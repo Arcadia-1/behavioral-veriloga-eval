@@ -9587,154 +9587,57 @@ def check_v3_384_file_fopen_mode_selector(rows: list[dict[str, float]]) -> tuple
     return _check_v3_file_io_gate(rows)
 
 
-def check_v3_385_table_model_linear_gain(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    required = {"time", "vin", "clk", "mode", "rst", "out", "metric"}
-    if not rows or not required.issubset(rows[0]):
-        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
-        return False, "missing_columns=" + ",".join(missing)
-    return _sample_many(
+def _piecewise_linear_table(x_value: float, points: list[tuple[float, float]]) -> float:
+    if x_value <= points[0][0]:
+        return points[0][1]
+    for (x0, y0), (x1, y1) in zip(points, points[1:]):
+        if x_value <= x1:
+            if x1 == x0:
+                return y1
+            alpha = (x_value - x0) / (x1 - x0)
+            return y0 + alpha * (y1 - y0)
+    return points[-1][1]
+
+
+def _check_v3_table_model_gate(
+    rows: list[dict[str, float]],
+    points: list[tuple[float, float]],
+) -> tuple[bool, str]:
+    def update(_state: dict[str, float | int], row: dict[str, float]) -> tuple[float, float]:
+        if row["rst"] > 0.45:
+            return 0.0, 0.0
+        out = _piecewise_linear_table(row["vin"], points)
+        return out, out / 0.9
+
+    return _check_v3_task_clocked_behavior(
         rows,
-        {
-            "out": [
-                (80.0, 0.1556),
-                (180.0, 0.6556),
-                (280.0, 0.2333),
-                (380.0, 0.7778),
-            ],
-            "metric": [
-                (80.0, 0.1728),
-                (180.0, 0.7284),
-                (280.0, 0.2593),
-                (380.0, 0.8642),
-            ],
-        },
-        tol=0.08,
+        update_fn=update,
+        initial_state={"out": 0.0, "metric": 0.0},
     )
+
+
+def check_v3_385_table_model_linear_gain(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    return _check_v3_table_model_gate(rows, [(0.0, 0.0), (0.45, 0.35), (0.9, 0.9)])
 
 
 def check_v3_386_table_model_clamped_transfer(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    required = {"time", "vin", "clk", "mode", "rst", "out", "metric"}
-    if not rows or not required.issubset(rows[0]):
-        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
-        return False, "missing_columns=" + ",".join(missing)
-    return _sample_many(
-        rows,
-        {
-            "out": [
-                (80.0, 0.0),
-                (180.0, 0.1556),
-                (280.0, 0.9),
-                (380.0, 0.7778),
-            ],
-            "metric": [
-                (80.0, 0.0),
-                (180.0, 0.1728),
-                (280.0, 1.0),
-                (380.0, 0.8642),
-            ],
-        },
-        tol=0.08,
-    )
+    return _check_v3_table_model_gate(rows, [(0.0, 0.0), (0.45, 0.35), (0.9, 0.9)])
 
 
 def check_v3_387_table_model_threshold_map(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    required = {"time", "vin", "clk", "mode", "rst", "out", "metric"}
-    if not rows or not required.issubset(rows[0]):
-        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
-        return False, "missing_columns=" + ",".join(missing)
-    return _sample_many(
-        rows,
-        {
-            "out": [
-                (80.0, 0.0),
-                (180.0, 0.9),
-                (280.0, 0.0),
-                (380.0, 0.9),
-            ],
-            "metric": [
-                (80.0, 0.0),
-                (180.0, 1.0),
-                (280.0, 0.0),
-                (380.0, 1.0),
-            ],
-        },
-        tol=0.08,
-    )
+    return _check_v3_table_model_gate(rows, [(0.0, 0.0), (0.44, 0.0), (0.46, 0.9), (0.9, 0.9)])
 
 
 def check_v3_388_table_model_dac_code_map(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    required = {"time", "vin", "clk", "mode", "rst", "out", "metric"}
-    if not rows or not required.issubset(rows[0]):
-        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
-        return False, "missing_columns=" + ",".join(missing)
-    return _sample_many(
-        rows,
-        {
-            "out": [
-                (80.0, 0.0),
-                (180.0, 0.3),
-                (280.0, 0.6),
-                (380.0, 0.9),
-            ],
-            "metric": [
-                (80.0, 0.0),
-                (180.0, 0.3333),
-                (280.0, 0.6667),
-                (380.0, 1.0),
-            ],
-        },
-        tol=0.08,
-    )
+    return _check_v3_table_model_gate(rows, [(0.0, 0.0), (1.0, 0.3), (2.0, 0.6), (3.0, 0.9)])
 
 
 def check_v3_389_table_model_temperature_profile(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    required = {"time", "vin", "clk", "mode", "rst", "out", "metric"}
-    if not rows or not required.issubset(rows[0]):
-        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
-        return False, "missing_columns=" + ",".join(missing)
-    return _sample_many(
-        rows,
-        {
-            "out": [
-                (80.0, 0.55),
-                (180.0, 0.9),
-                (280.0, 0.7),
-                (380.0, 0.5),
-            ],
-            "metric": [
-                (80.0, 0.6111),
-                (180.0, 1.0),
-                (280.0, 0.7778),
-                (380.0, 0.5556),
-            ],
-        },
-        tol=0.08,
-    )
+    return _check_v3_table_model_gate(rows, [(-40.0, 0.55), (25.0, 0.9), (85.0, 0.7), (125.0, 0.5)])
 
 
 def check_v3_390_table_model_piecewise_calibrator(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    required = {"time", "vin", "clk", "mode", "rst", "out", "metric"}
-    if not rows or not required.issubset(rows[0]):
-        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
-        return False, "missing_columns=" + ",".join(missing)
-    return _sample_many(
-        rows,
-        {
-            "out": [
-                (80.0, 0.125),
-                (180.0, 0.45),
-                (280.0, 0.775),
-                (380.0, 0.9),
-            ],
-            "metric": [
-                (80.0, 0.1389),
-                (180.0, 0.5),
-                (280.0, 0.8611),
-                (380.0, 1.0),
-            ],
-        },
-        tol=0.08,
-    )
+    return _check_v3_table_model_gate(rows, [(0.0, 0.0), (0.3, 0.25), (0.6, 0.65), (0.9, 0.9)])
 
 
 def check_v3_391_rdist_exponential_jitter(rows: list[dict[str, float]]) -> tuple[bool, str]:

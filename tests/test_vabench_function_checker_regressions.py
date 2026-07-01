@@ -2322,6 +2322,59 @@ def test_v3_file_io_checkers_follow_hidden_stimulus_values() -> None:
         assert not checker(_task_clocked_rows(file_gate_update, input_fn, wrong=True))[0]
 
 
+def test_v3_table_model_checkers_follow_hidden_stimulus_values() -> None:
+    cases = [
+        (
+            sim.check_v3_385_table_model_linear_gain,
+            [(0.0, 0.0), (0.45, 0.35), (0.9, 0.9)],
+            [(0.0, 0.05), (100.0, 0.42), (200.0, 0.63), (300.0, 0.88), (400.0, 0.18)],
+        ),
+        (
+            sim.check_v3_386_table_model_clamped_transfer,
+            [(0.0, 0.0), (0.45, 0.35), (0.9, 0.9)],
+            [(0.0, -0.35), (100.0, 0.15), (200.0, 0.72), (300.0, 1.25), (400.0, 0.48)],
+        ),
+        (
+            sim.check_v3_387_table_model_threshold_map,
+            [(0.0, 0.0), (0.44, 0.0), (0.46, 0.9), (0.9, 0.9)],
+            [(0.0, 0.43), (100.0, 0.455), (200.0, 0.20), (300.0, 0.70), (400.0, 0.445)],
+        ),
+        (
+            sim.check_v3_388_table_model_dac_code_map,
+            [(0.0, 0.0), (1.0, 0.3), (2.0, 0.6), (3.0, 0.9)],
+            [(0.0, 0.5), (100.0, 1.5), (200.0, 2.5), (300.0, -0.2), (400.0, 3.4)],
+        ),
+        (
+            sim.check_v3_389_table_model_temperature_profile,
+            [(-40.0, 0.55), (25.0, 0.9), (85.0, 0.7), (125.0, 0.5)],
+            [(0.0, -20.0), (100.0, 60.0), (200.0, 105.0), (300.0, 140.0), (400.0, -55.0)],
+        ),
+        (
+            sim.check_v3_390_table_model_piecewise_calibrator,
+            [(0.0, 0.0), (0.3, 0.25), (0.6, 0.65), (0.9, 0.9)],
+            [(0.0, 0.05), (100.0, 0.33), (200.0, 0.58), (300.0, 0.82), (400.0, 1.05)],
+        ),
+    ]
+
+    def make_update(points):
+        def update(_state: dict[str, float | int], row: dict[str, float]) -> tuple[float, float]:
+            if row["rst"] > 0.45:
+                return 0.0, 0.0
+            out = sim._piecewise_linear_table(row["vin"], points)
+            return out, out / 0.9
+
+        return update
+
+    for checker, points, vin_segments in cases:
+        input_fn = lambda time_ns, segments=vin_segments: (
+            _task_input_from_segments(time_ns, segments),
+            0.0,
+            0.0,
+        )
+        assert checker(_task_clocked_rows(make_update(points), input_fn))[0]
+        assert not checker(_task_clocked_rows(make_update(points), input_fn, wrong=True))[0]
+
+
 def _converter_front_end_chain_rows(*, mode: str = "good") -> list[dict[str, float]]:
     edges_ns = [5.0 + 20.0 * idx for idx in range(9)]
     aperture_levels = [0.18, 0.72, 0.32, 0.78, 0.40, 0.70, 0.25, 0.65, 0.38]

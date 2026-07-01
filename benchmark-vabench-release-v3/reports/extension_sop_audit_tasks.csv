@@ -83,12 +83,12 @@ task,number,title,tier,target,visible_hidden_distinct,negative_count,usable_scen
 382-file-ftell-position-meter,382,File Ftell Position Meter,syntax-extension-candidate,file_ftell_position_meter.va,True,5,True,True,True,True,True,,candidate_tier_not_score_ready
 383-file-rewind-second-pass,383,File Rewind Second Pass,syntax-extension-candidate,file_rewind_second_pass.va,True,5,True,True,True,True,True,,candidate_tier_not_score_ready
 384-file-fopen-mode-selector,384,File Fopen Mode Selector,syntax-extension-candidate,file_fopen_mode_selector.va,True,5,True,True,True,True,True,,candidate_tier_not_score_ready
-385-table-model-linear-gain,385,Table Model Linear Gain,syntax-extension-candidate,table_model_linear_gain.va,False,5,True,True,True,True,True,,candidate_tier_not_score_ready;visible_hidden_identical
-386-table-model-clamped-transfer,386,Table Model Clamped Transfer,syntax-extension-candidate,table_model_clamped_transfer.va,False,5,True,True,True,True,True,,candidate_tier_not_score_ready;visible_hidden_identical
-387-table-model-threshold-map,387,Table Model Threshold Map,syntax-extension-candidate,table_model_threshold_map.va,False,5,True,True,True,True,True,,candidate_tier_not_score_ready;visible_hidden_identical
-388-table-model-dac-code-map,388,Table Model Dac Code Map,syntax-extension-candidate,table_model_dac_code_map.va,False,5,True,True,True,True,True,,candidate_tier_not_score_ready;visible_hidden_identical
-389-table-model-temperature-profile,389,Table Model Temperature Profile,syntax-extension-candidate,table_model_temperature_profile.va,False,5,True,True,True,True,True,,candidate_tier_not_score_ready;visible_hidden_identical
-390-table-model-piecewise-calibrator,390,Table Model Piecewise Calibrator,syntax-extension-candidate,table_model_piecewise_calibrator.va,False,5,True,True,True,True,True,,candidate_tier_not_score_ready;visible_hidden_identical
+385-table-model-linear-gain,385,Table Model Linear Gain,syntax-extension-candidate,table_model_linear_gain.va,True,5,True,True,True,True,True,,candidate_tier_not_score_ready
+386-table-model-clamped-transfer,386,Table Model Clamped Transfer,syntax-extension-candidate,table_model_clamped_transfer.va,True,5,True,True,True,True,True,,candidate_tier_not_score_ready
+387-table-model-threshold-map,387,Table Model Threshold Map,syntax-extension-candidate,table_model_threshold_map.va,True,5,True,True,True,True,True,,candidate_tier_not_score_ready
+388-table-model-dac-code-map,388,Table Model Dac Code Map,syntax-extension-candidate,table_model_dac_code_map.va,True,5,True,True,True,True,True,,candidate_tier_not_score_ready
+389-table-model-temperature-profile,389,Table Model Temperature Profile,syntax-extension-candidate,table_model_temperature_profile.va,True,5,True,True,True,True,True,,candidate_tier_not_score_ready
+390-table-model-piecewise-calibrator,390,Table Model Piecewise Calibrator,syntax-extension-candidate,table_model_piecewise_calibrator.va,True,5,True,True,True,True,True,,candidate_tier_not_score_ready
 391-rdist-exponential-jitter,391,Rdist Exponential Jitter,syntax-extension-candidate,rdist_exponential_jitter.va,False,5,True,True,True,True,True,,candidate_tier_not_score_ready;visible_hidden_identical
 392-rdist-poisson-count-noise,392,Rdist Poisson Count Noise,syntax-extension-candidate,rdist_poisson_count_noise.va,False,5,True,True,True,True,True,,candidate_tier_not_score_ready;visible_hidden_identical
 393-rdist-normal-offset-dither,393,Rdist Normal Offset Dither,syntax-extension-candidate,rdist_normal_offset_dither.va,False,5,True,True,True,True,True,,candidate_tier_not_score_ready;visible_hidden_identical
