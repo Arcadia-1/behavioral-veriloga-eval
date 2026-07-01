@@ -7340,17 +7340,46 @@
 370-ac-stim-phase-selector: |
   version: 1
   task_id: v3_370_ac_stim_phase_selector
-  backend: noise_analysis_capable
-  status: noise-analysis-candidate
-  checker: noise_analysis_language_feature_contract
+  backend: evas
+  status: behavior-certified-candidate
+  checker: ac_stim_phase_transient_sideband_contract
+  # vabench-release-v2-checks
+  required_columns:
+    - time
+    - ctrl
+    - clk
+    - out
+    - metric
   syntax:
     must_include:
       - "analysis("
       - "ac_stim"
+      - 'analysis("ac")'
+      - "V(ctrl) > vth ? 90.0 : 0.0"
+      - "V(out)"
+      - "cross"
+      - "V(metric)"
+      - "transition"
     must_not_include:
       - "I("
+  sim_correct:
+    positive:
+      - solution/ac_stim_phase_selector.va
+    negative:
+      - negative_variants/neg_001_zero_noise/ac_stim_phase_selector.va
+      - negative_variants/neg_002_wrong_label/ac_stim_phase_selector.va
+      - negative_variants/neg_003_disable_analysis/ac_stim_phase_selector.va
+      - negative_variants/neg_004_wrong_metric/ac_stim_phase_selector.va
+      - negative_variants/neg_005_scale_output/ac_stim_phase_selector.va
+    checks:
+      - executable_analysis_guarded_ac_stim_phase_contribution
+      - out_follows_ctrl_during_tran
+      - metric_reports_phase_selection_on_clk_rising_crossing
+      - transient_sideband_only_not_ac_analysis_certification
+      - no_current_domain_contribution
   notes:
-    - "Noise/analysis extension task; not part of original full-300 transient certification claim."
+    - "AC analysis extension task promoted for executable transient sideband behavior."
+    - "The checker verifies transient behavior and the deterministic phase-selection sideband; AC phase behavior requires an AC-capable layer."
 371-combined-white-flicker-noise: |
   version: 1
   task_id: v3_371_combined_white_flicker_noise

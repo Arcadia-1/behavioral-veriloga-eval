@@ -10,18 +10,18 @@ module ac_stim_phase_selector (
 parameter real vth = 0.45;
 parameter real vhi = 0.9;
 parameter real tr = 200p;
-real out_v;
 real metric_v;
-integer count_q;
+
 analog begin
     @(initial_step) begin
-        out_v = 0.0;
-        metric_v = 0.0 * 0.0;
-        count_q = 0;
+        metric_v = 0.0;
     end
-V(out) <+ transition(V(ctrl), 0.0, tr, tr);
+
+    V(out) <+ transition(V(ctrl), 0.0, tr, tr);
     if (analysis("ac")) V(out) <+ ac_stim("ac", 1.0, V(ctrl) > vth ? 90.0 : 0.0);
-    @(cross(V(clk)-vth,+1)) metric_v = V(ctrl) > vth ? vhi : 0.0;
+
+    @(cross(V(clk)-vth,+1)) metric_v = V(ctrl) > vth ? 0.0 : vhi;
+
     V(metric) <+ transition(metric_v, 0.0, tr, tr);
 end
 endmodule

@@ -8233,6 +8233,31 @@ def check_v3_369_ac_stim_small_signal_source(rows: list[dict[str, float]]) -> tu
     )
 
 
+def check_v3_370_ac_stim_phase_selector(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "ctrl", "clk", "out", "metric"}
+    if not rows or not required.issubset(rows[0]):
+        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
+        return False, "missing_columns=" + ",".join(missing)
+    return _sample_many(
+        rows,
+        {
+            "out": [
+                (80.0, 0.2),
+                (180.0, 0.7),
+                (280.0, 0.3),
+                (380.0, 0.8),
+            ],
+            "metric": [
+                (80.0, 0.0),
+                (180.0, 0.9),
+                (280.0, 0.0),
+                (380.0, 0.9),
+            ],
+        },
+        tol=0.08,
+    )
+
+
 def check_v3_clocked_sar_comparator(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "cmpck", "vinp", "vinn", "dcmpn", "dcmpp"}
     if not rows or not required.issubset(rows[0]):
@@ -17266,6 +17291,8 @@ V3_STANDALONE_SPLIT_CHECKS = {
     "368-analysis-dependent-noise-enable": check_v3_368_analysis_dependent_noise_enable,
     "v3_369_ac_stim_small_signal_source": check_v3_369_ac_stim_small_signal_source,
     "369-ac-stim-small-signal-source": check_v3_369_ac_stim_small_signal_source,
+    "v3_370_ac_stim_phase_selector": check_v3_370_ac_stim_phase_selector,
+    "370-ac-stim-phase-selector": check_v3_370_ac_stim_phase_selector,
 }
 
 for _alias, _checker in V3_STANDALONE_SPLIT_CHECKS.items():

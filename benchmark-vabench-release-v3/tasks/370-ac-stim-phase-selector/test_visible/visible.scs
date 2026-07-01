@@ -1,4 +1,12 @@
 simulator lang=spectre
 global 0
-// Visible smoke skeleton for noise/analysis extension task.
-tran tran stop=80n
+
+ahdl_include "ac_stim_phase_selector.va"
+
+Vctrl (ctrl 0) vsource type=pwl wave=[0 0.2 99n 0.2 100n 0.7 199n 0.7 200n 0.3 299n 0.3 300n 0.8 420n 0.8]
+Vclk (clk 0) vsource type=pwl wave=[0 0.0 49n 0.0 50n 1.0 79n 1.0 80n 0.0 149n 0.0 150n 1.0 179n 1.0 180n 0.0 249n 0.0 250n 1.0 279n 1.0 280n 0.0 349n 0.0 350n 1.0 420n 1.0]
+
+XDUT (ctrl clk out metric) ac_stim_phase_selector
+
+tran tran stop=420n
+save ctrl clk out metric
