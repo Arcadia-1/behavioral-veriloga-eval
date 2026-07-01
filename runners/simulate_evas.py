@@ -8706,6 +8706,31 @@ def check_v3_388_table_model_dac_code_map(rows: list[dict[str, float]]) -> tuple
     )
 
 
+def check_v3_389_table_model_temperature_profile(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "vin", "clk", "mode", "rst", "out", "metric"}
+    if not rows or not required.issubset(rows[0]):
+        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
+        return False, "missing_columns=" + ",".join(missing)
+    return _sample_many(
+        rows,
+        {
+            "out": [
+                (80.0, 0.55),
+                (180.0, 0.9),
+                (280.0, 0.7),
+                (380.0, 0.5),
+            ],
+            "metric": [
+                (80.0, 0.6111),
+                (180.0, 1.0),
+                (280.0, 0.7778),
+                (380.0, 0.5556),
+            ],
+        },
+        tol=0.08,
+    )
+
+
 def check_v3_clocked_sar_comparator(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "cmpck", "vinp", "vinn", "dcmpn", "dcmpp"}
     if not rows or not required.issubset(rows[0]):
@@ -17777,6 +17802,8 @@ V3_STANDALONE_SPLIT_CHECKS = {
     "387-table-model-threshold-map": check_v3_387_table_model_threshold_map,
     "v3_388_table_model_dac_code_map": check_v3_388_table_model_dac_code_map,
     "388-table-model-dac-code-map": check_v3_388_table_model_dac_code_map,
+    "v3_389_table_model_temperature_profile": check_v3_389_table_model_temperature_profile,
+    "389-table-model-temperature-profile": check_v3_389_table_model_temperature_profile,
 }
 
 for _alias, _checker in V3_STANDALONE_SPLIT_CHECKS.items():

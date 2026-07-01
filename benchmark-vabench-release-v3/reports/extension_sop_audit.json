@@ -34,28 +34,28 @@
       "top_issues": []
     },
     {
-      "complete_tests_count": 15,
+      "complete_tests_count": 16,
       "description": "task/file/table/random/hierarchy syntax candidates",
-      "fair_eval_count": 16,
+      "fair_eval_count": 17,
       "range": "373-434",
-      "sop_ready_count": 15,
+      "sop_ready_count": 16,
       "task_count": 62,
       "top_issues": [
         [
           "missing_required_behavior_section",
-          47
+          46
         ],
         [
           "visible_scs_not_executable:include,instance,source",
-          46
+          45
         ],
         [
           "hidden_scs_not_executable:include,instance,source",
-          46
+          45
         ],
         [
           "checker_syntax_only_no_behavior_score",
-          46
+          45
         ]
       ]
     },
@@ -141,15 +141,15 @@
   "scope": "benchmark-vabench-release-v3 tasks 301-494",
   "standard": "behavioral-veriloga-vela/SOP.md visible/hidden task standard and four quality criteria",
   "summary": {
-    "complete_tests_count": 87,
-    "fair_eval_count": 87,
+    "complete_tests_count": 88,
+    "fair_eval_count": 88,
     "issue_counts": {
-      "checker_syntax_only_no_behavior_score": 107,
-      "hidden_scs_not_executable:include,instance,source": 106,
-      "missing_required_behavior_section": 107,
-      "visible_scs_not_executable:include,instance,source": 106
+      "checker_syntax_only_no_behavior_score": 106,
+      "hidden_scs_not_executable:include,instance,source": 105,
+      "missing_required_behavior_section": 106,
+      "visible_scs_not_executable:include,instance,source": 105
     },
-    "sop_ready_count": 86,
+    "sop_ready_count": 87,
     "task_count": 194
   },
   "tasks": [
@@ -2183,20 +2183,15 @@
     },
     {
       "certification_scope": "language_extension_not_part_of_original_full_300_claim",
-      "complete_tests": false,
-      "fair_eval": false,
+      "complete_tests": true,
+      "fair_eval": true,
       "hidden_scs_count": 1,
-      "issues": [
-        "visible_scs_not_executable:include,instance,source",
-        "hidden_scs_not_executable:include,instance,source",
-        "missing_required_behavior_section",
-        "checker_syntax_only_no_behavior_score"
-      ],
+      "issues": [],
       "negative_count": 5,
       "number": 389,
-      "reasonable_task": false,
+      "reasonable_task": true,
       "solution_file_count": 2,
-      "sop_ready": false,
+      "sop_ready": true,
       "starter_file_count": 2,
       "syntax_focus": "Use $table_model() for a profile-shaped behavioral output.",
       "target": "table_model_temperature_profile.va",
