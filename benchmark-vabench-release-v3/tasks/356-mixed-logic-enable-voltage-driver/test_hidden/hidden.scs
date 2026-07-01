@@ -1,4 +1,16 @@
 simulator lang=spectre
 global 0
-// Hidden AMS behavior skeleton for mixed-signal extension task.
-tran tran stop=200n
+
+ahdl_include "mixed_logic_enable_voltage_driver.vams"
+
+Vvin (vin 0) vsource type=pwl wave=[0 0.7 179n 0.7 180n 0.3 399n 0.3 400n 0.9 600n 0.9]
+Vclk (clk 0) vsource dc=0.0
+Ven (en 0) vsource type=pwl wave=[0 1.0 249n 1.0 250n 0.0 449n 0.0 450n 1.0 600n 1.0]
+Vsel (sel 0) vsource dc=0.0
+Va (a 0) vsource dc=0.25
+Vb (b 0) vsource dc=0.75
+
+XDUT (vin clk en sel a b vout) mixed_logic_enable_voltage_driver
+
+tran tran stop=600n
+save vin clk en sel a b vout

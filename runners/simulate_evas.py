@@ -7953,6 +7953,25 @@ def check_v3_355_always_enable_hold(rows: list[dict[str, float]]) -> tuple[bool,
     )
 
 
+def check_v3_356_mixed_logic_enable_voltage_driver(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "vin", "en", "sel", "a", "b", "vout"}
+    if not rows or not required.issubset(rows[0]):
+        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
+        return False, "missing_columns=" + ",".join(missing)
+    return _sample_many(
+        rows,
+        {
+            "vout": [
+                (120.0, 0.7),
+                (220.0, 0.3),
+                (340.0, 0.0),
+                (520.0, 0.9),
+            ],
+        },
+        tol=0.08,
+    )
+
+
 def check_v3_clocked_sar_comparator(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "cmpck", "vinp", "vinn", "dcmpn", "dcmpp"}
     if not rows or not required.issubset(rows[0]):
@@ -16958,6 +16977,8 @@ V3_STANDALONE_SPLIT_CHECKS = {
     "354-always-counter-two-bit": check_v3_354_always_counter_two_bit,
     "v3_355_always_enable_hold": check_v3_355_always_enable_hold,
     "355-always-enable-hold": check_v3_355_always_enable_hold,
+    "v3_356_mixed_logic_enable_voltage_driver": check_v3_356_mixed_logic_enable_voltage_driver,
+    "356-mixed-logic-enable-voltage-driver": check_v3_356_mixed_logic_enable_voltage_driver,
 }
 
 for _alias, _checker in V3_STANDALONE_SPLIT_CHECKS.items():

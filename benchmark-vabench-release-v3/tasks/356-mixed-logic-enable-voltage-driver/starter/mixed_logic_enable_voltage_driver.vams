@@ -1,7 +1,13 @@
-module mixed_logic_enable_voltage_driver(a, b, sel, y);
-    input a, b, sel;
-    output y;
-    wreal a, b, sel, y;
-    // TODO: implement the requested Verilog-AMS mixed-signal behavior.
-    assign y = 0.0;
+`include "constants.vams"
+`include "disciplines.vams"
+
+module mixed_logic_enable_voltage_driver(vin, clk, en, sel, a, b, vout);
+    input vin, clk, en, sel, a, b;
+    output vout;
+    electrical vin, vout;
+    logic clk, en, sel;
+    wreal a, b, level;
+    logic en_logic;
+    parameter real tr = 200p;
+    // TODO: implement the requested mixed-signal enable gate.
 endmodule
