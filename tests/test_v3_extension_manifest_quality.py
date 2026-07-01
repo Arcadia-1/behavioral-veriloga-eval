@@ -135,9 +135,8 @@ def test_v3_extension_visible_hidden_diversity_is_audited() -> None:
         else:
             distinct_tasks.append(task_key)
 
-    assert len(distinct_tasks) == 176
-    assert len(identical_tasks) == 18
-    assert "458-recursive-function-candidate" in identical_tasks
+    assert len(distinct_tasks) == 177
+    assert len(identical_tasks) == 17
     assert "341-wreal-gain-pass-through" in distinct_tasks
     assert "346-logic-assign-inverter" in distinct_tasks
     assert "351-always-posedged-dff" in distinct_tasks
@@ -150,6 +149,7 @@ def test_v3_extension_visible_hidden_diversity_is_audited() -> None:
     assert "434-repeat-loop-accumulator" in distinct_tasks
     assert "445-limexp-soft-exponential" in distinct_tasks
     assert "457-nested-function-pipeline" in distinct_tasks
+    assert "458-recursive-function-candidate" in distinct_tasks
     assert "336-directive-configurable-threshold" in distinct_tasks
     assert "340-bound-step-clock-guard" in distinct_tasks
     assert "456-event-or-cross-timer" in distinct_tasks

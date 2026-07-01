@@ -2912,6 +2912,20 @@ def test_v3_event_or_timer_checker_follows_hidden_events() -> None:
     assert not sim.check_v3_456_event_or_cross_timer(rows(wrong=True))[0]
 
 
+def test_v3_recursive_function_checker_follows_hidden_depth_override() -> None:
+    def rows(*, stim: float, out: float) -> list[dict[str, float]]:
+        return [
+            {"time": 0.0, "stim": stim, "out": out},
+            {"time": 10e-9, "stim": stim, "out": out},
+            {"time": 20e-9, "stim": stim, "out": out},
+        ]
+
+    assert sim.check_v3_458_recursive_function_candidate(rows(stim=0.0, out=6.0))[0]
+    assert sim.check_v3_458_recursive_function_candidate(rows(stim=1.0, out=24.0))[0]
+    assert not sim.check_v3_458_recursive_function_candidate(rows(stim=1.0, out=6.0))[0]
+    assert not sim.check_v3_458_recursive_function_candidate(rows(stim=0.0, out=24.0))[0]
+
+
 def test_v3_above_last_crossing_checkers_follow_hidden_events() -> None:
     def make_rows(vin_segments, rst_segments, model_fn, *, stop_ns: int = 760, wrong: bool = False) -> list[dict[str, float]]:
         rows: list[dict[str, float]] = []

@@ -8,9 +8,9 @@ Date: 2026-07-02
 - SOP-ready tasks: **153**
 - Tasks with executable visible+hidden SCS evidence: **194**
 - Tasks with behavior checker evidence: **153**
-- Tasks with distinct visible/hidden SCS stimuli: **176**
-- Tasks with identical visible/hidden SCS stimuli: **18**
-- SOP-ready tasks with identical visible/hidden SCS stimuli: **1**
+- Tasks with distinct visible/hidden SCS stimuli: **177**
+- Tasks with identical visible/hidden SCS stimuli: **17**
+- SOP-ready tasks with identical visible/hidden SCS stimuli: **0**
 - Staged tasks with identical visible/hidden SCS stimuli: **17**
 
 ## Issue Counts
@@ -20,7 +20,7 @@ Date: 2026-07-02
 ## Warning Counts
 
 - `candidate_tier_not_score_ready`: 194
-- `visible_hidden_identical`: 18
+- `visible_hidden_identical`: 17
 
 ## Range Summary
 
@@ -30,7 +30,7 @@ Date: 2026-07-02
 | `341-360` | AMS mixed-signal candidates | 20 | 19 | 20 | 19 | 19 | `checker_syntax_only_no_behavior_score`: 1 |
 | `361-372` | noise and analysis candidates | 12 | 12 | 12 | 12 | 12 |  |
 | `373-434` | task/file/table/random/hierarchy syntax candidates | 62 | 55 | 62 | 55 | 56 | `checker_syntax_only_no_behavior_score`: 7 |
-| `435-458` | manual syntax-completion candidates | 24 | 8 | 24 | 8 | 13 | `checker_syntax_only_no_behavior_score`: 16 |
+| `435-458` | manual syntax-completion candidates | 24 | 8 | 24 | 8 | 14 | `checker_syntax_only_no_behavior_score`: 16 |
 | `459-470` | course-material gap-fill candidates | 12 | 8 | 12 | 8 | 12 | `checker_syntax_only_no_behavior_score`: 4 |
 | `471-494` | LRM KCL/continuous-time gap-fill candidates | 24 | 11 | 24 | 11 | 24 | `checker_syntax_only_no_behavior_score`: 13 |
 

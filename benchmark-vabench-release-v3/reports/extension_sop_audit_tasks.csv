@@ -156,7 +156,7 @@ task,number,title,tier,target,visible_hidden_distinct,negative_count,usable_scen
 455-packed-logic-bus-slice,455,Packed Logic Bus Slice,syntax-extension-candidate,packed_logic_bus_slice.vams,True,5,True,True,True,False,False,checker_syntax_only_no_behavior_score,candidate_tier_not_score_ready
 456-event-or-cross-timer,456,Event Or Cross Timer,syntax-extension-candidate,event_or_cross_timer.va,True,5,True,True,True,True,True,,candidate_tier_not_score_ready
 457-nested-function-pipeline,457,Nested Function Pipeline,syntax-extension-candidate,nested_function_pipeline.va,True,5,True,True,True,True,True,,candidate_tier_not_score_ready
-458-recursive-function-candidate,458,Recursive Function Candidate,syntax-extension-candidate,recursive_function_candidate.va,False,5,True,True,True,True,True,,candidate_tier_not_score_ready;visible_hidden_identical
+458-recursive-function-candidate,458,Recursive Function Candidate,syntax-extension-candidate,recursive_function_candidate.va,True,5,True,True,True,True,True,,candidate_tier_not_score_ready
 459-do-while-loop-accumulator,459,Do While Loop Accumulator,syntax-extension-candidate,do_while_loop_accumulator.va,True,5,True,True,True,True,True,,candidate_tier_not_score_ready
 460-analog-initial-block-state,460,Analog Initial Block State,syntax-extension-candidate,analog_initial_block_state.va,True,5,True,True,True,True,True,,candidate_tier_not_score_ready
 461-vt-thermal-voltage-source,461,Vt Thermal Voltage Source,syntax-extension-candidate,vt_thermal_voltage_source.va,True,5,True,True,True,True,True,,candidate_tier_not_score_ready

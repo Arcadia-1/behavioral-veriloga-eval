@@ -8939,15 +8939,20 @@ def check_v3_457_nested_function_pipeline(rows: list[dict[str, float]]) -> tuple
 
 
 def check_v3_458_recursive_function_candidate(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    required = {"time", "out"}
+    required = {"time", "stim", "out"}
     if not rows or not required.issubset(rows[0]):
         missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
         return False, "missing_columns=" + ",".join(missing)
-    return _sample_many(
-        rows,
-        {"out": [(10.0, 6.0)]},
-        tol=0.08,
-    )
+    stim = sample_signal_at(rows, "stim", 10e-9)
+    out = sample_signal_at(rows, "out", 10e-9)
+    if stim is None or out is None:
+        return False, "missing_sample_at=10ns"
+    expected = 24.0 if stim > 0.5 else 6.0
+    err = abs(out - expected)
+    if err > 0.08:
+        mode = "hidden_depth4" if stim > 0.5 else "visible_depth3"
+        return False, f"{mode}: out@10ns={out:.4f} expected={expected:.4f}"
+    return True, f"stim={stim:.3f} expected_factorial={expected:.1f} err={err:.4f}"
 
 
 def check_v3_459_do_while_loop_accumulator(rows: list[dict[str, float]]) -> tuple[bool, str]:

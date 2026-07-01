@@ -23,7 +23,7 @@
     },
     {
       "id": "neg_004_metric_offset",
-      "why_wrong": "Offset the metric output while leaving the main path plausible.",
+      "why_wrong": "Hard-code the visible depth result so the default-depth test passes but the hidden depth override fails.",
       "files": [
         "neg_004_metric_offset/recursive_function_candidate.va"
       ]

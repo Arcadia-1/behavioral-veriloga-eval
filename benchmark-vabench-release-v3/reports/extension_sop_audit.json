@@ -64,7 +64,7 @@
           16
         ]
       ],
-      "visible_hidden_distinct_count": 13
+      "visible_hidden_distinct_count": 14
     },
     {
       "complete_tests_count": 12,
@@ -106,14 +106,14 @@
       "checker_syntax_only_no_behavior_score": 41
     },
     "sop_ready_count": 153,
-    "sop_ready_visible_hidden_identical_count": 1,
+    "sop_ready_visible_hidden_identical_count": 0,
     "staged_visible_hidden_identical_count": 17,
     "task_count": 194,
-    "visible_hidden_distinct_count": 176,
-    "visible_hidden_identical_count": 18,
+    "visible_hidden_distinct_count": 177,
+    "visible_hidden_identical_count": 17,
     "warning_counts": {
       "candidate_tier_not_score_ready": 194,
-      "visible_hidden_identical": 18
+      "visible_hidden_identical": 17
     }
   },
   "tasks": [
@@ -3968,11 +3968,10 @@
       "tier": "syntax-extension-candidate",
       "title": "Recursive Function Candidate",
       "usable_scene": true,
-      "visible_hidden_distinct": false,
+      "visible_hidden_distinct": true,
       "visible_scs_count": 1,
       "warnings": [
-        "candidate_tier_not_score_ready",
-        "visible_hidden_identical"
+        "candidate_tier_not_score_ready"
       ]
     },
     {

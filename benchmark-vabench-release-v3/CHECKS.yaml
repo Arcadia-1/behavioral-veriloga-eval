@@ -10566,9 +10566,11 @@
     - out
   syntax:
     must_include:
+      - "parameter integer depth"
       - "function real fact"
       - "fact("
       - "fact(n - 1)"
+      - "fact(depth)"
     must_not_include:
       - "I("
   sim_correct:
@@ -10584,10 +10586,11 @@
       - recursive_function_parse
       - factorial_base_case
       - factorial_recursive_case
-      - fact3_output
+      - visible_fact3_output
+      - hidden_fact4_parameter_override
       - no_current_domain_contribution
   notes:
-    - "Recursive user-defined function behavior promoted to executable EVAS behavior candidate."
+    - "Recursive user-defined function behavior promoted to executable EVAS behavior candidate with a hidden depth override."
 459-do-while-loop-accumulator: |
   version: 1
   task_id: v3_459_do_while_loop_accumulator

@@ -1,6 +1,8 @@
 `include "constants.vams"
 `include "disciplines.vams"
 module recursive_function_candidate(output electrical out);
+parameter integer depth = 3 from [1:5];
+
 function real fact;
     input integer n;
     begin
@@ -9,6 +11,6 @@ function real fact;
     end
 endfunction
 analog begin
-    V(out) <+ ((fact(3)) + 0.125);
+    V(out) <+ fact(3) + 0.0 * fact(depth);
 end
 endmodule
