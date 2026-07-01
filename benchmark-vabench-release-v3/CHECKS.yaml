@@ -11308,14 +11308,16 @@
 488-table-model-string-param-source: |
   version: 1
   task_id: v3_488_table_model_string_param_source
-  backend: evas_rust_compile_capable
+  backend: evas_pending_table_model_string_param_source
   status: syntax-extension-candidate
   checker: language_feature_contract
   syntax:
     must_include:
       - "parameter string tmdata"
+      - "$table_model"
+      - "1L"
   notes:
-    - "LRM gap-fill task; extension candidate, not part of the original full-300 behavior-certified claim."
+    - "Executable tests and checker are staged, but behavior promotion is blocked by EVAS issue #40 because string-parameter $table_model data source currently returns 0."
 489-event-nested-or-expression: |
   version: 1
   task_id: v3_489_event_nested_or_expression

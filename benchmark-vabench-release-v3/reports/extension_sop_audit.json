@@ -88,7 +88,7 @@
       ]
     },
     {
-      "complete_tests_count": 17,
+      "complete_tests_count": 18,
       "description": "LRM KCL/continuous-time gap-fill candidates",
       "fair_eval_count": 9,
       "range": "471-494",
@@ -101,15 +101,15 @@
         ],
         [
           "visible_scs_not_executable:include,instance,source",
-          7
+          6
         ],
         [
           "hidden_scs_not_executable:include,instance,source",
-          7
+          6
         ],
         [
           "missing_required_behavior_section",
-          7
+          6
         ]
       ]
     }
@@ -117,13 +117,13 @@
   "scope": "benchmark-vabench-release-v3 tasks 301-494",
   "standard": "behavioral-veriloga-vela/SOP.md visible/hidden task standard and four quality criteria",
   "summary": {
-    "complete_tests_count": 180,
+    "complete_tests_count": 181,
     "fair_eval_count": 151,
     "issue_counts": {
       "checker_syntax_only_no_behavior_score": 43,
-      "hidden_scs_not_executable:include,instance,source": 13,
-      "missing_required_behavior_section": 8,
-      "visible_scs_not_executable:include,instance,source": 13
+      "hidden_scs_not_executable:include,instance,source": 12,
+      "missing_required_behavior_section": 7,
+      "visible_scs_not_executable:include,instance,source": 12
     },
     "sop_ready_count": 150,
     "task_count": 194
@@ -4518,21 +4518,18 @@
     },
     {
       "certification_scope": "language_extension_not_part_of_original_full_300_claim",
-      "complete_tests": false,
+      "complete_tests": true,
       "fair_eval": false,
       "hidden_scs_count": 1,
       "issues": [
-        "visible_scs_not_executable:include,instance,source",
-        "hidden_scs_not_executable:include,instance,source",
-        "missing_required_behavior_section",
         "checker_syntax_only_no_behavior_score"
       ],
       "negative_count": 5,
       "number": 488,
-      "reasonable_task": false,
-      "solution_file_count": 1,
+      "reasonable_task": true,
+      "solution_file_count": 2,
       "sop_ready": false,
-      "starter_file_count": 1,
+      "starter_file_count": 2,
       "syntax_focus": "Use a string parameter as the $table_model() data source.",
       "target": "table_model_string_param_source.va",
       "task": "488-table-model-string-param-source",

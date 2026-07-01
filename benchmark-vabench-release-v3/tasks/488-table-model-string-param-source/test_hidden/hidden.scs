@@ -1,4 +1,11 @@
 simulator lang=spectre
 global 0
+
+ahdl_include "table_model_string_param_source.va"
+
+Vin (inp 0) vsource type=pwl wave=[0 0.0 20n 0.0 21n 0.5 60n 0.5 61n 1.0 100n 1.0 101n 0.0 160n 0.0]
+
+XDUT (inp out) table_model_string_param_source
+
 tran tran stop=160n
-save vin clk mode rst out metric
+save inp out
