@@ -1821,6 +1821,61 @@ def test_v3_wreal_assign_checkers_follow_hidden_stimulus_values() -> None:
         assert not checker(_wreal_assign_rows(expected_fn, wrong=True))[0]
 
 
+def _logic_assign_rows(expected_fn, *, wrong: bool = False) -> list[dict[str, float]]:
+    base_rows = [
+        (0.0, 0.0, 0.0, 0.0),
+        (120.0, 0.0, 1.0, 1.0),
+        (150.0, 0.0, 1.0, 1.0),
+        (220.0, 1.0, 0.0, 1.0),
+        (340.0, 1.0, 1.0, 1.0),
+        (390.0, 1.0, 1.0, 1.0),
+        (430.0, 1.0, 1.0, 1.0),
+        (500.0, 0.0, 1.0, 0.0),
+        (570.0, 1.0, 0.0, 0.0),
+    ]
+    rows: list[dict[str, float]] = []
+    for time_ns, a_value, b_value, en_value in base_rows:
+        expected = expected_fn(a_value > 0.45, b_value > 0.45, en_value > 0.45)
+        rows.append(
+            {
+                "time": time_ns * 1e-9,
+                "a": a_value,
+                "b": b_value,
+                "en": en_value,
+                "y": 0.0 if wrong else (1.0 if expected else 0.0),
+            }
+        )
+    return rows
+
+
+def test_v3_logic_assign_checkers_follow_hidden_stimulus_values() -> None:
+    cases = [
+        (
+            sim.check_v3_346_logic_assign_inverter,
+            lambda a_bit, b_bit, en_bit: (not a_bit) if en_bit else b_bit,
+        ),
+        (
+            sim.check_v3_347_logic_assign_and_or,
+            lambda a_bit, b_bit, en_bit: (a_bit and b_bit) or en_bit,
+        ),
+        (
+            sim.check_v3_348_logic_assign_xor_flag,
+            lambda a_bit, b_bit, en_bit: (a_bit ^ b_bit) if en_bit else False,
+        ),
+        (
+            sim.check_v3_349_logic_assign_priority_mux,
+            lambda a_bit, b_bit, en_bit: a_bit if en_bit else b_bit,
+        ),
+        (
+            sim.check_v3_350_logic_assign_reduction,
+            lambda a_bit, b_bit, en_bit: a_bit and b_bit and en_bit,
+        ),
+    ]
+    for checker, expected_fn in cases:
+        assert checker(_logic_assign_rows(expected_fn))[0]
+        assert not checker(_logic_assign_rows(expected_fn, wrong=True))[0]
+
+
 def _converter_front_end_chain_rows(*, mode: str = "good") -> list[dict[str, float]]:
     edges_ns = [5.0 + 20.0 * idx for idx in range(9)]
     aperture_levels = [0.18, 0.72, 0.32, 0.78, 0.40, 0.70, 0.25, 0.65, 0.38]

@@ -6831,6 +6831,46 @@ def _check_v3_wreal_assign_expression(
     return True, f"checked={checked} low={low_rows} high={high_rows} max_err={max_err:.4f}"
 
 
+def _check_v3_logic_assign_expression(
+    rows: list[dict[str, float]],
+    *,
+    expected_fn,
+    tol: float = 0.08,
+) -> tuple[bool, str]:
+    required = {"time", "a", "b", "en", "y"}
+    if not rows or not required.issubset(rows[0]):
+        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
+        return False, "missing_columns=" + ",".join(missing)
+
+    stride = max(1, len(rows) // 80)
+    checked = 0
+    low_expected = 0
+    high_expected = 0
+    max_err = 0.0
+    for row in rows[::stride]:
+        a_bit = row["a"] > 0.45
+        b_bit = row["b"] > 0.45
+        en_bit = row["en"] > 0.45
+        expected = 1.0 if expected_fn(a_bit, b_bit, en_bit) else 0.0
+        error = abs(row["y"] - expected)
+        max_err = max(max_err, error)
+        checked += 1
+        if expected > 0.5:
+            high_expected += 1
+        else:
+            low_expected += 1
+        if error > tol:
+            return False, (
+                f"y@{row['time'] * 1e9:g}ns={row['y']:.4f} "
+                f"expected={expected:.4f} a={row['a']:.4f} b={row['b']:.4f} "
+                f"en={row['en']:.4f} tol={tol:.4f}"
+            )
+
+    if low_expected < 3 or high_expected < 3:
+        return False, f"insufficient_output_coverage low={low_expected} high={high_expected}"
+    return True, f"checked={checked} low={low_expected} high={high_expected} max_err={max_err:.4f}"
+
+
 def _check_v3_function_sampled_map(
     rows: list[dict[str, float]],
     *,
@@ -7777,93 +7817,37 @@ def check_v3_345_wreal_scale_offset(rows: list[dict[str, float]]) -> tuple[bool,
 
 
 def check_v3_346_logic_assign_inverter(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    required = {"time", "a", "b", "en", "y"}
-    if not rows or not required.issubset(rows[0]):
-        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
-        return False, "missing_columns=" + ",".join(missing)
-    return _sample_many(
+    return _check_v3_logic_assign_expression(
         rows,
-        {
-            "y": [
-                (120.0, 1.0),
-                (320.0, 0.0),
-                (420.0, 1.0),
-            ],
-        },
-        tol=0.08,
+        expected_fn=lambda a_bit, b_bit, en_bit: (not a_bit) if en_bit else b_bit,
     )
 
 
 def check_v3_347_logic_assign_and_or(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    required = {"time", "a", "b", "en", "y"}
-    if not rows or not required.issubset(rows[0]):
-        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
-        return False, "missing_columns=" + ",".join(missing)
-    return _sample_many(
+    return _check_v3_logic_assign_expression(
         rows,
-        {
-            "y": [
-                (120.0, 0.0),
-                (260.0, 1.0),
-                (420.0, 1.0),
-            ],
-        },
-        tol=0.08,
+        expected_fn=lambda a_bit, b_bit, en_bit: (a_bit and b_bit) or en_bit,
     )
 
 
 def check_v3_348_logic_assign_xor_flag(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    required = {"time", "a", "b", "en", "y"}
-    if not rows or not required.issubset(rows[0]):
-        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
-        return False, "missing_columns=" + ",".join(missing)
-    return _sample_many(
+    return _check_v3_logic_assign_expression(
         rows,
-        {
-            "y": [
-                (120.0, 1.0),
-                (260.0, 0.0),
-                (420.0, 0.0),
-            ],
-        },
-        tol=0.08,
+        expected_fn=lambda a_bit, b_bit, en_bit: (a_bit ^ b_bit) if en_bit else False,
     )
 
 
 def check_v3_349_logic_assign_priority_mux(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    required = {"time", "a", "b", "en", "y"}
-    if not rows or not required.issubset(rows[0]):
-        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
-        return False, "missing_columns=" + ",".join(missing)
-    return _sample_many(
+    return _check_v3_logic_assign_expression(
         rows,
-        {
-            "y": [
-                (120.0, 1.0),
-                (260.0, 1.0),
-                (420.0, 0.0),
-            ],
-        },
-        tol=0.08,
+        expected_fn=lambda a_bit, b_bit, en_bit: a_bit if en_bit else b_bit,
     )
 
 
 def check_v3_350_logic_assign_reduction(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    required = {"time", "a", "b", "en", "y"}
-    if not rows or not required.issubset(rows[0]):
-        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
-        return False, "missing_columns=" + ",".join(missing)
-    return _sample_many(
+    return _check_v3_logic_assign_expression(
         rows,
-        {
-            "y": [
-                (100.0, 1.0),
-                (220.0, 0.0),
-                (340.0, 0.0),
-                (460.0, 0.0),
-            ],
-        },
-        tol=0.08,
+        expected_fn=lambda a_bit, b_bit, en_bit: a_bit and b_bit and en_bit,
     )
 
 

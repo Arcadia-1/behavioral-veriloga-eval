@@ -3,11 +3,11 @@ global 0
 
 ahdl_include "logic_assign_reduction.vams"
 
-Va (a 0) vsource type=pwl wave=[0 1.0 299n 1.0 300n 0.0 399n 0.0 400n 1.0 500n 1.0]
-Vb (b 0) vsource type=pwl wave=[0 1.0 149n 1.0 150n 0.0 299n 0.0 300n 1.0 500n 1.0]
-Ven (en 0) vsource type=pwl wave=[0 1.0 399n 1.0 400n 0.0 500n 0.0]
+Va (a 0) vsource type=pwl wave=[0 1.0 189n 1.0 190n 0.0 359n 0.0 360n 1.0 650n 1.0]
+Vb (b 0) vsource type=pwl wave=[0 1.0 279n 1.0 280n 0.0 439n 0.0 440n 1.0 650n 1.0]
+Ven (en 0) vsource type=pwl wave=[0 1.0 499n 1.0 500n 0.0 650n 0.0]
 
 XDUT (a b en y) logic_assign_reduction
 
-tran tran stop=500n
+tran tran stop=650n
 save a b en y

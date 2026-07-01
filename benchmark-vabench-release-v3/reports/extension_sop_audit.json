@@ -24,7 +24,7 @@
           1
         ]
       ],
-      "visible_hidden_distinct_count": 5
+      "visible_hidden_distinct_count": 10
     },
     {
       "complete_tests_count": 12,
@@ -106,14 +106,14 @@
       "checker_syntax_only_no_behavior_score": 41
     },
     "sop_ready_count": 153,
-    "sop_ready_visible_hidden_identical_count": 97,
+    "sop_ready_visible_hidden_identical_count": 92,
     "staged_visible_hidden_identical_count": 18,
     "task_count": 194,
-    "visible_hidden_distinct_count": 79,
-    "visible_hidden_identical_count": 115,
+    "visible_hidden_distinct_count": 84,
+    "visible_hidden_identical_count": 110,
     "warning_counts": {
       "candidate_tier_not_score_ready": 194,
-      "visible_hidden_identical": 115
+      "visible_hidden_identical": 110
     }
   },
   "tasks": [
@@ -1229,11 +1229,10 @@
       "tier": "ams-mixed-signal-candidate",
       "title": "Logic Assign Inverter",
       "usable_scene": true,
-      "visible_hidden_distinct": false,
+      "visible_hidden_distinct": true,
       "visible_scs_count": 1,
       "warnings": [
-        "candidate_tier_not_score_ready",
-        "visible_hidden_identical"
+        "candidate_tier_not_score_ready"
       ]
     },
     {
@@ -1254,11 +1253,10 @@
       "tier": "ams-mixed-signal-candidate",
       "title": "Logic Assign And Or",
       "usable_scene": true,
-      "visible_hidden_distinct": false,
+      "visible_hidden_distinct": true,
       "visible_scs_count": 1,
       "warnings": [
-        "candidate_tier_not_score_ready",
-        "visible_hidden_identical"
+        "candidate_tier_not_score_ready"
       ]
     },
     {
@@ -1279,11 +1277,10 @@
       "tier": "ams-mixed-signal-candidate",
       "title": "Logic Assign Xor Flag",
       "usable_scene": true,
-      "visible_hidden_distinct": false,
+      "visible_hidden_distinct": true,
       "visible_scs_count": 1,
       "warnings": [
-        "candidate_tier_not_score_ready",
-        "visible_hidden_identical"
+        "candidate_tier_not_score_ready"
       ]
     },
     {
@@ -1304,11 +1301,10 @@
       "tier": "ams-mixed-signal-candidate",
       "title": "Logic Assign Priority Mux",
       "usable_scene": true,
-      "visible_hidden_distinct": false,
+      "visible_hidden_distinct": true,
       "visible_scs_count": 1,
       "warnings": [
-        "candidate_tier_not_score_ready",
-        "visible_hidden_identical"
+        "candidate_tier_not_score_ready"
       ]
     },
     {
@@ -1329,11 +1325,10 @@
       "tier": "ams-mixed-signal-candidate",
       "title": "Logic Assign Reduction",
       "usable_scene": true,
-      "visible_hidden_distinct": false,
+      "visible_hidden_distinct": true,
       "visible_scs_count": 1,
       "warnings": [
-        "candidate_tier_not_score_ready",
-        "visible_hidden_identical"
+        "candidate_tier_not_score_ready"
       ]
     },
     {

@@ -44,11 +44,11 @@ task,number,title,tier,target,visible_hidden_distinct,negative_count,usable_scen
 343-wreal-threshold-flag,343,Wreal Threshold Flag,ams-mixed-signal-candidate,wreal_threshold_flag.vams,True,5,True,True,True,True,True,,candidate_tier_not_score_ready
 344-wreal-clamped-mux,344,Wreal Clamped Mux,ams-mixed-signal-candidate,wreal_clamped_mux.vams,True,5,True,True,True,True,True,,candidate_tier_not_score_ready
 345-wreal-scale-offset,345,Wreal Scale Offset,ams-mixed-signal-candidate,wreal_scale_offset.vams,True,5,True,True,True,True,True,,candidate_tier_not_score_ready
-346-logic-assign-inverter,346,Logic Assign Inverter,ams-mixed-signal-candidate,logic_assign_inverter.vams,False,5,True,True,True,True,True,,candidate_tier_not_score_ready;visible_hidden_identical
-347-logic-assign-and-or,347,Logic Assign And Or,ams-mixed-signal-candidate,logic_assign_and_or.vams,False,5,True,True,True,True,True,,candidate_tier_not_score_ready;visible_hidden_identical
-348-logic-assign-xor-flag,348,Logic Assign Xor Flag,ams-mixed-signal-candidate,logic_assign_xor_flag.vams,False,5,True,True,True,True,True,,candidate_tier_not_score_ready;visible_hidden_identical
-349-logic-assign-priority-mux,349,Logic Assign Priority Mux,ams-mixed-signal-candidate,logic_assign_priority_mux.vams,False,5,True,True,True,True,True,,candidate_tier_not_score_ready;visible_hidden_identical
-350-logic-assign-reduction,350,Logic Assign Reduction,ams-mixed-signal-candidate,logic_assign_reduction.vams,False,5,True,True,True,True,True,,candidate_tier_not_score_ready;visible_hidden_identical
+346-logic-assign-inverter,346,Logic Assign Inverter,ams-mixed-signal-candidate,logic_assign_inverter.vams,True,5,True,True,True,True,True,,candidate_tier_not_score_ready
+347-logic-assign-and-or,347,Logic Assign And Or,ams-mixed-signal-candidate,logic_assign_and_or.vams,True,5,True,True,True,True,True,,candidate_tier_not_score_ready
+348-logic-assign-xor-flag,348,Logic Assign Xor Flag,ams-mixed-signal-candidate,logic_assign_xor_flag.vams,True,5,True,True,True,True,True,,candidate_tier_not_score_ready
+349-logic-assign-priority-mux,349,Logic Assign Priority Mux,ams-mixed-signal-candidate,logic_assign_priority_mux.vams,True,5,True,True,True,True,True,,candidate_tier_not_score_ready
+350-logic-assign-reduction,350,Logic Assign Reduction,ams-mixed-signal-candidate,logic_assign_reduction.vams,True,5,True,True,True,True,True,,candidate_tier_not_score_ready
 351-always-posedged-dff,351,Always Posedged Dff,ams-mixed-signal-candidate,always_posedged_dff.vams,False,5,True,True,True,True,True,,candidate_tier_not_score_ready;visible_hidden_identical
 352-always-negedge-sampler,352,Always Negedge Sampler,ams-mixed-signal-candidate,always_negedge_sampler.vams,False,5,True,True,True,True,True,,candidate_tier_not_score_ready;visible_hidden_identical
 353-always-resettable-toggle,353,Always Resettable Toggle,ams-mixed-signal-candidate,always_resettable_toggle.vams,False,5,True,True,True,False,False,checker_syntax_only_no_behavior_score,candidate_tier_not_score_ready;visible_hidden_identical

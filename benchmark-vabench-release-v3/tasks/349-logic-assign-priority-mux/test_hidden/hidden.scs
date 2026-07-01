@@ -3,11 +3,11 @@ global 0
 
 ahdl_include "logic_assign_priority_mux.vams"
 
-Va (a 0) vsource type=pwl wave=[0 0.0 199n 0.0 200n 1.0 349n 1.0 350n 0.0 500n 0.0]
-Vb (b 0) vsource type=pwl wave=[0 1.0 199n 1.0 200n 0.0 349n 0.0 350n 1.0 500n 1.0]
-Ven (en 0) vsource type=pwl wave=[0 0.0 199n 0.0 200n 1.0 500n 1.0]
+Va (a 0) vsource type=pwl wave=[0 0.0 169n 0.0 170n 1.0 329n 1.0 330n 0.0 650n 0.0]
+Vb (b 0) vsource type=pwl wave=[0 1.0 249n 1.0 250n 0.0 449n 0.0 450n 1.0 650n 1.0]
+Ven (en 0) vsource type=pwl wave=[0 0.0 279n 0.0 280n 1.0 519n 1.0 520n 0.0 650n 0.0]
 
 XDUT (a b en y) logic_assign_priority_mux
 
-tran tran stop=500n
+tran tran stop=650n
 save a b en y
