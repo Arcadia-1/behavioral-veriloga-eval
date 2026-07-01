@@ -1,0 +1,18 @@
+`include "constants.vams"
+`include "disciplines.vams"
+
+module mixed_wreal_logic_select_driver(vin, clk, en, sel, a, b, vout);
+    input vin, clk, en, sel, a, b;
+    output vout;
+    electrical vin, vout;
+    logic clk, en, sel;
+    wreal a, b, level;
+    logic en_logic;
+    logic sampled;
+    real flag_real;
+    parameter real vth = 0.45;
+    parameter real vhi = 0.9;
+    parameter real tr = 200p;
+    assign level = sel ? a : b;
+    analog begin V(vout) <+ transition(0.5 * level, 0.0, tr, tr); end
+endmodule

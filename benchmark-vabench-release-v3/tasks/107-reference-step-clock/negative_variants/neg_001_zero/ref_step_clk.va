@@ -11,14 +11,7 @@ module ref_step_clk (
     parameter real t_switch = 2u from [0:inf);
     parameter real tedge = 100p from (0:inf);
 
-    real vh;
-    real vl;
-    real next_t;
-    real half_period;
-    integer clk_state;
-
-analog begin
-    V(CLK) <+ transition(0.0);
-end
-
+    analog begin
+        V(CLK) <+ transition(V(VSS), 0.0, tedge, tedge);
+    end
 endmodule

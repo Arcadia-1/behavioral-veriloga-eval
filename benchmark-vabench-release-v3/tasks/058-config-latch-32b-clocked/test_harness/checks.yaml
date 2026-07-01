@@ -1,9 +1,0 @@
-version: 2
-task_id: config_latch_32b_clocked
-backend: evas
-status: formal_candidate
-checker: config_latch_32b_clocked
-checks:
-  formal:
-    - gold_passes
-    - concrete_negatives_fail

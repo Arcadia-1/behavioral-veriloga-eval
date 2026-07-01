@@ -1,0 +1,7 @@
+module always_posedged_dff(clk, rst, d, en, q);
+    input clk, rst, d, en;
+    output q;
+    logic clk, rst, d, en, q;
+
+    always @(posedge clk) begin if (rst) q = 1'b0; else q = d; end
+endmodule

@@ -5,6 +5,24 @@
       "artifact": "neg_001_leave_buggy/dut_fixed.va",
       "expected_status": "FAIL_SIM_CORRECTNESS",
       "mutation": "Returns the original too-slow alpha=0.010 implementation."
+    },
+    {
+      "id": "neg_002_passthrough_timer",
+      "artifact": "neg_002_passthrough_timer/dut_fixed.va",
+      "expected_status": "FAIL_SIM_CORRECTNESS",
+      "mutation": "Keeps the timer/event structure but samples V(vin) directly, making the repaired DUT a delayed passthrough instead of a first-order lowpass."
+    },
+    {
+      "id": "neg_003_inverted_input",
+      "artifact": "neg_003_inverted_input/dut_fixed.va",
+      "expected_status": "FAIL_SIM_CORRECTNESS",
+      "mutation": "Uses the corrected alpha but filters 0.9 - V(vin), so the repaired response moves in the wrong direction and settles to the wrong level."
+    },
+    {
+      "id": "neg_004_output_clamped",
+      "artifact": "neg_004_output_clamped/dut_fixed.va",
+      "expected_status": "FAIL_SIM_CORRECTNESS",
+      "mutation": "Uses the corrected recurrence until the state reaches 0.35 V, then clamps the repaired output below the required late level."
     }
   ]
 }

@@ -1,0 +1,37 @@
+[
+  {
+    "id": "neg_001_force_zero",
+    "files": [
+      "neg_001_force_zero/logic_assign_and_or.vams"
+    ],
+    "expected": "compile_but_fail_full_behavior_under_ams_simulator"
+  },
+  {
+    "id": "neg_002_invert_select",
+    "files": [
+      "neg_002_invert_select/logic_assign_and_or.vams"
+    ],
+    "expected": "compile_but_fail_full_behavior_under_ams_simulator"
+  },
+  {
+    "id": "neg_003_drop_reset",
+    "files": [
+      "neg_003_drop_reset/logic_assign_and_or.vams"
+    ],
+    "expected": "compile_but_fail_full_behavior_under_ams_simulator"
+  },
+  {
+    "id": "neg_004_wrong_edge",
+    "files": [
+      "neg_004_wrong_edge/logic_assign_and_or.vams"
+    ],
+    "expected": "compile_but_fail_full_behavior_under_ams_simulator"
+  },
+  {
+    "id": "neg_005_scale_low",
+    "files": [
+      "neg_005_scale_low/logic_assign_and_or.vams"
+    ],
+    "expected": "compile_but_fail_full_behavior_under_ams_simulator"
+  }
+]

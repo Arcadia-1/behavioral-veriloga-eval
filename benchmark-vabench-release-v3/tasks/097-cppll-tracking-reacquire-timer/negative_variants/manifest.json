@@ -1,10 +1,29 @@
 {
-  "status": "one_concrete_negative_pending_recertification",
-  "negative_cases": [
+  "variants": [
     {
       "id": "neg_001_zero",
-      "target": "cppll_timer_ref.va",
-      "intent": "zero/stub output implementation copied from starter must not satisfy hidden behavior checker"
+      "description": "Keeps all outputs at the low rail and therefore has no DCO, feedback, lock, or control behavior.",
+      "path": "negative_variants/neg_001_zero/cppll_timer_ref.va"
+    },
+    {
+      "id": "neg_002_lock_stuck_high",
+      "description": "Generates the clocks but drives lock high continuously, missing disturbance and reacquire behavior.",
+      "path": "negative_variants/neg_002_lock_stuck_high/cppll_timer_ref.va"
+    },
+    {
+      "id": "neg_003_wrong_feedback_divider",
+      "description": "Uses the wrong feedback divider ratio so late-window feedback cadence cannot track the reference.",
+      "path": "negative_variants/neg_003_wrong_feedback_divider/cppll_timer_ref.va"
+    },
+    {
+      "id": "neg_004_no_loop_correction",
+      "description": "Keeps the control voltage fixed instead of correcting after the reference frequency step.",
+      "path": "negative_variants/neg_004_no_loop_correction/cppll_timer_ref.va"
+    },
+    {
+      "id": "neg_005_vctrl_monitor_out_of_range",
+      "description": "Reports a control-voltage monitor outside the supply rails while otherwise preserving most clock behavior.",
+      "path": "negative_variants/neg_005_vctrl_monitor_out_of_range/cppll_timer_ref.va"
     }
   ]
 }

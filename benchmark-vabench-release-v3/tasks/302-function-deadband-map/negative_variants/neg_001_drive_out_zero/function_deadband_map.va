@@ -1,0 +1,41 @@
+`include "constants.vams"
+`include "disciplines.vams"
+
+module function_deadband_map (
+    input  electrical vin,
+    input  electrical clk,
+    input  electrical mode,
+    input  electrical rst,
+    output electrical out,
+    output electrical metric
+);
+parameter real vth = 0.45;
+parameter real vhi = 0.9;
+parameter real tr = 200p;
+real out_v;
+real metric_v;
+integer count_q;
+integer state_q;
+function real map_value;
+    input real x;
+    begin
+        if (x > 0.52) map_value = 0.9;
+        else if (x < 0.38) map_value = 0.0;
+        else map_value = 0.45;
+    end
+endfunction
+analog begin
+    @(initial_step) begin
+        out_v = 0.0;
+        metric_v = 0.0;
+        count_q = 0;
+        state_q = 0;
+    end
+    @(cross(V(clk) - vth, +1)) begin
+        out_v = map_value(V(vin));
+        metric_v = (out_v - 0.45) / 0.45;
+    end
+    V(out) <+ transition(0.0, 0.0, tr, tr);
+    V(metric) <+ transition(metric_v, 0.0, tr, tr);
+end
+endmodule

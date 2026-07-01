@@ -1,0 +1,28 @@
+`include "constants.vams"
+`include "disciplines.vams"
+
+module combined_white_flicker_noise (
+    input  electrical ctrl,
+    input  electrical clk,
+    output electrical out,
+    output electrical metric
+);
+parameter real vth = 0.45;
+parameter real vhi = 0.9;
+parameter real tr = 200p;
+parameter real white_pwr = 1.0e-12;
+parameter real kf = 5.0e-13;
+real out_v;
+real metric_v;
+integer count_q;
+analog begin
+    @(initial_step) begin
+        out_v = 0.0;
+        metric_v = 0.0 * 0.0;
+        count_q = 0;
+    end
+V(out) <+ white_noise(white_pwr, "white") + flicker_noise(kf, 1.0, "flicker");
+    @(cross(V(clk)-vth,+1)) metric_v = white_pwr * 1.0e12 + kf * 1.0e12;
+    V(metric) <+ transition(metric_v, 0.0, tr, tr);
+end
+endmodule

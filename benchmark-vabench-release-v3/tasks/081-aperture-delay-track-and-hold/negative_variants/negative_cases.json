@@ -3,5 +3,20 @@
     "id": "neg_001_zero",
     "target": "sample_hold_aperture_ref.va",
     "intent": "zero/stub output implementation copied from starter must not satisfy hidden behavior checker"
+  },
+  {
+    "id": "neg_002_edge_sample_delayed_output",
+    "target": "sample_hold_aperture_ref.va",
+    "intent": "capturing vin at the clock edge instead of at the delayed aperture instant must not satisfy the hidden aperture-sensitive stimulus"
+  },
+  {
+    "id": "neg_003_half_gain_sample",
+    "target": "sample_hold_aperture_ref.va",
+    "intent": "delayed sampling with the wrong analog gain must not satisfy held-value checks"
+  },
+  {
+    "id": "neg_004_inverted_sample",
+    "target": "sample_hold_aperture_ref.va",
+    "intent": "delayed sampling with inverted rail-relative value must not satisfy held-value checks"
   }
 ]

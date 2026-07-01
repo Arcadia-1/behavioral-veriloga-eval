@@ -6,6 +6,7 @@
 - Human-confirmed judgment: keep this row as support for the gain-extraction measurement flow, not as standalone L1 credit. The clocked sine source has independent usefulness, but the current evaluation still relies on the larger gain-extraction harness rather than a task-specific source checker.
 - Public contract: only `vin_src.va` is the support component under review; supplied support artifacts are staged by the harness.
 - Artifact boundary: `task.toml` target remains `vin_src.va`, with `lfsr.va`, `dither_adder.va`, and `gain_amp_fixed.va` listed as support artifacts. The EVAS runner now stages these support artifacts for negative-variant runs instead of treating them as solver targets.
+- Migration context: the row originated from `vbr1_l2_gain_extraction_convergence_measurement_flow:tb`, but the repaired benchmark boundary is the `vin_src.va` support component evaluated in that flow.
 
 ## Gate 2: Modeling And Evidence
 

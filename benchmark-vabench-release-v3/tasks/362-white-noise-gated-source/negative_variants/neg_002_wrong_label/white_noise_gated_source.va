@@ -1,0 +1,27 @@
+`include "constants.vams"
+`include "disciplines.vams"
+
+module white_noise_gated_source (
+    input  electrical ctrl,
+    input  electrical clk,
+    output electrical out,
+    output electrical metric
+);
+parameter real vth = 0.45;
+parameter real vhi = 0.9;
+parameter real tr = 200p;
+parameter real noise_power = 2.0e-12;
+real out_v;
+real metric_v;
+integer count_q;
+analog begin
+    @(initial_step) begin
+        out_v = 0.0;
+        metric_v = 0.0;
+        count_q = 0;
+    end
+V(out) <+ 0.0 * (V(ctrl) > vth ? white_noise(noise_power, "gated_white") : 0.0);
+    @(cross(V(clk)-vth,+1)) metric_v = V(ctrl) > vth ? vhi : 0.0;
+    V(metric) <+ transition(metric_v, 0.0, tr, tr);
+end
+endmodule

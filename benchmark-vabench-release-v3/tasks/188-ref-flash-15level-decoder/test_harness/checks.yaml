@@ -1,8 +1,0 @@
-checker:
-  task_id: v3_ref_flash_15level_decoder
-  metric: stable_samples
-scoring:
-  axes:
-    - dut_compile
-    - tb_compile
-    - sim_correct

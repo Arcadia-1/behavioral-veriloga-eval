@@ -6,6 +6,7 @@
 - Human-confirmed judgment: a single programmable sequencer DUT is L1, not L2. It is an independent source/control component because it implements mode sequencing, ramp, chirp, and gate behavior in one reusable Verilog-A block.
 - Public contract: `programmable_stimulus_sequencer.va` generates sequenced analog stimulus and metric outputs with transition-smoothed state changes.
 - Artifact boundary: `task.toml` now classifies the row as L1 and targets only `programmable_stimulus_sequencer.va`; prompt, manifests, starter, solution, and negatives agree.
+- Migration context: the row originated from `vbr1_l2_programmable_stimulus_sequencer:tb`, but the repaired benchmark boundary is the standalone DUT artifact rather than the old flow/testbench identity.
 
 ## Gate 2: Modeling And Evidence
 

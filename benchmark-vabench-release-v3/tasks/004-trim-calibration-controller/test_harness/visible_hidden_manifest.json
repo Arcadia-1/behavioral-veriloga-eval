@@ -1,26 +1,7 @@
 {
-  "task": "004-trim-calibration-controller",
-  "form": "dut",
-  "status": "formal_candidate",
-  "visible": {
-    "instruction": "instruction.md",
-    "starter_files": [
-      "starter/cdac_calibration.va"
-    ],
-    "public_smoke": {
-      "testbench": "test_visible/visible.scs",
-      "hidden_dependency": false
-    }
-  },
-  "hidden": {
-    "testbenches": [
-      "test_hidden/hidden.scs"
-    ],
-    "checker": "test_harness/checks.yaml",
-    "gold": [
-      "solution/cdac_calibration.va"
-    ],
-    "negative_variants": "negative_variants"
+  "certification": {
+    "scope": "EVAS hidden gold, negative recertification, and visible smoke evidence tracked in AUDIT.md",
+    "status": "evas_certified"
   },
   "coverage": [
     "synchronous reset to 0.45 V on a rising clk edge",
@@ -30,8 +11,27 @@
     "lower clamp at 0.05 V",
     "recovery away from clamp when err direction reverses"
   ],
-  "certification": {
-    "status": "evas_certified",
-    "scope": "EVAS hidden gold, negative recertification, and visible smoke evidence tracked in AUDIT.md"
+  "form": "dut",
+  "hidden": {
+    "checker": "../../../CHECKS.yaml",
+    "gold": [
+      "solution/cdac_calibration.va"
+    ],
+    "negative_variants": "negative_variants",
+    "testbenches": [
+      "test_hidden/hidden.scs"
+    ]
+  },
+  "status": "formal_candidate",
+  "task": "004-trim-calibration-controller",
+  "visible": {
+    "instruction": "instruction.md",
+    "public_smoke": {
+      "hidden_dependency": false,
+      "testbench": "test_visible/visible.scs"
+    },
+    "starter_files": [
+      "starter/cdac_calibration.va"
+    ]
   }
 }

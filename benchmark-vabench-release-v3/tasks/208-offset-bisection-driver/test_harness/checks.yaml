@@ -1,8 +1,0 @@
-checker:
-  task_id: v3_offset_bisection_driver
-  metric: stable_samples
-scoring:
-  axes:
-    - dut_compile
-    - tb_compile
-    - sim_correct

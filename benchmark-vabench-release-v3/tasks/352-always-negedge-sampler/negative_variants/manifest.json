@@ -1,0 +1,41 @@
+{
+  "task": "352-always-negedge-sampler",
+  "negative_count": 5,
+  "cases": [
+    {
+      "id": "neg_001_force_zero",
+      "files": [
+        "neg_001_force_zero/always_negedge_sampler.vams"
+      ],
+      "expected": "compile_but_fail_full_behavior_under_ams_simulator"
+    },
+    {
+      "id": "neg_002_invert_select",
+      "files": [
+        "neg_002_invert_select/always_negedge_sampler.vams"
+      ],
+      "expected": "compile_but_fail_full_behavior_under_ams_simulator"
+    },
+    {
+      "id": "neg_003_drop_reset",
+      "files": [
+        "neg_003_drop_reset/always_negedge_sampler.vams"
+      ],
+      "expected": "compile_but_fail_full_behavior_under_ams_simulator"
+    },
+    {
+      "id": "neg_004_wrong_edge",
+      "files": [
+        "neg_004_wrong_edge/always_negedge_sampler.vams"
+      ],
+      "expected": "compile_but_fail_full_behavior_under_ams_simulator"
+    },
+    {
+      "id": "neg_005_scale_low",
+      "files": [
+        "neg_005_scale_low/always_negedge_sampler.vams"
+      ],
+      "expected": "compile_but_fail_full_behavior_under_ams_simulator"
+    }
+  ]
+}

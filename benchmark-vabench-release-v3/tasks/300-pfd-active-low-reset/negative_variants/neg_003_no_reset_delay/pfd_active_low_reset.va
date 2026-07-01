@@ -16,11 +16,11 @@ analog begin
     end
     @(cross(V(ref) - vth, +1)) begin
         up_state = 1;
-        if (down_state == 1) trst = $abstime;
+        if (down_state == 1) trst = $abstime + 1p;
     end
     @(cross(V(fb) - vth, +1)) begin
         down_state = 1;
-        if (up_state == 1) trst = $abstime;
+        if (up_state == 1) trst = $abstime + 1p;
     end
     @(timer(trst)) begin
         up_state = 0;

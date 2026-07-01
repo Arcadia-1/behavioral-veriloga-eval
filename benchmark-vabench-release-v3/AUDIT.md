@@ -28,7 +28,7 @@ Current-state checks:
 
 - 185/185 migrated tasks have the required public assets:
   `instruction.md`, `starter/`, `solution/`, `test_visible/`, `test_hidden/`,
-  `test_harness/checks.yaml`, and `negative_variants/manifest.json`;
+  top-level `CHECKS.yaml` entries, and `negative_variants/manifest.json`;
 - 185/185 migrated tasks use the v3-standard `variants/path` negative
   manifest shape;
 - 185/185 migrated tasks have at least four concrete negative variants;
@@ -65,7 +65,7 @@ Changes made:
 - each task now has four negative variants: the original `neg_001_zero` plus
   three targeted behavior mutations;
 - `runners/simulate_evas.py` registers checker aliases for the task ids
-  `v3_288_*` through `v3_300_*`, so the normal `task.toml` id path
+  `v3_288_*` through `v3_300_*`, so the normal top-level task id path
   reaches the checker without requiring a manual `--checker-task-id` override.
 
 EVAS 0.4.5 local verification:
@@ -85,7 +85,7 @@ Changes made:
   three targeted behavior mutations;
 - task `123-start-gated-offset-search` gold was corrected so START is
   handled as an explicit enable transition instead of a continuous reset;
-- source checker aliases now cover the normal `task.toml` ids for this batch.
+- source checker aliases now cover the normal top-level task ids for this batch.
 
 EVAS 0.4.5 local verification:
 

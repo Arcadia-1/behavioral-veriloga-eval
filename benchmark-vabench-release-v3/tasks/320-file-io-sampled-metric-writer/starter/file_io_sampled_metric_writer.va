@@ -1,0 +1,24 @@
+`include "constants.vams"
+`include "disciplines.vams"
+
+module file_io_sampled_metric_writer (
+    input  electrical vin,
+    input  electrical clk,
+    input  electrical mode,
+    input  electrical rst,
+    output electrical out,
+    output electrical metric
+);
+parameter real vth = 0.45;
+parameter real vhi = 0.9;
+parameter real tr = 200p;
+real out_v;
+real metric_v;
+analog begin
+    // TODO: implement the specified behavioral Verilog-A semantics.
+    out_v = 0.0;
+    metric_v = 0.0;
+    V(out) <+ transition(out_v, 0.0, tr, tr);
+    V(metric) <+ transition(metric_v, 0.0, tr, tr);
+end
+endmodule

@@ -7,12 +7,12 @@
     },
     {
       "id": "neg_002_wrong_denominator",
-      "description": "Normalizes by 64 instead of 32.",
+      "description": "Uses the old MSB-normalized scale instead of the all-ones full-scale code.",
       "path": "negative_variants/neg_002_wrong_denominator/weighted_decoder_6bit.va"
     },
     {
       "id": "neg_003_half_scale",
-      "description": "Scales the decoded weighted output by 0.5.",
+      "description": "Scales the decoded weighted output to half of the full-scale response.",
       "path": "negative_variants/neg_003_half_scale/weighted_decoder_6bit.va"
     },
     {

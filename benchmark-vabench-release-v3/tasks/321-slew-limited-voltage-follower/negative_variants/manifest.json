@@ -1,0 +1,41 @@
+{
+  "task": "321-slew-limited-voltage-follower",
+  "negative_count": 5,
+  "cases": [
+    {
+      "id": "neg_001_drive_out_zero",
+      "files": [
+        "neg_001_drive_out_zero/slew_limited_voltage_follower.va"
+      ],
+      "expected": "compile_but_fail_full_behavior"
+    },
+    {
+      "id": "neg_002_drive_metric_zero",
+      "files": [
+        "neg_002_drive_metric_zero/slew_limited_voltage_follower.va"
+      ],
+      "expected": "compile_but_fail_full_behavior"
+    },
+    {
+      "id": "neg_003_reset_polarity_wrong",
+      "files": [
+        "neg_003_reset_polarity_wrong/slew_limited_voltage_follower.va"
+      ],
+      "expected": "compile_but_fail_full_behavior"
+    },
+    {
+      "id": "neg_004_logic_threshold_shifted",
+      "files": [
+        "neg_004_logic_threshold_shifted/slew_limited_voltage_follower.va"
+      ],
+      "expected": "compile_but_fail_full_behavior"
+    },
+    {
+      "id": "neg_005_output_scale_low",
+      "files": [
+        "neg_005_output_scale_low/slew_limited_voltage_follower.va"
+      ],
+      "expected": "compile_but_fail_full_behavior"
+    }
+  ]
+}

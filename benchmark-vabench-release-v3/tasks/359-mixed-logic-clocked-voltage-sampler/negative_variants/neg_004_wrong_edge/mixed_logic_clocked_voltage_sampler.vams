@@ -1,0 +1,18 @@
+`include "constants.vams"
+`include "disciplines.vams"
+
+module mixed_logic_clocked_voltage_sampler(vin, clk, en, sel, a, b, vout);
+    input vin, clk, en, sel, a, b;
+    output vout;
+    electrical vin, vout;
+    logic clk, en, sel;
+    wreal a, b, level;
+    logic en_logic;
+    logic sampled;
+    real flag_real;
+    parameter real vth = 0.45;
+    parameter real vhi = 0.9;
+    parameter real tr = 200p;
+    always @(negedge clk) sampled = en;
+    analog begin V(vout) <+ transition(sampled ? V(vin) : 0.0, 0.0, tr, tr); end
+endmodule

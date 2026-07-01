@@ -2,7 +2,7 @@
 
 ## Scope
 
-Task boundary is one primary Verilog-A DUT artifact, `bbpd_data_edge_alignment_ref.va`, migrated from `vbr1_l1_bang_bang_phase_detector:tb`, plus the original EVAS/Spectre-compatible `.scs` transient scenario. Companion Verilog-A files listed in `task.toml` are supplied by the harness when needed by the original system testbench.
+Task boundary is one primary Verilog-A DUT artifact, `bbpd_data_edge_alignment_ref.va`, migrated from `vbr1_l1_bang_bang_phase_detector:tb`, plus the original EVAS/Spectre-compatible `.scs` transient scenario. Companion Verilog-A files listed in the top-level `TASKS.json` index are supplied by the harness when needed by the original system testbench.
 
 ## Four Standards
 

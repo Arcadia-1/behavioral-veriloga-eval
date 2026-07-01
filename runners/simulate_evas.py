@@ -140,6 +140,113 @@ def _extract_yaml_mapping_after_parent(text: str, parent: str) -> dict[str, str]
     return {}
 
 
+_V3_TASKS_INDEX_CACHE: dict[Path, dict[str, object]] = {}
+_V3_CHECKS_INDEX_CACHE: dict[Path, dict[str, str]] = {}
+
+
+def _v3_release_root_for_task(task_dir: Path) -> Path | None:
+    task_dir = task_dir.resolve()
+    if task_dir.parent.name == "tasks" and task_dir.parent.parent.name == "benchmark-vabench-release-v3":
+        return task_dir.parent.parent
+    return None
+
+
+def _v3_task_slug(task_dir: Path) -> str | None:
+    root = _v3_release_root_for_task(task_dir)
+    if root is None:
+        return None
+    return task_dir.resolve().name
+
+
+def _load_v3_tasks_index(root: Path) -> dict[str, object]:
+    cached = _V3_TASKS_INDEX_CACHE.get(root)
+    if cached is not None:
+        return cached
+    index_path = root / "TASKS.json"
+    if not index_path.exists():
+        return {}
+    data = json.loads(index_path.read_text(encoding="utf-8"))
+    tasks = data.get("tasks", {}) if isinstance(data, dict) else {}
+    if not isinstance(tasks, dict):
+        tasks = {}
+    defaults = data.get("defaults", {}) if isinstance(data, dict) else {}
+    if isinstance(defaults, dict):
+        merged_tasks: dict[str, object] = {}
+        for slug, entry in tasks.items():
+            if isinstance(entry, dict):
+                merged = {**defaults, **entry}
+                merged_tasks[str(slug)] = merged
+            else:
+                merged_tasks[str(slug)] = entry
+        tasks = merged_tasks
+    _V3_TASKS_INDEX_CACHE[root] = tasks
+    return tasks
+
+
+def _load_v3_checks_index(root: Path) -> dict[str, str]:
+    cached = _V3_CHECKS_INDEX_CACHE.get(root)
+    if cached is not None:
+        return cached
+    yaml_index_path = root / "CHECKS.yaml"
+    if yaml_index_path.exists():
+        checks = _parse_v3_checks_yaml_index(yaml_index_path.read_text(encoding="utf-8"))
+        _V3_CHECKS_INDEX_CACHE[root] = checks
+        return checks
+    json_index_path = root / "CHECKS.json"
+    if not json_index_path.exists():
+        return {}
+    data = json.loads(json_index_path.read_text(encoding="utf-8"))
+    json_checks = data.get("checks", {}) if isinstance(data, dict) else {}
+    checks = {}
+    if isinstance(json_checks, dict):
+        for slug, entry in json_checks.items():
+            if isinstance(entry, dict) and isinstance(entry.get("checks_yaml"), str):
+                checks[str(slug)] = str(entry["checks_yaml"])
+    _V3_CHECKS_INDEX_CACHE[root] = checks
+    return checks
+
+
+def _parse_v3_checks_yaml_index(text: str) -> dict[str, str]:
+    checks: dict[str, str] = {}
+    current_slug: str | None = None
+    current_lines: list[str] = []
+    for line in text.splitlines():
+        if line and not line.startswith((" ", "\t")) and line.endswith(": |"):
+            if current_slug is not None:
+                checks[current_slug] = "\n".join(current_lines).rstrip() + "\n"
+            current_slug = line[:-3]
+            current_lines = []
+            continue
+        if current_slug is None:
+            continue
+        if line.startswith("  "):
+            current_lines.append(line[2:])
+        elif line == "":
+            current_lines.append("")
+        else:
+            current_lines.append(line)
+    if current_slug is not None:
+        checks[current_slug] = "\n".join(current_lines).rstrip() + "\n"
+    return checks
+
+
+def _v3_task_index_entry(task_dir: Path) -> dict[str, object]:
+    root = _v3_release_root_for_task(task_dir)
+    slug = _v3_task_slug(task_dir)
+    if root is None or slug is None:
+        return {}
+    entry = _load_v3_tasks_index(root).get(slug, {})
+    return entry if isinstance(entry, dict) else {}
+
+
+def _v3_checks_index_entry(task_dir: Path) -> str | None:
+    root = _v3_release_root_for_task(task_dir)
+    slug = _v3_task_slug(task_dir)
+    if root is None or slug is None:
+        return None
+    return _load_v3_checks_index(root).get(slug)
+
+
 def _float_values(values: list[str]) -> list[float]:
     parsed: list[float] = []
     for value in values:
@@ -151,14 +258,22 @@ def _float_values(values: list[str]) -> list[float]:
 
 
 def load_v2_checks_config(task_dir: Path) -> dict[str, object]:
+    checks_sources: list[tuple[Path | str, str]] = []
     for checks_path in (
         task_dir / "private" / "invisible_checker_config.yaml",
         task_dir / "checks.yaml",
         task_dir / "private" / "checks.yaml",
+        task_dir / "test_harness" / "checks.yaml",
     ):
         if not checks_path.exists():
             continue
-        checks_text = checks_path.read_text(encoding="utf-8")
+        checks_sources.append((checks_path, checks_path.read_text(encoding="utf-8")))
+    indexed_checks_text = _v3_checks_index_entry(task_dir)
+    if isinstance(indexed_checks_text, str):
+        index_name = "CHECKS.yaml" if (_v3_release_root_for_task(task_dir) / "CHECKS.yaml").exists() else "CHECKS.json"
+        index_ref = f"{_v3_release_root_for_task(task_dir) / index_name}:{task_dir.name}"
+        checks_sources.append((index_ref, indexed_checks_text))
+    for checks_path, checks_text in checks_sources:
         if "vabench-release-v2-checks" not in checks_text:
             continue
         checker_parameters: dict[str, object] = _extract_yaml_mapping_after_parent(
@@ -196,17 +311,31 @@ def v2_checks_syntax_failures(checks_config: dict[str, object], run_dir: Path) -
 
 
 def read_task_artifact_targets(task_dir: Path) -> list[str]:
+    return _read_task_artifact_list(task_dir, "target")
+
+
+def read_task_artifact_supports(task_dir: Path) -> list[str]:
+    return _read_task_artifact_list(task_dir, "support")
+
+
+def _read_task_artifact_list(task_dir: Path, key: str) -> list[str]:
     task_toml = task_dir / "task.toml"
-    if not task_toml.exists():
-        return []
-    text = task_toml.read_text(encoding="utf-8", errors="ignore")
-    match = re.search(r"(?m)^\s*target\s*=\s*(\[[^\n]*\])", text)
-    if not match:
-        return []
-    try:
-        parsed = ast.literal_eval(match.group(1))
-    except (SyntaxError, ValueError):
-        return []
+    if task_toml.exists():
+        text = task_toml.read_text(encoding="utf-8", errors="ignore")
+        match = re.search(rf"(?m)^\s*{re.escape(key)}\s*=\s*(\[[^\n]*\])", text)
+        if not match:
+            return []
+        try:
+            parsed = ast.literal_eval(match.group(1))
+        except (SyntaxError, ValueError):
+            return []
+    else:
+        task_entry = _v3_task_index_entry(task_dir)
+        artifacts = task_entry.get("artifacts", {})
+        if isinstance(artifacts, dict) and key in artifacts:
+            parsed = artifacts.get(key, [])
+        else:
+            parsed = task_entry.get(key, [])
     if not isinstance(parsed, list):
         return []
     targets: list[str] = []
@@ -215,6 +344,24 @@ def read_task_artifact_targets(task_dir: Path) -> list[str]:
         if name and "/" not in name and "\\" not in name:
             targets.append(name)
     return targets
+
+
+def read_task_index_id(task_dir: Path) -> str | None:
+    task_toml = task_dir / "task.toml"
+    if task_toml.exists():
+        match = re.search(
+            r'(?m)^\s*id\s*=\s*(".*?"|\'.*?\')\s*$',
+            task_toml.read_text(encoding="utf-8", errors="ignore"),
+        )
+        if match:
+            try:
+                value = ast.literal_eval(match.group(1))
+            except (SyntaxError, ValueError):
+                value = None
+            if value:
+                return str(value)
+    entry_id = _v3_task_index_entry(task_dir).get("id")
+    return str(entry_id) if entry_id else None
 
 
 def copy_inputs(
@@ -243,9 +390,9 @@ def copy_inputs(
         shutil.copy2(dut_path, run_dir / dut_path.name)
 
     # Negative variants often keep their own filenames, while the Spectre deck
-    # includes the canonical artifact name from task.toml. Stage the selected
-    # DUT under that canonical name too so failures are behavioral, not a stale
-    # include-name mismatch.
+    # includes the canonical artifact name from task metadata. Stage the
+    # selected DUT under that canonical name too so failures are behavioral,
+    # not a stale include-name mismatch.
     for target_name in target_filenames:
         target_path = run_dir / target_name
         if target_path.exists() or target_path.name == dut_path.name:
@@ -1044,8 +1191,11 @@ def evaluate_noise_gen_csv(csv_path: Path) -> tuple[float, list[str]]:
 
     var = m2 / count
     std = math.sqrt(max(var, 0.0))
-    ok = std > 0.01 and max_abs > 0.05
-    return (1.0 if ok else 0.0), [f"noise_std={std:.4f} max_abs={max_abs:.4f} samples={count}"]
+    ok = 0.025 <= std <= 0.12 and abs(mean) <= 0.025 and 0.05 <= max_abs <= 0.22
+    return (
+        1.0 if ok else 0.0,
+        [f"noise_mean={mean:.4f} noise_std={std:.4f} max_abs={max_abs:.4f} samples={count}"],
+    )
 
 
 def _csv_fields(csv_path: Path) -> set[str]:
@@ -1302,17 +1452,20 @@ def _stream_cppll_freq_step_reacquire_csv(csv_path: Path) -> tuple[float, list[s
     relock_time = post_lock_edges[0] if post_lock_edges else float("nan")
     lock_high_frac = lock_window_high_dt / max(lock_window_total_dt, 1e-18)
     disturb_low_frac = 1.0 - lock_high_frac
+    vctrl_span = vctrl_max - vctrl_min
     ok = (
         bool(pre_lock_edges)
         and disturb_low_frac >= 0.25
         and bool(post_lock_edges)
         and 0.97 <= freq_ratio <= 1.03
         and vctrl_in_range
+        and vctrl_span >= 0.02
     )
     return (1.0 if ok else 0.0), [
         f"freq_ratio={freq_ratio:.4f} relock_time={relock_time:.3e} "
         f"disturb_low_frac={disturb_low_frac:.3f} "
-        f"vctrl_min={vctrl_min:.3f} vctrl_max={vctrl_max:.3f}"
+        f"vctrl_min={vctrl_min:.3f} vctrl_max={vctrl_max:.3f} "
+        f"vctrl_span={vctrl_span:.3f}"
     ]
 
 
@@ -5546,8 +5699,9 @@ def check_noise_gen(rows: list[dict[str, float]]) -> tuple[bool, str]:
     mean = sum(noises) / len(noises)
     var = sum((x - mean) ** 2 for x in noises) / len(noises)
     std = var ** 0.5
-    ok = std > 0.01 and max(abs(x) for x in noises) > 0.05
-    return ok, f"noise_std={std:.4f}"
+    max_abs = max(abs(x) for x in noises)
+    ok = 0.025 <= std <= 0.12 and abs(mean) <= 0.025 and 0.05 <= max_abs <= 0.22
+    return ok, f"noise_mean={mean:.4f} noise_std={std:.4f} max_abs={max_abs:.4f}"
 
 
 def check_gain_extraction(rows: list[dict[str, float]]) -> tuple[bool, str]:
@@ -5562,6 +5716,106 @@ def check_gain_extraction(rows: list[dict[str, float]]) -> tuple[bool, str]:
     gain = std_out / std_in if std_in > 1e-12 else 0.0
     ok = gain > 4.0 and std_out > std_in
     return ok, f"diff_gain={gain:.2f}"
+
+
+def check_v3_dither_adder(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"vres_p", "vres_n", "dpn", "vout_p", "vout_n"}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing vres_p/vres_n/dpn/vout_p/vout_n"
+
+    high: list[float] = []
+    low: list[float] = []
+    cm_errors: list[float] = []
+    for row in rows:
+        vin_diff = row["vres_p"] - row["vres_n"]
+        out_diff = row["vout_p"] - row["vout_n"]
+        dither_diff = out_diff - vin_diff
+        if row["dpn"] > 0.45:
+            high.append(dither_diff)
+        else:
+            low.append(dither_diff)
+        in_cm = 0.5 * (row["vres_p"] + row["vres_n"])
+        out_cm = 0.5 * (row["vout_p"] + row["vout_n"])
+        cm_errors.append(abs(out_cm - in_cm))
+
+    if len(high) < 20 or len(low) < 20:
+        return False, f"insufficient_dpn_states high={len(high)} low={len(low)}"
+    high_mean = sum(high) / len(high)
+    low_mean = sum(low) / len(low)
+    high_err = sum(abs(value - high_mean) for value in high) / len(high)
+    low_err = sum(abs(value - low_mean) for value in low) / len(low)
+    cm_max = max(cm_errors) if cm_errors else float("inf")
+    ok = (
+        0.025 <= high_mean <= 0.040
+        and -0.040 <= low_mean <= -0.025
+        and high_err <= 0.003
+        and low_err <= 0.003
+        and cm_max <= 0.003
+    )
+    return ok, (
+        f"dither_high={high_mean:.4f} dither_low={low_mean:.4f} "
+        f"high_err={high_err:.4f} low_err={low_err:.4f} cm_max={cm_max:.4f}"
+    )
+
+
+def check_v3_fixed_gain_amplifier(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"vin_p", "vin_n", "vout_p", "vout_n"}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing vin_p/vin_n/vout_p/vout_n"
+
+    gains: list[float] = []
+    cm_errors: list[float] = []
+    for row in rows:
+        vin_diff = row["vin_p"] - row["vin_n"]
+        if abs(vin_diff) < 0.015:
+            continue
+        out_diff = row["vout_p"] - row["vout_n"]
+        gains.append(out_diff / vin_diff)
+        cm_errors.append(abs(0.5 * (row["vout_p"] + row["vout_n"]) - 0.45))
+
+    if len(gains) < 20:
+        return False, f"insufficient_nonzero_input_samples={len(gains)}"
+    gain_mean = sum(gains) / len(gains)
+    gain_err = sum(abs(value - gain_mean) for value in gains) / len(gains)
+    cm_max = max(cm_errors) if cm_errors else float("inf")
+    ok = 5.0 <= gain_mean <= 5.5 and gain_err <= 0.08 and cm_max <= 0.006
+    return ok, f"gain={gain_mean:.3f} gain_err={gain_err:.4f} cm_max={cm_max:.4f}"
+
+
+def check_v3_reference_step_clock(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    if not rows or not {"time", "CLK"}.issubset(rows[0]):
+        return False, "missing time/CLK"
+
+    times = [row["time"] for row in rows]
+    clk = [row["CLK"] for row in rows]
+    vmin = min(clk)
+    vmax = max(clk)
+    if vmax - vmin < 0.75:
+        return False, f"insufficient_clock_swing={vmax - vmin:.3f}"
+    vth = 0.5 * (vmin + vmax)
+    rises = rising_edges(clk, times, vth)
+    if len(rises) < 80:
+        return False, f"too_few_rising_edges={len(rises)}"
+
+    early_periods = [b - a for a, b in zip(rises, rises[1:]) if 0.15e-6 <= a <= 1.05e-6]
+    late_periods = [b - a for a, b in zip(rises, rises[1:]) if 1.55e-6 <= a <= 2.25e-6]
+    if len(early_periods) < 10 or len(late_periods) < 10:
+        return False, f"insufficient_period_windows early={len(early_periods)} late={len(late_periods)}"
+    early = sum(early_periods) / len(early_periods)
+    late = sum(late_periods) / len(late_periods)
+
+    high_frac_early = weighted_logic_high_fraction_window(rows, "CLK", vth, 0.2e-6, 1.0e-6)
+    high_frac_late = weighted_logic_high_fraction_window(rows, "CLK", vth, 1.55e-6, 2.25e-6)
+    ok = (
+        17.0e-9 <= early <= 19.0e-9
+        and 21.0e-9 <= late <= 23.0e-9
+        and 0.43 <= high_frac_early <= 0.57
+        and 0.43 <= high_frac_late <= 0.57
+    )
+    return ok, (
+        f"period_pre={early:.3e} period_post={late:.3e} "
+        f"duty_pre={high_frac_early:.3f} duty_post={high_frac_late:.3f}"
+    )
 
 
 def check_gain_estimator(rows: list[dict[str, float]]) -> tuple[bool, str]:
@@ -9281,6 +9535,211 @@ def check_v3_pfd_active_low_reset(rows: list[dict[str, float]]) -> tuple[bool, s
             "down": [(0.2, 0.0), (0.7, 0.0), (1.1, 0.9), (1.25, 0.0), (2.1, 0.9), (2.5, 0.9), (2.7, 0.0)],
         },
         tol=0.08,
+    )
+
+
+def _check_source_tanh_transfer(
+    rows: list[dict[str, float]],
+    *,
+    high: float,
+    low: float,
+    offset: float,
+    slope: float,
+    tol: float,
+) -> tuple[bool, str]:
+    required = {"time", "sigin", "sigref", "sigout"}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing source tanh comparator signals"
+    max_err = 0.0
+    checked = 0
+    for row in rows:
+        if row["time"] < 0.05e-9:
+            continue
+        expected = (
+            0.5 * (high - low) * math.tanh(slope * (row["sigin"] - row["sigref"] - offset))
+            + 0.5 * (high + low)
+        )
+        err = abs(row["sigout"] - expected)
+        max_err = max(max_err, err)
+        checked += 1
+    if checked < 20:
+        return False, f"insufficient_tanh_rows={checked}"
+    return max_err <= tol, f"checked={checked} max_tanh_error={max_err:.5f}"
+
+
+def check_v3_source_smooth_comparator_tanh(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    return _check_source_tanh_transfer(rows, high=0.9, low=0.0, offset=0.0, slope=20.0, tol=0.025)
+
+
+def check_v3_source_smooth_tanh_comparator(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    return _check_source_tanh_transfer(rows, high=1.0, low=-1.0, offset=0.05, slope=4.0, tol=0.025)
+
+
+def _stable_voltage_bit(row: dict[str, float], signal: str) -> int | None:
+    value = row.get(signal)
+    if value is None:
+        return None
+    if value <= 0.15:
+        return 0
+    if value >= 0.75:
+        return 1
+    return None
+
+
+def _check_source_weighted_decoder(
+    rows: list[dict[str, float]],
+    *,
+    bit_names: list[str],
+    weights: list[float],
+    tol: float,
+) -> tuple[bool, str]:
+    required = {"time", "vout", *bit_names}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing source weighted decoder signals"
+    full_scale = sum(weights)
+    max_err = 0.0
+    checked = 0
+    worst_code = ""
+    for row in rows:
+        if row["time"] < 0.05e-9:
+            continue
+        bits = [_stable_voltage_bit(row, signal) for signal in bit_names]
+        if any(bit is None for bit in bits):
+            continue
+        code_value = sum(float(bit) * weight for bit, weight in zip(bits, weights))
+        expected = code_value / full_scale
+        err = abs(row["vout"] - expected)
+        if err > max_err:
+            max_err = err
+            worst_code = "".join(str(int(bit)) for bit in bits if bit is not None)
+        checked += 1
+    if checked < 20:
+        return False, f"insufficient_stable_weighted_rows={checked}"
+    return max_err <= tol, f"checked={checked} max_weighted_error={max_err:.5f} worst_code={worst_code}"
+
+
+def check_v3_source_weighted_decoder_6bit(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    return _check_source_weighted_decoder(
+        rows,
+        bit_names=["vd1", "vd2", "vd3", "vd4", "vd5", "vd6"],
+        weights=[32.0, 16.0, 8.0, 4.0, 2.0, 1.0],
+        tol=0.03,
+    )
+
+
+def check_v3_source_subradix_dac10(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    weights = [1.8**idx for idx in range(9, -1, -1)]
+    return _check_source_weighted_decoder(
+        rows,
+        bit_names=["vd9", "vd8", "vd7", "vd6", "vd5", "vd4", "vd3", "vd2", "vd1", "vd0"],
+        weights=weights,
+        tol=0.03,
+    )
+
+
+def _source_pfd_actions(
+    rows: list[dict[str, float]],
+    *,
+    first_signal: str,
+    second_signal: str,
+    reset_delay: float,
+    threshold: float = 0.45,
+) -> list[tuple[float, str]]:
+    times = [row["time"] for row in rows]
+    first_edges = _threshold_crossings([row[first_signal] for row in rows], times, threshold=threshold, direction="rising")
+    second_edges = _threshold_crossings([row[second_signal] for row in rows], times, threshold=threshold, direction="rising")
+    edge_events = sorted([(time_s, "first") for time_s in first_edges] + [(time_s, "second") for time_s in second_edges])
+    actions: list[tuple[float, str]] = []
+    first_state = False
+    second_state = False
+    reset_at: float | None = None
+    for event_time, event_kind in edge_events:
+        if reset_at is not None and reset_at <= event_time:
+            actions.append((reset_at, "reset"))
+            first_state = False
+            second_state = False
+            reset_at = None
+        actions.append((event_time, event_kind))
+        if event_kind == "first":
+            first_state = True
+        else:
+            second_state = True
+        if first_state and second_state and reset_at is None:
+            reset_at = event_time + reset_delay
+    if reset_at is not None:
+        actions.append((reset_at, "reset"))
+    return sorted(actions)
+
+
+def _source_pfd_state_at(actions: list[tuple[float, str]], time_s: float) -> tuple[bool, bool]:
+    first_state = False
+    second_state = False
+    for action_time, action_kind in actions:
+        if action_time > time_s:
+            break
+        if action_kind == "reset":
+            first_state = False
+            second_state = False
+        elif action_kind == "first":
+            first_state = True
+        elif action_kind == "second":
+            second_state = True
+    return first_state, second_state
+
+
+def _check_source_pfd_reset(
+    rows: list[dict[str, float]],
+    *,
+    first_signal: str,
+    second_signal: str,
+    first_output: str,
+    second_output: str,
+    reset_delay: float,
+    vh: float = 0.9,
+) -> tuple[bool, str]:
+    required = {"time", first_signal, second_signal, first_output, second_output}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing source pfd reset signals"
+    actions = _source_pfd_actions(rows, first_signal=first_signal, second_signal=second_signal, reset_delay=reset_delay)
+    if sum(1 for _, kind in actions if kind == "first") < 2 or sum(1 for _, kind in actions if kind == "second") < 2:
+        return False, "insufficient_pfd_input_edges"
+    edge_guard = 18e-12
+    max_err = 0.0
+    checked = 0
+    for row in rows:
+        time_s = row["time"]
+        if time_s < 0.05e-9 or any(abs(time_s - action_time) < edge_guard for action_time, _ in actions):
+            continue
+        first_state, second_state = _source_pfd_state_at(actions, time_s)
+        expected_first = 0.0 if first_state else vh
+        expected_second = vh if second_state else 0.0
+        err = max(abs(row[first_output] - expected_first), abs(row[second_output] - expected_second))
+        max_err = max(max_err, err)
+        checked += 1
+    if checked < 30:
+        return False, f"insufficient_stable_pfd_rows={checked}"
+    return max_err <= 0.12, f"checked={checked} pfd_actions={len(actions)} max_pfd_error={max_err:.5f}"
+
+
+def check_v3_source_pfd_timer_reset(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    return _check_source_pfd_reset(
+        rows,
+        first_signal="a",
+        second_signal="b",
+        first_output="ub",
+        second_output="d",
+        reset_delay=100e-12,
+    )
+
+
+def check_v3_source_pfd_active_low_reset(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    return _check_source_pfd_reset(
+        rows,
+        first_signal="ref",
+        second_signal="fb",
+        first_output="upb",
+        second_output="down",
+        reset_delay=80e-12,
     )
 
 
@@ -14100,11 +14559,13 @@ def check_reset_sync_active_low(rows: list[dict[str, float]]) -> tuple[bool, str
         missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
         return False, "missing_columns=" + ",".join(missing[:12])
     sr = [0, 0]
-    errors = 0
+    violations = 0
     saw_assert = False
     saw_release = False
     times = [row["time"] for row in rows]
-    for t in _rising_times(rows, "clk"):
+    clk_rises = _rising_times(rows, "clk")
+    reset_edges = _rising_times(rows, "rst_n") + _falling_times(rows, "rst_n")
+    for t in clk_rises:
         edge_row = rows[min(range(len(times)), key=lambda idx: abs(times[idx] - t))]
         out_row = _sample_after(rows, t, 1e-9)
         if edge_row["rst_n"] <= 0.45:
@@ -14115,15 +14576,17 @@ def check_reset_sync_active_low(rows: list[dict[str, float]]) -> tuple[bool, str
         expected = sr[1] == 1
         actual = out_row["sync_rst_n"] > 0.45
         if actual != expected:
-            errors += 1
+            violations += 1
         saw_release = saw_release or actual
     for row in rows[:: max(1, len(rows) // 300)]:
+        if any(abs(row["time"] - t) < 0.5e-9 for t in reset_edges + clk_rises):
+            continue
         if row["time"] < 1e-9 or 0.1 < row["rst_n"] < 0.8 or 0.1 < row["sync_rst_n"] < 0.8:
             continue
         if row["rst_n"] <= 0.45 and row["sync_rst_n"] > 0.45:
-            errors += 1
+            violations += 1
             saw_assert = True
-    return errors <= 1 and saw_assert and saw_release, f"checked={len(_rising_times(rows, 'clk'))} errors={errors}"
+    return violations == 0 and saw_assert and saw_release, f"checked={len(clk_rises)} violations={violations}"
 
 
 def check_reset_sync_active_high(rows: list[dict[str, float]]) -> tuple[bool, str]:
@@ -14132,11 +14595,13 @@ def check_reset_sync_active_high(rows: list[dict[str, float]]) -> tuple[bool, st
         missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
         return False, "missing_columns=" + ",".join(missing[:12])
     sr = [1, 1]
-    errors = 0
+    violations = 0
     saw_assert = False
     saw_release = False
     times = [row["time"] for row in rows]
-    for t in _rising_times(rows, "clk"):
+    clk_rises = _rising_times(rows, "clk")
+    reset_edges = _rising_times(rows, "rst") + _falling_times(rows, "rst")
+    for t in clk_rises:
         edge_row = rows[min(range(len(times)), key=lambda idx: abs(times[idx] - t))]
         out_row = _sample_after(rows, t, 1e-9)
         if edge_row["rst"] > 0.45:
@@ -14147,15 +14612,17 @@ def check_reset_sync_active_high(rows: list[dict[str, float]]) -> tuple[bool, st
         expected = sr[1] == 1
         actual = out_row["sync_rst"] > 0.45
         if actual != expected:
-            errors += 1
+            violations += 1
         saw_release = saw_release or not actual
     for row in rows[:: max(1, len(rows) // 300)]:
+        if any(abs(row["time"] - t) < 0.5e-9 for t in reset_edges + clk_rises):
+            continue
         if row["time"] < 1e-9 or 0.1 < row["rst"] < 0.8 or 0.1 < row["sync_rst"] < 0.8:
             continue
         if row["rst"] > 0.45 and row["sync_rst"] <= 0.45:
-            errors += 1
+            violations += 1
             saw_assert = True
-    return errors <= 1 and saw_assert and saw_release, f"checked={len(_rising_times(rows, 'clk'))} errors={errors}"
+    return violations == 0 and saw_assert and saw_release, f"checked={len(clk_rises)} violations={violations}"
 
 
 def check_enable_gated_clock_pulse(rows: list[dict[str, float]]) -> tuple[bool, str]:
@@ -14780,7 +15247,7 @@ CHECKS["297-mux4-priority"] = check_v3_mux4_priority
 CHECKS["298-xnor-gate-voltage"] = check_v3_xnor_gate_voltage
 CHECKS["299-bipolar-dff-sample"] = check_v3_bipolar_dff_sample
 CHECKS["300-pfd-active-low-reset"] = check_v3_pfd_active_low_reset
-# V3 task.toml id aliases generated from task metadata.
+# V3 task id aliases generated from task metadata.
 V3_TASK_ID_ALIASES = {
     "v3_112_clocked_sar_comparator": "v3_clocked_sar_comparator",
     "v3_113_clocked_dac_restore_4b": "v3_clocked_dac_restore_4b",
@@ -14970,7 +15437,36 @@ V3_TASK_ID_ALIASES = {
 for _task_id_alias, _checker_id in V3_TASK_ID_ALIASES.items():
     if _checker_id in CHECKS:
         CHECKS[_task_id_alias] = CHECKS[_checker_id]
-# End v3 task.toml id aliases.
+# End v3 task id aliases.
+
+CHECKS["v3_source_smooth_comparator_tanh"] = check_v3_source_smooth_comparator_tanh
+CHECKS["v3_source_weighted_decoder_6bit"] = check_v3_source_weighted_decoder_6bit
+CHECKS["v3_source_pfd_timer_reset"] = check_v3_source_pfd_timer_reset
+CHECKS["v3_source_smooth_tanh_comparator"] = check_v3_source_smooth_tanh_comparator
+CHECKS["v3_source_subradix_dac10"] = check_v3_source_subradix_dac10
+CHECKS["v3_source_pfd_active_low_reset"] = check_v3_source_pfd_active_low_reset
+
+V3_SOURCE_FORM_CHECK_ALIASES = {
+    "v3_source_smooth_comparator_tanh": "v3_source_smooth_comparator_tanh",
+    "v3_146_source_smooth_comparator_tanh": "v3_source_smooth_comparator_tanh",
+    "v3_source_absolute_value": "v3_absolute_value",
+    "v3_148_source_absolute_value": "v3_absolute_value",
+    "v3_288_source_absolute_value": "v3_absolute_value",
+    "v3_source_weighted_decoder_6bit": "v3_source_weighted_decoder_6bit",
+    "v3_274_source_weighted_decoder_6bit": "v3_source_weighted_decoder_6bit",
+    "v3_source_pfd_timer_reset": "v3_source_pfd_timer_reset",
+    "v3_282_source_pfd_timer_reset": "v3_source_pfd_timer_reset",
+    "v3_source_smooth_tanh_comparator": "v3_source_smooth_tanh_comparator",
+    "v3_292_source_smooth_tanh_comparator": "v3_source_smooth_tanh_comparator",
+    "v3_source_subradix_dac10": "v3_source_subradix_dac10",
+    "v3_294_source_subradix_dac10": "v3_source_subradix_dac10",
+    "v3_source_pfd_active_low_reset": "v3_source_pfd_active_low_reset",
+    "v3_300_source_pfd_active_low_reset": "v3_source_pfd_active_low_reset",
+}
+for _source_form_alias, _checker_id in V3_SOURCE_FORM_CHECK_ALIASES.items():
+    if _checker_id in CHECKS:
+        CHECKS[_source_form_alias] = CHECKS[_checker_id]
+
 CHECKS["v3_283_weighted_sar_adc_dac_loop"] = check_sar_adc_dac_weighted_8b
 CHECKS["283-weighted-sar-adc-dac-loop"] = check_sar_adc_dac_weighted_8b
 CHECKS["v3_284_window_comparator_testbench"] = check_true_window_comparator
@@ -15086,6 +15582,19 @@ for _alias, _source_checker_id in V3_CANDIDATE_090_111_CHECK_ALIASES.items():
     CHECKS[_alias] = CHECKS[_source_checker_id]
     if _source_checker_id in STREAMING_BEHAVIOR_CHECKS:
         STREAMING_BEHAVIOR_CHECKS[_alias] = STREAMING_BEHAVIOR_CHECKS[_source_checker_id]
+
+V3_STANDALONE_SPLIT_CHECKS = {
+    "v3_099_dither_adder": check_v3_dither_adder,
+    "099-dither-adder": check_v3_dither_adder,
+    "v3_101_fixed_gain_amplifier": check_v3_fixed_gain_amplifier,
+    "101-fixed-gain-amplifier": check_v3_fixed_gain_amplifier,
+    "v3_107_reference_step_clock": check_v3_reference_step_clock,
+    "107-reference-step-clock": check_v3_reference_step_clock,
+}
+
+for _alias, _checker in V3_STANDALONE_SPLIT_CHECKS.items():
+    CHECKS[_alias] = _checker
+    STREAMING_BEHAVIOR_CHECKS.pop(_alias, None)
 
 VALIDATED_FAST_CHECKER_TASKS = frozenset(STREAMING_BEHAVIOR_CHECKS)
 
@@ -15377,11 +15886,12 @@ def run_case(
 
         t0 = time.perf_counter()
         task_artifact_targets = read_task_artifact_targets(task_dir)
+        task_artifact_supports = read_task_artifact_supports(task_dir)
         dut_dst, tb_dst = copy_inputs(
             run_dir,
             dut_path,
             tb_path,
-            target_filenames=task_artifact_targets,
+            target_filenames=[*task_artifact_targets, *task_artifact_supports],
             primary_target_filename=task_artifact_targets[0] if task_artifact_targets else None,
             companion_search_dirs=(task_dir / "solution", task_dir / "starter"),
         )

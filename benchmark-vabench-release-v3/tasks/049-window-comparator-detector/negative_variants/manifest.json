@@ -1,0 +1,28 @@
+{
+  "cases": [
+    {
+      "id": "neg_001_inverted_output",
+      "artifact": "neg_001_inverted_output/window_comparator_ref.va",
+      "expected_status": "FAIL_SIM_CORRECTNESS",
+      "mutation": "Drives the output rail high outside the window and low inside the window."
+    },
+    {
+      "id": "neg_002_one_sided_lower",
+      "artifact": "neg_002_one_sided_lower/window_comparator_ref.va",
+      "expected_status": "FAIL_SIM_CORRECTNESS",
+      "mutation": "Uses only the lower threshold, so above-window inputs remain high."
+    },
+    {
+      "id": "neg_003_narrow_window",
+      "artifact": "neg_003_narrow_window/window_comparator_ref.va",
+      "expected_status": "FAIL_SIM_CORRECTNESS",
+      "mutation": "Uses a much narrower internal window than the public 0.3 V to 0.6 V function contract."
+    },
+    {
+      "id": "neg_004_stuck_low",
+      "artifact": "neg_004_stuck_low/window_comparator_ref.va",
+      "expected_status": "FAIL_SIM_CORRECTNESS",
+      "mutation": "Preserves the interface and transition contribution but never asserts the in-window output."
+    }
+  ]
+}

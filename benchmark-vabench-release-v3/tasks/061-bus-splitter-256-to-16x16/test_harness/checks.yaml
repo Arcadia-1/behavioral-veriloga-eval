@@ -1,9 +1,0 @@
-version: 2
-task_id: bus_splitter_256_to_16x16
-backend: evas
-status: formal_candidate
-checker: bus_splitter_256_to_16x16
-checks:
-  formal:
-    - gold_passes
-    - concrete_negatives_fail

@@ -2,7 +2,7 @@
 
 ## Scope
 
-Task boundary is one primary Verilog-A DUT artifact, `reference_startup_enable_flow.va`, migrated from `vbr1_l2_reference_startup_enable_flow:tb`, plus the original EVAS/Spectre-compatible `.scs` transient scenario. Companion Verilog-A files listed in `task.toml` are supplied by the harness when needed by the original system testbench.
+Task boundary is one primary Verilog-A DUT artifact, `reference_startup_enable_flow.va`, migrated from `vbr1_l2_reference_startup_enable_flow:tb`, plus the original EVAS/Spectre-compatible `.scs` transient scenario. Companion Verilog-A files listed in the top-level `TASKS.json` index are supplied by the harness when needed by the original system testbench.
 
 ## Four Standards
 

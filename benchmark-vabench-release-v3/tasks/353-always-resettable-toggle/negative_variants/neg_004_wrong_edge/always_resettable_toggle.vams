@@ -1,0 +1,7 @@
+module always_resettable_toggle(clk, rst, d, en, q);
+    input clk, rst, d, en;
+    output q;
+    logic clk, rst, d, en, q;
+
+    always @(negedge clk or posedge rst) begin if (rst) q = 1'b0; else q = ~q; end
+endmodule

@@ -1,0 +1,42 @@
+`include "constants.vams"
+`include "disciplines.vams"
+
+module function_code_normalizer (
+    input  electrical vin,
+    input  electrical clk,
+    input  electrical mode,
+    input  electrical rst,
+    output electrical out,
+    output electrical metric
+);
+parameter real vth = 0.45;
+parameter real vhi = 0.9;
+parameter real tr = 200p;
+real out_v;
+real metric_v;
+integer count_q;
+integer state_q;
+function real normalize4;
+    input real x;
+    integer code;
+    begin
+        code = x < 0.0 ? 0 : (x > 0.9 ? 15 : floor(16.0 * x / 0.9));
+        if (code > 15) code = 15;
+        normalize4 = code / 15.0 * 0.9;
+    end
+endfunction
+analog begin
+    @(initial_step) begin
+        out_v = 0.0;
+        metric_v = 0.0;
+        count_q = 0;
+        state_q = 0;
+    end
+    @(cross(V(clk) - vth, +1)) begin
+        out_v = normalize4(V(vin));
+        metric_v = out_v / vhi;
+    end
+    V(out) <+ transition(out_v, 0.0, tr, tr);
+    V(metric) <+ transition(metric_v, 0.0, tr, tr);
+end
+endmodule

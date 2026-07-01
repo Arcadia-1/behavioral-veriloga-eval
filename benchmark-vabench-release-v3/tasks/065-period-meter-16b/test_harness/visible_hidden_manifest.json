@@ -1,22 +1,22 @@
 {
-  "visible": [
-    "instruction.md",
-    "starter/period_meter_16b.va",
-    "test_visible/visible.scs"
-  ],
-  "hidden": [
-    "solution/period_meter_16b.va",
-    "test_hidden/hidden.scs",
-    "test_harness/checks.yaml",
-    "negative_variants/manifest.json"
-  ],
   "agent_visible": [
     "instruction.md",
     "starter/period_meter_16b.va",
     "test_visible/visible.scs"
   ],
   "certification": {
-    "status": "evas_certified",
-    "scope": "EVAS hidden gold, negative recertification, and visible smoke evidence tracked in AUDIT.md"
-  }
+    "scope": "EVAS hidden gold, negative recertification, and visible smoke evidence tracked in AUDIT.md",
+    "status": "evas_certified"
+  },
+  "hidden": [
+    "solution/period_meter_16b.va",
+    "test_hidden/hidden.scs",
+    "../../../CHECKS.yaml",
+    "negative_variants/manifest.json"
+  ],
+  "visible": [
+    "instruction.md",
+    "starter/period_meter_16b.va",
+    "test_visible/visible.scs"
+  ]
 }

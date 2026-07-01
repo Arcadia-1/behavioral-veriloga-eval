@@ -14,7 +14,7 @@ Evaluator-only files are:
 
 - `solution/lock_detector.va`
 - `test_hidden/hidden.scs`
-- `test_harness/checks.yaml`
+- `CHECKS.yaml`
 - `test_harness/visible_hidden_manifest.json`
 - `negative_variants/`
 
@@ -23,7 +23,7 @@ Evaluator-only files are:
 - Useful scenario: a reference/feedback lock detector is a common PLL behavioral control primitive. It is small enough for an L1/D2 behavioral Verilog-A task but still exercises event ordering, state retention, reset, and timing-window logic.
 - Reasonable task: the public prompt states the exact module name, positional port order, electrical voltage-domain interface, active-low reset behavior, `2 ns` reference/feedback alignment window, three-consecutive-aligned-reference lock rule, no-early-lock requirement, mismatch clearing rule, and relock-after-reset requirement.
 - Complete tests: the visible SCS is a useful smoke for syntax, reset low, acquisition after three aligned reference events, and loss of lock on a later mismatch. The hidden SCS adds post-acquisition active-low reset, a second acquisition sequence, and a later out-of-window mismatch. The negative set now contains concrete Verilog-A variants for late lock, over-wide tolerance, mismatch not clearing lock, reset not clearing lock, and counting feedback events instead of reference comparisons.
-- Fair evaluation: `test_harness/checks.yaml` declares a trace-based checker contract over saved `time`, `ref_clk`, `fb_clk`, `rst_n`, and `lock`. The checker should reconstruct rising threshold crossings and enforce only behavior described in `instruction.md`; it should not rely on hidden-only stimulus knowledge.
+- Fair evaluation: `CHECKS.yaml` declares a trace-based checker contract over saved `time`, `ref_clk`, `fb_clk`, `rst_n`, and `lock`. The checker should reconstruct rising threshold crossings and enforce only behavior described in `instruction.md`; it should not rely on hidden-only stimulus knowledge.
 
 Certification status: EVAS formal candidate. The task assets are self-consistent and the public runner has a `CHECKS` entry for this task-specific checker.
 
@@ -43,7 +43,7 @@ At each `ref_clk` rising threshold crossing while `rst_n` is high, find the most
 
 ## Runner Integration Needed
 
-The task declares `checker_id/check_name = v3_009_lock_detector` in `task.toml` and `test_harness/checks.yaml`. The main runner maps:
+The task declares `checker_id/check_name = v3_009_lock_detector` in the top-level indexes. The main runner maps:
 
 ```python
 CHECKS["v3_009_lock_detector"] = check_v3_009_lock_detector

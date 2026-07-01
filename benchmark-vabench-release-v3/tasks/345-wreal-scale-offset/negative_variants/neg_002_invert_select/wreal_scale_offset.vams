@@ -1,0 +1,11 @@
+module wreal_scale_offset(a, b, sel, y);
+    input a, b, sel;
+    output y;
+    wreal a, b, sel, y;
+    parameter real gain = 0.75;
+parameter real offset = 0.1;
+parameter real threshold = 0.45;
+parameter real high = 0.9;
+parameter real low = 0.0;
+    assign y = ~ gain * a + offset;
+endmodule
