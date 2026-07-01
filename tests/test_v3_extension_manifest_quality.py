@@ -64,6 +64,60 @@ def test_all_v3_extension_prompts_state_required_behavior() -> None:
         assert "Required Behavior" in instruction, f"{task_key} lacks Required Behavior section"
 
 
+def scs_has_feature(text: str, feature: str) -> bool:
+    lowered = text.lower()
+    if feature == "include":
+        return "ahdl_include" in lowered or re.search(r"(?m)^\s*include\b", text) is not None
+    if feature == "instance":
+        return re.search(r"(?im)^\s*x\w*\s*\(", text) is not None
+    if feature == "source":
+        return "vsource" in lowered or "isource" in lowered
+    if feature == "tran":
+        return re.search(r"(?im)^\s*tran\b", text) is not None
+    if feature == "save":
+        return re.search(r"(?im)^\s*save\b", text) is not None
+    raise AssertionError(f"unknown SCS feature {feature!r}")
+
+
+def test_all_v3_extension_tasks_have_visible_and_hidden_harness_files() -> None:
+    for task_key in extension_tasks():
+        base = TASK_ROOT / task_key
+        for rel_path in (
+            "test_visible/visible.scs",
+            "test_hidden/hidden.scs",
+            "test_harness/visible_hidden_manifest.json",
+        ):
+            assert (base / rel_path).exists(), f"{task_key} missing {rel_path}"
+
+
+def test_all_v3_extension_harness_manifests_reference_visible_and_hidden_scs() -> None:
+    for task_key in extension_tasks():
+        manifest = json.loads(
+            (TASK_ROOT / task_key / "test_harness" / "visible_hidden_manifest.json").read_text(
+                encoding="utf-8"
+            )
+        )
+        manifest_text = json.dumps(manifest).lower()
+        assert "visible.scs" in manifest_text, f"{task_key} manifest does not expose visible.scs"
+        assert "hidden.scs" in manifest_text, f"{task_key} manifest does not protect hidden.scs"
+
+
+def test_all_v3_extension_visible_and_hidden_scs_are_executable_testbenches() -> None:
+    required_features = ("include", "instance", "source", "tran", "save")
+    for task_key in extension_tasks():
+        for rel_path in ("test_visible/visible.scs", "test_hidden/hidden.scs"):
+            text = (TASK_ROOT / task_key / rel_path).read_text(
+                encoding="utf-8",
+                errors="ignore",
+            )
+            missing = [
+                feature
+                for feature in required_features
+                if not scs_has_feature(text, feature)
+            ]
+            assert missing == [], f"{task_key} {rel_path} missing SCS features {missing}"
+
+
 def negative_variants(task_key: str) -> list[dict]:
     manifest = json.loads(
         (TASK_ROOT / task_key / "negative_variants" / "manifest.json").read_text(
