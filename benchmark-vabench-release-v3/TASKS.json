@@ -4509,6 +4509,9 @@
       "target": [
         "file_fseek_offset_reader.va"
       ],
+      "support": [
+        "config_lines.txt"
+      ],
       "tier": "syntax-extension-candidate",
       "title": "File Fseek Offset Reader",
       "syntax_focus": "Use $fseek() to reposition a file handle before reading.",

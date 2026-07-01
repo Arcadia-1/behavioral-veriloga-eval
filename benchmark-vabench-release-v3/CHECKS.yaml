@@ -7837,16 +7837,49 @@
 381-file-fseek-offset-reader: |
   version: 1
   task_id: v3_381_file_fseek_offset_reader
-  backend: evas_rust_compile_capable
-  status: syntax-extension-candidate
-  checker: language_feature_contract
+  backend: evas
+  status: behavior-certified-candidate
+  checker: file_fseek_offset_reader_contract
+  # vabench-release-v2-checks
+  required_columns:
+    - time
+    - vin
+    - clk
+    - mode
+    - rst
+    - out
+    - metric
   syntax:
     must_include:
+      - "$fopen"
       - "$fseek"
+      - "$fgets"
+      - "$fclose"
+      - "config_lines.txt"
+      - "cross"
+      - "V(out)"
+      - "V(metric)"
+      - "transition"
     must_not_include:
       - "I("
+  sim_correct:
+    positive:
+      - solution/file_fseek_offset_reader.va
+    negative:
+      - negative_variants/neg_001_force_zero/file_fseek_offset_reader.va
+      - negative_variants/neg_002_wrong_threshold/file_fseek_offset_reader.va
+      - negative_variants/neg_003_reset_bias/file_fseek_offset_reader.va
+      - negative_variants/neg_004_metric_offset/file_fseek_offset_reader.va
+      - negative_variants/neg_005_scale_output/file_fseek_offset_reader.va
+    checks:
+      - config_file_staged_as_support_artifact
+      - fseek_repositions_to_second_line
+      - fgets_reads_line_after_seek
+      - metric_reports_successful_seek_hit
+      - output_gated_by_seek_hit_and_vin_threshold
+      - no_current_domain_contribution
   notes:
-    - "Language extension task; not part of original full-300 transient certification claim."
+    - "File I/O language extension promoted to executable EVAS behavior candidate."
 382-file-ftell-position-meter: |
   version: 1
   task_id: v3_382_file_ftell_position_meter
