@@ -7517,6 +7517,37 @@ def check_v3_333_last_crossing_period_meter(rows: list[dict[str, float]]) -> tup
     )
 
 
+def check_v3_334_last_crossing_edge_age(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "vin", "clk", "mode", "rst", "out", "metric"}
+    if not rows or not required.issubset(rows[0]):
+        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
+        return False, "missing_columns=" + ",".join(missing)
+    return _sample_many(
+        rows,
+        {
+            "out": [
+                (50.0, 0.0),
+                (160.0, 0.15),
+                (260.0, 0.45),
+                (430.0, 0.9),
+                (560.0, 0.15),
+                (660.0, 0.45),
+                (730.0, 0.0),
+            ],
+            "metric": [
+                (50.0, 0.0),
+                (160.0, 0.9),
+                (260.0, 0.0),
+                (310.0, 0.0),
+                (560.0, 0.9),
+                (660.0, 0.0),
+                (730.0, 0.0),
+            ],
+        },
+        tol=0.08,
+    )
+
+
 def check_v3_clocked_sar_comparator(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "cmpck", "vinp", "vinn", "dcmpn", "dcmpp"}
     if not rows or not required.issubset(rows[0]):
@@ -16480,6 +16511,8 @@ V3_STANDALONE_SPLIT_CHECKS = {
     "332-above-window-qualifier": check_v3_332_above_window_qualifier,
     "v3_333_last_crossing_period_meter": check_v3_333_last_crossing_period_meter,
     "333-last-crossing-period-meter": check_v3_333_last_crossing_period_meter,
+    "v3_334_last_crossing_edge_age": check_v3_334_last_crossing_edge_age,
+    "334-last-crossing-edge-age": check_v3_334_last_crossing_edge_age,
 }
 
 for _alias, _checker in V3_STANDALONE_SPLIT_CHECKS.items():

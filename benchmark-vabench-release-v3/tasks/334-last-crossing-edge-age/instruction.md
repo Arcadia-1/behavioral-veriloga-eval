@@ -19,9 +19,23 @@ module last_crossing_edge_age (
 
 ## Required Behavior
 
-Use above() and last_crossing() for threshold/edge timing behavior.
+Use `last_crossing()` to report the age of the most recent rising threshold crossing.
 
-Use voltage-coded logic with `vth = 0.45` V and high outputs near `0.9` V. The hidden evaluator samples `out` and `metric` under deterministic voltage-domain stimulus and checks the language feature named by this task.
+This is a pure voltage-domain behavioral task. Do not use current-domain `I(...)` branch contributions.
+
+Use voltage-coded logic with `vth = 0.45` V and high outputs near `0.9` V.
+
+Implement:
+
+- continuously evaluate `lc_q = last_crossing(V(vin) - vth, +1, 0.0, 1e-12)`
+- use `@(above(V(vin) - vth))` to mark that at least one rising threshold event has occurred
+- before any rising crossing, drive both outputs to `0.0`
+- on `@(timer(0, 50n))`, after a rising crossing, compute `age_q = $abstime - lc_q`
+- drive `out = 0.9 * age_q / 300 ns`, clamped to `0.0 ... 0.9`
+- drive `metric = 0.9` while `age_q <= 150 ns`, otherwise `0.0`
+- `@(cross(V(rst) - vth, +1))` clears the observed-edge state and both outputs
+
+The hidden testbench drives rising crossings around `100 ns` and `500 ns`, with reset around `700 ns`. The evaluator samples the age ramp, short-age marker, and reset clearing behavior.
 
 ## Output
 

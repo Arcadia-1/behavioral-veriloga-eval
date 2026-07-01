@@ -5,25 +5,25 @@ Date: 2026-07-01
 ## Summary
 
 - Audited extension tasks: **194**
-- SOP-ready tasks: **33**
-- Tasks with executable visible+hidden SCS evidence: **33**
-- Tasks with behavior checker evidence: **33**
+- SOP-ready tasks: **34**
+- Tasks with executable visible+hidden SCS evidence: **34**
+- Tasks with behavior checker evidence: **34**
 
 ## Issue Counts
 
-- `checker_syntax_only_no_behavior_score`: 161
-- `generic_prompt_template`: 7
-- `hidden_scs_not_executable:include,instance,source`: 129
+- `checker_syntax_only_no_behavior_score`: 160
+- `generic_prompt_template`: 6
+- `hidden_scs_not_executable:include,instance,source`: 128
 - `hidden_scs_not_executable:include,instance,source,save`: 32
 - `missing_required_behavior_section`: 122
-- `visible_scs_not_executable:include,instance,source`: 129
+- `visible_scs_not_executable:include,instance,source`: 128
 - `visible_scs_not_executable:include,instance,source,save`: 32
 
 ## Range Summary
 
 | Range | Description | Tasks | Ready | Executable Tests | Behavior Eval | Top Issues |
 | --- | --- | ---: | ---: | ---: | ---: | --- |
-| `301-340` | language-semantics voltage-domain candidates | 40 | 33 | 33 | 33 | `visible_scs_not_executable:include,instance,source`: 7<br>`hidden_scs_not_executable:include,instance,source`: 7<br>`generic_prompt_template`: 7<br>`checker_syntax_only_no_behavior_score`: 7 |
+| `301-340` | language-semantics voltage-domain candidates | 40 | 34 | 34 | 34 | `visible_scs_not_executable:include,instance,source`: 6<br>`hidden_scs_not_executable:include,instance,source`: 6<br>`generic_prompt_template`: 6<br>`checker_syntax_only_no_behavior_score`: 6 |
 | `341-360` | AMS mixed-signal candidates | 20 | 0 | 0 | 0 | `visible_scs_not_executable:include,instance,source,save`: 20<br>`hidden_scs_not_executable:include,instance,source,save`: 20<br>`checker_syntax_only_no_behavior_score`: 20 |
 | `361-372` | noise and analysis candidates | 12 | 0 | 0 | 0 | `visible_scs_not_executable:include,instance,source,save`: 12<br>`hidden_scs_not_executable:include,instance,source,save`: 12<br>`checker_syntax_only_no_behavior_score`: 12 |
 | `373-434` | task/file/table/random/hierarchy syntax candidates | 62 | 0 | 0 | 0 | `visible_scs_not_executable:include,instance,source`: 62<br>`hidden_scs_not_executable:include,instance,source`: 62<br>`missing_required_behavior_section`: 62<br>`checker_syntax_only_no_behavior_score`: 62 |
@@ -72,7 +72,7 @@ Tasks 301-494 are extension candidates, not SOP-ready benchmark tasks. They most
 | `331-above-threshold-latch` | `syntax-extension-candidate` | True | - |
 | `332-above-window-qualifier` | `syntax-extension-candidate` | True | - |
 | `333-last-crossing-period-meter` | `syntax-extension-candidate` | True | - |
-| `334-last-crossing-edge-age` | `syntax-extension-candidate` | False | `visible_scs_not_executable:include,instance,source`<br>`hidden_scs_not_executable:include,instance,source`<br>`generic_prompt_template`<br>`checker_syntax_only_no_behavior_score` |
+| `334-last-crossing-edge-age` | `syntax-extension-candidate` | True | - |
 | `335-above-resettable-peak-marker` | `syntax-extension-candidate` | False | `visible_scs_not_executable:include,instance,source`<br>`hidden_scs_not_executable:include,instance,source`<br>`generic_prompt_template`<br>`checker_syntax_only_no_behavior_score` |
 | `336-directive-configurable-threshold` | `syntax-extension-candidate` | False | `visible_scs_not_executable:include,instance,source`<br>`hidden_scs_not_executable:include,instance,source`<br>`generic_prompt_template`<br>`checker_syntax_only_no_behavior_score` |
 | `337-parameter-range-limited-gain` | `syntax-extension-candidate` | False | `visible_scs_not_executable:include,instance,source`<br>`hidden_scs_not_executable:include,instance,source`<br>`generic_prompt_template`<br>`checker_syntax_only_no_behavior_score` |

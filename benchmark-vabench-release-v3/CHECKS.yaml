@@ -5934,9 +5934,10 @@
 334-last-crossing-edge-age: |
   version: 1
   task_id: v3_334_last_crossing_edge_age
-  backend: syntax_extension
-  status: syntax-extension-candidate
-  checker: language_feature_contract
+  backend: evas
+  status: behavior-certified-candidate
+  checker: sampled_waveform_and_metric_contract
+  # vabench-release-v2-checks
   required_columns:
     - time
     - vin
@@ -5948,10 +5949,27 @@
   syntax:
     must_include:
       - "last_crossing("
+      - "above("
+      - "cross("
     must_not_include:
       - "I("
+  sim_correct:
+    positive:
+      - solution/last_crossing_edge_age.va
+    negative:
+      - negative_variants/neg_001_drive_out_zero/last_crossing_edge_age.va
+      - negative_variants/neg_002_drive_metric_zero/last_crossing_edge_age.va
+      - negative_variants/neg_003_reset_polarity_wrong/last_crossing_edge_age.va
+      - negative_variants/neg_004_logic_threshold_shifted/last_crossing_edge_age.va
+      - negative_variants/neg_005_output_scale_low/last_crossing_edge_age.va
+    checks:
+      - last_crossing_tracks_most_recent_rising_edge
+      - output_encodes_edge_age
+      - metric_marks_recent_edge_window
+      - reset_clears_edge_age_state
+      - no_current_domain_contribution
   notes:
-    - "Extension task; not part of the original full-300 certification claim."
+    - "Extension task promoted from syntax-only to executable behavior candidate."
 335-above-resettable-peak-marker: |
   version: 1
   task_id: v3_335_above_resettable_peak_marker
