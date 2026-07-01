@@ -25,6 +25,27 @@ def read_json(path: Path) -> Any:
     return json.loads(path.read_text(encoding="utf-8"))
 
 
+def read_sim_correct_task_slugs(checks_path: Path) -> set[str]:
+    if not checks_path.exists():
+        return set()
+    text = checks_path.read_text(encoding="utf-8", errors="ignore")
+    slugs: set[str] = set()
+    current_slug: str | None = None
+    current_body: list[str] = []
+    for line in text.splitlines():
+        if line and not line.startswith((" ", "\t")) and line.endswith(": |"):
+            if current_slug and any("sim_correct:" in body_line for body_line in current_body):
+                slugs.add(current_slug)
+            current_slug = line.split(":", 1)[0]
+            current_body = []
+            continue
+        if current_slug is not None:
+            current_body.append(line)
+    if current_slug and any("sim_correct:" in body_line for body_line in current_body):
+        slugs.add(current_slug)
+    return slugs
+
+
 def negative_variant_ids(task_dir: Path) -> list[str]:
     manifest_path = task_dir / "negative_variants" / "manifest.json"
     if not manifest_path.exists():
@@ -149,6 +170,16 @@ def main() -> int:
     parser.add_argument("--out", required=True)
     parser.add_argument("--gold-only", action="store_true")
     parser.add_argument("--negatives-only", action="store_true")
+    parser.add_argument(
+        "--checks",
+        default="benchmark-vabench-release-v3/CHECKS.yaml",
+        help="CHECKS.yaml path used to identify behavior-certified sim_correct tasks.",
+    )
+    parser.add_argument(
+        "--include-staged",
+        action="store_true",
+        help="Also run staged syntax/continuous/KCL candidates without sim_correct blocks.",
+    )
     args = parser.parse_args()
 
     if args.gold_only and args.negatives_only:
@@ -156,10 +187,16 @@ def main() -> int:
 
     os.environ.setdefault("VAEVAS_EVAS_PERSISTENT_WORKER", "0")
     root = Path(args.root)
+    sim_correct_slugs = read_sim_correct_task_slugs(Path(args.checks))
     cases: list[tuple[Path, str | None, int]] = []
+    skipped_tasks: list[str] = []
     for task_dir in sorted(p for p in root.iterdir() if p.is_dir()):
         number = task_number(task_dir)
         if number is None or not (args.start <= number <= args.end):
+            continue
+        if not args.include_staged and task_dir.name not in sim_correct_slugs:
+            skipped_tasks.append(task_dir.name)
+            print(task_dir.name, "SKIP_STAGED", flush=True)
             continue
         if not args.negatives_only:
             cases.append((task_dir, None, args.timeout))
@@ -197,9 +234,10 @@ def main() -> int:
         "negative_accepted": sum(row["status"] == "PASS" for row in negative_rows),
         "expectation_pass": sum(row["meets_expectation"] for row in rows),
         "expectation_fail": sum(not row["meets_expectation"] for row in rows),
+        "skipped_staged_tasks": len(skipped_tasks),
         "wall_s": round(time.perf_counter() - started, 6),
     }
-    payload = {"summary": summary, "rows": rows}
+    payload = {"summary": summary, "rows": rows, "skipped_tasks": skipped_tasks}
     out = Path(args.out)
     out.parent.mkdir(parents=True, exist_ok=True)
     out.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n", encoding="utf-8")
