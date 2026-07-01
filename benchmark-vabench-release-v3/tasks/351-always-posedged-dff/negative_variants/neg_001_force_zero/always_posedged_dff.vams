@@ -3,5 +3,9 @@ module always_posedged_dff(clk, rst, d, en, q);
     output q;
     logic clk, rst, d, en, q;
 
-    always @(posedge clk) begin if (rst) q = 1'b0; else q = d; end
+    always @(posedge clk) begin
+        if (rst) q = 1'b0;
+        else if (en) q = 1'b0;
+        else q = q;
+    end
 endmodule
