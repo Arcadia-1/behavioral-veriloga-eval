@@ -1,7 +1,15 @@
-module mixed_electrical_threshold_logic_flag(a, b, sel, y);
-    input a, b, sel;
-    output y;
-    wreal a, b, sel, y;
-    // TODO: implement the requested Verilog-AMS mixed-signal behavior.
-    assign y = 0.0;
+`include "constants.vams"
+`include "disciplines.vams"
+
+module mixed_electrical_threshold_logic_flag(vin, clk, en, sel, a, b, vout);
+    input vin, clk, en, sel, a, b;
+    output vout;
+    electrical vin, vout;
+    logic clk, en, sel;
+    wreal a, b, level;
+    real flag_real;
+    parameter real vth = 0.45;
+    parameter real vhi = 0.9;
+    parameter real tr = 200p;
+    // TODO: implement the requested electrical threshold flag.
 endmodule

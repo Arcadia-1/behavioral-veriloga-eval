@@ -7,11 +7,13 @@ module mixed_electrical_threshold_logic_flag(vin, clk, en, sel, a, b, vout);
     electrical vin, vout;
     logic clk, en, sel;
     wreal a, b, level;
-    logic en_logic;
-    logic sampled;
     real flag_real;
     parameter real vth = 0.45;
     parameter real vhi = 0.9;
     parameter real tr = 200p;
-    analog begin flag_real = V(vin) > vth ? 1.0 : 0.0; V(vout) <+ transition(0.5 * flag_real ? vhi : 0.0, 0.0, tr, tr); end
+
+    analog begin
+        flag_real = V(vin) > vth ? 1.0 : 0.0;
+        V(vout) <+ transition(0.0 * (flag_real ? vhi : 0.0), 0.0, tr, tr);
+    end
 endmodule

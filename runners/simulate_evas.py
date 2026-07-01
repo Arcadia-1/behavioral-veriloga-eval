@@ -7990,6 +7990,24 @@ def check_v3_357_mixed_wreal_to_electrical_buffer(rows: list[dict[str, float]]) 
     )
 
 
+def check_v3_358_mixed_electrical_threshold_logic_flag(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "vin", "en", "sel", "a", "b", "vout"}
+    if not rows or not required.issubset(rows[0]):
+        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
+        return False, "missing_columns=" + ",".join(missing)
+    return _sample_many(
+        rows,
+        {
+            "vout": [
+                (120.0, 0.0),
+                (300.0, 0.9),
+                (500.0, 0.0),
+            ],
+        },
+        tol=0.08,
+    )
+
+
 def check_v3_clocked_sar_comparator(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "cmpck", "vinp", "vinn", "dcmpn", "dcmpp"}
     if not rows or not required.issubset(rows[0]):
@@ -16999,6 +17017,8 @@ V3_STANDALONE_SPLIT_CHECKS = {
     "356-mixed-logic-enable-voltage-driver": check_v3_356_mixed_logic_enable_voltage_driver,
     "v3_357_mixed_wreal_to_electrical_buffer": check_v3_357_mixed_wreal_to_electrical_buffer,
     "357-mixed-wreal-to-electrical-buffer": check_v3_357_mixed_wreal_to_electrical_buffer,
+    "v3_358_mixed_electrical_threshold_logic_flag": check_v3_358_mixed_electrical_threshold_logic_flag,
+    "358-mixed-electrical-threshold-logic-flag": check_v3_358_mixed_electrical_threshold_logic_flag,
 }
 
 for _alias, _checker in V3_STANDALONE_SPLIT_CHECKS.items():

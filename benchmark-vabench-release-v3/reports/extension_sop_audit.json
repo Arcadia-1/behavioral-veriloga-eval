@@ -11,24 +11,24 @@
       "top_issues": []
     },
     {
-      "complete_tests_count": 17,
+      "complete_tests_count": 18,
       "description": "AMS mixed-signal candidates",
-      "fair_eval_count": 16,
+      "fair_eval_count": 17,
       "range": "341-360",
-      "sop_ready_count": 16,
+      "sop_ready_count": 17,
       "task_count": 20,
       "top_issues": [
         [
           "checker_syntax_only_no_behavior_score",
-          4
+          3
         ],
         [
           "visible_scs_not_executable:include,instance,source,save",
-          3
+          2
         ],
         [
           "hidden_scs_not_executable:include,instance,source,save",
-          3
+          2
         ]
       ]
     },
@@ -162,17 +162,17 @@
   "scope": "benchmark-vabench-release-v3 tasks 301-494",
   "standard": "behavioral-veriloga-vela/SOP.md visible/hidden task standard and four quality criteria",
   "summary": {
-    "complete_tests_count": 57,
-    "fair_eval_count": 56,
+    "complete_tests_count": 58,
+    "fair_eval_count": 57,
     "issue_counts": {
-      "checker_syntax_only_no_behavior_score": 138,
+      "checker_syntax_only_no_behavior_score": 137,
       "hidden_scs_not_executable:include,instance,source": 122,
-      "hidden_scs_not_executable:include,instance,source,save": 15,
+      "hidden_scs_not_executable:include,instance,source,save": 14,
       "missing_required_behavior_section": 122,
       "visible_scs_not_executable:include,instance,source": 122,
-      "visible_scs_not_executable:include,instance,source,save": 15
+      "visible_scs_not_executable:include,instance,source,save": 14
     },
-    "sop_ready_count": 56,
+    "sop_ready_count": 57,
     "task_count": 194
   },
   "tasks": [
@@ -1491,19 +1491,15 @@
     },
     {
       "certification_scope": "ams_extension_not_part_of_original_full_300_claim",
-      "complete_tests": false,
-      "fair_eval": false,
+      "complete_tests": true,
+      "fair_eval": true,
       "hidden_scs_count": 1,
-      "issues": [
-        "visible_scs_not_executable:include,instance,source,save",
-        "hidden_scs_not_executable:include,instance,source,save",
-        "checker_syntax_only_no_behavior_score"
-      ],
+      "issues": [],
       "negative_count": 5,
       "number": 358,
       "reasonable_task": true,
       "solution_file_count": 1,
-      "sop_ready": false,
+      "sop_ready": true,
       "starter_file_count": 1,
       "syntax_focus": "Use electrical thresholding to produce logic-like voltage behavior.",
       "target": "mixed_electrical_threshold_logic_flag.vams",
