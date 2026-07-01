@@ -6128,9 +6128,10 @@
 339-random-seeded-dither-source: |
   version: 1
   task_id: v3_339_random_seeded_dither_source
-  backend: syntax_extension
-  status: syntax-extension-candidate
-  checker: language_feature_contract
+  backend: evas
+  status: behavior-certified-candidate
+  checker: sampled_waveform_and_metric_contract
+  # vabench-release-v2-checks
   required_columns:
     - time
     - vin
@@ -6144,8 +6145,24 @@
       - "$random"
     must_not_include:
       - "I("
+  sim_correct:
+    positive:
+      - solution/random_seeded_dither_source.va
+    negative:
+      - negative_variants/neg_001_drive_out_zero/random_seeded_dither_source.va
+      - negative_variants/neg_002_drive_metric_zero/random_seeded_dither_source.va
+      - negative_variants/neg_003_reset_polarity_wrong/random_seeded_dither_source.va
+      - negative_variants/neg_004_logic_threshold_shifted/random_seeded_dither_source.va
+      - negative_variants/neg_005_output_scale_low/random_seeded_dither_source.va
+    checks:
+      - seeded_random_sequence_is_deterministic
+      - dither_code_drives_metric
+      - mode_offsets_random_code
+      - output_tracks_vin_plus_dither
+      - reset_clears_outputs
+      - no_current_domain_contribution
   notes:
-    - "Extension task; not part of the original full-300 certification claim."
+    - "Extension task promoted from syntax-only to executable behavior candidate."
 340-bound-step-clock-guard: |
   version: 1
   task_id: v3_340_bound_step_clock_guard

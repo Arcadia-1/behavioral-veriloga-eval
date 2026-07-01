@@ -19,9 +19,22 @@ module random_seeded_dither_source (
 
 ## Required Behavior
 
-Use deterministic random/distribution function call.
+Use a deterministic seeded random function call, `$random(seed_q)`, inside the clocked behavior.
 
-Use voltage-coded logic with `vth = 0.45` V and high outputs near `0.9` V. The hidden evaluator samples `out` and `metric` under deterministic voltage-domain stimulus and checks the language feature named by this task.
+Use voltage-coded logic with `vth = 0.45` V and high outputs limited to `vhi = 0.9` V.
+
+On `initial_step`, initialize an integer seed to `17`.
+
+On every rising crossing of `clk`:
+
+1. If `rst` is high, drive both `out` and `metric` low.
+2. Otherwise call `$random(seed_q)` and convert the returned value to a non-negative integer.
+3. Compute `code = random_value % 5`.
+4. When `mode` is high, increment `code` by one.
+5. Drive `metric = 0.1 * code`.
+6. Drive `out = V(vin) + 0.05 * code`, clipped to `[0.0, vhi]`.
+
+The evaluator samples the deterministic random sequence, the mode-dependent code offset, and reset clearing.
 
 ## Output
 
