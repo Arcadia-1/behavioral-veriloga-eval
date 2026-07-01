@@ -1,0 +1,39 @@
+{
+  "negative_variants": [
+    {
+      "id": "neg_001_force_zero",
+      "description": "Force output low after otherwise plausible computation.",
+      "files": [
+        "neg_001_force_zero/parameter_range_real_control.va"
+      ]
+    },
+    {
+      "id": "neg_002_wrong_threshold",
+      "description": "Use a shifted decision threshold that passes simple midscale smoke tests but fails boundary checks.",
+      "files": [
+        "neg_002_wrong_threshold/parameter_range_real_control.va"
+      ]
+    },
+    {
+      "id": "neg_003_reset_bias",
+      "description": "Bias reset/state initialization so startup-sensitive tests fail.",
+      "files": [
+        "neg_003_reset_bias/parameter_range_real_control.va"
+      ]
+    },
+    {
+      "id": "neg_004_metric_offset",
+      "description": "Offset the metric output while leaving the main output mostly plausible.",
+      "files": [
+        "neg_004_metric_offset/parameter_range_real_control.va"
+      ]
+    },
+    {
+      "id": "neg_005_scale_output",
+      "description": "Scale the final output so coarse tests may pass but calibrated checks fail.",
+      "files": [
+        "neg_005_scale_output/parameter_range_real_control.va"
+      ]
+    }
+  ]
+}

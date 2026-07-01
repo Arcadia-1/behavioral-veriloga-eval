@@ -20,8 +20,8 @@ analog begin
         metric_v = 0.0 * 0.0;
         count_q = 0;
     end
-if (analysis("noise")) V(out) <+ white_noise(noise_power, "metric_noise");
-    else V(out) <+ transition(V(ctrl), 0.0, tr, tr);
+V(out) <+ transition(V(ctrl), 0.0, tr, tr);
+    if (analysis("noise")) V(out) <+ white_noise(noise_power, "metric_noise");
     @(cross(V(clk)-vth,+1)) begin count_q = count_q + 1; metric_v = count_q / 8.0; end
     V(metric) <+ transition(metric_v, 0.0, tr, tr);
 end

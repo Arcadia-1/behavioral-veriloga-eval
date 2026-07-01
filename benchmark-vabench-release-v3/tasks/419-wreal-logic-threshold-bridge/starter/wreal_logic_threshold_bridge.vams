@@ -1,0 +1,6 @@
+module wreal_logic_threshold_bridge(clk, rst, en, q);
+    input clk, rst, en;
+    output q;
+    logic clk, rst, en, q;
+    assign q = 1'b0;
+endmodule

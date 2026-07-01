@@ -4381,6 +4381,678 @@
       "title": "Analysis Aware Noise Metric",
       "syntax_focus": "Use analysis() and noise contribution while maintaining a transient metric output.",
       "certification_scope": "noise_analysis_extension_not_part_of_original_full_300_claim"
+    },
+    "373-task-output-limiter": {
+      "category": "veriloga_task_semantics",
+      "difficulty": "D3",
+      "form": "dut",
+      "id": "v3_373_task_output_limiter",
+      "level": "NA",
+      "target": [
+        "task_output_limiter.va"
+      ],
+      "tier": "syntax-extension-candidate",
+      "title": "Task Output Limiter",
+      "syntax_focus": "Declare and call a Verilog-A task that clamps an output sample.",
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim"
+    },
+    "374-task-dual-output-update": {
+      "category": "veriloga_task_semantics",
+      "difficulty": "D3",
+      "form": "dut",
+      "id": "v3_374_task_dual_output_update",
+      "level": "NA",
+      "target": [
+        "task_dual_output_update.va"
+      ],
+      "tier": "syntax-extension-candidate",
+      "title": "Task Dual Output Update",
+      "syntax_focus": "Use a task with two real inputs to update output and metric state.",
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim"
+    },
+    "375-task-event-counter-service": {
+      "category": "veriloga_task_semantics",
+      "difficulty": "D3",
+      "form": "dut",
+      "id": "v3_375_task_event_counter_service",
+      "level": "NA",
+      "target": [
+        "task_event_counter_service.va"
+      ],
+      "tier": "syntax-extension-candidate",
+      "title": "Task Event Counter Service",
+      "syntax_focus": "Use a task to service event counter state on clock crossings.",
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim"
+    },
+    "376-task-reset-sequencer": {
+      "category": "veriloga_task_semantics",
+      "difficulty": "D3",
+      "form": "dut",
+      "id": "v3_376_task_reset_sequencer",
+      "level": "NA",
+      "target": [
+        "task_reset_sequencer.va"
+      ],
+      "tier": "syntax-extension-candidate",
+      "title": "Task Reset Sequencer",
+      "syntax_focus": "Use a task to share reset and normal update sequencing.",
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim"
+    },
+    "377-task-stateful-threshold-update": {
+      "category": "veriloga_task_semantics",
+      "difficulty": "D3",
+      "form": "dut",
+      "id": "v3_377_task_stateful_threshold_update",
+      "level": "NA",
+      "target": [
+        "task_stateful_threshold_update.va"
+      ],
+      "tier": "syntax-extension-candidate",
+      "title": "Task Stateful Threshold Update",
+      "syntax_focus": "Use a task to update state from thresholded analog inputs.",
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim"
+    },
+    "378-task-metric-normalizer": {
+      "category": "veriloga_task_semantics",
+      "difficulty": "D3",
+      "form": "dut",
+      "id": "v3_378_task_metric_normalizer",
+      "level": "NA",
+      "target": [
+        "task_metric_normalizer.va"
+      ],
+      "tier": "syntax-extension-candidate",
+      "title": "Task Metric Normalizer",
+      "syntax_focus": "Use a task to normalize a computed metric into a voltage-domain output.",
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim"
+    },
+    "379-file-fgets-config-loader": {
+      "category": "veriloga_file_read_semantics",
+      "difficulty": "D3",
+      "form": "dut",
+      "id": "v3_379_file_fgets_config_loader",
+      "level": "NA",
+      "target": [
+        "file_fgets_config_loader.va"
+      ],
+      "tier": "syntax-extension-candidate",
+      "title": "File Fgets Config Loader",
+      "syntax_focus": "Use $fopen(), $fgets(), and $fclose() in initial_step configuration loading.",
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim"
+    },
+    "380-file-feof-line-counter": {
+      "category": "veriloga_file_read_semantics",
+      "difficulty": "D3",
+      "form": "dut",
+      "id": "v3_380_file_feof_line_counter",
+      "level": "NA",
+      "target": [
+        "file_feof_line_counter.va"
+      ],
+      "tier": "syntax-extension-candidate",
+      "title": "File Feof Line Counter",
+      "syntax_focus": "Use $feof() to guard bounded file-read initialization logic.",
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim"
+    },
+    "381-file-fseek-offset-reader": {
+      "category": "veriloga_file_read_semantics",
+      "difficulty": "D3",
+      "form": "dut",
+      "id": "v3_381_file_fseek_offset_reader",
+      "level": "NA",
+      "target": [
+        "file_fseek_offset_reader.va"
+      ],
+      "tier": "syntax-extension-candidate",
+      "title": "File Fseek Offset Reader",
+      "syntax_focus": "Use $fseek() to reposition a file handle before reading.",
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim"
+    },
+    "382-file-ftell-position-meter": {
+      "category": "veriloga_file_read_semantics",
+      "difficulty": "D3",
+      "form": "dut",
+      "id": "v3_382_file_ftell_position_meter",
+      "level": "NA",
+      "target": [
+        "file_ftell_position_meter.va"
+      ],
+      "tier": "syntax-extension-candidate",
+      "title": "File Ftell Position Meter",
+      "syntax_focus": "Use $ftell() to expose a file-position derived metric.",
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim"
+    },
+    "383-file-rewind-second-pass": {
+      "category": "veriloga_file_read_semantics",
+      "difficulty": "D3",
+      "form": "dut",
+      "id": "v3_383_file_rewind_second_pass",
+      "level": "NA",
+      "target": [
+        "file_rewind_second_pass.va"
+      ],
+      "tier": "syntax-extension-candidate",
+      "title": "File Rewind Second Pass",
+      "syntax_focus": "Use $rewind() to perform a second pass over an opened file.",
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim"
+    },
+    "384-file-fopen-mode-selector": {
+      "category": "veriloga_file_read_semantics",
+      "difficulty": "D3",
+      "form": "dut",
+      "id": "v3_384_file_fopen_mode_selector",
+      "level": "NA",
+      "target": [
+        "file_fopen_mode_selector.va"
+      ],
+      "tier": "syntax-extension-candidate",
+      "title": "File Fopen Mode Selector",
+      "syntax_focus": "Use $fopen() mode selection with string-line ingestion.",
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim"
+    },
+    "385-table-model-linear-gain": {
+      "category": "veriloga_table_model_semantics",
+      "difficulty": "D3",
+      "form": "dut",
+      "id": "v3_385_table_model_linear_gain",
+      "level": "NA",
+      "target": [
+        "table_model_linear_gain.va"
+      ],
+      "tier": "syntax-extension-candidate",
+      "title": "Table Model Linear Gain",
+      "syntax_focus": "Use $table_model() for a one-dimensional linear gain lookup.",
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim"
+    },
+    "386-table-model-clamped-transfer": {
+      "category": "veriloga_table_model_semantics",
+      "difficulty": "D3",
+      "form": "dut",
+      "id": "v3_386_table_model_clamped_transfer",
+      "level": "NA",
+      "target": [
+        "table_model_clamped_transfer.va"
+      ],
+      "tier": "syntax-extension-candidate",
+      "title": "Table Model Clamped Transfer",
+      "syntax_focus": "Use $table_model() for a clamped transfer curve lookup.",
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim"
+    },
+    "387-table-model-threshold-map": {
+      "category": "veriloga_table_model_semantics",
+      "difficulty": "D3",
+      "form": "dut",
+      "id": "v3_387_table_model_threshold_map",
+      "level": "NA",
+      "target": [
+        "table_model_threshold_map.va"
+      ],
+      "tier": "syntax-extension-candidate",
+      "title": "Table Model Threshold Map",
+      "syntax_focus": "Use $table_model() to map a control voltage to threshold state.",
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim"
+    },
+    "388-table-model-dac-code-map": {
+      "category": "veriloga_table_model_semantics",
+      "difficulty": "D3",
+      "form": "dut",
+      "id": "v3_388_table_model_dac_code_map",
+      "level": "NA",
+      "target": [
+        "table_model_dac_code_map.va"
+      ],
+      "tier": "syntax-extension-candidate",
+      "title": "Table Model Dac Code Map",
+      "syntax_focus": "Use $table_model() as a compact DAC code transfer map.",
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim"
+    },
+    "389-table-model-temperature-profile": {
+      "category": "veriloga_table_model_semantics",
+      "difficulty": "D3",
+      "form": "dut",
+      "id": "v3_389_table_model_temperature_profile",
+      "level": "NA",
+      "target": [
+        "table_model_temperature_profile.va"
+      ],
+      "tier": "syntax-extension-candidate",
+      "title": "Table Model Temperature Profile",
+      "syntax_focus": "Use $table_model() for a profile-shaped behavioral output.",
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim"
+    },
+    "390-table-model-piecewise-calibrator": {
+      "category": "veriloga_table_model_semantics",
+      "difficulty": "D3",
+      "form": "dut",
+      "id": "v3_390_table_model_piecewise_calibrator",
+      "level": "NA",
+      "target": [
+        "table_model_piecewise_calibrator.va"
+      ],
+      "tier": "syntax-extension-candidate",
+      "title": "Table Model Piecewise Calibrator",
+      "syntax_focus": "Use $table_model() as a piecewise calibration primitive.",
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim"
+    },
+    "391-rdist-exponential-jitter": {
+      "category": "veriloga_random_distribution_semantics",
+      "difficulty": "D3",
+      "form": "dut",
+      "id": "v3_391_rdist_exponential_jitter",
+      "level": "NA",
+      "target": [
+        "rdist_exponential_jitter.va"
+      ],
+      "tier": "syntax-extension-candidate",
+      "title": "Rdist Exponential Jitter",
+      "syntax_focus": "Use $rdist_exponential() for deterministic seeded jitter modeling.",
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim"
+    },
+    "392-rdist-poisson-count-noise": {
+      "category": "veriloga_random_distribution_semantics",
+      "difficulty": "D3",
+      "form": "dut",
+      "id": "v3_392_rdist_poisson_count_noise",
+      "level": "NA",
+      "target": [
+        "rdist_poisson_count_noise.va"
+      ],
+      "tier": "syntax-extension-candidate",
+      "title": "Rdist Poisson Count Noise",
+      "syntax_focus": "Use $rdist_poisson() for seeded count-like variation.",
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim"
+    },
+    "393-rdist-normal-offset-dither": {
+      "category": "veriloga_random_distribution_semantics",
+      "difficulty": "D3",
+      "form": "dut",
+      "id": "v3_393_rdist_normal_offset_dither",
+      "level": "NA",
+      "target": [
+        "rdist_normal_offset_dither.va"
+      ],
+      "tier": "syntax-extension-candidate",
+      "title": "Rdist Normal Offset Dither",
+      "syntax_focus": "Use $rdist_normal() for deterministic offset dither.",
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim"
+    },
+    "394-rdist-chi-square-energy": {
+      "category": "veriloga_random_distribution_semantics",
+      "difficulty": "D3",
+      "form": "dut",
+      "id": "v3_394_rdist_chi_square_energy",
+      "level": "NA",
+      "target": [
+        "rdist_chi_square_energy.va"
+      ],
+      "tier": "syntax-extension-candidate",
+      "title": "Rdist Chi Square Energy",
+      "syntax_focus": "Use $rdist_chi_square() for seeded energy-like variation.",
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim"
+    },
+    "395-rdist-t-tail-dither": {
+      "category": "veriloga_random_distribution_semantics",
+      "difficulty": "D3",
+      "form": "dut",
+      "id": "v3_395_rdist_t_tail_dither",
+      "level": "NA",
+      "target": [
+        "rdist_t_tail_dither.va"
+      ],
+      "tier": "syntax-extension-candidate",
+      "title": "Rdist T Tail Dither",
+      "syntax_focus": "Use $rdist_t() for heavy-tail seeded dither.",
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim"
+    },
+    "396-rdist-erlang-latency": {
+      "category": "veriloga_random_distribution_semantics",
+      "difficulty": "D3",
+      "form": "dut",
+      "id": "v3_396_rdist_erlang_latency",
+      "level": "NA",
+      "target": [
+        "rdist_erlang_latency.va"
+      ],
+      "tier": "syntax-extension-candidate",
+      "title": "Rdist Erlang Latency",
+      "syntax_focus": "Use $rdist_erlang() for multi-stage latency variation.",
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim"
+    },
+    "397-hierarchy-gain-child": {
+      "category": "veriloga_hierarchy_semantics",
+      "difficulty": "D3",
+      "form": "dut",
+      "id": "v3_397_hierarchy_gain_child",
+      "level": "NA",
+      "target": [
+        "hierarchy_gain_child.va"
+      ],
+      "tier": "syntax-extension-candidate",
+      "title": "Hierarchy Gain Child",
+      "syntax_focus": "Instantiate a child behavioral module for gain staging.",
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim"
+    },
+    "398-hierarchy-two-stage-chain": {
+      "category": "veriloga_hierarchy_semantics",
+      "difficulty": "D3",
+      "form": "dut",
+      "id": "v3_398_hierarchy_two_stage_chain",
+      "level": "NA",
+      "target": [
+        "hierarchy_two_stage_chain.va"
+      ],
+      "tier": "syntax-extension-candidate",
+      "title": "Hierarchy Two Stage Chain",
+      "syntax_focus": "Build a two-stage hierarchy with an internal electrical node.",
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim"
+    },
+    "399-hierarchy-parameter-override": {
+      "category": "veriloga_hierarchy_semantics",
+      "difficulty": "D3",
+      "form": "dut",
+      "id": "v3_399_hierarchy_parameter_override",
+      "level": "NA",
+      "target": [
+        "hierarchy_parameter_override.va"
+      ],
+      "tier": "syntax-extension-candidate",
+      "title": "Hierarchy Parameter Override",
+      "syntax_focus": "Override a child module parameter at instantiation.",
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim"
+    },
+    "400-hierarchy-named-port-map": {
+      "category": "veriloga_hierarchy_semantics",
+      "difficulty": "D3",
+      "form": "dut",
+      "id": "v3_400_hierarchy_named_port_map",
+      "level": "NA",
+      "target": [
+        "hierarchy_named_port_map.va"
+      ],
+      "tier": "syntax-extension-candidate",
+      "title": "Hierarchy Named Port Map",
+      "syntax_focus": "Use named port mapping for a child module instance.",
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim"
+    },
+    "401-hierarchy-ordered-port-map": {
+      "category": "veriloga_hierarchy_semantics",
+      "difficulty": "D3",
+      "form": "dut",
+      "id": "v3_401_hierarchy_ordered_port_map",
+      "level": "NA",
+      "target": [
+        "hierarchy_ordered_port_map.va"
+      ],
+      "tier": "syntax-extension-candidate",
+      "title": "Hierarchy Ordered Port Map",
+      "syntax_focus": "Use ordered port mapping for a child module instance.",
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim"
+    },
+    "402-hierarchy-shared-threshold-child": {
+      "category": "veriloga_hierarchy_semantics",
+      "difficulty": "D3",
+      "form": "dut",
+      "id": "v3_402_hierarchy_shared_threshold_child",
+      "level": "NA",
+      "target": [
+        "hierarchy_shared_threshold_child.va"
+      ],
+      "tier": "syntax-extension-candidate",
+      "title": "Hierarchy Shared Threshold Child",
+      "syntax_focus": "Share a thresholding child module inside a parent behavioral DUT.",
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim"
+    },
+    "403-vector-bit-select-flag": {
+      "category": "veriloga_vector_operator_semantics",
+      "difficulty": "D3",
+      "form": "dut",
+      "id": "v3_403_vector_bit_select_flag",
+      "level": "NA",
+      "target": [
+        "vector_bit_select_flag.va"
+      ],
+      "tier": "syntax-extension-candidate",
+      "title": "Vector Bit Select Flag",
+      "syntax_focus": "Use Verilog bit-select syntax on integer vector state.",
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim"
+    },
+    "404-vector-part-select-window": {
+      "category": "veriloga_vector_operator_semantics",
+      "difficulty": "D3",
+      "form": "dut",
+      "id": "v3_404_vector_part_select_window",
+      "level": "NA",
+      "target": [
+        "vector_part_select_window.va"
+      ],
+      "tier": "syntax-extension-candidate",
+      "title": "Vector Part Select Window",
+      "syntax_focus": "Use Verilog part-select syntax on integer vector state.",
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim"
+    },
+    "405-vector-concat-code-build": {
+      "category": "veriloga_vector_operator_semantics",
+      "difficulty": "D3",
+      "form": "dut",
+      "id": "v3_405_vector_concat_code_build",
+      "level": "NA",
+      "target": [
+        "vector_concat_code_build.va"
+      ],
+      "tier": "syntax-extension-candidate",
+      "title": "Vector Concat Code Build",
+      "syntax_focus": "Use concatenation to build a compact control code.",
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim"
+    },
+    "406-vector-replication-mask": {
+      "category": "veriloga_vector_operator_semantics",
+      "difficulty": "D3",
+      "form": "dut",
+      "id": "v3_406_vector_replication_mask",
+      "level": "NA",
+      "target": [
+        "vector_replication_mask.va"
+      ],
+      "tier": "syntax-extension-candidate",
+      "title": "Vector Replication Mask",
+      "syntax_focus": "Use replication concatenation to build a repeated mask.",
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim"
+    },
+    "407-vector-reduction-parity": {
+      "category": "veriloga_vector_operator_semantics",
+      "difficulty": "D3",
+      "form": "dut",
+      "id": "v3_407_vector_reduction_parity",
+      "level": "NA",
+      "target": [
+        "vector_reduction_parity.va"
+      ],
+      "tier": "syntax-extension-candidate",
+      "title": "Vector Reduction Parity",
+      "syntax_focus": "Use reduction operators for parity/validity metrics.",
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim"
+    },
+    "408-vector-shift-and-mask-decoder": {
+      "category": "veriloga_vector_operator_semantics",
+      "difficulty": "D3",
+      "form": "dut",
+      "id": "v3_408_vector_shift_and_mask_decoder",
+      "level": "NA",
+      "target": [
+        "vector_shift_and_mask_decoder.va"
+      ],
+      "tier": "syntax-extension-candidate",
+      "title": "Vector Shift And Mask Decoder",
+      "syntax_focus": "Use shifts and masks for compact code decoding.",
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim"
+    },
+    "409-macro-functionlike-clamp": {
+      "category": "veriloga_preprocessor_control_semantics",
+      "difficulty": "D3",
+      "form": "dut",
+      "id": "v3_409_macro_functionlike_clamp",
+      "level": "NA",
+      "target": [
+        "macro_functionlike_clamp.va"
+      ],
+      "tier": "syntax-extension-candidate",
+      "title": "Macro Functionlike Clamp",
+      "syntax_focus": "Use a function-like preprocessor macro in analog behavior.",
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim"
+    },
+    "410-macro-ifdef-gain-select": {
+      "category": "veriloga_preprocessor_control_semantics",
+      "difficulty": "D3",
+      "form": "dut",
+      "id": "v3_410_macro_ifdef_gain_select",
+      "level": "NA",
+      "target": [
+        "macro_ifdef_gain_select.va"
+      ],
+      "tier": "syntax-extension-candidate",
+      "title": "Macro Ifdef Gain Select",
+      "syntax_focus": "Use `ifdef selection to alter a behavioral gain constant.",
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim"
+    },
+    "411-escaped-identifier-state": {
+      "category": "veriloga_preprocessor_control_semantics",
+      "difficulty": "D3",
+      "form": "dut",
+      "id": "v3_411_escaped_identifier_state",
+      "level": "NA",
+      "target": [
+        "escaped_identifier_state.va"
+      ],
+      "tier": "syntax-extension-candidate",
+      "title": "Escaped Identifier State",
+      "syntax_focus": "Use an escaped identifier for internal analog state.",
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim"
+    },
+    "412-initial-final-step-lifecycle": {
+      "category": "veriloga_preprocessor_control_semantics",
+      "difficulty": "D3",
+      "form": "dut",
+      "id": "v3_412_initial_final_step_lifecycle",
+      "level": "NA",
+      "target": [
+        "initial_final_step_lifecycle.va"
+      ],
+      "tier": "syntax-extension-candidate",
+      "title": "Initial Final Step Lifecycle",
+      "syntax_focus": "Use initial_step and final_step in one behavioral model.",
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim"
+    },
+    "413-while-loop-array-sum": {
+      "category": "veriloga_preprocessor_control_semantics",
+      "difficulty": "D3",
+      "form": "dut",
+      "id": "v3_413_while_loop_array_sum",
+      "level": "NA",
+      "target": [
+        "while_loop_array_sum.va"
+      ],
+      "tier": "syntax-extension-candidate",
+      "title": "While Loop Array Sum",
+      "syntax_focus": "Use a while loop over small behavioral state.",
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim"
+    },
+    "414-parameter-range-real-control": {
+      "category": "veriloga_preprocessor_control_semantics",
+      "difficulty": "D3",
+      "form": "dut",
+      "id": "v3_414_parameter_range_real_control",
+      "level": "NA",
+      "target": [
+        "parameter_range_real_control.va"
+      ],
+      "tier": "syntax-extension-candidate",
+      "title": "Parameter Range Real Control",
+      "syntax_focus": "Use parameter range constraints for real-valued controls.",
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim"
+    },
+    "415-logic-vector-assign-slice": {
+      "category": "verilogams_digital_mixed_semantics",
+      "difficulty": "D3",
+      "form": "dut",
+      "id": "v3_415_logic_vector_assign_slice",
+      "level": "NA",
+      "target": [
+        "logic_vector_assign_slice.vams"
+      ],
+      "tier": "ams-mixed-signal-candidate",
+      "title": "Logic Vector Assign Slice",
+      "syntax_focus": "Use logic vectors with continuous assign and slice selection.",
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim"
+    },
+    "416-logic-vector-reduction-flag": {
+      "category": "verilogams_digital_mixed_semantics",
+      "difficulty": "D3",
+      "form": "dut",
+      "id": "v3_416_logic_vector_reduction_flag",
+      "level": "NA",
+      "target": [
+        "logic_vector_reduction_flag.vams"
+      ],
+      "tier": "ams-mixed-signal-candidate",
+      "title": "Logic Vector Reduction Flag",
+      "syntax_focus": "Use logic vector reduction in a continuous assignment.",
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim"
+    },
+    "417-always-async-reset-counter": {
+      "category": "verilogams_digital_mixed_semantics",
+      "difficulty": "D3",
+      "form": "dut",
+      "id": "v3_417_always_async_reset_counter",
+      "level": "NA",
+      "target": [
+        "always_async_reset_counter.vams"
+      ],
+      "tier": "ams-mixed-signal-candidate",
+      "title": "Always Async Reset Counter",
+      "syntax_focus": "Use an always block with asynchronous reset sensitivity.",
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim"
+    },
+    "418-always-enable-saturating-counter": {
+      "category": "verilogams_digital_mixed_semantics",
+      "difficulty": "D3",
+      "form": "dut",
+      "id": "v3_418_always_enable_saturating_counter",
+      "level": "NA",
+      "target": [
+        "always_enable_saturating_counter.vams"
+      ],
+      "tier": "ams-mixed-signal-candidate",
+      "title": "Always Enable Saturating Counter",
+      "syntax_focus": "Use an always block for enabled saturating state update.",
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim"
+    },
+    "419-wreal-logic-threshold-bridge": {
+      "category": "verilogams_digital_mixed_semantics",
+      "difficulty": "D3",
+      "form": "dut",
+      "id": "v3_419_wreal_logic_threshold_bridge",
+      "level": "NA",
+      "target": [
+        "wreal_logic_threshold_bridge.vams"
+      ],
+      "tier": "ams-mixed-signal-candidate",
+      "title": "Wreal Logic Threshold Bridge",
+      "syntax_focus": "Bridge wreal input into logic threshold behavior.",
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim"
+    },
+    "420-mixed-analog-digital-mode-latch": {
+      "category": "verilogams_digital_mixed_semantics",
+      "difficulty": "D3",
+      "form": "dut",
+      "id": "v3_420_mixed_analog_digital_mode_latch",
+      "level": "NA",
+      "target": [
+        "mixed_analog_digital_mode_latch.vams"
+      ],
+      "tier": "ams-mixed-signal-candidate",
+      "title": "Mixed Analog Digital Mode Latch",
+      "syntax_focus": "Combine electrical threshold sampling with logic state output.",
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim"
     }
   }
 }

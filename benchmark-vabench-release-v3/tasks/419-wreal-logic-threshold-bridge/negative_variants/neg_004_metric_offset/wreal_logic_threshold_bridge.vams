@@ -1,0 +1,7 @@
+module wreal_logic_threshold_bridge(ain, en, flag);
+    input ain, en;
+    output flag;
+    wreal ain;
+    logic en, flag;
+    assign flag =  (ain > 0.45);
+endmodule

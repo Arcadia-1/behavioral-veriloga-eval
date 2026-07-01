@@ -1,14 +1,14 @@
 # Verilog-A Language-Semantics Extension Tasks
 
-Tasks `001` through `300` remain the original certified full-300 vaBench
-surface. Tasks `301` through `340` are extension candidates added to cover
-behavioral Verilog-A language features called out by the Cadence Verilog-A
-Language Reference and the local training material.
+Tasks `001` through `300` remain the original certified full-300 vaBench surface.
+Tasks `301` onward are extension candidates added to cover behavioral Verilog-A
+and Verilog-AMS language features called out by the Cadence Verilog-A Language
+Reference and the local training material.
 
-These extension tasks keep the same pure voltage-domain behavioral boundary as
-the original benchmark. They intentionally avoid current-domain `I(...)`
-behavior, transistor-level devices, custom conservative branch equations, and
-AMS connect-module or `wreal` glue.
+These extension tasks keep the same behavioral boundary as the benchmark: no
+transistor-level devices and no current contribution through `I(...)`. The AMS
+rows intentionally exercise digital/mixed-signal syntax (`logic`, `wreal`,
+`assign`, `always`) because practical behavioral models often need that surface.
 
 ## Coverage Added
 
@@ -21,6 +21,25 @@ AMS connect-module or `wreal` glue.
 - `331`-`335`: `above()` and `last_crossing()` threshold timing.
 - `336`-`340`: compiler directives, parameter ranges, math functions,
   deterministic `$random`, and `$bound_step`.
+- `341`-`360`: Verilog-AMS `wreal`, `logic`, continuous `assign`, edge-triggered
+  `always`, and mixed electrical/digital bridge tasks.
+- `361`-`372`: `white_noise()`, `flicker_noise()`, `noise_table()`, `analysis()`,
+  and `ac_stim()`.
+- `373`-`378`: user-defined `task` declarations and calls.
+- `379`-`384`: file-read and file-positioning helpers including `$fgets()`,
+  `$feof()`, `$fseek()`, `$ftell()`, `$rewind()`, and `$fopen()` mode handling.
+- `385`-`390`: one-dimensional `$table_model()` lookup tasks.
+- `391`-`396`: seeded random distributions: `$rdist_exponential()`,
+  `$rdist_poisson()`, `$rdist_normal()`, `$rdist_chi_square()`, `$rdist_t()`, and
+  `$rdist_erlang()`.
+- `397`-`402`: hierarchical module instantiation, named/ordered port maps, and
+  parameter override patterns.
+- `403`-`408`: bit-select, part-select, concatenation, replication, reduction,
+  and shift/mask vector expressions.
+- `409`-`414`: function-like macros, `ifdef` selection, escaped identifiers,
+  combined `initial_step`/`final_step`, `while` loops, and parameter ranges.
+- `415`-`420`: additional digital/mixed-signal vector, reduction, `always`,
+  `wreal`, and electrical-to-logic bridge rows.
 
 Each extension task contains:
 
@@ -34,46 +53,31 @@ Each extension task contains:
 
 ## Certification Boundary
 
-The extension tasks are marked `syntax-extension-candidate` in `TASKS.json` and
+The extension tasks are marked as candidate rows in `TASKS.json` and
 `CHECKS.yaml`. They are not part of the original full-300 certification claim.
+Before any paper-facing full-suite claim, promote only the rows whose reference
+solutions, hidden checks, and five negative variants are behavior-certified.
 
-Current EVAS compile scan:
+Current local EVAS compile status after this expansion:
 
-- 35 / 40 extension reference solutions compile with the current EVAS backend.
-- 5 / 40 user-defined-function tasks parse but require EVAS support for
-  user-defined function calls, or Spectre-based certification.
+- `001`-`300`: unchanged original benchmark surface.
+- `301`-`420`: extension reference solutions are designed to parse and compile
+  with current local EVAS, excluding known legacy non-Verilog-A harness/support
+  targets outside the single reference-solution scan.
+- `367`, `368`, `369`, `370`, and `372` were adjusted so `transition()` is no
+  longer inside conditionally executed `analysis()` branches.
 
-Before these tasks are included in any paper-facing full-suite claim, run
-dedicated EVAS/Spectre behavior certification and promote only the rows whose
-gold solutions, hidden checks, and five negative variants are all certified.
+## Remaining Language Gaps Worth Tracking
 
-## AMS Mixed-Signal Extension
+Tracked upstream in EVAS issue #30.
 
-Tasks `341` through `360` add Verilog-AMS digital/mixed-signal constructs that
-are outside pure Verilog-A but are important for practical behavioral modeling:
+The newly added rows avoid current-domain KCL and still leave some manual
+features as future work:
 
-- `341`-`345`: `wreal` nets with continuous `assign`.
-- `346`-`350`: `logic` nets with combinational continuous `assign`.
-- `351`-`355`: edge-triggered `always` blocks for digital sequential behavior.
-- `356`-`360`: mixed `logic`/`wreal`/`electrical` bridge-style behavioral tasks.
-
-These rows are marked `ams-mixed-signal-candidate`. EVAS currently parses and
-compiles some old-style `wreal`/`logic` declaration plus `assign` forms, but does
-not support `always` blocks and does not accept ANSI-style typed digital ports.
-Track EVAS support before promoting these rows into any certified suite.
-
-## Noise And Analysis Extension
-
-Tasks `361` through `372` add Verilog-A noise and analysis-dependent source
-functions from the Cadence language reference:
-
-- `white_noise()`
-- `flicker_noise()`
-- `noise_table()`
-- `analysis()`
-- `ac_stim()`
-
-These rows are marked `noise-analysis-candidate`. They are behavioral and
-voltage-domain, but they may require AC/noise-capable simulator certification.
-EVAS currently parses these functions but rejects them during backend compile;
-track EVAS issue #23 before EVAS promotion.
+- `$fscanf()` backend execution.
+- `$swrite()` / `$sformat()` string formatting backend execution.
+- `repeat` and `do ... while` loop syntax.
+- `$rdist_uniform()` backend execution.
+- richer multi-dimensional `$table_model()` behavior certification.
+- broader AMS connect-module/connect-rule semantics.
+- AC/noise behavior certification beyond compile-level helper coverage.

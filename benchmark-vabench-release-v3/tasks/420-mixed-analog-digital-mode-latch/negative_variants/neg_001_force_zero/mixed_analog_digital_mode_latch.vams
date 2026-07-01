@@ -1,0 +1,9 @@
+module mixed_analog_digital_mode_latch(vin, clk, flag);
+    input vin, clk;
+    output flag;
+    electrical vin;
+    logic clk, flag;
+    always @(posedge clk) begin
+        flag = 1'b0;
+    end
+endmodule

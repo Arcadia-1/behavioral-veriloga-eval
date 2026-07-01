@@ -1,0 +1,6 @@
+module logic_vector_assign_slice(clk, rst, en, q);
+    input clk, rst, en;
+    output q;
+    logic clk, rst, en, q;
+    assign q = 1'b0;
+endmodule

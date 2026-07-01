@@ -6065,3 +6065,627 @@
       - "I("
   notes:
     - "Noise/analysis extension task; not part of original full-300 transient certification claim."
+373-task-output-limiter: |
+  version: 1
+  task_id: v3_373_task_output_limiter
+  backend: evas_rust_compile_capable
+  status: syntax-extension-candidate
+  checker: language_feature_contract
+  syntax:
+    must_include:
+      - "task "
+    must_not_include:
+      - "I("
+  notes:
+    - "Language extension task; not part of original full-300 transient certification claim."
+374-task-dual-output-update: |
+  version: 1
+  task_id: v3_374_task_dual_output_update
+  backend: evas_rust_compile_capable
+  status: syntax-extension-candidate
+  checker: language_feature_contract
+  syntax:
+    must_include:
+      - "task "
+    must_not_include:
+      - "I("
+  notes:
+    - "Language extension task; not part of original full-300 transient certification claim."
+375-task-event-counter-service: |
+  version: 1
+  task_id: v3_375_task_event_counter_service
+  backend: evas_rust_compile_capable
+  status: syntax-extension-candidate
+  checker: language_feature_contract
+  syntax:
+    must_include:
+      - "task "
+    must_not_include:
+      - "I("
+  notes:
+    - "Language extension task; not part of original full-300 transient certification claim."
+376-task-reset-sequencer: |
+  version: 1
+  task_id: v3_376_task_reset_sequencer
+  backend: evas_rust_compile_capable
+  status: syntax-extension-candidate
+  checker: language_feature_contract
+  syntax:
+    must_include:
+      - "task "
+    must_not_include:
+      - "I("
+  notes:
+    - "Language extension task; not part of original full-300 transient certification claim."
+377-task-stateful-threshold-update: |
+  version: 1
+  task_id: v3_377_task_stateful_threshold_update
+  backend: evas_rust_compile_capable
+  status: syntax-extension-candidate
+  checker: language_feature_contract
+  syntax:
+    must_include:
+      - "task "
+    must_not_include:
+      - "I("
+  notes:
+    - "Language extension task; not part of original full-300 transient certification claim."
+378-task-metric-normalizer: |
+  version: 1
+  task_id: v3_378_task_metric_normalizer
+  backend: evas_rust_compile_capable
+  status: syntax-extension-candidate
+  checker: language_feature_contract
+  syntax:
+    must_include:
+      - "task "
+    must_not_include:
+      - "I("
+  notes:
+    - "Language extension task; not part of original full-300 transient certification claim."
+379-file-fgets-config-loader: |
+  version: 1
+  task_id: v3_379_file_fgets_config_loader
+  backend: evas_rust_compile_capable
+  status: syntax-extension-candidate
+  checker: language_feature_contract
+  syntax:
+    must_include:
+      - "$fgets"
+    must_not_include:
+      - "I("
+  notes:
+    - "Language extension task; not part of original full-300 transient certification claim."
+380-file-feof-line-counter: |
+  version: 1
+  task_id: v3_380_file_feof_line_counter
+  backend: evas_rust_compile_capable
+  status: syntax-extension-candidate
+  checker: language_feature_contract
+  syntax:
+    must_include:
+      - "$feof"
+    must_not_include:
+      - "I("
+  notes:
+    - "Language extension task; not part of original full-300 transient certification claim."
+381-file-fseek-offset-reader: |
+  version: 1
+  task_id: v3_381_file_fseek_offset_reader
+  backend: evas_rust_compile_capable
+  status: syntax-extension-candidate
+  checker: language_feature_contract
+  syntax:
+    must_include:
+      - "$fseek"
+    must_not_include:
+      - "I("
+  notes:
+    - "Language extension task; not part of original full-300 transient certification claim."
+382-file-ftell-position-meter: |
+  version: 1
+  task_id: v3_382_file_ftell_position_meter
+  backend: evas_rust_compile_capable
+  status: syntax-extension-candidate
+  checker: language_feature_contract
+  syntax:
+    must_include:
+      - "$ftell"
+    must_not_include:
+      - "I("
+  notes:
+    - "Language extension task; not part of original full-300 transient certification claim."
+383-file-rewind-second-pass: |
+  version: 1
+  task_id: v3_383_file_rewind_second_pass
+  backend: evas_rust_compile_capable
+  status: syntax-extension-candidate
+  checker: language_feature_contract
+  syntax:
+    must_include:
+      - "$rewind"
+    must_not_include:
+      - "I("
+  notes:
+    - "Language extension task; not part of original full-300 transient certification claim."
+384-file-fopen-mode-selector: |
+  version: 1
+  task_id: v3_384_file_fopen_mode_selector
+  backend: evas_rust_compile_capable
+  status: syntax-extension-candidate
+  checker: language_feature_contract
+  syntax:
+    must_include:
+      - "$fopen"
+    must_not_include:
+      - "I("
+  notes:
+    - "Language extension task; not part of original full-300 transient certification claim."
+385-table-model-linear-gain: |
+  version: 1
+  task_id: v3_385_table_model_linear_gain
+  backend: evas_rust_compile_capable
+  status: syntax-extension-candidate
+  checker: language_feature_contract
+  syntax:
+    must_include:
+      - "$table_model"
+    must_not_include:
+      - "I("
+  notes:
+    - "Language extension task; not part of original full-300 transient certification claim."
+386-table-model-clamped-transfer: |
+  version: 1
+  task_id: v3_386_table_model_clamped_transfer
+  backend: evas_rust_compile_capable
+  status: syntax-extension-candidate
+  checker: language_feature_contract
+  syntax:
+    must_include:
+      - "$table_model"
+    must_not_include:
+      - "I("
+  notes:
+    - "Language extension task; not part of original full-300 transient certification claim."
+387-table-model-threshold-map: |
+  version: 1
+  task_id: v3_387_table_model_threshold_map
+  backend: evas_rust_compile_capable
+  status: syntax-extension-candidate
+  checker: language_feature_contract
+  syntax:
+    must_include:
+      - "$table_model"
+    must_not_include:
+      - "I("
+  notes:
+    - "Language extension task; not part of original full-300 transient certification claim."
+388-table-model-dac-code-map: |
+  version: 1
+  task_id: v3_388_table_model_dac_code_map
+  backend: evas_rust_compile_capable
+  status: syntax-extension-candidate
+  checker: language_feature_contract
+  syntax:
+    must_include:
+      - "$table_model"
+    must_not_include:
+      - "I("
+  notes:
+    - "Language extension task; not part of original full-300 transient certification claim."
+389-table-model-temperature-profile: |
+  version: 1
+  task_id: v3_389_table_model_temperature_profile
+  backend: evas_rust_compile_capable
+  status: syntax-extension-candidate
+  checker: language_feature_contract
+  syntax:
+    must_include:
+      - "$table_model"
+    must_not_include:
+      - "I("
+  notes:
+    - "Language extension task; not part of original full-300 transient certification claim."
+390-table-model-piecewise-calibrator: |
+  version: 1
+  task_id: v3_390_table_model_piecewise_calibrator
+  backend: evas_rust_compile_capable
+  status: syntax-extension-candidate
+  checker: language_feature_contract
+  syntax:
+    must_include:
+      - "$table_model"
+    must_not_include:
+      - "I("
+  notes:
+    - "Language extension task; not part of original full-300 transient certification claim."
+391-rdist-exponential-jitter: |
+  version: 1
+  task_id: v3_391_rdist_exponential_jitter
+  backend: evas_rust_compile_capable
+  status: syntax-extension-candidate
+  checker: language_feature_contract
+  syntax:
+    must_include:
+      - "$rdist_exponential()"
+    must_not_include:
+      - "I("
+  notes:
+    - "Language extension task; not part of original full-300 transient certification claim."
+392-rdist-poisson-count-noise: |
+  version: 1
+  task_id: v3_392_rdist_poisson_count_noise
+  backend: evas_rust_compile_capable
+  status: syntax-extension-candidate
+  checker: language_feature_contract
+  syntax:
+    must_include:
+      - "$rdist_poisson()"
+    must_not_include:
+      - "I("
+  notes:
+    - "Language extension task; not part of original full-300 transient certification claim."
+393-rdist-normal-offset-dither: |
+  version: 1
+  task_id: v3_393_rdist_normal_offset_dither
+  backend: evas_rust_compile_capable
+  status: syntax-extension-candidate
+  checker: language_feature_contract
+  syntax:
+    must_include:
+      - "$rdist_normal()"
+    must_not_include:
+      - "I("
+  notes:
+    - "Language extension task; not part of original full-300 transient certification claim."
+394-rdist-chi-square-energy: |
+  version: 1
+  task_id: v3_394_rdist_chi_square_energy
+  backend: evas_rust_compile_capable
+  status: syntax-extension-candidate
+  checker: language_feature_contract
+  syntax:
+    must_include:
+      - "$rdist_chi_square()"
+    must_not_include:
+      - "I("
+  notes:
+    - "Language extension task; not part of original full-300 transient certification claim."
+395-rdist-t-tail-dither: |
+  version: 1
+  task_id: v3_395_rdist_t_tail_dither
+  backend: evas_rust_compile_capable
+  status: syntax-extension-candidate
+  checker: language_feature_contract
+  syntax:
+    must_include:
+      - "$rdist_t()"
+    must_not_include:
+      - "I("
+  notes:
+    - "Language extension task; not part of original full-300 transient certification claim."
+396-rdist-erlang-latency: |
+  version: 1
+  task_id: v3_396_rdist_erlang_latency
+  backend: evas_rust_compile_capable
+  status: syntax-extension-candidate
+  checker: language_feature_contract
+  syntax:
+    must_include:
+      - "$rdist_erlang()"
+    must_not_include:
+      - "I("
+  notes:
+    - "Language extension task; not part of original full-300 transient certification claim."
+397-hierarchy-gain-child: |
+  version: 1
+  task_id: v3_397_hierarchy_gain_child
+  backend: evas_rust_compile_capable
+  status: syntax-extension-candidate
+  checker: language_feature_contract
+  syntax:
+    must_include:
+      - "v3_child"
+    must_not_include:
+      - "I("
+  notes:
+    - "Language extension task; not part of original full-300 transient certification claim."
+398-hierarchy-two-stage-chain: |
+  version: 1
+  task_id: v3_398_hierarchy_two_stage_chain
+  backend: evas_rust_compile_capable
+  status: syntax-extension-candidate
+  checker: language_feature_contract
+  syntax:
+    must_include:
+      - "v3_child"
+    must_not_include:
+      - "I("
+  notes:
+    - "Language extension task; not part of original full-300 transient certification claim."
+399-hierarchy-parameter-override: |
+  version: 1
+  task_id: v3_399_hierarchy_parameter_override
+  backend: evas_rust_compile_capable
+  status: syntax-extension-candidate
+  checker: language_feature_contract
+  syntax:
+    must_include:
+      - "v3_child"
+    must_not_include:
+      - "I("
+  notes:
+    - "Language extension task; not part of original full-300 transient certification claim."
+400-hierarchy-named-port-map: |
+  version: 1
+  task_id: v3_400_hierarchy_named_port_map
+  backend: evas_rust_compile_capable
+  status: syntax-extension-candidate
+  checker: language_feature_contract
+  syntax:
+    must_include:
+      - "v3_child"
+    must_not_include:
+      - "I("
+  notes:
+    - "Language extension task; not part of original full-300 transient certification claim."
+401-hierarchy-ordered-port-map: |
+  version: 1
+  task_id: v3_401_hierarchy_ordered_port_map
+  backend: evas_rust_compile_capable
+  status: syntax-extension-candidate
+  checker: language_feature_contract
+  syntax:
+    must_include:
+      - "v3_child"
+    must_not_include:
+      - "I("
+  notes:
+    - "Language extension task; not part of original full-300 transient certification claim."
+402-hierarchy-shared-threshold-child: |
+  version: 1
+  task_id: v3_402_hierarchy_shared_threshold_child
+  backend: evas_rust_compile_capable
+  status: syntax-extension-candidate
+  checker: language_feature_contract
+  syntax:
+    must_include:
+      - "v3_child"
+    must_not_include:
+      - "I("
+  notes:
+    - "Language extension task; not part of original full-300 transient certification claim."
+403-vector-bit-select-flag: |
+  version: 1
+  task_id: v3_403_vector_bit_select_flag
+  backend: evas_rust_compile_capable
+  status: syntax-extension-candidate
+  checker: language_feature_contract
+  syntax:
+    must_include:
+      - "[2]"
+    must_not_include:
+      - "I("
+  notes:
+    - "Language extension task; not part of original full-300 transient certification claim."
+404-vector-part-select-window: |
+  version: 1
+  task_id: v3_404_vector_part_select_window
+  backend: evas_rust_compile_capable
+  status: syntax-extension-candidate
+  checker: language_feature_contract
+  syntax:
+    must_include:
+      - "[3:1]"
+    must_not_include:
+      - "I("
+  notes:
+    - "Language extension task; not part of original full-300 transient certification claim."
+405-vector-concat-code-build: |
+  version: 1
+  task_id: v3_405_vector_concat_code_build
+  backend: evas_rust_compile_capable
+  status: syntax-extension-candidate
+  checker: language_feature_contract
+  syntax:
+    must_include:
+      - "{2'b10"
+    must_not_include:
+      - "I("
+  notes:
+    - "Language extension task; not part of original full-300 transient certification claim."
+406-vector-replication-mask: |
+  version: 1
+  task_id: v3_406_vector_replication_mask
+  backend: evas_rust_compile_capable
+  status: syntax-extension-candidate
+  checker: language_feature_contract
+  syntax:
+    must_include:
+      - "{2{"
+    must_not_include:
+      - "I("
+  notes:
+    - "Language extension task; not part of original full-300 transient certification claim."
+407-vector-reduction-parity: |
+  version: 1
+  task_id: v3_407_vector_reduction_parity
+  backend: evas_rust_compile_capable
+  status: syntax-extension-candidate
+  checker: language_feature_contract
+  syntax:
+    must_include:
+      - "^code_q"
+    must_not_include:
+      - "I("
+  notes:
+    - "Language extension task; not part of original full-300 transient certification claim."
+408-vector-shift-and-mask-decoder: |
+  version: 1
+  task_id: v3_408_vector_shift_and_mask_decoder
+  backend: evas_rust_compile_capable
+  status: syntax-extension-candidate
+  checker: language_feature_contract
+  syntax:
+    must_include:
+      - ">>"
+    must_not_include:
+      - "I("
+  notes:
+    - "Language extension task; not part of original full-300 transient certification claim."
+409-macro-functionlike-clamp: |
+  version: 1
+  task_id: v3_409_macro_functionlike_clamp
+  backend: evas_rust_compile_capable
+  status: syntax-extension-candidate
+  checker: language_feature_contract
+  syntax:
+    must_include:
+      - "`V3_CLAMP"
+    must_not_include:
+      - "I("
+  notes:
+    - "Language extension task; not part of original full-300 transient certification claim."
+410-macro-ifdef-gain-select: |
+  version: 1
+  task_id: v3_410_macro_ifdef_gain_select
+  backend: evas_rust_compile_capable
+  status: syntax-extension-candidate
+  checker: language_feature_contract
+  syntax:
+    must_include:
+      - "`ifdef"
+    must_not_include:
+      - "I("
+  notes:
+    - "Language extension task; not part of original full-300 transient certification claim."
+411-escaped-identifier-state: |
+  version: 1
+  task_id: v3_411_escaped_identifier_state
+  backend: evas_rust_compile_capable
+  status: syntax-extension-candidate
+  checker: language_feature_contract
+  syntax:
+    must_include:
+      - "\trim.state"
+    must_not_include:
+      - "I("
+  notes:
+    - "Language extension task; not part of original full-300 transient certification claim."
+412-initial-final-step-lifecycle: |
+  version: 1
+  task_id: v3_412_initial_final_step_lifecycle
+  backend: evas_rust_compile_capable
+  status: syntax-extension-candidate
+  checker: language_feature_contract
+  syntax:
+    must_include:
+      - "final_step"
+    must_not_include:
+      - "I("
+  notes:
+    - "Language extension task; not part of original full-300 transient certification claim."
+413-while-loop-array-sum: |
+  version: 1
+  task_id: v3_413_while_loop_array_sum
+  backend: evas_rust_compile_capable
+  status: syntax-extension-candidate
+  checker: language_feature_contract
+  syntax:
+    must_include:
+      - "while ("
+    must_not_include:
+      - "I("
+  notes:
+    - "Language extension task; not part of original full-300 transient certification claim."
+414-parameter-range-real-control: |
+  version: 1
+  task_id: v3_414_parameter_range_real_control
+  backend: evas_rust_compile_capable
+  status: syntax-extension-candidate
+  checker: language_feature_contract
+  syntax:
+    must_include:
+      - "from ["
+    must_not_include:
+      - "I("
+  notes:
+    - "Language extension task; not part of original full-300 transient certification claim."
+415-logic-vector-assign-slice: |
+  version: 1
+  task_id: v3_415_logic_vector_assign_slice
+  backend: digital_mixed_capable
+  status: ams-mixed-signal-candidate
+  checker: language_feature_contract
+  syntax:
+    must_include:
+      - "code[2]"
+    must_not_include:
+      - "I("
+  notes:
+    - "Language extension task; not part of original full-300 transient certification claim."
+416-logic-vector-reduction-flag: |
+  version: 1
+  task_id: v3_416_logic_vector_reduction_flag
+  backend: digital_mixed_capable
+  status: ams-mixed-signal-candidate
+  checker: language_feature_contract
+  syntax:
+    must_include:
+      - "|code"
+    must_not_include:
+      - "I("
+  notes:
+    - "Language extension task; not part of original full-300 transient certification claim."
+417-always-async-reset-counter: |
+  version: 1
+  task_id: v3_417_always_async_reset_counter
+  backend: digital_mixed_capable
+  status: ams-mixed-signal-candidate
+  checker: language_feature_contract
+  syntax:
+    must_include:
+      - "always @"
+    must_not_include:
+      - "I("
+  notes:
+    - "Language extension task; not part of original full-300 transient certification claim."
+418-always-enable-saturating-counter: |
+  version: 1
+  task_id: v3_418_always_enable_saturating_counter
+  backend: digital_mixed_capable
+  status: ams-mixed-signal-candidate
+  checker: language_feature_contract
+  syntax:
+    must_include:
+      - "always @"
+    must_not_include:
+      - "I("
+  notes:
+    - "Language extension task; not part of original full-300 transient certification claim."
+419-wreal-logic-threshold-bridge: |
+  version: 1
+  task_id: v3_419_wreal_logic_threshold_bridge
+  backend: digital_mixed_capable
+  status: ams-mixed-signal-candidate
+  checker: language_feature_contract
+  syntax:
+    must_include:
+      - "wreal"
+    must_not_include:
+      - "I("
+  notes:
+    - "Language extension task; not part of original full-300 transient certification claim."
+420-mixed-analog-digital-mode-latch: |
+  version: 1
+  task_id: v3_420_mixed_analog_digital_mode_latch
+  backend: digital_mixed_capable
+  status: ams-mixed-signal-candidate
+  checker: language_feature_contract
+  syntax:
+    must_include:
+      - "electrical vin"
+    must_not_include:
+      - "I("
+  notes:
+    - "Language extension task; not part of original full-300 transient certification claim."

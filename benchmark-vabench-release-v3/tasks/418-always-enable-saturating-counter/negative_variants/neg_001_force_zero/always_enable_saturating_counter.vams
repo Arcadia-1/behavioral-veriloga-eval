@@ -1,0 +1,10 @@
+module always_enable_saturating_counter(clk, rst, en, q);
+    input clk, rst, en;
+    output [1:0] q;
+    logic clk, rst, en;
+    logic [1:0] q;
+    always @(posedge clk) begin
+        if (rst) q = 2'b00;
+        else if (en && q != 2'b11) q = q;
+    end
+endmodule

@@ -1,0 +1,5 @@
+module logic_vector_assign_slice(input [3:0] code, input sel, output y);
+    logic [3:0] code;
+    logic sel, y;
+    assign y = sel ? 1'b0 : code[0];
+endmodule

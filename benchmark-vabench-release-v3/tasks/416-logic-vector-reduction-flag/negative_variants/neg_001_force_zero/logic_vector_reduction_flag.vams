@@ -1,0 +1,5 @@
+module logic_vector_reduction_flag(input [3:0] code, output valid);
+    logic [3:0] code;
+    logic valid;
+    assign valid = 1'b0;
+endmodule

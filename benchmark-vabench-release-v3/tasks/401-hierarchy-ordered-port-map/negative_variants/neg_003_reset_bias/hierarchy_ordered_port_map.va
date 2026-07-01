@@ -1,0 +1,35 @@
+`include "constants.vams"
+`include "disciplines.vams"
+
+module hierarchy_ordered_port_map (
+    input  electrical vin,
+    input  electrical clk,
+    input  electrical mode,
+    input  electrical rst,
+    output electrical out,
+    output electrical metric
+);
+parameter real vth = 0.45;
+parameter real vhi = 0.9;
+parameter real tr = 200p;
+electrical mid;
+    v3_child_gain u1(vin, mid);
+    v3_child_gain #(.gain(0.5)) u2(mid, out);
+analog begin
+    V(metric) <+ transition(V(rst) > vth ? 0.25 : V(mid), 0.0, tr, tr);
+end
+endmodule
+
+module v3_child_gain(input electrical vin, output electrical out);
+parameter real gain = 0.8;
+analog begin
+    V(out) <+ gain * V(vin);
+end
+endmodule
+
+module v3_child_threshold(input electrical vin, output electrical out);
+parameter real vth = 0.45;
+analog begin
+    V(out) <+ transition(V(vin) > vth ? 0.9 : 0.0, 0.0, 200p, 200p);
+end
+endmodule

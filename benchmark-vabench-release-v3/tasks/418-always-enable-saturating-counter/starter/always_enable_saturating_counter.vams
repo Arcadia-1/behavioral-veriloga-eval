@@ -1,0 +1,6 @@
+module always_enable_saturating_counter(clk, rst, en, q);
+    input clk, rst, en;
+    output q;
+    logic clk, rst, en, q;
+    assign q = 1'b0;
+endmodule

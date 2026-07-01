@@ -1,0 +1,17 @@
+`include "constants.vams"
+`include "disciplines.vams"
+
+module table_model_linear_gain (
+    input  electrical vin,
+    input  electrical clk,
+    input  electrical mode,
+    input  electrical rst,
+    output electrical out,
+    output electrical metric
+);
+parameter real tr = 200p;
+analog begin
+    V(out) <+ transition(0.0, 0.0, tr, tr);
+    V(metric) <+ transition(0.0, 0.0, tr, tr);
+end
+endmodule

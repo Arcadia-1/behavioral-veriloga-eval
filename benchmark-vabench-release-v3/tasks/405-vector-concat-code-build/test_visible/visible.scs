@@ -1,0 +1,5 @@
+simulator lang=spectre
+global 0
+// Visible smoke skeleton. Evaluator supplies the candidate Verilog-A artifact.
+tran tran stop=80n
+save vin clk mode rst out metric
