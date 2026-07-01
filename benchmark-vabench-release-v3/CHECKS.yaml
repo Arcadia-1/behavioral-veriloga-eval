@@ -5492,11 +5492,14 @@
   notes:
     - "Extension task promoted from syntax-only to executable behavior candidate."
 322-slew-limited-mode-stepper: |
+  # vabench-release-v2-checks
   version: 1
   task_id: v3_322_slew_limited_mode_stepper
-  backend: syntax_extension
-  status: syntax-extension-candidate
-  checker: language_feature_contract
+  backend: evas
+  status: behavior-certified-candidate
+  checker:
+    task_id: v3_322_slew_limited_mode_stepper
+    metric: sampled_slew_limited_mode_stepper
   required_columns:
     - time
     - vin
@@ -5510,8 +5513,19 @@
       - "slew("
     must_not_include:
       - "I("
+      - "ddt("
+      - "idt("
+      - "transition("
+  sim_correct:
+    checks:
+      - reset_event_clears_slew_target
+      - low_mode_selects_low_step
+      - mid_mode_selects_high_step
+      - high_mode_returns_to_low_step
+      - upward_step_is_slew_limited
+      - downward_step_is_slew_limited
   notes:
-    - "Extension task; not part of the original full-300 certification claim."
+    - "Extension task promoted from syntax-only to executable behavior candidate."
 323-slew-output-reset-recovery: |
   version: 1
   task_id: v3_323_slew_output_reset_recovery
