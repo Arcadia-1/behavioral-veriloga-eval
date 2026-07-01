@@ -6662,7 +6662,7 @@
     must_not_include:
       - "I("
   notes:
-    - "AMS mixed-signal extension task; not part of original full-300 certification claim."
+    - "AMS mixed-signal extension task staged pending event-or always support: https://github.com/Arcadia-1/EVAS/issues/39"
 354-always-counter-two-bit: |
   version: 1
   task_id: v3_354_always_counter_two_bit
@@ -9096,7 +9096,7 @@
     must_not_include:
       - "I("
   notes:
-    - "Executable harness and behavior contract are staged, but promotion is blocked by EVAS issue #42: local `define is not honored by `ifdef."
+    - "Executable harness and behavior contract are staged, but promotion is blocked by local `define/`ifdef support: https://github.com/Arcadia-1/EVAS/issues/42"
 411-escaped-identifier-state: |
   version: 1
   task_id: v3_411_escaped_identifier_state
@@ -10781,7 +10781,7 @@
     must_not_include:
       - "I("
   notes:
-    - "Behavior promotion is blocked by EVAS instance parameter override semantics; see Arcadia-1/EVAS#49."
+    - "Behavior promotion is blocked by EVAS instance parameter override semantics: https://github.com/Arcadia-1/EVAS/issues/49"
 465-port-connected-output-enable: |
   version: 1
   task_id: v3_465_port_connected_output_enable
@@ -10907,7 +10907,7 @@
     must_not_include:
       - "I("
   notes:
-    - "Behavior promotion is blocked by EVAS explicit branch voltage probe semantics; see Arcadia-1/EVAS#50."
+    - "Behavior promotion is blocked by EVAS explicit branch voltage probe semantics: https://github.com/Arcadia-1/EVAS/issues/50"
 469-current-contribution-conductance: |
   version: 1
   task_id: v3_469_current_contribution_conductance
@@ -10918,7 +10918,7 @@
     must_include:
       - "I("
   notes:
-    - "KCL/current contribution task with executable voltage-source testbench; behavior remains outside ordinary event-level certification."
+    - "KCL/current contribution task with executable voltage-source testbench; behavior remains outside ordinary event-level certification pending KCL/dynamic support: https://github.com/Arcadia-1/EVAS/issues/44"
 470-branch-current-probe-contribution: |
   version: 1
   task_id: v3_470_branch_current_probe_contribution
@@ -10929,7 +10929,7 @@
     must_include:
       - "I(br)"
   notes:
-    - "KCL/current contribution task with executable voltage-source testbench; branch current behavior remains outside ordinary event-level certification."
+    - "KCL/current contribution task with executable voltage-source testbench; branch current behavior remains outside ordinary event-level certification pending KCL/dynamic support: https://github.com/Arcadia-1/EVAS/issues/44"
 471-indirect-branch-null-balance: |
   version: 1
   task_id: v3_471_indirect_branch_null_balance
@@ -10940,7 +10940,7 @@
     must_include:
       - "V(out) : V(in) == 0"
   notes:
-    - "Continuous-time/constraint task with executable source-driven testbench; indirect-branch equation behavior remains outside ordinary event-level certification."
+    - "Continuous-time/constraint task with executable source-driven testbench; indirect-branch equation behavior remains outside ordinary event-level certification pending dynamic-operator support: https://github.com/Arcadia-1/EVAS/issues/44"
 472-indirect-branch-ddt-balance: |
   version: 1
   task_id: v3_472_indirect_branch_ddt_balance
@@ -10951,7 +10951,7 @@
     must_include:
       - "ddt(V(out))"
   notes:
-    - "Continuous-time/constraint task with executable source-driven testbench; ddt indirect-branch behavior remains outside ordinary event-level certification."
+    - "Continuous-time/constraint task with executable source-driven testbench; ddt indirect-branch behavior remains outside ordinary event-level certification pending dynamic-operator support: https://github.com/Arcadia-1/EVAS/issues/44"
 473-attribute-potential-abstol-probe: |
   version: 1
   task_id: v3_473_attribute_potential_abstol_probe
@@ -11057,7 +11057,7 @@
       - "V(sigpath)"
       - "parameter string sigpath"
   notes:
-    - "LRM gap-fill task with executable tests; behavior promotion is blocked by EVAS issue #51 because V(sigpath) currently resolves to 0."
+    - "LRM gap-fill task with executable tests; behavior promotion is blocked because V(sigpath) currently resolves to 0: https://github.com/Arcadia-1/EVAS/issues/51"
 477-analog-node-alias-initial: |
   version: 1
   task_id: v3_477_analog_node_alias_initial
@@ -11069,7 +11069,7 @@
       - "$analog_node_alias"
       - "analog initial"
   notes:
-    - "LRM gap-fill task with executable tests; behavior promotion is blocked by EVAS issue #52 because $analog_node_alias currently leaves the alias node at 0."
+    - "LRM gap-fill task with executable tests; behavior promotion is blocked because $analog_node_alias currently leaves the alias node at 0: https://github.com/Arcadia-1/EVAS/issues/52"
 478-inherited-port-attribute-supply: |
   version: 1
   task_id: v3_478_inherited_port_attribute_supply
@@ -11144,7 +11144,7 @@
     must_not_include:
       - "I("
   notes:
-    - "Executable tests and checker are staged, but behavior promotion is blocked by EVAS issue #53 because $mfactor() is unsupported."
+    - "Executable tests and checker are staged, but behavior promotion is blocked because $mfactor() is unsupported: https://github.com/Arcadia-1/EVAS/issues/53"
 481-analog-primitive-resistor-instance: |
   version: 1
   task_id: v3_481_analog_primitive_resistor_instance
@@ -11159,7 +11159,7 @@
       - "V(out)"
       - "I("
   notes:
-    - "KCL/conservative primitive-instantiation task with staged smoke tests; execution is blocked by EVAS issue #54 because resistor is treated as an unknown child module."
+    - "KCL/conservative primitive-instantiation task with staged smoke tests; execution is blocked because resistor is treated as an unknown child module: https://github.com/Arcadia-1/EVAS/issues/54"
 482-analog-primitive-isource-instance: |
   version: 1
   task_id: v3_482_analog_primitive_isource_instance
@@ -11174,7 +11174,7 @@
       - "V(out)"
       - "I("
   notes:
-    - "KCL/conservative primitive-instantiation task with staged smoke tests; execution is blocked by EVAS issue #55 because isource is treated as an unknown child module."
+    - "KCL/conservative primitive-instantiation task with staged smoke tests; execution is blocked because isource is treated as an unknown child module: https://github.com/Arcadia-1/EVAS/issues/55"
 483-cds-violation-threshold-assert: |
   version: 1
   task_id: v3_483_cds_violation_threshold_assert
@@ -11304,7 +11304,7 @@
       - "$table_model"
       - "1L,1L"
   notes:
-    - "Executable tests and checker are staged, but behavior promotion is blocked by EVAS issue #56 because 2D array-backed $table_model() currently returns 0."
+    - "Executable tests and checker are staged, but behavior promotion is blocked because 2D array-backed $table_model() currently returns 0: https://github.com/Arcadia-1/EVAS/issues/56"
 488-table-model-string-param-source: |
   version: 1
   task_id: v3_488_table_model_string_param_source
@@ -11317,7 +11317,7 @@
       - "$table_model"
       - "1L"
   notes:
-    - "Executable tests and checker are staged, but behavior promotion is blocked by EVAS issue #40 because string-parameter $table_model data source currently returns 0."
+    - "Executable tests and checker are staged, but behavior promotion is blocked because string-parameter $table_model data source currently returns 0: https://github.com/Arcadia-1/EVAS/issues/40"
 489-event-nested-or-expression: |
   version: 1
   task_id: v3_489_event_nested_or_expression
@@ -11394,7 +11394,7 @@
     must_not_include:
       - "V(out)"
   notes:
-    - "KCL/current-contribution smoke tests staged; behavior certification requires continuous-time/KCL support tracked by EVAS issue #44."
+    - "KCL/current-contribution smoke tests staged; behavior certification requires continuous-time/KCL support: https://github.com/Arcadia-1/EVAS/issues/44"
 492-kcl-inductor-idt-voltage: |
   version: 1
   task_id: v3_492_kcl_inductor_idt_voltage
@@ -11408,7 +11408,7 @@
     must_not_include:
       - "V(out)"
   notes:
-    - "KCL/current-contribution smoke tests staged; behavior certification requires continuous-time/KCL support tracked by EVAS issue #44."
+    - "KCL/current-contribution smoke tests staged; behavior certification requires continuous-time/KCL support: https://github.com/Arcadia-1/EVAS/issues/44"
 493-continuous-laplace-nd-filter: |
   version: 1
   task_id: v3_493_continuous_laplace_nd_filter
@@ -11423,7 +11423,7 @@
     must_not_include:
       - "transition("
   notes:
-    - "Continuous-time transfer-function smoke tests staged; behavior certification requires dynamic-operator support tracked by EVAS issue #44."
+    - "Continuous-time transfer-function smoke tests staged; behavior certification requires dynamic-operator support: https://github.com/Arcadia-1/EVAS/issues/44"
 494-continuous-zi-nd-filter: |
   version: 1
   task_id: v3_494_continuous_zi_nd_filter
@@ -11439,4 +11439,4 @@
     must_not_include:
       - "transition("
   notes:
-    - "Sampled-data continuous-time operator smoke tests staged; behavior certification requires dynamic-operator support tracked by EVAS issue #44."
+    - "Sampled-data continuous-time operator smoke tests staged; behavior certification requires dynamic-operator support: https://github.com/Arcadia-1/EVAS/issues/44"
