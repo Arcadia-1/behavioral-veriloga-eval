@@ -8524,6 +8524,31 @@ def check_v3_447_display_warning_debug_log(rows: list[dict[str, float]]) -> tupl
     )
 
 
+def check_v3_448_rdist_uniform_seeded_dither(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "vin", "clk", "mode", "rst", "out", "metric"}
+    if not rows or not required.issubset(rows[0]):
+        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
+        return False, "missing_columns=" + ",".join(missing)
+    checks = [
+        (130.0, 0.70, 0.70, 0.715, 0.0, 1.0),
+        (230.0, 0.30, 0.30, 0.315, 0.0, 1.0),
+        (330.0, 0.80, -0.04, 0.04, -0.04, 0.04),
+        (430.0, 0.80, 0.80, 0.815, 0.0, 1.0),
+    ]
+    observed: list[str] = []
+    for time_ns, _vin_ref, out_lo, out_hi, metric_lo, metric_hi in checks:
+        out = sample_signal_at(rows, "out", time_ns * 1e-9)
+        metric = sample_signal_at(rows, "metric", time_ns * 1e-9)
+        if out is None or metric is None:
+            return False, f"missing_sample_at={time_ns:g}ns"
+        if not (out_lo <= out <= out_hi):
+            return False, f"out@{time_ns:g}ns={out:.4f} expected_range=[{out_lo:.3f},{out_hi:.3f}]"
+        if not (metric_lo <= metric <= metric_hi):
+            return False, f"metric@{time_ns:g}ns={metric:.4f} expected_range=[{metric_lo:.3f},{metric_hi:.3f}]"
+        observed.append(f"{time_ns:g}ns/out={out:.3f}/metric={metric:.3f}")
+    return True, " ".join(observed)
+
+
 def check_v3_361_white_noise_voltage_source(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "ctrl", "clk", "out", "metric"}
     if not rows or not required.issubset(rows[0]):
@@ -18984,6 +19009,8 @@ V3_STANDALONE_SPLIT_CHECKS = {
     "446-fstrobe-file-line-writer": check_v3_446_fstrobe_file_line_writer,
     "v3_447_display_warning_debug_log": check_v3_447_display_warning_debug_log,
     "447-display-warning-debug-log": check_v3_447_display_warning_debug_log,
+    "v3_448_rdist_uniform_seeded_dither": check_v3_448_rdist_uniform_seeded_dither,
+    "448-rdist-uniform-seeded-dither": check_v3_448_rdist_uniform_seeded_dither,
 }
 
 for _alias, _checker in V3_STANDALONE_SPLIT_CHECKS.items():

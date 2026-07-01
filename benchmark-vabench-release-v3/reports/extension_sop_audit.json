@@ -52,28 +52,28 @@
       ]
     },
     {
-      "complete_tests_count": 13,
+      "complete_tests_count": 14,
       "description": "manual syntax-completion candidates",
-      "fair_eval_count": 3,
+      "fair_eval_count": 4,
       "range": "435-458",
-      "sop_ready_count": 3,
+      "sop_ready_count": 4,
       "task_count": 24,
       "top_issues": [
         [
           "checker_syntax_only_no_behavior_score",
-          21
+          20
         ],
         [
           "visible_scs_not_executable:include,instance,source",
-          11
+          10
         ],
         [
           "hidden_scs_not_executable:include,instance,source",
-          11
+          10
         ],
         [
           "missing_required_behavior_section",
-          11
+          10
         ]
       ]
     },
@@ -133,15 +133,15 @@
   "scope": "benchmark-vabench-release-v3 tasks 301-494",
   "standard": "behavioral-veriloga-vela/SOP.md visible/hidden task standard and four quality criteria",
   "summary": {
-    "complete_tests_count": 146,
-    "fair_eval_count": 129,
+    "complete_tests_count": 147,
+    "fair_eval_count": 130,
     "issue_counts": {
-      "checker_syntax_only_no_behavior_score": 65,
-      "hidden_scs_not_executable:include,instance,source": 47,
-      "missing_required_behavior_section": 48,
-      "visible_scs_not_executable:include,instance,source": 47
+      "checker_syntax_only_no_behavior_score": 64,
+      "hidden_scs_not_executable:include,instance,source": 46,
+      "missing_required_behavior_section": 47,
+      "visible_scs_not_executable:include,instance,source": 46
     },
-    "sop_ready_count": 128,
+    "sop_ready_count": 129,
     "task_count": 194
   },
   "tasks": [
@@ -3566,20 +3566,15 @@
     },
     {
       "certification_scope": "language_extension_not_part_of_original_full_300_claim",
-      "complete_tests": false,
-      "fair_eval": false,
+      "complete_tests": true,
+      "fair_eval": true,
       "hidden_scs_count": 1,
-      "issues": [
-        "visible_scs_not_executable:include,instance,source",
-        "hidden_scs_not_executable:include,instance,source",
-        "missing_required_behavior_section",
-        "checker_syntax_only_no_behavior_score"
-      ],
+      "issues": [],
       "negative_count": 5,
       "number": 448,
-      "reasonable_task": false,
+      "reasonable_task": true,
       "solution_file_count": 1,
-      "sop_ready": false,
+      "sop_ready": true,
       "starter_file_count": 1,
       "syntax_focus": "Use $rdist_uniform() for seeded uniform dither.",
       "target": "rdist_uniform_seeded_dither.va",
