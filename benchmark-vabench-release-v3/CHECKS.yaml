@@ -6051,9 +6051,10 @@
 337-parameter-range-limited-gain: |
   version: 1
   task_id: v3_337_parameter_range_limited_gain
-  backend: syntax_extension
-  status: syntax-extension-candidate
-  checker: language_feature_contract
+  backend: evas
+  status: behavior-certified-candidate
+  checker: sampled_waveform_and_metric_contract
+  # vabench-release-v2-checks
   required_columns:
     - time
     - vin
@@ -6067,8 +6068,24 @@
       - " from ["
     must_not_include:
       - "I("
+  sim_correct:
+    positive:
+      - solution/parameter_range_limited_gain.va
+    negative:
+      - negative_variants/neg_001_drive_out_zero/parameter_range_limited_gain.va
+      - negative_variants/neg_002_drive_metric_zero/parameter_range_limited_gain.va
+      - negative_variants/neg_003_reset_polarity_wrong/parameter_range_limited_gain.va
+      - negative_variants/neg_004_logic_threshold_shifted/parameter_range_limited_gain.va
+      - negative_variants/neg_005_output_scale_low/parameter_range_limited_gain.va
+    checks:
+      - range_limited_parameter_declared
+      - gain_applied_to_sampled_input
+      - mode_offset_pushes_output_into_saturation
+      - metric_reports_prelimit_raw_value
+      - reset_clears_outputs
+      - no_current_domain_contribution
   notes:
-    - "Extension task; not part of the original full-300 certification claim."
+    - "Extension task promoted from syntax-only to executable behavior candidate."
 338-math-trig-envelope-detector: |
   version: 1
   task_id: v3_338_math_trig_envelope_detector
