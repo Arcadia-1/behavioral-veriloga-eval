@@ -1,5 +1,14 @@
 simulator lang=spectre
 global 0
-// Hidden behavior skeleton for the language-semantics extension task.
-tran tran stop=200n
+
+ahdl_include "display_strobe_event_logger.va"
+
+Vvin (vin 0) vsource type=pwl wave=[ 0n 0.90 12n 0.90 12.1n 0.20 39n 0.20 40n 0.50 59n 0.50 60n 0.80 79n 0.80 80n 0.50 90n 0.50 ]
+Vmode (mode 0) vsource type=pwl wave=[ 0n 0.0 90n 0.0 ]
+Vrst (rst 0) vsource type=pwl wave=[ 0n 0.9 12n 0.9 12.1n 0 90n 0 ]
+Vclk (clk 0) vsource type=pwl wave=[ 0n 0 4.9n 0 5.0n 0.9 5.5n 0.9 5.6n 0 24.9n 0 25.0n 0.9 25.5n 0.9 25.6n 0 44.9n 0 45.0n 0.9 45.5n 0.9 45.6n 0 64.9n 0 65.0n 0.9 65.5n 0.9 65.6n 0 84.9n 0 85.0n 0.9 85.5n 0.9 85.6n 0 90n 0 ]
+
+XDUT (vin clk mode rst out metric) display_strobe_event_logger
+
+tran tran stop=90n
 save vin clk mode rst out metric

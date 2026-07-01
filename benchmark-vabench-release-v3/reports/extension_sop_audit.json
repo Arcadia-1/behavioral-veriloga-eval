@@ -2,28 +2,28 @@
   "date": "2026-07-01",
   "range_summary": [
     {
-      "complete_tests_count": 18,
+      "complete_tests_count": 19,
       "description": "language-semantics voltage-domain candidates",
-      "fair_eval_count": 18,
+      "fair_eval_count": 19,
       "range": "301-340",
-      "sop_ready_count": 18,
+      "sop_ready_count": 19,
       "task_count": 40,
       "top_issues": [
         [
           "visible_scs_not_executable:include,instance,source",
-          22
+          21
         ],
         [
           "hidden_scs_not_executable:include,instance,source",
-          22
+          21
         ],
         [
           "generic_prompt_template",
-          22
+          21
         ],
         [
           "checker_syntax_only_no_behavior_score",
-          22
+          21
         ]
       ]
     },
@@ -179,18 +179,18 @@
   "scope": "benchmark-vabench-release-v3 tasks 301-494",
   "standard": "behavioral-veriloga-vela/SOP.md visible/hidden task standard and four quality criteria",
   "summary": {
-    "complete_tests_count": 18,
-    "fair_eval_count": 18,
+    "complete_tests_count": 19,
+    "fair_eval_count": 19,
     "issue_counts": {
-      "checker_syntax_only_no_behavior_score": 176,
-      "generic_prompt_template": 22,
-      "hidden_scs_not_executable:include,instance,source": 144,
+      "checker_syntax_only_no_behavior_score": 175,
+      "generic_prompt_template": 21,
+      "hidden_scs_not_executable:include,instance,source": 143,
       "hidden_scs_not_executable:include,instance,source,save": 32,
       "missing_required_behavior_section": 122,
-      "visible_scs_not_executable:include,instance,source": 144,
+      "visible_scs_not_executable:include,instance,source": 143,
       "visible_scs_not_executable:include,instance,source,save": 32
     },
-    "sop_ready_count": 18,
+    "sop_ready_count": 19,
     "task_count": 194
   },
   "tasks": [
@@ -610,20 +610,15 @@
     },
     {
       "certification_scope": "extension_not_part_of_original_full_300_claim",
-      "complete_tests": false,
-      "fair_eval": false,
+      "complete_tests": true,
+      "fair_eval": true,
       "hidden_scs_count": 1,
-      "issues": [
-        "visible_scs_not_executable:include,instance,source",
-        "hidden_scs_not_executable:include,instance,source",
-        "generic_prompt_template",
-        "checker_syntax_only_no_behavior_score"
-      ],
+      "issues": [],
       "negative_count": 5,
       "number": 319,
-      "reasonable_task": false,
+      "reasonable_task": true,
       "solution_file_count": 1,
-      "sop_ready": false,
+      "sop_ready": true,
       "starter_file_count": 1,
       "syntax_focus": "Use final_step and file/display system tasks for a deterministic metric.",
       "target": "display_strobe_event_logger.va",

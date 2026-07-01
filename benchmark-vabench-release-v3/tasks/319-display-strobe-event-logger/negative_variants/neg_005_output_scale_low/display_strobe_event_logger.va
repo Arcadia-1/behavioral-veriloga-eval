@@ -10,36 +10,47 @@ module display_strobe_event_logger (
     output electrical metric
 );
 parameter real vth = 0.45;
-parameter real vhi = 0.72;
+parameter real vhi = 0.9;
 parameter real tr = 200p;
 real out_v;
 real metric_v;
 integer count_q;
 integer state_q;
-integer fd;
-real sum_q;
-real max_q;
+integer class_q;
 analog begin
     @(initial_step) begin
         out_v = 0.0;
         metric_v = 0.0;
         count_q = 0;
         state_q = 0;
-        sum_q = 0.0;
-        max_q = 0.0;
+        class_q = 0;
+        $display("display_strobe_event_logger init");
     end
-    @(cross(V(clk) - vth, +1)) begin
-        count_q = count_q + 1;
-        sum_q = sum_q + V(vin);
-        if (V(vin) > max_q) max_q = V(vin);
-        out_v = V(vin);
-        metric_v = count_q > 0 ? sum_q / count_q : 0.0;
-        $strobe("sample count=%0d vin=%g", count_q, V(vin));
-    end
-    @(final_step) begin
-        fd = $fopen("syntax_extension_metric.out", "w");
-        $fwrite(fd, "count=%0d avg=%.6g max=%.6g", count_q, metric_v, max_q);
-        $fclose(fd);
+    @(cross(V(clk) - vth, +1) or cross(V(rst) - vth, +1)) begin
+        if (V(rst) > vth) begin
+            count_q = 0;
+            state_q = 0;
+            class_q = 0;
+            out_v = 0.0;
+            metric_v = 0.0;
+            $display("event_logger reset at %g", $abstime);
+        end else begin
+            count_q = count_q + 1;
+            if (V(vin) < 0.30) begin
+                class_q = 1;
+                out_v = 0.180;
+            end else if (V(vin) < 0.70) begin
+                class_q = 2;
+                out_v = 0.360;
+            end else begin
+                class_q = 3;
+                out_v = 0.720;
+            end
+            state_q = class_q;
+            metric_v = count_q / 4.0;
+            if (metric_v > 1.0) metric_v = 1.0;
+            $strobe("event_logger count=%0d class=%0d vin=%g", count_q, class_q, V(vin));
+        end
     end
     V(out) <+ transition(out_v, 0.0, tr, tr);
     V(metric) <+ transition(metric_v, 0.0, tr, tr);

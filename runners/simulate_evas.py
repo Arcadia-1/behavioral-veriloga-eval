@@ -7086,6 +7086,21 @@ def check_v3_318_final_step_max_observer_file(rows: list[dict[str, float]]) -> t
     )
 
 
+def check_v3_319_display_strobe_event_logger(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "vin", "clk", "mode", "rst", "out", "metric"}
+    if not rows or not required.issubset(rows[0]):
+        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
+        return False, "missing_columns=" + ",".join(missing)
+    return _sample_many(
+        rows,
+        {
+            "out": [(7.0, 0.0), (27.0, 0.225), (47.0, 0.45), (67.0, 0.90), (87.0, 0.45)],
+            "metric": [(7.0, 0.0), (27.0, 0.25), (47.0, 0.50), (67.0, 0.75), (87.0, 1.00)],
+        },
+        tol=0.025,
+    )
+
+
 def check_v3_clocked_sar_comparator(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "cmpck", "vinp", "vinn", "dcmpn", "dcmpp"}
     if not rows or not required.issubset(rows[0]):
@@ -16019,6 +16034,8 @@ V3_STANDALONE_SPLIT_CHECKS = {
     "317-final-step-average-metric-file": check_v3_317_final_step_average_metric_file,
     "v3_318_final_step_max_observer_file": check_v3_318_final_step_max_observer_file,
     "318-final-step-max-observer-file": check_v3_318_final_step_max_observer_file,
+    "v3_319_display_strobe_event_logger": check_v3_319_display_strobe_event_logger,
+    "319-display-strobe-event-logger": check_v3_319_display_strobe_event_logger,
 }
 
 for _alias, _checker in V3_STANDALONE_SPLIT_CHECKS.items():

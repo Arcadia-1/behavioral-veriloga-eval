@@ -5385,11 +5385,14 @@
   notes:
     - "Extension task promoted from syntax-only to executable behavior candidate."
 319-display-strobe-event-logger: |
+  # vabench-release-v2-checks
   version: 1
   task_id: v3_319_display_strobe_event_logger
-  backend: syntax_extension
-  status: syntax-extension-candidate
-  checker: language_feature_contract
+  backend: evas
+  status: behavior-certified-candidate
+  checker:
+    task_id: v3_319_display_strobe_event_logger
+    metric: sampled_display_strobe_event_logger
   required_columns:
     - time
     - vin
@@ -5400,12 +5403,22 @@
     - metric
   syntax:
     must_include:
-      - "final_step"
-      - "$fwrite"
+      - "$display"
+      - "$strobe"
     must_not_include:
       - "I("
+      - "ddt("
+      - "idt("
+  sim_correct:
+    checks:
+      - reset_high_clock_edge_is_ignored
+      - reset_event_logs_with_display
+      - clock_events_log_with_strobe
+      - vin_low_mid_high_classes_drive_distinct_outputs
+      - metric_counts_post_reset_events
+      - metric_saturates_at_one_after_four_events
   notes:
-    - "Extension task; not part of the original full-300 certification claim."
+    - "Extension task promoted from syntax-only to executable behavior candidate."
 320-file-io-sampled-metric-writer: |
   version: 1
   task_id: v3_320_file_io_sampled_metric_writer
