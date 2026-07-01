@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import csv
 import json
+import re
 from collections import Counter
 from datetime import date
 from pathlib import Path
@@ -13,6 +14,7 @@ ROOT = Path(__file__).resolve().parents[1]
 PACKAGE_ROOT = ROOT / "benchmark-vabench-release-v3"
 REPORTS_ROOT = PACKAGE_ROOT / "reports"
 TASKS_JSON = PACKAGE_ROOT / "TASKS.json"
+CHECKS_YAML = PACKAGE_ROOT / "CHECKS.yaml"
 REPORT_JSON = REPORTS_ROOT / "layered_certification.json"
 REPORT_MD = REPORTS_ROOT / "layered_certification.md"
 REPORT_CSV = REPORTS_ROOT / "layered_certification_tasks.csv"
@@ -100,11 +102,41 @@ def read_sop_ready_extension_tasks() -> set[str]:
     return ready
 
 
+def read_checks_issue_urls() -> dict[str, list[str]]:
+    if not CHECKS_YAML.exists():
+        return {}
+    issue_pattern = re.compile(r"https://github\.com/Arcadia-1/EVAS/issues/\d+")
+    issue_urls: dict[str, list[str]] = {}
+    current_key: str | None = None
+    current_lines: list[str] = []
+    for line in CHECKS_YAML.read_text(encoding="utf-8", errors="ignore").splitlines():
+        if line and not line.startswith((" ", "\t")) and line.endswith(": |"):
+            if current_key is not None:
+                urls = sorted(set(issue_pattern.findall("\n".join(current_lines))))
+                if urls:
+                    issue_urls[current_key] = urls
+            current_key = line.split(":", 1)[0]
+            current_lines = []
+            continue
+        if current_key is not None:
+            current_lines.append(line)
+    if current_key is not None:
+        urls = sorted(set(issue_pattern.findall("\n".join(current_lines))))
+        if urls:
+            issue_urls[current_key] = urls
+    return issue_urls
+
+
 def task_number(key: str) -> int:
     return int(key.split("-", 1)[0])
 
 
-def classify_task(key: str, task: dict[str, Any], sop_ready_extension_tasks: set[str]) -> dict[str, Any]:
+def classify_task(
+    key: str,
+    task: dict[str, Any],
+    sop_ready_extension_tasks: set[str],
+    checks_issue_urls: dict[str, list[str]],
+) -> dict[str, Any]:
     tier = str(task.get("tier") or "<none>")
     if tier not in TIER_TO_LAYER:
         raise ValueError(f"unknown tier for {key}: {tier}")
@@ -141,6 +173,7 @@ def classify_task(key: str, task: dict[str, Any], sop_ready_extension_tasks: set
             else "excluded_until_behavior_promotion"
         ),
         "claim_boundary": claim_boundary,
+        "blocking_issue_urls": ";".join(checks_issue_urls.get(key, [])),
         "target": ";".join(task.get("target", [])),
         "syntax_focus": task.get("syntax_focus", ""),
         "certification_scope": task.get("certification_scope", "original_full_300_claim"),
@@ -154,8 +187,9 @@ def counter(rows: list[dict[str, Any]], key: str) -> dict[str, int]:
 def build_report() -> dict[str, Any]:
     tasks = read_tasks()
     sop_ready_extension_tasks = read_sop_ready_extension_tasks()
+    checks_issue_urls = read_checks_issue_urls()
     rows = [
-        classify_task(key, tasks[key], sop_ready_extension_tasks)
+        classify_task(key, tasks[key], sop_ready_extension_tasks, checks_issue_urls)
         for key in sorted(tasks, key=task_number)
     ]
     extension_rows = [row for row in rows if row["extension_candidate"]]
@@ -227,6 +261,7 @@ def write_csv(rows: list[dict[str, Any]]) -> None:
         "behavior_certified",
         "score_claim",
         "claim_boundary",
+        "blocking_issue_urls",
         "target",
     ]
     with REPORT_CSV.open("w", newline="", encoding="utf-8") as fh:

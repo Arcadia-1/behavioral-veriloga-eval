@@ -52,6 +52,7 @@ def test_v3_extension_rows_do_not_overclaim_behavior_certification() -> None:
         else:
             assert not row["behavior_certified"]
             assert row["score_claim"] == "excluded_until_behavior_promotion"
+            assert row["blocking_issue_urls"].startswith("https://github.com/Arcadia-1/EVAS/issues/")
 
     continuous_rows = [
         row for row in rows
