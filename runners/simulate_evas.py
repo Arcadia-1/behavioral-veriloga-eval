@@ -6923,6 +6923,21 @@ def check_v3_311_for_loop_running_average(rows: list[dict[str, float]]) -> tuple
     )
 
 
+def check_v3_312_for_loop_thermometer_count(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "vin", "clk", "mode", "rst", "out", "metric"}
+    if not rows or not required.issubset(rows[0]):
+        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
+        return False, "missing_columns=" + ",".join(missing)
+    return _sample_many(
+        rows,
+        {
+            "out": [(7.0, 0.0), (17.0, 0.0), (27.0, 0.225), (37.0, 0.45), (47.0, 0.675), (57.0, 0.90)],
+            "metric": [(7.0, 0.0), (17.0, 0.0), (27.0, 0.25), (37.0, 0.50), (47.0, 0.75), (57.0, 1.00)],
+        },
+        tol=0.025,
+    )
+
+
 def check_v3_clocked_sar_comparator(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "cmpck", "vinp", "vinn", "dcmpn", "dcmpp"}
     if not rows or not required.issubset(rows[0]):
@@ -15842,6 +15857,8 @@ V3_STANDALONE_SPLIT_CHECKS = {
     "310-case-resettable-state-decoder": check_v3_310_case_resettable_state_decoder,
     "v3_311_for_loop_running_average": check_v3_311_for_loop_running_average,
     "311-for-loop-running-average": check_v3_311_for_loop_running_average,
+    "v3_312_for_loop_thermometer_count": check_v3_312_for_loop_thermometer_count,
+    "312-for-loop-thermometer-count": check_v3_312_for_loop_thermometer_count,
 }
 
 for _alias, _checker in V3_STANDALONE_SPLIT_CHECKS.items():

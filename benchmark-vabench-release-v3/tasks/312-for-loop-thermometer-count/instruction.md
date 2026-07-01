@@ -19,9 +19,17 @@ module for_loop_thermometer_count (
 
 ## Required Behavior
 
-Use a for loop and array state for voltage-domain computation.
+Use a Verilog-A `for` loop over a four-entry real array to count how many thermometer thresholds the sampled input exceeds.
 
-Use voltage-coded logic with `vth = 0.45` V and high outputs near `0.9` V. The hidden evaluator samples `out` and `metric` under deterministic voltage-domain stimulus and checks the language feature named by this task.
+The model defines `thresholds[0:3] = {0.18, 0.36, 0.54, 0.72}`. On a rising crossing of `clk` through `vth = 0.45` V:
+
+- if `rst` is high, clear the count and drive both outputs to zero
+- otherwise set `count_q = 0`
+- use a `for` loop over all four thresholds and increment `count_q` for each threshold where `V(vin) > thresholds[i]`
+- drive `out = 0.9 * count_q / 4.0`
+- drive `metric = count_q / 4.0`
+
+A rising `rst` event must also clear the count immediately. Drive outputs with `transition(..., 0, tr, tr)` using `tr = 200p`. Do not use `I(...)`, `ddt(...)`, or `idt(...)`.
 
 ## Output
 
