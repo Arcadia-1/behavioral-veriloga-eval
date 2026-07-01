@@ -34,28 +34,28 @@
       "top_issues": []
     },
     {
-      "complete_tests_count": 26,
+      "complete_tests_count": 27,
       "description": "task/file/table/random/hierarchy syntax candidates",
-      "fair_eval_count": 27,
+      "fair_eval_count": 28,
       "range": "373-434",
-      "sop_ready_count": 26,
+      "sop_ready_count": 27,
       "task_count": 62,
       "top_issues": [
         [
           "missing_required_behavior_section",
-          36
+          35
         ],
         [
           "visible_scs_not_executable:include,instance,source",
-          35
+          34
         ],
         [
           "hidden_scs_not_executable:include,instance,source",
-          35
+          34
         ],
         [
           "checker_syntax_only_no_behavior_score",
-          35
+          34
         ]
       ]
     },
@@ -141,15 +141,15 @@
   "scope": "benchmark-vabench-release-v3 tasks 301-494",
   "standard": "behavioral-veriloga-vela/SOP.md visible/hidden task standard and four quality criteria",
   "summary": {
-    "complete_tests_count": 98,
-    "fair_eval_count": 98,
+    "complete_tests_count": 99,
+    "fair_eval_count": 99,
     "issue_counts": {
-      "checker_syntax_only_no_behavior_score": 96,
-      "hidden_scs_not_executable:include,instance,source": 95,
-      "missing_required_behavior_section": 96,
-      "visible_scs_not_executable:include,instance,source": 95
+      "checker_syntax_only_no_behavior_score": 95,
+      "hidden_scs_not_executable:include,instance,source": 94,
+      "missing_required_behavior_section": 95,
+      "visible_scs_not_executable:include,instance,source": 94
     },
-    "sop_ready_count": 97,
+    "sop_ready_count": 98,
     "task_count": 194
   },
   "tasks": [
@@ -2436,21 +2436,16 @@
     },
     {
       "certification_scope": "language_extension_not_part_of_original_full_300_claim",
-      "complete_tests": false,
-      "fair_eval": false,
+      "complete_tests": true,
+      "fair_eval": true,
       "hidden_scs_count": 1,
-      "issues": [
-        "visible_scs_not_executable:include,instance,source",
-        "hidden_scs_not_executable:include,instance,source",
-        "missing_required_behavior_section",
-        "checker_syntax_only_no_behavior_score"
-      ],
+      "issues": [],
       "negative_count": 5,
       "number": 400,
-      "reasonable_task": false,
-      "solution_file_count": 1,
-      "sop_ready": false,
-      "starter_file_count": 1,
+      "reasonable_task": true,
+      "solution_file_count": 2,
+      "sop_ready": true,
+      "starter_file_count": 2,
       "syntax_focus": "Use named port mapping for a child module instance.",
       "target": "hierarchy_named_port_map.va",
       "task": "400-hierarchy-named-port-map",
