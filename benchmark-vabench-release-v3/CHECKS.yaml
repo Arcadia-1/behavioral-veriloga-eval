@@ -10265,16 +10265,43 @@
 447-display-warning-debug-log: |
   version: 1
   task_id: v3_447_display_warning_debug_log
-  backend: evas_rust_compile_capable
-  status: syntax-extension-candidate
-  checker: language_feature_contract
+  backend: evas
+  status: behavior-certified-candidate
+  checker: display_warning_debug_log_contract
+  # vabench-release-v2-checks
+  required_columns:
+    - time
+    - vin
+    - clk
+    - mode
+    - rst
+    - out
+    - metric
   syntax:
     must_include:
       - "$display"
+      - "$warning"
+      - "$debug"
+      - "$error"
     must_not_include:
       - "I("
+  sim_correct:
+    positive:
+      - solution/display_warning_debug_log.va
+    negative:
+      - negative_variants/neg_001_force_zero/display_warning_debug_log.va
+      - negative_variants/neg_002_wrong_threshold/display_warning_debug_log.va
+      - negative_variants/neg_003_reset_bias/display_warning_debug_log.va
+      - negative_variants/neg_004_metric_offset/display_warning_debug_log.va
+      - negative_variants/neg_005_scale_output/display_warning_debug_log.va
+    checks:
+      - display_warning_debug_error_parse
+      - threshold_output_high_low
+      - metric_count_sequence
+      - reset_clears_outputs
+      - no_current_domain_contribution
   notes:
-    - "Manual language gap-fill task; unsupported rows are tracked in EVAS issues."
+    - "System output logging behavior promoted to executable EVAS behavior candidate."
 448-rdist-uniform-seeded-dither: |
   version: 1
   task_id: v3_448_rdist_uniform_seeded_dither

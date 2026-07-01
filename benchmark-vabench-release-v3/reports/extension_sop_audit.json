@@ -52,28 +52,28 @@
       ]
     },
     {
-      "complete_tests_count": 12,
+      "complete_tests_count": 13,
       "description": "manual syntax-completion candidates",
-      "fair_eval_count": 2,
+      "fair_eval_count": 3,
       "range": "435-458",
-      "sop_ready_count": 2,
+      "sop_ready_count": 3,
       "task_count": 24,
       "top_issues": [
         [
           "checker_syntax_only_no_behavior_score",
-          22
+          21
         ],
         [
           "visible_scs_not_executable:include,instance,source",
-          12
+          11
         ],
         [
           "hidden_scs_not_executable:include,instance,source",
-          12
+          11
         ],
         [
           "missing_required_behavior_section",
-          12
+          11
         ]
       ]
     },
@@ -133,15 +133,15 @@
   "scope": "benchmark-vabench-release-v3 tasks 301-494",
   "standard": "behavioral-veriloga-vela/SOP.md visible/hidden task standard and four quality criteria",
   "summary": {
-    "complete_tests_count": 145,
-    "fair_eval_count": 128,
+    "complete_tests_count": 146,
+    "fair_eval_count": 129,
     "issue_counts": {
-      "checker_syntax_only_no_behavior_score": 66,
-      "hidden_scs_not_executable:include,instance,source": 48,
-      "missing_required_behavior_section": 49,
-      "visible_scs_not_executable:include,instance,source": 48
+      "checker_syntax_only_no_behavior_score": 65,
+      "hidden_scs_not_executable:include,instance,source": 47,
+      "missing_required_behavior_section": 48,
+      "visible_scs_not_executable:include,instance,source": 47
     },
-    "sop_ready_count": 127,
+    "sop_ready_count": 128,
     "task_count": 194
   },
   "tasks": [
@@ -3543,20 +3543,15 @@
     },
     {
       "certification_scope": "language_extension_not_part_of_original_full_300_claim",
-      "complete_tests": false,
-      "fair_eval": false,
+      "complete_tests": true,
+      "fair_eval": true,
       "hidden_scs_count": 1,
-      "issues": [
-        "visible_scs_not_executable:include,instance,source",
-        "hidden_scs_not_executable:include,instance,source",
-        "missing_required_behavior_section",
-        "checker_syntax_only_no_behavior_score"
-      ],
+      "issues": [],
       "negative_count": 5,
       "number": 447,
-      "reasonable_task": false,
+      "reasonable_task": true,
       "solution_file_count": 1,
-      "sop_ready": false,
+      "sop_ready": true,
       "starter_file_count": 1,
       "syntax_focus": "Use $display(), $warning(), $error(), and $debug() system output calls.",
       "target": "display_warning_debug_log.va",

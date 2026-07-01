@@ -8499,6 +8499,31 @@ def check_v3_446_fstrobe_file_line_writer(rows: list[dict[str, float]]) -> tuple
     )
 
 
+def check_v3_447_display_warning_debug_log(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "vin", "clk", "mode", "rst", "out", "metric"}
+    if not rows or not required.issubset(rows[0]):
+        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
+        return False, "missing_columns=" + ",".join(missing)
+    return _sample_many(
+        rows,
+        {
+            "out": [
+                (130.0, 0.9),
+                (230.0, 0.0),
+                (330.0, 0.0),
+                (430.0, 0.9),
+            ],
+            "metric": [
+                (130.0, 0.0),
+                (230.0, 1.0),
+                (330.0, 0.0),
+                (430.0, 0.0),
+            ],
+        },
+        tol=0.08,
+    )
+
+
 def check_v3_361_white_noise_voltage_source(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "ctrl", "clk", "out", "metric"}
     if not rows or not required.issubset(rows[0]):
@@ -18957,6 +18982,8 @@ V3_STANDALONE_SPLIT_CHECKS = {
     "445-limexp-soft-exponential": check_v3_445_limexp_soft_exponential,
     "v3_446_fstrobe_file_line_writer": check_v3_446_fstrobe_file_line_writer,
     "446-fstrobe-file-line-writer": check_v3_446_fstrobe_file_line_writer,
+    "v3_447_display_warning_debug_log": check_v3_447_display_warning_debug_log,
+    "447-display-warning-debug-log": check_v3_447_display_warning_debug_log,
 }
 
 for _alias, _checker in V3_STANDALONE_SPLIT_CHECKS.items():
