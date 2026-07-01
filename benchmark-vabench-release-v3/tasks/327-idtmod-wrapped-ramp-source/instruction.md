@@ -19,9 +19,21 @@ module idtmod_wrapped_ramp_source (
 
 ## Required Behavior
 
-Use idtmod() as a voltage-domain wrapped phase accumulator.
+Use `idtmod()` as a voltage-domain wrapped ramp source.
 
-Use voltage-coded logic with `vth = 0.45` V and high outputs near `0.9` V. The hidden evaluator samples `out` and `metric` under deterministic voltage-domain stimulus and checks the language feature named by this task.
+This is a behavioral continuous-time task, not a conservative-current/KCL task. Do not use `I(...)`, `ddt(...)`, or `idt(...)`.
+
+Use voltage-coded logic with `vth = 0.45` V and high outputs near `0.9` V.
+
+Implement:
+
+- `freq_q = 0.75e6 + 1.5e6 * V(vin)`
+- `phase_q = idtmod((V(rst) > vth) ? 0.0 : freq_q, 0.0, 1.0)`
+- while `V(rst) > vth`, drive both outputs to `0.0`
+- otherwise drive `out = 0.9 * phase_q`
+- otherwise drive `metric = 0.9` when `phase_q > V(mode)`, else `0.0`
+
+The hidden testbench holds reset high at the beginning, then releases it while driving `vin = 0.5` and `mode = 0.6`. This makes `freq_q = 1.5 MHz`, so the wrapped ramp phase advances by about `0.15` every `100 ns` after reset is released. The evaluator samples both the analog ramp voltage and the thresholded metric output.
 
 ## Output
 

@@ -7321,6 +7321,36 @@ def check_v3_326_idtmod_phase_accumulator(rows: list[dict[str, float]]) -> tuple
     )
 
 
+def check_v3_327_idtmod_wrapped_ramp_source(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "vin", "clk", "mode", "rst", "out", "metric"}
+    if not rows or not required.issubset(rows[0]):
+        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
+        return False, "missing_columns=" + ",".join(missing)
+    return _sample_many(
+        rows,
+        {
+            "out": [
+                (50.0, 0.0),
+                (200.0, 0.135),
+                (300.0, 0.270),
+                (500.0, 0.540),
+                (550.0, 0.6075),
+                (750.0, 0.8775),
+                (820.0, 0.054),
+            ],
+            "metric": [
+                (50.0, 0.0),
+                (300.0, 0.0),
+                (450.0, 0.0),
+                (550.0, 0.9),
+                (750.0, 0.9),
+                (820.0, 0.0),
+            ],
+        },
+        tol=0.08,
+    )
+
+
 def check_v3_clocked_sar_comparator(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "cmpck", "vinp", "vinn", "dcmpn", "dcmpp"}
     if not rows or not required.issubset(rows[0]):
@@ -16270,6 +16300,8 @@ V3_STANDALONE_SPLIT_CHECKS = {
     "325-slew-asymmetric-rise-fall": check_v3_325_slew_asymmetric_rise_fall,
     "v3_326_idtmod_phase_accumulator": check_v3_326_idtmod_phase_accumulator,
     "326-idtmod-phase-accumulator": check_v3_326_idtmod_phase_accumulator,
+    "v3_327_idtmod_wrapped_ramp_source": check_v3_327_idtmod_wrapped_ramp_source,
+    "327-idtmod-wrapped-ramp-source": check_v3_327_idtmod_wrapped_ramp_source,
 }
 
 for _alias, _checker in V3_STANDALONE_SPLIT_CHECKS.items():

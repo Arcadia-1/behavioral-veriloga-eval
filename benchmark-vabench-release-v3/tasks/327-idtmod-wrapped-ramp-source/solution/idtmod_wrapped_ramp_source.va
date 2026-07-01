@@ -25,10 +25,15 @@ analog begin
         count_q = 0;
         state_q = 0;
     end
-    freq_q = 1.0e6 + 2.0e6 * V(vin);
-    phase_q = idtmod(freq_q, 0.0, 1.0);
-    out_v = phase_q * vhi;
-    metric_v = (phase_q > V(mode)) ? vhi : 0.0;
+    freq_q = 0.75e6 + 1.5e6 * V(vin);
+    phase_q = idtmod((V(rst) > vth) ? 0.0 : freq_q, 0.0, 1.0);
+    if (V(rst) > vth) begin
+        out_v = 0.0;
+        metric_v = 0.0;
+    end else begin
+        out_v = phase_q * vhi;
+        metric_v = (phase_q > V(mode)) ? vhi : 0.0;
+    end
     V(out) <+ transition(out_v, 0.0, tr, tr);
     V(metric) <+ transition(metric_v, 0.0, tr, tr);
 end
