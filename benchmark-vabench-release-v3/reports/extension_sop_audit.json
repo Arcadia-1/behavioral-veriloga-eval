@@ -34,28 +34,28 @@
       "top_issues": []
     },
     {
-      "complete_tests_count": 20,
+      "complete_tests_count": 21,
       "description": "task/file/table/random/hierarchy syntax candidates",
-      "fair_eval_count": 21,
+      "fair_eval_count": 22,
       "range": "373-434",
-      "sop_ready_count": 20,
+      "sop_ready_count": 21,
       "task_count": 62,
       "top_issues": [
         [
           "missing_required_behavior_section",
-          42
+          41
         ],
         [
           "visible_scs_not_executable:include,instance,source",
-          41
+          40
         ],
         [
           "hidden_scs_not_executable:include,instance,source",
-          41
+          40
         ],
         [
           "checker_syntax_only_no_behavior_score",
-          41
+          40
         ]
       ]
     },
@@ -141,15 +141,15 @@
   "scope": "benchmark-vabench-release-v3 tasks 301-494",
   "standard": "behavioral-veriloga-vela/SOP.md visible/hidden task standard and four quality criteria",
   "summary": {
-    "complete_tests_count": 92,
-    "fair_eval_count": 92,
+    "complete_tests_count": 93,
+    "fair_eval_count": 93,
     "issue_counts": {
-      "checker_syntax_only_no_behavior_score": 102,
-      "hidden_scs_not_executable:include,instance,source": 101,
-      "missing_required_behavior_section": 102,
-      "visible_scs_not_executable:include,instance,source": 101
+      "checker_syntax_only_no_behavior_score": 101,
+      "hidden_scs_not_executable:include,instance,source": 100,
+      "missing_required_behavior_section": 101,
+      "visible_scs_not_executable:include,instance,source": 100
     },
-    "sop_ready_count": 91,
+    "sop_ready_count": 92,
     "task_count": 194
   },
   "tasks": [
@@ -2298,20 +2298,15 @@
     },
     {
       "certification_scope": "language_extension_not_part_of_original_full_300_claim",
-      "complete_tests": false,
-      "fair_eval": false,
+      "complete_tests": true,
+      "fair_eval": true,
       "hidden_scs_count": 1,
-      "issues": [
-        "visible_scs_not_executable:include,instance,source",
-        "hidden_scs_not_executable:include,instance,source",
-        "missing_required_behavior_section",
-        "checker_syntax_only_no_behavior_score"
-      ],
+      "issues": [],
       "negative_count": 5,
       "number": 394,
-      "reasonable_task": false,
+      "reasonable_task": true,
       "solution_file_count": 1,
-      "sop_ready": false,
+      "sop_ready": true,
       "starter_file_count": 1,
       "syntax_focus": "Use $rdist_chi_square() for seeded energy-like variation.",
       "target": "rdist_chi_square_energy.va",
