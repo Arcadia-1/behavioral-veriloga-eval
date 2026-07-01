@@ -3,9 +3,10 @@ module wreal_clamped_mux(a, b, sel, y);
     output y;
     wreal a, b, sel, y;
     parameter real gain = 0.75;
-parameter real offset = 0.1;
-parameter real threshold = 0.45;
-parameter real high = 0.6;
-parameter real low = 0.0;
-    assign y = sel > 0.5 ? a : b;
+    parameter real offset = 0.1;
+    parameter real threshold = 0.45;
+    parameter real high = 0.6;
+    parameter real low = 0.0;
+    assign y = ((sel > threshold ? a : b) > high) ? high :
+               (((sel > threshold ? a : b) < low) ? low : (sel > threshold ? a : b));
 endmodule

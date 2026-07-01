@@ -11,24 +11,24 @@
       "top_issues": []
     },
     {
-      "complete_tests_count": 3,
+      "complete_tests_count": 4,
       "description": "AMS mixed-signal candidates",
-      "fair_eval_count": 3,
+      "fair_eval_count": 4,
       "range": "341-360",
-      "sop_ready_count": 3,
+      "sop_ready_count": 4,
       "task_count": 20,
       "top_issues": [
         [
           "visible_scs_not_executable:include,instance,source,save",
-          17
+          16
         ],
         [
           "hidden_scs_not_executable:include,instance,source,save",
-          17
+          16
         ],
         [
           "checker_syntax_only_no_behavior_score",
-          17
+          16
         ]
       ]
     },
@@ -162,17 +162,17 @@
   "scope": "benchmark-vabench-release-v3 tasks 301-494",
   "standard": "behavioral-veriloga-vela/SOP.md visible/hidden task standard and four quality criteria",
   "summary": {
-    "complete_tests_count": 43,
-    "fair_eval_count": 43,
+    "complete_tests_count": 44,
+    "fair_eval_count": 44,
     "issue_counts": {
-      "checker_syntax_only_no_behavior_score": 151,
+      "checker_syntax_only_no_behavior_score": 150,
       "hidden_scs_not_executable:include,instance,source": 122,
-      "hidden_scs_not_executable:include,instance,source,save": 29,
+      "hidden_scs_not_executable:include,instance,source,save": 28,
       "missing_required_behavior_section": 122,
       "visible_scs_not_executable:include,instance,source": 122,
-      "visible_scs_not_executable:include,instance,source,save": 29
+      "visible_scs_not_executable:include,instance,source,save": 28
     },
-    "sop_ready_count": 43,
+    "sop_ready_count": 44,
     "task_count": 194
   },
   "tasks": [
@@ -1167,19 +1167,15 @@
     },
     {
       "certification_scope": "ams_extension_not_part_of_original_full_300_claim",
-      "complete_tests": false,
-      "fair_eval": false,
+      "complete_tests": true,
+      "fair_eval": true,
       "hidden_scs_count": 1,
-      "issues": [
-        "visible_scs_not_executable:include,instance,source,save",
-        "hidden_scs_not_executable:include,instance,source,save",
-        "checker_syntax_only_no_behavior_score"
-      ],
+      "issues": [],
       "negative_count": 5,
       "number": 344,
       "reasonable_task": true,
       "solution_file_count": 1,
-      "sop_ready": false,
+      "sop_ready": true,
       "starter_file_count": 1,
       "syntax_focus": "Use wreal select behavior with continuous assign.",
       "target": "wreal_clamped_mux.vams",

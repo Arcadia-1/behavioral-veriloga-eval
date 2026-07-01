@@ -6311,17 +6311,39 @@
 344-wreal-clamped-mux: |
   version: 1
   task_id: v3_344_wreal_clamped_mux
-  backend: ams_mixed_signal
-  status: ams-mixed-signal-candidate
-  checker: ams_language_feature_contract
+  backend: evas
+  status: behavior-certified-candidate
+  checker: sampled_wreal_assign_contract
+  # vabench-release-v2-checks
+  required_columns:
+    - time
+    - a
+    - b
+    - sel
+    - y
   syntax:
     must_include:
       - "wreal"
       - "assign"
     must_not_include:
       - "I("
+  sim_correct:
+    positive:
+      - solution/wreal_clamped_mux.vams
+    negative:
+      - negative_variants/neg_001_force_zero/wreal_clamped_mux.vams
+      - negative_variants/neg_002_invert_select/wreal_clamped_mux.vams
+      - negative_variants/neg_003_drop_reset/wreal_clamped_mux.vams
+      - negative_variants/neg_004_wrong_edge/wreal_clamped_mux.vams
+      - negative_variants/neg_005_scale_low/wreal_clamped_mux.vams
+    checks:
+      - wreal_ports_parse
+      - continuous_assign_mux_selects_real_input
+      - low_clamp_applied_to_b_path
+      - high_clamp_applied_to_a_path
+      - no_current_domain_contribution
   notes:
-    - "AMS mixed-signal extension task; not part of original full-300 certification claim."
+    - "AMS mixed-signal extension task promoted to executable EVAS behavior candidate."
 345-wreal-scale-offset: |
   version: 1
   task_id: v3_345_wreal_scale_offset
