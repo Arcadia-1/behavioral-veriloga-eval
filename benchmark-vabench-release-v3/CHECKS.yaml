@@ -10464,16 +10464,24 @@
 455-packed-logic-bus-slice: |
   version: 1
   task_id: v3_455_packed_logic_bus_slice
-  backend: evas_rust_compile_capable
-  status: syntax-extension-candidate
+  backend: digital_mixed_capable
+  status: ams-mixed-signal-candidate
   checker: language_feature_contract
+  required_columns:
+    - time
+    - a
+    - y
   syntax:
     must_include:
       - "logic [7:0]"
+      - "logic [3:0]"
+      - "assign"
+      - "{a[7:6], a[1:0]}"
     must_not_include:
       - "I("
   notes:
-    - "Manual language gap-fill task; unsupported rows are tracked in EVAS issues."
+    - "AMS/digital packed-bus slice candidate staged pending EVAS digital vector-port and assign support."
+    - "EVAS issue: https://github.com/Arcadia-1/EVAS/issues/43"
 456-event-or-cross-timer: |
   version: 1
   task_id: v3_456_event_or_cross_timer
