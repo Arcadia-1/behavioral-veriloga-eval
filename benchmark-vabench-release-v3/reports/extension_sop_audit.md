@@ -10,6 +10,8 @@ Date: 2026-07-02
 - Tasks with behavior checker evidence: **153**
 - Tasks with distinct visible/hidden SCS stimuli: **74**
 - Tasks with identical visible/hidden SCS stimuli: **120**
+- SOP-ready tasks with identical visible/hidden SCS stimuli: **102**
+- Staged tasks with identical visible/hidden SCS stimuli: **18**
 
 ## Issue Counts
 

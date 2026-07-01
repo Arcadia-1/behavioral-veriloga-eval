@@ -234,6 +234,8 @@ def write_md(report: dict[str, Any]) -> None:
         f"- Tasks with behavior checker evidence: **{summary['fair_eval_count']}**",
         f"- Tasks with distinct visible/hidden SCS stimuli: **{summary['visible_hidden_distinct_count']}**",
         f"- Tasks with identical visible/hidden SCS stimuli: **{summary['visible_hidden_identical_count']}**",
+        f"- SOP-ready tasks with identical visible/hidden SCS stimuli: **{summary['sop_ready_visible_hidden_identical_count']}**",
+        f"- Staged tasks with identical visible/hidden SCS stimuli: **{summary['staged_visible_hidden_identical_count']}**",
         "",
         "## Issue Counts",
         "",
@@ -318,6 +320,20 @@ def main() -> int:
             "visible_hidden_distinct_count": sum(row["visible_hidden_distinct"] for row in rows),
             "visible_hidden_identical_count": sum(
                 row["visible_scs_count"] > 0
+                and row["hidden_scs_count"] > 0
+                and not row["visible_hidden_distinct"]
+                for row in rows
+            ),
+            "sop_ready_visible_hidden_identical_count": sum(
+                row["sop_ready"]
+                and row["visible_scs_count"] > 0
+                and row["hidden_scs_count"] > 0
+                and not row["visible_hidden_distinct"]
+                for row in rows
+            ),
+            "staged_visible_hidden_identical_count": sum(
+                not row["sop_ready"]
+                and row["visible_scs_count"] > 0
                 and row["hidden_scs_count"] > 0
                 and not row["visible_hidden_distinct"]
                 for row in rows
