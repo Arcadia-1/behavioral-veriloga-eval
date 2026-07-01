@@ -8532,16 +8532,45 @@
 397-hierarchy-gain-child: |
   version: 1
   task_id: v3_397_hierarchy_gain_child
-  backend: evas_rust_compile_capable
-  status: syntax-extension-candidate
-  checker: language_feature_contract
+  backend: evas
+  status: behavior-certified-candidate
+  checker: hierarchy_gain_child_contract
+  # vabench-release-v2-checks
+  required_columns:
+    - time
+    - vin
+    - clk
+    - mode
+    - rst
+    - out
+    - metric
   syntax:
     must_include:
-      - "v3_child"
+      - "v3_child_gain"
+      - "u1"
+      - ".vin(vin)"
+      - ".out(out)"
+      - "gain"
+      - "V(out)"
     must_not_include:
       - "I("
+  sim_correct:
+    positive:
+      - solution/hierarchy_gain_child.va
+    negative:
+      - negative_variants/neg_001_force_zero/hierarchy_gain_child.va
+      - negative_variants/neg_002_wrong_threshold/hierarchy_gain_child.va
+      - negative_variants/neg_003_reset_bias/hierarchy_gain_child.va
+      - negative_variants/neg_004_metric_offset/hierarchy_gain_child.va
+      - negative_variants/neg_005_scale_output/hierarchy_gain_child.va
+    checks:
+      - child_module_instance_drives_parent_output
+      - named_port_map_connects_vin_to_out
+      - gain_is_exactly_0p8
+      - metric_remains_zero_for_unforced_mid_node
+      - no_current_domain_contribution
   notes:
-    - "Language extension task; not part of original full-300 transient certification claim."
+    - "Hierarchy/instantiation language extension promoted to executable EVAS behavior candidate."
 398-hierarchy-two-stage-chain: |
   version: 1
   task_id: v3_398_hierarchy_two_stage_chain

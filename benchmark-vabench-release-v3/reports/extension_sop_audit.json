@@ -34,28 +34,28 @@
       "top_issues": []
     },
     {
-      "complete_tests_count": 23,
+      "complete_tests_count": 24,
       "description": "task/file/table/random/hierarchy syntax candidates",
-      "fair_eval_count": 24,
+      "fair_eval_count": 25,
       "range": "373-434",
-      "sop_ready_count": 23,
+      "sop_ready_count": 24,
       "task_count": 62,
       "top_issues": [
         [
           "missing_required_behavior_section",
-          39
+          38
         ],
         [
           "visible_scs_not_executable:include,instance,source",
-          38
+          37
         ],
         [
           "hidden_scs_not_executable:include,instance,source",
-          38
+          37
         ],
         [
           "checker_syntax_only_no_behavior_score",
-          38
+          37
         ]
       ]
     },
@@ -141,15 +141,15 @@
   "scope": "benchmark-vabench-release-v3 tasks 301-494",
   "standard": "behavioral-veriloga-vela/SOP.md visible/hidden task standard and four quality criteria",
   "summary": {
-    "complete_tests_count": 95,
-    "fair_eval_count": 95,
+    "complete_tests_count": 96,
+    "fair_eval_count": 96,
     "issue_counts": {
-      "checker_syntax_only_no_behavior_score": 99,
-      "hidden_scs_not_executable:include,instance,source": 98,
-      "missing_required_behavior_section": 99,
-      "visible_scs_not_executable:include,instance,source": 98
+      "checker_syntax_only_no_behavior_score": 98,
+      "hidden_scs_not_executable:include,instance,source": 97,
+      "missing_required_behavior_section": 98,
+      "visible_scs_not_executable:include,instance,source": 97
     },
-    "sop_ready_count": 94,
+    "sop_ready_count": 95,
     "task_count": 194
   },
   "tasks": [
@@ -2367,21 +2367,16 @@
     },
     {
       "certification_scope": "language_extension_not_part_of_original_full_300_claim",
-      "complete_tests": false,
-      "fair_eval": false,
+      "complete_tests": true,
+      "fair_eval": true,
       "hidden_scs_count": 1,
-      "issues": [
-        "visible_scs_not_executable:include,instance,source",
-        "hidden_scs_not_executable:include,instance,source",
-        "missing_required_behavior_section",
-        "checker_syntax_only_no_behavior_score"
-      ],
+      "issues": [],
       "negative_count": 5,
       "number": 397,
-      "reasonable_task": false,
-      "solution_file_count": 1,
-      "sop_ready": false,
-      "starter_file_count": 1,
+      "reasonable_task": true,
+      "solution_file_count": 2,
+      "sop_ready": true,
+      "starter_file_count": 2,
       "syntax_focus": "Instantiate a child behavioral module for gain staging.",
       "target": "hierarchy_gain_child.va",
       "task": "397-hierarchy-gain-child",

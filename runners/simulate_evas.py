@@ -8906,6 +8906,29 @@ def check_v3_396_rdist_erlang_latency(rows: list[dict[str, float]]) -> tuple[boo
     )
 
 
+def check_v3_397_hierarchy_gain_child(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "vin", "clk", "mode", "rst", "out", "metric"}
+    if not rows or not required.issubset(rows[0]):
+        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
+        return False, "missing_columns=" + ",".join(missing)
+    return _sample_many(
+        rows,
+        {
+            "out": [
+                (20.0, 0.56),
+                (80.0, 0.56),
+                (140.0, 0.56),
+            ],
+            "metric": [
+                (20.0, 0.0),
+                (80.0, 0.0),
+                (140.0, 0.0),
+            ],
+        },
+        tol=0.02,
+    )
+
+
 def check_v3_clocked_sar_comparator(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "cmpck", "vinp", "vinn", "dcmpn", "dcmpp"}
     if not rows or not required.issubset(rows[0]):
@@ -17993,6 +18016,8 @@ V3_STANDALONE_SPLIT_CHECKS = {
     "395-rdist-t-tail-dither": check_v3_395_rdist_t_tail_dither,
     "v3_396_rdist_erlang_latency": check_v3_396_rdist_erlang_latency,
     "396-rdist-erlang-latency": check_v3_396_rdist_erlang_latency,
+    "v3_397_hierarchy_gain_child": check_v3_397_hierarchy_gain_child,
+    "397-hierarchy-gain-child": check_v3_397_hierarchy_gain_child,
 }
 
 for _alias, _checker in V3_STANDALONE_SPLIT_CHECKS.items():
