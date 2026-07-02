@@ -1,9 +1,48 @@
-# Source Latched Comparator Delay Audit
+# Audit: 126-latched-comparator-delay
 
-- Source: `jielu/L2_comp.va`
-- Scenario: single-output latched comparator with supply-referenced output delay.
-- Import status: certified only after visible compile, EVAS hidden semantic check, Spectre AX hidden semantic check, and EVAS/Spectre parity pass.
-- Evaluation: stable semantic samples from `tran.csv`; raw simulator timestep equality is not used.
-- Evidence:
-  - `WORK/source-import-batch3-evas/126-latched-comparator-delay`
-  - `WORK/source-import-batch3-spectre/126-latched-comparator-delay`
+## Gate 1
+
+- Label: `independent_l1_ready`.
+- Function: supply-referenced latched comparator with configurable output delay,
+  input-referred offset, and deterministic/noisy decision hook.
+- Independence: retained as distinct from `112` because this task has a single
+  latched output, derives output rails from `GND`/`VDD`, and includes delay plus
+  offset/noise decision semantics.
+- Interface role: human review treats the analog-to-decision boundary as a
+  meaningful data-converter benchmark candidate. The offset/noise/delay
+  contract makes it more than a parameter-only variant of a plain comparator,
+  while upstream can still decide whether to count it under a main L1 or
+  converter-interface bucket.
+
+## Gate 2
+
+- Status: `cadence_modeling_ready`.
+- Prompt hygiene: replaced terse import prompt with a public circuit contract.
+- Public contract now exposes module/ports, `td`, `tr`, `vos`, `vn`,
+  `seed_init`, supply-derived threshold/output rails, latch edge, and
+  deterministic `vn=0` behavior.
+- Visible/hidden relationship: hidden testbench is no longer byte-identical to
+  visible smoke; hidden coverage sets `vos=50m`, `vn=0`, a non-default delay,
+  and an input case where `VINP > VINN` but the differential is below offset.
+- Checker: `v3_latched_comparator_delay`, stable-window samples for high/low
+  decisions after delay.
+- Functional sanity vectors:
+  - `VINP - VINN = 110m`, `vos=50m`: output high after the latch delay.
+  - `VINP - VINN = 30m`, `vos=50m`: output low despite `VINP > VINN`.
+  - `VINP - VINN = 100m`, `vos=50m`: output high.
+  - Negative differential: output low.
+- Cadence reference correspondence: Cadence mixed-signal comparator/interface
+  examples publish thresholds, output levels, latch/event timing, delay, and
+  transition behavior at analog/digital boundaries. This row keeps those public
+  boundary contracts while adapting the output to pure voltage-domain
+  Verilog-A. The random hook remains public through `seed_init` and `vn` so the
+  checker is not relying on hidden-only noise semantics.
+
+## Validation
+
+- EVAS hidden gold: PASS.
+- EVAS negative variants: 4/4 rejected.
+- Spectre hidden gold: PASS.
+- Spectre negative variants: 4/4 rejected.
+- AHDL lint triage: no `AHDLLINT-*` findings. Spectre reported only
+  `VACOMP-2435` and `SPECTRE-592` environment/mode warnings.
