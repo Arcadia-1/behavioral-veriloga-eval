@@ -26,7 +26,7 @@ RANGE_GROUPS = [
     (373, 434, "task/file/table/random/hierarchy syntax candidates"),
     (435, 458, "manual syntax-completion candidates"),
     (459, 470, "course-material gap-fill candidates"),
-    (471, 497, "LRM KCL/continuous-time and Cadence data-converter gap-fill candidates"),
+    (471, 501, "LRM KCL/continuous-time and Cadence data-converter gap-fill candidates"),
 ]
 
 
@@ -319,6 +319,8 @@ def write_csv(rows: list[dict[str, Any]]) -> None:
 
 def write_md(report: dict[str, Any]) -> None:
     summary = report["summary"]
+    start_number = report["summary"]["min_task_number"]
+    end_number = report["summary"]["max_task_number"]
     lines = [
         "# v3 Extension SOP Audit",
         "",
@@ -370,7 +372,7 @@ def write_md(report: dict[str, Any]) -> None:
         "",
         "## Highest Severity Finding",
         "",
-        "Tasks 301-497 are extension-layer benchmark tasks outside the original "
+        f"Tasks {start_number:03d}-{end_number:03d} are staging-layer benchmark tasks outside the original "
         "full-300 denominator. Under the SOP they must retain concrete public "
         "behavior prompts, executable visible and hidden tests, repository "
         "behavior checkers, and five behavior-rejected negative variants.",
@@ -396,6 +398,8 @@ def main() -> int:
     ]
     issue_counts = dict(sorted(Counter(issue for row in rows for issue in row["issues"]).items()))
     warning_counts = dict(sorted(Counter(warning for row in rows for warning in row["warnings"]).items()))
+    min_task_number = min((row["number"] for row in rows), default=301)
+    max_task_number = max((row["number"] for row in rows), default=300)
     range_summary = []
     for start, end, description in RANGE_GROUPS:
         group_rows = [row for row in rows if start <= row["number"] <= end]
@@ -417,10 +421,12 @@ def main() -> int:
         })
     report = {
         "date": date.today().isoformat(),
-        "scope": "benchmark-vabench-release-v3 tasks 301-497",
+        "scope": f"benchmark-vabench-release-v3 tasks {min_task_number:03d}-{max_task_number:03d}",
         "standard": "behavioral-veriloga-vela/SOP.md visible/hidden task standard and four quality criteria",
         "summary": {
             "task_count": len(rows),
+            "min_task_number": min_task_number,
+            "max_task_number": max_task_number,
             "sop_ready_count": sum(row["sop_ready"] for row in rows),
             "complete_tests_count": sum(row["complete_tests"] for row in rows),
             "fair_eval_count": sum(row["fair_eval"] for row in rows),

@@ -12,22 +12,44 @@ REPORT = V3 / "reports" / "layered_certification.json"
 TASKS = V3 / "TASKS.json"
 SOP_AUDIT = V3 / "reports" / "extension_sop_audit.json"
 CHECKS = V3 / "CHECKS.yaml"
-VERIFY_REPORT = V3 / "reports" / "verify_301_497_layered.json"
+
+
+def task_manifest() -> dict[str, dict]:
+    return json.loads(TASKS.read_text(encoding="utf-8"))["tasks"]
+
+
+def extension_tasks() -> dict[str, dict]:
+    return {
+        key: task
+        for key, task in task_manifest().items()
+        if int(key.split("-", 1)[0]) > 300
+    }
+
+
+def extension_bounds() -> tuple[int, int]:
+    numbers = [int(key.split("-", 1)[0]) for key in extension_tasks()]
+    return min(numbers), max(numbers)
+
+
+def verify_report_path() -> Path:
+    start, end = extension_bounds()
+    return V3 / "reports" / f"verify_{start:03d}_{end:03d}_layered.json"
 
 
 def test_v3_layered_certification_counts_match_task_manifest() -> None:
     report = json.loads(REPORT.read_text(encoding="utf-8"))
-    tasks = json.loads(TASKS.read_text(encoding="utf-8"))["tasks"]
+    tasks = task_manifest()
     sop_audit = json.loads(SOP_AUDIT.read_text(encoding="utf-8"))
     sop_ready_count = sop_audit["summary"]["sop_ready_count"]
     summary = report["summary"]
+    expected_extension_count = len(extension_tasks())
 
-    assert summary["task_count"] == len(tasks) == 497
+    assert summary["task_count"] == len(tasks)
     assert summary["original_full_300_count"] == 300
-    assert summary["extension_candidate_count"] == 197
+    assert summary["extension_candidate_count"] == expected_extension_count
     assert summary["behavior_certified_count"] == 300 + sop_ready_count
     assert summary["behavior_certified_extension_count"] == sop_ready_count
-    assert summary["compile_supported_candidate_count"] == 197 - sop_ready_count
+    assert summary["compile_supported_candidate_count"] == expected_extension_count - sop_ready_count
     assert summary["unsupported_candidate_count"] == 0
 
     tier_counts = Counter((task.get("tier") or "<none>") for task in tasks.values())
@@ -41,12 +63,13 @@ def test_v3_extension_sop_audit_tracks_visible_hidden_diversity() -> None:
 
     distinct_rows = [row for row in rows if row["visible_hidden_distinct"]]
     identical_rows = [row for row in rows if not row["visible_hidden_distinct"]]
+    expected_extension_count = len(extension_tasks())
 
-    assert summary["visible_hidden_distinct_count"] == len(distinct_rows) == 197
+    assert summary["visible_hidden_distinct_count"] == len(distinct_rows) == expected_extension_count
     assert summary["visible_hidden_identical_count"] == len(identical_rows) == 0
-    assert summary["behavior_contract_complete_count"] == 197
-    assert summary["negative_cases_aligned_count"] == 197
-    assert summary["negative_descriptions_task_specific_count"] == 197
+    assert summary["behavior_contract_complete_count"] == expected_extension_count
+    assert summary["negative_cases_aligned_count"] == expected_extension_count
+    assert summary["negative_descriptions_task_specific_count"] == expected_extension_count
     assert summary["sop_ready_visible_hidden_identical_count"] == 0
     assert summary["staged_visible_hidden_identical_count"] == 0
     assert summary["warning_counts"].get("visible_hidden_identical", 0) == 0
@@ -67,7 +90,7 @@ def test_v3_extension_rows_do_not_overclaim_behavior_certification() -> None:
     rows = report["task_rows"]
 
     extension_rows = [row for row in rows if row["extension_candidate"]]
-    assert len(extension_rows) == 197
+    assert len(extension_rows) == len(extension_tasks())
     for row in extension_rows:
         if row["task_key"] in sop_ready_tasks:
             assert row["behavior_certified"]
@@ -396,7 +419,7 @@ def test_completion_audit_preserves_full_goal_boundary() -> None:
 
 
 def test_behavior_certified_extension_negatives_fail_behavior_checkers_only() -> None:
-    verification = json.loads(VERIFY_REPORT.read_text(encoding="utf-8"))
+    verification = json.loads(verify_report_path().read_text(encoding="utf-8"))
     summary = verification["summary"]
     negative_rows = [row for row in verification["rows"] if row["kind"] == "negative"]
     report = json.loads(REPORT.read_text(encoding="utf-8"))
@@ -416,7 +439,7 @@ def test_behavior_certified_extension_task_evidence_matches_case_report() -> Non
     report = json.loads(REPORT.read_text(encoding="utf-8"))
     evidence_path = ROOT / report["evidence_sources"]["behavior_certified_extension_task_evidence"]
     evidence = json.loads(evidence_path.read_text(encoding="utf-8"))
-    verification = json.loads(VERIFY_REPORT.read_text(encoding="utf-8"))
+    verification = json.loads(verify_report_path().read_text(encoding="utf-8"))
     verification_rows = verification["rows"]
 
     gold_by_task = {

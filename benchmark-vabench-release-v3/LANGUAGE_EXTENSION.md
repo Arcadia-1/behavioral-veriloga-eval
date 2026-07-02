@@ -125,18 +125,15 @@ PYTHONPATH=runners VAEVAS_DEFAULT_EVAS_ENGINE=python \
   --out benchmark-vabench-release-v3/reports/verify_301_501_layered.json
 ```
 
-The previously recorded `301`-`497` local EVAS run reported `197/197`
-staging-layer gold rows pass, `985/985` negative rows rejected, and `0`
-expectation failures. Targeted local EVAS verification for the added `498`-`501`
-replacement candidates reports `4/4` gold rows pass, `20/20` negative rows
-rejected, and `0` expectation failures. These rows remain outside the original
-full-300 denominator unless a later upstream decision assigns a replacement
-candidate to a `001`-`300` benchmark slot. Targeted Cadence/Spectre bridge
-validation for `498`-`501` reports visible gold `4/4` pass, hidden gold `4/4`
-pass, and hidden negative variants `20/20` rejected. AHDL log triage found no
-task-level `AHDLLINT-*` messages or AHDL compile errors for those replacement
-candidates; only the global `VACOMP-2435` environment-variable deprecation
-warning appears.
+The current `301`-`501` local EVAS run reports `201/201` staging-layer gold
+rows pass, `1005/1005` negative rows rejected, and `0` expectation failures.
+These rows remain outside the original full-300 denominator unless a later
+upstream decision assigns a replacement candidate to a `001`-`300` benchmark
+slot. Targeted Cadence/Spectre bridge validation for `498`-`501` reports visible
+gold `4/4` pass, hidden gold `4/4` pass, and hidden negative variants `20/20`
+rejected. AHDL log triage found no task-level `AHDLLINT-*` messages or AHDL
+compile errors for those replacement candidates; only the global `VACOMP-2435`
+environment-variable deprecation warning appears.
 
 Current local EVAS compile status after this expansion:
 
