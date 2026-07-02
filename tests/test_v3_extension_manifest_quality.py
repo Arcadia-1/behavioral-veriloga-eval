@@ -10,6 +10,7 @@ V3 = ROOT / "benchmark-vabench-release-v3"
 TASKS = V3 / "TASKS.json"
 CHECKS = V3 / "CHECKS.yaml"
 TASK_ROOT = V3 / "tasks"
+SOP_AUDIT = V3 / "reports" / "extension_sop_audit.json"
 
 
 REQUIRED_EXTENSION_FIELDS = {
@@ -277,7 +278,8 @@ def test_behavior_certified_extension_checks_reference_expected_artifacts() -> N
         for task_key in extension_tasks()
         if has_sim_correct(task_key)
     ]
-    assert len(behavior_tasks) == 156
+    sop_audit = json.loads(SOP_AUDIT.read_text(encoding="utf-8"))
+    assert len(behavior_tasks) == sop_audit["summary"]["sop_ready_count"]
 
     for task_key in behavior_tasks:
         task = extension_tasks()[task_key]

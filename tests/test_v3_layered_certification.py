@@ -140,7 +140,7 @@ def test_staged_extension_rows_have_traceable_evas_issues() -> None:
         for row in sop_audit["tasks"]
         if "checker_syntax_only_no_behavior_score" in row.get("issues", [])
     ]
-    assert len(staged_tasks) == 38
+    assert len(staged_tasks) == sop_audit["summary"]["task_count"] - sop_audit["summary"]["sop_ready_count"]
 
     missing_checks_url: list[str] = []
     missing_audit_url: list[str] = []
@@ -168,9 +168,10 @@ def test_blocking_issue_matrix_covers_all_staged_rows() -> None:
         for issue in blocking_issues
         for task in issue["tasks"]
     }
+    staged_count = report["summary"]["compile_supported_candidate_count"]
 
-    assert len(staged_rows) == 38
-    assert sum(issue["task_count"] for issue in blocking_issues) == 38
+    assert len(staged_rows) == staged_count
+    assert sum(issue["task_count"] for issue in blocking_issues) == staged_count
     assert issue_task_keys == {row["task_key"] for row in staged_rows}
     assert report["summary"]["blocking_issue_counts"] == {
         issue["issue_url"]: issue["task_count"]
@@ -211,10 +212,10 @@ def test_staged_gold_probe_documents_current_promotion_boundary() -> None:
         if row["score_claim"] == "excluded_until_behavior_promotion"
     ]
 
-    assert summary["gold_total"] == len(staged_rows) == 38
+    assert summary["gold_total"] == len(staged_rows)
     assert summary["gold_pass"] == 0
-    assert summary["expectation_fail"] == 38
-    assert len(probe["rows"]) == 38
+    assert summary["expectation_fail"] == len(staged_rows)
+    assert len(probe["rows"]) == len(staged_rows)
     assert {row["task_slug"] for row in probe["rows"]} == {
         row["task_key"] for row in staged_rows
     }
@@ -228,15 +229,17 @@ def test_completion_audit_preserves_full_goal_boundary() -> None:
 
     assert audit["status"] == "partial_external_blocked"
     assert audit["is_complete"] is False
-    assert "38 extension tasks" in audit["reason"]
+    staged_count = report["summary"]["compile_supported_candidate_count"]
+    behavior_count = report["summary"]["behavior_certified_extension_count"]
+    assert f"{staged_count} extension tasks" in audit["reason"]
     assert len(requirements) == 7
     assert by_requirement[
         "Each extension task has repository behavior checker evidence and can be scored fairly."
     ]["status"] == "partial"
-    assert "156 extension tasks are behavior-certified" in by_requirement[
+    assert f"{behavior_count} extension tasks are behavior-certified" in by_requirement[
         "Each extension task has repository behavior checker evidence and can be scored fairly."
     ]["evidence"]
-    assert "38 remain excluded_until_behavior_promotion" in by_requirement[
+    assert f"{staged_count} remain excluded_until_behavior_promotion" in by_requirement[
         "Each extension task has repository behavior checker evidence and can be scored fairly."
     ]["evidence"]
     assert by_requirement[
@@ -248,10 +251,13 @@ def test_behavior_certified_extension_negatives_fail_behavior_checkers_only() ->
     verification = json.loads(VERIFY_REPORT.read_text(encoding="utf-8"))
     summary = verification["summary"]
     negative_rows = [row for row in verification["rows"] if row["kind"] == "negative"]
+    report = json.loads(REPORT.read_text(encoding="utf-8"))
+    behavior_count = report["summary"]["behavior_certified_extension_count"]
+    expected_negative_count = behavior_count * 5
 
-    assert summary["gold_pass"] == 156
+    assert summary["gold_pass"] == behavior_count
     assert summary["gold_fail"] == 0
-    assert summary["negative_rejected"] == len(negative_rows) == 780
+    assert summary["negative_rejected"] == len(negative_rows) == expected_negative_count
     assert summary["negative_accepted"] == 0
     assert summary["expectation_fail"] == 0
     assert {row["status"] for row in negative_rows} == {"FAIL_SIM_CORRECTNESS"}
@@ -278,10 +284,12 @@ def test_behavior_certified_extension_task_evidence_matches_case_report() -> Non
 
     summary = evidence["summary"]
     task_rows = evidence["tasks"]
-    assert summary["task_count"] == len(task_rows) == 156
-    assert summary["gold_pass_count"] == 156
-    assert summary["negative_total"] == 780
-    assert summary["negative_behavior_rejected_total"] == 780
+    behavior_count = report["summary"]["behavior_certified_extension_count"]
+    expected_negative_count = behavior_count * 5
+    assert summary["task_count"] == len(task_rows) == behavior_count
+    assert summary["gold_pass_count"] == behavior_count
+    assert summary["negative_total"] == expected_negative_count
+    assert summary["negative_behavior_rejected_total"] == expected_negative_count
     assert summary["all_tasks_have_five_behavior_rejected_negatives"] is True
 
     for task_row in task_rows:

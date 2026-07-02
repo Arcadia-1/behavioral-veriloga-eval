@@ -10046,9 +10046,9 @@
 431-hierarchy-support-artifact-staging: |
   version: 1
   task_id: v3_431_hierarchy_support_artifact_staging
-  backend: hierarchy_capable
-  status: syntax-extension-candidate
-  checker: language_feature_contract
+  backend: evas
+  status: behavior-certified-candidate
+  checker: hierarchy_support_artifact_staging_contract
   # vabench-release-v2-checks
   required_columns:
     - time
@@ -10067,15 +10067,29 @@
       - "u_limit"
     must_not_include:
       - "I("
+  sim_correct:
+    positive:
+      - solution/hierarchy_support_artifact_staging.va
+    negative:
+      - negative_variants/neg_001_force_zero/hierarchy_support_artifact_staging.va
+      - negative_variants/neg_002_wrong_threshold/hierarchy_support_artifact_staging.va
+      - negative_variants/neg_003_reset_bias/hierarchy_support_artifact_staging.va
+      - negative_variants/neg_004_metric_offset/hierarchy_support_artifact_staging.va
+      - negative_variants/neg_005_scale_output/hierarchy_support_artifact_staging.va
+    checks:
+      - support_gain_child_applies_gain_0p75
+      - support_limit_child_clamps_output_to_0p9
+      - metric_tracks_intermediate_node
+      - named_child_instances_are_exercised
+      - no_current_domain_contribution
   notes:
-    - "Executable hierarchy candidate staged pending EVAS same-source child module lookup support."
-    - "EVAS issue: https://github.com/Arcadia-1/EVAS/issues/41"
+    - "Hierarchy support artifact candidate promoted to executable EVAS behavior evidence."
 432-hierarchy-nested-parameter-chain: |
   version: 1
   task_id: v3_432_hierarchy_nested_parameter_chain
-  backend: hierarchy_capable
-  status: syntax-extension-candidate
-  checker: language_feature_contract
+  backend: evas
+  status: behavior-certified-candidate
+  checker: hierarchy_nested_parameter_chain_contract
   required_columns:
     - time
     - vin
@@ -10093,9 +10107,23 @@
       - "u_gain1"
     must_not_include:
       - "I("
+  sim_correct:
+    positive:
+      - solution/hierarchy_nested_parameter_chain.va
+    negative:
+      - negative_variants/neg_001_force_zero/hierarchy_nested_parameter_chain.va
+      - negative_variants/neg_002_wrong_threshold/hierarchy_nested_parameter_chain.va
+      - negative_variants/neg_003_reset_bias/hierarchy_nested_parameter_chain.va
+      - negative_variants/neg_004_metric_offset/hierarchy_nested_parameter_chain.va
+      - negative_variants/neg_005_scale_output/hierarchy_nested_parameter_chain.va
+    checks:
+      - nested_gain_chain_applies_1p2_then_0p5
+      - metric_tracks_first_stage_output
+      - named_child_instances_are_exercised
+      - parameter_overrides_affect_hidden_waveform
+      - no_current_domain_contribution
   notes:
-    - "Executable hierarchy parameter-chain candidate staged pending EVAS same-source child module lookup support."
-    - "EVAS issue: https://github.com/Arcadia-1/EVAS/issues/41"
+    - "Hierarchy nested parameter-chain candidate promoted to executable EVAS behavior evidence."
 433-preprocessor-ifndef-elsif-undef: |
   version: 1
   task_id: v3_433_preprocessor_ifndef_elsif_undef

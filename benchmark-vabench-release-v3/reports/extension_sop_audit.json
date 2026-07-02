@@ -39,14 +39,14 @@
     {
       "complete_tests_count": 62,
       "description": "task/file/table/random/hierarchy syntax candidates",
-      "fair_eval_count": 55,
+      "fair_eval_count": 57,
       "range": "373-434",
-      "sop_ready_count": 55,
+      "sop_ready_count": 57,
       "task_count": 62,
       "top_issues": [
         [
           "checker_syntax_only_no_behavior_score",
-          7
+          5
         ]
       ],
       "visible_hidden_distinct_count": 62
@@ -101,11 +101,11 @@
   "standard": "behavioral-veriloga-vela/SOP.md visible/hidden task standard and four quality criteria",
   "summary": {
     "complete_tests_count": 194,
-    "fair_eval_count": 156,
+    "fair_eval_count": 158,
     "issue_counts": {
-      "checker_syntax_only_no_behavior_score": 38
+      "checker_syntax_only_no_behavior_score": 36
     },
-    "sop_ready_count": 156,
+    "sop_ready_count": 158,
     "sop_ready_visible_hidden_identical_count": 0,
     "staged_visible_hidden_identical_count": 0,
     "task_count": 194,
@@ -3251,18 +3251,16 @@
     {
       "certification_scope": "language_extension_not_part_of_original_full_300_claim",
       "complete_tests": true,
-      "fair_eval": false,
+      "fair_eval": true,
       "hidden_scs_count": 1,
-      "issues": [
-        "checker_syntax_only_no_behavior_score"
-      ],
+      "issues": [],
       "negative_count": 5,
       "number": 431,
       "reasonable_task": true,
-      "solution_file_count": 1,
-      "sop_ready": false,
-      "starter_file_count": 1,
-      "syntax_focus": "Use a parent module plus staged support child artifact in the same source.",
+      "solution_file_count": 3,
+      "sop_ready": true,
+      "starter_file_count": 3,
+      "syntax_focus": "Use a parent module plus staged support child artifacts.",
       "target": "hierarchy_support_artifact_staging.va",
       "task": "431-hierarchy-support-artifact-staging",
       "tier": "syntax-extension-candidate",
@@ -3277,18 +3275,16 @@
     {
       "certification_scope": "language_extension_not_part_of_original_full_300_claim",
       "complete_tests": true,
-      "fair_eval": false,
+      "fair_eval": true,
       "hidden_scs_count": 1,
-      "issues": [
-        "checker_syntax_only_no_behavior_score"
-      ],
+      "issues": [],
       "negative_count": 5,
       "number": 432,
       "reasonable_task": true,
-      "solution_file_count": 1,
-      "sop_ready": false,
-      "starter_file_count": 1,
-      "syntax_focus": "Use nested child module instances with parameter overrides across two stages.",
+      "solution_file_count": 2,
+      "sop_ready": true,
+      "starter_file_count": 2,
+      "syntax_focus": "Use nested child module instances from a support artifact with parameter overrides.",
       "target": "hierarchy_nested_parameter_chain.va",
       "task": "432-hierarchy-nested-parameter-chain",
       "tier": "syntax-extension-candidate",

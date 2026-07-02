@@ -1,0 +1,8 @@
+`include "constants.vams"
+`include "disciplines.vams"
+
+module staged_limit_child(input electrical vin, output electrical out);
+analog begin
+    V(out) <+ transition(V(vin) > 0.9 ? 0.9 : V(vin), 0.0, 200p, 200p);
+end
+endmodule

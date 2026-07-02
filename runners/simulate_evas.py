@@ -8684,12 +8684,12 @@ def check_v3_431_hierarchy_support_artifact_staging(rows: list[dict[str, float]]
         rows,
         {
             "out": [
-                (80.0, 0.30),
+                (100.0, 0.7125),
                 (220.0, 0.90),
             ],
             "metric": [
-                (80.0, 0.30),
-                (220.0, 1.05),
+                (100.0, 0.7125),
+                (220.0, 1.20),
             ],
         },
         tol=0.08,
@@ -8705,12 +8705,12 @@ def check_v3_432_hierarchy_nested_parameter_chain(rows: list[dict[str, float]]) 
         rows,
         {
             "out": [
-                (80.0, 0.30),
-                (220.0, 0.60),
+                (80.0, 0.18),
+                (220.0, 0.72),
             ],
             "metric": [
-                (80.0, 0.60),
-                (220.0, 1.20),
+                (80.0, 0.36),
+                (220.0, 1.44),
             ],
         },
         tol=0.08,

@@ -47,33 +47,6 @@
       ]
     },
     {
-      "issue_url": "https://github.com/Arcadia-1/EVAS/issues/41",
-      "promotion_acceptance": "After EVAS support lands, promote the listed 2 task(s) by adding sim_correct behavior contracts/checkers if missing, then require 2/2 gold PASS, 10/10 negative variants rejected, and zero expectation_fail in the verification report.",
-      "promotion_command": "PYTHONPATH=runners VAEVAS_DEFAULT_EVAS_ENGINE=python VAEVAS_EVAS_PERSISTENT_WORKER=0 PATH=\"$PWD/.venv-evas/bin:$PATH\" .venv-evas/bin/python scripts/run_v3_gold_negative_verification.py --start 431 --end 432 --tasks 431,432 --include-staged --timeout 120 --jobs 1 --out benchmark-vabench-release-v3/reports/verify_issue_431_432.json",
-      "semantic_layers": {
-        "behavioral_language_extension": 2
-      },
-      "task_count": 2,
-      "tasks": [
-        {
-          "semantic_layer": "behavioral_language_extension",
-          "target": "hierarchy_support_artifact_staging.va",
-          "task_id": "v3_431_hierarchy_support_artifact_staging",
-          "task_key": "431-hierarchy-support-artifact-staging",
-          "tier": "syntax-extension-candidate",
-          "title": "Hierarchy Support Artifact Staging"
-        },
-        {
-          "semantic_layer": "behavioral_language_extension",
-          "target": "hierarchy_nested_parameter_chain.va",
-          "task_id": "v3_432_hierarchy_nested_parameter_chain",
-          "task_key": "432-hierarchy-nested-parameter-chain",
-          "tier": "syntax-extension-candidate",
-          "title": "Hierarchy Nested Parameter Chain"
-        }
-      ]
-    },
-    {
       "issue_url": "https://github.com/Arcadia-1/EVAS/issues/42",
       "promotion_acceptance": "After EVAS support lands, promote the listed 1 task(s) by adding sim_correct behavior contracts/checkers if missing, then require 1/1 gold PASS, 5/5 negative variants rejected, and zero expectation_fail in the verification report.",
       "promotion_command": "PYTHONPATH=runners VAEVAS_DEFAULT_EVAS_ENGINE=python VAEVAS_EVAS_PERSISTENT_WORKER=0 PATH=\"$PWD/.venv-evas/bin:$PATH\" .venv-evas/bin/python scripts/run_v3_gold_negative_verification.py --start 410 --end 410 --tasks 410 --include-staged --timeout 120 --jobs 1 --out benchmark-vabench-release-v3/reports/verify_issue_410_410.json",
@@ -491,7 +464,7 @@
   ],
   "completion_audit": {
     "is_complete": false,
-    "reason": "The full 301-494 objective is not complete because 38 extension tasks still lack behavior checker evidence and are excluded until EVAS support issues are resolved.",
+    "reason": "The full 301-494 objective is not complete because 36 extension tasks still lack behavior checker evidence and are excluded until EVAS support issues are resolved.",
     "requirements": [
       {
         "evidence": "layered_certification summary reports extension_candidate_count=194.",
@@ -514,18 +487,18 @@
         "status": "satisfied"
       },
       {
-        "evidence": "156 extension tasks are behavior-certified; 38 remain excluded_until_behavior_promotion.",
+        "evidence": "158 extension tasks are behavior-certified; 36 remain excluded_until_behavior_promotion.",
         "gap": "The remaining staged rows are blocked by EVAS support issues or missing behavior-checker evidence; staged_promotion_gold_probe records the current per-task blocker.",
         "requirement": "Each extension task has repository behavior checker evidence and can be scored fairly.",
         "status": "partial"
       },
       {
-        "evidence": "verify_301_494_layered: gold_pass=156, gold_fail=0, negative_rejected=780, negative_accepted=0, expectation_fail=0.",
+        "evidence": "verify_301_494_layered: gold_pass=158, gold_fail=0, negative_rejected=790, negative_accepted=0, expectation_fail=0.",
         "requirement": "Behavior-certified extension tasks pass gold verification and reject all negative variants.",
         "status": "satisfied"
       },
       {
-        "evidence": "16 blocking issues cover 38 staged tasks; staged_promotion_gold_probe records 38/38 staged gold cases still failing the current promotion gate.",
+        "evidence": "15 blocking issues cover 36 staged tasks; staged_promotion_gold_probe records 36/36 staged gold cases still failing the current promotion gate.",
         "requirement": "Every staged task has a concrete EVAS issue and promotion checklist.",
         "status": "satisfied"
       }
@@ -607,12 +580,11 @@
   "release": "benchmark-vabench-release-v3",
   "status": "layered_partial",
   "summary": {
-    "behavior_certified_count": 456,
-    "behavior_certified_extension_count": 156,
+    "behavior_certified_count": 458,
+    "behavior_certified_extension_count": 158,
     "blocking_issue_counts": {
       "https://github.com/Arcadia-1/EVAS/issues/39": 2,
       "https://github.com/Arcadia-1/EVAS/issues/40": 1,
-      "https://github.com/Arcadia-1/EVAS/issues/41": 2,
       "https://github.com/Arcadia-1/EVAS/issues/42": 1,
       "https://github.com/Arcadia-1/EVAS/issues/43": 4,
       "https://github.com/Arcadia-1/EVAS/issues/44": 18,
@@ -629,18 +601,18 @@
     },
     "certification_level_counts": {
       "behavior_certified": 268,
-      "behavior_certified_extension": 156,
+      "behavior_certified_extension": 158,
       "behavior_certified_support": 32,
-      "compile_supported_candidate": 18,
+      "compile_supported_candidate": 16,
       "compile_supported_continuous_time_candidate": 14,
       "compile_supported_kcl_candidate": 6
     },
-    "compile_supported_candidate_count": 38,
+    "compile_supported_candidate_count": 36,
     "extension_candidate_count": 194,
     "original_full_300_count": 300,
     "score_claim_counts": {
-      "excluded_until_behavior_promotion": 38,
-      "extension_behavior_certified_outside_original_300": 156,
+      "excluded_until_behavior_promotion": 36,
+      "extension_behavior_certified_outside_original_300": 158,
       "original_full_300_policy": 300
     },
     "semantic_layer_counts": {
@@ -9270,16 +9242,16 @@
       "title": "Rdist Seed Reproducibility"
     },
     {
-      "behavior_certified": false,
-      "blocking_issue_urls": "https://github.com/Arcadia-1/EVAS/issues/41",
+      "behavior_certified": true,
+      "blocking_issue_urls": "",
       "category": "veriloga_hierarchy_semantics",
-      "certification_level": "compile_supported_candidate",
+      "certification_level": "behavior_certified_extension",
       "certification_scope": "language_extension_not_part_of_original_full_300_claim",
-      "claim_boundary": "Reference solution compiles with current local EVAS, but behavior checker promotion is still pending.",
+      "claim_boundary": "Extension task has SOP-ready behavior evidence: executable visible/hidden tests, repository behavior checker, and five rejected negative variants. It remains outside the original full-300 denominator.",
       "extension_candidate": true,
       "form": "dut",
       "in_original_full_300": false,
-      "score_claim": "excluded_until_behavior_promotion",
+      "score_claim": "extension_behavior_certified_outside_original_300",
       "semantic_layer": "behavioral_language_extension",
       "syntax_focus": "Use a parent module plus staged support child artifact in the same source.",
       "target": "hierarchy_support_artifact_staging.va",
@@ -9290,16 +9262,16 @@
       "title": "Hierarchy Support Artifact Staging"
     },
     {
-      "behavior_certified": false,
-      "blocking_issue_urls": "https://github.com/Arcadia-1/EVAS/issues/41",
+      "behavior_certified": true,
+      "blocking_issue_urls": "",
       "category": "veriloga_hierarchy_semantics",
-      "certification_level": "compile_supported_candidate",
+      "certification_level": "behavior_certified_extension",
       "certification_scope": "language_extension_not_part_of_original_full_300_claim",
-      "claim_boundary": "Reference solution compiles with current local EVAS, but behavior checker promotion is still pending.",
+      "claim_boundary": "Extension task has SOP-ready behavior evidence: executable visible/hidden tests, repository behavior checker, and five rejected negative variants. It remains outside the original full-300 denominator.",
       "extension_candidate": true,
       "form": "dut",
       "in_original_full_300": false,
-      "score_claim": "excluded_until_behavior_promotion",
+      "score_claim": "extension_behavior_certified_outside_original_300",
       "semantic_layer": "behavioral_language_extension",
       "syntax_focus": "Use nested child module instances with parameter overrides across two stages.",
       "target": "hierarchy_nested_parameter_chain.va",

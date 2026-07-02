@@ -5,9 +5,9 @@ Date: 2026-07-02
 ## Summary
 
 - Audited extension tasks: **194**
-- SOP-ready tasks: **156**
+- SOP-ready tasks: **158**
 - Tasks with executable visible+hidden SCS evidence: **194**
-- Tasks with behavior checker evidence: **156**
+- Tasks with behavior checker evidence: **158**
 - Tasks with distinct visible/hidden SCS stimuli: **194**
 - Tasks with identical visible/hidden SCS stimuli: **0**
 - SOP-ready tasks with identical visible/hidden SCS stimuli: **0**
@@ -15,7 +15,7 @@ Date: 2026-07-02
 
 ## Issue Counts
 
-- `checker_syntax_only_no_behavior_score`: 38
+- `checker_syntax_only_no_behavior_score`: 36
 
 ## Warning Counts
 
@@ -28,7 +28,7 @@ Date: 2026-07-02
 | `301-340` | language-semantics voltage-domain candidates | 40 | 40 | 40 | 40 | 40 |  |
 | `341-360` | AMS mixed-signal candidates | 20 | 19 | 20 | 19 | 20 | `checker_syntax_only_no_behavior_score`: 1 |
 | `361-372` | noise and analysis candidates | 12 | 12 | 12 | 12 | 12 |  |
-| `373-434` | task/file/table/random/hierarchy syntax candidates | 62 | 55 | 62 | 55 | 62 | `checker_syntax_only_no_behavior_score`: 7 |
+| `373-434` | task/file/table/random/hierarchy syntax candidates | 62 | 57 | 62 | 57 | 62 | `checker_syntax_only_no_behavior_score`: 5 |
 | `435-458` | manual syntax-completion candidates | 24 | 11 | 24 | 11 | 24 | `checker_syntax_only_no_behavior_score`: 13 |
 | `459-470` | course-material gap-fill candidates | 12 | 8 | 12 | 8 | 12 | `checker_syntax_only_no_behavior_score`: 4 |
 | `471-494` | LRM KCL/continuous-time gap-fill candidates | 24 | 11 | 24 | 11 | 24 | `checker_syntax_only_no_behavior_score`: 13 |
@@ -171,8 +171,8 @@ Tasks 301-494 are extension candidates, not SOP-ready benchmark tasks. They most
 | `428-string-mode-tagged-log` | `syntax-extension-candidate` | True | - |
 | `429-string-config-label-select` | `syntax-extension-candidate` | True | - |
 | `430-rdist-seed-reproducibility` | `syntax-extension-candidate` | True | - |
-| `431-hierarchy-support-artifact-staging` | `syntax-extension-candidate` | False | `checker_syntax_only_no_behavior_score` |
-| `432-hierarchy-nested-parameter-chain` | `syntax-extension-candidate` | False | `checker_syntax_only_no_behavior_score` |
+| `431-hierarchy-support-artifact-staging` | `syntax-extension-candidate` | True | - |
+| `432-hierarchy-nested-parameter-chain` | `syntax-extension-candidate` | True | - |
 | `433-preprocessor-ifndef-elsif-undef` | `syntax-extension-candidate` | True | - |
 | `434-repeat-loop-accumulator` | `syntax-extension-candidate` | True | - |
 | `435-ddt-voltage-derivative-source` | `behavioral-continuous-time-candidate` | False | `checker_syntax_only_no_behavior_score` |

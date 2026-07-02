@@ -1,6 +1,7 @@
 simulator lang=spectre
 global 0
 
+ahdl_include "staged_gain_child.va"
 ahdl_include "hierarchy_nested_parameter_chain.va"
 
 Vvin (vin 0) vsource type=pwl wave=[0 0.30 89n 0.30 90n 0.80 179n 0.80 180n 1.20 260n 1.20]

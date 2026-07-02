@@ -5268,7 +5268,11 @@
       ],
       "tier": "syntax-extension-candidate",
       "title": "Hierarchy Support Artifact Staging",
-      "syntax_focus": "Use a parent module plus staged support child artifact in the same source.",
+      "syntax_focus": "Use a parent module plus staged support child artifacts.",
+      "support": [
+        "staged_gain_child.va",
+        "staged_limit_child.va"
+      ],
       "certification_scope": "language_extension_not_part_of_original_full_300_claim"
     },
     "432-hierarchy-nested-parameter-chain": {
@@ -5282,7 +5286,10 @@
       ],
       "tier": "syntax-extension-candidate",
       "title": "Hierarchy Nested Parameter Chain",
-      "syntax_focus": "Use nested child module instances with parameter overrides across two stages.",
+      "syntax_focus": "Use nested child module instances from a support artifact with parameter overrides.",
+      "support": [
+        "staged_gain_child.va"
+      ],
       "certification_scope": "language_extension_not_part_of_original_full_300_claim"
     },
     "433-preprocessor-ifndef-elsif-undef": {
