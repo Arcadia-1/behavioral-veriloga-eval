@@ -1,13 +1,16 @@
 # Latched Comparator Delay
 
-Implement `latched_comparator_delay.va` in Verilog-A.
+Implement `latched_comparator_delay.va` in Verilog-A as a converter front-end
+interface primitive: a differential analog input is sampled by a latch clock and
+published as a supply-referenced voltage-coded decision.
 
 ## Public Interface
 
 Declare module `latched_comparator_delay(DOUT, GND, VDD, CLK, VINN, VINP)` with
 scalar electrical voltage-domain ports. `GND` and `VDD` are the output rail
-references, `CLK` is the latch clock, `VINP`/`VINN` are differential inputs,
-and `DOUT` is the voltage-coded latched decision.
+references, `CLK` is the latch clock, `VINP`/`VINN` are the differential analog
+input pair, and `DOUT` is the voltage-coded latched decision that bridges the
+analog comparison into the converter readout path.
 
 ## Public Parameter Contract
 

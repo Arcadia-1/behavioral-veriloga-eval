@@ -8,6 +8,11 @@
 - Independence: retained as distinct from `112` because this task has a single
   latched output, derives output rails from `GND`/`VDD`, and includes delay plus
   offset/noise decision semantics.
+- Interface role: human review treats the analog-to-decision boundary as a
+  meaningful data-converter benchmark candidate. The offset/noise/delay
+  contract makes it more than a parameter-only variant of a plain comparator,
+  while upstream can still decide whether to count it under a main L1 or
+  converter-interface bucket.
 
 ## Gate 2
 
@@ -26,9 +31,12 @@
   - `VINP - VINN = 30m`, `vos=50m`: output low despite `VINP > VINN`.
   - `VINP - VINN = 100m`, `vos=50m`: output high.
   - Negative differential: output low.
-- Cadence reference correspondence: random/distribution semantics must publish
-  seed and distribution behavior; voltage-domain logic must publish thresholds,
-  output levels, initial state, and transition timing.
+- Cadence reference correspondence: Cadence mixed-signal comparator/interface
+  examples publish thresholds, output levels, latch/event timing, delay, and
+  transition behavior at analog/digital boundaries. This row keeps those public
+  boundary contracts while adapting the output to pure voltage-domain
+  Verilog-A. The random hook remains public through `seed_init` and `vn` so the
+  checker is not relying on hidden-only noise semantics.
 
 ## Validation
 

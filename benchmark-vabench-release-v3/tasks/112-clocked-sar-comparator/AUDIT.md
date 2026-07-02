@@ -8,6 +8,10 @@
 - Independence: retained as distinct from reset-low comparator variants because
   the precharge-high/equal-input behavior is a different converter front-end
   primitive, not just a parameter value.
+- Interface role: human review treats this analog-to-decision boundary as a
+  meaningful data-converter benchmark candidate, not a disposable support-only
+  helper. Upstream can still decide whether to count it in the main L1 set or
+  in a converter-interface subcategory.
 - Duplicate policy: `116-clocked-comparator-reset-low` is treated as the
   non-counted reset-polarity variant in this review batch.
 
@@ -27,9 +31,11 @@
   - `VINP < VINN` after rising clock: `DCMPP=0`, `DCMPN=0.9`.
   - `VINP == VINN` after rising clock: both decision outputs low.
   - Clock falling reset/precharge: both decision outputs high.
-- Cadence reference correspondence: voltage-domain logic should publish
-  thresholds, output levels, initial state, and transition timing; ADC examples
-  require bit/order/event semantics to be public.
+- Cadence reference correspondence: Cadence Verilog-AMS interface-element and
+  comparator examples publish thresholds, output levels, initial state, event
+  timing, and transition behavior at analog/digital boundaries. This row adapts
+  that mixed-signal boundary pattern into pure voltage-domain Verilog-A outputs
+  so it remains reviewable in the current v3 surface.
 
 ## Validation
 

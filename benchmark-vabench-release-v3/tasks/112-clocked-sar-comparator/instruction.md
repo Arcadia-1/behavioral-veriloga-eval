@@ -1,13 +1,16 @@
 # Clocked SAR Comparator
 
-Implement `clocked_sar_comparator.va` in Verilog-A.
+Implement `clocked_sar_comparator.va` in Verilog-A as a converter front-end
+interface primitive: a differential analog input is latched into voltage-coded
+decision outputs for a SAR-style readout path.
 
 ## Public Interface
 
 Declare module `clocked_sar_comparator(CMPCK, VINN, VINP, DCMPN, DCMPP)` with
 scalar electrical voltage-domain ports. `CMPCK` is the comparator clock,
-`VINP` and `VINN` are differential analog inputs, and `DCMPP`/`DCMPN` are
-voltage-coded decision outputs.
+`VINP` and `VINN` are the differential analog input pair, and
+`DCMPP`/`DCMPN` are the voltage-coded decision outputs that bridge the analog
+comparison into the SAR decision path.
 
 ## Public Parameter Contract
 
