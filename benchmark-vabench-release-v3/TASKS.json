@@ -4114,6 +4114,25 @@
       "tier": "ams-mixed-signal-candidate",
       "title": "Always Resettable Toggle",
       "syntax_focus": "Use edge-triggered always with async reset.",
+      "description": "Use an always block with asynchronous reset to toggle q only when enable and data are asserted.",
+      "required_behavior": [
+        "A rising rst edge must immediately clear q to 0.",
+        "On each rising clk edge with rst low, q toggles only when en and d are both high.",
+        "When en or d is low, q must hold its previous value."
+      ],
+      "visible_tests": [
+        "visible.scs drives reset release and enabled data edges to check toggle behavior."
+      ],
+      "hidden_tests": [
+        "hidden.scs asserts reset mid-run to verify asynchronous clearing and later toggle recovery."
+      ],
+      "negative_variants": [
+        "neg_001_force_zero",
+        "neg_002_invert_select",
+        "neg_003_drop_reset",
+        "neg_004_wrong_edge",
+        "neg_005_scale_low"
+      ],
       "certification_scope": "ams_extension_not_part_of_original_full_300_claim"
     },
     "354-always-counter-two-bit": {
@@ -5055,6 +5074,25 @@
       "tier": "ams-mixed-signal-candidate",
       "title": "Logic Vector Assign Slice",
       "syntax_focus": "Use logic vectors with continuous assign and slice selection.",
+      "description": "Use a logic vector and continuous assignment to select either code[2] or code[0].",
+      "required_behavior": [
+        "When sel is high, y must follow code[2].",
+        "When sel is low, y must follow code[0].",
+        "The unused code bits must not affect y."
+      ],
+      "visible_tests": [
+        "visible.scs toggles code bits and sel to check both slice paths."
+      ],
+      "hidden_tests": [
+        "hidden.scs changes all code bits over a longer sequence to reject wrong-index implementations."
+      ],
+      "negative_variants": [
+        "neg_001_force_zero",
+        "neg_002_wrong_threshold",
+        "neg_003_reset_bias",
+        "neg_004_metric_offset",
+        "neg_005_scale_output"
+      ],
       "certification_scope": "language_extension_not_part_of_original_full_300_claim"
     },
     "416-logic-vector-reduction-flag": {
@@ -5069,6 +5107,25 @@
       "tier": "ams-mixed-signal-candidate",
       "title": "Logic Vector Reduction Flag",
       "syntax_focus": "Use logic vector reduction in a continuous assignment.",
+      "description": "Use a packed logic vector reduction OR to raise valid when any code bit is high.",
+      "required_behavior": [
+        "valid must be 0 only when all code bits are 0.",
+        "valid must be 1 when any single code bit or multiple code bits are 1.",
+        "The implementation must use vector reduction behavior rather than a constant flag."
+      ],
+      "visible_tests": [
+        "visible.scs drives several non-zero code combinations and an all-zero interval."
+      ],
+      "hidden_tests": [
+        "hidden.scs independently toggles all four code bits to catch partial reductions."
+      ],
+      "negative_variants": [
+        "neg_001_force_zero",
+        "neg_002_wrong_threshold",
+        "neg_003_reset_bias",
+        "neg_004_metric_offset",
+        "neg_005_scale_output"
+      ],
       "certification_scope": "language_extension_not_part_of_original_full_300_claim"
     },
     "417-always-async-reset-counter": {
@@ -5083,6 +5140,25 @@
       "tier": "ams-mixed-signal-candidate",
       "title": "Always Async Reset Counter",
       "syntax_focus": "Use an always block with asynchronous reset sensitivity.",
+      "description": "Use an always block with posedge clk or posedge rst to implement an enabled toggle counter.",
+      "required_behavior": [
+        "rst must asynchronously clear q to 0.",
+        "With rst low and en high, q toggles on each rising clk edge.",
+        "With en low, q holds its current value across clock edges."
+      ],
+      "visible_tests": [
+        "visible.scs checks reset release and enabled/disabled clock edges."
+      ],
+      "hidden_tests": [
+        "hidden.scs reasserts reset mid-run and varies en to verify async sensitivity."
+      ],
+      "negative_variants": [
+        "neg_001_force_zero",
+        "neg_002_wrong_threshold",
+        "neg_003_reset_bias",
+        "neg_004_metric_offset",
+        "neg_005_scale_output"
+      ],
       "certification_scope": "language_extension_not_part_of_original_full_300_claim"
     },
     "418-always-enable-saturating-counter": {
@@ -5097,6 +5173,25 @@
       "tier": "ams-mixed-signal-candidate",
       "title": "Always Enable Saturating Counter",
       "syntax_focus": "Use an always block for enabled saturating state update.",
+      "description": "Use an always block to implement a 2-bit counter that increments only when enabled and saturates at 3.",
+      "required_behavior": [
+        "rst must clear q to 00 on a clock edge.",
+        "With en high, q increments on rising clk edges until it reaches 11.",
+        "At 11 or when en is low, q must hold rather than wrap."
+      ],
+      "visible_tests": [
+        "visible.scs checks incrementing, enable hold, and saturation on q0/q1."
+      ],
+      "hidden_tests": [
+        "hidden.scs adds reset after saturation and further enable gaps to catch wraparound bugs."
+      ],
+      "negative_variants": [
+        "neg_001_force_zero",
+        "neg_002_wrong_threshold",
+        "neg_003_reset_bias",
+        "neg_004_metric_offset",
+        "neg_005_scale_output"
+      ],
       "certification_scope": "language_extension_not_part_of_original_full_300_claim"
     },
     "419-wreal-logic-threshold-bridge": {
@@ -5547,6 +5642,25 @@
       "tier": "ams-mixed-signal-candidate",
       "title": "Generate Genvar Replicated Stage",
       "syntax_focus": "Use generate/genvar to replicate a behavioral stage.",
+      "description": "Use generate/genvar and wreal assign staging to pass input a through to output y.",
+      "required_behavior": [
+        "The generated stage must continuously mirror a into stage[0].",
+        "y must follow stage[0] and therefore track a across all waveform segments.",
+        "The behavior must come from the generated assignment structure, not a disconnected constant."
+      ],
+      "visible_tests": [
+        "visible.scs drives several a levels to check pass-through tracking."
+      ],
+      "hidden_tests": [
+        "hidden.scs uses additional amplitudes and transitions to reject constant or stale stage outputs."
+      ],
+      "negative_variants": [
+        "neg_001_force_zero",
+        "neg_002_wrong_threshold",
+        "neg_003_reset_bias",
+        "neg_004_metric_offset",
+        "neg_005_scale_output"
+      ],
       "certification_scope": "language_extension_not_part_of_original_full_300_claim"
     },
     "450-custom-nature-discipline-voltage": {
@@ -5603,6 +5717,25 @@
       "tier": "ams-mixed-signal-candidate",
       "title": "Specify Specparam Delay",
       "syntax_focus": "Use specify/specparam delay syntax.",
+      "description": "Use specify/specparam path delay syntax while preserving the logical a-to-y relationship.",
+      "required_behavior": [
+        "y must follow the logical value of a.",
+        "The specify block must declare a path delay from a to y using specparam tpd.",
+        "The staged checker treats this as pending until delay semantics can be certified."
+      ],
+      "visible_tests": [
+        "visible.scs drives pulsed a transitions and checks the observable y relationship."
+      ],
+      "hidden_tests": [
+        "hidden.scs uses a different pulse period and width to exercise repeated path-delay events."
+      ],
+      "negative_variants": [
+        "neg_001_force_zero",
+        "neg_002_wrong_threshold",
+        "neg_003_reset_bias",
+        "neg_004_metric_offset",
+        "neg_005_scale_output"
+      ],
       "certification_scope": "language_extension_not_part_of_original_full_300_claim"
     },
     "454-multidimensional-array-state": {
@@ -5631,6 +5764,25 @@
       "tier": "ams-mixed-signal-candidate",
       "title": "Packed Logic Bus Slice",
       "syntax_focus": "Use a packed-style logic bus with slices and concatenation.",
+      "description": "Use packed bus slicing and concatenation to map selected a bits into y.",
+      "required_behavior": [
+        "y[3:2] must follow a[7:6].",
+        "y[1:0] must follow a[1:0].",
+        "Middle bits a[5:2] must not affect y."
+      ],
+      "visible_tests": [
+        "visible.scs toggles selected and unselected a bits to verify the packed slice mapping."
+      ],
+      "hidden_tests": [
+        "hidden.scs drives independent pulse timing on a7, a6, a1, and a0 to catch swapped slices."
+      ],
+      "negative_variants": [
+        "neg_001_force_zero",
+        "neg_002_wrong_threshold",
+        "neg_003_reset_bias",
+        "neg_004_metric_offset",
+        "neg_005_scale_output"
+      ],
       "certification_scope": "language_extension_not_part_of_original_full_300_claim"
     },
     "456-event-or-cross-timer": {
