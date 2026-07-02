@@ -167,7 +167,7 @@ task,number,title,tier,target,visible_hidden_distinct,negative_count,behavior_co
 466-temperature-environment-metric,466,Temperature Environment Metric,syntax-extension-candidate,temperature_environment_metric.va,True,5,True,True,True,True,True,True,True,True,,candidate_tier_not_score_ready
 467-simparam-query-tnom,467,Simparam Query Tnom,syntax-extension-candidate,simparam_query_tnom.va,True,5,True,True,True,True,True,True,True,True,,candidate_tier_not_score_ready
 468-branch-declaration-voltage-probe,468,Branch Declaration Voltage Probe,syntax-extension-candidate,branch_declaration_voltage_probe.va,True,5,True,True,True,True,True,True,True,True,,candidate_tier_not_score_ready
-469-current-contribution-conductance,469,Current Contribution Conductance,kcl-syntax-candidate,current_contribution_conductance.va,True,5,True,True,True,True,True,True,False,False,checker_syntax_only_no_behavior_score,candidate_tier_not_score_ready
+469-current-contribution-conductance,469,Current Contribution Conductance,kcl-syntax-candidate,current_contribution_conductance.va,True,5,True,True,True,True,True,True,True,True,,candidate_tier_not_score_ready
 470-branch-current-probe-contribution,470,Branch Current Probe Contribution,kcl-syntax-candidate,branch_current_probe_contribution.va,True,5,True,True,True,True,True,True,True,True,,candidate_tier_not_score_ready
 471-indirect-branch-null-balance,471,Indirect Branch Null Balance,behavioral-continuous-time-candidate,indirect_branch_null_balance.va,True,5,True,True,True,True,True,True,True,True,,candidate_tier_not_score_ready
 472-indirect-branch-ddt-balance,472,Indirect Branch Ddt Balance,behavioral-continuous-time-candidate,indirect_branch_ddt_balance.va,True,5,True,True,True,True,True,True,True,True,,candidate_tier_not_score_ready
@@ -189,7 +189,7 @@ task,number,title,tier,target,visible_hidden_distinct,negative_count,behavior_co
 488-table-model-string-param-source,488,Table Model String Param Source,syntax-extension-candidate,table_model_string_param_source.va,True,5,True,True,True,True,True,True,True,True,,candidate_tier_not_score_ready
 489-event-nested-or-expression,489,Event Nested Or Expression,syntax-extension-candidate,event_nested_or_expression.va,True,5,True,True,True,True,True,True,True,True,,candidate_tier_not_score_ready
 490-event-task-function-state-update,490,Event Task Function State Update,syntax-extension-candidate,event_task_function_state_update.va,True,5,True,True,True,True,True,True,True,True,,candidate_tier_not_score_ready
-491-kcl-capacitor-ddt-current,491,Kcl Capacitor Ddt Current,kcl-syntax-candidate,kcl_capacitor_ddt_current.va,True,5,True,True,True,True,True,True,False,False,checker_syntax_only_no_behavior_score,candidate_tier_not_score_ready
+491-kcl-capacitor-ddt-current,491,Kcl Capacitor Ddt Current,kcl-syntax-candidate,kcl_capacitor_ddt_current.va,True,5,True,True,True,True,True,True,True,True,,candidate_tier_not_score_ready
 492-kcl-inductor-idt-voltage,492,Kcl Inductor Idt Voltage,kcl-syntax-candidate,kcl_inductor_idt_voltage.va,True,5,True,True,True,True,True,True,True,True,,candidate_tier_not_score_ready
 493-continuous-laplace-nd-filter,493,Continuous Laplace Nd Filter,behavioral-continuous-time-candidate,continuous_laplace_nd_filter.va,True,5,True,True,True,True,True,True,True,True,,candidate_tier_not_score_ready
 494-continuous-zi-nd-filter,494,Continuous Zi Nd Filter,behavioral-continuous-time-candidate,continuous_zi_nd_filter.va,True,5,True,True,True,True,True,True,True,True,,candidate_tier_not_score_ready

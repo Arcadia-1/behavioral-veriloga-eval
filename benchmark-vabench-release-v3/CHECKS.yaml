@@ -11585,14 +11585,39 @@
 469-current-contribution-conductance: |
   version: 1
   task_id: v3_469_current_contribution_conductance
-  backend: evas_rust_compile_capable
-  status: kcl-syntax-candidate
-  checker: language_feature_contract
+  backend: evas
+  status: behavior-certified-candidate
+  checker: current_contribution_conductance_contract
+  # vabench-release-v2-checks
+  required_columns:
+    - time
+    - p
+    - n
+    - imon
   syntax:
     must_include:
       - "I("
+    must_not_include:
+      - "V(out)"
+  sim_correct:
+    positive:
+      - solution/current_contribution_conductance.va
+    negative:
+      - negative_variants/neg_001_force_zero/current_contribution_conductance.va
+      - negative_variants/neg_002_wrong_threshold/current_contribution_conductance.va
+      - negative_variants/neg_003_reset_bias/current_contribution_conductance.va
+      - negative_variants/neg_004_metric_offset/current_contribution_conductance.va
+      - negative_variants/neg_005_scale_output/current_contribution_conductance.va
+    checks:
+      - branch_current_monitor_support_artifact
+      - imon_tracks_gain_times_v_p_minus_v_n
+      - hidden_negative_branch_voltage_signed_current
+      - five_negative_variants_rejected_by_behavior_checker
+  promotion_evidence:
+    command: "PYTHONPATH=\"/Users/mac/Documents/github-repos/EVAS:$PWD/runners\" VAEVAS_DEFAULT_EVAS_ENGINE=python VAEVAS_EVAS_PERSISTENT_WORKER=0 PATH=\"$PWD/.venv-evas/bin:$PATH\" .venv-evas/bin/python scripts/run_v3_gold_negative_verification.py --start 469 --end 469 --include-staged --timeout 120 --jobs 1 --out benchmark-vabench-release-v3/reports/verify_task_469_after_current_patch.json"
+    result: "1/1 gold PASS; 5/5 negative variants rejected; 0 expectation_fail after EVAS ordinary branch-current contribution observability support."
   notes:
-    - "KCL/current contribution task with executable voltage-source testbench; behavior remains outside ordinary event-level certification pending current-domain KCL/MNA support: https://github.com/Arcadia-1/EVAS/issues/57"
+    - "Promoted after EVAS exposes ordinary I(p,n)<+ branch-current contributions to later I(p,n) probes; this certifies branch-current observability, not unknown-node MNA solving."
 470-branch-current-probe-contribution: |
   version: 1
   task_id: v3_470_branch_current_probe_contribution
@@ -12255,17 +12280,40 @@
 491-kcl-capacitor-ddt-current: |
   version: 1
   task_id: v3_491_kcl_capacitor_ddt_current
-  backend: evas_rust_compile_capable
-  status: kcl-syntax-candidate
-  checker: kcl_language_feature_contract
+  backend: evas
+  status: behavior-certified-candidate
+  checker: kcl_capacitor_ddt_current_contract
+  # vabench-release-v2-checks
+  required_columns:
+    - time
+    - p
+    - n
+    - imon
   syntax:
     must_include:
-      - "I(p, n) <+ c * ddt"
-      - "V(p, n)"
+      - "I("
+      - "ddt("
     must_not_include:
       - "V(out)"
+  sim_correct:
+    positive:
+      - solution/kcl_capacitor_ddt_current.va
+    negative:
+      - negative_variants/neg_001_force_zero/kcl_capacitor_ddt_current.va
+      - negative_variants/neg_002_wrong_threshold/kcl_capacitor_ddt_current.va
+      - negative_variants/neg_003_reset_bias/kcl_capacitor_ddt_current.va
+      - negative_variants/neg_004_metric_offset/kcl_capacitor_ddt_current.va
+      - negative_variants/neg_005_scale_output/kcl_capacitor_ddt_current.va
+    checks:
+      - branch_current_monitor_support_artifact
+      - imon_tracks_c_times_ddt_v_p_minus_v_n
+      - hidden_dynamic_reference_catches_v_p_only_derivative
+      - five_negative_variants_rejected_by_behavior_checker
+  promotion_evidence:
+    command: "PYTHONPATH=\"/Users/mac/Documents/github-repos/EVAS:$PWD/runners\" VAEVAS_DEFAULT_EVAS_ENGINE=python VAEVAS_EVAS_PERSISTENT_WORKER=0 PATH=\"$PWD/.venv-evas/bin:$PATH\" .venv-evas/bin/python scripts/run_v3_gold_negative_verification.py --start 491 --end 491 --include-staged --timeout 120 --jobs 1 --out benchmark-vabench-release-v3/reports/verify_task_491_after_current_patch.json"
+    result: "1/1 gold PASS; 5/5 negative variants rejected; 0 expectation_fail after EVAS ordinary branch-current contribution observability plus behavioral ddt support."
   notes:
-    - "KCL/current-contribution smoke tests staged; behavior certification requires current-domain KCL/MNA support: https://github.com/Arcadia-1/EVAS/issues/57"
+    - "Promoted for observable capacitor-style branch-current contribution using finite-difference ddt(V(p,n)); this remains separate from full unknown-node MNA capacitor loading."
 492-kcl-inductor-idt-voltage: |
   version: 1
   task_id: v3_492_kcl_inductor_idt_voltage

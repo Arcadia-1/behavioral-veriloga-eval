@@ -9694,11 +9694,34 @@ def check_v3_468_branch_declaration_voltage_probe(rows: list[dict[str, float]]) 
 
 
 def check_v3_469_current_contribution_conductance(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    return _check_v3_staged_kcl_boundary(
-        rows,
-        required={"time", "p", "n"},
-        feature="I(p,n)<+gain*V(p,n)",
-    )
+    ok, note = _v3_required_columns(rows, {"time", "p", "n", "imon"})
+    if not ok:
+        return False, note
+    sample_times_ns = [10.0, 30.0, 70.0, 95.0]
+    if rows[-1]["time"] >= 170e-9:
+        sample_times_ns = [10.0, 50.0, 90.0, 130.0, 150.0, 170.0]
+    failures: list[str] = []
+    max_err = 0.0
+    for time_ns in sample_times_ns:
+        time_s = time_ns * 1e-9
+        p_val = _v3_interp_signal(rows, "p", time_s)
+        n_val = _v3_interp_signal(rows, "n", time_s)
+        expected = 1e-3 * (p_val - n_val)
+        observed = _v3_interp_signal(rows, "imon", time_s)
+        err = abs(observed - expected)
+        max_err = max(max_err, err)
+        tol = max(1.0e-5, abs(expected) * 0.06)
+        if err > tol:
+            failures.append(
+                f"imon@{time_ns:g}ns={observed:.3e} expected={expected:.3e} tol={tol:.1e}"
+            )
+    current_range = _v3_signal_range(rows, "imon")
+    min_range = 6.5e-4 if rows[-1]["time"] >= 170e-9 else 4.0e-4
+    if current_range < min_range:
+        failures.append(f"imon_range_too_small={current_range:.3e}")
+    if failures:
+        return False, " ".join(failures[:4])
+    return True, f"conductance_branch_current_ok imon_range={current_range:.3e} max_err={max_err:.3e}"
 
 
 def check_v3_470_branch_current_probe_contribution(rows: list[dict[str, float]]) -> tuple[bool, str]:
@@ -10123,11 +10146,57 @@ def check_v3_490_event_task_function_state_update(rows: list[dict[str, float]]) 
 
 
 def check_v3_491_kcl_capacitor_ddt_current(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    return _check_v3_staged_kcl_boundary(
-        rows,
-        required={"time", "p"},
-        feature="I(p,n)<+c*ddt(V(p,n))",
-    )
+    ok, note = _v3_required_columns(rows, {"time", "p", "n", "imon"})
+    if not ok:
+        return False, note
+
+    hidden = rows[-1]["time"] >= 150e-9
+    branch_points = [
+        (0.0, 0.0),
+        (20.0, 0.0),
+        (24.0, 0.4),
+        (60.0, 0.4),
+        (64.0, 0.1),
+    ]
+    if hidden:
+        branch_points.extend([
+            (120.0, 0.1),
+            (124.0, 0.7),
+            (140.0, 0.7),
+            (144.0, 0.2),
+            (160.0, 0.2),
+        ])
+        sample_times_ns = [22.0, 62.0, 80.0, 122.0, 142.0, 150.0]
+    else:
+        branch_points.extend([(100.0, 0.1)])
+        sample_times_ns = [22.0, 62.0, 80.0]
+
+    def expected_current(time_ns: float) -> float:
+        for (t0, v0), (t1, v1) in zip(branch_points[:-1], branch_points[1:]):
+            if t0 < time_ns < t1 and t1 > t0:
+                slope_v_per_s = (v1 - v0) / ((t1 - t0) * 1e-9)
+                return 1e-12 * slope_v_per_s
+        return 0.0
+
+    failures: list[str] = []
+    max_err = 0.0
+    for time_ns in sample_times_ns:
+        expected = expected_current(time_ns)
+        observed = _v3_interp_signal(rows, "imon", time_ns * 1e-9)
+        err = abs(observed - expected)
+        max_err = max(max_err, err)
+        tol = max(7.0e-6, abs(expected) * 0.10)
+        if err > tol:
+            failures.append(
+                f"imon@{time_ns:g}ns={observed:.3e} expected={expected:.3e} tol={tol:.1e}"
+            )
+    current_range = _v3_signal_range(rows, "imon")
+    min_range = 2.5e-4 if hidden else 1.5e-4
+    if current_range < min_range:
+        failures.append(f"imon_range_too_small={current_range:.3e}")
+    if failures:
+        return False, " ".join(failures[:4])
+    return True, f"capacitor_ddt_branch_current_ok imon_range={current_range:.3e} max_err={max_err:.3e}"
 
 
 def check_v3_492_kcl_inductor_idt_voltage(rows: list[dict[str, float]]) -> tuple[bool, str]:

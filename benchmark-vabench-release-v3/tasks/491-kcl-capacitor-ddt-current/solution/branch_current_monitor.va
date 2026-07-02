@@ -1,0 +1,12 @@
+`include "constants.vams"
+`include "disciplines.vams"
+
+module branch_current_monitor (
+    input electrical p,
+    input electrical n,
+    output electrical imon
+);
+analog begin
+    V(imon) <+ I(p, n);
+end
+endmodule

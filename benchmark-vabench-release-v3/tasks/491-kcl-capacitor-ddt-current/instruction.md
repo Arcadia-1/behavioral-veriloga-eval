@@ -19,7 +19,7 @@ module kcl_capacitor_ddt_current(
 
 - Declare `parameter real c = 1p`.
 - Use the conservative current contribution `I(p, n) <+ c * ddt(V(p, n));`.
-- This is a conservative-current/KCL task. It is intended to exercise syntax and staging for current contributions plus `ddt()`, not ordinary voltage-domain behavioral-event scoring.
+- This is a conservative-current/KCL-layer task, but the checker observes the contributed branch current through a harness monitor rather than requiring an unknown-node MNA solve.
 - Do not replace the model with `V(...) <+ ...`, a voltage follower, or an event-only approximation.
 
 Return exactly one source artifact named `kcl_capacitor_ddt_current.va`.

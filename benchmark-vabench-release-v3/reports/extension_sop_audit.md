@@ -5,9 +5,9 @@ Date: 2026-07-02
 ## Summary
 
 - Audited extension tasks: **194**
-- SOP-ready tasks: **192**
+- SOP-ready tasks: **194**
 - Tasks with executable visible+hidden SCS evidence: **194**
-- Tasks with behavior checker evidence: **192**
+- Tasks with behavior checker evidence: **194**
 - Tasks with complete manifest behavior contracts: **194**
 - Tasks with aligned negative case indexes: **194**
 - Tasks with task-specific negative descriptions: **194**
@@ -18,7 +18,6 @@ Date: 2026-07-02
 
 ## Issue Counts
 
-- `checker_syntax_only_no_behavior_score`: 2
 
 ## Warning Counts
 
@@ -33,8 +32,8 @@ Date: 2026-07-02
 | `361-372` | noise and analysis candidates | 12 | 12 | 12 | 12 | 12 | 12 | 12 | 12 |  |
 | `373-434` | task/file/table/random/hierarchy syntax candidates | 62 | 62 | 62 | 62 | 62 | 62 | 62 | 62 |  |
 | `435-458` | manual syntax-completion candidates | 24 | 24 | 24 | 24 | 24 | 24 | 24 | 24 |  |
-| `459-470` | course-material gap-fill candidates | 12 | 11 | 12 | 11 | 12 | 12 | 12 | 12 | `checker_syntax_only_no_behavior_score`: 1 |
-| `471-494` | LRM KCL/continuous-time gap-fill candidates | 24 | 23 | 24 | 23 | 24 | 24 | 24 | 24 | `checker_syntax_only_no_behavior_score`: 1 |
+| `459-470` | course-material gap-fill candidates | 12 | 12 | 12 | 12 | 12 | 12 | 12 | 12 |  |
+| `471-494` | LRM KCL/continuous-time gap-fill candidates | 24 | 24 | 24 | 24 | 24 | 24 | 24 | 24 |  |
 
 ## Highest Severity Finding
 
@@ -212,7 +211,7 @@ Tasks 301-494 are extension candidates, not SOP-ready benchmark tasks. They most
 | `466-temperature-environment-metric` | `syntax-extension-candidate` | True | - |
 | `467-simparam-query-tnom` | `syntax-extension-candidate` | True | - |
 | `468-branch-declaration-voltage-probe` | `syntax-extension-candidate` | True | - |
-| `469-current-contribution-conductance` | `kcl-syntax-candidate` | False | `checker_syntax_only_no_behavior_score` |
+| `469-current-contribution-conductance` | `kcl-syntax-candidate` | True | - |
 | `470-branch-current-probe-contribution` | `kcl-syntax-candidate` | True | - |
 | `471-indirect-branch-null-balance` | `behavioral-continuous-time-candidate` | True | - |
 | `472-indirect-branch-ddt-balance` | `behavioral-continuous-time-candidate` | True | - |
@@ -234,7 +233,7 @@ Tasks 301-494 are extension candidates, not SOP-ready benchmark tasks. They most
 | `488-table-model-string-param-source` | `syntax-extension-candidate` | True | - |
 | `489-event-nested-or-expression` | `syntax-extension-candidate` | True | - |
 | `490-event-task-function-state-update` | `syntax-extension-candidate` | True | - |
-| `491-kcl-capacitor-ddt-current` | `kcl-syntax-candidate` | False | `checker_syntax_only_no_behavior_score` |
+| `491-kcl-capacitor-ddt-current` | `kcl-syntax-candidate` | True | - |
 | `492-kcl-inductor-idt-voltage` | `kcl-syntax-candidate` | True | - |
 | `493-continuous-laplace-nd-filter` | `behavioral-continuous-time-candidate` | True | - |
 | `494-continuous-zi-nd-filter` | `behavioral-continuous-time-candidate` | True | - |

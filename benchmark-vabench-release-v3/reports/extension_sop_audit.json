@@ -70,36 +70,26 @@
       "behavior_contract_complete_count": 12,
       "complete_tests_count": 12,
       "description": "course-material gap-fill candidates",
-      "fair_eval_count": 11,
+      "fair_eval_count": 12,
       "negative_cases_aligned_count": 12,
       "negative_descriptions_task_specific_count": 12,
       "range": "459-470",
-      "sop_ready_count": 11,
+      "sop_ready_count": 12,
       "task_count": 12,
-      "top_issues": [
-        [
-          "checker_syntax_only_no_behavior_score",
-          1
-        ]
-      ],
+      "top_issues": [],
       "visible_hidden_distinct_count": 12
     },
     {
       "behavior_contract_complete_count": 24,
       "complete_tests_count": 24,
       "description": "LRM KCL/continuous-time gap-fill candidates",
-      "fair_eval_count": 23,
+      "fair_eval_count": 24,
       "negative_cases_aligned_count": 24,
       "negative_descriptions_task_specific_count": 24,
       "range": "471-494",
-      "sop_ready_count": 23,
+      "sop_ready_count": 24,
       "task_count": 24,
-      "top_issues": [
-        [
-          "checker_syntax_only_no_behavior_score",
-          1
-        ]
-      ],
+      "top_issues": [],
       "visible_hidden_distinct_count": 24
     }
   ],
@@ -108,13 +98,11 @@
   "summary": {
     "behavior_contract_complete_count": 194,
     "complete_tests_count": 194,
-    "fair_eval_count": 192,
-    "issue_counts": {
-      "checker_syntax_only_no_behavior_score": 2
-    },
+    "fair_eval_count": 194,
+    "issue_counts": {},
     "negative_cases_aligned_count": 194,
     "negative_descriptions_task_specific_count": 194,
-    "sop_ready_count": 192,
+    "sop_ready_count": 194,
     "sop_ready_visible_hidden_identical_count": 0,
     "staged_visible_hidden_identical_count": 0,
     "task_count": 194,
@@ -4665,19 +4653,17 @@
       "behavior_contract_complete": true,
       "certification_scope": "language_extension_not_part_of_original_full_300_claim",
       "complete_tests": true,
-      "fair_eval": false,
+      "fair_eval": true,
       "hidden_scs_count": 1,
-      "issues": [
-        "checker_syntax_only_no_behavior_score"
-      ],
+      "issues": [],
       "negative_cases_aligned": true,
       "negative_count": 5,
       "negative_descriptions_task_specific": true,
       "number": 469,
       "reasonable_task": true,
-      "solution_file_count": 1,
-      "sop_ready": false,
-      "starter_file_count": 1,
+      "solution_file_count": 2,
+      "sop_ready": true,
+      "starter_file_count": 2,
       "syntax_focus": "Use I(p,n) current contribution for a conductance-style model.",
       "target": "current_contribution_conductance.va",
       "task": "469-current-contribution-conductance",
@@ -5261,19 +5247,17 @@
       "behavior_contract_complete": true,
       "certification_scope": "language_extension_not_part_of_original_full_300_claim",
       "complete_tests": true,
-      "fair_eval": false,
+      "fair_eval": true,
       "hidden_scs_count": 1,
-      "issues": [
-        "checker_syntax_only_no_behavior_score"
-      ],
+      "issues": [],
       "negative_cases_aligned": true,
       "negative_count": 5,
       "negative_descriptions_task_specific": true,
       "number": 491,
       "reasonable_task": true,
-      "solution_file_count": 1,
-      "sop_ready": false,
-      "starter_file_count": 1,
+      "solution_file_count": 2,
+      "sop_ready": true,
+      "starter_file_count": 2,
       "syntax_focus": "Use current contribution with ddt() for a capacitor-style conservative model.",
       "target": "kcl_capacitor_ddt_current.va",
       "task": "491-kcl-capacitor-ddt-current",

@@ -5,16 +5,18 @@
 - Required syntax focus: `Use current contribution with ddt() for a capacitor-style conservative model.`
 - Certification scope: `language_extension_not_part_of_original_full_300_claim`
 - Tier: `kcl-syntax-candidate`
-- EVAS status: `KCL/current-contribution smoke tests staged; behavior certification requires EVAS current-domain KCL/MNA support tracked by issue #57`
-- Blocking issue: `https://github.com/Arcadia-1/EVAS/issues/57`
+- EVAS status: `behavior-certified for observable ddt branch-current contribution`
 
-## Staged Promotion Gate
+## Behavior Certification
 
-- Score claim: `excluded_until_behavior_promotion`.
-- Current probe status: `FAIL_SIM_CORRECTNESS`.
-- Current failure summary: staged_kcl_boundary feature=I(p,n)<+c*ddt(V(p,n)) p_range=0.0012 expected=mna_current_observable
-- Blocking issue(s): https://github.com/Arcadia-1/EVAS/issues/57.
-- Promotion requirements: repository `sim_correct` checker evidence, gold PASS, five useful negative variants rejected, and zero expectation_fail in the promotion report.
-- Per-task promotion command: `PYTHONPATH=runners VAEVAS_DEFAULT_EVAS_ENGINE=python VAEVAS_EVAS_PERSISTENT_WORKER=0 PATH="$PWD/.venv-evas/bin:$PATH" .venv-evas/bin/python scripts/run_v3_gold_negative_verification.py --start 491 --end 491 --tasks 491 --include-staged --timeout 120 --jobs 1 --out benchmark-vabench-release-v3/reports/verify_task_491.json`
-- Per-task acceptance: Promote `491-kcl-capacitor-ddt-current` only after adding repository sim_correct evidence, then require 1/1 gold PASS, 5/5 negative variants rejected, and zero expectation_fail in the per-task report.
-- Issue-level acceptance: After EVAS KCL/MNA current-domain support lands, promote the listed 2 task(s) by adding sim_correct behavior contracts/checkers if missing, then require 2/2 gold PASS, 10/10 negative variants rejected, and zero expectation_fail in the verification report.
+- Score claim: `extension_behavior_certified_outside_original_300`.
+- Checker: `kcl_capacitor_ddt_current_contract`.
+- Observable: support artifact `branch_current_monitor.va` records `imon = I(p,n)` after DUT evaluation.
+- Required behavior: `imon` tracks `1p * ddt(V(p,n))` on rising and falling branch-voltage ramps.
+- Hidden coverage: p and n both move, so `ddt(V(p))` can pass a grounded-reference smoke test but fails the dynamic-reference hidden checks.
+- Negative evidence: 5/5 variants are rejected by `FAIL_SIM_CORRECTNESS`.
+- Promotion evidence: `benchmark-vabench-release-v3/reports/verify_301_494_layered.json` reports gold PASS and all five negatives rejected for this task.
+
+## Boundary
+
+This task certifies finite-difference behavioral `ddt(V(p,n))` branch-current observability. It does not claim full unknown-node MNA/KCL capacitor loading.

@@ -1,11 +1,11 @@
 {
   "summary": {
     "all_tasks_have_five_behavior_rejected_negatives": true,
-    "gold_pass_count": 192,
-    "negative_behavior_rejected_total": 960,
-    "negative_total": 960,
+    "gold_pass_count": 194,
+    "negative_behavior_rejected_total": 970,
+    "negative_total": 970,
     "source_report": "benchmark-vabench-release-v3/reports/verify_301_494_layered.json",
-    "task_count": 192
+    "task_count": 194
   },
   "tasks": [
     {
@@ -2698,6 +2698,22 @@
     },
     {
       "all_negatives_behavior_rejected": true,
+      "checker_task_id": "v3_469_current_contribution_conductance",
+      "gold_meets_expectation": true,
+      "gold_status": "PASS",
+      "negative_behavior_rejected_count": 5,
+      "negative_count": 5,
+      "negative_statuses": {
+        "neg_001_force_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_002_wrong_threshold": "FAIL_SIM_CORRECTNESS",
+        "neg_003_reset_bias": "FAIL_SIM_CORRECTNESS",
+        "neg_004_metric_offset": "FAIL_SIM_CORRECTNESS",
+        "neg_005_scale_output": "FAIL_SIM_CORRECTNESS"
+      },
+      "task": "469-current-contribution-conductance"
+    },
+    {
+      "all_negatives_behavior_rejected": true,
       "checker_task_id": "v3_470_branch_current_probe_contribution",
       "gold_meets_expectation": true,
       "gold_status": "PASS",
@@ -3031,6 +3047,22 @@
         "neg_005_scale_output": "FAIL_SIM_CORRECTNESS"
       },
       "task": "490-event-task-function-state-update"
+    },
+    {
+      "all_negatives_behavior_rejected": true,
+      "checker_task_id": "v3_491_kcl_capacitor_ddt_current",
+      "gold_meets_expectation": true,
+      "gold_status": "PASS",
+      "negative_behavior_rejected_count": 5,
+      "negative_count": 5,
+      "negative_statuses": {
+        "neg_001_force_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_002_wrong_threshold": "FAIL_SIM_CORRECTNESS",
+        "neg_003_reset_bias": "FAIL_SIM_CORRECTNESS",
+        "neg_004_metric_offset": "FAIL_SIM_CORRECTNESS",
+        "neg_005_scale_output": "FAIL_SIM_CORRECTNESS"
+      },
+      "task": "491-kcl-capacitor-ddt-current"
     },
     {
       "all_negatives_behavior_rejected": true,

@@ -9268,6 +9268,9 @@
       "target": [
         "current_contribution_conductance.va"
       ],
+      "support": [
+        "branch_current_monitor.va"
+      ],
       "tier": "kcl-syntax-candidate",
       "title": "Current Contribution Conductance",
       "syntax_focus": "Use I(p,n) current contribution for a conductance-style model.",
@@ -9275,14 +9278,14 @@
       "description": "Use I(p,n) <+ gain*V(p,n) as a conductance-style conservative current contribution.",
       "required_behavior": [
         "Contribute branch current proportional to V(p,n).",
-        "Expose node behavior through the circuit solution, not by writing a voltage directly.",
-        "Remain in the KCL layer until MNA current observability is certified."
+        "Expose the contributed branch current through the harness monitor without writing voltage-domain outputs from the DUT.",
+        "Stay scoped to branch-current observability, not unknown-node MNA solving."
       ],
       "visible_tests": [
-        "visible.scs biases p/n to check conductance contribution observability."
+        "visible.scs biases p/n and records imon=I(p,n) through a support monitor."
       ],
       "hidden_tests": [
-        "hidden.scs changes the bias point to catch missing or wrong-sign current contributions."
+        "hidden.scs changes p and n independently, including a negative branch voltage, to catch absolute-node, positive-only, wrong-sign, and wrong-scale current contributions."
       ],
       "negative_variants": [
         "neg_001_force_zero",
@@ -10013,6 +10016,9 @@
       "target": [
         "kcl_capacitor_ddt_current.va"
       ],
+      "support": [
+        "branch_current_monitor.va"
+      ],
       "tier": "kcl-syntax-candidate",
       "title": "Kcl Capacitor Ddt Current",
       "syntax_focus": "Use current contribution with ddt() for a capacitor-style conservative model.",
@@ -10020,14 +10026,14 @@
       "description": "Use I(p,n) <+ C*ddt(V(p,n)) to model a capacitor-style conservative current contribution.",
       "required_behavior": [
         "Contribute current proportional to the time derivative of branch voltage.",
-        "Require dynamic KCL/MNA handling for the ddt current term.",
-        "Remain staged until capacitor-style dynamic current behavior is certified."
+        "Expose the dynamic branch-current contribution through the harness monitor without adding DUT voltage outputs.",
+        "Stay scoped to finite-difference branch-current observability, not unknown-node MNA capacitor loading."
       ],
       "visible_tests": [
-        "visible.scs applies a changing voltage to expose ddt current behavior."
+        "visible.scs applies rising and falling V(p,n) ramps and records imon=I(p,n)."
       ],
       "hidden_tests": [
-        "hidden.scs changes slope and amplitude to catch static conductance substitutes."
+        "hidden.scs changes both p and n slopes to catch static, p-only, wrong-sign, and wrong-scale ddt current substitutes."
       ],
       "negative_variants": [
         "neg_001_force_zero",

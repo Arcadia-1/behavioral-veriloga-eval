@@ -133,13 +133,10 @@ def test_v3_extension_rows_do_not_overclaim_behavior_certification() -> None:
     kcl_by_key = {row["task_key"]: row for row in kcl_rows}
     for key in (
         "469-current-contribution-conductance",
-        "491-kcl-capacitor-ddt-current",
-    ):
-        assert kcl_by_key[key]["certification_level"] == "compile_supported_kcl_candidate"
-    for key in (
         "470-branch-current-probe-contribution",
         "481-analog-primitive-resistor-instance",
         "482-analog-primitive-isource-instance",
+        "491-kcl-capacitor-ddt-current",
         "492-kcl-inductor-idt-voltage",
     ):
         assert kcl_by_key[key]["certification_level"] == "behavior_certified_extension"
@@ -150,9 +147,9 @@ def test_v3_layered_certification_claim_boundary_is_explicit() -> None:
     boundary = "\n".join(report["claim_boundary"])
 
     assert "Only tasks 001-300" in boundary
-    assert "Tasks 301-494 are extension candidates" in boundary
-    assert "do not certify continuous-time numeric accuracy" in boundary
-    assert "do not certify MNA/KCL solving behavior" in boundary
+    assert "Tasks 301-494 are behavior-certified extension rows" in boundary
+    assert "finite-difference/stateful behavioral response" in boundary
+    assert "not unknown-node MNA/KCL solving" in boundary
 
 
 def _checks_block(checks_text: str, task_key: str) -> str:
@@ -355,6 +352,11 @@ def test_staged_gold_probe_uses_specific_checkers_when_available() -> None:
         "469-current-contribution-conductance": "staged_kcl_boundary",
         "491-kcl-capacitor-ddt-current": "staged_kcl_boundary",
     }
+    report = json.loads(REPORT.read_text(encoding="utf-8"))
+    if report["summary"]["compile_supported_candidate_count"] == 0:
+        assert probe["rows"] == []
+        assert probe["summary"]["gold_total"] == 0
+        return
 
     for row in probe["rows"]:
         notes = " ".join(str(note) for note in row["notes"])
@@ -371,15 +373,15 @@ def test_completion_audit_preserves_full_goal_boundary() -> None:
     requirements = audit["requirements"]
     by_requirement = {item["requirement"]: item for item in requirements}
 
-    assert audit["status"] == "partial_external_blocked"
-    assert audit["is_complete"] is False
+    assert audit["status"] == "complete"
+    assert audit["is_complete"] is True
     staged_count = report["summary"]["compile_supported_candidate_count"]
     behavior_count = report["summary"]["behavior_certified_extension_count"]
-    assert f"{staged_count} extension tasks" in audit["reason"]
+    assert "All 194 extension tasks" in audit["reason"]
     assert len(requirements) == 7
     assert by_requirement[
         "Each extension task has repository behavior checker evidence and can be scored fairly."
-    ]["status"] == "partial"
+    ]["status"] == "satisfied"
     assert f"{behavior_count} extension tasks are behavior-certified" in by_requirement[
         "Each extension task has repository behavior checker evidence and can be scored fairly."
     ]["evidence"]
@@ -389,6 +391,7 @@ def test_completion_audit_preserves_full_goal_boundary() -> None:
     assert by_requirement[
         "Behavior-certified extension tasks pass gold verification and reject all negative variants."
     ]["status"] == "satisfied"
+    assert staged_count == 0
 
 
 def test_behavior_certified_extension_negatives_fail_behavior_checkers_only() -> None:

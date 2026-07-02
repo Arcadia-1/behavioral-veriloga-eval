@@ -2,7 +2,7 @@
   "negative_variants": [
     {
       "id": "neg_001_force_zero",
-      "description": "Current Contribution Conductance: forces the main output to zero, so coarse compilation passes but behavioral stimulus points fail.",
+      "description": "Current Contribution Conductance: uses absolute V(p) instead of branch voltage V(p,n), so n=0 smoke tests can pass but differential-bias checks fail.",
       "files": [
         "neg_001_force_zero/current_contribution_conductance.va"
       ],
@@ -10,7 +10,7 @@
     },
     {
       "id": "neg_002_wrong_threshold",
-      "description": "Current Contribution Conductance: uses a shifted or inverted decision condition that can pass one mode but fails boundary cases.",
+      "description": "Current Contribution Conductance: only contributes current for positive branch voltage, so positive-only smoke tests can pass but negative V(p,n) hidden checks fail.",
       "files": [
         "neg_002_wrong_threshold/current_contribution_conductance.va"
       ],
@@ -18,7 +18,7 @@
     },
     {
       "id": "neg_003_reset_bias",
-      "description": "Current Contribution Conductance: mishandles reset or initialization, passing steady-state samples but failing startup or recovery checks.",
+      "description": "Current Contribution Conductance: adds a small DC current offset, so coarse shape checks can pass while calibrated zero-bias and gain checks fail.",
       "files": [
         "neg_003_reset_bias/current_contribution_conductance.va"
       ],
@@ -26,7 +26,7 @@
     },
     {
       "id": "neg_004_metric_offset",
-      "description": "Current Contribution Conductance: keeps the main datapath plausible while reporting the wrong metric value.",
+      "description": "Current Contribution Conductance: contributes through the reversed branch direction, preserving magnitude but failing signed current checks.",
       "files": [
         "neg_004_metric_offset/current_contribution_conductance.va"
       ],
@@ -34,7 +34,7 @@
     },
     {
       "id": "neg_005_scale_output",
-      "description": "Current Contribution Conductance: uses a shifted or inverted decision condition that can pass one mode but fails boundary cases.",
+      "description": "Current Contribution Conductance: uses half the required conductance, so simple sign checks pass but calibrated current samples fail.",
       "files": [
         "neg_005_scale_output/current_contribution_conductance.va"
       ],

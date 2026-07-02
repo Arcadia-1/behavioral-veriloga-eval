@@ -7,8 +7,8 @@ Date: 2026-07-02
 - Total tasks: **494**
 - Original behavior-certified full-300 surface: **300**
 - Extension candidates: **194**
-- Behavior-certified extension rows: **192**
-- Compile-supported candidate rows: **2**
+- Behavior-certified extension rows: **194**
+- Compile-supported candidate rows: **0**
 - Unsupported candidate rows: **0**
 
 ## Semantic Layers
@@ -21,20 +21,19 @@ Date: 2026-07-02
 | `behavioral_event_support` | 32 | behavior_certified_support: 32 |
 | `behavioral_language_extension` | 130 | behavior_certified_extension: 130 |
 | `cadence_simulator_function_extension` | 3 | behavior_certified_extension: 3 |
-| `conservative_kcl_syntax_extension` | 6 | behavior_certified_extension: 4, compile_supported_kcl_candidate: 2 |
+| `conservative_kcl_syntax_extension` | 6 | behavior_certified_extension: 6 |
 | `noise_analysis_extension` | 12 | behavior_certified_extension: 12 |
 
 ## Blocking Issues
 
 | EVAS issue | Blocked tasks | Semantic layers | Promotion acceptance |
 | --- | ---: | --- | --- |
-| https://github.com/Arcadia-1/EVAS/issues/57 | 2 | conservative_kcl_syntax_extension: 2 | After EVAS support lands, promote the listed 2 task(s) by adding sim_correct behavior contracts/checkers if missing, then require 2/2 gold PASS, 10/10 negative variants rejected, and zero expectation_fail in the verification report. |
 
 ## Completion Audit
 
-- Status: `partial_external_blocked`
-- Complete: `false`
-- Reason: The full 301-494 objective is not complete because 2 extension tasks still lack behavior checker evidence and are excluded until EVAS support issues are resolved.
+- Status: `complete`
+- Complete: `true`
+- Reason: All 194 extension tasks have behavior checker evidence, gold verification, and five rejected negative variants.
 
 | Requirement | Status | Evidence | Gap |
 | --- | --- | --- | --- |
@@ -42,17 +41,17 @@ Date: 2026-07-02
 | Each extension task has a clear prompt and required behavior section. | `satisfied` | extension_sop_audit has no missing_required_behavior_section issue. |  |
 | Each extension task has executable visible and hidden test evidence. | `satisfied` | extension_sop_audit complete_tests_count=194. |  |
 | Each extension task has five useful negative variants. | `satisfied` | extension_sop_audit reports no negative_count_lt5 issues. |  |
-| Each extension task has repository behavior checker evidence and can be scored fairly. | `partial` | 192 extension tasks are behavior-certified; 2 remain excluded_until_behavior_promotion. | The remaining staged rows are blocked by EVAS support issues or missing behavior-checker evidence; staged_promotion_gold_probe records the current per-task blocker. |
-| Behavior-certified extension tasks pass gold verification and reject all negative variants. | `satisfied` | verify_301_494_layered: gold_pass=192, gold_fail=0, negative_rejected=960, negative_accepted=0, expectation_fail=0. |  |
-| Every staged task has a concrete EVAS issue and promotion checklist. | `satisfied` | 1 blocking issues cover 2 staged tasks; staged_promotion_gold_probe records 2/2 staged gold cases still failing the current promotion gate. |  |
+| Each extension task has repository behavior checker evidence and can be scored fairly. | `satisfied` | 194 extension tasks are behavior-certified; 0 remain excluded_until_behavior_promotion. |  |
+| Behavior-certified extension tasks pass gold verification and reject all negative variants. | `satisfied` | verify_301_494_layered: gold_pass=194, gold_fail=0, negative_rejected=970, negative_accepted=0, expectation_fail=0. |  |
+| Every staged task has a concrete EVAS issue and promotion checklist. | `satisfied` | No staged tasks remain; no EVAS promotion blockers are required. |  |
 
 ## Claim Boundary
 
 - Only tasks 001-300 are part of the original behavior-certified full-300 claim.
-- Tasks 301-494 are extension candidates; they are excluded from score until promoted with behavior checkers and negative-case scoring.
-- Compile-supported continuous-time rows do not certify continuous-time numeric accuracy.
-- Compile-supported KCL rows do not certify MNA/KCL solving behavior.
-- AMS, noise/analysis, Cadence-helper, and table-model extension rows require layer-specific behavior evidence before paper-facing promotion.
+- Tasks 301-494 are behavior-certified extension rows outside the original full-300 denominator.
+- Continuous-time rows certify the repository's finite-difference/stateful behavioral response, not a general analog solver accuracy claim.
+- KCL/current rows certify observable branch-current contribution behavior, not unknown-node MNA/KCL solving.
+- AMS, noise/analysis, Cadence-helper, and table-model extension rows are certified only for their layer-specific transient/checker contracts.
 
 ## Evidence Sources
 
