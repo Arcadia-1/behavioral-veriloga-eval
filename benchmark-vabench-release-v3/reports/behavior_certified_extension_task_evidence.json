@@ -1,11 +1,11 @@
 {
   "summary": {
     "all_tasks_have_five_behavior_rejected_negatives": true,
-    "gold_pass_count": 162,
-    "negative_behavior_rejected_total": 810,
-    "negative_total": 810,
+    "gold_pass_count": 168,
+    "negative_behavior_rejected_total": 840,
+    "negative_total": 840,
     "source_report": "benchmark-vabench-release-v3/reports/verify_301_494_layered.json",
-    "task_count": 162
+    "task_count": 168
   },
   "tasks": [
     {
@@ -839,6 +839,22 @@
         "neg_005_scale_low": "FAIL_SIM_CORRECTNESS"
       },
       "task": "352-always-negedge-sampler"
+    },
+    {
+      "all_negatives_behavior_rejected": true,
+      "checker_task_id": "v3_353_always_resettable_toggle",
+      "gold_meets_expectation": true,
+      "gold_status": "PASS",
+      "negative_behavior_rejected_count": 5,
+      "negative_count": 5,
+      "negative_statuses": {
+        "neg_001_force_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_002_invert_select": "FAIL_SIM_CORRECTNESS",
+        "neg_003_drop_reset": "FAIL_SIM_CORRECTNESS",
+        "neg_004_wrong_edge": "FAIL_SIM_CORRECTNESS",
+        "neg_005_scale_low": "FAIL_SIM_CORRECTNESS"
+      },
+      "task": "353-always-resettable-toggle"
     },
     {
       "all_negatives_behavior_rejected": true,
@@ -1818,6 +1834,22 @@
     },
     {
       "all_negatives_behavior_rejected": true,
+      "checker_task_id": "v3_416_logic_vector_reduction_flag",
+      "gold_meets_expectation": true,
+      "gold_status": "PASS",
+      "negative_behavior_rejected_count": 5,
+      "negative_count": 5,
+      "negative_statuses": {
+        "neg_001_force_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_002_wrong_threshold": "FAIL_SIM_CORRECTNESS",
+        "neg_003_reset_bias": "FAIL_SIM_CORRECTNESS",
+        "neg_004_metric_offset": "FAIL_SIM_CORRECTNESS",
+        "neg_005_scale_output": "FAIL_SIM_CORRECTNESS"
+      },
+      "task": "416-logic-vector-reduction-flag"
+    },
+    {
+      "all_negatives_behavior_rejected": true,
       "checker_task_id": "v3_419_wreal_logic_threshold_bridge",
       "gold_meets_expectation": true,
       "gold_status": "PASS",
@@ -2394,6 +2426,22 @@
     },
     {
       "all_negatives_behavior_rejected": true,
+      "checker_task_id": "v3_468_branch_declaration_voltage_probe",
+      "gold_meets_expectation": true,
+      "gold_status": "PASS",
+      "negative_behavior_rejected_count": 5,
+      "negative_count": 5,
+      "negative_statuses": {
+        "neg_001_force_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_002_wrong_threshold": "FAIL_SIM_CORRECTNESS",
+        "neg_003_reset_bias": "FAIL_SIM_CORRECTNESS",
+        "neg_004_metric_offset": "FAIL_SIM_CORRECTNESS",
+        "neg_005_scale_output": "FAIL_SIM_CORRECTNESS"
+      },
+      "task": "468-branch-declaration-voltage-probe"
+    },
+    {
+      "all_negatives_behavior_rejected": true,
       "checker_task_id": "v3_473_attribute_potential_abstol_probe",
       "gold_meets_expectation": true,
       "gold_status": "PASS",
@@ -2439,6 +2487,38 @@
         "neg_005_scale_output": "FAIL_SIM_CORRECTNESS"
       },
       "task": "475-generic-potential-contribution"
+    },
+    {
+      "all_negatives_behavior_rejected": true,
+      "checker_task_id": "v3_476_oomr_string_voltage_probe",
+      "gold_meets_expectation": true,
+      "gold_status": "PASS",
+      "negative_behavior_rejected_count": 5,
+      "negative_count": 5,
+      "negative_statuses": {
+        "neg_001_force_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_002_wrong_threshold": "FAIL_SIM_CORRECTNESS",
+        "neg_003_reset_bias": "FAIL_SIM_CORRECTNESS",
+        "neg_004_metric_offset": "FAIL_SIM_CORRECTNESS",
+        "neg_005_scale_output": "FAIL_SIM_CORRECTNESS"
+      },
+      "task": "476-oomr-string-voltage-probe"
+    },
+    {
+      "all_negatives_behavior_rejected": true,
+      "checker_task_id": "v3_477_analog_node_alias_initial",
+      "gold_meets_expectation": true,
+      "gold_status": "PASS",
+      "negative_behavior_rejected_count": 5,
+      "negative_count": 5,
+      "negative_statuses": {
+        "neg_001_force_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_002_wrong_threshold": "FAIL_SIM_CORRECTNESS",
+        "neg_003_reset_bias": "FAIL_SIM_CORRECTNESS",
+        "neg_004_metric_offset": "FAIL_SIM_CORRECTNESS",
+        "neg_005_scale_output": "FAIL_SIM_CORRECTNESS"
+      },
+      "task": "477-analog-node-alias-initial"
     },
     {
       "all_negatives_behavior_rejected": true,
@@ -2551,6 +2631,22 @@
         "neg_005_scale_output": "FAIL_SIM_CORRECTNESS"
       },
       "task": "486-rf-source-info-registration"
+    },
+    {
+      "all_negatives_behavior_rejected": true,
+      "checker_task_id": "v3_487_table_model_2d_array_surface",
+      "gold_meets_expectation": true,
+      "gold_status": "PASS",
+      "negative_behavior_rejected_count": 5,
+      "negative_count": 5,
+      "negative_statuses": {
+        "neg_001_force_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_002_wrong_threshold": "FAIL_SIM_CORRECTNESS",
+        "neg_003_reset_bias": "FAIL_SIM_CORRECTNESS",
+        "neg_004_metric_offset": "FAIL_SIM_CORRECTNESS",
+        "neg_005_scale_output": "FAIL_SIM_CORRECTNESS"
+      },
+      "task": "487-table-model-2d-array-surface"
     },
     {
       "all_negatives_behavior_rejected": true,

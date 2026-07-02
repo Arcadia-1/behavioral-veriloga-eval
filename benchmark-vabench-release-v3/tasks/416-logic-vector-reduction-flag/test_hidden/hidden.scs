@@ -3,10 +3,10 @@ global 0
 
 ahdl_include "logic_vector_reduction_flag.vams"
 
-Vcode0 (code0 0) vsource type=pwl wave=[0 1.0 119n 1.0 120n 0.0 239n 0.0 240n 1.0 500n 1.0]
+Vcode0 (code0 0) vsource type=pwl wave=[0 1.0 119n 1.0 120n 0.0 239n 0.0 240n 1.0 439n 1.0 440n 0.0 500n 0.0]
 Vcode1 (code1 0) vsource type=pwl wave=[0 0.0 159n 0.0 160n 1.0 319n 1.0 320n 0.0 500n 0.0]
-Vcode2 (code2 0) vsource type=pwl wave=[0 1.0 219n 1.0 220n 0.0 379n 0.0 380n 1.0 500n 1.0]
-Vcode3 (code3 0) vsource type=pwl wave=[0 0.0 279n 0.0 280n 1.0 439n 1.0 440n 0.0 500n 0.0]
+Vcode2 (code2 0) vsource type=pwl wave=[0 0.0 139n 0.0 140n 1.0 219n 1.0 220n 0.0 379n 0.0 380n 1.0 439n 1.0 440n 0.0 500n 0.0]
+Vcode3 (code3 0) vsource type=pwl wave=[0 0.0 279n 0.0 280n 1.0 500n 1.0]
 
 XDUT (code0 code1 code2 code3 valid) logic_vector_reduction_flag
 

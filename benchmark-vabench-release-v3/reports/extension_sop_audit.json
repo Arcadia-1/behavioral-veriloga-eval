@@ -18,18 +18,13 @@
       "behavior_contract_complete_count": 20,
       "complete_tests_count": 20,
       "description": "AMS mixed-signal candidates",
-      "fair_eval_count": 19,
+      "fair_eval_count": 20,
       "negative_cases_aligned_count": 20,
       "negative_descriptions_task_specific_count": 20,
       "range": "341-360",
-      "sop_ready_count": 19,
+      "sop_ready_count": 20,
       "task_count": 20,
-      "top_issues": [
-        [
-          "checker_syntax_only_no_behavior_score",
-          1
-        ]
-      ],
+      "top_issues": [],
       "visible_hidden_distinct_count": 20
     },
     {
@@ -49,16 +44,16 @@
       "behavior_contract_complete_count": 62,
       "complete_tests_count": 62,
       "description": "task/file/table/random/hierarchy syntax candidates",
-      "fair_eval_count": 58,
+      "fair_eval_count": 59,
       "negative_cases_aligned_count": 62,
       "negative_descriptions_task_specific_count": 62,
       "range": "373-434",
-      "sop_ready_count": 58,
+      "sop_ready_count": 59,
       "task_count": 62,
       "top_issues": [
         [
           "checker_syntax_only_no_behavior_score",
-          4
+          3
         ]
       ],
       "visible_hidden_distinct_count": 62
@@ -85,16 +80,16 @@
       "behavior_contract_complete_count": 12,
       "complete_tests_count": 12,
       "description": "course-material gap-fill candidates",
-      "fair_eval_count": 9,
+      "fair_eval_count": 10,
       "negative_cases_aligned_count": 12,
       "negative_descriptions_task_specific_count": 12,
       "range": "459-470",
-      "sop_ready_count": 9,
+      "sop_ready_count": 10,
       "task_count": 12,
       "top_issues": [
         [
           "checker_syntax_only_no_behavior_score",
-          3
+          2
         ]
       ],
       "visible_hidden_distinct_count": 12
@@ -103,16 +98,16 @@
       "behavior_contract_complete_count": 24,
       "complete_tests_count": 24,
       "description": "LRM KCL/continuous-time gap-fill candidates",
-      "fair_eval_count": 13,
+      "fair_eval_count": 16,
       "negative_cases_aligned_count": 24,
       "negative_descriptions_task_specific_count": 24,
       "range": "471-494",
-      "sop_ready_count": 13,
+      "sop_ready_count": 16,
       "task_count": 24,
       "top_issues": [
         [
           "checker_syntax_only_no_behavior_score",
-          11
+          8
         ]
       ],
       "visible_hidden_distinct_count": 24
@@ -123,13 +118,13 @@
   "summary": {
     "behavior_contract_complete_count": 194,
     "complete_tests_count": 194,
-    "fair_eval_count": 162,
+    "fair_eval_count": 168,
     "issue_counts": {
-      "checker_syntax_only_no_behavior_score": 32
+      "checker_syntax_only_no_behavior_score": 26
     },
     "negative_cases_aligned_count": 194,
     "negative_descriptions_task_specific_count": 194,
-    "sop_ready_count": 162,
+    "sop_ready_count": 168,
     "sop_ready_visible_hidden_identical_count": 0,
     "staged_visible_hidden_identical_count": 0,
     "task_count": 194,
@@ -1548,18 +1543,16 @@
       "behavior_contract_complete": true,
       "certification_scope": "ams_extension_not_part_of_original_full_300_claim",
       "complete_tests": true,
-      "fair_eval": false,
+      "fair_eval": true,
       "hidden_scs_count": 1,
-      "issues": [
-        "checker_syntax_only_no_behavior_score"
-      ],
+      "issues": [],
       "negative_cases_aligned": true,
       "negative_count": 5,
       "negative_descriptions_task_specific": true,
       "number": 353,
       "reasonable_task": true,
       "solution_file_count": 1,
-      "sop_ready": false,
+      "sop_ready": true,
       "starter_file_count": 1,
       "syntax_focus": "Use edge-triggered always with async reset.",
       "target": "always_resettable_toggle.vams",
@@ -3253,18 +3246,16 @@
       "behavior_contract_complete": true,
       "certification_scope": "language_extension_not_part_of_original_full_300_claim",
       "complete_tests": true,
-      "fair_eval": false,
+      "fair_eval": true,
       "hidden_scs_count": 1,
-      "issues": [
-        "checker_syntax_only_no_behavior_score"
-      ],
+      "issues": [],
       "negative_cases_aligned": true,
       "negative_count": 5,
       "negative_descriptions_task_specific": true,
       "number": 416,
       "reasonable_task": true,
       "solution_file_count": 1,
-      "sop_ready": false,
+      "sop_ready": true,
       "starter_file_count": 1,
       "syntax_focus": "Use logic vector reduction in a continuous assignment.",
       "target": "logic_vector_reduction_flag.vams",
@@ -4689,18 +4680,16 @@
       "behavior_contract_complete": true,
       "certification_scope": "language_extension_not_part_of_original_full_300_claim",
       "complete_tests": true,
-      "fair_eval": false,
+      "fair_eval": true,
       "hidden_scs_count": 1,
-      "issues": [
-        "checker_syntax_only_no_behavior_score"
-      ],
+      "issues": [],
       "negative_cases_aligned": true,
       "negative_count": 5,
       "negative_descriptions_task_specific": true,
       "number": 468,
       "reasonable_task": true,
       "solution_file_count": 1,
-      "sop_ready": false,
+      "sop_ready": true,
       "starter_file_count": 1,
       "syntax_focus": "Declare an explicit branch and read its voltage.",
       "target": "branch_declaration_voltage_probe.va",
@@ -4915,18 +4904,16 @@
       "behavior_contract_complete": true,
       "certification_scope": "language_extension_not_part_of_original_full_300_claim",
       "complete_tests": true,
-      "fair_eval": false,
+      "fair_eval": true,
       "hidden_scs_count": 1,
-      "issues": [
-        "checker_syntax_only_no_behavior_score"
-      ],
+      "issues": [],
       "negative_cases_aligned": true,
       "negative_count": 5,
       "negative_descriptions_task_specific": true,
       "number": 476,
       "reasonable_task": true,
       "solution_file_count": 1,
-      "sop_ready": false,
+      "sop_ready": true,
       "starter_file_count": 1,
       "syntax_focus": "Use a string out-of-module reference in a voltage probe.",
       "target": "oomr_string_voltage_probe.va",
@@ -4944,18 +4931,16 @@
       "behavior_contract_complete": true,
       "certification_scope": "language_extension_not_part_of_original_full_300_claim",
       "complete_tests": true,
-      "fair_eval": false,
+      "fair_eval": true,
       "hidden_scs_count": 1,
-      "issues": [
-        "checker_syntax_only_no_behavior_score"
-      ],
+      "issues": [],
       "negative_cases_aligned": true,
       "negative_count": 5,
       "negative_descriptions_task_specific": true,
       "number": 477,
       "reasonable_task": true,
       "solution_file_count": 1,
-      "sop_ready": false,
+      "sop_ready": true,
       "starter_file_count": 1,
       "syntax_focus": "Use $analog_node_alias inside analog initial for hierarchical node aliasing.",
       "target": "analog_node_alias_initial.va",
@@ -5220,18 +5205,16 @@
       "behavior_contract_complete": true,
       "certification_scope": "language_extension_not_part_of_original_full_300_claim",
       "complete_tests": true,
-      "fair_eval": false,
+      "fair_eval": true,
       "hidden_scs_count": 1,
-      "issues": [
-        "checker_syntax_only_no_behavior_score"
-      ],
+      "issues": [],
       "negative_cases_aligned": true,
       "negative_count": 5,
       "negative_descriptions_task_specific": true,
       "number": 487,
       "reasonable_task": true,
       "solution_file_count": 1,
-      "sop_ready": false,
+      "sop_ready": true,
       "starter_file_count": 1,
       "syntax_focus": "Use two independent arrays and one output array in a 2D $table_model().",
       "target": "table_model_2d_array_surface.va",

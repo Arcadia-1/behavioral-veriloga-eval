@@ -6858,19 +6858,36 @@
   notes:
     - "AMS mixed-signal extension task promoted to executable EVAS behavior candidate."
 353-always-resettable-toggle: |
-  version: 1
+  version: 2
   task_id: v3_353_always_resettable_toggle
-  backend: ams_mixed_signal
-  status: ams-mixed-signal-candidate
-  checker: ams_language_feature_contract
+  backend: evas
+  status: behavior-certified-extension
+  checker: v3_353_always_resettable_toggle
   syntax:
     must_include:
       - "logic"
       - "always"
     must_not_include:
       - "I("
+  sim_correct:
+    trace_signals:
+      time: "time"
+      clk: "clk"
+      rst: "rst"
+      d: "d"
+      en: "en"
+      q: "q"
+    checks:
+      - "edge_triggered_always_updates_q"
+      - "async_reset_forces_q_low"
+      - "enable_and_data_toggle_sequence_matches_reference"
+      - "no_current_domain_contribution"
+      - "five_negative_variants_rejected_by_behavior_checker"
+  promotion_evidence:
+    command: "PYTHONPATH=\"/Users/mac/Documents/github-repos/EVAS:$PWD/runners\" VAEVAS_DEFAULT_EVAS_ENGINE=python VAEVAS_EVAS_PERSISTENT_WORKER=0 PATH=\"$PWD/.venv-evas/bin:$PATH\" .venv-evas/bin/python scripts/run_v3_gold_negative_verification.py --start 353 --end 353 --tasks 353 --include-staged --timeout 120 --jobs 1 --out benchmark-vabench-release-v3/reports/verify_tasks_353_476_487_probe.json"
+    result: "1/1 gold PASS; 5/5 negative variants rejected; 0 expectation_fail for task 353."
   notes:
-    - "AMS mixed-signal extension task staged pending event-or always support: https://github.com/Arcadia-1/EVAS/issues/39"
+    - "Promoted after EVAS supported the resettable always behavior required by this AMS/digital mixed-signal task."
 354-always-counter-two-bit: |
   version: 1
   task_id: v3_354_always_counter_two_bit
@@ -9516,11 +9533,11 @@
     - "Executable AMS/digital vector candidate staged pending EVAS digital continuous assign/vector-port support."
     - "EVAS issue: https://github.com/Arcadia-1/EVAS/issues/43"
 416-logic-vector-reduction-flag: |
-  version: 1
+  version: 2
   task_id: v3_416_logic_vector_reduction_flag
-  backend: digital_mixed_capable
-  status: ams-mixed-signal-candidate
-  checker: language_feature_contract
+  backend: evas
+  status: behavior-certified-extension
+  checker: v3_416_logic_vector_reduction_flag
   required_columns:
     - time
     - code0
@@ -9533,9 +9550,25 @@
       - "|code"
     must_not_include:
       - "I("
+  sim_correct:
+    trace_signals:
+      time: "time"
+      code0: "code0"
+      code1: "code1"
+      code2: "code2"
+      code3: "code3"
+      valid: "valid"
+    checks:
+      - "logic_vector_reduction_or_is_used"
+      - "valid_asserts_for_each_single_active_bit"
+      - "hidden_stimulus_includes_low_and_high_endpoint_single_bit_cases"
+      - "partial_bit_reduction_negative_is_rejected"
+      - "five_negative_variants_rejected_by_behavior_checker"
+  promotion_evidence:
+    command: "PYTHONPATH=\"/Users/mac/Documents/github-repos/EVAS:$PWD/runners\" VAEVAS_DEFAULT_EVAS_ENGINE=python VAEVAS_EVAS_PERSISTENT_WORKER=0 PATH=\"$PWD/.venv-evas/bin:$PATH\" .venv-evas/bin/python scripts/run_v3_gold_negative_verification.py --start 416 --end 416 --tasks 416 --include-staged --timeout 120 --jobs 1 --out benchmark-vabench-release-v3/reports/verify_task_416_after_msb_only_vector.json"
+    result: "1/1 gold PASS; 5/5 negative variants rejected; 0 expectation_fail after hidden stimulus covered endpoint single-bit reductions."
   notes:
-    - "Executable AMS/digital vector reduction candidate staged pending EVAS digital continuous assign/vector-port support."
-    - "EVAS issue: https://github.com/Arcadia-1/EVAS/issues/43"
+    - "Promoted after the hidden stimulus was strengthened to include endpoint single-bit vector cases, rejecting partial reductions that omit one vector bit."
 417-always-async-reset-counter: |
   version: 1
   task_id: v3_417_always_async_reset_counter
@@ -11239,19 +11272,34 @@
   notes:
     - "$simparam tnom query behavior promoted to executable EVAS behavior candidate."
 468-branch-declaration-voltage-probe: |
-  version: 1
+  version: 2
   task_id: v3_468_branch_declaration_voltage_probe
-  backend: evas_pending_branch_voltage_probe_semantics
-  status: syntax-extension-candidate
-  checker: language_feature_contract
+  backend: evas
+  status: behavior-certified-extension
+  checker: v3_468_branch_declaration_voltage_probe
   syntax:
     must_include:
       - "branch ("
       - "V(br)"
     must_not_include:
       - "I("
+  sim_correct:
+    trace_signals:
+      time: "time"
+      p: "p"
+      n: "n"
+      out: "out"
+    checks:
+      - "explicit_branch_declaration_is_used"
+      - "branch_voltage_tracks_v_p_minus_v_n"
+      - "non_zero_reference_node_rejects_absolute_potential_probe"
+      - "no_current_domain_contribution"
+      - "five_negative_variants_rejected_by_behavior_checker"
+  promotion_evidence:
+    command: "PYTHONPATH=\"/Users/mac/Documents/github-repos/EVAS:$PWD/runners\" VAEVAS_DEFAULT_EVAS_ENGINE=python VAEVAS_EVAS_PERSISTENT_WORKER=0 PATH=\"$PWD/.venv-evas/bin:$PATH\" .venv-evas/bin/python scripts/run_v3_gold_negative_verification.py --start 468 --end 468 --tasks 468 --include-staged --timeout 120 --jobs 1 --out benchmark-vabench-release-v3/reports/verify_task_468_after_branch_probe.json"
+    result: "1/1 gold PASS; 5/5 negative variants rejected; 0 expectation_fail after EVAS explicit branch voltage probe support."
   notes:
-    - "Behavior promotion is blocked by EVAS explicit branch voltage probe semantics: https://github.com/Arcadia-1/EVAS/issues/50"
+    - "Promoted after EVAS parsed explicit branch declarations and resolved V(br) as V(p,n)."
 469-current-contribution-conductance: |
   version: 1
   task_id: v3_469_current_contribution_conductance
@@ -11391,29 +11439,63 @@
   notes:
     - "Generic potential() contribution target behavior promoted to executable EVAS behavior candidate."
 476-oomr-string-voltage-probe: |
-  version: 1
+  version: 2
   task_id: v3_476_oomr_string_voltage_probe
-  backend: evas_pending_string_oomr_voltage_probe_semantics
-  status: syntax-extension-candidate
-  checker: language_feature_contract
+  backend: evas
+  status: behavior-certified-extension
+  checker: v3_476_oomr_string_voltage_probe
   syntax:
     must_include:
       - "V(sigpath)"
       - "parameter string sigpath"
+    must_not_include:
+      - "input electrical vin"
+  sim_correct:
+    trace_signals:
+      time: "time"
+      vin: "vin"
+      out: "out"
+    checks:
+      - "string_oomr_voltage_probe_resolves_root_node"
+      - "output_tracks_vin_waveform"
+      - "negative_segment_rejects_constant_alias"
+      - "ordinary_input_port_bypass_is_forbidden"
+      - "five_negative_variants_rejected_by_behavior_checker"
+  promotion_evidence:
+    command: "PYTHONPATH=\"/Users/mac/Documents/github-repos/EVAS:$PWD/runners\" VAEVAS_DEFAULT_EVAS_ENGINE=python VAEVAS_EVAS_PERSISTENT_WORKER=0 PATH=\"$PWD/.venv-evas/bin:$PATH\" .venv-evas/bin/python scripts/run_v3_gold_negative_verification.py --start 476 --end 476 --tasks 476 --include-staged --timeout 120 --jobs 1 --out benchmark-vabench-release-v3/reports/verify_tasks_353_476_487_probe.json"
+    result: "1/1 gold PASS; 5/5 negative variants rejected; 0 expectation_fail for task 476."
   notes:
-    - "LRM gap-fill task with executable tests; behavior promotion is blocked because V(sigpath) currently resolves to 0: https://github.com/Arcadia-1/EVAS/issues/51"
+    - "Promoted after EVAS resolved string out-of-module voltage probes such as V(sigpath)."
 477-analog-node-alias-initial: |
-  version: 1
+  version: 2
   task_id: v3_477_analog_node_alias_initial
-  backend: evas_pending_analog_node_alias_semantics
-  status: syntax-extension-candidate
-  checker: language_feature_contract
+  backend: evas
+  status: behavior-certified-extension
+  checker: v3_477_analog_node_alias_initial
   syntax:
     must_include:
       - "$analog_node_alias"
       - "analog initial"
+      - "target_path"
+      - "V(aliased)"
+    must_not_include:
+      - "input electrical"
+  sim_correct:
+    trace_signals:
+      time: "time"
+      vin: "vin"
+      out: "out"
+    checks:
+      - "analog_initial_installs_internal_node_alias"
+      - "root_path_vin_alias_tracks_top_level_source"
+      - "output_follows_aliased_node_voltage"
+      - "ordinary_input_port_bypass_is_forbidden"
+      - "five_negative_variants_rejected_by_behavior_checker"
+  promotion_evidence:
+    command: "PYTHONPATH=\"/Users/mac/Documents/github-repos/EVAS:$PWD/runners\" VAEVAS_DEFAULT_EVAS_ENGINE=python VAEVAS_EVAS_PERSISTENT_WORKER=0 PATH=\"$PWD/.venv-evas/bin:$PATH\" .venv-evas/bin/python scripts/run_v3_gold_negative_verification.py --start 477 --end 477 --tasks 477 --include-staged --timeout 120 --jobs 1 --out benchmark-vabench-release-v3/reports/verify_task_477_after_analog_node_alias.json"
+    result: "1/1 gold PASS; 5/5 negative variants rejected; 0 expectation_fail after EVAS analog node alias support."
   notes:
-    - "LRM gap-fill task with executable tests; behavior promotion is blocked because $analog_node_alias currently leaves the alias node at 0: https://github.com/Arcadia-1/EVAS/issues/52"
+    - "Promoted after EVAS mapped an internal alias node to the requested $root path during analog initial."
 478-inherited-port-attribute-supply: |
   version: 1
   task_id: v3_478_inherited_port_attribute_supply
@@ -11655,17 +11737,34 @@
   notes:
     - "RF source registration helper promoted with executable frequency-parameter behavior verification."
 487-table-model-2d-array-surface: |
-  version: 1
+  version: 2
   task_id: v3_487_table_model_2d_array_surface
-  backend: evas_pending_table_model_2d_array_surface
-  status: syntax-extension-candidate
-  checker: language_feature_contract
+  backend: evas
+  status: behavior-certified-extension
+  checker: v3_487_table_model_2d_array_surface
   syntax:
     must_include:
       - "$table_model"
       - "1L,1L"
+    must_not_include:
+      - "I("
+  sim_correct:
+    trace_signals:
+      time: "time"
+      x: "x"
+      y: "y"
+      out: "out"
+    checks:
+      - "array_backed_2d_table_model_is_used"
+      - "four_surface_corners_match_reference_values"
+      - "zero_corner_bias_negative_is_rejected"
+      - "no_current_domain_contribution"
+      - "five_negative_variants_rejected_by_behavior_checker"
+  promotion_evidence:
+    command: "PYTHONPATH=\"/Users/mac/Documents/github-repos/EVAS:$PWD/runners\" VAEVAS_DEFAULT_EVAS_ENGINE=python VAEVAS_EVAS_PERSISTENT_WORKER=0 PATH=\"$PWD/.venv-evas/bin:$PATH\" .venv-evas/bin/python scripts/run_v3_gold_negative_verification.py --start 487 --end 487 --tasks 487 --include-staged --timeout 120 --jobs 1 --out benchmark-vabench-release-v3/reports/verify_task_487_after_table_model_2d.json"
+    result: "1/1 gold PASS; 5/5 negative variants rejected; 0 expectation_fail after strengthening neg_003 to perturb z[0]."
   notes:
-    - "Executable tests and checker are staged, but behavior promotion is blocked because 2D array-backed $table_model() currently returns 0: https://github.com/Arcadia-1/EVAS/issues/56"
+    - "Promoted after EVAS evaluated 2D array-backed $table_model() surfaces and the weak reset-bias negative was made checker-visible."
 488-table-model-string-param-source: |
   version: 2
   task_id: v3_488_table_model_string_param_source

@@ -2,21 +2,13 @@
   "blocking_issues": [
     {
       "issue_url": "https://github.com/Arcadia-1/EVAS/issues/39",
-      "promotion_acceptance": "After EVAS support lands, promote the listed 2 task(s) by adding sim_correct behavior contracts/checkers if missing, then require 2/2 gold PASS, 10/10 negative variants rejected, and zero expectation_fail in the verification report.",
-      "promotion_command": "PYTHONPATH=runners VAEVAS_DEFAULT_EVAS_ENGINE=python VAEVAS_EVAS_PERSISTENT_WORKER=0 PATH=\"$PWD/.venv-evas/bin:$PATH\" .venv-evas/bin/python scripts/run_v3_gold_negative_verification.py --start 353 --end 417 --tasks 353,417 --include-staged --timeout 120 --jobs 1 --out benchmark-vabench-release-v3/reports/verify_issue_353_417.json",
+      "promotion_acceptance": "After EVAS support lands, promote the listed 1 task(s) by adding sim_correct behavior contracts/checkers if missing, then require 1/1 gold PASS, 5/5 negative variants rejected, and zero expectation_fail in the verification report.",
+      "promotion_command": "PYTHONPATH=runners VAEVAS_DEFAULT_EVAS_ENGINE=python VAEVAS_EVAS_PERSISTENT_WORKER=0 PATH=\"$PWD/.venv-evas/bin:$PATH\" .venv-evas/bin/python scripts/run_v3_gold_negative_verification.py --start 417 --end 417 --tasks 417 --include-staged --timeout 120 --jobs 1 --out benchmark-vabench-release-v3/reports/verify_issue_417_417.json",
       "semantic_layers": {
-        "ams_mixed_signal_extension": 2
+        "ams_mixed_signal_extension": 1
       },
-      "task_count": 2,
+      "task_count": 1,
       "tasks": [
-        {
-          "semantic_layer": "ams_mixed_signal_extension",
-          "target": "always_resettable_toggle.vams",
-          "task_id": "v3_353_always_resettable_toggle",
-          "task_key": "353-always-resettable-toggle",
-          "tier": "ams-mixed-signal-candidate",
-          "title": "Always Resettable Toggle"
-        },
         {
           "semantic_layer": "ams_mixed_signal_extension",
           "target": "always_async_reset_counter.vams",
@@ -29,12 +21,12 @@
     },
     {
       "issue_url": "https://github.com/Arcadia-1/EVAS/issues/43",
-      "promotion_acceptance": "After EVAS support lands, promote the listed 4 task(s) by adding sim_correct behavior contracts/checkers if missing, then require 4/4 gold PASS, 20/20 negative variants rejected, and zero expectation_fail in the verification report.",
-      "promotion_command": "PYTHONPATH=runners VAEVAS_DEFAULT_EVAS_ENGINE=python VAEVAS_EVAS_PERSISTENT_WORKER=0 PATH=\"$PWD/.venv-evas/bin:$PATH\" .venv-evas/bin/python scripts/run_v3_gold_negative_verification.py --start 415 --end 455 --tasks 415,416,418,455 --include-staged --timeout 120 --jobs 1 --out benchmark-vabench-release-v3/reports/verify_issue_415_455.json",
+      "promotion_acceptance": "After EVAS support lands, promote the listed 3 task(s) by adding sim_correct behavior contracts/checkers if missing, then require 3/3 gold PASS, 15/15 negative variants rejected, and zero expectation_fail in the verification report.",
+      "promotion_command": "PYTHONPATH=runners VAEVAS_DEFAULT_EVAS_ENGINE=python VAEVAS_EVAS_PERSISTENT_WORKER=0 PATH=\"$PWD/.venv-evas/bin:$PATH\" .venv-evas/bin/python scripts/run_v3_gold_negative_verification.py --start 415 --end 455 --tasks 415,418,455 --include-staged --timeout 120 --jobs 1 --out benchmark-vabench-release-v3/reports/verify_issue_415_455.json",
       "semantic_layers": {
-        "ams_mixed_signal_extension": 4
+        "ams_mixed_signal_extension": 3
       },
-      "task_count": 4,
+      "task_count": 3,
       "tasks": [
         {
           "semantic_layer": "ams_mixed_signal_extension",
@@ -43,14 +35,6 @@
           "task_key": "415-logic-vector-assign-slice",
           "tier": "ams-mixed-signal-candidate",
           "title": "Logic Vector Assign Slice"
-        },
-        {
-          "semantic_layer": "ams_mixed_signal_extension",
-          "target": "logic_vector_reduction_flag.vams",
-          "task_id": "v3_416_logic_vector_reduction_flag",
-          "task_key": "416-logic-vector-reduction-flag",
-          "tier": "ams-mixed-signal-candidate",
-          "title": "Logic Vector Reduction Flag"
         },
         {
           "semantic_layer": "ams_mixed_signal_extension",
@@ -265,63 +249,6 @@
       ]
     },
     {
-      "issue_url": "https://github.com/Arcadia-1/EVAS/issues/50",
-      "promotion_acceptance": "After EVAS support lands, promote the listed 1 task(s) by adding sim_correct behavior contracts/checkers if missing, then require 1/1 gold PASS, 5/5 negative variants rejected, and zero expectation_fail in the verification report.",
-      "promotion_command": "PYTHONPATH=runners VAEVAS_DEFAULT_EVAS_ENGINE=python VAEVAS_EVAS_PERSISTENT_WORKER=0 PATH=\"$PWD/.venv-evas/bin:$PATH\" .venv-evas/bin/python scripts/run_v3_gold_negative_verification.py --start 468 --end 468 --tasks 468 --include-staged --timeout 120 --jobs 1 --out benchmark-vabench-release-v3/reports/verify_issue_468_468.json",
-      "semantic_layers": {
-        "behavioral_language_extension": 1
-      },
-      "task_count": 1,
-      "tasks": [
-        {
-          "semantic_layer": "behavioral_language_extension",
-          "target": "branch_declaration_voltage_probe.va",
-          "task_id": "v3_468_branch_declaration_voltage_probe",
-          "task_key": "468-branch-declaration-voltage-probe",
-          "tier": "syntax-extension-candidate",
-          "title": "Branch Declaration Voltage Probe"
-        }
-      ]
-    },
-    {
-      "issue_url": "https://github.com/Arcadia-1/EVAS/issues/51",
-      "promotion_acceptance": "After EVAS support lands, promote the listed 1 task(s) by adding sim_correct behavior contracts/checkers if missing, then require 1/1 gold PASS, 5/5 negative variants rejected, and zero expectation_fail in the verification report.",
-      "promotion_command": "PYTHONPATH=runners VAEVAS_DEFAULT_EVAS_ENGINE=python VAEVAS_EVAS_PERSISTENT_WORKER=0 PATH=\"$PWD/.venv-evas/bin:$PATH\" .venv-evas/bin/python scripts/run_v3_gold_negative_verification.py --start 476 --end 476 --tasks 476 --include-staged --timeout 120 --jobs 1 --out benchmark-vabench-release-v3/reports/verify_issue_476_476.json",
-      "semantic_layers": {
-        "behavioral_language_extension": 1
-      },
-      "task_count": 1,
-      "tasks": [
-        {
-          "semantic_layer": "behavioral_language_extension",
-          "target": "oomr_string_voltage_probe.va",
-          "task_id": "v3_476_oomr_string_voltage_probe",
-          "task_key": "476-oomr-string-voltage-probe",
-          "tier": "syntax-extension-candidate",
-          "title": "Oomr String Voltage Probe"
-        }
-      ]
-    },
-    {
-      "issue_url": "https://github.com/Arcadia-1/EVAS/issues/52",
-      "promotion_acceptance": "After EVAS support lands, promote the listed 1 task(s) by adding sim_correct behavior contracts/checkers if missing, then require 1/1 gold PASS, 5/5 negative variants rejected, and zero expectation_fail in the verification report.",
-      "promotion_command": "PYTHONPATH=runners VAEVAS_DEFAULT_EVAS_ENGINE=python VAEVAS_EVAS_PERSISTENT_WORKER=0 PATH=\"$PWD/.venv-evas/bin:$PATH\" .venv-evas/bin/python scripts/run_v3_gold_negative_verification.py --start 477 --end 477 --tasks 477 --include-staged --timeout 120 --jobs 1 --out benchmark-vabench-release-v3/reports/verify_issue_477_477.json",
-      "semantic_layers": {
-        "behavioral_language_extension": 1
-      },
-      "task_count": 1,
-      "tasks": [
-        {
-          "semantic_layer": "behavioral_language_extension",
-          "target": "analog_node_alias_initial.va",
-          "task_id": "v3_477_analog_node_alias_initial",
-          "task_key": "477-analog-node-alias-initial",
-          "tier": "syntax-extension-candidate",
-          "title": "Analog Node Alias Initial"
-        }
-      ]
-    },
-    {
       "issue_url": "https://github.com/Arcadia-1/EVAS/issues/54",
       "promotion_acceptance": "After EVAS support lands, promote the listed 1 task(s) by adding sim_correct behavior contracts/checkers if missing, then require 1/1 gold PASS, 5/5 negative variants rejected, and zero expectation_fail in the verification report.",
       "promotion_command": "PYTHONPATH=runners VAEVAS_DEFAULT_EVAS_ENGINE=python VAEVAS_EVAS_PERSISTENT_WORKER=0 PATH=\"$PWD/.venv-evas/bin:$PATH\" .venv-evas/bin/python scripts/run_v3_gold_negative_verification.py --start 481 --end 481 --tasks 481 --include-staged --timeout 120 --jobs 1 --out benchmark-vabench-release-v3/reports/verify_issue_481_481.json",
@@ -358,25 +285,6 @@
           "title": "Analog Primitive Isource Instance"
         }
       ]
-    },
-    {
-      "issue_url": "https://github.com/Arcadia-1/EVAS/issues/56",
-      "promotion_acceptance": "After EVAS support lands, promote the listed 1 task(s) by adding sim_correct behavior contracts/checkers if missing, then require 1/1 gold PASS, 5/5 negative variants rejected, and zero expectation_fail in the verification report.",
-      "promotion_command": "PYTHONPATH=runners VAEVAS_DEFAULT_EVAS_ENGINE=python VAEVAS_EVAS_PERSISTENT_WORKER=0 PATH=\"$PWD/.venv-evas/bin:$PATH\" .venv-evas/bin/python scripts/run_v3_gold_negative_verification.py --start 487 --end 487 --tasks 487 --include-staged --timeout 120 --jobs 1 --out benchmark-vabench-release-v3/reports/verify_issue_487_487.json",
-      "semantic_layers": {
-        "behavioral_language_extension": 1
-      },
-      "task_count": 1,
-      "tasks": [
-        {
-          "semantic_layer": "behavioral_language_extension",
-          "target": "table_model_2d_array_surface.va",
-          "task_id": "v3_487_table_model_2d_array_surface",
-          "task_key": "487-table-model-2d-array-surface",
-          "tier": "syntax-extension-candidate",
-          "title": "Table Model 2d Array Surface"
-        }
-      ]
     }
   ],
   "claim_boundary": [
@@ -388,7 +296,7 @@
   ],
   "completion_audit": {
     "is_complete": false,
-    "reason": "The full 301-494 objective is not complete because 32 extension tasks still lack behavior checker evidence and are excluded until EVAS support issues are resolved.",
+    "reason": "The full 301-494 objective is not complete because 26 extension tasks still lack behavior checker evidence and are excluded until EVAS support issues are resolved.",
     "requirements": [
       {
         "evidence": "layered_certification summary reports extension_candidate_count=194.",
@@ -411,18 +319,18 @@
         "status": "satisfied"
       },
       {
-        "evidence": "162 extension tasks are behavior-certified; 32 remain excluded_until_behavior_promotion.",
+        "evidence": "168 extension tasks are behavior-certified; 26 remain excluded_until_behavior_promotion.",
         "gap": "The remaining staged rows are blocked by EVAS support issues or missing behavior-checker evidence; staged_promotion_gold_probe records the current per-task blocker.",
         "requirement": "Each extension task has repository behavior checker evidence and can be scored fairly.",
         "status": "partial"
       },
       {
-        "evidence": "verify_301_494_layered: gold_pass=162, gold_fail=0, negative_rejected=810, negative_accepted=0, expectation_fail=0.",
+        "evidence": "verify_301_494_layered: gold_pass=168, gold_fail=0, negative_rejected=840, negative_accepted=0, expectation_fail=0.",
         "requirement": "Behavior-certified extension tasks pass gold verification and reject all negative variants.",
         "status": "satisfied"
       },
       {
-        "evidence": "11 blocking issues cover 32 staged tasks; staged_promotion_gold_probe records 32/32 staged gold cases still failing the current promotion gate.",
+        "evidence": "7 blocking issues cover 26 staged tasks; staged_promotion_gold_probe records 26/26 staged gold cases still failing the current promotion gate.",
         "requirement": "Every staged task has a concrete EVAS issue and promotion checklist.",
         "status": "satisfied"
       }
@@ -446,8 +354,8 @@
   "layers": [
     {
       "certification_levels": {
-        "behavior_certified_extension": 21,
-        "compile_supported_candidate": 8
+        "behavior_certified_extension": 23,
+        "compile_supported_candidate": 6
       },
       "semantic_layer": "ams_mixed_signal_extension",
       "task_count": 29
@@ -475,8 +383,7 @@
     },
     {
       "certification_levels": {
-        "behavior_certified_extension": 126,
-        "compile_supported_candidate": 4
+        "behavior_certified_extension": 130
       },
       "semantic_layer": "behavioral_language_extension",
       "task_count": 130
@@ -506,35 +413,31 @@
   "release": "benchmark-vabench-release-v3",
   "status": "layered_partial",
   "summary": {
-    "behavior_certified_count": 462,
-    "behavior_certified_extension_count": 162,
+    "behavior_certified_count": 468,
+    "behavior_certified_extension_count": 168,
     "blocking_issue_counts": {
-      "https://github.com/Arcadia-1/EVAS/issues/39": 2,
-      "https://github.com/Arcadia-1/EVAS/issues/43": 4,
+      "https://github.com/Arcadia-1/EVAS/issues/39": 1,
+      "https://github.com/Arcadia-1/EVAS/issues/43": 3,
       "https://github.com/Arcadia-1/EVAS/issues/44": 18,
       "https://github.com/Arcadia-1/EVAS/issues/45": 1,
       "https://github.com/Arcadia-1/EVAS/issues/48": 1,
-      "https://github.com/Arcadia-1/EVAS/issues/50": 1,
-      "https://github.com/Arcadia-1/EVAS/issues/51": 1,
-      "https://github.com/Arcadia-1/EVAS/issues/52": 1,
       "https://github.com/Arcadia-1/EVAS/issues/54": 1,
-      "https://github.com/Arcadia-1/EVAS/issues/55": 1,
-      "https://github.com/Arcadia-1/EVAS/issues/56": 1
+      "https://github.com/Arcadia-1/EVAS/issues/55": 1
     },
     "certification_level_counts": {
       "behavior_certified": 268,
-      "behavior_certified_extension": 162,
+      "behavior_certified_extension": 168,
       "behavior_certified_support": 32,
-      "compile_supported_candidate": 12,
+      "compile_supported_candidate": 6,
       "compile_supported_continuous_time_candidate": 14,
       "compile_supported_kcl_candidate": 6
     },
-    "compile_supported_candidate_count": 32,
+    "compile_supported_candidate_count": 26,
     "extension_candidate_count": 194,
     "original_full_300_count": 300,
     "score_claim_counts": {
-      "excluded_until_behavior_promotion": 32,
-      "extension_behavior_certified_outside_original_300": 162,
+      "excluded_until_behavior_promotion": 26,
+      "extension_behavior_certified_outside_original_300": 168,
       "original_full_300_policy": 300
     },
     "semantic_layer_counts": {
@@ -7604,16 +7507,16 @@
       "title": "Always Negedge Sampler"
     },
     {
-      "behavior_certified": false,
-      "blocking_issue_urls": "https://github.com/Arcadia-1/EVAS/issues/39",
+      "behavior_certified": true,
+      "blocking_issue_urls": "",
       "category": "verilog_ams_mixed_signal",
-      "certification_level": "compile_supported_candidate",
+      "certification_level": "behavior_certified_extension",
       "certification_scope": "ams_extension_not_part_of_original_full_300_claim",
-      "claim_boundary": "Verilog-AMS/digital-mixed-signal syntax candidate; not part of the original full-300 behavior claim.",
+      "claim_boundary": "Extension task has SOP-ready behavior evidence: executable visible/hidden tests, repository behavior checker, and five rejected negative variants. It remains outside the original full-300 denominator.",
       "extension_candidate": true,
       "form": "dut",
       "in_original_full_300": false,
-      "score_claim": "excluded_until_behavior_promotion",
+      "score_claim": "extension_behavior_certified_outside_original_300",
       "semantic_layer": "ams_mixed_signal_extension",
       "syntax_focus": "Use edge-triggered always with async reset.",
       "target": "always_resettable_toggle.vams",
@@ -8864,16 +8767,16 @@
       "title": "Logic Vector Assign Slice"
     },
     {
-      "behavior_certified": false,
-      "blocking_issue_urls": "https://github.com/Arcadia-1/EVAS/issues/43",
+      "behavior_certified": true,
+      "blocking_issue_urls": "",
       "category": "verilogams_digital_mixed_semantics",
-      "certification_level": "compile_supported_candidate",
+      "certification_level": "behavior_certified_extension",
       "certification_scope": "language_extension_not_part_of_original_full_300_claim",
-      "claim_boundary": "Verilog-AMS/digital-mixed-signal syntax candidate; not part of the original full-300 behavior claim.",
+      "claim_boundary": "Extension task has SOP-ready behavior evidence: executable visible/hidden tests, repository behavior checker, and five rejected negative variants. It remains outside the original full-300 denominator.",
       "extension_candidate": true,
       "form": "dut",
       "in_original_full_300": false,
-      "score_claim": "excluded_until_behavior_promotion",
+      "score_claim": "extension_behavior_certified_outside_original_300",
       "semantic_layer": "ams_mixed_signal_extension",
       "syntax_focus": "Use logic vector reduction in a continuous assignment.",
       "target": "logic_vector_reduction_flag.vams",
@@ -9904,16 +9807,16 @@
       "title": "Simparam Query Tnom"
     },
     {
-      "behavior_certified": false,
-      "blocking_issue_urls": "https://github.com/Arcadia-1/EVAS/issues/50",
+      "behavior_certified": true,
+      "blocking_issue_urls": "",
       "category": "veriloga_branch_semantics",
-      "certification_level": "compile_supported_candidate",
+      "certification_level": "behavior_certified_extension",
       "certification_scope": "language_extension_not_part_of_original_full_300_claim",
-      "claim_boundary": "Reference solution compiles with current local EVAS, but behavior checker promotion is still pending.",
+      "claim_boundary": "Extension task has SOP-ready behavior evidence: executable visible/hidden tests, repository behavior checker, and five rejected negative variants. It remains outside the original full-300 denominator.",
       "extension_candidate": true,
       "form": "dut",
       "in_original_full_300": false,
-      "score_claim": "excluded_until_behavior_promotion",
+      "score_claim": "extension_behavior_certified_outside_original_300",
       "semantic_layer": "behavioral_language_extension",
       "syntax_focus": "Declare an explicit branch and read its voltage.",
       "target": "branch_declaration_voltage_probe.va",
@@ -10064,16 +9967,16 @@
       "title": "Generic Potential Contribution"
     },
     {
-      "behavior_certified": false,
-      "blocking_issue_urls": "https://github.com/Arcadia-1/EVAS/issues/51",
+      "behavior_certified": true,
+      "blocking_issue_urls": "",
       "category": "veriloga_oomr_semantics",
-      "certification_level": "compile_supported_candidate",
+      "certification_level": "behavior_certified_extension",
       "certification_scope": "language_extension_not_part_of_original_full_300_claim",
-      "claim_boundary": "Reference solution compiles with current local EVAS, but behavior checker promotion is still pending.",
+      "claim_boundary": "Extension task has SOP-ready behavior evidence: executable visible/hidden tests, repository behavior checker, and five rejected negative variants. It remains outside the original full-300 denominator.",
       "extension_candidate": true,
       "form": "dut",
       "in_original_full_300": false,
-      "score_claim": "excluded_until_behavior_promotion",
+      "score_claim": "extension_behavior_certified_outside_original_300",
       "semantic_layer": "behavioral_language_extension",
       "syntax_focus": "Use a string out-of-module reference in a voltage probe.",
       "target": "oomr_string_voltage_probe.va",
@@ -10084,16 +9987,16 @@
       "title": "Oomr String Voltage Probe"
     },
     {
-      "behavior_certified": false,
-      "blocking_issue_urls": "https://github.com/Arcadia-1/EVAS/issues/52",
+      "behavior_certified": true,
+      "blocking_issue_urls": "",
       "category": "veriloga_alias_semantics",
-      "certification_level": "compile_supported_candidate",
+      "certification_level": "behavior_certified_extension",
       "certification_scope": "language_extension_not_part_of_original_full_300_claim",
-      "claim_boundary": "Reference solution compiles with current local EVAS, but behavior checker promotion is still pending.",
+      "claim_boundary": "Extension task has SOP-ready behavior evidence: executable visible/hidden tests, repository behavior checker, and five rejected negative variants. It remains outside the original full-300 denominator.",
       "extension_candidate": true,
       "form": "dut",
       "in_original_full_300": false,
-      "score_claim": "excluded_until_behavior_promotion",
+      "score_claim": "extension_behavior_certified_outside_original_300",
       "semantic_layer": "behavioral_language_extension",
       "syntax_focus": "Use $analog_node_alias inside analog initial for hierarchical node aliasing.",
       "target": "analog_node_alias_initial.va",
@@ -10284,16 +10187,16 @@
       "title": "Rf Source Info Registration"
     },
     {
-      "behavior_certified": false,
-      "blocking_issue_urls": "https://github.com/Arcadia-1/EVAS/issues/56",
+      "behavior_certified": true,
+      "blocking_issue_urls": "",
       "category": "veriloga_table_model_semantics",
-      "certification_level": "compile_supported_candidate",
+      "certification_level": "behavior_certified_extension",
       "certification_scope": "language_extension_not_part_of_original_full_300_claim",
-      "claim_boundary": "Reference solution compiles with current local EVAS, but behavior checker promotion is still pending.",
+      "claim_boundary": "Extension task has SOP-ready behavior evidence: executable visible/hidden tests, repository behavior checker, and five rejected negative variants. It remains outside the original full-300 denominator.",
       "extension_candidate": true,
       "form": "dut",
       "in_original_full_300": false,
-      "score_claim": "excluded_until_behavior_promotion",
+      "score_claim": "extension_behavior_certified_outside_original_300",
       "semantic_layer": "behavioral_language_extension",
       "syntax_focus": "Use two independent arrays and one output array in a 2D $table_model().",
       "target": "table_model_2d_array_surface.va",

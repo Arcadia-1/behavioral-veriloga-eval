@@ -5,9 +5,9 @@ Date: 2026-07-02
 ## Summary
 
 - Audited extension tasks: **194**
-- SOP-ready tasks: **162**
+- SOP-ready tasks: **168**
 - Tasks with executable visible+hidden SCS evidence: **194**
-- Tasks with behavior checker evidence: **162**
+- Tasks with behavior checker evidence: **168**
 - Tasks with complete manifest behavior contracts: **194**
 - Tasks with aligned negative case indexes: **194**
 - Tasks with task-specific negative descriptions: **194**
@@ -18,7 +18,7 @@ Date: 2026-07-02
 
 ## Issue Counts
 
-- `checker_syntax_only_no_behavior_score`: 32
+- `checker_syntax_only_no_behavior_score`: 26
 
 ## Warning Counts
 
@@ -29,12 +29,12 @@ Date: 2026-07-02
 | Range | Description | Tasks | Ready | Executable Tests | Behavior Eval | Contracts | Neg Index | Neg Desc | Distinct V/H | Top Issues |
 | --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | --- |
 | `301-340` | language-semantics voltage-domain candidates | 40 | 40 | 40 | 40 | 40 | 40 | 40 | 40 |  |
-| `341-360` | AMS mixed-signal candidates | 20 | 19 | 20 | 19 | 20 | 20 | 20 | 20 | `checker_syntax_only_no_behavior_score`: 1 |
+| `341-360` | AMS mixed-signal candidates | 20 | 20 | 20 | 20 | 20 | 20 | 20 | 20 |  |
 | `361-372` | noise and analysis candidates | 12 | 12 | 12 | 12 | 12 | 12 | 12 | 12 |  |
-| `373-434` | task/file/table/random/hierarchy syntax candidates | 62 | 58 | 62 | 58 | 62 | 62 | 62 | 62 | `checker_syntax_only_no_behavior_score`: 4 |
+| `373-434` | task/file/table/random/hierarchy syntax candidates | 62 | 59 | 62 | 59 | 62 | 62 | 62 | 62 | `checker_syntax_only_no_behavior_score`: 3 |
 | `435-458` | manual syntax-completion candidates | 24 | 11 | 24 | 11 | 24 | 24 | 24 | 24 | `checker_syntax_only_no_behavior_score`: 13 |
-| `459-470` | course-material gap-fill candidates | 12 | 9 | 12 | 9 | 12 | 12 | 12 | 12 | `checker_syntax_only_no_behavior_score`: 3 |
-| `471-494` | LRM KCL/continuous-time gap-fill candidates | 24 | 13 | 24 | 13 | 24 | 24 | 24 | 24 | `checker_syntax_only_no_behavior_score`: 11 |
+| `459-470` | course-material gap-fill candidates | 12 | 10 | 12 | 10 | 12 | 12 | 12 | 12 | `checker_syntax_only_no_behavior_score`: 2 |
+| `471-494` | LRM KCL/continuous-time gap-fill candidates | 24 | 16 | 24 | 16 | 24 | 24 | 24 | 24 | `checker_syntax_only_no_behavior_score`: 8 |
 
 ## Highest Severity Finding
 
@@ -96,7 +96,7 @@ Tasks 301-494 are extension candidates, not SOP-ready benchmark tasks. They most
 | `350-logic-assign-reduction` | `ams-mixed-signal-candidate` | True | - |
 | `351-always-posedged-dff` | `ams-mixed-signal-candidate` | True | - |
 | `352-always-negedge-sampler` | `ams-mixed-signal-candidate` | True | - |
-| `353-always-resettable-toggle` | `ams-mixed-signal-candidate` | False | `checker_syntax_only_no_behavior_score` |
+| `353-always-resettable-toggle` | `ams-mixed-signal-candidate` | True | - |
 | `354-always-counter-two-bit` | `ams-mixed-signal-candidate` | True | - |
 | `355-always-enable-hold` | `ams-mixed-signal-candidate` | True | - |
 | `356-mixed-logic-enable-voltage-driver` | `ams-mixed-signal-candidate` | True | - |
@@ -159,7 +159,7 @@ Tasks 301-494 are extension candidates, not SOP-ready benchmark tasks. They most
 | `413-while-loop-array-sum` | `syntax-extension-candidate` | True | - |
 | `414-parameter-range-real-control` | `syntax-extension-candidate` | True | - |
 | `415-logic-vector-assign-slice` | `ams-mixed-signal-candidate` | False | `checker_syntax_only_no_behavior_score` |
-| `416-logic-vector-reduction-flag` | `ams-mixed-signal-candidate` | False | `checker_syntax_only_no_behavior_score` |
+| `416-logic-vector-reduction-flag` | `ams-mixed-signal-candidate` | True | - |
 | `417-always-async-reset-counter` | `ams-mixed-signal-candidate` | False | `checker_syntax_only_no_behavior_score` |
 | `418-always-enable-saturating-counter` | `ams-mixed-signal-candidate` | False | `checker_syntax_only_no_behavior_score` |
 | `419-wreal-logic-threshold-bridge` | `ams-mixed-signal-candidate` | True | - |
@@ -211,7 +211,7 @@ Tasks 301-494 are extension candidates, not SOP-ready benchmark tasks. They most
 | `465-port-connected-output-enable` | `syntax-extension-candidate` | True | - |
 | `466-temperature-environment-metric` | `syntax-extension-candidate` | True | - |
 | `467-simparam-query-tnom` | `syntax-extension-candidate` | True | - |
-| `468-branch-declaration-voltage-probe` | `syntax-extension-candidate` | False | `checker_syntax_only_no_behavior_score` |
+| `468-branch-declaration-voltage-probe` | `syntax-extension-candidate` | True | - |
 | `469-current-contribution-conductance` | `kcl-syntax-candidate` | False | `checker_syntax_only_no_behavior_score` |
 | `470-branch-current-probe-contribution` | `kcl-syntax-candidate` | False | `checker_syntax_only_no_behavior_score` |
 | `471-indirect-branch-null-balance` | `behavioral-continuous-time-candidate` | False | `checker_syntax_only_no_behavior_score` |
@@ -219,8 +219,8 @@ Tasks 301-494 are extension candidates, not SOP-ready benchmark tasks. They most
 | `473-attribute-potential-abstol-probe` | `syntax-extension-candidate` | True | - |
 | `474-generic-potential-access-function` | `syntax-extension-candidate` | True | - |
 | `475-generic-potential-contribution` | `syntax-extension-candidate` | True | - |
-| `476-oomr-string-voltage-probe` | `syntax-extension-candidate` | False | `checker_syntax_only_no_behavior_score` |
-| `477-analog-node-alias-initial` | `syntax-extension-candidate` | False | `checker_syntax_only_no_behavior_score` |
+| `476-oomr-string-voltage-probe` | `syntax-extension-candidate` | True | - |
+| `477-analog-node-alias-initial` | `syntax-extension-candidate` | True | - |
 | `478-inherited-port-attribute-supply` | `syntax-extension-candidate` | True | - |
 | `479-inherited-mfactor-parameter` | `syntax-extension-candidate` | True | - |
 | `480-mfactor-system-function-gain` | `syntax-extension-candidate` | True | - |
@@ -230,7 +230,7 @@ Tasks 301-494 are extension candidates, not SOP-ready benchmark tasks. They most
 | `484-rtoi-conversion-quantizer` | `syntax-extension-candidate` | True | - |
 | `485-mc-trial-number-metric` | `cadence-simulator-function-candidate` | True | - |
 | `486-rf-source-info-registration` | `cadence-simulator-function-candidate` | True | - |
-| `487-table-model-2d-array-surface` | `syntax-extension-candidate` | False | `checker_syntax_only_no_behavior_score` |
+| `487-table-model-2d-array-surface` | `syntax-extension-candidate` | True | - |
 | `488-table-model-string-param-source` | `syntax-extension-candidate` | True | - |
 | `489-event-nested-or-expression` | `syntax-extension-candidate` | True | - |
 | `490-event-task-function-state-update` | `syntax-extension-candidate` | True | - |
