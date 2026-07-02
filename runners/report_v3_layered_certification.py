@@ -239,6 +239,7 @@ def build_completion_audit(
 ) -> dict[str, Any]:
     sop_summary = sop_audit.get("summary", {}) if isinstance(sop_audit, dict) else {}
     issue_counts = sop_summary.get("issue_counts", {}) if isinstance(sop_summary, dict) else {}
+    staged_count = summary["compile_supported_candidate_count"]
     requirements = [
         {
             "requirement": "Scope covers all v3 extension tasks 301-494.",
@@ -265,9 +266,13 @@ def build_completion_audit(
             "status": "partial",
             "evidence": (
                 f"{summary['behavior_certified_extension_count']} extension tasks are behavior-certified; "
-                f"{summary['compile_supported_candidate_count']} remain excluded_until_behavior_promotion."
+                f"{staged_count} remain excluded_until_behavior_promotion."
             ),
-            "gap": "The remaining staged rows are blocked by EVAS support issues and must not be counted as behavior-certified yet.",
+            "gap": (
+                "The remaining staged rows are blocked by EVAS support issues or missing "
+                "behavior-checker evidence; staged_promotion_gold_probe records the current "
+                "per-task blocker."
+            ),
         },
         {
             "requirement": "Behavior-certified extension tasks pass gold verification and reject all negative variants.",
@@ -293,7 +298,9 @@ def build_completion_audit(
             ) else "not_satisfied",
             "evidence": (
                 f"{len(blocking_issues)} blocking issues cover "
-                f"{sum(issue['task_count'] for issue in blocking_issues)} staged tasks."
+                f"{sum(issue['task_count'] for issue in blocking_issues)} staged tasks; "
+                "staged_promotion_gold_probe records "
+                f"{staged_count}/{staged_count} staged gold cases still failing the current promotion gate."
             ),
         },
     ]
@@ -301,7 +308,7 @@ def build_completion_audit(
         "status": "partial_external_blocked",
         "is_complete": False,
         "reason": (
-            "The full 301-494 objective is not complete because 41 extension tasks still lack "
+            f"The full 301-494 objective is not complete because {staged_count} extension tasks still lack "
             "behavior checker evidence and are excluded until EVAS support issues are resolved."
         ),
         "requirements": requirements,
@@ -405,8 +412,11 @@ def build_report() -> dict[str, Any]:
             "task_manifest": "benchmark-vabench-release-v3/TASKS.json",
             "checker_manifest": "benchmark-vabench-release-v3/CHECKS.yaml",
             "extension_sop_audit": "benchmark-vabench-release-v3/reports/extension_sop_audit.json",
+            "behavior_certified_extension_task_evidence": "benchmark-vabench-release-v3/reports/behavior_certified_extension_task_evidence.json",
             "language_extension_notes": "benchmark-vabench-release-v3/LANGUAGE_EXTENSION.md",
             "core_behavior_evidence": "benchmark-vabench-release-v1/reports/benchmark_overview.json",
+            "staged_gold_probe": "benchmark-vabench-release-v3/reports/staged_promotion_gold_probe.json",
+            "staged_gold_probe_summary": "benchmark-vabench-release-v3/reports/staged_promotion_gold_probe.md",
             "latest_compile_probe": "local evas-rust compile probe for tasks 460-494 solution plus five negative variants per task: 210 files, 0 failures",
         },
         "task_rows": rows,

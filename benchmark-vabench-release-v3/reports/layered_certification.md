@@ -72,12 +72,12 @@ Date: 2026-07-02
 
 | Evidence | Path / note |
 | --- | --- |
-| `behavior_certified_extension_task_evidence` | `benchmark-vabench-release-v3/reports/behavior_certified_extension_task_evidence.json` |
+| `task_manifest` | `benchmark-vabench-release-v3/TASKS.json` |
 | `checker_manifest` | `benchmark-vabench-release-v3/CHECKS.yaml` |
-| `core_behavior_evidence` | `benchmark-vabench-release-v1/reports/benchmark_overview.json` |
 | `extension_sop_audit` | `benchmark-vabench-release-v3/reports/extension_sop_audit.json` |
+| `behavior_certified_extension_task_evidence` | `benchmark-vabench-release-v3/reports/behavior_certified_extension_task_evidence.json` |
 | `language_extension_notes` | `benchmark-vabench-release-v3/LANGUAGE_EXTENSION.md` |
-| `latest_compile_probe` | `local evas-rust compile probe for tasks 460-494 solution plus five negative variants per task: 210 files, 0 failures` |
+| `core_behavior_evidence` | `benchmark-vabench-release-v1/reports/benchmark_overview.json` |
 | `staged_gold_probe` | `benchmark-vabench-release-v3/reports/staged_promotion_gold_probe.json` |
 | `staged_gold_probe_summary` | `benchmark-vabench-release-v3/reports/staged_promotion_gold_probe.md` |
-| `task_manifest` | `benchmark-vabench-release-v3/TASKS.json` |
+| `latest_compile_probe` | `local evas-rust compile probe for tasks 460-494 solution plus five negative variants per task: 210 files, 0 failures` |
