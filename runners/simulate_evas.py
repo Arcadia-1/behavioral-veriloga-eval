@@ -9132,11 +9132,7 @@ def check_v3_443_zi_zd_discrete_filter(rows: list[dict[str, float]]) -> tuple[bo
 
 
 def check_v3_444_zi_zp_discrete_filter(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    return _check_v3_staged_dynamic_operator_boundary(
-        rows,
-        required={"time", "vin", "clk", "rst", "out", "metric"},
-        operator="zi_zp",
-    )
+    return _check_v3_sampled_first_order_difference(rows, operator="zi_zp")
 
 
 def check_v3_445_limexp_soft_exponential(rows: list[dict[str, float]]) -> tuple[bool, str]:

@@ -4,7 +4,7 @@ Date: 2026-07-02
 
 ## Summary
 
-- Staged tasks: **7**
+- Staged tasks: **6**
 - Distinct blocking issues: **1**
 - Missing issue links: **0**
 - Missing failure summaries: **0**
@@ -13,7 +13,6 @@ Date: 2026-07-02
 
 | Task | Layer | Issue | Probe status | Failure summary | Per-task promotion command |
 | --- | --- | --- | --- | --- | --- |
-| `444-zi-zp-discrete-filter` | `behavioral_continuous_time_extension` | https://github.com/Arcadia-1/EVAS/issues/44 | `FAIL_SIM_CORRECTNESS` | staged_dynamic_solver_boundary operator=zi_zp out_range=0.45 metric_range=0.45 expected=certified_continuous_time_response | `PYTHONPATH=runners VAEVAS_DEFAULT_EVAS_ENGINE=python VAEVAS_EVAS_PERSISTENT_WORKER=0 PATH="$PWD/.venv-evas/bin:$PATH" .venv-evas/bin/python scripts/run_v3_gold_negative_verification.py --start 444 --end 444 --tasks 444 --include-staged --timeout 120 --jobs 1 --out benchmark-vabench-release-v3/reports/verify_task_444.json` |
 | `469-current-contribution-conductance` | `conservative_kcl_syntax_extension` | https://github.com/Arcadia-1/EVAS/issues/44 | `FAIL_SIM_CORRECTNESS` | staged_kcl_boundary feature=I(p,n)<+gain*V(p,n) n_range=0 p_range=0.0008 expected=mna_current_observable | `PYTHONPATH=runners VAEVAS_DEFAULT_EVAS_ENGINE=python VAEVAS_EVAS_PERSISTENT_WORKER=0 PATH="$PWD/.venv-evas/bin:$PATH" .venv-evas/bin/python scripts/run_v3_gold_negative_verification.py --start 469 --end 469 --tasks 469 --include-staged --timeout 120 --jobs 1 --out benchmark-vabench-release-v3/reports/verify_task_469.json` |
 | `471-indirect-branch-null-balance` | `behavioral_continuous_time_extension` | https://github.com/Arcadia-1/EVAS/issues/44 | `FAIL_SIM_CORRECTNESS` | staged_dynamic_solver_boundary operator=indirect_branch_equation out_range=0 expected=certified_continuous_time_response | `PYTHONPATH=runners VAEVAS_DEFAULT_EVAS_ENGINE=python VAEVAS_EVAS_PERSISTENT_WORKER=0 PATH="$PWD/.venv-evas/bin:$PATH" .venv-evas/bin/python scripts/run_v3_gold_negative_verification.py --start 471 --end 471 --tasks 471 --include-staged --timeout 120 --jobs 1 --out benchmark-vabench-release-v3/reports/verify_task_471.json` |
 | `472-indirect-branch-ddt-balance` | `behavioral_continuous_time_extension` | https://github.com/Arcadia-1/EVAS/issues/44 | `FAIL_SIM_CORRECTNESS` | staged_dynamic_solver_boundary operator=indirect_branch_ddt_equation out_range=0 expected=certified_continuous_time_response | `PYTHONPATH=runners VAEVAS_DEFAULT_EVAS_ENGINE=python VAEVAS_EVAS_PERSISTENT_WORKER=0 PATH="$PWD/.venv-evas/bin:$PATH" .venv-evas/bin/python scripts/run_v3_gold_negative_verification.py --start 472 --end 472 --tasks 472 --include-staged --timeout 120 --jobs 1 --out benchmark-vabench-release-v3/reports/verify_task_472.json` |
