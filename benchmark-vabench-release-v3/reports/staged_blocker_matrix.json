@@ -4,15 +4,14 @@
   "missing_issue_tasks": [],
   "release": "benchmark-vabench-release-v3",
   "summary": {
-    "issue_count": 4,
+    "issue_count": 3,
     "missing_failure_summary_count": 0,
     "missing_issue_count": 0,
     "semantic_layer_counts": {
-      "ams_mixed_signal_extension": 1,
       "behavioral_continuous_time_extension": 14,
       "conservative_kcl_syntax_extension": 6
     },
-    "staged_task_count": 21
+    "staged_task_count": 20
   },
   "tasks": [
     {
@@ -224,27 +223,6 @@
       "task_promotion_command": "PYTHONPATH=runners VAEVAS_DEFAULT_EVAS_ENGINE=python VAEVAS_EVAS_PERSISTENT_WORKER=0 PATH=\"$PWD/.venv-evas/bin:$PATH\" .venv-evas/bin/python scripts/run_v3_gold_negative_verification.py --start 444 --end 444 --tasks 444 --include-staged --timeout 120 --jobs 1 --out benchmark-vabench-release-v3/reports/verify_task_444.json",
       "tier": "behavioral-continuous-time-candidate",
       "title": "Zi Zp Discrete Filter"
-    },
-    {
-      "failure_summary": "staged_specify_boundary a_range=1 y_range=1 expected=certified_specify_path_delay",
-      "issue_urls": [
-        "https://github.com/Arcadia-1/EVAS/issues/48"
-      ],
-      "probe_status": "FAIL_SIM_CORRECTNESS",
-      "promotion_acceptance": [
-        "After EVAS support lands, promote the listed 1 task(s) by adding sim_correct behavior contracts/checkers if missing, then require 1/1 gold PASS, 5/5 negative variants rejected, and zero expectation_fail in the verification report."
-      ],
-      "promotion_commands": [
-        "PYTHONPATH=runners VAEVAS_DEFAULT_EVAS_ENGINE=python VAEVAS_EVAS_PERSISTENT_WORKER=0 PATH=\"$PWD/.venv-evas/bin:$PATH\" .venv-evas/bin/python scripts/run_v3_gold_negative_verification.py --start 453 --end 453 --tasks 453 --include-staged --timeout 120 --jobs 1 --out benchmark-vabench-release-v3/reports/verify_issue_453_453.json"
-      ],
-      "semantic_layer": "ams_mixed_signal_extension",
-      "target": "specify_specparam_delay.vams",
-      "task_id": "v3_453_specify_specparam_delay",
-      "task_key": "453-specify-specparam-delay",
-      "task_promotion_acceptance": "Promote `453-specify-specparam-delay` only after adding repository sim_correct evidence, then require 1/1 gold PASS, 5/5 negative variants rejected, and zero expectation_fail in the per-task report.",
-      "task_promotion_command": "PYTHONPATH=runners VAEVAS_DEFAULT_EVAS_ENGINE=python VAEVAS_EVAS_PERSISTENT_WORKER=0 PATH=\"$PWD/.venv-evas/bin:$PATH\" .venv-evas/bin/python scripts/run_v3_gold_negative_verification.py --start 453 --end 453 --tasks 453 --include-staged --timeout 120 --jobs 1 --out benchmark-vabench-release-v3/reports/verify_task_453.json",
-      "tier": "ams-mixed-signal-candidate",
-      "title": "Specify Specparam Delay"
     },
     {
       "failure_summary": "staged_kcl_boundary feature=I(p,n)<+gain*V(p,n) n_range=0 p_range=0.0008 expected=mna_current_observable",

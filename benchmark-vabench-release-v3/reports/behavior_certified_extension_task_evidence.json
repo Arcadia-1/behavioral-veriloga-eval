@@ -1,11 +1,11 @@
 {
   "summary": {
     "all_tasks_have_five_behavior_rejected_negatives": true,
-    "gold_pass_count": 173,
-    "negative_behavior_rejected_total": 865,
-    "negative_total": 865,
+    "gold_pass_count": 174,
+    "negative_behavior_rejected_total": 870,
+    "negative_total": 870,
     "source_report": "benchmark-vabench-release-v3/reports/verify_301_494_layered.json",
-    "task_count": 173
+    "task_count": 174
   },
   "tasks": [
     {
@@ -2279,6 +2279,22 @@
         "neg_005_scale_output": "FAIL_SIM_CORRECTNESS"
       },
       "task": "452-connectrules-electrical-map"
+    },
+    {
+      "all_negatives_behavior_rejected": true,
+      "checker_task_id": "v3_453_specify_specparam_delay",
+      "gold_meets_expectation": true,
+      "gold_status": "PASS",
+      "negative_behavior_rejected_count": 5,
+      "negative_count": 5,
+      "negative_statuses": {
+        "neg_001_force_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_002_wrong_threshold": "FAIL_SIM_CORRECTNESS",
+        "neg_003_reset_bias": "FAIL_SIM_CORRECTNESS",
+        "neg_004_metric_offset": "FAIL_SIM_CORRECTNESS",
+        "neg_005_scale_output": "FAIL_SIM_CORRECTNESS"
+      },
+      "task": "453-specify-specparam-delay"
     },
     {
       "all_negatives_behavior_rejected": true,

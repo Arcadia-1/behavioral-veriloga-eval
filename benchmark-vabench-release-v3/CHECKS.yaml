@@ -10811,11 +10811,15 @@
   notes:
     - "Connectrules file plus referenced connectmodule bridge behavior promoted to executable EVAS behavior candidate."
 453-specify-specparam-delay: |
-  version: 1
+  version: 2
   task_id: v3_453_specify_specparam_delay
-  backend: digital_timing_capable
-  status: syntax-extension-candidate
-  checker: language_feature_contract
+  backend: evas
+  status: behavior-certified-extension
+  checker: v3_453_specify_specparam_delay
+  required_columns:
+    - time
+    - a
+    - y
   syntax:
     must_include:
       - "specify"
@@ -10823,9 +10827,21 @@
       - "endspecify"
     must_not_include:
       - "I("
+  sim_correct:
+    trace_signals:
+      time: "time"
+      a: "a"
+      y: "y"
+    checks:
+      - "specify_block_is_parsed"
+      - "specparam_tpd_sets_one_nanosecond_path_delay"
+      - "y_edges_follow_a_edges_after_path_delay"
+      - "zero_delay_and_two_nanosecond_negative_variants_rejected"
+  promotion_evidence:
+    command: "PYTHONPATH=\"/Users/mac/Documents/github-repos/EVAS:$PWD/runners\" VAEVAS_DEFAULT_EVAS_ENGINE=python VAEVAS_EVAS_PERSISTENT_WORKER=0 PATH=\"$PWD/.venv-evas/bin:$PATH\" .venv-evas/bin/python scripts/run_v3_gold_negative_verification.py --start 453 --end 453 --tasks 453 --include-staged --timeout 120 --jobs 1 --out benchmark-vabench-release-v3/reports/verify_task_453_after_specify_delay.json"
+    result: "1/1 gold PASS; 5/5 negative variants rejected; 0 expectation_fail after EVAS implemented the simple specify/specparam path-delay subset."
   notes:
-    - "specify/specparam timing candidate staged pending EVAS timing block support."
-    - "EVAS issue: https://github.com/Arcadia-1/EVAS/issues/48"
+    - "Promoted after EVAS accepted and executed the simple `(a => y) = tpd` specify path-delay subset used by this task."
 454-multidimensional-array-state: |
   version: 1
   task_id: v3_454_multidimensional_array_state

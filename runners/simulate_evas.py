@@ -9099,9 +9099,45 @@ def check_v3_453_specify_specparam_delay(rows: list[dict[str, float]]) -> tuple[
     ok, note = _v3_required_columns(rows, {"time", "a", "y"})
     if not ok:
         return False, note
-    return False, (
-        f"staged_specify_boundary a_range={_v3_signal_range(rows, 'a'):.4g} "
-        f"y_range={_v3_signal_range(rows, 'y'):.4g} expected=certified_specify_path_delay"
+    times = [row["time"] for row in rows]
+    a_vals = [row["a"] for row in rows]
+    y_vals = [row["y"] for row in rows]
+    if _v3_signal_range(rows, "a") < 0.8 or _v3_signal_range(rows, "y") < 0.8:
+        return False, (
+            f"insufficient_logic_swing a_range={_v3_signal_range(rows, 'a'):.4g} "
+            f"y_range={_v3_signal_range(rows, 'y'):.4g}"
+        )
+
+    delays: list[float] = []
+    for direction in ("rising", "falling"):
+        a_edges = _threshold_crossings(a_vals, times, threshold=0.5, direction=direction)
+        y_edges = _threshold_crossings(y_vals, times, threshold=0.5, direction=direction)
+        if len(a_edges) < 2 or len(y_edges) < 2:
+            return False, f"insufficient_{direction}_edges a={len(a_edges)} y={len(y_edges)}"
+        direction_delays: list[float] = []
+        yi = 0
+        for a_edge in a_edges:
+            while yi < len(y_edges) and y_edges[yi] <= a_edge + 0.2e-9:
+                yi += 1
+            if yi >= len(y_edges):
+                break
+            delay = y_edges[yi] - a_edge
+            if 0.65e-9 <= delay <= 1.35e-9:
+                direction_delays.append(delay)
+                yi += 1
+        if len(direction_delays) < 2:
+            return False, f"missing_certified_{direction}_path_delay samples={len(direction_delays)}"
+        delays.extend(direction_delays)
+
+    if len(delays) < 4:
+        return False, f"insufficient_delay_samples={len(delays)}"
+    min_delay = min(delays)
+    max_delay = max(delays)
+    mean_delay = sum(delays) / len(delays)
+    ok = 0.75e-9 <= mean_delay <= 1.25e-9 and max_delay - min_delay <= 0.35e-9
+    return ok, (
+        f"specify_path_delay_ns={[round(delay * 1e9, 3) for delay in delays[:6]]} "
+        f"mean_ns={mean_delay * 1e9:.3f} span_ns={(max_delay - min_delay) * 1e9:.3f}"
     )
 
 

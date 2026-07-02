@@ -57,16 +57,16 @@
       "behavior_contract_complete_count": 24,
       "complete_tests_count": 24,
       "description": "manual syntax-completion candidates",
-      "fair_eval_count": 13,
+      "fair_eval_count": 14,
       "negative_cases_aligned_count": 24,
       "negative_descriptions_task_specific_count": 24,
       "range": "435-458",
-      "sop_ready_count": 13,
+      "sop_ready_count": 14,
       "task_count": 24,
       "top_issues": [
         [
           "checker_syntax_only_no_behavior_score",
-          11
+          10
         ]
       ],
       "visible_hidden_distinct_count": 24
@@ -113,13 +113,13 @@
   "summary": {
     "behavior_contract_complete_count": 194,
     "complete_tests_count": 194,
-    "fair_eval_count": 173,
+    "fair_eval_count": 174,
     "issue_counts": {
-      "checker_syntax_only_no_behavior_score": 21
+      "checker_syntax_only_no_behavior_score": 20
     },
     "negative_cases_aligned_count": 194,
     "negative_descriptions_task_specific_count": 194,
-    "sop_ready_count": 173,
+    "sop_ready_count": 174,
     "sop_ready_visible_hidden_identical_count": 0,
     "staged_visible_hidden_identical_count": 0,
     "task_count": 194,
@@ -4258,18 +4258,16 @@
       "behavior_contract_complete": true,
       "certification_scope": "language_extension_not_part_of_original_full_300_claim",
       "complete_tests": true,
-      "fair_eval": false,
+      "fair_eval": true,
       "hidden_scs_count": 1,
-      "issues": [
-        "checker_syntax_only_no_behavior_score"
-      ],
+      "issues": [],
       "negative_cases_aligned": true,
       "negative_count": 5,
       "negative_descriptions_task_specific": true,
       "number": 453,
       "reasonable_task": true,
       "solution_file_count": 1,
-      "sop_ready": false,
+      "sop_ready": true,
       "starter_file_count": 1,
       "syntax_focus": "Use specify/specparam delay syntax.",
       "target": "specify_specparam_delay.vams",
