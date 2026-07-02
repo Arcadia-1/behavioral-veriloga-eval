@@ -250,6 +250,25 @@ def test_staged_blocker_matrix_tracks_each_unpromoted_task() -> None:
     assert all(row["failure_summary"] for row in matrix_rows.values())
 
 
+def test_staged_task_audits_include_current_promotion_gate() -> None:
+    matrix = json.loads((V3 / "reports" / "staged_blocker_matrix.json").read_text(encoding="utf-8"))
+
+    for row in matrix["tasks"]:
+        audit_path = V3 / "tasks" / row["task_key"] / "AUDIT.md"
+        assert audit_path.exists(), f"{row['task_key']} missing AUDIT.md"
+        audit = audit_path.read_text(encoding="utf-8")
+
+        assert "## Staged Promotion Gate" in audit
+        assert f"- Current probe status: `{row['probe_status']}`." in audit
+        assert f"- Current failure summary: {row['failure_summary']}" in audit
+        assert "- Promotion requirements: repository `sim_correct` checker evidence" in audit
+        assert "gold PASS" in audit
+        assert "five useful negative variants rejected" in audit
+        assert "zero expectation_fail" in audit
+        for issue_url in row["issue_urls"]:
+            assert issue_url in audit
+
+
 def test_generate_genvar_task_is_ams_mixed_signal_layer() -> None:
     report = json.loads(REPORT.read_text(encoding="utf-8"))
     rows = {row["task_key"]: row for row in report["task_rows"]}
