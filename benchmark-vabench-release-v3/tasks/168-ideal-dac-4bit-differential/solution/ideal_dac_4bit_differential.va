@@ -29,8 +29,8 @@ analog begin
         vod = code * lsb - vref + half_lsb;
     end
 
-    V(vop) <+ transition(V(vcm) + vod / 2.0, tdel, trise, tfall);
-    V(von) <+ transition(V(vcm) - vod / 2.0, tdel, trise, tfall);
+    V(vop) <+ V(vcm) + transition(vod / 2.0, tdel, trise, tfall);
+    V(von) <+ V(vcm) - transition(vod / 2.0, tdel, trise, tfall);
 end
 
 endmodule

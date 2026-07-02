@@ -6813,6 +6813,94 @@ def _sample_many(
     return True, " ".join(details)
 
 
+def _signal_threshold_edges(
+    rows: list[dict[str, float]],
+    signal: str,
+    *,
+    threshold: float = 0.45,
+    directions: tuple[str, ...] = ("rising", "falling"),
+) -> list[float]:
+    times = [row["time"] for row in rows]
+    values = [row[signal] for row in rows]
+    edges: list[float] = []
+    for direction in directions:
+        edges.extend(_threshold_crossings(values, times, threshold=threshold, direction=direction))
+    return sorted(edges)
+
+
+def _logic_level_at(
+    rows: list[dict[str, float]],
+    signal: str,
+    time_s: float,
+    *,
+    threshold: float = 0.45,
+) -> int | None:
+    value = sample_signal_at(rows, signal, time_s)
+    if value is None:
+        return None
+    return 1 if value > threshold else 0
+
+
+def _stable_probe_times(
+    rows: list[dict[str, float]],
+    signals: list[str],
+    *,
+    threshold: float = 0.45,
+    settle_s: float = 0.3e-9,
+) -> list[float]:
+    if not rows:
+        return []
+    first_t = rows[0]["time"]
+    last_t = rows[-1]["time"]
+    cuts = [first_t, last_t]
+    for signal in signals:
+        cuts.extend(_signal_threshold_edges(rows, signal, threshold=threshold))
+    cuts = sorted({t for t in cuts if first_t <= t <= last_t})
+    probes: list[float] = []
+    for start_t, end_t in zip(cuts, cuts[1:]):
+        width = end_t - start_t
+        if width <= 2.0 * settle_s:
+            continue
+        probe_t = 0.5 * (start_t + end_t)
+        if start_t + settle_s <= probe_t <= end_t - settle_s:
+            probes.append(probe_t)
+    return probes
+
+
+def _adc_threshold_count(sample: float, *, vref: float = 1.0, levels: int = 16) -> int:
+    lsb = 2.0 * vref / levels
+    code = 0
+    for idx in range(1, levels):
+        if sample > -vref + idx * lsb:
+            code += 1
+    return max(0, min(levels - 1, code))
+
+
+def _va_lx_adc_bits(sample: float, *, vdd: float = 1.0) -> dict[str, int]:
+    vth_cmp = vdd / 2.0
+    if sample > vth_cmp:
+        d4 = 1
+        vth_cmp += vdd / 4.0
+    else:
+        d4 = 0
+        vth_cmp -= vdd / 4.0
+    if sample > vth_cmp:
+        d3 = 1
+        vth_cmp += vdd / 8.0
+    else:
+        d3 = 0
+        vth_cmp -= vdd / 8.0
+    if sample > vth_cmp:
+        d2 = 1
+        vth_cmp += vdd / 16.0
+    else:
+        d2 = 0
+        vth_cmp -= vdd / 16.0
+    if sample > vth_cmp:
+        d1 = 1
+    else:
+        d1 = 0
+    return {"d1": d1, "d2": d2, "d3": d3, "d4": d4}
 def _check_v3_wreal_assign_expression(
     rows: list[dict[str, float]],
     *,
@@ -11196,15 +11284,35 @@ def check_v3_bipolar_dac_4b_continuous(rows: list[dict[str, float]]) -> tuple[bo
     required = {"time", "vd3", "vd2", "vd1", "vd0", "vout"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing time/vd3/vd2/vd1/vd0/vout"
-    expected = [(2.0, -0.9), (12.0, -0.3), (22.0, 0.3), (32.0, 0.9)]
-    ok, detail = _sample_many(rows, {"vout": expected}, tol=0.025)
-    if not ok:
-        return ok, detail
-    observed = [float(sample_signal_at(rows, "vout", t_ns * 1e-9) or 0.0) for t_ns, _ in expected]
-    monotonic = all(b > a + 0.45 for a, b in zip(observed, observed[1:]))
+    probes = _stable_probe_times(rows, ["vd3", "vd2", "vd1", "vd0"])
+    if len(probes) < 4:
+        return False, f"too_few_bipolar_dac_probe_windows={len(probes)}"
+    code_to_output: dict[int, float] = {}
+    max_err = 0.0
+    for time_s in probes:
+        bits = [
+            _logic_level_at(rows, "vd3", time_s),
+            _logic_level_at(rows, "vd2", time_s),
+            _logic_level_at(rows, "vd1", time_s),
+            _logic_level_at(rows, "vd0", time_s),
+        ]
+        out = sample_signal_at(rows, "vout", time_s)
+        if any(bit is None for bit in bits) or out is None:
+            return False, f"missing_bipolar_dac_sample_at={time_s * 1e9:.3f}ns"
+        bit_values = [int(bit) for bit in bits]
+        code = 8 * bit_values[0] + 4 * bit_values[1] + 2 * bit_values[2] + bit_values[3]
+        expected = 0.9 * (2.0 * code / 15.0 - 1.0)
+        max_err = max(max_err, abs(out - expected))
+        code_to_output[code] = out
+    if max_err > 0.035:
+        return False, f"bipolar_dac_max_err={max_err:.4f} codes={sorted(code_to_output)}"
+    if len(code_to_output) < 4 or min(code_to_output) > 1 or max(code_to_output) < 14:
+        return False, f"insufficient_bipolar_dac_code_coverage={sorted(code_to_output)}"
+    sorted_outputs = [code_to_output[code] for code in sorted(code_to_output)]
+    monotonic = all(b > a + 0.08 for a, b in zip(sorted_outputs, sorted_outputs[1:]))
     if not monotonic:
-        return False, f"bipolar_dac_not_monotonic samples={','.join(f'{v:.3f}' for v in observed)}"
-    return True, detail + " monotonic=True"
+        return False, f"bipolar_dac_not_monotonic codes={sorted(code_to_output)}"
+    return True, f"codes={sorted(code_to_output)} max_err={max_err:.4f} monotonic=True"
 
 
 def check_v3_clocked_dac_restore_7b(rows: list[dict[str, float]]) -> tuple[bool, str]:
@@ -11971,35 +12079,59 @@ def check_v3_ideal_adc_4bit_quantizer(rows: list[dict[str, float]]) -> tuple[boo
     required = {"time", "vclk", "vip", "vin", "digital"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing time/vclk/vip/vin/digital"
-    return _sample_many(
-        rows,
-        {"digital": [(4.0, 0.0), (14.0, 6.0), (24.0, 8.0), (34.0, 11.0), (44.0, 15.0)]},
-        tol=0.08,
-    )
+    edges = _signal_threshold_edges(rows, "vclk", threshold=0.5, directions=("rising",))
+    if len(edges) < 5:
+        return False, f"too_few_adc4_rising_edges={len(edges)}"
+    codes: list[int] = []
+    max_err = 0.0
+    for edge_t in edges:
+        vip = sample_signal_at(rows, "vip", edge_t)
+        vin = sample_signal_at(rows, "vin", edge_t)
+        if vip is None or vin is None:
+            return False, f"missing_adc4_input_at={edge_t * 1e9:.3f}ns"
+        expected = _adc_threshold_count(vip - vin)
+        out_t = edge_t + 0.8e-9
+        got = sample_signal_at(rows, "digital", out_t)
+        if got is None:
+            return False, f"missing_adc4_output_at={out_t * 1e9:.3f}ns"
+        max_err = max(max_err, abs(got - expected))
+        codes.append(expected)
+    if max_err > 0.08:
+        return False, f"adc4_quantizer_max_err={max_err:.4f} codes={codes}"
+    if len(set(codes)) < 4 or min(codes) != 0 or max(codes) != 15:
+        return False, f"insufficient_adc4_code_coverage={codes}"
+    return True, f"codes={codes} max_err={max_err:.4f}"
 
 
 def check_v3_ideal_dac_4bit_differential(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "clk", "digital", "vcm", "vop", "von"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing time/clk/digital/vcm/vop/von"
-    ok, detail = _sample_many(
-        rows,
-        {
-            "vop": [(4.0, 0.03125), (14.0, 0.34375), (24.0, 0.53125), (34.0, 0.96875)],
-            "von": [(4.0, 0.96875), (14.0, 0.65625), (24.0, 0.46875), (34.0, 0.03125)],
-        },
-        tol=0.025,
-    )
-    if not ok:
-        return ok, detail
+    edges = _signal_threshold_edges(rows, "clk", threshold=0.5, directions=("falling",))
+    if len(edges) < 4:
+        return False, f"too_few_differential_dac_falling_edges={len(edges)}"
+    codes: list[int] = []
+    max_err = 0.0
     max_cm_error = 0.0
-    for time_ns in (4.0, 14.0, 24.0, 34.0):
-        vop = sample_signal_at(rows, "vop", time_ns * 1e-9)
-        von = sample_signal_at(rows, "von", time_ns * 1e-9)
-        if vop is None or von is None:
-            return False, f"missing_dac_output_sample_at={time_ns:g}ns"
-        max_cm_error = max(max_cm_error, abs(0.5 * (vop + von) - 0.5))
-    return max_cm_error <= 0.015, f"{detail} max_cm_error={max_cm_error:.5f}"
+    for edge_t in edges:
+        code_sample = sample_signal_at(rows, "digital", edge_t)
+        out_t = edge_t + 0.8e-9
+        vcm = sample_signal_at(rows, "vcm", out_t)
+        vop = sample_signal_at(rows, "vop", out_t)
+        von = sample_signal_at(rows, "von", out_t)
+        if code_sample is None or vcm is None or vop is None or von is None:
+            return False, f"missing_differential_dac_sample_at={out_t * 1e9:.3f}ns"
+        code = max(0, min(15, int(code_sample)))
+        lsb = 2.0 / 16.0
+        vod = code * lsb - 1.0 + lsb / 2.0
+        max_err = max(max_err, abs(vop - (vcm + vod / 2.0)), abs(von - (vcm - vod / 2.0)))
+        max_cm_error = max(max_cm_error, abs(0.5 * (vop + von) - vcm))
+        codes.append(code)
+    if max_err > 0.03 or max_cm_error > 0.02:
+        return False, f"differential_dac_max_err={max_err:.4f} max_cm_error={max_cm_error:.4f} codes={codes}"
+    if len(set(codes)) < 4 or min(codes) > 2 or max(codes) != 15:
+        return False, f"insufficient_differential_dac_code_coverage={codes}"
+    return True, f"codes={codes} max_err={max_err:.4f} max_cm_error={max_cm_error:.4f}"
 
 
 def check_v3_two_period_sample_delay(rows: list[dict[str, float]]) -> tuple[bool, str]:
@@ -12550,16 +12682,30 @@ def check_v3_va_lx_adc_ideal_4b(rows: list[dict[str, float]]) -> tuple[bool, str
     required = {"time", "vin", "clks", "d1", "d2", "d3", "d4"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing va_lx adc signals"
-    return _sample_many(
-        rows,
-        {
-            "d1": [(5.0, 1.0), (15.0, 0.0), (25.0, 1.0), (35.0, 0.0)],
-            "d2": [(5.0, 0.0), (15.0, 0.0), (25.0, 0.0), (35.0, 1.0)],
-            "d3": [(5.0, 0.0), (15.0, 1.0), (25.0, 0.0), (35.0, 1.0)],
-            "d4": [(5.0, 0.0), (15.0, 0.0), (25.0, 1.0), (35.0, 1.0)],
-        },
-        tol=0.08,
-    )
+    edges = _signal_threshold_edges(rows, "clks", threshold=0.5, directions=("falling",))
+    if len(edges) < 4:
+        return False, f"too_few_va_lx_adc_falling_edges={len(edges)}"
+    codes: list[int] = []
+    max_err = 0.0
+    for edge_t in edges:
+        sample_t = max(rows[0]["time"], edge_t - 1e-12)
+        sample = sample_signal_at(rows, "vin", sample_t)
+        out_t = edge_t + 0.8e-9
+        if sample is None:
+            return False, f"missing_va_lx_adc_input_at={sample_t * 1e9:.3f}ns"
+        expected_bits = _va_lx_adc_bits(sample)
+        code = 8 * expected_bits["d4"] + 4 * expected_bits["d3"] + 2 * expected_bits["d2"] + expected_bits["d1"]
+        codes.append(code)
+        for signal, expected in expected_bits.items():
+            got = sample_signal_at(rows, signal, out_t)
+            if got is None:
+                return False, f"missing_{signal}_sample_at={out_t * 1e9:.3f}ns"
+            max_err = max(max_err, abs(got - expected))
+    if max_err > 0.08:
+        return False, f"va_lx_adc_max_err={max_err:.4f} codes={codes}"
+    if len(set(codes)) < 4 or min(codes) > 1 or max(codes) < 14:
+        return False, f"insufficient_va_lx_adc_code_coverage={codes}"
+    return True, f"codes={codes} max_err={max_err:.4f}"
 
 
 def check_v3_va_lx_dac_ideal_4b(rows: list[dict[str, float]]) -> tuple[bool, str]:
@@ -12613,11 +12759,32 @@ def check_v3_dac_ideal_4b_offset(rows: list[dict[str, float]]) -> tuple[bool, st
     required = {"time", "din0", "din1", "din2", "din3", "dout"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing dac ideal 4b offset signals"
-    return _sample_many(
-        rows,
-        {"dout": [(5.0, 0.239), (15.0, 0.379625), (25.0, 0.52025), (35.0, 0.660875)]},
-        tol=0.02,
-    )
+    probes = _stable_probe_times(rows, ["din0", "din1", "din2", "din3"])
+    if len(probes) < 4:
+        return False, f"too_few_offset_dac_probe_windows={len(probes)}"
+    codes: list[int] = []
+    max_err = 0.0
+    scaling = 32.0 * 10.0 / 9.0
+    for time_s in probes:
+        bits = [
+            _logic_level_at(rows, "din3", time_s),
+            _logic_level_at(rows, "din2", time_s),
+            _logic_level_at(rows, "din1", time_s),
+            _logic_level_at(rows, "din0", time_s),
+        ]
+        out = sample_signal_at(rows, "dout", time_s)
+        if any(bit is None for bit in bits) or out is None:
+            return False, f"missing_offset_dac_sample_at={time_s * 1e9:.3f}ns"
+        bit_values = [int(bit) for bit in bits]
+        code = 8 * bit_values[0] + 4 * bit_values[1] + 2 * bit_values[2] + bit_values[3]
+        expected = 0.239 + code / scaling
+        max_err = max(max_err, abs(out - expected))
+        codes.append(code)
+    if max_err > 0.025:
+        return False, f"offset_dac_max_err={max_err:.4f} codes={codes}"
+    if len(set(codes)) < 4 or max(codes) < 14:
+        return False, f"insufficient_offset_dac_code_coverage={codes}"
+    return True, f"codes={codes} max_err={max_err:.4f}"
 
 
 def check_v3_linear_pfd_gain(rows: list[dict[str, float]]) -> tuple[bool, str]:
@@ -14425,15 +14592,34 @@ def check_v3_clocked_adc3bit(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "vin", "vclk", "vd0", "vd1", "vd2"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing clocked adc3bit signals"
-    return _sample_many(
-        rows,
-        {
-            "vd0": [(0.6, 0.0), (1.4, 0.0), (2.2, 0.0), (2.9, 0.9)],
-            "vd1": [(0.6, 0.0), (1.4, 0.9), (2.2, 0.0), (2.9, 0.9)],
-            "vd2": [(0.6, 0.0), (1.4, 0.0), (2.2, 0.9), (2.9, 0.9)],
-        },
-        tol=0.06,
-    )
+    edges = _signal_threshold_edges(rows, "vclk", threshold=0.45, directions=("rising",))
+    if len(edges) < 4:
+        return False, f"too_few_clocked_adc3bit_rising_edges={len(edges)}"
+    codes: list[int] = []
+    max_err = 0.0
+    for edge_t in edges:
+        vin = sample_signal_at(rows, "vin", edge_t)
+        out_t = edge_t + 0.08e-9
+        if vin is None:
+            return False, f"missing_clocked_adc3bit_input_at={edge_t * 1e9:.3f}ns"
+        code = math.floor(8.0 * vin)
+        code = max(0, min(7, code))
+        expected = {
+            "vd0": 0.9 if (code & 1) else 0.0,
+            "vd1": 0.9 if ((code >> 1) & 1) else 0.0,
+            "vd2": 0.9 if ((code >> 2) & 1) else 0.0,
+        }
+        for signal, want in expected.items():
+            got = sample_signal_at(rows, signal, out_t)
+            if got is None:
+                return False, f"missing_{signal}_sample_at={out_t * 1e9:.3f}ns"
+            max_err = max(max_err, abs(got - want))
+        codes.append(code)
+    if max_err > 0.06:
+        return False, f"clocked_adc3bit_max_err={max_err:.4f} codes={codes}"
+    if len(set(codes)) < 3 or min(codes) != 0 or max(codes) != 7:
+        return False, f"insufficient_clocked_adc3bit_code_coverage={codes}"
+    return True, f"codes={codes} max_err={max_err:.4f}"
 
 
 def check_v3_495_slew_rate_dac4(rows: list[dict[str, float]]) -> tuple[bool, str]:
