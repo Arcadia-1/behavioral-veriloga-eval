@@ -225,16 +225,22 @@ def test_staged_gold_probe_uses_specific_checkers_when_available() -> None:
     probe = json.loads((V3 / "reports" / "staged_promotion_gold_probe.json").read_text(encoding="utf-8"))
     rows = {row["task_slug"]: row for row in probe["rows"]}
     checker_backed_staged_tasks = {
-        "410-macro-ifdef-gain-select",
-        "449-generate-genvar-replicated-stage",
-        "464-param-given-gain-select",
-        "468-branch-declaration-voltage-probe",
+        "353-always-resettable-toggle": "expected=",
+        "410-macro-ifdef-gain-select": "expected=",
+        "415-logic-vector-assign-slice": "expected=",
+        "416-logic-vector-reduction-flag": "expected=",
+        "417-always-async-reset-counter": "expected=",
+        "418-always-enable-saturating-counter": "expected=",
+        "449-generate-genvar-replicated-stage": "expected=",
+        "455-packed-logic-bus-slice": "missing_columns=",
+        "464-param-given-gain-select": "expected=",
+        "468-branch-declaration-voltage-probe": "expected=",
     }
 
-    for task_key in checker_backed_staged_tasks:
+    for task_key, marker in checker_backed_staged_tasks.items():
         notes = " ".join(str(note) for note in rows[task_key]["notes"])
         assert "no behavior check implemented" not in notes
-        assert "expected=" in notes
+        assert marker in notes
 
 
 def test_completion_audit_preserves_full_goal_boundary() -> None:

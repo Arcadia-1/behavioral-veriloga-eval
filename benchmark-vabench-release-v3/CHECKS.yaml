@@ -10583,8 +10583,14 @@
   checker: language_feature_contract
   required_columns:
     - time
-    - a
-    - y
+    - a7
+    - a6
+    - a1
+    - a0
+    - y3
+    - y2
+    - y1
+    - y0
   syntax:
     must_include:
       - "genvar"

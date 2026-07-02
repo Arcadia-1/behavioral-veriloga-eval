@@ -8388,6 +8388,24 @@ def check_v3_352_always_negedge_sampler(rows: list[dict[str, float]]) -> tuple[b
     return _check_v3_clocked_dff_expression(rows, edge="negedge")
 
 
+def check_v3_353_always_resettable_toggle(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "clk", "rst", "d", "en", "q"}
+    if not rows or not required.issubset(rows[0]):
+        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
+        return False, "missing_columns=" + ",".join(missing)
+    return _sample_many(
+        rows,
+        {
+            "q": [
+                (50.0, 1.0),
+                (150.0, 0.0),
+                (190.0, 0.0),
+            ],
+        },
+        tol=0.08,
+    )
+
+
 def check_v3_354_always_counter_two_bit(rows: list[dict[str, float]]) -> tuple[bool, str]:
     return _check_v3_clocked_counter_msb(rows)
 
@@ -8454,6 +8472,89 @@ def check_v3_419_wreal_logic_threshold_bridge(rows: list[dict[str, float]]) -> t
     if max(expected_values) - min(expected_values) < 0.5:
         return False, "insufficient_flag_dynamic_range"
     return True, f"samples={checked} max_flag_err={max_err:.4f}"
+
+
+def check_v3_415_logic_vector_assign_slice(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "code0", "code1", "code2", "code3", "sel", "y"}
+    if not rows or not required.issubset(rows[0]):
+        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
+        return False, "missing_columns=" + ",".join(missing)
+    return _sample_many(
+        rows,
+        {
+            "y": [
+                (50.0, 1.0),
+                (150.0, 1.0),
+                (300.0, 1.0),
+                (450.0, 0.0),
+            ],
+        },
+        tol=0.08,
+    )
+
+
+def check_v3_416_logic_vector_reduction_flag(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "code0", "code1", "code2", "code3", "valid"}
+    if not rows or not required.issubset(rows[0]):
+        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
+        return False, "missing_columns=" + ",".join(missing)
+    return _sample_many(
+        rows,
+        {
+            "valid": [
+                (50.0, 1.0),
+                (150.0, 1.0),
+                (250.0, 1.0),
+                (350.0, 1.0),
+                (450.0, 1.0),
+            ],
+        },
+        tol=0.08,
+    )
+
+
+def check_v3_417_always_async_reset_counter(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "clk", "rst", "en", "q"}
+    if not rows or not required.issubset(rows[0]):
+        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
+        return False, "missing_columns=" + ",".join(missing)
+    return _sample_many(
+        rows,
+        {
+            "q": [
+                (100.0, 1.0),
+                (300.0, 0.0),
+                (400.0, 1.0),
+                (500.0, 0.0),
+            ],
+        },
+        tol=0.08,
+    )
+
+
+def check_v3_418_always_enable_saturating_counter(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "clk", "rst", "en", "q0", "q1"}
+    if not rows or not required.issubset(rows[0]):
+        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
+        return False, "missing_columns=" + ",".join(missing)
+    return _sample_many(
+        rows,
+        {
+            "q0": [
+                (90.0, 1.0),
+                (200.0, 0.0),
+                (300.0, 0.0),
+                (400.0, 0.0),
+            ],
+            "q1": [
+                (90.0, 0.0),
+                (200.0, 1.0),
+                (300.0, 1.0),
+                (400.0, 0.0),
+            ],
+        },
+        tol=0.08,
+    )
 
 
 def check_v3_420_mixed_analog_digital_mode_latch(rows: list[dict[str, float]]) -> tuple[bool, str]:
@@ -8866,6 +8967,24 @@ def check_v3_454_multidimensional_array_state(rows: list[dict[str, float]]) -> t
         update_fn=update,
         initial_state={"out": 0.0, "metric": 0.0, "count": 0},
     )
+
+
+def check_v3_455_packed_logic_bus_slice(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "a7", "a6", "a1", "a0", "y3", "y2", "y1", "y0"}
+    if not rows or not required.issubset(rows[0]):
+        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
+        return False, "missing_columns=" + ",".join(missing)
+    failures: list[str] = []
+    for time_ns in (50.0, 90.0, 100.0, 150.0):
+        row = min(rows, key=lambda item: abs(item["time"] - time_ns * 1e-9))
+        for out_sig, in_sig in (("y3", "a7"), ("y2", "a6"), ("y1", "a1"), ("y0", "a0")):
+            expected = 1.0 if row[in_sig] > 0.45 else 0.0
+            observed = row[out_sig]
+            if abs(observed - expected) > 0.08:
+                failures.append(f"{out_sig}@{time_ns:g}ns={observed:.4f} expected_{in_sig}={expected:.4f}")
+    if failures:
+        return False, " ".join(failures[:4])
+    return True, "packed_bus_slice_y_matches_a7_a6_a1_a0"
 
 
 def check_v3_456_event_or_cross_timer(rows: list[dict[str, float]]) -> tuple[bool, str]:
@@ -19294,6 +19413,8 @@ V3_STANDALONE_SPLIT_CHECKS = {
     "351-always-posedged-dff": check_v3_351_always_posedged_dff,
     "v3_352_always_negedge_sampler": check_v3_352_always_negedge_sampler,
     "352-always-negedge-sampler": check_v3_352_always_negedge_sampler,
+    "v3_353_always_resettable_toggle": check_v3_353_always_resettable_toggle,
+    "353-always-resettable-toggle": check_v3_353_always_resettable_toggle,
     "v3_354_always_counter_two_bit": check_v3_354_always_counter_two_bit,
     "354-always-counter-two-bit": check_v3_354_always_counter_two_bit,
     "v3_355_always_enable_hold": check_v3_355_always_enable_hold,
@@ -19416,6 +19537,14 @@ V3_STANDALONE_SPLIT_CHECKS = {
     "413-while-loop-array-sum": check_v3_413_while_loop_array_sum,
     "v3_414_parameter_range_real_control": check_v3_414_parameter_range_real_control,
     "414-parameter-range-real-control": check_v3_414_parameter_range_real_control,
+    "v3_415_logic_vector_assign_slice": check_v3_415_logic_vector_assign_slice,
+    "415-logic-vector-assign-slice": check_v3_415_logic_vector_assign_slice,
+    "v3_416_logic_vector_reduction_flag": check_v3_416_logic_vector_reduction_flag,
+    "416-logic-vector-reduction-flag": check_v3_416_logic_vector_reduction_flag,
+    "v3_417_always_async_reset_counter": check_v3_417_always_async_reset_counter,
+    "417-always-async-reset-counter": check_v3_417_always_async_reset_counter,
+    "v3_418_always_enable_saturating_counter": check_v3_418_always_enable_saturating_counter,
+    "418-always-enable-saturating-counter": check_v3_418_always_enable_saturating_counter,
     "v3_419_wreal_logic_threshold_bridge": check_v3_419_wreal_logic_threshold_bridge,
     "419-wreal-logic-threshold-bridge": check_v3_419_wreal_logic_threshold_bridge,
     "v3_420_mixed_analog_digital_mode_latch": check_v3_420_mixed_analog_digital_mode_latch,
@@ -19466,6 +19595,8 @@ V3_STANDALONE_SPLIT_CHECKS = {
     "452-connectrules-electrical-map": check_v3_452_connectrules_electrical_map,
     "v3_454_multidimensional_array_state": check_v3_454_multidimensional_array_state,
     "454-multidimensional-array-state": check_v3_454_multidimensional_array_state,
+    "v3_455_packed_logic_bus_slice": check_v3_455_packed_logic_bus_slice,
+    "455-packed-logic-bus-slice": check_v3_455_packed_logic_bus_slice,
     "v3_456_event_or_cross_timer": check_v3_456_event_or_cross_timer,
     "456-event-or-cross-timer": check_v3_456_event_or_cross_timer,
     "v3_457_nested_function_pipeline": check_v3_457_nested_function_pipeline,
