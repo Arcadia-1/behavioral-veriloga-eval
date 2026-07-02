@@ -115,6 +115,7 @@ def test_v3_extension_rows_do_not_overclaim_behavior_certification() -> None:
         "439-laplace-zd-zero-den-filter",
         "440-laplace-zp-zero-pole-filter",
         "441-zi-nd-discrete-filter",
+        "442-zi-np-discrete-filter",
     }
     for key in behavior_certified_continuous:
         assert continuous_by_key[key]["certification_level"] == "behavior_certified_extension"
@@ -345,7 +346,6 @@ def test_staged_gold_probe_uses_specific_checkers_when_available() -> None:
     probe = json.loads((V3 / "reports" / "staged_promotion_gold_probe.json").read_text(encoding="utf-8"))
     rows = {row["task_slug"]: row for row in probe["rows"]}
     checker_backed_staged_tasks = {
-        "442-zi-np-discrete-filter": "operator=zi_np",
         "443-zi-zd-discrete-filter": "operator=zi_zd",
         "444-zi-zp-discrete-filter": "operator=zi_zp",
         "469-current-contribution-conductance": "staged_kcl_boundary",

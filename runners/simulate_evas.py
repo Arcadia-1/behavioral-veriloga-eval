@@ -9084,7 +9084,9 @@ def check_v3_440_laplace_zp_zero_pole_filter(rows: list[dict[str, float]]) -> tu
     return _check_v3_first_order_laplace_event_response(rows, "laplace_zp")
 
 
-def check_v3_441_zi_nd_discrete_filter(rows: list[dict[str, float]]) -> tuple[bool, str]:
+def _check_v3_sampled_first_order_difference(
+    rows: list[dict[str, float]], *, operator: str
+) -> tuple[bool, str]:
     ok, note = _v3_required_columns(rows, {"time", "vin", "clk", "rst", "out", "metric"})
     if not ok:
         return False, note
@@ -9114,15 +9116,15 @@ def check_v3_441_zi_nd_discrete_filter(rows: list[dict[str, float]]) -> tuple[bo
         failures.append(f"metric_mismatch out={out_second:.4g} metric={metric_second:.4g}")
     if failures:
         return False, " ".join(failures[:5])
-    return True, f"zi_nd_first_order_difference_response expected_second={expected_second:.4g}"
+    return True, f"{operator}_first_order_difference_response expected_second={expected_second:.4g}"
+
+
+def check_v3_441_zi_nd_discrete_filter(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    return _check_v3_sampled_first_order_difference(rows, operator="zi_nd")
 
 
 def check_v3_442_zi_np_discrete_filter(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    return _check_v3_staged_dynamic_operator_boundary(
-        rows,
-        required={"time", "vin", "clk", "rst", "out", "metric"},
-        operator="zi_np",
-    )
+    return _check_v3_sampled_first_order_difference(rows, operator="zi_np")
 
 
 def check_v3_443_zi_zd_discrete_filter(rows: list[dict[str, float]]) -> tuple[bool, str]:

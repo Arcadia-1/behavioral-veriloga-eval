@@ -4,18 +4,17 @@ Date: 2026-07-02
 
 ## Summary
 
-- `gold_total`: 9
+- `gold_total`: 8
 - `gold_pass`: 0
-- `gold_fail`: 9
-- `expectation_fail`: 9
+- `gold_fail`: 8
+- `expectation_fail`: 8
 - `skipped_staged_tasks`: 0
-- `wall_s`: 1.239561
+- `wall_s`: 1.023088
 
 ## Rows
 
 | Task | Status | First behavior note |
 | --- | --- | --- |
-| `442-zi-np-discrete-filter` | `FAIL_SIM_CORRECTNESS` | staged_dynamic_solver_boundary operator=zi_np out_range=0.65 metric_range=0.65 expected=certified_continuous_time_response |
 | `443-zi-zd-discrete-filter` | `FAIL_SIM_CORRECTNESS` | staged_dynamic_solver_boundary operator=zi_zd out_range=0.85 metric_range=0.85 expected=certified_continuous_time_response |
 | `444-zi-zp-discrete-filter` | `FAIL_SIM_CORRECTNESS` | staged_dynamic_solver_boundary operator=zi_zp out_range=0.45 metric_range=0.45 expected=certified_continuous_time_response |
 | `469-current-contribution-conductance` | `FAIL_SIM_CORRECTNESS` | staged_kcl_boundary feature=I(p,n)<+gain*V(p,n) n_range=0 p_range=0.0008 expected=mna_current_observable |
