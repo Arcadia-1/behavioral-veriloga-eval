@@ -254,7 +254,7 @@ def test_staged_gold_probe_uses_specific_checkers_when_available() -> None:
         "481-analog-primitive-resistor-instance": "Unknown child module: resistor",
         "482-analog-primitive-isource-instance": "Unknown child module: isource",
         "491-kcl-capacitor-ddt-current": "staged_kcl_boundary",
-        "492-kcl-inductor-idt-voltage": "simulator_error=",
+        "492-kcl-inductor-idt-voltage": "Model isource not found",
         "493-continuous-laplace-nd-filter": "operator=continuous_laplace_nd",
         "494-continuous-zi-nd-filter": "operator=continuous_zi_nd",
     }

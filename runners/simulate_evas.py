@@ -20089,6 +20089,25 @@ def parse_evas_timing(text: str) -> dict[str, float]:
     return timing
 
 
+def extract_evas_simulator_error(text: str) -> str | None:
+    """Extract a concise EVAS error before stdout tail truncation hides it."""
+    if not text.strip():
+        return None
+    patterns = (
+        r"ERROR:\s*(?P<msg>[^\n]+)",
+        r"CompilationError:\s*(?P<msg>[^\n]+)",
+        r"SyntaxError:\s*(?P<msg>[^\n]+)",
+        r"NameError:\s*(?P<msg>[^\n]+)",
+        r"ValueError:\s*(?P<msg>[^\n]+)",
+    )
+    for pattern in patterns:
+        matches = list(re.finditer(pattern, text))
+        if matches:
+            message = re.sub(r"\s+", " ", matches[-1].group("msg").strip())
+            return f"simulator_error={message[:240]}"
+    return None
+
+
 def add_evas_reported_timing_split(
     timing_split: dict[str, float],
     timing: dict[str, float],
@@ -20323,6 +20342,9 @@ def run_case(
             notes.append("dut_not_compiled")
         if tb_compile == 0.0:
             notes.append("tb_not_executed")
+        simulator_error = extract_evas_simulator_error(combined) if proc.returncode != 0 else None
+        if simulator_error:
+            notes.append(simulator_error)
 
         csv_path = out_dir / "tran.csv"
         if "sim_correct" in scoring and proc.returncode == 0 and csv_path.exists():

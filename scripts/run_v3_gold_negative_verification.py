@@ -185,7 +185,7 @@ def run_one(task_dir: Path, variant: str | None, timeout_s: int) -> dict[str, An
     meets_expectation = status == "PASS" if expected_ok else status != "PASS"
     stdout_tail = str(result.get("stdout_tail", ""))
     notes = [*selection_notes, *[str(note) for note in result.get("notes", [])]]
-    if status != "PASS":
+    if status != "PASS" and not any(note.startswith("simulator_error=") for note in notes):
         failure_summary = simulator_failure_summary(stdout_tail)
         if failure_summary and failure_summary not in notes:
             notes.append(failure_summary)
