@@ -22,4 +22,4 @@ module table_model_string_param_source(
 - Drive `out` with the returned table value using `transition(..., 0, 200p, 200p)`.
 - The supplied `gain_profile.tbl` maps `0.0 -> 0.1`, `0.5 -> 0.6`, and `1.0 -> 1.1`.
 
-Return exactly one source artifact named `table_model_string_param_source.va`.
+Return exactly one source artifact named `table_model_string_param_source.va`. The supplied support table `gain_profile.tbl` is part of the task harness and must be available at simulation time.

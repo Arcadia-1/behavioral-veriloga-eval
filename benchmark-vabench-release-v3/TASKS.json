@@ -6067,7 +6067,10 @@
       "tier": "syntax-extension-candidate",
       "title": "Table Model String Param Source",
       "syntax_focus": "Use a string parameter as the $table_model() data source.",
-      "certification_scope": "language_extension_not_part_of_original_full_300_claim"
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim",
+      "support": [
+        "gain_profile.tbl"
+      ]
     },
     "489-event-nested-or-expression": {
       "category": "veriloga_event_semantics",

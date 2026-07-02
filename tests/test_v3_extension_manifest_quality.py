@@ -55,6 +55,36 @@ def test_all_v3_extension_targets_exist_in_starter_and_solution() -> None:
             )
 
 
+def test_all_v3_extension_support_artifacts_are_declared_and_materialized() -> None:
+    support_tasks: list[str] = []
+    for task_key, task in extension_tasks().items():
+        support = task.get("support", [])
+        assert isinstance(support, list), f"{task_key} support must be a list"
+        manifest = json.loads(
+            (TASK_ROOT / task_key / "test_harness" / "visible_hidden_manifest.json").read_text(
+                encoding="utf-8"
+            )
+        )
+        manifest_support = manifest.get("support", [])
+        assert isinstance(manifest_support, list), f"{task_key} manifest support must be a list"
+        assert manifest_support == support, f"{task_key} support mismatch between TASKS and harness manifest"
+
+        if support:
+            support_tasks.append(task_key)
+        for artifact in support:
+            assert "/" not in artifact and "\\" not in artifact, (
+                f"{task_key} support artifact must be a flat filename: {artifact}"
+            )
+            assert (TASK_ROOT / task_key / "starter" / artifact).exists(), (
+                f"{task_key} starter support missing: {artifact}"
+            )
+            assert (TASK_ROOT / task_key / "solution" / artifact).exists(), (
+                f"{task_key} solution support missing: {artifact}"
+            )
+
+    assert "488-table-model-string-param-source" in support_tasks
+
+
 def test_all_v3_extension_prompts_state_required_behavior() -> None:
     for task_key in extension_tasks():
         instruction = (TASK_ROOT / task_key / "instruction.md").read_text(

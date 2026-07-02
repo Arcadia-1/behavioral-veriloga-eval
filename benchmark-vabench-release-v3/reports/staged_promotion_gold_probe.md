@@ -10,7 +10,7 @@ This report records the current local EVAS gold-only promotion probe for the 38 
 - Gold cases: **0/38 PASS**
 - Expectation failures: **38**
 - Skipped staged tasks: **0**
-- Wall time: **7.622s**
+- Wall time: **7.647s**
 
 ## Per-Task Evidence
 
