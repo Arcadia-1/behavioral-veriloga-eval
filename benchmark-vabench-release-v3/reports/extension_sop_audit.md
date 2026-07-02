@@ -5,9 +5,9 @@ Date: 2026-07-02
 ## Summary
 
 - Audited extension tasks: **194**
-- SOP-ready tasks: **181**
+- SOP-ready tasks: **182**
 - Tasks with executable visible+hidden SCS evidence: **194**
-- Tasks with behavior checker evidence: **181**
+- Tasks with behavior checker evidence: **182**
 - Tasks with complete manifest behavior contracts: **194**
 - Tasks with aligned negative case indexes: **194**
 - Tasks with task-specific negative descriptions: **194**
@@ -18,7 +18,7 @@ Date: 2026-07-02
 
 ## Issue Counts
 
-- `checker_syntax_only_no_behavior_score`: 13
+- `checker_syntax_only_no_behavior_score`: 12
 
 ## Warning Counts
 
@@ -32,7 +32,7 @@ Date: 2026-07-02
 | `341-360` | AMS mixed-signal candidates | 20 | 20 | 20 | 20 | 20 | 20 | 20 | 20 |  |
 | `361-372` | noise and analysis candidates | 12 | 12 | 12 | 12 | 12 | 12 | 12 | 12 |  |
 | `373-434` | task/file/table/random/hierarchy syntax candidates | 62 | 62 | 62 | 62 | 62 | 62 | 62 | 62 |  |
-| `435-458` | manual syntax-completion candidates | 24 | 17 | 24 | 17 | 24 | 24 | 24 | 24 | `checker_syntax_only_no_behavior_score`: 7 |
+| `435-458` | manual syntax-completion candidates | 24 | 18 | 24 | 18 | 24 | 24 | 24 | 24 | `checker_syntax_only_no_behavior_score`: 6 |
 | `459-470` | course-material gap-fill candidates | 12 | 11 | 12 | 11 | 12 | 12 | 12 | 12 | `checker_syntax_only_no_behavior_score`: 1 |
 | `471-494` | LRM KCL/continuous-time gap-fill candidates | 24 | 19 | 24 | 19 | 24 | 24 | 24 | 24 | `checker_syntax_only_no_behavior_score`: 5 |
 
@@ -181,7 +181,7 @@ Tasks 301-494 are extension candidates, not SOP-ready benchmark tasks. They most
 | `435-ddt-voltage-derivative-source` | `behavioral-continuous-time-candidate` | True | - |
 | `436-idt-voltage-integrator-source` | `behavioral-continuous-time-candidate` | True | - |
 | `437-laplace-nd-lowpass-filter` | `behavioral-continuous-time-candidate` | True | - |
-| `438-laplace-np-pole-filter` | `behavioral-continuous-time-candidate` | False | `checker_syntax_only_no_behavior_score` |
+| `438-laplace-np-pole-filter` | `behavioral-continuous-time-candidate` | True | - |
 | `439-laplace-zd-zero-den-filter` | `behavioral-continuous-time-candidate` | False | `checker_syntax_only_no_behavior_score` |
 | `440-laplace-zp-zero-pole-filter` | `behavioral-continuous-time-candidate` | False | `checker_syntax_only_no_behavior_score` |
 | `441-zi-nd-discrete-filter` | `behavioral-continuous-time-candidate` | False | `checker_syntax_only_no_behavior_score` |

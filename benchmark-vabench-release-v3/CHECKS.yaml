@@ -10424,9 +10424,10 @@
 438-laplace-np-pole-filter: |
   version: 1
   task_id: v3_438_laplace_np_pole_filter
-  backend: behavioral_continuous_time_capable
-  status: behavioral-continuous-time-candidate
-  checker: language_feature_contract
+  backend: evas
+  status: behavior-certified-candidate
+  checker: laplace_np_pole_filter_contract
+  # vabench-release-v2-checks
   required_columns:
     - time
     - vin
@@ -10440,9 +10441,27 @@
       - "laplace_np"
     must_not_include:
       - "I("
+  sim_correct:
+    positive:
+      - solution/laplace_np_pole_filter.va
+    negative:
+      - negative_variants/neg_001_force_zero/laplace_np_pole_filter.va
+      - negative_variants/neg_002_wrong_threshold/laplace_np_pole_filter.va
+      - negative_variants/neg_003_reset_bias/laplace_np_pole_filter.va
+      - negative_variants/neg_004_metric_offset/laplace_np_pole_filter.va
+      - negative_variants/neg_005_scale_output/laplace_np_pole_filter.va
+    checks:
+      - laplace_np_expression_used_in_event_body
+      - first_clk_sample_initializes_pole_state
+      - second_clk_sample_matches_first_real_pole_exponential_update
+      - out_and_metric_track_same_pole_filter_value
+      - five_negative_variants_rejected_by_behavior_checker
+  promotion_evidence:
+    evas_commit: "de978be Support first-order laplace_np behavior"
+    command: "PYTHONPATH=\"/Users/mac/Documents/github-repos/EVAS:$PWD/runners\" VAEVAS_DEFAULT_EVAS_ENGINE=python VAEVAS_EVAS_PERSISTENT_WORKER=0 PATH=\"$PWD/.venv-evas/bin:$PATH\" .venv-evas/bin/python scripts/run_v3_gold_negative_verification.py --start 438 --end 438 --include-staged --timeout 120 --jobs 1 --out benchmark-vabench-release-v3/reports/verify_task_438_after_checker.json"
+    result: "1/1 gold PASS; 5/5 negative variants rejected; 0 expectation_fail with event-sampled first-real-pole laplace_np checker."
   notes:
-    - "Executable behavioral-continuous-time candidate staged pending EVAS dynamic operator support."
-    - "EVAS issue: https://github.com/Arcadia-1/EVAS/issues/44"
+    - "Promoted using EVAS first-order laplace_np behavioral support; checker validates event-sampled pole response without claiming high-order, complex-pole, Z-domain, or KCL/MNA support."
 439-laplace-zd-zero-den-filter: |
   version: 1
   task_id: v3_439_laplace_zd_zero_den_filter

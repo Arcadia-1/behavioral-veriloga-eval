@@ -9031,7 +9031,10 @@ def check_v3_436_idt_voltage_integrator_source(rows: list[dict[str, float]]) -> 
     return True, f"idt_event_integral_matches_clk_samples expected={expected:.4g}"
 
 
-def check_v3_437_laplace_nd_lowpass_filter(rows: list[dict[str, float]]) -> tuple[bool, str]:
+def _check_v3_first_order_laplace_event_response(
+    rows: list[dict[str, float]],
+    operator: str,
+) -> tuple[bool, str]:
     ok, note = _v3_required_columns(rows, {"time", "vin", "clk", "rst", "out", "metric"})
     if not ok:
         return False, note
@@ -9062,15 +9065,15 @@ def check_v3_437_laplace_nd_lowpass_filter(rows: list[dict[str, float]]) -> tupl
         failures.append(f"metric_mismatch out={out_second:.4g} metric={metric_second:.4g}")
     if failures:
         return False, " ".join(failures[:5])
-    return True, f"laplace_nd_first_order_event_response expected_second={expected_second:.4g}"
+    return True, f"{operator}_first_order_event_response expected_second={expected_second:.4g}"
+
+
+def check_v3_437_laplace_nd_lowpass_filter(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    return _check_v3_first_order_laplace_event_response(rows, "laplace_nd")
 
 
 def check_v3_438_laplace_np_pole_filter(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    return _check_v3_staged_dynamic_operator_boundary(
-        rows,
-        required={"time", "vin", "clk", "rst", "out", "metric"},
-        operator="laplace_np",
-    )
+    return _check_v3_first_order_laplace_event_response(rows, "laplace_np")
 
 
 def check_v3_439_laplace_zd_zero_den_filter(rows: list[dict[str, float]]) -> tuple[bool, str]:

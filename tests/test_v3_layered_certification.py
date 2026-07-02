@@ -111,6 +111,7 @@ def test_v3_extension_rows_do_not_overclaim_behavior_certification() -> None:
         "435-ddt-voltage-derivative-source",
         "436-idt-voltage-integrator-source",
         "437-laplace-nd-lowpass-filter",
+        "438-laplace-np-pole-filter",
     }
     for key in behavior_certified_continuous:
         assert continuous_by_key[key]["certification_level"] == "behavior_certified_extension"
@@ -341,7 +342,6 @@ def test_staged_gold_probe_uses_specific_checkers_when_available() -> None:
     probe = json.loads((V3 / "reports" / "staged_promotion_gold_probe.json").read_text(encoding="utf-8"))
     rows = {row["task_slug"]: row for row in probe["rows"]}
     checker_backed_staged_tasks = {
-        "438-laplace-np-pole-filter": "operator=laplace_np",
         "439-laplace-zd-zero-den-filter": "operator=laplace_zd",
         "440-laplace-zp-zero-pole-filter": "operator=laplace_zp",
         "441-zi-nd-discrete-filter": "operator=zi_nd",

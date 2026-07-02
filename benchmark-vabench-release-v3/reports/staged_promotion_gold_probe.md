@@ -4,18 +4,17 @@ Date: 2026-07-02
 
 ## Summary
 
-- `gold_total`: 13
+- `gold_total`: 12
 - `gold_pass`: 0
-- `gold_fail`: 13
-- `expectation_fail`: 13
+- `gold_fail`: 12
+- `expectation_fail`: 12
 - `skipped_staged_tasks`: 0
-- `wall_s`: 1.753614
+- `wall_s`: 1.556688
 
 ## Rows
 
 | Task | Status | First behavior note |
 | --- | --- | --- |
-| `438-laplace-np-pole-filter` | `FAIL_SIM_CORRECTNESS` | staged_dynamic_solver_boundary operator=laplace_np out_range=0.6 metric_range=0.6 expected=certified_continuous_time_response |
 | `439-laplace-zd-zero-den-filter` | `FAIL_SIM_CORRECTNESS` | staged_dynamic_solver_boundary operator=laplace_zd out_range=0.75 metric_range=0.75 expected=certified_continuous_time_response |
 | `440-laplace-zp-zero-pole-filter` | `FAIL_SIM_CORRECTNESS` | staged_dynamic_solver_boundary operator=laplace_zp out_range=0.9 metric_range=0.9 expected=certified_continuous_time_response |
 | `441-zi-nd-discrete-filter` | `FAIL_SIM_CORRECTNESS` | staged_dynamic_solver_boundary operator=zi_nd out_range=0.7 metric_range=0.7 expected=certified_continuous_time_response |

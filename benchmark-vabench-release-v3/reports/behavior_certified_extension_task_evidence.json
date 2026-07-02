@@ -1,11 +1,11 @@
 {
   "summary": {
     "all_tasks_have_five_behavior_rejected_negatives": true,
-    "gold_pass_count": 181,
-    "negative_behavior_rejected_total": 905,
-    "negative_total": 905,
+    "gold_pass_count": 182,
+    "negative_behavior_rejected_total": 910,
+    "negative_total": 910,
     "source_report": "benchmark-vabench-release-v3/reports/verify_301_494_layered.json",
-    "task_count": 181
+    "task_count": 182
   },
   "tasks": [
     {
@@ -2199,6 +2199,22 @@
         "neg_005_scale_output": "FAIL_SIM_CORRECTNESS"
       },
       "task": "437-laplace-nd-lowpass-filter"
+    },
+    {
+      "all_negatives_behavior_rejected": true,
+      "checker_task_id": "v3_438_laplace_np_pole_filter",
+      "gold_meets_expectation": true,
+      "gold_status": "PASS",
+      "negative_behavior_rejected_count": 5,
+      "negative_count": 5,
+      "negative_statuses": {
+        "neg_001_force_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_002_wrong_threshold": "FAIL_SIM_CORRECTNESS",
+        "neg_003_reset_bias": "FAIL_SIM_CORRECTNESS",
+        "neg_004_metric_offset": "FAIL_SIM_CORRECTNESS",
+        "neg_005_scale_output": "FAIL_SIM_CORRECTNESS"
+      },
+      "task": "438-laplace-np-pole-filter"
     },
     {
       "all_negatives_behavior_rejected": true,
