@@ -234,6 +234,26 @@ def promotion_command_for(blocked_rows: list[dict[str, Any]]) -> str:
     )
 
 
+def task_promotion_command_for(row: dict[str, Any]) -> str:
+    number = int(row["task_number"])
+    task_filter = f"{number:03d}"
+    return (
+        "PYTHONPATH=runners VAEVAS_DEFAULT_EVAS_ENGINE=python "
+        "VAEVAS_EVAS_PERSISTENT_WORKER=0 PATH=\"$PWD/.venv-evas/bin:$PATH\" "
+        ".venv-evas/bin/python scripts/run_v3_gold_negative_verification.py "
+        f"--start {number} --end {number} --tasks {task_filter} "
+        "--include-staged --timeout 120 --jobs 1 "
+        f"--out benchmark-vabench-release-v3/reports/verify_task_{number:03d}.json"
+    )
+
+
+def task_promotion_acceptance_for(row: dict[str, Any]) -> str:
+    return (
+        f"Promote `{row['task_key']}` only after adding repository sim_correct evidence, then require "
+        "1/1 gold PASS, 5/5 negative variants rejected, and zero expectation_fail in the per-task report."
+    )
+
+
 def promotion_acceptance_for(blocked_rows: list[dict[str, Any]]) -> str:
     task_count = len(blocked_rows)
     negative_count = task_count * 5
@@ -496,6 +516,8 @@ def build_staged_blocker_matrix(report: dict[str, Any]) -> dict[str, Any]:
             "issue_urls": issue_urls,
             "probe_status": probe_row.get("status", ""),
             "failure_summary": probe_row.get("failure_summary", ""),
+            "task_promotion_command": task_promotion_command_for(task),
+            "task_promotion_acceptance": task_promotion_acceptance_for(task),
             "promotion_commands": [
                 issue_commands.get(issue_url, {}).get("promotion_command", "")
                 for issue_url in issue_urls
@@ -534,6 +556,8 @@ def write_staged_blocker_csv(matrix: dict[str, Any]) -> None:
         "issue_urls",
         "probe_status",
         "failure_summary",
+        "task_promotion_command",
+        "task_promotion_acceptance",
     ]
     with STAGED_BLOCKER_CSV.open("w", newline="", encoding="utf-8") as fh:
         writer = csv.DictWriter(fh, fieldnames=fields)
@@ -549,6 +573,8 @@ def write_staged_blocker_csv(matrix: dict[str, Any]) -> None:
                 "issue_urls": ";".join(row["issue_urls"]),
                 "probe_status": row["probe_status"],
                 "failure_summary": row["failure_summary"],
+                "task_promotion_command": row["task_promotion_command"],
+                "task_promotion_acceptance": row["task_promotion_acceptance"],
             })
 
 
@@ -568,15 +594,15 @@ def write_staged_blocker_md(matrix: dict[str, Any]) -> None:
         "",
         "## Tasks",
         "",
-        "| Task | Layer | Issue | Probe status | Failure summary |",
-        "| --- | --- | --- | --- | --- |",
+        "| Task | Layer | Issue | Probe status | Failure summary | Per-task promotion command |",
+        "| --- | --- | --- | --- | --- | --- |",
     ]
     for row in matrix["tasks"]:
         issues = "<br>".join(row["issue_urls"])
         summary_text = str(row["failure_summary"]).replace("|", "\\|").replace("\n", " ")
         lines.append(
             f"| `{row['task_key']}` | `{row['semantic_layer']}` | {issues} | "
-            f"`{row['probe_status']}` | {summary_text} |"
+            f"`{row['probe_status']}` | {summary_text} | `{row['task_promotion_command']}` |"
         )
     lines.append("")
     STAGED_BLOCKER_MD.write_text("\n".join(lines), encoding="utf-8")

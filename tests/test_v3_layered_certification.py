@@ -248,6 +248,15 @@ def test_staged_blocker_matrix_tracks_each_unpromoted_task() -> None:
     assert set(matrix_rows) == set(staged_rows)
     assert all(row["issue_urls"] for row in matrix_rows.values())
     assert all(row["failure_summary"] for row in matrix_rows.values())
+    for row in matrix_rows.values():
+        task_number = int(row["task_key"].split("-", 1)[0])
+        assert row["task_promotion_command"]
+        assert f"--start {task_number}" in row["task_promotion_command"]
+        assert f"--end {task_number}" in row["task_promotion_command"]
+        assert f"--tasks {task_number:03d}" in row["task_promotion_command"]
+        assert f"verify_task_{task_number:03d}.json" in row["task_promotion_command"]
+        assert "1/1 gold PASS" in row["task_promotion_acceptance"]
+        assert "5/5 negative variants rejected" in row["task_promotion_acceptance"]
 
 
 def test_staged_task_audits_include_current_promotion_gate() -> None:
@@ -265,6 +274,8 @@ def test_staged_task_audits_include_current_promotion_gate() -> None:
         assert "gold PASS" in audit
         assert "five useful negative variants rejected" in audit
         assert "zero expectation_fail" in audit
+        assert f"- Per-task promotion command: `{row['task_promotion_command']}`" in audit
+        assert f"- Per-task acceptance: {row['task_promotion_acceptance']}" in audit
         for issue_url in row["issue_urls"]:
             assert issue_url in audit
 

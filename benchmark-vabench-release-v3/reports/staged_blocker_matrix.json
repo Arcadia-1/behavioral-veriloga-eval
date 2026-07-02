@@ -32,6 +32,8 @@
       "target": "always_resettable_toggle.vams",
       "task_id": "v3_353_always_resettable_toggle",
       "task_key": "353-always-resettable-toggle",
+      "task_promotion_acceptance": "Promote `353-always-resettable-toggle` only after adding repository sim_correct evidence, then require 1/1 gold PASS, 5/5 negative variants rejected, and zero expectation_fail in the per-task report.",
+      "task_promotion_command": "PYTHONPATH=runners VAEVAS_DEFAULT_EVAS_ENGINE=python VAEVAS_EVAS_PERSISTENT_WORKER=0 PATH=\"$PWD/.venv-evas/bin:$PATH\" .venv-evas/bin/python scripts/run_v3_gold_negative_verification.py --start 353 --end 353 --tasks 353 --include-staged --timeout 120 --jobs 1 --out benchmark-vabench-release-v3/reports/verify_task_353.json",
       "tier": "ams-mixed-signal-candidate",
       "title": "Always Resettable Toggle"
     },
@@ -51,6 +53,8 @@
       "target": "macro_ifdef_gain_select.va",
       "task_id": "v3_410_macro_ifdef_gain_select",
       "task_key": "410-macro-ifdef-gain-select",
+      "task_promotion_acceptance": "Promote `410-macro-ifdef-gain-select` only after adding repository sim_correct evidence, then require 1/1 gold PASS, 5/5 negative variants rejected, and zero expectation_fail in the per-task report.",
+      "task_promotion_command": "PYTHONPATH=runners VAEVAS_DEFAULT_EVAS_ENGINE=python VAEVAS_EVAS_PERSISTENT_WORKER=0 PATH=\"$PWD/.venv-evas/bin:$PATH\" .venv-evas/bin/python scripts/run_v3_gold_negative_verification.py --start 410 --end 410 --tasks 410 --include-staged --timeout 120 --jobs 1 --out benchmark-vabench-release-v3/reports/verify_task_410.json",
       "tier": "syntax-extension-candidate",
       "title": "Macro Ifdef Gain Select"
     },
@@ -70,6 +74,8 @@
       "target": "logic_vector_assign_slice.vams",
       "task_id": "v3_415_logic_vector_assign_slice",
       "task_key": "415-logic-vector-assign-slice",
+      "task_promotion_acceptance": "Promote `415-logic-vector-assign-slice` only after adding repository sim_correct evidence, then require 1/1 gold PASS, 5/5 negative variants rejected, and zero expectation_fail in the per-task report.",
+      "task_promotion_command": "PYTHONPATH=runners VAEVAS_DEFAULT_EVAS_ENGINE=python VAEVAS_EVAS_PERSISTENT_WORKER=0 PATH=\"$PWD/.venv-evas/bin:$PATH\" .venv-evas/bin/python scripts/run_v3_gold_negative_verification.py --start 415 --end 415 --tasks 415 --include-staged --timeout 120 --jobs 1 --out benchmark-vabench-release-v3/reports/verify_task_415.json",
       "tier": "ams-mixed-signal-candidate",
       "title": "Logic Vector Assign Slice"
     },
@@ -89,6 +95,8 @@
       "target": "logic_vector_reduction_flag.vams",
       "task_id": "v3_416_logic_vector_reduction_flag",
       "task_key": "416-logic-vector-reduction-flag",
+      "task_promotion_acceptance": "Promote `416-logic-vector-reduction-flag` only after adding repository sim_correct evidence, then require 1/1 gold PASS, 5/5 negative variants rejected, and zero expectation_fail in the per-task report.",
+      "task_promotion_command": "PYTHONPATH=runners VAEVAS_DEFAULT_EVAS_ENGINE=python VAEVAS_EVAS_PERSISTENT_WORKER=0 PATH=\"$PWD/.venv-evas/bin:$PATH\" .venv-evas/bin/python scripts/run_v3_gold_negative_verification.py --start 416 --end 416 --tasks 416 --include-staged --timeout 120 --jobs 1 --out benchmark-vabench-release-v3/reports/verify_task_416.json",
       "tier": "ams-mixed-signal-candidate",
       "title": "Logic Vector Reduction Flag"
     },
@@ -108,6 +116,8 @@
       "target": "always_async_reset_counter.vams",
       "task_id": "v3_417_always_async_reset_counter",
       "task_key": "417-always-async-reset-counter",
+      "task_promotion_acceptance": "Promote `417-always-async-reset-counter` only after adding repository sim_correct evidence, then require 1/1 gold PASS, 5/5 negative variants rejected, and zero expectation_fail in the per-task report.",
+      "task_promotion_command": "PYTHONPATH=runners VAEVAS_DEFAULT_EVAS_ENGINE=python VAEVAS_EVAS_PERSISTENT_WORKER=0 PATH=\"$PWD/.venv-evas/bin:$PATH\" .venv-evas/bin/python scripts/run_v3_gold_negative_verification.py --start 417 --end 417 --tasks 417 --include-staged --timeout 120 --jobs 1 --out benchmark-vabench-release-v3/reports/verify_task_417.json",
       "tier": "ams-mixed-signal-candidate",
       "title": "Always Async Reset Counter"
     },
@@ -127,6 +137,8 @@
       "target": "always_enable_saturating_counter.vams",
       "task_id": "v3_418_always_enable_saturating_counter",
       "task_key": "418-always-enable-saturating-counter",
+      "task_promotion_acceptance": "Promote `418-always-enable-saturating-counter` only after adding repository sim_correct evidence, then require 1/1 gold PASS, 5/5 negative variants rejected, and zero expectation_fail in the per-task report.",
+      "task_promotion_command": "PYTHONPATH=runners VAEVAS_DEFAULT_EVAS_ENGINE=python VAEVAS_EVAS_PERSISTENT_WORKER=0 PATH=\"$PWD/.venv-evas/bin:$PATH\" .venv-evas/bin/python scripts/run_v3_gold_negative_verification.py --start 418 --end 418 --tasks 418 --include-staged --timeout 120 --jobs 1 --out benchmark-vabench-release-v3/reports/verify_task_418.json",
       "tier": "ams-mixed-signal-candidate",
       "title": "Always Enable Saturating Counter"
     },
@@ -146,6 +158,8 @@
       "target": "ddt_voltage_derivative_source.va",
       "task_id": "v3_435_ddt_voltage_derivative_source",
       "task_key": "435-ddt-voltage-derivative-source",
+      "task_promotion_acceptance": "Promote `435-ddt-voltage-derivative-source` only after adding repository sim_correct evidence, then require 1/1 gold PASS, 5/5 negative variants rejected, and zero expectation_fail in the per-task report.",
+      "task_promotion_command": "PYTHONPATH=runners VAEVAS_DEFAULT_EVAS_ENGINE=python VAEVAS_EVAS_PERSISTENT_WORKER=0 PATH=\"$PWD/.venv-evas/bin:$PATH\" .venv-evas/bin/python scripts/run_v3_gold_negative_verification.py --start 435 --end 435 --tasks 435 --include-staged --timeout 120 --jobs 1 --out benchmark-vabench-release-v3/reports/verify_task_435.json",
       "tier": "behavioral-continuous-time-candidate",
       "title": "Ddt Voltage Derivative Source"
     },
@@ -165,6 +179,8 @@
       "target": "idt_voltage_integrator_source.va",
       "task_id": "v3_436_idt_voltage_integrator_source",
       "task_key": "436-idt-voltage-integrator-source",
+      "task_promotion_acceptance": "Promote `436-idt-voltage-integrator-source` only after adding repository sim_correct evidence, then require 1/1 gold PASS, 5/5 negative variants rejected, and zero expectation_fail in the per-task report.",
+      "task_promotion_command": "PYTHONPATH=runners VAEVAS_DEFAULT_EVAS_ENGINE=python VAEVAS_EVAS_PERSISTENT_WORKER=0 PATH=\"$PWD/.venv-evas/bin:$PATH\" .venv-evas/bin/python scripts/run_v3_gold_negative_verification.py --start 436 --end 436 --tasks 436 --include-staged --timeout 120 --jobs 1 --out benchmark-vabench-release-v3/reports/verify_task_436.json",
       "tier": "behavioral-continuous-time-candidate",
       "title": "Idt Voltage Integrator Source"
     },
@@ -184,6 +200,8 @@
       "target": "laplace_nd_lowpass_filter.va",
       "task_id": "v3_437_laplace_nd_lowpass_filter",
       "task_key": "437-laplace-nd-lowpass-filter",
+      "task_promotion_acceptance": "Promote `437-laplace-nd-lowpass-filter` only after adding repository sim_correct evidence, then require 1/1 gold PASS, 5/5 negative variants rejected, and zero expectation_fail in the per-task report.",
+      "task_promotion_command": "PYTHONPATH=runners VAEVAS_DEFAULT_EVAS_ENGINE=python VAEVAS_EVAS_PERSISTENT_WORKER=0 PATH=\"$PWD/.venv-evas/bin:$PATH\" .venv-evas/bin/python scripts/run_v3_gold_negative_verification.py --start 437 --end 437 --tasks 437 --include-staged --timeout 120 --jobs 1 --out benchmark-vabench-release-v3/reports/verify_task_437.json",
       "tier": "behavioral-continuous-time-candidate",
       "title": "Laplace Nd Lowpass Filter"
     },
@@ -203,6 +221,8 @@
       "target": "laplace_np_pole_filter.va",
       "task_id": "v3_438_laplace_np_pole_filter",
       "task_key": "438-laplace-np-pole-filter",
+      "task_promotion_acceptance": "Promote `438-laplace-np-pole-filter` only after adding repository sim_correct evidence, then require 1/1 gold PASS, 5/5 negative variants rejected, and zero expectation_fail in the per-task report.",
+      "task_promotion_command": "PYTHONPATH=runners VAEVAS_DEFAULT_EVAS_ENGINE=python VAEVAS_EVAS_PERSISTENT_WORKER=0 PATH=\"$PWD/.venv-evas/bin:$PATH\" .venv-evas/bin/python scripts/run_v3_gold_negative_verification.py --start 438 --end 438 --tasks 438 --include-staged --timeout 120 --jobs 1 --out benchmark-vabench-release-v3/reports/verify_task_438.json",
       "tier": "behavioral-continuous-time-candidate",
       "title": "Laplace Np Pole Filter"
     },
@@ -222,6 +242,8 @@
       "target": "laplace_zd_zero_den_filter.va",
       "task_id": "v3_439_laplace_zd_zero_den_filter",
       "task_key": "439-laplace-zd-zero-den-filter",
+      "task_promotion_acceptance": "Promote `439-laplace-zd-zero-den-filter` only after adding repository sim_correct evidence, then require 1/1 gold PASS, 5/5 negative variants rejected, and zero expectation_fail in the per-task report.",
+      "task_promotion_command": "PYTHONPATH=runners VAEVAS_DEFAULT_EVAS_ENGINE=python VAEVAS_EVAS_PERSISTENT_WORKER=0 PATH=\"$PWD/.venv-evas/bin:$PATH\" .venv-evas/bin/python scripts/run_v3_gold_negative_verification.py --start 439 --end 439 --tasks 439 --include-staged --timeout 120 --jobs 1 --out benchmark-vabench-release-v3/reports/verify_task_439.json",
       "tier": "behavioral-continuous-time-candidate",
       "title": "Laplace Zd Zero Den Filter"
     },
@@ -241,6 +263,8 @@
       "target": "laplace_zp_zero_pole_filter.va",
       "task_id": "v3_440_laplace_zp_zero_pole_filter",
       "task_key": "440-laplace-zp-zero-pole-filter",
+      "task_promotion_acceptance": "Promote `440-laplace-zp-zero-pole-filter` only after adding repository sim_correct evidence, then require 1/1 gold PASS, 5/5 negative variants rejected, and zero expectation_fail in the per-task report.",
+      "task_promotion_command": "PYTHONPATH=runners VAEVAS_DEFAULT_EVAS_ENGINE=python VAEVAS_EVAS_PERSISTENT_WORKER=0 PATH=\"$PWD/.venv-evas/bin:$PATH\" .venv-evas/bin/python scripts/run_v3_gold_negative_verification.py --start 440 --end 440 --tasks 440 --include-staged --timeout 120 --jobs 1 --out benchmark-vabench-release-v3/reports/verify_task_440.json",
       "tier": "behavioral-continuous-time-candidate",
       "title": "Laplace Zp Zero Pole Filter"
     },
@@ -260,6 +284,8 @@
       "target": "zi_nd_discrete_filter.va",
       "task_id": "v3_441_zi_nd_discrete_filter",
       "task_key": "441-zi-nd-discrete-filter",
+      "task_promotion_acceptance": "Promote `441-zi-nd-discrete-filter` only after adding repository sim_correct evidence, then require 1/1 gold PASS, 5/5 negative variants rejected, and zero expectation_fail in the per-task report.",
+      "task_promotion_command": "PYTHONPATH=runners VAEVAS_DEFAULT_EVAS_ENGINE=python VAEVAS_EVAS_PERSISTENT_WORKER=0 PATH=\"$PWD/.venv-evas/bin:$PATH\" .venv-evas/bin/python scripts/run_v3_gold_negative_verification.py --start 441 --end 441 --tasks 441 --include-staged --timeout 120 --jobs 1 --out benchmark-vabench-release-v3/reports/verify_task_441.json",
       "tier": "behavioral-continuous-time-candidate",
       "title": "Zi Nd Discrete Filter"
     },
@@ -279,6 +305,8 @@
       "target": "zi_np_discrete_filter.va",
       "task_id": "v3_442_zi_np_discrete_filter",
       "task_key": "442-zi-np-discrete-filter",
+      "task_promotion_acceptance": "Promote `442-zi-np-discrete-filter` only after adding repository sim_correct evidence, then require 1/1 gold PASS, 5/5 negative variants rejected, and zero expectation_fail in the per-task report.",
+      "task_promotion_command": "PYTHONPATH=runners VAEVAS_DEFAULT_EVAS_ENGINE=python VAEVAS_EVAS_PERSISTENT_WORKER=0 PATH=\"$PWD/.venv-evas/bin:$PATH\" .venv-evas/bin/python scripts/run_v3_gold_negative_verification.py --start 442 --end 442 --tasks 442 --include-staged --timeout 120 --jobs 1 --out benchmark-vabench-release-v3/reports/verify_task_442.json",
       "tier": "behavioral-continuous-time-candidate",
       "title": "Zi Np Discrete Filter"
     },
@@ -298,6 +326,8 @@
       "target": "zi_zd_discrete_filter.va",
       "task_id": "v3_443_zi_zd_discrete_filter",
       "task_key": "443-zi-zd-discrete-filter",
+      "task_promotion_acceptance": "Promote `443-zi-zd-discrete-filter` only after adding repository sim_correct evidence, then require 1/1 gold PASS, 5/5 negative variants rejected, and zero expectation_fail in the per-task report.",
+      "task_promotion_command": "PYTHONPATH=runners VAEVAS_DEFAULT_EVAS_ENGINE=python VAEVAS_EVAS_PERSISTENT_WORKER=0 PATH=\"$PWD/.venv-evas/bin:$PATH\" .venv-evas/bin/python scripts/run_v3_gold_negative_verification.py --start 443 --end 443 --tasks 443 --include-staged --timeout 120 --jobs 1 --out benchmark-vabench-release-v3/reports/verify_task_443.json",
       "tier": "behavioral-continuous-time-candidate",
       "title": "Zi Zd Discrete Filter"
     },
@@ -317,6 +347,8 @@
       "target": "zi_zp_discrete_filter.va",
       "task_id": "v3_444_zi_zp_discrete_filter",
       "task_key": "444-zi-zp-discrete-filter",
+      "task_promotion_acceptance": "Promote `444-zi-zp-discrete-filter` only after adding repository sim_correct evidence, then require 1/1 gold PASS, 5/5 negative variants rejected, and zero expectation_fail in the per-task report.",
+      "task_promotion_command": "PYTHONPATH=runners VAEVAS_DEFAULT_EVAS_ENGINE=python VAEVAS_EVAS_PERSISTENT_WORKER=0 PATH=\"$PWD/.venv-evas/bin:$PATH\" .venv-evas/bin/python scripts/run_v3_gold_negative_verification.py --start 444 --end 444 --tasks 444 --include-staged --timeout 120 --jobs 1 --out benchmark-vabench-release-v3/reports/verify_task_444.json",
       "tier": "behavioral-continuous-time-candidate",
       "title": "Zi Zp Discrete Filter"
     },
@@ -336,6 +368,8 @@
       "target": "generate_genvar_replicated_stage.vams",
       "task_id": "v3_449_generate_genvar_replicated_stage",
       "task_key": "449-generate-genvar-replicated-stage",
+      "task_promotion_acceptance": "Promote `449-generate-genvar-replicated-stage` only after adding repository sim_correct evidence, then require 1/1 gold PASS, 5/5 negative variants rejected, and zero expectation_fail in the per-task report.",
+      "task_promotion_command": "PYTHONPATH=runners VAEVAS_DEFAULT_EVAS_ENGINE=python VAEVAS_EVAS_PERSISTENT_WORKER=0 PATH=\"$PWD/.venv-evas/bin:$PATH\" .venv-evas/bin/python scripts/run_v3_gold_negative_verification.py --start 449 --end 449 --tasks 449 --include-staged --timeout 120 --jobs 1 --out benchmark-vabench-release-v3/reports/verify_task_449.json",
       "tier": "ams-mixed-signal-candidate",
       "title": "Generate Genvar Replicated Stage"
     },
@@ -355,6 +389,8 @@
       "target": "specify_specparam_delay.vams",
       "task_id": "v3_453_specify_specparam_delay",
       "task_key": "453-specify-specparam-delay",
+      "task_promotion_acceptance": "Promote `453-specify-specparam-delay` only after adding repository sim_correct evidence, then require 1/1 gold PASS, 5/5 negative variants rejected, and zero expectation_fail in the per-task report.",
+      "task_promotion_command": "PYTHONPATH=runners VAEVAS_DEFAULT_EVAS_ENGINE=python VAEVAS_EVAS_PERSISTENT_WORKER=0 PATH=\"$PWD/.venv-evas/bin:$PATH\" .venv-evas/bin/python scripts/run_v3_gold_negative_verification.py --start 453 --end 453 --tasks 453 --include-staged --timeout 120 --jobs 1 --out benchmark-vabench-release-v3/reports/verify_task_453.json",
       "tier": "ams-mixed-signal-candidate",
       "title": "Specify Specparam Delay"
     },
@@ -374,6 +410,8 @@
       "target": "packed_logic_bus_slice.vams",
       "task_id": "v3_455_packed_logic_bus_slice",
       "task_key": "455-packed-logic-bus-slice",
+      "task_promotion_acceptance": "Promote `455-packed-logic-bus-slice` only after adding repository sim_correct evidence, then require 1/1 gold PASS, 5/5 negative variants rejected, and zero expectation_fail in the per-task report.",
+      "task_promotion_command": "PYTHONPATH=runners VAEVAS_DEFAULT_EVAS_ENGINE=python VAEVAS_EVAS_PERSISTENT_WORKER=0 PATH=\"$PWD/.venv-evas/bin:$PATH\" .venv-evas/bin/python scripts/run_v3_gold_negative_verification.py --start 455 --end 455 --tasks 455 --include-staged --timeout 120 --jobs 1 --out benchmark-vabench-release-v3/reports/verify_task_455.json",
       "tier": "ams-mixed-signal-candidate",
       "title": "Packed Logic Bus Slice"
     },
@@ -393,6 +431,8 @@
       "target": "param_given_gain_select.va",
       "task_id": "v3_464_param_given_gain_select",
       "task_key": "464-param-given-gain-select",
+      "task_promotion_acceptance": "Promote `464-param-given-gain-select` only after adding repository sim_correct evidence, then require 1/1 gold PASS, 5/5 negative variants rejected, and zero expectation_fail in the per-task report.",
+      "task_promotion_command": "PYTHONPATH=runners VAEVAS_DEFAULT_EVAS_ENGINE=python VAEVAS_EVAS_PERSISTENT_WORKER=0 PATH=\"$PWD/.venv-evas/bin:$PATH\" .venv-evas/bin/python scripts/run_v3_gold_negative_verification.py --start 464 --end 464 --tasks 464 --include-staged --timeout 120 --jobs 1 --out benchmark-vabench-release-v3/reports/verify_task_464.json",
       "tier": "syntax-extension-candidate",
       "title": "Param Given Gain Select"
     },
@@ -412,6 +452,8 @@
       "target": "branch_declaration_voltage_probe.va",
       "task_id": "v3_468_branch_declaration_voltage_probe",
       "task_key": "468-branch-declaration-voltage-probe",
+      "task_promotion_acceptance": "Promote `468-branch-declaration-voltage-probe` only after adding repository sim_correct evidence, then require 1/1 gold PASS, 5/5 negative variants rejected, and zero expectation_fail in the per-task report.",
+      "task_promotion_command": "PYTHONPATH=runners VAEVAS_DEFAULT_EVAS_ENGINE=python VAEVAS_EVAS_PERSISTENT_WORKER=0 PATH=\"$PWD/.venv-evas/bin:$PATH\" .venv-evas/bin/python scripts/run_v3_gold_negative_verification.py --start 468 --end 468 --tasks 468 --include-staged --timeout 120 --jobs 1 --out benchmark-vabench-release-v3/reports/verify_task_468.json",
       "tier": "syntax-extension-candidate",
       "title": "Branch Declaration Voltage Probe"
     },
@@ -431,6 +473,8 @@
       "target": "current_contribution_conductance.va",
       "task_id": "v3_469_current_contribution_conductance",
       "task_key": "469-current-contribution-conductance",
+      "task_promotion_acceptance": "Promote `469-current-contribution-conductance` only after adding repository sim_correct evidence, then require 1/1 gold PASS, 5/5 negative variants rejected, and zero expectation_fail in the per-task report.",
+      "task_promotion_command": "PYTHONPATH=runners VAEVAS_DEFAULT_EVAS_ENGINE=python VAEVAS_EVAS_PERSISTENT_WORKER=0 PATH=\"$PWD/.venv-evas/bin:$PATH\" .venv-evas/bin/python scripts/run_v3_gold_negative_verification.py --start 469 --end 469 --tasks 469 --include-staged --timeout 120 --jobs 1 --out benchmark-vabench-release-v3/reports/verify_task_469.json",
       "tier": "kcl-syntax-candidate",
       "title": "Current Contribution Conductance"
     },
@@ -450,6 +494,8 @@
       "target": "branch_current_probe_contribution.va",
       "task_id": "v3_470_branch_current_probe_contribution",
       "task_key": "470-branch-current-probe-contribution",
+      "task_promotion_acceptance": "Promote `470-branch-current-probe-contribution` only after adding repository sim_correct evidence, then require 1/1 gold PASS, 5/5 negative variants rejected, and zero expectation_fail in the per-task report.",
+      "task_promotion_command": "PYTHONPATH=runners VAEVAS_DEFAULT_EVAS_ENGINE=python VAEVAS_EVAS_PERSISTENT_WORKER=0 PATH=\"$PWD/.venv-evas/bin:$PATH\" .venv-evas/bin/python scripts/run_v3_gold_negative_verification.py --start 470 --end 470 --tasks 470 --include-staged --timeout 120 --jobs 1 --out benchmark-vabench-release-v3/reports/verify_task_470.json",
       "tier": "kcl-syntax-candidate",
       "title": "Branch Current Probe Contribution"
     },
@@ -469,6 +515,8 @@
       "target": "indirect_branch_null_balance.va",
       "task_id": "v3_471_indirect_branch_null_balance",
       "task_key": "471-indirect-branch-null-balance",
+      "task_promotion_acceptance": "Promote `471-indirect-branch-null-balance` only after adding repository sim_correct evidence, then require 1/1 gold PASS, 5/5 negative variants rejected, and zero expectation_fail in the per-task report.",
+      "task_promotion_command": "PYTHONPATH=runners VAEVAS_DEFAULT_EVAS_ENGINE=python VAEVAS_EVAS_PERSISTENT_WORKER=0 PATH=\"$PWD/.venv-evas/bin:$PATH\" .venv-evas/bin/python scripts/run_v3_gold_negative_verification.py --start 471 --end 471 --tasks 471 --include-staged --timeout 120 --jobs 1 --out benchmark-vabench-release-v3/reports/verify_task_471.json",
       "tier": "behavioral-continuous-time-candidate",
       "title": "Indirect Branch Null Balance"
     },
@@ -488,6 +536,8 @@
       "target": "indirect_branch_ddt_balance.va",
       "task_id": "v3_472_indirect_branch_ddt_balance",
       "task_key": "472-indirect-branch-ddt-balance",
+      "task_promotion_acceptance": "Promote `472-indirect-branch-ddt-balance` only after adding repository sim_correct evidence, then require 1/1 gold PASS, 5/5 negative variants rejected, and zero expectation_fail in the per-task report.",
+      "task_promotion_command": "PYTHONPATH=runners VAEVAS_DEFAULT_EVAS_ENGINE=python VAEVAS_EVAS_PERSISTENT_WORKER=0 PATH=\"$PWD/.venv-evas/bin:$PATH\" .venv-evas/bin/python scripts/run_v3_gold_negative_verification.py --start 472 --end 472 --tasks 472 --include-staged --timeout 120 --jobs 1 --out benchmark-vabench-release-v3/reports/verify_task_472.json",
       "tier": "behavioral-continuous-time-candidate",
       "title": "Indirect Branch Ddt Balance"
     },
@@ -507,6 +557,8 @@
       "target": "oomr_string_voltage_probe.va",
       "task_id": "v3_476_oomr_string_voltage_probe",
       "task_key": "476-oomr-string-voltage-probe",
+      "task_promotion_acceptance": "Promote `476-oomr-string-voltage-probe` only after adding repository sim_correct evidence, then require 1/1 gold PASS, 5/5 negative variants rejected, and zero expectation_fail in the per-task report.",
+      "task_promotion_command": "PYTHONPATH=runners VAEVAS_DEFAULT_EVAS_ENGINE=python VAEVAS_EVAS_PERSISTENT_WORKER=0 PATH=\"$PWD/.venv-evas/bin:$PATH\" .venv-evas/bin/python scripts/run_v3_gold_negative_verification.py --start 476 --end 476 --tasks 476 --include-staged --timeout 120 --jobs 1 --out benchmark-vabench-release-v3/reports/verify_task_476.json",
       "tier": "syntax-extension-candidate",
       "title": "Oomr String Voltage Probe"
     },
@@ -526,6 +578,8 @@
       "target": "analog_node_alias_initial.va",
       "task_id": "v3_477_analog_node_alias_initial",
       "task_key": "477-analog-node-alias-initial",
+      "task_promotion_acceptance": "Promote `477-analog-node-alias-initial` only after adding repository sim_correct evidence, then require 1/1 gold PASS, 5/5 negative variants rejected, and zero expectation_fail in the per-task report.",
+      "task_promotion_command": "PYTHONPATH=runners VAEVAS_DEFAULT_EVAS_ENGINE=python VAEVAS_EVAS_PERSISTENT_WORKER=0 PATH=\"$PWD/.venv-evas/bin:$PATH\" .venv-evas/bin/python scripts/run_v3_gold_negative_verification.py --start 477 --end 477 --tasks 477 --include-staged --timeout 120 --jobs 1 --out benchmark-vabench-release-v3/reports/verify_task_477.json",
       "tier": "syntax-extension-candidate",
       "title": "Analog Node Alias Initial"
     },
@@ -545,6 +599,8 @@
       "target": "mfactor_system_function_gain.va",
       "task_id": "v3_480_mfactor_system_function_gain",
       "task_key": "480-mfactor-system-function-gain",
+      "task_promotion_acceptance": "Promote `480-mfactor-system-function-gain` only after adding repository sim_correct evidence, then require 1/1 gold PASS, 5/5 negative variants rejected, and zero expectation_fail in the per-task report.",
+      "task_promotion_command": "PYTHONPATH=runners VAEVAS_DEFAULT_EVAS_ENGINE=python VAEVAS_EVAS_PERSISTENT_WORKER=0 PATH=\"$PWD/.venv-evas/bin:$PATH\" .venv-evas/bin/python scripts/run_v3_gold_negative_verification.py --start 480 --end 480 --tasks 480 --include-staged --timeout 120 --jobs 1 --out benchmark-vabench-release-v3/reports/verify_task_480.json",
       "tier": "syntax-extension-candidate",
       "title": "Mfactor System Function Gain"
     },
@@ -564,6 +620,8 @@
       "target": "analog_primitive_resistor_instance.va",
       "task_id": "v3_481_analog_primitive_resistor_instance",
       "task_key": "481-analog-primitive-resistor-instance",
+      "task_promotion_acceptance": "Promote `481-analog-primitive-resistor-instance` only after adding repository sim_correct evidence, then require 1/1 gold PASS, 5/5 negative variants rejected, and zero expectation_fail in the per-task report.",
+      "task_promotion_command": "PYTHONPATH=runners VAEVAS_DEFAULT_EVAS_ENGINE=python VAEVAS_EVAS_PERSISTENT_WORKER=0 PATH=\"$PWD/.venv-evas/bin:$PATH\" .venv-evas/bin/python scripts/run_v3_gold_negative_verification.py --start 481 --end 481 --tasks 481 --include-staged --timeout 120 --jobs 1 --out benchmark-vabench-release-v3/reports/verify_task_481.json",
       "tier": "kcl-syntax-candidate",
       "title": "Analog Primitive Resistor Instance"
     },
@@ -583,6 +641,8 @@
       "target": "analog_primitive_isource_instance.va",
       "task_id": "v3_482_analog_primitive_isource_instance",
       "task_key": "482-analog-primitive-isource-instance",
+      "task_promotion_acceptance": "Promote `482-analog-primitive-isource-instance` only after adding repository sim_correct evidence, then require 1/1 gold PASS, 5/5 negative variants rejected, and zero expectation_fail in the per-task report.",
+      "task_promotion_command": "PYTHONPATH=runners VAEVAS_DEFAULT_EVAS_ENGINE=python VAEVAS_EVAS_PERSISTENT_WORKER=0 PATH=\"$PWD/.venv-evas/bin:$PATH\" .venv-evas/bin/python scripts/run_v3_gold_negative_verification.py --start 482 --end 482 --tasks 482 --include-staged --timeout 120 --jobs 1 --out benchmark-vabench-release-v3/reports/verify_task_482.json",
       "tier": "kcl-syntax-candidate",
       "title": "Analog Primitive Isource Instance"
     },
@@ -602,6 +662,8 @@
       "target": "table_model_2d_array_surface.va",
       "task_id": "v3_487_table_model_2d_array_surface",
       "task_key": "487-table-model-2d-array-surface",
+      "task_promotion_acceptance": "Promote `487-table-model-2d-array-surface` only after adding repository sim_correct evidence, then require 1/1 gold PASS, 5/5 negative variants rejected, and zero expectation_fail in the per-task report.",
+      "task_promotion_command": "PYTHONPATH=runners VAEVAS_DEFAULT_EVAS_ENGINE=python VAEVAS_EVAS_PERSISTENT_WORKER=0 PATH=\"$PWD/.venv-evas/bin:$PATH\" .venv-evas/bin/python scripts/run_v3_gold_negative_verification.py --start 487 --end 487 --tasks 487 --include-staged --timeout 120 --jobs 1 --out benchmark-vabench-release-v3/reports/verify_task_487.json",
       "tier": "syntax-extension-candidate",
       "title": "Table Model 2d Array Surface"
     },
@@ -621,6 +683,8 @@
       "target": "table_model_string_param_source.va",
       "task_id": "v3_488_table_model_string_param_source",
       "task_key": "488-table-model-string-param-source",
+      "task_promotion_acceptance": "Promote `488-table-model-string-param-source` only after adding repository sim_correct evidence, then require 1/1 gold PASS, 5/5 negative variants rejected, and zero expectation_fail in the per-task report.",
+      "task_promotion_command": "PYTHONPATH=runners VAEVAS_DEFAULT_EVAS_ENGINE=python VAEVAS_EVAS_PERSISTENT_WORKER=0 PATH=\"$PWD/.venv-evas/bin:$PATH\" .venv-evas/bin/python scripts/run_v3_gold_negative_verification.py --start 488 --end 488 --tasks 488 --include-staged --timeout 120 --jobs 1 --out benchmark-vabench-release-v3/reports/verify_task_488.json",
       "tier": "syntax-extension-candidate",
       "title": "Table Model String Param Source"
     },
@@ -640,6 +704,8 @@
       "target": "kcl_capacitor_ddt_current.va",
       "task_id": "v3_491_kcl_capacitor_ddt_current",
       "task_key": "491-kcl-capacitor-ddt-current",
+      "task_promotion_acceptance": "Promote `491-kcl-capacitor-ddt-current` only after adding repository sim_correct evidence, then require 1/1 gold PASS, 5/5 negative variants rejected, and zero expectation_fail in the per-task report.",
+      "task_promotion_command": "PYTHONPATH=runners VAEVAS_DEFAULT_EVAS_ENGINE=python VAEVAS_EVAS_PERSISTENT_WORKER=0 PATH=\"$PWD/.venv-evas/bin:$PATH\" .venv-evas/bin/python scripts/run_v3_gold_negative_verification.py --start 491 --end 491 --tasks 491 --include-staged --timeout 120 --jobs 1 --out benchmark-vabench-release-v3/reports/verify_task_491.json",
       "tier": "kcl-syntax-candidate",
       "title": "Kcl Capacitor Ddt Current"
     },
@@ -659,6 +725,8 @@
       "target": "kcl_inductor_idt_voltage.va",
       "task_id": "v3_492_kcl_inductor_idt_voltage",
       "task_key": "492-kcl-inductor-idt-voltage",
+      "task_promotion_acceptance": "Promote `492-kcl-inductor-idt-voltage` only after adding repository sim_correct evidence, then require 1/1 gold PASS, 5/5 negative variants rejected, and zero expectation_fail in the per-task report.",
+      "task_promotion_command": "PYTHONPATH=runners VAEVAS_DEFAULT_EVAS_ENGINE=python VAEVAS_EVAS_PERSISTENT_WORKER=0 PATH=\"$PWD/.venv-evas/bin:$PATH\" .venv-evas/bin/python scripts/run_v3_gold_negative_verification.py --start 492 --end 492 --tasks 492 --include-staged --timeout 120 --jobs 1 --out benchmark-vabench-release-v3/reports/verify_task_492.json",
       "tier": "kcl-syntax-candidate",
       "title": "Kcl Inductor Idt Voltage"
     },
@@ -678,6 +746,8 @@
       "target": "continuous_laplace_nd_filter.va",
       "task_id": "v3_493_continuous_laplace_nd_filter",
       "task_key": "493-continuous-laplace-nd-filter",
+      "task_promotion_acceptance": "Promote `493-continuous-laplace-nd-filter` only after adding repository sim_correct evidence, then require 1/1 gold PASS, 5/5 negative variants rejected, and zero expectation_fail in the per-task report.",
+      "task_promotion_command": "PYTHONPATH=runners VAEVAS_DEFAULT_EVAS_ENGINE=python VAEVAS_EVAS_PERSISTENT_WORKER=0 PATH=\"$PWD/.venv-evas/bin:$PATH\" .venv-evas/bin/python scripts/run_v3_gold_negative_verification.py --start 493 --end 493 --tasks 493 --include-staged --timeout 120 --jobs 1 --out benchmark-vabench-release-v3/reports/verify_task_493.json",
       "tier": "behavioral-continuous-time-candidate",
       "title": "Continuous Laplace Nd Filter"
     },
@@ -697,6 +767,8 @@
       "target": "continuous_zi_nd_filter.va",
       "task_id": "v3_494_continuous_zi_nd_filter",
       "task_key": "494-continuous-zi-nd-filter",
+      "task_promotion_acceptance": "Promote `494-continuous-zi-nd-filter` only after adding repository sim_correct evidence, then require 1/1 gold PASS, 5/5 negative variants rejected, and zero expectation_fail in the per-task report.",
+      "task_promotion_command": "PYTHONPATH=runners VAEVAS_DEFAULT_EVAS_ENGINE=python VAEVAS_EVAS_PERSISTENT_WORKER=0 PATH=\"$PWD/.venv-evas/bin:$PATH\" .venv-evas/bin/python scripts/run_v3_gold_negative_verification.py --start 494 --end 494 --tasks 494 --include-staged --timeout 120 --jobs 1 --out benchmark-vabench-release-v3/reports/verify_task_494.json",
       "tier": "behavioral-continuous-time-candidate",
       "title": "Continuous Zi Nd Filter"
     }
