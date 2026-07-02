@@ -1,0 +1,175 @@
+{
+  "rows": [
+    {
+      "case_id": "468-branch-declaration-voltage-probe:gold",
+      "checker_task_id": "v3_468_branch_declaration_voltage_probe",
+      "expected_ok": true,
+      "failure_summary": null,
+      "kind": "gold",
+      "meets_expectation": true,
+      "notes": [
+        "returncode=0",
+        "evas_engine=python",
+        "trace_contract=row_required_set",
+        "out=0.100,0.400,0.700,-0.050"
+      ],
+      "scores": {
+        "dut_compile": 1.0,
+        "sim_correct": 1.0,
+        "tb_compile": 1.0,
+        "weighted_total": 1.0
+      },
+      "status": "PASS",
+      "stdout_tail": "tion_batches = 0\n        rust_event_interpolation_cache_hits = 0\n        rust_event_interpolation_fallbacks = 0\n        rust_event_interpolation_nodes = 0\n        rust_event_linear_write_batches = 0\n        rust_event_linear_write_production_calls = 0\n        rust_event_linear_write_production_executed = 0\n        rust_event_linear_write_production_fallbacks = 0\n        rust_event_linear_write_shadow_checks = 0\n        rust_event_linear_write_shadow_errors = 0\n        rust_event_linear_write_shadow_matches = 0\n        rust_event_linear_write_shadow_mismatches = 0\n        rust_event_write_production_calls = 0\n        rust_event_write_production_executed = 0\n        rust_event_write_production_fallbacks = 0\n        rust_event_write_shadow_checks = 0\n        rust_event_write_shadow_errors = 0\n        rust_event_write_shadow_matches = 0\n        rust_event_write_shadow_mismatches = 0\n        rust_timer_breakpoint_fallbacks = 0\n        rust_timer_breakpoint_scans = 0\n        rust_timer_breakpoint_state_scans = 0\n        rust_timer_event_production_absolute_calls = 0\n        rust_timer_event_production_expirations = 0\n        rust_timer_event_production_fallbacks = 0\n        rust_timer_event_production_fires = 0\n        rust_timer_event_production_periodic_calls = 0\n        rust_timer_event_production_skips = 0\n        rust_timer_lfsr_output_batches = 0\n        rust_timer_lfsr_output_calls = 0\n        rust_timer_lfsr_output_due = 0\n        rust_timer_lfsr_output_executed = 0\n        rust_timer_lfsr_output_fallbacks = 0\n        rust_timer_lfsr_output_skips = 0\n        rust_timer_lfsr_output_writes = 0\n        rust_transition_batch_fallbacks = 0\n        rust_transition_batch_flushes = 0\n        rust_transition_batch_max_slots = 0\n        rust_transition_batch_slot_total = 0\n        rust_transition_breakpoint_fallbacks = 0\n        rust_transition_breakpoint_scans = 0\n        rust_transition_breakpoint_state_scans = 0\n        rust_transition_lazy_enqueues = 0\n        rust_transition_state_buffer_alloc_total = 0\n        rust_transition_state_buffer_reuse_calls = 0\n        rust_transition_state_production_calls = 0\n        rust_transition_state_production_fallbacks = 0\n        rust_transition_state_production_outputs = 0\n        static_branch_fastpath_fallbacks = 0\n        timer_absolute_checks = 0\n        timer_absolute_expirations = 0\n        timer_absolute_fires = 0\n        timer_array_sidecar_rebuilds = 0\n        timer_array_sidecar_scans = 0\n        timer_array_sidecar_updates = 0\n        timer_batch_due_calls = 0\n        timer_batch_due_events = 0\n        timer_batch_due_fallbacks = 0\n        timer_batch_due_fires = 0\n        timer_breakpoint_cache_hits = 0\n        timer_breakpoint_hits = 0\n        timer_breakpoint_scans = 1\n        timer_periodic_checks = 0\n        timer_periodic_fires = 0\n        timer_periodic_skips = 0\n        timer_reschedules = 0\n        timer_state_owned_checks = 0\n        timer_state_owned_fallbacks = 0\n        timer_state_owned_fast_skips = 0\n        timer_state_owned_fires = 0\n        timer_state_owned_target_reads = 0\n        timer_state_updates = 0\n        transition_breakpoint_active_scans = 4461\n        transition_breakpoint_inactive_skips = 1018\n        transition_breakpoint_scans = 4461\n        transition_calls = 5481\n        transition_evaluate_calls = 5479\n        transition_output_fastpath_calls = 5481\n        transition_set_target_calls = 5479\n        transition_unchanged_target_fastpath = 0\n\nMaximum value achieved for any signal of each quantity:\n    V: V(p) = 800 mV\n\nTran analysis time: CPU = 39.7 ms, elapsed = 39.7 ms.\nRunner timing counters:\n    derive_bus_signals_s = 0.000066 s\n    csv_write_s = 0.003485 s\nTrace counters:\n    required_trace_csv_signal_count = 3\n\nWriting CSV: /var/folders/tc/xljvs46x0xn64sknvbxjcz4w0000gn/T/v3_468_branch_declaration_voltage_probe_2l3axr8c/output/tran.csv (signals: n, out, p)\n\nevas completes with 0 errors, 0 warnings.\nTotal time: CPU = 0.1 s, elapsed = 0.1 s.\n\n",
+      "task_id": "v3_468_branch_declaration_voltage_probe",
+      "task_slug": "468-branch-declaration-voltage-probe",
+      "variant": null,
+      "wall_s": 0.392601
+    },
+    {
+      "case_id": "468-branch-declaration-voltage-probe:neg_001_force_zero",
+      "checker_task_id": "v3_468_branch_declaration_voltage_probe",
+      "expected_ok": false,
+      "failure_summary": "out@10ns=0.0000 expected=0.1000 tol=0.0350",
+      "kind": "negative",
+      "meets_expectation": true,
+      "notes": [
+        "returncode=0",
+        "evas_engine=python",
+        "trace_contract=row_required_set",
+        "out@10ns=0.0000 expected=0.1000 tol=0.0350"
+      ],
+      "scores": {
+        "dut_compile": 1.0,
+        "sim_correct": 0.0,
+        "tb_compile": 1.0,
+        "weighted_total": 0.6667
+      },
+      "status": "FAIL_SIM_CORRECTNESS",
+      "stdout_tail": "erpolation_batches = 0\n        rust_event_interpolation_cache_hits = 0\n        rust_event_interpolation_fallbacks = 0\n        rust_event_interpolation_nodes = 0\n        rust_event_linear_write_batches = 0\n        rust_event_linear_write_production_calls = 0\n        rust_event_linear_write_production_executed = 0\n        rust_event_linear_write_production_fallbacks = 0\n        rust_event_linear_write_shadow_checks = 0\n        rust_event_linear_write_shadow_errors = 0\n        rust_event_linear_write_shadow_matches = 0\n        rust_event_linear_write_shadow_mismatches = 0\n        rust_event_write_production_calls = 0\n        rust_event_write_production_executed = 0\n        rust_event_write_production_fallbacks = 0\n        rust_event_write_shadow_checks = 0\n        rust_event_write_shadow_errors = 0\n        rust_event_write_shadow_matches = 0\n        rust_event_write_shadow_mismatches = 0\n        rust_timer_breakpoint_fallbacks = 0\n        rust_timer_breakpoint_scans = 0\n        rust_timer_breakpoint_state_scans = 0\n        rust_timer_event_production_absolute_calls = 0\n        rust_timer_event_production_expirations = 0\n        rust_timer_event_production_fallbacks = 0\n        rust_timer_event_production_fires = 0\n        rust_timer_event_production_periodic_calls = 0\n        rust_timer_event_production_skips = 0\n        rust_timer_lfsr_output_batches = 0\n        rust_timer_lfsr_output_calls = 0\n        rust_timer_lfsr_output_due = 0\n        rust_timer_lfsr_output_executed = 0\n        rust_timer_lfsr_output_fallbacks = 0\n        rust_timer_lfsr_output_skips = 0\n        rust_timer_lfsr_output_writes = 0\n        rust_transition_batch_fallbacks = 0\n        rust_transition_batch_flushes = 0\n        rust_transition_batch_max_slots = 0\n        rust_transition_batch_slot_total = 0\n        rust_transition_breakpoint_fallbacks = 0\n        rust_transition_breakpoint_scans = 0\n        rust_transition_breakpoint_state_scans = 0\n        rust_transition_lazy_enqueues = 0\n        rust_transition_state_buffer_alloc_total = 0\n        rust_transition_state_buffer_reuse_calls = 0\n        rust_transition_state_production_calls = 0\n        rust_transition_state_production_fallbacks = 0\n        rust_transition_state_production_outputs = 0\n        static_branch_fastpath_fallbacks = 0\n        timer_absolute_checks = 0\n        timer_absolute_expirations = 0\n        timer_absolute_fires = 0\n        timer_array_sidecar_rebuilds = 0\n        timer_array_sidecar_scans = 0\n        timer_array_sidecar_updates = 0\n        timer_batch_due_calls = 0\n        timer_batch_due_events = 0\n        timer_batch_due_fallbacks = 0\n        timer_batch_due_fires = 0\n        timer_breakpoint_cache_hits = 0\n        timer_breakpoint_hits = 0\n        timer_breakpoint_scans = 1\n        timer_periodic_checks = 0\n        timer_periodic_fires = 0\n        timer_periodic_skips = 0\n        timer_reschedules = 0\n        timer_state_owned_checks = 0\n        timer_state_owned_fallbacks = 0\n        timer_state_owned_fast_skips = 0\n        timer_state_owned_fires = 0\n        timer_state_owned_target_reads = 0\n        timer_state_updates = 0\n        transition_breakpoint_active_scans = 0\n        transition_breakpoint_inactive_skips = 5602\n        transition_breakpoint_scans = 0\n        transition_calls = 5604\n        transition_evaluate_calls = 5602\n        transition_output_fastpath_calls = 5604\n        transition_set_target_calls = 5602\n        transition_unchanged_target_fastpath = 0\n\nMaximum value achieved for any signal of each quantity:\n    V: V(p) = 800 mV\n\nTran analysis time: CPU = 24.0 ms, elapsed = 24.0 ms.\nRunner timing counters:\n    derive_bus_signals_s = 0.000059 s\n    csv_write_s = 0.001939 s\nTrace counters:\n    required_trace_csv_signal_count = 3\n\nWriting CSV: /var/folders/tc/xljvs46x0xn64sknvbxjcz4w0000gn/T/v3_468_branch_declaration_voltage_probe_nsgf77yc/output/tran.csv (signals: n, out, p)\n\nevas completes with 0 errors, 0 warnings.\nTotal time: CPU = 0.0 s, elapsed = 0.0 s.\n\n",
+      "task_id": "v3_468_branch_declaration_voltage_probe",
+      "task_slug": "468-branch-declaration-voltage-probe",
+      "variant": "neg_001_force_zero",
+      "wall_s": 0.253188
+    },
+    {
+      "case_id": "468-branch-declaration-voltage-probe:neg_002_wrong_threshold",
+      "checker_task_id": "v3_468_branch_declaration_voltage_probe",
+      "expected_ok": false,
+      "failure_summary": "out@10ns=0.0000 expected=0.1000 tol=0.0350",
+      "kind": "negative",
+      "meets_expectation": true,
+      "notes": [
+        "returncode=0",
+        "evas_engine=python",
+        "trace_contract=row_required_set",
+        "out@10ns=0.0000 expected=0.1000 tol=0.0350"
+      ],
+      "scores": {
+        "dut_compile": 1.0,
+        "sim_correct": 0.0,
+        "tb_compile": 1.0,
+        "weighted_total": 0.6667
+      },
+      "status": "FAIL_SIM_CORRECTNESS",
+      "stdout_tail": "tion_batches = 0\n        rust_event_interpolation_cache_hits = 0\n        rust_event_interpolation_fallbacks = 0\n        rust_event_interpolation_nodes = 0\n        rust_event_linear_write_batches = 0\n        rust_event_linear_write_production_calls = 0\n        rust_event_linear_write_production_executed = 0\n        rust_event_linear_write_production_fallbacks = 0\n        rust_event_linear_write_shadow_checks = 0\n        rust_event_linear_write_shadow_errors = 0\n        rust_event_linear_write_shadow_matches = 0\n        rust_event_linear_write_shadow_mismatches = 0\n        rust_event_write_production_calls = 0\n        rust_event_write_production_executed = 0\n        rust_event_write_production_fallbacks = 0\n        rust_event_write_shadow_checks = 0\n        rust_event_write_shadow_errors = 0\n        rust_event_write_shadow_matches = 0\n        rust_event_write_shadow_mismatches = 0\n        rust_timer_breakpoint_fallbacks = 0\n        rust_timer_breakpoint_scans = 0\n        rust_timer_breakpoint_state_scans = 0\n        rust_timer_event_production_absolute_calls = 0\n        rust_timer_event_production_expirations = 0\n        rust_timer_event_production_fallbacks = 0\n        rust_timer_event_production_fires = 0\n        rust_timer_event_production_periodic_calls = 0\n        rust_timer_event_production_skips = 0\n        rust_timer_lfsr_output_batches = 0\n        rust_timer_lfsr_output_calls = 0\n        rust_timer_lfsr_output_due = 0\n        rust_timer_lfsr_output_executed = 0\n        rust_timer_lfsr_output_fallbacks = 0\n        rust_timer_lfsr_output_skips = 0\n        rust_timer_lfsr_output_writes = 0\n        rust_transition_batch_fallbacks = 0\n        rust_transition_batch_flushes = 0\n        rust_transition_batch_max_slots = 0\n        rust_transition_batch_slot_total = 0\n        rust_transition_breakpoint_fallbacks = 0\n        rust_transition_breakpoint_scans = 0\n        rust_transition_breakpoint_state_scans = 0\n        rust_transition_lazy_enqueues = 0\n        rust_transition_state_buffer_alloc_total = 0\n        rust_transition_state_buffer_reuse_calls = 0\n        rust_transition_state_production_calls = 0\n        rust_transition_state_production_fallbacks = 0\n        rust_transition_state_production_outputs = 0\n        static_branch_fastpath_fallbacks = 0\n        timer_absolute_checks = 0\n        timer_absolute_expirations = 0\n        timer_absolute_fires = 0\n        timer_array_sidecar_rebuilds = 0\n        timer_array_sidecar_scans = 0\n        timer_array_sidecar_updates = 0\n        timer_batch_due_calls = 0\n        timer_batch_due_events = 0\n        timer_batch_due_fallbacks = 0\n        timer_batch_due_fires = 0\n        timer_breakpoint_cache_hits = 0\n        timer_breakpoint_hits = 0\n        timer_breakpoint_scans = 1\n        timer_periodic_checks = 0\n        timer_periodic_fires = 0\n        timer_periodic_skips = 0\n        timer_reschedules = 0\n        timer_state_owned_checks = 0\n        timer_state_owned_fallbacks = 0\n        timer_state_owned_fast_skips = 0\n        timer_state_owned_fires = 0\n        timer_state_owned_target_reads = 0\n        timer_state_updates = 0\n        transition_breakpoint_active_scans = 396\n        transition_breakpoint_inactive_skips = 5171\n        transition_breakpoint_scans = 396\n        transition_calls = 5569\n        transition_evaluate_calls = 5567\n        transition_output_fastpath_calls = 5569\n        transition_set_target_calls = 5567\n        transition_unchanged_target_fastpath = 0\n\nMaximum value achieved for any signal of each quantity:\n    V: V(out) = 900 mV\n\nTran analysis time: CPU = 32.7 ms, elapsed = 32.7 ms.\nRunner timing counters:\n    derive_bus_signals_s = 0.000057 s\n    csv_write_s = 0.001990 s\nTrace counters:\n    required_trace_csv_signal_count = 3\n\nWriting CSV: /var/folders/tc/xljvs46x0xn64sknvbxjcz4w0000gn/T/v3_468_branch_declaration_voltage_probe_cflnr51f/output/tran.csv (signals: n, out, p)\n\nevas completes with 0 errors, 0 warnings.\nTotal time: CPU = 0.0 s, elapsed = 0.0 s.\n\n",
+      "task_id": "v3_468_branch_declaration_voltage_probe",
+      "task_slug": "468-branch-declaration-voltage-probe",
+      "variant": "neg_002_wrong_threshold",
+      "wall_s": 0.235704
+    },
+    {
+      "case_id": "468-branch-declaration-voltage-probe:neg_003_reset_bias",
+      "checker_task_id": "v3_468_branch_declaration_voltage_probe",
+      "expected_ok": false,
+      "failure_summary": "out@10ns=0.1500 expected=0.1000 tol=0.0350",
+      "kind": "negative",
+      "meets_expectation": true,
+      "notes": [
+        "returncode=0",
+        "evas_engine=python",
+        "trace_contract=row_required_set",
+        "out@10ns=0.1500 expected=0.1000 tol=0.0350"
+      ],
+      "scores": {
+        "dut_compile": 1.0,
+        "sim_correct": 0.0,
+        "tb_compile": 1.0,
+        "weighted_total": 0.6667
+      },
+      "status": "FAIL_SIM_CORRECTNESS",
+      "stdout_tail": "tion_batches = 0\n        rust_event_interpolation_cache_hits = 0\n        rust_event_interpolation_fallbacks = 0\n        rust_event_interpolation_nodes = 0\n        rust_event_linear_write_batches = 0\n        rust_event_linear_write_production_calls = 0\n        rust_event_linear_write_production_executed = 0\n        rust_event_linear_write_production_fallbacks = 0\n        rust_event_linear_write_shadow_checks = 0\n        rust_event_linear_write_shadow_errors = 0\n        rust_event_linear_write_shadow_matches = 0\n        rust_event_linear_write_shadow_mismatches = 0\n        rust_event_write_production_calls = 0\n        rust_event_write_production_executed = 0\n        rust_event_write_production_fallbacks = 0\n        rust_event_write_shadow_checks = 0\n        rust_event_write_shadow_errors = 0\n        rust_event_write_shadow_matches = 0\n        rust_event_write_shadow_mismatches = 0\n        rust_timer_breakpoint_fallbacks = 0\n        rust_timer_breakpoint_scans = 0\n        rust_timer_breakpoint_state_scans = 0\n        rust_timer_event_production_absolute_calls = 0\n        rust_timer_event_production_expirations = 0\n        rust_timer_event_production_fallbacks = 0\n        rust_timer_event_production_fires = 0\n        rust_timer_event_production_periodic_calls = 0\n        rust_timer_event_production_skips = 0\n        rust_timer_lfsr_output_batches = 0\n        rust_timer_lfsr_output_calls = 0\n        rust_timer_lfsr_output_due = 0\n        rust_timer_lfsr_output_executed = 0\n        rust_timer_lfsr_output_fallbacks = 0\n        rust_timer_lfsr_output_skips = 0\n        rust_timer_lfsr_output_writes = 0\n        rust_transition_batch_fallbacks = 0\n        rust_transition_batch_flushes = 0\n        rust_transition_batch_max_slots = 0\n        rust_transition_batch_slot_total = 0\n        rust_transition_breakpoint_fallbacks = 0\n        rust_transition_breakpoint_scans = 0\n        rust_transition_breakpoint_state_scans = 0\n        rust_transition_lazy_enqueues = 0\n        rust_transition_state_buffer_alloc_total = 0\n        rust_transition_state_buffer_reuse_calls = 0\n        rust_transition_state_production_calls = 0\n        rust_transition_state_production_fallbacks = 0\n        rust_transition_state_production_outputs = 0\n        static_branch_fastpath_fallbacks = 0\n        timer_absolute_checks = 0\n        timer_absolute_expirations = 0\n        timer_absolute_fires = 0\n        timer_array_sidecar_rebuilds = 0\n        timer_array_sidecar_scans = 0\n        timer_array_sidecar_updates = 0\n        timer_batch_due_calls = 0\n        timer_batch_due_events = 0\n        timer_batch_due_fallbacks = 0\n        timer_batch_due_fires = 0\n        timer_breakpoint_cache_hits = 0\n        timer_breakpoint_hits = 0\n        timer_breakpoint_scans = 1\n        timer_periodic_checks = 0\n        timer_periodic_fires = 0\n        timer_periodic_skips = 0\n        timer_reschedules = 0\n        timer_state_owned_checks = 0\n        timer_state_owned_fallbacks = 0\n        timer_state_owned_fast_skips = 0\n        timer_state_owned_fires = 0\n        timer_state_owned_target_reads = 0\n        timer_state_updates = 0\n        transition_breakpoint_active_scans = 4461\n        transition_breakpoint_inactive_skips = 1018\n        transition_breakpoint_scans = 4461\n        transition_calls = 5481\n        transition_evaluate_calls = 5479\n        transition_output_fastpath_calls = 5481\n        transition_set_target_calls = 5479\n        transition_unchanged_target_fastpath = 0\n\nMaximum value achieved for any signal of each quantity:\n    V: V(p) = 800 mV\n\nTran analysis time: CPU = 29.4 ms, elapsed = 29.4 ms.\nRunner timing counters:\n    derive_bus_signals_s = 0.000058 s\n    csv_write_s = 0.002006 s\nTrace counters:\n    required_trace_csv_signal_count = 3\n\nWriting CSV: /var/folders/tc/xljvs46x0xn64sknvbxjcz4w0000gn/T/v3_468_branch_declaration_voltage_probe_d5m1hg7q/output/tran.csv (signals: n, out, p)\n\nevas completes with 0 errors, 0 warnings.\nTotal time: CPU = 0.0 s, elapsed = 0.0 s.\n\n",
+      "task_id": "v3_468_branch_declaration_voltage_probe",
+      "task_slug": "468-branch-declaration-voltage-probe",
+      "variant": "neg_003_reset_bias",
+      "wall_s": 0.24268
+    },
+    {
+      "case_id": "468-branch-declaration-voltage-probe:neg_004_metric_offset",
+      "checker_task_id": "v3_468_branch_declaration_voltage_probe",
+      "expected_ok": false,
+      "failure_summary": "out@10ns=0.2250 expected=0.1000 tol=0.0350",
+      "kind": "negative",
+      "meets_expectation": true,
+      "notes": [
+        "returncode=0",
+        "evas_engine=python",
+        "trace_contract=row_required_set",
+        "out@10ns=0.2250 expected=0.1000 tol=0.0350"
+      ],
+      "scores": {
+        "dut_compile": 1.0,
+        "sim_correct": 0.0,
+        "tb_compile": 1.0,
+        "weighted_total": 0.6667
+      },
+      "status": "FAIL_SIM_CORRECTNESS",
+      "stdout_tail": "on_batches = 0\n        rust_event_interpolation_cache_hits = 0\n        rust_event_interpolation_fallbacks = 0\n        rust_event_interpolation_nodes = 0\n        rust_event_linear_write_batches = 0\n        rust_event_linear_write_production_calls = 0\n        rust_event_linear_write_production_executed = 0\n        rust_event_linear_write_production_fallbacks = 0\n        rust_event_linear_write_shadow_checks = 0\n        rust_event_linear_write_shadow_errors = 0\n        rust_event_linear_write_shadow_matches = 0\n        rust_event_linear_write_shadow_mismatches = 0\n        rust_event_write_production_calls = 0\n        rust_event_write_production_executed = 0\n        rust_event_write_production_fallbacks = 0\n        rust_event_write_shadow_checks = 0\n        rust_event_write_shadow_errors = 0\n        rust_event_write_shadow_matches = 0\n        rust_event_write_shadow_mismatches = 0\n        rust_timer_breakpoint_fallbacks = 0\n        rust_timer_breakpoint_scans = 0\n        rust_timer_breakpoint_state_scans = 0\n        rust_timer_event_production_absolute_calls = 0\n        rust_timer_event_production_expirations = 0\n        rust_timer_event_production_fallbacks = 0\n        rust_timer_event_production_fires = 0\n        rust_timer_event_production_periodic_calls = 0\n        rust_timer_event_production_skips = 0\n        rust_timer_lfsr_output_batches = 0\n        rust_timer_lfsr_output_calls = 0\n        rust_timer_lfsr_output_due = 0\n        rust_timer_lfsr_output_executed = 0\n        rust_timer_lfsr_output_fallbacks = 0\n        rust_timer_lfsr_output_skips = 0\n        rust_timer_lfsr_output_writes = 0\n        rust_transition_batch_fallbacks = 0\n        rust_transition_batch_flushes = 0\n        rust_transition_batch_max_slots = 0\n        rust_transition_batch_slot_total = 0\n        rust_transition_breakpoint_fallbacks = 0\n        rust_transition_breakpoint_scans = 0\n        rust_transition_breakpoint_state_scans = 0\n        rust_transition_lazy_enqueues = 0\n        rust_transition_state_buffer_alloc_total = 0\n        rust_transition_state_buffer_reuse_calls = 0\n        rust_transition_state_production_calls = 0\n        rust_transition_state_production_fallbacks = 0\n        rust_transition_state_production_outputs = 0\n        static_branch_fastpath_fallbacks = 0\n        timer_absolute_checks = 0\n        timer_absolute_expirations = 0\n        timer_absolute_fires = 0\n        timer_array_sidecar_rebuilds = 0\n        timer_array_sidecar_scans = 0\n        timer_array_sidecar_updates = 0\n        timer_batch_due_calls = 0\n        timer_batch_due_events = 0\n        timer_batch_due_fallbacks = 0\n        timer_batch_due_fires = 0\n        timer_breakpoint_cache_hits = 0\n        timer_breakpoint_hits = 0\n        timer_breakpoint_scans = 1\n        timer_periodic_checks = 0\n        timer_periodic_fires = 0\n        timer_periodic_skips = 0\n        timer_reschedules = 0\n        timer_state_owned_checks = 0\n        timer_state_owned_fallbacks = 0\n        timer_state_owned_fast_skips = 0\n        timer_state_owned_fires = 0\n        timer_state_owned_target_reads = 0\n        timer_state_updates = 0\n        transition_breakpoint_active_scans = 4461\n        transition_breakpoint_inactive_skips = 1018\n        transition_breakpoint_scans = 4461\n        transition_calls = 5481\n        transition_evaluate_calls = 5479\n        transition_output_fastpath_calls = 5481\n        transition_set_target_calls = 5479\n        transition_unchanged_target_fastpath = 0\n\nMaximum value achieved for any signal of each quantity:\n    V: V(out) = 825 mV\n\nTran analysis time: CPU = 29.3 ms, elapsed = 29.3 ms.\nRunner timing counters:\n    derive_bus_signals_s = 0.000062 s\n    csv_write_s = 0.002150 s\nTrace counters:\n    required_trace_csv_signal_count = 3\n\nWriting CSV: /var/folders/tc/xljvs46x0xn64sknvbxjcz4w0000gn/T/v3_468_branch_declaration_voltage_probe_m83ia_oq/output/tran.csv (signals: n, out, p)\n\nevas completes with 0 errors, 0 warnings.\nTotal time: CPU = 0.0 s, elapsed = 0.0 s.\n\n",
+      "task_id": "v3_468_branch_declaration_voltage_probe",
+      "task_slug": "468-branch-declaration-voltage-probe",
+      "variant": "neg_004_metric_offset",
+      "wall_s": 0.239644
+    },
+    {
+      "case_id": "468-branch-declaration-voltage-probe:neg_005_scale_output",
+      "checker_task_id": "v3_468_branch_declaration_voltage_probe",
+      "expected_ok": false,
+      "failure_summary": "out@10ns=0.0500 expected=0.1000 tol=0.0350",
+      "kind": "negative",
+      "meets_expectation": true,
+      "notes": [
+        "returncode=0",
+        "evas_engine=python",
+        "trace_contract=row_required_set",
+        "out@10ns=0.0500 expected=0.1000 tol=0.0350"
+      ],
+      "scores": {
+        "dut_compile": 1.0,
+        "sim_correct": 0.0,
+        "tb_compile": 1.0,
+        "weighted_total": 0.6667
+      },
+      "status": "FAIL_SIM_CORRECTNESS",
+      "stdout_tail": "tion_batches = 0\n        rust_event_interpolation_cache_hits = 0\n        rust_event_interpolation_fallbacks = 0\n        rust_event_interpolation_nodes = 0\n        rust_event_linear_write_batches = 0\n        rust_event_linear_write_production_calls = 0\n        rust_event_linear_write_production_executed = 0\n        rust_event_linear_write_production_fallbacks = 0\n        rust_event_linear_write_shadow_checks = 0\n        rust_event_linear_write_shadow_errors = 0\n        rust_event_linear_write_shadow_matches = 0\n        rust_event_linear_write_shadow_mismatches = 0\n        rust_event_write_production_calls = 0\n        rust_event_write_production_executed = 0\n        rust_event_write_production_fallbacks = 0\n        rust_event_write_shadow_checks = 0\n        rust_event_write_shadow_errors = 0\n        rust_event_write_shadow_matches = 0\n        rust_event_write_shadow_mismatches = 0\n        rust_timer_breakpoint_fallbacks = 0\n        rust_timer_breakpoint_scans = 0\n        rust_timer_breakpoint_state_scans = 0\n        rust_timer_event_production_absolute_calls = 0\n        rust_timer_event_production_expirations = 0\n        rust_timer_event_production_fallbacks = 0\n        rust_timer_event_production_fires = 0\n        rust_timer_event_production_periodic_calls = 0\n        rust_timer_event_production_skips = 0\n        rust_timer_lfsr_output_batches = 0\n        rust_timer_lfsr_output_calls = 0\n        rust_timer_lfsr_output_due = 0\n        rust_timer_lfsr_output_executed = 0\n        rust_timer_lfsr_output_fallbacks = 0\n        rust_timer_lfsr_output_skips = 0\n        rust_timer_lfsr_output_writes = 0\n        rust_transition_batch_fallbacks = 0\n        rust_transition_batch_flushes = 0\n        rust_transition_batch_max_slots = 0\n        rust_transition_batch_slot_total = 0\n        rust_transition_breakpoint_fallbacks = 0\n        rust_transition_breakpoint_scans = 0\n        rust_transition_breakpoint_state_scans = 0\n        rust_transition_lazy_enqueues = 0\n        rust_transition_state_buffer_alloc_total = 0\n        rust_transition_state_buffer_reuse_calls = 0\n        rust_transition_state_production_calls = 0\n        rust_transition_state_production_fallbacks = 0\n        rust_transition_state_production_outputs = 0\n        static_branch_fastpath_fallbacks = 0\n        timer_absolute_checks = 0\n        timer_absolute_expirations = 0\n        timer_absolute_fires = 0\n        timer_array_sidecar_rebuilds = 0\n        timer_array_sidecar_scans = 0\n        timer_array_sidecar_updates = 0\n        timer_batch_due_calls = 0\n        timer_batch_due_events = 0\n        timer_batch_due_fallbacks = 0\n        timer_batch_due_fires = 0\n        timer_breakpoint_cache_hits = 0\n        timer_breakpoint_hits = 0\n        timer_breakpoint_scans = 1\n        timer_periodic_checks = 0\n        timer_periodic_fires = 0\n        timer_periodic_skips = 0\n        timer_reschedules = 0\n        timer_state_owned_checks = 0\n        timer_state_owned_fallbacks = 0\n        timer_state_owned_fast_skips = 0\n        timer_state_owned_fires = 0\n        timer_state_owned_target_reads = 0\n        timer_state_updates = 0\n        transition_breakpoint_active_scans = 4461\n        transition_breakpoint_inactive_skips = 1018\n        transition_breakpoint_scans = 4461\n        transition_calls = 5481\n        transition_evaluate_calls = 5479\n        transition_output_fastpath_calls = 5481\n        transition_set_target_calls = 5479\n        transition_unchanged_target_fastpath = 0\n\nMaximum value achieved for any signal of each quantity:\n    V: V(p) = 800 mV\n\nTran analysis time: CPU = 29.2 ms, elapsed = 29.2 ms.\nRunner timing counters:\n    derive_bus_signals_s = 0.000058 s\n    csv_write_s = 0.002166 s\nTrace counters:\n    required_trace_csv_signal_count = 3\n\nWriting CSV: /var/folders/tc/xljvs46x0xn64sknvbxjcz4w0000gn/T/v3_468_branch_declaration_voltage_probe_s2f470do/output/tran.csv (signals: n, out, p)\n\nevas completes with 0 errors, 0 warnings.\nTotal time: CPU = 0.0 s, elapsed = 0.0 s.\n\n",
+      "task_id": "v3_468_branch_declaration_voltage_probe",
+      "task_slug": "468-branch-declaration-voltage-probe",
+      "variant": "neg_005_scale_output",
+      "wall_s": 0.23474
+    }
+  ],
+  "skipped_tasks": [],
+  "summary": {
+    "cases_total": 6,
+    "expectation_fail": 0,
+    "expectation_pass": 6,
+    "gold_fail": 0,
+    "gold_pass": 1,
+    "gold_total": 1,
+    "negative_accepted": 0,
+    "negative_rejected": 5,
+    "negative_total": 5,
+    "scope": "468-468",
+    "skipped_staged_tasks": 0,
+    "wall_s": 1.598798
+  }
+}

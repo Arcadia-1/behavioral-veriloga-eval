@@ -3,11 +3,11 @@ global 0
 
 ahdl_include "wreal_scale_offset.vams"
 
-Va (a 0) vsource dc=0.40 type=dc
-Vb (b 0) vsource dc=0.80 type=dc
-Vsel (sel 0) vsource type=pwl wave=[0 0.0 249n 0.0 250n 0.9 500n 0.9]
+Va (a 0) vsource type=pwl wave=[0 0.20 260n 0.20 261n 0.56 650n 0.56]
+Vb (b 0) vsource type=pwl wave=[0 0.70 360n 0.70 361n 0.30 650n 0.30]
+Vsel (sel 0) vsource type=pwl wave=[0 0.0 199n 0.0 200n 0.9 449n 0.9 450n 0.0 650n 0.0]
 
 XDUT (a b sel y) wreal_scale_offset
 
-tran tran stop=500n
+tran tran stop=650n
 save a b sel y

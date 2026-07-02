@@ -1,4 +1,14 @@
 simulator lang=spectre
 global 0
-tran tran stop=160n
-save vin clk mode rst out metric
+
+ahdl_include "current_contribution_conductance.va"
+ahdl_include "branch_current_monitor.va"
+
+Vp (p 0) vsource type=pwl wave=[0 0.00 20n 0.00 21n 0.50 60n 0.50 61n 0.20 100n 0.20 101n 0.80 140n 0.80 141n 0.05 180n 0.05]
+Vn (n 0) vsource type=pwl wave=[0 0.00 40n 0.00 41n 0.10 120n 0.10 121n 0.30 180n 0.30]
+
+XDUT (p n) current_contribution_conductance
+XMON (p n imon) branch_current_monitor
+
+tran tran stop=180n
+save p n imon

@@ -2,38 +2,43 @@
   "negative_variants": [
     {
       "id": "neg_001_force_zero",
-      "description": "Force output low after otherwise plausible computation.",
+      "description": "Task Stateful Threshold Update: forces the main output to zero, so coarse compilation passes but behavioral stimulus points fail.",
       "files": [
         "neg_001_force_zero/task_stateful_threshold_update.va"
-      ]
+      ],
+      "expected": "compile_but_fail_full_behavior"
     },
     {
       "id": "neg_002_wrong_threshold",
-      "description": "Use a shifted decision threshold that passes simple midscale smoke tests but fails boundary checks.",
+      "description": "Task Stateful Threshold Update: uses a shifted or inverted decision condition that can pass one mode but fails boundary cases.",
       "files": [
         "neg_002_wrong_threshold/task_stateful_threshold_update.va"
-      ]
+      ],
+      "expected": "compile_but_fail_full_behavior"
     },
     {
       "id": "neg_003_reset_bias",
-      "description": "Bias reset/state initialization so startup-sensitive tests fail.",
+      "description": "Task Stateful Threshold Update: mishandles reset or initialization, passing steady-state samples but failing startup or recovery checks.",
       "files": [
         "neg_003_reset_bias/task_stateful_threshold_update.va"
-      ]
+      ],
+      "expected": "compile_but_fail_full_behavior"
     },
     {
       "id": "neg_004_metric_offset",
-      "description": "Offset the metric output while leaving the main output mostly plausible.",
+      "description": "Task Stateful Threshold Update: keeps the main datapath plausible while reporting the wrong metric value.",
       "files": [
         "neg_004_metric_offset/task_stateful_threshold_update.va"
-      ]
+      ],
+      "expected": "compile_but_fail_full_behavior"
     },
     {
       "id": "neg_005_scale_output",
-      "description": "Scale the final output so coarse tests may pass but calibrated checks fail.",
+      "description": "Task Stateful Threshold Update: uses a shifted or inverted decision condition that can pass one mode but fails boundary cases.",
       "files": [
         "neg_005_scale_output/task_stateful_threshold_update.va"
-      ]
+      ],
+      "expected": "compile_but_fail_full_behavior"
     }
   ]
 }

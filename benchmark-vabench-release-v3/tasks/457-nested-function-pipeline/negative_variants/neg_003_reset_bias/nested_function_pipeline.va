@@ -10,6 +10,6 @@ function real f1;
     begin f1 = f2(x) + 1.0; end
 endfunction
 analog begin
-    V(out) <+ (V(rst) > 0.45 ? 0.25 : (f1(V(vin))));
+    V(out) <+ f1(V(vin)) + 0.25;
 end
 endmodule

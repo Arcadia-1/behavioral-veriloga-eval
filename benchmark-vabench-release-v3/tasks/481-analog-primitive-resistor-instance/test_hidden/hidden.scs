@@ -1,4 +1,11 @@
 simulator lang=spectre
 global 0
+
+ahdl_include "analog_primitive_resistor_instance.va"
+
+Vin (p 0) vsource type=pwl wave=[0 0.0 20n 0.0 21n 0.4 80n 0.4 81n -0.2 160n -0.2]
+
+XDUT (p 0) analog_primitive_resistor_instance
+
 tran tran stop=160n
-save vin clk mode rst out metric
+save p

@@ -1,5 +1,9 @@
 simulator lang=spectre
 global 0
-// Visible smoke skeleton. Evaluator supplies the candidate Verilog-A/AMS artifact.
+ahdl_include "../solution/specify_specparam_delay.vams"
+
+Va (a 0) vsource type=pulse val0=0 val1=1 period=20n delay=5n rise=100p fall=100p width=8n
+Xdut (a y) specify_specparam_delay
+
 tran tran stop=80n
-save vin clk mode rst out metric
+save a y

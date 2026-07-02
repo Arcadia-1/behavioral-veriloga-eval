@@ -5,7 +5,7 @@ module table_model_string_param_source (input electrical in, output electrical o
 parameter string tmdata = "gain_profile.tbl";
 real yv;
 analog begin
-    yv = $table_model(V(in), tmdata, "1L");
+    yv = $table_model(V(in) + 0.5, tmdata, "1L");
     V(out) <+ transition(yv, 0.0, 200p, 200p);
 end
 endmodule

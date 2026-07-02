@@ -5,3 +5,4 @@
 - Required syntax focus: `Use `ifndef, `elsif, and `undef to select a behavioral constant.`
 - EVAS status: `supported`
 - Boundary: behavioral voltage/digital modeling only; no `I(...)` current contribution.
+- Status: promoted to executable EVAS behavior candidate with gold and five negative variants verified.

@@ -9,9 +9,32 @@ module file_fopen_mode_selector (
     output electrical out,
     output electrical metric
 );
+parameter real vth = 0.45;
+parameter real vhi = 0.9;
 parameter real tr = 200p;
+real out_v;
+real metric_v;
+integer mode_hit_q;
+integer fd;
+string line_buf;
 analog begin
-    V(out) <+ transition(0.0, 0.0, tr, tr);
-    V(metric) <+ transition(0.0, 0.0, tr, tr);
+    @(initial_step) begin
+        out_v = 0.0;
+        metric_v = 0.0;
+        mode_hit_q = 0;
+        fd = $fopen("config_lines.txt", "r");
+        $fgets(line_buf, fd);
+        $fclose(fd);
+        // TODO: set mode_hit_q and metric_v from line_buf.
+    end
+    @(cross(V(clk) - vth, +1)) begin
+        if (V(rst) > vth) begin
+            out_v = 0.0;
+        end else begin
+            // TODO: gate threshold output by mode_hit_q.
+        end
+    end
+    V(out) <+ transition(out_v, 0.0, tr, tr);
+    V(metric) <+ transition(metric_v, 0.0, tr, tr);
 end
 endmodule

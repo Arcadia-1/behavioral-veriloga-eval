@@ -1,4 +1,11 @@
 simulator lang=spectre
 global 0
-tran tran stop=80n
-save vin clk mode rst out metric
+
+ahdl_include "cds_violation_threshold_assert.va"
+
+Vin (inp 0) vsource type=pwl wave=[0 0.20 20n 0.20 21n 0.75 60n 0.75 61n 1.20 100n 1.20]
+
+XDUT (inp out) cds_violation_threshold_assert
+
+tran tran stop=100n
+save inp out

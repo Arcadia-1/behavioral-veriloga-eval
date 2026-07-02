@@ -3,10 +3,10 @@ global 0
 
 ahdl_include "analysis_dependent_noise_enable.va"
 
-Vctrl (ctrl 0) vsource type=pwl wave=[0 0.2 99n 0.2 100n 0.6 199n 0.6 200n 0.3 299n 0.3 300n 0.8 420n 0.8]
-Vclk (clk 0) vsource type=pwl wave=[0 0.0 49n 0.0 50n 1.0 79n 1.0 80n 0.0 149n 0.0 150n 1.0 179n 1.0 180n 0.0 249n 0.0 250n 1.0 279n 1.0 280n 0.0 349n 0.0 350n 1.0 420n 1.0]
+Vctrl (ctrl 0) vsource type=pwl wave=[0 0.25 129n 0.25 130n 0.72 269n 0.72 270n 0.38 409n 0.38 410n 0.82 560n 0.82]
+Vclk (clk 0) vsource type=pwl wave=[0 0.0 59n 0.0 60n 1.0 89n 1.0 90n 0.0 169n 0.0 170n 1.0 199n 1.0 200n 0.0 309n 0.0 310n 1.0 339n 1.0 340n 0.0 449n 0.0 450n 1.0 479n 1.0 480n 0.0 529n 0.0 530n 1.0 560n 1.0]
 
 XDUT (ctrl clk out metric) analysis_dependent_noise_enable
 
-tran tran stop=420n
+tran tran stop=560n
 save ctrl clk out metric

@@ -3,12 +3,12 @@ global 0
 
 ahdl_include "task_dual_output_update.va"
 
-Vvin (vin 0) vsource type=pwl wave=[0 0.2 99n 0.2 100n 0.7 199n 0.7 200n 0.6 299n 0.6 300n -0.1 420n -0.1]
-Vclk (clk 0) vsource type=pwl wave=[0 0.0 49n 0.0 50n 1.0 79n 1.0 80n 0.0 149n 0.0 150n 1.0 179n 1.0 180n 0.0 249n 0.0 250n 1.0 279n 1.0 280n 0.0 349n 0.0 350n 1.0 420n 1.0]
-Vmode (mode 0) vsource type=pwl wave=[0 0.1 99n 0.1 100n -0.2 199n -0.2 200n 0.5 299n 0.5 300n 0.2 420n 0.2]
+Vvin (vin 0) vsource type=pwl wave=[0 -0.10 99n -0.10 100n 0.35 199n 0.35 200n 0.95 299n 0.95 300n 0.45 399n 0.45 400n 0.10 520n 0.10]
+Vclk (clk 0) vsource type=pwl wave=[0 0.0 49n 0.0 50n 1.0 79n 1.0 80n 0.0 149n 0.0 150n 1.0 179n 1.0 180n 0.0 249n 0.0 250n 1.0 279n 1.0 280n 0.0 349n 0.0 350n 1.0 379n 1.0 380n 0.0 449n 0.0 450n 1.0 520n 1.0]
+Vmode (mode 0) vsource type=pwl wave=[0 0.25 99n 0.25 100n 0.10 199n 0.10 200n -0.30 299n -0.30 300n 0.55 399n 0.55 400n -0.15 520n -0.15]
 Vrst (rst 0) vsource dc=0.0
 
 XDUT (vin clk mode rst out metric) task_dual_output_update
 
-tran tran stop=420n
+tran tran stop=520n
 save vin clk mode rst out metric

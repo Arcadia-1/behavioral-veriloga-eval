@@ -4,6 +4,6 @@
 module kcl_capacitor_ddt_current (inout electrical p, inout electrical n);
 parameter real c = 1p;
 analog begin
-    I(p, n) <+ c * ddt(V(p, n));
+    I(p, n) <+ 0.8 * c * ddt(V(p, n));
 end
 endmodule

@@ -7,35 +7,40 @@
       "files": [
         "neg_001_drive_out_zero/above_threshold_latch.va"
       ],
-      "expected": "compile_but_fail_full_behavior"
+      "expected": "compile_but_fail_full_behavior",
+      "description": "Above Threshold Latch: forces the main output to zero, so coarse compilation passes but behavioral stimulus points fail."
     },
     {
       "id": "neg_002_drive_metric_zero",
       "files": [
         "neg_002_drive_metric_zero/above_threshold_latch.va"
       ],
-      "expected": "compile_but_fail_full_behavior"
+      "expected": "compile_but_fail_full_behavior",
+      "description": "Above Threshold Latch: keeps the main datapath plausible while reporting the wrong metric value."
     },
     {
       "id": "neg_003_reset_polarity_wrong",
       "files": [
         "neg_003_reset_polarity_wrong/above_threshold_latch.va"
       ],
-      "expected": "compile_but_fail_full_behavior"
+      "expected": "compile_but_fail_full_behavior",
+      "description": "Above Threshold Latch: mishandles reset or initialization, passing steady-state samples but failing startup or recovery checks."
     },
     {
       "id": "neg_004_logic_threshold_shifted",
       "files": [
         "neg_004_logic_threshold_shifted/above_threshold_latch.va"
       ],
-      "expected": "compile_but_fail_full_behavior"
+      "expected": "compile_but_fail_full_behavior",
+      "description": "Above Threshold Latch: uses a shifted or inverted decision condition that can pass one mode but fails boundary cases."
     },
     {
       "id": "neg_005_output_scale_low",
       "files": [
         "neg_005_output_scale_low/above_threshold_latch.va"
       ],
-      "expected": "compile_but_fail_full_behavior"
+      "expected": "compile_but_fail_full_behavior",
+      "description": "Above Threshold Latch: uses a shifted or inverted decision condition that can pass one mode but fails boundary cases."
     }
   ]
 }

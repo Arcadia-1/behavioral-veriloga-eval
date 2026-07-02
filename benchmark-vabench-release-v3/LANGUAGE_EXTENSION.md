@@ -96,25 +96,25 @@ The common blocking issues are skeleton visible/hidden SCS decks without a
 candidate include, DUT instance, or stimulus source, plus syntax-only checker
 entries that do not yet prove hidden behavior or reject the negative variants.
 
-The same boundary is confirmed by local `evas-sim` 0.5.0 simulation using the
-Python engine. The PyPI 0.5.0 default `EVAS_ENGINE=evas2` path still requires a
-local `libevas_rust_core.so`, so this evidence intentionally pins the Python
-compatibility engine:
+The same boundary is confirmed by local EVAS simulation using the Python
+engine. The gold/negative verification script is layer-aware by default: it
+runs only tasks with a `sim_correct:` behavior contract and reports syntax,
+continuous-time, KCL, and AMS-staged tasks as skipped unless `--include-staged`
+is explicitly requested for diagnosis.
 
 ```bash
 PYTHONPATH=runners VAEVAS_DEFAULT_EVAS_ENGINE=python \
   VAEVAS_EVAS_PERSISTENT_WORKER=0 \
-  PATH="$PWD/.venv/bin:$PATH" \
-  .venv/bin/python scripts/run_v3_gold_negative_verification.py \
-  --start 301 --end 494 --gold-only --timeout 60 --jobs 16 \
-  --out results/v3-verification/gold_301_494_evas050_python.json
+  PATH="$PWD/.venv-evas/bin:$PATH" \
+  .venv-evas/bin/python scripts/run_v3_gold_negative_verification.py \
+  --start 301 --end 494 --timeout 120 --jobs 1 \
+  --out benchmark-vabench-release-v3/reports/verify_301_494_layered.json
 ```
 
-Result: `0/194` extension gold rows pass. Earlier negative sweeps showed all
-`970` negative rows are non-PASS, but that is not useful negative evidence
-because the corresponding gold rows also fail. These rows remain non-scored
-extension candidates until their testbenches instantiate the DUT and behavior
-checkers are implemented.
+Result: `153/153` behavior-contracted extension gold rows pass, `765/765`
+negative rows are rejected, and `41` staged language-extension rows are skipped.
+Those `41` rows remain non-scored candidates until the linked EVAS issues are
+implemented or the tasks are moved into a different certified layer.
 
 Current local EVAS compile status after this expansion:
 

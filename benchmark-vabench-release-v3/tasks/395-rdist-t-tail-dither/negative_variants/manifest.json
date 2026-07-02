@@ -2,38 +2,43 @@
   "negative_variants": [
     {
       "id": "neg_001_force_zero",
-      "description": "Force output low after otherwise plausible computation.",
+      "description": "Rdist T Tail Dither: forces the main output to zero, so coarse compilation passes but behavioral stimulus points fail.",
       "files": [
         "neg_001_force_zero/rdist_t_tail_dither.va"
-      ]
+      ],
+      "expected": "compile_but_fail_full_behavior"
     },
     {
       "id": "neg_002_wrong_threshold",
-      "description": "Use a shifted decision threshold that passes simple midscale smoke tests but fails boundary checks.",
+      "description": "Rdist T Tail Dither: uses a shifted or inverted decision condition that can pass one mode but fails boundary cases.",
       "files": [
         "neg_002_wrong_threshold/rdist_t_tail_dither.va"
-      ]
+      ],
+      "expected": "compile_but_fail_full_behavior"
     },
     {
       "id": "neg_003_reset_bias",
-      "description": "Bias reset/state initialization so startup-sensitive tests fail.",
+      "description": "Rdist T Tail Dither: mishandles reset or initialization, passing steady-state samples but failing startup or recovery checks.",
       "files": [
         "neg_003_reset_bias/rdist_t_tail_dither.va"
-      ]
+      ],
+      "expected": "compile_but_fail_full_behavior"
     },
     {
       "id": "neg_004_metric_offset",
-      "description": "Offset the metric output while leaving the main output mostly plausible.",
+      "description": "Rdist T Tail Dither: keeps the main datapath plausible while reporting the wrong metric value.",
       "files": [
         "neg_004_metric_offset/rdist_t_tail_dither.va"
-      ]
+      ],
+      "expected": "compile_but_fail_full_behavior"
     },
     {
       "id": "neg_005_scale_output",
-      "description": "Scale the final output so coarse tests may pass but calibrated checks fail.",
+      "description": "Rdist T Tail Dither: uses a wrong gain or scale factor, leaving shape plausible while calibrated checks fail.",
       "files": [
         "neg_005_scale_output/rdist_t_tail_dither.va"
-      ]
+      ],
+      "expected": "compile_but_fail_full_behavior"
     }
   ]
 }

@@ -1,4 +1,14 @@
 simulator lang=spectre
 global 0
-tran tran stop=80n
-save vin clk mode rst out metric
+
+ahdl_include "kcl_capacitor_ddt_current.va"
+ahdl_include "branch_current_monitor.va"
+
+Vin (p 0) vsource type=pwl wave=[0 0.0 20n 0.0 24n 0.4 60n 0.4 64n 0.2 100n 0.2]
+Vref (n 0) vsource type=pwl wave=[0 0.0 60n 0.0 64n 0.1 100n 0.1]
+
+XDUT (p n) kcl_capacitor_ddt_current c=1p
+XMON (p n imon) branch_current_monitor
+
+tran tran stop=100n maxstep=0.25n
+save p n imon

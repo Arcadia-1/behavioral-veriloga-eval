@@ -4,6 +4,6 @@
 module inherited_mfactor_parameter (input electrical in, output electrical out);
 (* inherited_mfactor *) parameter real m = 1.0;
 analog begin
-    V(out) <+ transition(m * V(in), 0.0, 200p, 200p);
+    V(out) <+ transition(m * (V(in) > 0.30 ? 0.8 : 0.0), 0.0, 200p, 200p);
 end
 endmodule

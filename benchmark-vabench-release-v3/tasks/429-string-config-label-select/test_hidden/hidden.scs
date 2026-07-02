@@ -1,5 +1,14 @@
 simulator lang=spectre
 global 0
-// Hidden behavior skeleton. Evaluator supplies the candidate Verilog-A artifact and stricter checks.
-tran tran stop=160n
+
+ahdl_include "string_config_label_select.va"
+
+Vvin (vin 0) vsource type=pwl wave=[0 0.20 149n 0.20 150n 0.82 249n 0.82 250n 0.35 349n 0.35 350n 0.68 450n 0.68]
+Vclk (clk 0) vsource type=pwl wave=[0 0.0 99n 0.0 100n 1.0 149n 1.0 150n 0.0 199n 0.0 200n 1.0 249n 1.0 250n 0.0 299n 0.0 300n 1.0 349n 1.0 350n 0.0 399n 0.0 400n 1.0 450n 1.0]
+Vmode (mode 0) vsource type=pwl wave=[0 1.0 149n 1.0 150n 0.0 249n 0.0 250n 1.0 450n 1.0]
+Vrst (rst 0) vsource type=pwl wave=[0 0.0 249n 0.0 250n 1.0 329n 1.0 330n 0.0 450n 0.0]
+
+XDUT (vin clk mode rst out metric) string_config_label_select
+
+tran tran stop=450n
 save vin clk mode rst out metric

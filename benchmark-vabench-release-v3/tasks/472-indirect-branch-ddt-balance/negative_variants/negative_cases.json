@@ -1,0 +1,39 @@
+{
+  "negative_cases": [
+    {
+      "id": "neg_001_force_zero",
+      "why_wrong": "Indirect Branch Ddt Balance: keeps the indirect ddt equation form but forces zero derivative.",
+      "files": [
+        "neg_001_force_zero/indirect_branch_ddt_balance.va"
+      ]
+    },
+    {
+      "id": "neg_002_wrong_threshold",
+      "why_wrong": "Indirect Branch Ddt Balance: integrates V(in) with a positive bias term, producing a plausible but offset trajectory.",
+      "files": [
+        "neg_002_wrong_threshold/indirect_branch_ddt_balance.va"
+      ]
+    },
+    {
+      "id": "neg_003_reset_bias",
+      "why_wrong": "Indirect Branch Ddt Balance: feeds back V(out) in the derivative equation, turning the required integral into a leaky response.",
+      "files": [
+        "neg_003_reset_bias/indirect_branch_ddt_balance.va"
+      ]
+    },
+    {
+      "id": "neg_004_metric_offset",
+      "why_wrong": "Indirect Branch Ddt Balance: integrates only half of V(in), preserving shape but failing calibrated samples.",
+      "files": [
+        "neg_004_metric_offset/indirect_branch_ddt_balance.va"
+      ]
+    },
+    {
+      "id": "neg_005_scale_output",
+      "why_wrong": "Indirect Branch Ddt Balance: subtracts a bias from the derivative before integration, producing a plausible but wrong trajectory.",
+      "files": [
+        "neg_005_scale_output/indirect_branch_ddt_balance.va"
+      ]
+    }
+  ]
+}

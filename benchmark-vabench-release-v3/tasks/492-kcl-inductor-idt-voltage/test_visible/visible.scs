@@ -1,4 +1,11 @@
 simulator lang=spectre
 global 0
+
+ahdl_include "kcl_inductor_idt_voltage.va"
+
+Istep (p 0) isource type=pwl wave=[0 0.0 20n 0.0 21n 1u 80n 1u]
+
+XDUT (p 0) kcl_inductor_idt_voltage l=1n
+
 tran tran stop=80n
-save vin clk mode rst out metric
+save p

@@ -1,5 +1,9 @@
 simulator lang=spectre
 global 0
-// Visible smoke skeleton. Evaluator supplies the candidate Verilog-A/AMS artifact.
+ahdl_include "../solution/connectrules_electrical_map.vams"
+
+Va (a 0) vsource type=pwl wave=[0n 0 10n 0.25 25n 0.65 55n 0.35]
+Xdut (a y) connectrules_electrical_map_bridge
+
 tran tran stop=80n
-save vin clk mode rst out metric
+save a y

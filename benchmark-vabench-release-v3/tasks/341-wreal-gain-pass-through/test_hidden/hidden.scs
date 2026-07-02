@@ -3,11 +3,11 @@ global 0
 
 ahdl_include "wreal_gain_pass_through.vams"
 
-Va (a 0) vsource dc=0.80 type=dc
-Vb (b 0) vsource dc=0.20 type=dc
-Vsel (sel 0) vsource type=pwl wave=[0 0.0 249n 0.0 250n 0.9 500n 0.9]
+Va (a 0) vsource type=pwl wave=[0 0.60 180n 0.60 181n 0.45 420n 0.45 421n 0.72 650n 0.72]
+Vb (b 0) vsource type=pwl wave=[0 0.10 300n 0.10 301n 0.32 650n 0.32]
+Vsel (sel 0) vsource type=pwl wave=[0 0.0 199n 0.0 200n 0.9 449n 0.9 450n 0.0 650n 0.0]
 
 XDUT (a b sel y) wreal_gain_pass_through
 
-tran tran stop=500n
+tran tran stop=650n
 save a b sel y

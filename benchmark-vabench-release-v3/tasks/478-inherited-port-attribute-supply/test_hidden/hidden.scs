@@ -1,4 +1,12 @@
 simulator lang=spectre
 global 0
+
+ahdl_include "inherited_port_attribute_supply.va"
+
+Vin (inp 0) vsource type=pwl wave=[0 0.00 20n 0.00 21n 0.22 60n 0.22 61n 0.52 100n 0.52 101n -0.18 160n -0.18]
+Vdd (vdd 0) vsource dc=1.2
+
+XDUT (out inp vdd 0) inherited_port_attribute_supply
+
 tran tran stop=160n
-save vin clk mode rst out metric
+save inp out vdd

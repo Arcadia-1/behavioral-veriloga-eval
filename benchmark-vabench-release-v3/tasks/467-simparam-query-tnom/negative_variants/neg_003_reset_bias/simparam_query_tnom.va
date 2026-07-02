@@ -27,8 +27,8 @@ analog begin
             metric_v = 0.0;
             count_q = 0;
         end else begin
-            out_v = (V(rst) > 0.45 ? 0.25 : ($simparam("tnom", 27.0) / 300.0));
-            metric_v = out_v;
+            out_v = $simparam("tnom", 27.0) / 300.0;
+            metric_v = out_v + 0.05;
             count_q = count_q + 1;
         end
     end

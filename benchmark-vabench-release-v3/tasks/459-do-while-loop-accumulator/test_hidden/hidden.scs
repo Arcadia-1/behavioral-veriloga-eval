@@ -1,4 +1,14 @@
 simulator lang=spectre
 global 0
+
+ahdl_include "do_while_loop_accumulator.va"
+
+Vvin (vin 0) vsource type=pwl wave=[0 0.8 20n 0.8 21n 0.2 160n 0.2]
+Vclk (clk 0) vsource type=pwl wave=[0 0.0 9n 0.0 10n 1.0 14n 1.0 15n 0.0 29n 0.0 30n 1.0 34n 1.0 35n 0.0 49n 0.0 50n 1.0 54n 1.0 55n 0.0 69n 0.0 70n 1.0 74n 1.0 75n 0.0 89n 0.0 90n 1.0 94n 1.0 95n 0.0 109n 0.0 110n 1.0 114n 1.0 115n 0.0 160n 0.0]
+Vmode (mode 0) vsource dc=0.0
+Vrst (rst 0) vsource type=pwl wave=[0 0.0 59n 0.0 60n 1.0 79n 1.0 80n 0.0 160n 0.0]
+
+XDUT (vin clk mode rst out metric) do_while_loop_accumulator
+
 tran tran stop=160n
 save vin clk mode rst out metric

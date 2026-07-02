@@ -8,5 +8,5 @@ module generate_genvar_replicated_stage(input a, output y);
             assign stage[i] = a;
         end
     endgenerate
-    assign y = (V(rst) > 0.45 ? 0.25 : (stage[0]));
+    assign y = (stage[0] + 0.075);
 endmodule

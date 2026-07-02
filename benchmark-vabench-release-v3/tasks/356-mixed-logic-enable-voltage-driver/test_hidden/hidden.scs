@@ -3,14 +3,14 @@ global 0
 
 ahdl_include "mixed_logic_enable_voltage_driver.vams"
 
-Vvin (vin 0) vsource type=pwl wave=[0 0.7 179n 0.7 180n 0.3 399n 0.3 400n 0.9 600n 0.9]
+Vvin (vin 0) vsource type=pwl wave=[0 0.55 149n 0.55 150n 0.25 329n 0.25 330n 0.82 549n 0.82 550n 0.40 760n 0.40]
 Vclk (clk 0) vsource dc=0.0
-Ven (en 0) vsource type=pwl wave=[0 1.0 249n 1.0 250n 0.0 449n 0.0 450n 1.0 600n 1.0]
+Ven (en 0) vsource type=pwl wave=[0 1.0 219n 1.0 220n 0.0 459n 0.0 460n 1.0 639n 1.0 640n 0.0 760n 0.0]
 Vsel (sel 0) vsource dc=0.0
 Va (a 0) vsource dc=0.25
 Vb (b 0) vsource dc=0.75
 
 XDUT (vin clk en sel a b vout) mixed_logic_enable_voltage_driver
 
-tran tran stop=600n
+tran tran stop=760n
 save vin clk en sel a b vout

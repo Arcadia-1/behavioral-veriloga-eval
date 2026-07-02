@@ -3,6 +3,6 @@
 
 module indirect_branch_ddt_balance (input electrical in, output electrical out);
 analog begin
-    V(out) : ddt(V(out)) == V(in);
+    V(out) : ddt(V(out)) == V(in) - V(out);
 end
 endmodule

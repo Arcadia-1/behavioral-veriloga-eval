@@ -3,8 +3,8 @@ global 0
 
 ahdl_include "idtmod_frequency_control.va"
 
-Vvin (vin 0) vsource type=pwl wave=[0 0.1 400n 0.1 401n 0.6 900n 0.6]
-Vmode (mode 0) vsource dc=0.9 type=dc
+Vvin (vin 0) vsource type=pwl wave=[0 0.25 299n 0.25 300n 0.55 599n 0.55 600n 0.15 900n 0.15]
+Vmode (mode 0) vsource type=pwl wave=[0 0.0 349n 0.0 350n 0.9 749n 0.9 750n 0.0 900n 0.0]
 Vrst (rst 0) vsource dc=0.0 type=dc
 Vclk (clk 0) vsource dc=0.0 type=dc
 

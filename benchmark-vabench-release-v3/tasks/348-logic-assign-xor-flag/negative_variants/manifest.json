@@ -7,35 +7,40 @@
       "files": [
         "neg_001_force_zero/logic_assign_xor_flag.vams"
       ],
-      "expected": "compile_but_fail_full_behavior_under_ams_simulator"
+      "expected": "compile_but_fail_full_behavior_under_ams_simulator",
+      "description": "Logic Assign Xor Flag: forces the main output to zero, so coarse compilation passes but behavioral stimulus points fail."
     },
     {
       "id": "neg_002_invert_select",
       "files": [
         "neg_002_invert_select/logic_assign_xor_flag.vams"
       ],
-      "expected": "compile_but_fail_full_behavior_under_ams_simulator"
+      "expected": "compile_but_fail_full_behavior_under_ams_simulator",
+      "description": "Logic Assign Xor Flag: uses a shifted or inverted decision condition that can pass one mode but fails boundary cases."
     },
     {
       "id": "neg_003_drop_reset",
       "files": [
         "neg_003_drop_reset/logic_assign_xor_flag.vams"
       ],
-      "expected": "compile_but_fail_full_behavior_under_ams_simulator"
+      "expected": "compile_but_fail_full_behavior_under_ams_simulator",
+      "description": "Logic Assign Xor Flag: mishandles reset or initialization, passing steady-state samples but failing startup or recovery checks."
     },
     {
       "id": "neg_004_wrong_edge",
       "files": [
         "neg_004_wrong_edge/logic_assign_xor_flag.vams"
       ],
-      "expected": "compile_but_fail_full_behavior_under_ams_simulator"
+      "expected": "compile_but_fail_full_behavior_under_ams_simulator",
+      "description": "Logic Assign Xor Flag: updates on the wrong edge or event, so simple static samples pass but timed checks fail."
     },
     {
       "id": "neg_005_scale_low",
       "files": [
         "neg_005_scale_low/logic_assign_xor_flag.vams"
       ],
-      "expected": "compile_but_fail_full_behavior_under_ams_simulator"
+      "expected": "compile_but_fail_full_behavior_under_ams_simulator",
+      "description": "Logic Assign Xor Flag: uses a wrong gain or scale factor, leaving shape plausible while calibrated checks fail."
     }
   ]
 }

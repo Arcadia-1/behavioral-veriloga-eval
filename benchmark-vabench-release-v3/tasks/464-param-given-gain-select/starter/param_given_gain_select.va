@@ -12,6 +12,7 @@ module param_given_gain_select (
 parameter real vth = 0.45;
 parameter real vhi = 0.9;
 parameter real tr = 200p;
+parameter real gain = 0.8;
 real out_v;
 real metric_v;
 integer count_q;

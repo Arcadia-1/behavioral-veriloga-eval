@@ -1,0 +1,9 @@
+`include "constants.vams"
+`include "disciplines.vams"
+
+module v3_child_threshold(input electrical vin, output electrical out);
+parameter real vth = 0.45;
+analog begin
+    V(out) <+ transition(V(vin) > vth ? 0.9 : 0.0, 0.0, 200p, 200p);
+end
+endmodule

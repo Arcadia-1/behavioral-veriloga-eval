@@ -4,4 +4,4 @@
 - Category: `verilogams_digital_mixed_semantics`
 - Required syntax focus: `Bridge wreal input into logic threshold behavior.`
 - Boundary: behavioral voltage/digital modeling only; no `I(...)` current contribution.
-- Status: language extension candidate pending full behavioral certification.
+- Status: promoted to executable EVAS behavior candidate with gold and five negative variants verified.

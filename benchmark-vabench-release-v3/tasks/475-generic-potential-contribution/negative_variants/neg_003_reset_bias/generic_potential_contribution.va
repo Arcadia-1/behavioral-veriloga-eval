@@ -3,6 +3,6 @@
 
 module generic_potential_contribution (input electrical in, output electrical out);
 analog begin
-    potential(out) <+ transition(V(in), 0.0, 200p, 200p);
+    potential(out) <+ transition(V(in) + 0.1, 0.0, 200p, 200p);
 end
 endmodule

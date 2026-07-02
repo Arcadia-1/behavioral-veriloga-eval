@@ -1,5 +1,10 @@
 simulator lang=spectre
 global 0
-// Hidden behavior skeleton. Evaluator supplies the candidate Verilog-A/AMS artifact and stricter checks.
-tran tran stop=160n
-save vin clk mode rst out metric
+
+ahdl_include "recursive_function_candidate.va"
+
+Vstim (stim 0) vsource dc=1.0
+XDUT (out) recursive_function_candidate depth=4
+
+tran tran stop=20n
+save stim out

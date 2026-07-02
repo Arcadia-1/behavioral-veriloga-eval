@@ -26,15 +26,13 @@ analog begin
     @(cross(V(clk) - vth, +1)) begin
         if (V(rst) > vth) begin
             out_v = 0.0;
-            metric_v = 0.0;
+            metric_v = 0.25;
             count_q = 0;
         end else begin
             out_v = V(vin) > vth ? vhi : 0.0;
             metric_v = count_q;
             $fstrobe(fd, "count=%0d out=%0.3f", count_q, out_v);
             count_q = count_q + 1;
-            out_v = (V(rst) > 0.45 ? 0.25 : (out_v));
-            metric_v = (V(rst) > 0.45 ? 0.25 : (metric_v));
         end
     end
     @(final_step) $fclose(fd);

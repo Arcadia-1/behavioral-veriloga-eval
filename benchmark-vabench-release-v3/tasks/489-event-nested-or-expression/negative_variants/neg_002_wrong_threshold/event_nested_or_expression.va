@@ -5,7 +5,7 @@ module event_nested_or_expression (input electrical a, input electrical b, outpu
 real q;
 analog begin
     @(initial_step) q = 0.0;
-    @(cross(V(a) - 0.55, +1) or above(V(b) - 0.55) or timer(10n, 20n)) begin
+    @(cross(V(a) - 1.10, +1) or above(V(b) - 1.10) or timer(10n, 20n)) begin
         q = q + 0.1;
         if (q > 0.9) q = 0.0;
     end

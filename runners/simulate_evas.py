@@ -3059,6 +3059,15 @@ _STREAMING_TRACE_REQUIREMENTS_BY_FUNC = {
 
 _CHECKER_TRACE_CONTRACT_CACHE: dict[str, frozenset[str]] = {}
 
+_TASKS_WITH_UNRELIABLE_SPARSE_TRACE = {
+    # EVAS can write these scalar vector-bit saves from the SCS deck, but the
+    # sparse EVAS_REQUIRED_TRACE_SIGNALS path drops some zero-valued packed-bus
+    # output bits. Use the benchmark harness save list so the staged diagnostic
+    # reports behavior, not trace-interface loss.
+    "v3_455_packed_logic_bus_slice",
+    "455-packed-logic-bus-slice",
+}
+
 
 def _trace_contracts_enabled() -> bool:
     return not _env_truthy("VAEVAS_DISABLE_REQUIRED_TRACE")
@@ -3143,13 +3152,17 @@ def _checker_fstring_range_values(node: ast.AST) -> set[str]:
         not isinstance(generator.iter, ast.Call)
         or not isinstance(generator.iter.func, ast.Name)
         or generator.iter.func.id != "range"
-        or len(generator.iter.args) != 1
-        or not isinstance(generator.iter.args[0], ast.Constant)
-        or not isinstance(generator.iter.args[0].value, int)
+        or len(generator.iter.args) not in {1, 2}
+        or not all(isinstance(arg, ast.Constant) and isinstance(arg.value, int) for arg in generator.iter.args)
     ):
         return set()
-    stop = generator.iter.args[0].value
-    if stop < 0 or stop > 256:
+    if len(generator.iter.args) == 1:
+        start = 0
+        stop = generator.iter.args[0].value
+    else:
+        start = generator.iter.args[0].value
+        stop = generator.iter.args[1].value
+    if start < 0 or stop < start or stop > 256:
         return set()
 
     elt = node.elt
@@ -3173,7 +3186,7 @@ def _checker_fstring_range_values(node: ast.AST) -> set[str]:
         return set()
 
     names: set[str] = set()
-    for idx in range(stop):
+    for idx in range(start, stop):
         text = "".join(str(idx) if part is None else part for part in parts).strip()
         if text:
             names.add(text)
@@ -3191,13 +3204,17 @@ def _checker_for_loop_fstring_values(tree: ast.AST) -> set[str]:
             not isinstance(node.iter, ast.Call)
             or not isinstance(node.iter.func, ast.Name)
             or node.iter.func.id != "range"
-            or len(node.iter.args) != 1
-            or not isinstance(node.iter.args[0], ast.Constant)
-            or not isinstance(node.iter.args[0].value, int)
+            or len(node.iter.args) not in {1, 2}
+            or not all(isinstance(arg, ast.Constant) and isinstance(arg.value, int) for arg in node.iter.args)
         ):
             continue
-        stop = node.iter.args[0].value
-        if stop < 0 or stop > 256:
+        if len(node.iter.args) == 1:
+            start = 0
+            stop = node.iter.args[0].value
+        else:
+            start = node.iter.args[0].value
+            stop = node.iter.args[1].value
+        if start < 0 or stop < start or stop > 256:
             continue
         for child in ast.walk(node):
             if not isinstance(child, ast.JoinedStr):
@@ -3219,7 +3236,7 @@ def _checker_for_loop_fstring_values(tree: ast.AST) -> set[str]:
                     break
             if not saw_loop_value or not parts:
                 continue
-            for idx in range(stop):
+            for idx in range(start, stop):
                 text = "".join(str(idx) if part is None else part for part in parts).strip()
                 if text:
                     names.add(text)
@@ -3397,6 +3414,8 @@ def _auto_row_checker_trace_contract(task_id: str) -> frozenset[str]:
 def required_trace_contract_kind_for_checker(task_id: str) -> str:
     if not _trace_contracts_enabled():
         return "disabled"
+    if task_id in _TASKS_WITH_UNRELIABLE_SPARSE_TRACE:
+        return "harness_save"
     checker = STREAMING_BEHAVIOR_CHECKS.get(task_id)
     if checker is not None and _STREAMING_TRACE_REQUIREMENTS_BY_FUNC.get(checker):
         return "streaming"
@@ -3408,6 +3427,8 @@ def required_trace_contract_kind_for_checker(task_id: str) -> str:
 def required_trace_signals_for_checker(task_id: str) -> frozenset[str]:
     """Return the checker-observable signal contract used for sparse EVAS traces."""
     if not _trace_contracts_enabled():
+        return frozenset()
+    if task_id in _TASKS_WITH_UNRELIABLE_SPARSE_TRACE:
         return frozenset()
     formal_utility_trace_signals = {
         "thermometer_to_binary_encoder_8b": frozenset({"time", "valid"})
@@ -6880,6 +6901,502 @@ def _va_lx_adc_bits(sample: float, *, vdd: float = 1.0) -> dict[str, int]:
     else:
         d1 = 0
     return {"d1": d1, "d2": d2, "d3": d3, "d4": d4}
+def _check_v3_wreal_assign_expression(
+    rows: list[dict[str, float]],
+    *,
+    expected_fn,
+    tol: float = 0.08,
+) -> tuple[bool, str]:
+    required = {"time", "a", "b", "sel", "y"}
+    if not rows or not required.issubset(rows[0]):
+        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
+        return False, "missing_columns=" + ",".join(missing)
+
+    stride = max(1, len(rows) // 80)
+    checked = 0
+    low_rows = 0
+    high_rows = 0
+    max_err = 0.0
+    for row in rows[::stride]:
+        sel = row["sel"]
+        if 0.20 < sel < 0.70:
+            continue
+        expected = expected_fn(row)
+        error = abs(row["y"] - expected)
+        max_err = max(max_err, error)
+        checked += 1
+        if sel <= 0.20:
+            low_rows += 1
+        if sel >= 0.70:
+            high_rows += 1
+        if error > tol:
+            return False, (
+                f"y@{row['time'] * 1e9:g}ns={row['y']:.4f} "
+                f"expected={expected:.4f} sel={sel:.4f} tol={tol:.4f}"
+            )
+
+    if low_rows < 3 or high_rows < 3:
+        return False, f"insufficient_select_coverage low={low_rows} high={high_rows}"
+    return True, f"checked={checked} low={low_rows} high={high_rows} max_err={max_err:.4f}"
+
+
+def _check_v3_logic_assign_expression(
+    rows: list[dict[str, float]],
+    *,
+    expected_fn,
+    tol: float = 0.08,
+) -> tuple[bool, str]:
+    required = {"time", "a", "b", "en", "y"}
+    if not rows or not required.issubset(rows[0]):
+        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
+        return False, "missing_columns=" + ",".join(missing)
+
+    stride = max(1, len(rows) // 80)
+    checked = 0
+    low_expected = 0
+    high_expected = 0
+    max_err = 0.0
+    for row in rows[::stride]:
+        a_bit = row["a"] > 0.45
+        b_bit = row["b"] > 0.45
+        en_bit = row["en"] > 0.45
+        expected = 1.0 if expected_fn(a_bit, b_bit, en_bit) else 0.0
+        error = abs(row["y"] - expected)
+        max_err = max(max_err, error)
+        checked += 1
+        if expected > 0.5:
+            high_expected += 1
+        else:
+            low_expected += 1
+        if error > tol:
+            return False, (
+                f"y@{row['time'] * 1e9:g}ns={row['y']:.4f} "
+                f"expected={expected:.4f} a={row['a']:.4f} b={row['b']:.4f} "
+                f"en={row['en']:.4f} tol={tol:.4f}"
+            )
+
+    if low_expected < 3 or high_expected < 3:
+        return False, f"insufficient_output_coverage low={low_expected} high={high_expected}"
+    return True, f"checked={checked} low={low_expected} high={high_expected} max_err={max_err:.4f}"
+
+
+def _check_v3_clocked_dff_expression(
+    rows: list[dict[str, float]],
+    *,
+    edge: str,
+    tol: float = 0.08,
+) -> tuple[bool, str]:
+    required = {"time", "clk", "rst", "d", "en", "q"}
+    if not rows or not required.issubset(rows[0]):
+        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
+        return False, "missing_columns=" + ",".join(missing)
+
+    q_expected = 0.0
+    checked = 0
+    edge_count = 0
+    high_count = 0
+    low_count = 0
+    max_err = 0.0
+    prev_clk = rows[0]["clk"]
+    logic_threshold = 1e-9
+    for row in rows[1:]:
+        clk = row["clk"]
+        is_edge = (
+            prev_clk <= logic_threshold < clk
+            if edge == "posedge"
+            else prev_clk > logic_threshold >= clk
+        )
+        if is_edge:
+            edge_count += 1
+            if row["rst"] > logic_threshold:
+                q_expected = 0.0
+            elif row["en"] > logic_threshold:
+                q_expected = 1.0 if row["d"] > logic_threshold else 0.0
+        error = abs(row["q"] - q_expected)
+        max_err = max(max_err, error)
+        checked += 1
+        if q_expected > 0.5:
+            high_count += 1
+        else:
+            low_count += 1
+        if error > tol:
+            return False, (
+                f"q@{row['time'] * 1e9:g}ns={row['q']:.4f} "
+                f"expected={q_expected:.4f} edge={edge} tol={tol:.4f}"
+            )
+        prev_clk = clk
+
+    if edge_count < 3:
+        return False, f"insufficient_clock_edges={edge_count}"
+    if low_count < 3 or high_count < 3:
+        return False, f"insufficient_q_coverage low={low_count} high={high_count}"
+    return True, f"checked={checked} edges={edge_count} low={low_count} high={high_count} max_err={max_err:.4f}"
+
+
+def _check_v3_clocked_counter_msb(
+    rows: list[dict[str, float]],
+    *,
+    tol: float = 0.08,
+) -> tuple[bool, str]:
+    required = {"time", "clk", "rst", "d", "en", "q"}
+    if not rows or not required.issubset(rows[0]):
+        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
+        return False, "missing_columns=" + ",".join(missing)
+
+    count = 0
+    checked = 0
+    edge_count = 0
+    high_count = 0
+    low_count = 0
+    max_err = 0.0
+    prev_clk = rows[0]["clk"]
+    logic_threshold = 0.45
+    for row in rows[1:]:
+        clk = row["clk"]
+        if prev_clk <= logic_threshold < clk:
+            edge_count += 1
+            if row["rst"] > logic_threshold:
+                count = 0
+            elif row["en"] > logic_threshold and row["d"] > logic_threshold:
+                count = (count + 1) & 0x3
+        q_expected = 1.0 if (count & 0x2) else 0.0
+        error = abs(row["q"] - q_expected)
+        max_err = max(max_err, error)
+        checked += 1
+        if q_expected > 0.5:
+            high_count += 1
+        else:
+            low_count += 1
+        if error > tol:
+            return False, (
+                f"q@{row['time'] * 1e9:g}ns={row['q']:.4f} "
+                f"expected={q_expected:.4f} count={count} tol={tol:.4f}"
+            )
+        prev_clk = clk
+
+    if edge_count < 4:
+        return False, f"insufficient_clock_edges={edge_count}"
+    if low_count < 3 or high_count < 3:
+        return False, f"insufficient_q_coverage low={low_count} high={high_count}"
+    return True, f"checked={checked} edges={edge_count} low={low_count} high={high_count} max_err={max_err:.4f}"
+
+
+def _check_v3_mixed_vout_expression(
+    rows: list[dict[str, float]],
+    *,
+    expected_fn,
+    required: set[str] | None = None,
+    tol: float = 0.08,
+) -> tuple[bool, str]:
+    required_columns = required or {"time", "vin", "en", "sel", "a", "b", "vout"}
+    if not rows or not required_columns.issubset(rows[0]):
+        missing = sorted(required_columns - set(rows[0].keys())) if rows else sorted(required_columns)
+        return False, "missing_columns=" + ",".join(missing)
+
+    stride = max(1, len(rows) // 100)
+    checked = 0
+    low_expected = 0
+    high_expected = 0
+    max_err = 0.0
+    for index in range(0, len(rows), stride):
+        row = rows[index]
+        expected = expected_fn(row)
+        window_start = max(0, index - 5)
+        window_end = min(len(rows), index + 6)
+        nearby_expected = [expected_fn(rows[near_index]) for near_index in range(window_start, window_end)]
+        if max(abs(expected - value) for value in nearby_expected) > 0.02:
+            continue
+        error = abs(row["vout"] - expected)
+        max_err = max(max_err, error)
+        checked += 1
+        if expected > 0.45:
+            high_expected += 1
+        else:
+            low_expected += 1
+        if error > tol:
+            return False, (
+                f"vout@{row['time'] * 1e9:g}ns={row['vout']:.4f} "
+                f"expected={expected:.4f} tol={tol:.4f}"
+            )
+    if low_expected < 3 or high_expected < 3:
+        return False, f"insufficient_vout_coverage low={low_expected} high={high_expected}"
+    return True, f"checked={checked} low={low_expected} high={high_expected} max_err={max_err:.4f}"
+
+
+def _check_v3_mixed_clocked_voltage_sampler(
+    rows: list[dict[str, float]],
+    *,
+    tol: float = 0.08,
+) -> tuple[bool, str]:
+    required = {"time", "vin", "clk", "en", "sel", "a", "b", "vout"}
+    if not rows or not required.issubset(rows[0]):
+        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
+        return False, "missing_columns=" + ",".join(missing)
+
+    sampled = False
+    prev_clk = rows[0]["clk"]
+    edge_count = 0
+    expected_values: list[float] = [0.0]
+    low_expected = 0
+    high_expected = 0
+    for row in rows[1:]:
+        clk = row["clk"]
+        if prev_clk <= 1e-9 < clk:
+            edge_count += 1
+            sampled = row["en"] > 1e-9
+        expected_values.append(row["vin"] if sampled else 0.0)
+        prev_clk = clk
+
+    checked = 0
+    max_err = 0.0
+    for index in range(1, len(rows), max(1, len(rows) // 100)):
+        row = rows[index]
+        expected = expected_values[index]
+        window_start = max(0, index - 5)
+        window_end = min(len(rows), index + 6)
+        if max(abs(expected - expected_values[near_index]) for near_index in range(window_start, window_end)) > 0.02:
+            continue
+        error = abs(row["vout"] - expected)
+        max_err = max(max_err, error)
+        checked += 1
+        if expected > 0.45:
+            high_expected += 1
+        else:
+            low_expected += 1
+        if error > tol:
+            return False, (
+                f"vout@{row['time'] * 1e9:g}ns={row['vout']:.4f} "
+                f"expected={expected:.4f} sampled={sampled} tol={tol:.4f}"
+            )
+
+    if edge_count < 3:
+        return False, f"insufficient_clock_edges={edge_count}"
+    if low_expected < 3 or high_expected < 3:
+        return False, f"insufficient_vout_coverage low={low_expected} high={high_expected}"
+    return True, f"checked={checked} edges={edge_count} low={low_expected} high={high_expected} max_err={max_err:.4f}"
+
+
+def _check_v3_clocked_metric_expression(
+    rows: list[dict[str, float]],
+    *,
+    metric_fn,
+    out_fn=None,
+    tol: float = 0.08,
+) -> tuple[bool, str]:
+    required = {"time", "ctrl", "clk", "out", "metric"}
+    if not rows or not required.issubset(rows[0]):
+        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
+        return False, "missing_columns=" + ",".join(missing)
+
+    metric_expected = 0.0
+    metric_values: list[float] = [metric_expected]
+    out_values: list[float] = [out_fn(rows[0]) if out_fn else rows[0]["out"]]
+    edge_count = 0
+    prev_clk = rows[0]["clk"]
+    for row in rows[1:]:
+        if prev_clk <= 0.45 < row["clk"]:
+            edge_count += 1
+            metric_expected = metric_fn(row, edge_count)
+        metric_values.append(metric_expected)
+        out_values.append(out_fn(row) if out_fn else row["out"])
+        prev_clk = row["clk"]
+
+    stride = max(1, len(rows) // 120)
+    checked_metric = 0
+    checked_out = 0
+    max_metric_err = 0.0
+    max_out_err = 0.0
+    for index in range(0, len(rows), stride):
+        metric_expected = metric_values[index]
+        metric_window = metric_values[max(0, index - 5) : min(len(rows), index + 6)]
+        if max(abs(metric_expected - value) for value in metric_window) <= 0.02:
+            metric_err = abs(rows[index]["metric"] - metric_expected)
+            max_metric_err = max(max_metric_err, metric_err)
+            checked_metric += 1
+            if metric_err > tol:
+                return False, (
+                    f"metric@{rows[index]['time'] * 1e9:g}ns={rows[index]['metric']:.4f} "
+                    f"expected={metric_expected:.4f} tol={tol:.4f}"
+                )
+        if out_fn is not None:
+            out_expected = out_values[index]
+            out_window = out_values[max(0, index - 5) : min(len(rows), index + 6)]
+            if max(abs(out_expected - value) for value in out_window) <= 0.02:
+                out_err = abs(rows[index]["out"] - out_expected)
+                max_out_err = max(max_out_err, out_err)
+                checked_out += 1
+                if out_err > tol:
+                    return False, (
+                        f"out@{rows[index]['time'] * 1e9:g}ns={rows[index]['out']:.4f} "
+                        f"expected={out_expected:.4f} tol={tol:.4f}"
+                    )
+
+    if edge_count < 3:
+        return False, f"insufficient_clock_edges={edge_count}"
+    if checked_metric < 8:
+        return False, f"insufficient_metric_samples={checked_metric}"
+    if out_fn is not None and checked_out < 8:
+        return False, f"insufficient_out_samples={checked_out}"
+    return (
+        True,
+        f"edges={edge_count} metric_samples={checked_metric} out_samples={checked_out} "
+        f"max_metric_err={max_metric_err:.4f} max_out_err={max_out_err:.4f}",
+    )
+
+
+def _check_v3_task_clocked_behavior(
+    rows: list[dict[str, float]],
+    *,
+    update_fn,
+    initial_state: dict[str, float | int],
+    tol: float = 0.08,
+) -> tuple[bool, str]:
+    required = {"time", "vin", "clk", "mode", "rst", "out", "metric"}
+    if not rows or not required.issubset(rows[0]):
+        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
+        return False, "missing_columns=" + ",".join(missing)
+
+    state = dict(initial_state)
+    out_expected = float(state.get("out", 0.0))
+    metric_expected = float(state.get("metric", 0.0))
+    out_values = [out_expected]
+    metric_values = [metric_expected]
+    edge_count = 0
+    prev_clk = rows[0]["clk"]
+    for row in rows[1:]:
+        if prev_clk <= 0.45 < row["clk"]:
+            edge_count += 1
+            out_expected, metric_expected = update_fn(state, row)
+        out_values.append(out_expected)
+        metric_values.append(metric_expected)
+        prev_clk = row["clk"]
+
+    stride = max(1, len(rows) // 120)
+    checked_out = 0
+    checked_metric = 0
+    observed_expected_out: list[float] = []
+    max_out_err = 0.0
+    max_metric_err = 0.0
+    for index in range(0, len(rows), stride):
+        out_expected = out_values[index]
+        metric_expected = metric_values[index]
+        window_start = max(0, index - 5)
+        window_end = min(len(rows), index + 6)
+
+        out_window = out_values[window_start:window_end]
+        if max(abs(out_expected - value) for value in out_window) <= 0.02:
+            out_err = abs(rows[index]["out"] - out_expected)
+            max_out_err = max(max_out_err, out_err)
+            checked_out += 1
+            observed_expected_out.append(out_expected)
+            if out_err > tol:
+                return False, (
+                    f"out@{rows[index]['time'] * 1e9:g}ns={rows[index]['out']:.4f} "
+                    f"expected={out_expected:.4f} tol={tol:.4f}"
+                )
+
+        metric_window = metric_values[window_start:window_end]
+        if max(abs(metric_expected - value) for value in metric_window) <= 0.02:
+            metric_err = abs(rows[index]["metric"] - metric_expected)
+            max_metric_err = max(max_metric_err, metric_err)
+            checked_metric += 1
+            if metric_err > tol:
+                return False, (
+                    f"metric@{rows[index]['time'] * 1e9:g}ns={rows[index]['metric']:.4f} "
+                    f"expected={metric_expected:.4f} tol={tol:.4f}"
+                )
+
+    if edge_count < 3:
+        return False, f"insufficient_clock_edges={edge_count}"
+    if checked_out < 8 or checked_metric < 8:
+        return False, f"insufficient_samples out={checked_out} metric={checked_metric}"
+    out_span = max(observed_expected_out) - min(observed_expected_out) if observed_expected_out else 0.0
+    if out_span < 0.12:
+        return False, f"insufficient_out_dynamic_range={out_span:.4f}"
+    return (
+        True,
+        f"edges={edge_count} out_samples={checked_out} metric_samples={checked_metric} "
+        f"out_span={out_span:.4f} max_out_err={max_out_err:.4f} max_metric_err={max_metric_err:.4f}",
+    )
+
+
+def _check_v3_expected_trace(
+    rows: list[dict[str, float]],
+    *,
+    required: set[str],
+    out_values: list[float],
+    metric_values: list[float],
+    change_times: list[float],
+    tol: float = 0.08,
+    min_samples: int = 8,
+    min_out_span: float = 0.12,
+) -> tuple[bool, str]:
+    if not rows or not required.issubset(rows[0]):
+        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
+        return False, "missing_columns=" + ",".join(missing)
+    if len(rows) != len(out_values) or len(rows) != len(metric_values) or len(rows) != len(change_times):
+        return False, "expected_trace_length_mismatch"
+
+    stride = max(1, len(rows) // 140)
+    checked_out = 0
+    checked_metric = 0
+    observed_out_expected: list[float] = []
+    max_out_err = 0.0
+    max_metric_err = 0.0
+    for index in range(0, len(rows), stride):
+        if rows[index]["time"] - change_times[index] < 0.30e-9:
+            continue
+        window_start = max(0, index - 5)
+        window_end = min(len(rows), index + 6)
+        out_expected = out_values[index]
+        metric_expected = metric_values[index]
+        if max(abs(out_expected - value) for value in out_values[window_start:window_end]) <= 0.02:
+            out_err = abs(rows[index]["out"] - out_expected)
+            max_out_err = max(max_out_err, out_err)
+            checked_out += 1
+            observed_out_expected.append(out_expected)
+            if out_err > tol:
+                return False, (
+                    f"out@{rows[index]['time'] * 1e9:g}ns={rows[index]['out']:.4f} "
+                    f"expected={out_expected:.4f} tol={tol:.4f}"
+                )
+        if max(abs(metric_expected - value) for value in metric_values[window_start:window_end]) <= 0.02:
+            metric_err = abs(rows[index]["metric"] - metric_expected)
+            max_metric_err = max(max_metric_err, metric_err)
+            checked_metric += 1
+            if metric_err > tol:
+                return False, (
+                    f"metric@{rows[index]['time'] * 1e9:g}ns={rows[index]['metric']:.4f} "
+                    f"expected={metric_expected:.4f} tol={tol:.4f}"
+                )
+    if checked_out < min_samples or checked_metric < min_samples:
+        return False, f"insufficient_samples out={checked_out} metric={checked_metric}"
+    out_span = max(observed_out_expected) - min(observed_out_expected) if observed_out_expected else 0.0
+    if out_span < min_out_span:
+        return False, f"insufficient_out_dynamic_range={out_span:.4f}"
+    return (
+        True,
+        f"out_samples={checked_out} metric_samples={checked_metric} "
+        f"out_span={out_span:.4f} max_out_err={max_out_err:.4f} max_metric_err={max_metric_err:.4f}",
+    )
+
+
+def _v3_integrated_mod_phase_values(
+    rows: list[dict[str, float]],
+    *,
+    freq_fn,
+    modulus: float,
+) -> list[float]:
+    phase = 0.0
+    phases = [phase]
+    for prev, row in zip(rows, rows[1:]):
+        dt = max(0.0, row["time"] - prev["time"])
+        if prev.get("rst", 0.0) <= 0.45 and row.get("rst", 0.0) <= 0.45:
+            f0 = freq_fn(prev)
+            f1 = freq_fn(row)
+            phase = (phase + 0.5 * (f0 + f1) * dt) % modulus
+        phases.append(phase)
+    return phases
 
 
 def _check_v3_function_sampled_map(
@@ -7416,28 +7933,23 @@ def check_v3_327_idtmod_wrapped_ramp_source(rows: list[dict[str, float]]) -> tup
     if not rows or not required.issubset(rows[0]):
         missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
         return False, "missing_columns=" + ",".join(missing)
-    return _sample_many(
+    phases = _v3_integrated_mod_phase_values(
         rows,
-        {
-            "out": [
-                (50.0, 0.0),
-                (200.0, 0.135),
-                (300.0, 0.270),
-                (500.0, 0.540),
-                (550.0, 0.6075),
-                (750.0, 0.8775),
-                (820.0, 0.054),
-            ],
-            "metric": [
-                (50.0, 0.0),
-                (300.0, 0.0),
-                (450.0, 0.0),
-                (550.0, 0.9),
-                (750.0, 0.9),
-                (820.0, 0.0),
-            ],
-        },
-        tol=0.08,
+        freq_fn=lambda row: 0.75e6 + 1.5e6 * row["vin"],
+        modulus=1.0,
+    )
+    out_values = [0.0 if row["rst"] > 0.45 else 0.9 * phase for row, phase in zip(rows, phases)]
+    metric_values = [
+        0.0 if row["rst"] > 0.45 else (0.9 if phase > row["mode"] else 0.0)
+        for row, phase in zip(rows, phases)
+    ]
+    return _check_v3_expected_trace(
+        rows,
+        required=required,
+        out_values=out_values,
+        metric_values=metric_values,
+        change_times=[-1e99] * len(rows),
+        tol=0.09,
     )
 
 
@@ -7446,26 +7958,23 @@ def check_v3_328_idtmod_frequency_control(rows: list[dict[str, float]]) -> tuple
     if not rows or not required.issubset(rows[0]):
         missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
         return False, "missing_columns=" + ",".join(missing)
-    return _sample_many(
+    phases = _v3_integrated_mod_phase_values(
         rows,
-        {
-            "out": [
-                (200.0, 0.126),
-                (400.0, 0.252),
-                (500.0, 0.405),
-                (650.0, 0.6345),
-                (720.0, 0.7416),
-                (850.0, 0.0405),
-            ],
-            "metric": [
-                (200.0, 0.0),
-                (500.0, 0.0),
-                (650.0, 0.0),
-                (720.0, 0.9),
-                (850.0, 0.0),
-            ],
-        },
-        tol=0.08,
+        freq_fn=lambda row: 0.5e6 + (2.0e6 if row["mode"] > 0.45 else 1.0e6) * row["vin"],
+        modulus=1.0,
+    )
+    out_values = [0.0 if row["rst"] > 0.45 else 0.9 * phase for row, phase in zip(rows, phases)]
+    metric_values = [
+        0.0 if row["rst"] > 0.45 else (0.9 if phase > 0.75 else 0.0)
+        for row, phase in zip(rows, phases)
+    ]
+    return _check_v3_expected_trace(
+        rows,
+        required=required,
+        out_values=out_values,
+        metric_values=metric_values,
+        change_times=[-1e99] * len(rows),
+        tol=0.09,
     )
 
 
@@ -7474,27 +7983,23 @@ def check_v3_329_idtmod_modulo_phase_marker(rows: list[dict[str, float]]) -> tup
     if not rows or not required.issubset(rows[0]):
         missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
         return False, "missing_columns=" + ",".join(missing)
-    return _sample_many(
+    phases = _v3_integrated_mod_phase_values(
         rows,
-        {
-            "out": [
-                (20.0, 0.054),
-                (100.0, 0.270),
-                (300.0, 0.810),
-                (350.0, 0.045),
-                (500.0, 0.450),
-                (680.0, 0.036),
-            ],
-            "metric": [
-                (20.0, 0.9),
-                (100.0, 0.0),
-                (300.0, 0.0),
-                (350.0, 0.9),
-                (500.0, 0.0),
-                (680.0, 0.9),
-            ],
-        },
-        tol=0.08,
+        freq_fn=lambda row: 0.5e6 + 0.5e6 * row["vin"],
+        modulus=0.25,
+    )
+    out_values = [0.0 if row["rst"] > 0.45 else 0.9 * phase / 0.25 for row, phase in zip(rows, phases)]
+    metric_values = [
+        0.0 if row["rst"] > 0.45 else (0.9 if phase < (0.05 if row["mode"] > 0.45 else 0.025) else 0.0)
+        for row, phase in zip(rows, phases)
+    ]
+    return _check_v3_expected_trace(
+        rows,
+        required=required,
+        out_values=out_values,
+        metric_values=metric_values,
+        change_times=[-1e99] * len(rows),
+        tol=0.09,
     )
 
 
@@ -7503,25 +8008,38 @@ def check_v3_330_idtmod_clock_phase_meter(rows: list[dict[str, float]]) -> tuple
     if not rows or not required.issubset(rows[0]):
         missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
         return False, "missing_columns=" + ",".join(missing)
-    return _sample_many(
+    phases = _v3_integrated_mod_phase_values(
         rows,
-        {
-            "out": [
-                (50.0, 0.0),
-                (110.0, 0.130),
-                (310.0, 0.391),
-                (510.0, 0.652),
-                (710.0, 0.013),
-            ],
-            "metric": [
-                (50.0, 0.0),
-                (110.0, 0.0),
-                (310.0, 0.0),
-                (510.0, 0.9),
-                (710.0, 0.0),
-            ],
-        },
-        tol=0.08,
+        freq_fn=lambda row: 1.25e6 + 0.5e6 * row["vin"],
+        modulus=1.0,
+    )
+    sample = 0.0
+    metric = 0.0
+    out_values: list[float] = []
+    metric_values: list[float] = []
+    change_times: list[float] = []
+    last_change = -1e99
+    prev_clk = rows[0]["clk"]
+    for row, phase in zip(rows, phases):
+        if prev_clk <= 0.45 < row["clk"]:
+            if row["rst"] > 0.45:
+                sample = 0.0
+                metric = 0.0
+            else:
+                sample = phase
+                metric = 0.9 if sample > row["mode"] else 0.0
+            last_change = row["time"]
+        out_values.append(0.9 * sample)
+        metric_values.append(metric)
+        change_times.append(last_change)
+        prev_clk = row["clk"]
+    return _check_v3_expected_trace(
+        rows,
+        required=required,
+        out_values=out_values,
+        metric_values=metric_values,
+        change_times=change_times,
+        tol=0.09,
     )
 
 
@@ -7530,26 +8048,43 @@ def check_v3_331_above_threshold_latch(rows: list[dict[str, float]]) -> tuple[bo
     if not rows or not required.issubset(rows[0]):
         missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
         return False, "missing_columns=" + ",".join(missing)
-    return _sample_many(
+    state = 0
+    last_t = -1.0
+    prev_t = -1.0
+    metric = 0.0
+    out_values: list[float] = []
+    metric_values: list[float] = []
+    change_times: list[float] = []
+    last_change = -1e99
+    prev_vin = rows[0]["vin"]
+    prev_rst = rows[0]["rst"]
+    for row in rows:
+        if prev_rst <= 0.45 < row["rst"]:
+            state = 0
+            last_t = -1.0
+            prev_t = -1.0
+            metric = 0.0
+            last_change = row["time"]
+        if prev_vin <= 0.45 < row["vin"]:
+            state = 1
+            prev_t = last_t
+            last_t = row["time"]
+            if prev_t > 0.0:
+                metric = 0.9 if last_t - prev_t < 250e-9 else 0.0
+            else:
+                metric = 0.0
+            last_change = row["time"]
+        out_values.append(0.9 if state else 0.0)
+        metric_values.append(metric)
+        change_times.append(last_change)
+        prev_vin = row["vin"]
+        prev_rst = row["rst"]
+    return _check_v3_expected_trace(
         rows,
-        {
-            "out": [
-                (50.0, 0.0),
-                (120.0, 0.9),
-                (220.0, 0.9),
-                (320.0, 0.9),
-                (460.0, 0.0),
-                (620.0, 0.9),
-            ],
-            "metric": [
-                (50.0, 0.0),
-                (120.0, 0.0),
-                (320.0, 0.9),
-                (460.0, 0.0),
-                (620.0, 0.0),
-            ],
-        },
-        tol=0.08,
+        required=required,
+        out_values=out_values,
+        metric_values=metric_values,
+        change_times=change_times,
     )
 
 
@@ -7558,25 +8093,44 @@ def check_v3_332_above_window_qualifier(rows: list[dict[str, float]]) -> tuple[b
     if not rows or not required.issubset(rows[0]):
         missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
         return False, "missing_columns=" + ",".join(missing)
-    return _sample_many(
+    state = 0
+    last_t = -1.0
+    prev_t = -1.0
+    metric = 0.0
+    out_values: list[float] = []
+    metric_values: list[float] = []
+    change_times: list[float] = []
+    last_change = -1e99
+    prev_vin = rows[0]["vin"]
+    prev_rst = rows[0]["rst"]
+    for row in rows:
+        if prev_rst <= 0.45 < row["rst"]:
+            state = 0
+            last_t = -1.0
+            prev_t = -1.0
+            metric = 0.0
+            last_change = row["time"]
+        if prev_vin <= 0.45 < row["vin"]:
+            state = 1
+            prev_t = last_t
+            last_t = row["time"]
+            if prev_t > 0.0:
+                period = last_t - prev_t
+                metric = 0.9 if 120e-9 <= period <= 260e-9 else 0.0
+            else:
+                metric = 0.0
+            last_change = row["time"]
+        out_values.append(0.9 if state else 0.0)
+        metric_values.append(metric)
+        change_times.append(last_change)
+        prev_vin = row["vin"]
+        prev_rst = row["rst"]
+    return _check_v3_expected_trace(
         rows,
-        {
-            "out": [
-                (50.0, 0.0),
-                (120.0, 0.9),
-                (220.0, 0.9),
-                (320.0, 0.9),
-                (460.0, 0.0),
-                (710.0, 0.9),
-            ],
-            "metric": [
-                (120.0, 0.0),
-                (320.0, 0.9),
-                (460.0, 0.0),
-                (710.0, 0.0),
-            ],
-        },
-        tol=0.08,
+        required=required,
+        out_values=out_values,
+        metric_values=metric_values,
+        change_times=change_times,
     )
 
 
@@ -7585,25 +8139,44 @@ def check_v3_333_last_crossing_period_meter(rows: list[dict[str, float]]) -> tup
     if not rows or not required.issubset(rows[0]):
         missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
         return False, "missing_columns=" + ",".join(missing)
-    return _sample_many(
+    last_t = -1.0
+    prev_t = -1.0
+    out = 0.0
+    metric = 0.0
+    out_values: list[float] = []
+    metric_values: list[float] = []
+    change_times: list[float] = []
+    last_change = -1e99
+    prev_vin = rows[0]["vin"]
+    prev_rst = rows[0]["rst"]
+    for row in rows:
+        if prev_rst <= 0.45 < row["rst"]:
+            last_t = -1.0
+            prev_t = -1.0
+            out = 0.0
+            metric = 0.0
+            last_change = row["time"]
+        if prev_vin <= 0.45 < row["vin"]:
+            prev_t = last_t
+            last_t = row["time"]
+            if prev_t > 0.0:
+                out = min(0.9, max(0.0, 0.9 * (last_t - prev_t) / 400e-9))
+                metric = 0.9
+            else:
+                out = 0.0
+                metric = 0.0
+            last_change = row["time"]
+        out_values.append(out)
+        metric_values.append(metric)
+        change_times.append(last_change)
+        prev_vin = row["vin"]
+        prev_rst = row["rst"]
+    return _check_v3_expected_trace(
         rows,
-        {
-            "out": [
-                (120.0, 0.0),
-                (320.0, 0.45),
-                (620.0, 0.675),
-                (760.0, 0.0),
-                (860.0, 0.0),
-            ],
-            "metric": [
-                (120.0, 0.0),
-                (320.0, 0.9),
-                (620.0, 0.9),
-                (760.0, 0.0),
-                (860.0, 0.0),
-            ],
-        },
-        tol=0.08,
+        required=required,
+        out_values=out_values,
+        metric_values=metric_values,
+        change_times=change_times,
     )
 
 
@@ -7612,29 +8185,46 @@ def check_v3_334_last_crossing_edge_age(rows: list[dict[str, float]]) -> tuple[b
     if not rows or not required.issubset(rows[0]):
         missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
         return False, "missing_columns=" + ",".join(missing)
-    return _sample_many(
+    state = 0
+    last_t = -1.0
+    out = 0.0
+    metric = 0.0
+    next_timer = 0.0
+    out_values: list[float] = []
+    metric_values: list[float] = []
+    change_times: list[float] = []
+    last_change = -1e99
+    prev_vin = rows[0]["vin"]
+    prev_rst = rows[0]["rst"]
+    for row in rows:
+        if prev_rst <= 0.45 < row["rst"]:
+            state = 0
+            last_t = -1.0
+            out = 0.0
+            metric = 0.0
+            last_change = row["time"]
+        if prev_vin <= 0.45 < row["vin"]:
+            state = 1
+            last_t = row["time"]
+            last_change = row["time"]
+        while row["time"] + 1e-15 >= next_timer:
+            if state:
+                age = next_timer - last_t
+                out = min(0.9, max(0.0, 0.9 * age / 300e-9))
+                metric = 0.9 if age <= 150e-9 else 0.0
+                last_change = next_timer
+            next_timer += 50e-9
+        out_values.append(out)
+        metric_values.append(metric)
+        change_times.append(last_change)
+        prev_vin = row["vin"]
+        prev_rst = row["rst"]
+    return _check_v3_expected_trace(
         rows,
-        {
-            "out": [
-                (50.0, 0.0),
-                (160.0, 0.15),
-                (260.0, 0.45),
-                (430.0, 0.9),
-                (560.0, 0.15),
-                (660.0, 0.45),
-                (730.0, 0.0),
-            ],
-            "metric": [
-                (50.0, 0.0),
-                (160.0, 0.9),
-                (260.0, 0.0),
-                (310.0, 0.0),
-                (560.0, 0.9),
-                (660.0, 0.0),
-                (730.0, 0.0),
-            ],
-        },
-        tol=0.08,
+        required=required,
+        out_values=out_values,
+        metric_values=metric_values,
+        change_times=change_times,
     )
 
 
@@ -7643,95 +8233,88 @@ def check_v3_335_above_resettable_peak_marker(rows: list[dict[str, float]]) -> t
     if not rows or not required.issubset(rows[0]):
         missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
         return False, "missing_columns=" + ",".join(missing)
-    return _sample_many(
+    state = 0
+    peak = 0.0
+    metric = 0.0
+    next_timer = 0.0
+    out_values: list[float] = []
+    metric_values: list[float] = []
+    change_times: list[float] = []
+    last_change = -1e99
+    prev_vin = rows[0]["vin"]
+    prev_rst = rows[0]["rst"]
+    for row in rows:
+        if prev_rst <= 0.45 < row["rst"]:
+            state = 0
+            peak = 0.0
+            metric = 0.0
+            last_change = row["time"]
+        if prev_vin <= 0.45 < row["vin"]:
+            state = 1
+            last_change = row["time"]
+        while row["time"] + 1e-15 >= next_timer:
+            if state:
+                peak = min(0.9, max(0.0, max(peak, row["vin"])))
+                metric = peak
+                last_change = next_timer
+            next_timer += 50e-9
+        out_values.append(0.9 if state else 0.0)
+        metric_values.append(metric)
+        change_times.append(last_change)
+        prev_vin = row["vin"]
+        prev_rst = row["rst"]
+    return _check_v3_expected_trace(
         rows,
-        {
-            "out": [
-                (50.0, 0.0),
-                (160.0, 0.9),
-                (360.0, 0.9),
-                (460.0, 0.0),
-                (660.0, 0.9),
-            ],
-            "metric": [
-                (50.0, 0.0),
-                (160.0, 0.5),
-                (360.0, 0.8),
-                (420.0, 0.8),
-                (460.0, 0.0),
-                (660.0, 0.6),
-            ],
-        },
-        tol=0.08,
+        required=required,
+        out_values=out_values,
+        metric_values=metric_values,
+        change_times=change_times,
     )
 
 
 def check_v3_336_directive_configurable_threshold(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    required = {"time", "vin", "clk", "mode", "rst", "out", "metric"}
-    if not rows or not required.issubset(rows[0]):
-        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
-        return False, "missing_columns=" + ",".join(missing)
-    return _sample_many(
+    def update(_state: dict[str, float | int], row: dict[str, float]) -> tuple[float, float]:
+        if row["rst"] > 0.45:
+            return 0.0, 0.0
+        eff_th = 0.5 if row["mode"] > 0.45 else 0.6
+        return (0.9 if row["vin"] > eff_th else 0.0), eff_th
+
+    return _check_v3_task_clocked_behavior(
         rows,
-        {
-            "out": [
-                (120.0, 0.0),
-                (320.0, 0.9),
-                (520.0, 0.0),
-            ],
-            "metric": [
-                (120.0, 0.60),
-                (320.0, 0.50),
-                (520.0, 0.0),
-            ],
-        },
-        tol=0.08,
+        update_fn=update,
+        initial_state={"out": 0.0, "metric": 0.0},
     )
 
 
 def check_v3_337_parameter_range_limited_gain(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    required = {"time", "vin", "clk", "mode", "rst", "out", "metric"}
-    if not rows or not required.issubset(rows[0]):
-        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
-        return False, "missing_columns=" + ",".join(missing)
-    return _sample_many(
+    def update(_state: dict[str, float | int], row: dict[str, float]) -> tuple[float, float]:
+        if row["rst"] > 0.45:
+            return 0.0, 0.0
+        effective = row["vin"] + (0.2 if row["mode"] > 0.45 else 0.0)
+        raw = 1.25 * effective
+        return min(0.9, max(0.0, raw)), raw
+
+    return _check_v3_task_clocked_behavior(
         rows,
-        {
-            "out": [
-                (120.0, 0.375),
-                (320.0, 0.9),
-                (520.0, 0.0),
-            ],
-            "metric": [
-                (120.0, 0.375),
-                (320.0, 0.9375),
-                (520.0, 0.0),
-            ],
-        },
-        tol=0.08,
+        update_fn=update,
+        initial_state={"out": 0.0, "metric": 0.0},
     )
 
 
 def check_v3_338_math_trig_envelope_detector(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    required = {"time", "vin", "clk", "mode", "rst", "out", "metric"}
-    if not rows or not required.issubset(rows[0]):
-        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
-        return False, "missing_columns=" + ",".join(missing)
-    return _sample_many(
+    def update(_state: dict[str, float | int], row: dict[str, float]) -> tuple[float, float]:
+        if row["rst"] > 0.45:
+            return 0.0, 0.0
+        phase = 2.0 * math.pi * row["vin"]
+        if row["mode"] > 0.45:
+            phase -= 0.5 * math.pi
+        out = min(0.9, max(0.0, 0.45 + 0.25 * math.sin(phase)))
+        return out, math.sqrt(abs(out))
+
+    return _check_v3_task_clocked_behavior(
         rows,
-        {
-            "out": [
-                (120.0, 0.70),
-                (320.0, 0.45),
-                (520.0, 0.0),
-            ],
-            "metric": [
-                (120.0, 0.8367),
-                (320.0, 0.6708),
-                (520.0, 0.0),
-            ],
-        },
-        tol=0.08,
+        update_fn=update,
+        initial_state={"out": 0.0, "metric": 0.0},
     )
 
 
@@ -7740,245 +8323,181 @@ def check_v3_339_random_seeded_dither_source(rows: list[dict[str, float]]) -> tu
     if not rows or not required.issubset(rows[0]):
         missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
         return False, "missing_columns=" + ",".join(missing)
-    return _sample_many(
-        rows,
-        {
-            "out": [
-                (120.0, 0.45),
-                (320.0, 0.60),
-                (520.0, 0.0),
-            ],
-            "metric": [
-                (120.0, 0.10),
-                (320.0, 0.40),
-                (520.0, 0.0),
-            ],
-        },
-        tol=0.08,
+    expected_out = 0.0
+    expected_metric_active = False
+    out_expected_values = [expected_out]
+    metric_active_values = [expected_metric_active]
+    edge_count = 0
+    prev_clk = rows[0]["clk"]
+    for row in rows[1:]:
+        if prev_clk <= 0.45 < row["clk"]:
+            edge_count += 1
+            if row["rst"] > 0.45:
+                expected_out = 0.0
+                expected_metric_active = False
+            else:
+                expected_out = row["vin"]
+                expected_metric_active = True
+        prev_clk = row["clk"]
+        out_expected_values.append(expected_out)
+        metric_active_values.append(expected_metric_active)
+
+    checked = 0
+    active_metric_values: list[float] = []
+    stride = max(1, len(rows) // 120)
+    for index in range(0, len(rows), stride):
+        expected_out = out_expected_values[index]
+        active = metric_active_values[index]
+        window_start = max(0, index - 5)
+        window_end = min(len(rows), index + 6)
+        if max(abs(expected_out - value) for value in out_expected_values[window_start:window_end]) > 0.02:
+            continue
+        if any(active != value for value in metric_active_values[window_start:window_end]):
+            continue
+        if not active:
+            if abs(rows[index]["out"]) > 0.08 or abs(rows[index]["metric"]) > 0.08:
+                return False, f"reset_window_nonzero@{rows[index]['time'] * 1e9:g}ns"
+        else:
+            out_lo = max(0.0, expected_out) - 0.02
+            out_hi = min(0.9, expected_out + 0.25) + 0.02
+            if not (out_lo <= rows[index]["out"] <= out_hi):
+                return False, (
+                    f"out@{rows[index]['time'] * 1e9:g}ns={rows[index]['out']:.4f} "
+                    f"expected_range=[{out_lo:.3f},{out_hi:.3f}]"
+                )
+            if not (0.0 <= rows[index]["metric"] <= 0.5):
+                return False, f"metric@{rows[index]['time'] * 1e9:g}ns={rows[index]['metric']:.4f} expected_dither_range"
+            if rows[index]["mode"] > 0.45 and rows[index]["metric"] < 0.095:
+                return False, f"mode_high_metric_too_low@{rows[index]['time'] * 1e9:g}ns={rows[index]['metric']:.4f}"
+            relation_err = abs((rows[index]["out"] - expected_out) - 0.5 * rows[index]["metric"])
+            if relation_err > 0.04:
+                return False, (
+                    f"dither_relation_err@{rows[index]['time'] * 1e9:g}ns={relation_err:.4f} "
+                    f"out={rows[index]['out']:.4f} vin={expected_out:.4f} metric={rows[index]['metric']:.4f}"
+                )
+            active_metric_values.append(rows[index]["metric"])
+        checked += 1
+    if edge_count < 3:
+        return False, f"insufficient_clock_edges={edge_count}"
+    if checked < 8:
+        return False, f"insufficient_samples={checked}"
+    if active_metric_values and max(active_metric_values) - min(active_metric_values) < 0.05:
+        return False, "insufficient_metric_dynamic_range"
+    return (
+        True,
+        f"edges={edge_count} samples={checked} "
+        f"metric_span={(max(active_metric_values) - min(active_metric_values)) if active_metric_values else 0.0:.4f}",
     )
 
 
 def check_v3_340_bound_step_clock_guard(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    required = {"time", "vin", "clk", "mode", "rst", "out", "metric"}
-    if not rows or not required.issubset(rows[0]):
-        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
-        return False, "missing_columns=" + ",".join(missing)
-    return _sample_many(
+    def update(state: dict[str, float | int], row: dict[str, float]) -> tuple[float, float]:
+        if row["rst"] > 0.45:
+            state["out"] = 0.0
+            return 0.0, 0.0
+        if row["mode"] > 0.45:
+            out = min(0.9, max(0.0, row["vin"]))
+            state["out"] = out
+            return out, 0.8
+        return float(state.get("out", 0.0)), 0.2
+
+    return _check_v3_task_clocked_behavior(
         rows,
-        {
-            "out": [
-                (120.0, 0.0),
-                (320.0, 0.75),
-                (520.0, 0.0),
-            ],
-            "metric": [
-                (120.0, 0.2),
-                (320.0, 0.8),
-                (520.0, 0.0),
-            ],
-        },
-        tol=0.08,
+        update_fn=update,
+        initial_state={"out": 0.0, "metric": 0.0},
     )
 
 
 def check_v3_341_wreal_gain_pass_through(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    required = {"time", "a", "b", "sel", "y"}
-    if not rows or not required.issubset(rows[0]):
-        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
-        return False, "missing_columns=" + ",".join(missing)
-    return _sample_many(
+    return _check_v3_wreal_assign_expression(
         rows,
-        {
-            "y": [
-                (120.0, 0.15),
-                (320.0, 0.70),
-            ],
-        },
-        tol=0.08,
+        expected_fn=lambda row: (
+            0.75 * row["a"] + 0.1 if row["sel"] > 0.45 else 0.75 * row["b"]
+        ),
     )
 
 
 def check_v3_342_wreal_two_input_summer(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    required = {"time", "a", "b", "sel", "y"}
-    if not rows or not required.issubset(rows[0]):
-        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
-        return False, "missing_columns=" + ",".join(missing)
-    return _sample_many(
+    return _check_v3_wreal_assign_expression(
         rows,
-        {
-            "y": [
-                (120.0, 0.60),
-                (320.0, 0.70),
-            ],
-        },
-        tol=0.08,
+        expected_fn=lambda row: row["a"]
+        + row["b"]
+        + (0.1 if row["sel"] > 0.45 else 0.0),
     )
 
 
 def check_v3_343_wreal_threshold_flag(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    required = {"time", "a", "b", "sel", "y"}
-    if not rows or not required.issubset(rows[0]):
-        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
-        return False, "missing_columns=" + ",".join(missing)
-    return _sample_many(
+    return _check_v3_wreal_assign_expression(
         rows,
-        {
-            "y": [
-                (120.0, 0.0),
-                (320.0, 0.9),
-            ],
-        },
-        tol=0.08,
+        expected_fn=lambda row: (
+            0.9 if ((row["a"] + (0.1 if row["sel"] > 0.45 else 0.0)) > 0.45) else 0.0
+        ),
     )
 
 
 def check_v3_344_wreal_clamped_mux(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    required = {"time", "a", "b", "sel", "y"}
-    if not rows or not required.issubset(rows[0]):
-        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
-        return False, "missing_columns=" + ",".join(missing)
-    return _sample_many(
+    return _check_v3_wreal_assign_expression(
         rows,
-        {
-            "y": [
-                (120.0, 0.0),
-                (320.0, 0.9),
-            ],
-        },
-        tol=0.08,
+        expected_fn=lambda row: min(
+            0.9,
+            max(0.0, row["a"] if row["sel"] > 0.45 else row["b"]),
+        ),
     )
 
 
 def check_v3_345_wreal_scale_offset(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    required = {"time", "a", "b", "sel", "y"}
-    if not rows or not required.issubset(rows[0]):
-        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
-        return False, "missing_columns=" + ",".join(missing)
-    return _sample_many(
+    return _check_v3_wreal_assign_expression(
         rows,
-        {
-            "y": [
-                (120.0, 0.40),
-                (320.0, 0.50),
-            ],
-        },
-        tol=0.08,
+        expected_fn=lambda row: (
+            0.75 * row["b"] - 0.1 if row["sel"] > 0.45 else 0.75 * row["a"] + 0.1
+        ),
     )
 
 
 def check_v3_346_logic_assign_inverter(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    required = {"time", "a", "b", "en", "y"}
-    if not rows or not required.issubset(rows[0]):
-        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
-        return False, "missing_columns=" + ",".join(missing)
-    return _sample_many(
+    return _check_v3_logic_assign_expression(
         rows,
-        {
-            "y": [
-                (120.0, 1.0),
-                (320.0, 0.0),
-                (420.0, 1.0),
-            ],
-        },
-        tol=0.08,
+        expected_fn=lambda a_bit, b_bit, en_bit: (not a_bit) if en_bit else b_bit,
     )
 
 
 def check_v3_347_logic_assign_and_or(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    required = {"time", "a", "b", "en", "y"}
-    if not rows or not required.issubset(rows[0]):
-        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
-        return False, "missing_columns=" + ",".join(missing)
-    return _sample_many(
+    return _check_v3_logic_assign_expression(
         rows,
-        {
-            "y": [
-                (120.0, 0.0),
-                (260.0, 1.0),
-                (420.0, 1.0),
-            ],
-        },
-        tol=0.08,
+        expected_fn=lambda a_bit, b_bit, en_bit: (a_bit and b_bit) or en_bit,
     )
 
 
 def check_v3_348_logic_assign_xor_flag(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    required = {"time", "a", "b", "en", "y"}
-    if not rows or not required.issubset(rows[0]):
-        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
-        return False, "missing_columns=" + ",".join(missing)
-    return _sample_many(
+    return _check_v3_logic_assign_expression(
         rows,
-        {
-            "y": [
-                (120.0, 1.0),
-                (260.0, 0.0),
-                (420.0, 0.0),
-            ],
-        },
-        tol=0.08,
+        expected_fn=lambda a_bit, b_bit, en_bit: (a_bit ^ b_bit) if en_bit else False,
     )
 
 
 def check_v3_349_logic_assign_priority_mux(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    required = {"time", "a", "b", "en", "y"}
-    if not rows or not required.issubset(rows[0]):
-        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
-        return False, "missing_columns=" + ",".join(missing)
-    return _sample_many(
+    return _check_v3_logic_assign_expression(
         rows,
-        {
-            "y": [
-                (120.0, 1.0),
-                (260.0, 1.0),
-                (420.0, 0.0),
-            ],
-        },
-        tol=0.08,
+        expected_fn=lambda a_bit, b_bit, en_bit: a_bit if en_bit else b_bit,
     )
 
 
 def check_v3_350_logic_assign_reduction(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    required = {"time", "a", "b", "en", "y"}
-    if not rows or not required.issubset(rows[0]):
-        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
-        return False, "missing_columns=" + ",".join(missing)
-    return _sample_many(
+    return _check_v3_logic_assign_expression(
         rows,
-        {
-            "y": [
-                (100.0, 1.0),
-                (220.0, 0.0),
-                (340.0, 0.0),
-                (460.0, 0.0),
-            ],
-        },
-        tol=0.08,
+        expected_fn=lambda a_bit, b_bit, en_bit: a_bit and b_bit and en_bit,
     )
 
 
 def check_v3_351_always_posedged_dff(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    required = {"time", "clk", "rst", "d", "en", "q"}
-    if not rows or not required.issubset(rows[0]):
-        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
-        return False, "missing_columns=" + ",".join(missing)
-    return _sample_many(
-        rows,
-        {
-            "q": [
-                (70.0, 0.0),
-                (130.0, 0.0),
-                (180.0, 1.0),
-                (280.0, 1.0),
-                (380.0, 0.0),
-                (480.0, 1.0),
-            ],
-        },
-        tol=0.08,
-    )
+    return _check_v3_clocked_dff_expression(rows, edge="posedge")
 
 
 def check_v3_352_always_negedge_sampler(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    return _check_v3_clocked_dff_expression(rows, edge="negedge")
+
+
+def check_v3_353_always_resettable_toggle(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "clk", "rst", "d", "en", "q"}
     if not rows or not required.issubset(rows[0]):
         missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
@@ -7987,12 +8506,9 @@ def check_v3_352_always_negedge_sampler(rows: list[dict[str, float]]) -> tuple[b
         rows,
         {
             "q": [
-                (70.0, 0.0),
-                (130.0, 0.0),
-                (180.0, 1.0),
-                (280.0, 1.0),
-                (380.0, 0.0),
-                (480.0, 1.0),
+                (50.0, 1.0),
+                (150.0, 0.0),
+                (190.0, 0.0),
             ],
         },
         tol=0.08,
@@ -8000,97 +8516,124 @@ def check_v3_352_always_negedge_sampler(rows: list[dict[str, float]]) -> tuple[b
 
 
 def check_v3_354_always_counter_two_bit(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    required = {"time", "clk", "rst", "d", "en", "q"}
-    if not rows or not required.issubset(rows[0]):
-        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
-        return False, "missing_columns=" + ",".join(missing)
-    return _sample_many(
-        rows,
-        {
-            "q": [
-                (80.0, 0.0),
-                (180.0, 0.0),
-                (280.0, 1.0),
-                (380.0, 1.0),
-                (480.0, 1.0),
-                (580.0, 1.0),
-                (680.0, 0.0),
-            ],
-        },
-        tol=0.08,
-    )
+    return _check_v3_clocked_counter_msb(rows)
 
 
 def check_v3_355_always_enable_hold(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    required = {"time", "clk", "rst", "d", "en", "q"}
-    if not rows or not required.issubset(rows[0]):
-        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
-        return False, "missing_columns=" + ",".join(missing)
-    return _sample_many(
-        rows,
-        {
-            "q": [
-                (80.0, 0.0),
-                (130.0, 0.0),
-                (180.0, 1.0),
-                (280.0, 1.0),
-                (380.0, 0.0),
-                (480.0, 0.0),
-                (580.0, 1.0),
-            ],
-        },
-        tol=0.08,
-    )
+    return _check_v3_clocked_dff_expression(rows, edge="posedge")
 
 
 def check_v3_356_mixed_logic_enable_voltage_driver(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    required = {"time", "vin", "en", "sel", "a", "b", "vout"}
-    if not rows or not required.issubset(rows[0]):
-        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
-        return False, "missing_columns=" + ",".join(missing)
-    return _sample_many(
+    return _check_v3_mixed_vout_expression(
         rows,
-        {
-            "vout": [
-                (120.0, 0.7),
-                (220.0, 0.3),
-                (340.0, 0.0),
-                (520.0, 0.9),
-            ],
-        },
-        tol=0.08,
+        expected_fn=lambda row: row["vin"] if row["en"] > 1e-9 else 0.0,
     )
 
 
 def check_v3_357_mixed_wreal_to_electrical_buffer(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    required = {"time", "vin", "en", "sel", "a", "b", "vout"}
+    return _check_v3_mixed_vout_expression(
+        rows,
+        expected_fn=lambda row: row["a"],
+    )
+
+
+def check_v3_358_mixed_electrical_threshold_logic_flag(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    return _check_v3_mixed_vout_expression(
+        rows,
+        expected_fn=lambda row: 0.9 if row["vin"] > 0.45 else 0.0,
+    )
+
+
+def check_v3_359_mixed_logic_clocked_voltage_sampler(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    return _check_v3_mixed_clocked_voltage_sampler(rows)
+
+
+def check_v3_360_mixed_wreal_logic_select_driver(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    return _check_v3_mixed_vout_expression(
+        rows,
+        expected_fn=lambda row: row["a"] if row["sel"] > 1e-9 else row["b"],
+        required={"time", "vin", "clk", "en", "sel", "a", "b", "vout"},
+    )
+
+
+def check_v3_419_wreal_logic_threshold_bridge(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "ain", "en", "flag"}
+    if not rows or not required.issubset(rows[0]):
+        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
+        return False, "missing_columns=" + ",".join(missing)
+    checked = 0
+    expected_values: list[float] = []
+    max_err = 0.0
+    stride = max(1, len(rows) // 120)
+    for row in rows[::stride]:
+        expected = 1.0 if row["en"] > 0.45 and row["ain"] > 0.45 else 0.0
+        err = abs(row["flag"] - expected)
+        max_err = max(max_err, err)
+        expected_values.append(expected)
+        checked += 1
+        if err > 0.08:
+            return False, (
+                f"flag@{row['time'] * 1e9:g}ns={row['flag']:.4f} "
+                f"expected={expected:.4f} tol=0.0800"
+            )
+    if checked < 8:
+        return False, f"insufficient_samples={checked}"
+    if max(expected_values) - min(expected_values) < 0.5:
+        return False, "insufficient_flag_dynamic_range"
+    return True, f"samples={checked} max_flag_err={max_err:.4f}"
+
+
+def check_v3_415_logic_vector_assign_slice(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "code0", "code1", "code2", "code3", "sel", "y"}
     if not rows or not required.issubset(rows[0]):
         missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
         return False, "missing_columns=" + ",".join(missing)
     return _sample_many(
         rows,
         {
-            "vout": [
-                (120.0, 0.2),
-                (300.0, 0.8),
-                (500.0, 0.4),
+            "y": [
+                (50.0, 1.0),
+                (150.0, 1.0),
+                (300.0, 1.0),
+                (450.0, 0.0),
             ],
         },
         tol=0.08,
     )
 
 
-def check_v3_358_mixed_electrical_threshold_logic_flag(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    required = {"time", "vin", "en", "sel", "a", "b", "vout"}
+def check_v3_416_logic_vector_reduction_flag(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "code0", "code1", "code2", "code3", "valid"}
     if not rows or not required.issubset(rows[0]):
         missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
         return False, "missing_columns=" + ",".join(missing)
     return _sample_many(
         rows,
         {
-            "vout": [
-                (120.0, 0.0),
-                (300.0, 0.9),
+            "valid": [
+                (50.0, 1.0),
+                (150.0, 1.0),
+                (250.0, 1.0),
+                (350.0, 1.0),
+                (450.0, 1.0),
+            ],
+        },
+        tol=0.08,
+    )
+
+
+def check_v3_417_always_async_reset_counter(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "clk", "rst", "en", "q"}
+    if not rows or not required.issubset(rows[0]):
+        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
+        return False, "missing_columns=" + ",".join(missing)
+    return _sample_many(
+        rows,
+        {
+            "q": [
+                (100.0, 1.0),
+                (300.0, 0.0),
+                (400.0, 1.0),
                 (500.0, 0.0),
             ],
         },
@@ -8098,501 +8641,2536 @@ def check_v3_358_mixed_electrical_threshold_logic_flag(rows: list[dict[str, floa
     )
 
 
-def check_v3_359_mixed_logic_clocked_voltage_sampler(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    required = {"time", "vin", "clk", "en", "sel", "a", "b", "vout"}
+def check_v3_418_always_enable_saturating_counter(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "clk", "rst", "en", "q0", "q1"}
     if not rows or not required.issubset(rows[0]):
         missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
         return False, "missing_columns=" + ",".join(missing)
     return _sample_many(
         rows,
         {
-            "vout": [
-                (130.0, 0.0),
-                (220.0, 0.0),
-                (280.0, 0.6),
-                (360.0, 0.8),
-                (430.0, 0.0),
-                (520.0, 0.0),
-                (580.0, 0.8),
+            "q0": [
+                (90.0, 1.0),
+                (200.0, 0.0),
+                (300.0, 0.0),
+                (400.0, 0.0),
+            ],
+            "q1": [
+                (90.0, 0.0),
+                (200.0, 1.0),
+                (300.0, 1.0),
+                (400.0, 0.0),
             ],
         },
         tol=0.08,
     )
 
 
-def check_v3_360_mixed_wreal_logic_select_driver(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    required = {"time", "vin", "clk", "en", "sel", "a", "b", "vout"}
+def check_v3_420_mixed_analog_digital_mode_latch(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "vin", "clk", "flag"}
+    if not rows or not required.issubset(rows[0]):
+        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
+        return False, "missing_columns=" + ",".join(missing)
+    expected = 0.0
+    expected_values: list[float] = []
+    flag_values: list[float] = []
+    max_err = 0.0
+    prev_clk = rows[0]["clk"]
+    edge_count = 0
+    for row in rows[1:]:
+        if prev_clk <= 0.45 < row["clk"]:
+            expected = 1.0 if row["vin"] > 0.45 else 0.0
+            edge_count += 1
+        expected_values.append(expected)
+        flag_values.append(row["flag"])
+        prev_clk = row["clk"]
+
+    stride = max(1, len(expected_values) // 120)
+    checked = 0
+    for index in range(0, len(expected_values), stride):
+        err = abs(flag_values[index] - expected_values[index])
+        max_err = max(max_err, err)
+        checked += 1
+        if err > 0.08:
+            row = rows[index + 1]
+            return False, (
+                f"flag@{row['time'] * 1e9:g}ns={row['flag']:.4f} "
+                f"expected={expected_values[index]:.4f} tol=0.0800"
+            )
+    if edge_count < 3:
+        return False, f"insufficient_clock_edges={edge_count}"
+    if max(expected_values) - min(expected_values) < 0.5:
+        return False, "insufficient_flag_dynamic_range"
+    return True, f"edges={edge_count} samples={checked} max_flag_err={max_err:.4f}"
+
+
+def check_v3_421_task_local_variable_transform(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    def update(_state: dict[str, float | int], row: dict[str, float]) -> tuple[float, float]:
+        if row["rst"] > 0.45:
+            return 0.0, 0.0
+        out = min(0.9, max(0.0, row["vin"]))
+        return out, out / 0.9
+
+    return _check_v3_task_clocked_behavior(
+        rows,
+        update_fn=update,
+        initial_state={"out": 0.0, "metric": 0.0},
+    )
+
+
+def check_v3_422_file_fscanf_table_stimulus(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    def update(_state: dict[str, float | int], row: dict[str, float]) -> tuple[float, float]:
+        if row["rst"] > 0.45:
+            return 0.0, 0.0
+        return 0.7, 0.0
+
+    return _check_v3_task_clocked_behavior(
+        rows,
+        update_fn=update,
+        initial_state={"out": 0.7, "metric": 2.0},
+    )
+
+
+def check_v3_423_file_profile_replay_controller(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    def update(state: dict[str, float | int], row: dict[str, float]) -> tuple[float, float]:
+        if row["rst"] > 0.45:
+            state["count"] = 0
+            state["metric"] = 0.0
+            return 0.0, 0.0
+        out = 0.9 if row["vin"] > 0.45 else 0.0
+        metric = float(state["metric"]) + 0.01 * int(state["count"])
+        state["metric"] = metric
+        state["count"] = int(state["count"]) + 1
+        return out, metric
+
+    return _check_v3_task_clocked_behavior(
+        rows,
+        update_fn=update,
+        initial_state={"out": 0.0, "metric": 1.0, "count": 0},
+    )
+
+
+def check_v3_424_file_fscanf_multi_column_profile(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    def update(_state: dict[str, float | int], row: dict[str, float]) -> tuple[float, float]:
+        if row["rst"] > 0.45:
+            return 0.0, 0.0
+        return 0.7, 0.5
+
+    return _check_v3_task_clocked_behavior(
+        rows,
+        update_fn=update,
+        initial_state={"out": 0.7, "metric": 3.0},
+    )
+
+
+def check_v3_425_string_swrite_label_builder(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    def update(state: dict[str, float | int], row: dict[str, float]) -> tuple[float, float]:
+        if row["rst"] > 0.45:
+            state["count"] = 0
+            return 0.0, 0.0
+        metric = float(state["count"])
+        state["count"] = int(state["count"]) + 1
+        return 0.9 if row["vin"] > 0.45 else 0.0, metric
+
+    return _check_v3_task_clocked_behavior(
+        rows,
+        update_fn=update,
+        initial_state={"out": 0.0, "metric": 0.0, "count": 0},
+    )
+
+
+def check_v3_426_string_sformat_mode_tag(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    return check_v3_425_string_swrite_label_builder(rows)
+
+
+def check_v3_427_string_formatted_metric_line(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    return check_v3_425_string_swrite_label_builder(rows)
+
+
+def check_v3_428_string_mode_tagged_log(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    return check_v3_425_string_swrite_label_builder(rows)
+
+
+def check_v3_429_string_config_label_select(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    def update(state: dict[str, float | int], row: dict[str, float]) -> tuple[float, float]:
+        if row["rst"] > 0.45:
+            state["count"] = 0
+            return 0.0, 0.0
+        count = int(state["count"])
+        state["count"] = count + 1
+        if row["mode"] > 0.45:
+            return (0.0 if row["vin"] > 0.45 else 0.9), float(count + 10)
+        return (0.9 if row["vin"] > 0.45 else 0.0), float(count)
+
+    return _check_v3_task_clocked_behavior(
+        rows,
+        update_fn=update,
+        initial_state={"out": 0.0, "metric": 0.0, "count": 0},
+    )
+
+
+def check_v3_430_rdist_seed_reproducibility(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "vin", "clk", "mode", "rst", "out", "metric"}
+    if not rows or not required.issubset(rows[0]):
+        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
+        return False, "missing_columns=" + ",".join(missing)
+
+    expected_out = 0.0
+    expected_metric = 0.0
+    out_expected_values = [expected_out]
+    metric_expected_values = [expected_metric]
+    edge_count = 0
+    prev_clk = rows[0]["clk"]
+    for row in rows[1:]:
+        if prev_clk <= 0.45 < row["clk"]:
+            edge_count += 1
+            if row["rst"] > 0.45:
+                expected_out = 0.0
+                expected_metric = 0.0
+            else:
+                expected_out = row["vin"]
+                expected_metric = 1.0
+        prev_clk = row["clk"]
+        out_expected_values.append(expected_out)
+        metric_expected_values.append(expected_metric)
+
+    checked_out = 0
+    checked_metric = 0
+    max_metric_err = 0.0
+    out_values: list[float] = []
+    stride = max(1, len(rows) // 120)
+    for index in range(0, len(rows), stride):
+        out_expected = out_expected_values[index]
+        metric_expected = metric_expected_values[index]
+        window_start = max(0, index - 5)
+        window_end = min(len(rows), index + 6)
+        out_window = out_expected_values[window_start:window_end]
+        metric_window = metric_expected_values[window_start:window_end]
+
+        if max(abs(out_expected - value) for value in out_window) <= 0.02:
+            if metric_expected == 0.0:
+                out_ok = abs(rows[index]["out"]) <= 0.08
+            else:
+                out_ok = out_expected - 0.02 <= rows[index]["out"] <= out_expected + 0.12
+            if not out_ok:
+                return False, (
+                    f"out@{rows[index]['time'] * 1e9:g}ns={rows[index]['out']:.4f} "
+                    f"expected_near_vin={out_expected:.4f}"
+                )
+            checked_out += 1
+            out_values.append(out_expected)
+
+        if max(abs(metric_expected - value) for value in metric_window) > 0.02:
+            continue
+        metric_err = abs(rows[index]["metric"] - metric_expected)
+        max_metric_err = max(max_metric_err, metric_err)
+        checked_metric += 1
+        if metric_err > 0.08:
+            return False, (
+                f"metric@{rows[index]['time'] * 1e9:g}ns={rows[index]['metric']:.4f} "
+                f"expected={expected_metric:.4f} tol=0.0800"
+            )
+
+    if edge_count < 3:
+        return False, f"insufficient_clock_edges={edge_count}"
+    if checked_out < 8 or checked_metric < 8:
+        return False, f"insufficient_samples out={checked_out} metric={checked_metric}"
+    out_span = max(out_values) - min(out_values) if out_values else 0.0
+    if out_span < 0.12:
+        return False, f"insufficient_out_dynamic_range={out_span:.4f}"
+    return (
+        True,
+        f"edges={edge_count} out_samples={checked_out} metric_samples={checked_metric} "
+        f"out_span={out_span:.4f} max_metric_err={max_metric_err:.4f}",
+    )
+
+
+def check_v3_410_macro_ifdef_gain_select(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "vin", "clk", "mode", "rst", "out", "metric"}
     if not rows or not required.issubset(rows[0]):
         missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
         return False, "missing_columns=" + ",".join(missing)
     return _sample_many(
         rows,
         {
-            "vout": [
-                (80.0, 0.8),
-                (150.0, 0.25),
-                (220.0, 0.7),
-                (360.0, 0.15),
-                (500.0, 0.35),
+            "out": [
+                (60.0, 0.15),
+                (160.0, 0.80),
+                (260.0, 0.00),
+                (360.0, 0.90),
+            ],
+            "metric": [
+                (60.0, 1.25),
+                (160.0, 1.25),
+                (260.0, 0.00),
+                (360.0, 1.25),
             ],
         },
         tol=0.08,
     )
+
+
+def check_v3_431_hierarchy_support_artifact_staging(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "vin", "clk", "mode", "rst", "out", "metric"}
+    if not rows or not required.issubset(rows[0]):
+        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
+        return False, "missing_columns=" + ",".join(missing)
+    return _sample_many(
+        rows,
+        {
+            "out": [
+                (100.0, 0.7125),
+                (220.0, 0.90),
+            ],
+            "metric": [
+                (100.0, 0.7125),
+                (220.0, 1.20),
+            ],
+        },
+        tol=0.08,
+    )
+
+
+def check_v3_432_hierarchy_nested_parameter_chain(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "vin", "clk", "mode", "rst", "out", "metric"}
+    if not rows or not required.issubset(rows[0]):
+        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
+        return False, "missing_columns=" + ",".join(missing)
+    return _sample_many(
+        rows,
+        {
+            "out": [
+                (80.0, 0.18),
+                (220.0, 0.72),
+            ],
+            "metric": [
+                (80.0, 0.36),
+                (220.0, 1.44),
+            ],
+        },
+        tol=0.08,
+    )
+
+
+def check_v3_433_preprocessor_ifndef_elsif_undef(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    def update(_state: dict[str, float | int], row: dict[str, float]) -> tuple[float, float]:
+        if row["rst"] > 0.45:
+            return 0.0, 0.0
+        return 0.75 * row["vin"], 0.75
+
+    return _check_v3_task_clocked_behavior(
+        rows,
+        update_fn=update,
+        initial_state={"out": 0.0, "metric": 0.0},
+    )
+
+
+def check_v3_434_repeat_loop_accumulator(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    def update(state: dict[str, float | int], row: dict[str, float]) -> tuple[float, float]:
+        if row["rst"] > 0.45:
+            state["count"] = 0
+            return 0.0, 0.0
+        acc = 4 * (int(state["count"]) + 1)
+        state["count"] = int(state["count"]) + 1
+        return 0.9 if acc > 4 else 0.0, float(acc)
+
+    return _check_v3_task_clocked_behavior(
+        rows,
+        update_fn=update,
+        initial_state={"out": 0.0, "metric": 0.0, "count": 0},
+    )
+
+
+def _v3_required_columns(rows: list[dict[str, float]], required: set[str]) -> tuple[bool, str]:
+    if not rows or not required.issubset(rows[0]):
+        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
+        return False, "missing_columns=" + ",".join(missing)
+    return True, ""
+
+
+def _v3_signal_range(rows: list[dict[str, float]], signal: str) -> float:
+    values = [row[signal] for row in rows if signal in row]
+    return max(values) - min(values) if values else 0.0
+
+
+def _check_v3_staged_dynamic_operator_boundary(
+    rows: list[dict[str, float]],
+    *,
+    required: set[str],
+    operator: str,
+    outputs: tuple[str, ...] = ("out", "metric"),
+) -> tuple[bool, str]:
+    ok, note = _v3_required_columns(rows, required)
+    if not ok:
+        return False, note
+    ranges = " ".join(f"{signal}_range={_v3_signal_range(rows, signal):.4g}" for signal in outputs)
+    return False, (
+        f"staged_dynamic_solver_boundary operator={operator} {ranges} "
+        "expected=certified_continuous_time_response"
+    )
+
+
+def _check_v3_staged_kcl_boundary(
+    rows: list[dict[str, float]],
+    *,
+    required: set[str],
+    feature: str,
+) -> tuple[bool, str]:
+    ok, note = _v3_required_columns(rows, required)
+    if not ok:
+        return False, note
+    voltage_ranges = " ".join(
+        f"{signal}_range={_v3_signal_range(rows, signal):.4g}"
+        for signal in sorted(required - {"time"})
+        if signal in rows[0]
+    )
+    return False, (
+        f"staged_kcl_boundary feature={feature} {voltage_ranges} "
+        "expected=mna_current_observable"
+    )
+
+
+def _v3_interp_signal(rows: list[dict[str, float]], signal: str, time_s: float) -> float:
+    if not rows:
+        return 0.0
+    if time_s <= rows[0]["time"]:
+        return rows[0][signal]
+    for prev, cur in zip(rows, rows[1:]):
+        t0 = prev["time"]
+        t1 = cur["time"]
+        if t0 <= time_s <= t1:
+            if t1 == t0:
+                return cur[signal]
+            frac = (time_s - t0) / (t1 - t0)
+            return prev[signal] + frac * (cur[signal] - prev[signal])
+    return rows[-1][signal]
+
+
+def _v3_trapezoid_integral_to(rows: list[dict[str, float]], signal: str, time_s: float) -> float:
+    if not rows or time_s <= rows[0]["time"]:
+        return 0.0
+    total = 0.0
+    prev_t = rows[0]["time"]
+    prev_v = rows[0][signal]
+    for cur in rows[1:]:
+        cur_t = cur["time"]
+        cur_v = cur[signal]
+        if cur_t >= time_s:
+            value_at_target = _v3_interp_signal(rows, signal, time_s)
+            total += 0.5 * (prev_v + value_at_target) * max(0.0, time_s - prev_t)
+            return total
+        total += 0.5 * (prev_v + cur_v) * max(0.0, cur_t - prev_t)
+        prev_t = cur_t
+        prev_v = cur_v
+    return total
+
+
+def _v3_rising_cross_times(
+    rows: list[dict[str, float]],
+    signal: str,
+    threshold: float,
+) -> list[float]:
+    times: list[float] = []
+    for prev, cur in zip(rows, rows[1:]):
+        y0 = prev[signal] - threshold
+        y1 = cur[signal] - threshold
+        if y0 < 0.0 <= y1:
+            t0 = prev["time"]
+            t1 = cur["time"]
+            if y1 == y0:
+                times.append(t1)
+            else:
+                times.append(t0 + (0.0 - y0) * (t1 - t0) / (y1 - y0))
+    return times
+
+
+def check_v3_435_ddt_voltage_derivative_source(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    ok, note = _v3_required_columns(rows, {"time", "vin", "clk", "rst", "out", "metric"})
+    if not ok:
+        return False, note
+    crossings = _v3_rising_cross_times(rows, "clk", 0.45)
+    if len(crossings) < 2:
+        return False, f"missing_two_clk_rising_crossings count={len(crossings)}"
+    first_t, second_t = crossings[0], crossings[1]
+    first_sample_t = first_t + 8e-9
+    second_sample_t = second_t + 8e-9
+    vin_first = _v3_interp_signal(rows, "vin", first_t)
+    vin_second = _v3_interp_signal(rows, "vin", second_t)
+    expected = (vin_second - vin_first) / (second_t - first_t)
+    failures: list[str] = []
+    for signal in ("out", "metric"):
+        first_value = _v3_interp_signal(rows, signal, first_sample_t)
+        if abs(first_value) > 0.05:
+            failures.append(f"{signal}_first_sample={first_value:.4g} expected_initial_ddt=0")
+        second_value = _v3_interp_signal(rows, signal, second_sample_t)
+        tol = max(1.0e4, abs(expected) * 0.04)
+        if abs(second_value - expected) > tol:
+            failures.append(f"{signal}_second_sample={second_value:.4g} expected_ddt={expected:.4g}")
+    out_second = _v3_interp_signal(rows, "out", second_sample_t)
+    metric_second = _v3_interp_signal(rows, "metric", second_sample_t)
+    if abs(out_second - metric_second) > max(1.0, abs(expected) * 0.005):
+        failures.append(f"metric_mismatch out={out_second:.4g} metric={metric_second:.4g}")
+    if failures:
+        return False, " ".join(failures[:5])
+    return True, f"ddt_event_derivative_matches_clk_samples expected={expected:.4g}"
+
+
+def check_v3_436_idt_voltage_integrator_source(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    ok, note = _v3_required_columns(rows, {"time", "vin", "clk", "rst", "out", "metric"})
+    if not ok:
+        return False, note
+    crossings = _v3_rising_cross_times(rows, "clk", 0.45)
+    if len(crossings) < 2:
+        return False, f"missing_two_clk_rising_crossings count={len(crossings)}"
+    first_t, second_t = crossings[0], crossings[1]
+    first_sample_t = first_t + 8e-9
+    second_sample_t = second_t + 8e-9
+    vin_first = _v3_interp_signal(rows, "vin", first_t)
+    vin_second = _v3_interp_signal(rows, "vin", second_t)
+    expected = 0.5 * (vin_first + vin_second) * (second_t - first_t)
+    failures: list[str] = []
+    for signal in ("out", "metric"):
+        first_value = _v3_interp_signal(rows, signal, first_sample_t)
+        if abs(first_value) > 1.0e-10:
+            failures.append(f"{signal}_first_sample={first_value:.4g} expected_initial_idt=0")
+        second_value = _v3_interp_signal(rows, signal, second_sample_t)
+        tol = max(1.0e-10, abs(expected) * 0.04)
+        if abs(second_value - expected) > tol:
+            failures.append(f"{signal}_second_sample={second_value:.4g} expected_idt={expected:.4g}")
+    out_second = _v3_interp_signal(rows, "out", second_sample_t)
+    metric_second = _v3_interp_signal(rows, "metric", second_sample_t)
+    if abs(out_second - metric_second) > max(1.0e-11, abs(expected) * 0.005):
+        failures.append(f"metric_mismatch out={out_second:.4g} metric={metric_second:.4g}")
+    if failures:
+        return False, " ".join(failures[:5])
+    return True, f"idt_event_integral_matches_clk_samples expected={expected:.4g}"
+
+
+def _check_v3_first_order_laplace_event_response(
+    rows: list[dict[str, float]],
+    operator: str,
+) -> tuple[bool, str]:
+    ok, note = _v3_required_columns(rows, {"time", "vin", "clk", "rst", "out", "metric"})
+    if not ok:
+        return False, note
+    crossings = _v3_rising_cross_times(rows, "clk", 0.45)
+    if len(crossings) < 2:
+        return False, f"missing_two_clk_rising_crossings count={len(crossings)}"
+    first_t, second_t = crossings[0], crossings[1]
+    first_sample_t = first_t + 8e-9
+    second_sample_t = second_t + 8e-9
+    vin_first = _v3_interp_signal(rows, "vin", first_t)
+    vin_second = _v3_interp_signal(rows, "vin", second_t)
+    dt = second_t - first_t
+    expected_first = vin_first
+    expected_second = expected_first + (1.0 - math.exp(-dt / 1.0)) * (vin_second - expected_first)
+    failures: list[str] = []
+    for signal in ("out", "metric"):
+        first_value = _v3_interp_signal(rows, signal, first_sample_t)
+        first_tol = max(1.0e-9, abs(expected_first) * 0.01)
+        if abs(first_value - expected_first) > first_tol:
+            failures.append(f"{signal}_first_sample={first_value:.4g} expected_laplace_init={expected_first:.4g}")
+        second_value = _v3_interp_signal(rows, signal, second_sample_t)
+        second_tol = max(1.0e-9, abs(expected_second) * 0.05)
+        if abs(second_value - expected_second) > second_tol:
+            failures.append(f"{signal}_second_sample={second_value:.4g} expected_laplace={expected_second:.4g}")
+    out_second = _v3_interp_signal(rows, "out", second_sample_t)
+    metric_second = _v3_interp_signal(rows, "metric", second_sample_t)
+    if abs(out_second - metric_second) > max(1.0e-10, abs(expected_second) * 0.005):
+        failures.append(f"metric_mismatch out={out_second:.4g} metric={metric_second:.4g}")
+    if failures:
+        return False, " ".join(failures[:5])
+    return True, f"{operator}_first_order_event_response expected_second={expected_second:.4g}"
+
+
+def check_v3_437_laplace_nd_lowpass_filter(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    return _check_v3_first_order_laplace_event_response(rows, "laplace_nd")
+
+
+def check_v3_438_laplace_np_pole_filter(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    return _check_v3_first_order_laplace_event_response(rows, "laplace_np")
+
+
+def check_v3_439_laplace_zd_zero_den_filter(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    return _check_v3_first_order_laplace_event_response(rows, "laplace_zd")
+
+
+def check_v3_440_laplace_zp_zero_pole_filter(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    return _check_v3_first_order_laplace_event_response(rows, "laplace_zp")
+
+
+def _check_v3_sampled_first_order_difference(
+    rows: list[dict[str, float]], *, operator: str
+) -> tuple[bool, str]:
+    ok, note = _v3_required_columns(rows, {"time", "vin", "clk", "rst", "out", "metric"})
+    if not ok:
+        return False, note
+    crossings = _v3_rising_cross_times(rows, "clk", 0.45)
+    if len(crossings) < 2:
+        return False, f"missing_two_clk_rising_crossings count={len(crossings)}"
+    first_t, second_t = crossings[0], crossings[1]
+    first_sample_t = first_t + 8e-9
+    second_sample_t = second_t + 8e-9
+    vin_first = _v3_interp_signal(rows, "vin", first_t)
+    vin_second = _v3_interp_signal(rows, "vin", second_t)
+    expected_first = vin_first
+    expected_second = vin_second - expected_first
+    failures: list[str] = []
+    for signal in ("out", "metric"):
+        first_value = _v3_interp_signal(rows, signal, first_sample_t)
+        first_tol = max(1.0e-9, abs(expected_first) * 0.01)
+        if abs(first_value - expected_first) > first_tol:
+            failures.append(f"{signal}_first_sample={first_value:.4g} expected_zi_init={expected_first:.4g}")
+        second_value = _v3_interp_signal(rows, signal, second_sample_t)
+        second_tol = max(1.0e-9, abs(expected_second) * 0.05)
+        if abs(second_value - expected_second) > second_tol:
+            failures.append(f"{signal}_second_sample={second_value:.4g} expected_zi={expected_second:.4g}")
+    out_second = _v3_interp_signal(rows, "out", second_sample_t)
+    metric_second = _v3_interp_signal(rows, "metric", second_sample_t)
+    if abs(out_second - metric_second) > max(1.0e-10, abs(expected_second) * 0.005):
+        failures.append(f"metric_mismatch out={out_second:.4g} metric={metric_second:.4g}")
+    if failures:
+        return False, " ".join(failures[:5])
+    return True, f"{operator}_first_order_difference_response expected_second={expected_second:.4g}"
+
+
+def check_v3_441_zi_nd_discrete_filter(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    return _check_v3_sampled_first_order_difference(rows, operator="zi_nd")
+
+
+def check_v3_442_zi_np_discrete_filter(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    return _check_v3_sampled_first_order_difference(rows, operator="zi_np")
+
+
+def check_v3_443_zi_zd_discrete_filter(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    return _check_v3_sampled_first_order_difference(rows, operator="zi_zd")
+
+
+def check_v3_444_zi_zp_discrete_filter(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    return _check_v3_sampled_first_order_difference(rows, operator="zi_zp")
+
+
+def check_v3_445_limexp_soft_exponential(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    def update(_state: dict[str, float | int], row: dict[str, float]) -> tuple[float, float]:
+        if row["rst"] > 0.45:
+            return 0.0, 0.0
+        out = math.exp(row["vin"])
+        return out, out
+
+    return _check_v3_task_clocked_behavior(
+        rows,
+        update_fn=update,
+        initial_state={"out": 0.0, "metric": 0.0},
+        tol=0.1,
+    )
+
+
+def check_v3_446_fstrobe_file_line_writer(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    return check_v3_425_string_swrite_label_builder(rows)
+
+
+def check_v3_447_display_warning_debug_log(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    return check_v3_425_string_swrite_label_builder(rows)
+
+
+def check_v3_448_rdist_uniform_seeded_dither(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "vin", "clk", "mode", "rst", "out", "metric"}
+    if not rows or not required.issubset(rows[0]):
+        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
+        return False, "missing_columns=" + ",".join(missing)
+    expected_out = 0.0
+    expected_metric = 0.0
+    out_expected_values = [expected_out]
+    metric_expected_values = [expected_metric]
+    edge_count = 0
+    prev_clk = rows[0]["clk"]
+    for row in rows[1:]:
+        if prev_clk <= 0.45 < row["clk"]:
+            edge_count += 1
+            if row["rst"] > 0.45:
+                expected_out = 0.0
+                expected_metric = 0.0
+            else:
+                expected_out = row["vin"]
+                expected_metric = 0.5
+        prev_clk = row["clk"]
+        out_expected_values.append(expected_out)
+        metric_expected_values.append(expected_metric)
+
+    checked = 0
+    stride = max(1, len(rows) // 120)
+    observed: list[str] = []
+    for index in range(0, len(rows), stride):
+        out_expected = out_expected_values[index]
+        metric_expected = metric_expected_values[index]
+        window_start = max(0, index - 5)
+        window_end = min(len(rows), index + 6)
+        if max(abs(out_expected - value) for value in out_expected_values[window_start:window_end]) > 0.02:
+            continue
+        if max(abs(metric_expected - value) for value in metric_expected_values[window_start:window_end]) > 0.02:
+            continue
+        if metric_expected == 0.0:
+            out_ok = abs(rows[index]["out"]) <= 0.08
+            metric_ok = abs(rows[index]["metric"]) <= 0.08
+        else:
+            out_ok = out_expected - 0.02 <= rows[index]["out"] <= out_expected + 0.04
+            metric_ok = 0.0 <= rows[index]["metric"] <= 1.0
+        if not out_ok:
+            return False, (
+                f"out@{rows[index]['time'] * 1e9:g}ns={rows[index]['out']:.4f} "
+                f"expected_near_vin={out_expected:.4f}"
+            )
+        if not metric_ok:
+            return False, f"metric@{rows[index]['time'] * 1e9:g}ns={rows[index]['metric']:.4f} expected_uniform_range"
+        checked += 1
+        observed.append(f"{rows[index]['time'] * 1e9:g}ns/out={rows[index]['out']:.3f}/metric={rows[index]['metric']:.3f}")
+    if edge_count < 3:
+        return False, f"insufficient_clock_edges={edge_count}"
+    if checked < 8:
+        return False, f"insufficient_samples={checked}"
+    return True, f"edges={edge_count} samples={checked} " + " ".join(observed[:4])
+
+
+def check_v3_453_specify_specparam_delay(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    ok, note = _v3_required_columns(rows, {"time", "a", "y"})
+    if not ok:
+        return False, note
+    times = [row["time"] for row in rows]
+    a_vals = [row["a"] for row in rows]
+    y_vals = [row["y"] for row in rows]
+    if _v3_signal_range(rows, "a") < 0.8 or _v3_signal_range(rows, "y") < 0.8:
+        return False, (
+            f"insufficient_logic_swing a_range={_v3_signal_range(rows, 'a'):.4g} "
+            f"y_range={_v3_signal_range(rows, 'y'):.4g}"
+        )
+
+    delays: list[float] = []
+    for direction in ("rising", "falling"):
+        a_edges = _threshold_crossings(a_vals, times, threshold=0.5, direction=direction)
+        y_edges = _threshold_crossings(y_vals, times, threshold=0.5, direction=direction)
+        if len(a_edges) < 2 or len(y_edges) < 2:
+            return False, f"insufficient_{direction}_edges a={len(a_edges)} y={len(y_edges)}"
+        direction_delays: list[float] = []
+        yi = 0
+        for a_edge in a_edges:
+            while yi < len(y_edges) and y_edges[yi] <= a_edge + 0.2e-9:
+                yi += 1
+            if yi >= len(y_edges):
+                break
+            delay = y_edges[yi] - a_edge
+            if 0.65e-9 <= delay <= 1.35e-9:
+                direction_delays.append(delay)
+                yi += 1
+        if len(direction_delays) < 2:
+            return False, f"missing_certified_{direction}_path_delay samples={len(direction_delays)}"
+        delays.extend(direction_delays)
+
+    if len(delays) < 4:
+        return False, f"insufficient_delay_samples={len(delays)}"
+    min_delay = min(delays)
+    max_delay = max(delays)
+    mean_delay = sum(delays) / len(delays)
+    ok = 0.75e-9 <= mean_delay <= 1.25e-9 and max_delay - min_delay <= 0.35e-9
+    return ok, (
+        f"specify_path_delay_ns={[round(delay * 1e9, 3) for delay in delays[:6]]} "
+        f"mean_ns={mean_delay * 1e9:.3f} span_ns={(max_delay - min_delay) * 1e9:.3f}"
+    )
+
+
+def check_v3_454_multidimensional_array_state(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    def update(state: dict[str, float | int], row: dict[str, float]) -> tuple[float, float]:
+        if row["rst"] > 0.45:
+            state["count"] = 0
+            return 0.0, 0.0
+        metric = int(state["count"]) + 1
+        state["count"] = int(state["count"]) + 1
+        return 0.9 if metric > 2 else 0.0, float(metric)
+
+    return _check_v3_task_clocked_behavior(
+        rows,
+        update_fn=update,
+        initial_state={"out": 0.0, "metric": 0.0, "count": 0},
+    )
+
+
+def check_v3_455_packed_logic_bus_slice(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "a7", "a6", "a1", "a0", "y3", "y2", "y1", "y0"}
+    if not rows or not required.issubset(rows[0]):
+        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
+        return False, "missing_columns=" + ",".join(missing)
+    failures: list[str] = []
+    for time_ns in (50.0, 90.0, 100.0, 150.0):
+        row = min(rows, key=lambda item: abs(item["time"] - time_ns * 1e-9))
+        for out_sig, in_sig in (("y3", "a7"), ("y2", "a6"), ("y1", "a1"), ("y0", "a0")):
+            expected = 1.0 if row[in_sig] > 0.45 else 0.0
+            observed = row[out_sig]
+            if abs(observed - expected) > 0.08:
+                failures.append(f"{out_sig}@{time_ns:g}ns={observed:.4f} expected_{in_sig}={expected:.4f}")
+    if failures:
+        return False, " ".join(failures[:4])
+    return True, "packed_bus_slice_y_matches_a7_a6_a1_a0"
+
+
+def check_v3_456_event_or_cross_timer(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "vin", "clk", "out", "metric"}
+    if not rows or not required.issubset(rows[0]):
+        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
+        return False, "missing_columns=" + ",".join(missing)
+    out_expected = 0.0
+    metric_expected = 0.0
+    out_expected_values = [out_expected]
+    metric_expected_values = [metric_expected]
+    last_event_time = -1e99
+    last_event_times = [last_event_time]
+    timer_next = 1e-9
+    event_count = 0
+    prev_clk = rows[0]["clk"]
+    for row in rows[1:]:
+        event_fired = False
+        while row["time"] + 1e-15 >= timer_next:
+            event_count += 1
+            out_expected = row["vin"]
+            last_event_time = row["time"]
+            timer_next += 1e-9
+            event_fired = True
+        if prev_clk <= 0.45 < row["clk"]:
+            event_count += 1
+            out_expected = row["vin"]
+            last_event_time = row["time"]
+            event_fired = True
+        if event_fired:
+            metric_expected = float(event_count)
+        out_expected_values.append(out_expected)
+        metric_expected_values.append(metric_expected)
+        last_event_times.append(last_event_time)
+        prev_clk = row["clk"]
+
+    stride = max(1, len(rows) // 120)
+    checked = 0
+    max_out_err = 0.0
+    max_metric_err = 0.0
+    for index in range(0, len(rows), stride):
+        out_expected = out_expected_values[index]
+        metric_expected = metric_expected_values[index]
+        window_start = max(0, index - 5)
+        window_end = min(len(rows), index + 6)
+        if max(abs(out_expected - value) for value in out_expected_values[window_start:window_end]) > 0.02:
+            continue
+        if max(abs(metric_expected - value) for value in metric_expected_values[window_start:window_end]) > 0.02:
+            continue
+        if rows[index]["time"] - last_event_times[index] < 0.30e-9:
+            continue
+        out_err = abs(rows[index]["out"] - out_expected)
+        metric_err = abs(rows[index]["metric"] - metric_expected)
+        max_out_err = max(max_out_err, out_err)
+        max_metric_err = max(max_metric_err, metric_err)
+        checked += 1
+        if out_err > 0.08:
+            return False, (
+                f"out@{rows[index]['time'] * 1e9:g}ns={rows[index]['out']:.4f} "
+                f"expected={out_expected:.4f}"
+            )
+        if metric_err > 0.25:
+            return False, (
+                f"metric@{rows[index]['time'] * 1e9:g}ns={rows[index]['metric']:.4f} "
+                f"expected={metric_expected:.4f}"
+            )
+    if event_count < 4:
+        return False, f"insufficient_events={event_count}"
+    if checked < 8:
+        return False, f"insufficient_samples={checked}"
+    return True, f"events={event_count} samples={checked} max_out_err={max_out_err:.4f} max_metric_err={max_metric_err:.4f}"
+
+
+def check_v3_457_nested_function_pipeline(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "vin", "out"}
+    if not rows or not required.issubset(rows[0]):
+        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
+        return False, "missing_columns=" + ",".join(missing)
+    checked = 0
+    expected_values: list[float] = []
+    max_err = 0.0
+    stride = max(1, len(rows) // 120)
+    for row in rows[::stride]:
+        expected = row["vin"] * row["vin"] + 1.0
+        err = abs(row["out"] - expected)
+        max_err = max(max_err, err)
+        checked += 1
+        expected_values.append(expected)
+        if err > 0.08:
+            return False, f"out@{row['time'] * 1e9:g}ns={row['out']:.4f} expected={expected:.4f}"
+    if checked < 8:
+        return False, f"insufficient_samples={checked}"
+    if max(expected_values) - min(expected_values) < 0.2:
+        return False, "insufficient_out_dynamic_range"
+    return True, f"samples={checked} max_out_err={max_err:.4f}"
+
+
+def check_v3_458_recursive_function_candidate(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "stim", "out"}
+    if not rows or not required.issubset(rows[0]):
+        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
+        return False, "missing_columns=" + ",".join(missing)
+    stim = sample_signal_at(rows, "stim", 10e-9)
+    out = sample_signal_at(rows, "out", 10e-9)
+    if stim is None or out is None:
+        return False, "missing_sample_at=10ns"
+    expected = 24.0 if stim > 0.5 else 6.0
+    err = abs(out - expected)
+    if err > 0.08:
+        mode = "hidden_depth4" if stim > 0.5 else "visible_depth3"
+        return False, f"{mode}: out@10ns={out:.4f} expected={expected:.4f}"
+    return True, f"stim={stim:.3f} expected_factorial={expected:.1f} err={err:.4f}"
+
+
+def check_v3_459_do_while_loop_accumulator(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "vin", "clk", "mode", "rst", "out", "metric"}
+    if not rows or not required.issubset(rows[0]):
+        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
+        return False, "missing_columns=" + ",".join(missing)
+    return _sample_many(
+        rows,
+        {
+            "out": [
+                (12.0, 0.0),
+                (32.0, 0.9),
+                (52.0, 0.9),
+                (72.0, 0.0),
+                (92.0, 0.0),
+                (112.0, 0.9),
+            ],
+            "metric": [
+                (12.0, 3.0),
+                (32.0, 6.0),
+                (52.0, 9.0),
+                (72.0, 0.0),
+                (92.0, 3.0),
+                (112.0, 6.0),
+            ],
+        },
+        tol=0.08,
+    )
+
+
+def check_v3_460_analog_initial_block_state(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "vin", "out"}
+    if not rows or not required.issubset(rows[0]):
+        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
+        return False, "missing_columns=" + ",".join(missing)
+    return _sample_many(
+        rows,
+        {
+            "out": [
+                (10.0, 0.25),
+                (50.0, 0.45),
+                (90.0, 0.75),
+                (130.0, 0.15),
+            ],
+        },
+        tol=0.08,
+    )
+
+
+def check_v3_461_vt_thermal_voltage_source(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "vin", "clk", "mode", "rst", "out", "metric"}
+    if not rows or not required.issubset(rows[0]):
+        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
+        return False, "missing_columns=" + ",".join(missing)
+    vt_expected = 0.02585
+    checks = [
+        (12.0, vt_expected, vt_expected),
+        (32.0, vt_expected, vt_expected),
+        (52.0, vt_expected, vt_expected),
+        (72.0, 0.0, 0.0),
+        (92.0, vt_expected, vt_expected),
+    ]
+    observed: list[str] = []
+    for time_ns, expected_out, expected_metric in checks:
+        out = sample_signal_at(rows, "out", time_ns * 1e-9)
+        metric = sample_signal_at(rows, "metric", time_ns * 1e-9)
+        if out is None or metric is None:
+            return False, f"missing_sample_at={time_ns:g}ns"
+        tol = 0.004 if expected_out > 0 else 0.004
+        if abs(out - expected_out) > tol:
+            return False, f"out@{time_ns:g}ns={out:.5f} expected={expected_out:.5f} tol={tol:.5f}"
+        if abs(metric - expected_metric) > tol:
+            return False, f"metric@{time_ns:g}ns={metric:.5f} expected={expected_metric:.5f} tol={tol:.5f}"
+        observed.append(f"{time_ns:g}ns/out={out:.5f}/metric={metric:.5f}")
+    return True, " ".join(observed)
+
+
+def check_v3_462_vt_temperature_argument(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "vin", "clk", "mode", "rst", "out", "metric"}
+    if not rows or not required.issubset(rows[0]):
+        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
+        return False, "missing_columns=" + ",".join(missing)
+    vt_expected = 0.05170
+    checks = [
+        (12.0, vt_expected, vt_expected),
+        (32.0, vt_expected, vt_expected),
+        (52.0, vt_expected, vt_expected),
+        (72.0, 0.0, 0.0),
+        (92.0, vt_expected, vt_expected),
+    ]
+    observed: list[str] = []
+    for time_ns, expected_out, expected_metric in checks:
+        out = sample_signal_at(rows, "out", time_ns * 1e-9)
+        metric = sample_signal_at(rows, "metric", time_ns * 1e-9)
+        if out is None or metric is None:
+            return False, f"missing_sample_at={time_ns:g}ns"
+        tol = 0.006
+        if abs(out - expected_out) > tol:
+            return False, f"out@{time_ns:g}ns={out:.5f} expected={expected_out:.5f} tol={tol:.5f}"
+        if abs(metric - expected_metric) > tol:
+            return False, f"metric@{time_ns:g}ns={metric:.5f} expected={expected_metric:.5f} tol={tol:.5f}"
+        observed.append(f"{time_ns:g}ns/out={out:.5f}/metric={metric:.5f}")
+    return True, " ".join(observed)
+
+
+def check_v3_463_discontinuity_event_announcement(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "vin", "clk", "mode", "rst", "out", "metric"}
+    if not rows or not required.issubset(rows[0]):
+        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
+        return False, "missing_columns=" + ",".join(missing)
+    return _sample_many(
+        rows,
+        {
+            "out": [
+                (12.0, 0.9),
+                (32.0, 0.0),
+                (52.0, 0.9),
+                (72.0, 0.0),
+                (92.0, 0.9),
+                (112.0, 0.0),
+            ],
+            "metric": [
+                (12.0, 0.0),
+                (32.0, 1.0),
+                (52.0, 2.0),
+                (72.0, 0.0),
+                (92.0, 0.0),
+                (112.0, 1.0),
+            ],
+        },
+        tol=0.08,
+    )
+
+
+def check_v3_464_param_given_gain_select(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "vin", "clk", "mode", "rst", "out_def", "metric_def", "out_ovr", "metric_ovr"}
+    if not rows or not required.issubset(rows[0]):
+        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
+        return False, "missing_columns=" + ",".join(missing)
+    failures: list[str] = []
+    checks = [
+        (12.0, 0.60, 0.0, 0.30, 1.0),
+        (52.0, 0.30, 0.0, 0.15, 1.0),
+        (72.0, 0.00, 0.0, 0.00, 0.0),
+        (92.0, 0.80, 0.0, 0.40, 1.0),
+        (132.0, 0.80, 0.0, 0.40, 1.0),
+    ]
+    for time_ns, out_def_exp, metric_def_exp, out_ovr_exp, metric_ovr_exp in checks:
+        row = min(rows, key=lambda item: abs(item["time"] - time_ns * 1e-9))
+        for signal, expected in (
+            ("out_def", out_def_exp),
+            ("metric_def", metric_def_exp),
+            ("out_ovr", out_ovr_exp),
+            ("metric_ovr", metric_ovr_exp),
+        ):
+            observed = row[signal]
+            if abs(observed - expected) > 0.04:
+                failures.append(f"{signal}@{time_ns:g}ns={observed:.4f} expected={expected:.4f}")
+    if failures:
+        return False, " ".join(failures[:4])
+    return True, "param_given_default_and_override_paths_ok"
+
+
+def check_v3_465_port_connected_output_enable(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "vin", "clk", "mode", "rst", "out", "metric"}
+    if not rows or not required.issubset(rows[0]):
+        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
+        return False, "missing_columns=" + ",".join(missing)
+    return _sample_many(
+        rows,
+        {
+            "out": [
+                (12.0, 0.60),
+                (52.0, 0.30),
+                (72.0, 0.0),
+                (92.0, 0.80),
+                (132.0, 0.80),
+            ],
+            "metric": [
+                (12.0, 1.0),
+                (52.0, 1.0),
+                (72.0, 0.0),
+                (92.0, 1.0),
+                (132.0, 1.0),
+            ],
+        },
+        tol=0.08,
+    )
+
+
+def check_v3_466_temperature_environment_metric(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "vin", "clk", "mode", "rst", "out", "metric"}
+    if not rows or not required.issubset(rows[0]):
+        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
+        return False, "missing_columns=" + ",".join(missing)
+    temp_expected = 300.15
+    out_expected = temp_expected / 300.0
+    checks = [
+        (12.0, out_expected, temp_expected),
+        (52.0, out_expected, temp_expected),
+        (72.0, 0.0, 0.0),
+        (92.0, out_expected, temp_expected),
+        (132.0, out_expected, temp_expected),
+    ]
+    observed: list[str] = []
+    for time_ns, expected_out, expected_metric in checks:
+        out = sample_signal_at(rows, "out", time_ns * 1e-9)
+        metric = sample_signal_at(rows, "metric", time_ns * 1e-9)
+        if out is None or metric is None:
+            return False, f"missing_sample_at={time_ns:g}ns"
+        out_tol = 0.04 if expected_out else 0.04
+        metric_tol = 2.0 if expected_metric else 0.04
+        if abs(out - expected_out) > out_tol:
+            return False, f"out@{time_ns:g}ns={out:.4f} expected={expected_out:.4f} tol={out_tol:.4f}"
+        if abs(metric - expected_metric) > metric_tol:
+            return False, f"metric@{time_ns:g}ns={metric:.4f} expected={expected_metric:.4f} tol={metric_tol:.4f}"
+        observed.append(f"{time_ns:g}ns/out={out:.3f}/metric={metric:.2f}")
+    return True, " ".join(observed)
+
+
+def check_v3_467_simparam_query_tnom(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "vin", "clk", "mode", "rst", "out", "metric"}
+    if not rows or not required.issubset(rows[0]):
+        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
+        return False, "missing_columns=" + ",".join(missing)
+    expected = 27.0 / 300.0
+    return _sample_many(
+        rows,
+        {
+            "out": [
+                (12.0, expected),
+                (52.0, expected),
+                (72.0, 0.0),
+                (92.0, expected),
+                (132.0, expected),
+            ],
+            "metric": [
+                (12.0, expected),
+                (52.0, expected),
+                (72.0, 0.0),
+                (92.0, expected),
+                (132.0, expected),
+            ],
+        },
+        tol=0.025,
+    )
+
+
+def check_v3_468_branch_declaration_voltage_probe(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "p", "n", "out"}
+    if not rows or not required.issubset(rows[0]):
+        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
+        return False, "missing_columns=" + ",".join(missing)
+    return _sample_many(
+        rows,
+        {
+            "out": [
+                (10.0, 0.10),
+                (50.0, 0.40),
+                (90.0, 0.70),
+                (130.0, -0.05),
+            ],
+        },
+        tol=0.035,
+    )
+
+
+def check_v3_469_current_contribution_conductance(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    ok, note = _v3_required_columns(rows, {"time", "p", "n", "imon"})
+    if not ok:
+        return False, note
+    sample_times_ns = [10.0, 30.0, 70.0, 95.0]
+    if rows[-1]["time"] >= 170e-9:
+        sample_times_ns = [10.0, 50.0, 90.0, 130.0, 150.0, 170.0]
+    failures: list[str] = []
+    max_err = 0.0
+    for time_ns in sample_times_ns:
+        time_s = time_ns * 1e-9
+        p_val = _v3_interp_signal(rows, "p", time_s)
+        n_val = _v3_interp_signal(rows, "n", time_s)
+        expected = 1e-3 * (p_val - n_val)
+        observed = _v3_interp_signal(rows, "imon", time_s)
+        err = abs(observed - expected)
+        max_err = max(max_err, err)
+        tol = max(1.0e-5, abs(expected) * 0.06)
+        if err > tol:
+            failures.append(
+                f"imon@{time_ns:g}ns={observed:.3e} expected={expected:.3e} tol={tol:.1e}"
+            )
+    current_range = _v3_signal_range(rows, "imon")
+    min_range = 6.5e-4 if rows[-1]["time"] >= 170e-9 else 4.0e-4
+    if current_range < min_range:
+        failures.append(f"imon_range_too_small={current_range:.3e}")
+    if failures:
+        return False, " ".join(failures[:4])
+    return True, f"conductance_branch_current_ok imon_range={current_range:.3e} max_err={max_err:.3e}"
+
+
+def check_v3_470_branch_current_probe_contribution(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    ok, note = _v3_required_columns(rows, {"time", "p", "n", "out"})
+    if not ok:
+        return False, note
+    failures: list[str] = []
+    for time_ns in (10.0, 50.0, 90.0):
+        row = min(rows, key=lambda item: abs(item["time"] - time_ns * 1e-9))
+        expected = row["p"] - row["n"]
+        if abs(row["out"] - expected) > 0.08:
+            failures.append(f"out@{time_ns:g}ns={row['out']:.4f} expected_branch_current={expected:.4f}")
+    if failures:
+        return False, " ".join(failures[:4])
+    return True, "branch_current_probe_tracks_contributed_current"
+
+
+def check_v3_471_indirect_branch_null_balance(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    ok, note = _v3_required_columns(rows, {"time", "inp", "out"})
+    if not ok:
+        return False, note
+    sample_times_ns = [10.0, 50.0, 90.0]
+    if rows[-1]["time"] >= 150e-9:
+        sample_times_ns.extend([130.0, 150.0])
+    max_err = 0.0
+    observed: list[str] = []
+    for time_ns in sample_times_ns:
+        time_s = time_ns * 1e-9
+        inp = _v3_interp_signal(rows, "inp", time_s)
+        out = _v3_interp_signal(rows, "out", time_s)
+        err = abs(out - inp)
+        max_err = max(max_err, err)
+        observed.append(f"{time_ns:g}ns:{out:.3f}/{inp:.3f}")
+        if err > 0.035:
+            return False, f"out_not_tracking_in@{time_ns:g}ns out={out:.4f} inp={inp:.4f} err={err:.4f}"
+    if _v3_signal_range(rows, "out") < 0.45:
+        return False, f"out_range_too_small={_v3_signal_range(rows, 'out'):.4f}"
+    return True, "indirect_branch_voltage_tracks_input max_err={:.4f} samples={}".format(
+        max_err,
+        ",".join(observed),
+    )
+
+
+def check_v3_472_indirect_branch_ddt_balance(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    ok, note = _v3_required_columns(rows, {"time", "inp", "out"})
+    if not ok:
+        return False, note
+    sample_times_ns = [50.0, 90.0]
+    if rows[-1]["time"] >= 150e-9:
+        sample_times_ns.extend([130.0, 150.0])
+    max_err = 0.0
+    observed: list[str] = []
+    for time_ns in sample_times_ns:
+        time_s = time_ns * 1e-9
+        expected = _v3_trapezoid_integral_to(rows, "inp", time_s)
+        out = _v3_interp_signal(rows, "out", time_s)
+        err = abs(out - expected)
+        max_err = max(max_err, err)
+        observed.append(f"{time_ns:g}ns:{out:.3e}/{expected:.3e}")
+        if err > 2.0e-9:
+            return False, f"out_not_integral@{time_ns:g}ns out={out:.4e} expected={expected:.4e} err={err:.4e}"
+    if _v3_signal_range(rows, "out") < 2.0e-8:
+        return False, f"out_integral_range_too_small={_v3_signal_range(rows, 'out'):.4e}"
+    return True, "indirect_branch_ddt_integral max_err={:.3e} samples={}".format(
+        max_err,
+        ",".join(observed),
+    )
+
+
+def check_v3_473_attribute_potential_abstol_probe(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "inp", "out"}
+    if not rows or not required.issubset(rows[0]):
+        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
+        return False, "missing_columns=" + ",".join(missing)
+    return _sample_many(
+        rows,
+        {
+            "out": [
+                (10.0, 0.10),
+                (50.0, 0.40),
+                (90.0, 0.70),
+                (130.0, 0.00),
+            ],
+        },
+        tol=0.035,
+    )
+
+
+def check_v3_474_generic_potential_access_function(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "inp", "out"}
+    if not rows or not required.issubset(rows[0]):
+        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
+        return False, "missing_columns=" + ",".join(missing)
+    return _sample_many(
+        rows,
+        {
+            "out": [
+                (10.0, 0.00),
+                (50.0, 0.30),
+                (90.0, 0.60),
+                (130.0, -0.10),
+            ],
+        },
+        tol=0.035,
+    )
+
+
+def check_v3_475_generic_potential_contribution(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "inp", "out"}
+    if not rows or not required.issubset(rows[0]):
+        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
+        return False, "missing_columns=" + ",".join(missing)
+    return _sample_many(
+        rows,
+        {
+            "out": [
+                (10.0, 0.00),
+                (50.0, 0.25),
+                (90.0, 0.55),
+                (130.0, -0.15),
+            ],
+        },
+        tol=0.035,
+    )
+
+
+def check_v3_476_oomr_string_voltage_probe(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "vin", "out"}
+    if not rows or not required.issubset(rows[0]):
+        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
+        return False, "missing_columns=" + ",".join(missing)
+    return _sample_many(
+        rows,
+        {
+            "out": [
+                (10.0, 0.00),
+                (50.0, 0.20),
+                (90.0, 0.50),
+                (130.0, -0.20),
+            ],
+        },
+        tol=0.035,
+    )
+
+
+def check_v3_477_analog_node_alias_initial(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "vin", "out"}
+    if not rows or not required.issubset(rows[0]):
+        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
+        return False, "missing_columns=" + ",".join(missing)
+    return _sample_many(
+        rows,
+        {
+            "out": [
+                (10.0, 0.00),
+                (50.0, 0.20),
+                (90.0, 0.50),
+                (130.0, -0.20),
+            ],
+        },
+        tol=0.035,
+    )
+
+
+def check_v3_478_inherited_port_attribute_supply(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "inp", "out"}
+    if not rows or not required.issubset(rows[0]):
+        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
+        return False, "missing_columns=" + ",".join(missing)
+    return _sample_many(
+        rows,
+        {
+            "out": [
+                (10.0, 0.00),
+                (50.0, 0.22),
+                (90.0, 0.52),
+                (130.0, -0.18),
+            ],
+        },
+        tol=0.035,
+    )
+
+
+def check_v3_479_inherited_mfactor_parameter(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "inp", "out"}
+    if not rows or not required.issubset(rows[0]):
+        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
+        return False, "missing_columns=" + ",".join(missing)
+    return _sample_many(
+        rows,
+        {
+            "out": [
+                (10.0, 0.00),
+                (50.0, 0.30),
+                (90.0, 0.60),
+                (130.0, -0.15),
+            ],
+        },
+        tol=0.035,
+    )
+
+
+def check_v3_480_mfactor_system_function_gain(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "inp", "out"}
+    if not rows or not required.issubset(rows[0]):
+        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
+        return False, "missing_columns=" + ",".join(missing)
+    return _sample_many(
+        rows,
+        {
+            "out": [
+                (10.0, 0.00),
+                (50.0, 0.30),
+                (90.0, 0.70),
+                (130.0, -0.20),
+            ],
+        },
+        tol=0.035,
+    )
+
+
+def check_v3_analog_primitive_trace_present(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "p"}
+    if not rows or not required.issubset(rows[0]):
+        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
+        return False, "missing_columns=" + ",".join(missing)
+    if len(rows) < 2:
+        return False, f"too_few_trace_rows={len(rows)}"
+    return True, f"primitive_trace_present rows={len(rows)} p_range={_v3_signal_range(rows, 'p'):.4g}"
+
+
+def _veriloga_source_without_comments(path: Path) -> str:
+    text = path.read_text(encoding="utf-8", errors="ignore")
+    text = re.sub(r"/\*.*?\*/", " ", text, flags=re.S)
+    text = re.sub(r"//.*", " ", text)
+    return re.sub(r"\s+", " ", text).strip()
+
+
+def check_v3_481_analog_primitive_resistor_instance_artifact(dut_path: Path) -> tuple[bool, str]:
+    text = _veriloga_source_without_comments(dut_path)
+    primitive_pattern = re.compile(
+        r"\bresistor\s*#\s*\(\s*\.r\s*\(\s*1000(?:\.0+)?\s*\)\s*\)\s*"
+        r"(?P<inst>[A-Za-z_][A-Za-z0-9_$]*)\s*\(\s*p\s*,\s*n\s*\)\s*;",
+        re.I,
+    )
+    matches = list(primitive_pattern.finditer(text))
+    if len(matches) != 1:
+        return False, f"resistor_primitive_contract_matches={len(matches)} expected=1"
+    if re.search(r"\bV\s*\(", text) or re.search(r"\bI\s*\(", text):
+        return False, "unexpected_behavioral_or_current_contribution"
+    return True, f"artifact_resistor_primitive instance={matches[0].group('inst')} r_ohm=1000 ports=p,n"
+
+
+def check_v3_482_analog_primitive_isource_instance_artifact(dut_path: Path) -> tuple[bool, str]:
+    text = _veriloga_source_without_comments(dut_path)
+    if not re.search(r"\bparameter\s+real\s+ibias\s*=\s*1u\s*;", text, re.I):
+        return False, "missing_parameter_real_ibias_1u"
+    primitive_pattern = re.compile(
+        r"\bisource\s*#\s*\(\s*\.dc\s*\(\s*ibias\s*\)\s*\)\s*"
+        r"(?P<inst>[A-Za-z_][A-Za-z0-9_$]*)\s*\(\s*n\s*,\s*p\s*\)\s*;",
+        re.I,
+    )
+    matches = list(primitive_pattern.finditer(text))
+    if len(matches) != 1:
+        return False, f"isource_primitive_contract_matches={len(matches)} expected=1"
+    if re.search(r"\bV\s*\(", text) or re.search(r"\bI\s*\(", text):
+        return False, "unexpected_behavioral_or_current_contribution"
+    return True, f"artifact_isource_primitive instance={matches[0].group('inst')} dc=ibias ports=n,p"
+
+
+def check_v3_483_cds_violation_threshold_assert(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "inp", "out"}
+    if not rows or not required.issubset(rows[0]):
+        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
+        return False, "missing_columns=" + ",".join(missing)
+    return _sample_many(
+        rows,
+        {
+            "out": [
+                (10.0, 0.20),
+                (50.0, 0.75),
+                (90.0, 1.00),
+                (130.0, 0.40),
+            ],
+        },
+        tol=0.035,
+    )
+
+
+def check_v3_484_rtoi_conversion_quantizer(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "inp", "out"}
+    if not rows or not required.issubset(rows[0]):
+        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
+        return False, "missing_columns=" + ",".join(missing)
+    return _sample_many(
+        rows,
+        {
+            "out": [
+                (10.0, 0.0 / 7.0),
+                (50.0, 2.0 / 7.0),
+                (90.0, 5.0 / 7.0),
+                (120.0, 1.0),
+                (145.0, 0.0),
+            ],
+        },
+        tol=0.035,
+    )
+
+
+def check_v3_485_mc_trial_number_metric(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "stim", "out"}
+    if not rows or not required.issubset(rows[0]):
+        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
+        return False, "missing_columns=" + ",".join(missing)
+    return _sample_many(
+        rows,
+        {
+            "out": [
+                (10.0, 0.25),
+                (50.0, 0.25),
+                (120.0, 0.25),
+            ],
+        },
+        tol=0.025,
+    )
+
+
+def check_v3_486_rf_source_info_registration(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "inp", "out"}
+    if not rows or not required.issubset(rows[0]):
+        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
+        return False, "missing_columns=" + ",".join(missing)
+    return _sample_many(
+        rows,
+        {
+            "out": [
+                (10.0, 0.20),
+                (50.0, 0.40),
+                (90.0, 0.60),
+                (130.0, 0.00),
+            ],
+        },
+        tol=0.035,
+    )
+
+
+def check_v3_487_table_model_2d_array_surface(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "x", "y", "out"}
+    if not rows or not required.issubset(rows[0]):
+        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
+        return False, "missing_columns=" + ",".join(missing)
+    return _sample_many(
+        rows,
+        {
+            "out": [
+                (10.0, 0.0),
+                (50.0, 1.0),
+                (90.0, 3.0),
+                (130.0, 2.0),
+            ],
+        },
+        tol=0.05,
+    )
+
+
+def check_v3_488_table_model_string_param_source(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "inp", "out"}
+    if not rows or not required.issubset(rows[0]):
+        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
+        return False, "missing_columns=" + ",".join(missing)
+    return _sample_many(
+        rows,
+        {
+            "out": [
+                (10.0, 0.1),
+                (50.0, 0.6),
+                (90.0, 1.1),
+                (130.0, 0.1),
+            ],
+        },
+        tol=0.04,
+    )
+
+
+def check_v3_489_event_nested_or_expression(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "a", "b", "out"}
+    if not rows or not required.issubset(rows[0]):
+        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
+        return False, "missing_columns=" + ",".join(missing)
+    return _sample_many(
+        rows,
+        {
+            "out": [
+                (15.0, 0.1),
+                (40.0, 0.3),
+                (60.0, 0.4),
+                (80.0, 0.6),
+                (120.0, 0.8),
+            ],
+        },
+        tol=0.035,
+    )
+
+
+def check_v3_490_event_task_function_state_update(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "clk", "inp", "out"}
+    if not rows or not required.issubset(rows[0]):
+        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
+        return False, "missing_columns=" + ",".join(missing)
+    return _sample_many(
+        rows,
+        {
+            "out": [
+                (20.0, 0.15),
+                (40.0, 0.40),
+                (60.0, 0.85),
+                (80.0, 1.00),
+            ],
+        },
+        tol=0.035,
+    )
+
+
+def check_v3_491_kcl_capacitor_ddt_current(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    ok, note = _v3_required_columns(rows, {"time", "p", "n", "imon"})
+    if not ok:
+        return False, note
+
+    hidden = rows[-1]["time"] >= 150e-9
+    branch_points = [
+        (0.0, 0.0),
+        (20.0, 0.0),
+        (24.0, 0.4),
+        (60.0, 0.4),
+        (64.0, 0.1),
+    ]
+    if hidden:
+        branch_points.extend([
+            (120.0, 0.1),
+            (124.0, 0.7),
+            (140.0, 0.7),
+            (144.0, 0.2),
+            (160.0, 0.2),
+        ])
+        sample_times_ns = [22.0, 62.0, 80.0, 122.0, 142.0, 150.0]
+    else:
+        branch_points.extend([(100.0, 0.1)])
+        sample_times_ns = [22.0, 62.0, 80.0]
+
+    def expected_current(time_ns: float) -> float:
+        for (t0, v0), (t1, v1) in zip(branch_points[:-1], branch_points[1:]):
+            if t0 < time_ns < t1 and t1 > t0:
+                slope_v_per_s = (v1 - v0) / ((t1 - t0) * 1e-9)
+                return 1e-12 * slope_v_per_s
+        return 0.0
+
+    failures: list[str] = []
+    max_err = 0.0
+    for time_ns in sample_times_ns:
+        expected = expected_current(time_ns)
+        observed = _v3_interp_signal(rows, "imon", time_ns * 1e-9)
+        err = abs(observed - expected)
+        max_err = max(max_err, err)
+        tol = max(7.0e-6, abs(expected) * 0.10)
+        if err > tol:
+            failures.append(
+                f"imon@{time_ns:g}ns={observed:.3e} expected={expected:.3e} tol={tol:.1e}"
+            )
+    current_range = _v3_signal_range(rows, "imon")
+    min_range = 2.5e-4 if hidden else 1.5e-4
+    if current_range < min_range:
+        failures.append(f"imon_range_too_small={current_range:.3e}")
+    if failures:
+        return False, " ".join(failures[:4])
+    return True, f"capacitor_ddt_branch_current_ok imon_range={current_range:.3e} max_err={max_err:.3e}"
+
+
+def check_v3_492_kcl_inductor_idt_voltage(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    ok, note = _v3_required_columns(rows, {"time", "p"})
+    if not ok:
+        return False, note
+
+    wave = [
+        (0.0, 0.0),
+        (20e-9, 0.0),
+        (21e-9, 1e-6),
+        (80e-9, 1e-6),
+        (81e-9, -1e-6),
+        (160e-9, -1e-6),
+    ]
+
+    def expected_p(time_s: float) -> float:
+        area = 0.0
+        for (t0, i0), (t1, i1) in zip(wave[:-1], wave[1:]):
+            if time_s <= t0:
+                break
+            end = min(time_s, t1)
+            if end <= t0:
+                continue
+            frac = (end - t0) / (t1 - t0) if t1 > t0 else 1.0
+            i_end = i0 + frac * (i1 - i0)
+            area += 0.5 * (i0 + i_end) * (end - t0)
+            if time_s <= t1:
+                break
+        return 1e-9 * area
+
+    failures: list[str] = []
+    max_err = 0.0
+    for time_ns in (21.0, 40.0, 80.0, 100.0, 120.0, 160.0):
+        expected = expected_p(time_ns * 1e-9)
+        observed = sample_signal_at(rows, "p", time_ns * 1e-9)
+        if observed is None:
+            failures.append(f"missing_p@{time_ns:g}ns")
+            continue
+        err = abs(observed - expected)
+        max_err = max(max_err, err)
+        tol = max(2.5e-25, abs(expected) * 0.03)
+        if err > tol:
+            failures.append(
+                f"p@{time_ns:g}ns={observed:.3e} expected={expected:.3e} tol={tol:.3e}"
+            )
+    p_range = _v3_signal_range(rows, "p")
+    if p_range < 7.0e-23:
+        failures.append(f"p_range_too_small={p_range:.3e}")
+    if failures:
+        return False, " ".join(failures[:4])
+    return True, f"kcl_idt_branch_current_shape_ok p_range={p_range:.3e} max_err={max_err:.3e}"
+
+
+def check_v3_493_continuous_laplace_nd_filter(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    ok, note = _v3_required_columns(rows, {"time", "inp", "out"})
+    if not ok:
+        return False, note
+    rise_times = _v3_rising_cross_times(rows, "inp", 0.5)
+    if not rise_times:
+        return False, "missing_input_step_up"
+    rise_t = rise_times[0]
+    fall_t = None
+    for prev, cur in zip(rows, rows[1:]):
+        if prev["inp"] >= 0.5 and cur["inp"] < 0.5:
+            denom = prev["inp"] - cur["inp"]
+            frac = 0.0 if denom == 0.0 else (prev["inp"] - 0.5) / denom
+            fall_t = prev["time"] + frac * (cur["time"] - prev["time"])
+            break
+
+    tau = 1.0e-6
+
+    def expected(time_s: float) -> float:
+        if time_s <= rise_t:
+            return 0.0
+        if fall_t is None or time_s <= fall_t:
+            return 1.0 - math.exp(-(time_s - rise_t) / tau)
+        y_fall = 1.0 - math.exp(-(fall_t - rise_t) / tau)
+        return y_fall * math.exp(-(time_s - fall_t) / tau)
+
+    stop_t = rows[-1]["time"]
+    sample_times = [40e-9, min(75e-9, stop_t)]
+    if stop_t > 120e-9:
+        sample_times.extend([100e-9, 150e-9])
+    failures: list[str] = []
+    for sample_t in sample_times:
+        observed = _v3_interp_signal(rows, "out", sample_t)
+        exp_value = expected(sample_t)
+        tol = max(3.0e-3, abs(exp_value) * 0.08)
+        if abs(observed - exp_value) > tol:
+            failures.append(f"out@{sample_t*1e9:.0f}ns={observed:.4g} expected={exp_value:.4g}")
+    if _v3_signal_range(rows, "out") < 0.03:
+        failures.append(f"out_range_too_small={_v3_signal_range(rows, 'out'):.4g}")
+    if failures:
+        return False, " ".join(failures[:5])
+    return True, "continuous_laplace_nd_first_order_lowpass_shape"
+
+
+def check_v3_494_continuous_zi_nd_filter(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    ok, note = _v3_required_columns(rows, {"time", "inp", "out"})
+    if not ok:
+        return False, note
+
+    stop_t = rows[-1]["time"]
+    expected_samples = [
+        (30e-9, 0.08),
+        (40e-9, 0.60),
+        (50e-9, 1.15),
+        (70e-9, 1.321875),
+    ]
+    if stop_t > 120e-9:
+        expected_samples.extend(
+            [
+                (100e-9, 0.4829663),
+                (120e-9, 0.03018539),
+                (140e-9, 0.001886587),
+            ]
+        )
+
+    failures: list[str] = []
+    for sample_t, expected in expected_samples:
+        observed = _v3_interp_signal(rows, "out", sample_t)
+        tol = max(0.018, abs(expected) * 0.055)
+        if abs(observed - expected) > tol:
+            failures.append(f"out@{sample_t*1e9:.0f}ns={observed:.4g} expected={expected:.4g}")
+
+    high_out = max(row["out"] for row in rows if 55e-9 <= row["time"] <= min(stop_t, 82e-9))
+    if not (1.20 <= high_out <= 1.40):
+        failures.append(f"iir_peak_wrong={high_out:.4g}")
+    if stop_t > 120e-9:
+        late_out = _v3_interp_signal(rows, "out", 140e-9)
+        if abs(late_out) > 0.012:
+            failures.append(f"decay_tail_too_large={late_out:.4g}")
+
+    if failures:
+        return False, " ".join(failures[:6])
+    return True, "continuous_zi_nd_sampled_iir_response"
 
 
 def check_v3_361_white_noise_voltage_source(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    required = {"time", "ctrl", "clk", "out", "metric"}
-    if not rows or not required.issubset(rows[0]):
-        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
-        return False, "missing_columns=" + ",".join(missing)
-    return _sample_many(
+    return _check_v3_clocked_metric_expression(
         rows,
-        {
-            "metric": [
-                (80.0, 0.2),
-                (180.0, 0.6),
-                (280.0, 0.3),
-                (380.0, 0.8),
-            ],
-        },
-        tol=0.08,
+        metric_fn=lambda row, _edge_count: row["ctrl"],
     )
 
 
 def check_v3_362_white_noise_gated_source(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    required = {"time", "ctrl", "clk", "out", "metric"}
-    if not rows or not required.issubset(rows[0]):
-        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
-        return False, "missing_columns=" + ",".join(missing)
-    return _sample_many(
+    return _check_v3_clocked_metric_expression(
         rows,
-        {
-            "metric": [
-                (80.0, 0.0),
-                (180.0, 0.9),
-                (280.0, 0.0),
-                (380.0, 0.9),
-            ],
-        },
-        tol=0.08,
+        metric_fn=lambda row, _edge_count: 0.9 if row["ctrl"] > 0.45 else 0.0,
     )
 
 
 def check_v3_363_flicker_noise_voltage_source(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    required = {"time", "ctrl", "clk", "out", "metric"}
-    if not rows or not required.issubset(rows[0]):
-        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
-        return False, "missing_columns=" + ",".join(missing)
-    return _sample_many(
+    return _check_v3_clocked_metric_expression(
         rows,
-        {
-            "metric": [
-                (80.0, 1.0),
-                (180.0, 1.0),
-                (280.0, 1.0),
-                (380.0, 1.0),
-            ],
-        },
-        tol=0.08,
+        metric_fn=lambda _row, _edge_count: 1.0,
     )
 
 
 def check_v3_364_flicker_noise_corner_selector(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    required = {"time", "ctrl", "clk", "out", "metric"}
-    if not rows or not required.issubset(rows[0]):
-        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
-        return False, "missing_columns=" + ",".join(missing)
-    return _sample_many(
+    return _check_v3_clocked_metric_expression(
         rows,
-        {
-            "metric": [
-                (80.0, 0.0),
-                (180.0, 0.9),
-                (280.0, 0.0),
-                (380.0, 0.9),
-            ],
-        },
-        tol=0.08,
+        metric_fn=lambda row, _edge_count: 0.9 if row["ctrl"] > 0.45 else 0.0,
     )
 
 
 def check_v3_365_noise_table_voltage_shaper(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    required = {"time", "ctrl", "clk", "out", "metric"}
-    if not rows or not required.issubset(rows[0]):
-        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
-        return False, "missing_columns=" + ",".join(missing)
-    return _sample_many(
+    return _check_v3_clocked_metric_expression(
         rows,
-        {
-            "metric": [
-                (80.0, 0.34),
-                (180.0, 0.42),
-                (280.0, 0.36),
-                (380.0, 0.46),
-            ],
-        },
-        tol=0.08,
+        metric_fn=lambda row, _edge_count: 0.3 + row["ctrl"] * 0.2,
     )
 
 
 def check_v3_366_noise_table_gated_shaper(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    required = {"time", "ctrl", "clk", "out", "metric"}
-    if not rows or not required.issubset(rows[0]):
-        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
-        return False, "missing_columns=" + ",".join(missing)
-    return _sample_many(
+    return _check_v3_clocked_metric_expression(
         rows,
-        {
-            "metric": [
-                (80.0, 0.0),
-                (180.0, 0.9),
-                (280.0, 0.0),
-                (380.0, 0.9),
-            ],
-        },
-        tol=0.08,
+        metric_fn=lambda row, _edge_count: 0.9 if row["ctrl"] > 0.45 else 0.0,
     )
 
 
 def check_v3_367_analysis_dependent_dc_tran_mode(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    required = {"time", "ctrl", "clk", "out", "metric"}
-    if not rows or not required.issubset(rows[0]):
-        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
-        return False, "missing_columns=" + ",".join(missing)
-    return _sample_many(
+    return _check_v3_clocked_metric_expression(
         rows,
-        {
-            "out": [
-                (80.0, 0.2),
-                (180.0, 0.6),
-                (280.0, 0.3),
-                (380.0, 0.8),
-            ],
-            "metric": [
-                (80.0, 0.9),
-                (180.0, 0.9),
-                (280.0, 0.9),
-                (380.0, 0.9),
-            ],
-        },
-        tol=0.08,
+        metric_fn=lambda _row, _edge_count: 0.9,
+        out_fn=lambda row: row["ctrl"],
     )
 
 
 def check_v3_368_analysis_dependent_noise_enable(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    required = {"time", "ctrl", "clk", "out", "metric"}
-    if not rows or not required.issubset(rows[0]):
-        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
-        return False, "missing_columns=" + ",".join(missing)
-    return _sample_many(
+    return _check_v3_clocked_metric_expression(
         rows,
-        {
-            "metric": [
-                (80.0, 0.2),
-                (180.0, 0.6),
-                (280.0, 0.3),
-                (380.0, 0.8),
-            ],
-        },
-        tol=0.08,
+        metric_fn=lambda row, _edge_count: row["ctrl"],
     )
 
 
 def check_v3_369_ac_stim_small_signal_source(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    required = {"time", "ctrl", "clk", "out", "metric"}
-    if not rows or not required.issubset(rows[0]):
-        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
-        return False, "missing_columns=" + ",".join(missing)
-    return _sample_many(
+    return _check_v3_clocked_metric_expression(
         rows,
-        {
-            "out": [
-                (80.0, 0.2),
-                (180.0, 0.6),
-                (280.0, 0.3),
-                (380.0, 0.8),
-            ],
-            "metric": [
-                (80.0, 1.0),
-                (180.0, 1.0),
-                (280.0, 1.0),
-                (380.0, 1.0),
-            ],
-        },
-        tol=0.08,
+        metric_fn=lambda _row, _edge_count: 1.0,
+        out_fn=lambda row: row["ctrl"],
     )
 
 
 def check_v3_370_ac_stim_phase_selector(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    required = {"time", "ctrl", "clk", "out", "metric"}
-    if not rows or not required.issubset(rows[0]):
-        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
-        return False, "missing_columns=" + ",".join(missing)
-    return _sample_many(
+    return _check_v3_clocked_metric_expression(
         rows,
-        {
-            "out": [
-                (80.0, 0.2),
-                (180.0, 0.7),
-                (280.0, 0.3),
-                (380.0, 0.8),
-            ],
-            "metric": [
-                (80.0, 0.0),
-                (180.0, 0.9),
-                (280.0, 0.0),
-                (380.0, 0.9),
-            ],
-        },
-        tol=0.08,
+        metric_fn=lambda row, _edge_count: 0.9 if row["ctrl"] > 0.45 else 0.0,
+        out_fn=lambda row: row["ctrl"],
     )
 
 
 def check_v3_371_combined_white_flicker_noise(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    required = {"time", "ctrl", "clk", "out", "metric"}
-    if not rows or not required.issubset(rows[0]):
-        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
-        return False, "missing_columns=" + ",".join(missing)
-    return _sample_many(
+    return _check_v3_clocked_metric_expression(
         rows,
-        {
-            "metric": [
-                (80.0, 1.5),
-                (180.0, 1.5),
-                (280.0, 1.5),
-                (380.0, 1.5),
-            ],
-        },
-        tol=0.08,
+        metric_fn=lambda _row, _edge_count: 1.5,
     )
 
 
 def check_v3_372_analysis_aware_noise_metric(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    required = {"time", "ctrl", "clk", "out", "metric"}
-    if not rows or not required.issubset(rows[0]):
-        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
-        return False, "missing_columns=" + ",".join(missing)
-    return _sample_many(
+    return _check_v3_clocked_metric_expression(
         rows,
-        {
-            "out": [
-                (80.0, 0.2),
-                (180.0, 0.6),
-                (280.0, 0.3),
-                (380.0, 0.8),
-            ],
-            "metric": [
-                (80.0, 0.125),
-                (180.0, 0.25),
-                (280.0, 0.375),
-                (380.0, 0.5),
-            ],
-        },
-        tol=0.08,
+        metric_fn=lambda _row, edge_count: edge_count / 8.0,
+        out_fn=lambda row: row["ctrl"],
     )
 
 
 def check_v3_373_task_output_limiter(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    required = {"time", "vin", "clk", "mode", "rst", "out", "metric"}
-    if not rows or not required.issubset(rows[0]):
-        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
-        return False, "missing_columns=" + ",".join(missing)
-    return _sample_many(
+    def update(state: dict[str, float | int], row: dict[str, float]) -> tuple[float, float]:
+        if row["rst"] > 0.45:
+            state["count"] = 0
+            state["state_q"] = 0
+            return 0.0, 0.0
+        state["count"] = int(state["count"]) + 1
+        state_q = int(state["count"]) % 3
+        state["state_q"] = state_q
+        sample = row["vin"]
+        if state_q == 0:
+            out = sample
+        elif state_q == 1:
+            out = 0.9 if sample > 0.45 else 0.0
+        else:
+            out = min(0.9, max(0.0, sample))
+        return out, out / 0.9
+
+    return _check_v3_task_clocked_behavior(
         rows,
-        {
-            "out": [
-                (80.0, 0.0),
-                (180.0, 0.9),
-                (280.0, 0.3),
-                (380.0, 0.9),
-            ],
-            "metric": [
-                (80.0, 0.0),
-                (180.0, 1.0),
-                (280.0, 1.0 / 3.0),
-                (380.0, 1.0),
-            ],
-        },
-        tol=0.08,
+        update_fn=update,
+        initial_state={"out": 0.0, "metric": 0.0, "count": 0, "state_q": 0},
     )
 
 
 def check_v3_374_task_dual_output_update(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    required = {"time", "vin", "clk", "mode", "rst", "out", "metric"}
-    if not rows or not required.issubset(rows[0]):
-        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
-        return False, "missing_columns=" + ",".join(missing)
-    return _sample_many(
+    def update(_state: dict[str, float | int], row: dict[str, float]) -> tuple[float, float]:
+        if row["rst"] > 0.45:
+            return 0.0, 0.0
+        sample = row["vin"]
+        trim = row["mode"]
+        out = min(0.9, max(0.0, sample + trim))
+        metric_raw = min(0.9, max(0.0, sample - trim + 0.3))
+        return out, metric_raw / 0.9
+
+    return _check_v3_task_clocked_behavior(
         rows,
-        {
-            "out": [
-                (80.0, 0.3),
-                (180.0, 0.5),
-                (280.0, 0.9),
-                (380.0, 0.1),
-            ],
-            "metric": [
-                (80.0, 4.0 / 9.0),
-                (180.0, 1.0),
-                (280.0, 4.0 / 9.0),
-                (380.0, 0.0),
-            ],
-        },
-        tol=0.08,
+        update_fn=update,
+        initial_state={"out": 0.0, "metric": 0.0},
     )
 
 
 def check_v3_375_task_event_counter_service(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    required = {"time", "vin", "clk", "mode", "rst", "out", "metric"}
-    if not rows or not required.issubset(rows[0]):
-        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
-        return False, "missing_columns=" + ",".join(missing)
-    return _sample_many(
+    def update(state: dict[str, float | int], row: dict[str, float]) -> tuple[float, float]:
+        if row["rst"] > 0.45:
+            state["count"] = 0
+            state["sum"] = 0.0
+            return 0.0, 0.0
+        if row["mode"] > 0.45:
+            state["count"] = int(state["count"]) + 1
+            state["sum"] = float(state["sum"]) + row["vin"]
+        count = int(state["count"])
+        out = min(0.9, 0.15 * count)
+        metric = float(state["sum"]) / count if count > 0 else 0.0
+        return out, metric
+
+    return _check_v3_task_clocked_behavior(
         rows,
-        {
-            "out": [
-                (80.0, 0.15),
-                (180.0, 0.15),
-                (280.0, 0.30),
-                (380.0, 0.45),
-            ],
-            "metric": [
-                (80.0, 0.20),
-                (180.0, 0.20),
-                (280.0, 0.40),
-                (380.0, 1.7 / 3.0),
-            ],
-        },
-        tol=0.08,
+        update_fn=update,
+        initial_state={"out": 0.0, "metric": 0.0, "count": 0, "sum": 0.0},
     )
 
 
 def check_v3_376_task_reset_sequencer(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    required = {"time", "vin", "clk", "mode", "rst", "out", "metric"}
-    if not rows or not required.issubset(rows[0]):
-        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
-        return False, "missing_columns=" + ",".join(missing)
-    return _sample_many(
+    def update(state: dict[str, float | int], row: dict[str, float]) -> tuple[float, float]:
+        if row["rst"] > 0.45:
+            state["phase"] = 0
+            return 0.0, 0.0
+        state["phase"] = int(state["phase"]) + 1
+        out = row["vin"] + (0.2 if row["mode"] > 0.45 else 0.0)
+        out = min(0.9, max(0.0, out))
+        return out, int(state["phase"]) / 4.0
+
+    return _check_v3_task_clocked_behavior(
         rows,
-        {
-            "out": [
-                (80.0, 0.2),
-                (180.0, 0.0),
-                (280.0, 0.8),
-                (380.0, 0.4),
-                (480.0, 0.9),
-            ],
-            "metric": [
-                (80.0, 0.25),
-                (180.0, 0.0),
-                (280.0, 0.25),
-                (380.0, 0.5),
-                (480.0, 0.75),
-            ],
-        },
-        tol=0.08,
+        update_fn=update,
+        initial_state={"out": 0.0, "metric": 0.0, "phase": 0},
     )
 
 
 def check_v3_377_task_stateful_threshold_update(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    required = {"time", "vin", "clk", "mode", "rst", "out", "metric"}
-    if not rows or not required.issubset(rows[0]):
-        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
-        return False, "missing_columns=" + ",".join(missing)
-    return _sample_many(
+    def update(state: dict[str, float | int], row: dict[str, float]) -> tuple[float, float]:
+        if row["rst"] > 0.45:
+            state["threshold"] = 0.45
+            return 0.0, 0.0
+        threshold = float(state["threshold"])
+        out = 0.9 if row["vin"] > threshold else 0.0
+        metric = threshold
+        if row["mode"] > 0.45:
+            state["threshold"] = min(0.75, threshold + 0.1)
+        return out, metric
+
+    return _check_v3_task_clocked_behavior(
         rows,
-        {
-            "out": [
-                (80.0, 0.9),
-                (180.0, 0.0),
-                (280.0, 0.0),
-                (380.0, 0.9),
-                (480.0, 0.0),
-            ],
-            "metric": [
-                (80.0, 0.45),
-                (180.0, 0.45),
-                (280.0, 0.55),
-                (380.0, 0.55),
-                (480.0, 0.65),
-            ],
-        },
-        tol=0.08,
+        update_fn=update,
+        initial_state={"out": 0.0, "metric": 0.0, "threshold": 0.45},
     )
 
 
 def check_v3_378_task_metric_normalizer(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    required = {"time", "vin", "clk", "mode", "rst", "out", "metric"}
-    if not rows or not required.issubset(rows[0]):
-        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
-        return False, "missing_columns=" + ",".join(missing)
-    return _sample_many(
+    def update(_state: dict[str, float | int], row: dict[str, float]) -> tuple[float, float]:
+        if row["rst"] > 0.45:
+            return 0.0, 0.0
+        sample = row["vin"]
+        out = min(0.9, max(0.0, sample))
+        norm_span = 0.9 if row["mode"] > 0.45 else 0.45
+        metric = 0.9 * abs(sample - 0.45) / norm_span
+        metric = min(0.9, max(0.0, metric))
+        return out, metric
+
+    return _check_v3_task_clocked_behavior(
         rows,
-        {
-            "out": [
-                (80.0, 0.45),
-                (180.0, 0.0),
-                (280.0, 0.9),
-                (380.0, 0.2),
-            ],
-            "metric": [
-                (80.0, 0.0),
-                (180.0, 0.9),
-                (280.0, 0.45),
-                (380.0, 0.25),
-            ],
-        },
-        tol=0.08,
+        update_fn=update,
+        initial_state={"out": 0.0, "metric": 0.0},
+    )
+
+
+def _check_v3_file_io_gate(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    def update(_state: dict[str, float | int], row: dict[str, float]) -> tuple[float, float]:
+        if row["rst"] > 0.45:
+            return 0.0, 0.9
+        return (0.9 if row["vin"] > 0.45 else 0.0), 0.9
+
+    return _check_v3_task_clocked_behavior(
+        rows,
+        update_fn=update,
+        initial_state={"out": 0.0, "metric": 0.9},
     )
 
 
 def check_v3_379_file_fgets_config_loader(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    required = {"time", "vin", "clk", "mode", "rst", "out", "metric"}
-    if not rows or not required.issubset(rows[0]):
-        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
-        return False, "missing_columns=" + ",".join(missing)
-    return _sample_many(
-        rows,
-        {
-            "out": [
-                (80.0, 0.0),
-                (180.0, 0.9),
-                (280.0, 0.0),
-                (380.0, 0.9),
-            ],
-            "metric": [
-                (80.0, 0.9),
-                (180.0, 0.9),
-                (280.0, 0.9),
-                (380.0, 0.9),
-            ],
-        },
-        tol=0.08,
-    )
+    return _check_v3_file_io_gate(rows)
 
 
 def check_v3_380_file_feof_line_counter(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    return _check_v3_file_io_gate(rows)
+
+
+def check_v3_381_file_fseek_offset_reader(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    return _check_v3_file_io_gate(rows)
+
+
+def check_v3_382_file_ftell_position_meter(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    return _check_v3_file_io_gate(rows)
+
+
+def check_v3_383_file_rewind_second_pass(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    return _check_v3_file_io_gate(rows)
+
+
+def check_v3_384_file_fopen_mode_selector(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    return _check_v3_file_io_gate(rows)
+
+
+def _piecewise_linear_table(x_value: float, points: list[tuple[float, float]]) -> float:
+    if x_value <= points[0][0]:
+        return points[0][1]
+    for (x0, y0), (x1, y1) in zip(points, points[1:]):
+        if x_value <= x1:
+            if x1 == x0:
+                return y1
+            alpha = (x_value - x0) / (x1 - x0)
+            return y0 + alpha * (y1 - y0)
+    return points[-1][1]
+
+
+def _check_v3_table_model_gate(
+    rows: list[dict[str, float]],
+    points: list[tuple[float, float]],
+) -> tuple[bool, str]:
+    def update(_state: dict[str, float | int], row: dict[str, float]) -> tuple[float, float]:
+        if row["rst"] > 0.45:
+            return 0.0, 0.0
+        out = _piecewise_linear_table(row["vin"], points)
+        return out, out / 0.9
+
+    return _check_v3_task_clocked_behavior(
+        rows,
+        update_fn=update,
+        initial_state={"out": 0.0, "metric": 0.0},
+    )
+
+
+def check_v3_385_table_model_linear_gain(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    return _check_v3_table_model_gate(rows, [(0.0, 0.0), (0.45, 0.35), (0.9, 0.9)])
+
+
+def check_v3_386_table_model_clamped_transfer(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    return _check_v3_table_model_gate(rows, [(0.0, 0.0), (0.45, 0.35), (0.9, 0.9)])
+
+
+def check_v3_387_table_model_threshold_map(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    return _check_v3_table_model_gate(rows, [(0.0, 0.0), (0.44, 0.0), (0.46, 0.9), (0.9, 0.9)])
+
+
+def check_v3_388_table_model_dac_code_map(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    return _check_v3_table_model_gate(rows, [(0.0, 0.0), (1.0, 0.3), (2.0, 0.6), (3.0, 0.9)])
+
+
+def check_v3_389_table_model_temperature_profile(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    return _check_v3_table_model_gate(rows, [(-40.0, 0.55), (25.0, 0.9), (85.0, 0.7), (125.0, 0.5)])
+
+
+def check_v3_390_table_model_piecewise_calibrator(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    return _check_v3_table_model_gate(rows, [(0.0, 0.0), (0.3, 0.25), (0.6, 0.65), (0.9, 0.9)])
+
+
+def _check_v3_rdist_sequence(
+    rows: list[dict[str, float]],
+    metric_sequence: list[float],
+    *,
+    tol: float,
+) -> tuple[bool, str]:
     required = {"time", "vin", "clk", "mode", "rst", "out", "metric"}
+    if not rows or not required.issubset(rows[0]):
+        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
+        return False, "missing_columns=" + ",".join(missing)
+
+    expected_metric = 0.0
+    expected_out = 0.0
+    metric_values: list[float] = [expected_metric]
+    out_values: list[float] = [expected_out]
+    edge_count = 0
+    edge_times: list[float] = []
+    prev_clk = rows[0]["clk"]
+    for row in rows[1:]:
+        if prev_clk <= 0.45 < row["clk"]:
+            edge_times.append(row["time"])
+            if row["rst"] > 0.45:
+                expected_metric = 0.0
+                expected_out = 0.0
+            else:
+                if edge_count >= len(metric_sequence):
+                    return False, f"unexpected_extra_random_edge={edge_count + 1}"
+                expected_metric = metric_sequence[edge_count]
+                expected_out = row["vin"] + 0.01 * expected_metric
+                edge_count += 1
+        metric_values.append(expected_metric)
+        out_values.append(expected_out)
+        prev_clk = row["clk"]
+
+    stride = max(1, len(rows) // 120)
+    checked_metric = 0
+    checked_out = 0
+    max_metric_err = 0.0
+    max_out_err = 0.0
+    for index in range(0, len(rows), stride):
+        if any(0.0 <= rows[index]["time"] - edge_time <= 1.0e-9 for edge_time in edge_times):
+            continue
+        window_start = max(0, index - 5)
+        window_end = min(len(rows), index + 6)
+        metric_expected = metric_values[index]
+        if max(abs(metric_expected - value) for value in metric_values[window_start:window_end]) <= 0.02:
+            metric_err = abs(rows[index]["metric"] - metric_expected)
+            max_metric_err = max(max_metric_err, metric_err)
+            checked_metric += 1
+            if metric_err > tol:
+                return False, (
+                    f"metric@{rows[index]['time'] * 1e9:g}ns={rows[index]['metric']:.4f} "
+                    f"expected={metric_expected:.4f} tol={tol:.4f}"
+                )
+        out_expected = out_values[index]
+        if max(abs(out_expected - value) for value in out_values[window_start:window_end]) <= 0.02:
+            out_err = abs(rows[index]["out"] - out_expected)
+            max_out_err = max(max_out_err, out_err)
+            checked_out += 1
+            if out_err > max(0.02, tol):
+                return False, (
+                    f"out@{rows[index]['time'] * 1e9:g}ns={rows[index]['out']:.4f} "
+                    f"expected={out_expected:.4f} tol={max(0.02, tol):.4f}"
+                )
+
+    if edge_count != len(metric_sequence):
+        return False, f"random_edge_count={edge_count} expected={len(metric_sequence)}"
+    if checked_metric < 8 or checked_out < 8:
+        return False, f"insufficient_samples out={checked_out} metric={checked_metric}"
+    return (
+        True,
+        f"edges={edge_count} out_samples={checked_out} metric_samples={checked_metric} "
+        f"max_out_err={max_out_err:.4f} max_metric_err={max_metric_err:.4f}",
+    )
+
+
+def check_v3_391_rdist_exponential_jitter(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    return _check_v3_rdist_sequence(rows, [3.7943, 0.5581, 0.6179, 0.1685], tol=0.05)
+
+
+def check_v3_392_rdist_poisson_count_noise(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    return _check_v3_rdist_sequence(rows, [3.0, 2.0, 0.0, 0.0], tol=0.05)
+
+
+def check_v3_393_rdist_normal_offset_dither(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    return _check_v3_rdist_sequence(rows, [0.0113, -0.0160, 0.0591, 0.0312], tol=0.008)
+
+
+def check_v3_394_rdist_chi_square_energy(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    return _check_v3_rdist_sequence(rows, [0.5044, 0.5387, 0.9852, 1.6858], tol=0.03)
+
+
+def check_v3_395_rdist_t_tail_dither(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    return _check_v3_rdist_sequence(rows, [-1.7540, 0.0963, 0.4683, -1.5343], tol=0.03)
+
+
+def check_v3_396_rdist_erlang_latency(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    return _check_v3_rdist_sequence(rows, [1.0851, 1.0945, 0.5121, 0.2559], tol=0.03)
+
+
+def _check_v3_hierarchy_expression(
+    rows: list[dict[str, float]],
+    *,
+    out_fn,
+    metric_fn=None,
+    tol: float = 0.035,
+) -> tuple[bool, str]:
+    required = {"time", "vin", "clk", "mode", "rst", "out", "metric"}
+    if not rows or not required.issubset(rows[0]):
+        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
+        return False, "missing_columns=" + ",".join(missing)
+
+    stride = max(1, len(rows) // 120)
+    checked_out = 0
+    checked_metric = 0
+    max_out_err = 0.0
+    max_metric_err = 0.0
+    expected_outs = [out_fn(row) for row in rows]
+    expected_metrics = [metric_fn(row) if metric_fn else 0.0 for row in rows]
+    for index in range(0, len(rows), stride):
+        window_start = max(0, index - 5)
+        window_end = min(len(rows), index + 6)
+        out_expected = expected_outs[index]
+        if max(abs(out_expected - value) for value in expected_outs[window_start:window_end]) <= 0.02:
+            out_err = abs(rows[index]["out"] - out_expected)
+            max_out_err = max(max_out_err, out_err)
+            checked_out += 1
+            if out_err > tol:
+                return False, (
+                    f"out@{rows[index]['time'] * 1e9:g}ns={rows[index]['out']:.4f} "
+                    f"expected={out_expected:.4f} tol={tol:.4f}"
+                )
+        metric_expected = expected_metrics[index]
+        if max(abs(metric_expected - value) for value in expected_metrics[window_start:window_end]) <= 0.02:
+            metric_err = abs(rows[index]["metric"] - metric_expected)
+            max_metric_err = max(max_metric_err, metric_err)
+            checked_metric += 1
+            if metric_err > tol:
+                return False, (
+                    f"metric@{rows[index]['time'] * 1e9:g}ns={rows[index]['metric']:.4f} "
+                    f"expected={metric_expected:.4f} tol={tol:.4f}"
+                )
+    if checked_out < 8 or checked_metric < 8:
+        return False, f"insufficient_samples out={checked_out} metric={checked_metric}"
+    return (
+        True,
+        f"out_samples={checked_out} metric_samples={checked_metric} "
+        f"max_out_err={max_out_err:.4f} max_metric_err={max_metric_err:.4f}",
+    )
+
+
+def check_v3_397_hierarchy_gain_child(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    return _check_v3_hierarchy_expression(rows, out_fn=lambda row: 0.8 * row["vin"], tol=0.035)
+
+
+def check_v3_398_hierarchy_two_stage_chain(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    return _check_v3_hierarchy_expression(
+        rows,
+        out_fn=lambda row: 0.4 * row["vin"],
+        metric_fn=lambda row: 0.8 * row["vin"],
+    )
+
+
+def check_v3_399_hierarchy_parameter_override(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    return _check_v3_hierarchy_expression(rows, out_fn=lambda row: 1.5 * row["vin"], tol=0.04)
+
+
+def check_v3_400_hierarchy_named_port_map(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    return _check_v3_hierarchy_expression(rows, out_fn=lambda row: 0.8 * row["vin"], tol=0.035)
+
+
+def check_v3_401_hierarchy_ordered_port_map(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    return _check_v3_hierarchy_expression(
+        rows,
+        out_fn=lambda row: 0.4 * row["vin"],
+        metric_fn=lambda row: 0.8 * row["vin"],
+    )
+
+
+def check_v3_402_hierarchy_shared_threshold_child(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    return _check_v3_hierarchy_expression(
+        rows,
+        out_fn=lambda row: 0.9 if row["vin"] > 0.45 else 0.0,
+        tol=0.04,
+    )
+
+
+def _check_v3_vector_counter_behavior(
+    rows: list[dict[str, float]],
+    *,
+    expected_fn,
+    tol: float = 0.05,
+) -> tuple[bool, str]:
+    required = {"time", "vin", "clk", "mode", "rst", "out", "metric"}
+    if not rows or not required.issubset(rows[0]):
+        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
+        return False, "missing_columns=" + ",".join(missing)
+
+    count = 0
+    out_expected = 0.0
+    metric_expected = 0.0
+    out_values = [out_expected]
+    metric_values = [metric_expected]
+    edge_times: list[float] = []
+    edge_count = 0
+    prev_clk = rows[0]["clk"]
+    for row in rows[1:]:
+        if prev_clk <= 0.45 < row["clk"]:
+            edge_times.append(row["time"])
+            edge_count += 1
+            if row["rst"] > 0.45:
+                count = 0
+                out_expected = 0.0
+                metric_expected = 0.0
+            else:
+                out_expected, metric_expected = expected_fn(count)
+                count += 1
+        out_values.append(out_expected)
+        metric_values.append(metric_expected)
+        prev_clk = row["clk"]
+
+    stride = max(1, len(rows) // 140)
+    checked_out = 0
+    checked_metric = 0
+    max_out_err = 0.0
+    max_metric_err = 0.0
+    for index in range(0, len(rows), stride):
+        if any(0.0 <= rows[index]["time"] - edge_time <= 1.0e-9 for edge_time in edge_times):
+            continue
+        window_start = max(0, index - 5)
+        window_end = min(len(rows), index + 6)
+        out_expected = out_values[index]
+        if max(abs(out_expected - value) for value in out_values[window_start:window_end]) <= 0.02:
+            out_err = abs(rows[index]["out"] - out_expected)
+            max_out_err = max(max_out_err, out_err)
+            checked_out += 1
+            if out_err > tol:
+                return False, (
+                    f"out@{rows[index]['time'] * 1e9:g}ns={rows[index]['out']:.4f} "
+                    f"expected={out_expected:.4f} tol={tol:.4f}"
+                )
+        metric_expected = metric_values[index]
+        if max(abs(metric_expected - value) for value in metric_values[window_start:window_end]) <= 0.02:
+            metric_err = abs(rows[index]["metric"] - metric_expected)
+            max_metric_err = max(max_metric_err, metric_err)
+            checked_metric += 1
+            if metric_err > tol:
+                return False, (
+                    f"metric@{rows[index]['time'] * 1e9:g}ns={rows[index]['metric']:.4f} "
+                    f"expected={metric_expected:.4f} tol={tol:.4f}"
+                )
+    if edge_count < 4:
+        return False, f"insufficient_clock_edges={edge_count}"
+    if checked_out < 8 or checked_metric < 8:
+        return False, f"insufficient_samples out={checked_out} metric={checked_metric}"
+    return (
+        True,
+        f"edges={edge_count} out_samples={checked_out} metric_samples={checked_metric} "
+        f"max_out_err={max_out_err:.4f} max_metric_err={max_metric_err:.4f}",
+    )
+
+
+def _odd_parity(value: int) -> bool:
+    return bin(value & 0xFFFFFFFF).count("1") % 2 == 1
+
+
+def check_v3_403_vector_bit_select_flag(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    return _check_v3_vector_counter_behavior(
+        rows,
+        expected_fn=lambda count: (0.9 if ((count + 4) & 0x4) else 0.0, float((count + 4) & 0x1)),
+    )
+
+
+def check_v3_404_vector_part_select_window(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    return _check_v3_vector_counter_behavior(
+        rows,
+        expected_fn=lambda count: (
+            0.9 if (((count + 9) >> 1) & 0x7) > 3 else 0.0,
+            float(((count + 9) >> 1) & 0x7),
+        ),
+    )
+
+
+def check_v3_405_vector_concat_code_build(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    return _check_v3_vector_counter_behavior(
+        rows,
+        expected_fn=lambda count: (
+            0.9 if (8 | (count & 0x3)) > 8 else 0.0,
+            float(8 | (count & 0x3)),
+        ),
+    )
+
+
+def check_v3_406_vector_replication_mask(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    return _check_v3_vector_counter_behavior(
+        rows,
+        expected_fn=lambda count: (0.9 if (10 & count) != 0 else 0.0, 10.0),
+    )
+
+
+def check_v3_407_vector_reduction_parity(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    return _check_v3_vector_counter_behavior(
+        rows,
+        expected_fn=lambda count: (0.9 if _odd_parity(count + 1) else 0.0, 1.0 if (count + 1) != 0 else 0.0),
+    )
+
+
+def check_v3_408_vector_shift_and_mask_decoder(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    return _check_v3_vector_counter_behavior(
+        rows,
+        expected_fn=lambda count: (
+            0.9 if (((count + 12) >> 1) & 0x3) == 2 else 0.0,
+            float(((count + 12) >> 1) & 0x3),
+        ),
+    )
+
+
+def check_v3_409_macro_functionlike_clamp(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    def update(_state: dict[str, float | int], row: dict[str, float]) -> tuple[float, float]:
+        if row["rst"] > 0.45:
+            return 0.0, 0.0
+        out = min(0.9, max(0.0, row["vin"]))
+        return out, out / 0.9
+
+    return _check_v3_task_clocked_behavior(
+        rows,
+        update_fn=update,
+        initial_state={"out": 0.0, "metric": 0.0},
+    )
+
+
+def check_v3_449_generate_genvar_replicated_stage(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "a", "y"}
     if not rows or not required.issubset(rows[0]):
         missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
         return False, "missing_columns=" + ",".join(missing)
     return _sample_many(
         rows,
         {
-            "out": [
-                (80.0, 0.0),
-                (180.0, 0.9),
-                (280.0, 0.0),
-                (380.0, 0.9),
-            ],
-            "metric": [
-                (80.0, 0.9),
-                (180.0, 0.9),
-                (280.0, 0.9),
-                (380.0, 0.9),
+            "y": [
+                (10.0, 0.80),
+                (50.0, 0.787),
+                (90.0, 0.35),
+                (130.0, 0.65),
             ],
         },
-        tol=0.08,
+        tol=0.05,
+    )
+
+
+def check_v3_450_custom_nature_discipline_voltage(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    return _check_v3_a_to_y_passthrough(rows)
+
+
+def _check_v3_a_to_y_passthrough(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "a", "y"}
+    if not rows or not required.issubset(rows[0]):
+        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
+        return False, "missing_columns=" + ",".join(missing)
+    checked = 0
+    max_err = 0.0
+    input_span_values: list[float] = []
+    stride = max(1, len(rows) // 120)
+    for row in rows[::stride]:
+        err = abs(row["y"] - row["a"])
+        max_err = max(max_err, err)
+        checked += 1
+        input_span_values.append(row["a"])
+        if err > 0.035:
+            return False, f"y@{row['time'] * 1e9:g}ns={row['y']:.4f} expected_a={row['a']:.4f}"
+    if checked < 8:
+        return False, f"insufficient_samples={checked}"
+    input_span = max(input_span_values) - min(input_span_values)
+    if input_span < 0.3:
+        return False, f"insufficient_input_span={input_span:.4f}"
+    return True, f"checked={checked} input_span={input_span:.4f} max_err={max_err:.4f}"
+
+
+def check_v3_451_connectmodule_electrical_bridge(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    return _check_v3_a_to_y_passthrough(rows)
+
+
+def check_v3_452_connectrules_electrical_map(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    return _check_v3_a_to_y_passthrough(rows)
+
+
+def check_v3_411_escaped_identifier_state(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    def update(_state: dict[str, float | int], row: dict[str, float]) -> tuple[float, float]:
+        if row["rst"] > 0.45:
+            return 0.0, 0.0
+        trim = 0.2 if row["mode"] > 0.45 else 0.1
+        return row["vin"] + trim, trim
+
+    return _check_v3_task_clocked_behavior(
+        rows,
+        update_fn=update,
+        initial_state={"out": 0.0, "metric": 0.0},
+    )
+
+
+def check_v3_412_initial_final_step_lifecycle(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    def update(state: dict[str, float | int], row: dict[str, float]) -> tuple[float, float]:
+        if row["rst"] > 0.45:
+            state["count"] = 0
+            return 0.0, 0.0
+        metric = float(state["count"])
+        state["count"] = int(state["count"]) + 1
+        return row["vin"], metric
+
+    return _check_v3_task_clocked_behavior(
+        rows,
+        update_fn=update,
+        initial_state={"out": 0.0, "metric": 0.0, "count": 0},
+    )
+
+
+def check_v3_413_while_loop_array_sum(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    def update(state: dict[str, float | int], row: dict[str, float]) -> tuple[float, float]:
+        if row["rst"] > 0.45:
+            state["count"] = 0
+            return 0.0, 0.0
+        acc = 3 + 3 * int(state["count"])
+        state["count"] = int(state["count"]) + 1
+        return (0.9 if acc > 3 else 0.0), float(acc)
+
+    return _check_v3_task_clocked_behavior(
+        rows,
+        update_fn=update,
+        initial_state={"out": 0.0, "metric": 0.0, "count": 0},
+    )
+
+
+def check_v3_414_parameter_range_real_control(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    def update(state: dict[str, float | int], row: dict[str, float]) -> tuple[float, float]:
+        if row["rst"] > 0.45:
+            state["count"] = 0
+            return 0.0, 0.0
+        state["count"] = (int(state["count"]) + 1) % 8
+        return 0.8 * row["vin"], float(state["count"])
+
+    return _check_v3_task_clocked_behavior(
+        rows,
+        update_fn=update,
+        initial_state={"out": 0.0, "metric": 0.0, "count": 0},
     )
 
 
@@ -8603,8 +11181,8 @@ def check_v3_clocked_sar_comparator(rows: list[dict[str, float]]) -> tuple[bool,
     return _sample_many(
         rows,
         {
-            "dcmpp": [(7.0, 0.9), (17.0, 0.9), (27.0, 0.0), (37.0, 0.9)],
-            "dcmpn": [(7.0, 0.0), (17.0, 0.9), (27.0, 0.9), (37.0, 0.9)],
+            "dcmpp": [(7.0, 0.9), (17.0, 0.9), (27.0, 0.0), (37.0, 0.9), (47.0, 0.0), (57.0, 0.9)],
+            "dcmpn": [(7.0, 0.0), (17.0, 0.9), (27.0, 0.9), (37.0, 0.9), (47.0, 0.0), (57.0, 0.9)],
         },
         tol=0.08,
     )
@@ -8615,10 +11193,10 @@ def check_v3_clocked_dac_restore_4b(rows: list[dict[str, float]]) -> tuple[bool,
     if not rows or not required.issubset(rows[0]):
         return False, "missing time/d3/d2/d1/d0/clk/vout"
     expected = [
-        (6.0, -0.84375),
-        (16.0, -0.28125),
-        (26.0, 0.28125),
-        (36.0, 0.84375),
+        (6.0, -0.73125),
+        (16.0, -0.16875),
+        (26.0, 0.16875),
+        (36.0, 0.73125),
     ]
     ok, detail = _sample_many(rows, {"vout": expected}, tol=0.02)
     if not ok:
@@ -8865,7 +11443,7 @@ def check_v3_start_gated_offset_search(rows: list[dict[str, float]]) -> tuple[bo
         rows,
         "vinp",
         "vinn",
-        [(8.0, 0.000), (18.5, 0.020), (28.5, 0.040), (38.5, 0.030), (48.5, 0.020)],
+        [(8.0, 0.000), (18.5, 0.020), (28.5, 0.010), (38.5, 0.000), (48.5, 0.005)],
         common_mode=0.70,
         diff_tol=0.0030,
         common_tol=0.0030,
@@ -8880,7 +11458,7 @@ def check_v3_comp_os_detect(rows: list[dict[str, float]]) -> tuple[bool, str]:
         rows,
         "vinp",
         "vinn",
-        [(8.5, -0.1000), (18.5, -0.0500), (28.5, -0.0250), (38.5, -0.0375), (48.5, -0.04375)],
+        [(8.5, 0.1000), (18.5, 0.0500), (28.5, 0.0250), (38.5, 0.0375), (48.5, 0.03125)],
         common_mode=0.45,
         diff_tol=0.0030,
         common_tol=0.0030,
@@ -8919,15 +11497,16 @@ def check_v3_sar_weighted_sum(rows: list[dict[str, float]]) -> tuple[bool, str]:
         return False, "missing time/d10/d9/d8/d7/d6/d5/d4/d3/d2/d1/d0/vout"
     expected = [
         (2.0, -1.0),
-        (12.0, -0.125),
-        (22.0, 0.375),
-        (32.0, 0.998046875),
+        (12.0, -0.90625),
+        (22.0, -0.84375),
+        (32.0, -0.125),
+        (42.0, 0.998046875),
     ]
     ok, detail = _sample_many(rows, {"vout": expected}, tol=0.025)
     if not ok:
         return ok, detail
     observed = [float(sample_signal_at(rows, "vout", time_ns * 1e-9) or 0.0) for time_ns, _ in expected]
-    monotonic = all(b > a + 0.35 for a, b in zip(observed, observed[1:]))
+    monotonic = all(b > a + 0.03 for a, b in zip(observed, observed[1:]))
     if not monotonic:
         return False, f"sar_weighted_sum_not_monotonic samples={','.join(f'{v:.3f}' for v in observed)}"
     return True, detail + " monotonic=True"
@@ -9600,15 +12179,72 @@ def check_v3_divide_by_eight_clock(rows: list[dict[str, float]]) -> tuple[bool, 
     )
 
 
+def _v3_missing_columns(rows: list[dict[str, float]], required: set[str]) -> str | None:
+    if not rows:
+        return "empty_waveform"
+    missing = sorted(required - set(rows[0]))
+    if missing:
+        return "missing_columns=" + ",".join(missing)
+    return None
+
+
+def _v3_edge_sample_times(
+    rows: list[dict[str, float]],
+    signal: str,
+    *,
+    threshold: float = 0.45,
+    delay_s: float = 1.8e-9,
+) -> list[tuple[float, float]]:
+    times = [row["time"] for row in rows]
+    edges = rising_edges([row[signal] for row in rows], times, threshold=threshold)
+    last_time = times[-1]
+    return [(edge_t, edge_t + delay_s) for edge_t in edges if edge_t + delay_s <= last_time]
+
+
+def _v3_logic_at(rows: list[dict[str, float]], signal: str, time_s: float, threshold: float = 0.45) -> int | None:
+    value = sample_signal_at(rows, signal, time_s)
+    if value is None:
+        return None
+    return 1 if value > threshold else 0
+
+
+def _v3_logic_transition_times(
+    rows: list[dict[str, float]],
+    signals: list[str],
+    *,
+    threshold: float = 0.45,
+) -> list[float]:
+    transition_times: set[float] = set()
+    for signal in signals:
+        for idx in range(1, len(rows)):
+            prev = rows[idx - 1][signal]
+            cur = rows[idx][signal]
+            if (prev <= threshold < cur) or (prev > threshold >= cur):
+                transition_times.add(rows[idx]["time"])
+    return sorted(transition_times)
+
+
 def check_v3_flash_thermometer_centered_sum(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    required = {"time", "b0", "b1", "b2", "b3", "b4", "b5", "b6", "b7", "dout"}
-    if not rows or not required.issubset(rows[0]):
-        return False, "missing thermometer input/output signals"
-    return _sample_many(
-        rows,
-        {"dout": [(5.0, -0.45), (15.0, -0.1125), (25.0, 0.1125), (35.0, 0.45)]},
-        tol=0.02,
-    )
+    bit_names = [f"b{idx}" for idx in range(8)]
+    required = {"time", "dout", *bit_names}
+    missing = _v3_missing_columns(rows, required)
+    if missing:
+        return False, missing
+
+    max_error = 0.0
+    checked = 0
+    stride = max(1, len(rows) // 60)
+    for row in rows[::stride]:
+        bits = [row[name] for name in bit_names]
+        if not all(bit <= 0.10 or bit >= 0.80 for bit in bits):
+            continue
+        ones = sum(1 for bit in bits if bit > 0.45)
+        expected = 0.1125 * (ones - 4.0)
+        max_error = max(max_error, abs(row["dout"] - expected))
+        checked += 1
+    if checked < 8:
+        return False, f"too_few_stable_thermometer_samples={checked}"
+    return max_error <= 0.02, f"checked={checked} max_error={max_error:.5f}"
 
 
 def check_v3_weighted_sar_decoder_9b(rows: list[dict[str, float]]) -> tuple[bool, str]:
@@ -9685,13 +12321,42 @@ def check_v3_dual_modulus_divider_16_17(rows: list[dict[str, float]]) -> tuple[b
 
 def check_v3_sar_5bit_serial_decoder(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "din", "clks", "ready", "dout"}
-    if not rows or not required.issubset(rows[0]):
-        return False, "missing time/din/clks/ready/dout"
-    return _sample_many(
-        rows,
-        {"dout": [(3.0, -0.5), (17.0, 0.2096774), (33.0, -0.2096774)]},
-        tol=0.02,
-    )
+    missing = _v3_missing_columns(rows, required)
+    if missing:
+        return False, missing
+
+    clk_edges = _v3_edge_sample_times(rows, "clks", threshold=0.45)
+    ready_edges = [edge_t for edge_t, _ in _v3_edge_sample_times(rows, "ready", threshold=0.45, delay_s=0.0)]
+    events = [(edge_t, "clk") for edge_t, _ in clk_edges] + [(edge_t, "ready") for edge_t in ready_edges]
+    events.sort()
+
+    counter = 4
+    total = 0.0
+    expected_samples: list[tuple[float, float]] = []
+    for event_t, event_kind in events:
+        if event_kind == "ready":
+            bit = _v3_logic_at(rows, "din", event_t, threshold=0.45)
+            if bit is None:
+                return False, f"missing_din_at_ready={event_t * 1e9:.3f}ns"
+            if bit and counter >= 0:
+                total += 2.0 ** counter
+            counter -= 1
+            continue
+        sample_t = event_t + 1.8e-9
+        if sample_t <= rows[-1]["time"]:
+            expected_samples.append((sample_t, total / 31.0 - 0.5))
+        counter = 4
+        total = 0.0
+
+    if len(expected_samples) < 2:
+        return False, f"too_few_clock_publication_samples={len(expected_samples)}"
+    max_error = 0.0
+    for sample_t, expected in expected_samples:
+        observed = sample_signal_at(rows, "dout", sample_t)
+        if observed is None:
+            return False, f"missing_dout_sample={sample_t * 1e9:.3f}ns"
+        max_error = max(max_error, abs(observed - expected))
+    return max_error <= 0.015, f"published={len(expected_samples)} max_error={max_error:.5f}"
 
 
 def check_v3_cyclic_decoder_12bit(rows: list[dict[str, float]]) -> tuple[bool, str]:
@@ -9706,17 +12371,38 @@ def check_v3_cyclic_decoder_12bit(rows: list[dict[str, float]]) -> tuple[bool, s
 
 
 def check_v3_flash_8level_sum_delay(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    required = {"time", "vip", "vim", "clks", "doutsum", "doutsumdelay"}
-    if not rows or not required.issubset(rows[0]):
-        return False, "missing flash8 sum/delay signals"
-    return _sample_many(
-        rows,
-        {
-            "doutsum": [(4.0, 0.0), (14.0, 0.25), (24.0, 0.5), (34.0, 0.875)],
-            "doutsumdelay": [(4.0, 0.0), (14.0, 0.0), (24.0, 0.25), (34.0, 0.5)],
-        },
-        tol=0.025,
-    )
+    required = {"time", "vip", "vim", "refp", "refn", "clks", "doutsum", "doutsumdelay"}
+    missing = _v3_missing_columns(rows, required)
+    if missing:
+        return False, missing
+
+    edge_samples = _v3_edge_sample_times(rows, "clks", threshold=0.45)
+    if len(edge_samples) < 3:
+        return False, f"too_few_clock_edges={len(edge_samples)}"
+    previous = 0.0
+    max_sum_error = 0.0
+    max_delay_error = 0.0
+    checked = 0
+    for edge_t, sample_t in edge_samples:
+        vip = sample_signal_at(rows, "vip", edge_t)
+        vim = sample_signal_at(rows, "vim", edge_t)
+        refp = sample_signal_at(rows, "refp", edge_t)
+        refn = sample_signal_at(rows, "refn", edge_t)
+        observed_sum = sample_signal_at(rows, "doutsum", sample_t)
+        observed_delay = sample_signal_at(rows, "doutsumdelay", sample_t)
+        if None in (vip, vim, refp, refn, observed_sum, observed_delay):
+            return False, f"missing_flash8_sample_at={edge_t * 1e9:.3f}ns"
+        span = refp - refn
+        thresholds = [sign * frac * span * 0.5 for sign in (-1.0, 1.0) for frac in (7.0 / 8.0, 5.0 / 8.0, 3.0 / 8.0, 1.0 / 8.0)]
+        thresholds = sorted(thresholds)
+        vin = vip - vim
+        current = sum(1 for threshold in thresholds if vin > threshold) / 8.0
+        max_sum_error = max(max_sum_error, abs(observed_sum - current))
+        max_delay_error = max(max_delay_error, abs(observed_delay - previous))
+        previous = current
+        checked += 1
+    ok = max_sum_error <= 0.035 and max_delay_error <= 0.035
+    return ok, f"checked={checked} max_sum_error={max_sum_error:.5f} max_delay_error={max_delay_error:.5f}"
 
 
 def check_v3_flash_sum8_fraction(rows: list[dict[str, float]]) -> tuple[bool, str]:
@@ -9767,21 +12453,29 @@ def check_v3_differential_dac_calc_6b(rows: list[dict[str, float]]) -> tuple[boo
 
 def check_v3_flash_adc_threshold_taps(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "vin", "clk", "dout0", "dout1", "dout2", "dout3", "dout4", "dout5", "dout6"}
-    if not rows or not required.issubset(rows[0]):
-        return False, "missing flash adc threshold tap signals"
-    return _sample_many(
-        rows,
-        {
-            "dout0": [(4.0, 0.0), (14.0, 0.9), (24.0, 0.9), (34.0, 0.9), (44.0, 0.9)],
-            "dout1": [(4.0, 0.0), (14.0, 0.9), (24.0, 0.9), (34.0, 0.9), (44.0, 0.9)],
-            "dout2": [(4.0, 0.0), (14.0, 0.0), (24.0, 0.9), (34.0, 0.9), (44.0, 0.9)],
-            "dout3": [(4.0, 0.0), (14.0, 0.0), (24.0, 0.9), (34.0, 0.9), (44.0, 0.9)],
-            "dout4": [(4.0, 0.0), (14.0, 0.0), (24.0, 0.0), (34.0, 0.9), (44.0, 0.9)],
-            "dout5": [(4.0, 0.0), (14.0, 0.0), (24.0, 0.0), (34.0, 0.9), (44.0, 0.9)],
-            "dout6": [(4.0, 0.0), (14.0, 0.0), (24.0, 0.0), (34.0, 0.0), (44.0, 0.9)],
-        },
-        tol=0.08,
-    )
+    missing = _v3_missing_columns(rows, required)
+    if missing:
+        return False, missing
+
+    edge_samples = _v3_edge_sample_times(rows, "clk", threshold=0.45)
+    if len(edge_samples) < 4:
+        return False, f"too_few_clk_edges={len(edge_samples)}"
+    tap_indices = [1, 5, 10, 15, 20, 25, 30]
+    thresholds = [-0.125 + tap * (0.25 / 31.0) for tap in tap_indices]
+    max_error = 0.0
+    checked = 0
+    for edge_t, sample_t in edge_samples:
+        vin = sample_signal_at(rows, "vin", edge_t)
+        if vin is None:
+            return False, f"missing_vin_at_clk={edge_t * 1e9:.3f}ns"
+        for idx, threshold in enumerate(thresholds):
+            observed = sample_signal_at(rows, f"dout{idx}", sample_t)
+            if observed is None:
+                return False, f"missing_dout{idx}_sample={sample_t * 1e9:.3f}ns"
+            expected = 0.9 if vin > threshold else 0.0
+            max_error = max(max_error, abs(observed - expected))
+            checked += 1
+    return max_error <= 0.09, f"tap_checks={checked} max_error={max_error:.5f}"
 
 
 def check_v3_divide_by_two_toggle(rows: list[dict[str, float]]) -> tuple[bool, str]:
@@ -9808,27 +12502,61 @@ def check_v3_dac_5v_weighted_7b(rows: list[dict[str, float]]) -> tuple[bool, str
 
 def check_v3_folded_flash_dac_4b(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "vd4", "vd3", "vd2", "vd1", "vout"}
-    if not rows or not required.issubset(rows[0]):
-        return False, "missing folded flash dac signals"
-    return _sample_many(
-        rows,
-        {"vout": [(5.0, 0.5), (15.0, 0.0625), (25.0, 0.5), (35.0, 0.9375)]},
-        tol=0.02,
-    )
+    missing = _v3_missing_columns(rows, required)
+    if missing:
+        return False, missing
+
+    bit_names = ["vd4", "vd3", "vd2", "vd1"]
+    transition_times = _v3_logic_transition_times(rows, bit_names, threshold=0.45)
+    candidate_times = [rows[0]["time"] + 1.0e-9] + [time_s + 1.0e-9 for time_s in transition_times]
+    sample_times = [time_s for time_s in candidate_times if rows[0]["time"] <= time_s <= rows[-1]["time"]]
+    if len(sample_times) < 3:
+        return False, f"too_few_folded_dac_samples={len(sample_times)}"
+
+    max_error = 0.0
+    checked = 0
+    for sample_t in sample_times:
+        bits = [_v3_logic_at(rows, name, sample_t, threshold=0.45) for name in bit_names]
+        observed = sample_signal_at(rows, "vout", sample_t)
+        if observed is None or any(bit is None for bit in bits):
+            return False, f"missing_folded_dac_sample={sample_t * 1e9:.3f}ns"
+        msb, b3, b2, b1 = bits
+        subcode = 4 * b3 + 2 * b2 + b1
+        folded_code = 8 + subcode if msb else 8 - subcode
+        expected = folded_code / 16.0
+        max_error = max(max_error, abs(observed - expected))
+        checked += 1
+    return max_error <= 0.025, f"checked={checked} max_error={max_error:.5f}"
 
 
 def check_v3_ref_flash_8level_decoder(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    required = {"time", "vin", "clks", "dout", "vres"}
-    if not rows or not required.issubset(rows[0]):
-        return False, "missing ref flash 8level signals"
-    return _sample_many(
-        rows,
-        {
-            "dout": [(4.0, 0.0), (14.0, 0.375), (24.0, 0.625), (34.0, 1.0)],
-            "vres": [(4.0, 0.6), (14.0, 0.325), (24.0, -0.225), (34.0, -0.2)],
-        },
-        tol=0.025,
-    )
+    tap_names = [f"dt{idx}" for idx in range(8)]
+    required = {"time", "vin", "clks", "dout", "vres", *tap_names}
+    missing = _v3_missing_columns(rows, required)
+    if missing:
+        return False, missing
+
+    edge_samples = _v3_edge_sample_times(rows, "clks", threshold=0.45)
+    if len(edge_samples) < 3:
+        return False, f"too_few_clks_edges={len(edge_samples)}"
+    max_dout_error = 0.0
+    max_res_error = 0.0
+    checked = 0
+    for edge_t, sample_t in edge_samples:
+        tap_bits = [_v3_logic_at(rows, name, edge_t, threshold=0.45) for name in tap_names]
+        vin = sample_signal_at(rows, "vin", edge_t)
+        observed_dout = sample_signal_at(rows, "dout", sample_t)
+        observed_vres = sample_signal_at(rows, "vres", sample_t)
+        if vin is None or observed_dout is None or observed_vres is None or any(bit is None for bit in tap_bits):
+            return False, f"missing_ref_flash_sample={edge_t * 1e9:.3f}ns"
+        count = float(sum(tap_bits))
+        expected_dout = count / 8.0
+        expected_vres = vin - (count - 4.0) / 8.0
+        max_dout_error = max(max_dout_error, abs(observed_dout - expected_dout))
+        max_res_error = max(max_res_error, abs(observed_vres - expected_vres))
+        checked += 1
+    ok = max_dout_error <= 0.035 and max_res_error <= 0.035
+    return ok, f"checked={checked} max_dout_error={max_dout_error:.5f} max_res_error={max_res_error:.5f}"
 
 
 def check_v3_ref_flash_15level_decoder(rows: list[dict[str, float]]) -> tuple[bool, str]:
@@ -9893,13 +12621,50 @@ def check_v3_flash_data_align_pipeline(rows: list[dict[str, float]]) -> tuple[bo
 
 def check_v3_cyclic_decoder_10b(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "dp", "dn", "ready", "clks", "dout"}
-    if not rows or not required.issubset(rows[0]):
-        return False, "missing cyclic decoder signals"
-    return _sample_many(
-        rows,
-        {"dout": [(12.0, 720.0 / 1023.0 - 0.5), (26.0, 320.0 / 1023.0 - 0.5)]},
-        tol=0.02,
-    )
+    missing = _v3_missing_columns(rows, required)
+    if missing:
+        return False, missing
+
+    clk_edges = _v3_edge_sample_times(rows, "clks", threshold=0.55)
+    ready_edges = [edge_t for edge_t, _ in _v3_edge_sample_times(rows, "ready", threshold=0.55, delay_s=0.0)]
+    events = [(edge_t, "clk") for edge_t, _ in clk_edges] + [(edge_t, "ready") for edge_t in ready_edges]
+    events.sort()
+
+    nbit = 10
+    counter = nbit - 1
+    total = 0.0
+    expected_samples: list[tuple[float, float]] = []
+    half_weight_seen = False
+    for event_t, event_kind in events:
+        if event_kind == "ready":
+            dp = _v3_logic_at(rows, "dp", event_t, threshold=0.55)
+            dn = _v3_logic_at(rows, "dn", event_t, threshold=0.55)
+            if dp is None or dn is None:
+                return False, f"missing_cyclic_decision_at={event_t * 1e9:.3f}ns"
+            if counter >= 0:
+                if dp:
+                    total += 2.0 ** counter
+                elif dn:
+                    total += 0.5 * (2.0 ** counter)
+                    half_weight_seen = True
+            counter -= 1
+            continue
+        sample_t = event_t + 1.8e-9
+        if sample_t <= rows[-1]["time"]:
+            expected_samples.append((sample_t, total / (2.0 ** nbit - 1.0) - 0.5))
+        counter = nbit - 1
+        total = 0.0
+
+    if len(expected_samples) < 2:
+        return False, f"too_few_cyclic_publication_samples={len(expected_samples)}"
+    max_error = 0.0
+    for sample_t, expected in expected_samples:
+        observed = sample_signal_at(rows, "dout", sample_t)
+        if observed is None:
+            return False, f"missing_cyclic_dout_sample={sample_t * 1e9:.3f}ns"
+        max_error = max(max_error, abs(observed - expected))
+    ok = max_error <= 0.025 and half_weight_seen
+    return ok, f"published={len(expected_samples)} half_weight_seen={half_weight_seen} max_error={max_error:.5f}"
 
 
 def check_v3_ideal_adc_out_7bits(rows: list[dict[str, float]]) -> tuple[bool, str]:
@@ -10065,11 +12830,37 @@ def check_v3_pipe_2lane_edge_align(rows: list[dict[str, float]]) -> tuple[bool, 
     required = {"time", "din1", "din2", "clk_align", "dout"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing pipe 2lane edge align signals"
-    return _sample_many(
-        rows,
-        {"dout": [(1.3, 0.1), (1.8, 0.8), (11.3, 0.4), (11.8, 0.3), (21.3, 0.7), (21.8, 0.5), (31.3, 0.2), (31.8, 0.9)]},
-        tol=0.02,
-    )
+    times = [row["time"] for row in rows]
+    clk = [row["clk_align"] for row in rows]
+    events = [(t, "din1") for t in _threshold_crossings(clk, times, threshold=0.45, direction="rising")]
+    events += [(t, "din2") for t in _threshold_crossings(clk, times, threshold=0.45, direction="falling")]
+    events.sort()
+    if len(events) < 4:
+        return False, f"too_few_alignment_edges={len(events)}"
+
+    max_err = 0.0
+    checked = 0
+    failures: list[str] = []
+    for edge_t, source in events:
+        sample_t = edge_t + 0.15e-9
+        if sample_t > rows[-1]["time"]:
+            continue
+        expected = sample_signal_at(rows, source, edge_t + 1e-12)
+        observed = sample_signal_at(rows, "dout", sample_t)
+        if expected is None or observed is None:
+            continue
+        err = abs(observed - expected)
+        max_err = max(max_err, err)
+        checked += 1
+        if err > 0.035:
+            failures.append(
+                f"dout_after_{source}_edge@{edge_t * 1e9:.3f}ns={observed:.4f} expected={expected:.4f}"
+            )
+    if checked < 4:
+        return False, f"insufficient_alignment_samples={checked}"
+    if failures:
+        return False, " ".join(failures[:4])
+    return True, f"alignment_edges={checked} max_err={max_err:.4f}"
 
 
 def check_v3_dac_serial_accumulator(rows: list[dict[str, float]]) -> tuple[bool, str]:
@@ -10098,11 +12889,56 @@ def check_v3_iterative_isar_dac(rows: list[dict[str, float]]) -> tuple[bool, str
     required = {"time", "dcmp", "rst", "clk", "vdac"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing iterative isar dac signals"
-    return _sample_many(
-        rows,
-        {"vdac": [(1.5, 0.0), (2.5, -0.1), (4.5, -0.05), (6.5, -0.025), (8.5, -0.0375), (10.5, -0.03125)]},
-        tol=0.015,
-    )
+    times = [row["time"] for row in rows]
+    clk_edges = _threshold_crossings([row["clk"] for row in rows], times, threshold=0.5, direction="rising")
+    rst_edges = _threshold_crossings([row["rst"] for row in rows], times, threshold=0.5, direction="rising")
+    if len(clk_edges) < 4:
+        return False, f"too_few_clk_edges={len(clk_edges)}"
+    if not rst_edges:
+        return False, "missing_reset_rising_edge"
+
+    failures: list[str] = []
+    for rst_t in rst_edges:
+        observed = sample_signal_at(rows, "vdac", rst_t + 0.25e-9)
+        if observed is None:
+            continue
+        if abs(observed) > 0.02:
+            failures.append(f"reset_vdac@{rst_t * 1e9:.3f}ns={observed:.4f}")
+
+    changes_by_segment: dict[int, list[float]] = {}
+    checked_updates = 0
+    for clk_t in clk_edges:
+        pre = sample_signal_at(rows, "vdac", max(rows[0]["time"], clk_t - 0.08e-9))
+        post = sample_signal_at(rows, "vdac", clk_t + 0.25e-9)
+        dcmp = sample_signal_at(rows, "dcmp", clk_t + 1e-12)
+        if pre is None or post is None or dcmp is None:
+            continue
+        diff = post - pre
+        if abs(diff) < 0.002:
+            continue
+        expected_sign = -1 if dcmp > 0.5 else 1
+        if diff * expected_sign <= 0:
+            failures.append(
+                f"wrong_update_direction@{clk_t * 1e9:.3f}ns diff={diff:.4f} dcmp={dcmp:.3f}"
+            )
+        segment = sum(1 for rst_t in rst_edges if rst_t < clk_t)
+        changes_by_segment.setdefault(segment, []).append(abs(diff))
+        checked_updates += 1
+
+    if checked_updates < 4:
+        return False, f"too_few_effective_updates={checked_updates}"
+
+    ratios: list[float] = []
+    for segment_changes in changes_by_segment.values():
+        for prev, cur in zip(segment_changes, segment_changes[1:]):
+            if prev > 0.01 and cur > 0.001:
+                ratios.append(cur / prev)
+    bad_ratios = [ratio for ratio in ratios if not (0.42 <= ratio <= 0.58)]
+    if bad_ratios:
+        failures.append("bad_halving_ratios=" + ",".join(f"{ratio:.3f}" for ratio in bad_ratios[:4]))
+    if failures:
+        return False, " ".join(failures[:5])
+    return True, f"updates={checked_updates} ratio_count={len(ratios)}"
 
 
 def check_v3_offset_bisection_driver(rows: list[dict[str, float]]) -> tuple[bool, str]:
@@ -10119,19 +12955,53 @@ def check_v3_offset_bisection_driver(rows: list[dict[str, float]]) -> tuple[bool
     )
 
 
+def _stable_bits_tuple(row: dict[str, float], bit_names: list[str]) -> tuple[int, ...] | None:
+    bits = [_stable_voltage_bit(row, signal) for signal in bit_names]
+    if any(bit is None for bit in bits):
+        return None
+    return tuple(int(bit) for bit in bits if bit is not None)
+
+
 def check_v3_weighted_decoder_7b5(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    required = {"time", "aout7b", "aout7b5", "aout8b"}
+    bit_names = [f"d{i}" for i in range(9)]
+    required = {"time", "aout7b", "aout7b5", "aout8b", *bit_names}
     if not rows or not required.issubset(rows[0]):
         return False, "missing weighted decoder outputs"
-    return _sample_many(
-        rows,
-        {
-            "aout7b": [(5.0, -0.4963235), (15.0, -0.1654412), (25.0, 0.1727941), (35.0, 0.4963235)],
-            "aout7b5": [(5.0, -0.4963235), (15.0, -0.1654412), (25.0, 0.1691176), (35.0, 0.4963235)],
-            "aout8b": [(5.0, -0.4981618), (15.0, -0.1636029), (25.0, 0.1709559), (35.0, 0.4981618)],
-        },
-        tol=0.01,
-    )
+    ladder_weights = [1.0, 2.0, 4.0, 8.0, 8.0, 16.0, 32.0, 64.0]
+    denom = 2.0 * (sum(ladder_weights) + 1.0)
+    last_bits: tuple[int, ...] | None = None
+    settle_until = 0.0
+    checked = 0
+    max_err = 0.0
+    worst_code = ""
+    for row in rows:
+        t = row.get("time")
+        if t is None:
+            continue
+        bits = _stable_bits_tuple(row, bit_names)
+        if bits is None:
+            continue
+        if last_bits is None or bits != last_bits:
+            last_bits = bits
+            settle_until = t + 0.08e-9
+            continue
+        if t < settle_until:
+            continue
+        bipolar = [1.0 if bit else -1.0 for bit in bits]
+        paired_lsb = 1.0 if bits[0] and bits[1] else -1.0 if not bits[0] and not bits[1] else 0.0
+        expected = {
+            "aout7b": sum(weight * bipolar[idx + 1] for idx, weight in enumerate(ladder_weights)) / denom,
+            "aout8b": (0.5 * bipolar[0] + sum(weight * bipolar[idx + 1] for idx, weight in enumerate(ladder_weights))) / denom,
+            "aout7b5": (paired_lsb + sum(weight * bipolar[idx + 2] for idx, weight in enumerate(ladder_weights[1:]))) / denom,
+        }
+        err = max(abs(row[name] - value) for name, value in expected.items())
+        if err > max_err:
+            max_err = err
+            worst_code = "".join(str(bit) for bit in bits)
+        checked += 1
+    if checked < 20:
+        return False, f"insufficient_weighted_decoder_rows={checked}"
+    return max_err <= 0.025, f"checked={checked} max_weighted7b5_error={max_err:.5f} worst_code={worst_code}"
 
 
 def check_v3_toggle_flip_flop(rows: list[dict[str, float]]) -> tuple[bool, str]:
@@ -10219,20 +13089,52 @@ def check_v3_foreground_cload_calibrator(rows: list[dict[str, float]]) -> tuple[
 
 
 def check_v3_pipe15_data_align(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    required = {"time", "do0", "do3", "do7", "do11", "do14"}
+    required = {"time", "samp", *{f"d{i}" for i in range(15)}, *{f"do{i}" for i in range(15)}}
     if not rows or not required.issubset(rows[0]):
         return False, "missing pipe15 data align outputs"
-    return _sample_many(
-        rows,
-        {
-            "do0": [(1.7, 0.9), (11.7, 0.0)],
-            "do3": [(1.7, 0.0), (9.7, 0.0), (11.7, 0.9)],
-            "do7": [(5.7, 0.9), (9.7, 0.9), (11.7, 0.0)],
-            "do11": [(5.7, 0.0), (9.7, 0.9), (11.7, 0.0)],
-            "do14": [(5.7, 0.0), (9.7, 0.9), (11.7, 0.0)],
-        },
-        tol=0.08,
-    )
+    times = [row["time"] for row in rows]
+    edges = _threshold_crossings([row["samp"] for row in rows], times, threshold=0.45, direction="rising")
+    if len(edges) < 5:
+        return False, f"too_few_sample_edges={len(edges)}"
+
+    max_err = 0.0
+    checked = 0
+    failures: list[str] = []
+    for edge_idx, edge_t in enumerate(edges):
+        sample_t = edge_t + 0.12e-9
+        if sample_t > rows[-1]["time"]:
+            continue
+        for bit in range(15):
+            if bit <= 2:
+                delay = 0
+            elif bit <= 6:
+                delay = 1
+            elif bit <= 10:
+                delay = 2
+            else:
+                delay = 4
+            source_idx = edge_idx - delay
+            if source_idx < 0:
+                expected = 0.0
+            else:
+                expected = sample_signal_at(rows, f"d{bit}", edges[source_idx] + 1e-12)
+                if expected is None:
+                    continue
+            observed = sample_signal_at(rows, f"do{bit}", sample_t)
+            if observed is None:
+                continue
+            err = abs(observed - expected)
+            max_err = max(max_err, err)
+            checked += 1
+            if err > 0.12:
+                failures.append(
+                    f"do{bit}@{edge_t * 1e9:.3f}ns={observed:.3f} expected={expected:.3f} delay={delay}"
+                )
+    if checked < 45:
+        return False, f"insufficient_pipe_align_checks={checked}"
+    if failures:
+        return False, " ".join(failures[:6])
+    return True, f"aligned_bit_samples={checked} max_err={max_err:.4f}"
 
 
 def check_v3_clocked_mux4_sampler(rows: list[dict[str, float]]) -> tuple[bool, str]:
@@ -10685,14 +13587,46 @@ def check_v3_qtz_differential_2level(rows: list[dict[str, float]]) -> tuple[bool
 
 
 def check_v3_l2_7b_dac_ready(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    required = {"time", "rdy", "din1", "din2", "din3", "din4", "din5", "din6", "din7", "aout"}
+    bit_names = [f"din{i}" for i in range(1, 8)]
+    required = {"time", "rdy", "aout", *bit_names}
     if not rows or not required.issubset(rows[0]):
         return False, "missing l2 7b dac ready signals"
-    return _sample_many(
-        rows,
-        {"aout": [(0.5, 0.0), (1.5, -0.9), (2.5, 0.2860465), (3.5, 0.8720930)]},
-        tol=0.02,
-    )
+    vth = 0.45
+    vdd = 0.9
+    weights_by_bit = [0.5, 1.0, 2.0, 4.0, 8.0, 16.0, 32.0]
+    total_weight = sum(weights_by_bit) + 1.0
+    armed = False
+    expected = 0.0
+    prev_rdy = rows[0].get("rdy", 0.0)
+    settle_until = 0.0
+    checked = 0
+    edge_count = 0
+    max_err = 0.0
+    for row in rows:
+        t = row.get("time")
+        rdy = row.get("rdy")
+        if t is None or rdy is None:
+            continue
+        if prev_rdy is not None and prev_rdy <= vth and rdy > vth:
+            edge_count += 1
+            if not armed:
+                armed = True
+                expected = 0.0
+            else:
+                bits = _stable_bits_tuple(row, bit_names)
+                if bits is not None:
+                    switched = sum(float(bit) * weight for bit, weight in zip(bits, weights_by_bit))
+                    expected = (switched / total_weight) * 2.0 * vdd - vdd
+            settle_until = t + 0.08e-9
+        prev_rdy = rdy
+        if t < settle_until:
+            continue
+        err = abs(row["aout"] - expected)
+        max_err = max(max_err, err)
+        checked += 1
+    if checked < 20 or edge_count < 3:
+        return False, f"insufficient_ready_dac_rows={checked} edges={edge_count}"
+    return max_err <= 0.03, f"checked={checked} ready_edges={edge_count} max_ready_dac_error={max_err:.5f}"
 
 
 def check_v3_l2_cdac_4b_switch(rows: list[dict[str, float]]) -> tuple[bool, str]:
@@ -10804,49 +13738,118 @@ def check_v3_l3_sar2_logic_7b(rows: list[dict[str, float]]) -> tuple[bool, str]:
     }
     if not rows or not required.issubset(rows[0]):
         return False, "missing l3 sar2 logic 7b signals"
-    return _sample_many(
-        rows,
-        {
-            "cmpck": [(0.95, 0.9), (1.5, 0.0), (2.5, 0.9), (4.5, 0.9), (5.6, 0.0), (6.0, 0.0)],
-            "do6": [(5.9, 0.9)],
-            "do5": [(5.9, 0.0)],
-            "do4": [(5.9, 0.9)],
-            "do3": [(5.9, 0.0)],
-            "do2": [(5.9, 0.9)],
-            "do1": [(5.9, 0.9)],
-            "do0": [(5.9, 0.0)],
-            "sp6": [(0.6, 0.9), (6.0, 0.9)],
-            "sn6": [(0.6, 0.9), (1.7, 0.0), (6.0, 0.0)],
-            "sn5": [(2.5, 0.9), (6.0, 0.9)],
-            "sp4": [(3.2, 0.9), (6.0, 0.9)],
-            "sn3": [(3.9, 0.9), (6.0, 0.9)],
-            "sp2": [(4.6, 0.9), (6.0, 0.9)],
-            "sp1": [(5.25, 0.9), (6.0, 0.9)],
-            "sp5": [(6.0, 0.0)],
-            "sn4": [(6.0, 0.0)],
-        },
-        tol=0.08,
-    )
+    times = [row["time"] for row in rows]
+    threshold = 0.45
+    high_level = max(max(row[signal] for row in rows) for signal in ("clk", "dp", "dn"))
+    if high_level < 0.6:
+        high_level = 0.9
+    clk_edges = _threshold_crossings([row["clk"] for row in rows], times, threshold=threshold, direction="rising")
+    dp_falls = [(t, 0) for t in _threshold_crossings([row["dp"] for row in rows], times, threshold=threshold, direction="falling")]
+    dn_falls = [(t, 1) for t in _threshold_crossings([row["dn"] for row in rows], times, threshold=threshold, direction="falling")]
+    decisions = sorted(dp_falls + dn_falls)
+    if not clk_edges:
+        return False, "missing_clk_start_edge"
+    if len(decisions) < 7:
+        return False, f"too_few_active_low_decisions={len(decisions)}"
+    decisions = decisions[:7]
+    decision_bits = [bit for _, bit in decisions]
+
+    sample_t = min(rows[-1]["time"] - 0.05e-9, decisions[-1][0] + 0.58e-9)
+    if sample_t <= decisions[-1][0]:
+        sample_t = rows[-1]["time"]
+
+    failures: list[str] = []
+    for bit in range(7):
+        expected = decision_bits[6 - bit] * high_level
+        observed = sample_signal_at(rows, f"do{bit}", sample_t)
+        if observed is None or abs(observed - expected) > 0.12:
+            failures.append(f"do{bit}={observed} expected={expected:.3f}")
+
+    expected_sp = {idx: 0 for idx in range(1, 7)}
+    expected_sn = {idx: 0 for idx in range(1, 7)}
+    expected_sp[6] = 1
+    expected_sn[6] = 1
+    for seq_idx, decision in enumerate(decision_bits[:6]):
+        bit = 6 - seq_idx
+        if bit == 6:
+            if decision:
+                expected_sn[6] = 0
+            else:
+                expected_sp[6] = 0
+        elif decision:
+            expected_sp[bit] = 1
+        else:
+            expected_sn[bit] = 1
+    for bit in range(1, 7):
+        for prefix, expected_map in (("sp", expected_sp), ("sn", expected_sn)):
+            signal = f"{prefix}{bit}"
+            expected = expected_map[bit] * high_level
+            observed = sample_signal_at(rows, signal, sample_t)
+            if observed is None or abs(observed - expected) > 0.12:
+                failures.append(f"{signal}={observed} expected={expected:.3f}")
+
+    cmp_start = sample_signal_at(rows, "cmpck", clk_edges[0] + 0.12e-9)
+    cmp_final = sample_signal_at(rows, "cmpck", sample_t)
+    if cmp_start is None or cmp_start < high_level * 0.6:
+        failures.append(f"cmpck_start={cmp_start}")
+    if cmp_final is None or cmp_final > high_level * 0.4:
+        failures.append(f"cmpck_final={cmp_final}")
+    if failures:
+        return False, " ".join(failures[:8])
+    code = "".join(str(bit) for bit in decision_bits)
+    return True, f"active_low_decisions={code} sample_t_ns={sample_t * 1e9:.3f}"
 
 
 def check_v3_cdac_8b_monodown(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "vin", "clks", "vres", *{f"dctrl{i}" for i in range(1, 8)}}
     if not rows or not required.issubset(rows[0]):
         return False, "missing cdac 8b monodown signals"
-    return _sample_many(
-        rows,
-        {
-            "vres": [(0.5, 0.8), (1.0, 0.8), (1.5, 0.3), (2.1, 0.05), (2.7, -0.075), (3.3, -0.1375), (3.9, -0.16875), (4.5, -0.184375), (5.1, -0.1921875)],
-            "dctrl7": [(1.5, 1.0)],
-            "dctrl6": [(2.1, 1.0)],
-            "dctrl5": [(2.7, 1.0)],
-            "dctrl4": [(3.3, 1.0)],
-            "dctrl3": [(3.9, 1.0)],
-            "dctrl2": [(4.5, 1.0)],
-            "dctrl1": [(5.1, 1.0)],
-        },
-        tol=0.02,
-    )
+    times = [row["time"] for row in rows]
+    threshold = 0.5
+    events: list[tuple[float, str, int | None]] = []
+    events += [
+        (t, "sample", None)
+        for t in _threshold_crossings([row["clks"] for row in rows], times, threshold=threshold, direction="falling")
+    ]
+    for bit in range(1, 8):
+        signal = f"dctrl{bit}"
+        events += [
+            (t, "subtract", bit)
+            for t in _threshold_crossings([row[signal] for row in rows], times, threshold=threshold, direction="rising")
+        ]
+    events.sort()
+    if len(events) < 5:
+        return False, f"too_few_cdac_events={len(events)}"
+
+    residue = sample_signal_at(rows, "vin", rows[0]["time"]) or 0.0
+    checked = 0
+    max_err = 0.0
+    failures: list[str] = []
+    for event_t, kind, bit in events:
+        if kind == "sample":
+            sampled = sample_signal_at(rows, "vin", event_t + 1e-12)
+            if sampled is None:
+                continue
+            residue = sampled
+        elif bit is not None:
+            residue -= 1.0 / (2 ** (8 - bit))
+        sample_t = event_t + 0.12e-9
+        if sample_t > rows[-1]["time"]:
+            continue
+        observed = sample_signal_at(rows, "vres", sample_t)
+        if observed is None:
+            continue
+        err = abs(observed - residue)
+        max_err = max(max_err, err)
+        checked += 1
+        if err > 0.035:
+            detail = "sample" if kind == "sample" else f"dctrl{bit}"
+            failures.append(f"vres_after_{detail}@{event_t * 1e9:.3f}ns={observed:.4f} expected={residue:.4f}")
+    if checked < 5:
+        return False, f"insufficient_cdac_checks={checked}"
+    if failures:
+        return False, " ".join(failures[:6])
+    return True, f"cdac_events={checked} max_err={max_err:.4f}"
 
 
 def check_v3_va_dac_6b_se(rows: list[dict[str, float]]) -> tuple[bool, str]:
@@ -10967,11 +13970,46 @@ def check_v3_tool_4bit_sar_signed_dac(rows: list[dict[str, float]]) -> tuple[boo
     required = {"time", "sh", "aout", *{f"d{i}" for i in range(4)}}
     if not rows or not required.issubset(rows[0]):
         return False, "missing tool 4bit sar signed dac signals"
-    return _sample_many(
-        rows,
-        {"aout": [(0.5, -1.6875), (1.5, 0.5625), (2.5, -0.5625), (3.5, 1.6875)]},
-        tol=0.025,
-    )
+    times = [row["time"] for row in rows]
+    high_level = max(max(row[signal] for row in rows) for signal in ("sh", "d0", "d1", "d2", "d3"))
+    if high_level < 1.0:
+        high_level = 1.8
+    threshold = high_level / 2.0
+    sample_edges = _threshold_crossings([row["sh"] for row in rows], times, threshold=threshold, direction="rising")
+    if len(sample_edges) < 3:
+        return False, f"too_few_sample_edges={len(sample_edges)}"
+
+    weights = {3: 8.0, 2: 4.0, 1: 2.0, 0: 1.0}
+    gain = high_level / 16.0
+    checked = 0
+    max_err = 0.0
+    failures: list[str] = []
+    for edge_t in sample_edges:
+        total = 0.0
+        bit_text: list[str] = []
+        for bit, weight in weights.items():
+            value = sample_signal_at(rows, f"d{bit}", edge_t + 1e-12)
+            if value is None:
+                continue
+            high = value > threshold
+            bit_text.append("1" if high else "0")
+            total += weight if high else -weight
+        expected = total * gain
+        observed = sample_signal_at(rows, "aout", edge_t + 0.08e-9)
+        if observed is None:
+            continue
+        err = abs(observed - expected)
+        max_err = max(max_err, err)
+        checked += 1
+        if err > 0.04:
+            failures.append(
+                f"aout@{edge_t * 1e9:.3f}ns={observed:.4f} expected={expected:.4f} bits={''.join(bit_text)}"
+            )
+    if checked < 3:
+        return False, f"insufficient_signed_dac_checks={checked}"
+    if failures:
+        return False, " ".join(failures[:5])
+    return True, f"signed_dac_samples={checked} max_err={max_err:.4f}"
 
 
 def check_v3_dac4bit_small_swing(rows: list[dict[str, float]]) -> tuple[bool, str]:
@@ -11025,13 +14063,53 @@ def check_v3_dac_serial_16b_nobridge(rows: list[dict[str, float]]) -> tuple[bool
     required = {"time", "clk_sample", "clk_sarready", "data", "out"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing dac serial 16b nobridge signals"
-    return _sample_many(
-        rows,
-        {
-            "out": [(0.5, -1.1), (1.1, -0.1290701), (2.1, -0.1290701), (3.1, 0.1136623), (4.1, 0.3563948)],
-            "clk_sample": [(0.1, 1.1), (0.35, 0.0), (0.8, 1.1)],
-        },
-        tol=0.025,
+    vcm = 0.55
+    vdd = 1.1
+    prefix_weights = [64.0, 32.0, 16.0, 16.0, 8.0]
+    continuation_weights = [4.0, 2.0, 1.0, 1.0, 0.5, 0.25, 0.125, 0.0625, 0.03125, 0.015625, 0.015625]
+    total_weight = sum(prefix_weights) + sum(continuation_weights) + 0.015625
+    state = 0.0
+    counter = 1
+    expected = -vdd
+    prev_sample = rows[0].get("clk_sample", 0.0)
+    prev_ready = rows[0].get("clk_sarready", 0.0)
+    settle_until = 0.05e-9
+    checked = 0
+    ready_edges = 0
+    sample_resets = 0
+    max_err = 0.0
+    for row in rows:
+        t = row.get("time")
+        sample = row.get("clk_sample")
+        ready = row.get("clk_sarready")
+        data = row.get("data")
+        if t is None or sample is None or ready is None or data is None:
+            continue
+        if prev_sample is not None and prev_sample > vcm and sample <= vcm:
+            state = 0.0
+            counter = 1
+            expected = -vdd
+            sample_resets += 1
+            settle_until = t + 0.05e-9
+        if prev_ready is not None and prev_ready > vcm and ready <= vcm:
+            if counter <= len(prefix_weights) and data > vcm:
+                state += prefix_weights[counter - 1] / total_weight
+            counter += 1
+            expected = state * 2.0 * vdd - vdd
+            ready_edges += 1
+            settle_until = t + 0.05e-9
+        prev_sample = sample
+        prev_ready = ready
+        if t < settle_until:
+            continue
+        err = abs(row["out"] - expected)
+        max_err = max(max_err, err)
+        checked += 1
+    if checked < 20 or ready_edges < 4 or sample_resets < 1:
+        return False, f"insufficient_serial_dac_rows={checked} ready_edges={ready_edges} sample_resets={sample_resets}"
+    return max_err <= 0.04, (
+        f"checked={checked} ready_edges={ready_edges} sample_resets={sample_resets} "
+        f"max_serial_dac_error={max_err:.5f}"
     )
 
 
@@ -11039,14 +14117,61 @@ def check_v3_sar_13bit_serial_decoder(rows: list[dict[str, float]]) -> tuple[boo
     required = {"time", "din", "clks", "ready", "dout", "dnum"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing sar 13bit serial decoder signals"
-    return _sample_many(
-        rows,
-        {
-            "dout": [(1.0, -0.5), (14.0, -0.5), (15.0, 0.19808326)],
-            "dnum": [(1.0, 0.0), (6.5, 3.0), (13.5, 7.0), (15.0, 0.0)],
-        },
-        tol=0.03,
-    )
+    times = [row["time"] for row in rows]
+    threshold = 0.55
+    events: list[tuple[float, str]] = []
+    events += [(t, "clks") for t in _threshold_crossings([row["clks"] for row in rows], times, threshold=threshold, direction="rising")]
+    events += [(t, "ready") for t in _threshold_crossings([row["ready"] for row in rows], times, threshold=threshold, direction="rising")]
+    events.sort()
+    if not any(kind == "clks" for _, kind in events):
+        return False, "missing_clks_publish_edge"
+    if sum(1 for _, kind in events if kind == "ready") < 8:
+        return False, "too_few_ready_edges"
+
+    counter = 12
+    accum = 0.0
+    high_count = 0.0
+    ready_checks = 0
+    publish_checks = 0
+    failures: list[str] = []
+    for event_t, kind in events:
+        if kind == "ready":
+            if counter >= 0:
+                bit_value = sample_signal_at(rows, "din", event_t + 1e-12)
+                if bit_value is not None and bit_value > threshold:
+                    accum += 2.0 ** counter
+                    high_count += 1.0
+                counter -= 1
+                observed_count = sample_signal_at(rows, "dnum", event_t + 0.08e-9)
+                if observed_count is not None:
+                    ready_checks += 1
+                    if abs(observed_count - high_count) > 0.15:
+                        failures.append(
+                            f"dnum@{event_t * 1e9:.3f}ns={observed_count:.3f} expected={high_count:.1f}"
+                        )
+        else:
+            expected = accum / 8191.0 - 0.5
+            observed = sample_signal_at(rows, "dout", event_t + 0.08e-9)
+            observed_count = sample_signal_at(rows, "dnum", event_t + 0.08e-9)
+            if observed is not None:
+                publish_checks += 1
+                if abs(observed - expected) > 0.035:
+                    failures.append(
+                        f"dout@{event_t * 1e9:.3f}ns={observed:.4f} expected={expected:.4f}"
+                    )
+            if observed_count is not None and abs(observed_count) > 0.15:
+                failures.append(f"dnum_after_publish@{event_t * 1e9:.3f}ns={observed_count:.3f}")
+            counter = 12
+            accum = 0.0
+            high_count = 0.0
+
+    if ready_checks < 8:
+        return False, f"insufficient_ready_checks={ready_checks}"
+    if publish_checks < 2:
+        return False, f"insufficient_publish_checks={publish_checks}"
+    if failures:
+        return False, " ".join(failures[:6])
+    return True, f"ready_checks={ready_checks} publish_checks={publish_checks}"
 
 
 def check_v3_single_shot_timer_pulse(rows: list[dict[str, float]]) -> tuple[bool, str]:
@@ -11180,17 +14305,53 @@ def check_v3_therm8_to_bin4_count(rows: list[dict[str, float]]) -> tuple[bool, s
 
 def check_v3_coarse_qtz_3bit_residue(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "vin", "d0", "d1", "d2", "vres"}
-    if not rows or not required.issubset(rows[0]):
-        return False, "missing coarse qtz 3bit residue signals"
-    return _sample_many(
-        rows,
-        {
-            "d0": [(0.5, 0.0), (1.2, 0.0), (2.1, 0.0), (3.0, 1.0)],
-            "d1": [(0.5, 0.0), (1.2, 1.0), (2.1, 0.0), (3.0, 1.0)],
-            "d2": [(0.5, 0.0), (1.2, 0.0), (2.1, 1.0), (3.0, 1.0)],
-            "vres": [(0.5, 0.0), (1.2, -0.1), (2.1, 0.1), (3.0, 0.15)],
-        },
-        tol=0.03,
+    missing = _v3_missing_columns(rows, required)
+    if missing:
+        return False, missing
+
+    max_bit_error = 0.0
+    max_res_error = 0.0
+    checked = 0
+    saw_low_clip = False
+    saw_high_clip = False
+    saw_internal = False
+    stride = max(1, len(rows) // 80)
+    for idx in range(1, len(rows) - 1, stride):
+        row = rows[idx]
+        prev_row = rows[idx - 1]
+        next_row = rows[idx + 1]
+        local_vin_span = max(
+            abs(prev_row["vin"] - row["vin"]),
+            abs(next_row["vin"] - row["vin"]),
+        )
+        if local_vin_span > 1.0e-6:
+            continue
+        vin = row["vin"]
+        vclip = max(-1.0, min(1.0, vin))
+        saw_low_clip = saw_low_clip or vin < -1.0
+        saw_high_clip = saw_high_clip or vin > 1.0
+        saw_internal = saw_internal or (-0.95 < vin < 0.95)
+        lsb = 0.25
+        code = math.floor(((vclip + 1.0) / lsb) + 0.5)
+        code = max(0, min(7, code))
+        vq = code * lsb - 1.0
+        expected = {
+            "d0": 1.0 if (code & 1) else 0.0,
+            "d1": 1.0 if ((code >> 1) & 1) else 0.0,
+            "d2": 1.0 if ((code >> 2) & 1) else 0.0,
+            "vres": vclip - vq,
+        }
+        for bit_name in ("d0", "d1", "d2"):
+            max_bit_error = max(max_bit_error, abs(row[bit_name] - expected[bit_name]))
+        max_res_error = max(max_res_error, abs(row["vres"] - expected["vres"]))
+        checked += 1
+    if checked < 8:
+        return False, f"too_few_quantizer_samples={checked}"
+    ok = max_bit_error <= 0.09 and max_res_error <= 0.035
+    return (
+        ok,
+        f"checked={checked} low_clip={saw_low_clip} high_clip={saw_high_clip} "
+        f"internal={saw_internal} max_bit_error={max_bit_error:.5f} max_res_error={max_res_error:.5f}",
     )
 
 
@@ -11459,6 +14620,136 @@ def check_v3_clocked_adc3bit(rows: list[dict[str, float]]) -> tuple[bool, str]:
     if len(set(codes)) < 3 or min(codes) != 0 or max(codes) != 7:
         return False, f"insufficient_clocked_adc3bit_code_coverage={codes}"
     return True, f"codes={codes} max_err={max_err:.4f}"
+
+
+def check_v3_495_slew_rate_dac4(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "d3", "d2", "d1", "d0", "vout"}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing slew-rate dac4 signals"
+    expected = 0.0
+    last_t = rows[0]["time"]
+    max_err = 0.0
+    max_endpoint_err = 0.0
+    checked = 0
+    endpoint_checks = 0
+    for row in rows[1:]:
+        code = 0
+        code += 8 if row["d3"] > 0.45 else 0
+        code += 4 if row["d2"] > 0.45 else 0
+        code += 2 if row["d1"] > 0.45 else 0
+        code += 1 if row["d0"] > 0.45 else 0
+        target = code / 15.0
+        dt = max(0.0, row["time"] - last_t)
+        step = 1e8 * dt
+        if expected < target:
+            expected = min(target, expected + step)
+        elif expected > target:
+            expected = max(target, expected - step)
+        last_t = row["time"]
+        if row["time"] < 0.5e-9:
+            continue
+        err = abs(row["vout"] - expected)
+        max_err = max(max_err, err)
+        checked += 1
+        if abs(expected - target) < 0.003 and code in {0, 3, 6, 12, 15}:
+            endpoint_err = abs(row["vout"] - target)
+            max_endpoint_err = max(max_endpoint_err, endpoint_err)
+            endpoint_checks += 1
+    if checked < 40:
+        return False, f"insufficient_slew_samples={checked}"
+    if endpoint_checks < 8:
+        return False, f"insufficient_settled_endpoint_checks={endpoint_checks}"
+    if max_err > 0.075:
+        return False, f"max_slew_error={max_err:.4f}"
+    if max_endpoint_err > 0.020:
+        return False, f"max_endpoint_error={max_endpoint_err:.4f}"
+    return True, (
+        f"slew_samples={checked} settled_checks={endpoint_checks} "
+        f"max_err={max_err:.4f} max_endpoint_err={max_endpoint_err:.4f}"
+    )
+
+
+def check_v3_496_first_order_sigma_delta_modulator(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "vin", "vclk", "bitout"}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing sigma-delta modulator signals"
+    times = [row["time"] for row in rows]
+    edges = _threshold_crossings([row["vclk"] for row in rows], times, threshold=0.45, direction="rising")
+    if len(edges) < 20:
+        return False, f"too_few_clock_edges={len(edges)}"
+    acc = 0.0
+    bit_state = 0
+    mismatches: list[str] = []
+    low_bits = 0
+    low_total = 0
+    high_bits = 0
+    high_total = 0
+    for edge_t in edges:
+        vin = sample_signal_at(rows, "vin", edge_t + 1e-12)
+        observed = sample_signal_at(rows, "bitout", edge_t + 0.10e-9)
+        if vin is None or observed is None:
+            continue
+        acc = acc + vin - bit_state
+        bit_state = 1 if acc >= 0.0 else 0
+        observed_bit = 1 if observed > 0.45 else 0
+        if observed_bit != bit_state:
+            mismatches.append(
+                f"edge@{edge_t * 1e9:.3f}ns bit={observed_bit} expected={bit_state} vin={vin:.3f}"
+            )
+        if vin < 0.35:
+            low_total += 1
+            low_bits += observed_bit
+        elif vin > 0.55:
+            high_total += 1
+            high_bits += observed_bit
+    if low_total < 8 or high_total < 8:
+        return False, f"insufficient_density_windows=low{low_total}_high{high_total}"
+    low_density = low_bits / low_total
+    high_density = high_bits / high_total
+    if mismatches:
+        return False, " ".join(mismatches[:6])
+    if high_density <= low_density + 0.20:
+        return False, f"density_not_separated=low{low_density:.3f}_high{high_density:.3f}"
+    return True, f"edges={len(edges)} low_density={low_density:.3f} high_density={high_density:.3f}"
+
+
+def check_v3_497_thermometer_bus_encoder(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "vin", *{f"t{i}" for i in range(16)}}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing thermometer bus encoder signals"
+    sample_times = [1.4e-9, 3.4e-9, 5.4e-9, 7.4e-9, 9.4e-9, 10.8e-9]
+    checked = 0
+    failures: list[str] = []
+    for sample_t in sample_times:
+        vin = sample_signal_at(rows, "vin", sample_t)
+        if vin is None:
+            continue
+        clipped = min(1.0, max(0.0, vin))
+        code = int(math.floor(16.0 * clipped))
+        code = max(0, min(16, code))
+        bits = []
+        for bit in range(16):
+            value = sample_signal_at(rows, f"t{bit}", sample_t)
+            if value is None:
+                bits.append(-1)
+            else:
+                bits.append(1 if value > 0.45 else 0)
+        if -1 in bits:
+            failures.append(f"missing_bus_sample@{sample_t * 1e9:.2f}ns")
+            continue
+        expected = [1 if bit < code else 0 for bit in range(16)]
+        if bits != expected:
+            failures.append(
+                f"therm@{sample_t * 1e9:.2f}ns code={code} observed={sum(bits)} prefix={''.join(str(x) for x in bits[:8])}"
+            )
+        if any(bits[i] < bits[i + 1] for i in range(15)):
+            failures.append(f"non_prefix_order@{sample_t * 1e9:.2f}ns")
+        checked += 1
+    if checked < 4:
+        return False, f"insufficient_thermometer_samples={checked}"
+    if failures:
+        return False, " ".join(failures[:5])
+    return True, f"thermometer_samples={checked}"
 
 
 def check_v3_cal4bit_modulo(rows: list[dict[str, float]]) -> tuple[bool, str]:
@@ -17089,6 +20380,7 @@ CHECKS["189-divide-by-8-9-switch"] = check_v3_divide_by_8_9_switch
 CHECKS["190-dac-restore-10bit-offset"] = check_v3_dac_restore_10bit_offset
 CHECKS["191-dac-8bit-ideal-scalar"] = check_v3_dac_8bit_ideal_scalar
 CHECKS["192-flash-data-align-pipeline"] = check_v3_flash_data_align_pipeline
+CHECKS["215-pipe15-data-align"] = check_v3_pipe15_data_align
 CHECKS["193-cyclic-decoder-10b"] = check_v3_cyclic_decoder_10b
 CHECKS["194-ideal-adc-out-7bits"] = check_v3_ideal_adc_out_7bits
 CHECKS["195-va-lx-adc-ideal-4b"] = check_v3_va_lx_adc_ideal_4b
@@ -17217,6 +20509,9 @@ CHECKS["v3_smooth_tanh_comparator"] = check_v3_smooth_tanh_comparator
 CHECKS["v3_flash_folded_dac4"] = check_v3_flash_folded_dac4
 CHECKS["v3_subradix_dac10"] = check_v3_subradix_dac10
 CHECKS["v3_clocked_adc3bit"] = check_v3_clocked_adc3bit
+CHECKS["v3_495_slew_rate_dac4"] = check_v3_495_slew_rate_dac4
+CHECKS["v3_496_first_order_sigma_delta_modulator"] = check_v3_496_first_order_sigma_delta_modulator
+CHECKS["v3_497_thermometer_bus_encoder"] = check_v3_497_thermometer_bus_encoder
 CHECKS["v3_cal4bit_modulo"] = check_v3_cal4bit_modulo
 CHECKS["v3_mux4_priority"] = check_v3_mux4_priority
 CHECKS["v3_xnor_gate_voltage"] = check_v3_xnor_gate_voltage
@@ -17243,6 +20538,9 @@ CHECKS["292-smooth-tanh-comparator"] = check_v3_smooth_tanh_comparator
 CHECKS["293-flash-folded-dac4"] = check_v3_flash_folded_dac4
 CHECKS["294-subradix-dac10"] = check_v3_subradix_dac10
 CHECKS["295-clocked-adc3bit"] = check_v3_clocked_adc3bit
+CHECKS["495-slew-rate-dac4"] = check_v3_495_slew_rate_dac4
+CHECKS["496-first-order-sigma-delta-modulator"] = check_v3_496_first_order_sigma_delta_modulator
+CHECKS["497-thermometer-bus-encoder"] = check_v3_497_thermometer_bus_encoder
 CHECKS["296-cal4bit-modulo"] = check_v3_cal4bit_modulo
 CHECKS["297-mux4-priority"] = check_v3_mux4_priority
 CHECKS["298-xnor-gate-voltage"] = check_v3_xnor_gate_voltage
@@ -17695,6 +20993,8 @@ V3_STANDALONE_SPLIT_CHECKS = {
     "351-always-posedged-dff": check_v3_351_always_posedged_dff,
     "v3_352_always_negedge_sampler": check_v3_352_always_negedge_sampler,
     "352-always-negedge-sampler": check_v3_352_always_negedge_sampler,
+    "v3_353_always_resettable_toggle": check_v3_353_always_resettable_toggle,
+    "353-always-resettable-toggle": check_v3_353_always_resettable_toggle,
     "v3_354_always_counter_two_bit": check_v3_354_always_counter_two_bit,
     "354-always-counter-two-bit": check_v3_354_always_counter_two_bit,
     "v3_355_always_enable_hold": check_v3_355_always_enable_hold,
@@ -17749,11 +21049,246 @@ V3_STANDALONE_SPLIT_CHECKS = {
     "379-file-fgets-config-loader": check_v3_379_file_fgets_config_loader,
     "v3_380_file_feof_line_counter": check_v3_380_file_feof_line_counter,
     "380-file-feof-line-counter": check_v3_380_file_feof_line_counter,
+    "v3_381_file_fseek_offset_reader": check_v3_381_file_fseek_offset_reader,
+    "381-file-fseek-offset-reader": check_v3_381_file_fseek_offset_reader,
+    "v3_382_file_ftell_position_meter": check_v3_382_file_ftell_position_meter,
+    "382-file-ftell-position-meter": check_v3_382_file_ftell_position_meter,
+    "v3_383_file_rewind_second_pass": check_v3_383_file_rewind_second_pass,
+    "383-file-rewind-second-pass": check_v3_383_file_rewind_second_pass,
+    "v3_384_file_fopen_mode_selector": check_v3_384_file_fopen_mode_selector,
+    "384-file-fopen-mode-selector": check_v3_384_file_fopen_mode_selector,
+    "v3_385_table_model_linear_gain": check_v3_385_table_model_linear_gain,
+    "385-table-model-linear-gain": check_v3_385_table_model_linear_gain,
+    "v3_386_table_model_clamped_transfer": check_v3_386_table_model_clamped_transfer,
+    "386-table-model-clamped-transfer": check_v3_386_table_model_clamped_transfer,
+    "v3_387_table_model_threshold_map": check_v3_387_table_model_threshold_map,
+    "387-table-model-threshold-map": check_v3_387_table_model_threshold_map,
+    "v3_388_table_model_dac_code_map": check_v3_388_table_model_dac_code_map,
+    "388-table-model-dac-code-map": check_v3_388_table_model_dac_code_map,
+    "v3_389_table_model_temperature_profile": check_v3_389_table_model_temperature_profile,
+    "389-table-model-temperature-profile": check_v3_389_table_model_temperature_profile,
+    "v3_390_table_model_piecewise_calibrator": check_v3_390_table_model_piecewise_calibrator,
+    "390-table-model-piecewise-calibrator": check_v3_390_table_model_piecewise_calibrator,
+    "v3_391_rdist_exponential_jitter": check_v3_391_rdist_exponential_jitter,
+    "391-rdist-exponential-jitter": check_v3_391_rdist_exponential_jitter,
+    "v3_392_rdist_poisson_count_noise": check_v3_392_rdist_poisson_count_noise,
+    "392-rdist-poisson-count-noise": check_v3_392_rdist_poisson_count_noise,
+    "v3_393_rdist_normal_offset_dither": check_v3_393_rdist_normal_offset_dither,
+    "393-rdist-normal-offset-dither": check_v3_393_rdist_normal_offset_dither,
+    "v3_394_rdist_chi_square_energy": check_v3_394_rdist_chi_square_energy,
+    "394-rdist-chi-square-energy": check_v3_394_rdist_chi_square_energy,
+    "v3_395_rdist_t_tail_dither": check_v3_395_rdist_t_tail_dither,
+    "395-rdist-t-tail-dither": check_v3_395_rdist_t_tail_dither,
+    "v3_396_rdist_erlang_latency": check_v3_396_rdist_erlang_latency,
+    "396-rdist-erlang-latency": check_v3_396_rdist_erlang_latency,
+    "v3_397_hierarchy_gain_child": check_v3_397_hierarchy_gain_child,
+    "397-hierarchy-gain-child": check_v3_397_hierarchy_gain_child,
+    "v3_398_hierarchy_two_stage_chain": check_v3_398_hierarchy_two_stage_chain,
+    "398-hierarchy-two-stage-chain": check_v3_398_hierarchy_two_stage_chain,
+    "v3_399_hierarchy_parameter_override": check_v3_399_hierarchy_parameter_override,
+    "399-hierarchy-parameter-override": check_v3_399_hierarchy_parameter_override,
+    "v3_400_hierarchy_named_port_map": check_v3_400_hierarchy_named_port_map,
+    "400-hierarchy-named-port-map": check_v3_400_hierarchy_named_port_map,
+    "v3_401_hierarchy_ordered_port_map": check_v3_401_hierarchy_ordered_port_map,
+    "401-hierarchy-ordered-port-map": check_v3_401_hierarchy_ordered_port_map,
+    "v3_402_hierarchy_shared_threshold_child": check_v3_402_hierarchy_shared_threshold_child,
+    "402-hierarchy-shared-threshold-child": check_v3_402_hierarchy_shared_threshold_child,
+    "v3_403_vector_bit_select_flag": check_v3_403_vector_bit_select_flag,
+    "403-vector-bit-select-flag": check_v3_403_vector_bit_select_flag,
+    "v3_404_vector_part_select_window": check_v3_404_vector_part_select_window,
+    "404-vector-part-select-window": check_v3_404_vector_part_select_window,
+    "v3_405_vector_concat_code_build": check_v3_405_vector_concat_code_build,
+    "405-vector-concat-code-build": check_v3_405_vector_concat_code_build,
+    "v3_406_vector_replication_mask": check_v3_406_vector_replication_mask,
+    "406-vector-replication-mask": check_v3_406_vector_replication_mask,
+    "v3_407_vector_reduction_parity": check_v3_407_vector_reduction_parity,
+    "407-vector-reduction-parity": check_v3_407_vector_reduction_parity,
+    "v3_408_vector_shift_and_mask_decoder": check_v3_408_vector_shift_and_mask_decoder,
+    "408-vector-shift-and-mask-decoder": check_v3_408_vector_shift_and_mask_decoder,
+    "v3_409_macro_functionlike_clamp": check_v3_409_macro_functionlike_clamp,
+    "409-macro-functionlike-clamp": check_v3_409_macro_functionlike_clamp,
+    "v3_410_macro_ifdef_gain_select": check_v3_410_macro_ifdef_gain_select,
+    "410-macro-ifdef-gain-select": check_v3_410_macro_ifdef_gain_select,
+    "v3_411_escaped_identifier_state": check_v3_411_escaped_identifier_state,
+    "411-escaped-identifier-state": check_v3_411_escaped_identifier_state,
+    "v3_412_initial_final_step_lifecycle": check_v3_412_initial_final_step_lifecycle,
+    "412-initial-final-step-lifecycle": check_v3_412_initial_final_step_lifecycle,
+    "v3_413_while_loop_array_sum": check_v3_413_while_loop_array_sum,
+    "413-while-loop-array-sum": check_v3_413_while_loop_array_sum,
+    "v3_414_parameter_range_real_control": check_v3_414_parameter_range_real_control,
+    "414-parameter-range-real-control": check_v3_414_parameter_range_real_control,
+    "v3_415_logic_vector_assign_slice": check_v3_415_logic_vector_assign_slice,
+    "415-logic-vector-assign-slice": check_v3_415_logic_vector_assign_slice,
+    "v3_416_logic_vector_reduction_flag": check_v3_416_logic_vector_reduction_flag,
+    "416-logic-vector-reduction-flag": check_v3_416_logic_vector_reduction_flag,
+    "v3_417_always_async_reset_counter": check_v3_417_always_async_reset_counter,
+    "417-always-async-reset-counter": check_v3_417_always_async_reset_counter,
+    "v3_418_always_enable_saturating_counter": check_v3_418_always_enable_saturating_counter,
+    "418-always-enable-saturating-counter": check_v3_418_always_enable_saturating_counter,
+    "v3_419_wreal_logic_threshold_bridge": check_v3_419_wreal_logic_threshold_bridge,
+    "419-wreal-logic-threshold-bridge": check_v3_419_wreal_logic_threshold_bridge,
+    "v3_420_mixed_analog_digital_mode_latch": check_v3_420_mixed_analog_digital_mode_latch,
+    "420-mixed-analog-digital-mode-latch": check_v3_420_mixed_analog_digital_mode_latch,
+    "v3_421_task_local_variable_transform": check_v3_421_task_local_variable_transform,
+    "421-task-local-variable-transform": check_v3_421_task_local_variable_transform,
+    "v3_422_file_fscanf_table_stimulus": check_v3_422_file_fscanf_table_stimulus,
+    "422-file-fscanf-table-stimulus": check_v3_422_file_fscanf_table_stimulus,
+    "v3_423_file_profile_replay_controller": check_v3_423_file_profile_replay_controller,
+    "423-file-profile-replay-controller": check_v3_423_file_profile_replay_controller,
+    "v3_424_file_fscanf_multi_column_profile": check_v3_424_file_fscanf_multi_column_profile,
+    "424-file-fscanf-multi-column-profile": check_v3_424_file_fscanf_multi_column_profile,
+    "v3_425_string_swrite_label_builder": check_v3_425_string_swrite_label_builder,
+    "425-string-swrite-label-builder": check_v3_425_string_swrite_label_builder,
+    "v3_426_string_sformat_mode_tag": check_v3_426_string_sformat_mode_tag,
+    "426-string-sformat-mode-tag": check_v3_426_string_sformat_mode_tag,
+    "v3_427_string_formatted_metric_line": check_v3_427_string_formatted_metric_line,
+    "427-string-formatted-metric-line": check_v3_427_string_formatted_metric_line,
+    "v3_428_string_mode_tagged_log": check_v3_428_string_mode_tagged_log,
+    "428-string-mode-tagged-log": check_v3_428_string_mode_tagged_log,
+    "v3_429_string_config_label_select": check_v3_429_string_config_label_select,
+    "429-string-config-label-select": check_v3_429_string_config_label_select,
+    "v3_430_rdist_seed_reproducibility": check_v3_430_rdist_seed_reproducibility,
+    "430-rdist-seed-reproducibility": check_v3_430_rdist_seed_reproducibility,
+    "v3_431_hierarchy_support_artifact_staging": check_v3_431_hierarchy_support_artifact_staging,
+    "431-hierarchy-support-artifact-staging": check_v3_431_hierarchy_support_artifact_staging,
+    "v3_432_hierarchy_nested_parameter_chain": check_v3_432_hierarchy_nested_parameter_chain,
+    "432-hierarchy-nested-parameter-chain": check_v3_432_hierarchy_nested_parameter_chain,
+    "v3_433_preprocessor_ifndef_elsif_undef": check_v3_433_preprocessor_ifndef_elsif_undef,
+    "433-preprocessor-ifndef-elsif-undef": check_v3_433_preprocessor_ifndef_elsif_undef,
+    "v3_434_repeat_loop_accumulator": check_v3_434_repeat_loop_accumulator,
+    "434-repeat-loop-accumulator": check_v3_434_repeat_loop_accumulator,
+    "v3_435_ddt_voltage_derivative_source": check_v3_435_ddt_voltage_derivative_source,
+    "435-ddt-voltage-derivative-source": check_v3_435_ddt_voltage_derivative_source,
+    "v3_436_idt_voltage_integrator_source": check_v3_436_idt_voltage_integrator_source,
+    "436-idt-voltage-integrator-source": check_v3_436_idt_voltage_integrator_source,
+    "v3_437_laplace_nd_lowpass_filter": check_v3_437_laplace_nd_lowpass_filter,
+    "437-laplace-nd-lowpass-filter": check_v3_437_laplace_nd_lowpass_filter,
+    "v3_438_laplace_np_pole_filter": check_v3_438_laplace_np_pole_filter,
+    "438-laplace-np-pole-filter": check_v3_438_laplace_np_pole_filter,
+    "v3_439_laplace_zd_zero_den_filter": check_v3_439_laplace_zd_zero_den_filter,
+    "439-laplace-zd-zero-den-filter": check_v3_439_laplace_zd_zero_den_filter,
+    "v3_440_laplace_zp_zero_pole_filter": check_v3_440_laplace_zp_zero_pole_filter,
+    "440-laplace-zp-zero-pole-filter": check_v3_440_laplace_zp_zero_pole_filter,
+    "v3_441_zi_nd_discrete_filter": check_v3_441_zi_nd_discrete_filter,
+    "441-zi-nd-discrete-filter": check_v3_441_zi_nd_discrete_filter,
+    "v3_442_zi_np_discrete_filter": check_v3_442_zi_np_discrete_filter,
+    "442-zi-np-discrete-filter": check_v3_442_zi_np_discrete_filter,
+    "v3_443_zi_zd_discrete_filter": check_v3_443_zi_zd_discrete_filter,
+    "443-zi-zd-discrete-filter": check_v3_443_zi_zd_discrete_filter,
+    "v3_444_zi_zp_discrete_filter": check_v3_444_zi_zp_discrete_filter,
+    "444-zi-zp-discrete-filter": check_v3_444_zi_zp_discrete_filter,
+    "v3_445_limexp_soft_exponential": check_v3_445_limexp_soft_exponential,
+    "445-limexp-soft-exponential": check_v3_445_limexp_soft_exponential,
+    "v3_446_fstrobe_file_line_writer": check_v3_446_fstrobe_file_line_writer,
+    "446-fstrobe-file-line-writer": check_v3_446_fstrobe_file_line_writer,
+    "v3_447_display_warning_debug_log": check_v3_447_display_warning_debug_log,
+    "447-display-warning-debug-log": check_v3_447_display_warning_debug_log,
+    "v3_448_rdist_uniform_seeded_dither": check_v3_448_rdist_uniform_seeded_dither,
+    "448-rdist-uniform-seeded-dither": check_v3_448_rdist_uniform_seeded_dither,
+    "v3_449_generate_genvar_replicated_stage": check_v3_449_generate_genvar_replicated_stage,
+    "449-generate-genvar-replicated-stage": check_v3_449_generate_genvar_replicated_stage,
+    "v3_450_custom_nature_discipline_voltage": check_v3_450_custom_nature_discipline_voltage,
+    "450-custom-nature-discipline-voltage": check_v3_450_custom_nature_discipline_voltage,
+    "v3_451_connectmodule_electrical_bridge": check_v3_451_connectmodule_electrical_bridge,
+    "451-connectmodule-electrical-bridge": check_v3_451_connectmodule_electrical_bridge,
+    "v3_452_connectrules_electrical_map": check_v3_452_connectrules_electrical_map,
+    "452-connectrules-electrical-map": check_v3_452_connectrules_electrical_map,
+    "v3_453_specify_specparam_delay": check_v3_453_specify_specparam_delay,
+    "453-specify-specparam-delay": check_v3_453_specify_specparam_delay,
+    "v3_454_multidimensional_array_state": check_v3_454_multidimensional_array_state,
+    "454-multidimensional-array-state": check_v3_454_multidimensional_array_state,
+    "v3_455_packed_logic_bus_slice": check_v3_455_packed_logic_bus_slice,
+    "455-packed-logic-bus-slice": check_v3_455_packed_logic_bus_slice,
+    "v3_456_event_or_cross_timer": check_v3_456_event_or_cross_timer,
+    "456-event-or-cross-timer": check_v3_456_event_or_cross_timer,
+    "v3_457_nested_function_pipeline": check_v3_457_nested_function_pipeline,
+    "457-nested-function-pipeline": check_v3_457_nested_function_pipeline,
+    "v3_458_recursive_function_candidate": check_v3_458_recursive_function_candidate,
+    "458-recursive-function-candidate": check_v3_458_recursive_function_candidate,
+    "v3_459_do_while_loop_accumulator": check_v3_459_do_while_loop_accumulator,
+    "459-do-while-loop-accumulator": check_v3_459_do_while_loop_accumulator,
+    "v3_460_analog_initial_block_state": check_v3_460_analog_initial_block_state,
+    "460-analog-initial-block-state": check_v3_460_analog_initial_block_state,
+    "v3_461_vt_thermal_voltage_source": check_v3_461_vt_thermal_voltage_source,
+    "461-vt-thermal-voltage-source": check_v3_461_vt_thermal_voltage_source,
+    "v3_462_vt_temperature_argument": check_v3_462_vt_temperature_argument,
+    "462-vt-temperature-argument": check_v3_462_vt_temperature_argument,
+    "v3_463_discontinuity_event_announcement": check_v3_463_discontinuity_event_announcement,
+    "463-discontinuity-event-announcement": check_v3_463_discontinuity_event_announcement,
+    "v3_464_param_given_gain_select": check_v3_464_param_given_gain_select,
+    "464-param-given-gain-select": check_v3_464_param_given_gain_select,
+    "v3_465_port_connected_output_enable": check_v3_465_port_connected_output_enable,
+    "465-port-connected-output-enable": check_v3_465_port_connected_output_enable,
+    "v3_466_temperature_environment_metric": check_v3_466_temperature_environment_metric,
+    "466-temperature-environment-metric": check_v3_466_temperature_environment_metric,
+    "v3_467_simparam_query_tnom": check_v3_467_simparam_query_tnom,
+    "467-simparam-query-tnom": check_v3_467_simparam_query_tnom,
+    "v3_468_branch_declaration_voltage_probe": check_v3_468_branch_declaration_voltage_probe,
+    "468-branch-declaration-voltage-probe": check_v3_468_branch_declaration_voltage_probe,
+    "v3_469_current_contribution_conductance": check_v3_469_current_contribution_conductance,
+    "469-current-contribution-conductance": check_v3_469_current_contribution_conductance,
+    "v3_470_branch_current_probe_contribution": check_v3_470_branch_current_probe_contribution,
+    "470-branch-current-probe-contribution": check_v3_470_branch_current_probe_contribution,
+    "v3_471_indirect_branch_null_balance": check_v3_471_indirect_branch_null_balance,
+    "471-indirect-branch-null-balance": check_v3_471_indirect_branch_null_balance,
+    "v3_472_indirect_branch_ddt_balance": check_v3_472_indirect_branch_ddt_balance,
+    "472-indirect-branch-ddt-balance": check_v3_472_indirect_branch_ddt_balance,
+    "v3_473_attribute_potential_abstol_probe": check_v3_473_attribute_potential_abstol_probe,
+    "473-attribute-potential-abstol-probe": check_v3_473_attribute_potential_abstol_probe,
+    "v3_474_generic_potential_access_function": check_v3_474_generic_potential_access_function,
+    "474-generic-potential-access-function": check_v3_474_generic_potential_access_function,
+    "v3_475_generic_potential_contribution": check_v3_475_generic_potential_contribution,
+    "475-generic-potential-contribution": check_v3_475_generic_potential_contribution,
+    "v3_476_oomr_string_voltage_probe": check_v3_476_oomr_string_voltage_probe,
+    "476-oomr-string-voltage-probe": check_v3_476_oomr_string_voltage_probe,
+    "v3_477_analog_node_alias_initial": check_v3_477_analog_node_alias_initial,
+    "477-analog-node-alias-initial": check_v3_477_analog_node_alias_initial,
+    "v3_478_inherited_port_attribute_supply": check_v3_478_inherited_port_attribute_supply,
+    "478-inherited-port-attribute-supply": check_v3_478_inherited_port_attribute_supply,
+    "v3_479_inherited_mfactor_parameter": check_v3_479_inherited_mfactor_parameter,
+    "479-inherited-mfactor-parameter": check_v3_479_inherited_mfactor_parameter,
+    "v3_480_mfactor_system_function_gain": check_v3_480_mfactor_system_function_gain,
+    "480-mfactor-system-function-gain": check_v3_480_mfactor_system_function_gain,
+    "v3_481_analog_primitive_resistor_instance": check_v3_analog_primitive_trace_present,
+    "481-analog-primitive-resistor-instance": check_v3_analog_primitive_trace_present,
+    "v3_482_analog_primitive_isource_instance": check_v3_analog_primitive_trace_present,
+    "482-analog-primitive-isource-instance": check_v3_analog_primitive_trace_present,
+    "v3_483_cds_violation_threshold_assert": check_v3_483_cds_violation_threshold_assert,
+    "483-cds-violation-threshold-assert": check_v3_483_cds_violation_threshold_assert,
+    "v3_484_rtoi_conversion_quantizer": check_v3_484_rtoi_conversion_quantizer,
+    "484-rtoi-conversion-quantizer": check_v3_484_rtoi_conversion_quantizer,
+    "v3_485_mc_trial_number_metric": check_v3_485_mc_trial_number_metric,
+    "485-mc-trial-number-metric": check_v3_485_mc_trial_number_metric,
+    "v3_486_rf_source_info_registration": check_v3_486_rf_source_info_registration,
+    "486-rf-source-info-registration": check_v3_486_rf_source_info_registration,
+    "v3_487_table_model_2d_array_surface": check_v3_487_table_model_2d_array_surface,
+    "487-table-model-2d-array-surface": check_v3_487_table_model_2d_array_surface,
+    "v3_488_table_model_string_param_source": check_v3_488_table_model_string_param_source,
+    "488-table-model-string-param-source": check_v3_488_table_model_string_param_source,
+    "v3_489_event_nested_or_expression": check_v3_489_event_nested_or_expression,
+    "489-event-nested-or-expression": check_v3_489_event_nested_or_expression,
+    "v3_490_event_task_function_state_update": check_v3_490_event_task_function_state_update,
+    "490-event-task-function-state-update": check_v3_490_event_task_function_state_update,
+    "v3_491_kcl_capacitor_ddt_current": check_v3_491_kcl_capacitor_ddt_current,
+    "491-kcl-capacitor-ddt-current": check_v3_491_kcl_capacitor_ddt_current,
+    "v3_492_kcl_inductor_idt_voltage": check_v3_492_kcl_inductor_idt_voltage,
+    "492-kcl-inductor-idt-voltage": check_v3_492_kcl_inductor_idt_voltage,
+    "v3_493_continuous_laplace_nd_filter": check_v3_493_continuous_laplace_nd_filter,
+    "493-continuous-laplace-nd-filter": check_v3_493_continuous_laplace_nd_filter,
+    "v3_494_continuous_zi_nd_filter": check_v3_494_continuous_zi_nd_filter,
+    "494-continuous-zi-nd-filter": check_v3_494_continuous_zi_nd_filter,
 }
 
 for _alias, _checker in V3_STANDALONE_SPLIT_CHECKS.items():
     CHECKS[_alias] = _checker
     STREAMING_BEHAVIOR_CHECKS.pop(_alias, None)
+
+ARTIFACT_BEHAVIOR_CHECKS = {
+    "v3_481_analog_primitive_resistor_instance": check_v3_481_analog_primitive_resistor_instance_artifact,
+    "481-analog-primitive-resistor-instance": check_v3_481_analog_primitive_resistor_instance_artifact,
+    "v3_482_analog_primitive_isource_instance": check_v3_482_analog_primitive_isource_instance_artifact,
+    "482-analog-primitive-isource-instance": check_v3_482_analog_primitive_isource_instance_artifact,
+}
 
 VALIDATED_FAST_CHECKER_TASKS = frozenset(STREAMING_BEHAVIOR_CHECKS)
 
@@ -17928,6 +21463,25 @@ def parse_evas_timing(text: str) -> dict[str, float]:
     return timing
 
 
+def extract_evas_simulator_error(text: str) -> str | None:
+    """Extract a concise EVAS error before stdout tail truncation hides it."""
+    if not text.strip():
+        return None
+    patterns = (
+        r"ERROR:\s*(?P<msg>[^\n]+)",
+        r"CompilationError:\s*(?P<msg>[^\n]+)",
+        r"SyntaxError:\s*(?P<msg>[^\n]+)",
+        r"NameError:\s*(?P<msg>[^\n]+)",
+        r"ValueError:\s*(?P<msg>[^\n]+)",
+    )
+    for pattern in patterns:
+        matches = list(re.finditer(pattern, text))
+        if matches:
+            message = re.sub(r"\s+", " ", matches[-1].group("msg").strip())
+            return f"simulator_error={message[:240]}"
+    return None
+
+
 def add_evas_reported_timing_split(
     timing_split: dict[str, float],
     timing: dict[str, float],
@@ -18052,7 +21606,7 @@ def run_case(
             tb_path,
             target_filenames=[*task_artifact_targets, *task_artifact_supports],
             primary_target_filename=task_artifact_targets[0] if task_artifact_targets else None,
-            companion_search_dirs=(task_dir / "solution", task_dir / "starter"),
+            companion_search_dirs=(dut_path.parent, task_dir / "solution", task_dir / "starter"),
         )
         timing_split["copy_inputs_s"] = time.perf_counter() - t0
 
@@ -18162,6 +21716,9 @@ def run_case(
             notes.append("dut_not_compiled")
         if tb_compile == 0.0:
             notes.append("tb_not_executed")
+        simulator_error = extract_evas_simulator_error(combined) if proc.returncode != 0 else None
+        if simulator_error:
+            notes.append(simulator_error)
 
         csv_path = out_dir / "tran.csv"
         if "sim_correct" in scoring and proc.returncode == 0 and csv_path.exists():
@@ -18174,6 +21731,14 @@ def run_case(
             )
             timing_split["behavior_checker_s"] = time.perf_counter() - t0
             notes.extend(behavior_notes)
+            artifact_checker = ARTIFACT_BEHAVIOR_CHECKS.get(checker_task_id)
+            if artifact_checker is not None:
+                t0 = time.perf_counter()
+                artifact_ok, artifact_note = artifact_checker(dut_dst)
+                timing_split["artifact_checker_s"] = time.perf_counter() - t0
+                notes.append(artifact_note)
+                if not artifact_ok:
+                    sim_correct = 0.0
             t0 = time.perf_counter()
             metric_result = validate_behavior_side_outputs(checker_task_id, run_dir, csv_path)
             timing_split["side_output_validation_s"] = time.perf_counter() - t0

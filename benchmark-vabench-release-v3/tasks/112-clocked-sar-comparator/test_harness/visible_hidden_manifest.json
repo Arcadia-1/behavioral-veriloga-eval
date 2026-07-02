@@ -1,13 +1,7 @@
 {
   "certification": {
-    "evidence": {
-      "evas_summary": "WORK/source-import-pilot-evas/summary.json",
-      "spectre_backend": "sui-direct zhangz@101.6.68.147",
-      "spectre_mode": "ax",
-      "spectre_summary": "WORK/source-import-pilot-spectre/summary.json"
-    },
-    "scope": "Visible smoke passed; EVAS hidden gold passed; Spectre AX hidden gold passed; EVAS/Spectre parity passed on stable-window checker.",
-    "status": "certified"
+    "scope": "Visible smoke plus distinct hidden semantic coverage; current EVAS/Spectre rerun evidence is recorded in AUDIT.md.",
+    "status": "current_main_validated"
   },
   "form": "dut",
   "hidden": {
@@ -20,8 +14,7 @@
       "test_hidden/tests/tb_source_ref.scs"
     ]
   },
-  "provenance": "caiyizeng25/L3_SAR_comparator_ideal.va",
-  "status": "source_import_certified",
+  "status": "v3_current_main_validated",
   "task": "112-clocked-sar-comparator",
   "visible": {
     "instruction": "instruction.md",

@@ -1767,6 +1767,1435 @@ def test_acquisition_limited_sample_hold_checker_rejects_ideal_jump_and_hold_dri
     )[0]
 
 
+def _wreal_assign_rows(expected_fn, *, wrong: bool = False) -> list[dict[str, float]]:
+    base_rows = [
+        (0.0, 0.60, 0.10, 0.0),
+        (100.0, 0.60, 0.10, 0.0),
+        (210.0, 0.45, 0.10, 0.9),
+        (330.0, 0.45, 0.32, 0.9),
+        (390.0, 0.50, 0.32, 0.9),
+        (470.0, 0.72, 0.32, 0.0),
+        (620.0, 0.72, 0.32, 0.0),
+    ]
+    rows: list[dict[str, float]] = []
+    for time_ns, a_value, b_value, sel_value in base_rows:
+        row = {
+            "time": time_ns * 1e-9,
+            "a": a_value,
+            "b": b_value,
+            "sel": sel_value,
+            "y": 0.0,
+        }
+        row["y"] = 0.0 if wrong else expected_fn(row)
+        rows.append(row)
+    return rows
+
+
+def test_v3_wreal_assign_checkers_follow_hidden_stimulus_values() -> None:
+    cases = [
+        (
+            sim.check_v3_341_wreal_gain_pass_through,
+            lambda row: 0.75 * row["a"] + 0.1 if row["sel"] > 0.45 else 0.75 * row["b"],
+        ),
+        (
+            sim.check_v3_342_wreal_two_input_summer,
+            lambda row: row["a"] + row["b"] + (0.1 if row["sel"] > 0.45 else 0.0),
+        ),
+        (
+            sim.check_v3_343_wreal_threshold_flag,
+            lambda row: 0.9
+            if ((row["a"] + (0.1 if row["sel"] > 0.45 else 0.0)) > 0.45)
+            else 0.0,
+        ),
+        (
+            sim.check_v3_344_wreal_clamped_mux,
+            lambda row: min(0.9, max(0.0, row["a"] if row["sel"] > 0.45 else row["b"])),
+        ),
+        (
+            sim.check_v3_345_wreal_scale_offset,
+            lambda row: 0.75 * row["b"] - 0.1 if row["sel"] > 0.45 else 0.75 * row["a"] + 0.1,
+        ),
+    ]
+    for checker, expected_fn in cases:
+        assert checker(_wreal_assign_rows(expected_fn))[0]
+        assert not checker(_wreal_assign_rows(expected_fn, wrong=True))[0]
+
+
+def _logic_assign_rows(expected_fn, *, wrong: bool = False) -> list[dict[str, float]]:
+    base_rows = [
+        (0.0, 0.0, 0.0, 0.0),
+        (120.0, 0.0, 1.0, 1.0),
+        (150.0, 0.0, 1.0, 1.0),
+        (220.0, 1.0, 0.0, 1.0),
+        (340.0, 1.0, 1.0, 1.0),
+        (390.0, 1.0, 1.0, 1.0),
+        (430.0, 1.0, 1.0, 1.0),
+        (500.0, 0.0, 1.0, 0.0),
+        (570.0, 1.0, 0.0, 0.0),
+    ]
+    rows: list[dict[str, float]] = []
+    for time_ns, a_value, b_value, en_value in base_rows:
+        expected = expected_fn(a_value > 0.45, b_value > 0.45, en_value > 0.45)
+        rows.append(
+            {
+                "time": time_ns * 1e-9,
+                "a": a_value,
+                "b": b_value,
+                "en": en_value,
+                "y": 0.0 if wrong else (1.0 if expected else 0.0),
+            }
+        )
+    return rows
+
+
+def test_v3_logic_assign_checkers_follow_hidden_stimulus_values() -> None:
+    cases = [
+        (
+            sim.check_v3_346_logic_assign_inverter,
+            lambda a_bit, b_bit, en_bit: (not a_bit) if en_bit else b_bit,
+        ),
+        (
+            sim.check_v3_347_logic_assign_and_or,
+            lambda a_bit, b_bit, en_bit: (a_bit and b_bit) or en_bit,
+        ),
+        (
+            sim.check_v3_348_logic_assign_xor_flag,
+            lambda a_bit, b_bit, en_bit: (a_bit ^ b_bit) if en_bit else False,
+        ),
+        (
+            sim.check_v3_349_logic_assign_priority_mux,
+            lambda a_bit, b_bit, en_bit: a_bit if en_bit else b_bit,
+        ),
+        (
+            sim.check_v3_350_logic_assign_reduction,
+            lambda a_bit, b_bit, en_bit: a_bit and b_bit and en_bit,
+        ),
+    ]
+    for checker, expected_fn in cases:
+        assert checker(_logic_assign_rows(expected_fn))[0]
+        assert not checker(_logic_assign_rows(expected_fn, wrong=True))[0]
+
+
+def _clocked_dff_rows(*, edge: str = "posedge", wrong: bool = False) -> list[dict[str, float]]:
+    if edge == "posedge":
+        samples = [
+            (0.0, 0.0, 1.0, 1.0, 1.0),
+            (10.0, 0.2, 1.0, 1.0, 1.0),
+            (20.0, 0.0, 0.0, 1.0, 1.0),
+            (30.0, 0.2, 0.0, 1.0, 1.0),
+            (35.0, 0.0, 0.0, 1.0, 1.0),
+            (40.0, 0.0, 0.0, 0.0, 0.0),
+            (50.0, 0.2, 0.0, 0.0, 1.0),
+            (55.0, 0.0, 0.0, 0.0, 1.0),
+            (60.0, 0.0, 0.0, 1.0, 0.0),
+            (70.0, 0.2, 0.0, 1.0, 0.0),
+        ]
+    else:
+        samples = [
+            (0.0, 1.0, 1.0, 1.0, 1.0),
+            (10.0, 0.0, 1.0, 1.0, 1.0),
+            (20.0, 1.0, 0.0, 1.0, 1.0),
+            (30.0, 0.0, 0.0, 1.0, 1.0),
+            (35.0, 1.0, 0.0, 1.0, 1.0),
+            (40.0, 1.0, 0.0, 0.0, 0.0),
+            (50.0, 0.0, 0.0, 0.0, 1.0),
+            (55.0, 1.0, 0.0, 0.0, 1.0),
+            (60.0, 1.0, 0.0, 1.0, 0.0),
+            (70.0, 0.0, 0.0, 1.0, 0.0),
+        ]
+    q = 0.0
+    prev_clk = samples[0][1]
+    rows: list[dict[str, float]] = []
+    for time_ns, clk, rst, d, en in samples:
+        if rows:
+            is_edge = prev_clk <= 1e-9 < clk if edge == "posedge" else prev_clk > 1e-9 >= clk
+            if is_edge:
+                if rst > 1e-9:
+                    q = 0.0
+                elif en > 1e-9:
+                    q = 1.0 if d > 1e-9 else 0.0
+        rows.append(
+            {
+                "time": time_ns * 1e-9,
+                "clk": clk,
+                "rst": rst,
+                "d": d,
+                "en": en,
+                "q": 1.0 - q if wrong else q,
+            }
+        )
+        prev_clk = clk
+    return rows
+
+
+def _counter_msb_rows(*, wrong: bool = False) -> list[dict[str, float]]:
+    samples = [
+        (0.0, 0.0, 1.0, 1.0, 1.0),
+        (10.0, 1.0, 1.0, 1.0, 1.0),
+        (20.0, 0.0, 0.0, 1.0, 1.0),
+        (30.0, 1.0, 0.0, 1.0, 1.0),
+        (40.0, 0.0, 0.0, 1.0, 1.0),
+        (50.0, 1.0, 0.0, 1.0, 1.0),
+        (60.0, 0.0, 0.0, 0.0, 1.0),
+        (70.0, 1.0, 0.0, 0.0, 1.0),
+        (80.0, 0.0, 0.0, 1.0, 1.0),
+        (90.0, 1.0, 0.0, 1.0, 1.0),
+    ]
+    count = 0
+    prev_clk = samples[0][1]
+    rows: list[dict[str, float]] = []
+    for time_ns, clk, rst, d, en in samples:
+        if rows and prev_clk <= 0.45 < clk:
+            if rst > 0.45:
+                count = 0
+            elif en > 0.45 and d > 0.45:
+                count = (count + 1) & 0x3
+        q = 1.0 if (count & 0x2) else 0.0
+        rows.append(
+            {
+                "time": time_ns * 1e-9,
+                "clk": clk,
+                "rst": rst,
+                "d": d,
+                "en": en,
+                "q": 1.0 - q if wrong else q,
+            }
+        )
+        prev_clk = clk
+    return rows
+
+
+def test_v3_clocked_checkers_follow_edge_stimulus_values() -> None:
+    assert sim.check_v3_351_always_posedged_dff(_clocked_dff_rows())[0]
+    assert not sim.check_v3_351_always_posedged_dff(_clocked_dff_rows(wrong=True))[0]
+    assert sim.check_v3_352_always_negedge_sampler(_clocked_dff_rows(edge="negedge"))[0]
+    assert not sim.check_v3_352_always_negedge_sampler(
+        _clocked_dff_rows(edge="negedge", wrong=True)
+    )[0]
+    assert sim.check_v3_354_always_counter_two_bit(_counter_msb_rows())[0]
+    assert not sim.check_v3_354_always_counter_two_bit(_counter_msb_rows(wrong=True))[0]
+
+
+def _mixed_rows(expected_fn, *, wrong: bool = False) -> list[dict[str, float]]:
+    base_rows = [
+        (0.0, 0.55, 0.0, 1.0, 0.0, 0.25, 0.75),
+        (100.0, 0.55, 0.0, 1.0, 0.0, 0.25, 0.75),
+        (220.0, 0.25, 0.0, 0.0, 1.0, 0.68, 0.75),
+        (280.0, 0.30, 0.0, 0.0, 0.0, 0.70, 0.24),
+        (340.0, 0.82, 0.0, 0.0, 0.0, 0.68, 0.22),
+        (520.0, 0.82, 0.0, 1.0, 1.0, 0.42, 0.22),
+        (610.0, 0.35, 0.0, 1.0, 0.0, 0.30, 0.56),
+        (700.0, 0.40, 0.0, 0.0, 1.0, 0.42, 0.56),
+    ]
+    rows: list[dict[str, float]] = []
+    for time_ns, vin, clk, en, sel, a_value, b_value in base_rows:
+        for offset_ns in range(6):
+            row = {
+                "time": (time_ns + offset_ns) * 1e-9,
+                "vin": vin,
+                "clk": clk,
+                "en": en,
+                "sel": sel,
+                "a": a_value,
+                "b": b_value,
+                "vout": 0.0,
+            }
+            row["vout"] = 0.0 if wrong else expected_fn(row)
+            rows.append(row)
+    return rows
+
+
+def _mixed_sampler_rows(*, wrong: bool = False) -> list[dict[str, float]]:
+    samples = [
+        (0.0, 0.45, 0.0, 0.0),
+        (80.0, 0.45, 1.0, 0.0),
+        (120.0, 0.45, 0.0, 0.0),
+        (220.0, 0.72, 1.0, 1.0),
+        (300.0, 0.72, 0.0, 1.0),
+        (520.0, 0.30, 1.0, 0.0),
+        (600.0, 0.30, 0.0, 0.0),
+        (680.0, 0.86, 1.0, 1.0),
+    ]
+    sampled = False
+    prev_clk = samples[0][2]
+    rows: list[dict[str, float]] = []
+    for time_ns, vin, clk, en in samples:
+        if rows and prev_clk <= 1e-9 < clk:
+            sampled = en > 1e-9
+        expected = vin if sampled else 0.0
+        for offset_ns in range(6):
+            rows.append(
+                {
+                    "time": (time_ns + offset_ns) * 1e-9,
+                    "vin": vin,
+                    "clk": clk,
+                    "en": en,
+                    "sel": 0.0,
+                    "a": 0.2,
+                    "b": 0.7,
+                    "vout": 0.0 if wrong else expected,
+                }
+            )
+        prev_clk = clk
+    return rows
+
+
+def test_v3_mixed_signal_checkers_follow_hidden_stimulus_values() -> None:
+    cases = [
+        (
+            sim.check_v3_356_mixed_logic_enable_voltage_driver,
+            lambda row: row["vin"] if row["en"] > 1e-9 else 0.0,
+        ),
+        (
+            sim.check_v3_357_mixed_wreal_to_electrical_buffer,
+            lambda row: row["a"],
+        ),
+        (
+            sim.check_v3_358_mixed_electrical_threshold_logic_flag,
+            lambda row: 0.9 if row["vin"] > 0.45 else 0.0,
+        ),
+        (
+            sim.check_v3_360_mixed_wreal_logic_select_driver,
+            lambda row: row["a"] if row["sel"] > 1e-9 else row["b"],
+        ),
+    ]
+    for checker, expected_fn in cases:
+        assert checker(_mixed_rows(expected_fn))[0]
+        assert not checker(_mixed_rows(expected_fn, wrong=True))[0]
+
+    assert sim.check_v3_359_mixed_logic_clocked_voltage_sampler(_mixed_sampler_rows())[0]
+    assert not sim.check_v3_359_mixed_logic_clocked_voltage_sampler(
+        _mixed_sampler_rows(wrong=True)
+    )[0]
+
+
+def _noise_metric_rows(metric_fn, *, out_fn=None, wrong: bool = False) -> list[dict[str, float]]:
+    samples = [
+        (0.0, 0.25, 0.0),
+        (60.0, 0.25, 1.0),
+        (90.0, 0.25, 0.0),
+        (170.0, 0.72, 1.0),
+        (200.0, 0.72, 0.0),
+        (310.0, 0.38, 1.0),
+        (340.0, 0.38, 0.0),
+        (450.0, 0.82, 1.0),
+        (480.0, 0.82, 0.0),
+    ]
+    metric = 0.0
+    prev_clk = samples[0][2]
+    edge_count = 0
+    rows: list[dict[str, float]] = []
+    for time_ns, ctrl, clk in samples:
+        if rows and prev_clk <= 0.45 < clk:
+            edge_count += 1
+            metric = metric_fn(ctrl, edge_count)
+        out = ctrl if out_fn is None else out_fn(ctrl)
+        for offset_ns in range(6):
+            rows.append(
+                {
+                    "time": (time_ns + offset_ns) * 1e-9,
+                    "ctrl": ctrl,
+                    "clk": clk,
+                    "out": out,
+                    "metric": 0.0 if wrong else metric,
+                }
+            )
+        prev_clk = clk
+    return rows
+
+
+def test_v3_noise_analysis_checkers_follow_hidden_stimulus_values() -> None:
+    cases = [
+        (sim.check_v3_361_white_noise_voltage_source, lambda ctrl, _edge: ctrl, None),
+        (sim.check_v3_362_white_noise_gated_source, lambda ctrl, _edge: 0.9 if ctrl > 0.45 else 0.0, None),
+        (sim.check_v3_363_flicker_noise_voltage_source, lambda _ctrl, _edge: 1.0, None),
+        (sim.check_v3_364_flicker_noise_corner_selector, lambda ctrl, _edge: 0.9 if ctrl > 0.45 else 0.0, None),
+        (sim.check_v3_365_noise_table_voltage_shaper, lambda ctrl, _edge: 0.3 + ctrl * 0.2, None),
+        (sim.check_v3_366_noise_table_gated_shaper, lambda ctrl, _edge: 0.9 if ctrl > 0.45 else 0.0, None),
+        (sim.check_v3_367_analysis_dependent_dc_tran_mode, lambda _ctrl, _edge: 0.9, lambda ctrl: ctrl),
+        (sim.check_v3_368_analysis_dependent_noise_enable, lambda ctrl, _edge: ctrl, None),
+        (sim.check_v3_369_ac_stim_small_signal_source, lambda _ctrl, _edge: 1.0, lambda ctrl: ctrl),
+        (sim.check_v3_370_ac_stim_phase_selector, lambda ctrl, _edge: 0.9 if ctrl > 0.45 else 0.0, lambda ctrl: ctrl),
+        (sim.check_v3_371_combined_white_flicker_noise, lambda _ctrl, _edge: 1.5, None),
+        (sim.check_v3_372_analysis_aware_noise_metric, lambda _ctrl, edge: edge / 8.0, lambda ctrl: ctrl),
+    ]
+    for checker, metric_fn, out_fn in cases:
+        assert checker(_noise_metric_rows(metric_fn, out_fn=out_fn))[0]
+        assert not checker(_noise_metric_rows(metric_fn, out_fn=out_fn, wrong=True))[0]
+
+
+def _task_input_from_segments(time_ns: float, segments: list[tuple[float, float]]) -> float:
+    value = segments[0][1]
+    for start_ns, segment_value in segments:
+        if time_ns >= start_ns:
+            value = segment_value
+        else:
+            break
+    return value
+
+
+def _task_clocked_rows(update_fn, input_fn, *, wrong: bool = False) -> list[dict[str, float]]:
+    rows: list[dict[str, float]] = []
+    state: dict[str, float | int] = {
+        "count": 0,
+        "state_q": 0,
+        "phase": 0,
+        "sum": 0.0,
+        "threshold": 0.45,
+    }
+    out = 0.0
+    metric = 0.0
+    prev_clk = 0.0
+    for idx in range(521):
+        time_ns = float(idx)
+        clk = 1.0 if any(edge <= time_ns <= edge + 29.0 for edge in [50.0, 150.0, 250.0, 350.0, 450.0]) else 0.0
+        vin, mode, rst = input_fn(time_ns)
+        row = {
+            "time": time_ns * 1e-9,
+            "vin": vin,
+            "clk": clk,
+            "mode": mode,
+            "rst": rst,
+            "out": out,
+            "metric": metric,
+        }
+        if prev_clk <= 0.45 < clk:
+            out, metric = update_fn(state, row)
+        row["out"] = 0.0 if wrong else out
+        row["metric"] = 0.0 if wrong else metric
+        rows.append(row)
+        prev_clk = clk
+    return rows
+
+
+def test_v3_task_checkers_follow_hidden_stimulus_values() -> None:
+    def limiter_update(state: dict[str, float | int], row: dict[str, float]) -> tuple[float, float]:
+        if row["rst"] > 0.45:
+            state["count"] = 0
+            state["state_q"] = 0
+            return 0.0, 0.0
+        state["count"] = int(state["count"]) + 1
+        state_q = int(state["count"]) % 3
+        sample = row["vin"]
+        if state_q == 0:
+            out = sample
+        elif state_q == 1:
+            out = 0.9 if sample > 0.45 else 0.0
+        else:
+            out = min(0.9, max(0.0, sample))
+        return out, out / 0.9
+
+    def dual_update(_state: dict[str, float | int], row: dict[str, float]) -> tuple[float, float]:
+        if row["rst"] > 0.45:
+            return 0.0, 0.0
+        out = min(0.9, max(0.0, row["vin"] + row["mode"]))
+        metric = min(0.9, max(0.0, row["vin"] - row["mode"] + 0.3)) / 0.9
+        return out, metric
+
+    def counter_update(state: dict[str, float | int], row: dict[str, float]) -> tuple[float, float]:
+        if row["rst"] > 0.45:
+            state["count"] = 0
+            state["sum"] = 0.0
+            return 0.0, 0.0
+        if row["mode"] > 0.45:
+            state["count"] = int(state["count"]) + 1
+            state["sum"] = float(state["sum"]) + row["vin"]
+        count = int(state["count"])
+        return min(0.9, 0.15 * count), float(state["sum"]) / count if count else 0.0
+
+    def reset_update(state: dict[str, float | int], row: dict[str, float]) -> tuple[float, float]:
+        if row["rst"] > 0.45:
+            state["phase"] = 0
+            return 0.0, 0.0
+        state["phase"] = int(state["phase"]) + 1
+        out = row["vin"] + (0.2 if row["mode"] > 0.45 else 0.0)
+        return min(0.9, max(0.0, out)), int(state["phase"]) / 4.0
+
+    def threshold_update(state: dict[str, float | int], row: dict[str, float]) -> tuple[float, float]:
+        if row["rst"] > 0.45:
+            state["threshold"] = 0.45
+            return 0.0, 0.0
+        threshold = float(state["threshold"])
+        out = 0.9 if row["vin"] > threshold else 0.0
+        if row["mode"] > 0.45:
+            state["threshold"] = min(0.75, threshold + 0.1)
+        return out, threshold
+
+    def normalizer_update(_state: dict[str, float | int], row: dict[str, float]) -> tuple[float, float]:
+        if row["rst"] > 0.45:
+            return 0.0, 0.0
+        out = min(0.9, max(0.0, row["vin"]))
+        norm_span = 0.9 if row["mode"] > 0.45 else 0.45
+        metric = min(0.9, max(0.0, 0.9 * abs(row["vin"] - 0.45) / norm_span))
+        return out, metric
+
+    cases = [
+        (
+            sim.check_v3_373_task_output_limiter,
+            limiter_update,
+            lambda t: (
+                _task_input_from_segments(t, [(0.0, 0.15), (100.0, 0.95), (200.0, -0.20), (300.0, 0.55), (400.0, 1.25)]),
+                0.0,
+                0.0,
+            ),
+        ),
+        (
+            sim.check_v3_374_task_dual_output_update,
+            dual_update,
+            lambda t: (
+                _task_input_from_segments(t, [(0.0, -0.10), (100.0, 0.35), (200.0, 0.95), (300.0, 0.45), (400.0, 0.10)]),
+                _task_input_from_segments(t, [(0.0, 0.25), (100.0, 0.10), (200.0, -0.30), (300.0, 0.55), (400.0, -0.15)]),
+                0.0,
+            ),
+        ),
+        (
+            sim.check_v3_375_task_event_counter_service,
+            counter_update,
+            lambda t: (
+                _task_input_from_segments(t, [(0.0, 0.75), (100.0, 0.20), (200.0, 0.85), (300.0, 0.40), (400.0, 0.65)]),
+                _task_input_from_segments(t, [(0.0, 0.0), (100.0, 0.9), (200.0, 0.9), (300.0, 0.0), (400.0, 0.9)]),
+                0.0,
+            ),
+        ),
+        (
+            sim.check_v3_376_task_reset_sequencer,
+            reset_update,
+            lambda t: (
+                _task_input_from_segments(t, [(0.0, 0.55), (100.0, 0.10), (200.0, 0.75), (300.0, 0.35), (400.0, 0.95)]),
+                _task_input_from_segments(t, [(0.0, 0.9), (100.0, 0.0), (200.0, 0.9), (300.0, 0.0)]),
+                0.9 if 230.0 <= t <= 289.0 else 0.0,
+            ),
+        ),
+        (
+            sim.check_v3_377_task_stateful_threshold_update,
+            threshold_update,
+            lambda t: (
+                _task_input_from_segments(t, [(0.0, 0.30), (100.0, 0.62), (200.0, 0.58), (300.0, 0.72), (400.0, 0.50)]),
+                _task_input_from_segments(t, [(0.0, 0.9), (200.0, 0.0), (300.0, 0.9), (400.0, 0.0)]),
+                0.9 if 230.0 <= t <= 289.0 else 0.0,
+            ),
+        ),
+        (
+            sim.check_v3_378_task_metric_normalizer,
+            normalizer_update,
+            lambda t: (
+                _task_input_from_segments(t, [(0.0, 0.10), (100.0, 0.45), (200.0, 0.82), (300.0, -0.20), (400.0, 1.10)]),
+                _task_input_from_segments(t, [(0.0, 0.9), (100.0, 0.0), (200.0, 0.9), (300.0, 0.0), (400.0, 0.9)]),
+                0.0,
+            ),
+        ),
+    ]
+    for checker, update_fn, input_fn in cases:
+        assert checker(_task_clocked_rows(update_fn, input_fn))[0]
+        assert not checker(_task_clocked_rows(update_fn, input_fn, wrong=True))[0]
+
+
+def test_v3_file_io_checkers_follow_hidden_stimulus_values() -> None:
+    def file_gate_update(_state: dict[str, float | int], row: dict[str, float]) -> tuple[float, float]:
+        if row["rst"] > 0.45:
+            return 0.0, 0.9
+        return (0.9 if row["vin"] > 0.45 else 0.0), 0.9
+
+    def input_fn(time_ns: float) -> tuple[float, float, float]:
+        return (
+            _task_input_from_segments(
+                time_ns,
+                [(0.0, 0.82), (100.0, 0.20), (200.0, 0.55), (300.0, 0.10), (400.0, 0.95)],
+            ),
+            0.0,
+            0.9 if 230.0 <= time_ns <= 289.0 else 0.0,
+        )
+
+    checkers = [
+        sim.check_v3_379_file_fgets_config_loader,
+        sim.check_v3_380_file_feof_line_counter,
+        sim.check_v3_381_file_fseek_offset_reader,
+        sim.check_v3_382_file_ftell_position_meter,
+        sim.check_v3_383_file_rewind_second_pass,
+        sim.check_v3_384_file_fopen_mode_selector,
+    ]
+    for checker in checkers:
+        good_rows = _task_clocked_rows(file_gate_update, input_fn)
+        for row in good_rows:
+            row["metric"] = 0.9
+        assert checker(good_rows)[0]
+        assert not checker(_task_clocked_rows(file_gate_update, input_fn, wrong=True))[0]
+
+
+def test_v3_table_model_checkers_follow_hidden_stimulus_values() -> None:
+    cases = [
+        (
+            sim.check_v3_385_table_model_linear_gain,
+            [(0.0, 0.0), (0.45, 0.35), (0.9, 0.9)],
+            [(0.0, 0.05), (100.0, 0.42), (200.0, 0.63), (300.0, 0.88), (400.0, 0.18)],
+        ),
+        (
+            sim.check_v3_386_table_model_clamped_transfer,
+            [(0.0, 0.0), (0.45, 0.35), (0.9, 0.9)],
+            [(0.0, -0.35), (100.0, 0.15), (200.0, 0.72), (300.0, 1.25), (400.0, 0.48)],
+        ),
+        (
+            sim.check_v3_387_table_model_threshold_map,
+            [(0.0, 0.0), (0.44, 0.0), (0.46, 0.9), (0.9, 0.9)],
+            [(0.0, 0.43), (100.0, 0.455), (200.0, 0.20), (300.0, 0.70), (400.0, 0.445)],
+        ),
+        (
+            sim.check_v3_388_table_model_dac_code_map,
+            [(0.0, 0.0), (1.0, 0.3), (2.0, 0.6), (3.0, 0.9)],
+            [(0.0, 0.5), (100.0, 1.5), (200.0, 2.5), (300.0, -0.2), (400.0, 3.4)],
+        ),
+        (
+            sim.check_v3_389_table_model_temperature_profile,
+            [(-40.0, 0.55), (25.0, 0.9), (85.0, 0.7), (125.0, 0.5)],
+            [(0.0, -20.0), (100.0, 60.0), (200.0, 105.0), (300.0, 140.0), (400.0, -55.0)],
+        ),
+        (
+            sim.check_v3_390_table_model_piecewise_calibrator,
+            [(0.0, 0.0), (0.3, 0.25), (0.6, 0.65), (0.9, 0.9)],
+            [(0.0, 0.05), (100.0, 0.33), (200.0, 0.58), (300.0, 0.82), (400.0, 1.05)],
+        ),
+    ]
+
+    def make_update(points):
+        def update(_state: dict[str, float | int], row: dict[str, float]) -> tuple[float, float]:
+            if row["rst"] > 0.45:
+                return 0.0, 0.0
+            out = sim._piecewise_linear_table(row["vin"], points)
+            return out, out / 0.9
+
+        return update
+
+    for checker, points, vin_segments in cases:
+        input_fn = lambda time_ns, segments=vin_segments: (
+            _task_input_from_segments(time_ns, segments),
+            0.0,
+            0.0,
+        )
+        assert checker(_task_clocked_rows(make_update(points), input_fn))[0]
+        assert not checker(_task_clocked_rows(make_update(points), input_fn, wrong=True))[0]
+
+
+def _rdist_sequence_rows(metric_sequence: list[float], *, wrong: bool = False) -> list[dict[str, float]]:
+    rows: list[dict[str, float]] = []
+    vin_segments = [(0.0, 0.62), (100.0, 0.74), (200.0, 0.66), (300.0, 0.81)]
+    metric = 0.0
+    out = 0.0
+    prev_clk = 0.0
+    edge_count = 0
+    for idx in range(421):
+        time_ns = float(idx)
+        clk = 1.0 if any(edge <= time_ns <= edge + 29.0 for edge in [50.0, 150.0, 250.0, 350.0]) else 0.0
+        vin = _task_input_from_segments(time_ns, vin_segments)
+        if prev_clk <= 0.45 < clk:
+            metric = metric_sequence[edge_count]
+            out = vin + 0.01 * metric
+            edge_count += 1
+        rows.append(
+            {
+                "time": time_ns * 1e-9,
+                "vin": vin,
+                "clk": clk,
+                "mode": 0.0,
+                "rst": 0.0,
+                "out": 0.0 if wrong else out,
+                "metric": 0.0 if wrong else metric,
+            }
+        )
+        prev_clk = clk
+    return rows
+
+
+def test_v3_rdist_checkers_follow_hidden_vin_values() -> None:
+    cases = [
+        (sim.check_v3_391_rdist_exponential_jitter, [3.7943, 0.5581, 0.6179, 0.1685]),
+        (sim.check_v3_392_rdist_poisson_count_noise, [3.0, 2.0, 0.0, 0.0]),
+        (sim.check_v3_393_rdist_normal_offset_dither, [0.0113, -0.0160, 0.0591, 0.0312]),
+        (sim.check_v3_394_rdist_chi_square_energy, [0.5044, 0.5387, 0.9852, 1.6858]),
+        (sim.check_v3_395_rdist_t_tail_dither, [-1.7540, 0.0963, 0.4683, -1.5343]),
+        (sim.check_v3_396_rdist_erlang_latency, [1.0851, 1.0945, 0.5121, 0.2559]),
+    ]
+    for checker, sequence in cases:
+        assert checker(_rdist_sequence_rows(sequence))[0]
+        assert not checker(_rdist_sequence_rows(sequence, wrong=True))[0]
+
+
+def _hierarchy_rows(out_fn, *, metric_fn=None, wrong: bool = False) -> list[dict[str, float]]:
+    rows: list[dict[str, float]] = []
+    vin_segments = [(0.0, 0.25), (50.0, 0.72), (100.0, 0.45), (150.0, 0.9)]
+    for idx in range(201):
+        time_ns = float(idx)
+        vin = _task_input_from_segments(time_ns, vin_segments)
+        row = {
+            "time": time_ns * 1e-9,
+            "vin": vin,
+            "clk": 0.0,
+            "mode": 0.0,
+            "rst": 0.0,
+            "out": 0.0,
+            "metric": 0.0,
+        }
+        row["out"] = 0.0 if wrong else out_fn(row)
+        row["metric"] = 0.0 if wrong else (metric_fn(row) if metric_fn else 0.0)
+        rows.append(row)
+    return rows
+
+
+def test_v3_hierarchy_checkers_follow_hidden_vin_values() -> None:
+    cases = [
+        (sim.check_v3_397_hierarchy_gain_child, lambda row: 0.8 * row["vin"], None),
+        (sim.check_v3_398_hierarchy_two_stage_chain, lambda row: 0.4 * row["vin"], lambda row: 0.8 * row["vin"]),
+        (sim.check_v3_399_hierarchy_parameter_override, lambda row: 1.5 * row["vin"], None),
+        (sim.check_v3_400_hierarchy_named_port_map, lambda row: 0.8 * row["vin"], None),
+        (sim.check_v3_401_hierarchy_ordered_port_map, lambda row: 0.4 * row["vin"], lambda row: 0.8 * row["vin"]),
+        (sim.check_v3_402_hierarchy_shared_threshold_child, lambda row: 0.9 if row["vin"] > 0.45 else 0.0, None),
+    ]
+    for checker, out_fn, metric_fn in cases:
+        assert checker(_hierarchy_rows(out_fn, metric_fn=metric_fn))[0]
+        assert not checker(_hierarchy_rows(out_fn, metric_fn=metric_fn, wrong=True))[0]
+
+
+def _vector_counter_rows(expected_fn, *, reset_edges: set[int] | None = None, wrong: bool = False) -> list[dict[str, float]]:
+    rows: list[dict[str, float]] = []
+    reset_edges = reset_edges or set()
+    count = 0
+    out = 0.0
+    metric = 0.0
+    prev_clk = 0.0
+    edges = [50.0, 150.0, 250.0, 350.0, 450.0, 550.0, 650.0, 750.0, 850.0]
+    for idx in range(921):
+        time_ns = float(idx)
+        clk = 1.0 if any(edge <= time_ns <= edge + 29.0 for edge in edges) else 0.0
+        edge_index = sum(1 for edge in edges if edge <= time_ns)
+        rst = 0.9 if edge_index in reset_edges and clk > 0.45 else 0.0
+        if prev_clk <= 0.45 < clk:
+            if rst > 0.45:
+                count = 0
+                out = 0.0
+                metric = 0.0
+            else:
+                out, metric = expected_fn(count)
+                count += 1
+        rows.append(
+            {
+                "time": time_ns * 1e-9,
+                "vin": 0.7,
+                "clk": clk,
+                "mode": 0.0,
+                "rst": rst,
+                "out": 0.0 if wrong else out,
+                "metric": 0.0 if wrong else metric,
+            }
+        )
+        prev_clk = clk
+    return rows
+
+
+def test_v3_vector_checkers_follow_counter_and_reset_values() -> None:
+    cases = [
+        (sim.check_v3_403_vector_bit_select_flag, lambda c: (0.9 if ((c + 4) & 0x4) else 0.0, float((c + 4) & 1))),
+        (sim.check_v3_404_vector_part_select_window, lambda c: (0.9 if (((c + 9) >> 1) & 7) > 3 else 0.0, float(((c + 9) >> 1) & 7))),
+        (sim.check_v3_405_vector_concat_code_build, lambda c: (0.9 if (8 | (c & 3)) > 8 else 0.0, float(8 | (c & 3)))),
+        (sim.check_v3_406_vector_replication_mask, lambda c: (0.9 if (10 & c) != 0 else 0.0, 10.0)),
+        (sim.check_v3_407_vector_reduction_parity, lambda c: (0.9 if sim._odd_parity(c + 1) else 0.0, 1.0)),
+        (sim.check_v3_408_vector_shift_and_mask_decoder, lambda c: (0.9 if (((c + 12) >> 1) & 3) == 2 else 0.0, float(((c + 12) >> 1) & 3))),
+    ]
+    for checker, expected_fn in cases:
+        assert checker(_vector_counter_rows(expected_fn, reset_edges={3}))[0]
+        assert not checker(_vector_counter_rows(expected_fn, reset_edges={3}, wrong=True))[0]
+
+
+def test_v3_macro_lifecycle_loop_parameter_checkers_follow_hidden_stimulus_values() -> None:
+    def clamp_update(_state: dict[str, float | int], row: dict[str, float]) -> tuple[float, float]:
+        if row["rst"] > 0.45:
+            return 0.0, 0.0
+        out = min(0.9, max(0.0, row["vin"]))
+        return out, out / 0.9
+
+    def escaped_update(_state: dict[str, float | int], row: dict[str, float]) -> tuple[float, float]:
+        if row["rst"] > 0.45:
+            return 0.0, 0.0
+        trim = 0.2 if row["mode"] > 0.45 else 0.1
+        return row["vin"] + trim, trim
+
+    def lifecycle_update(state: dict[str, float | int], row: dict[str, float]) -> tuple[float, float]:
+        if row["rst"] > 0.45:
+            state["count"] = 0
+            return 0.0, 0.0
+        metric = float(state["count"])
+        state["count"] = int(state["count"]) + 1
+        return row["vin"], metric
+
+    def loop_update(state: dict[str, float | int], row: dict[str, float]) -> tuple[float, float]:
+        if row["rst"] > 0.45:
+            state["count"] = 0
+            return 0.0, 0.0
+        acc = 3.0 + 3.0 * int(state["count"])
+        state["count"] = int(state["count"]) + 1
+        return 0.9 if acc > 3.0 else 0.0, acc
+
+    def parameter_update(state: dict[str, float | int], row: dict[str, float]) -> tuple[float, float]:
+        if row["rst"] > 0.45:
+            state["count"] = 0
+            return 0.0, 0.0
+        state["count"] = (int(state["count"]) + 1) % 8
+        return 0.8 * row["vin"], float(state["count"])
+
+    def input_from(vin_segments, mode_segments=None):
+        return lambda time_ns: (
+            _task_input_from_segments(time_ns, vin_segments),
+            _task_input_from_segments(time_ns, mode_segments or [(0.0, 0.0)]),
+            0.9 if 230.0 <= time_ns <= 289.0 else 0.0,
+        )
+
+    cases = [
+        (
+            sim.check_v3_409_macro_functionlike_clamp,
+            clamp_update,
+            input_from([(0.0, 1.1), (100.0, -0.15), (200.0, 0.52), (300.0, 0.95), (400.0, 0.25)]),
+        ),
+        (
+            sim.check_v3_411_escaped_identifier_state,
+            escaped_update,
+            input_from(
+                [(0.0, 0.55), (100.0, 0.25), (200.0, 0.75), (300.0, 0.35), (400.0, 0.55)],
+                [(0.0, 0.0), (100.0, 0.9), (200.0, 0.0), (300.0, 0.9), (400.0, 0.0)],
+            ),
+        ),
+        (
+            sim.check_v3_412_initial_final_step_lifecycle,
+            lifecycle_update,
+            input_from([(0.0, 0.65), (100.0, 0.15), (200.0, 0.85), (300.0, 0.45), (400.0, 0.65)]),
+        ),
+        (
+            sim.check_v3_413_while_loop_array_sum,
+            loop_update,
+            input_from([(0.0, 0.1), (100.0, 0.9), (200.0, 0.3), (300.0, 0.8), (400.0, 0.1)]),
+        ),
+        (
+            sim.check_v3_414_parameter_range_real_control,
+            parameter_update,
+            input_from([(0.0, 0.35), (100.0, 0.75), (200.0, 0.15), (300.0, 0.9), (400.0, 0.35)]),
+        ),
+    ]
+    for checker, update_fn, input_fn in cases:
+        assert checker(_task_clocked_rows(update_fn, input_fn))[0]
+        assert not checker(_task_clocked_rows(update_fn, input_fn, wrong=True))[0]
+
+
+def test_v3_mixed_file_string_random_preprocessor_checkers_follow_hidden_values() -> None:
+    def logic_bridge_rows(*, wrong: bool = False) -> list[dict[str, float]]:
+        rows: list[dict[str, float]] = []
+        for idx in range(501):
+            time_ns = float(idx)
+            ain = _task_input_from_segments(
+                time_ns,
+                [(0.0, 0.20), (80.0, 0.55), (180.0, 0.35), (280.0, 0.82), (380.0, 0.42)],
+            )
+            en = _task_input_from_segments(time_ns, [(0.0, 1.0), (150.0, 0.0), (250.0, 1.0)])
+            flag = 1.0 if en > 0.45 and ain > 0.45 else 0.0
+            rows.append({"time": time_ns * 1e-9, "ain": ain, "en": en, "flag": 0.0 if wrong else flag})
+        return rows
+
+    def latch_rows(*, wrong: bool = False) -> list[dict[str, float]]:
+        rows: list[dict[str, float]] = []
+        flag = 0.0
+        prev_clk = 0.0
+        for idx in range(551):
+            time_ns = float(idx)
+            vin = _task_input_from_segments(
+                time_ns,
+                [(0.0, 0.75), (80.0, 0.50), (150.0, 0.40), (250.0, 0.65), (350.0, 0.30), (450.0, 0.80)],
+            )
+            clk = 1.0 if any(edge <= time_ns <= edge + 49.0 for edge in [100.0, 200.0, 300.0, 400.0, 500.0]) else 0.0
+            if prev_clk <= 0.45 < clk:
+                flag = 1.0 if vin > 0.45 else 0.0
+            rows.append({"time": time_ns * 1e-9, "vin": vin, "clk": clk, "flag": 0.0 if wrong else flag})
+            prev_clk = clk
+        return rows
+
+    def clocked_rows(update_fn, input_fn, *, initial_out=0.0, initial_metric=0.0, wrong: bool = False) -> list[dict[str, float]]:
+        rows: list[dict[str, float]] = []
+        state: dict[str, float | int] = {"count": 0, "metric": initial_metric}
+        out = initial_out
+        metric = initial_metric
+        prev_clk = 0.0
+        for idx in range(551):
+            time_ns = float(idx)
+            clk = 1.0 if any(edge <= time_ns <= edge + 49.0 for edge in [100.0, 200.0, 300.0, 400.0, 500.0]) else 0.0
+            vin, mode, rst = input_fn(time_ns)
+            row = {"time": time_ns * 1e-9, "vin": vin, "clk": clk, "mode": mode, "rst": rst, "out": out, "metric": metric}
+            if prev_clk <= 0.45 < clk:
+                out, metric = update_fn(state, row)
+            row["out"] = 0.0 if wrong else out
+            row["metric"] = 0.0 if wrong else metric
+            rows.append(row)
+            prev_clk = clk
+        return rows
+
+    input_general = lambda t: (
+        _task_input_from_segments(t, [(0.0, 0.25), (150.0, 0.85), (250.0, 0.35), (350.0, 0.75)]),
+        0.0,
+        0.9 if 350.0 <= t <= 429.0 else 0.0,
+    )
+
+    def clamp_update(_state: dict[str, float | int], row: dict[str, float]) -> tuple[float, float]:
+        if row["rst"] > 0.45:
+            return 0.0, 0.0
+        out = min(0.9, max(0.0, row["vin"]))
+        return out, out / 0.9
+
+    def file_constant_update(out_value: float, metric_value: float):
+        def update(_state: dict[str, float | int], row: dict[str, float]) -> tuple[float, float]:
+            if row["rst"] > 0.45:
+                return 0.0, 0.0
+            return out_value, metric_value
+
+        return update
+
+    def profile_update(state: dict[str, float | int], row: dict[str, float]) -> tuple[float, float]:
+        if row["rst"] > 0.45:
+            state["count"] = 0
+            state["metric"] = 0.0
+            return 0.0, 0.0
+        out = 0.9 if row["vin"] > 0.45 else 0.0
+        metric = float(state["metric"]) + 0.01 * int(state["count"])
+        state["metric"] = metric
+        state["count"] = int(state["count"]) + 1
+        return out, metric
+
+    def count_threshold_update(state: dict[str, float | int], row: dict[str, float]) -> tuple[float, float]:
+        if row["rst"] > 0.45:
+            state["count"] = 0
+            return 0.0, 0.0
+        metric = float(state["count"])
+        state["count"] = int(state["count"]) + 1
+        return 0.9 if row["vin"] > 0.45 else 0.0, metric
+
+    def config_update(state: dict[str, float | int], row: dict[str, float]) -> tuple[float, float]:
+        if row["rst"] > 0.45:
+            state["count"] = 0
+            return 0.0, 0.0
+        count = int(state["count"])
+        state["count"] = count + 1
+        if row["mode"] > 0.45:
+            return 0.0 if row["vin"] > 0.45 else 0.9, float(count + 10)
+        return 0.9 if row["vin"] > 0.45 else 0.0, float(count)
+
+    def rdist_update(_state: dict[str, float | int], row: dict[str, float]) -> tuple[float, float]:
+        if row["rst"] > 0.45:
+            return 0.0, 0.0
+        return row["vin"] + 0.03, 1.0
+
+    def uniform_update(_state: dict[str, float | int], row: dict[str, float]) -> tuple[float, float]:
+        if row["rst"] > 0.45:
+            return 0.0, 0.0
+        return row["vin"] + 0.01, 0.5
+
+    def exp_update(_state: dict[str, float | int], row: dict[str, float]) -> tuple[float, float]:
+        if row["rst"] > 0.45:
+            return 0.0, 0.0
+        out = math.exp(row["vin"])
+        return out, out
+
+    def gain_update(_state: dict[str, float | int], row: dict[str, float]) -> tuple[float, float]:
+        if row["rst"] > 0.45:
+            return 0.0, 0.0
+        return 0.75 * row["vin"], 0.75
+
+    def repeat_update(state: dict[str, float | int], row: dict[str, float]) -> tuple[float, float]:
+        if row["rst"] > 0.45:
+            state["count"] = 0
+            return 0.0, 0.0
+        acc = 4 * (int(state["count"]) + 1)
+        state["count"] = int(state["count"]) + 1
+        return 0.9 if acc > 4 else 0.0, float(acc)
+
+    def multi_array_update(state: dict[str, float | int], row: dict[str, float]) -> tuple[float, float]:
+        if row["rst"] > 0.45:
+            state["count"] = 0
+            return 0.0, 0.0
+        metric = int(state["count"]) + 1
+        state["count"] = int(state["count"]) + 1
+        return 0.9 if metric > 2 else 0.0, float(metric)
+
+    def nested_rows(*, wrong: bool = False) -> list[dict[str, float]]:
+        rows: list[dict[str, float]] = []
+        for idx in range(401):
+            time_ns = float(idx)
+            vin = _task_input_from_segments(
+                time_ns,
+                [(0.0, -0.75), (100.0, 0.25), (200.0, 0.90), (300.0, -0.10)],
+            )
+            out = vin * vin + 1.0
+            rows.append({"time": time_ns * 1e-9, "vin": vin, "out": 0.0 if wrong else out})
+        return rows
+
+    assert sim.check_v3_419_wreal_logic_threshold_bridge(logic_bridge_rows())[0]
+    assert not sim.check_v3_419_wreal_logic_threshold_bridge(logic_bridge_rows(wrong=True))[0]
+    assert sim.check_v3_420_mixed_analog_digital_mode_latch(latch_rows())[0]
+    assert not sim.check_v3_420_mixed_analog_digital_mode_latch(latch_rows(wrong=True))[0]
+    assert sim.check_v3_457_nested_function_pipeline(nested_rows())[0]
+    assert not sim.check_v3_457_nested_function_pipeline(nested_rows(wrong=True))[0]
+
+    cases = [
+        (sim.check_v3_421_task_local_variable_transform, clamp_update, input_general, 0.0, 0.0),
+        (sim.check_v3_422_file_fscanf_table_stimulus, file_constant_update(0.7, 0.0), input_general, 0.7, 2.0),
+        (sim.check_v3_423_file_profile_replay_controller, profile_update, input_general, 0.0, 1.0),
+        (sim.check_v3_424_file_fscanf_multi_column_profile, file_constant_update(0.7, 0.5), input_general, 0.7, 3.0),
+        (sim.check_v3_425_string_swrite_label_builder, count_threshold_update, input_general, 0.0, 0.0),
+        (sim.check_v3_426_string_sformat_mode_tag, count_threshold_update, input_general, 0.0, 0.0),
+        (sim.check_v3_427_string_formatted_metric_line, count_threshold_update, input_general, 0.0, 0.0),
+        (sim.check_v3_428_string_mode_tagged_log, count_threshold_update, input_general, 0.0, 0.0),
+        (
+            sim.check_v3_429_string_config_label_select,
+            config_update,
+            lambda t: (
+                _task_input_from_segments(t, [(0.0, 0.20), (150.0, 0.82), (250.0, 0.35), (350.0, 0.68)]),
+                _task_input_from_segments(t, [(0.0, 1.0), (150.0, 0.0), (250.0, 1.0)]),
+                0.9 if 350.0 <= t <= 429.0 else 0.0,
+            ),
+            0.0,
+            0.0,
+        ),
+        (
+            sim.check_v3_430_rdist_seed_reproducibility,
+            rdist_update,
+            lambda t: (
+                _task_input_from_segments(t, [(0.0, 0.62), (150.0, 0.18), (250.0, 0.76), (350.0, 0.44)]),
+                0.0,
+                0.9 if 350.0 <= t <= 429.0 else 0.0,
+            ),
+            0.0,
+            0.0,
+        ),
+        (
+            sim.check_v3_445_limexp_soft_exponential,
+            exp_update,
+            lambda t: (
+                _task_input_from_segments(t, [(0.0, -0.25), (150.0, 0.75), (250.0, 0.20), (350.0, -0.60)]),
+                0.0,
+                0.9 if 350.0 <= t <= 429.0 else 0.0,
+            ),
+            0.0,
+            0.0,
+        ),
+        (sim.check_v3_446_fstrobe_file_line_writer, count_threshold_update, input_general, 0.0, 0.0),
+        (sim.check_v3_447_display_warning_debug_log, count_threshold_update, input_general, 0.0, 0.0),
+        (
+            sim.check_v3_448_rdist_uniform_seeded_dither,
+            uniform_update,
+            lambda t: (
+                _task_input_from_segments(t, [(0.0, 0.62), (150.0, 0.18), (250.0, 0.76), (350.0, 0.44)]),
+                0.0,
+                0.9 if 350.0 <= t <= 429.0 else 0.0,
+            ),
+            0.0,
+            0.0,
+        ),
+        (
+            sim.check_v3_454_multidimensional_array_state,
+            multi_array_update,
+            lambda t: (
+                0.0,
+                0.0,
+                0.9 if 360.0 <= t <= 429.0 else 0.0,
+            ),
+            0.0,
+            0.0,
+        ),
+        (sim.check_v3_433_preprocessor_ifndef_elsif_undef, gain_update, input_general, 0.0, 0.0),
+        (sim.check_v3_434_repeat_loop_accumulator, repeat_update, input_general, 0.0, 0.0),
+    ]
+    for checker, update_fn, input_fn, initial_out, initial_metric in cases:
+        assert checker(clocked_rows(update_fn, input_fn, initial_out=initial_out, initial_metric=initial_metric))[0]
+        assert not checker(
+            clocked_rows(update_fn, input_fn, initial_out=initial_out, initial_metric=initial_metric, wrong=True)
+        )[0]
+
+
+def test_v3_clocked_semantic_gap_checkers_follow_hidden_values() -> None:
+    def input_fn(time_ns: float) -> tuple[float, float, float]:
+        return (
+            _task_input_from_segments(time_ns, [(0.0, 0.48), (100.0, 0.62), (200.0, 0.52), (300.0, 0.22), (400.0, 0.82)]),
+            _task_input_from_segments(time_ns, [(0.0, 0.9), (100.0, 0.0), (200.0, 0.9), (400.0, 0.0)]),
+            0.9 if 330.0 <= time_ns <= 389.0 else 0.0,
+        )
+
+    def threshold_update(_state: dict[str, float | int], row: dict[str, float]) -> tuple[float, float]:
+        if row["rst"] > 0.45:
+            return 0.0, 0.0
+        eff_th = 0.5 if row["mode"] > 0.45 else 0.6
+        return 0.9 if row["vin"] > eff_th else 0.0, eff_th
+
+    def gain_update(_state: dict[str, float | int], row: dict[str, float]) -> tuple[float, float]:
+        if row["rst"] > 0.45:
+            return 0.0, 0.0
+        effective = row["vin"] + (0.2 if row["mode"] > 0.45 else 0.0)
+        raw = 1.25 * effective
+        return min(0.9, max(0.0, raw)), raw
+
+    def trig_update(_state: dict[str, float | int], row: dict[str, float]) -> tuple[float, float]:
+        if row["rst"] > 0.45:
+            return 0.0, 0.0
+        phase = 2.0 * math.pi * row["vin"]
+        if row["mode"] > 0.45:
+            phase -= 0.5 * math.pi
+        out = min(0.9, max(0.0, 0.45 + 0.25 * math.sin(phase)))
+        return out, math.sqrt(abs(out))
+
+    def random_rows(*, wrong: bool = False) -> list[dict[str, float]]:
+        rows = _task_clocked_rows(
+            lambda _state, row: (
+                0.0 if row["rst"] > 0.45 else row["vin"] + 0.5 * (0.2 if row["mode"] > 0.45 else 0.1),
+                0.0 if row["rst"] > 0.45 else (0.2 if row["mode"] > 0.45 else 0.1),
+            ),
+            input_fn,
+            wrong=wrong,
+        )
+        return rows
+
+    def guard_update(state: dict[str, float | int], row: dict[str, float]) -> tuple[float, float]:
+        if row["rst"] > 0.45:
+            state["out"] = 0.0
+            return 0.0, 0.0
+        if row["mode"] > 0.45:
+            out = min(0.9, max(0.0, row["vin"]))
+            state["out"] = out
+            return out, 0.8
+        return float(state.get("out", 0.0)), 0.2
+
+    cases = [
+        (sim.check_v3_336_directive_configurable_threshold, threshold_update),
+        (sim.check_v3_337_parameter_range_limited_gain, gain_update),
+        (sim.check_v3_338_math_trig_envelope_detector, trig_update),
+        (sim.check_v3_340_bound_step_clock_guard, guard_update),
+    ]
+    for checker, update_fn in cases:
+        assert checker(_task_clocked_rows(update_fn, input_fn))[0]
+        assert not checker(_task_clocked_rows(update_fn, input_fn, wrong=True))[0]
+
+    assert sim.check_v3_339_random_seeded_dither_source(random_rows())[0]
+    assert not sim.check_v3_339_random_seeded_dither_source(random_rows(wrong=True))[0]
+
+
+def test_v3_event_or_timer_checker_follows_hidden_events() -> None:
+    def rows(*, wrong: bool = False) -> list[dict[str, float]]:
+        output_rows: list[dict[str, float]] = []
+        out = 0.0
+        metric = 0.0
+        prev_clk = 0.0
+        next_timer = 1.0
+        for idx in range(0, 5601, 10):
+            time_ns = idx / 1000.0
+            vin = _task_input_from_segments(time_ns, [(0.0, 0.35), (1.7, 0.75), (3.7, 0.15)])
+            clk = 1.0 if 2.2 <= time_ns <= 2.7 or 4.2 <= time_ns <= 4.7 else 0.0
+            while time_ns + 1e-6 >= next_timer:
+                metric += 1.0
+                out = vin
+                next_timer += 1.0
+            if prev_clk <= 0.45 < clk:
+                metric += 1.0
+                out = vin
+            output_rows.append(
+                {
+                    "time": time_ns * 1e-9,
+                    "vin": vin,
+                    "clk": clk,
+                    "out": 0.0 if wrong else out,
+                    "metric": 0.0 if wrong else metric,
+                }
+            )
+            prev_clk = clk
+        return output_rows
+
+    assert sim.check_v3_456_event_or_cross_timer(rows())[0]
+    assert not sim.check_v3_456_event_or_cross_timer(rows(wrong=True))[0]
+
+
+def test_v3_custom_nature_checker_tracks_input_potential() -> None:
+    good_rows = [
+        {"time": idx * 1e-9, "a": value, "y": value}
+        for idx, value in enumerate([0.0, 0.2, 0.7, 0.4, 0.9, 0.1, 0.55, 0.8] * 3)
+    ]
+    zero_rows = [{**row, "y": 0.0} for row in good_rows]
+    offset_rows = [{**row, "y": row["a"] + 0.12} for row in good_rows]
+
+    assert sim.check_v3_450_custom_nature_discipline_voltage(good_rows)[0]
+    assert not sim.check_v3_450_custom_nature_discipline_voltage(zero_rows)[0]
+    assert not sim.check_v3_450_custom_nature_discipline_voltage(offset_rows)[0]
+
+
+def test_v3_connectmodule_checkers_track_input_potential() -> None:
+    good_rows = [
+        {"time": idx * 1e-9, "a": value, "y": value}
+        for idx, value in enumerate([0.65, 0.2, 0.85, 0.1, 0.5, 0.9, 0.15, 0.7] * 3)
+    ]
+    threshold_rows = [{**row, "y": 0.9 if row["a"] > 0.55 else 0.0} for row in good_rows]
+
+    assert sim.check_v3_451_connectmodule_electrical_bridge(good_rows)[0]
+    assert sim.check_v3_452_connectrules_electrical_map(good_rows)[0]
+    assert not sim.check_v3_451_connectmodule_electrical_bridge(threshold_rows)[0]
+    assert not sim.check_v3_452_connectrules_electrical_map(threshold_rows)[0]
+
+
+def test_v3_recursive_function_checker_follows_hidden_depth_override() -> None:
+    def rows(*, stim: float, out: float) -> list[dict[str, float]]:
+        return [
+            {"time": 0.0, "stim": stim, "out": out},
+            {"time": 10e-9, "stim": stim, "out": out},
+            {"time": 20e-9, "stim": stim, "out": out},
+        ]
+
+    assert sim.check_v3_458_recursive_function_candidate(rows(stim=0.0, out=6.0))[0]
+    assert sim.check_v3_458_recursive_function_candidate(rows(stim=1.0, out=24.0))[0]
+    assert not sim.check_v3_458_recursive_function_candidate(rows(stim=1.0, out=6.0))[0]
+    assert not sim.check_v3_458_recursive_function_candidate(rows(stim=0.0, out=24.0))[0]
+
+
+def test_v3_above_last_crossing_checkers_follow_hidden_events() -> None:
+    def make_rows(vin_segments, rst_segments, model_fn, *, stop_ns: int = 760, wrong: bool = False) -> list[dict[str, float]]:
+        rows: list[dict[str, float]] = []
+        state: dict[str, float | int] = {}
+        prev_vin = _task_input_from_segments(0.0, vin_segments)
+        prev_rst = _task_input_from_segments(0.0, rst_segments)
+        for idx in range(stop_ns + 1):
+            time_ns = float(idx)
+            row = {
+                "time": time_ns * 1e-9,
+                "vin": _task_input_from_segments(time_ns, vin_segments),
+                "clk": 0.0,
+                "mode": 0.0,
+                "rst": _task_input_from_segments(time_ns, rst_segments),
+                "out": 0.0,
+                "metric": 0.0,
+            }
+            out, metric = model_fn(state, row, prev_vin, prev_rst)
+            row["out"] = 0.0 if wrong else out
+            row["metric"] = 0.0 if wrong else metric
+            rows.append(row)
+            prev_vin = row["vin"]
+            prev_rst = row["rst"]
+        return rows
+
+    def latch_model(metric_fn):
+        def model(state, row, prev_vin, prev_rst):
+            if "state" not in state:
+                state.update({"state": 0, "last_t": -1.0, "prev_t": -1.0, "metric": 0.0})
+            if prev_rst <= 0.45 < row["rst"]:
+                state.update({"state": 0, "last_t": -1.0, "prev_t": -1.0, "metric": 0.0})
+            if prev_vin <= 0.45 < row["vin"]:
+                state["state"] = 1
+                state["prev_t"] = state["last_t"]
+                state["last_t"] = row["time"]
+                if state["prev_t"] > 0.0:
+                    state["metric"] = metric_fn(state["last_t"] - state["prev_t"])
+                else:
+                    state["metric"] = 0.0
+            return (0.9 if state["state"] else 0.0), float(state["metric"])
+
+        return model
+
+    def period_model(state, row, prev_vin, prev_rst):
+        if "last_t" not in state:
+            state.update({"last_t": -1.0, "prev_t": -1.0, "out": 0.0, "metric": 0.0})
+        if prev_rst <= 0.45 < row["rst"]:
+            state.update({"last_t": -1.0, "prev_t": -1.0, "out": 0.0, "metric": 0.0})
+        if prev_vin <= 0.45 < row["vin"]:
+            state["prev_t"] = state["last_t"]
+            state["last_t"] = row["time"]
+            if state["prev_t"] > 0.0:
+                state["out"] = min(0.9, max(0.0, 0.9 * (state["last_t"] - state["prev_t"]) / 400e-9))
+                state["metric"] = 0.9
+            else:
+                state["out"] = 0.0
+                state["metric"] = 0.0
+        return float(state["out"]), float(state["metric"])
+
+    def age_model(state, row, prev_vin, prev_rst):
+        if "next_timer" not in state:
+            state.update({"active": 0, "last_t": -1.0, "out": 0.0, "metric": 0.0, "next_timer": 0.0})
+        if prev_rst <= 0.45 < row["rst"]:
+            state.update({"active": 0, "last_t": -1.0, "out": 0.0, "metric": 0.0})
+        if prev_vin <= 0.45 < row["vin"]:
+            state["active"] = 1
+            state["last_t"] = row["time"]
+        while row["time"] + 1e-15 >= state["next_timer"]:
+            if state["active"]:
+                age = state["next_timer"] - state["last_t"]
+                state["out"] = min(0.9, max(0.0, 0.9 * age / 300e-9))
+                state["metric"] = 0.9 if age <= 150e-9 else 0.0
+            state["next_timer"] += 50e-9
+        return float(state["out"]), float(state["metric"])
+
+    def peak_model(state, row, prev_vin, prev_rst):
+        if "next_timer" not in state:
+            state.update({"active": 0, "peak": 0.0, "metric": 0.0, "next_timer": 0.0})
+        if prev_rst <= 0.45 < row["rst"]:
+            state.update({"active": 0, "peak": 0.0, "metric": 0.0})
+        if prev_vin <= 0.45 < row["vin"]:
+            state["active"] = 1
+        while row["time"] + 1e-15 >= state["next_timer"]:
+            if state["active"]:
+                state["peak"] = min(0.9, max(0.0, max(state["peak"], row["vin"])))
+                state["metric"] = state["peak"]
+            state["next_timer"] += 50e-9
+        return (0.9 if state["active"] else 0.0), float(state["metric"])
+
+    cases = [
+        (
+            sim.check_v3_331_above_threshold_latch,
+            [(0.0, 0.1), (80.0, 0.75), (151.0, 0.1), (260.0, 0.82), (341.0, 0.1), (580.0, 0.78)],
+            [(0.0, 0.0), (420.0, 0.9), (450.0, 0.0)],
+            latch_model(lambda period: 0.9 if period < 250e-9 else 0.0),
+            700,
+        ),
+        (
+            sim.check_v3_332_above_window_qualifier,
+            [(0.0, 0.1), (90.0, 0.76), (161.0, 0.1), (240.0, 0.80), (331.0, 0.1), (640.0, 0.78)],
+            [(0.0, 0.0), (420.0, 0.9), (450.0, 0.0)],
+            latch_model(lambda period: 0.9 if 120e-9 <= period <= 260e-9 else 0.0),
+            760,
+        ),
+        (
+            sim.check_v3_333_last_crossing_period_meter,
+            [(0.0, 0.1), (90.0, 0.8), (161.0, 0.1), (260.0, 0.8), (351.0, 0.1), (560.0, 0.8), (651.0, 0.1), (820.0, 0.8)],
+            [(0.0, 0.0), (720.0, 0.9), (750.0, 0.0)],
+            period_model,
+            900,
+        ),
+        (
+            sim.check_v3_334_last_crossing_edge_age,
+            [(0.0, 0.1), (80.0, 0.8), (161.0, 0.1), (460.0, 0.8), (561.0, 0.1)],
+            [(0.0, 0.0), (670.0, 0.9), (700.0, 0.0)],
+            age_model,
+            800,
+        ),
+        (
+            sim.check_v3_335_above_resettable_peak_marker,
+            [(0.0, 0.1), (80.0, 0.50), (260.0, 0.85), (351.0, 0.25), (560.0, 0.65)],
+            [(0.0, 0.0), (420.0, 0.9), (450.0, 0.0)],
+            peak_model,
+            720,
+        ),
+    ]
+
+    for checker, vin_segments, rst_segments, model_fn, stop_ns in cases:
+        assert checker(make_rows(vin_segments, rst_segments, model_fn, stop_ns=stop_ns))[0]
+        assert not checker(make_rows(vin_segments, rst_segments, model_fn, stop_ns=stop_ns, wrong=True))[0]
+
+
+def test_v3_idtmod_phase_checkers_follow_hidden_waveforms() -> None:
+    def base_rows(vin_segments, mode_segments, rst_segments, clk_segments=None, *, stop_ns: int = 900) -> list[dict[str, float]]:
+        rows: list[dict[str, float]] = []
+        for idx in range(stop_ns + 1):
+            time_ns = float(idx)
+            rows.append(
+                {
+                    "time": time_ns * 1e-9,
+                    "vin": _task_input_from_segments(time_ns, vin_segments),
+                    "clk": _task_input_from_segments(time_ns, clk_segments or [(0.0, 0.0)]),
+                    "mode": _task_input_from_segments(time_ns, mode_segments),
+                    "rst": _task_input_from_segments(time_ns, rst_segments),
+                    "out": 0.0,
+                    "metric": 0.0,
+                }
+            )
+        return rows
+
+    def fill_continuous(rows, freq_fn, metric_fn, *, modulus=1.0, wrong: bool = False):
+        phases = sim._v3_integrated_mod_phase_values(rows, freq_fn=freq_fn, modulus=modulus)
+        for row, phase in zip(rows, phases):
+            if row["rst"] > 0.45:
+                out = 0.0
+                metric = 0.0
+            else:
+                out = 0.9 * phase / modulus
+                metric = metric_fn(row, phase)
+            row["out"] = 0.0 if wrong else out
+            row["metric"] = 0.0 if wrong else metric
+        return rows
+
+    rows_327 = lambda wrong=False: fill_continuous(
+        base_rows(
+            [(0.0, 0.30), (250.0, 0.70), (550.0, 0.45)],
+            [(0.0, 0.55)],
+            [(0.0, 0.9), (80.0, 0.0), (650.0, 0.9), (700.0, 0.0)],
+        ),
+        lambda row: 0.75e6 + 1.5e6 * row["vin"],
+        lambda row, phase: 0.9 if phase > row["mode"] else 0.0,
+        wrong=wrong,
+    )
+    rows_328 = lambda wrong=False: fill_continuous(
+        base_rows(
+            [(0.0, 0.25), (300.0, 0.55), (600.0, 0.15)],
+            [(0.0, 0.0), (350.0, 0.9), (750.0, 0.0)],
+            [(0.0, 0.0)],
+        ),
+        lambda row: 0.5e6 + (2.0e6 if row["mode"] > 0.45 else 1.0e6) * row["vin"],
+        lambda _row, phase: 0.9 if phase > 0.75 else 0.0,
+        wrong=wrong,
+    )
+    rows_329 = lambda wrong=False: fill_continuous(
+        base_rows(
+            [(0.0, 0.20), (200.0, 0.80), (500.0, 0.35)],
+            [(0.0, 0.9), (250.0, 0.0), (550.0, 0.9)],
+            [(0.0, 0.0)],
+            stop_ns=750,
+        ),
+        lambda row: 0.5e6 + 0.5e6 * row["vin"],
+        lambda row, phase: 0.9 if phase < (0.05 if row["mode"] > 0.45 else 0.025) else 0.0,
+        modulus=0.25,
+        wrong=wrong,
+    )
+
+    def rows_330(wrong: bool = False):
+        rows = base_rows(
+            [(0.0, 0.20), (250.0, 0.65), (550.0, 0.35)],
+            [(0.0, 0.55)],
+            [(0.0, 0.0)],
+            [
+                (0.0, 0.0),
+                (120.0, 0.9),
+                (146.0, 0.0),
+                (280.0, 0.9),
+                (306.0, 0.0),
+                (460.0, 0.9),
+                (486.0, 0.0),
+                (640.0, 0.9),
+                (666.0, 0.0),
+                (740.0, 0.9),
+                (766.0, 0.0),
+            ],
+            stop_ns=780,
+        )
+        phases = sim._v3_integrated_mod_phase_values(
+            rows,
+            freq_fn=lambda row: 1.25e6 + 0.5e6 * row["vin"],
+            modulus=1.0,
+        )
+        sample = 0.0
+        metric = 0.0
+        prev_clk = rows[0]["clk"]
+        for row, phase in zip(rows, phases):
+            if prev_clk <= 0.45 < row["clk"]:
+                sample = phase
+                metric = 0.9 if sample > row["mode"] else 0.0
+            row["out"] = 0.0 if wrong else 0.9 * sample
+            row["metric"] = 0.0 if wrong else metric
+            prev_clk = row["clk"]
+        return rows
+
+    cases = [
+        (sim.check_v3_327_idtmod_wrapped_ramp_source, rows_327),
+        (sim.check_v3_328_idtmod_frequency_control, rows_328),
+        (sim.check_v3_329_idtmod_modulo_phase_marker, rows_329),
+        (sim.check_v3_330_idtmod_clock_phase_meter, rows_330),
+    ]
+    for checker, make_rows in cases:
+        assert checker(make_rows())[0]
+        assert not checker(make_rows(wrong=True))[0]
+
+
 def _converter_front_end_chain_rows(*, mode: str = "good") -> list[dict[str, float]]:
     edges_ns = [5.0 + 20.0 * idx for idx in range(9)]
     aperture_levels = [0.18, 0.72, 0.32, 0.78, 0.40, 0.70, 0.25, 0.65, 0.38]

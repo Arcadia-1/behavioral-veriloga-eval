@@ -33,7 +33,7 @@ analog begin
             metric_v = count_q;
         $swrite(label_q, "mode=%0d metric=%0.3f", count_q, metric_v);
             count_q = count_q + 1;
-            if (V(vin) > vth + 0.1) out_v = vhi;
+            if (V(vin) > 0.25) out_v = vhi;
         end
     end
     V(out) <+ transition(out_v, 0.0, tr, tr);

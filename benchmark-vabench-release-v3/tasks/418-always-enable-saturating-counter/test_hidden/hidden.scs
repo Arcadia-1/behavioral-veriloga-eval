@@ -1,5 +1,13 @@
 simulator lang=spectre
 global 0
-// Hidden behavior skeleton. Evaluator supplies the candidate Verilog-A artifact and stricter checks.
-tran tran stop=160n
-save vin clk mode rst out metric
+
+ahdl_include "always_enable_saturating_counter.vams"
+
+Vclk (clk 0) vsource type=pwl wave=[0 0.0 59n 0.0 60n 1.0 109n 1.0 110n 0.0 169n 0.0 170n 1.0 219n 1.0 220n 0.0 279n 0.0 280n 1.0 329n 1.0 330n 0.0 389n 0.0 390n 1.0 439n 1.0 440n 0.0 499n 0.0 500n 1.0 549n 1.0 550n 0.0 600n 0.0]
+Vrst (rst 0) vsource type=pwl wave=[0 1.0 49n 1.0 50n 0.0 359n 0.0 360n 1.0 409n 1.0 410n 0.0 600n 0.0]
+Ven (en 0) vsource type=pwl wave=[0 1.0 179n 1.0 180n 0.0 329n 0.0 330n 1.0 479n 1.0 480n 0.0 529n 0.0 530n 1.0 600n 1.0]
+
+XDUT (clk rst en q1 q0) always_enable_saturating_counter
+
+tran tran stop=600n
+save clk rst en q0 q1

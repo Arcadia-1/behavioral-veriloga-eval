@@ -7,35 +7,40 @@
       "files": [
         "neg_001_drive_out_zero/case_mode_gain_selector.va"
       ],
-      "expected": "compile_but_fail_full_behavior"
+      "expected": "compile_but_fail_full_behavior",
+      "description": "Case Mode Gain Selector: forces the main output to zero, so coarse compilation passes but behavioral stimulus points fail."
     },
     {
       "id": "neg_002_drive_metric_zero",
       "files": [
         "neg_002_drive_metric_zero/case_mode_gain_selector.va"
       ],
-      "expected": "compile_but_fail_full_behavior"
+      "expected": "compile_but_fail_full_behavior",
+      "description": "Case Mode Gain Selector: keeps the main datapath plausible while reporting the wrong metric value."
     },
     {
       "id": "neg_003_reset_polarity_wrong",
       "files": [
         "neg_003_reset_polarity_wrong/case_mode_gain_selector.va"
       ],
-      "expected": "compile_but_fail_full_behavior"
+      "expected": "compile_but_fail_full_behavior",
+      "description": "Case Mode Gain Selector: mishandles reset or initialization, passing steady-state samples but failing startup or recovery checks."
     },
     {
       "id": "neg_004_logic_threshold_shifted",
       "files": [
         "neg_004_logic_threshold_shifted/case_mode_gain_selector.va"
       ],
-      "expected": "compile_but_fail_full_behavior"
+      "expected": "compile_but_fail_full_behavior",
+      "description": "Case Mode Gain Selector: uses a shifted or inverted decision condition that can pass one mode but fails boundary cases."
     },
     {
       "id": "neg_005_output_scale_low",
       "files": [
         "neg_005_output_scale_low/case_mode_gain_selector.va"
       ],
-      "expected": "compile_but_fail_full_behavior"
+      "expected": "compile_but_fail_full_behavior",
+      "description": "Case Mode Gain Selector: uses a shifted or inverted decision condition that can pass one mode but fails boundary cases."
     }
   ]
 }

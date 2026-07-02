@@ -5,3 +5,4 @@
 - Required syntax focus: `Use repeated seeded random distribution calls to make reproducibility explicit.`
 - EVAS status: `supported`
 - Boundary: behavioral voltage/digital modeling only; no `I(...)` current contribution.
+- Status: promoted to executable EVAS behavior candidate with gold and five negative variants verified.

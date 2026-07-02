@@ -3,8 +3,8 @@ global 0
 
 ahdl_include "always_resettable_toggle.vams"
 
-Vclk (clk 0) vsource type=pwl wave=[0 0.0 49n 0.0 50n 1.0 99n 1.0 100n 0.0 149n 0.0 150n 1.0 200n 1.0]
-Vrst (rst 0) vsource type=pwl wave=[0 1.0 49n 1.0 50n 0.0 200n 0.0]
+Vclk (clk 0) vsource type=pwl wave=[0 0.0 39n 0.0 40n 1.0 79n 1.0 80n 0.0 129n 0.0 130n 1.0 169n 1.0 170n 0.0 200n 0.0]
+Vrst (rst 0) vsource type=pwl wave=[0 1.0 29n 1.0 30n 0.0 139n 0.0 140n 1.0 159n 1.0 160n 0.0 200n 0.0]
 Vd (d 0) vsource dc=1.0
 Ven (en 0) vsource dc=1.0
 

@@ -1,0 +1,24 @@
+{
+  "variants": [
+    {
+      "id": "neg_001_force_zero",
+      "description": "Never emits high bits.",
+      "path": "negative_variants/neg_001_force_zero/first_order_sigma_delta_modulator.va"
+    },
+    {
+      "id": "neg_002_no_feedback",
+      "description": "Accumulates the input without subtracting the previous feedback bit.",
+      "path": "negative_variants/neg_002_no_feedback/first_order_sigma_delta_modulator.va"
+    },
+    {
+      "id": "neg_003_inverted_decision",
+      "description": "Uses the opposite comparator decision polarity.",
+      "path": "negative_variants/neg_003_inverted_decision/first_order_sigma_delta_modulator.va"
+    },
+    {
+      "id": "neg_004_falling_edge_update",
+      "description": "Updates on falling clock crossings instead of rising crossings.",
+      "path": "negative_variants/neg_004_falling_edge_update/first_order_sigma_delta_modulator.va"
+    }
+  ]
+}

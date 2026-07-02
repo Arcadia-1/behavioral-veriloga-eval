@@ -22,7 +22,7 @@ analog begin
     @(initial_step) begin
         out_v = 0.0;
         metric_v = 0.0;
-        count_q = 0;
+        count_q = 1;
         state_q = 0;
     end
     @(cross(V(clk) - vth, +1)) begin
@@ -37,7 +37,6 @@ analog begin
         out_v = field_q == 2 ? vhi : 0.0;
         metric_v = field_q;
         count_q = count_q + 1;
-        if (V(rst) > vth) begin state_q = 1; metric_v = 0.25; end
         end
     end
     V(out) <+ transition(out_v, 0.0, tr, tr);

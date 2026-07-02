@@ -7,35 +7,40 @@
       "files": [
         "neg_001_zero_noise/white_noise_gated_source.va"
       ],
-      "expected": "compile_but_fail_full_behavior_under_noise_or_ac_simulator"
+      "expected": "compile_but_fail_full_behavior_under_noise_or_ac_simulator",
+      "description": "White Noise Gated Source: implements a plausible but incomplete behavior that passes shallow checks and fails the full visible/hidden contract."
     },
     {
       "id": "neg_002_wrong_label",
       "files": [
         "neg_002_wrong_label/white_noise_gated_source.va"
       ],
-      "expected": "compile_but_fail_full_behavior_under_noise_or_ac_simulator"
+      "expected": "compile_but_fail_full_behavior_under_noise_or_ac_simulator",
+      "description": "White Noise Gated Source: uses a shifted or inverted decision condition that can pass one mode but fails boundary cases."
     },
     {
       "id": "neg_003_disable_analysis",
       "files": [
         "neg_003_disable_analysis/white_noise_gated_source.va"
       ],
-      "expected": "compile_but_fail_full_behavior_under_noise_or_ac_simulator"
+      "expected": "compile_but_fail_full_behavior_under_noise_or_ac_simulator",
+      "description": "White Noise Gated Source: implements a plausible but incomplete behavior that passes shallow checks and fails the full visible/hidden contract."
     },
     {
       "id": "neg_004_wrong_metric",
       "files": [
         "neg_004_wrong_metric/white_noise_gated_source.va"
       ],
-      "expected": "compile_but_fail_full_behavior_under_noise_or_ac_simulator"
+      "expected": "compile_but_fail_full_behavior_under_noise_or_ac_simulator",
+      "description": "White Noise Gated Source: implements a plausible but incomplete behavior that passes shallow checks and fails the full visible/hidden contract."
     },
     {
       "id": "neg_005_scale_output",
       "files": [
         "neg_005_scale_output/white_noise_gated_source.va"
       ],
-      "expected": "compile_but_fail_full_behavior_under_noise_or_ac_simulator"
+      "expected": "compile_but_fail_full_behavior_under_noise_or_ac_simulator",
+      "description": "White Noise Gated Source: uses a wrong gain or scale factor, leaving shape plausible while calibrated checks fail."
     }
   ]
 }

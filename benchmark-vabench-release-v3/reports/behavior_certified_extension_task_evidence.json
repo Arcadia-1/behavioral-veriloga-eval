@@ -1,0 +1,3116 @@
+{
+  "summary": {
+    "all_tasks_have_five_behavior_rejected_negatives": true,
+    "gold_pass_count": 194,
+    "negative_behavior_rejected_total": 970,
+    "negative_total": 970,
+    "source_report": "benchmark-vabench-release-v3/reports/verify_301_494_layered.json",
+    "task_count": 194
+  },
+  "tasks": [
+    {
+      "all_negatives_behavior_rejected": true,
+      "checker_task_id": "v3_301_function_clamp_window",
+      "gold_meets_expectation": true,
+      "gold_status": "PASS",
+      "negative_behavior_rejected_count": 5,
+      "negative_count": 5,
+      "negative_statuses": {
+        "neg_001_drive_out_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_002_drive_metric_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_003_reset_polarity_wrong": "FAIL_SIM_CORRECTNESS",
+        "neg_004_logic_threshold_shifted": "FAIL_SIM_CORRECTNESS",
+        "neg_005_output_scale_low": "FAIL_SIM_CORRECTNESS"
+      },
+      "task": "301-function-clamp-window"
+    },
+    {
+      "all_negatives_behavior_rejected": true,
+      "checker_task_id": "v3_302_function_deadband_map",
+      "gold_meets_expectation": true,
+      "gold_status": "PASS",
+      "negative_behavior_rejected_count": 5,
+      "negative_count": 5,
+      "negative_statuses": {
+        "neg_001_drive_out_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_002_drive_metric_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_003_reset_polarity_wrong": "FAIL_SIM_CORRECTNESS",
+        "neg_004_logic_threshold_shifted": "FAIL_SIM_CORRECTNESS",
+        "neg_005_output_scale_low": "FAIL_SIM_CORRECTNESS"
+      },
+      "task": "302-function-deadband-map"
+    },
+    {
+      "all_negatives_behavior_rejected": true,
+      "checker_task_id": "v3_303_function_piecewise_gain",
+      "gold_meets_expectation": true,
+      "gold_status": "PASS",
+      "negative_behavior_rejected_count": 5,
+      "negative_count": 5,
+      "negative_statuses": {
+        "neg_001_drive_out_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_002_drive_metric_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_003_reset_polarity_wrong": "FAIL_SIM_CORRECTNESS",
+        "neg_004_logic_threshold_shifted": "FAIL_SIM_CORRECTNESS",
+        "neg_005_output_scale_low": "FAIL_SIM_CORRECTNESS"
+      },
+      "task": "303-function-piecewise-gain"
+    },
+    {
+      "all_negatives_behavior_rejected": true,
+      "checker_task_id": "v3_304_function_code_normalizer",
+      "gold_meets_expectation": true,
+      "gold_status": "PASS",
+      "negative_behavior_rejected_count": 5,
+      "negative_count": 5,
+      "negative_statuses": {
+        "neg_001_drive_out_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_002_drive_metric_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_003_reset_polarity_wrong": "FAIL_SIM_CORRECTNESS",
+        "neg_004_logic_threshold_shifted": "FAIL_SIM_CORRECTNESS",
+        "neg_005_output_scale_low": "FAIL_SIM_CORRECTNESS"
+      },
+      "task": "304-function-code-normalizer"
+    },
+    {
+      "all_negatives_behavior_rejected": true,
+      "checker_task_id": "v3_305_function_soft_threshold",
+      "gold_meets_expectation": true,
+      "gold_status": "PASS",
+      "negative_behavior_rejected_count": 5,
+      "negative_count": 5,
+      "negative_statuses": {
+        "neg_001_drive_out_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_002_drive_metric_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_003_reset_polarity_wrong": "FAIL_SIM_CORRECTNESS",
+        "neg_004_logic_threshold_shifted": "FAIL_SIM_CORRECTNESS",
+        "neg_005_output_scale_low": "FAIL_SIM_CORRECTNESS"
+      },
+      "task": "305-function-soft-threshold"
+    },
+    {
+      "all_negatives_behavior_rejected": true,
+      "checker_task_id": "v3_306_case_mode_gain_selector",
+      "gold_meets_expectation": true,
+      "gold_status": "PASS",
+      "negative_behavior_rejected_count": 5,
+      "negative_count": 5,
+      "negative_statuses": {
+        "neg_001_drive_out_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_002_drive_metric_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_003_reset_polarity_wrong": "FAIL_SIM_CORRECTNESS",
+        "neg_004_logic_threshold_shifted": "FAIL_SIM_CORRECTNESS",
+        "neg_005_output_scale_low": "FAIL_SIM_CORRECTNESS"
+      },
+      "task": "306-case-mode-gain-selector"
+    },
+    {
+      "all_negatives_behavior_rejected": true,
+      "checker_task_id": "v3_307_case_priority_status_decoder",
+      "gold_meets_expectation": true,
+      "gold_status": "PASS",
+      "negative_behavior_rejected_count": 5,
+      "negative_count": 5,
+      "negative_statuses": {
+        "neg_001_drive_out_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_002_drive_metric_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_003_reset_polarity_wrong": "FAIL_SIM_CORRECTNESS",
+        "neg_004_logic_threshold_shifted": "FAIL_SIM_CORRECTNESS",
+        "neg_005_output_scale_low": "FAIL_SIM_CORRECTNESS"
+      },
+      "task": "307-case-priority-status-decoder"
+    },
+    {
+      "all_negatives_behavior_rejected": true,
+      "checker_task_id": "v3_308_case_quantized_output_level",
+      "gold_meets_expectation": true,
+      "gold_status": "PASS",
+      "negative_behavior_rejected_count": 5,
+      "negative_count": 5,
+      "negative_statuses": {
+        "neg_001_drive_out_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_002_drive_metric_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_003_reset_polarity_wrong": "FAIL_SIM_CORRECTNESS",
+        "neg_004_logic_threshold_shifted": "FAIL_SIM_CORRECTNESS",
+        "neg_005_output_scale_low": "FAIL_SIM_CORRECTNESS"
+      },
+      "task": "308-case-quantized-output-level"
+    },
+    {
+      "all_negatives_behavior_rejected": true,
+      "checker_task_id": "v3_309_case_clocked_range_bucket",
+      "gold_meets_expectation": true,
+      "gold_status": "PASS",
+      "negative_behavior_rejected_count": 5,
+      "negative_count": 5,
+      "negative_statuses": {
+        "neg_001_drive_out_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_002_drive_metric_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_003_reset_polarity_wrong": "FAIL_SIM_CORRECTNESS",
+        "neg_004_logic_threshold_shifted": "FAIL_SIM_CORRECTNESS",
+        "neg_005_output_scale_low": "FAIL_SIM_CORRECTNESS"
+      },
+      "task": "309-case-clocked-range-bucket"
+    },
+    {
+      "all_negatives_behavior_rejected": true,
+      "checker_task_id": "v3_310_case_resettable_state_decoder",
+      "gold_meets_expectation": true,
+      "gold_status": "PASS",
+      "negative_behavior_rejected_count": 5,
+      "negative_count": 5,
+      "negative_statuses": {
+        "neg_001_drive_out_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_002_drive_metric_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_003_reset_polarity_wrong": "FAIL_SIM_CORRECTNESS",
+        "neg_004_logic_threshold_shifted": "FAIL_SIM_CORRECTNESS",
+        "neg_005_output_scale_low": "FAIL_SIM_CORRECTNESS"
+      },
+      "task": "310-case-resettable-state-decoder"
+    },
+    {
+      "all_negatives_behavior_rejected": true,
+      "checker_task_id": "v3_311_for_loop_running_average",
+      "gold_meets_expectation": true,
+      "gold_status": "PASS",
+      "negative_behavior_rejected_count": 5,
+      "negative_count": 5,
+      "negative_statuses": {
+        "neg_001_drive_out_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_002_drive_metric_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_003_reset_polarity_wrong": "FAIL_SIM_CORRECTNESS",
+        "neg_004_logic_threshold_shifted": "FAIL_SIM_CORRECTNESS",
+        "neg_005_output_scale_low": "FAIL_SIM_CORRECTNESS"
+      },
+      "task": "311-for-loop-running-average"
+    },
+    {
+      "all_negatives_behavior_rejected": true,
+      "checker_task_id": "v3_312_for_loop_thermometer_count",
+      "gold_meets_expectation": true,
+      "gold_status": "PASS",
+      "negative_behavior_rejected_count": 5,
+      "negative_count": 5,
+      "negative_statuses": {
+        "neg_001_drive_out_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_002_drive_metric_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_003_reset_polarity_wrong": "FAIL_SIM_CORRECTNESS",
+        "neg_004_logic_threshold_shifted": "FAIL_SIM_CORRECTNESS",
+        "neg_005_output_scale_low": "FAIL_SIM_CORRECTNESS"
+      },
+      "task": "312-for-loop-thermometer-count"
+    },
+    {
+      "all_negatives_behavior_rejected": true,
+      "checker_task_id": "v3_313_for_loop_weighted_accumulator",
+      "gold_meets_expectation": true,
+      "gold_status": "PASS",
+      "negative_behavior_rejected_count": 5,
+      "negative_count": 5,
+      "negative_statuses": {
+        "neg_001_drive_out_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_002_drive_metric_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_003_reset_polarity_wrong": "FAIL_SIM_CORRECTNESS",
+        "neg_004_logic_threshold_shifted": "FAIL_SIM_CORRECTNESS",
+        "neg_005_output_scale_low": "FAIL_SIM_CORRECTNESS"
+      },
+      "task": "313-for-loop-weighted-accumulator"
+    },
+    {
+      "all_negatives_behavior_rejected": true,
+      "checker_task_id": "v3_314_for_loop_windowed_peak",
+      "gold_meets_expectation": true,
+      "gold_status": "PASS",
+      "negative_behavior_rejected_count": 5,
+      "negative_count": 5,
+      "negative_statuses": {
+        "neg_001_drive_out_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_002_drive_metric_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_003_reset_polarity_wrong": "FAIL_SIM_CORRECTNESS",
+        "neg_004_logic_threshold_shifted": "FAIL_SIM_CORRECTNESS",
+        "neg_005_output_scale_low": "FAIL_SIM_CORRECTNESS"
+      },
+      "task": "314-for-loop-windowed-peak"
+    },
+    {
+      "all_negatives_behavior_rejected": true,
+      "checker_task_id": "v3_315_for_loop_code_popcount",
+      "gold_meets_expectation": true,
+      "gold_status": "PASS",
+      "negative_behavior_rejected_count": 5,
+      "negative_count": 5,
+      "negative_statuses": {
+        "neg_001_drive_out_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_002_drive_metric_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_003_reset_polarity_wrong": "FAIL_SIM_CORRECTNESS",
+        "neg_004_logic_threshold_shifted": "FAIL_SIM_CORRECTNESS",
+        "neg_005_output_scale_low": "FAIL_SIM_CORRECTNESS"
+      },
+      "task": "315-for-loop-code-popcount"
+    },
+    {
+      "all_negatives_behavior_rejected": true,
+      "checker_task_id": "v3_316_final_step_edge_counter_file",
+      "gold_meets_expectation": true,
+      "gold_status": "PASS",
+      "negative_behavior_rejected_count": 5,
+      "negative_count": 5,
+      "negative_statuses": {
+        "neg_001_drive_out_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_002_drive_metric_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_003_reset_polarity_wrong": "FAIL_SIM_CORRECTNESS",
+        "neg_004_logic_threshold_shifted": "FAIL_SIM_CORRECTNESS",
+        "neg_005_output_scale_low": "FAIL_SIM_CORRECTNESS"
+      },
+      "task": "316-final-step-edge-counter-file"
+    },
+    {
+      "all_negatives_behavior_rejected": true,
+      "checker_task_id": "v3_317_final_step_average_metric_file",
+      "gold_meets_expectation": true,
+      "gold_status": "PASS",
+      "negative_behavior_rejected_count": 5,
+      "negative_count": 5,
+      "negative_statuses": {
+        "neg_001_drive_out_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_002_drive_metric_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_003_reset_polarity_wrong": "FAIL_SIM_CORRECTNESS",
+        "neg_004_logic_threshold_shifted": "FAIL_SIM_CORRECTNESS",
+        "neg_005_output_scale_low": "FAIL_SIM_CORRECTNESS"
+      },
+      "task": "317-final-step-average-metric-file"
+    },
+    {
+      "all_negatives_behavior_rejected": true,
+      "checker_task_id": "v3_318_final_step_max_observer_file",
+      "gold_meets_expectation": true,
+      "gold_status": "PASS",
+      "negative_behavior_rejected_count": 5,
+      "negative_count": 5,
+      "negative_statuses": {
+        "neg_001_drive_out_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_002_drive_metric_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_003_reset_polarity_wrong": "FAIL_SIM_CORRECTNESS",
+        "neg_004_logic_threshold_shifted": "FAIL_SIM_CORRECTNESS",
+        "neg_005_output_scale_low": "FAIL_SIM_CORRECTNESS"
+      },
+      "task": "318-final-step-max-observer-file"
+    },
+    {
+      "all_negatives_behavior_rejected": true,
+      "checker_task_id": "v3_319_display_strobe_event_logger",
+      "gold_meets_expectation": true,
+      "gold_status": "PASS",
+      "negative_behavior_rejected_count": 5,
+      "negative_count": 5,
+      "negative_statuses": {
+        "neg_001_drive_out_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_002_drive_metric_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_003_reset_polarity_wrong": "FAIL_SIM_CORRECTNESS",
+        "neg_004_logic_threshold_shifted": "FAIL_SIM_CORRECTNESS",
+        "neg_005_output_scale_low": "FAIL_SIM_CORRECTNESS"
+      },
+      "task": "319-display-strobe-event-logger"
+    },
+    {
+      "all_negatives_behavior_rejected": true,
+      "checker_task_id": "v3_320_file_io_sampled_metric_writer",
+      "gold_meets_expectation": true,
+      "gold_status": "PASS",
+      "negative_behavior_rejected_count": 5,
+      "negative_count": 5,
+      "negative_statuses": {
+        "neg_001_drive_out_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_002_drive_metric_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_003_reset_polarity_wrong": "FAIL_SIM_CORRECTNESS",
+        "neg_004_logic_threshold_shifted": "FAIL_SIM_CORRECTNESS",
+        "neg_005_output_scale_low": "FAIL_SIM_CORRECTNESS"
+      },
+      "task": "320-file-io-sampled-metric-writer"
+    },
+    {
+      "all_negatives_behavior_rejected": true,
+      "checker_task_id": "v3_321_slew_limited_voltage_follower",
+      "gold_meets_expectation": true,
+      "gold_status": "PASS",
+      "negative_behavior_rejected_count": 5,
+      "negative_count": 5,
+      "negative_statuses": {
+        "neg_001_drive_out_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_002_drive_metric_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_003_reset_polarity_wrong": "FAIL_SIM_CORRECTNESS",
+        "neg_004_logic_threshold_shifted": "FAIL_SIM_CORRECTNESS",
+        "neg_005_output_scale_low": "FAIL_SIM_CORRECTNESS"
+      },
+      "task": "321-slew-limited-voltage-follower"
+    },
+    {
+      "all_negatives_behavior_rejected": true,
+      "checker_task_id": "v3_322_slew_limited_mode_stepper",
+      "gold_meets_expectation": true,
+      "gold_status": "PASS",
+      "negative_behavior_rejected_count": 5,
+      "negative_count": 5,
+      "negative_statuses": {
+        "neg_001_drive_out_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_002_drive_metric_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_003_reset_polarity_wrong": "FAIL_SIM_CORRECTNESS",
+        "neg_004_logic_threshold_shifted": "FAIL_SIM_CORRECTNESS",
+        "neg_005_output_scale_low": "FAIL_SIM_CORRECTNESS"
+      },
+      "task": "322-slew-limited-mode-stepper"
+    },
+    {
+      "all_negatives_behavior_rejected": true,
+      "checker_task_id": "v3_323_slew_output_reset_recovery",
+      "gold_meets_expectation": true,
+      "gold_status": "PASS",
+      "negative_behavior_rejected_count": 5,
+      "negative_count": 5,
+      "negative_statuses": {
+        "neg_001_drive_out_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_002_drive_metric_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_003_reset_polarity_wrong": "FAIL_SIM_CORRECTNESS",
+        "neg_004_logic_threshold_shifted": "FAIL_SIM_CORRECTNESS",
+        "neg_005_output_scale_low": "FAIL_SIM_CORRECTNESS"
+      },
+      "task": "323-slew-output-reset-recovery"
+    },
+    {
+      "all_negatives_behavior_rejected": true,
+      "checker_task_id": "v3_324_slew_limited_envelope",
+      "gold_meets_expectation": true,
+      "gold_status": "PASS",
+      "negative_behavior_rejected_count": 5,
+      "negative_count": 5,
+      "negative_statuses": {
+        "neg_001_drive_out_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_002_drive_metric_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_003_reset_polarity_wrong": "FAIL_SIM_CORRECTNESS",
+        "neg_004_logic_threshold_shifted": "FAIL_SIM_CORRECTNESS",
+        "neg_005_output_scale_low": "FAIL_SIM_CORRECTNESS"
+      },
+      "task": "324-slew-limited-envelope"
+    },
+    {
+      "all_negatives_behavior_rejected": true,
+      "checker_task_id": "v3_325_slew_asymmetric_rise_fall",
+      "gold_meets_expectation": true,
+      "gold_status": "PASS",
+      "negative_behavior_rejected_count": 5,
+      "negative_count": 5,
+      "negative_statuses": {
+        "neg_001_drive_out_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_002_drive_metric_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_003_reset_polarity_wrong": "FAIL_SIM_CORRECTNESS",
+        "neg_004_logic_threshold_shifted": "FAIL_SIM_CORRECTNESS",
+        "neg_005_output_scale_low": "FAIL_SIM_CORRECTNESS"
+      },
+      "task": "325-slew-asymmetric-rise-fall"
+    },
+    {
+      "all_negatives_behavior_rejected": true,
+      "checker_task_id": "v3_326_idtmod_phase_accumulator",
+      "gold_meets_expectation": true,
+      "gold_status": "PASS",
+      "negative_behavior_rejected_count": 5,
+      "negative_count": 5,
+      "negative_statuses": {
+        "neg_001_drive_out_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_002_drive_metric_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_003_reset_polarity_wrong": "FAIL_SIM_CORRECTNESS",
+        "neg_004_logic_threshold_shifted": "FAIL_SIM_CORRECTNESS",
+        "neg_005_output_scale_low": "FAIL_SIM_CORRECTNESS"
+      },
+      "task": "326-idtmod-phase-accumulator"
+    },
+    {
+      "all_negatives_behavior_rejected": true,
+      "checker_task_id": "v3_327_idtmod_wrapped_ramp_source",
+      "gold_meets_expectation": true,
+      "gold_status": "PASS",
+      "negative_behavior_rejected_count": 5,
+      "negative_count": 5,
+      "negative_statuses": {
+        "neg_001_drive_out_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_002_drive_metric_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_003_reset_polarity_wrong": "FAIL_SIM_CORRECTNESS",
+        "neg_004_logic_threshold_shifted": "FAIL_SIM_CORRECTNESS",
+        "neg_005_output_scale_low": "FAIL_SIM_CORRECTNESS"
+      },
+      "task": "327-idtmod-wrapped-ramp-source"
+    },
+    {
+      "all_negatives_behavior_rejected": true,
+      "checker_task_id": "v3_328_idtmod_frequency_control",
+      "gold_meets_expectation": true,
+      "gold_status": "PASS",
+      "negative_behavior_rejected_count": 5,
+      "negative_count": 5,
+      "negative_statuses": {
+        "neg_001_drive_out_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_002_drive_metric_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_003_reset_polarity_wrong": "FAIL_SIM_CORRECTNESS",
+        "neg_004_logic_threshold_shifted": "FAIL_SIM_CORRECTNESS",
+        "neg_005_output_scale_low": "FAIL_SIM_CORRECTNESS"
+      },
+      "task": "328-idtmod-frequency-control"
+    },
+    {
+      "all_negatives_behavior_rejected": true,
+      "checker_task_id": "v3_329_idtmod_modulo_phase_marker",
+      "gold_meets_expectation": true,
+      "gold_status": "PASS",
+      "negative_behavior_rejected_count": 5,
+      "negative_count": 5,
+      "negative_statuses": {
+        "neg_001_drive_out_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_002_drive_metric_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_003_reset_polarity_wrong": "FAIL_SIM_CORRECTNESS",
+        "neg_004_logic_threshold_shifted": "FAIL_SIM_CORRECTNESS",
+        "neg_005_output_scale_low": "FAIL_SIM_CORRECTNESS"
+      },
+      "task": "329-idtmod-modulo-phase-marker"
+    },
+    {
+      "all_negatives_behavior_rejected": true,
+      "checker_task_id": "v3_330_idtmod_clock_phase_meter",
+      "gold_meets_expectation": true,
+      "gold_status": "PASS",
+      "negative_behavior_rejected_count": 5,
+      "negative_count": 5,
+      "negative_statuses": {
+        "neg_001_drive_out_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_002_drive_metric_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_003_reset_polarity_wrong": "FAIL_SIM_CORRECTNESS",
+        "neg_004_logic_threshold_shifted": "FAIL_SIM_CORRECTNESS",
+        "neg_005_output_scale_low": "FAIL_SIM_CORRECTNESS"
+      },
+      "task": "330-idtmod-clock-phase-meter"
+    },
+    {
+      "all_negatives_behavior_rejected": true,
+      "checker_task_id": "v3_331_above_threshold_latch",
+      "gold_meets_expectation": true,
+      "gold_status": "PASS",
+      "negative_behavior_rejected_count": 5,
+      "negative_count": 5,
+      "negative_statuses": {
+        "neg_001_drive_out_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_002_drive_metric_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_003_reset_polarity_wrong": "FAIL_SIM_CORRECTNESS",
+        "neg_004_logic_threshold_shifted": "FAIL_SIM_CORRECTNESS",
+        "neg_005_output_scale_low": "FAIL_SIM_CORRECTNESS"
+      },
+      "task": "331-above-threshold-latch"
+    },
+    {
+      "all_negatives_behavior_rejected": true,
+      "checker_task_id": "v3_332_above_window_qualifier",
+      "gold_meets_expectation": true,
+      "gold_status": "PASS",
+      "negative_behavior_rejected_count": 5,
+      "negative_count": 5,
+      "negative_statuses": {
+        "neg_001_drive_out_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_002_drive_metric_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_003_reset_polarity_wrong": "FAIL_SIM_CORRECTNESS",
+        "neg_004_logic_threshold_shifted": "FAIL_SIM_CORRECTNESS",
+        "neg_005_output_scale_low": "FAIL_SIM_CORRECTNESS"
+      },
+      "task": "332-above-window-qualifier"
+    },
+    {
+      "all_negatives_behavior_rejected": true,
+      "checker_task_id": "v3_333_last_crossing_period_meter",
+      "gold_meets_expectation": true,
+      "gold_status": "PASS",
+      "negative_behavior_rejected_count": 5,
+      "negative_count": 5,
+      "negative_statuses": {
+        "neg_001_drive_out_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_002_drive_metric_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_003_reset_polarity_wrong": "FAIL_SIM_CORRECTNESS",
+        "neg_004_logic_threshold_shifted": "FAIL_SIM_CORRECTNESS",
+        "neg_005_output_scale_low": "FAIL_SIM_CORRECTNESS"
+      },
+      "task": "333-last-crossing-period-meter"
+    },
+    {
+      "all_negatives_behavior_rejected": true,
+      "checker_task_id": "v3_334_last_crossing_edge_age",
+      "gold_meets_expectation": true,
+      "gold_status": "PASS",
+      "negative_behavior_rejected_count": 5,
+      "negative_count": 5,
+      "negative_statuses": {
+        "neg_001_drive_out_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_002_drive_metric_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_003_reset_polarity_wrong": "FAIL_SIM_CORRECTNESS",
+        "neg_004_logic_threshold_shifted": "FAIL_SIM_CORRECTNESS",
+        "neg_005_output_scale_low": "FAIL_SIM_CORRECTNESS"
+      },
+      "task": "334-last-crossing-edge-age"
+    },
+    {
+      "all_negatives_behavior_rejected": true,
+      "checker_task_id": "v3_335_above_resettable_peak_marker",
+      "gold_meets_expectation": true,
+      "gold_status": "PASS",
+      "negative_behavior_rejected_count": 5,
+      "negative_count": 5,
+      "negative_statuses": {
+        "neg_001_drive_out_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_002_drive_metric_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_003_reset_polarity_wrong": "FAIL_SIM_CORRECTNESS",
+        "neg_004_logic_threshold_shifted": "FAIL_SIM_CORRECTNESS",
+        "neg_005_output_scale_low": "FAIL_SIM_CORRECTNESS"
+      },
+      "task": "335-above-resettable-peak-marker"
+    },
+    {
+      "all_negatives_behavior_rejected": true,
+      "checker_task_id": "v3_336_directive_configurable_threshold",
+      "gold_meets_expectation": true,
+      "gold_status": "PASS",
+      "negative_behavior_rejected_count": 5,
+      "negative_count": 5,
+      "negative_statuses": {
+        "neg_001_drive_out_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_002_drive_metric_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_003_reset_polarity_wrong": "FAIL_SIM_CORRECTNESS",
+        "neg_004_logic_threshold_shifted": "FAIL_SIM_CORRECTNESS",
+        "neg_005_output_scale_low": "FAIL_SIM_CORRECTNESS"
+      },
+      "task": "336-directive-configurable-threshold"
+    },
+    {
+      "all_negatives_behavior_rejected": true,
+      "checker_task_id": "v3_337_parameter_range_limited_gain",
+      "gold_meets_expectation": true,
+      "gold_status": "PASS",
+      "negative_behavior_rejected_count": 5,
+      "negative_count": 5,
+      "negative_statuses": {
+        "neg_001_drive_out_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_002_drive_metric_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_003_reset_polarity_wrong": "FAIL_SIM_CORRECTNESS",
+        "neg_004_logic_threshold_shifted": "FAIL_SIM_CORRECTNESS",
+        "neg_005_output_scale_low": "FAIL_SIM_CORRECTNESS"
+      },
+      "task": "337-parameter-range-limited-gain"
+    },
+    {
+      "all_negatives_behavior_rejected": true,
+      "checker_task_id": "v3_338_math_trig_envelope_detector",
+      "gold_meets_expectation": true,
+      "gold_status": "PASS",
+      "negative_behavior_rejected_count": 5,
+      "negative_count": 5,
+      "negative_statuses": {
+        "neg_001_drive_out_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_002_drive_metric_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_003_reset_polarity_wrong": "FAIL_SIM_CORRECTNESS",
+        "neg_004_logic_threshold_shifted": "FAIL_SIM_CORRECTNESS",
+        "neg_005_output_scale_low": "FAIL_SIM_CORRECTNESS"
+      },
+      "task": "338-math-trig-envelope-detector"
+    },
+    {
+      "all_negatives_behavior_rejected": true,
+      "checker_task_id": "v3_339_random_seeded_dither_source",
+      "gold_meets_expectation": true,
+      "gold_status": "PASS",
+      "negative_behavior_rejected_count": 5,
+      "negative_count": 5,
+      "negative_statuses": {
+        "neg_001_drive_out_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_002_drive_metric_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_003_reset_polarity_wrong": "FAIL_SIM_CORRECTNESS",
+        "neg_004_logic_threshold_shifted": "FAIL_SIM_CORRECTNESS",
+        "neg_005_output_scale_low": "FAIL_SIM_CORRECTNESS"
+      },
+      "task": "339-random-seeded-dither-source"
+    },
+    {
+      "all_negatives_behavior_rejected": true,
+      "checker_task_id": "v3_340_bound_step_clock_guard",
+      "gold_meets_expectation": true,
+      "gold_status": "PASS",
+      "negative_behavior_rejected_count": 5,
+      "negative_count": 5,
+      "negative_statuses": {
+        "neg_001_drive_out_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_002_drive_metric_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_003_reset_polarity_wrong": "FAIL_SIM_CORRECTNESS",
+        "neg_004_logic_threshold_shifted": "FAIL_SIM_CORRECTNESS",
+        "neg_005_output_scale_low": "FAIL_SIM_CORRECTNESS"
+      },
+      "task": "340-bound-step-clock-guard"
+    },
+    {
+      "all_negatives_behavior_rejected": true,
+      "checker_task_id": "v3_341_wreal_gain_pass_through",
+      "gold_meets_expectation": true,
+      "gold_status": "PASS",
+      "negative_behavior_rejected_count": 5,
+      "negative_count": 5,
+      "negative_statuses": {
+        "neg_001_force_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_002_invert_select": "FAIL_SIM_CORRECTNESS",
+        "neg_003_drop_reset": "FAIL_SIM_CORRECTNESS",
+        "neg_004_wrong_edge": "FAIL_SIM_CORRECTNESS",
+        "neg_005_scale_low": "FAIL_SIM_CORRECTNESS"
+      },
+      "task": "341-wreal-gain-pass-through"
+    },
+    {
+      "all_negatives_behavior_rejected": true,
+      "checker_task_id": "v3_342_wreal_two_input_summer",
+      "gold_meets_expectation": true,
+      "gold_status": "PASS",
+      "negative_behavior_rejected_count": 5,
+      "negative_count": 5,
+      "negative_statuses": {
+        "neg_001_force_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_002_invert_select": "FAIL_SIM_CORRECTNESS",
+        "neg_003_drop_reset": "FAIL_SIM_CORRECTNESS",
+        "neg_004_wrong_edge": "FAIL_SIM_CORRECTNESS",
+        "neg_005_scale_low": "FAIL_SIM_CORRECTNESS"
+      },
+      "task": "342-wreal-two-input-summer"
+    },
+    {
+      "all_negatives_behavior_rejected": true,
+      "checker_task_id": "v3_343_wreal_threshold_flag",
+      "gold_meets_expectation": true,
+      "gold_status": "PASS",
+      "negative_behavior_rejected_count": 5,
+      "negative_count": 5,
+      "negative_statuses": {
+        "neg_001_force_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_002_invert_select": "FAIL_SIM_CORRECTNESS",
+        "neg_003_drop_reset": "FAIL_SIM_CORRECTNESS",
+        "neg_004_wrong_edge": "FAIL_SIM_CORRECTNESS",
+        "neg_005_scale_low": "FAIL_SIM_CORRECTNESS"
+      },
+      "task": "343-wreal-threshold-flag"
+    },
+    {
+      "all_negatives_behavior_rejected": true,
+      "checker_task_id": "v3_344_wreal_clamped_mux",
+      "gold_meets_expectation": true,
+      "gold_status": "PASS",
+      "negative_behavior_rejected_count": 5,
+      "negative_count": 5,
+      "negative_statuses": {
+        "neg_001_force_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_002_invert_select": "FAIL_SIM_CORRECTNESS",
+        "neg_003_drop_reset": "FAIL_SIM_CORRECTNESS",
+        "neg_004_wrong_edge": "FAIL_SIM_CORRECTNESS",
+        "neg_005_scale_low": "FAIL_SIM_CORRECTNESS"
+      },
+      "task": "344-wreal-clamped-mux"
+    },
+    {
+      "all_negatives_behavior_rejected": true,
+      "checker_task_id": "v3_345_wreal_scale_offset",
+      "gold_meets_expectation": true,
+      "gold_status": "PASS",
+      "negative_behavior_rejected_count": 5,
+      "negative_count": 5,
+      "negative_statuses": {
+        "neg_001_force_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_002_invert_select": "FAIL_SIM_CORRECTNESS",
+        "neg_003_drop_reset": "FAIL_SIM_CORRECTNESS",
+        "neg_004_wrong_edge": "FAIL_SIM_CORRECTNESS",
+        "neg_005_scale_low": "FAIL_SIM_CORRECTNESS"
+      },
+      "task": "345-wreal-scale-offset"
+    },
+    {
+      "all_negatives_behavior_rejected": true,
+      "checker_task_id": "v3_346_logic_assign_inverter",
+      "gold_meets_expectation": true,
+      "gold_status": "PASS",
+      "negative_behavior_rejected_count": 5,
+      "negative_count": 5,
+      "negative_statuses": {
+        "neg_001_force_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_002_invert_select": "FAIL_SIM_CORRECTNESS",
+        "neg_003_drop_reset": "FAIL_SIM_CORRECTNESS",
+        "neg_004_wrong_edge": "FAIL_SIM_CORRECTNESS",
+        "neg_005_scale_low": "FAIL_SIM_CORRECTNESS"
+      },
+      "task": "346-logic-assign-inverter"
+    },
+    {
+      "all_negatives_behavior_rejected": true,
+      "checker_task_id": "v3_347_logic_assign_and_or",
+      "gold_meets_expectation": true,
+      "gold_status": "PASS",
+      "negative_behavior_rejected_count": 5,
+      "negative_count": 5,
+      "negative_statuses": {
+        "neg_001_force_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_002_invert_select": "FAIL_SIM_CORRECTNESS",
+        "neg_003_drop_reset": "FAIL_SIM_CORRECTNESS",
+        "neg_004_wrong_edge": "FAIL_SIM_CORRECTNESS",
+        "neg_005_scale_low": "FAIL_SIM_CORRECTNESS"
+      },
+      "task": "347-logic-assign-and-or"
+    },
+    {
+      "all_negatives_behavior_rejected": true,
+      "checker_task_id": "v3_348_logic_assign_xor_flag",
+      "gold_meets_expectation": true,
+      "gold_status": "PASS",
+      "negative_behavior_rejected_count": 5,
+      "negative_count": 5,
+      "negative_statuses": {
+        "neg_001_force_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_002_invert_select": "FAIL_SIM_CORRECTNESS",
+        "neg_003_drop_reset": "FAIL_SIM_CORRECTNESS",
+        "neg_004_wrong_edge": "FAIL_SIM_CORRECTNESS",
+        "neg_005_scale_low": "FAIL_SIM_CORRECTNESS"
+      },
+      "task": "348-logic-assign-xor-flag"
+    },
+    {
+      "all_negatives_behavior_rejected": true,
+      "checker_task_id": "v3_349_logic_assign_priority_mux",
+      "gold_meets_expectation": true,
+      "gold_status": "PASS",
+      "negative_behavior_rejected_count": 5,
+      "negative_count": 5,
+      "negative_statuses": {
+        "neg_001_force_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_002_invert_select": "FAIL_SIM_CORRECTNESS",
+        "neg_003_drop_reset": "FAIL_SIM_CORRECTNESS",
+        "neg_004_wrong_edge": "FAIL_SIM_CORRECTNESS",
+        "neg_005_scale_low": "FAIL_SIM_CORRECTNESS"
+      },
+      "task": "349-logic-assign-priority-mux"
+    },
+    {
+      "all_negatives_behavior_rejected": true,
+      "checker_task_id": "v3_350_logic_assign_reduction",
+      "gold_meets_expectation": true,
+      "gold_status": "PASS",
+      "negative_behavior_rejected_count": 5,
+      "negative_count": 5,
+      "negative_statuses": {
+        "neg_001_force_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_002_invert_select": "FAIL_SIM_CORRECTNESS",
+        "neg_003_drop_reset": "FAIL_SIM_CORRECTNESS",
+        "neg_004_wrong_edge": "FAIL_SIM_CORRECTNESS",
+        "neg_005_scale_low": "FAIL_SIM_CORRECTNESS"
+      },
+      "task": "350-logic-assign-reduction"
+    },
+    {
+      "all_negatives_behavior_rejected": true,
+      "checker_task_id": "v3_351_always_posedged_dff",
+      "gold_meets_expectation": true,
+      "gold_status": "PASS",
+      "negative_behavior_rejected_count": 5,
+      "negative_count": 5,
+      "negative_statuses": {
+        "neg_001_force_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_002_invert_select": "FAIL_SIM_CORRECTNESS",
+        "neg_003_drop_reset": "FAIL_SIM_CORRECTNESS",
+        "neg_004_wrong_edge": "FAIL_SIM_CORRECTNESS",
+        "neg_005_scale_low": "FAIL_SIM_CORRECTNESS"
+      },
+      "task": "351-always-posedged-dff"
+    },
+    {
+      "all_negatives_behavior_rejected": true,
+      "checker_task_id": "v3_352_always_negedge_sampler",
+      "gold_meets_expectation": true,
+      "gold_status": "PASS",
+      "negative_behavior_rejected_count": 5,
+      "negative_count": 5,
+      "negative_statuses": {
+        "neg_001_force_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_002_invert_select": "FAIL_SIM_CORRECTNESS",
+        "neg_003_drop_reset": "FAIL_SIM_CORRECTNESS",
+        "neg_004_wrong_edge": "FAIL_SIM_CORRECTNESS",
+        "neg_005_scale_low": "FAIL_SIM_CORRECTNESS"
+      },
+      "task": "352-always-negedge-sampler"
+    },
+    {
+      "all_negatives_behavior_rejected": true,
+      "checker_task_id": "v3_353_always_resettable_toggle",
+      "gold_meets_expectation": true,
+      "gold_status": "PASS",
+      "negative_behavior_rejected_count": 5,
+      "negative_count": 5,
+      "negative_statuses": {
+        "neg_001_force_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_002_invert_select": "FAIL_SIM_CORRECTNESS",
+        "neg_003_drop_reset": "FAIL_SIM_CORRECTNESS",
+        "neg_004_wrong_edge": "FAIL_SIM_CORRECTNESS",
+        "neg_005_scale_low": "FAIL_SIM_CORRECTNESS"
+      },
+      "task": "353-always-resettable-toggle"
+    },
+    {
+      "all_negatives_behavior_rejected": true,
+      "checker_task_id": "v3_354_always_counter_two_bit",
+      "gold_meets_expectation": true,
+      "gold_status": "PASS",
+      "negative_behavior_rejected_count": 5,
+      "negative_count": 5,
+      "negative_statuses": {
+        "neg_001_force_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_002_invert_select": "FAIL_SIM_CORRECTNESS",
+        "neg_003_drop_reset": "FAIL_SIM_CORRECTNESS",
+        "neg_004_wrong_edge": "FAIL_SIM_CORRECTNESS",
+        "neg_005_scale_low": "FAIL_SIM_CORRECTNESS"
+      },
+      "task": "354-always-counter-two-bit"
+    },
+    {
+      "all_negatives_behavior_rejected": true,
+      "checker_task_id": "v3_355_always_enable_hold",
+      "gold_meets_expectation": true,
+      "gold_status": "PASS",
+      "negative_behavior_rejected_count": 5,
+      "negative_count": 5,
+      "negative_statuses": {
+        "neg_001_force_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_002_invert_select": "FAIL_SIM_CORRECTNESS",
+        "neg_003_drop_reset": "FAIL_SIM_CORRECTNESS",
+        "neg_004_wrong_edge": "FAIL_SIM_CORRECTNESS",
+        "neg_005_scale_low": "FAIL_SIM_CORRECTNESS"
+      },
+      "task": "355-always-enable-hold"
+    },
+    {
+      "all_negatives_behavior_rejected": true,
+      "checker_task_id": "v3_356_mixed_logic_enable_voltage_driver",
+      "gold_meets_expectation": true,
+      "gold_status": "PASS",
+      "negative_behavior_rejected_count": 5,
+      "negative_count": 5,
+      "negative_statuses": {
+        "neg_001_force_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_002_invert_select": "FAIL_SIM_CORRECTNESS",
+        "neg_003_drop_reset": "FAIL_SIM_CORRECTNESS",
+        "neg_004_wrong_edge": "FAIL_SIM_CORRECTNESS",
+        "neg_005_scale_low": "FAIL_SIM_CORRECTNESS"
+      },
+      "task": "356-mixed-logic-enable-voltage-driver"
+    },
+    {
+      "all_negatives_behavior_rejected": true,
+      "checker_task_id": "v3_357_mixed_wreal_to_electrical_buffer",
+      "gold_meets_expectation": true,
+      "gold_status": "PASS",
+      "negative_behavior_rejected_count": 5,
+      "negative_count": 5,
+      "negative_statuses": {
+        "neg_001_force_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_002_invert_select": "FAIL_SIM_CORRECTNESS",
+        "neg_003_drop_reset": "FAIL_SIM_CORRECTNESS",
+        "neg_004_wrong_edge": "FAIL_SIM_CORRECTNESS",
+        "neg_005_scale_low": "FAIL_SIM_CORRECTNESS"
+      },
+      "task": "357-mixed-wreal-to-electrical-buffer"
+    },
+    {
+      "all_negatives_behavior_rejected": true,
+      "checker_task_id": "v3_358_mixed_electrical_threshold_logic_flag",
+      "gold_meets_expectation": true,
+      "gold_status": "PASS",
+      "negative_behavior_rejected_count": 5,
+      "negative_count": 5,
+      "negative_statuses": {
+        "neg_001_force_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_002_invert_select": "FAIL_SIM_CORRECTNESS",
+        "neg_003_drop_reset": "FAIL_SIM_CORRECTNESS",
+        "neg_004_wrong_edge": "FAIL_SIM_CORRECTNESS",
+        "neg_005_scale_low": "FAIL_SIM_CORRECTNESS"
+      },
+      "task": "358-mixed-electrical-threshold-logic-flag"
+    },
+    {
+      "all_negatives_behavior_rejected": true,
+      "checker_task_id": "v3_359_mixed_logic_clocked_voltage_sampler",
+      "gold_meets_expectation": true,
+      "gold_status": "PASS",
+      "negative_behavior_rejected_count": 5,
+      "negative_count": 5,
+      "negative_statuses": {
+        "neg_001_force_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_002_invert_select": "FAIL_SIM_CORRECTNESS",
+        "neg_003_drop_reset": "FAIL_SIM_CORRECTNESS",
+        "neg_004_wrong_edge": "FAIL_SIM_CORRECTNESS",
+        "neg_005_scale_low": "FAIL_SIM_CORRECTNESS"
+      },
+      "task": "359-mixed-logic-clocked-voltage-sampler"
+    },
+    {
+      "all_negatives_behavior_rejected": true,
+      "checker_task_id": "v3_360_mixed_wreal_logic_select_driver",
+      "gold_meets_expectation": true,
+      "gold_status": "PASS",
+      "negative_behavior_rejected_count": 5,
+      "negative_count": 5,
+      "negative_statuses": {
+        "neg_001_force_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_002_invert_select": "FAIL_SIM_CORRECTNESS",
+        "neg_003_drop_reset": "FAIL_SIM_CORRECTNESS",
+        "neg_004_wrong_edge": "FAIL_SIM_CORRECTNESS",
+        "neg_005_scale_low": "FAIL_SIM_CORRECTNESS"
+      },
+      "task": "360-mixed-wreal-logic-select-driver"
+    },
+    {
+      "all_negatives_behavior_rejected": true,
+      "checker_task_id": "v3_361_white_noise_voltage_source",
+      "gold_meets_expectation": true,
+      "gold_status": "PASS",
+      "negative_behavior_rejected_count": 5,
+      "negative_count": 5,
+      "negative_statuses": {
+        "neg_001_zero_noise": "FAIL_SIM_CORRECTNESS",
+        "neg_002_wrong_label": "FAIL_SIM_CORRECTNESS",
+        "neg_003_disable_analysis": "FAIL_SIM_CORRECTNESS",
+        "neg_004_wrong_metric": "FAIL_SIM_CORRECTNESS",
+        "neg_005_scale_output": "FAIL_SIM_CORRECTNESS"
+      },
+      "task": "361-white-noise-voltage-source"
+    },
+    {
+      "all_negatives_behavior_rejected": true,
+      "checker_task_id": "v3_362_white_noise_gated_source",
+      "gold_meets_expectation": true,
+      "gold_status": "PASS",
+      "negative_behavior_rejected_count": 5,
+      "negative_count": 5,
+      "negative_statuses": {
+        "neg_001_zero_noise": "FAIL_SIM_CORRECTNESS",
+        "neg_002_wrong_label": "FAIL_SIM_CORRECTNESS",
+        "neg_003_disable_analysis": "FAIL_SIM_CORRECTNESS",
+        "neg_004_wrong_metric": "FAIL_SIM_CORRECTNESS",
+        "neg_005_scale_output": "FAIL_SIM_CORRECTNESS"
+      },
+      "task": "362-white-noise-gated-source"
+    },
+    {
+      "all_negatives_behavior_rejected": true,
+      "checker_task_id": "v3_363_flicker_noise_voltage_source",
+      "gold_meets_expectation": true,
+      "gold_status": "PASS",
+      "negative_behavior_rejected_count": 5,
+      "negative_count": 5,
+      "negative_statuses": {
+        "neg_001_zero_noise": "FAIL_SIM_CORRECTNESS",
+        "neg_002_wrong_label": "FAIL_SIM_CORRECTNESS",
+        "neg_003_disable_analysis": "FAIL_SIM_CORRECTNESS",
+        "neg_004_wrong_metric": "FAIL_SIM_CORRECTNESS",
+        "neg_005_scale_output": "FAIL_SIM_CORRECTNESS"
+      },
+      "task": "363-flicker-noise-voltage-source"
+    },
+    {
+      "all_negatives_behavior_rejected": true,
+      "checker_task_id": "v3_364_flicker_noise_corner_selector",
+      "gold_meets_expectation": true,
+      "gold_status": "PASS",
+      "negative_behavior_rejected_count": 5,
+      "negative_count": 5,
+      "negative_statuses": {
+        "neg_001_zero_noise": "FAIL_SIM_CORRECTNESS",
+        "neg_002_wrong_label": "FAIL_SIM_CORRECTNESS",
+        "neg_003_disable_analysis": "FAIL_SIM_CORRECTNESS",
+        "neg_004_wrong_metric": "FAIL_SIM_CORRECTNESS",
+        "neg_005_scale_output": "FAIL_SIM_CORRECTNESS"
+      },
+      "task": "364-flicker-noise-corner-selector"
+    },
+    {
+      "all_negatives_behavior_rejected": true,
+      "checker_task_id": "v3_365_noise_table_voltage_shaper",
+      "gold_meets_expectation": true,
+      "gold_status": "PASS",
+      "negative_behavior_rejected_count": 5,
+      "negative_count": 5,
+      "negative_statuses": {
+        "neg_001_zero_noise": "FAIL_SIM_CORRECTNESS",
+        "neg_002_wrong_label": "FAIL_SIM_CORRECTNESS",
+        "neg_003_disable_analysis": "FAIL_SIM_CORRECTNESS",
+        "neg_004_wrong_metric": "FAIL_SIM_CORRECTNESS",
+        "neg_005_scale_output": "FAIL_SIM_CORRECTNESS"
+      },
+      "task": "365-noise-table-voltage-shaper"
+    },
+    {
+      "all_negatives_behavior_rejected": true,
+      "checker_task_id": "v3_366_noise_table_gated_shaper",
+      "gold_meets_expectation": true,
+      "gold_status": "PASS",
+      "negative_behavior_rejected_count": 5,
+      "negative_count": 5,
+      "negative_statuses": {
+        "neg_001_zero_noise": "FAIL_SIM_CORRECTNESS",
+        "neg_002_wrong_label": "FAIL_SIM_CORRECTNESS",
+        "neg_003_disable_analysis": "FAIL_SIM_CORRECTNESS",
+        "neg_004_wrong_metric": "FAIL_SIM_CORRECTNESS",
+        "neg_005_scale_output": "FAIL_SIM_CORRECTNESS"
+      },
+      "task": "366-noise-table-gated-shaper"
+    },
+    {
+      "all_negatives_behavior_rejected": true,
+      "checker_task_id": "v3_367_analysis_dependent_dc_tran_mode",
+      "gold_meets_expectation": true,
+      "gold_status": "PASS",
+      "negative_behavior_rejected_count": 5,
+      "negative_count": 5,
+      "negative_statuses": {
+        "neg_001_zero_noise": "FAIL_SIM_CORRECTNESS",
+        "neg_002_wrong_label": "FAIL_SIM_CORRECTNESS",
+        "neg_003_disable_analysis": "FAIL_SIM_CORRECTNESS",
+        "neg_004_wrong_metric": "FAIL_SIM_CORRECTNESS",
+        "neg_005_scale_output": "FAIL_SIM_CORRECTNESS"
+      },
+      "task": "367-analysis-dependent-dc-tran-mode"
+    },
+    {
+      "all_negatives_behavior_rejected": true,
+      "checker_task_id": "v3_368_analysis_dependent_noise_enable",
+      "gold_meets_expectation": true,
+      "gold_status": "PASS",
+      "negative_behavior_rejected_count": 5,
+      "negative_count": 5,
+      "negative_statuses": {
+        "neg_001_zero_noise": "FAIL_SIM_CORRECTNESS",
+        "neg_002_wrong_label": "FAIL_SIM_CORRECTNESS",
+        "neg_003_disable_analysis": "FAIL_SIM_CORRECTNESS",
+        "neg_004_wrong_metric": "FAIL_SIM_CORRECTNESS",
+        "neg_005_scale_output": "FAIL_SIM_CORRECTNESS"
+      },
+      "task": "368-analysis-dependent-noise-enable"
+    },
+    {
+      "all_negatives_behavior_rejected": true,
+      "checker_task_id": "v3_369_ac_stim_small_signal_source",
+      "gold_meets_expectation": true,
+      "gold_status": "PASS",
+      "negative_behavior_rejected_count": 5,
+      "negative_count": 5,
+      "negative_statuses": {
+        "neg_001_zero_noise": "FAIL_SIM_CORRECTNESS",
+        "neg_002_wrong_label": "FAIL_SIM_CORRECTNESS",
+        "neg_003_disable_analysis": "FAIL_SIM_CORRECTNESS",
+        "neg_004_wrong_metric": "FAIL_SIM_CORRECTNESS",
+        "neg_005_scale_output": "FAIL_SIM_CORRECTNESS"
+      },
+      "task": "369-ac-stim-small-signal-source"
+    },
+    {
+      "all_negatives_behavior_rejected": true,
+      "checker_task_id": "v3_370_ac_stim_phase_selector",
+      "gold_meets_expectation": true,
+      "gold_status": "PASS",
+      "negative_behavior_rejected_count": 5,
+      "negative_count": 5,
+      "negative_statuses": {
+        "neg_001_zero_noise": "FAIL_SIM_CORRECTNESS",
+        "neg_002_wrong_label": "FAIL_SIM_CORRECTNESS",
+        "neg_003_disable_analysis": "FAIL_SIM_CORRECTNESS",
+        "neg_004_wrong_metric": "FAIL_SIM_CORRECTNESS",
+        "neg_005_scale_output": "FAIL_SIM_CORRECTNESS"
+      },
+      "task": "370-ac-stim-phase-selector"
+    },
+    {
+      "all_negatives_behavior_rejected": true,
+      "checker_task_id": "v3_371_combined_white_flicker_noise",
+      "gold_meets_expectation": true,
+      "gold_status": "PASS",
+      "negative_behavior_rejected_count": 5,
+      "negative_count": 5,
+      "negative_statuses": {
+        "neg_001_zero_noise": "FAIL_SIM_CORRECTNESS",
+        "neg_002_wrong_label": "FAIL_SIM_CORRECTNESS",
+        "neg_003_disable_analysis": "FAIL_SIM_CORRECTNESS",
+        "neg_004_wrong_metric": "FAIL_SIM_CORRECTNESS",
+        "neg_005_scale_output": "FAIL_SIM_CORRECTNESS"
+      },
+      "task": "371-combined-white-flicker-noise"
+    },
+    {
+      "all_negatives_behavior_rejected": true,
+      "checker_task_id": "v3_372_analysis_aware_noise_metric",
+      "gold_meets_expectation": true,
+      "gold_status": "PASS",
+      "negative_behavior_rejected_count": 5,
+      "negative_count": 5,
+      "negative_statuses": {
+        "neg_001_zero_noise": "FAIL_SIM_CORRECTNESS",
+        "neg_002_wrong_label": "FAIL_SIM_CORRECTNESS",
+        "neg_003_disable_analysis": "FAIL_SIM_CORRECTNESS",
+        "neg_004_wrong_metric": "FAIL_SIM_CORRECTNESS",
+        "neg_005_scale_output": "FAIL_SIM_CORRECTNESS"
+      },
+      "task": "372-analysis-aware-noise-metric"
+    },
+    {
+      "all_negatives_behavior_rejected": true,
+      "checker_task_id": "v3_373_task_output_limiter",
+      "gold_meets_expectation": true,
+      "gold_status": "PASS",
+      "negative_behavior_rejected_count": 5,
+      "negative_count": 5,
+      "negative_statuses": {
+        "neg_001_force_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_002_wrong_threshold": "FAIL_SIM_CORRECTNESS",
+        "neg_003_reset_bias": "FAIL_SIM_CORRECTNESS",
+        "neg_004_metric_offset": "FAIL_SIM_CORRECTNESS",
+        "neg_005_scale_output": "FAIL_SIM_CORRECTNESS"
+      },
+      "task": "373-task-output-limiter"
+    },
+    {
+      "all_negatives_behavior_rejected": true,
+      "checker_task_id": "v3_374_task_dual_output_update",
+      "gold_meets_expectation": true,
+      "gold_status": "PASS",
+      "negative_behavior_rejected_count": 5,
+      "negative_count": 5,
+      "negative_statuses": {
+        "neg_001_force_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_002_wrong_threshold": "FAIL_SIM_CORRECTNESS",
+        "neg_003_reset_bias": "FAIL_SIM_CORRECTNESS",
+        "neg_004_metric_offset": "FAIL_SIM_CORRECTNESS",
+        "neg_005_scale_output": "FAIL_SIM_CORRECTNESS"
+      },
+      "task": "374-task-dual-output-update"
+    },
+    {
+      "all_negatives_behavior_rejected": true,
+      "checker_task_id": "v3_375_task_event_counter_service",
+      "gold_meets_expectation": true,
+      "gold_status": "PASS",
+      "negative_behavior_rejected_count": 5,
+      "negative_count": 5,
+      "negative_statuses": {
+        "neg_001_force_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_002_wrong_threshold": "FAIL_SIM_CORRECTNESS",
+        "neg_003_reset_bias": "FAIL_SIM_CORRECTNESS",
+        "neg_004_metric_offset": "FAIL_SIM_CORRECTNESS",
+        "neg_005_scale_output": "FAIL_SIM_CORRECTNESS"
+      },
+      "task": "375-task-event-counter-service"
+    },
+    {
+      "all_negatives_behavior_rejected": true,
+      "checker_task_id": "v3_376_task_reset_sequencer",
+      "gold_meets_expectation": true,
+      "gold_status": "PASS",
+      "negative_behavior_rejected_count": 5,
+      "negative_count": 5,
+      "negative_statuses": {
+        "neg_001_force_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_002_wrong_threshold": "FAIL_SIM_CORRECTNESS",
+        "neg_003_reset_bias": "FAIL_SIM_CORRECTNESS",
+        "neg_004_metric_offset": "FAIL_SIM_CORRECTNESS",
+        "neg_005_scale_output": "FAIL_SIM_CORRECTNESS"
+      },
+      "task": "376-task-reset-sequencer"
+    },
+    {
+      "all_negatives_behavior_rejected": true,
+      "checker_task_id": "v3_377_task_stateful_threshold_update",
+      "gold_meets_expectation": true,
+      "gold_status": "PASS",
+      "negative_behavior_rejected_count": 5,
+      "negative_count": 5,
+      "negative_statuses": {
+        "neg_001_force_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_002_wrong_threshold": "FAIL_SIM_CORRECTNESS",
+        "neg_003_reset_bias": "FAIL_SIM_CORRECTNESS",
+        "neg_004_metric_offset": "FAIL_SIM_CORRECTNESS",
+        "neg_005_scale_output": "FAIL_SIM_CORRECTNESS"
+      },
+      "task": "377-task-stateful-threshold-update"
+    },
+    {
+      "all_negatives_behavior_rejected": true,
+      "checker_task_id": "v3_378_task_metric_normalizer",
+      "gold_meets_expectation": true,
+      "gold_status": "PASS",
+      "negative_behavior_rejected_count": 5,
+      "negative_count": 5,
+      "negative_statuses": {
+        "neg_001_force_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_002_wrong_threshold": "FAIL_SIM_CORRECTNESS",
+        "neg_003_reset_bias": "FAIL_SIM_CORRECTNESS",
+        "neg_004_metric_offset": "FAIL_SIM_CORRECTNESS",
+        "neg_005_scale_output": "FAIL_SIM_CORRECTNESS"
+      },
+      "task": "378-task-metric-normalizer"
+    },
+    {
+      "all_negatives_behavior_rejected": true,
+      "checker_task_id": "v3_379_file_fgets_config_loader",
+      "gold_meets_expectation": true,
+      "gold_status": "PASS",
+      "negative_behavior_rejected_count": 5,
+      "negative_count": 5,
+      "negative_statuses": {
+        "neg_001_force_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_002_wrong_threshold": "FAIL_SIM_CORRECTNESS",
+        "neg_003_reset_bias": "FAIL_SIM_CORRECTNESS",
+        "neg_004_metric_offset": "FAIL_SIM_CORRECTNESS",
+        "neg_005_scale_output": "FAIL_SIM_CORRECTNESS"
+      },
+      "task": "379-file-fgets-config-loader"
+    },
+    {
+      "all_negatives_behavior_rejected": true,
+      "checker_task_id": "v3_380_file_feof_line_counter",
+      "gold_meets_expectation": true,
+      "gold_status": "PASS",
+      "negative_behavior_rejected_count": 5,
+      "negative_count": 5,
+      "negative_statuses": {
+        "neg_001_force_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_002_wrong_threshold": "FAIL_SIM_CORRECTNESS",
+        "neg_003_reset_bias": "FAIL_SIM_CORRECTNESS",
+        "neg_004_metric_offset": "FAIL_SIM_CORRECTNESS",
+        "neg_005_scale_output": "FAIL_SIM_CORRECTNESS"
+      },
+      "task": "380-file-feof-line-counter"
+    },
+    {
+      "all_negatives_behavior_rejected": true,
+      "checker_task_id": "v3_381_file_fseek_offset_reader",
+      "gold_meets_expectation": true,
+      "gold_status": "PASS",
+      "negative_behavior_rejected_count": 5,
+      "negative_count": 5,
+      "negative_statuses": {
+        "neg_001_force_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_002_wrong_threshold": "FAIL_SIM_CORRECTNESS",
+        "neg_003_reset_bias": "FAIL_SIM_CORRECTNESS",
+        "neg_004_metric_offset": "FAIL_SIM_CORRECTNESS",
+        "neg_005_scale_output": "FAIL_SIM_CORRECTNESS"
+      },
+      "task": "381-file-fseek-offset-reader"
+    },
+    {
+      "all_negatives_behavior_rejected": true,
+      "checker_task_id": "v3_382_file_ftell_position_meter",
+      "gold_meets_expectation": true,
+      "gold_status": "PASS",
+      "negative_behavior_rejected_count": 5,
+      "negative_count": 5,
+      "negative_statuses": {
+        "neg_001_force_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_002_wrong_threshold": "FAIL_SIM_CORRECTNESS",
+        "neg_003_reset_bias": "FAIL_SIM_CORRECTNESS",
+        "neg_004_metric_offset": "FAIL_SIM_CORRECTNESS",
+        "neg_005_scale_output": "FAIL_SIM_CORRECTNESS"
+      },
+      "task": "382-file-ftell-position-meter"
+    },
+    {
+      "all_negatives_behavior_rejected": true,
+      "checker_task_id": "v3_383_file_rewind_second_pass",
+      "gold_meets_expectation": true,
+      "gold_status": "PASS",
+      "negative_behavior_rejected_count": 5,
+      "negative_count": 5,
+      "negative_statuses": {
+        "neg_001_force_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_002_wrong_threshold": "FAIL_SIM_CORRECTNESS",
+        "neg_003_reset_bias": "FAIL_SIM_CORRECTNESS",
+        "neg_004_metric_offset": "FAIL_SIM_CORRECTNESS",
+        "neg_005_scale_output": "FAIL_SIM_CORRECTNESS"
+      },
+      "task": "383-file-rewind-second-pass"
+    },
+    {
+      "all_negatives_behavior_rejected": true,
+      "checker_task_id": "v3_384_file_fopen_mode_selector",
+      "gold_meets_expectation": true,
+      "gold_status": "PASS",
+      "negative_behavior_rejected_count": 5,
+      "negative_count": 5,
+      "negative_statuses": {
+        "neg_001_force_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_002_wrong_threshold": "FAIL_SIM_CORRECTNESS",
+        "neg_003_reset_bias": "FAIL_SIM_CORRECTNESS",
+        "neg_004_metric_offset": "FAIL_SIM_CORRECTNESS",
+        "neg_005_scale_output": "FAIL_SIM_CORRECTNESS"
+      },
+      "task": "384-file-fopen-mode-selector"
+    },
+    {
+      "all_negatives_behavior_rejected": true,
+      "checker_task_id": "v3_385_table_model_linear_gain",
+      "gold_meets_expectation": true,
+      "gold_status": "PASS",
+      "negative_behavior_rejected_count": 5,
+      "negative_count": 5,
+      "negative_statuses": {
+        "neg_001_force_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_002_wrong_threshold": "FAIL_SIM_CORRECTNESS",
+        "neg_003_reset_bias": "FAIL_SIM_CORRECTNESS",
+        "neg_004_metric_offset": "FAIL_SIM_CORRECTNESS",
+        "neg_005_scale_output": "FAIL_SIM_CORRECTNESS"
+      },
+      "task": "385-table-model-linear-gain"
+    },
+    {
+      "all_negatives_behavior_rejected": true,
+      "checker_task_id": "v3_386_table_model_clamped_transfer",
+      "gold_meets_expectation": true,
+      "gold_status": "PASS",
+      "negative_behavior_rejected_count": 5,
+      "negative_count": 5,
+      "negative_statuses": {
+        "neg_001_force_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_002_wrong_threshold": "FAIL_SIM_CORRECTNESS",
+        "neg_003_reset_bias": "FAIL_SIM_CORRECTNESS",
+        "neg_004_metric_offset": "FAIL_SIM_CORRECTNESS",
+        "neg_005_scale_output": "FAIL_SIM_CORRECTNESS"
+      },
+      "task": "386-table-model-clamped-transfer"
+    },
+    {
+      "all_negatives_behavior_rejected": true,
+      "checker_task_id": "v3_387_table_model_threshold_map",
+      "gold_meets_expectation": true,
+      "gold_status": "PASS",
+      "negative_behavior_rejected_count": 5,
+      "negative_count": 5,
+      "negative_statuses": {
+        "neg_001_force_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_002_wrong_threshold": "FAIL_SIM_CORRECTNESS",
+        "neg_003_reset_bias": "FAIL_SIM_CORRECTNESS",
+        "neg_004_metric_offset": "FAIL_SIM_CORRECTNESS",
+        "neg_005_scale_output": "FAIL_SIM_CORRECTNESS"
+      },
+      "task": "387-table-model-threshold-map"
+    },
+    {
+      "all_negatives_behavior_rejected": true,
+      "checker_task_id": "v3_388_table_model_dac_code_map",
+      "gold_meets_expectation": true,
+      "gold_status": "PASS",
+      "negative_behavior_rejected_count": 5,
+      "negative_count": 5,
+      "negative_statuses": {
+        "neg_001_force_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_002_wrong_threshold": "FAIL_SIM_CORRECTNESS",
+        "neg_003_reset_bias": "FAIL_SIM_CORRECTNESS",
+        "neg_004_metric_offset": "FAIL_SIM_CORRECTNESS",
+        "neg_005_scale_output": "FAIL_SIM_CORRECTNESS"
+      },
+      "task": "388-table-model-dac-code-map"
+    },
+    {
+      "all_negatives_behavior_rejected": true,
+      "checker_task_id": "v3_389_table_model_temperature_profile",
+      "gold_meets_expectation": true,
+      "gold_status": "PASS",
+      "negative_behavior_rejected_count": 5,
+      "negative_count": 5,
+      "negative_statuses": {
+        "neg_001_force_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_002_wrong_threshold": "FAIL_SIM_CORRECTNESS",
+        "neg_003_reset_bias": "FAIL_SIM_CORRECTNESS",
+        "neg_004_metric_offset": "FAIL_SIM_CORRECTNESS",
+        "neg_005_scale_output": "FAIL_SIM_CORRECTNESS"
+      },
+      "task": "389-table-model-temperature-profile"
+    },
+    {
+      "all_negatives_behavior_rejected": true,
+      "checker_task_id": "v3_390_table_model_piecewise_calibrator",
+      "gold_meets_expectation": true,
+      "gold_status": "PASS",
+      "negative_behavior_rejected_count": 5,
+      "negative_count": 5,
+      "negative_statuses": {
+        "neg_001_force_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_002_wrong_threshold": "FAIL_SIM_CORRECTNESS",
+        "neg_003_reset_bias": "FAIL_SIM_CORRECTNESS",
+        "neg_004_metric_offset": "FAIL_SIM_CORRECTNESS",
+        "neg_005_scale_output": "FAIL_SIM_CORRECTNESS"
+      },
+      "task": "390-table-model-piecewise-calibrator"
+    },
+    {
+      "all_negatives_behavior_rejected": true,
+      "checker_task_id": "v3_391_rdist_exponential_jitter",
+      "gold_meets_expectation": true,
+      "gold_status": "PASS",
+      "negative_behavior_rejected_count": 5,
+      "negative_count": 5,
+      "negative_statuses": {
+        "neg_001_force_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_002_wrong_threshold": "FAIL_SIM_CORRECTNESS",
+        "neg_003_reset_bias": "FAIL_SIM_CORRECTNESS",
+        "neg_004_metric_offset": "FAIL_SIM_CORRECTNESS",
+        "neg_005_scale_output": "FAIL_SIM_CORRECTNESS"
+      },
+      "task": "391-rdist-exponential-jitter"
+    },
+    {
+      "all_negatives_behavior_rejected": true,
+      "checker_task_id": "v3_392_rdist_poisson_count_noise",
+      "gold_meets_expectation": true,
+      "gold_status": "PASS",
+      "negative_behavior_rejected_count": 5,
+      "negative_count": 5,
+      "negative_statuses": {
+        "neg_001_force_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_002_wrong_threshold": "FAIL_SIM_CORRECTNESS",
+        "neg_003_reset_bias": "FAIL_SIM_CORRECTNESS",
+        "neg_004_metric_offset": "FAIL_SIM_CORRECTNESS",
+        "neg_005_scale_output": "FAIL_SIM_CORRECTNESS"
+      },
+      "task": "392-rdist-poisson-count-noise"
+    },
+    {
+      "all_negatives_behavior_rejected": true,
+      "checker_task_id": "v3_393_rdist_normal_offset_dither",
+      "gold_meets_expectation": true,
+      "gold_status": "PASS",
+      "negative_behavior_rejected_count": 5,
+      "negative_count": 5,
+      "negative_statuses": {
+        "neg_001_force_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_002_wrong_threshold": "FAIL_SIM_CORRECTNESS",
+        "neg_003_reset_bias": "FAIL_SIM_CORRECTNESS",
+        "neg_004_metric_offset": "FAIL_SIM_CORRECTNESS",
+        "neg_005_scale_output": "FAIL_SIM_CORRECTNESS"
+      },
+      "task": "393-rdist-normal-offset-dither"
+    },
+    {
+      "all_negatives_behavior_rejected": true,
+      "checker_task_id": "v3_394_rdist_chi_square_energy",
+      "gold_meets_expectation": true,
+      "gold_status": "PASS",
+      "negative_behavior_rejected_count": 5,
+      "negative_count": 5,
+      "negative_statuses": {
+        "neg_001_force_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_002_wrong_threshold": "FAIL_SIM_CORRECTNESS",
+        "neg_003_reset_bias": "FAIL_SIM_CORRECTNESS",
+        "neg_004_metric_offset": "FAIL_SIM_CORRECTNESS",
+        "neg_005_scale_output": "FAIL_SIM_CORRECTNESS"
+      },
+      "task": "394-rdist-chi-square-energy"
+    },
+    {
+      "all_negatives_behavior_rejected": true,
+      "checker_task_id": "v3_395_rdist_t_tail_dither",
+      "gold_meets_expectation": true,
+      "gold_status": "PASS",
+      "negative_behavior_rejected_count": 5,
+      "negative_count": 5,
+      "negative_statuses": {
+        "neg_001_force_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_002_wrong_threshold": "FAIL_SIM_CORRECTNESS",
+        "neg_003_reset_bias": "FAIL_SIM_CORRECTNESS",
+        "neg_004_metric_offset": "FAIL_SIM_CORRECTNESS",
+        "neg_005_scale_output": "FAIL_SIM_CORRECTNESS"
+      },
+      "task": "395-rdist-t-tail-dither"
+    },
+    {
+      "all_negatives_behavior_rejected": true,
+      "checker_task_id": "v3_396_rdist_erlang_latency",
+      "gold_meets_expectation": true,
+      "gold_status": "PASS",
+      "negative_behavior_rejected_count": 5,
+      "negative_count": 5,
+      "negative_statuses": {
+        "neg_001_force_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_002_wrong_threshold": "FAIL_SIM_CORRECTNESS",
+        "neg_003_reset_bias": "FAIL_SIM_CORRECTNESS",
+        "neg_004_metric_offset": "FAIL_SIM_CORRECTNESS",
+        "neg_005_scale_output": "FAIL_SIM_CORRECTNESS"
+      },
+      "task": "396-rdist-erlang-latency"
+    },
+    {
+      "all_negatives_behavior_rejected": true,
+      "checker_task_id": "v3_397_hierarchy_gain_child",
+      "gold_meets_expectation": true,
+      "gold_status": "PASS",
+      "negative_behavior_rejected_count": 5,
+      "negative_count": 5,
+      "negative_statuses": {
+        "neg_001_force_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_002_wrong_threshold": "FAIL_SIM_CORRECTNESS",
+        "neg_003_reset_bias": "FAIL_SIM_CORRECTNESS",
+        "neg_004_metric_offset": "FAIL_SIM_CORRECTNESS",
+        "neg_005_scale_output": "FAIL_SIM_CORRECTNESS"
+      },
+      "task": "397-hierarchy-gain-child"
+    },
+    {
+      "all_negatives_behavior_rejected": true,
+      "checker_task_id": "v3_398_hierarchy_two_stage_chain",
+      "gold_meets_expectation": true,
+      "gold_status": "PASS",
+      "negative_behavior_rejected_count": 5,
+      "negative_count": 5,
+      "negative_statuses": {
+        "neg_001_force_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_002_wrong_threshold": "FAIL_SIM_CORRECTNESS",
+        "neg_003_reset_bias": "FAIL_SIM_CORRECTNESS",
+        "neg_004_metric_offset": "FAIL_SIM_CORRECTNESS",
+        "neg_005_scale_output": "FAIL_SIM_CORRECTNESS"
+      },
+      "task": "398-hierarchy-two-stage-chain"
+    },
+    {
+      "all_negatives_behavior_rejected": true,
+      "checker_task_id": "v3_399_hierarchy_parameter_override",
+      "gold_meets_expectation": true,
+      "gold_status": "PASS",
+      "negative_behavior_rejected_count": 5,
+      "negative_count": 5,
+      "negative_statuses": {
+        "neg_001_force_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_002_wrong_threshold": "FAIL_SIM_CORRECTNESS",
+        "neg_003_reset_bias": "FAIL_SIM_CORRECTNESS",
+        "neg_004_metric_offset": "FAIL_SIM_CORRECTNESS",
+        "neg_005_scale_output": "FAIL_SIM_CORRECTNESS"
+      },
+      "task": "399-hierarchy-parameter-override"
+    },
+    {
+      "all_negatives_behavior_rejected": true,
+      "checker_task_id": "v3_400_hierarchy_named_port_map",
+      "gold_meets_expectation": true,
+      "gold_status": "PASS",
+      "negative_behavior_rejected_count": 5,
+      "negative_count": 5,
+      "negative_statuses": {
+        "neg_001_force_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_002_wrong_threshold": "FAIL_SIM_CORRECTNESS",
+        "neg_003_reset_bias": "FAIL_SIM_CORRECTNESS",
+        "neg_004_metric_offset": "FAIL_SIM_CORRECTNESS",
+        "neg_005_scale_output": "FAIL_SIM_CORRECTNESS"
+      },
+      "task": "400-hierarchy-named-port-map"
+    },
+    {
+      "all_negatives_behavior_rejected": true,
+      "checker_task_id": "v3_401_hierarchy_ordered_port_map",
+      "gold_meets_expectation": true,
+      "gold_status": "PASS",
+      "negative_behavior_rejected_count": 5,
+      "negative_count": 5,
+      "negative_statuses": {
+        "neg_001_force_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_002_wrong_threshold": "FAIL_SIM_CORRECTNESS",
+        "neg_003_reset_bias": "FAIL_SIM_CORRECTNESS",
+        "neg_004_metric_offset": "FAIL_SIM_CORRECTNESS",
+        "neg_005_scale_output": "FAIL_SIM_CORRECTNESS"
+      },
+      "task": "401-hierarchy-ordered-port-map"
+    },
+    {
+      "all_negatives_behavior_rejected": true,
+      "checker_task_id": "v3_402_hierarchy_shared_threshold_child",
+      "gold_meets_expectation": true,
+      "gold_status": "PASS",
+      "negative_behavior_rejected_count": 5,
+      "negative_count": 5,
+      "negative_statuses": {
+        "neg_001_force_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_002_wrong_threshold": "FAIL_SIM_CORRECTNESS",
+        "neg_003_reset_bias": "FAIL_SIM_CORRECTNESS",
+        "neg_004_metric_offset": "FAIL_SIM_CORRECTNESS",
+        "neg_005_scale_output": "FAIL_SIM_CORRECTNESS"
+      },
+      "task": "402-hierarchy-shared-threshold-child"
+    },
+    {
+      "all_negatives_behavior_rejected": true,
+      "checker_task_id": "v3_403_vector_bit_select_flag",
+      "gold_meets_expectation": true,
+      "gold_status": "PASS",
+      "negative_behavior_rejected_count": 5,
+      "negative_count": 5,
+      "negative_statuses": {
+        "neg_001_force_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_002_wrong_threshold": "FAIL_SIM_CORRECTNESS",
+        "neg_003_reset_bias": "FAIL_SIM_CORRECTNESS",
+        "neg_004_metric_offset": "FAIL_SIM_CORRECTNESS",
+        "neg_005_scale_output": "FAIL_SIM_CORRECTNESS"
+      },
+      "task": "403-vector-bit-select-flag"
+    },
+    {
+      "all_negatives_behavior_rejected": true,
+      "checker_task_id": "v3_404_vector_part_select_window",
+      "gold_meets_expectation": true,
+      "gold_status": "PASS",
+      "negative_behavior_rejected_count": 5,
+      "negative_count": 5,
+      "negative_statuses": {
+        "neg_001_force_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_002_wrong_threshold": "FAIL_SIM_CORRECTNESS",
+        "neg_003_reset_bias": "FAIL_SIM_CORRECTNESS",
+        "neg_004_metric_offset": "FAIL_SIM_CORRECTNESS",
+        "neg_005_scale_output": "FAIL_SIM_CORRECTNESS"
+      },
+      "task": "404-vector-part-select-window"
+    },
+    {
+      "all_negatives_behavior_rejected": true,
+      "checker_task_id": "v3_405_vector_concat_code_build",
+      "gold_meets_expectation": true,
+      "gold_status": "PASS",
+      "negative_behavior_rejected_count": 5,
+      "negative_count": 5,
+      "negative_statuses": {
+        "neg_001_force_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_002_wrong_threshold": "FAIL_SIM_CORRECTNESS",
+        "neg_003_reset_bias": "FAIL_SIM_CORRECTNESS",
+        "neg_004_metric_offset": "FAIL_SIM_CORRECTNESS",
+        "neg_005_scale_output": "FAIL_SIM_CORRECTNESS"
+      },
+      "task": "405-vector-concat-code-build"
+    },
+    {
+      "all_negatives_behavior_rejected": true,
+      "checker_task_id": "v3_406_vector_replication_mask",
+      "gold_meets_expectation": true,
+      "gold_status": "PASS",
+      "negative_behavior_rejected_count": 5,
+      "negative_count": 5,
+      "negative_statuses": {
+        "neg_001_force_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_002_wrong_threshold": "FAIL_SIM_CORRECTNESS",
+        "neg_003_reset_bias": "FAIL_SIM_CORRECTNESS",
+        "neg_004_metric_offset": "FAIL_SIM_CORRECTNESS",
+        "neg_005_scale_output": "FAIL_SIM_CORRECTNESS"
+      },
+      "task": "406-vector-replication-mask"
+    },
+    {
+      "all_negatives_behavior_rejected": true,
+      "checker_task_id": "v3_407_vector_reduction_parity",
+      "gold_meets_expectation": true,
+      "gold_status": "PASS",
+      "negative_behavior_rejected_count": 5,
+      "negative_count": 5,
+      "negative_statuses": {
+        "neg_001_force_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_002_wrong_threshold": "FAIL_SIM_CORRECTNESS",
+        "neg_003_reset_bias": "FAIL_SIM_CORRECTNESS",
+        "neg_004_metric_offset": "FAIL_SIM_CORRECTNESS",
+        "neg_005_scale_output": "FAIL_SIM_CORRECTNESS"
+      },
+      "task": "407-vector-reduction-parity"
+    },
+    {
+      "all_negatives_behavior_rejected": true,
+      "checker_task_id": "v3_408_vector_shift_and_mask_decoder",
+      "gold_meets_expectation": true,
+      "gold_status": "PASS",
+      "negative_behavior_rejected_count": 5,
+      "negative_count": 5,
+      "negative_statuses": {
+        "neg_001_force_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_002_wrong_threshold": "FAIL_SIM_CORRECTNESS",
+        "neg_003_reset_bias": "FAIL_SIM_CORRECTNESS",
+        "neg_004_metric_offset": "FAIL_SIM_CORRECTNESS",
+        "neg_005_scale_output": "FAIL_SIM_CORRECTNESS"
+      },
+      "task": "408-vector-shift-and-mask-decoder"
+    },
+    {
+      "all_negatives_behavior_rejected": true,
+      "checker_task_id": "v3_409_macro_functionlike_clamp",
+      "gold_meets_expectation": true,
+      "gold_status": "PASS",
+      "negative_behavior_rejected_count": 5,
+      "negative_count": 5,
+      "negative_statuses": {
+        "neg_001_force_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_002_wrong_threshold": "FAIL_SIM_CORRECTNESS",
+        "neg_003_reset_bias": "FAIL_SIM_CORRECTNESS",
+        "neg_004_metric_offset": "FAIL_SIM_CORRECTNESS",
+        "neg_005_scale_output": "FAIL_SIM_CORRECTNESS"
+      },
+      "task": "409-macro-functionlike-clamp"
+    },
+    {
+      "all_negatives_behavior_rejected": true,
+      "checker_task_id": "v3_410_macro_ifdef_gain_select",
+      "gold_meets_expectation": true,
+      "gold_status": "PASS",
+      "negative_behavior_rejected_count": 5,
+      "negative_count": 5,
+      "negative_statuses": {
+        "neg_001_force_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_002_wrong_threshold": "FAIL_SIM_CORRECTNESS",
+        "neg_003_reset_bias": "FAIL_SIM_CORRECTNESS",
+        "neg_004_metric_offset": "FAIL_SIM_CORRECTNESS",
+        "neg_005_scale_output": "FAIL_SIM_CORRECTNESS"
+      },
+      "task": "410-macro-ifdef-gain-select"
+    },
+    {
+      "all_negatives_behavior_rejected": true,
+      "checker_task_id": "v3_411_escaped_identifier_state",
+      "gold_meets_expectation": true,
+      "gold_status": "PASS",
+      "negative_behavior_rejected_count": 5,
+      "negative_count": 5,
+      "negative_statuses": {
+        "neg_001_force_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_002_wrong_threshold": "FAIL_SIM_CORRECTNESS",
+        "neg_003_reset_bias": "FAIL_SIM_CORRECTNESS",
+        "neg_004_metric_offset": "FAIL_SIM_CORRECTNESS",
+        "neg_005_scale_output": "FAIL_SIM_CORRECTNESS"
+      },
+      "task": "411-escaped-identifier-state"
+    },
+    {
+      "all_negatives_behavior_rejected": true,
+      "checker_task_id": "v3_412_initial_final_step_lifecycle",
+      "gold_meets_expectation": true,
+      "gold_status": "PASS",
+      "negative_behavior_rejected_count": 5,
+      "negative_count": 5,
+      "negative_statuses": {
+        "neg_001_force_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_002_wrong_threshold": "FAIL_SIM_CORRECTNESS",
+        "neg_003_reset_bias": "FAIL_SIM_CORRECTNESS",
+        "neg_004_metric_offset": "FAIL_SIM_CORRECTNESS",
+        "neg_005_scale_output": "FAIL_SIM_CORRECTNESS"
+      },
+      "task": "412-initial-final-step-lifecycle"
+    },
+    {
+      "all_negatives_behavior_rejected": true,
+      "checker_task_id": "v3_413_while_loop_array_sum",
+      "gold_meets_expectation": true,
+      "gold_status": "PASS",
+      "negative_behavior_rejected_count": 5,
+      "negative_count": 5,
+      "negative_statuses": {
+        "neg_001_force_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_002_wrong_threshold": "FAIL_SIM_CORRECTNESS",
+        "neg_003_reset_bias": "FAIL_SIM_CORRECTNESS",
+        "neg_004_metric_offset": "FAIL_SIM_CORRECTNESS",
+        "neg_005_scale_output": "FAIL_SIM_CORRECTNESS"
+      },
+      "task": "413-while-loop-array-sum"
+    },
+    {
+      "all_negatives_behavior_rejected": true,
+      "checker_task_id": "v3_414_parameter_range_real_control",
+      "gold_meets_expectation": true,
+      "gold_status": "PASS",
+      "negative_behavior_rejected_count": 5,
+      "negative_count": 5,
+      "negative_statuses": {
+        "neg_001_force_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_002_wrong_threshold": "FAIL_SIM_CORRECTNESS",
+        "neg_003_reset_bias": "FAIL_SIM_CORRECTNESS",
+        "neg_004_metric_offset": "FAIL_SIM_CORRECTNESS",
+        "neg_005_scale_output": "FAIL_SIM_CORRECTNESS"
+      },
+      "task": "414-parameter-range-real-control"
+    },
+    {
+      "all_negatives_behavior_rejected": true,
+      "checker_task_id": "v3_415_logic_vector_assign_slice",
+      "gold_meets_expectation": true,
+      "gold_status": "PASS",
+      "negative_behavior_rejected_count": 5,
+      "negative_count": 5,
+      "negative_statuses": {
+        "neg_001_force_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_002_wrong_threshold": "FAIL_SIM_CORRECTNESS",
+        "neg_003_reset_bias": "FAIL_SIM_CORRECTNESS",
+        "neg_004_metric_offset": "FAIL_SIM_CORRECTNESS",
+        "neg_005_scale_output": "FAIL_SIM_CORRECTNESS"
+      },
+      "task": "415-logic-vector-assign-slice"
+    },
+    {
+      "all_negatives_behavior_rejected": true,
+      "checker_task_id": "v3_416_logic_vector_reduction_flag",
+      "gold_meets_expectation": true,
+      "gold_status": "PASS",
+      "negative_behavior_rejected_count": 5,
+      "negative_count": 5,
+      "negative_statuses": {
+        "neg_001_force_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_002_wrong_threshold": "FAIL_SIM_CORRECTNESS",
+        "neg_003_reset_bias": "FAIL_SIM_CORRECTNESS",
+        "neg_004_metric_offset": "FAIL_SIM_CORRECTNESS",
+        "neg_005_scale_output": "FAIL_SIM_CORRECTNESS"
+      },
+      "task": "416-logic-vector-reduction-flag"
+    },
+    {
+      "all_negatives_behavior_rejected": true,
+      "checker_task_id": "v3_417_always_async_reset_counter",
+      "gold_meets_expectation": true,
+      "gold_status": "PASS",
+      "negative_behavior_rejected_count": 5,
+      "negative_count": 5,
+      "negative_statuses": {
+        "neg_001_force_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_002_wrong_threshold": "FAIL_SIM_CORRECTNESS",
+        "neg_003_reset_bias": "FAIL_SIM_CORRECTNESS",
+        "neg_004_metric_offset": "FAIL_SIM_CORRECTNESS",
+        "neg_005_scale_output": "FAIL_SIM_CORRECTNESS"
+      },
+      "task": "417-always-async-reset-counter"
+    },
+    {
+      "all_negatives_behavior_rejected": true,
+      "checker_task_id": "v3_418_always_enable_saturating_counter",
+      "gold_meets_expectation": true,
+      "gold_status": "PASS",
+      "negative_behavior_rejected_count": 5,
+      "negative_count": 5,
+      "negative_statuses": {
+        "neg_001_force_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_002_wrong_threshold": "FAIL_SIM_CORRECTNESS",
+        "neg_003_reset_bias": "FAIL_SIM_CORRECTNESS",
+        "neg_004_metric_offset": "FAIL_SIM_CORRECTNESS",
+        "neg_005_scale_output": "FAIL_SIM_CORRECTNESS"
+      },
+      "task": "418-always-enable-saturating-counter"
+    },
+    {
+      "all_negatives_behavior_rejected": true,
+      "checker_task_id": "v3_419_wreal_logic_threshold_bridge",
+      "gold_meets_expectation": true,
+      "gold_status": "PASS",
+      "negative_behavior_rejected_count": 5,
+      "negative_count": 5,
+      "negative_statuses": {
+        "neg_001_force_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_002_wrong_threshold": "FAIL_SIM_CORRECTNESS",
+        "neg_003_reset_bias": "FAIL_SIM_CORRECTNESS",
+        "neg_004_metric_offset": "FAIL_SIM_CORRECTNESS",
+        "neg_005_scale_output": "FAIL_SIM_CORRECTNESS"
+      },
+      "task": "419-wreal-logic-threshold-bridge"
+    },
+    {
+      "all_negatives_behavior_rejected": true,
+      "checker_task_id": "v3_420_mixed_analog_digital_mode_latch",
+      "gold_meets_expectation": true,
+      "gold_status": "PASS",
+      "negative_behavior_rejected_count": 5,
+      "negative_count": 5,
+      "negative_statuses": {
+        "neg_001_force_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_002_wrong_threshold": "FAIL_SIM_CORRECTNESS",
+        "neg_003_reset_bias": "FAIL_SIM_CORRECTNESS",
+        "neg_004_metric_offset": "FAIL_SIM_CORRECTNESS",
+        "neg_005_scale_output": "FAIL_SIM_CORRECTNESS"
+      },
+      "task": "420-mixed-analog-digital-mode-latch"
+    },
+    {
+      "all_negatives_behavior_rejected": true,
+      "checker_task_id": "v3_421_task_local_variable_transform",
+      "gold_meets_expectation": true,
+      "gold_status": "PASS",
+      "negative_behavior_rejected_count": 5,
+      "negative_count": 5,
+      "negative_statuses": {
+        "neg_001_force_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_002_wrong_threshold": "FAIL_SIM_CORRECTNESS",
+        "neg_003_reset_bias": "FAIL_SIM_CORRECTNESS",
+        "neg_004_metric_offset": "FAIL_SIM_CORRECTNESS",
+        "neg_005_scale_output": "FAIL_SIM_CORRECTNESS"
+      },
+      "task": "421-task-local-variable-transform"
+    },
+    {
+      "all_negatives_behavior_rejected": true,
+      "checker_task_id": "v3_422_file_fscanf_table_stimulus",
+      "gold_meets_expectation": true,
+      "gold_status": "PASS",
+      "negative_behavior_rejected_count": 5,
+      "negative_count": 5,
+      "negative_statuses": {
+        "neg_001_force_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_002_wrong_threshold": "FAIL_SIM_CORRECTNESS",
+        "neg_003_reset_bias": "FAIL_SIM_CORRECTNESS",
+        "neg_004_metric_offset": "FAIL_SIM_CORRECTNESS",
+        "neg_005_scale_output": "FAIL_SIM_CORRECTNESS"
+      },
+      "task": "422-file-fscanf-table-stimulus"
+    },
+    {
+      "all_negatives_behavior_rejected": true,
+      "checker_task_id": "v3_423_file_profile_replay_controller",
+      "gold_meets_expectation": true,
+      "gold_status": "PASS",
+      "negative_behavior_rejected_count": 5,
+      "negative_count": 5,
+      "negative_statuses": {
+        "neg_001_force_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_002_wrong_threshold": "FAIL_SIM_CORRECTNESS",
+        "neg_003_reset_bias": "FAIL_SIM_CORRECTNESS",
+        "neg_004_metric_offset": "FAIL_SIM_CORRECTNESS",
+        "neg_005_scale_output": "FAIL_SIM_CORRECTNESS"
+      },
+      "task": "423-file-profile-replay-controller"
+    },
+    {
+      "all_negatives_behavior_rejected": true,
+      "checker_task_id": "v3_424_file_fscanf_multi_column_profile",
+      "gold_meets_expectation": true,
+      "gold_status": "PASS",
+      "negative_behavior_rejected_count": 5,
+      "negative_count": 5,
+      "negative_statuses": {
+        "neg_001_force_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_002_wrong_threshold": "FAIL_SIM_CORRECTNESS",
+        "neg_003_reset_bias": "FAIL_SIM_CORRECTNESS",
+        "neg_004_metric_offset": "FAIL_SIM_CORRECTNESS",
+        "neg_005_scale_output": "FAIL_SIM_CORRECTNESS"
+      },
+      "task": "424-file-fscanf-multi-column-profile"
+    },
+    {
+      "all_negatives_behavior_rejected": true,
+      "checker_task_id": "v3_425_string_swrite_label_builder",
+      "gold_meets_expectation": true,
+      "gold_status": "PASS",
+      "negative_behavior_rejected_count": 5,
+      "negative_count": 5,
+      "negative_statuses": {
+        "neg_001_force_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_002_wrong_threshold": "FAIL_SIM_CORRECTNESS",
+        "neg_003_reset_bias": "FAIL_SIM_CORRECTNESS",
+        "neg_004_metric_offset": "FAIL_SIM_CORRECTNESS",
+        "neg_005_scale_output": "FAIL_SIM_CORRECTNESS"
+      },
+      "task": "425-string-swrite-label-builder"
+    },
+    {
+      "all_negatives_behavior_rejected": true,
+      "checker_task_id": "v3_426_string_sformat_mode_tag",
+      "gold_meets_expectation": true,
+      "gold_status": "PASS",
+      "negative_behavior_rejected_count": 5,
+      "negative_count": 5,
+      "negative_statuses": {
+        "neg_001_force_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_002_wrong_threshold": "FAIL_SIM_CORRECTNESS",
+        "neg_003_reset_bias": "FAIL_SIM_CORRECTNESS",
+        "neg_004_metric_offset": "FAIL_SIM_CORRECTNESS",
+        "neg_005_scale_output": "FAIL_SIM_CORRECTNESS"
+      },
+      "task": "426-string-sformat-mode-tag"
+    },
+    {
+      "all_negatives_behavior_rejected": true,
+      "checker_task_id": "v3_427_string_formatted_metric_line",
+      "gold_meets_expectation": true,
+      "gold_status": "PASS",
+      "negative_behavior_rejected_count": 5,
+      "negative_count": 5,
+      "negative_statuses": {
+        "neg_001_force_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_002_wrong_threshold": "FAIL_SIM_CORRECTNESS",
+        "neg_003_reset_bias": "FAIL_SIM_CORRECTNESS",
+        "neg_004_metric_offset": "FAIL_SIM_CORRECTNESS",
+        "neg_005_scale_output": "FAIL_SIM_CORRECTNESS"
+      },
+      "task": "427-string-formatted-metric-line"
+    },
+    {
+      "all_negatives_behavior_rejected": true,
+      "checker_task_id": "v3_428_string_mode_tagged_log",
+      "gold_meets_expectation": true,
+      "gold_status": "PASS",
+      "negative_behavior_rejected_count": 5,
+      "negative_count": 5,
+      "negative_statuses": {
+        "neg_001_force_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_002_wrong_threshold": "FAIL_SIM_CORRECTNESS",
+        "neg_003_reset_bias": "FAIL_SIM_CORRECTNESS",
+        "neg_004_metric_offset": "FAIL_SIM_CORRECTNESS",
+        "neg_005_scale_output": "FAIL_SIM_CORRECTNESS"
+      },
+      "task": "428-string-mode-tagged-log"
+    },
+    {
+      "all_negatives_behavior_rejected": true,
+      "checker_task_id": "v3_429_string_config_label_select",
+      "gold_meets_expectation": true,
+      "gold_status": "PASS",
+      "negative_behavior_rejected_count": 5,
+      "negative_count": 5,
+      "negative_statuses": {
+        "neg_001_force_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_002_wrong_threshold": "FAIL_SIM_CORRECTNESS",
+        "neg_003_reset_bias": "FAIL_SIM_CORRECTNESS",
+        "neg_004_metric_offset": "FAIL_SIM_CORRECTNESS",
+        "neg_005_scale_output": "FAIL_SIM_CORRECTNESS"
+      },
+      "task": "429-string-config-label-select"
+    },
+    {
+      "all_negatives_behavior_rejected": true,
+      "checker_task_id": "v3_430_rdist_seed_reproducibility",
+      "gold_meets_expectation": true,
+      "gold_status": "PASS",
+      "negative_behavior_rejected_count": 5,
+      "negative_count": 5,
+      "negative_statuses": {
+        "neg_001_force_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_002_wrong_threshold": "FAIL_SIM_CORRECTNESS",
+        "neg_003_reset_bias": "FAIL_SIM_CORRECTNESS",
+        "neg_004_metric_offset": "FAIL_SIM_CORRECTNESS",
+        "neg_005_scale_output": "FAIL_SIM_CORRECTNESS"
+      },
+      "task": "430-rdist-seed-reproducibility"
+    },
+    {
+      "all_negatives_behavior_rejected": true,
+      "checker_task_id": "v3_431_hierarchy_support_artifact_staging",
+      "gold_meets_expectation": true,
+      "gold_status": "PASS",
+      "negative_behavior_rejected_count": 5,
+      "negative_count": 5,
+      "negative_statuses": {
+        "neg_001_force_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_002_wrong_threshold": "FAIL_SIM_CORRECTNESS",
+        "neg_003_reset_bias": "FAIL_SIM_CORRECTNESS",
+        "neg_004_metric_offset": "FAIL_SIM_CORRECTNESS",
+        "neg_005_scale_output": "FAIL_SIM_CORRECTNESS"
+      },
+      "task": "431-hierarchy-support-artifact-staging"
+    },
+    {
+      "all_negatives_behavior_rejected": true,
+      "checker_task_id": "v3_432_hierarchy_nested_parameter_chain",
+      "gold_meets_expectation": true,
+      "gold_status": "PASS",
+      "negative_behavior_rejected_count": 5,
+      "negative_count": 5,
+      "negative_statuses": {
+        "neg_001_force_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_002_wrong_threshold": "FAIL_SIM_CORRECTNESS",
+        "neg_003_reset_bias": "FAIL_SIM_CORRECTNESS",
+        "neg_004_metric_offset": "FAIL_SIM_CORRECTNESS",
+        "neg_005_scale_output": "FAIL_SIM_CORRECTNESS"
+      },
+      "task": "432-hierarchy-nested-parameter-chain"
+    },
+    {
+      "all_negatives_behavior_rejected": true,
+      "checker_task_id": "v3_433_preprocessor_ifndef_elsif_undef",
+      "gold_meets_expectation": true,
+      "gold_status": "PASS",
+      "negative_behavior_rejected_count": 5,
+      "negative_count": 5,
+      "negative_statuses": {
+        "neg_001_force_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_002_wrong_threshold": "FAIL_SIM_CORRECTNESS",
+        "neg_003_reset_bias": "FAIL_SIM_CORRECTNESS",
+        "neg_004_metric_offset": "FAIL_SIM_CORRECTNESS",
+        "neg_005_scale_output": "FAIL_SIM_CORRECTNESS"
+      },
+      "task": "433-preprocessor-ifndef-elsif-undef"
+    },
+    {
+      "all_negatives_behavior_rejected": true,
+      "checker_task_id": "v3_434_repeat_loop_accumulator",
+      "gold_meets_expectation": true,
+      "gold_status": "PASS",
+      "negative_behavior_rejected_count": 5,
+      "negative_count": 5,
+      "negative_statuses": {
+        "neg_001_force_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_002_wrong_threshold": "FAIL_SIM_CORRECTNESS",
+        "neg_003_reset_bias": "FAIL_SIM_CORRECTNESS",
+        "neg_004_metric_offset": "FAIL_SIM_CORRECTNESS",
+        "neg_005_scale_output": "FAIL_SIM_CORRECTNESS"
+      },
+      "task": "434-repeat-loop-accumulator"
+    },
+    {
+      "all_negatives_behavior_rejected": true,
+      "checker_task_id": "v3_435_ddt_voltage_derivative_source",
+      "gold_meets_expectation": true,
+      "gold_status": "PASS",
+      "negative_behavior_rejected_count": 5,
+      "negative_count": 5,
+      "negative_statuses": {
+        "neg_001_force_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_002_wrong_threshold": "FAIL_SIM_CORRECTNESS",
+        "neg_003_reset_bias": "FAIL_SIM_CORRECTNESS",
+        "neg_004_metric_offset": "FAIL_SIM_CORRECTNESS",
+        "neg_005_scale_output": "FAIL_SIM_CORRECTNESS"
+      },
+      "task": "435-ddt-voltage-derivative-source"
+    },
+    {
+      "all_negatives_behavior_rejected": true,
+      "checker_task_id": "v3_436_idt_voltage_integrator_source",
+      "gold_meets_expectation": true,
+      "gold_status": "PASS",
+      "negative_behavior_rejected_count": 5,
+      "negative_count": 5,
+      "negative_statuses": {
+        "neg_001_force_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_002_wrong_threshold": "FAIL_SIM_CORRECTNESS",
+        "neg_003_reset_bias": "FAIL_SIM_CORRECTNESS",
+        "neg_004_metric_offset": "FAIL_SIM_CORRECTNESS",
+        "neg_005_scale_output": "FAIL_SIM_CORRECTNESS"
+      },
+      "task": "436-idt-voltage-integrator-source"
+    },
+    {
+      "all_negatives_behavior_rejected": true,
+      "checker_task_id": "v3_437_laplace_nd_lowpass_filter",
+      "gold_meets_expectation": true,
+      "gold_status": "PASS",
+      "negative_behavior_rejected_count": 5,
+      "negative_count": 5,
+      "negative_statuses": {
+        "neg_001_force_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_002_wrong_threshold": "FAIL_SIM_CORRECTNESS",
+        "neg_003_reset_bias": "FAIL_SIM_CORRECTNESS",
+        "neg_004_metric_offset": "FAIL_SIM_CORRECTNESS",
+        "neg_005_scale_output": "FAIL_SIM_CORRECTNESS"
+      },
+      "task": "437-laplace-nd-lowpass-filter"
+    },
+    {
+      "all_negatives_behavior_rejected": true,
+      "checker_task_id": "v3_438_laplace_np_pole_filter",
+      "gold_meets_expectation": true,
+      "gold_status": "PASS",
+      "negative_behavior_rejected_count": 5,
+      "negative_count": 5,
+      "negative_statuses": {
+        "neg_001_force_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_002_wrong_threshold": "FAIL_SIM_CORRECTNESS",
+        "neg_003_reset_bias": "FAIL_SIM_CORRECTNESS",
+        "neg_004_metric_offset": "FAIL_SIM_CORRECTNESS",
+        "neg_005_scale_output": "FAIL_SIM_CORRECTNESS"
+      },
+      "task": "438-laplace-np-pole-filter"
+    },
+    {
+      "all_negatives_behavior_rejected": true,
+      "checker_task_id": "v3_439_laplace_zd_zero_den_filter",
+      "gold_meets_expectation": true,
+      "gold_status": "PASS",
+      "negative_behavior_rejected_count": 5,
+      "negative_count": 5,
+      "negative_statuses": {
+        "neg_001_force_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_002_wrong_threshold": "FAIL_SIM_CORRECTNESS",
+        "neg_003_reset_bias": "FAIL_SIM_CORRECTNESS",
+        "neg_004_metric_offset": "FAIL_SIM_CORRECTNESS",
+        "neg_005_scale_output": "FAIL_SIM_CORRECTNESS"
+      },
+      "task": "439-laplace-zd-zero-den-filter"
+    },
+    {
+      "all_negatives_behavior_rejected": true,
+      "checker_task_id": "v3_440_laplace_zp_zero_pole_filter",
+      "gold_meets_expectation": true,
+      "gold_status": "PASS",
+      "negative_behavior_rejected_count": 5,
+      "negative_count": 5,
+      "negative_statuses": {
+        "neg_001_force_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_002_wrong_threshold": "FAIL_SIM_CORRECTNESS",
+        "neg_003_reset_bias": "FAIL_SIM_CORRECTNESS",
+        "neg_004_metric_offset": "FAIL_SIM_CORRECTNESS",
+        "neg_005_scale_output": "FAIL_SIM_CORRECTNESS"
+      },
+      "task": "440-laplace-zp-zero-pole-filter"
+    },
+    {
+      "all_negatives_behavior_rejected": true,
+      "checker_task_id": "v3_441_zi_nd_discrete_filter",
+      "gold_meets_expectation": true,
+      "gold_status": "PASS",
+      "negative_behavior_rejected_count": 5,
+      "negative_count": 5,
+      "negative_statuses": {
+        "neg_001_force_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_002_wrong_threshold": "FAIL_SIM_CORRECTNESS",
+        "neg_003_reset_bias": "FAIL_SIM_CORRECTNESS",
+        "neg_004_metric_offset": "FAIL_SIM_CORRECTNESS",
+        "neg_005_scale_output": "FAIL_SIM_CORRECTNESS"
+      },
+      "task": "441-zi-nd-discrete-filter"
+    },
+    {
+      "all_negatives_behavior_rejected": true,
+      "checker_task_id": "v3_442_zi_np_discrete_filter",
+      "gold_meets_expectation": true,
+      "gold_status": "PASS",
+      "negative_behavior_rejected_count": 5,
+      "negative_count": 5,
+      "negative_statuses": {
+        "neg_001_force_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_002_wrong_threshold": "FAIL_SIM_CORRECTNESS",
+        "neg_003_reset_bias": "FAIL_SIM_CORRECTNESS",
+        "neg_004_metric_offset": "FAIL_SIM_CORRECTNESS",
+        "neg_005_scale_output": "FAIL_SIM_CORRECTNESS"
+      },
+      "task": "442-zi-np-discrete-filter"
+    },
+    {
+      "all_negatives_behavior_rejected": true,
+      "checker_task_id": "v3_443_zi_zd_discrete_filter",
+      "gold_meets_expectation": true,
+      "gold_status": "PASS",
+      "negative_behavior_rejected_count": 5,
+      "negative_count": 5,
+      "negative_statuses": {
+        "neg_001_force_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_002_wrong_threshold": "FAIL_SIM_CORRECTNESS",
+        "neg_003_reset_bias": "FAIL_SIM_CORRECTNESS",
+        "neg_004_metric_offset": "FAIL_SIM_CORRECTNESS",
+        "neg_005_scale_output": "FAIL_SIM_CORRECTNESS"
+      },
+      "task": "443-zi-zd-discrete-filter"
+    },
+    {
+      "all_negatives_behavior_rejected": true,
+      "checker_task_id": "v3_444_zi_zp_discrete_filter",
+      "gold_meets_expectation": true,
+      "gold_status": "PASS",
+      "negative_behavior_rejected_count": 5,
+      "negative_count": 5,
+      "negative_statuses": {
+        "neg_001_force_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_002_wrong_threshold": "FAIL_SIM_CORRECTNESS",
+        "neg_003_reset_bias": "FAIL_SIM_CORRECTNESS",
+        "neg_004_metric_offset": "FAIL_SIM_CORRECTNESS",
+        "neg_005_scale_output": "FAIL_SIM_CORRECTNESS"
+      },
+      "task": "444-zi-zp-discrete-filter"
+    },
+    {
+      "all_negatives_behavior_rejected": true,
+      "checker_task_id": "v3_445_limexp_soft_exponential",
+      "gold_meets_expectation": true,
+      "gold_status": "PASS",
+      "negative_behavior_rejected_count": 5,
+      "negative_count": 5,
+      "negative_statuses": {
+        "neg_001_force_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_002_wrong_threshold": "FAIL_SIM_CORRECTNESS",
+        "neg_003_reset_bias": "FAIL_SIM_CORRECTNESS",
+        "neg_004_metric_offset": "FAIL_SIM_CORRECTNESS",
+        "neg_005_scale_output": "FAIL_SIM_CORRECTNESS"
+      },
+      "task": "445-limexp-soft-exponential"
+    },
+    {
+      "all_negatives_behavior_rejected": true,
+      "checker_task_id": "v3_446_fstrobe_file_line_writer",
+      "gold_meets_expectation": true,
+      "gold_status": "PASS",
+      "negative_behavior_rejected_count": 5,
+      "negative_count": 5,
+      "negative_statuses": {
+        "neg_001_force_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_002_wrong_threshold": "FAIL_SIM_CORRECTNESS",
+        "neg_003_reset_bias": "FAIL_SIM_CORRECTNESS",
+        "neg_004_metric_offset": "FAIL_SIM_CORRECTNESS",
+        "neg_005_scale_output": "FAIL_SIM_CORRECTNESS"
+      },
+      "task": "446-fstrobe-file-line-writer"
+    },
+    {
+      "all_negatives_behavior_rejected": true,
+      "checker_task_id": "v3_447_display_warning_debug_log",
+      "gold_meets_expectation": true,
+      "gold_status": "PASS",
+      "negative_behavior_rejected_count": 5,
+      "negative_count": 5,
+      "negative_statuses": {
+        "neg_001_force_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_002_wrong_threshold": "FAIL_SIM_CORRECTNESS",
+        "neg_003_reset_bias": "FAIL_SIM_CORRECTNESS",
+        "neg_004_metric_offset": "FAIL_SIM_CORRECTNESS",
+        "neg_005_scale_output": "FAIL_SIM_CORRECTNESS"
+      },
+      "task": "447-display-warning-debug-log"
+    },
+    {
+      "all_negatives_behavior_rejected": true,
+      "checker_task_id": "v3_448_rdist_uniform_seeded_dither",
+      "gold_meets_expectation": true,
+      "gold_status": "PASS",
+      "negative_behavior_rejected_count": 5,
+      "negative_count": 5,
+      "negative_statuses": {
+        "neg_001_force_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_002_wrong_threshold": "FAIL_SIM_CORRECTNESS",
+        "neg_003_reset_bias": "FAIL_SIM_CORRECTNESS",
+        "neg_004_metric_offset": "FAIL_SIM_CORRECTNESS",
+        "neg_005_scale_output": "FAIL_SIM_CORRECTNESS"
+      },
+      "task": "448-rdist-uniform-seeded-dither"
+    },
+    {
+      "all_negatives_behavior_rejected": true,
+      "checker_task_id": "v3_449_generate_genvar_replicated_stage",
+      "gold_meets_expectation": true,
+      "gold_status": "PASS",
+      "negative_behavior_rejected_count": 5,
+      "negative_count": 5,
+      "negative_statuses": {
+        "neg_001_force_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_002_wrong_threshold": "FAIL_SIM_CORRECTNESS",
+        "neg_003_reset_bias": "FAIL_SIM_CORRECTNESS",
+        "neg_004_metric_offset": "FAIL_SIM_CORRECTNESS",
+        "neg_005_scale_output": "FAIL_SIM_CORRECTNESS"
+      },
+      "task": "449-generate-genvar-replicated-stage"
+    },
+    {
+      "all_negatives_behavior_rejected": true,
+      "checker_task_id": "v3_450_custom_nature_discipline_voltage",
+      "gold_meets_expectation": true,
+      "gold_status": "PASS",
+      "negative_behavior_rejected_count": 5,
+      "negative_count": 5,
+      "negative_statuses": {
+        "neg_001_force_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_002_wrong_threshold": "FAIL_SIM_CORRECTNESS",
+        "neg_003_reset_bias": "FAIL_SIM_CORRECTNESS",
+        "neg_004_metric_offset": "FAIL_SIM_CORRECTNESS",
+        "neg_005_scale_output": "FAIL_SIM_CORRECTNESS"
+      },
+      "task": "450-custom-nature-discipline-voltage"
+    },
+    {
+      "all_negatives_behavior_rejected": true,
+      "checker_task_id": "v3_451_connectmodule_electrical_bridge",
+      "gold_meets_expectation": true,
+      "gold_status": "PASS",
+      "negative_behavior_rejected_count": 5,
+      "negative_count": 5,
+      "negative_statuses": {
+        "neg_001_force_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_002_wrong_threshold": "FAIL_SIM_CORRECTNESS",
+        "neg_003_reset_bias": "FAIL_SIM_CORRECTNESS",
+        "neg_004_metric_offset": "FAIL_SIM_CORRECTNESS",
+        "neg_005_scale_output": "FAIL_SIM_CORRECTNESS"
+      },
+      "task": "451-connectmodule-electrical-bridge"
+    },
+    {
+      "all_negatives_behavior_rejected": true,
+      "checker_task_id": "v3_452_connectrules_electrical_map",
+      "gold_meets_expectation": true,
+      "gold_status": "PASS",
+      "negative_behavior_rejected_count": 5,
+      "negative_count": 5,
+      "negative_statuses": {
+        "neg_001_force_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_002_wrong_threshold": "FAIL_SIM_CORRECTNESS",
+        "neg_003_reset_bias": "FAIL_SIM_CORRECTNESS",
+        "neg_004_metric_offset": "FAIL_SIM_CORRECTNESS",
+        "neg_005_scale_output": "FAIL_SIM_CORRECTNESS"
+      },
+      "task": "452-connectrules-electrical-map"
+    },
+    {
+      "all_negatives_behavior_rejected": true,
+      "checker_task_id": "v3_453_specify_specparam_delay",
+      "gold_meets_expectation": true,
+      "gold_status": "PASS",
+      "negative_behavior_rejected_count": 5,
+      "negative_count": 5,
+      "negative_statuses": {
+        "neg_001_force_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_002_wrong_threshold": "FAIL_SIM_CORRECTNESS",
+        "neg_003_reset_bias": "FAIL_SIM_CORRECTNESS",
+        "neg_004_metric_offset": "FAIL_SIM_CORRECTNESS",
+        "neg_005_scale_output": "FAIL_SIM_CORRECTNESS"
+      },
+      "task": "453-specify-specparam-delay"
+    },
+    {
+      "all_negatives_behavior_rejected": true,
+      "checker_task_id": "v3_454_multidimensional_array_state",
+      "gold_meets_expectation": true,
+      "gold_status": "PASS",
+      "negative_behavior_rejected_count": 5,
+      "negative_count": 5,
+      "negative_statuses": {
+        "neg_001_force_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_002_wrong_threshold": "FAIL_SIM_CORRECTNESS",
+        "neg_003_reset_bias": "FAIL_SIM_CORRECTNESS",
+        "neg_004_metric_offset": "FAIL_SIM_CORRECTNESS",
+        "neg_005_scale_output": "FAIL_SIM_CORRECTNESS"
+      },
+      "task": "454-multidimensional-array-state"
+    },
+    {
+      "all_negatives_behavior_rejected": true,
+      "checker_task_id": "v3_455_packed_logic_bus_slice",
+      "gold_meets_expectation": true,
+      "gold_status": "PASS",
+      "negative_behavior_rejected_count": 5,
+      "negative_count": 5,
+      "negative_statuses": {
+        "neg_001_force_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_002_wrong_threshold": "FAIL_SIM_CORRECTNESS",
+        "neg_003_reset_bias": "FAIL_SIM_CORRECTNESS",
+        "neg_004_metric_offset": "FAIL_SIM_CORRECTNESS",
+        "neg_005_scale_output": "FAIL_SIM_CORRECTNESS"
+      },
+      "task": "455-packed-logic-bus-slice"
+    },
+    {
+      "all_negatives_behavior_rejected": true,
+      "checker_task_id": "v3_456_event_or_cross_timer",
+      "gold_meets_expectation": true,
+      "gold_status": "PASS",
+      "negative_behavior_rejected_count": 5,
+      "negative_count": 5,
+      "negative_statuses": {
+        "neg_001_force_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_002_wrong_threshold": "FAIL_SIM_CORRECTNESS",
+        "neg_003_reset_bias": "FAIL_SIM_CORRECTNESS",
+        "neg_004_metric_offset": "FAIL_SIM_CORRECTNESS",
+        "neg_005_scale_output": "FAIL_SIM_CORRECTNESS"
+      },
+      "task": "456-event-or-cross-timer"
+    },
+    {
+      "all_negatives_behavior_rejected": true,
+      "checker_task_id": "v3_457_nested_function_pipeline",
+      "gold_meets_expectation": true,
+      "gold_status": "PASS",
+      "negative_behavior_rejected_count": 5,
+      "negative_count": 5,
+      "negative_statuses": {
+        "neg_001_force_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_002_wrong_threshold": "FAIL_SIM_CORRECTNESS",
+        "neg_003_reset_bias": "FAIL_SIM_CORRECTNESS",
+        "neg_004_metric_offset": "FAIL_SIM_CORRECTNESS",
+        "neg_005_scale_output": "FAIL_SIM_CORRECTNESS"
+      },
+      "task": "457-nested-function-pipeline"
+    },
+    {
+      "all_negatives_behavior_rejected": true,
+      "checker_task_id": "v3_458_recursive_function_candidate",
+      "gold_meets_expectation": true,
+      "gold_status": "PASS",
+      "negative_behavior_rejected_count": 5,
+      "negative_count": 5,
+      "negative_statuses": {
+        "neg_001_force_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_002_wrong_threshold": "FAIL_SIM_CORRECTNESS",
+        "neg_003_reset_bias": "FAIL_SIM_CORRECTNESS",
+        "neg_004_metric_offset": "FAIL_SIM_CORRECTNESS",
+        "neg_005_scale_output": "FAIL_SIM_CORRECTNESS"
+      },
+      "task": "458-recursive-function-candidate"
+    },
+    {
+      "all_negatives_behavior_rejected": true,
+      "checker_task_id": "v3_459_do_while_loop_accumulator",
+      "gold_meets_expectation": true,
+      "gold_status": "PASS",
+      "negative_behavior_rejected_count": 5,
+      "negative_count": 5,
+      "negative_statuses": {
+        "neg_001_force_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_002_wrong_threshold": "FAIL_SIM_CORRECTNESS",
+        "neg_003_reset_bias": "FAIL_SIM_CORRECTNESS",
+        "neg_004_metric_offset": "FAIL_SIM_CORRECTNESS",
+        "neg_005_scale_output": "FAIL_SIM_CORRECTNESS"
+      },
+      "task": "459-do-while-loop-accumulator"
+    },
+    {
+      "all_negatives_behavior_rejected": true,
+      "checker_task_id": "v3_460_analog_initial_block_state",
+      "gold_meets_expectation": true,
+      "gold_status": "PASS",
+      "negative_behavior_rejected_count": 5,
+      "negative_count": 5,
+      "negative_statuses": {
+        "neg_001_force_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_002_wrong_threshold": "FAIL_SIM_CORRECTNESS",
+        "neg_003_reset_bias": "FAIL_SIM_CORRECTNESS",
+        "neg_004_metric_offset": "FAIL_SIM_CORRECTNESS",
+        "neg_005_scale_output": "FAIL_SIM_CORRECTNESS"
+      },
+      "task": "460-analog-initial-block-state"
+    },
+    {
+      "all_negatives_behavior_rejected": true,
+      "checker_task_id": "v3_461_vt_thermal_voltage_source",
+      "gold_meets_expectation": true,
+      "gold_status": "PASS",
+      "negative_behavior_rejected_count": 5,
+      "negative_count": 5,
+      "negative_statuses": {
+        "neg_001_force_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_002_wrong_threshold": "FAIL_SIM_CORRECTNESS",
+        "neg_003_reset_bias": "FAIL_SIM_CORRECTNESS",
+        "neg_004_metric_offset": "FAIL_SIM_CORRECTNESS",
+        "neg_005_scale_output": "FAIL_SIM_CORRECTNESS"
+      },
+      "task": "461-vt-thermal-voltage-source"
+    },
+    {
+      "all_negatives_behavior_rejected": true,
+      "checker_task_id": "v3_462_vt_temperature_argument",
+      "gold_meets_expectation": true,
+      "gold_status": "PASS",
+      "negative_behavior_rejected_count": 5,
+      "negative_count": 5,
+      "negative_statuses": {
+        "neg_001_force_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_002_wrong_threshold": "FAIL_SIM_CORRECTNESS",
+        "neg_003_reset_bias": "FAIL_SIM_CORRECTNESS",
+        "neg_004_metric_offset": "FAIL_SIM_CORRECTNESS",
+        "neg_005_scale_output": "FAIL_SIM_CORRECTNESS"
+      },
+      "task": "462-vt-temperature-argument"
+    },
+    {
+      "all_negatives_behavior_rejected": true,
+      "checker_task_id": "v3_463_discontinuity_event_announcement",
+      "gold_meets_expectation": true,
+      "gold_status": "PASS",
+      "negative_behavior_rejected_count": 5,
+      "negative_count": 5,
+      "negative_statuses": {
+        "neg_001_force_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_002_wrong_threshold": "FAIL_SIM_CORRECTNESS",
+        "neg_003_reset_bias": "FAIL_SIM_CORRECTNESS",
+        "neg_004_metric_offset": "FAIL_SIM_CORRECTNESS",
+        "neg_005_scale_output": "FAIL_SIM_CORRECTNESS"
+      },
+      "task": "463-discontinuity-event-announcement"
+    },
+    {
+      "all_negatives_behavior_rejected": true,
+      "checker_task_id": "v3_464_param_given_gain_select",
+      "gold_meets_expectation": true,
+      "gold_status": "PASS",
+      "negative_behavior_rejected_count": 5,
+      "negative_count": 5,
+      "negative_statuses": {
+        "neg_001_force_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_002_wrong_threshold": "FAIL_SIM_CORRECTNESS",
+        "neg_003_reset_bias": "FAIL_SIM_CORRECTNESS",
+        "neg_004_metric_offset": "FAIL_SIM_CORRECTNESS",
+        "neg_005_scale_output": "FAIL_SIM_CORRECTNESS"
+      },
+      "task": "464-param-given-gain-select"
+    },
+    {
+      "all_negatives_behavior_rejected": true,
+      "checker_task_id": "v3_465_port_connected_output_enable",
+      "gold_meets_expectation": true,
+      "gold_status": "PASS",
+      "negative_behavior_rejected_count": 5,
+      "negative_count": 5,
+      "negative_statuses": {
+        "neg_001_force_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_002_wrong_threshold": "FAIL_SIM_CORRECTNESS",
+        "neg_003_reset_bias": "FAIL_SIM_CORRECTNESS",
+        "neg_004_metric_offset": "FAIL_SIM_CORRECTNESS",
+        "neg_005_scale_output": "FAIL_SIM_CORRECTNESS"
+      },
+      "task": "465-port-connected-output-enable"
+    },
+    {
+      "all_negatives_behavior_rejected": true,
+      "checker_task_id": "v3_466_temperature_environment_metric",
+      "gold_meets_expectation": true,
+      "gold_status": "PASS",
+      "negative_behavior_rejected_count": 5,
+      "negative_count": 5,
+      "negative_statuses": {
+        "neg_001_force_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_002_wrong_threshold": "FAIL_SIM_CORRECTNESS",
+        "neg_003_reset_bias": "FAIL_SIM_CORRECTNESS",
+        "neg_004_metric_offset": "FAIL_SIM_CORRECTNESS",
+        "neg_005_scale_output": "FAIL_SIM_CORRECTNESS"
+      },
+      "task": "466-temperature-environment-metric"
+    },
+    {
+      "all_negatives_behavior_rejected": true,
+      "checker_task_id": "v3_467_simparam_query_tnom",
+      "gold_meets_expectation": true,
+      "gold_status": "PASS",
+      "negative_behavior_rejected_count": 5,
+      "negative_count": 5,
+      "negative_statuses": {
+        "neg_001_force_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_002_wrong_threshold": "FAIL_SIM_CORRECTNESS",
+        "neg_003_reset_bias": "FAIL_SIM_CORRECTNESS",
+        "neg_004_metric_offset": "FAIL_SIM_CORRECTNESS",
+        "neg_005_scale_output": "FAIL_SIM_CORRECTNESS"
+      },
+      "task": "467-simparam-query-tnom"
+    },
+    {
+      "all_negatives_behavior_rejected": true,
+      "checker_task_id": "v3_468_branch_declaration_voltage_probe",
+      "gold_meets_expectation": true,
+      "gold_status": "PASS",
+      "negative_behavior_rejected_count": 5,
+      "negative_count": 5,
+      "negative_statuses": {
+        "neg_001_force_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_002_wrong_threshold": "FAIL_SIM_CORRECTNESS",
+        "neg_003_reset_bias": "FAIL_SIM_CORRECTNESS",
+        "neg_004_metric_offset": "FAIL_SIM_CORRECTNESS",
+        "neg_005_scale_output": "FAIL_SIM_CORRECTNESS"
+      },
+      "task": "468-branch-declaration-voltage-probe"
+    },
+    {
+      "all_negatives_behavior_rejected": true,
+      "checker_task_id": "v3_469_current_contribution_conductance",
+      "gold_meets_expectation": true,
+      "gold_status": "PASS",
+      "negative_behavior_rejected_count": 5,
+      "negative_count": 5,
+      "negative_statuses": {
+        "neg_001_force_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_002_wrong_threshold": "FAIL_SIM_CORRECTNESS",
+        "neg_003_reset_bias": "FAIL_SIM_CORRECTNESS",
+        "neg_004_metric_offset": "FAIL_SIM_CORRECTNESS",
+        "neg_005_scale_output": "FAIL_SIM_CORRECTNESS"
+      },
+      "task": "469-current-contribution-conductance"
+    },
+    {
+      "all_negatives_behavior_rejected": true,
+      "checker_task_id": "v3_470_branch_current_probe_contribution",
+      "gold_meets_expectation": true,
+      "gold_status": "PASS",
+      "negative_behavior_rejected_count": 5,
+      "negative_count": 5,
+      "negative_statuses": {
+        "neg_001_force_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_002_wrong_threshold": "FAIL_SIM_CORRECTNESS",
+        "neg_003_reset_bias": "FAIL_SIM_CORRECTNESS",
+        "neg_004_metric_offset": "FAIL_SIM_CORRECTNESS",
+        "neg_005_scale_output": "FAIL_SIM_CORRECTNESS"
+      },
+      "task": "470-branch-current-probe-contribution"
+    },
+    {
+      "all_negatives_behavior_rejected": true,
+      "checker_task_id": "v3_471_indirect_branch_null_balance",
+      "gold_meets_expectation": true,
+      "gold_status": "PASS",
+      "negative_behavior_rejected_count": 5,
+      "negative_count": 5,
+      "negative_statuses": {
+        "neg_001_force_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_002_wrong_threshold": "FAIL_SIM_CORRECTNESS",
+        "neg_003_reset_bias": "FAIL_SIM_CORRECTNESS",
+        "neg_004_metric_offset": "FAIL_SIM_CORRECTNESS",
+        "neg_005_scale_output": "FAIL_SIM_CORRECTNESS"
+      },
+      "task": "471-indirect-branch-null-balance"
+    },
+    {
+      "all_negatives_behavior_rejected": true,
+      "checker_task_id": "v3_472_indirect_branch_ddt_balance",
+      "gold_meets_expectation": true,
+      "gold_status": "PASS",
+      "negative_behavior_rejected_count": 5,
+      "negative_count": 5,
+      "negative_statuses": {
+        "neg_001_force_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_002_wrong_threshold": "FAIL_SIM_CORRECTNESS",
+        "neg_003_reset_bias": "FAIL_SIM_CORRECTNESS",
+        "neg_004_metric_offset": "FAIL_SIM_CORRECTNESS",
+        "neg_005_scale_output": "FAIL_SIM_CORRECTNESS"
+      },
+      "task": "472-indirect-branch-ddt-balance"
+    },
+    {
+      "all_negatives_behavior_rejected": true,
+      "checker_task_id": "v3_473_attribute_potential_abstol_probe",
+      "gold_meets_expectation": true,
+      "gold_status": "PASS",
+      "negative_behavior_rejected_count": 5,
+      "negative_count": 5,
+      "negative_statuses": {
+        "neg_001_force_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_002_wrong_threshold": "FAIL_SIM_CORRECTNESS",
+        "neg_003_reset_bias": "FAIL_SIM_CORRECTNESS",
+        "neg_004_metric_offset": "FAIL_SIM_CORRECTNESS",
+        "neg_005_scale_output": "FAIL_SIM_CORRECTNESS"
+      },
+      "task": "473-attribute-potential-abstol-probe"
+    },
+    {
+      "all_negatives_behavior_rejected": true,
+      "checker_task_id": "v3_474_generic_potential_access_function",
+      "gold_meets_expectation": true,
+      "gold_status": "PASS",
+      "negative_behavior_rejected_count": 5,
+      "negative_count": 5,
+      "negative_statuses": {
+        "neg_001_force_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_002_wrong_threshold": "FAIL_SIM_CORRECTNESS",
+        "neg_003_reset_bias": "FAIL_SIM_CORRECTNESS",
+        "neg_004_metric_offset": "FAIL_SIM_CORRECTNESS",
+        "neg_005_scale_output": "FAIL_SIM_CORRECTNESS"
+      },
+      "task": "474-generic-potential-access-function"
+    },
+    {
+      "all_negatives_behavior_rejected": true,
+      "checker_task_id": "v3_475_generic_potential_contribution",
+      "gold_meets_expectation": true,
+      "gold_status": "PASS",
+      "negative_behavior_rejected_count": 5,
+      "negative_count": 5,
+      "negative_statuses": {
+        "neg_001_force_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_002_wrong_threshold": "FAIL_SIM_CORRECTNESS",
+        "neg_003_reset_bias": "FAIL_SIM_CORRECTNESS",
+        "neg_004_metric_offset": "FAIL_SIM_CORRECTNESS",
+        "neg_005_scale_output": "FAIL_SIM_CORRECTNESS"
+      },
+      "task": "475-generic-potential-contribution"
+    },
+    {
+      "all_negatives_behavior_rejected": true,
+      "checker_task_id": "v3_476_oomr_string_voltage_probe",
+      "gold_meets_expectation": true,
+      "gold_status": "PASS",
+      "negative_behavior_rejected_count": 5,
+      "negative_count": 5,
+      "negative_statuses": {
+        "neg_001_force_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_002_wrong_threshold": "FAIL_SIM_CORRECTNESS",
+        "neg_003_reset_bias": "FAIL_SIM_CORRECTNESS",
+        "neg_004_metric_offset": "FAIL_SIM_CORRECTNESS",
+        "neg_005_scale_output": "FAIL_SIM_CORRECTNESS"
+      },
+      "task": "476-oomr-string-voltage-probe"
+    },
+    {
+      "all_negatives_behavior_rejected": true,
+      "checker_task_id": "v3_477_analog_node_alias_initial",
+      "gold_meets_expectation": true,
+      "gold_status": "PASS",
+      "negative_behavior_rejected_count": 5,
+      "negative_count": 5,
+      "negative_statuses": {
+        "neg_001_force_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_002_wrong_threshold": "FAIL_SIM_CORRECTNESS",
+        "neg_003_reset_bias": "FAIL_SIM_CORRECTNESS",
+        "neg_004_metric_offset": "FAIL_SIM_CORRECTNESS",
+        "neg_005_scale_output": "FAIL_SIM_CORRECTNESS"
+      },
+      "task": "477-analog-node-alias-initial"
+    },
+    {
+      "all_negatives_behavior_rejected": true,
+      "checker_task_id": "v3_478_inherited_port_attribute_supply",
+      "gold_meets_expectation": true,
+      "gold_status": "PASS",
+      "negative_behavior_rejected_count": 5,
+      "negative_count": 5,
+      "negative_statuses": {
+        "neg_001_force_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_002_wrong_threshold": "FAIL_SIM_CORRECTNESS",
+        "neg_003_reset_bias": "FAIL_SIM_CORRECTNESS",
+        "neg_004_metric_offset": "FAIL_SIM_CORRECTNESS",
+        "neg_005_scale_output": "FAIL_SIM_CORRECTNESS"
+      },
+      "task": "478-inherited-port-attribute-supply"
+    },
+    {
+      "all_negatives_behavior_rejected": true,
+      "checker_task_id": "v3_479_inherited_mfactor_parameter",
+      "gold_meets_expectation": true,
+      "gold_status": "PASS",
+      "negative_behavior_rejected_count": 5,
+      "negative_count": 5,
+      "negative_statuses": {
+        "neg_001_force_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_002_wrong_threshold": "FAIL_SIM_CORRECTNESS",
+        "neg_003_reset_bias": "FAIL_SIM_CORRECTNESS",
+        "neg_004_metric_offset": "FAIL_SIM_CORRECTNESS",
+        "neg_005_scale_output": "FAIL_SIM_CORRECTNESS"
+      },
+      "task": "479-inherited-mfactor-parameter"
+    },
+    {
+      "all_negatives_behavior_rejected": true,
+      "checker_task_id": "v3_480_mfactor_system_function_gain",
+      "gold_meets_expectation": true,
+      "gold_status": "PASS",
+      "negative_behavior_rejected_count": 5,
+      "negative_count": 5,
+      "negative_statuses": {
+        "neg_001_force_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_002_wrong_threshold": "FAIL_SIM_CORRECTNESS",
+        "neg_003_reset_bias": "FAIL_SIM_CORRECTNESS",
+        "neg_004_metric_offset": "FAIL_SIM_CORRECTNESS",
+        "neg_005_scale_output": "FAIL_SIM_CORRECTNESS"
+      },
+      "task": "480-mfactor-system-function-gain"
+    },
+    {
+      "all_negatives_behavior_rejected": true,
+      "checker_task_id": "v3_481_analog_primitive_resistor_instance",
+      "gold_meets_expectation": true,
+      "gold_status": "PASS",
+      "negative_behavior_rejected_count": 5,
+      "negative_count": 5,
+      "negative_statuses": {
+        "neg_001_force_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_002_wrong_threshold": "FAIL_SIM_CORRECTNESS",
+        "neg_003_reset_bias": "FAIL_SIM_CORRECTNESS",
+        "neg_004_metric_offset": "FAIL_SIM_CORRECTNESS",
+        "neg_005_scale_output": "FAIL_SIM_CORRECTNESS"
+      },
+      "task": "481-analog-primitive-resistor-instance"
+    },
+    {
+      "all_negatives_behavior_rejected": true,
+      "checker_task_id": "v3_482_analog_primitive_isource_instance",
+      "gold_meets_expectation": true,
+      "gold_status": "PASS",
+      "negative_behavior_rejected_count": 5,
+      "negative_count": 5,
+      "negative_statuses": {
+        "neg_001_force_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_002_wrong_threshold": "FAIL_SIM_CORRECTNESS",
+        "neg_003_reset_bias": "FAIL_SIM_CORRECTNESS",
+        "neg_004_metric_offset": "FAIL_SIM_CORRECTNESS",
+        "neg_005_scale_output": "FAIL_SIM_CORRECTNESS"
+      },
+      "task": "482-analog-primitive-isource-instance"
+    },
+    {
+      "all_negatives_behavior_rejected": true,
+      "checker_task_id": "v3_483_cds_violation_threshold_assert",
+      "gold_meets_expectation": true,
+      "gold_status": "PASS",
+      "negative_behavior_rejected_count": 5,
+      "negative_count": 5,
+      "negative_statuses": {
+        "neg_001_force_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_002_wrong_threshold": "FAIL_SIM_CORRECTNESS",
+        "neg_003_reset_bias": "FAIL_SIM_CORRECTNESS",
+        "neg_004_metric_offset": "FAIL_SIM_CORRECTNESS",
+        "neg_005_scale_output": "FAIL_SIM_CORRECTNESS"
+      },
+      "task": "483-cds-violation-threshold-assert"
+    },
+    {
+      "all_negatives_behavior_rejected": true,
+      "checker_task_id": "v3_484_rtoi_conversion_quantizer",
+      "gold_meets_expectation": true,
+      "gold_status": "PASS",
+      "negative_behavior_rejected_count": 5,
+      "negative_count": 5,
+      "negative_statuses": {
+        "neg_001_force_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_002_wrong_threshold": "FAIL_SIM_CORRECTNESS",
+        "neg_003_reset_bias": "FAIL_SIM_CORRECTNESS",
+        "neg_004_metric_offset": "FAIL_SIM_CORRECTNESS",
+        "neg_005_scale_output": "FAIL_SIM_CORRECTNESS"
+      },
+      "task": "484-rtoi-conversion-quantizer"
+    },
+    {
+      "all_negatives_behavior_rejected": true,
+      "checker_task_id": "v3_485_mc_trial_number_metric",
+      "gold_meets_expectation": true,
+      "gold_status": "PASS",
+      "negative_behavior_rejected_count": 5,
+      "negative_count": 5,
+      "negative_statuses": {
+        "neg_001_force_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_002_wrong_threshold": "FAIL_SIM_CORRECTNESS",
+        "neg_003_reset_bias": "FAIL_SIM_CORRECTNESS",
+        "neg_004_metric_offset": "FAIL_SIM_CORRECTNESS",
+        "neg_005_scale_output": "FAIL_SIM_CORRECTNESS"
+      },
+      "task": "485-mc-trial-number-metric"
+    },
+    {
+      "all_negatives_behavior_rejected": true,
+      "checker_task_id": "v3_486_rf_source_info_registration",
+      "gold_meets_expectation": true,
+      "gold_status": "PASS",
+      "negative_behavior_rejected_count": 5,
+      "negative_count": 5,
+      "negative_statuses": {
+        "neg_001_force_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_002_wrong_threshold": "FAIL_SIM_CORRECTNESS",
+        "neg_003_reset_bias": "FAIL_SIM_CORRECTNESS",
+        "neg_004_metric_offset": "FAIL_SIM_CORRECTNESS",
+        "neg_005_scale_output": "FAIL_SIM_CORRECTNESS"
+      },
+      "task": "486-rf-source-info-registration"
+    },
+    {
+      "all_negatives_behavior_rejected": true,
+      "checker_task_id": "v3_487_table_model_2d_array_surface",
+      "gold_meets_expectation": true,
+      "gold_status": "PASS",
+      "negative_behavior_rejected_count": 5,
+      "negative_count": 5,
+      "negative_statuses": {
+        "neg_001_force_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_002_wrong_threshold": "FAIL_SIM_CORRECTNESS",
+        "neg_003_reset_bias": "FAIL_SIM_CORRECTNESS",
+        "neg_004_metric_offset": "FAIL_SIM_CORRECTNESS",
+        "neg_005_scale_output": "FAIL_SIM_CORRECTNESS"
+      },
+      "task": "487-table-model-2d-array-surface"
+    },
+    {
+      "all_negatives_behavior_rejected": true,
+      "checker_task_id": "v3_488_table_model_string_param_source",
+      "gold_meets_expectation": true,
+      "gold_status": "PASS",
+      "negative_behavior_rejected_count": 5,
+      "negative_count": 5,
+      "negative_statuses": {
+        "neg_001_force_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_002_wrong_threshold": "FAIL_SIM_CORRECTNESS",
+        "neg_003_reset_bias": "FAIL_SIM_CORRECTNESS",
+        "neg_004_metric_offset": "FAIL_SIM_CORRECTNESS",
+        "neg_005_scale_output": "FAIL_SIM_CORRECTNESS"
+      },
+      "task": "488-table-model-string-param-source"
+    },
+    {
+      "all_negatives_behavior_rejected": true,
+      "checker_task_id": "v3_489_event_nested_or_expression",
+      "gold_meets_expectation": true,
+      "gold_status": "PASS",
+      "negative_behavior_rejected_count": 5,
+      "negative_count": 5,
+      "negative_statuses": {
+        "neg_001_force_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_002_wrong_threshold": "FAIL_SIM_CORRECTNESS",
+        "neg_003_reset_bias": "FAIL_SIM_CORRECTNESS",
+        "neg_004_metric_offset": "FAIL_SIM_CORRECTNESS",
+        "neg_005_scale_output": "FAIL_SIM_CORRECTNESS"
+      },
+      "task": "489-event-nested-or-expression"
+    },
+    {
+      "all_negatives_behavior_rejected": true,
+      "checker_task_id": "v3_490_event_task_function_state_update",
+      "gold_meets_expectation": true,
+      "gold_status": "PASS",
+      "negative_behavior_rejected_count": 5,
+      "negative_count": 5,
+      "negative_statuses": {
+        "neg_001_force_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_002_wrong_threshold": "FAIL_SIM_CORRECTNESS",
+        "neg_003_reset_bias": "FAIL_SIM_CORRECTNESS",
+        "neg_004_metric_offset": "FAIL_SIM_CORRECTNESS",
+        "neg_005_scale_output": "FAIL_SIM_CORRECTNESS"
+      },
+      "task": "490-event-task-function-state-update"
+    },
+    {
+      "all_negatives_behavior_rejected": true,
+      "checker_task_id": "v3_491_kcl_capacitor_ddt_current",
+      "gold_meets_expectation": true,
+      "gold_status": "PASS",
+      "negative_behavior_rejected_count": 5,
+      "negative_count": 5,
+      "negative_statuses": {
+        "neg_001_force_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_002_wrong_threshold": "FAIL_SIM_CORRECTNESS",
+        "neg_003_reset_bias": "FAIL_SIM_CORRECTNESS",
+        "neg_004_metric_offset": "FAIL_SIM_CORRECTNESS",
+        "neg_005_scale_output": "FAIL_SIM_CORRECTNESS"
+      },
+      "task": "491-kcl-capacitor-ddt-current"
+    },
+    {
+      "all_negatives_behavior_rejected": true,
+      "checker_task_id": "v3_492_kcl_inductor_idt_voltage",
+      "gold_meets_expectation": true,
+      "gold_status": "PASS",
+      "negative_behavior_rejected_count": 5,
+      "negative_count": 5,
+      "negative_statuses": {
+        "neg_001_force_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_002_wrong_threshold": "FAIL_SIM_CORRECTNESS",
+        "neg_003_reset_bias": "FAIL_SIM_CORRECTNESS",
+        "neg_004_metric_offset": "FAIL_SIM_CORRECTNESS",
+        "neg_005_scale_output": "FAIL_SIM_CORRECTNESS"
+      },
+      "task": "492-kcl-inductor-idt-voltage"
+    },
+    {
+      "all_negatives_behavior_rejected": true,
+      "checker_task_id": "v3_493_continuous_laplace_nd_filter",
+      "gold_meets_expectation": true,
+      "gold_status": "PASS",
+      "negative_behavior_rejected_count": 5,
+      "negative_count": 5,
+      "negative_statuses": {
+        "neg_001_force_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_002_wrong_threshold": "FAIL_SIM_CORRECTNESS",
+        "neg_003_reset_bias": "FAIL_SIM_CORRECTNESS",
+        "neg_004_metric_offset": "FAIL_SIM_CORRECTNESS",
+        "neg_005_scale_output": "FAIL_SIM_CORRECTNESS"
+      },
+      "task": "493-continuous-laplace-nd-filter"
+    },
+    {
+      "all_negatives_behavior_rejected": true,
+      "checker_task_id": "v3_494_continuous_zi_nd_filter",
+      "gold_meets_expectation": true,
+      "gold_status": "PASS",
+      "negative_behavior_rejected_count": 5,
+      "negative_count": 5,
+      "negative_statuses": {
+        "neg_001_force_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_002_wrong_threshold": "FAIL_SIM_CORRECTNESS",
+        "neg_003_reset_bias": "FAIL_SIM_CORRECTNESS",
+        "neg_004_metric_offset": "FAIL_SIM_CORRECTNESS",
+        "neg_005_scale_output": "FAIL_SIM_CORRECTNESS"
+      },
+      "task": "494-continuous-zi-nd-filter"
+    }
+  ]
+}

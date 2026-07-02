@@ -3,11 +3,11 @@ global 0
 
 ahdl_include "logic_assign_inverter.vams"
 
-Va (a 0) vsource type=pwl wave=[0 0.0 249n 0.0 250n 1.0 500n 1.0]
-Vb (b 0) vsource dc=1.0 type=dc
-Ven (en 0) vsource type=pwl wave=[0 1.0 349n 1.0 350n 0.0 500n 0.0]
+Va (a 0) vsource type=pwl wave=[0 0.0 179n 0.0 180n 1.0 359n 1.0 360n 0.0 650n 0.0]
+Vb (b 0) vsource type=pwl wave=[0 1.0 459n 1.0 460n 0.0 650n 0.0]
+Ven (en 0) vsource type=pwl wave=[0 1.0 419n 1.0 420n 0.0 650n 0.0]
 
 XDUT (a b en y) logic_assign_inverter
 
-tran tran stop=500n
+tran tran stop=650n
 save a b en y

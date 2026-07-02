@@ -23,6 +23,8 @@ Keep the model behavioral and do not introduce current contributions.
 
 Declare and call a Verilog-A task named `update_outputs` that accepts a real sample and an integer mode code. The task must update module-level `out_v` and `metric_v`.
 
+## Required Behavior
+
 Required task behavior:
 
 - mode `0`: pass the sample through unchanged.

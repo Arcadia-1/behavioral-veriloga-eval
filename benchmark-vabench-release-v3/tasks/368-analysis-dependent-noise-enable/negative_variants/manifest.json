@@ -7,35 +7,40 @@
       "files": [
         "neg_001_zero_noise/analysis_dependent_noise_enable.va"
       ],
-      "expected": "compile_but_fail_full_behavior_under_noise_or_ac_simulator"
+      "expected": "compile_but_fail_full_behavior_under_noise_or_ac_simulator",
+      "description": "Analysis Dependent Noise Enable: implements a plausible but incomplete behavior that passes shallow checks and fails the full visible/hidden contract."
     },
     {
       "id": "neg_002_wrong_label",
       "files": [
         "neg_002_wrong_label/analysis_dependent_noise_enable.va"
       ],
-      "expected": "compile_but_fail_full_behavior_under_noise_or_ac_simulator"
+      "expected": "compile_but_fail_full_behavior_under_noise_or_ac_simulator",
+      "description": "Analysis Dependent Noise Enable: uses a shifted or inverted decision condition that can pass one mode but fails boundary cases."
     },
     {
       "id": "neg_003_disable_analysis",
       "files": [
         "neg_003_disable_analysis/analysis_dependent_noise_enable.va"
       ],
-      "expected": "compile_but_fail_full_behavior_under_noise_or_ac_simulator"
+      "expected": "compile_but_fail_full_behavior_under_noise_or_ac_simulator",
+      "description": "Analysis Dependent Noise Enable: implements a plausible but incomplete behavior that passes shallow checks and fails the full visible/hidden contract."
     },
     {
       "id": "neg_004_wrong_metric",
       "files": [
         "neg_004_wrong_metric/analysis_dependent_noise_enable.va"
       ],
-      "expected": "compile_but_fail_full_behavior_under_noise_or_ac_simulator"
+      "expected": "compile_but_fail_full_behavior_under_noise_or_ac_simulator",
+      "description": "Analysis Dependent Noise Enable: implements a plausible but incomplete behavior that passes shallow checks and fails the full visible/hidden contract."
     },
     {
       "id": "neg_005_scale_output",
       "files": [
         "neg_005_scale_output/analysis_dependent_noise_enable.va"
       ],
-      "expected": "compile_but_fail_full_behavior_under_noise_or_ac_simulator"
+      "expected": "compile_but_fail_full_behavior_under_noise_or_ac_simulator",
+      "description": "Analysis Dependent Noise Enable: uses a wrong gain or scale factor, leaving shape plausible while calibrated checks fail."
     }
   ]
 }

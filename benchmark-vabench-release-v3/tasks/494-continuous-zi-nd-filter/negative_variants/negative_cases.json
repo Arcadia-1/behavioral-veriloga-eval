@@ -1,0 +1,39 @@
+{
+  "negative_cases": [
+    {
+      "id": "neg_001_force_zero",
+      "why_wrong": "Continuous Zi Nd Filter: forces the main output to zero, so coarse compilation passes but behavioral stimulus points fail.",
+      "files": [
+        "neg_001_force_zero/continuous_zi_nd_filter.va"
+      ]
+    },
+    {
+      "id": "neg_002_wrong_threshold",
+      "why_wrong": "Continuous Zi Nd Filter: preserves the required zi_nd signature but inverts the sampled IIR output, so compilation passes while the dynamic response is wrong.",
+      "files": [
+        "neg_002_wrong_threshold/continuous_zi_nd_filter.va"
+      ]
+    },
+    {
+      "id": "neg_003_reset_bias",
+      "why_wrong": "Continuous Zi Nd Filter: mishandles reset or initialization, passing steady-state samples but failing startup or recovery checks.",
+      "files": [
+        "neg_003_reset_bias/continuous_zi_nd_filter.va"
+      ]
+    },
+    {
+      "id": "neg_004_metric_offset",
+      "why_wrong": "Continuous Zi Nd Filter: keeps the main datapath plausible while reporting the wrong metric value.",
+      "files": [
+        "neg_004_metric_offset/continuous_zi_nd_filter.va"
+      ]
+    },
+    {
+      "id": "neg_005_scale_output",
+      "why_wrong": "Continuous Zi Nd Filter: uses a wrong gain or scale factor, leaving shape plausible while calibrated checks fail.",
+      "files": [
+        "neg_005_scale_output/continuous_zi_nd_filter.va"
+      ]
+    }
+  ]
+}

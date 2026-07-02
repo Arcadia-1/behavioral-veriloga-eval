@@ -1,5 +1,13 @@
 simulator lang=spectre
 global 0
-// Visible smoke skeleton. Evaluator supplies the candidate Verilog-A artifact.
-tran tran stop=80n
-save vin clk mode rst out metric
+
+ahdl_include "always_enable_saturating_counter.vams"
+
+Vclk (clk 0) vsource type=pwl wave=[0 0.0 49n 0.0 50n 1.0 99n 1.0 100n 0.0 149n 0.0 150n 1.0 199n 1.0 200n 0.0 249n 0.0 250n 1.0 299n 1.0 300n 0.0 349n 0.0 350n 1.0 399n 1.0 400n 0.0 449n 0.0 450n 1.0 499n 1.0 500n 0.0 549n 0.0 550n 1.0 600n 1.0]
+Vrst (rst 0) vsource type=pwl wave=[0 1.0 74n 1.0 75n 0.0 600n 0.0]
+Ven (en 0) vsource type=pwl wave=[0 1.0 199n 1.0 200n 0.0 299n 0.0 300n 1.0 600n 1.0]
+
+XDUT (clk rst en q1 q0) always_enable_saturating_counter
+
+tran tran stop=600n
+save clk rst en q0 q1

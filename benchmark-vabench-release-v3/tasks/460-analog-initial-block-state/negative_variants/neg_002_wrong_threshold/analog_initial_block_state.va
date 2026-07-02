@@ -4,9 +4,9 @@
 module analog_initial_block_state (input electrical vin, output electrical out);
 real init_v;
 analog initial begin
-    init_v = 0.25;
+    init_v = 0.50;
 end
 analog begin
-    V(out) <+ ((init_v) > 0.55 ? 0.9 : 0.0) + V(vin);
+    V(out) <+ init_v + V(vin);
 end
 endmodule

@@ -39,15 +39,15 @@ def main() -> int:
             for item in preflight:
                 print(item)
             return 1
-        old = os.environ.get("EVAS_ENGINE")
-        os.environ["EVAS_ENGINE"] = "python"
+        old_worker = os.environ.get("VAEVAS_EVAS_PERSISTENT_WORKER")
+        os.environ["VAEVAS_EVAS_PERSISTENT_WORKER"] = "0"
         try:
             result = run_evas(run_dir, run_dir / "tb_visible_smoke.scs", run_dir / "out", timeout_s=30)
         finally:
-            if old is None:
-                os.environ.pop("EVAS_ENGINE", None)
+            if old_worker is None:
+                os.environ.pop("VAEVAS_EVAS_PERSISTENT_WORKER", None)
             else:
-                os.environ["EVAS_ENGINE"] = old
+                os.environ["VAEVAS_EVAS_PERSISTENT_WORKER"] = old_worker
         combined = (result.stdout or "") + "\n" + (result.stderr or "")
         if result.returncode != 0:
             print("VISIBLE_SMOKE_EVAS_FAIL")

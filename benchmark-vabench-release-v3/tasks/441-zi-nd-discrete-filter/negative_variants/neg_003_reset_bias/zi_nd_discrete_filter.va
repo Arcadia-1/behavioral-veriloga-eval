@@ -30,8 +30,8 @@ analog begin
             out_v = zi_nd(V(vin), {1.0}, {1.0, 1.0}, 1n);
             metric_v = out_v;
             count_q = count_q + 1;
-            out_v = (V(rst) > 0.45 ? 0.25 : (out_v));
-            metric_v = (V(rst) > 0.45 ? 0.25 : (metric_v));
+            out_v = out_v + 0.02;
+            metric_v = metric_v + 0.02;
         end
     end
     V(out) <+ transition(out_v, 0.0, tr, tr);

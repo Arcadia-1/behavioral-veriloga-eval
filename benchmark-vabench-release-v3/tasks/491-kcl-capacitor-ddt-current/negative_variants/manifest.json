@@ -2,38 +2,43 @@
   "negative_variants": [
     {
       "id": "neg_001_force_zero",
-      "description": "Force output low after otherwise plausible computation.",
+      "description": "Kcl Capacitor Ddt Current: clips negative ddt current to zero, so rising-ramp smoke tests can pass but falling-ramp checks fail.",
       "files": [
         "neg_001_force_zero/kcl_capacitor_ddt_current.va"
-      ]
+      ],
+      "expected": "compile_but_fail_full_behavior"
     },
     {
       "id": "neg_002_wrong_threshold",
-      "description": "Use a shifted threshold or condition that fails boundary checks.",
+      "description": "Kcl Capacitor Ddt Current: doubles the ddt current, preserving sign and timing but failing calibrated magnitude checks.",
       "files": [
         "neg_002_wrong_threshold/kcl_capacitor_ddt_current.va"
-      ]
+      ],
+      "expected": "compile_but_fail_full_behavior"
     },
     {
       "id": "neg_003_reset_bias",
-      "description": "Bias reset/state initialization so startup-sensitive tests fail.",
+      "description": "Kcl Capacitor Ddt Current: contributes into the reversed branch direction, so timing looks plausible but signed current checks fail.",
       "files": [
         "neg_003_reset_bias/kcl_capacitor_ddt_current.va"
-      ]
+      ],
+      "expected": "compile_but_fail_full_behavior"
     },
     {
       "id": "neg_004_metric_offset",
-      "description": "Offset the metric output while leaving the main path plausible.",
+      "description": "Kcl Capacitor Ddt Current: differentiates V(p) instead of V(p,n), so n=0 smoke tests can pass but dynamic-reference checks fail.",
       "files": [
         "neg_004_metric_offset/kcl_capacitor_ddt_current.va"
-      ]
+      ],
+      "expected": "compile_but_fail_full_behavior"
     },
     {
       "id": "neg_005_scale_output",
-      "description": "Scale the final output so calibrated checks fail.",
+      "description": "Kcl Capacitor Ddt Current: uses 0.8x capacitance, preserving waveform shape but failing calibrated current samples.",
       "files": [
         "neg_005_scale_output/kcl_capacitor_ddt_current.va"
-      ]
+      ],
+      "expected": "compile_but_fail_full_behavior"
     }
   ]
 }

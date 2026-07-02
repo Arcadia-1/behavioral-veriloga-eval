@@ -2,38 +2,43 @@
   "negative_variants": [
     {
       "id": "neg_001_force_zero",
-      "description": "Force output low after otherwise plausible computation.",
+      "description": "Analog Primitive Resistor Instance: instantiates a resistor primitive, but uses .r(1.0) instead of the required 1000.0 ohm value.",
       "files": [
         "neg_001_force_zero/analog_primitive_resistor_instance.va"
-      ]
+      ],
+      "expected": "compile_but_fail_full_behavior"
     },
     {
       "id": "neg_002_wrong_threshold",
-      "description": "Use a shifted threshold or condition that fails boundary checks.",
+      "description": "Analog Primitive Resistor Instance: instantiates the correct primitive shape, but uses .r(10000.0) and fails the required value contract.",
       "files": [
         "neg_002_wrong_threshold/analog_primitive_resistor_instance.va"
-      ]
+      ],
+      "expected": "compile_but_fail_full_behavior"
     },
     {
       "id": "neg_003_reset_bias",
-      "description": "Bias reset/state initialization so startup-sensitive tests fail.",
+      "description": "Analog Primitive Resistor Instance: instantiates the correct primitive shape, but uses .r(500.0) and fails the required value contract.",
       "files": [
         "neg_003_reset_bias/analog_primitive_resistor_instance.va"
-      ]
+      ],
+      "expected": "compile_but_fail_full_behavior"
     },
     {
       "id": "neg_004_metric_offset",
-      "description": "Offset the metric output while leaving the main path plausible.",
+      "description": "Analog Primitive Resistor Instance: instantiates the correct primitive shape, but uses .r(1500.0) and fails the required value contract.",
       "files": [
         "neg_004_metric_offset/analog_primitive_resistor_instance.va"
-      ]
+      ],
+      "expected": "compile_but_fail_full_behavior"
     },
     {
       "id": "neg_005_scale_output",
-      "description": "Scale the final output so calibrated checks fail.",
+      "description": "Analog Primitive Resistor Instance: instantiates the correct primitive shape, but uses .r(800.0) and fails the required value contract.",
       "files": [
         "neg_005_scale_output/analog_primitive_resistor_instance.va"
-      ]
+      ],
+      "expected": "compile_but_fail_full_behavior"
     }
   ]
 }

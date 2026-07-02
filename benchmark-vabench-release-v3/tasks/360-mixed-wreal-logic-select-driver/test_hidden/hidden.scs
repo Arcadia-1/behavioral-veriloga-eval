@@ -6,11 +6,11 @@ ahdl_include "mixed_wreal_logic_select_driver.vams"
 Vvin (vin 0) vsource dc=0.0
 Vclk (clk 0) vsource dc=0.0
 Ven (en 0) vsource dc=1.0
-Vsel (sel 0) vsource type=pwl wave=[0 0.0 119n 0.0 120n 1.0 319n 1.0 320n 0.0 459n 0.0 460n 1.0 600n 1.0]
-Va (a 0) vsource type=pwl wave=[0 0.25 179n 0.25 180n 0.70 419n 0.70 420n 0.35 600n 0.35]
-Vb (b 0) vsource type=pwl wave=[0 0.80 259n 0.80 260n 0.15 600n 0.15]
+Vsel (sel 0) vsource type=pwl wave=[0 0.0 139n 0.0 140n 1.0 359n 1.0 360n 0.0 539n 0.0 540n 1.0 760n 1.0]
+Va (a 0) vsource type=pwl wave=[0 0.20 199n 0.20 200n 0.68 459n 0.68 460n 0.42 760n 0.42]
+Vb (b 0) vsource type=pwl wave=[0 0.78 279n 0.78 280n 0.22 579n 0.22 580n 0.56 760n 0.56]
 
 XDUT (vin clk en sel a b vout) mixed_wreal_logic_select_driver
 
-tran tran stop=600n
+tran tran stop=760n
 save vin clk en sel a b vout

@@ -1,0 +1,39 @@
+{
+  "negative_cases": [
+    {
+      "id": "neg_001_force_zero",
+      "why_wrong": "Inherited Mfactor Parameter: forces the main output to zero, so coarse compilation passes but behavioral stimulus points fail.",
+      "files": [
+        "neg_001_force_zero/inherited_mfactor_parameter.va"
+      ]
+    },
+    {
+      "id": "neg_002_wrong_threshold",
+      "why_wrong": "Inherited Mfactor Parameter: uses a shifted or inverted decision condition that can pass one mode but fails boundary cases.",
+      "files": [
+        "neg_002_wrong_threshold/inherited_mfactor_parameter.va"
+      ]
+    },
+    {
+      "id": "neg_003_reset_bias",
+      "why_wrong": "Inherited Mfactor Parameter: mishandles reset or initialization, passing steady-state samples but failing startup or recovery checks.",
+      "files": [
+        "neg_003_reset_bias/inherited_mfactor_parameter.va"
+      ]
+    },
+    {
+      "id": "neg_004_metric_offset",
+      "why_wrong": "Inherited Mfactor Parameter: keeps the main datapath plausible while reporting the wrong metric value.",
+      "files": [
+        "neg_004_metric_offset/inherited_mfactor_parameter.va"
+      ]
+    },
+    {
+      "id": "neg_005_scale_output",
+      "why_wrong": "Inherited Mfactor Parameter: uses a wrong gain or scale factor, leaving shape plausible while calibrated checks fail.",
+      "files": [
+        "neg_005_scale_output/inherited_mfactor_parameter.va"
+      ]
+    }
+  ]
+}

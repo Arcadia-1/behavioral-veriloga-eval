@@ -3,12 +3,12 @@ global 0
 
 ahdl_include "always_posedged_dff.vams"
 
-Vclk (clk 0) vsource type=pwl wave=[0 0.0 49n 0.0 50n 1.0 99n 1.0 100n 0.0 149n 0.0 150n 1.0 199n 1.0 200n 0.0 249n 0.0 250n 1.0 299n 1.0 300n 0.0 349n 0.0 350n 1.0 399n 1.0 400n 0.0 449n 0.0 450n 1.0 500n 1.0]
-Vrst (rst 0) vsource type=pwl wave=[0 1.0 74n 1.0 75n 0.0 500n 0.0]
-Vd (d 0) vsource type=pwl wave=[0 1.0 199n 1.0 200n 0.0 399n 0.0 400n 1.0 500n 1.0]
-Ven (en 0) vsource type=pwl wave=[0 1.0 199n 1.0 200n 0.0 299n 0.0 300n 1.0 500n 1.0]
+Vclk (clk 0) vsource type=pwl wave=[0 0.0 59n 0.0 60n 1.0 99n 1.0 100n 0.0 159n 0.0 160n 1.0 199n 1.0 200n 0.0 259n 0.0 260n 1.0 299n 1.0 300n 0.0 359n 0.0 360n 1.0 399n 1.0 400n 0.0 459n 0.0 460n 1.0 499n 1.0 500n 0.0 559n 0.0 560n 1.0 599n 1.0 600n 0.0 659n 0.0 660n 1.0 720n 1.0]
+Vrst (rst 0) vsource type=pwl wave=[0 1.0 89n 1.0 90n 0.0 720n 0.0]
+Vd (d 0) vsource type=pwl wave=[0 1.0 319n 1.0 320n 0.0 519n 0.0 520n 1.0 720n 1.0]
+Ven (en 0) vsource type=pwl wave=[0 1.0 219n 1.0 220n 0.0 339n 0.0 340n 1.0 479n 1.0 480n 0.0 599n 0.0 600n 1.0 720n 1.0]
 
 XDUT (clk rst d en q) always_posedged_dff
 
-tran tran stop=500n
+tran tran stop=720n
 save clk rst d en q

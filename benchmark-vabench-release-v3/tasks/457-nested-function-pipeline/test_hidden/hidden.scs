@@ -1,5 +1,11 @@
 simulator lang=spectre
 global 0
-// Hidden behavior skeleton. Evaluator supplies the candidate Verilog-A/AMS artifact and stricter checks.
-tran tran stop=160n
-save vin clk mode rst out metric
+
+ahdl_include "nested_function_pipeline.va"
+
+Vvin (vin 0) vsource type=pwl wave=[0 -0.75 99n -0.75 100n 0.25 199n 0.25 200n 0.90 299n 0.90 300n -0.10 400n -0.10]
+
+XDUT (vin out) nested_function_pipeline
+
+tran tran stop=400n
+save vin out

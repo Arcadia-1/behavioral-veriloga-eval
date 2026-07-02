@@ -3,9 +3,9 @@ global 0
 
 ahdl_include "idtmod_wrapped_ramp_source.va"
 
-Vvin (vin 0) vsource dc=0.5 type=dc
-Vmode (mode 0) vsource dc=0.6 type=dc
-Vrst (rst 0) vsource type=pwl wave=[0 0.9 95n 0.9 100n 0.0 900n 0.0]
+Vvin (vin 0) vsource type=pwl wave=[0 0.30 249n 0.30 250n 0.70 549n 0.70 550n 0.45 900n 0.45]
+Vmode (mode 0) vsource dc=0.55 type=dc
+Vrst (rst 0) vsource type=pwl wave=[0 0.9 74n 0.9 80n 0.0 649n 0.0 650n 0.9 699n 0.9 700n 0.0 900n 0.0]
 Vclk (clk 0) vsource dc=0.0 type=dc
 
 XDUT (vin clk mode rst out metric) idtmod_wrapped_ramp_source

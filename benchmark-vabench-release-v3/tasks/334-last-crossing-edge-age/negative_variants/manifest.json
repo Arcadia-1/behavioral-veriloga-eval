@@ -7,35 +7,40 @@
       "files": [
         "neg_001_drive_out_zero/last_crossing_edge_age.va"
       ],
-      "expected": "compile_but_fail_full_behavior"
+      "expected": "compile_but_fail_full_behavior",
+      "description": "Last Crossing Edge Age: forces the main output to zero, so coarse compilation passes but behavioral stimulus points fail."
     },
     {
       "id": "neg_002_drive_metric_zero",
       "files": [
         "neg_002_drive_metric_zero/last_crossing_edge_age.va"
       ],
-      "expected": "compile_but_fail_full_behavior"
+      "expected": "compile_but_fail_full_behavior",
+      "description": "Last Crossing Edge Age: keeps the main datapath plausible while reporting the wrong metric value."
     },
     {
       "id": "neg_003_reset_polarity_wrong",
       "files": [
         "neg_003_reset_polarity_wrong/last_crossing_edge_age.va"
       ],
-      "expected": "compile_but_fail_full_behavior"
+      "expected": "compile_but_fail_full_behavior",
+      "description": "Last Crossing Edge Age: mishandles reset or initialization, passing steady-state samples but failing startup or recovery checks."
     },
     {
       "id": "neg_004_logic_threshold_shifted",
       "files": [
         "neg_004_logic_threshold_shifted/last_crossing_edge_age.va"
       ],
-      "expected": "compile_but_fail_full_behavior"
+      "expected": "compile_but_fail_full_behavior",
+      "description": "Last Crossing Edge Age: uses a shifted or inverted decision condition that can pass one mode but fails boundary cases."
     },
     {
       "id": "neg_005_output_scale_low",
       "files": [
         "neg_005_output_scale_low/last_crossing_edge_age.va"
       ],
-      "expected": "compile_but_fail_full_behavior"
+      "expected": "compile_but_fail_full_behavior",
+      "description": "Last Crossing Edge Age: updates on the wrong edge or event, so simple static samples pass but timed checks fail."
     }
   ]
 }

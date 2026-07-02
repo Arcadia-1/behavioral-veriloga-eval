@@ -6,6 +6,6 @@ parameter string tmdata = "gain_profile.tbl";
 real yv;
 analog begin
     yv = $table_model(V(in), tmdata, "1L");
-    V(out) <+ transition(yv, 0.0, 200p, 200p);
+    V(out) <+ transition(yv - 0.1, 0.0, 200p, 200p);
 end
 endmodule

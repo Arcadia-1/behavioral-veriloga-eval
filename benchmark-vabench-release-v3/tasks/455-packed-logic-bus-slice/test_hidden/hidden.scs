@@ -1,5 +1,16 @@
 simulator lang=spectre
 global 0
-// Hidden behavior skeleton. Evaluator supplies the candidate Verilog-A/AMS artifact and stricter checks.
+ahdl_include "../solution/packed_logic_bus_slice.vams"
+
+Va0 (a0 0) vsource type=pulse val0=0 val1=1 period=40n delay=5n rise=100p fall=100p width=15n
+Va1 (a1 0) vsource type=pulse val0=1 val1=0 period=55n delay=8n rise=100p fall=100p width=20n
+Va2 (a2 0) vsource dc=0
+Va3 (a3 0) vsource dc=0
+Va4 (a4 0) vsource dc=0
+Va5 (a5 0) vsource dc=0
+Va6 (a6 0) vsource type=pulse val0=0 val1=1 period=65n delay=12n rise=100p fall=100p width=25n
+Va7 (a7 0) vsource type=pulse val0=1 val1=0 period=70n delay=20n rise=100p fall=100p width=22n
+Xdut ([a7 a6 a5 a4 a3 a2 a1 a0] [y3 y2 y1 y0]) packed_logic_bus_slice
+
 tran tran stop=160n
-save vin clk mode rst out metric
+save a7 a6 a1 a0 y3 y2 y1 y0

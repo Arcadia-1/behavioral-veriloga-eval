@@ -4,34 +4,39 @@
     "files": [
       "neg_001_force_zero/always_resettable_toggle.vams"
     ],
-    "expected": "compile_but_fail_full_behavior_under_ams_simulator"
+    "expected": "compile_but_fail_full_behavior_under_ams_simulator",
+    "why_wrong": "Always Resettable Toggle: forces the main output to zero, so coarse compilation passes but behavioral stimulus points fail."
   },
   {
     "id": "neg_002_invert_select",
     "files": [
       "neg_002_invert_select/always_resettable_toggle.vams"
     ],
-    "expected": "compile_but_fail_full_behavior_under_ams_simulator"
+    "expected": "compile_but_fail_full_behavior_under_ams_simulator",
+    "why_wrong": "Always Resettable Toggle: mishandles reset or initialization, passing steady-state samples but failing startup or recovery checks."
   },
   {
     "id": "neg_003_drop_reset",
     "files": [
       "neg_003_drop_reset/always_resettable_toggle.vams"
     ],
-    "expected": "compile_but_fail_full_behavior_under_ams_simulator"
+    "expected": "compile_but_fail_full_behavior_under_ams_simulator",
+    "why_wrong": "Always Resettable Toggle: mishandles reset or initialization, passing steady-state samples but failing startup or recovery checks."
   },
   {
     "id": "neg_004_wrong_edge",
     "files": [
       "neg_004_wrong_edge/always_resettable_toggle.vams"
     ],
-    "expected": "compile_but_fail_full_behavior_under_ams_simulator"
+    "expected": "compile_but_fail_full_behavior_under_ams_simulator",
+    "why_wrong": "Always Resettable Toggle: mishandles reset or initialization, passing steady-state samples but failing startup or recovery checks."
   },
   {
     "id": "neg_005_scale_low",
     "files": [
       "neg_005_scale_low/always_resettable_toggle.vams"
     ],
-    "expected": "compile_but_fail_full_behavior_under_ams_simulator"
+    "expected": "compile_but_fail_full_behavior_under_ams_simulator",
+    "why_wrong": "Always Resettable Toggle: mishandles reset or initialization, passing steady-state samples but failing startup or recovery checks."
   }
 ]

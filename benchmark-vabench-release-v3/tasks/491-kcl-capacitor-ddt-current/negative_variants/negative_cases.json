@@ -1,0 +1,39 @@
+{
+  "negative_cases": [
+    {
+      "id": "neg_001_force_zero",
+      "why_wrong": "Kcl Capacitor Ddt Current: clips negative ddt current to zero, so rising-ramp smoke tests can pass but falling-ramp checks fail.",
+      "files": [
+        "neg_001_force_zero/kcl_capacitor_ddt_current.va"
+      ]
+    },
+    {
+      "id": "neg_002_wrong_threshold",
+      "why_wrong": "Kcl Capacitor Ddt Current: doubles the ddt current, preserving sign and timing but failing calibrated magnitude checks.",
+      "files": [
+        "neg_002_wrong_threshold/kcl_capacitor_ddt_current.va"
+      ]
+    },
+    {
+      "id": "neg_003_reset_bias",
+      "why_wrong": "Kcl Capacitor Ddt Current: contributes into the reversed branch direction, so timing looks plausible but signed current checks fail.",
+      "files": [
+        "neg_003_reset_bias/kcl_capacitor_ddt_current.va"
+      ]
+    },
+    {
+      "id": "neg_004_metric_offset",
+      "why_wrong": "Kcl Capacitor Ddt Current: differentiates V(p) instead of V(p,n), so n=0 smoke tests can pass but dynamic-reference checks fail.",
+      "files": [
+        "neg_004_metric_offset/kcl_capacitor_ddt_current.va"
+      ]
+    },
+    {
+      "id": "neg_005_scale_output",
+      "why_wrong": "Kcl Capacitor Ddt Current: uses 0.8x capacitance, preserving waveform shape but failing calibrated current samples.",
+      "files": [
+        "neg_005_scale_output/kcl_capacitor_ddt_current.va"
+      ]
+    }
+  ]
+}

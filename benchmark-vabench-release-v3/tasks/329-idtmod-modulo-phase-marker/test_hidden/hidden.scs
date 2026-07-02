@@ -3,8 +3,8 @@ global 0
 
 ahdl_include "idtmod_modulo_phase_marker.va"
 
-Vvin (vin 0) vsource dc=0.5 type=dc
-Vmode (mode 0) vsource dc=0.9 type=dc
+Vvin (vin 0) vsource type=pwl wave=[0 0.20 199n 0.20 200n 0.80 499n 0.80 500n 0.35 750n 0.35]
+Vmode (mode 0) vsource type=pwl wave=[0 0.9 249n 0.9 250n 0.0 549n 0.0 550n 0.9 750n 0.9]
 Vrst (rst 0) vsource dc=0.0 type=dc
 Vclk (clk 0) vsource dc=0.0 type=dc
 

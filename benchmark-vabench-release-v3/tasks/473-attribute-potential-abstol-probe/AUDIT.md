@@ -5,3 +5,4 @@
 - Required syntax focus: `Access a node potential attribute through hierarchical attribute syntax.`
 - Certification scope: `language_extension_not_part_of_original_full_300_claim`
 - Tier: `syntax-extension-candidate`
+- EVAS status: `behavior promotion in progress`

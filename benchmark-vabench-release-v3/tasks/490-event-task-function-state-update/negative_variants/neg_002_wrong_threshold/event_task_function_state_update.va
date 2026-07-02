@@ -21,7 +21,7 @@ task update_state;
 endtask
 analog begin
     @(initial_step) begin count = 0; q = 0.0; end
-    @(cross(V(clk) - 0.55, +1)) begin
+    @(cross(V(clk) - 1.10, +1)) begin
         update_state(V(in));
     end
     V(out) <+ transition(q, 0.0, 200p, 200p);

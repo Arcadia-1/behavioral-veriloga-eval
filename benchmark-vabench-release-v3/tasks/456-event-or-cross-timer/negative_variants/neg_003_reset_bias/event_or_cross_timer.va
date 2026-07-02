@@ -8,8 +8,8 @@ integer event_count;
 analog begin
     @(initial_step) begin out_v = 0.0; event_count = 0; end
     @(cross(V(clk) - vth, +1) or timer(1n, 1n)) begin
-        out_v = (V(rst) > 0.45 ? 0.25 : (V(vin)));
-        event_count = event_count + 1;
+        out_v = V(vin);
+        event_count = event_count + 2;
     end
     V(out) <+ transition(out_v, 0.0, tr, tr);
     V(metric) <+ transition(event_count, 0.0, tr, tr);

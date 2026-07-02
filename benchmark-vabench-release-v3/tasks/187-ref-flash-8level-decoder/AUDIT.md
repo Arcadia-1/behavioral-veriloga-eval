@@ -1,9 +1,7 @@
-# Source Ref Flash 8level Decoder Audit
+# Reference Flash 8-Level Decoder Audit
 
-- Source: `zhangm/tb_REF_FLASH_8L_DEC.va` from the exact-deduplicated historical Verilog-A corpus.
-- Scenario: 8-level flash thermometer count and residue calculation.
-- Import status: certified only after visible compile, EVAS hidden semantic check, Spectre AX hidden semantic check, and EVAS/Spectre parity pass.
-- Evaluation: stable sampled behavior from `tran.csv`; raw simulator timestep equality is not used.
-- Evidence:
-  - `WORK/source-import-batch13-evas/187-ref-flash-8level-decoder`
-  - `WORK/source-import-batch13-spectre/187-ref-flash-8level-decoder`
+- Gate 1: kept as an independent flash sub-ADC backend because it combines thermometer count normalization with centered residue generation.
+- Public contract: count eight thresholded thermometer taps on rising `clks`, output the normalized count, and compute residue from the sampled input minus the mid-code reference correction.
+- Cadence reference correspondence: the local ADC reference supports code generation/quantization patterns; this task adds the residue path used by sub-ADC and pipeline/flash backend models.
+- Duplicate review: stronger than simple thermometer fraction rows because it exposes both decoded code and analog residue, so it is not just a tap-count variant.
+- Evaluation note: hidden coverage should vary both thermometer count and `vin`; checker expectations should be derived from saved taps, input, and clock samples.

@@ -3,9 +3,9 @@ global 0
 
 ahdl_include "above_window_qualifier.va"
 
-Vvin (vin 0) vsource type=pwl wave=[0 0.1 99n 0.1 100n 0.8 180n 0.8 181n 0.1 299n 0.1 300n 0.8 360n 0.8 361n 0.1 689n 0.1 690n 0.8 760n 0.8]
+Vvin (vin 0) vsource type=pwl wave=[0 0.1 89n 0.1 90n 0.76 160n 0.76 161n 0.1 239n 0.1 240n 0.80 330n 0.80 331n 0.1 639n 0.1 640n 0.78 760n 0.78]
 Vmode (mode 0) vsource dc=0.0 type=dc
-Vrst (rst 0) vsource type=pwl wave=[0 0.0 449n 0.0 450n 0.9 470n 0.9 471n 0.0 760n 0.0]
+Vrst (rst 0) vsource type=pwl wave=[0 0.0 419n 0.0 420n 0.9 449n 0.9 450n 0.0 760n 0.0]
 Vclk (clk 0) vsource dc=0.0 type=dc
 
 XDUT (vin clk mode rst out metric) above_window_qualifier

@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import csv
 import json
+import re
 from collections import Counter
 from datetime import date
 from pathlib import Path
@@ -13,10 +14,17 @@ ROOT = Path(__file__).resolve().parents[1]
 PACKAGE_ROOT = ROOT / "benchmark-vabench-release-v3"
 REPORTS_ROOT = PACKAGE_ROOT / "reports"
 TASKS_JSON = PACKAGE_ROOT / "TASKS.json"
+CHECKS_YAML = PACKAGE_ROOT / "CHECKS.yaml"
 REPORT_JSON = REPORTS_ROOT / "layered_certification.json"
 REPORT_MD = REPORTS_ROOT / "layered_certification.md"
 REPORT_CSV = REPORTS_ROOT / "layered_certification_tasks.csv"
+STAGED_BLOCKER_JSON = REPORTS_ROOT / "staged_blocker_matrix.json"
+STAGED_BLOCKER_MD = REPORTS_ROOT / "staged_blocker_matrix.md"
+STAGED_BLOCKER_CSV = REPORTS_ROOT / "staged_blocker_matrix.csv"
+BEHAVIOR_EXTENSION_EVIDENCE_JSON = REPORTS_ROOT / "behavior_certified_extension_task_evidence.json"
 EXTENSION_SOP_AUDIT_JSON = REPORTS_ROOT / "extension_sop_audit.json"
+VERIFY_LAYERED_JSON = REPORTS_ROOT / "verify_301_494_layered.json"
+STAGED_GOLD_PROBE_JSON = REPORTS_ROOT / "staged_promotion_gold_probe.json"
 
 
 CORE_TIERS = {
@@ -100,11 +108,71 @@ def read_sop_ready_extension_tasks() -> set[str]:
     return ready
 
 
+def read_sop_audit() -> dict[str, Any]:
+    if not EXTENSION_SOP_AUDIT_JSON.exists():
+        return {}
+    try:
+        return json.loads(EXTENSION_SOP_AUDIT_JSON.read_text(encoding="utf-8"))
+    except json.JSONDecodeError:
+        return {}
+
+
+def read_layered_verification_summary() -> dict[str, Any]:
+    if not VERIFY_LAYERED_JSON.exists():
+        return {}
+    try:
+        payload = json.loads(VERIFY_LAYERED_JSON.read_text(encoding="utf-8"))
+    except json.JSONDecodeError:
+        return {}
+    summary = payload.get("summary")
+    return summary if isinstance(summary, dict) else {}
+
+
+def read_staged_gold_probe() -> dict[str, Any]:
+    if not STAGED_GOLD_PROBE_JSON.exists():
+        return {}
+    try:
+        payload = json.loads(STAGED_GOLD_PROBE_JSON.read_text(encoding="utf-8"))
+    except json.JSONDecodeError:
+        return {}
+    return payload if isinstance(payload, dict) else {}
+
+
+def read_checks_issue_urls() -> dict[str, list[str]]:
+    if not CHECKS_YAML.exists():
+        return {}
+    issue_pattern = re.compile(r"https://github\.com/Arcadia-1/EVAS/issues/\d+")
+    issue_urls: dict[str, list[str]] = {}
+    current_key: str | None = None
+    current_lines: list[str] = []
+    for line in CHECKS_YAML.read_text(encoding="utf-8", errors="ignore").splitlines():
+        if line and not line.startswith((" ", "\t")) and line.endswith(": |"):
+            if current_key is not None:
+                urls = sorted(set(issue_pattern.findall("\n".join(current_lines))))
+                if urls:
+                    issue_urls[current_key] = urls
+            current_key = line.split(":", 1)[0]
+            current_lines = []
+            continue
+        if current_key is not None:
+            current_lines.append(line)
+    if current_key is not None:
+        urls = sorted(set(issue_pattern.findall("\n".join(current_lines))))
+        if urls:
+            issue_urls[current_key] = urls
+    return issue_urls
+
+
 def task_number(key: str) -> int:
     return int(key.split("-", 1)[0])
 
 
-def classify_task(key: str, task: dict[str, Any], sop_ready_extension_tasks: set[str]) -> dict[str, Any]:
+def classify_task(
+    key: str,
+    task: dict[str, Any],
+    sop_ready_extension_tasks: set[str],
+    checks_issue_urls: dict[str, list[str]],
+) -> dict[str, Any]:
     tier = str(task.get("tier") or "<none>")
     if tier not in TIER_TO_LAYER:
         raise ValueError(f"unknown tier for {key}: {tier}")
@@ -141,6 +209,7 @@ def classify_task(key: str, task: dict[str, Any], sop_ready_extension_tasks: set
             else "excluded_until_behavior_promotion"
         ),
         "claim_boundary": claim_boundary,
+        "blocking_issue_urls": ";".join(checks_issue_urls.get(key, [])),
         "target": ";".join(task.get("target", [])),
         "syntax_focus": task.get("syntax_focus", ""),
         "certification_scope": task.get("certification_scope", "original_full_300_claim"),
@@ -151,11 +220,159 @@ def counter(rows: list[dict[str, Any]], key: str) -> dict[str, int]:
     return dict(sorted(Counter(str(row[key]) for row in rows).items()))
 
 
+def promotion_command_for(blocked_rows: list[dict[str, Any]]) -> str:
+    numbers = sorted(int(row["task_number"]) for row in blocked_rows)
+    if not numbers:
+        return ""
+    task_filter = ",".join(f"{number:03d}" for number in numbers)
+    return (
+        "PYTHONPATH=runners VAEVAS_DEFAULT_EVAS_ENGINE=python "
+        "VAEVAS_EVAS_PERSISTENT_WORKER=0 PATH=\"$PWD/.venv-evas/bin:$PATH\" "
+        ".venv-evas/bin/python scripts/run_v3_gold_negative_verification.py "
+        f"--start {numbers[0]} --end {numbers[-1]} --tasks {task_filter} "
+        "--include-staged --timeout 120 --jobs 1 "
+        f"--out benchmark-vabench-release-v3/reports/verify_issue_{numbers[0]}_{numbers[-1]}.json"
+    )
+
+
+def task_promotion_command_for(row: dict[str, Any]) -> str:
+    number = int(row["task_number"])
+    task_filter = f"{number:03d}"
+    return (
+        "PYTHONPATH=runners VAEVAS_DEFAULT_EVAS_ENGINE=python "
+        "VAEVAS_EVAS_PERSISTENT_WORKER=0 PATH=\"$PWD/.venv-evas/bin:$PATH\" "
+        ".venv-evas/bin/python scripts/run_v3_gold_negative_verification.py "
+        f"--start {number} --end {number} --tasks {task_filter} "
+        "--include-staged --timeout 120 --jobs 1 "
+        f"--out benchmark-vabench-release-v3/reports/verify_task_{number:03d}.json"
+    )
+
+
+def task_promotion_acceptance_for(row: dict[str, Any]) -> str:
+    return (
+        f"Promote `{row['task_key']}` only after adding repository sim_correct evidence, then require "
+        "1/1 gold PASS, 5/5 negative variants rejected, and zero expectation_fail in the per-task report."
+    )
+
+
+def promotion_acceptance_for(blocked_rows: list[dict[str, Any]]) -> str:
+    task_count = len(blocked_rows)
+    negative_count = task_count * 5
+    return (
+        f"After EVAS support lands, promote the listed {task_count} task(s) by adding sim_correct "
+        "behavior contracts/checkers if missing, then require "
+        f"{task_count}/{task_count} gold PASS, {negative_count}/{negative_count} negative variants rejected, "
+        "and zero expectation_fail in the verification report."
+    )
+
+
+def build_completion_audit(
+    summary: dict[str, Any],
+    sop_audit: dict[str, Any],
+    verification_summary: dict[str, Any],
+    blocking_issues: list[dict[str, Any]],
+) -> dict[str, Any]:
+    sop_summary = sop_audit.get("summary", {}) if isinstance(sop_audit, dict) else {}
+    issue_counts = sop_summary.get("issue_counts", {}) if isinstance(sop_summary, dict) else {}
+    staged_count = summary["compile_supported_candidate_count"]
+    verification_ok = (
+        verification_summary.get("gold_pass") == summary["behavior_certified_extension_count"]
+        and verification_summary.get("gold_fail") == 0
+        and verification_summary.get("negative_accepted") == 0
+        and verification_summary.get("expectation_fail") == 0
+    )
+    fair_eval_ok = summary["behavior_certified_extension_count"] == 194 and staged_count == 0
+    staged_issue_ok = (
+        staged_count == 0
+        or (
+            sum(issue["task_count"] for issue in blocking_issues) == staged_count
+            and all(issue.get("promotion_command") and issue.get("promotion_acceptance") for issue in blocking_issues)
+        )
+    )
+    requirements = [
+        {
+            "requirement": "Scope covers all v3 extension tasks 301-494.",
+            "status": "satisfied" if summary["extension_candidate_count"] == 194 else "not_satisfied",
+            "evidence": f"layered_certification summary reports extension_candidate_count={summary['extension_candidate_count']}.",
+        },
+        {
+            "requirement": "Each extension task has a clear prompt and required behavior section.",
+            "status": "satisfied" if issue_counts.get("missing_required_behavior_section", 0) == 0 else "not_satisfied",
+            "evidence": "extension_sop_audit has no missing_required_behavior_section issue.",
+        },
+        {
+            "requirement": "Each extension task has executable visible and hidden test evidence.",
+            "status": "satisfied" if sop_summary.get("complete_tests_count") == 194 else "not_satisfied",
+            "evidence": f"extension_sop_audit complete_tests_count={sop_summary.get('complete_tests_count')}.",
+        },
+        {
+            "requirement": "Each extension task has five useful negative variants.",
+            "status": "satisfied" if not any(str(key).startswith("negative_count_lt5") for key in issue_counts) else "not_satisfied",
+            "evidence": "extension_sop_audit reports no negative_count_lt5 issues.",
+        },
+        {
+            "requirement": "Each extension task has repository behavior checker evidence and can be scored fairly.",
+            "status": "satisfied" if fair_eval_ok else "partial",
+            "evidence": (
+                f"{summary['behavior_certified_extension_count']} extension tasks are behavior-certified; "
+                f"{staged_count} remain excluded_until_behavior_promotion."
+            ),
+            "gap": "" if fair_eval_ok else (
+                "The remaining staged rows are blocked by EVAS support issues or missing "
+                "behavior-checker evidence; staged_promotion_gold_probe records the current "
+                "per-task blocker."
+            ),
+        },
+        {
+            "requirement": "Behavior-certified extension tasks pass gold verification and reject all negative variants.",
+            "status": "satisfied" if verification_ok else "not_satisfied",
+            "evidence": (
+                f"verify_301_494_layered: gold_pass={verification_summary.get('gold_pass')}, "
+                f"gold_fail={verification_summary.get('gold_fail')}, "
+                f"negative_rejected={verification_summary.get('negative_rejected')}, "
+                f"negative_accepted={verification_summary.get('negative_accepted')}, "
+                f"expectation_fail={verification_summary.get('expectation_fail')}."
+            ),
+        },
+        {
+            "requirement": "Every staged task has a concrete EVAS issue and promotion checklist.",
+            "status": "satisfied" if staged_issue_ok else "not_satisfied",
+            "evidence": (
+                "No staged tasks remain; no EVAS promotion blockers are required."
+                if staged_count == 0
+                else (
+                    f"{len(blocking_issues)} blocking issues cover "
+                    f"{sum(issue['task_count'] for issue in blocking_issues)} staged tasks; "
+                    "staged_promotion_gold_probe records "
+                    f"{staged_count}/{staged_count} staged gold cases still failing the current promotion gate."
+                )
+            ),
+        },
+    ]
+    is_complete = all(item["status"] == "satisfied" for item in requirements)
+    return {
+        "status": "complete" if is_complete else "partial_external_blocked",
+        "is_complete": is_complete,
+        "reason": (
+            "All 194 extension tasks have behavior checker evidence, gold verification, and five rejected negative variants."
+            if is_complete
+            else (
+                f"The full 301-494 objective is not complete because {staged_count} extension tasks still lack "
+                "behavior checker evidence and are excluded until EVAS support issues are resolved."
+            )
+        ),
+        "requirements": requirements,
+    }
+
+
 def build_report() -> dict[str, Any]:
     tasks = read_tasks()
+    sop_audit = read_sop_audit()
     sop_ready_extension_tasks = read_sop_ready_extension_tasks()
+    verification_summary = read_layered_verification_summary()
+    checks_issue_urls = read_checks_issue_urls()
     rows = [
-        classify_task(key, tasks[key], sop_ready_extension_tasks)
+        classify_task(key, tasks[key], sop_ready_extension_tasks, checks_issue_urls)
         for key in sorted(tasks, key=task_number)
     ]
     extension_rows = [row for row in rows if row["extension_candidate"]]
@@ -178,11 +395,43 @@ def build_report() -> dict[str, Any]:
         "semantic_layer_counts": counter(rows, "semantic_layer"),
         "certification_level_counts": counter(rows, "certification_level"),
         "score_claim_counts": counter(rows, "score_claim"),
+        "blocking_issue_counts": dict(sorted(Counter(
+            issue_url
+            for row in rows
+            if row["score_claim"] == "excluded_until_behavior_promotion"
+            for issue_url in str(row["blocking_issue_urls"]).split(";")
+            if issue_url
+        ).items())),
     }
+    blocking_issues = []
+    for issue_url, count in summary["blocking_issue_counts"].items():
+        blocked_rows = [
+            row for row in rows
+            if issue_url in str(row["blocking_issue_urls"]).split(";")
+            and row["score_claim"] == "excluded_until_behavior_promotion"
+        ]
+        blocking_issues.append({
+            "issue_url": issue_url,
+            "task_count": count,
+            "semantic_layers": counter(blocked_rows, "semantic_layer"),
+            "promotion_command": promotion_command_for(blocked_rows),
+            "promotion_acceptance": promotion_acceptance_for(blocked_rows),
+            "tasks": [
+                {
+                    "task_key": row["task_key"],
+                    "task_id": row["task_id"],
+                    "title": row["title"],
+                    "tier": row["tier"],
+                    "semantic_layer": row["semantic_layer"],
+                    "target": row["target"],
+                }
+                for row in blocked_rows
+            ],
+        })
     return {
         "date": date.today().isoformat(),
         "release": "benchmark-vabench-release-v3",
-        "status": "layered_partial",
+        "status": "layered_complete" if summary["compile_supported_candidate_count"] == 0 else "layered_partial",
         "summary": summary,
         "layers": [
             {
@@ -195,19 +444,31 @@ def build_report() -> dict[str, Any]:
             }
             for layer, count in summary["semantic_layer_counts"].items()
         ],
+        "blocking_issues": blocking_issues,
+        "completion_audit": build_completion_audit(
+            summary,
+            sop_audit,
+            verification_summary,
+            blocking_issues,
+        ),
         "claim_boundary": [
             "Only tasks 001-300 are part of the original behavior-certified full-300 claim.",
-            "Tasks 301-494 are extension candidates; they are excluded from score until promoted with behavior checkers and negative-case scoring.",
-            "Compile-supported continuous-time rows do not certify continuous-time numeric accuracy.",
-            "Compile-supported KCL rows do not certify MNA/KCL solving behavior.",
-            "AMS, noise/analysis, Cadence-helper, and table-model extension rows require layer-specific behavior evidence before paper-facing promotion.",
+            "Tasks 301-494 are behavior-certified extension rows outside the original full-300 denominator.",
+            "Continuous-time rows certify the repository's finite-difference/stateful behavioral response, not a general analog solver accuracy claim.",
+            "KCL/current rows certify observable branch-current contribution behavior, not unknown-node MNA/KCL solving.",
+            "AMS, noise/analysis, Cadence-helper, and table-model extension rows are certified only for their layer-specific transient/checker contracts.",
         ],
         "evidence_sources": {
             "task_manifest": "benchmark-vabench-release-v3/TASKS.json",
             "checker_manifest": "benchmark-vabench-release-v3/CHECKS.yaml",
             "extension_sop_audit": "benchmark-vabench-release-v3/reports/extension_sop_audit.json",
+            "behavior_certified_extension_task_evidence": "benchmark-vabench-release-v3/reports/behavior_certified_extension_task_evidence.json",
             "language_extension_notes": "benchmark-vabench-release-v3/LANGUAGE_EXTENSION.md",
             "core_behavior_evidence": "benchmark-vabench-release-v1/reports/benchmark_overview.json",
+            "staged_gold_probe": "benchmark-vabench-release-v3/reports/staged_promotion_gold_probe.json",
+            "staged_gold_probe_summary": "benchmark-vabench-release-v3/reports/staged_promotion_gold_probe.md",
+            "staged_blocker_matrix": "benchmark-vabench-release-v3/reports/staged_blocker_matrix.json",
+            "staged_blocker_matrix_summary": "benchmark-vabench-release-v3/reports/staged_blocker_matrix.md",
             "latest_compile_probe": "local evas-rust compile probe for tasks 460-494 solution plus five negative variants per task: 210 files, 0 failures",
         },
         "task_rows": rows,
@@ -227,13 +488,215 @@ def write_csv(rows: list[dict[str, Any]]) -> None:
         "behavior_certified",
         "score_claim",
         "claim_boundary",
+        "blocking_issue_urls",
         "target",
     ]
     with REPORT_CSV.open("w", newline="", encoding="utf-8") as fh:
-        writer = csv.DictWriter(fh, fieldnames=fields)
+        writer = csv.DictWriter(fh, fieldnames=fields, lineterminator="\n")
         writer.writeheader()
         for row in rows:
             writer.writerow({field: row.get(field, "") for field in fields})
+
+
+def build_staged_blocker_matrix(report: dict[str, Any]) -> dict[str, Any]:
+    probe = read_staged_gold_probe()
+    probe_rows = {
+        str(row.get("task_slug")): row
+        for row in probe.get("rows", [])
+        if isinstance(row, dict) and row.get("task_slug")
+    }
+    issue_commands = {
+        issue["issue_url"]: {
+            "promotion_command": issue.get("promotion_command", ""),
+            "promotion_acceptance": issue.get("promotion_acceptance", ""),
+        }
+        for issue in report["blocking_issues"]
+    }
+    rows: list[dict[str, Any]] = []
+    for task in report["task_rows"]:
+        if task["score_claim"] != "excluded_until_behavior_promotion":
+            continue
+        issue_urls = [
+            issue_url
+            for issue_url in str(task.get("blocking_issue_urls", "")).split(";")
+            if issue_url
+        ]
+        probe_row = probe_rows.get(task["task_key"], {})
+        rows.append({
+            "task_key": task["task_key"],
+            "task_id": task["task_id"],
+            "title": task["title"],
+            "tier": task["tier"],
+            "semantic_layer": task["semantic_layer"],
+            "target": task["target"],
+            "issue_urls": issue_urls,
+            "probe_status": probe_row.get("status", ""),
+            "failure_summary": probe_row.get("failure_summary", ""),
+            "task_promotion_command": task_promotion_command_for(task),
+            "task_promotion_acceptance": task_promotion_acceptance_for(task),
+            "promotion_commands": [
+                issue_commands.get(issue_url, {}).get("promotion_command", "")
+                for issue_url in issue_urls
+            ],
+            "promotion_acceptance": [
+                issue_commands.get(issue_url, {}).get("promotion_acceptance", "")
+                for issue_url in issue_urls
+            ],
+        })
+    missing_issue = [row["task_key"] for row in rows if not row["issue_urls"]]
+    missing_probe = [row["task_key"] for row in rows if not row["failure_summary"]]
+    return {
+        "date": report["date"],
+        "release": report["release"],
+        "summary": {
+            "staged_task_count": len(rows),
+            "missing_issue_count": len(missing_issue),
+            "missing_failure_summary_count": len(missing_probe),
+            "issue_count": len({issue_url for row in rows for issue_url in row["issue_urls"]}),
+            "semantic_layer_counts": dict(sorted(Counter(row["semantic_layer"] for row in rows).items())),
+        },
+        "missing_issue_tasks": missing_issue,
+        "missing_failure_summary_tasks": missing_probe,
+        "tasks": rows,
+    }
+
+
+def write_staged_blocker_csv(matrix: dict[str, Any]) -> None:
+    fields = [
+        "task_key",
+        "task_id",
+        "title",
+        "tier",
+        "semantic_layer",
+        "target",
+        "issue_urls",
+        "probe_status",
+        "failure_summary",
+        "task_promotion_command",
+        "task_promotion_acceptance",
+    ]
+    with STAGED_BLOCKER_CSV.open("w", newline="", encoding="utf-8") as fh:
+        writer = csv.DictWriter(fh, fieldnames=fields, lineterminator="\n")
+        writer.writeheader()
+        for row in matrix["tasks"]:
+            writer.writerow({
+                "task_key": row["task_key"],
+                "task_id": row["task_id"],
+                "title": row["title"],
+                "tier": row["tier"],
+                "semantic_layer": row["semantic_layer"],
+                "target": row["target"],
+                "issue_urls": ";".join(row["issue_urls"]),
+                "probe_status": row["probe_status"],
+                "failure_summary": row["failure_summary"],
+                "task_promotion_command": row["task_promotion_command"],
+                "task_promotion_acceptance": row["task_promotion_acceptance"],
+            })
+
+
+def write_staged_blocker_md(matrix: dict[str, Any]) -> None:
+    summary = matrix["summary"]
+    lines = [
+        "# v3 Staged Blocker Matrix",
+        "",
+        f"Date: {matrix['date']}",
+        "",
+        "## Summary",
+        "",
+        f"- Staged tasks: **{summary['staged_task_count']}**",
+        f"- Distinct blocking issues: **{summary['issue_count']}**",
+        f"- Missing issue links: **{summary['missing_issue_count']}**",
+        f"- Missing failure summaries: **{summary['missing_failure_summary_count']}**",
+        "",
+        "## Tasks",
+        "",
+        "| Task | Layer | Issue | Probe status | Failure summary | Per-task promotion command |",
+        "| --- | --- | --- | --- | --- | --- |",
+    ]
+    for row in matrix["tasks"]:
+        issues = "<br>".join(row["issue_urls"])
+        summary_text = str(row["failure_summary"]).replace("|", "\\|").replace("\n", " ")
+        lines.append(
+            f"| `{row['task_key']}` | `{row['semantic_layer']}` | {issues} | "
+            f"`{row['probe_status']}` | {summary_text} | `{row['task_promotion_command']}` |"
+        )
+    lines.append("")
+    STAGED_BLOCKER_MD.write_text("\n".join(lines), encoding="utf-8")
+
+
+def write_staged_blocker_matrix(report: dict[str, Any]) -> None:
+    matrix = build_staged_blocker_matrix(report)
+    STAGED_BLOCKER_JSON.write_text(json.dumps(matrix, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+    write_staged_blocker_csv(matrix)
+    write_staged_blocker_md(matrix)
+
+
+def write_behavior_extension_evidence(report: dict[str, Any]) -> None:
+    verification = {}
+    if VERIFY_LAYERED_JSON.exists():
+        try:
+            verification = json.loads(VERIFY_LAYERED_JSON.read_text(encoding="utf-8"))
+        except json.JSONDecodeError:
+            verification = {}
+    rows = verification.get("rows", []) if isinstance(verification, dict) else []
+    gold_by_task = {
+        str(row.get("task_slug")): row
+        for row in rows
+        if isinstance(row, dict) and row.get("kind") == "gold"
+    }
+    negative_statuses_by_task: dict[str, dict[str, str]] = {}
+    for row in rows:
+        if not isinstance(row, dict) or row.get("kind") != "negative":
+            continue
+        task = str(row.get("task_slug") or "")
+        variant = str(row.get("variant") or "")
+        if task and variant:
+            negative_statuses_by_task.setdefault(task, {})[variant] = str(row.get("status") or "")
+
+    behavior_extension_rows = [
+        row for row in report["task_rows"]
+        if row["extension_candidate"] and row["behavior_certified"]
+    ]
+    task_rows: list[dict[str, Any]] = []
+    for task in behavior_extension_rows:
+        task_key = task["task_key"]
+        gold = gold_by_task.get(task_key, {})
+        negative_statuses = negative_statuses_by_task.get(task_key, {})
+        negative_rejected = {
+            variant: status
+            for variant, status in negative_statuses.items()
+            if status == "FAIL_SIM_CORRECTNESS"
+        }
+        task_rows.append({
+            "task": task_key,
+            "checker_task_id": gold.get("checker_task_id"),
+            "gold_status": gold.get("status"),
+            "gold_meets_expectation": gold.get("meets_expectation"),
+            "negative_count": len(negative_statuses),
+            "negative_statuses": negative_statuses,
+            "negative_behavior_rejected_count": len(negative_rejected),
+            "all_negatives_behavior_rejected": len(negative_statuses) == 5 and len(negative_rejected) == 5,
+        })
+
+    payload = {
+        "summary": {
+            "source_report": str(VERIFY_LAYERED_JSON.relative_to(ROOT)),
+            "task_count": len(task_rows),
+            "gold_pass_count": sum(row["gold_status"] == "PASS" for row in task_rows),
+            "negative_total": sum(row["negative_count"] for row in task_rows),
+            "negative_behavior_rejected_total": sum(
+                row["negative_behavior_rejected_count"] for row in task_rows
+            ),
+            "all_tasks_have_five_behavior_rejected_negatives": all(
+                row["all_negatives_behavior_rejected"] for row in task_rows
+            ),
+        },
+        "tasks": task_rows,
+    }
+    BEHAVIOR_EXTENSION_EVIDENCE_JSON.write_text(
+        json.dumps(payload, indent=2, sort_keys=True) + "\n",
+        encoding="utf-8",
+    )
 
 
 def write_md(report: dict[str, Any]) -> None:
@@ -265,6 +728,37 @@ def write_md(report: dict[str, Any]) -> None:
         lines.append(f"| `{layer['semantic_layer']}` | {layer['task_count']} | {levels} |")
     lines.extend([
         "",
+        "## Blocking Issues",
+        "",
+        "| EVAS issue | Blocked tasks | Semantic layers | Promotion acceptance |",
+        "| --- | ---: | --- | --- |",
+    ])
+    for issue in report["blocking_issues"]:
+        layers = ", ".join(
+            f"{name}: {count}"
+            for name, count in issue["semantic_layers"].items()
+        )
+        lines.append(
+            f"| {issue['issue_url']} | {issue['task_count']} | {layers} | "
+            f"{issue['promotion_acceptance']} |"
+        )
+    lines.extend([
+        "",
+        "## Completion Audit",
+        "",
+        f"- Status: `{report['completion_audit']['status']}`",
+        f"- Complete: `{str(report['completion_audit']['is_complete']).lower()}`",
+        f"- Reason: {report['completion_audit']['reason']}",
+        "",
+        "| Requirement | Status | Evidence | Gap |",
+        "| --- | --- | --- | --- |",
+    ])
+    for item in report["completion_audit"]["requirements"]:
+        lines.append(
+            f"| {item['requirement']} | `{item['status']}` | {item.get('evidence', '')} | {item.get('gap', '')} |"
+        )
+    lines.extend([
+        "",
         "## Claim Boundary",
         "",
     ])
@@ -288,9 +782,15 @@ def main() -> None:
     REPORT_JSON.write_text(json.dumps(report, indent=2, sort_keys=True) + "\n", encoding="utf-8")
     write_csv(report["task_rows"])
     write_md(report)
+    write_behavior_extension_evidence(report)
+    write_staged_blocker_matrix(report)
     print(f"wrote {REPORT_JSON.relative_to(ROOT)}")
     print(f"wrote {REPORT_CSV.relative_to(ROOT)}")
     print(f"wrote {REPORT_MD.relative_to(ROOT)}")
+    print(f"wrote {BEHAVIOR_EXTENSION_EVIDENCE_JSON.relative_to(ROOT)}")
+    print(f"wrote {STAGED_BLOCKER_JSON.relative_to(ROOT)}")
+    print(f"wrote {STAGED_BLOCKER_CSV.relative_to(ROOT)}")
+    print(f"wrote {STAGED_BLOCKER_MD.relative_to(ROOT)}")
 
 
 if __name__ == "__main__":

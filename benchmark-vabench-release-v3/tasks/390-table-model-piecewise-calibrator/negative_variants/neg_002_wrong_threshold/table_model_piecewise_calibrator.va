@@ -31,7 +31,7 @@ analog begin
             state_q = 0;
         end else begin
         count_q = count_q + 1;
-        out_v = $table_model(V(vin), "table-model-piecewise-calibrator.tbl", "1L");
+        out_v = $table_model(V(vin), "table-model-piecewise-calibrator.tbl");
         metric_v = out_v / vhi;
         if (V(vin) > (vth + 0.1)) out_v = vhi;
         end

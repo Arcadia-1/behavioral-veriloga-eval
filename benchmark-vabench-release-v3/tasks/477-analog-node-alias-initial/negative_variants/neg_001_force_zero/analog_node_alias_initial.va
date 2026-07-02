@@ -9,6 +9,6 @@ analog initial begin
     ok = $analog_node_alias(aliased, target_path);
 end
 analog begin
-    V(out) <+ transition(V(aliased), 0.0, 200p, 200p);
+    V(out) <+ transition(0.0 + 0.0 * V(aliased), 0.0, 200p, 200p);
 end
 endmodule

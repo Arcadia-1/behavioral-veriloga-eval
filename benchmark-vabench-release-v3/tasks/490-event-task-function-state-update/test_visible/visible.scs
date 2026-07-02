@@ -1,4 +1,12 @@
 simulator lang=spectre
 global 0
-tran tran stop=80n
-save vin clk mode rst out metric
+
+ahdl_include "event_task_function_state_update.va"
+
+Vclk (clk 0) vsource type=pwl wave=[0 0.0 9n 0.0 10n 0.9 14n 0.9 15n 0.0 29n 0.0 30n 0.9 34n 0.9 35n 0.0 49n 0.0 50n 0.9 54n 0.9 55n 0.0 69n 0.0 70n 0.9 74n 0.9 75n 0.0 100n 0.0]
+Vin (inp 0) vsource type=pwl wave=[0 0.10 20n 0.10 21n 0.30 40n 0.30 41n 0.70 60n 0.70 61n 0.90 100n 0.90]
+
+XDUT (clk inp out) event_task_function_state_update
+
+tran tran stop=100n
+save clk inp out

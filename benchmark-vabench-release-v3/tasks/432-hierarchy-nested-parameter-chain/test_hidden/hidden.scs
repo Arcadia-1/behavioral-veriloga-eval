@@ -1,5 +1,15 @@
 simulator lang=spectre
 global 0
-// Hidden behavior skeleton. Evaluator supplies the candidate Verilog-A artifact and stricter checks.
-tran tran stop=160n
+
+ahdl_include "staged_gain_child.va"
+ahdl_include "hierarchy_nested_parameter_chain.va"
+
+Vvin (vin 0) vsource type=pwl wave=[0 0.30 89n 0.30 90n 0.80 179n 0.80 180n 1.20 260n 1.20]
+Vclk (clk 0) vsource dc=0.0
+Vmode (mode 0) vsource dc=0.0
+Vrst (rst 0) vsource type=pwl wave=[0 0.0 199n 0.0 200n 1.0 239n 1.0 240n 0.0 260n 0.0]
+
+XDUT (vin clk mode rst out metric) hierarchy_nested_parameter_chain
+
+tran tran stop=260n
 save vin clk mode rst out metric

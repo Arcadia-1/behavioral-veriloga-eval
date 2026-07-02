@@ -1,9 +1,17 @@
-# Source SAR 13bit Serial Decoder Audit
+# SAR 13bit Serial Decoder Audit
 
-- Source: `zhangm/SAR_13bit_decoder.va` from the exact-deduplicated historical Verilog-A corpus.
-- Scenario: Implement a 13-bit serial SAR decoder. CLKS rising publishes the previous accumulated result and resets the accumulator; READY rising consumes DIN into the current bit weight and counts high decisions.
-- Import status: certified only after visible compile, EVAS hidden semantic check, Spectre AX hidden semantic check, EVAS/Spectre parity pass, and negative variant rejection.
-- Evaluation: stable sampled behavior from `tran.csv`; raw simulator timestep equality is not used.
-- Evidence:
-  - `WORK/source-import-batch27-evas/261-sar-13bit-serial-decoder`
-  - `WORK/source-import-batch27-spectre/261-sar-13bit-serial-decoder`
+- Gate 1: independent L1 rework candidate retained. The row models an
+  MSB-first serial SAR decision decoder with frame publication and high-decision
+  count monitoring.
+- Gate 2: EVAS-ready, Cadence lint/Spectre pending. Public prompt now states
+  interface, ready/clock semantics, bit order, bipolar normalization, and reset
+  after publication.
+- Hidden coverage: repaired to use distinct frame timing and serial data
+  pattern from the visible smoke deck.
+- Checker: upgraded from fixed samples to event-derived ready-bit accumulation,
+  `dnum` count checks, and `clks` frame publication checks.
+- Negatives: zero output, counting low decisions, wrong initial counter, and
+  unipolar result variants are rejected by the behavior checker.
+- Cadence/Spectre: not rerun in this branch because the local bridge readiness
+  check reports bridge setup missing; this is a validation-environment block,
+  not a known model failure.

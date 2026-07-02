@@ -1,0 +1,39 @@
+{
+  "negative_cases": [
+    {
+      "id": "neg_001_force_zero",
+      "why_wrong": "Kcl Inductor Idt Voltage: forces the branch-current integral to zero, so it compiles and runs but misses every nonzero current-integration sample.",
+      "files": [
+        "neg_001_force_zero/kcl_inductor_idt_voltage.va"
+      ]
+    },
+    {
+      "id": "neg_002_wrong_threshold",
+      "why_wrong": "Kcl Inductor Idt Voltage: uses twice the required inductance scale, preserving waveform shape but failing the calibrated integral magnitude.",
+      "files": [
+        "neg_002_wrong_threshold/kcl_inductor_idt_voltage.va"
+      ]
+    },
+    {
+      "id": "neg_003_reset_bias",
+      "why_wrong": "Kcl Inductor Idt Voltage: uses the correct V(p,n) contribution target but negates the branch-current integral, producing the opposite-polarity response.",
+      "files": [
+        "neg_003_reset_bias/kcl_inductor_idt_voltage.va"
+      ]
+    },
+    {
+      "id": "neg_004_metric_offset",
+      "why_wrong": "Kcl Inductor Idt Voltage: uses a nonzero idt initial condition, adding a large DC offset while retaining the later current-driven slope.",
+      "files": [
+        "neg_004_metric_offset/kcl_inductor_idt_voltage.va"
+      ]
+    },
+    {
+      "id": "neg_005_scale_output",
+      "why_wrong": "Kcl Inductor Idt Voltage: uses 0.8x of the required inductance scale, so coarse shape checks pass but magnitude-sensitive samples fail.",
+      "files": [
+        "neg_005_scale_output/kcl_inductor_idt_voltage.va"
+      ]
+    }
+  ]
+}

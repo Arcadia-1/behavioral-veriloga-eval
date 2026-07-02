@@ -3,9 +3,9 @@ global 0
 
 ahdl_include "directive_configurable_threshold.va"
 
-Vvin (vin 0) vsource dc=0.55 type=dc
-Vmode (mode 0) vsource type=pwl wave=[0 0.0 249n 0.0 250n 0.9 650n 0.9]
-Vrst (rst 0) vsource type=pwl wave=[0 0.0 449n 0.0 450n 0.9 650n 0.9]
+Vvin (vin 0) vsource type=pwl wave=[0 0.48 199n 0.48 200n 0.62 399n 0.62 400n 0.52 650n 0.52]
+Vmode (mode 0) vsource type=pwl wave=[0 0.9 199n 0.9 200n 0.0 399n 0.0 400n 0.9 650n 0.9]
+Vrst (rst 0) vsource type=pwl wave=[0 0.0 449n 0.0 450n 0.9 529n 0.9 530n 0.0 650n 0.0]
 Vclk (clk 0) vsource type=pwl wave=[0 0.0 99n 0.0 100n 0.9 120n 0.9 121n 0.0 299n 0.0 300n 0.9 320n 0.9 321n 0.0 499n 0.0 500n 0.9 520n 0.9 521n 0.0]
 
 XDUT (vin clk mode rst out metric) directive_configurable_threshold

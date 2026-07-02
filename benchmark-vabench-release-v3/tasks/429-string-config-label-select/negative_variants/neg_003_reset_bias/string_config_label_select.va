@@ -26,14 +26,19 @@ analog begin
     @(cross(V(clk) - vth, +1)) begin
         if (V(rst) > vth) begin
             out_v = 0.0;
-            metric_v = 0.0;
+            metric_v = 0.25;
             count_q = 0;
         end else begin
-            out_v = V(vin) > vth ? vhi : 0.0;
-            metric_v = count_q;
-        label_q = $sformat("mode=%0d vin=%0.3f", count_q, V(vin));
+            if (V(mode) > vth) begin
+                out_v = V(vin) > vth ? 0.0 : vhi;
+                metric_v = count_q + 10;
+                label_q = $sformat("cfg=B count=%0d vin=%0.3f", count_q, V(vin));
+            end else begin
+                out_v = V(vin) > vth ? vhi : 0.0;
+                metric_v = count_q;
+                label_q = $sformat("cfg=A count=%0d vin=%0.3f", count_q, V(vin));
+            end
             count_q = count_q + 1;
-            if (V(rst) > vth) metric_v = 0.25;
         end
     end
     V(out) <+ transition(out_v, 0.0, tr, tr);

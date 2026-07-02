@@ -28,7 +28,7 @@ analog begin
             count_q = 0;
         end else begin
             $discontinuity(0);
-            out_v = (((V(vin) > vth ? vhi : 0.0)) > 0.55 ? 0.9 : 0.0);
+            out_v = (V(vin) > vth + 0.10 ? vhi : 0.0);
             metric_v = count_q;
             count_q = count_q + 1;
         end

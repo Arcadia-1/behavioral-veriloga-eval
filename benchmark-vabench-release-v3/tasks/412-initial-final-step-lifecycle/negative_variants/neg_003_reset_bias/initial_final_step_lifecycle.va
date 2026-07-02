@@ -33,7 +33,7 @@ analog begin
         out_v = V(vin);
         metric_v = count_q;
         count_q = count_q + 1;
-        if (V(rst) > vth) begin state_q = 1; metric_v = 0.25; end
+        if (count_q == 1) metric_v = 0.25;
         end
     end
     @(final_step) begin

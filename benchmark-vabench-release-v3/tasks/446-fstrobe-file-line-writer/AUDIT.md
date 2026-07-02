@@ -3,5 +3,6 @@
 - Task id: `v3_446_fstrobe_file_line_writer`
 - Category: `veriloga_system_output_semantics`
 - Required syntax focus: `Use $fstrobe() to write a formatted line to a file handle.`
-- EVAS status: `supported`
-- Boundary: language coverage candidate; KCL/current solving is outside this task unless explicitly required by the syntax itself.
+- EVAS status: `behavior-certified`
+- Boundary: behavioral voltage modeling only; no `I(...)` current contribution.
+- Status: promoted to executable EVAS behavior candidate with gold and five negative variants verified.
