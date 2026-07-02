@@ -4966,6 +4966,25 @@
       "tier": "syntax-extension-candidate",
       "title": "Macro Ifdef Gain Select",
       "syntax_focus": "Use `ifdef selection to alter a behavioral gain constant.",
+      "description": "Select a compile-time gain branch with `ifdef and expose both the sampled output and selected gain metric.",
+      "required_behavior": [
+        "On each rising clock edge, sample vin unless reset is asserted.",
+        "When V3_HIGH_GAIN is defined, drive out to 1.25 times the sampled vin and metric to 1.25.",
+        "When reset is high at a sampling edge, clear out and metric to zero."
+      ],
+      "visible_tests": [
+        "visible.scs drives multiple vin levels with reset held low and checks the high-gain sampled output."
+      ],
+      "hidden_tests": [
+        "hidden.scs changes vin levels and asserts reset mid-run to check clearing and reacquisition."
+      ],
+      "negative_variants": [
+        "neg_001_force_zero",
+        "neg_002_wrong_threshold",
+        "neg_003_reset_bias",
+        "neg_004_metric_offset",
+        "neg_005_scale_output"
+      ],
       "certification_scope": "language_extension_not_part_of_original_full_300_claim"
     },
     "411-escaped-identifier-state": {
@@ -5738,6 +5757,25 @@
       "tier": "syntax-extension-candidate",
       "title": "Param Given Gain Select",
       "syntax_focus": "Use $param_given() to choose behavior based on parameter override presence.",
+      "description": "Use $param_given(gain) to distinguish the default instance from an overridden gain instance.",
+      "required_behavior": [
+        "The default instance must use unity gain and report metric 0 because gain was not explicitly provided.",
+        "The overridden instance must use the provided gain parameter and report metric 1.",
+        "Both instances must sample on rising clock edges and clear output/metric on reset."
+      ],
+      "visible_tests": [
+        "visible.scs instantiates default and overridden gain instances over two sampled vin levels."
+      ],
+      "hidden_tests": [
+        "hidden.scs adds reset and extra sampled vin levels to verify both $param_given branches."
+      ],
+      "negative_variants": [
+        "neg_001_force_zero",
+        "neg_002_wrong_threshold",
+        "neg_003_reset_bias",
+        "neg_004_metric_offset",
+        "neg_005_scale_output"
+      ],
       "certification_scope": "language_extension_not_part_of_original_full_300_claim"
     },
     "465-port-connected-output-enable": {
@@ -5794,6 +5832,25 @@
       "tier": "syntax-extension-candidate",
       "title": "Branch Declaration Voltage Probe",
       "syntax_focus": "Declare an explicit branch and read its voltage.",
+      "description": "Declare a named branch between p and n, then mirror that branch voltage to out.",
+      "required_behavior": [
+        "Drive out to V(p,n) through V(br), not to the absolute p potential.",
+        "Track changes in p while n is biased at a non-zero reference.",
+        "Use only voltage-domain behavior and no current contribution."
+      ],
+      "visible_tests": [
+        "visible.scs sweeps p with n fixed at 0.10 V and checks V(p,n)."
+      ],
+      "hidden_tests": [
+        "hidden.scs adds an extra low-voltage segment to catch absolute-node probes."
+      ],
+      "negative_variants": [
+        "neg_001_force_zero",
+        "neg_002_wrong_threshold",
+        "neg_003_reset_bias",
+        "neg_004_metric_offset",
+        "neg_005_scale_output"
+      ],
       "certification_scope": "language_extension_not_part_of_original_full_300_claim"
     },
     "469-current-contribution-conductance": {
@@ -5906,6 +5963,25 @@
       "tier": "syntax-extension-candidate",
       "title": "Oomr String Voltage Probe",
       "syntax_focus": "Use a string out-of-module reference in a voltage probe.",
+      "description": "Use a string out-of-module reference parameter to probe the top-level vin voltage.",
+      "required_behavior": [
+        "Resolve the sigpath string to the top-level vin node.",
+        "Drive out to the referenced vin waveform, including positive and negative levels.",
+        "Do not hard-code a constant or local dummy node."
+      ],
+      "visible_tests": [
+        "visible.scs drives vin through two positive levels and checks out follows vin."
+      ],
+      "hidden_tests": [
+        "hidden.scs adds a negative vin segment to reject clamp-only or constant implementations."
+      ],
+      "negative_variants": [
+        "neg_001_force_zero",
+        "neg_002_wrong_threshold",
+        "neg_003_reset_bias",
+        "neg_004_metric_offset",
+        "neg_005_scale_output"
+      ],
       "certification_scope": "language_extension_not_part_of_original_full_300_claim"
     },
     "477-analog-node-alias-initial": {
@@ -5920,6 +5996,25 @@
       "tier": "syntax-extension-candidate",
       "title": "Analog Node Alias Initial",
       "syntax_focus": "Use $analog_node_alias inside analog initial for hierarchical node aliasing.",
+      "description": "Create an alias to a top-level vin node during analog initial and mirror the aliased node voltage.",
+      "required_behavior": [
+        "$analog_node_alias must bind the internal aliased node to the configured target path.",
+        "out must follow the aliased vin waveform across all visible and hidden segments.",
+        "The alias setup must happen in analog initial rather than by directly probing vin."
+      ],
+      "visible_tests": [
+        "visible.scs checks alias tracking for two positive vin levels."
+      ],
+      "hidden_tests": [
+        "hidden.scs adds a negative vin segment to catch unbound or constant aliases."
+      ],
+      "negative_variants": [
+        "neg_001_force_zero",
+        "neg_002_wrong_threshold",
+        "neg_003_reset_bias",
+        "neg_004_metric_offset",
+        "neg_005_scale_output"
+      ],
       "certification_scope": "language_extension_not_part_of_original_full_300_claim"
     },
     "478-inherited-port-attribute-supply": {
@@ -5962,6 +6057,25 @@
       "tier": "syntax-extension-candidate",
       "title": "Mfactor System Function Gain",
       "syntax_focus": "Use $mfactor() to scale behavioral gain.",
+      "description": "Read the instance m factor through $mfactor() and use it as a behavioral gain.",
+      "required_behavior": [
+        "For an instance with m=2.0, drive out to two times the input voltage.",
+        "Track positive and negative input levels without using a hard-coded waveform.",
+        "Compile and run without current-domain contributions."
+      ],
+      "visible_tests": [
+        "visible.scs instantiates the DUT with m=2.0 and drives positive input levels."
+      ],
+      "hidden_tests": [
+        "hidden.scs adds a negative input segment to check signed gain behavior."
+      ],
+      "negative_variants": [
+        "neg_001_force_zero",
+        "neg_002_wrong_threshold",
+        "neg_003_reset_bias",
+        "neg_004_metric_offset",
+        "neg_005_scale_output"
+      ],
       "certification_scope": "language_extension_not_part_of_original_full_300_claim"
     },
     "481-analog-primitive-resistor-instance": {
@@ -6060,6 +6174,25 @@
       "tier": "syntax-extension-candidate",
       "title": "Table Model 2d Array Surface",
       "syntax_focus": "Use two independent arrays and one output array in a 2D $table_model().",
+      "description": "Use array-backed 2D $table_model data to map x/y voltage corners to a surface output.",
+      "required_behavior": [
+        "Initialize x, y, and z arrays at initial_step.",
+        "$table_model(V(xnode), V(ynode), x, y, z, \"1L,1L\") must return the expected corner value.",
+        "out must distinguish all exercised 2D corners rather than returning a 1D or constant result."
+      ],
+      "visible_tests": [
+        "visible.scs exercises the (0,0), (1,0), and (1,1) corners."
+      ],
+      "hidden_tests": [
+        "hidden.scs also exercises the (0,1) corner to catch collapsed-axis implementations."
+      ],
+      "negative_variants": [
+        "neg_001_force_zero",
+        "neg_002_wrong_threshold",
+        "neg_003_reset_bias",
+        "neg_004_metric_offset",
+        "neg_005_scale_output"
+      ],
       "certification_scope": "language_extension_not_part_of_original_full_300_claim"
     },
     "488-table-model-string-param-source": {
@@ -6074,6 +6207,25 @@
       "tier": "syntax-extension-candidate",
       "title": "Table Model String Param Source",
       "syntax_focus": "Use a string parameter as the $table_model() data source.",
+      "description": "Load 1D $table_model data from the string parameter tmdata and mirror the interpolated gain profile.",
+      "required_behavior": [
+        "Read the gain_profile.tbl support artifact through the tmdata string parameter.",
+        "Return 0.1, 0.6, and 1.1 at the exercised input breakpoints 0.0, 0.5, and 1.0.",
+        "The behavior must depend on the table file contents rather than hard-coded input thresholds."
+      ],
+      "visible_tests": [
+        "visible.scs exercises all three table breakpoints in ascending order."
+      ],
+      "hidden_tests": [
+        "hidden.scs replays the first breakpoint after the high endpoint to catch stateful replay bugs."
+      ],
+      "negative_variants": [
+        "neg_001_force_zero",
+        "neg_002_wrong_threshold",
+        "neg_003_reset_bias",
+        "neg_004_metric_offset",
+        "neg_005_scale_output"
+      ],
       "certification_scope": "language_extension_not_part_of_original_full_300_claim",
       "support": [
         "gain_profile.tbl"

@@ -11,6 +11,7 @@ TASKS = V3 / "TASKS.json"
 CHECKS = V3 / "CHECKS.yaml"
 TASK_ROOT = V3 / "tasks"
 SOP_AUDIT = V3 / "reports" / "extension_sop_audit.json"
+STAGED_BLOCKER_MATRIX = V3 / "reports" / "staged_blocker_matrix.json"
 
 
 REQUIRED_EXTENSION_FIELDS = {
@@ -93,6 +94,36 @@ def test_all_v3_extension_prompts_state_required_behavior() -> None:
             errors="ignore",
         )
         assert "Required Behavior" in instruction, f"{task_key} lacks Required Behavior section"
+
+
+def test_staged_behavioral_language_tasks_have_manifest_behavior_contracts() -> None:
+    matrix = json.loads(STAGED_BLOCKER_MATRIX.read_text(encoding="utf-8"))
+    staged_language_tasks = [
+        row["task_key"]
+        for row in matrix["tasks"]
+        if row["semantic_layer"] == "behavioral_language_extension"
+    ]
+
+    assert staged_language_tasks
+    for task_key in staged_language_tasks:
+        task = extension_tasks()[task_key]
+        assert str(task.get("description") or "").strip(), f"{task_key} missing manifest description"
+        required_behavior = task.get("required_behavior")
+        visible_tests = task.get("visible_tests")
+        hidden_tests = task.get("hidden_tests")
+        manifest_negative_ids = task.get("negative_variants")
+
+        assert isinstance(required_behavior, list) and len(required_behavior) >= 2, (
+            f"{task_key} must list manifest required behavior"
+        )
+        assert all(str(item).strip() for item in required_behavior)
+        assert isinstance(visible_tests, list) and visible_tests, f"{task_key} missing visible test summary"
+        assert isinstance(hidden_tests, list) and hidden_tests, f"{task_key} missing hidden test summary"
+
+        expected_negative_ids = [str(variant["id"]) for variant in negative_variants(task_key)]
+        assert manifest_negative_ids == expected_negative_ids, (
+            f"{task_key} manifest negative_variants must mirror negative_variants/manifest.json"
+        )
 
 
 def scs_has_feature(text: str, feature: str) -> bool:
