@@ -18,8 +18,12 @@ CHECKS_YAML = PACKAGE_ROOT / "CHECKS.yaml"
 REPORT_JSON = REPORTS_ROOT / "layered_certification.json"
 REPORT_MD = REPORTS_ROOT / "layered_certification.md"
 REPORT_CSV = REPORTS_ROOT / "layered_certification_tasks.csv"
+STAGED_BLOCKER_JSON = REPORTS_ROOT / "staged_blocker_matrix.json"
+STAGED_BLOCKER_MD = REPORTS_ROOT / "staged_blocker_matrix.md"
+STAGED_BLOCKER_CSV = REPORTS_ROOT / "staged_blocker_matrix.csv"
 EXTENSION_SOP_AUDIT_JSON = REPORTS_ROOT / "extension_sop_audit.json"
 VERIFY_LAYERED_JSON = REPORTS_ROOT / "verify_301_494_layered.json"
+STAGED_GOLD_PROBE_JSON = REPORTS_ROOT / "staged_promotion_gold_probe.json"
 
 
 CORE_TIERS = {
@@ -121,6 +125,16 @@ def read_layered_verification_summary() -> dict[str, Any]:
         return {}
     summary = payload.get("summary")
     return summary if isinstance(summary, dict) else {}
+
+
+def read_staged_gold_probe() -> dict[str, Any]:
+    if not STAGED_GOLD_PROBE_JSON.exists():
+        return {}
+    try:
+        payload = json.loads(STAGED_GOLD_PROBE_JSON.read_text(encoding="utf-8"))
+    except json.JSONDecodeError:
+        return {}
+    return payload if isinstance(payload, dict) else {}
 
 
 def read_checks_issue_urls() -> dict[str, list[str]]:
@@ -417,6 +431,8 @@ def build_report() -> dict[str, Any]:
             "core_behavior_evidence": "benchmark-vabench-release-v1/reports/benchmark_overview.json",
             "staged_gold_probe": "benchmark-vabench-release-v3/reports/staged_promotion_gold_probe.json",
             "staged_gold_probe_summary": "benchmark-vabench-release-v3/reports/staged_promotion_gold_probe.md",
+            "staged_blocker_matrix": "benchmark-vabench-release-v3/reports/staged_blocker_matrix.json",
+            "staged_blocker_matrix_summary": "benchmark-vabench-release-v3/reports/staged_blocker_matrix.md",
             "latest_compile_probe": "local evas-rust compile probe for tasks 460-494 solution plus five negative variants per task: 210 files, 0 failures",
         },
         "task_rows": rows,
@@ -444,6 +460,133 @@ def write_csv(rows: list[dict[str, Any]]) -> None:
         writer.writeheader()
         for row in rows:
             writer.writerow({field: row.get(field, "") for field in fields})
+
+
+def build_staged_blocker_matrix(report: dict[str, Any]) -> dict[str, Any]:
+    probe = read_staged_gold_probe()
+    probe_rows = {
+        str(row.get("task_slug")): row
+        for row in probe.get("rows", [])
+        if isinstance(row, dict) and row.get("task_slug")
+    }
+    issue_commands = {
+        issue["issue_url"]: {
+            "promotion_command": issue.get("promotion_command", ""),
+            "promotion_acceptance": issue.get("promotion_acceptance", ""),
+        }
+        for issue in report["blocking_issues"]
+    }
+    rows: list[dict[str, Any]] = []
+    for task in report["task_rows"]:
+        if task["score_claim"] != "excluded_until_behavior_promotion":
+            continue
+        issue_urls = [
+            issue_url
+            for issue_url in str(task.get("blocking_issue_urls", "")).split(";")
+            if issue_url
+        ]
+        probe_row = probe_rows.get(task["task_key"], {})
+        rows.append({
+            "task_key": task["task_key"],
+            "task_id": task["task_id"],
+            "title": task["title"],
+            "tier": task["tier"],
+            "semantic_layer": task["semantic_layer"],
+            "target": task["target"],
+            "issue_urls": issue_urls,
+            "probe_status": probe_row.get("status", ""),
+            "failure_summary": probe_row.get("failure_summary", ""),
+            "promotion_commands": [
+                issue_commands.get(issue_url, {}).get("promotion_command", "")
+                for issue_url in issue_urls
+            ],
+            "promotion_acceptance": [
+                issue_commands.get(issue_url, {}).get("promotion_acceptance", "")
+                for issue_url in issue_urls
+            ],
+        })
+    missing_issue = [row["task_key"] for row in rows if not row["issue_urls"]]
+    missing_probe = [row["task_key"] for row in rows if not row["failure_summary"]]
+    return {
+        "date": report["date"],
+        "release": report["release"],
+        "summary": {
+            "staged_task_count": len(rows),
+            "missing_issue_count": len(missing_issue),
+            "missing_failure_summary_count": len(missing_probe),
+            "issue_count": len({issue_url for row in rows for issue_url in row["issue_urls"]}),
+            "semantic_layer_counts": dict(sorted(Counter(row["semantic_layer"] for row in rows).items())),
+        },
+        "missing_issue_tasks": missing_issue,
+        "missing_failure_summary_tasks": missing_probe,
+        "tasks": rows,
+    }
+
+
+def write_staged_blocker_csv(matrix: dict[str, Any]) -> None:
+    fields = [
+        "task_key",
+        "task_id",
+        "title",
+        "tier",
+        "semantic_layer",
+        "target",
+        "issue_urls",
+        "probe_status",
+        "failure_summary",
+    ]
+    with STAGED_BLOCKER_CSV.open("w", newline="", encoding="utf-8") as fh:
+        writer = csv.DictWriter(fh, fieldnames=fields)
+        writer.writeheader()
+        for row in matrix["tasks"]:
+            writer.writerow({
+                "task_key": row["task_key"],
+                "task_id": row["task_id"],
+                "title": row["title"],
+                "tier": row["tier"],
+                "semantic_layer": row["semantic_layer"],
+                "target": row["target"],
+                "issue_urls": ";".join(row["issue_urls"]),
+                "probe_status": row["probe_status"],
+                "failure_summary": row["failure_summary"],
+            })
+
+
+def write_staged_blocker_md(matrix: dict[str, Any]) -> None:
+    summary = matrix["summary"]
+    lines = [
+        "# v3 Staged Blocker Matrix",
+        "",
+        f"Date: {matrix['date']}",
+        "",
+        "## Summary",
+        "",
+        f"- Staged tasks: **{summary['staged_task_count']}**",
+        f"- Distinct blocking issues: **{summary['issue_count']}**",
+        f"- Missing issue links: **{summary['missing_issue_count']}**",
+        f"- Missing failure summaries: **{summary['missing_failure_summary_count']}**",
+        "",
+        "## Tasks",
+        "",
+        "| Task | Layer | Issue | Probe status | Failure summary |",
+        "| --- | --- | --- | --- | --- |",
+    ]
+    for row in matrix["tasks"]:
+        issues = "<br>".join(row["issue_urls"])
+        summary_text = str(row["failure_summary"]).replace("|", "\\|").replace("\n", " ")
+        lines.append(
+            f"| `{row['task_key']}` | `{row['semantic_layer']}` | {issues} | "
+            f"`{row['probe_status']}` | {summary_text} |"
+        )
+    lines.append("")
+    STAGED_BLOCKER_MD.write_text("\n".join(lines), encoding="utf-8")
+
+
+def write_staged_blocker_matrix(report: dict[str, Any]) -> None:
+    matrix = build_staged_blocker_matrix(report)
+    STAGED_BLOCKER_JSON.write_text(json.dumps(matrix, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+    write_staged_blocker_csv(matrix)
+    write_staged_blocker_md(matrix)
 
 
 def write_md(report: dict[str, Any]) -> None:
@@ -529,9 +672,13 @@ def main() -> None:
     REPORT_JSON.write_text(json.dumps(report, indent=2, sort_keys=True) + "\n", encoding="utf-8")
     write_csv(report["task_rows"])
     write_md(report)
+    write_staged_blocker_matrix(report)
     print(f"wrote {REPORT_JSON.relative_to(ROOT)}")
     print(f"wrote {REPORT_CSV.relative_to(ROOT)}")
     print(f"wrote {REPORT_MD.relative_to(ROOT)}")
+    print(f"wrote {STAGED_BLOCKER_JSON.relative_to(ROOT)}")
+    print(f"wrote {STAGED_BLOCKER_CSV.relative_to(ROOT)}")
+    print(f"wrote {STAGED_BLOCKER_MD.relative_to(ROOT)}")
 
 
 if __name__ == "__main__":

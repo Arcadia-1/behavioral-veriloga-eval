@@ -226,6 +226,39 @@ def test_staged_gold_probe_documents_current_promotion_boundary() -> None:
     )
 
 
+def test_staged_blocker_matrix_tracks_each_unpromoted_task() -> None:
+    report = json.loads(REPORT.read_text(encoding="utf-8"))
+    evidence = report["evidence_sources"]
+    matrix_path = ROOT / evidence["staged_blocker_matrix"]
+    matrix_summary_path = ROOT / evidence["staged_blocker_matrix_summary"]
+
+    assert matrix_path.exists()
+    assert matrix_summary_path.exists()
+    matrix = json.loads(matrix_path.read_text(encoding="utf-8"))
+    staged_rows = {
+        row["task_key"]: row
+        for row in report["task_rows"]
+        if row["score_claim"] == "excluded_until_behavior_promotion"
+    }
+    matrix_rows = {row["task_key"]: row for row in matrix["tasks"]}
+
+    assert matrix["summary"]["staged_task_count"] == len(staged_rows)
+    assert matrix["summary"]["missing_issue_count"] == 0
+    assert matrix["summary"]["missing_failure_summary_count"] == 0
+    assert set(matrix_rows) == set(staged_rows)
+    assert all(row["issue_urls"] for row in matrix_rows.values())
+    assert all(row["failure_summary"] for row in matrix_rows.values())
+
+
+def test_generate_genvar_task_is_ams_mixed_signal_layer() -> None:
+    report = json.loads(REPORT.read_text(encoding="utf-8"))
+    rows = {row["task_key"]: row for row in report["task_rows"]}
+
+    row = rows["449-generate-genvar-replicated-stage"]
+    assert row["tier"] == "ams-mixed-signal-candidate"
+    assert row["semantic_layer"] == "ams_mixed_signal_extension"
+
+
 def test_staged_gold_probe_uses_specific_checkers_when_available() -> None:
     probe = json.loads((V3 / "reports" / "staged_promotion_gold_probe.json").read_text(encoding="utf-8"))
     rows = {row["task_slug"]: row for row in probe["rows"]}

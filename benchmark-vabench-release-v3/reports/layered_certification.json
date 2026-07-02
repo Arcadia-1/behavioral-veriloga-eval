@@ -269,16 +269,16 @@
       "promotion_acceptance": "After EVAS support lands, promote the listed 1 task(s) by adding sim_correct behavior contracts/checkers if missing, then require 1/1 gold PASS, 5/5 negative variants rejected, and zero expectation_fail in the verification report.",
       "promotion_command": "PYTHONPATH=runners VAEVAS_DEFAULT_EVAS_ENGINE=python VAEVAS_EVAS_PERSISTENT_WORKER=0 PATH=\"$PWD/.venv-evas/bin:$PATH\" .venv-evas/bin/python scripts/run_v3_gold_negative_verification.py --start 449 --end 449 --tasks 449 --include-staged --timeout 120 --jobs 1 --out benchmark-vabench-release-v3/reports/verify_issue_449_449.json",
       "semantic_layers": {
-        "behavioral_language_extension": 1
+        "ams_mixed_signal_extension": 1
       },
       "task_count": 1,
       "tasks": [
         {
-          "semantic_layer": "behavioral_language_extension",
+          "semantic_layer": "ams_mixed_signal_extension",
           "target": "generate_genvar_replicated_stage.vams",
           "task_id": "v3_449_generate_genvar_replicated_stage",
           "task_key": "449-generate-genvar-replicated-stage",
-          "tier": "syntax-extension-candidate",
+          "tier": "ams-mixed-signal-candidate",
           "title": "Generate Genvar Replicated Stage"
         }
       ]
@@ -513,6 +513,8 @@
     "extension_sop_audit": "benchmark-vabench-release-v3/reports/extension_sop_audit.json",
     "language_extension_notes": "benchmark-vabench-release-v3/LANGUAGE_EXTENSION.md",
     "latest_compile_probe": "local evas-rust compile probe for tasks 460-494 solution plus five negative variants per task: 210 files, 0 failures",
+    "staged_blocker_matrix": "benchmark-vabench-release-v3/reports/staged_blocker_matrix.json",
+    "staged_blocker_matrix_summary": "benchmark-vabench-release-v3/reports/staged_blocker_matrix.md",
     "staged_gold_probe": "benchmark-vabench-release-v3/reports/staged_promotion_gold_probe.json",
     "staged_gold_probe_summary": "benchmark-vabench-release-v3/reports/staged_promotion_gold_probe.md",
     "task_manifest": "benchmark-vabench-release-v3/TASKS.json"
@@ -521,10 +523,10 @@
     {
       "certification_levels": {
         "behavior_certified_extension": 21,
-        "compile_supported_candidate": 7
+        "compile_supported_candidate": 8
       },
       "semantic_layer": "ams_mixed_signal_extension",
-      "task_count": 28
+      "task_count": 29
     },
     {
       "certification_levels": {
@@ -550,10 +552,10 @@
     {
       "certification_levels": {
         "behavior_certified_extension": 122,
-        "compile_supported_candidate": 9
+        "compile_supported_candidate": 8
       },
       "semantic_layer": "behavioral_language_extension",
-      "task_count": 131
+      "task_count": 130
     },
     {
       "certification_levels": {
@@ -616,11 +618,11 @@
       "original_full_300_policy": 300
     },
     "semantic_layer_counts": {
-      "ams_mixed_signal_extension": 28,
+      "ams_mixed_signal_extension": 29,
       "behavioral_continuous_time_extension": 14,
       "behavioral_event_core": 268,
       "behavioral_event_support": 32,
-      "behavioral_language_extension": 131,
+      "behavioral_language_extension": 130,
       "cadence_simulator_function_extension": 3,
       "conservative_kcl_syntax_extension": 6,
       "noise_analysis_extension": 12
@@ -628,7 +630,7 @@
     "task_count": 494,
     "tier_counts": {
       "<none>": 260,
-      "ams-mixed-signal-candidate": 28,
+      "ams-mixed-signal-candidate": 29,
       "behavioral-continuous-time-candidate": 14,
       "cadence-simulator-function-candidate": 3,
       "core-formal-candidate": 1,
@@ -636,7 +638,7 @@
       "kcl-syntax-candidate": 6,
       "noise-analysis-candidate": 12,
       "support-formal-candidate": 32,
-      "syntax-extension-candidate": 131
+      "syntax-extension-candidate": 130
     },
     "unsupported_candidate_count": 0
   },
@@ -9607,18 +9609,18 @@
       "category": "veriloga_generate_semantics",
       "certification_level": "compile_supported_candidate",
       "certification_scope": "language_extension_not_part_of_original_full_300_claim",
-      "claim_boundary": "Reference solution compiles with current local EVAS, but behavior checker promotion is still pending.",
+      "claim_boundary": "Verilog-AMS/digital-mixed-signal syntax candidate; not part of the original full-300 behavior claim.",
       "extension_candidate": true,
       "form": "dut",
       "in_original_full_300": false,
       "score_claim": "excluded_until_behavior_promotion",
-      "semantic_layer": "behavioral_language_extension",
+      "semantic_layer": "ams_mixed_signal_extension",
       "syntax_focus": "Use generate/genvar to replicate a behavioral stage.",
       "target": "generate_genvar_replicated_stage.vams",
       "task_id": "v3_449_generate_genvar_replicated_stage",
       "task_key": "449-generate-genvar-replicated-stage",
       "task_number": 449,
-      "tier": "syntax-extension-candidate",
+      "tier": "ams-mixed-signal-candidate",
       "title": "Generate Genvar Replicated Stage"
     },
     {

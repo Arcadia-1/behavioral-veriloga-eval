@@ -1,0 +1,704 @@
+{
+  "date": "2026-07-02",
+  "missing_failure_summary_tasks": [],
+  "missing_issue_tasks": [],
+  "release": "benchmark-vabench-release-v3",
+  "summary": {
+    "issue_count": 15,
+    "missing_failure_summary_count": 0,
+    "missing_issue_count": 0,
+    "semantic_layer_counts": {
+      "ams_mixed_signal_extension": 8,
+      "behavioral_continuous_time_extension": 14,
+      "behavioral_language_extension": 8,
+      "conservative_kcl_syntax_extension": 6
+    },
+    "staged_task_count": 36
+  },
+  "tasks": [
+    {
+      "failure_summary": "q@50ns=0.0000 expected=1.0000 tol=0.0800",
+      "issue_urls": [
+        "https://github.com/Arcadia-1/EVAS/issues/39"
+      ],
+      "probe_status": "FAIL_SIM_CORRECTNESS",
+      "promotion_acceptance": [
+        "After EVAS support lands, promote the listed 2 task(s) by adding sim_correct behavior contracts/checkers if missing, then require 2/2 gold PASS, 10/10 negative variants rejected, and zero expectation_fail in the verification report."
+      ],
+      "promotion_commands": [
+        "PYTHONPATH=runners VAEVAS_DEFAULT_EVAS_ENGINE=python VAEVAS_EVAS_PERSISTENT_WORKER=0 PATH=\"$PWD/.venv-evas/bin:$PATH\" .venv-evas/bin/python scripts/run_v3_gold_negative_verification.py --start 353 --end 417 --tasks 353,417 --include-staged --timeout 120 --jobs 1 --out benchmark-vabench-release-v3/reports/verify_issue_353_417.json"
+      ],
+      "semantic_layer": "ams_mixed_signal_extension",
+      "target": "always_resettable_toggle.vams",
+      "task_id": "v3_353_always_resettable_toggle",
+      "task_key": "353-always-resettable-toggle",
+      "tier": "ams-mixed-signal-candidate",
+      "title": "Always Resettable Toggle"
+    },
+    {
+      "failure_summary": "out@160ns=0.4800 expected=0.8000 tol=0.0800",
+      "issue_urls": [
+        "https://github.com/Arcadia-1/EVAS/issues/42"
+      ],
+      "probe_status": "FAIL_SIM_CORRECTNESS",
+      "promotion_acceptance": [
+        "After EVAS support lands, promote the listed 1 task(s) by adding sim_correct behavior contracts/checkers if missing, then require 1/1 gold PASS, 5/5 negative variants rejected, and zero expectation_fail in the verification report."
+      ],
+      "promotion_commands": [
+        "PYTHONPATH=runners VAEVAS_DEFAULT_EVAS_ENGINE=python VAEVAS_EVAS_PERSISTENT_WORKER=0 PATH=\"$PWD/.venv-evas/bin:$PATH\" .venv-evas/bin/python scripts/run_v3_gold_negative_verification.py --start 410 --end 410 --tasks 410 --include-staged --timeout 120 --jobs 1 --out benchmark-vabench-release-v3/reports/verify_issue_410_410.json"
+      ],
+      "semantic_layer": "behavioral_language_extension",
+      "target": "macro_ifdef_gain_select.va",
+      "task_id": "v3_410_macro_ifdef_gain_select",
+      "task_key": "410-macro-ifdef-gain-select",
+      "tier": "syntax-extension-candidate",
+      "title": "Macro Ifdef Gain Select"
+    },
+    {
+      "failure_summary": "y@50ns=0.0000 expected=1.0000 tol=0.0800",
+      "issue_urls": [
+        "https://github.com/Arcadia-1/EVAS/issues/43"
+      ],
+      "probe_status": "FAIL_SIM_CORRECTNESS",
+      "promotion_acceptance": [
+        "After EVAS support lands, promote the listed 4 task(s) by adding sim_correct behavior contracts/checkers if missing, then require 4/4 gold PASS, 20/20 negative variants rejected, and zero expectation_fail in the verification report."
+      ],
+      "promotion_commands": [
+        "PYTHONPATH=runners VAEVAS_DEFAULT_EVAS_ENGINE=python VAEVAS_EVAS_PERSISTENT_WORKER=0 PATH=\"$PWD/.venv-evas/bin:$PATH\" .venv-evas/bin/python scripts/run_v3_gold_negative_verification.py --start 415 --end 455 --tasks 415,416,418,455 --include-staged --timeout 120 --jobs 1 --out benchmark-vabench-release-v3/reports/verify_issue_415_455.json"
+      ],
+      "semantic_layer": "ams_mixed_signal_extension",
+      "target": "logic_vector_assign_slice.vams",
+      "task_id": "v3_415_logic_vector_assign_slice",
+      "task_key": "415-logic-vector-assign-slice",
+      "tier": "ams-mixed-signal-candidate",
+      "title": "Logic Vector Assign Slice"
+    },
+    {
+      "failure_summary": "valid@50ns=0.0000 expected=1.0000 tol=0.0800",
+      "issue_urls": [
+        "https://github.com/Arcadia-1/EVAS/issues/43"
+      ],
+      "probe_status": "FAIL_SIM_CORRECTNESS",
+      "promotion_acceptance": [
+        "After EVAS support lands, promote the listed 4 task(s) by adding sim_correct behavior contracts/checkers if missing, then require 4/4 gold PASS, 20/20 negative variants rejected, and zero expectation_fail in the verification report."
+      ],
+      "promotion_commands": [
+        "PYTHONPATH=runners VAEVAS_DEFAULT_EVAS_ENGINE=python VAEVAS_EVAS_PERSISTENT_WORKER=0 PATH=\"$PWD/.venv-evas/bin:$PATH\" .venv-evas/bin/python scripts/run_v3_gold_negative_verification.py --start 415 --end 455 --tasks 415,416,418,455 --include-staged --timeout 120 --jobs 1 --out benchmark-vabench-release-v3/reports/verify_issue_415_455.json"
+      ],
+      "semantic_layer": "ams_mixed_signal_extension",
+      "target": "logic_vector_reduction_flag.vams",
+      "task_id": "v3_416_logic_vector_reduction_flag",
+      "task_key": "416-logic-vector-reduction-flag",
+      "tier": "ams-mixed-signal-candidate",
+      "title": "Logic Vector Reduction Flag"
+    },
+    {
+      "failure_summary": "q@100ns=0.0000 expected=1.0000 tol=0.0800",
+      "issue_urls": [
+        "https://github.com/Arcadia-1/EVAS/issues/39"
+      ],
+      "probe_status": "FAIL_SIM_CORRECTNESS",
+      "promotion_acceptance": [
+        "After EVAS support lands, promote the listed 2 task(s) by adding sim_correct behavior contracts/checkers if missing, then require 2/2 gold PASS, 10/10 negative variants rejected, and zero expectation_fail in the verification report."
+      ],
+      "promotion_commands": [
+        "PYTHONPATH=runners VAEVAS_DEFAULT_EVAS_ENGINE=python VAEVAS_EVAS_PERSISTENT_WORKER=0 PATH=\"$PWD/.venv-evas/bin:$PATH\" .venv-evas/bin/python scripts/run_v3_gold_negative_verification.py --start 353 --end 417 --tasks 353,417 --include-staged --timeout 120 --jobs 1 --out benchmark-vabench-release-v3/reports/verify_issue_353_417.json"
+      ],
+      "semantic_layer": "ams_mixed_signal_extension",
+      "target": "always_async_reset_counter.vams",
+      "task_id": "v3_417_always_async_reset_counter",
+      "task_key": "417-always-async-reset-counter",
+      "tier": "ams-mixed-signal-candidate",
+      "title": "Always Async Reset Counter"
+    },
+    {
+      "failure_summary": "q0@90ns=0.0000 expected=1.0000 tol=0.0800",
+      "issue_urls": [
+        "https://github.com/Arcadia-1/EVAS/issues/43"
+      ],
+      "probe_status": "FAIL_SIM_CORRECTNESS",
+      "promotion_acceptance": [
+        "After EVAS support lands, promote the listed 4 task(s) by adding sim_correct behavior contracts/checkers if missing, then require 4/4 gold PASS, 20/20 negative variants rejected, and zero expectation_fail in the verification report."
+      ],
+      "promotion_commands": [
+        "PYTHONPATH=runners VAEVAS_DEFAULT_EVAS_ENGINE=python VAEVAS_EVAS_PERSISTENT_WORKER=0 PATH=\"$PWD/.venv-evas/bin:$PATH\" .venv-evas/bin/python scripts/run_v3_gold_negative_verification.py --start 415 --end 455 --tasks 415,416,418,455 --include-staged --timeout 120 --jobs 1 --out benchmark-vabench-release-v3/reports/verify_issue_415_455.json"
+      ],
+      "semantic_layer": "ams_mixed_signal_extension",
+      "target": "always_enable_saturating_counter.vams",
+      "task_id": "v3_418_always_enable_saturating_counter",
+      "task_key": "418-always-enable-saturating-counter",
+      "tier": "ams-mixed-signal-candidate",
+      "title": "Always Enable Saturating Counter"
+    },
+    {
+      "failure_summary": "staged_dynamic_solver_boundary operator=ddt out_range=8.653e+05 metric_range=8.653e+05 expected=certified_continuous_time_response",
+      "issue_urls": [
+        "https://github.com/Arcadia-1/EVAS/issues/44"
+      ],
+      "probe_status": "FAIL_SIM_CORRECTNESS",
+      "promotion_acceptance": [
+        "After EVAS support lands, promote the listed 18 task(s) by adding sim_correct behavior contracts/checkers if missing, then require 18/18 gold PASS, 90/90 negative variants rejected, and zero expectation_fail in the verification report."
+      ],
+      "promotion_commands": [
+        "PYTHONPATH=runners VAEVAS_DEFAULT_EVAS_ENGINE=python VAEVAS_EVAS_PERSISTENT_WORKER=0 PATH=\"$PWD/.venv-evas/bin:$PATH\" .venv-evas/bin/python scripts/run_v3_gold_negative_verification.py --start 435 --end 494 --tasks 435,436,437,438,439,440,441,442,443,444,469,470,471,472,491,492,493,494 --include-staged --timeout 120 --jobs 1 --out benchmark-vabench-release-v3/reports/verify_issue_435_494.json"
+      ],
+      "semantic_layer": "behavioral_continuous_time_extension",
+      "target": "ddt_voltage_derivative_source.va",
+      "task_id": "v3_435_ddt_voltage_derivative_source",
+      "task_key": "435-ddt-voltage-derivative-source",
+      "tier": "behavioral-continuous-time-candidate",
+      "title": "Ddt Voltage Derivative Source"
+    },
+    {
+      "failure_summary": "staged_dynamic_solver_boundary operator=idt out_range=7.5e-08 metric_range=7.5e-08 expected=certified_continuous_time_response",
+      "issue_urls": [
+        "https://github.com/Arcadia-1/EVAS/issues/44"
+      ],
+      "probe_status": "FAIL_SIM_CORRECTNESS",
+      "promotion_acceptance": [
+        "After EVAS support lands, promote the listed 18 task(s) by adding sim_correct behavior contracts/checkers if missing, then require 18/18 gold PASS, 90/90 negative variants rejected, and zero expectation_fail in the verification report."
+      ],
+      "promotion_commands": [
+        "PYTHONPATH=runners VAEVAS_DEFAULT_EVAS_ENGINE=python VAEVAS_EVAS_PERSISTENT_WORKER=0 PATH=\"$PWD/.venv-evas/bin:$PATH\" .venv-evas/bin/python scripts/run_v3_gold_negative_verification.py --start 435 --end 494 --tasks 435,436,437,438,439,440,441,442,443,444,469,470,471,472,491,492,493,494 --include-staged --timeout 120 --jobs 1 --out benchmark-vabench-release-v3/reports/verify_issue_435_494.json"
+      ],
+      "semantic_layer": "behavioral_continuous_time_extension",
+      "target": "idt_voltage_integrator_source.va",
+      "task_id": "v3_436_idt_voltage_integrator_source",
+      "task_key": "436-idt-voltage-integrator-source",
+      "tier": "behavioral-continuous-time-candidate",
+      "title": "Idt Voltage Integrator Source"
+    },
+    {
+      "failure_summary": "staged_dynamic_solver_boundary operator=laplace_nd out_range=0.8 metric_range=0.8 expected=certified_continuous_time_response",
+      "issue_urls": [
+        "https://github.com/Arcadia-1/EVAS/issues/44"
+      ],
+      "probe_status": "FAIL_SIM_CORRECTNESS",
+      "promotion_acceptance": [
+        "After EVAS support lands, promote the listed 18 task(s) by adding sim_correct behavior contracts/checkers if missing, then require 18/18 gold PASS, 90/90 negative variants rejected, and zero expectation_fail in the verification report."
+      ],
+      "promotion_commands": [
+        "PYTHONPATH=runners VAEVAS_DEFAULT_EVAS_ENGINE=python VAEVAS_EVAS_PERSISTENT_WORKER=0 PATH=\"$PWD/.venv-evas/bin:$PATH\" .venv-evas/bin/python scripts/run_v3_gold_negative_verification.py --start 435 --end 494 --tasks 435,436,437,438,439,440,441,442,443,444,469,470,471,472,491,492,493,494 --include-staged --timeout 120 --jobs 1 --out benchmark-vabench-release-v3/reports/verify_issue_435_494.json"
+      ],
+      "semantic_layer": "behavioral_continuous_time_extension",
+      "target": "laplace_nd_lowpass_filter.va",
+      "task_id": "v3_437_laplace_nd_lowpass_filter",
+      "task_key": "437-laplace-nd-lowpass-filter",
+      "tier": "behavioral-continuous-time-candidate",
+      "title": "Laplace Nd Lowpass Filter"
+    },
+    {
+      "failure_summary": "staged_dynamic_solver_boundary operator=laplace_np out_range=0.6 metric_range=0.6 expected=certified_continuous_time_response",
+      "issue_urls": [
+        "https://github.com/Arcadia-1/EVAS/issues/44"
+      ],
+      "probe_status": "FAIL_SIM_CORRECTNESS",
+      "promotion_acceptance": [
+        "After EVAS support lands, promote the listed 18 task(s) by adding sim_correct behavior contracts/checkers if missing, then require 18/18 gold PASS, 90/90 negative variants rejected, and zero expectation_fail in the verification report."
+      ],
+      "promotion_commands": [
+        "PYTHONPATH=runners VAEVAS_DEFAULT_EVAS_ENGINE=python VAEVAS_EVAS_PERSISTENT_WORKER=0 PATH=\"$PWD/.venv-evas/bin:$PATH\" .venv-evas/bin/python scripts/run_v3_gold_negative_verification.py --start 435 --end 494 --tasks 435,436,437,438,439,440,441,442,443,444,469,470,471,472,491,492,493,494 --include-staged --timeout 120 --jobs 1 --out benchmark-vabench-release-v3/reports/verify_issue_435_494.json"
+      ],
+      "semantic_layer": "behavioral_continuous_time_extension",
+      "target": "laplace_np_pole_filter.va",
+      "task_id": "v3_438_laplace_np_pole_filter",
+      "task_key": "438-laplace-np-pole-filter",
+      "tier": "behavioral-continuous-time-candidate",
+      "title": "Laplace Np Pole Filter"
+    },
+    {
+      "failure_summary": "staged_dynamic_solver_boundary operator=laplace_zd out_range=0.75 metric_range=0.75 expected=certified_continuous_time_response",
+      "issue_urls": [
+        "https://github.com/Arcadia-1/EVAS/issues/44"
+      ],
+      "probe_status": "FAIL_SIM_CORRECTNESS",
+      "promotion_acceptance": [
+        "After EVAS support lands, promote the listed 18 task(s) by adding sim_correct behavior contracts/checkers if missing, then require 18/18 gold PASS, 90/90 negative variants rejected, and zero expectation_fail in the verification report."
+      ],
+      "promotion_commands": [
+        "PYTHONPATH=runners VAEVAS_DEFAULT_EVAS_ENGINE=python VAEVAS_EVAS_PERSISTENT_WORKER=0 PATH=\"$PWD/.venv-evas/bin:$PATH\" .venv-evas/bin/python scripts/run_v3_gold_negative_verification.py --start 435 --end 494 --tasks 435,436,437,438,439,440,441,442,443,444,469,470,471,472,491,492,493,494 --include-staged --timeout 120 --jobs 1 --out benchmark-vabench-release-v3/reports/verify_issue_435_494.json"
+      ],
+      "semantic_layer": "behavioral_continuous_time_extension",
+      "target": "laplace_zd_zero_den_filter.va",
+      "task_id": "v3_439_laplace_zd_zero_den_filter",
+      "task_key": "439-laplace-zd-zero-den-filter",
+      "tier": "behavioral-continuous-time-candidate",
+      "title": "Laplace Zd Zero Den Filter"
+    },
+    {
+      "failure_summary": "staged_dynamic_solver_boundary operator=laplace_zp out_range=0.9 metric_range=0.9 expected=certified_continuous_time_response",
+      "issue_urls": [
+        "https://github.com/Arcadia-1/EVAS/issues/44"
+      ],
+      "probe_status": "FAIL_SIM_CORRECTNESS",
+      "promotion_acceptance": [
+        "After EVAS support lands, promote the listed 18 task(s) by adding sim_correct behavior contracts/checkers if missing, then require 18/18 gold PASS, 90/90 negative variants rejected, and zero expectation_fail in the verification report."
+      ],
+      "promotion_commands": [
+        "PYTHONPATH=runners VAEVAS_DEFAULT_EVAS_ENGINE=python VAEVAS_EVAS_PERSISTENT_WORKER=0 PATH=\"$PWD/.venv-evas/bin:$PATH\" .venv-evas/bin/python scripts/run_v3_gold_negative_verification.py --start 435 --end 494 --tasks 435,436,437,438,439,440,441,442,443,444,469,470,471,472,491,492,493,494 --include-staged --timeout 120 --jobs 1 --out benchmark-vabench-release-v3/reports/verify_issue_435_494.json"
+      ],
+      "semantic_layer": "behavioral_continuous_time_extension",
+      "target": "laplace_zp_zero_pole_filter.va",
+      "task_id": "v3_440_laplace_zp_zero_pole_filter",
+      "task_key": "440-laplace-zp-zero-pole-filter",
+      "tier": "behavioral-continuous-time-candidate",
+      "title": "Laplace Zp Zero Pole Filter"
+    },
+    {
+      "failure_summary": "staged_dynamic_solver_boundary operator=zi_nd out_range=0.7 metric_range=0.7 expected=certified_continuous_time_response",
+      "issue_urls": [
+        "https://github.com/Arcadia-1/EVAS/issues/44"
+      ],
+      "probe_status": "FAIL_SIM_CORRECTNESS",
+      "promotion_acceptance": [
+        "After EVAS support lands, promote the listed 18 task(s) by adding sim_correct behavior contracts/checkers if missing, then require 18/18 gold PASS, 90/90 negative variants rejected, and zero expectation_fail in the verification report."
+      ],
+      "promotion_commands": [
+        "PYTHONPATH=runners VAEVAS_DEFAULT_EVAS_ENGINE=python VAEVAS_EVAS_PERSISTENT_WORKER=0 PATH=\"$PWD/.venv-evas/bin:$PATH\" .venv-evas/bin/python scripts/run_v3_gold_negative_verification.py --start 435 --end 494 --tasks 435,436,437,438,439,440,441,442,443,444,469,470,471,472,491,492,493,494 --include-staged --timeout 120 --jobs 1 --out benchmark-vabench-release-v3/reports/verify_issue_435_494.json"
+      ],
+      "semantic_layer": "behavioral_continuous_time_extension",
+      "target": "zi_nd_discrete_filter.va",
+      "task_id": "v3_441_zi_nd_discrete_filter",
+      "task_key": "441-zi-nd-discrete-filter",
+      "tier": "behavioral-continuous-time-candidate",
+      "title": "Zi Nd Discrete Filter"
+    },
+    {
+      "failure_summary": "staged_dynamic_solver_boundary operator=zi_np out_range=0.65 metric_range=0.65 expected=certified_continuous_time_response",
+      "issue_urls": [
+        "https://github.com/Arcadia-1/EVAS/issues/44"
+      ],
+      "probe_status": "FAIL_SIM_CORRECTNESS",
+      "promotion_acceptance": [
+        "After EVAS support lands, promote the listed 18 task(s) by adding sim_correct behavior contracts/checkers if missing, then require 18/18 gold PASS, 90/90 negative variants rejected, and zero expectation_fail in the verification report."
+      ],
+      "promotion_commands": [
+        "PYTHONPATH=runners VAEVAS_DEFAULT_EVAS_ENGINE=python VAEVAS_EVAS_PERSISTENT_WORKER=0 PATH=\"$PWD/.venv-evas/bin:$PATH\" .venv-evas/bin/python scripts/run_v3_gold_negative_verification.py --start 435 --end 494 --tasks 435,436,437,438,439,440,441,442,443,444,469,470,471,472,491,492,493,494 --include-staged --timeout 120 --jobs 1 --out benchmark-vabench-release-v3/reports/verify_issue_435_494.json"
+      ],
+      "semantic_layer": "behavioral_continuous_time_extension",
+      "target": "zi_np_discrete_filter.va",
+      "task_id": "v3_442_zi_np_discrete_filter",
+      "task_key": "442-zi-np-discrete-filter",
+      "tier": "behavioral-continuous-time-candidate",
+      "title": "Zi Np Discrete Filter"
+    },
+    {
+      "failure_summary": "staged_dynamic_solver_boundary operator=zi_zd out_range=0.85 metric_range=0.85 expected=certified_continuous_time_response",
+      "issue_urls": [
+        "https://github.com/Arcadia-1/EVAS/issues/44"
+      ],
+      "probe_status": "FAIL_SIM_CORRECTNESS",
+      "promotion_acceptance": [
+        "After EVAS support lands, promote the listed 18 task(s) by adding sim_correct behavior contracts/checkers if missing, then require 18/18 gold PASS, 90/90 negative variants rejected, and zero expectation_fail in the verification report."
+      ],
+      "promotion_commands": [
+        "PYTHONPATH=runners VAEVAS_DEFAULT_EVAS_ENGINE=python VAEVAS_EVAS_PERSISTENT_WORKER=0 PATH=\"$PWD/.venv-evas/bin:$PATH\" .venv-evas/bin/python scripts/run_v3_gold_negative_verification.py --start 435 --end 494 --tasks 435,436,437,438,439,440,441,442,443,444,469,470,471,472,491,492,493,494 --include-staged --timeout 120 --jobs 1 --out benchmark-vabench-release-v3/reports/verify_issue_435_494.json"
+      ],
+      "semantic_layer": "behavioral_continuous_time_extension",
+      "target": "zi_zd_discrete_filter.va",
+      "task_id": "v3_443_zi_zd_discrete_filter",
+      "task_key": "443-zi-zd-discrete-filter",
+      "tier": "behavioral-continuous-time-candidate",
+      "title": "Zi Zd Discrete Filter"
+    },
+    {
+      "failure_summary": "staged_dynamic_solver_boundary operator=zi_zp out_range=0.45 metric_range=0.45 expected=certified_continuous_time_response",
+      "issue_urls": [
+        "https://github.com/Arcadia-1/EVAS/issues/44"
+      ],
+      "probe_status": "FAIL_SIM_CORRECTNESS",
+      "promotion_acceptance": [
+        "After EVAS support lands, promote the listed 18 task(s) by adding sim_correct behavior contracts/checkers if missing, then require 18/18 gold PASS, 90/90 negative variants rejected, and zero expectation_fail in the verification report."
+      ],
+      "promotion_commands": [
+        "PYTHONPATH=runners VAEVAS_DEFAULT_EVAS_ENGINE=python VAEVAS_EVAS_PERSISTENT_WORKER=0 PATH=\"$PWD/.venv-evas/bin:$PATH\" .venv-evas/bin/python scripts/run_v3_gold_negative_verification.py --start 435 --end 494 --tasks 435,436,437,438,439,440,441,442,443,444,469,470,471,472,491,492,493,494 --include-staged --timeout 120 --jobs 1 --out benchmark-vabench-release-v3/reports/verify_issue_435_494.json"
+      ],
+      "semantic_layer": "behavioral_continuous_time_extension",
+      "target": "zi_zp_discrete_filter.va",
+      "task_id": "v3_444_zi_zp_discrete_filter",
+      "task_key": "444-zi-zp-discrete-filter",
+      "tier": "behavioral-continuous-time-candidate",
+      "title": "Zi Zp Discrete Filter"
+    },
+    {
+      "failure_summary": "y@10ns=0.0000 expected=0.8000 tol=0.0500",
+      "issue_urls": [
+        "https://github.com/Arcadia-1/EVAS/issues/45"
+      ],
+      "probe_status": "FAIL_SIM_CORRECTNESS",
+      "promotion_acceptance": [
+        "After EVAS support lands, promote the listed 1 task(s) by adding sim_correct behavior contracts/checkers if missing, then require 1/1 gold PASS, 5/5 negative variants rejected, and zero expectation_fail in the verification report."
+      ],
+      "promotion_commands": [
+        "PYTHONPATH=runners VAEVAS_DEFAULT_EVAS_ENGINE=python VAEVAS_EVAS_PERSISTENT_WORKER=0 PATH=\"$PWD/.venv-evas/bin:$PATH\" .venv-evas/bin/python scripts/run_v3_gold_negative_verification.py --start 449 --end 449 --tasks 449 --include-staged --timeout 120 --jobs 1 --out benchmark-vabench-release-v3/reports/verify_issue_449_449.json"
+      ],
+      "semantic_layer": "ams_mixed_signal_extension",
+      "target": "generate_genvar_replicated_stage.vams",
+      "task_id": "v3_449_generate_genvar_replicated_stage",
+      "task_key": "449-generate-genvar-replicated-stage",
+      "tier": "ams-mixed-signal-candidate",
+      "title": "Generate Genvar Replicated Stage"
+    },
+    {
+      "failure_summary": "staged_specify_boundary a_range=1 y_range=1 expected=certified_specify_path_delay",
+      "issue_urls": [
+        "https://github.com/Arcadia-1/EVAS/issues/48"
+      ],
+      "probe_status": "FAIL_SIM_CORRECTNESS",
+      "promotion_acceptance": [
+        "After EVAS support lands, promote the listed 1 task(s) by adding sim_correct behavior contracts/checkers if missing, then require 1/1 gold PASS, 5/5 negative variants rejected, and zero expectation_fail in the verification report."
+      ],
+      "promotion_commands": [
+        "PYTHONPATH=runners VAEVAS_DEFAULT_EVAS_ENGINE=python VAEVAS_EVAS_PERSISTENT_WORKER=0 PATH=\"$PWD/.venv-evas/bin:$PATH\" .venv-evas/bin/python scripts/run_v3_gold_negative_verification.py --start 453 --end 453 --tasks 453 --include-staged --timeout 120 --jobs 1 --out benchmark-vabench-release-v3/reports/verify_issue_453_453.json"
+      ],
+      "semantic_layer": "ams_mixed_signal_extension",
+      "target": "specify_specparam_delay.vams",
+      "task_id": "v3_453_specify_specparam_delay",
+      "task_key": "453-specify-specparam-delay",
+      "tier": "ams-mixed-signal-candidate",
+      "title": "Specify Specparam Delay"
+    },
+    {
+      "failure_summary": "y3@50ns=0.0000 expected_a7=1.0000 y1@50ns=0.0000 expected_a1=1.0000 y0@50ns=0.0000 expected_a0=1.0000 y3@90ns=0.0000 expected_a7=1.0000",
+      "issue_urls": [
+        "https://github.com/Arcadia-1/EVAS/issues/43"
+      ],
+      "probe_status": "FAIL_SIM_CORRECTNESS",
+      "promotion_acceptance": [
+        "After EVAS support lands, promote the listed 4 task(s) by adding sim_correct behavior contracts/checkers if missing, then require 4/4 gold PASS, 20/20 negative variants rejected, and zero expectation_fail in the verification report."
+      ],
+      "promotion_commands": [
+        "PYTHONPATH=runners VAEVAS_DEFAULT_EVAS_ENGINE=python VAEVAS_EVAS_PERSISTENT_WORKER=0 PATH=\"$PWD/.venv-evas/bin:$PATH\" .venv-evas/bin/python scripts/run_v3_gold_negative_verification.py --start 415 --end 455 --tasks 415,416,418,455 --include-staged --timeout 120 --jobs 1 --out benchmark-vabench-release-v3/reports/verify_issue_415_455.json"
+      ],
+      "semantic_layer": "ams_mixed_signal_extension",
+      "target": "packed_logic_bus_slice.vams",
+      "task_id": "v3_455_packed_logic_bus_slice",
+      "task_key": "455-packed-logic-bus-slice",
+      "tier": "ams-mixed-signal-candidate",
+      "title": "Packed Logic Bus Slice"
+    },
+    {
+      "failure_summary": "out_ovr@12ns=0.6000 expected=0.3000 metric_ovr@12ns=0.0000 expected=1.0000 out_ovr@52ns=0.3000 expected=0.1500 metric_ovr@52ns=0.0000 expected=1.0000",
+      "issue_urls": [
+        "https://github.com/Arcadia-1/EVAS/issues/49"
+      ],
+      "probe_status": "FAIL_SIM_CORRECTNESS",
+      "promotion_acceptance": [
+        "After EVAS support lands, promote the listed 1 task(s) by adding sim_correct behavior contracts/checkers if missing, then require 1/1 gold PASS, 5/5 negative variants rejected, and zero expectation_fail in the verification report."
+      ],
+      "promotion_commands": [
+        "PYTHONPATH=runners VAEVAS_DEFAULT_EVAS_ENGINE=python VAEVAS_EVAS_PERSISTENT_WORKER=0 PATH=\"$PWD/.venv-evas/bin:$PATH\" .venv-evas/bin/python scripts/run_v3_gold_negative_verification.py --start 464 --end 464 --tasks 464 --include-staged --timeout 120 --jobs 1 --out benchmark-vabench-release-v3/reports/verify_issue_464_464.json"
+      ],
+      "semantic_layer": "behavioral_language_extension",
+      "target": "param_given_gain_select.va",
+      "task_id": "v3_464_param_given_gain_select",
+      "task_key": "464-param-given-gain-select",
+      "tier": "syntax-extension-candidate",
+      "title": "Param Given Gain Select"
+    },
+    {
+      "failure_summary": "out@10ns=0.0000 expected=0.1000 tol=0.0350",
+      "issue_urls": [
+        "https://github.com/Arcadia-1/EVAS/issues/50"
+      ],
+      "probe_status": "FAIL_SIM_CORRECTNESS",
+      "promotion_acceptance": [
+        "After EVAS support lands, promote the listed 1 task(s) by adding sim_correct behavior contracts/checkers if missing, then require 1/1 gold PASS, 5/5 negative variants rejected, and zero expectation_fail in the verification report."
+      ],
+      "promotion_commands": [
+        "PYTHONPATH=runners VAEVAS_DEFAULT_EVAS_ENGINE=python VAEVAS_EVAS_PERSISTENT_WORKER=0 PATH=\"$PWD/.venv-evas/bin:$PATH\" .venv-evas/bin/python scripts/run_v3_gold_negative_verification.py --start 468 --end 468 --tasks 468 --include-staged --timeout 120 --jobs 1 --out benchmark-vabench-release-v3/reports/verify_issue_468_468.json"
+      ],
+      "semantic_layer": "behavioral_language_extension",
+      "target": "branch_declaration_voltage_probe.va",
+      "task_id": "v3_468_branch_declaration_voltage_probe",
+      "task_key": "468-branch-declaration-voltage-probe",
+      "tier": "syntax-extension-candidate",
+      "title": "Branch Declaration Voltage Probe"
+    },
+    {
+      "failure_summary": "staged_kcl_boundary feature=I(p,n)<+gain*V(p,n) n_range=0 p_range=0.0008 expected=mna_current_observable",
+      "issue_urls": [
+        "https://github.com/Arcadia-1/EVAS/issues/44"
+      ],
+      "probe_status": "FAIL_SIM_CORRECTNESS",
+      "promotion_acceptance": [
+        "After EVAS support lands, promote the listed 18 task(s) by adding sim_correct behavior contracts/checkers if missing, then require 18/18 gold PASS, 90/90 negative variants rejected, and zero expectation_fail in the verification report."
+      ],
+      "promotion_commands": [
+        "PYTHONPATH=runners VAEVAS_DEFAULT_EVAS_ENGINE=python VAEVAS_EVAS_PERSISTENT_WORKER=0 PATH=\"$PWD/.venv-evas/bin:$PATH\" .venv-evas/bin/python scripts/run_v3_gold_negative_verification.py --start 435 --end 494 --tasks 435,436,437,438,439,440,441,442,443,444,469,470,471,472,491,492,493,494 --include-staged --timeout 120 --jobs 1 --out benchmark-vabench-release-v3/reports/verify_issue_435_494.json"
+      ],
+      "semantic_layer": "conservative_kcl_syntax_extension",
+      "target": "current_contribution_conductance.va",
+      "task_id": "v3_469_current_contribution_conductance",
+      "task_key": "469-current-contribution-conductance",
+      "tier": "kcl-syntax-candidate",
+      "title": "Current Contribution Conductance"
+    },
+    {
+      "failure_summary": "out@50ns=0.0000 expected_branch_current=0.5000 out@90ns=0.0000 expected_branch_current=0.2000",
+      "issue_urls": [
+        "https://github.com/Arcadia-1/EVAS/issues/44"
+      ],
+      "probe_status": "FAIL_SIM_CORRECTNESS",
+      "promotion_acceptance": [
+        "After EVAS support lands, promote the listed 18 task(s) by adding sim_correct behavior contracts/checkers if missing, then require 18/18 gold PASS, 90/90 negative variants rejected, and zero expectation_fail in the verification report."
+      ],
+      "promotion_commands": [
+        "PYTHONPATH=runners VAEVAS_DEFAULT_EVAS_ENGINE=python VAEVAS_EVAS_PERSISTENT_WORKER=0 PATH=\"$PWD/.venv-evas/bin:$PATH\" .venv-evas/bin/python scripts/run_v3_gold_negative_verification.py --start 435 --end 494 --tasks 435,436,437,438,439,440,441,442,443,444,469,470,471,472,491,492,493,494 --include-staged --timeout 120 --jobs 1 --out benchmark-vabench-release-v3/reports/verify_issue_435_494.json"
+      ],
+      "semantic_layer": "conservative_kcl_syntax_extension",
+      "target": "branch_current_probe_contribution.va",
+      "task_id": "v3_470_branch_current_probe_contribution",
+      "task_key": "470-branch-current-probe-contribution",
+      "tier": "kcl-syntax-candidate",
+      "title": "Branch Current Probe Contribution"
+    },
+    {
+      "failure_summary": "staged_dynamic_solver_boundary operator=indirect_branch_equation out_range=0 expected=certified_continuous_time_response",
+      "issue_urls": [
+        "https://github.com/Arcadia-1/EVAS/issues/44"
+      ],
+      "probe_status": "FAIL_SIM_CORRECTNESS",
+      "promotion_acceptance": [
+        "After EVAS support lands, promote the listed 18 task(s) by adding sim_correct behavior contracts/checkers if missing, then require 18/18 gold PASS, 90/90 negative variants rejected, and zero expectation_fail in the verification report."
+      ],
+      "promotion_commands": [
+        "PYTHONPATH=runners VAEVAS_DEFAULT_EVAS_ENGINE=python VAEVAS_EVAS_PERSISTENT_WORKER=0 PATH=\"$PWD/.venv-evas/bin:$PATH\" .venv-evas/bin/python scripts/run_v3_gold_negative_verification.py --start 435 --end 494 --tasks 435,436,437,438,439,440,441,442,443,444,469,470,471,472,491,492,493,494 --include-staged --timeout 120 --jobs 1 --out benchmark-vabench-release-v3/reports/verify_issue_435_494.json"
+      ],
+      "semantic_layer": "behavioral_continuous_time_extension",
+      "target": "indirect_branch_null_balance.va",
+      "task_id": "v3_471_indirect_branch_null_balance",
+      "task_key": "471-indirect-branch-null-balance",
+      "tier": "behavioral-continuous-time-candidate",
+      "title": "Indirect Branch Null Balance"
+    },
+    {
+      "failure_summary": "staged_dynamic_solver_boundary operator=indirect_branch_ddt_equation out_range=0 expected=certified_continuous_time_response",
+      "issue_urls": [
+        "https://github.com/Arcadia-1/EVAS/issues/44"
+      ],
+      "probe_status": "FAIL_SIM_CORRECTNESS",
+      "promotion_acceptance": [
+        "After EVAS support lands, promote the listed 18 task(s) by adding sim_correct behavior contracts/checkers if missing, then require 18/18 gold PASS, 90/90 negative variants rejected, and zero expectation_fail in the verification report."
+      ],
+      "promotion_commands": [
+        "PYTHONPATH=runners VAEVAS_DEFAULT_EVAS_ENGINE=python VAEVAS_EVAS_PERSISTENT_WORKER=0 PATH=\"$PWD/.venv-evas/bin:$PATH\" .venv-evas/bin/python scripts/run_v3_gold_negative_verification.py --start 435 --end 494 --tasks 435,436,437,438,439,440,441,442,443,444,469,470,471,472,491,492,493,494 --include-staged --timeout 120 --jobs 1 --out benchmark-vabench-release-v3/reports/verify_issue_435_494.json"
+      ],
+      "semantic_layer": "behavioral_continuous_time_extension",
+      "target": "indirect_branch_ddt_balance.va",
+      "task_id": "v3_472_indirect_branch_ddt_balance",
+      "task_key": "472-indirect-branch-ddt-balance",
+      "tier": "behavioral-continuous-time-candidate",
+      "title": "Indirect Branch Ddt Balance"
+    },
+    {
+      "failure_summary": "out@50ns=0.0000 expected=0.2000 tol=0.0350",
+      "issue_urls": [
+        "https://github.com/Arcadia-1/EVAS/issues/51"
+      ],
+      "probe_status": "FAIL_SIM_CORRECTNESS",
+      "promotion_acceptance": [
+        "After EVAS support lands, promote the listed 1 task(s) by adding sim_correct behavior contracts/checkers if missing, then require 1/1 gold PASS, 5/5 negative variants rejected, and zero expectation_fail in the verification report."
+      ],
+      "promotion_commands": [
+        "PYTHONPATH=runners VAEVAS_DEFAULT_EVAS_ENGINE=python VAEVAS_EVAS_PERSISTENT_WORKER=0 PATH=\"$PWD/.venv-evas/bin:$PATH\" .venv-evas/bin/python scripts/run_v3_gold_negative_verification.py --start 476 --end 476 --tasks 476 --include-staged --timeout 120 --jobs 1 --out benchmark-vabench-release-v3/reports/verify_issue_476_476.json"
+      ],
+      "semantic_layer": "behavioral_language_extension",
+      "target": "oomr_string_voltage_probe.va",
+      "task_id": "v3_476_oomr_string_voltage_probe",
+      "task_key": "476-oomr-string-voltage-probe",
+      "tier": "syntax-extension-candidate",
+      "title": "Oomr String Voltage Probe"
+    },
+    {
+      "failure_summary": "out@50ns=0.0000 expected=0.2000 tol=0.0350",
+      "issue_urls": [
+        "https://github.com/Arcadia-1/EVAS/issues/52"
+      ],
+      "probe_status": "FAIL_SIM_CORRECTNESS",
+      "promotion_acceptance": [
+        "After EVAS support lands, promote the listed 1 task(s) by adding sim_correct behavior contracts/checkers if missing, then require 1/1 gold PASS, 5/5 negative variants rejected, and zero expectation_fail in the verification report."
+      ],
+      "promotion_commands": [
+        "PYTHONPATH=runners VAEVAS_DEFAULT_EVAS_ENGINE=python VAEVAS_EVAS_PERSISTENT_WORKER=0 PATH=\"$PWD/.venv-evas/bin:$PATH\" .venv-evas/bin/python scripts/run_v3_gold_negative_verification.py --start 477 --end 477 --tasks 477 --include-staged --timeout 120 --jobs 1 --out benchmark-vabench-release-v3/reports/verify_issue_477_477.json"
+      ],
+      "semantic_layer": "behavioral_language_extension",
+      "target": "analog_node_alias_initial.va",
+      "task_id": "v3_477_analog_node_alias_initial",
+      "task_key": "477-analog-node-alias-initial",
+      "tier": "syntax-extension-candidate",
+      "title": "Analog Node Alias Initial"
+    },
+    {
+      "failure_summary": "simulator_error=Failed to compile Verilog-A file mfactor_system_function_gain.va: Spectre-incompatible/unsupported Verilog-A function call: $mfactor()",
+      "issue_urls": [
+        "https://github.com/Arcadia-1/EVAS/issues/53"
+      ],
+      "probe_status": "FAIL_DUT_COMPILE",
+      "promotion_acceptance": [
+        "After EVAS support lands, promote the listed 1 task(s) by adding sim_correct behavior contracts/checkers if missing, then require 1/1 gold PASS, 5/5 negative variants rejected, and zero expectation_fail in the verification report."
+      ],
+      "promotion_commands": [
+        "PYTHONPATH=runners VAEVAS_DEFAULT_EVAS_ENGINE=python VAEVAS_EVAS_PERSISTENT_WORKER=0 PATH=\"$PWD/.venv-evas/bin:$PATH\" .venv-evas/bin/python scripts/run_v3_gold_negative_verification.py --start 480 --end 480 --tasks 480 --include-staged --timeout 120 --jobs 1 --out benchmark-vabench-release-v3/reports/verify_issue_480_480.json"
+      ],
+      "semantic_layer": "behavioral_language_extension",
+      "target": "mfactor_system_function_gain.va",
+      "task_id": "v3_480_mfactor_system_function_gain",
+      "task_key": "480-mfactor-system-function-gain",
+      "tier": "syntax-extension-candidate",
+      "title": "Mfactor System Function Gain"
+    },
+    {
+      "failure_summary": "simulator_error=Unknown child module: resistor in analog_primitive_resistor_instance.rload",
+      "issue_urls": [
+        "https://github.com/Arcadia-1/EVAS/issues/54"
+      ],
+      "probe_status": "FAIL_TB_COMPILE",
+      "promotion_acceptance": [
+        "After EVAS support lands, promote the listed 1 task(s) by adding sim_correct behavior contracts/checkers if missing, then require 1/1 gold PASS, 5/5 negative variants rejected, and zero expectation_fail in the verification report."
+      ],
+      "promotion_commands": [
+        "PYTHONPATH=runners VAEVAS_DEFAULT_EVAS_ENGINE=python VAEVAS_EVAS_PERSISTENT_WORKER=0 PATH=\"$PWD/.venv-evas/bin:$PATH\" .venv-evas/bin/python scripts/run_v3_gold_negative_verification.py --start 481 --end 481 --tasks 481 --include-staged --timeout 120 --jobs 1 --out benchmark-vabench-release-v3/reports/verify_issue_481_481.json"
+      ],
+      "semantic_layer": "conservative_kcl_syntax_extension",
+      "target": "analog_primitive_resistor_instance.va",
+      "task_id": "v3_481_analog_primitive_resistor_instance",
+      "task_key": "481-analog-primitive-resistor-instance",
+      "tier": "kcl-syntax-candidate",
+      "title": "Analog Primitive Resistor Instance"
+    },
+    {
+      "failure_summary": "simulator_error=Unknown child module: isource in analog_primitive_isource_instance.ib",
+      "issue_urls": [
+        "https://github.com/Arcadia-1/EVAS/issues/55"
+      ],
+      "probe_status": "FAIL_TB_COMPILE",
+      "promotion_acceptance": [
+        "After EVAS support lands, promote the listed 1 task(s) by adding sim_correct behavior contracts/checkers if missing, then require 1/1 gold PASS, 5/5 negative variants rejected, and zero expectation_fail in the verification report."
+      ],
+      "promotion_commands": [
+        "PYTHONPATH=runners VAEVAS_DEFAULT_EVAS_ENGINE=python VAEVAS_EVAS_PERSISTENT_WORKER=0 PATH=\"$PWD/.venv-evas/bin:$PATH\" .venv-evas/bin/python scripts/run_v3_gold_negative_verification.py --start 482 --end 482 --tasks 482 --include-staged --timeout 120 --jobs 1 --out benchmark-vabench-release-v3/reports/verify_issue_482_482.json"
+      ],
+      "semantic_layer": "conservative_kcl_syntax_extension",
+      "target": "analog_primitive_isource_instance.va",
+      "task_id": "v3_482_analog_primitive_isource_instance",
+      "task_key": "482-analog-primitive-isource-instance",
+      "tier": "kcl-syntax-candidate",
+      "title": "Analog Primitive Isource Instance"
+    },
+    {
+      "failure_summary": "out@50ns=0.0000 expected=1.0000 tol=0.0500",
+      "issue_urls": [
+        "https://github.com/Arcadia-1/EVAS/issues/56"
+      ],
+      "probe_status": "FAIL_SIM_CORRECTNESS",
+      "promotion_acceptance": [
+        "After EVAS support lands, promote the listed 1 task(s) by adding sim_correct behavior contracts/checkers if missing, then require 1/1 gold PASS, 5/5 negative variants rejected, and zero expectation_fail in the verification report."
+      ],
+      "promotion_commands": [
+        "PYTHONPATH=runners VAEVAS_DEFAULT_EVAS_ENGINE=python VAEVAS_EVAS_PERSISTENT_WORKER=0 PATH=\"$PWD/.venv-evas/bin:$PATH\" .venv-evas/bin/python scripts/run_v3_gold_negative_verification.py --start 487 --end 487 --tasks 487 --include-staged --timeout 120 --jobs 1 --out benchmark-vabench-release-v3/reports/verify_issue_487_487.json"
+      ],
+      "semantic_layer": "behavioral_language_extension",
+      "target": "table_model_2d_array_surface.va",
+      "task_id": "v3_487_table_model_2d_array_surface",
+      "task_key": "487-table-model-2d-array-surface",
+      "tier": "syntax-extension-candidate",
+      "title": "Table Model 2d Array Surface"
+    },
+    {
+      "failure_summary": "out@10ns=0.0000 expected=0.1000 tol=0.0400",
+      "issue_urls": [
+        "https://github.com/Arcadia-1/EVAS/issues/40"
+      ],
+      "probe_status": "FAIL_SIM_CORRECTNESS",
+      "promotion_acceptance": [
+        "After EVAS support lands, promote the listed 1 task(s) by adding sim_correct behavior contracts/checkers if missing, then require 1/1 gold PASS, 5/5 negative variants rejected, and zero expectation_fail in the verification report."
+      ],
+      "promotion_commands": [
+        "PYTHONPATH=runners VAEVAS_DEFAULT_EVAS_ENGINE=python VAEVAS_EVAS_PERSISTENT_WORKER=0 PATH=\"$PWD/.venv-evas/bin:$PATH\" .venv-evas/bin/python scripts/run_v3_gold_negative_verification.py --start 488 --end 488 --tasks 488 --include-staged --timeout 120 --jobs 1 --out benchmark-vabench-release-v3/reports/verify_issue_488_488.json"
+      ],
+      "semantic_layer": "behavioral_language_extension",
+      "target": "table_model_string_param_source.va",
+      "task_id": "v3_488_table_model_string_param_source",
+      "task_key": "488-table-model-string-param-source",
+      "tier": "syntax-extension-candidate",
+      "title": "Table Model String Param Source"
+    },
+    {
+      "failure_summary": "staged_kcl_boundary feature=I(p,n)<+c*ddt(V(p,n)) p_range=0.0012 expected=mna_current_observable",
+      "issue_urls": [
+        "https://github.com/Arcadia-1/EVAS/issues/44"
+      ],
+      "probe_status": "FAIL_SIM_CORRECTNESS",
+      "promotion_acceptance": [
+        "After EVAS support lands, promote the listed 18 task(s) by adding sim_correct behavior contracts/checkers if missing, then require 18/18 gold PASS, 90/90 negative variants rejected, and zero expectation_fail in the verification report."
+      ],
+      "promotion_commands": [
+        "PYTHONPATH=runners VAEVAS_DEFAULT_EVAS_ENGINE=python VAEVAS_EVAS_PERSISTENT_WORKER=0 PATH=\"$PWD/.venv-evas/bin:$PATH\" .venv-evas/bin/python scripts/run_v3_gold_negative_verification.py --start 435 --end 494 --tasks 435,436,437,438,439,440,441,442,443,444,469,470,471,472,491,492,493,494 --include-staged --timeout 120 --jobs 1 --out benchmark-vabench-release-v3/reports/verify_issue_435_494.json"
+      ],
+      "semantic_layer": "conservative_kcl_syntax_extension",
+      "target": "kcl_capacitor_ddt_current.va",
+      "task_id": "v3_491_kcl_capacitor_ddt_current",
+      "task_key": "491-kcl-capacitor-ddt-current",
+      "tier": "kcl-syntax-candidate",
+      "title": "Kcl Capacitor Ddt Current"
+    },
+    {
+      "failure_summary": "simulator_error=Model isource not found (available: ['kcl_inductor_idt_voltage'])",
+      "issue_urls": [
+        "https://github.com/Arcadia-1/EVAS/issues/44"
+      ],
+      "probe_status": "FAIL_SIM_CORRECTNESS",
+      "promotion_acceptance": [
+        "After EVAS support lands, promote the listed 18 task(s) by adding sim_correct behavior contracts/checkers if missing, then require 18/18 gold PASS, 90/90 negative variants rejected, and zero expectation_fail in the verification report."
+      ],
+      "promotion_commands": [
+        "PYTHONPATH=runners VAEVAS_DEFAULT_EVAS_ENGINE=python VAEVAS_EVAS_PERSISTENT_WORKER=0 PATH=\"$PWD/.venv-evas/bin:$PATH\" .venv-evas/bin/python scripts/run_v3_gold_negative_verification.py --start 435 --end 494 --tasks 435,436,437,438,439,440,441,442,443,444,469,470,471,472,491,492,493,494 --include-staged --timeout 120 --jobs 1 --out benchmark-vabench-release-v3/reports/verify_issue_435_494.json"
+      ],
+      "semantic_layer": "conservative_kcl_syntax_extension",
+      "target": "kcl_inductor_idt_voltage.va",
+      "task_id": "v3_492_kcl_inductor_idt_voltage",
+      "task_key": "492-kcl-inductor-idt-voltage",
+      "tier": "kcl-syntax-candidate",
+      "title": "Kcl Inductor Idt Voltage"
+    },
+    {
+      "failure_summary": "staged_dynamic_solver_boundary operator=continuous_laplace_nd out_range=1 expected=certified_continuous_time_response",
+      "issue_urls": [
+        "https://github.com/Arcadia-1/EVAS/issues/44"
+      ],
+      "probe_status": "FAIL_SIM_CORRECTNESS",
+      "promotion_acceptance": [
+        "After EVAS support lands, promote the listed 18 task(s) by adding sim_correct behavior contracts/checkers if missing, then require 18/18 gold PASS, 90/90 negative variants rejected, and zero expectation_fail in the verification report."
+      ],
+      "promotion_commands": [
+        "PYTHONPATH=runners VAEVAS_DEFAULT_EVAS_ENGINE=python VAEVAS_EVAS_PERSISTENT_WORKER=0 PATH=\"$PWD/.venv-evas/bin:$PATH\" .venv-evas/bin/python scripts/run_v3_gold_negative_verification.py --start 435 --end 494 --tasks 435,436,437,438,439,440,441,442,443,444,469,470,471,472,491,492,493,494 --include-staged --timeout 120 --jobs 1 --out benchmark-vabench-release-v3/reports/verify_issue_435_494.json"
+      ],
+      "semantic_layer": "behavioral_continuous_time_extension",
+      "target": "continuous_laplace_nd_filter.va",
+      "task_id": "v3_493_continuous_laplace_nd_filter",
+      "task_key": "493-continuous-laplace-nd-filter",
+      "tier": "behavioral-continuous-time-candidate",
+      "title": "Continuous Laplace Nd Filter"
+    },
+    {
+      "failure_summary": "staged_dynamic_solver_boundary operator=continuous_zi_nd out_range=1 expected=certified_continuous_time_response",
+      "issue_urls": [
+        "https://github.com/Arcadia-1/EVAS/issues/44"
+      ],
+      "probe_status": "FAIL_SIM_CORRECTNESS",
+      "promotion_acceptance": [
+        "After EVAS support lands, promote the listed 18 task(s) by adding sim_correct behavior contracts/checkers if missing, then require 18/18 gold PASS, 90/90 negative variants rejected, and zero expectation_fail in the verification report."
+      ],
+      "promotion_commands": [
+        "PYTHONPATH=runners VAEVAS_DEFAULT_EVAS_ENGINE=python VAEVAS_EVAS_PERSISTENT_WORKER=0 PATH=\"$PWD/.venv-evas/bin:$PATH\" .venv-evas/bin/python scripts/run_v3_gold_negative_verification.py --start 435 --end 494 --tasks 435,436,437,438,439,440,441,442,443,444,469,470,471,472,491,492,493,494 --include-staged --timeout 120 --jobs 1 --out benchmark-vabench-release-v3/reports/verify_issue_435_494.json"
+      ],
+      "semantic_layer": "behavioral_continuous_time_extension",
+      "target": "continuous_zi_nd_filter.va",
+      "task_id": "v3_494_continuous_zi_nd_filter",
+      "task_key": "494-continuous-zi-nd-filter",
+      "tier": "behavioral-continuous-time-candidate",
+      "title": "Continuous Zi Nd Filter"
+    }
+  ]
+}
