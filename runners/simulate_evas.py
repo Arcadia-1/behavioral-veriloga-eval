@@ -8934,12 +8934,70 @@ def _check_v3_staged_kcl_boundary(
     )
 
 
+def _v3_interp_signal(rows: list[dict[str, float]], signal: str, time_s: float) -> float:
+    if not rows:
+        return 0.0
+    if time_s <= rows[0]["time"]:
+        return rows[0][signal]
+    for prev, cur in zip(rows, rows[1:]):
+        t0 = prev["time"]
+        t1 = cur["time"]
+        if t0 <= time_s <= t1:
+            if t1 == t0:
+                return cur[signal]
+            frac = (time_s - t0) / (t1 - t0)
+            return prev[signal] + frac * (cur[signal] - prev[signal])
+    return rows[-1][signal]
+
+
+def _v3_rising_cross_times(
+    rows: list[dict[str, float]],
+    signal: str,
+    threshold: float,
+) -> list[float]:
+    times: list[float] = []
+    for prev, cur in zip(rows, rows[1:]):
+        y0 = prev[signal] - threshold
+        y1 = cur[signal] - threshold
+        if y0 < 0.0 <= y1:
+            t0 = prev["time"]
+            t1 = cur["time"]
+            if y1 == y0:
+                times.append(t1)
+            else:
+                times.append(t0 + (0.0 - y0) * (t1 - t0) / (y1 - y0))
+    return times
+
+
 def check_v3_435_ddt_voltage_derivative_source(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    return _check_v3_staged_dynamic_operator_boundary(
-        rows,
-        required={"time", "vin", "clk", "rst", "out", "metric"},
-        operator="ddt",
-    )
+    ok, note = _v3_required_columns(rows, {"time", "vin", "clk", "rst", "out", "metric"})
+    if not ok:
+        return False, note
+    crossings = _v3_rising_cross_times(rows, "clk", 0.45)
+    if len(crossings) < 2:
+        return False, f"missing_two_clk_rising_crossings count={len(crossings)}"
+    first_t, second_t = crossings[0], crossings[1]
+    first_sample_t = first_t + 8e-9
+    second_sample_t = second_t + 8e-9
+    vin_first = _v3_interp_signal(rows, "vin", first_t)
+    vin_second = _v3_interp_signal(rows, "vin", second_t)
+    expected = (vin_second - vin_first) / (second_t - first_t)
+    failures: list[str] = []
+    for signal in ("out", "metric"):
+        first_value = _v3_interp_signal(rows, signal, first_sample_t)
+        if abs(first_value) > 0.05:
+            failures.append(f"{signal}_first_sample={first_value:.4g} expected_initial_ddt=0")
+        second_value = _v3_interp_signal(rows, signal, second_sample_t)
+        tol = max(1.0e4, abs(expected) * 0.04)
+        if abs(second_value - expected) > tol:
+            failures.append(f"{signal}_second_sample={second_value:.4g} expected_ddt={expected:.4g}")
+    out_second = _v3_interp_signal(rows, "out", second_sample_t)
+    metric_second = _v3_interp_signal(rows, "metric", second_sample_t)
+    if abs(out_second - metric_second) > max(1.0, abs(expected) * 0.005):
+        failures.append(f"metric_mismatch out={out_second:.4g} metric={metric_second:.4g}")
+    if failures:
+        return False, " ".join(failures[:5])
+    return True, f"ddt_event_derivative_matches_clk_samples expected={expected:.4g}"
 
 
 def check_v3_436_idt_voltage_integrator_source(rows: list[dict[str, float]]) -> tuple[bool, str]:

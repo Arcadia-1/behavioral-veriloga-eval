@@ -4,7 +4,7 @@ Date: 2026-07-02
 
 ## Summary
 
-- Staged tasks: **16**
+- Staged tasks: **15**
 - Distinct blocking issues: **1**
 - Missing issue links: **0**
 - Missing failure summaries: **0**
@@ -13,7 +13,6 @@ Date: 2026-07-02
 
 | Task | Layer | Issue | Probe status | Failure summary | Per-task promotion command |
 | --- | --- | --- | --- | --- | --- |
-| `435-ddt-voltage-derivative-source` | `behavioral_continuous_time_extension` | https://github.com/Arcadia-1/EVAS/issues/44 | `FAIL_SIM_CORRECTNESS` | staged_dynamic_solver_boundary operator=ddt out_range=8.653e+05 metric_range=8.653e+05 expected=certified_continuous_time_response | `PYTHONPATH=runners VAEVAS_DEFAULT_EVAS_ENGINE=python VAEVAS_EVAS_PERSISTENT_WORKER=0 PATH="$PWD/.venv-evas/bin:$PATH" .venv-evas/bin/python scripts/run_v3_gold_negative_verification.py --start 435 --end 435 --tasks 435 --include-staged --timeout 120 --jobs 1 --out benchmark-vabench-release-v3/reports/verify_task_435.json` |
 | `436-idt-voltage-integrator-source` | `behavioral_continuous_time_extension` | https://github.com/Arcadia-1/EVAS/issues/44 | `FAIL_SIM_CORRECTNESS` | staged_dynamic_solver_boundary operator=idt out_range=7.5e-08 metric_range=7.5e-08 expected=certified_continuous_time_response | `PYTHONPATH=runners VAEVAS_DEFAULT_EVAS_ENGINE=python VAEVAS_EVAS_PERSISTENT_WORKER=0 PATH="$PWD/.venv-evas/bin:$PATH" .venv-evas/bin/python scripts/run_v3_gold_negative_verification.py --start 436 --end 436 --tasks 436 --include-staged --timeout 120 --jobs 1 --out benchmark-vabench-release-v3/reports/verify_task_436.json` |
 | `437-laplace-nd-lowpass-filter` | `behavioral_continuous_time_extension` | https://github.com/Arcadia-1/EVAS/issues/44 | `FAIL_SIM_CORRECTNESS` | staged_dynamic_solver_boundary operator=laplace_nd out_range=0.8 metric_range=0.8 expected=certified_continuous_time_response | `PYTHONPATH=runners VAEVAS_DEFAULT_EVAS_ENGINE=python VAEVAS_EVAS_PERSISTENT_WORKER=0 PATH="$PWD/.venv-evas/bin:$PATH" .venv-evas/bin/python scripts/run_v3_gold_negative_verification.py --start 437 --end 437 --tasks 437 --include-staged --timeout 120 --jobs 1 --out benchmark-vabench-release-v3/reports/verify_task_437.json` |
 | `438-laplace-np-pole-filter` | `behavioral_continuous_time_extension` | https://github.com/Arcadia-1/EVAS/issues/44 | `FAIL_SIM_CORRECTNESS` | staged_dynamic_solver_boundary operator=laplace_np out_range=0.6 metric_range=0.6 expected=certified_continuous_time_response | `PYTHONPATH=runners VAEVAS_DEFAULT_EVAS_ENGINE=python VAEVAS_EVAS_PERSISTENT_WORKER=0 PATH="$PWD/.venv-evas/bin:$PATH" .venv-evas/bin/python scripts/run_v3_gold_negative_verification.py --start 438 --end 438 --tasks 438 --include-staged --timeout 120 --jobs 1 --out benchmark-vabench-release-v3/reports/verify_task_438.json` |

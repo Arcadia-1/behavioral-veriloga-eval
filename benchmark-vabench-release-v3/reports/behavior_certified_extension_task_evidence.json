@@ -1,11 +1,11 @@
 {
   "summary": {
     "all_tasks_have_five_behavior_rejected_negatives": true,
-    "gold_pass_count": 178,
-    "negative_behavior_rejected_total": 890,
-    "negative_total": 890,
+    "gold_pass_count": 179,
+    "negative_behavior_rejected_total": 895,
+    "negative_total": 895,
     "source_report": "benchmark-vabench-release-v3/reports/verify_301_494_layered.json",
-    "task_count": 178
+    "task_count": 179
   },
   "tasks": [
     {
@@ -2151,6 +2151,22 @@
         "neg_005_scale_output": "FAIL_SIM_CORRECTNESS"
       },
       "task": "434-repeat-loop-accumulator"
+    },
+    {
+      "all_negatives_behavior_rejected": true,
+      "checker_task_id": "v3_435_ddt_voltage_derivative_source",
+      "gold_meets_expectation": true,
+      "gold_status": "PASS",
+      "negative_behavior_rejected_count": 5,
+      "negative_count": 5,
+      "negative_statuses": {
+        "neg_001_force_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_002_wrong_threshold": "FAIL_SIM_CORRECTNESS",
+        "neg_003_reset_bias": "FAIL_SIM_CORRECTNESS",
+        "neg_004_metric_offset": "FAIL_SIM_CORRECTNESS",
+        "neg_005_scale_output": "FAIL_SIM_CORRECTNESS"
+      },
+      "task": "435-ddt-voltage-derivative-source"
     },
     {
       "all_negatives_behavior_rejected": true,
