@@ -1,0 +1,24 @@
+{
+  "variants": [
+    {
+      "id": "neg_001_force_zero",
+      "description": "Leaves every thermometer output low.",
+      "path": "negative_variants/neg_001_force_zero/thermometer_bus_encoder.va"
+    },
+    {
+      "id": "neg_002_off_by_one",
+      "description": "Turns on one extra segment for nonzero input codes.",
+      "path": "negative_variants/neg_002_off_by_one/thermometer_bus_encoder.va"
+    },
+    {
+      "id": "neg_003_binary_code_outputs",
+      "description": "Emits a binary-style word instead of a prefix thermometer bus.",
+      "path": "negative_variants/neg_003_binary_code_outputs/thermometer_bus_encoder.va"
+    },
+    {
+      "id": "neg_004_reversed_thermometer_order",
+      "description": "Builds the thermometer prefix from the high segment down.",
+      "path": "negative_variants/neg_004_reversed_thermometer_order/thermometer_bus_encoder.va"
+    }
+  ]
+}

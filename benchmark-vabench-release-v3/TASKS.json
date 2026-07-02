@@ -10141,6 +10141,96 @@
         "neg_004_metric_offset",
         "neg_005_scale_output"
       ]
+    },
+    "495-slew-rate-dac4": {
+      "category": "data_converter",
+      "difficulty": "D2",
+      "form": "dut",
+      "id": "v3_495_slew_rate_dac4",
+      "level": "L1",
+      "target": [
+        "slew_rate_dac4.va"
+      ],
+      "tier": "cadence-derived-data-converter-candidate",
+      "title": "Slew Rate DAC4",
+      "description": "Four-bit voltage-coded DAC with Cadence-style slew-rate-limited analog output.",
+      "required_behavior": [
+        "Decode d3..d0 as an unsigned binary word with d3 as MSB.",
+        "Map code zero to 0 V and code fifteen to vref.",
+        "Limit output motion with the public slew rate rather than jumping directly."
+      ],
+      "visible_tests": [
+        "visible.scs exercises large up/down code steps and settled endpoint behavior."
+      ],
+      "hidden_tests": [
+        "hidden.scs uses different code transitions to check both slew and bit order."
+      ],
+      "negative_variants": [
+        "neg_001_force_zero",
+        "neg_002_direct_transition",
+        "neg_003_wrong_denominator",
+        "neg_004_reversed_bit_order"
+      ]
+    },
+    "496-first-order-sigma-delta-modulator": {
+      "category": "data_converter",
+      "difficulty": "D3",
+      "form": "dut",
+      "id": "v3_496_first_order_sigma_delta_modulator",
+      "level": "L1",
+      "target": [
+        "first_order_sigma_delta_modulator.va"
+      ],
+      "tier": "cadence-derived-data-converter-candidate",
+      "title": "First Order Sigma Delta Modulator",
+      "description": "Clocked first-order sigma-delta modulator with one-bit voltage-coded output stream.",
+      "required_behavior": [
+        "Update a feedback-bounded accumulator on rising clock crossings.",
+        "Subtract the previous one-bit feedback value from the normalized input.",
+        "Emit a one-bit stream whose pulse density rises with the input level."
+      ],
+      "visible_tests": [
+        "visible.scs checks low and high input-density windows."
+      ],
+      "hidden_tests": [
+        "hidden.scs varies clock period and input levels to catch hard-coded sequences."
+      ],
+      "negative_variants": [
+        "neg_001_force_zero",
+        "neg_002_no_feedback",
+        "neg_003_inverted_decision",
+        "neg_004_falling_edge_update"
+      ]
+    },
+    "497-thermometer-bus-encoder": {
+      "category": "data_converter",
+      "difficulty": "D2",
+      "form": "dut",
+      "id": "v3_497_thermometer_bus_encoder",
+      "level": "L1",
+      "target": [
+        "thermometer_bus_encoder.va"
+      ],
+      "tier": "cadence-derived-data-converter-candidate",
+      "title": "Thermometer Bus Encoder",
+      "description": "Analog-input 16-segment thermometer bus encoder with prefix output ordering.",
+      "required_behavior": [
+        "Clip the analog input to the declared full-scale range.",
+        "Turn on a monotonic prefix of t0..t15 according to the input level.",
+        "Avoid binary-coded output words and reversed segment ordering."
+      ],
+      "visible_tests": [
+        "visible.scs covers low, midscale, high, and overrange input levels."
+      ],
+      "hidden_tests": [
+        "hidden.scs covers underrange, alternate midscale, and overrange levels."
+      ],
+      "negative_variants": [
+        "neg_001_force_zero",
+        "neg_002_off_by_one",
+        "neg_003_binary_code_outputs",
+        "neg_004_reversed_thermometer_order"
+      ]
     }
   }
 }
