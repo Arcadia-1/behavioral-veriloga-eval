@@ -21,6 +21,7 @@ REPORT_CSV = REPORTS_ROOT / "layered_certification_tasks.csv"
 STAGED_BLOCKER_JSON = REPORTS_ROOT / "staged_blocker_matrix.json"
 STAGED_BLOCKER_MD = REPORTS_ROOT / "staged_blocker_matrix.md"
 STAGED_BLOCKER_CSV = REPORTS_ROOT / "staged_blocker_matrix.csv"
+BEHAVIOR_EXTENSION_EVIDENCE_JSON = REPORTS_ROOT / "behavior_certified_extension_task_evidence.json"
 EXTENSION_SOP_AUDIT_JSON = REPORTS_ROOT / "extension_sop_audit.json"
 VERIFY_LAYERED_JSON = REPORTS_ROOT / "verify_301_494_layered.json"
 STAGED_GOLD_PROBE_JSON = REPORTS_ROOT / "staged_promotion_gold_probe.json"
@@ -476,7 +477,7 @@ def write_csv(rows: list[dict[str, Any]]) -> None:
         "target",
     ]
     with REPORT_CSV.open("w", newline="", encoding="utf-8") as fh:
-        writer = csv.DictWriter(fh, fieldnames=fields)
+        writer = csv.DictWriter(fh, fieldnames=fields, lineterminator="\n")
         writer.writeheader()
         for row in rows:
             writer.writerow({field: row.get(field, "") for field in fields})
@@ -560,7 +561,7 @@ def write_staged_blocker_csv(matrix: dict[str, Any]) -> None:
         "task_promotion_acceptance",
     ]
     with STAGED_BLOCKER_CSV.open("w", newline="", encoding="utf-8") as fh:
-        writer = csv.DictWriter(fh, fieldnames=fields)
+        writer = csv.DictWriter(fh, fieldnames=fields, lineterminator="\n")
         writer.writeheader()
         for row in matrix["tasks"]:
             writer.writerow({
@@ -613,6 +614,74 @@ def write_staged_blocker_matrix(report: dict[str, Any]) -> None:
     STAGED_BLOCKER_JSON.write_text(json.dumps(matrix, indent=2, sort_keys=True) + "\n", encoding="utf-8")
     write_staged_blocker_csv(matrix)
     write_staged_blocker_md(matrix)
+
+
+def write_behavior_extension_evidence(report: dict[str, Any]) -> None:
+    verification = {}
+    if VERIFY_LAYERED_JSON.exists():
+        try:
+            verification = json.loads(VERIFY_LAYERED_JSON.read_text(encoding="utf-8"))
+        except json.JSONDecodeError:
+            verification = {}
+    rows = verification.get("rows", []) if isinstance(verification, dict) else []
+    gold_by_task = {
+        str(row.get("task_slug")): row
+        for row in rows
+        if isinstance(row, dict) and row.get("kind") == "gold"
+    }
+    negative_statuses_by_task: dict[str, dict[str, str]] = {}
+    for row in rows:
+        if not isinstance(row, dict) or row.get("kind") != "negative":
+            continue
+        task = str(row.get("task_slug") or "")
+        variant = str(row.get("variant") or "")
+        if task and variant:
+            negative_statuses_by_task.setdefault(task, {})[variant] = str(row.get("status") or "")
+
+    behavior_extension_rows = [
+        row for row in report["task_rows"]
+        if row["extension_candidate"] and row["behavior_certified"]
+    ]
+    task_rows: list[dict[str, Any]] = []
+    for task in behavior_extension_rows:
+        task_key = task["task_key"]
+        gold = gold_by_task.get(task_key, {})
+        negative_statuses = negative_statuses_by_task.get(task_key, {})
+        negative_rejected = {
+            variant: status
+            for variant, status in negative_statuses.items()
+            if status == "FAIL_SIM_CORRECTNESS"
+        }
+        task_rows.append({
+            "task": task_key,
+            "checker_task_id": gold.get("checker_task_id"),
+            "gold_status": gold.get("status"),
+            "gold_meets_expectation": gold.get("meets_expectation"),
+            "negative_count": len(negative_statuses),
+            "negative_statuses": negative_statuses,
+            "negative_behavior_rejected_count": len(negative_rejected),
+            "all_negatives_behavior_rejected": len(negative_statuses) == 5 and len(negative_rejected) == 5,
+        })
+
+    payload = {
+        "summary": {
+            "source_report": str(VERIFY_LAYERED_JSON.relative_to(ROOT)),
+            "task_count": len(task_rows),
+            "gold_pass_count": sum(row["gold_status"] == "PASS" for row in task_rows),
+            "negative_total": sum(row["negative_count"] for row in task_rows),
+            "negative_behavior_rejected_total": sum(
+                row["negative_behavior_rejected_count"] for row in task_rows
+            ),
+            "all_tasks_have_five_behavior_rejected_negatives": all(
+                row["all_negatives_behavior_rejected"] for row in task_rows
+            ),
+        },
+        "tasks": task_rows,
+    }
+    BEHAVIOR_EXTENSION_EVIDENCE_JSON.write_text(
+        json.dumps(payload, indent=2, sort_keys=True) + "\n",
+        encoding="utf-8",
+    )
 
 
 def write_md(report: dict[str, Any]) -> None:
@@ -698,10 +767,12 @@ def main() -> None:
     REPORT_JSON.write_text(json.dumps(report, indent=2, sort_keys=True) + "\n", encoding="utf-8")
     write_csv(report["task_rows"])
     write_md(report)
+    write_behavior_extension_evidence(report)
     write_staged_blocker_matrix(report)
     print(f"wrote {REPORT_JSON.relative_to(ROOT)}")
     print(f"wrote {REPORT_CSV.relative_to(ROOT)}")
     print(f"wrote {REPORT_MD.relative_to(ROOT)}")
+    print(f"wrote {BEHAVIOR_EXTENSION_EVIDENCE_JSON.relative_to(ROOT)}")
     print(f"wrote {STAGED_BLOCKER_JSON.relative_to(ROOT)}")
     print(f"wrote {STAGED_BLOCKER_CSV.relative_to(ROOT)}")
     print(f"wrote {STAGED_BLOCKER_MD.relative_to(ROOT)}")

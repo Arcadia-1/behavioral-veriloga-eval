@@ -4,8 +4,8 @@ Date: 2026-07-02
 
 ## Summary
 
-- Staged tasks: **36**
-- Distinct blocking issues: **15**
+- Staged tasks: **35**
+- Distinct blocking issues: **14**
 - Missing issue links: **0**
 - Missing failure summaries: **0**
 
@@ -14,7 +14,6 @@ Date: 2026-07-02
 | Task | Layer | Issue | Probe status | Failure summary | Per-task promotion command |
 | --- | --- | --- | --- | --- | --- |
 | `353-always-resettable-toggle` | `ams_mixed_signal_extension` | https://github.com/Arcadia-1/EVAS/issues/39 | `FAIL_SIM_CORRECTNESS` | q@50ns=0.0000 expected=1.0000 tol=0.0800 | `PYTHONPATH=runners VAEVAS_DEFAULT_EVAS_ENGINE=python VAEVAS_EVAS_PERSISTENT_WORKER=0 PATH="$PWD/.venv-evas/bin:$PATH" .venv-evas/bin/python scripts/run_v3_gold_negative_verification.py --start 353 --end 353 --tasks 353 --include-staged --timeout 120 --jobs 1 --out benchmark-vabench-release-v3/reports/verify_task_353.json` |
-| `410-macro-ifdef-gain-select` | `behavioral_language_extension` | https://github.com/Arcadia-1/EVAS/issues/42 | `FAIL_SIM_CORRECTNESS` | out@160ns=0.4800 expected=0.8000 tol=0.0800 | `PYTHONPATH=runners VAEVAS_DEFAULT_EVAS_ENGINE=python VAEVAS_EVAS_PERSISTENT_WORKER=0 PATH="$PWD/.venv-evas/bin:$PATH" .venv-evas/bin/python scripts/run_v3_gold_negative_verification.py --start 410 --end 410 --tasks 410 --include-staged --timeout 120 --jobs 1 --out benchmark-vabench-release-v3/reports/verify_task_410.json` |
 | `415-logic-vector-assign-slice` | `ams_mixed_signal_extension` | https://github.com/Arcadia-1/EVAS/issues/43 | `FAIL_SIM_CORRECTNESS` | y@50ns=0.0000 expected=1.0000 tol=0.0800 | `PYTHONPATH=runners VAEVAS_DEFAULT_EVAS_ENGINE=python VAEVAS_EVAS_PERSISTENT_WORKER=0 PATH="$PWD/.venv-evas/bin:$PATH" .venv-evas/bin/python scripts/run_v3_gold_negative_verification.py --start 415 --end 415 --tasks 415 --include-staged --timeout 120 --jobs 1 --out benchmark-vabench-release-v3/reports/verify_task_415.json` |
 | `416-logic-vector-reduction-flag` | `ams_mixed_signal_extension` | https://github.com/Arcadia-1/EVAS/issues/43 | `FAIL_SIM_CORRECTNESS` | valid@50ns=0.0000 expected=1.0000 tol=0.0800 | `PYTHONPATH=runners VAEVAS_DEFAULT_EVAS_ENGINE=python VAEVAS_EVAS_PERSISTENT_WORKER=0 PATH="$PWD/.venv-evas/bin:$PATH" .venv-evas/bin/python scripts/run_v3_gold_negative_verification.py --start 416 --end 416 --tasks 416 --include-staged --timeout 120 --jobs 1 --out benchmark-vabench-release-v3/reports/verify_task_416.json` |
 | `417-always-async-reset-counter` | `ams_mixed_signal_extension` | https://github.com/Arcadia-1/EVAS/issues/39 | `FAIL_SIM_CORRECTNESS` | q@100ns=0.0000 expected=1.0000 tol=0.0800 | `PYTHONPATH=runners VAEVAS_DEFAULT_EVAS_ENGINE=python VAEVAS_EVAS_PERSISTENT_WORKER=0 PATH="$PWD/.venv-evas/bin:$PATH" .venv-evas/bin/python scripts/run_v3_gold_negative_verification.py --start 417 --end 417 --tasks 417 --include-staged --timeout 120 --jobs 1 --out benchmark-vabench-release-v3/reports/verify_task_417.json` |

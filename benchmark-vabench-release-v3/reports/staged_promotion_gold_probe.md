@@ -4,19 +4,18 @@ Date: 2026-07-02
 
 ## Summary
 
-- `gold_total`: 36
+- `gold_total`: 35
 - `gold_pass`: 0
-- `gold_fail`: 36
-- `expectation_fail`: 36
+- `gold_fail`: 35
+- `expectation_fail`: 35
 - `skipped_staged_tasks`: 0
-- `wall_s`: 9.54015
+- `wall_s`: 9.235053
 
 ## Rows
 
 | Task | Status | First behavior note |
 | --- | --- | --- |
 | `353-always-resettable-toggle` | `FAIL_SIM_CORRECTNESS` | q@50ns=0.0000 expected=1.0000 tol=0.0800 |
-| `410-macro-ifdef-gain-select` | `FAIL_SIM_CORRECTNESS` | out@160ns=0.4800 expected=0.8000 tol=0.0800 |
 | `415-logic-vector-assign-slice` | `FAIL_SIM_CORRECTNESS` | y@50ns=0.0000 expected=1.0000 tol=0.0800 |
 | `416-logic-vector-reduction-flag` | `FAIL_SIM_CORRECTNESS` | valid@50ns=0.0000 expected=1.0000 tol=0.0800 |
 | `417-always-async-reset-counter` | `FAIL_SIM_CORRECTNESS` | q@100ns=0.0000 expected=1.0000 tol=0.0800 |

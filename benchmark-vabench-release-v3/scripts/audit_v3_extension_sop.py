@@ -308,7 +308,7 @@ def write_csv(rows: list[dict[str, Any]]) -> None:
         "warnings",
     ]
     with REPORT_CSV.open("w", newline="", encoding="utf-8") as fh:
-        writer = csv.DictWriter(fh, fieldnames=fields)
+        writer = csv.DictWriter(fh, fieldnames=fields, lineterminator="\n")
         writer.writeheader()
         for row in rows:
             out = dict(row)

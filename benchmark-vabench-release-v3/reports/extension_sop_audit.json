@@ -49,16 +49,16 @@
       "behavior_contract_complete_count": 62,
       "complete_tests_count": 62,
       "description": "task/file/table/random/hierarchy syntax candidates",
-      "fair_eval_count": 57,
+      "fair_eval_count": 58,
       "negative_cases_aligned_count": 62,
       "negative_descriptions_task_specific_count": 62,
       "range": "373-434",
-      "sop_ready_count": 57,
+      "sop_ready_count": 58,
       "task_count": 62,
       "top_issues": [
         [
           "checker_syntax_only_no_behavior_score",
-          5
+          4
         ]
       ],
       "visible_hidden_distinct_count": 62
@@ -123,13 +123,13 @@
   "summary": {
     "behavior_contract_complete_count": 194,
     "complete_tests_count": 194,
-    "fair_eval_count": 158,
+    "fair_eval_count": 159,
     "issue_counts": {
-      "checker_syntax_only_no_behavior_score": 36
+      "checker_syntax_only_no_behavior_score": 35
     },
     "negative_cases_aligned_count": 194,
     "negative_descriptions_task_specific_count": 194,
-    "sop_ready_count": 158,
+    "sop_ready_count": 159,
     "sop_ready_visible_hidden_identical_count": 0,
     "staged_visible_hidden_identical_count": 0,
     "task_count": 194,
@@ -3089,18 +3089,16 @@
       "behavior_contract_complete": true,
       "certification_scope": "language_extension_not_part_of_original_full_300_claim",
       "complete_tests": true,
-      "fair_eval": false,
+      "fair_eval": true,
       "hidden_scs_count": 1,
-      "issues": [
-        "checker_syntax_only_no_behavior_score"
-      ],
+      "issues": [],
       "negative_cases_aligned": true,
       "negative_count": 5,
       "negative_descriptions_task_specific": true,
       "number": 410,
       "reasonable_task": true,
       "solution_file_count": 1,
-      "sop_ready": false,
+      "sop_ready": true,
       "starter_file_count": 1,
       "syntax_focus": "Use `ifdef selection to alter a behavioral gain constant.",
       "target": "macro_ifdef_gain_select.va",

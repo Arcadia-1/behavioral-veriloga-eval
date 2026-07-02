@@ -7,8 +7,8 @@ Date: 2026-07-02
 - Total tasks: **494**
 - Original behavior-certified full-300 surface: **300**
 - Extension candidates: **194**
-- Behavior-certified extension rows: **158**
-- Compile-supported candidate rows: **36**
+- Behavior-certified extension rows: **159**
+- Compile-supported candidate rows: **35**
 - Unsupported candidate rows: **0**
 
 ## Semantic Layers
@@ -19,7 +19,7 @@ Date: 2026-07-02
 | `behavioral_continuous_time_extension` | 14 | compile_supported_continuous_time_candidate: 14 |
 | `behavioral_event_core` | 268 | behavior_certified: 268 |
 | `behavioral_event_support` | 32 | behavior_certified_support: 32 |
-| `behavioral_language_extension` | 130 | behavior_certified_extension: 122, compile_supported_candidate: 8 |
+| `behavioral_language_extension` | 130 | behavior_certified_extension: 123, compile_supported_candidate: 7 |
 | `cadence_simulator_function_extension` | 3 | behavior_certified_extension: 3 |
 | `conservative_kcl_syntax_extension` | 6 | compile_supported_kcl_candidate: 6 |
 | `noise_analysis_extension` | 12 | behavior_certified_extension: 12 |
@@ -30,7 +30,6 @@ Date: 2026-07-02
 | --- | ---: | --- | --- |
 | https://github.com/Arcadia-1/EVAS/issues/39 | 2 | ams_mixed_signal_extension: 2 | After EVAS support lands, promote the listed 2 task(s) by adding sim_correct behavior contracts/checkers if missing, then require 2/2 gold PASS, 10/10 negative variants rejected, and zero expectation_fail in the verification report. |
 | https://github.com/Arcadia-1/EVAS/issues/40 | 1 | behavioral_language_extension: 1 | After EVAS support lands, promote the listed 1 task(s) by adding sim_correct behavior contracts/checkers if missing, then require 1/1 gold PASS, 5/5 negative variants rejected, and zero expectation_fail in the verification report. |
-| https://github.com/Arcadia-1/EVAS/issues/42 | 1 | behavioral_language_extension: 1 | After EVAS support lands, promote the listed 1 task(s) by adding sim_correct behavior contracts/checkers if missing, then require 1/1 gold PASS, 5/5 negative variants rejected, and zero expectation_fail in the verification report. |
 | https://github.com/Arcadia-1/EVAS/issues/43 | 4 | ams_mixed_signal_extension: 4 | After EVAS support lands, promote the listed 4 task(s) by adding sim_correct behavior contracts/checkers if missing, then require 4/4 gold PASS, 20/20 negative variants rejected, and zero expectation_fail in the verification report. |
 | https://github.com/Arcadia-1/EVAS/issues/44 | 18 | behavioral_continuous_time_extension: 14, conservative_kcl_syntax_extension: 4 | After EVAS support lands, promote the listed 18 task(s) by adding sim_correct behavior contracts/checkers if missing, then require 18/18 gold PASS, 90/90 negative variants rejected, and zero expectation_fail in the verification report. |
 | https://github.com/Arcadia-1/EVAS/issues/45 | 1 | ams_mixed_signal_extension: 1 | After EVAS support lands, promote the listed 1 task(s) by adding sim_correct behavior contracts/checkers if missing, then require 1/1 gold PASS, 5/5 negative variants rejected, and zero expectation_fail in the verification report. |
@@ -48,7 +47,7 @@ Date: 2026-07-02
 
 - Status: `partial_external_blocked`
 - Complete: `false`
-- Reason: The full 301-494 objective is not complete because 36 extension tasks still lack behavior checker evidence and are excluded until EVAS support issues are resolved.
+- Reason: The full 301-494 objective is not complete because 35 extension tasks still lack behavior checker evidence and are excluded until EVAS support issues are resolved.
 
 | Requirement | Status | Evidence | Gap |
 | --- | --- | --- | --- |
@@ -56,9 +55,9 @@ Date: 2026-07-02
 | Each extension task has a clear prompt and required behavior section. | `satisfied` | extension_sop_audit has no missing_required_behavior_section issue. |  |
 | Each extension task has executable visible and hidden test evidence. | `satisfied` | extension_sop_audit complete_tests_count=194. |  |
 | Each extension task has five useful negative variants. | `satisfied` | extension_sop_audit reports no negative_count_lt5 issues. |  |
-| Each extension task has repository behavior checker evidence and can be scored fairly. | `partial` | 158 extension tasks are behavior-certified; 36 remain excluded_until_behavior_promotion. | The remaining staged rows are blocked by EVAS support issues or missing behavior-checker evidence; staged_promotion_gold_probe records the current per-task blocker. |
-| Behavior-certified extension tasks pass gold verification and reject all negative variants. | `satisfied` | verify_301_494_layered: gold_pass=158, gold_fail=0, negative_rejected=790, negative_accepted=0, expectation_fail=0. |  |
-| Every staged task has a concrete EVAS issue and promotion checklist. | `satisfied` | 15 blocking issues cover 36 staged tasks; staged_promotion_gold_probe records 36/36 staged gold cases still failing the current promotion gate. |  |
+| Each extension task has repository behavior checker evidence and can be scored fairly. | `partial` | 159 extension tasks are behavior-certified; 35 remain excluded_until_behavior_promotion. | The remaining staged rows are blocked by EVAS support issues or missing behavior-checker evidence; staged_promotion_gold_probe records the current per-task blocker. |
+| Behavior-certified extension tasks pass gold verification and reject all negative variants. | `satisfied` | verify_301_494_layered: gold_pass=159, gold_fail=0, negative_rejected=795, negative_accepted=0, expectation_fail=0. |  |
+| Every staged task has a concrete EVAS issue and promotion checklist. | `satisfied` | 14 blocking issues cover 35 staged tasks; staged_promotion_gold_probe records 35/35 staged gold cases still failing the current promotion gate. |  |
 
 ## Claim Boundary
 

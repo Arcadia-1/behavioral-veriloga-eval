@@ -9286,11 +9286,11 @@
   notes:
     - "Preprocessor language extension promoted to executable EVAS behavior candidate."
 410-macro-ifdef-gain-select: |
-  version: 1
+  version: 2
   task_id: v3_410_macro_ifdef_gain_select
-  backend: evas_rust_compile_capable
-  status: syntax-extension-candidate
-  checker: language_feature_contract
+  backend: evas
+  status: behavior-certified-extension
+  checker: v3_410_macro_ifdef_gain_select
   syntax:
     must_include:
       - "`ifdef"
@@ -9303,8 +9303,25 @@
       - "V(metric)"
     must_not_include:
       - "I("
+  sim_correct:
+    trace_signals:
+      time: "time"
+      vin: "vin"
+      clk: "clk"
+      mode: "mode"
+      rst: "rst"
+      out: "out"
+      metric: "metric"
+    checks:
+      - "valueless_define_selects_high_gain_ifdef_branch"
+      - "hidden_clocked_samples_match_1p25_gain"
+      - "reset_clears_out_and_metric"
+      - "five_negative_variants_rejected_by_behavior_checker"
+  promotion_evidence:
+    command: "PYTHONPATH=runners VAEVAS_DEFAULT_EVAS_ENGINE=python VAEVAS_EVAS_PERSISTENT_WORKER=0 PATH=\"$PWD/.venv-evas/bin:$PATH\" .venv-evas/bin/python scripts/run_v3_gold_negative_verification.py --start 410 --end 410 --tasks 410 --include-staged --timeout 120 --jobs 1 --out benchmark-vabench-release-v3/reports/verify_task_410_after_evas_define.json"
+    result: "1/1 gold PASS; 5/5 negative variants rejected; 0 expectation_fail after EVAS valueless `define support."
   notes:
-    - "Executable harness and behavior contract are staged, but promotion is blocked by local `define/`ifdef support: https://github.com/Arcadia-1/EVAS/issues/42"
+    - "Promoted after EVAS accepted object-like `define without a value and selected the `ifdef branch."
 411-escaped-identifier-state: |
   version: 1
   task_id: v3_411_escaped_identifier_state

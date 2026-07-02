@@ -300,7 +300,6 @@ def test_staged_gold_probe_uses_specific_checkers_when_available() -> None:
     rows = {row["task_slug"]: row for row in probe["rows"]}
     checker_backed_staged_tasks = {
         "353-always-resettable-toggle": "expected=",
-        "410-macro-ifdef-gain-select": "expected=",
         "415-logic-vector-assign-slice": "expected=",
         "416-logic-vector-reduction-flag": "expected=",
         "417-always-async-reset-counter": "expected=",

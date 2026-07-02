@@ -5,9 +5,9 @@ Date: 2026-07-02
 ## Summary
 
 - Audited extension tasks: **194**
-- SOP-ready tasks: **158**
+- SOP-ready tasks: **159**
 - Tasks with executable visible+hidden SCS evidence: **194**
-- Tasks with behavior checker evidence: **158**
+- Tasks with behavior checker evidence: **159**
 - Tasks with complete manifest behavior contracts: **194**
 - Tasks with aligned negative case indexes: **194**
 - Tasks with task-specific negative descriptions: **194**
@@ -18,7 +18,7 @@ Date: 2026-07-02
 
 ## Issue Counts
 
-- `checker_syntax_only_no_behavior_score`: 36
+- `checker_syntax_only_no_behavior_score`: 35
 
 ## Warning Counts
 
@@ -31,7 +31,7 @@ Date: 2026-07-02
 | `301-340` | language-semantics voltage-domain candidates | 40 | 40 | 40 | 40 | 40 | 40 | 40 | 40 |  |
 | `341-360` | AMS mixed-signal candidates | 20 | 19 | 20 | 19 | 20 | 20 | 20 | 20 | `checker_syntax_only_no_behavior_score`: 1 |
 | `361-372` | noise and analysis candidates | 12 | 12 | 12 | 12 | 12 | 12 | 12 | 12 |  |
-| `373-434` | task/file/table/random/hierarchy syntax candidates | 62 | 57 | 62 | 57 | 62 | 62 | 62 | 62 | `checker_syntax_only_no_behavior_score`: 5 |
+| `373-434` | task/file/table/random/hierarchy syntax candidates | 62 | 58 | 62 | 58 | 62 | 62 | 62 | 62 | `checker_syntax_only_no_behavior_score`: 4 |
 | `435-458` | manual syntax-completion candidates | 24 | 11 | 24 | 11 | 24 | 24 | 24 | 24 | `checker_syntax_only_no_behavior_score`: 13 |
 | `459-470` | course-material gap-fill candidates | 12 | 8 | 12 | 8 | 12 | 12 | 12 | 12 | `checker_syntax_only_no_behavior_score`: 4 |
 | `471-494` | LRM KCL/continuous-time gap-fill candidates | 24 | 11 | 24 | 11 | 24 | 24 | 24 | 24 | `checker_syntax_only_no_behavior_score`: 13 |
@@ -153,7 +153,7 @@ Tasks 301-494 are extension candidates, not SOP-ready benchmark tasks. They most
 | `407-vector-reduction-parity` | `syntax-extension-candidate` | True | - |
 | `408-vector-shift-and-mask-decoder` | `syntax-extension-candidate` | True | - |
 | `409-macro-functionlike-clamp` | `syntax-extension-candidate` | True | - |
-| `410-macro-ifdef-gain-select` | `syntax-extension-candidate` | False | `checker_syntax_only_no_behavior_score` |
+| `410-macro-ifdef-gain-select` | `syntax-extension-candidate` | True | - |
 | `411-escaped-identifier-state` | `syntax-extension-candidate` | True | - |
 | `412-initial-final-step-lifecycle` | `syntax-extension-candidate` | True | - |
 | `413-while-loop-array-sum` | `syntax-extension-candidate` | True | - |
