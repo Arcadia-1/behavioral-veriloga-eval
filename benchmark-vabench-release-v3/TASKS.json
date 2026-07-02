@@ -10243,6 +10243,143 @@
         "neg_004_reversed_thermometer_order",
         "neg_005_round_to_nearest"
       ]
+    },
+    "498-dc-aware-adc3bit": {
+      "id": "v3_498_dc_aware_adc3bit",
+      "form": "dut",
+      "level": "L1",
+      "category": "data_converter",
+      "target": [
+        "dc_aware_adc3bit.va"
+      ],
+      "tier": "data-converter-replacement-candidate",
+      "title": "DC Aware ADC3bit",
+      "syntax_focus": "Use static voltage-domain quantization so the ADC output is valid without a sampling clock.",
+      "certification_scope": "materialized_replacement_candidate_not_final_301_plus_benchmark_number",
+      "replacement_policy": "Temporary 498+ materialization only. If accepted as scored benchmark content, assign a replacement slot inside the original 001-300 benchmark surface or otherwise keep it outside the scored denominator.",
+      "description": "Combinational three-bit ADC with clipping, binary output ordering, and DC-compatible static behavior.",
+      "required_behavior": [
+        "Clip the analog input to the 0-to-vref range.",
+        "Quantize the clipped input into eight uniform bin-floor codes.",
+        "Drive d2..d0 as MSB-to-LSB voltage-coded outputs without requiring a clock.",
+        "Use smooth output transitions while preserving static conversion semantics."
+      ],
+      "visible_tests": [
+        "visible.scs sweeps static input levels across low, middle, high, and over-range ADC bins."
+      ],
+      "hidden_tests": [
+        "hidden.scs uses different static levels including negative and over-full-scale clipping cases."
+      ],
+      "negative_variants": [
+        "neg_001_force_zero",
+        "neg_002_wrong_code_span",
+        "neg_003_reversed_bit_order",
+        "neg_004_no_clipping",
+        "neg_005_round_to_nearest"
+      ]
+    },
+    "499-latched-bus-dac8": {
+      "id": "v3_499_latched_bus_dac8",
+      "form": "dut",
+      "level": "L1",
+      "category": "data_converter",
+      "target": [
+        "latched_bus_dac8.va"
+      ],
+      "tier": "data-converter-replacement-candidate",
+      "title": "Latched Bus DAC8",
+      "syntax_focus": "Use rising clock events to latch a voltage-coded input bus and hold the DAC output between updates.",
+      "certification_scope": "materialized_replacement_candidate_not_final_301_plus_benchmark_number",
+      "replacement_policy": "Temporary 498+ materialization only. If accepted as scored benchmark content, assign a replacement slot inside the original 001-300 benchmark surface or otherwise keep it outside the scored denominator.",
+      "description": "Eight-bit update-strobed DAC that samples a parallel bus on clock edges and holds the decoded output.",
+      "required_behavior": [
+        "Sample b7..b0 on rising vclk crossings with b7 as MSB.",
+        "Hold the last latched code between update edges even if the input bus changes.",
+        "Map code zero to 0 V and code 255 to vref.",
+        "Smooth output transitions after each clocked update."
+      ],
+      "visible_tests": [
+        "visible.scs changes the input bus between update-clock edges to exercise latch-and-hold behavior."
+      ],
+      "hidden_tests": [
+        "hidden.scs uses different bus codes and between-edge bus changes to check rising-edge sampling and hold behavior."
+      ],
+      "negative_variants": [
+        "neg_001_force_zero",
+        "neg_002_transparent_bus",
+        "neg_003_falling_edge_update",
+        "neg_004_reversed_bit_order",
+        "neg_005_wrong_denominator"
+      ]
+    },
+    "500-deterministic-mismatch-dac6": {
+      "id": "v3_500_deterministic_mismatch_dac6",
+      "form": "dut",
+      "level": "L1",
+      "category": "data_converter",
+      "target": [
+        "deterministic_mismatch_dac6.va"
+      ],
+      "tier": "data-converter-replacement-candidate",
+      "title": "Deterministic Mismatch DAC6",
+      "syntax_focus": "Use public deterministic element-weight errors in a voltage-domain DAC transfer.",
+      "certification_scope": "materialized_replacement_candidate_not_final_301_plus_benchmark_number",
+      "replacement_policy": "Temporary 498+ materialization only. If accepted as scored benchmark content, assign a replacement slot inside the original 001-300 benchmark surface or otherwise keep it outside the scored denominator.",
+      "description": "Six-bit DAC with fixed fractional element mismatch and actual-weight full-scale normalization.",
+      "required_behavior": [
+        "Decode d5..d0 as an unsigned binary word with d5 as MSB.",
+        "Apply the public fractional mismatch parameters to each nominal binary element weight.",
+        "Normalize by the sum of all actual element weights so all ones reaches vref.",
+        "Drive a smooth static DAC output without random mismatch."
+      ],
+      "visible_tests": [
+        "visible.scs applies representative DAC codes that expose deterministic mismatch and endpoint behavior."
+      ],
+      "hidden_tests": [
+        "hidden.scs uses different sparse, midscale, near-full-scale, and all-ones codes to check actual-weight normalization."
+      ],
+      "negative_variants": [
+        "neg_001_force_zero",
+        "neg_002_ideal_binary_only",
+        "neg_003_wrong_mismatch_sign",
+        "neg_004_reversed_bit_order",
+        "neg_005_nominal_normalization"
+      ]
+    },
+    "501-adc-static-linearity-monitor": {
+      "id": "v3_501_adc_static_linearity_monitor",
+      "form": "dut",
+      "level": "L2",
+      "category": "data_converter",
+      "target": [
+        "adc_static_linearity_monitor.va"
+      ],
+      "tier": "data-converter-replacement-candidate",
+      "title": "ADC Static Linearity Monitor",
+      "syntax_focus": "Use voltage-domain decoding and sampled retained state to measure maximum static ADC code error.",
+      "certification_scope": "materialized_replacement_candidate_not_final_301_plus_benchmark_number",
+      "replacement_policy": "Temporary 498+ materialization only. If accepted as scored benchmark content, assign a replacement slot inside the original 001-300 benchmark surface or otherwise keep it outside the scored denominator.",
+      "description": "Sampled measurement monitor that tracks the maximum code error between a swept input and observed three-bit ADC output.",
+      "required_behavior": [
+        "Update only on rising vsample crossings.",
+        "Compute the ideal bin-floor three-bit code from the clipped analog input.",
+        "Decode observed d2..d0 with d2 as MSB.",
+        "Compute absolute code error in LSBs and retain the maximum sampled error seen so far.",
+        "Drive maxerr as the retained maximum error scaled by lsb_out."
+      ],
+      "visible_tests": [
+        "visible.scs strobes settled ADC sweep points and includes recoveries after code-error intervals."
+      ],
+      "hidden_tests": [
+        "hidden.scs uses different sampled sweep points to check one-LSB and two-LSB maximum-error retention."
+      ],
+      "negative_variants": [
+        "neg_001_force_zero",
+        "neg_002_instantaneous_error_only",
+        "neg_003_reversed_observed_bits",
+        "neg_004_rounds_ideal_code",
+        "neg_005_wrong_code_span"
+      ]
     }
   }
 }

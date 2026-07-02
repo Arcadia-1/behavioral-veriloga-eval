@@ -4,7 +4,7 @@ This note records data-converter candidates that should be reviewed as
 replacement or backfill material for the original `001`-`300` benchmark
 surface, not as additional final benchmark numbers after `300`.
 
-The current `495`-`497` rows are materialized review candidates only. Their
+The current `495`-`501` rows are materialized review candidates only. Their
 temporary IDs make the assets executable in the repository, but they should not
 be interpreted as final scored benchmark numbering. If upstream accepts one of
 these rows as benchmark content, it should be assigned to a replacement slot
@@ -30,16 +30,16 @@ denominator.
 | `495-slew-rate-dac4` | Four-bit DAC with finite `slew()` output motion | Output slew rate is part of the converter macro behavior, not only a cosmetic `transition()` edge | Replace an ideal binary/restore DAC variant if upstream wants one DAC row to cover finite output slew | Whether this is sufficiently converter-specific or should remain an operator-support row |
 | `496-first-order-sigma-delta-modulator` | First-order sigma-delta modulator with one-bit feedback stream | Adds a converter architecture absent from the SAR/flash/weighted-DAC families | High-priority replacement/backfill for a duplicate weighted-DAC or simple ideal-ADC row | Exact L1 vs small L2 label; it is a loop, but the target is one reusable modulator DUT |
 | `497-thermometer-bus-encoder` | Analog input to thermometer-prefix output bus | Models a reusable thermometer-bus source/encoder instead of decoding or summarizing an existing bus | Replace a simple thermometer helper only if upstream counts source/support components as benchmark rows | L1 support component vs standalone converter-interface function |
+| `498-dc-aware-adc3bit` | Static three-bit ADC whose output is valid without a sampling clock | Separates combinational/DC-compatible conversion from clocked transient ADC rows | Replace or upgrade an ideal ADC row that differs mostly by bit count or rail choice | Whether the benchmark wants an explicitly static ADC row in the scored set |
+| `499-latched-bus-dac8` | Parallel DAC that latches an input bus on update-clock edges and holds between updates | Adds update-strobe and hold behavior missing from transparent binary DAC rows | Replace a repeated binary DAC or restore-DAC variant if clocked bus update is preferred | Whether this should replace an existing clocked DAC rather than add another DAC family row |
+| `500-deterministic-mismatch-dac6` | Binary DAC with public deterministic element-weight errors and actual-weight normalization | Models calibration/mismatch behavior without random or hidden coefficients | Upgrade or replace a weak mismatch/weighted-DAC row | Exact mismatch values are public circuit parameters, not private checker data |
+| `501-adc-static-linearity-monitor` | Sampled monitor that accumulates maximum ADC static code error over a sweep | Adds measurement-flow coverage rather than another converter core | Replace or upgrade a weak static-linearity/measurement row | L2 measurement/support label and final counting policy |
 
 ## Additional Candidates To Materialize After Slot Review
 
 | Candidate function | Cadence-backed modeling pattern | Why it may improve the benchmark | Suggested replacement use | Main risk before implementation |
 | --- | --- | --- | --- | --- |
-| DC-compatible ideal ADC | Combinational A2D conversion that also behaves under DC-style operating analyses | Distinct from clocked transient ADC rows; useful when the benchmark wants analysis-aware converter models | Replace or upgrade one ideal ADC row that currently differs mostly by bit count or rail choice | EVAS and current v3 harness are transient-oriented; may need a transient-compatible public test or remain non-scored |
-| Fixed-width scalable-style DAC | Thresholded voltage bus, looped bit accumulation, clocked update, fixed public width | Captures scalable bus/generator style without relying on Virtuoso variable-width symbol/PCell machinery | Replace a repeated binary DAC or restore-DAC variant if the loop/bus contract is considered valuable | Must avoid making "same DAC with different implementation style" the only novelty |
-| Deterministic ladder/mismatch DAC | Structural or structured weighted ladder with deterministic element mismatch | Strengthens the DAC mismatch family with a more circuit-recognizable ladder abstraction | Upgrade/replace the existing mismatch DAC row rather than add a near duplicate | Must stay in the supported voltage-domain subset and avoid current-domain KCL/MNA claims unless deliberately scoped |
 | Generated-bit ADC quantizer | Generated repeated bit outputs, explicit MSB/LSB order, threshold update | Covers ADC bus generation and bit ordering more strongly than scalar ideal ADC rows | Replace one duplicated ideal ADC output-bus row | Needs careful prompt wording so `generate` style is not a hidden implementation requirement |
-| Static linearity measurement flow | Code sweep, endpoint/gain extraction, and INL/DNL-style measurement | More valuable as a converter L2 measurement row than another component variant | Upgrade `096-converter-static-linearity-measurement` or replace a weak measurement flow | Must keep testbench vs DUT boundary explicit and avoid hard-coding hidden checker samples |
 | Table-driven converter transfer | Data-file backed code/level mapping with interpolation or clamping | Useful if the benchmark wants calibrated converter behavior from a public table artifact | Candidate replacement only after table-file support policy is settled | `$table_model` and file dependency support may place it in extension/non-scored scope first |
 
 ## Non-Candidates Or Deferred Forms

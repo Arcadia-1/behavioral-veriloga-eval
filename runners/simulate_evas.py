@@ -14752,6 +14752,199 @@ def check_v3_497_thermometer_bus_encoder(rows: list[dict[str, float]]) -> tuple[
     return True, f"thermometer_samples={checked}"
 
 
+def check_v3_498_dc_aware_adc3bit(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "vin", "d2", "d1", "d0"}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing dc-aware adc3bit signals"
+    sample_times = [0.6e-9, 1.8e-9, 3.8e-9, 5.8e-9, 7.8e-9, 9.8e-9, 11.8e-9]
+    checked = 0
+    codes: list[int] = []
+    failures: list[str] = []
+    for sample_t in sample_times:
+        vin = sample_signal_at(rows, "vin", sample_t)
+        if vin is None:
+            continue
+        clipped = min(1.0, max(0.0, vin))
+        code = int(math.floor(8.0 * clipped))
+        code = max(0, min(7, code))
+        expected = {
+            "d2": 1 if code >= 4 else 0,
+            "d1": 1 if (code % 4) >= 2 else 0,
+            "d0": 1 if (code % 2) >= 1 else 0,
+        }
+        observed: dict[str, int] = {}
+        for signal in ("d2", "d1", "d0"):
+            value = sample_signal_at(rows, signal, sample_t)
+            if value is None:
+                failures.append(f"missing_{signal}@{sample_t * 1e9:.2f}ns")
+                continue
+            observed[signal] = 1 if value > 0.45 else 0
+        if observed != expected:
+            failures.append(
+                f"adc3@{sample_t * 1e9:.2f}ns vin={vin:.3f} code={code} "
+                f"obs={observed}"
+            )
+        codes.append(code)
+        checked += 1
+    if checked < 6:
+        return False, f"insufficient_dc_adc_samples={checked}"
+    if min(codes) != 0 or max(codes) != 7 or len(set(codes)) < 5:
+        return False, f"insufficient_dc_adc_code_coverage={codes}"
+    if failures:
+        return False, " ".join(failures[:5])
+    return True, f"dc_adc_samples={checked} codes={codes}"
+
+
+def check_v3_499_latched_bus_dac8(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "vclk", "vout", *{f"b{i}" for i in range(8)}}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing latched bus dac8 signals"
+    times = [row["time"] for row in rows]
+    edges = _threshold_crossings([row["vclk"] for row in rows], times, threshold=0.45, direction="rising")
+    if len(edges) < 4:
+        return False, f"too_few_latched_dac_edges={len(edges)}"
+    max_err = 0.0
+    max_hold_err = 0.0
+    checked = 0
+    hold_checked = 0
+    codes: list[int] = []
+    for edge_t in edges:
+        if edge_t + 0.18e-9 > times[-1]:
+            continue
+        code = 0
+        for bit in range(8):
+            value = sample_signal_at(rows, f"b{bit}", edge_t + 1e-12)
+            if value is None:
+                return False, f"missing_b{bit}_at_edge={edge_t * 1e9:.3f}ns"
+            code += (1 << bit) if value > 0.45 else 0
+        expected = code / 255.0
+        got = sample_signal_at(rows, "vout", edge_t + 0.18e-9)
+        if got is None:
+            return False, f"missing_vout_after_edge={edge_t * 1e9:.3f}ns"
+        max_err = max(max_err, abs(got - expected))
+        checked += 1
+        codes.append(code)
+        hold_t = edge_t + 1.45e-9
+        if hold_t < times[-1]:
+            held = sample_signal_at(rows, "vout", hold_t)
+            if held is None:
+                return False, f"missing_vout_hold={hold_t * 1e9:.3f}ns"
+            max_hold_err = max(max_hold_err, abs(held - expected))
+            hold_checked += 1
+    if checked < 4 or hold_checked < 3:
+        return False, f"insufficient_latched_dac_checks=edge{checked}_hold{hold_checked}"
+    if len(set(codes)) < 4:
+        return False, f"insufficient_latched_dac_code_coverage={codes}"
+    if max_err > 0.045:
+        return False, f"max_latched_dac_edge_err={max_err:.4f} codes={codes}"
+    if max_hold_err > 0.045:
+        return False, f"max_latched_dac_hold_err={max_hold_err:.4f} codes={codes}"
+    return True, (
+        f"edges={checked} hold={hold_checked} codes={codes} "
+        f"max_err={max_err:.4f} max_hold_err={max_hold_err:.4f}"
+    )
+
+
+def check_v3_500_deterministic_mismatch_dac6(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "vout", *{f"d{i}" for i in range(6)}}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing deterministic mismatch dac6 signals"
+    weights = {
+        5: 32.0 * 1.08,
+        4: 16.0 * 0.94,
+        3: 8.0 * 1.04,
+        2: 4.0 * 0.97,
+        1: 2.0 * 1.025,
+        0: 1.0 * 0.985,
+    }
+    total = sum(weights.values())
+    sample_times = [0.7e-9, 2.0e-9, 4.0e-9, 6.0e-9, 8.0e-9, 10.0e-9, 12.0e-9]
+    checked = 0
+    max_err = 0.0
+    max_nominal_delta = 0.0
+    codes: list[int] = []
+    for sample_t in sample_times:
+        active = 0.0
+        nominal_code = 0
+        for bit in range(6):
+            value = sample_signal_at(rows, f"d{bit}", sample_t)
+            if value is None:
+                return False, f"missing_d{bit}@{sample_t * 1e9:.2f}ns"
+            if value > 0.45:
+                active += weights[bit]
+                nominal_code += 1 << bit
+        expected = active / total
+        got = sample_signal_at(rows, "vout", sample_t)
+        if got is None:
+            return False, f"missing_vout@{sample_t * 1e9:.2f}ns"
+        max_err = max(max_err, abs(got - expected))
+        max_nominal_delta = max(max_nominal_delta, abs(expected - nominal_code / 63.0))
+        codes.append(nominal_code)
+        checked += 1
+    if checked < 6:
+        return False, f"insufficient_mismatch_dac_samples={checked}"
+    if 0 not in codes or 63 not in codes or len(set(codes)) < 5:
+        return False, f"insufficient_mismatch_dac_code_coverage={codes}"
+    if max_nominal_delta < 0.012:
+        return False, f"mismatch_not_exercised=max_nominal_delta{max_nominal_delta:.4f}"
+    if max_err > 0.018:
+        return False, f"max_mismatch_dac_err={max_err:.4f} codes={codes}"
+    return True, f"samples={checked} codes={codes} max_err={max_err:.4f} nominal_delta={max_nominal_delta:.4f}"
+
+
+def check_v3_501_adc_static_linearity_monitor(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "vsample", "vin", "d2", "d1", "d0", "maxerr"}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing adc static linearity monitor signals"
+    times = [row["time"] for row in rows]
+    sample_edges = _threshold_crossings(
+        [row["vsample"] for row in rows],
+        times,
+        threshold=0.45,
+        direction="rising",
+    )
+    if len(sample_edges) < 5:
+        return False, f"too_few_linearity_sample_edges={len(sample_edges)}"
+    expected_max = 0
+    checked = 0
+    max_err = 0.0
+    observed_metrics: list[float] = []
+    failures: list[str] = []
+    for edge_t in sample_edges:
+        sample_t = edge_t + 0.10e-9
+        vin = sample_signal_at(rows, "vin", edge_t + 1e-12)
+        if vin is None:
+            continue
+        clipped = min(1.0, max(0.0, vin))
+        ideal = int(math.floor(8.0 * clipped))
+        ideal = max(0, min(7, ideal))
+        observed_code = 0
+        for bit, signal in enumerate(("d0", "d1", "d2")):
+            value = sample_signal_at(rows, signal, edge_t + 1e-12)
+            if value is None:
+                failures.append(f"missing_{signal}@{edge_t * 1e9:.2f}ns")
+                continue
+            observed_code += (1 << bit) if value > 0.45 else 0
+        expected_max = max(expected_max, abs(observed_code - ideal))
+        metric = sample_signal_at(rows, "maxerr", sample_t)
+        if metric is None:
+            return False, f"missing_maxerr@{sample_t * 1e9:.2f}ns"
+        observed_metrics.append(metric)
+        max_err = max(max_err, abs(metric - expected_max))
+        checked += 1
+    if checked < 5:
+        return False, f"insufficient_linearity_monitor_samples={checked}"
+    if any(observed_metrics[idx] + 0.03 < observed_metrics[idx - 1] for idx in range(1, len(observed_metrics))):
+        return False, f"maxerr_not_monotonic={observed_metrics}"
+    if expected_max < 2:
+        return False, f"stimulus_did_not_exercise_two_lsb_error={expected_max}"
+    if failures:
+        return False, " ".join(failures[:5])
+    if max_err > 0.08:
+        return False, f"maxerr_metric_error={max_err:.4f} metrics={observed_metrics}"
+    return True, f"samples={checked} expected_max={expected_max} max_err={max_err:.4f}"
+
+
 def check_v3_cal4bit_modulo(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "ain", "d0", "d1", "d2", "d3"}
     if not rows or not required.issubset(rows[0]):
@@ -20512,6 +20705,10 @@ CHECKS["v3_clocked_adc3bit"] = check_v3_clocked_adc3bit
 CHECKS["v3_495_slew_rate_dac4"] = check_v3_495_slew_rate_dac4
 CHECKS["v3_496_first_order_sigma_delta_modulator"] = check_v3_496_first_order_sigma_delta_modulator
 CHECKS["v3_497_thermometer_bus_encoder"] = check_v3_497_thermometer_bus_encoder
+CHECKS["v3_498_dc_aware_adc3bit"] = check_v3_498_dc_aware_adc3bit
+CHECKS["v3_499_latched_bus_dac8"] = check_v3_499_latched_bus_dac8
+CHECKS["v3_500_deterministic_mismatch_dac6"] = check_v3_500_deterministic_mismatch_dac6
+CHECKS["v3_501_adc_static_linearity_monitor"] = check_v3_501_adc_static_linearity_monitor
 CHECKS["v3_cal4bit_modulo"] = check_v3_cal4bit_modulo
 CHECKS["v3_mux4_priority"] = check_v3_mux4_priority
 CHECKS["v3_xnor_gate_voltage"] = check_v3_xnor_gate_voltage
@@ -20541,6 +20738,10 @@ CHECKS["295-clocked-adc3bit"] = check_v3_clocked_adc3bit
 CHECKS["495-slew-rate-dac4"] = check_v3_495_slew_rate_dac4
 CHECKS["496-first-order-sigma-delta-modulator"] = check_v3_496_first_order_sigma_delta_modulator
 CHECKS["497-thermometer-bus-encoder"] = check_v3_497_thermometer_bus_encoder
+CHECKS["498-dc-aware-adc3bit"] = check_v3_498_dc_aware_adc3bit
+CHECKS["499-latched-bus-dac8"] = check_v3_499_latched_bus_dac8
+CHECKS["500-deterministic-mismatch-dac6"] = check_v3_500_deterministic_mismatch_dac6
+CHECKS["501-adc-static-linearity-monitor"] = check_v3_501_adc_static_linearity_monitor
 CHECKS["296-cal4bit-modulo"] = check_v3_cal4bit_modulo
 CHECKS["297-mux4-priority"] = check_v3_mux4_priority
 CHECKS["298-xnor-gate-voltage"] = check_v3_xnor_gate_voltage

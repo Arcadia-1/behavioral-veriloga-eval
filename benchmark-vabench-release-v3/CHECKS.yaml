@@ -12537,3 +12537,152 @@
       - t0_to_t15_prefix_order
       - no_binary_or_reversed_thermometer_word
       - five_negative_variants_rejected_by_behavior_checker
+498-dc-aware-adc3bit: |
+  version: 1
+  task_id: v3_498_dc_aware_adc3bit
+  backend: evas
+  status: formal-candidate
+  checker: v3_498_dc_aware_adc3bit
+  required_columns:
+    - time
+    - vin
+    - d2
+    - d1
+    - d0
+  checks:
+    hidden:
+      - static_bin_floor_quantization
+      - input_clipping_to_0_to_vref
+      - d2_to_d0_msb_lsb_order
+      - no_clock_or_sample_state_required
+      - five_negative_variants_rejected_by_behavior_checker
+  sim_correct:
+    positive:
+      - solution/dc_aware_adc3bit.va
+    negative:
+      - negative_variants/neg_001_force_zero/dc_aware_adc3bit.va
+      - negative_variants/neg_002_wrong_code_span/dc_aware_adc3bit.va
+      - negative_variants/neg_003_reversed_bit_order/dc_aware_adc3bit.va
+      - negative_variants/neg_004_no_clipping/dc_aware_adc3bit.va
+      - negative_variants/neg_005_round_to_nearest/dc_aware_adc3bit.va
+    checks:
+      - static_bin_floor_quantization
+      - input_clipping_to_0_to_vref
+      - d2_to_d0_msb_lsb_order
+      - no_clock_or_sample_state_required
+      - five_negative_variants_rejected_by_behavior_checker
+499-latched-bus-dac8: |
+  version: 1
+  task_id: v3_499_latched_bus_dac8
+  backend: evas
+  status: formal-candidate
+  checker: v3_499_latched_bus_dac8
+  required_columns:
+    - time
+    - vclk
+    - b7
+    - b6
+    - b5
+    - b4
+    - b3
+    - b2
+    - b1
+    - b0
+    - vout
+  checks:
+    hidden:
+      - rising_clock_latches_parallel_bus
+      - output_holds_between_update_edges
+      - b7_to_b0_msb_lsb_order
+      - endpoint_mapping_uses_code_span_255
+      - five_negative_variants_rejected_by_behavior_checker
+  sim_correct:
+    positive:
+      - solution/latched_bus_dac8.va
+    negative:
+      - negative_variants/neg_001_force_zero/latched_bus_dac8.va
+      - negative_variants/neg_002_transparent_bus/latched_bus_dac8.va
+      - negative_variants/neg_003_falling_edge_update/latched_bus_dac8.va
+      - negative_variants/neg_004_reversed_bit_order/latched_bus_dac8.va
+      - negative_variants/neg_005_wrong_denominator/latched_bus_dac8.va
+    checks:
+      - rising_clock_latches_parallel_bus
+      - output_holds_between_update_edges
+      - b7_to_b0_msb_lsb_order
+      - endpoint_mapping_uses_code_span_255
+      - five_negative_variants_rejected_by_behavior_checker
+500-deterministic-mismatch-dac6: |
+  version: 1
+  task_id: v3_500_deterministic_mismatch_dac6
+  backend: evas
+  status: formal-candidate
+  checker: v3_500_deterministic_mismatch_dac6
+  required_columns:
+    - time
+    - d5
+    - d4
+    - d3
+    - d2
+    - d1
+    - d0
+    - vout
+  checks:
+    hidden:
+      - deterministic_weight_errors_applied
+      - actual_weight_full_scale_normalization
+      - d5_to_d0_msb_lsb_order
+      - all_ones_maps_to_vref
+      - five_negative_variants_rejected_by_behavior_checker
+  sim_correct:
+    positive:
+      - solution/deterministic_mismatch_dac6.va
+    negative:
+      - negative_variants/neg_001_force_zero/deterministic_mismatch_dac6.va
+      - negative_variants/neg_002_ideal_binary_only/deterministic_mismatch_dac6.va
+      - negative_variants/neg_003_wrong_mismatch_sign/deterministic_mismatch_dac6.va
+      - negative_variants/neg_004_reversed_bit_order/deterministic_mismatch_dac6.va
+      - negative_variants/neg_005_nominal_normalization/deterministic_mismatch_dac6.va
+    checks:
+      - deterministic_weight_errors_applied
+      - actual_weight_full_scale_normalization
+      - d5_to_d0_msb_lsb_order
+      - all_ones_maps_to_vref
+      - five_negative_variants_rejected_by_behavior_checker
+501-adc-static-linearity-monitor: |
+  version: 1
+  task_id: v3_501_adc_static_linearity_monitor
+  backend: evas
+  status: formal-candidate
+  checker: v3_501_adc_static_linearity_monitor
+  required_columns:
+    - time
+    - vsample
+    - vin
+    - d2
+    - d1
+    - d0
+    - maxerr
+  checks:
+    hidden:
+      - rising_sample_strobe_updates_metric
+      - ideal_bin_floor_code_from_clipped_input
+      - observed_code_decoded_msb_first
+      - maximum_sampled_code_error_retained
+      - metric_scaled_by_lsb_out
+      - five_negative_variants_rejected_by_behavior_checker
+  sim_correct:
+    positive:
+      - solution/adc_static_linearity_monitor.va
+    negative:
+      - negative_variants/neg_001_force_zero/adc_static_linearity_monitor.va
+      - negative_variants/neg_002_instantaneous_error_only/adc_static_linearity_monitor.va
+      - negative_variants/neg_003_reversed_observed_bits/adc_static_linearity_monitor.va
+      - negative_variants/neg_004_rounds_ideal_code/adc_static_linearity_monitor.va
+      - negative_variants/neg_005_wrong_code_span/adc_static_linearity_monitor.va
+    checks:
+      - rising_sample_strobe_updates_metric
+      - ideal_bin_floor_code_from_clipped_input
+      - observed_code_decoded_msb_first
+      - maximum_sampled_code_error_retained
+      - metric_scaled_by_lsb_out
+      - five_negative_variants_rejected_by_behavior_checker

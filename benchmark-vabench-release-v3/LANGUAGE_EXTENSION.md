@@ -5,7 +5,7 @@ Tasks `301` through `494` are extension candidates added to cover behavioral
 Verilog-A and Verilog-AMS language features called out by the Cadence Verilog-A
 Language Reference and the local training material.
 
-Tasks `495` through `497` are different: they are materialized data-converter
+Tasks `495` through `501` are different: they are materialized data-converter
 replacement candidates, not final appended benchmark numbers. They exist at
 temporary `495+` IDs only so their assets can be reviewed and executed. If one
 of those rows is accepted as scored benchmark content, upstream should assign it
@@ -69,7 +69,7 @@ rows intentionally exercise digital/mixed-signal syntax (`logic`, `wreal`,
   Carlo/RF helpers, 2D/string `$table_model()`, deeper analog event
   expressions, KCL `ddt`/`idt` current/voltage forms, and explicit
   continuous-time Laplace/Z-domain tier rows.
-- `495`-`497`: materialized data-converter replacement candidates. These are
+- `495`-`501`: materialized data-converter replacement candidates. These are
   not language-extension rows and are not final scored benchmark numbering.
 
 Each `301+` staging row currently contains:
@@ -95,15 +95,15 @@ Re-run the SOP audit for this staging layer with:
 python3 benchmark-vabench-release-v3/scripts/audit_v3_extension_sop.py
 ```
 
-As of 2026-07-02, the SOP audit covers the `301`-`497` staging layer, including
-`301`-`494` language-extension rows and the three materialized data-converter
-replacement candidates at `495`-`497`. The generated report still uses
+As of 2026-07-02, the SOP audit covers the `301`-`501` staging layer, including
+`301`-`494` language-extension rows and seven materialized data-converter
+replacement candidates at `495`-`501`. The generated report still uses
 historical extension terminology for the whole staging layer and reports:
 
-- audited extension tasks: `197`
-- SOP-ready extension tasks: `197`
-- rows with executable visible+hidden SCS evidence: `197`
-- rows with behavior-checker evidence: `197`
+- audited staging tasks: `201`
+- SOP-ready staging tasks: `201`
+- rows with executable visible+hidden SCS evidence: `201`
+- rows with behavior-checker evidence: `201`
 
 The current extension layer has no SOP blocker issues. Each extension row has a
 public required-behavior contract, executable visible and hidden SCS benches,
@@ -125,10 +125,15 @@ PYTHONPATH=runners VAEVAS_DEFAULT_EVAS_ENGINE=python \
   --out benchmark-vabench-release-v3/reports/verify_301_497_layered.json
 ```
 
-Result: `197/197` staging-layer gold rows pass, `985/985` negative rows are
-rejected, and `0` expectation failures are reported. These rows remain outside
-the original full-300 denominator unless a later upstream decision assigns a
-replacement candidate to a `001`-`300` benchmark slot.
+The previously recorded `301`-`497` local EVAS run reported `197/197`
+staging-layer gold rows pass, `985/985` negative rows rejected, and `0`
+expectation failures. Targeted local EVAS verification for the added `498`-`501`
+replacement candidates reports `4/4` gold rows pass, `20/20` negative rows
+rejected, and `0` expectation failures. These rows remain outside the original
+full-300 denominator unless a later upstream decision assigns a replacement
+candidate to a `001`-`300` benchmark slot. Cadence AHDL lint/Spectre evidence
+for `498`-`501` remains pending because the local bridge check reported
+`bridge_repo_missing`.
 
 Current local EVAS compile status after this expansion:
 
@@ -143,7 +148,7 @@ Current local EVAS compile status after this expansion:
   helper rows that now compile with current local EVAS.
 - `471`-`494`: newly added LRM gap-fill rows; all reference solutions now
   compile and pass their repository behavior checks.
-- `495`-`497`: materialized Cadence-derived data-converter replacement
+- `495`-`501`: materialized Cadence-derived data-converter replacement
   candidates; all reference solutions now compile and pass their repository
   behavior checks, but final numbering/counting remains an upstream replacement
   decision.

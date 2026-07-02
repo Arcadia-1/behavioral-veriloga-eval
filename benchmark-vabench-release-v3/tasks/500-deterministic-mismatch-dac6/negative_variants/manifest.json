@@ -1,0 +1,44 @@
+{
+  "negative_variants": [
+    {
+      "id": "neg_001_force_zero",
+      "description": "Deterministic Mismatch DAC6: forces the output low and misses every nonzero weighted code.",
+      "files": [
+        "neg_001_force_zero/deterministic_mismatch_dac6.va"
+      ],
+      "expected": "compile_but_fail_full_behavior"
+    },
+    {
+      "id": "neg_002_ideal_binary_only",
+      "description": "Deterministic Mismatch DAC6: ignores the public deterministic element mismatch coefficients.",
+      "files": [
+        "neg_002_ideal_binary_only/deterministic_mismatch_dac6.va"
+      ],
+      "expected": "compile_but_fail_full_behavior"
+    },
+    {
+      "id": "neg_003_wrong_mismatch_sign",
+      "description": "Deterministic Mismatch DAC6: applies the mismatch coefficients with the wrong sign.",
+      "files": [
+        "neg_003_wrong_mismatch_sign/deterministic_mismatch_dac6.va"
+      ],
+      "expected": "compile_but_fail_full_behavior"
+    },
+    {
+      "id": "neg_004_reversed_bit_order",
+      "description": "Deterministic Mismatch DAC6: assigns MSB and LSB weights to the wrong input pins.",
+      "files": [
+        "neg_004_reversed_bit_order/deterministic_mismatch_dac6.va"
+      ],
+      "expected": "compile_but_fail_full_behavior"
+    },
+    {
+      "id": "neg_005_nominal_normalization",
+      "description": "Deterministic Mismatch DAC6: uses the nominal binary full-scale sum instead of normalizing by actual mismatched weights.",
+      "files": [
+        "neg_005_nominal_normalization/deterministic_mismatch_dac6.va"
+      ],
+      "expected": "compile_but_fail_full_behavior"
+    }
+  ]
+}
