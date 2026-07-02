@@ -1,11 +1,11 @@
 {
   "summary": {
     "all_tasks_have_five_behavior_rejected_negatives": true,
-    "gold_pass_count": 170,
-    "negative_behavior_rejected_total": 850,
-    "negative_total": 850,
+    "gold_pass_count": 172,
+    "negative_behavior_rejected_total": 860,
+    "negative_total": 860,
     "source_report": "benchmark-vabench-release-v3/reports/verify_301_494_layered.json",
-    "task_count": 170
+    "task_count": 172
   },
   "tasks": [
     {
@@ -1863,6 +1863,38 @@
         "neg_005_scale_output": "FAIL_SIM_CORRECTNESS"
       },
       "task": "416-logic-vector-reduction-flag"
+    },
+    {
+      "all_negatives_behavior_rejected": true,
+      "checker_task_id": "v3_417_always_async_reset_counter",
+      "gold_meets_expectation": true,
+      "gold_status": "PASS",
+      "negative_behavior_rejected_count": 5,
+      "negative_count": 5,
+      "negative_statuses": {
+        "neg_001_force_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_002_wrong_threshold": "FAIL_SIM_CORRECTNESS",
+        "neg_003_reset_bias": "FAIL_SIM_CORRECTNESS",
+        "neg_004_metric_offset": "FAIL_SIM_CORRECTNESS",
+        "neg_005_scale_output": "FAIL_SIM_CORRECTNESS"
+      },
+      "task": "417-always-async-reset-counter"
+    },
+    {
+      "all_negatives_behavior_rejected": true,
+      "checker_task_id": "v3_418_always_enable_saturating_counter",
+      "gold_meets_expectation": true,
+      "gold_status": "PASS",
+      "negative_behavior_rejected_count": 5,
+      "negative_count": 5,
+      "negative_statuses": {
+        "neg_001_force_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_002_wrong_threshold": "FAIL_SIM_CORRECTNESS",
+        "neg_003_reset_bias": "FAIL_SIM_CORRECTNESS",
+        "neg_004_metric_offset": "FAIL_SIM_CORRECTNESS",
+        "neg_005_scale_output": "FAIL_SIM_CORRECTNESS"
+      },
+      "task": "418-always-enable-saturating-counter"
     },
     {
       "all_negatives_behavior_rejected": true,

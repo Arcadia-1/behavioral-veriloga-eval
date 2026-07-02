@@ -5,6 +5,6 @@ module always_async_reset_counter(clk, rst, en, q);
     logic q;
     always @(posedge clk or posedge rst) begin
         if (rst) q = 1'b0;
-        else q = ~q;
+        else if (!en) q = ~q;
     end
 endmodule

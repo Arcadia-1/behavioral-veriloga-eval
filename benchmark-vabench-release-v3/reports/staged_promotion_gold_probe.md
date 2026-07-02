@@ -4,19 +4,17 @@ Date: 2026-07-02
 
 ## Summary
 
-- `gold_total`: 24
+- `gold_total`: 22
 - `gold_pass`: 0
-- `gold_fail`: 24
-- `expectation_fail`: 24
+- `gold_fail`: 22
+- `expectation_fail`: 22
 - `skipped_staged_tasks`: 0
-- `wall_s`: 5.914734
+- `wall_s`: 5.290621
 
 ## Rows
 
 | Task | Status | First behavior note |
 | --- | --- | --- |
-| `417-always-async-reset-counter` | `FAIL_SIM_CORRECTNESS` | q@100ns=-1.0000 expected=1.0000 tol=0.0800 |
-| `418-always-enable-saturating-counter` | `FAIL_SIM_CORRECTNESS` | q0@90ns=0.0000 expected=1.0000 tol=0.0800 |
 | `435-ddt-voltage-derivative-source` | `FAIL_SIM_CORRECTNESS` | staged_dynamic_solver_boundary operator=ddt out_range=8.653e+05 metric_range=8.653e+05 expected=certified_continuous_time_response |
 | `436-idt-voltage-integrator-source` | `FAIL_SIM_CORRECTNESS` | staged_dynamic_solver_boundary operator=idt out_range=7.5e-08 metric_range=7.5e-08 expected=certified_continuous_time_response |
 | `437-laplace-nd-lowpass-filter` | `FAIL_SIM_CORRECTNESS` | staged_dynamic_solver_boundary operator=laplace_nd out_range=0.8 metric_range=0.8 expected=certified_continuous_time_response |

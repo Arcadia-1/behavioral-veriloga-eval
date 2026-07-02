@@ -299,8 +299,6 @@ def test_staged_gold_probe_uses_specific_checkers_when_available() -> None:
     probe = json.loads((V3 / "reports" / "staged_promotion_gold_probe.json").read_text(encoding="utf-8"))
     rows = {row["task_slug"]: row for row in probe["rows"]}
     checker_backed_staged_tasks = {
-        "417-always-async-reset-counter": "expected=",
-        "418-always-enable-saturating-counter": "expected=",
         "435-ddt-voltage-derivative-source": "operator=ddt",
         "436-idt-voltage-integrator-source": "operator=idt",
         "437-laplace-nd-lowpass-filter": "operator=laplace_nd",

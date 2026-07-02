@@ -6884,10 +6884,10 @@
       - "no_current_domain_contribution"
       - "five_negative_variants_rejected_by_behavior_checker"
   promotion_evidence:
-    command: "PYTHONPATH=\"/Users/mac/Documents/github-repos/EVAS:$PWD/runners\" VAEVAS_DEFAULT_EVAS_ENGINE=python VAEVAS_EVAS_PERSISTENT_WORKER=0 PATH=\"$PWD/.venv-evas/bin:$PATH\" .venv-evas/bin/python scripts/run_v3_gold_negative_verification.py --start 353 --end 353 --tasks 353 --include-staged --timeout 120 --jobs 1 --out benchmark-vabench-release-v3/reports/verify_tasks_353_476_487_probe.json"
-    result: "1/1 gold PASS; 5/5 negative variants rejected; 0 expectation_fail for task 353."
+    command: "PYTHONPATH=\"/Users/mac/Documents/github-repos/EVAS:$PWD/runners\" VAEVAS_DEFAULT_EVAS_ENGINE=python VAEVAS_EVAS_PERSISTENT_WORKER=0 PATH=\"$PWD/.venv-evas/bin:$PATH\" .venv-evas/bin/python scripts/run_v3_gold_negative_verification.py --start 353 --end 353 --tasks 353 --include-staged --timeout 120 --jobs 1 --out benchmark-vabench-release-v3/reports/verify_task_353_after_bitnot_negative_refresh.json"
+    result: "1/1 gold PASS; 5/5 negative variants rejected; 0 expectation_fail after weak toggle-only negatives were refreshed for correct Verilog-width bitwise-not semantics."
   notes:
-    - "Promoted after EVAS supported the resettable always behavior required by this AMS/digital mixed-signal task."
+    - "Promoted after EVAS supported the resettable always behavior required by this AMS/digital mixed-signal task; negative variants were refreshed after EVAS corrected Verilog-width bitwise-not semantics."
 354-always-counter-two-bit: |
   version: 1
   task_id: v3_354_always_counter_two_bit
@@ -9587,11 +9587,11 @@
   notes:
     - "Promoted after the hidden stimulus was strengthened to include endpoint single-bit vector cases, rejecting partial reductions that omit one vector bit."
 417-always-async-reset-counter: |
-  version: 1
+  version: 2
   task_id: v3_417_always_async_reset_counter
-  backend: digital_mixed_capable
-  status: ams-mixed-signal-candidate
-  checker: language_feature_contract
+  backend: evas
+  status: behavior-certified-extension
+  checker: v3_417_always_async_reset_counter
   required_columns:
     - time
     - clk
@@ -9603,15 +9603,30 @@
       - "always @"
     must_not_include:
       - "I("
+  sim_correct:
+    trace_signals:
+      time: "time"
+      clk: "clk"
+      rst: "rst"
+      en: "en"
+      q: "q"
+    checks:
+      - "async_reset_forces_q_low"
+      - "posedge_clk_toggles_q_only_when_en_high"
+      - "en_low_holds_q"
+      - "bitwise_not_is_masked_to_logic_width"
+      - "five_negative_variants_rejected_by_behavior_checker"
+  promotion_evidence:
+    command: "PYTHONPATH=\"/Users/mac/Documents/github-repos/EVAS:$PWD/runners\" VAEVAS_DEFAULT_EVAS_ENGINE=python VAEVAS_EVAS_PERSISTENT_WORKER=0 PATH=\"$PWD/.venv-evas/bin:$PATH\" .venv-evas/bin/python scripts/run_v3_gold_negative_verification.py --start 417 --end 418 --tasks 417,418 --include-staged --timeout 120 --jobs 1 --out benchmark-vabench-release-v3/reports/verify_tasks_417_418_after_digital_fixes.json"
+    result: "2/2 gold PASS; 10/10 negative variants rejected; 0 expectation_fail after EVAS masked bitwise-not to logic width and the weak enable-polarity negative was strengthened."
   notes:
-    - "Executable AMS/digital async-reset always candidate staged pending EVAS event-or support."
-    - "EVAS issue: https://github.com/Arcadia-1/EVAS/issues/39"
+    - "Promoted after EVAS implemented Verilog-width bitwise-not semantics for logic state and the enable-polarity negative was strengthened."
 418-always-enable-saturating-counter: |
-  version: 1
+  version: 2
   task_id: v3_418_always_enable_saturating_counter
-  backend: digital_mixed_capable
-  status: ams-mixed-signal-candidate
-  checker: language_feature_contract
+  backend: evas
+  status: behavior-certified-extension
+  checker: v3_418_always_enable_saturating_counter
   required_columns:
     - time
     - clk
@@ -9624,9 +9639,26 @@
       - "always @"
     must_not_include:
       - "I("
+  sim_correct:
+    trace_signals:
+      time: "time"
+      clk: "clk"
+      rst: "rst"
+      en: "en"
+      q0: "q0"
+      q1: "q1"
+    checks:
+      - "posedge_clk_increments_two_bit_q_when_en_high"
+      - "rst_resets_q_to_zero"
+      - "en_low_holds_counter"
+      - "counter_saturates_at_three"
+      - "vector_output_port_order_matches_high_to_low_positional_mapping"
+      - "five_negative_variants_rejected_by_behavior_checker"
+  promotion_evidence:
+    command: "PYTHONPATH=\"/Users/mac/Documents/github-repos/EVAS:$PWD/runners\" VAEVAS_DEFAULT_EVAS_ENGINE=python VAEVAS_EVAS_PERSISTENT_WORKER=0 PATH=\"$PWD/.venv-evas/bin:$PATH\" .venv-evas/bin/python scripts/run_v3_gold_negative_verification.py --start 417 --end 418 --tasks 417,418 --include-staged --timeout 120 --jobs 1 --out benchmark-vabench-release-v3/reports/verify_tasks_417_418_after_digital_fixes.json"
+    result: "2/2 gold PASS; 10/10 negative variants rejected; 0 expectation_fail after the vector output instance order was aligned and weak saturation/enable negatives were strengthened."
   notes:
-    - "Executable AMS/digital vector-output always candidate staged pending EVAS vector output support."
-    - "EVAS issue: https://github.com/Arcadia-1/EVAS/issues/43"
+    - "Promoted after the harness used high-to-low positional vector output mapping and the saturation/enable negative variants were made behavior-revealing."
 419-wreal-logic-threshold-bridge: |
   version: 1
   task_id: v3_419_wreal_logic_threshold_bridge

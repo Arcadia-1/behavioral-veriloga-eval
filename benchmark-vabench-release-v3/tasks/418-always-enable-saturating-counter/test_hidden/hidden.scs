@@ -7,7 +7,7 @@ Vclk (clk 0) vsource type=pwl wave=[0 0.0 59n 0.0 60n 1.0 109n 1.0 110n 0.0 169n
 Vrst (rst 0) vsource type=pwl wave=[0 1.0 49n 1.0 50n 0.0 359n 0.0 360n 1.0 409n 1.0 410n 0.0 600n 0.0]
 Ven (en 0) vsource type=pwl wave=[0 1.0 179n 1.0 180n 0.0 329n 0.0 330n 1.0 479n 1.0 480n 0.0 529n 0.0 530n 1.0 600n 1.0]
 
-XDUT (clk rst en q0 q1) always_enable_saturating_counter
+XDUT (clk rst en q1 q0) always_enable_saturating_counter
 
 tran tran stop=600n
 save clk rst en q0 q1
