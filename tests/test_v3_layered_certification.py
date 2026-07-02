@@ -119,6 +119,7 @@ def test_v3_extension_rows_do_not_overclaim_behavior_certification() -> None:
         "443-zi-zd-discrete-filter",
         "444-zi-zp-discrete-filter",
         "493-continuous-laplace-nd-filter",
+        "494-continuous-zi-nd-filter",
     }
     for key in behavior_certified_continuous:
         assert continuous_by_key[key]["certification_level"] == "behavior_certified_extension"
@@ -353,7 +354,6 @@ def test_staged_gold_probe_uses_specific_checkers_when_available() -> None:
         "471-indirect-branch-null-balance": "operator=indirect_branch_equation",
         "472-indirect-branch-ddt-balance": "operator=indirect_branch_ddt_equation",
         "491-kcl-capacitor-ddt-current": "staged_kcl_boundary",
-        "494-continuous-zi-nd-filter": "operator=continuous_zi_nd",
     }
 
     for row in probe["rows"]:

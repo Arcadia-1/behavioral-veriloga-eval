@@ -10,7 +10,7 @@
     },
     {
       "id": "neg_002_wrong_threshold",
-      "description": "Continuous Zi Nd Filter: uses a shifted or inverted decision condition that can pass one mode but fails boundary cases.",
+      "description": "Continuous Zi Nd Filter: preserves the required zi_nd signature but inverts the sampled IIR output, so compilation passes while the dynamic response is wrong.",
       "files": [
         "neg_002_wrong_threshold/continuous_zi_nd_filter.va"
       ],

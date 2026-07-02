@@ -10174,12 +10174,44 @@ def check_v3_493_continuous_laplace_nd_filter(rows: list[dict[str, float]]) -> t
 
 
 def check_v3_494_continuous_zi_nd_filter(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    return _check_v3_staged_dynamic_operator_boundary(
-        rows,
-        required={"time", "inp", "out"},
-        operator="continuous_zi_nd",
-        outputs=("out",),
-    )
+    ok, note = _v3_required_columns(rows, {"time", "inp", "out"})
+    if not ok:
+        return False, note
+
+    stop_t = rows[-1]["time"]
+    expected_samples = [
+        (30e-9, 0.08),
+        (40e-9, 0.60),
+        (50e-9, 1.15),
+        (70e-9, 1.321875),
+    ]
+    if stop_t > 120e-9:
+        expected_samples.extend(
+            [
+                (100e-9, 0.4829663),
+                (120e-9, 0.03018539),
+                (140e-9, 0.001886587),
+            ]
+        )
+
+    failures: list[str] = []
+    for sample_t, expected in expected_samples:
+        observed = _v3_interp_signal(rows, "out", sample_t)
+        tol = max(0.018, abs(expected) * 0.055)
+        if abs(observed - expected) > tol:
+            failures.append(f"out@{sample_t*1e9:.0f}ns={observed:.4g} expected={expected:.4g}")
+
+    high_out = max(row["out"] for row in rows if 55e-9 <= row["time"] <= min(stop_t, 82e-9))
+    if not (1.20 <= high_out <= 1.40):
+        failures.append(f"iir_peak_wrong={high_out:.4g}")
+    if stop_t > 120e-9:
+        late_out = _v3_interp_signal(rows, "out", 140e-9)
+        if abs(late_out) > 0.012:
+            failures.append(f"decay_tail_too_large={late_out:.4g}")
+
+    if failures:
+        return False, " ".join(failures[:6])
+    return True, "continuous_zi_nd_sampled_iir_response"
 
 
 def check_v3_361_white_noise_voltage_source(rows: list[dict[str, float]]) -> tuple[bool, str]:

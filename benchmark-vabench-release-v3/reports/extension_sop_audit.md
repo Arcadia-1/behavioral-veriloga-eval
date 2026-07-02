@@ -5,9 +5,9 @@ Date: 2026-07-02
 ## Summary
 
 - Audited extension tasks: **194**
-- SOP-ready tasks: **189**
+- SOP-ready tasks: **190**
 - Tasks with executable visible+hidden SCS evidence: **194**
-- Tasks with behavior checker evidence: **189**
+- Tasks with behavior checker evidence: **190**
 - Tasks with complete manifest behavior contracts: **194**
 - Tasks with aligned negative case indexes: **194**
 - Tasks with task-specific negative descriptions: **194**
@@ -18,7 +18,7 @@ Date: 2026-07-02
 
 ## Issue Counts
 
-- `checker_syntax_only_no_behavior_score`: 5
+- `checker_syntax_only_no_behavior_score`: 4
 
 ## Warning Counts
 
@@ -34,7 +34,7 @@ Date: 2026-07-02
 | `373-434` | task/file/table/random/hierarchy syntax candidates | 62 | 62 | 62 | 62 | 62 | 62 | 62 | 62 |  |
 | `435-458` | manual syntax-completion candidates | 24 | 24 | 24 | 24 | 24 | 24 | 24 | 24 |  |
 | `459-470` | course-material gap-fill candidates | 12 | 11 | 12 | 11 | 12 | 12 | 12 | 12 | `checker_syntax_only_no_behavior_score`: 1 |
-| `471-494` | LRM KCL/continuous-time gap-fill candidates | 24 | 20 | 24 | 20 | 24 | 24 | 24 | 24 | `checker_syntax_only_no_behavior_score`: 4 |
+| `471-494` | LRM KCL/continuous-time gap-fill candidates | 24 | 21 | 24 | 21 | 24 | 24 | 24 | 24 | `checker_syntax_only_no_behavior_score`: 3 |
 
 ## Highest Severity Finding
 
@@ -237,4 +237,4 @@ Tasks 301-494 are extension candidates, not SOP-ready benchmark tasks. They most
 | `491-kcl-capacitor-ddt-current` | `kcl-syntax-candidate` | False | `checker_syntax_only_no_behavior_score` |
 | `492-kcl-inductor-idt-voltage` | `kcl-syntax-candidate` | True | - |
 | `493-continuous-laplace-nd-filter` | `behavioral-continuous-time-candidate` | True | - |
-| `494-continuous-zi-nd-filter` | `behavioral-continuous-time-candidate` | False | `checker_syntax_only_no_behavior_score` |
+| `494-continuous-zi-nd-filter` | `behavioral-continuous-time-candidate` | True | - |
