@@ -5446,7 +5446,26 @@
       "tier": "behavioral-continuous-time-candidate",
       "title": "Ddt Voltage Derivative Source",
       "syntax_focus": "Use ddt() to form a voltage-domain derivative source.",
-      "certification_scope": "language_extension_not_part_of_original_full_300_claim"
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim",
+      "description": "Use ddt() in a voltage-domain behavioral source to expose the derivative of the input waveform.",
+      "required_behavior": [
+        "Compute a continuous-time derivative response from V(in).",
+        "Drive out and metric from the derivative operator rather than a static gain.",
+        "Remain in the behavioral-continuous-time layer until dynamic-solver accuracy is certified."
+      ],
+      "visible_tests": [
+        "visible.scs drives a ramp-like input segment to check derivative observability."
+      ],
+      "hidden_tests": [
+        "hidden.scs changes slope and timing to reject constant or stale derivative implementations."
+      ],
+      "negative_variants": [
+        "neg_001_force_zero",
+        "neg_002_wrong_threshold",
+        "neg_003_reset_bias",
+        "neg_004_metric_offset",
+        "neg_005_scale_output"
+      ]
     },
     "436-idt-voltage-integrator-source": {
       "category": "veriloga_dynamic_operator_semantics",
@@ -5460,7 +5479,26 @@
       "tier": "behavioral-continuous-time-candidate",
       "title": "Idt Voltage Integrator Source",
       "syntax_focus": "Use idt() to form a voltage-domain integrator source.",
-      "certification_scope": "language_extension_not_part_of_original_full_300_claim"
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim",
+      "description": "Use idt() in a voltage-domain behavioral source to expose the integral of the input waveform.",
+      "required_behavior": [
+        "Accumulate the time integral of V(in) into the output response.",
+        "Preserve internal continuous-time state across the transient run.",
+        "Remain staged until integration state and timestep behavior can be certified."
+      ],
+      "visible_tests": [
+        "visible.scs drives a bounded input segment to check integral growth."
+      ],
+      "hidden_tests": [
+        "hidden.scs changes input duration and amplitude to catch reset or constant integrator bugs."
+      ],
+      "negative_variants": [
+        "neg_001_force_zero",
+        "neg_002_wrong_threshold",
+        "neg_003_reset_bias",
+        "neg_004_metric_offset",
+        "neg_005_scale_output"
+      ]
     },
     "437-laplace-nd-lowpass-filter": {
       "category": "veriloga_laplace_filter_semantics",
@@ -5474,7 +5512,26 @@
       "tier": "behavioral-continuous-time-candidate",
       "title": "Laplace Nd Lowpass Filter",
       "syntax_focus": "Use laplace_nd() for continuous-time transfer modeling.",
-      "certification_scope": "language_extension_not_part_of_original_full_300_claim"
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim",
+      "description": "Use laplace_nd() to model a numerator/denominator continuous-time low-pass response.",
+      "required_behavior": [
+        "Apply the declared laplace_nd transfer function to V(in).",
+        "Drive out and metric with the filtered response, not a direct pass-through.",
+        "Remain staged until continuous-time transfer accuracy is certified."
+      ],
+      "visible_tests": [
+        "visible.scs applies a step-like input to expose low-pass response behavior."
+      ],
+      "hidden_tests": [
+        "hidden.scs uses a different transition schedule to catch direct-feedthrough implementations."
+      ],
+      "negative_variants": [
+        "neg_001_force_zero",
+        "neg_002_wrong_threshold",
+        "neg_003_reset_bias",
+        "neg_004_metric_offset",
+        "neg_005_scale_output"
+      ]
     },
     "438-laplace-np-pole-filter": {
       "category": "veriloga_laplace_filter_semantics",
@@ -5488,7 +5545,26 @@
       "tier": "behavioral-continuous-time-candidate",
       "title": "Laplace Np Pole Filter",
       "syntax_focus": "Use laplace_np() for pole-form continuous-time transfer modeling.",
-      "certification_scope": "language_extension_not_part_of_original_full_300_claim"
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim",
+      "description": "Use laplace_np() to model a numerator/pole continuous-time filter response.",
+      "required_behavior": [
+        "Apply the pole-form transfer function to V(in).",
+        "Output the dynamic filtered value rather than the raw input.",
+        "Remain staged until pole-form solver behavior is certified."
+      ],
+      "visible_tests": [
+        "visible.scs checks response to an input step over the transient window."
+      ],
+      "hidden_tests": [
+        "hidden.scs varies the input timing to reject static-gain substitutes."
+      ],
+      "negative_variants": [
+        "neg_001_force_zero",
+        "neg_002_wrong_threshold",
+        "neg_003_reset_bias",
+        "neg_004_metric_offset",
+        "neg_005_scale_output"
+      ]
     },
     "439-laplace-zd-zero-den-filter": {
       "category": "veriloga_laplace_filter_semantics",
@@ -5502,7 +5578,26 @@
       "tier": "behavioral-continuous-time-candidate",
       "title": "Laplace Zd Zero Den Filter",
       "syntax_focus": "Use laplace_zd() for zero/denominator transfer modeling.",
-      "certification_scope": "language_extension_not_part_of_original_full_300_claim"
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim",
+      "description": "Use laplace_zd() to model a zero/denominator continuous-time transfer response.",
+      "required_behavior": [
+        "Apply the zero/denominator transfer function to the input waveform.",
+        "Expose a dynamic response that differs from a constant or direct pass-through.",
+        "Remain staged until laplace_zd numeric behavior is certified."
+      ],
+      "visible_tests": [
+        "visible.scs exercises a transition that should produce a shaped output."
+      ],
+      "hidden_tests": [
+        "hidden.scs uses an alternate transition interval to catch hard-coded responses."
+      ],
+      "negative_variants": [
+        "neg_001_force_zero",
+        "neg_002_wrong_threshold",
+        "neg_003_reset_bias",
+        "neg_004_metric_offset",
+        "neg_005_scale_output"
+      ]
     },
     "440-laplace-zp-zero-pole-filter": {
       "category": "veriloga_laplace_filter_semantics",
@@ -5516,7 +5611,26 @@
       "tier": "behavioral-continuous-time-candidate",
       "title": "Laplace Zp Zero Pole Filter",
       "syntax_focus": "Use laplace_zp() for zero/pole transfer modeling.",
-      "certification_scope": "language_extension_not_part_of_original_full_300_claim"
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim",
+      "description": "Use laplace_zp() to model a zero/pole continuous-time transfer response.",
+      "required_behavior": [
+        "Apply the declared zero/pole transfer to V(in).",
+        "Produce the expected dynamic output range over the transient run.",
+        "Remain staged until zero/pole transfer accuracy is certified."
+      ],
+      "visible_tests": [
+        "visible.scs drives a step transition to check filtered behavior."
+      ],
+      "hidden_tests": [
+        "hidden.scs changes the step timing and level to catch pass-through or constant outputs."
+      ],
+      "negative_variants": [
+        "neg_001_force_zero",
+        "neg_002_wrong_threshold",
+        "neg_003_reset_bias",
+        "neg_004_metric_offset",
+        "neg_005_scale_output"
+      ]
     },
     "441-zi-nd-discrete-filter": {
       "category": "veriloga_z_domain_filter_semantics",
@@ -5530,7 +5644,26 @@
       "tier": "behavioral-continuous-time-candidate",
       "title": "Zi Nd Discrete Filter",
       "syntax_focus": "Use zi_nd() for discrete-time numerator/denominator filtering.",
-      "certification_scope": "language_extension_not_part_of_original_full_300_claim"
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim",
+      "description": "Use zi_nd() to model a sampled-data numerator/denominator filter response.",
+      "required_behavior": [
+        "Apply zi_nd discrete filter state to the input samples.",
+        "Drive out and metric from the filter state rather than a raw input copy.",
+        "Remain staged until sampled-data filter semantics are certified."
+      ],
+      "visible_tests": [
+        "visible.scs drives input changes across sample intervals to expose filter state."
+      ],
+      "hidden_tests": [
+        "hidden.scs uses additional input timing to catch missing state updates."
+      ],
+      "negative_variants": [
+        "neg_001_force_zero",
+        "neg_002_wrong_threshold",
+        "neg_003_reset_bias",
+        "neg_004_metric_offset",
+        "neg_005_scale_output"
+      ]
     },
     "442-zi-np-discrete-filter": {
       "category": "veriloga_z_domain_filter_semantics",
@@ -5544,7 +5677,26 @@
       "tier": "behavioral-continuous-time-candidate",
       "title": "Zi Np Discrete Filter",
       "syntax_focus": "Use zi_np() for discrete-time numerator/pole filtering.",
-      "certification_scope": "language_extension_not_part_of_original_full_300_claim"
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim",
+      "description": "Use zi_np() to model a sampled-data numerator/pole filter response.",
+      "required_behavior": [
+        "Apply zi_np state updates across the transient run.",
+        "Output the discrete filter response, not a constant or direct input.",
+        "Remain staged until pole-form sampled-data behavior is certified."
+      ],
+      "visible_tests": [
+        "visible.scs checks response after input transitions near sample intervals."
+      ],
+      "hidden_tests": [
+        "hidden.scs varies transitions to reject hard-coded waveform replicas."
+      ],
+      "negative_variants": [
+        "neg_001_force_zero",
+        "neg_002_wrong_threshold",
+        "neg_003_reset_bias",
+        "neg_004_metric_offset",
+        "neg_005_scale_output"
+      ]
     },
     "443-zi-zd-discrete-filter": {
       "category": "veriloga_z_domain_filter_semantics",
@@ -5558,7 +5710,26 @@
       "tier": "behavioral-continuous-time-candidate",
       "title": "Zi Zd Discrete Filter",
       "syntax_focus": "Use zi_zd() for discrete-time zero/denominator filtering.",
-      "certification_scope": "language_extension_not_part_of_original_full_300_claim"
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim",
+      "description": "Use zi_zd() to model a sampled-data zero/denominator filter response.",
+      "required_behavior": [
+        "Apply zero/denominator discrete filter semantics to V(in).",
+        "Preserve filter state between sampled updates.",
+        "Remain staged until zi_zd numeric behavior is certified."
+      ],
+      "visible_tests": [
+        "visible.scs exercises a non-constant input sequence across the filter."
+      ],
+      "hidden_tests": [
+        "hidden.scs adds alternate timing to catch stateless approximations."
+      ],
+      "negative_variants": [
+        "neg_001_force_zero",
+        "neg_002_wrong_threshold",
+        "neg_003_reset_bias",
+        "neg_004_metric_offset",
+        "neg_005_scale_output"
+      ]
     },
     "444-zi-zp-discrete-filter": {
       "category": "veriloga_z_domain_filter_semantics",
@@ -5572,7 +5743,26 @@
       "tier": "behavioral-continuous-time-candidate",
       "title": "Zi Zp Discrete Filter",
       "syntax_focus": "Use zi_zp() for discrete-time zero/pole filtering.",
-      "certification_scope": "language_extension_not_part_of_original_full_300_claim"
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim",
+      "description": "Use zi_zp() to model a sampled-data zero/pole filter response.",
+      "required_behavior": [
+        "Apply the declared zero/pole discrete transfer function.",
+        "Produce a stateful output range over the transient run.",
+        "Remain staged until zi_zp sampled-data behavior is certified."
+      ],
+      "visible_tests": [
+        "visible.scs drives a step-like sequence to check discrete response behavior."
+      ],
+      "hidden_tests": [
+        "hidden.scs changes the sequence timing to catch constant and pass-through implementations."
+      ],
+      "negative_variants": [
+        "neg_001_force_zero",
+        "neg_002_wrong_threshold",
+        "neg_003_reset_bias",
+        "neg_004_metric_offset",
+        "neg_005_scale_output"
+      ]
     },
     "445-limexp-soft-exponential": {
       "category": "veriloga_math_function_semantics",
@@ -6017,7 +6207,26 @@
       "tier": "kcl-syntax-candidate",
       "title": "Current Contribution Conductance",
       "syntax_focus": "Use I(p,n) current contribution for a conductance-style model.",
-      "certification_scope": "language_extension_not_part_of_original_full_300_claim"
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim",
+      "description": "Use I(p,n) <+ gain*V(p,n) as a conductance-style conservative current contribution.",
+      "required_behavior": [
+        "Contribute branch current proportional to V(p,n).",
+        "Expose node behavior through the circuit solution, not by writing a voltage directly.",
+        "Remain in the KCL layer until MNA current observability is certified."
+      ],
+      "visible_tests": [
+        "visible.scs biases p/n to check conductance contribution observability."
+      ],
+      "hidden_tests": [
+        "hidden.scs changes the bias point to catch missing or wrong-sign current contributions."
+      ],
+      "negative_variants": [
+        "neg_001_force_zero",
+        "neg_002_wrong_threshold",
+        "neg_003_reset_bias",
+        "neg_004_metric_offset",
+        "neg_005_scale_output"
+      ]
     },
     "470-branch-current-probe-contribution": {
       "category": "veriloga_kcl_contribution_semantics",
@@ -6031,7 +6240,26 @@
       "tier": "kcl-syntax-candidate",
       "title": "Branch Current Probe Contribution",
       "syntax_focus": "Use a named branch with current contribution and current probing.",
-      "certification_scope": "language_extension_not_part_of_original_full_300_claim"
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim",
+      "description": "Use a named branch with current contribution and current probing to mirror branch current to out.",
+      "required_behavior": [
+        "Contribute current through the named branch.",
+        "Probe the branch current and drive out from the measured current value.",
+        "Remain staged until branch-current probing and KCL behavior are certified."
+      ],
+      "visible_tests": [
+        "visible.scs drives bias points that should produce measurable branch current."
+      ],
+      "hidden_tests": [
+        "hidden.scs changes current magnitude to catch zero or wrong-scale current probes."
+      ],
+      "negative_variants": [
+        "neg_001_force_zero",
+        "neg_002_wrong_threshold",
+        "neg_003_reset_bias",
+        "neg_004_metric_offset",
+        "neg_005_scale_output"
+      ]
     },
     "471-indirect-branch-null-balance": {
       "category": "veriloga_indirect_branch_semantics",
@@ -6045,7 +6273,26 @@
       "tier": "behavioral-continuous-time-candidate",
       "title": "Indirect Branch Null Balance",
       "syntax_focus": "Use an indirect branch assignment target/equation form.",
-      "certification_scope": "language_extension_not_part_of_original_full_300_claim"
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim",
+      "description": "Use an indirect branch assignment equation to impose a null-balance relationship.",
+      "required_behavior": [
+        "Declare and solve the indirect branch equation form.",
+        "Drive the observable output from the solved branch relationship.",
+        "Remain staged until indirect equation solving is certified."
+      ],
+      "visible_tests": [
+        "visible.scs checks that the indirect branch equation has an observable solution boundary."
+      ],
+      "hidden_tests": [
+        "hidden.scs varies the source condition to reject disconnected equations."
+      ],
+      "negative_variants": [
+        "neg_001_force_zero",
+        "neg_002_wrong_threshold",
+        "neg_003_reset_bias",
+        "neg_004_metric_offset",
+        "neg_005_scale_output"
+      ]
     },
     "472-indirect-branch-ddt-balance": {
       "category": "veriloga_indirect_branch_semantics",
@@ -6059,7 +6306,26 @@
       "tier": "behavioral-continuous-time-candidate",
       "title": "Indirect Branch Ddt Balance",
       "syntax_focus": "Use indirect branch assignment with a ddt() equation term.",
-      "certification_scope": "language_extension_not_part_of_original_full_300_claim"
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim",
+      "description": "Use indirect branch assignment with ddt() to express a dynamic branch-balance equation.",
+      "required_behavior": [
+        "Combine indirect branch equation solving with a ddt() dynamic term.",
+        "Preserve dynamic state needed by the branch-balance equation.",
+        "Remain staged until indirect dynamic equation solving is certified."
+      ],
+      "visible_tests": [
+        "visible.scs exercises a dynamic input that should affect the branch balance."
+      ],
+      "hidden_tests": [
+        "hidden.scs changes transition timing to catch static or disconnected balance equations."
+      ],
+      "negative_variants": [
+        "neg_001_force_zero",
+        "neg_002_wrong_threshold",
+        "neg_003_reset_bias",
+        "neg_004_metric_offset",
+        "neg_005_scale_output"
+      ]
     },
     "473-attribute-potential-abstol-probe": {
       "category": "veriloga_attribute_semantics",
@@ -6242,7 +6508,26 @@
       "tier": "kcl-syntax-candidate",
       "title": "Analog Primitive Resistor Instance",
       "syntax_focus": "Instantiate a Spectre analog resistor primitive inside a Verilog-A module.",
-      "certification_scope": "language_extension_not_part_of_original_full_300_claim"
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim",
+      "description": "Instantiate a Spectre resistor primitive inside the Verilog-A module and expose its KCL behavior.",
+      "required_behavior": [
+        "Instantiate the resistor primitive as an internal analog primitive.",
+        "Let the primitive participate in the conservative circuit solution.",
+        "Remain staged until analog primitive instantiation is supported and behavior-certified."
+      ],
+      "visible_tests": [
+        "visible.scs biases the primitive instance to check resistor participation."
+      ],
+      "hidden_tests": [
+        "hidden.scs changes the bias condition to catch missing primitive instances."
+      ],
+      "negative_variants": [
+        "neg_001_force_zero",
+        "neg_002_wrong_threshold",
+        "neg_003_reset_bias",
+        "neg_004_metric_offset",
+        "neg_005_scale_output"
+      ]
     },
     "482-analog-primitive-isource-instance": {
       "category": "veriloga_analog_primitive_semantics",
@@ -6256,7 +6541,26 @@
       "tier": "kcl-syntax-candidate",
       "title": "Analog Primitive Isource Instance",
       "syntax_focus": "Instantiate a Spectre analog current-source primitive inside a Verilog-A module.",
-      "certification_scope": "language_extension_not_part_of_original_full_300_claim"
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim",
+      "description": "Instantiate a Spectre current-source primitive inside the Verilog-A module and expose its KCL behavior.",
+      "required_behavior": [
+        "Instantiate the current-source primitive as an internal analog primitive.",
+        "Let the primitive inject current through the conservative circuit solution.",
+        "Remain staged until analog primitive current-source instantiation is certified."
+      ],
+      "visible_tests": [
+        "visible.scs checks observable behavior from the internal current-source primitive."
+      ],
+      "hidden_tests": [
+        "hidden.scs varies the external bias to catch missing or wrong primitive source behavior."
+      ],
+      "negative_variants": [
+        "neg_001_force_zero",
+        "neg_002_wrong_threshold",
+        "neg_003_reset_bias",
+        "neg_004_metric_offset",
+        "neg_005_scale_output"
+      ]
     },
     "483-cds-violation-threshold-assert": {
       "category": "veriloga_assert_semantics",
@@ -6423,7 +6727,26 @@
       "tier": "kcl-syntax-candidate",
       "title": "Kcl Capacitor Ddt Current",
       "syntax_focus": "Use current contribution with ddt() for a capacitor-style conservative model.",
-      "certification_scope": "language_extension_not_part_of_original_full_300_claim"
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim",
+      "description": "Use I(p,n) <+ C*ddt(V(p,n)) to model a capacitor-style conservative current contribution.",
+      "required_behavior": [
+        "Contribute current proportional to the time derivative of branch voltage.",
+        "Require dynamic KCL/MNA handling for the ddt current term.",
+        "Remain staged until capacitor-style dynamic current behavior is certified."
+      ],
+      "visible_tests": [
+        "visible.scs applies a changing voltage to expose ddt current behavior."
+      ],
+      "hidden_tests": [
+        "hidden.scs changes slope and amplitude to catch static conductance substitutes."
+      ],
+      "negative_variants": [
+        "neg_001_force_zero",
+        "neg_002_wrong_threshold",
+        "neg_003_reset_bias",
+        "neg_004_metric_offset",
+        "neg_005_scale_output"
+      ]
     },
     "492-kcl-inductor-idt-voltage": {
       "category": "veriloga_kcl_contribution_semantics",
@@ -6437,7 +6760,26 @@
       "tier": "kcl-syntax-candidate",
       "title": "Kcl Inductor Idt Voltage",
       "syntax_focus": "Use voltage contribution with idt() of branch current for an inductor-style model.",
-      "certification_scope": "language_extension_not_part_of_original_full_300_claim"
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim",
+      "description": "Use voltage contribution with idt() of branch current to model an inductor-style conservative element.",
+      "required_behavior": [
+        "Integrate branch current to determine the contributed branch voltage.",
+        "Participate in the KCL/MNA solution with internal dynamic state.",
+        "Remain staged until inductor-style idt voltage behavior is certified."
+      ],
+      "visible_tests": [
+        "visible.scs drives a current-related condition to expose integrated voltage behavior."
+      ],
+      "hidden_tests": [
+        "hidden.scs changes stimulus duration to catch missing integration state."
+      ],
+      "negative_variants": [
+        "neg_001_force_zero",
+        "neg_002_wrong_threshold",
+        "neg_003_reset_bias",
+        "neg_004_metric_offset",
+        "neg_005_scale_output"
+      ]
     },
     "493-continuous-laplace-nd-filter": {
       "category": "veriloga_continuous_time_semantics",
@@ -6451,7 +6793,26 @@
       "tier": "behavioral-continuous-time-candidate",
       "title": "Continuous Laplace Nd Filter",
       "syntax_focus": "Use laplace_nd() as a continuous-time behavioral transfer function.",
-      "certification_scope": "language_extension_not_part_of_original_full_300_claim"
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim",
+      "description": "Use laplace_nd() as a continuous-time behavioral transfer function with visible dynamic output.",
+      "required_behavior": [
+        "Apply the numerator/denominator transfer function to the input waveform.",
+        "Produce a certified dynamic response rather than direct input feedthrough.",
+        "Remain staged until continuous laplace_nd solver accuracy is certified."
+      ],
+      "visible_tests": [
+        "visible.scs drives a transition to check continuous transfer response."
+      ],
+      "hidden_tests": [
+        "hidden.scs varies the transition profile to catch hard-coded or static outputs."
+      ],
+      "negative_variants": [
+        "neg_001_force_zero",
+        "neg_002_wrong_threshold",
+        "neg_003_reset_bias",
+        "neg_004_metric_offset",
+        "neg_005_scale_output"
+      ]
     },
     "494-continuous-zi-nd-filter": {
       "category": "veriloga_continuous_time_semantics",
@@ -6465,7 +6826,26 @@
       "tier": "behavioral-continuous-time-candidate",
       "title": "Continuous Zi Nd Filter",
       "syntax_focus": "Use zi_nd() as a sampled-data behavioral transfer function.",
-      "certification_scope": "language_extension_not_part_of_original_full_300_claim"
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim",
+      "description": "Use zi_nd() as a sampled-data behavioral transfer function with visible stateful output.",
+      "required_behavior": [
+        "Apply sampled-data numerator/denominator filtering to the input waveform.",
+        "Preserve filter state across sample intervals.",
+        "Remain staged until continuous/sampled zi_nd behavior is certified."
+      ],
+      "visible_tests": [
+        "visible.scs drives a sequence that should update zi_nd filter state."
+      ],
+      "hidden_tests": [
+        "hidden.scs uses alternate input timing to catch missing sampled-state behavior."
+      ],
+      "negative_variants": [
+        "neg_001_force_zero",
+        "neg_002_wrong_threshold",
+        "neg_003_reset_bias",
+        "neg_004_metric_offset",
+        "neg_005_scale_output"
+      ]
     }
   }
 }

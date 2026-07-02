@@ -96,19 +96,14 @@ def test_all_v3_extension_prompts_state_required_behavior() -> None:
         assert "Required Behavior" in instruction, f"{task_key} lacks Required Behavior section"
 
 
-def test_staged_behavioral_and_ams_tasks_have_manifest_behavior_contracts() -> None:
+def test_all_staged_tasks_have_manifest_behavior_contracts() -> None:
     matrix = json.loads(STAGED_BLOCKER_MATRIX.read_text(encoding="utf-8"))
-    covered_layers = {
-        "ams_mixed_signal_extension",
-        "behavioral_language_extension",
-    }
     staged_tasks = [
         row["task_key"]
         for row in matrix["tasks"]
-        if row["semantic_layer"] in covered_layers
     ]
 
-    assert len(staged_tasks) == 16
+    assert len(staged_tasks) == matrix["summary"]["staged_task_count"] == 36
     for task_key in staged_tasks:
         task = extension_tasks()[task_key]
         assert str(task.get("description") or "").strip(), f"{task_key} missing manifest description"
