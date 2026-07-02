@@ -256,3 +256,39 @@ def test_behavior_certified_extension_negatives_fail_behavior_checkers_only() ->
     assert summary["expectation_fail"] == 0
     assert {row["status"] for row in negative_rows} == {"FAIL_SIM_CORRECTNESS"}
     assert all(row["meets_expectation"] for row in negative_rows)
+
+
+def test_behavior_certified_extension_task_evidence_matches_case_report() -> None:
+    report = json.loads(REPORT.read_text(encoding="utf-8"))
+    evidence_path = ROOT / report["evidence_sources"]["behavior_certified_extension_task_evidence"]
+    evidence = json.loads(evidence_path.read_text(encoding="utf-8"))
+    verification = json.loads(VERIFY_REPORT.read_text(encoding="utf-8"))
+    verification_rows = verification["rows"]
+
+    gold_by_task = {
+        row["task_slug"]: row
+        for row in verification_rows
+        if row["kind"] == "gold"
+    }
+    negative_statuses_by_task: dict[str, dict[str, str]] = {}
+    for row in verification_rows:
+        if row["kind"] != "negative":
+            continue
+        negative_statuses_by_task.setdefault(row["task_slug"], {})[row["variant"]] = row["status"]
+
+    summary = evidence["summary"]
+    task_rows = evidence["tasks"]
+    assert summary["task_count"] == len(task_rows) == 156
+    assert summary["gold_pass_count"] == 156
+    assert summary["negative_total"] == 780
+    assert summary["negative_behavior_rejected_total"] == 780
+    assert summary["all_tasks_have_five_behavior_rejected_negatives"] is True
+
+    for task_row in task_rows:
+        task = task_row["task"]
+        assert task_row["gold_status"] == gold_by_task[task]["status"] == "PASS"
+        assert task_row["gold_meets_expectation"] is True
+        assert task_row["negative_count"] == 5
+        assert task_row["negative_statuses"] == negative_statuses_by_task[task]
+        assert task_row["negative_behavior_rejected_count"] == 5
+        assert task_row["all_negatives_behavior_rejected"] is True
