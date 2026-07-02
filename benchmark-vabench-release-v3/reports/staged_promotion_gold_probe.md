@@ -4,18 +4,17 @@ Date: 2026-07-02
 
 ## Summary
 
-- `gold_total`: 15
+- `gold_total`: 14
 - `gold_pass`: 0
-- `gold_fail`: 15
-- `expectation_fail`: 15
+- `gold_fail`: 14
+- `expectation_fail`: 14
 - `skipped_staged_tasks`: 0
-- `wall_s`: 1.964561
+- `wall_s`: 1.861242
 
 ## Rows
 
 | Task | Status | First behavior note |
 | --- | --- | --- |
-| `436-idt-voltage-integrator-source` | `FAIL_SIM_CORRECTNESS` | staged_dynamic_solver_boundary operator=idt out_range=7.5e-08 metric_range=7.5e-08 expected=certified_continuous_time_response |
 | `437-laplace-nd-lowpass-filter` | `FAIL_SIM_CORRECTNESS` | staged_dynamic_solver_boundary operator=laplace_nd out_range=0.8 metric_range=0.8 expected=certified_continuous_time_response |
 | `438-laplace-np-pole-filter` | `FAIL_SIM_CORRECTNESS` | staged_dynamic_solver_boundary operator=laplace_np out_range=0.6 metric_range=0.6 expected=certified_continuous_time_response |
 | `439-laplace-zd-zero-den-filter` | `FAIL_SIM_CORRECTNESS` | staged_dynamic_solver_boundary operator=laplace_zd out_range=0.75 metric_range=0.75 expected=certified_continuous_time_response |

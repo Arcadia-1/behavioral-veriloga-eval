@@ -10343,9 +10343,10 @@
 436-idt-voltage-integrator-source: |
   version: 1
   task_id: v3_436_idt_voltage_integrator_source
-  backend: behavioral_continuous_time_capable
-  status: behavioral-continuous-time-candidate
-  checker: language_feature_contract
+  backend: evas
+  status: behavior-certified-candidate
+  checker: idt_voltage_integrator_source_contract
+  # vabench-release-v2-checks
   required_columns:
     - time
     - vin
@@ -10359,9 +10360,26 @@
       - "idt("
     must_not_include:
       - "I("
+  sim_correct:
+    positive:
+      - solution/idt_voltage_integrator_source.va
+    negative:
+      - negative_variants/neg_001_force_zero/idt_voltage_integrator_source.va
+      - negative_variants/neg_002_wrong_threshold/idt_voltage_integrator_source.va
+      - negative_variants/neg_003_reset_bias/idt_voltage_integrator_source.va
+      - negative_variants/neg_004_metric_offset/idt_voltage_integrator_source.va
+      - negative_variants/neg_005_scale_output/idt_voltage_integrator_source.va
+    checks:
+      - idt_expression_used_in_event_body
+      - first_clk_sample_initializes_integrator_state
+      - second_clk_sample_matches_trapezoidal_vin_integral
+      - out_and_metric_track_same_integral_value
+      - five_negative_variants_rejected_by_behavior_checker
+  promotion_evidence:
+    command: "PYTHONPATH=\"/Users/mac/Documents/github-repos/EVAS:$PWD/runners\" VAEVAS_DEFAULT_EVAS_ENGINE=python VAEVAS_EVAS_PERSISTENT_WORKER=0 PATH=\"$PWD/.venv-evas/bin:$PATH\" .venv-evas/bin/python scripts/run_v3_gold_negative_verification.py --start 436 --end 436 --include-staged --timeout 120 --jobs 1 --out benchmark-vabench-release-v3/reports/verify_task_436_after_checker.json"
+    result: "1/1 gold PASS; 5/5 negative variants rejected; 0 expectation_fail with event-sampled idt behavior checker."
   notes:
-    - "Executable behavioral-continuous-time candidate staged pending EVAS dynamic operator support."
-    - "EVAS issue: https://github.com/Arcadia-1/EVAS/issues/44"
+    - "Promoted using EVAS behavioral idt() trapezoidal support; checker validates clock-event integral samples without KCL/MNA claims."
 437-laplace-nd-lowpass-filter: |
   version: 1
   task_id: v3_437_laplace_nd_lowpass_filter

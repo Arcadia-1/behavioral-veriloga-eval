@@ -3,17 +3,14 @@
 - Task id: `v3_436_idt_voltage_integrator_source`
 - Category: `veriloga_dynamic_operator_semantics`
 - Required syntax focus: `Use idt() to form a voltage-domain integrator source.`
-- EVAS status: `pending EVAS issue #44: https://github.com/Arcadia-1/EVAS/issues/44: https://github.com/Arcadia-1/EVAS/issues/44`
+- EVAS status: `behavior-certified with event-sampled idt trapezoidal support`
 - Boundary: language coverage candidate; KCL/current solving is outside this task unless explicitly required by the syntax itself.
-- Status: executable behavioral-continuous-time candidate staged; behavior certification is blocked by continuous-time operator support.
+- Status: promoted to behavior-certified extension; certification covers this task's event-sampled voltage-domain `idt(V(vin))` behavior and does not claim conservative-current/KCL support.
 
-## Staged Promotion Gate
+## Promotion Evidence
 
-- Score claim: `excluded_until_behavior_promotion`.
-- Current probe status: `FAIL_SIM_CORRECTNESS`.
-- Current failure summary: staged_dynamic_solver_boundary operator=idt out_range=7.5e-08 metric_range=7.5e-08 expected=certified_continuous_time_response
-- Blocking issue(s): https://github.com/Arcadia-1/EVAS/issues/44.
-- Promotion requirements: repository `sim_correct` checker evidence, gold PASS, five useful negative variants rejected, and zero expectation_fail in the promotion report.
-- Per-task promotion command: `PYTHONPATH=runners VAEVAS_DEFAULT_EVAS_ENGINE=python VAEVAS_EVAS_PERSISTENT_WORKER=0 PATH="$PWD/.venv-evas/bin:$PATH" .venv-evas/bin/python scripts/run_v3_gold_negative_verification.py --start 436 --end 436 --tasks 436 --include-staged --timeout 120 --jobs 1 --out benchmark-vabench-release-v3/reports/verify_task_436.json`
-- Per-task acceptance: Promote `436-idt-voltage-integrator-source` only after adding repository sim_correct evidence, then require 1/1 gold PASS, 5/5 negative variants rejected, and zero expectation_fail in the per-task report.
-- Issue-level acceptance: After EVAS support lands, promote the listed 18 task(s) by adding sim_correct behavior contracts/checkers if missing, then require 18/18 gold PASS, 90/90 negative variants rejected, and zero expectation_fail in the verification report.
+- Score claim: `extension_behavior_certified_outside_original_300`.
+- Probe status: `PASS`.
+- Behavior checker: repository checker interpolates `clk` rising crossings, verifies the first `idt` event initializes to zero, and verifies the second event output equals the trapezoidal integral `0.5*(vin1+vin2)*(t2-t1)` within tolerance.
+- Per-task promotion command: `PYTHONPATH="/Users/mac/Documents/github-repos/EVAS:$PWD/runners" VAEVAS_DEFAULT_EVAS_ENGINE=python VAEVAS_EVAS_PERSISTENT_WORKER=0 PATH="$PWD/.venv-evas/bin:$PATH" .venv-evas/bin/python scripts/run_v3_gold_negative_verification.py --start 436 --end 436 --include-staged --timeout 120 --jobs 1 --out benchmark-vabench-release-v3/reports/verify_task_436_after_checker.json`
+- Result: `1/1 gold PASS; 5/5 negative variants rejected; 0 expectation_fail`.

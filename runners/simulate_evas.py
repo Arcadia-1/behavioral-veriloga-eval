@@ -9001,11 +9001,34 @@ def check_v3_435_ddt_voltage_derivative_source(rows: list[dict[str, float]]) -> 
 
 
 def check_v3_436_idt_voltage_integrator_source(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    return _check_v3_staged_dynamic_operator_boundary(
-        rows,
-        required={"time", "vin", "clk", "rst", "out", "metric"},
-        operator="idt",
-    )
+    ok, note = _v3_required_columns(rows, {"time", "vin", "clk", "rst", "out", "metric"})
+    if not ok:
+        return False, note
+    crossings = _v3_rising_cross_times(rows, "clk", 0.45)
+    if len(crossings) < 2:
+        return False, f"missing_two_clk_rising_crossings count={len(crossings)}"
+    first_t, second_t = crossings[0], crossings[1]
+    first_sample_t = first_t + 8e-9
+    second_sample_t = second_t + 8e-9
+    vin_first = _v3_interp_signal(rows, "vin", first_t)
+    vin_second = _v3_interp_signal(rows, "vin", second_t)
+    expected = 0.5 * (vin_first + vin_second) * (second_t - first_t)
+    failures: list[str] = []
+    for signal in ("out", "metric"):
+        first_value = _v3_interp_signal(rows, signal, first_sample_t)
+        if abs(first_value) > 1.0e-10:
+            failures.append(f"{signal}_first_sample={first_value:.4g} expected_initial_idt=0")
+        second_value = _v3_interp_signal(rows, signal, second_sample_t)
+        tol = max(1.0e-10, abs(expected) * 0.04)
+        if abs(second_value - expected) > tol:
+            failures.append(f"{signal}_second_sample={second_value:.4g} expected_idt={expected:.4g}")
+    out_second = _v3_interp_signal(rows, "out", second_sample_t)
+    metric_second = _v3_interp_signal(rows, "metric", second_sample_t)
+    if abs(out_second - metric_second) > max(1.0e-11, abs(expected) * 0.005):
+        failures.append(f"metric_mismatch out={out_second:.4g} metric={metric_second:.4g}")
+    if failures:
+        return False, " ".join(failures[:5])
+    return True, f"idt_event_integral_matches_clk_samples expected={expected:.4g}"
 
 
 def check_v3_437_laplace_nd_lowpass_filter(rows: list[dict[str, float]]) -> tuple[bool, str]:

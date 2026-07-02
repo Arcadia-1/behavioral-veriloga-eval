@@ -107,11 +107,16 @@ def test_v3_extension_rows_do_not_overclaim_behavior_certification() -> None:
     }
     assert len(kcl_rows) == 6
     continuous_by_key = {row["task_key"]: row for row in continuous_rows}
-    assert continuous_by_key["435-ddt-voltage-derivative-source"]["certification_level"] == "behavior_certified_extension"
+    behavior_certified_continuous = {
+        "435-ddt-voltage-derivative-source",
+        "436-idt-voltage-integrator-source",
+    }
+    for key in behavior_certified_continuous:
+        assert continuous_by_key[key]["certification_level"] == "behavior_certified_extension"
     assert all(
         row["certification_level"] == "compile_supported_continuous_time_candidate"
         for key, row in continuous_by_key.items()
-        if key != "435-ddt-voltage-derivative-source"
+        if key not in behavior_certified_continuous
     )
     kcl_by_key = {row["task_key"]: row for row in kcl_rows}
     for key in (
@@ -335,7 +340,6 @@ def test_staged_gold_probe_uses_specific_checkers_when_available() -> None:
     probe = json.loads((V3 / "reports" / "staged_promotion_gold_probe.json").read_text(encoding="utf-8"))
     rows = {row["task_slug"]: row for row in probe["rows"]}
     checker_backed_staged_tasks = {
-        "436-idt-voltage-integrator-source": "operator=idt",
         "437-laplace-nd-lowpass-filter": "operator=laplace_nd",
         "438-laplace-np-pole-filter": "operator=laplace_np",
         "439-laplace-zd-zero-den-filter": "operator=laplace_zd",
