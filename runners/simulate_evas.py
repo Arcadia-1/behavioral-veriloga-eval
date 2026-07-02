@@ -3059,6 +3059,15 @@ _STREAMING_TRACE_REQUIREMENTS_BY_FUNC = {
 
 _CHECKER_TRACE_CONTRACT_CACHE: dict[str, frozenset[str]] = {}
 
+_TASKS_WITH_UNRELIABLE_SPARSE_TRACE = {
+    # EVAS can write these scalar vector-bit saves from the SCS deck, but the
+    # sparse EVAS_REQUIRED_TRACE_SIGNALS path drops some zero-valued packed-bus
+    # output bits. Use the benchmark harness save list so the staged diagnostic
+    # reports behavior, not trace-interface loss.
+    "v3_455_packed_logic_bus_slice",
+    "455-packed-logic-bus-slice",
+}
+
 
 def _trace_contracts_enabled() -> bool:
     return not _env_truthy("VAEVAS_DISABLE_REQUIRED_TRACE")
@@ -3397,6 +3406,8 @@ def _auto_row_checker_trace_contract(task_id: str) -> frozenset[str]:
 def required_trace_contract_kind_for_checker(task_id: str) -> str:
     if not _trace_contracts_enabled():
         return "disabled"
+    if task_id in _TASKS_WITH_UNRELIABLE_SPARSE_TRACE:
+        return "harness_save"
     checker = STREAMING_BEHAVIOR_CHECKS.get(task_id)
     if checker is not None and _STREAMING_TRACE_REQUIREMENTS_BY_FUNC.get(checker):
         return "streaming"
@@ -3408,6 +3419,8 @@ def required_trace_contract_kind_for_checker(task_id: str) -> str:
 def required_trace_signals_for_checker(task_id: str) -> frozenset[str]:
     """Return the checker-observable signal contract used for sparse EVAS traces."""
     if not _trace_contracts_enabled():
+        return frozenset()
+    if task_id in _TASKS_WITH_UNRELIABLE_SPARSE_TRACE:
         return frozenset()
     formal_utility_trace_signals = {
         "thermometer_to_binary_encoder_8b": frozenset({"time", "valid"})

@@ -9,7 +9,7 @@ Date: 2026-07-02
 - `gold_fail`: 36
 - `expectation_fail`: 36
 - `skipped_staged_tasks`: 0
-- `wall_s`: 9.675299
+- `wall_s`: 9.452433
 
 ## Rows
 
@@ -33,7 +33,7 @@ Date: 2026-07-02
 | `444-zi-zp-discrete-filter` | `FAIL_SIM_CORRECTNESS` | staged_dynamic_solver_boundary operator=zi_zp out_range=0.45 metric_range=0.45 expected=certified_continuous_time_response |
 | `449-generate-genvar-replicated-stage` | `FAIL_SIM_CORRECTNESS` | y@10ns=0.0000 expected=0.8000 tol=0.0500 |
 | `453-specify-specparam-delay` | `FAIL_SIM_CORRECTNESS` | staged_specify_boundary a_range=1 y_range=1 expected=certified_specify_path_delay |
-| `455-packed-logic-bus-slice` | `FAIL_SIM_CORRECTNESS` | missing_columns=y0,y3 |
+| `455-packed-logic-bus-slice` | `FAIL_SIM_CORRECTNESS` | y3@50ns=0.0000 expected_a7=1.0000 y1@50ns=0.0000 expected_a1=1.0000 y0@50ns=0.0000 expected_a0=1.0000 y3@90ns=0.0000 expected_a7=1.0000 |
 | `464-param-given-gain-select` | `FAIL_SIM_CORRECTNESS` | out_ovr@12ns=0.6000 expected=0.3000 metric_ovr@12ns=0.0000 expected=1.0000 out_ovr@52ns=0.3000 expected=0.1500 metric_ovr@52ns=0.0000 expected=1.0000 |
 | `468-branch-declaration-voltage-probe` | `FAIL_SIM_CORRECTNESS` | out@10ns=0.0000 expected=0.1000 tol=0.0350 |
 | `469-current-contribution-conductance` | `FAIL_SIM_CORRECTNESS` | staged_kcl_boundary feature=I(p,n)<+gain*V(p,n) n_range=0 p_range=0.0008 expected=mna_current_observable |
