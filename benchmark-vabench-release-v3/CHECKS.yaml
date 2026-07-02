@@ -11092,18 +11092,40 @@
   notes:
     - "$discontinuity event-body behavior promoted to executable EVAS behavior candidate."
 464-param-given-gain-select: |
-  version: 1
+  version: 2
   task_id: v3_464_param_given_gain_select
-  backend: evas_pending_instance_param_given_semantics
-  status: syntax-extension-candidate
-  checker: language_feature_contract
+  backend: evas
+  status: behavior-certified-extension
+  checker: v3_464_param_given_gain_select
   syntax:
     must_include:
       - "$param_given"
+      - "parameter real gain = 0.8"
+      - "V(out)"
+      - "V(metric)"
     must_not_include:
       - "I("
+  sim_correct:
+    trace_signals:
+      time: "time"
+      vin: "vin"
+      clk: "clk"
+      rst: "rst"
+      out_def: "out_def"
+      metric_def: "metric_def"
+      out_ovr: "out_ovr"
+      metric_ovr: "metric_ovr"
+    checks:
+      - "default_instance_without_gain_override_uses_unity_gain"
+      - "override_instance_with_gain_parameter_uses_explicit_gain"
+      - "metric_def_reports_param_not_given"
+      - "metric_ovr_reports_param_given"
+      - "five_negative_variants_rejected_by_behavior_checker"
+  promotion_evidence:
+    command: "PYTHONPATH=\"/Users/mac/Documents/github-repos/EVAS:$PWD/runners\" VAEVAS_DEFAULT_EVAS_ENGINE=python VAEVAS_EVAS_PERSISTENT_WORKER=0 PATH=\"$PWD/.venv-evas/bin:$PATH\" .venv-evas/bin/python scripts/run_v3_gold_negative_verification.py --start 464 --end 464 --tasks 464 --include-staged --timeout 120 --jobs 1 --out benchmark-vabench-release-v3/reports/verify_task_464_after_param_given.json"
+    result: "1/1 gold PASS; 5/5 negative variants rejected; 0 expectation_fail after EVAS $param_given() instance metadata support."
   notes:
-    - "Behavior promotion is blocked by EVAS instance parameter override semantics: https://github.com/Arcadia-1/EVAS/issues/49"
+    - "Promoted after EVAS tracked explicit Spectre instance parameter names for $param_given()."
 465-port-connected-output-enable: |
   version: 1
   task_id: v3_465_port_connected_output_enable

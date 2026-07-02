@@ -284,25 +284,6 @@
       ]
     },
     {
-      "issue_url": "https://github.com/Arcadia-1/EVAS/issues/49",
-      "promotion_acceptance": "After EVAS support lands, promote the listed 1 task(s) by adding sim_correct behavior contracts/checkers if missing, then require 1/1 gold PASS, 5/5 negative variants rejected, and zero expectation_fail in the verification report.",
-      "promotion_command": "PYTHONPATH=runners VAEVAS_DEFAULT_EVAS_ENGINE=python VAEVAS_EVAS_PERSISTENT_WORKER=0 PATH=\"$PWD/.venv-evas/bin:$PATH\" .venv-evas/bin/python scripts/run_v3_gold_negative_verification.py --start 464 --end 464 --tasks 464 --include-staged --timeout 120 --jobs 1 --out benchmark-vabench-release-v3/reports/verify_issue_464_464.json",
-      "semantic_layers": {
-        "behavioral_language_extension": 1
-      },
-      "task_count": 1,
-      "tasks": [
-        {
-          "semantic_layer": "behavioral_language_extension",
-          "target": "param_given_gain_select.va",
-          "task_id": "v3_464_param_given_gain_select",
-          "task_key": "464-param-given-gain-select",
-          "tier": "syntax-extension-candidate",
-          "title": "Param Given Gain Select"
-        }
-      ]
-    },
-    {
       "issue_url": "https://github.com/Arcadia-1/EVAS/issues/50",
       "promotion_acceptance": "After EVAS support lands, promote the listed 1 task(s) by adding sim_correct behavior contracts/checkers if missing, then require 1/1 gold PASS, 5/5 negative variants rejected, and zero expectation_fail in the verification report.",
       "promotion_command": "PYTHONPATH=runners VAEVAS_DEFAULT_EVAS_ENGINE=python VAEVAS_EVAS_PERSISTENT_WORKER=0 PATH=\"$PWD/.venv-evas/bin:$PATH\" .venv-evas/bin/python scripts/run_v3_gold_negative_verification.py --start 468 --end 468 --tasks 468 --include-staged --timeout 120 --jobs 1 --out benchmark-vabench-release-v3/reports/verify_issue_468_468.json",
@@ -426,7 +407,7 @@
   ],
   "completion_audit": {
     "is_complete": false,
-    "reason": "The full 301-494 objective is not complete because 34 extension tasks still lack behavior checker evidence and are excluded until EVAS support issues are resolved.",
+    "reason": "The full 301-494 objective is not complete because 33 extension tasks still lack behavior checker evidence and are excluded until EVAS support issues are resolved.",
     "requirements": [
       {
         "evidence": "layered_certification summary reports extension_candidate_count=194.",
@@ -449,18 +430,18 @@
         "status": "satisfied"
       },
       {
-        "evidence": "160 extension tasks are behavior-certified; 34 remain excluded_until_behavior_promotion.",
+        "evidence": "161 extension tasks are behavior-certified; 33 remain excluded_until_behavior_promotion.",
         "gap": "The remaining staged rows are blocked by EVAS support issues or missing behavior-checker evidence; staged_promotion_gold_probe records the current per-task blocker.",
         "requirement": "Each extension task has repository behavior checker evidence and can be scored fairly.",
         "status": "partial"
       },
       {
-        "evidence": "verify_301_494_layered: gold_pass=160, gold_fail=0, negative_rejected=800, negative_accepted=0, expectation_fail=0.",
+        "evidence": "verify_301_494_layered: gold_pass=161, gold_fail=0, negative_rejected=805, negative_accepted=0, expectation_fail=0.",
         "requirement": "Behavior-certified extension tasks pass gold verification and reject all negative variants.",
         "status": "satisfied"
       },
       {
-        "evidence": "13 blocking issues cover 34 staged tasks; staged_promotion_gold_probe records 34/34 staged gold cases still failing the current promotion gate.",
+        "evidence": "12 blocking issues cover 33 staged tasks; staged_promotion_gold_probe records 33/33 staged gold cases still failing the current promotion gate.",
         "requirement": "Every staged task has a concrete EVAS issue and promotion checklist.",
         "status": "satisfied"
       }
@@ -513,8 +494,8 @@
     },
     {
       "certification_levels": {
-        "behavior_certified_extension": 124,
-        "compile_supported_candidate": 6
+        "behavior_certified_extension": 125,
+        "compile_supported_candidate": 5
       },
       "semantic_layer": "behavioral_language_extension",
       "task_count": 130
@@ -544,8 +525,8 @@
   "release": "benchmark-vabench-release-v3",
   "status": "layered_partial",
   "summary": {
-    "behavior_certified_count": 460,
-    "behavior_certified_extension_count": 160,
+    "behavior_certified_count": 461,
+    "behavior_certified_extension_count": 161,
     "blocking_issue_counts": {
       "https://github.com/Arcadia-1/EVAS/issues/39": 2,
       "https://github.com/Arcadia-1/EVAS/issues/40": 1,
@@ -553,7 +534,6 @@
       "https://github.com/Arcadia-1/EVAS/issues/44": 18,
       "https://github.com/Arcadia-1/EVAS/issues/45": 1,
       "https://github.com/Arcadia-1/EVAS/issues/48": 1,
-      "https://github.com/Arcadia-1/EVAS/issues/49": 1,
       "https://github.com/Arcadia-1/EVAS/issues/50": 1,
       "https://github.com/Arcadia-1/EVAS/issues/51": 1,
       "https://github.com/Arcadia-1/EVAS/issues/52": 1,
@@ -563,18 +543,18 @@
     },
     "certification_level_counts": {
       "behavior_certified": 268,
-      "behavior_certified_extension": 160,
+      "behavior_certified_extension": 161,
       "behavior_certified_support": 32,
-      "compile_supported_candidate": 14,
+      "compile_supported_candidate": 13,
       "compile_supported_continuous_time_candidate": 14,
       "compile_supported_kcl_candidate": 6
     },
-    "compile_supported_candidate_count": 34,
+    "compile_supported_candidate_count": 33,
     "extension_candidate_count": 194,
     "original_full_300_count": 300,
     "score_claim_counts": {
-      "excluded_until_behavior_promotion": 34,
-      "extension_behavior_certified_outside_original_300": 160,
+      "excluded_until_behavior_promotion": 33,
+      "extension_behavior_certified_outside_original_300": 161,
       "original_full_300_policy": 300
     },
     "semantic_layer_counts": {
@@ -9864,16 +9844,16 @@
       "title": "Discontinuity Event Announcement"
     },
     {
-      "behavior_certified": false,
-      "blocking_issue_urls": "https://github.com/Arcadia-1/EVAS/issues/49",
+      "behavior_certified": true,
+      "blocking_issue_urls": "",
       "category": "veriloga_environment_function_semantics",
-      "certification_level": "compile_supported_candidate",
+      "certification_level": "behavior_certified_extension",
       "certification_scope": "language_extension_not_part_of_original_full_300_claim",
-      "claim_boundary": "Reference solution compiles with current local EVAS, but behavior checker promotion is still pending.",
+      "claim_boundary": "Extension task has SOP-ready behavior evidence: executable visible/hidden tests, repository behavior checker, and five rejected negative variants. It remains outside the original full-300 denominator.",
       "extension_candidate": true,
       "form": "dut",
       "in_original_full_300": false,
-      "score_claim": "excluded_until_behavior_promotion",
+      "score_claim": "extension_behavior_certified_outside_original_300",
       "semantic_layer": "behavioral_language_extension",
       "syntax_focus": "Use $param_given() to choose behavior based on parameter override presence.",
       "target": "param_given_gain_select.va",

@@ -1,11 +1,11 @@
 {
   "summary": {
     "all_tasks_have_five_behavior_rejected_negatives": true,
-    "gold_pass_count": 160,
-    "negative_behavior_rejected_total": 800,
-    "negative_total": 800,
+    "gold_pass_count": 161,
+    "negative_behavior_rejected_total": 805,
+    "negative_total": 805,
     "source_report": "benchmark-vabench-release-v3/reports/verify_301_494_layered.json",
-    "task_count": 160
+    "task_count": 161
   },
   "tasks": [
     {
@@ -2327,6 +2327,22 @@
         "neg_005_scale_output": "FAIL_SIM_CORRECTNESS"
       },
       "task": "463-discontinuity-event-announcement"
+    },
+    {
+      "all_negatives_behavior_rejected": true,
+      "checker_task_id": "v3_464_param_given_gain_select",
+      "gold_meets_expectation": true,
+      "gold_status": "PASS",
+      "negative_behavior_rejected_count": 5,
+      "negative_count": 5,
+      "negative_statuses": {
+        "neg_001_force_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_002_wrong_threshold": "FAIL_SIM_CORRECTNESS",
+        "neg_003_reset_bias": "FAIL_SIM_CORRECTNESS",
+        "neg_004_metric_offset": "FAIL_SIM_CORRECTNESS",
+        "neg_005_scale_output": "FAIL_SIM_CORRECTNESS"
+      },
+      "task": "464-param-given-gain-select"
     },
     {
       "all_negatives_behavior_rejected": true,

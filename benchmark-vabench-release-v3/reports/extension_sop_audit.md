@@ -5,9 +5,9 @@ Date: 2026-07-02
 ## Summary
 
 - Audited extension tasks: **194**
-- SOP-ready tasks: **160**
+- SOP-ready tasks: **161**
 - Tasks with executable visible+hidden SCS evidence: **194**
-- Tasks with behavior checker evidence: **160**
+- Tasks with behavior checker evidence: **161**
 - Tasks with complete manifest behavior contracts: **194**
 - Tasks with aligned negative case indexes: **194**
 - Tasks with task-specific negative descriptions: **194**
@@ -18,7 +18,7 @@ Date: 2026-07-02
 
 ## Issue Counts
 
-- `checker_syntax_only_no_behavior_score`: 34
+- `checker_syntax_only_no_behavior_score`: 33
 
 ## Warning Counts
 
@@ -33,7 +33,7 @@ Date: 2026-07-02
 | `361-372` | noise and analysis candidates | 12 | 12 | 12 | 12 | 12 | 12 | 12 | 12 |  |
 | `373-434` | task/file/table/random/hierarchy syntax candidates | 62 | 58 | 62 | 58 | 62 | 62 | 62 | 62 | `checker_syntax_only_no_behavior_score`: 4 |
 | `435-458` | manual syntax-completion candidates | 24 | 11 | 24 | 11 | 24 | 24 | 24 | 24 | `checker_syntax_only_no_behavior_score`: 13 |
-| `459-470` | course-material gap-fill candidates | 12 | 8 | 12 | 8 | 12 | 12 | 12 | 12 | `checker_syntax_only_no_behavior_score`: 4 |
+| `459-470` | course-material gap-fill candidates | 12 | 9 | 12 | 9 | 12 | 12 | 12 | 12 | `checker_syntax_only_no_behavior_score`: 3 |
 | `471-494` | LRM KCL/continuous-time gap-fill candidates | 24 | 12 | 24 | 12 | 24 | 24 | 24 | 24 | `checker_syntax_only_no_behavior_score`: 12 |
 
 ## Highest Severity Finding
@@ -207,7 +207,7 @@ Tasks 301-494 are extension candidates, not SOP-ready benchmark tasks. They most
 | `461-vt-thermal-voltage-source` | `syntax-extension-candidate` | True | - |
 | `462-vt-temperature-argument` | `syntax-extension-candidate` | True | - |
 | `463-discontinuity-event-announcement` | `syntax-extension-candidate` | True | - |
-| `464-param-given-gain-select` | `syntax-extension-candidate` | False | `checker_syntax_only_no_behavior_score` |
+| `464-param-given-gain-select` | `syntax-extension-candidate` | True | - |
 | `465-port-connected-output-enable` | `syntax-extension-candidate` | True | - |
 | `466-temperature-environment-metric` | `syntax-extension-candidate` | True | - |
 | `467-simparam-query-tnom` | `syntax-extension-candidate` | True | - |

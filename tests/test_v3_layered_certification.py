@@ -317,7 +317,6 @@ def test_staged_gold_probe_uses_specific_checkers_when_available() -> None:
         "449-generate-genvar-replicated-stage": "expected=",
         "453-specify-specparam-delay": "staged_specify_boundary",
         "455-packed-logic-bus-slice": "expected_a7=",
-        "464-param-given-gain-select": "expected=",
         "468-branch-declaration-voltage-probe": "expected=",
         "469-current-contribution-conductance": "staged_kcl_boundary",
         "470-branch-current-probe-contribution": "expected_branch_current=",
