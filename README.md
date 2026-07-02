@@ -75,13 +75,18 @@ judge for gold promotion and paper-facing parity claims.
 For benchmark changes, prefer:
 
 1. static/source integrity checks;
-2. EVAS gold validation for changed tasks;
-3. Spectre or dual EVAS/Spectre validation for promoted/paper-facing evidence.
+2. EVAS AHDL-like lint preflight for changed v3 tasks;
+3. EVAS gold validation for changed tasks;
+4. Spectre or dual EVAS/Spectre validation for promoted/paper-facing evidence.
 
 For a quick repository sanity check:
 
 ```bash
 python3 -m py_compile runners/simulate_evas.py
+python3 scripts/run_v3_evas_lint_preflight.py --tasks 049 --out scratch/v3_lint_049.json
 PYTHONPATH=runners python3 -m pytest -q tests/test_evas_output_cleanup.py
 python3 -m pytest -q tests/test_task_count_filters.py
 ```
+
+Keep EVAS lint JSON output under scratch/generated paths. It is a review
+preflight artifact, not public certification evidence.
