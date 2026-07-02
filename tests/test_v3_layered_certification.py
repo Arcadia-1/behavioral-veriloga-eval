@@ -195,6 +195,30 @@ def test_blocking_issue_matrix_has_promotion_checklists() -> None:
         assert "zero expectation_fail" in acceptance
 
 
+def test_staged_gold_probe_documents_current_promotion_boundary() -> None:
+    report = json.loads(REPORT.read_text(encoding="utf-8"))
+    evidence = report["evidence_sources"]
+    probe_path = ROOT / evidence["staged_gold_probe"]
+    probe_summary_path = ROOT / evidence["staged_gold_probe_summary"]
+
+    assert probe_path.exists()
+    assert probe_summary_path.exists()
+    probe = json.loads(probe_path.read_text(encoding="utf-8"))
+    summary = probe["summary"]
+    staged_rows = [
+        row for row in report["task_rows"]
+        if row["score_claim"] == "excluded_until_behavior_promotion"
+    ]
+
+    assert summary["gold_total"] == len(staged_rows) == 38
+    assert summary["gold_pass"] == 0
+    assert summary["expectation_fail"] == 38
+    assert len(probe["rows"]) == 38
+    assert {row["task_slug"] for row in probe["rows"]} == {
+        row["task_key"] for row in staged_rows
+    }
+
+
 def test_completion_audit_preserves_full_goal_boundary() -> None:
     report = json.loads(REPORT.read_text(encoding="utf-8"))
     audit = report["completion_audit"]

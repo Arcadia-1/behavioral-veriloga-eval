@@ -515,7 +515,7 @@
       },
       {
         "evidence": "156 extension tasks are behavior-certified; 38 remain excluded_until_behavior_promotion.",
-        "gap": "The remaining staged rows are blocked by EVAS support issues and must not be counted as behavior-certified yet.",
+        "gap": "The remaining staged rows are blocked by EVAS support issues or missing behavior-checker evidence; staged_promotion_gold_probe records the current per-task blocker.",
         "requirement": "Each extension task has repository behavior checker evidence and can be scored fairly.",
         "status": "partial"
       },
@@ -525,7 +525,7 @@
         "status": "satisfied"
       },
       {
-        "evidence": "16 blocking issues cover 38 staged tasks.",
+        "evidence": "16 blocking issues cover 38 staged tasks; staged_promotion_gold_probe records 38/38 staged gold cases still failing the current promotion gate.",
         "requirement": "Every staged task has a concrete EVAS issue and promotion checklist.",
         "status": "satisfied"
       }
@@ -539,7 +539,9 @@
     "extension_sop_audit": "benchmark-vabench-release-v3/reports/extension_sop_audit.json",
     "language_extension_notes": "benchmark-vabench-release-v3/LANGUAGE_EXTENSION.md",
     "latest_compile_probe": "local evas-rust compile probe for tasks 460-494 solution plus five negative variants per task: 210 files, 0 failures",
-    "task_manifest": "benchmark-vabench-release-v3/TASKS.json"
+    "task_manifest": "benchmark-vabench-release-v3/TASKS.json",
+    "staged_gold_probe": "benchmark-vabench-release-v3/reports/staged_promotion_gold_probe.json",
+    "staged_gold_probe_summary": "benchmark-vabench-release-v3/reports/staged_promotion_gold_probe.md"
   },
   "layers": [
     {
