@@ -1,0 +1,30 @@
+{
+  "status": "concrete_near_miss_negatives",
+  "variants": [
+    {
+      "id": "neg_001",
+      "description": "Removes the differential-dependent delay variation.",
+      "path": "negative_variants/neg_001/cmp_delay.va"
+    },
+    {
+      "id": "neg_002",
+      "description": "Uses an incorrect delay window for one comparator decision phase.",
+      "path": "negative_variants/neg_002/cmp_delay.va"
+    },
+    {
+      "id": "neg_003",
+      "description": "Inverts the differential decision polarity while keeping the interface valid.",
+      "path": "negative_variants/neg_003/cmp_delay.va"
+    },
+    {
+      "id": "neg_004",
+      "description": "Breaks falling-clock reset behavior between delayed decisions.",
+      "path": "negative_variants/neg_004/cmp_delay.va"
+    },
+    {
+      "id": "neg_005",
+      "description": "Fails the public output transition or stuck-output behavior checks.",
+      "path": "negative_variants/neg_005/cmp_delay.va"
+    }
+  ]
+}

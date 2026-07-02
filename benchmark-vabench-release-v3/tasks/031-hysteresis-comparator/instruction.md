@@ -1,86 +1,38 @@
 # Hysteresis Comparator
 
-## Task Contract
+Implement a voltage-domain differential comparator with hysteresis.
 
-- Form: `dut`
-- Level: `L1`
-- Category: Comparator and Decision Circuits
-- Base function: Hysteresis comparator
-- Domain: `voltage`
-- Target artifact(s): `cmp_hysteresis.va`
-- Supplied/reference support artifact(s): `tb_cmp_hysteresis_ref.scs`
-- Visible context: public task, interface, artifact, stimulus, and observable contract only.
-- Hidden evaluator boundary: deterministic checker and EVAS/Spectre validation are external; do not generate checker logic.
+## Public Interface
 
-## Form-Specific Requirements
+Declare module `cmp_hysteresis` with positional ports `VINN, VINP, OUTN, OUTP,
+VSS, VDD`. All ports are electrical. `VINP` and `VINN` are the differential
+inputs, `OUTP` and `OUTN` are complementary decision outputs, and `VSS`/`VDD`
+are supply rails.
 
-- Implement only the requested Verilog-A DUT artifact(s); do not generate a Spectre testbench in this form.
-- Preserve the public module names, port order, parameters, and waveform observable names.
+## Public Parameter Contract
 
-## Public Verilog-A Interface
+Provide these overrideable public parameters:
 
-- `cmp_hysteresis.va` declares module `cmp_hysteresis` with positional ports: `VINN`, `VINP`, `OUTN`, `OUTP`, `VSS`, `VDD`.
+- `vhys = 10m V`: total hysteresis width.
+- `tedge = 50p`: transition smoothing time for the complementary outputs.
 
-## Public Testbench And Observable Contract
+## Functional Contract
 
-Public transient setting used by the evaluator:
+- Initialize `OUTP` high only when `V(VINP,VSS) - V(VINN,VSS)` is above
+  `+vhys/2`; otherwise initialize `OUTP` low and `OUTN` high.
+- Switch to the high `OUTP` state only when the differential input rises
+  through `+vhys/2`.
+- Switch back to the low `OUTP` state only when the differential input falls
+  through `-vhys/2`.
+- Hold the previous decision while the differential input remains inside the
+  hysteresis band.
+- Drive `OUTP` and `OUTN` as complementary rail-referenced outputs using finite
+  transition-style smoothing.
 
-```spectre
-tran tran stop=80n maxstep=100p
-```
+## Modeling Constraints
 
-The evaluator expects these exact public scalar observables:
-
-- `vinp`
-- `vinn`
-- `out_p`
-- `out_n`
-
-When this form generates a testbench, use plain scalar save names for these observables; do not rely on instance-qualified or aliased save names.
-
-## Public Behavior Checks
-
-- `output_shows_hysteresis_window`
-- `upward_and_downward_trip_points_are_separated`
-
-## Output Contract
-
-Return exactly one source artifact named `cmp_hysteresis.va`.
-Do not include explanatory prose outside the source artifact contents.
-
-## Task-Specific Description
-
-# Hysteresis comparator DUT
-
-Write the Verilog-A DUT artifact(s) for `Hysteresis comparator`.
-
-This is a function-checked DUT task, not a generic companion wrapper. The
-public contract below defines the exact module interface, voltage-domain
-behavior, and waveform observables used by the release checker.
-
-Domain: pure voltage-domain behavioral Verilog-A.
-
-## Module Contract
-
-- Declaration: `cmp_hysteresis(vinn, vinp, out_n, out_p, vss, vdd)`
-
-Ports:
-
-- `vinn`, `vinp`: input electrical differential pair
-- `out_n`, `out_p`: output electrical complementary decisions
-- `vss`, `vdd`: electrical supply rails
-
-## Behavioral Contract
-
-- trip high when `V(vinp)-V(vinn)` exceeds `+vhys/2`
-- trip low when `V(vinp)-V(vinn)` falls below `-vhys/2`
-- hold the previous decision inside the hysteresis band
-- drive complementary rail-referenced outputs with `transition(...)`
-
-## Public Evaluation Observables
-
-The companion validation testbench saves these waveform columns:
-
-- `time`
-- `out_p`
-- `out_n`
+Return only `cmp_hysteresis.va`. Use voltage contributions only. Do not modify
+or emit the support testbench, add checker logic, hard-code waveform sample
+points, add simulator-private side channels, use current contributions,
+`ddt()`, or `idt()`. For event-driven hysteresis, update a retained local state
+at threshold crossings and keep output contributions outside the event blocks.

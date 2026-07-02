@@ -1,0 +1,30 @@
+{
+  "status": "concrete_near_miss_negatives",
+  "variants": [
+    {
+      "id": "neg_001",
+      "description": "Swaps the complementary output state across the hysteresis window.",
+      "path": "negative_variants/neg_001/cmp_hysteresis.va"
+    },
+    {
+      "id": "neg_002",
+      "description": "Uses incorrect threshold timing for one hysteresis crossing.",
+      "path": "negative_variants/neg_002/cmp_hysteresis.va"
+    },
+    {
+      "id": "neg_003",
+      "description": "Inverts the differential polarity used to update the hysteresis state.",
+      "path": "negative_variants/neg_003/cmp_hysteresis.va"
+    },
+    {
+      "id": "neg_004",
+      "description": "Breaks the held-state behavior inside the hysteresis band.",
+      "path": "negative_variants/neg_004/cmp_hysteresis.va"
+    },
+    {
+      "id": "neg_005",
+      "description": "Fails to produce rail-referenced complementary outputs for the checked states.",
+      "path": "negative_variants/neg_005/cmp_hysteresis.va"
+    }
+  ]
+}

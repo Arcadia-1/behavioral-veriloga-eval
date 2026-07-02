@@ -31,13 +31,19 @@ Task 284 is a testbench-generation task for the window-comparator detector.
   - `neg_002_no_above_window`: no above-window region.
   - `neg_003_no_falling_window`: no falling-side in-window region.
   - `neg_004_no_below_window`: no below-window region.
-- Cadence/Spectre evidence from `scripts/run_v3_spectre_audit.py`: hidden
-  reference PASS and 4/4 private negative variants `NEGATIVE_REJECTED`.
-- Gate 2 Cadence status: `cadence_lint_pending`.
+- Cadence/Spectre evidence from `scripts/run_v3_spectre_audit.py` using the
+  restored Virtuoso bridge (`BRIDGE_PROFILE=jin`, `--spectre-backend bridge`):
+  hidden reference PASS and 4/4 private negative variants `NEGATIVE_REJECTED`.
+- Runner repair: `scripts/run_v3_spectre_audit.py` now falls back to
+  `TASKS.json` for `form=tb` when a task has no `task.toml`, so Spectre
+  negative runs use the candidate testbench artifact rather than the hidden
+  reference deck.
+- AHDL lint/read-in triage: Spectre reports no task-level errors. The remaining
+  warnings are global AHDL-CMI/environment or simulator-mode notices, not
+  task-specific Verilog-A modeling findings.
+- Gate 2 Cadence status: `cadence_modeling_ready`.
 
 ## Remaining Risk
 
-- AHDL lint evidence is not attached yet; do not mark
-  `cadence_modeling_ready` until lint/triage is recorded.
 - Counting reports must not claim this row as independent window-comparator
   circuit-function coverage in addition to task 049.

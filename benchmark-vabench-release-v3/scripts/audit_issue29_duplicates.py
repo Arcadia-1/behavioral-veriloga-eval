@@ -69,9 +69,9 @@ ISSUE_GROUPS: list[dict[str, Any]] = [
         "why_flagged": "Two tasks share the same public title and likely the same absolute-value transfer function.",
     },
     {
-        "id": "smooth_tanh_comparator_duplicate",
-        "issue_tasks": ["292-smooth-tanh-comparator", "146-smooth-comparator-tanh"],
-        "why_flagged": "Two tasks appear to name the same smooth tanh comparator transfer behavior.",
+        "id": "smooth_tanh_vs_hysteretic_receiver",
+        "issue_tasks": ["292-hysteretic-comparator-receiver", "146-smooth-comparator-tanh"],
+        "why_flagged": "Task 292 was previously a smooth-tanh duplicate; it is now rewritten as a hysteretic receiver and should be checked against task 146 for non-overlap.",
     },
     {
         "id": "pfd_active_low_reset_pair",
@@ -214,28 +214,25 @@ MANUAL_GROUP_ADJUDICATIONS: dict[str, dict[str, str]] = {
             "behavior, so only one should be counted as independent coverage."
         ),
     },
-    "smooth_tanh_comparator_duplicate": {
-        "classification": "valid_variant_needs_counting_policy",
-        "status": "Manual review completed for 146/292; EVAS/Spectre visible-hidden gold and negative evidence passed.",
+    "smooth_tanh_vs_hysteretic_receiver": {
+        "classification": "independent_l1_ready",
+        "status": "Task 292 was rewritten from the old smooth-tanh variant into a Cadence-derived hysteretic comparator receiver.",
         "decision": (
-            "Keep 146 as the canonical generic smooth-tanh-comparator L1 row with public "
-            "high/low/offset/slope parameters. Keep 292 as a non-counted transfer-curve "
-            "variant unless the benchmark counting policy explicitly admits multiple tanh "
-            "comparator parameterizations as separate coverage."
+            "Keep 146 as the generic smooth-tanh-comparator L1 row. Treat 292 as a separate "
+            "hysteretic comparator receiver candidate because it now evaluates upper/lower "
+            "threshold memory, fixed receiver delay, and rail-coded output behavior rather "
+            "than a continuous tanh transfer."
         ),
         "rewrite_path": (
-            "To make 292 independent, rewrite it to add a distinct comparator function such as "
-            "hysteresis, rail-derived output levels, differential common-mode handling, offset "
-            "calibration, noise-aware decision behavior, or a measurement flow for extracting "
-            "comparator smoothness."
+            "The rewrite path has been applied: task 292 now uses the Cadence OFFSET/HYST "
+            "comparator threshold pattern adapted to voltage-domain Verilog-A."
         ),
         "evidence": (
-            "Tasks 146 and 292 visible/hidden gold both PASS under EVAS and Spectre, and both "
-            "have 4/4 concrete hidden negatives rejected behaviorally under EVAS and "
-            "NEGATIVE_REJECTED under Spectre. Their visible and hidden decks are now distinct. "
-            "Their checker ids and default transfer parameters differ, but both remain smooth "
-            "tanh comparators from `sigin/sigref` to `sigout`; the current difference is a "
-            "valid regression variant rather than a clearly independent function."
+            "The old smooth-tanh overlap is resolved by task replacement. Task 292 now has "
+            "a dedicated hysteresis/delay checker and five behavior negatives. Fresh EVAS "
+            "visible/hidden gold and hidden-negative evidence passed after the rewrite. "
+            "Fresh Spectre direct-SUI visible/hidden gold passed, and 5/5 hidden negatives "
+            "were rejected behaviorally."
         ),
     },
     "pfd_active_low_reset_pair": {
@@ -318,7 +315,7 @@ PHASE1_TO_5_TASKS = [
     "274-weighted-decoder-6bit",
     "282-pfd-timer-reset",
     "288-absolute-value",
-    "292-smooth-tanh-comparator",
+    "292-hysteretic-comparator-receiver",
     "294-subradix-dac10",
     "300-pfd-active-low-reset",
 ]
@@ -355,7 +352,7 @@ CADENCE_SPECTRE_AUDIT: dict[str, Any] = {
         "286-first-order-lowpass-bugfix",
         "287-gain-extraction-flow",
         "288-absolute-value",
-        "292-smooth-tanh-comparator",
+        "292-hysteretic-comparator-receiver",
         "294-subradix-dac10",
         "300-pfd-active-low-reset",
     ],
@@ -384,6 +381,12 @@ CADENCE_SPECTRE_AUDIT: dict[str, Any] = {
         "fail_spectre": 0,
     },
     "phase1_to_5_batch": {
+        "status": "historical_batch_with_292_refreshed_separately",
+        "refresh_note": (
+            "The phase1-to-phase5 batch summary predates the later 292 rewrite. Task 292 "
+            "now has separate fresh EVAS/Spectre evidence as a hysteretic comparator "
+            "receiver; do not reuse the old smooth-tanh 292 evidence for the new function."
+        ),
         "tasks": PHASE1_TO_5_TASKS,
         "evas_gold": {
             "runner": "runners/simulate_evas.py",
@@ -615,7 +618,7 @@ CADENCE_SPECTRE_AUDIT: dict[str, Any] = {
         "284-window-comparator-testbench neg_002/003/004 companion DUT port declarations were expanded to Spectre-legal ANSI-style ports.",
         "285-aperture-delay-sample-hold no-aperture-delay negative fixture port declaration was expanded to Spectre-legal ANSI-style ports.",
         "287-gain-extraction-flow unity-gain negative gain_amp_fixed port declaration was expanded to Spectre-legal ANSI-style ports.",
-        "146/148/274/282/288/292/294/300 hidden decks were made distinct from public visible smoke decks before the phase1-to-phase5 EVAS/Spectre rerun.",
+        "146/148/274/282/288/292/294/300 hidden decks were made distinct from public visible smoke decks before the phase1-to-phase5 EVAS/Spectre rerun; task 292 was later rewritten from the old smooth-tanh variant into a hysteretic comparator receiver and has separate fresh EVAS/Spectre evidence for that new function.",
         "085/086/087/088/089/106/111 hidden decks were made distinct from public visible smoke decks before the batch1 EVAS/Spectre rerun.",
         "086-dither-noise-like-deterministic-source and 087-lfsr-prbs-generator target artifacts were narrowed to their *_ref.va files and stale legacy starter/solution/negative target files were removed.",
         "086-dither-noise-like-deterministic-source gold/starter behavior was repaired from one-shot/random-style output to deterministic periodic sampled pseudo-noise so EVAS and Spectre exercise the same public contract.",
@@ -1510,7 +1513,7 @@ def render_markdown(report: dict[str, Any]) -> str:
             "",
             "## Interpretation Notes",
             "",
-            "- Similarity scores are triage evidence. A pair with high overlap can still be retained if the public spec, artifact role, hidden checker, and negative variants test genuinely different skills.",
+            "- Similarity scores are triage evidence. A pair with high overlap can still be retained if the public spec, artifact role, private behavior checks, and negative variants test genuinely different skills.",
             "- Cross-form variants such as DUT vs testbench or DUT vs bugfix should not automatically be deleted; they need explicit counting policy so release claims do not double-count one circuit function as independent coverage.",
             "- Short source-family rows are not automatically invalid, but they need strong negatives and circuit-meaningful wording to avoid becoming source-import filler.",
             "- The JSON report contains all rows beyond the truncated Markdown tables.",
