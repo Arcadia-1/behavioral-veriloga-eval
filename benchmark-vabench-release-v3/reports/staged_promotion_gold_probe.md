@@ -4,12 +4,12 @@ Date: 2026-07-02
 
 ## Summary
 
-- `gold_total`: 33
+- `gold_total`: 32
 - `gold_pass`: 0
-- `gold_fail`: 33
-- `expectation_fail`: 33
+- `gold_fail`: 32
+- `expectation_fail`: 32
 - `skipped_staged_tasks`: 0
-- `wall_s`: 8.09055
+- `wall_s`: 8.342892
 
 ## Rows
 
@@ -43,7 +43,6 @@ Date: 2026-07-02
 | `481-analog-primitive-resistor-instance` | `FAIL_TB_COMPILE` | simulator_error=Unknown child module: resistor in analog_primitive_resistor_instance.rload |
 | `482-analog-primitive-isource-instance` | `FAIL_TB_COMPILE` | simulator_error=Unknown child module: isource in analog_primitive_isource_instance.ib |
 | `487-table-model-2d-array-surface` | `FAIL_SIM_CORRECTNESS` | out@50ns=0.0000 expected=1.0000 tol=0.0500 |
-| `488-table-model-string-param-source` | `FAIL_SIM_CORRECTNESS` | out@10ns=0.0000 expected=0.1000 tol=0.0400 |
 | `491-kcl-capacitor-ddt-current` | `FAIL_SIM_CORRECTNESS` | staged_kcl_boundary feature=I(p,n)<+c*ddt(V(p,n)) p_range=0.0012 expected=mna_current_observable |
 | `492-kcl-inductor-idt-voltage` | `FAIL_SIM_CORRECTNESS` | simulator_error=Model isource not found (available: ['kcl_inductor_idt_voltage']) |
 | `493-continuous-laplace-nd-filter` | `FAIL_SIM_CORRECTNESS` | staged_dynamic_solver_boundary operator=continuous_laplace_nd out_range=1 expected=certified_continuous_time_response |

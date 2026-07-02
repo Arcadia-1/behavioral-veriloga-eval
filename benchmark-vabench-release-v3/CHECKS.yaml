@@ -11667,18 +11667,36 @@
   notes:
     - "Executable tests and checker are staged, but behavior promotion is blocked because 2D array-backed $table_model() currently returns 0: https://github.com/Arcadia-1/EVAS/issues/56"
 488-table-model-string-param-source: |
-  version: 1
+  version: 2
   task_id: v3_488_table_model_string_param_source
-  backend: evas_pending_table_model_string_param_source
-  status: syntax-extension-candidate
-  checker: language_feature_contract
+  backend: evas
+  status: behavior-certified-extension
+  checker: v3_488_table_model_string_param_source
   syntax:
     must_include:
       - "parameter string tmdata"
       - "$table_model"
       - "1L"
+      - "V(in)"
+      - "V(out)"
+    must_not_include:
+      - "I("
+  sim_correct:
+    trace_signals:
+      time: "time"
+      inp: "inp"
+      out: "out"
+    checks:
+      - "support_table_gain_profile_is_staged"
+      - "string_parameter_names_table_model_data_source"
+      - "table_model_control_string_does_not_mask_filename"
+      - "breakpoints_map_0p0_to_0p1_0p5_to_0p6_1p0_to_1p1"
+      - "five_negative_variants_rejected_by_behavior_checker"
+  promotion_evidence:
+    command: "PYTHONPATH=\"/Users/mac/Documents/github-repos/EVAS:$PWD/runners\" VAEVAS_DEFAULT_EVAS_ENGINE=python VAEVAS_EVAS_PERSISTENT_WORKER=0 PATH=\"$PWD/.venv-evas/bin:$PATH\" .venv-evas/bin/python scripts/run_v3_gold_negative_verification.py --start 488 --end 488 --tasks 488 --include-staged --timeout 120 --jobs 1 --out benchmark-vabench-release-v3/reports/verify_task_488_after_table_model_string_param.json"
+    result: "1/1 gold PASS; 5/5 negative variants rejected; 0 expectation_fail after EVAS $table_model filename/control-argument support."
   notes:
-    - "Executable tests and checker are staged, but behavior promotion is blocked because string-parameter $table_model data source currently returns 0: https://github.com/Arcadia-1/EVAS/issues/40"
+    - "Promoted after EVAS resolved the $table_model data filename from the string parameter argument before the control string."
 489-event-nested-or-expression: |
   version: 1
   task_id: v3_489_event_nested_or_expression

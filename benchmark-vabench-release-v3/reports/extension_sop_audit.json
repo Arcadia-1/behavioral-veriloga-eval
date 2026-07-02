@@ -103,16 +103,16 @@
       "behavior_contract_complete_count": 24,
       "complete_tests_count": 24,
       "description": "LRM KCL/continuous-time gap-fill candidates",
-      "fair_eval_count": 12,
+      "fair_eval_count": 13,
       "negative_cases_aligned_count": 24,
       "negative_descriptions_task_specific_count": 24,
       "range": "471-494",
-      "sop_ready_count": 12,
+      "sop_ready_count": 13,
       "task_count": 24,
       "top_issues": [
         [
           "checker_syntax_only_no_behavior_score",
-          12
+          11
         ]
       ],
       "visible_hidden_distinct_count": 24
@@ -123,13 +123,13 @@
   "summary": {
     "behavior_contract_complete_count": 194,
     "complete_tests_count": 194,
-    "fair_eval_count": 161,
+    "fair_eval_count": 162,
     "issue_counts": {
-      "checker_syntax_only_no_behavior_score": 33
+      "checker_syntax_only_no_behavior_score": 32
     },
     "negative_cases_aligned_count": 194,
     "negative_descriptions_task_specific_count": 194,
-    "sop_ready_count": 161,
+    "sop_ready_count": 162,
     "sop_ready_visible_hidden_identical_count": 0,
     "staged_visible_hidden_identical_count": 0,
     "task_count": 194,
@@ -5249,18 +5249,16 @@
       "behavior_contract_complete": true,
       "certification_scope": "language_extension_not_part_of_original_full_300_claim",
       "complete_tests": true,
-      "fair_eval": false,
+      "fair_eval": true,
       "hidden_scs_count": 1,
-      "issues": [
-        "checker_syntax_only_no_behavior_score"
-      ],
+      "issues": [],
       "negative_cases_aligned": true,
       "negative_count": 5,
       "negative_descriptions_task_specific": true,
       "number": 488,
       "reasonable_task": true,
       "solution_file_count": 2,
-      "sop_ready": false,
+      "sop_ready": true,
       "starter_file_count": 2,
       "syntax_focus": "Use a string parameter as the $table_model() data source.",
       "target": "table_model_string_param_source.va",

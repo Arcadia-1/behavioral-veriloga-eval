@@ -5,9 +5,9 @@ Date: 2026-07-02
 ## Summary
 
 - Audited extension tasks: **194**
-- SOP-ready tasks: **161**
+- SOP-ready tasks: **162**
 - Tasks with executable visible+hidden SCS evidence: **194**
-- Tasks with behavior checker evidence: **161**
+- Tasks with behavior checker evidence: **162**
 - Tasks with complete manifest behavior contracts: **194**
 - Tasks with aligned negative case indexes: **194**
 - Tasks with task-specific negative descriptions: **194**
@@ -18,7 +18,7 @@ Date: 2026-07-02
 
 ## Issue Counts
 
-- `checker_syntax_only_no_behavior_score`: 33
+- `checker_syntax_only_no_behavior_score`: 32
 
 ## Warning Counts
 
@@ -34,7 +34,7 @@ Date: 2026-07-02
 | `373-434` | task/file/table/random/hierarchy syntax candidates | 62 | 58 | 62 | 58 | 62 | 62 | 62 | 62 | `checker_syntax_only_no_behavior_score`: 4 |
 | `435-458` | manual syntax-completion candidates | 24 | 11 | 24 | 11 | 24 | 24 | 24 | 24 | `checker_syntax_only_no_behavior_score`: 13 |
 | `459-470` | course-material gap-fill candidates | 12 | 9 | 12 | 9 | 12 | 12 | 12 | 12 | `checker_syntax_only_no_behavior_score`: 3 |
-| `471-494` | LRM KCL/continuous-time gap-fill candidates | 24 | 12 | 24 | 12 | 24 | 24 | 24 | 24 | `checker_syntax_only_no_behavior_score`: 12 |
+| `471-494` | LRM KCL/continuous-time gap-fill candidates | 24 | 13 | 24 | 13 | 24 | 24 | 24 | 24 | `checker_syntax_only_no_behavior_score`: 11 |
 
 ## Highest Severity Finding
 
@@ -231,7 +231,7 @@ Tasks 301-494 are extension candidates, not SOP-ready benchmark tasks. They most
 | `485-mc-trial-number-metric` | `cadence-simulator-function-candidate` | True | - |
 | `486-rf-source-info-registration` | `cadence-simulator-function-candidate` | True | - |
 | `487-table-model-2d-array-surface` | `syntax-extension-candidate` | False | `checker_syntax_only_no_behavior_score` |
-| `488-table-model-string-param-source` | `syntax-extension-candidate` | False | `checker_syntax_only_no_behavior_score` |
+| `488-table-model-string-param-source` | `syntax-extension-candidate` | True | - |
 | `489-event-nested-or-expression` | `syntax-extension-candidate` | True | - |
 | `490-event-task-function-state-update` | `syntax-extension-candidate` | True | - |
 | `491-kcl-capacitor-ddt-current` | `kcl-syntax-candidate` | False | `checker_syntax_only_no_behavior_score` |
