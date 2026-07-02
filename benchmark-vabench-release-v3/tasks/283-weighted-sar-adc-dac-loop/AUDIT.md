@@ -1,10 +1,23 @@
-# Task 283 Audit
+# Weighted SAR ADC DAC Loop Audit
 
-Absorbs v2 `vbr1_l2_weighted_sar_adc_dac_loop:e2e` into v3.
-
-- Useful scenario: pass. Closed-loop sample/hold, SAR decision, and DAC reconstruction are a real converter behavioral flow.
-- Reasonable task: pass. Public interfaces, output files, monitor names, clock/reset stimulus, and saved observables are fixed.
-- Complete tests: pending fresh local EVAS/Spectre recertification. Hidden checker and gold assets are imported from the v2 task; a shorter visible smoke is provided for public compile/sanity feedback.
-- Fair evaluation: pass in design. The checker uses public waveform observables and public SAR/DAC consistency requirements.
-
-Remaining risk: newly absorbed v3 packaging has not yet been rerun on this host because EVAS is not installed locally.
+- Gate 1: L2 core flow retained. The row composes sample/hold, SAR conversion,
+  public trial monitors, final code bits, and weighted DAC reconstruction.
+- Gate 2: EVAS-ready for current public assets, Cadence lint/Spectre pending.
+  Public prompt was normalized to state the L2 flow role, separate exact
+  testbench stimulus values from DUT-internal circuit contracts, and expose the
+  observable SAR trial monitors without leaking checker sample windows.
+- Hidden coverage: existing hidden flow is distinct from the visible smoke deck
+  and keeps the longer converter-loop validation.
+- Checker: flow-level checker verifies public SAR/DAC consistency, range,
+  code coverage, trial visibility, and monotonic reconstruction behavior.
+- Negatives: stuck-zero flow variant is rejected by the behavior checker.
+- EVAS note: this L2 flow needs a longer timeout than small single-DUT rows; a
+  120 s timeout can expire, while a 360 s timeout passes on this host.
+- Cadence reference correspondence: Cadence converter examples model the same
+  pieces as public behavior rather than private checker facts: sample/hold
+  capture on a clock event, thresholded bit-bus DAC reconstruction, MSB-to-LSB
+  ADC decision sequencing, and explicit transition-smoothed observable outputs.
+  This row combines those conventions into an integrated conversion loop.
+- Cadence/Spectre: not rerun in this branch because the local bridge readiness
+  check reports bridge setup missing; this is a validation-environment block,
+  not a known model failure.

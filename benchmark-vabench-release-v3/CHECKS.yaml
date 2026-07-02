@@ -3714,7 +3714,7 @@
 204-pipe-2lane-edge-align: |
   checker:
     task_id: v3_pipe_2lane_edge_align
-    metric: stable_samples
+    metric: edge_lane_selection
   scoring:
     axes:
       - dut_compile
@@ -3741,7 +3741,7 @@
 207-iterative-isar-dac: |
   checker:
     task_id: v3_iterative_isar_dac
-    metric: stable_samples
+    metric: reset_step_halving_direction
   scoring:
     axes:
       - dut_compile
@@ -3813,7 +3813,7 @@
 215-pipe15-data-align: |
   checker:
     task_id: v3_pipe15_data_align
-    metric: stable_samples
+    metric: latency_group_alignment
   scoring:
     axes:
       - dut_compile
@@ -4074,7 +4074,7 @@
 244-l3-sar2-logic-7b: |
   checker:
     task_id: v3_l3_sar2_logic_7b
-    metric: stable_samples
+    metric: active_low_sar_sequence
   scoring:
     axes:
       - dut_compile
@@ -4083,7 +4083,7 @@
 245-cdac-8b-monodown: |
   checker:
     task_id: v3_cdac_8b_monodown
-    metric: stable_samples
+    metric: event_weighted_residue
   scoring:
     axes:
       - dut_compile
@@ -4173,7 +4173,7 @@
 255-tool-4bit-sar-signed-dac: |
   checker:
     task_id: v3_tool_4bit_sar_signed_dac
-    metric: stable_samples
+    metric: sample_signed_weighted_sum
   scoring:
     axes:
       - dut_compile
@@ -4227,7 +4227,7 @@
 261-sar-13bit-serial-decoder: |
   checker:
     task_id: v3_sar_13bit_serial_decoder
-    metric: stable_samples
+    metric: serial_frame_decode
   scoring:
     axes:
       - dut_compile

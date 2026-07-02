@@ -12663,11 +12663,37 @@ def check_v3_pipe_2lane_edge_align(rows: list[dict[str, float]]) -> tuple[bool, 
     required = {"time", "din1", "din2", "clk_align", "dout"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing pipe 2lane edge align signals"
-    return _sample_many(
-        rows,
-        {"dout": [(1.3, 0.1), (1.8, 0.8), (11.3, 0.4), (11.8, 0.3), (21.3, 0.7), (21.8, 0.5), (31.3, 0.2), (31.8, 0.9)]},
-        tol=0.02,
-    )
+    times = [row["time"] for row in rows]
+    clk = [row["clk_align"] for row in rows]
+    events = [(t, "din1") for t in _threshold_crossings(clk, times, threshold=0.45, direction="rising")]
+    events += [(t, "din2") for t in _threshold_crossings(clk, times, threshold=0.45, direction="falling")]
+    events.sort()
+    if len(events) < 4:
+        return False, f"too_few_alignment_edges={len(events)}"
+
+    max_err = 0.0
+    checked = 0
+    failures: list[str] = []
+    for edge_t, source in events:
+        sample_t = edge_t + 0.15e-9
+        if sample_t > rows[-1]["time"]:
+            continue
+        expected = sample_signal_at(rows, source, edge_t + 1e-12)
+        observed = sample_signal_at(rows, "dout", sample_t)
+        if expected is None or observed is None:
+            continue
+        err = abs(observed - expected)
+        max_err = max(max_err, err)
+        checked += 1
+        if err > 0.035:
+            failures.append(
+                f"dout_after_{source}_edge@{edge_t * 1e9:.3f}ns={observed:.4f} expected={expected:.4f}"
+            )
+    if checked < 4:
+        return False, f"insufficient_alignment_samples={checked}"
+    if failures:
+        return False, " ".join(failures[:4])
+    return True, f"alignment_edges={checked} max_err={max_err:.4f}"
 
 
 def check_v3_dac_serial_accumulator(rows: list[dict[str, float]]) -> tuple[bool, str]:
@@ -12696,11 +12722,56 @@ def check_v3_iterative_isar_dac(rows: list[dict[str, float]]) -> tuple[bool, str
     required = {"time", "dcmp", "rst", "clk", "vdac"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing iterative isar dac signals"
-    return _sample_many(
-        rows,
-        {"vdac": [(1.5, 0.0), (2.5, -0.1), (4.5, -0.05), (6.5, -0.025), (8.5, -0.0375), (10.5, -0.03125)]},
-        tol=0.015,
-    )
+    times = [row["time"] for row in rows]
+    clk_edges = _threshold_crossings([row["clk"] for row in rows], times, threshold=0.5, direction="rising")
+    rst_edges = _threshold_crossings([row["rst"] for row in rows], times, threshold=0.5, direction="rising")
+    if len(clk_edges) < 4:
+        return False, f"too_few_clk_edges={len(clk_edges)}"
+    if not rst_edges:
+        return False, "missing_reset_rising_edge"
+
+    failures: list[str] = []
+    for rst_t in rst_edges:
+        observed = sample_signal_at(rows, "vdac", rst_t + 0.25e-9)
+        if observed is None:
+            continue
+        if abs(observed) > 0.02:
+            failures.append(f"reset_vdac@{rst_t * 1e9:.3f}ns={observed:.4f}")
+
+    changes_by_segment: dict[int, list[float]] = {}
+    checked_updates = 0
+    for clk_t in clk_edges:
+        pre = sample_signal_at(rows, "vdac", max(rows[0]["time"], clk_t - 0.08e-9))
+        post = sample_signal_at(rows, "vdac", clk_t + 0.25e-9)
+        dcmp = sample_signal_at(rows, "dcmp", clk_t + 1e-12)
+        if pre is None or post is None or dcmp is None:
+            continue
+        diff = post - pre
+        if abs(diff) < 0.002:
+            continue
+        expected_sign = -1 if dcmp > 0.5 else 1
+        if diff * expected_sign <= 0:
+            failures.append(
+                f"wrong_update_direction@{clk_t * 1e9:.3f}ns diff={diff:.4f} dcmp={dcmp:.3f}"
+            )
+        segment = sum(1 for rst_t in rst_edges if rst_t < clk_t)
+        changes_by_segment.setdefault(segment, []).append(abs(diff))
+        checked_updates += 1
+
+    if checked_updates < 4:
+        return False, f"too_few_effective_updates={checked_updates}"
+
+    ratios: list[float] = []
+    for segment_changes in changes_by_segment.values():
+        for prev, cur in zip(segment_changes, segment_changes[1:]):
+            if prev > 0.01 and cur > 0.001:
+                ratios.append(cur / prev)
+    bad_ratios = [ratio for ratio in ratios if not (0.42 <= ratio <= 0.58)]
+    if bad_ratios:
+        failures.append("bad_halving_ratios=" + ",".join(f"{ratio:.3f}" for ratio in bad_ratios[:4]))
+    if failures:
+        return False, " ".join(failures[:5])
+    return True, f"updates={checked_updates} ratio_count={len(ratios)}"
 
 
 def check_v3_offset_bisection_driver(rows: list[dict[str, float]]) -> tuple[bool, str]:
@@ -12851,20 +12922,52 @@ def check_v3_foreground_cload_calibrator(rows: list[dict[str, float]]) -> tuple[
 
 
 def check_v3_pipe15_data_align(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    required = {"time", "do0", "do3", "do7", "do11", "do14"}
+    required = {"time", "samp", *{f"d{i}" for i in range(15)}, *{f"do{i}" for i in range(15)}}
     if not rows or not required.issubset(rows[0]):
         return False, "missing pipe15 data align outputs"
-    return _sample_many(
-        rows,
-        {
-            "do0": [(1.7, 0.9), (11.7, 0.0)],
-            "do3": [(1.7, 0.0), (9.7, 0.0), (11.7, 0.9)],
-            "do7": [(5.7, 0.9), (9.7, 0.9), (11.7, 0.0)],
-            "do11": [(5.7, 0.0), (9.7, 0.9), (11.7, 0.0)],
-            "do14": [(5.7, 0.0), (9.7, 0.9), (11.7, 0.0)],
-        },
-        tol=0.08,
-    )
+    times = [row["time"] for row in rows]
+    edges = _threshold_crossings([row["samp"] for row in rows], times, threshold=0.45, direction="rising")
+    if len(edges) < 5:
+        return False, f"too_few_sample_edges={len(edges)}"
+
+    max_err = 0.0
+    checked = 0
+    failures: list[str] = []
+    for edge_idx, edge_t in enumerate(edges):
+        sample_t = edge_t + 0.12e-9
+        if sample_t > rows[-1]["time"]:
+            continue
+        for bit in range(15):
+            if bit <= 2:
+                delay = 0
+            elif bit <= 6:
+                delay = 1
+            elif bit <= 10:
+                delay = 2
+            else:
+                delay = 4
+            source_idx = edge_idx - delay
+            if source_idx < 0:
+                expected = 0.0
+            else:
+                expected = sample_signal_at(rows, f"d{bit}", edges[source_idx] + 1e-12)
+                if expected is None:
+                    continue
+            observed = sample_signal_at(rows, f"do{bit}", sample_t)
+            if observed is None:
+                continue
+            err = abs(observed - expected)
+            max_err = max(max_err, err)
+            checked += 1
+            if err > 0.12:
+                failures.append(
+                    f"do{bit}@{edge_t * 1e9:.3f}ns={observed:.3f} expected={expected:.3f} delay={delay}"
+                )
+    if checked < 45:
+        return False, f"insufficient_pipe_align_checks={checked}"
+    if failures:
+        return False, " ".join(failures[:6])
+    return True, f"aligned_bit_samples={checked} max_err={max_err:.4f}"
 
 
 def check_v3_clocked_mux4_sampler(rows: list[dict[str, float]]) -> tuple[bool, str]:
@@ -13468,49 +13571,118 @@ def check_v3_l3_sar2_logic_7b(rows: list[dict[str, float]]) -> tuple[bool, str]:
     }
     if not rows or not required.issubset(rows[0]):
         return False, "missing l3 sar2 logic 7b signals"
-    return _sample_many(
-        rows,
-        {
-            "cmpck": [(0.95, 0.9), (1.5, 0.0), (2.5, 0.9), (4.5, 0.9), (5.6, 0.0), (6.0, 0.0)],
-            "do6": [(5.9, 0.9)],
-            "do5": [(5.9, 0.0)],
-            "do4": [(5.9, 0.9)],
-            "do3": [(5.9, 0.0)],
-            "do2": [(5.9, 0.9)],
-            "do1": [(5.9, 0.9)],
-            "do0": [(5.9, 0.0)],
-            "sp6": [(0.6, 0.9), (6.0, 0.9)],
-            "sn6": [(0.6, 0.9), (1.7, 0.0), (6.0, 0.0)],
-            "sn5": [(2.5, 0.9), (6.0, 0.9)],
-            "sp4": [(3.2, 0.9), (6.0, 0.9)],
-            "sn3": [(3.9, 0.9), (6.0, 0.9)],
-            "sp2": [(4.6, 0.9), (6.0, 0.9)],
-            "sp1": [(5.25, 0.9), (6.0, 0.9)],
-            "sp5": [(6.0, 0.0)],
-            "sn4": [(6.0, 0.0)],
-        },
-        tol=0.08,
-    )
+    times = [row["time"] for row in rows]
+    threshold = 0.45
+    high_level = max(max(row[signal] for row in rows) for signal in ("clk", "dp", "dn"))
+    if high_level < 0.6:
+        high_level = 0.9
+    clk_edges = _threshold_crossings([row["clk"] for row in rows], times, threshold=threshold, direction="rising")
+    dp_falls = [(t, 0) for t in _threshold_crossings([row["dp"] for row in rows], times, threshold=threshold, direction="falling")]
+    dn_falls = [(t, 1) for t in _threshold_crossings([row["dn"] for row in rows], times, threshold=threshold, direction="falling")]
+    decisions = sorted(dp_falls + dn_falls)
+    if not clk_edges:
+        return False, "missing_clk_start_edge"
+    if len(decisions) < 7:
+        return False, f"too_few_active_low_decisions={len(decisions)}"
+    decisions = decisions[:7]
+    decision_bits = [bit for _, bit in decisions]
+
+    sample_t = min(rows[-1]["time"] - 0.05e-9, decisions[-1][0] + 0.58e-9)
+    if sample_t <= decisions[-1][0]:
+        sample_t = rows[-1]["time"]
+
+    failures: list[str] = []
+    for bit in range(7):
+        expected = decision_bits[6 - bit] * high_level
+        observed = sample_signal_at(rows, f"do{bit}", sample_t)
+        if observed is None or abs(observed - expected) > 0.12:
+            failures.append(f"do{bit}={observed} expected={expected:.3f}")
+
+    expected_sp = {idx: 0 for idx in range(1, 7)}
+    expected_sn = {idx: 0 for idx in range(1, 7)}
+    expected_sp[6] = 1
+    expected_sn[6] = 1
+    for seq_idx, decision in enumerate(decision_bits[:6]):
+        bit = 6 - seq_idx
+        if bit == 6:
+            if decision:
+                expected_sn[6] = 0
+            else:
+                expected_sp[6] = 0
+        elif decision:
+            expected_sp[bit] = 1
+        else:
+            expected_sn[bit] = 1
+    for bit in range(1, 7):
+        for prefix, expected_map in (("sp", expected_sp), ("sn", expected_sn)):
+            signal = f"{prefix}{bit}"
+            expected = expected_map[bit] * high_level
+            observed = sample_signal_at(rows, signal, sample_t)
+            if observed is None or abs(observed - expected) > 0.12:
+                failures.append(f"{signal}={observed} expected={expected:.3f}")
+
+    cmp_start = sample_signal_at(rows, "cmpck", clk_edges[0] + 0.12e-9)
+    cmp_final = sample_signal_at(rows, "cmpck", sample_t)
+    if cmp_start is None or cmp_start < high_level * 0.6:
+        failures.append(f"cmpck_start={cmp_start}")
+    if cmp_final is None or cmp_final > high_level * 0.4:
+        failures.append(f"cmpck_final={cmp_final}")
+    if failures:
+        return False, " ".join(failures[:8])
+    code = "".join(str(bit) for bit in decision_bits)
+    return True, f"active_low_decisions={code} sample_t_ns={sample_t * 1e9:.3f}"
 
 
 def check_v3_cdac_8b_monodown(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "vin", "clks", "vres", *{f"dctrl{i}" for i in range(1, 8)}}
     if not rows or not required.issubset(rows[0]):
         return False, "missing cdac 8b monodown signals"
-    return _sample_many(
-        rows,
-        {
-            "vres": [(0.5, 0.8), (1.0, 0.8), (1.5, 0.3), (2.1, 0.05), (2.7, -0.075), (3.3, -0.1375), (3.9, -0.16875), (4.5, -0.184375), (5.1, -0.1921875)],
-            "dctrl7": [(1.5, 1.0)],
-            "dctrl6": [(2.1, 1.0)],
-            "dctrl5": [(2.7, 1.0)],
-            "dctrl4": [(3.3, 1.0)],
-            "dctrl3": [(3.9, 1.0)],
-            "dctrl2": [(4.5, 1.0)],
-            "dctrl1": [(5.1, 1.0)],
-        },
-        tol=0.02,
-    )
+    times = [row["time"] for row in rows]
+    threshold = 0.5
+    events: list[tuple[float, str, int | None]] = []
+    events += [
+        (t, "sample", None)
+        for t in _threshold_crossings([row["clks"] for row in rows], times, threshold=threshold, direction="falling")
+    ]
+    for bit in range(1, 8):
+        signal = f"dctrl{bit}"
+        events += [
+            (t, "subtract", bit)
+            for t in _threshold_crossings([row[signal] for row in rows], times, threshold=threshold, direction="rising")
+        ]
+    events.sort()
+    if len(events) < 5:
+        return False, f"too_few_cdac_events={len(events)}"
+
+    residue = sample_signal_at(rows, "vin", rows[0]["time"]) or 0.0
+    checked = 0
+    max_err = 0.0
+    failures: list[str] = []
+    for event_t, kind, bit in events:
+        if kind == "sample":
+            sampled = sample_signal_at(rows, "vin", event_t + 1e-12)
+            if sampled is None:
+                continue
+            residue = sampled
+        elif bit is not None:
+            residue -= 1.0 / (2 ** (8 - bit))
+        sample_t = event_t + 0.12e-9
+        if sample_t > rows[-1]["time"]:
+            continue
+        observed = sample_signal_at(rows, "vres", sample_t)
+        if observed is None:
+            continue
+        err = abs(observed - residue)
+        max_err = max(max_err, err)
+        checked += 1
+        if err > 0.035:
+            detail = "sample" if kind == "sample" else f"dctrl{bit}"
+            failures.append(f"vres_after_{detail}@{event_t * 1e9:.3f}ns={observed:.4f} expected={residue:.4f}")
+    if checked < 5:
+        return False, f"insufficient_cdac_checks={checked}"
+    if failures:
+        return False, " ".join(failures[:6])
+    return True, f"cdac_events={checked} max_err={max_err:.4f}"
 
 
 def check_v3_va_dac_6b_se(rows: list[dict[str, float]]) -> tuple[bool, str]:
@@ -13631,11 +13803,46 @@ def check_v3_tool_4bit_sar_signed_dac(rows: list[dict[str, float]]) -> tuple[boo
     required = {"time", "sh", "aout", *{f"d{i}" for i in range(4)}}
     if not rows or not required.issubset(rows[0]):
         return False, "missing tool 4bit sar signed dac signals"
-    return _sample_many(
-        rows,
-        {"aout": [(0.5, -1.6875), (1.5, 0.5625), (2.5, -0.5625), (3.5, 1.6875)]},
-        tol=0.025,
-    )
+    times = [row["time"] for row in rows]
+    high_level = max(max(row[signal] for row in rows) for signal in ("sh", "d0", "d1", "d2", "d3"))
+    if high_level < 1.0:
+        high_level = 1.8
+    threshold = high_level / 2.0
+    sample_edges = _threshold_crossings([row["sh"] for row in rows], times, threshold=threshold, direction="rising")
+    if len(sample_edges) < 3:
+        return False, f"too_few_sample_edges={len(sample_edges)}"
+
+    weights = {3: 8.0, 2: 4.0, 1: 2.0, 0: 1.0}
+    gain = high_level / 16.0
+    checked = 0
+    max_err = 0.0
+    failures: list[str] = []
+    for edge_t in sample_edges:
+        total = 0.0
+        bit_text: list[str] = []
+        for bit, weight in weights.items():
+            value = sample_signal_at(rows, f"d{bit}", edge_t + 1e-12)
+            if value is None:
+                continue
+            high = value > threshold
+            bit_text.append("1" if high else "0")
+            total += weight if high else -weight
+        expected = total * gain
+        observed = sample_signal_at(rows, "aout", edge_t + 0.08e-9)
+        if observed is None:
+            continue
+        err = abs(observed - expected)
+        max_err = max(max_err, err)
+        checked += 1
+        if err > 0.04:
+            failures.append(
+                f"aout@{edge_t * 1e9:.3f}ns={observed:.4f} expected={expected:.4f} bits={''.join(bit_text)}"
+            )
+    if checked < 3:
+        return False, f"insufficient_signed_dac_checks={checked}"
+    if failures:
+        return False, " ".join(failures[:5])
+    return True, f"signed_dac_samples={checked} max_err={max_err:.4f}"
 
 
 def check_v3_dac4bit_small_swing(rows: list[dict[str, float]]) -> tuple[bool, str]:
@@ -13743,14 +13950,61 @@ def check_v3_sar_13bit_serial_decoder(rows: list[dict[str, float]]) -> tuple[boo
     required = {"time", "din", "clks", "ready", "dout", "dnum"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing sar 13bit serial decoder signals"
-    return _sample_many(
-        rows,
-        {
-            "dout": [(1.0, -0.5), (14.0, -0.5), (15.0, 0.19808326)],
-            "dnum": [(1.0, 0.0), (6.5, 3.0), (13.5, 7.0), (15.0, 0.0)],
-        },
-        tol=0.03,
-    )
+    times = [row["time"] for row in rows]
+    threshold = 0.55
+    events: list[tuple[float, str]] = []
+    events += [(t, "clks") for t in _threshold_crossings([row["clks"] for row in rows], times, threshold=threshold, direction="rising")]
+    events += [(t, "ready") for t in _threshold_crossings([row["ready"] for row in rows], times, threshold=threshold, direction="rising")]
+    events.sort()
+    if not any(kind == "clks" for _, kind in events):
+        return False, "missing_clks_publish_edge"
+    if sum(1 for _, kind in events if kind == "ready") < 8:
+        return False, "too_few_ready_edges"
+
+    counter = 12
+    accum = 0.0
+    high_count = 0.0
+    ready_checks = 0
+    publish_checks = 0
+    failures: list[str] = []
+    for event_t, kind in events:
+        if kind == "ready":
+            if counter >= 0:
+                bit_value = sample_signal_at(rows, "din", event_t + 1e-12)
+                if bit_value is not None and bit_value > threshold:
+                    accum += 2.0 ** counter
+                    high_count += 1.0
+                counter -= 1
+                observed_count = sample_signal_at(rows, "dnum", event_t + 0.08e-9)
+                if observed_count is not None:
+                    ready_checks += 1
+                    if abs(observed_count - high_count) > 0.15:
+                        failures.append(
+                            f"dnum@{event_t * 1e9:.3f}ns={observed_count:.3f} expected={high_count:.1f}"
+                        )
+        else:
+            expected = accum / 8191.0 - 0.5
+            observed = sample_signal_at(rows, "dout", event_t + 0.08e-9)
+            observed_count = sample_signal_at(rows, "dnum", event_t + 0.08e-9)
+            if observed is not None:
+                publish_checks += 1
+                if abs(observed - expected) > 0.035:
+                    failures.append(
+                        f"dout@{event_t * 1e9:.3f}ns={observed:.4f} expected={expected:.4f}"
+                    )
+            if observed_count is not None and abs(observed_count) > 0.15:
+                failures.append(f"dnum_after_publish@{event_t * 1e9:.3f}ns={observed_count:.3f}")
+            counter = 12
+            accum = 0.0
+            high_count = 0.0
+
+    if ready_checks < 8:
+        return False, f"insufficient_ready_checks={ready_checks}"
+    if publish_checks < 2:
+        return False, f"insufficient_publish_checks={publish_checks}"
+    if failures:
+        return False, " ".join(failures[:6])
+    return True, f"ready_checks={ready_checks} publish_checks={publish_checks}"
 
 
 def check_v3_single_shot_timer_pulse(rows: list[dict[str, float]]) -> tuple[bool, str]:
@@ -19810,6 +20064,7 @@ CHECKS["189-divide-by-8-9-switch"] = check_v3_divide_by_8_9_switch
 CHECKS["190-dac-restore-10bit-offset"] = check_v3_dac_restore_10bit_offset
 CHECKS["191-dac-8bit-ideal-scalar"] = check_v3_dac_8bit_ideal_scalar
 CHECKS["192-flash-data-align-pipeline"] = check_v3_flash_data_align_pipeline
+CHECKS["215-pipe15-data-align"] = check_v3_pipe15_data_align
 CHECKS["193-cyclic-decoder-10b"] = check_v3_cyclic_decoder_10b
 CHECKS["194-ideal-adc-out-7bits"] = check_v3_ideal_adc_out_7bits
 CHECKS["195-va-lx-adc-ideal-4b"] = check_v3_va_lx_adc_ideal_4b

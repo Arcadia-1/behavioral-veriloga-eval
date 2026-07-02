@@ -1,9 +1,17 @@
-# Source L3 SAR2 Logic 7b Audit
+# L3 SAR2 Logic 7b Audit
 
-- Source: `caiyizeng25/L3_SAR2_logic_7b_ideal.va` from the exact-deduplicated historical Verilog-A corpus.
-- Scenario: active-low comparator-output SAR2 controller with CLK reset/start, SP/SN CDAC controls, and final latched 7-bit DO publication.
-- Import status: certified only after visible compile, EVAS hidden semantic check, Spectre AX hidden semantic check, EVAS/Spectre parity pass, and negative variant rejection.
-- Evaluation: stable sampled logic behavior from `tran.csv`; raw simulator timestep equality is not used.
-- Evidence:
-  - `WORK/source-import-batch24-evas/244-l3-sar2-logic-7b`
-  - `WORK/source-import-batch24-spectre/244-l3-sar2-logic-7b`
+- Gate 1: independent L1 rework candidate retained. The row models a
+  converter-facing SAR2 controller with active-low comparator pulses, `cmpck`,
+  final code bits, and CDAC control outputs.
+- Gate 2: EVAS-ready, Cadence lint/Spectre pending. Public prompt now states
+  interface, logic levels, reset/start behavior, active-low decision semantics,
+  and final publication behavior.
+- Hidden coverage: repaired to use a distinct active-low decision sequence and
+  conversion timing relative to the visible smoke deck.
+- Checker: upgraded from fixed samples to event-derived active-low decision,
+  final-code, `sp`/`sn`, and `cmpck` checks.
+- Negatives: zero output, inverted decision, no step decrement, and half-level
+  `cmpck` variants are rejected by the behavior checker.
+- Cadence/Spectre: not rerun in this branch because the local bridge readiness
+  check reports bridge setup missing; this is a validation-environment block,
+  not a known model failure.
