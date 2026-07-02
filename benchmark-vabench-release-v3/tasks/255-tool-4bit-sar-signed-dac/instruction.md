@@ -1,7 +1,7 @@
 # Tool 4bit SAR Signed DAC
 
-Implement `tool_4bit_sar_signed_dac.va` as a sample-triggered signed helper DAC
-for a SAR-style readout path.
+Implement `tool_4bit_sar_signed_dac.va` as a sample-triggered signed SAR
+reconstruction DAC for a SAR-style readout path.
 
 ## Public Interface
 

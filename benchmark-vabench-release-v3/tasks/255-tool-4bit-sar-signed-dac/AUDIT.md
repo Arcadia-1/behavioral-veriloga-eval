@@ -1,11 +1,13 @@
 # Tool 4bit SAR Signed DAC Audit
 
-- Gate 1: independent L1 rework candidate retained as a signed SAR helper DAC.
-  It is counted only if the benchmark policy admits helper DAC/readout macros
-  as standalone functions.
+- Gate 1: `independent_l1_ready`. This is a signed SAR reconstruction
+  DAC/readout component. Human review confirmed that reusable converter
+  readout/calibration macros with standalone public behavior should count as
+  independent benchmark components.
 - Gate 2: EVAS-ready, Cadence lint/Spectre pending. Public prompt now states
-  interface, threshold, gain, signed bit contribution, sample trigger, and
-  hold behavior.
+  interface, threshold, gain, transition time, signed bit contribution, sample
+  trigger, and hold behavior. Starter and gold both expose the public `tr`
+  parameter, and gold uses it for the output transition.
 - Hidden coverage: repaired to use a distinct sample clock and bit pattern from
   the visible smoke deck.
 - Checker: upgraded from fixed samples to sample-triggered signed weighted-sum
