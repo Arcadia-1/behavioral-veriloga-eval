@@ -2,35 +2,35 @@
   "negative_cases": [
     {
       "id": "neg_001_force_zero",
-      "why_wrong": "Zi Np Discrete Filter: keeps the file compilable but forces the observable output path low, so it can pass include/instance smoke checks while failing the required behavior to Apply zi_np state updates across the transient run.",
+      "why_wrong": "Zi Np Discrete Filter: forces the main output to zero, so coarse compilation passes but behavioral stimulus points fail.",
       "files": [
         "neg_001_force_zero/zi_np_discrete_filter.va"
       ]
     },
     {
       "id": "neg_002_wrong_threshold",
-      "why_wrong": "Zi Np Discrete Filter: keeps the main operator syntax but collapses the computed value through the wrong condition, so coarse smoke cases may run while boundary and waveform checks for Use zi_np() for discrete-time numerator/pole filtering fail.",
+      "why_wrong": "Zi Np Discrete Filter: uses a shifted or inverted decision condition that can pass one mode but fails boundary cases.",
       "files": [
         "neg_002_wrong_threshold/zi_np_discrete_filter.va"
       ]
     },
     {
       "id": "neg_003_reset_bias",
-      "why_wrong": "Zi Np Discrete Filter: introduces incorrect initialization or state bias, so startup and reset-sensitive checks fail while the model still compiles and produces activity.",
+      "why_wrong": "Zi Np Discrete Filter: mishandles reset or initialization, passing steady-state samples but failing startup or recovery checks.",
       "files": [
         "neg_003_reset_bias/zi_np_discrete_filter.va"
       ]
     },
     {
       "id": "neg_004_metric_offset",
-      "why_wrong": "Zi Np Discrete Filter: offsets the secondary metric or observable path, so the primary waveform may look plausible while calibrated checker evidence for Apply zi_np state updates across the transient run fails.",
+      "why_wrong": "Zi Np Discrete Filter: keeps the main datapath plausible while reporting the wrong metric value.",
       "files": [
         "neg_004_metric_offset/zi_np_discrete_filter.va"
       ]
     },
     {
       "id": "neg_005_scale_output",
-      "why_wrong": "Zi Np Discrete Filter: scales the final observable response, so compile and rough activity checks can pass while calibrated output checks for Use zi_np() for discrete-time numerator/pole filtering fail.",
+      "why_wrong": "Zi Np Discrete Filter: uses a wrong gain or scale factor, leaving shape plausible while calibrated checks fail.",
       "files": [
         "neg_005_scale_output/zi_np_discrete_filter.va"
       ]

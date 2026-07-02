@@ -5,7 +5,7 @@
       "neg_001_force_zero/always_resettable_toggle.vams"
     ],
     "expected": "compile_but_fail_full_behavior_under_ams_simulator",
-    "why_wrong": "Always Resettable Toggle: keeps the file compilable but forces the observable output path low, so it can pass include/instance smoke checks while failing the required behavior to A rising rst edge must immediately clear q to 0."
+    "why_wrong": "Always Resettable Toggle: forces the main output to zero, so coarse compilation passes but behavioral stimulus points fail."
   },
   {
     "id": "neg_002_invert_select",
@@ -13,7 +13,7 @@
       "neg_002_invert_select/always_resettable_toggle.vams"
     ],
     "expected": "compile_but_fail_full_behavior_under_ams_simulator",
-    "why_wrong": "Always Resettable Toggle: keeps the event structure but inverts the select/data decision, so simple reset wiring may look valid while the Use edge-triggered always with async reset behavior is wrong."
+    "why_wrong": "Always Resettable Toggle: mishandles reset or initialization, passing steady-state samples but failing startup or recovery checks."
   },
   {
     "id": "neg_003_drop_reset",
@@ -21,7 +21,7 @@
       "neg_003_drop_reset/always_resettable_toggle.vams"
     ],
     "expected": "compile_but_fail_full_behavior_under_ams_simulator",
-    "why_wrong": "Always Resettable Toggle: preserves clocked behavior but drops reset handling, so post-reset or mid-run reset checks fail even though non-reset toggles may still occur."
+    "why_wrong": "Always Resettable Toggle: mishandles reset or initialization, passing steady-state samples but failing startup or recovery checks."
   },
   {
     "id": "neg_004_wrong_edge",
@@ -29,7 +29,7 @@
       "neg_004_wrong_edge/always_resettable_toggle.vams"
     ],
     "expected": "compile_but_fail_full_behavior_under_ams_simulator",
-    "why_wrong": "Always Resettable Toggle: responds on the wrong event edge, so static wiring may look plausible but the timed hidden samples disagree with the required edge behavior."
+    "why_wrong": "Always Resettable Toggle: mishandles reset or initialization, passing steady-state samples but failing startup or recovery checks."
   },
   {
     "id": "neg_005_scale_low",
@@ -37,6 +37,6 @@
       "neg_005_scale_low/always_resettable_toggle.vams"
     ],
     "expected": "compile_but_fail_full_behavior_under_ams_simulator",
-    "why_wrong": "Always Resettable Toggle: attenuates the computed output level, so transitions remain visible but amplitude-sensitive checks reject the low-scale response."
+    "why_wrong": "Always Resettable Toggle: mishandles reset or initialization, passing steady-state samples but failing startup or recovery checks."
   }
 ]

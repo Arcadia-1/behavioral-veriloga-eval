@@ -2,35 +2,35 @@
   "negative_cases": [
     {
       "id": "neg_001_force_zero",
-      "why_wrong": "Idt Voltage Integrator Source: keeps the file compilable but forces the observable output path low, so it can pass include/instance smoke checks while failing the required behavior to Accumulate the time integral of V(in) into the output response.",
+      "why_wrong": "Idt Voltage Integrator Source: forces the main output to zero, so coarse compilation passes but behavioral stimulus points fail.",
       "files": [
         "neg_001_force_zero/idt_voltage_integrator_source.va"
       ]
     },
     {
       "id": "neg_002_wrong_threshold",
-      "why_wrong": "Idt Voltage Integrator Source: keeps the main operator syntax but collapses the computed value through the wrong condition, so coarse smoke cases may run while boundary and waveform checks for Use idt() to form a voltage-domain integrator source fail.",
+      "why_wrong": "Idt Voltage Integrator Source: uses a shifted or inverted decision condition that can pass one mode but fails boundary cases.",
       "files": [
         "neg_002_wrong_threshold/idt_voltage_integrator_source.va"
       ]
     },
     {
       "id": "neg_003_reset_bias",
-      "why_wrong": "Idt Voltage Integrator Source: introduces incorrect initialization or state bias, so startup and reset-sensitive checks fail while the model still compiles and produces activity.",
+      "why_wrong": "Idt Voltage Integrator Source: mishandles reset or initialization, passing steady-state samples but failing startup or recovery checks.",
       "files": [
         "neg_003_reset_bias/idt_voltage_integrator_source.va"
       ]
     },
     {
       "id": "neg_004_metric_offset",
-      "why_wrong": "Idt Voltage Integrator Source: offsets the secondary metric or observable path, so the primary waveform may look plausible while calibrated checker evidence for Accumulate the time integral of V(in) into the output response fails.",
+      "why_wrong": "Idt Voltage Integrator Source: keeps the main datapath plausible while reporting the wrong metric value.",
       "files": [
         "neg_004_metric_offset/idt_voltage_integrator_source.va"
       ]
     },
     {
       "id": "neg_005_scale_output",
-      "why_wrong": "Idt Voltage Integrator Source: scales the final observable response, so compile and rough activity checks can pass while calibrated output checks for Use idt() to form a voltage-domain integrator source fail.",
+      "why_wrong": "Idt Voltage Integrator Source: uses a wrong gain or scale factor, leaving shape plausible while calibrated checks fail.",
       "files": [
         "neg_005_scale_output/idt_voltage_integrator_source.va"
       ]

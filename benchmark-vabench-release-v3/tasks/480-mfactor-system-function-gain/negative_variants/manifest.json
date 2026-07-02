@@ -2,7 +2,7 @@
   "negative_variants": [
     {
       "id": "neg_001_force_zero",
-      "description": "Mfactor System Function Gain: keeps the file compilable but forces the observable output path low, so it can pass include/instance smoke checks while failing the required behavior to For an instance with m=2.0, drive out to two times the input voltage.",
+      "description": "Mfactor System Function Gain: forces the main output to zero, so coarse compilation passes but behavioral stimulus points fail.",
       "files": [
         "neg_001_force_zero/mfactor_system_function_gain.va"
       ],
@@ -10,7 +10,7 @@
     },
     {
       "id": "neg_002_wrong_threshold",
-      "description": "Mfactor System Function Gain: keeps the main operator syntax but collapses the computed value through the wrong condition, so coarse smoke cases may run while boundary and waveform checks for Use $mfactor() to scale behavioral gain fail.",
+      "description": "Mfactor System Function Gain: uses a shifted or inverted decision condition that can pass one mode but fails boundary cases.",
       "files": [
         "neg_002_wrong_threshold/mfactor_system_function_gain.va"
       ],
@@ -18,7 +18,7 @@
     },
     {
       "id": "neg_003_reset_bias",
-      "description": "Mfactor System Function Gain: introduces incorrect initialization or state bias, so startup and reset-sensitive checks fail while the model still compiles and produces activity.",
+      "description": "Mfactor System Function Gain: mishandles reset or initialization, passing steady-state samples but failing startup or recovery checks.",
       "files": [
         "neg_003_reset_bias/mfactor_system_function_gain.va"
       ],
@@ -26,7 +26,7 @@
     },
     {
       "id": "neg_004_metric_offset",
-      "description": "Mfactor System Function Gain: offsets the secondary metric or observable path, so the primary waveform may look plausible while calibrated checker evidence for For an instance with m=2.0, drive out to two times the input voltage fails.",
+      "description": "Mfactor System Function Gain: keeps the main datapath plausible while reporting the wrong metric value.",
       "files": [
         "neg_004_metric_offset/mfactor_system_function_gain.va"
       ],
@@ -34,7 +34,7 @@
     },
     {
       "id": "neg_005_scale_output",
-      "description": "Mfactor System Function Gain: scales the final observable response, so compile and rough activity checks can pass while calibrated output checks for Use $mfactor() to scale behavioral gain fail.",
+      "description": "Mfactor System Function Gain: uses a wrong gain or scale factor, leaving shape plausible while calibrated checks fail.",
       "files": [
         "neg_005_scale_output/mfactor_system_function_gain.va"
       ],

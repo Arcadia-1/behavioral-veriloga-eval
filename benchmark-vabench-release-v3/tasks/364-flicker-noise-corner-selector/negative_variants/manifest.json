@@ -8,7 +8,7 @@
         "neg_001_zero_noise/flicker_noise_corner_selector.va"
       ],
       "expected": "compile_but_fail_full_behavior_under_noise_or_ac_simulator",
-      "description": "Compiles and runs, but suppresses the intended noise contribution."
+      "description": "Flicker Noise Corner Selector: uses a shifted or inverted decision condition that can pass one mode but fails boundary cases."
     },
     {
       "id": "neg_002_wrong_label",
@@ -16,7 +16,7 @@
         "neg_002_wrong_label/flicker_noise_corner_selector.va"
       ],
       "expected": "compile_but_fail_full_behavior_under_noise_or_ac_simulator",
-      "description": "Compiles and runs, but emits the wrong label or mode tag."
+      "description": "Flicker Noise Corner Selector: uses a shifted or inverted decision condition that can pass one mode but fails boundary cases."
     },
     {
       "id": "neg_003_disable_analysis",
@@ -24,7 +24,7 @@
         "neg_003_disable_analysis/flicker_noise_corner_selector.va"
       ],
       "expected": "compile_but_fail_full_behavior_under_noise_or_ac_simulator",
-      "description": "Compiles and runs, but disables the analysis-dependent behavior."
+      "description": "Flicker Noise Corner Selector: uses a shifted or inverted decision condition that can pass one mode but fails boundary cases."
     },
     {
       "id": "neg_004_wrong_metric",
@@ -32,7 +32,7 @@
         "neg_004_wrong_metric/flicker_noise_corner_selector.va"
       ],
       "expected": "compile_but_fail_full_behavior_under_noise_or_ac_simulator",
-      "description": "Compiles and runs, but reports the wrong checker metric."
+      "description": "Flicker Noise Corner Selector: uses a shifted or inverted decision condition that can pass one mode but fails boundary cases."
     },
     {
       "id": "neg_005_scale_output",
@@ -40,7 +40,7 @@
         "neg_005_scale_output/flicker_noise_corner_selector.va"
       ],
       "expected": "compile_but_fail_full_behavior_under_noise_or_ac_simulator",
-      "description": "Compiles and runs, but scales the final output incorrectly."
+      "description": "Flicker Noise Corner Selector: uses a shifted or inverted decision condition that can pass one mode but fails boundary cases."
     }
   ]
 }

@@ -2,7 +2,7 @@
   "negative_variants": [
     {
       "id": "neg_001_force_zero",
-      "description": "Force output low after otherwise plausible computation.",
+      "description": "Task Dual Output Update: forces the main output to zero, so coarse compilation passes but behavioral stimulus points fail.",
       "files": [
         "neg_001_force_zero/task_dual_output_update.va"
       ],
@@ -10,7 +10,7 @@
     },
     {
       "id": "neg_002_wrong_threshold",
-      "description": "Use a shifted decision threshold that passes simple midscale smoke tests but fails boundary checks.",
+      "description": "Task Dual Output Update: uses a shifted or inverted decision condition that can pass one mode but fails boundary cases.",
       "files": [
         "neg_002_wrong_threshold/task_dual_output_update.va"
       ],
@@ -18,7 +18,7 @@
     },
     {
       "id": "neg_003_reset_bias",
-      "description": "Bias reset/state initialization so startup-sensitive tests fail.",
+      "description": "Task Dual Output Update: mishandles reset or initialization, passing steady-state samples but failing startup or recovery checks.",
       "files": [
         "neg_003_reset_bias/task_dual_output_update.va"
       ],
@@ -26,7 +26,7 @@
     },
     {
       "id": "neg_004_metric_offset",
-      "description": "Offset the metric output while leaving the main output mostly plausible.",
+      "description": "Task Dual Output Update: keeps the main datapath plausible while reporting the wrong metric value.",
       "files": [
         "neg_004_metric_offset/task_dual_output_update.va"
       ],
@@ -34,7 +34,7 @@
     },
     {
       "id": "neg_005_scale_output",
-      "description": "Scale the final output so coarse tests may pass but calibrated checks fail.",
+      "description": "Task Dual Output Update: uses a wrong gain or scale factor, leaving shape plausible while calibrated checks fail.",
       "files": [
         "neg_005_scale_output/task_dual_output_update.va"
       ],

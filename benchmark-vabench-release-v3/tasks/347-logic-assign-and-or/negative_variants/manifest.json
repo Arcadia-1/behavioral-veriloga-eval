@@ -8,7 +8,7 @@
         "neg_001_force_zero/logic_assign_and_or.vams"
       ],
       "expected": "compile_but_fail_full_behavior_under_ams_simulator",
-      "description": "Compiles and runs, but incorrectly forces the observed output to zero."
+      "description": "Logic Assign And Or: forces the main output to zero, so coarse compilation passes but behavioral stimulus points fail."
     },
     {
       "id": "neg_002_invert_select",
@@ -16,7 +16,7 @@
         "neg_002_invert_select/logic_assign_and_or.vams"
       ],
       "expected": "compile_but_fail_full_behavior_under_ams_simulator",
-      "description": "Compiles and runs, but inverts the mode or select decision."
+      "description": "Logic Assign And Or: uses a shifted or inverted decision condition that can pass one mode but fails boundary cases."
     },
     {
       "id": "neg_003_drop_reset",
@@ -24,7 +24,7 @@
         "neg_003_drop_reset/logic_assign_and_or.vams"
       ],
       "expected": "compile_but_fail_full_behavior_under_ams_simulator",
-      "description": "Compiles and runs, but ignores or drops the reset behavior."
+      "description": "Logic Assign And Or: mishandles reset or initialization, passing steady-state samples but failing startup or recovery checks."
     },
     {
       "id": "neg_004_wrong_edge",
@@ -32,7 +32,7 @@
         "neg_004_wrong_edge/logic_assign_and_or.vams"
       ],
       "expected": "compile_but_fail_full_behavior_under_ams_simulator",
-      "description": "Compiles and runs, but responds to the wrong clock or event edge."
+      "description": "Logic Assign And Or: updates on the wrong edge or event, so simple static samples pass but timed checks fail."
     },
     {
       "id": "neg_005_scale_low",
@@ -40,7 +40,7 @@
         "neg_005_scale_low/logic_assign_and_or.vams"
       ],
       "expected": "compile_but_fail_full_behavior_under_ams_simulator",
-      "description": "Compiles and runs, but scales the computed value too low."
+      "description": "Logic Assign And Or: uses a wrong gain or scale factor, leaving shape plausible while calibrated checks fail."
     }
   ]
 }

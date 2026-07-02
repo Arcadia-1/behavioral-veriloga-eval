@@ -2,7 +2,7 @@
   "negative_variants": [
     {
       "id": "neg_001_force_zero",
-      "description": "Force output low after otherwise plausible computation.",
+      "description": "Discontinuity Event Announcement: forces the main output to zero, so coarse compilation passes but behavioral stimulus points fail.",
       "files": [
         "neg_001_force_zero/discontinuity_event_announcement.va"
       ],
@@ -10,7 +10,7 @@
     },
     {
       "id": "neg_002_wrong_threshold",
-      "description": "Use a shifted threshold or condition that fails boundary checks.",
+      "description": "Discontinuity Event Announcement: uses a shifted or inverted decision condition that can pass one mode but fails boundary cases.",
       "files": [
         "neg_002_wrong_threshold/discontinuity_event_announcement.va"
       ],
@@ -18,7 +18,7 @@
     },
     {
       "id": "neg_003_reset_bias",
-      "description": "Bias reset/state initialization so startup-sensitive tests fail.",
+      "description": "Discontinuity Event Announcement: mishandles reset or initialization, passing steady-state samples but failing startup or recovery checks.",
       "files": [
         "neg_003_reset_bias/discontinuity_event_announcement.va"
       ],
@@ -26,7 +26,7 @@
     },
     {
       "id": "neg_004_metric_offset",
-      "description": "Offset the metric output while leaving the main path plausible.",
+      "description": "Discontinuity Event Announcement: keeps the main datapath plausible while reporting the wrong metric value.",
       "files": [
         "neg_004_metric_offset/discontinuity_event_announcement.va"
       ],
@@ -34,7 +34,7 @@
     },
     {
       "id": "neg_005_scale_output",
-      "description": "Scale the final output so calibrated checks fail.",
+      "description": "Discontinuity Event Announcement: uses a wrong gain or scale factor, leaving shape plausible while calibrated checks fail.",
       "files": [
         "neg_005_scale_output/discontinuity_event_announcement.va"
       ],

@@ -2,7 +2,7 @@
   "negative_variants": [
     {
       "id": "neg_001_force_zero",
-      "description": "Packed Logic Bus Slice: keeps the file compilable but forces the observable output path low, so it can pass include/instance smoke checks while failing the required behavior to y[3:2] must follow a[7:6].",
+      "description": "Packed Logic Bus Slice: forces the main output to zero, so coarse compilation passes but behavioral stimulus points fail.",
       "files": [
         "neg_001_force_zero/packed_logic_bus_slice.vams"
       ],
@@ -10,7 +10,7 @@
     },
     {
       "id": "neg_002_wrong_threshold",
-      "description": "Packed Logic Bus Slice: keeps the main operator syntax but collapses the computed value through the wrong condition, so coarse smoke cases may run while boundary and waveform checks for Use a packed-style logic bus with slices and concatenation fail.",
+      "description": "Packed Logic Bus Slice: uses a shifted or inverted decision condition that can pass one mode but fails boundary cases.",
       "files": [
         "neg_002_wrong_threshold/packed_logic_bus_slice.vams"
       ],
@@ -18,7 +18,7 @@
     },
     {
       "id": "neg_003_reset_bias",
-      "description": "Packed Logic Bus Slice: introduces incorrect initialization or state bias, so startup and reset-sensitive checks fail while the model still compiles and produces activity.",
+      "description": "Packed Logic Bus Slice: mishandles reset or initialization, passing steady-state samples but failing startup or recovery checks.",
       "files": [
         "neg_003_reset_bias/packed_logic_bus_slice.vams"
       ],
@@ -26,7 +26,7 @@
     },
     {
       "id": "neg_004_metric_offset",
-      "description": "Packed Logic Bus Slice: offsets the secondary metric or observable path, so the primary waveform may look plausible while calibrated checker evidence for y[3:2] must follow a[7:6] fails.",
+      "description": "Packed Logic Bus Slice: keeps the main datapath plausible while reporting the wrong metric value.",
       "files": [
         "neg_004_metric_offset/packed_logic_bus_slice.vams"
       ],
@@ -34,7 +34,7 @@
     },
     {
       "id": "neg_005_scale_output",
-      "description": "Packed Logic Bus Slice: scales the final observable response, so compile and rough activity checks can pass while calibrated output checks for Use a packed-style logic bus with slices and concatenation fail.",
+      "description": "Packed Logic Bus Slice: uses a wrong gain or scale factor, leaving shape plausible while calibrated checks fail.",
       "files": [
         "neg_005_scale_output/packed_logic_bus_slice.vams"
       ],

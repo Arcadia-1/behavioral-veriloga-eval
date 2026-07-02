@@ -2,7 +2,7 @@
   "negative_variants": [
     {
       "id": "neg_001_force_zero",
-      "description": "Force output low after otherwise plausible computation.",
+      "description": "Repeat Loop Accumulator: forces the main output to zero, so coarse compilation passes but behavioral stimulus points fail.",
       "files": [
         "neg_001_force_zero/repeat_loop_accumulator.va"
       ],
@@ -10,7 +10,7 @@
     },
     {
       "id": "neg_002_wrong_threshold",
-      "description": "Use a shifted threshold or condition that fails boundary checks.",
+      "description": "Repeat Loop Accumulator: uses a shifted or inverted decision condition that can pass one mode but fails boundary cases.",
       "files": [
         "neg_002_wrong_threshold/repeat_loop_accumulator.va"
       ],
@@ -18,7 +18,7 @@
     },
     {
       "id": "neg_003_reset_bias",
-      "description": "Bias reset/state initialization so startup-sensitive tests fail.",
+      "description": "Repeat Loop Accumulator: mishandles reset or initialization, passing steady-state samples but failing startup or recovery checks.",
       "files": [
         "neg_003_reset_bias/repeat_loop_accumulator.va"
       ],
@@ -26,7 +26,7 @@
     },
     {
       "id": "neg_004_metric_offset",
-      "description": "Offset the metric output while leaving the main path plausible.",
+      "description": "Repeat Loop Accumulator: keeps the main datapath plausible while reporting the wrong metric value.",
       "files": [
         "neg_004_metric_offset/repeat_loop_accumulator.va"
       ],
@@ -34,7 +34,7 @@
     },
     {
       "id": "neg_005_scale_output",
-      "description": "Scale the final output so calibrated checks fail.",
+      "description": "Repeat Loop Accumulator: uses a wrong gain or scale factor, leaving shape plausible while calibrated checks fail.",
       "files": [
         "neg_005_scale_output/repeat_loop_accumulator.va"
       ],

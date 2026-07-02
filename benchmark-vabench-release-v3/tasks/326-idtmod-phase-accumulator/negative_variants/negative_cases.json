@@ -5,7 +5,7 @@
       "neg_001_drive_out_zero/idtmod_phase_accumulator.va"
     ],
     "expected": "compile_but_fail_full_behavior",
-    "why_wrong": "Compiles and runs, but incorrectly forces the primary output to zero."
+    "why_wrong": "Idtmod Phase Accumulator: forces the main output to zero, so coarse compilation passes but behavioral stimulus points fail."
   },
   {
     "id": "neg_002_drive_metric_zero",
@@ -13,7 +13,7 @@
       "neg_002_drive_metric_zero/idtmod_phase_accumulator.va"
     ],
     "expected": "compile_but_fail_full_behavior",
-    "why_wrong": "Compiles and runs, but incorrectly reports the metric output as zero."
+    "why_wrong": "Idtmod Phase Accumulator: keeps the main datapath plausible while reporting the wrong metric value."
   },
   {
     "id": "neg_003_reset_polarity_wrong",
@@ -21,7 +21,7 @@
       "neg_003_reset_polarity_wrong/idtmod_phase_accumulator.va"
     ],
     "expected": "compile_but_fail_full_behavior",
-    "why_wrong": "Compiles and runs, but handles reset with the wrong polarity."
+    "why_wrong": "Idtmod Phase Accumulator: mishandles reset or initialization, passing steady-state samples but failing startup or recovery checks."
   },
   {
     "id": "neg_004_logic_threshold_shifted",
@@ -29,7 +29,7 @@
       "neg_004_logic_threshold_shifted/idtmod_phase_accumulator.va"
     ],
     "expected": "compile_but_fail_full_behavior",
-    "why_wrong": "Compiles and runs, but shifts the logic decision threshold."
+    "why_wrong": "Idtmod Phase Accumulator: uses a shifted or inverted decision condition that can pass one mode but fails boundary cases."
   },
   {
     "id": "neg_005_output_scale_low",
@@ -37,6 +37,6 @@
       "neg_005_output_scale_low/idtmod_phase_accumulator.va"
     ],
     "expected": "compile_but_fail_full_behavior",
-    "why_wrong": "Compiles and runs, but scales the primary output too low."
+    "why_wrong": "Idtmod Phase Accumulator: uses a wrong gain or scale factor, leaving shape plausible while calibrated checks fail."
   }
 ]

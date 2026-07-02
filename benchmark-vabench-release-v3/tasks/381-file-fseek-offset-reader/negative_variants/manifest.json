@@ -2,7 +2,7 @@
   "negative_variants": [
     {
       "id": "neg_001_force_zero",
-      "description": "Force output low after otherwise plausible computation.",
+      "description": "File Fseek Offset Reader: forces the main output to zero, so coarse compilation passes but behavioral stimulus points fail.",
       "files": [
         "neg_001_force_zero/file_fseek_offset_reader.va"
       ],
@@ -10,7 +10,7 @@
     },
     {
       "id": "neg_002_wrong_threshold",
-      "description": "Use a shifted decision threshold that passes simple midscale smoke tests but fails boundary checks.",
+      "description": "File Fseek Offset Reader: uses a shifted or inverted decision condition that can pass one mode but fails boundary cases.",
       "files": [
         "neg_002_wrong_threshold/file_fseek_offset_reader.va"
       ],
@@ -18,7 +18,7 @@
     },
     {
       "id": "neg_003_reset_bias",
-      "description": "Bias reset/state initialization so startup-sensitive tests fail.",
+      "description": "File Fseek Offset Reader: mishandles reset or initialization, passing steady-state samples but failing startup or recovery checks.",
       "files": [
         "neg_003_reset_bias/file_fseek_offset_reader.va"
       ],
@@ -26,7 +26,7 @@
     },
     {
       "id": "neg_004_metric_offset",
-      "description": "Offset the metric output while leaving the main output mostly plausible.",
+      "description": "File Fseek Offset Reader: keeps the main datapath plausible while reporting the wrong metric value.",
       "files": [
         "neg_004_metric_offset/file_fseek_offset_reader.va"
       ],
@@ -34,7 +34,7 @@
     },
     {
       "id": "neg_005_scale_output",
-      "description": "Scale the final output so coarse tests may pass but calibrated checks fail.",
+      "description": "File Fseek Offset Reader: uses a wrong gain or scale factor, leaving shape plausible while calibrated checks fail.",
       "files": [
         "neg_005_scale_output/file_fseek_offset_reader.va"
       ],

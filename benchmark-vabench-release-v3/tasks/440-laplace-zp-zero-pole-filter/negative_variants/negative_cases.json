@@ -2,35 +2,35 @@
   "negative_cases": [
     {
       "id": "neg_001_force_zero",
-      "why_wrong": "Laplace Zp Zero Pole Filter: keeps the file compilable but forces the observable output path low, so it can pass include/instance smoke checks while failing the required behavior to Apply the declared zero/pole transfer to V(in).",
+      "why_wrong": "Laplace Zp Zero Pole Filter: forces the main output to zero, so coarse compilation passes but behavioral stimulus points fail.",
       "files": [
         "neg_001_force_zero/laplace_zp_zero_pole_filter.va"
       ]
     },
     {
       "id": "neg_002_wrong_threshold",
-      "why_wrong": "Laplace Zp Zero Pole Filter: keeps the main operator syntax but collapses the computed value through the wrong condition, so coarse smoke cases may run while boundary and waveform checks for Use laplace_zp() for zero/pole transfer modeling fail.",
+      "why_wrong": "Laplace Zp Zero Pole Filter: uses a shifted or inverted decision condition that can pass one mode but fails boundary cases.",
       "files": [
         "neg_002_wrong_threshold/laplace_zp_zero_pole_filter.va"
       ]
     },
     {
       "id": "neg_003_reset_bias",
-      "why_wrong": "Laplace Zp Zero Pole Filter: introduces incorrect initialization or state bias, so startup and reset-sensitive checks fail while the model still compiles and produces activity.",
+      "why_wrong": "Laplace Zp Zero Pole Filter: mishandles reset or initialization, passing steady-state samples but failing startup or recovery checks.",
       "files": [
         "neg_003_reset_bias/laplace_zp_zero_pole_filter.va"
       ]
     },
     {
       "id": "neg_004_metric_offset",
-      "why_wrong": "Laplace Zp Zero Pole Filter: offsets the secondary metric or observable path, so the primary waveform may look plausible while calibrated checker evidence for Apply the declared zero/pole transfer to V(in) fails.",
+      "why_wrong": "Laplace Zp Zero Pole Filter: keeps the main datapath plausible while reporting the wrong metric value.",
       "files": [
         "neg_004_metric_offset/laplace_zp_zero_pole_filter.va"
       ]
     },
     {
       "id": "neg_005_scale_output",
-      "why_wrong": "Laplace Zp Zero Pole Filter: scales the final observable response, so compile and rough activity checks can pass while calibrated output checks for Use laplace_zp() for zero/pole transfer modeling fail.",
+      "why_wrong": "Laplace Zp Zero Pole Filter: uses a shifted or inverted decision condition that can pass one mode but fails boundary cases.",
       "files": [
         "neg_005_scale_output/laplace_zp_zero_pole_filter.va"
       ]

@@ -96,16 +96,8 @@ def test_all_v3_extension_prompts_state_required_behavior() -> None:
         assert "Required Behavior" in instruction, f"{task_key} lacks Required Behavior section"
 
 
-def test_all_staged_tasks_have_manifest_behavior_contracts() -> None:
-    matrix = json.loads(STAGED_BLOCKER_MATRIX.read_text(encoding="utf-8"))
-    staged_tasks = [
-        row["task_key"]
-        for row in matrix["tasks"]
-    ]
-
-    assert len(staged_tasks) == matrix["summary"]["staged_task_count"] == 36
-    for task_key in staged_tasks:
-        task = extension_tasks()[task_key]
+def test_all_v3_extension_tasks_have_manifest_behavior_contracts() -> None:
+    for task_key, task in extension_tasks().items():
         assert str(task.get("description") or "").strip(), f"{task_key} missing manifest description"
         required_behavior = task.get("required_behavior")
         visible_tests = task.get("visible_tests")
@@ -116,6 +108,11 @@ def test_all_staged_tasks_have_manifest_behavior_contracts() -> None:
             f"{task_key} must list manifest required behavior"
         )
         assert all(str(item).strip() for item in required_behavior)
+        assert not any(str(item).lower().strip().endswith(("interface.", "parameters.")) for item in required_behavior)
+        assert not any(str(item).lower().strip() == "required behavior." for item in required_behavior)
+        assert not any(str(item).lstrip().startswith(("-", "*")) for item in required_behavior)
+        assert not any("return exactly one source artifact" in str(item).lower() for item in required_behavior)
+        assert not any(str(item).strip().endswith((";.", ":.")) for item in required_behavior)
         assert isinstance(visible_tests, list) and visible_tests, f"{task_key} missing visible test summary"
         assert isinstance(hidden_tests, list) and hidden_tests, f"{task_key} missing hidden test summary"
 
@@ -125,9 +122,13 @@ def test_all_staged_tasks_have_manifest_behavior_contracts() -> None:
         )
 
 
-def test_staged_negative_variant_descriptions_are_task_specific() -> None:
-    matrix = json.loads(STAGED_BLOCKER_MATRIX.read_text(encoding="utf-8"))
+def test_all_v3_extension_negative_variant_descriptions_are_task_specific() -> None:
     banned_templates = (
+        "Compiles and runs, but incorrectly forces the primary output to zero.",
+        "Compiles and runs, but incorrectly reports the metric output as zero.",
+        "Compiles and runs, but handles reset with the wrong polarity.",
+        "Compiles and runs, but uses a shifted logic or comparison threshold.",
+        "Compiles and runs, but scales the final output incorrectly.",
         "Force output low after otherwise plausible computation.",
         "Use a shifted threshold or condition that fails boundary checks.",
         "Use a shifted decision threshold that passes simple midscale smoke tests but fails boundary checks.",
@@ -138,8 +139,7 @@ def test_staged_negative_variant_descriptions_are_task_specific() -> None:
         "Scale the final output so coarse tests may pass but calibrated checks fail.",
     )
 
-    for row in matrix["tasks"]:
-        task_key = row["task_key"]
+    for task_key in extension_tasks():
         title = extension_tasks()[task_key]["title"]
         variants = negative_variants(task_key)
         cases = negative_cases_index(task_key)

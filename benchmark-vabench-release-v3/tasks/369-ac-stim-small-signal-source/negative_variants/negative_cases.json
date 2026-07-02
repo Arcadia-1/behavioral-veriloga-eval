@@ -5,7 +5,7 @@
       "neg_001_zero_noise/ac_stim_small_signal_source.va"
     ],
     "expected": "compile_but_fail_full_behavior_under_noise_or_ac_simulator",
-    "why_wrong": "Compiles and runs, but suppresses the intended noise contribution."
+    "why_wrong": "Ac Stim Small Signal Source: implements a plausible but incomplete behavior that passes shallow checks and fails the full visible/hidden contract."
   },
   {
     "id": "neg_002_wrong_label",
@@ -13,7 +13,7 @@
       "neg_002_wrong_label/ac_stim_small_signal_source.va"
     ],
     "expected": "compile_but_fail_full_behavior_under_noise_or_ac_simulator",
-    "why_wrong": "Compiles and runs, but emits the wrong label or mode tag."
+    "why_wrong": "Ac Stim Small Signal Source: uses a shifted or inverted decision condition that can pass one mode but fails boundary cases."
   },
   {
     "id": "neg_003_disable_analysis",
@@ -21,7 +21,7 @@
       "neg_003_disable_analysis/ac_stim_small_signal_source.va"
     ],
     "expected": "compile_but_fail_full_behavior_under_noise_or_ac_simulator",
-    "why_wrong": "Compiles and runs, but disables the analysis-dependent behavior."
+    "why_wrong": "Ac Stim Small Signal Source: implements a plausible but incomplete behavior that passes shallow checks and fails the full visible/hidden contract."
   },
   {
     "id": "neg_004_wrong_metric",
@@ -29,7 +29,7 @@
       "neg_004_wrong_metric/ac_stim_small_signal_source.va"
     ],
     "expected": "compile_but_fail_full_behavior_under_noise_or_ac_simulator",
-    "why_wrong": "Compiles and runs, but reports the wrong checker metric."
+    "why_wrong": "Ac Stim Small Signal Source: implements a plausible but incomplete behavior that passes shallow checks and fails the full visible/hidden contract."
   },
   {
     "id": "neg_005_scale_output",
@@ -37,6 +37,6 @@
       "neg_005_scale_output/ac_stim_small_signal_source.va"
     ],
     "expected": "compile_but_fail_full_behavior_under_noise_or_ac_simulator",
-    "why_wrong": "Compiles and runs, but scales the final output incorrectly."
+    "why_wrong": "Ac Stim Small Signal Source: uses a wrong gain or scale factor, leaving shape plausible while calibrated checks fail."
   }
 ]

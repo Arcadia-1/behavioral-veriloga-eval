@@ -2,35 +2,35 @@
   "negative_cases": [
     {
       "id": "neg_001_force_zero",
-      "why_wrong": "Branch Current Probe Contribution: keeps the file compilable but forces the observable output path low, so it can pass include/instance smoke checks while failing the required behavior to Contribute current through the named branch.",
+      "why_wrong": "Branch Current Probe Contribution: forces the main output to zero, so coarse compilation passes but behavioral stimulus points fail.",
       "files": [
         "neg_001_force_zero/branch_current_probe_contribution.va"
       ]
     },
     {
       "id": "neg_002_wrong_threshold",
-      "why_wrong": "Branch Current Probe Contribution: keeps the main operator syntax but collapses the computed value through the wrong condition, so coarse smoke cases may run while boundary and waveform checks for Use a named branch with current contribution and current probing fail.",
+      "why_wrong": "Branch Current Probe Contribution: uses a shifted or inverted decision condition that can pass one mode but fails boundary cases.",
       "files": [
         "neg_002_wrong_threshold/branch_current_probe_contribution.va"
       ]
     },
     {
       "id": "neg_003_reset_bias",
-      "why_wrong": "Branch Current Probe Contribution: introduces incorrect initialization or state bias, so startup and reset-sensitive checks fail while the model still compiles and produces activity.",
+      "why_wrong": "Branch Current Probe Contribution: mishandles reset or initialization, passing steady-state samples but failing startup or recovery checks.",
       "files": [
         "neg_003_reset_bias/branch_current_probe_contribution.va"
       ]
     },
     {
       "id": "neg_004_metric_offset",
-      "why_wrong": "Branch Current Probe Contribution: offsets the secondary metric or observable path, so the primary waveform may look plausible while calibrated checker evidence for Contribute current through the named branch fails.",
+      "why_wrong": "Branch Current Probe Contribution: keeps the main datapath plausible while reporting the wrong metric value.",
       "files": [
         "neg_004_metric_offset/branch_current_probe_contribution.va"
       ]
     },
     {
       "id": "neg_005_scale_output",
-      "why_wrong": "Branch Current Probe Contribution: scales the final observable response, so compile and rough activity checks can pass while calibrated output checks for Use a named branch with current contribution and current probing fail.",
+      "why_wrong": "Branch Current Probe Contribution: uses a wrong gain or scale factor, leaving shape plausible while calibrated checks fail.",
       "files": [
         "neg_005_scale_output/branch_current_probe_contribution.va"
       ]

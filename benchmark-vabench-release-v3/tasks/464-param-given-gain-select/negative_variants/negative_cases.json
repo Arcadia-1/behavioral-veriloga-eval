@@ -2,35 +2,35 @@
   "negative_cases": [
     {
       "id": "neg_001_force_zero",
-      "why_wrong": "Param Given Gain Select: keeps the file compilable but forces the observable output path low, so it can pass include/instance smoke checks while failing the required behavior to The default instance must use unity gain and report metric 0 because gain was not explicitly provided.",
+      "why_wrong": "Param Given Gain Select: forces the main output to zero, so coarse compilation passes but behavioral stimulus points fail.",
       "files": [
         "neg_001_force_zero/param_given_gain_select.va"
       ]
     },
     {
       "id": "neg_002_wrong_threshold",
-      "why_wrong": "Param Given Gain Select: keeps the main operator syntax but collapses the computed value through the wrong condition, so coarse smoke cases may run while boundary and waveform checks for Use $param_given() to choose behavior based on parameter override presence fail.",
+      "why_wrong": "Param Given Gain Select: uses a shifted or inverted decision condition that can pass one mode but fails boundary cases.",
       "files": [
         "neg_002_wrong_threshold/param_given_gain_select.va"
       ]
     },
     {
       "id": "neg_003_reset_bias",
-      "why_wrong": "Param Given Gain Select: introduces incorrect initialization or state bias, so startup and reset-sensitive checks fail while the model still compiles and produces activity.",
+      "why_wrong": "Param Given Gain Select: mishandles reset or initialization, passing steady-state samples but failing startup or recovery checks.",
       "files": [
         "neg_003_reset_bias/param_given_gain_select.va"
       ]
     },
     {
       "id": "neg_004_metric_offset",
-      "why_wrong": "Param Given Gain Select: offsets the secondary metric or observable path, so the primary waveform may look plausible while calibrated checker evidence for The default instance must use unity gain and report metric 0 because gain was not explicitly provided fails.",
+      "why_wrong": "Param Given Gain Select: keeps the main datapath plausible while reporting the wrong metric value.",
       "files": [
         "neg_004_metric_offset/param_given_gain_select.va"
       ]
     },
     {
       "id": "neg_005_scale_output",
-      "why_wrong": "Param Given Gain Select: scales the final observable response, so compile and rough activity checks can pass while calibrated output checks for Use $param_given() to choose behavior based on parameter override presence fail.",
+      "why_wrong": "Param Given Gain Select: uses a shifted or inverted decision condition that can pass one mode but fails boundary cases.",
       "files": [
         "neg_005_scale_output/param_given_gain_select.va"
       ]

@@ -8,7 +8,7 @@
         "neg_001_force_zero/mixed_electrical_threshold_logic_flag.vams"
       ],
       "expected": "compile_but_fail_full_behavior_under_ams_simulator",
-      "description": "Compiles and runs, but incorrectly forces the observed output to zero."
+      "description": "Mixed Electrical Threshold Logic Flag: forces the main output to zero, so coarse compilation passes but behavioral stimulus points fail."
     },
     {
       "id": "neg_002_invert_select",
@@ -16,7 +16,7 @@
         "neg_002_invert_select/mixed_electrical_threshold_logic_flag.vams"
       ],
       "expected": "compile_but_fail_full_behavior_under_ams_simulator",
-      "description": "Compiles and runs, but inverts the mode or select decision."
+      "description": "Mixed Electrical Threshold Logic Flag: uses a shifted or inverted decision condition that can pass one mode but fails boundary cases."
     },
     {
       "id": "neg_003_drop_reset",
@@ -24,7 +24,7 @@
         "neg_003_drop_reset/mixed_electrical_threshold_logic_flag.vams"
       ],
       "expected": "compile_but_fail_full_behavior_under_ams_simulator",
-      "description": "Compiles and runs, but ignores or drops the reset behavior."
+      "description": "Mixed Electrical Threshold Logic Flag: mishandles reset or initialization, passing steady-state samples but failing startup or recovery checks."
     },
     {
       "id": "neg_004_wrong_edge",
@@ -32,7 +32,7 @@
         "neg_004_wrong_edge/mixed_electrical_threshold_logic_flag.vams"
       ],
       "expected": "compile_but_fail_full_behavior_under_ams_simulator",
-      "description": "Compiles and runs, but responds to the wrong clock or event edge."
+      "description": "Mixed Electrical Threshold Logic Flag: uses a shifted or inverted decision condition that can pass one mode but fails boundary cases."
     },
     {
       "id": "neg_005_scale_low",
@@ -40,7 +40,7 @@
         "neg_005_scale_low/mixed_electrical_threshold_logic_flag.vams"
       ],
       "expected": "compile_but_fail_full_behavior_under_ams_simulator",
-      "description": "Compiles and runs, but scales the computed value too low."
+      "description": "Mixed Electrical Threshold Logic Flag: uses a shifted or inverted decision condition that can pass one mode but fails boundary cases."
     }
   ]
 }

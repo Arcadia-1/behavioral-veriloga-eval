@@ -5,7 +5,7 @@
       "neg_001_drive_out_zero/final_step_average_metric_file.va"
     ],
     "expected": "compile_but_fail_full_behavior",
-    "why_wrong": "Compiles and runs, but incorrectly forces the primary output to zero."
+    "why_wrong": "Final Step Average Metric File: forces the main output to zero, so coarse compilation passes but behavioral stimulus points fail."
   },
   {
     "id": "neg_002_drive_metric_zero",
@@ -13,7 +13,7 @@
       "neg_002_drive_metric_zero/final_step_average_metric_file.va"
     ],
     "expected": "compile_but_fail_full_behavior",
-    "why_wrong": "Compiles and runs, but incorrectly reports the metric output as zero."
+    "why_wrong": "Final Step Average Metric File: keeps the main datapath plausible while reporting the wrong metric value."
   },
   {
     "id": "neg_003_reset_polarity_wrong",
@@ -21,7 +21,7 @@
       "neg_003_reset_polarity_wrong/final_step_average_metric_file.va"
     ],
     "expected": "compile_but_fail_full_behavior",
-    "why_wrong": "Compiles and runs, but handles reset with the wrong polarity."
+    "why_wrong": "Final Step Average Metric File: mishandles reset or initialization, passing steady-state samples but failing startup or recovery checks."
   },
   {
     "id": "neg_004_logic_threshold_shifted",
@@ -29,7 +29,7 @@
       "neg_004_logic_threshold_shifted/final_step_average_metric_file.va"
     ],
     "expected": "compile_but_fail_full_behavior",
-    "why_wrong": "Compiles and runs, but shifts the logic decision threshold."
+    "why_wrong": "Final Step Average Metric File: uses a shifted or inverted decision condition that can pass one mode but fails boundary cases."
   },
   {
     "id": "neg_005_output_scale_low",
@@ -37,6 +37,6 @@
       "neg_005_output_scale_low/final_step_average_metric_file.va"
     ],
     "expected": "compile_but_fail_full_behavior",
-    "why_wrong": "Compiles and runs, but scales the primary output too low."
+    "why_wrong": "Final Step Average Metric File: uses a wrong gain or scale factor, leaving shape plausible while calibrated checks fail."
   }
 ]

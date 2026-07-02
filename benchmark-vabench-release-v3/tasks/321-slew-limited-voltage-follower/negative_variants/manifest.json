@@ -8,7 +8,7 @@
         "neg_001_drive_out_zero/slew_limited_voltage_follower.va"
       ],
       "expected": "compile_but_fail_full_behavior",
-      "description": "Compiles and runs, but incorrectly forces the primary output to zero."
+      "description": "Slew Limited Voltage Follower: forces the main output to zero, so coarse compilation passes but behavioral stimulus points fail."
     },
     {
       "id": "neg_002_drive_metric_zero",
@@ -16,7 +16,7 @@
         "neg_002_drive_metric_zero/slew_limited_voltage_follower.va"
       ],
       "expected": "compile_but_fail_full_behavior",
-      "description": "Compiles and runs, but incorrectly reports the metric output as zero."
+      "description": "Slew Limited Voltage Follower: keeps the main datapath plausible while reporting the wrong metric value."
     },
     {
       "id": "neg_003_reset_polarity_wrong",
@@ -24,7 +24,7 @@
         "neg_003_reset_polarity_wrong/slew_limited_voltage_follower.va"
       ],
       "expected": "compile_but_fail_full_behavior",
-      "description": "Compiles and runs, but handles reset with the wrong polarity."
+      "description": "Slew Limited Voltage Follower: mishandles reset or initialization, passing steady-state samples but failing startup or recovery checks."
     },
     {
       "id": "neg_004_logic_threshold_shifted",
@@ -32,7 +32,7 @@
         "neg_004_logic_threshold_shifted/slew_limited_voltage_follower.va"
       ],
       "expected": "compile_but_fail_full_behavior",
-      "description": "Compiles and runs, but shifts the logic decision threshold."
+      "description": "Slew Limited Voltage Follower: uses a shifted or inverted decision condition that can pass one mode but fails boundary cases."
     },
     {
       "id": "neg_005_output_scale_low",
@@ -40,7 +40,7 @@
         "neg_005_output_scale_low/slew_limited_voltage_follower.va"
       ],
       "expected": "compile_but_fail_full_behavior",
-      "description": "Compiles and runs, but scales the primary output too low."
+      "description": "Slew Limited Voltage Follower: uses a wrong gain or scale factor, leaving shape plausible while calibrated checks fail."
     }
   ]
 }

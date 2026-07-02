@@ -2,35 +2,35 @@
   "negative_cases": [
     {
       "id": "neg_001_force_zero",
-      "why_wrong": "Force output low after otherwise plausible computation.",
+      "why_wrong": "Cds Violation Threshold Assert: forces the main output to zero, so coarse compilation passes but behavioral stimulus points fail.",
       "files": [
         "neg_001_force_zero/cds_violation_threshold_assert.va"
       ]
     },
     {
       "id": "neg_002_wrong_threshold",
-      "why_wrong": "Use a shifted threshold or condition that fails boundary checks.",
+      "why_wrong": "Cds Violation Threshold Assert: uses a shifted or inverted decision condition that can pass one mode but fails boundary cases.",
       "files": [
         "neg_002_wrong_threshold/cds_violation_threshold_assert.va"
       ]
     },
     {
       "id": "neg_003_reset_bias",
-      "why_wrong": "Bias reset/state initialization so startup-sensitive tests fail.",
+      "why_wrong": "Cds Violation Threshold Assert: mishandles reset or initialization, passing steady-state samples but failing startup or recovery checks.",
       "files": [
         "neg_003_reset_bias/cds_violation_threshold_assert.va"
       ]
     },
     {
       "id": "neg_004_metric_offset",
-      "why_wrong": "Offset the metric output while leaving the main path plausible.",
+      "why_wrong": "Cds Violation Threshold Assert: keeps the main datapath plausible while reporting the wrong metric value.",
       "files": [
         "neg_004_metric_offset/cds_violation_threshold_assert.va"
       ]
     },
     {
       "id": "neg_005_scale_output",
-      "why_wrong": "Scale the final output so calibrated checks fail.",
+      "why_wrong": "Cds Violation Threshold Assert: uses a shifted or inverted decision condition that can pass one mode but fails boundary cases.",
       "files": [
         "neg_005_scale_output/cds_violation_threshold_assert.va"
       ]

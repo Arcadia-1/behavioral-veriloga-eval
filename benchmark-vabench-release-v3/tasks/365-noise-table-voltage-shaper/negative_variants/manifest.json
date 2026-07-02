@@ -8,7 +8,7 @@
         "neg_001_zero_noise/noise_table_voltage_shaper.va"
       ],
       "expected": "compile_but_fail_full_behavior_under_noise_or_ac_simulator",
-      "description": "Compiles and runs, but suppresses the intended noise contribution."
+      "description": "Noise Table Voltage Shaper: misreads or misapplies the support data, so default smoke behavior can pass while profile-driven checks fail."
     },
     {
       "id": "neg_002_wrong_label",
@@ -16,7 +16,7 @@
         "neg_002_wrong_label/noise_table_voltage_shaper.va"
       ],
       "expected": "compile_but_fail_full_behavior_under_noise_or_ac_simulator",
-      "description": "Compiles and runs, but emits the wrong label or mode tag."
+      "description": "Noise Table Voltage Shaper: uses a shifted or inverted decision condition that can pass one mode but fails boundary cases."
     },
     {
       "id": "neg_003_disable_analysis",
@@ -24,7 +24,7 @@
         "neg_003_disable_analysis/noise_table_voltage_shaper.va"
       ],
       "expected": "compile_but_fail_full_behavior_under_noise_or_ac_simulator",
-      "description": "Compiles and runs, but disables the analysis-dependent behavior."
+      "description": "Noise Table Voltage Shaper: misreads or misapplies the support data, so default smoke behavior can pass while profile-driven checks fail."
     },
     {
       "id": "neg_004_wrong_metric",
@@ -32,7 +32,7 @@
         "neg_004_wrong_metric/noise_table_voltage_shaper.va"
       ],
       "expected": "compile_but_fail_full_behavior_under_noise_or_ac_simulator",
-      "description": "Compiles and runs, but reports the wrong checker metric."
+      "description": "Noise Table Voltage Shaper: misreads or misapplies the support data, so default smoke behavior can pass while profile-driven checks fail."
     },
     {
       "id": "neg_005_scale_output",
@@ -40,7 +40,7 @@
         "neg_005_scale_output/noise_table_voltage_shaper.va"
       ],
       "expected": "compile_but_fail_full_behavior_under_noise_or_ac_simulator",
-      "description": "Compiles and runs, but scales the final output incorrectly."
+      "description": "Noise Table Voltage Shaper: uses a wrong gain or scale factor, leaving shape plausible while calibrated checks fail."
     }
   ]
 }

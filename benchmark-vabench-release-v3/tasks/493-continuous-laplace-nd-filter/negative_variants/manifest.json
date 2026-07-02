@@ -2,7 +2,7 @@
   "negative_variants": [
     {
       "id": "neg_001_force_zero",
-      "description": "Continuous Laplace Nd Filter: keeps the file compilable but forces the observable output path low, so it can pass include/instance smoke checks while failing the required behavior to Apply the numerator/denominator transfer function to the input waveform.",
+      "description": "Continuous Laplace Nd Filter: forces the main output to zero, so coarse compilation passes but behavioral stimulus points fail.",
       "files": [
         "neg_001_force_zero/continuous_laplace_nd_filter.va"
       ],
@@ -10,7 +10,7 @@
     },
     {
       "id": "neg_002_wrong_threshold",
-      "description": "Continuous Laplace Nd Filter: keeps the main operator syntax but collapses the computed value through the wrong condition, so coarse smoke cases may run while boundary and waveform checks for Use laplace_nd() as a continuous-time behavioral transfer function fail.",
+      "description": "Continuous Laplace Nd Filter: uses a shifted or inverted decision condition that can pass one mode but fails boundary cases.",
       "files": [
         "neg_002_wrong_threshold/continuous_laplace_nd_filter.va"
       ],
@@ -18,7 +18,7 @@
     },
     {
       "id": "neg_003_reset_bias",
-      "description": "Continuous Laplace Nd Filter: introduces incorrect initialization or state bias, so startup and reset-sensitive checks fail while the model still compiles and produces activity.",
+      "description": "Continuous Laplace Nd Filter: mishandles reset or initialization, passing steady-state samples but failing startup or recovery checks.",
       "files": [
         "neg_003_reset_bias/continuous_laplace_nd_filter.va"
       ],
@@ -26,7 +26,7 @@
     },
     {
       "id": "neg_004_metric_offset",
-      "description": "Continuous Laplace Nd Filter: offsets the secondary metric or observable path, so the primary waveform may look plausible while calibrated checker evidence for Apply the numerator/denominator transfer function to the input waveform fails.",
+      "description": "Continuous Laplace Nd Filter: keeps the main datapath plausible while reporting the wrong metric value.",
       "files": [
         "neg_004_metric_offset/continuous_laplace_nd_filter.va"
       ],
@@ -34,7 +34,7 @@
     },
     {
       "id": "neg_005_scale_output",
-      "description": "Continuous Laplace Nd Filter: scales the final observable response, so compile and rough activity checks can pass while calibrated output checks for Use laplace_nd() as a continuous-time behavioral transfer function fail.",
+      "description": "Continuous Laplace Nd Filter: uses a wrong gain or scale factor, leaving shape plausible while calibrated checks fail.",
       "files": [
         "neg_005_scale_output/continuous_laplace_nd_filter.va"
       ],

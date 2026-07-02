@@ -2,35 +2,35 @@
   "negative_cases": [
     {
       "id": "neg_001_force_zero",
-      "why_wrong": "Kcl Capacitor Ddt Current: keeps the file compilable but forces the observable output path low, so it can pass include/instance smoke checks while failing the required behavior to Contribute current proportional to the time derivative of branch voltage.",
+      "why_wrong": "Kcl Capacitor Ddt Current: forces the main output to zero, so coarse compilation passes but behavioral stimulus points fail.",
       "files": [
         "neg_001_force_zero/kcl_capacitor_ddt_current.va"
       ]
     },
     {
       "id": "neg_002_wrong_threshold",
-      "why_wrong": "Kcl Capacitor Ddt Current: keeps the main operator syntax but collapses the computed value through the wrong condition, so coarse smoke cases may run while boundary and waveform checks for Use current contribution with ddt() for a capacitor-style conservative model fail.",
+      "why_wrong": "Kcl Capacitor Ddt Current: uses a shifted or inverted decision condition that can pass one mode but fails boundary cases.",
       "files": [
         "neg_002_wrong_threshold/kcl_capacitor_ddt_current.va"
       ]
     },
     {
       "id": "neg_003_reset_bias",
-      "why_wrong": "Kcl Capacitor Ddt Current: introduces incorrect initialization or state bias, so startup and reset-sensitive checks fail while the model still compiles and produces activity.",
+      "why_wrong": "Kcl Capacitor Ddt Current: mishandles reset or initialization, passing steady-state samples but failing startup or recovery checks.",
       "files": [
         "neg_003_reset_bias/kcl_capacitor_ddt_current.va"
       ]
     },
     {
       "id": "neg_004_metric_offset",
-      "why_wrong": "Kcl Capacitor Ddt Current: offsets the secondary metric or observable path, so the primary waveform may look plausible while calibrated checker evidence for Contribute current proportional to the time derivative of branch voltage fails.",
+      "why_wrong": "Kcl Capacitor Ddt Current: keeps the main datapath plausible while reporting the wrong metric value.",
       "files": [
         "neg_004_metric_offset/kcl_capacitor_ddt_current.va"
       ]
     },
     {
       "id": "neg_005_scale_output",
-      "why_wrong": "Kcl Capacitor Ddt Current: scales the final observable response, so compile and rough activity checks can pass while calibrated output checks for Use current contribution with ddt() for a capacitor-style conservative model fail.",
+      "why_wrong": "Kcl Capacitor Ddt Current: uses a shifted or inverted decision condition that can pass one mode but fails boundary cases.",
       "files": [
         "neg_005_scale_output/kcl_capacitor_ddt_current.va"
       ]

@@ -2,35 +2,35 @@
   "negative_cases": [
     {
       "id": "neg_001_force_zero",
-      "why_wrong": "Indirect Branch Null Balance: keeps the file compilable but forces the observable output path low, so it can pass include/instance smoke checks while failing the required behavior to Declare and solve the indirect branch equation form.",
+      "why_wrong": "Indirect Branch Null Balance: forces the main output to zero, so coarse compilation passes but behavioral stimulus points fail.",
       "files": [
         "neg_001_force_zero/indirect_branch_null_balance.va"
       ]
     },
     {
       "id": "neg_002_wrong_threshold",
-      "why_wrong": "Indirect Branch Null Balance: keeps the main operator syntax but collapses the computed value through the wrong condition, so coarse smoke cases may run while boundary and waveform checks for Use an indirect branch assignment target/equation form fail.",
+      "why_wrong": "Indirect Branch Null Balance: uses a shifted or inverted decision condition that can pass one mode but fails boundary cases.",
       "files": [
         "neg_002_wrong_threshold/indirect_branch_null_balance.va"
       ]
     },
     {
       "id": "neg_003_reset_bias",
-      "why_wrong": "Indirect Branch Null Balance: introduces incorrect initialization or state bias, so startup and reset-sensitive checks fail while the model still compiles and produces activity.",
+      "why_wrong": "Indirect Branch Null Balance: mishandles reset or initialization, passing steady-state samples but failing startup or recovery checks.",
       "files": [
         "neg_003_reset_bias/indirect_branch_null_balance.va"
       ]
     },
     {
       "id": "neg_004_metric_offset",
-      "why_wrong": "Indirect Branch Null Balance: offsets the secondary metric or observable path, so the primary waveform may look plausible while calibrated checker evidence for Declare and solve the indirect branch equation form fails.",
+      "why_wrong": "Indirect Branch Null Balance: keeps the main datapath plausible while reporting the wrong metric value.",
       "files": [
         "neg_004_metric_offset/indirect_branch_null_balance.va"
       ]
     },
     {
       "id": "neg_005_scale_output",
-      "why_wrong": "Indirect Branch Null Balance: scales the final observable response, so compile and rough activity checks can pass while calibrated output checks for Use an indirect branch assignment target/equation form fail.",
+      "why_wrong": "Indirect Branch Null Balance: uses a wrong gain or scale factor, leaving shape plausible while calibrated checks fail.",
       "files": [
         "neg_005_scale_output/indirect_branch_null_balance.va"
       ]

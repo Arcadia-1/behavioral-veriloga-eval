@@ -8,7 +8,7 @@
         "neg_001_zero_noise/ac_stim_phase_selector.va"
       ],
       "expected": "compile_but_fail_full_behavior_under_noise_or_ac_simulator",
-      "description": "Compiles and runs, but suppresses the intended noise contribution."
+      "description": "Ac Stim Phase Selector: uses a shifted or inverted decision condition that can pass one mode but fails boundary cases."
     },
     {
       "id": "neg_002_wrong_label",
@@ -16,7 +16,7 @@
         "neg_002_wrong_label/ac_stim_phase_selector.va"
       ],
       "expected": "compile_but_fail_full_behavior_under_noise_or_ac_simulator",
-      "description": "Compiles and runs, but emits the wrong label or mode tag."
+      "description": "Ac Stim Phase Selector: uses a shifted or inverted decision condition that can pass one mode but fails boundary cases."
     },
     {
       "id": "neg_003_disable_analysis",
@@ -24,7 +24,7 @@
         "neg_003_disable_analysis/ac_stim_phase_selector.va"
       ],
       "expected": "compile_but_fail_full_behavior_under_noise_or_ac_simulator",
-      "description": "Compiles and runs, but disables the analysis-dependent behavior."
+      "description": "Ac Stim Phase Selector: uses a shifted or inverted decision condition that can pass one mode but fails boundary cases."
     },
     {
       "id": "neg_004_wrong_metric",
@@ -32,7 +32,7 @@
         "neg_004_wrong_metric/ac_stim_phase_selector.va"
       ],
       "expected": "compile_but_fail_full_behavior_under_noise_or_ac_simulator",
-      "description": "Compiles and runs, but reports the wrong checker metric."
+      "description": "Ac Stim Phase Selector: uses a shifted or inverted decision condition that can pass one mode but fails boundary cases."
     },
     {
       "id": "neg_005_scale_output",
@@ -40,7 +40,7 @@
         "neg_005_scale_output/ac_stim_phase_selector.va"
       ],
       "expected": "compile_but_fail_full_behavior_under_noise_or_ac_simulator",
-      "description": "Compiles and runs, but scales the final output incorrectly."
+      "description": "Ac Stim Phase Selector: uses a shifted or inverted decision condition that can pass one mode but fails boundary cases."
     }
   ]
 }
