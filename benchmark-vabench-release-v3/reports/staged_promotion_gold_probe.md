@@ -4,12 +4,12 @@ Date: 2026-07-02
 
 ## Summary
 
-- `gold_total`: 18
+- `gold_total`: 17
 - `gold_pass`: 0
-- `gold_fail`: 18
-- `expectation_fail`: 18
+- `gold_fail`: 17
+- `expectation_fail`: 17
 - `skipped_staged_tasks`: 0
-- `wall_s`: 4.827175
+- `wall_s`: 2.323263
 
 ## Rows
 
@@ -30,6 +30,5 @@ Date: 2026-07-02
 | `471-indirect-branch-null-balance` | `FAIL_SIM_CORRECTNESS` | staged_dynamic_solver_boundary operator=indirect_branch_equation out_range=0 expected=certified_continuous_time_response |
 | `472-indirect-branch-ddt-balance` | `FAIL_SIM_CORRECTNESS` | staged_dynamic_solver_boundary operator=indirect_branch_ddt_equation out_range=0 expected=certified_continuous_time_response |
 | `491-kcl-capacitor-ddt-current` | `FAIL_SIM_CORRECTNESS` | staged_kcl_boundary feature=I(p,n)<+c*ddt(V(p,n)) p_range=0.0012 expected=mna_current_observable |
-| `492-kcl-inductor-idt-voltage` | `FAIL_SIM_CORRECTNESS` | simulator_error=Model isource not found (available: ['kcl_inductor_idt_voltage']) |
 | `493-continuous-laplace-nd-filter` | `FAIL_SIM_CORRECTNESS` | staged_dynamic_solver_boundary operator=continuous_laplace_nd out_range=1 expected=certified_continuous_time_response |
 | `494-continuous-zi-nd-filter` | `FAIL_SIM_CORRECTNESS` | staged_dynamic_solver_boundary operator=continuous_zi_nd out_range=1 expected=certified_continuous_time_response |

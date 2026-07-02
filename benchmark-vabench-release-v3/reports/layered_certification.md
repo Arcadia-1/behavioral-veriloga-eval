@@ -7,8 +7,8 @@ Date: 2026-07-02
 - Total tasks: **494**
 - Original behavior-certified full-300 surface: **300**
 - Extension candidates: **194**
-- Behavior-certified extension rows: **176**
-- Compile-supported candidate rows: **18**
+- Behavior-certified extension rows: **177**
+- Compile-supported candidate rows: **17**
 - Unsupported candidate rows: **0**
 
 ## Semantic Layers
@@ -21,20 +21,20 @@ Date: 2026-07-02
 | `behavioral_event_support` | 32 | behavior_certified_support: 32 |
 | `behavioral_language_extension` | 130 | behavior_certified_extension: 130 |
 | `cadence_simulator_function_extension` | 3 | behavior_certified_extension: 3 |
-| `conservative_kcl_syntax_extension` | 6 | behavior_certified_extension: 2, compile_supported_kcl_candidate: 4 |
+| `conservative_kcl_syntax_extension` | 6 | behavior_certified_extension: 3, compile_supported_kcl_candidate: 3 |
 | `noise_analysis_extension` | 12 | behavior_certified_extension: 12 |
 
 ## Blocking Issues
 
 | EVAS issue | Blocked tasks | Semantic layers | Promotion acceptance |
 | --- | ---: | --- | --- |
-| https://github.com/Arcadia-1/EVAS/issues/44 | 18 | behavioral_continuous_time_extension: 14, conservative_kcl_syntax_extension: 4 | After EVAS support lands, promote the listed 18 task(s) by adding sim_correct behavior contracts/checkers if missing, then require 18/18 gold PASS, 90/90 negative variants rejected, and zero expectation_fail in the verification report. |
+| https://github.com/Arcadia-1/EVAS/issues/44 | 17 | behavioral_continuous_time_extension: 14, conservative_kcl_syntax_extension: 3 | After EVAS support lands, promote the listed 17 task(s) by adding sim_correct behavior contracts/checkers if missing, then require 17/17 gold PASS, 85/85 negative variants rejected, and zero expectation_fail in the verification report. |
 
 ## Completion Audit
 
 - Status: `partial_external_blocked`
 - Complete: `false`
-- Reason: The full 301-494 objective is not complete because 18 extension tasks still lack behavior checker evidence and are excluded until EVAS support issues are resolved.
+- Reason: The full 301-494 objective is not complete because 17 extension tasks still lack behavior checker evidence and are excluded until EVAS support issues are resolved.
 
 | Requirement | Status | Evidence | Gap |
 | --- | --- | --- | --- |
@@ -42,9 +42,9 @@ Date: 2026-07-02
 | Each extension task has a clear prompt and required behavior section. | `satisfied` | extension_sop_audit has no missing_required_behavior_section issue. |  |
 | Each extension task has executable visible and hidden test evidence. | `satisfied` | extension_sop_audit complete_tests_count=194. |  |
 | Each extension task has five useful negative variants. | `satisfied` | extension_sop_audit reports no negative_count_lt5 issues. |  |
-| Each extension task has repository behavior checker evidence and can be scored fairly. | `partial` | 176 extension tasks are behavior-certified; 18 remain excluded_until_behavior_promotion. | The remaining staged rows are blocked by EVAS support issues or missing behavior-checker evidence; staged_promotion_gold_probe records the current per-task blocker. |
-| Behavior-certified extension tasks pass gold verification and reject all negative variants. | `satisfied` | verify_301_494_layered: gold_pass=176, gold_fail=0, negative_rejected=880, negative_accepted=0, expectation_fail=0. |  |
-| Every staged task has a concrete EVAS issue and promotion checklist. | `satisfied` | 1 blocking issues cover 18 staged tasks; staged_promotion_gold_probe records 18/18 staged gold cases still failing the current promotion gate. |  |
+| Each extension task has repository behavior checker evidence and can be scored fairly. | `partial` | 177 extension tasks are behavior-certified; 17 remain excluded_until_behavior_promotion. | The remaining staged rows are blocked by EVAS support issues or missing behavior-checker evidence; staged_promotion_gold_probe records the current per-task blocker. |
+| Behavior-certified extension tasks pass gold verification and reject all negative variants. | `satisfied` | verify_301_494_layered: gold_pass=177, gold_fail=0, negative_rejected=885, negative_accepted=0, expectation_fail=0. |  |
+| Every staged task has a concrete EVAS issue and promotion checklist. | `satisfied` | 1 blocking issues cover 17 staged tasks; staged_promotion_gold_probe records 17/17 staged gold cases still failing the current promotion gate. |  |
 
 ## Claim Boundary
 

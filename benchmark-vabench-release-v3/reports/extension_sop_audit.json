@@ -93,16 +93,16 @@
       "behavior_contract_complete_count": 24,
       "complete_tests_count": 24,
       "description": "LRM KCL/continuous-time gap-fill candidates",
-      "fair_eval_count": 18,
+      "fair_eval_count": 19,
       "negative_cases_aligned_count": 24,
       "negative_descriptions_task_specific_count": 24,
       "range": "471-494",
-      "sop_ready_count": 18,
+      "sop_ready_count": 19,
       "task_count": 24,
       "top_issues": [
         [
           "checker_syntax_only_no_behavior_score",
-          6
+          5
         ]
       ],
       "visible_hidden_distinct_count": 24
@@ -113,13 +113,13 @@
   "summary": {
     "behavior_contract_complete_count": 194,
     "complete_tests_count": 194,
-    "fair_eval_count": 176,
+    "fair_eval_count": 177,
     "issue_counts": {
-      "checker_syntax_only_no_behavior_score": 18
+      "checker_syntax_only_no_behavior_score": 17
     },
     "negative_cases_aligned_count": 194,
     "negative_descriptions_task_specific_count": 194,
-    "sop_ready_count": 176,
+    "sop_ready_count": 177,
     "sop_ready_visible_hidden_identical_count": 0,
     "staged_visible_hidden_identical_count": 0,
     "task_count": 194,
@@ -5321,18 +5321,16 @@
       "behavior_contract_complete": true,
       "certification_scope": "language_extension_not_part_of_original_full_300_claim",
       "complete_tests": true,
-      "fair_eval": false,
+      "fair_eval": true,
       "hidden_scs_count": 1,
-      "issues": [
-        "checker_syntax_only_no_behavior_score"
-      ],
+      "issues": [],
       "negative_cases_aligned": true,
       "negative_count": 5,
       "negative_descriptions_task_specific": true,
       "number": 492,
       "reasonable_task": true,
       "solution_file_count": 1,
-      "sop_ready": false,
+      "sop_ready": true,
       "starter_file_count": 1,
       "syntax_focus": "Use voltage contribution with idt() of branch current for an inductor-style model.",
       "target": "kcl_inductor_idt_voltage.va",

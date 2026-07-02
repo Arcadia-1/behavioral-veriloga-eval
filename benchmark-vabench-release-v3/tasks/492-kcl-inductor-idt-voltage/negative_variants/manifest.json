@@ -2,7 +2,7 @@
   "negative_variants": [
     {
       "id": "neg_001_force_zero",
-      "description": "Kcl Inductor Idt Voltage: forces the main output to zero, so coarse compilation passes but behavioral stimulus points fail.",
+      "description": "Kcl Inductor Idt Voltage: forces the branch-current integral to zero, so it compiles and runs but misses every nonzero current-integration sample.",
       "files": [
         "neg_001_force_zero/kcl_inductor_idt_voltage.va"
       ],
@@ -10,7 +10,7 @@
     },
     {
       "id": "neg_002_wrong_threshold",
-      "description": "Kcl Inductor Idt Voltage: uses a shifted or inverted decision condition that can pass one mode but fails boundary cases.",
+      "description": "Kcl Inductor Idt Voltage: uses twice the required inductance scale, preserving waveform shape but failing the calibrated integral magnitude.",
       "files": [
         "neg_002_wrong_threshold/kcl_inductor_idt_voltage.va"
       ],
@@ -18,7 +18,7 @@
     },
     {
       "id": "neg_003_reset_bias",
-      "description": "Kcl Inductor Idt Voltage: mishandles reset or initialization, passing steady-state samples but failing startup or recovery checks.",
+      "description": "Kcl Inductor Idt Voltage: uses the correct V(p,n) contribution target but negates the branch-current integral, producing the opposite-polarity response.",
       "files": [
         "neg_003_reset_bias/kcl_inductor_idt_voltage.va"
       ],
@@ -26,7 +26,7 @@
     },
     {
       "id": "neg_004_metric_offset",
-      "description": "Kcl Inductor Idt Voltage: keeps the main datapath plausible while reporting the wrong metric value.",
+      "description": "Kcl Inductor Idt Voltage: uses a nonzero idt initial condition, adding a large DC offset while retaining the later current-driven slope.",
       "files": [
         "neg_004_metric_offset/kcl_inductor_idt_voltage.va"
       ],
@@ -34,7 +34,7 @@
     },
     {
       "id": "neg_005_scale_output",
-      "description": "Kcl Inductor Idt Voltage: uses a shifted or inverted decision condition that can pass one mode but fails boundary cases.",
+      "description": "Kcl Inductor Idt Voltage: uses 0.8x of the required inductance scale, so coarse shape checks pass but magnitude-sensitive samples fail.",
       "files": [
         "neg_005_scale_output/kcl_inductor_idt_voltage.va"
       ],

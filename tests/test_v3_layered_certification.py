@@ -112,12 +112,12 @@ def test_v3_extension_rows_do_not_overclaim_behavior_certification() -> None:
         "469-current-contribution-conductance",
         "470-branch-current-probe-contribution",
         "491-kcl-capacitor-ddt-current",
-        "492-kcl-inductor-idt-voltage",
     ):
         assert kcl_by_key[key]["certification_level"] == "compile_supported_kcl_candidate"
     for key in (
         "481-analog-primitive-resistor-instance",
         "482-analog-primitive-isource-instance",
+        "492-kcl-inductor-idt-voltage",
     ):
         assert kcl_by_key[key]["certification_level"] == "behavior_certified_extension"
 
@@ -344,7 +344,6 @@ def test_staged_gold_probe_uses_specific_checkers_when_available() -> None:
         "471-indirect-branch-null-balance": "operator=indirect_branch_equation",
         "472-indirect-branch-ddt-balance": "operator=indirect_branch_ddt_equation",
         "491-kcl-capacitor-ddt-current": "staged_kcl_boundary",
-        "492-kcl-inductor-idt-voltage": "Model isource not found",
         "493-continuous-laplace-nd-filter": "operator=continuous_laplace_nd",
         "494-continuous-zi-nd-filter": "operator=continuous_zi_nd",
     }

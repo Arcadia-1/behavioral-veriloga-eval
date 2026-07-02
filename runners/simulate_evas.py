@@ -9956,6 +9956,58 @@ def check_v3_491_kcl_capacitor_ddt_current(rows: list[dict[str, float]]) -> tupl
     )
 
 
+def check_v3_492_kcl_inductor_idt_voltage(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    ok, note = _v3_required_columns(rows, {"time", "p"})
+    if not ok:
+        return False, note
+
+    wave = [
+        (0.0, 0.0),
+        (20e-9, 0.0),
+        (21e-9, 1e-6),
+        (80e-9, 1e-6),
+        (81e-9, -1e-6),
+        (160e-9, -1e-6),
+    ]
+
+    def expected_p(time_s: float) -> float:
+        area = 0.0
+        for (t0, i0), (t1, i1) in zip(wave[:-1], wave[1:]):
+            if time_s <= t0:
+                break
+            end = min(time_s, t1)
+            if end <= t0:
+                continue
+            frac = (end - t0) / (t1 - t0) if t1 > t0 else 1.0
+            i_end = i0 + frac * (i1 - i0)
+            area += 0.5 * (i0 + i_end) * (end - t0)
+            if time_s <= t1:
+                break
+        return 1e-9 * area
+
+    failures: list[str] = []
+    max_err = 0.0
+    for time_ns in (21.0, 40.0, 80.0, 100.0, 120.0, 160.0):
+        expected = expected_p(time_ns * 1e-9)
+        observed = sample_signal_at(rows, "p", time_ns * 1e-9)
+        if observed is None:
+            failures.append(f"missing_p@{time_ns:g}ns")
+            continue
+        err = abs(observed - expected)
+        max_err = max(max_err, err)
+        tol = max(2.5e-25, abs(expected) * 0.03)
+        if err > tol:
+            failures.append(
+                f"p@{time_ns:g}ns={observed:.3e} expected={expected:.3e} tol={tol:.3e}"
+            )
+    p_range = _v3_signal_range(rows, "p")
+    if p_range < 7.0e-23:
+        failures.append(f"p_range_too_small={p_range:.3e}")
+    if failures:
+        return False, " ".join(failures[:4])
+    return True, f"kcl_idt_branch_current_shape_ok p_range={p_range:.3e} max_err={max_err:.3e}"
+
+
 def check_v3_493_continuous_laplace_nd_filter(rows: list[dict[str, float]]) -> tuple[bool, str]:
     return _check_v3_staged_dynamic_operator_boundary(
         rows,
@@ -19995,6 +20047,8 @@ V3_STANDALONE_SPLIT_CHECKS = {
     "490-event-task-function-state-update": check_v3_490_event_task_function_state_update,
     "v3_491_kcl_capacitor_ddt_current": check_v3_491_kcl_capacitor_ddt_current,
     "491-kcl-capacitor-ddt-current": check_v3_491_kcl_capacitor_ddt_current,
+    "v3_492_kcl_inductor_idt_voltage": check_v3_492_kcl_inductor_idt_voltage,
+    "492-kcl-inductor-idt-voltage": check_v3_492_kcl_inductor_idt_voltage,
     "v3_493_continuous_laplace_nd_filter": check_v3_493_continuous_laplace_nd_filter,
     "493-continuous-laplace-nd-filter": check_v3_493_continuous_laplace_nd_filter,
     "v3_494_continuous_zi_nd_filter": check_v3_494_continuous_zi_nd_filter,

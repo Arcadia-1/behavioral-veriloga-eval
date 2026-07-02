@@ -12000,17 +12000,34 @@
 492-kcl-inductor-idt-voltage: |
   version: 1
   task_id: v3_492_kcl_inductor_idt_voltage
-  backend: evas_rust_compile_capable
-  status: kcl-syntax-candidate
-  checker: kcl_language_feature_contract
+  backend: evas
+  status: behavior-certified-candidate
+  checker: kcl_inductor_idt_voltage_contract
+  # vabench-release-v2-checks
+  required_columns:
+    - time
+    - p
   syntax:
     must_include:
       - "idt(I(p, n)"
       - "V(p, n) <+"
     must_not_include:
       - "V(out)"
+  sim_correct:
+    positive:
+      - solution/kcl_inductor_idt_voltage.va
+    negative:
+      - negative_variants/neg_001_force_zero/kcl_inductor_idt_voltage.va
+      - negative_variants/neg_002_wrong_threshold/kcl_inductor_idt_voltage.va
+      - negative_variants/neg_003_reset_bias/kcl_inductor_idt_voltage.va
+      - negative_variants/neg_004_metric_offset/kcl_inductor_idt_voltage.va
+      - negative_variants/neg_005_scale_output/kcl_inductor_idt_voltage.va
+    checks:
+      - independent_isource_branch_current_probe
+      - idt_branch_current_integral_shape
+      - hidden_pwl_current_reversal_recovery
   notes:
-    - "KCL/current-contribution smoke tests staged; behavior certification requires continuous-time/KCL support: https://github.com/Arcadia-1/EVAS/issues/44"
+    - "Branch-current idt voltage contribution promoted with executable EVAS behavior verification."
 493-continuous-laplace-nd-filter: |
   version: 1
   task_id: v3_493_continuous_laplace_nd_filter
