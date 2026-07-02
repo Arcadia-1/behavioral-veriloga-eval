@@ -1,24 +1,21 @@
-# Honest SOP Audit: Task 027 DAC Mismatch Unit Weighting Model
+# Audit: 027 DAC Mismatch Unit Weighting Model
 
-## Scope
+Gate 1: `independent_l1_ready`. This is a 4-bit DAC transfer model with
+explicit nonideal unit weights. It is independent from the canonical binary
+DAC because the public behavior is a mismatch-weighted reconstruction rather
+than ideal powers-of-two weighting.
 
-Task boundary is one Verilog-A DUT, `dac_mismatch_unit_weighting_model.va`, plus EVAS/Spectre-compatible `.scs` testbenches. Agent-visible materials are limited to `instruction.md`, `starter/`, and `test_visible/`. Evaluator-only materials are `solution/`, `test_hidden/`, `test_harness/`, and `negative_variants/`. No `meta.json` is present.
+Gate 2: `cadence_modeling_ready`. The public prompt states the interface,
+nonideal weights, all-active normalization rule, endpoints, transition
+smoothing, and voltage-only constraints without exposing a precomputed total
+weight. Current PR validation: EVAS gold PASS, Spectre AX hidden gold PASS,
+and EVAS/Spectre negatives rejected with no Spectre errors. Spectre emitted
+only environment/setup warnings.
 
-## Four Standards
+Hidden/visible coverage: visible and hidden decks are structurally distinct.
+The hidden deck checks low-code, mid-code, and full-scale mismatch-weighted
+levels.
 
-- Useful scenario: pass. A DAC unit-weighting model with mismatch is a realistic data-converter behavioral primitive.
-- Reasonable task: pass. The prompt fixes the unit weighting, mismatch behavior, reference scaling, output smoothing, and voltage-only implementation constraints.
-- Complete tests: pass for EVAS. Hidden samples check representative unit-weighted output levels, including low-code, mid-code, and full-scale behavior. Five concrete negatives cover gain errors, wrong weighting, swapped/missing units, saturation, and endpoint mismatch.
-- Fair evaluation: pass for EVAS. The checker enforces the public transfer levels with tolerance and does not rely on implementation internals.
-
-## Checker And Evidence
-
-- Checker id: `v3_027_dac_mismatch_unit_weighting_model`
-- Runner mapping: `CHECKS["v3_027_dac_mismatch_unit_weighting_model"] = check_release_dac_mismatch_unit_weighting`
-- EVAS/Python-engine hidden gold smoke: `PASS`
-- Concrete negative recertification: 5/5 expected failures, all `FAIL_SIM_CORRECTNESS` with simulator `returncode=0`
-- Visible compile/sim smoke: `COMPILE_SIM_OK`
-
-## Remaining Risk
-
-Spectre/Spectre-AX correlation has not been run from this working tree; use EVAS-only wording until that evidence exists.
+Checker coverage: `v3_027_dac_mismatch_unit_weighting_model` enforces the
+public mismatch-weighted transfer function and rejects wrong gain, idealized or
+swapped weights, missing units, saturation, and endpoint mistakes.
