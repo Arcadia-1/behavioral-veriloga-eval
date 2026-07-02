@@ -1,11 +1,11 @@
 {
   "summary": {
     "all_tasks_have_five_behavior_rejected_negatives": true,
-    "gold_pass_count": 168,
-    "negative_behavior_rejected_total": 840,
-    "negative_total": 840,
+    "gold_pass_count": 170,
+    "negative_behavior_rejected_total": 850,
+    "negative_total": 850,
     "source_report": "benchmark-vabench-release-v3/reports/verify_301_494_layered.json",
-    "task_count": 168
+    "task_count": 170
   },
   "tasks": [
     {
@@ -1834,6 +1834,22 @@
     },
     {
       "all_negatives_behavior_rejected": true,
+      "checker_task_id": "v3_415_logic_vector_assign_slice",
+      "gold_meets_expectation": true,
+      "gold_status": "PASS",
+      "negative_behavior_rejected_count": 5,
+      "negative_count": 5,
+      "negative_statuses": {
+        "neg_001_force_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_002_wrong_threshold": "FAIL_SIM_CORRECTNESS",
+        "neg_003_reset_bias": "FAIL_SIM_CORRECTNESS",
+        "neg_004_metric_offset": "FAIL_SIM_CORRECTNESS",
+        "neg_005_scale_output": "FAIL_SIM_CORRECTNESS"
+      },
+      "task": "415-logic-vector-assign-slice"
+    },
+    {
+      "all_negatives_behavior_rejected": true,
       "checker_task_id": "v3_416_logic_vector_reduction_flag",
       "gold_meets_expectation": true,
       "gold_status": "PASS",
@@ -2231,6 +2247,22 @@
         "neg_005_scale_output": "FAIL_SIM_CORRECTNESS"
       },
       "task": "454-multidimensional-array-state"
+    },
+    {
+      "all_negatives_behavior_rejected": true,
+      "checker_task_id": "v3_455_packed_logic_bus_slice",
+      "gold_meets_expectation": true,
+      "gold_status": "PASS",
+      "negative_behavior_rejected_count": 5,
+      "negative_count": 5,
+      "negative_statuses": {
+        "neg_001_force_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_002_wrong_threshold": "FAIL_SIM_CORRECTNESS",
+        "neg_003_reset_bias": "FAIL_SIM_CORRECTNESS",
+        "neg_004_metric_offset": "FAIL_SIM_CORRECTNESS",
+        "neg_005_scale_output": "FAIL_SIM_CORRECTNESS"
+      },
+      "task": "455-packed-logic-bus-slice"
     },
     {
       "all_negatives_behavior_rejected": true,

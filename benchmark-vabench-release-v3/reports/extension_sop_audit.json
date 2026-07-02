@@ -44,16 +44,16 @@
       "behavior_contract_complete_count": 62,
       "complete_tests_count": 62,
       "description": "task/file/table/random/hierarchy syntax candidates",
-      "fair_eval_count": 59,
+      "fair_eval_count": 60,
       "negative_cases_aligned_count": 62,
       "negative_descriptions_task_specific_count": 62,
       "range": "373-434",
-      "sop_ready_count": 59,
+      "sop_ready_count": 60,
       "task_count": 62,
       "top_issues": [
         [
           "checker_syntax_only_no_behavior_score",
-          3
+          2
         ]
       ],
       "visible_hidden_distinct_count": 62
@@ -62,16 +62,16 @@
       "behavior_contract_complete_count": 24,
       "complete_tests_count": 24,
       "description": "manual syntax-completion candidates",
-      "fair_eval_count": 11,
+      "fair_eval_count": 12,
       "negative_cases_aligned_count": 24,
       "negative_descriptions_task_specific_count": 24,
       "range": "435-458",
-      "sop_ready_count": 11,
+      "sop_ready_count": 12,
       "task_count": 24,
       "top_issues": [
         [
           "checker_syntax_only_no_behavior_score",
-          13
+          12
         ]
       ],
       "visible_hidden_distinct_count": 24
@@ -118,13 +118,13 @@
   "summary": {
     "behavior_contract_complete_count": 194,
     "complete_tests_count": 194,
-    "fair_eval_count": 168,
+    "fair_eval_count": 170,
     "issue_counts": {
-      "checker_syntax_only_no_behavior_score": 26
+      "checker_syntax_only_no_behavior_score": 24
     },
     "negative_cases_aligned_count": 194,
     "negative_descriptions_task_specific_count": 194,
-    "sop_ready_count": 168,
+    "sop_ready_count": 170,
     "sop_ready_visible_hidden_identical_count": 0,
     "staged_visible_hidden_identical_count": 0,
     "task_count": 194,
@@ -3217,18 +3217,16 @@
       "behavior_contract_complete": true,
       "certification_scope": "language_extension_not_part_of_original_full_300_claim",
       "complete_tests": true,
-      "fair_eval": false,
+      "fair_eval": true,
       "hidden_scs_count": 1,
-      "issues": [
-        "checker_syntax_only_no_behavior_score"
-      ],
+      "issues": [],
       "negative_cases_aligned": true,
       "negative_count": 5,
       "negative_descriptions_task_specific": true,
       "number": 415,
       "reasonable_task": true,
       "solution_file_count": 1,
-      "sop_ready": false,
+      "sop_ready": true,
       "starter_file_count": 1,
       "syntax_focus": "Use logic vectors with continuous assign and slice selection.",
       "target": "logic_vector_assign_slice.vams",
@@ -4327,18 +4325,16 @@
       "behavior_contract_complete": true,
       "certification_scope": "language_extension_not_part_of_original_full_300_claim",
       "complete_tests": true,
-      "fair_eval": false,
+      "fair_eval": true,
       "hidden_scs_count": 1,
-      "issues": [
-        "checker_syntax_only_no_behavior_score"
-      ],
+      "issues": [],
       "negative_cases_aligned": true,
       "negative_count": 5,
       "negative_descriptions_task_specific": true,
       "number": 455,
       "reasonable_task": true,
       "solution_file_count": 1,
-      "sop_ready": false,
+      "sop_ready": true,
       "starter_file_count": 1,
       "syntax_focus": "Use a packed-style logic bus with slices and concatenation.",
       "target": "packed_logic_bus_slice.vams",

@@ -113,7 +113,7 @@ task,number,title,tier,target,visible_hidden_distinct,negative_count,behavior_co
 412-initial-final-step-lifecycle,412,Initial Final Step Lifecycle,syntax-extension-candidate,initial_final_step_lifecycle.va,True,5,True,True,True,True,True,True,True,True,,candidate_tier_not_score_ready
 413-while-loop-array-sum,413,While Loop Array Sum,syntax-extension-candidate,while_loop_array_sum.va,True,5,True,True,True,True,True,True,True,True,,candidate_tier_not_score_ready
 414-parameter-range-real-control,414,Parameter Range Real Control,syntax-extension-candidate,parameter_range_real_control.va,True,5,True,True,True,True,True,True,True,True,,candidate_tier_not_score_ready
-415-logic-vector-assign-slice,415,Logic Vector Assign Slice,ams-mixed-signal-candidate,logic_vector_assign_slice.vams,True,5,True,True,True,True,True,True,False,False,checker_syntax_only_no_behavior_score,candidate_tier_not_score_ready
+415-logic-vector-assign-slice,415,Logic Vector Assign Slice,ams-mixed-signal-candidate,logic_vector_assign_slice.vams,True,5,True,True,True,True,True,True,True,True,,candidate_tier_not_score_ready
 416-logic-vector-reduction-flag,416,Logic Vector Reduction Flag,ams-mixed-signal-candidate,logic_vector_reduction_flag.vams,True,5,True,True,True,True,True,True,True,True,,candidate_tier_not_score_ready
 417-always-async-reset-counter,417,Always Async Reset Counter,ams-mixed-signal-candidate,always_async_reset_counter.vams,True,5,True,True,True,True,True,True,False,False,checker_syntax_only_no_behavior_score,candidate_tier_not_score_ready
 418-always-enable-saturating-counter,418,Always Enable Saturating Counter,ams-mixed-signal-candidate,always_enable_saturating_counter.vams,True,5,True,True,True,True,True,True,False,False,checker_syntax_only_no_behavior_score,candidate_tier_not_score_ready
@@ -153,7 +153,7 @@ task,number,title,tier,target,visible_hidden_distinct,negative_count,behavior_co
 452-connectrules-electrical-map,452,Connectrules Electrical Map,syntax-extension-candidate,connectrules_electrical_map.vams,True,5,True,True,True,True,True,True,True,True,,candidate_tier_not_score_ready
 453-specify-specparam-delay,453,Specify Specparam Delay,ams-mixed-signal-candidate,specify_specparam_delay.vams,True,5,True,True,True,True,True,True,False,False,checker_syntax_only_no_behavior_score,candidate_tier_not_score_ready
 454-multidimensional-array-state,454,Multidimensional Array State,syntax-extension-candidate,multidimensional_array_state.va,True,5,True,True,True,True,True,True,True,True,,candidate_tier_not_score_ready
-455-packed-logic-bus-slice,455,Packed Logic Bus Slice,ams-mixed-signal-candidate,packed_logic_bus_slice.vams,True,5,True,True,True,True,True,True,False,False,checker_syntax_only_no_behavior_score,candidate_tier_not_score_ready
+455-packed-logic-bus-slice,455,Packed Logic Bus Slice,ams-mixed-signal-candidate,packed_logic_bus_slice.vams,True,5,True,True,True,True,True,True,True,True,,candidate_tier_not_score_ready
 456-event-or-cross-timer,456,Event Or Cross Timer,syntax-extension-candidate,event_or_cross_timer.va,True,5,True,True,True,True,True,True,True,True,,candidate_tier_not_score_ready
 457-nested-function-pipeline,457,Nested Function Pipeline,syntax-extension-candidate,nested_function_pipeline.va,True,5,True,True,True,True,True,True,True,True,,candidate_tier_not_score_ready
 458-recursive-function-candidate,458,Recursive Function Candidate,syntax-extension-candidate,recursive_function_candidate.va,True,5,True,True,True,True,True,True,True,True,,candidate_tier_not_score_ready

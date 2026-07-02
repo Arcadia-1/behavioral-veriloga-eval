@@ -4,18 +4,17 @@ Date: 2026-07-02
 
 ## Summary
 
-- `gold_total`: 26
+- `gold_total`: 24
 - `gold_pass`: 0
-- `gold_fail`: 26
-- `expectation_fail`: 26
+- `gold_fail`: 24
+- `expectation_fail`: 24
 - `skipped_staged_tasks`: 0
-- `wall_s`: 6.528402
+- `wall_s`: 5.914734
 
 ## Rows
 
 | Task | Status | First behavior note |
 | --- | --- | --- |
-| `415-logic-vector-assign-slice` | `FAIL_SIM_CORRECTNESS` | y@150ns=0.0000 expected=1.0000 tol=0.0800 |
 | `417-always-async-reset-counter` | `FAIL_SIM_CORRECTNESS` | q@100ns=-1.0000 expected=1.0000 tol=0.0800 |
 | `418-always-enable-saturating-counter` | `FAIL_SIM_CORRECTNESS` | q0@90ns=0.0000 expected=1.0000 tol=0.0800 |
 | `435-ddt-voltage-derivative-source` | `FAIL_SIM_CORRECTNESS` | staged_dynamic_solver_boundary operator=ddt out_range=8.653e+05 metric_range=8.653e+05 expected=certified_continuous_time_response |
@@ -30,7 +29,6 @@ Date: 2026-07-02
 | `444-zi-zp-discrete-filter` | `FAIL_SIM_CORRECTNESS` | staged_dynamic_solver_boundary operator=zi_zp out_range=0.45 metric_range=0.45 expected=certified_continuous_time_response |
 | `449-generate-genvar-replicated-stage` | `FAIL_DUT_COMPILE` | simulator_error=Failed to compile Verilog-A file generate_genvar_replicated_stage.vams: Parse error at L6:5: Unsupported Verilog-AMS module block 'generate' is outside the EVAS behavioral subset |
 | `453-specify-specparam-delay` | `FAIL_DUT_COMPILE` | simulator_error=Failed to compile Verilog-A file specify_specparam_delay.vams: Parse error at L4:5: Unsupported Verilog-AMS module block 'specify' is outside the EVAS behavioral subset |
-| `455-packed-logic-bus-slice` | `FAIL_SIM_CORRECTNESS` | y3@50ns=0.0000 expected_a7=1.0000 y0@50ns=0.0000 expected_a0=1.0000 y3@90ns=0.0000 expected_a7=1.0000 y0@90ns=0.0000 expected_a0=1.0000 |
 | `469-current-contribution-conductance` | `FAIL_SIM_CORRECTNESS` | staged_kcl_boundary feature=I(p,n)<+gain*V(p,n) n_range=0 p_range=0.0008 expected=mna_current_observable |
 | `470-branch-current-probe-contribution` | `FAIL_SIM_CORRECTNESS` | out@50ns=0.0000 expected_branch_current=0.5000 out@90ns=0.0000 expected_branch_current=0.2000 |
 | `471-indirect-branch-null-balance` | `FAIL_SIM_CORRECTNESS` | staged_dynamic_solver_boundary operator=indirect_branch_equation out_range=0 expected=certified_continuous_time_response |

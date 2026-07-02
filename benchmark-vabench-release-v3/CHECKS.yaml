@@ -9510,11 +9510,11 @@
   notes:
     - "Parameter declaration language extension promoted to executable EVAS behavior candidate."
 415-logic-vector-assign-slice: |
-  version: 1
+  version: 2
   task_id: v3_415_logic_vector_assign_slice
-  backend: digital_mixed_capable
-  status: ams-mixed-signal-candidate
-  checker: language_feature_contract
+  backend: evas
+  status: behavior-certified-extension
+  checker: v3_415_logic_vector_assign_slice
   required_columns:
     - time
     - code0
@@ -9529,9 +9529,26 @@
       - "assign"
     must_not_include:
       - "I("
+  sim_correct:
+    trace_signals:
+      time: "time"
+      code0: "code0"
+      code1: "code1"
+      code2: "code2"
+      code3: "code3"
+      sel: "sel"
+      y: "y"
+    checks:
+      - "vector_port_order_matches_high_to_low_positional_mapping"
+      - "selects_code2_when_sel_high"
+      - "selects_code0_when_sel_low"
+      - "code1_false_branch_negative_is_rejected"
+      - "five_negative_variants_rejected_by_behavior_checker"
+  promotion_evidence:
+    command: "PYTHONPATH=\"/Users/mac/Documents/github-repos/EVAS:$PWD/runners\" VAEVAS_DEFAULT_EVAS_ENGINE=python VAEVAS_EVAS_PERSISTENT_WORKER=0 PATH=\"$PWD/.venv-evas/bin:$PATH\" .venv-evas/bin/python scripts/run_v3_gold_negative_verification.py --start 415 --end 415 --tasks 415 --include-staged --timeout 120 --jobs 1 --out benchmark-vabench-release-v3/reports/verify_task_415_after_vector_port_order.json"
+    result: "1/1 gold PASS; 5/5 negative variants rejected; 0 expectation_fail after aligning vector port instance order and strengthening the code0/code1 hidden split."
   notes:
-    - "Executable AMS/digital vector candidate staged pending EVAS digital continuous assign/vector-port support."
-    - "EVAS issue: https://github.com/Arcadia-1/EVAS/issues/43"
+    - "Promoted after the harness used high-to-low positional vector port mapping and the hidden stimulus rejected the wrong false-branch bit."
 416-logic-vector-reduction-flag: |
   version: 2
   task_id: v3_416_logic_vector_reduction_flag
@@ -10808,11 +10825,11 @@
   notes:
     - "Multidimensional array state behavior promoted to executable EVAS behavior candidate."
 455-packed-logic-bus-slice: |
-  version: 1
+  version: 2
   task_id: v3_455_packed_logic_bus_slice
-  backend: digital_mixed_capable
-  status: ams-mixed-signal-candidate
-  checker: language_feature_contract
+  backend: evas
+  status: behavior-certified-extension
+  checker: v3_455_packed_logic_bus_slice
   required_columns:
     - time
     - a7
@@ -10831,9 +10848,28 @@
       - "{a[7:6], a[1:0]}"
     must_not_include:
       - "I("
+  sim_correct:
+    trace_signals:
+      time: "time"
+      a7: "a7"
+      a6: "a6"
+      a1: "a1"
+      a0: "a0"
+      y3: "y3"
+      y2: "y2"
+      y1: "y1"
+      y0: "y0"
+    checks:
+      - "bracketed_bus_instance_group_is_flattened"
+      - "concat_uses_a7_a6_a1_a0_in_order"
+      - "packed_output_bits_drive_y3_through_y0"
+      - "adjacent_bit_slice_negatives_are_rejected"
+      - "five_negative_variants_rejected_by_behavior_checker"
+  promotion_evidence:
+    command: "PYTHONPATH=\"/Users/mac/Documents/github-repos/EVAS:$PWD/runners\" VAEVAS_DEFAULT_EVAS_ENGINE=python VAEVAS_EVAS_PERSISTENT_WORKER=0 PATH=\"$PWD/.venv-evas/bin:$PATH\" .venv-evas/bin/python scripts/run_v3_gold_negative_verification.py --start 455 --end 455 --tasks 455 --include-staged --timeout 120 --jobs 1 --out benchmark-vabench-release-v3/reports/verify_task_455_after_bracketed_bus.json"
+    result: "1/1 gold PASS; 5/5 negative variants rejected; 0 expectation_fail after EVAS bracketed bus group parsing and negative variant strengthening."
   notes:
-    - "AMS/digital packed-bus slice candidate staged pending EVAS digital vector-port and assign support."
-    - "EVAS issue: https://github.com/Arcadia-1/EVAS/issues/43"
+    - "Promoted after EVAS flattened bracketed bus instance groups and the weak packed-slice negatives were replaced with adjacent-bit slice errors."
 456-event-or-cross-timer: |
   version: 1
   task_id: v3_456_event_or_cross_timer

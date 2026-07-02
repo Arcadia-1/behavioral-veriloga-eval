@@ -21,21 +21,13 @@
     },
     {
       "issue_url": "https://github.com/Arcadia-1/EVAS/issues/43",
-      "promotion_acceptance": "After EVAS support lands, promote the listed 3 task(s) by adding sim_correct behavior contracts/checkers if missing, then require 3/3 gold PASS, 15/15 negative variants rejected, and zero expectation_fail in the verification report.",
-      "promotion_command": "PYTHONPATH=runners VAEVAS_DEFAULT_EVAS_ENGINE=python VAEVAS_EVAS_PERSISTENT_WORKER=0 PATH=\"$PWD/.venv-evas/bin:$PATH\" .venv-evas/bin/python scripts/run_v3_gold_negative_verification.py --start 415 --end 455 --tasks 415,418,455 --include-staged --timeout 120 --jobs 1 --out benchmark-vabench-release-v3/reports/verify_issue_415_455.json",
+      "promotion_acceptance": "After EVAS support lands, promote the listed 1 task(s) by adding sim_correct behavior contracts/checkers if missing, then require 1/1 gold PASS, 5/5 negative variants rejected, and zero expectation_fail in the verification report.",
+      "promotion_command": "PYTHONPATH=runners VAEVAS_DEFAULT_EVAS_ENGINE=python VAEVAS_EVAS_PERSISTENT_WORKER=0 PATH=\"$PWD/.venv-evas/bin:$PATH\" .venv-evas/bin/python scripts/run_v3_gold_negative_verification.py --start 418 --end 418 --tasks 418 --include-staged --timeout 120 --jobs 1 --out benchmark-vabench-release-v3/reports/verify_issue_418_418.json",
       "semantic_layers": {
-        "ams_mixed_signal_extension": 3
+        "ams_mixed_signal_extension": 1
       },
-      "task_count": 3,
+      "task_count": 1,
       "tasks": [
-        {
-          "semantic_layer": "ams_mixed_signal_extension",
-          "target": "logic_vector_assign_slice.vams",
-          "task_id": "v3_415_logic_vector_assign_slice",
-          "task_key": "415-logic-vector-assign-slice",
-          "tier": "ams-mixed-signal-candidate",
-          "title": "Logic Vector Assign Slice"
-        },
         {
           "semantic_layer": "ams_mixed_signal_extension",
           "target": "always_enable_saturating_counter.vams",
@@ -43,14 +35,6 @@
           "task_key": "418-always-enable-saturating-counter",
           "tier": "ams-mixed-signal-candidate",
           "title": "Always Enable Saturating Counter"
-        },
-        {
-          "semantic_layer": "ams_mixed_signal_extension",
-          "target": "packed_logic_bus_slice.vams",
-          "task_id": "v3_455_packed_logic_bus_slice",
-          "task_key": "455-packed-logic-bus-slice",
-          "tier": "ams-mixed-signal-candidate",
-          "title": "Packed Logic Bus Slice"
         }
       ]
     },
@@ -296,7 +280,7 @@
   ],
   "completion_audit": {
     "is_complete": false,
-    "reason": "The full 301-494 objective is not complete because 26 extension tasks still lack behavior checker evidence and are excluded until EVAS support issues are resolved.",
+    "reason": "The full 301-494 objective is not complete because 24 extension tasks still lack behavior checker evidence and are excluded until EVAS support issues are resolved.",
     "requirements": [
       {
         "evidence": "layered_certification summary reports extension_candidate_count=194.",
@@ -319,18 +303,18 @@
         "status": "satisfied"
       },
       {
-        "evidence": "168 extension tasks are behavior-certified; 26 remain excluded_until_behavior_promotion.",
+        "evidence": "170 extension tasks are behavior-certified; 24 remain excluded_until_behavior_promotion.",
         "gap": "The remaining staged rows are blocked by EVAS support issues or missing behavior-checker evidence; staged_promotion_gold_probe records the current per-task blocker.",
         "requirement": "Each extension task has repository behavior checker evidence and can be scored fairly.",
         "status": "partial"
       },
       {
-        "evidence": "verify_301_494_layered: gold_pass=168, gold_fail=0, negative_rejected=840, negative_accepted=0, expectation_fail=0.",
+        "evidence": "verify_301_494_layered: gold_pass=170, gold_fail=0, negative_rejected=850, negative_accepted=0, expectation_fail=0.",
         "requirement": "Behavior-certified extension tasks pass gold verification and reject all negative variants.",
         "status": "satisfied"
       },
       {
-        "evidence": "7 blocking issues cover 26 staged tasks; staged_promotion_gold_probe records 26/26 staged gold cases still failing the current promotion gate.",
+        "evidence": "7 blocking issues cover 24 staged tasks; staged_promotion_gold_probe records 24/24 staged gold cases still failing the current promotion gate.",
         "requirement": "Every staged task has a concrete EVAS issue and promotion checklist.",
         "status": "satisfied"
       }
@@ -354,8 +338,8 @@
   "layers": [
     {
       "certification_levels": {
-        "behavior_certified_extension": 23,
-        "compile_supported_candidate": 6
+        "behavior_certified_extension": 25,
+        "compile_supported_candidate": 4
       },
       "semantic_layer": "ams_mixed_signal_extension",
       "task_count": 29
@@ -413,11 +397,11 @@
   "release": "benchmark-vabench-release-v3",
   "status": "layered_partial",
   "summary": {
-    "behavior_certified_count": 468,
-    "behavior_certified_extension_count": 168,
+    "behavior_certified_count": 470,
+    "behavior_certified_extension_count": 170,
     "blocking_issue_counts": {
       "https://github.com/Arcadia-1/EVAS/issues/39": 1,
-      "https://github.com/Arcadia-1/EVAS/issues/43": 3,
+      "https://github.com/Arcadia-1/EVAS/issues/43": 1,
       "https://github.com/Arcadia-1/EVAS/issues/44": 18,
       "https://github.com/Arcadia-1/EVAS/issues/45": 1,
       "https://github.com/Arcadia-1/EVAS/issues/48": 1,
@@ -426,18 +410,18 @@
     },
     "certification_level_counts": {
       "behavior_certified": 268,
-      "behavior_certified_extension": 168,
+      "behavior_certified_extension": 170,
       "behavior_certified_support": 32,
-      "compile_supported_candidate": 6,
+      "compile_supported_candidate": 4,
       "compile_supported_continuous_time_candidate": 14,
       "compile_supported_kcl_candidate": 6
     },
-    "compile_supported_candidate_count": 26,
+    "compile_supported_candidate_count": 24,
     "extension_candidate_count": 194,
     "original_full_300_count": 300,
     "score_claim_counts": {
-      "excluded_until_behavior_promotion": 26,
-      "extension_behavior_certified_outside_original_300": 168,
+      "excluded_until_behavior_promotion": 24,
+      "extension_behavior_certified_outside_original_300": 170,
       "original_full_300_policy": 300
     },
     "semantic_layer_counts": {
@@ -8747,16 +8731,16 @@
       "title": "Parameter Range Real Control"
     },
     {
-      "behavior_certified": false,
-      "blocking_issue_urls": "https://github.com/Arcadia-1/EVAS/issues/43",
+      "behavior_certified": true,
+      "blocking_issue_urls": "",
       "category": "verilogams_digital_mixed_semantics",
-      "certification_level": "compile_supported_candidate",
+      "certification_level": "behavior_certified_extension",
       "certification_scope": "language_extension_not_part_of_original_full_300_claim",
-      "claim_boundary": "Verilog-AMS/digital-mixed-signal syntax candidate; not part of the original full-300 behavior claim.",
+      "claim_boundary": "Extension task has SOP-ready behavior evidence: executable visible/hidden tests, repository behavior checker, and five rejected negative variants. It remains outside the original full-300 denominator.",
       "extension_candidate": true,
       "form": "dut",
       "in_original_full_300": false,
-      "score_claim": "excluded_until_behavior_promotion",
+      "score_claim": "extension_behavior_certified_outside_original_300",
       "semantic_layer": "ams_mixed_signal_extension",
       "syntax_focus": "Use logic vectors with continuous assign and slice selection.",
       "target": "logic_vector_assign_slice.vams",
@@ -9547,16 +9531,16 @@
       "title": "Multidimensional Array State"
     },
     {
-      "behavior_certified": false,
-      "blocking_issue_urls": "https://github.com/Arcadia-1/EVAS/issues/43",
+      "behavior_certified": true,
+      "blocking_issue_urls": "",
       "category": "verilogams_vector_semantics",
-      "certification_level": "compile_supported_candidate",
+      "certification_level": "behavior_certified_extension",
       "certification_scope": "language_extension_not_part_of_original_full_300_claim",
-      "claim_boundary": "Verilog-AMS/digital-mixed-signal syntax candidate; not part of the original full-300 behavior claim.",
+      "claim_boundary": "Extension task has SOP-ready behavior evidence: executable visible/hidden tests, repository behavior checker, and five rejected negative variants. It remains outside the original full-300 denominator.",
       "extension_candidate": true,
       "form": "dut",
       "in_original_full_300": false,
-      "score_claim": "excluded_until_behavior_promotion",
+      "score_claim": "extension_behavior_certified_outside_original_300",
       "semantic_layer": "ams_mixed_signal_extension",
       "syntax_focus": "Use a packed-style logic bus with slices and concatenation.",
       "target": "packed_logic_bus_slice.vams",

@@ -299,7 +299,6 @@ def test_staged_gold_probe_uses_specific_checkers_when_available() -> None:
     probe = json.loads((V3 / "reports" / "staged_promotion_gold_probe.json").read_text(encoding="utf-8"))
     rows = {row["task_slug"]: row for row in probe["rows"]}
     checker_backed_staged_tasks = {
-        "415-logic-vector-assign-slice": "expected=",
         "417-always-async-reset-counter": "expected=",
         "418-always-enable-saturating-counter": "expected=",
         "435-ddt-voltage-derivative-source": "operator=ddt",
@@ -314,7 +313,6 @@ def test_staged_gold_probe_uses_specific_checkers_when_available() -> None:
         "444-zi-zp-discrete-filter": "operator=zi_zp",
         "449-generate-genvar-replicated-stage": "Unsupported Verilog-AMS module block 'generate'",
         "453-specify-specparam-delay": "Unsupported Verilog-AMS module block 'specify'",
-        "455-packed-logic-bus-slice": "expected_a7=",
         "469-current-contribution-conductance": "staged_kcl_boundary",
         "470-branch-current-probe-contribution": "expected_branch_current=",
         "471-indirect-branch-null-balance": "operator=indirect_branch_equation",

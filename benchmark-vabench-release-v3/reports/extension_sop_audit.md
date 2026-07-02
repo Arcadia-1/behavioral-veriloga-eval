@@ -5,9 +5,9 @@ Date: 2026-07-02
 ## Summary
 
 - Audited extension tasks: **194**
-- SOP-ready tasks: **168**
+- SOP-ready tasks: **170**
 - Tasks with executable visible+hidden SCS evidence: **194**
-- Tasks with behavior checker evidence: **168**
+- Tasks with behavior checker evidence: **170**
 - Tasks with complete manifest behavior contracts: **194**
 - Tasks with aligned negative case indexes: **194**
 - Tasks with task-specific negative descriptions: **194**
@@ -18,7 +18,7 @@ Date: 2026-07-02
 
 ## Issue Counts
 
-- `checker_syntax_only_no_behavior_score`: 26
+- `checker_syntax_only_no_behavior_score`: 24
 
 ## Warning Counts
 
@@ -31,8 +31,8 @@ Date: 2026-07-02
 | `301-340` | language-semantics voltage-domain candidates | 40 | 40 | 40 | 40 | 40 | 40 | 40 | 40 |  |
 | `341-360` | AMS mixed-signal candidates | 20 | 20 | 20 | 20 | 20 | 20 | 20 | 20 |  |
 | `361-372` | noise and analysis candidates | 12 | 12 | 12 | 12 | 12 | 12 | 12 | 12 |  |
-| `373-434` | task/file/table/random/hierarchy syntax candidates | 62 | 59 | 62 | 59 | 62 | 62 | 62 | 62 | `checker_syntax_only_no_behavior_score`: 3 |
-| `435-458` | manual syntax-completion candidates | 24 | 11 | 24 | 11 | 24 | 24 | 24 | 24 | `checker_syntax_only_no_behavior_score`: 13 |
+| `373-434` | task/file/table/random/hierarchy syntax candidates | 62 | 60 | 62 | 60 | 62 | 62 | 62 | 62 | `checker_syntax_only_no_behavior_score`: 2 |
+| `435-458` | manual syntax-completion candidates | 24 | 12 | 24 | 12 | 24 | 24 | 24 | 24 | `checker_syntax_only_no_behavior_score`: 12 |
 | `459-470` | course-material gap-fill candidates | 12 | 10 | 12 | 10 | 12 | 12 | 12 | 12 | `checker_syntax_only_no_behavior_score`: 2 |
 | `471-494` | LRM KCL/continuous-time gap-fill candidates | 24 | 16 | 24 | 16 | 24 | 24 | 24 | 24 | `checker_syntax_only_no_behavior_score`: 8 |
 
@@ -158,7 +158,7 @@ Tasks 301-494 are extension candidates, not SOP-ready benchmark tasks. They most
 | `412-initial-final-step-lifecycle` | `syntax-extension-candidate` | True | - |
 | `413-while-loop-array-sum` | `syntax-extension-candidate` | True | - |
 | `414-parameter-range-real-control` | `syntax-extension-candidate` | True | - |
-| `415-logic-vector-assign-slice` | `ams-mixed-signal-candidate` | False | `checker_syntax_only_no_behavior_score` |
+| `415-logic-vector-assign-slice` | `ams-mixed-signal-candidate` | True | - |
 | `416-logic-vector-reduction-flag` | `ams-mixed-signal-candidate` | True | - |
 | `417-always-async-reset-counter` | `ams-mixed-signal-candidate` | False | `checker_syntax_only_no_behavior_score` |
 | `418-always-enable-saturating-counter` | `ams-mixed-signal-candidate` | False | `checker_syntax_only_no_behavior_score` |
@@ -198,7 +198,7 @@ Tasks 301-494 are extension candidates, not SOP-ready benchmark tasks. They most
 | `452-connectrules-electrical-map` | `syntax-extension-candidate` | True | - |
 | `453-specify-specparam-delay` | `ams-mixed-signal-candidate` | False | `checker_syntax_only_no_behavior_score` |
 | `454-multidimensional-array-state` | `syntax-extension-candidate` | True | - |
-| `455-packed-logic-bus-slice` | `ams-mixed-signal-candidate` | False | `checker_syntax_only_no_behavior_score` |
+| `455-packed-logic-bus-slice` | `ams-mixed-signal-candidate` | True | - |
 | `456-event-or-cross-timer` | `syntax-extension-candidate` | True | - |
 | `457-nested-function-pipeline` | `syntax-extension-candidate` | True | - |
 | `458-recursive-function-candidate` | `syntax-extension-candidate` | True | - |
