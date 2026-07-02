@@ -10248,6 +10248,7 @@
       "id": "v3_498_dc_aware_adc3bit",
       "form": "dut",
       "level": "L1",
+      "difficulty": "D2",
       "category": "data_converter",
       "target": [
         "dc_aware_adc3bit.va"
@@ -10256,7 +10257,7 @@
       "title": "DC Aware ADC3bit",
       "syntax_focus": "Use static voltage-domain quantization so the ADC output is valid without a sampling clock.",
       "certification_scope": "materialized_replacement_candidate_not_final_301_plus_benchmark_number",
-      "replacement_policy": "Temporary 498+ materialization only. If accepted as scored benchmark content, assign a replacement slot inside the original 001-300 benchmark surface or otherwise keep it outside the scored denominator.",
+      "replacement_policy": "Temporary 495-501 materialization only. If accepted as scored benchmark content, assign a replacement slot inside the original 001-300 benchmark surface or otherwise keep it outside the scored denominator.",
       "description": "Combinational three-bit ADC with clipping, binary output ordering, and DC-compatible static behavior.",
       "required_behavior": [
         "Clip the analog input to the 0-to-vref range.",
@@ -10282,6 +10283,7 @@
       "id": "v3_499_latched_bus_dac8",
       "form": "dut",
       "level": "L1",
+      "difficulty": "D2",
       "category": "data_converter",
       "target": [
         "latched_bus_dac8.va"
@@ -10290,7 +10292,7 @@
       "title": "Latched Bus DAC8",
       "syntax_focus": "Use rising clock events to latch a voltage-coded input bus and hold the DAC output between updates.",
       "certification_scope": "materialized_replacement_candidate_not_final_301_plus_benchmark_number",
-      "replacement_policy": "Temporary 498+ materialization only. If accepted as scored benchmark content, assign a replacement slot inside the original 001-300 benchmark surface or otherwise keep it outside the scored denominator.",
+      "replacement_policy": "Temporary 495-501 materialization only. If accepted as scored benchmark content, assign a replacement slot inside the original 001-300 benchmark surface or otherwise keep it outside the scored denominator.",
       "description": "Eight-bit update-strobed DAC that samples a parallel bus on clock edges and holds the decoded output.",
       "required_behavior": [
         "Sample b7..b0 on rising vclk crossings with b7 as MSB.",
@@ -10316,6 +10318,7 @@
       "id": "v3_500_deterministic_mismatch_dac6",
       "form": "dut",
       "level": "L1",
+      "difficulty": "D2",
       "category": "data_converter",
       "target": [
         "deterministic_mismatch_dac6.va"
@@ -10324,7 +10327,7 @@
       "title": "Deterministic Mismatch DAC6",
       "syntax_focus": "Use public deterministic element-weight errors in a voltage-domain DAC transfer.",
       "certification_scope": "materialized_replacement_candidate_not_final_301_plus_benchmark_number",
-      "replacement_policy": "Temporary 498+ materialization only. If accepted as scored benchmark content, assign a replacement slot inside the original 001-300 benchmark surface or otherwise keep it outside the scored denominator.",
+      "replacement_policy": "Temporary 495-501 materialization only. If accepted as scored benchmark content, assign a replacement slot inside the original 001-300 benchmark surface or otherwise keep it outside the scored denominator.",
       "description": "Six-bit DAC with fixed fractional element mismatch and actual-weight full-scale normalization.",
       "required_behavior": [
         "Decode d5..d0 as an unsigned binary word with d5 as MSB.",
@@ -10350,6 +10353,7 @@
       "id": "v3_501_adc_static_linearity_monitor",
       "form": "dut",
       "level": "L2",
+      "difficulty": "D2",
       "category": "data_converter",
       "target": [
         "adc_static_linearity_monitor.va"
@@ -10358,7 +10362,7 @@
       "title": "ADC Static Linearity Monitor",
       "syntax_focus": "Use voltage-domain decoding and sampled retained state to measure maximum static ADC code error.",
       "certification_scope": "materialized_replacement_candidate_not_final_301_plus_benchmark_number",
-      "replacement_policy": "Temporary 498+ materialization only. If accepted as scored benchmark content, assign a replacement slot inside the original 001-300 benchmark surface or otherwise keep it outside the scored denominator.",
+      "replacement_policy": "Temporary 495-501 materialization only. If accepted as scored benchmark content, assign a replacement slot inside the original 001-300 benchmark surface or otherwise keep it outside the scored denominator.",
       "description": "Sampled measurement monitor that tracks the maximum code error between a swept input and observed three-bit ADC output.",
       "required_behavior": [
         "Update only on rising vsample crossings.",

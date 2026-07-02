@@ -121,8 +121,8 @@ PYTHONPATH=runners VAEVAS_DEFAULT_EVAS_ENGINE=python \
   VAEVAS_EVAS_PERSISTENT_WORKER=0 \
   PATH="$PWD/.venv-evas/bin:$PATH" \
   .venv-evas/bin/python scripts/run_v3_gold_negative_verification.py \
-  --start 301 --end 497 --timeout 180 --jobs 4 --include-staged \
-  --out benchmark-vabench-release-v3/reports/verify_301_497_layered.json
+  --start 301 --end 501 --timeout 180 --jobs 4 --include-staged \
+  --out benchmark-vabench-release-v3/reports/verify_301_501_layered.json
 ```
 
 The previously recorded `301`-`497` local EVAS run reported `197/197`
@@ -131,9 +131,12 @@ expectation failures. Targeted local EVAS verification for the added `498`-`501`
 replacement candidates reports `4/4` gold rows pass, `20/20` negative rows
 rejected, and `0` expectation failures. These rows remain outside the original
 full-300 denominator unless a later upstream decision assigns a replacement
-candidate to a `001`-`300` benchmark slot. Cadence AHDL lint/Spectre evidence
-for `498`-`501` remains pending because the local bridge check reported
-`bridge_repo_missing`.
+candidate to a `001`-`300` benchmark slot. Targeted Cadence/Spectre bridge
+validation for `498`-`501` reports visible gold `4/4` pass, hidden gold `4/4`
+pass, and hidden negative variants `20/20` rejected. AHDL log triage found no
+task-level `AHDLLINT-*` messages or AHDL compile errors for those replacement
+candidates; only the global `VACOMP-2435` environment-variable deprecation
+warning appears.
 
 Current local EVAS compile status after this expansion:
 

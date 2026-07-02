@@ -11,6 +11,26 @@ these rows as benchmark content, it should be assigned to a replacement slot
 inside the original full-300 surface, or explicitly kept outside the scored
 denominator.
 
+## Current Closure Status
+
+As of the 2026-07-02 closeout sweep, `TASKS.json` contains 88
+data-converter-category rows when `data_converter` and `data_converter_models`
+are counted together: 81 rows inside the original `001`-`300` surface and seven
+temporary replacement candidates at `495`-`501`.
+
+The closeout EVAS sweep over those 88 rows reports `88/88` gold pass and
+`326/326` negative variants rejected. Targeted Spectre bridge validation also
+passes the L2 closeout rows `096`, `105`, and `283` on visible/hidden gold and
+rejects their available hidden negative variants. The materialized replacement
+candidates `498`-`501` pass visible/hidden Spectre gold and reject all 20 hidden
+negative variants.
+
+Rows `096`, `105`, `283`, and `501` should be treated as L2 data-converter
+tasks: `096` and `501` are measurement/support flows, `105` is a pipeline ADC
+residue-chain flow, and `283` is an end-to-end SAR ADC/DAC loop. That L2 label
+does not by itself assign final scoring slots; final replacement, removal, and
+counting decisions remain upstream review decisions.
+
 ## Replacement Policy
 
 - Do not grow the scored benchmark simply by appending `301+` rows.
@@ -33,7 +53,7 @@ denominator.
 | `498-dc-aware-adc3bit` | Static three-bit ADC whose output is valid without a sampling clock | Separates combinational/DC-compatible conversion from clocked transient ADC rows | Replace or upgrade an ideal ADC row that differs mostly by bit count or rail choice | Whether the benchmark wants an explicitly static ADC row in the scored set |
 | `499-latched-bus-dac8` | Parallel DAC that latches an input bus on update-clock edges and holds between updates | Adds update-strobe and hold behavior missing from transparent binary DAC rows | Replace a repeated binary DAC or restore-DAC variant if clocked bus update is preferred | Whether this should replace an existing clocked DAC rather than add another DAC family row |
 | `500-deterministic-mismatch-dac6` | Binary DAC with public deterministic element-weight errors and actual-weight normalization | Models calibration/mismatch behavior without random or hidden coefficients | Upgrade or replace a weak mismatch/weighted-DAC row | Exact mismatch values are public circuit parameters, not private checker data |
-| `501-adc-static-linearity-monitor` | Sampled monitor that accumulates maximum ADC static code error over a sweep | Adds measurement-flow coverage rather than another converter core | Replace or upgrade a weak static-linearity/measurement row | L2 measurement/support label and final counting policy |
+| `501-adc-static-linearity-monitor` | Sampled monitor that accumulates maximum ADC static code error over a sweep | Adds measurement-flow coverage rather than another converter core | Replace or upgrade a weak static-linearity/measurement row | Confirmed L2 measurement/support candidate; final replacement slot and counted status remain upstream decisions |
 
 ## Additional Candidates To Materialize After Slot Review
 

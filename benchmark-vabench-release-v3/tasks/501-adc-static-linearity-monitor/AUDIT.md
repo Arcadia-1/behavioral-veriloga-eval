@@ -1,12 +1,11 @@
 # ADC Static Linearity Monitor Audit
 
-- Gate 1: `l2_measurement_ready` pending counting policy as a materialized
-  replacement candidate. This row is a converter measurement monitor rather
-  than another converter core; it samples settled ADC sweep points and
-  accumulates the maximum static code error over the run. It should not be
-  counted as an appended `501` benchmark row; if accepted, upstream should
-  assign it to a replacement slot in the original `001`-`300` surface or mark it
-  as a measurement/support L2 row.
+- Gate 1: `l2_measurement_ready` as a materialized replacement candidate. This
+  row is a converter measurement monitor rather than another converter core; it
+  samples settled ADC sweep points and accumulates the maximum static code error
+  over the run. It should not be counted as an appended `501` benchmark row; if
+  accepted, upstream should assign it to a replacement slot in the original
+  `001`-`300` surface or keep it outside the scored denominator.
 - Gate 2: `cadence_modeling_ready` for this replacement-candidate slice. Public
   prompt exposes the sample strobe, ideal-code binning, observed-code decoding,
   maximum-error retention, and metric scaling without leaking checker sample
