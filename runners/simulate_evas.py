@@ -19658,6 +19658,7 @@ CHECKS["189-divide-by-8-9-switch"] = check_v3_divide_by_8_9_switch
 CHECKS["190-dac-restore-10bit-offset"] = check_v3_dac_restore_10bit_offset
 CHECKS["191-dac-8bit-ideal-scalar"] = check_v3_dac_8bit_ideal_scalar
 CHECKS["192-flash-data-align-pipeline"] = check_v3_flash_data_align_pipeline
+CHECKS["215-pipe15-data-align"] = check_v3_pipe15_data_align
 CHECKS["193-cyclic-decoder-10b"] = check_v3_cyclic_decoder_10b
 CHECKS["194-ideal-adc-out-7bits"] = check_v3_ideal_adc_out_7bits
 CHECKS["195-va-lx-adc-ideal-4b"] = check_v3_va_lx_adc_ideal_4b
