@@ -13776,6 +13776,136 @@ def check_v3_clocked_adc3bit(rows: list[dict[str, float]]) -> tuple[bool, str]:
     )
 
 
+def check_v3_495_slew_rate_dac4(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "d3", "d2", "d1", "d0", "vout"}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing slew-rate dac4 signals"
+    expected = 0.0
+    last_t = rows[0]["time"]
+    max_err = 0.0
+    max_endpoint_err = 0.0
+    checked = 0
+    endpoint_checks = 0
+    for row in rows[1:]:
+        code = 0
+        code += 8 if row["d3"] > 0.45 else 0
+        code += 4 if row["d2"] > 0.45 else 0
+        code += 2 if row["d1"] > 0.45 else 0
+        code += 1 if row["d0"] > 0.45 else 0
+        target = code / 15.0
+        dt = max(0.0, row["time"] - last_t)
+        step = 1e8 * dt
+        if expected < target:
+            expected = min(target, expected + step)
+        elif expected > target:
+            expected = max(target, expected - step)
+        last_t = row["time"]
+        if row["time"] < 0.5e-9:
+            continue
+        err = abs(row["vout"] - expected)
+        max_err = max(max_err, err)
+        checked += 1
+        if abs(expected - target) < 0.003 and code in {0, 3, 6, 12, 15}:
+            endpoint_err = abs(row["vout"] - target)
+            max_endpoint_err = max(max_endpoint_err, endpoint_err)
+            endpoint_checks += 1
+    if checked < 40:
+        return False, f"insufficient_slew_samples={checked}"
+    if endpoint_checks < 8:
+        return False, f"insufficient_settled_endpoint_checks={endpoint_checks}"
+    if max_err > 0.075:
+        return False, f"max_slew_error={max_err:.4f}"
+    if max_endpoint_err > 0.020:
+        return False, f"max_endpoint_error={max_endpoint_err:.4f}"
+    return True, (
+        f"slew_samples={checked} settled_checks={endpoint_checks} "
+        f"max_err={max_err:.4f} max_endpoint_err={max_endpoint_err:.4f}"
+    )
+
+
+def check_v3_496_first_order_sigma_delta_modulator(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "vin", "vclk", "bitout"}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing sigma-delta modulator signals"
+    times = [row["time"] for row in rows]
+    edges = _threshold_crossings([row["vclk"] for row in rows], times, threshold=0.45, direction="rising")
+    if len(edges) < 20:
+        return False, f"too_few_clock_edges={len(edges)}"
+    acc = 0.0
+    bit_state = 0
+    mismatches: list[str] = []
+    low_bits = 0
+    low_total = 0
+    high_bits = 0
+    high_total = 0
+    for edge_t in edges:
+        vin = sample_signal_at(rows, "vin", edge_t + 1e-12)
+        observed = sample_signal_at(rows, "bitout", edge_t + 0.10e-9)
+        if vin is None or observed is None:
+            continue
+        acc = acc + vin - bit_state
+        bit_state = 1 if acc >= 0.0 else 0
+        observed_bit = 1 if observed > 0.45 else 0
+        if observed_bit != bit_state:
+            mismatches.append(
+                f"edge@{edge_t * 1e9:.3f}ns bit={observed_bit} expected={bit_state} vin={vin:.3f}"
+            )
+        if vin < 0.35:
+            low_total += 1
+            low_bits += observed_bit
+        elif vin > 0.55:
+            high_total += 1
+            high_bits += observed_bit
+    if low_total < 8 or high_total < 8:
+        return False, f"insufficient_density_windows=low{low_total}_high{high_total}"
+    low_density = low_bits / low_total
+    high_density = high_bits / high_total
+    if mismatches:
+        return False, " ".join(mismatches[:6])
+    if high_density <= low_density + 0.20:
+        return False, f"density_not_separated=low{low_density:.3f}_high{high_density:.3f}"
+    return True, f"edges={len(edges)} low_density={low_density:.3f} high_density={high_density:.3f}"
+
+
+def check_v3_497_thermometer_bus_encoder(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "vin", *{f"t{i}" for i in range(16)}}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing thermometer bus encoder signals"
+    sample_times = [1.4e-9, 3.4e-9, 5.4e-9, 7.4e-9, 9.4e-9, 10.8e-9]
+    checked = 0
+    failures: list[str] = []
+    for sample_t in sample_times:
+        vin = sample_signal_at(rows, "vin", sample_t)
+        if vin is None:
+            continue
+        clipped = min(1.0, max(0.0, vin))
+        code = int(math.floor(16.0 * clipped))
+        code = max(0, min(16, code))
+        bits = []
+        for bit in range(16):
+            value = sample_signal_at(rows, f"t{bit}", sample_t)
+            if value is None:
+                bits.append(-1)
+            else:
+                bits.append(1 if value > 0.45 else 0)
+        if -1 in bits:
+            failures.append(f"missing_bus_sample@{sample_t * 1e9:.2f}ns")
+            continue
+        expected = [1 if bit < code else 0 for bit in range(16)]
+        if bits != expected:
+            failures.append(
+                f"therm@{sample_t * 1e9:.2f}ns code={code} observed={sum(bits)} prefix={''.join(str(x) for x in bits[:8])}"
+            )
+        if any(bits[i] < bits[i + 1] for i in range(15)):
+            failures.append(f"non_prefix_order@{sample_t * 1e9:.2f}ns")
+        checked += 1
+    if checked < 4:
+        return False, f"insufficient_thermometer_samples={checked}"
+    if failures:
+        return False, " ".join(failures[:5])
+    return True, f"thermometer_samples={checked}"
+
+
 def check_v3_cal4bit_modulo(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "ain", "d0", "d1", "d2", "d3"}
     if not rows or not required.issubset(rows[0]):
@@ -19532,6 +19662,9 @@ CHECKS["v3_smooth_tanh_comparator"] = check_v3_smooth_tanh_comparator
 CHECKS["v3_flash_folded_dac4"] = check_v3_flash_folded_dac4
 CHECKS["v3_subradix_dac10"] = check_v3_subradix_dac10
 CHECKS["v3_clocked_adc3bit"] = check_v3_clocked_adc3bit
+CHECKS["v3_495_slew_rate_dac4"] = check_v3_495_slew_rate_dac4
+CHECKS["v3_496_first_order_sigma_delta_modulator"] = check_v3_496_first_order_sigma_delta_modulator
+CHECKS["v3_497_thermometer_bus_encoder"] = check_v3_497_thermometer_bus_encoder
 CHECKS["v3_cal4bit_modulo"] = check_v3_cal4bit_modulo
 CHECKS["v3_mux4_priority"] = check_v3_mux4_priority
 CHECKS["v3_xnor_gate_voltage"] = check_v3_xnor_gate_voltage
@@ -19558,6 +19691,9 @@ CHECKS["292-smooth-tanh-comparator"] = check_v3_smooth_tanh_comparator
 CHECKS["293-flash-folded-dac4"] = check_v3_flash_folded_dac4
 CHECKS["294-subradix-dac10"] = check_v3_subradix_dac10
 CHECKS["295-clocked-adc3bit"] = check_v3_clocked_adc3bit
+CHECKS["495-slew-rate-dac4"] = check_v3_495_slew_rate_dac4
+CHECKS["496-first-order-sigma-delta-modulator"] = check_v3_496_first_order_sigma_delta_modulator
+CHECKS["497-thermometer-bus-encoder"] = check_v3_497_thermometer_bus_encoder
 CHECKS["296-cal4bit-modulo"] = check_v3_cal4bit_modulo
 CHECKS["297-mux4-priority"] = check_v3_mux4_priority
 CHECKS["298-xnor-gate-voltage"] = check_v3_xnor_gate_voltage

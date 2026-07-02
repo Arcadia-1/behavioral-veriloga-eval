@@ -12374,3 +12374,70 @@
     result: "1/1 gold PASS; 5/5 negative variants rejected; 0 expectation_fail with sampled zi_nd IIR response checker."
   notes:
     - "Promoted using EVAS zi_nd sampled-data support; checker validates only the task's {0.5,0.5}/{1.0,-0.25}/10n voltage-domain IIR response without claiming full z-domain, KCL/MNA, or timestep-control coverage."
+495-slew-rate-dac4: |
+  version: 1
+  task_id: v3_495_slew_rate_dac4
+  backend: evas
+  status: formal-candidate
+  checker: v3_495_slew_rate_dac4
+  required_columns:
+    - time
+    - d3
+    - d2
+    - d1
+    - d0
+    - vout
+  checks:
+    hidden:
+      - binary_bit_order_matches_d3_msb
+      - endpoint_mapping_uses_code_span_15
+      - large_code_steps_are_slew_rate_limited
+      - settled_codes_match_monotonic_dac_levels
+496-first-order-sigma-delta-modulator: |
+  version: 1
+  task_id: v3_496_first_order_sigma_delta_modulator
+  backend: evas
+  status: formal-candidate
+  checker: v3_496_first_order_sigma_delta_modulator
+  required_columns:
+    - time
+    - vin
+    - vclk
+    - bitout
+  checks:
+    hidden:
+      - rising_clock_updates_only
+      - one_bit_feedback_bounds_accumulator
+      - output_bitstream_matches_first_order_loop
+      - high_input_window_has_higher_density_than_low_input_window
+497-thermometer-bus-encoder: |
+  version: 1
+  task_id: v3_497_thermometer_bus_encoder
+  backend: evas
+  status: formal-candidate
+  checker: v3_497_thermometer_bus_encoder
+  required_columns:
+    - time
+    - vin
+    - t0
+    - t1
+    - t2
+    - t3
+    - t4
+    - t5
+    - t6
+    - t7
+    - t8
+    - t9
+    - t10
+    - t11
+    - t12
+    - t13
+    - t14
+    - t15
+  checks:
+    hidden:
+      - input_clipping_to_0_to_vref
+      - active_segment_count_matches_input_bin
+      - t0_to_t15_prefix_order
+      - no_binary_or_reversed_thermometer_word
