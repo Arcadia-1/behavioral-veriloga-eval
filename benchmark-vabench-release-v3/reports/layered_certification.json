@@ -2,13 +2,13 @@
   "blocking_issues": [
     {
       "issue_url": "https://github.com/Arcadia-1/EVAS/issues/44",
-      "promotion_acceptance": "After EVAS support lands, promote the listed 17 task(s) by adding sim_correct behavior contracts/checkers if missing, then require 17/17 gold PASS, 85/85 negative variants rejected, and zero expectation_fail in the verification report.",
-      "promotion_command": "PYTHONPATH=runners VAEVAS_DEFAULT_EVAS_ENGINE=python VAEVAS_EVAS_PERSISTENT_WORKER=0 PATH=\"$PWD/.venv-evas/bin:$PATH\" .venv-evas/bin/python scripts/run_v3_gold_negative_verification.py --start 435 --end 494 --tasks 435,436,437,438,439,440,441,442,443,444,469,470,471,472,491,493,494 --include-staged --timeout 120 --jobs 1 --out benchmark-vabench-release-v3/reports/verify_issue_435_494.json",
+      "promotion_acceptance": "After EVAS support lands, promote the listed 16 task(s) by adding sim_correct behavior contracts/checkers if missing, then require 16/16 gold PASS, 80/80 negative variants rejected, and zero expectation_fail in the verification report.",
+      "promotion_command": "PYTHONPATH=runners VAEVAS_DEFAULT_EVAS_ENGINE=python VAEVAS_EVAS_PERSISTENT_WORKER=0 PATH=\"$PWD/.venv-evas/bin:$PATH\" .venv-evas/bin/python scripts/run_v3_gold_negative_verification.py --start 435 --end 494 --tasks 435,436,437,438,439,440,441,442,443,444,469,471,472,491,493,494 --include-staged --timeout 120 --jobs 1 --out benchmark-vabench-release-v3/reports/verify_issue_435_494.json",
       "semantic_layers": {
         "behavioral_continuous_time_extension": 14,
-        "conservative_kcl_syntax_extension": 3
+        "conservative_kcl_syntax_extension": 2
       },
-      "task_count": 17,
+      "task_count": 16,
       "tasks": [
         {
           "semantic_layer": "behavioral_continuous_time_extension",
@@ -99,14 +99,6 @@
           "title": "Current Contribution Conductance"
         },
         {
-          "semantic_layer": "conservative_kcl_syntax_extension",
-          "target": "branch_current_probe_contribution.va",
-          "task_id": "v3_470_branch_current_probe_contribution",
-          "task_key": "470-branch-current-probe-contribution",
-          "tier": "kcl-syntax-candidate",
-          "title": "Branch Current Probe Contribution"
-        },
-        {
           "semantic_layer": "behavioral_continuous_time_extension",
           "target": "indirect_branch_null_balance.va",
           "task_id": "v3_471_indirect_branch_null_balance",
@@ -158,7 +150,7 @@
   ],
   "completion_audit": {
     "is_complete": false,
-    "reason": "The full 301-494 objective is not complete because 17 extension tasks still lack behavior checker evidence and are excluded until EVAS support issues are resolved.",
+    "reason": "The full 301-494 objective is not complete because 16 extension tasks still lack behavior checker evidence and are excluded until EVAS support issues are resolved.",
     "requirements": [
       {
         "evidence": "layered_certification summary reports extension_candidate_count=194.",
@@ -181,18 +173,18 @@
         "status": "satisfied"
       },
       {
-        "evidence": "177 extension tasks are behavior-certified; 17 remain excluded_until_behavior_promotion.",
+        "evidence": "178 extension tasks are behavior-certified; 16 remain excluded_until_behavior_promotion.",
         "gap": "The remaining staged rows are blocked by EVAS support issues or missing behavior-checker evidence; staged_promotion_gold_probe records the current per-task blocker.",
         "requirement": "Each extension task has repository behavior checker evidence and can be scored fairly.",
         "status": "partial"
       },
       {
-        "evidence": "verify_301_494_layered: gold_pass=177, gold_fail=0, negative_rejected=885, negative_accepted=0, expectation_fail=0.",
+        "evidence": "verify_301_494_layered: gold_pass=178, gold_fail=0, negative_rejected=890, negative_accepted=0, expectation_fail=0.",
         "requirement": "Behavior-certified extension tasks pass gold verification and reject all negative variants.",
         "status": "satisfied"
       },
       {
-        "evidence": "1 blocking issues cover 17 staged tasks; staged_promotion_gold_probe records 17/17 staged gold cases still failing the current promotion gate.",
+        "evidence": "1 blocking issues cover 16 staged tasks; staged_promotion_gold_probe records 16/16 staged gold cases still failing the current promotion gate.",
         "requirement": "Every staged task has a concrete EVAS issue and promotion checklist.",
         "status": "satisfied"
       }
@@ -258,8 +250,8 @@
     },
     {
       "certification_levels": {
-        "behavior_certified_extension": 3,
-        "compile_supported_kcl_candidate": 3
+        "behavior_certified_extension": 4,
+        "compile_supported_kcl_candidate": 2
       },
       "semantic_layer": "conservative_kcl_syntax_extension",
       "task_count": 6
@@ -275,24 +267,24 @@
   "release": "benchmark-vabench-release-v3",
   "status": "layered_partial",
   "summary": {
-    "behavior_certified_count": 477,
-    "behavior_certified_extension_count": 177,
+    "behavior_certified_count": 478,
+    "behavior_certified_extension_count": 178,
     "blocking_issue_counts": {
-      "https://github.com/Arcadia-1/EVAS/issues/44": 17
+      "https://github.com/Arcadia-1/EVAS/issues/44": 16
     },
     "certification_level_counts": {
       "behavior_certified": 268,
-      "behavior_certified_extension": 177,
+      "behavior_certified_extension": 178,
       "behavior_certified_support": 32,
       "compile_supported_continuous_time_candidate": 14,
-      "compile_supported_kcl_candidate": 3
+      "compile_supported_kcl_candidate": 2
     },
-    "compile_supported_candidate_count": 17,
+    "compile_supported_candidate_count": 16,
     "extension_candidate_count": 194,
     "original_full_300_count": 300,
     "score_claim_counts": {
-      "excluded_until_behavior_promotion": 17,
-      "extension_behavior_certified_outside_original_300": 177,
+      "excluded_until_behavior_promotion": 16,
+      "extension_behavior_certified_outside_original_300": 178,
       "original_full_300_policy": 300
     },
     "semantic_layer_counts": {
@@ -9702,16 +9694,16 @@
       "title": "Current Contribution Conductance"
     },
     {
-      "behavior_certified": false,
-      "blocking_issue_urls": "https://github.com/Arcadia-1/EVAS/issues/44",
+      "behavior_certified": true,
+      "blocking_issue_urls": "",
       "category": "veriloga_kcl_contribution_semantics",
-      "certification_level": "compile_supported_kcl_candidate",
+      "certification_level": "behavior_certified_extension",
       "certification_scope": "language_extension_not_part_of_original_full_300_claim",
-      "claim_boundary": "KCL/current-contribution syntax compiles; MNA/KCL behavior is not certified.",
+      "claim_boundary": "Extension task has SOP-ready behavior evidence: executable visible/hidden tests, repository behavior checker, and five rejected negative variants. It remains outside the original full-300 denominator.",
       "extension_candidate": true,
       "form": "dut",
       "in_original_full_300": false,
-      "score_claim": "excluded_until_behavior_promotion",
+      "score_claim": "extension_behavior_certified_outside_original_300",
       "semantic_layer": "conservative_kcl_syntax_extension",
       "syntax_focus": "Use a named branch with current contribution and current probing.",
       "target": "branch_current_probe_contribution.va",

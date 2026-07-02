@@ -11405,14 +11405,39 @@
 470-branch-current-probe-contribution: |
   version: 1
   task_id: v3_470_branch_current_probe_contribution
-  backend: evas_rust_compile_capable
-  status: kcl-syntax-candidate
-  checker: language_feature_contract
+  backend: evas
+  status: behavior-certified-candidate
+  checker: branch_current_probe_contribution_contract
+  # vabench-release-v2-checks
+  required_columns:
+    - time
+    - p
+    - n
+    - out
   syntax:
     must_include:
       - "I(br)"
+      - "branch (p, n) br"
+      - "I(br) <+"
+  sim_correct:
+    positive:
+      - solution/branch_current_probe_contribution.va
+    negative:
+      - negative_variants/neg_001_force_zero/branch_current_probe_contribution.va
+      - negative_variants/neg_002_wrong_threshold/branch_current_probe_contribution.va
+      - negative_variants/neg_003_reset_bias/branch_current_probe_contribution.va
+      - negative_variants/neg_004_metric_offset/branch_current_probe_contribution.va
+      - negative_variants/neg_005_scale_output/branch_current_probe_contribution.va
+    checks:
+      - explicit_named_branch_current_contribution
+      - current_probe_tracks_v_p_minus_v_n
+      - hidden_pwl_step_sequence_samples
+      - five_negative_variants_rejected_by_behavior_checker
+  promotion_evidence:
+    command: "PYTHONPATH=\"/Users/mac/Documents/github-repos/EVAS:$PWD/runners\" VAEVAS_DEFAULT_EVAS_ENGINE=python VAEVAS_EVAS_PERSISTENT_WORKER=0 PATH=\"$PWD/.venv-evas/bin:$PATH\" .venv-evas/bin/python scripts/run_v3_gold_negative_verification.py --start 470 --end 470 --include-staged --timeout 120 --jobs 1 --out benchmark-vabench-release-v3/reports/verify_task_470_after_evas_patch.json"
+    result: "1/1 gold PASS; 5/5 negative variants rejected; 0 expectation_fail after EVAS named branch current contribution/probe support."
   notes:
-    - "KCL/current contribution task with executable voltage-source testbench; branch current behavior remains outside ordinary event-level certification pending KCL/dynamic support: https://github.com/Arcadia-1/EVAS/issues/44"
+    - "Promoted after EVAS records I(br)<+ contributions on explicit named branches and resolves later I(br) probes in the same analog evaluation."
 471-indirect-branch-null-balance: |
   version: 1
   task_id: v3_471_indirect_branch_null_balance

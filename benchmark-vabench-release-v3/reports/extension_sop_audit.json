@@ -75,16 +75,16 @@
       "behavior_contract_complete_count": 12,
       "complete_tests_count": 12,
       "description": "course-material gap-fill candidates",
-      "fair_eval_count": 10,
+      "fair_eval_count": 11,
       "negative_cases_aligned_count": 12,
       "negative_descriptions_task_specific_count": 12,
       "range": "459-470",
-      "sop_ready_count": 10,
+      "sop_ready_count": 11,
       "task_count": 12,
       "top_issues": [
         [
           "checker_syntax_only_no_behavior_score",
-          2
+          1
         ]
       ],
       "visible_hidden_distinct_count": 12
@@ -113,13 +113,13 @@
   "summary": {
     "behavior_contract_complete_count": 194,
     "complete_tests_count": 194,
-    "fair_eval_count": 177,
+    "fair_eval_count": 178,
     "issue_counts": {
-      "checker_syntax_only_no_behavior_score": 17
+      "checker_syntax_only_no_behavior_score": 16
     },
     "negative_cases_aligned_count": 194,
     "negative_descriptions_task_specific_count": 194,
-    "sop_ready_count": 177,
+    "sop_ready_count": 178,
     "sop_ready_visible_hidden_identical_count": 0,
     "staged_visible_hidden_identical_count": 0,
     "task_count": 194,
@@ -4719,18 +4719,16 @@
       "behavior_contract_complete": true,
       "certification_scope": "language_extension_not_part_of_original_full_300_claim",
       "complete_tests": true,
-      "fair_eval": false,
+      "fair_eval": true,
       "hidden_scs_count": 1,
-      "issues": [
-        "checker_syntax_only_no_behavior_score"
-      ],
+      "issues": [],
       "negative_cases_aligned": true,
       "negative_count": 5,
       "negative_descriptions_task_specific": true,
       "number": 470,
       "reasonable_task": true,
       "solution_file_count": 1,
-      "sop_ready": false,
+      "sop_ready": true,
       "starter_file_count": 1,
       "syntax_focus": "Use a named branch with current contribution and current probing.",
       "target": "branch_current_probe_contribution.va",

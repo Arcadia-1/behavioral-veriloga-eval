@@ -110,11 +110,11 @@ def test_v3_extension_rows_do_not_overclaim_behavior_certification() -> None:
     kcl_by_key = {row["task_key"]: row for row in kcl_rows}
     for key in (
         "469-current-contribution-conductance",
-        "470-branch-current-probe-contribution",
         "491-kcl-capacitor-ddt-current",
     ):
         assert kcl_by_key[key]["certification_level"] == "compile_supported_kcl_candidate"
     for key in (
+        "470-branch-current-probe-contribution",
         "481-analog-primitive-resistor-instance",
         "482-analog-primitive-isource-instance",
         "492-kcl-inductor-idt-voltage",
@@ -340,7 +340,6 @@ def test_staged_gold_probe_uses_specific_checkers_when_available() -> None:
         "443-zi-zd-discrete-filter": "operator=zi_zd",
         "444-zi-zp-discrete-filter": "operator=zi_zp",
         "469-current-contribution-conductance": "staged_kcl_boundary",
-        "470-branch-current-probe-contribution": "expected_branch_current=",
         "471-indirect-branch-null-balance": "operator=indirect_branch_equation",
         "472-indirect-branch-ddt-balance": "operator=indirect_branch_ddt_equation",
         "491-kcl-capacitor-ddt-current": "staged_kcl_boundary",
