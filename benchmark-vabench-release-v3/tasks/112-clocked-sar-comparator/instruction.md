@@ -1,51 +1,37 @@
-# Source Clocked SAR Comparator
+# Clocked SAR Comparator
 
-## Task Contract
+Implement `clocked_sar_comparator.va` in Verilog-A.
 
-- Form: `dut`
-- Level: `L1`
-- Category: Data Converter
-- Base function: source-derived `clocked_sar_comparator`
-- Domain: `voltage`
-- Target artifact(s): `clocked_sar_comparator.va`
-- Source provenance: `caiyizeng25/L3_SAR_comparator_ideal.va`
-- Visible context: public task, interface, artifact, stimulus, and observable contract only.
-- Hidden evaluator boundary: deterministic checker and EVAS/Spectre validation are external; do not generate checker logic.
+## Public Interface
 
-## Form-Specific Requirements
+Declare module `clocked_sar_comparator(CMPCK, VINN, VINP, DCMPN, DCMPP)` with
+scalar electrical voltage-domain ports. `CMPCK` is the comparator clock,
+`VINP` and `VINN` are differential analog inputs, and `DCMPP`/`DCMPN` are
+voltage-coded decision outputs.
 
-- Implement only the requested Verilog-A DUT artifact.
-- Preserve the public module name, port order, parameters, and waveform observable names.
-- Use voltage contributions only. Do not use current contributions, `ddt()`, or `idt()`.
+## Public Parameter Contract
 
-## Public Verilog-A Interface
+Provide these overrideable public parameters:
 
-`clocked_sar_comparator.va` declares module `clocked_sar_comparator` with positional ports:
+- `vdd = 0.9 V`: logic high level and clock threshold reference.
+- `td_cmp = 20p`: comparator output delay.
+- `tr = 5p`: output transition smoothing time.
 
-```text
-CMPCK, VINN, VINP, DCMPN, DCMPP
-```
+## Functional Contract
 
-## Public Testbench And Observable Contract
+- Initialize both decision outputs high.
+- Whenever `CMPCK` falls through `vdd/2`, precharge/reset both decision outputs
+  high.
+- Whenever `CMPCK` rises through `vdd/2`, latch a differential decision:
+  `DCMPP` goes high when `VINP > VINN`, `DCMPN` goes high when `VINP < VINN`,
+  and both outputs go low for an equal-input decision.
+- Hold the latched or precharged state until the next clock event.
+- Drive outputs as smooth voltage-domain levels using the configured delay and
+  transition time.
 
-Public transient setting used by the evaluator:
+## Modeling Constraints
 
-```spectre
-tran tran stop=55n maxstep=50p
-```
-
-The evaluator samples stable windows after event edges and checks the intended source-derived behavior. It does not require pointwise equality at simulator timesteps.
-
-## Public Behavior Checks
-
-- reset_both_high_when_clock_low
-- positive_and_negative_decisions_after_rising_edges
-
-## Output Contract
-
-Return exactly one source artifact named `clocked_sar_comparator.va`.
-Do not include explanatory prose outside the source artifact contents.
-
-## Task-Specific Description
-
-Implement the source-derived voltage-domain behavior represented by `clocked_sar_comparator`. This benchmark case is included because it captures a reusable mixed-signal behavioral primitive from the deduplicated historical Verilog-A corpus while remaining small enough for deterministic EVAS/Spectre parity evaluation.
+Return only `clocked_sar_comparator.va`. Do not emit a Spectre testbench,
+checker logic, private test hooks, or simulator-private side channels. Use
+voltage contributions only; do not use current contributions, `ddt()`, or
+`idt()`.

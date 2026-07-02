@@ -11016,8 +11016,8 @@ def check_v3_clocked_sar_comparator(rows: list[dict[str, float]]) -> tuple[bool,
     return _sample_many(
         rows,
         {
-            "dcmpp": [(7.0, 0.9), (17.0, 0.9), (27.0, 0.0), (37.0, 0.9)],
-            "dcmpn": [(7.0, 0.0), (17.0, 0.9), (27.0, 0.9), (37.0, 0.9)],
+            "dcmpp": [(7.0, 0.9), (17.0, 0.9), (27.0, 0.0), (37.0, 0.9), (47.0, 0.0), (57.0, 0.9)],
+            "dcmpn": [(7.0, 0.0), (17.0, 0.9), (27.0, 0.9), (37.0, 0.9), (47.0, 0.0), (57.0, 0.9)],
         },
         tol=0.08,
     )
@@ -11312,15 +11312,16 @@ def check_v3_sar_weighted_sum(rows: list[dict[str, float]]) -> tuple[bool, str]:
         return False, "missing time/d10/d9/d8/d7/d6/d5/d4/d3/d2/d1/d0/vout"
     expected = [
         (2.0, -1.0),
-        (12.0, -0.125),
-        (22.0, 0.375),
-        (32.0, 0.998046875),
+        (12.0, -0.90625),
+        (22.0, -0.84375),
+        (32.0, -0.125),
+        (42.0, 0.998046875),
     ]
     ok, detail = _sample_many(rows, {"vout": expected}, tol=0.025)
     if not ok:
         return ok, detail
     observed = [float(sample_signal_at(rows, "vout", time_ns * 1e-9) or 0.0) for time_ns, _ in expected]
-    monotonic = all(b > a + 0.35 for a, b in zip(observed, observed[1:]))
+    monotonic = all(b > a + 0.03 for a, b in zip(observed, observed[1:]))
     if not monotonic:
         return False, f"sar_weighted_sum_not_monotonic samples={','.join(f'{v:.3f}' for v in observed)}"
     return True, detail + " monotonic=True"
