@@ -10151,10 +10151,11 @@
       "target": [
         "slew_rate_dac4.va"
       ],
-      "tier": "cadence-derived-data-converter-candidate",
+      "tier": "data-converter-replacement-candidate",
       "title": "Slew Rate DAC4",
       "syntax_focus": "Use slew() to implement a finite-slew voltage-domain DAC output.",
-      "certification_scope": "language_extension_not_part_of_original_full_300_claim",
+      "certification_scope": "materialized_replacement_candidate_not_final_301_plus_benchmark_number",
+      "replacement_policy": "Temporary 495+ materialization only. If accepted as scored benchmark content, assign a replacement slot inside the original 001-300 benchmark surface or otherwise keep it outside the scored denominator.",
       "description": "Four-bit voltage-coded DAC with Cadence-style slew-rate-limited analog output.",
       "required_behavior": [
         "Decode d3..d0 as an unsigned binary word with d3 as MSB.",
@@ -10184,10 +10185,11 @@
       "target": [
         "first_order_sigma_delta_modulator.va"
       ],
-      "tier": "cadence-derived-data-converter-candidate",
+      "tier": "data-converter-replacement-candidate",
       "title": "First Order Sigma Delta Modulator",
       "syntax_focus": "Use clocked analog events and state update to model a first-order sigma-delta loop.",
-      "certification_scope": "language_extension_not_part_of_original_full_300_claim",
+      "certification_scope": "materialized_replacement_candidate_not_final_301_plus_benchmark_number",
+      "replacement_policy": "Temporary 495+ materialization only. If accepted as scored benchmark content, assign a replacement slot inside the original 001-300 benchmark surface or otherwise keep it outside the scored denominator.",
       "description": "Clocked first-order sigma-delta modulator with one-bit voltage-coded output stream.",
       "required_behavior": [
         "Update a feedback-bounded accumulator on rising clock crossings.",
@@ -10217,10 +10219,11 @@
       "target": [
         "thermometer_bus_encoder.va"
       ],
-      "tier": "cadence-derived-data-converter-candidate",
+      "tier": "data-converter-replacement-candidate",
       "title": "Thermometer Bus Encoder",
       "syntax_focus": "Use voltage-domain quantization and multi-output thermometer bus driving.",
-      "certification_scope": "language_extension_not_part_of_original_full_300_claim",
+      "certification_scope": "materialized_replacement_candidate_not_final_301_plus_benchmark_number",
+      "replacement_policy": "Temporary 495+ materialization only. If accepted as scored benchmark content, assign a replacement slot inside the original 001-300 benchmark surface or otherwise keep it outside the scored denominator.",
       "description": "Analog-input 16-segment thermometer bus encoder with prefix output ordering.",
       "required_behavior": [
         "Clip the analog input to the declared full-scale range.",
