@@ -8675,6 +8675,31 @@ def check_v3_430_rdist_seed_reproducibility(rows: list[dict[str, float]]) -> tup
     )
 
 
+def check_v3_410_macro_ifdef_gain_select(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "vin", "clk", "mode", "rst", "out", "metric"}
+    if not rows or not required.issubset(rows[0]):
+        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
+        return False, "missing_columns=" + ",".join(missing)
+    return _sample_many(
+        rows,
+        {
+            "out": [
+                (60.0, 0.15),
+                (160.0, 0.80),
+                (260.0, 0.00),
+                (360.0, 0.90),
+            ],
+            "metric": [
+                (60.0, 1.25),
+                (160.0, 1.25),
+                (260.0, 0.00),
+                (360.0, 1.25),
+            ],
+        },
+        tol=0.08,
+    )
+
+
 def check_v3_431_hierarchy_support_artifact_staging(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "vin", "clk", "mode", "rst", "out", "metric"}
     if not rows or not required.issubset(rows[0]):
@@ -9088,6 +9113,35 @@ def check_v3_463_discontinuity_event_announcement(rows: list[dict[str, float]]) 
     )
 
 
+def check_v3_464_param_given_gain_select(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "vin", "clk", "mode", "rst", "out_def", "metric_def", "out_ovr", "metric_ovr"}
+    if not rows or not required.issubset(rows[0]):
+        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
+        return False, "missing_columns=" + ",".join(missing)
+    failures: list[str] = []
+    checks = [
+        (12.0, 0.60, 0.0, 0.30, 1.0),
+        (52.0, 0.30, 0.0, 0.15, 1.0),
+        (72.0, 0.00, 0.0, 0.00, 0.0),
+        (92.0, 0.80, 0.0, 0.40, 1.0),
+        (132.0, 0.80, 0.0, 0.40, 1.0),
+    ]
+    for time_ns, out_def_exp, metric_def_exp, out_ovr_exp, metric_ovr_exp in checks:
+        row = min(rows, key=lambda item: abs(item["time"] - time_ns * 1e-9))
+        for signal, expected in (
+            ("out_def", out_def_exp),
+            ("metric_def", metric_def_exp),
+            ("out_ovr", out_ovr_exp),
+            ("metric_ovr", metric_ovr_exp),
+        ):
+            observed = row[signal]
+            if abs(observed - expected) > 0.04:
+                failures.append(f"{signal}@{time_ns:g}ns={observed:.4f} expected={expected:.4f}")
+    if failures:
+        return False, " ".join(failures[:4])
+    return True, "param_given_default_and_override_paths_ok"
+
+
 def check_v3_465_port_connected_output_enable(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "vin", "clk", "mode", "rst", "out", "metric"}
     if not rows or not required.issubset(rows[0]):
@@ -9170,6 +9224,25 @@ def check_v3_467_simparam_query_tnom(rows: list[dict[str, float]]) -> tuple[bool
             ],
         },
         tol=0.025,
+    )
+
+
+def check_v3_468_branch_declaration_voltage_probe(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "p", "n", "out"}
+    if not rows or not required.issubset(rows[0]):
+        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
+        return False, "missing_columns=" + ",".join(missing)
+    return _sample_many(
+        rows,
+        {
+            "out": [
+                (10.0, 0.10),
+                (50.0, 0.40),
+                (90.0, 0.70),
+                (130.0, -0.05),
+            ],
+        },
+        tol=0.035,
     )
 
 
@@ -10101,6 +10174,25 @@ def check_v3_409_macro_functionlike_clamp(rows: list[dict[str, float]]) -> tuple
         rows,
         update_fn=update,
         initial_state={"out": 0.0, "metric": 0.0},
+    )
+
+
+def check_v3_449_generate_genvar_replicated_stage(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "a", "y"}
+    if not rows or not required.issubset(rows[0]):
+        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
+        return False, "missing_columns=" + ",".join(missing)
+    return _sample_many(
+        rows,
+        {
+            "y": [
+                (10.0, 0.80),
+                (50.0, 0.787),
+                (90.0, 0.35),
+                (130.0, 0.65),
+            ],
+        },
+        tol=0.05,
     )
 
 
@@ -19314,6 +19406,8 @@ V3_STANDALONE_SPLIT_CHECKS = {
     "408-vector-shift-and-mask-decoder": check_v3_408_vector_shift_and_mask_decoder,
     "v3_409_macro_functionlike_clamp": check_v3_409_macro_functionlike_clamp,
     "409-macro-functionlike-clamp": check_v3_409_macro_functionlike_clamp,
+    "v3_410_macro_ifdef_gain_select": check_v3_410_macro_ifdef_gain_select,
+    "410-macro-ifdef-gain-select": check_v3_410_macro_ifdef_gain_select,
     "v3_411_escaped_identifier_state": check_v3_411_escaped_identifier_state,
     "411-escaped-identifier-state": check_v3_411_escaped_identifier_state,
     "v3_412_initial_final_step_lifecycle": check_v3_412_initial_final_step_lifecycle,
@@ -19362,6 +19456,8 @@ V3_STANDALONE_SPLIT_CHECKS = {
     "447-display-warning-debug-log": check_v3_447_display_warning_debug_log,
     "v3_448_rdist_uniform_seeded_dither": check_v3_448_rdist_uniform_seeded_dither,
     "448-rdist-uniform-seeded-dither": check_v3_448_rdist_uniform_seeded_dither,
+    "v3_449_generate_genvar_replicated_stage": check_v3_449_generate_genvar_replicated_stage,
+    "449-generate-genvar-replicated-stage": check_v3_449_generate_genvar_replicated_stage,
     "v3_450_custom_nature_discipline_voltage": check_v3_450_custom_nature_discipline_voltage,
     "450-custom-nature-discipline-voltage": check_v3_450_custom_nature_discipline_voltage,
     "v3_451_connectmodule_electrical_bridge": check_v3_451_connectmodule_electrical_bridge,
@@ -19386,12 +19482,16 @@ V3_STANDALONE_SPLIT_CHECKS = {
     "462-vt-temperature-argument": check_v3_462_vt_temperature_argument,
     "v3_463_discontinuity_event_announcement": check_v3_463_discontinuity_event_announcement,
     "463-discontinuity-event-announcement": check_v3_463_discontinuity_event_announcement,
+    "v3_464_param_given_gain_select": check_v3_464_param_given_gain_select,
+    "464-param-given-gain-select": check_v3_464_param_given_gain_select,
     "v3_465_port_connected_output_enable": check_v3_465_port_connected_output_enable,
     "465-port-connected-output-enable": check_v3_465_port_connected_output_enable,
     "v3_466_temperature_environment_metric": check_v3_466_temperature_environment_metric,
     "466-temperature-environment-metric": check_v3_466_temperature_environment_metric,
     "v3_467_simparam_query_tnom": check_v3_467_simparam_query_tnom,
     "467-simparam-query-tnom": check_v3_467_simparam_query_tnom,
+    "v3_468_branch_declaration_voltage_probe": check_v3_468_branch_declaration_voltage_probe,
+    "468-branch-declaration-voltage-probe": check_v3_468_branch_declaration_voltage_probe,
     "v3_473_attribute_potential_abstol_probe": check_v3_473_attribute_potential_abstol_probe,
     "473-attribute-potential-abstol-probe": check_v3_473_attribute_potential_abstol_probe,
     "v3_474_generic_potential_access_function": check_v3_474_generic_potential_access_function,
