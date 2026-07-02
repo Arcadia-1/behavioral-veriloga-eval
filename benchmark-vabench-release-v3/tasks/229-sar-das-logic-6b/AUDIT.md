@@ -1,9 +1,7 @@
-# Source SAR DAS Logic 6b Audit
+# 6-bit SAR DAS Logic Audit
 
-- Source: `zhangz/SAR_logic_DAS_va.va` from the exact-deduplicated historical Verilog-A corpus.
-- Scenario: six decision-bit differential SAR switching controller with sampling refresh and comparator-coded updates.
-- Import status: certified only after visible compile, EVAS hidden semantic check, Spectre AX hidden semantic check, and EVAS/Spectre parity pass.
-- Evaluation: stable sampled behavior from `tran.csv`; raw simulator timestep equality is not used.
-- Evidence:
-  - `WORK/source-import-batch21-evas/229-sar-das-logic-6b`
-  - `WORK/source-import-batch21-spectre/229-sar-das-logic-6b`
+- Scope: L1 data-converter DUT. This is SAR differential bit-control logic for a converter control path.
+- Source provenance: `zhangz/SAR_logic_DAS_va.va` from the exact-deduplicated historical Verilog-A corpus.
+- Gate 1 content review: Retain. The task is distinct from analog DAC-weight tasks because it exercises sampling refresh, MSB-to-LSB SAR state progression, and complementary control/pulse outputs.
+- Gate 2 prompt/checker review: Public prompt now states the module interface, public parameters, sampling-clock reset/preset semantics, comparator decision polarity, and `co/cob` pulse behavior. Hidden stimulus is distinct from the visible smoke deck.
+- Verification: EVAS gold passed; all four negative variants were rejected. Spectre hidden gold passed with the same behavior checker. AHDL log triage found no task-level `AHDLLINT-*` messages or AHDL compile errors.

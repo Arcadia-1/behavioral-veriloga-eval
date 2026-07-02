@@ -3901,14 +3901,28 @@
       - tb_compile
       - sim_correct
 225-cdac-bidirect-residue: |
+  schema_version: "vabench-release-v2-checks"
+  task_id: "v3_225_cdac_bidirect_residue"
   checker:
-    task_id: v3_cdac_bidirect_residue
-    metric: stable_samples
-  scoring:
-    axes:
-      - dut_compile
-      - tb_compile
-      - sim_correct
+    task_id: "225-cdac-bidirect-residue"
+    function: "check_v3_cdac_bidirect_residue"
+    source: "runners/simulate_evas.py"
+  dut_compile:
+    backend: "evas"
+  tb_compile:
+    backend: "evas"
+  sim_correct:
+    checks:
+      - "sampled_cdac_residue"
+      - "bidirectional_binary_weight_steps"
+    public_observables:
+      - "vin"
+      - "clks"
+      - "dctrl1..dctrl7"
+      - "vres"
+    public_behavior_envelope: "Sample vin on falling clks, add the half-scale dctrl7 residue step, and subtract binary-weighted dctrl6..dctrl1 steps on their rising transitions."
+  parity:
+    required: true
 226-pfd-reset-pulse: |
   checker:
     task_id: v3_pfd_reset_pulse
@@ -3937,23 +3951,60 @@
       - tb_compile
       - sim_correct
 229-sar-das-logic-6b: |
+  schema_version: "vabench-release-v2-checks"
+  task_id: "v3_229_sar_das_logic_6b"
   checker:
-    task_id: v3_sar_das_logic_6b
-    metric: stable_samples
-  scoring:
-    axes:
-      - dut_compile
-      - tb_compile
-      - sim_correct
+    task_id: "229-sar-das-logic-6b"
+    function: "check_v3_sar_das_logic_6b"
+    source: "runners/simulate_evas.py"
+  dut_compile:
+    backend: "evas"
+  tb_compile:
+    backend: "evas"
+  sim_correct:
+    checks:
+      - "sampling_clock_reset_and_preset"
+      - "sar_clock_msb_to_lsb_decisions"
+      - "co_cob_decision_pulses"
+    public_observables:
+      - "clk_sampling"
+      - "clk_sar"
+      - "vcomp"
+      - "d1..d6"
+      - "db1..db6"
+      - "co"
+      - "cob"
+    public_behavior_envelope: "Sampling-clock edges clear/preset the differential bit controls; SAR-clock rising edges consume vcomp against vcm and update one MSB-to-LSB bit-control decision while SAR-clock falling edges clear co/cob."
+  parity:
+    required: true
 230-sar-logic-4b-self-timed: |
+  schema_version: "vabench-release-v2-checks"
+  task_id: "v3_230_sar_logic_4b_self_timed"
   checker:
-    task_id: v3_sar_logic_4b_self_timed
-    metric: stable_samples
-  scoring:
-    axes:
-      - dut_compile
-      - tb_compile
-      - sim_correct
+    task_id: "230-sar-logic-4b-self-timed"
+    function: "check_v3_sar_logic_4b_self_timed"
+    source: "runners/simulate_evas.py"
+  dut_compile:
+    backend: "evas"
+  tb_compile:
+    backend: "evas"
+  sim_correct:
+    checks:
+      - "self_timed_cmpck_sequence"
+      - "msb_to_lsb_decision_latching"
+      - "bottom_plate_control_updates"
+    public_observables:
+      - "clkc"
+      - "rst"
+      - "dcmpp"
+      - "dcmpn"
+      - "cmpck"
+      - "dout1..dout4"
+      - "dbotp1..dbotp3"
+      - "dbotn1..dbotn3"
+    public_behavior_envelope: "Reset initializes the controller, clkc arms cmpck, and comparator pulses latch four MSB-to-LSB decisions while cycling cmpck and bottom-plate controls."
+  parity:
+    required: true
 231-pfd-tdomain-reset-window: |
   checker:
     task_id: v3_pfd_tdomain_reset_window
@@ -3982,14 +4033,33 @@
       - tb_compile
       - sim_correct
 234-l2-sar-logic-4b: |
+  schema_version: "vabench-release-v2-checks"
+  task_id: "v3_234_l2_sar_logic_4b"
   checker:
-    task_id: v3_l2_sar_logic_4b
-    metric: stable_samples
-  scoring:
-    axes:
-      - dut_compile
-      - tb_compile
-      - sim_correct
+    task_id: "234-l2-sar-logic-4b"
+    function: "check_v3_l2_sar_logic_4b"
+    source: "runners/simulate_evas.py"
+  dut_compile:
+    backend: "evas"
+  tb_compile:
+    backend: "evas"
+  sim_correct:
+    checks:
+      - "sar_controller_reset_start"
+      - "msb_to_lsb_decision_latching"
+      - "dac_control_update_sequence"
+    public_observables:
+      - "clkc"
+      - "clks"
+      - "dcmpp"
+      - "dcmpn"
+      - "cmpck"
+      - "do0..do3"
+      - "dctrlp1..dctrlp3"
+      - "dctrln1..dctrln3"
+    public_behavior_envelope: "The controller resets on clks, starts comparison on clkc, then uses comparator pulses to latch four MSB-to-LSB decisions and update the positive/negative DAC controls."
+  parity:
+    required: true
 235-phase-detector-chopper: |
   checker:
     task_id: v3_phase_detector_chopper
@@ -4009,14 +4079,30 @@
       - tb_compile
       - sim_correct
 237-qtz-differential-2level: |
+  schema_version: "vabench-release-v2-checks"
+  task_id: "v3_237_qtz_differential_2level"
   checker:
-    task_id: v3_qtz_differential_2level
-    metric: stable_samples
-  scoring:
-    axes:
-      - dut_compile
-      - tb_compile
-      - sim_correct
+    task_id: "237-qtz-differential-2level"
+    function: "check_v3_qtz_differential_2level"
+    source: "runners/simulate_evas.py"
+  dut_compile:
+    backend: "evas"
+  tb_compile:
+    backend: "evas"
+  sim_correct:
+    checks:
+      - "clocked_midpoint_quantization"
+      - "signed_two_level_output"
+    public_observables:
+      - "vinp"
+      - "vinn"
+      - "vrefp"
+      - "vrefn"
+      - "clk"
+      - "dout"
+    public_behavior_envelope: "On each rising clk transition, compare vinp-vinn to the midpoint threshold derived from vrefp/vrefn and hold a signed -0.5/+0.5 output code between clock edges."
+  parity:
+    required: true
 238-l2-7b-dac-ready: |
   checker:
     task_id: v3_l2_7b_dac_ready

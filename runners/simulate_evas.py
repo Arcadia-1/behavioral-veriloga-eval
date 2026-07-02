@@ -13321,21 +13321,146 @@ def check_v3_pipeline_counter_onehot(rows: list[dict[str, float]]) -> tuple[bool
     )
 
 
+def _max_signal_value(
+    rows: list[dict[str, float]],
+    signals: list[str],
+    *,
+    default: float,
+) -> float:
+    values: list[float] = []
+    for row in rows:
+        for signal in signals:
+            value = row.get(signal)
+            if value is not None:
+                values.append(value)
+    return max(values) if values else default
+
+
+def _edge_times_for_signal(
+    rows: list[dict[str, float]],
+    signal: str,
+    *,
+    threshold: float,
+    direction: str,
+) -> list[float]:
+    times = [row["time"] for row in rows if "time" in row and signal in row]
+    values = [row[signal] for row in rows if "time" in row and signal in row]
+    if len(times) < 2:
+        return []
+    return _threshold_crossings(values, times, threshold=threshold, direction=direction)
+
+
+def _event_probe_time(
+    rows: list[dict[str, float]],
+    event_time_s: float,
+    *,
+    delay_s: float = 0.18e-9,
+) -> float | None:
+    if not rows:
+        return None
+    last_time = rows[-1].get("time")
+    if last_time is None:
+        return None
+    probe_time = event_time_s + delay_s
+    if probe_time <= last_time:
+        return probe_time
+    fallback = last_time - 0.02e-9
+    return fallback if fallback > event_time_s else None
+
+
+def _assert_sample_close(
+    rows: list[dict[str, float]],
+    signal: str,
+    time_s: float,
+    expected: float,
+    *,
+    tol: float,
+) -> tuple[bool, str]:
+    value = sample_signal_at(rows, signal, time_s)
+    if value is None:
+        return False, f"missing_{signal}_sample_at={time_s * 1e9:g}ns"
+    if abs(value - expected) > tol:
+        return False, f"{signal}@{time_s * 1e9:g}ns={value:.4f} expected={expected:.4f} tol={tol:.4f}"
+    return True, f"{signal}@{time_s * 1e9:g}ns={value:.4f}"
+
+
+def _assert_logic_levels(
+    rows: list[dict[str, float]],
+    expected_bits: dict[str, int],
+    time_s: float,
+    *,
+    vhi: float,
+    vlo: float = 0.0,
+    tol: float = 0.12,
+) -> tuple[bool, str]:
+    checked = 0
+    for signal, bit in expected_bits.items():
+        expected = vhi if bit else vlo
+        ok, detail = _assert_sample_close(rows, signal, time_s, expected, tol=tol)
+        if not ok:
+            return False, detail
+        checked += 1
+    return True, f"checked_logic_levels={checked}@{time_s * 1e9:g}ns"
+
+
 def check_v3_cdac_bidirect_residue(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    required = {"time", "vin", "clks", "dctrl4", "dctrl5", "dctrl6", "dctrl7", "vres"}
+    required = {"time", "vin", "clks", "dctrl1", "dctrl2", "dctrl3", "dctrl4", "dctrl5", "dctrl6", "dctrl7", "vres"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing cdac bidirect residue signals"
-    return _sample_many(
-        rows,
-        {
-            "vres": [(0.3, 0.30), (1.0, 0.30), (2.0, 0.80), (3.0, 0.55), (4.0, 0.425), (5.0, 0.3625)],
-            "dctrl7": [(0.3, 1.0), (2.0, 0.0)],
-            "dctrl6": [(2.0, 0.0), (3.0, 1.0)],
-            "dctrl5": [(3.0, 0.0), (4.0, 1.0)],
-            "dctrl4": [(4.0, 0.0), (5.0, 1.0)],
-        },
-        tol=0.015,
-    )
+
+    threshold = 0.5
+    events: list[tuple[float, str, str, float]] = []
+    for edge_time in _edge_times_for_signal(rows, "clks", threshold=threshold, direction="falling"):
+        events.append((edge_time, "sample", "clks", 0.0))
+    events.extend((t, "step", "dctrl7", 0.5) for t in _edge_times_for_signal(rows, "dctrl7", threshold=threshold, direction="falling"))
+    for bit, weight in ((6, 0.25), (5, 0.125), (4, 0.0625), (3, 0.03125), (2, 0.015625), (1, 0.0078125)):
+        signal = f"dctrl{bit}"
+        for edge_time in _edge_times_for_signal(rows, signal, threshold=threshold, direction="rising"):
+            events.append((edge_time, "step", signal, -weight))
+    events.sort(key=lambda item: item[0])
+
+    if not any(kind == "sample" for _, kind, _, _ in events):
+        return False, "missing_clks_falling_sample_event"
+    if not any(signal == "dctrl7" for _, _, signal, _ in events):
+        return False, "missing_dctrl7_half_scale_event"
+    lower_step_count = sum(1 for _, _, signal, _ in events if signal in {"dctrl1", "dctrl2", "dctrl3", "dctrl4", "dctrl5", "dctrl6"})
+    if lower_step_count < 3:
+        return False, f"insufficient_binary_step_coverage={lower_step_count}"
+
+    residue = rows[0]["vin"]
+    first_probe = _event_probe_time(rows, rows[0]["time"], delay_s=0.20e-9)
+    checked = 0
+    max_error = 0.0
+    if first_probe is not None:
+        value = sample_signal_at(rows, "vres", first_probe)
+        if value is not None:
+            max_error = max(max_error, abs(value - residue))
+            if abs(value - residue) > 0.025:
+                return False, f"initial_vres={value:.4f} expected={residue:.4f}"
+            checked += 1
+
+    for event_time, kind, signal, delta in events:
+        if kind == "sample":
+            vin_at_edge = sample_signal_at(rows, "vin", event_time)
+            if vin_at_edge is None:
+                return False, f"missing_vin_at_clks_edge={event_time * 1e9:g}ns"
+            residue = vin_at_edge
+        else:
+            residue += delta
+        probe_time = _event_probe_time(rows, event_time, delay_s=0.14e-9)
+        if probe_time is None:
+            continue
+        value = sample_signal_at(rows, "vres", probe_time)
+        if value is None:
+            return False, f"missing_vres_after_{signal}"
+        error = abs(value - residue)
+        max_error = max(max_error, error)
+        checked += 1
+        if error > 0.025:
+            return False, f"vres_after_{signal}={value:.4f} expected={residue:.4f} err={error:.4f}"
+    if checked < 4:
+        return False, f"insufficient_residue_checks={checked}"
+    return True, f"checked={checked} lower_steps={lower_step_count} max_residue_error={max_error:.5f}"
 
 
 def check_v3_pfd_reset_pulse(rows: list[dict[str, float]]) -> tuple[bool, str]:
@@ -13414,47 +13539,182 @@ def check_v3_sar_das_logic_6b(rows: list[dict[str, float]]) -> tuple[bool, str]:
     }
     if not rows or not required.issubset(rows[0]):
         return False, "missing sar das logic signals"
-    return _sample_many(
-        rows,
-        {
-            "d1": [(1.2, 1.1), (8.0, 1.1)],
-            "d2": [(1.2, 1.1), (5.5, 1.1), (8.0, 0.0)],
-            "d3": [(1.2, 1.1), (5.5, 0.0), (8.0, 0.0)],
-            "d4": [(1.2, 1.1), (3.1, 1.1), (8.0, 1.1)],
-            "d5": [(1.2, 1.1), (3.0, 0.0), (8.0, 0.0)],
-            "d6": [(1.2, 1.1), (8.0, 1.1)],
-            "db1": [(1.2, 1.1), (8.0, 0.0)],
-            "db2": [(1.2, 1.1), (8.0, 1.1)],
-            "db3": [(1.2, 1.1), (8.0, 1.1)],
-            "db4": [(1.2, 1.1), (4.0, 0.0), (8.0, 0.0)],
-            "db5": [(1.2, 1.1), (8.0, 1.1)],
-            "db6": [(1.2, 1.1), (8.0, 1.1)],
-            "co": [(1.7, 1.1), (2.0, 0.0), (4.1, 1.1), (4.5, 0.0)],
-            "cob": [(1.7, 0.0), (3.1, 1.1), (3.5, 0.0), (5.3, 1.1)],
-        },
-        tol=0.09,
-    )
+    vdd = _max_signal_value(rows, ["clk_sampling", "clk_sar", "vcomp"], default=1.1)
+    vcm = 0.5 * vdd
+    events: list[tuple[float, str]] = []
+    events.extend((t, "sampling_rise") for t in _edge_times_for_signal(rows, "clk_sampling", threshold=vcm, direction="rising"))
+    events.extend((t, "sampling_fall") for t in _edge_times_for_signal(rows, "clk_sampling", threshold=vcm, direction="falling"))
+    events.extend((t, "sar_rise") for t in _edge_times_for_signal(rows, "clk_sar", threshold=vcm, direction="rising"))
+    events.extend((t, "sar_fall") for t in _edge_times_for_signal(rows, "clk_sar", threshold=vcm, direction="falling"))
+    events.sort(key=lambda item: item[0])
+
+    if sum(1 for _, kind in events if kind == "sampling_rise") < 1:
+        return False, "missing_sampling_rising_reset"
+    if sum(1 for _, kind in events if kind == "sampling_fall") < 1:
+        return False, "missing_sampling_falling_preset"
+    sar_rises = sum(1 for _, kind in events if kind == "sar_rise")
+    if sar_rises < 6:
+        return False, f"insufficient_sar_rising_edges={sar_rises}"
+
+    bit = 7
+    b = {idx: 0 for idx in range(1, 7)}
+    bb = {idx: 0 for idx in range(1, 7)}
+    cout = 0
+    coutb = 0
+    checked = 0
+    for event_time, kind in events:
+        if kind == "sampling_rise":
+            bit = 7
+            b = {idx: 0 for idx in range(1, 7)}
+            bb = {idx: 0 for idx in range(1, 7)}
+            cout = 0
+            coutb = 0
+        elif kind == "sampling_fall":
+            b = {idx: 1 for idx in range(1, 7)}
+            bb = {idx: 1 for idx in range(1, 7)}
+            cout = 0
+            coutb = 0
+        elif kind == "sar_rise":
+            vcomp = sample_signal_at(rows, "vcomp", event_time + 0.02e-9)
+            if vcomp is None:
+                vcomp = sample_signal_at(rows, "vcomp", event_time)
+            if vcomp is None:
+                return False, f"missing_vcomp_at_sar_edge={event_time * 1e9:g}ns"
+            if vcomp > vcm:
+                cout = 1
+                coutb = 0
+                if bit == 7:
+                    b[6] = 1
+                elif bit == 6:
+                    bb[5] = 0
+                elif bit == 5:
+                    bb[4] = 0
+                elif bit == 4:
+                    bb[3] = 0
+                elif bit == 3:
+                    bb[2] = 0
+                elif bit == 2:
+                    bb[1] = 0
+            else:
+                cout = 0
+                coutb = 1
+                if bit == 7:
+                    bb[6] = 1
+                elif bit == 6:
+                    b[5] = 0
+                elif bit == 5:
+                    b[4] = 0
+                elif bit == 4:
+                    b[3] = 0
+                elif bit == 3:
+                    b[2] = 0
+                elif bit == 2:
+                    b[1] = 0
+            bit -= 1
+        elif kind == "sar_fall":
+            cout = 0
+            coutb = 0
+
+        probe_time = _event_probe_time(rows, event_time, delay_s=0.17e-9)
+        if probe_time is None:
+            continue
+        expected = {f"d{idx}": b[idx] for idx in range(1, 7)}
+        expected.update({f"db{idx}": bb[idx] for idx in range(1, 7)})
+        expected.update({"co": cout, "cob": coutb})
+        ok, detail = _assert_logic_levels(rows, expected, probe_time, vhi=vdd, tol=0.13)
+        if not ok:
+            return False, f"{kind}_{detail}"
+        checked += 1
+    if checked < 8:
+        return False, f"insufficient_sar_logic_checks={checked}"
+    return True, f"checked={checked} sar_rises={sar_rises} final_bit={bit}"
 
 
 def check_v3_sar_logic_4b_self_timed(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "clkc", "rst", "dcmpp", "dcmpn", "cmpck", "dout1", "dout2", "dout3", "dout4", "dbotp1", "dbotp2", "dbotp3", "dbotn1", "dbotn2", "dbotn3"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing sar logic 4b self timed signals"
-    return _sample_many(
-        rows,
-        {
-            "cmpck": [(0.9, 0.0), (1.05, 1.0), (1.5, 0.0), (2.0, 1.0), (3.0, 0.0), (3.5, 0.0)],
-            "dout4": [(1.8, 1.0), (4.2, 1.0)],
-            "dout3": [(2.5, 0.0), (4.2, 0.0)],
-            "dout2": [(3.2, 1.0), (4.2, 1.0)],
-            "dout1": [(4.0, 0.0), (4.2, 0.0)],
-            "dbotp3": [(0.6, 1.0), (1.8, 0.0), (4.2, 0.0)],
-            "dbotn2": [(0.6, 1.0), (2.5, 0.0), (4.2, 0.0)],
-            "dbotp1": [(0.6, 1.0), (3.2, 0.0), (4.2, 0.0)],
-            "dbotn1": [(0.6, 1.0), (4.2, 1.0)],
-        },
-        tol=0.09,
-    )
+    vhi = _max_signal_value(rows, ["clkc", "rst", "dcmpp", "dcmpn"], default=1.0)
+    threshold = 0.5 * vhi
+    reset_rises = _edge_times_for_signal(rows, "rst", threshold=threshold, direction="rising")
+    clkc_rises = _edge_times_for_signal(rows, "clkc", threshold=threshold, direction="rising")
+    comp_events: list[tuple[float, str]] = []
+    for signal in ("dcmpp", "dcmpn"):
+        comp_events.extend((t, "rise") for t in _edge_times_for_signal(rows, signal, threshold=threshold, direction="rising"))
+        comp_events.extend((t, "fall") for t in _edge_times_for_signal(rows, signal, threshold=threshold, direction="falling"))
+    comp_events.sort(key=lambda item: item[0])
+    comp_rises = [t for t, kind in comp_events if kind == "rise"]
+    if not clkc_rises:
+        return False, "missing_clkc_start_edge"
+    if len(comp_rises) < 4:
+        return False, f"insufficient_comparator_pulses={len(comp_rises)}"
+
+    step = 4
+    d = {idx: 0 for idx in range(1, 5)}
+    bp = {idx: 1 for idx in range(1, 4)}
+    bn = {idx: 1 for idx in range(1, 4)}
+    checked = 0
+
+    if reset_rises:
+        reset_probe = _event_probe_time(rows, reset_rises[0], delay_s=0.22e-9)
+        if reset_probe is not None:
+            expected_reset = {"cmpck": 0, "dout1": 0, "dout2": 0, "dout3": 0, "dout4": 0}
+            expected_reset.update({f"dbotp{idx}": 1 for idx in range(1, 4)})
+            expected_reset.update({f"dbotn{idx}": 1 for idx in range(1, 4)})
+            ok, detail = _assert_logic_levels(rows, expected_reset, reset_probe, vhi=vhi, tol=0.12)
+            if not ok:
+                return False, f"reset_{detail}"
+            checked += 1
+
+    start_probe = _event_probe_time(rows, clkc_rises[0], delay_s=0.24e-9)
+    if start_probe is not None:
+        ok, detail = _assert_logic_levels(rows, {"cmpck": 1}, start_probe, vhi=vhi, tol=0.12)
+        if not ok:
+            return False, f"clkc_start_{detail}"
+        checked += 1
+
+    for event_time, kind in comp_events:
+        if kind == "rise":
+            dcmpp_value = sample_signal_at(rows, "dcmpp", event_time + 0.02e-9)
+            dcmpn_value = sample_signal_at(rows, "dcmpn", event_time + 0.02e-9)
+            if dcmpp_value is None or dcmpn_value is None:
+                return False, f"missing_comparator_value_at={event_time * 1e9:g}ns"
+            positive = dcmpp_value > dcmpn_value
+            if 1 <= step <= 4:
+                d[step] = 1 if positive else 0
+            if step > 1:
+                ctrl_idx = step - 1
+                if positive:
+                    bp[ctrl_idx] = 0
+                else:
+                    bn[ctrl_idx] = 0
+            logic_probe = _event_probe_time(rows, event_time, delay_s=0.14e-9)
+            if logic_probe is not None:
+                expected = {f"dout{idx}": d[idx] for idx in range(1, 5)}
+                expected.update({f"dbotp{idx}": bp[idx] for idx in range(1, 4)})
+                expected.update({f"dbotn{idx}": bn[idx] for idx in range(1, 4)})
+                ok, detail = _assert_logic_levels(rows, expected, logic_probe, vhi=vhi, tol=0.12)
+                if not ok:
+                    return False, f"decision_step{step}_{detail}"
+                checked += 1
+            cmpck_low_probe = _event_probe_time(rows, event_time, delay_s=0.24e-9)
+            if cmpck_low_probe is not None:
+                ok, detail = _assert_logic_levels(rows, {"cmpck": 0}, cmpck_low_probe, vhi=vhi, tol=0.12)
+                if not ok:
+                    return False, f"cmpck_close_step{step}_{detail}"
+                checked += 1
+        else:
+            if step > 1:
+                step -= 1
+                cmpck_high_probe = _event_probe_time(rows, event_time, delay_s=0.24e-9)
+                if cmpck_high_probe is not None:
+                    ok, detail = _assert_logic_levels(rows, {"cmpck": 1}, cmpck_high_probe, vhi=vhi, tol=0.12)
+                    if not ok:
+                        return False, f"cmpck_reopen_step{step}_{detail}"
+                    checked += 1
+    if checked < 8:
+        return False, f"insufficient_self_timed_sar_checks={checked}"
+    return True, f"checked={checked} comparator_pulses={len(comp_rises)} final_step={step}"
 
 
 def check_v3_pfd_tdomain_reset_window(rows: list[dict[str, float]]) -> tuple[bool, str]:
@@ -13534,23 +13794,87 @@ def check_v3_l2_sar_logic_4b(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "clkc", "clks", "dcmpp", "dcmpn", "cmpck", "do0", "do1", "do2", "do3", "dctrlp1", "dctrlp2", "dctrlp3", "dctrln1", "dctrln2", "dctrln3"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing l2 sar logic 4b signals"
-    return _sample_many(
-        rows,
-        {
-            "cmpck": [(0.95, 1.1), (1.5, 0.0), (2.0, 1.1), (3.2, 1.1), (4.0, 0.0)],
-            "do3": [(1.7, 1.1), (4.2, 1.1)],
-            "do2": [(2.5, 0.0), (4.2, 0.0)],
-            "do1": [(3.2, 1.1), (4.2, 1.1)],
-            "do0": [(4.0, 0.0), (4.2, 0.0)],
-            "dctrln3": [(1.7, 1.1), (4.2, 1.1)],
-            "dctrlp2": [(2.5, 1.1), (4.2, 1.1)],
-            "dctrln1": [(3.2, 1.1), (4.2, 1.1)],
-            "dctrlp1": [(4.2, 0.0)],
-            "dctrlp3": [(4.2, 0.0)],
-            "dctrln2": [(4.2, 0.0)],
-        },
-        tol=0.09,
-    )
+    vhi = _max_signal_value(rows, ["clkc", "clks", "dcmpp", "dcmpn"], default=1.1)
+    threshold = 0.5 * vhi
+    reset_rises = _edge_times_for_signal(rows, "clks", threshold=threshold, direction="rising")
+    clkc_rises = _edge_times_for_signal(rows, "clkc", threshold=threshold, direction="rising")
+    comp_events: list[tuple[float, str]] = []
+    for signal in ("dcmpp", "dcmpn"):
+        comp_events.extend((t, "rise") for t in _edge_times_for_signal(rows, signal, threshold=threshold, direction="rising"))
+        comp_events.extend((t, "fall") for t in _edge_times_for_signal(rows, signal, threshold=threshold, direction="falling"))
+    comp_events.sort(key=lambda item: item[0])
+    comp_rises = [t for t, kind in comp_events if kind == "rise"]
+    if not reset_rises:
+        return False, "missing_clks_reset_edge"
+    if not clkc_rises:
+        return False, "missing_clkc_start_edge"
+    if len(comp_rises) < 4:
+        return False, f"insufficient_comparator_pulses={len(comp_rises)}"
+
+    step = 3
+    dout = {idx: 0 for idx in range(0, 4)}
+    dp = {idx: 0 for idx in range(1, 4)}
+    dn = {idx: 0 for idx in range(1, 4)}
+    checked = 0
+
+    reset_probe = _event_probe_time(rows, reset_rises[0], delay_s=0.22e-9)
+    if reset_probe is not None:
+        expected_reset = {"cmpck": 0, "do0": 0, "do1": 0, "do2": 0, "do3": 0}
+        expected_reset.update({f"dctrlp{idx}": 0 for idx in range(1, 4)})
+        expected_reset.update({f"dctrln{idx}": 0 for idx in range(1, 4)})
+        ok, detail = _assert_logic_levels(rows, expected_reset, reset_probe, vhi=vhi, tol=0.13)
+        if not ok:
+            return False, f"reset_{detail}"
+        checked += 1
+
+    start_probe = _event_probe_time(rows, clkc_rises[0], delay_s=0.24e-9)
+    if start_probe is not None:
+        ok, detail = _assert_logic_levels(rows, {"cmpck": 1}, start_probe, vhi=vhi, tol=0.13)
+        if not ok:
+            return False, f"clkc_start_{detail}"
+        checked += 1
+
+    for event_time, kind in comp_events:
+        if kind == "rise":
+            dcmpp_value = sample_signal_at(rows, "dcmpp", event_time + 0.02e-9)
+            dcmpn_value = sample_signal_at(rows, "dcmpn", event_time + 0.02e-9)
+            if dcmpp_value is None or dcmpn_value is None:
+                return False, f"missing_comparator_value_at={event_time * 1e9:g}ns"
+            positive = dcmpp_value > dcmpn_value
+            if 0 <= step <= 3:
+                dout[step] = 1 if positive else 0
+            if step >= 1:
+                if positive:
+                    dn[step] = 1
+                else:
+                    dp[step] = 1
+            logic_probe = _event_probe_time(rows, event_time, delay_s=0.14e-9)
+            if logic_probe is not None:
+                expected = {f"do{idx}": dout[idx] for idx in range(0, 4)}
+                expected.update({f"dctrlp{idx}": dp[idx] for idx in range(1, 4)})
+                expected.update({f"dctrln{idx}": dn[idx] for idx in range(1, 4)})
+                ok, detail = _assert_logic_levels(rows, expected, logic_probe, vhi=vhi, tol=0.13)
+                if not ok:
+                    return False, f"decision_step{step}_{detail}"
+                checked += 1
+            cmpck_low_probe = _event_probe_time(rows, event_time, delay_s=0.24e-9)
+            if cmpck_low_probe is not None:
+                ok, detail = _assert_logic_levels(rows, {"cmpck": 0}, cmpck_low_probe, vhi=vhi, tol=0.13)
+                if not ok:
+                    return False, f"cmpck_close_step{step}_{detail}"
+                checked += 1
+        else:
+            step -= 1
+            if step >= 0:
+                cmpck_high_probe = _event_probe_time(rows, event_time, delay_s=0.24e-9)
+                if cmpck_high_probe is not None:
+                    ok, detail = _assert_logic_levels(rows, {"cmpck": 1}, cmpck_high_probe, vhi=vhi, tol=0.13)
+                    if not ok:
+                        return False, f"cmpck_reopen_step{step}_{detail}"
+                    checked += 1
+    if checked < 8:
+        return False, f"insufficient_l2_sar_logic_checks={checked}"
+    return True, f"checked={checked} comparator_pulses={len(comp_rises)} final_step={step}"
 
 
 def check_v3_phase_detector_chopper(rows: list[dict[str, float]]) -> tuple[bool, str]:
@@ -13579,11 +13903,46 @@ def check_v3_qtz_differential_2level(rows: list[dict[str, float]]) -> tuple[bool
     required = {"time", "vinp", "vinn", "vrefp", "vrefn", "clk", "dout"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing qtz differential 2level signals"
-    return _sample_many(
-        rows,
-        {"dout": [(0.5, -0.5), (1.5, -0.5), (2.5, 0.5), (3.5, 0.5)]},
-        tol=0.03,
-    )
+    clk_hi = _max_signal_value(rows, ["clk"], default=0.9)
+    threshold = 0.5 * clk_hi
+    clk_rises = _edge_times_for_signal(rows, "clk", threshold=threshold, direction="rising")
+    if len(clk_rises) < 3:
+        return False, f"insufficient_clock_edges={len(clk_rises)}"
+
+    checked = 0
+    high_codes = 0
+    low_codes = 0
+    max_error = 0.0
+    for edge_time in clk_rises:
+        vinp = sample_signal_at(rows, "vinp", edge_time + 0.02e-9)
+        vinn = sample_signal_at(rows, "vinn", edge_time + 0.02e-9)
+        vrefp = sample_signal_at(rows, "vrefp", edge_time + 0.02e-9)
+        vrefn = sample_signal_at(rows, "vrefn", edge_time + 0.02e-9)
+        if None in (vinp, vinn, vrefp, vrefn):
+            return False, f"missing_quantizer_input_at={edge_time * 1e9:g}ns"
+        assert vinp is not None and vinn is not None and vrefp is not None and vrefn is not None
+        midpoint = vrefn + 0.5 * (vrefp - vrefn)
+        expected = 0.5 if (vinp - vinn) > midpoint else -0.5
+        if expected > 0:
+            high_codes += 1
+        else:
+            low_codes += 1
+        probe_time = _event_probe_time(rows, edge_time, delay_s=0.08e-9)
+        if probe_time is None:
+            continue
+        value = sample_signal_at(rows, "dout", probe_time)
+        if value is None:
+            return False, f"missing_dout_after_clk={edge_time * 1e9:g}ns"
+        error = abs(value - expected)
+        max_error = max(max_error, error)
+        checked += 1
+        if error > 0.04:
+            return False, f"dout_after_clk={value:.4f} expected={expected:.4f} err={error:.4f}"
+    if checked < 3:
+        return False, f"insufficient_quantizer_checks={checked}"
+    if high_codes == 0 or low_codes == 0:
+        return False, f"missing_signed_code_coverage low={low_codes} high={high_codes}"
+    return True, f"checked={checked} low_codes={low_codes} high_codes={high_codes} max_error={max_error:.4f}"
 
 
 def check_v3_l2_7b_dac_ready(rows: list[dict[str, float]]) -> tuple[bool, str]:
