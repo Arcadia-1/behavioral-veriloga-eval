@@ -4,12 +4,12 @@ Date: 2026-07-02
 
 ## Summary
 
-- `gold_total`: 35
+- `gold_total`: 34
 - `gold_pass`: 0
-- `gold_fail`: 35
-- `expectation_fail`: 35
+- `gold_fail`: 34
+- `expectation_fail`: 34
 - `skipped_staged_tasks`: 0
-- `wall_s`: 9.235053
+- `wall_s`: 9.187569
 
 ## Rows
 
@@ -41,7 +41,6 @@ Date: 2026-07-02
 | `472-indirect-branch-ddt-balance` | `FAIL_SIM_CORRECTNESS` | staged_dynamic_solver_boundary operator=indirect_branch_ddt_equation out_range=0 expected=certified_continuous_time_response |
 | `476-oomr-string-voltage-probe` | `FAIL_SIM_CORRECTNESS` | out@50ns=0.0000 expected=0.2000 tol=0.0350 |
 | `477-analog-node-alias-initial` | `FAIL_SIM_CORRECTNESS` | out@50ns=0.0000 expected=0.2000 tol=0.0350 |
-| `480-mfactor-system-function-gain` | `FAIL_DUT_COMPILE` | simulator_error=Failed to compile Verilog-A file mfactor_system_function_gain.va: Spectre-incompatible/unsupported Verilog-A function call: $mfactor() |
 | `481-analog-primitive-resistor-instance` | `FAIL_TB_COMPILE` | simulator_error=Unknown child module: resistor in analog_primitive_resistor_instance.rload |
 | `482-analog-primitive-isource-instance` | `FAIL_TB_COMPILE` | simulator_error=Unknown child module: isource in analog_primitive_isource_instance.ib |
 | `487-table-model-2d-array-surface` | `FAIL_SIM_CORRECTNESS` | out@50ns=0.0000 expected=1.0000 tol=0.0500 |

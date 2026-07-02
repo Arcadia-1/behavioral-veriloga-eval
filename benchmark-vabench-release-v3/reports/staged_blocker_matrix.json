@@ -4,16 +4,16 @@
   "missing_issue_tasks": [],
   "release": "benchmark-vabench-release-v3",
   "summary": {
-    "issue_count": 14,
+    "issue_count": 13,
     "missing_failure_summary_count": 0,
     "missing_issue_count": 0,
     "semantic_layer_counts": {
       "ams_mixed_signal_extension": 8,
       "behavioral_continuous_time_extension": 14,
-      "behavioral_language_extension": 7,
+      "behavioral_language_extension": 6,
       "conservative_kcl_syntax_extension": 6
     },
-    "staged_task_count": 35
+    "staged_task_count": 34
   },
   "tasks": [
     {
@@ -561,27 +561,6 @@
       "task_promotion_command": "PYTHONPATH=runners VAEVAS_DEFAULT_EVAS_ENGINE=python VAEVAS_EVAS_PERSISTENT_WORKER=0 PATH=\"$PWD/.venv-evas/bin:$PATH\" .venv-evas/bin/python scripts/run_v3_gold_negative_verification.py --start 477 --end 477 --tasks 477 --include-staged --timeout 120 --jobs 1 --out benchmark-vabench-release-v3/reports/verify_task_477.json",
       "tier": "syntax-extension-candidate",
       "title": "Analog Node Alias Initial"
-    },
-    {
-      "failure_summary": "simulator_error=Failed to compile Verilog-A file mfactor_system_function_gain.va: Spectre-incompatible/unsupported Verilog-A function call: $mfactor()",
-      "issue_urls": [
-        "https://github.com/Arcadia-1/EVAS/issues/53"
-      ],
-      "probe_status": "FAIL_DUT_COMPILE",
-      "promotion_acceptance": [
-        "After EVAS support lands, promote the listed 1 task(s) by adding sim_correct behavior contracts/checkers if missing, then require 1/1 gold PASS, 5/5 negative variants rejected, and zero expectation_fail in the verification report."
-      ],
-      "promotion_commands": [
-        "PYTHONPATH=runners VAEVAS_DEFAULT_EVAS_ENGINE=python VAEVAS_EVAS_PERSISTENT_WORKER=0 PATH=\"$PWD/.venv-evas/bin:$PATH\" .venv-evas/bin/python scripts/run_v3_gold_negative_verification.py --start 480 --end 480 --tasks 480 --include-staged --timeout 120 --jobs 1 --out benchmark-vabench-release-v3/reports/verify_issue_480_480.json"
-      ],
-      "semantic_layer": "behavioral_language_extension",
-      "target": "mfactor_system_function_gain.va",
-      "task_id": "v3_480_mfactor_system_function_gain",
-      "task_key": "480-mfactor-system-function-gain",
-      "task_promotion_acceptance": "Promote `480-mfactor-system-function-gain` only after adding repository sim_correct evidence, then require 1/1 gold PASS, 5/5 negative variants rejected, and zero expectation_fail in the per-task report.",
-      "task_promotion_command": "PYTHONPATH=runners VAEVAS_DEFAULT_EVAS_ENGINE=python VAEVAS_EVAS_PERSISTENT_WORKER=0 PATH=\"$PWD/.venv-evas/bin:$PATH\" .venv-evas/bin/python scripts/run_v3_gold_negative_verification.py --start 480 --end 480 --tasks 480 --include-staged --timeout 120 --jobs 1 --out benchmark-vabench-release-v3/reports/verify_task_480.json",
-      "tier": "syntax-extension-candidate",
-      "title": "Mfactor System Function Gain"
     },
     {
       "failure_summary": "simulator_error=Unknown child module: resistor in analog_primitive_resistor_instance.rload",

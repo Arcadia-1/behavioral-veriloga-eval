@@ -11455,18 +11455,35 @@
   notes:
     - "Inherited m-factor parameter attribute promoted with executable parameter-gain behavior verification."
 480-mfactor-system-function-gain: |
-  version: 1
+  version: 2
   task_id: v3_480_mfactor_system_function_gain
-  backend: evas_pending_mfactor_system_function
-  status: syntax-extension-candidate
-  checker: language_feature_contract
+  backend: evas
+  status: behavior-certified-extension
+  checker: v3_480_mfactor_system_function_gain
   syntax:
     must_include:
       - "$mfactor()"
+      - "transition"
+      - "V(in)"
+      - "V(out)"
     must_not_include:
       - "I("
+  sim_correct:
+    trace_signals:
+      time: "time"
+      inp: "inp"
+      out: "out"
+    checks:
+      - "instance_m_parameter_is_read_by_mfactor"
+      - "output_tracks_two_times_input_in_visible_and_hidden_tests"
+      - "transition_output_settles_within_behavior_tolerance"
+      - "five_negative_variants_rejected_by_behavior_checker"
+      - "no_current_domain_contribution"
+  promotion_evidence:
+    command: "PYTHONPATH=\"/Users/mac/Documents/github-repos/EVAS:$PWD/runners\" VAEVAS_DEFAULT_EVAS_ENGINE=python VAEVAS_EVAS_PERSISTENT_WORKER=0 PATH=\"$PWD/.venv-evas/bin:$PATH\" .venv-evas/bin/python scripts/run_v3_gold_negative_verification.py --start 480 --end 480 --tasks 480 --include-staged --timeout 120 --jobs 1 --out benchmark-vabench-release-v3/reports/verify_task_480_after_mfactor.json"
+    result: "1/1 gold PASS; 5/5 negative variants rejected; 0 expectation_fail after EVAS $mfactor() support."
   notes:
-    - "Executable tests and checker are staged, but behavior promotion is blocked because $mfactor() is unsupported: https://github.com/Arcadia-1/EVAS/issues/53"
+    - "Promoted after EVAS read Spectre instance m= as the runtime value returned by $mfactor()."
 481-analog-primitive-resistor-instance: |
   version: 1
   task_id: v3_481_analog_primitive_resistor_instance
