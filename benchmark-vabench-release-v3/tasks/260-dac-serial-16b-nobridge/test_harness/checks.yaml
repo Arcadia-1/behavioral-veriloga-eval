@@ -1,0 +1,8 @@
+checker:
+  task_id: v3_dac_serial_16b_nobridge
+  metric: serial_prefix_accumulation
+scoring:
+  axes:
+    - dut_compile
+    - tb_compile
+    - sim_correct

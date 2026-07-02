@@ -1,0 +1,8 @@
+checker:
+  task_id: v3_l2_7b_dac_ready
+  metric: ready_edge_weighted_output
+scoring:
+  axes:
+    - dut_compile
+    - tb_compile
+    - sim_correct
