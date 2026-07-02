@@ -4,7 +4,7 @@ Date: 2026-07-02
 
 ## Summary
 
-- Staged tasks: **11**
+- Staged tasks: **10**
 - Distinct blocking issues: **1**
 - Missing issue links: **0**
 - Missing failure summaries: **0**
@@ -13,7 +13,6 @@ Date: 2026-07-02
 
 | Task | Layer | Issue | Probe status | Failure summary | Per-task promotion command |
 | --- | --- | --- | --- | --- | --- |
-| `440-laplace-zp-zero-pole-filter` | `behavioral_continuous_time_extension` | https://github.com/Arcadia-1/EVAS/issues/44 | `FAIL_SIM_CORRECTNESS` | staged_dynamic_solver_boundary operator=laplace_zp out_range=0.9 metric_range=0.9 expected=certified_continuous_time_response | `PYTHONPATH=runners VAEVAS_DEFAULT_EVAS_ENGINE=python VAEVAS_EVAS_PERSISTENT_WORKER=0 PATH="$PWD/.venv-evas/bin:$PATH" .venv-evas/bin/python scripts/run_v3_gold_negative_verification.py --start 440 --end 440 --tasks 440 --include-staged --timeout 120 --jobs 1 --out benchmark-vabench-release-v3/reports/verify_task_440.json` |
 | `441-zi-nd-discrete-filter` | `behavioral_continuous_time_extension` | https://github.com/Arcadia-1/EVAS/issues/44 | `FAIL_SIM_CORRECTNESS` | staged_dynamic_solver_boundary operator=zi_nd out_range=0.7 metric_range=0.7 expected=certified_continuous_time_response | `PYTHONPATH=runners VAEVAS_DEFAULT_EVAS_ENGINE=python VAEVAS_EVAS_PERSISTENT_WORKER=0 PATH="$PWD/.venv-evas/bin:$PATH" .venv-evas/bin/python scripts/run_v3_gold_negative_verification.py --start 441 --end 441 --tasks 441 --include-staged --timeout 120 --jobs 1 --out benchmark-vabench-release-v3/reports/verify_task_441.json` |
 | `442-zi-np-discrete-filter` | `behavioral_continuous_time_extension` | https://github.com/Arcadia-1/EVAS/issues/44 | `FAIL_SIM_CORRECTNESS` | staged_dynamic_solver_boundary operator=zi_np out_range=0.65 metric_range=0.65 expected=certified_continuous_time_response | `PYTHONPATH=runners VAEVAS_DEFAULT_EVAS_ENGINE=python VAEVAS_EVAS_PERSISTENT_WORKER=0 PATH="$PWD/.venv-evas/bin:$PATH" .venv-evas/bin/python scripts/run_v3_gold_negative_verification.py --start 442 --end 442 --tasks 442 --include-staged --timeout 120 --jobs 1 --out benchmark-vabench-release-v3/reports/verify_task_442.json` |
 | `443-zi-zd-discrete-filter` | `behavioral_continuous_time_extension` | https://github.com/Arcadia-1/EVAS/issues/44 | `FAIL_SIM_CORRECTNESS` | staged_dynamic_solver_boundary operator=zi_zd out_range=0.85 metric_range=0.85 expected=certified_continuous_time_response | `PYTHONPATH=runners VAEVAS_DEFAULT_EVAS_ENGINE=python VAEVAS_EVAS_PERSISTENT_WORKER=0 PATH="$PWD/.venv-evas/bin:$PATH" .venv-evas/bin/python scripts/run_v3_gold_negative_verification.py --start 443 --end 443 --tasks 443 --include-staged --timeout 120 --jobs 1 --out benchmark-vabench-release-v3/reports/verify_task_443.json` |

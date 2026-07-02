@@ -9081,11 +9081,7 @@ def check_v3_439_laplace_zd_zero_den_filter(rows: list[dict[str, float]]) -> tup
 
 
 def check_v3_440_laplace_zp_zero_pole_filter(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    return _check_v3_staged_dynamic_operator_boundary(
-        rows,
-        required={"time", "vin", "clk", "rst", "out", "metric"},
-        operator="laplace_zp",
-    )
+    return _check_v3_first_order_laplace_event_response(rows, "laplace_zp")
 
 
 def check_v3_441_zi_nd_discrete_filter(rows: list[dict[str, float]]) -> tuple[bool, str]:
