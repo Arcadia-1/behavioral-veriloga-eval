@@ -2,9 +2,12 @@
   "date": "2026-07-02",
   "range_summary": [
     {
+      "behavior_contract_complete_count": 40,
       "complete_tests_count": 40,
       "description": "language-semantics voltage-domain candidates",
       "fair_eval_count": 40,
+      "negative_cases_aligned_count": 40,
+      "negative_descriptions_task_specific_count": 40,
       "range": "301-340",
       "sop_ready_count": 40,
       "task_count": 40,
@@ -12,9 +15,12 @@
       "visible_hidden_distinct_count": 40
     },
     {
+      "behavior_contract_complete_count": 20,
       "complete_tests_count": 20,
       "description": "AMS mixed-signal candidates",
       "fair_eval_count": 19,
+      "negative_cases_aligned_count": 20,
+      "negative_descriptions_task_specific_count": 20,
       "range": "341-360",
       "sop_ready_count": 19,
       "task_count": 20,
@@ -27,9 +33,12 @@
       "visible_hidden_distinct_count": 20
     },
     {
+      "behavior_contract_complete_count": 12,
       "complete_tests_count": 12,
       "description": "noise and analysis candidates",
       "fair_eval_count": 12,
+      "negative_cases_aligned_count": 12,
+      "negative_descriptions_task_specific_count": 12,
       "range": "361-372",
       "sop_ready_count": 12,
       "task_count": 12,
@@ -37,9 +46,12 @@
       "visible_hidden_distinct_count": 12
     },
     {
+      "behavior_contract_complete_count": 62,
       "complete_tests_count": 62,
       "description": "task/file/table/random/hierarchy syntax candidates",
       "fair_eval_count": 57,
+      "negative_cases_aligned_count": 62,
+      "negative_descriptions_task_specific_count": 62,
       "range": "373-434",
       "sop_ready_count": 57,
       "task_count": 62,
@@ -52,9 +64,12 @@
       "visible_hidden_distinct_count": 62
     },
     {
+      "behavior_contract_complete_count": 24,
       "complete_tests_count": 24,
       "description": "manual syntax-completion candidates",
       "fair_eval_count": 11,
+      "negative_cases_aligned_count": 24,
+      "negative_descriptions_task_specific_count": 24,
       "range": "435-458",
       "sop_ready_count": 11,
       "task_count": 24,
@@ -67,9 +82,12 @@
       "visible_hidden_distinct_count": 24
     },
     {
+      "behavior_contract_complete_count": 12,
       "complete_tests_count": 12,
       "description": "course-material gap-fill candidates",
       "fair_eval_count": 8,
+      "negative_cases_aligned_count": 12,
+      "negative_descriptions_task_specific_count": 12,
       "range": "459-470",
       "sop_ready_count": 8,
       "task_count": 12,
@@ -82,9 +100,12 @@
       "visible_hidden_distinct_count": 12
     },
     {
+      "behavior_contract_complete_count": 24,
       "complete_tests_count": 24,
       "description": "LRM KCL/continuous-time gap-fill candidates",
       "fair_eval_count": 11,
+      "negative_cases_aligned_count": 24,
+      "negative_descriptions_task_specific_count": 24,
       "range": "471-494",
       "sop_ready_count": 11,
       "task_count": 24,
@@ -100,11 +121,14 @@
   "scope": "benchmark-vabench-release-v3 tasks 301-494",
   "standard": "behavioral-veriloga-vela/SOP.md visible/hidden task standard and four quality criteria",
   "summary": {
+    "behavior_contract_complete_count": 194,
     "complete_tests_count": 194,
     "fair_eval_count": 158,
     "issue_counts": {
       "checker_syntax_only_no_behavior_score": 36
     },
+    "negative_cases_aligned_count": 194,
+    "negative_descriptions_task_specific_count": 194,
     "sop_ready_count": 158,
     "sop_ready_visible_hidden_identical_count": 0,
     "staged_visible_hidden_identical_count": 0,
@@ -117,12 +141,15 @@
   },
   "tasks": [
     {
+      "behavior_contract_complete": true,
       "certification_scope": "extension_not_part_of_original_full_300_claim",
       "complete_tests": true,
       "fair_eval": true,
       "hidden_scs_count": 1,
       "issues": [],
+      "negative_cases_aligned": true,
       "negative_count": 5,
+      "negative_descriptions_task_specific": true,
       "number": 301,
       "reasonable_task": true,
       "solution_file_count": 1,
@@ -141,12 +168,15 @@
       ]
     },
     {
+      "behavior_contract_complete": true,
       "certification_scope": "extension_not_part_of_original_full_300_claim",
       "complete_tests": true,
       "fair_eval": true,
       "hidden_scs_count": 1,
       "issues": [],
+      "negative_cases_aligned": true,
       "negative_count": 5,
+      "negative_descriptions_task_specific": true,
       "number": 302,
       "reasonable_task": true,
       "solution_file_count": 1,
@@ -165,12 +195,15 @@
       ]
     },
     {
+      "behavior_contract_complete": true,
       "certification_scope": "extension_not_part_of_original_full_300_claim",
       "complete_tests": true,
       "fair_eval": true,
       "hidden_scs_count": 1,
       "issues": [],
+      "negative_cases_aligned": true,
       "negative_count": 5,
+      "negative_descriptions_task_specific": true,
       "number": 303,
       "reasonable_task": true,
       "solution_file_count": 1,
@@ -189,12 +222,15 @@
       ]
     },
     {
+      "behavior_contract_complete": true,
       "certification_scope": "extension_not_part_of_original_full_300_claim",
       "complete_tests": true,
       "fair_eval": true,
       "hidden_scs_count": 1,
       "issues": [],
+      "negative_cases_aligned": true,
       "negative_count": 5,
+      "negative_descriptions_task_specific": true,
       "number": 304,
       "reasonable_task": true,
       "solution_file_count": 1,
@@ -213,12 +249,15 @@
       ]
     },
     {
+      "behavior_contract_complete": true,
       "certification_scope": "extension_not_part_of_original_full_300_claim",
       "complete_tests": true,
       "fair_eval": true,
       "hidden_scs_count": 1,
       "issues": [],
+      "negative_cases_aligned": true,
       "negative_count": 5,
+      "negative_descriptions_task_specific": true,
       "number": 305,
       "reasonable_task": true,
       "solution_file_count": 1,
@@ -237,12 +276,15 @@
       ]
     },
     {
+      "behavior_contract_complete": true,
       "certification_scope": "extension_not_part_of_original_full_300_claim",
       "complete_tests": true,
       "fair_eval": true,
       "hidden_scs_count": 1,
       "issues": [],
+      "negative_cases_aligned": true,
       "negative_count": 5,
+      "negative_descriptions_task_specific": true,
       "number": 306,
       "reasonable_task": true,
       "solution_file_count": 1,
@@ -261,12 +303,15 @@
       ]
     },
     {
+      "behavior_contract_complete": true,
       "certification_scope": "extension_not_part_of_original_full_300_claim",
       "complete_tests": true,
       "fair_eval": true,
       "hidden_scs_count": 1,
       "issues": [],
+      "negative_cases_aligned": true,
       "negative_count": 5,
+      "negative_descriptions_task_specific": true,
       "number": 307,
       "reasonable_task": true,
       "solution_file_count": 1,
@@ -285,12 +330,15 @@
       ]
     },
     {
+      "behavior_contract_complete": true,
       "certification_scope": "extension_not_part_of_original_full_300_claim",
       "complete_tests": true,
       "fair_eval": true,
       "hidden_scs_count": 1,
       "issues": [],
+      "negative_cases_aligned": true,
       "negative_count": 5,
+      "negative_descriptions_task_specific": true,
       "number": 308,
       "reasonable_task": true,
       "solution_file_count": 1,
@@ -309,12 +357,15 @@
       ]
     },
     {
+      "behavior_contract_complete": true,
       "certification_scope": "extension_not_part_of_original_full_300_claim",
       "complete_tests": true,
       "fair_eval": true,
       "hidden_scs_count": 1,
       "issues": [],
+      "negative_cases_aligned": true,
       "negative_count": 5,
+      "negative_descriptions_task_specific": true,
       "number": 309,
       "reasonable_task": true,
       "solution_file_count": 1,
@@ -333,12 +384,15 @@
       ]
     },
     {
+      "behavior_contract_complete": true,
       "certification_scope": "extension_not_part_of_original_full_300_claim",
       "complete_tests": true,
       "fair_eval": true,
       "hidden_scs_count": 1,
       "issues": [],
+      "negative_cases_aligned": true,
       "negative_count": 5,
+      "negative_descriptions_task_specific": true,
       "number": 310,
       "reasonable_task": true,
       "solution_file_count": 1,
@@ -357,12 +411,15 @@
       ]
     },
     {
+      "behavior_contract_complete": true,
       "certification_scope": "extension_not_part_of_original_full_300_claim",
       "complete_tests": true,
       "fair_eval": true,
       "hidden_scs_count": 1,
       "issues": [],
+      "negative_cases_aligned": true,
       "negative_count": 5,
+      "negative_descriptions_task_specific": true,
       "number": 311,
       "reasonable_task": true,
       "solution_file_count": 1,
@@ -381,12 +438,15 @@
       ]
     },
     {
+      "behavior_contract_complete": true,
       "certification_scope": "extension_not_part_of_original_full_300_claim",
       "complete_tests": true,
       "fair_eval": true,
       "hidden_scs_count": 1,
       "issues": [],
+      "negative_cases_aligned": true,
       "negative_count": 5,
+      "negative_descriptions_task_specific": true,
       "number": 312,
       "reasonable_task": true,
       "solution_file_count": 1,
@@ -405,12 +465,15 @@
       ]
     },
     {
+      "behavior_contract_complete": true,
       "certification_scope": "extension_not_part_of_original_full_300_claim",
       "complete_tests": true,
       "fair_eval": true,
       "hidden_scs_count": 1,
       "issues": [],
+      "negative_cases_aligned": true,
       "negative_count": 5,
+      "negative_descriptions_task_specific": true,
       "number": 313,
       "reasonable_task": true,
       "solution_file_count": 1,
@@ -429,12 +492,15 @@
       ]
     },
     {
+      "behavior_contract_complete": true,
       "certification_scope": "extension_not_part_of_original_full_300_claim",
       "complete_tests": true,
       "fair_eval": true,
       "hidden_scs_count": 1,
       "issues": [],
+      "negative_cases_aligned": true,
       "negative_count": 5,
+      "negative_descriptions_task_specific": true,
       "number": 314,
       "reasonable_task": true,
       "solution_file_count": 1,
@@ -453,12 +519,15 @@
       ]
     },
     {
+      "behavior_contract_complete": true,
       "certification_scope": "extension_not_part_of_original_full_300_claim",
       "complete_tests": true,
       "fair_eval": true,
       "hidden_scs_count": 1,
       "issues": [],
+      "negative_cases_aligned": true,
       "negative_count": 5,
+      "negative_descriptions_task_specific": true,
       "number": 315,
       "reasonable_task": true,
       "solution_file_count": 1,
@@ -477,12 +546,15 @@
       ]
     },
     {
+      "behavior_contract_complete": true,
       "certification_scope": "extension_not_part_of_original_full_300_claim",
       "complete_tests": true,
       "fair_eval": true,
       "hidden_scs_count": 1,
       "issues": [],
+      "negative_cases_aligned": true,
       "negative_count": 5,
+      "negative_descriptions_task_specific": true,
       "number": 316,
       "reasonable_task": true,
       "solution_file_count": 1,
@@ -501,12 +573,15 @@
       ]
     },
     {
+      "behavior_contract_complete": true,
       "certification_scope": "extension_not_part_of_original_full_300_claim",
       "complete_tests": true,
       "fair_eval": true,
       "hidden_scs_count": 1,
       "issues": [],
+      "negative_cases_aligned": true,
       "negative_count": 5,
+      "negative_descriptions_task_specific": true,
       "number": 317,
       "reasonable_task": true,
       "solution_file_count": 1,
@@ -525,12 +600,15 @@
       ]
     },
     {
+      "behavior_contract_complete": true,
       "certification_scope": "extension_not_part_of_original_full_300_claim",
       "complete_tests": true,
       "fair_eval": true,
       "hidden_scs_count": 1,
       "issues": [],
+      "negative_cases_aligned": true,
       "negative_count": 5,
+      "negative_descriptions_task_specific": true,
       "number": 318,
       "reasonable_task": true,
       "solution_file_count": 1,
@@ -549,12 +627,15 @@
       ]
     },
     {
+      "behavior_contract_complete": true,
       "certification_scope": "extension_not_part_of_original_full_300_claim",
       "complete_tests": true,
       "fair_eval": true,
       "hidden_scs_count": 1,
       "issues": [],
+      "negative_cases_aligned": true,
       "negative_count": 5,
+      "negative_descriptions_task_specific": true,
       "number": 319,
       "reasonable_task": true,
       "solution_file_count": 1,
@@ -573,12 +654,15 @@
       ]
     },
     {
+      "behavior_contract_complete": true,
       "certification_scope": "extension_not_part_of_original_full_300_claim",
       "complete_tests": true,
       "fair_eval": true,
       "hidden_scs_count": 1,
       "issues": [],
+      "negative_cases_aligned": true,
       "negative_count": 5,
+      "negative_descriptions_task_specific": true,
       "number": 320,
       "reasonable_task": true,
       "solution_file_count": 1,
@@ -597,12 +681,15 @@
       ]
     },
     {
+      "behavior_contract_complete": true,
       "certification_scope": "extension_not_part_of_original_full_300_claim",
       "complete_tests": true,
       "fair_eval": true,
       "hidden_scs_count": 1,
       "issues": [],
+      "negative_cases_aligned": true,
       "negative_count": 5,
+      "negative_descriptions_task_specific": true,
       "number": 321,
       "reasonable_task": true,
       "solution_file_count": 1,
@@ -621,12 +708,15 @@
       ]
     },
     {
+      "behavior_contract_complete": true,
       "certification_scope": "extension_not_part_of_original_full_300_claim",
       "complete_tests": true,
       "fair_eval": true,
       "hidden_scs_count": 1,
       "issues": [],
+      "negative_cases_aligned": true,
       "negative_count": 5,
+      "negative_descriptions_task_specific": true,
       "number": 322,
       "reasonable_task": true,
       "solution_file_count": 1,
@@ -645,12 +735,15 @@
       ]
     },
     {
+      "behavior_contract_complete": true,
       "certification_scope": "extension_not_part_of_original_full_300_claim",
       "complete_tests": true,
       "fair_eval": true,
       "hidden_scs_count": 1,
       "issues": [],
+      "negative_cases_aligned": true,
       "negative_count": 5,
+      "negative_descriptions_task_specific": true,
       "number": 323,
       "reasonable_task": true,
       "solution_file_count": 1,
@@ -669,12 +762,15 @@
       ]
     },
     {
+      "behavior_contract_complete": true,
       "certification_scope": "extension_not_part_of_original_full_300_claim",
       "complete_tests": true,
       "fair_eval": true,
       "hidden_scs_count": 1,
       "issues": [],
+      "negative_cases_aligned": true,
       "negative_count": 5,
+      "negative_descriptions_task_specific": true,
       "number": 324,
       "reasonable_task": true,
       "solution_file_count": 1,
@@ -693,12 +789,15 @@
       ]
     },
     {
+      "behavior_contract_complete": true,
       "certification_scope": "extension_not_part_of_original_full_300_claim",
       "complete_tests": true,
       "fair_eval": true,
       "hidden_scs_count": 1,
       "issues": [],
+      "negative_cases_aligned": true,
       "negative_count": 5,
+      "negative_descriptions_task_specific": true,
       "number": 325,
       "reasonable_task": true,
       "solution_file_count": 1,
@@ -717,12 +816,15 @@
       ]
     },
     {
+      "behavior_contract_complete": true,
       "certification_scope": "extension_not_part_of_original_full_300_claim",
       "complete_tests": true,
       "fair_eval": true,
       "hidden_scs_count": 1,
       "issues": [],
+      "negative_cases_aligned": true,
       "negative_count": 5,
+      "negative_descriptions_task_specific": true,
       "number": 326,
       "reasonable_task": true,
       "solution_file_count": 1,
@@ -741,12 +843,15 @@
       ]
     },
     {
+      "behavior_contract_complete": true,
       "certification_scope": "extension_not_part_of_original_full_300_claim",
       "complete_tests": true,
       "fair_eval": true,
       "hidden_scs_count": 1,
       "issues": [],
+      "negative_cases_aligned": true,
       "negative_count": 5,
+      "negative_descriptions_task_specific": true,
       "number": 327,
       "reasonable_task": true,
       "solution_file_count": 1,
@@ -765,12 +870,15 @@
       ]
     },
     {
+      "behavior_contract_complete": true,
       "certification_scope": "extension_not_part_of_original_full_300_claim",
       "complete_tests": true,
       "fair_eval": true,
       "hidden_scs_count": 1,
       "issues": [],
+      "negative_cases_aligned": true,
       "negative_count": 5,
+      "negative_descriptions_task_specific": true,
       "number": 328,
       "reasonable_task": true,
       "solution_file_count": 1,
@@ -789,12 +897,15 @@
       ]
     },
     {
+      "behavior_contract_complete": true,
       "certification_scope": "extension_not_part_of_original_full_300_claim",
       "complete_tests": true,
       "fair_eval": true,
       "hidden_scs_count": 1,
       "issues": [],
+      "negative_cases_aligned": true,
       "negative_count": 5,
+      "negative_descriptions_task_specific": true,
       "number": 329,
       "reasonable_task": true,
       "solution_file_count": 1,
@@ -813,12 +924,15 @@
       ]
     },
     {
+      "behavior_contract_complete": true,
       "certification_scope": "extension_not_part_of_original_full_300_claim",
       "complete_tests": true,
       "fair_eval": true,
       "hidden_scs_count": 1,
       "issues": [],
+      "negative_cases_aligned": true,
       "negative_count": 5,
+      "negative_descriptions_task_specific": true,
       "number": 330,
       "reasonable_task": true,
       "solution_file_count": 1,
@@ -837,12 +951,15 @@
       ]
     },
     {
+      "behavior_contract_complete": true,
       "certification_scope": "extension_not_part_of_original_full_300_claim",
       "complete_tests": true,
       "fair_eval": true,
       "hidden_scs_count": 1,
       "issues": [],
+      "negative_cases_aligned": true,
       "negative_count": 5,
+      "negative_descriptions_task_specific": true,
       "number": 331,
       "reasonable_task": true,
       "solution_file_count": 1,
@@ -861,12 +978,15 @@
       ]
     },
     {
+      "behavior_contract_complete": true,
       "certification_scope": "extension_not_part_of_original_full_300_claim",
       "complete_tests": true,
       "fair_eval": true,
       "hidden_scs_count": 1,
       "issues": [],
+      "negative_cases_aligned": true,
       "negative_count": 5,
+      "negative_descriptions_task_specific": true,
       "number": 332,
       "reasonable_task": true,
       "solution_file_count": 1,
@@ -885,12 +1005,15 @@
       ]
     },
     {
+      "behavior_contract_complete": true,
       "certification_scope": "extension_not_part_of_original_full_300_claim",
       "complete_tests": true,
       "fair_eval": true,
       "hidden_scs_count": 1,
       "issues": [],
+      "negative_cases_aligned": true,
       "negative_count": 5,
+      "negative_descriptions_task_specific": true,
       "number": 333,
       "reasonable_task": true,
       "solution_file_count": 1,
@@ -909,12 +1032,15 @@
       ]
     },
     {
+      "behavior_contract_complete": true,
       "certification_scope": "extension_not_part_of_original_full_300_claim",
       "complete_tests": true,
       "fair_eval": true,
       "hidden_scs_count": 1,
       "issues": [],
+      "negative_cases_aligned": true,
       "negative_count": 5,
+      "negative_descriptions_task_specific": true,
       "number": 334,
       "reasonable_task": true,
       "solution_file_count": 1,
@@ -933,12 +1059,15 @@
       ]
     },
     {
+      "behavior_contract_complete": true,
       "certification_scope": "extension_not_part_of_original_full_300_claim",
       "complete_tests": true,
       "fair_eval": true,
       "hidden_scs_count": 1,
       "issues": [],
+      "negative_cases_aligned": true,
       "negative_count": 5,
+      "negative_descriptions_task_specific": true,
       "number": 335,
       "reasonable_task": true,
       "solution_file_count": 1,
@@ -957,12 +1086,15 @@
       ]
     },
     {
+      "behavior_contract_complete": true,
       "certification_scope": "extension_not_part_of_original_full_300_claim",
       "complete_tests": true,
       "fair_eval": true,
       "hidden_scs_count": 1,
       "issues": [],
+      "negative_cases_aligned": true,
       "negative_count": 5,
+      "negative_descriptions_task_specific": true,
       "number": 336,
       "reasonable_task": true,
       "solution_file_count": 1,
@@ -981,12 +1113,15 @@
       ]
     },
     {
+      "behavior_contract_complete": true,
       "certification_scope": "extension_not_part_of_original_full_300_claim",
       "complete_tests": true,
       "fair_eval": true,
       "hidden_scs_count": 1,
       "issues": [],
+      "negative_cases_aligned": true,
       "negative_count": 5,
+      "negative_descriptions_task_specific": true,
       "number": 337,
       "reasonable_task": true,
       "solution_file_count": 1,
@@ -1005,12 +1140,15 @@
       ]
     },
     {
+      "behavior_contract_complete": true,
       "certification_scope": "extension_not_part_of_original_full_300_claim",
       "complete_tests": true,
       "fair_eval": true,
       "hidden_scs_count": 1,
       "issues": [],
+      "negative_cases_aligned": true,
       "negative_count": 5,
+      "negative_descriptions_task_specific": true,
       "number": 338,
       "reasonable_task": true,
       "solution_file_count": 1,
@@ -1029,12 +1167,15 @@
       ]
     },
     {
+      "behavior_contract_complete": true,
       "certification_scope": "extension_not_part_of_original_full_300_claim",
       "complete_tests": true,
       "fair_eval": true,
       "hidden_scs_count": 1,
       "issues": [],
+      "negative_cases_aligned": true,
       "negative_count": 5,
+      "negative_descriptions_task_specific": true,
       "number": 339,
       "reasonable_task": true,
       "solution_file_count": 1,
@@ -1053,12 +1194,15 @@
       ]
     },
     {
+      "behavior_contract_complete": true,
       "certification_scope": "extension_not_part_of_original_full_300_claim",
       "complete_tests": true,
       "fair_eval": true,
       "hidden_scs_count": 1,
       "issues": [],
+      "negative_cases_aligned": true,
       "negative_count": 5,
+      "negative_descriptions_task_specific": true,
       "number": 340,
       "reasonable_task": true,
       "solution_file_count": 1,
@@ -1077,12 +1221,15 @@
       ]
     },
     {
+      "behavior_contract_complete": true,
       "certification_scope": "ams_extension_not_part_of_original_full_300_claim",
       "complete_tests": true,
       "fair_eval": true,
       "hidden_scs_count": 1,
       "issues": [],
+      "negative_cases_aligned": true,
       "negative_count": 5,
+      "negative_descriptions_task_specific": true,
       "number": 341,
       "reasonable_task": true,
       "solution_file_count": 1,
@@ -1101,12 +1248,15 @@
       ]
     },
     {
+      "behavior_contract_complete": true,
       "certification_scope": "ams_extension_not_part_of_original_full_300_claim",
       "complete_tests": true,
       "fair_eval": true,
       "hidden_scs_count": 1,
       "issues": [],
+      "negative_cases_aligned": true,
       "negative_count": 5,
+      "negative_descriptions_task_specific": true,
       "number": 342,
       "reasonable_task": true,
       "solution_file_count": 1,
@@ -1125,12 +1275,15 @@
       ]
     },
     {
+      "behavior_contract_complete": true,
       "certification_scope": "ams_extension_not_part_of_original_full_300_claim",
       "complete_tests": true,
       "fair_eval": true,
       "hidden_scs_count": 1,
       "issues": [],
+      "negative_cases_aligned": true,
       "negative_count": 5,
+      "negative_descriptions_task_specific": true,
       "number": 343,
       "reasonable_task": true,
       "solution_file_count": 1,
@@ -1149,12 +1302,15 @@
       ]
     },
     {
+      "behavior_contract_complete": true,
       "certification_scope": "ams_extension_not_part_of_original_full_300_claim",
       "complete_tests": true,
       "fair_eval": true,
       "hidden_scs_count": 1,
       "issues": [],
+      "negative_cases_aligned": true,
       "negative_count": 5,
+      "negative_descriptions_task_specific": true,
       "number": 344,
       "reasonable_task": true,
       "solution_file_count": 1,
@@ -1173,12 +1329,15 @@
       ]
     },
     {
+      "behavior_contract_complete": true,
       "certification_scope": "ams_extension_not_part_of_original_full_300_claim",
       "complete_tests": true,
       "fair_eval": true,
       "hidden_scs_count": 1,
       "issues": [],
+      "negative_cases_aligned": true,
       "negative_count": 5,
+      "negative_descriptions_task_specific": true,
       "number": 345,
       "reasonable_task": true,
       "solution_file_count": 1,
@@ -1197,12 +1356,15 @@
       ]
     },
     {
+      "behavior_contract_complete": true,
       "certification_scope": "ams_extension_not_part_of_original_full_300_claim",
       "complete_tests": true,
       "fair_eval": true,
       "hidden_scs_count": 1,
       "issues": [],
+      "negative_cases_aligned": true,
       "negative_count": 5,
+      "negative_descriptions_task_specific": true,
       "number": 346,
       "reasonable_task": true,
       "solution_file_count": 1,
@@ -1221,12 +1383,15 @@
       ]
     },
     {
+      "behavior_contract_complete": true,
       "certification_scope": "ams_extension_not_part_of_original_full_300_claim",
       "complete_tests": true,
       "fair_eval": true,
       "hidden_scs_count": 1,
       "issues": [],
+      "negative_cases_aligned": true,
       "negative_count": 5,
+      "negative_descriptions_task_specific": true,
       "number": 347,
       "reasonable_task": true,
       "solution_file_count": 1,
@@ -1245,12 +1410,15 @@
       ]
     },
     {
+      "behavior_contract_complete": true,
       "certification_scope": "ams_extension_not_part_of_original_full_300_claim",
       "complete_tests": true,
       "fair_eval": true,
       "hidden_scs_count": 1,
       "issues": [],
+      "negative_cases_aligned": true,
       "negative_count": 5,
+      "negative_descriptions_task_specific": true,
       "number": 348,
       "reasonable_task": true,
       "solution_file_count": 1,
@@ -1269,12 +1437,15 @@
       ]
     },
     {
+      "behavior_contract_complete": true,
       "certification_scope": "ams_extension_not_part_of_original_full_300_claim",
       "complete_tests": true,
       "fair_eval": true,
       "hidden_scs_count": 1,
       "issues": [],
+      "negative_cases_aligned": true,
       "negative_count": 5,
+      "negative_descriptions_task_specific": true,
       "number": 349,
       "reasonable_task": true,
       "solution_file_count": 1,
@@ -1293,12 +1464,15 @@
       ]
     },
     {
+      "behavior_contract_complete": true,
       "certification_scope": "ams_extension_not_part_of_original_full_300_claim",
       "complete_tests": true,
       "fair_eval": true,
       "hidden_scs_count": 1,
       "issues": [],
+      "negative_cases_aligned": true,
       "negative_count": 5,
+      "negative_descriptions_task_specific": true,
       "number": 350,
       "reasonable_task": true,
       "solution_file_count": 1,
@@ -1317,12 +1491,15 @@
       ]
     },
     {
+      "behavior_contract_complete": true,
       "certification_scope": "ams_extension_not_part_of_original_full_300_claim",
       "complete_tests": true,
       "fair_eval": true,
       "hidden_scs_count": 1,
       "issues": [],
+      "negative_cases_aligned": true,
       "negative_count": 5,
+      "negative_descriptions_task_specific": true,
       "number": 351,
       "reasonable_task": true,
       "solution_file_count": 1,
@@ -1341,12 +1518,15 @@
       ]
     },
     {
+      "behavior_contract_complete": true,
       "certification_scope": "ams_extension_not_part_of_original_full_300_claim",
       "complete_tests": true,
       "fair_eval": true,
       "hidden_scs_count": 1,
       "issues": [],
+      "negative_cases_aligned": true,
       "negative_count": 5,
+      "negative_descriptions_task_specific": true,
       "number": 352,
       "reasonable_task": true,
       "solution_file_count": 1,
@@ -1365,6 +1545,7 @@
       ]
     },
     {
+      "behavior_contract_complete": true,
       "certification_scope": "ams_extension_not_part_of_original_full_300_claim",
       "complete_tests": true,
       "fair_eval": false,
@@ -1372,7 +1553,9 @@
       "issues": [
         "checker_syntax_only_no_behavior_score"
       ],
+      "negative_cases_aligned": true,
       "negative_count": 5,
+      "negative_descriptions_task_specific": true,
       "number": 353,
       "reasonable_task": true,
       "solution_file_count": 1,
@@ -1391,12 +1574,15 @@
       ]
     },
     {
+      "behavior_contract_complete": true,
       "certification_scope": "ams_extension_not_part_of_original_full_300_claim",
       "complete_tests": true,
       "fair_eval": true,
       "hidden_scs_count": 1,
       "issues": [],
+      "negative_cases_aligned": true,
       "negative_count": 5,
+      "negative_descriptions_task_specific": true,
       "number": 354,
       "reasonable_task": true,
       "solution_file_count": 1,
@@ -1415,12 +1601,15 @@
       ]
     },
     {
+      "behavior_contract_complete": true,
       "certification_scope": "ams_extension_not_part_of_original_full_300_claim",
       "complete_tests": true,
       "fair_eval": true,
       "hidden_scs_count": 1,
       "issues": [],
+      "negative_cases_aligned": true,
       "negative_count": 5,
+      "negative_descriptions_task_specific": true,
       "number": 355,
       "reasonable_task": true,
       "solution_file_count": 1,
@@ -1439,12 +1628,15 @@
       ]
     },
     {
+      "behavior_contract_complete": true,
       "certification_scope": "ams_extension_not_part_of_original_full_300_claim",
       "complete_tests": true,
       "fair_eval": true,
       "hidden_scs_count": 1,
       "issues": [],
+      "negative_cases_aligned": true,
       "negative_count": 5,
+      "negative_descriptions_task_specific": true,
       "number": 356,
       "reasonable_task": true,
       "solution_file_count": 1,
@@ -1463,12 +1655,15 @@
       ]
     },
     {
+      "behavior_contract_complete": true,
       "certification_scope": "ams_extension_not_part_of_original_full_300_claim",
       "complete_tests": true,
       "fair_eval": true,
       "hidden_scs_count": 1,
       "issues": [],
+      "negative_cases_aligned": true,
       "negative_count": 5,
+      "negative_descriptions_task_specific": true,
       "number": 357,
       "reasonable_task": true,
       "solution_file_count": 1,
@@ -1487,12 +1682,15 @@
       ]
     },
     {
+      "behavior_contract_complete": true,
       "certification_scope": "ams_extension_not_part_of_original_full_300_claim",
       "complete_tests": true,
       "fair_eval": true,
       "hidden_scs_count": 1,
       "issues": [],
+      "negative_cases_aligned": true,
       "negative_count": 5,
+      "negative_descriptions_task_specific": true,
       "number": 358,
       "reasonable_task": true,
       "solution_file_count": 1,
@@ -1511,12 +1709,15 @@
       ]
     },
     {
+      "behavior_contract_complete": true,
       "certification_scope": "ams_extension_not_part_of_original_full_300_claim",
       "complete_tests": true,
       "fair_eval": true,
       "hidden_scs_count": 1,
       "issues": [],
+      "negative_cases_aligned": true,
       "negative_count": 5,
+      "negative_descriptions_task_specific": true,
       "number": 359,
       "reasonable_task": true,
       "solution_file_count": 1,
@@ -1535,12 +1736,15 @@
       ]
     },
     {
+      "behavior_contract_complete": true,
       "certification_scope": "ams_extension_not_part_of_original_full_300_claim",
       "complete_tests": true,
       "fair_eval": true,
       "hidden_scs_count": 1,
       "issues": [],
+      "negative_cases_aligned": true,
       "negative_count": 5,
+      "negative_descriptions_task_specific": true,
       "number": 360,
       "reasonable_task": true,
       "solution_file_count": 1,
@@ -1559,12 +1763,15 @@
       ]
     },
     {
+      "behavior_contract_complete": true,
       "certification_scope": "noise_analysis_extension_not_part_of_original_full_300_claim",
       "complete_tests": true,
       "fair_eval": true,
       "hidden_scs_count": 1,
       "issues": [],
+      "negative_cases_aligned": true,
       "negative_count": 5,
+      "negative_descriptions_task_specific": true,
       "number": 361,
       "reasonable_task": true,
       "solution_file_count": 1,
@@ -1583,12 +1790,15 @@
       ]
     },
     {
+      "behavior_contract_complete": true,
       "certification_scope": "noise_analysis_extension_not_part_of_original_full_300_claim",
       "complete_tests": true,
       "fair_eval": true,
       "hidden_scs_count": 1,
       "issues": [],
+      "negative_cases_aligned": true,
       "negative_count": 5,
+      "negative_descriptions_task_specific": true,
       "number": 362,
       "reasonable_task": true,
       "solution_file_count": 1,
@@ -1607,12 +1817,15 @@
       ]
     },
     {
+      "behavior_contract_complete": true,
       "certification_scope": "noise_analysis_extension_not_part_of_original_full_300_claim",
       "complete_tests": true,
       "fair_eval": true,
       "hidden_scs_count": 1,
       "issues": [],
+      "negative_cases_aligned": true,
       "negative_count": 5,
+      "negative_descriptions_task_specific": true,
       "number": 363,
       "reasonable_task": true,
       "solution_file_count": 1,
@@ -1631,12 +1844,15 @@
       ]
     },
     {
+      "behavior_contract_complete": true,
       "certification_scope": "noise_analysis_extension_not_part_of_original_full_300_claim",
       "complete_tests": true,
       "fair_eval": true,
       "hidden_scs_count": 1,
       "issues": [],
+      "negative_cases_aligned": true,
       "negative_count": 5,
+      "negative_descriptions_task_specific": true,
       "number": 364,
       "reasonable_task": true,
       "solution_file_count": 1,
@@ -1655,12 +1871,15 @@
       ]
     },
     {
+      "behavior_contract_complete": true,
       "certification_scope": "noise_analysis_extension_not_part_of_original_full_300_claim",
       "complete_tests": true,
       "fair_eval": true,
       "hidden_scs_count": 1,
       "issues": [],
+      "negative_cases_aligned": true,
       "negative_count": 5,
+      "negative_descriptions_task_specific": true,
       "number": 365,
       "reasonable_task": true,
       "solution_file_count": 1,
@@ -1679,12 +1898,15 @@
       ]
     },
     {
+      "behavior_contract_complete": true,
       "certification_scope": "noise_analysis_extension_not_part_of_original_full_300_claim",
       "complete_tests": true,
       "fair_eval": true,
       "hidden_scs_count": 1,
       "issues": [],
+      "negative_cases_aligned": true,
       "negative_count": 5,
+      "negative_descriptions_task_specific": true,
       "number": 366,
       "reasonable_task": true,
       "solution_file_count": 1,
@@ -1703,12 +1925,15 @@
       ]
     },
     {
+      "behavior_contract_complete": true,
       "certification_scope": "noise_analysis_extension_not_part_of_original_full_300_claim",
       "complete_tests": true,
       "fair_eval": true,
       "hidden_scs_count": 1,
       "issues": [],
+      "negative_cases_aligned": true,
       "negative_count": 5,
+      "negative_descriptions_task_specific": true,
       "number": 367,
       "reasonable_task": true,
       "solution_file_count": 1,
@@ -1727,12 +1952,15 @@
       ]
     },
     {
+      "behavior_contract_complete": true,
       "certification_scope": "noise_analysis_extension_not_part_of_original_full_300_claim",
       "complete_tests": true,
       "fair_eval": true,
       "hidden_scs_count": 1,
       "issues": [],
+      "negative_cases_aligned": true,
       "negative_count": 5,
+      "negative_descriptions_task_specific": true,
       "number": 368,
       "reasonable_task": true,
       "solution_file_count": 1,
@@ -1751,12 +1979,15 @@
       ]
     },
     {
+      "behavior_contract_complete": true,
       "certification_scope": "noise_analysis_extension_not_part_of_original_full_300_claim",
       "complete_tests": true,
       "fair_eval": true,
       "hidden_scs_count": 1,
       "issues": [],
+      "negative_cases_aligned": true,
       "negative_count": 5,
+      "negative_descriptions_task_specific": true,
       "number": 369,
       "reasonable_task": true,
       "solution_file_count": 1,
@@ -1775,12 +2006,15 @@
       ]
     },
     {
+      "behavior_contract_complete": true,
       "certification_scope": "noise_analysis_extension_not_part_of_original_full_300_claim",
       "complete_tests": true,
       "fair_eval": true,
       "hidden_scs_count": 1,
       "issues": [],
+      "negative_cases_aligned": true,
       "negative_count": 5,
+      "negative_descriptions_task_specific": true,
       "number": 370,
       "reasonable_task": true,
       "solution_file_count": 1,
@@ -1799,12 +2033,15 @@
       ]
     },
     {
+      "behavior_contract_complete": true,
       "certification_scope": "noise_analysis_extension_not_part_of_original_full_300_claim",
       "complete_tests": true,
       "fair_eval": true,
       "hidden_scs_count": 1,
       "issues": [],
+      "negative_cases_aligned": true,
       "negative_count": 5,
+      "negative_descriptions_task_specific": true,
       "number": 371,
       "reasonable_task": true,
       "solution_file_count": 1,
@@ -1823,12 +2060,15 @@
       ]
     },
     {
+      "behavior_contract_complete": true,
       "certification_scope": "noise_analysis_extension_not_part_of_original_full_300_claim",
       "complete_tests": true,
       "fair_eval": true,
       "hidden_scs_count": 1,
       "issues": [],
+      "negative_cases_aligned": true,
       "negative_count": 5,
+      "negative_descriptions_task_specific": true,
       "number": 372,
       "reasonable_task": true,
       "solution_file_count": 1,
@@ -1847,12 +2087,15 @@
       ]
     },
     {
+      "behavior_contract_complete": true,
       "certification_scope": "language_extension_not_part_of_original_full_300_claim",
       "complete_tests": true,
       "fair_eval": true,
       "hidden_scs_count": 1,
       "issues": [],
+      "negative_cases_aligned": true,
       "negative_count": 5,
+      "negative_descriptions_task_specific": true,
       "number": 373,
       "reasonable_task": true,
       "solution_file_count": 1,
@@ -1871,12 +2114,15 @@
       ]
     },
     {
+      "behavior_contract_complete": true,
       "certification_scope": "language_extension_not_part_of_original_full_300_claim",
       "complete_tests": true,
       "fair_eval": true,
       "hidden_scs_count": 1,
       "issues": [],
+      "negative_cases_aligned": true,
       "negative_count": 5,
+      "negative_descriptions_task_specific": true,
       "number": 374,
       "reasonable_task": true,
       "solution_file_count": 1,
@@ -1895,12 +2141,15 @@
       ]
     },
     {
+      "behavior_contract_complete": true,
       "certification_scope": "language_extension_not_part_of_original_full_300_claim",
       "complete_tests": true,
       "fair_eval": true,
       "hidden_scs_count": 1,
       "issues": [],
+      "negative_cases_aligned": true,
       "negative_count": 5,
+      "negative_descriptions_task_specific": true,
       "number": 375,
       "reasonable_task": true,
       "solution_file_count": 1,
@@ -1919,12 +2168,15 @@
       ]
     },
     {
+      "behavior_contract_complete": true,
       "certification_scope": "language_extension_not_part_of_original_full_300_claim",
       "complete_tests": true,
       "fair_eval": true,
       "hidden_scs_count": 1,
       "issues": [],
+      "negative_cases_aligned": true,
       "negative_count": 5,
+      "negative_descriptions_task_specific": true,
       "number": 376,
       "reasonable_task": true,
       "solution_file_count": 1,
@@ -1943,12 +2195,15 @@
       ]
     },
     {
+      "behavior_contract_complete": true,
       "certification_scope": "language_extension_not_part_of_original_full_300_claim",
       "complete_tests": true,
       "fair_eval": true,
       "hidden_scs_count": 1,
       "issues": [],
+      "negative_cases_aligned": true,
       "negative_count": 5,
+      "negative_descriptions_task_specific": true,
       "number": 377,
       "reasonable_task": true,
       "solution_file_count": 1,
@@ -1967,12 +2222,15 @@
       ]
     },
     {
+      "behavior_contract_complete": true,
       "certification_scope": "language_extension_not_part_of_original_full_300_claim",
       "complete_tests": true,
       "fair_eval": true,
       "hidden_scs_count": 1,
       "issues": [],
+      "negative_cases_aligned": true,
       "negative_count": 5,
+      "negative_descriptions_task_specific": true,
       "number": 378,
       "reasonable_task": true,
       "solution_file_count": 1,
@@ -1991,12 +2249,15 @@
       ]
     },
     {
+      "behavior_contract_complete": true,
       "certification_scope": "language_extension_not_part_of_original_full_300_claim",
       "complete_tests": true,
       "fair_eval": true,
       "hidden_scs_count": 1,
       "issues": [],
+      "negative_cases_aligned": true,
       "negative_count": 5,
+      "negative_descriptions_task_specific": true,
       "number": 379,
       "reasonable_task": true,
       "solution_file_count": 2,
@@ -2015,12 +2276,15 @@
       ]
     },
     {
+      "behavior_contract_complete": true,
       "certification_scope": "language_extension_not_part_of_original_full_300_claim",
       "complete_tests": true,
       "fair_eval": true,
       "hidden_scs_count": 1,
       "issues": [],
+      "negative_cases_aligned": true,
       "negative_count": 5,
+      "negative_descriptions_task_specific": true,
       "number": 380,
       "reasonable_task": true,
       "solution_file_count": 2,
@@ -2039,12 +2303,15 @@
       ]
     },
     {
+      "behavior_contract_complete": true,
       "certification_scope": "language_extension_not_part_of_original_full_300_claim",
       "complete_tests": true,
       "fair_eval": true,
       "hidden_scs_count": 1,
       "issues": [],
+      "negative_cases_aligned": true,
       "negative_count": 5,
+      "negative_descriptions_task_specific": true,
       "number": 381,
       "reasonable_task": true,
       "solution_file_count": 2,
@@ -2063,12 +2330,15 @@
       ]
     },
     {
+      "behavior_contract_complete": true,
       "certification_scope": "language_extension_not_part_of_original_full_300_claim",
       "complete_tests": true,
       "fair_eval": true,
       "hidden_scs_count": 1,
       "issues": [],
+      "negative_cases_aligned": true,
       "negative_count": 5,
+      "negative_descriptions_task_specific": true,
       "number": 382,
       "reasonable_task": true,
       "solution_file_count": 2,
@@ -2087,12 +2357,15 @@
       ]
     },
     {
+      "behavior_contract_complete": true,
       "certification_scope": "language_extension_not_part_of_original_full_300_claim",
       "complete_tests": true,
       "fair_eval": true,
       "hidden_scs_count": 1,
       "issues": [],
+      "negative_cases_aligned": true,
       "negative_count": 5,
+      "negative_descriptions_task_specific": true,
       "number": 383,
       "reasonable_task": true,
       "solution_file_count": 2,
@@ -2111,12 +2384,15 @@
       ]
     },
     {
+      "behavior_contract_complete": true,
       "certification_scope": "language_extension_not_part_of_original_full_300_claim",
       "complete_tests": true,
       "fair_eval": true,
       "hidden_scs_count": 1,
       "issues": [],
+      "negative_cases_aligned": true,
       "negative_count": 5,
+      "negative_descriptions_task_specific": true,
       "number": 384,
       "reasonable_task": true,
       "solution_file_count": 2,
@@ -2135,12 +2411,15 @@
       ]
     },
     {
+      "behavior_contract_complete": true,
       "certification_scope": "language_extension_not_part_of_original_full_300_claim",
       "complete_tests": true,
       "fair_eval": true,
       "hidden_scs_count": 1,
       "issues": [],
+      "negative_cases_aligned": true,
       "negative_count": 5,
+      "negative_descriptions_task_specific": true,
       "number": 385,
       "reasonable_task": true,
       "solution_file_count": 2,
@@ -2159,12 +2438,15 @@
       ]
     },
     {
+      "behavior_contract_complete": true,
       "certification_scope": "language_extension_not_part_of_original_full_300_claim",
       "complete_tests": true,
       "fair_eval": true,
       "hidden_scs_count": 1,
       "issues": [],
+      "negative_cases_aligned": true,
       "negative_count": 5,
+      "negative_descriptions_task_specific": true,
       "number": 386,
       "reasonable_task": true,
       "solution_file_count": 2,
@@ -2183,12 +2465,15 @@
       ]
     },
     {
+      "behavior_contract_complete": true,
       "certification_scope": "language_extension_not_part_of_original_full_300_claim",
       "complete_tests": true,
       "fair_eval": true,
       "hidden_scs_count": 1,
       "issues": [],
+      "negative_cases_aligned": true,
       "negative_count": 5,
+      "negative_descriptions_task_specific": true,
       "number": 387,
       "reasonable_task": true,
       "solution_file_count": 2,
@@ -2207,12 +2492,15 @@
       ]
     },
     {
+      "behavior_contract_complete": true,
       "certification_scope": "language_extension_not_part_of_original_full_300_claim",
       "complete_tests": true,
       "fair_eval": true,
       "hidden_scs_count": 1,
       "issues": [],
+      "negative_cases_aligned": true,
       "negative_count": 5,
+      "negative_descriptions_task_specific": true,
       "number": 388,
       "reasonable_task": true,
       "solution_file_count": 2,
@@ -2231,12 +2519,15 @@
       ]
     },
     {
+      "behavior_contract_complete": true,
       "certification_scope": "language_extension_not_part_of_original_full_300_claim",
       "complete_tests": true,
       "fair_eval": true,
       "hidden_scs_count": 1,
       "issues": [],
+      "negative_cases_aligned": true,
       "negative_count": 5,
+      "negative_descriptions_task_specific": true,
       "number": 389,
       "reasonable_task": true,
       "solution_file_count": 2,
@@ -2255,12 +2546,15 @@
       ]
     },
     {
+      "behavior_contract_complete": true,
       "certification_scope": "language_extension_not_part_of_original_full_300_claim",
       "complete_tests": true,
       "fair_eval": true,
       "hidden_scs_count": 1,
       "issues": [],
+      "negative_cases_aligned": true,
       "negative_count": 5,
+      "negative_descriptions_task_specific": true,
       "number": 390,
       "reasonable_task": true,
       "solution_file_count": 2,
@@ -2279,12 +2573,15 @@
       ]
     },
     {
+      "behavior_contract_complete": true,
       "certification_scope": "language_extension_not_part_of_original_full_300_claim",
       "complete_tests": true,
       "fair_eval": true,
       "hidden_scs_count": 1,
       "issues": [],
+      "negative_cases_aligned": true,
       "negative_count": 5,
+      "negative_descriptions_task_specific": true,
       "number": 391,
       "reasonable_task": true,
       "solution_file_count": 1,
@@ -2303,12 +2600,15 @@
       ]
     },
     {
+      "behavior_contract_complete": true,
       "certification_scope": "language_extension_not_part_of_original_full_300_claim",
       "complete_tests": true,
       "fair_eval": true,
       "hidden_scs_count": 1,
       "issues": [],
+      "negative_cases_aligned": true,
       "negative_count": 5,
+      "negative_descriptions_task_specific": true,
       "number": 392,
       "reasonable_task": true,
       "solution_file_count": 1,
@@ -2327,12 +2627,15 @@
       ]
     },
     {
+      "behavior_contract_complete": true,
       "certification_scope": "language_extension_not_part_of_original_full_300_claim",
       "complete_tests": true,
       "fair_eval": true,
       "hidden_scs_count": 1,
       "issues": [],
+      "negative_cases_aligned": true,
       "negative_count": 5,
+      "negative_descriptions_task_specific": true,
       "number": 393,
       "reasonable_task": true,
       "solution_file_count": 1,
@@ -2351,12 +2654,15 @@
       ]
     },
     {
+      "behavior_contract_complete": true,
       "certification_scope": "language_extension_not_part_of_original_full_300_claim",
       "complete_tests": true,
       "fair_eval": true,
       "hidden_scs_count": 1,
       "issues": [],
+      "negative_cases_aligned": true,
       "negative_count": 5,
+      "negative_descriptions_task_specific": true,
       "number": 394,
       "reasonable_task": true,
       "solution_file_count": 1,
@@ -2375,12 +2681,15 @@
       ]
     },
     {
+      "behavior_contract_complete": true,
       "certification_scope": "language_extension_not_part_of_original_full_300_claim",
       "complete_tests": true,
       "fair_eval": true,
       "hidden_scs_count": 1,
       "issues": [],
+      "negative_cases_aligned": true,
       "negative_count": 5,
+      "negative_descriptions_task_specific": true,
       "number": 395,
       "reasonable_task": true,
       "solution_file_count": 1,
@@ -2399,12 +2708,15 @@
       ]
     },
     {
+      "behavior_contract_complete": true,
       "certification_scope": "language_extension_not_part_of_original_full_300_claim",
       "complete_tests": true,
       "fair_eval": true,
       "hidden_scs_count": 1,
       "issues": [],
+      "negative_cases_aligned": true,
       "negative_count": 5,
+      "negative_descriptions_task_specific": true,
       "number": 396,
       "reasonable_task": true,
       "solution_file_count": 1,
@@ -2423,12 +2735,15 @@
       ]
     },
     {
+      "behavior_contract_complete": true,
       "certification_scope": "language_extension_not_part_of_original_full_300_claim",
       "complete_tests": true,
       "fair_eval": true,
       "hidden_scs_count": 1,
       "issues": [],
+      "negative_cases_aligned": true,
       "negative_count": 5,
+      "negative_descriptions_task_specific": true,
       "number": 397,
       "reasonable_task": true,
       "solution_file_count": 2,
@@ -2447,12 +2762,15 @@
       ]
     },
     {
+      "behavior_contract_complete": true,
       "certification_scope": "language_extension_not_part_of_original_full_300_claim",
       "complete_tests": true,
       "fair_eval": true,
       "hidden_scs_count": 1,
       "issues": [],
+      "negative_cases_aligned": true,
       "negative_count": 5,
+      "negative_descriptions_task_specific": true,
       "number": 398,
       "reasonable_task": true,
       "solution_file_count": 2,
@@ -2471,12 +2789,15 @@
       ]
     },
     {
+      "behavior_contract_complete": true,
       "certification_scope": "language_extension_not_part_of_original_full_300_claim",
       "complete_tests": true,
       "fair_eval": true,
       "hidden_scs_count": 1,
       "issues": [],
+      "negative_cases_aligned": true,
       "negative_count": 5,
+      "negative_descriptions_task_specific": true,
       "number": 399,
       "reasonable_task": true,
       "solution_file_count": 2,
@@ -2495,12 +2816,15 @@
       ]
     },
     {
+      "behavior_contract_complete": true,
       "certification_scope": "language_extension_not_part_of_original_full_300_claim",
       "complete_tests": true,
       "fair_eval": true,
       "hidden_scs_count": 1,
       "issues": [],
+      "negative_cases_aligned": true,
       "negative_count": 5,
+      "negative_descriptions_task_specific": true,
       "number": 400,
       "reasonable_task": true,
       "solution_file_count": 2,
@@ -2519,12 +2843,15 @@
       ]
     },
     {
+      "behavior_contract_complete": true,
       "certification_scope": "language_extension_not_part_of_original_full_300_claim",
       "complete_tests": true,
       "fair_eval": true,
       "hidden_scs_count": 1,
       "issues": [],
+      "negative_cases_aligned": true,
       "negative_count": 5,
+      "negative_descriptions_task_specific": true,
       "number": 401,
       "reasonable_task": true,
       "solution_file_count": 2,
@@ -2543,12 +2870,15 @@
       ]
     },
     {
+      "behavior_contract_complete": true,
       "certification_scope": "language_extension_not_part_of_original_full_300_claim",
       "complete_tests": true,
       "fair_eval": true,
       "hidden_scs_count": 1,
       "issues": [],
+      "negative_cases_aligned": true,
       "negative_count": 5,
+      "negative_descriptions_task_specific": true,
       "number": 402,
       "reasonable_task": true,
       "solution_file_count": 2,
@@ -2567,12 +2897,15 @@
       ]
     },
     {
+      "behavior_contract_complete": true,
       "certification_scope": "language_extension_not_part_of_original_full_300_claim",
       "complete_tests": true,
       "fair_eval": true,
       "hidden_scs_count": 1,
       "issues": [],
+      "negative_cases_aligned": true,
       "negative_count": 5,
+      "negative_descriptions_task_specific": true,
       "number": 403,
       "reasonable_task": true,
       "solution_file_count": 1,
@@ -2591,12 +2924,15 @@
       ]
     },
     {
+      "behavior_contract_complete": true,
       "certification_scope": "language_extension_not_part_of_original_full_300_claim",
       "complete_tests": true,
       "fair_eval": true,
       "hidden_scs_count": 1,
       "issues": [],
+      "negative_cases_aligned": true,
       "negative_count": 5,
+      "negative_descriptions_task_specific": true,
       "number": 404,
       "reasonable_task": true,
       "solution_file_count": 1,
@@ -2615,12 +2951,15 @@
       ]
     },
     {
+      "behavior_contract_complete": true,
       "certification_scope": "language_extension_not_part_of_original_full_300_claim",
       "complete_tests": true,
       "fair_eval": true,
       "hidden_scs_count": 1,
       "issues": [],
+      "negative_cases_aligned": true,
       "negative_count": 5,
+      "negative_descriptions_task_specific": true,
       "number": 405,
       "reasonable_task": true,
       "solution_file_count": 1,
@@ -2639,12 +2978,15 @@
       ]
     },
     {
+      "behavior_contract_complete": true,
       "certification_scope": "language_extension_not_part_of_original_full_300_claim",
       "complete_tests": true,
       "fair_eval": true,
       "hidden_scs_count": 1,
       "issues": [],
+      "negative_cases_aligned": true,
       "negative_count": 5,
+      "negative_descriptions_task_specific": true,
       "number": 406,
       "reasonable_task": true,
       "solution_file_count": 1,
@@ -2663,12 +3005,15 @@
       ]
     },
     {
+      "behavior_contract_complete": true,
       "certification_scope": "language_extension_not_part_of_original_full_300_claim",
       "complete_tests": true,
       "fair_eval": true,
       "hidden_scs_count": 1,
       "issues": [],
+      "negative_cases_aligned": true,
       "negative_count": 5,
+      "negative_descriptions_task_specific": true,
       "number": 407,
       "reasonable_task": true,
       "solution_file_count": 1,
@@ -2687,12 +3032,15 @@
       ]
     },
     {
+      "behavior_contract_complete": true,
       "certification_scope": "language_extension_not_part_of_original_full_300_claim",
       "complete_tests": true,
       "fair_eval": true,
       "hidden_scs_count": 1,
       "issues": [],
+      "negative_cases_aligned": true,
       "negative_count": 5,
+      "negative_descriptions_task_specific": true,
       "number": 408,
       "reasonable_task": true,
       "solution_file_count": 1,
@@ -2711,12 +3059,15 @@
       ]
     },
     {
+      "behavior_contract_complete": true,
       "certification_scope": "language_extension_not_part_of_original_full_300_claim",
       "complete_tests": true,
       "fair_eval": true,
       "hidden_scs_count": 1,
       "issues": [],
+      "negative_cases_aligned": true,
       "negative_count": 5,
+      "negative_descriptions_task_specific": true,
       "number": 409,
       "reasonable_task": true,
       "solution_file_count": 1,
@@ -2735,6 +3086,7 @@
       ]
     },
     {
+      "behavior_contract_complete": true,
       "certification_scope": "language_extension_not_part_of_original_full_300_claim",
       "complete_tests": true,
       "fair_eval": false,
@@ -2742,7 +3094,9 @@
       "issues": [
         "checker_syntax_only_no_behavior_score"
       ],
+      "negative_cases_aligned": true,
       "negative_count": 5,
+      "negative_descriptions_task_specific": true,
       "number": 410,
       "reasonable_task": true,
       "solution_file_count": 1,
@@ -2761,12 +3115,15 @@
       ]
     },
     {
+      "behavior_contract_complete": true,
       "certification_scope": "language_extension_not_part_of_original_full_300_claim",
       "complete_tests": true,
       "fair_eval": true,
       "hidden_scs_count": 1,
       "issues": [],
+      "negative_cases_aligned": true,
       "negative_count": 5,
+      "negative_descriptions_task_specific": true,
       "number": 411,
       "reasonable_task": true,
       "solution_file_count": 1,
@@ -2785,12 +3142,15 @@
       ]
     },
     {
+      "behavior_contract_complete": true,
       "certification_scope": "language_extension_not_part_of_original_full_300_claim",
       "complete_tests": true,
       "fair_eval": true,
       "hidden_scs_count": 1,
       "issues": [],
+      "negative_cases_aligned": true,
       "negative_count": 5,
+      "negative_descriptions_task_specific": true,
       "number": 412,
       "reasonable_task": true,
       "solution_file_count": 1,
@@ -2809,12 +3169,15 @@
       ]
     },
     {
+      "behavior_contract_complete": true,
       "certification_scope": "language_extension_not_part_of_original_full_300_claim",
       "complete_tests": true,
       "fair_eval": true,
       "hidden_scs_count": 1,
       "issues": [],
+      "negative_cases_aligned": true,
       "negative_count": 5,
+      "negative_descriptions_task_specific": true,
       "number": 413,
       "reasonable_task": true,
       "solution_file_count": 1,
@@ -2833,12 +3196,15 @@
       ]
     },
     {
+      "behavior_contract_complete": true,
       "certification_scope": "language_extension_not_part_of_original_full_300_claim",
       "complete_tests": true,
       "fair_eval": true,
       "hidden_scs_count": 1,
       "issues": [],
+      "negative_cases_aligned": true,
       "negative_count": 5,
+      "negative_descriptions_task_specific": true,
       "number": 414,
       "reasonable_task": true,
       "solution_file_count": 1,
@@ -2857,6 +3223,7 @@
       ]
     },
     {
+      "behavior_contract_complete": true,
       "certification_scope": "language_extension_not_part_of_original_full_300_claim",
       "complete_tests": true,
       "fair_eval": false,
@@ -2864,7 +3231,9 @@
       "issues": [
         "checker_syntax_only_no_behavior_score"
       ],
+      "negative_cases_aligned": true,
       "negative_count": 5,
+      "negative_descriptions_task_specific": true,
       "number": 415,
       "reasonable_task": true,
       "solution_file_count": 1,
@@ -2883,6 +3252,7 @@
       ]
     },
     {
+      "behavior_contract_complete": true,
       "certification_scope": "language_extension_not_part_of_original_full_300_claim",
       "complete_tests": true,
       "fair_eval": false,
@@ -2890,7 +3260,9 @@
       "issues": [
         "checker_syntax_only_no_behavior_score"
       ],
+      "negative_cases_aligned": true,
       "negative_count": 5,
+      "negative_descriptions_task_specific": true,
       "number": 416,
       "reasonable_task": true,
       "solution_file_count": 1,
@@ -2909,6 +3281,7 @@
       ]
     },
     {
+      "behavior_contract_complete": true,
       "certification_scope": "language_extension_not_part_of_original_full_300_claim",
       "complete_tests": true,
       "fair_eval": false,
@@ -2916,7 +3289,9 @@
       "issues": [
         "checker_syntax_only_no_behavior_score"
       ],
+      "negative_cases_aligned": true,
       "negative_count": 5,
+      "negative_descriptions_task_specific": true,
       "number": 417,
       "reasonable_task": true,
       "solution_file_count": 1,
@@ -2935,6 +3310,7 @@
       ]
     },
     {
+      "behavior_contract_complete": true,
       "certification_scope": "language_extension_not_part_of_original_full_300_claim",
       "complete_tests": true,
       "fair_eval": false,
@@ -2942,7 +3318,9 @@
       "issues": [
         "checker_syntax_only_no_behavior_score"
       ],
+      "negative_cases_aligned": true,
       "negative_count": 5,
+      "negative_descriptions_task_specific": true,
       "number": 418,
       "reasonable_task": true,
       "solution_file_count": 1,
@@ -2961,12 +3339,15 @@
       ]
     },
     {
+      "behavior_contract_complete": true,
       "certification_scope": "language_extension_not_part_of_original_full_300_claim",
       "complete_tests": true,
       "fair_eval": true,
       "hidden_scs_count": 1,
       "issues": [],
+      "negative_cases_aligned": true,
       "negative_count": 5,
+      "negative_descriptions_task_specific": true,
       "number": 419,
       "reasonable_task": true,
       "solution_file_count": 1,
@@ -2985,12 +3366,15 @@
       ]
     },
     {
+      "behavior_contract_complete": true,
       "certification_scope": "language_extension_not_part_of_original_full_300_claim",
       "complete_tests": true,
       "fair_eval": true,
       "hidden_scs_count": 1,
       "issues": [],
+      "negative_cases_aligned": true,
       "negative_count": 5,
+      "negative_descriptions_task_specific": true,
       "number": 420,
       "reasonable_task": true,
       "solution_file_count": 1,
@@ -3009,12 +3393,15 @@
       ]
     },
     {
+      "behavior_contract_complete": true,
       "certification_scope": "language_extension_not_part_of_original_full_300_claim",
       "complete_tests": true,
       "fair_eval": true,
       "hidden_scs_count": 1,
       "issues": [],
+      "negative_cases_aligned": true,
       "negative_count": 5,
+      "negative_descriptions_task_specific": true,
       "number": 421,
       "reasonable_task": true,
       "solution_file_count": 1,
@@ -3033,12 +3420,15 @@
       ]
     },
     {
+      "behavior_contract_complete": true,
       "certification_scope": "language_extension_not_part_of_original_full_300_claim",
       "complete_tests": true,
       "fair_eval": true,
       "hidden_scs_count": 1,
       "issues": [],
+      "negative_cases_aligned": true,
       "negative_count": 5,
+      "negative_descriptions_task_specific": true,
       "number": 422,
       "reasonable_task": true,
       "solution_file_count": 2,
@@ -3057,12 +3447,15 @@
       ]
     },
     {
+      "behavior_contract_complete": true,
       "certification_scope": "language_extension_not_part_of_original_full_300_claim",
       "complete_tests": true,
       "fair_eval": true,
       "hidden_scs_count": 1,
       "issues": [],
+      "negative_cases_aligned": true,
       "negative_count": 5,
+      "negative_descriptions_task_specific": true,
       "number": 423,
       "reasonable_task": true,
       "solution_file_count": 2,
@@ -3081,12 +3474,15 @@
       ]
     },
     {
+      "behavior_contract_complete": true,
       "certification_scope": "language_extension_not_part_of_original_full_300_claim",
       "complete_tests": true,
       "fair_eval": true,
       "hidden_scs_count": 1,
       "issues": [],
+      "negative_cases_aligned": true,
       "negative_count": 5,
+      "negative_descriptions_task_specific": true,
       "number": 424,
       "reasonable_task": true,
       "solution_file_count": 2,
@@ -3105,12 +3501,15 @@
       ]
     },
     {
+      "behavior_contract_complete": true,
       "certification_scope": "language_extension_not_part_of_original_full_300_claim",
       "complete_tests": true,
       "fair_eval": true,
       "hidden_scs_count": 1,
       "issues": [],
+      "negative_cases_aligned": true,
       "negative_count": 5,
+      "negative_descriptions_task_specific": true,
       "number": 425,
       "reasonable_task": true,
       "solution_file_count": 1,
@@ -3129,12 +3528,15 @@
       ]
     },
     {
+      "behavior_contract_complete": true,
       "certification_scope": "language_extension_not_part_of_original_full_300_claim",
       "complete_tests": true,
       "fair_eval": true,
       "hidden_scs_count": 1,
       "issues": [],
+      "negative_cases_aligned": true,
       "negative_count": 5,
+      "negative_descriptions_task_specific": true,
       "number": 426,
       "reasonable_task": true,
       "solution_file_count": 1,
@@ -3153,12 +3555,15 @@
       ]
     },
     {
+      "behavior_contract_complete": true,
       "certification_scope": "language_extension_not_part_of_original_full_300_claim",
       "complete_tests": true,
       "fair_eval": true,
       "hidden_scs_count": 1,
       "issues": [],
+      "negative_cases_aligned": true,
       "negative_count": 5,
+      "negative_descriptions_task_specific": true,
       "number": 427,
       "reasonable_task": true,
       "solution_file_count": 1,
@@ -3177,12 +3582,15 @@
       ]
     },
     {
+      "behavior_contract_complete": true,
       "certification_scope": "language_extension_not_part_of_original_full_300_claim",
       "complete_tests": true,
       "fair_eval": true,
       "hidden_scs_count": 1,
       "issues": [],
+      "negative_cases_aligned": true,
       "negative_count": 5,
+      "negative_descriptions_task_specific": true,
       "number": 428,
       "reasonable_task": true,
       "solution_file_count": 1,
@@ -3201,12 +3609,15 @@
       ]
     },
     {
+      "behavior_contract_complete": true,
       "certification_scope": "language_extension_not_part_of_original_full_300_claim",
       "complete_tests": true,
       "fair_eval": true,
       "hidden_scs_count": 1,
       "issues": [],
+      "negative_cases_aligned": true,
       "negative_count": 5,
+      "negative_descriptions_task_specific": true,
       "number": 429,
       "reasonable_task": true,
       "solution_file_count": 1,
@@ -3225,12 +3636,15 @@
       ]
     },
     {
+      "behavior_contract_complete": true,
       "certification_scope": "language_extension_not_part_of_original_full_300_claim",
       "complete_tests": true,
       "fair_eval": true,
       "hidden_scs_count": 1,
       "issues": [],
+      "negative_cases_aligned": true,
       "negative_count": 5,
+      "negative_descriptions_task_specific": true,
       "number": 430,
       "reasonable_task": true,
       "solution_file_count": 1,
@@ -3249,12 +3663,15 @@
       ]
     },
     {
+      "behavior_contract_complete": true,
       "certification_scope": "language_extension_not_part_of_original_full_300_claim",
       "complete_tests": true,
       "fair_eval": true,
       "hidden_scs_count": 1,
       "issues": [],
+      "negative_cases_aligned": true,
       "negative_count": 5,
+      "negative_descriptions_task_specific": true,
       "number": 431,
       "reasonable_task": true,
       "solution_file_count": 3,
@@ -3273,12 +3690,15 @@
       ]
     },
     {
+      "behavior_contract_complete": true,
       "certification_scope": "language_extension_not_part_of_original_full_300_claim",
       "complete_tests": true,
       "fair_eval": true,
       "hidden_scs_count": 1,
       "issues": [],
+      "negative_cases_aligned": true,
       "negative_count": 5,
+      "negative_descriptions_task_specific": true,
       "number": 432,
       "reasonable_task": true,
       "solution_file_count": 2,
@@ -3297,12 +3717,15 @@
       ]
     },
     {
+      "behavior_contract_complete": true,
       "certification_scope": "language_extension_not_part_of_original_full_300_claim",
       "complete_tests": true,
       "fair_eval": true,
       "hidden_scs_count": 1,
       "issues": [],
+      "negative_cases_aligned": true,
       "negative_count": 5,
+      "negative_descriptions_task_specific": true,
       "number": 433,
       "reasonable_task": true,
       "solution_file_count": 1,
@@ -3321,12 +3744,15 @@
       ]
     },
     {
+      "behavior_contract_complete": true,
       "certification_scope": "language_extension_not_part_of_original_full_300_claim",
       "complete_tests": true,
       "fair_eval": true,
       "hidden_scs_count": 1,
       "issues": [],
+      "negative_cases_aligned": true,
       "negative_count": 5,
+      "negative_descriptions_task_specific": true,
       "number": 434,
       "reasonable_task": true,
       "solution_file_count": 1,
@@ -3345,6 +3771,7 @@
       ]
     },
     {
+      "behavior_contract_complete": true,
       "certification_scope": "language_extension_not_part_of_original_full_300_claim",
       "complete_tests": true,
       "fair_eval": false,
@@ -3352,7 +3779,9 @@
       "issues": [
         "checker_syntax_only_no_behavior_score"
       ],
+      "negative_cases_aligned": true,
       "negative_count": 5,
+      "negative_descriptions_task_specific": true,
       "number": 435,
       "reasonable_task": true,
       "solution_file_count": 1,
@@ -3371,6 +3800,7 @@
       ]
     },
     {
+      "behavior_contract_complete": true,
       "certification_scope": "language_extension_not_part_of_original_full_300_claim",
       "complete_tests": true,
       "fair_eval": false,
@@ -3378,7 +3808,9 @@
       "issues": [
         "checker_syntax_only_no_behavior_score"
       ],
+      "negative_cases_aligned": true,
       "negative_count": 5,
+      "negative_descriptions_task_specific": true,
       "number": 436,
       "reasonable_task": true,
       "solution_file_count": 1,
@@ -3397,6 +3829,7 @@
       ]
     },
     {
+      "behavior_contract_complete": true,
       "certification_scope": "language_extension_not_part_of_original_full_300_claim",
       "complete_tests": true,
       "fair_eval": false,
@@ -3404,7 +3837,9 @@
       "issues": [
         "checker_syntax_only_no_behavior_score"
       ],
+      "negative_cases_aligned": true,
       "negative_count": 5,
+      "negative_descriptions_task_specific": true,
       "number": 437,
       "reasonable_task": true,
       "solution_file_count": 1,
@@ -3423,6 +3858,7 @@
       ]
     },
     {
+      "behavior_contract_complete": true,
       "certification_scope": "language_extension_not_part_of_original_full_300_claim",
       "complete_tests": true,
       "fair_eval": false,
@@ -3430,7 +3866,9 @@
       "issues": [
         "checker_syntax_only_no_behavior_score"
       ],
+      "negative_cases_aligned": true,
       "negative_count": 5,
+      "negative_descriptions_task_specific": true,
       "number": 438,
       "reasonable_task": true,
       "solution_file_count": 1,
@@ -3449,6 +3887,7 @@
       ]
     },
     {
+      "behavior_contract_complete": true,
       "certification_scope": "language_extension_not_part_of_original_full_300_claim",
       "complete_tests": true,
       "fair_eval": false,
@@ -3456,7 +3895,9 @@
       "issues": [
         "checker_syntax_only_no_behavior_score"
       ],
+      "negative_cases_aligned": true,
       "negative_count": 5,
+      "negative_descriptions_task_specific": true,
       "number": 439,
       "reasonable_task": true,
       "solution_file_count": 1,
@@ -3475,6 +3916,7 @@
       ]
     },
     {
+      "behavior_contract_complete": true,
       "certification_scope": "language_extension_not_part_of_original_full_300_claim",
       "complete_tests": true,
       "fair_eval": false,
@@ -3482,7 +3924,9 @@
       "issues": [
         "checker_syntax_only_no_behavior_score"
       ],
+      "negative_cases_aligned": true,
       "negative_count": 5,
+      "negative_descriptions_task_specific": true,
       "number": 440,
       "reasonable_task": true,
       "solution_file_count": 1,
@@ -3501,6 +3945,7 @@
       ]
     },
     {
+      "behavior_contract_complete": true,
       "certification_scope": "language_extension_not_part_of_original_full_300_claim",
       "complete_tests": true,
       "fair_eval": false,
@@ -3508,7 +3953,9 @@
       "issues": [
         "checker_syntax_only_no_behavior_score"
       ],
+      "negative_cases_aligned": true,
       "negative_count": 5,
+      "negative_descriptions_task_specific": true,
       "number": 441,
       "reasonable_task": true,
       "solution_file_count": 1,
@@ -3527,6 +3974,7 @@
       ]
     },
     {
+      "behavior_contract_complete": true,
       "certification_scope": "language_extension_not_part_of_original_full_300_claim",
       "complete_tests": true,
       "fair_eval": false,
@@ -3534,7 +3982,9 @@
       "issues": [
         "checker_syntax_only_no_behavior_score"
       ],
+      "negative_cases_aligned": true,
       "negative_count": 5,
+      "negative_descriptions_task_specific": true,
       "number": 442,
       "reasonable_task": true,
       "solution_file_count": 1,
@@ -3553,6 +4003,7 @@
       ]
     },
     {
+      "behavior_contract_complete": true,
       "certification_scope": "language_extension_not_part_of_original_full_300_claim",
       "complete_tests": true,
       "fair_eval": false,
@@ -3560,7 +4011,9 @@
       "issues": [
         "checker_syntax_only_no_behavior_score"
       ],
+      "negative_cases_aligned": true,
       "negative_count": 5,
+      "negative_descriptions_task_specific": true,
       "number": 443,
       "reasonable_task": true,
       "solution_file_count": 1,
@@ -3579,6 +4032,7 @@
       ]
     },
     {
+      "behavior_contract_complete": true,
       "certification_scope": "language_extension_not_part_of_original_full_300_claim",
       "complete_tests": true,
       "fair_eval": false,
@@ -3586,7 +4040,9 @@
       "issues": [
         "checker_syntax_only_no_behavior_score"
       ],
+      "negative_cases_aligned": true,
       "negative_count": 5,
+      "negative_descriptions_task_specific": true,
       "number": 444,
       "reasonable_task": true,
       "solution_file_count": 1,
@@ -3605,12 +4061,15 @@
       ]
     },
     {
+      "behavior_contract_complete": true,
       "certification_scope": "language_extension_not_part_of_original_full_300_claim",
       "complete_tests": true,
       "fair_eval": true,
       "hidden_scs_count": 1,
       "issues": [],
+      "negative_cases_aligned": true,
       "negative_count": 5,
+      "negative_descriptions_task_specific": true,
       "number": 445,
       "reasonable_task": true,
       "solution_file_count": 1,
@@ -3629,12 +4088,15 @@
       ]
     },
     {
+      "behavior_contract_complete": true,
       "certification_scope": "language_extension_not_part_of_original_full_300_claim",
       "complete_tests": true,
       "fair_eval": true,
       "hidden_scs_count": 1,
       "issues": [],
+      "negative_cases_aligned": true,
       "negative_count": 5,
+      "negative_descriptions_task_specific": true,
       "number": 446,
       "reasonable_task": true,
       "solution_file_count": 1,
@@ -3653,12 +4115,15 @@
       ]
     },
     {
+      "behavior_contract_complete": true,
       "certification_scope": "language_extension_not_part_of_original_full_300_claim",
       "complete_tests": true,
       "fair_eval": true,
       "hidden_scs_count": 1,
       "issues": [],
+      "negative_cases_aligned": true,
       "negative_count": 5,
+      "negative_descriptions_task_specific": true,
       "number": 447,
       "reasonable_task": true,
       "solution_file_count": 1,
@@ -3677,12 +4142,15 @@
       ]
     },
     {
+      "behavior_contract_complete": true,
       "certification_scope": "language_extension_not_part_of_original_full_300_claim",
       "complete_tests": true,
       "fair_eval": true,
       "hidden_scs_count": 1,
       "issues": [],
+      "negative_cases_aligned": true,
       "negative_count": 5,
+      "negative_descriptions_task_specific": true,
       "number": 448,
       "reasonable_task": true,
       "solution_file_count": 1,
@@ -3701,6 +4169,7 @@
       ]
     },
     {
+      "behavior_contract_complete": true,
       "certification_scope": "language_extension_not_part_of_original_full_300_claim",
       "complete_tests": true,
       "fair_eval": false,
@@ -3708,7 +4177,9 @@
       "issues": [
         "checker_syntax_only_no_behavior_score"
       ],
+      "negative_cases_aligned": true,
       "negative_count": 5,
+      "negative_descriptions_task_specific": true,
       "number": 449,
       "reasonable_task": true,
       "solution_file_count": 1,
@@ -3717,7 +4188,7 @@
       "syntax_focus": "Use generate/genvar to replicate a behavioral stage.",
       "target": "generate_genvar_replicated_stage.vams",
       "task": "449-generate-genvar-replicated-stage",
-      "tier": "syntax-extension-candidate",
+      "tier": "ams-mixed-signal-candidate",
       "title": "Generate Genvar Replicated Stage",
       "usable_scene": true,
       "visible_hidden_distinct": true,
@@ -3727,12 +4198,15 @@
       ]
     },
     {
+      "behavior_contract_complete": true,
       "certification_scope": "language_extension_not_part_of_original_full_300_claim",
       "complete_tests": true,
       "fair_eval": true,
       "hidden_scs_count": 1,
       "issues": [],
+      "negative_cases_aligned": true,
       "negative_count": 5,
+      "negative_descriptions_task_specific": true,
       "number": 450,
       "reasonable_task": true,
       "solution_file_count": 1,
@@ -3751,12 +4225,15 @@
       ]
     },
     {
+      "behavior_contract_complete": true,
       "certification_scope": "language_extension_not_part_of_original_full_300_claim",
       "complete_tests": true,
       "fair_eval": true,
       "hidden_scs_count": 1,
       "issues": [],
+      "negative_cases_aligned": true,
       "negative_count": 5,
+      "negative_descriptions_task_specific": true,
       "number": 451,
       "reasonable_task": true,
       "solution_file_count": 1,
@@ -3775,12 +4252,15 @@
       ]
     },
     {
+      "behavior_contract_complete": true,
       "certification_scope": "language_extension_not_part_of_original_full_300_claim",
       "complete_tests": true,
       "fair_eval": true,
       "hidden_scs_count": 1,
       "issues": [],
+      "negative_cases_aligned": true,
       "negative_count": 5,
+      "negative_descriptions_task_specific": true,
       "number": 452,
       "reasonable_task": true,
       "solution_file_count": 1,
@@ -3799,6 +4279,7 @@
       ]
     },
     {
+      "behavior_contract_complete": true,
       "certification_scope": "language_extension_not_part_of_original_full_300_claim",
       "complete_tests": true,
       "fair_eval": false,
@@ -3806,7 +4287,9 @@
       "issues": [
         "checker_syntax_only_no_behavior_score"
       ],
+      "negative_cases_aligned": true,
       "negative_count": 5,
+      "negative_descriptions_task_specific": true,
       "number": 453,
       "reasonable_task": true,
       "solution_file_count": 1,
@@ -3825,12 +4308,15 @@
       ]
     },
     {
+      "behavior_contract_complete": true,
       "certification_scope": "language_extension_not_part_of_original_full_300_claim",
       "complete_tests": true,
       "fair_eval": true,
       "hidden_scs_count": 1,
       "issues": [],
+      "negative_cases_aligned": true,
       "negative_count": 5,
+      "negative_descriptions_task_specific": true,
       "number": 454,
       "reasonable_task": true,
       "solution_file_count": 1,
@@ -3849,6 +4335,7 @@
       ]
     },
     {
+      "behavior_contract_complete": true,
       "certification_scope": "language_extension_not_part_of_original_full_300_claim",
       "complete_tests": true,
       "fair_eval": false,
@@ -3856,7 +4343,9 @@
       "issues": [
         "checker_syntax_only_no_behavior_score"
       ],
+      "negative_cases_aligned": true,
       "negative_count": 5,
+      "negative_descriptions_task_specific": true,
       "number": 455,
       "reasonable_task": true,
       "solution_file_count": 1,
@@ -3875,12 +4364,15 @@
       ]
     },
     {
+      "behavior_contract_complete": true,
       "certification_scope": "language_extension_not_part_of_original_full_300_claim",
       "complete_tests": true,
       "fair_eval": true,
       "hidden_scs_count": 1,
       "issues": [],
+      "negative_cases_aligned": true,
       "negative_count": 5,
+      "negative_descriptions_task_specific": true,
       "number": 456,
       "reasonable_task": true,
       "solution_file_count": 1,
@@ -3899,12 +4391,15 @@
       ]
     },
     {
+      "behavior_contract_complete": true,
       "certification_scope": "language_extension_not_part_of_original_full_300_claim",
       "complete_tests": true,
       "fair_eval": true,
       "hidden_scs_count": 1,
       "issues": [],
+      "negative_cases_aligned": true,
       "negative_count": 5,
+      "negative_descriptions_task_specific": true,
       "number": 457,
       "reasonable_task": true,
       "solution_file_count": 1,
@@ -3923,12 +4418,15 @@
       ]
     },
     {
+      "behavior_contract_complete": true,
       "certification_scope": "language_extension_not_part_of_original_full_300_claim",
       "complete_tests": true,
       "fair_eval": true,
       "hidden_scs_count": 1,
       "issues": [],
+      "negative_cases_aligned": true,
       "negative_count": 5,
+      "negative_descriptions_task_specific": true,
       "number": 458,
       "reasonable_task": true,
       "solution_file_count": 1,
@@ -3947,12 +4445,15 @@
       ]
     },
     {
+      "behavior_contract_complete": true,
       "certification_scope": "language_extension_not_part_of_original_full_300_claim",
       "complete_tests": true,
       "fair_eval": true,
       "hidden_scs_count": 1,
       "issues": [],
+      "negative_cases_aligned": true,
       "negative_count": 5,
+      "negative_descriptions_task_specific": true,
       "number": 459,
       "reasonable_task": true,
       "solution_file_count": 1,
@@ -3971,12 +4472,15 @@
       ]
     },
     {
+      "behavior_contract_complete": true,
       "certification_scope": "language_extension_not_part_of_original_full_300_claim",
       "complete_tests": true,
       "fair_eval": true,
       "hidden_scs_count": 1,
       "issues": [],
+      "negative_cases_aligned": true,
       "negative_count": 5,
+      "negative_descriptions_task_specific": true,
       "number": 460,
       "reasonable_task": true,
       "solution_file_count": 1,
@@ -3995,12 +4499,15 @@
       ]
     },
     {
+      "behavior_contract_complete": true,
       "certification_scope": "language_extension_not_part_of_original_full_300_claim",
       "complete_tests": true,
       "fair_eval": true,
       "hidden_scs_count": 1,
       "issues": [],
+      "negative_cases_aligned": true,
       "negative_count": 5,
+      "negative_descriptions_task_specific": true,
       "number": 461,
       "reasonable_task": true,
       "solution_file_count": 1,
@@ -4019,12 +4526,15 @@
       ]
     },
     {
+      "behavior_contract_complete": true,
       "certification_scope": "language_extension_not_part_of_original_full_300_claim",
       "complete_tests": true,
       "fair_eval": true,
       "hidden_scs_count": 1,
       "issues": [],
+      "negative_cases_aligned": true,
       "negative_count": 5,
+      "negative_descriptions_task_specific": true,
       "number": 462,
       "reasonable_task": true,
       "solution_file_count": 1,
@@ -4043,12 +4553,15 @@
       ]
     },
     {
+      "behavior_contract_complete": true,
       "certification_scope": "language_extension_not_part_of_original_full_300_claim",
       "complete_tests": true,
       "fair_eval": true,
       "hidden_scs_count": 1,
       "issues": [],
+      "negative_cases_aligned": true,
       "negative_count": 5,
+      "negative_descriptions_task_specific": true,
       "number": 463,
       "reasonable_task": true,
       "solution_file_count": 1,
@@ -4067,6 +4580,7 @@
       ]
     },
     {
+      "behavior_contract_complete": true,
       "certification_scope": "language_extension_not_part_of_original_full_300_claim",
       "complete_tests": true,
       "fair_eval": false,
@@ -4074,7 +4588,9 @@
       "issues": [
         "checker_syntax_only_no_behavior_score"
       ],
+      "negative_cases_aligned": true,
       "negative_count": 5,
+      "negative_descriptions_task_specific": true,
       "number": 464,
       "reasonable_task": true,
       "solution_file_count": 1,
@@ -4093,12 +4609,15 @@
       ]
     },
     {
+      "behavior_contract_complete": true,
       "certification_scope": "language_extension_not_part_of_original_full_300_claim",
       "complete_tests": true,
       "fair_eval": true,
       "hidden_scs_count": 1,
       "issues": [],
+      "negative_cases_aligned": true,
       "negative_count": 5,
+      "negative_descriptions_task_specific": true,
       "number": 465,
       "reasonable_task": true,
       "solution_file_count": 1,
@@ -4117,12 +4636,15 @@
       ]
     },
     {
+      "behavior_contract_complete": true,
       "certification_scope": "language_extension_not_part_of_original_full_300_claim",
       "complete_tests": true,
       "fair_eval": true,
       "hidden_scs_count": 1,
       "issues": [],
+      "negative_cases_aligned": true,
       "negative_count": 5,
+      "negative_descriptions_task_specific": true,
       "number": 466,
       "reasonable_task": true,
       "solution_file_count": 1,
@@ -4141,12 +4663,15 @@
       ]
     },
     {
+      "behavior_contract_complete": true,
       "certification_scope": "language_extension_not_part_of_original_full_300_claim",
       "complete_tests": true,
       "fair_eval": true,
       "hidden_scs_count": 1,
       "issues": [],
+      "negative_cases_aligned": true,
       "negative_count": 5,
+      "negative_descriptions_task_specific": true,
       "number": 467,
       "reasonable_task": true,
       "solution_file_count": 1,
@@ -4165,6 +4690,7 @@
       ]
     },
     {
+      "behavior_contract_complete": true,
       "certification_scope": "language_extension_not_part_of_original_full_300_claim",
       "complete_tests": true,
       "fair_eval": false,
@@ -4172,7 +4698,9 @@
       "issues": [
         "checker_syntax_only_no_behavior_score"
       ],
+      "negative_cases_aligned": true,
       "negative_count": 5,
+      "negative_descriptions_task_specific": true,
       "number": 468,
       "reasonable_task": true,
       "solution_file_count": 1,
@@ -4191,6 +4719,7 @@
       ]
     },
     {
+      "behavior_contract_complete": true,
       "certification_scope": "language_extension_not_part_of_original_full_300_claim",
       "complete_tests": true,
       "fair_eval": false,
@@ -4198,7 +4727,9 @@
       "issues": [
         "checker_syntax_only_no_behavior_score"
       ],
+      "negative_cases_aligned": true,
       "negative_count": 5,
+      "negative_descriptions_task_specific": true,
       "number": 469,
       "reasonable_task": true,
       "solution_file_count": 1,
@@ -4217,6 +4748,7 @@
       ]
     },
     {
+      "behavior_contract_complete": true,
       "certification_scope": "language_extension_not_part_of_original_full_300_claim",
       "complete_tests": true,
       "fair_eval": false,
@@ -4224,7 +4756,9 @@
       "issues": [
         "checker_syntax_only_no_behavior_score"
       ],
+      "negative_cases_aligned": true,
       "negative_count": 5,
+      "negative_descriptions_task_specific": true,
       "number": 470,
       "reasonable_task": true,
       "solution_file_count": 1,
@@ -4243,6 +4777,7 @@
       ]
     },
     {
+      "behavior_contract_complete": true,
       "certification_scope": "language_extension_not_part_of_original_full_300_claim",
       "complete_tests": true,
       "fair_eval": false,
@@ -4250,7 +4785,9 @@
       "issues": [
         "checker_syntax_only_no_behavior_score"
       ],
+      "negative_cases_aligned": true,
       "negative_count": 5,
+      "negative_descriptions_task_specific": true,
       "number": 471,
       "reasonable_task": true,
       "solution_file_count": 1,
@@ -4269,6 +4806,7 @@
       ]
     },
     {
+      "behavior_contract_complete": true,
       "certification_scope": "language_extension_not_part_of_original_full_300_claim",
       "complete_tests": true,
       "fair_eval": false,
@@ -4276,7 +4814,9 @@
       "issues": [
         "checker_syntax_only_no_behavior_score"
       ],
+      "negative_cases_aligned": true,
       "negative_count": 5,
+      "negative_descriptions_task_specific": true,
       "number": 472,
       "reasonable_task": true,
       "solution_file_count": 1,
@@ -4295,12 +4835,15 @@
       ]
     },
     {
+      "behavior_contract_complete": true,
       "certification_scope": "language_extension_not_part_of_original_full_300_claim",
       "complete_tests": true,
       "fair_eval": true,
       "hidden_scs_count": 1,
       "issues": [],
+      "negative_cases_aligned": true,
       "negative_count": 5,
+      "negative_descriptions_task_specific": true,
       "number": 473,
       "reasonable_task": true,
       "solution_file_count": 1,
@@ -4319,12 +4862,15 @@
       ]
     },
     {
+      "behavior_contract_complete": true,
       "certification_scope": "language_extension_not_part_of_original_full_300_claim",
       "complete_tests": true,
       "fair_eval": true,
       "hidden_scs_count": 1,
       "issues": [],
+      "negative_cases_aligned": true,
       "negative_count": 5,
+      "negative_descriptions_task_specific": true,
       "number": 474,
       "reasonable_task": true,
       "solution_file_count": 1,
@@ -4343,12 +4889,15 @@
       ]
     },
     {
+      "behavior_contract_complete": true,
       "certification_scope": "language_extension_not_part_of_original_full_300_claim",
       "complete_tests": true,
       "fair_eval": true,
       "hidden_scs_count": 1,
       "issues": [],
+      "negative_cases_aligned": true,
       "negative_count": 5,
+      "negative_descriptions_task_specific": true,
       "number": 475,
       "reasonable_task": true,
       "solution_file_count": 1,
@@ -4367,6 +4916,7 @@
       ]
     },
     {
+      "behavior_contract_complete": true,
       "certification_scope": "language_extension_not_part_of_original_full_300_claim",
       "complete_tests": true,
       "fair_eval": false,
@@ -4374,7 +4924,9 @@
       "issues": [
         "checker_syntax_only_no_behavior_score"
       ],
+      "negative_cases_aligned": true,
       "negative_count": 5,
+      "negative_descriptions_task_specific": true,
       "number": 476,
       "reasonable_task": true,
       "solution_file_count": 1,
@@ -4393,6 +4945,7 @@
       ]
     },
     {
+      "behavior_contract_complete": true,
       "certification_scope": "language_extension_not_part_of_original_full_300_claim",
       "complete_tests": true,
       "fair_eval": false,
@@ -4400,7 +4953,9 @@
       "issues": [
         "checker_syntax_only_no_behavior_score"
       ],
+      "negative_cases_aligned": true,
       "negative_count": 5,
+      "negative_descriptions_task_specific": true,
       "number": 477,
       "reasonable_task": true,
       "solution_file_count": 1,
@@ -4419,12 +4974,15 @@
       ]
     },
     {
+      "behavior_contract_complete": true,
       "certification_scope": "language_extension_not_part_of_original_full_300_claim",
       "complete_tests": true,
       "fair_eval": true,
       "hidden_scs_count": 1,
       "issues": [],
+      "negative_cases_aligned": true,
       "negative_count": 5,
+      "negative_descriptions_task_specific": true,
       "number": 478,
       "reasonable_task": true,
       "solution_file_count": 1,
@@ -4443,12 +5001,15 @@
       ]
     },
     {
+      "behavior_contract_complete": true,
       "certification_scope": "language_extension_not_part_of_original_full_300_claim",
       "complete_tests": true,
       "fair_eval": true,
       "hidden_scs_count": 1,
       "issues": [],
+      "negative_cases_aligned": true,
       "negative_count": 5,
+      "negative_descriptions_task_specific": true,
       "number": 479,
       "reasonable_task": true,
       "solution_file_count": 1,
@@ -4467,6 +5028,7 @@
       ]
     },
     {
+      "behavior_contract_complete": true,
       "certification_scope": "language_extension_not_part_of_original_full_300_claim",
       "complete_tests": true,
       "fair_eval": false,
@@ -4474,7 +5036,9 @@
       "issues": [
         "checker_syntax_only_no_behavior_score"
       ],
+      "negative_cases_aligned": true,
       "negative_count": 5,
+      "negative_descriptions_task_specific": true,
       "number": 480,
       "reasonable_task": true,
       "solution_file_count": 1,
@@ -4493,6 +5057,7 @@
       ]
     },
     {
+      "behavior_contract_complete": true,
       "certification_scope": "language_extension_not_part_of_original_full_300_claim",
       "complete_tests": true,
       "fair_eval": false,
@@ -4500,7 +5065,9 @@
       "issues": [
         "checker_syntax_only_no_behavior_score"
       ],
+      "negative_cases_aligned": true,
       "negative_count": 5,
+      "negative_descriptions_task_specific": true,
       "number": 481,
       "reasonable_task": true,
       "solution_file_count": 1,
@@ -4519,6 +5086,7 @@
       ]
     },
     {
+      "behavior_contract_complete": true,
       "certification_scope": "language_extension_not_part_of_original_full_300_claim",
       "complete_tests": true,
       "fair_eval": false,
@@ -4526,7 +5094,9 @@
       "issues": [
         "checker_syntax_only_no_behavior_score"
       ],
+      "negative_cases_aligned": true,
       "negative_count": 5,
+      "negative_descriptions_task_specific": true,
       "number": 482,
       "reasonable_task": true,
       "solution_file_count": 1,
@@ -4545,12 +5115,15 @@
       ]
     },
     {
+      "behavior_contract_complete": true,
       "certification_scope": "language_extension_not_part_of_original_full_300_claim",
       "complete_tests": true,
       "fair_eval": true,
       "hidden_scs_count": 1,
       "issues": [],
+      "negative_cases_aligned": true,
       "negative_count": 5,
+      "negative_descriptions_task_specific": true,
       "number": 483,
       "reasonable_task": true,
       "solution_file_count": 1,
@@ -4569,12 +5142,15 @@
       ]
     },
     {
+      "behavior_contract_complete": true,
       "certification_scope": "language_extension_not_part_of_original_full_300_claim",
       "complete_tests": true,
       "fair_eval": true,
       "hidden_scs_count": 1,
       "issues": [],
+      "negative_cases_aligned": true,
       "negative_count": 5,
+      "negative_descriptions_task_specific": true,
       "number": 484,
       "reasonable_task": true,
       "solution_file_count": 1,
@@ -4593,12 +5169,15 @@
       ]
     },
     {
+      "behavior_contract_complete": true,
       "certification_scope": "language_extension_not_part_of_original_full_300_claim",
       "complete_tests": true,
       "fair_eval": true,
       "hidden_scs_count": 1,
       "issues": [],
+      "negative_cases_aligned": true,
       "negative_count": 5,
+      "negative_descriptions_task_specific": true,
       "number": 485,
       "reasonable_task": true,
       "solution_file_count": 1,
@@ -4617,12 +5196,15 @@
       ]
     },
     {
+      "behavior_contract_complete": true,
       "certification_scope": "language_extension_not_part_of_original_full_300_claim",
       "complete_tests": true,
       "fair_eval": true,
       "hidden_scs_count": 1,
       "issues": [],
+      "negative_cases_aligned": true,
       "negative_count": 5,
+      "negative_descriptions_task_specific": true,
       "number": 486,
       "reasonable_task": true,
       "solution_file_count": 1,
@@ -4641,6 +5223,7 @@
       ]
     },
     {
+      "behavior_contract_complete": true,
       "certification_scope": "language_extension_not_part_of_original_full_300_claim",
       "complete_tests": true,
       "fair_eval": false,
@@ -4648,7 +5231,9 @@
       "issues": [
         "checker_syntax_only_no_behavior_score"
       ],
+      "negative_cases_aligned": true,
       "negative_count": 5,
+      "negative_descriptions_task_specific": true,
       "number": 487,
       "reasonable_task": true,
       "solution_file_count": 1,
@@ -4667,6 +5252,7 @@
       ]
     },
     {
+      "behavior_contract_complete": true,
       "certification_scope": "language_extension_not_part_of_original_full_300_claim",
       "complete_tests": true,
       "fair_eval": false,
@@ -4674,7 +5260,9 @@
       "issues": [
         "checker_syntax_only_no_behavior_score"
       ],
+      "negative_cases_aligned": true,
       "negative_count": 5,
+      "negative_descriptions_task_specific": true,
       "number": 488,
       "reasonable_task": true,
       "solution_file_count": 2,
@@ -4693,12 +5281,15 @@
       ]
     },
     {
+      "behavior_contract_complete": true,
       "certification_scope": "language_extension_not_part_of_original_full_300_claim",
       "complete_tests": true,
       "fair_eval": true,
       "hidden_scs_count": 1,
       "issues": [],
+      "negative_cases_aligned": true,
       "negative_count": 5,
+      "negative_descriptions_task_specific": true,
       "number": 489,
       "reasonable_task": true,
       "solution_file_count": 1,
@@ -4717,12 +5308,15 @@
       ]
     },
     {
+      "behavior_contract_complete": true,
       "certification_scope": "language_extension_not_part_of_original_full_300_claim",
       "complete_tests": true,
       "fair_eval": true,
       "hidden_scs_count": 1,
       "issues": [],
+      "negative_cases_aligned": true,
       "negative_count": 5,
+      "negative_descriptions_task_specific": true,
       "number": 490,
       "reasonable_task": true,
       "solution_file_count": 1,
@@ -4741,6 +5335,7 @@
       ]
     },
     {
+      "behavior_contract_complete": true,
       "certification_scope": "language_extension_not_part_of_original_full_300_claim",
       "complete_tests": true,
       "fair_eval": false,
@@ -4748,7 +5343,9 @@
       "issues": [
         "checker_syntax_only_no_behavior_score"
       ],
+      "negative_cases_aligned": true,
       "negative_count": 5,
+      "negative_descriptions_task_specific": true,
       "number": 491,
       "reasonable_task": true,
       "solution_file_count": 1,
@@ -4767,6 +5364,7 @@
       ]
     },
     {
+      "behavior_contract_complete": true,
       "certification_scope": "language_extension_not_part_of_original_full_300_claim",
       "complete_tests": true,
       "fair_eval": false,
@@ -4774,7 +5372,9 @@
       "issues": [
         "checker_syntax_only_no_behavior_score"
       ],
+      "negative_cases_aligned": true,
       "negative_count": 5,
+      "negative_descriptions_task_specific": true,
       "number": 492,
       "reasonable_task": true,
       "solution_file_count": 1,
@@ -4793,6 +5393,7 @@
       ]
     },
     {
+      "behavior_contract_complete": true,
       "certification_scope": "language_extension_not_part_of_original_full_300_claim",
       "complete_tests": true,
       "fair_eval": false,
@@ -4800,7 +5401,9 @@
       "issues": [
         "checker_syntax_only_no_behavior_score"
       ],
+      "negative_cases_aligned": true,
       "negative_count": 5,
+      "negative_descriptions_task_specific": true,
       "number": 493,
       "reasonable_task": true,
       "solution_file_count": 1,
@@ -4819,6 +5422,7 @@
       ]
     },
     {
+      "behavior_contract_complete": true,
       "certification_scope": "language_extension_not_part_of_original_full_300_claim",
       "complete_tests": true,
       "fair_eval": false,
@@ -4826,7 +5430,9 @@
       "issues": [
         "checker_syntax_only_no_behavior_score"
       ],
+      "negative_cases_aligned": true,
       "negative_count": 5,
+      "negative_descriptions_task_specific": true,
       "number": 494,
       "reasonable_task": true,
       "solution_file_count": 1,

@@ -44,10 +44,16 @@ def test_v3_extension_sop_audit_tracks_visible_hidden_diversity() -> None:
 
     assert summary["visible_hidden_distinct_count"] == len(distinct_rows) == 194
     assert summary["visible_hidden_identical_count"] == len(identical_rows) == 0
+    assert summary["behavior_contract_complete_count"] == 194
+    assert summary["negative_cases_aligned_count"] == 194
+    assert summary["negative_descriptions_task_specific_count"] == 194
     assert summary["sop_ready_visible_hidden_identical_count"] == 0
     assert summary["staged_visible_hidden_identical_count"] == 0
     assert summary["warning_counts"].get("visible_hidden_identical", 0) == 0
     assert all("visible_hidden_identical" in row["warnings"] for row in identical_rows)
+    assert all(row["behavior_contract_complete"] for row in rows)
+    assert all(row["negative_cases_aligned"] for row in rows)
+    assert all(row["negative_descriptions_task_specific"] for row in rows)
 
 
 def test_v3_extension_rows_do_not_overclaim_behavior_certification() -> None:
