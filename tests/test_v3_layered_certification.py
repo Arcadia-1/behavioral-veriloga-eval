@@ -231,15 +231,36 @@ def test_staged_gold_probe_uses_specific_checkers_when_available() -> None:
         "416-logic-vector-reduction-flag": "expected=",
         "417-always-async-reset-counter": "expected=",
         "418-always-enable-saturating-counter": "expected=",
+        "435-ddt-voltage-derivative-source": "operator=ddt",
+        "436-idt-voltage-integrator-source": "operator=idt",
+        "437-laplace-nd-lowpass-filter": "operator=laplace_nd",
+        "438-laplace-np-pole-filter": "operator=laplace_np",
+        "439-laplace-zd-zero-den-filter": "operator=laplace_zd",
+        "440-laplace-zp-zero-pole-filter": "operator=laplace_zp",
+        "441-zi-nd-discrete-filter": "operator=zi_nd",
+        "442-zi-np-discrete-filter": "operator=zi_np",
+        "443-zi-zd-discrete-filter": "operator=zi_zd",
+        "444-zi-zp-discrete-filter": "operator=zi_zp",
         "449-generate-genvar-replicated-stage": "expected=",
+        "453-specify-specparam-delay": "staged_specify_boundary",
         "455-packed-logic-bus-slice": "missing_columns=",
         "464-param-given-gain-select": "expected=",
         "468-branch-declaration-voltage-probe": "expected=",
+        "469-current-contribution-conductance": "staged_kcl_boundary",
+        "470-branch-current-probe-contribution": "expected_branch_current=",
+        "471-indirect-branch-null-balance": "operator=indirect_branch_equation",
+        "472-indirect-branch-ddt-balance": "operator=indirect_branch_ddt_equation",
+        "491-kcl-capacitor-ddt-current": "staged_kcl_boundary",
+        "493-continuous-laplace-nd-filter": "operator=continuous_laplace_nd",
+        "494-continuous-zi-nd-filter": "operator=continuous_zi_nd",
     }
+
+    for row in probe["rows"]:
+        notes = " ".join(str(note) for note in row["notes"])
+        assert "no behavior check implemented" not in notes
 
     for task_key, marker in checker_backed_staged_tasks.items():
         notes = " ".join(str(note) for note in rows[task_key]["notes"])
-        assert "no behavior check implemented" not in notes
         assert marker in notes
 
 

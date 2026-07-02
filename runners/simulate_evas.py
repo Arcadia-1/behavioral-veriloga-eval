@@ -8872,6 +8872,135 @@ def check_v3_434_repeat_loop_accumulator(rows: list[dict[str, float]]) -> tuple[
     )
 
 
+def _v3_required_columns(rows: list[dict[str, float]], required: set[str]) -> tuple[bool, str]:
+    if not rows or not required.issubset(rows[0]):
+        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
+        return False, "missing_columns=" + ",".join(missing)
+    return True, ""
+
+
+def _v3_signal_range(rows: list[dict[str, float]], signal: str) -> float:
+    values = [row[signal] for row in rows if signal in row]
+    return max(values) - min(values) if values else 0.0
+
+
+def _check_v3_staged_dynamic_operator_boundary(
+    rows: list[dict[str, float]],
+    *,
+    required: set[str],
+    operator: str,
+    outputs: tuple[str, ...] = ("out", "metric"),
+) -> tuple[bool, str]:
+    ok, note = _v3_required_columns(rows, required)
+    if not ok:
+        return False, note
+    ranges = " ".join(f"{signal}_range={_v3_signal_range(rows, signal):.4g}" for signal in outputs)
+    return False, (
+        f"staged_dynamic_solver_boundary operator={operator} {ranges} "
+        "expected=certified_continuous_time_response"
+    )
+
+
+def _check_v3_staged_kcl_boundary(
+    rows: list[dict[str, float]],
+    *,
+    required: set[str],
+    feature: str,
+) -> tuple[bool, str]:
+    ok, note = _v3_required_columns(rows, required)
+    if not ok:
+        return False, note
+    voltage_ranges = " ".join(
+        f"{signal}_range={_v3_signal_range(rows, signal):.4g}"
+        for signal in sorted(required - {"time"})
+        if signal in rows[0]
+    )
+    return False, (
+        f"staged_kcl_boundary feature={feature} {voltage_ranges} "
+        "expected=mna_current_observable"
+    )
+
+
+def check_v3_435_ddt_voltage_derivative_source(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    return _check_v3_staged_dynamic_operator_boundary(
+        rows,
+        required={"time", "vin", "clk", "rst", "out", "metric"},
+        operator="ddt",
+    )
+
+
+def check_v3_436_idt_voltage_integrator_source(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    return _check_v3_staged_dynamic_operator_boundary(
+        rows,
+        required={"time", "vin", "clk", "rst", "out", "metric"},
+        operator="idt",
+    )
+
+
+def check_v3_437_laplace_nd_lowpass_filter(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    return _check_v3_staged_dynamic_operator_boundary(
+        rows,
+        required={"time", "vin", "clk", "rst", "out", "metric"},
+        operator="laplace_nd",
+    )
+
+
+def check_v3_438_laplace_np_pole_filter(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    return _check_v3_staged_dynamic_operator_boundary(
+        rows,
+        required={"time", "vin", "clk", "rst", "out", "metric"},
+        operator="laplace_np",
+    )
+
+
+def check_v3_439_laplace_zd_zero_den_filter(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    return _check_v3_staged_dynamic_operator_boundary(
+        rows,
+        required={"time", "vin", "clk", "rst", "out", "metric"},
+        operator="laplace_zd",
+    )
+
+
+def check_v3_440_laplace_zp_zero_pole_filter(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    return _check_v3_staged_dynamic_operator_boundary(
+        rows,
+        required={"time", "vin", "clk", "rst", "out", "metric"},
+        operator="laplace_zp",
+    )
+
+
+def check_v3_441_zi_nd_discrete_filter(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    return _check_v3_staged_dynamic_operator_boundary(
+        rows,
+        required={"time", "vin", "clk", "rst", "out", "metric"},
+        operator="zi_nd",
+    )
+
+
+def check_v3_442_zi_np_discrete_filter(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    return _check_v3_staged_dynamic_operator_boundary(
+        rows,
+        required={"time", "vin", "clk", "rst", "out", "metric"},
+        operator="zi_np",
+    )
+
+
+def check_v3_443_zi_zd_discrete_filter(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    return _check_v3_staged_dynamic_operator_boundary(
+        rows,
+        required={"time", "vin", "clk", "rst", "out", "metric"},
+        operator="zi_zd",
+    )
+
+
+def check_v3_444_zi_zp_discrete_filter(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    return _check_v3_staged_dynamic_operator_boundary(
+        rows,
+        required={"time", "vin", "clk", "rst", "out", "metric"},
+        operator="zi_zp",
+    )
+
+
 def check_v3_445_limexp_soft_exponential(rows: list[dict[str, float]]) -> tuple[bool, str]:
     def update(_state: dict[str, float | int], row: dict[str, float]) -> tuple[float, float]:
         if row["rst"] > 0.45:
@@ -8951,6 +9080,16 @@ def check_v3_448_rdist_uniform_seeded_dither(rows: list[dict[str, float]]) -> tu
     if checked < 8:
         return False, f"insufficient_samples={checked}"
     return True, f"edges={edge_count} samples={checked} " + " ".join(observed[:4])
+
+
+def check_v3_453_specify_specparam_delay(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    ok, note = _v3_required_columns(rows, {"time", "a", "y"})
+    if not ok:
+        return False, note
+    return False, (
+        f"staged_specify_boundary a_range={_v3_signal_range(rows, 'a'):.4g} "
+        f"y_range={_v3_signal_range(rows, 'y'):.4g} expected=certified_specify_path_delay"
+    )
 
 
 def check_v3_454_multidimensional_array_state(rows: list[dict[str, float]]) -> tuple[bool, str]:
@@ -9365,6 +9504,47 @@ def check_v3_468_branch_declaration_voltage_probe(rows: list[dict[str, float]]) 
     )
 
 
+def check_v3_469_current_contribution_conductance(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    return _check_v3_staged_kcl_boundary(
+        rows,
+        required={"time", "p", "n"},
+        feature="I(p,n)<+gain*V(p,n)",
+    )
+
+
+def check_v3_470_branch_current_probe_contribution(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    ok, note = _v3_required_columns(rows, {"time", "p", "n", "out"})
+    if not ok:
+        return False, note
+    failures: list[str] = []
+    for time_ns in (10.0, 50.0, 90.0):
+        row = min(rows, key=lambda item: abs(item["time"] - time_ns * 1e-9))
+        expected = row["p"] - row["n"]
+        if abs(row["out"] - expected) > 0.08:
+            failures.append(f"out@{time_ns:g}ns={row['out']:.4f} expected_branch_current={expected:.4f}")
+    if failures:
+        return False, " ".join(failures[:4])
+    return True, "branch_current_probe_tracks_contributed_current"
+
+
+def check_v3_471_indirect_branch_null_balance(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    return _check_v3_staged_dynamic_operator_boundary(
+        rows,
+        required={"time", "inp", "out"},
+        operator="indirect_branch_equation",
+        outputs=("out",),
+    )
+
+
+def check_v3_472_indirect_branch_ddt_balance(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    return _check_v3_staged_dynamic_operator_boundary(
+        rows,
+        required={"time", "inp", "out"},
+        operator="indirect_branch_ddt_equation",
+        outputs=("out",),
+    )
+
+
 def check_v3_473_attribute_potential_abstol_probe(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "inp", "out"}
     if not rows or not required.issubset(rows[0]):
@@ -9667,6 +9847,32 @@ def check_v3_490_event_task_function_state_update(rows: list[dict[str, float]]) 
             ],
         },
         tol=0.035,
+    )
+
+
+def check_v3_491_kcl_capacitor_ddt_current(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    return _check_v3_staged_kcl_boundary(
+        rows,
+        required={"time", "p"},
+        feature="I(p,n)<+c*ddt(V(p,n))",
+    )
+
+
+def check_v3_493_continuous_laplace_nd_filter(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    return _check_v3_staged_dynamic_operator_boundary(
+        rows,
+        required={"time", "inp", "out"},
+        operator="continuous_laplace_nd",
+        outputs=("out",),
+    )
+
+
+def check_v3_494_continuous_zi_nd_filter(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    return _check_v3_staged_dynamic_operator_boundary(
+        rows,
+        required={"time", "inp", "out"},
+        operator="continuous_zi_nd",
+        outputs=("out",),
     )
 
 
@@ -19577,6 +19783,26 @@ V3_STANDALONE_SPLIT_CHECKS = {
     "433-preprocessor-ifndef-elsif-undef": check_v3_433_preprocessor_ifndef_elsif_undef,
     "v3_434_repeat_loop_accumulator": check_v3_434_repeat_loop_accumulator,
     "434-repeat-loop-accumulator": check_v3_434_repeat_loop_accumulator,
+    "v3_435_ddt_voltage_derivative_source": check_v3_435_ddt_voltage_derivative_source,
+    "435-ddt-voltage-derivative-source": check_v3_435_ddt_voltage_derivative_source,
+    "v3_436_idt_voltage_integrator_source": check_v3_436_idt_voltage_integrator_source,
+    "436-idt-voltage-integrator-source": check_v3_436_idt_voltage_integrator_source,
+    "v3_437_laplace_nd_lowpass_filter": check_v3_437_laplace_nd_lowpass_filter,
+    "437-laplace-nd-lowpass-filter": check_v3_437_laplace_nd_lowpass_filter,
+    "v3_438_laplace_np_pole_filter": check_v3_438_laplace_np_pole_filter,
+    "438-laplace-np-pole-filter": check_v3_438_laplace_np_pole_filter,
+    "v3_439_laplace_zd_zero_den_filter": check_v3_439_laplace_zd_zero_den_filter,
+    "439-laplace-zd-zero-den-filter": check_v3_439_laplace_zd_zero_den_filter,
+    "v3_440_laplace_zp_zero_pole_filter": check_v3_440_laplace_zp_zero_pole_filter,
+    "440-laplace-zp-zero-pole-filter": check_v3_440_laplace_zp_zero_pole_filter,
+    "v3_441_zi_nd_discrete_filter": check_v3_441_zi_nd_discrete_filter,
+    "441-zi-nd-discrete-filter": check_v3_441_zi_nd_discrete_filter,
+    "v3_442_zi_np_discrete_filter": check_v3_442_zi_np_discrete_filter,
+    "442-zi-np-discrete-filter": check_v3_442_zi_np_discrete_filter,
+    "v3_443_zi_zd_discrete_filter": check_v3_443_zi_zd_discrete_filter,
+    "443-zi-zd-discrete-filter": check_v3_443_zi_zd_discrete_filter,
+    "v3_444_zi_zp_discrete_filter": check_v3_444_zi_zp_discrete_filter,
+    "444-zi-zp-discrete-filter": check_v3_444_zi_zp_discrete_filter,
     "v3_445_limexp_soft_exponential": check_v3_445_limexp_soft_exponential,
     "445-limexp-soft-exponential": check_v3_445_limexp_soft_exponential,
     "v3_446_fstrobe_file_line_writer": check_v3_446_fstrobe_file_line_writer,
@@ -19593,6 +19819,8 @@ V3_STANDALONE_SPLIT_CHECKS = {
     "451-connectmodule-electrical-bridge": check_v3_451_connectmodule_electrical_bridge,
     "v3_452_connectrules_electrical_map": check_v3_452_connectrules_electrical_map,
     "452-connectrules-electrical-map": check_v3_452_connectrules_electrical_map,
+    "v3_453_specify_specparam_delay": check_v3_453_specify_specparam_delay,
+    "453-specify-specparam-delay": check_v3_453_specify_specparam_delay,
     "v3_454_multidimensional_array_state": check_v3_454_multidimensional_array_state,
     "454-multidimensional-array-state": check_v3_454_multidimensional_array_state,
     "v3_455_packed_logic_bus_slice": check_v3_455_packed_logic_bus_slice,
@@ -19623,6 +19851,14 @@ V3_STANDALONE_SPLIT_CHECKS = {
     "467-simparam-query-tnom": check_v3_467_simparam_query_tnom,
     "v3_468_branch_declaration_voltage_probe": check_v3_468_branch_declaration_voltage_probe,
     "468-branch-declaration-voltage-probe": check_v3_468_branch_declaration_voltage_probe,
+    "v3_469_current_contribution_conductance": check_v3_469_current_contribution_conductance,
+    "469-current-contribution-conductance": check_v3_469_current_contribution_conductance,
+    "v3_470_branch_current_probe_contribution": check_v3_470_branch_current_probe_contribution,
+    "470-branch-current-probe-contribution": check_v3_470_branch_current_probe_contribution,
+    "v3_471_indirect_branch_null_balance": check_v3_471_indirect_branch_null_balance,
+    "471-indirect-branch-null-balance": check_v3_471_indirect_branch_null_balance,
+    "v3_472_indirect_branch_ddt_balance": check_v3_472_indirect_branch_ddt_balance,
+    "472-indirect-branch-ddt-balance": check_v3_472_indirect_branch_ddt_balance,
     "v3_473_attribute_potential_abstol_probe": check_v3_473_attribute_potential_abstol_probe,
     "473-attribute-potential-abstol-probe": check_v3_473_attribute_potential_abstol_probe,
     "v3_474_generic_potential_access_function": check_v3_474_generic_potential_access_function,
@@ -19655,6 +19891,12 @@ V3_STANDALONE_SPLIT_CHECKS = {
     "489-event-nested-or-expression": check_v3_489_event_nested_or_expression,
     "v3_490_event_task_function_state_update": check_v3_490_event_task_function_state_update,
     "490-event-task-function-state-update": check_v3_490_event_task_function_state_update,
+    "v3_491_kcl_capacitor_ddt_current": check_v3_491_kcl_capacitor_ddt_current,
+    "491-kcl-capacitor-ddt-current": check_v3_491_kcl_capacitor_ddt_current,
+    "v3_493_continuous_laplace_nd_filter": check_v3_493_continuous_laplace_nd_filter,
+    "493-continuous-laplace-nd-filter": check_v3_493_continuous_laplace_nd_filter,
+    "v3_494_continuous_zi_nd_filter": check_v3_494_continuous_zi_nd_filter,
+    "494-continuous-zi-nd-filter": check_v3_494_continuous_zi_nd_filter,
 }
 
 for _alias, _checker in V3_STANDALONE_SPLIT_CHECKS.items():
