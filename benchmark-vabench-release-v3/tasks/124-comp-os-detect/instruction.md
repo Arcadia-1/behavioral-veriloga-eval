@@ -1,6 +1,7 @@
 # Comparator Offset Detect
 
-Implement a comparator-offset detector that drives differential search outputs.
+Implement a standalone comparator-offset detector for a converter calibration
+loop that drives differential search outputs.
 
 ## Public Interface
 
@@ -26,6 +27,6 @@ their difference equal to the accumulated differential search value.
 ## Modeling Constraints
 
 Return only `comp_os_detect.va`. Use deterministic voltage-domain Verilog-A.
-Do not modify or emit the support testbench, add checker logic, hard-code
+Do not modify or emit the provided testbench, add checker logic, hard-code
 private waveform sample points, add simulator-private side channels, use
 current contributions, `ddt()`, or `idt()`.

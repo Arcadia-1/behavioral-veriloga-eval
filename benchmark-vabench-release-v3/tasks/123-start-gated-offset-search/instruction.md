@@ -1,6 +1,7 @@
 # Start Gated Offset Search
 
-Implement a start-gated comparator-offset calibration stimulus driver.
+Implement a standalone start-gated comparator-offset calibration search driver
+for a converter calibration loop.
 
 ## Public Interface
 
@@ -29,6 +30,6 @@ falls, return to the reset common-mode state.
 ## Modeling Constraints
 
 Return only `start_gated_offset_search.va`. Use deterministic voltage-domain
-Verilog-A. Do not modify or emit the support testbench, add checker logic,
+Verilog-A. Do not modify or emit the provided testbench, add checker logic,
 hard-code private waveform sample points, add simulator-private side channels,
 use current contributions, `ddt()`, or `idt()`.
