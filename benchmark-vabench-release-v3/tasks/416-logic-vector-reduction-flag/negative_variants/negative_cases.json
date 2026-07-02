@@ -2,35 +2,35 @@
   "negative_cases": [
     {
       "id": "neg_001_force_zero",
-      "why_wrong": "Force output low after otherwise plausible computation.",
+      "why_wrong": "Logic Vector Reduction Flag: keeps the file compilable but forces the observable output path low, so it can pass include/instance smoke checks while failing the required behavior to valid must be 0 only when all code bits are 0.",
       "files": [
         "neg_001_force_zero/logic_vector_reduction_flag.vams"
       ]
     },
     {
       "id": "neg_002_wrong_threshold",
-      "why_wrong": "Use a shifted decision threshold that passes simple midscale smoke tests but fails boundary checks.",
+      "why_wrong": "Logic Vector Reduction Flag: keeps the main operator syntax but collapses the computed value through the wrong condition, so coarse smoke cases may run while boundary and waveform checks for Use logic vector reduction in a continuous assignment fail.",
       "files": [
         "neg_002_wrong_threshold/logic_vector_reduction_flag.vams"
       ]
     },
     {
       "id": "neg_003_reset_bias",
-      "why_wrong": "Bias reset/state initialization so startup-sensitive tests fail.",
+      "why_wrong": "Logic Vector Reduction Flag: introduces incorrect initialization or state bias, so startup and reset-sensitive checks fail while the model still compiles and produces activity.",
       "files": [
         "neg_003_reset_bias/logic_vector_reduction_flag.vams"
       ]
     },
     {
       "id": "neg_004_metric_offset",
-      "why_wrong": "Offset the metric output while leaving the main output mostly plausible.",
+      "why_wrong": "Logic Vector Reduction Flag: offsets the secondary metric or observable path, so the primary waveform may look plausible while calibrated checker evidence for valid must be 0 only when all code bits are 0 fails.",
       "files": [
         "neg_004_metric_offset/logic_vector_reduction_flag.vams"
       ]
     },
     {
       "id": "neg_005_scale_output",
-      "why_wrong": "Scale the final output so coarse tests may pass but calibrated checks fail.",
+      "why_wrong": "Logic Vector Reduction Flag: scales the final observable response, so compile and rough activity checks can pass while calibrated output checks for Use logic vector reduction in a continuous assignment fail.",
       "files": [
         "neg_005_scale_output/logic_vector_reduction_flag.vams"
       ]

@@ -125,6 +125,46 @@ def test_all_staged_tasks_have_manifest_behavior_contracts() -> None:
         )
 
 
+def test_staged_negative_variant_descriptions_are_task_specific() -> None:
+    matrix = json.loads(STAGED_BLOCKER_MATRIX.read_text(encoding="utf-8"))
+    banned_templates = (
+        "Force output low after otherwise plausible computation.",
+        "Use a shifted threshold or condition that fails boundary checks.",
+        "Use a shifted decision threshold that passes simple midscale smoke tests but fails boundary checks.",
+        "Bias reset/state initialization so startup-sensitive tests fail.",
+        "Offset the metric output while leaving the main path plausible.",
+        "Offset the metric output while leaving the main output mostly plausible.",
+        "Scale the final output so calibrated checks fail.",
+        "Scale the final output so coarse tests may pass but calibrated checks fail.",
+    )
+
+    for row in matrix["tasks"]:
+        task_key = row["task_key"]
+        title = extension_tasks()[task_key]["title"]
+        variants = negative_variants(task_key)
+        cases = negative_cases_index(task_key)
+        case_by_id = {str(case["id"]): case for case in cases}
+
+        for variant in variants:
+            variant_id = str(variant["id"])
+            description = str(variant.get("description") or "")
+            why_wrong = str(
+                case_by_id[variant_id].get("why_wrong")
+                or case_by_id[variant_id].get("description")
+                or ""
+            )
+
+            assert description.startswith(f"{title}: "), (
+                f"{task_key} {variant_id} description must name the task behavior"
+            )
+            assert description == why_wrong, (
+                f"{task_key} {variant_id} manifest and negative_cases descriptions diverge"
+            )
+            assert not any(template in description for template in banned_templates), (
+                f"{task_key} {variant_id} still uses a generic negative-template description"
+            )
+
+
 def scs_has_feature(text: str, feature: str) -> bool:
     lowered = text.lower()
     if feature == "include":

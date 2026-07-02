@@ -2,7 +2,7 @@
   "negative_variants": [
     {
       "id": "neg_001_force_zero",
-      "description": "Force output low after otherwise plausible computation.",
+      "description": "Branch Current Probe Contribution: keeps the file compilable but forces the observable output path low, so it can pass include/instance smoke checks while failing the required behavior to Contribute current through the named branch.",
       "files": [
         "neg_001_force_zero/branch_current_probe_contribution.va"
       ],
@@ -10,7 +10,7 @@
     },
     {
       "id": "neg_002_wrong_threshold",
-      "description": "Use a shifted threshold or condition that fails boundary checks.",
+      "description": "Branch Current Probe Contribution: keeps the main operator syntax but collapses the computed value through the wrong condition, so coarse smoke cases may run while boundary and waveform checks for Use a named branch with current contribution and current probing fail.",
       "files": [
         "neg_002_wrong_threshold/branch_current_probe_contribution.va"
       ],
@@ -18,7 +18,7 @@
     },
     {
       "id": "neg_003_reset_bias",
-      "description": "Bias reset/state initialization so startup-sensitive tests fail.",
+      "description": "Branch Current Probe Contribution: introduces incorrect initialization or state bias, so startup and reset-sensitive checks fail while the model still compiles and produces activity.",
       "files": [
         "neg_003_reset_bias/branch_current_probe_contribution.va"
       ],
@@ -26,7 +26,7 @@
     },
     {
       "id": "neg_004_metric_offset",
-      "description": "Offset the metric output while leaving the main path plausible.",
+      "description": "Branch Current Probe Contribution: offsets the secondary metric or observable path, so the primary waveform may look plausible while calibrated checker evidence for Contribute current through the named branch fails.",
       "files": [
         "neg_004_metric_offset/branch_current_probe_contribution.va"
       ],
@@ -34,7 +34,7 @@
     },
     {
       "id": "neg_005_scale_output",
-      "description": "Scale the final output so calibrated checks fail.",
+      "description": "Branch Current Probe Contribution: scales the final observable response, so compile and rough activity checks can pass while calibrated output checks for Use a named branch with current contribution and current probing fail.",
       "files": [
         "neg_005_scale_output/branch_current_probe_contribution.va"
       ],

@@ -2,35 +2,35 @@
   "negative_cases": [
     {
       "id": "neg_001_force_zero",
-      "why_wrong": "Force output low after otherwise plausible computation.",
+      "why_wrong": "Ddt Voltage Derivative Source: keeps the file compilable but forces the observable output path low, so it can pass include/instance smoke checks while failing the required behavior to Compute a continuous-time derivative response from V(in).",
       "files": [
         "neg_001_force_zero/ddt_voltage_derivative_source.va"
       ]
     },
     {
       "id": "neg_002_wrong_threshold",
-      "why_wrong": "Use a shifted threshold or condition that fails boundary checks.",
+      "why_wrong": "Ddt Voltage Derivative Source: keeps the main operator syntax but collapses the computed value through the wrong condition, so coarse smoke cases may run while boundary and waveform checks for Use ddt() to form a voltage-domain derivative source fail.",
       "files": [
         "neg_002_wrong_threshold/ddt_voltage_derivative_source.va"
       ]
     },
     {
       "id": "neg_003_reset_bias",
-      "why_wrong": "Bias reset/state initialization so startup-sensitive tests fail.",
+      "why_wrong": "Ddt Voltage Derivative Source: introduces incorrect initialization or state bias, so startup and reset-sensitive checks fail while the model still compiles and produces activity.",
       "files": [
         "neg_003_reset_bias/ddt_voltage_derivative_source.va"
       ]
     },
     {
       "id": "neg_004_metric_offset",
-      "why_wrong": "Offset the metric output while leaving the main path plausible.",
+      "why_wrong": "Ddt Voltage Derivative Source: offsets the secondary metric or observable path, so the primary waveform may look plausible while calibrated checker evidence for Compute a continuous-time derivative response from V(in) fails.",
       "files": [
         "neg_004_metric_offset/ddt_voltage_derivative_source.va"
       ]
     },
     {
       "id": "neg_005_scale_output",
-      "why_wrong": "Scale the final output so calibrated checks fail.",
+      "why_wrong": "Ddt Voltage Derivative Source: scales the final observable response, so compile and rough activity checks can pass while calibrated output checks for Use ddt() to form a voltage-domain derivative source fail.",
       "files": [
         "neg_005_scale_output/ddt_voltage_derivative_source.va"
       ]

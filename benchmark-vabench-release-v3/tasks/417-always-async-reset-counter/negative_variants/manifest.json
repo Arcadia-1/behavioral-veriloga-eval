@@ -2,7 +2,7 @@
   "negative_variants": [
     {
       "id": "neg_001_force_zero",
-      "description": "Force output low after otherwise plausible computation.",
+      "description": "Always Async Reset Counter: keeps the file compilable but forces the observable output path low, so it can pass include/instance smoke checks while failing the required behavior to rst must asynchronously clear q to 0.",
       "files": [
         "neg_001_force_zero/always_async_reset_counter.vams"
       ],
@@ -10,7 +10,7 @@
     },
     {
       "id": "neg_002_wrong_threshold",
-      "description": "Use a shifted decision threshold that passes simple midscale smoke tests but fails boundary checks.",
+      "description": "Always Async Reset Counter: keeps the main operator syntax but collapses the computed value through the wrong condition, so coarse smoke cases may run while boundary and waveform checks for Use an always block with asynchronous reset sensitivity fail.",
       "files": [
         "neg_002_wrong_threshold/always_async_reset_counter.vams"
       ],
@@ -18,7 +18,7 @@
     },
     {
       "id": "neg_003_reset_bias",
-      "description": "Bias reset/state initialization so startup-sensitive tests fail.",
+      "description": "Always Async Reset Counter: introduces incorrect initialization or state bias, so startup and reset-sensitive checks fail while the model still compiles and produces activity.",
       "files": [
         "neg_003_reset_bias/always_async_reset_counter.vams"
       ],
@@ -26,7 +26,7 @@
     },
     {
       "id": "neg_004_metric_offset",
-      "description": "Offset the metric output while leaving the main output mostly plausible.",
+      "description": "Always Async Reset Counter: offsets the secondary metric or observable path, so the primary waveform may look plausible while calibrated checker evidence for rst must asynchronously clear q to 0 fails.",
       "files": [
         "neg_004_metric_offset/always_async_reset_counter.vams"
       ],
@@ -34,7 +34,7 @@
     },
     {
       "id": "neg_005_scale_output",
-      "description": "Scale the final output so coarse tests may pass but calibrated checks fail.",
+      "description": "Always Async Reset Counter: scales the final observable response, so compile and rough activity checks can pass while calibrated output checks for Use an always block with asynchronous reset sensitivity fail.",
       "files": [
         "neg_005_scale_output/always_async_reset_counter.vams"
       ],

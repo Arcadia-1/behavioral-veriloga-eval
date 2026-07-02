@@ -2,7 +2,7 @@
   "negative_variants": [
     {
       "id": "neg_001_force_zero",
-      "description": "Force output low after otherwise plausible computation.",
+      "description": "Laplace Np Pole Filter: keeps the file compilable but forces the observable output path low, so it can pass include/instance smoke checks while failing the required behavior to Apply the pole-form transfer function to V(in).",
       "files": [
         "neg_001_force_zero/laplace_np_pole_filter.va"
       ],
@@ -10,7 +10,7 @@
     },
     {
       "id": "neg_002_wrong_threshold",
-      "description": "Use a shifted threshold or condition that fails boundary checks.",
+      "description": "Laplace Np Pole Filter: keeps the main operator syntax but collapses the computed value through the wrong condition, so coarse smoke cases may run while boundary and waveform checks for Use laplace_np() for pole-form continuous-time transfer modeling fail.",
       "files": [
         "neg_002_wrong_threshold/laplace_np_pole_filter.va"
       ],
@@ -18,7 +18,7 @@
     },
     {
       "id": "neg_003_reset_bias",
-      "description": "Bias reset/state initialization so startup-sensitive tests fail.",
+      "description": "Laplace Np Pole Filter: introduces incorrect initialization or state bias, so startup and reset-sensitive checks fail while the model still compiles and produces activity.",
       "files": [
         "neg_003_reset_bias/laplace_np_pole_filter.va"
       ],
@@ -26,7 +26,7 @@
     },
     {
       "id": "neg_004_metric_offset",
-      "description": "Offset the metric output while leaving the main path plausible.",
+      "description": "Laplace Np Pole Filter: offsets the secondary metric or observable path, so the primary waveform may look plausible while calibrated checker evidence for Apply the pole-form transfer function to V(in) fails.",
       "files": [
         "neg_004_metric_offset/laplace_np_pole_filter.va"
       ],
@@ -34,7 +34,7 @@
     },
     {
       "id": "neg_005_scale_output",
-      "description": "Scale the final output so calibrated checks fail.",
+      "description": "Laplace Np Pole Filter: scales the final observable response, so compile and rough activity checks can pass while calibrated output checks for Use laplace_np() for pole-form continuous-time transfer modeling fail.",
       "files": [
         "neg_005_scale_output/laplace_np_pole_filter.va"
       ],

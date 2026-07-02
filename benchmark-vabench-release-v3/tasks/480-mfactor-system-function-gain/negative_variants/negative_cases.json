@@ -2,35 +2,35 @@
   "negative_cases": [
     {
       "id": "neg_001_force_zero",
-      "why_wrong": "Force output low after otherwise plausible computation.",
+      "why_wrong": "Mfactor System Function Gain: keeps the file compilable but forces the observable output path low, so it can pass include/instance smoke checks while failing the required behavior to For an instance with m=2.0, drive out to two times the input voltage.",
       "files": [
         "neg_001_force_zero/mfactor_system_function_gain.va"
       ]
     },
     {
       "id": "neg_002_wrong_threshold",
-      "why_wrong": "Use a shifted threshold or condition that fails boundary checks.",
+      "why_wrong": "Mfactor System Function Gain: keeps the main operator syntax but collapses the computed value through the wrong condition, so coarse smoke cases may run while boundary and waveform checks for Use $mfactor() to scale behavioral gain fail.",
       "files": [
         "neg_002_wrong_threshold/mfactor_system_function_gain.va"
       ]
     },
     {
       "id": "neg_003_reset_bias",
-      "why_wrong": "Bias reset/state initialization so startup-sensitive tests fail.",
+      "why_wrong": "Mfactor System Function Gain: introduces incorrect initialization or state bias, so startup and reset-sensitive checks fail while the model still compiles and produces activity.",
       "files": [
         "neg_003_reset_bias/mfactor_system_function_gain.va"
       ]
     },
     {
       "id": "neg_004_metric_offset",
-      "why_wrong": "Offset the metric output while leaving the main path plausible.",
+      "why_wrong": "Mfactor System Function Gain: offsets the secondary metric or observable path, so the primary waveform may look plausible while calibrated checker evidence for For an instance with m=2.0, drive out to two times the input voltage fails.",
       "files": [
         "neg_004_metric_offset/mfactor_system_function_gain.va"
       ]
     },
     {
       "id": "neg_005_scale_output",
-      "why_wrong": "Scale the final output so calibrated checks fail.",
+      "why_wrong": "Mfactor System Function Gain: scales the final observable response, so compile and rough activity checks can pass while calibrated output checks for Use $mfactor() to scale behavioral gain fail.",
       "files": [
         "neg_005_scale_output/mfactor_system_function_gain.va"
       ]

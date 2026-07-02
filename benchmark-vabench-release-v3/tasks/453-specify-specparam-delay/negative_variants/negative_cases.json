@@ -2,35 +2,35 @@
   "negative_cases": [
     {
       "id": "neg_001_force_zero",
-      "why_wrong": "Force output low after otherwise plausible computation.",
+      "why_wrong": "Specify Specparam Delay: keeps the file compilable but forces the observable output path low, so it can pass include/instance smoke checks while failing the required behavior to y must follow the logical value of a.",
       "files": [
         "neg_001_force_zero/specify_specparam_delay.vams"
       ]
     },
     {
       "id": "neg_002_wrong_threshold",
-      "why_wrong": "Use a shifted threshold or condition that fails boundary checks.",
+      "why_wrong": "Specify Specparam Delay: keeps the main operator syntax but collapses the computed value through the wrong condition, so coarse smoke cases may run while boundary and waveform checks for Use specify/specparam delay syntax fail.",
       "files": [
         "neg_002_wrong_threshold/specify_specparam_delay.vams"
       ]
     },
     {
       "id": "neg_003_reset_bias",
-      "why_wrong": "Bias reset/state initialization so startup-sensitive tests fail.",
+      "why_wrong": "Specify Specparam Delay: introduces incorrect initialization or state bias, so startup and reset-sensitive checks fail while the model still compiles and produces activity.",
       "files": [
         "neg_003_reset_bias/specify_specparam_delay.vams"
       ]
     },
     {
       "id": "neg_004_metric_offset",
-      "why_wrong": "Offset the metric output while leaving the main path plausible.",
+      "why_wrong": "Specify Specparam Delay: offsets the secondary metric or observable path, so the primary waveform may look plausible while calibrated checker evidence for y must follow the logical value of a fails.",
       "files": [
         "neg_004_metric_offset/specify_specparam_delay.vams"
       ]
     },
     {
       "id": "neg_005_scale_output",
-      "why_wrong": "Scale the final output so calibrated checks fail.",
+      "why_wrong": "Specify Specparam Delay: scales the final observable response, so compile and rough activity checks can pass while calibrated output checks for Use specify/specparam delay syntax fail.",
       "files": [
         "neg_005_scale_output/specify_specparam_delay.vams"
       ]

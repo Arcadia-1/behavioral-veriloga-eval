@@ -2,35 +2,35 @@
   "negative_cases": [
     {
       "id": "neg_001_force_zero",
-      "why_wrong": "Force output low after otherwise plausible computation.",
+      "why_wrong": "Table Model 2d Array Surface: keeps the file compilable but forces the observable output path low, so it can pass include/instance smoke checks while failing the required behavior to Initialize x, y, and z arrays at initial_step.",
       "files": [
         "neg_001_force_zero/table_model_2d_array_surface.va"
       ]
     },
     {
       "id": "neg_002_wrong_threshold",
-      "why_wrong": "Use a shifted threshold or condition that fails boundary checks.",
+      "why_wrong": "Table Model 2d Array Surface: keeps the main operator syntax but collapses the computed value through the wrong condition, so coarse smoke cases may run while boundary and waveform checks for Use two independent arrays and one output array in a 2D $table_model() fail.",
       "files": [
         "neg_002_wrong_threshold/table_model_2d_array_surface.va"
       ]
     },
     {
       "id": "neg_003_reset_bias",
-      "why_wrong": "Bias reset/state initialization so startup-sensitive tests fail.",
+      "why_wrong": "Table Model 2d Array Surface: introduces incorrect initialization or state bias, so startup and reset-sensitive checks fail while the model still compiles and produces activity.",
       "files": [
         "neg_003_reset_bias/table_model_2d_array_surface.va"
       ]
     },
     {
       "id": "neg_004_metric_offset",
-      "why_wrong": "Offset the metric output while leaving the main path plausible.",
+      "why_wrong": "Table Model 2d Array Surface: offsets the secondary metric or observable path, so the primary waveform may look plausible while calibrated checker evidence for Initialize x, y, and z arrays at initial_step fails.",
       "files": [
         "neg_004_metric_offset/table_model_2d_array_surface.va"
       ]
     },
     {
       "id": "neg_005_scale_output",
-      "why_wrong": "Scale the final output so calibrated checks fail.",
+      "why_wrong": "Table Model 2d Array Surface: scales the final observable response, so compile and rough activity checks can pass while calibrated output checks for Use two independent arrays and one output array in a 2D $table_model() fail.",
       "files": [
         "neg_005_scale_output/table_model_2d_array_surface.va"
       ]

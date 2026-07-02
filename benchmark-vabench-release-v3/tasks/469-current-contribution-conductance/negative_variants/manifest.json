@@ -2,7 +2,7 @@
   "negative_variants": [
     {
       "id": "neg_001_force_zero",
-      "description": "Force output low after otherwise plausible computation.",
+      "description": "Current Contribution Conductance: keeps the file compilable but forces the observable output path low, so it can pass include/instance smoke checks while failing the required behavior to Contribute branch current proportional to V(p,n).",
       "files": [
         "neg_001_force_zero/current_contribution_conductance.va"
       ],
@@ -10,7 +10,7 @@
     },
     {
       "id": "neg_002_wrong_threshold",
-      "description": "Use a shifted threshold or condition that fails boundary checks.",
+      "description": "Current Contribution Conductance: keeps the main operator syntax but collapses the computed value through the wrong condition, so coarse smoke cases may run while boundary and waveform checks for Use I(p,n) current contribution for a conductance-style model fail.",
       "files": [
         "neg_002_wrong_threshold/current_contribution_conductance.va"
       ],
@@ -18,7 +18,7 @@
     },
     {
       "id": "neg_003_reset_bias",
-      "description": "Bias reset/state initialization so startup-sensitive tests fail.",
+      "description": "Current Contribution Conductance: introduces incorrect initialization or state bias, so startup and reset-sensitive checks fail while the model still compiles and produces activity.",
       "files": [
         "neg_003_reset_bias/current_contribution_conductance.va"
       ],
@@ -26,7 +26,7 @@
     },
     {
       "id": "neg_004_metric_offset",
-      "description": "Offset the metric output while leaving the main path plausible.",
+      "description": "Current Contribution Conductance: offsets the secondary metric or observable path, so the primary waveform may look plausible while calibrated checker evidence for Contribute branch current proportional to V(p,n) fails.",
       "files": [
         "neg_004_metric_offset/current_contribution_conductance.va"
       ],
@@ -34,7 +34,7 @@
     },
     {
       "id": "neg_005_scale_output",
-      "description": "Scale the final output so calibrated checks fail.",
+      "description": "Current Contribution Conductance: scales the final observable response, so compile and rough activity checks can pass while calibrated output checks for Use I(p,n) current contribution for a conductance-style model fail.",
       "files": [
         "neg_005_scale_output/current_contribution_conductance.va"
       ],

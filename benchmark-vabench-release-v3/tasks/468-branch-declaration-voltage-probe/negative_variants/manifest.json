@@ -2,7 +2,7 @@
   "negative_variants": [
     {
       "id": "neg_001_force_zero",
-      "description": "Force output low after otherwise plausible computation.",
+      "description": "Branch Declaration Voltage Probe: keeps the file compilable but forces the observable output path low, so it can pass include/instance smoke checks while failing the required behavior to Drive out to V(p,n) through V(br), not to the absolute p potential.",
       "files": [
         "neg_001_force_zero/branch_declaration_voltage_probe.va"
       ],
@@ -10,7 +10,7 @@
     },
     {
       "id": "neg_002_wrong_threshold",
-      "description": "Use a shifted threshold or condition that fails boundary checks.",
+      "description": "Branch Declaration Voltage Probe: keeps the main operator syntax but collapses the computed value through the wrong condition, so coarse smoke cases may run while boundary and waveform checks for Declare an explicit branch and read its voltage fail.",
       "files": [
         "neg_002_wrong_threshold/branch_declaration_voltage_probe.va"
       ],
@@ -18,7 +18,7 @@
     },
     {
       "id": "neg_003_reset_bias",
-      "description": "Bias reset/state initialization so startup-sensitive tests fail.",
+      "description": "Branch Declaration Voltage Probe: introduces incorrect initialization or state bias, so startup and reset-sensitive checks fail while the model still compiles and produces activity.",
       "files": [
         "neg_003_reset_bias/branch_declaration_voltage_probe.va"
       ],
@@ -26,7 +26,7 @@
     },
     {
       "id": "neg_004_metric_offset",
-      "description": "Offset the metric output while leaving the main path plausible.",
+      "description": "Branch Declaration Voltage Probe: offsets the secondary metric or observable path, so the primary waveform may look plausible while calibrated checker evidence for Drive out to V(p,n) through V(br), not to the absolute p potential fails.",
       "files": [
         "neg_004_metric_offset/branch_declaration_voltage_probe.va"
       ],
@@ -34,7 +34,7 @@
     },
     {
       "id": "neg_005_scale_output",
-      "description": "Scale the final output so calibrated checks fail.",
+      "description": "Branch Declaration Voltage Probe: scales the final observable response, so compile and rough activity checks can pass while calibrated output checks for Declare an explicit branch and read its voltage fail.",
       "files": [
         "neg_005_scale_output/branch_declaration_voltage_probe.va"
       ],
