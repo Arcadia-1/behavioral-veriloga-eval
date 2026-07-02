@@ -4789,6 +4789,14 @@
       - "ddt("
       - "idt("
   sim_correct:
+    positive:
+      - solution/function_clamp_window.va
+    negative:
+      - negative_variants/neg_001_drive_out_zero/function_clamp_window.va
+      - negative_variants/neg_002_drive_metric_zero/function_clamp_window.va
+      - negative_variants/neg_003_reset_polarity_wrong/function_clamp_window.va
+      - negative_variants/neg_004_logic_threshold_shifted/function_clamp_window.va
+      - negative_variants/neg_005_output_scale_low/function_clamp_window.va
     checks:
       - clamp_low_inputs_to_0p10
       - pass_mid_window_inputs_unchanged
@@ -4823,6 +4831,14 @@
       - "ddt("
       - "idt("
   sim_correct:
+    positive:
+      - solution/function_deadband_map.va
+    negative:
+      - negative_variants/neg_001_drive_out_zero/function_deadband_map.va
+      - negative_variants/neg_002_drive_metric_zero/function_deadband_map.va
+      - negative_variants/neg_003_reset_polarity_wrong/function_deadband_map.va
+      - negative_variants/neg_004_logic_threshold_shifted/function_deadband_map.va
+      - negative_variants/neg_005_output_scale_low/function_deadband_map.va
     checks:
       - vin_below_0p38_maps_to_0p0
       - vin_inside_deadband_maps_to_0p45
@@ -4857,6 +4873,14 @@
       - "ddt("
       - "idt("
   sim_correct:
+    positive:
+      - solution/function_piecewise_gain.va
+    negative:
+      - negative_variants/neg_001_drive_out_zero/function_piecewise_gain.va
+      - negative_variants/neg_002_drive_metric_zero/function_piecewise_gain.va
+      - negative_variants/neg_003_reset_polarity_wrong/function_piecewise_gain.va
+      - negative_variants/neg_004_logic_threshold_shifted/function_piecewise_gain.va
+      - negative_variants/neg_005_output_scale_low/function_piecewise_gain.va
     checks:
       - low_region_has_half_gain
       - mid_region_has_unity_gain
@@ -4891,6 +4915,14 @@
       - "ddt("
       - "idt("
   sim_correct:
+    positive:
+      - solution/function_code_normalizer.va
+    negative:
+      - negative_variants/neg_001_drive_out_zero/function_code_normalizer.va
+      - negative_variants/neg_002_drive_metric_zero/function_code_normalizer.va
+      - negative_variants/neg_003_reset_polarity_wrong/function_code_normalizer.va
+      - negative_variants/neg_004_logic_threshold_shifted/function_code_normalizer.va
+      - negative_variants/neg_005_output_scale_low/function_code_normalizer.va
     checks:
       - clamp_negative_or_low_to_code_zero
       - quantize_to_16_uniform_codes
@@ -4925,6 +4957,14 @@
       - "ddt("
       - "idt("
   sim_correct:
+    positive:
+      - solution/function_soft_threshold.va
+    negative:
+      - negative_variants/neg_001_drive_out_zero/function_soft_threshold.va
+      - negative_variants/neg_002_drive_metric_zero/function_soft_threshold.va
+      - negative_variants/neg_003_reset_polarity_wrong/function_soft_threshold.va
+      - negative_variants/neg_004_logic_threshold_shifted/function_soft_threshold.va
+      - negative_variants/neg_005_output_scale_low/function_soft_threshold.va
     checks:
       - tanh_soft_threshold_centered_at_0p45
       - low_inputs_approach_zero_smoothly
@@ -4959,6 +4999,14 @@
       - "ddt("
       - "idt("
   sim_correct:
+    positive:
+      - solution/case_mode_gain_selector.va
+    negative:
+      - negative_variants/neg_001_drive_out_zero/case_mode_gain_selector.va
+      - negative_variants/neg_002_drive_metric_zero/case_mode_gain_selector.va
+      - negative_variants/neg_003_reset_polarity_wrong/case_mode_gain_selector.va
+      - negative_variants/neg_004_logic_threshold_shifted/case_mode_gain_selector.va
+      - negative_variants/neg_005_output_scale_low/case_mode_gain_selector.va
     checks:
       - reset_high_forces_outputs_low
       - case_state_0_selects_0p20_gain
@@ -4994,6 +5042,14 @@
       - "ddt("
       - "idt("
   sim_correct:
+    positive:
+      - solution/case_priority_status_decoder.va
+    negative:
+      - negative_variants/neg_001_drive_out_zero/case_priority_status_decoder.va
+      - negative_variants/neg_002_drive_metric_zero/case_priority_status_decoder.va
+      - negative_variants/neg_003_reset_polarity_wrong/case_priority_status_decoder.va
+      - negative_variants/neg_004_logic_threshold_shifted/case_priority_status_decoder.va
+      - negative_variants/neg_005_output_scale_low/case_priority_status_decoder.va
     checks:
       - reset_high_forces_outputs_low
       - low_vin_low_mode_maps_to_status_0
@@ -5028,6 +5084,14 @@
       - "ddt("
       - "idt("
   sim_correct:
+    positive:
+      - solution/case_quantized_output_level.va
+    negative:
+      - negative_variants/neg_001_drive_out_zero/case_quantized_output_level.va
+      - negative_variants/neg_002_drive_metric_zero/case_quantized_output_level.va
+      - negative_variants/neg_003_reset_polarity_wrong/case_quantized_output_level.va
+      - negative_variants/neg_004_logic_threshold_shifted/case_quantized_output_level.va
+      - negative_variants/neg_005_output_scale_low/case_quantized_output_level.va
     checks:
       - reset_high_forces_outputs_low
       - vin_bin_0_outputs_0p00
@@ -5062,6 +5126,14 @@
       - "ddt("
       - "idt("
   sim_correct:
+    positive:
+      - solution/case_clocked_range_bucket.va
+    negative:
+      - negative_variants/neg_001_drive_out_zero/case_clocked_range_bucket.va
+      - negative_variants/neg_002_drive_metric_zero/case_clocked_range_bucket.va
+      - negative_variants/neg_003_reset_polarity_wrong/case_clocked_range_bucket.va
+      - negative_variants/neg_004_logic_threshold_shifted/case_clocked_range_bucket.va
+      - negative_variants/neg_005_output_scale_low/case_clocked_range_bucket.va
     checks:
       - reset_high_forces_outputs_low
       - low_range_bucket_outputs_0p10
@@ -5097,6 +5169,14 @@
       - "ddt("
       - "idt("
   sim_correct:
+    positive:
+      - solution/case_resettable_state_decoder.va
+    negative:
+      - negative_variants/neg_001_drive_out_zero/case_resettable_state_decoder.va
+      - negative_variants/neg_002_drive_metric_zero/case_resettable_state_decoder.va
+      - negative_variants/neg_003_reset_polarity_wrong/case_resettable_state_decoder.va
+      - negative_variants/neg_004_logic_threshold_shifted/case_resettable_state_decoder.va
+      - negative_variants/neg_005_output_scale_low/case_resettable_state_decoder.va
     checks:
       - reset_high_forces_state_zero
       - mode_high_advances_state
@@ -5130,6 +5210,14 @@
       - "ddt("
       - "idt("
   sim_correct:
+    positive:
+      - solution/for_loop_running_average.va
+    negative:
+      - negative_variants/neg_001_drive_out_zero/for_loop_running_average.va
+      - negative_variants/neg_002_drive_metric_zero/for_loop_running_average.va
+      - negative_variants/neg_003_reset_polarity_wrong/for_loop_running_average.va
+      - negative_variants/neg_004_logic_threshold_shifted/for_loop_running_average.va
+      - negative_variants/neg_005_output_scale_low/for_loop_running_average.va
     checks:
       - reset_high_clears_sample_array
       - for_loop_sums_four_sample_window
@@ -5163,6 +5251,14 @@
       - "ddt("
       - "idt("
   sim_correct:
+    positive:
+      - solution/for_loop_thermometer_count.va
+    negative:
+      - negative_variants/neg_001_drive_out_zero/for_loop_thermometer_count.va
+      - negative_variants/neg_002_drive_metric_zero/for_loop_thermometer_count.va
+      - negative_variants/neg_003_reset_polarity_wrong/for_loop_thermometer_count.va
+      - negative_variants/neg_004_logic_threshold_shifted/for_loop_thermometer_count.va
+      - negative_variants/neg_005_output_scale_low/for_loop_thermometer_count.va
     checks:
       - reset_high_clears_count
       - for_loop_scans_four_threshold_array_entries
@@ -5196,6 +5292,14 @@
       - "ddt("
       - "idt("
   sim_correct:
+    positive:
+      - solution/for_loop_weighted_accumulator.va
+    negative:
+      - negative_variants/neg_001_drive_out_zero/for_loop_weighted_accumulator.va
+      - negative_variants/neg_002_drive_metric_zero/for_loop_weighted_accumulator.va
+      - negative_variants/neg_003_reset_polarity_wrong/for_loop_weighted_accumulator.va
+      - negative_variants/neg_004_logic_threshold_shifted/for_loop_weighted_accumulator.va
+      - negative_variants/neg_005_output_scale_low/for_loop_weighted_accumulator.va
     checks:
       - reset_high_clears_sample_history
       - for_loop_sums_four_weighted_taps
@@ -5230,6 +5334,14 @@
       - "ddt("
       - "idt("
   sim_correct:
+    positive:
+      - solution/for_loop_windowed_peak.va
+    negative:
+      - negative_variants/neg_001_drive_out_zero/for_loop_windowed_peak.va
+      - negative_variants/neg_002_drive_metric_zero/for_loop_windowed_peak.va
+      - negative_variants/neg_003_reset_polarity_wrong/for_loop_windowed_peak.va
+      - negative_variants/neg_004_logic_threshold_shifted/for_loop_windowed_peak.va
+      - negative_variants/neg_005_output_scale_low/for_loop_windowed_peak.va
     checks:
       - reset_high_clears_sample_history
       - for_loop_scans_window_for_peak
@@ -5264,6 +5376,14 @@
       - "ddt("
       - "idt("
   sim_correct:
+    positive:
+      - solution/for_loop_code_popcount.va
+    negative:
+      - negative_variants/neg_001_drive_out_zero/for_loop_code_popcount.va
+      - negative_variants/neg_002_drive_metric_zero/for_loop_code_popcount.va
+      - negative_variants/neg_003_reset_polarity_wrong/for_loop_code_popcount.va
+      - negative_variants/neg_004_logic_threshold_shifted/for_loop_code_popcount.va
+      - negative_variants/neg_005_output_scale_low/for_loop_code_popcount.va
     checks:
       - reset_high_clears_bits
       - for_loop_counts_four_derived_bits
@@ -5301,6 +5421,14 @@
       - "ddt("
       - "idt("
   sim_correct:
+    positive:
+      - solution/final_step_edge_counter_file.va
+    negative:
+      - negative_variants/neg_001_drive_out_zero/final_step_edge_counter_file.va
+      - negative_variants/neg_002_drive_metric_zero/final_step_edge_counter_file.va
+      - negative_variants/neg_003_reset_polarity_wrong/final_step_edge_counter_file.va
+      - negative_variants/neg_004_logic_threshold_shifted/final_step_edge_counter_file.va
+      - negative_variants/neg_005_output_scale_low/final_step_edge_counter_file.va
     checks:
       - reset_high_edge_is_ignored
       - post_reset_clock_edges_increment_count
@@ -5338,6 +5466,14 @@
       - "ddt("
       - "idt("
   sim_correct:
+    positive:
+      - solution/final_step_average_metric_file.va
+    negative:
+      - negative_variants/neg_001_drive_out_zero/final_step_average_metric_file.va
+      - negative_variants/neg_002_drive_metric_zero/final_step_average_metric_file.va
+      - negative_variants/neg_003_reset_polarity_wrong/final_step_average_metric_file.va
+      - negative_variants/neg_004_logic_threshold_shifted/final_step_average_metric_file.va
+      - negative_variants/neg_005_output_scale_low/final_step_average_metric_file.va
     checks:
       - reset_high_sample_is_ignored
       - post_reset_samples_update_running_average
@@ -5375,6 +5511,14 @@
       - "ddt("
       - "idt("
   sim_correct:
+    positive:
+      - solution/final_step_max_observer_file.va
+    negative:
+      - negative_variants/neg_001_drive_out_zero/final_step_max_observer_file.va
+      - negative_variants/neg_002_drive_metric_zero/final_step_max_observer_file.va
+      - negative_variants/neg_003_reset_polarity_wrong/final_step_max_observer_file.va
+      - negative_variants/neg_004_logic_threshold_shifted/final_step_max_observer_file.va
+      - negative_variants/neg_005_output_scale_low/final_step_max_observer_file.va
     checks:
       - reset_high_sample_is_ignored
       - post_reset_samples_update_observed_max
@@ -5410,6 +5554,14 @@
       - "ddt("
       - "idt("
   sim_correct:
+    positive:
+      - solution/display_strobe_event_logger.va
+    negative:
+      - negative_variants/neg_001_drive_out_zero/display_strobe_event_logger.va
+      - negative_variants/neg_002_drive_metric_zero/display_strobe_event_logger.va
+      - negative_variants/neg_003_reset_polarity_wrong/display_strobe_event_logger.va
+      - negative_variants/neg_004_logic_threshold_shifted/display_strobe_event_logger.va
+      - negative_variants/neg_005_output_scale_low/display_strobe_event_logger.va
     checks:
       - reset_high_clock_edge_is_ignored
       - reset_event_logs_with_display
@@ -5447,6 +5599,14 @@
       - "ddt("
       - "idt("
   sim_correct:
+    positive:
+      - solution/file_io_sampled_metric_writer.va
+    negative:
+      - negative_variants/neg_001_drive_out_zero/file_io_sampled_metric_writer.va
+      - negative_variants/neg_002_drive_metric_zero/file_io_sampled_metric_writer.va
+      - negative_variants/neg_003_reset_polarity_wrong/file_io_sampled_metric_writer.va
+      - negative_variants/neg_004_logic_threshold_shifted/file_io_sampled_metric_writer.va
+      - negative_variants/neg_005_output_scale_low/file_io_sampled_metric_writer.va
     checks:
       - reset_high_clock_edge_does_not_write_sample
       - post_reset_samples_drive_out
@@ -5482,6 +5642,14 @@
       - "idt("
       - "transition("
   sim_correct:
+    positive:
+      - solution/slew_limited_voltage_follower.va
+    negative:
+      - negative_variants/neg_001_drive_out_zero/slew_limited_voltage_follower.va
+      - negative_variants/neg_002_drive_metric_zero/slew_limited_voltage_follower.va
+      - negative_variants/neg_003_reset_polarity_wrong/slew_limited_voltage_follower.va
+      - negative_variants/neg_004_logic_threshold_shifted/slew_limited_voltage_follower.va
+      - negative_variants/neg_005_output_scale_low/slew_limited_voltage_follower.va
     checks:
       - reset_event_clears_slew_target
       - rising_target_is_slew_limited
@@ -5517,6 +5685,14 @@
       - "idt("
       - "transition("
   sim_correct:
+    positive:
+      - solution/slew_limited_mode_stepper.va
+    negative:
+      - negative_variants/neg_001_drive_out_zero/slew_limited_mode_stepper.va
+      - negative_variants/neg_002_drive_metric_zero/slew_limited_mode_stepper.va
+      - negative_variants/neg_003_reset_polarity_wrong/slew_limited_mode_stepper.va
+      - negative_variants/neg_004_logic_threshold_shifted/slew_limited_mode_stepper.va
+      - negative_variants/neg_005_output_scale_low/slew_limited_mode_stepper.va
     checks:
       - reset_event_clears_slew_target
       - low_mode_selects_low_step
@@ -5552,6 +5728,14 @@
       - "idt("
       - "transition("
   sim_correct:
+    positive:
+      - solution/slew_output_reset_recovery.va
+    negative:
+      - negative_variants/neg_001_drive_out_zero/slew_output_reset_recovery.va
+      - negative_variants/neg_002_drive_metric_zero/slew_output_reset_recovery.va
+      - negative_variants/neg_003_reset_polarity_wrong/slew_output_reset_recovery.va
+      - negative_variants/neg_004_logic_threshold_shifted/slew_output_reset_recovery.va
+      - negative_variants/neg_005_output_scale_low/slew_output_reset_recovery.va
     checks:
       - initial_reset_clears_target
       - first_clock_slews_up_to_high_target
@@ -5586,6 +5770,14 @@
       - "idt("
       - "transition("
   sim_correct:
+    positive:
+      - solution/slew_limited_envelope.va
+    negative:
+      - negative_variants/neg_001_drive_out_zero/slew_limited_envelope.va
+      - negative_variants/neg_002_drive_metric_zero/slew_limited_envelope.va
+      - negative_variants/neg_003_reset_polarity_wrong/slew_limited_envelope.va
+      - negative_variants/neg_004_logic_threshold_shifted/slew_limited_envelope.va
+      - negative_variants/neg_005_output_scale_low/slew_limited_envelope.va
     checks:
       - reset_clears_envelope
       - low_mode_tracks_peak_envelope
@@ -5621,6 +5813,14 @@
       - "idt("
       - "transition("
   sim_correct:
+    positive:
+      - solution/slew_asymmetric_rise_fall.va
+    negative:
+      - negative_variants/neg_001_drive_out_zero/slew_asymmetric_rise_fall.va
+      - negative_variants/neg_002_drive_metric_zero/slew_asymmetric_rise_fall.va
+      - negative_variants/neg_003_reset_polarity_wrong/slew_asymmetric_rise_fall.va
+      - negative_variants/neg_004_logic_threshold_shifted/slew_asymmetric_rise_fall.va
+      - negative_variants/neg_005_output_scale_low/slew_asymmetric_rise_fall.va
     checks:
       - reset_clears_target
       - low_mode_selects_high_target
@@ -5655,6 +5855,14 @@
       - "ddt("
       - "idt("
   sim_correct:
+    positive:
+      - solution/idtmod_phase_accumulator.va
+    negative:
+      - negative_variants/neg_001_drive_out_zero/idtmod_phase_accumulator.va
+      - negative_variants/neg_002_drive_metric_zero/idtmod_phase_accumulator.va
+      - negative_variants/neg_003_reset_polarity_wrong/idtmod_phase_accumulator.va
+      - negative_variants/neg_004_logic_threshold_shifted/idtmod_phase_accumulator.va
+      - negative_variants/neg_005_output_scale_low/idtmod_phase_accumulator.va
     checks:
       - idtmod_wraps_phase_every_half_microsecond
       - output_tracks_wrapped_phase_voltage
