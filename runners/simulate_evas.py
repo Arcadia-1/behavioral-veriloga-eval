@@ -10130,12 +10130,47 @@ def check_v3_492_kcl_inductor_idt_voltage(rows: list[dict[str, float]]) -> tuple
 
 
 def check_v3_493_continuous_laplace_nd_filter(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    return _check_v3_staged_dynamic_operator_boundary(
-        rows,
-        required={"time", "inp", "out"},
-        operator="continuous_laplace_nd",
-        outputs=("out",),
-    )
+    ok, note = _v3_required_columns(rows, {"time", "inp", "out"})
+    if not ok:
+        return False, note
+    rise_times = _v3_rising_cross_times(rows, "inp", 0.5)
+    if not rise_times:
+        return False, "missing_input_step_up"
+    rise_t = rise_times[0]
+    fall_t = None
+    for prev, cur in zip(rows, rows[1:]):
+        if prev["inp"] >= 0.5 and cur["inp"] < 0.5:
+            denom = prev["inp"] - cur["inp"]
+            frac = 0.0 if denom == 0.0 else (prev["inp"] - 0.5) / denom
+            fall_t = prev["time"] + frac * (cur["time"] - prev["time"])
+            break
+
+    tau = 1.0e-6
+
+    def expected(time_s: float) -> float:
+        if time_s <= rise_t:
+            return 0.0
+        if fall_t is None or time_s <= fall_t:
+            return 1.0 - math.exp(-(time_s - rise_t) / tau)
+        y_fall = 1.0 - math.exp(-(fall_t - rise_t) / tau)
+        return y_fall * math.exp(-(time_s - fall_t) / tau)
+
+    stop_t = rows[-1]["time"]
+    sample_times = [40e-9, min(75e-9, stop_t)]
+    if stop_t > 120e-9:
+        sample_times.extend([100e-9, 150e-9])
+    failures: list[str] = []
+    for sample_t in sample_times:
+        observed = _v3_interp_signal(rows, "out", sample_t)
+        exp_value = expected(sample_t)
+        tol = max(3.0e-3, abs(exp_value) * 0.08)
+        if abs(observed - exp_value) > tol:
+            failures.append(f"out@{sample_t*1e9:.0f}ns={observed:.4g} expected={exp_value:.4g}")
+    if _v3_signal_range(rows, "out") < 0.03:
+        failures.append(f"out_range_too_small={_v3_signal_range(rows, 'out'):.4g}")
+    if failures:
+        return False, " ".join(failures[:5])
+    return True, "continuous_laplace_nd_first_order_lowpass_shape"
 
 
 def check_v3_494_continuous_zi_nd_filter(rows: list[dict[str, float]]) -> tuple[bool, str]:

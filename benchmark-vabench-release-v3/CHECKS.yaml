@@ -12247,9 +12247,14 @@
 493-continuous-laplace-nd-filter: |
   version: 1
   task_id: v3_493_continuous_laplace_nd_filter
-  backend: evas_rust_compile_capable
-  status: behavioral-continuous-time-candidate
-  checker: continuous_time_language_feature_contract
+  backend: evas
+  status: behavior-certified-candidate
+  checker: continuous_laplace_nd_filter_contract
+  # vabench-release-v2-checks
+  required_columns:
+    - time
+    - inp
+    - out
   syntax:
     must_include:
       - "laplace_nd"
@@ -12257,8 +12262,26 @@
       - "{1.0, 1e-6}"
     must_not_include:
       - "transition("
+  sim_correct:
+    positive:
+      - solution/continuous_laplace_nd_filter.va
+    negative:
+      - negative_variants/neg_001_force_zero/continuous_laplace_nd_filter.va
+      - negative_variants/neg_002_wrong_threshold/continuous_laplace_nd_filter.va
+      - negative_variants/neg_003_reset_bias/continuous_laplace_nd_filter.va
+      - negative_variants/neg_004_metric_offset/continuous_laplace_nd_filter.va
+      - negative_variants/neg_005_scale_output/continuous_laplace_nd_filter.va
+    checks:
+      - laplace_nd_expression_used_in_continuous_analog_body
+      - first_order_lowpass_rise_matches_tau_1us
+      - hidden_falling_step_decay_matches_same_state
+      - five_negative_variants_rejected_by_behavior_checker
+  promotion_evidence:
+    evas_commit: "b2d3609 Support first-order laplace_nd behavior"
+    command: "PYTHONPATH=\"/Users/mac/Documents/github-repos/EVAS:$PWD/runners\" VAEVAS_DEFAULT_EVAS_ENGINE=python VAEVAS_EVAS_PERSISTENT_WORKER=0 PATH=\"$PWD/.venv-evas/bin:$PATH\" .venv-evas/bin/python scripts/run_v3_gold_negative_verification.py --start 493 --end 493 --tasks 493 --include-staged --timeout 120 --jobs 1 --out benchmark-vabench-release-v3/reports/verify_task_493_after_negfix.json"
+    result: "1/1 gold PASS; 5/5 negative variants rejected; 0 expectation_fail with first-order laplace_nd low-pass checker."
   notes:
-    - "Continuous-time transfer-function smoke tests staged; behavior certification requires dynamic-operator support: https://github.com/Arcadia-1/EVAS/issues/44"
+    - "Promoted using EVAS first-order laplace_nd support; checker validates only the task's {1.0}/{1.0,1e-6} voltage-domain low-pass form without claiming full Laplace, KCL/MNA, or timestep-control coverage."
 494-continuous-zi-nd-filter: |
   version: 1
   task_id: v3_494_continuous_zi_nd_filter
