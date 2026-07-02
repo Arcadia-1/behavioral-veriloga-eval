@@ -141,7 +141,7 @@ task,number,title,tier,target,visible_hidden_distinct,negative_count,behavior_co
 440-laplace-zp-zero-pole-filter,440,Laplace Zp Zero Pole Filter,behavioral-continuous-time-candidate,laplace_zp_zero_pole_filter.va,True,5,True,True,True,True,True,True,True,True,,candidate_tier_not_score_ready
 441-zi-nd-discrete-filter,441,Zi Nd Discrete Filter,behavioral-continuous-time-candidate,zi_nd_discrete_filter.va,True,5,True,True,True,True,True,True,True,True,,candidate_tier_not_score_ready
 442-zi-np-discrete-filter,442,Zi Np Discrete Filter,behavioral-continuous-time-candidate,zi_np_discrete_filter.va,True,5,True,True,True,True,True,True,True,True,,candidate_tier_not_score_ready
-443-zi-zd-discrete-filter,443,Zi Zd Discrete Filter,behavioral-continuous-time-candidate,zi_zd_discrete_filter.va,True,5,True,True,True,True,True,True,False,False,checker_syntax_only_no_behavior_score,candidate_tier_not_score_ready
+443-zi-zd-discrete-filter,443,Zi Zd Discrete Filter,behavioral-continuous-time-candidate,zi_zd_discrete_filter.va,True,5,True,True,True,True,True,True,True,True,,candidate_tier_not_score_ready
 444-zi-zp-discrete-filter,444,Zi Zp Discrete Filter,behavioral-continuous-time-candidate,zi_zp_discrete_filter.va,True,5,True,True,True,True,True,True,False,False,checker_syntax_only_no_behavior_score,candidate_tier_not_score_ready
 445-limexp-soft-exponential,445,Limexp Soft Exponential,syntax-extension-candidate,limexp_soft_exponential.va,True,5,True,True,True,True,True,True,True,True,,candidate_tier_not_score_ready
 446-fstrobe-file-line-writer,446,Fstrobe File Line Writer,syntax-extension-candidate,fstrobe_file_line_writer.va,True,5,True,True,True,True,True,True,True,True,,candidate_tier_not_score_ready

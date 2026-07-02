@@ -8,33 +8,12 @@
     "missing_failure_summary_count": 0,
     "missing_issue_count": 0,
     "semantic_layer_counts": {
-      "behavioral_continuous_time_extension": 6,
+      "behavioral_continuous_time_extension": 5,
       "conservative_kcl_syntax_extension": 2
     },
-    "staged_task_count": 8
+    "staged_task_count": 7
   },
   "tasks": [
-    {
-      "failure_summary": "staged_dynamic_solver_boundary operator=zi_zd out_range=0.85 metric_range=0.85 expected=certified_continuous_time_response",
-      "issue_urls": [
-        "https://github.com/Arcadia-1/EVAS/issues/44"
-      ],
-      "probe_status": "FAIL_SIM_CORRECTNESS",
-      "promotion_acceptance": [
-        "After EVAS support lands, promote the listed 8 task(s) by adding sim_correct behavior contracts/checkers if missing, then require 8/8 gold PASS, 40/40 negative variants rejected, and zero expectation_fail in the verification report."
-      ],
-      "promotion_commands": [
-        "PYTHONPATH=runners VAEVAS_DEFAULT_EVAS_ENGINE=python VAEVAS_EVAS_PERSISTENT_WORKER=0 PATH=\"$PWD/.venv-evas/bin:$PATH\" .venv-evas/bin/python scripts/run_v3_gold_negative_verification.py --start 443 --end 494 --tasks 443,444,469,471,472,491,493,494 --include-staged --timeout 120 --jobs 1 --out benchmark-vabench-release-v3/reports/verify_issue_443_494.json"
-      ],
-      "semantic_layer": "behavioral_continuous_time_extension",
-      "target": "zi_zd_discrete_filter.va",
-      "task_id": "v3_443_zi_zd_discrete_filter",
-      "task_key": "443-zi-zd-discrete-filter",
-      "task_promotion_acceptance": "Promote `443-zi-zd-discrete-filter` only after adding repository sim_correct evidence, then require 1/1 gold PASS, 5/5 negative variants rejected, and zero expectation_fail in the per-task report.",
-      "task_promotion_command": "PYTHONPATH=runners VAEVAS_DEFAULT_EVAS_ENGINE=python VAEVAS_EVAS_PERSISTENT_WORKER=0 PATH=\"$PWD/.venv-evas/bin:$PATH\" .venv-evas/bin/python scripts/run_v3_gold_negative_verification.py --start 443 --end 443 --tasks 443 --include-staged --timeout 120 --jobs 1 --out benchmark-vabench-release-v3/reports/verify_task_443.json",
-      "tier": "behavioral-continuous-time-candidate",
-      "title": "Zi Zd Discrete Filter"
-    },
     {
       "failure_summary": "staged_dynamic_solver_boundary operator=zi_zp out_range=0.45 metric_range=0.45 expected=certified_continuous_time_response",
       "issue_urls": [
@@ -42,10 +21,10 @@
       ],
       "probe_status": "FAIL_SIM_CORRECTNESS",
       "promotion_acceptance": [
-        "After EVAS support lands, promote the listed 8 task(s) by adding sim_correct behavior contracts/checkers if missing, then require 8/8 gold PASS, 40/40 negative variants rejected, and zero expectation_fail in the verification report."
+        "After EVAS support lands, promote the listed 7 task(s) by adding sim_correct behavior contracts/checkers if missing, then require 7/7 gold PASS, 35/35 negative variants rejected, and zero expectation_fail in the verification report."
       ],
       "promotion_commands": [
-        "PYTHONPATH=runners VAEVAS_DEFAULT_EVAS_ENGINE=python VAEVAS_EVAS_PERSISTENT_WORKER=0 PATH=\"$PWD/.venv-evas/bin:$PATH\" .venv-evas/bin/python scripts/run_v3_gold_negative_verification.py --start 443 --end 494 --tasks 443,444,469,471,472,491,493,494 --include-staged --timeout 120 --jobs 1 --out benchmark-vabench-release-v3/reports/verify_issue_443_494.json"
+        "PYTHONPATH=runners VAEVAS_DEFAULT_EVAS_ENGINE=python VAEVAS_EVAS_PERSISTENT_WORKER=0 PATH=\"$PWD/.venv-evas/bin:$PATH\" .venv-evas/bin/python scripts/run_v3_gold_negative_verification.py --start 444 --end 494 --tasks 444,469,471,472,491,493,494 --include-staged --timeout 120 --jobs 1 --out benchmark-vabench-release-v3/reports/verify_issue_444_494.json"
       ],
       "semantic_layer": "behavioral_continuous_time_extension",
       "target": "zi_zp_discrete_filter.va",
@@ -63,10 +42,10 @@
       ],
       "probe_status": "FAIL_SIM_CORRECTNESS",
       "promotion_acceptance": [
-        "After EVAS support lands, promote the listed 8 task(s) by adding sim_correct behavior contracts/checkers if missing, then require 8/8 gold PASS, 40/40 negative variants rejected, and zero expectation_fail in the verification report."
+        "After EVAS support lands, promote the listed 7 task(s) by adding sim_correct behavior contracts/checkers if missing, then require 7/7 gold PASS, 35/35 negative variants rejected, and zero expectation_fail in the verification report."
       ],
       "promotion_commands": [
-        "PYTHONPATH=runners VAEVAS_DEFAULT_EVAS_ENGINE=python VAEVAS_EVAS_PERSISTENT_WORKER=0 PATH=\"$PWD/.venv-evas/bin:$PATH\" .venv-evas/bin/python scripts/run_v3_gold_negative_verification.py --start 443 --end 494 --tasks 443,444,469,471,472,491,493,494 --include-staged --timeout 120 --jobs 1 --out benchmark-vabench-release-v3/reports/verify_issue_443_494.json"
+        "PYTHONPATH=runners VAEVAS_DEFAULT_EVAS_ENGINE=python VAEVAS_EVAS_PERSISTENT_WORKER=0 PATH=\"$PWD/.venv-evas/bin:$PATH\" .venv-evas/bin/python scripts/run_v3_gold_negative_verification.py --start 444 --end 494 --tasks 444,469,471,472,491,493,494 --include-staged --timeout 120 --jobs 1 --out benchmark-vabench-release-v3/reports/verify_issue_444_494.json"
       ],
       "semantic_layer": "conservative_kcl_syntax_extension",
       "target": "current_contribution_conductance.va",
@@ -84,10 +63,10 @@
       ],
       "probe_status": "FAIL_SIM_CORRECTNESS",
       "promotion_acceptance": [
-        "After EVAS support lands, promote the listed 8 task(s) by adding sim_correct behavior contracts/checkers if missing, then require 8/8 gold PASS, 40/40 negative variants rejected, and zero expectation_fail in the verification report."
+        "After EVAS support lands, promote the listed 7 task(s) by adding sim_correct behavior contracts/checkers if missing, then require 7/7 gold PASS, 35/35 negative variants rejected, and zero expectation_fail in the verification report."
       ],
       "promotion_commands": [
-        "PYTHONPATH=runners VAEVAS_DEFAULT_EVAS_ENGINE=python VAEVAS_EVAS_PERSISTENT_WORKER=0 PATH=\"$PWD/.venv-evas/bin:$PATH\" .venv-evas/bin/python scripts/run_v3_gold_negative_verification.py --start 443 --end 494 --tasks 443,444,469,471,472,491,493,494 --include-staged --timeout 120 --jobs 1 --out benchmark-vabench-release-v3/reports/verify_issue_443_494.json"
+        "PYTHONPATH=runners VAEVAS_DEFAULT_EVAS_ENGINE=python VAEVAS_EVAS_PERSISTENT_WORKER=0 PATH=\"$PWD/.venv-evas/bin:$PATH\" .venv-evas/bin/python scripts/run_v3_gold_negative_verification.py --start 444 --end 494 --tasks 444,469,471,472,491,493,494 --include-staged --timeout 120 --jobs 1 --out benchmark-vabench-release-v3/reports/verify_issue_444_494.json"
       ],
       "semantic_layer": "behavioral_continuous_time_extension",
       "target": "indirect_branch_null_balance.va",
@@ -105,10 +84,10 @@
       ],
       "probe_status": "FAIL_SIM_CORRECTNESS",
       "promotion_acceptance": [
-        "After EVAS support lands, promote the listed 8 task(s) by adding sim_correct behavior contracts/checkers if missing, then require 8/8 gold PASS, 40/40 negative variants rejected, and zero expectation_fail in the verification report."
+        "After EVAS support lands, promote the listed 7 task(s) by adding sim_correct behavior contracts/checkers if missing, then require 7/7 gold PASS, 35/35 negative variants rejected, and zero expectation_fail in the verification report."
       ],
       "promotion_commands": [
-        "PYTHONPATH=runners VAEVAS_DEFAULT_EVAS_ENGINE=python VAEVAS_EVAS_PERSISTENT_WORKER=0 PATH=\"$PWD/.venv-evas/bin:$PATH\" .venv-evas/bin/python scripts/run_v3_gold_negative_verification.py --start 443 --end 494 --tasks 443,444,469,471,472,491,493,494 --include-staged --timeout 120 --jobs 1 --out benchmark-vabench-release-v3/reports/verify_issue_443_494.json"
+        "PYTHONPATH=runners VAEVAS_DEFAULT_EVAS_ENGINE=python VAEVAS_EVAS_PERSISTENT_WORKER=0 PATH=\"$PWD/.venv-evas/bin:$PATH\" .venv-evas/bin/python scripts/run_v3_gold_negative_verification.py --start 444 --end 494 --tasks 444,469,471,472,491,493,494 --include-staged --timeout 120 --jobs 1 --out benchmark-vabench-release-v3/reports/verify_issue_444_494.json"
       ],
       "semantic_layer": "behavioral_continuous_time_extension",
       "target": "indirect_branch_ddt_balance.va",
@@ -126,10 +105,10 @@
       ],
       "probe_status": "FAIL_SIM_CORRECTNESS",
       "promotion_acceptance": [
-        "After EVAS support lands, promote the listed 8 task(s) by adding sim_correct behavior contracts/checkers if missing, then require 8/8 gold PASS, 40/40 negative variants rejected, and zero expectation_fail in the verification report."
+        "After EVAS support lands, promote the listed 7 task(s) by adding sim_correct behavior contracts/checkers if missing, then require 7/7 gold PASS, 35/35 negative variants rejected, and zero expectation_fail in the verification report."
       ],
       "promotion_commands": [
-        "PYTHONPATH=runners VAEVAS_DEFAULT_EVAS_ENGINE=python VAEVAS_EVAS_PERSISTENT_WORKER=0 PATH=\"$PWD/.venv-evas/bin:$PATH\" .venv-evas/bin/python scripts/run_v3_gold_negative_verification.py --start 443 --end 494 --tasks 443,444,469,471,472,491,493,494 --include-staged --timeout 120 --jobs 1 --out benchmark-vabench-release-v3/reports/verify_issue_443_494.json"
+        "PYTHONPATH=runners VAEVAS_DEFAULT_EVAS_ENGINE=python VAEVAS_EVAS_PERSISTENT_WORKER=0 PATH=\"$PWD/.venv-evas/bin:$PATH\" .venv-evas/bin/python scripts/run_v3_gold_negative_verification.py --start 444 --end 494 --tasks 444,469,471,472,491,493,494 --include-staged --timeout 120 --jobs 1 --out benchmark-vabench-release-v3/reports/verify_issue_444_494.json"
       ],
       "semantic_layer": "conservative_kcl_syntax_extension",
       "target": "kcl_capacitor_ddt_current.va",
@@ -147,10 +126,10 @@
       ],
       "probe_status": "FAIL_SIM_CORRECTNESS",
       "promotion_acceptance": [
-        "After EVAS support lands, promote the listed 8 task(s) by adding sim_correct behavior contracts/checkers if missing, then require 8/8 gold PASS, 40/40 negative variants rejected, and zero expectation_fail in the verification report."
+        "After EVAS support lands, promote the listed 7 task(s) by adding sim_correct behavior contracts/checkers if missing, then require 7/7 gold PASS, 35/35 negative variants rejected, and zero expectation_fail in the verification report."
       ],
       "promotion_commands": [
-        "PYTHONPATH=runners VAEVAS_DEFAULT_EVAS_ENGINE=python VAEVAS_EVAS_PERSISTENT_WORKER=0 PATH=\"$PWD/.venv-evas/bin:$PATH\" .venv-evas/bin/python scripts/run_v3_gold_negative_verification.py --start 443 --end 494 --tasks 443,444,469,471,472,491,493,494 --include-staged --timeout 120 --jobs 1 --out benchmark-vabench-release-v3/reports/verify_issue_443_494.json"
+        "PYTHONPATH=runners VAEVAS_DEFAULT_EVAS_ENGINE=python VAEVAS_EVAS_PERSISTENT_WORKER=0 PATH=\"$PWD/.venv-evas/bin:$PATH\" .venv-evas/bin/python scripts/run_v3_gold_negative_verification.py --start 444 --end 494 --tasks 444,469,471,472,491,493,494 --include-staged --timeout 120 --jobs 1 --out benchmark-vabench-release-v3/reports/verify_issue_444_494.json"
       ],
       "semantic_layer": "behavioral_continuous_time_extension",
       "target": "continuous_laplace_nd_filter.va",
@@ -168,10 +147,10 @@
       ],
       "probe_status": "FAIL_SIM_CORRECTNESS",
       "promotion_acceptance": [
-        "After EVAS support lands, promote the listed 8 task(s) by adding sim_correct behavior contracts/checkers if missing, then require 8/8 gold PASS, 40/40 negative variants rejected, and zero expectation_fail in the verification report."
+        "After EVAS support lands, promote the listed 7 task(s) by adding sim_correct behavior contracts/checkers if missing, then require 7/7 gold PASS, 35/35 negative variants rejected, and zero expectation_fail in the verification report."
       ],
       "promotion_commands": [
-        "PYTHONPATH=runners VAEVAS_DEFAULT_EVAS_ENGINE=python VAEVAS_EVAS_PERSISTENT_WORKER=0 PATH=\"$PWD/.venv-evas/bin:$PATH\" .venv-evas/bin/python scripts/run_v3_gold_negative_verification.py --start 443 --end 494 --tasks 443,444,469,471,472,491,493,494 --include-staged --timeout 120 --jobs 1 --out benchmark-vabench-release-v3/reports/verify_issue_443_494.json"
+        "PYTHONPATH=runners VAEVAS_DEFAULT_EVAS_ENGINE=python VAEVAS_EVAS_PERSISTENT_WORKER=0 PATH=\"$PWD/.venv-evas/bin:$PATH\" .venv-evas/bin/python scripts/run_v3_gold_negative_verification.py --start 444 --end 494 --tasks 444,469,471,472,491,493,494 --include-staged --timeout 120 --jobs 1 --out benchmark-vabench-release-v3/reports/verify_issue_444_494.json"
       ],
       "semantic_layer": "behavioral_continuous_time_extension",
       "target": "continuous_zi_nd_filter.va",
