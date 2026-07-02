@@ -10675,21 +10675,15 @@
   notes:
     - "Seeded uniform dither behavior promoted to executable EVAS behavior candidate."
 449-generate-genvar-replicated-stage: |
-  version: 1
+  version: 2
   task_id: v3_449_generate_genvar_replicated_stage
-  backend: digital_mixed_capable
-  status: ams-mixed-signal-candidate
-  checker: language_feature_contract
+  backend: evas
+  status: behavior-certified-extension
+  checker: v3_449_generate_genvar_replicated_stage
   required_columns:
     - time
-    - a7
-    - a6
-    - a1
-    - a0
-    - y3
-    - y2
-    - y1
-    - y0
+    - a
+    - y
   syntax:
     must_include:
       - "genvar"
@@ -10698,9 +10692,22 @@
       - "assign"
     must_not_include:
       - "I("
+  sim_correct:
+    trace_signals:
+      time: "time"
+      a: "a"
+      y: "y"
+    checks:
+      - "generate_for_named_block_is_accepted"
+      - "genvar_decl_is_accepted"
+      - "wreal_stage_array_carries_input"
+      - "output_follows_generated_stage"
+      - "five_negative_variants_rejected_by_behavior_checker"
+  promotion_evidence:
+    command: "PYTHONPATH=\"/Users/mac/Documents/github-repos/EVAS:$PWD/runners\" VAEVAS_DEFAULT_EVAS_ENGINE=python VAEVAS_EVAS_PERSISTENT_WORKER=0 PATH=\"$PWD/.venv-evas/bin:$PATH\" .venv-evas/bin/python scripts/run_v3_gold_negative_verification.py --start 449 --end 449 --tasks 449 --include-staged --timeout 120 --jobs 1 --out benchmark-vabench-release-v3/reports/verify_task_449_after_generate_subset.json"
+    result: "1/1 gold PASS; 5/5 negative variants rejected; 0 expectation_fail after EVAS accepted the simple generate/genvar assignment subset and the weak reset-bias negative was refreshed."
   notes:
-    - "AMS/wreal generate candidate staged pending EVAS generate/genvar and wreal assign support."
-    - "EVAS issue: https://github.com/Arcadia-1/EVAS/issues/45"
+    - "Promoted after EVAS accepted simple generate-for assignment wrappers and wreal internal array declarations, with the pass-through behavior checked on hidden samples."
 450-custom-nature-discipline-voltage: |
   version: 1
   task_id: v3_450_custom_nature_discipline_voltage

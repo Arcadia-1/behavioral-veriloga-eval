@@ -4,12 +4,12 @@ Date: 2026-07-02
 
 ## Summary
 
-- `gold_total`: 22
+- `gold_total`: 21
 - `gold_pass`: 0
-- `gold_fail`: 22
-- `expectation_fail`: 22
+- `gold_fail`: 21
+- `expectation_fail`: 21
 - `skipped_staged_tasks`: 0
-- `wall_s`: 5.290621
+- `wall_s`: 5.169559
 
 ## Rows
 
@@ -25,8 +25,7 @@ Date: 2026-07-02
 | `442-zi-np-discrete-filter` | `FAIL_SIM_CORRECTNESS` | staged_dynamic_solver_boundary operator=zi_np out_range=0.65 metric_range=0.65 expected=certified_continuous_time_response |
 | `443-zi-zd-discrete-filter` | `FAIL_SIM_CORRECTNESS` | staged_dynamic_solver_boundary operator=zi_zd out_range=0.85 metric_range=0.85 expected=certified_continuous_time_response |
 | `444-zi-zp-discrete-filter` | `FAIL_SIM_CORRECTNESS` | staged_dynamic_solver_boundary operator=zi_zp out_range=0.45 metric_range=0.45 expected=certified_continuous_time_response |
-| `449-generate-genvar-replicated-stage` | `FAIL_DUT_COMPILE` | simulator_error=Failed to compile Verilog-A file generate_genvar_replicated_stage.vams: Parse error at L6:5: Unsupported Verilog-AMS module block 'generate' is outside the EVAS behavioral subset |
-| `453-specify-specparam-delay` | `FAIL_DUT_COMPILE` | simulator_error=Failed to compile Verilog-A file specify_specparam_delay.vams: Parse error at L4:5: Unsupported Verilog-AMS module block 'specify' is outside the EVAS behavioral subset |
+| `453-specify-specparam-delay` | `FAIL_SIM_CORRECTNESS` | staged_specify_boundary a_range=1 y_range=1 expected=certified_specify_path_delay |
 | `469-current-contribution-conductance` | `FAIL_SIM_CORRECTNESS` | staged_kcl_boundary feature=I(p,n)<+gain*V(p,n) n_range=0 p_range=0.0008 expected=mna_current_observable |
 | `470-branch-current-probe-contribution` | `FAIL_SIM_CORRECTNESS` | out@50ns=0.0000 expected_branch_current=0.5000 out@90ns=0.0000 expected_branch_current=0.2000 |
 | `471-indirect-branch-null-balance` | `FAIL_SIM_CORRECTNESS` | staged_dynamic_solver_boundary operator=indirect_branch_equation out_range=0 expected=certified_continuous_time_response |

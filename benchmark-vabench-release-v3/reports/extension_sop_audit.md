@@ -5,9 +5,9 @@ Date: 2026-07-02
 ## Summary
 
 - Audited extension tasks: **194**
-- SOP-ready tasks: **172**
+- SOP-ready tasks: **173**
 - Tasks with executable visible+hidden SCS evidence: **194**
-- Tasks with behavior checker evidence: **172**
+- Tasks with behavior checker evidence: **173**
 - Tasks with complete manifest behavior contracts: **194**
 - Tasks with aligned negative case indexes: **194**
 - Tasks with task-specific negative descriptions: **194**
@@ -18,7 +18,7 @@ Date: 2026-07-02
 
 ## Issue Counts
 
-- `checker_syntax_only_no_behavior_score`: 22
+- `checker_syntax_only_no_behavior_score`: 21
 
 ## Warning Counts
 
@@ -32,7 +32,7 @@ Date: 2026-07-02
 | `341-360` | AMS mixed-signal candidates | 20 | 20 | 20 | 20 | 20 | 20 | 20 | 20 |  |
 | `361-372` | noise and analysis candidates | 12 | 12 | 12 | 12 | 12 | 12 | 12 | 12 |  |
 | `373-434` | task/file/table/random/hierarchy syntax candidates | 62 | 62 | 62 | 62 | 62 | 62 | 62 | 62 |  |
-| `435-458` | manual syntax-completion candidates | 24 | 12 | 24 | 12 | 24 | 24 | 24 | 24 | `checker_syntax_only_no_behavior_score`: 12 |
+| `435-458` | manual syntax-completion candidates | 24 | 13 | 24 | 13 | 24 | 24 | 24 | 24 | `checker_syntax_only_no_behavior_score`: 11 |
 | `459-470` | course-material gap-fill candidates | 12 | 10 | 12 | 10 | 12 | 12 | 12 | 12 | `checker_syntax_only_no_behavior_score`: 2 |
 | `471-494` | LRM KCL/continuous-time gap-fill candidates | 24 | 16 | 24 | 16 | 24 | 24 | 24 | 24 | `checker_syntax_only_no_behavior_score`: 8 |
 
@@ -192,7 +192,7 @@ Tasks 301-494 are extension candidates, not SOP-ready benchmark tasks. They most
 | `446-fstrobe-file-line-writer` | `syntax-extension-candidate` | True | - |
 | `447-display-warning-debug-log` | `syntax-extension-candidate` | True | - |
 | `448-rdist-uniform-seeded-dither` | `syntax-extension-candidate` | True | - |
-| `449-generate-genvar-replicated-stage` | `ams-mixed-signal-candidate` | False | `checker_syntax_only_no_behavior_score` |
+| `449-generate-genvar-replicated-stage` | `ams-mixed-signal-candidate` | True | - |
 | `450-custom-nature-discipline-voltage` | `syntax-extension-candidate` | True | - |
 | `451-connectmodule-electrical-bridge` | `syntax-extension-candidate` | True | - |
 | `452-connectrules-electrical-map` | `syntax-extension-candidate` | True | - |

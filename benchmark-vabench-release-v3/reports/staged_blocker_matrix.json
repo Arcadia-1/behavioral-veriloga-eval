@@ -4,15 +4,15 @@
   "missing_issue_tasks": [],
   "release": "benchmark-vabench-release-v3",
   "summary": {
-    "issue_count": 5,
+    "issue_count": 4,
     "missing_failure_summary_count": 0,
     "missing_issue_count": 0,
     "semantic_layer_counts": {
-      "ams_mixed_signal_extension": 2,
+      "ams_mixed_signal_extension": 1,
       "behavioral_continuous_time_extension": 14,
       "conservative_kcl_syntax_extension": 6
     },
-    "staged_task_count": 22
+    "staged_task_count": 21
   },
   "tasks": [
     {
@@ -226,32 +226,11 @@
       "title": "Zi Zp Discrete Filter"
     },
     {
-      "failure_summary": "simulator_error=Failed to compile Verilog-A file generate_genvar_replicated_stage.vams: Parse error at L6:5: Unsupported Verilog-AMS module block 'generate' is outside the EVAS behavioral subset",
-      "issue_urls": [
-        "https://github.com/Arcadia-1/EVAS/issues/45"
-      ],
-      "probe_status": "FAIL_DUT_COMPILE",
-      "promotion_acceptance": [
-        "After EVAS support lands, promote the listed 1 task(s) by adding sim_correct behavior contracts/checkers if missing, then require 1/1 gold PASS, 5/5 negative variants rejected, and zero expectation_fail in the verification report."
-      ],
-      "promotion_commands": [
-        "PYTHONPATH=runners VAEVAS_DEFAULT_EVAS_ENGINE=python VAEVAS_EVAS_PERSISTENT_WORKER=0 PATH=\"$PWD/.venv-evas/bin:$PATH\" .venv-evas/bin/python scripts/run_v3_gold_negative_verification.py --start 449 --end 449 --tasks 449 --include-staged --timeout 120 --jobs 1 --out benchmark-vabench-release-v3/reports/verify_issue_449_449.json"
-      ],
-      "semantic_layer": "ams_mixed_signal_extension",
-      "target": "generate_genvar_replicated_stage.vams",
-      "task_id": "v3_449_generate_genvar_replicated_stage",
-      "task_key": "449-generate-genvar-replicated-stage",
-      "task_promotion_acceptance": "Promote `449-generate-genvar-replicated-stage` only after adding repository sim_correct evidence, then require 1/1 gold PASS, 5/5 negative variants rejected, and zero expectation_fail in the per-task report.",
-      "task_promotion_command": "PYTHONPATH=runners VAEVAS_DEFAULT_EVAS_ENGINE=python VAEVAS_EVAS_PERSISTENT_WORKER=0 PATH=\"$PWD/.venv-evas/bin:$PATH\" .venv-evas/bin/python scripts/run_v3_gold_negative_verification.py --start 449 --end 449 --tasks 449 --include-staged --timeout 120 --jobs 1 --out benchmark-vabench-release-v3/reports/verify_task_449.json",
-      "tier": "ams-mixed-signal-candidate",
-      "title": "Generate Genvar Replicated Stage"
-    },
-    {
-      "failure_summary": "simulator_error=Failed to compile Verilog-A file specify_specparam_delay.vams: Parse error at L4:5: Unsupported Verilog-AMS module block 'specify' is outside the EVAS behavioral subset",
+      "failure_summary": "staged_specify_boundary a_range=1 y_range=1 expected=certified_specify_path_delay",
       "issue_urls": [
         "https://github.com/Arcadia-1/EVAS/issues/48"
       ],
-      "probe_status": "FAIL_DUT_COMPILE",
+      "probe_status": "FAIL_SIM_CORRECTNESS",
       "promotion_acceptance": [
         "After EVAS support lands, promote the listed 1 task(s) by adding sim_correct behavior contracts/checkers if missing, then require 1/1 gold PASS, 5/5 negative variants rejected, and zero expectation_fail in the verification report."
       ],

@@ -293,6 +293,8 @@ def test_generate_genvar_task_is_ams_mixed_signal_layer() -> None:
     row = rows["449-generate-genvar-replicated-stage"]
     assert row["tier"] == "ams-mixed-signal-candidate"
     assert row["semantic_layer"] == "ams_mixed_signal_extension"
+    assert row["certification_level"] == "behavior_certified_extension"
+    assert row["behavior_certified"] is True
 
 
 def test_staged_gold_probe_uses_specific_checkers_when_available() -> None:
@@ -309,8 +311,7 @@ def test_staged_gold_probe_uses_specific_checkers_when_available() -> None:
         "442-zi-np-discrete-filter": "operator=zi_np",
         "443-zi-zd-discrete-filter": "operator=zi_zd",
         "444-zi-zp-discrete-filter": "operator=zi_zp",
-        "449-generate-genvar-replicated-stage": "Unsupported Verilog-AMS module block 'generate'",
-        "453-specify-specparam-delay": "Unsupported Verilog-AMS module block 'specify'",
+        "453-specify-specparam-delay": "expected=certified_specify_path_delay",
         "469-current-contribution-conductance": "staged_kcl_boundary",
         "470-branch-current-probe-contribution": "expected_branch_current=",
         "471-indirect-branch-null-balance": "operator=indirect_branch_equation",
