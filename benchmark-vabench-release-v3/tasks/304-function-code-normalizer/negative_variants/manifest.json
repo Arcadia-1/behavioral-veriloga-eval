@@ -7,35 +7,40 @@
       "files": [
         "neg_001_drive_out_zero/function_code_normalizer.va"
       ],
-      "expected": "compile_but_fail_full_behavior"
+      "expected": "compile_but_fail_full_behavior",
+      "description": "Compiles and runs, but incorrectly forces the primary output to zero."
     },
     {
       "id": "neg_002_drive_metric_zero",
       "files": [
         "neg_002_drive_metric_zero/function_code_normalizer.va"
       ],
-      "expected": "compile_but_fail_full_behavior"
+      "expected": "compile_but_fail_full_behavior",
+      "description": "Compiles and runs, but incorrectly reports the metric output as zero."
     },
     {
       "id": "neg_003_reset_polarity_wrong",
       "files": [
         "neg_003_reset_polarity_wrong/function_code_normalizer.va"
       ],
-      "expected": "compile_but_fail_full_behavior"
+      "expected": "compile_but_fail_full_behavior",
+      "description": "Compiles and runs, but handles reset with the wrong polarity."
     },
     {
       "id": "neg_004_logic_threshold_shifted",
       "files": [
         "neg_004_logic_threshold_shifted/function_code_normalizer.va"
       ],
-      "expected": "compile_but_fail_full_behavior"
+      "expected": "compile_but_fail_full_behavior",
+      "description": "Compiles and runs, but shifts the logic decision threshold."
     },
     {
       "id": "neg_005_output_scale_low",
       "files": [
         "neg_005_output_scale_low/function_code_normalizer.va"
       ],
-      "expected": "compile_but_fail_full_behavior"
+      "expected": "compile_but_fail_full_behavior",
+      "description": "Compiles and runs, but scales the primary output too low."
     }
   ]
 }

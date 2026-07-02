@@ -253,6 +253,24 @@ def test_all_v3_extension_negative_variants_are_materialized_and_distinct() -> N
                 ), f"{task_key} {variant_id} is identical to solution"
 
 
+def test_all_v3_extension_negative_variants_describe_expected_mutation() -> None:
+    for task_key in extension_tasks():
+        for variant in negative_variants(task_key):
+            variant_id = str(variant.get("id") or "")
+            expected = str(variant.get("expected") or "")
+            description = str(variant.get("description") or "").strip()
+
+            assert expected.startswith("compile_but_fail_full_behavior"), (
+                f"{task_key} {variant_id} must declare a partial-credit behavioral failure expectation"
+            )
+            assert len(description.split()) >= 4, (
+                f"{task_key} {variant_id} must describe the intended behavior mutation"
+            )
+            assert "outputput" not in description and "inputput" not in description, (
+                f"{task_key} {variant_id} has a mechanically corrupted mutation description"
+            )
+
+
 def test_behavior_certified_extension_checks_reference_expected_artifacts() -> None:
     behavior_tasks = [
         task_key

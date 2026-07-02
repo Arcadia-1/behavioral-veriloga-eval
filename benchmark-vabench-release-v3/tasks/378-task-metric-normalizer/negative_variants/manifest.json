@@ -5,35 +5,40 @@
       "description": "Force output low after otherwise plausible computation.",
       "files": [
         "neg_001_force_zero/task_metric_normalizer.va"
-      ]
+      ],
+      "expected": "compile_but_fail_full_behavior"
     },
     {
       "id": "neg_002_wrong_threshold",
       "description": "Use a shifted decision threshold that passes simple midscale smoke tests but fails boundary checks.",
       "files": [
         "neg_002_wrong_threshold/task_metric_normalizer.va"
-      ]
+      ],
+      "expected": "compile_but_fail_full_behavior"
     },
     {
       "id": "neg_003_reset_bias",
       "description": "Bias reset/state initialization so startup-sensitive tests fail.",
       "files": [
         "neg_003_reset_bias/task_metric_normalizer.va"
-      ]
+      ],
+      "expected": "compile_but_fail_full_behavior"
     },
     {
       "id": "neg_004_metric_offset",
       "description": "Offset the metric output while leaving the main output mostly plausible.",
       "files": [
         "neg_004_metric_offset/task_metric_normalizer.va"
-      ]
+      ],
+      "expected": "compile_but_fail_full_behavior"
     },
     {
       "id": "neg_005_scale_output",
       "description": "Scale the final output so coarse tests may pass but calibrated checks fail.",
       "files": [
         "neg_005_scale_output/task_metric_normalizer.va"
-      ]
+      ],
+      "expected": "compile_but_fail_full_behavior"
     }
   ]
 }

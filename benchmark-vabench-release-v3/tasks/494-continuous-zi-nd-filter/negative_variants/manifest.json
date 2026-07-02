@@ -5,35 +5,40 @@
       "description": "Force output low after otherwise plausible computation.",
       "files": [
         "neg_001_force_zero/continuous_zi_nd_filter.va"
-      ]
+      ],
+      "expected": "compile_but_fail_full_behavior"
     },
     {
       "id": "neg_002_wrong_threshold",
       "description": "Use a shifted threshold or condition that fails boundary checks.",
       "files": [
         "neg_002_wrong_threshold/continuous_zi_nd_filter.va"
-      ]
+      ],
+      "expected": "compile_but_fail_full_behavior"
     },
     {
       "id": "neg_003_reset_bias",
       "description": "Bias reset/state initialization so startup-sensitive tests fail.",
       "files": [
         "neg_003_reset_bias/continuous_zi_nd_filter.va"
-      ]
+      ],
+      "expected": "compile_but_fail_full_behavior"
     },
     {
       "id": "neg_004_metric_offset",
       "description": "Offset the metric output while leaving the main path plausible.",
       "files": [
         "neg_004_metric_offset/continuous_zi_nd_filter.va"
-      ]
+      ],
+      "expected": "compile_but_fail_full_behavior"
     },
     {
       "id": "neg_005_scale_output",
       "description": "Scale the final output so calibrated checks fail.",
       "files": [
         "neg_005_scale_output/continuous_zi_nd_filter.va"
-      ]
+      ],
+      "expected": "compile_but_fail_full_behavior"
     }
   ]
 }

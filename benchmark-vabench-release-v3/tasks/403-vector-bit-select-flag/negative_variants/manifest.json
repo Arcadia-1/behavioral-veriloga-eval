@@ -5,35 +5,40 @@
       "description": "Force output low after otherwise plausible computation.",
       "files": [
         "neg_001_force_zero/vector_bit_select_flag.va"
-      ]
+      ],
+      "expected": "compile_but_fail_full_behavior"
     },
     {
       "id": "neg_002_wrong_threshold",
       "description": "Invert the selected vector bit so syntax checks pass but bit-specific behavior fails.",
       "files": [
         "neg_002_wrong_threshold/vector_bit_select_flag.va"
-      ]
+      ],
+      "expected": "compile_but_fail_full_behavior"
     },
     {
       "id": "neg_003_reset_bias",
       "description": "Bias reset/state initialization so startup-sensitive tests fail.",
       "files": [
         "neg_003_reset_bias/vector_bit_select_flag.va"
-      ]
+      ],
+      "expected": "compile_but_fail_full_behavior"
     },
     {
       "id": "neg_004_metric_offset",
       "description": "Offset the metric output while leaving the main output mostly plausible.",
       "files": [
         "neg_004_metric_offset/vector_bit_select_flag.va"
-      ]
+      ],
+      "expected": "compile_but_fail_full_behavior"
     },
     {
       "id": "neg_005_scale_output",
       "description": "Scale the final output so coarse tests may pass but calibrated checks fail.",
       "files": [
         "neg_005_scale_output/vector_bit_select_flag.va"
-      ]
+      ],
+      "expected": "compile_but_fail_full_behavior"
     }
   ]
 }
