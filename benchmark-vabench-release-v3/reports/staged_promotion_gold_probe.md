@@ -4,18 +4,17 @@ Date: 2026-07-02
 
 ## Summary
 
-- `gold_total`: 10
+- `gold_total`: 9
 - `gold_pass`: 0
-- `gold_fail`: 10
-- `expectation_fail`: 10
+- `gold_fail`: 9
+- `expectation_fail`: 9
 - `skipped_staged_tasks`: 0
-- `wall_s`: 1.366027
+- `wall_s`: 1.239561
 
 ## Rows
 
 | Task | Status | First behavior note |
 | --- | --- | --- |
-| `441-zi-nd-discrete-filter` | `FAIL_SIM_CORRECTNESS` | staged_dynamic_solver_boundary operator=zi_nd out_range=0.7 metric_range=0.7 expected=certified_continuous_time_response |
 | `442-zi-np-discrete-filter` | `FAIL_SIM_CORRECTNESS` | staged_dynamic_solver_boundary operator=zi_np out_range=0.65 metric_range=0.65 expected=certified_continuous_time_response |
 | `443-zi-zd-discrete-filter` | `FAIL_SIM_CORRECTNESS` | staged_dynamic_solver_boundary operator=zi_zd out_range=0.85 metric_range=0.85 expected=certified_continuous_time_response |
 | `444-zi-zp-discrete-filter` | `FAIL_SIM_CORRECTNESS` | staged_dynamic_solver_boundary operator=zi_zp out_range=0.45 metric_range=0.45 expected=certified_continuous_time_response |
@@ -24,4 +23,4 @@ Date: 2026-07-02
 | `472-indirect-branch-ddt-balance` | `FAIL_SIM_CORRECTNESS` | staged_dynamic_solver_boundary operator=indirect_branch_ddt_equation out_range=0 expected=certified_continuous_time_response |
 | `491-kcl-capacitor-ddt-current` | `FAIL_SIM_CORRECTNESS` | staged_kcl_boundary feature=I(p,n)<+c*ddt(V(p,n)) p_range=0.0012 expected=mna_current_observable |
 | `493-continuous-laplace-nd-filter` | `FAIL_SIM_CORRECTNESS` | staged_dynamic_solver_boundary operator=continuous_laplace_nd out_range=0.05821 expected=certified_continuous_time_response |
-| `494-continuous-zi-nd-filter` | `FAIL_SIM_CORRECTNESS` | staged_dynamic_solver_boundary operator=continuous_zi_nd out_range=1 expected=certified_continuous_time_response |
+| `494-continuous-zi-nd-filter` | `FAIL_SIM_CORRECTNESS` | staged_dynamic_solver_boundary operator=continuous_zi_nd out_range=1.33 expected=certified_continuous_time_response |

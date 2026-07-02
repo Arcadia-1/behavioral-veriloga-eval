@@ -1,11 +1,11 @@
 {
   "summary": {
     "all_tasks_have_five_behavior_rejected_negatives": true,
-    "gold_pass_count": 184,
-    "negative_behavior_rejected_total": 920,
-    "negative_total": 920,
+    "gold_pass_count": 185,
+    "negative_behavior_rejected_total": 925,
+    "negative_total": 925,
     "source_report": "benchmark-vabench-release-v3/reports/verify_301_494_layered.json",
-    "task_count": 184
+    "task_count": 185
   },
   "tasks": [
     {
@@ -2247,6 +2247,22 @@
         "neg_005_scale_output": "FAIL_SIM_CORRECTNESS"
       },
       "task": "440-laplace-zp-zero-pole-filter"
+    },
+    {
+      "all_negatives_behavior_rejected": true,
+      "checker_task_id": "v3_441_zi_nd_discrete_filter",
+      "gold_meets_expectation": true,
+      "gold_status": "PASS",
+      "negative_behavior_rejected_count": 5,
+      "negative_count": 5,
+      "negative_statuses": {
+        "neg_001_force_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_002_wrong_threshold": "FAIL_SIM_CORRECTNESS",
+        "neg_003_reset_bias": "FAIL_SIM_CORRECTNESS",
+        "neg_004_metric_offset": "FAIL_SIM_CORRECTNESS",
+        "neg_005_scale_output": "FAIL_SIM_CORRECTNESS"
+      },
+      "task": "441-zi-nd-discrete-filter"
     },
     {
       "all_negatives_behavior_rejected": true,

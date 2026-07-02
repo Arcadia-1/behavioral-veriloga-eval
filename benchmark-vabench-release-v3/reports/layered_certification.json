@@ -2,22 +2,14 @@
   "blocking_issues": [
     {
       "issue_url": "https://github.com/Arcadia-1/EVAS/issues/44",
-      "promotion_acceptance": "After EVAS support lands, promote the listed 10 task(s) by adding sim_correct behavior contracts/checkers if missing, then require 10/10 gold PASS, 50/50 negative variants rejected, and zero expectation_fail in the verification report.",
-      "promotion_command": "PYTHONPATH=runners VAEVAS_DEFAULT_EVAS_ENGINE=python VAEVAS_EVAS_PERSISTENT_WORKER=0 PATH=\"$PWD/.venv-evas/bin:$PATH\" .venv-evas/bin/python scripts/run_v3_gold_negative_verification.py --start 441 --end 494 --tasks 441,442,443,444,469,471,472,491,493,494 --include-staged --timeout 120 --jobs 1 --out benchmark-vabench-release-v3/reports/verify_issue_441_494.json",
+      "promotion_acceptance": "After EVAS support lands, promote the listed 9 task(s) by adding sim_correct behavior contracts/checkers if missing, then require 9/9 gold PASS, 45/45 negative variants rejected, and zero expectation_fail in the verification report.",
+      "promotion_command": "PYTHONPATH=runners VAEVAS_DEFAULT_EVAS_ENGINE=python VAEVAS_EVAS_PERSISTENT_WORKER=0 PATH=\"$PWD/.venv-evas/bin:$PATH\" .venv-evas/bin/python scripts/run_v3_gold_negative_verification.py --start 442 --end 494 --tasks 442,443,444,469,471,472,491,493,494 --include-staged --timeout 120 --jobs 1 --out benchmark-vabench-release-v3/reports/verify_issue_442_494.json",
       "semantic_layers": {
-        "behavioral_continuous_time_extension": 8,
+        "behavioral_continuous_time_extension": 7,
         "conservative_kcl_syntax_extension": 2
       },
-      "task_count": 10,
+      "task_count": 9,
       "tasks": [
-        {
-          "semantic_layer": "behavioral_continuous_time_extension",
-          "target": "zi_nd_discrete_filter.va",
-          "task_id": "v3_441_zi_nd_discrete_filter",
-          "task_key": "441-zi-nd-discrete-filter",
-          "tier": "behavioral-continuous-time-candidate",
-          "title": "Zi Nd Discrete Filter"
-        },
         {
           "semantic_layer": "behavioral_continuous_time_extension",
           "target": "zi_np_discrete_filter.va",
@@ -102,7 +94,7 @@
   ],
   "completion_audit": {
     "is_complete": false,
-    "reason": "The full 301-494 objective is not complete because 10 extension tasks still lack behavior checker evidence and are excluded until EVAS support issues are resolved.",
+    "reason": "The full 301-494 objective is not complete because 9 extension tasks still lack behavior checker evidence and are excluded until EVAS support issues are resolved.",
     "requirements": [
       {
         "evidence": "layered_certification summary reports extension_candidate_count=194.",
@@ -125,18 +117,18 @@
         "status": "satisfied"
       },
       {
-        "evidence": "184 extension tasks are behavior-certified; 10 remain excluded_until_behavior_promotion.",
+        "evidence": "185 extension tasks are behavior-certified; 9 remain excluded_until_behavior_promotion.",
         "gap": "The remaining staged rows are blocked by EVAS support issues or missing behavior-checker evidence; staged_promotion_gold_probe records the current per-task blocker.",
         "requirement": "Each extension task has repository behavior checker evidence and can be scored fairly.",
         "status": "partial"
       },
       {
-        "evidence": "verify_301_494_layered: gold_pass=184, gold_fail=0, negative_rejected=920, negative_accepted=0, expectation_fail=0.",
+        "evidence": "verify_301_494_layered: gold_pass=185, gold_fail=0, negative_rejected=925, negative_accepted=0, expectation_fail=0.",
         "requirement": "Behavior-certified extension tasks pass gold verification and reject all negative variants.",
         "status": "satisfied"
       },
       {
-        "evidence": "1 blocking issues cover 10 staged tasks; staged_promotion_gold_probe records 10/10 staged gold cases still failing the current promotion gate.",
+        "evidence": "1 blocking issues cover 9 staged tasks; staged_promotion_gold_probe records 9/9 staged gold cases still failing the current promotion gate.",
         "requirement": "Every staged task has a concrete EVAS issue and promotion checklist.",
         "status": "satisfied"
       }
@@ -167,8 +159,8 @@
     },
     {
       "certification_levels": {
-        "behavior_certified_extension": 6,
-        "compile_supported_continuous_time_candidate": 8
+        "behavior_certified_extension": 7,
+        "compile_supported_continuous_time_candidate": 7
       },
       "semantic_layer": "behavioral_continuous_time_extension",
       "task_count": 14
@@ -220,24 +212,24 @@
   "release": "benchmark-vabench-release-v3",
   "status": "layered_partial",
   "summary": {
-    "behavior_certified_count": 484,
-    "behavior_certified_extension_count": 184,
+    "behavior_certified_count": 485,
+    "behavior_certified_extension_count": 185,
     "blocking_issue_counts": {
-      "https://github.com/Arcadia-1/EVAS/issues/44": 10
+      "https://github.com/Arcadia-1/EVAS/issues/44": 9
     },
     "certification_level_counts": {
       "behavior_certified": 268,
-      "behavior_certified_extension": 184,
+      "behavior_certified_extension": 185,
       "behavior_certified_support": 32,
-      "compile_supported_continuous_time_candidate": 8,
+      "compile_supported_continuous_time_candidate": 7,
       "compile_supported_kcl_candidate": 2
     },
-    "compile_supported_candidate_count": 10,
+    "compile_supported_candidate_count": 9,
     "extension_candidate_count": 194,
     "original_full_300_count": 300,
     "score_claim_counts": {
-      "excluded_until_behavior_promotion": 10,
-      "extension_behavior_certified_outside_original_300": 184,
+      "excluded_until_behavior_promotion": 9,
+      "extension_behavior_certified_outside_original_300": 185,
       "original_full_300_policy": 300
     },
     "semantic_layer_counts": {
@@ -9067,16 +9059,16 @@
       "title": "Laplace Zp Zero Pole Filter"
     },
     {
-      "behavior_certified": false,
-      "blocking_issue_urls": "https://github.com/Arcadia-1/EVAS/issues/44",
+      "behavior_certified": true,
+      "blocking_issue_urls": "",
       "category": "veriloga_z_domain_filter_semantics",
-      "certification_level": "compile_supported_continuous_time_candidate",
+      "certification_level": "behavior_certified_extension",
       "certification_scope": "language_extension_not_part_of_original_full_300_claim",
-      "claim_boundary": "Continuous-time operator syntax compiles; dynamic-solver accuracy is not certified.",
+      "claim_boundary": "Extension task has SOP-ready behavior evidence: executable visible/hidden tests, repository behavior checker, and five rejected negative variants. It remains outside the original full-300 denominator.",
       "extension_candidate": true,
       "form": "dut",
       "in_original_full_300": false,
-      "score_claim": "excluded_until_behavior_promotion",
+      "score_claim": "extension_behavior_certified_outside_original_300",
       "semantic_layer": "behavioral_continuous_time_extension",
       "syntax_focus": "Use zi_nd() for discrete-time numerator/denominator filtering.",
       "target": "zi_nd_discrete_filter.va",
