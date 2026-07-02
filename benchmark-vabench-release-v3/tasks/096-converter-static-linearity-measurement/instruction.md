@@ -1,55 +1,50 @@
 # Converter Static Linearity Measurement
 
-Implement `converter_static_linearity_measurement_flow.va` in Verilog-A.
+Implement one Verilog-A source file named
+`converter_static_linearity_measurement_flow.va`.
 
-## Interface
+## Public Interface
 
 ```verilog
 module converter_static_linearity_measurement_flow(clk, rst, vin, code, recon, dnl, inl);
 ```
+
+All ports are electrical. `clk` is the sampling strobe, `rst` is an
+active-high reset, `vin` is the swept converter input, and `code`, `recon`,
+`dnl`, and `inl` are analog metric outputs.
+
+## Public Parameter Contract
+
+- `vth = 0.45 V`: threshold for voltage-coded clock and reset logic.
+- `vfs = 0.9 V`: full-scale input range for the 4-bit converter sweep.
+- `tr = 120p`: transition smoothing time for the metric outputs.
 
 ## Required Behavior
 
-This task asks for the `converter_static_linearity_measurement_flow` behavioral module, not a Spectre testbench. The hidden evaluator instantiates this module in the original `vbr1_l2_converter_static_linearity_measurement_flow` transient scenario and checks the saved waveform/metric behavior with EVAS.
+This is an L2 converter measurement-flow component, not just an ideal quantizer.
+On each rising crossing of `clk`, reset the retained state when `rst` is high.
+Otherwise, clip `vin` to the 0-to-`vfs` range, quantize it to a 4-bit code, and
+drive `code` as the code index times `vfs / 15`.
 
-Original public behavior context:
+Drive `recon` as a monotonic but deliberately non-ideal DAC reconstruction of
+the current code. The reconstruction should have visibly non-uniform step sizes
+so that DNL-like behavior can be observed from the waveform history.
 
-# Converter static linearity measurement flow (testbench generation)
+Drive `inl` as a bounded analog metric centered near 0.45 V that reflects the
+current reconstruction error relative to an ideal `vfs / 15` ramp. Drive `dnl`
+as a bounded analog metric centered near 0.45 V that reflects the most recent
+positive code-step error relative to the ideal step size; when there is no prior
+valid increasing code step, return the DNL metric to its common-mode value.
 
-Write a Spectre transient testbench for a supplied voltage-domain
-static-linearity characterization flow for a 4-bit converter pair.
+## Public Verification Context
 
-The supplied DUT samples an input ramp, quantizes it to a 4-bit code, reconstructs a deliberately
-non-ideal DAC voltage, and uses a lightweight measurement stage to derive DNL/INL-like
-metric voltages from the observed reconstruction. This is a converter measurement flow:
-the checker observes code coverage, monotonic reconstruction, non-uniform code steps, and
-metric consistency against the measured code/reconstruction history.
+The public transient scenario saves `clk`, `rst`, `vin`, `code`, `recon`, `dnl`,
+and `inl` over a 96 ns converter sweep. Treat those values as the verification
+scenario for observable behavior, not as private checker implementation details.
 
-Public port contract:
+## Modeling Constraints
 
-```verilog
-module converter_static_linearity_measurement_flow(clk, rst, vin, code, recon, dnl, inl);
-input clk, rst, vin;
-output code, recon, dnl, inl;
-electrical clk, rst, vin, code, recon, dnl, inl;
-```
-
-Signal contract:
-
-All logic controls are voltage-coded, low=0 V and high=0.9 V with threshold 0.45 V. The design remains pure voltage-domain behavioral Verilog-A: no current contributions, transistor devices, AC/noise analysis, or KCL/KVL solving assumptions.
-
-Saved waveform columns:
-
-```text
-clk rst vin code recon dnl inl
-```
-
-Public transient contract:
-
-```spectre
-tran tran stop=96n maxstep=0.25n
-```
-
-Use voltage-coded logic with a 0.45 V threshold where applicable, drive high logic outputs near 0.9 V and low outputs near 0 V, and keep the model pure behavioral Verilog-A. Do not use transistor-level devices, AC/noise analysis, hidden checker logic, or simulator-private side channels.
-
-Only the target artifact is graded as the candidate implementation; companion Verilog-A files listed by the testbench are supplied by the harness for this task.
+Use voltage-domain event-driven Verilog-A only. Do not emit a Spectre
+testbench, checker logic, private waveform sample points, current
+contributions, transistor-level devices, AC/noise analysis, `ddt()`, or
+`idt()`.

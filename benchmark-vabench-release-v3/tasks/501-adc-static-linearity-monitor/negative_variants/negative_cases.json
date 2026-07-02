@@ -1,0 +1,39 @@
+{
+  "negative_cases": [
+    {
+      "id": "neg_001_force_zero",
+      "why_wrong": "ADC Static Linearity Monitor: never reports nonzero code error.",
+      "files": [
+        "neg_001_force_zero/adc_static_linearity_monitor.va"
+      ]
+    },
+    {
+      "id": "neg_002_instantaneous_error_only",
+      "why_wrong": "ADC Static Linearity Monitor: reports only the latest sampled error and forgets the maximum once the ADC output recovers.",
+      "files": [
+        "neg_002_instantaneous_error_only/adc_static_linearity_monitor.va"
+      ]
+    },
+    {
+      "id": "neg_003_reversed_observed_bits",
+      "why_wrong": "ADC Static Linearity Monitor: decodes the observed ADC word with reversed MSB/LSB order.",
+      "files": [
+        "neg_003_reversed_observed_bits/adc_static_linearity_monitor.va"
+      ]
+    },
+    {
+      "id": "neg_004_rounds_ideal_code",
+      "why_wrong": "ADC Static Linearity Monitor: rounds the ideal code instead of using bin-floor static quantization.",
+      "files": [
+        "neg_004_rounds_ideal_code/adc_static_linearity_monitor.va"
+      ]
+    },
+    {
+      "id": "neg_005_wrong_code_span",
+      "why_wrong": "ADC Static Linearity Monitor: uses seven bins for the ideal three-bit ADC code.",
+      "files": [
+        "neg_005_wrong_code_span/adc_static_linearity_monitor.va"
+      ]
+    }
+  ]
+}

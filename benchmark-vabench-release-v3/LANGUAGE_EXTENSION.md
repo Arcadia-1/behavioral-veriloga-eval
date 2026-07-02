@@ -1,9 +1,17 @@
 # Verilog-A Language-Semantics Extension Tasks
 
 Tasks `001` through `300` remain the original certified full-300 vaBench surface.
-Tasks `301` onward are extension candidates added to cover behavioral Verilog-A
-and Verilog-AMS language features called out by the Cadence Verilog-A Language
-Reference and the local training material.
+Tasks `301` through `494` are extension candidates added to cover behavioral
+Verilog-A and Verilog-AMS language features called out by the Cadence Verilog-A
+Language Reference and the local training material.
+
+Tasks `495` through `501` are different: they are materialized data-converter
+replacement candidates, not final appended benchmark numbers. They exist at
+temporary `495+` IDs only so their assets can be reviewed and executed. If one
+of those rows is accepted as scored benchmark content, upstream should assign it
+to a replacement slot inside the original `001`-`300` surface or explicitly keep
+it outside the scored denominator. See
+`DATA_CONVERTER_REPLACEMENT_CANDIDATES.md`.
 
 These extension tasks keep the same behavioral boundary as the benchmark: no
 transistor-level devices and no current contribution through `I(...)`. The AMS
@@ -61,8 +69,10 @@ rows intentionally exercise digital/mixed-signal syntax (`logic`, `wreal`,
   Carlo/RF helpers, 2D/string `$table_model()`, deeper analog event
   expressions, KCL `ddt`/`idt` current/voltage forms, and explicit
   continuous-time Laplace/Z-domain tier rows.
+- `495`-`501`: materialized data-converter replacement candidates. These are
+  not language-extension rows and are not final scored benchmark numbering.
 
-Each extension task contains:
+Each `301+` staging row currently contains:
 
 - `instruction.md`
 - `solution/`
@@ -74,23 +84,26 @@ Each extension task contains:
 
 ## Certification Boundary
 
-The extension tasks are marked as candidate rows in `TASKS.json` and
+The `301+` staging rows are marked as candidate rows in `TASKS.json` and
 `CHECKS.yaml`. They are not part of the original full-300 certification claim.
 Before any paper-facing full-suite claim, promote only the rows whose reference
 solutions, hidden checks, and five negative variants are behavior-certified.
 
-Re-run the SOP audit for these extension rows with:
+Re-run the SOP audit for this staging layer with:
 
 ```bash
 python3 benchmark-vabench-release-v3/scripts/audit_v3_extension_sop.py
 ```
 
-As of 2026-07-02, the SOP audit covers tasks `301`-`497` and reports:
+As of 2026-07-02, the SOP audit covers the `301`-`501` staging layer, including
+`301`-`494` language-extension rows and seven materialized data-converter
+replacement candidates at `495`-`501`. The generated report still uses
+historical extension terminology for the whole staging layer and reports:
 
-- audited extension tasks: `197`
-- SOP-ready extension tasks: `197`
-- rows with executable visible+hidden SCS evidence: `197`
-- rows with behavior-checker evidence: `197`
+- audited staging tasks: `201`
+- SOP-ready staging tasks: `201`
+- rows with executable visible+hidden SCS evidence: `201`
+- rows with behavior-checker evidence: `201`
 
 The current extension layer has no SOP blocker issues. Each extension row has a
 public required-behavior contract, executable visible and hidden SCS benches,
@@ -108,14 +121,19 @@ PYTHONPATH=runners VAEVAS_DEFAULT_EVAS_ENGINE=python \
   VAEVAS_EVAS_PERSISTENT_WORKER=0 \
   PATH="$PWD/.venv-evas/bin:$PATH" \
   .venv-evas/bin/python scripts/run_v3_gold_negative_verification.py \
-  --start 301 --end 497 --timeout 180 --jobs 4 --include-staged \
-  --out benchmark-vabench-release-v3/reports/verify_301_497_layered.json
+  --start 301 --end 501 --timeout 180 --jobs 4 --include-staged \
+  --out benchmark-vabench-release-v3/reports/verify_301_501_layered.json
 ```
 
-Result: `197/197` extension gold rows pass, `985/985` negative rows are
-rejected, and `0` expectation failures are reported. These rows remain outside
-the original full-300 denominator even though they are behavior-certified in
-the extension layer.
+The current `301`-`501` local EVAS run reports `201/201` staging-layer gold
+rows pass, `1005/1005` negative rows rejected, and `0` expectation failures.
+These rows remain outside the original full-300 denominator unless a later
+upstream decision assigns a replacement candidate to a `001`-`300` benchmark
+slot. Targeted Cadence/Spectre bridge validation for `498`-`501` reports visible
+gold `4/4` pass, hidden gold `4/4` pass, and hidden negative variants `20/20`
+rejected. AHDL log triage found no task-level `AHDLLINT-*` messages or AHDL
+compile errors for those replacement candidates; only the global `VACOMP-2435`
+environment-variable deprecation warning appears.
 
 Current local EVAS compile status after this expansion:
 
@@ -128,8 +146,12 @@ Current local EVAS compile status after this expansion:
   that currently compile with local EVAS.
 - `460`, `462`, `464`, `465`, and `467`: course-material environment
   helper rows that now compile with current local EVAS.
-- `471`-`497`: newly added LRM and Cadence data-converter gap-fill rows; all
-  reference solutions now compile and pass their repository behavior checks.
+- `471`-`494`: newly added LRM gap-fill rows; all reference solutions now
+  compile and pass their repository behavior checks.
+- `495`-`501`: materialized Cadence-derived data-converter replacement
+  candidates; all reference solutions now compile and pass their repository
+  behavior checks, but final numbering/counting remains an upstream replacement
+  decision.
 - `471`, `472`, `493`, and `494`: behavioral continuous-time candidates;
   these are compile-supported language rows, not full dynamic-solver accuracy
   claims.

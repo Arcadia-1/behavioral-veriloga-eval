@@ -23,7 +23,6 @@ STAGED_BLOCKER_MD = REPORTS_ROOT / "staged_blocker_matrix.md"
 STAGED_BLOCKER_CSV = REPORTS_ROOT / "staged_blocker_matrix.csv"
 BEHAVIOR_EXTENSION_EVIDENCE_JSON = REPORTS_ROOT / "behavior_certified_extension_task_evidence.json"
 EXTENSION_SOP_AUDIT_JSON = REPORTS_ROOT / "extension_sop_audit.json"
-VERIFY_LAYERED_JSON = REPORTS_ROOT / "verify_301_497_layered.json"
 STAGED_GOLD_PROBE_JSON = REPORTS_ROOT / "staged_promotion_gold_probe.json"
 
 
@@ -80,6 +79,11 @@ TIER_TO_LAYER = {
         "compile_supported_candidate",
         "Cadence-derived data-converter candidate; behavior certification is tracked outside the original full-300 denominator.",
     ),
+    "data-converter-replacement-candidate": (
+        "data_converter_replacement_candidate",
+        "compile_supported_candidate",
+        "Materialized data-converter replacement candidate; behavior certification is tracked outside the original full-300 denominator and final counted numbering remains an upstream policy decision.",
+    ),
     "behavioral-continuous-time-candidate": (
         "behavioral_continuous_time_extension",
         "compile_supported_continuous_time_candidate",
@@ -95,6 +99,24 @@ TIER_TO_LAYER = {
 
 def read_tasks() -> dict[str, Any]:
     return json.loads(TASKS_JSON.read_text(encoding="utf-8"))["tasks"]
+
+
+def task_number(key: str) -> int:
+    return int(key.split("-", 1)[0])
+
+
+def extension_bounds(tasks: dict[str, Any]) -> tuple[int, int]:
+    extension_numbers = [task_number(key) for key in tasks if task_number(key) > 300]
+    if not extension_numbers:
+        return 301, 300
+    return min(extension_numbers), max(extension_numbers)
+
+
+def verify_layered_json(tasks: dict[str, Any] | None = None) -> Path:
+    if tasks is None:
+        tasks = read_tasks()
+    start, end = extension_bounds(tasks)
+    return REPORTS_ROOT / f"verify_{start:03d}_{end:03d}_layered.json"
 
 
 def read_sop_ready_extension_tasks() -> set[str]:
@@ -123,10 +145,11 @@ def read_sop_audit() -> dict[str, Any]:
 
 
 def read_layered_verification_summary() -> dict[str, Any]:
-    if not VERIFY_LAYERED_JSON.exists():
+    verify_json = verify_layered_json()
+    if not verify_json.exists():
         return {}
     try:
-        payload = json.loads(VERIFY_LAYERED_JSON.read_text(encoding="utf-8"))
+        payload = json.loads(verify_json.read_text(encoding="utf-8"))
     except json.JSONDecodeError:
         return {}
     summary = payload.get("summary")
@@ -166,10 +189,6 @@ def read_checks_issue_urls() -> dict[str, list[str]]:
         if urls:
             issue_urls[current_key] = urls
     return issue_urls
-
-
-def task_number(key: str) -> int:
-    return int(key.split("-", 1)[0])
 
 
 def classify_task(
@@ -389,6 +408,7 @@ def build_completion_audit(
 
 def build_report() -> dict[str, Any]:
     tasks = read_tasks()
+    extension_start, extension_end = extension_bounds(tasks)
     sop_audit = read_sop_audit()
     sop_ready_extension_tasks = read_sop_ready_extension_tasks()
     verification_summary = read_layered_verification_summary()
@@ -475,7 +495,7 @@ def build_report() -> dict[str, Any]:
         ),
         "claim_boundary": [
             "Only tasks 001-300 are part of the original behavior-certified full-300 claim.",
-            "Tasks 301-497 are behavior-certified extension rows outside the original full-300 denominator.",
+            f"Tasks {extension_start:03d}-{extension_end:03d} are behavior-certified extension rows outside the original full-300 denominator.",
             "Continuous-time rows certify the repository's finite-difference/stateful behavioral response, not a general analog solver accuracy claim.",
             "KCL/current rows certify observable branch-current contribution behavior, not unknown-node MNA/KCL solving.",
             "AMS, noise/analysis, Cadence-helper, Cadence-derived data-converter, and table-model extension rows are certified only for their layer-specific transient/checker contracts.",
@@ -491,7 +511,7 @@ def build_report() -> dict[str, Any]:
             "staged_gold_probe_summary": "benchmark-vabench-release-v3/reports/staged_promotion_gold_probe.md",
             "staged_blocker_matrix": "benchmark-vabench-release-v3/reports/staged_blocker_matrix.json",
             "staged_blocker_matrix_summary": "benchmark-vabench-release-v3/reports/staged_blocker_matrix.md",
-            "latest_compile_probe": "local evas-rust compile probe for tasks 460-494 solution plus five negative variants per task: 210 files, 0 failures",
+            "latest_compile_probe": "local EVAS compile/verification probes cover the current staging rows and their five negative variants per task.",
         },
         "task_rows": rows,
     }
@@ -655,9 +675,10 @@ def write_staged_blocker_matrix(report: dict[str, Any]) -> None:
 
 def write_behavior_extension_evidence(report: dict[str, Any]) -> None:
     verification = {}
-    if VERIFY_LAYERED_JSON.exists():
+    verify_json = verify_layered_json()
+    if verify_json.exists():
         try:
-            verification = json.loads(VERIFY_LAYERED_JSON.read_text(encoding="utf-8"))
+            verification = json.loads(verify_json.read_text(encoding="utf-8"))
         except json.JSONDecodeError:
             verification = {}
     rows = verification.get("rows", []) if isinstance(verification, dict) else []
@@ -702,7 +723,7 @@ def write_behavior_extension_evidence(report: dict[str, Any]) -> None:
 
     payload = {
         "summary": {
-            "source_report": str(VERIFY_LAYERED_JSON.relative_to(ROOT)),
+            "source_report": str(verify_json.relative_to(ROOT)),
             "task_count": len(task_rows),
             "gold_pass_count": sum(row["gold_status"] == "PASS" for row in task_rows),
             "negative_total": sum(row["negative_count"] for row in task_rows),

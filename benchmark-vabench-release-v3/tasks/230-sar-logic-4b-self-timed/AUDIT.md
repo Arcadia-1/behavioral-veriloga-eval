@@ -1,9 +1,7 @@
-# Source SAR Logic 4b Self Timed Audit
+# 4-bit Self-Timed SAR Logic Audit
 
-- Source: `zhangz/L3_logic_4b.va` from the exact-deduplicated historical Verilog-A corpus.
-- Scenario: self-timed four-bit SAR controller that gates the comparator clock and updates top/bottom CDAC controls from comparator pulses.
-- Import status: certified only after visible compile, EVAS hidden semantic check, Spectre AX hidden semantic check, and EVAS/Spectre parity pass.
-- Evaluation: stable sampled behavior from `tran.csv`; raw simulator timestep equality is not used.
-- Evidence:
-  - `WORK/source-import-batch21-evas/230-sar-logic-4b-self-timed`
-  - `WORK/source-import-batch21-spectre/230-sar-logic-4b-self-timed`
+- Scope: L1 data-converter DUT. This is a self-timed SAR controller, not a complete ADC loop.
+- Source provenance: `zhangz/L3_logic_4b.va` from the exact-deduplicated historical Verilog-A corpus.
+- Gate 1 content review: Retain. The task covers a comparator-clock handshake and bottom-plate control updates that are independent from pure DAC weighting tasks.
+- Gate 2 prompt/checker review: Public prompt now states the exact interface, supply-derived logic threshold, reset state, comparator pulse sequencing, and default logic delay. Hidden stimulus is distinct from the visible smoke deck.
+- Verification: EVAS gold passed; all four negative variants were rejected. Spectre hidden gold passed with the same behavior checker. AHDL log triage found no task-level `AHDLLINT-*` messages or AHDL compile errors.

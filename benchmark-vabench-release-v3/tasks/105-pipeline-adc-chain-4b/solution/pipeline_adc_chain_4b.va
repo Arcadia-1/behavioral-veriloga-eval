@@ -112,16 +112,16 @@ analog begin
                     (final_code == 9) || (final_code == 11) || (final_code == 13) || (final_code == 15)) ? V(VDD) : V(VSS);
     end
 
-    V(RES1, VSS) <+ transition(res1_level - V(VSS), 0, tedge, tedge);
-    V(RES2, VSS) <+ transition(res2_level - V(VSS), 0, tedge, tedge);
-    V(S1B1, VSS) <+ transition(s1b1_level - V(VSS), 0, tedge, tedge);
-    V(S1B0, VSS) <+ transition(s1b0_level - V(VSS), 0, tedge, tedge);
-    V(S2B1, VSS) <+ transition(s2b1_level - V(VSS), 0, tedge, tedge);
-    V(S2B0, VSS) <+ transition(s2b0_level - V(VSS), 0, tedge, tedge);
-    V(DOUT3, VSS) <+ transition(d3_level - V(VSS), 0, tedge, tedge);
-    V(DOUT2, VSS) <+ transition(d2_level - V(VSS), 0, tedge, tedge);
-    V(DOUT1, VSS) <+ transition(d1_level - V(VSS), 0, tedge, tedge);
-    V(DOUT0, VSS) <+ transition(d0_level - V(VSS), 0, tedge, tedge);
+    V(RES1, VSS) <+ transition(res1_level, 0, tedge, tedge);
+    V(RES2, VSS) <+ transition(res2_level, 0, tedge, tedge);
+    V(S1B1, VSS) <+ transition(s1b1_level, 0, tedge, tedge);
+    V(S1B0, VSS) <+ transition(s1b0_level, 0, tedge, tedge);
+    V(S2B1, VSS) <+ transition(s2b1_level, 0, tedge, tedge);
+    V(S2B0, VSS) <+ transition(s2b0_level, 0, tedge, tedge);
+    V(DOUT3, VSS) <+ transition(d3_level, 0, tedge, tedge);
+    V(DOUT2, VSS) <+ transition(d2_level, 0, tedge, tedge);
+    V(DOUT1, VSS) <+ transition(d1_level, 0, tedge, tedge);
+    V(DOUT0, VSS) <+ transition(d0_level, 0, tedge, tedge);
 end
 
 endmodule

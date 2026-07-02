@@ -4,14 +4,14 @@ Date: 2026-07-02
 
 ## Summary
 
-- Audited extension tasks: **197**
-- SOP-ready tasks: **197**
-- Tasks with executable visible+hidden SCS evidence: **197**
-- Tasks with behavior checker evidence: **197**
-- Tasks with complete manifest behavior contracts: **197**
-- Tasks with aligned negative case indexes: **197**
-- Tasks with task-specific negative descriptions: **197**
-- Tasks with distinct visible/hidden SCS stimuli: **197**
+- Audited extension tasks: **201**
+- SOP-ready tasks: **201**
+- Tasks with executable visible+hidden SCS evidence: **201**
+- Tasks with behavior checker evidence: **201**
+- Tasks with complete manifest behavior contracts: **201**
+- Tasks with aligned negative case indexes: **201**
+- Tasks with task-specific negative descriptions: **201**
+- Tasks with distinct visible/hidden SCS stimuli: **201**
 - Tasks with identical visible/hidden SCS stimuli: **0**
 - SOP-ready tasks with identical visible/hidden SCS stimuli: **0**
 - Staged tasks with identical visible/hidden SCS stimuli: **0**
@@ -21,7 +21,7 @@ Date: 2026-07-02
 
 ## Warning Counts
 
-- `candidate_tier_not_score_ready`: 197
+- `candidate_tier_not_score_ready`: 201
 
 ## Range Summary
 
@@ -33,11 +33,11 @@ Date: 2026-07-02
 | `373-434` | task/file/table/random/hierarchy syntax candidates | 62 | 62 | 62 | 62 | 62 | 62 | 62 | 62 |  |
 | `435-458` | manual syntax-completion candidates | 24 | 24 | 24 | 24 | 24 | 24 | 24 | 24 |  |
 | `459-470` | course-material gap-fill candidates | 12 | 12 | 12 | 12 | 12 | 12 | 12 | 12 |  |
-| `471-497` | LRM KCL/continuous-time and Cadence data-converter gap-fill candidates | 27 | 27 | 27 | 27 | 27 | 27 | 27 | 27 |  |
+| `471-501` | LRM KCL/continuous-time and Cadence data-converter gap-fill candidates | 31 | 31 | 31 | 31 | 31 | 31 | 31 | 31 |  |
 
 ## Highest Severity Finding
 
-Tasks 301-497 are extension-layer benchmark tasks outside the original full-300 denominator. Under the SOP they must retain concrete public behavior prompts, executable visible and hidden tests, repository behavior checkers, and five behavior-rejected negative variants.
+Tasks 301-501 are staging-layer benchmark tasks outside the original full-300 denominator. Under the SOP they must retain concrete public behavior prompts, executable visible and hidden tests, repository behavior checkers, and five behavior-rejected negative variants.
 
 ## Per-Task Rows
 
@@ -237,6 +237,10 @@ Tasks 301-497 are extension-layer benchmark tasks outside the original full-300 
 | `492-kcl-inductor-idt-voltage` | `kcl-syntax-candidate` | True | - |
 | `493-continuous-laplace-nd-filter` | `behavioral-continuous-time-candidate` | True | - |
 | `494-continuous-zi-nd-filter` | `behavioral-continuous-time-candidate` | True | - |
-| `495-slew-rate-dac4` | `cadence-derived-data-converter-candidate` | True | - |
-| `496-first-order-sigma-delta-modulator` | `cadence-derived-data-converter-candidate` | True | - |
-| `497-thermometer-bus-encoder` | `cadence-derived-data-converter-candidate` | True | - |
+| `495-slew-rate-dac4` | `data-converter-replacement-candidate` | True | - |
+| `496-first-order-sigma-delta-modulator` | `data-converter-replacement-candidate` | True | - |
+| `497-thermometer-bus-encoder` | `data-converter-replacement-candidate` | True | - |
+| `498-dc-aware-adc3bit` | `data-converter-replacement-candidate` | True | - |
+| `499-latched-bus-dac8` | `data-converter-replacement-candidate` | True | - |
+| `500-deterministic-mismatch-dac6` | `data-converter-replacement-candidate` | True | - |
+| `501-adc-static-linearity-monitor` | `data-converter-replacement-candidate` | True | - |

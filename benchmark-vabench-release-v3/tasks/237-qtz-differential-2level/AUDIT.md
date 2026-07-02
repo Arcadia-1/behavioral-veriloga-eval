@@ -1,9 +1,7 @@
-# Source QTZ Differential 2level Audit
+# Differential Two-Level Quantizer Audit
 
-- Source: `zhangsh/QTZ.va` from the exact-deduplicated historical Verilog-A corpus.
-- Scenario: clocked two-threshold differential quantizer with signed analog output code.
-- Import status: certified only after visible compile, EVAS hidden semantic check, Spectre AX hidden semantic check, and EVAS/Spectre parity pass.
-- Evaluation: stable sampled behavior from `tran.csv`; raw simulator timestep equality is not used.
-- Evidence:
-  - `WORK/source-import-batch22-evas/237-qtz-differential-2level`
-  - `WORK/source-import-batch22-spectre/237-qtz-differential-2level`
+- Scope: L1 data-converter DUT. This is a clocked quantizer primitive for converter modeling.
+- Source provenance: `zhangsh/QTZ.va` from the exact-deduplicated historical Verilog-A corpus.
+- Gate 1 content review: Retain. The task is distinct from flash-code summarizers and DAC tasks because it samples a differential input and holds a signed two-level code.
+- Gate 2 prompt/checker review: Public prompt now states the exact interface, clock-edge sampling, midpoint reference threshold, signed `-0.5/+0.5` output levels, and hold behavior. Hidden stimulus is distinct from the visible smoke deck.
+- Verification: EVAS gold passed; all four negative variants were rejected. Spectre hidden gold passed with the same behavior checker. AHDL log triage found no task-level `AHDLLINT-*` messages or AHDL compile errors.

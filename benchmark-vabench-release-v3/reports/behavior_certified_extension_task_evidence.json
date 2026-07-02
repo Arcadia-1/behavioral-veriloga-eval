@@ -1,11 +1,11 @@
 {
   "summary": {
     "all_tasks_have_five_behavior_rejected_negatives": true,
-    "gold_pass_count": 197,
-    "negative_behavior_rejected_total": 985,
-    "negative_total": 985,
-    "source_report": "benchmark-vabench-release-v3/reports/verify_301_497_layered.json",
-    "task_count": 197
+    "gold_pass_count": 201,
+    "negative_behavior_rejected_total": 1005,
+    "negative_total": 1005,
+    "source_report": "benchmark-vabench-release-v3/reports/verify_301_501_layered.json",
+    "task_count": 201
   },
   "tasks": [
     {
@@ -3159,6 +3159,70 @@
         "neg_005_round_to_nearest": "FAIL_SIM_CORRECTNESS"
       },
       "task": "497-thermometer-bus-encoder"
+    },
+    {
+      "all_negatives_behavior_rejected": true,
+      "checker_task_id": "v3_498_dc_aware_adc3bit",
+      "gold_meets_expectation": true,
+      "gold_status": "PASS",
+      "negative_behavior_rejected_count": 5,
+      "negative_count": 5,
+      "negative_statuses": {
+        "neg_001_force_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_002_wrong_code_span": "FAIL_SIM_CORRECTNESS",
+        "neg_003_reversed_bit_order": "FAIL_SIM_CORRECTNESS",
+        "neg_004_no_clipping": "FAIL_SIM_CORRECTNESS",
+        "neg_005_round_to_nearest": "FAIL_SIM_CORRECTNESS"
+      },
+      "task": "498-dc-aware-adc3bit"
+    },
+    {
+      "all_negatives_behavior_rejected": true,
+      "checker_task_id": "v3_499_latched_bus_dac8",
+      "gold_meets_expectation": true,
+      "gold_status": "PASS",
+      "negative_behavior_rejected_count": 5,
+      "negative_count": 5,
+      "negative_statuses": {
+        "neg_001_force_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_002_transparent_bus": "FAIL_SIM_CORRECTNESS",
+        "neg_003_falling_edge_update": "FAIL_SIM_CORRECTNESS",
+        "neg_004_reversed_bit_order": "FAIL_SIM_CORRECTNESS",
+        "neg_005_wrong_denominator": "FAIL_SIM_CORRECTNESS"
+      },
+      "task": "499-latched-bus-dac8"
+    },
+    {
+      "all_negatives_behavior_rejected": true,
+      "checker_task_id": "v3_500_deterministic_mismatch_dac6",
+      "gold_meets_expectation": true,
+      "gold_status": "PASS",
+      "negative_behavior_rejected_count": 5,
+      "negative_count": 5,
+      "negative_statuses": {
+        "neg_001_force_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_002_ideal_binary_only": "FAIL_SIM_CORRECTNESS",
+        "neg_003_wrong_mismatch_sign": "FAIL_SIM_CORRECTNESS",
+        "neg_004_reversed_bit_order": "FAIL_SIM_CORRECTNESS",
+        "neg_005_nominal_normalization": "FAIL_SIM_CORRECTNESS"
+      },
+      "task": "500-deterministic-mismatch-dac6"
+    },
+    {
+      "all_negatives_behavior_rejected": true,
+      "checker_task_id": "v3_501_adc_static_linearity_monitor",
+      "gold_meets_expectation": true,
+      "gold_status": "PASS",
+      "negative_behavior_rejected_count": 5,
+      "negative_count": 5,
+      "negative_statuses": {
+        "neg_001_force_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_002_instantaneous_error_only": "FAIL_SIM_CORRECTNESS",
+        "neg_003_reversed_observed_bits": "FAIL_SIM_CORRECTNESS",
+        "neg_004_rounds_ideal_code": "FAIL_SIM_CORRECTNESS",
+        "neg_005_wrong_code_span": "FAIL_SIM_CORRECTNESS"
+      },
+      "task": "501-adc-static-linearity-monitor"
     }
   ]
 }

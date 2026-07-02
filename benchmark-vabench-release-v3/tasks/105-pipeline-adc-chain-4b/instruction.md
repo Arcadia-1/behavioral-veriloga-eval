@@ -1,48 +1,58 @@
 # Pipeline ADC Chain 4b
 
-Implement `pipeline_adc_chain_4b.va` in Verilog-A.
+Implement one Verilog-A source file named `pipeline_adc_chain_4b.va`.
 
-## Interface
+## Public Interface
 
 ```verilog
 module pipeline_adc_chain_4b(VDD, VSS, VIN, CLK, RES1, RES2, S1B1, S1B0, S2B1, S2B0, DOUT3, DOUT2, DOUT1, DOUT0);
 ```
 
+All ports are electrical. `VDD` and `VSS` are the supply rails, `VIN` is the
+sampled analog input, `CLK` is the conversion strobe, `RES1` and `RES2` expose
+the first-stage and second-stage residue voltages, `S1B1/S1B0` and
+`S2B1/S2B0` expose the two stage decisions, and `DOUT3..DOUT0` expose the final
+4-bit code with `DOUT3` as MSB.
+
+## Public Parameter Contract
+
+- `vrefp = 0.9 V`: positive conversion reference.
+- `vrefn = 0.0 V`: negative conversion reference.
+- `vth = 0.45 V`: threshold for voltage-coded clock and output-bit logic.
+- `tedge = 100p`: transition smoothing time for residue and bit outputs.
+
 ## Required Behavior
 
-This task asks for the `pipeline_adc_chain_4b` behavioral module, not a Spectre testbench. The hidden evaluator instantiates this module in the original `vbr1_l2_pipeline_adc_chain` transient scenario and checks the saved waveform/metric behavior with EVAS.
+This is an L2 pipeline-ADC residue-chain component. On each rising crossing of
+`CLK`, clip `VIN` to the `vrefn`-to-`vrefp` range and perform a two-stage
+2-bit/stage conversion.
 
-Gold-source design notes carried into the public contract:
+Stage 1 makes a 2-bit coarse decision from the clipped input. It should output
+that decision on `S1B1/S1B0`, compute the center of the selected quarter-scale
+bin, amplify the input error from that center by four, and drive the clipped
+first residue on `RES1`.
 
-```text
-// Two-stage 2-bit/stage pipeline ADC residue chain, EVAS-compatible behavioral model.
-// Stage 1 makes a 2-bit coarse decision, amplifies the residue by 4, and
-// stage 2 quantizes that residue into the lower 2 output bits.
-```
+Stage 2 quantizes `RES1` with the same 2-bit quarter-scale rule. It should
+output the backend decision on `S2B1/S2B0`, compute the second residue with the
+same gain-of-four residue rule, and drive the clipped backend residue on
+`RES2`.
 
-Original public behavior context:
+The final output word is the stage-1 decision concatenated with the stage-2
+decision: `DOUT3/DOUT2` are the stage-1 bits and `DOUT1/DOUT0` are the stage-2
+bits. High logic outputs should be near `VDD`; low logic outputs should be near
+`VSS`.
 
-# Pipeline ADC residue chain Testbench Companion
+## Public Verification Context
 
-Write a Spectre transient testbench for a pure voltage-domain compact two-stage
-4-bit pipeline ADC chain. The supplied DUT performs a 2-bit coarse
-quantization, outputs the first residue, performs a 2-bit backend quantization,
-and drives a final 4-bit code for the same sampled input. This is a
-single-sample behavioral residue chain, not a latency/correction benchmark.
+The public transient scenario drives representative points across all 16 final
+4-bit code bins, alternates lower-half and upper-half points inside adjacent
+bins, and observes `vin`, `clk`, `res1`, `res2`, the stage bits, and the final
+code bits. Treat that scenario as observable verification context, not as values
+to hard-code into the DUT.
 
-Public requirements:
+## Modeling Constraints
 
-- use a 0.9 V supply
-- drive `vin` through representative points in all 16 final 4-bit code bins
-- alternate lower-half and upper-half points inside adjacent bins so the
-  residue path is exercised, not only the final code output
-- drive `clk` so every input point is stable before a rising clock edge
-- instantiate `pipeline_adc_chain_4b` by positional ports
-- save exactly these scalar names: `vin`, `clk`, `res1`, `res2`, `s1b1`,
-  `s1b0`, `s2b1`, `s2b0`, `dout3`, `dout2`, `dout1`, `dout0`
-- include a transient `tran` analysis
-- avoid transistor-level devices, AC/noise analysis, and current-domain solver assumptions
-
-Use voltage-coded logic with a 0.45 V threshold where applicable, drive high logic outputs near 0.9 V and low outputs near 0 V, and keep the model pure behavioral Verilog-A. Do not use transistor-level devices, AC/noise analysis, hidden checker logic, or simulator-private side channels.
-
-Only the target artifact is graded as the candidate implementation; companion Verilog-A files listed by the testbench are supplied by the harness for this task.
+Use voltage-domain event-driven Verilog-A only. Do not emit a Spectre
+testbench, checker logic, private waveform sample points, current
+contributions, transistor-level devices, AC/noise analysis, `ddt()`, or
+`idt()`.

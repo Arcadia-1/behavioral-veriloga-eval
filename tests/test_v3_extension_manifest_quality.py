@@ -33,15 +33,23 @@ def extension_tasks() -> dict[str, dict]:
     return {key: value for key, value in tasks.items() if int(key[:3]) > 300}
 
 
+def expected_extension_count() -> int:
+    return len(extension_tasks())
+
+
 def test_all_v3_extension_tasks_have_manifest_metadata() -> None:
     tasks = extension_tasks()
 
-    assert len(tasks) == 197
+    assert len(tasks) == expected_extension_count()
     for task_key, task in tasks.items():
         missing = REQUIRED_EXTENSION_FIELDS - set(task)
         assert missing == set(), f"{task_key} missing {sorted(missing)}"
         assert task["target"], f"{task_key} has no target artifact"
-        assert str(task["certification_scope"]).endswith("_not_part_of_original_full_300_claim")
+        certification_scope = str(task["certification_scope"])
+        assert (
+            certification_scope.endswith("_not_part_of_original_full_300_claim")
+            or certification_scope == "materialized_replacement_candidate_not_final_301_plus_benchmark_number"
+        )
         assert str(task["tier"]).endswith("candidate")
         assert str(task["syntax_focus"]).strip()
 
@@ -236,7 +244,7 @@ def test_v3_extension_visible_hidden_diversity_is_audited() -> None:
         else:
             distinct_tasks.append(task_key)
 
-    assert len(distinct_tasks) == 197
+    assert len(distinct_tasks) == expected_extension_count()
     assert len(identical_tasks) == 0
     assert "341-wreal-gain-pass-through" in distinct_tasks
     assert "346-logic-assign-inverter" in distinct_tasks

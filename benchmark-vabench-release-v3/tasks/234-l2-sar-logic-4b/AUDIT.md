@@ -1,9 +1,7 @@
-# Source L2 SAR Logic 4b Audit
+# 4-bit SAR Logic Controller Audit
 
-- Source: `yueyh/L2_4bit_sar_logic.va` from the exact-deduplicated historical Verilog-A corpus.
-- Scenario: four-bit pipe-SAR controller that gates a comparator clock and records DP/DN decisions into CDAC controls.
-- Import status: certified only after visible compile, EVAS hidden semantic check, Spectre AX hidden semantic check, and EVAS/Spectre parity pass.
-- Evaluation: stable sampled behavior from `tran.csv`; raw simulator timestep equality is not used.
-- Evidence:
-  - `WORK/source-import-batch22-evas/234-l2-sar-logic-4b`
-  - `WORK/source-import-batch22-spectre/234-l2-sar-logic-4b`
+- Scope: L1 data-converter DUT. The `l2` text is historical module naming; this benchmark remains a single controller module, not an L2 closed-loop flow.
+- Source provenance: `yueyh/L2_4bit_sar_logic.va` from the exact-deduplicated historical Verilog-A corpus.
+- Gate 1 content review: Retain. The task covers a reset/start SAR controller with comparator-clock gating and explicit positive/negative DAC-control updates.
+- Gate 2 prompt/checker review: Public prompt now states the exact interface, reset/start behavior, MSB-to-LSB decision order, DAC-control polarity, and default delay. Hidden stimulus is distinct from the visible smoke deck.
+- Verification: EVAS gold passed; all four negative variants were rejected. Spectre hidden gold passed with the same behavior checker. AHDL log triage found no task-level `AHDLLINT-*` messages or AHDL compile errors.
