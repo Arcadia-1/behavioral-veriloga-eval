@@ -107,7 +107,19 @@ def test_v3_extension_rows_do_not_overclaim_behavior_certification() -> None:
     }
     assert len(kcl_rows) == 6
     assert all(row["certification_level"] == "compile_supported_continuous_time_candidate" for row in continuous_rows)
-    assert all(row["certification_level"] == "compile_supported_kcl_candidate" for row in kcl_rows)
+    kcl_by_key = {row["task_key"]: row for row in kcl_rows}
+    for key in (
+        "469-current-contribution-conductance",
+        "470-branch-current-probe-contribution",
+        "491-kcl-capacitor-ddt-current",
+        "492-kcl-inductor-idt-voltage",
+    ):
+        assert kcl_by_key[key]["certification_level"] == "compile_supported_kcl_candidate"
+    for key in (
+        "481-analog-primitive-resistor-instance",
+        "482-analog-primitive-isource-instance",
+    ):
+        assert kcl_by_key[key]["certification_level"] == "behavior_certified_extension"
 
 
 def test_v3_layered_certification_claim_boundary_is_explicit() -> None:
@@ -302,6 +314,16 @@ def test_generate_genvar_task_is_ams_mixed_signal_layer() -> None:
     assert specify["certification_level"] == "behavior_certified_extension"
     assert specify["behavior_certified"] is True
 
+    resistor = rows["481-analog-primitive-resistor-instance"]
+    assert resistor["semantic_layer"] == "conservative_kcl_syntax_extension"
+    assert resistor["certification_level"] == "behavior_certified_extension"
+    assert resistor["behavior_certified"] is True
+
+    isource = rows["482-analog-primitive-isource-instance"]
+    assert isource["semantic_layer"] == "conservative_kcl_syntax_extension"
+    assert isource["certification_level"] == "behavior_certified_extension"
+    assert isource["behavior_certified"] is True
+
 
 def test_staged_gold_probe_uses_specific_checkers_when_available() -> None:
     probe = json.loads((V3 / "reports" / "staged_promotion_gold_probe.json").read_text(encoding="utf-8"))
@@ -321,8 +343,6 @@ def test_staged_gold_probe_uses_specific_checkers_when_available() -> None:
         "470-branch-current-probe-contribution": "expected_branch_current=",
         "471-indirect-branch-null-balance": "operator=indirect_branch_equation",
         "472-indirect-branch-ddt-balance": "operator=indirect_branch_ddt_equation",
-        "481-analog-primitive-resistor-instance": "Unsupported analog primitive instance: resistor",
-        "482-analog-primitive-isource-instance": "Unsupported analog primitive instance: isource",
         "491-kcl-capacitor-ddt-current": "staged_kcl_boundary",
         "492-kcl-inductor-idt-voltage": "Model isource not found",
         "493-continuous-laplace-nd-filter": "operator=continuous_laplace_nd",

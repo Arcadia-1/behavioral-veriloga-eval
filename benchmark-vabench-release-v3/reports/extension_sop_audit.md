@@ -5,9 +5,9 @@ Date: 2026-07-02
 ## Summary
 
 - Audited extension tasks: **194**
-- SOP-ready tasks: **174**
+- SOP-ready tasks: **176**
 - Tasks with executable visible+hidden SCS evidence: **194**
-- Tasks with behavior checker evidence: **174**
+- Tasks with behavior checker evidence: **176**
 - Tasks with complete manifest behavior contracts: **194**
 - Tasks with aligned negative case indexes: **194**
 - Tasks with task-specific negative descriptions: **194**
@@ -18,7 +18,7 @@ Date: 2026-07-02
 
 ## Issue Counts
 
-- `checker_syntax_only_no_behavior_score`: 20
+- `checker_syntax_only_no_behavior_score`: 18
 
 ## Warning Counts
 
@@ -34,7 +34,7 @@ Date: 2026-07-02
 | `373-434` | task/file/table/random/hierarchy syntax candidates | 62 | 62 | 62 | 62 | 62 | 62 | 62 | 62 |  |
 | `435-458` | manual syntax-completion candidates | 24 | 14 | 24 | 14 | 24 | 24 | 24 | 24 | `checker_syntax_only_no_behavior_score`: 10 |
 | `459-470` | course-material gap-fill candidates | 12 | 10 | 12 | 10 | 12 | 12 | 12 | 12 | `checker_syntax_only_no_behavior_score`: 2 |
-| `471-494` | LRM KCL/continuous-time gap-fill candidates | 24 | 16 | 24 | 16 | 24 | 24 | 24 | 24 | `checker_syntax_only_no_behavior_score`: 8 |
+| `471-494` | LRM KCL/continuous-time gap-fill candidates | 24 | 18 | 24 | 18 | 24 | 24 | 24 | 24 | `checker_syntax_only_no_behavior_score`: 6 |
 
 ## Highest Severity Finding
 
@@ -224,8 +224,8 @@ Tasks 301-494 are extension candidates, not SOP-ready benchmark tasks. They most
 | `478-inherited-port-attribute-supply` | `syntax-extension-candidate` | True | - |
 | `479-inherited-mfactor-parameter` | `syntax-extension-candidate` | True | - |
 | `480-mfactor-system-function-gain` | `syntax-extension-candidate` | True | - |
-| `481-analog-primitive-resistor-instance` | `kcl-syntax-candidate` | False | `checker_syntax_only_no_behavior_score` |
-| `482-analog-primitive-isource-instance` | `kcl-syntax-candidate` | False | `checker_syntax_only_no_behavior_score` |
+| `481-analog-primitive-resistor-instance` | `kcl-syntax-candidate` | True | - |
+| `482-analog-primitive-isource-instance` | `kcl-syntax-candidate` | True | - |
 | `483-cds-violation-threshold-assert` | `cadence-simulator-function-candidate` | True | - |
 | `484-rtoi-conversion-quantizer` | `syntax-extension-candidate` | True | - |
 | `485-mc-trial-number-metric` | `cadence-simulator-function-candidate` | True | - |

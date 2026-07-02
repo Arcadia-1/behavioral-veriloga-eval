@@ -2,7 +2,7 @@
   "negative_variants": [
     {
       "id": "neg_001_force_zero",
-      "description": "Analog Primitive Resistor Instance: forces the main output to zero, so coarse compilation passes but behavioral stimulus points fail.",
+      "description": "Analog Primitive Resistor Instance: instantiates a resistor primitive, but uses .r(1.0) instead of the required 1000.0 ohm value.",
       "files": [
         "neg_001_force_zero/analog_primitive_resistor_instance.va"
       ],
@@ -10,7 +10,7 @@
     },
     {
       "id": "neg_002_wrong_threshold",
-      "description": "Analog Primitive Resistor Instance: uses a shifted or inverted decision condition that can pass one mode but fails boundary cases.",
+      "description": "Analog Primitive Resistor Instance: instantiates the correct primitive shape, but uses .r(10000.0) and fails the required value contract.",
       "files": [
         "neg_002_wrong_threshold/analog_primitive_resistor_instance.va"
       ],
@@ -18,7 +18,7 @@
     },
     {
       "id": "neg_003_reset_bias",
-      "description": "Analog Primitive Resistor Instance: mishandles reset or initialization, passing steady-state samples but failing startup or recovery checks.",
+      "description": "Analog Primitive Resistor Instance: instantiates the correct primitive shape, but uses .r(500.0) and fails the required value contract.",
       "files": [
         "neg_003_reset_bias/analog_primitive_resistor_instance.va"
       ],
@@ -26,7 +26,7 @@
     },
     {
       "id": "neg_004_metric_offset",
-      "description": "Analog Primitive Resistor Instance: keeps the main datapath plausible while reporting the wrong metric value.",
+      "description": "Analog Primitive Resistor Instance: instantiates the correct primitive shape, but uses .r(1500.0) and fails the required value contract.",
       "files": [
         "neg_004_metric_offset/analog_primitive_resistor_instance.va"
       ],
@@ -34,7 +34,7 @@
     },
     {
       "id": "neg_005_scale_output",
-      "description": "Analog Primitive Resistor Instance: uses a wrong gain or scale factor, leaving shape plausible while calibrated checks fail.",
+      "description": "Analog Primitive Resistor Instance: instantiates the correct primitive shape, but uses .r(800.0) and fails the required value contract.",
       "files": [
         "neg_005_scale_output/analog_primitive_resistor_instance.va"
       ],

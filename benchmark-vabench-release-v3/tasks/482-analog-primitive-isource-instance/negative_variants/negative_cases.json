@@ -2,35 +2,35 @@
   "negative_cases": [
     {
       "id": "neg_001_force_zero",
-      "why_wrong": "Analog Primitive Isource Instance: forces the main output to zero, so coarse compilation passes but behavioral stimulus points fail.",
+      "why_wrong": "Analog Primitive Isource Instance: instantiates an isource primitive, but hard-codes .dc(0.0) instead of using the required ibias parameter.",
       "files": [
         "neg_001_force_zero/analog_primitive_isource_instance.va"
       ]
     },
     {
       "id": "neg_002_wrong_threshold",
-      "why_wrong": "Analog Primitive Isource Instance: uses a shifted or inverted decision condition that can pass one mode but fails boundary cases.",
+      "why_wrong": "Analog Primitive Isource Instance: instantiates the correct primitive type, but hard-codes .dc(5u) instead of using ibias.",
       "files": [
         "neg_002_wrong_threshold/analog_primitive_isource_instance.va"
       ]
     },
     {
       "id": "neg_003_reset_bias",
-      "why_wrong": "Analog Primitive Isource Instance: mishandles reset or initialization, passing steady-state samples but failing startup or recovery checks.",
+      "why_wrong": "Analog Primitive Isource Instance: instantiates the correct primitive type, but hard-codes .dc(0.5u) instead of using ibias.",
       "files": [
         "neg_003_reset_bias/analog_primitive_isource_instance.va"
       ]
     },
     {
       "id": "neg_004_metric_offset",
-      "why_wrong": "Analog Primitive Isource Instance: keeps the main datapath plausible while reporting the wrong metric value.",
+      "why_wrong": "Analog Primitive Isource Instance: instantiates the correct primitive type, but uses .dc(ibias + 0.5u) instead of the exact ibias expression.",
       "files": [
         "neg_004_metric_offset/analog_primitive_isource_instance.va"
       ]
     },
     {
       "id": "neg_005_scale_output",
-      "why_wrong": "Analog Primitive Isource Instance: uses a wrong gain or scale factor, leaving shape plausible while calibrated checks fail.",
+      "why_wrong": "Analog Primitive Isource Instance: instantiates the correct primitive type, but scales the parameter as .dc(0.8 * ibias).",
       "files": [
         "neg_005_scale_output/analog_primitive_isource_instance.va"
       ]

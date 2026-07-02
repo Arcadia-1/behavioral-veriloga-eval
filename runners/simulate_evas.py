@@ -9746,6 +9746,55 @@ def check_v3_480_mfactor_system_function_gain(rows: list[dict[str, float]]) -> t
     )
 
 
+def check_v3_analog_primitive_trace_present(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "p"}
+    if not rows or not required.issubset(rows[0]):
+        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
+        return False, "missing_columns=" + ",".join(missing)
+    if len(rows) < 2:
+        return False, f"too_few_trace_rows={len(rows)}"
+    return True, f"primitive_trace_present rows={len(rows)} p_range={_v3_signal_range(rows, 'p'):.4g}"
+
+
+def _veriloga_source_without_comments(path: Path) -> str:
+    text = path.read_text(encoding="utf-8", errors="ignore")
+    text = re.sub(r"/\*.*?\*/", " ", text, flags=re.S)
+    text = re.sub(r"//.*", " ", text)
+    return re.sub(r"\s+", " ", text).strip()
+
+
+def check_v3_481_analog_primitive_resistor_instance_artifact(dut_path: Path) -> tuple[bool, str]:
+    text = _veriloga_source_without_comments(dut_path)
+    primitive_pattern = re.compile(
+        r"\bresistor\s*#\s*\(\s*\.r\s*\(\s*1000(?:\.0+)?\s*\)\s*\)\s*"
+        r"(?P<inst>[A-Za-z_][A-Za-z0-9_$]*)\s*\(\s*p\s*,\s*n\s*\)\s*;",
+        re.I,
+    )
+    matches = list(primitive_pattern.finditer(text))
+    if len(matches) != 1:
+        return False, f"resistor_primitive_contract_matches={len(matches)} expected=1"
+    if re.search(r"\bV\s*\(", text) or re.search(r"\bI\s*\(", text):
+        return False, "unexpected_behavioral_or_current_contribution"
+    return True, f"artifact_resistor_primitive instance={matches[0].group('inst')} r_ohm=1000 ports=p,n"
+
+
+def check_v3_482_analog_primitive_isource_instance_artifact(dut_path: Path) -> tuple[bool, str]:
+    text = _veriloga_source_without_comments(dut_path)
+    if not re.search(r"\bparameter\s+real\s+ibias\s*=\s*1u\s*;", text, re.I):
+        return False, "missing_parameter_real_ibias_1u"
+    primitive_pattern = re.compile(
+        r"\bisource\s*#\s*\(\s*\.dc\s*\(\s*ibias\s*\)\s*\)\s*"
+        r"(?P<inst>[A-Za-z_][A-Za-z0-9_$]*)\s*\(\s*n\s*,\s*p\s*\)\s*;",
+        re.I,
+    )
+    matches = list(primitive_pattern.finditer(text))
+    if len(matches) != 1:
+        return False, f"isource_primitive_contract_matches={len(matches)} expected=1"
+    if re.search(r"\bV\s*\(", text) or re.search(r"\bI\s*\(", text):
+        return False, "unexpected_behavioral_or_current_contribution"
+    return True, f"artifact_isource_primitive instance={matches[0].group('inst')} dc=ibias ports=n,p"
+
+
 def check_v3_483_cds_violation_threshold_assert(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "inp", "out"}
     if not rows or not required.issubset(rows[0]):
@@ -19924,6 +19973,10 @@ V3_STANDALONE_SPLIT_CHECKS = {
     "479-inherited-mfactor-parameter": check_v3_479_inherited_mfactor_parameter,
     "v3_480_mfactor_system_function_gain": check_v3_480_mfactor_system_function_gain,
     "480-mfactor-system-function-gain": check_v3_480_mfactor_system_function_gain,
+    "v3_481_analog_primitive_resistor_instance": check_v3_analog_primitive_trace_present,
+    "481-analog-primitive-resistor-instance": check_v3_analog_primitive_trace_present,
+    "v3_482_analog_primitive_isource_instance": check_v3_analog_primitive_trace_present,
+    "482-analog-primitive-isource-instance": check_v3_analog_primitive_trace_present,
     "v3_483_cds_violation_threshold_assert": check_v3_483_cds_violation_threshold_assert,
     "483-cds-violation-threshold-assert": check_v3_483_cds_violation_threshold_assert,
     "v3_484_rtoi_conversion_quantizer": check_v3_484_rtoi_conversion_quantizer,
@@ -19951,6 +20004,13 @@ V3_STANDALONE_SPLIT_CHECKS = {
 for _alias, _checker in V3_STANDALONE_SPLIT_CHECKS.items():
     CHECKS[_alias] = _checker
     STREAMING_BEHAVIOR_CHECKS.pop(_alias, None)
+
+ARTIFACT_BEHAVIOR_CHECKS = {
+    "v3_481_analog_primitive_resistor_instance": check_v3_481_analog_primitive_resistor_instance_artifact,
+    "481-analog-primitive-resistor-instance": check_v3_481_analog_primitive_resistor_instance_artifact,
+    "v3_482_analog_primitive_isource_instance": check_v3_482_analog_primitive_isource_instance_artifact,
+    "482-analog-primitive-isource-instance": check_v3_482_analog_primitive_isource_instance_artifact,
+}
 
 VALIDATED_FAST_CHECKER_TASKS = frozenset(STREAMING_BEHAVIOR_CHECKS)
 
@@ -20393,6 +20453,14 @@ def run_case(
             )
             timing_split["behavior_checker_s"] = time.perf_counter() - t0
             notes.extend(behavior_notes)
+            artifact_checker = ARTIFACT_BEHAVIOR_CHECKS.get(checker_task_id)
+            if artifact_checker is not None:
+                t0 = time.perf_counter()
+                artifact_ok, artifact_note = artifact_checker(dut_dst)
+                timing_split["artifact_checker_s"] = time.perf_counter() - t0
+                notes.append(artifact_note)
+                if not artifact_ok:
+                    sim_correct = 0.0
             t0 = time.perf_counter()
             metric_result = validate_behavior_side_outputs(checker_task_id, run_dir, csv_path)
             timing_split["side_output_validation_s"] = time.perf_counter() - t0

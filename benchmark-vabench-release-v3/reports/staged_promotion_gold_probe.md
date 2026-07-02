@@ -4,12 +4,12 @@ Date: 2026-07-02
 
 ## Summary
 
-- `gold_total`: 20
+- `gold_total`: 18
 - `gold_pass`: 0
-- `gold_fail`: 20
-- `expectation_fail`: 20
+- `gold_fail`: 18
+- `expectation_fail`: 18
 - `skipped_staged_tasks`: 0
-- `wall_s`: 5.028611
+- `wall_s`: 4.827175
 
 ## Rows
 
@@ -29,8 +29,6 @@ Date: 2026-07-02
 | `470-branch-current-probe-contribution` | `FAIL_SIM_CORRECTNESS` | out@50ns=0.0000 expected_branch_current=0.5000 out@90ns=0.0000 expected_branch_current=0.2000 |
 | `471-indirect-branch-null-balance` | `FAIL_SIM_CORRECTNESS` | staged_dynamic_solver_boundary operator=indirect_branch_equation out_range=0 expected=certified_continuous_time_response |
 | `472-indirect-branch-ddt-balance` | `FAIL_SIM_CORRECTNESS` | staged_dynamic_solver_boundary operator=indirect_branch_ddt_equation out_range=0 expected=certified_continuous_time_response |
-| `481-analog-primitive-resistor-instance` | `FAIL_TB_COMPILE` | simulator_error=Unsupported analog primitive instance: resistor in analog_primitive_resistor_instance.rload; EVAS behavioral mode does not implement conservative analog primitives |
-| `482-analog-primitive-isource-instance` | `FAIL_TB_COMPILE` | simulator_error=Unsupported analog primitive instance: isource in analog_primitive_isource_instance.ib; EVAS behavioral mode does not implement conservative analog primitives |
 | `491-kcl-capacitor-ddt-current` | `FAIL_SIM_CORRECTNESS` | staged_kcl_boundary feature=I(p,n)<+c*ddt(V(p,n)) p_range=0.0012 expected=mna_current_observable |
 | `492-kcl-inductor-idt-voltage` | `FAIL_SIM_CORRECTNESS` | simulator_error=Model isource not found (available: ['kcl_inductor_idt_voltage']) |
 | `493-continuous-laplace-nd-filter` | `FAIL_SIM_CORRECTNESS` | staged_dynamic_solver_boundary operator=continuous_laplace_nd out_range=1 expected=certified_continuous_time_response |

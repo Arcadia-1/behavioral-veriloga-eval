@@ -11680,11 +11680,14 @@
   notes:
     - "Promoted after EVAS read Spectre instance m= as the runtime value returned by $mfactor()."
 481-analog-primitive-resistor-instance: |
-  version: 1
+  version: 2
   task_id: v3_481_analog_primitive_resistor_instance
-  backend: evas_pending_analog_primitive_resistor_instance
-  status: kcl-syntax-candidate
-  checker: kcl_language_feature_contract
+  backend: evas
+  status: structure-certified-extension
+  checker: v3_481_analog_primitive_resistor_instance
+  required_columns:
+    - time
+    - p
   syntax:
     must_include:
       - "resistor #"
@@ -11692,14 +11695,30 @@
     must_not_include:
       - "V(out)"
       - "I("
+  sim_correct:
+    trace_signals:
+      time: "time"
+      p: "p"
+    checks:
+      - "EVAS compiles and stages the resistor primitive instance as inert analog primitive metadata"
+      - "artifact checker requires exactly one resistor primitive instance"
+      - "artifact checker requires .r(1000.0) and positional ports (p, n)"
+      - "wrong resistor values and behavioral/current replacements are rejected"
+      - "KCL current behavior is intentionally not certified by this task"
+  promotion_evidence:
+    command: "PYTHONPATH=\"/Users/mac/Documents/github-repos/EVAS:$PWD/runners\" VAEVAS_DEFAULT_EVAS_ENGINE=python VAEVAS_EVAS_PERSISTENT_WORKER=0 PATH=\"$PWD/.venv-evas/bin:$PATH\" .venv-evas/bin/python scripts/run_v3_gold_negative_verification.py --start 481 --end 482 --tasks 481,482 --include-staged --timeout 120 --jobs 1 --out benchmark-vabench-release-v3/reports/verify_task_481_482_after_primitive_metadata.json"
+    result: "481 gold PASS; 5/5 negative variants rejected; 0 expectation_fail after EVAS records inert analog primitive metadata."
   notes:
-    - "KCL/conservative primitive-instantiation task with staged smoke tests; execution is blocked because resistor is treated as an unknown child module: https://github.com/Arcadia-1/EVAS/issues/54"
+    - "Structure-certified primitive-instantiation task. EVAS records the primitive metadata but still does not certify resistor current or MNA/KCL behavior."
 482-analog-primitive-isource-instance: |
-  version: 1
+  version: 2
   task_id: v3_482_analog_primitive_isource_instance
-  backend: evas_pending_analog_primitive_isource_instance
-  status: kcl-syntax-candidate
-  checker: kcl_language_feature_contract
+  backend: evas
+  status: structure-certified-extension
+  checker: v3_482_analog_primitive_isource_instance
+  required_columns:
+    - time
+    - p
   syntax:
     must_include:
       - "isource #"
@@ -11707,8 +11726,22 @@
     must_not_include:
       - "V(out)"
       - "I("
+  sim_correct:
+    trace_signals:
+      time: "time"
+      p: "p"
+    checks:
+      - "EVAS compiles and stages the isource primitive instance as inert analog primitive metadata"
+      - "artifact checker requires parameter real ibias = 1u"
+      - "artifact checker requires exactly one isource primitive instance"
+      - "artifact checker requires .dc(ibias) and positional ports (n, p)"
+      - "wrong dc expressions and behavioral/current replacements are rejected"
+      - "KCL current behavior is intentionally not certified by this task"
+  promotion_evidence:
+    command: "PYTHONPATH=\"/Users/mac/Documents/github-repos/EVAS:$PWD/runners\" VAEVAS_DEFAULT_EVAS_ENGINE=python VAEVAS_EVAS_PERSISTENT_WORKER=0 PATH=\"$PWD/.venv-evas/bin:$PATH\" .venv-evas/bin/python scripts/run_v3_gold_negative_verification.py --start 481 --end 482 --tasks 481,482 --include-staged --timeout 120 --jobs 1 --out benchmark-vabench-release-v3/reports/verify_task_481_482_after_primitive_metadata.json"
+    result: "482 gold PASS; 5/5 negative variants rejected; 0 expectation_fail after EVAS records inert analog primitive metadata."
   notes:
-    - "KCL/conservative primitive-instantiation task with staged smoke tests; execution is blocked because isource is treated as an unknown child module: https://github.com/Arcadia-1/EVAS/issues/55"
+    - "Structure-certified primitive-instantiation task. EVAS records the primitive metadata but still does not certify current source or MNA/KCL behavior."
 483-cds-violation-threshold-assert: |
   version: 1
   task_id: v3_483_cds_violation_threshold_assert
