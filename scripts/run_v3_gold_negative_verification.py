@@ -120,6 +120,30 @@ def simulator_failure_summary(text: str) -> str | None:
     return None
 
 
+def first_failure_summary(status: str, notes: list[str]) -> str | None:
+    if status == "PASS":
+        return None
+    for note in notes:
+        text = str(note).strip()
+        if text.startswith("simulator_error="):
+            return text
+    low_signal_prefixes = (
+        "returncode=",
+        "evas_engine=",
+        "checker_config=",
+        "trace_contract=",
+        "extra_trace_signals=",
+        "used_single_artifact_fallback=",
+        "dut_not_compiled",
+        "tb_not_executed",
+    )
+    for note in notes:
+        text = str(note).strip()
+        if text and not text.startswith(low_signal_prefixes):
+            return text
+    return notes[0] if notes else None
+
+
 def run_one(task_dir: Path, variant: str | None, timeout_s: int) -> dict[str, Any]:
     started = time.perf_counter()
     targets = read_task_artifact_targets(task_dir)
@@ -134,21 +158,25 @@ def run_one(task_dir: Path, variant: str | None, timeout_s: int) -> dict[str, An
         "variant": variant,
     }
     if not targets:
+        notes = ["missing target in TASKS.json/task.toml"]
         row.update({
             "status": "FAIL_NO_TARGET",
             "expected_ok": False,
             "meets_expectation": kind == "negative",
-            "notes": ["missing target in TASKS.json/task.toml"],
+            "notes": notes,
+            "failure_summary": first_failure_summary("FAIL_NO_TARGET", notes),
             "wall_s": round(time.perf_counter() - started, 6),
         })
         return row
     tb = choose_hidden_tb(task_dir)
     if tb is None:
+        notes = ["missing hidden.scs or unique test_hidden/tests/*.scs"]
         row.update({
             "status": "FAIL_NO_TB",
             "expected_ok": False,
             "meets_expectation": kind == "negative",
-            "notes": ["missing hidden.scs or unique test_hidden/tests/*.scs"],
+            "notes": notes,
+            "failure_summary": first_failure_summary("FAIL_NO_TB", notes),
             "wall_s": round(time.perf_counter() - started, 6),
         })
         return row
@@ -159,6 +187,7 @@ def run_one(task_dir: Path, variant: str | None, timeout_s: int) -> dict[str, An
             "expected_ok": False,
             "meets_expectation": kind == "negative",
             "notes": selection_notes,
+            "failure_summary": first_failure_summary("FAIL_NO_DUT", selection_notes),
             "wall_s": round(time.perf_counter() - started, 6),
         })
         return row
@@ -196,10 +225,47 @@ def run_one(task_dir: Path, variant: str | None, timeout_s: int) -> dict[str, An
         "checker_task_id": result.get("checker_task_id"),
         "scores": result.get("scores", {}),
         "notes": notes,
+        "failure_summary": first_failure_summary(status, notes),
         "stdout_tail": stdout_tail[-4000:],
         "wall_s": round(time.perf_counter() - started, 6),
     })
     return row
+
+
+def write_markdown_summary(payload: dict[str, Any], out: Path) -> None:
+    summary = payload["summary"]
+    rows = payload["rows"]
+    lines = [
+        "# v3 Staged Promotion Gold Probe",
+        "",
+        f"Date: {time.strftime('%Y-%m-%d')}",
+        "",
+        "## Summary",
+        "",
+    ]
+    for key in (
+        "gold_total",
+        "gold_pass",
+        "gold_fail",
+        "expectation_fail",
+        "skipped_staged_tasks",
+        "wall_s",
+    ):
+        lines.append(f"- `{key}`: {summary[key]}")
+    lines.extend([
+        "",
+        "## Rows",
+        "",
+        "| Task | Status | First behavior note |",
+        "| --- | --- | --- |",
+    ])
+    for row in rows:
+        note = str(row.get("failure_summary") or "")
+        note = note.replace("|", "\\|").replace("\n", " ")
+        lines.append(f"| `{row['task_slug']}` | `{row['status']}` | {note} |")
+    lines.append("")
+    out.parent.mkdir(parents=True, exist_ok=True)
+    out.write_text("\n".join(lines), encoding="utf-8")
 
 
 def main() -> int:
@@ -215,6 +281,11 @@ def main() -> int:
     parser.add_argument("--timeout", type=int, default=120)
     parser.add_argument("--jobs", type=int, default=1)
     parser.add_argument("--out", required=True)
+    parser.add_argument(
+        "--md-out",
+        default="",
+        help="Optional Markdown summary path for staged promotion probes.",
+    )
     parser.add_argument("--gold-only", action="store_true")
     parser.add_argument("--negatives-only", action="store_true")
     parser.add_argument(
@@ -291,6 +362,8 @@ def main() -> int:
     out = Path(args.out)
     out.parent.mkdir(parents=True, exist_ok=True)
     out.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+    if args.md_out:
+        write_markdown_summary(payload, Path(args.md_out))
     print(json.dumps(summary, indent=2, sort_keys=True))
     print("REPORT", out)
     return 0 if summary["expectation_fail"] == 0 else 1

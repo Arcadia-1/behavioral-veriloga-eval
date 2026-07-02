@@ -9,7 +9,7 @@ Date: 2026-07-02
 - `gold_fail`: 36
 - `expectation_fail`: 36
 - `skipped_staged_tasks`: 0
-- `wall_s`: 9.618876
+- `wall_s`: 9.54015
 
 ## Rows
 

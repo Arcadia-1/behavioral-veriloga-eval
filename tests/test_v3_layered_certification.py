@@ -219,6 +219,11 @@ def test_staged_gold_probe_documents_current_promotion_boundary() -> None:
     assert {row["task_slug"] for row in probe["rows"]} == {
         row["task_key"] for row in staged_rows
     }
+    assert all(row.get("failure_summary") for row in probe["rows"])
+    assert not any(
+        str(row.get("failure_summary")).startswith(("returncode=", "evas_engine=", "dut_not_compiled", "tb_not_executed"))
+        for row in probe["rows"]
+    )
 
 
 def test_staged_gold_probe_uses_specific_checkers_when_available() -> None:

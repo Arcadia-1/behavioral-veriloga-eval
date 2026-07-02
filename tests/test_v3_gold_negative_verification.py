@@ -97,3 +97,54 @@ def test_simulator_failure_summary_extracts_concise_error() -> None:
     assert verifier.simulator_failure_summary(
         "evas completes with 1 errors, 0 warnings."
     ) == "simulator_error=evas completed with 1 error but did not expose a detailed diagnostic in captured output"
+
+
+def test_first_failure_summary_prefers_behavior_note() -> None:
+    verifier = load_verifier_module()
+
+    assert verifier.first_failure_summary(
+        "FAIL_SIM_CORRECTNESS",
+        [
+            "returncode=0",
+            "evas_engine=python",
+            "trace_contract=row_required_set",
+            "out@50ns=0.0000 expected=1.0000 tol=0.0800",
+        ],
+    ) == "out@50ns=0.0000 expected=1.0000 tol=0.0800"
+    assert verifier.first_failure_summary(
+        "FAIL_DUT_COMPILE",
+        [
+            "returncode=1",
+            "dut_not_compiled",
+            "simulator_error=unsupported Verilog-A function call: $mfactor()",
+        ],
+    ) == "simulator_error=unsupported Verilog-A function call: $mfactor()"
+    assert verifier.first_failure_summary("PASS", ["returncode=0"]) is None
+
+
+def test_markdown_summary_uses_failure_summary(tmp_path: Path) -> None:
+    verifier = load_verifier_module()
+    out = tmp_path / "probe.md"
+    verifier.write_markdown_summary(
+        {
+            "summary": {
+                "gold_total": 1,
+                "gold_pass": 0,
+                "gold_fail": 1,
+                "expectation_fail": 1,
+                "skipped_staged_tasks": 0,
+                "wall_s": 0.125,
+            },
+            "rows": [
+                {
+                    "task_slug": "410-macro-ifdef-gain-select",
+                    "status": "FAIL_SIM_CORRECTNESS",
+                    "failure_summary": "out@160ns=0.4800 expected=0.8000 tol=0.0800",
+                }
+            ],
+        },
+        out,
+    )
+
+    text = out.read_text(encoding="utf-8")
+    assert "| `410-macro-ifdef-gain-select` | `FAIL_SIM_CORRECTNESS` | out@160ns=0.4800 expected=0.8000 tol=0.0800 |" in text
