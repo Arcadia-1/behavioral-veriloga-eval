@@ -24,8 +24,16 @@ analog begin
         r3 = (V(refp) - V(refn)) * 7.0 / 8.0 * ref_scaling;
         vin = V(vip) - V(vim);
         sum_prev = sum_now;
-        sum_now = ((vin > -r3) + (vin > -r2) + (vin > -r1) + (vin > -r0)
-                 + (vin > r0) + (vin > r1) + (vin > r2) + (vin > r3)) / 8.0;
+        sum_now = 0.0;
+        if (vin > -r3) sum_now = sum_now + 1.0;
+        if (vin > -r2) sum_now = sum_now + 1.0;
+        if (vin > -r1) sum_now = sum_now + 1.0;
+        if (vin > -r0) sum_now = sum_now + 1.0;
+        if (vin > r0) sum_now = sum_now + 1.0;
+        if (vin > r1) sum_now = sum_now + 1.0;
+        if (vin > r2) sum_now = sum_now + 1.0;
+        if (vin > r3) sum_now = sum_now + 1.0;
+        sum_now = sum_now / 8.0;
     end
 
     V(doutsum) <+ transition(sum_now, 0, tt, tt);

@@ -12046,15 +12046,72 @@ def check_v3_divide_by_eight_clock(rows: list[dict[str, float]]) -> tuple[bool, 
     )
 
 
+def _v3_missing_columns(rows: list[dict[str, float]], required: set[str]) -> str | None:
+    if not rows:
+        return "empty_waveform"
+    missing = sorted(required - set(rows[0]))
+    if missing:
+        return "missing_columns=" + ",".join(missing)
+    return None
+
+
+def _v3_edge_sample_times(
+    rows: list[dict[str, float]],
+    signal: str,
+    *,
+    threshold: float = 0.45,
+    delay_s: float = 1.8e-9,
+) -> list[tuple[float, float]]:
+    times = [row["time"] for row in rows]
+    edges = rising_edges([row[signal] for row in rows], times, threshold=threshold)
+    last_time = times[-1]
+    return [(edge_t, edge_t + delay_s) for edge_t in edges if edge_t + delay_s <= last_time]
+
+
+def _v3_logic_at(rows: list[dict[str, float]], signal: str, time_s: float, threshold: float = 0.45) -> int | None:
+    value = sample_signal_at(rows, signal, time_s)
+    if value is None:
+        return None
+    return 1 if value > threshold else 0
+
+
+def _v3_logic_transition_times(
+    rows: list[dict[str, float]],
+    signals: list[str],
+    *,
+    threshold: float = 0.45,
+) -> list[float]:
+    transition_times: set[float] = set()
+    for signal in signals:
+        for idx in range(1, len(rows)):
+            prev = rows[idx - 1][signal]
+            cur = rows[idx][signal]
+            if (prev <= threshold < cur) or (prev > threshold >= cur):
+                transition_times.add(rows[idx]["time"])
+    return sorted(transition_times)
+
+
 def check_v3_flash_thermometer_centered_sum(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    required = {"time", "b0", "b1", "b2", "b3", "b4", "b5", "b6", "b7", "dout"}
-    if not rows or not required.issubset(rows[0]):
-        return False, "missing thermometer input/output signals"
-    return _sample_many(
-        rows,
-        {"dout": [(5.0, -0.45), (15.0, -0.1125), (25.0, 0.1125), (35.0, 0.45)]},
-        tol=0.02,
-    )
+    bit_names = [f"b{idx}" for idx in range(8)]
+    required = {"time", "dout", *bit_names}
+    missing = _v3_missing_columns(rows, required)
+    if missing:
+        return False, missing
+
+    max_error = 0.0
+    checked = 0
+    stride = max(1, len(rows) // 60)
+    for row in rows[::stride]:
+        bits = [row[name] for name in bit_names]
+        if not all(bit <= 0.10 or bit >= 0.80 for bit in bits):
+            continue
+        ones = sum(1 for bit in bits if bit > 0.45)
+        expected = 0.1125 * (ones - 4.0)
+        max_error = max(max_error, abs(row["dout"] - expected))
+        checked += 1
+    if checked < 8:
+        return False, f"too_few_stable_thermometer_samples={checked}"
+    return max_error <= 0.02, f"checked={checked} max_error={max_error:.5f}"
 
 
 def check_v3_weighted_sar_decoder_9b(rows: list[dict[str, float]]) -> tuple[bool, str]:
@@ -12131,13 +12188,42 @@ def check_v3_dual_modulus_divider_16_17(rows: list[dict[str, float]]) -> tuple[b
 
 def check_v3_sar_5bit_serial_decoder(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "din", "clks", "ready", "dout"}
-    if not rows or not required.issubset(rows[0]):
-        return False, "missing time/din/clks/ready/dout"
-    return _sample_many(
-        rows,
-        {"dout": [(3.0, -0.5), (17.0, 0.2096774), (33.0, -0.2096774)]},
-        tol=0.02,
-    )
+    missing = _v3_missing_columns(rows, required)
+    if missing:
+        return False, missing
+
+    clk_edges = _v3_edge_sample_times(rows, "clks", threshold=0.45)
+    ready_edges = [edge_t for edge_t, _ in _v3_edge_sample_times(rows, "ready", threshold=0.45, delay_s=0.0)]
+    events = [(edge_t, "clk") for edge_t, _ in clk_edges] + [(edge_t, "ready") for edge_t in ready_edges]
+    events.sort()
+
+    counter = 4
+    total = 0.0
+    expected_samples: list[tuple[float, float]] = []
+    for event_t, event_kind in events:
+        if event_kind == "ready":
+            bit = _v3_logic_at(rows, "din", event_t, threshold=0.45)
+            if bit is None:
+                return False, f"missing_din_at_ready={event_t * 1e9:.3f}ns"
+            if bit and counter >= 0:
+                total += 2.0 ** counter
+            counter -= 1
+            continue
+        sample_t = event_t + 1.8e-9
+        if sample_t <= rows[-1]["time"]:
+            expected_samples.append((sample_t, total / 31.0 - 0.5))
+        counter = 4
+        total = 0.0
+
+    if len(expected_samples) < 2:
+        return False, f"too_few_clock_publication_samples={len(expected_samples)}"
+    max_error = 0.0
+    for sample_t, expected in expected_samples:
+        observed = sample_signal_at(rows, "dout", sample_t)
+        if observed is None:
+            return False, f"missing_dout_sample={sample_t * 1e9:.3f}ns"
+        max_error = max(max_error, abs(observed - expected))
+    return max_error <= 0.015, f"published={len(expected_samples)} max_error={max_error:.5f}"
 
 
 def check_v3_cyclic_decoder_12bit(rows: list[dict[str, float]]) -> tuple[bool, str]:
@@ -12152,17 +12238,38 @@ def check_v3_cyclic_decoder_12bit(rows: list[dict[str, float]]) -> tuple[bool, s
 
 
 def check_v3_flash_8level_sum_delay(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    required = {"time", "vip", "vim", "clks", "doutsum", "doutsumdelay"}
-    if not rows or not required.issubset(rows[0]):
-        return False, "missing flash8 sum/delay signals"
-    return _sample_many(
-        rows,
-        {
-            "doutsum": [(4.0, 0.0), (14.0, 0.25), (24.0, 0.5), (34.0, 0.875)],
-            "doutsumdelay": [(4.0, 0.0), (14.0, 0.0), (24.0, 0.25), (34.0, 0.5)],
-        },
-        tol=0.025,
-    )
+    required = {"time", "vip", "vim", "refp", "refn", "clks", "doutsum", "doutsumdelay"}
+    missing = _v3_missing_columns(rows, required)
+    if missing:
+        return False, missing
+
+    edge_samples = _v3_edge_sample_times(rows, "clks", threshold=0.45)
+    if len(edge_samples) < 3:
+        return False, f"too_few_clock_edges={len(edge_samples)}"
+    previous = 0.0
+    max_sum_error = 0.0
+    max_delay_error = 0.0
+    checked = 0
+    for edge_t, sample_t in edge_samples:
+        vip = sample_signal_at(rows, "vip", edge_t)
+        vim = sample_signal_at(rows, "vim", edge_t)
+        refp = sample_signal_at(rows, "refp", edge_t)
+        refn = sample_signal_at(rows, "refn", edge_t)
+        observed_sum = sample_signal_at(rows, "doutsum", sample_t)
+        observed_delay = sample_signal_at(rows, "doutsumdelay", sample_t)
+        if None in (vip, vim, refp, refn, observed_sum, observed_delay):
+            return False, f"missing_flash8_sample_at={edge_t * 1e9:.3f}ns"
+        span = refp - refn
+        thresholds = [sign * frac * span * 0.5 for sign in (-1.0, 1.0) for frac in (7.0 / 8.0, 5.0 / 8.0, 3.0 / 8.0, 1.0 / 8.0)]
+        thresholds = sorted(thresholds)
+        vin = vip - vim
+        current = sum(1 for threshold in thresholds if vin > threshold) / 8.0
+        max_sum_error = max(max_sum_error, abs(observed_sum - current))
+        max_delay_error = max(max_delay_error, abs(observed_delay - previous))
+        previous = current
+        checked += 1
+    ok = max_sum_error <= 0.035 and max_delay_error <= 0.035
+    return ok, f"checked={checked} max_sum_error={max_sum_error:.5f} max_delay_error={max_delay_error:.5f}"
 
 
 def check_v3_flash_sum8_fraction(rows: list[dict[str, float]]) -> tuple[bool, str]:
@@ -12213,21 +12320,29 @@ def check_v3_differential_dac_calc_6b(rows: list[dict[str, float]]) -> tuple[boo
 
 def check_v3_flash_adc_threshold_taps(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "vin", "clk", "dout0", "dout1", "dout2", "dout3", "dout4", "dout5", "dout6"}
-    if not rows or not required.issubset(rows[0]):
-        return False, "missing flash adc threshold tap signals"
-    return _sample_many(
-        rows,
-        {
-            "dout0": [(4.0, 0.0), (14.0, 0.9), (24.0, 0.9), (34.0, 0.9), (44.0, 0.9)],
-            "dout1": [(4.0, 0.0), (14.0, 0.9), (24.0, 0.9), (34.0, 0.9), (44.0, 0.9)],
-            "dout2": [(4.0, 0.0), (14.0, 0.0), (24.0, 0.9), (34.0, 0.9), (44.0, 0.9)],
-            "dout3": [(4.0, 0.0), (14.0, 0.0), (24.0, 0.9), (34.0, 0.9), (44.0, 0.9)],
-            "dout4": [(4.0, 0.0), (14.0, 0.0), (24.0, 0.0), (34.0, 0.9), (44.0, 0.9)],
-            "dout5": [(4.0, 0.0), (14.0, 0.0), (24.0, 0.0), (34.0, 0.9), (44.0, 0.9)],
-            "dout6": [(4.0, 0.0), (14.0, 0.0), (24.0, 0.0), (34.0, 0.0), (44.0, 0.9)],
-        },
-        tol=0.08,
-    )
+    missing = _v3_missing_columns(rows, required)
+    if missing:
+        return False, missing
+
+    edge_samples = _v3_edge_sample_times(rows, "clk", threshold=0.45)
+    if len(edge_samples) < 4:
+        return False, f"too_few_clk_edges={len(edge_samples)}"
+    tap_indices = [1, 5, 10, 15, 20, 25, 30]
+    thresholds = [-0.125 + tap * (0.25 / 31.0) for tap in tap_indices]
+    max_error = 0.0
+    checked = 0
+    for edge_t, sample_t in edge_samples:
+        vin = sample_signal_at(rows, "vin", edge_t)
+        if vin is None:
+            return False, f"missing_vin_at_clk={edge_t * 1e9:.3f}ns"
+        for idx, threshold in enumerate(thresholds):
+            observed = sample_signal_at(rows, f"dout{idx}", sample_t)
+            if observed is None:
+                return False, f"missing_dout{idx}_sample={sample_t * 1e9:.3f}ns"
+            expected = 0.9 if vin > threshold else 0.0
+            max_error = max(max_error, abs(observed - expected))
+            checked += 1
+    return max_error <= 0.09, f"tap_checks={checked} max_error={max_error:.5f}"
 
 
 def check_v3_divide_by_two_toggle(rows: list[dict[str, float]]) -> tuple[bool, str]:
@@ -12254,27 +12369,61 @@ def check_v3_dac_5v_weighted_7b(rows: list[dict[str, float]]) -> tuple[bool, str
 
 def check_v3_folded_flash_dac_4b(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "vd4", "vd3", "vd2", "vd1", "vout"}
-    if not rows or not required.issubset(rows[0]):
-        return False, "missing folded flash dac signals"
-    return _sample_many(
-        rows,
-        {"vout": [(5.0, 0.5), (15.0, 0.0625), (25.0, 0.5), (35.0, 0.9375)]},
-        tol=0.02,
-    )
+    missing = _v3_missing_columns(rows, required)
+    if missing:
+        return False, missing
+
+    bit_names = ["vd4", "vd3", "vd2", "vd1"]
+    transition_times = _v3_logic_transition_times(rows, bit_names, threshold=0.45)
+    candidate_times = [rows[0]["time"] + 1.0e-9] + [time_s + 1.0e-9 for time_s in transition_times]
+    sample_times = [time_s for time_s in candidate_times if rows[0]["time"] <= time_s <= rows[-1]["time"]]
+    if len(sample_times) < 3:
+        return False, f"too_few_folded_dac_samples={len(sample_times)}"
+
+    max_error = 0.0
+    checked = 0
+    for sample_t in sample_times:
+        bits = [_v3_logic_at(rows, name, sample_t, threshold=0.45) for name in bit_names]
+        observed = sample_signal_at(rows, "vout", sample_t)
+        if observed is None or any(bit is None for bit in bits):
+            return False, f"missing_folded_dac_sample={sample_t * 1e9:.3f}ns"
+        msb, b3, b2, b1 = bits
+        subcode = 4 * b3 + 2 * b2 + b1
+        folded_code = 8 + subcode if msb else 8 - subcode
+        expected = folded_code / 16.0
+        max_error = max(max_error, abs(observed - expected))
+        checked += 1
+    return max_error <= 0.025, f"checked={checked} max_error={max_error:.5f}"
 
 
 def check_v3_ref_flash_8level_decoder(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    required = {"time", "vin", "clks", "dout", "vres"}
-    if not rows or not required.issubset(rows[0]):
-        return False, "missing ref flash 8level signals"
-    return _sample_many(
-        rows,
-        {
-            "dout": [(4.0, 0.0), (14.0, 0.375), (24.0, 0.625), (34.0, 1.0)],
-            "vres": [(4.0, 0.6), (14.0, 0.325), (24.0, -0.225), (34.0, -0.2)],
-        },
-        tol=0.025,
-    )
+    tap_names = [f"dt{idx}" for idx in range(8)]
+    required = {"time", "vin", "clks", "dout", "vres", *tap_names}
+    missing = _v3_missing_columns(rows, required)
+    if missing:
+        return False, missing
+
+    edge_samples = _v3_edge_sample_times(rows, "clks", threshold=0.45)
+    if len(edge_samples) < 3:
+        return False, f"too_few_clks_edges={len(edge_samples)}"
+    max_dout_error = 0.0
+    max_res_error = 0.0
+    checked = 0
+    for edge_t, sample_t in edge_samples:
+        tap_bits = [_v3_logic_at(rows, name, edge_t, threshold=0.45) for name in tap_names]
+        vin = sample_signal_at(rows, "vin", edge_t)
+        observed_dout = sample_signal_at(rows, "dout", sample_t)
+        observed_vres = sample_signal_at(rows, "vres", sample_t)
+        if vin is None or observed_dout is None or observed_vres is None or any(bit is None for bit in tap_bits):
+            return False, f"missing_ref_flash_sample={edge_t * 1e9:.3f}ns"
+        count = float(sum(tap_bits))
+        expected_dout = count / 8.0
+        expected_vres = vin - (count - 4.0) / 8.0
+        max_dout_error = max(max_dout_error, abs(observed_dout - expected_dout))
+        max_res_error = max(max_res_error, abs(observed_vres - expected_vres))
+        checked += 1
+    ok = max_dout_error <= 0.035 and max_res_error <= 0.035
+    return ok, f"checked={checked} max_dout_error={max_dout_error:.5f} max_res_error={max_res_error:.5f}"
 
 
 def check_v3_ref_flash_15level_decoder(rows: list[dict[str, float]]) -> tuple[bool, str]:
@@ -12339,13 +12488,50 @@ def check_v3_flash_data_align_pipeline(rows: list[dict[str, float]]) -> tuple[bo
 
 def check_v3_cyclic_decoder_10b(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "dp", "dn", "ready", "clks", "dout"}
-    if not rows or not required.issubset(rows[0]):
-        return False, "missing cyclic decoder signals"
-    return _sample_many(
-        rows,
-        {"dout": [(12.0, 720.0 / 1023.0 - 0.5), (26.0, 320.0 / 1023.0 - 0.5)]},
-        tol=0.02,
-    )
+    missing = _v3_missing_columns(rows, required)
+    if missing:
+        return False, missing
+
+    clk_edges = _v3_edge_sample_times(rows, "clks", threshold=0.55)
+    ready_edges = [edge_t for edge_t, _ in _v3_edge_sample_times(rows, "ready", threshold=0.55, delay_s=0.0)]
+    events = [(edge_t, "clk") for edge_t, _ in clk_edges] + [(edge_t, "ready") for edge_t in ready_edges]
+    events.sort()
+
+    nbit = 10
+    counter = nbit - 1
+    total = 0.0
+    expected_samples: list[tuple[float, float]] = []
+    half_weight_seen = False
+    for event_t, event_kind in events:
+        if event_kind == "ready":
+            dp = _v3_logic_at(rows, "dp", event_t, threshold=0.55)
+            dn = _v3_logic_at(rows, "dn", event_t, threshold=0.55)
+            if dp is None or dn is None:
+                return False, f"missing_cyclic_decision_at={event_t * 1e9:.3f}ns"
+            if counter >= 0:
+                if dp:
+                    total += 2.0 ** counter
+                elif dn:
+                    total += 0.5 * (2.0 ** counter)
+                    half_weight_seen = True
+            counter -= 1
+            continue
+        sample_t = event_t + 1.8e-9
+        if sample_t <= rows[-1]["time"]:
+            expected_samples.append((sample_t, total / (2.0 ** nbit - 1.0) - 0.5))
+        counter = nbit - 1
+        total = 0.0
+
+    if len(expected_samples) < 2:
+        return False, f"too_few_cyclic_publication_samples={len(expected_samples)}"
+    max_error = 0.0
+    for sample_t, expected in expected_samples:
+        observed = sample_signal_at(rows, "dout", sample_t)
+        if observed is None:
+            return False, f"missing_cyclic_dout_sample={sample_t * 1e9:.3f}ns"
+        max_error = max(max_error, abs(observed - expected))
+    ok = max_error <= 0.025 and half_weight_seen
+    return ok, f"published={len(expected_samples)} half_weight_seen={half_weight_seen} max_error={max_error:.5f}"
 
 
 def check_v3_ideal_adc_out_7bits(rows: list[dict[str, float]]) -> tuple[bool, str]:
@@ -13697,17 +13883,53 @@ def check_v3_therm8_to_bin4_count(rows: list[dict[str, float]]) -> tuple[bool, s
 
 def check_v3_coarse_qtz_3bit_residue(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "vin", "d0", "d1", "d2", "vres"}
-    if not rows or not required.issubset(rows[0]):
-        return False, "missing coarse qtz 3bit residue signals"
-    return _sample_many(
-        rows,
-        {
-            "d0": [(0.5, 0.0), (1.2, 0.0), (2.1, 0.0), (3.0, 1.0)],
-            "d1": [(0.5, 0.0), (1.2, 1.0), (2.1, 0.0), (3.0, 1.0)],
-            "d2": [(0.5, 0.0), (1.2, 0.0), (2.1, 1.0), (3.0, 1.0)],
-            "vres": [(0.5, 0.0), (1.2, -0.1), (2.1, 0.1), (3.0, 0.15)],
-        },
-        tol=0.03,
+    missing = _v3_missing_columns(rows, required)
+    if missing:
+        return False, missing
+
+    max_bit_error = 0.0
+    max_res_error = 0.0
+    checked = 0
+    saw_low_clip = False
+    saw_high_clip = False
+    saw_internal = False
+    stride = max(1, len(rows) // 80)
+    for idx in range(1, len(rows) - 1, stride):
+        row = rows[idx]
+        prev_row = rows[idx - 1]
+        next_row = rows[idx + 1]
+        local_vin_span = max(
+            abs(prev_row["vin"] - row["vin"]),
+            abs(next_row["vin"] - row["vin"]),
+        )
+        if local_vin_span > 1.0e-6:
+            continue
+        vin = row["vin"]
+        vclip = max(-1.0, min(1.0, vin))
+        saw_low_clip = saw_low_clip or vin < -1.0
+        saw_high_clip = saw_high_clip or vin > 1.0
+        saw_internal = saw_internal or (-0.95 < vin < 0.95)
+        lsb = 0.25
+        code = math.floor(((vclip + 1.0) / lsb) + 0.5)
+        code = max(0, min(7, code))
+        vq = code * lsb - 1.0
+        expected = {
+            "d0": 1.0 if (code & 1) else 0.0,
+            "d1": 1.0 if ((code >> 1) & 1) else 0.0,
+            "d2": 1.0 if ((code >> 2) & 1) else 0.0,
+            "vres": vclip - vq,
+        }
+        for bit_name in ("d0", "d1", "d2"):
+            max_bit_error = max(max_bit_error, abs(row[bit_name] - expected[bit_name]))
+        max_res_error = max(max_res_error, abs(row["vres"] - expected["vres"]))
+        checked += 1
+    if checked < 8:
+        return False, f"too_few_quantizer_samples={checked}"
+    ok = max_bit_error <= 0.09 and max_res_error <= 0.035
+    return (
+        ok,
+        f"checked={checked} low_clip={saw_low_clip} high_clip={saw_high_clip} "
+        f"internal={saw_internal} max_bit_error={max_bit_error:.5f} max_res_error={max_res_error:.5f}",
     )
 
 
