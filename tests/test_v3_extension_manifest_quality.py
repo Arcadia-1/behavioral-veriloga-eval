@@ -208,6 +208,19 @@ def negative_variants(task_key: str) -> list[dict]:
     return []
 
 
+def negative_cases_index(task_key: str) -> list[dict]:
+    cases_path = TASK_ROOT / task_key / "negative_variants" / "negative_cases.json"
+    assert cases_path.exists(), f"{task_key} missing negative_cases.json"
+    payload = json.loads(cases_path.read_text(encoding="utf-8"))
+    if isinstance(payload, list):
+        return payload
+    if isinstance(payload, dict):
+        cases = payload.get("negative_cases")
+        if isinstance(cases, list):
+            return cases
+    raise AssertionError(f"{task_key} negative_cases.json must be a list or contain negative_cases")
+
+
 def checks_block(task_key: str) -> str:
     checks = CHECKS.read_text(encoding="utf-8")
     match = re.search(
@@ -252,6 +265,26 @@ def test_all_v3_extension_negative_variants_are_materialized_and_distinct() -> N
                     encoding="utf-8",
                     errors="ignore",
                 ), f"{task_key} {variant_id} is identical to solution"
+
+
+def test_all_v3_extension_negative_cases_index_matches_manifest() -> None:
+    for task_key in extension_tasks():
+        variants = negative_variants(task_key)
+        cases = negative_cases_index(task_key)
+        assert len(cases) == 5, f"{task_key} negative_cases.json must list exactly five cases"
+
+        variant_index = {
+            str(variant.get("id") or ""): sorted(str(file_name) for file_name in variant.get("files", []))
+            for variant in variants
+        }
+        case_index = {
+            str(case.get("id") or ""): sorted(str(file_name) for file_name in case.get("files", []))
+            for case in cases
+        }
+        assert case_index == variant_index, f"{task_key} negative_cases.json must mirror manifest.json"
+        for case in cases:
+            why_wrong = str(case.get("why_wrong") or case.get("description") or "").strip()
+            assert len(why_wrong.split()) >= 4, f"{task_key} {case.get('id')} must explain why it is wrong"
 
 
 def test_all_v3_extension_negative_variants_describe_expected_mutation() -> None:

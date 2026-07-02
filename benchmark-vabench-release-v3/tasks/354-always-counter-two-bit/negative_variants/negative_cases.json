@@ -4,34 +4,39 @@
     "files": [
       "neg_001_force_zero/always_counter_two_bit.vams"
     ],
-    "expected": "compile_but_fail_full_behavior_under_ams_simulator"
+    "expected": "compile_but_fail_full_behavior_under_ams_simulator",
+    "why_wrong": "Compiles and runs, but incorrectly forces the observed output to zero."
   },
   {
     "id": "neg_002_invert_select",
     "files": [
       "neg_002_invert_select/always_counter_two_bit.vams"
     ],
-    "expected": "compile_but_fail_full_behavior_under_ams_simulator"
+    "expected": "compile_but_fail_full_behavior_under_ams_simulator",
+    "why_wrong": "Compiles and runs, but inverts the mode or select decision."
   },
   {
     "id": "neg_003_drop_reset",
     "files": [
       "neg_003_drop_reset/always_counter_two_bit.vams"
     ],
-    "expected": "compile_but_fail_full_behavior_under_ams_simulator"
+    "expected": "compile_but_fail_full_behavior_under_ams_simulator",
+    "why_wrong": "Compiles and runs, but ignores or drops the reset behavior."
   },
   {
     "id": "neg_004_wrong_edge",
     "files": [
       "neg_004_wrong_edge/always_counter_two_bit.vams"
     ],
-    "expected": "compile_but_fail_full_behavior_under_ams_simulator"
+    "expected": "compile_but_fail_full_behavior_under_ams_simulator",
+    "why_wrong": "Compiles and runs, but responds to the wrong clock or event edge."
   },
   {
     "id": "neg_005_scale_low",
     "files": [
       "neg_005_scale_low/always_counter_two_bit.vams"
     ],
-    "expected": "compile_but_fail_full_behavior_under_ams_simulator"
+    "expected": "compile_but_fail_full_behavior_under_ams_simulator",
+    "why_wrong": "Compiles and runs, but scales the computed value too low."
   }
 ]

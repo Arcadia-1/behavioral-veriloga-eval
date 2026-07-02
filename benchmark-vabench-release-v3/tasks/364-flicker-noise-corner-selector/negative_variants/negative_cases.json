@@ -4,34 +4,39 @@
     "files": [
       "neg_001_zero_noise/flicker_noise_corner_selector.va"
     ],
-    "expected": "compile_but_fail_full_behavior_under_noise_or_ac_simulator"
+    "expected": "compile_but_fail_full_behavior_under_noise_or_ac_simulator",
+    "why_wrong": "Compiles and runs, but suppresses the intended noise contribution."
   },
   {
     "id": "neg_002_wrong_label",
     "files": [
       "neg_002_wrong_label/flicker_noise_corner_selector.va"
     ],
-    "expected": "compile_but_fail_full_behavior_under_noise_or_ac_simulator"
+    "expected": "compile_but_fail_full_behavior_under_noise_or_ac_simulator",
+    "why_wrong": "Compiles and runs, but emits the wrong label or mode tag."
   },
   {
     "id": "neg_003_disable_analysis",
     "files": [
       "neg_003_disable_analysis/flicker_noise_corner_selector.va"
     ],
-    "expected": "compile_but_fail_full_behavior_under_noise_or_ac_simulator"
+    "expected": "compile_but_fail_full_behavior_under_noise_or_ac_simulator",
+    "why_wrong": "Compiles and runs, but disables the analysis-dependent behavior."
   },
   {
     "id": "neg_004_wrong_metric",
     "files": [
       "neg_004_wrong_metric/flicker_noise_corner_selector.va"
     ],
-    "expected": "compile_but_fail_full_behavior_under_noise_or_ac_simulator"
+    "expected": "compile_but_fail_full_behavior_under_noise_or_ac_simulator",
+    "why_wrong": "Compiles and runs, but reports the wrong checker metric."
   },
   {
     "id": "neg_005_scale_output",
     "files": [
       "neg_005_scale_output/flicker_noise_corner_selector.va"
     ],
-    "expected": "compile_but_fail_full_behavior_under_noise_or_ac_simulator"
+    "expected": "compile_but_fail_full_behavior_under_noise_or_ac_simulator",
+    "why_wrong": "Compiles and runs, but scales the final output incorrectly."
   }
 ]
