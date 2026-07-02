@@ -2,18 +2,18 @@
   "blocking_issues": [],
   "claim_boundary": [
     "Only tasks 001-300 are part of the original behavior-certified full-300 claim.",
-    "Tasks 301-494 are behavior-certified extension rows outside the original full-300 denominator.",
+    "Tasks 301-497 are behavior-certified extension rows outside the original full-300 denominator.",
     "Continuous-time rows certify the repository's finite-difference/stateful behavioral response, not a general analog solver accuracy claim.",
     "KCL/current rows certify observable branch-current contribution behavior, not unknown-node MNA/KCL solving.",
-    "AMS, noise/analysis, Cadence-helper, and table-model extension rows are certified only for their layer-specific transient/checker contracts."
+    "AMS, noise/analysis, Cadence-helper, Cadence-derived data-converter, and table-model extension rows are certified only for their layer-specific transient/checker contracts."
   ],
   "completion_audit": {
     "is_complete": true,
-    "reason": "All 194 extension tasks have behavior checker evidence, gold verification, and five rejected negative variants.",
+    "reason": "All 197 extension tasks have behavior checker evidence, gold verification, and five rejected negative variants.",
     "requirements": [
       {
-        "evidence": "layered_certification summary reports extension_candidate_count=194.",
-        "requirement": "Scope covers all v3 extension tasks 301-494.",
+        "evidence": "layered_certification summary reports extension_candidate_count=197.",
+        "requirement": "Scope covers all v3 extension tasks 301-497.",
         "status": "satisfied"
       },
       {
@@ -22,7 +22,7 @@
         "status": "satisfied"
       },
       {
-        "evidence": "extension_sop_audit complete_tests_count=194.",
+        "evidence": "extension_sop_audit complete_tests_count=197.",
         "requirement": "Each extension task has executable visible and hidden test evidence.",
         "status": "satisfied"
       },
@@ -32,13 +32,13 @@
         "status": "satisfied"
       },
       {
-        "evidence": "194 extension tasks are behavior-certified; 0 remain excluded_until_behavior_promotion.",
+        "evidence": "197 extension tasks are behavior-certified; 0 remain excluded_until_behavior_promotion.",
         "gap": "",
         "requirement": "Each extension task has repository behavior checker evidence and can be scored fairly.",
         "status": "satisfied"
       },
       {
-        "evidence": "verify_301_494_layered: gold_pass=194, gold_fail=0, negative_rejected=970, negative_accepted=0, expectation_fail=0.",
+        "evidence": "verify_301_497_layered: gold_pass=197, gold_fail=0, negative_rejected=985, negative_accepted=0, expectation_fail=0.",
         "requirement": "Behavior-certified extension tasks pass gold verification and reject all negative variants.",
         "status": "satisfied"
       },
@@ -104,6 +104,13 @@
       "certification_levels": {
         "behavior_certified_extension": 3
       },
+      "semantic_layer": "cadence_derived_data_converter_extension",
+      "task_count": 3
+    },
+    {
+      "certification_levels": {
+        "behavior_certified_extension": 3
+      },
       "semantic_layer": "cadence_simulator_function_extension",
       "task_count": 3
     },
@@ -125,19 +132,19 @@
   "release": "benchmark-vabench-release-v3",
   "status": "layered_complete",
   "summary": {
-    "behavior_certified_count": 494,
-    "behavior_certified_extension_count": 194,
+    "behavior_certified_count": 497,
+    "behavior_certified_extension_count": 197,
     "blocking_issue_counts": {},
     "certification_level_counts": {
       "behavior_certified": 268,
-      "behavior_certified_extension": 194,
+      "behavior_certified_extension": 197,
       "behavior_certified_support": 32
     },
     "compile_supported_candidate_count": 0,
-    "extension_candidate_count": 194,
+    "extension_candidate_count": 197,
     "original_full_300_count": 300,
     "score_claim_counts": {
-      "extension_behavior_certified_outside_original_300": 194,
+      "extension_behavior_certified_outside_original_300": 197,
       "original_full_300_policy": 300
     },
     "semantic_layer_counts": {
@@ -146,15 +153,17 @@
       "behavioral_event_core": 268,
       "behavioral_event_support": 32,
       "behavioral_language_extension": 130,
+      "cadence_derived_data_converter_extension": 3,
       "cadence_simulator_function_extension": 3,
       "conservative_kcl_syntax_extension": 6,
       "noise_analysis_extension": 12
     },
-    "task_count": 494,
+    "task_count": 497,
     "tier_counts": {
       "<none>": 260,
       "ams-mixed-signal-candidate": 29,
       "behavioral-continuous-time-candidate": 14,
+      "cadence-derived-data-converter-candidate": 3,
       "cadence-simulator-function-candidate": 3,
       "core-formal-candidate": 1,
       "formal-candidate": 7,
@@ -10045,6 +10054,66 @@
       "task_number": 494,
       "tier": "behavioral-continuous-time-candidate",
       "title": "Continuous Zi Nd Filter"
+    },
+    {
+      "behavior_certified": true,
+      "blocking_issue_urls": "",
+      "category": "data_converter",
+      "certification_level": "behavior_certified_extension",
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim",
+      "claim_boundary": "Extension task has SOP-ready behavior evidence: executable visible/hidden tests, repository behavior checker, and five rejected negative variants. It remains outside the original full-300 denominator.",
+      "extension_candidate": true,
+      "form": "dut",
+      "in_original_full_300": false,
+      "score_claim": "extension_behavior_certified_outside_original_300",
+      "semantic_layer": "cadence_derived_data_converter_extension",
+      "syntax_focus": "Use slew() to implement a finite-slew voltage-domain DAC output.",
+      "target": "slew_rate_dac4.va",
+      "task_id": "v3_495_slew_rate_dac4",
+      "task_key": "495-slew-rate-dac4",
+      "task_number": 495,
+      "tier": "cadence-derived-data-converter-candidate",
+      "title": "Slew Rate DAC4"
+    },
+    {
+      "behavior_certified": true,
+      "blocking_issue_urls": "",
+      "category": "data_converter",
+      "certification_level": "behavior_certified_extension",
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim",
+      "claim_boundary": "Extension task has SOP-ready behavior evidence: executable visible/hidden tests, repository behavior checker, and five rejected negative variants. It remains outside the original full-300 denominator.",
+      "extension_candidate": true,
+      "form": "dut",
+      "in_original_full_300": false,
+      "score_claim": "extension_behavior_certified_outside_original_300",
+      "semantic_layer": "cadence_derived_data_converter_extension",
+      "syntax_focus": "Use clocked analog events and state update to model a first-order sigma-delta loop.",
+      "target": "first_order_sigma_delta_modulator.va",
+      "task_id": "v3_496_first_order_sigma_delta_modulator",
+      "task_key": "496-first-order-sigma-delta-modulator",
+      "task_number": 496,
+      "tier": "cadence-derived-data-converter-candidate",
+      "title": "First Order Sigma Delta Modulator"
+    },
+    {
+      "behavior_certified": true,
+      "blocking_issue_urls": "",
+      "category": "data_converter",
+      "certification_level": "behavior_certified_extension",
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim",
+      "claim_boundary": "Extension task has SOP-ready behavior evidence: executable visible/hidden tests, repository behavior checker, and five rejected negative variants. It remains outside the original full-300 denominator.",
+      "extension_candidate": true,
+      "form": "dut",
+      "in_original_full_300": false,
+      "score_claim": "extension_behavior_certified_outside_original_300",
+      "semantic_layer": "cadence_derived_data_converter_extension",
+      "syntax_focus": "Use voltage-domain quantization and multi-output thermometer bus driving.",
+      "target": "thermometer_bus_encoder.va",
+      "task_id": "v3_497_thermometer_bus_encoder",
+      "task_key": "497-thermometer-bus-encoder",
+      "task_number": 497,
+      "tier": "cadence-derived-data-converter-candidate",
+      "title": "Thermometer Bus Encoder"
     }
   ]
 }

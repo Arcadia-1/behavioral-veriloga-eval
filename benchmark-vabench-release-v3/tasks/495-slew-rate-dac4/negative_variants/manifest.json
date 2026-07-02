@@ -1,24 +1,44 @@
 {
-  "variants": [
+  "negative_variants": [
     {
       "id": "neg_001_force_zero",
-      "description": "Drives a constant zero output.",
-      "path": "negative_variants/neg_001_force_zero/slew_rate_dac4.va"
+      "description": "Slew Rate DAC4: forces the output to zero, so it compiles and idles plausibly but fails every nonzero code check.",
+      "files": [
+        "neg_001_force_zero/slew_rate_dac4.va"
+      ],
+      "expected": "compile_but_fail_full_behavior"
     },
     {
       "id": "neg_002_direct_transition",
-      "description": "Decodes the code but jumps directly instead of using slew-rate limiting.",
-      "path": "negative_variants/neg_002_direct_transition/slew_rate_dac4.va"
+      "description": "Slew Rate DAC4: decodes the binary input correctly but jumps directly to the target instead of enforcing the slew-rate limit.",
+      "files": [
+        "neg_002_direct_transition/slew_rate_dac4.va"
+      ],
+      "expected": "compile_but_fail_full_behavior"
     },
     {
       "id": "neg_003_wrong_denominator",
-      "description": "Normalizes the four-bit code by 16 rather than the endpoint span.",
-      "path": "negative_variants/neg_003_wrong_denominator/slew_rate_dac4.va"
+      "description": "Slew Rate DAC4: uses code divided by 16, passing monotonic smoke checks while missing the full-scale endpoint calibration.",
+      "files": [
+        "neg_003_wrong_denominator/slew_rate_dac4.va"
+      ],
+      "expected": "compile_but_fail_full_behavior"
     },
     {
       "id": "neg_004_reversed_bit_order",
-      "description": "Treats d0 as the MSB and d3 as the LSB.",
-      "path": "negative_variants/neg_004_reversed_bit_order/slew_rate_dac4.va"
+      "description": "Slew Rate DAC4: treats d0 as the MSB and d3 as the LSB, so symmetric code smoke tests can pass but bit-order coverage fails.",
+      "files": [
+        "neg_004_reversed_bit_order/slew_rate_dac4.va"
+      ],
+      "expected": "compile_but_fail_full_behavior"
+    },
+    {
+      "id": "neg_005_half_slew_rate",
+      "description": "Slew Rate DAC4: reaches the right endpoints eventually but slews at half the required rate, failing ramp-shape timing checks.",
+      "files": [
+        "neg_005_half_slew_rate/slew_rate_dac4.va"
+      ],
+      "expected": "compile_but_fail_full_behavior"
     }
   ]
 }

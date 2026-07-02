@@ -12,7 +12,7 @@
 - Required behavior: compile-time macro selection changes the gain used by the behavioral output.
 - Visible/hidden coverage: hidden stimulus exercises the non-default gain path and calibrated output samples.
 - Negative evidence: 5/5 variants are rejected by `FAIL_SIM_CORRECTNESS`.
-- Evidence: `benchmark-vabench-release-v3/reports/verify_301_494_layered.json`.
+- Evidence: `benchmark-vabench-release-v3/reports/verify_301_497_layered.json`.
 
 ## Boundary
 

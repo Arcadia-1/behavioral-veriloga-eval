@@ -1,11 +1,11 @@
 {
   "summary": {
     "all_tasks_have_five_behavior_rejected_negatives": true,
-    "gold_pass_count": 194,
-    "negative_behavior_rejected_total": 970,
-    "negative_total": 970,
-    "source_report": "benchmark-vabench-release-v3/reports/verify_301_494_layered.json",
-    "task_count": 194
+    "gold_pass_count": 197,
+    "negative_behavior_rejected_total": 985,
+    "negative_total": 985,
+    "source_report": "benchmark-vabench-release-v3/reports/verify_301_497_layered.json",
+    "task_count": 197
   },
   "tasks": [
     {
@@ -3111,6 +3111,54 @@
         "neg_005_scale_output": "FAIL_SIM_CORRECTNESS"
       },
       "task": "494-continuous-zi-nd-filter"
+    },
+    {
+      "all_negatives_behavior_rejected": true,
+      "checker_task_id": "v3_495_slew_rate_dac4",
+      "gold_meets_expectation": true,
+      "gold_status": "PASS",
+      "negative_behavior_rejected_count": 5,
+      "negative_count": 5,
+      "negative_statuses": {
+        "neg_001_force_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_002_direct_transition": "FAIL_SIM_CORRECTNESS",
+        "neg_003_wrong_denominator": "FAIL_SIM_CORRECTNESS",
+        "neg_004_reversed_bit_order": "FAIL_SIM_CORRECTNESS",
+        "neg_005_half_slew_rate": "FAIL_SIM_CORRECTNESS"
+      },
+      "task": "495-slew-rate-dac4"
+    },
+    {
+      "all_negatives_behavior_rejected": true,
+      "checker_task_id": "v3_496_first_order_sigma_delta_modulator",
+      "gold_meets_expectation": true,
+      "gold_status": "PASS",
+      "negative_behavior_rejected_count": 5,
+      "negative_count": 5,
+      "negative_statuses": {
+        "neg_001_force_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_002_no_feedback": "FAIL_SIM_CORRECTNESS",
+        "neg_003_inverted_decision": "FAIL_SIM_CORRECTNESS",
+        "neg_004_falling_edge_update": "FAIL_SIM_CORRECTNESS",
+        "neg_005_half_feedback": "FAIL_SIM_CORRECTNESS"
+      },
+      "task": "496-first-order-sigma-delta-modulator"
+    },
+    {
+      "all_negatives_behavior_rejected": true,
+      "checker_task_id": "v3_497_thermometer_bus_encoder",
+      "gold_meets_expectation": true,
+      "gold_status": "PASS",
+      "negative_behavior_rejected_count": 5,
+      "negative_count": 5,
+      "negative_statuses": {
+        "neg_001_force_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_002_off_by_one": "FAIL_SIM_CORRECTNESS",
+        "neg_003_binary_code_outputs": "FAIL_SIM_CORRECTNESS",
+        "neg_004_reversed_thermometer_order": "FAIL_SIM_CORRECTNESS",
+        "neg_005_round_to_nearest": "FAIL_SIM_CORRECTNESS"
+      },
+      "task": "497-thermometer-bus-encoder"
     }
   ]
 }

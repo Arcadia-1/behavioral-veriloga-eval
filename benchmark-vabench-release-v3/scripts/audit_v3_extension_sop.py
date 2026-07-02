@@ -26,7 +26,7 @@ RANGE_GROUPS = [
     (373, 434, "task/file/table/random/hierarchy syntax candidates"),
     (435, 458, "manual syntax-completion candidates"),
     (459, 470, "course-material gap-fill candidates"),
-    (471, 494, "LRM KCL/continuous-time gap-fill candidates"),
+    (471, 497, "LRM KCL/continuous-time and Cadence data-converter gap-fill candidates"),
 ]
 
 
@@ -370,11 +370,10 @@ def write_md(report: dict[str, Any]) -> None:
         "",
         "## Highest Severity Finding",
         "",
-        "Tasks 301-494 are extension candidates, not SOP-ready benchmark tasks. "
-        "They mostly provide syntax-focused reference artifacts plus skeleton "
-        "visible/hidden Spectre decks. Under the SOP, they need concrete public "
-        "behavior prompts, executable visible smoke tests, hidden formal tests, "
-        "and behavior-checking negative evidence before promotion.",
+        "Tasks 301-497 are extension-layer benchmark tasks outside the original "
+        "full-300 denominator. Under the SOP they must retain concrete public "
+        "behavior prompts, executable visible and hidden tests, repository "
+        "behavior checkers, and five behavior-rejected negative variants.",
         "",
         "## Per-Task Rows",
         "",
@@ -418,7 +417,7 @@ def main() -> int:
         })
     report = {
         "date": date.today().isoformat(),
-        "scope": "benchmark-vabench-release-v3 tasks 301-494",
+        "scope": "benchmark-vabench-release-v3 tasks 301-497",
         "standard": "behavioral-veriloga-vela/SOP.md visible/hidden task standard and four quality criteria",
         "summary": {
             "task_count": len(rows),

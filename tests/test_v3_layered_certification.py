@@ -12,7 +12,7 @@ REPORT = V3 / "reports" / "layered_certification.json"
 TASKS = V3 / "TASKS.json"
 SOP_AUDIT = V3 / "reports" / "extension_sop_audit.json"
 CHECKS = V3 / "CHECKS.yaml"
-VERIFY_REPORT = V3 / "reports" / "verify_301_494_layered.json"
+VERIFY_REPORT = V3 / "reports" / "verify_301_497_layered.json"
 
 
 def test_v3_layered_certification_counts_match_task_manifest() -> None:
@@ -22,12 +22,12 @@ def test_v3_layered_certification_counts_match_task_manifest() -> None:
     sop_ready_count = sop_audit["summary"]["sop_ready_count"]
     summary = report["summary"]
 
-    assert summary["task_count"] == len(tasks) == 494
+    assert summary["task_count"] == len(tasks) == 497
     assert summary["original_full_300_count"] == 300
-    assert summary["extension_candidate_count"] == 194
+    assert summary["extension_candidate_count"] == 197
     assert summary["behavior_certified_count"] == 300 + sop_ready_count
     assert summary["behavior_certified_extension_count"] == sop_ready_count
-    assert summary["compile_supported_candidate_count"] == 194 - sop_ready_count
+    assert summary["compile_supported_candidate_count"] == 197 - sop_ready_count
     assert summary["unsupported_candidate_count"] == 0
 
     tier_counts = Counter((task.get("tier") or "<none>") for task in tasks.values())
@@ -42,11 +42,11 @@ def test_v3_extension_sop_audit_tracks_visible_hidden_diversity() -> None:
     distinct_rows = [row for row in rows if row["visible_hidden_distinct"]]
     identical_rows = [row for row in rows if not row["visible_hidden_distinct"]]
 
-    assert summary["visible_hidden_distinct_count"] == len(distinct_rows) == 194
+    assert summary["visible_hidden_distinct_count"] == len(distinct_rows) == 197
     assert summary["visible_hidden_identical_count"] == len(identical_rows) == 0
-    assert summary["behavior_contract_complete_count"] == 194
-    assert summary["negative_cases_aligned_count"] == 194
-    assert summary["negative_descriptions_task_specific_count"] == 194
+    assert summary["behavior_contract_complete_count"] == 197
+    assert summary["negative_cases_aligned_count"] == 197
+    assert summary["negative_descriptions_task_specific_count"] == 197
     assert summary["sop_ready_visible_hidden_identical_count"] == 0
     assert summary["staged_visible_hidden_identical_count"] == 0
     assert summary["warning_counts"].get("visible_hidden_identical", 0) == 0
@@ -67,7 +67,7 @@ def test_v3_extension_rows_do_not_overclaim_behavior_certification() -> None:
     rows = report["task_rows"]
 
     extension_rows = [row for row in rows if row["extension_candidate"]]
-    assert len(extension_rows) == 194
+    assert len(extension_rows) == 197
     for row in extension_rows:
         if row["task_key"] in sop_ready_tasks:
             assert row["behavior_certified"]
@@ -145,9 +145,10 @@ def test_v3_extension_rows_do_not_overclaim_behavior_certification() -> None:
 def test_v3_layered_certification_claim_boundary_is_explicit() -> None:
     report = json.loads(REPORT.read_text(encoding="utf-8"))
     boundary = "\n".join(report["claim_boundary"])
+    extension_end = report["summary"]["task_count"]
 
     assert "Only tasks 001-300" in boundary
-    assert "Tasks 301-494 are behavior-certified extension rows" in boundary
+    assert f"Tasks 301-{extension_end} are behavior-certified extension rows" in boundary
     assert "finite-difference/stateful behavioral response" in boundary
     assert "not unknown-node MNA/KCL solving" in boundary
 
@@ -377,7 +378,7 @@ def test_completion_audit_preserves_full_goal_boundary() -> None:
     assert audit["is_complete"] is True
     staged_count = report["summary"]["compile_supported_candidate_count"]
     behavior_count = report["summary"]["behavior_certified_extension_count"]
-    assert "All 194 extension tasks" in audit["reason"]
+    assert f"All {behavior_count} extension tasks" in audit["reason"]
     assert len(requirements) == 7
     assert by_requirement[
         "Each extension task has repository behavior checker evidence and can be scored fairly."

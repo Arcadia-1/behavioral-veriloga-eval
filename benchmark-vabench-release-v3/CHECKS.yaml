@@ -12441,6 +12441,22 @@
       - endpoint_mapping_uses_code_span_15
       - large_code_steps_are_slew_rate_limited
       - settled_codes_match_monotonic_dac_levels
+      - five_negative_variants_rejected_by_behavior_checker
+  sim_correct:
+    positive:
+      - solution/slew_rate_dac4.va
+    negative:
+      - negative_variants/neg_001_force_zero/slew_rate_dac4.va
+      - negative_variants/neg_002_direct_transition/slew_rate_dac4.va
+      - negative_variants/neg_003_wrong_denominator/slew_rate_dac4.va
+      - negative_variants/neg_004_reversed_bit_order/slew_rate_dac4.va
+      - negative_variants/neg_005_half_slew_rate/slew_rate_dac4.va
+    checks:
+      - binary_bit_order_matches_d3_msb
+      - endpoint_mapping_uses_code_span_15
+      - large_code_steps_are_slew_rate_limited
+      - settled_codes_match_monotonic_dac_levels
+      - five_negative_variants_rejected_by_behavior_checker
 496-first-order-sigma-delta-modulator: |
   version: 1
   task_id: v3_496_first_order_sigma_delta_modulator
@@ -12458,6 +12474,22 @@
       - one_bit_feedback_bounds_accumulator
       - output_bitstream_matches_first_order_loop
       - high_input_window_has_higher_density_than_low_input_window
+      - five_negative_variants_rejected_by_behavior_checker
+  sim_correct:
+    positive:
+      - solution/first_order_sigma_delta_modulator.va
+    negative:
+      - negative_variants/neg_001_force_zero/first_order_sigma_delta_modulator.va
+      - negative_variants/neg_002_no_feedback/first_order_sigma_delta_modulator.va
+      - negative_variants/neg_003_inverted_decision/first_order_sigma_delta_modulator.va
+      - negative_variants/neg_004_falling_edge_update/first_order_sigma_delta_modulator.va
+      - negative_variants/neg_005_half_feedback/first_order_sigma_delta_modulator.va
+    checks:
+      - rising_clock_updates_only
+      - one_bit_feedback_bounds_accumulator
+      - output_bitstream_matches_first_order_loop
+      - high_input_window_has_higher_density_than_low_input_window
+      - five_negative_variants_rejected_by_behavior_checker
 497-thermometer-bus-encoder: |
   version: 1
   task_id: v3_497_thermometer_bus_encoder
@@ -12489,3 +12521,19 @@
       - active_segment_count_matches_input_bin
       - t0_to_t15_prefix_order
       - no_binary_or_reversed_thermometer_word
+      - five_negative_variants_rejected_by_behavior_checker
+  sim_correct:
+    positive:
+      - solution/thermometer_bus_encoder.va
+    negative:
+      - negative_variants/neg_001_force_zero/thermometer_bus_encoder.va
+      - negative_variants/neg_002_off_by_one/thermometer_bus_encoder.va
+      - negative_variants/neg_003_binary_code_outputs/thermometer_bus_encoder.va
+      - negative_variants/neg_004_reversed_thermometer_order/thermometer_bus_encoder.va
+      - negative_variants/neg_005_round_to_nearest/thermometer_bus_encoder.va
+    checks:
+      - input_clipping_to_0_to_vref
+      - active_segment_count_matches_input_bin
+      - t0_to_t15_prefix_order
+      - no_binary_or_reversed_thermometer_word
+      - five_negative_variants_rejected_by_behavior_checker

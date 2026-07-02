@@ -4,10 +4,10 @@ Date: 2026-07-02
 
 ## Headline
 
-- Total tasks: **494**
+- Total tasks: **497**
 - Original behavior-certified full-300 surface: **300**
-- Extension candidates: **194**
-- Behavior-certified extension rows: **194**
+- Extension candidates: **197**
+- Behavior-certified extension rows: **197**
 - Compile-supported candidate rows: **0**
 - Unsupported candidate rows: **0**
 
@@ -20,6 +20,7 @@ Date: 2026-07-02
 | `behavioral_event_core` | 268 | behavior_certified: 268 |
 | `behavioral_event_support` | 32 | behavior_certified_support: 32 |
 | `behavioral_language_extension` | 130 | behavior_certified_extension: 130 |
+| `cadence_derived_data_converter_extension` | 3 | behavior_certified_extension: 3 |
 | `cadence_simulator_function_extension` | 3 | behavior_certified_extension: 3 |
 | `conservative_kcl_syntax_extension` | 6 | behavior_certified_extension: 6 |
 | `noise_analysis_extension` | 12 | behavior_certified_extension: 12 |
@@ -33,25 +34,25 @@ Date: 2026-07-02
 
 - Status: `complete`
 - Complete: `true`
-- Reason: All 194 extension tasks have behavior checker evidence, gold verification, and five rejected negative variants.
+- Reason: All 197 extension tasks have behavior checker evidence, gold verification, and five rejected negative variants.
 
 | Requirement | Status | Evidence | Gap |
 | --- | --- | --- | --- |
-| Scope covers all v3 extension tasks 301-494. | `satisfied` | layered_certification summary reports extension_candidate_count=194. |  |
+| Scope covers all v3 extension tasks 301-497. | `satisfied` | layered_certification summary reports extension_candidate_count=197. |  |
 | Each extension task has a clear prompt and required behavior section. | `satisfied` | extension_sop_audit has no missing_required_behavior_section issue. |  |
-| Each extension task has executable visible and hidden test evidence. | `satisfied` | extension_sop_audit complete_tests_count=194. |  |
+| Each extension task has executable visible and hidden test evidence. | `satisfied` | extension_sop_audit complete_tests_count=197. |  |
 | Each extension task has five useful negative variants. | `satisfied` | extension_sop_audit reports no negative_count_lt5 issues. |  |
-| Each extension task has repository behavior checker evidence and can be scored fairly. | `satisfied` | 194 extension tasks are behavior-certified; 0 remain excluded_until_behavior_promotion. |  |
-| Behavior-certified extension tasks pass gold verification and reject all negative variants. | `satisfied` | verify_301_494_layered: gold_pass=194, gold_fail=0, negative_rejected=970, negative_accepted=0, expectation_fail=0. |  |
+| Each extension task has repository behavior checker evidence and can be scored fairly. | `satisfied` | 197 extension tasks are behavior-certified; 0 remain excluded_until_behavior_promotion. |  |
+| Behavior-certified extension tasks pass gold verification and reject all negative variants. | `satisfied` | verify_301_497_layered: gold_pass=197, gold_fail=0, negative_rejected=985, negative_accepted=0, expectation_fail=0. |  |
 | Every staged task has a concrete EVAS issue and promotion checklist. | `satisfied` | No staged tasks remain; no EVAS promotion blockers are required. |  |
 
 ## Claim Boundary
 
 - Only tasks 001-300 are part of the original behavior-certified full-300 claim.
-- Tasks 301-494 are behavior-certified extension rows outside the original full-300 denominator.
+- Tasks 301-497 are behavior-certified extension rows outside the original full-300 denominator.
 - Continuous-time rows certify the repository's finite-difference/stateful behavioral response, not a general analog solver accuracy claim.
 - KCL/current rows certify observable branch-current contribution behavior, not unknown-node MNA/KCL solving.
-- AMS, noise/analysis, Cadence-helper, and table-model extension rows are certified only for their layer-specific transient/checker contracts.
+- AMS, noise/analysis, Cadence-helper, Cadence-derived data-converter, and table-model extension rows are certified only for their layer-specific transient/checker contracts.
 
 ## Evidence Sources
 

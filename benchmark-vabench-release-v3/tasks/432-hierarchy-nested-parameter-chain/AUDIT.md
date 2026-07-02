@@ -12,7 +12,7 @@
 - Required behavior: two staged child instances apply their parameter overrides in sequence and expose the intermediate metric.
 - Visible/hidden coverage: hidden stimulus varies input and reset windows to catch missing child lookup, wrong parameter override, and metric-only mistakes.
 - Negative evidence: 5/5 variants are rejected by `FAIL_SIM_CORRECTNESS`.
-- Evidence: `benchmark-vabench-release-v3/reports/verify_301_494_layered.json`.
+- Evidence: `benchmark-vabench-release-v3/reports/verify_301_497_layered.json`.
 
 ## Boundary
 

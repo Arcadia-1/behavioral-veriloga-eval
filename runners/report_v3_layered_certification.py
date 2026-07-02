@@ -23,7 +23,7 @@ STAGED_BLOCKER_MD = REPORTS_ROOT / "staged_blocker_matrix.md"
 STAGED_BLOCKER_CSV = REPORTS_ROOT / "staged_blocker_matrix.csv"
 BEHAVIOR_EXTENSION_EVIDENCE_JSON = REPORTS_ROOT / "behavior_certified_extension_task_evidence.json"
 EXTENSION_SOP_AUDIT_JSON = REPORTS_ROOT / "extension_sop_audit.json"
-VERIFY_LAYERED_JSON = REPORTS_ROOT / "verify_301_494_layered.json"
+VERIFY_LAYERED_JSON = REPORTS_ROOT / "verify_301_497_layered.json"
 STAGED_GOLD_PROBE_JSON = REPORTS_ROOT / "staged_promotion_gold_probe.json"
 
 
@@ -74,6 +74,11 @@ TIER_TO_LAYER = {
         "cadence_simulator_function_extension",
         "compile_supported_candidate",
         "Cadence simulator helper syntax candidate; behavior certification is pending.",
+    ),
+    "cadence-derived-data-converter-candidate": (
+        "cadence_derived_data_converter_extension",
+        "compile_supported_candidate",
+        "Cadence-derived data-converter candidate; behavior certification is tracked outside the original full-300 denominator.",
     ),
     "behavioral-continuous-time-candidate": (
         "behavioral_continuous_time_extension",
@@ -275,13 +280,20 @@ def build_completion_audit(
     sop_summary = sop_audit.get("summary", {}) if isinstance(sop_audit, dict) else {}
     issue_counts = sop_summary.get("issue_counts", {}) if isinstance(sop_summary, dict) else {}
     staged_count = summary["compile_supported_candidate_count"]
+    expected_extension_count = summary["task_count"] - summary["original_full_300_count"]
+    extension_start = summary["original_full_300_count"] + 1
+    extension_end = summary["task_count"]
+    verify_report_label = f"verify_{extension_start:03d}_{extension_end:03d}_layered"
     verification_ok = (
         verification_summary.get("gold_pass") == summary["behavior_certified_extension_count"]
         and verification_summary.get("gold_fail") == 0
         and verification_summary.get("negative_accepted") == 0
         and verification_summary.get("expectation_fail") == 0
     )
-    fair_eval_ok = summary["behavior_certified_extension_count"] == 194 and staged_count == 0
+    fair_eval_ok = (
+        summary["behavior_certified_extension_count"] == expected_extension_count
+        and staged_count == 0
+    )
     staged_issue_ok = (
         staged_count == 0
         or (
@@ -291,8 +303,12 @@ def build_completion_audit(
     )
     requirements = [
         {
-            "requirement": "Scope covers all v3 extension tasks 301-494.",
-            "status": "satisfied" if summary["extension_candidate_count"] == 194 else "not_satisfied",
+            "requirement": f"Scope covers all v3 extension tasks {extension_start:03d}-{extension_end:03d}.",
+            "status": (
+                "satisfied"
+                if summary["extension_candidate_count"] == expected_extension_count
+                else "not_satisfied"
+            ),
             "evidence": f"layered_certification summary reports extension_candidate_count={summary['extension_candidate_count']}.",
         },
         {
@@ -302,7 +318,11 @@ def build_completion_audit(
         },
         {
             "requirement": "Each extension task has executable visible and hidden test evidence.",
-            "status": "satisfied" if sop_summary.get("complete_tests_count") == 194 else "not_satisfied",
+            "status": (
+                "satisfied"
+                if sop_summary.get("complete_tests_count") == expected_extension_count
+                else "not_satisfied"
+            ),
             "evidence": f"extension_sop_audit complete_tests_count={sop_summary.get('complete_tests_count')}.",
         },
         {
@@ -327,7 +347,7 @@ def build_completion_audit(
             "requirement": "Behavior-certified extension tasks pass gold verification and reject all negative variants.",
             "status": "satisfied" if verification_ok else "not_satisfied",
             "evidence": (
-                f"verify_301_494_layered: gold_pass={verification_summary.get('gold_pass')}, "
+                f"{verify_report_label}: gold_pass={verification_summary.get('gold_pass')}, "
                 f"gold_fail={verification_summary.get('gold_fail')}, "
                 f"negative_rejected={verification_summary.get('negative_rejected')}, "
                 f"negative_accepted={verification_summary.get('negative_accepted')}, "
@@ -354,10 +374,12 @@ def build_completion_audit(
         "status": "complete" if is_complete else "partial_external_blocked",
         "is_complete": is_complete,
         "reason": (
-            "All 194 extension tasks have behavior checker evidence, gold verification, and five rejected negative variants."
+            f"All {expected_extension_count} extension tasks have behavior checker evidence, "
+            "gold verification, and five rejected negative variants."
             if is_complete
             else (
-                f"The full 301-494 objective is not complete because {staged_count} extension tasks still lack "
+                f"The full {extension_start:03d}-{extension_end:03d} objective is not complete because "
+                f"{staged_count} extension tasks still lack "
                 "behavior checker evidence and are excluded until EVAS support issues are resolved."
             )
         ),
@@ -453,10 +475,10 @@ def build_report() -> dict[str, Any]:
         ),
         "claim_boundary": [
             "Only tasks 001-300 are part of the original behavior-certified full-300 claim.",
-            "Tasks 301-494 are behavior-certified extension rows outside the original full-300 denominator.",
+            "Tasks 301-497 are behavior-certified extension rows outside the original full-300 denominator.",
             "Continuous-time rows certify the repository's finite-difference/stateful behavioral response, not a general analog solver accuracy claim.",
             "KCL/current rows certify observable branch-current contribution behavior, not unknown-node MNA/KCL solving.",
-            "AMS, noise/analysis, Cadence-helper, and table-model extension rows are certified only for their layer-specific transient/checker contracts.",
+            "AMS, noise/analysis, Cadence-helper, Cadence-derived data-converter, and table-model extension rows are certified only for their layer-specific transient/checker contracts.",
         ],
         "evidence_sources": {
             "task_manifest": "benchmark-vabench-release-v3/TASKS.json",

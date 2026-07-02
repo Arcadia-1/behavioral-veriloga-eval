@@ -193,3 +193,6 @@ task,number,title,tier,target,visible_hidden_distinct,negative_count,behavior_co
 492-kcl-inductor-idt-voltage,492,Kcl Inductor Idt Voltage,kcl-syntax-candidate,kcl_inductor_idt_voltage.va,True,5,True,True,True,True,True,True,True,True,,candidate_tier_not_score_ready
 493-continuous-laplace-nd-filter,493,Continuous Laplace Nd Filter,behavioral-continuous-time-candidate,continuous_laplace_nd_filter.va,True,5,True,True,True,True,True,True,True,True,,candidate_tier_not_score_ready
 494-continuous-zi-nd-filter,494,Continuous Zi Nd Filter,behavioral-continuous-time-candidate,continuous_zi_nd_filter.va,True,5,True,True,True,True,True,True,True,True,,candidate_tier_not_score_ready
+495-slew-rate-dac4,495,Slew Rate DAC4,cadence-derived-data-converter-candidate,slew_rate_dac4.va,True,5,True,True,True,True,True,True,True,True,,candidate_tier_not_score_ready
+496-first-order-sigma-delta-modulator,496,First Order Sigma Delta Modulator,cadence-derived-data-converter-candidate,first_order_sigma_delta_modulator.va,True,5,True,True,True,True,True,True,True,True,,candidate_tier_not_score_ready
+497-thermometer-bus-encoder,497,Thermometer Bus Encoder,cadence-derived-data-converter-candidate,thermometer_bus_encoder.va,True,5,True,True,True,True,True,True,True,True,,candidate_tier_not_score_ready

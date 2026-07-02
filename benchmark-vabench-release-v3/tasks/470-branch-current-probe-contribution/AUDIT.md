@@ -12,7 +12,7 @@
 - Required behavior: named branch current contributions are accumulated and later `I(br)` probes drive `out`.
 - Visible/hidden coverage: hidden PWL bias points catch missing branch contribution, wrong thresholding, offset, and scale errors.
 - Negative evidence: 5/5 variants are rejected by `FAIL_SIM_CORRECTNESS`.
-- Evidence: `benchmark-vabench-release-v3/reports/verify_301_494_layered.json`.
+- Evidence: `benchmark-vabench-release-v3/reports/verify_301_497_layered.json`.
 
 ## Boundary
 

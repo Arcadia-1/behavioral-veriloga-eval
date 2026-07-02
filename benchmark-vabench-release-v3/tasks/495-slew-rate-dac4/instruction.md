@@ -17,7 +17,7 @@ analog DAC output.
 - `vref = 1.0 V`: full-scale endpoint reference.
 - `slewrate = 1e8 V/s`: maximum output slew rate.
 
-## Functional Contract
+## Required Behavior
 
 Interpret the four input voltages as an unsigned binary code using `vth`.
 Map code zero to 0 V and code fifteen to `vref`, with monotonic binary-weighted

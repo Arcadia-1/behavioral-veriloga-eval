@@ -18,7 +18,7 @@ modulator clock, and `bitout` is the voltage-coded one-bit output stream.
 - `vref = 1.0 V`: normalized feedback reference.
 - `tr = 20p`: output transition smoothing time.
 
-## Functional Contract
+## Required Behavior
 
 Maintain a first-order accumulator. On each rising crossing of `vclk`, update
 the accumulator with the current normalized input minus the previous one-bit

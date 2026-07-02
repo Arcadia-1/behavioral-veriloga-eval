@@ -4,14 +4,14 @@ Date: 2026-07-02
 
 ## Summary
 
-- Audited extension tasks: **194**
-- SOP-ready tasks: **194**
-- Tasks with executable visible+hidden SCS evidence: **194**
-- Tasks with behavior checker evidence: **194**
-- Tasks with complete manifest behavior contracts: **194**
-- Tasks with aligned negative case indexes: **194**
-- Tasks with task-specific negative descriptions: **194**
-- Tasks with distinct visible/hidden SCS stimuli: **194**
+- Audited extension tasks: **197**
+- SOP-ready tasks: **197**
+- Tasks with executable visible+hidden SCS evidence: **197**
+- Tasks with behavior checker evidence: **197**
+- Tasks with complete manifest behavior contracts: **197**
+- Tasks with aligned negative case indexes: **197**
+- Tasks with task-specific negative descriptions: **197**
+- Tasks with distinct visible/hidden SCS stimuli: **197**
 - Tasks with identical visible/hidden SCS stimuli: **0**
 - SOP-ready tasks with identical visible/hidden SCS stimuli: **0**
 - Staged tasks with identical visible/hidden SCS stimuli: **0**
@@ -21,7 +21,7 @@ Date: 2026-07-02
 
 ## Warning Counts
 
-- `candidate_tier_not_score_ready`: 194
+- `candidate_tier_not_score_ready`: 197
 
 ## Range Summary
 
@@ -33,11 +33,11 @@ Date: 2026-07-02
 | `373-434` | task/file/table/random/hierarchy syntax candidates | 62 | 62 | 62 | 62 | 62 | 62 | 62 | 62 |  |
 | `435-458` | manual syntax-completion candidates | 24 | 24 | 24 | 24 | 24 | 24 | 24 | 24 |  |
 | `459-470` | course-material gap-fill candidates | 12 | 12 | 12 | 12 | 12 | 12 | 12 | 12 |  |
-| `471-494` | LRM KCL/continuous-time gap-fill candidates | 24 | 24 | 24 | 24 | 24 | 24 | 24 | 24 |  |
+| `471-497` | LRM KCL/continuous-time and Cadence data-converter gap-fill candidates | 27 | 27 | 27 | 27 | 27 | 27 | 27 | 27 |  |
 
 ## Highest Severity Finding
 
-Tasks 301-494 are extension candidates, not SOP-ready benchmark tasks. They mostly provide syntax-focused reference artifacts plus skeleton visible/hidden Spectre decks. Under the SOP, they need concrete public behavior prompts, executable visible smoke tests, hidden formal tests, and behavior-checking negative evidence before promotion.
+Tasks 301-497 are extension-layer benchmark tasks outside the original full-300 denominator. Under the SOP they must retain concrete public behavior prompts, executable visible and hidden tests, repository behavior checkers, and five behavior-rejected negative variants.
 
 ## Per-Task Rows
 
@@ -237,3 +237,6 @@ Tasks 301-494 are extension candidates, not SOP-ready benchmark tasks. They most
 | `492-kcl-inductor-idt-voltage` | `kcl-syntax-candidate` | True | - |
 | `493-continuous-laplace-nd-filter` | `behavioral-continuous-time-candidate` | True | - |
 | `494-continuous-zi-nd-filter` | `behavioral-continuous-time-candidate` | True | - |
+| `495-slew-rate-dac4` | `cadence-derived-data-converter-candidate` | True | - |
+| `496-first-order-sigma-delta-modulator` | `cadence-derived-data-converter-candidate` | True | - |
+| `497-thermometer-bus-encoder` | `cadence-derived-data-converter-candidate` | True | - |

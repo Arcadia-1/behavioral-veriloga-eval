@@ -85,16 +85,17 @@ Re-run the SOP audit for these extension rows with:
 python3 benchmark-vabench-release-v3/scripts/audit_v3_extension_sop.py
 ```
 
-As of 2026-07-01, the SOP audit covers tasks `301`-`494` and reports:
+As of 2026-07-02, the SOP audit covers tasks `301`-`497` and reports:
 
-- audited extension tasks: `194`
-- SOP-ready extension tasks: `0`
-- rows with executable visible+hidden SCS evidence: `0`
-- rows with behavior-checker evidence: `0`
+- audited extension tasks: `197`
+- SOP-ready extension tasks: `197`
+- rows with executable visible+hidden SCS evidence: `197`
+- rows with behavior-checker evidence: `197`
 
-The common blocking issues are skeleton visible/hidden SCS decks without a
-candidate include, DUT instance, or stimulus source, plus syntax-only checker
-entries that do not yet prove hidden behavior or reject the negative variants.
+The current extension layer has no SOP blocker issues. Each extension row has a
+public required-behavior contract, executable visible and hidden SCS benches,
+repository `sim_correct` evidence, and five concrete negative variants that are
+rejected by the behavior checker.
 
 The same boundary is confirmed by local EVAS simulation using the Python
 engine. The gold/negative verification script is layer-aware by default: it
@@ -107,14 +108,14 @@ PYTHONPATH=runners VAEVAS_DEFAULT_EVAS_ENGINE=python \
   VAEVAS_EVAS_PERSISTENT_WORKER=0 \
   PATH="$PWD/.venv-evas/bin:$PATH" \
   .venv-evas/bin/python scripts/run_v3_gold_negative_verification.py \
-  --start 301 --end 494 --timeout 120 --jobs 1 \
-  --out benchmark-vabench-release-v3/reports/verify_301_494_layered.json
+  --start 301 --end 497 --timeout 180 --jobs 4 --include-staged \
+  --out benchmark-vabench-release-v3/reports/verify_301_497_layered.json
 ```
 
-Result: `153/153` behavior-contracted extension gold rows pass, `765/765`
-negative rows are rejected, and `41` staged language-extension rows are skipped.
-Those `41` rows remain non-scored candidates until the linked EVAS issues are
-implemented or the tasks are moved into a different certified layer.
+Result: `197/197` extension gold rows pass, `985/985` negative rows are
+rejected, and `0` expectation failures are reported. These rows remain outside
+the original full-300 denominator even though they are behavior-certified in
+the extension layer.
 
 Current local EVAS compile status after this expansion:
 
@@ -127,29 +128,29 @@ Current local EVAS compile status after this expansion:
   that currently compile with local EVAS.
 - `460`, `462`, `464`, `465`, and `467`: course-material environment
   helper rows that now compile with current local EVAS.
-- `471`-`494`: newly added LRM gap-fill rows; all reference solutions now
-  compile with current local EVAS after the EVAS CLI helper allowlist update.
+- `471`-`497`: newly added LRM and Cadence data-converter gap-fill rows; all
+  reference solutions now compile and pass their repository behavior checks.
 - `471`, `472`, `493`, and `494`: behavioral continuous-time candidates;
   these are compile-supported language rows, not full dynamic-solver accuracy
   claims.
 - `469`, `470`, `481`, `482`, `491`, and `492`: KCL/current-contribution or
-  analog-primitive syntax candidates only; they are not behavior-certified
-  KCL/MNA claims.
+  analog-primitive rows certify observable branch-current/primitive behavior
+  only; they are not full unknown-node KCL/MNA claims.
 - `367`, `368`, `369`, `370`, and `372` were adjusted so `transition()` is no
   longer inside conditionally executed `analysis()` branches.
 
 ## Remaining Language Gaps Worth Tracking
 
-Upstream EVAS issues #35 and #36 are closed. The rows below are now
-compile-supported by current local EVAS, but remain extension candidates until
-their behavior checkers and negative-case scoring are promoted.
+Upstream EVAS issues #35 and #36 are closed. The extension rows are now
+behavior-certified for their layer-specific transient/checker contracts, but
+the benchmark still intentionally separates those contracts from broader analog
+solver claims.
 
 The newly added rows avoid current-domain KCL and still leave some manual
 features as future work:
 
-- behavior certification, beyond compile support, for indirect branch assignment,
-  attribute/generic access functions, `$analog_node_alias`, `$rtoi`,
-  `$cds_get_mc_trial_number`, 2D/string `$table_model`, and continuous-time
-  `ddt`/`idt`/`laplace_nd`/`zi_nd` rows.
-- richer multi-dimensional `$table_model()` behavior certification.
-- AC/noise behavior certification beyond compile-level helper coverage.
+- broader analog-solver accuracy for arbitrary continuous-time transfer
+  functions beyond the finite task contracts.
+- true unknown-node MNA/KCL solving beyond observable branch-current contracts.
+- AC/noise analysis semantics beyond the transient helper contracts currently
+  certified here.

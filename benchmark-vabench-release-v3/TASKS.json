@@ -10153,6 +10153,8 @@
       ],
       "tier": "cadence-derived-data-converter-candidate",
       "title": "Slew Rate DAC4",
+      "syntax_focus": "Use slew() to implement a finite-slew voltage-domain DAC output.",
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim",
       "description": "Four-bit voltage-coded DAC with Cadence-style slew-rate-limited analog output.",
       "required_behavior": [
         "Decode d3..d0 as an unsigned binary word with d3 as MSB.",
@@ -10169,7 +10171,8 @@
         "neg_001_force_zero",
         "neg_002_direct_transition",
         "neg_003_wrong_denominator",
-        "neg_004_reversed_bit_order"
+        "neg_004_reversed_bit_order",
+        "neg_005_half_slew_rate"
       ]
     },
     "496-first-order-sigma-delta-modulator": {
@@ -10183,6 +10186,8 @@
       ],
       "tier": "cadence-derived-data-converter-candidate",
       "title": "First Order Sigma Delta Modulator",
+      "syntax_focus": "Use clocked analog events and state update to model a first-order sigma-delta loop.",
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim",
       "description": "Clocked first-order sigma-delta modulator with one-bit voltage-coded output stream.",
       "required_behavior": [
         "Update a feedback-bounded accumulator on rising clock crossings.",
@@ -10199,7 +10204,8 @@
         "neg_001_force_zero",
         "neg_002_no_feedback",
         "neg_003_inverted_decision",
-        "neg_004_falling_edge_update"
+        "neg_004_falling_edge_update",
+        "neg_005_half_feedback"
       ]
     },
     "497-thermometer-bus-encoder": {
@@ -10213,6 +10219,8 @@
       ],
       "tier": "cadence-derived-data-converter-candidate",
       "title": "Thermometer Bus Encoder",
+      "syntax_focus": "Use voltage-domain quantization and multi-output thermometer bus driving.",
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim",
       "description": "Analog-input 16-segment thermometer bus encoder with prefix output ordering.",
       "required_behavior": [
         "Clip the analog input to the declared full-scale range.",
@@ -10229,7 +10237,8 @@
         "neg_001_force_zero",
         "neg_002_off_by_one",
         "neg_003_binary_code_outputs",
-        "neg_004_reversed_thermometer_order"
+        "neg_004_reversed_thermometer_order",
+        "neg_005_round_to_nearest"
       ]
     }
   }

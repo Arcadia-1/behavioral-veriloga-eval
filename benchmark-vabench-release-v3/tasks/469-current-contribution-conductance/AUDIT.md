@@ -15,7 +15,7 @@
 - Required behavior: `imon` tracks `1e-3 * V(p,n)` across visible and hidden p/n bias segments.
 - Hidden coverage: p and n are driven independently, including a negative branch voltage, to catch absolute-node, positive-only, wrong-sign, offset, and wrong-scale implementations.
 - Negative evidence: 5/5 variants are rejected by `FAIL_SIM_CORRECTNESS`.
-- Promotion evidence: `benchmark-vabench-release-v3/reports/verify_301_494_layered.json` reports gold PASS and all five negatives rejected for this task.
+- Promotion evidence: `benchmark-vabench-release-v3/reports/verify_301_497_layered.json` reports gold PASS and all five negatives rejected for this task.
 
 ## Boundary
 

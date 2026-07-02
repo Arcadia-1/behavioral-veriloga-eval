@@ -36,7 +36,7 @@ def extension_tasks() -> dict[str, dict]:
 def test_all_v3_extension_tasks_have_manifest_metadata() -> None:
     tasks = extension_tasks()
 
-    assert len(tasks) == 194
+    assert len(tasks) == 197
     for task_key, task in tasks.items():
         missing = REQUIRED_EXTENSION_FIELDS - set(task)
         assert missing == set(), f"{task_key} missing {sorted(missing)}"
@@ -236,7 +236,7 @@ def test_v3_extension_visible_hidden_diversity_is_audited() -> None:
         else:
             distinct_tasks.append(task_key)
 
-    assert len(distinct_tasks) == 194
+    assert len(distinct_tasks) == 197
     assert len(identical_tasks) == 0
     assert "341-wreal-gain-pass-through" in distinct_tasks
     assert "346-logic-assign-inverter" in distinct_tasks

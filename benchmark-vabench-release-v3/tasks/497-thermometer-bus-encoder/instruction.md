@@ -19,7 +19,7 @@ highest segment.
 - `vh = 0.9 V`: output logic-high level.
 - `tr = 20p`: output transition smoothing time.
 
-## Functional Contract
+## Required Behavior
 
 Convert `vin` into a 16-segment thermometer code. Clip the input to the
 0-to-`vref` range, choose the number of active segments from the clipped input

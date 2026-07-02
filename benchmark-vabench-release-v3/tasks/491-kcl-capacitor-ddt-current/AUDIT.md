@@ -15,7 +15,7 @@
 - Required behavior: `imon` tracks `1p * ddt(V(p,n))` on rising and falling branch-voltage ramps.
 - Hidden coverage: p and n both move, so `ddt(V(p))` can pass a grounded-reference smoke test but fails the dynamic-reference hidden checks.
 - Negative evidence: 5/5 variants are rejected by `FAIL_SIM_CORRECTNESS`.
-- Promotion evidence: `benchmark-vabench-release-v3/reports/verify_301_494_layered.json` reports gold PASS and all five negatives rejected for this task.
+- Promotion evidence: `benchmark-vabench-release-v3/reports/verify_301_497_layered.json` reports gold PASS and all five negatives rejected for this task.
 
 ## Boundary
 

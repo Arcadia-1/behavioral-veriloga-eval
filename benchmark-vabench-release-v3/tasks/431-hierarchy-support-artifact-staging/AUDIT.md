@@ -12,7 +12,7 @@
 - Required behavior: parent and support child artifacts are staged together and produce the expected chained gain behavior.
 - Visible/hidden coverage: hidden stimulus changes input segments to catch missing child staging, hard-coded outputs, and wrong child gain.
 - Negative evidence: 5/5 variants are rejected by `FAIL_SIM_CORRECTNESS`.
-- Evidence: `benchmark-vabench-release-v3/reports/verify_301_494_layered.json`.
+- Evidence: `benchmark-vabench-release-v3/reports/verify_301_497_layered.json`.
 
 ## Boundary
 
