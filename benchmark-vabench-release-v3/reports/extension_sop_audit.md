@@ -5,9 +5,9 @@ Date: 2026-07-02
 ## Summary
 
 - Audited extension tasks: **194**
-- SOP-ready tasks: **190**
+- SOP-ready tasks: **192**
 - Tasks with executable visible+hidden SCS evidence: **194**
-- Tasks with behavior checker evidence: **190**
+- Tasks with behavior checker evidence: **192**
 - Tasks with complete manifest behavior contracts: **194**
 - Tasks with aligned negative case indexes: **194**
 - Tasks with task-specific negative descriptions: **194**
@@ -18,7 +18,7 @@ Date: 2026-07-02
 
 ## Issue Counts
 
-- `checker_syntax_only_no_behavior_score`: 4
+- `checker_syntax_only_no_behavior_score`: 2
 
 ## Warning Counts
 
@@ -34,7 +34,7 @@ Date: 2026-07-02
 | `373-434` | task/file/table/random/hierarchy syntax candidates | 62 | 62 | 62 | 62 | 62 | 62 | 62 | 62 |  |
 | `435-458` | manual syntax-completion candidates | 24 | 24 | 24 | 24 | 24 | 24 | 24 | 24 |  |
 | `459-470` | course-material gap-fill candidates | 12 | 11 | 12 | 11 | 12 | 12 | 12 | 12 | `checker_syntax_only_no_behavior_score`: 1 |
-| `471-494` | LRM KCL/continuous-time gap-fill candidates | 24 | 21 | 24 | 21 | 24 | 24 | 24 | 24 | `checker_syntax_only_no_behavior_score`: 3 |
+| `471-494` | LRM KCL/continuous-time gap-fill candidates | 24 | 23 | 24 | 23 | 24 | 24 | 24 | 24 | `checker_syntax_only_no_behavior_score`: 1 |
 
 ## Highest Severity Finding
 
@@ -214,8 +214,8 @@ Tasks 301-494 are extension candidates, not SOP-ready benchmark tasks. They most
 | `468-branch-declaration-voltage-probe` | `syntax-extension-candidate` | True | - |
 | `469-current-contribution-conductance` | `kcl-syntax-candidate` | False | `checker_syntax_only_no_behavior_score` |
 | `470-branch-current-probe-contribution` | `kcl-syntax-candidate` | True | - |
-| `471-indirect-branch-null-balance` | `behavioral-continuous-time-candidate` | False | `checker_syntax_only_no_behavior_score` |
-| `472-indirect-branch-ddt-balance` | `behavioral-continuous-time-candidate` | False | `checker_syntax_only_no_behavior_score` |
+| `471-indirect-branch-null-balance` | `behavioral-continuous-time-candidate` | True | - |
+| `472-indirect-branch-ddt-balance` | `behavioral-continuous-time-candidate` | True | - |
 | `473-attribute-potential-abstol-probe` | `syntax-extension-candidate` | True | - |
 | `474-generic-potential-access-function` | `syntax-extension-candidate` | True | - |
 | `475-generic-potential-contribution` | `syntax-extension-candidate` | True | - |

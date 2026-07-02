@@ -20,7 +20,6 @@ module indirect_branch_ddt_balance(
 - Use the Verilog-A indirect branch assignment/equation form.
 - Constrain `out` with the dynamic equation `V(out) : ddt(V(out)) == V(in)`.
 - Do not use explicit current contributions.
-- This task is in the behavioral-continuous-time/constraint layer. It is not part of the ordinary event-level behavior score until EVAS has certified `ddt()` and indirect-branch equation semantics.
-- The visible and hidden testbenches drive the input node and save both input and output nodes for future behavior certification.
+- The visible and hidden testbenches drive the input node and require `out` to match the time integral implied by the indirect `ddt()` branch equation.
 
 Return exactly one source artifact named `indirect_branch_ddt_balance.va`.

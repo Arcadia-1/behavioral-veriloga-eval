@@ -9338,17 +9338,17 @@
       "title": "Indirect Branch Null Balance",
       "syntax_focus": "Use an indirect branch assignment target/equation form.",
       "certification_scope": "language_extension_not_part_of_original_full_300_claim",
-      "description": "Use an indirect branch assignment equation to impose a null-balance relationship.",
+      "description": "Use an indirect branch assignment equation to impose a null-balance relationship between out and in.",
       "required_behavior": [
-        "Declare and solve the indirect branch equation form.",
-        "Drive the observable output from the solved branch relationship.",
-        "Remain staged until indirect equation solving is certified."
+        "Declare the indirect branch equation form.",
+        "Constrain out with V(out) : V(out) - V(in) == 0.",
+        "Drive the observable output from the solved branch relationship across the visible and hidden PWL segments."
       ],
       "visible_tests": [
-        "visible.scs checks that the indirect branch equation has an observable solution boundary."
+        "visible.scs checks that out tracks the driven input through the first PWL sequence."
       ],
       "hidden_tests": [
-        "hidden.scs varies the source condition to reject disconnected equations."
+        "hidden.scs adds a late input segment to reject disconnected, offset, and scaled equations."
       ],
       "negative_variants": [
         "neg_001_force_zero",
@@ -9375,13 +9375,13 @@
       "required_behavior": [
         "Combine indirect branch equation solving with a ddt() dynamic term.",
         "Preserve dynamic state needed by the branch-balance equation.",
-        "Remain staged until indirect dynamic equation solving is certified."
+        "Drive out as the time integral implied by ddt(V(out)) == V(in)."
       ],
       "visible_tests": [
-        "visible.scs exercises a dynamic input that should affect the branch balance."
+        "visible.scs exercises a dynamic input and checks the resulting integral trajectory."
       ],
       "hidden_tests": [
-        "hidden.scs changes transition timing to catch static or disconnected balance equations."
+        "hidden.scs adds a late input segment to catch zero, biased, leaky, or wrong-scale integration."
       ],
       "negative_variants": [
         "neg_001_force_zero",

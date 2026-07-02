@@ -5,16 +5,15 @@
 - Required syntax focus: `Use indirect branch assignment with a ddt() equation term.`
 - Certification scope: `language_extension_not_part_of_original_full_300_claim`
 - Tier: `behavioral-continuous-time-candidate`
-- EVAS status: `compile-supported continuous-time/constraint candidate; behavior requires ddt and indirect-branch equation certification`
-- Blocking issue: `ddt()` indirect branch behavior requires continuous-time dynamic support in EVAS; see https://github.com/Arcadia-1/EVAS/issues/44.
+- EVAS status: `behavior-certified with narrow indirect branch ddt-equation support`
+- Boundary: voltage-domain behavioral integration for `V(out) : ddt(V(out)) == expr`; KCL/current solving and general dynamic equation solving are outside this task.
 
-## Staged Promotion Gate
+## Promotion Evidence
 
-- Score claim: `excluded_until_behavior_promotion`.
-- Current probe status: `FAIL_SIM_CORRECTNESS`.
-- Current failure summary: staged_dynamic_solver_boundary operator=indirect_branch_ddt_equation out_range=0 expected=certified_continuous_time_response
-- Blocking issue(s): https://github.com/Arcadia-1/EVAS/issues/44.
-- Promotion requirements: repository `sim_correct` checker evidence, gold PASS, five useful negative variants rejected, and zero expectation_fail in the promotion report.
-- Per-task promotion command: `PYTHONPATH=runners VAEVAS_DEFAULT_EVAS_ENGINE=python VAEVAS_EVAS_PERSISTENT_WORKER=0 PATH="$PWD/.venv-evas/bin:$PATH" .venv-evas/bin/python scripts/run_v3_gold_negative_verification.py --start 472 --end 472 --tasks 472 --include-staged --timeout 120 --jobs 1 --out benchmark-vabench-release-v3/reports/verify_task_472.json`
-- Per-task acceptance: Promote `472-indirect-branch-ddt-balance` only after adding repository sim_correct evidence, then require 1/1 gold PASS, 5/5 negative variants rejected, and zero expectation_fail in the per-task report.
-- Issue-level acceptance: After EVAS support lands, promote the listed 18 task(s) by adding sim_correct behavior contracts/checkers if missing, then require 18/18 gold PASS, 90/90 negative variants rejected, and zero expectation_fail in the verification report.
+- Score claim: `extension_behavior_certified_outside_original_300`.
+- Repository checker: `check_v3_472_indirect_branch_ddt_balance`.
+- Checker behavior: compares `out` against the trapezoidal integral of the driven `inp` waveform across visible and hidden segments, rejecting zero-derivative, biased, leaky, and half-scale dynamic equation variants.
+- Per-task promotion command: `PYTHONPATH="/Users/mac/Documents/github-repos/EVAS:$PWD/runners" VAEVAS_DEFAULT_EVAS_ENGINE=python VAEVAS_EVAS_PERSISTENT_WORKER=0 PATH="$PWD/.venv-evas/bin:$PATH" .venv-evas/bin/python scripts/run_v3_gold_negative_verification.py --start 472 --end 472 --tasks 472 --include-staged --timeout 120 --jobs 1 --out benchmark-vabench-release-v3/reports/verify_task_472_after_indirect_branch_support.json`
+- Per-task result: `1/1 gold PASS; 5/5 negative variants rejected; 0 expectation_fail`.
+- EVAS support commit: `1c193f6`.
+- Boundary: does not claim full `ddt()` simulator equivalence, nonlinear dynamic equation solving, or conservative current-domain behavior.

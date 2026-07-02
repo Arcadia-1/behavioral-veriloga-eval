@@ -2,7 +2,7 @@
   "negative_variants": [
     {
       "id": "neg_001_force_zero",
-      "description": "Indirect Branch Null Balance: forces the main output to zero, so coarse compilation passes but behavioral stimulus points fail.",
+      "description": "Indirect Branch Null Balance: keeps a valid indirect equation form but cancels V(in), forcing out to zero.",
       "files": [
         "neg_001_force_zero/indirect_branch_null_balance.va"
       ],
@@ -10,7 +10,7 @@
     },
     {
       "id": "neg_002_wrong_threshold",
-      "description": "Indirect Branch Null Balance: uses a shifted or inverted decision condition that can pass one mode but fails boundary cases.",
+      "description": "Indirect Branch Null Balance: solves a shifted equation so out follows V(in) with a positive offset.",
       "files": [
         "neg_002_wrong_threshold/indirect_branch_null_balance.va"
       ],
@@ -18,7 +18,7 @@
     },
     {
       "id": "neg_003_reset_bias",
-      "description": "Indirect Branch Null Balance: mishandles reset or initialization, passing steady-state samples but failing startup or recovery checks.",
+      "description": "Indirect Branch Null Balance: solves the opposite-polarity equation so out tracks -V(in).",
       "files": [
         "neg_003_reset_bias/indirect_branch_null_balance.va"
       ],
@@ -26,7 +26,7 @@
     },
     {
       "id": "neg_004_metric_offset",
-      "description": "Indirect Branch Null Balance: keeps the main datapath plausible while reporting the wrong metric value.",
+      "description": "Indirect Branch Null Balance: solves a shifted equation so out follows V(in) with a negative offset.",
       "files": [
         "neg_004_metric_offset/indirect_branch_null_balance.va"
       ],
@@ -34,7 +34,7 @@
     },
     {
       "id": "neg_005_scale_output",
-      "description": "Indirect Branch Null Balance: uses a wrong gain or scale factor, leaving shape plausible while calibrated checks fail.",
+      "description": "Indirect Branch Null Balance: uses the right equation structure but solves a half-scale output.",
       "files": [
         "neg_005_scale_output/indirect_branch_null_balance.va"
       ],

@@ -11592,7 +11592,7 @@
     must_include:
       - "I("
   notes:
-    - "KCL/current contribution task with executable voltage-source testbench; behavior remains outside ordinary event-level certification pending KCL/dynamic support: https://github.com/Arcadia-1/EVAS/issues/44"
+    - "KCL/current contribution task with executable voltage-source testbench; behavior remains outside ordinary event-level certification pending current-domain KCL/MNA support: https://github.com/Arcadia-1/EVAS/issues/57"
 470-branch-current-probe-contribution: |
   version: 1
   task_id: v3_470_branch_current_probe_contribution
@@ -11632,25 +11632,78 @@
 471-indirect-branch-null-balance: |
   version: 1
   task_id: v3_471_indirect_branch_null_balance
-  backend: evas_rust_compile_capable
-  status: behavioral-continuous-time-candidate
-  checker: continuous_time_language_feature_contract
+  backend: evas
+  status: behavior-certified-candidate
+  checker: indirect_branch_null_balance_contract
+  # vabench-release-v2-checks
+  required_columns:
+    - time
+    - inp
+    - out
   syntax:
     must_include:
-      - "V(out) : V(in) == 0"
+      - "V(out) :"
+      - "V(in)"
+      - "== 0"
+    must_not_include:
+      - "I("
+  sim_correct:
+    positive:
+      - solution/indirect_branch_null_balance.va
+    negative:
+      - negative_variants/neg_001_force_zero/indirect_branch_null_balance.va
+      - negative_variants/neg_002_wrong_threshold/indirect_branch_null_balance.va
+      - negative_variants/neg_003_reset_bias/indirect_branch_null_balance.va
+      - negative_variants/neg_004_metric_offset/indirect_branch_null_balance.va
+      - negative_variants/neg_005_scale_output/indirect_branch_null_balance.va
+    checks:
+      - indirect_branch_voltage_equation_syntax
+      - output_tracks_input_at_visible_samples
+      - output_tracks_hidden_reacquire_segment
+      - no_current_domain_contribution
+      - five_negative_variants_rejected_by_behavior_checker
+  promotion_evidence:
+    command: "PYTHONPATH=\"/Users/mac/Documents/github-repos/EVAS:$PWD/runners\" VAEVAS_DEFAULT_EVAS_ENGINE=python VAEVAS_EVAS_PERSISTENT_WORKER=0 PATH=\"$PWD/.venv-evas/bin:$PATH\" .venv-evas/bin/python scripts/run_v3_gold_negative_verification.py --start 471 --end 471 --tasks 471 --include-staged --timeout 120 --jobs 1 --out benchmark-vabench-release-v3/reports/verify_task_471_after_indirect_branch_support.json"
+    result: "1/1 gold PASS; 5/5 negative variants rejected; 0 expectation_fail after EVAS commit 1c193f6 indirect branch voltage-equation support."
   notes:
-    - "Continuous-time/constraint task with executable source-driven testbench; indirect-branch equation behavior remains outside ordinary event-level certification pending dynamic-operator support: https://github.com/Arcadia-1/EVAS/issues/44"
+    - "Promoted after changing the task contract to a solvable null-balance equation V(out)-V(in)==0 and adding a behavior checker over visible and hidden PWL segments."
 472-indirect-branch-ddt-balance: |
   version: 1
   task_id: v3_472_indirect_branch_ddt_balance
-  backend: evas_rust_compile_capable
-  status: behavioral-continuous-time-candidate
-  checker: continuous_time_language_feature_contract
+  backend: evas
+  status: behavior-certified-candidate
+  checker: indirect_branch_ddt_balance_contract
+  # vabench-release-v2-checks
+  required_columns:
+    - time
+    - inp
+    - out
   syntax:
     must_include:
+      - "V(out) :"
       - "ddt(V(out))"
+    must_not_include:
+      - "I("
+  sim_correct:
+    positive:
+      - solution/indirect_branch_ddt_balance.va
+    negative:
+      - negative_variants/neg_001_force_zero/indirect_branch_ddt_balance.va
+      - negative_variants/neg_002_wrong_threshold/indirect_branch_ddt_balance.va
+      - negative_variants/neg_003_reset_bias/indirect_branch_ddt_balance.va
+      - negative_variants/neg_004_metric_offset/indirect_branch_ddt_balance.va
+      - negative_variants/neg_005_scale_output/indirect_branch_ddt_balance.va
+    checks:
+      - indirect_branch_ddt_equation_syntax
+      - output_matches_trapezoid_integral_of_input
+      - hidden_dynamic_segment_changes_integral
+      - no_current_domain_contribution
+      - five_negative_variants_rejected_by_behavior_checker
+  promotion_evidence:
+    command: "PYTHONPATH=\"/Users/mac/Documents/github-repos/EVAS:$PWD/runners\" VAEVAS_DEFAULT_EVAS_ENGINE=python VAEVAS_EVAS_PERSISTENT_WORKER=0 PATH=\"$PWD/.venv-evas/bin:$PATH\" .venv-evas/bin/python scripts/run_v3_gold_negative_verification.py --start 472 --end 472 --tasks 472 --include-staged --timeout 120 --jobs 1 --out benchmark-vabench-release-v3/reports/verify_task_472_after_indirect_branch_support.json"
+    result: "1/1 gold PASS; 5/5 negative variants rejected; 0 expectation_fail after EVAS commit 1c193f6 indirect ddt branch-equation support."
   notes:
-    - "Continuous-time/constraint task with executable source-driven testbench; ddt indirect-branch behavior remains outside ordinary event-level certification pending dynamic-operator support: https://github.com/Arcadia-1/EVAS/issues/44"
+    - "Promoted as a behavioral-continuous-time extension using a repository checker that compares out against the input waveform integral."
 473-attribute-potential-abstol-probe: |
   version: 1
   task_id: v3_473_attribute_potential_abstol_probe
@@ -12212,7 +12265,7 @@
     must_not_include:
       - "V(out)"
   notes:
-    - "KCL/current-contribution smoke tests staged; behavior certification requires continuous-time/KCL support: https://github.com/Arcadia-1/EVAS/issues/44"
+    - "KCL/current-contribution smoke tests staged; behavior certification requires current-domain KCL/MNA support: https://github.com/Arcadia-1/EVAS/issues/57"
 492-kcl-inductor-idt-voltage: |
   version: 1
   task_id: v3_492_kcl_inductor_idt_voltage

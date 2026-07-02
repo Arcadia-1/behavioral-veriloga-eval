@@ -18,9 +18,8 @@ module indirect_branch_null_balance(
 ## Required Behavior
 
 - Use the Verilog-A indirect branch assignment/equation form.
-- Constrain `out` with `V(out) : V(in) == 0`.
+- Constrain `out` with the null-balance equation `V(out) : V(out) - V(in) == 0`.
 - Do not use explicit current contributions.
-- This task is in the behavioral-continuous-time/constraint layer. It is not part of the ordinary event-level behavior score until EVAS has certified indirect-branch equation semantics.
-- The visible and hidden testbenches drive the input node and save both input and output nodes for future behavior certification.
+- The visible and hidden testbenches drive the input node and require `out` to track the solved indirect-branch relationship across all PWL segments.
 
 Return exactly one source artifact named `indirect_branch_null_balance.va`.

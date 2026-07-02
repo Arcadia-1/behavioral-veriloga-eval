@@ -8950,6 +8950,25 @@ def _v3_interp_signal(rows: list[dict[str, float]], signal: str, time_s: float) 
     return rows[-1][signal]
 
 
+def _v3_trapezoid_integral_to(rows: list[dict[str, float]], signal: str, time_s: float) -> float:
+    if not rows or time_s <= rows[0]["time"]:
+        return 0.0
+    total = 0.0
+    prev_t = rows[0]["time"]
+    prev_v = rows[0][signal]
+    for cur in rows[1:]:
+        cur_t = cur["time"]
+        cur_v = cur[signal]
+        if cur_t >= time_s:
+            value_at_target = _v3_interp_signal(rows, signal, time_s)
+            total += 0.5 * (prev_v + value_at_target) * max(0.0, time_s - prev_t)
+            return total
+        total += 0.5 * (prev_v + cur_v) * max(0.0, cur_t - prev_t)
+        prev_t = cur_t
+        prev_v = cur_v
+    return total
+
+
 def _v3_rising_cross_times(
     rows: list[dict[str, float]],
     signal: str,
@@ -9698,20 +9717,54 @@ def check_v3_470_branch_current_probe_contribution(rows: list[dict[str, float]])
 
 
 def check_v3_471_indirect_branch_null_balance(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    return _check_v3_staged_dynamic_operator_boundary(
-        rows,
-        required={"time", "inp", "out"},
-        operator="indirect_branch_equation",
-        outputs=("out",),
+    ok, note = _v3_required_columns(rows, {"time", "inp", "out"})
+    if not ok:
+        return False, note
+    sample_times_ns = [10.0, 50.0, 90.0]
+    if rows[-1]["time"] >= 150e-9:
+        sample_times_ns.extend([130.0, 150.0])
+    max_err = 0.0
+    observed: list[str] = []
+    for time_ns in sample_times_ns:
+        time_s = time_ns * 1e-9
+        inp = _v3_interp_signal(rows, "inp", time_s)
+        out = _v3_interp_signal(rows, "out", time_s)
+        err = abs(out - inp)
+        max_err = max(max_err, err)
+        observed.append(f"{time_ns:g}ns:{out:.3f}/{inp:.3f}")
+        if err > 0.035:
+            return False, f"out_not_tracking_in@{time_ns:g}ns out={out:.4f} inp={inp:.4f} err={err:.4f}"
+    if _v3_signal_range(rows, "out") < 0.45:
+        return False, f"out_range_too_small={_v3_signal_range(rows, 'out'):.4f}"
+    return True, "indirect_branch_voltage_tracks_input max_err={:.4f} samples={}".format(
+        max_err,
+        ",".join(observed),
     )
 
 
 def check_v3_472_indirect_branch_ddt_balance(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    return _check_v3_staged_dynamic_operator_boundary(
-        rows,
-        required={"time", "inp", "out"},
-        operator="indirect_branch_ddt_equation",
-        outputs=("out",),
+    ok, note = _v3_required_columns(rows, {"time", "inp", "out"})
+    if not ok:
+        return False, note
+    sample_times_ns = [50.0, 90.0]
+    if rows[-1]["time"] >= 150e-9:
+        sample_times_ns.extend([130.0, 150.0])
+    max_err = 0.0
+    observed: list[str] = []
+    for time_ns in sample_times_ns:
+        time_s = time_ns * 1e-9
+        expected = _v3_trapezoid_integral_to(rows, "inp", time_s)
+        out = _v3_interp_signal(rows, "out", time_s)
+        err = abs(out - expected)
+        max_err = max(max_err, err)
+        observed.append(f"{time_ns:g}ns:{out:.3e}/{expected:.3e}")
+        if err > 2.0e-9:
+            return False, f"out_not_integral@{time_ns:g}ns out={out:.4e} expected={expected:.4e} err={err:.4e}"
+    if _v3_signal_range(rows, "out") < 2.0e-8:
+        return False, f"out_integral_range_too_small={_v3_signal_range(rows, 'out'):.4e}"
+    return True, "indirect_branch_ddt_integral max_err={:.3e} samples={}".format(
+        max_err,
+        ",".join(observed),
     )
 
 

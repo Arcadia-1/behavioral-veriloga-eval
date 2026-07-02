@@ -3,6 +3,6 @@
 
 module indirect_branch_null_balance (input electrical in, output electrical out);
 analog begin
-    V(out) : V(in) == 1.0;
+    V(out) : V(out) - (V(in) - V(in)) == 0;
 end
 endmodule

@@ -1,11 +1,11 @@
 {
   "summary": {
     "all_tasks_have_five_behavior_rejected_negatives": true,
-    "gold_pass_count": 190,
-    "negative_behavior_rejected_total": 950,
-    "negative_total": 950,
+    "gold_pass_count": 192,
+    "negative_behavior_rejected_total": 960,
+    "negative_total": 960,
     "source_report": "benchmark-vabench-release-v3/reports/verify_301_494_layered.json",
-    "task_count": 190
+    "task_count": 192
   },
   "tasks": [
     {
@@ -2711,6 +2711,38 @@
         "neg_005_scale_output": "FAIL_SIM_CORRECTNESS"
       },
       "task": "470-branch-current-probe-contribution"
+    },
+    {
+      "all_negatives_behavior_rejected": true,
+      "checker_task_id": "v3_471_indirect_branch_null_balance",
+      "gold_meets_expectation": true,
+      "gold_status": "PASS",
+      "negative_behavior_rejected_count": 5,
+      "negative_count": 5,
+      "negative_statuses": {
+        "neg_001_force_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_002_wrong_threshold": "FAIL_SIM_CORRECTNESS",
+        "neg_003_reset_bias": "FAIL_SIM_CORRECTNESS",
+        "neg_004_metric_offset": "FAIL_SIM_CORRECTNESS",
+        "neg_005_scale_output": "FAIL_SIM_CORRECTNESS"
+      },
+      "task": "471-indirect-branch-null-balance"
+    },
+    {
+      "all_negatives_behavior_rejected": true,
+      "checker_task_id": "v3_472_indirect_branch_ddt_balance",
+      "gold_meets_expectation": true,
+      "gold_status": "PASS",
+      "negative_behavior_rejected_count": 5,
+      "negative_count": 5,
+      "negative_statuses": {
+        "neg_001_force_zero": "FAIL_SIM_CORRECTNESS",
+        "neg_002_wrong_threshold": "FAIL_SIM_CORRECTNESS",
+        "neg_003_reset_bias": "FAIL_SIM_CORRECTNESS",
+        "neg_004_metric_offset": "FAIL_SIM_CORRECTNESS",
+        "neg_005_scale_output": "FAIL_SIM_CORRECTNESS"
+      },
+      "task": "472-indirect-branch-ddt-balance"
     },
     {
       "all_negatives_behavior_rejected": true,

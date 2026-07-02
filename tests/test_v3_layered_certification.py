@@ -118,6 +118,8 @@ def test_v3_extension_rows_do_not_overclaim_behavior_certification() -> None:
         "442-zi-np-discrete-filter",
         "443-zi-zd-discrete-filter",
         "444-zi-zp-discrete-filter",
+        "471-indirect-branch-null-balance",
+        "472-indirect-branch-ddt-balance",
         "493-continuous-laplace-nd-filter",
         "494-continuous-zi-nd-filter",
     }
@@ -351,8 +353,6 @@ def test_staged_gold_probe_uses_specific_checkers_when_available() -> None:
     rows = {row["task_slug"]: row for row in probe["rows"]}
     checker_backed_staged_tasks = {
         "469-current-contribution-conductance": "staged_kcl_boundary",
-        "471-indirect-branch-null-balance": "operator=indirect_branch_equation",
-        "472-indirect-branch-ddt-balance": "operator=indirect_branch_ddt_equation",
         "491-kcl-capacitor-ddt-current": "staged_kcl_boundary",
     }
 
