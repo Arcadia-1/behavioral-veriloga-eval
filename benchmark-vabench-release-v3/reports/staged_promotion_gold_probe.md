@@ -9,7 +9,7 @@ Date: 2026-07-02
 - `gold_fail`: 36
 - `expectation_fail`: 36
 - `skipped_staged_tasks`: 0
-- `wall_s`: 9.452433
+- `wall_s`: 9.612872
 
 ## Rows
 
@@ -42,12 +42,12 @@ Date: 2026-07-02
 | `472-indirect-branch-ddt-balance` | `FAIL_SIM_CORRECTNESS` | staged_dynamic_solver_boundary operator=indirect_branch_ddt_equation out_range=0 expected=certified_continuous_time_response |
 | `476-oomr-string-voltage-probe` | `FAIL_SIM_CORRECTNESS` | out@50ns=0.0000 expected=0.2000 tol=0.0350 |
 | `477-analog-node-alias-initial` | `FAIL_SIM_CORRECTNESS` | out@50ns=0.0000 expected=0.2000 tol=0.0350 |
-| `480-mfactor-system-function-gain` | `FAIL_DUT_COMPILE` | dut_not_compiled |
-| `481-analog-primitive-resistor-instance` | `FAIL_TB_COMPILE` | tb_not_executed |
-| `482-analog-primitive-isource-instance` | `FAIL_TB_COMPILE` | tb_not_executed |
+| `480-mfactor-system-function-gain` | `FAIL_DUT_COMPILE` | simulator_error=Failed to compile Verilog-A file mfactor_system_function_gain.va: Spectre-incompatible/unsupported Verilog-A function call: $mfactor() |
+| `481-analog-primitive-resistor-instance` | `FAIL_TB_COMPILE` | simulator_error=Unknown child module: resistor in analog_primitive_resistor_instance.rload |
+| `482-analog-primitive-isource-instance` | `FAIL_TB_COMPILE` | simulator_error=Unknown child module: isource in analog_primitive_isource_instance.ib |
 | `487-table-model-2d-array-surface` | `FAIL_SIM_CORRECTNESS` | out@50ns=0.0000 expected=1.0000 tol=0.0500 |
 | `488-table-model-string-param-source` | `FAIL_SIM_CORRECTNESS` | out@10ns=0.0000 expected=0.1000 tol=0.0400 |
 | `491-kcl-capacitor-ddt-current` | `FAIL_SIM_CORRECTNESS` | staged_kcl_boundary feature=I(p,n)<+c*ddt(V(p,n)) p_range=0.0012 expected=mna_current_observable |
-| `492-kcl-inductor-idt-voltage` | `FAIL_SIM_CORRECTNESS` | tran.csv missing |
+| `492-kcl-inductor-idt-voltage` | `FAIL_SIM_CORRECTNESS` | simulator_error=evas completed with 1 error but did not expose a detailed diagnostic in captured output |
 | `493-continuous-laplace-nd-filter` | `FAIL_SIM_CORRECTNESS` | staged_dynamic_solver_boundary operator=continuous_laplace_nd out_range=1 expected=certified_continuous_time_response |
 | `494-continuous-zi-nd-filter` | `FAIL_SIM_CORRECTNESS` | staged_dynamic_solver_boundary operator=continuous_zi_nd out_range=1 expected=certified_continuous_time_response |

@@ -250,7 +250,11 @@ def test_staged_gold_probe_uses_specific_checkers_when_available() -> None:
         "470-branch-current-probe-contribution": "expected_branch_current=",
         "471-indirect-branch-null-balance": "operator=indirect_branch_equation",
         "472-indirect-branch-ddt-balance": "operator=indirect_branch_ddt_equation",
+        "480-mfactor-system-function-gain": "unsupported Verilog-A function call: $mfactor()",
+        "481-analog-primitive-resistor-instance": "Unknown child module: resistor",
+        "482-analog-primitive-isource-instance": "Unknown child module: isource",
         "491-kcl-capacitor-ddt-current": "staged_kcl_boundary",
+        "492-kcl-inductor-idt-voltage": "simulator_error=",
         "493-continuous-laplace-nd-filter": "operator=continuous_laplace_nd",
         "494-continuous-zi-nd-filter": "operator=continuous_zi_nd",
     }

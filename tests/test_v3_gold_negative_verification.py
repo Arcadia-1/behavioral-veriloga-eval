@@ -83,3 +83,17 @@ def test_negative_variant_ids_supports_all_manifest_shapes(tmp_path: Path) -> No
         )
 
         assert verifier.negative_variant_ids(task_dir) == ["neg_001", "neg_002"]
+
+
+def test_simulator_failure_summary_extracts_concise_error() -> None:
+    verifier = load_verifier_module()
+
+    assert verifier.simulator_failure_summary(
+        "Reading file\nERROR: Failed to compile Verilog-A file foo.va: unsupported $mfactor()\n"
+    ) == "simulator_error=Failed to compile Verilog-A file foo.va: unsupported $mfactor()"
+    assert verifier.simulator_failure_summary(
+        "Traceback...\nevas.simulator.backend.CompilationError: Unknown child module: resistor in dut.rload\n"
+    ) == "simulator_error=Unknown child module: resistor in dut.rload"
+    assert verifier.simulator_failure_summary(
+        "evas completes with 1 errors, 0 warnings."
+    ) == "simulator_error=evas completed with 1 error but did not expose a detailed diagnostic in captured output"

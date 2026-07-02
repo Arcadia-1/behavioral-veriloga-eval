@@ -7,6 +7,7 @@ import argparse
 import concurrent.futures
 import json
 import os
+import re
 import time
 from pathlib import Path
 from typing import Any
@@ -97,6 +98,28 @@ def choose_hidden_tb(task_dir: Path) -> Path | None:
     return candidates[0] if len(candidates) == 1 else None
 
 
+def simulator_failure_summary(text: str) -> str | None:
+    """Extract a concise simulator failure reason from EVAS output."""
+    if not text.strip():
+        return None
+    patterns = (
+        r"ERROR:\s*(?P<msg>[^\n]+)",
+        r"CompilationError:\s*(?P<msg>[^\n]+)",
+        r"SyntaxError:\s*(?P<msg>[^\n]+)",
+        r"NameError:\s*(?P<msg>[^\n]+)",
+        r"ValueError:\s*(?P<msg>[^\n]+)",
+    )
+    for pattern in patterns:
+        matches = list(re.finditer(pattern, text))
+        if matches:
+            message = matches[-1].group("msg").strip()
+            message = re.sub(r"\s+", " ", message)
+            return f"simulator_error={message[:240]}"
+    if "evas completes with 1 errors" in text:
+        return "simulator_error=evas completed with 1 error but did not expose a detailed diagnostic in captured output"
+    return None
+
+
 def run_one(task_dir: Path, variant: str | None, timeout_s: int) -> dict[str, Any]:
     started = time.perf_counter()
     targets = read_task_artifact_targets(task_dir)
@@ -160,14 +183,20 @@ def run_one(task_dir: Path, variant: str | None, timeout_s: int) -> dict[str, An
     status = str(result.get("status", "FAIL_UNKNOWN"))
     expected_ok = kind == "gold"
     meets_expectation = status == "PASS" if expected_ok else status != "PASS"
+    stdout_tail = str(result.get("stdout_tail", ""))
+    notes = [*selection_notes, *[str(note) for note in result.get("notes", [])]]
+    if status != "PASS":
+        failure_summary = simulator_failure_summary(stdout_tail)
+        if failure_summary and failure_summary not in notes:
+            notes.append(failure_summary)
     row.update({
         "status": status,
         "expected_ok": expected_ok,
         "meets_expectation": meets_expectation,
         "checker_task_id": result.get("checker_task_id"),
         "scores": result.get("scores", {}),
-        "notes": [*selection_notes, *[str(note) for note in result.get("notes", [])]],
-        "stdout_tail": str(result.get("stdout_tail", ""))[-2000:],
+        "notes": notes,
+        "stdout_tail": stdout_tail[-4000:],
         "wall_s": round(time.perf_counter() - started, 6),
     })
     return row
