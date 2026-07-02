@@ -12,6 +12,7 @@ REPORT = V3 / "reports" / "layered_certification.json"
 TASKS = V3 / "TASKS.json"
 SOP_AUDIT = V3 / "reports" / "extension_sop_audit.json"
 CHECKS = V3 / "CHECKS.yaml"
+VERIFY_REPORT = V3 / "reports" / "verify_301_494_layered.json"
 
 
 def test_v3_layered_certification_counts_match_task_manifest() -> None:
@@ -241,3 +242,17 @@ def test_completion_audit_preserves_full_goal_boundary() -> None:
     assert by_requirement[
         "Behavior-certified extension tasks pass gold verification and reject all negative variants."
     ]["status"] == "satisfied"
+
+
+def test_behavior_certified_extension_negatives_fail_behavior_checkers_only() -> None:
+    verification = json.loads(VERIFY_REPORT.read_text(encoding="utf-8"))
+    summary = verification["summary"]
+    negative_rows = [row for row in verification["rows"] if row["kind"] == "negative"]
+
+    assert summary["gold_pass"] == 156
+    assert summary["gold_fail"] == 0
+    assert summary["negative_rejected"] == len(negative_rows) == 780
+    assert summary["negative_accepted"] == 0
+    assert summary["expectation_fail"] == 0
+    assert {row["status"] for row in negative_rows} == {"FAIL_SIM_CORRECTNESS"}
+    assert all(row["meets_expectation"] for row in negative_rows)
