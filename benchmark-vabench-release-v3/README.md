@@ -46,3 +46,21 @@ and `test_visible/`. Hidden tests, checker configs in `CHECKS.yaml`, golden
 solutions, and negative variants are evaluator-side material.
 
 Task names describe the circuit/helper being built instead of preserving legacy migration ids. Private submission records, image tags, model ids, and other orchestration state remain outside this public benchmark tree.
+
+## EVAS Lint Preflight
+
+Use `scripts/run_v3_evas_lint_preflight.py` from the repository root to run the
+EVAS AHDL-like linter over staged v3 gold or starter cases before promotion or
+manual review. By default it stages solution artifacts with hidden testbenches,
+runs `evas lint`, and fails only on EVAS/Spectre compatibility errors; AHDL-like
+warnings remain review signals.
+
+Example:
+
+```bash
+python3 scripts/run_v3_evas_lint_preflight.py --tasks 049,284 --split hidden --out scratch/v3_lint_probe.json
+```
+
+Write lint output to scratch/generated locations. Do not commit generated lint,
+certification, simulator, or private oracle reports into the public benchmark
+tree.
