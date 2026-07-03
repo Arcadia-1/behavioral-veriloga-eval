@@ -2,23 +2,31 @@
 
 ## Scope
 
-Task boundary is one Verilog-A DUT, `uvlo_brownout_detector.va`, plus EVAS/Spectre-compatible `.scs` testbenches. Agent-visible materials are limited to `instruction.md`, `starter/`, and `test_visible/`. Evaluator-only materials are `solution/`, `test_hidden/`, `test_harness/`, and `negative_variants/`. No `meta.json` is present.
+Task boundary is one L1 Verilog-A DUT, `uvlo_brownout_detector.va`. Public solver materials are `instruction.md`, `starter/`, and `test_visible/`. Evaluation materials are `solution/`, `test_hidden/`, `test_harness/`, and `negative_variants/`.
 
-## Four Standards
+## Gate 1
 
-- Useful scenario: pass. UVLO/brownout detection is a practical power-management protection macro.
-- Reasonable task: pass. The public prompt fixes undervoltage thresholding, hysteresis hold, brownout detection, and recovery behavior.
-- Complete tests: pass for EVAS. Hidden samples check initial low state, power-good hold, brownout/lower-threshold behavior, and recovery. Five concrete negatives cover missing hysteresis, wrong polarity, missing brownout, stuck output, and bad recovery.
-- Fair evaluation: pass for EVAS. The checker uses public voltage observables and behavior stated in the prompt.
+- Proposed label: `independent_l1_ready`.
+- Reasoning: UVLO/brownout power-good hysteresis is an independent protection detector. It is distinct from task 038 because this row evaluates hysteretic power-good assertion/clearing rather than active-high POR release delay.
+- Human confirmation: confirmed by reviewer; retain as an independent L1 row for this category.
+
+## Gate 2
+
+- Status: `cadence_modeling_ready`.
+- Public prompt now states the DUT boundary, interface, starter parameters, upper/lower UVLO thresholds, hysteresis hold behavior, brownout clearing, recovery, and metric semantics.
+- Visible and hidden decks are structurally distinct.
+- Cadence/Verilog-A correspondence: the gold uses event-updated latch state with `@(initial_step)`, `@(cross(...))`, and `transition()` on discrete target variables, matching Cadence-style smoothed voltage-coded logic outputs.
 
 ## Checker And Evidence
 
-- Checker id: `v3_048_uvlo_brownout_detector`
-- Runner mapping: `CHECKS["v3_048_uvlo_brownout_detector"] = check_uvlo_brownout_detector`
-- EVAS/Python-engine hidden gold smoke: `PASS`
-- Concrete negative recertification: 5/5 expected failures, all `FAIL_SIM_CORRECTNESS` with simulator `returncode=0`
-- Visible compile/sim smoke: `COMPILE_SIM_OK`
+- Checker id: `v3_048_uvlo_brownout_detector`.
+- EVAS hidden gold: PASS.
+- EVAS negative variants: 5/5 rejected.
+- Spectre hidden gold: PASS.
+- Spectre negative variants: not rerun for this legacy nested-negative layout.
+- EVAS lint preflight: PASS, 0 diagnostics.
+- Cadence AHDL lint: PASS with no task-specific `AHDLLINT-*`; only global `VACOMP-2435` environment notice observed.
 
 ## Remaining Risk
 
-Spectre/Spectre-AX correlation has not been run from this working tree; use EVAS-only wording until that evidence exists.
+Spectre negative coverage can be added later by normalizing the legacy nested negative layout, but current gold, EVAS negatives, Spectre hidden gold, and AHDL lint evidence support the task as an L1 category candidate.

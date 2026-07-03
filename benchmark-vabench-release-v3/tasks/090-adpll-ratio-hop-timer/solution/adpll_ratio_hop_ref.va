@@ -195,7 +195,7 @@ module adpll_ratio_hop_ref (
 
         V(vout) <+ vl + (vh - vl) * transition(dco_state ? 1.0 : 0.0, 0.0, tedge, tedge);
         V(fb_clk) <+ vl + (vh - vl) * transition(fb_state ? 1.0 : 0.0, 0.0, tedge, tedge);
-        V(vctrl_mon) <+ vl + (vh - vl) * code_norm;
+        V(vctrl_mon) <+ vl + (vh - vl) * transition(code_norm, 0.0, tedge, tedge);
         V(lock) <+ vl + (vh - vl) * transition(lock_state ? 1.0 : 0.0, 0.0, tedge, tedge);
     end
 

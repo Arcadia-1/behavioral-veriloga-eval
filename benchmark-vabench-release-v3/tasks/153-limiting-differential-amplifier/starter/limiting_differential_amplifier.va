@@ -6,6 +6,11 @@ input sigin_p, sigin_n;
 output sigout;
 electrical sigin_p, sigin_n, sigout;
 
+parameter real gain = 1;
+parameter real sigout_high = 10;
+parameter real sigout_low = -10;
+parameter real sigin_offset = 0;
+
 analog begin
     V(sigout) <+ 0;
 end

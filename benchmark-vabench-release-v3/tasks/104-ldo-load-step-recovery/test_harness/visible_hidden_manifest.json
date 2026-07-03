@@ -1,13 +1,31 @@
 {
-  "task_id": "v3_104_ldo_load_step_recovery",
-  "source_task": "vbr1_l2_ldo_load_step_recovery_flow",
-  "source_form": "tb",
-  "source_checker_id": "vbr1_l2_ldo_load_step_recovery_flow_tb",
-  "primary_target": "ldo_load_step_recovery_flow.va",
-  "artifact_targets": [
-    "ldo_load_step_recovery_flow.va"
-  ],
-  "hidden_testbench": "tb_ldo_load_step_recovery_flow.scs",
-  "visible_smoke": "tb_visible_smoke.scs",
-  "status": "initial_migration_pending_negative_audit"
+  "certification": {
+    "scope": "EVAS hidden gold/negative, Spectre hidden gold/negative, and Cadence AHDL lint evidence tracked in AUDIT.md",
+    "status": "dual_hidden_gold_and_negative_reviewed"
+  },
+  "form": "dut",
+  "hidden": {
+    "checker": "../../../CHECKS.yaml",
+    "gold": [
+      "solution/ldo_load_step_recovery_flow.va"
+    ],
+    "negative_variants": "negative_variants",
+    "testbenches": [
+      "test_hidden/hidden.scs",
+      "test_hidden/tests/tb_ldo_load_step_recovery_flow.scs"
+    ]
+  },
+  "level": "L2",
+  "status": "v3_candidate",
+  "task": "104-ldo-load-step-recovery",
+  "visible": {
+    "instruction": "instruction.md",
+    "public_smoke": {
+      "hidden_dependency": false,
+      "testbench": "test_visible/tests/tb_visible_smoke.scs"
+    },
+    "starter_files": [
+      "starter/ldo_load_step_recovery_flow.va"
+    ]
+  }
 }

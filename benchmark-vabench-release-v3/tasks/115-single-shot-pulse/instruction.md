@@ -1,51 +1,45 @@
-# Source Single Shot Pulse
+# Single-Shot Pulse
 
-## Task Contract
+Implement `source_single_shot.va` in Verilog-A.
 
-- Form: `dut`
-- Level: `L1`
-- Category: Timing Primitive
-- Base function: source-derived `source_single_shot`
-- Domain: `voltage`
-- Target artifact(s): `source_single_shot.va`
-- Source provenance: `wangx/single_shot.va`
-- Visible context: public task, interface, artifact, stimulus, and observable contract only.
-- Hidden evaluator boundary: deterministic checker and EVAS/Spectre validation are external; do not generate checker logic.
+## Interface
 
-## Form-Specific Requirements
-
-- Implement only the requested Verilog-A DUT artifact.
-- Preserve the public module name, port order, parameters, and waveform observable names.
-- Use voltage contributions only. Do not use current contributions, `ddt()`, or `idt()`.
-
-## Public Verilog-A Interface
-
-`source_single_shot.va` declares module `source_single_shot` with positional ports:
-
-```text
-vin, vout
+```verilog
+module source_single_shot(
+    input  electrical vin,
+    output electrical vout
+);
 ```
 
-## Public Testbench And Observable Contract
+## Required Behavior
 
-Public transient setting used by the evaluator:
+This task asks for the `source_single_shot` behavioral DUT module, not a Spectre
+testbench. The module is a voltage-domain one-shot pulse generator.
 
-```spectre
-tran tran stop=45n maxstep=50p
-```
+Support these public parameters and legal overrides:
 
-The evaluator samples stable windows after event edges and checks the intended source-derived behavior. It does not require pointwise equality at simulator timesteps.
+| Parameter | Default | Unit / range | Contract |
+| --- | ---: | --- | --- |
+| `pulse_width` | `10 ns` | time, `(0:inf)` | Output high duration after a qualifying input edge. |
+| `vlogic_high` | `0.9` | V | Output high level. |
+| `vlogic_low` | `0.0` | V | Output low level. |
+| `vtrans` | `0.45` | V | Rising-edge threshold for `vin`. |
+| `tdel` | `1 ns` | time, `[0:inf)` | Output transition delay. |
+| `trise` | `20 ps` | time, `(0:inf)` | Output rise time. |
+| `tfall` | `20 ps` | time, `(0:inf)` | Output fall time. |
 
-## Public Behavior Checks
+Required observable behavior:
 
-- one_output_pulse_per_input_rising_edge
-- pulse_width_matches_10ns_with_delay
+- Detect rising `vin` crossings at `vtrans`.
+- On each qualifying rising edge, drive `vout` high.
+- Use a timer to return `vout` low after the configured pulse width.
+- Generate one output pulse per input rising edge.
+- Drive `vout` through smoothed voltage contributions.
 
-## Output Contract
+Use voltage contributions only. Do not use current contributions, `ddt()`,
+`idt()`, transistor-level devices, AC/noise analysis, checker logic, private
+test hooks, or simulator-private side channels.
+
+## Output
 
 Return exactly one source artifact named `source_single_shot.va`.
-Do not include explanatory prose outside the source artifact contents.
-
-## Task-Specific Description
-
-Implement the source-derived voltage-domain behavior represented by `source_single_shot`. This benchmark case is included because it captures a reusable mixed-signal behavioral primitive from the deduplicated historical Verilog-A corpus while remaining small enough for deterministic EVAS/Spectre parity evaluation.

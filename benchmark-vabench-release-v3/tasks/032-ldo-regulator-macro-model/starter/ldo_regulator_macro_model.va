@@ -8,6 +8,6 @@ electrical clk, rst, vin, out, metric;
 parameter real tr = 100p;
 parameter real vth = 0.45;
 
-    // TODO: implement the behavior described in visible/prompt.md.
-    // This starter is intentionally incomplete; hidden tests grade behavior.
+    // TODO: implement the behavior described in instruction.md.
+    // This starter is intentionally incomplete; implement the instruction.md behavior.
 endmodule

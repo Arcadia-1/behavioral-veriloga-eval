@@ -17,32 +17,36 @@ module cross_interval_163p333_ref (
 
 ## Required Behavior
 
-This task asks for the `cross_interval_163p333_ref` behavioral module, not a Spectre testbench. The hidden evaluator instantiates this module in the original `vbr1_l1_edge_interval_timer` transient scenario and checks the saved waveform/metric behavior with EVAS.
+This task asks for the `cross_interval_163p333_ref` behavioral DUT module, not
+a Spectre testbench. The module measures the interval from a rising edge on
+`a` to the next rising edge on `b` and exposes both the measured interval and a
+completion marker.
 
-Original public behavior context:
+Support these public parameters and legal overrides:
 
-# Edge interval timer Testbench Companion
+| Parameter | Default | Unit / range | Contract |
+| --- | ---: | --- | --- |
+| `vth` | `0.45` | V | Rising-edge threshold for `a` and `b` relative to `VSS`. |
+| `scale_ps` | `200.0` | ps, `(0:inf)` | Delay normalization used for `delay_out`. |
+| `tedge` | `20 ps` | time, `(0:inf)` | Rise/fall smoothing for outputs. |
 
-Write a Spectre transient testbench for the `Edge interval timer` behavioral
-Verilog-A release task. This is the testbench-generation companion for an
-already materialized end-to-end task.
+Required observable behavior:
 
-The testbench should instantiate the same behavioral DUT or system module used
-by the corresponding end-to-end form, drive the public transient scenario, save
-the observable waveform or metric signals, and preserve the EVAS/Spectre
-validation contract.
+- On a rising `a` crossing, arm a fresh measurement and clear the completion
+  marker.
+- On the first rising `b` crossing after the armed `a` edge, compute the elapsed
+  time in picoseconds.
+- Drive `delay_out` as `V(VDD,VSS) * measured_delay_ps / scale_ps`.
+- Drive `seen_out` high after a valid `a`-then-`b` measurement and low while a
+  measurement is armed but incomplete.
+- Ignore additional `b` crossings until a new rising `a` edge starts the next
+  measurement.
 
-Domain: pure voltage-domain behavioral Verilog-A.
+Use voltage-coded logic referenced to `VDD` and `VSS`, keep the model pure
+behavioral Verilog-A, and do not use transistor-level devices, AC/noise
+analysis, checker logic, private test hooks, or simulator-private side
+channels.
 
-Public requirements:
+## Output
 
-- include a transient `tran` analysis
-- save the public observables needed by the public behavior checks
-- include or instantiate the Verilog-A behavioral module under test
-- satisfy the named behavior checks using only public waveforms and side outputs
-- avoid transistor-level devices, AC/noise analysis, and current-domain
-  solver assumptions
-
-Use voltage-coded logic with a 0.45 V threshold where applicable, drive high logic outputs near 0.9 V and low outputs near 0 V, and keep the model pure behavioral Verilog-A. Do not use transistor-level devices, AC/noise analysis, hidden checker logic, or simulator-private side channels.
-
-Only the target artifact is graded as the candidate implementation; companion Verilog-A files listed by the testbench are supplied by the harness for this task.
+Return exactly one source artifact named `cross_interval_163p333_ref.va`.

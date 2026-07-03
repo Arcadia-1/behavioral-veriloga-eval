@@ -1,22 +1,26 @@
-# Honest SOP Audit: Task 080 Acquisition Limited Sample And Hold
+# Two-Gate SOP Audit: Task 080 Acquisition Limited Sample And Hold
 
-## Scope
+## Gate 1 Counting
 
-Task boundary is one Verilog-A DUT migrated from `vbr1_l1_acquisition_limited_sample_and_hold:dut`, plus EVAS/Spectre-compatible `.scs` testbenches. Agent-visible materials are `instruction.md`, `starter/`, and `test_visible/`. Evaluator-only materials are `solution/`, `test_hidden/`, `test_harness/`, and `negative_variants/`. No `meta.json` is present.
+- Label: `independent_l1_ready`
+- Function boundary: finite-acquisition track/hold behavior with a public
+  tracking monitor.
+- Independence note: this is not an ideal edge sampler. The output moves toward
+  `vin` over a tracking window and freezes at the last acquired value on the
+  falling sample edge.
 
-## Four Standards
+## Gate 2 Modeling
 
-- Useful scenario: accepted. The module is a reusable behavioral Verilog-A block or flow component with a concrete transient use case.
-- Reasonable task: accepted for this migration slice. The public prompt names the target artifact, interface, and behavior context.
-- Complete tests: accepted for current v3 smoke. Hidden gold passes and `neg_001_zero` is non-full-credit; further hand-authored negatives can still strengthen release evidence.
-- Fair evaluation: accepted for current v3 smoke. The checker is bound through the v3 alias and the hidden behavior is covered by the public prompt context.
+- Status: `cadence_modeling_ready`
+- Public prompt now removes migration/history text and states the DUT interface,
+  parameter defaults, acquisition update behavior, reset behavior, and metric
+  semantics.
+- Hidden stimulus now differs from the visible waveform.
+- Checker was generalized from fixed time samples to event-derived acquisition
+  and hold windows.
 
-## Checker And Evidence
+## Validation
 
-- Source checker id: `vbr1_l1_acquisition_limited_sample_and_hold`
-- EVAS 0.4.5 hidden gold smoke: PASS
-- Concrete negative `neg_001_zero`: non-full-credit
-
-## Remaining Risk
-
-This is an initial migration artifact. Do not count this task in a release denominator until gold and negative evidence are attached.
+- EVAS gold/negative: gold PASS; 5/5 concrete negatives rejected.
+- EVAS preflight: visible and hidden decks PASS with zero diagnostics.
+- Spectre hidden gold: PASS with zero simulator warnings.

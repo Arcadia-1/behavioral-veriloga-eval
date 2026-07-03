@@ -40,7 +40,9 @@ The public smoke test instantiates the DUT and saves these scalar observables:
 - `rst_n`
 - `lock`
 
-The hidden evaluator uses deterministic broader SCS stimulus to check reset behavior, no early lock, three aligned rising-edge lock acquisition, and mismatch-induced streak breaking.
+Additional verification may use broader deterministic stimulus to check reset
+behavior, no early lock, three aligned rising-edge lock acquisition, and
+mismatch-induced streak breaking.
 
 ## Output
 
