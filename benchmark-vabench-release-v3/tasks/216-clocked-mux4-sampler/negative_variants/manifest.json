@@ -13,19 +13,19 @@
       "path": "negative_variants/neg_002_rising_edge_sample/clocked_mux4_sampler.va"
     },
     {
-      "description": "Swaps din0 and din1 for dsel1=0 selection.",
-      "id": "neg_003_swap_select_lsb",
-      "path": "negative_variants/neg_003_swap_select_lsb/clocked_mux4_sampler.va"
+      "description": "Ignores the update qualifier and applies select changes on every falling clock.",
+      "id": "neg_003_ignore_update",
+      "path": "negative_variants/neg_003_ignore_update/clocked_mux4_sampler.va"
     },
     {
-      "description": "Drives the sampled mux output at half amplitude.",
-      "id": "neg_004_half_output",
-      "path": "negative_variants/neg_004_half_output/clocked_mux4_sampler.va"
+      "description": "Ignores the active-high reset default to din0.",
+      "id": "neg_004_ignore_reset",
+      "path": "negative_variants/neg_004_ignore_reset/clocked_mux4_sampler.va"
     },
     {
-      "description": "Clocked Mux4 Sampler: scales the metric output, preserving the main path while failing measurement checks.",
-      "id": "neg_005_metric_scale_low",
-      "path": "negative_variants/neg_005_metric_scale_low/clocked_mux4_sampler.va"
+      "description": "Swaps the least-significant select-bit mapping for din1/din2.",
+      "id": "neg_005_swap_select_lsb",
+      "path": "negative_variants/neg_005_swap_select_lsb/clocked_mux4_sampler.va"
     }
   ]
 }

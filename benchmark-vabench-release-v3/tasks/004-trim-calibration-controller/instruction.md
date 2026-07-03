@@ -8,9 +8,9 @@
 - Base function: Trim-voltage generator
 - Domain: `voltage`
 - Target artifact(s): `cdac_calibration.va`
-- Supplied/reference support artifact(s): `visible.scs` for public smoke; `hidden.scs` is verifier-only.
+- Supplied public support artifact(s): `visible.scs` for public smoke.
 - Visible context: public task, interface, artifact, stimulus, and observable contract only.
-- Hidden evaluator boundary: deterministic checker and EVAS/Spectre validation are external; do not generate checker logic.
+- Output boundary: implement only the requested DUT artifact; validation harnesses and simulator-private hooks are external to the requested output.
 
 ## Form-Specific Requirements
 
@@ -23,13 +23,13 @@
 
 ## Public Testbench And Observable Contract
 
-Transient setting used by the public smoke and hidden evaluator:
+Public transient context:
 
 ```spectre
 tran tran stop=220n maxstep=500p
 ```
 
-The evaluator expects these exact public scalar observables:
+The public scalar observables are:
 
 - `clk`
 - `rst`

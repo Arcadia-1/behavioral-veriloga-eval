@@ -8,15 +8,21 @@ Task boundary is one primary Verilog-A DUT artifact, `complete_calibration_loop.
 
 - Useful scenario: accepted. The module is a reusable behavioral Verilog-A block or flow component with a concrete transient use case.
 - Reasonable task: accepted for this migration slice. The public prompt names the target artifact, interface, and behavior context.
-- Complete tests: accepted for current v3 smoke. Hidden gold passes and `neg_001_zero` is non-full-credit; further hand-authored negatives can still strengthen release evidence.
-- Fair evaluation: accepted for current v3 smoke. The checker is bound through the v3 alias and the hidden behavior is covered by the public prompt context.
+- Complete tests: accepted for current v3 smoke. Gold semantic validation passes and `neg_001_zero` is non-full-credit; further hand-authored negatives can still strengthen release evidence.
+- Fair evaluation: accepted for current v3 smoke. The checker is bound through the v3 alias and private validation behavior is covered by the public prompt context.
 
 ## Checker And Evidence
 
 - Source checker id: `vbr1_l2_complete_calibration_loop_tb`
-- EVAS 0.4.5 hidden gold smoke: PASS
+- EVAS 0.4.5 gold semantic validation: PASS
 - Concrete negative `neg_001_zero`: non-full-credit
+
+## Digital/Control/Logic Closeout Review
+
+- Gate 1 status: `l2_core_ready` after prompt-boundary cleanup, with checker-strength follow-up recommended.
+- Rationale: this is a complete calibration loop boundary with error stimulus, controller action, trim monitor, residual monitor, corrected output, and metric output.
+- Counting recommendation: retain as calibration/control L2, but strengthen negatives beyond `neg_001_zero` before final score claims.
 
 ## Remaining Risk
 
-Initial migration artifact. Do not count this task in a final release surface until gold smoke and negative evidence are attached.
+Initial migration artifact. Do not count this task in a final release surface until gold semantic validation and stronger negative evidence are attached.

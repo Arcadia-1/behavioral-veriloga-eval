@@ -2,7 +2,7 @@
 
 ## Scope
 
-Task boundary is one Verilog-A DUT, `thermometer_decoder_guarded.va`, plus EVAS/Spectre-compatible `.scs` testbenches. Agent-visible materials are limited to `instruction.md`, `starter/`, and `test_visible/`. Evaluator-only materials are `solution/`, `test_hidden/`, `test_harness/`, and `negative_variants/`. No `meta.json` is present.
+Task boundary is one Verilog-A DUT, `thermometer_decoder_guarded.va`, plus EVAS/Spectre-compatible `.scs` testbenches. Agent-visible materials are limited to `instruction.md`, `starter/`, and `test_visible/`. Private validation materials include the reference solution, validation decks, harness code, and negative variants. No `meta.json` is present.
 
 ## Four Standards
 
@@ -15,7 +15,7 @@ Task boundary is one Verilog-A DUT, `thermometer_decoder_guarded.va`, plus EVAS/
 
 - Checker id: `v3_020_thermometer_code_decoder`
 - Runner mapping: `CHECKS["v3_020_thermometer_code_decoder"] = check_vbm1_thermometer_decoder_guarded`
-- EVAS/Python-engine hidden gold smoke: `PASS`
+- EVAS/Python-engine gold semantic validation: `PASS`
 - Concrete negative recertification: 5/5 expected failures, all `FAIL_SIM_CORRECTNESS`
 - Visible compile/sim smoke: `COMPILE_SIM_OK`
 

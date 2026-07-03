@@ -10,7 +10,7 @@
 - Target artifact(s): `source_dff_reset.va`
 - Source provenance: `hexy/dff_rst.va`
 - Visible context: public task, interface, artifact, stimulus, and observable contract only.
-- Hidden evaluator boundary: deterministic checker and EVAS/Spectre validation are external; do not generate checker logic.
+- Output boundary: implement only the requested DUT artifact; validation harnesses and simulator-private hooks are external to the requested output.
 
 ## Form-Specific Requirements
 
@@ -28,8 +28,10 @@ vin_d, vclk, rst, vout_q, vout_qbar
 
 ## Public Testbench And Observable Contract
 
-The public and hidden smoke testbench uses the transient statement shown in `test_hidden/tests/tb_source_ref.scs`.
-The evaluator samples stable windows after event edges and checks source-derived behavior. It does not require pointwise equality at simulator timesteps.
+The public testbench provides voltage-coded `vin_d`, `vclk`, and `rst` stimuli
+and saves `vout_q` and `vout_qbar`. The observable contract samples stable
+windows after clock/reset events and checks source-derived behavior; it does not
+require pointwise equality at simulator timesteps.
 
 ## Public Behavior Checks
 

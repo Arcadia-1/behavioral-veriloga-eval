@@ -10,7 +10,7 @@
 - Target artifact(s): `successive_approximation_calibration_search_fsm.va`
 - Supplied/reference support artifact(s): `tb_successive_approximation_calibration_search_fsm.scs`
 - Visible context: public task, interface, artifact, stimulus, and observable contract only.
-- Hidden evaluator boundary: deterministic checker and EVAS/Spectre validation are external; do not generate checker logic.
+- Output boundary: implement only the requested DUT artifact; validation harnesses and simulator-private hooks are external to the requested output.
 
 ## Form-Specific Requirements
 
@@ -23,13 +23,13 @@
 
 ## Public Testbench And Observable Contract
 
-Public transient setting used by the evaluator:
+Public transient context:
 
 ```spectre
 tran tran stop=80n maxstep=0.5n
 ```
 
-The evaluator expects these exact public scalar observables:
+The public scalar observables are:
 
 - `clk`
 - `rst`

@@ -10,7 +10,7 @@
 - Target artifact(s): `source_not_gate.va`
 - Source provenance: `wangx/not_gate.va`
 - Visible context: public task, interface, artifact, stimulus, and observable contract only.
-- Hidden evaluator boundary: deterministic checker and EVAS/Spectre validation are external; do not generate checker logic.
+- Output boundary: implement only the requested DUT artifact; validation harnesses and simulator-private hooks are external to the requested output.
 
 ## Form-Specific Requirements
 
@@ -28,8 +28,10 @@ vin, vout
 
 ## Public Testbench And Observable Contract
 
-The public and hidden smoke testbench uses the transient statement shown in `test_hidden/tests/tb_source_ref.scs`.
-The evaluator samples stable windows after event edges and checks source-derived behavior. It does not require pointwise equality at simulator timesteps.
+The public testbench provides a voltage-coded input stimulus and saves `vin` and
+`vout`. The observable contract samples stable windows after event edges and
+checks source-derived behavior; it does not require pointwise equality at
+simulator timesteps.
 
 ## Public Behavior Checks
 
