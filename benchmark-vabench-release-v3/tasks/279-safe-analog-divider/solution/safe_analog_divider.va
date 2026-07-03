@@ -4,7 +4,7 @@ input signumer, sigdenom;
 output sigout;
 electrical signumer, sigdenom, sigout;
 parameter real gain = 1.0;
-parameter real min_sigdenom = 0.2;
+parameter real min_sigdenom = 0.2 from (0:inf);
 real denominator;
 analog begin
     denominator = V(sigdenom);
