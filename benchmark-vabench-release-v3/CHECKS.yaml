@@ -3222,7 +3222,7 @@
 146-smooth-comparator-tanh: |
   checker:
     task_id: v3_smooth_comparator_tanh
-    metric: stable_samples
+    metric: smooth_tanh_transfer
   sim_correct:
     checks:
       - smooth_tanh_transfer

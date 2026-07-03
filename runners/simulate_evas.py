@@ -11926,14 +11926,7 @@ def check_v3_hard_voltage_clamp(rows: list[dict[str, float]]) -> tuple[bool, str
 
 
 def check_v3_smooth_comparator_tanh(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    required = {"time", "sigin", "sigref", "sigout"}
-    if not rows or not required.issubset(rows[0]):
-        return False, "missing time/sigin/sigref/sigout"
-    return _sample_many(
-        rows,
-        {"sigout": [(5.0, 0.00004), (15.0, 0.45), (25.0, 0.89996), (35.0, 0.01619)]},
-        tol=0.02,
-    )
+    return _check_source_tanh_transfer(rows, high=0.9, low=0.0, offset=0.0, slope=20.0, tol=0.025)
 
 
 def check_v3_limiter_rails(rows: list[dict[str, float]]) -> tuple[bool, str]:
