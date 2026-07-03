@@ -12,5 +12,4 @@ module resettable_integrator(vin, rst, vout);
     parameter real tr = 500p;
 
     // TODO: implement the behavior described in instruction.md.
-    // This starter is intentionally incomplete; hidden tests grade behavior.
 endmodule

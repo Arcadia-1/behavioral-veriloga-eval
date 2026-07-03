@@ -8,4 +8,4 @@ V_vin (vin 0) vsource type=pulse val0=0 val1=0.9 period=3n delay=0p rise=50p fal
 XDUT (vin vout) slew_rate_limiter
 
 tran tran stop=5n maxstep=100p
-save vin
+save vin vout

@@ -1,13 +1,30 @@
 {
-  "task_id": "v3_092_amplifier_filter_chain",
-  "source_task": "vbr1_l2_amplifier_filter_chain",
-  "source_form": "tb",
-  "source_checker_id": "vbr1_l2_amplifier_filter_chain_tb",
-  "primary_target": "amplifier_filter_chain.va",
-  "artifact_targets": [
-    "amplifier_filter_chain.va"
-  ],
-  "hidden_testbench": "tb_amplifier_filter_chain.scs",
-  "visible_smoke": "tb_visible_smoke.scs",
-  "status": "initial_migration_pending_negative_audit"
+  "certification": {
+    "scope": "EVAS reference-solution, negative, visible-smoke, Spectre, and AHDL lint evidence tracked in AUDIT.md",
+    "status": "cadence_modeling_ready"
+  },
+  "form": "dut",
+  "hidden": {
+    "checker": "../../../CHECKS.yaml",
+    "gold": [
+      "solution/amplifier_filter_chain.va"
+    ],
+    "negative_variants": "negative_variants",
+    "testbenches": [
+      "test_hidden/tests/tb_amplifier_filter_chain.scs"
+    ]
+  },
+  "status": "l2_core_candidate",
+  "task": "092-amplifier-filter-chain",
+  "visible": {
+    "instruction": "instruction.md",
+    "public_smoke": {
+      "hidden_dependency": false,
+      "legacy_testbench": "test_visible/visible.scs",
+      "testbench": "test_visible/tests/tb_visible_smoke.scs"
+    },
+    "starter_files": [
+      "starter/amplifier_filter_chain.va"
+    ]
+  }
 }

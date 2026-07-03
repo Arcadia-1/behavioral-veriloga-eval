@@ -1,91 +1,42 @@
-# Higher Order Filter
+# Clocked Cascaded Two-Pole Filter
 
-## Task Contract
+Implement `higher_order_filter.va` in Verilog-A.
 
-- Form: `dut`
-- Level: `L1`
-- Category: Baseband Signal Conditioning
-- Base function: Higher-order filter
-- Domain: `voltage`
-- Target artifact(s): `higher_order_filter.va`
-- Supplied/reference support artifact(s): `tb_higher_order_filter.scs`
-- Visible context: public task, interface, artifact, stimulus, and observable contract only.
-- Hidden evaluator boundary: deterministic checker and EVAS/Spectre validation are external; do not generate checker logic.
+## Public Interface
 
-## Form-Specific Requirements
+Declare module `higher_order_filter(clk, rst, vin, out, metric)` with scalar
+electrical voltage-domain ports. `clk` and `rst` are voltage-coded logic inputs
+with a `0.45 V` threshold.
 
-- Implement only the requested Verilog-A DUT artifact(s); do not generate a Spectre testbench in this form.
-- Preserve the public module names, port order, parameters, and waveform observable names.
+## Public Parameter Contract
 
-## Public Verilog-A Interface
+- `tr`: output transition smoothing time, default `100p`.
+- `gain`: input deviation gain around the `0.45 V` common-mode level, default
+  `1.8`.
+- `alpha`: sampled low-pass update coefficient for each cascaded state,
+  default `0.18`.
 
-- `higher_order_filter.va` declares module `higher_order_filter` with positional ports: `clk`, `rst`, `vin`, `out`, `metric`.
+## Functional Contract
 
-## Public Testbench And Observable Contract
+- Initialize the two filter states, output state, and metric baseline near
+  `0.45 V`.
+- On each rising `clk` crossing, update the sampled filter state.
+- Treat `rst` as active high when `V(rst) > 0.45`; while reset is active,
+  return both filter states and `out` to the common-mode level.
+- When reset is low, form a bounded target by amplifying `vin` around the
+  `0.45 V` common-mode level, then drive two cascaded sampled low-pass states
+  toward that bounded target.
+- Drive `out` from the second filtered state, bounded to the signal rails.
+- Drive `metric` as a voltage observable of the lag between the cascaded filter
+  states, centered around the common-mode level, so the settling transient is
+  visible without exposing private sample windows.
 
-Public transient setting used by the evaluator:
+The visible testbench is a public verification scenario for wiring and saved
+observables. Do not hard-code its transient stop time, waveform breakpoints, or
+sample windows into the DUT.
 
-```spectre
-tran tran stop=80n maxstep=0.5n
-```
+## Modeling Constraints
 
-The evaluator expects these exact public scalar observables:
-
-- `clk`
-- `rst`
-- `vin`
-- `out`
-- `metric`
-
-When this form generates a testbench, use plain scalar save names for these observables; do not rely on instance-qualified or aliased save names.
-
-## Public Behavior Checks
-
-- `two_filter_states`
-- `step_response_is_smoothed`
-- `reset_clears_states`
-
-## Output Contract
-
-Return exactly one source artifact named `higher_order_filter.va`.
-Do not include explanatory prose outside the source artifact contents.
-
-## Task-Specific Description
-
-### Higher-order filter (spec-to-va)
-
-Write the Verilog-A behavioral module only.
-
-Behavioral intent:
-
-Approximate a second-order low-pass response with two sampled internal filter states.
-
-Module name: `higher_order_filter`.
-Domain: pure voltage-domain behavioral Verilog-A.
-Do not use current contributions, transistor-level devices, AC/noise analysis,
-or KCL/KVL solving assumptions.
-
-Public port contract:
-
-```verilog
-module higher_order_filter(clk, rst, vin, out, metric);
-input clk, rst, vin;
-output out, metric;
-electrical clk, rst, vin, out, metric;
-```
-
-Signal contract:
-
-clk and rst are voltage-coded logic signals, low=0 V and high=0.9 V with threshold 0.45 V. vin is an analog voltage stimulus. out is the bounded conditioned voltage. metric exposes the filter/settling internal response.
-
-Saved waveform columns:
-
-```text
-clk rst vin out metric
-```
-
-Public transient contract:
-
-```spectre
-tran tran stop=80n maxstep=0.5n
-```
+Return only `higher_order_filter.va`. Do not emit a Spectre testbench, checker
+logic, private test hooks, or simulator-private side channels. Use voltage
+contributions only; do not use current contributions or `ddt()`.

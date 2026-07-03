@@ -1,63 +1,35 @@
 # Slew Rate Limiter
 
-## Task Contract
+Implement `slew_rate_limiter.va` in Verilog-A.
 
-- Form: `dut`
-- Level: `L1`
-- Category: Baseband Signal Conditioning
-- Base function: Slew-rate limiter
-- Domain: `voltage`
-- Target artifact(s): `slew_rate_limiter.va`
-- Supplied/reference support artifact(s): `tb_slew_rate_limiter_ref.scs`
-- Visible context: public task, interface, artifact, stimulus, and observable contract only.
-- Hidden evaluator boundary: deterministic checker and EVAS/Spectre validation are external; do not generate checker logic.
+## Public Interface
 
-## Form-Specific Requirements
+Declare module `slew_rate_limiter(vin, vout)` with scalar electrical
+voltage-domain ports.
 
-- Implement only the requested Verilog-A DUT artifact(s); do not generate a Spectre testbench in this form.
-- Preserve the public module names, port order, parameters, and waveform observable names.
+## Public Parameter Contract
 
-## Public Verilog-A Interface
+- `step`: maximum internal output change per update, default `0.015`.
+- `tr`: output transition smoothing time, default `200p`.
 
-- `slew_rate_limiter.va` declares module `slew_rate_limiter` with positional ports: `vin`, `vout`.
+## Functional Contract
 
-## Public Testbench And Observable Contract
+- Initialize the internal output state at `0 V`.
+- Update the state on a `1 ns` timer.
+- On each update, move the internal state toward `V(vin)` by no more than
+  `step`.
+- Limit both rising and falling changes; if `V(vin)` is within one `step` of
+  the internal state, the state may settle directly to `V(vin)`.
+- Drive `vout` from the internal state with a smoothed voltage contribution.
+- The response should eventually reach both high and low input levels while
+  remaining visibly slower than an instantaneous copy of `vin`.
 
-Public transient setting used by the evaluator:
+The visible testbench is a public verification scenario for wiring and saved
+observables. Do not hard-code its transient stop time, waveform breakpoints, or
+sample windows into the DUT.
 
-```spectre
-tran tran stop=170n maxstep=500p
-```
+## Modeling Constraints
 
-The evaluator expects these exact public scalar observables:
-
-- `vin`
-- `vout`
-
-When this form generates a testbench, use plain scalar save names for these observables; do not rely on instance-qualified or aliased save names.
-
-## Public Behavior Checks
-
-- `input_up_down_steps_exercised`
-- `rising_slew_is_limited`
-- `high_level_eventually_reached`
-- `falling_slew_is_limited`
-- `low_level_eventually_reached`
-- `lagged_response_not_passthrough`
-
-## Output Contract
-
-Return exactly one source artifact named `slew_rate_limiter.va`.
-Do not include explanatory prose outside the source artifact contents.
-
-## Task-Specific Description
-
-Write a pure voltage-domain Verilog-A module for a discrete slew-rate limiter.
-
-The DUT module is `slew_rate_limiter` with ports `vin, vout`. All ports are electrical; digital-control ports use 0/0.9 V logic levels.
-
-Required behavior:
-- Use a 1 ns timer update and move the internal output toward `vin` by at most 0.015 V per update.
-- Limit both rising and falling changes and drive `vout` with `transition()`.
-
-Use voltage contributions only. Do not use current contributions, `ddt()`, or `idt()`.
+Return only `slew_rate_limiter.va`. Do not emit a Spectre testbench, checker
+logic, private test hooks, or simulator-private side channels. Use voltage
+contributions only; do not use current contributions, `ddt()`, or `idt()`.

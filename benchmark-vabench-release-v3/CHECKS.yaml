@@ -890,6 +890,12 @@
       - "two_filter_states"
       - "step_response_is_smoothed"
       - "reset_clears_states"
+    public_observables:
+      - "clk"
+      - "rst"
+      - "vin"
+      - "out"
+      - "metric"
   parity:
     reference: "spectre"
     status: "pending_until_evas_spectre_rerun"
@@ -2291,11 +2297,12 @@
 092-amplifier-filter-chain: |
   syntax:
     must_include:
-      - "tran"
-      - "save"
+      - "@(cross("
+      - "transition("
     must_not_include:
       - "I("
       - "ddt("
+      - "idt("
   dut_compile:
     backend: "evas"
   tb_compile:
@@ -2308,11 +2315,21 @@
       - "filtered_output_lags_input"
       - "metric_tracks_settling"
       - "settle_status_asserts_after_output_recovery"
+    public_observables:
+      - "clk"
+      - "rst"
+      - "vin"
+      - "out"
+      - "metric"
+      - "preamp_mon"
+      - "filt1_mon"
+      - "filt2_mon"
+      - "settle_metric"
   parity:
     reference: "spectre"
-    status: "certified"
+    status: "cadence_modeling_ready"
     notes:
-      - "Current release dual_certification report certifies this form as EVAS/Spectre pass; rerun is required after checker/gold behavior changes."
+      - "EVAS reference solution, EVAS concrete negatives, current-branch targeted Spectre gold validation, and AHDL warning triage pass after checker strengthening."
 093-bbpd-data-edge-alignment: |
   syntax:
     must_include:
