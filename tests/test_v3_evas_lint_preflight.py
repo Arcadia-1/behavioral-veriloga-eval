@@ -122,3 +122,40 @@ def test_lint_summary_counts_warnings_and_compat_errors(tmp_path: Path) -> None:
     assert row["diagnostics"][1]["file"] == "tb_demo.scs"
     assert payload["summary"]["compat_error_count"] == 1
     assert payload["summary"]["warning_count"] == 1
+
+
+def test_run_evas_lint_falls_back_to_sibling_venv_executable(tmp_path: Path, monkeypatch) -> None:
+    lint = load_lint_module()
+    bin_dir = tmp_path / "venv" / "bin"
+    bin_dir.mkdir(parents=True)
+    python_path = bin_dir / "python"
+    evas_path = bin_dir / "evas"
+    python_path.write_text("", encoding="utf-8")
+    evas_path.write_text("", encoding="utf-8")
+    input_path = tmp_path / "tb.scs"
+    input_path.write_text("simulator lang=spectre\n", encoding="utf-8")
+
+    captured: dict[str, object] = {}
+
+    def fake_run(cmd, **kwargs):
+        captured["cmd"] = cmd
+        captured["cwd"] = kwargs["cwd"]
+
+        class Result:
+            returncode = 0
+            stdout = "[]"
+            stderr = ""
+
+        return Result()
+
+    monkeypatch.setattr(lint, "evas_command_and_env", lambda: (["evas"], None))
+    monkeypatch.setattr(lint.sys, "executable", str(python_path))
+    monkeypatch.setattr(lint.subprocess, "run", fake_run)
+
+    returncode, diagnostics, raw_output = lint.run_evas_lint(input_path, 1e-12, 5)
+
+    assert returncode == 0
+    assert diagnostics == []
+    assert raw_output == "[]"
+    assert captured["cmd"][0] == str(evas_path)
+    assert captured["cwd"] == input_path.parent

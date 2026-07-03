@@ -170,6 +170,10 @@ def stage_lint_case(case: LintCase, run_dir: Path) -> Path:
 
 def run_evas_lint(input_path: Path, min_transition: float, timeout_s: int) -> tuple[int, list[dict[str, Any]], str]:
     base_cmd, env = evas_command_and_env()
+    if base_cmd == ["evas"]:
+        sibling_evas = Path(sys.executable).parent / "evas"
+        if sibling_evas.exists():
+            base_cmd = [str(sibling_evas)]
     cmd = [
         *base_cmd,
         "lint",
