@@ -48,7 +48,24 @@ def main() -> int:
             return 1
 
         output_dir = run_dir / "out"
-        result = run_evas(run_dir, tb_dst, output_dir, timeout_s=30)
+        old_worker = os.environ.get("VAEVAS_EVAS_PERSISTENT_WORKER")
+        old_engine = os.environ.get("EVAS_ENGINE")
+        os.environ["VAEVAS_EVAS_PERSISTENT_WORKER"] = "0"
+        try:
+            result = run_evas(run_dir, tb_dst, output_dir, timeout_s=30)
+            combined = (result.stdout or "") + "\n" + (result.stderr or "")
+            if result.returncode != 0 and "no supported whole-segment Rust runtime" in combined:
+                os.environ["EVAS_ENGINE"] = "python"
+                result = run_evas(run_dir, tb_dst, output_dir, timeout_s=30)
+        finally:
+            if old_worker is None:
+                os.environ.pop("VAEVAS_EVAS_PERSISTENT_WORKER", None)
+            else:
+                os.environ["VAEVAS_EVAS_PERSISTENT_WORKER"] = old_worker
+            if old_engine is None:
+                os.environ.pop("EVAS_ENGINE", None)
+            else:
+                os.environ["EVAS_ENGINE"] = old_engine
         combined = (result.stdout or "") + "\n" + (result.stderr or "")
         if result.returncode != 0:
             print("VISIBLE_SMOKE_EVAS_FAIL")

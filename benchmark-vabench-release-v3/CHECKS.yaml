@@ -2704,16 +2704,20 @@
 109-sample-hold-droop-front-end: |
   syntax:
     must_include:
-      - "ahdl_include"
-      - "tran"
-      - "save"
+      - "@(cross("
+      - "@(timer("
+      - "transition("
     must_not_include:
       - "I("
       - "ddt("
       - "idt("
+  dut_compile:
+    backend: "evas"
   tb_compile:
     backend: "evas"
   sim_correct:
+    dut_companion_role: "function_checked_dut"
+    strong_benchmark_claim: true
     checks:
       - "aperture_delayed_sample_tracks_vin"
       - "hold_windows_show_bounded_droop"
@@ -4490,9 +4494,32 @@
       - tb_compile
       - sim_correct
 268-samplehold-rising-edge: |
-  checker:
-    task_id: v3_samplehold_rising_edge
-    metric: stable_samples
+  syntax:
+    must_include:
+      - "@(cross("
+      - "transition("
+    must_not_include:
+      - "I("
+      - "ddt("
+      - "idt("
+  dut_compile:
+    backend: "evas"
+  tb_compile:
+    backend: "evas"
+  sim_correct:
+    dut_companion_role: "function_checked_dut"
+    strong_benchmark_claim: "valid_variant_needs_counting_policy"
+    checks:
+      - "rising_control_edge_captures_vin"
+      - "held_output_remains_between_edges"
+      - "held_output_does_not_track_vin_between_edges"
+    public_observables:
+      - "control"
+      - "vin"
+      - "vout"
+  parity:
+    required: true
+    tolerance_notes: "Use event-derived edge and hold windows rather than fixed source-import sample times."
   scoring:
     axes:
       - dut_compile
@@ -4716,21 +4743,24 @@
   parity:
     required: true
     tolerance_notes: "Use waveform resampling so EVAS dense CSV and Spectre adaptive breakpoints are judged on the same behavior."
-285-aperture-delay-sample-hold: |
-  schema_version: "vabench-release-v2-checks"
-  task_id: "vbr1_l1_aperture_delay_track_and_hold:dut"
+285-dual-track-sample-hold: |
+  schema_version: "vabench-release-v3-checks"
+  task_id: "v3_285_dual_track_sample_hold"
   checker:
-    task_id: "vbr1_l1_aperture_delay_track_and_hold"
-    function: "check_vbm1_track_hold_aperture"
+    task_id: "v3_285_dual_track_sample_hold"
+    function: "check_v3_285_dual_track_sample_hold"
     source: "runners/simulate_evas.py"
   syntax:
     policy: "behavior_first"
-    must_include: []
+    must_include:
+      - "@(cross("
+      - "@(timer("
+      - "transition("
     must_not_include:
       - "I("
       - "ddt("
       - "idt("
-    notes: "Do not require private variable names, timer variable names, or a fixed implementation template. Compile and behavior checks decide correctness."
+    notes: "Do not require private variable names or a fixed implementation template. Compile and behavior checks decide correctness."
   dut_compile:
     backend: "evas"
   tb_compile:
@@ -4739,17 +4769,19 @@
     dut_companion_role: "function_checked_dut"
     strong_benchmark_claim: true
     checks:
-      - "sampled_values_match_aperture_delayed_input"
-      - "held_output_remains_between_samples"
+      - "low_phase_input_stage_tracks_vin"
+      - "high_phase_output_stage_tracks_retained_input_stage"
+      - "falling_edge_freezes_output_stage"
+      - "phase_monitor_marks_output_track_phase"
     public_observables:
       - "vin"
       - "clk"
       - "vout"
-    public_behavior_envelope: "The public spec specifies a 200 ps aperture delay after each rising clock transition, delayed capture of vin rather than edge-time capture, held vout between delayed samples, broad held-level coverage, and smooth voltage-domain output transitions."
-    private_sample_policy: "Internal checker samples vin at the aperture point and vout after a safe post-aperture settling window."
+      - "phase"
+    public_behavior_envelope: "Dual complementary track/hold sample-and-hold: input stage tracks during low clock, output stage tracks the retained input-stage value during high clock, and phase is high only during output-stage tracking."
   parity:
     required: true
-    tolerance_notes: "Use post-aperture settled sample windows away from transition edges."
+    tolerance_notes: "Use event-derived phase windows and a reference update model derived from the public tick/alpha parameter contract."
 286-first-order-lowpass-bugfix: |
   schema_version: "vabench-release-v2-checks"
   task_id: "vbr1_l1_first_order_lowpass:bugfix"

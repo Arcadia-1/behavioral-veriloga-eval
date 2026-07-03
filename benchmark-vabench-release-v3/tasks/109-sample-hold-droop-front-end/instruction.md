@@ -2,41 +2,43 @@
 
 Implement `sample_hold_droop_ref.va` in Verilog-A.
 
-## Interface
+## Public Interface
 
-```verilog
-module sample_hold_droop_ref(vdd, vss, clk, vin, vout, valid, coarse);
-```
+Declare module `sample_hold_droop_ref(vdd, vss, clk, vin, vout, valid, coarse)`
+with scalar electrical voltage-domain ports.
 
-## Required Behavior
+- `vdd`, `vss`: local supply rails.
+- `clk`: voltage-coded sampling clock.
+- `vin`: analog input voltage.
+- `vout`: sampled output voltage with bounded hold droop.
+- `valid`: voltage-coded pulse indicating a completed sample.
+- `coarse`: voltage-coded coarse decision derived from the held sample.
 
-This task asks for the `sample_hold_droop_ref` behavioral module, not a Spectre testbench. The hidden evaluator instantiates this module in the original `vbr1_l2_converter_front_end` transient scenario and checks the saved waveform/metric behavior with EVAS.
+## Public Parameter Contract
 
-Original public behavior context:
+- `vth`: clock and decision threshold, default `0.45`.
+- `trf`: output transition smoothing time, default `40p`.
+- `tau`: droop time constant, default `90n`.
+- `dt`: droop update interval, default `0.5n`.
+- `taperture`: sampling aperture delay after a rising clock crossing, default
+  `200p`.
+- `valid_width`: valid-pulse duration after the aperture sample, default `2n`.
 
-# Converter front-end chain Testbench Companion
+## Functional Contract
 
-Write a Spectre transient testbench for the `Converter front-end` behavioral
-Verilog-A release task. This is the testbench-generation companion for an
-already materialized end-to-end task.
+Model a compact sampling front end:
 
-The testbench should instantiate the same behavioral DUT or system module used
-by the corresponding end-to-end form, drive an aperture-sensitive sampling
-scenario, save the observable waveform or metric signals, and preserve the
-EVAS/Spectre validation contract.
+- On each rising `clk` crossing, schedule a sample after `taperture`.
+- At the aperture sample, capture `vin`, clamp the held value to the local
+  `vss`-to-`vdd` range, update `vout`, assert `valid`, and update `coarse`.
+- `coarse` is high when the sampled value is above `vth` and low otherwise.
+- While the clock is low, apply bounded droop to the held output using `tau`
+  and `dt`.
+- Deassert `valid` after `valid_width`.
 
-Domain: pure voltage-domain behavioral Verilog-A.
+## Modeling Constraints
 
-Public requirements:
-
-- include a transient `tran` analysis
-- save `vin`, `clk`, `vout`, `valid`, and `coarse`
-- include or instantiate the Verilog-A behavioral module under test
-- exercise aperture-delayed sampling, bounded hold droop, coarse decision, and
-  valid-pulse behavior
-- avoid transistor-level devices, AC/noise analysis, and current-domain
-  solver assumptions
-
-Use voltage-coded logic with a 0.45 V threshold where applicable, drive high logic outputs near 0.9 V and low outputs near 0 V, and keep the model pure behavioral Verilog-A. Do not use transistor-level devices, AC/noise analysis, hidden checker logic, or simulator-private side channels.
-
-Only the target artifact is graded as the candidate implementation; companion Verilog-A files listed by the testbench are supplied by the harness for this task.
+Return only `sample_hold_droop_ref.va`. Do not emit a Spectre testbench,
+checker logic, private test hooks, or simulator-private side channels. Use
+voltage contributions only; do not use current contributions, `ddt()`, or
+`idt()`.

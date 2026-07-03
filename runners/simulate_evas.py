@@ -14930,13 +14930,56 @@ def check_v3_samplehold_rising_edge(rows: list[dict[str, float]]) -> tuple[bool,
     required = {"time", "control", "vin", "vout"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing samplehold rising edge signals"
-    return _sample_many(
-        rows,
-        {
-            "vin": [(0.3, 1.0), (1.5, 3.0), (2.9, 4.2)],
-            "vout": [(0.3, 0.0), (0.8, 1.0), (1.5, 1.0), (2.3, 3.0), (2.9, 3.0)],
-        },
-        tol=0.05,
+    times = [r["time"] for r in rows]
+    edges = _threshold_crossings(
+        [r["control"] for r in rows],
+        times,
+        threshold=2.5,
+        direction="rising",
+    )
+    if len(edges) < 2:
+        return False, f"too_few_control_edges={len(edges)}"
+
+    sample_errors: list[float] = []
+    hold_windows = 0
+    hold_failures = 0
+    nontransparent_windows = 0
+    for idx, edge_t in enumerate(edges):
+        vin_edge = sample_signal_at(rows, "vin", edge_t)
+        vout_settled = sample_signal_at(rows, "vout", edge_t + 0.12e-9)
+        if vin_edge is None or vout_settled is None:
+            return False, f"missing_edge_sample_at={edge_t:.3e}"
+        sample_errors.append(abs(vout_settled - vin_edge))
+
+        if idx + 1 >= len(edges):
+            continue
+        start = edge_t + 0.25e-9
+        stop = edges[idx + 1] - 0.25e-9
+        if stop <= start:
+            continue
+        vout_vals = [r["vout"] for r in rows if start <= r["time"] <= stop]
+        vin_vals = [r["vin"] for r in rows if start <= r["time"] <= stop]
+        if len(vout_vals) < 4:
+            continue
+        hold_windows += 1
+        vout_span = max(vout_vals) - min(vout_vals)
+        vin_span = max(vin_vals) - min(vin_vals) if vin_vals else 0.0
+        if vout_span > 0.08:
+            hold_failures += 1
+        if vin_span > 0.25 and vout_span < 0.10:
+            nontransparent_windows += 1
+
+    max_sample_err = max(sample_errors)
+    ok = (
+        max_sample_err <= 0.08
+        and hold_windows >= 1
+        and hold_failures == 0
+        and nontransparent_windows >= 1
+    )
+    return ok, (
+        f"edges={len(edges)} max_sample_err={max_sample_err:.3f} "
+        f"hold_windows={hold_windows} hold_failures={hold_failures} "
+        f"nontransparent_windows={nontransparent_windows}"
     )
 
 
@@ -18508,64 +18551,178 @@ def check_acquisition_limited_sample_hold(rows: list[dict[str, float]]) -> tuple
     if not rows or not required.issubset(rows[0]):
         return False, "missing time/sample/rst/vin/vout/metric"
 
-    reset_out = mean_in_window(rows, "vout", 0.5e-9, 2.0e-9)
-    first_track_vout = mean_in_window(rows, "vout", 5.1e-9, 5.8e-9)
-    first_track_vin = mean_in_window(rows, "vin", 5.1e-9, 5.8e-9)
-    early_track_vout = mean_in_window(rows, "vout", 6.0e-9, 6.8e-9)
-    early_track_vin = mean_in_window(rows, "vin", 6.0e-9, 6.8e-9)
-    late_track_vout = mean_in_window(rows, "vout", 9.0e-9, 9.8e-9)
-    late_track_vin = mean_in_window(rows, "vin", 9.0e-9, 9.8e-9)
-    hold_early = mean_in_window(rows, "vout", 10.5e-9, 12.0e-9)
-    hold_late = mean_in_window(rows, "vout", 17.0e-9, 19.0e-9)
-    tracking_metric = mean_in_window(rows, "metric", 6.0e-9, 9.0e-9)
-    hold_metric = mean_in_window(rows, "metric", 12.0e-9, 18.0e-9)
-    if None in (
-        reset_out,
-        first_track_vout,
-        first_track_vin,
-        early_track_vout,
-        early_track_vin,
-        late_track_vout,
-        late_track_vin,
-        hold_early,
-        hold_late,
-        tracking_metric,
-        hold_metric,
-    ):
-        return False, "acq_hold_missing_sample_windows"
-    assert reset_out is not None
-    assert first_track_vout is not None
-    assert first_track_vin is not None
-    assert early_track_vout is not None
-    assert early_track_vin is not None
-    assert late_track_vout is not None
-    assert late_track_vin is not None
-    assert hold_early is not None
-    assert hold_late is not None
-    assert tracking_metric is not None
-    assert hold_metric is not None
+    times = [r["time"] for r in rows]
+    sample_vals = [r["sample"] for r in rows]
+    rising = _threshold_crossings(sample_vals, times, threshold=0.45, direction="rising")
+    falling = _threshold_crossings(sample_vals, times, threshold=0.45, direction="falling")
+    if len(rising) < 3 or len(falling) < 3:
+        return False, f"too_few_sample_windows rise={len(rising)} fall={len(falling)}"
 
-    if abs(reset_out - 0.45) > 0.05:
-        return False, f"acq_hold_reset_out={reset_out:.3f}"
-    initial_error = abs(first_track_vout - first_track_vin)
-    early_error = abs(early_track_vout - early_track_vin)
-    late_error = abs(late_track_vout - late_track_vin)
-    if initial_error < 0.09:
-        return False, f"acq_hold_instantaneous_jump initial_error={initial_error:.3f}"
-    if late_error > early_error - 0.025:
-        return False, f"acq_hold_no_settling_improvement early={early_error:.3f} late={late_error:.3f}"
-    hold_delta = abs(hold_late - hold_early)
-    if hold_delta > 0.035:
-        return False, f"acq_hold_drifted_after_fall delta={hold_delta:.3f}"
-    if tracking_metric < 0.65 or hold_metric > 0.20:
-        return False, (
-            f"acq_hold_metric_wrong tracking={tracking_metric:.3f} "
-            f"hold={hold_metric:.3f}"
-        )
-    return True, (
+    reset_rows = [r for r in rows if r["rst"] > 0.45]
+    if not reset_rows:
+        return False, "missing_reset_window"
+    reset_mean = sum(r["vout"] for r in reset_rows) / len(reset_rows)
+    if abs(reset_mean - 0.45) > 0.08:
+        return False, f"acq_hold_reset_out={reset_mean:.3f}"
+
+    finite_windows = 0
+    settling_windows = 0
+    metric_track_hits = 0
+    metric_hold_hits = 0
+    hold_windows = 0
+    hold_failures = 0
+    max_late_error = 0.0
+    for idx, rise_t in enumerate(rising):
+        fall_t = next((t for t in falling if t > rise_t + 0.2e-9), None)
+        if fall_t is None:
+            continue
+        if mean_in_window(rows, "rst", rise_t + 0.2e-9, fall_t - 0.2e-9) is None:
+            continue
+        duration = fall_t - rise_t
+        if duration < 1.5e-9:
+            continue
+        early_t = rise_t + min(1.2e-9, duration * 0.30)
+        late_t = fall_t - min(0.6e-9, duration * 0.20)
+        early_vin = sample_signal_at(rows, "vin", early_t)
+        early_vout = sample_signal_at(rows, "vout", early_t)
+        late_vin = sample_signal_at(rows, "vin", late_t)
+        late_vout = sample_signal_at(rows, "vout", late_t)
+        track_metric = mean_in_window(rows, "metric", early_t, late_t)
+        if None in (early_vin, early_vout, late_vin, late_vout, track_metric):
+            return False, f"acq_hold_missing_window_at={rise_t:.3e}"
+        assert early_vin is not None and early_vout is not None
+        assert late_vin is not None and late_vout is not None and track_metric is not None
+        early_error = abs(early_vout - early_vin)
+        late_error = abs(late_vout - late_vin)
+        max_late_error = max(max_late_error, late_error)
+        if early_error > 0.07:
+            finite_windows += 1
+        if late_error + 0.02 < early_error:
+            settling_windows += 1
+        if track_metric > 0.60:
+            metric_track_hits += 1
+
+        next_rise = rising[idx + 1] if idx + 1 < len(rising) else None
+        if next_rise is not None and next_rise - fall_t > 1.5e-9:
+            hold_start = fall_t + 0.8e-9
+            hold_stop = next_rise - 0.8e-9
+            hold_vals = [r["vout"] for r in rows if hold_start <= r["time"] <= hold_stop]
+            hold_metric = mean_in_window(rows, "metric", hold_start, hold_stop)
+            if len(hold_vals) >= 3 and hold_metric is not None:
+                hold_windows += 1
+                if max(hold_vals) - min(hold_vals) > 0.055:
+                    hold_failures += 1
+                if hold_metric < 0.25:
+                    metric_hold_hits += 1
+
+    ok = (
+        finite_windows >= 1
+        and settling_windows >= 2
+        and hold_windows >= 2
+        and hold_failures == 0
+        and metric_track_hits >= 2
+        and metric_hold_hits >= 2
+        and max_late_error <= 0.14
+    )
+    return ok, (
         "acquisition_limited_sample_hold "
-        f"errors={initial_error:.3f}/{early_error:.3f}/{late_error:.3f} "
-        f"hold_delta={hold_delta:.3f} metric={tracking_metric:.3f}/{hold_metric:.3f}"
+        f"finite_windows={finite_windows} settling_windows={settling_windows} "
+        f"hold_windows={hold_windows} hold_failures={hold_failures} "
+        f"metric={metric_track_hits}/{metric_hold_hits} "
+        f"max_late_error={max_late_error:.3f}"
+    )
+
+
+def check_v3_285_dual_track_sample_hold(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "vin", "clk", "vout", "phase"}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing time/vin/clk/vout/phase"
+
+    times = [r["time"] for r in rows]
+    last_t = times[-1]
+    rising = _threshold_crossings([r["clk"] for r in rows], times, threshold=0.45, direction="rising")
+    falling = _threshold_crossings([r["clk"] for r in rows], times, threshold=0.45, direction="falling")
+    if len(rising) < 4 or len(falling) < 4:
+        return False, f"too_few_clk_edges rise={len(rising)} fall={len(falling)}"
+
+    tick = 0.5e-9
+    alpha_in = 0.45
+    alpha_out = 0.55
+    stage_in = 0.0
+    stage_out = 0.0
+    ref_errors: list[float] = []
+    t = 0.0
+    while t <= last_t - 0.20e-9:
+        vin = sample_signal_at(rows, "vin", t)
+        clk = sample_signal_at(rows, "clk", t)
+        if vin is None or clk is None:
+            t += tick
+            continue
+        if clk > 0.45:
+            stage_out = stage_out + alpha_out * (stage_in - stage_out)
+        else:
+            stage_in = stage_in + alpha_in * (vin - stage_in)
+        if stage_in < 0.0:
+            stage_in = 0.0
+        if stage_in > 0.9:
+            stage_in = 0.9
+        if stage_out < 0.0:
+            stage_out = 0.0
+        if stage_out > 0.9:
+            stage_out = 0.9
+        observed = sample_signal_at(rows, "vout", t + 0.15e-9)
+        if observed is not None and t > 1.0e-9:
+            ref_errors.append(abs(observed - stage_out))
+        t += tick
+
+    if len(ref_errors) < 20:
+        return False, f"too_few_reference_samples={len(ref_errors)}"
+    mean_ref_err = sum(ref_errors) / len(ref_errors)
+    max_ref_err = max(ref_errors)
+
+    phase_high_hits = 0
+    phase_low_hits = 0
+    hold_windows = 0
+    hold_failures = 0
+    tracking_windows = 0
+    for rise_t in rising:
+        fall_t = next((ft for ft in falling if ft > rise_t + 0.2e-9), None)
+        if fall_t is None:
+            continue
+        phase_hi = mean_in_window(rows, "phase", rise_t + 0.5e-9, fall_t - 0.5e-9)
+        if phase_hi is not None and phase_hi > 0.60:
+            phase_high_hits += 1
+        out_vals_hi = [r["vout"] for r in rows if rise_t + 0.5e-9 <= r["time"] <= fall_t - 0.5e-9]
+        if out_vals_hi and max(out_vals_hi) - min(out_vals_hi) > 0.035:
+            tracking_windows += 1
+
+    for fall_t in falling:
+        next_rise = next((rt for rt in rising if rt > fall_t + 0.2e-9), None)
+        if next_rise is None or next_rise - fall_t <= 1.5e-9:
+            continue
+        phase_lo = mean_in_window(rows, "phase", fall_t + 0.5e-9, next_rise - 0.5e-9)
+        if phase_lo is not None and phase_lo < 0.25:
+            phase_low_hits += 1
+        out_vals_lo = [r["vout"] for r in rows if fall_t + 0.8e-9 <= r["time"] <= next_rise - 0.8e-9]
+        if len(out_vals_lo) >= 3:
+            hold_windows += 1
+            if max(out_vals_lo) - min(out_vals_lo) > 0.060:
+                hold_failures += 1
+
+    ok = (
+        mean_ref_err <= 0.035
+        and max_ref_err <= 0.12
+        and phase_high_hits >= 4
+        and phase_low_hits >= 3
+        and tracking_windows >= 3
+        and hold_windows >= 3
+        and hold_failures == 0
+    )
+    return ok, (
+        f"dual_track_sample_hold mean_ref_err={mean_ref_err:.3f} max_ref_err={max_ref_err:.3f} "
+        f"phase_hi={phase_high_hits} phase_lo={phase_low_hits} "
+        f"tracking_windows={tracking_windows} hold_windows={hold_windows} "
+        f"hold_failures={hold_failures}"
     )
 
 
@@ -22025,8 +22182,8 @@ CHECKS["v3_283_weighted_sar_adc_dac_loop"] = check_sar_adc_dac_weighted_8b
 CHECKS["283-weighted-sar-adc-dac-loop"] = check_sar_adc_dac_weighted_8b
 CHECKS["v3_284_window_comparator_testbench"] = check_true_window_comparator
 CHECKS["284-window-comparator-testbench"] = check_true_window_comparator
-CHECKS["v3_285_aperture_delay_sample_hold"] = check_vbm1_track_hold_aperture
-CHECKS["285-aperture-delay-sample-hold"] = check_vbm1_track_hold_aperture
+CHECKS["v3_285_dual_track_sample_hold"] = check_v3_285_dual_track_sample_hold
+CHECKS["285-dual-track-sample-hold"] = check_v3_285_dual_track_sample_hold
 CHECKS["v3_286_first_order_lowpass_bugfix"] = check_vbm1_first_order_lowpass
 CHECKS["286-first-order-lowpass-bugfix"] = check_vbm1_first_order_lowpass
 CHECKS["v3_287_gain_extraction_flow"] = check_gain_extraction
@@ -22037,8 +22194,8 @@ for _alias, _source_checker_id in {
     "283-weighted-sar-adc-dac-loop": "vbr1_l2_weighted_sar_adc_dac_loop_e2e",
     "v3_284_window_comparator_testbench": "vbr1_l1_window_comparator_detector_tb",
     "284-window-comparator-testbench": "vbr1_l1_window_comparator_detector_tb",
-    "v3_285_aperture_delay_sample_hold": "vbr1_l1_aperture_delay_track_and_hold",
-    "285-aperture-delay-sample-hold": "vbr1_l1_aperture_delay_track_and_hold",
+    "v3_285_dual_track_sample_hold": "v3_285_dual_track_sample_hold",
+    "285-dual-track-sample-hold": "v3_285_dual_track_sample_hold",
     "v3_286_first_order_lowpass_bugfix": "vbr1_l1_first_order_lowpass",
     "286-first-order-lowpass-bugfix": "vbr1_l1_first_order_lowpass",
     "v3_287_gain_extraction_flow": "vbr1_l2_gain_extraction_convergence_measurement_flow_e2e",
