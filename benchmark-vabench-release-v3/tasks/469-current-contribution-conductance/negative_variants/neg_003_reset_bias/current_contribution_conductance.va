@@ -1,9 +1,15 @@
 `include "constants.vams"
 `include "disciplines.vams"
 
-module current_contribution_conductance (input electrical p, input electrical n);
+module current_contribution_conductance (
+    inout electrical p,
+    inout electrical n,
+    output electrical imon
+);
 parameter real gain = 1e-3;
+parameter real tr = 200p;
 analog begin
     I(p, n) <+ gain * V(p,n) + 1e-4;
+    V(imon) <+ transition(I(p, n), 0.0, tr, tr);
 end
 endmodule

@@ -1,25 +1,37 @@
-# Kcl Capacitor Ddt Current
+# KCL Capacitor Ddt Current
 
-Implement one Verilog-A source file named `kcl_capacitor_ddt_current.va`.
+## Task Contract
 
-## Required Feature
+Implement one Verilog-A source file named `kcl_capacitor_ddt_current.va`. The task models a capacitor-style conservative current contribution and exposes a monitor of the contributed dynamic branch current.
 
-Use current contribution with ddt() for a capacitor-style conservative model.
+## Form-Specific Requirements
 
-## Required Interface
+This is a DUT task in the conservative-current layer. The `imon` voltage is a validation monitor for the branch current contribution.
+
+## Public Verilog-A Interface
+
+Use this exact module interface:
 
 ```verilog
 module kcl_capacitor_ddt_current(
     inout electrical p,
-    inout electrical n
+    inout electrical n,
+    output electrical imon
 );
 ```
 
+## Public Parameter Contract
+
+Declare `parameter real c = 1p` and `parameter real tr = 200p`. `c` is the capacitance multiplying `ddt(V(p,n))`; `tr` is the monitor transition rise/fall time.
+
 ## Required Behavior
 
-- Declare `parameter real c = 1p`.
-- Use the conservative current contribution `I(p, n) <+ c * ddt(V(p, n));`.
-- This is a conservative-current/KCL-layer task, but the checker observes the contributed branch current through a harness monitor rather than requiring an unknown-node MNA solve.
-- Do not replace the model with `V(...) <+ ...`, a voltage follower, or an event-only approximation.
+Use the conservative current contribution `I(p, n) <+ c * ddt(V(p, n));`. Drive `imon` with the probed branch current so ramping `V(p,n)` stimuli expose the derivative current sign and scale.
+
+## Modeling Constraints
+
+Keep `ddt(V(p,n))` in the branch current contribution. Do not replace the model with a voltage follower, static conductance, or event-only approximation. The monitor may use `transition(I(p, n), 0, tr, tr)`.
+
+## Output Contract
 
 Return exactly one source artifact named `kcl_capacitor_ddt_current.va`.

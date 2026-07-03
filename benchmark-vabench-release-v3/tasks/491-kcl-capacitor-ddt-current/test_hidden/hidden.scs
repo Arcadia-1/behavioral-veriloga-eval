@@ -2,13 +2,11 @@ simulator lang=spectre
 global 0
 
 ahdl_include "kcl_capacitor_ddt_current.va"
-ahdl_include "branch_current_monitor.va"
 
 Vin (p 0) vsource type=pwl wave=[0 0.0 20n 0.0 24n 0.4 60n 0.4 64n 0.2 100n 0.2 120n 0.2 124n 0.7 140n 0.7 144n 0.5 160n 0.5]
 Vref (n 0) vsource type=pwl wave=[0 0.0 60n 0.0 64n 0.1 120n 0.1 124n 0.0 140n 0.0 144n 0.3 160n 0.3]
 
-XDUT (p n) kcl_capacitor_ddt_current c=1p
-XMON (p n imon) branch_current_monitor
+XDUT (p n imon) kcl_capacitor_ddt_current c=1p
 
 tran tran stop=160n maxstep=0.25n
 save p n imon

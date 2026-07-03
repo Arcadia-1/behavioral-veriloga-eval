@@ -9065,6 +9065,28 @@ def _v3_trapezoid_integral_to(rows: list[dict[str, float]], signal: str, time_s:
     return total
 
 
+def _v3_first_order_balance_to(
+    rows: list[dict[str, float]],
+    signal: str,
+    time_s: float,
+    *,
+    tau: float = 20e-9,
+) -> float:
+    if not rows:
+        return 0.0
+    start_time = rows[0]["time"]
+    y = _v3_interp_signal(rows, signal, start_time)
+    t = start_time
+    stop = max(start_time, time_s)
+    max_step = tau / 40.0
+    while t < stop - 1e-18:
+        step = min(max_step, stop - t)
+        x_mid = _v3_interp_signal(rows, signal, t + 0.5 * step)
+        y += step * (x_mid - y) / tau
+        t += step
+    return y
+
+
 def _v3_rising_cross_times(
     rows: list[dict[str, float]],
     signal: str,
@@ -9872,16 +9894,16 @@ def check_v3_472_indirect_branch_ddt_balance(rows: list[dict[str, float]]) -> tu
     observed: list[str] = []
     for time_ns in sample_times_ns:
         time_s = time_ns * 1e-9
-        expected = _v3_trapezoid_integral_to(rows, "inp", time_s)
+        expected = _v3_first_order_balance_to(rows, "inp", time_s, tau=20e-9)
         out = _v3_interp_signal(rows, "out", time_s)
         err = abs(out - expected)
         max_err = max(max_err, err)
-        observed.append(f"{time_ns:g}ns:{out:.3e}/{expected:.3e}")
-        if err > 2.0e-9:
-            return False, f"out_not_integral@{time_ns:g}ns out={out:.4e} expected={expected:.4e} err={err:.4e}"
-    if _v3_signal_range(rows, "out") < 2.0e-8:
-        return False, f"out_integral_range_too_small={_v3_signal_range(rows, 'out'):.4e}"
-    return True, "indirect_branch_ddt_integral max_err={:.3e} samples={}".format(
+        observed.append(f"{time_ns:g}ns:{out:.3f}/{expected:.3f}")
+        if err > 0.045:
+            return False, f"out_not_first_order_balance@{time_ns:g}ns out={out:.4f} expected={expected:.4f} err={err:.4f}"
+    if _v3_signal_range(rows, "out") < 0.35:
+        return False, f"out_dynamic_range_too_small={_v3_signal_range(rows, 'out'):.4f}"
+    return True, "indirect_branch_ddt_first_order_balance max_err={:.4f} samples={}".format(
         max_err,
         ",".join(observed),
     )

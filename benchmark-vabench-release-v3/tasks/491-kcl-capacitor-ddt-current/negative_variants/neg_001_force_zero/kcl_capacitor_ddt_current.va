@@ -1,9 +1,15 @@
 `include "constants.vams"
 `include "disciplines.vams"
 
-module kcl_capacitor_ddt_current (inout electrical p, inout electrical n);
+module kcl_capacitor_ddt_current (
+    inout electrical p,
+    inout electrical n,
+    output electrical imon
+);
 parameter real c = 1p;
+parameter real tr = 200p;
 analog begin
-    I(p, n) <+ (ddt(V(p, n)) > 0.0 ? c * ddt(V(p, n)) : 0.0);
+    I(p, n) <+ 0.0 * ddt(V(p, n));
+    V(imon) <+ 0.0;
 end
 endmodule
