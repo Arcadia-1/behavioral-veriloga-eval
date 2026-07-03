@@ -1,5 +1,16 @@
-# Source Limiting Diffamp
+# Limiting Diffamp
 
-Implement a differential amplifier with hard output limits. OUT is 4*(INP-INN) clipped to +/-0.75 V.
+Implement `limiting_diffamp` in `limiting_diffamp.va`.
 
-The module name and port list must match `limiting_diffamp.va`. Keep the implementation deterministic and voltage-domain only. The historical source normalized for this task is `wangx/limiting_diffamp.va`.
+The module is a voltage-domain DUT with port order `sigin_p, sigin_n, sigout`.
+Declare all ports as `electrical`; `sigin_p` and `sigin_n` are inputs and
+`sigout` is the output.
+
+Use the differential input voltage from `sigin_p` to `sigin_n`. The small-signal
+output is the differential input multiplied by `gain`. Hard-limit the output to
+the lower and upper output rails, preserving differential polarity in the
+linear region and saturating cleanly when either rail is reached.
+
+Provide overridable real parameters `gain=4.0`, `sigout_low=-0.75`, and
+`sigout_high=0.75`. The rail parameters are voltages and `gain` is
+dimensionless.

@@ -6,8 +6,11 @@ input vin, vgnd;
 output vout;
 electrical vin, vout, vgnd;
 
+parameter real vclamp_upper = 1;
+parameter real vclamp_lower = 0;
+
 analog begin
-    V(vout) <+ 0;
+    V(vout, vgnd) <+ 0;
 end
 
 endmodule
