@@ -2,34 +2,36 @@
 
 Task: `056-decimal-digit-to-bcd-encoder`
 
-Review: 2026-07 Testbench Utility Straggler Review
+Status: support formal candidate for EVAS-based evaluation.
 
-## Gate 1
+## Four-Standard Review
 
-- Admission label: `valid_variant_needs_counting_policy` for any future
-  restoration; archived/non-counted in the current release package.
-- Function boundary: a decimal one-hot digit to BCD encoder is a recognizable
-  support helper for display/readout or constrained stimulus paths.
-- Counting policy: current `upstream/main` keeps this row under
-  `spectre-unsupported-tasks/` and excludes it from the default `TASKS.json` and
-  `CHECKS.yaml` denominator. Do not count it or restore it from this category
-  review alone.
-- Overlap note: this is a narrower ten-line specialization of task 054's
-  one-hot-to-binary encoding pattern. Keep it non-counted unless upstream wants
-  a BCD-specific support row for a future display/readout subcategory.
+- Useful scenario: pass. `Decimal Digit To BCD Encoder` is a reusable analog/mixed-signal testbench utility.
+- Reasonable task: pass. The public prompt fixes the exact vector port order, logic threshold, output encoding, and invalid-state behavior when applicable.
+- Complete tests: pass for EVAS formal-candidate scope. Hidden tests cover boundary values, representative interior values, and invalid/gating cases when applicable.
+- Fair evaluation: pass for the stated prompt. Hidden scoring requirements are stated in `instruction.md`; public smoke only checks compile/basic simulation viability.
 
-## Gate 2
+## Evidence
 
-- Prompt status: updated to the mandatory vaBench v3 instruction headings and
-  made explicit about module name, vector port order, decimal digit mapping,
-  BCD bit order, exact-one validity rule, threshold, logic levels, transition
-  parameter, and invalid-input behavior.
-- Modeling status: `cadence_sim_pending` and `cadence_lint_pending` for this
-  category PR. The archived Verilog-A assets need the separate Spectre legality
-  and AHDL evidence chain before any restoration or readiness claim.
-- Existing archived checks: digit cases, invalid cases, and concrete negative
-  variants target the stated encoder behavior, but those checks are not default
-  release evidence while the row remains archived.
+- Hidden gold expected result: `PASS`, `dut_compile=1.0`, `tb_compile=1.0`, `sim_correct=1.0`.
+- Positive vectors: digits 0-9 plus invalid.
+- Concrete negative variants: 5 expected rejections.
 
-Certification status: archived support/non-counted. Category review is complete;
-Cadence modeling readiness is not claimed by this PR.
+Negative coverage:
+
+- `neg_001`: rejected as `FAIL_SIM_CORRECTNESS`.
+- `neg_002`: rejected as `FAIL_SIM_CORRECTNESS`.
+- `neg_003`: rejected as `FAIL_SIM_CORRECTNESS`.
+- `neg_004`: rejected as `FAIL_SIM_CORRECTNESS`.
+- `neg_005`: rejected as `FAIL_SIM_CORRECTNESS`.
+
+## Interface Cleanup
+
+- The task now uses Verilog-A vector ports to keep the benchmark focused on behavior rather than mechanical scalar-port expansion. Existing EVAS testbenches still save the same scalar node columns for checker compatibility.
+
+## Remaining Risk
+
+- This audit is EVAS-only. Per SOP, paper-facing final certification still needs Spectre/Spectre-AX correlation or an explicit EVAS-only label.
+- No model positive run has been attached yet, so this is not an A-tier core-score claim. It is ready to move out of staging as a support formal candidate.
+
+Certification status: certified with EVAS gold PASS and concrete negative FAIL_SIM_CORRECTNESS evidence.
