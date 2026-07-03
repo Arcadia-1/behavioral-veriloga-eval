@@ -7,6 +7,14 @@ status is `cadence_modeling_ready` for the reviewed gold after current-branch
 EVAS, targeted Spectre, and AHDL warning triage. This row should be counted as
 an integration-flow L2, not as a duplicate L1 filter row.
 
+## Duplicate/Counting Policy
+
+Keep as L2 core. The row overlaps intentionally with L1 amplifier and low-pass
+building blocks, but the benchmark contract evaluates the composed chain:
+bounded preamplifier, two cascaded sampled low-pass states, monitor consistency,
+output lag, reset recovery, and a settling metric. It should not be counted as
+another standalone filter primitive.
+
 ## Review Decision
 
 - Useful scenario: pass. The row is a composed baseband chain: bounded

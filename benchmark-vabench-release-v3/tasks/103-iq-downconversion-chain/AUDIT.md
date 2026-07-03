@@ -2,21 +2,40 @@
 
 ## Scope
 
-Task boundary is one primary Verilog-A DUT artifact, `iq_downconversion_chain.va`, migrated from `vbr1_l2_iq_downconversion_chain:tb`, plus the original EVAS/Spectre-compatible `.scs` transient scenario. Companion Verilog-A files listed in the top-level `TASKS.json` index are supplied by the harness when needed by the original system testbench.
+Task boundary is one Verilog-A DUT, `iq_downconversion_chain.va`. Public solver
+materials are `instruction.md`, `starter/`, and `test_visible/`. Evaluator-only
+materials are `solution/`, `test_hidden/`, `test_harness/`, and
+`negative_variants/`.
 
-## Four Standards
+## Gate 1
 
-- Useful scenario: accepted. The module is a reusable behavioral Verilog-A block or flow component with a concrete transient use case.
-- Reasonable task: accepted for this migration slice. The public prompt names the target artifact, interface, and behavior context.
-- Complete tests: accepted for current v3 smoke. Hidden gold passes and `neg_001_zero` is non-full-credit; further hand-authored negatives can still strengthen release evidence.
-- Fair evaluation: accepted for current v3 smoke. The checker is bound through the v3 alias and the hidden behavior is covered by the public prompt context.
+- Admission label: `l2_core_ready`.
+- Function: composed voltage-domain I/Q downconversion chain with quadrature LO
+  sequencing, LO polarity monitors, I/Q mixer monitors, filtered I-path output,
+  Q-path metric, and phase monitor.
+- Duplicate/counting policy: keep as L2 core. It is not a duplicate of task 043
+  because this row evaluates quadrature sequencing and multi-observable I/Q
+  chain integration, not only a single LO-polarity mixer macro.
 
-## Checker And Evidence
+## Gate 2
 
-- Source checker id: `vbr1_l2_iq_downconversion_chain_tb`
-- EVAS 0.4.5 hidden gold smoke: PASS
-- Concrete negative `neg_001_zero`: non-full-credit
+- Modeling status: `cadence_modeling_ready`.
+- Prompt contract: public interface, parameters, reset behavior, four-phase
+  quadrature sequence, `lo_i`/`lo_q`, `mix_i`/`mix_q`, `phase_mon`, I/Q
+  baseband outputs, and common-mode recovery are stated without
+  hidden-evaluator or `tb-generation` migration wording.
+- Public/private split: visible decks are short public smoke scenarios for
+  wiring and saved observables; hidden decks retain the longer behavioral I/Q
+  validation flow.
 
-## Remaining Risk
+## Verification
 
-Initial migration artifact. Do not count this task in a final release surface until gold smoke and negative evidence are attached.
+- Visible smoke: PASS.
+- EVAS hidden gold: PASS.
+- Concrete negative recertification: 5/5 expected failures, all failed
+  behavioral correctness after compiling and simulating.
+- AHDL-like lint preflight: solution hidden and starter visible slices report
+  0 diagnostics.
+- Targeted Spectre AX hidden gold: PASS. Spectre read-in reports no
+  task-specific AHDL compile error, `AHDLLINT-*`, or `VACOMP-1116`; remaining
+  warnings are shared environment/preset notices.

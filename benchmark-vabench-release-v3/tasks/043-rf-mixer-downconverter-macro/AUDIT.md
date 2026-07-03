@@ -2,23 +2,38 @@
 
 ## Scope
 
-Task boundary is one Verilog-A DUT, `rf_mixer_downconverter_macro.va`, plus EVAS/Spectre-compatible `.scs` testbenches. Agent-visible materials are limited to `instruction.md`, `starter/`, and `test_visible/`. Evaluator-only materials are `solution/`, `test_hidden/`, `test_harness/`, and `negative_variants/`. No `meta.json` is present.
+Task boundary is one Verilog-A DUT, `rf_mixer_downconverter_macro.va`.
+Public solver materials are `instruction.md`, `starter/`, and `test_visible/`.
+Evaluator-only materials are `solution/`, `test_hidden/`, `test_harness/`, and
+`negative_variants/`.
 
-## Four Standards
+## Gate 1
 
-- Useful scenario: pass. An RF downconverter macro is a practical RF/AFE behavioral block.
-- Reasonable task: pass. The public prompt fixes LO polarity control, conversion gain, baseband output bounding, and voltage-domain behavior.
-- Complete tests: pass for EVAS. Hidden samples check LO sign control, conversion-gain visibility, and bounded baseband output. Five concrete negatives cover missing mixing sign, wrong gain, unbounded output, stuck output, and missing metric/baseband behavior.
-- Fair evaluation: pass for EVAS. The checker uses public waveform observables and behavior specified in the prompt.
+- Admission label: `independent_l1_ready`.
+- Function: RF/AFE voltage-domain downconverter macro. It multiplies the input
+  envelope deviation from common mode by LO polarity, preserves common mode,
+  bounds the baseband output, and exposes a conversion activity metric.
+- Duplicate/counting policy: keep as a standalone L1. It is not a duplicate of
+  task 103 because this row evaluates a single reusable mixer macro, while 103
+  evaluates a composed quadrature I/Q chain.
 
-## Checker And Evidence
+## Gate 2
 
-- Checker id: `v3_043_rf_mixer_downconverter_macro`
-- Runner mapping: `CHECKS["v3_043_rf_mixer_downconverter_macro"] = check_rf_mixer_downconverter_macro`
-- EVAS/Python-engine hidden gold smoke: `PASS`
-- Concrete negative recertification: 5/5 expected failures, all `FAIL_SIM_CORRECTNESS` with simulator `returncode=0`
-- Visible compile/sim smoke: `COMPILE_SIM_OK`
+- Modeling status: `cadence_modeling_ready`.
+- Prompt contract: public interface, parameters, reset behavior, LO polarity,
+  conversion-gain semantics, bounded voltage-domain output, and metric role are
+  stated without hidden-checker, old migration, or gold-history wording.
+- Public/private split: public visible smoke is wiring/compile coverage only;
+  hidden validation checks the longer behavioral conversion windows.
 
-## Remaining Risk
+## Verification
 
-Spectre/Spectre-AX correlation has not been run from this working tree; use EVAS-only wording until that evidence exists.
+- Visible smoke: PASS.
+- EVAS hidden gold: PASS.
+- Concrete negative recertification: 5/5 expected failures, all failed
+  behavioral correctness after compiling and simulating.
+- AHDL-like lint preflight: solution hidden and starter visible slices report
+  0 diagnostics.
+- Targeted Spectre AX hidden gold: PASS. Spectre read-in reports no
+  task-specific AHDL compile error, `AHDLLINT-*`, or `VACOMP-1116`; remaining
+  warnings are shared environment/preset notices.

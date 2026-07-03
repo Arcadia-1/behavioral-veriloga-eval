@@ -1,80 +1,8 @@
 # RF Mixer Downconverter Macro
 
-## Task Contract
+Implement `rf_mixer_downconverter_macro.va` in Verilog-A.
 
-- Form: `dut`
-- Level: `L1`
-- Category: RF and AFE Behavioral Macromodels
-- Base function: RF mixer/downconverter macro
-- Domain: `voltage`
-- Target artifact(s): `rf_mixer_downconverter_macro.va`
-- Supplied/reference support artifact(s): `tb_rf_mixer_downconverter_macro.scs`
-- Visible context: public task, interface, artifact, stimulus, and observable contract only.
-- Hidden evaluator boundary: deterministic checker and EVAS/Spectre validation are external; do not generate checker logic.
-
-## Form-Specific Requirements
-
-- Implement only the requested Verilog-A DUT artifact(s); do not generate a Spectre testbench in this form.
-- Preserve the public module names, port order, parameters, and waveform observable names.
-
-## Public Verilog-A Interface
-
-- `rf_mixer_downconverter_macro.va` declares module `rf_mixer_downconverter_macro` with positional ports: `clk`, `rst`, `vin`, `out`, `metric`.
-
-## Public Testbench And Observable Contract
-
-Public transient setting used by the evaluator:
-
-```spectre
-tran tran stop=80n maxstep=0.5n
-```
-
-The evaluator expects these exact public scalar observables:
-
-- `clk`
-- `rst`
-- `vin`
-- `out`
-- `metric`
-
-When this form generates a testbench, use plain scalar save names for these observables; do not rely on instance-qualified or aliased save names.
-
-## Public Behavior Checks
-
-- `lo_polarity_controls_conversion_sign`
-- `conversion_gain_visible`
-- `baseband_output_bounded`
-
-## Public Behavioral Targets
-
-- Treat clk as the LO-polarity waveform with a 0.45 V logic threshold.
-- Convert the input envelope around 0.45 V common mode to baseband by flipping sign with LO polarity.
-- Preserve output common mode near 0.45 V and keep out bounded.
-- metric should indicate active conversion or LO polarity state.
-
-## Output Contract
-
-Return exactly one source artifact named `rf_mixer_downconverter_macro.va`.
-Do not include explanatory prose outside the source artifact contents.
-
-## Task-Specific Description
-
-### RF mixer/downconverter macro (spec-to-va)
-
-Write the Verilog-A behavioral module only.
-
-Behavioral intent:
-
-Model a voltage-domain RF mixer/downconverter where the LO polarity modulates the RF input around common mode into a baseband output.
-
-Module name: `rf_mixer_downconverter_macro`.
-Domain: pure voltage-domain behavioral Verilog-A.
-Do not use current contributions, transistor-level devices, AC/noise analysis,
-or KCL/KVL solving assumptions.
-
-This is a voltage-domain RF/AFE behavioral macromodel task. Model observable gain, compression, LO polarity, RSSI, limiting, AGC, or I/Q baseband behavior with event-driven voltage states. Do not implement transistor RF physics, S-parameters, current-domain loads, communication modem algorithms, or full link-level decoding.
-
-Public port contract:
+## Public Interface
 
 ```verilog
 module rf_mixer_downconverter_macro(clk, rst, vin, out, metric);
@@ -83,18 +11,38 @@ output out, metric;
 electrical clk, rst, vin, out, metric;
 ```
 
-Signal contract:
+All ports are scalar electrical voltage-domain ports. `clk` is the LO-polarity
+control waveform and `rst` is an active-high voltage-coded reset. Use a `0.45 V`
+logic threshold where a digital decision is needed.
 
-clk is the public LO-polarity waveform and rst is voltage-coded reset. vin is an RF input envelope around 0.45 V common mode. out is the LO-polarity-converted baseband voltage. metric marks active conversion.
+## Public Parameter Contract
 
-Saved waveform columns:
+- `tr`: output transition smoothing time, default `80p`.
+- `vth`: voltage-coded logic threshold, default `0.45`.
+- `conv_gain`: conversion gain applied to the input deviation from common mode,
+  default `1.25`.
 
-```text
-clk rst vin out metric
-```
+## Functional Contract
 
-Public transient contract:
+- Model a reusable voltage-domain RF/AFE mixer/downconverter macromodel, not a
+  Spectre testbench or transistor-level RF circuit.
+- Treat `vin` as an RF-envelope voltage around `0.45 V` common mode.
+- While reset is active, hold `out` near common mode and clear `metric`.
+- When reset is low, convert `V(vin) - 0.45` to a baseband output by multiplying
+  it by LO polarity: high `clk` uses positive polarity and low `clk` uses
+  negative polarity.
+- Preserve the output common mode near `0.45 V`, apply `conv_gain`, and bound
+  `out` to the voltage signal range.
+- Drive `metric` as a voltage-coded activity observable that is low during
+  reset and high when the conversion path is active.
 
-```spectre
-tran tran stop=80n maxstep=0.5n
-```
+The visible testbench is a public verification scenario for wiring and saved
+observables. Do not hard-code its transient stop time, waveform breakpoints, or
+sample windows into the DUT.
+
+## Modeling Constraints
+
+Return only `rf_mixer_downconverter_macro.va`. Do not emit a Spectre testbench,
+checker logic, private test hooks, or simulator-private side channels. Use
+voltage contributions only; do not use current contributions, transistor-level
+devices, S-parameters, AC/noise analysis, `ddt()`, or `idt()`.

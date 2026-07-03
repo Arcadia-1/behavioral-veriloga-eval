@@ -2,23 +2,37 @@
 
 ## Scope
 
-Task boundary is one Verilog-A DUT, `soft_hysteretic_limiter.va`, plus EVAS/Spectre-compatible `.scs` testbenches. Agent-visible materials are limited to `instruction.md`, `starter/`, and `test_visible/`. Evaluator-only materials are `solution/`, `test_hidden/`, `test_harness/`, and `negative_variants/`. No `meta.json` is present.
+Task boundary is one Verilog-A DUT, `soft_hysteretic_limiter.va`. Public solver
+materials are `instruction.md`, `starter/`, and `test_visible/`.
+Evaluator-only materials are `solution/`, `test_hidden/`, `test_harness/`, and
+`negative_variants/`.
 
-## Four Standards
+## Gate 1
 
-- Useful scenario: pass. A soft limiter with hysteresis is a practical baseband conditioning macro.
-- Reasonable task: pass. The public prompt fixes upper/lower limiting, memory behavior, transition smoothing, and metric output.
-- Complete tests: pass for EVAS. Hidden samples check limiting levels, hysteretic memory, and metric span. Five concrete negatives cover hard clipping, missing memory, wrong limits, stuck outputs, and metric mistakes.
-- Fair evaluation: pass for EVAS. The checker uses public voltage observables and stated limiter behavior.
+- Admission label: `independent_l1_ready`.
+- Function: baseband soft limiter with clocked hysteresis memory, bounded
+  output compression, and a voltage-coded state metric.
+- Duplicate/counting policy: keep as a standalone L1. It is distinct from
+  simple clamps or limiting amplifiers because the task requires stateful
+  hysteresis memory across mid-level hold windows.
 
-## Checker And Evidence
+## Gate 2
 
-- Checker id: `v3_045_soft_hysteretic_limiter`
-- Runner mapping: `CHECKS["v3_045_soft_hysteretic_limiter"] = check_release_soft_hysteretic_limiter`
-- EVAS/Python-engine hidden gold smoke: `PASS`
-- Concrete negative recertification: 5/5 expected failures, all `FAIL_SIM_CORRECTNESS` with simulator `returncode=0`
-- Visible compile/sim smoke: `COMPILE_SIM_OK`
+- Modeling status: `cadence_modeling_ready`.
+- Prompt contract: public interface, parameters, reset behavior, high/low memory
+  states, output compression, transition smoothing, and metric semantics are
+  stated without hidden-checker, old migration, or gold-history wording.
+- Public/private split: public visible smoke is wiring/compile coverage only;
+  hidden validation checks limiting levels, hysteresis memory, and metric span.
 
-## Remaining Risk
+## Verification
 
-Spectre/Spectre-AX correlation has not been rerun from this working tree; use EVAS-only wording unless fresh dual-simulator evidence is attached.
+- Visible smoke: PASS.
+- EVAS hidden gold: PASS.
+- Concrete negative recertification: 5/5 expected failures, all failed
+  behavioral correctness after compiling and simulating.
+- AHDL-like lint preflight: solution hidden and starter visible slices report
+  0 diagnostics.
+- Targeted Spectre AX hidden gold: PASS. Spectre read-in reports no
+  task-specific AHDL compile error, `AHDLLINT-*`, or `VACOMP-1116`; remaining
+  warnings are shared environment/preset notices.

@@ -2,34 +2,7 @@
 
 Implement `agc_receiver_leveling_loop.va` in Verilog-A.
 
-## Interface
-
-```verilog
-module agc_receiver_leveling_loop(clk, rst, vin, out, metric, gain_mon, rssi_mon);
-```
-
-## Required Behavior
-
-This task asks for the `agc_receiver_leveling_loop` behavioral module, not a Spectre testbench. The hidden evaluator instantiates this module in the original `vbr1_l2_agc_receiver_leveling_loop` transient scenario and checks the saved waveform/metric behavior with EVAS.
-
-Original public behavior context:
-
-### AGC receiver leveling loop (tb-generation)
-
-Write a Spectre transient testbench for the described behavioral Verilog-A module.
-
-Behavioral intent:
-
-Compose a receiver gain path, envelope/RSSI observation, and gain-control update so output amplitude settles toward a target level.
-
-Module name: `agc_receiver_leveling_loop`.
-Domain: pure voltage-domain behavioral Verilog-A.
-Do not use current contributions, transistor-level devices, AC/noise analysis,
-or KCL/KVL solving assumptions.
-
-This is a voltage-domain RF/AFE behavioral macromodel task. Model observable gain, compression, LO polarity, RSSI, limiting, AGC, or I/Q baseband behavior with event-driven voltage states. Do not implement transistor RF physics, S-parameters, current-domain loads, communication modem algorithms, or full link-level decoding.
-
-Public port contract:
+## Public Interface
 
 ```verilog
 module agc_receiver_leveling_loop(clk, rst, vin, out, metric, gain_mon, rssi_mon);
@@ -38,22 +11,40 @@ output out, metric, gain_mon, rssi_mon;
 electrical clk, rst, vin, out, metric, gain_mon, rssi_mon;
 ```
 
-Signal contract:
+All ports are scalar electrical voltage-domain ports. `clk` and `rst` are
+voltage-coded logic signals with a `0.45 V` threshold. `rst` is active high.
 
-clk and rst are voltage-coded logic signals. vin is the receiver input envelope around 0.45 V common mode. rssi_mon is the public envelope/RSSI monitor, gain_mon is the bounded public gain-control monitor, the internal gain-control loop reduces gain under overload and restores a target output amplitude, out is the leveled receiver output, and metric is high near target amplitude.
+## Public Parameter Contract
 
-Saved waveform columns:
+- `tr`: output transition smoothing time, default `100p`.
+- `vth`: voltage-coded logic threshold, default `0.45`.
+- `target_amp`: target output amplitude around common mode, default `0.18`.
+- `deadband`: amplitude error band that avoids unnecessary gain updates,
+  default `0.025`.
 
-```text
-clk rst vin out metric gain_mon rssi_mon
-```
+## Functional Contract
 
-Public transient contract:
+- Model a composed RF/AFE receiver AGC flow: gain path, envelope/RSSI
+  observation, gain-control update, leveled output, and lock-quality metric.
+- Treat `vin` as a receiver input envelope around `0.45 V` common mode.
+- Initialize the gain control to a moderate gain, hold `out` near common mode,
+  and clear the monitors while reset is active.
+- On each rising `clk` crossing after reset, apply the current gain to
+  `V(vin) - 0.45`, preserve common mode, and bound `out` to the signal range.
+- Derive `rssi_mon` from the absolute output amplitude. Reduce gain when the
+  observed amplitude is above `target_amp + deadband`; increase gain when it is
+  below `target_amp - deadband`; keep the gain bounded.
+- Drive `gain_mon` as a voltage-coded monitor of the bounded gain state.
+- Drive `metric` high when the output amplitude is close to the AGC target and
+  lower when the loop is far from target.
 
-```spectre
-tran tran stop=80n maxstep=0.5n
-```
+The visible testbench is a public verification scenario for wiring and saved
+observables. Do not hard-code its transient stop time, waveform breakpoints, or
+sample windows into the DUT.
 
-Use voltage-coded logic with a 0.45 V threshold where applicable, drive high logic outputs near 0.9 V and low outputs near 0 V, and keep the model pure behavioral Verilog-A. Do not use transistor-level devices, AC/noise analysis, hidden checker logic, or simulator-private side channels.
+## Modeling Constraints
 
-Only the target artifact is graded as the candidate implementation; companion Verilog-A files listed by the testbench are supplied by the harness for this task.
+Return only `agc_receiver_leveling_loop.va`. Do not emit a Spectre testbench,
+checker logic, private test hooks, or simulator-private side channels. Use
+voltage contributions only; do not use current contributions, transistor-level
+devices, S-parameters, AC/noise analysis, `ddt()`, or `idt()`.

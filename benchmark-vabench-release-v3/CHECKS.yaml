@@ -1002,7 +1002,7 @@
     status: "pass"
     notes:
       - "Fresh targeted review: EVAS hidden gold passed, targeted Spectre hidden gold passed, five concrete negatives were rejected behaviorally, and AHDL triage found no task-specific warnings or compile errors."
-      - "Counting remains a category policy decision because this LNA compression row is related to the PA compression macro row."
+      - "Duplicate/counting policy confirmed: keep as a role-distinct L1 because this LNA front-end compression macro differs from the PA output-compression macro."
 035-log-rssi-power-detector: |
   syntax:
     must_include:
@@ -1077,7 +1077,7 @@
     status: "pass"
     notes:
       - "Fresh targeted review: EVAS hidden gold passed, targeted Spectre hidden gold passed, five concrete negatives were rejected behaviorally, and AHDL triage found no task-specific warnings or compile errors."
-      - "Counting remains a category policy decision because this PA compression row is related to the LNA compression macro row."
+      - "Duplicate/counting policy confirmed: keep as a role-distinct L1 because this PA output-compression macro differs from the LNA front-end compression macro."
 038-power-on-reset-detector: |
   syntax:
     must_include:
@@ -1248,9 +1248,10 @@
       - "baseband_output_bounded"
   parity:
     reference: "spectre"
-    status: "pending_until_evas_spectre_rerun"
+    status: "cadence_modeling_ready"
     notes:
-      - "Designed release source; no imported historical EVAS/Spectre dual evidence yet."
+      - "Fresh RF/baseband tail review: visible smoke passed, EVAS hidden gold passed, five concrete negatives were rejected behaviorally, targeted Spectre AX hidden gold passed, and AHDL-like lint preflight reported zero diagnostics."
+      - "Duplicate/counting policy confirmed: keep as a standalone L1 RF mixer/downconverter macro; it is a reusable conversion primitive, while 103 is the composed I/Q chain."
 044-sample-and-hold-with-droop-leakage: |
   syntax:
     must_include:
@@ -1296,9 +1297,10 @@
       - "bounded_output"
   parity:
     reference: "spectre"
-    status: "pending_until_evas_spectre_rerun"
+    status: "cadence_modeling_ready"
     notes:
-      - "Designed release source; no imported historical EVAS/Spectre dual evidence yet."
+      - "Fresh RF/baseband tail review: visible smoke passed, EVAS hidden gold passed, five concrete negatives were rejected behaviorally, targeted Spectre AX hidden gold passed, and AHDL-like lint preflight reported zero diagnostics."
+      - "Duplicate/counting policy confirmed: keep as a standalone L1 soft limiter with hysteresis memory, distinct from simple clamp or memoryless gain-limiter rows."
 046-successive-approximation-calibration-search-fsm: |
   syntax:
     must_include:
@@ -2276,11 +2278,14 @@
 091-agc-receiver-leveling-loop: |
   syntax:
     must_include:
-      - "tran"
-      - "save"
+      - "transition("
+      - "@(cross("
     must_not_include:
       - "I("
       - "ddt("
+      - "idt("
+  dut_companion_role: "l2_core_dut"
+  strong_benchmark_claim: true
   dut_compile:
     backend: "evas"
   tb_compile:
@@ -2292,11 +2297,20 @@
       - "lock_metric_after_settling"
       - "rssi_monitor_rises_on_overload"
       - "gain_monitor_decreases_after_high_rssi"
+    public_observables:
+      - "clk"
+      - "rst"
+      - "vin"
+      - "out"
+      - "gain_mon"
+      - "rssi_mon"
+      - "metric"
   parity:
     reference: "spectre"
-    status: "pending_fresh_dual_rerun"
+    status: "cadence_modeling_ready"
     notes:
-      - "Fresh dual rerun required after adding gain_mon/rssi_mon intermediate observability."
+      - "Fresh RF/baseband tail review: visible smoke passed, EVAS hidden gold passed, five concrete negatives were rejected behaviorally, targeted Spectre AX hidden gold passed, and AHDL-like lint preflight reported zero diagnostics."
+      - "Duplicate/counting policy confirmed: keep as an L2 AGC receiver leveling flow because it combines envelope/RSSI sensing, gain adaptation, limiting, and lock/settling observation."
 092-amplifier-filter-chain: |
   syntax:
     must_include:
@@ -2333,6 +2347,7 @@
     status: "cadence_modeling_ready"
     notes:
       - "EVAS reference solution, EVAS concrete negatives, current-branch targeted Spectre gold validation, and AHDL warning triage pass after checker strengthening."
+      - "Duplicate/counting policy confirmed: keep as an L2 amplifier/filter chain, not as another standalone L1 low-pass or gain block."
 093-bbpd-data-edge-alignment: |
   syntax:
     must_include:
@@ -2570,11 +2585,14 @@
 103-iq-downconversion-chain: |
   syntax:
     must_include:
-      - "tran"
-      - "save"
+      - "transition("
+      - "@(cross("
     must_not_include:
       - "I("
       - "ddt("
+      - "idt("
+  dut_companion_role: "l2_core_dut"
+  strong_benchmark_claim: true
   dut_compile:
     backend: "evas"
   tb_compile:
@@ -2587,11 +2605,23 @@
       - "i_and_q_outputs_are_distinct"
       - "baseband_outputs_follow_mixer_paths"
       - "common_mode_hold_when_input_centered"
+    public_observables:
+      - "clk"
+      - "rst"
+      - "vin"
+      - "out"
+      - "metric"
+      - "lo_i"
+      - "lo_q"
+      - "mix_i"
+      - "mix_q"
+      - "phase_mon"
   parity:
     reference: "spectre"
-    status: "certified"
+    status: "cadence_modeling_ready"
     notes:
-      - "Current release dual_certification report certifies this form as EVAS/Spectre pass; rerun is required after checker/gold behavior changes."
+      - "Fresh RF/baseband tail review: visible smoke passed, EVAS hidden gold passed, five concrete negatives were rejected behaviorally, targeted Spectre AX hidden gold passed, and AHDL-like lint preflight reported zero diagnostics."
+      - "Duplicate/counting policy confirmed: keep as an L2 I/Q downconversion chain; it composes quadrature LO state, mixer polarity, baseband outputs, and observability, while 043 is the standalone mixer primitive."
 104-ldo-load-step-recovery: |
   syntax:
     must_include:

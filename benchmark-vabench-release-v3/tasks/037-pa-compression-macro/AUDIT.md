@@ -12,10 +12,11 @@ EVAS/Spectre-compatible `.scs` testbenches. Public solver materials are
 - Admission label: RF gain-compression L1 candidate.
 - Function: power-amplifier-style macro with above-unity gain, large-signal
   compression/limiting, bounded output, and compression metric output.
-- Counting risk: medium. This row and task 034 both model gain-compression
-  amplifier behavior in different RF roles. Keep both as role-distinct
-  candidates for now, but final counted status should be confirmed against the
-  category-level duplicate policy.
+- Duplicate/counting policy: keep as a role-distinct L1. This row models a
+  PA-style output compression/limiting macro, while task 034 models an
+  LNA-style receiver front-end gain-compression macro. They share the broad
+  compression theme but differ in RF role, limiting emphasis, and checker
+  contract.
 
 ## Gate 2
 

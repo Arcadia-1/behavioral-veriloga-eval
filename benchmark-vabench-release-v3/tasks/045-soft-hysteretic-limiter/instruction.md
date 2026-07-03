@@ -1,84 +1,8 @@
 # Soft Hysteretic Limiter
 
-## Task Contract
+Implement `soft_hysteretic_limiter.va` in Verilog-A.
 
-- Form: `dut`
-- Level: `L1`
-- Category: Baseband Signal Conditioning
-- Base function: Soft/hysteretic limiter
-- Domain: `voltage`
-- Target artifact(s): `soft_hysteretic_limiter.va`
-- Supplied/reference support artifact(s): `tb_soft_hysteretic_limiter.scs`
-- Visible context: public task, interface, artifact, stimulus, and observable contract only.
-- Hidden evaluator boundary: deterministic checker and EVAS/Spectre validation are external; do not generate checker logic.
-
-## Form-Specific Requirements
-
-- Implement only the requested Verilog-A DUT artifact(s); do not generate a Spectre testbench in this form.
-- Preserve the public module names, port order, parameters, and waveform observable names.
-
-## Public Verilog-A Interface
-
-- `soft_hysteretic_limiter.va` declares module `soft_hysteretic_limiter` with positional ports: `clk`, `rst`, `vin`, `out`, `metric`.
-
-## Public Testbench And Observable Contract
-
-Public transient setting used by the evaluator:
-
-```spectre
-tran tran stop=80n maxstep=0.5n
-```
-
-The evaluator expects these exact public scalar observables:
-
-- `clk`
-- `rst`
-- `vin`
-- `out`
-- `metric`
-
-When this form generates a testbench, use plain scalar save names for these observables; do not rely on instance-qualified or aliased save names.
-
-## Public Behavior Checks
-
-- `smooth_limiting`
-- `hysteresis_state_memory`
-- `bounded_output`
-
-## Public Behavioral Targets
-
-- After reset, keep `out` bounded in the 0 V to 0.9 V signal range.
-- For high `vin` excursions, compress `out` toward a high limited level around
-  0.75 V rather than passing the input directly.
-- For low `vin` excursions, compress `out` toward a low limited level around
-  0.15 V.
-- Preserve hysteresis memory during mid-level hold windows: after a high
-  excursion, the mid-level output/metric should remain in the high state; after
-  a low excursion, they should remain in the low state.
-- Drive `metric` as a voltage-coded hysteresis state observable, high for the
-  high-memory state and low for the low-memory state.
-
-## Output Contract
-
-Return exactly one source artifact named `soft_hysteretic_limiter.va`.
-Do not include explanatory prose outside the source artifact contents.
-
-## Task-Specific Description
-
-### Soft/hysteretic limiter (spec-to-va)
-
-Write the Verilog-A behavioral module only.
-
-Behavioral intent:
-
-Limit a voltage signal with bounded compression and stateful hysteresis memory around high/low thresholds.
-
-Module name: `soft_hysteretic_limiter`.
-Domain: pure voltage-domain behavioral Verilog-A.
-Do not use current contributions, transistor-level devices, AC/noise analysis,
-or KCL/KVL solving assumptions.
-
-Public port contract:
+## Public Interface
 
 ```verilog
 module soft_hysteretic_limiter(clk, rst, vin, out, metric);
@@ -87,18 +11,41 @@ output out, metric;
 electrical clk, rst, vin, out, metric;
 ```
 
-Signal contract:
+All ports are scalar electrical voltage-domain ports. `clk` and `rst` are
+voltage-coded logic signals with a `0.45 V` threshold. `rst` is active high.
 
-clk and rst are voltage-coded logic signals, low=0 V and high=0.9 V with threshold 0.45 V. vin is an analog voltage stimulus. out is the bounded conditioned voltage. metric exposes the limiter hysteresis state: it goes high after upper-threshold excursions, low after lower-threshold excursions, and preserves that state during mid-level hold windows.
+## Public Parameter Contract
 
-Saved waveform columns:
+- `tr`: output transition smoothing time, default `100p`.
+- `gain`: small-signal gain around the `0.45 V` common-mode level, default
+  `1.8`.
+- `hys_step`: signed hysteresis offset applied to the limiter state, default
+  `0.08`.
 
-```text
-clk rst vin out metric
-```
+## Functional Contract
 
-Public transient contract:
+- Model a baseband soft limiter with stateful hysteresis memory.
+- Initialize `out` and `metric` near the midscale/common-mode state.
+- On each rising `clk` crossing, reset the limiter to midscale while `rst` is
+  active high.
+- When reset is low, amplify `vin` around `0.45 V`, add the current hysteresis
+  state, and bound `out` to the voltage signal range.
+- A high `vin` excursion should move the limiter into a high-memory state with
+  output compressed toward the upper limited region. A low `vin` excursion
+  should move it into a low-memory state with output compressed toward the lower
+  limited region.
+- During mid-level hold windows, preserve the most recent high or low memory
+  state rather than immediately returning to midscale.
+- Drive `metric` as a voltage-coded hysteresis-state observable: high for the
+  high-memory state, low for the low-memory state, and midscale after reset.
 
-```spectre
-tran tran stop=80n maxstep=0.5n
-```
+The visible testbench is a public verification scenario for wiring and saved
+observables. Do not hard-code its transient stop time, waveform breakpoints, or
+sample windows into the DUT.
+
+## Modeling Constraints
+
+Return only `soft_hysteretic_limiter.va`. Do not emit a Spectre testbench,
+checker logic, private test hooks, or simulator-private side channels. Use
+voltage contributions only; do not use current contributions, transistor-level
+devices, AC/noise analysis, `ddt()`, or `idt()`.
