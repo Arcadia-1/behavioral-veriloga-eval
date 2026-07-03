@@ -1,22 +1,44 @@
-# Honest SOP Audit: Task 092 Amplifier Filter Chain
+# Task 092 Audit
 
-## Scope
+Task: `092-amplifier-filter-chain`
 
-Task boundary is one primary Verilog-A DUT artifact, `amplifier_filter_chain.va`, migrated from `vbr1_l2_amplifier_filter_chain:tb`, plus the original EVAS/Spectre-compatible `.scs` transient scenario. Companion Verilog-A files listed in the top-level `TASKS.json` index are supplied by the harness when needed by the original system testbench.
+Status: `l2_core_ready` candidate after prompt/checker repair. Gate 2 Cadence
+status is `cadence_modeling_ready` for the reviewed gold after current-branch
+EVAS, targeted Spectre, and AHDL warning triage. This row should be counted as
+an integration-flow L2, not as a duplicate L1 filter row.
 
-## Four Standards
+## Review Decision
 
-- Useful scenario: accepted. The module is a reusable behavioral Verilog-A block or flow component with a concrete transient use case.
-- Reasonable task: accepted for this migration slice. The public prompt names the target artifact, interface, and behavior context.
-- Complete tests: accepted for current v3 smoke. Hidden gold passes and `neg_001_zero` is non-full-credit; further hand-authored negatives can still strengthen release evidence.
-- Fair evaluation: accepted for current v3 smoke. The checker is bound through the v3 alias and the hidden behavior is covered by the public prompt context.
+- Useful scenario: pass. The row is a composed baseband chain: bounded
+  preamplifier, two cascaded sampled low-pass states, monitor outputs, and a
+  settling metric.
+- Reasonable task: pass after repair. The public prompt now describes the
+  target DUT, nine-port interface, reset/clock behavior, monitor semantics, and
+  observable flow-level contract.
+- Complete tests: pass for EVAS/Spectre gold validation and EVAS negative
+  recertification. The public smoke deck is now a short wiring/compile
+  scenario, while the private validation deck exercises the longer flow. The
+  behavior checker now requires all nine observables.
+- Fair evaluation: pass. The checker verifies the public flow behavior and
+  monitor consistency rather than accepting only the main output.
 
-## Checker And Evidence
+## Checker Contract
 
-- Source checker id: `vbr1_l2_amplifier_filter_chain_tb`
-- EVAS 0.4.5 hidden gold smoke: PASS
-- Concrete negative `neg_001_zero`: non-full-credit
+- Checker id: `v3_092_amplifier_filter_chain`.
+- Required trace signals: `time`, `clk`, `rst`, `vin`, `out`, `metric`,
+  `preamp_mon`, `filt1_mon`, `filt2_mon`, and `settle_metric`.
+- Behavioral checks: preamp and metric windows, first-stage vs second-stage
+  lag, output-to-filter consistency, voltage-coded settling flag, reset
+  recovery, and range sanity.
 
-## Remaining Risk
+## Current Evidence
 
-Initial migration artifact. Do not count this task in a final release surface until gold smoke and negative evidence are attached.
+- Reference solution: PASS under EVAS and targeted Spectre with the
+  strengthened checker.
+- Concrete negatives: 5/5 rejected with behavioral failures after checker
+  strengthening.
+- Public visible smoke: EVAS compile/transient smoke PASS.
+- AHDL lint/read-in triage: EVAS AHDL-like lint preflight reports PASS with
+  zero diagnostics for both hidden solution decks. Spectre AHDL read-in reports
+  no task-level `AHDLLINT-*`, AHDL compile, or VACOMP errors; the remaining
+  `VACOMP-2435` and `SPECTRE-592` warnings are shared environment/mode notices.

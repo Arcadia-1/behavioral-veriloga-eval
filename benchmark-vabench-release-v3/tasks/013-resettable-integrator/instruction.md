@@ -1,69 +1,40 @@
 # Resettable Integrator
 
-## Task Contract
+Implement `resettable_integrator.va` in Verilog-A.
 
-- Form: `dut`
-- Level: `L1`
-- Category: Baseband Signal Conditioning
-- Base function: Resettable integrator
-- Domain: `voltage`
-- Target artifact(s): `resettable_integrator.va`
-- Supplied/reference support artifact(s): `tb_resettable_integrator_ref.scs`
-- Visible context: public task, interface, artifact, stimulus, and observable contract only.
-- Hidden evaluator boundary: deterministic checker and EVAS/Spectre validation are external; do not generate checker logic.
+## Public Interface
 
-## Form-Specific Requirements
+Declare module `resettable_integrator(vin, rst, vout)` with scalar electrical
+voltage-domain ports. `rst` is a voltage-coded control input.
 
-- Implement only the requested Verilog-A DUT artifact(s); do not generate a Spectre testbench in this form.
-- Preserve the public module names, port order, parameters, and waveform observable names.
+## Public Parameter Contract
 
-## Public Verilog-A Interface
+- `vth`: reset logic threshold, default `0.45`.
+- `gain`: integration gain in inverse seconds, default `1.0e9`.
+- `dt`: timer update interval, default `1n`.
+- `vmax`: accumulator clamp level, default `0.85`.
+- `tr`: output transition smoothing time, default `500p`.
 
-- `resettable_integrator.va` declares module `resettable_integrator` with positional ports: `vin`, `rst`, `vout`.
+## Functional Contract
 
-## Public Testbench And Observable Contract
+- Initialize the internal accumulator to `0 V`.
+- Update state only on `@(timer(0, dt))`.
+- Treat reset as active high when `V(rst) > vth`; while reset is active, force
+  the accumulator and `vout` toward `0 V`.
+- When reset is low, add `gain * V(vin) * dt` to the accumulator on each timer
+  event.
+- Clamp the accumulator to the closed range from `0 V` to `vmax`.
+- After reset deasserts, integration must restart from `0 V` using the same
+  update rule.
+- Drive `vout` from the accumulator with a smoothed voltage contribution.
 
-Public transient setting used by the evaluator:
+The visible testbench is a public verification scenario for wiring and saved
+observables. Do not hard-code its transient stop time, waveform breakpoints, or
+sample windows into the DUT.
 
-```spectre
-tran tran stop=320n maxstep=500p
-```
+## Modeling Constraints
 
-The evaluator expects these exact public scalar observables:
-
-- `vin`
-- `rst`
-- `vout`
-
-When this form generates a testbench, use plain scalar save names for these observables; do not rely on instance-qualified or aliased save names.
-
-## Public Behavior Checks
-
-- `input_drive_present`
-- `reset_pulse_exercised`
-- `pre_reset_output_integrates_up`
-- `reset_clears_integrator`
-- `post_reset_integration_restarts`
-
-## Output Contract
-
-Return exactly one source artifact named `resettable_integrator.va`.
-Do not include explanatory prose outside the source artifact contents.
-
-## Task-Specific Description
-
-Write a pure voltage-domain Verilog-A module for a resettable timer integrator.
-
-The DUT module is `resettable_integrator` with ports `vin, rst, vout`. All ports are electrical; digital-control ports use 0/0.9 V logic levels.
-
-Required behavior:
-- Keep the public parameters `vth = 0.45`, `gain = 1.0e9`, `dt = 1n`, `vmax = 0.85`, and `tr = 500p`.
-- Initialize an internal real accumulator to 0 V at `initial_step`.
-- Use `@(timer(0, dt))` as the only state update cadence. With the default parameters this is a 1 ns update.
-- Treat `rst` as active high when `V(rst) > vth`. While reset is high, set the accumulator to exactly 0 V and hold `vout` near 0 V.
-- When reset is low, update the accumulator by `gain * V(vin) * dt` on each timer event.
-- After every update, clamp the accumulator to the closed range 0 V to `vmax`.
-- After a reset pulse returns low, integration must restart from 0 V using the same update rule.
-- Drive `vout` from the accumulator using `transition(acc, 0, tr, tr)`.
-
-Use voltage contributions only. Do not use current contributions, `ddt()`, or `idt()`.
+Return only `resettable_integrator.va`. Do not emit a Spectre testbench,
+checker logic, private test hooks, or simulator-private side channels. Use
+voltage contributions only; do not use current contributions, `ddt()`, or
+`idt()`.

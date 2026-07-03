@@ -2,7 +2,7 @@
   "negative_cases": [
     {
       "id": "neg_001_zero",
-      "intent": "zero/stub output implementation copied from starter must not satisfy hidden behavior checker",
+      "intent": "zero/stub output implementation copied from starter must not satisfy the behavior checker",
       "target": "amplifier_filter_chain.va"
     },
     {
@@ -27,6 +27,6 @@
     }
   ],
   "negative_count": 5,
-  "policy": "five_partial_pass_near_miss_negatives_per_task",
-  "status": "five_concrete_negatives_pending_recertification"
+  "policy": "five_behavioral_near_miss_negatives_per_task",
+  "status": "evas_behavior_rejected_after_checker_strengthening"
 }

@@ -19,7 +19,7 @@
     "testbenches": [
       "test_hidden/tests/tb_first_order_lowpass_ref.scs"
     ],
-    "checker": "test_harness/checks.yaml",
+    "checker": "../../../CHECKS.yaml",
     "gold": [
       "solution/dut_fixed.va"
     ],
@@ -27,6 +27,6 @@
   },
   "certification": {
     "status": "evas_only_recertified",
-    "scope": "Bugfix-form EVAS hidden gold and concrete negative variants; task 007 remains the independent lowpass circuit-function row."
+    "scope": "Bugfix-form EVAS reference solution and concrete negative variants; task 007 remains the independent lowpass circuit-function row."
   }
 }
