@@ -1,5 +1,5 @@
 // vaBench generated partial-pass negative: metric_scale_low
-// Preserves module/interface shape while intentionally violating one hidden behavior contract.
+// Preserves module/interface shape while intentionally violating one behavioral contract.
 `include "disciplines.vams"
 
 module voltage_controlled_gain_amplifier(vin_p, vin_n, vctrl_p, vctrl_n, vout);

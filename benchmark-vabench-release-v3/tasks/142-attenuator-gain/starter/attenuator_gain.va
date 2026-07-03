@@ -6,6 +6,8 @@ input vin;
 output vout;
 electrical vin, vout;
 
+parameter real attenuation = 0;
+
 analog begin
     V(vout) <+ 0;
 end
