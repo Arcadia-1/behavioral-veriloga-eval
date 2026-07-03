@@ -1,0 +1,12 @@
+{
+  "task": "122-comparator-offset-calibration-loop",
+  "form": "dut",
+  "visible": [
+    "test_visible/tests/run_visible_smoke.py"
+  ],
+  "hidden": [
+    "test_hidden/tests/tb_source_ref.scs"
+  ],
+  "checker": "v3_comparator_offset_calibration_loop",
+  "coverage_note": "Hidden stimulus uses a different comparator offset polarity, clock period, and support comparator delay from visible smoke coverage."
+}

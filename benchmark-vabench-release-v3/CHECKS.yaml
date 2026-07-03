@@ -2973,10 +2973,25 @@
   parity:
     required: true
     tolerance_notes: "Compare stable sample windows and logical event behavior, not raw timestep equality."
-122-offset-search-comparator: |
+122-comparator-offset-calibration-loop: |
   checker:
-    task_id: v3_offset_search_comparator
-    metric: stable_samples
+    task_id: v3_comparator_offset_calibration_loop
+    metric: closed_loop_offset_estimate
+  sim_correct:
+    checks:
+      - falling_clock_updates_successive_approximation_estimate
+      - generated_differential_stimulus_is_symmetric_about_mid_supply
+      - offset_est_matches_final_stimulus_and_support_offset
+      - valid_asserts_after_configured_search_iterations
+    public_observables:
+      - clk
+      - dcmpp
+      - vinp
+      - vinn
+      - offset_est
+      - valid
+    public_behavior_envelope: "The public spec defines a voltage-domain comparator offset calibration loop that drives a supplied comparator, performs a halving successive-approximation search from comparator decisions, reports the signed offset estimate, and asserts valid after the configured update count."
+    private_threshold_policy: "Checker derives convergence, symmetry, and final offset error from saved waveforms and the support reference offset in the testbench; exact tolerances are not agent-visible."
   scoring:
     axes:
       - dut_compile
@@ -2991,10 +3006,25 @@
       - dut_compile
       - tb_compile
       - sim_correct
-124-comp-os-detect: |
+124-hysteresis-trip-characterizer: |
   checker:
-    task_id: v3_comp_os_detect
-    metric: stable_samples
+    task_id: v3_hysteresis_trip_characterizer
+    metric: trip_capture
+  sim_correct:
+    checks:
+      - captures_input_voltage_at_rising_output_trip
+      - captures_input_voltage_at_falling_output_trip
+      - reports_positive_hysteresis_width_from_latest_trip_pair
+      - valid_asserts_after_both_trip_directions
+    public_observables:
+      - vin
+      - cmp_out
+      - trip_rise
+      - trip_fall
+      - hyst_width
+      - valid
+    public_behavior_envelope: "The public spec defines a measurement component that observes a supplied hysteretic comparator, captures observable rising and falling trip voltages from the comparator output transitions, and reports the resulting hysteresis width."
+    private_threshold_policy: "Checker derives expected trip voltages from waveform crossing events rather than hard-coded support parameters; exact tolerances are not agent-visible."
   scoring:
     axes:
       - dut_compile
@@ -3702,21 +3732,28 @@
       - dut_compile
       - tb_compile
       - sim_correct
-202-l2-cmp-ideal-clocked: |
+202-comparator-delay-overdrive-meter: |
   checker:
-    task_id: v3_l2_cmp_ideal_clocked
-    metric: stable_samples
+    task_id: v3_comparator_delay_overdrive_meter
+    metric: delay_overdrive_measurement
   sim_correct:
     checks:
-      - reset_both_high_when_clock_low
-      - positive_and_negative_decisions_after_rising_edges
-      - equal_input_decision_clears_both_outputs
+      - arms_measurement_on_clock_rising_edge
+      - captures_first_resolving_decision_output_delay
+      - reports_absolute_input_overdrive_from_sampled_clock_edge
+      - reports_decision_polarity_and_valid_flag
     public_observables:
-      - cmpck
+      - clk
       - vinp
       - vinn
-      - dcmpp
-      - dcmpn
+      - outp
+      - outn
+      - delay_ps
+      - overdrive_mv
+      - polarity
+      - valid
+    public_behavior_envelope: "The public spec defines a comparator characterization meter that observes a supplied clocked comparator, measures clock-to-decision delay for each resolved comparison, and reports the sampled input overdrive and decision polarity."
+    private_threshold_policy: "Checker derives expected delay, overdrive, and polarity from saved clock/input/output crossings; exact tolerances are not agent-visible."
   scoring:
     axes:
       - dut_compile

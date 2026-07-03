@@ -11507,28 +11507,6 @@ def _check_offset_search_driver_behavior(
     return True, f"checked_edges={checked} max_diff_err={max_diff_err:.5f} max_cm_err={max_cm_err:.5f}"
 
 
-def check_v3_offset_search_comparator(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    required = {"time", "clk", "vout", "vinp", "vinn"}
-    if not rows or not required.issubset(rows[0]):
-        return False, "missing time/clk/vout/vinp/vinn"
-    vdd = _max_signal_value(rows, ["clk", "vout"], default=0.9)
-    return _check_offset_search_driver_behavior(
-        rows,
-        clk="clk",
-        decision="vout",
-        vinp="vinp",
-        vinn="vinn",
-        common_signal=None,
-        fixed_common=0.5 * vdd,
-        threshold=0.5 * vdd,
-        step_initial=0.010,
-        high_decreases=True,
-        halve_on_polarity_change_only=True,
-        initial_polarity=0,
-        min_edges=4,
-    )
-
-
 def check_v3_start_gated_offset_search(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "clk", "start", "vout", "vinp", "vinn"}
     if not rows or not required.issubset(rows[0]):
@@ -11544,18 +11522,106 @@ def check_v3_start_gated_offset_search(rows: list[dict[str, float]]) -> tuple[bo
     )
 
 
-def check_v3_comp_os_detect(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    required = {"time", "clk", "dcmpp", "vinp", "vinn"}
+def check_v3_comparator_offset_calibration_loop(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "clk", "dcmpp", "vinp", "vinn", "offset_est", "valid", "vos_ref"}
     if not rows or not required.issubset(rows[0]):
-        return False, "missing time/clk/dcmpp/vinp/vinn"
-    return _sample_differential_sequence(
-        rows,
-        "vinp",
-        "vinn",
-        [(8.5, 0.1000), (18.5, 0.0500), (28.5, 0.0250), (38.5, 0.0375), (48.5, 0.03125)],
-        common_mode=0.45,
-        diff_tol=0.0030,
-        common_tol=0.0030,
+        return False, "missing comparator offset calibration loop signals"
+
+    vdd = _max_signal_value(rows, ["clk", "dcmpp", "valid"], default=0.9)
+    final_t = rows[-1]["time"]
+    final_vinp = sample_signal_at(rows, "vinp", final_t)
+    final_vinn = sample_signal_at(rows, "vinn", final_t)
+    final_est = sample_signal_at(rows, "offset_est", final_t)
+    final_valid = sample_signal_at(rows, "valid", final_t)
+    ref_offset = sample_signal_at(rows, "vos_ref", final_t)
+    if None in (final_vinp, final_vinn, final_est, final_valid, ref_offset):
+        return False, "missing_final_calibration_samples"
+
+    assert final_vinp is not None
+    assert final_vinn is not None
+    assert final_est is not None
+    assert final_valid is not None
+    assert ref_offset is not None
+
+    final_diff = final_vinp - final_vinn
+    final_common = 0.5 * (final_vinp + final_vinn)
+    mid_supply = 0.5 * vdd
+    diff_err = abs(final_diff - final_est)
+    ref_err = abs(final_est - ref_offset)
+    cm_err = abs(final_common - mid_supply)
+    valid_ok = final_valid > 0.7 * vdd
+
+    times = [row["time"] for row in rows]
+    clk_falls = _threshold_crossings(
+        [row["clk"] for row in rows],
+        times,
+        threshold=0.5 * vdd,
+        direction="falling",
+    )
+    valid_edges = _threshold_crossings(
+        [row["valid"] for row in rows],
+        times,
+        threshold=0.5 * vdd,
+        direction="rising",
+    )
+    if len(clk_falls) < 7:
+        return False, f"insufficient_calibration_updates={len(clk_falls)}"
+    if not valid_edges:
+        return False, "valid_never_asserted"
+
+    ok = valid_ok and diff_err <= 0.0025 and ref_err <= 0.0025 and cm_err <= 0.0025
+    return (
+        ok,
+        f"offset_est={final_est:.5f} ref={ref_offset:.5f} diff={final_diff:.5f} "
+        f"diff_err={diff_err:.5f} ref_err={ref_err:.5f} cm_err={cm_err:.5f} "
+        f"valid={final_valid:.3f} updates={len(clk_falls)} valid_edges={len(valid_edges)}",
+    )
+
+
+def check_v3_hysteresis_trip_characterizer(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "vin", "cmp_out", "trip_rise", "trip_fall", "hyst_width", "valid"}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing hysteresis trip characterizer signals"
+
+    vdd = _max_signal_value(rows, ["cmp_out", "valid"], default=0.9)
+    times = [row["time"] for row in rows]
+    cmp_values = [row["cmp_out"] for row in rows]
+    rises = _threshold_crossings(cmp_values, times, threshold=0.5 * vdd, direction="rising")
+    falls = _threshold_crossings(cmp_values, times, threshold=0.5 * vdd, direction="falling")
+    if len(rises) < 2 or len(falls) < 2:
+        return False, f"insufficient_trip_events rises={len(rises)} falls={len(falls)}"
+
+    rise_t = rises[-1]
+    fall_t = falls[-1]
+    expected_rise = sample_signal_at(rows, "vin", rise_t)
+    expected_fall = sample_signal_at(rows, "vin", fall_t)
+    final_t = rows[-1]["time"]
+    trip_rise = sample_signal_at(rows, "trip_rise", final_t)
+    trip_fall = sample_signal_at(rows, "trip_fall", final_t)
+    hyst_width = sample_signal_at(rows, "hyst_width", final_t)
+    valid = sample_signal_at(rows, "valid", final_t)
+    if None in (expected_rise, expected_fall, trip_rise, trip_fall, hyst_width, valid):
+        return False, "missing_trip_measurement_samples"
+
+    assert expected_rise is not None
+    assert expected_fall is not None
+    assert trip_rise is not None
+    assert trip_fall is not None
+    assert hyst_width is not None
+    assert valid is not None
+
+    expected_width = expected_rise - expected_fall
+    rise_err = abs(trip_rise - expected_rise)
+    fall_err = abs(trip_fall - expected_fall)
+    width_err = abs(hyst_width - expected_width)
+    valid_ok = valid > 0.7 * vdd
+    width_ok = expected_width > 0.015
+    ok = valid_ok and width_ok and rise_err <= 0.004 and fall_err <= 0.004 and width_err <= 0.004
+    return (
+        ok,
+        f"trip_rise={trip_rise:.5f}/{expected_rise:.5f} trip_fall={trip_fall:.5f}/{expected_fall:.5f} "
+        f"width={hyst_width:.5f}/{expected_width:.5f} valid={valid:.3f} "
+        f"events={len(rises)}/{len(falls)}",
     )
 
 
@@ -12892,17 +12958,104 @@ def check_v3_linear_pfd_gain(rows: list[dict[str, float]]) -> tuple[bool, str]:
     )
 
 
-def check_v3_l2_cmp_ideal_clocked(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    required = {"time", "cmpck", "vinp", "vinn", "dcmpn", "dcmpp"}
+def check_v3_comparator_delay_overdrive_meter(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {
+        "time",
+        "clk",
+        "vinp",
+        "vinn",
+        "outp",
+        "outn",
+        "delay_ps",
+        "overdrive_mv",
+        "polarity",
+        "valid",
+    }
     if not rows or not required.issubset(rows[0]):
-        return False, "missing l2 cmp ideal clocked signals"
-    return _sample_many(
-        rows,
-        {
-            "dcmpp": [(1.3, 0.9), (2.0, 0.9), (11.3, 0.0), (12.0, 0.9), (21.3, 0.0), (31.3, 0.9)],
-            "dcmpn": [(1.3, 0.0), (2.0, 0.9), (11.3, 0.9), (12.0, 0.9), (21.3, 0.0), (31.3, 0.0)],
-        },
-        tol=0.08,
+        return False, "missing comparator delay overdrive meter signals"
+
+    vdd = _max_signal_value(rows, ["clk", "outp", "outn", "valid", "polarity"], default=0.9)
+    threshold = 0.5 * vdd
+    times = [row["time"] for row in rows]
+    clk_rises = _threshold_crossings([row["clk"] for row in rows], times, threshold=threshold, direction="rising")
+    out_events: list[tuple[float, str]] = []
+    out_events += [
+        (t, "outp")
+        for t in _threshold_crossings([row["outp"] for row in rows], times, threshold=threshold, direction="rising")
+    ]
+    out_events += [
+        (t, "outn")
+        for t in _threshold_crossings([row["outn"] for row in rows], times, threshold=threshold, direction="rising")
+    ]
+    out_events.sort()
+    if len(clk_rises) < 4 or len(out_events) < 4:
+        return False, f"insufficient_delay_events clk={len(clk_rises)} out={len(out_events)}"
+
+    failures: list[str] = []
+    checked = 0
+    max_delay_err = 0.0
+    max_overdrive_err = 0.0
+    saw_outp = False
+    saw_outn = False
+
+    for idx, clk_t in enumerate(clk_rises):
+        next_clk = clk_rises[idx + 1] if idx + 1 < len(clk_rises) else rows[-1]["time"] + 1e-12
+        event = next(((t, name) for t, name in out_events if clk_t + 1e-13 < t < next_clk), None)
+        if event is None:
+            continue
+        event_t, out_name = event
+        probe_t = _event_probe_time(rows, event_t, delay_s=0.08e-9)
+        if probe_t is None:
+            continue
+        vinp = sample_signal_at(rows, "vinp", clk_t + 1e-12)
+        vinn = sample_signal_at(rows, "vinn", clk_t + 1e-12)
+        delay_ps = sample_signal_at(rows, "delay_ps", probe_t)
+        overdrive_mv = sample_signal_at(rows, "overdrive_mv", probe_t)
+        polarity = sample_signal_at(rows, "polarity", probe_t)
+        valid = sample_signal_at(rows, "valid", probe_t)
+        if None in (vinp, vinn, delay_ps, overdrive_mv, polarity, valid):
+            continue
+        assert vinp is not None
+        assert vinn is not None
+        assert delay_ps is not None
+        assert overdrive_mv is not None
+        assert polarity is not None
+        assert valid is not None
+
+        expected_delay_ps = 1.0e12 * (event_t - clk_t)
+        expected_overdrive_mv = 1.0e3 * abs(vinp - vinn)
+        expected_polarity = vdd if out_name == "outp" else 0.0
+        saw_outp = saw_outp or out_name == "outp"
+        saw_outn = saw_outn or out_name == "outn"
+        delay_err = abs(delay_ps - expected_delay_ps)
+        overdrive_err = abs(overdrive_mv - expected_overdrive_mv)
+        polarity_err = abs(polarity - expected_polarity)
+        max_delay_err = max(max_delay_err, delay_err)
+        max_overdrive_err = max(max_overdrive_err, overdrive_err)
+        checked += 1
+        if delay_err > 4.0:
+            failures.append(
+                f"delay@{probe_t * 1e9:.3f}ns={delay_ps:.3f} expected={expected_delay_ps:.3f}"
+            )
+        if overdrive_err > 1.5:
+            failures.append(
+                f"overdrive@{probe_t * 1e9:.3f}ns={overdrive_mv:.3f} expected={expected_overdrive_mv:.3f}"
+            )
+        if polarity_err > 0.08 or valid < 0.7 * vdd:
+            failures.append(
+                f"flags@{probe_t * 1e9:.3f}ns polarity={polarity:.3f}/{expected_polarity:.3f} valid={valid:.3f}"
+            )
+
+    if checked < 4:
+        return False, f"insufficient_checked_delay_events={checked}"
+    if not (saw_outp and saw_outn):
+        return False, f"missing_decision_polarity_coverage outp={saw_outp} outn={saw_outn}"
+    if failures:
+        return False, " ".join(failures[:6])
+    return (
+        True,
+        f"checked={checked} max_delay_err_ps={max_delay_err:.3f} "
+        f"max_overdrive_err_mv={max_overdrive_err:.3f}",
     )
 
 
@@ -19757,9 +19910,9 @@ CHECKS = {
     "v3_crossing_pulse_detector": check_v3_crossing_pulse_detector,
     "v3_not_gate": check_v3_not_gate,
     "v3_dff_reset": check_v3_dff_reset,
-    "v3_offset_search_comparator": check_v3_offset_search_comparator,
+    "v3_comparator_offset_calibration_loop": check_v3_comparator_offset_calibration_loop,
     "v3_start_gated_offset_search": check_v3_start_gated_offset_search,
-    "v3_comp_os_detect": check_v3_comp_os_detect,
+    "v3_hysteresis_trip_characterizer": check_v3_hysteresis_trip_characterizer,
     "v3_clocked_dac_4b_binary": check_v3_clocked_dac_4b_binary,
     "v3_latched_comparator_delay": check_v3_latched_comparator_delay,
     "v3_sar_weighted_sum": check_v3_sar_weighted_sum,
@@ -19837,7 +19990,7 @@ CHECKS = {
     "v3_ideal_clkmux_8channel": check_v3_ideal_clkmux_8channel,
     "v3_dac_ideal_4b_offset": check_v3_dac_ideal_4b_offset,
     "v3_linear_pfd_gain": check_v3_linear_pfd_gain,
-    "v3_l2_cmp_ideal_clocked": check_v3_l2_cmp_ideal_clocked,
+    "v3_comparator_delay_overdrive_meter": check_v3_comparator_delay_overdrive_meter,
     "v3_comparator_offset_driver": check_v3_comparator_offset_driver,
     "v3_pipe_2lane_edge_align": check_v3_pipe_2lane_edge_align,
     "v3_dac_serial_accumulator": check_v3_dac_serial_accumulator,
@@ -21158,9 +21311,9 @@ CHECKS["118-clocked-dac-restore-7b"] = check_v3_clocked_dac_restore_7b
 CHECKS["119-crossing-pulse-detector"] = check_v3_crossing_pulse_detector
 CHECKS["120-not-gate-voltage"] = check_v3_not_gate
 CHECKS["121-dff-reset-voltage"] = check_v3_dff_reset
-CHECKS["122-offset-search-comparator"] = check_v3_offset_search_comparator
+CHECKS["122-comparator-offset-calibration-loop"] = check_v3_comparator_offset_calibration_loop
 CHECKS["123-start-gated-offset-search"] = check_v3_start_gated_offset_search
-CHECKS["124-comp-os-detect"] = check_v3_comp_os_detect
+CHECKS["124-hysteresis-trip-characterizer"] = check_v3_hysteresis_trip_characterizer
 CHECKS["125-clocked-dac-4b-binary"] = check_v3_clocked_dac_4b_binary
 CHECKS["126-latched-comparator-delay"] = check_v3_latched_comparator_delay
 CHECKS["127-sar-weighted-sum"] = check_v3_sar_weighted_sum
@@ -21214,7 +21367,7 @@ CHECKS["198-l2-cdac-4b-residue"] = check_v3_l2_cdac_4b_residue
 CHECKS["199-ideal-clkmux-8channel"] = check_v3_ideal_clkmux_8channel
 CHECKS["200-dac-ideal-4b-offset"] = check_v3_dac_ideal_4b_offset
 CHECKS["201-linear-pfd-gain"] = check_v3_linear_pfd_gain
-CHECKS["202-l2-cmp-ideal-clocked"] = check_v3_l2_cmp_ideal_clocked
+CHECKS["202-comparator-delay-overdrive-meter"] = check_v3_comparator_delay_overdrive_meter
 CHECKS["203-comparator-offset-driver"] = check_v3_comparator_offset_driver
 CHECKS["204-pipe-2lane-edge-align"] = check_v3_pipe_2lane_edge_align
 CHECKS["205-dac-serial-accumulator"] = check_v3_dac_serial_accumulator
@@ -21392,9 +21545,9 @@ V3_TASK_ID_ALIASES = {
     "v3_119_crossing_pulse_detector": "v3_crossing_pulse_detector",
     "v3_120_not_gate_voltage": "v3_not_gate",
     "v3_121_dff_reset_voltage": "v3_dff_reset",
-    "v3_122_offset_search_comparator": "v3_offset_search_comparator",
+    "v3_122_comparator_offset_calibration_loop": "v3_comparator_offset_calibration_loop",
     "v3_123_start_gated_offset_search": "v3_start_gated_offset_search",
-    "v3_124_comp_os_detect": "v3_comp_os_detect",
+    "v3_124_hysteresis_trip_characterizer": "v3_hysteresis_trip_characterizer",
     "v3_125_clocked_dac_4b_binary": "v3_clocked_dac_4b_binary",
     "v3_126_latched_comparator_delay": "v3_latched_comparator_delay",
     "v3_127_sar_weighted_sum": "v3_sar_weighted_sum",
@@ -21472,7 +21625,7 @@ V3_TASK_ID_ALIASES = {
     "v3_199_ideal_clkmux_8channel": "v3_ideal_clkmux_8channel",
     "v3_200_dac_ideal_4b_offset": "v3_dac_ideal_4b_offset",
     "v3_201_linear_pfd_gain": "v3_linear_pfd_gain",
-    "v3_202_l2_cmp_ideal_clocked": "v3_l2_cmp_ideal_clocked",
+    "v3_202_comparator_delay_overdrive_meter": "v3_comparator_delay_overdrive_meter",
     "v3_203_comparator_offset_driver": "v3_comparator_offset_driver",
     "v3_204_pipe_2lane_edge_align": "v3_pipe_2lane_edge_align",
     "v3_205_dac_serial_accumulator": "v3_dac_serial_accumulator",

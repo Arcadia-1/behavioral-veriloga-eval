@@ -1,0 +1,12 @@
+{
+  "task": "124-hysteresis-trip-characterizer",
+  "form": "dut",
+  "visible": [
+    "test_visible/tests/run_visible_smoke.py"
+  ],
+  "hidden": [
+    "test_hidden/tests/tb_source_ref.scs"
+  ],
+  "checker": "v3_hysteresis_trip_characterizer",
+  "coverage_note": "Hidden stimulus changes the reference level, hysteresis width, offset, comparator delay, and ramp trajectory."
+}

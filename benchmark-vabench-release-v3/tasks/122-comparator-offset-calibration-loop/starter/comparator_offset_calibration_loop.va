@@ -1,0 +1,19 @@
+`include "disciplines.vams"
+
+module comparator_offset_calibration_loop(vdd, vss, clk, dcmpp, vinp, vinn, offset_est, valid);
+input vdd, vss, clk, dcmpp;
+output vinp, vinn, offset_est, valid;
+electrical vdd, vss, clk, dcmpp, vinp, vinn, offset_est, valid;
+
+parameter real step_initial = 64m;
+parameter integer iterations = 7;
+parameter real tr = 20p;
+
+analog begin
+    V(vinp, vss) <+ 0.5 * V(vdd, vss);
+    V(vinn, vss) <+ 0.5 * V(vdd, vss);
+    V(offset_est, vss) <+ transition(0.0, 0.0, tr, tr);
+    V(valid, vss) <+ transition(0.0, 0.0, tr, tr);
+end
+
+endmodule

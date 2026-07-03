@@ -1,0 +1,31 @@
+{
+  "negative_count": 5,
+  "policy": "five_partial_pass_near_miss_negatives_per_task",
+  "variants": [
+    {
+      "description": "Leaves all measurement outputs at zero.",
+      "id": "neg_001_zero",
+      "path": "negative_variants/neg_001_zero/comparator_delay_overdrive_meter.va"
+    },
+    {
+      "description": "Measures delay from the wrong clock edge.",
+      "id": "neg_002_wrong_edge",
+      "path": "negative_variants/neg_002_wrong_edge/comparator_delay_overdrive_meter.va"
+    },
+    {
+      "description": "Reports signed overdrive instead of absolute overdrive.",
+      "id": "neg_003_no_overdrive_abs",
+      "path": "negative_variants/neg_003_no_overdrive_abs/comparator_delay_overdrive_meter.va"
+    },
+    {
+      "description": "Flips the reported decision polarity.",
+      "id": "neg_004_wrong_polarity",
+      "path": "negative_variants/neg_004_wrong_polarity/comparator_delay_overdrive_meter.va"
+    },
+    {
+      "description": "Scales the reported delay too low.",
+      "id": "neg_005_metric_scale_low",
+      "path": "negative_variants/neg_005_metric_scale_low/comparator_delay_overdrive_meter.va"
+    }
+  ]
+}

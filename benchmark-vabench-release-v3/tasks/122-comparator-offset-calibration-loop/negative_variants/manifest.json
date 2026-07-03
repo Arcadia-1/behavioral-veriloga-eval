@@ -1,0 +1,31 @@
+{
+  "negative_count": 5,
+  "policy": "five_partial_pass_near_miss_negatives_per_task",
+  "variants": [
+    {
+      "description": "Leaves stimulus, estimate, and valid outputs at zero.",
+      "id": "neg_001_zero",
+      "path": "negative_variants/neg_001_zero/comparator_offset_calibration_loop.va"
+    },
+    {
+      "description": "Moves the estimate in the opposite direction from comparator decisions.",
+      "id": "neg_002_wrong_direction",
+      "path": "negative_variants/neg_002_wrong_direction/comparator_offset_calibration_loop.va"
+    },
+    {
+      "description": "Uses a constant search step rather than a halving search.",
+      "id": "neg_003_no_step_halving",
+      "path": "negative_variants/neg_003_no_step_halving/comparator_offset_calibration_loop.va"
+    },
+    {
+      "description": "Runs the search but never asserts the completion flag.",
+      "id": "neg_004_no_valid",
+      "path": "negative_variants/neg_004_no_valid/comparator_offset_calibration_loop.va"
+    },
+    {
+      "description": "Reports a scaled-down offset estimate.",
+      "id": "neg_005_metric_scale_low",
+      "path": "negative_variants/neg_005_metric_scale_low/comparator_offset_calibration_loop.va"
+    }
+  ]
+}
