@@ -255,6 +255,96 @@ VALUE
     assert any("tcsh -c" in script for script in captured["text_scripts"])
 
 
+def test_direct_sui_backend_retries_transient_rc255(monkeypatch, tmp_path: Path) -> None:
+    output_dir = tmp_path / "out"
+    tb_path = tmp_path / "tb.scs"
+    tb_path.write_text("simulator lang=spectre\n", encoding="utf-8")
+    calls: list[dict[str, object]] = []
+
+    monkeypatch.setenv("VAEVAS_SUI_DIRECT_RETRIES", "1")
+    monkeypatch.setenv("VAEVAS_SUI_DIRECT_RETRY_BACKOFF_S", "0")
+
+    def fake_direct(**kwargs):
+        calls.append(kwargs)
+        if len(calls) == 1:
+            return {
+                "ok": False,
+                "status": "error",
+                "errors": ["remote_upload_failed rc=255"],
+                "warnings": [],
+                "remote_run_dir": "/tmp/first",
+            }
+        return {
+            "ok": True,
+            "status": "success",
+            "errors": [],
+            "warnings": [],
+            "remote_run_dir": "/tmp/second",
+        }
+
+    monkeypatch.setattr(dual, "run_spectre_case_sui_direct", fake_direct)
+
+    result = dual.run_spectre_case(
+        task_id="case",
+        tb_path=tb_path,
+        include_paths=[],
+        output_dir=output_dir,
+        bridge_repo=tmp_path / "bridge",
+        cadence_cshrc="/cadence.cshrc",
+        timeout_s=5,
+        spectre_backend="sui-direct",
+        sui_host="thu-sui-test",
+        sui_work_root="/tmp/vaevas-direct-spectre",
+    )
+
+    assert result["ok"] is True
+    assert len(calls) == 2
+    assert result["sui_direct_retry_count"] == 1
+    assert result["sui_direct_attempts"][0]["retryable"] is True
+    assert "sui_direct_retry attempt=1 next_attempt=2 reason=remote_upload_failed rc=255" in result["warnings"][0]
+    saved = json.loads((output_dir / "spectre_result.json").read_text(encoding="utf-8"))
+    assert saved["sui_direct_retry_count"] == 1
+
+
+def test_direct_sui_backend_does_not_retry_spectre_or_license_failure(monkeypatch, tmp_path: Path) -> None:
+    output_dir = tmp_path / "out"
+    tb_path = tmp_path / "tb.scs"
+    tb_path.write_text("simulator lang=spectre\n", encoding="utf-8")
+    calls: list[dict[str, object]] = []
+
+    monkeypatch.setenv("VAEVAS_SUI_DIRECT_RETRIES", "3")
+
+    def fake_direct(**kwargs):
+        calls.append(kwargs)
+        return {
+            "ok": False,
+            "status": "error",
+            "errors": ["spectre_failed rc=1", "spectre_license_checkout_failed:SPECTRE-209"],
+            "warnings": [],
+            "remote_run_dir": "/tmp/fail",
+        }
+
+    monkeypatch.setattr(dual, "run_spectre_case_sui_direct", fake_direct)
+
+    result = dual.run_spectre_case(
+        task_id="case",
+        tb_path=tb_path,
+        include_paths=[],
+        output_dir=output_dir,
+        bridge_repo=tmp_path / "bridge",
+        cadence_cshrc="/cadence.cshrc",
+        timeout_s=5,
+        spectre_backend="sui-direct",
+        sui_host="thu-sui-test",
+        sui_work_root="/tmp/vaevas-direct-spectre",
+    )
+
+    assert result["ok"] is False
+    assert len(calls) == 1
+    assert result["sui_direct_retry_count"] == 0
+    assert result["sui_direct_attempts"][0]["retryable"] is False
+
+
 def test_direct_sui_backend_reports_license_checkout_failure(monkeypatch, tmp_path: Path) -> None:
     output_dir = tmp_path / "out"
     tb_path = tmp_path / "tb.scs"

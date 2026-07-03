@@ -112,6 +112,43 @@ def spectre_license_queue_timeout(timeout_s: int) -> int:
     return max(1, min(requested, max(1, int(timeout_s) - 30)))
 
 
+def direct_sui_retry_count() -> int:
+    raw = os.environ.get("VAEVAS_SUI_DIRECT_RETRIES", "2")
+    try:
+        value = int(raw)
+    except ValueError:
+        return 2
+    return max(0, min(value, 5))
+
+
+def direct_sui_retry_backoff_s(attempt_number: int) -> float:
+    raw = os.environ.get("VAEVAS_SUI_DIRECT_RETRY_BACKOFF_S", "3")
+    try:
+        base = float(raw)
+    except ValueError:
+        base = 3.0
+    return max(0.0, min(base * max(1, attempt_number), 30.0))
+
+
+def retryable_direct_sui_result(result: dict) -> tuple[bool, str]:
+    if result.get("ok"):
+        return False, ""
+    errors = [str(item) for item in (result.get("errors") or [])]
+    if any("spectre_license_checkout_failed" in error for error in errors):
+        return False, ""
+    for error in errors:
+        if re.search(r"\brc=255\b", error):
+            return True, error
+        if error == "remote_workdir_unresolved":
+            return True, error
+    return False, ""
+
+
+def write_spectre_result_json(output_dir: Path, result: dict) -> None:
+    output_dir.mkdir(parents=True, exist_ok=True)
+    (output_dir / "spectre_result.json").write_text(json.dumps(result, indent=2), encoding="utf-8")
+
+
 def safe_path_component(value: object) -> str:
     text = str(value or "case")
     return re.sub(r"[^A-Za-z0-9_.-]+", "_", text).strip("_") or "case"
@@ -2165,18 +2202,51 @@ def run_spectre_case(
     backend = normalize_spectre_backend(spectre_backend)
     mode = normalize_spectre_mode(spectre_mode)
     if backend == "sui-direct":
-        return run_spectre_case_sui_direct(
-            task_id=task_id,
-            tb_path=tb_path,
-            include_paths=include_paths,
-            output_dir=output_dir,
-            cadence_cshrc=cadence_cshrc,
-            timeout_s=timeout_s,
-            side_output_files=side_output_files,
-            sui_host=sui_host,
-            sui_work_root=sui_work_root,
-            spectre_mode=mode,
-        )
+        max_attempts = 1 + direct_sui_retry_count()
+        attempts: list[dict[str, object]] = []
+        retry_warnings: list[str] = []
+        for attempt_number in range(1, max_attempts + 1):
+            result = run_spectre_case_sui_direct(
+                task_id=task_id,
+                tb_path=tb_path,
+                include_paths=include_paths,
+                output_dir=output_dir,
+                cadence_cshrc=cadence_cshrc,
+                timeout_s=timeout_s,
+                side_output_files=side_output_files,
+                sui_host=sui_host,
+                sui_work_root=sui_work_root,
+                spectre_mode=mode,
+            )
+            retryable, retry_reason = retryable_direct_sui_result(result)
+            attempts.append(
+                {
+                    "attempt": attempt_number,
+                    "ok": bool(result.get("ok")),
+                    "status": result.get("status", ""),
+                    "retryable": retryable,
+                    "retry_reason": retry_reason,
+                    "errors": list(result.get("errors") or []),
+                    "remote_run_dir": result.get("remote_run_dir", ""),
+                }
+            )
+            if result.get("ok") or not retryable or attempt_number >= max_attempts:
+                result["sui_direct_attempts"] = attempts
+                result["sui_direct_retry_count"] = attempt_number - 1
+                if retry_warnings:
+                    result.setdefault("warnings", []).extend(retry_warnings)
+                write_spectre_result_json(output_dir, result)
+                return result
+            backoff_s = direct_sui_retry_backoff_s(attempt_number)
+            retry_warnings.append(
+                "sui_direct_retry "
+                f"attempt={attempt_number} next_attempt={attempt_number + 1} "
+                f"reason={retry_reason} backoff_s={backoff_s:g}"
+            )
+            if backoff_s > 0:
+                time.sleep(backoff_s)
+
+        raise AssertionError("unreachable direct SUI retry loop")
 
     output_dir.mkdir(parents=True, exist_ok=True)
     bridge_py = bridge_repo / ".venv" / "bin" / "python"
