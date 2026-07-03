@@ -31,11 +31,14 @@ Task boundary is one Verilog-A DUT, `window_comparator_ref.va`, plus EVAS/Spectr
   simulation-correctness negatives.
 - Visible compile/sim smoke: `COMPILE_SIM_OK` with public `vin/out`
   observables saved.
-- Cadence/Spectre evidence from `scripts/run_v3_spectre_audit.py`: hidden
-  gold PASS and 4/4 hidden negative variants `NEGATIVE_REJECTED`.
-- Gate 2 Cadence status: `cadence_lint_pending`.
+- Cadence/Spectre evidence from `scripts/run_v3_spectre_audit.py` using the
+  restored Virtuoso bridge (`BRIDGE_PROFILE=jin`, `--spectre-backend bridge`):
+  hidden gold PASS and 4/4 hidden negative variants `NEGATIVE_REJECTED`.
+- AHDL lint/read-in triage: Spectre reports no task-level errors. The remaining
+  warnings are global AHDL-CMI/environment or simulator-mode notices, not
+  task-specific Verilog-A modeling findings.
+- Gate 2 Cadence status: `cadence_modeling_ready`.
 
 ## Remaining Risk
 
-AHDL lint evidence is not attached yet; do not mark `cadence_modeling_ready`
-until lint/triage is recorded.
+No remaining task-specific modeling blocker found in this review slice.

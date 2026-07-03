@@ -1,0 +1,30 @@
+{
+  "status": "concrete_near_miss_negatives",
+  "variants": [
+    {
+      "id": "neg_001",
+      "description": "Inverts the static differential decision polarity.",
+      "path": "negative_variants/neg_001/comparator.va"
+    },
+    {
+      "id": "neg_002",
+      "description": "Shifts the effective threshold away from the zero-differential crossing.",
+      "path": "negative_variants/neg_002/comparator.va"
+    },
+    {
+      "id": "neg_003",
+      "description": "Misses one transition direction across the comparator threshold.",
+      "path": "negative_variants/neg_003/comparator.va"
+    },
+    {
+      "id": "neg_004",
+      "description": "Produces a stuck or one-sided output instead of rail-referenced decisions.",
+      "path": "negative_variants/neg_004/comparator.va"
+    },
+    {
+      "id": "neg_005",
+      "description": "Fails to respond to the falling differential crossing.",
+      "path": "negative_variants/neg_005/comparator.va"
+    }
+  ]
+}

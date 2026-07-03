@@ -1,74 +1,43 @@
 # Strongarm Style Latch Comparator
 
-## Task Contract
+Implement a voltage-domain StrongARM-style clocked latch comparator.
 
-- Form: `dut`
-- Level: `L1`
-- Category: Comparator and Decision Circuits
-- Base function: StrongARM-style latch comparator
-- Domain: `voltage`
-- Target artifact(s): `cmp_strongarm.va`
-- Supplied/reference support artifact(s): `tb_cmp_strongarm_ref.scs`
-- Visible context: public task, interface, artifact, stimulus, and observable contract only.
-- Hidden evaluator boundary: deterministic checker and EVAS/Spectre validation are external; do not generate checker logic.
+## Public Interface
 
-## Form-Specific Requirements
+Declare module `cmp_strongarm` with positional ports `CLK, VINN, VINP, DCMPN,
+DCMPP, LP, LM, VSS, VDD`. All ports are electrical. `CLK` is the comparator
+clock, `VINP` and `VINN` are the differential inputs, `DCMPP` and `DCMPN` are
+the complementary decision outputs, `LP` and `LM` are latch-state monitor
+outputs, and `VSS`/`VDD` are supply rails.
 
-- Implement only the requested Verilog-A DUT artifact(s); do not generate a Spectre testbench in this form.
-- Preserve the public module names, port order, parameters, and waveform observable names.
+## Public Parameter Contract
 
-## Public Verilog-A Interface
+Provide these overrideable public parameters:
 
-- `cmp_strongarm.va` declares module `cmp_strongarm` with positional ports: `CLK`, `VINN`, `VINP`, `DCMPN`, `DCMPP`, `LP`, `LM`, `VSS`, `VDD`.
+- `td_cmp = 0`: comparator output delay.
+- `voffset = 0`: input-referred offset subtracted from `VINP - VINN`.
 
-## Public Testbench And Observable Contract
+## Functional Contract
 
-Public transient setting used by the evaluator:
+- Initialize all public decision and latch-state outputs low.
+- Use `V(VDD,VSS)/2` as the clock decision threshold.
+- On each rising clock crossing, latch the sign of
+  `V(VINP,VSS) - V(VINN,VSS) - voffset`.
+- For a positive latched differential input, drive `DCMPP` and `LP` high while
+  `DCMPN` and `LM` remain low. For a negative latched differential input, drive
+  `DCMPN` and `LM` high while `DCMPP` and `LP` remain low.
+- For an exactly zero effective differential input, keep both complementary
+  decision states low.
+- On each falling clock crossing, reset all public decision and latch-state
+  outputs low.
+- Hold the latched decision between clock events; the model must not become
+  transparent while the clock is high.
 
-```spectre
-tran tran stop=4n maxstep=5p
-```
+## Modeling Constraints
 
-The evaluator expects these exact public scalar observables:
-
-- `clk`
-- `vinp`
-- `vinn`
-- `out_p`
-- `out_n`
-
-When this form generates a testbench, use plain scalar save names for these observables; do not rely on instance-qualified or aliased save names.
-
-## Public Behavior Checks
-
-- `outputs_toggle_nontrivially`
-- `rising_clk_edge_latches_positive_decision`
-- `rising_clk_edge_latches_negative_decision`
-- `falling_clk_resets_both_outputs_low`
-- `latched_decision_holds_through_input_swap`
-
-## Output Contract
-
-Return exactly one source artifact named `cmp_strongarm.va`.
-Do not include explanatory prose outside the source artifact contents.
-
-## Task-Specific Description
-
-# StrongARM-Style Latch Comparator DUT
-
-Write a pure voltage-domain Verilog-A module named `cmp_strongarm`.
-
-The module is a clocked StrongArm-style comparator with electrical ports
-`CLK`, `VINN`, `VINP`, `DCMPN`, `DCMPP`, `LP`, `LM`, `VSS`, and `VDD`. On each
-rising edge of `CLK`, compare `VINP - VINN` after applying the optional
-`voffset` parameter. Drive `DCMPP` high and `DCMPN` low when the offset-adjusted
-differential input is positive; drive `DCMPN` high and `DCMPP` low when it is
-negative. On falling clock edges, reset both comparator outputs low.
-
-The model must be edge-latched, not transparent during the high clock phase:
-after a rising edge decision, later input polarity swaps must not change
-`DCMPP`/`DCMPN` until the next rising clock edge. Drive `LP` and `LM` as
-observable latch-state nodes consistent with `DCMPP` and `DCMPN`.
-
-Use voltage contributions and smoothed output transitions. Do not use current
-contributions, `ddt()`, or `idt()`.
+Return only `cmp_strongarm.va`. Use voltage contributions only. Do not modify
+or emit the support testbench, add checker logic, hard-code waveform sample
+points, add simulator-private side channels, use current contributions,
+`ddt()`, or `idt()`. For Cadence-style event modeling, update discrete state in
+`cross()`/`initial_step` event blocks and drive smoothed output contributions
+outside those event blocks.

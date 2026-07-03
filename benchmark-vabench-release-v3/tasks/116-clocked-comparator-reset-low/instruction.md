@@ -1,46 +1,38 @@
-# Source Clocked Comparator Reset Low
+# Clocked Comparator Reset Low
 
-## Task Contract
+Implement a clocked differential comparator with reset-low voltage-coded
+decision outputs.
 
-- Form: `dut`
-- Level: `L1`
-- Category: Data Converter
-- Base function: source-derived `clocked_comparator_reset_low`
-- Domain: `voltage`
-- Target artifact(s): `clocked_comparator_reset_low.va`
-- Source provenance: `caiyizeng25/comp_ideal.va`
-- Visible context: public task, interface, artifact, stimulus, and observable contract only.
-- Hidden evaluator boundary: deterministic checker and EVAS/Spectre validation are external; do not generate checker logic.
+## Public Interface
 
-## Form-Specific Requirements
+Declare module `clocked_comparator_reset_low` with positional ports `CMPCK,
+VINN, VINP, DCMPN, DCMPP`. All ports are electrical. `CMPCK` is the comparator
+clock, `VINP` and `VINN` are the differential analog inputs, and
+`DCMPP`/`DCMPN` are complementary decision outputs.
 
-- Implement only the requested Verilog-A DUT artifact.
-- Preserve the public module name, port order, parameters, and waveform observable names.
-- Use voltage contributions only. Do not use current contributions, `ddt()`, or `idt()`.
+## Public Parameter Contract
 
-## Public Verilog-A Interface
+Provide these overrideable public parameters:
 
-`clocked_comparator_reset_low.va` declares module `clocked_comparator_reset_low` with positional ports:
+- `vdd = 0.9 V`: logic high level and clock threshold reference.
+- `td_cmp = 100p`: output decision delay.
+- `tr = 10p`: output transition smoothing time.
 
-```text
-CMPCK, VINN, VINP, DCMPN, DCMPP
-```
+## Functional Contract
 
-## Public Testbench And Observable Contract
+- Initialize both decision outputs low.
+- Whenever `CMPCK` falls through `vdd/2`, reset both decision outputs low.
+- Whenever `CMPCK` rises through `vdd/2`, latch a differential decision:
+  `DCMPP` high for `VINP > VINN`, `DCMPN` high for `VINP < VINN`, and both
+  outputs remain low for an equal-input decision.
+- Hold the latched or reset state until the next clock event.
+- Drive outputs as smooth voltage-domain levels using the configured delay and
+  transition time.
 
-The public and hidden smoke testbench uses the transient statement shown in `test_hidden/tests/tb_source_ref.scs`.
-The evaluator samples stable windows after event edges and checks source-derived behavior. It does not require pointwise equality at simulator timesteps.
+## Modeling Constraints
 
-## Public Behavior Checks
-
-- reset_low_when_clock_falls
-- positive_and_negative_decisions_after_rising_edges
-
-## Output Contract
-
-Return exactly one source artifact named `clocked_comparator_reset_low.va`.
-Do not include explanatory prose outside the source artifact contents.
-
-## Task-Specific Description
-
-Implement the source-derived voltage-domain behavior represented by `clocked_comparator_reset_low`. This benchmark case is included because it captures a reusable primitive from the deduplicated historical Verilog-A corpus while remaining small enough for deterministic EVAS/Spectre parity evaluation.
+Return only `clocked_comparator_reset_low.va`. Use voltage contributions only.
+Do not modify or emit the support testbench, add checker logic, hard-code
+waveform sample points, add simulator-private side channels, use current
+contributions, `ddt()`, or `idt()`. Update local decision state in analog event
+blocks and drive smoothed output contributions outside those event blocks.

@@ -1,43 +1,42 @@
 # Comparator Offset Search
 
-Implement `comparator_offset_search_ref.va` in Verilog-A.
+Implement a voltage-domain measurement companion for a single-ramp comparator
+offset search.
 
-## Interface
+## Public Interface
 
-```verilog
-module comparator_offset_search_ref(vdd, vss, inp, inn, outp, trip_v, offset_est, valid);
-```
+Declare module `comparator_offset_search_ref` with positional ports `vdd, vss,
+inp, inn, outp, trip_v, offset_est, valid`. All ports are electrical. `vdd` and
+`vss` are supply rails, `inp` and `inn` are the differential comparator inputs,
+`outp` is the voltage-coded comparator decision, and `trip_v`, `offset_est`,
+and `valid` are measurement outputs.
 
-## Required Behavior
+## Public Parameter Contract
 
-This task asks for the `comparator_offset_search_ref` behavioral module, not a Spectre testbench. The hidden evaluator instantiates this module in the original `vbr1_l2_comparator_measurement_flow` transient scenario and checks the saved waveform/metric behavior with EVAS.
+Provide these overrideable public parameters:
 
-Original public behavior context:
+- `vos = 5m V`: positive input-referred comparator offset.
+- `trf = 20p`: transition smoothing time for decision and measurement outputs.
 
-# Single-ramp comparator offset measurement flow Testbench Companion
+## Functional Contract
 
-Write a Spectre transient testbench for the `Single-ramp comparator offset measurement flow` behavioral
-Verilog-A release task. This is the testbench-generation companion for an
-already materialized end-to-end task.
+- Initialize `valid`, `trip_v`, and `offset_est` to a valid zero measurement
+  state, and initialize `outp` consistently with the current differential input
+  relative to `vos`.
+- Drive `outp` high when `V(inp,vss) - V(inn,vss)` rises above `vos`.
+- Drive `outp` low when the same differential input falls back below `vos`.
+- On the first rising offset crossing, capture the input trip voltage on
+  `trip_v`, capture the measured differential offset on `offset_est`, and
+  assert `valid`.
+- Keep the captured measurement stable after it becomes valid.
+- Drive logic outputs rail-to-rail relative to `vdd` and `vss` using finite
+  transition-style smoothing.
 
-The testbench should instantiate the same behavioral DUT or system module used
-by the corresponding end-to-end form, drive the public transient scenario, save
-the observable waveform or metric signals, and preserve the EVAS/Spectre
-validation contract.
+## Modeling Constraints
 
-Domain: pure voltage-domain behavioral Verilog-A.
-
-Public requirements:
-
-- include a transient `tran` analysis
-- instantiate `comparator_offset_search_ref` with ports `vdd vss inp inn outp trip_v offset_est valid`
-- drive `inn` at 0.500 V and perform a single ramp of `inp` from 0.490 V to 0.520 V over the transient
-- save exactly the public scalar observables needed by the checker: `inp`, `inn`, `outp`, `trip_v`, `offset_est`, and `valid`
-- include the Verilog-A behavioral module under test
-- exercise the crossing so `outp`, `valid`, `trip_v`, and `offset_est` all settle after the expected 5 mV offset trip point
-- avoid transistor-level devices, AC/noise analysis, and current-domain
-  solver assumptions
-
-Use voltage-coded logic with a 0.45 V threshold where applicable, drive high logic outputs near 0.9 V and low outputs near 0 V, and keep the model pure behavioral Verilog-A. Do not use transistor-level devices, AC/noise analysis, hidden checker logic, or simulator-private side channels.
-
-Only the target artifact is graded as the candidate implementation; companion Verilog-A files listed by the testbench are supplied by the harness for this task.
+Return only `comparator_offset_search_ref.va`. Use voltage contributions only.
+Do not modify or emit the support testbench, add checker logic, hard-code
+waveform sample points, add simulator-private side channels, use
+transistor-level devices, current contributions, AC/noise analysis, `ddt()`, or
+`idt()`. Update retained decision and measurement state at crossing events and
+drive voltage contributions outside those event blocks.

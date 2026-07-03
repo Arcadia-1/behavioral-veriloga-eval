@@ -53,8 +53,6 @@ analog begin
             xoutp = 0;
             xoutn = 1;
         end
-        $strobe("[cmp_delay] t=%.3f ns | diff=%.5fmV | td=%.1f ps | dec=%d",
-                $abstime*1e9, (V(VINP)-V(VINN))*1e3, td*1e12, xoutp);
     end
 
     @(cross(V(CLK) - vdd*0.5, -1)) begin

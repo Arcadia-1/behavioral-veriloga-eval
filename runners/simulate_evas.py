@@ -11420,18 +11420,112 @@ def _sample_differential_sequence(
     return True, f"{pos}-{neg}={diff_detail} cm={cm_detail}"
 
 
+def _check_offset_search_driver_behavior(
+    rows: list[dict[str, float]],
+    *,
+    clk: str,
+    decision: str,
+    vinp: str,
+    vinn: str,
+    common_signal: str | None,
+    fixed_common: float,
+    threshold: float,
+    step_initial: float,
+    high_decreases: bool,
+    halve_on_polarity_change_only: bool,
+    initial_polarity: int,
+    min_edges: int,
+) -> tuple[bool, str]:
+    times = [row["time"] for row in rows]
+    clk_values = [row[clk] for row in rows]
+    falling_edges = _threshold_crossings(clk_values, times, threshold=threshold, direction="falling")
+    if len(falling_edges) < min_edges:
+        return False, f"too_few_falling_edges={len(falling_edges)}"
+
+    diff = 0.0
+    step = step_initial
+    previous_polarity = initial_polarity
+    checked = 0
+    max_diff_err = 0.0
+    max_cm_err = 0.0
+    failures: list[str] = []
+
+    for edge_t in falling_edges:
+        decision_value = sample_signal_at(rows, decision, edge_t)
+        if decision_value is None:
+            continue
+        polarity = 1 if decision_value > threshold else 0
+        if halve_on_polarity_change_only:
+            if polarity != previous_polarity and step > 0.0:
+                step *= 0.5
+            previous_polarity = polarity
+        direction = -1.0 if polarity and high_decreases else 1.0
+        if (not polarity) and high_decreases:
+            direction = 1.0
+        elif polarity and (not high_decreases):
+            direction = 1.0
+        elif (not polarity) and (not high_decreases):
+            direction = -1.0
+        diff += direction * step
+        if not halve_on_polarity_change_only:
+            step *= 0.5
+
+        probe_t = _event_probe_time(rows, edge_t, delay_s=0.25e-9)
+        if probe_t is None:
+            continue
+        observed_p = sample_signal_at(rows, vinp, probe_t)
+        observed_n = sample_signal_at(rows, vinn, probe_t)
+        if observed_p is None or observed_n is None:
+            continue
+        observed_diff = observed_p - observed_n
+        expected_common = (
+            sample_signal_at(rows, common_signal, probe_t)
+            if common_signal is not None
+            else fixed_common
+        )
+        if expected_common is None:
+            continue
+        observed_common = 0.5 * (observed_p + observed_n)
+        diff_err = abs(observed_diff - diff)
+        cm_err = abs(observed_common - expected_common)
+        max_diff_err = max(max_diff_err, diff_err)
+        max_cm_err = max(max_cm_err, cm_err)
+        checked += 1
+        if diff_err > 0.004:
+            failures.append(
+                f"diff@{probe_t * 1e9:.3f}ns={observed_diff:.5f} expected={diff:.5f}"
+            )
+        if cm_err > 0.004:
+            failures.append(
+                f"cm@{probe_t * 1e9:.3f}ns={observed_common:.5f} expected={expected_common:.5f}"
+            )
+
+    if checked < min_edges:
+        return False, f"insufficient_checked_edges={checked}"
+    if failures:
+        return False, " ".join(failures[:5])
+    return True, f"checked_edges={checked} max_diff_err={max_diff_err:.5f} max_cm_err={max_cm_err:.5f}"
+
+
 def check_v3_offset_search_comparator(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "clk", "vout", "vinp", "vinn"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing time/clk/vout/vinp/vinn"
-    return _sample_differential_sequence(
+    vdd = _max_signal_value(rows, ["clk", "vout"], default=0.9)
+    return _check_offset_search_driver_behavior(
         rows,
-        "vinp",
-        "vinn",
-        [(8.5, 0.010), (18.5, 0.020), (28.5, 0.015), (38.5, 0.010), (48.5, 0.0125)],
-        common_mode=0.45,
-        diff_tol=0.0025,
-        common_tol=0.0025,
+        clk="clk",
+        decision="vout",
+        vinp="vinp",
+        vinn="vinn",
+        common_signal=None,
+        fixed_common=0.5 * vdd,
+        threshold=0.5 * vdd,
+        step_initial=0.010,
+        high_decreases=True,
+        halve_on_polarity_change_only=True,
+        initial_polarity=0,
+        min_edges=4,
     )
 
 
@@ -12816,13 +12910,21 @@ def check_v3_comparator_offset_driver(rows: list[dict[str, float]]) -> tuple[boo
     required = {"time", "clk", "dcmpp", "vinp", "vinn"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing comparator offset driver signals"
-    return _sample_many(
+    vdd = _max_signal_value(rows, ["clk", "dcmpp"], default=0.9)
+    return _check_offset_search_driver_behavior(
         rows,
-        {
-            "vinp": [(3.0, 0.4), (13.0, 0.425), (23.0, 0.4125), (33.0, 0.40625)],
-            "vinn": [(3.0, 0.5), (13.0, 0.475), (23.0, 0.4875), (33.0, 0.49375)],
-        },
-        tol=0.02,
+        clk="clk",
+        decision="dcmpp",
+        vinp="vinp",
+        vinn="vinn",
+        common_signal=None,
+        fixed_common=0.5 * vdd,
+        threshold=0.5 * vdd,
+        step_initial=0.100,
+        high_decreases=True,
+        halve_on_polarity_change_only=False,
+        initial_polarity=0,
+        min_edges=3,
     )
 
 
@@ -12945,13 +13047,20 @@ def check_v3_offset_bisection_driver(rows: list[dict[str, float]]) -> tuple[bool
     required = {"time", "clk", "vout", "vcm", "vinp", "vinn"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing offset bisection driver signals"
-    return _sample_many(
+    return _check_offset_search_driver_behavior(
         rows,
-        {
-            "vinp": [(3.0, 0.505), (5.0, 0.510), (7.0, 0.5075), (9.0, 0.505), (11.0, 0.50625), (13.0, 0.505625)],
-            "vinn": [(3.0, 0.495), (5.0, 0.490), (7.0, 0.4925), (9.0, 0.495), (11.0, 0.49375), (13.0, 0.494375)],
-        },
-        tol=0.005,
+        clk="clk",
+        decision="vout",
+        vinp="vinp",
+        vinn="vinn",
+        common_signal="vcm",
+        fixed_common=0.45,
+        threshold=0.45,
+        step_initial=0.010,
+        high_decreases=True,
+        halve_on_polarity_change_only=True,
+        initial_polarity=0,
+        min_edges=5,
     )
 
 
@@ -14551,13 +14660,69 @@ def check_v3_clocked_comparator_dual_output(rows: list[dict[str, float]]) -> tup
     required = {"time", "clk", "vinn", "vinp", "outn", "outp"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing clocked comparator dual output signals"
-    return _sample_many(
-        rows,
-        {
-            "outp": [(0.45, 1.0), (1.0, 0.0), (1.65, 0.0), (2.25, 0.0)],
-            "outn": [(0.45, 0.0), (1.0, 0.0), (1.65, 1.0), (2.25, 0.0)],
-        },
-        tol=0.05,
+    vdd = _max_signal_value(rows, ["clk", "outp", "outn"], default=1.0)
+    vth = 0.5 * vdd
+    times = [row["time"] for row in rows]
+    clk_values = [row["clk"] for row in rows]
+    rising_edges = _threshold_crossings(clk_values, times, threshold=vth, direction="rising")
+    falling_edges = _threshold_crossings(clk_values, times, threshold=vth, direction="falling")
+    if len(rising_edges) < 2 or len(falling_edges) < 1:
+        return False, f"insufficient_clock_edges rise={len(rising_edges)} fall={len(falling_edges)}"
+
+    failures: list[str] = []
+    decision_checks = 0
+    reset_checks = 0
+    saw_positive = False
+    saw_negative = False
+    saw_equal = False
+
+    for edge_t in rising_edges:
+        probe_t = _event_probe_time(rows, edge_t, delay_s=0.22e-9)
+        if probe_t is None:
+            continue
+        vinp = sample_signal_at(rows, "vinp", edge_t)
+        vinn = sample_signal_at(rows, "vinn", edge_t)
+        outp = sample_signal_at(rows, "outp", probe_t)
+        outn = sample_signal_at(rows, "outn", probe_t)
+        if vinp is None or vinn is None or outp is None or outn is None:
+            continue
+        if vinp > vinn + 1e-6:
+            exp_p, exp_n = vdd, 0.0
+            saw_positive = True
+        elif vinn > vinp + 1e-6:
+            exp_p, exp_n = 0.0, vdd
+            saw_negative = True
+        else:
+            exp_p, exp_n = 0.0, 0.0
+            saw_equal = True
+        decision_checks += 1
+        if abs(outp - exp_p) > 0.08 or abs(outn - exp_n) > 0.08:
+            failures.append(
+                f"decision@{probe_t * 1e9:.3f}ns outp/outn={outp:.3f}/{outn:.3f} "
+                f"expected={exp_p:.3f}/{exp_n:.3f}"
+            )
+
+    for edge_t in falling_edges:
+        probe_t = _event_probe_time(rows, edge_t, delay_s=0.22e-9)
+        if probe_t is None:
+            continue
+        outp = sample_signal_at(rows, "outp", probe_t)
+        outn = sample_signal_at(rows, "outn", probe_t)
+        if outp is None or outn is None:
+            continue
+        reset_checks += 1
+        if abs(outp) > 0.08 or abs(outn) > 0.08:
+            failures.append(f"reset@{probe_t * 1e9:.3f}ns outp/outn={outp:.3f}/{outn:.3f}")
+
+    if decision_checks < 2 or reset_checks < 1:
+        return False, f"insufficient_checks decisions={decision_checks} resets={reset_checks}"
+    if not (saw_positive and saw_negative):
+        return False, f"missing_polarity_coverage positive={saw_positive} negative={saw_negative} equal={saw_equal}"
+    if failures:
+        return False, " ".join(failures[:5])
+    return True, (
+        f"decisions={decision_checks} resets={reset_checks} "
+        f"positive={saw_positive} negative={saw_negative} equal={saw_equal}"
     )
 
 
@@ -14922,6 +15087,113 @@ def check_v3_smooth_tanh_comparator(rows: list[dict[str, float]]) -> tuple[bool,
         rows,
         {"sigout": [(0.4, -0.975743), (1.2, -0.197375), (2.0, 0.197375), (2.8, 0.995055)]},
         tol=0.03,
+    )
+
+
+def check_v3_hysteretic_comparator_receiver(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "inp", "inm", "out"}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing hysteretic comparator receiver signals"
+
+    times = [row["time"] for row in rows]
+    diff = [row["inp"] - row["inm"] for row in rows]
+    out = [row["out"] for row in rows]
+
+    vout_high = 0.9
+    vout_low = 0.0
+    upper_th = 20e-3
+    lower_th = -20e-3
+    td = 400e-12
+    tr = 80e-12
+    out_mid = 0.5 * (vout_high + vout_low)
+
+    high_events = _threshold_crossings(diff, times, threshold=upper_th, direction="rising")
+    low_events = _threshold_crossings(diff, times, threshold=lower_th, direction="falling")
+    if len(high_events) < 2 or len(low_events) < 2:
+        return False, f"insufficient_hysteresis_events high={len(high_events)} low={len(low_events)}"
+
+    expected_edges: list[tuple[float, int]] = []
+    state = 1 if diff[0] >= upper_th else 0
+    for event_time, next_state in sorted([(t, 1) for t in high_events] + [(t, 0) for t in low_events]):
+        if next_state == state:
+            continue
+        expected_edges.append((event_time, next_state))
+        state = next_state
+
+    if len(expected_edges) < 4:
+        return False, f"insufficient_expected_state_edges={len(expected_edges)}"
+
+    out_rises = _threshold_crossings(out, times, threshold=out_mid, direction="rising")
+    out_falls = _threshold_crossings(out, times, threshold=out_mid, direction="falling")
+    expected_rises = [t + td + 0.5 * tr for t, next_state in expected_edges if next_state == 1]
+    expected_falls = [t + td + 0.5 * tr for t, next_state in expected_edges if next_state == 0]
+
+    edge_tol = 180e-12
+
+    def compare_edges(actual: list[float], expected: list[float], label: str) -> tuple[bool, str, float]:
+        if len(actual) < len(expected):
+            return False, f"missing_{label}_edges actual={len(actual)} expected={len(expected)}", 0.0
+        used: set[int] = set()
+        max_err = 0.0
+        for want in expected:
+            choices = [(abs(got - want), idx, got) for idx, got in enumerate(actual) if idx not in used]
+            if not choices:
+                return False, f"missing_unmatched_{label}_edge_at={want * 1e9:.3f}ns", max_err
+            err, idx, got = min(choices)
+            if err > edge_tol:
+                return (
+                    False,
+                    f"{label}_edge_delay_error got={got * 1e9:.3f}ns "
+                    f"want={want * 1e9:.3f}ns err={err * 1e12:.1f}ps",
+                    max(max_err, err),
+                )
+            used.add(idx)
+            max_err = max(max_err, err)
+        return True, "ok", max_err
+
+    ok, msg, rise_err = compare_edges(out_rises, expected_rises, "rising")
+    if not ok:
+        return False, msg
+    ok, msg, fall_err = compare_edges(out_falls, expected_falls, "falling")
+    if not ok:
+        return False, msg
+
+    expected_centers = expected_rises + expected_falls
+    for actual_edge in out_rises + out_falls:
+        if min(abs(actual_edge - want) for want in expected_centers) > edge_tol:
+            return False, f"unexpected_output_edge_at={actual_edge * 1e9:.3f}ns"
+
+    max_level_err = 0.0
+    checked = 0
+    high_checked = 0
+    low_checked = 0
+    for row in rows:
+        t = row["time"]
+        in_transition = any((edge_t + td - 20e-12) <= t <= (edge_t + td + tr + 80e-12) for edge_t, _ in expected_edges)
+        if in_transition:
+            continue
+        expected_state = 1 if diff[0] >= upper_th else 0
+        for edge_t, next_state in expected_edges:
+            if t >= edge_t + td + tr + 80e-12:
+                expected_state = next_state
+        want = vout_high if expected_state else vout_low
+        err = abs(row["out"] - want)
+        max_level_err = max(max_level_err, err)
+        checked += 1
+        if expected_state:
+            high_checked += 1
+        else:
+            low_checked += 1
+
+    if checked < 20 or high_checked == 0 or low_checked == 0:
+        return False, f"insufficient_settled_samples checked={checked} high={high_checked} low={low_checked}"
+    if max_level_err > 0.08:
+        return False, f"level_error={max_level_err:.4f} checked={checked}"
+
+    return (
+        True,
+        f"edges={len(expected_edges)} rise_err_ps={rise_err * 1e12:.1f} "
+        f"fall_err_ps={fall_err * 1e12:.1f} level_err={max_level_err:.4f}",
     )
 
 
@@ -20948,6 +21220,7 @@ CHECKS["204-pipe-2lane-edge-align"] = check_v3_pipe_2lane_edge_align
 CHECKS["205-dac-serial-accumulator"] = check_v3_dac_serial_accumulator
 CHECKS["206-sar-sum-weighted-11b"] = check_v3_sar_sum_weighted_11b
 CHECKS["207-iterative-isar-dac"] = check_v3_iterative_isar_dac
+CHECKS["208-offset-bisection-driver"] = check_v3_offset_bisection_driver
 CHECKS["218-foreground-rdac-calibrator"] = check_v3_foreground_rdac_calibrator
 CHECKS["219-offset-rdac-search-flow"] = check_v3_offset_rdac_search_flow
 CHECKS["220-spi-shift-mux"] = check_v3_spi_shift_mux
@@ -21058,6 +21331,7 @@ CHECKS["v3_deadband_voltage"] = check_v3_deadband_voltage
 CHECKS["v3_deadband_diffamp"] = check_v3_deadband_diffamp
 CHECKS["v3_limiting_diffamp"] = check_v3_limiting_diffamp
 CHECKS["v3_smooth_tanh_comparator"] = check_v3_smooth_tanh_comparator
+CHECKS["v3_hysteretic_comparator_receiver"] = check_v3_hysteretic_comparator_receiver
 CHECKS["v3_flash_folded_dac4"] = check_v3_flash_folded_dac4
 CHECKS["v3_subradix_dac10"] = check_v3_subradix_dac10
 CHECKS["v3_clocked_adc3bit"] = check_v3_clocked_adc3bit
@@ -21077,7 +21351,7 @@ CHECKS["v3_288_absolute_value"] = check_v3_absolute_value
 CHECKS["v3_289_deadband_voltage"] = check_v3_deadband_voltage
 CHECKS["v3_290_deadband_diffamp"] = check_v3_deadband_diffamp
 CHECKS["v3_291_limiting_diffamp"] = check_v3_limiting_diffamp
-CHECKS["v3_292_smooth_tanh_comparator"] = check_v3_smooth_tanh_comparator
+CHECKS["v3_292_hysteretic_comparator_receiver"] = check_v3_hysteretic_comparator_receiver
 CHECKS["v3_293_flash_folded_dac4"] = check_v3_flash_folded_dac4
 CHECKS["v3_294_subradix_dac10"] = check_v3_subradix_dac10
 CHECKS["v3_295_clocked_adc3bit"] = check_v3_clocked_adc3bit
@@ -21090,7 +21364,7 @@ CHECKS["288-absolute-value"] = check_v3_absolute_value
 CHECKS["289-deadband-voltage"] = check_v3_deadband_voltage
 CHECKS["290-deadband-diffamp"] = check_v3_deadband_diffamp
 CHECKS["291-limiting-diffamp"] = check_v3_limiting_diffamp
-CHECKS["292-smooth-tanh-comparator"] = check_v3_smooth_tanh_comparator
+CHECKS["292-hysteretic-comparator-receiver"] = check_v3_hysteretic_comparator_receiver
 CHECKS["293-flash-folded-dac4"] = check_v3_flash_folded_dac4
 CHECKS["294-subradix-dac10"] = check_v3_subradix_dac10
 CHECKS["295-clocked-adc3bit"] = check_v3_clocked_adc3bit
@@ -21283,7 +21557,7 @@ V3_TASK_ID_ALIASES = {
     "v3_289_deadband_voltage": "v3_deadband_voltage",
     "v3_290_deadband_diffamp": "v3_deadband_diffamp",
     "v3_291_limiting_diffamp": "v3_limiting_diffamp",
-    "v3_292_smooth_tanh_comparator": "v3_smooth_tanh_comparator",
+    "v3_292_hysteretic_comparator_receiver": "v3_hysteretic_comparator_receiver",
     "v3_293_flash_folded_dac4": "v3_flash_folded_dac4",
     "v3_294_subradix_dac10": "v3_subradix_dac10",
     "v3_295_clocked_adc3bit": "v3_clocked_adc3bit",
@@ -21315,8 +21589,6 @@ V3_SOURCE_FORM_CHECK_ALIASES = {
     "v3_274_source_weighted_decoder_6bit": "v3_source_weighted_decoder_6bit",
     "v3_source_pfd_timer_reset": "v3_source_pfd_timer_reset",
     "v3_282_source_pfd_timer_reset": "v3_source_pfd_timer_reset",
-    "v3_source_smooth_tanh_comparator": "v3_source_smooth_tanh_comparator",
-    "v3_292_source_smooth_tanh_comparator": "v3_source_smooth_tanh_comparator",
     "v3_source_subradix_dac10": "v3_source_subradix_dac10",
     "v3_294_source_subradix_dac10": "v3_source_subradix_dac10",
     "v3_source_pfd_active_low_reset": "v3_source_pfd_active_low_reset",

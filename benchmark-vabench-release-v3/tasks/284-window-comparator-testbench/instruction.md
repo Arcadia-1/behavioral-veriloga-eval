@@ -1,12 +1,15 @@
 # Window Comparator Testbench
 
-Generate `tb_window_comparator_ref.scs` for the supplied
-`window_comparator_ref.va` DUT.
+Generate a Spectre transient testbench for the supplied window-comparator DUT.
 
-## Supplied DUT
+## Target Artifact
 
-The supplied DUT declares `window_comparator_ref(VDD, VSS, vin, out)` and
-drives `out` high only when `0.3 V < vin < 0.6 V`.
+Return exactly one file named `tb_window_comparator_ref.scs`.
+
+## Supplied DUT Contract
+
+The supplied DUT declares `window_comparator_ref(VDD, VSS, vin, out)` and drives
+`out` high only when `0.3 V < V(vin,VSS) < 0.6 V`.
 
 ## Testbench Contract
 
@@ -17,10 +20,10 @@ drives `out` high only when `0.3 V < vin < 0.6 V`.
   inside the window on the rising ramp, above the window, and inside the window
   again on the falling ramp.
 - Run `tran tran stop=90n maxstep=20p errpreset=conservative`.
-- Save `vin` and `out`.
+- Save `vin` and `out` using plain scalar save names.
 
 ## Modeling Constraints
 
 Return only `tb_window_comparator_ref.scs`. Do not modify or emit the supplied
-DUT, checker logic, private test hooks, waveform files, or simulator-private
-side channels.
+DUT, checker logic, waveform result files, private test hooks, or
+simulator-private side channels.

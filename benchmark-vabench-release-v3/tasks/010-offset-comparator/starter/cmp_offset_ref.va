@@ -11,5 +11,4 @@ module cmp_offset_ref(VDD, VSS, CLK, VINP, VINN, OUT_P);
     parameter real tt = 20p;
 
     // TODO: implement the behavior described in instruction.md.
-    // This starter is intentionally incomplete; hidden tests grade behavior.
 endmodule

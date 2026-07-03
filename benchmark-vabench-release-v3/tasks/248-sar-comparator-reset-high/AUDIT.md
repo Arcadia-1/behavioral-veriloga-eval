@@ -1,9 +1,40 @@
-# Source SAR Comparator Reset High Audit
+# Two-Gate SOP Audit: Task 248 SAR Comparator Reset-High
 
-- Source: `caiyizeng25/L3_SAR_comparator_ideal.va` from the exact-deduplicated historical Verilog-A corpus.
-- Scenario: Implement a clocked SAR comparator that compares VINP/VINN on CMPCK rising and resets both differential outputs high on initial step or CMPCK falling.
-- Import status: certified only after visible compile, EVAS hidden semantic check, Spectre AX hidden semantic check, EVAS/Spectre parity pass, and negative variant rejection.
-- Evaluation: stable sampled behavior from `tran.csv`; raw simulator timestep equality is not used.
-- Evidence:
-  - `WORK/source-import-batch25-evas/248-sar-comparator-reset-high`
-  - `WORK/source-import-batch25-spectre/248-sar-comparator-reset-high`
+## Scope
+
+Task 248 is a clocked SAR-style comparator DUT. It compares `vinp/vinn` on
+`cmpck` rising edges and resets both differential outputs high when `cmpck`
+falls.
+
+This is a single-component L1 artifact, not a composed L2 flow.
+
+## Gate 1: Admission And Counting
+
+- Admission label: `valid_variant_needs_counting_policy`.
+- Counting decision: task 248 is a valid reset-high clocked-comparator artifact
+  but overlaps with existing reset-high SAR/comparator coverage. Human review
+  confirmed that reset-family rows should be deduplicated strictly, and task
+  `112-clocked-sar-comparator` is the retained reset-high representative unless
+  upstream explicitly chooses task 248 instead.
+- Function boundary: SAR-facing reset-high clocked comparator with
+  complementary decision outputs.
+- Checker alignment: the checker verifies reset-high behavior, decision
+  polarity after rising edges, and rail-derived output levels.
+
+## Gate 2: Cadence Modeling Quality
+
+- Modeling status: `cadence_modeling_ready` after prompt/schema repair and
+  current comparator-batch EVAS/Spectre validation.
+- Prompt hygiene: the prompt now exposes public interface, reset behavior,
+  output timing, and constraints without source-import wording.
+- Metadata repair: `TASKS.json` now classifies this single-component DUT as L1,
+  and release-level `CHECKS.yaml` includes a current `sim_correct:` block.
+- Counting risk: retain only as a non-counted reset-high variant or rewrite
+  candidate unless upstream selects it as the canonical reset-high
+  SAR-comparator representative.
+
+## Human Confirmation
+
+The reviewer confirmed that small timing/default differences are not enough to
+make this a separate independent function when the reset-high clocked
+comparator role is already represented.

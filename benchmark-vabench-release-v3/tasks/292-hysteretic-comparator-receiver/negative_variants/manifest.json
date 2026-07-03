@@ -1,0 +1,29 @@
+{
+  "variants": [
+    {
+      "id": "neg_001_stuck_low",
+      "description": "Never updates the receiver state, so high-threshold crossings do not drive the output high.",
+      "path": "negative_variants/neg_001_stuck_low/hysteretic_comparator_receiver.va"
+    },
+    {
+      "id": "neg_002_no_hysteresis",
+      "description": "Uses a single offset threshold instead of separate upper and lower hysteresis thresholds.",
+      "path": "negative_variants/neg_002_no_hysteresis/hysteretic_comparator_receiver.va"
+    },
+    {
+      "id": "neg_003_no_delay",
+      "description": "Implements the hysteresis thresholds but ignores the required propagation delay.",
+      "path": "negative_variants/neg_003_no_delay/hysteretic_comparator_receiver.va"
+    },
+    {
+      "id": "neg_004_wrong_polarity",
+      "description": "Swaps the high and low receiver states.",
+      "path": "negative_variants/neg_004_wrong_polarity/hysteretic_comparator_receiver.va"
+    },
+    {
+      "id": "neg_005_wrong_output_level",
+      "description": "Uses the right state transitions but drives the wrong high output rail.",
+      "path": "negative_variants/neg_005_wrong_output_level/hysteretic_comparator_receiver.va"
+    }
+  ]
+}
