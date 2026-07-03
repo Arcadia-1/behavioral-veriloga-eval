@@ -2,18 +2,29 @@
 
 Implement `lna_gain_compression_macro.va` in Verilog-A.
 
-Declare module `lna_gain_compression_macro(clk, rst, vin, out, metric)` with
-all ports electrical. `clk` and `rst` are voltage-coded logic signals with a
-0.45 V threshold. `vin` is a receiver front-end input around 0.45 V common
-mode, `out` is the amplified voltage, and `metric` indicates compression.
+## Public Interface
 
-Public parameters:
+Declare module `lna_gain_compression_macro(clk, rst, vin, out, metric)`:
+
+```verilog
+module lna_gain_compression_macro(clk, rst, vin, out, metric);
+input clk, rst, vin;
+output out, metric;
+electrical clk, rst, vin, out, metric;
+```
+
+`clk` and `rst` are voltage-coded logic signals with low `0 V`, high `0.9 V`,
+and threshold `0.45 V`. `vin` is a receiver front-end input around `0.45 V`
+common mode. `out` is the amplified/compressed voltage. `metric` indicates
+whether the macro is operating in compression.
+
+## Public Parameter Contract
 
 - `tr`: output transition time, default `100p`.
 - `vth`: logic threshold, default `0.45`.
 - `gain`: small-signal voltage gain, default `2.2`.
 
-Behavior:
+## Functional Contract
 
 - Initialize `out` to the 0.45 V common-mode level and `metric` low.
 - Update the held output state on rising `clk` crossings.
@@ -25,11 +36,14 @@ Behavior:
 - Keep compression roughly symmetric around common mode.
 - Drive `metric` low or small in the linear region and high during compression.
 
-Modeling requirements:
+The visible testbench is a public verification scenario for wiring and saved
+observables. Do not hard-code its transient stop time, waveform breakpoints, or
+sample windows into the DUT.
 
-- Use voltage contributions only; do not use current contributions,
-  transistor-level devices, AC/noise analysis, or KCL/KVL assumptions.
-- Use a clocked state update and drive output voltages through
-  `transition(...)`.
-- Return only `lna_gain_compression_macro.va`; do not emit a Spectre testbench
-  or checker.
+## Modeling Constraints
+
+Return only `lna_gain_compression_macro.va`. Do not emit a Spectre testbench,
+checker logic, private test hooks, or simulator-private side channels. Use
+voltage contributions only; do not use current contributions, transistor-level
+devices, AC/noise analysis, or KCL/KVL assumptions. Use a clocked state update
+and drive output voltages through `transition(...)`.

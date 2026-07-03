@@ -1,24 +1,44 @@
-# Honest SOP Audit: Task 043 RF Mixer Downconverter Macro
+# Two-Gate Audit: Task 043 RF Mixer Downconverter Macro
 
-## Scope
+## Gate 1: Admission
 
-Task boundary is one Verilog-A DUT, `rf_mixer_downconverter_macro.va`, plus EVAS/Spectre-compatible `.scs` testbenches. Agent-visible materials are limited to `instruction.md`, `starter/`, and `test_visible/`. Evaluator-only materials are `solution/`, `test_hidden/`, `test_harness/`, and `negative_variants/`. No `meta.json` is present.
+- Label: `independent_l1_ready`.
+- Human-review status: proposed for retention as the RF/AFE category's standalone
+  mixer/downconverter L1 row.
+- Function boundary: a voltage-domain RF mixer macromodel that applies LO
+  polarity to the RF envelope around common mode and exposes bounded baseband
+  output plus an activity metric.
+- Duplicate check: distinct from LNA/PA compression and RSSI rows because the
+  primary behavior is polarity-controlled downconversion, not gain compression
+  or power detection.
 
-## Four Standards
+## Gate 2: Modeling And Evidence
 
-- Useful scenario: pass. An RF downconverter macro is a practical RF/AFE behavioral block.
-- Reasonable task: pass. The public prompt fixes LO polarity control, conversion gain, baseband output bounding, and voltage-domain behavior.
-- Complete tests: pass for EVAS. Hidden samples check LO sign control, conversion-gain visibility, and bounded baseband output. Five concrete negatives cover missing mixing sign, wrong gain, unbounded output, stuck output, and missing metric/baseband behavior.
-- Fair evaluation: pass for EVAS. The checker uses public waveform observables and behavior specified in the prompt.
+- Status: `cadence_modeling_ready`.
+- Prompt hygiene: public prompt now describes only the DUT contract, interface,
+  observable behavior, and modeling boundary. Hidden-evaluator wording and
+  repeated testbench-generation context were removed.
+- Cadence/Verilog-A correspondence: the model uses event-updated state on
+  `cross`, bounded voltage targets, and `transition()` smoothing for
+  discontinuous target updates. This matches the local Cadence review guidance
+  for transient behavioral Verilog-A macromodels while avoiding RF/PSS
+  overclaiming.
+- Visible/hidden coverage: visible smoke is a short compile/sim deck; hidden
+  deck exercises positive and negative input-envelope deviations under both LO
+  polarities. The starter file now drives benign constant voltage placeholders
+  so the public smoke deck checks compile/transient packaging without passing
+  hidden behavior.
+- Checker strength: checker requires LO polarity to control conversion sign,
+  verifies visible conversion gain, bounds baseband output, and rejects missing
+  metric behavior.
+- Negatives: 5/5 concrete variants reject behaviorally under EVAS.
+- EVAS evidence: hidden gold PASS; concrete negatives 5/5 rejected with
+  `FAIL_SIM_CORRECTNESS`.
+- Spectre evidence: hidden gold PASS under the RF/AFE remaining review rerun.
+- AHDL lint status: EVAS AHDL-like lint preflight PASS with zero diagnostics.
 
-## Checker And Evidence
+## Residual Risk
 
-- Checker id: `v3_043_rf_mixer_downconverter_macro`
-- Runner mapping: `CHECKS["v3_043_rf_mixer_downconverter_macro"] = check_rf_mixer_downconverter_macro`
-- EVAS/Python-engine hidden gold smoke: `PASS`
-- Concrete negative recertification: 5/5 expected failures, all `FAIL_SIM_CORRECTNESS` with simulator `returncode=0`
-- Visible compile/sim smoke: `COMPILE_SIM_OK`
-
-## Remaining Risk
-
-Spectre/Spectre-AX correlation has not been run from this working tree; use EVAS-only wording until that evidence exists.
+Spectre negatives were not rerun for every concrete negative variant in this
+category closeout. The task is a transient voltage-domain RF/AFE macromodel and
+should not be claimed as a Spectre RF/PSS-ready transistor-level RF model.

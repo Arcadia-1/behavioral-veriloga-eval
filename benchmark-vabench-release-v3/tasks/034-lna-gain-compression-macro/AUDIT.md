@@ -9,20 +9,21 @@ EVAS/Spectre-compatible `.scs` testbenches. Public solver materials are
 
 ## Gate 1
 
-- Admission label: RF gain-compression L1 candidate.
+- Admission label: `independent_l1_ready`.
 - Function: low-noise-amplifier-style front-end macro with small-signal gain,
   large-signal gain compression, output bounding, and compression metric output.
-- Counting risk: medium. This row and task 037 both model gain-compression
-  amplifier behavior in different RF roles. Keep both as role-distinct
-  candidates for now, but final counted status should be confirmed against the
-  category-level duplicate policy.
+- Counting decision: keep as the primary counted RF gain-compression L1 row.
+  Task 037 remains a valid RF-role variant, but as currently written it is
+  structurally close enough that both should not be counted without an explicit
+  category policy or a PA-specific rewrite.
 
 ## Gate 2
 
 - Modeling status: `cadence_modeling_ready` for the audited hidden gold slice.
 - Prompt contract: public interface, parameters, small-signal gain, compression
-  behavior, metric semantics, and voltage-only constraints are stated without
-  hidden-checker or gold-history wording.
+  behavior, metric semantics, and voltage-only constraints are stated in the
+  standard public contract format without hidden-checker or gold-history
+  wording.
 - Cadence semantics: the model uses voltage-domain behavioral contributions and
   transition-smoothed state/output updates.
 

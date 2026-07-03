@@ -704,9 +704,9 @@
       - "trim_clamped_to_range"
   parity:
     reference: "spectre"
-    status: "pending_until_evas_spectre_rerun"
+    status: "pass"
     notes:
-      - "Designed release source; no imported historical EVAS/Spectre dual evidence yet."
+      - "Fresh RF/AFE remaining review evidence: EVAS hidden gold PASS, EVAS negatives rejected 5/5, Spectre hidden gold PASS, and EVAS AHDL-like lint has zero diagnostics."
 024-charge-pump-abstraction: |
   syntax:
     must_include:
@@ -1002,7 +1002,7 @@
     status: "pass"
     notes:
       - "Fresh targeted review: EVAS hidden gold passed, targeted Spectre hidden gold passed, five concrete negatives were rejected behaviorally, and AHDL triage found no task-specific warnings or compile errors."
-      - "Counting remains a category policy decision because this LNA compression row is related to the PA compression macro row."
+      - "Gate1: independent_l1_ready. Keep as the primary counted RF gain-compression L1 row; 037 is a close RF-role variant that needs explicit counting policy or PA-specific rewrite before separate counting."
 035-log-rssi-power-detector: |
   syntax:
     must_include:
@@ -1062,7 +1062,7 @@
       - "I("
       - "ddt("
   dut_companion_role: "function_checked_dut"
-  strong_benchmark_claim: true
+  strong_benchmark_claim: "valid_variant_needs_counting_policy"
   dut_compile:
     backend: "evas"
   tb_compile:
@@ -1077,7 +1077,7 @@
     status: "pass"
     notes:
       - "Fresh targeted review: EVAS hidden gold passed, targeted Spectre hidden gold passed, five concrete negatives were rejected behaviorally, and AHDL triage found no task-specific warnings or compile errors."
-      - "Counting remains a category policy decision because this PA compression row is related to the LNA compression macro row."
+      - "Gate1: valid_variant_needs_counting_policy. As written, this PA compression row is structurally close to 034; count separately only if upstream keeps RF role variants or rewrites it into a stronger PA-specific compression macromodel."
 038-power-on-reset-detector: |
   syntax:
     must_include:
@@ -1296,9 +1296,10 @@
       - "bounded_output"
   parity:
     reference: "spectre"
-    status: "pending_until_evas_spectre_rerun"
+    status: "pass"
     notes:
-      - "Designed release source; no imported historical EVAS/Spectre dual evidence yet."
+      - "Fresh Window A review: EVAS hidden gold passed, five concrete negatives were rejected behaviorally, targeted Spectre hidden gold passed, and AHDL-like lint/read-in triage found no task-specific diagnostics."
+      - "Gate1: independent_l1_ready. The independent value is hysteretic memory across mid-level holds, not just clipping or gain compression."
 046-successive-approximation-calibration-search-fsm: |
   syntax:
     must_include:
@@ -2276,11 +2277,13 @@
 091-agc-receiver-leveling-loop: |
   syntax:
     must_include:
-      - "tran"
-      - "save"
+      - "@(cross("
+      - "transition("
     must_not_include:
       - "I("
       - "ddt("
+  dut_companion_role: "l2_receiver_control_subsystem"
+  strong_benchmark_claim: true
   dut_compile:
     backend: "evas"
   tb_compile:
@@ -2294,9 +2297,9 @@
       - "gain_monitor_decreases_after_high_rssi"
   parity:
     reference: "spectre"
-    status: "pending_fresh_dual_rerun"
+    status: "pass"
     notes:
-      - "Fresh dual rerun required after adding gain_mon/rssi_mon intermediate observability."
+      - "Fresh RF/AFE remaining review evidence: EVAS hidden gold PASS, EVAS negatives rejected 5/5, Spectre hidden gold PASS, and EVAS AHDL-like lint has zero diagnostics."
 092-amplifier-filter-chain: |
   syntax:
     must_include:
@@ -2333,6 +2336,7 @@
     status: "cadence_modeling_ready"
     notes:
       - "EVAS reference solution, EVAS concrete negatives, current-branch targeted Spectre gold validation, and AHDL warning triage pass after checker strengthening."
+      - "Gate1: l2_core_ready. Count as an integration-flow L2 for the combined preamp, cascaded sampled filter states, monitor outputs, and settling metric rather than as another standalone gain or low-pass row."
 093-bbpd-data-edge-alignment: |
   syntax:
     must_include:
@@ -2570,11 +2574,13 @@
 103-iq-downconversion-chain: |
   syntax:
     must_include:
-      - "tran"
-      - "save"
+      - "@(cross("
+      - "transition("
     must_not_include:
       - "I("
       - "ddt("
+  dut_companion_role: "l2_iq_downconversion_subsystem"
+  strong_benchmark_claim: true
   dut_compile:
     backend: "evas"
   tb_compile:
@@ -2589,9 +2595,9 @@
       - "common_mode_hold_when_input_centered"
   parity:
     reference: "spectre"
-    status: "certified"
+    status: "pass"
     notes:
-      - "Current release dual_certification report certifies this form as EVAS/Spectre pass; rerun is required after checker/gold behavior changes."
+      - "Fresh RF/AFE remaining review evidence: EVAS hidden gold PASS, EVAS negatives rejected 5/5, Spectre hidden gold PASS, and EVAS AHDL-like lint has zero diagnostics."
 104-ldo-load-step-recovery: |
   syntax:
     must_include:
