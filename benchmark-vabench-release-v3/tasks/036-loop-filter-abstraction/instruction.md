@@ -1,95 +1,40 @@
 # Loop Filter Abstraction
 
-## Task Contract
+Implement `loop_filter_abstraction.va` in Verilog-A.
 
-- Form: `dut`
-- Level: `L1`
-- Category: PLL Clock and Timing Systems
-- Base function: Sampled loop-filter abstraction
-- Domain: `voltage`
-- Target artifact(s): `loop_filter_abstraction.va`
-- Supplied/reference support artifact(s): `tb_loop_filter_abstraction.scs`
-- Visible context: public task, interface, artifact, stimulus, and observable contract only.
-- Hidden evaluator boundary: deterministic checker and EVAS/Spectre validation are external; do not generate checker logic.
+Declare module `loop_filter_abstraction(clk, rst, vin, out, metric)` with all
+ports electrical. `clk` and `rst` are voltage-coded logic signals with a
+0.45 V threshold. `vin` is a signed loop-error stimulus around 0.45 V, `out`
+is a bounded loop-control voltage, and `metric` marks valid convergence/update
+state.
 
-## Form-Specific Requirements
+Public parameters:
 
-- Implement only the requested Verilog-A DUT artifact(s); do not generate a Spectre testbench in this form.
-- Preserve the public module names, port order, parameters, and waveform observable names.
+- `tr`: output transition time, default `100p`.
+- `deadband`: input error deadband around common mode, default `0.05`.
 
-## Public Verilog-A Interface
+Behavior:
 
-- `loop_filter_abstraction.va` declares module `loop_filter_abstraction` with positional ports: `clk`, `rst`, `vin`, `out`, `metric`.
+- Initialize `out` to 0.45 V and clear the convergence metric.
+- Update the internal loop-filter state on rising `clk` crossings.
+- When `rst` is high, clear the proportional step, integral residual, output
+  state, and `metric`.
+- Interpret `V(vin) - 0.45` as signed error.
+- Ignore errors inside the `deadband`.
+- For repeated same-sign errors outside the deadband, move `out` in the error
+  direction with a proportional step that decays over successive updates.
+- Accumulate a small integral residual so the output can retain a corrected
+  level after the proportional step has decayed.
+- Drive `metric` high only after enough valid loop updates have occurred, and
+  clear it on reset.
+- Keep the output voltage bounded in the 0 V to 0.9 V range.
 
-## Public Testbench And Observable Contract
+Modeling requirements:
 
-Public transient setting used by the evaluator:
-
-```spectre
-tran tran stop=80n maxstep=0.5n
-```
-
-The evaluator expects these exact public scalar observables:
-
-- `clk`
-- `rst`
-- `vin`
-- `out`
-- `metric`
-
-When this form generates a testbench, use plain scalar save names for these observables; do not rely on instance-qualified or aliased save names.
-
-## Public Behavior Checks
-
-- `proportional_step_decays`
-- `integral_residual_accumulates`
-- `metric_asserts_after_valid_updates`
-- `reset_clears_integrator`
-- `filtered_output_bounded`
-
-## Output Contract
-
-Return exactly one source artifact named `loop_filter_abstraction.va`.
-Do not include explanatory prose outside the source artifact contents.
-
-## Task-Specific Description
-
-### Sampled loop-filter abstraction (spec-to-va)
-
-Write the Verilog-A behavioral module only.
-
-Behavioral intent:
-
-Approximate the continuous-time proportional/integral loop-filter trend with sampled voltage-domain state updates on clock edges.
-
-Module name: `loop_filter_abstraction`.
-Domain: pure voltage-domain behavioral Verilog-A.
-Do not use current contributions, transistor-level devices, AC/noise analysis,
-or KCL/KVL solving assumptions.
-
-This is a sampled/event-driven behavioral abstraction of the loop-filter control trend. It must not require current-domain charge storage, true continuous-time RC integration, or KCL/KVL solving.
-
-Public port contract:
-
-```verilog
-module loop_filter_abstraction(clk, rst, vin, out, metric);
-input clk, rst, vin;
-output out, metric;
-electrical clk, rst, vin, out, metric;
-```
-
-Signal contract:
-
-clk and rst are voltage-coded logic signals, low=0 V and high=0.9 V with threshold 0.45 V. vin is a signed loop-error stimulus around 0.45 V. out is a bounded loop-control voltage. metric is a voltage-coded update/convergence observable.
-
-Saved waveform columns:
-
-```text
-clk rst vin out metric
-```
-
-Public transient contract:
-
-```spectre
-tran tran stop=80n maxstep=0.5n
-```
+- Use voltage contributions only; do not use current contributions,
+  transistor-level devices, continuous-time RC storage, `ddt`, `idt`, or
+  KCL/KVL assumptions.
+- Use a sampled/event-driven state update and drive output voltages through
+  `transition(...)`.
+- Return only `loop_filter_abstraction.va`; do not emit a Spectre testbench or
+  checker.

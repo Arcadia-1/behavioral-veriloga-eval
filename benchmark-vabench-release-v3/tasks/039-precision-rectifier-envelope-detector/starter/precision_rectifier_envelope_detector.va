@@ -11,6 +11,5 @@ module precision_rectifier_envelope_detector(clk, rst, vin, rect, env, metric);
     parameter real decay = 0.018 from [0:inf);
     parameter real tr = 150p from (0:inf);
 
-    // TODO: implement the behavior described in visible/prompt.md.
-    // This starter is intentionally incomplete; hidden tests grade behavior.
+    // TODO: implement the behavior described in instruction.md.
 endmodule

@@ -2,23 +2,36 @@
 
 ## Scope
 
-Task boundary is one Verilog-A DUT, `loop_filter_abstraction.va`, plus EVAS/Spectre-compatible `.scs` testbenches. Agent-visible materials are limited to `instruction.md`, `starter/`, and `test_visible/`. Evaluator-only materials are `solution/`, `test_hidden/`, `test_harness/`, and `negative_variants/`. No `meta.json` is present.
+Task boundary is one Verilog-A DUT, `loop_filter_abstraction.va`, plus
+EVAS/Spectre-compatible `.scs` testbenches. Public solver materials are
+`instruction.md`, `starter/`, and `test_visible/`. Evaluator-only materials are
+`solution/`, `test_hidden/`, `test_harness/`, and `negative_variants/`.
 
-## Four Standards
+## Gate 1
 
-- Useful scenario: pass. A PI-style loop-filter abstraction is a common PLL/control-loop behavioral primitive.
-- Reasonable task: pass. The public prompt fixes UP/DOWN response, proportional decay, integral residual, reset clearing, metric windows, and voltage-domain constraints.
-- Complete tests: pass for EVAS. Hidden stimulus checks positive and negative PI responses, residual integral behavior, metric timing, and reset clearing. Five concrete negatives cover missing PI response, wrong direction, no proportional decay, missing reset behavior, and collapsed output.
-- Fair evaluation: pass for EVAS. The checker scores public loop-filter response windows rather than implementation internals.
+- Admission label: independent L1 DUT.
+- Function: PI-style loop-filter/control-loop abstraction with UP/DOWN response,
+  proportional decay, residual integral memory, reset clearing, and metric
+  output.
+- Duplicate risk: low within the reviewed RF/baseband/filter batch.
 
-## Checker And Evidence
+## Gate 2
 
-- Checker id: `v3_036_loop_filter_abstraction`
-- Runner mapping: `CHECKS["v3_036_loop_filter_abstraction"] = check_release_loop_filter`
-- EVAS/Python-engine hidden gold smoke: `PASS`
-- Concrete negative recertification: 5/5 expected failures, all `FAIL_SIM_CORRECTNESS` with simulator `returncode=0`
-- Visible compile/sim smoke: `COMPILE_SIM_OK`
+- Modeling status: `cadence_modeling_ready` for the audited hidden gold slice.
+- Prompt contract: public interface, parameters, UP/DOWN update semantics,
+  integral/residual behavior, reset behavior, metric semantics, and voltage-only
+  constraints are stated without hidden-checker or gold-history wording.
+- Cadence semantics: the model uses event-driven sampled state with
+  transition-smoothed voltage outputs.
 
-## Remaining Risk
+## Verification
 
-Spectre/Spectre-AX correlation has not been run from this working tree; use EVAS-only wording until that evidence exists.
+- EVAS hidden gold: PASS.
+- Concrete negative recertification: 5/5 expected failures; all failed
+  behavioral correctness with simulator return code 0.
+- Visible smoke: PASS.
+- Targeted Spectre hidden gold: PASS.
+- AHDL lint/read-in triage: starter and solution preflight produced 0
+  diagnostics; Spectre read-in showed no task-specific `AHDLLINT-*`,
+  `VACOMP-1116`, or AHDL compile errors. The remaining Spectre warnings are
+  global AHDL-CMI/environment or small-design setup notices.
