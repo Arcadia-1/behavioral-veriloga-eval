@@ -43,3 +43,9 @@ Certification status: certified as an EVAS formal candidate on 2026-06-26.
 - Gate 1 status: `independent_l1_ready`.
 - Rationale: deterministic one-hot element shuffle is a DEM/control primitive with reset restart and non-monotonic element-order behavior.
 - Counting recommendation: retain as DEM/control L1.
+
+## Window B Calibration Closeout
+
+- Gate 2 status: `cadence_modeling_ready`.
+- Evidence: Window B targeted review on 2026-07-03 recorded EVAS hidden gold PASS, 6/6 concrete negatives rejected, AHDL-like lint PASS with 0 diagnostics, and targeted Spectre hidden gold PASS.
+- Counting recommendation: retain as an independent DEM/control L1 row.

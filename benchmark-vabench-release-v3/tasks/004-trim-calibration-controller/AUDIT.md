@@ -51,3 +51,9 @@ Certification status: certified as an EVAS formal candidate on 2026-06-24.
 - Gate 1 status: `independent_l1_ready`.
 - Rationale: voltage-domain calibration accumulator with reset, signed error update, clamp range, and recovery behavior.
 - Counting recommendation: retain as calibration/control L1.
+
+## Window B Calibration Closeout
+
+- Gate 2 status: `cadence_modeling_ready`.
+- Evidence: Window B targeted review on 2026-07-03 recorded EVAS hidden gold PASS, 5/5 concrete negatives rejected, AHDL-like lint PASS with 0 diagnostics, and targeted Spectre hidden gold PASS.
+- Counting recommendation: retain as an independent calibration-control L1 row.

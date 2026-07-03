@@ -1,8 +1,30 @@
 {
-  "visible": [
-    "test_visible/tests/run_visible_smoke.py"
-  ],
-  "hidden": [
-    "test_hidden/tests/tb_source_ref.scs"
-  ]
+  "certification": {
+    "scope": "EVAS/AHDL lint, targeted Spectre hidden gold, negative variants, and visible smoke evidence tracked in AUDIT.md",
+    "status": "cadence_modeling_ready"
+  },
+  "form": "dut",
+  "hidden": {
+    "checker": "../../../CHECKS.yaml",
+    "gold": [
+      "solution/pipe_adc_gain_control_loop.va"
+    ],
+    "negative_variants": "negative_variants",
+    "testbenches": [
+      "test_hidden/tests/tb_source_ref.scs"
+    ]
+  },
+  "status": "cadence_modeling_ready",
+  "task": "232-pipe-adc-gain-control-loop",
+  "visible": {
+    "instruction": "instruction.md",
+    "public_smoke": {
+      "hidden_dependency": false,
+      "runner": "test_visible/tests/run_visible_smoke.py",
+      "testbench": "test_visible/tests/tb_visible_smoke.scs"
+    },
+    "starter_files": [
+      "starter/pipe_adc_gain_control_loop.va"
+    ]
+  }
 }

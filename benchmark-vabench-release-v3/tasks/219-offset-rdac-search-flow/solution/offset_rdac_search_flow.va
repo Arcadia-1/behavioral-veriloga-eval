@@ -5,19 +5,36 @@ output vinp, vinn, vrefp, vrefn, dc0, dc1, dc2, dc3, dc4, dc5, dc6;
 electrical ck, d, vinp, vinn, vrefp, vrefn, dc0, dc1, dc2, dc3, dc4, dc5, dc6;
 real vin, vref, step, lsb;
 integer sign, state, iter, flag_calib;
-integer code[0:6];
+integer code0, code1, code2, code3, code4, code5, code6;
 analog begin
     @(initial_step) begin
         lsb = 1.0 / (17.0 - 1.0); vref = -17.0 / 2.0 * lsb; vin = vref; step = 40m;
         sign = 1; state = 1; iter = 6; flag_calib = 0;
-        code[6] = 1; code[5] = 0; code[4] = 0; code[3] = 0; code[2] = 0; code[1] = 0; code[0] = 0;
+        code6 = 1; code5 = 0; code4 = 0; code3 = 0; code2 = 0; code1 = 0; code0 = 0;
     end
     @(cross(V(ck) - 0.5, +1)) begin
         if (flag_calib == 0) begin
             sign = V(d) < 0.5;
             if (iter > 0) begin
-                if (sign == 1) code[iter - 1] = 1;
-                else begin code[iter] = 0; code[iter - 1] = 1; end
+                if (iter == 6) begin
+                    if (sign == 1) code5 = 1;
+                    else begin code6 = 0; code5 = 1; end
+                end else if (iter == 5) begin
+                    if (sign == 1) code4 = 1;
+                    else begin code5 = 0; code4 = 1; end
+                end else if (iter == 4) begin
+                    if (sign == 1) code3 = 1;
+                    else begin code4 = 0; code3 = 1; end
+                end else if (iter == 3) begin
+                    if (sign == 1) code2 = 1;
+                    else begin code3 = 0; code2 = 1; end
+                end else if (iter == 2) begin
+                    if (sign == 1) code1 = 1;
+                    else begin code2 = 0; code1 = 1; end
+                end else begin
+                    if (sign == 1) code0 = 1;
+                    else begin code1 = 0; code0 = 1; end
+                end
                 iter = iter - 1;
             end else begin
                 flag_calib = 1; iter = 0; step = 40m;
@@ -31,13 +48,21 @@ analog begin
                 state = sign; vin = vin + (2 * state - 1) * step; iter = iter + 1;
                 if (iter == 8) begin
                     vref = vref + lsb; vin = vref;
-                    code[6] = 1; code[5] = 0; code[4] = 0; code[3] = 0; code[2] = 0; code[1] = 0; code[0] = 0;
+                    code6 = 1; code5 = 0; code4 = 0; code3 = 0; code2 = 0; code1 = 0; code0 = 0;
                 end
             end
         end
     end
-    V(vinp) <+ 0.6 + 0.5 * vin; V(vinn) <+ 0.6 - 0.5 * vin;
-    V(vrefp) <+ 0.6 + 0.5 * vref; V(vrefn) <+ 0.6 - 0.5 * vref;
-    V(dc0) <+ code[0]; V(dc1) <+ code[1]; V(dc2) <+ code[2]; V(dc3) <+ code[3]; V(dc4) <+ code[4]; V(dc5) <+ code[5]; V(dc6) <+ code[6];
+    V(vinp) <+ transition(0.6 + 0.5 * vin, 0, 20p, 20p);
+    V(vinn) <+ transition(0.6 - 0.5 * vin, 0, 20p, 20p);
+    V(vrefp) <+ transition(0.6 + 0.5 * vref, 0, 20p, 20p);
+    V(vrefn) <+ transition(0.6 - 0.5 * vref, 0, 20p, 20p);
+    V(dc0) <+ transition(code0 ? 1.0 : 0.0, 0, 20p, 20p);
+    V(dc1) <+ transition(code1 ? 1.0 : 0.0, 0, 20p, 20p);
+    V(dc2) <+ transition(code2 ? 1.0 : 0.0, 0, 20p, 20p);
+    V(dc3) <+ transition(code3 ? 1.0 : 0.0, 0, 20p, 20p);
+    V(dc4) <+ transition(code4 ? 1.0 : 0.0, 0, 20p, 20p);
+    V(dc5) <+ transition(code5 ? 1.0 : 0.0, 0, 20p, 20p);
+    V(dc6) <+ transition(code6 ? 1.0 : 0.0, 0, 20p, 20p);
 end
 endmodule

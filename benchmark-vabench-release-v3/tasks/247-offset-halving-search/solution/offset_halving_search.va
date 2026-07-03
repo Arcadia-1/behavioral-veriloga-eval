@@ -17,7 +17,7 @@ analog begin
         vin = vin - (2 * sign - 1) * step;
         step = step / 2.0;
     end
-    V(vinp) <+ 0.5 * vdd + 0.5 * vin;
-    V(vinn) <+ 0.5 * vdd - 0.5 * vin;
+    V(vinp) <+ transition(0.5 * vdd + 0.5 * vin, 0, 10p, 10p);
+    V(vinn) <+ transition(0.5 * vdd - 0.5 * vin, 0, 10p, 10p);
 end
 endmodule
