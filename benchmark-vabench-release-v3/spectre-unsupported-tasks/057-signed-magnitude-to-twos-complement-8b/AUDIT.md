@@ -2,36 +2,31 @@
 
 Task: `057-signed-magnitude-to-twos-complement-8b`
 
-Status: support formal candidate for EVAS-based evaluation.
+Status: support formal candidate with targeted Spectre validation.
 
-## Four-Standard Review
+Packaging note: current `upstream/main` archives this row under `spectre-unsupported-tasks/`; this PR repairs the archived asset and does not re-add it to the active default denominator.
 
-- Useful scenario: pass. `Signed Magnitude To Twos Complement 8b` is a reusable analog/mixed-signal testbench utility.
-- Reasonable task: pass. The public prompt fixes the exact vector port order, logic threshold, output encoding, and invalid-state behavior when applicable.
-- Complete tests: pass for EVAS formal-candidate scope. Hidden tests cover boundary values, representative interior values, and invalid/gating cases when applicable.
-- Fair evaluation: pass for the stated prompt. Hidden scoring requirements are stated in `instruction.md`; public smoke only checks compile/basic simulation viability.
+## Gate 1
+
+- Useful scenario: pass. Signed-magnitude to two's-complement conversion is a reusable voltage-domain AMS support utility for signed readout, calibration, arithmetic-interface, and verification flows.
+- Counting boundary: support/formal candidate. This row remains a support utility, not a core L1 circuit-function claim by itself.
+
+## Gate 2
+
+- Public contract: pass. The prompt fixes module name, vector port order, threshold, logic high level, transition time, magnitude bit order, sign behavior, and negative-zero mapping.
+- Spectre modeling contract: pass. The prompt states that electrical vector ports must be accessed through constant indices or generate-time static expansion, avoiding runtime/procedural `V(mag[i])` or `V(y[i])` indexing.
+- Gold/starter/negative style: pass. The solution, starter, and five concrete negatives use constant-index static expansion so Spectre does not see runtime electrical-vector indexing.
 
 ## Evidence
 
-- Hidden gold expected result: `PASS`, `dut_compile=1.0`, `tb_compile=1.0`, `sim_correct=1.0`.
-- Positive vectors: +/-0,+/-1,+/-2,+/-63,+/-127.
-- Concrete negative variants: 5 expected rejections.
-
-Negative coverage:
-
-- `neg_001`: rejected as `FAIL_SIM_CORRECTNESS`.
-- `neg_002`: rejected as `FAIL_SIM_CORRECTNESS`.
-- `neg_003`: rejected as `FAIL_SIM_CORRECTNESS`.
-- `neg_004`: rejected as `FAIL_SIM_CORRECTNESS`.
-- `neg_005`: rejected as `FAIL_SIM_CORRECTNESS`.
-
-## Interface Cleanup
-
-- The task now uses Verilog-A vector ports to keep the benchmark focused on behavior rather than mechanical scalar-port expansion. Existing EVAS testbenches still save the same scalar node columns for checker compatibility.
+- EVAS2 hidden gold: PASS.
+- EVAS2 concrete negatives: 5/5 rejected as `FAIL_SIM_CORRECTNESS`.
+- Spectre AX hidden gold: PASS; checker covered positive, negative, maximum-magnitude, and negative-zero cases.
+- Spectre AX hidden negatives: 5/5 rejected behaviorally.
+- EVAS AHDL-like lint preflight: starter and solution hidden decks PASS with zero diagnostics.
+- AHDL/Spectre warning triage: no task-specific `AHDLLINT-*`, `VACOMP-1116`, `VACOMP-1192`, or AHDL compile errors were present. The remaining warnings are the shared `VACOMP-2435` AHDL-CMI environment notice and `SPECTRE-592` simulator-mode setup notice.
 
 ## Remaining Risk
 
-- This audit is EVAS-only. Per SOP, paper-facing final certification still needs Spectre/Spectre-AX correlation or an explicit EVAS-only label.
-- No model positive run has been attached yet, so this is not an A-tier core-score claim. It is ready to move out of staging as a support formal candidate.
-
-Certification status: certified with EVAS gold PASS and concrete negative FAIL_SIM_CORRECTNESS evidence.
+- Full v3 sweep was not rerun for this audit slice.
+- No model positive run is attached here, so this remains a support/formal-candidate validation record rather than a model-score claim.

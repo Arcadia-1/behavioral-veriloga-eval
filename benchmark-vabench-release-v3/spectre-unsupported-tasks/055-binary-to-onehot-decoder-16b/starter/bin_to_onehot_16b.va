@@ -9,8 +9,23 @@ module bin_to_onehot_16b(
     parameter real vdd = 0.9;
     parameter real vth = 0.45;
     parameter real tr = 20p;
-    genvar i;
+
     analog begin
-        for (i = 0; i < 16; i = i + 1) V(oh[i]) <+ transition(0.0, 0, tr, tr);
+        V(oh[0]) <+ transition((0) ? vdd : 0.0, 0, tr, tr);
+        V(oh[1]) <+ transition((0) ? vdd : 0.0, 0, tr, tr);
+        V(oh[2]) <+ transition((0) ? vdd : 0.0, 0, tr, tr);
+        V(oh[3]) <+ transition((0) ? vdd : 0.0, 0, tr, tr);
+        V(oh[4]) <+ transition((0) ? vdd : 0.0, 0, tr, tr);
+        V(oh[5]) <+ transition((0) ? vdd : 0.0, 0, tr, tr);
+        V(oh[6]) <+ transition((0) ? vdd : 0.0, 0, tr, tr);
+        V(oh[7]) <+ transition((0) ? vdd : 0.0, 0, tr, tr);
+        V(oh[8]) <+ transition((0) ? vdd : 0.0, 0, tr, tr);
+        V(oh[9]) <+ transition((0) ? vdd : 0.0, 0, tr, tr);
+        V(oh[10]) <+ transition((0) ? vdd : 0.0, 0, tr, tr);
+        V(oh[11]) <+ transition((0) ? vdd : 0.0, 0, tr, tr);
+        V(oh[12]) <+ transition((0) ? vdd : 0.0, 0, tr, tr);
+        V(oh[13]) <+ transition((0) ? vdd : 0.0, 0, tr, tr);
+        V(oh[14]) <+ transition((0) ? vdd : 0.0, 0, tr, tr);
+        V(oh[15]) <+ transition((0) ? vdd : 0.0, 0, tr, tr);
     end
 endmodule

@@ -12,11 +12,38 @@ module prbs_generator_32b(
     parameter real vth = 0.45;
     parameter real tr = 20p;
 
-    genvar bit;
-
     analog begin
-        for (bit = 0; bit < 32; bit = bit + 1) begin
-            V(out[bit]) <+ transition(0.0, 0, tr, tr);
-        end
+        V(out[0]) <+ transition((0) ? vdd : 0.0, 0, tr, tr);
+        V(out[1]) <+ transition((0) ? vdd : 0.0, 0, tr, tr);
+        V(out[2]) <+ transition((0) ? vdd : 0.0, 0, tr, tr);
+        V(out[3]) <+ transition((0) ? vdd : 0.0, 0, tr, tr);
+        V(out[4]) <+ transition((0) ? vdd : 0.0, 0, tr, tr);
+        V(out[5]) <+ transition((0) ? vdd : 0.0, 0, tr, tr);
+        V(out[6]) <+ transition((0) ? vdd : 0.0, 0, tr, tr);
+        V(out[7]) <+ transition((0) ? vdd : 0.0, 0, tr, tr);
+        V(out[8]) <+ transition((0) ? vdd : 0.0, 0, tr, tr);
+        V(out[9]) <+ transition((0) ? vdd : 0.0, 0, tr, tr);
+        V(out[10]) <+ transition((0) ? vdd : 0.0, 0, tr, tr);
+        V(out[11]) <+ transition((0) ? vdd : 0.0, 0, tr, tr);
+        V(out[12]) <+ transition((0) ? vdd : 0.0, 0, tr, tr);
+        V(out[13]) <+ transition((0) ? vdd : 0.0, 0, tr, tr);
+        V(out[14]) <+ transition((0) ? vdd : 0.0, 0, tr, tr);
+        V(out[15]) <+ transition((0) ? vdd : 0.0, 0, tr, tr);
+        V(out[16]) <+ transition((0) ? vdd : 0.0, 0, tr, tr);
+        V(out[17]) <+ transition((0) ? vdd : 0.0, 0, tr, tr);
+        V(out[18]) <+ transition((0) ? vdd : 0.0, 0, tr, tr);
+        V(out[19]) <+ transition((0) ? vdd : 0.0, 0, tr, tr);
+        V(out[20]) <+ transition((0) ? vdd : 0.0, 0, tr, tr);
+        V(out[21]) <+ transition((0) ? vdd : 0.0, 0, tr, tr);
+        V(out[22]) <+ transition((0) ? vdd : 0.0, 0, tr, tr);
+        V(out[23]) <+ transition((0) ? vdd : 0.0, 0, tr, tr);
+        V(out[24]) <+ transition((0) ? vdd : 0.0, 0, tr, tr);
+        V(out[25]) <+ transition((0) ? vdd : 0.0, 0, tr, tr);
+        V(out[26]) <+ transition((0) ? vdd : 0.0, 0, tr, tr);
+        V(out[27]) <+ transition((0) ? vdd : 0.0, 0, tr, tr);
+        V(out[28]) <+ transition((0) ? vdd : 0.0, 0, tr, tr);
+        V(out[29]) <+ transition((0) ? vdd : 0.0, 0, tr, tr);
+        V(out[30]) <+ transition((0) ? vdd : 0.0, 0, tr, tr);
+        V(out[31]) <+ transition((0) ? vdd : 0.0, 0, tr, tr);
     end
 endmodule

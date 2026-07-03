@@ -9,21 +9,35 @@ module gray_to_bin_8b(
     parameter real vth = 0.45;
     parameter real tr = 20p;
 
-    integer bit_y[7:0];
-    integer running;
-    integer bit_g;
-    integer j;
-    genvar i;
+    integer g7_q, g6_q, g5_q, g4_q, g3_q, g2_q, g1_q, g0_q;
+    integer b7_q, b6_q, b5_q, b4_q, b3_q, b2_q, b1_q, b0_q;
 
     analog begin
-        running = 0;
-        for (j = 7; j >= 0; j = j - 1) begin
-            bit_g = (V(g[j]) > vth) ? 1 : 0;
-            running = (running != bit_g) ? 1 : 0;
-            bit_y[j] = running;
-        end
-        for (i = 0; i < 8; i = i + 1) begin
-            V(b[i]) <+ transition(((i == 7) ? 0 : bit_y[i]) ? vdd : 0.0, 0, tr, tr);
-        end
+        g7_q = (V(g[7]) > vth) ? 1 : 0;
+        g6_q = (V(g[6]) > vth) ? 1 : 0;
+        g5_q = (V(g[5]) > vth) ? 1 : 0;
+        g4_q = (V(g[4]) > vth) ? 1 : 0;
+        g3_q = (V(g[3]) > vth) ? 1 : 0;
+        g2_q = (V(g[2]) > vth) ? 1 : 0;
+        g1_q = (V(g[1]) > vth) ? 1 : 0;
+        g0_q = (V(g[0]) > vth) ? 1 : 0;
+
+        b7_q = g7_q;
+        b6_q = (b7_q != g6_q) ? 1 : 0;
+        b5_q = (b6_q != g5_q) ? 1 : 0;
+        b4_q = (b5_q != g4_q) ? 1 : 0;
+        b3_q = (b4_q != g3_q) ? 1 : 0;
+        b2_q = (b3_q != g2_q) ? 1 : 0;
+        b1_q = (b2_q != g1_q) ? 1 : 0;
+        b0_q = (b1_q != g0_q) ? 1 : 0;
+
+        V(b[7]) <+ transition(0.0, 0, tr, tr);
+        V(b[6]) <+ transition(b6_q ? vdd : 0.0, 0, tr, tr);
+        V(b[5]) <+ transition(b5_q ? vdd : 0.0, 0, tr, tr);
+        V(b[4]) <+ transition(b4_q ? vdd : 0.0, 0, tr, tr);
+        V(b[3]) <+ transition(b3_q ? vdd : 0.0, 0, tr, tr);
+        V(b[2]) <+ transition(b2_q ? vdd : 0.0, 0, tr, tr);
+        V(b[1]) <+ transition(b1_q ? vdd : 0.0, 0, tr, tr);
+        V(b[0]) <+ transition(b0_q ? vdd : 0.0, 0, tr, tr);
     end
 endmodule
