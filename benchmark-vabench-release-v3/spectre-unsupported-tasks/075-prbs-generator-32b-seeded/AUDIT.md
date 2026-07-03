@@ -2,14 +2,14 @@
 
 Task: `075-prbs-generator-32b-seeded`
 
-Status: support formal candidate with targeted Spectre validation.
+Status: archived support/formal candidate with targeted Spectre validation; not counted in the active default denominator.
 
-Packaging note: current `upstream/main` archives this row under `spectre-unsupported-tasks/`; this PR repairs the archived asset and does not re-add it to the active default denominator.
+Packaging note: current `upstream/main` archives this row under `spectre-unsupported-tasks/` and excludes it from default `TASKS.json`/`CHECKS.yaml`. This PR repairs the archived asset only; restoration/counting remains an upstream policy decision.
 
 ## Gate 1
 
 - Useful scenario: pass. A seeded 32-bit PRBS/LFSR source is a reusable voltage-domain AMS support utility for converter, link, calibration, and measurement stimulus flows.
-- Counting boundary: support/formal candidate. This row remains a support utility, not a core L1 circuit-function claim by itself.
+- Counting boundary: archived support/formal candidate. This row can be restored only as a support utility; it is not a core L1 circuit-function claim by itself.
 
 ## Gate 2
 

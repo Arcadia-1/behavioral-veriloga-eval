@@ -2,14 +2,14 @@
 
 Task: `052-gray-to-binary-converter-8b`
 
-Status: support formal candidate with targeted Spectre validation.
+Status: archived support/formal candidate with targeted Spectre validation; not counted in the active default denominator.
 
-Packaging note: current `upstream/main` archives this row under `spectre-unsupported-tasks/`; this PR repairs the archived asset and does not re-add it to the active default denominator.
+Packaging note: current `upstream/main` archives this row under `spectre-unsupported-tasks/` and excludes it from default `TASKS.json`/`CHECKS.yaml`. This PR repairs the archived asset only; restoration/counting remains an upstream policy decision.
 
 ## Gate 1
 
 - Useful scenario: pass. An 8-bit Gray-to-binary code converter is a reusable voltage-domain AMS support utility for converter, encoder, and measurement testbenches.
-- Counting boundary: support/formal candidate. This row remains a support utility, not a core L1 circuit-function claim by itself.
+- Counting boundary: archived support/formal candidate. This row can be restored only as a support utility; it is not a core L1 circuit-function claim by itself.
 
 ## Gate 2
 
