@@ -32,14 +32,10 @@ analog begin
 
     @(cross(diff - 0.5 * vhys, +1)) begin
         out_state = 1;
-        $strobe("[cmp_hysteresis] t=%.3f ns | rising trip | diff=%.3fmV",
-                $abstime * 1e9, diff * 1e3);
     end
 
     @(cross(diff + 0.5 * vhys, -1)) begin
         out_state = 0;
-        $strobe("[cmp_hysteresis] t=%.3f ns | falling trip | diff=%.3fmV",
-                $abstime * 1e9, diff * 1e3);
     end
 
     V(OUTP) <+ vl + (vh - vl) * transition(out_state ? 1.0 : 0.0, 0.0, tedge, tedge);

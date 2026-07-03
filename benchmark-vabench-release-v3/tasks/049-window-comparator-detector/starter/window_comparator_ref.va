@@ -12,7 +12,6 @@ parameter real vhigh = 0.6;
 parameter real tedge = 200p;
 
     // TODO: implement the behavior described in instruction.md.
-    // This starter is intentionally incomplete; hidden tests grade behavior.
 analog begin
     V(out, VSS) <+ 0.0;
 end

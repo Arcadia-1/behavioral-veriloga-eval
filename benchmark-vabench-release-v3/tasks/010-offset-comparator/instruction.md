@@ -1,72 +1,37 @@
 # Offset Comparator
 
-## Task Contract
+Implement a clocked voltage-domain comparator with a positive input-referred
+offset.
 
-- Form: `dut`
-- Level: `L1`
-- Category: Comparator and Decision Circuits
-- Base function: Offset comparator
-- Domain: `voltage`
-- Target artifact(s): `cmp_offset_ref.va`
-- Supplied public smoke testbench: `test_visible/visible.scs`
-- Visible context: public task, interface, artifact, stimulus, and observable contract only.
-- Hidden evaluator boundary: deterministic checker and EVAS/Spectre validation are external; do not generate checker logic.
+## Public Interface
 
-## Form-Specific Requirements
+Declare module `cmp_offset_ref` with positional ports `VDD, VSS, CLK, VINP,
+VINN, OUT_P`. All ports are electrical. `VDD` and `VSS` are supply rails, `CLK`
+is the sampling clock, `VINP` and `VINN` are the differential analog inputs,
+and `OUT_P` is the voltage-coded latched decision output.
 
-- Implement only the requested Verilog-A DUT artifact(s); do not generate a Spectre testbench in this form.
-- Preserve the public module names, port order, parameters, and waveform observable names.
+## Public Parameter Contract
 
-## Public Verilog-A Interface
+Provide these overrideable public parameters:
 
-- `cmp_offset_ref.va` declares module `cmp_offset_ref` with positional ports: `VDD`, `VSS`, `CLK`, `VINP`, `VINN`, `OUT_P`.
+- `vos = 5m V`: positive input-referred offset threshold.
+- `tt = 20p`: transition smoothing time for `OUT_P`.
 
-## Public Testbench And Observable Contract
+## Functional Contract
 
-Public transient setting used by the evaluator:
+- Initialize `OUT_P` low relative to `VSS`.
+- On each rising crossing of `CLK` through the voltage-coded logic midpoint,
+  latch whether `V(VINP,VSS) - V(VINN,VSS)` is greater than `vos`.
+- Drive `OUT_P` high to the `VDD` rail only for latched inputs above the
+  positive offset threshold; otherwise drive it low to `VSS`.
+- Hold the latched decision between rising clock edges, even if the input
+  polarity changes between samples.
+- Use smoothed rail-referenced voltage-domain output transitions.
 
-```spectre
-tran tran stop=28n maxstep=20p
-```
+## Modeling Constraints
 
-The evaluator expects these exact public scalar observables:
-
-- `CLK`
-- `VINP`
-- `VINN`
-- `OUT_P`
-
-When this form generates a testbench, use plain scalar save names for these observables; do not rely on instance-qualified or aliased save names.
-
-## Public Behavior Checks
-
-- `clocked_output_sequence_matches_offset_comparison`
-- `negative_diff_latches_low`
-- `positive_diff_below_5mV_offset_latches_low`
-- `positive_diff_above_5mV_offset_latches_high`
-- `decisions_sampled_after_rising_clk_edges`
-- `does_not_asynchronously_respond_between_edges`
-- `output_levels_track_VSS_and_VDD`
-
-## Output Contract
-
-Return exactly one source artifact named `cmp_offset_ref.va`.
-Do not include explanatory prose outside the source artifact contents.
-
-## Task-Specific Description
-
-# Offset Comparator DUT
-
-Write a pure voltage-domain Verilog-A module for a clocked comparator with input offset.
-
-The DUT module is `cmp_offset_ref` with ports `VDD, VSS, CLK, VINP, VINN, OUT_P`. All ports are electrical; digital-control ports use 0/0.9 V logic levels.
-
-Required behavior:
-- On each rising `CLK` edge, compare `VINP - VINN` against an internal positive
-  offset threshold of about 5 mV.
-- Borderline positive inputs below the offset, such as +3 mV, must still latch
-  low; inputs above the offset, such as +7 mV or +20 mV, must latch high.
-- Drive `OUT_P` to the supply level for a high decision and to `VSS` for a low decision.
-- Use smoothed voltage-domain output transitions.
-
-Use voltage contributions only. Do not use current contributions, `ddt()`, or `idt()`.
+Return only `cmp_offset_ref.va`. Use voltage contributions only. Do not modify
+or emit the support testbench, add checker logic, hard-code waveform sample
+points, add simulator-private side channels, use current contributions,
+`ddt()`, or `idt()`. For clocked behavior, update local state in analog event
+blocks and place the output voltage contribution outside those event blocks.

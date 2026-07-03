@@ -5,15 +5,17 @@
 - Label: `independent_l1_ready`.
 - Function: SAR comparator primitive with clock-low precharge-high behavior and
   differential rising-edge decisions.
-- Independence: retained as distinct from reset-low comparator variants because
-  the precharge-high/equal-input behavior is a different converter front-end
-  primitive, not just a parameter value.
+- Independence: retained as the canonical reset-high comparator representative
+  in this review batch. Reset-high rows `202-l2-cmp-ideal-clocked` and
+  `248-sar-comparator-reset-high` are treated as valid but non-counted
+  duplicates unless upstream explicitly chooses one of them instead.
 - Interface role: human review treats this analog-to-decision boundary as a
   meaningful data-converter benchmark candidate, not a disposable support-only
   helper. Upstream can still decide whether to count it in the main L1 set or
   in a converter-interface subcategory.
-- Duplicate policy: `116-clocked-comparator-reset-low` is treated as the
-  non-counted reset-polarity variant in this review batch.
+- Duplicate policy: `116-clocked-comparator-reset-low`, `202-l2-cmp-ideal-clocked`,
+  `248-sar-comparator-reset-high`, and `257-comparator-reset-low-1p8` are not
+  separate counted functions under the strict reset-family deduplication policy.
 
 ## Gate 2
 

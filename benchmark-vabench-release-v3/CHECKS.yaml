@@ -3193,6 +3193,15 @@
   checker:
     task_id: v3_smooth_comparator_tanh
     metric: stable_samples
+  sim_correct:
+    checks:
+      - smooth_tanh_transfer
+      - output_span_and_offset
+      - polarity_and_slope
+    public_observables:
+      - sigin
+      - sigref
+      - sigout
   scoring:
     axes:
       - dut_compile
@@ -3697,6 +3706,17 @@
   checker:
     task_id: v3_l2_cmp_ideal_clocked
     metric: stable_samples
+  sim_correct:
+    checks:
+      - reset_both_high_when_clock_low
+      - positive_and_negative_decisions_after_rising_edges
+      - equal_input_decision_clears_both_outputs
+    public_observables:
+      - cmpck
+      - vinp
+      - vinn
+      - dcmpp
+      - dcmpn
   scoring:
     axes:
       - dut_compile
@@ -3706,6 +3726,16 @@
   checker:
     task_id: v3_comparator_offset_driver
     metric: stable_samples
+  sim_correct:
+    checks:
+      - falling_edge_updates_search_value
+      - search_step_halves_each_update
+      - differential_outputs_are_symmetric_about_common_mode
+    public_observables:
+      - clk
+      - dcmpp
+      - vinp
+      - vinn
   scoring:
     axes:
       - dut_compile
@@ -3751,6 +3781,17 @@
   checker:
     task_id: v3_offset_bisection_driver
     metric: stable_samples
+  sim_correct:
+    checks:
+      - falling_edge_updates_search_value
+      - step_halves_on_polarity_change
+      - differential_outputs_follow_vcm_input
+    public_observables:
+      - clk
+      - vout
+      - vcm
+      - vinp
+      - vinn
   scoring:
     axes:
       - dut_compile
@@ -4197,6 +4238,17 @@
   checker:
     task_id: v3_sar_comparator_reset_high
     metric: stable_samples
+  sim_correct:
+    checks:
+      - reset_both_high_when_clock_low
+      - positive_and_negative_decisions_after_rising_edges
+      - output_levels_track_vdd
+    public_observables:
+      - cmpck
+      - vinp
+      - vinn
+      - dcmpp
+      - dcmpn
   scoring:
     axes:
       - dut_compile
@@ -4278,6 +4330,17 @@
   checker:
     task_id: v3_comparator_reset_low_1p8
     metric: stable_samples
+  sim_correct:
+    checks:
+      - reset_both_low_when_clock_low
+      - positive_and_negative_decisions_after_rising_edges
+      - output_levels_track_1p8_domain
+    public_observables:
+      - cmpck
+      - vinp
+      - vinn
+      - dcmpp
+      - dcmpn
   scoring:
     axes:
       - dut_compile
@@ -4332,6 +4395,17 @@
   checker:
     task_id: v3_clocked_comparator_dual_output
     metric: stable_samples
+  sim_correct:
+    checks:
+      - reset_both_low_when_clock_low
+      - complementary_decisions_after_rising_edges
+      - equal_input_decision_clears_both_outputs
+    public_observables:
+      - clk
+      - vinp
+      - vinn
+      - outp
+      - outn
   scoring:
     axes:
       - dut_compile
@@ -4768,10 +4842,20 @@
       - dut_compile
       - tb_compile
       - sim_correct
-292-smooth-tanh-comparator: |
+292-hysteretic-comparator-receiver: |
   checker:
-    task_id: v3_smooth_tanh_comparator
+    task_id: v3_hysteretic_comparator_receiver
     metric: stable_samples
+  sim_correct:
+    checks:
+      - upper_lower_hysteresis_thresholds
+      - fixed_propagation_delay
+      - rail_coded_receiver_output
+      - holds_state_inside_hysteresis_band
+    public_observables:
+      - inp
+      - inm
+      - out
   scoring:
     axes:
       - dut_compile

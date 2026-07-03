@@ -1,22 +1,36 @@
-# Audit: 116-clocked-comparator-reset-low
+# Two-Gate SOP Audit: Task 116 Clocked Comparator Reset-Low
 
-- Status: source import certified
-- Source provenance: `caiyizeng25/comp_ideal.va`
-- EVAS: PASS, checker `116-clocked-comparator-reset-low`
-- Spectre: PASS, mode AX via SUI direct
-- EVAS/Spectre parity: `passed`
-- Spectre checker note: dcmpp=0.900,0.000,0.000,0.000 dcmpn=0.000,0.000,0.900,0.000
-- Evidence:
-  - `WORK/source-import-batch2-evas/summary.json`
-  - `WORK/source-import-batch2-spectre/summary.json`
+## Scope
 
-## Four-Standard Review
+Task 116 is a reset-low clocked comparator DUT. It compares `VINP/VINN` on
+`CMPCK` rising edges and resets both decision outputs low when `CMPCK` falls.
 
-- Useful scenario: yes. This is a reusable source-derived voltage-domain primitive for converter, timing, or logic behavioral flows.
-- Reasonable task: yes. The public task is a single DUT with fixed port order and bounded scope.
-- Complete tests: yes for this import stage. Visible smoke compiles starter; hidden gold runs EVAS and Spectre on the same testbench with semantic checker.
-- Fair evaluation: yes. The checker samples stable windows after events and does not require raw timestep equality.
+## Gate 1: Admission And Counting
 
-## Submit Decision
+- Admission label: `hard_duplicate_rewrite_or_remove`.
+- Counting decision: human review confirmed that reset-low clocked comparator
+  rows should be deduplicated strictly. Task 116 is valid modeled behavior, but
+  it is functionally covered by the retained reset-low representative
+  `263-clocked-comparator-dual-output`.
+- Function boundary: reset-low clocked comparator with complementary decision
+  outputs.
+- Rewrite path: keep only if upstream wants a different reset-low interface
+  role, such as explicit latch-valid signaling, metastability modeling, or a
+  converter-front-end contract that is not already covered by task 263.
 
-Can submit: yes. This task passed visible smoke, EVAS hidden gold, Spectre AX hidden gold, and EVAS/Spectre parity.
+## Gate 2: Cadence Modeling Quality
+
+- Modeling status: `cadence_modeling_ready` for the artifact itself, but not a
+  separate counted function under the strict duplicate policy.
+- Prompt hygiene: repaired to remove source-provenance and hidden-evaluator
+  wording. The public prompt now states interface, parameters, edge behavior,
+  delay, output smoothing, and voltage-only constraints.
+- Checker coverage: `v3_clocked_comparator_reset_low` verifies reset-low
+  behavior, positive and negative decisions, equal-input clearing, and
+  behavioral negative variants.
+
+## Human Confirmation
+
+The reviewer confirmed that parameter, naming, or reset-family variants should
+not become independent benchmark functions unless they add a distinct reusable
+AMS role.

@@ -1,64 +1,41 @@
 # Debounce Latch
 
-## Task Contract
+Implement a voltage-domain comparator decision debounce latch.
 
-- Form: `dut`
-- Level: `L1`
-- Category: Comparator and Decision Circuits
-- Base function: Comparator debounce latch
-- Domain: `voltage`
-- Target artifact(s): `debounce_latch.va`
-- Supplied/reference support artifact(s): `tb_debounce_latch_ref.scs`
-- Visible context: public task, interface, artifact, stimulus, and observable contract only.
-- Hidden evaluator boundary: deterministic checker and EVAS/Spectre validation are external; do not generate checker logic.
+## Public Interface
 
-## Form-Specific Requirements
+Declare module `debounce_latch` with positional ports `sig, rst_n, out`. All
+ports are electrical. `sig` is the noisy voltage-coded comparator decision,
+`rst_n` is an active-low reset input, and `out` is the debounced decision
+output.
 
-- Implement only the requested Verilog-A DUT artifact(s); do not generate a Spectre testbench in this form.
-- Preserve the public module names, port order, parameters, and waveform observable names.
+## Public Parameter Contract
 
-## Public Verilog-A Interface
+Provide these overrideable public parameters:
 
-- `debounce_latch.va` declares module `debounce_latch` with positional ports: `sig`, `rst_n`, `out`.
+- `vth = 0.45 V`: logic threshold for `sig` and `rst_n`.
+- `vdd = 0.9 V`: logic high output level.
+- `stable = 12n`: qualification time after a rising comparator-decision edge.
+- `tr = 500p`: transition smoothing time for output changes.
 
-## Public Testbench And Observable Contract
+## Functional Contract
 
-Public transient setting used by the evaluator:
+- Initialize `out` low.
+- When `rst_n` is below `vth`, force `out` low and cancel any pending
+  qualification.
+- When `sig` rises through `vth` while reset is released, start a qualification
+  timer.
+- When the qualification timer expires, set `out` high only if both `sig` and
+  `rst_n` are still above `vth`.
+- When `sig` falls below `vth`, clear `out` low and cancel any pending
+  qualification.
+- Hold the debounced output state between reset, input-edge, and timer events.
 
-```spectre
-tran tran stop=140n maxstep=500p
-```
+## Modeling Constraints
 
-The evaluator expects these exact public scalar observables:
-
-- `sig`
-- `rst_n`
-- `out`
-
-When this form generates a testbench, use plain scalar save names for these observables; do not rely on instance-qualified or aliased save names.
-
-## Public Behavior Checks
-
-- `short_glitch_rejected`
-- `stable_high_qualified_after_delay`
-- `falling_sig_clears_output`
-
-## Output Contract
-
-Return exactly one source artifact named `debounce_latch.va`.
-Do not include explanatory prose outside the source artifact contents.
-
-## Task-Specific Description
-
-# Comparator Debounce Latch DUT
-
-Write a pure voltage-domain Verilog-A module for a comparator decision latch with delayed glitch qualification.
-
-The DUT module is `debounce_latch` with ports `sig, rst_n, out`. Treat `sig` as a noisy voltage-coded comparator decision. All ports are electrical; voltage-coded control ports use 0/0.9 V logic levels.
-
-Required behavior:
-- Use active-low reset `rst_n`; reset forces `out` low and cancels any pending qualification.
-- On a rising comparator-decision edge on `sig` while reset is released, arm a 12 ns qualification timer.
-- On the timer event, set `out` high only if `sig` and `rst_n` are still high; falling `sig` clears or cancels the output.
-
-Use voltage contributions only. Do not use current contributions, `ddt()`, or `idt()`.
+Return only `debounce_latch.va`. Use voltage contributions only. Do not modify
+or emit the support testbench, add checker logic, hard-code waveform sample
+points, add simulator-private side channels, use current contributions,
+`ddt()`, or `idt()`. For event-driven behavior, update local state in analog
+event blocks and drive the output contribution outside those event blocks with
+finite transition-style smoothing.

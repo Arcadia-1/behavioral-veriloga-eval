@@ -1,89 +1,32 @@
 # Threshold Comparator
 
-## Task Contract
+Implement a voltage-domain single-ended threshold comparator.
 
-- Form: `dut`
-- Level: `L1`
-- Category: Comparator and Decision Circuits
-- Base function: Threshold comparator
-- Domain: `voltage`
-- Target artifact(s): `comparator.va`
-- Supplied/reference support artifact(s): `tb_comparator_ref.scs`
-- Visible context: public task, interface, artifact, stimulus, and observable contract only.
-- Hidden evaluator boundary: deterministic checker and EVAS/Spectre validation are external; do not generate checker logic.
+## Public Interface
 
-## Form-Specific Requirements
+Declare module `comparator` with positional ports `VDD, VSS, VINP, VINN,
+OUT_P`. All ports are electrical. `VDD` and `VSS` are supply rails, `VINP` and
+`VINN` are the differential inputs, and `OUT_P` is the single-ended decision
+output.
 
-- Implement only the requested Verilog-A DUT artifact(s); do not generate a Spectre testbench in this form.
-- Preserve the public module names, port order, parameters, and waveform observable names.
+## Public Parameter Contract
 
-## Public Verilog-A Interface
+Provide this overrideable public parameter:
 
-- `comparator.va` declares module `comparator` with positional ports: `VDD`, `VSS`, `VINP`, `VINN`, `OUT_P`.
+- `tedge = 100p`: transition smoothing time for `OUT_P`.
 
-## Public Testbench And Observable Contract
+## Functional Contract
 
-Public transient setting used by the evaluator:
+- Initialize `OUT_P` from the initial sign of `V(VINP,VSS) - V(VINN,VSS)`.
+- Drive `OUT_P` high to `VDD` when `VINP` crosses above `VINN`.
+- Drive `OUT_P` low to `VSS` when `VINP` crosses below `VINN`.
+- Respond to both rising and falling zero-differential crossings.
+- Use finite transition-style smoothing for rail-referenced output changes.
 
-```spectre
-tran tran stop=30n maxstep=0.1n
-```
+## Modeling Constraints
 
-The evaluator expects these exact public scalar observables:
-
-- `vinp`
-- `vinn`
-- `out_p`
-
-When this form generates a testbench, use plain scalar save names for these observables; do not rely on instance-qualified or aliased save names.
-
-## Public Behavior Checks
-
-- `low_for_negative_diff`
-- `high_for_positive_diff`
-- `rising_trip_near_zero_diff`
-- `falling_trip_near_zero_diff`
-- `rail_referenced_output_levels`
-
-## Output Contract
-
-Return exactly one source artifact named `comparator.va`.
-Do not include explanatory prose outside the source artifact contents.
-
-## Task-Specific Description
-
-# Threshold comparator DUT
-
-Write the Verilog-A DUT artifact(s) for `Threshold comparator`.
-
-This is a function-checked DUT task, not a generic companion wrapper. The
-public contract below defines the exact module interface, voltage-domain
-behavior, and waveform observables used by the release checker.
-
-Domain: pure voltage-domain behavioral Verilog-A.
-
-## Module Contract
-
-- Declaration: `comparator(vdd, vss, vinp, vinn, out_p)`
-
-Ports:
-
-- `vdd`, `vss`: electrical supply rails
-- `vinp`, `vinn`: input electrical differential pair
-- `out_p`: output electrical single-ended decision
-
-## Behavioral Contract
-
-- drive `out_p` high when `V(vinp) > V(vinn)` by a visible margin
-- drive `out_p` low when `V(vinp) < V(vinn)` by a visible margin
-- respond to both rising and falling zero-differential crossings, not only a
-  single low-to-high threshold event
-- use rail-referenced output levels and finite `transition(...)` edges
-
-## Public Evaluation Observables
-
-The companion validation testbench saves these waveform columns:
-
-- `vinp`
-- `vinn`
-- `out_p`
+Return only `comparator.va`. Use voltage contributions only. Do not modify or
+emit the support testbench, add checker logic, hard-code waveform sample
+points, add simulator-private side channels, use current contributions,
+`ddt()`, or `idt()`. Update the retained decision state at crossing events and
+drive the output contribution outside those event blocks.

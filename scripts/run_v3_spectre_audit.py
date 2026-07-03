@@ -89,6 +89,37 @@ def read_task_toml(task_dir: Path) -> dict[str, Any]:
         return parsed
 
 
+def read_task_index_entry(task_dir: Path) -> dict[str, Any]:
+    if task_dir.parent.name != "tasks":
+        return {}
+    index_path = task_dir.parent.parent / "TASKS.json"
+    if not index_path.exists():
+        return {}
+    try:
+        data = json.loads(index_path.read_text(encoding="utf-8"))
+    except (json.JSONDecodeError, OSError):
+        return {}
+    if not isinstance(data, dict):
+        return {}
+    tasks = data.get("tasks", {})
+    if not isinstance(tasks, dict):
+        return {}
+    entry = tasks.get(task_dir.name, {})
+    if not isinstance(entry, dict):
+        return {}
+    defaults = data.get("defaults", {})
+    if isinstance(defaults, dict):
+        return {**defaults, **entry}
+    return entry
+
+
+def effective_task_form(task_dir: Path, meta: dict[str, Any]) -> str:
+    task_toml_form = str(meta.get("form") or "").strip()
+    if task_toml_form:
+        return task_toml_form
+    return str(read_task_index_entry(task_dir).get("form") or "").strip()
+
+
 def load_v3_checks_config(task_dir: Path) -> dict[str, Any]:
     for checks_path in (
         task_dir / "test_harness" / "checks.yaml",
@@ -290,7 +321,7 @@ def run_audit_case(
 ) -> dict[str, Any]:
     meta = read_task_toml(task_dir)
     task_index_id = read_task_index_id(task_dir)
-    form = str(meta.get("form") or "")
+    form = effective_task_form(task_dir, meta)
     targets = read_task_artifact_targets(task_dir)
     checks_config = load_v3_checks_config(task_dir)
     checker_id = resolve_checker_id(task_dir, meta, checks_config)
@@ -448,11 +479,12 @@ def main() -> int:
     for task_dir in tasks:
         meta = read_task_toml(task_dir)
         targets = read_task_artifact_targets(task_dir)
+        form = effective_task_form(task_dir, meta)
         variants = candidate_roots(
             task_dir,
             args.variant,
             targets=targets,
-            form=str(meta.get("form") or ""),
+            form=form,
             all_negative_variants=args.all_negative_variants,
         )
         for variant_label, candidate_root, expected_pass in variants:

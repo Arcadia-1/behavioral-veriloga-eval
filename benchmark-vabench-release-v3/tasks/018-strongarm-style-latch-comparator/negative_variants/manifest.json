@@ -1,0 +1,30 @@
+{
+  "status": "concrete_near_miss_negatives",
+  "variants": [
+    {
+      "id": "neg_001",
+      "description": "Applies a nonzero comparator offset that changes the near-threshold latch decision.",
+      "path": "negative_variants/neg_001/cmp_strongarm.va"
+    },
+    {
+      "id": "neg_002",
+      "description": "Breaks edge-latched timing behavior while preserving the public module interface.",
+      "path": "negative_variants/neg_002/cmp_strongarm.va"
+    },
+    {
+      "id": "neg_003",
+      "description": "Inverts or misroutes the positive/negative differential decision polarity.",
+      "path": "negative_variants/neg_003/cmp_strongarm.va"
+    },
+    {
+      "id": "neg_004",
+      "description": "Breaks reset/hold behavior after comparator clock transitions.",
+      "path": "negative_variants/neg_004/cmp_strongarm.va"
+    },
+    {
+      "id": "neg_005",
+      "description": "Fails complementary latch-state behavior on the public decision outputs.",
+      "path": "negative_variants/neg_005/cmp_strongarm.va"
+    }
+  ]
+}

@@ -2789,7 +2789,7 @@
       "difficulty": "D2",
       "form": "dut",
       "id": "v3_248_sar_comparator_reset_high",
-      "level": "L2",
+      "level": "L1",
       "target": [
         "sar_comparator_reset_high.va"
       ],
@@ -2888,7 +2888,7 @@
       "difficulty": "D2",
       "form": "dut",
       "id": "v3_257_comparator_reset_low_1p8",
-      "level": "L2",
+      "level": "L1",
       "target": [
         "comparator_reset_low_1p8.va"
       ],
@@ -2954,7 +2954,7 @@
       "difficulty": "D2",
       "form": "dut",
       "id": "v3_263_clocked_comparator_dual_output",
-      "level": "L2",
+      "level": "L1",
       "target": [
         "clocked_comparator_dual_output.va"
       ],
@@ -3275,16 +3275,16 @@
       ],
       "title": "Limiting Diffamp"
     },
-    "292-smooth-tanh-comparator": {
+    "292-hysteretic-comparator-receiver": {
       "category": "comparator",
       "difficulty": "D2",
       "form": "dut",
-      "id": "v3_292_smooth_tanh_comparator",
+      "id": "v3_292_hysteretic_comparator_receiver",
       "level": "L1",
       "target": [
-        "smooth_tanh_comparator.va"
+        "hysteretic_comparator_receiver.va"
       ],
-      "title": "Smooth Tanh Comparator"
+      "title": "Hysteretic Comparator Receiver"
     },
     "293-flash-folded-dac4": {
       "category": "data_converter",

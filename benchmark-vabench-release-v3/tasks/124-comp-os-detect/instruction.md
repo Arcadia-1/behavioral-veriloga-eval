@@ -18,11 +18,13 @@ Provide this overrideable public parameter:
 
 ## Functional Contract
 
-On each falling `CLK` crossing through half `vdd`, read `DCMPP`. A high
-decision subtracts the current differential search step from the internal
-offset estimate; a low decision adds the current step. Halve the step after
-every decision. Drive `VINP` and `VINN` symmetrically around half `vdd` with
-their difference equal to the accumulated differential search value.
+Initialize the signed differential search value to zero and the differential
+search step to `100m V`. On each falling `CLK` crossing through half `vdd`,
+read `DCMPP`. A high decision subtracts the current differential search step
+from the internal offset estimate; a low decision adds the current step. Halve
+the step after every decision. Drive `VINP` and `VINN` symmetrically around
+half `vdd` with their difference equal to the accumulated differential search
+value.
 
 ## Modeling Constraints
 

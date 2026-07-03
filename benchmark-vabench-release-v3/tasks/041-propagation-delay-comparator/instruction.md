@@ -1,100 +1,57 @@
 # Propagation Delay Comparator
 
-## Task Contract
+Implement a voltage-domain clocked comparator whose clock-to-output delay grows
+as the effective differential input becomes smaller, plus the supplied timing
+helper artifact.
 
-- Form: `dut`
-- Level: `L1`
-- Category: Comparator and Decision Circuits
-- Base function: Propagation-delay comparator
-- Domain: `voltage`
-- Target artifact(s): `cmp_delay.va`, `edge_interval_timer.va`
-- Supplied/reference support artifact(s): `tb_cmp_delay_ref.scs`
-- Visible context: public task, interface, artifact, stimulus, and observable contract only.
-- Hidden evaluator boundary: deterministic checker and EVAS/Spectre validation are external; do not generate checker logic.
+## Public Interface
 
-## Form-Specific Requirements
+Return these Verilog-A artifacts:
 
-- Implement only the requested Verilog-A DUT artifact(s); do not generate a Spectre testbench in this form.
-- Preserve the public module names, port order, parameters, and waveform observable names.
+- `cmp_delay.va`: declares module `cmp_delay` with positional ports `CLK, VINN,
+  VINP, DCMPN, DCMPP, LP, LM, VSS, VDD`.
+- `edge_interval_timer.va`: declares module `edge_interval_timer` with
+  positional ports `CLK_1, CLK_2, OUT_PS`.
 
-## Public Verilog-A Interface
+All ports are electrical. In `cmp_delay`, `CLK` is the comparator clock,
+`VINP`/`VINN` are the differential inputs, `DCMPP`/`DCMPN` are complementary
+decision outputs, `LP`/`LM` are compatibility monitor outputs, and `VSS`/`VDD`
+are supply rails. In `edge_interval_timer`, `OUT_PS` reports a measured edge
+interval in picoseconds as a voltage-coded real value.
 
-- `cmp_delay.va` declares module `cmp_delay` with positional ports: `CLK`, `VINN`, `VINP`, `DCMPN`, `DCMPP`, `LP`, `LM`, `VSS`, `VDD`.
-- `edge_interval_timer.va` declares module `edge_interval_timer` with positional ports: `CLK_1`, `CLK_2`, `OUT_PS`.
+## Public Parameter Contract
 
-## Public Testbench And Observable Contract
+For `cmp_delay`, provide these overrideable public parameters:
 
-Public transient setting used by the evaluator:
+- `voffset = 0`: input-referred offset subtracted from `VINP - VINN`.
+- `tau = 4.34e-12`: regeneration time constant.
+- `td_0 = 20.5e-12`: base delay offset.
+- `td_min = 20e-12`: minimum comparator delay.
+- `td_max = 200e-12`: maximum comparator delay.
 
-```spectre
-tran tran stop=16n maxstep=10p
-```
+For `edge_interval_timer`, provide `VTH = 0.4 V` as the edge-detection
+threshold.
 
-The evaluator expects these exact public scalar observables:
+## Functional Contract
 
-- `clk`
-- `vinp`
-- `vinn`
-- `out_p`
-- `out_n`
-- `delay_ps`
+- Initialize the comparator decision outputs low.
+- Use `V(VDD,VSS)/2` as the comparator clock threshold.
+- On each rising clock crossing, latch the sign of
+  `V(VINP,VSS) - V(VINN,VSS) - voffset`.
+- Schedule the decision outputs using a log-linear regeneration delay:
+  compute `vdiff_eff = abs(V(VINP,VSS) - V(VINN,VSS) - voffset)`, floor it at
+  a small positive value to avoid `ln(0)`, compute
+  `td_raw = td_0 + tau * ln(V(VDD,VSS) / vdiff_eff)`, and clamp the result to
+  `[td_min, td_max]`.
+- On each falling clock crossing, reset the comparator decision outputs low.
+- Drive the timing helper so it captures the time between rising crossings of
+  `CLK_1` and `CLK_2`, converts that interval to picoseconds, and holds the
+  most recent completed measurement on `OUT_PS`.
 
-When this form generates a testbench, use plain scalar save names for these observables; do not rely on instance-qualified or aliased save names.
+## Modeling Constraints
 
-## Public Behavior Checks
-
-- `output_goes_high_in_each_phase`
-- `clk_to_output_delay_increases_as_diff_shrinks`
-
-## Output Contract
-
-Return exactly these source artifacts:
-
-- `cmp_delay.va`
-- `edge_interval_timer.va`
-
-Do not include explanatory prose outside the source artifact contents.
-
-## Task-Specific Description
-
-# Propagation-delay comparator DUT
-
-Write the Verilog-A DUT artifact(s) for `Propagation-delay comparator`.
-
-This is a function-checked DUT task, not a generic companion wrapper. The
-public contract below defines the exact module interface, voltage-domain
-behavior, and waveform observables used by the release checker.
-
-Domain: pure voltage-domain behavioral Verilog-A.
-
-## Module Contract
-
-- Declaration: `cmp_delay(CLK, VINN, VINP, DCMPN, DCMPP, LP, LM, VSS, VDD)`
-
-Ports:
-
-- `CLK`: input electrical decision clock
-- `VINN`, `VINP`: input electrical differential pair
-- `DCMPN`, `DCMPP`: output electrical complementary decisions
-- `LP`, `LM`: output electrical compatibility monitor ports
-- `VSS`, `VDD`: electrical supply rails
-
-## Behavioral Contract
-
-- on rising `CLK`, resolve the positive input polarity to `DCMPP` high
-- reset the public decision outputs low between decisions
-- model a longer clock-to-output delay as `abs(V(VINP)-V(VINN))` shrinks
-- keep the delay bounded by public minimum and maximum delay parameters
-
-## Public Evaluation Observables
-
-The companion validation testbench saves these waveform columns through scalar
-testbench aliases:
-
-- `time`
-- `clk`
-- `vinp`
-- `vinn`
-- `out_p`
-- `out_n`
-- `delay_ps`
+Return only `cmp_delay.va` and `edge_interval_timer.va`. Use voltage
+contributions only. Do not modify or emit the support testbench, add checker
+logic, hard-code waveform sample points, add simulator-private side channels,
+use current contributions, `ddt()`, or `idt()`. Update event-driven state in
+analog event blocks and place voltage contributions outside those event blocks.
