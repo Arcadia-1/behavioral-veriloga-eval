@@ -18,7 +18,7 @@ module ref_step_clk (
     integer clk_state;
 
 analog begin
-    V(CLK) <+ transition(0.0);
+    V(CLK) <+ transition(0.0, 0.0, tedge, tedge);
 end
 
 endmodule

@@ -30,9 +30,19 @@ behavior as its only evidence.
   to reduce fixed-waveform overfitting risk.
 - Cadence/Spectre evidence from `scripts/run_v3_spectre_audit.py`: private
   reference PASS and 5/5 private negative variants `NEGATIVE_REJECTED`.
-- Gate 2 Cadence status: `cadence_lint_pending`.
+- EVAS gold/negative verification: gold PASS and 5/5 concrete negatives
+  rejected with simulator return code 0.
+- EVAS lint preflight: starter and solution visible/hidden decks PASS with 0
+  diagnostics after the starter placeholder was changed to use explicit
+  `tedge` rise/fall arguments in `transition()`.
+- AHDL read-in triage: targeted Spectre gold and hidden negative runs report no
+  task-specific `AHDLLINT-*`, `VACOMP-1116`, or AHDL compile errors; only
+  global bridge/Spectre setup notices such as `VACOMP-2435` and `SPECTRE-592`
+  were observed.
+- Gate 2 Cadence status: `cadence_modeling_ready`.
 
 ## Remaining Risk
 
-AHDL lint evidence is not attached yet; do not mark `cadence_modeling_ready`
-until lint/triage is recorded.
+This row is retained as a support-style L1 component rather than a PLL system
+flow. It should not be counted as evidence for downstream CPPLL reacquisition
+behavior.
