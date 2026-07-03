@@ -15576,6 +15576,275 @@ def check_v3_501_adc_static_linearity_monitor(rows: list[dict[str, float]]) -> t
     return True, f"samples={checked} expected_max={expected_max} max_err={max_err:.4f}"
 
 
+def check_v3_502_sine_vco_idtmod_bound_step(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "vin", "out", "metric"}
+    if not rows or not required.issubset(rows[0]):
+        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
+        return False, "missing_columns=" + ",".join(missing)
+
+    center_freq = 20.0e6
+    vco_gain = 40.0e6
+    vco_amp = 0.9
+    phases = _v3_integrated_mod_phase_values(
+        rows,
+        freq_fn=lambda row: center_freq + vco_gain * row["vin"],
+        modulus=1.0,
+    )
+    two_pi = 2.0 * math.pi
+    stride = max(1, len(rows) // 160)
+    checked = 0
+    max_out_err = 0.0
+    max_metric_err = 0.0
+    out_span_lo: float | None = None
+    out_span_hi: float | None = None
+    for index in range(0, len(rows), stride):
+        if rows[index]["time"] < 8.0e-9:
+            continue
+        phase = phases[index]
+        out_expected = vco_amp * math.sin(two_pi * phase)
+        metric_expected = vco_amp * phase
+        out_err = abs(rows[index]["out"] - out_expected)
+        out_span_lo = out_expected if out_span_lo is None else min(out_span_lo, out_expected)
+        out_span_hi = out_expected if out_span_hi is None else max(out_span_hi, out_expected)
+        max_out_err = max(max_out_err, out_err)
+        checked += 1
+        if out_err > 0.08:
+            return False, (
+                f"out@{rows[index]['time'] * 1e9:g}ns={rows[index]['out']:.4f} "
+                f"expected={out_expected:.4f} tol=0.0800"
+            )
+        if 0.05 < phase < 0.95:
+            metric_err = abs(rows[index]["metric"] - metric_expected)
+            max_metric_err = max(max_metric_err, metric_err)
+            if metric_err > 0.06:
+                return False, (
+                    f"metric@{rows[index]['time'] * 1e9:g}ns={rows[index]['metric']:.4f} "
+                    f"expected={metric_expected:.4f} tol=0.0600"
+                )
+    if checked < 20:
+        return False, f"insufficient_samples={checked}"
+    out_span = (out_span_hi - out_span_lo) if (out_span_lo is not None) else 0.0
+    if out_span < 0.6 * vco_amp:
+        return False, f"insufficient_out_dynamic_range={out_span:.4f}"
+    return True, (
+        f"out_samples={checked} out_span={out_span:.4f} "
+        f"max_out_err={max_out_err:.4f} max_metric_err={max_metric_err:.4f}"
+    )
+
+
+def check_v3_503_differential_vco_clip_idtmod(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "vinp", "vinm", "outp", "outm", "metric"}
+    if not rows or not required.issubset(rows[0]):
+        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
+        return False, "missing_columns=" + ",".join(missing)
+
+    fnom = 20.0e6
+    dfdv = 160.0e6
+    fmin = 5.0e6
+    fmax = 80.0e6
+    vcm = 0.45
+    vac = 0.4
+
+    def _clip(x: float) -> float:
+        return fmin if x < fmin else (fmax if x > fmax else x)
+
+    phases = _v3_integrated_mod_phase_values(
+        rows,
+        freq_fn=lambda row: _clip(fnom + dfdv * (row["vinp"] - row["vinm"])),
+        modulus=1.0,
+    )
+    two_pi = 2.0 * math.pi
+    stride = max(1, len(rows) // 160)
+    checked = 0
+    max_err = 0.0
+    outp_span_lo: float | None = None
+    outp_span_hi: float | None = None
+    saw_upper_clamp_case = any(fnom + dfdv * (row["vinp"] - row["vinm"]) > fmax for row in rows)
+    for index in range(0, len(rows), stride):
+        if rows[index]["time"] < 8.0e-9:
+            continue
+        phase = phases[index]
+        outp_expected = vcm + vac * math.sin(two_pi * phase)
+        outm_expected = vcm - vac * math.sin(two_pi * phase)
+        metric_expected = 0.9 * phase
+        outp_err = abs(rows[index]["outp"] - outp_expected)
+        outm_err = abs(rows[index]["outm"] - outm_expected)
+        max_err = max(max_err, outp_err, outm_err)
+        checked += 1
+        outp_span_lo = outp_expected if outp_span_lo is None else min(outp_span_lo, outp_expected)
+        outp_span_hi = outp_expected if outp_span_hi is None else max(outp_span_hi, outp_expected)
+        if outp_err > 0.08:
+            return False, (
+                f"outp@{rows[index]['time'] * 1e9:g}ns={rows[index]['outp']:.4f} "
+                f"expected={outp_expected:.4f} tol=0.0800"
+            )
+        if outm_err > 0.08:
+            return False, (
+                f"outm@{rows[index]['time'] * 1e9:g}ns={rows[index]['outm']:.4f} "
+                f"expected={outm_expected:.4f} tol=0.0800"
+            )
+        if 0.05 < phase < 0.95:
+            metric_err = abs(rows[index]["metric"] - metric_expected)
+            max_err = max(max_err, metric_err)
+            if metric_err > 0.06:
+                return False, (
+                    f"metric@{rows[index]['time'] * 1e9:g}ns={rows[index]['metric']:.4f} "
+                    f"expected={metric_expected:.4f} tol=0.0600"
+                )
+    if checked < 20:
+        return False, f"insufficient_samples={checked}"
+    outp_span = (outp_span_hi - outp_span_lo) if (outp_span_lo is not None) else 0.0
+    if outp_span < 0.5 * vac:
+        return False, f"insufficient_outp_dynamic_range={outp_span:.4f}"
+    clamp_note = " upper_clamp_exercised" if saw_upper_clamp_case else ""
+    return True, f"samples={checked} outp_span={outp_span:.4f} max_err={max_err:.4f}{clamp_note}"
+
+
+def check_v3_504_charge_pump_pfd_state_machine(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "ref", "fb", "vctrl", "metric"}
+    if not rows or not required.issubset(rows[0]):
+        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
+        return False, "missing_columns=" + ",".join(missing)
+    t_end = rows[-1]["time"]
+    if t_end < 600e-9:
+        return False, f"trace_too_short={t_end * 1e9:g}ns"
+
+    vth = 0.45
+    times = [row["time"] for row in rows]
+    ref_edges = rising_edges([row["ref"] for row in rows], times, threshold=vth)
+    fb_edges = rising_edges([row["fb"] for row in rows], times, threshold=vth)
+    if len(ref_edges) < 3 or len(fb_edges) < 3:
+        return False, f"too_few_ref_fb_edges ref={len(ref_edges)} fb={len(fb_edges)}"
+
+    deltas: list[float] = []
+    for ref_edge in ref_edges:
+        nearest_fb = min(fb_edges, key=lambda fb_edge: abs(fb_edge - ref_edge))
+        deltas.append(nearest_fb - ref_edge)
+    signed_delta = sorted(deltas)[len(deltas) // 2]
+    if abs(signed_delta) < 2e-9:
+        return False, f"ambiguous_lead_lag_delta={signed_delta * 1e9:.3f}ns"
+    ref_leads = signed_delta > 0.0
+
+    vctrl_min = 0.05
+    vctrl_max = 0.85
+    metric_lo = 0.1
+    metric_hi = 0.8
+    vctrl_init = 0.45
+
+    def _window_mean(lo_frac: float, hi_frac: float, key: str) -> float:
+        lo_t = lo_frac * t_end
+        hi_t = hi_frac * t_end
+        vals = [row[key] for row in rows if lo_t <= row["time"] <= hi_t]
+        return sum(vals) / len(vals) if vals else 0.0
+
+    late_vctrl = _window_mean(0.55, 0.95, "vctrl")
+    if ref_leads:
+        if late_vctrl < vctrl_max - 0.06:
+            return False, f"vctrl_did_not_reach_top_rail late={late_vctrl:.4f}"
+    else:
+        if late_vctrl > vctrl_min + 0.06:
+            return False, f"vctrl_did_not_reach_bottom_rail late={late_vctrl:.4f}"
+
+    vctrl_vals = [row["vctrl"] for row in rows]
+    vmin_obs = min(vctrl_vals)
+    vmax_obs = max(vctrl_vals)
+    if ref_leads and vmax_obs < vctrl_init + 0.10:
+        return False, f"vctrl_never_moved_up max={vmax_obs:.4f}"
+    if not ref_leads and vmin_obs > vctrl_init - 0.10:
+        return False, f"vctrl_never_moved_down min={vmin_obs:.4f}"
+    if vmin_obs < vctrl_min - 0.02 or vmax_obs > vctrl_max + 0.02:
+        return False, f"vctrl_out_of_clamp min={vmin_obs:.4f} max={vmax_obs:.4f}"
+
+    late_metric_rows = [row for row in rows if 0.55 * t_end <= row["time"] <= 0.95 * t_end]
+    if not late_metric_rows:
+        return False, "no_late_metric_samples"
+    hi_count = sum(1 for row in late_metric_rows if abs(row["metric"] - metric_hi) < 0.12)
+    lo_count = sum(1 for row in late_metric_rows if abs(row["metric"] - metric_lo) < 0.12)
+    hi_frac = hi_count / len(late_metric_rows)
+    lo_frac = lo_count / len(late_metric_rows)
+    if ref_leads:
+        if hi_frac < 0.02:
+            return False, f"metric_no_positive_pulses hi_frac={hi_frac:.3f}"
+        if lo_frac > 0.02:
+            return False, f"metric_negative_pulses_present lo_frac={lo_frac:.3f}"
+    else:
+        if lo_frac < 0.02:
+            return False, f"metric_no_negative_pulses lo_frac={lo_frac:.3f}"
+        if hi_frac > 0.02:
+            return False, f"metric_positive_pulses_present hi_frac={hi_frac:.3f}"
+    direction = "ref_leads" if ref_leads else "fb_leads"
+    return True, (
+        f"{direction} delta_ns={signed_delta * 1e9:.3f} late_vctrl={late_vctrl:.4f} "
+        f"vctrl_range=[{vmin_obs:.4f},{vmax_obs:.4f}] "
+        f"metric_hi_frac={hi_frac:.3f} metric_lo_frac={lo_frac:.3f}"
+    )
+
+
+def check_v3_505_fractional_n_divider_accumulator_flow(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "ref_clk", "fb_clk", "dco_clk", "lock", "vctrl_mon"}
+    if not rows or not required.issubset(rows[0]):
+        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
+        return False, "missing_columns=" + ",".join(missing)
+
+    vth = 0.45
+    times = [row["time"] for row in rows]
+    ref_edges = rising_edges([row["ref_clk"] for row in rows], times, threshold=vth)
+    fb_edges = rising_edges([row["fb_clk"] for row in rows], times, threshold=vth)
+    dco_edges = rising_edges([row["dco_clk"] for row in rows], times, threshold=vth)
+    if len(ref_edges) < 12 or len(fb_edges) < 12 or len(dco_edges) < 80:
+        return False, f"not_enough_edges ref={len(ref_edges)} fb={len(fb_edges)} dco={len(dco_edges)}"
+
+    ref_late = [time_s for time_s in ref_edges if 4.5e-6 <= time_s <= 5.9e-6]
+    fb_late = [time_s for time_s in fb_edges if 4.5e-6 <= time_s <= 5.9e-6]
+    if len(ref_late) < 4 or len(fb_late) < 4:
+        return False, f"not_enough_late_edges ref_late={len(ref_late)} fb_late={len(fb_late)}"
+
+    ref_periods = [b - a for a, b in zip(ref_late, ref_late[1:])]
+    fb_periods = [b - a for a, b in zip(fb_late, fb_late[1:])]
+    ref_period = sum(ref_periods) / len(ref_periods)
+    fb_period = sum(fb_periods) / len(fb_periods)
+    if ref_period <= 0.0 or fb_period <= 0.0:
+        return False, "non_positive_period"
+    freq_ratio = ref_period / fb_period
+
+    dco_counts: list[int] = []
+    for start_t, stop_t in zip(fb_late, fb_late[1:]):
+        dco_counts.append(sum(1 for edge_t in dco_edges if start_t < edge_t <= stop_t))
+    if len(dco_counts) < 3:
+        return False, f"not_enough_dco_count_windows={len(dco_counts)}"
+    avg_dco_per_fb = sum(dco_counts) / len(dco_counts)
+    if not (14.0 <= avg_dco_per_fb <= 17.0):
+        return False, f"dco_edges_per_fb_period_out_of_range avg={avg_dco_per_fb:.3f} counts={dco_counts}"
+    if min(dco_counts) >= 16:
+        return False, f"fractional_short_count_not_observed counts={dco_counts}"
+
+    lock_edges = rising_edges([row["lock"] for row in rows], times, threshold=vth)
+    pre_lock_edges = [time_s for time_s in lock_edges if time_s < 2.0e-6]
+    post_lock_edges = [time_s for time_s in lock_edges if 2.2e-6 <= time_s <= 5.9e-6]
+    disturb_low_frac = 1.0 - weighted_logic_high_fraction_window(rows, "lock", vth, 2.05e-6, 2.8e-6)
+
+    vctrl_vals = [row["vctrl_mon"] for row in rows]
+    vctrl_min = min(vctrl_vals)
+    vctrl_max = max(vctrl_vals)
+    vctrl_span = vctrl_max - vctrl_min
+    vctrl_in_range = all(-1e-6 <= value <= 0.95 for value in vctrl_vals)
+
+    ok = (
+        bool(pre_lock_edges)
+        and disturb_low_frac >= 0.20
+        and bool(post_lock_edges)
+        and 0.95 <= freq_ratio <= 1.05
+        and vctrl_in_range
+        and vctrl_span >= 0.01
+    )
+    return ok, (
+        f"pre_lock_edges={len(pre_lock_edges)} disturb_lock_low_frac={disturb_low_frac:.3f} "
+        f"post_lock_edges={len(post_lock_edges)} late_freq_ratio={freq_ratio:.4f} "
+        f"dco_counts={dco_counts[:8]} avg_dco_per_fb={avg_dco_per_fb:.3f} "
+        f"vctrl_min={vctrl_min:.3f} vctrl_max={vctrl_max:.3f} vctrl_span={vctrl_span:.3f}"
+    )
+
+
 def check_v3_cal4bit_modulo(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "ain", "d0", "d1", "d2", "d3"}
     if not rows or not required.issubset(rows[0]):
@@ -21342,6 +21611,10 @@ CHECKS["v3_498_dc_aware_adc3bit"] = check_v3_498_dc_aware_adc3bit
 CHECKS["v3_499_latched_bus_dac8"] = check_v3_499_latched_bus_dac8
 CHECKS["v3_500_deterministic_mismatch_dac6"] = check_v3_500_deterministic_mismatch_dac6
 CHECKS["v3_501_adc_static_linearity_monitor"] = check_v3_501_adc_static_linearity_monitor
+CHECKS["v3_502_sine_vco_idtmod_bound_step"] = check_v3_502_sine_vco_idtmod_bound_step
+CHECKS["v3_503_differential_vco_clip_idtmod"] = check_v3_503_differential_vco_clip_idtmod
+CHECKS["v3_504_charge_pump_pfd_state_machine"] = check_v3_504_charge_pump_pfd_state_machine
+CHECKS["v3_505_fractional_n_divider_accumulator_flow"] = check_v3_505_fractional_n_divider_accumulator_flow
 CHECKS["v3_cal4bit_modulo"] = check_v3_cal4bit_modulo
 CHECKS["v3_mux4_priority"] = check_v3_mux4_priority
 CHECKS["v3_xnor_gate_voltage"] = check_v3_xnor_gate_voltage
@@ -21375,6 +21648,10 @@ CHECKS["498-dc-aware-adc3bit"] = check_v3_498_dc_aware_adc3bit
 CHECKS["499-latched-bus-dac8"] = check_v3_499_latched_bus_dac8
 CHECKS["500-deterministic-mismatch-dac6"] = check_v3_500_deterministic_mismatch_dac6
 CHECKS["501-adc-static-linearity-monitor"] = check_v3_501_adc_static_linearity_monitor
+CHECKS["502-sine-vco-idtmod-bound-step"] = check_v3_502_sine_vco_idtmod_bound_step
+CHECKS["503-differential-vco-clip-idtmod"] = check_v3_503_differential_vco_clip_idtmod
+CHECKS["504-charge-pump-pfd-state-machine"] = check_v3_504_charge_pump_pfd_state_machine
+CHECKS["505-fractional-n-divider-accumulator-flow"] = check_v3_505_fractional_n_divider_accumulator_flow
 CHECKS["296-cal4bit-modulo"] = check_v3_cal4bit_modulo
 CHECKS["297-mux4-priority"] = check_v3_mux4_priority
 CHECKS["298-xnor-gate-voltage"] = check_v3_xnor_gate_voltage
