@@ -629,7 +629,6 @@
   tb_compile:
     backend: "evas"
   sim_correct:
-    strong_benchmark_claim: false
     checks:
       - "enable_low_forces_all_low"
       - "cumulative_sequence_for_codes_1_2_3"
@@ -637,8 +636,6 @@
   parity:
     required: true
     tolerance_notes: "Check fixed code windows rather than transition rows."
-    notes:
-      - "Gate1: l2_support_component. Retain as a compact guarded thermometer helper, but do not count separately from the larger thermometer-bus utility coverage."
 021-vco-phase-integrator: |
   syntax:
     must_include:
@@ -1413,12 +1410,8 @@
   version: 2
   task_id: bin_to_thermometer_decoder_8b
   backend: evas
-  status: support-formal-candidate
+  status: formal_candidate
   checker: bin_to_thermometer_decoder_8b
-  strong_benchmark_claim: true
-  review_notes:
-    - "Gate1: independent_l1_ready for the support utility role. Retain as the canonical binary-to-thermometer bus helper."
-    - "Gate2: prompt hygiene repaired; targeted Spectre and AHDL warning triage are still pending before cadence_modeling_ready."
   required_columns:
     - time
     - en
@@ -1440,12 +1433,8 @@
   version: 2
   task_id: thermometer_to_binary_encoder_8b
   backend: evas
-  status: support-formal-candidate
+  status: formal_candidate
   checker: thermometer_to_binary_encoder_8b
-  strong_benchmark_claim: true
-  review_notes:
-    - "Gate1: independent_l1_ready for the support utility role. Retain as the thermometer-to-binary inverse helper with validity/bubble semantics."
-    - "Gate2: prompt hygiene repaired; targeted Spectre and AHDL warning triage are still pending before cadence_modeling_ready."
   checks:
     formal:
       - valid_for_cumulative_inputs
@@ -1455,12 +1444,8 @@
   version: 2
   task_id: config_latch_32b_clocked
   backend: evas
-  status: support-formal-candidate
+  status: formal_candidate
   checker: config_latch_32b_clocked
-  strong_benchmark_claim: false
-  review_notes:
-    - "Gate1: l2_support_component. Valid static enable-gated config bus helper, but not counted as an independent latch/storage benchmark."
-    - "Gate2: prompt now states static enable behavior rather than clocked latch behavior; targeted Spectre and AHDL warning triage are pending."
   checks:
     formal:
       - gold_passes
@@ -1469,12 +1454,8 @@
   version: 2
   task_id: config_latch_128b_static_enable
   backend: evas
-  status: support-formal-candidate
+  status: formal_candidate
   checker: config_latch_128b_static_enable
-  strong_benchmark_claim: false
-  review_notes:
-    - "Gate1: l2_support_component. Valid wide static enable-gated config bus helper, but not counted separately from the 32-bit width variant."
-    - "Gate2: prompt hygiene repaired; targeted Spectre and AHDL warning triage are still pending before cadence_modeling_ready."
   checks:
     formal:
       - gold_passes
@@ -1483,12 +1464,8 @@
   version: 2
   task_id: config_shift_register_64b
   backend: evas
-  status: support-formal-candidate
+  status: formal_candidate
   checker: config_shift_register_64b
-  strong_benchmark_claim: true
-  review_notes:
-    - "Gate1: independent_l1_ready for the support/control role. Retain because serial-to-parallel clocked configuration loading has a distinct stateful AMS support boundary."
-    - "Gate2: prompt hygiene repaired; targeted Spectre and AHDL warning triage are still pending before cadence_modeling_ready."
   checks:
     formal:
       - gold_passes
@@ -1497,12 +1474,8 @@
   version: 2
   task_id: bus_splitter_256_to_16x16
   backend: evas
-  status: support-formal-candidate
+  status: formal_candidate
   checker: bus_splitter_256_to_16x16
-  strong_benchmark_claim: false
-  review_notes:
-    - "Gate1: l2_support_component. Valid bus reshape helper, but pure wiring/splitting should not count as a standalone benchmark."
-    - "Gate2: prompt hygiene repaired; targeted Spectre and AHDL warning triage are still pending before cadence_modeling_ready."
   checks:
     formal:
       - gold_passes
@@ -1511,12 +1484,8 @@
   version: 2
   task_id: bus_combiner_16x16_to_256
   backend: evas
-  status: support-formal-candidate
+  status: formal_candidate
   checker: bus_combiner_16x16_to_256
-  strong_benchmark_claim: false
-  review_notes:
-    - "Gate1: l2_support_component. Valid bus reshape helper, but pure wiring/combining should not count as a standalone benchmark."
-    - "Gate2: prompt hygiene repaired; targeted Spectre and AHDL warning triage are still pending before cadence_modeling_ready."
   checks:
     formal:
       - gold_passes
@@ -1525,12 +1494,8 @@
   version: 2
   task_id: masked_config_update_32b
   backend: evas
-  status: support-formal-candidate
+  status: formal_candidate
   checker: masked_config_update_32b
-  strong_benchmark_claim: false
-  review_notes:
-    - "Gate1: l2_support_component. Retain as a useful AMS masked-configuration helper, but do not count as a strong standalone core circuit benchmark unless rewritten with a commit/hold configuration-register boundary."
-    - "Gate2: prompt hygiene repaired; targeted Spectre and AHDL warning triage are still pending before cadence_modeling_ready."
   checks:
     formal:
       - gold_passes
@@ -1541,10 +1506,6 @@
   backend: evas
   status: support-formal-candidate
   checker: v3_064_edge_interval_tdc_8b
-  strong_benchmark_claim: true
-  review_notes:
-    - "Gate1: independent_l1_ready for the measurement/support role. Retain as a compact digital-code edge-interval TDC utility."
-    - "Gate2: prompt hygiene repaired; targeted Spectre and AHDL warning triage are still pending before cadence_modeling_ready."
   required_columns:
     - time
     - start
@@ -1568,10 +1529,6 @@
   backend: evas
   status: support-formal-candidate
   checker: v3_065_period_meter_16b
-  strong_benchmark_claim: true
-  review_notes:
-    - "Gate1: independent_l1_ready for the measurement/support role. Retain as a reusable period-meter utility."
-    - "Gate2: prompt hygiene repaired; targeted Spectre and AHDL warning triage are still pending before cadence_modeling_ready."
   required_columns:
     - time
     - clk_in
@@ -1602,10 +1559,6 @@
   backend: evas
   status: support-formal-candidate
   checker: v3_066_duty_cycle_meter_8b
-  strong_benchmark_claim: true
-  review_notes:
-    - "Gate1: independent_l1_ready for the measurement/support role. Retain as a reusable duty-cycle meter utility."
-    - "Gate2: prompt hygiene repaired; targeted Spectre and AHDL warning triage are still pending before cadence_modeling_ready."
   required_columns:
     - time
     - clk_in
@@ -1628,10 +1581,6 @@
   backend: evas
   status: support-formal-candidate
   checker: v3_067_event_counter_windowed_16b
-  strong_benchmark_claim: true
-  review_notes:
-    - "Gate1: independent_l1_ready for the measurement/support role. Retain as a gated event-counter utility."
-    - "Gate2: prompt hygiene repaired; targeted Spectre and AHDL warning triage are still pending before cadence_modeling_ready."
   required_columns:
     - time
     - gate
@@ -1663,10 +1612,6 @@
   backend: evas
   status: support-formal-candidate
   checker: v3_068_latency_counter_ready_valid_12b
-  strong_benchmark_claim: true
-  review_notes:
-    - "Gate1: independent_l1_ready for the instrumentation/support role. Retain as a ready/valid latency counter utility."
-    - "Gate2: prompt hygiene repaired; targeted Spectre and AHDL warning triage are still pending before cadence_modeling_ready."
   required_columns:
     - time
     - clk
@@ -1695,10 +1640,6 @@
   backend: evas
   status: support-formal-candidate
   checker: v3_069_settling_window_detector
-  strong_benchmark_claim: true
-  review_notes:
-    - "Gate1: independent_l1_ready for the measurement/support role. Retain as an online settling-window detector distinct from full settling measurement flows."
-    - "Gate2: prompt hygiene repaired; targeted Spectre and AHDL warning triage are still pending before cadence_modeling_ready."
   required_columns:
     - time
     - vin
@@ -1723,10 +1664,6 @@
   backend: evas
   status: support-formal-candidate
   checker: v3_070_active_low_reset_synchronizer
-  strong_benchmark_claim: true
-  review_notes:
-    - "Gate1: independent_l1_ready for the support/control role. Use as the canonical counted reset-synchronizer row in the 070/071 polarity pair."
-    - "Gate2: prompt hygiene repaired; targeted Spectre and AHDL warning triage are still pending before cadence_modeling_ready."
   required_columns:
     - time
     - clk
@@ -1742,10 +1679,6 @@
   backend: evas
   status: support-formal-candidate
   checker: v3_071_active_high_reset_synchronizer
-  strong_benchmark_claim: false
-  review_notes:
-    - "Gate1: valid_variant_needs_counting_policy. Retain as a valid active-high polarity variant, but do not count separately when 070 is the canonical reset-synchronizer support L1."
-    - "Gate2: prompt hygiene repaired; targeted Spectre and AHDL warning triage are still pending before cadence_modeling_ready."
   required_columns:
     - time
     - clk
@@ -1761,10 +1694,6 @@
   backend: evas
   status: support-formal-candidate
   checker: v3_072_enable_gated_clock_pulse
-  strong_benchmark_claim: false
-  review_notes:
-    - "Gate1: l2_support_component. Valid gated-clock helper, but too close to a pure AND gate to count as a standalone benchmark."
-    - "Gate2: prompt hygiene repaired; targeted Spectre and AHDL warning triage are still pending before cadence_modeling_ready."
   required_columns:
     - time
     - clk
@@ -1780,10 +1709,6 @@
   backend: evas
   status: support-formal-candidate
   checker: v3_073_low_active_enable_decoder_4b
-  strong_benchmark_claim: false
-  review_notes:
-    - "Gate1: l2_support_component. Valid active-low one-hot decoder helper, but pure decode logic should not count as a standalone AMS benchmark."
-    - "Gate2: prompt hygiene repaired; targeted Spectre and AHDL warning triage are still pending before cadence_modeling_ready."
   required_columns:
     - time
     - en_n
@@ -1817,10 +1742,6 @@
   backend: evas
   status: support-formal-candidate
   checker: v3_074_configurable_polarity_edge_detector
-  strong_benchmark_claim: true
-  review_notes:
-    - "Gate1: independent_l1_ready for the event/support role. Retain because selected-edge pulse generation is a reusable AMS event helper."
-    - "Gate2: prompt hygiene repaired; targeted Spectre and AHDL warning triage are still pending before cadence_modeling_ready."
   required_columns:
     - time
     - sig
@@ -1836,10 +1757,6 @@
   backend: evas
   status: support-formal-candidate
   checker: v3_076_multiphase_clock_generator_4ph
-  strong_benchmark_claim: true
-  review_notes:
-    - "Gate1: independent_l1_ready for the source/support role. Retain as a counted four-phase clock-source support L1."
-    - "Gate2: prompt hygiene repaired; targeted Spectre and AHDL warning triage are still pending before cadence_modeling_ready."
   required_columns:
     - time
     - clk0
@@ -1856,10 +1773,6 @@
   backend: evas
   status: support-formal-candidate
   checker: v3_077_configurable_pulse_train_generator
-  strong_benchmark_claim: true
-  review_notes:
-    - "Gate1: independent_l1_ready for the source/support role. Retain as a counted programmable pulse-train source L1."
-    - "Gate2: prompt hygiene repaired; targeted Spectre and AHDL warning triage are still pending before cadence_modeling_ready."
   required_columns:
     - time
     - clk
@@ -1888,10 +1801,6 @@
   backend: evas
   status: support-formal-candidate
   checker: v3_078_staircase_dac_stimulus_8b
-  strong_benchmark_claim: true
-  review_notes:
-    - "Gate1: independent_l1_ready for the source/support role. Retain as a counted converter-stimulus source L1, not as another DAC-under-test row."
-    - "Gate2: prompt hygiene repaired; targeted Spectre and AHDL warning triage are still pending before cadence_modeling_ready."
   required_columns:
     - time
     - clk
@@ -1915,10 +1824,6 @@
   backend: evas
   status: support-formal-candidate
   checker: v3_079_jittered_clock_source_deterministic
-  strong_benchmark_claim: true
-  review_notes:
-    - "Gate1: independent_l1_ready for the source/support role. Retain as a counted deterministic jittered-clock source L1."
-    - "Gate2: prompt hygiene repaired; targeted Spectre and AHDL warning triage are still pending before cadence_modeling_ready."
   required_columns:
     - time
     - jitter_en
