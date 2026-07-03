@@ -4677,7 +4677,7 @@
       - "vout"
   parity:
     required: true
-    tolerance_notes: "Use event-derived edge and hold windows rather than fixed source-import sample times."
+    tolerance_notes: "Use event-derived edge and hold windows rather than fixed stimulus sample times."
   scoring:
     axes:
       - dut_compile
@@ -13144,6 +13144,9 @@ candidate-bias-supply-bias-validity-gate: |
   task_id: v3_candidate_bias_supply_bias_validity_gate
   backend: evas
   status: formal-candidate
+  candidate_scope: opt_in_replacement_only
+  default_sweep: false
+  counted_in_score: false
   checker: v3_candidate_bias_supply_bias_validity_gate
   required_columns:
     - time
@@ -13181,6 +13184,9 @@ candidate-bias-power-mode-supply-current-metric: |
   task_id: v3_candidate_bias_power_mode_supply_current_metric
   backend: evas
   status: formal-candidate
+  candidate_scope: opt_in_replacement_only
+  default_sweep: false
+  counted_in_score: false
   checker: v3_candidate_bias_power_mode_supply_current_metric
   required_columns:
     - time
@@ -13218,6 +13224,9 @@ candidate-bias-dynamic-supply-level-driver: |
   task_id: v3_candidate_bias_dynamic_supply_level_driver
   backend: evas
   status: formal-candidate
+  candidate_scope: opt_in_replacement_only
+  default_sweep: false
+  counted_in_score: false
   checker: v3_candidate_bias_dynamic_supply_level_driver
   required_columns:
     - time
@@ -13252,6 +13261,9 @@ candidate-bias-power-enable-turnon-delay-gate: |
   task_id: v3_candidate_bias_power_enable_turnon_delay_gate
   backend: evas
   status: formal-candidate
+  candidate_scope: opt_in_replacement_only
+  default_sweep: false
+  counted_in_score: false
   checker: v3_candidate_bias_power_enable_turnon_delay_gate
   required_columns:
     - time
@@ -13291,6 +13303,9 @@ candidate-bias-reference-settling-window-monitor: |
   task_id: v3_candidate_bias_reference_settling_window_monitor
   backend: evas
   status: formal-candidate
+  candidate_scope: opt_in_replacement_only
+  default_sweep: false
+  counted_in_score: false
   checker: v3_candidate_bias_reference_settling_window_monitor
   required_columns:
     - time

@@ -30,11 +30,54 @@ REQUIRED_EXTENSION_FIELDS = {
 
 def extension_tasks() -> dict[str, dict]:
     tasks = json.loads(TASKS.read_text(encoding="utf-8"))["tasks"]
-    return {key: value for key, value in tasks.items() if int(key[:3]) > 300}
+    return {
+        key: value
+        for key, value in tasks.items()
+        if (number := task_number(key)) is not None and number > 300
+    }
+
+
+def replacement_candidate_tasks() -> dict[str, dict]:
+    tasks = json.loads(TASKS.read_text(encoding="utf-8"))["tasks"]
+    return {
+        key: value
+        for key, value in tasks.items()
+        if task_number(key) is None and str(value.get("tier", "")).endswith("replacement-candidate")
+    }
+
+
+def task_number(task_key: str) -> int | None:
+    match = re.match(r"^(\d{3})-", task_key)
+    return int(match.group(1)) if match else None
 
 
 def expected_extension_count() -> int:
     return len(extension_tasks())
+
+
+def test_non_numbered_replacement_candidates_are_opt_in_only() -> None:
+    candidates = replacement_candidate_tasks()
+    assert set(candidates) == {
+        "candidate-bias-supply-bias-validity-gate",
+        "candidate-bias-power-mode-supply-current-metric",
+        "candidate-bias-dynamic-supply-level-driver",
+        "candidate-bias-power-enable-turnon-delay-gate",
+        "candidate-bias-reference-settling-window-monitor",
+    }
+
+    checks_text = CHECKS.read_text(encoding="utf-8")
+    for task_key, task in candidates.items():
+        assert task.get("candidate_only") is True
+        assert task.get("default_sweep") is False
+        assert task.get("counted_in_score") is False
+        assert task.get("certification_scope") == "materialized_replacement_candidate_not_final_numbered_benchmark"
+        assert "outside the scored denominator" in str(task.get("replacement_policy", ""))
+
+        block = checks_block(task_key)
+        assert "candidate_scope: opt_in_replacement_only" in block
+        assert "default_sweep: false" in block
+        assert "counted_in_score: false" in block
+        assert task_key in checks_text
 
 
 def test_all_v3_extension_tasks_have_manifest_metadata() -> None:
@@ -302,7 +345,7 @@ def negative_cases_index(task_key: str) -> list[dict]:
 def checks_block(task_key: str) -> str:
     checks = CHECKS.read_text(encoding="utf-8")
     match = re.search(
-        rf"^{re.escape(task_key)}: \|\n(?P<body>.*?)(?=^\d{{3}}-|\Z)",
+        rf"^{re.escape(task_key)}: \|\n(?P<body>.*?)(?=^[^\s][^:\n]*: \|\n|\Z)",
         checks,
         flags=re.MULTILINE | re.DOTALL,
     )
@@ -384,12 +427,15 @@ def test_all_v3_extension_negative_variants_describe_expected_mutation() -> None
 
 
 def test_behavior_certified_extension_checks_reference_expected_artifacts() -> None:
+    sop_audit = json.loads(SOP_AUDIT.read_text(encoding="utf-8"))
+    sop_tasks = {row["task"] for row in sop_audit["tasks"]}
+    assert sop_tasks.issubset(extension_tasks())
+
     behavior_tasks = [
         task_key
         for task_key in extension_tasks()
-        if has_sim_correct(task_key)
+        if task_key in sop_tasks and has_sim_correct(task_key)
     ]
-    sop_audit = json.loads(SOP_AUDIT.read_text(encoding="utf-8"))
     assert len(behavior_tasks) == sop_audit["summary"]["sop_ready_count"]
 
     for task_key in behavior_tasks:

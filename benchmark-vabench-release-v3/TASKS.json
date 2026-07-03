@@ -10542,6 +10542,9 @@
         "supply_bias_validity_gate.va"
       ],
       "tier": "bias-reference-power-replacement-candidate",
+      "candidate_only": true,
+      "default_sweep": false,
+      "counted_in_score": false,
       "title": "Supply Bias Validity Gate",
       "syntax_focus": "Combine supply window, local-ground displacement, vss-referenced bias validity, enable, and power-down into voltage-coded validity outputs.",
       "certification_scope": "materialized_replacement_candidate_not_final_numbered_benchmark",
@@ -10578,6 +10581,9 @@
         "power_mode_supply_current_metric.va"
       ],
       "tier": "bias-reference-power-replacement-candidate",
+      "candidate_only": true,
+      "default_sweep": false,
+      "counted_in_score": false,
       "title": "Power Mode Supply Current Metric",
       "syntax_focus": "Expose supply-current demand as a voltage-coded metric that scales with supply, mode, load, enable, and power-down state.",
       "certification_scope": "materialized_replacement_candidate_not_final_numbered_benchmark",
@@ -10614,6 +10620,9 @@
         "dynamic_supply_level_driver.va"
       ],
       "tier": "bias-reference-power-replacement-candidate",
+      "candidate_only": true,
+      "default_sweep": false,
+      "counted_in_score": false,
       "title": "Dynamic Supply Level Driver",
       "syntax_focus": "Use local supply rails for both input thresholding and output level generation.",
       "certification_scope": "materialized_replacement_candidate_not_final_numbered_benchmark",
@@ -10650,6 +10659,9 @@
         "power_enable_turnon_delay_gate.va"
       ],
       "tier": "bias-reference-power-replacement-candidate",
+      "candidate_only": true,
+      "default_sweep": false,
+      "counted_in_score": false,
       "title": "Power Enable Turn-On Delay Gate",
       "syntax_focus": "Require consecutive valid sampled supply, bias, enable, and power-down conditions before releasing downstream drive.",
       "certification_scope": "materialized_replacement_candidate_not_final_numbered_benchmark",
@@ -10686,6 +10698,9 @@
         "reference_settling_window_monitor.va"
       ],
       "tier": "bias-reference-power-replacement-candidate",
+      "candidate_only": true,
+      "default_sweep": false,
+      "counted_in_score": false,
       "title": "Reference Settling Window Monitor",
       "syntax_focus": "Sample absolute reference error against a target, track consecutive in-window settling, and expose a bounded error metric.",
       "certification_scope": "materialized_replacement_candidate_not_final_numbered_benchmark",
