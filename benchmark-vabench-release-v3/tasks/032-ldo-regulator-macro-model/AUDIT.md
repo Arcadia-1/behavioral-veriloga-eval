@@ -2,23 +2,31 @@
 
 ## Scope
 
-Task boundary is one Verilog-A DUT, `ldo_regulator_macro_model.va`, plus EVAS/Spectre-compatible `.scs` testbenches. Agent-visible materials are limited to `instruction.md`, `starter/`, and `test_visible/`. Evaluator-only materials are `solution/`, `test_hidden/`, `test_harness/`, and `negative_variants/`. No `meta.json` is present.
+Task boundary is one L1 Verilog-A DUT, `ldo_regulator_macro_model.va`. Public solver materials are `instruction.md`, `starter/`, and `test_visible/`. Evaluation materials are `solution/`, `test_hidden/`, `test_harness/`, and `negative_variants/`.
 
-## Four Standards
+## Gate 1
 
-- Useful scenario: pass. An LDO regulator macro model is a practical bias/reference/power-management behavioral block.
-- Reasonable task: pass. The public prompt fixes light-load regulation, load-step droop, recovery behavior, metric output, voltage-domain outputs, and voltage-only constraints.
-- Complete tests: pass for EVAS. Hidden stimulus checks light-load level, heavy-load droop, recovery, and metric windows. Five concrete negatives cover missing droop, wrong regulation level, no recovery, and bad metric behavior.
-- Fair evaluation: pass for EVAS. The checker scores public voltage/metric behavior and does not require internal loop structure.
+- Proposed label: `independent_l1_ready`.
+- Reasoning: a bounded LDO output macro with load droop, recovery, and regulation metric is a standalone power-management macro. It is distinct from task 104, which evaluates a repeated load-step recovery flow with load/control monitors.
+- Human confirmation: confirmed by reviewer; retain as an independent L1 row for this category.
+
+## Gate 2
+
+- Status: `cadence_modeling_ready`.
+- Public prompt now states the DUT boundary, interface, starter parameters, voltage-domain constraints, load/disturbance interpretation, droop, recovery, and metric behavior.
+- Visible and hidden decks are structurally distinct.
+- Cadence/Verilog-A correspondence: the gold uses event-updated real state with `@(initial_step)`, `@(cross(...))`, and `transition()` on discrete target variables, matching the Cadence behavioral-modeling guidance for smoothed piecewise-constant outputs.
 
 ## Checker And Evidence
 
-- Checker id: `v3_032_ldo_regulator_macro_model`
-- Runner mapping: `CHECKS["v3_032_ldo_regulator_macro_model"] = check_ldo_regulator_macro_model`
-- EVAS/Python-engine hidden gold smoke: `PASS`
-- Concrete negative recertification: 5/5 expected failures, all `FAIL_SIM_CORRECTNESS` with simulator `returncode=0`
-- Visible compile/sim smoke: `COMPILE_SIM_OK`
+- Checker id: `v3_032_ldo_regulator_macro_model`.
+- EVAS hidden gold: PASS.
+- EVAS negative variants: 5/5 rejected.
+- Spectre hidden gold: PASS.
+- Spectre negative variants: not rerun for this legacy nested-negative layout.
+- EVAS lint preflight: PASS, 0 diagnostics.
+- Cadence AHDL lint: PASS with no task-specific `AHDLLINT-*`; only global `VACOMP-2435` environment notice observed.
 
 ## Remaining Risk
 
-Spectre/Spectre-AX correlation has not been run from this working tree; use EVAS-only wording until that evidence exists.
+Spectre negative coverage can be added later by normalizing the legacy nested negative layout, but current gold, EVAS negatives, Spectre hidden gold, and AHDL lint evidence support the task as an L1 category candidate.

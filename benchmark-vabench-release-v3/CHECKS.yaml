@@ -679,9 +679,10 @@
       - "line_regulation_is_bounded"
   parity:
     reference: "spectre"
-    status: "pending_until_evas_spectre_rerun"
+    status: "pass"
     notes:
-      - "Designed release source; no imported historical EVAS/Spectre dual evidence yet."
+      - "Fresh category review evidence: EVAS hidden gold PASS, EVAS negatives rejected, Spectre hidden gold PASS, and Cadence AHDL lint has no task-specific AHDLLINT warning."
+      - "Spectre negatives were not rerun for this legacy nested-negative layout."
 023-calibration-deadband-controller: |
   syntax:
     must_include:
@@ -943,9 +944,10 @@
       - "output_recovers_after_load_reduction"
   parity:
     reference: "spectre"
-    status: "pending_until_evas_spectre_rerun"
+    status: "pass"
     notes:
-      - "Designed release source; no imported historical EVAS/Spectre dual evidence yet."
+      - "Fresh category review evidence: EVAS hidden gold PASS, EVAS negatives rejected, Spectre hidden gold PASS, and Cadence AHDL lint has no task-specific AHDLLINT warning."
+      - "Spectre negatives were not rerun for this legacy nested-negative layout."
 033-limiting-amplifier-frontend: |
   syntax:
     must_include:
@@ -1089,9 +1091,10 @@
       - "brownout_reasserts_reset"
   parity:
     reference: "spectre"
-    status: "pending_until_evas_spectre_rerun"
+    status: "pass"
     notes:
-      - "Designed release source; no imported historical EVAS/Spectre dual evidence yet."
+      - "Fresh category review evidence: EVAS hidden gold PASS, EVAS negatives rejected, Spectre hidden gold PASS, and Cadence AHDL lint has no task-specific AHDLLINT warning."
+      - "Spectre negatives were not rerun for this legacy nested-negative layout."
 039-precision-rectifier-envelope-detector: |
   syntax:
     must_include:
@@ -1211,9 +1214,10 @@
       - "reference_common_mode_bounded"
   parity:
     reference: "spectre"
-    status: "pending_until_evas_spectre_rerun"
+    status: "pass"
     notes:
-      - "Designed release source; no imported historical EVAS/Spectre dual evidence yet."
+      - "Fresh category review evidence: EVAS hidden gold PASS, EVAS negatives rejected, Spectre hidden gold PASS, and Cadence AHDL lint has no task-specific AHDLLINT warning."
+      - "Spectre negatives were not rerun for this legacy nested-negative layout."
 043-rf-mixer-downconverter-macro: |
   syntax:
     must_include:
@@ -1361,9 +1365,10 @@
       - "recovery_requires_upper_threshold"
   parity:
     reference: "spectre"
-    status: "pending_until_evas_spectre_rerun"
+    status: "pass"
     notes:
-      - "Designed release source; no imported historical EVAS/Spectre dual evidence yet."
+      - "Fresh category review evidence: EVAS hidden gold PASS, EVAS negatives rejected, Spectre hidden gold PASS, and Cadence AHDL lint has no task-specific AHDLLINT warning."
+      - "Spectre negatives were not rerun for this legacy nested-negative layout."
 049-window-comparator-detector: |
   syntax:
     must_include:
@@ -2043,9 +2048,9 @@
       - "metric_marks_enabled_bias"
   parity:
     reference: "spectre"
-    status: "pending_until_evas_spectre_rerun"
+    status: "pass"
     notes:
-      - "Designed release source; no imported historical EVAS/Spectre dual evidence yet."
+      - "Fresh category review evidence: EVAS hidden gold PASS, EVAS negatives rejected, Spectre hidden gold PASS, Spectre negatives rejected 5/5, and Cadence AHDL lint has no task-specific AHDLLINT warning."
 083-crossing-metric-writer: |
   syntax:
     must_include:
@@ -2570,8 +2575,8 @@
 104-ldo-load-step-recovery: |
   syntax:
     must_include:
-      - "tran"
-      - "save"
+      - "transition("
+      - "@(cross("
     must_not_include:
       - "I("
       - "ddt("
@@ -2588,9 +2593,9 @@
       - "control_monitor_responds_to_droop"
   parity:
     reference: "spectre"
-    status: "pending_fresh_dual_rerun"
+    status: "pass"
     notes:
-      - "Fresh dual rerun required after adding load_mon/ctrl_mon intermediate observability."
+      - "Fresh category review evidence: EVAS hidden gold PASS, EVAS negatives rejected, Spectre hidden gold PASS, Spectre negatives rejected 5/5, and Cadence AHDL lint has no task-specific AHDLLINT warning."
 105-pipeline-adc-chain-4b: |
   syntax:
     must_include:
@@ -2674,8 +2679,8 @@
 108-reference-startup-enable-flow: |
   syntax:
     must_include:
-      - "tran"
-      - "save"
+      - "transition("
+      - "@(cross("
     must_not_include:
       - "I("
       - "ddt("
@@ -2693,9 +2698,9 @@
       - "state_and_valid_status_recover_after_supply_return"
   parity:
     reference: "spectre"
-    status: "certified"
+    status: "pass"
     notes:
-      - "Current release dual_certification report certifies this form as EVAS/Spectre pass; rerun is required after checker/gold behavior changes."
+      - "Fresh category review evidence: EVAS hidden gold PASS, EVAS negatives rejected, Spectre hidden gold PASS, Spectre negatives rejected 5/5, and Cadence AHDL lint has no task-specific AHDLLINT warning."
 109-sample-hold-droop-front-end: |
   syntax:
     must_include:
