@@ -15,8 +15,8 @@ module ref_step_clk (
 ## Required Behavior
 
 This task asks for the `ref_step_clk` behavioral module, not a Spectre
-testbench. The evaluator instantiates this module directly and checks the
-generated `CLK` waveform.
+testbench. The verification harness instantiates this module directly and
+checks the generated `CLK` waveform.
 
 - Generate a voltage-coded square-wave clock on `CLK`.
 - Use the `VDD` and `VSS` supplies as the high and low output rails.
@@ -38,9 +38,9 @@ Public parameters and legal overrides:
 
 A correct implementation should be parameterized by those public parameters
 rather than hard-coding a fixed waveform. The observable behavior should remain
-consistent when the evaluator instantiates nearby legal parameter values, and
-should not rely on a fixed internal variable name or exact implementation
-template.
+consistent when the verification harness instantiates nearby legal parameter
+values, and should not rely on a fixed internal variable name or exact
+implementation template.
 
 Use voltage-coded logic with a mid-supply decision threshold where applicable,
 drive high logic outputs near `VDD` and low outputs near `VSS`, and keep the
