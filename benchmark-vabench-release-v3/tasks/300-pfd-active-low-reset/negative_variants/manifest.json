@@ -1,24 +1,31 @@
 {
+  "negative_count": 5,
+  "policy": "five_partial_pass_near_miss_negatives_per_task",
   "variants": [
     {
-      "id": "neg_001_zero",
       "description": "Keeps the output at its trivial zero behavior and therefore fails the stable waveform contract.",
+      "id": "neg_001_zero",
       "path": "negative_variants/neg_001_zero/pfd_active_low_reset.va"
     },
     {
-      "id": "neg_002_up_active_high",
       "description": "Drives UP as active-high instead of active-low UPB.",
+      "id": "neg_002_up_active_high",
       "path": "negative_variants/neg_002_up_active_high/pfd_active_low_reset.va"
     },
     {
-      "id": "neg_003_no_reset_delay",
       "description": "Resets immediately once both edges have arrived.",
+      "id": "neg_003_no_reset_delay",
       "path": "negative_variants/neg_003_no_reset_delay/pfd_active_low_reset.va"
     },
     {
-      "id": "neg_004_swapped_edges",
       "description": "Swaps REF and FB state updates.",
+      "id": "neg_004_swapped_edges",
       "path": "negative_variants/neg_004_swapped_edges/pfd_active_low_reset.va"
+    },
+    {
+      "description": "PFD Active Low Reset: scales the metric output, preserving the main path while failing measurement checks.",
+      "id": "neg_005_metric_scale_low",
+      "path": "negative_variants/neg_005_metric_scale_low/pfd_active_low_reset.va"
     }
   ]
 }

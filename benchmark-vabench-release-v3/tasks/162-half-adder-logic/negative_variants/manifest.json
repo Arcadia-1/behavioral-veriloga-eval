@@ -1,24 +1,31 @@
 {
+  "negative_count": 5,
+  "policy": "five_partial_pass_near_miss_negatives_per_task",
   "variants": [
     {
-      "id": "neg_001_zero",
       "description": "Drives zero outputs and therefore fails the arithmetic/state contract.",
+      "id": "neg_001_zero",
       "path": "negative_variants/neg_001_zero/half_adder_logic.va"
     },
     {
-      "id": "neg_002_or_sum",
       "description": "Uses OR for sum instead of XOR.",
+      "id": "neg_002_or_sum",
       "path": "negative_variants/neg_002_or_sum/half_adder_logic.va"
     },
     {
-      "id": "neg_003_or_carry",
       "description": "Uses OR for carry instead of AND.",
+      "id": "neg_003_or_carry",
       "path": "negative_variants/neg_003_or_carry/half_adder_logic.va"
     },
     {
-      "id": "neg_004_half_levels",
       "description": "Correct logic but half output high level.",
+      "id": "neg_004_half_levels",
       "path": "negative_variants/neg_004_half_levels/half_adder_logic.va"
+    },
+    {
+      "description": "Half Adder Logic: scales the metric output, preserving the main path while failing measurement checks.",
+      "id": "neg_005_metric_scale_low",
+      "path": "negative_variants/neg_005_metric_scale_low/half_adder_logic.va"
     }
   ]
 }

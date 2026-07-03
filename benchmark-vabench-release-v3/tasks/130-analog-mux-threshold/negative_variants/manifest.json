@@ -1,24 +1,31 @@
 {
+  "negative_count": 5,
+  "policy": "five_partial_pass_near_miss_negatives_per_task",
   "variants": [
     {
-      "id": "neg_001_zero",
       "description": "Drives zero outputs and therefore fails the stable-sample semantic contract.",
+      "id": "neg_001_zero",
       "path": "negative_variants/neg_001_zero/analog_mux_threshold.va"
     },
     {
-      "id": "neg_002_swapped_mux_inputs",
       "description": "Selects the opposite mux input.",
+      "id": "neg_002_swapped_mux_inputs",
       "path": "negative_variants/neg_002_swapped_mux_inputs/analog_mux_threshold.va"
     },
     {
-      "id": "neg_003_rising_only_select",
       "description": "Never updates selection on falling threshold crossings.",
+      "id": "neg_003_rising_only_select",
       "path": "negative_variants/neg_003_rising_only_select/analog_mux_threshold.va"
     },
     {
-      "id": "neg_004_average_instead_of_select",
       "description": "Averages both inputs instead of selecting one.",
+      "id": "neg_004_average_instead_of_select",
       "path": "negative_variants/neg_004_average_instead_of_select/analog_mux_threshold.va"
+    },
+    {
+      "description": "Analog Mux Threshold: scales the metric output, preserving the main path while failing measurement checks.",
+      "id": "neg_005_metric_scale_low",
+      "path": "negative_variants/neg_005_metric_scale_low/analog_mux_threshold.va"
     }
   ]
 }

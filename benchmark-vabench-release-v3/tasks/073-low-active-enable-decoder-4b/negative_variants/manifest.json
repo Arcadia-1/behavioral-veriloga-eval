@@ -1,35 +1,37 @@
 {
-  "status": "concrete_near_miss_negatives",
   "cases": [
     {
-      "id": "neg_001_all_high",
       "artifact": "neg_001_all_high/low_active_enable_decoder_4b.va",
-      "mutation": "never selects",
-      "expected_status": "FAIL_SIM_CORRECTNESS"
+      "expected_status": "FAIL_SIM_CORRECTNESS",
+      "id": "neg_001_all_high",
+      "mutation": "never selects"
     },
     {
-      "id": "neg_002_active_high",
       "artifact": "neg_002_active_high/low_active_enable_decoder_4b.va",
-      "mutation": "drives selected high instead of low",
-      "expected_status": "FAIL_SIM_CORRECTNESS"
+      "expected_status": "FAIL_SIM_CORRECTNESS",
+      "id": "neg_002_active_high",
+      "mutation": "drives selected high instead of low"
     },
     {
-      "id": "neg_003_ignore_enable",
       "artifact": "neg_003_ignore_enable/low_active_enable_decoder_4b.va",
-      "mutation": "decodes even when disabled",
-      "expected_status": "FAIL_SIM_CORRECTNESS"
+      "expected_status": "FAIL_SIM_CORRECTNESS",
+      "id": "neg_003_ignore_enable",
+      "mutation": "decodes even when disabled"
     },
     {
-      "id": "neg_004_shifted",
       "artifact": "neg_004_shifted/low_active_enable_decoder_4b.va",
-      "mutation": "selects code plus one",
-      "expected_status": "FAIL_SIM_CORRECTNESS"
+      "expected_status": "FAIL_SIM_CORRECTNESS",
+      "id": "neg_004_shifted",
+      "mutation": "selects code plus one"
     },
     {
-      "id": "neg_005_bit_reverse",
       "artifact": "neg_005_bit_reverse/low_active_enable_decoder_4b.va",
-      "mutation": "reverses code bits",
-      "expected_status": "FAIL_SIM_CORRECTNESS"
+      "expected_status": "FAIL_SIM_CORRECTNESS",
+      "id": "neg_005_bit_reverse",
+      "mutation": "reverses code bits"
     }
-  ]
+  ],
+  "negative_count": 5,
+  "policy": "five_partial_pass_near_miss_negatives_per_task",
+  "status": "concrete_near_miss_negatives"
 }

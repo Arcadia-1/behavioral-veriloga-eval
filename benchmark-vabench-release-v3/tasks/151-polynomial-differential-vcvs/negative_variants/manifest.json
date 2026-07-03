@@ -1,24 +1,31 @@
 {
+  "negative_count": 5,
+  "policy": "five_partial_pass_near_miss_negatives_per_task",
   "variants": [
     {
-      "id": "neg_001_zero",
       "description": "Drives zero output and therefore fails the stable waveform contract.",
+      "id": "neg_001_zero",
       "path": "negative_variants/neg_001_zero/polynomial_differential_vcvs.va"
     },
     {
-      "id": "neg_002_missing_half_factor",
       "description": "Uses the full polynomial as vod instead of half.",
+      "id": "neg_002_missing_half_factor",
       "path": "negative_variants/neg_002_missing_half_factor/polynomial_differential_vcvs.va"
     },
     {
-      "id": "neg_003_inverted_output_polarity",
       "description": "Inverts the differential output polarity.",
+      "id": "neg_003_inverted_output_polarity",
       "path": "negative_variants/neg_003_inverted_output_polarity/polynomial_differential_vcvs.va"
     },
     {
-      "id": "neg_004_common_mode_zero",
       "description": "Drives outputs around zero common mode instead of vcmo.",
+      "id": "neg_004_common_mode_zero",
       "path": "negative_variants/neg_004_common_mode_zero/polynomial_differential_vcvs.va"
+    },
+    {
+      "description": "Polynomial Differential VCVS: scales the metric output, preserving the main path while failing measurement checks.",
+      "id": "neg_005_metric_scale_low",
+      "path": "negative_variants/neg_005_metric_scale_low/polynomial_differential_vcvs.va"
     }
   ]
 }

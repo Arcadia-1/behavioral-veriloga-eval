@@ -1,24 +1,31 @@
 {
+  "negative_count": 5,
+  "policy": "five_partial_pass_near_miss_negatives_per_task",
   "variants": [
     {
-      "id": "neg_001_zero",
       "description": "Drives zero outputs and therefore fails the arithmetic/state contract.",
+      "id": "neg_001_zero",
       "path": "negative_variants/neg_001_zero/full_adder_logic.va"
     },
     {
-      "id": "neg_002_ignores_carry_in",
       "description": "Computes a half-adder and ignores carry input.",
+      "id": "neg_002_ignores_carry_in",
       "path": "negative_variants/neg_002_ignores_carry_in/full_adder_logic.va"
     },
     {
-      "id": "neg_003_wrong_carry_exactly_three",
       "description": "Asserts carry only when all three inputs are high.",
+      "id": "neg_003_wrong_carry_exactly_three",
       "path": "negative_variants/neg_003_wrong_carry_exactly_three/full_adder_logic.va"
     },
     {
-      "id": "neg_004_even_parity_sum",
       "description": "Uses even parity for sum.",
+      "id": "neg_004_even_parity_sum",
       "path": "negative_variants/neg_004_even_parity_sum/full_adder_logic.va"
+    },
+    {
+      "description": "Full Adder Logic: scales the metric output, preserving the main path while failing measurement checks.",
+      "id": "neg_005_metric_scale_low",
+      "path": "negative_variants/neg_005_metric_scale_low/full_adder_logic.va"
     }
   ]
 }

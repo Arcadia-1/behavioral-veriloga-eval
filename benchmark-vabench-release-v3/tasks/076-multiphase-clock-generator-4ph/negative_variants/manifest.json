@@ -1,35 +1,37 @@
 {
-  "status": "concrete_near_miss_negatives",
   "cases": [
     {
-      "id": "neg_001_zero",
       "artifact": "neg_001_zero/multiphase_clock_generator_4ph.va",
-      "mutation": "no clocks",
-      "expected_status": "FAIL_SIM_CORRECTNESS"
+      "expected_status": "FAIL_SIM_CORRECTNESS",
+      "id": "neg_001_zero",
+      "mutation": "no clocks"
     },
     {
-      "id": "neg_002_same_phase",
       "artifact": "neg_002_same_phase/multiphase_clock_generator_4ph.va",
-      "mutation": "all phases equal",
-      "expected_status": "FAIL_SIM_CORRECTNESS"
+      "expected_status": "FAIL_SIM_CORRECTNESS",
+      "id": "neg_002_same_phase",
+      "mutation": "all phases equal"
     },
     {
-      "id": "neg_003_wrong_90",
       "artifact": "neg_003_wrong_90/multiphase_clock_generator_4ph.va",
-      "mutation": "wrong quarter phase",
-      "expected_status": "FAIL_SIM_CORRECTNESS"
+      "expected_status": "FAIL_SIM_CORRECTNESS",
+      "id": "neg_003_wrong_90",
+      "mutation": "wrong quarter phase"
     },
     {
-      "id": "neg_004_wrong_period",
       "artifact": "neg_004_wrong_period/multiphase_clock_generator_4ph.va",
-      "mutation": "uses 25ns period",
-      "expected_status": "FAIL_SIM_CORRECTNESS"
+      "expected_status": "FAIL_SIM_CORRECTNESS",
+      "id": "neg_004_wrong_period",
+      "mutation": "uses 25ns period"
     },
     {
-      "id": "neg_005_inverted_180",
       "artifact": "neg_005_inverted_180/multiphase_clock_generator_4ph.va",
-      "mutation": "inverts clk180",
-      "expected_status": "FAIL_SIM_CORRECTNESS"
+      "expected_status": "FAIL_SIM_CORRECTNESS",
+      "id": "neg_005_inverted_180",
+      "mutation": "inverts clk180"
     }
-  ]
+  ],
+  "negative_count": 5,
+  "policy": "five_partial_pass_near_miss_negatives_per_task",
+  "status": "concrete_near_miss_negatives"
 }

@@ -1,24 +1,31 @@
 {
+  "negative_count": 5,
+  "policy": "five_partial_pass_near_miss_negatives_per_task",
   "variants": [
     {
-      "id": "neg_001_zero",
       "description": "Drives zero output and therefore fails the stable waveform contract.",
+      "id": "neg_001_zero",
       "path": "negative_variants/neg_001_zero/comparator_offset_binary_driver.va"
     },
     {
-      "id": "neg_002_no_step_halving",
       "description": "Keeps the same offset-search step size after every clock edge.",
+      "id": "neg_002_no_step_halving",
       "path": "negative_variants/neg_002_no_step_halving/comparator_offset_binary_driver.va"
     },
     {
-      "id": "neg_003_inverted_update",
       "description": "Moves vin in the opposite direction for each comparator decision.",
+      "id": "neg_003_inverted_update",
       "path": "negative_variants/neg_003_inverted_update/comparator_offset_binary_driver.va"
     },
     {
-      "id": "neg_004_full_diff_scale",
       "description": "Uses full vin on each differential output instead of half-scale around common mode.",
+      "id": "neg_004_full_diff_scale",
       "path": "negative_variants/neg_004_full_diff_scale/comparator_offset_binary_driver.va"
+    },
+    {
+      "description": "Comparator Offset Driver: scales the metric output, preserving the main path while failing measurement checks.",
+      "id": "neg_005_metric_scale_low",
+      "path": "negative_variants/neg_005_metric_scale_low/comparator_offset_binary_driver.va"
     }
   ]
 }

@@ -1,24 +1,31 @@
 {
+  "negative_count": 5,
+  "policy": "five_partial_pass_near_miss_negatives_per_task",
   "variants": [
     {
-      "id": "neg_001_zero",
       "description": "Drives zero outputs and therefore fails the stable-sample semantic contract.",
+      "id": "neg_001_zero",
       "path": "negative_variants/neg_001_zero/latched_comparator_delay.va"
     },
     {
-      "id": "neg_002_inverted_decision",
       "description": "Inverts the latched comparator decision.",
+      "id": "neg_002_inverted_decision",
       "path": "negative_variants/neg_002_inverted_decision/latched_comparator_delay.va"
     },
     {
-      "id": "neg_003_no_output_delay",
       "description": "Forces a half-amplitude output high level instead of rail-to-rail logic.",
+      "id": "neg_003_no_output_delay",
       "path": "negative_variants/neg_003_no_output_delay/latched_comparator_delay.va"
     },
     {
-      "id": "neg_004_falling_edge_latch",
       "description": "Latches on falling clock edges.",
+      "id": "neg_004_falling_edge_latch",
       "path": "negative_variants/neg_004_falling_edge_latch/latched_comparator_delay.va"
+    },
+    {
+      "description": "Latched Comparator Delay: scales the metric output, preserving the main path while failing measurement checks.",
+      "id": "neg_005_metric_scale_low",
+      "path": "negative_variants/neg_005_metric_scale_low/latched_comparator_delay.va"
     }
   ]
 }

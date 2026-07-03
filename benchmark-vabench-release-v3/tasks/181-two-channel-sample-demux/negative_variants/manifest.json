@@ -1,24 +1,31 @@
 {
+  "negative_count": 5,
+  "policy": "five_partial_pass_near_miss_negatives_per_task",
   "variants": [
     {
-      "id": "neg_001_zero",
       "description": "Drives zero output and therefore fails the stable waveform contract.",
+      "id": "neg_001_zero",
       "path": "negative_variants/neg_001_zero/two_channel_sample_demux.va"
     },
     {
-      "id": "neg_002_swap_channels",
       "description": "Swaps clks1/clks2 sample assignments.",
+      "id": "neg_002_swap_channels",
       "path": "negative_variants/neg_002_swap_channels/two_channel_sample_demux.va"
     },
     {
-      "id": "neg_003_ignore_second_channel",
       "description": "Ignores clks2 and always forwards samp1.",
+      "id": "neg_003_ignore_second_channel",
       "path": "negative_variants/neg_003_ignore_second_channel/two_channel_sample_demux.va"
     },
     {
-      "id": "neg_004_half_output_gain",
       "description": "Outputs half of the selected sample.",
+      "id": "neg_004_half_output_gain",
       "path": "negative_variants/neg_004_half_output_gain/two_channel_sample_demux.va"
+    },
+    {
+      "description": "Two Channel Sample Demux: scales the metric output, preserving the main path while failing measurement checks.",
+      "id": "neg_005_metric_scale_low",
+      "path": "negative_variants/neg_005_metric_scale_low/two_channel_sample_demux.va"
     }
   ]
 }

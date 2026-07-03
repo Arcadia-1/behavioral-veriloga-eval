@@ -1,24 +1,31 @@
 {
+  "negative_count": 5,
+  "policy": "five_partial_pass_near_miss_negatives_per_task",
   "variants": [
     {
-      "id": "neg_001_zero",
       "description": "Drives zero output and therefore fails the stable waveform contract.",
+      "id": "neg_001_zero",
       "path": "negative_variants/neg_001_zero/clocked_comparator_dual_output.va"
     },
     {
-      "id": "neg_002_no_falling_reset",
       "description": "Holds comparator outputs after clock falling edges instead of resetting low.",
+      "id": "neg_002_no_falling_reset",
       "path": "negative_variants/neg_002_no_falling_reset/clocked_comparator_dual_output.va"
     },
     {
-      "id": "neg_003_inverted_compare",
       "description": "Inverts the latched comparison.",
+      "id": "neg_003_inverted_compare",
       "path": "negative_variants/neg_003_inverted_compare/clocked_comparator_dual_output.va"
     },
     {
-      "id": "neg_004_swapped_outputs",
       "description": "Swaps OUTP and OUTN drive states.",
+      "id": "neg_004_swapped_outputs",
       "path": "negative_variants/neg_004_swapped_outputs/clocked_comparator_dual_output.va"
+    },
+    {
+      "description": "Clocked Comparator Dual Output: scales the metric output, preserving the main path while failing measurement checks.",
+      "id": "neg_005_metric_scale_low",
+      "path": "negative_variants/neg_005_metric_scale_low/clocked_comparator_dual_output.va"
     }
   ]
 }

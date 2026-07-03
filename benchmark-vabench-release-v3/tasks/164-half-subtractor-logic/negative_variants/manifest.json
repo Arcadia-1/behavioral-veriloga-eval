@@ -1,24 +1,31 @@
 {
+  "negative_count": 5,
+  "policy": "five_partial_pass_near_miss_negatives_per_task",
   "variants": [
     {
-      "id": "neg_001_zero",
       "description": "Drives zero outputs and therefore fails the arithmetic/state contract.",
+      "id": "neg_001_zero",
       "path": "negative_variants/neg_001_zero/half_subtractor_logic.va"
     },
     {
-      "id": "neg_002_wrong_borrow_direction",
       "description": "Uses a && !b for borrow instead of !a && b.",
+      "id": "neg_002_wrong_borrow_direction",
       "path": "negative_variants/neg_002_wrong_borrow_direction/half_subtractor_logic.va"
     },
     {
-      "id": "neg_003_and_diff",
       "description": "Uses AND for difference.",
+      "id": "neg_003_and_diff",
       "path": "negative_variants/neg_003_and_diff/half_subtractor_logic.va"
     },
     {
-      "id": "neg_004_half_levels",
       "description": "Correct logic but half output high level.",
+      "id": "neg_004_half_levels",
       "path": "negative_variants/neg_004_half_levels/half_subtractor_logic.va"
+    },
+    {
+      "description": "Half Subtractor Logic: scales the metric output, preserving the main path while failing measurement checks.",
+      "id": "neg_005_metric_scale_low",
+      "path": "negative_variants/neg_005_metric_scale_low/half_subtractor_logic.va"
     }
   ]
 }

@@ -1,24 +1,31 @@
 {
+  "negative_count": 5,
+  "policy": "five_partial_pass_near_miss_negatives_per_task",
   "variants": [
     {
-      "id": "neg_001_zero",
       "description": "Keeps the output at its trivial zero behavior and therefore fails the stable waveform contract.",
+      "id": "neg_001_zero",
       "path": "negative_variants/neg_001_zero/weighted_decoder_6bit.va"
     },
     {
-      "id": "neg_002_wrong_denominator",
       "description": "Uses the old MSB-normalized scale instead of the all-ones full-scale code.",
+      "id": "neg_002_wrong_denominator",
       "path": "negative_variants/neg_002_wrong_denominator/weighted_decoder_6bit.va"
     },
     {
-      "id": "neg_003_half_scale",
       "description": "Scales the decoded weighted output to half of the full-scale response.",
+      "id": "neg_003_half_scale",
       "path": "negative_variants/neg_003_half_scale/weighted_decoder_6bit.va"
     },
     {
-      "id": "neg_004_threshold_too_high",
       "description": "Uses a threshold above the input high level.",
+      "id": "neg_004_threshold_too_high",
       "path": "negative_variants/neg_004_threshold_too_high/weighted_decoder_6bit.va"
+    },
+    {
+      "description": "Weighted Decoder 6bit: scales the metric output, preserving the main path while failing measurement checks.",
+      "id": "neg_005_metric_scale_low",
+      "path": "negative_variants/neg_005_metric_scale_low/weighted_decoder_6bit.va"
     }
   ]
 }

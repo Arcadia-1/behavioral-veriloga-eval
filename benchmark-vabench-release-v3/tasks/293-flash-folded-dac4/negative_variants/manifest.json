@@ -1,24 +1,31 @@
 {
+  "negative_count": 5,
+  "policy": "five_partial_pass_near_miss_negatives_per_task",
   "variants": [
     {
-      "id": "neg_001_zero",
       "description": "Keeps the output at its trivial zero behavior and therefore fails the stable waveform contract.",
+      "id": "neg_001_zero",
       "path": "negative_variants/neg_001_zero/flash_folded_dac4.va"
     },
     {
-      "id": "neg_002_binary_unfolded",
       "description": "Implements a plain binary DAC and misses the folded MSB behavior.",
+      "id": "neg_002_binary_unfolded",
       "path": "negative_variants/neg_002_binary_unfolded/flash_folded_dac4.va"
     },
     {
-      "id": "neg_003_wrong_denominator",
       "description": "Uses the wrong full-scale denominator.",
+      "id": "neg_003_wrong_denominator",
       "path": "negative_variants/neg_003_wrong_denominator/flash_folded_dac4.va"
     },
     {
-      "id": "neg_004_inverted_fold",
       "description": "Folds in the opposite direction for the MSB branch.",
+      "id": "neg_004_inverted_fold",
       "path": "negative_variants/neg_004_inverted_fold/flash_folded_dac4.va"
+    },
+    {
+      "description": "Flash Folded DAC4: scales the metric output, preserving the main path while failing measurement checks.",
+      "id": "neg_005_metric_scale_low",
+      "path": "negative_variants/neg_005_metric_scale_low/flash_folded_dac4.va"
     }
   ]
 }

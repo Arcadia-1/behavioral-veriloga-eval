@@ -1,24 +1,31 @@
 {
+  "negative_count": 5,
+  "policy": "five_partial_pass_near_miss_negatives_per_task",
   "variants": [
     {
-      "id": "neg_001_zero",
       "description": "Keeps the output at its trivial zero behavior and therefore fails the stable waveform contract.",
+      "id": "neg_001_zero",
       "path": "negative_variants/neg_001_zero/safe_analog_divider.va"
     },
     {
-      "id": "neg_002_no_denominator_guard",
       "description": "Divides by the raw denominator without the small-signal clamp.",
+      "id": "neg_002_no_denominator_guard",
       "path": "negative_variants/neg_002_no_denominator_guard/safe_analog_divider.va"
     },
     {
-      "id": "neg_003_positive_guard_only",
       "description": "Clamps both small positive and small negative denominators to +0.2 V.",
+      "id": "neg_003_positive_guard_only",
       "path": "negative_variants/neg_003_positive_guard_only/safe_analog_divider.va"
     },
     {
-      "id": "neg_004_half_gain",
       "description": "Uses half the required divider gain.",
+      "id": "neg_004_half_gain",
       "path": "negative_variants/neg_004_half_gain/safe_analog_divider.va"
+    },
+    {
+      "description": "Safe Analog Divider: scales the metric output, preserving the main path while failing measurement checks.",
+      "id": "neg_005_metric_scale_low",
+      "path": "negative_variants/neg_005_metric_scale_low/safe_analog_divider.va"
     }
   ]
 }

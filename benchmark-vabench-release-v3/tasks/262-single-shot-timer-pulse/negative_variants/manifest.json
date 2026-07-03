@@ -1,24 +1,31 @@
 {
+  "negative_count": 5,
+  "policy": "five_partial_pass_near_miss_negatives_per_task",
   "variants": [
     {
-      "id": "neg_001_zero",
       "description": "Drives zero output and therefore fails the stable waveform contract.",
+      "id": "neg_001_zero",
       "path": "negative_variants/neg_001_zero/single_shot_timer_pulse.va"
     },
     {
-      "id": "neg_002_falling_trigger",
       "description": "Triggers the one-shot on falling input edges rather than rising edges.",
+      "id": "neg_002_falling_trigger",
       "path": "negative_variants/neg_002_falling_trigger/single_shot_timer_pulse.va"
     },
     {
-      "id": "neg_003_short_pulse",
       "description": "Uses half the required pulse width.",
+      "id": "neg_003_short_pulse",
       "path": "negative_variants/neg_003_short_pulse/single_shot_timer_pulse.va"
     },
     {
-      "id": "neg_004_no_turnoff",
       "description": "Never schedules the timer turn-off after a trigger.",
+      "id": "neg_004_no_turnoff",
       "path": "negative_variants/neg_004_no_turnoff/single_shot_timer_pulse.va"
+    },
+    {
+      "description": "Single Shot Timer Pulse: scales the metric output, preserving the main path while failing measurement checks.",
+      "id": "neg_005_metric_scale_low",
+      "path": "negative_variants/neg_005_metric_scale_low/single_shot_timer_pulse.va"
     }
   ]
 }

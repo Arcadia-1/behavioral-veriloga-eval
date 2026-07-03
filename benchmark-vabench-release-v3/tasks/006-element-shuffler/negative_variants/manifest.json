@@ -1,41 +1,37 @@
 {
-  "status": "concrete_near_miss_negatives",
   "cases": [
     {
-      "id": "neg_001_stuck_initial_state",
       "artifact": "neg_001_stuck_initial_state/element_shuffler.va",
-      "mutation": "Preserves the public interface but never advances the internal state on valid clock edges.",
-      "expected_status": "FAIL_SIM_CORRECTNESS"
+      "expected_status": "FAIL_SIM_CORRECTNESS",
+      "id": "neg_001_stuck_initial_state",
+      "mutation": "Preserves the public interface but never advances the internal state on valid clock edges."
     },
     {
-      "id": "neg_002_skip_every_other_state",
       "artifact": "neg_002_skip_every_other_state/element_shuffler.va",
-      "mutation": "Advances by two states per rising clock edge, skipping half of the required permutation.",
-      "expected_status": "FAIL_SIM_CORRECTNESS"
+      "expected_status": "FAIL_SIM_CORRECTNESS",
+      "id": "neg_002_skip_every_other_state",
+      "mutation": "Advances by two states per rising clock edge, skipping half of the required permutation."
     },
     {
-      "id": "neg_003_monotonic_output_order",
       "artifact": "neg_003_monotonic_output_order/element_shuffler.va",
-      "mutation": "Uses a monotonic output mapping instead of the required non-monotonic out2,out0,out3,out1 permutation.",
-      "expected_status": "FAIL_SIM_CORRECTNESS"
+      "expected_status": "FAIL_SIM_CORRECTNESS",
+      "id": "neg_003_monotonic_output_order",
+      "mutation": "Uses a monotonic output mapping instead of the required non-monotonic out2,out0,out3,out1 permutation."
     },
     {
-      "id": "neg_004_forces_state_three",
       "artifact": "neg_004_forces_state_three/element_shuffler.va",
-      "mutation": "Forces the same terminal state on every valid clock edge.",
-      "expected_status": "FAIL_SIM_CORRECTNESS"
+      "expected_status": "FAIL_SIM_CORRECTNESS",
+      "id": "neg_004_forces_state_three",
+      "mutation": "Forces the same terminal state on every valid clock edge."
     },
     {
-      "id": "neg_005_out0_stuck_high",
       "artifact": "neg_005_out0_stuck_high/element_shuffler.va",
-      "mutation": "Drives a plausible voltage output but violates one-hot rotation by keeping only out0 high.",
-      "expected_status": "FAIL_SIM_CORRECTNESS"
-    },
-    {
-      "id": "neg_006_ignore_midrun_reset",
-      "artifact": "neg_006_ignore_midrun_reset/element_shuffler.va",
-      "mutation": "Matches the first public sequence window but ignores asynchronous reset assertions between clock edges, so the hidden post-reset window does not restart.",
-      "expected_status": "FAIL_SIM_CORRECTNESS"
+      "expected_status": "FAIL_SIM_CORRECTNESS",
+      "id": "neg_005_out0_stuck_high",
+      "mutation": "Drives a plausible voltage output but violates one-hot rotation by keeping only out0 high."
     }
-  ]
+  ],
+  "negative_count": 5,
+  "policy": "five_partial_pass_near_miss_negatives_per_task",
+  "status": "concrete_near_miss_negatives"
 }

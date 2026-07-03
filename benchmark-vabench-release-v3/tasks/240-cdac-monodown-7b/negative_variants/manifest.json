@@ -1,24 +1,31 @@
 {
+  "negative_count": 5,
+  "policy": "five_partial_pass_near_miss_negatives_per_task",
   "variants": [
     {
-      "id": "neg_001_zero",
       "description": "Drives zero output and therefore fails the stable waveform contract.",
+      "id": "neg_001_zero",
       "path": "negative_variants/neg_001_zero/cdac_monodown_7b.va"
     },
     {
-      "id": "neg_002_wrong_msb_weight",
       "description": "Uses a quarter-scale dctrl7 subtraction instead of the required half-scale.",
+      "id": "neg_002_wrong_msb_weight",
       "path": "negative_variants/neg_002_wrong_msb_weight/cdac_monodown_7b.va"
     },
     {
-      "id": "neg_003_wrong_sign",
       "description": "Adds the dctrl6 residue step instead of subtracting it.",
+      "id": "neg_003_wrong_sign",
       "path": "negative_variants/neg_003_wrong_sign/cdac_monodown_7b.va"
     },
     {
-      "id": "neg_004_half_output",
       "description": "Drives the residue output at half amplitude.",
+      "id": "neg_004_half_output",
       "path": "negative_variants/neg_004_half_output/cdac_monodown_7b.va"
+    },
+    {
+      "description": "CDAC Monodown 7b: scales the metric output, preserving the main path while failing measurement checks.",
+      "id": "neg_005_metric_scale_low",
+      "path": "negative_variants/neg_005_metric_scale_low/cdac_monodown_7b.va"
     }
   ]
 }

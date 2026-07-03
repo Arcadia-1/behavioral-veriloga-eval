@@ -1,10 +1,32 @@
 {
-  "status": "one_concrete_negative_pending_recertification",
   "negative_cases": [
     {
       "id": "neg_001_zero",
-      "target": "agc_receiver_leveling_loop.va",
-      "intent": "zero/stub output implementation copied from starter must not satisfy hidden behavior checker"
+      "intent": "zero/stub output implementation copied from starter must not satisfy hidden behavior checker",
+      "target": "agc_receiver_leveling_loop.va"
+    },
+    {
+      "id": "neg_002_threshold_shifted",
+      "intent": "AGC Receiver Leveling Loop: shifts the decision threshold, preserving nominal behavior while failing boundary checks.",
+      "target": "agc_receiver_leveling_loop.va"
+    },
+    {
+      "id": "neg_003_event_edge_wrong",
+      "intent": "AGC Receiver Leveling Loop: uses the opposite event edge, preserving interface behavior while failing timing windows.",
+      "target": "agc_receiver_leveling_loop.va"
+    },
+    {
+      "id": "neg_004_reset_polarity_wrong",
+      "intent": "AGC Receiver Leveling Loop: uses the wrong reset polarity, preserving steady-state behavior while failing recovery checks.",
+      "target": "agc_receiver_leveling_loop.va"
+    },
+    {
+      "id": "neg_005_metric_scale_low",
+      "intent": "AGC Receiver Leveling Loop: scales the metric output, preserving the main path while failing measurement checks.",
+      "target": "agc_receiver_leveling_loop.va"
     }
-  ]
+  ],
+  "negative_count": 5,
+  "policy": "five_partial_pass_near_miss_negatives_per_task",
+  "status": "five_concrete_negatives_pending_recertification"
 }

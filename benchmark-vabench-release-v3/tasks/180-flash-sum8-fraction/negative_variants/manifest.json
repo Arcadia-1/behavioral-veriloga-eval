@@ -1,24 +1,31 @@
 {
+  "negative_count": 5,
+  "policy": "five_partial_pass_near_miss_negatives_per_task",
   "variants": [
     {
-      "id": "neg_001_zero",
       "description": "Drives zero output and therefore fails the stable waveform contract.",
+      "id": "neg_001_zero",
       "path": "negative_variants/neg_001_zero/flash_sum8_fraction.va"
     },
     {
-      "id": "neg_002_wrong_normalization",
       "description": "Divides count by four instead of eight.",
+      "id": "neg_002_wrong_normalization",
       "path": "negative_variants/neg_002_wrong_normalization/flash_sum8_fraction.va"
     },
     {
-      "id": "neg_003_ignores_upper_inputs",
       "description": "Counts only lower four thermometer inputs.",
+      "id": "neg_003_ignores_upper_inputs",
       "path": "negative_variants/neg_003_ignores_upper_inputs/flash_sum8_fraction.va"
     },
     {
-      "id": "neg_004_output_offset",
       "description": "Adds a fixed output offset after counting.",
+      "id": "neg_004_output_offset",
       "path": "negative_variants/neg_004_output_offset/flash_sum8_fraction.va"
+    },
+    {
+      "description": "Flash Sum8 Fraction: scales the metric output, preserving the main path while failing measurement checks.",
+      "id": "neg_005_metric_scale_low",
+      "path": "negative_variants/neg_005_metric_scale_low/flash_sum8_fraction.va"
     }
   ]
 }

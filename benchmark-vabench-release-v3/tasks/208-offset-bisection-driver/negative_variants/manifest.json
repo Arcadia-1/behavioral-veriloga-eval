@@ -1,24 +1,31 @@
 {
+  "negative_count": 5,
+  "policy": "five_partial_pass_near_miss_negatives_per_task",
   "variants": [
     {
-      "id": "neg_001_zero",
       "description": "Drives zero output and therefore fails the stable waveform contract.",
+      "id": "neg_001_zero",
       "path": "negative_variants/neg_001_zero/offset_bisection_driver.va"
     },
     {
-      "id": "neg_002_no_step_halving",
       "description": "Keeps the bisection step fixed after sign changes.",
+      "id": "neg_002_no_step_halving",
       "path": "negative_variants/neg_002_no_step_halving/offset_bisection_driver.va"
     },
     {
-      "id": "neg_003_inverted_sign_sense",
       "description": "Uses the opposite comparator polarity for offset updates.",
+      "id": "neg_003_inverted_sign_sense",
       "path": "negative_variants/neg_003_inverted_sign_sense/offset_bisection_driver.va"
     },
     {
-      "id": "neg_004_full_diff_scale",
       "description": "Drives the differential pair with full vin instead of half-scale around vcm.",
+      "id": "neg_004_full_diff_scale",
       "path": "negative_variants/neg_004_full_diff_scale/offset_bisection_driver.va"
+    },
+    {
+      "description": "Offset Bisection Driver: scales the metric output, preserving the main path while failing measurement checks.",
+      "id": "neg_005_metric_scale_low",
+      "path": "negative_variants/neg_005_metric_scale_low/offset_bisection_driver.va"
     }
   ]
 }

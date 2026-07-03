@@ -1,24 +1,31 @@
 {
+  "negative_count": 5,
+  "policy": "five_partial_pass_near_miss_negatives_per_task",
   "variants": [
     {
-      "id": "neg_001_zero",
       "description": "Existing concrete negative.",
+      "id": "neg_001_zero",
       "path": "negative_variants/neg_001_zero/source_sample_hold.va"
     },
     {
-      "id": "neg_002_transparent_track",
       "description": "Tracks input continuously instead of holding sampled values.",
+      "id": "neg_002_transparent_track",
       "path": "negative_variants/neg_002_transparent_track/source_sample_hold.va"
     },
     {
-      "id": "neg_003_falling_edge_sample",
       "description": "Samples on the falling clock edge.",
+      "id": "neg_003_falling_edge_sample",
       "path": "negative_variants/neg_003_falling_edge_sample/source_sample_hold.va"
     },
     {
-      "id": "neg_004_half_gain_hold",
       "description": "Samples the right edge but stores half the input voltage.",
+      "id": "neg_004_half_gain_hold",
       "path": "negative_variants/neg_004_half_gain_hold/source_sample_hold.va"
+    },
+    {
+      "description": "Ideal Sample And Hold: scales the metric output, preserving the main path while failing measurement checks.",
+      "id": "neg_005_metric_scale_low",
+      "path": "negative_variants/neg_005_metric_scale_low/source_sample_hold.va"
     }
   ]
 }

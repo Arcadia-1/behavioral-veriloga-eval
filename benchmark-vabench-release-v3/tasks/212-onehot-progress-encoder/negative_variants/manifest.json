@@ -1,24 +1,31 @@
 {
+  "negative_count": 5,
+  "policy": "five_partial_pass_near_miss_negatives_per_task",
   "variants": [
     {
-      "id": "neg_001_zero",
       "description": "Drives zero output and therefore fails the stable waveform contract.",
+      "id": "neg_001_zero",
       "path": "negative_variants/neg_001_zero/onehot_progress_encoder.va"
     },
     {
-      "id": "neg_002_start_at_one",
       "description": "Starts progress at index 1, skipping d0 on the first clock.",
+      "id": "neg_002_start_at_one",
       "path": "negative_variants/neg_002_start_at_one/onehot_progress_encoder.va"
     },
     {
-      "id": "neg_003_wrong_sum",
       "description": "Reports one less than the active progress count.",
+      "id": "neg_003_wrong_sum",
       "path": "negative_variants/neg_003_wrong_sum/onehot_progress_encoder.va"
     },
     {
-      "id": "neg_004_clear_previous_bits",
       "description": "Clears the previous one-hot/progress bits before setting the next bit.",
+      "id": "neg_004_clear_previous_bits",
       "path": "negative_variants/neg_004_clear_previous_bits/onehot_progress_encoder.va"
+    },
+    {
+      "description": "Onehot Progress Encoder: scales the metric output, preserving the main path while failing measurement checks.",
+      "id": "neg_005_metric_scale_low",
+      "path": "negative_variants/neg_005_metric_scale_low/onehot_progress_encoder.va"
     }
   ]
 }

@@ -1,24 +1,31 @@
 {
+  "negative_count": 5,
+  "policy": "five_partial_pass_near_miss_negatives_per_task",
   "variants": [
     {
-      "id": "neg_001_zero",
       "description": "Existing concrete negative.",
+      "id": "neg_001_zero",
       "path": "negative_variants/neg_001_zero/source_single_shot.va"
     },
     {
-      "id": "neg_002_short_pulse",
       "description": "Uses a pulse width that is too short.",
+      "id": "neg_002_short_pulse",
       "path": "negative_variants/neg_002_short_pulse/source_single_shot.va"
     },
     {
-      "id": "neg_003_falling_edge_trigger",
       "description": "Triggers pulses on falling input crossings.",
+      "id": "neg_003_falling_edge_trigger",
       "path": "negative_variants/neg_003_falling_edge_trigger/source_single_shot.va"
     },
     {
-      "id": "neg_004_stuck_high_after_first",
       "description": "Never turns the pulse off after a trigger.",
+      "id": "neg_004_stuck_high_after_first",
       "path": "negative_variants/neg_004_stuck_high_after_first/source_single_shot.va"
+    },
+    {
+      "description": "Single Shot Pulse: scales the metric output, preserving the main path while failing measurement checks.",
+      "id": "neg_005_metric_scale_low",
+      "path": "negative_variants/neg_005_metric_scale_low/source_single_shot.va"
     }
   ]
 }

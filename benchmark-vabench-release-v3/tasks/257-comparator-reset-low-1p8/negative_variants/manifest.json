@@ -1,24 +1,31 @@
 {
+  "negative_count": 5,
+  "policy": "five_partial_pass_near_miss_negatives_per_task",
   "variants": [
     {
-      "id": "neg_001_zero",
       "description": "Drives zero output and therefore fails the stable waveform contract.",
+      "id": "neg_001_zero",
       "path": "negative_variants/neg_001_zero/comparator_reset_low_1p8.va"
     },
     {
-      "id": "neg_002_no_falling_reset",
       "description": "Keeps the latched comparison through clock falling edges instead of resetting both outputs low.",
+      "id": "neg_002_no_falling_reset",
       "path": "negative_variants/neg_002_no_falling_reset/comparator_reset_low_1p8.va"
     },
     {
-      "id": "neg_003_inverted_compare",
       "description": "Inverts the VINP/VINN comparison polarity.",
+      "id": "neg_003_inverted_compare",
       "path": "negative_variants/neg_003_inverted_compare/comparator_reset_low_1p8.va"
     },
     {
-      "id": "neg_004_swapped_outputs",
       "description": "Drives DCM/P and DCM/N from the opposite latched states.",
+      "id": "neg_004_swapped_outputs",
       "path": "negative_variants/neg_004_swapped_outputs/comparator_reset_low_1p8.va"
+    },
+    {
+      "description": "Comparator Reset Low 1p8: scales the metric output, preserving the main path while failing measurement checks.",
+      "id": "neg_005_metric_scale_low",
+      "path": "negative_variants/neg_005_metric_scale_low/comparator_reset_low_1p8.va"
     }
   ]
 }

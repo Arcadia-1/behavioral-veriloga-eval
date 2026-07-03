@@ -1,24 +1,31 @@
 {
+  "negative_count": 5,
+  "policy": "five_partial_pass_near_miss_negatives_per_task",
   "variants": [
     {
-      "id": "neg_001_zero",
       "description": "Drives zero output and therefore fails the stable waveform contract.",
+      "id": "neg_001_zero",
       "path": "negative_variants/neg_001_zero/two_period_sample_delay.va"
     },
     {
-      "id": "neg_002_one_period_delay",
       "description": "Outputs the current sample with only one-period delay.",
+      "id": "neg_002_one_period_delay",
       "path": "negative_variants/neg_002_one_period_delay/two_period_sample_delay.va"
     },
     {
-      "id": "neg_003_half_output_gain",
       "description": "Applies half gain to the delayed output.",
+      "id": "neg_003_half_output_gain",
       "path": "negative_variants/neg_003_half_output_gain/two_period_sample_delay.va"
     },
     {
-      "id": "neg_004_wrong_initial_value",
       "description": "Uses wrong initial output before samples are available.",
+      "id": "neg_004_wrong_initial_value",
       "path": "negative_variants/neg_004_wrong_initial_value/two_period_sample_delay.va"
+    },
+    {
+      "description": "Two Period Sample Delay: scales the metric output, preserving the main path while failing measurement checks.",
+      "id": "neg_005_metric_scale_low",
+      "path": "negative_variants/neg_005_metric_scale_low/two_period_sample_delay.va"
     }
   ]
 }

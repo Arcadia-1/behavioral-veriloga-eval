@@ -1,24 +1,31 @@
 {
+  "negative_count": 5,
+  "policy": "five_partial_pass_near_miss_negatives_per_task",
   "variants": [
     {
-      "id": "neg_001_zero",
       "description": "Drives zero output and therefore fails the stable waveform contract.",
+      "id": "neg_001_zero",
       "path": "negative_variants/neg_001_zero/pipe15_data_align.va"
     },
     {
-      "id": "neg_002_top_group_three_delay",
       "description": "Uses the third delay stage for bits 11-14 instead of the fourth.",
+      "id": "neg_002_top_group_three_delay",
       "path": "negative_variants/neg_002_top_group_three_delay/pipe15_data_align.va"
     },
     {
-      "id": "neg_003_middle_group_one_delay",
       "description": "Uses only one delay stage for bits 7-10 instead of three.",
+      "id": "neg_003_middle_group_one_delay",
       "path": "negative_variants/neg_003_middle_group_one_delay/pipe15_data_align.va"
     },
     {
-      "id": "neg_004_swap_low_outputs",
       "description": "Forces traced aligned output do14 low.",
+      "id": "neg_004_swap_low_outputs",
       "path": "negative_variants/neg_004_swap_low_outputs/pipe15_data_align.va"
+    },
+    {
+      "description": "Pipe15 Data Align: scales the metric output, preserving the main path while failing measurement checks.",
+      "id": "neg_005_metric_scale_low",
+      "path": "negative_variants/neg_005_metric_scale_low/pipe15_data_align.va"
     }
   ]
 }

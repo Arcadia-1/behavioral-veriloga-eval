@@ -1,22 +1,29 @@
 [
   {
     "id": "neg_001_zero",
-    "target": "programmable_stimulus_sequencer.va",
-    "intent": "zero output/metric stub"
+    "intent": "zero output/metric stub",
+    "target": "programmable_stimulus_sequencer.va"
   },
   {
     "id": "neg_002_flat_ramp",
-    "target": "programmable_stimulus_sequencer.va",
-    "intent": "ramp segment is flat"
+    "intent": "ramp segment is flat",
+    "target": "programmable_stimulus_sequencer.va"
   },
   {
     "id": "neg_003_fixed_sine_not_chirp",
-    "target": "programmable_stimulus_sequencer.va",
-    "intent": "chirp segment is stuck at center"
+    "intent": "chirp segment is stuck at center",
+    "target": "programmable_stimulus_sequencer.va"
   },
   {
     "id": "neg_004_ignore_gate",
-    "target": "programmable_stimulus_sequencer.va",
-    "intent": "burst segment ignores gate low interval"
+    "intent": "burst segment ignores gate low interval",
+    "target": "programmable_stimulus_sequencer.va"
+  },
+  {
+    "files": [
+      "neg_005_metric_scale_low/programmable_stimulus_sequencer.va"
+    ],
+    "id": "neg_005_metric_scale_low",
+    "why_wrong": "Programmable Stimulus Sequencer: scales the metric output, preserving the main path while failing measurement checks."
   }
 ]

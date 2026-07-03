@@ -1,24 +1,31 @@
 {
+  "negative_count": 5,
+  "policy": "five_partial_pass_near_miss_negatives_per_task",
   "variants": [
     {
-      "id": "neg_001_zero",
       "description": "Drives zero output and therefore fails the stable waveform contract.",
+      "id": "neg_001_zero",
       "path": "negative_variants/neg_001_zero/lt_readout_sar4.va"
     },
     {
-      "id": "neg_002_reverse_weights",
       "description": "Swaps the d0 and d3 weights.",
+      "id": "neg_002_reverse_weights",
       "path": "negative_variants/neg_002_reverse_weights/lt_readout_sar4.va"
     },
     {
-      "id": "neg_003_wrong_denominator",
       "description": "Normalizes by 15 instead of 16.",
+      "id": "neg_003_wrong_denominator",
       "path": "negative_variants/neg_003_wrong_denominator/lt_readout_sar4.va"
     },
     {
-      "id": "neg_004_half_output",
       "description": "Drives the readout output at half amplitude.",
+      "id": "neg_004_half_output",
       "path": "negative_variants/neg_004_half_output/lt_readout_sar4.va"
+    },
+    {
+      "description": "LT Readout SAR4: scales the metric output, preserving the main path while failing measurement checks.",
+      "id": "neg_005_metric_scale_low",
+      "path": "negative_variants/neg_005_metric_scale_low/lt_readout_sar4.va"
     }
   ]
 }

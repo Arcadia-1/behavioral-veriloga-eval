@@ -1,24 +1,31 @@
 {
+  "negative_count": 5,
+  "policy": "five_partial_pass_near_miss_negatives_per_task",
   "variants": [
     {
-      "id": "neg_001_zero",
       "description": "Drives zero output and therefore fails the stable waveform contract.",
+      "id": "neg_001_zero",
       "path": "negative_variants/neg_001_zero/l1_dac_4b_bipolar.va"
     },
     {
-      "id": "neg_002_unipolar_output",
       "description": "Outputs the unipolar code instead of the required bipolar mapping.",
+      "id": "neg_002_unipolar_output",
       "path": "negative_variants/neg_002_unipolar_output/l1_dac_4b_bipolar.va"
     },
     {
-      "id": "neg_003_missing_vdd_scale",
       "description": "Inverts the bipolar DAC transfer polarity around midscale.",
+      "id": "neg_003_missing_vdd_scale",
       "path": "negative_variants/neg_003_missing_vdd_scale/l1_dac_4b_bipolar.va"
     },
     {
-      "id": "neg_004_wrong_msb_weight",
       "description": "Uses a quarter-scale MSB weight for din4.",
+      "id": "neg_004_wrong_msb_weight",
       "path": "negative_variants/neg_004_wrong_msb_weight/l1_dac_4b_bipolar.va"
+    },
+    {
+      "description": "L1 DAC 4b Bipolar: scales the metric output, preserving the main path while failing measurement checks.",
+      "id": "neg_005_metric_scale_low",
+      "path": "negative_variants/neg_005_metric_scale_low/l1_dac_4b_bipolar.va"
     }
   ]
 }

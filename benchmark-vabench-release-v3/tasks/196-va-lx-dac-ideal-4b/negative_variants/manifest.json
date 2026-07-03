@@ -1,24 +1,31 @@
 {
+  "negative_count": 5,
+  "policy": "five_partial_pass_near_miss_negatives_per_task",
   "variants": [
     {
-      "id": "neg_001_zero",
       "description": "Drives zero output and therefore fails the stable waveform contract.",
+      "id": "neg_001_zero",
       "path": "negative_variants/neg_001_zero/va_lx_dac_ideal_4b.va"
     },
     {
-      "id": "neg_002_missing_vdd_scale",
       "description": "Leaves the decoded DAC fraction unscaled by vdd.",
+      "id": "neg_002_missing_vdd_scale",
       "path": "negative_variants/neg_002_missing_vdd_scale/va_lx_dac_ideal_4b.va"
     },
     {
-      "id": "neg_003_wrong_msb_weight",
       "description": "Uses a quarter-scale MSB weight for din4.",
+      "id": "neg_003_wrong_msb_weight",
       "path": "negative_variants/neg_003_wrong_msb_weight/va_lx_dac_ideal_4b.va"
     },
     {
-      "id": "neg_004_ignore_lsb",
       "description": "Drops the din1 least-significant bit contribution.",
+      "id": "neg_004_ignore_lsb",
       "path": "negative_variants/neg_004_ignore_lsb/va_lx_dac_ideal_4b.va"
+    },
+    {
+      "description": "VA Lx DAC Ideal 4b: scales the metric output, preserving the main path while failing measurement checks.",
+      "id": "neg_005_metric_scale_low",
+      "path": "negative_variants/neg_005_metric_scale_low/va_lx_dac_ideal_4b.va"
     }
   ]
 }

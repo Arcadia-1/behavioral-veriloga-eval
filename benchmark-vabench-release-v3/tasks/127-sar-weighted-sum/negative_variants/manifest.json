@@ -1,24 +1,31 @@
 {
+  "negative_count": 5,
+  "policy": "five_partial_pass_near_miss_negatives_per_task",
   "variants": [
     {
-      "id": "neg_001_zero",
       "description": "Drives zero output and therefore fails the weighted-sum semantic contract.",
+      "id": "neg_001_zero",
       "path": "negative_variants/neg_001_zero/sar_weighted_sum.va"
     },
     {
-      "id": "neg_002_binary_weights",
       "description": "Uses ordinary binary weights instead of the specified SAR weights.",
+      "id": "neg_002_binary_weights",
       "path": "negative_variants/neg_002_binary_weights/sar_weighted_sum.va"
     },
     {
-      "id": "neg_003_wrong_normalization",
       "description": "Uses the wrong normalization denominator.",
+      "id": "neg_003_wrong_normalization",
       "path": "negative_variants/neg_003_wrong_normalization/sar_weighted_sum.va"
     },
     {
-      "id": "neg_004_missing_offset",
       "description": "Omits the required -1.0 output offset.",
+      "id": "neg_004_missing_offset",
       "path": "negative_variants/neg_004_missing_offset/sar_weighted_sum.va"
+    },
+    {
+      "description": "SAR Weighted Sum: scales the metric output, preserving the main path while failing measurement checks.",
+      "id": "neg_005_metric_scale_low",
+      "path": "negative_variants/neg_005_metric_scale_low/sar_weighted_sum.va"
     }
   ]
 }

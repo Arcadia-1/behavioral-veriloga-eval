@@ -1,24 +1,31 @@
 {
+  "negative_count": 5,
+  "policy": "five_partial_pass_near_miss_negatives_per_task",
   "variants": [
     {
-      "id": "neg_001_zero",
       "description": "Drives zero output and therefore fails the stable waveform contract.",
+      "id": "neg_001_zero",
       "path": "negative_variants/neg_001_zero/differential_gain_driver.va"
     },
     {
-      "id": "neg_002_single_ended_gain",
       "description": "Drives only the positive output and leaves the negative output at the reference.",
+      "id": "neg_002_single_ended_gain",
       "path": "negative_variants/neg_002_single_ended_gain/differential_gain_driver.va"
     },
     {
-      "id": "neg_003_missing_half_split",
       "description": "Applies full gain to both output halves.",
+      "id": "neg_003_missing_half_split",
       "path": "negative_variants/neg_003_missing_half_split/differential_gain_driver.va"
     },
     {
-      "id": "neg_004_inverted_polarity",
       "description": "Inverts the differential output polarity.",
+      "id": "neg_004_inverted_polarity",
       "path": "negative_variants/neg_004_inverted_polarity/differential_gain_driver.va"
+    },
+    {
+      "description": "Differential Gain Driver: scales the metric output, preserving the main path while failing measurement checks.",
+      "id": "neg_005_metric_scale_low",
+      "path": "negative_variants/neg_005_metric_scale_low/differential_gain_driver.va"
     }
   ]
 }

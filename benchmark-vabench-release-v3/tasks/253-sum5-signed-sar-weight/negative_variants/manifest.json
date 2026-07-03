@@ -1,24 +1,31 @@
 {
+  "negative_count": 5,
+  "policy": "five_partial_pass_near_miss_negatives_per_task",
   "variants": [
     {
-      "id": "neg_001_zero",
       "description": "Drives zero output and therefore fails the stable waveform contract.",
+      "id": "neg_001_zero",
       "path": "negative_variants/neg_001_zero/sum5_signed_sar_weight.va"
     },
     {
-      "id": "neg_002_wrong_msb_sign",
       "description": "Treats d5 low as zero instead of -1 for the signed MSB contribution.",
+      "id": "neg_002_wrong_msb_sign",
       "path": "negative_variants/neg_002_wrong_msb_sign/sum5_signed_sar_weight.va"
     },
     {
-      "id": "neg_003_wrong_output_mapping",
       "description": "Omits the signed output remapping vout*2-1.",
+      "id": "neg_003_wrong_output_mapping",
       "path": "negative_variants/neg_003_wrong_output_mapping/sum5_signed_sar_weight.va"
     },
     {
-      "id": "neg_004_half_output",
       "description": "Drives the signed weighted output at half amplitude.",
+      "id": "neg_004_half_output",
       "path": "negative_variants/neg_004_half_output/sum5_signed_sar_weight.va"
+    },
+    {
+      "description": "SUM5 Signed SAR Weight: scales the metric output, preserving the main path while failing measurement checks.",
+      "id": "neg_005_metric_scale_low",
+      "path": "negative_variants/neg_005_metric_scale_low/sum5_signed_sar_weight.va"
     }
   ]
 }

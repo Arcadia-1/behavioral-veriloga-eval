@@ -1,10 +1,32 @@
 {
-  "status": "one_concrete_negative_pending_recertification",
   "negative_cases": [
     {
       "id": "neg_001_zero",
-      "target": "acquisition_limited_sample_hold.va",
-      "intent": "zero/stub output implementation copied from starter must not satisfy hidden behavior checker"
+      "intent": "zero/stub output implementation copied from starter must not satisfy hidden behavior checker",
+      "target": "acquisition_limited_sample_hold.va"
+    },
+    {
+      "id": "neg_002_threshold_shifted",
+      "intent": "Acquisition Limited Sample And Hold: shifts the decision threshold, preserving nominal behavior while failing boundary checks.",
+      "target": "acquisition_limited_sample_hold.va"
+    },
+    {
+      "id": "neg_003_event_edge_wrong",
+      "intent": "Acquisition Limited Sample And Hold: uses the opposite event edge, preserving interface behavior while failing timing windows.",
+      "target": "acquisition_limited_sample_hold.va"
+    },
+    {
+      "id": "neg_004_reset_polarity_wrong",
+      "intent": "Acquisition Limited Sample And Hold: uses the wrong reset polarity, preserving steady-state behavior while failing recovery checks.",
+      "target": "acquisition_limited_sample_hold.va"
+    },
+    {
+      "id": "neg_005_metric_scale_low",
+      "intent": "Acquisition Limited Sample And Hold: scales the metric output, preserving the main path while failing measurement checks.",
+      "target": "acquisition_limited_sample_hold.va"
     }
-  ]
+  ],
+  "negative_count": 5,
+  "policy": "five_partial_pass_near_miss_negatives_per_task",
+  "status": "five_concrete_negatives_pending_recertification"
 }

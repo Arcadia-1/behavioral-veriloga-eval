@@ -1,24 +1,31 @@
 {
+  "negative_count": 5,
+  "policy": "five_partial_pass_near_miss_negatives_per_task",
   "variants": [
     {
-      "id": "neg_001_zero",
       "description": "Drives zero output and therefore fails the stable waveform contract.",
+      "id": "neg_001_zero",
       "path": "negative_variants/neg_001_zero/va_dac_6b_se.va"
     },
     {
-      "id": "neg_002_wrong_denominator",
       "description": "Uses half the required MSB weight for din5.",
+      "id": "neg_002_wrong_denominator",
       "path": "negative_variants/neg_002_wrong_denominator/va_dac_6b_se.va"
     },
     {
-      "id": "neg_003_unipolar_output",
       "description": "Omits the bipolar minus-vdd offset.",
+      "id": "neg_003_unipolar_output",
       "path": "negative_variants/neg_003_unipolar_output/va_dac_6b_se.va"
     },
     {
-      "id": "neg_004_half_output",
       "description": "Drives aout at half amplitude.",
+      "id": "neg_004_half_output",
       "path": "negative_variants/neg_004_half_output/va_dac_6b_se.va"
+    },
+    {
+      "description": "VA DAC 6b SE: scales the metric output, preserving the main path while failing measurement checks.",
+      "id": "neg_005_metric_scale_low",
+      "path": "negative_variants/neg_005_metric_scale_low/va_dac_6b_se.va"
     }
   ]
 }

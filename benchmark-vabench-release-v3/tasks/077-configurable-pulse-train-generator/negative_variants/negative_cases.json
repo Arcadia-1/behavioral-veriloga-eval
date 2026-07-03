@@ -1,35 +1,72 @@
 {
-  "status": "concrete_near_miss_negatives",
   "cases": [
     {
-      "id": "neg_001_zero",
       "artifact": "neg_001_zero/configurable_pulse_train.va",
-      "mutation": "no pulse train",
-      "expected_status": "FAIL_SIM_CORRECTNESS"
+      "expected_status": "FAIL_SIM_CORRECTNESS",
+      "id": "neg_001_zero",
+      "mutation": "no pulse train"
     },
     {
-      "id": "neg_002_ignore_width",
       "artifact": "neg_002_ignore_width/configurable_pulse_train.va",
-      "mutation": "one-cycle pulses only",
-      "expected_status": "FAIL_SIM_CORRECTNESS"
+      "expected_status": "FAIL_SIM_CORRECTNESS",
+      "id": "neg_002_ignore_width",
+      "mutation": "one-cycle pulses only"
     },
     {
-      "id": "neg_003_wrong_period",
       "artifact": "neg_003_wrong_period/configurable_pulse_train.va",
-      "mutation": "uses period plus one",
-      "expected_status": "FAIL_SIM_CORRECTNESS"
+      "expected_status": "FAIL_SIM_CORRECTNESS",
+      "id": "neg_003_wrong_period",
+      "mutation": "uses period plus one"
     },
     {
-      "id": "neg_004_no_done",
       "artifact": "neg_004_no_done/configurable_pulse_train.va",
-      "mutation": "never asserts done",
-      "expected_status": "FAIL_SIM_CORRECTNESS"
+      "expected_status": "FAIL_SIM_CORRECTNESS",
+      "id": "neg_004_no_done",
+      "mutation": "never asserts done"
     },
     {
-      "id": "neg_005_extra_pulse",
       "artifact": "neg_005_extra_pulse/configurable_pulse_train.va",
-      "mutation": "emits one extra pulse",
-      "expected_status": "FAIL_SIM_CORRECTNESS"
+      "expected_status": "FAIL_SIM_CORRECTNESS",
+      "id": "neg_005_extra_pulse",
+      "mutation": "emits one extra pulse"
     }
-  ]
+  ],
+  "negative_cases": [
+    {
+      "files": [
+        "neg_001_zero/configurable_pulse_train.va"
+      ],
+      "id": "neg_001_zero",
+      "why_wrong": ""
+    },
+    {
+      "files": [
+        "neg_002_ignore_width/configurable_pulse_train.va"
+      ],
+      "id": "neg_002_ignore_width",
+      "why_wrong": ""
+    },
+    {
+      "files": [
+        "neg_003_wrong_period/configurable_pulse_train.va"
+      ],
+      "id": "neg_003_wrong_period",
+      "why_wrong": ""
+    },
+    {
+      "files": [
+        "neg_004_no_done/configurable_pulse_train.va"
+      ],
+      "id": "neg_004_no_done",
+      "why_wrong": ""
+    },
+    {
+      "files": [
+        "neg_005_extra_pulse/configurable_pulse_train.va"
+      ],
+      "id": "neg_005_extra_pulse",
+      "why_wrong": ""
+    }
+  ],
+  "status": "concrete_near_miss_negatives"
 }

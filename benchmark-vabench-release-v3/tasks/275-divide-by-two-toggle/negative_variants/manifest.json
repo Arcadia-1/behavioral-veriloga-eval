@@ -1,24 +1,31 @@
 {
+  "negative_count": 5,
+  "policy": "five_partial_pass_near_miss_negatives_per_task",
   "variants": [
     {
-      "id": "neg_001_zero",
       "description": "Keeps the output at its trivial zero behavior and therefore fails the stable waveform contract.",
+      "id": "neg_001_zero",
       "path": "negative_variants/neg_001_zero/divide_by_two_toggle.va"
     },
     {
-      "id": "neg_002_stuck_low_on_clock",
       "description": "Forces the divider state low on each clock instead of toggling.",
+      "id": "neg_002_stuck_low_on_clock",
       "path": "negative_variants/neg_002_stuck_low_on_clock/divide_by_two_toggle.va"
     },
     {
-      "id": "neg_003_starts_high",
       "description": "Starts the divide-by-two state high rather than low.",
+      "id": "neg_003_starts_high",
       "path": "negative_variants/neg_003_starts_high/divide_by_two_toggle.va"
     },
     {
-      "id": "neg_004_no_toggle",
       "description": "Forces the state high on each clock instead of toggling.",
+      "id": "neg_004_no_toggle",
       "path": "negative_variants/neg_004_no_toggle/divide_by_two_toggle.va"
+    },
+    {
+      "description": "Divide By Two Toggle: scales the metric output, preserving the main path while failing measurement checks.",
+      "id": "neg_005_metric_scale_low",
+      "path": "negative_variants/neg_005_metric_scale_low/divide_by_two_toggle.va"
     }
   ]
 }

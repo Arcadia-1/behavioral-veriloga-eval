@@ -1,24 +1,31 @@
 {
+  "negative_count": 5,
+  "policy": "five_partial_pass_near_miss_negatives_per_task",
   "variants": [
     {
-      "id": "neg_001_zero",
       "description": "Drives zero output and therefore fails the stable waveform contract.",
+      "id": "neg_001_zero",
       "path": "negative_variants/neg_001_zero/cyclic_decoder_12bit.va"
     },
     {
-      "id": "neg_002_half_output_scale",
       "description": "Compresses the decoded output by half.",
+      "id": "neg_002_half_output_scale",
       "path": "negative_variants/neg_002_half_output_scale/cyclic_decoder_12bit.va"
     },
     {
-      "id": "neg_003_reversed_bit_weights",
       "description": "Reverses LSB/MSB bit weights.",
+      "id": "neg_003_reversed_bit_weights",
       "path": "negative_variants/neg_003_reversed_bit_weights/cyclic_decoder_12bit.va"
     },
     {
-      "id": "neg_004_missing_midscale_offset",
       "description": "Omits the -0.5 midscale offset.",
+      "id": "neg_004_missing_midscale_offset",
       "path": "negative_variants/neg_004_missing_midscale_offset/cyclic_decoder_12bit.va"
+    },
+    {
+      "description": "Cyclic Decoder 12bit: scales the metric output, preserving the main path while failing measurement checks.",
+      "id": "neg_005_metric_scale_low",
+      "path": "negative_variants/neg_005_metric_scale_low/cyclic_decoder_12bit.va"
     }
   ]
 }

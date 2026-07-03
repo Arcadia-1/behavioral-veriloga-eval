@@ -1,35 +1,37 @@
 {
-  "status": "concrete_near_miss_negatives",
   "cases": [
     {
-      "id": "neg_001_zero_code",
       "artifact": "neg_001_zero_code/edge_interval_tdc_8b.va",
-      "mutation": "never reports interval",
-      "expected_status": "FAIL_SIM_CORRECTNESS"
+      "expected_status": "FAIL_SIM_CORRECTNESS",
+      "id": "neg_001_zero_code",
+      "mutation": "never reports interval"
     },
     {
-      "id": "neg_002_off_by_one",
       "artifact": "neg_002_off_by_one/edge_interval_tdc_8b.va",
-      "mutation": "adds one count",
-      "expected_status": "FAIL_SIM_CORRECTNESS"
+      "expected_status": "FAIL_SIM_CORRECTNESS",
+      "id": "neg_002_off_by_one",
+      "mutation": "adds one count"
     },
     {
-      "id": "neg_003_no_valid",
       "artifact": "neg_003_no_valid/edge_interval_tdc_8b.va",
-      "mutation": "does not assert valid",
-      "expected_status": "FAIL_SIM_CORRECTNESS"
+      "expected_status": "FAIL_SIM_CORRECTNESS",
+      "id": "neg_003_no_valid",
+      "mutation": "does not assert valid"
     },
     {
-      "id": "neg_004_half_scale",
       "artifact": "neg_004_half_scale/edge_interval_tdc_8b.va",
-      "mutation": "uses 2 ns LSB",
-      "expected_status": "FAIL_SIM_CORRECTNESS"
+      "expected_status": "FAIL_SIM_CORRECTNESS",
+      "id": "neg_004_half_scale",
+      "mutation": "uses 2 ns LSB"
     },
     {
-      "id": "neg_005_stop_only",
       "artifact": "neg_005_stop_only/edge_interval_tdc_8b.va",
-      "mutation": "measures from time zero",
-      "expected_status": "FAIL_SIM_CORRECTNESS"
+      "expected_status": "FAIL_SIM_CORRECTNESS",
+      "id": "neg_005_stop_only",
+      "mutation": "measures from time zero"
     }
-  ]
+  ],
+  "negative_count": 5,
+  "policy": "five_partial_pass_near_miss_negatives_per_task",
+  "status": "concrete_near_miss_negatives"
 }

@@ -1,24 +1,31 @@
 {
+  "negative_count": 5,
+  "policy": "five_partial_pass_near_miss_negatives_per_task",
   "variants": [
     {
-      "id": "neg_001_zero",
       "description": "Keeps the output at its trivial zero behavior and therefore fails the stable waveform contract.",
+      "id": "neg_001_zero",
       "path": "negative_variants/neg_001_zero/deadband_diffamp.va"
     },
     {
-      "id": "neg_002_no_leak",
       "description": "Drops the required leakage offset inside and outside the deadband.",
+      "id": "neg_002_no_leak",
       "path": "negative_variants/neg_002_no_leak/deadband_diffamp.va"
     },
     {
-      "id": "neg_003_symmetric_gain",
       "description": "Uses the low-side gain for both polarities.",
+      "id": "neg_003_symmetric_gain",
       "path": "negative_variants/neg_003_symmetric_gain/deadband_diffamp.va"
     },
     {
-      "id": "neg_004_inverted_diff",
       "description": "Computes the differential input with reversed polarity.",
+      "id": "neg_004_inverted_diff",
       "path": "negative_variants/neg_004_inverted_diff/deadband_diffamp.va"
+    },
+    {
+      "description": "Deadband Diffamp: scales the metric output, preserving the main path while failing measurement checks.",
+      "id": "neg_005_metric_scale_low",
+      "path": "negative_variants/neg_005_metric_scale_low/deadband_diffamp.va"
     }
   ]
 }

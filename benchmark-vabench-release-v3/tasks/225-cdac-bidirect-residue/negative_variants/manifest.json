@@ -1,24 +1,31 @@
 {
+  "negative_count": 5,
+  "policy": "five_partial_pass_near_miss_negatives_per_task",
   "variants": [
     {
-      "id": "neg_001_zero",
       "description": "Drives zero output and therefore fails the stable waveform contract.",
+      "id": "neg_001_zero",
       "path": "negative_variants/neg_001_zero/cdac_bidirect_residue.va"
     },
     {
-      "id": "neg_002_wrong_msb_sign",
       "description": "Subtracts the dctrl7 half-scale residue step instead of adding it.",
+      "id": "neg_002_wrong_msb_sign",
       "path": "negative_variants/neg_002_wrong_msb_sign/cdac_bidirect_residue.va"
     },
     {
-      "id": "neg_003_wrong_dctrl6_weight",
       "description": "Uses a half-scale dctrl6 subtraction instead of quarter-scale.",
+      "id": "neg_003_wrong_dctrl6_weight",
       "path": "negative_variants/neg_003_wrong_dctrl6_weight/cdac_bidirect_residue.va"
     },
     {
-      "id": "neg_004_half_output",
       "description": "Drives the CDAC residue output at half amplitude.",
+      "id": "neg_004_half_output",
       "path": "negative_variants/neg_004_half_output/cdac_bidirect_residue.va"
+    },
+    {
+      "description": "CDAC Bidirect Residue: scales the metric output, preserving the main path while failing measurement checks.",
+      "id": "neg_005_metric_scale_low",
+      "path": "negative_variants/neg_005_metric_scale_low/cdac_bidirect_residue.va"
     }
   ]
 }

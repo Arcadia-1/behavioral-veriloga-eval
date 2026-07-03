@@ -1,22 +1,29 @@
 [
   {
     "id": "neg_001_zero",
-    "target": "clk_burst_gen.va",
-    "intent": "zero output stub"
+    "intent": "zero output stub",
+    "target": "clk_burst_gen.va"
   },
   {
     "id": "neg_002_pass_all_cycles",
-    "target": "clk_burst_gen.va",
-    "intent": "passes every clock cycle"
+    "intent": "passes every clock cycle",
+    "target": "clk_burst_gen.va"
   },
   {
     "id": "neg_003_one_cycle_burst",
-    "target": "clk_burst_gen.va",
-    "intent": "passes only one cycle per frame"
+    "intent": "passes only one cycle per frame",
+    "target": "clk_burst_gen.va"
   },
   {
     "id": "neg_004_wrong_div4",
-    "target": "clk_burst_gen.va",
-    "intent": "uses the wrong repeat frame"
+    "intent": "uses the wrong repeat frame",
+    "target": "clk_burst_gen.va"
+  },
+  {
+    "files": [
+      "neg_005_metric_scale_low/clk_burst_gen.va"
+    ],
+    "id": "neg_005_metric_scale_low",
+    "why_wrong": "Burst Clock Source: scales the metric output, preserving the main path while failing measurement checks."
   }
 ]

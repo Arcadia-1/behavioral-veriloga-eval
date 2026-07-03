@@ -1,24 +1,31 @@
 {
+  "negative_count": 5,
+  "policy": "five_partial_pass_near_miss_negatives_per_task",
   "variants": [
     {
-      "id": "neg_001_zero",
       "description": "Drives zero output and therefore fails the stable waveform contract.",
+      "id": "neg_001_zero",
       "path": "negative_variants/neg_001_zero/sar_comparator_reset_high.va"
     },
     {
-      "id": "neg_002_swap_decision_outputs",
       "description": "Swaps comparator decision polarity.",
+      "id": "neg_002_swap_decision_outputs",
       "path": "negative_variants/neg_002_swap_decision_outputs/sar_comparator_reset_high.va"
     },
     {
-      "id": "neg_003_no_reset_high",
       "description": "Does not reset comparator outputs high on falling cmpck.",
+      "id": "neg_003_no_reset_high",
       "path": "negative_variants/neg_003_no_reset_high/sar_comparator_reset_high.va"
     },
     {
-      "id": "neg_004_half_output",
       "description": "Drives comparator logic highs at half vdd.",
+      "id": "neg_004_half_output",
       "path": "negative_variants/neg_004_half_output/sar_comparator_reset_high.va"
+    },
+    {
+      "description": "SAR Comparator Reset High: scales the metric output, preserving the main path while failing measurement checks.",
+      "id": "neg_005_metric_scale_low",
+      "path": "negative_variants/neg_005_metric_scale_low/sar_comparator_reset_high.va"
     }
   ]
 }

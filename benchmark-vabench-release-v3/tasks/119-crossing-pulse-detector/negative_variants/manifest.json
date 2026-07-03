@@ -1,24 +1,31 @@
 {
+  "negative_count": 5,
+  "policy": "five_partial_pass_near_miss_negatives_per_task",
   "variants": [
     {
-      "id": "neg_001_zero",
       "description": "Existing concrete negative.",
+      "id": "neg_001_zero",
       "path": "negative_variants/neg_001_zero/source_crossing_pulse_detector.va"
     },
     {
-      "id": "neg_002_rising_only",
       "description": "Triggers only on rising crossings, missing falling crossings.",
+      "id": "neg_002_rising_only",
       "path": "negative_variants/neg_002_rising_only/source_crossing_pulse_detector.va"
     },
     {
-      "id": "neg_003_short_pulse",
       "description": "Uses a pulse width that is too short.",
+      "id": "neg_003_short_pulse",
       "path": "negative_variants/neg_003_short_pulse/source_crossing_pulse_detector.va"
     },
     {
-      "id": "neg_004_no_delay",
       "description": "Latches high after the first crossing instead of producing bounded pulses.",
+      "id": "neg_004_no_delay",
       "path": "negative_variants/neg_004_no_delay/source_crossing_pulse_detector.va"
+    },
+    {
+      "description": "Crossing Pulse Detector: scales the metric output, preserving the main path while failing measurement checks.",
+      "id": "neg_005_metric_scale_low",
+      "path": "negative_variants/neg_005_metric_scale_low/source_crossing_pulse_detector.va"
     }
   ]
 }

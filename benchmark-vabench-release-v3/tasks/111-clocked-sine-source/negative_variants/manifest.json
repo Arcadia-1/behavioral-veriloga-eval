@@ -1,25 +1,35 @@
 {
+  "negative_count": 5,
+  "policy": "five_partial_pass_near_miss_negatives_per_task",
   "status": "behavioral_negatives_pending_recertification",
   "variants": [
     {
-      "id": "neg_001_zero",
       "description": "Drives both stimulus outputs to zero.",
+      "id": "neg_001_zero",
       "path": "negative_variants/neg_001_zero/vin_src.va"
     },
     {
-      "id": "neg_002_static_common_mode",
       "description": "Holds both outputs at common mode, so the composed gain flow sees no input signal.",
+      "id": "neg_002_static_common_mode",
       "path": "negative_variants/neg_002_static_common_mode/vin_src.va"
     },
     {
-      "id": "neg_003_common_mode_sine",
       "description": "Drives both outputs to the wrong high common-mode level with no differential stimulus.",
+      "id": "neg_003_common_mode_sine",
       "path": "negative_variants/neg_003_common_mode_sine/vin_src.va"
     },
     {
-      "id": "neg_004_reset_stuck",
       "description": "Never updates after reset release.",
+      "id": "neg_004_reset_stuck",
       "path": "negative_variants/neg_004_reset_stuck/vin_src.va"
+    },
+    {
+      "description": "Clocked Sine Source: preserves clocked sampling and deterministic noise but attenuates the sine stimulus too far.",
+      "id": "neg_005_metric_scale_low",
+      "files": [
+        "negative_variants/neg_005_metric_scale_low/vin_src.va",
+        "negative_variants/neg_005_metric_scale_low/gain_amp_fixed.va"
+      ]
     }
   ]
 }

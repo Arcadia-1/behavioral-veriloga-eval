@@ -1,24 +1,31 @@
 {
+  "negative_count": 5,
+  "policy": "five_partial_pass_near_miss_negatives_per_task",
   "variants": [
     {
-      "id": "neg_001_zero",
       "description": "Drives zero output and therefore fails the stable waveform contract.",
+      "id": "neg_001_zero",
       "path": "negative_variants/neg_001_zero/sync_8b_dffs_v2.va"
     },
     {
-      "id": "neg_002_wrong_final_stage_source",
       "description": "Forces the most delayed synchronized output bit low.",
+      "id": "neg_002_wrong_final_stage_source",
       "path": "negative_variants/neg_002_wrong_final_stage_source/sync_8b_dffs_v2.va"
     },
     {
-      "id": "neg_003_omit_do4_capture",
       "description": "Forces output bit do4 low regardless of the synchronized pipeline state.",
+      "id": "neg_003_omit_do4_capture",
       "path": "negative_variants/neg_003_omit_do4_capture/sync_8b_dffs_v2.va"
     },
     {
-      "id": "neg_004_invert_do8",
       "description": "Inverts the most delayed synchronized output bit.",
+      "id": "neg_004_invert_do8",
       "path": "negative_variants/neg_004_invert_do8/sync_8b_dffs_v2.va"
+    },
+    {
+      "description": "Sync 8b DFFs V2: scales the metric output, preserving the main path while failing measurement checks.",
+      "id": "neg_005_metric_scale_low",
+      "path": "negative_variants/neg_005_metric_scale_low/sync_8b_dffs_v2.va"
     }
   ]
 }

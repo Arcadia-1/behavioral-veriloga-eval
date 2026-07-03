@@ -1,24 +1,31 @@
 {
+  "negative_count": 5,
+  "policy": "five_partial_pass_near_miss_negatives_per_task",
   "variants": [
     {
-      "id": "neg_001_zero",
       "description": "Drives zero output and therefore fails the stable waveform contract.",
+      "id": "neg_001_zero",
       "path": "negative_variants/neg_001_zero/dac4bit_small_swing.va"
     },
     {
-      "id": "neg_002_unipolar_range",
       "description": "Maps code to 0..vref instead of the required bipolar small-swing range.",
+      "id": "neg_002_unipolar_range",
       "path": "negative_variants/neg_002_unipolar_range/dac4bit_small_swing.va"
     },
     {
-      "id": "neg_003_swapped_bit_weights",
       "description": "Swaps MSB/LSB weights so endpoint and intermediate codes decode incorrectly.",
+      "id": "neg_003_swapped_bit_weights",
       "path": "negative_variants/neg_003_swapped_bit_weights/dac4bit_small_swing.va"
     },
     {
-      "id": "neg_004_wrong_threshold",
       "description": "Uses a threshold above the stimulus high level so all input bits are missed.",
+      "id": "neg_004_wrong_threshold",
       "path": "negative_variants/neg_004_wrong_threshold/dac4bit_small_swing.va"
+    },
+    {
+      "description": "DAC4bit Small Swing: scales the metric output, preserving the main path while failing measurement checks.",
+      "id": "neg_005_metric_scale_low",
+      "path": "negative_variants/neg_005_metric_scale_low/dac4bit_small_swing.va"
     }
   ]
 }

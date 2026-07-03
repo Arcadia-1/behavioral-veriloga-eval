@@ -37,34 +37,19 @@ analog begin
     @(initial_step) begin
         vout_val = 0;
         code_val = 0;
-        $strobe("[dac_weighted_8b] INIT | vdd=%.3gV | total_sum=255", vdd);
     end
 
-    // Explicit event-triggered accumulation avoids simulator-specific analog
-    // loop/index handling and recomputes the DAC output whenever a code bit
-    // crosses its voltage-coded logic threshold.
-    @(initial_step
-      or cross(V(DIN7) - vth, +1) or cross(V(DIN7) - vth, -1)
-      or cross(V(DIN6) - vth, +1) or cross(V(DIN6) - vth, -1)
-      or cross(V(DIN5) - vth, +1) or cross(V(DIN5) - vth, -1)
-      or cross(V(DIN4) - vth, +1) or cross(V(DIN4) - vth, -1)
-      or cross(V(DIN3) - vth, +1) or cross(V(DIN3) - vth, -1)
-      or cross(V(DIN2) - vth, +1) or cross(V(DIN2) - vth, -1)
-      or cross(V(DIN1) - vth, +1) or cross(V(DIN1) - vth, -1)
-      or cross(V(DIN0) - vth, +1) or cross(V(DIN0) - vth, -1)) begin
-        code_val = 0.0;
-        if (V(DIN7) > vth) code_val = code_val + 128.0;
-        if (V(DIN6) > vth) code_val = code_val + 64.0;
-        if (V(DIN5) > vth) code_val = code_val + 32.0;
-        if (V(DIN4) > vth) code_val = code_val + 16.0;
-        if (V(DIN3) > vth) code_val = code_val + 8.0;
-        if (V(DIN2) > vth) code_val = code_val + 4.0;
-        if (V(DIN1) > vth) code_val = code_val + 2.0;
-        if (V(DIN0) > vth) code_val = code_val + 1.0;
-        vout_val = code_val / 255.0 * vdd;
-    end
-
-    V(VOUT) <+ transition(vout_val, 0);
+    code_val = 0.0;
+    if (V(DIN7) > vth) code_val = code_val + 128.0;
+    if (V(DIN6) > vth) code_val = code_val + 64.0;
+    if (V(DIN5) > vth) code_val = code_val + 32.0;
+    if (V(DIN4) > vth) code_val = code_val + 16.0;
+    if (V(DIN3) > vth) code_val = code_val + 8.0;
+    if (V(DIN2) > vth) code_val = code_val + 4.0;
+    if (V(DIN1) > vth) code_val = code_val + 2.0;
+    if (V(DIN0) > vth) code_val = code_val + 1.0;
+    vout_val = code_val / 255.0 * vdd;
+    V(VOUT) <+ vout_val;
 end
 
 endmodule

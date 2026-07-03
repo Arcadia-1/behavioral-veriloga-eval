@@ -1,24 +1,31 @@
 {
+  "negative_count": 5,
+  "policy": "five_partial_pass_near_miss_negatives_per_task",
   "variants": [
     {
-      "id": "neg_001_zero",
       "description": "Drives zero output and therefore fails the stable waveform contract.",
+      "id": "neg_001_zero",
       "path": "negative_variants/neg_001_zero/flash_adc_threshold_taps.va"
     },
     {
-      "id": "neg_002_missing_top_tap",
       "description": "Forces the top threshold tap low.",
+      "id": "neg_002_missing_top_tap",
       "path": "negative_variants/neg_002_missing_top_tap/flash_adc_threshold_taps.va"
     },
     {
-      "id": "neg_003_inverted_outputs",
       "description": "Inverts all thermometer output polarities.",
+      "id": "neg_003_inverted_outputs",
       "path": "negative_variants/neg_003_inverted_outputs/flash_adc_threshold_taps.va"
     },
     {
-      "id": "neg_004_half_high_level",
       "description": "Uses half high level for asserted thermometer outputs.",
+      "id": "neg_004_half_high_level",
       "path": "negative_variants/neg_004_half_high_level/flash_adc_threshold_taps.va"
+    },
+    {
+      "description": "Flash ADC Threshold Taps: scales the metric output, preserving the main path while failing measurement checks.",
+      "id": "neg_005_metric_scale_low",
+      "path": "negative_variants/neg_005_metric_scale_low/flash_adc_threshold_taps.va"
     }
   ]
 }

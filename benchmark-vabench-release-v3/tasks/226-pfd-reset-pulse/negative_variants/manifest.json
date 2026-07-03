@@ -1,24 +1,31 @@
 {
+  "negative_count": 5,
+  "policy": "five_partial_pass_near_miss_negatives_per_task",
   "variants": [
     {
-      "id": "neg_001_zero",
       "description": "Drives zero output and therefore fails the stable waveform contract.",
+      "id": "neg_001_zero",
       "path": "negative_variants/neg_001_zero/pfd_reset_pulse.va"
     },
     {
-      "id": "neg_002_no_reset_delay",
       "description": "Drives the down pulse at half logic amplitude.",
+      "id": "neg_002_no_reset_delay",
       "path": "negative_variants/neg_002_no_reset_delay/pfd_reset_pulse.va"
     },
     {
-      "id": "neg_003_ub_noninverted",
       "description": "Drives ub as an active-high up output instead of active-low.",
+      "id": "neg_003_ub_noninverted",
       "path": "negative_variants/neg_003_ub_noninverted/pfd_reset_pulse.va"
     },
     {
-      "id": "neg_004_no_down_reset_request",
       "description": "Does not schedule reset when b arrives after up.",
+      "id": "neg_004_no_down_reset_request",
       "path": "negative_variants/neg_004_no_down_reset_request/pfd_reset_pulse.va"
+    },
+    {
+      "description": "PFD Reset Pulse: scales the metric output, preserving the main path while failing measurement checks.",
+      "id": "neg_005_metric_scale_low",
+      "path": "negative_variants/neg_005_metric_scale_low/pfd_reset_pulse.va"
     }
   ]
 }

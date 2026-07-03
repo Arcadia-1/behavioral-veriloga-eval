@@ -1,24 +1,31 @@
 {
+  "negative_count": 5,
+  "policy": "five_partial_pass_near_miss_negatives_per_task",
   "variants": [
     {
-      "id": "neg_001_zero",
       "description": "Existing concrete negative.",
+      "id": "neg_001_zero",
       "path": "negative_variants/neg_001_zero/clocked_sar_comparator.va"
     },
     {
-      "id": "neg_002_never_resets_high",
       "description": "Reset phase incorrectly drives both outputs low instead of high.",
+      "id": "neg_002_never_resets_high",
       "path": "negative_variants/neg_002_never_resets_high/clocked_sar_comparator.va"
     },
     {
-      "id": "neg_003_swapped_decision",
       "description": "Swaps positive and negative comparator decisions.",
+      "id": "neg_003_swapped_decision",
       "path": "negative_variants/neg_003_swapped_decision/clocked_sar_comparator.va"
     },
     {
-      "id": "neg_004_no_equal_both_high",
       "description": "Drives comparator outputs at half amplitude, violating voltage-coded high levels.",
+      "id": "neg_004_no_equal_both_high",
       "path": "negative_variants/neg_004_no_equal_both_high/clocked_sar_comparator.va"
+    },
+    {
+      "description": "Clocked SAR Comparator: scales the metric output, preserving the main path while failing measurement checks.",
+      "id": "neg_005_metric_scale_low",
+      "path": "negative_variants/neg_005_metric_scale_low/clocked_sar_comparator.va"
     }
   ]
 }

@@ -1,35 +1,37 @@
 {
-  "status": "concrete_near_miss_negatives",
   "cases": [
     {
-      "id": "neg_001_threshold_too_wide",
       "artifact": "neg_001_threshold_too_wide/pipeline_stage.va",
-      "mutation": "Uses +/-VREF/3 decision thresholds instead of +/-VREF/4.",
-      "expected_status": "FAIL_SIM_CORRECTNESS"
+      "expected_status": "FAIL_SIM_CORRECTNESS",
+      "id": "neg_001_threshold_too_wide",
+      "mutation": "Uses +/-VREF/3 decision thresholds instead of +/-VREF/4."
     },
     {
-      "id": "neg_002_slow_output_edges",
       "artifact": "neg_002_slow_output_edges/pipeline_stage.va",
-      "mutation": "Uses a 50 ns output transition and also suppresses the upper-region D1 assertion.",
-      "expected_status": "FAIL_SIM_CORRECTNESS"
+      "expected_status": "FAIL_SIM_CORRECTNESS",
+      "id": "neg_002_slow_output_edges",
+      "mutation": "Uses a 50 ns output transition and also suppresses the upper-region D1 assertion."
     },
     {
-      "id": "neg_003_residue_feedback_sign_swapped",
       "artifact": "neg_003_residue_feedback_sign_swapped/pipeline_stage.va",
-      "mutation": "Applies the wrong residue feedback sign in the upper and lower regions.",
-      "expected_status": "FAIL_SIM_CORRECTNESS"
+      "expected_status": "FAIL_SIM_CORRECTNESS",
+      "id": "neg_003_residue_feedback_sign_swapped",
+      "mutation": "Applies the wrong residue feedback sign in the upper and lower regions."
     },
     {
-      "id": "neg_004_middle_code_wrong",
       "artifact": "neg_004_middle_code_wrong/pipeline_stage.va",
-      "mutation": "Drives middle-region D0 low instead of high.",
-      "expected_status": "FAIL_SIM_CORRECTNESS"
+      "expected_status": "FAIL_SIM_CORRECTNESS",
+      "id": "neg_004_middle_code_wrong",
+      "mutation": "Drives middle-region D0 low instead of high."
     },
     {
-      "id": "neg_005_residue_gain_low",
       "artifact": "neg_005_residue_gain_low/pipeline_stage.va",
-      "mutation": "Uses 1.5x residue gain instead of 2x.",
-      "expected_status": "FAIL_SIM_CORRECTNESS"
+      "expected_status": "FAIL_SIM_CORRECTNESS",
+      "id": "neg_005_residue_gain_low",
+      "mutation": "Uses 1.5x residue gain instead of 2x."
     }
-  ]
+  ],
+  "negative_count": 5,
+  "policy": "five_partial_pass_near_miss_negatives_per_task",
+  "status": "concrete_near_miss_negatives"
 }

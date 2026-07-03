@@ -1,24 +1,31 @@
 {
+  "negative_count": 5,
+  "policy": "five_partial_pass_near_miss_negatives_per_task",
   "variants": [
     {
-      "id": "neg_001_zero",
       "description": "Drives zero output and therefore fails the stable waveform contract.",
+      "id": "neg_001_zero",
       "path": "negative_variants/neg_001_zero/limiter_rails.va"
     },
     {
-      "id": "neg_002_ignores_rail_offsets",
       "description": "Clamps directly to vdd and vss rather than using vmax/vmin offsets.",
+      "id": "neg_002_ignores_rail_offsets",
       "path": "negative_variants/neg_002_ignores_rail_offsets/limiter_rails.va"
     },
     {
-      "id": "neg_003_swapped_offsets",
       "description": "Uses vmin for the upper headroom and vmax for the lower headroom.",
+      "id": "neg_003_swapped_offsets",
       "path": "negative_variants/neg_003_swapped_offsets/limiter_rails.va"
     },
     {
-      "id": "neg_004_no_lower_limit",
       "description": "Omits the lower limiting branch.",
+      "id": "neg_004_no_lower_limit",
       "path": "negative_variants/neg_004_no_lower_limit/limiter_rails.va"
+    },
+    {
+      "description": "Limiter Rails: scales the metric output, preserving the main path while failing measurement checks.",
+      "id": "neg_005_metric_scale_low",
+      "path": "negative_variants/neg_005_metric_scale_low/limiter_rails.va"
     }
   ]
 }

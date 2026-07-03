@@ -50,7 +50,7 @@ analog begin
         y = 0.45;
         metricv = 0.65;
     end
-    V(out) <+ transition(y, 0, tr, tr);
+    V(out) <+ y;
     V(metric) <+ transition(metricv, 0, tr, tr);
 end
 endmodule

@@ -1,24 +1,31 @@
 {
+  "negative_count": 5,
+  "policy": "five_partial_pass_near_miss_negatives_per_task",
   "variants": [
     {
-      "id": "neg_001_zero",
       "description": "Keeps the output at its trivial zero behavior and therefore fails the stable waveform contract.",
+      "id": "neg_001_zero",
       "path": "negative_variants/neg_001_zero/cal4bit_modulo.va"
     },
     {
-      "id": "neg_002_rounds_instead_of_floor",
       "description": "Rounds the analog input before encoding instead of flooring it.",
+      "id": "neg_002_rounds_instead_of_floor",
       "path": "negative_variants/neg_002_rounds_instead_of_floor/cal4bit_modulo.va"
     },
     {
-      "id": "neg_003_reverse_bit_order",
       "description": "Drives the four encoded bits in reverse order.",
+      "id": "neg_003_reverse_bit_order",
       "path": "negative_variants/neg_003_reverse_bit_order/cal4bit_modulo.va"
     },
     {
-      "id": "neg_004_wraps_instead_of_clamping",
       "description": "Wraps large input values modulo 16 instead of clamping to 15.",
+      "id": "neg_004_wraps_instead_of_clamping",
       "path": "negative_variants/neg_004_wraps_instead_of_clamping/cal4bit_modulo.va"
+    },
+    {
+      "description": "CAL4bit Modulo: scales the metric output, preserving the main path while failing measurement checks.",
+      "id": "neg_005_metric_scale_low",
+      "path": "negative_variants/neg_005_metric_scale_low/cal4bit_modulo.va"
     }
   ]
 }

@@ -1,28 +1,30 @@
 {
+  "negative_count": 5,
+  "policy": "five_partial_pass_near_miss_negatives_per_task",
   "variants": [
     {
-      "id": "neg_001_zero",
       "description": "Holds the clock output at zero instead of generating edges.",
+      "id": "neg_001_zero",
       "path": "negative_variants/neg_001_zero/deterministic_jittered_clock.va"
     },
     {
-      "id": "neg_002_no_jitter",
       "description": "Uses a constant period even when jitter is enabled.",
+      "id": "neg_002_no_jitter",
       "path": "negative_variants/neg_002_no_jitter/deterministic_jittered_clock.va"
     },
     {
-      "id": "neg_003_too_slow",
       "description": "Uses the wrong nominal period in both non-jittered and jittered modes.",
+      "id": "neg_003_too_slow",
       "path": "negative_variants/neg_003_too_slow/deterministic_jittered_clock.va"
     },
     {
-      "id": "neg_004_unbounded",
       "description": "Applies period modulation that exceeds the required bounded jitter range.",
+      "id": "neg_004_unbounded",
       "path": "negative_variants/neg_004_unbounded/deterministic_jittered_clock.va"
     },
     {
-      "id": "neg_005_ignore_seed",
       "description": "Generates a deterministic jitter pattern that ignores the seed inputs.",
+      "id": "neg_005_ignore_seed",
       "path": "negative_variants/neg_005_ignore_seed/deterministic_jittered_clock.va"
     }
   ]

@@ -14,6 +14,9 @@ from typing import Any
 
 from simulate_evas import read_task_artifact_targets, read_task_index_id, run_case
 
+NEGATIVE_LIST_KEYS = ("cases", "negative_cases", "negative_variants", "variants", "negatives")
+SLOW_GOLD_THRESHOLD_S = 20.0
+
 
 def task_number(task_dir: Path) -> int | None:
     try:
@@ -39,6 +42,28 @@ def read_json(path: Path) -> Any:
     return json.loads(path.read_text(encoding="utf-8"))
 
 
+def manifest_negative_cases(manifest_path: Path) -> list[dict[str, Any]]:
+    manifest = read_json(manifest_path)
+    if not isinstance(manifest, dict):
+        return []
+    for key in NEGATIVE_LIST_KEYS:
+        variants = manifest.get(key)
+        if not isinstance(variants, list):
+            continue
+        cases: list[dict[str, Any]] = []
+        for item in variants:
+            if not isinstance(item, dict):
+                continue
+            variant_id = str(item.get("id", "")).strip()
+            if not variant_id:
+                continue
+            case = dict(item)
+            case["id"] = variant_id
+            cases.append(case)
+        return cases
+    return []
+
+
 def read_sim_correct_task_slugs(checks_path: Path) -> set[str]:
     if not checks_path.exists():
         return set()
@@ -60,24 +85,77 @@ def read_sim_correct_task_slugs(checks_path: Path) -> set[str]:
     return slugs
 
 
-def negative_variant_ids(task_dir: Path) -> list[str]:
+def negative_variant_cases(task_dir: Path) -> list[dict[str, Any]]:
     manifest_path = task_dir / "negative_variants" / "manifest.json"
     if not manifest_path.exists():
-        return []
-    manifest = read_json(manifest_path)
-    if not isinstance(manifest, dict):
-        return []
-    for key in ("cases", "variants", "negative_variants"):
-        variants = manifest.get(key)
-        if not isinstance(variants, list):
-            continue
-        ids = [str(item.get("id", "")).strip() for item in variants if isinstance(item, dict)]
-        return [variant_id for variant_id in ids if variant_id]
-    return []
+        nested_manifests = sorted((task_dir / "negative_variants").glob("*/manifest.json"))
+        if len(nested_manifests) != 1:
+            return []
+        manifest_path = nested_manifests[0]
+    cases = manifest_negative_cases(manifest_path)
+    if manifest_path.parent != task_dir / "negative_variants":
+        prefix = manifest_path.parent.relative_to(task_dir).as_posix()
+        for case in cases:
+            case.setdefault("legacy_manifest", manifest_path.relative_to(task_dir).as_posix())
+            if "files" not in case and "path" not in case and "source" in case:
+                continue
+            if "files" not in case and "path" not in case and "source" not in case:
+                case["files"] = [f"{prefix}/{case['id']}.va"]
+    return cases
 
 
-def choose_dut(task_dir: Path, target: str, variant: str | None) -> tuple[Path | None, list[str]]:
+def negative_variant_ids(task_dir: Path) -> list[str]:
+    return [str(case["id"]) for case in negative_variant_cases(task_dir)]
+
+
+def negative_case_file(task_dir: Path, case: dict[str, Any] | None, target: str) -> Path | None:
+    if not case:
+        return None
+    raw_paths: list[str] = []
+    for key in ("files", "source", "path", "artifact", "target"):
+        value = case.get(key)
+        if isinstance(value, str):
+            raw_paths.append(value)
+        elif isinstance(value, list):
+            raw_paths.extend(str(item) for item in value if isinstance(item, str))
+    for raw_path in raw_paths:
+        path = Path(raw_path)
+        candidates = []
+        if path.is_absolute():
+            candidates.append(path)
+        else:
+            candidates.append(task_dir / path)
+            if not raw_path.startswith("negative_variants/"):
+                candidates.append(task_dir / "negative_variants" / raw_path)
+            candidates.append(task_dir / "negative_variants" / str(case["id"]) / raw_path)
+        for candidate in candidates:
+            if candidate.exists() and candidate.name == target:
+                return candidate
+    for raw_path in raw_paths:
+        path = Path(raw_path)
+        candidates = [path] if path.is_absolute() else [
+            task_dir / path,
+            task_dir / "negative_variants" / path,
+            task_dir / "negative_variants" / str(case["id"]) / path,
+        ]
+        for candidate in candidates:
+            if candidate.exists() and candidate.suffix in {".va", ".vams"}:
+                return candidate
+    return None
+
+
+def choose_dut(
+    task_dir: Path,
+    target: str,
+    variant: str | None,
+    negative_case: dict[str, Any] | None = None,
+) -> tuple[Path | None, list[str]]:
     notes: list[str] = []
+    case_file = negative_case_file(task_dir, negative_case, target)
+    if case_file is not None:
+        if case_file.name != target:
+            notes.append(f"used_negative_manifest_file={case_file.relative_to(task_dir).as_posix()}")
+        return case_file, notes
     dut_root = task_dir / "negative_variants" / variant if variant else task_dir / "solution"
     dut = dut_root / target
     if dut.exists():
@@ -144,7 +222,12 @@ def first_failure_summary(status: str, notes: list[str]) -> str | None:
     return notes[0] if notes else None
 
 
-def run_one(task_dir: Path, variant: str | None, timeout_s: int) -> dict[str, Any]:
+def run_one(
+    task_dir: Path,
+    variant: str | None,
+    timeout_s: int,
+    negative_case: dict[str, Any] | None = None,
+) -> dict[str, Any]:
     started = time.perf_counter()
     targets = read_task_artifact_targets(task_dir)
     task_index_id = read_task_index_id(task_dir) or task_dir.name
@@ -180,7 +263,7 @@ def run_one(task_dir: Path, variant: str | None, timeout_s: int) -> dict[str, An
             "wall_s": round(time.perf_counter() - started, 6),
         })
         return row
-    dut, selection_notes = choose_dut(task_dir, targets[0], variant)
+    dut, selection_notes = choose_dut(task_dir, targets[0], variant, negative_case)
     if dut is None:
         row.update({
             "status": "FAIL_NO_DUT",
@@ -232,9 +315,34 @@ def run_one(task_dir: Path, variant: str | None, timeout_s: int) -> dict[str, An
     return row
 
 
+def gold_timing_rows(rows: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    timings = []
+    for row in rows:
+        if row.get("kind") != "gold":
+            continue
+        timings.append({
+            "task_slug": row["task_slug"],
+            "task_id": row.get("task_id"),
+            "case_id": row.get("case_id"),
+            "status": row.get("status"),
+            "wall_s": row.get("wall_s", 0.0),
+        })
+    return sorted(timings, key=lambda item: (str(item["task_slug"]), str(item["case_id"])))
+
+
+def slow_gold_cases(gold_timings: list[dict[str, Any]], threshold_s: float) -> list[dict[str, Any]]:
+    return [
+        timing
+        for timing in sorted(gold_timings, key=lambda item: float(item.get("wall_s") or 0.0), reverse=True)
+        if float(timing.get("wall_s") or 0.0) > threshold_s
+    ]
+
+
 def write_markdown_summary(payload: dict[str, Any], out: Path) -> None:
     summary = payload["summary"]
     rows = payload["rows"]
+    gold_timings = payload.get("gold_timings", [])
+    slow_cases = payload.get("slow_gold_cases", [])
     lines = [
         "# v3 Staged Promotion Gold Probe",
         "",
@@ -249,9 +357,33 @@ def write_markdown_summary(payload: dict[str, Any], out: Path) -> None:
         "gold_fail",
         "expectation_fail",
         "skipped_staged_tasks",
+        "gold_wall_s_total",
+        "gold_wall_s_max",
+        "slow_gold_threshold_s",
+        "slow_gold_count",
         "wall_s",
     ):
         lines.append(f"- `{key}`: {summary[key]}")
+    if slow_cases:
+        lines.extend([
+            "",
+            "## Slow Gold Cases",
+            "",
+            "| Task | Status | Wall s |",
+            "| --- | --- | ---: |",
+        ])
+        for row in slow_cases:
+            lines.append(f"| `{row['task_slug']}` | `{row['status']}` | {row['wall_s']} |")
+    if gold_timings:
+        lines.extend([
+            "",
+            "## Gold Timing Top 20",
+            "",
+            "| Task | Status | Wall s |",
+            "| --- | --- | ---: |",
+        ])
+        for row in sorted(gold_timings, key=lambda item: float(item.get("wall_s") or 0.0), reverse=True)[:20]:
+            lines.append(f"| `{row['task_slug']}` | `{row['status']}` | {row['wall_s']} |")
     lines.extend([
         "",
         "## Rows",
@@ -282,6 +414,12 @@ def main() -> int:
     parser.add_argument("--jobs", type=int, default=1)
     parser.add_argument("--out", required=True)
     parser.add_argument(
+        "--slow-gold-threshold",
+        type=float,
+        default=SLOW_GOLD_THRESHOLD_S,
+        help="Record gold cases above this per-case wall-clock threshold as slow.",
+    )
+    parser.add_argument(
         "--md-out",
         default="",
         help="Optional Markdown summary path for staged promotion probes.",
@@ -307,7 +445,7 @@ def main() -> int:
     root = Path(args.root)
     sim_correct_slugs = read_sim_correct_task_slugs(Path(args.checks))
     task_filter = parse_task_filter(args.tasks)
-    cases: list[tuple[Path, str | None, int]] = []
+    cases: list[tuple[Path, str | None, int, dict[str, Any] | None]] = []
     skipped_tasks: list[str] = []
     for task_dir in sorted(p for p in root.iterdir() if p.is_dir()):
         number = task_number(task_dir)
@@ -320,10 +458,10 @@ def main() -> int:
             print(task_dir.name, "SKIP_STAGED", flush=True)
             continue
         if not args.negatives_only:
-            cases.append((task_dir, None, args.timeout))
+            cases.append((task_dir, None, args.timeout, None))
         if not args.gold_only:
-            for variant_id in negative_variant_ids(task_dir):
-                cases.append((task_dir, variant_id, args.timeout))
+            for negative_case in negative_variant_cases(task_dir):
+                cases.append((task_dir, str(negative_case["id"]), args.timeout, negative_case))
 
     rows: list[dict[str, Any]] = []
     started = time.perf_counter()
@@ -344,6 +482,9 @@ def main() -> int:
     rows.sort(key=lambda row: (row["task_slug"], row["kind"], str(row["variant"] or "")))
     gold_rows = [row for row in rows if row["kind"] == "gold"]
     negative_rows = [row for row in rows if row["kind"] == "negative"]
+    gold_timings = gold_timing_rows(rows)
+    slow_cases = slow_gold_cases(gold_timings, args.slow_gold_threshold)
+    gold_wall_times = [float(row.get("wall_s") or 0.0) for row in gold_timings]
     summary = {
         "scope": f"{args.start}-{args.end}",
         "cases_total": len(rows),
@@ -356,9 +497,19 @@ def main() -> int:
         "expectation_pass": sum(row["meets_expectation"] for row in rows),
         "expectation_fail": sum(not row["meets_expectation"] for row in rows),
         "skipped_staged_tasks": len(skipped_tasks),
+        "gold_wall_s_total": round(sum(gold_wall_times), 6),
+        "gold_wall_s_max": round(max(gold_wall_times), 6) if gold_wall_times else 0.0,
+        "slow_gold_threshold_s": args.slow_gold_threshold,
+        "slow_gold_count": len(slow_cases),
         "wall_s": round(time.perf_counter() - started, 6),
     }
-    payload = {"summary": summary, "rows": rows, "skipped_tasks": skipped_tasks}
+    payload = {
+        "summary": summary,
+        "rows": rows,
+        "skipped_tasks": skipped_tasks,
+        "gold_timings": gold_timings,
+        "slow_gold_cases": slow_cases,
+    }
     out = Path(args.out)
     out.parent.mkdir(parents=True, exist_ok=True)
     out.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n", encoding="utf-8")

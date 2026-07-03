@@ -1,24 +1,31 @@
 {
+  "negative_count": 5,
+  "policy": "five_partial_pass_near_miss_negatives_per_task",
   "variants": [
     {
-      "id": "neg_001_zero",
       "description": "Drives zero output and therefore fails the stable waveform contract.",
+      "id": "neg_001_zero",
       "path": "negative_variants/neg_001_zero/samplehold_rising_edge.va"
     },
     {
-      "id": "neg_002_half_scale_capture",
       "description": "Captures half of VIN on rising control edges instead of the full held voltage.",
+      "id": "neg_002_half_scale_capture",
       "path": "negative_variants/neg_002_half_scale_capture/samplehold_rising_edge.va"
     },
     {
-      "id": "neg_003_track_input",
       "description": "Tracks VIN continuously instead of holding sampled values.",
+      "id": "neg_003_track_input",
       "path": "negative_variants/neg_003_track_input/samplehold_rising_edge.va"
     },
     {
-      "id": "neg_004_wrong_threshold",
       "description": "Uses a threshold above the control high level and never captures after initialization.",
+      "id": "neg_004_wrong_threshold",
       "path": "negative_variants/neg_004_wrong_threshold/samplehold_rising_edge.va"
+    },
+    {
+      "description": "Samplehold Rising Edge: scales the metric output, preserving the main path while failing measurement checks.",
+      "id": "neg_005_metric_scale_low",
+      "path": "negative_variants/neg_005_metric_scale_low/samplehold_rising_edge.va"
     }
   ]
 }

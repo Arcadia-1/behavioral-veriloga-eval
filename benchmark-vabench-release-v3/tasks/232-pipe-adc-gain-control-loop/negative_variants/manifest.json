@@ -1,24 +1,31 @@
 {
+  "negative_count": 5,
+  "policy": "five_partial_pass_near_miss_negatives_per_task",
   "variants": [
     {
-      "id": "neg_001_zero",
       "description": "Drives zero output and therefore fails the stable waveform contract.",
+      "id": "neg_001_zero",
       "path": "negative_variants/neg_001_zero/pipe_adc_gain_control_loop.va"
     },
     {
-      "id": "neg_002_wrong_target_diff",
       "description": "Uses target difference 32 instead of 64 for gain correction.",
+      "id": "neg_002_wrong_target_diff",
       "path": "negative_variants/neg_002_wrong_target_diff/pipe_adc_gain_control_loop.va"
     },
     {
-      "id": "neg_003_no_gain_update",
       "description": "Leaves gainctrlcode unchanged during closed-loop correction.",
+      "id": "neg_003_no_gain_update",
       "path": "negative_variants/neg_003_no_gain_update/pipe_adc_gain_control_loop.va"
     },
     {
-      "id": "neg_004_half_gain_outputs",
       "description": "Drives gainctrl6 at half logic level.",
+      "id": "neg_004_half_gain_outputs",
       "path": "negative_variants/neg_004_half_gain_outputs/pipe_adc_gain_control_loop.va"
+    },
+    {
+      "description": "Pipe ADC Gain Control Loop: scales the metric output, preserving the main path while failing measurement checks.",
+      "id": "neg_005_metric_scale_low",
+      "path": "negative_variants/neg_005_metric_scale_low/pipe_adc_gain_control_loop.va"
     }
   ]
 }

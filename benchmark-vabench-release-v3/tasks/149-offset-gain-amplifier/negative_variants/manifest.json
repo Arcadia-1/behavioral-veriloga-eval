@@ -1,24 +1,31 @@
 {
+  "negative_count": 5,
+  "policy": "five_partial_pass_near_miss_negatives_per_task",
   "variants": [
     {
-      "id": "neg_001_zero",
       "description": "Drives zero output and therefore fails the stable waveform contract.",
+      "id": "neg_001_zero",
       "path": "negative_variants/neg_001_zero/offset_gain_amplifier.va"
     },
     {
-      "id": "neg_002_missing_offset",
       "description": "Uses gain without subtracting the input offset.",
+      "id": "neg_002_missing_offset",
       "path": "negative_variants/neg_002_missing_offset/offset_gain_amplifier.va"
     },
     {
-      "id": "neg_003_wrong_gain",
       "description": "Uses the wrong gain factor.",
+      "id": "neg_003_wrong_gain",
       "path": "negative_variants/neg_003_wrong_gain/offset_gain_amplifier.va"
     },
     {
-      "id": "neg_004_adds_offset",
       "description": "Adds the offset instead of subtracting it.",
+      "id": "neg_004_adds_offset",
       "path": "negative_variants/neg_004_adds_offset/offset_gain_amplifier.va"
+    },
+    {
+      "description": "Offset Gain Amplifier: scales the metric output, preserving the main path while failing measurement checks.",
+      "id": "neg_005_metric_scale_low",
+      "path": "negative_variants/neg_005_metric_scale_low/offset_gain_amplifier.va"
     }
   ]
 }

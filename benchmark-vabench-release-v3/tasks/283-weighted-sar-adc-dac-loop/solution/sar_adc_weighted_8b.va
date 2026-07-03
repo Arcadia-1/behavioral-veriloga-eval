@@ -71,7 +71,6 @@ analog begin
         cmp_decision_v = 0.0;
         conv_done_v = 0.0;
 
-        $strobe("[sar_adc_weighted_8b] INIT | vdd=%.3gV | total_sum=%g", vdd, total_sum);
     end
 
     // Start a conversion by sampling the held input when the ADC is idle.
@@ -170,28 +169,26 @@ analog begin
                     cmp_decision_v = (vsampled >= trial_vdac_state) ? vdd : 0.0;
                     conv_done_v = vdd;
                     busy = 0;
-                    $strobe("[sar_adc_weighted_8b] t=%.3f ns | vin=%.5gV | final_code=%d",
-                            $abstime*1e9, vsampled, final_code);
                 end
             end
         end
     end
 
     // DOUT[7]=MSB (weight[8]=128), DOUT[0]=LSB (weight[1]=1)
-    V(DOUT[7]) <+ transition(dout_bits[8] ? vdd : 0, 0);
-    V(DOUT[6]) <+ transition(dout_bits[7] ? vdd : 0, 0);
-    V(DOUT[5]) <+ transition(dout_bits[6] ? vdd : 0, 0);
-    V(DOUT[4]) <+ transition(dout_bits[5] ? vdd : 0, 0);
-    V(DOUT[3]) <+ transition(dout_bits[4] ? vdd : 0, 0);
-    V(DOUT[2]) <+ transition(dout_bits[3] ? vdd : 0, 0);
-    V(DOUT[1]) <+ transition(dout_bits[2] ? vdd : 0, 0);
-    V(DOUT[0]) <+ transition(dout_bits[1] ? vdd : 0, 0);
-    V(BIT_INDEX) <+ transition(bit_index_v, 0);
-    V(TRIAL_CODE_MON) <+ transition(trial_code_v, 0);
-    V(TRIAL_VDAC) <+ transition(trial_vdac_state, 0);
-    V(CMP_DECISION) <+ transition(cmp_decision_v, 0);
-    V(CONV_DONE) <+ transition(conv_done_v, 0);
-    V(VIN_SAMPLE) <+ transition(vsampled, 0);
+    V(DOUT[7]) <+ (dout_bits[8] ? vdd : 0);
+    V(DOUT[6]) <+ (dout_bits[7] ? vdd : 0);
+    V(DOUT[5]) <+ (dout_bits[6] ? vdd : 0);
+    V(DOUT[4]) <+ (dout_bits[5] ? vdd : 0);
+    V(DOUT[3]) <+ (dout_bits[4] ? vdd : 0);
+    V(DOUT[2]) <+ (dout_bits[3] ? vdd : 0);
+    V(DOUT[1]) <+ (dout_bits[2] ? vdd : 0);
+    V(DOUT[0]) <+ (dout_bits[1] ? vdd : 0);
+    V(BIT_INDEX) <+ bit_index_v;
+    V(TRIAL_CODE_MON) <+ trial_code_v;
+    V(TRIAL_VDAC) <+ trial_vdac_state;
+    V(CMP_DECISION) <+ cmp_decision_v;
+    V(CONV_DONE) <+ conv_done_v;
+    V(VIN_SAMPLE) <+ vsampled;
 end
 
 endmodule

@@ -31,9 +31,9 @@ DUT internals unless they are also exposed as DUT parameters or ports.
 
 The testbench must include the three Verilog-A files with literal
 `ahdl_include` lines, use instance-first/module-last AHDL syntax, define
-`parameters vdd=0.9 fin=100e3`, drive `clks` as a 50 MHz clock, use active-low
+`parameters vdd=0.9 fin=200e3`, drive `clks` as a 50 MHz clock, use active-low
 reset `rst_n`, drive `vin` with a full-swing sine, run
-`tran tran stop=20u maxstep=5n`, and save `vin`, `vin_sh`, `clks`, `rst_n`,
+`tran tran stop=9u maxstep=5n`, and save `vin`, `vin_sh`, `clks`, `rst_n`,
 `vout`, `dout_7` through `dout_0`, `bit_index`, `trial_code_mon`,
 `trial_vdac`, `cmp_decision`, `conv_done`, and `vin_sample`.
 

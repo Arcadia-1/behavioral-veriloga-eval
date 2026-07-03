@@ -1,24 +1,31 @@
 {
+  "negative_count": 5,
+  "policy": "five_partial_pass_near_miss_negatives_per_task",
   "variants": [
     {
-      "id": "neg_001_zero",
       "description": "Drives zero outputs and therefore fails the arithmetic/state contract.",
+      "id": "neg_001_zero",
       "path": "negative_variants/neg_001_zero/rs_latch_voltage.va"
     },
     {
-      "id": "neg_002_no_hold",
       "description": "Drops Q low whenever set is not asserted.",
+      "id": "neg_002_no_hold",
       "path": "negative_variants/neg_002_no_hold/rs_latch_voltage.va"
     },
     {
-      "id": "neg_003_swapped_set_reset",
       "description": "Treats reset as set and set as reset.",
+      "id": "neg_003_swapped_set_reset",
       "path": "negative_variants/neg_003_swapped_set_reset/rs_latch_voltage.va"
     },
     {
-      "id": "neg_004_qbar_not_complement",
       "description": "Drives qbar equal to q.",
+      "id": "neg_004_qbar_not_complement",
       "path": "negative_variants/neg_004_qbar_not_complement/rs_latch_voltage.va"
+    },
+    {
+      "description": "RS Latch Voltage: scales the metric output, preserving the main path while failing measurement checks.",
+      "id": "neg_005_metric_scale_low",
+      "path": "negative_variants/neg_005_metric_scale_low/rs_latch_voltage.va"
     }
   ]
 }

@@ -1,10 +1,44 @@
 {
   "cases": [
     {
-      "id": "neg_001_stuck_zero",
       "artifacts": "neg_001_stuck_zero/",
       "expected_status": "FAIL_SIM_CORRECTNESS",
+      "id": "neg_001_stuck_zero",
       "mutation": "All behavioral outputs are stuck at zero."
+    },
+    {
+      "description": "Weighted SAR ADC DAC Loop: shifts the decision threshold, preserving nominal behavior while failing boundary checks.",
+      "expected": "compile_but_fail_full_behavior",
+      "files": [
+        "neg_002_threshold_shifted/dac_weighted_8b.va"
+      ],
+      "id": "neg_002_threshold_shifted"
+    },
+    {
+      "description": "Weighted SAR ADC DAC Loop: uses the opposite event edge, preserving interface behavior while failing timing windows.",
+      "expected": "compile_but_fail_full_behavior",
+      "files": [
+        "neg_003_event_edge_wrong/dac_weighted_8b.va"
+      ],
+      "id": "neg_003_event_edge_wrong"
+    },
+    {
+      "description": "Weighted SAR ADC DAC Loop: uses the wrong reset polarity, preserving steady-state behavior while failing recovery checks.",
+      "expected": "compile_but_fail_full_behavior",
+      "files": [
+        "neg_004_reset_polarity_wrong/dac_weighted_8b.va"
+      ],
+      "id": "neg_004_reset_polarity_wrong"
+    },
+    {
+      "description": "Weighted SAR ADC DAC Loop: scales the metric output, preserving the main path while failing measurement checks.",
+      "expected": "compile_but_fail_full_behavior",
+      "files": [
+        "neg_005_metric_scale_low/dac_weighted_8b.va"
+      ],
+      "id": "neg_005_metric_scale_low"
     }
-  ]
+  ],
+  "negative_count": 5,
+  "policy": "five_partial_pass_near_miss_negatives_per_task"
 }

@@ -1,35 +1,37 @@
 {
-  "status": "concrete_near_miss_negatives",
   "cases": [
     {
-      "id": "neg_001_no_final_sig_recheck",
       "artifact": "neg_001_no_final_sig_recheck/debounce_latch.va",
-      "mutation": "sets out at the timer event without rechecking that sig is still high",
-      "expected_status": "FAIL_SIM_CORRECTNESS"
+      "expected_status": "FAIL_SIM_CORRECTNESS",
+      "id": "neg_001_no_final_sig_recheck",
+      "mutation": "sets out at the timer event without rechecking that sig is still high"
     },
     {
-      "id": "neg_002_immediate_set_on_rise",
       "artifact": "neg_002_immediate_set_on_rise/debounce_latch.va",
-      "mutation": "sets out immediately on the rising sig edge instead of waiting 12 ns",
-      "expected_status": "FAIL_SIM_CORRECTNESS"
+      "expected_status": "FAIL_SIM_CORRECTNESS",
+      "id": "neg_002_immediate_set_on_rise",
+      "mutation": "sets out immediately on the rising sig edge instead of waiting 12 ns"
     },
     {
-      "id": "neg_003_arms_while_reset_low",
       "artifact": "neg_003_arms_while_reset_low/debounce_latch.va",
-      "mutation": "arms qualification even while rst_n is low",
-      "expected_status": "FAIL_SIM_CORRECTNESS"
+      "expected_status": "FAIL_SIM_CORRECTNESS",
+      "id": "neg_003_arms_while_reset_low",
+      "mutation": "arms qualification even while rst_n is low"
     },
     {
-      "id": "neg_004_reset_does_not_cancel_timer",
       "artifact": "neg_004_reset_does_not_cancel_timer/debounce_latch.va",
-      "mutation": "reset clears output but leaves pending qualification armed",
-      "expected_status": "FAIL_SIM_CORRECTNESS"
+      "expected_status": "FAIL_SIM_CORRECTNESS",
+      "id": "neg_004_reset_does_not_cancel_timer",
+      "mutation": "reset clears output but leaves pending qualification armed"
     },
     {
-      "id": "neg_005_never_qualifies_high",
       "artifact": "neg_005_never_qualifies_high/debounce_latch.va",
-      "mutation": "cancels the timer event and never asserts out for a stable high input",
-      "expected_status": "FAIL_SIM_CORRECTNESS"
+      "expected_status": "FAIL_SIM_CORRECTNESS",
+      "id": "neg_005_never_qualifies_high",
+      "mutation": "cancels the timer event and never asserts out for a stable high input"
     }
-  ]
+  ],
+  "negative_count": 5,
+  "policy": "five_partial_pass_near_miss_negatives_per_task",
+  "status": "concrete_near_miss_negatives"
 }

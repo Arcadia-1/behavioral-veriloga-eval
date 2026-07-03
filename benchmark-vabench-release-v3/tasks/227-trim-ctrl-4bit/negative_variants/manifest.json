@@ -1,24 +1,31 @@
 {
+  "negative_count": 5,
+  "policy": "five_partial_pass_near_miss_negatives_per_task",
   "variants": [
     {
-      "id": "neg_001_zero",
       "description": "Drives zero output and therefore fails the stable waveform contract.",
+      "id": "neg_001_zero",
       "path": "negative_variants/neg_001_zero/trim_ctrl_4bit.va"
     },
     {
-      "id": "neg_002_floor_without_round",
       "description": "Inverts output bit dout1 of the rounded trim code.",
+      "id": "neg_002_floor_without_round",
       "path": "negative_variants/neg_002_floor_without_round/trim_ctrl_4bit.va"
     },
     {
-      "id": "neg_003_invert_msb",
       "description": "Inverts the MSB output bit.",
+      "id": "neg_003_invert_msb",
       "path": "negative_variants/neg_003_invert_msb/trim_ctrl_4bit.va"
     },
     {
-      "id": "neg_004_half_output_level",
       "description": "Drives dout0 high at half logic level.",
+      "id": "neg_004_half_output_level",
       "path": "negative_variants/neg_004_half_output_level/trim_ctrl_4bit.va"
+    },
+    {
+      "description": "Trim Ctrl 4bit: scales the metric output, preserving the main path while failing measurement checks.",
+      "id": "neg_005_metric_scale_low",
+      "path": "negative_variants/neg_005_metric_scale_low/trim_ctrl_4bit.va"
     }
   ]
 }

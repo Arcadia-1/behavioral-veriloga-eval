@@ -1,24 +1,31 @@
 {
+  "negative_count": 5,
+  "policy": "five_partial_pass_near_miss_negatives_per_task",
   "variants": [
     {
-      "id": "neg_001_zero",
       "description": "Drives zero output and therefore fails the stable waveform contract.",
+      "id": "neg_001_zero",
       "path": "negative_variants/neg_001_zero/foreground_rdac_calibrator.va"
     },
     {
-      "id": "neg_002_wrong_initial_code",
       "description": "Initializes the MSB calibration code low instead of high.",
+      "id": "neg_002_wrong_initial_code",
       "path": "negative_variants/neg_002_wrong_initial_code/foreground_rdac_calibrator.va"
     },
     {
-      "id": "neg_003_inverted_decision",
       "description": "Clears the current code bit for low d decisions instead of high d decisions.",
+      "id": "neg_003_inverted_decision",
       "path": "negative_variants/neg_003_inverted_decision/foreground_rdac_calibrator.va"
     },
     {
-      "id": "neg_004_enable_never_finishes",
       "description": "Leaves calibration enable high after all RDAC bits are visited.",
+      "id": "neg_004_enable_never_finishes",
       "path": "negative_variants/neg_004_enable_never_finishes/foreground_rdac_calibrator.va"
+    },
+    {
+      "description": "Foreground RDAC Calibrator: scales the metric output, preserving the main path while failing measurement checks.",
+      "id": "neg_005_metric_scale_low",
+      "path": "negative_variants/neg_005_metric_scale_low/foreground_rdac_calibrator.va"
     }
   ]
 }

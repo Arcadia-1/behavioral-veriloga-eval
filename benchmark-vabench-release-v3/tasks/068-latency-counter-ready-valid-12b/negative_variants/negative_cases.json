@@ -1,35 +1,72 @@
 {
-  "status": "concrete_near_miss_negatives",
   "cases": [
     {
-      "id": "neg_001_zero",
       "artifact": "neg_001_zero/ready_valid_latency_counter_12b.va",
-      "mutation": "never reports latency",
-      "expected_status": "FAIL_SIM_CORRECTNESS"
+      "expected_status": "FAIL_SIM_CORRECTNESS",
+      "id": "neg_001_zero",
+      "mutation": "never reports latency"
     },
     {
-      "id": "neg_002_off_by_one",
       "artifact": "neg_002_off_by_one/ready_valid_latency_counter_12b.va",
-      "mutation": "starts at one",
-      "expected_status": "FAIL_SIM_CORRECTNESS"
+      "expected_status": "FAIL_SIM_CORRECTNESS",
+      "id": "neg_002_off_by_one",
+      "mutation": "starts at one"
     },
     {
-      "id": "neg_003_count_ready_cycle",
       "artifact": "neg_003_count_ready_cycle/ready_valid_latency_counter_12b.va",
-      "mutation": "counts ready cycle too",
-      "expected_status": "FAIL_SIM_CORRECTNESS"
+      "expected_status": "FAIL_SIM_CORRECTNESS",
+      "id": "neg_003_count_ready_cycle",
+      "mutation": "counts ready cycle too"
     },
     {
-      "id": "neg_004_no_done",
       "artifact": "neg_004_no_done/ready_valid_latency_counter_12b.va",
-      "mutation": "does not assert done",
-      "expected_status": "FAIL_SIM_CORRECTNESS"
+      "expected_status": "FAIL_SIM_CORRECTNESS",
+      "id": "neg_004_no_done",
+      "mutation": "does not assert done"
     },
     {
-      "id": "neg_005_ignore_valid",
       "artifact": "neg_005_ignore_valid/ready_valid_latency_counter_12b.va",
-      "mutation": "starts immediately",
-      "expected_status": "FAIL_SIM_CORRECTNESS"
+      "expected_status": "FAIL_SIM_CORRECTNESS",
+      "id": "neg_005_ignore_valid",
+      "mutation": "starts immediately"
     }
-  ]
+  ],
+  "negative_cases": [
+    {
+      "files": [
+        "neg_001_zero/ready_valid_latency_counter_12b.va"
+      ],
+      "id": "neg_001_zero",
+      "why_wrong": ""
+    },
+    {
+      "files": [
+        "neg_002_off_by_one/ready_valid_latency_counter_12b.va"
+      ],
+      "id": "neg_002_off_by_one",
+      "why_wrong": ""
+    },
+    {
+      "files": [
+        "neg_003_count_ready_cycle/ready_valid_latency_counter_12b.va"
+      ],
+      "id": "neg_003_count_ready_cycle",
+      "why_wrong": ""
+    },
+    {
+      "files": [
+        "neg_004_no_done/ready_valid_latency_counter_12b.va"
+      ],
+      "id": "neg_004_no_done",
+      "why_wrong": ""
+    },
+    {
+      "files": [
+        "neg_005_ignore_valid/ready_valid_latency_counter_12b.va"
+      ],
+      "id": "neg_005_ignore_valid",
+      "why_wrong": ""
+    }
+  ],
+  "status": "concrete_near_miss_negatives"
 }

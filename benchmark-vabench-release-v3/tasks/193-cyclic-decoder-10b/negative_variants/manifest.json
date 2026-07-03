@@ -1,24 +1,31 @@
 {
+  "negative_count": 5,
+  "policy": "five_partial_pass_near_miss_negatives_per_task",
   "variants": [
     {
-      "id": "neg_001_zero",
       "description": "Drives zero output and therefore fails the stable waveform contract.",
+      "id": "neg_001_zero",
       "path": "negative_variants/neg_001_zero/cyclic_decoder_10b.va"
     },
     {
-      "id": "neg_002_wrong_denominator",
       "description": "Halves the decoded amplitude before applying the midscale offset.",
+      "id": "neg_002_wrong_denominator",
       "path": "negative_variants/neg_002_wrong_denominator/cyclic_decoder_10b.va"
     },
     {
-      "id": "neg_003_omit_dn_half_weight",
       "description": "Ignores the dn half-weight contribution for ternary-ready codes.",
+      "id": "neg_003_omit_dn_half_weight",
       "path": "negative_variants/neg_003_omit_dn_half_weight/cyclic_decoder_10b.va"
     },
     {
-      "id": "neg_004_missing_midscale_offset",
       "description": "Omits the required minus-0.5 output centering.",
+      "id": "neg_004_missing_midscale_offset",
       "path": "negative_variants/neg_004_missing_midscale_offset/cyclic_decoder_10b.va"
+    },
+    {
+      "description": "Cyclic Decoder 10b: scales the metric output, preserving the main path while failing measurement checks.",
+      "id": "neg_005_metric_scale_low",
+      "path": "negative_variants/neg_005_metric_scale_low/cyclic_decoder_10b.va"
     }
   ]
 }

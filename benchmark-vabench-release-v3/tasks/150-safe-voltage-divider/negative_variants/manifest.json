@@ -1,24 +1,31 @@
 {
+  "negative_count": 5,
+  "policy": "five_partial_pass_near_miss_negatives_per_task",
   "variants": [
     {
-      "id": "neg_001_zero",
       "description": "Drives zero output and therefore fails the stable waveform contract.",
+      "id": "neg_001_zero",
       "path": "negative_variants/neg_001_zero/safe_voltage_divider.va"
     },
     {
-      "id": "neg_002_no_safe_floor",
       "description": "Divides by the raw denominator without applying the safety floor.",
+      "id": "neg_002_no_safe_floor",
       "path": "negative_variants/neg_002_no_safe_floor/safe_voltage_divider.va"
     },
     {
-      "id": "neg_003_loses_denominator_sign",
       "description": "Uses a positive floor for both small positive and small negative denominators.",
+      "id": "neg_003_loses_denominator_sign",
       "path": "negative_variants/neg_003_loses_denominator_sign/safe_voltage_divider.va"
     },
     {
-      "id": "neg_004_missing_gain",
       "description": "Omits the gain factor.",
+      "id": "neg_004_missing_gain",
       "path": "negative_variants/neg_004_missing_gain/safe_voltage_divider.va"
+    },
+    {
+      "description": "Safe Voltage Divider: scales the metric output, preserving the main path while failing measurement checks.",
+      "id": "neg_005_metric_scale_low",
+      "path": "negative_variants/neg_005_metric_scale_low/safe_voltage_divider.va"
     }
   ]
 }

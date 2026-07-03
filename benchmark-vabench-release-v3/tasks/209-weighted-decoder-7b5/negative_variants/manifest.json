@@ -1,24 +1,31 @@
 {
+  "negative_count": 5,
+  "policy": "five_partial_pass_near_miss_negatives_per_task",
   "variants": [
     {
-      "id": "neg_001_zero",
       "description": "Drives zero output and therefore fails the stable waveform contract.",
+      "id": "neg_001_zero",
       "path": "negative_variants/neg_001_zero/weighted_decoder_7b5.va"
     },
     {
-      "id": "neg_002_wrong_denominator",
       "description": "Normalizes all weighted outputs by 256 instead of 272.",
+      "id": "neg_002_wrong_denominator",
       "path": "negative_variants/neg_002_wrong_denominator/weighted_decoder_7b5.va"
     },
     {
-      "id": "neg_003_omit_half_bit",
       "description": "Drives the 8-bit weighted output at half amplitude.",
+      "id": "neg_003_omit_half_bit",
       "path": "negative_variants/neg_003_omit_half_bit/weighted_decoder_7b5.va"
     },
     {
-      "id": "neg_004_wrong_lsb_vote",
       "description": "Inverts the 7.5-bit weighted output polarity.",
+      "id": "neg_004_wrong_lsb_vote",
       "path": "negative_variants/neg_004_wrong_lsb_vote/weighted_decoder_7b5.va"
+    },
+    {
+      "description": "Weighted Decoder 7b5: scales the metric output, preserving the main path while failing measurement checks.",
+      "id": "neg_005_metric_scale_low",
+      "path": "negative_variants/neg_005_metric_scale_low/weighted_decoder_7b5.va"
     }
   ]
 }

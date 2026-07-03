@@ -4,12 +4,9 @@ module file_metric_writer(vin,done);
     input vin; output done; electrical vin,done; parameter string filename="metric.out"; parameter real vth=0.45; parameter real tr=300p; integer fh; integer wrote;
     
     analog begin
-        V(input) <+ transition(0.0);
-        V(vin) <+ transition(0.0);
+        @(initial_step) begin
+            wrote = 0;
+        end
         V(done) <+ transition(0.0);
-        V(parameter) <+ transition(0.0);
-        V(string) <+ transition(0.0);
-        V(fh) <+ transition(0.0);
-        V(wrote) <+ transition(0.0);
     end
 endmodule

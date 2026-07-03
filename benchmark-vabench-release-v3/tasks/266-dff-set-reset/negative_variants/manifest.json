@@ -1,24 +1,31 @@
 {
+  "negative_count": 5,
+  "policy": "five_partial_pass_near_miss_negatives_per_task",
   "variants": [
     {
-      "id": "neg_001_zero",
       "description": "Drives zero output and therefore fails the stable waveform contract.",
+      "id": "neg_001_zero",
       "path": "negative_variants/neg_001_zero/dff_set_reset.va"
     },
     {
-      "id": "neg_002_active_high_async",
       "description": "Treats SET/RST controls as active-high instead of active-low.",
+      "id": "neg_002_active_high_async",
       "path": "negative_variants/neg_002_active_high_async/dff_set_reset.va"
     },
     {
-      "id": "neg_003_falling_edge_sample",
       "description": "Samples D on the falling clock edge instead of rising edge.",
+      "id": "neg_003_falling_edge_sample",
       "path": "negative_variants/neg_003_falling_edge_sample/dff_set_reset.va"
     },
     {
-      "id": "neg_004_qb_not_complement",
       "description": "Drives QB equal to Q instead of complementary.",
+      "id": "neg_004_qb_not_complement",
       "path": "negative_variants/neg_004_qb_not_complement/dff_set_reset.va"
+    },
+    {
+      "description": "DFF Set Reset: scales the metric output, preserving the main path while failing measurement checks.",
+      "id": "neg_005_metric_scale_low",
+      "path": "negative_variants/neg_005_metric_scale_low/dff_set_reset.va"
     }
   ]
 }

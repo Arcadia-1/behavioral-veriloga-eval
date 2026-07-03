@@ -1,24 +1,31 @@
 {
+  "negative_count": 5,
+  "policy": "five_partial_pass_near_miss_negatives_per_task",
   "variants": [
     {
-      "id": "neg_001_zero",
       "description": "Existing concrete negative.",
+      "id": "neg_001_zero",
       "path": "negative_variants/neg_001_zero/source_dff_reset.va"
     },
     {
-      "id": "neg_002_qbar_not_complement",
       "description": "Drives qbar equal to q.",
+      "id": "neg_002_qbar_not_complement",
       "path": "negative_variants/neg_002_qbar_not_complement/source_dff_reset.va"
     },
     {
-      "id": "neg_003_ignores_reset",
       "description": "Ignores the reset input.",
+      "id": "neg_003_ignores_reset",
       "path": "negative_variants/neg_003_ignores_reset/source_dff_reset.va"
     },
     {
-      "id": "neg_004_falling_edge_sample",
       "description": "Samples D on falling clock edges.",
+      "id": "neg_004_falling_edge_sample",
       "path": "negative_variants/neg_004_falling_edge_sample/source_dff_reset.va"
+    },
+    {
+      "description": "DFF Reset Voltage: scales the metric output, preserving the main path while failing measurement checks.",
+      "id": "neg_005_metric_scale_low",
+      "path": "negative_variants/neg_005_metric_scale_low/source_dff_reset.va"
     }
   ]
 }

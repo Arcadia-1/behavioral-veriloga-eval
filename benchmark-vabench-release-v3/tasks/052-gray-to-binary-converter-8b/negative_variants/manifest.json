@@ -1,35 +1,37 @@
 {
-  "status": "concrete_near_miss_negatives",
   "cases": [
     {
-      "id": "neg_001_identity_mapping",
       "artifact": "neg_001_identity_mapping/gray_to_bin_8b.va",
-      "mutation": "identity",
-      "expected_status": "FAIL_SIM_CORRECTNESS"
+      "expected_status": "FAIL_SIM_CORRECTNESS",
+      "id": "neg_001_identity_mapping",
+      "mutation": "identity"
     },
     {
-      "id": "neg_002_reverse_input_bits",
       "artifact": "neg_002_reverse_input_bits/gray_to_bin_8b.va",
-      "mutation": "bitrev",
-      "expected_status": "FAIL_SIM_CORRECTNESS"
+      "expected_status": "FAIL_SIM_CORRECTNESS",
+      "id": "neg_002_reverse_input_bits",
+      "mutation": "bitrev"
     },
     {
-      "id": "neg_003_invert_lsb",
       "artifact": "neg_003_invert_lsb/gray_to_bin_8b.va",
-      "mutation": "invert_lsb",
-      "expected_status": "FAIL_SIM_CORRECTNESS"
+      "expected_status": "FAIL_SIM_CORRECTNESS",
+      "id": "neg_003_invert_lsb",
+      "mutation": "invert_lsb"
     },
     {
-      "id": "neg_004_zero_msb",
       "artifact": "neg_004_zero_msb/gray_to_bin_8b.va",
-      "mutation": "zero_msb",
-      "expected_status": "FAIL_SIM_CORRECTNESS"
+      "expected_status": "FAIL_SIM_CORRECTNESS",
+      "id": "neg_004_zero_msb",
+      "mutation": "zero_msb"
     },
     {
-      "id": "neg_005_shifted_output",
       "artifact": "neg_005_shifted_output/gray_to_bin_8b.va",
-      "mutation": "shift",
-      "expected_status": "FAIL_SIM_CORRECTNESS"
+      "expected_status": "FAIL_SIM_CORRECTNESS",
+      "id": "neg_005_shifted_output",
+      "mutation": "shift"
     }
-  ]
+  ],
+  "negative_count": 5,
+  "policy": "five_partial_pass_near_miss_negatives_per_task",
+  "status": "concrete_near_miss_negatives"
 }

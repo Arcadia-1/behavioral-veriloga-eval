@@ -1,24 +1,31 @@
 {
+  "negative_count": 5,
+  "policy": "five_partial_pass_near_miss_negatives_per_task",
   "variants": [
     {
-      "id": "neg_001_zero",
       "description": "Existing concrete negative.",
+      "id": "neg_001_zero",
       "path": "negative_variants/neg_001_zero/clocked_dac_restore_7b.va"
     },
     {
-      "id": "neg_002_no_midrise_offset",
       "description": "Uses an incorrect DAC scale so restored levels are compressed.",
+      "id": "neg_002_no_midrise_offset",
       "path": "negative_variants/neg_002_no_midrise_offset/clocked_dac_restore_7b.va"
     },
     {
-      "id": "neg_003_wrong_msb_weight",
       "description": "Uses 32 instead of 64 for the MSB.",
+      "id": "neg_003_wrong_msb_weight",
       "path": "negative_variants/neg_003_wrong_msb_weight/clocked_dac_restore_7b.va"
     },
     {
-      "id": "neg_004_falling_edge_update",
       "description": "Drops the MSB contribution from the 7-bit DAC code.",
+      "id": "neg_004_falling_edge_update",
       "path": "negative_variants/neg_004_falling_edge_update/clocked_dac_restore_7b.va"
+    },
+    {
+      "description": "Clocked DAC Restore 7b: scales the metric output, preserving the main path while failing measurement checks.",
+      "id": "neg_005_metric_scale_low",
+      "path": "negative_variants/neg_005_metric_scale_low/clocked_dac_restore_7b.va"
     }
   ]
 }

@@ -1,24 +1,31 @@
 {
+  "negative_count": 5,
+  "policy": "five_partial_pass_near_miss_negatives_per_task",
   "variants": [
     {
-      "id": "neg_001_zero",
       "description": "Drives zero output and therefore fails the stable waveform contract.",
+      "id": "neg_001_zero",
       "path": "negative_variants/neg_001_zero/limiting_differential_amplifier.va"
     },
     {
-      "id": "neg_002_missing_input_offset",
       "description": "Does not subtract sigin_offset before amplification.",
+      "id": "neg_002_missing_input_offset",
       "path": "negative_variants/neg_002_missing_input_offset/limiting_differential_amplifier.va"
     },
     {
-      "id": "neg_003_no_clamp",
       "description": "Does not clamp the amplified output to the rails.",
+      "id": "neg_003_no_clamp",
       "path": "negative_variants/neg_003_no_clamp/limiting_differential_amplifier.va"
     },
     {
-      "id": "neg_004_wrong_reference",
       "description": "Centers the amplifier at zero instead of the rail midpoint.",
+      "id": "neg_004_wrong_reference",
       "path": "negative_variants/neg_004_wrong_reference/limiting_differential_amplifier.va"
+    },
+    {
+      "description": "Limiting Differential Amplifier: scales the metric output, preserving the main path while failing measurement checks.",
+      "id": "neg_005_metric_scale_low",
+      "path": "negative_variants/neg_005_metric_scale_low/limiting_differential_amplifier.va"
     }
   ]
 }

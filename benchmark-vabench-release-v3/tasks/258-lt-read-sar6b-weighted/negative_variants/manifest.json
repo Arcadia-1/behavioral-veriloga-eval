@@ -1,24 +1,31 @@
 {
+  "negative_count": 5,
+  "policy": "five_partial_pass_near_miss_negatives_per_task",
   "variants": [
     {
-      "id": "neg_001_zero",
       "description": "Drives zero output and therefore fails the stable waveform contract.",
+      "id": "neg_001_zero",
       "path": "negative_variants/neg_001_zero/lt_read_sar6b_weighted.va"
     },
     {
-      "id": "neg_002_uses_d0_weight",
       "description": "Incorrectly includes D0 as a 1/32-weighted bit although the source model ignores D0.",
+      "id": "neg_002_uses_d0_weight",
       "path": "negative_variants/neg_002_uses_d0_weight/lt_read_sar6b_weighted.va"
     },
     {
-      "id": "neg_003_unipolar_offset",
       "description": "Drops the required -vref offset and outputs a unipolar weighted sum.",
+      "id": "neg_003_unipolar_offset",
       "path": "negative_variants/neg_003_unipolar_offset/lt_read_sar6b_weighted.va"
     },
     {
-      "id": "neg_004_reversed_msb_lsb",
       "description": "Reverses D5 and D1 weights.",
+      "id": "neg_004_reversed_msb_lsb",
       "path": "negative_variants/neg_004_reversed_msb_lsb/lt_read_sar6b_weighted.va"
+    },
+    {
+      "description": "LT Read SAR6B Weighted: scales the metric output, preserving the main path while failing measurement checks.",
+      "id": "neg_005_metric_scale_low",
+      "path": "negative_variants/neg_005_metric_scale_low/lt_read_sar6b_weighted.va"
     }
   ]
 }

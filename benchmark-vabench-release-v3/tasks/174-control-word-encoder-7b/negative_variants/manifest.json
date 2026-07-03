@@ -1,24 +1,31 @@
 {
+  "negative_count": 5,
+  "policy": "five_partial_pass_near_miss_negatives_per_task",
   "variants": [
     {
-      "id": "neg_001_zero",
       "description": "Drives zero output and therefore fails the stable waveform contract.",
+      "id": "neg_001_zero",
       "path": "negative_variants/neg_001_zero/control_word_encoder_7b.va"
     },
     {
-      "id": "neg_002_shifted_bits",
       "description": "Shifts every decoded bit by one position.",
+      "id": "neg_002_shifted_bits",
       "path": "negative_variants/neg_002_shifted_bits/control_word_encoder_7b.va"
     },
     {
-      "id": "neg_003_inverted_bits",
       "description": "Inverts every output bit.",
+      "id": "neg_003_inverted_bits",
       "path": "negative_variants/neg_003_inverted_bits/control_word_encoder_7b.va"
     },
     {
-      "id": "neg_004_half_high_level",
       "description": "Uses half high level for logic one.",
+      "id": "neg_004_half_high_level",
       "path": "negative_variants/neg_004_half_high_level/control_word_encoder_7b.va"
+    },
+    {
+      "description": "Control Word Encoder 7b: scales the metric output, preserving the main path while failing measurement checks.",
+      "id": "neg_005_metric_scale_low",
+      "path": "negative_variants/neg_005_metric_scale_low/control_word_encoder_7b.va"
     }
   ]
 }

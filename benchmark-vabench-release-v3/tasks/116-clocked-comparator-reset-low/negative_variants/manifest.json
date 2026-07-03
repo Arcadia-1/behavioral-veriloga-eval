@@ -1,24 +1,31 @@
 {
+  "negative_count": 5,
+  "policy": "five_partial_pass_near_miss_negatives_per_task",
   "variants": [
     {
-      "id": "neg_001_zero",
       "description": "Existing concrete negative.",
+      "id": "neg_001_zero",
       "path": "negative_variants/neg_001_zero/clocked_comparator_reset_low.va"
     },
     {
-      "id": "neg_002_reset_high",
       "description": "Reset phase incorrectly drives both outputs high.",
+      "id": "neg_002_reset_high",
       "path": "negative_variants/neg_002_reset_high/clocked_comparator_reset_low.va"
     },
     {
-      "id": "neg_003_swapped_decision",
       "description": "Swaps positive and negative comparator outputs.",
+      "id": "neg_003_swapped_decision",
       "path": "negative_variants/neg_003_swapped_decision/clocked_comparator_reset_low.va"
     },
     {
-      "id": "neg_004_equal_outputs_high",
       "description": "Suppresses the negative output decision, so negative comparisons are missed.",
+      "id": "neg_004_equal_outputs_high",
       "path": "negative_variants/neg_004_equal_outputs_high/clocked_comparator_reset_low.va"
+    },
+    {
+      "description": "Clocked Comparator Reset Low: scales the metric output, preserving the main path while failing measurement checks.",
+      "id": "neg_005_metric_scale_low",
+      "path": "negative_variants/neg_005_metric_scale_low/clocked_comparator_reset_low.va"
     }
   ]
 }

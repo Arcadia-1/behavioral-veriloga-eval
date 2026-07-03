@@ -1,24 +1,31 @@
 {
+  "negative_count": 5,
+  "policy": "five_partial_pass_near_miss_negatives_per_task",
   "variants": [
     {
-      "id": "neg_001_zero",
       "description": "Drives zero output and therefore fails the stable waveform contract.",
+      "id": "neg_001_zero",
       "path": "negative_variants/neg_001_zero/dac_serial_accumulator.va"
     },
     {
-      "id": "neg_002_no_sample_reset",
       "description": "Does not clear the serial accumulator on the sample clock boundary.",
+      "id": "neg_002_no_sample_reset",
       "path": "negative_variants/neg_002_no_sample_reset/dac_serial_accumulator.va"
     },
     {
-      "id": "neg_003_reversed_bit_weights",
       "description": "Uses the reverse serial bit weighting order during accumulation.",
+      "id": "neg_003_reversed_bit_weights",
       "path": "negative_variants/neg_003_reversed_bit_weights/dac_serial_accumulator.va"
     },
     {
-      "id": "neg_004_unipolar_output",
       "description": "Emits unipolar accumulated state instead of the required bipolar output mapping.",
+      "id": "neg_004_unipolar_output",
       "path": "negative_variants/neg_004_unipolar_output/dac_serial_accumulator.va"
+    },
+    {
+      "description": "DAC Serial Accumulator: scales the metric output, preserving the main path while failing measurement checks.",
+      "id": "neg_005_metric_scale_low",
+      "path": "negative_variants/neg_005_metric_scale_low/dac_serial_accumulator.va"
     }
   ]
 }

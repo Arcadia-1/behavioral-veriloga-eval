@@ -1,9 +1,31 @@
 {
+  "negative_count": 5,
+  "policy": "five_partial_pass_near_miss_negatives_per_task",
   "variants": [
     {
-      "id": "neg_001_unity_gain",
       "description": "Amplifier passes the dithered input through at unity gain, so the measured output differential variation is not separated from input variation.",
+      "id": "neg_001_unity_gain",
       "path": "negative_variants/neg_001_unity_gain/"
+    },
+    {
+      "description": "Gain Extraction Flow: shifts the dither decision threshold and stages an under-gain amplifier, so the full flow still runs but misses the gain contract.",
+      "id": "neg_002_threshold_shifted",
+      "path": "negative_variants/neg_002_threshold_shifted/dither_adder.va"
+    },
+    {
+      "description": "Gain Extraction Flow: keeps the flow structure but combines an event-edge perturbation with an under-gain amplifier.",
+      "id": "neg_003_event_edge_wrong",
+      "path": "negative_variants/neg_003_event_edge_wrong/dither_adder.va"
+    },
+    {
+      "description": "Gain Extraction Flow: keeps the flow structure but combines a reset-polarity perturbation with an under-gain amplifier.",
+      "id": "neg_004_reset_polarity_wrong",
+      "path": "negative_variants/neg_004_reset_polarity_wrong/dither_adder.va"
+    },
+    {
+      "description": "Gain Extraction Flow: preserves the composed stimulus path but makes the amplifier gain too small for the extracted-gain contract.",
+      "id": "neg_005_metric_scale_low",
+      "path": "negative_variants/neg_005_metric_scale_low/dither_adder.va"
     }
   ]
 }

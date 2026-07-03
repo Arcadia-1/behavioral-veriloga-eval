@@ -1,0 +1,38 @@
+// vaBench generated partial-pass negative: metric_scale_low
+// Preserves module/interface shape while intentionally violating one hidden behavior contract.
+`include "disciplines.vams"
+
+module weighted_sar_decoder_9b(d0, d1, d2, d3, d4, d5, d6, d7, d8, aout7b, aout7b5, aout8b);
+input d0, d1, d2, d3, d4, d5, d6, d7, d8;
+output aout7b, aout7b5, aout8b;
+electrical d0, d1, d2, d3, d4, d5, d6, d7, d8, aout7b, aout7b5, aout8b;
+
+parameter real vth = 0.5;
+real b0, b1, b2, b3, b4, b5, b6, b7, b8;
+real d_lsb, y7b, y7b5, y8b;
+
+analog begin
+    b0 = (V(d0) > vth) ? 1.0 : -1.0;
+    b1 = (V(d1) > vth) ? 1.0 : -1.0;
+    b2 = (V(d2) > vth) ? 1.0 : -1.0;
+    b3 = (V(d3) > vth) ? 1.0 : -1.0;
+    b4 = (V(d4) > vth) ? 1.0 : -1.0;
+    b5 = (V(d5) > vth) ? 1.0 : -1.0;
+    b6 = (V(d6) > vth) ? 1.0 : -1.0;
+    b7 = (V(d7) > vth) ? 1.0 : -1.0;
+    b8 = (V(d8) > vth) ? 1.0 : -1.0;
+
+    if (V(d1) > vth && V(d0) > vth) d_lsb = 1.0;
+    else if (V(d1) < vth && V(d0) < vth) d_lsb = -1.0;
+    else d_lsb = 0.0;
+
+    y7b = (b1 + 2.0*b2 + 4.0*b3 + 8.0*b4 + 8.0*b5 + 16.0*b6 + 32.0*b7 + 64.0*b8) / 272.0;
+    y8b = (0.5*b0 + b1 + 2.0*b2 + 4.0*b3 + 8.0*b4 + 8.0*b5 + 16.0*b6 + 32.0*b7 + 64.0*b8) / 272.0;
+    y7b5 = (d_lsb + 2.0*b2 + 4.0*b3 + 8.0*b4 + 8.0*b5 + 16.0*b6 + 32.0*b7 + 64.0*b8) / 272.0;
+
+    V(aout7b) <+ (0.42 * (transition(y7b, 0, 10f)));
+    V(aout7b5) <+ (0.42 * (transition(y7b5, 0, 10f)));
+    V(aout8b) <+ (0.42 * (transition(y8b, 0, 10f)));
+end
+
+endmodule

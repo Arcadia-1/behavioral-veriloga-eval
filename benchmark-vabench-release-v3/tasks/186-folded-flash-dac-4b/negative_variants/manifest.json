@@ -1,24 +1,31 @@
 {
+  "negative_count": 5,
+  "policy": "five_partial_pass_near_miss_negatives_per_task",
   "variants": [
     {
-      "id": "neg_001_zero",
       "description": "Drives zero output and therefore fails the stable waveform contract.",
+      "id": "neg_001_zero",
       "path": "negative_variants/neg_001_zero/folded_flash_dac_4b.va"
     },
     {
-      "id": "neg_002_no_fold_mirror",
       "description": "Uses direct unsigned code without folding.",
+      "id": "neg_002_no_fold_mirror",
       "path": "negative_variants/neg_002_no_fold_mirror/folded_flash_dac_4b.va"
     },
     {
-      "id": "neg_003_wrong_denominator",
       "description": "Divides by 8 instead of 16.",
+      "id": "neg_003_wrong_denominator",
       "path": "negative_variants/neg_003_wrong_denominator/folded_flash_dac_4b.va"
     },
     {
-      "id": "neg_004_inverted_msb_fold",
       "description": "Uses the opposite fold branch for vd4.",
+      "id": "neg_004_inverted_msb_fold",
       "path": "negative_variants/neg_004_inverted_msb_fold/folded_flash_dac_4b.va"
+    },
+    {
+      "description": "Folded Flash DAC 4b: scales the metric output, preserving the main path while failing measurement checks.",
+      "id": "neg_005_metric_scale_low",
+      "path": "negative_variants/neg_005_metric_scale_low/folded_flash_dac_4b.va"
     }
   ]
 }

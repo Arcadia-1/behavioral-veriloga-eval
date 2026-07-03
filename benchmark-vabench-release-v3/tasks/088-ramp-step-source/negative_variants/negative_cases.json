@@ -1,22 +1,29 @@
 [
   {
     "id": "neg_001_zero",
-    "target": "bound_step_period_guard_ref.va",
-    "intent": "zero output stub"
+    "intent": "zero output stub",
+    "target": "bound_step_period_guard_ref.va"
   },
   {
     "id": "neg_002_no_wrap",
-    "target": "bound_step_period_guard_ref.va",
-    "intent": "missing periodic wrap"
+    "intent": "missing periodic wrap",
+    "target": "bound_step_period_guard_ref.va"
   },
   {
     "id": "neg_003_guard_always_low",
-    "target": "bound_step_period_guard_ref.va",
-    "intent": "missing guard pulse"
+    "intent": "missing guard pulse",
+    "target": "bound_step_period_guard_ref.va"
   },
   {
     "id": "neg_004_wrong_guard_width",
-    "target": "bound_step_period_guard_ref.va",
-    "intent": "wrong guard pulse width"
+    "intent": "wrong guard pulse width",
+    "target": "bound_step_period_guard_ref.va"
+  },
+  {
+    "files": [
+      "neg_005_metric_scale_low/bound_step_period_guard_ref.va"
+    ],
+    "id": "neg_005_metric_scale_low",
+    "why_wrong": "Ramp Step Source: scales the metric output, preserving the main path while failing measurement checks."
   }
 ]

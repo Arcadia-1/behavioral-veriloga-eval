@@ -1,24 +1,31 @@
 {
+  "negative_count": 5,
+  "policy": "five_partial_pass_near_miss_negatives_per_task",
   "variants": [
     {
-      "id": "neg_001_zero",
       "description": "Drives zero output and therefore fails the stable waveform contract.",
+      "id": "neg_001_zero",
       "path": "negative_variants/neg_001_zero/hard_voltage_clamp_behavior.va"
     },
     {
-      "id": "neg_002_no_lower_clamp",
       "description": "Passes values below the lower clamp through.",
+      "id": "neg_002_no_lower_clamp",
       "path": "negative_variants/neg_002_no_lower_clamp/hard_voltage_clamp_behavior.va"
     },
     {
-      "id": "neg_003_no_upper_clamp",
       "description": "Passes values above the upper clamp through.",
+      "id": "neg_003_no_upper_clamp",
       "path": "negative_variants/neg_003_no_upper_clamp/hard_voltage_clamp_behavior.va"
     },
     {
-      "id": "neg_004_swapped_clamp_rails",
       "description": "Uses the opposite rail for each clamp condition.",
+      "id": "neg_004_swapped_clamp_rails",
       "path": "negative_variants/neg_004_swapped_clamp_rails/hard_voltage_clamp_behavior.va"
+    },
+    {
+      "description": "Hard Voltage Clamp: scales the metric output, preserving the main path while failing measurement checks.",
+      "id": "neg_005_metric_scale_low",
+      "path": "negative_variants/neg_005_metric_scale_low/hard_voltage_clamp_behavior.va"
     }
   ]
 }

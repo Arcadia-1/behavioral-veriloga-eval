@@ -1,35 +1,37 @@
 {
-  "status": "concrete_near_miss_negatives",
   "cases": [
     {
-      "id": "neg_001_stuck_midscale",
       "artifact": "neg_001_stuck_midscale/cdac_calibration.va",
-      "mutation": "Resets correctly but ignores err and remains at 0.45 V.",
-      "expected_status": "FAIL_SIM_CORRECTNESS"
+      "expected_status": "FAIL_SIM_CORRECTNESS",
+      "id": "neg_001_stuck_midscale",
+      "mutation": "Resets correctly but ignores err and remains at 0.45 V."
     },
     {
-      "id": "neg_002_inverted_error_direction",
       "artifact": "neg_002_inverted_error_direction/cdac_calibration.va",
-      "mutation": "Uses the correct step size and clamps but decreases on high err and increases on low err.",
-      "expected_status": "FAIL_SIM_CORRECTNESS"
+      "expected_status": "FAIL_SIM_CORRECTNESS",
+      "id": "neg_002_inverted_error_direction",
+      "mutation": "Uses the correct step size and clamps but decreases on high err and increases on low err."
     },
     {
-      "id": "neg_003_wrong_step_size",
       "artifact": "neg_003_wrong_step_size/cdac_calibration.va",
-      "mutation": "Implements the right direction and clamps but uses 0.05 V steps instead of 0.06 V.",
-      "expected_status": "FAIL_SIM_CORRECTNESS"
+      "expected_status": "FAIL_SIM_CORRECTNESS",
+      "id": "neg_003_wrong_step_size",
+      "mutation": "Implements the right direction and clamps but uses 0.05 V steps instead of 0.06 V."
     },
     {
-      "id": "neg_004_wrong_reset_level",
       "artifact": "neg_004_wrong_reset_level/cdac_calibration.va",
-      "mutation": "Honors reset timing but resets trim to 0.50 V instead of the required 0.45 V.",
-      "expected_status": "FAIL_SIM_CORRECTNESS"
+      "expected_status": "FAIL_SIM_CORRECTNESS",
+      "id": "neg_004_wrong_reset_level",
+      "mutation": "Honors reset timing but resets trim to 0.50 V instead of the required 0.45 V."
     },
     {
-      "id": "neg_005_missing_lower_clamp",
       "artifact": "neg_005_missing_lower_clamp/cdac_calibration.va",
-      "mutation": "Implements reset, direction, step, and upper clamp but allows trim below 0.05 V.",
-      "expected_status": "FAIL_SIM_CORRECTNESS"
+      "expected_status": "FAIL_SIM_CORRECTNESS",
+      "id": "neg_005_missing_lower_clamp",
+      "mutation": "Implements reset, direction, step, and upper clamp but allows trim below 0.05 V."
     }
-  ]
+  ],
+  "negative_count": 5,
+  "policy": "five_partial_pass_near_miss_negatives_per_task",
+  "status": "concrete_near_miss_negatives"
 }

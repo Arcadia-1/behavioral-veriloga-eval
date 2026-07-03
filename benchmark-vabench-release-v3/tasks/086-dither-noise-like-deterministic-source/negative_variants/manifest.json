@@ -1,25 +1,32 @@
 {
+  "negative_count": 5,
+  "policy": "five_partial_pass_near_miss_negatives_per_task",
   "status": "behavioral_negatives_pending_recertification",
   "variants": [
     {
-      "id": "neg_001_zero",
       "description": "Zero output stub; fails the baseline-plus-noise source contract.",
+      "id": "neg_001_zero",
       "path": "negative_variants/neg_001_zero/noise_gen_ref.va"
     },
     {
-      "id": "neg_002_passthrough",
       "description": "Passes the input through with no sampled perturbation.",
+      "id": "neg_002_passthrough",
       "path": "negative_variants/neg_002_passthrough/noise_gen_ref.va"
     },
     {
-      "id": "neg_003_too_large_noise",
       "description": "Adds sampled perturbation with far too much variance.",
+      "id": "neg_003_too_large_noise",
       "path": "negative_variants/neg_003_too_large_noise/noise_gen_ref.va"
     },
     {
-      "id": "neg_004_biased_noise",
       "description": "Adds sampled perturbation with a DC bias instead of zero mean.",
+      "id": "neg_004_biased_noise",
       "path": "negative_variants/neg_004_biased_noise/noise_gen_ref.va"
+    },
+    {
+      "description": "Dither Noise Like Deterministic Source: scales the metric output, preserving the main path while failing measurement checks.",
+      "id": "neg_005_metric_scale_low",
+      "path": "negative_variants/neg_005_metric_scale_low/noise_gen.va"
     }
   ]
 }

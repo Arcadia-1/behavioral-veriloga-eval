@@ -1,35 +1,37 @@
 {
-  "status": "concrete_near_miss_negatives",
   "cases": [
     {
-      "id": "neg_001_wrong_mapping",
       "artifact": "neg_001_wrong_mapping/bus_combine_16x16_to_256.va",
-      "mutation": "wrong mapping",
-      "expected_status": "FAIL_SIM_CORRECTNESS"
+      "expected_status": "FAIL_SIM_CORRECTNESS",
+      "id": "neg_001_wrong_mapping",
+      "mutation": "wrong mapping"
     },
     {
-      "id": "neg_002_wrong_mapping",
       "artifact": "neg_002_wrong_mapping/bus_combine_16x16_to_256.va",
-      "mutation": "wrong mapping",
-      "expected_status": "FAIL_SIM_CORRECTNESS"
+      "expected_status": "FAIL_SIM_CORRECTNESS",
+      "id": "neg_002_wrong_mapping",
+      "mutation": "wrong mapping"
     },
     {
-      "id": "neg_003_wrong_mapping",
       "artifact": "neg_003_wrong_mapping/bus_combine_16x16_to_256.va",
-      "mutation": "wrong mapping",
-      "expected_status": "FAIL_SIM_CORRECTNESS"
+      "expected_status": "FAIL_SIM_CORRECTNESS",
+      "id": "neg_003_wrong_mapping",
+      "mutation": "wrong mapping"
     },
     {
-      "id": "neg_004_wrong_mapping",
       "artifact": "neg_004_wrong_mapping/bus_combine_16x16_to_256.va",
-      "mutation": "wrong mapping",
-      "expected_status": "FAIL_SIM_CORRECTNESS"
+      "expected_status": "FAIL_SIM_CORRECTNESS",
+      "id": "neg_004_wrong_mapping",
+      "mutation": "wrong mapping"
     },
     {
-      "id": "neg_005_wrong_mapping",
       "artifact": "neg_005_wrong_mapping/bus_combine_16x16_to_256.va",
-      "mutation": "wrong mapping",
-      "expected_status": "FAIL_SIM_CORRECTNESS"
+      "expected_status": "FAIL_SIM_CORRECTNESS",
+      "id": "neg_005_wrong_mapping",
+      "mutation": "wrong mapping"
     }
-  ]
+  ],
+  "negative_count": 5,
+  "policy": "five_partial_pass_near_miss_negatives_per_task",
+  "status": "concrete_near_miss_negatives"
 }

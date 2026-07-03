@@ -1,35 +1,72 @@
 {
-  "status": "concrete_near_miss_negatives",
   "cases": [
     {
-      "id": "neg_001_zero",
       "artifact": "neg_001_zero/enable_gated_clock_pulse.va",
-      "mutation": "no pulse",
-      "expected_status": "FAIL_SIM_CORRECTNESS"
+      "expected_status": "FAIL_SIM_CORRECTNESS",
+      "id": "neg_001_zero",
+      "mutation": "no pulse"
     },
     {
-      "id": "neg_002_ignore_enable",
       "artifact": "neg_002_ignore_enable/enable_gated_clock_pulse.va",
-      "mutation": "passes clock regardless of enable",
-      "expected_status": "FAIL_SIM_CORRECTNESS"
+      "expected_status": "FAIL_SIM_CORRECTNESS",
+      "id": "neg_002_ignore_enable",
+      "mutation": "passes clock regardless of enable"
     },
     {
-      "id": "neg_003_ignore_clock",
       "artifact": "neg_003_ignore_clock/enable_gated_clock_pulse.va",
-      "mutation": "passes enable level",
-      "expected_status": "FAIL_SIM_CORRECTNESS"
+      "expected_status": "FAIL_SIM_CORRECTNESS",
+      "id": "neg_003_ignore_clock",
+      "mutation": "passes enable level"
     },
     {
-      "id": "neg_004_invert_enable",
       "artifact": "neg_004_invert_enable/enable_gated_clock_pulse.va",
-      "mutation": "uses inverted enable",
-      "expected_status": "FAIL_SIM_CORRECTNESS"
+      "expected_status": "FAIL_SIM_CORRECTNESS",
+      "id": "neg_004_invert_enable",
+      "mutation": "uses inverted enable"
     },
     {
-      "id": "neg_005_invert_output",
       "artifact": "neg_005_invert_output/enable_gated_clock_pulse.va",
-      "mutation": "inverts output",
-      "expected_status": "FAIL_SIM_CORRECTNESS"
+      "expected_status": "FAIL_SIM_CORRECTNESS",
+      "id": "neg_005_invert_output",
+      "mutation": "inverts output"
     }
-  ]
+  ],
+  "negative_cases": [
+    {
+      "files": [
+        "neg_001_zero/enable_gated_clock_pulse.va"
+      ],
+      "id": "neg_001_zero",
+      "why_wrong": ""
+    },
+    {
+      "files": [
+        "neg_002_ignore_enable/enable_gated_clock_pulse.va"
+      ],
+      "id": "neg_002_ignore_enable",
+      "why_wrong": ""
+    },
+    {
+      "files": [
+        "neg_003_ignore_clock/enable_gated_clock_pulse.va"
+      ],
+      "id": "neg_003_ignore_clock",
+      "why_wrong": ""
+    },
+    {
+      "files": [
+        "neg_004_invert_enable/enable_gated_clock_pulse.va"
+      ],
+      "id": "neg_004_invert_enable",
+      "why_wrong": ""
+    },
+    {
+      "files": [
+        "neg_005_invert_output/enable_gated_clock_pulse.va"
+      ],
+      "id": "neg_005_invert_output",
+      "why_wrong": ""
+    }
+  ],
+  "status": "concrete_near_miss_negatives"
 }

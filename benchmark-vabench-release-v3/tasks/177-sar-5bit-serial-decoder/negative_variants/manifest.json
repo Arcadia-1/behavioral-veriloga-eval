@@ -1,24 +1,31 @@
 {
+  "negative_count": 5,
+  "policy": "five_partial_pass_near_miss_negatives_per_task",
   "variants": [
     {
-      "id": "neg_001_zero",
       "description": "Drives zero output and therefore fails the stable waveform contract.",
+      "id": "neg_001_zero",
       "path": "negative_variants/neg_001_zero/sar_5bit_serial_decoder.va"
     },
     {
-      "id": "neg_002_wrong_normalization",
       "description": "Normalizes by 32 instead of 31.",
+      "id": "neg_002_wrong_normalization",
       "path": "negative_variants/neg_002_wrong_normalization/sar_5bit_serial_decoder.va"
     },
     {
-      "id": "neg_003_reversed_serial_weights",
       "description": "Assigns the first serial bit to LSB instead of MSB.",
+      "id": "neg_003_reversed_serial_weights",
       "path": "negative_variants/neg_003_reversed_serial_weights/sar_5bit_serial_decoder.va"
     },
     {
-      "id": "neg_004_missing_midscale_offset",
       "description": "Publishes the normalized code without subtracting the midscale offset.",
+      "id": "neg_004_missing_midscale_offset",
       "path": "negative_variants/neg_004_missing_midscale_offset/sar_5bit_serial_decoder.va"
+    },
+    {
+      "description": "SAR 5bit Serial Decoder: scales the metric output, preserving the main path while failing measurement checks.",
+      "id": "neg_005_metric_scale_low",
+      "path": "negative_variants/neg_005_metric_scale_low/sar_5bit_serial_decoder.va"
     }
   ]
 }

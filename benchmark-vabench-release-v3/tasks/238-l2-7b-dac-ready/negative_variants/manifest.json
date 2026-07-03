@@ -1,24 +1,31 @@
 {
+  "negative_count": 5,
+  "policy": "five_partial_pass_near_miss_negatives_per_task",
   "variants": [
     {
-      "id": "neg_001_zero",
       "description": "Drives zero output and therefore fails the stable waveform contract.",
+      "id": "neg_001_zero",
       "path": "negative_variants/neg_001_zero/l2_7b_dac_ready.va"
     },
     {
-      "id": "neg_002_no_ready_skip",
       "description": "Updates aout on the first ready edge instead of skipping it.",
+      "id": "neg_002_no_ready_skip",
       "path": "negative_variants/neg_002_no_ready_skip/l2_7b_dac_ready.va"
     },
     {
-      "id": "neg_003_wrong_denominator",
       "description": "Drives the ready-sampled DAC output at half amplitude.",
+      "id": "neg_003_wrong_denominator",
       "path": "negative_variants/neg_003_wrong_denominator/l2_7b_dac_ready.va"
     },
     {
-      "id": "neg_004_unipolar_output",
       "description": "Omits the bipolar minus-vdd output offset.",
+      "id": "neg_004_unipolar_output",
       "path": "negative_variants/neg_004_unipolar_output/l2_7b_dac_ready.va"
+    },
+    {
+      "description": "L2 7b DAC Ready: scales the metric output, preserving the main path while failing measurement checks.",
+      "id": "neg_005_metric_scale_low",
+      "path": "negative_variants/neg_005_metric_scale_low/l2_7b_dac_ready.va"
     }
   ]
 }

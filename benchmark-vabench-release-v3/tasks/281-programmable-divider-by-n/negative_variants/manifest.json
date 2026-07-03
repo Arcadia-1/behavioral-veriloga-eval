@@ -1,24 +1,31 @@
 {
+  "negative_count": 5,
+  "policy": "five_partial_pass_near_miss_negatives_per_task",
   "variants": [
     {
-      "id": "neg_001_zero",
       "description": "Keeps the output at its trivial zero behavior and therefore fails the stable waveform contract.",
+      "id": "neg_001_zero",
       "path": "negative_variants/neg_001_zero/programmable_divider_by_n.va"
     },
     {
-      "id": "neg_002_floor_minus_one_ratio",
       "description": "Uses DIVCTRL-1 as the divider ratio.",
+      "id": "neg_002_floor_minus_one_ratio",
       "path": "negative_variants/neg_002_floor_minus_one_ratio/programmable_divider_by_n.va"
     },
     {
-      "id": "neg_003_threshold_too_high",
       "description": "Uses a clock threshold above the high level, so the divider never counts edges.",
+      "id": "neg_003_threshold_too_high",
       "path": "negative_variants/neg_003_threshold_too_high/programmable_divider_by_n.va"
     },
     {
-      "id": "neg_004_output_when_one",
       "description": "Asserts OUT when the counter is one rather than zero.",
+      "id": "neg_004_output_when_one",
       "path": "negative_variants/neg_004_output_when_one/programmable_divider_by_n.va"
+    },
+    {
+      "description": "Programmable Divider By N: scales the metric output, preserving the main path while failing measurement checks.",
+      "id": "neg_005_metric_scale_low",
+      "path": "negative_variants/neg_005_metric_scale_low/programmable_divider_by_n.va"
     }
   ]
 }

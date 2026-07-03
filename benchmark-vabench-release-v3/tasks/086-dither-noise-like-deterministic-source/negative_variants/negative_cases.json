@@ -1,22 +1,29 @@
 [
   {
     "id": "neg_001_zero",
-    "target": "noise_gen_ref.va",
-    "intent": "zero output stub"
+    "intent": "zero output stub",
+    "target": "noise_gen_ref.va"
   },
   {
     "id": "neg_002_passthrough",
-    "target": "noise_gen_ref.va",
-    "intent": "no sampled perturbation"
+    "intent": "no sampled perturbation",
+    "target": "noise_gen_ref.va"
   },
   {
     "id": "neg_003_too_large_noise",
-    "target": "noise_gen_ref.va",
-    "intent": "variance too large"
+    "intent": "variance too large",
+    "target": "noise_gen_ref.va"
   },
   {
     "id": "neg_004_biased_noise",
-    "target": "noise_gen_ref.va",
-    "intent": "nonzero mean perturbation"
+    "intent": "nonzero mean perturbation",
+    "target": "noise_gen_ref.va"
+  },
+  {
+    "files": [
+      "neg_005_metric_scale_low/noise_gen.va"
+    ],
+    "id": "neg_005_metric_scale_low",
+    "why_wrong": "Dither Noise Like Deterministic Source: scales the metric output, preserving the main path while failing measurement checks."
   }
 ]

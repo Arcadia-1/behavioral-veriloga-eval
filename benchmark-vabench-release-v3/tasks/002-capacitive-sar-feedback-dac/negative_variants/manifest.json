@@ -1,35 +1,37 @@
 {
-  "status": "concrete_near_miss_negatives",
   "cases": [
     {
-      "id": "neg_001_ignore_calibration",
       "artifact": "neg_001_ignore_calibration/cdac_cal.va",
-      "mutation": "ignores CAL0 and CAL1 when computing effective_code",
-      "expected_status": "FAIL_SIM_CORRECTNESS"
+      "expected_status": "FAIL_SIM_CORRECTNESS",
+      "id": "neg_001_ignore_calibration",
+      "mutation": "ignores CAL0 and CAL1 when computing effective_code"
     },
     {
-      "id": "neg_002_reversed_polarity",
       "artifact": "neg_002_reversed_polarity/cdac_cal.va",
-      "mutation": "higher effective code lowers VDAC_P relative to VDAC_N",
-      "expected_status": "FAIL_SIM_CORRECTNESS"
+      "expected_status": "FAIL_SIM_CORRECTNESS",
+      "id": "neg_002_reversed_polarity",
+      "mutation": "higher effective code lowers VDAC_P relative to VDAC_N"
     },
     {
-      "id": "neg_003_bit_weight_swap",
       "artifact": "neg_003_bit_weight_swap/cdac_cal.va",
-      "mutation": "swaps D9 and D8 binary weights",
-      "expected_status": "FAIL_SIM_CORRECTNESS"
+      "expected_status": "FAIL_SIM_CORRECTNESS",
+      "id": "neg_003_bit_weight_swap",
+      "mutation": "swaps D9 and D8 binary weights"
     },
     {
-      "id": "neg_004_calibration_scale_16",
       "artifact": "neg_004_calibration_scale_16/cdac_cal.va",
-      "mutation": "uses 16 LSB per calibration code instead of 32",
-      "expected_status": "FAIL_SIM_CORRECTNESS"
+      "expected_status": "FAIL_SIM_CORRECTNESS",
+      "id": "neg_004_calibration_scale_16",
+      "mutation": "uses 16 LSB per calibration code instead of 32"
     },
     {
-      "id": "neg_005_common_mode_error",
       "artifact": "neg_005_common_mode_error/cdac_cal.va",
-      "mutation": "uses an incorrect 0.50 V output common-mode",
-      "expected_status": "FAIL_SIM_CORRECTNESS"
+      "expected_status": "FAIL_SIM_CORRECTNESS",
+      "id": "neg_005_common_mode_error",
+      "mutation": "uses an incorrect 0.50 V output common-mode"
     }
-  ]
+  ],
+  "negative_count": 5,
+  "policy": "five_partial_pass_near_miss_negatives_per_task",
+  "status": "concrete_near_miss_negatives"
 }

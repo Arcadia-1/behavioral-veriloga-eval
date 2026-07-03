@@ -1,24 +1,31 @@
 {
+  "negative_count": 5,
+  "policy": "five_partial_pass_near_miss_negatives_per_task",
   "variants": [
     {
-      "id": "neg_001_zero",
       "description": "Drives zero output and therefore fails the stable waveform contract.",
+      "id": "neg_001_zero",
       "path": "negative_variants/neg_001_zero/sar_logic_4b_self_timed.va"
     },
     {
-      "id": "neg_002_invert_decision",
       "description": "Stores comparator decisions with inverted dcmpp/dcmpn polarity.",
+      "id": "neg_002_invert_decision",
       "path": "negative_variants/neg_002_invert_decision/sar_logic_4b_self_timed.va"
     },
     {
-      "id": "neg_003_no_step_decrement",
       "description": "Does not advance the SAR step when comparator outputs fall.",
+      "id": "neg_003_no_step_decrement",
       "path": "negative_variants/neg_003_no_step_decrement/sar_logic_4b_self_timed.va"
     },
     {
-      "id": "neg_004_half_cmpck",
       "description": "Drives cmpck at half supply amplitude.",
+      "id": "neg_004_half_cmpck",
       "path": "negative_variants/neg_004_half_cmpck/sar_logic_4b_self_timed.va"
+    },
+    {
+      "description": "SAR Logic 4b Self Timed: scales the metric output, preserving the main path while failing measurement checks.",
+      "id": "neg_005_metric_scale_low",
+      "path": "negative_variants/neg_005_metric_scale_low/sar_logic_4b_self_timed.va"
     }
   ]
 }

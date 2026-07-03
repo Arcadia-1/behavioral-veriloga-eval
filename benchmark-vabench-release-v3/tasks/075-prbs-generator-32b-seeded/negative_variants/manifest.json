@@ -1,35 +1,37 @@
 {
-  "status": "concrete_near_miss_negatives",
   "cases": [
     {
-      "id": "neg_001_zero",
       "artifact": "neg_001_zero/prbs_generator_32b.va",
-      "mutation": "stuck zero",
-      "expected_status": "FAIL_SIM_CORRECTNESS"
+      "expected_status": "FAIL_SIM_CORRECTNESS",
+      "id": "neg_001_zero",
+      "mutation": "stuck zero"
     },
     {
-      "id": "neg_002_no_seed",
       "artifact": "neg_002_no_seed/prbs_generator_32b.va",
-      "mutation": "ignores seed load",
-      "expected_status": "FAIL_SIM_CORRECTNESS"
+      "expected_status": "FAIL_SIM_CORRECTNESS",
+      "id": "neg_002_no_seed",
+      "mutation": "ignores seed load"
     },
     {
-      "id": "neg_003_wrong_tap",
       "artifact": "neg_003_wrong_tap/prbs_generator_32b.va",
-      "mutation": "uses wrong feedback tap",
-      "expected_status": "FAIL_SIM_CORRECTNESS"
+      "expected_status": "FAIL_SIM_CORRECTNESS",
+      "id": "neg_003_wrong_tap",
+      "mutation": "uses wrong feedback tap"
     },
     {
-      "id": "neg_004_hold",
       "artifact": "neg_004_hold/prbs_generator_32b.va",
-      "mutation": "does not advance",
-      "expected_status": "FAIL_SIM_CORRECTNESS"
+      "expected_status": "FAIL_SIM_CORRECTNESS",
+      "id": "neg_004_hold",
+      "mutation": "does not advance"
     },
     {
-      "id": "neg_005_invert_lsb",
       "artifact": "neg_005_invert_lsb/prbs_generator_32b.va",
-      "mutation": "toggles LSB output",
-      "expected_status": "FAIL_SIM_CORRECTNESS"
+      "expected_status": "FAIL_SIM_CORRECTNESS",
+      "id": "neg_005_invert_lsb",
+      "mutation": "toggles LSB output"
     }
-  ]
+  ],
+  "negative_count": 5,
+  "policy": "five_partial_pass_near_miss_negatives_per_task",
+  "status": "concrete_near_miss_negatives"
 }

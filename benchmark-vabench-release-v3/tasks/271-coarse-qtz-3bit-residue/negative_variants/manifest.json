@@ -1,24 +1,31 @@
 {
+  "negative_count": 5,
+  "policy": "five_partial_pass_near_miss_negatives_per_task",
   "variants": [
     {
-      "id": "neg_001_zero",
       "description": "Drives zero output and therefore fails the stable waveform contract.",
+      "id": "neg_001_zero",
       "path": "negative_variants/neg_001_zero/coarse_qtz_3bit_residue.va"
     },
     {
-      "id": "neg_002_floor_quantizer",
       "description": "Uses floor quantization instead of rounding to nearest.",
+      "id": "neg_002_floor_quantizer",
       "path": "negative_variants/neg_002_floor_quantizer/coarse_qtz_3bit_residue.va"
     },
     {
-      "id": "neg_003_no_input_clip",
       "description": "Does not clip VIN before quantization and residue computation.",
+      "id": "neg_003_no_input_clip",
       "path": "negative_variants/neg_003_no_input_clip/coarse_qtz_3bit_residue.va"
     },
     {
-      "id": "neg_004_residue_sign_inverted",
       "description": "Reports quantized-minus-input residue instead of input-minus-quantized residue.",
+      "id": "neg_004_residue_sign_inverted",
       "path": "negative_variants/neg_004_residue_sign_inverted/coarse_qtz_3bit_residue.va"
+    },
+    {
+      "description": "Coarse QTZ 3bit Residue: scales the metric output, preserving the main path while failing measurement checks.",
+      "id": "neg_005_metric_scale_low",
+      "path": "negative_variants/neg_005_metric_scale_low/coarse_qtz_3bit_residue.va"
     }
   ]
 }

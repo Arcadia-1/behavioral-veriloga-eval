@@ -1,24 +1,31 @@
 {
+  "negative_count": 5,
+  "policy": "five_partial_pass_near_miss_negatives_per_task",
   "variants": [
     {
-      "id": "neg_001_zero",
       "description": "Drives zero output and therefore fails the stable waveform contract.",
+      "id": "neg_001_zero",
       "path": "negative_variants/neg_001_zero/adc_sample_clock_sequencer.va"
     },
     {
-      "id": "neg_002_shift_conv_early",
       "description": "Drives conv pulses at half amplitude.",
+      "id": "neg_002_shift_conv_early",
       "path": "negative_variants/neg_002_shift_conv_early/adc_sample_clock_sequencer.va"
     },
     {
-      "id": "neg_003_short_sample_pulse",
       "description": "Drives sample pulses at half amplitude.",
+      "id": "neg_003_short_sample_pulse",
       "path": "negative_variants/neg_003_short_sample_pulse/adc_sample_clock_sequencer.va"
     },
     {
-      "id": "neg_004_swap_nc_outputs",
       "description": "Swaps nc and nc_az output routing.",
+      "id": "neg_004_swap_nc_outputs",
       "path": "negative_variants/neg_004_swap_nc_outputs/adc_sample_clock_sequencer.va"
+    },
+    {
+      "description": "ADC Sample Clock Sequencer: scales the metric output, preserving the main path while failing measurement checks.",
+      "id": "neg_005_metric_scale_low",
+      "path": "negative_variants/neg_005_metric_scale_low/adc_sample_clock_sequencer.va"
     }
   ]
 }

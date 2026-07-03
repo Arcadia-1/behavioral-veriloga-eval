@@ -1,24 +1,31 @@
 {
+  "negative_count": 5,
+  "policy": "five_partial_pass_near_miss_negatives_per_task",
   "variants": [
     {
-      "id": "neg_001_zero",
       "description": "Drives zero output and therefore fails the stable waveform contract.",
+      "id": "neg_001_zero",
       "path": "negative_variants/neg_001_zero/linear_pfd_gain.va"
     },
     {
-      "id": "neg_002_inverted_sign",
       "description": "Computes the gain with in2-in1 polarity.",
+      "id": "neg_002_inverted_sign",
       "path": "negative_variants/neg_002_inverted_sign/linear_pfd_gain.va"
     },
     {
-      "id": "neg_003_unit_gain",
       "description": "Drops the required kphi scaling and emits only the raw input difference.",
+      "id": "neg_003_unit_gain",
       "path": "negative_variants/neg_003_unit_gain/linear_pfd_gain.va"
     },
     {
-      "id": "neg_004_single_ended",
       "description": "Ignores in2 and turns the PFD into a single-ended gain block.",
+      "id": "neg_004_single_ended",
       "path": "negative_variants/neg_004_single_ended/linear_pfd_gain.va"
+    },
+    {
+      "description": "Linear PFD Gain: scales the metric output, preserving the main path while failing measurement checks.",
+      "id": "neg_005_metric_scale_low",
+      "path": "negative_variants/neg_005_metric_scale_low/linear_pfd_gain.va"
     }
   ]
 }

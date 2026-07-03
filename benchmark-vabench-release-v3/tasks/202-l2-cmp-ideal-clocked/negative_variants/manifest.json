@@ -1,24 +1,31 @@
 {
+  "negative_count": 5,
+  "policy": "five_partial_pass_near_miss_negatives_per_task",
   "variants": [
     {
-      "id": "neg_001_zero",
       "description": "Drives zero output and therefore fails the stable waveform contract.",
+      "id": "neg_001_zero",
       "path": "negative_variants/neg_001_zero/l2_cmp_ideal_clocked.va"
     },
     {
-      "id": "neg_002_swap_decision_outputs",
       "description": "Swaps the comparator decision polarity for dcmpp and dcmpn.",
+      "id": "neg_002_swap_decision_outputs",
       "path": "negative_variants/neg_002_swap_decision_outputs/l2_cmp_ideal_clocked.va"
     },
     {
-      "id": "neg_003_no_falling_reset",
       "description": "Holds the last decision on the falling clock instead of resetting both outputs high.",
+      "id": "neg_003_no_falling_reset",
       "path": "negative_variants/neg_003_no_falling_reset/l2_cmp_ideal_clocked.va"
     },
     {
-      "id": "neg_004_half_output_level",
       "description": "Drives comparator logic highs at half vdd.",
+      "id": "neg_004_half_output_level",
       "path": "negative_variants/neg_004_half_output_level/l2_cmp_ideal_clocked.va"
+    },
+    {
+      "description": "L2 CMP Ideal Clocked: scales the metric output, preserving the main path while failing measurement checks.",
+      "id": "neg_005_metric_scale_low",
+      "path": "negative_variants/neg_005_metric_scale_low/l2_cmp_ideal_clocked.va"
     }
   ]
 }

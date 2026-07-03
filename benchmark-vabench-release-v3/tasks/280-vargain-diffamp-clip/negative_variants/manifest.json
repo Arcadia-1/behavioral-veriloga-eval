@@ -1,24 +1,31 @@
 {
+  "negative_count": 5,
+  "policy": "five_partial_pass_near_miss_negatives_per_task",
   "variants": [
     {
-      "id": "neg_001_zero",
       "description": "Keeps the output at its trivial zero behavior and therefore fails the stable waveform contract.",
+      "id": "neg_001_zero",
       "path": "negative_variants/neg_001_zero/vargain_diffamp_clip.va"
     },
     {
-      "id": "neg_002_missing_input_offset",
       "description": "Omits the required 50 mV input offset.",
+      "id": "neg_002_missing_input_offset",
       "path": "negative_variants/neg_002_missing_input_offset/vargain_diffamp_clip.va"
     },
     {
-      "id": "neg_003_inverted_control_polarity",
       "description": "Reverses the control differential polarity.",
+      "id": "neg_003_inverted_control_polarity",
       "path": "negative_variants/neg_003_inverted_control_polarity/vargain_diffamp_clip.va"
     },
     {
-      "id": "neg_004_no_positive_clip",
       "description": "Clips only the negative rail and leaves positive outputs unclamped.",
+      "id": "neg_004_no_positive_clip",
       "path": "negative_variants/neg_004_no_positive_clip/vargain_diffamp_clip.va"
+    },
+    {
+      "description": "Vargain Diffamp Clip: scales the metric output, preserving the main path while failing measurement checks.",
+      "id": "neg_005_metric_scale_low",
+      "path": "negative_variants/neg_005_metric_scale_low/vargain_diffamp_clip.va"
     }
   ]
 }

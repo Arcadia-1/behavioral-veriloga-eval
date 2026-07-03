@@ -1,24 +1,31 @@
 {
+  "negative_count": 5,
+  "policy": "five_partial_pass_near_miss_negatives_per_task",
   "variants": [
     {
-      "id": "neg_001_zero",
       "description": "Drives zero output and therefore fails the stable waveform contract.",
+      "id": "neg_001_zero",
       "path": "negative_variants/neg_001_zero/linearity_rdac_offset_sweep.va"
     },
     {
-      "id": "neg_002_no_step_halving",
       "description": "Collapses the differential reference outputs to common mode.",
+      "id": "neg_002_no_step_halving",
       "path": "negative_variants/neg_002_no_step_halving/linearity_rdac_offset_sweep.va"
     },
     {
-      "id": "neg_003_no_ddex_decrement",
       "description": "Does not sweep the RDAC code downward after calibration.",
+      "id": "neg_003_no_ddex_decrement",
       "path": "negative_variants/neg_003_no_ddex_decrement/linearity_rdac_offset_sweep.va"
     },
     {
-      "id": "neg_004_full_diff_scale",
       "description": "Uses full differential amplitude for vin outputs instead of half-scale.",
+      "id": "neg_004_full_diff_scale",
       "path": "negative_variants/neg_004_full_diff_scale/linearity_rdac_offset_sweep.va"
+    },
+    {
+      "description": "Linearity RDAC Offset Sweep: scales the metric output, preserving the main path while failing measurement checks.",
+      "id": "neg_005_metric_scale_low",
+      "path": "negative_variants/neg_005_metric_scale_low/linearity_rdac_offset_sweep.va"
     }
   ]
 }

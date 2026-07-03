@@ -1,35 +1,37 @@
 {
-  "status": "concrete_near_miss_negatives",
   "cases": [
     {
-      "id": "neg_001_wrong_mask",
       "artifact": "neg_001_wrong_mask/masked_config_update_32b.va",
-      "mutation": "wrong masked update",
-      "expected_status": "FAIL_SIM_CORRECTNESS"
+      "expected_status": "FAIL_SIM_CORRECTNESS",
+      "id": "neg_001_wrong_mask",
+      "mutation": "wrong masked update"
     },
     {
-      "id": "neg_002_wrong_mask",
       "artifact": "neg_002_wrong_mask/masked_config_update_32b.va",
-      "mutation": "wrong masked update",
-      "expected_status": "FAIL_SIM_CORRECTNESS"
+      "expected_status": "FAIL_SIM_CORRECTNESS",
+      "id": "neg_002_wrong_mask",
+      "mutation": "wrong masked update"
     },
     {
-      "id": "neg_003_wrong_mask",
       "artifact": "neg_003_wrong_mask/masked_config_update_32b.va",
-      "mutation": "wrong masked update",
-      "expected_status": "FAIL_SIM_CORRECTNESS"
+      "expected_status": "FAIL_SIM_CORRECTNESS",
+      "id": "neg_003_wrong_mask",
+      "mutation": "wrong masked update"
     },
     {
-      "id": "neg_004_wrong_mask",
       "artifact": "neg_004_wrong_mask/masked_config_update_32b.va",
-      "mutation": "wrong masked update",
-      "expected_status": "FAIL_SIM_CORRECTNESS"
+      "expected_status": "FAIL_SIM_CORRECTNESS",
+      "id": "neg_004_wrong_mask",
+      "mutation": "wrong masked update"
     },
     {
-      "id": "neg_005_wrong_mask",
       "artifact": "neg_005_wrong_mask/masked_config_update_32b.va",
-      "mutation": "wrong masked update",
-      "expected_status": "FAIL_SIM_CORRECTNESS"
+      "expected_status": "FAIL_SIM_CORRECTNESS",
+      "id": "neg_005_wrong_mask",
+      "mutation": "wrong masked update"
     }
-  ]
+  ],
+  "negative_count": 5,
+  "policy": "five_partial_pass_near_miss_negatives_per_task",
+  "status": "concrete_near_miss_negatives"
 }

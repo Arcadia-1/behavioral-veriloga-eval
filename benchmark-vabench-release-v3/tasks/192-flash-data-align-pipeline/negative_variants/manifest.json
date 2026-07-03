@@ -1,24 +1,31 @@
 {
+  "negative_count": 5,
+  "policy": "five_partial_pass_near_miss_negatives_per_task",
   "variants": [
     {
-      "id": "neg_001_zero",
       "description": "Drives zero output and therefore fails the stable waveform contract.",
+      "id": "neg_001_zero",
       "path": "negative_variants/neg_001_zero/flash_data_align_pipeline.va"
     },
     {
-      "id": "neg_002_three_cycle_delay",
       "description": "Publishes the third pipeline stage instead of the required fourth-cycle aligned count.",
+      "id": "neg_002_three_cycle_delay",
       "path": "negative_variants/neg_002_three_cycle_delay/flash_data_align_pipeline.va"
     },
     {
-      "id": "neg_003_ignore_upper_inputs",
       "description": "Counts only the lower four thermometer inputs, missing din4 through din7.",
+      "id": "neg_003_ignore_upper_inputs",
       "path": "negative_variants/neg_003_ignore_upper_inputs/flash_data_align_pipeline.va"
     },
     {
-      "id": "neg_004_swap_output_bits",
       "description": "Swaps the two least significant output bits while keeping timing intact.",
+      "id": "neg_004_swap_output_bits",
       "path": "negative_variants/neg_004_swap_output_bits/flash_data_align_pipeline.va"
+    },
+    {
+      "description": "Flash Data Align Pipeline: scales the metric output, preserving the main path while failing measurement checks.",
+      "id": "neg_005_metric_scale_low",
+      "path": "negative_variants/neg_005_metric_scale_low/flash_data_align_pipeline.va"
     }
   ]
 }

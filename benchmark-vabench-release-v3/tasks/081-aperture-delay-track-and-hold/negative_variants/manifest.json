@@ -1,25 +1,32 @@
 {
-  "status": "four_concrete_negatives_evas_spectre_verified",
   "negative_cases": [
     {
       "id": "neg_001_zero",
-      "target": "sample_hold_aperture_ref.va",
-      "intent": "zero/stub output implementation copied from starter must not satisfy hidden behavior checker"
+      "intent": "zero/stub output implementation copied from starter must not satisfy hidden behavior checker",
+      "target": "sample_hold_aperture_ref.va"
     },
     {
       "id": "neg_002_edge_sample_delayed_output",
-      "target": "sample_hold_aperture_ref.va",
-      "intent": "capturing vin at the clock edge instead of at the delayed aperture instant must not satisfy the hidden aperture-sensitive stimulus"
+      "intent": "capturing vin at the clock edge instead of at the delayed aperture instant must not satisfy the hidden aperture-sensitive stimulus",
+      "target": "sample_hold_aperture_ref.va"
     },
     {
       "id": "neg_003_half_gain_sample",
-      "target": "sample_hold_aperture_ref.va",
-      "intent": "delayed sampling with the wrong analog gain must not satisfy held-value checks"
+      "intent": "delayed sampling with the wrong analog gain must not satisfy held-value checks",
+      "target": "sample_hold_aperture_ref.va"
     },
     {
       "id": "neg_004_inverted_sample",
-      "target": "sample_hold_aperture_ref.va",
-      "intent": "delayed sampling with inverted rail-relative value must not satisfy held-value checks"
+      "intent": "delayed sampling with inverted rail-relative value must not satisfy held-value checks",
+      "target": "sample_hold_aperture_ref.va"
+    },
+    {
+      "id": "neg_005_metric_scale_low",
+      "intent": "Aperture Delay Track And Hold: scales the metric output, preserving the main path while failing measurement checks.",
+      "target": "sample_hold_aperture_ref.va"
     }
-  ]
+  ],
+  "negative_count": 5,
+  "policy": "five_partial_pass_near_miss_negatives_per_task",
+  "status": "four_concrete_negatives_evas_spectre_verified"
 }

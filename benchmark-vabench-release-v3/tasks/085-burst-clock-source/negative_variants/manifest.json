@@ -1,25 +1,32 @@
 {
+  "negative_count": 5,
+  "policy": "five_partial_pass_near_miss_negatives_per_task",
   "status": "behavioral_negatives_pending_recertification",
   "variants": [
     {
-      "id": "neg_001_zero",
       "description": "Zero output stub; must fail the pass-two-pulses contract.",
+      "id": "neg_001_zero",
       "path": "negative_variants/neg_001_zero/clk_burst_gen.va"
     },
     {
-      "id": "neg_002_pass_all_cycles",
       "description": "Passes every input clock high phase after reset instead of suppressing cycles 2..7.",
+      "id": "neg_002_pass_all_cycles",
       "path": "negative_variants/neg_002_pass_all_cycles/clk_burst_gen.va"
     },
     {
-      "id": "neg_003_one_cycle_burst",
       "description": "Passes only the first clock in each frame instead of the first two.",
+      "id": "neg_003_one_cycle_burst",
       "path": "negative_variants/neg_003_one_cycle_burst/clk_burst_gen.va"
     },
     {
-      "id": "neg_004_wrong_div4",
       "description": "Uses a four-cycle repeat frame instead of the public div=8 frame.",
+      "id": "neg_004_wrong_div4",
       "path": "negative_variants/neg_004_wrong_div4/clk_burst_gen.va"
+    },
+    {
+      "description": "Burst Clock Source: scales the metric output, preserving the main path while failing measurement checks.",
+      "id": "neg_005_metric_scale_low",
+      "path": "negative_variants/neg_005_metric_scale_low/clk_burst_gen.va"
     }
   ]
 }

@@ -1,7 +1,35 @@
 [
   {
     "id": "neg_001_zero",
-    "target": "reference_startup_enable_flow.va",
-    "intent": "zero/stub output implementation copied from starter must not satisfy hidden behavior checker"
+    "intent": "zero/stub output implementation copied from starter must not satisfy hidden behavior checker",
+    "target": "reference_startup_enable_flow.va"
+  },
+  {
+    "files": [
+      "neg_002_threshold_shifted/reference_startup_enable_flow.va"
+    ],
+    "id": "neg_002_threshold_shifted",
+    "why_wrong": "Reference Startup Enable Flow: shifts the decision threshold, preserving nominal behavior while failing boundary checks."
+  },
+  {
+    "files": [
+      "neg_003_event_edge_wrong/reference_startup_enable_flow.va"
+    ],
+    "id": "neg_003_event_edge_wrong",
+    "why_wrong": "Reference Startup Enable Flow: uses the opposite event edge, preserving interface behavior while failing timing windows."
+  },
+  {
+    "files": [
+      "neg_004_reset_polarity_wrong/reference_startup_enable_flow.va"
+    ],
+    "id": "neg_004_reset_polarity_wrong",
+    "why_wrong": "Reference Startup Enable Flow: uses the wrong reset polarity, preserving steady-state behavior while failing recovery checks."
+  },
+  {
+    "files": [
+      "neg_005_metric_scale_low/reference_startup_enable_flow.va"
+    ],
+    "id": "neg_005_metric_scale_low",
+    "why_wrong": "Reference Startup Enable Flow: scales the metric output, preserving the main path while failing measurement checks."
   }
 ]

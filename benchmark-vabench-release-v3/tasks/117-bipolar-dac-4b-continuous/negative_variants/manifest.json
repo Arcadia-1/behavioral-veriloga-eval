@@ -1,24 +1,31 @@
 {
+  "negative_count": 5,
+  "policy": "five_partial_pass_near_miss_negatives_per_task",
   "variants": [
     {
-      "id": "neg_001_zero",
       "description": "Existing concrete negative.",
+      "id": "neg_001_zero",
       "path": "negative_variants/neg_001_zero/bipolar_dac_4b_continuous.va"
     },
     {
-      "id": "neg_002_unipolar_output",
       "description": "Implements a unipolar DAC instead of bipolar output.",
+      "id": "neg_002_unipolar_output",
       "path": "negative_variants/neg_002_unipolar_output/bipolar_dac_4b_continuous.va"
     },
     {
-      "id": "neg_003_reversed_bit_weights",
       "description": "Reverses the bit weights.",
+      "id": "neg_003_reversed_bit_weights",
       "path": "negative_variants/neg_003_reversed_bit_weights/bipolar_dac_4b_continuous.va"
     },
     {
-      "id": "neg_004_wrong_fullscale",
       "description": "Uses the wrong denominator for full scale.",
+      "id": "neg_004_wrong_fullscale",
       "path": "negative_variants/neg_004_wrong_fullscale/bipolar_dac_4b_continuous.va"
+    },
+    {
+      "description": "Bipolar DAC 4b Continuous: scales the metric output, preserving the main path while failing measurement checks.",
+      "id": "neg_005_metric_scale_low",
+      "path": "negative_variants/neg_005_metric_scale_low/bipolar_dac_4b_continuous.va"
     }
   ]
 }

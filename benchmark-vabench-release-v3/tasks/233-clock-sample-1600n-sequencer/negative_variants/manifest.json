@@ -1,24 +1,31 @@
 {
+  "negative_count": 5,
+  "policy": "five_partial_pass_near_miss_negatives_per_task",
   "variants": [
     {
-      "id": "neg_001_zero",
       "description": "Drives zero output and therefore fails the stable waveform contract.",
+      "id": "neg_001_zero",
       "path": "negative_variants/neg_001_zero/clock_sample_1600n_sequencer.va"
     },
     {
-      "id": "neg_002_half_conv_level",
       "description": "Drives conversion pulses at half amplitude.",
+      "id": "neg_002_half_conv_level",
       "path": "negative_variants/neg_002_half_conv_level/clock_sample_1600n_sequencer.va"
     },
     {
-      "id": "neg_003_swap_nc_res",
       "description": "Swaps nc and res output routing.",
+      "id": "neg_003_swap_nc_res",
       "path": "negative_variants/neg_003_swap_nc_res/clock_sample_1600n_sequencer.va"
     },
     {
-      "id": "neg_004_missing_second_sample",
       "description": "Removes the second sample pulse from the 16 ns sequence.",
+      "id": "neg_004_missing_second_sample",
       "path": "negative_variants/neg_004_missing_second_sample/clock_sample_1600n_sequencer.va"
+    },
+    {
+      "description": "Clock Sample 1600n Sequencer: scales the metric output, preserving the main path while failing measurement checks.",
+      "id": "neg_005_metric_scale_low",
+      "path": "negative_variants/neg_005_metric_scale_low/clock_sample_1600n_sequencer.va"
     }
   ]
 }

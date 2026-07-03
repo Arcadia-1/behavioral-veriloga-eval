@@ -1,24 +1,31 @@
 {
+  "negative_count": 5,
+  "policy": "five_partial_pass_near_miss_negatives_per_task",
   "variants": [
     {
-      "id": "neg_001_zero",
       "description": "Drives zero output and therefore fails the stable waveform contract.",
+      "id": "neg_001_zero",
       "path": "negative_variants/neg_001_zero/deadband_window.va"
     },
     {
-      "id": "neg_002_passes_inside_deadband",
       "description": "Passes input inside the deadband instead of zeroing it.",
+      "id": "neg_002_passes_inside_deadband",
       "path": "negative_variants/neg_002_passes_inside_deadband/deadband_window.va"
     },
     {
-      "id": "neg_003_wrong_offsets",
       "description": "Uses the wrong deadband edge offset outside the window.",
+      "id": "neg_003_wrong_offsets",
       "path": "negative_variants/neg_003_wrong_offsets/deadband_window.va"
     },
     {
-      "id": "neg_004_clips_outside_deadband",
       "description": "Clips outside the window instead of subtracting the edge.",
+      "id": "neg_004_clips_outside_deadband",
       "path": "negative_variants/neg_004_clips_outside_deadband/deadband_window.va"
+    },
+    {
+      "description": "Deadband Window: scales the metric output, preserving the main path while failing measurement checks.",
+      "id": "neg_005_metric_scale_low",
+      "path": "negative_variants/neg_005_metric_scale_low/deadband_window.va"
     }
   ]
 }

@@ -73,7 +73,7 @@ def test_read_sim_correct_task_slugs_only_returns_behavior_contracts(tmp_path: P
 
 def test_negative_variant_ids_supports_all_manifest_shapes(tmp_path: Path) -> None:
     verifier = load_verifier_module()
-    for key in ("cases", "variants", "negative_variants"):
+    for key in ("cases", "negative_cases", "variants", "negative_variants", "negatives"):
         task_dir = tmp_path / key
         manifest_dir = task_dir / "negative_variants"
         manifest_dir.mkdir(parents=True)
@@ -83,6 +83,37 @@ def test_negative_variant_ids_supports_all_manifest_shapes(tmp_path: Path) -> No
         )
 
         assert verifier.negative_variant_ids(task_dir) == ["neg_001", "neg_002"]
+
+
+def test_negative_variant_cases_supports_legacy_nested_manifest_paths(tmp_path: Path) -> None:
+    verifier = load_verifier_module()
+    task_dir = tmp_path / "018-legacy"
+    legacy_dir = task_dir / "negative_variants" / "legacy_dut"
+    legacy_dir.mkdir(parents=True)
+    (legacy_dir / "neg_001.va").write_text("module m; endmodule\n", encoding="utf-8")
+    (legacy_dir / "manifest.json").write_text(
+        json.dumps({"negatives": [{"id": "neg_001", "source": "negative_variants/legacy_dut/neg_001.va"}]}),
+        encoding="utf-8",
+    )
+
+    cases = verifier.negative_variant_cases(task_dir)
+
+    assert [case["id"] for case in cases] == ["neg_001"]
+    assert verifier.negative_case_file(task_dir, cases[0], "candidate.va") == legacy_dir / "neg_001.va"
+
+
+def test_gold_timing_rows_and_slow_cases_are_reported() -> None:
+    verifier = load_verifier_module()
+    timings = verifier.gold_timing_rows(
+        [
+            {"kind": "negative", "task_slug": "001-a", "wall_s": 99.0},
+            {"kind": "gold", "task_slug": "002-b", "task_id": "b", "case_id": "002-b:gold", "status": "PASS", "wall_s": 21.25},
+            {"kind": "gold", "task_slug": "001-a", "task_id": "a", "case_id": "001-a:gold", "status": "PASS", "wall_s": 0.5},
+        ]
+    )
+
+    assert [row["task_slug"] for row in timings] == ["001-a", "002-b"]
+    assert verifier.slow_gold_cases(timings, 20.0) == [timings[1]]
 
 
 def test_simulator_failure_summary_extracts_concise_error() -> None:
@@ -133,8 +164,26 @@ def test_markdown_summary_uses_failure_summary(tmp_path: Path) -> None:
                 "gold_fail": 1,
                 "expectation_fail": 1,
                 "skipped_staged_tasks": 0,
+                "gold_wall_s_total": 21.25,
+                "gold_wall_s_max": 21.25,
+                "slow_gold_threshold_s": 20.0,
+                "slow_gold_count": 1,
                 "wall_s": 0.125,
             },
+            "gold_timings": [
+                {
+                    "task_slug": "410-macro-ifdef-gain-select",
+                    "status": "FAIL_SIM_CORRECTNESS",
+                    "wall_s": 21.25,
+                }
+            ],
+            "slow_gold_cases": [
+                {
+                    "task_slug": "410-macro-ifdef-gain-select",
+                    "status": "FAIL_SIM_CORRECTNESS",
+                    "wall_s": 21.25,
+                }
+            ],
             "rows": [
                 {
                     "task_slug": "410-macro-ifdef-gain-select",
@@ -147,4 +196,6 @@ def test_markdown_summary_uses_failure_summary(tmp_path: Path) -> None:
     )
 
     text = out.read_text(encoding="utf-8")
+    assert "- `slow_gold_count`: 1" in text
+    assert "| `410-macro-ifdef-gain-select` | `FAIL_SIM_CORRECTNESS` | 21.25 |" in text
     assert "| `410-macro-ifdef-gain-select` | `FAIL_SIM_CORRECTNESS` | out@160ns=0.4800 expected=0.8000 tol=0.0800 |" in text

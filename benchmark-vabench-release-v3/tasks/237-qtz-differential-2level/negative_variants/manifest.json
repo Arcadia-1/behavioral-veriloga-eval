@@ -1,24 +1,31 @@
 {
+  "negative_count": 5,
+  "policy": "five_partial_pass_near_miss_negatives_per_task",
   "variants": [
     {
-      "id": "neg_001_zero",
       "description": "Drives zero output and therefore fails the stable waveform contract.",
+      "id": "neg_001_zero",
       "path": "negative_variants/neg_001_zero/qtz_differential_2level.va"
     },
     {
-      "id": "neg_002_invert_decision",
       "description": "Inverts the two-level quantizer decision.",
+      "id": "neg_002_invert_decision",
       "path": "negative_variants/neg_002_invert_decision/qtz_differential_2level.va"
     },
     {
-      "id": "neg_003_wrong_threshold",
       "description": "Compares against the full differential reference instead of the midpoint threshold.",
+      "id": "neg_003_wrong_threshold",
       "path": "negative_variants/neg_003_wrong_threshold/qtz_differential_2level.va"
     },
     {
-      "id": "neg_004_unipolar_output",
       "description": "Outputs 0/1 instead of -0.5/+0.5 quantizer levels.",
+      "id": "neg_004_unipolar_output",
       "path": "negative_variants/neg_004_unipolar_output/qtz_differential_2level.va"
+    },
+    {
+      "description": "QTZ Differential 2level: scales the metric output, preserving the main path while failing measurement checks.",
+      "id": "neg_005_metric_scale_low",
+      "path": "negative_variants/neg_005_metric_scale_low/qtz_differential_2level.va"
     }
   ]
 }

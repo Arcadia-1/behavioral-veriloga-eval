@@ -1,24 +1,31 @@
 {
+  "negative_count": 5,
+  "policy": "five_partial_pass_near_miss_negatives_per_task",
   "variants": [
     {
-      "id": "neg_001_zero",
       "description": "Drives zero outputs and therefore fails the stable-sample semantic contract.",
+      "id": "neg_001_zero",
       "path": "negative_variants/neg_001_zero/differential_buffer.va"
     },
     {
-      "id": "neg_002_swapped_outputs",
       "description": "Swaps positive and negative outputs.",
+      "id": "neg_002_swapped_outputs",
       "path": "negative_variants/neg_002_swapped_outputs/differential_buffer.va"
     },
     {
-      "id": "neg_003_half_gain",
       "description": "Copies both inputs with half gain.",
+      "id": "neg_003_half_gain",
       "path": "negative_variants/neg_003_half_gain/differential_buffer.va"
     },
     {
-      "id": "neg_004_common_mode_only",
       "description": "Outputs only the common-mode average.",
+      "id": "neg_004_common_mode_only",
       "path": "negative_variants/neg_004_common_mode_only/differential_buffer.va"
+    },
+    {
+      "description": "Differential Buffer: scales the metric output, preserving the main path while failing measurement checks.",
+      "id": "neg_005_metric_scale_low",
+      "path": "negative_variants/neg_005_metric_scale_low/differential_buffer.va"
     }
   ]
 }

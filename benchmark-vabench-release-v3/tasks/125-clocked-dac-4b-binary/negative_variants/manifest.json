@@ -1,24 +1,31 @@
 {
+  "negative_count": 5,
+  "policy": "five_partial_pass_near_miss_negatives_per_task",
   "variants": [
     {
-      "id": "neg_001_zero",
       "description": "Drives zero outputs and therefore fails the stable-sample semantic contract.",
+      "id": "neg_001_zero",
       "path": "negative_variants/neg_001_zero/clocked_dac_4b_binary.va"
     },
     {
-      "id": "neg_002_no_midrise_offset",
       "description": "Omits the half-LSB midrise offset.",
+      "id": "neg_002_no_midrise_offset",
       "path": "negative_variants/neg_002_no_midrise_offset/clocked_dac_4b_binary.va"
     },
     {
-      "id": "neg_003_reversed_bit_weights",
       "description": "Reverses the source bit weights.",
+      "id": "neg_003_reversed_bit_weights",
       "path": "negative_variants/neg_003_reversed_bit_weights/clocked_dac_4b_binary.va"
     },
     {
-      "id": "neg_004_falling_edge_update",
       "description": "Updates on falling clock edges instead of rising edges.",
+      "id": "neg_004_falling_edge_update",
       "path": "negative_variants/neg_004_falling_edge_update/clocked_dac_4b_binary.va"
+    },
+    {
+      "description": "Clocked DAC 4b Binary: scales the metric output, preserving the main path while failing measurement checks.",
+      "id": "neg_005_metric_scale_low",
+      "path": "negative_variants/neg_005_metric_scale_low/clocked_dac_4b_binary.va"
     }
   ]
 }

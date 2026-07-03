@@ -1,24 +1,31 @@
 {
+  "negative_count": 5,
+  "policy": "five_partial_pass_near_miss_negatives_per_task",
   "variants": [
     {
-      "id": "neg_001_zero",
       "description": "Drives zero outputs and therefore fails the arithmetic/state contract.",
+      "id": "neg_001_zero",
       "path": "negative_variants/neg_001_zero/full_subtractor_logic.va"
     },
     {
-      "id": "neg_002_ignores_borrow_in",
       "description": "Ignores borrow input and acts as half subtractor.",
+      "id": "neg_002_ignores_borrow_in",
       "path": "negative_variants/neg_002_ignores_borrow_in/full_subtractor_logic.va"
     },
     {
-      "id": "neg_003_wrong_borrow_majority",
       "description": "Uses adder carry majority instead of subtractor borrow.",
+      "id": "neg_003_wrong_borrow_majority",
       "path": "negative_variants/neg_003_wrong_borrow_majority/full_subtractor_logic.va"
     },
     {
-      "id": "neg_004_inverted_diff",
       "description": "Inverts difference output.",
+      "id": "neg_004_inverted_diff",
       "path": "negative_variants/neg_004_inverted_diff/full_subtractor_logic.va"
+    },
+    {
+      "description": "Full Subtractor Logic: scales the metric output, preserving the main path while failing measurement checks.",
+      "id": "neg_005_metric_scale_low",
+      "path": "negative_variants/neg_005_metric_scale_low/full_subtractor_logic.va"
     }
   ]
 }

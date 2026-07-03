@@ -1,24 +1,31 @@
 {
+  "negative_count": 5,
+  "policy": "five_partial_pass_near_miss_negatives_per_task",
   "variants": [
     {
-      "id": "neg_001_zero",
       "description": "Keeps the output at its trivial zero behavior and therefore fails the stable waveform contract.",
+      "id": "neg_001_zero",
       "path": "negative_variants/neg_001_zero/xnor_gate_voltage.va"
     },
     {
-      "id": "neg_002_xor",
       "description": "Implements XOR instead of XNOR.",
+      "id": "neg_002_xor",
       "path": "negative_variants/neg_002_xor/xnor_gate_voltage.va"
     },
     {
-      "id": "neg_003_and_gate",
       "description": "Implements AND instead of XNOR.",
+      "id": "neg_003_and_gate",
       "path": "negative_variants/neg_003_and_gate/xnor_gate_voltage.va"
     },
     {
-      "id": "neg_004_wrong_threshold",
       "description": "Uses a threshold that misclassifies mid-level logic inputs.",
+      "id": "neg_004_wrong_threshold",
       "path": "negative_variants/neg_004_wrong_threshold/xnor_gate_voltage.va"
+    },
+    {
+      "description": "XNOR Gate Voltage: scales the metric output, preserving the main path while failing measurement checks.",
+      "id": "neg_005_metric_scale_low",
+      "path": "negative_variants/neg_005_metric_scale_low/xnor_gate_voltage.va"
     }
   ]
 }

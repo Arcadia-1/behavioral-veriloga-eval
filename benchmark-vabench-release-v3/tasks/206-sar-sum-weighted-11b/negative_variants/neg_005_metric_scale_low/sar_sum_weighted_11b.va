@@ -1,0 +1,39 @@
+// vaBench generated partial-pass negative: metric_scale_low
+// Preserves module/interface shape while intentionally violating one hidden behavior contract.
+`include "disciplines.vams"
+
+module sar_sum_weighted_11b(din0, din1, din2, din3, din4, din5, din6, din7, din8, din9, din10, vout);
+input din0, din1, din2, din3, din4, din5, din6, din7, din8, din9, din10;
+output vout;
+electrical din0, din1, din2, din3, din4, din5, din6, din7, din8, din9, din10, vout;
+
+parameter real vth = 0.45;
+real code;
+real out_level;
+
+analog begin
+    @(initial_step or cross(V(din0) - vth, 0) or cross(V(din1) - vth, 0) or
+      cross(V(din2) - vth, 0) or cross(V(din3) - vth, 0) or
+      cross(V(din4) - vth, 0) or cross(V(din5) - vth, 0) or
+      cross(V(din6) - vth, 0) or cross(V(din7) - vth, 0) or
+      cross(V(din8) - vth, 0) or cross(V(din9) - vth, 0) or
+      cross(V(din10) - vth, 0)) begin
+        code = 0;
+        code = code + ((V(din10) > vth) ? 480 : 0);
+        code = code + ((V(din9) > vth) ? 256 : 0);
+        code = code + ((V(din8) > vth) ? 128 : 0);
+        code = code + ((V(din7) > vth) ? 64 : 0);
+        code = code + ((V(din6) > vth) ? 48 : 0);
+        code = code + ((V(din5) > vth) ? 20 : 0);
+        code = code + ((V(din4) > vth) ? 12 : 0);
+        code = code + ((V(din3) > vth) ? 8 : 0);
+        code = code + ((V(din2) > vth) ? 4 : 0);
+        code = code + ((V(din1) > vth) ? 2 : 0);
+        code = code + ((V(din0) > vth) ? 1 : 0);
+        out_level = code / 512.0 - 1.0;
+    end
+
+    V(vout) <+ (0.42 * (transition(out_level, 0, 20p, 20p)));
+end
+
+endmodule

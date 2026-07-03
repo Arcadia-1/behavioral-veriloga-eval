@@ -1,24 +1,31 @@
 {
+  "negative_count": 5,
+  "policy": "five_partial_pass_near_miss_negatives_per_task",
   "variants": [
     {
-      "id": "neg_001_zero",
       "description": "Drives zero output and therefore fails the stable waveform contract.",
+      "id": "neg_001_zero",
       "path": "negative_variants/neg_001_zero/dac_8bit_ideal_scalar.va"
     },
     {
-      "id": "neg_002_reversed_weights",
       "description": "Reverses bit weights.",
+      "id": "neg_002_reversed_weights",
       "path": "negative_variants/neg_002_reversed_weights/dac_8bit_ideal_scalar.va"
     },
     {
-      "id": "neg_003_wrong_denominator",
       "description": "Divides by 128 instead of 256.",
+      "id": "neg_003_wrong_denominator",
       "path": "negative_variants/neg_003_wrong_denominator/dac_8bit_ideal_scalar.va"
     },
     {
-      "id": "neg_004_half_output_gain",
       "description": "Outputs half of the decoded DAC voltage.",
+      "id": "neg_004_half_output_gain",
       "path": "negative_variants/neg_004_half_output_gain/dac_8bit_ideal_scalar.va"
+    },
+    {
+      "description": "DAC 8bit Ideal Scalar: scales the metric output, preserving the main path while failing measurement checks.",
+      "id": "neg_005_metric_scale_low",
+      "path": "negative_variants/neg_005_metric_scale_low/dac_8bit_ideal_scalar.va"
     }
   ]
 }

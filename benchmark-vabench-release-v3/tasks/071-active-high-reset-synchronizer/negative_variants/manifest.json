@@ -1,35 +1,37 @@
 {
-  "status": "concrete_near_miss_negatives",
   "cases": [
     {
-      "id": "neg_001_zero",
       "artifact": "neg_001_zero/reset_sync_active_high.va",
-      "mutation": "stuck low",
-      "expected_status": "FAIL_SIM_CORRECTNESS"
+      "expected_status": "FAIL_SIM_CORRECTNESS",
+      "id": "neg_001_zero",
+      "mutation": "stuck low"
     },
     {
-      "id": "neg_002_one",
       "artifact": "neg_002_one/reset_sync_active_high.va",
-      "mutation": "stuck high",
-      "expected_status": "FAIL_SIM_CORRECTNESS"
+      "expected_status": "FAIL_SIM_CORRECTNESS",
+      "id": "neg_002_one",
+      "mutation": "stuck high"
     },
     {
-      "id": "neg_003_one_stage",
       "artifact": "neg_003_one_stage/reset_sync_active_high.va",
-      "mutation": "single-stage synchronizer",
-      "expected_status": "FAIL_SIM_CORRECTNESS"
+      "expected_status": "FAIL_SIM_CORRECTNESS",
+      "id": "neg_003_one_stage",
+      "mutation": "single-stage synchronizer"
     },
     {
-      "id": "neg_004_inverted",
       "artifact": "neg_004_inverted/reset_sync_active_high.va",
-      "mutation": "inverts output",
-      "expected_status": "FAIL_SIM_CORRECTNESS"
+      "expected_status": "FAIL_SIM_CORRECTNESS",
+      "id": "neg_004_inverted",
+      "mutation": "inverts output"
     },
     {
-      "id": "neg_005_ignore_reset",
       "artifact": "neg_005_ignore_reset/reset_sync_active_high.va",
-      "mutation": "ignores async assertion",
-      "expected_status": "FAIL_SIM_CORRECTNESS"
+      "expected_status": "FAIL_SIM_CORRECTNESS",
+      "id": "neg_005_ignore_reset",
+      "mutation": "ignores async assertion"
     }
-  ]
+  ],
+  "negative_count": 5,
+  "policy": "five_partial_pass_near_miss_negatives_per_task",
+  "status": "concrete_near_miss_negatives"
 }

@@ -1,24 +1,31 @@
 {
+  "negative_count": 5,
+  "policy": "five_partial_pass_near_miss_negatives_per_task",
   "variants": [
     {
-      "id": "neg_001_zero",
       "description": "Drives zero output and therefore fails the stable waveform contract.",
+      "id": "neg_001_zero",
       "path": "negative_variants/neg_001_zero/absolute_value_behavior.va"
     },
     {
-      "id": "neg_002_identity",
       "description": "Passes the signed input instead of the absolute value.",
+      "id": "neg_002_identity",
       "path": "negative_variants/neg_002_identity/absolute_value_behavior.va"
     },
     {
-      "id": "neg_003_negative_abs",
       "description": "Drives the negative absolute value.",
+      "id": "neg_003_negative_abs",
       "path": "negative_variants/neg_003_negative_abs/absolute_value_behavior.va"
     },
     {
-      "id": "neg_004_half_abs",
       "description": "Uses half of the absolute value.",
+      "id": "neg_004_half_abs",
       "path": "negative_variants/neg_004_half_abs/absolute_value_behavior.va"
+    },
+    {
+      "description": "Absolute Value: scales the metric output, preserving the main path while failing measurement checks.",
+      "id": "neg_005_metric_scale_low",
+      "path": "negative_variants/neg_005_metric_scale_low/absolute_value_behavior.va"
     }
   ]
 }

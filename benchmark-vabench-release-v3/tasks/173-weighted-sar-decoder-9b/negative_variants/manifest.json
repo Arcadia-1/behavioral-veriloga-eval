@@ -1,24 +1,31 @@
 {
+  "negative_count": 5,
+  "policy": "five_partial_pass_near_miss_negatives_per_task",
   "variants": [
     {
-      "id": "neg_001_zero",
       "description": "Drives zero output and therefore fails the stable waveform contract.",
+      "id": "neg_001_zero",
       "path": "negative_variants/neg_001_zero/weighted_sar_decoder_9b.va"
     },
     {
-      "id": "neg_002_unipolar_bits",
       "description": "Maps low bits to 0 instead of bipolar -1.",
+      "id": "neg_002_unipolar_bits",
       "path": "negative_variants/neg_002_unipolar_bits/weighted_sar_decoder_9b.va"
     },
     {
-      "id": "neg_003_missing_msb_weight",
       "description": "Omits the d8 MSB contribution from all weighted sums.",
+      "id": "neg_003_missing_msb_weight",
       "path": "negative_variants/neg_003_missing_msb_weight/weighted_sar_decoder_9b.va"
     },
     {
-      "id": "neg_004_wrong_normalization",
       "description": "Uses the wrong denominator for weighted sums.",
+      "id": "neg_004_wrong_normalization",
       "path": "negative_variants/neg_004_wrong_normalization/weighted_sar_decoder_9b.va"
+    },
+    {
+      "description": "Weighted SAR Decoder 9b: scales the metric output, preserving the main path while failing measurement checks.",
+      "id": "neg_005_metric_scale_low",
+      "path": "negative_variants/neg_005_metric_scale_low/weighted_sar_decoder_9b.va"
     }
   ]
 }
