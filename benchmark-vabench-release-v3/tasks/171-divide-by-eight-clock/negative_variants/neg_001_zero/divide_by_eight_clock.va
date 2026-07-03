@@ -1,9 +1,9 @@
 `include "disciplines.vams"
 
-module divide_by_eight_clock(vin, vout);
-input vin;
+module divide_by_eight_clock(vin, rst, en, vout);
+input vin, rst, en;
 output vout;
-electrical vin, vout;
+electrical vin, rst, en, vout;
 
 analog begin
     V(vout) <+ 0;

@@ -51,7 +51,8 @@ preferred; do not manually expand 256 scalar input ports.
 
 ## Public Smoke
 
-The public smoke test checks interface and simulation viability; hidden tests exercise boundary and invalid cases.
+The public smoke test checks interface and simulation viability. The behavioral
+contract includes boundary thermometer codes and invalid non-cumulative inputs.
 
 ## Output
 

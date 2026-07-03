@@ -9,7 +9,7 @@
 - Domain: `voltage`
 - Target artifact(s): `element_shuffler.va`
 - Visible context: public task, interface, starter artifact, public smoke test, and observable behavior contract only.
-- Hidden evaluator boundary: deterministic checker and EVAS/Spectre validation are external; do not generate checker logic.
+- Output boundary: implement only the requested DUT artifact; validation harnesses and simulator-private hooks are external to the requested output.
 
 ## Form-Specific Requirements
 
@@ -47,7 +47,7 @@ The output sequence must be driven by `clk` and `rst_n` behavior, not by absolut
 
 Use voltage contributions only.
 
-Do not use current contributions, transistor-level devices, `ddt()`, `idt()`, AC/noise analysis, hidden checker logic, or simulator-private side channels.
+Do not use current contributions, transistor-level devices, `ddt()`, `idt()`, AC/noise analysis, private test hooks, or simulator-private side channels.
 
 Smooth output transitions with `transition(...)` or equivalent Verilog-A voltage contribution.
 

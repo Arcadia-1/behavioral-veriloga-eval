@@ -1,9 +1,11 @@
 # Source Offset RDAC Search Flow Audit
 
-- Source: `zhaoh/VA_comparator_offset_calib_rdac.va` from the exact-deduplicated historical Verilog-A corpus.
 - Scenario: combined RDAC code search followed by comparator offset bisection and reference stepping.
-- Import status: certified only after visible compile, EVAS hidden semantic check, Spectre AX hidden semantic check, and EVAS/Spectre parity pass.
+- Import status: certified only after visible compile, EVAS/Spectre semantic validation, and EVAS/Spectre parity pass.
 - Evaluation: stable sampled behavior from `tran.csv`; raw simulator timestep equality is not used.
-- Evidence:
-  - `WORK/source-import-batch19-evas/219-offset-rdac-search-flow`
-  - `WORK/source-import-batch19-spectre/219-offset-rdac-search-flow`
+
+## Digital/Control/Logic Closeout Review
+
+- Gate 1 status: `l2_core_ready`.
+- Rationale: this is a composed calibration/search flow that combines RDAC refinement, bounded offset search, and reference stepping.
+- Counting recommendation: retain as calibration L2/core flow, separate from single encoder or DFF support rows.

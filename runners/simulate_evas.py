@@ -12251,13 +12251,16 @@ def check_v3_clocked_four_input_mux(rows: list[dict[str, float]]) -> tuple[bool,
 
 
 def check_v3_divide_by_eight_clock(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    required = {"time", "vin", "vout"}
+    required = {"time", "vin", "rst", "en", "vout"}
     if not rows or not required.issubset(rows[0]):
-        return False, "missing time/vin/vout"
+        return False, "missing time/vin/rst/en/vout"
     return _sample_many(
         rows,
         {
+            "rst": [(0.5, 0.9), (2.0, 0.0), (18.5, 0.9), (20.0, 0.0)],
+            "en": [(10.0, 0.9), (14.0, 0.0), (16.0, 0.9)],
             "vout": [
+                (0.5, 0.9),
                 (2.0, 0.9),
                 (4.0, 0.9),
                 (6.0, 0.9),
@@ -12266,7 +12269,10 @@ def check_v3_divide_by_eight_clock(rows: list[dict[str, float]]) -> tuple[bool, 
                 (12.0, 0.0),
                 (14.0, 0.0),
                 (16.0, 0.0),
-                (18.0, 0.9),
+                (17.5, 0.0),
+                (18.5, 0.9),
+                (20.0, 0.9),
+                (22.0, 0.9),
             ]
         },
         tol=0.08,
@@ -13247,12 +13253,16 @@ def check_v3_pipe15_data_align(rows: list[dict[str, float]]) -> tuple[bool, str]
 
 
 def check_v3_clocked_mux4_sampler(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    required = {"time", "dsel0", "dsel1", "din0", "din1", "din2", "din3", "clks", "dout"}
+    required = {"time", "dsel0", "dsel1", "din0", "din1", "din2", "din3", "update", "rst", "clks", "dout"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing clocked mux4 sampler signals"
     return _sample_many(
         rows,
-        {"dout": [(0.5, 0.0), (1.3, 0.12), (3.3, 0.34), (5.3, 0.61), (7.3, 0.83), (8.5, 0.83)]},
+        {
+            "update": [(1.3, 0.9), (3.3, 0.0), (5.3, 0.9), (7.3, 0.0), (9.3, 0.9)],
+            "rst": [(0.5, 0.9), (1.3, 0.0), (7.0, 0.9), (8.0, 0.0)],
+            "dout": [(0.5, 0.12), (1.3, 0.34), (3.3, 0.34), (5.3, 0.61), (7.3, 0.12), (9.3, 0.83)],
+        },
         tol=0.015,
     )
 
@@ -13320,18 +13330,19 @@ def check_v3_offset_rdac_search_flow(rows: list[dict[str, float]]) -> tuple[bool
 
 
 def check_v3_spi_shift_mux(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    required = {"time", "out0", "out1", "out2", "out3", "out4", "out5", "out6", "out7", "sdo", "scko"}
+    required = {"time", "rst", "out0", "out1", "out2", "out3", "out4", "out5", "out6", "out7", "sdo", "scko"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing spi shift mux outputs"
     return _sample_many(
         rows,
         {
-            "out7": [(0.2, 0.9), (1.3, 0.0), (2.3, 0.9), (6.3, 0.9)],
-            "out6": [(0.2, 0.0), (1.3, 0.9), (3.3, 0.0), (5.3, 0.9)],
-            "out5": [(0.2, 0.9), (2.3, 0.0), (4.3, 0.9), (6.3, 0.9)],
-            "out4": [(0.2, 0.9), (1.3, 0.0), (3.3, 0.9), (5.3, 0.9)],
-            "out0": [(0.2, 0.0), (1.3, 0.9), (3.3, 0.0), (5.3, 0.9)],
-            "sdo": [(0.2, 0.9), (1.3, 0.0), (2.3, 0.9), (5.3, 0.0)],
+            "rst": [(4.7, 0.9), (5.3, 0.0)],
+            "out7": [(0.2, 0.9), (1.3, 0.0), (2.3, 0.9), (4.7, 0.9), (5.3, 0.0), (6.3, 0.9)],
+            "out6": [(0.2, 0.0), (1.3, 0.9), (3.3, 0.0), (4.7, 0.0), (5.3, 0.9)],
+            "out5": [(0.2, 0.9), (2.3, 0.0), (4.3, 0.9), (4.7, 0.9), (5.3, 0.9), (6.3, 0.0)],
+            "out4": [(0.2, 0.9), (1.3, 0.0), (3.3, 0.9), (4.7, 0.9), (5.3, 0.0)],
+            "out0": [(0.2, 0.0), (1.3, 0.9), (3.3, 0.0), (4.7, 0.0), (5.3, 0.9)],
+            "sdo": [(0.2, 0.9), (1.3, 0.0), (2.3, 0.9), (4.7, 0.9), (5.3, 0.0), (6.3, 0.9)],
             "scko": [(0.2, 0.0), (1.3, 0.9), (2.3, 0.0), (3.3, 0.9)],
         },
         tol=0.08,

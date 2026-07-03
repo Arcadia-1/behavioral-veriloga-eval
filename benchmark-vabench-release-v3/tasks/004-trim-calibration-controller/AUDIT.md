@@ -8,8 +8,8 @@ Status: formal candidate for EVAS-based release-v3 evaluation.
 
 - Useful scenario: pass. A voltage-domain trim accumulator is a common calibration-control primitive for behavioral data-converter and mixed-signal models.
 - Reasonable task: pass. The public prompt fixes module name, scalar port order, voltage logic threshold, reset value, step size, clamp range, rising-edge update rule, and voltage-only Verilog-A implementation constraints.
-- Complete tests: candidate pass. The visible testbench checks syntax, reset, and basic increment/decrement behavior. The hidden testbench drives a deterministic PWL clock sequence that covers synchronous reset, repeated increments, repeated decrements through midscale to the lower clamp, and recovery after direction reversal.
-- Fair evaluation: pass. Hidden checks are stricter stimulus points for requirements stated in `instruction.md`; the visible testbench does not expose the full clamp and recovery sequence.
+- Complete tests: candidate pass. The visible testbench checks syntax, reset, and basic increment/decrement behavior. Private validation drives a deterministic PWL clock sequence that covers synchronous reset, repeated increments, repeated decrements through midscale to the lower clamp, and recovery after direction reversal.
+- Fair evaluation: pass. Private validation checks stricter stimulus points for requirements stated in `instruction.md`; the visible testbench does not expose the full clamp and recovery sequence.
 
 ## Checker Contract
 
@@ -26,7 +26,7 @@ Scoring logic:
 ## Evidence
 
 - Public visible SCS: `test_visible/visible.scs`.
-- Hidden formal SCS: `test_hidden/hidden.scs`.
+- Private validation SCS: validation deck under the task harness.
 - Golden reference: `solution/cdac_calibration.va`.
 - Concrete negative variants: 5 cases under `negative_variants/neg_*`, described by `negative_variants/manifest.json`.
 
@@ -45,3 +45,9 @@ Negative coverage:
 - Paper-facing certification still needs fresh EVAS/Spectre correlation or an explicit EVAS-only label.
 
 Certification status: certified as an EVAS formal candidate on 2026-06-24.
+
+## Digital/Control/Logic Closeout Review
+
+- Gate 1 status: `independent_l1_ready`.
+- Rationale: voltage-domain calibration accumulator with reset, signed error update, clamp range, and recovery behavior.
+- Counting recommendation: retain as calibration/control L1.

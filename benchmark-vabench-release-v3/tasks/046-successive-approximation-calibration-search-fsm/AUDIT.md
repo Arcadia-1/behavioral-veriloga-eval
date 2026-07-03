@@ -2,7 +2,7 @@
 
 ## Scope
 
-Task boundary is one Verilog-A DUT, `successive_approximation_calibration_search_fsm.va`, plus EVAS/Spectre-compatible `.scs` testbenches. Agent-visible materials are limited to `instruction.md`, `starter/`, and `test_visible/`. Evaluator-only materials are `solution/`, `test_hidden/`, `test_harness/`, and `negative_variants/`. No `meta.json` is present.
+Task boundary is one Verilog-A DUT, `successive_approximation_calibration_search_fsm.va`, plus EVAS/Spectre-compatible `.scs` testbenches. Agent-visible materials are limited to `instruction.md`, `starter/`, and `test_visible/`. Private validation materials include the reference solution, validation decks, harness code, and negative variants. No `meta.json` is present.
 
 ## Four Standards
 
@@ -15,7 +15,7 @@ Task boundary is one Verilog-A DUT, `successive_approximation_calibration_search
 
 - Checker id: `v3_046_successive_approximation_calibration_search_fsm`
 - Runner mapping: `CHECKS["v3_046_successive_approximation_calibration_search_fsm"] = check_release_sar_calibration_fsm`
-- EVAS/Python-engine hidden gold smoke: `PASS`
+- EVAS/Python-engine gold semantic validation: `PASS`
 - Concrete negative recertification: 5/5 expected failures, all `FAIL_SIM_CORRECTNESS` with simulator `returncode=0`
 - Visible compile/sim smoke: `COMPILE_SIM_OK`
 
