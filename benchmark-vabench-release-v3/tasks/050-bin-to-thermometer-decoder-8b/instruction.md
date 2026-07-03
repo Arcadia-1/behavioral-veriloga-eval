@@ -1,38 +1,51 @@
 # Bin To Thermometer Decoder 8b
 
-Implement one Verilog-A DUT file named `bin_to_therm_8b.va`.
+## Task Contract
 
-The DUT is a voltage-domain utility decoder used by analog/mixed-signal testbenches to expand an 8-bit binary code into a 256-line thermometer bus.
+Implement `bin_to_therm_8b.va`, a voltage-domain utility decoder used by AMS testbenches and data-converter support models to expand an 8-bit binary word into a cumulative thermometer bus.
 
-## Interface
+## Form-Specific Requirements
 
-Define module `bin_to_therm_8b` with vector electrical ports in this exact order:
+- This is a DUT/support-component task: implement only the requested Verilog-A source artifact.
+- Do not generate a Spectre testbench or checker.
+- Preserve the public module name, port order, port directions, and parameter names.
+- Treat any public validation harness as an observable use case, not as values to hard-code into the DUT.
+
+## Public Verilog-A Interface
 
 ```verilog
-module bin_to_therm_8b(
-    input electrical en,
-    input electrical [7:0] b,
-    output electrical [255:0] th
-);
+module bin_to_therm_8b(en, b, th);
+    input en;
+    input [7:0] b;
+    output [255:0] th;
 ```
 
-Use `vdd=0.9`, `vth=0.45`, and `tr=20p` unless compatible parameters are needed.
+All ports are electrical.
+
+## Public Parameter Contract
+
+| Parameter | Default | Contract |
+| --- | ---: | --- |
+| `vdd` | `0.9` | Logic-high output voltage. |
+| `vth` | `0.45` | Decision threshold for voltage-coded digital inputs. |
+| `tr` | `20p` | Output transition rise/fall smoothing time. |
 
 ## Required Behavior
 
-Treat `en` and `b[7:0]` as 0/0.9 V logic using `vth`. Decode `b[7:0]` as an unsigned integer from 0 to 255, where `b[7]` is the most significant bit.
+- Treat `en` and `b[7:0]` as voltage-coded logic inputs using `vth`.
+- Decode `b[7:0]` as an unsigned integer from 0 to 255, with `b[7]` as the most significant bit.
+- When `en` is high, drive exactly `code` thermometer outputs high as a prefix from `th[0]` upward: `th[0]` through `th[code-1]` high and all higher bits low.
+- Code 0 drives every thermometer output low. Code 255 drives `th[0]` through `th[254]` high and `th[255]` low.
+- When `en` is low, drive every thermometer output low.
 
-When `en` is high, drive exactly `code` thermometer outputs high. The high outputs must be cumulative from the low end of the bus: `th[0]` through `th[code-1]` are high, and all higher bits are low. Code 0 drives all thermometer outputs low. Code 255 drives `th[0]` through `th[254]` high and `th[255]` low.
+## Modeling Constraints
 
-When `en` is low, drive all thermometer outputs low regardless of the binary code.
+- Keep the model pure voltage-domain behavioral Verilog-A.
+- Treat voltage-coded logic low as near 0 V and logic high as near `vdd`.
+- Use `transition(...)` or equivalent smooth voltage contributions for driven logic outputs.
+- Do not instantiate transistor-level devices, use current-branch contributions, AC/noise analysis, checker logic, private test hooks, or simulator-private side channels.
+- Compact loop-based Verilog-A is preferred; do not manually expand 256 scalar output assignments unless required by the simulator subset.
 
-Drive high outputs near `vdd` and low outputs near 0 V using smooth Verilog-A contributions such as `transition(...)`. Compact loop-based Verilog-A is preferred; do not manually expand 256 scalar output ports.
+## Output Contract
 
-## Public Smoke
-
-The public smoke test checks interface and simulation viability. The behavioral
-contract includes enable gating and multiple binary codes.
-
-## Output
-
-Return exactly one source artifact named `bin_to_therm_8b.va`. Do not generate a Spectre testbench.
+Return exactly one complete Verilog-A source file named `bin_to_therm_8b.va`.

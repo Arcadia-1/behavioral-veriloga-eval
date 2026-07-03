@@ -1,28 +1,49 @@
 # Config Shift Register 64b
 
-Implement one Verilog-A DUT file named `config_shift_reg_64b.va`.
+## Task Contract
 
-## Interface
+Implement `config_shift_reg_64b.va`, a clocked serial-to-parallel configuration loader for voltage-coded AMS support models.
 
-Define module `config_shift_reg_64b` with vector electrical output in this exact order:
+## Form-Specific Requirements
+
+- This is a DUT/support-component task: implement only the requested Verilog-A source artifact.
+- Do not generate a Spectre testbench or checker.
+- Preserve the public module name, port order, port directions, and parameter names.
+- Treat any public validation harness as an observable use case, not as values to hard-code into the DUT.
+
+## Public Verilog-A Interface
 
 ```verilog
-module config_shift_reg_64b(
-    input electrical clk,
-    input electrical rst_n,
-    input electrical serial_in,
-    output electrical [63:0] q
-);
+module config_shift_reg_64b(clk, rst_n, serial_in, q);
+    input clk, rst_n, serial_in;
+    output [63:0] q;
 ```
 
-Use `vdd=0.9`, `vth=0.45`, and `tr=20p` unless compatible parameters are needed.
+All ports are electrical.
+
+## Public Parameter Contract
+
+| Parameter | Default | Contract |
+| --- | ---: | --- |
+| `vdd` | `0.9` | Logic-high output voltage. |
+| `vth` | `0.45` | Decision threshold for voltage-coded digital inputs. |
+| `tr` | `20p` | Output transition rise/fall smoothing time. |
 
 ## Required Behavior
 
-Treat `clk`, `rst_n`, and `serial_in` as 0/0.9 V logic using `vth`. On each rising crossing of `clk`, if `rst_n` is high, shift `serial_in` into `q[0]`, previous `q[0]` into `q[1]`, and so on through `q[63]`. If `rst_n` is low on a rising clock edge, clear all register bits.
+- Treat `clk`, `rst_n`, and `serial_in` as voltage-coded logic using `vth`.
+- On each rising `clk` crossing, clear all register bits if `rst_n` is low.
+- Otherwise shift `serial_in` into `q[0]`, previous `q[0]` into `q[1]`, and so on through `q[63]`.
+- Drive `q[63:0]` as the current parallel register state.
 
-Drive high outputs near `vdd` and low outputs near 0 V using smooth Verilog-A contributions. Compact loop-based Verilog-A is preferred; do not manually expand 64 scalar output ports.
+## Modeling Constraints
 
-## Output
+- Keep the model pure voltage-domain behavioral Verilog-A.
+- Treat voltage-coded logic low as near 0 V and logic high as near `vdd`.
+- Use `transition(...)` or equivalent smooth voltage contributions for driven logic outputs.
+- Do not instantiate transistor-level devices, use current-branch contributions, AC/noise analysis, checker logic, private test hooks, or simulator-private side channels.
+- Keep register state in integer or real state variables updated by clock events; avoid combinational rewrites that ignore history.
 
-Return exactly `config_shift_reg_64b.va`. Do not generate a Spectre testbench.
+## Output Contract
+
+Return exactly one complete Verilog-A source file named `config_shift_reg_64b.va`.

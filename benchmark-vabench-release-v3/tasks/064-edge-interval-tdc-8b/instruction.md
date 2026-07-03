@@ -1,18 +1,48 @@
 # Edge Interval TDC 8b
 
-Implement `edge_interval_tdc_8b.va` in Verilog-A.
+## Task Contract
 
-## Interface
+Implement `edge_interval_tdc_8b.va`, a testbench utility that measures the elapsed time between voltage-coded start and stop edges and reports the result as an 8-bit code.
+
+## Form-Specific Requirements
+
+- This is a DUT/support-component task: implement only the requested Verilog-A source artifact.
+- Do not generate a Spectre testbench or checker.
+- Preserve the public module name, port order, port directions, and parameter names.
+- Treat any public validation harness as an observable use case, not as values to hard-code into the DUT.
+
+## Public Verilog-A Interface
 
 ```verilog
 module edge_interval_tdc_8b(start, stop, valid, code0, code1, code2, code3, code4, code5, code6, code7);
 ```
 
-Inputs: `start, stop`.
-Outputs: `valid, code0, code1, code2, code3, code4, code5, code6, code7`.
+Inputs are `start` and `stop`. Outputs are `valid` and `code0` through `code7`. All ports are electrical.
+
+## Public Parameter Contract
+
+| Parameter | Default | Contract |
+| --- | ---: | --- |
+| `vdd` | `0.9` | Logic-high output voltage. |
+| `vth` | `0.45` | Decision threshold for voltage-coded digital inputs. |
+| `tr` | `20p` | Output transition rise/fall smoothing time. |
 
 ## Required Behavior
 
-On each rising `start`, arm the measurement. On the next rising `stop`, assert `valid` and output `code[7:0] = round((stop_time - start_time) / 1 ns)`, saturated to 0..255.
+- On each rising `start` crossing, arm a new measurement, store the start time, and clear `valid`.
+- On the next rising `stop` crossing after an armed start, compute `round((stop_time - start_time) / 1 ns)`.
+- Saturate the code to the inclusive range 0 to 255.
+- Drive `code0` as the least significant bit through `code7` as the most significant bit, and assert `valid` after a completed measurement.
+- Ignore unarmed `stop` edges.
 
-Use logic threshold 0.45 V for digital decisions, drive high outputs to 0.9 V and low outputs to 0 V, and use short transition edges so EVAS transient traces are stable away from switching instants.
+## Modeling Constraints
+
+- Keep the model pure voltage-domain behavioral Verilog-A.
+- Treat voltage-coded logic low as near 0 V and logic high as near `vdd`.
+- Use `transition(...)` or equivalent smooth voltage contributions for driven logic outputs.
+- Do not instantiate transistor-level devices, use current-branch contributions, AC/noise analysis, checker logic, private test hooks, or simulator-private side channels.
+- Use event state for the armed flag, start time, result code, and validity flag.
+
+## Output Contract
+
+Return exactly one complete Verilog-A source file named `edge_interval_tdc_8b.va`.

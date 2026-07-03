@@ -1,18 +1,47 @@
 # Event Counter Windowed 16b
 
-Implement `event_counter_windowed_16b.va` in Verilog-A.
+## Task Contract
 
-## Interface
+Implement `event_counter_windowed_16b.va`, a voltage-domain utility that counts event edges inside an enable window and reports the final count.
+
+## Form-Specific Requirements
+
+- This is a DUT/support-component task: implement only the requested Verilog-A source artifact.
+- Do not generate a Spectre testbench or checker.
+- Preserve the public module name, port order, port directions, and parameter names.
+- Treat any public validation harness as an observable use case, not as values to hard-code into the DUT.
+
+## Public Verilog-A Interface
 
 ```verilog
 module event_counter_windowed_16b(gate, event, done, count0, count1, count2, count3, count4, count5, count6, count7, count8, count9, count10, count11, count12, count13, count14, count15);
 ```
 
-Inputs: `gate, event`.
-Outputs: `done, count0, count1, count2, count3, count4, count5, count6, count7, count8, count9, count10, count11, count12, count13, count14, count15`.
+Inputs are `gate` and `event`. Outputs are `done` and `count0` through `count15`. All ports are electrical.
+
+## Public Parameter Contract
+
+| Parameter | Default | Contract |
+| --- | ---: | --- |
+| `vdd` | `0.9` | Logic-high output voltage. |
+| `vth` | `0.45` | Decision threshold for voltage-coded digital inputs. |
+| `tr` | `20p` | Output transition rise/fall smoothing time. |
 
 ## Required Behavior
 
-Count rising edges on `event` only while `gate` is high. Clear the count on each rising `gate`; after falling `gate`, hold the count and assert `done`.
+- On a rising `gate` crossing, clear the counter, mark the window active, and drive `done` low.
+- Count rising `event` crossings only while the window is active and `gate` is high.
+- On a falling `gate` crossing, close the window, hold the count, and assert `done`.
+- Drive `count0` as the least significant bit through `count15` as the most significant bit.
 
-Use logic threshold 0.45 V for digital decisions, drive high outputs to 0.9 V and low outputs to 0 V, and use short transition edges so EVAS transient traces are stable away from switching instants.
+## Modeling Constraints
+
+- Keep the model pure voltage-domain behavioral Verilog-A.
+- Treat voltage-coded logic low as near 0 V and logic high as near `vdd`.
+- Use `transition(...)` or equivalent smooth voltage contributions for driven logic outputs.
+- Do not instantiate transistor-level devices, use current-branch contributions, AC/noise analysis, checker logic, private test hooks, or simulator-private side channels.
+- Use event state for the active-window flag, count, and done flag.
+
+## Output Contract
+
+Return exactly one complete Verilog-A source file named `event_counter_windowed_16b.va`.
