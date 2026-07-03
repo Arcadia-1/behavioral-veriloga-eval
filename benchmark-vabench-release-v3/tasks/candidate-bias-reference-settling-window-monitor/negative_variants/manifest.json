@@ -1,0 +1,44 @@
+{
+  "negative_variants": [
+    {
+      "id": "neg_001_always_valid",
+      "description": "Reference Settling Window Monitor: asserts valid regardless of settling state.",
+      "files": [
+        "neg_001_always_valid/reference_settling_window_monitor.va"
+      ],
+      "expected": "compile_but_fail_full_behavior"
+    },
+    {
+      "id": "neg_002_no_settle_window",
+      "description": "Reference Settling Window Monitor: asserts valid after a single in-window sample.",
+      "files": [
+        "neg_002_no_settle_window/reference_settling_window_monitor.va"
+      ],
+      "expected": "compile_but_fail_full_behavior"
+    },
+    {
+      "id": "neg_003_fixed_target",
+      "description": "Reference Settling Window Monitor: compares against a fixed target instead of the target port.",
+      "files": [
+        "neg_003_fixed_target/reference_settling_window_monitor.va"
+      ],
+      "expected": "compile_but_fail_full_behavior"
+    },
+    {
+      "id": "neg_004_ignore_reset",
+      "description": "Reference Settling Window Monitor: does not force validity and settling progress low during reset.",
+      "files": [
+        "neg_004_ignore_reset/reference_settling_window_monitor.va"
+      ],
+      "expected": "compile_but_fail_full_behavior"
+    },
+    {
+      "id": "neg_005_wrong_err_metric",
+      "description": "Reference Settling Window Monitor: reports a signed/unscaled error metric.",
+      "files": [
+        "neg_005_wrong_err_metric/reference_settling_window_monitor.va"
+      ],
+      "expected": "compile_but_fail_full_behavior"
+    }
+  ]
+}

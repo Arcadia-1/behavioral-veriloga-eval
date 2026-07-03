@@ -10384,6 +10384,186 @@
         "neg_004_rounds_ideal_code",
         "neg_005_wrong_code_span"
       ]
+    },
+    "candidate-bias-supply-bias-validity-gate": {
+      "id": "v3_candidate_bias_supply_bias_validity_gate",
+      "form": "dut",
+      "level": "L1",
+      "difficulty": "D2",
+      "category": "bias_reference_power_management",
+      "target": [
+        "supply_bias_validity_gate.va"
+      ],
+      "tier": "bias-reference-power-replacement-candidate",
+      "title": "Supply Bias Validity Gate",
+      "syntax_focus": "Combine supply window, local-ground displacement, vss-referenced bias validity, enable, and power-down into voltage-coded validity outputs.",
+      "certification_scope": "materialized_replacement_candidate_not_final_numbered_benchmark",
+      "replacement_policy": "Non-numbered replacement candidate only. If accepted as scored benchmark content, upstream should assign a replacement slot inside the original 001-300 benchmark surface or otherwise keep it outside the scored denominator.",
+      "description": "Reusable voltage-domain gate that reports valid analog supply/bias conditions and downstream drive enable.",
+      "required_behavior": [
+        "Measure supply as V(vdd,vss) and require it to fall inside the public min/max supply window.",
+        "Reject operation when the local vss rail is displaced beyond the public ground limit.",
+        "Measure bias as V(vbias,vss) and require it to fall inside the public bias window.",
+        "Drive ok high only for valid supply, ground, and bias conditions.",
+        "Drive gated high only when ok is high, en is high, and pd is low."
+      ],
+      "visible_tests": [
+        "visible.scs exercises nominal operation, undervoltage, high-supply fault, bias fault, ground displacement, and power-down gating."
+      ],
+      "hidden_tests": [
+        "hidden.scs changes the supply, vss offset, bias, enable, and power-down sequence to check vss-referenced bias behavior."
+      ],
+      "negative_variants": [
+        "neg_001_always_valid",
+        "neg_002_ignore_bias",
+        "neg_003_ignore_enable_powerdown",
+        "neg_004_absolute_bias_reference",
+        "neg_005_ignore_high_supply_fault"
+      ]
+    },
+    "candidate-bias-power-mode-supply-current-metric": {
+      "id": "v3_candidate_bias_power_mode_supply_current_metric",
+      "form": "dut",
+      "level": "L1",
+      "difficulty": "D2",
+      "category": "bias_reference_power_management",
+      "target": [
+        "power_mode_supply_current_metric.va"
+      ],
+      "tier": "bias-reference-power-replacement-candidate",
+      "title": "Power Mode Supply Current Metric",
+      "syntax_focus": "Expose supply-current demand as a voltage-coded metric that scales with supply, mode, load, enable, and power-down state.",
+      "certification_scope": "materialized_replacement_candidate_not_final_numbered_benchmark",
+      "replacement_policy": "Non-numbered replacement candidate only. If accepted as scored benchmark content, upstream should assign a replacement slot inside the original 001-300 benchmark surface or otherwise keep it outside the scored denominator.",
+      "description": "Voltage-domain macro-model metric for supply-current accounting across operating mode, load demand, and power state.",
+      "required_behavior": [
+        "Scale the metric by V(vdd,vss)/vnom with clipping.",
+        "Use the power-down metric whenever en is low or pd is high.",
+        "Use a mode-dependent active quiescent metric while enabled.",
+        "Add a clipped load-dependent term during active operation.",
+        "Drive isup_metric with smooth voltage-domain behavior only."
+      ],
+      "visible_tests": [
+        "visible.scs exercises active low-current and high-current modes, supply scaling, load changes, disable, and power-down."
+      ],
+      "hidden_tests": [
+        "hidden.scs uses different rail, mode, load, enable, and power-down sequences including a vss offset."
+      ],
+      "negative_variants": [
+        "neg_001_constant_metric",
+        "neg_002_ignore_supply_scaling",
+        "neg_003_ignore_powerdown",
+        "neg_004_ignore_mode",
+        "neg_005_ignore_load"
+      ]
+    },
+    "candidate-bias-dynamic-supply-level-driver": {
+      "id": "v3_candidate_bias_dynamic_supply_level_driver",
+      "form": "dut",
+      "level": "L1",
+      "difficulty": "D2",
+      "category": "bias_reference_power_management",
+      "target": [
+        "dynamic_supply_level_driver.va"
+      ],
+      "tier": "bias-reference-power-replacement-candidate",
+      "title": "Dynamic Supply Level Driver",
+      "syntax_focus": "Use local supply rails for both input thresholding and output level generation.",
+      "certification_scope": "materialized_replacement_candidate_not_final_numbered_benchmark",
+      "replacement_policy": "Non-numbered replacement candidate only. If accepted as scored benchmark content, upstream should assign a replacement slot inside the original 001-300 benchmark surface or otherwise keep it outside the scored denominator.",
+      "description": "Electrical level driver whose input decision and output levels track the local vdd/vss rails and fall back under low supply.",
+      "required_behavior": [
+        "Normalize din relative to the local V(vdd,vss) range above vss.",
+        "Drive the output low or high relative to the local rails while the supply is valid.",
+        "Drive the local low level when V(vdd,vss) is below vsup_min.",
+        "Handle nonzero vss offsets correctly.",
+        "Smooth output transitions with transition()."
+      ],
+      "visible_tests": [
+        "visible.scs exercises fixed and shifted local rails, valid and invalid supply intervals, and low/high input decisions."
+      ],
+      "hidden_tests": [
+        "hidden.scs changes rail amplitudes, vss offset, input levels, and under-supply intervals."
+      ],
+      "negative_variants": [
+        "neg_001_fixed_output_rails",
+        "neg_002_absolute_input_threshold",
+        "neg_003_ignore_vss_offset",
+        "neg_004_drive_when_supply_invalid",
+        "neg_005_inverted_logic"
+      ]
+    },
+    "candidate-bias-power-enable-turnon-delay-gate": {
+      "id": "v3_candidate_bias_power_enable_turnon_delay_gate",
+      "form": "dut",
+      "level": "L1",
+      "difficulty": "D2",
+      "category": "bias_reference_power_management",
+      "target": [
+        "power_enable_turnon_delay_gate.va"
+      ],
+      "tier": "bias-reference-power-replacement-candidate",
+      "title": "Power Enable Turn-On Delay Gate",
+      "syntax_focus": "Require consecutive valid sampled supply, bias, enable, and power-down conditions before releasing downstream drive.",
+      "certification_scope": "materialized_replacement_candidate_not_final_numbered_benchmark",
+      "replacement_policy": "Non-numbered replacement candidate only. If accepted as scored benchmark content, upstream should assign a replacement slot inside the original 001-300 benchmark surface or otherwise keep it outside the scored denominator.",
+      "description": "Power-up sequencing gate that exposes instantaneous validity and delayed drive-enable release for a biased analog block.",
+      "required_behavior": [
+        "Sample supply, bias, enable, and power-down conditions on rising clock crossings.",
+        "Measure supply as V(vdd,vss) and bias as V(vbias,vss).",
+        "Drive pwr_ok high only for sampled valid supply, bias, enable, and non-power-down state.",
+        "Accumulate consecutive valid sampled updates and clear the accumulator on any sampled invalid condition.",
+        "Assert drive_en only after the public turn-on delay count and drive delay_mon as bounded voltage-coded progress."
+      ],
+      "visible_tests": [
+        "visible.scs exercises nominal release, supply undervoltage, bias fault, disabled interval, and power-down interval."
+      ],
+      "hidden_tests": [
+        "hidden.scs changes clock phase, local vss offset, high-supply fault, low-bias fault, enable drop, and power-down interval."
+      ],
+      "negative_variants": [
+        "neg_001_no_turnon_delay",
+        "neg_002_ignore_bias_validity",
+        "neg_003_ignore_powerdown",
+        "neg_004_no_fault_reset",
+        "neg_005_short_delay"
+      ]
+    },
+    "candidate-bias-reference-settling-window-monitor": {
+      "id": "v3_candidate_bias_reference_settling_window_monitor",
+      "form": "dut",
+      "level": "L2",
+      "difficulty": "D2",
+      "category": "bias_reference_power_management",
+      "target": [
+        "reference_settling_window_monitor.va"
+      ],
+      "tier": "bias-reference-power-replacement-candidate",
+      "title": "Reference Settling Window Monitor",
+      "syntax_focus": "Sample absolute reference error against a target, track consecutive in-window settling, and expose a bounded error metric.",
+      "certification_scope": "materialized_replacement_candidate_not_final_numbered_benchmark",
+      "replacement_policy": "Non-numbered replacement candidate only. If accepted as scored benchmark content, upstream should assign a replacement slot inside the original 001-300 benchmark surface or otherwise keep it outside the scored denominator.",
+      "description": "Measurement-style monitor for deciding when a reference or bias voltage has remained settled inside a target window.",
+      "required_behavior": [
+        "Sample absolute error between ref and target on rising clock crossings.",
+        "Drive err_metric as clipped absolute error scaled by the public full-scale error.",
+        "Clear settling state while active-high reset is asserted.",
+        "Accumulate consecutive in-window samples and clear the accumulator on any out-of-window sample.",
+        "Assert valid only after the public settling count and drive settle_mon as bounded voltage-coded progress."
+      ],
+      "visible_tests": [
+        "visible.scs exercises reset, target changes, out-of-window intervals, valid assertion, and valid clearing."
+      ],
+      "hidden_tests": [
+        "hidden.scs changes clock phase, reset timing, target levels, and settling/out-of-window intervals."
+      ],
+      "negative_variants": [
+        "neg_001_always_valid",
+        "neg_002_no_settle_window",
+        "neg_003_fixed_target",
+        "neg_004_ignore_reset",
+        "neg_005_wrong_err_metric"
+      ]
     }
   }
 }

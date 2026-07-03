@@ -1,0 +1,20 @@
+`include "disciplines.vams"
+
+module power_mode_supply_current_metric(vdd, vss, en, pd, mode, load, isup_metric);
+input vdd, vss, en, pd, mode, load;
+output isup_metric;
+electrical vdd, vss, en, pd, mode, load, isup_metric;
+
+parameter real vth = 0.45;
+parameter real vhi = 0.9;
+parameter real vnom = 0.9;
+parameter real iq0 = 0.08;
+parameter real iq1 = 0.14;
+parameter real ipd = 0.01;
+parameter real load_gain = 0.20;
+parameter real tr = 80p;
+
+analog begin
+    // Implement instruction.md behavior here.
+end
+endmodule

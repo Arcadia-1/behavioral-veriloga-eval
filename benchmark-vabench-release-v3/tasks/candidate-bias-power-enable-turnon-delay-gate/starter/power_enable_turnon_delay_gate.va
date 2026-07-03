@@ -1,0 +1,20 @@
+`include "disciplines.vams"
+
+module power_enable_turnon_delay_gate(clk, vdd, vss, vbias, en, pd, pwr_ok, drive_en, delay_mon);
+input clk, vdd, vss, vbias, en, pd;
+output pwr_ok, drive_en, delay_mon;
+electrical clk, vdd, vss, vbias, en, pd, pwr_ok, drive_en, delay_mon;
+
+parameter real vth = 0.45;
+parameter real vhi = 0.9;
+parameter real vdd_min = 0.75;
+parameter real vdd_max = 1.05;
+parameter real vbias_min = 0.25;
+parameter real vbias_max = 0.75;
+parameter integer delay_cycles = 3;
+parameter real tr = 60p;
+
+analog begin
+    // Implement instruction.md behavior here.
+end
+endmodule
