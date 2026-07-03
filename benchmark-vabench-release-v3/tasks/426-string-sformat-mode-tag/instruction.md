@@ -1,10 +1,14 @@
 # String Sformat Mode Tag
 
+## Task Contract
+
 Implement one behavioral Verilog-A source file named `string_sformat_mode_tag.va`.
 
-## Interface
+## Form-Specific Requirements
 
-Use this exact module interface:
+Use `$sformat` to generate a mode-tagged behavioral label. For Spectre compatibility, call `$sformat` in task form with a destination string, for example `$sformat(label_q, "mode=%0d vin=%0.3f", count_q, V(vin));`. Do not assign the return value of `$sformat`.
+
+## Public Verilog-A Interface
 
 ```verilog
 module string_sformat_mode_tag (
@@ -17,21 +21,24 @@ module string_sformat_mode_tag (
 );
 ```
 
-Keep the model behavioral and do not introduce current contributions.
+## Public Parameter Contract
+
+Use voltage-coded logic with `vth = 0.45` V and high outputs near `vhi = 0.9` V. Drive output transitions with rise/fall time `tr = 200p`. These values may be implemented as compatible Verilog-A parameters or internal constants.
 
 ## Required Behavior
 
-Use $sformat() to generate a mode-tagged behavioral label.
+- Declare a string state variable such as `label_q`.
+- Initialize `out_v`, `metric_v`, and `count_q` at `initial_step`.
+- On each rising `clk` crossing, reset `out_v`, `metric_v`, and `count_q` when `rst` is high.
+- Otherwise set `out_v` to `vhi` when `V(vin) > vth`, else `0.0`.
+- Set `metric_v` to the current `count_q` value before incrementing it.
+- Format `label_q` with text that includes the count or mode tag and the input value.
+- Increment `count_q` after building the label.
 
-Required behavior:
+## Modeling Constraints
 
-- declare a string state variable such as `label_q`;
-- initialize `out_v`, `metric_v`, and `count_q` at `initial_step`;
-- on each rising `clk` crossing, reset `out_v`, `metric_v`, and `count_q` when `rst` is high;
-- otherwise set `out_v` to `vhi` when `V(vin) > vth`, else 0.0;
-- set `metric_v` to the current `count_q` value before incrementing it;
-- assign `label_q = $sformat("mode=%0d vin=%0.3f", count_q, V(vin))` or an equivalent format that includes both mode/count and input value;
-- increment `count_q` after building the label;
-- drive `out` and `metric` with `transition(...)`.
+Keep the model behavioral and do not introduce current contributions. Drive `out` and `metric` with `transition(..., 0, tr, tr)`. The formatted string is observable only through simulator side effects and must not change the voltage-domain output contract.
+
+## Output Contract
 
 Return exactly one source artifact named `string_sformat_mode_tag.va`.

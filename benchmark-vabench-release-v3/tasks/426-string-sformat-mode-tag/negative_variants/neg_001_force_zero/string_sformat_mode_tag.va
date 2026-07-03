@@ -31,7 +31,7 @@ analog begin
         end else begin
             out_v = V(vin) > vth ? vhi : 0.0;
             metric_v = count_q;
-        label_q = $sformat("mode=%0d vin=%0.3f", count_q, V(vin));
+            $sformat(label_q, "mode=%0d vin=%0.3f", count_q, V(vin));
             count_q = count_q + 1;
             out_v = 0.0;
         end

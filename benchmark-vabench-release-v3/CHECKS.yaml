@@ -5121,6 +5121,7 @@
       - output_updates_only_after_clocked_samples
   notes:
     - "Extension task promoted from syntax-only to executable behavior candidate."
+    - "Issue #69 repair: Spectre-compatible analog function declaration verified with hidden gold and hidden negative variants; EVAS lint passes after subprogram parser support."
 302-function-deadband-map: |
   # vabench-release-v2-checks
   version: 1
@@ -5163,6 +5164,7 @@
       - output_updates_only_after_clocked_samples
   notes:
     - "Extension task promoted from syntax-only to executable behavior candidate."
+    - "Issue #69 repair: Spectre-compatible analog function declaration verified with hidden gold and hidden negative variants; EVAS lint passes after subprogram parser support."
 303-function-piecewise-gain: |
   # vabench-release-v2-checks
   version: 1
@@ -5205,6 +5207,7 @@
       - output_updates_only_after_clocked_samples
   notes:
     - "Extension task promoted from syntax-only to executable behavior candidate."
+    - "Issue #69 repair: Spectre-compatible analog function declaration verified with hidden gold and hidden negative variants; EVAS lint passes after subprogram parser support."
 304-function-code-normalizer: |
   # vabench-release-v2-checks
   version: 1
@@ -5247,6 +5250,7 @@
       - output_updates_only_after_clocked_samples
   notes:
     - "Extension task promoted from syntax-only to executable behavior candidate."
+    - "Issue #69 repair: Spectre-compatible analog function declaration verified with hidden gold and hidden negative variants; EVAS lint passes after subprogram parser support."
 305-function-soft-threshold: |
   # vabench-release-v2-checks
   version: 1
@@ -5289,6 +5293,7 @@
       - output_updates_only_after_clocked_samples
   notes:
     - "Extension task promoted from syntax-only to executable behavior candidate."
+    - "Issue #69 repair: Spectre-compatible analog function declaration verified with hidden gold and hidden negative variants; EVAS lint passes after subprogram parser support."
 306-case-mode-gain-selector: |
   # vabench-release-v2-checks
   version: 1
@@ -6379,6 +6384,7 @@
       - no_current_domain_contribution
   notes:
     - "Extension task promoted from syntax-only to executable behavior candidate."
+    - "Issue #69 repair: removed unsupported extra last_crossing tolerance arguments; Spectre hidden gold and hidden negative variants pass the expected behavior contract."
 332-above-window-qualifier: |
   version: 1
   task_id: v3_332_above_window_qualifier
@@ -6417,6 +6423,7 @@
       - no_current_domain_contribution
   notes:
     - "Extension task promoted from syntax-only to executable behavior candidate."
+    - "Issue #69 repair: removed unsupported extra last_crossing tolerance arguments; Spectre hidden gold and hidden negative variants pass the expected behavior contract."
 333-last-crossing-period-meter: |
   version: 1
   task_id: v3_333_last_crossing_period_meter
@@ -8805,6 +8812,7 @@
       - no_current_domain_contribution
   notes:
     - "String sformat mode-tag behavior promoted to executable EVAS behavior candidate."
+    - "Issue #69 repair: use task-form $sformat with an explicit destination string; Spectre hidden gold and hidden negative variants pass the expected behavior contract."
 427-string-formatted-metric-line: |
   version: 1
   task_id: v3_427_string_formatted_metric_line
@@ -8887,6 +8895,7 @@
       - no_current_domain_contribution
   notes:
     - "String mode-tagged strobe log behavior promoted to executable EVAS behavior candidate."
+    - "Issue #69 repair: use task-form $sformat with an explicit destination string; Spectre hidden gold and hidden negative variants pass the expected behavior contract."
 429-string-config-label-select: |
   version: 1
   task_id: v3_429_string_config_label_select
@@ -8927,6 +8936,7 @@
       - no_current_domain_contribution
   notes:
     - "String config label select behavior promoted to executable EVAS behavior candidate."
+    - "Issue #69 repair: use task-form $sformat with an explicit destination string; Spectre hidden gold and hidden negative variants pass the expected behavior contract."
 430-rdist-seed-reproducibility: |
   version: 1
   task_id: v3_430_rdist_seed_reproducibility

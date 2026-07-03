@@ -16,8 +16,9 @@ real out_v;
 real metric_v;
 integer count_q;
 integer state_q;
-function real soft_threshold;
-    input real x;
+analog function real soft_threshold;
+    input x;
+    real x;
     begin
         soft_threshold = 0.45 + 0.45 * tanh(8.0 * (x - 0.45));
     end
