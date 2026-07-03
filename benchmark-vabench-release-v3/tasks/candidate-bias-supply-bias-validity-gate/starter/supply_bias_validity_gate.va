@@ -1,0 +1,20 @@
+`include "disciplines.vams"
+
+module supply_bias_validity_gate(vdd, vss, vbias, en, pd, ok, gated);
+input vdd, vss, vbias, en, pd;
+output ok, gated;
+electrical vdd, vss, vbias, en, pd, ok, gated;
+
+parameter real vth = 0.45;
+parameter real vhi = 0.9;
+parameter real vdd_min = 0.75;
+parameter real vdd_max = 1.05;
+parameter real vss_max = 0.08;
+parameter real vbias_min = 0.25;
+parameter real vbias_max = 0.75;
+parameter real tr = 50p;
+
+analog begin
+    // Implement instruction.md behavior here.
+end
+endmodule

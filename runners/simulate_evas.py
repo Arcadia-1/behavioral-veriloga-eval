@@ -15765,6 +15765,248 @@ def check_v3_501_adc_static_linearity_monitor(rows: list[dict[str, float]]) -> t
     return True, f"samples={checked} expected_max={expected_max} max_err={max_err:.4f}"
 
 
+def check_v3_candidate_bias_supply_bias_validity_gate(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "vdd", "vss", "vbias", "en", "pd", "ok", "gated"}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing supply bias validity gate signals"
+    end_t = rows[-1]["time"]
+    sample_t = 0.75e-9
+    checked = 0
+    max_err = 0.0
+    ok_high = ok_low = gated_high = gated_low_while_ok = False
+    while sample_t < end_t - 0.2e-9:
+        values = {name: sample_signal_at(rows, name, sample_t) for name in required if name != "time"}
+        if any(value is None for value in values.values()):
+            sample_t += 1.0e-9
+            continue
+        supply = values["vdd"] - values["vss"]
+        vss_abs = abs(values["vss"])
+        bias = values["vbias"] - values["vss"]
+        ok_expected = 0.9 if (
+            0.75 <= supply <= 1.05 and vss_abs <= 0.08 and 0.25 <= bias <= 0.75
+        ) else 0.0
+        gated_expected = 0.9 if (ok_expected > 0.45 and values["en"] > 0.45 and values["pd"] <= 0.45) else 0.0
+        max_err = max(max_err, abs(values["ok"] - ok_expected), abs(values["gated"] - gated_expected))
+        ok_high = ok_high or ok_expected > 0.45
+        ok_low = ok_low or ok_expected < 0.45
+        gated_high = gated_high or gated_expected > 0.45
+        gated_low_while_ok = gated_low_while_ok or (ok_expected > 0.45 and gated_expected < 0.45)
+        checked += 1
+        sample_t += 1.0e-9
+    if checked < 8:
+        return False, f"insufficient_validity_gate_samples={checked}"
+    if not (ok_high and ok_low and gated_high and gated_low_while_ok):
+        return False, "insufficient_validity_gate_coverage"
+    if max_err > 0.08:
+        return False, f"validity_gate_error={max_err:.4f}"
+    return True, f"samples={checked} max_err={max_err:.4f}"
+
+
+def check_v3_candidate_bias_power_mode_supply_current_metric(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "vdd", "vss", "en", "pd", "mode", "load", "isup_metric"}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing power mode supply current metric signals"
+    end_t = rows[-1]["time"]
+    sample_t = 0.75e-9
+    checked = 0
+    max_err = 0.0
+    saw_active_low = saw_active_high = saw_powerdown = saw_supply_scaled = saw_load_high = False
+    while sample_t < end_t - 0.2e-9:
+        values = {name: sample_signal_at(rows, name, sample_t) for name in required if name != "time"}
+        if any(value is None for value in values.values()):
+            sample_t += 1.0e-9
+            continue
+        supply_scale = (values["vdd"] - values["vss"]) / 0.9
+        supply_scale = min(1.5, max(0.0, supply_scale))
+        load_norm = (values["load"] - values["vss"]) / 0.9
+        load_norm = min(1.0, max(0.0, load_norm))
+        active = values["en"] > 0.45 and values["pd"] <= 0.45
+        if active:
+            base = 0.14 if values["mode"] > 0.45 else 0.08
+            expected = (base + 0.20 * load_norm) * supply_scale
+            saw_active_high = saw_active_high or values["mode"] > 0.45
+            saw_active_low = saw_active_low or values["mode"] <= 0.45
+            saw_load_high = saw_load_high or load_norm > 0.7
+        else:
+            expected = 0.01 * supply_scale
+            saw_powerdown = True
+        saw_supply_scaled = saw_supply_scaled or abs(supply_scale - 1.0) > 0.15
+        max_err = max(max_err, abs(values["isup_metric"] - expected))
+        checked += 1
+        sample_t += 1.0e-9
+    if checked < 8:
+        return False, f"insufficient_supply_metric_samples={checked}"
+    if not (saw_active_low and saw_active_high and saw_powerdown and saw_supply_scaled and saw_load_high):
+        return False, "insufficient_supply_metric_coverage"
+    if max_err > 0.035:
+        return False, f"supply_metric_error={max_err:.4f}"
+    return True, f"samples={checked} max_err={max_err:.4f}"
+
+
+def check_v3_candidate_bias_dynamic_supply_level_driver(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "din", "vdd", "vss", "out"}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing dynamic supply level driver signals"
+    end_t = rows[-1]["time"]
+    sample_t = 0.75e-9
+    checked = 0
+    max_err = 0.0
+    saw_local_high = saw_local_low = saw_invalid_supply = saw_vss_offset = False
+    while sample_t < end_t - 0.2e-9:
+        values = {name: sample_signal_at(rows, name, sample_t) for name in required if name != "time"}
+        if any(value is None for value in values.values()):
+            sample_t += 1.0e-9
+            continue
+        supply = values["vdd"] - values["vss"]
+        if supply < 0.55:
+            expected = values["vss"]
+            saw_invalid_supply = True
+        else:
+            normalized = (values["din"] - values["vss"]) / supply
+            expected = values["vss"] + (supply if normalized > 0.5 else 0.0)
+            saw_local_high = saw_local_high or expected > values["vss"] + 0.4
+            saw_local_low = saw_local_low or expected <= values["vss"] + 0.05
+        saw_vss_offset = saw_vss_offset or abs(values["vss"]) > 0.04
+        max_err = max(max_err, abs(values["out"] - expected))
+        checked += 1
+        sample_t += 1.0e-9
+    if checked < 6:
+        return False, f"insufficient_dynamic_supply_samples={checked}"
+    if not (saw_local_high and saw_local_low and saw_invalid_supply and saw_vss_offset):
+        return False, "insufficient_dynamic_supply_coverage"
+    if max_err > 0.08:
+        return False, f"dynamic_supply_driver_error={max_err:.4f}"
+    return True, f"samples={checked} max_err={max_err:.4f}"
+
+
+def check_v3_candidate_bias_power_enable_turnon_delay_gate(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "clk", "vdd", "vss", "vbias", "en", "pd", "pwr_ok", "drive_en", "delay_mon"}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing power enable turn-on delay gate signals"
+    times = [row["time"] for row in rows]
+    clk_edges = _threshold_crossings([row["clk"] for row in rows], times, threshold=0.45, direction="rising")
+    if len(clk_edges) < 8:
+        return False, f"too_few_turnon_delay_clk_edges={len(clk_edges)}"
+    min_period = min((b - a for a, b in zip(clk_edges, clk_edges[1:])), default=1.0e-9)
+    output_delay = min(0.45e-9, 0.45 * min_period)
+    valid_count = 0
+    checked = 0
+    max_err = 0.0
+    pwr_ok_high = pwr_ok_low = drive_high = delayed_low = invalid_cleared = False
+    for edge_t in clk_edges:
+        output_t = edge_t + output_delay
+        if output_t >= times[-1] - 0.05e-9:
+            continue
+        input_values = {
+            name: sample_signal_at(rows, name, edge_t + 1.0e-12)
+            for name in ("vdd", "vss", "vbias", "en", "pd")
+        }
+        output_values = {
+            name: sample_signal_at(rows, name, output_t)
+            for name in ("pwr_ok", "drive_en", "delay_mon")
+        }
+        if any(value is None for value in input_values.values()) or any(value is None for value in output_values.values()):
+            continue
+        prior_count = valid_count
+        supply = input_values["vdd"] - input_values["vss"]
+        bias = input_values["vbias"] - input_values["vss"]
+        sampled_valid = (
+            0.75 <= supply <= 1.05
+            and 0.25 <= bias <= 0.75
+            and input_values["en"] > 0.45
+            and input_values["pd"] <= 0.45
+        )
+        if sampled_valid:
+            valid_count = min(valid_count + 1, 3)
+        else:
+            valid_count = 0
+        pwr_ok_expected = 0.9 if sampled_valid else 0.0
+        drive_expected = 0.9 if valid_count >= 3 else 0.0
+        delay_expected = 0.9 * valid_count / 3.0
+        max_err = max(
+            max_err,
+            abs(output_values["pwr_ok"] - pwr_ok_expected),
+            abs(output_values["drive_en"] - drive_expected),
+            abs(output_values["delay_mon"] - delay_expected),
+        )
+        pwr_ok_high = pwr_ok_high or pwr_ok_expected > 0.45
+        pwr_ok_low = pwr_ok_low or pwr_ok_expected < 0.45
+        drive_high = drive_high or drive_expected > 0.45
+        delayed_low = delayed_low or (pwr_ok_expected > 0.45 and drive_expected < 0.45)
+        invalid_cleared = invalid_cleared or ((not sampled_valid) and prior_count > 0 and valid_count == 0)
+        checked += 1
+    if checked < 10:
+        return False, f"insufficient_turnon_delay_samples={checked}"
+    if not (pwr_ok_high and pwr_ok_low and drive_high and delayed_low and invalid_cleared):
+        return False, "insufficient_turnon_delay_coverage"
+    if max_err > 0.10:
+        return False, f"turnon_delay_gate_error={max_err:.4f}"
+    return True, f"samples={checked} max_err={max_err:.4f}"
+
+
+def check_v3_candidate_bias_reference_settling_window_monitor(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "clk", "rst", "ref", "target", "valid", "err_metric", "settle_mon"}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing reference settling window monitor signals"
+    times = [row["time"] for row in rows]
+    clk_edges = _threshold_crossings([row["clk"] for row in rows], times, threshold=0.45, direction="rising")
+    if len(clk_edges) < 8:
+        return False, f"too_few_reference_settling_clk_edges={len(clk_edges)}"
+    min_period = min((b - a for a, b in zip(clk_edges, clk_edges[1:])), default=1.0e-9)
+    output_delay = min(0.45e-9, 0.45 * min_period)
+    settle_count = 0
+    checked = 0
+    max_err = 0.0
+    valid_high = valid_low = reset_seen = metric_high = target_changed = out_of_window_clear = False
+    first_target: float | None = None
+    for edge_t in clk_edges:
+        output_t = edge_t + output_delay
+        if output_t >= times[-1] - 0.05e-9:
+            continue
+        input_values = {
+            name: sample_signal_at(rows, name, edge_t + 1.0e-12)
+            for name in ("rst", "ref", "target")
+        }
+        output_values = {
+            name: sample_signal_at(rows, name, output_t)
+            for name in ("valid", "err_metric", "settle_mon")
+        }
+        if any(value is None for value in input_values.values()) or any(value is None for value in output_values.values()):
+            continue
+        prior_count = settle_count
+        if first_target is None:
+            first_target = input_values["target"]
+        target_changed = target_changed or abs(input_values["target"] - first_target) > 0.05
+        err_v = abs(input_values["ref"] - input_values["target"])
+        metric_expected = min(1.0, max(0.0, err_v / 0.20)) * 0.9
+        if input_values["rst"] > 0.45:
+            settle_count = 0
+            reset_seen = True
+        elif err_v <= 0.035:
+            settle_count = min(settle_count + 1, 3)
+        else:
+            settle_count = 0
+        valid_expected = 0.9 if settle_count >= 3 else 0.0
+        settle_expected = 0.9 * settle_count / 3.0
+        max_err = max(
+            max_err,
+            abs(output_values["valid"] - valid_expected),
+            abs(output_values["err_metric"] - metric_expected),
+            abs(output_values["settle_mon"] - settle_expected),
+        )
+        valid_high = valid_high or valid_expected > 0.45
+        valid_low = valid_low or valid_expected < 0.45
+        metric_high = metric_high or metric_expected > 0.45
+        out_of_window_clear = out_of_window_clear or (err_v > 0.035 and prior_count > 0 and settle_count == 0)
+        checked += 1
+    if checked < 10:
+        return False, f"insufficient_reference_settling_samples={checked}"
+    if not (valid_high and valid_low and reset_seen and metric_high and target_changed and out_of_window_clear):
+        return False, "insufficient_reference_settling_coverage"
+    if max_err > 0.10:
+        return False, f"reference_settling_error={max_err:.4f}"
+    return True, f"samples={checked} max_err={max_err:.4f}"
+
 def check_v3_502_sine_vco_idtmod_bound_step(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "vin", "out", "metric"}
     if not rows or not required.issubset(rows[0]):
@@ -21914,6 +22156,11 @@ CHECKS["v3_498_dc_aware_adc3bit"] = check_v3_498_dc_aware_adc3bit
 CHECKS["v3_499_latched_bus_dac8"] = check_v3_499_latched_bus_dac8
 CHECKS["v3_500_deterministic_mismatch_dac6"] = check_v3_500_deterministic_mismatch_dac6
 CHECKS["v3_501_adc_static_linearity_monitor"] = check_v3_501_adc_static_linearity_monitor
+CHECKS["v3_candidate_bias_supply_bias_validity_gate"] = check_v3_candidate_bias_supply_bias_validity_gate
+CHECKS["v3_candidate_bias_power_mode_supply_current_metric"] = check_v3_candidate_bias_power_mode_supply_current_metric
+CHECKS["v3_candidate_bias_dynamic_supply_level_driver"] = check_v3_candidate_bias_dynamic_supply_level_driver
+CHECKS["v3_candidate_bias_power_enable_turnon_delay_gate"] = check_v3_candidate_bias_power_enable_turnon_delay_gate
+CHECKS["v3_candidate_bias_reference_settling_window_monitor"] = check_v3_candidate_bias_reference_settling_window_monitor
 CHECKS["v3_502_sine_vco_idtmod_bound_step"] = check_v3_502_sine_vco_idtmod_bound_step
 CHECKS["v3_503_differential_vco_clip_idtmod"] = check_v3_503_differential_vco_clip_idtmod
 CHECKS["v3_504_charge_pump_pfd_state_machine"] = check_v3_504_charge_pump_pfd_state_machine
@@ -21951,6 +22198,11 @@ CHECKS["498-dc-aware-adc3bit"] = check_v3_498_dc_aware_adc3bit
 CHECKS["499-latched-bus-dac8"] = check_v3_499_latched_bus_dac8
 CHECKS["500-deterministic-mismatch-dac6"] = check_v3_500_deterministic_mismatch_dac6
 CHECKS["501-adc-static-linearity-monitor"] = check_v3_501_adc_static_linearity_monitor
+CHECKS["candidate-bias-supply-bias-validity-gate"] = check_v3_candidate_bias_supply_bias_validity_gate
+CHECKS["candidate-bias-power-mode-supply-current-metric"] = check_v3_candidate_bias_power_mode_supply_current_metric
+CHECKS["candidate-bias-dynamic-supply-level-driver"] = check_v3_candidate_bias_dynamic_supply_level_driver
+CHECKS["candidate-bias-power-enable-turnon-delay-gate"] = check_v3_candidate_bias_power_enable_turnon_delay_gate
+CHECKS["candidate-bias-reference-settling-window-monitor"] = check_v3_candidate_bias_reference_settling_window_monitor
 CHECKS["502-sine-vco-idtmod-bound-step"] = check_v3_502_sine_vco_idtmod_bound_step
 CHECKS["503-differential-vco-clip-idtmod"] = check_v3_503_differential_vco_clip_idtmod
 CHECKS["504-charge-pump-pfd-state-machine"] = check_v3_504_charge_pump_pfd_state_machine

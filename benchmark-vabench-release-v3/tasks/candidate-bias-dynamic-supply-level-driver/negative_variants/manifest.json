@@ -1,0 +1,44 @@
+{
+  "negative_variants": [
+    {
+      "id": "neg_001_fixed_output_rails",
+      "description": "Dynamic Supply Level Driver: drives fixed global 0/0.9 V rails instead of local supply rails.",
+      "files": [
+        "neg_001_fixed_output_rails/dynamic_supply_level_driver.va"
+      ],
+      "expected": "compile_but_fail_full_behavior"
+    },
+    {
+      "id": "neg_002_absolute_input_threshold",
+      "description": "Dynamic Supply Level Driver: thresholds din against a fixed absolute voltage.",
+      "files": [
+        "neg_002_absolute_input_threshold/dynamic_supply_level_driver.va"
+      ],
+      "expected": "compile_but_fail_full_behavior"
+    },
+    {
+      "id": "neg_003_ignore_vss_offset",
+      "description": "Dynamic Supply Level Driver: ignores the local vss offset in output level calculation.",
+      "files": [
+        "neg_003_ignore_vss_offset/dynamic_supply_level_driver.va"
+      ],
+      "expected": "compile_but_fail_full_behavior"
+    },
+    {
+      "id": "neg_004_drive_when_supply_invalid",
+      "description": "Dynamic Supply Level Driver: drives high even when the local supply is below vsup_min.",
+      "files": [
+        "neg_004_drive_when_supply_invalid/dynamic_supply_level_driver.va"
+      ],
+      "expected": "compile_but_fail_full_behavior"
+    },
+    {
+      "id": "neg_005_inverted_logic",
+      "description": "Dynamic Supply Level Driver: inverts the normalized input decision.",
+      "files": [
+        "neg_005_inverted_logic/dynamic_supply_level_driver.va"
+      ],
+      "expected": "compile_but_fail_full_behavior"
+    }
+  ]
+}

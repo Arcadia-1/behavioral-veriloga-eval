@@ -1,0 +1,44 @@
+{
+  "negative_variants": [
+    {
+      "id": "neg_001_constant_metric",
+      "description": "Power Mode Supply Current Metric: reports a constant metric.",
+      "files": [
+        "neg_001_constant_metric/power_mode_supply_current_metric.va"
+      ],
+      "expected": "compile_but_fail_full_behavior"
+    },
+    {
+      "id": "neg_002_ignore_supply_scaling",
+      "description": "Power Mode Supply Current Metric: ignores V(vdd,vss) supply scaling.",
+      "files": [
+        "neg_002_ignore_supply_scaling/power_mode_supply_current_metric.va"
+      ],
+      "expected": "compile_but_fail_full_behavior"
+    },
+    {
+      "id": "neg_003_ignore_powerdown",
+      "description": "Power Mode Supply Current Metric: keeps active current during disabled or power-down intervals.",
+      "files": [
+        "neg_003_ignore_powerdown/power_mode_supply_current_metric.va"
+      ],
+      "expected": "compile_but_fail_full_behavior"
+    },
+    {
+      "id": "neg_004_ignore_mode",
+      "description": "Power Mode Supply Current Metric: ignores the mode-dependent quiescent metric.",
+      "files": [
+        "neg_004_ignore_mode/power_mode_supply_current_metric.va"
+      ],
+      "expected": "compile_but_fail_full_behavior"
+    },
+    {
+      "id": "neg_005_ignore_load",
+      "description": "Power Mode Supply Current Metric: ignores the load-dependent active metric term.",
+      "files": [
+        "neg_005_ignore_load/power_mode_supply_current_metric.va"
+      ],
+      "expected": "compile_but_fail_full_behavior"
+    }
+  ]
+}

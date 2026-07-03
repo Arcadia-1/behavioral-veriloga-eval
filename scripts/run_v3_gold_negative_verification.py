@@ -38,6 +38,13 @@ def task_matches_filter(task_dir: Path, task_filter: set[str]) -> bool:
     return task_dir.name in task_filter or (number is not None and f"{number:03d}" in task_filter)
 
 
+def task_in_requested_range(task_dir: Path, task_filter: set[str], start: int, end: int) -> bool:
+    number = task_number(task_dir)
+    if number is not None:
+        return start <= number <= end
+    return bool(task_filter) and task_dir.name in task_filter
+
+
 def read_json(path: Path) -> Any:
     return json.loads(path.read_text(encoding="utf-8"))
 
@@ -448,8 +455,7 @@ def main() -> int:
     cases: list[tuple[Path, str | None, int, dict[str, Any] | None]] = []
     skipped_tasks: list[str] = []
     for task_dir in sorted(p for p in root.iterdir() if p.is_dir()):
-        number = task_number(task_dir)
-        if number is None or not (args.start <= number <= args.end):
+        if not task_in_requested_range(task_dir, task_filter, args.start, args.end):
             continue
         if not task_matches_filter(task_dir, task_filter):
             continue
