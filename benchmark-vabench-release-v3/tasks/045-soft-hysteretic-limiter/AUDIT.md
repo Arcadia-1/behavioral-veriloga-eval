@@ -1,24 +1,50 @@
-# Honest SOP Audit: Task 045 Soft Hysteretic Limiter
+# Task 045 Audit
 
-## Scope
+Task: `045-soft-hysteretic-limiter`
 
-Task boundary is one Verilog-A DUT, `soft_hysteretic_limiter.va`, plus EVAS/Spectre-compatible `.scs` testbenches. Agent-visible materials are limited to `instruction.md`, `starter/`, and `test_visible/`. Evaluator-only materials are `solution/`, `test_hidden/`, `test_harness/`, and `negative_variants/`. No `meta.json` is present.
+Status: `independent_l1_ready`. Gate 2 status is
+`cadence_modeling_ready` for the reviewed gold after EVAS, targeted Spectre,
+and AHDL warning triage.
 
-## Four Standards
+## Gate 1
 
-- Useful scenario: pass. A soft limiter with hysteresis is a practical baseband conditioning macro.
-- Reasonable task: pass. The public prompt fixes upper/lower limiting, memory behavior, transition smoothing, and metric output.
-- Complete tests: pass for EVAS. Hidden samples check limiting levels, hysteretic memory, and metric span. Five concrete negatives cover hard clipping, missing memory, wrong limits, stuck outputs, and metric mistakes.
-- Fair evaluation: pass for EVAS. The checker uses public voltage observables and stated limiter behavior.
+- Function boundary: baseband soft limiter with hysteresis memory and a
+  voltage-coded state monitor.
+- Counting decision: keep as an independent L1 signal-conditioning primitive.
+  It is distinct from plain limiting/gain rows because the required state
+  memory preserves high/low history through mid-level intervals.
+- Category relation: complements gain-compression and limiting-differential
+  rows, but the hysteretic memory behavior is the independent circuit function.
 
-## Checker And Evidence
+## Gate 2
 
-- Checker id: `v3_045_soft_hysteretic_limiter`
-- Runner mapping: `CHECKS["v3_045_soft_hysteretic_limiter"] = check_release_soft_hysteretic_limiter`
-- EVAS/Python-engine hidden gold smoke: `PASS`
-- Concrete negative recertification: 5/5 expected failures, all `FAIL_SIM_CORRECTNESS` with simulator `returncode=0`
-- Visible compile/sim smoke: `COMPILE_SIM_OK`
+- Public prompt: rewritten into the standard public interface, parameter
+  contract, functional contract, and modeling constraints format.
+- Boundary: the visible testbench is treated as a public wiring/smoke scenario;
+  transient stop time and waveform windows are not DUT implementation
+  constants.
+- Gold behavior: uses event-updated state on rising clock crossings, active-high
+  reset, bounded output compression, preserved high/low hysteresis, and
+  transition-smoothed voltage contributions.
+- Checker behavior: verifies bounded high/low limiting, visible hysteresis
+  memory, state-coded metric polarity, and metric span.
+- Reference correspondence: local Cadence/Verilog-A notes for event detection
+  and transition-shaped piecewise-constant outputs support the modeling pattern;
+  no direct Cadence RF/baseband soft-limiter example was found in the targeted
+  sweep.
 
-## Remaining Risk
+## Evidence
 
-Spectre/Spectre-AX correlation has not been rerun from this working tree; use EVAS-only wording unless fresh dual-simulator evidence is attached.
+- EVAS hidden gold: PASS.
+- Concrete negatives: 5/5 rejected with behavioral failures.
+- Visible smoke: PASS after saving all public observables.
+- Targeted Spectre hidden gold: PASS.
+- AHDL lint/read-in triage: EVAS AHDL-like lint reports zero diagnostics for
+  the hidden solution deck and visible starter smoke deck. Spectre read-in
+  reports no task-specific AHDL lint, AHDL compile, or VACOMP errors.
+
+## Residual Risk
+
+- The checker validates a deterministic transient voltage-domain macromodel. It
+  does not claim transistor-level limiter accuracy, noise behavior, or RF/PSS
+  readiness.

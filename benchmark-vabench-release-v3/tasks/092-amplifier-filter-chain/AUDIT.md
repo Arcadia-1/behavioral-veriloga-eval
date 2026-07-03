@@ -12,6 +12,10 @@ an integration-flow L2, not as a duplicate L1 filter row.
 - Useful scenario: pass. The row is a composed baseband chain: bounded
   preamplifier, two cascaded sampled low-pass states, monitor outputs, and a
   settling metric.
+- Counting decision: keep as an L2 integration-flow row, not as another
+  standalone gain or low-pass primitive. The independent value is the combined
+  preamp/filter/settling monitor interaction across multiple public
+  observables.
 - Reasonable task: pass after repair. The public prompt now describes the
   target DUT, nine-port interface, reset/clock behavior, monitor semantics, and
   observable flow-level contract.
