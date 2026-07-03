@@ -5204,7 +5204,8 @@
         "Drive out and metric with transition(...).",
         "open config_lines.txt.",
         "call $fseek(fd, 9, 0) to skip the first line gain=0.8.",
-        "call $fgets(line_buf, fd) after the seek."
+        "call $fgets(line_buf, fd) after the seek.",
+        "parse the loaded key/value content so ordinary line terminators do not prevent detecting mode=1."
       ],
       "visible_tests": [
         "visible.scs exercises the public File Fseek Offset Reader stimulus and checks the primary observable behavior."
@@ -5280,7 +5281,8 @@
         "Drive out and metric with transition(...).",
         "read the first two lines into line0 and line1.",
         "call $rewind(fd).",
-        "read one more line into line_again."
+        "read one more line into line_again.",
+        "parse the loaded key/value content so ordinary line terminators do not prevent detecting gain=0.8 and mode=1."
       ],
       "visible_tests": [
         "visible.scs exercises the public File Rewind Second Pass stimulus and checks the primary observable behavior."
@@ -5318,7 +5320,8 @@
         "Drive out and metric with transition(...).",
         "open config_lines.txt with explicit read mode \"r\".",
         "read the first line using $fgets(line_buf, fd).",
-        "close the file with $fclose(fd)."
+        "close the file with $fclose(fd).",
+        "parse the loaded key/value content so ordinary line terminators do not prevent detecting gain=0.8."
       ],
       "visible_tests": [
         "visible.scs exercises the public File Fopen Mode Selector stimulus and checks the primary observable behavior."
@@ -5393,8 +5396,8 @@
         "Use $table_model() for a clamped transfer curve lookup.",
         "initialize out_v and metric_v to 0.0.",
         "on each rising crossing of clk, reset out_v and metric_v to zero when rst > vth.",
-        "otherwise set out_v = $table_model(V(vin), \"table-model-clamped-transfer.tbl\").",
-        "rely on the table lookup to clamp below the first table row and above the last table row."
+        "otherwise set out_v using $table_model(V(vin), \"table-model-clamped-transfer.tbl\", control) with first-degree interpolation and clamp extrapolation on both ends.",
+        "clamp below the first table row and above the last table row rather than relying on simulator-default linear extrapolation."
       ],
       "visible_tests": [
         "visible.scs exercises the public Table Model Clamped Transfer stimulus and checks the primary observable behavior."
@@ -5470,7 +5473,7 @@
         "treat V(vin) as an analog-coded DAC code coordinate.",
         "initialize out_v and metric_v to 0.0.",
         "on each rising crossing of clk, reset out_v and metric_v to zero when rst > vth.",
-        "otherwise set out_v = $table_model(V(vin), \"table-model-dac-code-map.tbl\")."
+        "otherwise set out_v using $table_model(V(vin), \"table-model-dac-code-map.tbl\", control) with first-degree interpolation and clamp extrapolation on both ends."
       ],
       "visible_tests": [
         "visible.scs exercises the public Table Model Dac Code Map stimulus and checks the primary observable behavior."
@@ -5508,7 +5511,7 @@
         "treat V(vin) as a temperature coordinate in degrees Celsius.",
         "initialize out_v and metric_v to 0.0.",
         "on each rising crossing of clk, reset out_v and metric_v to zero when rst > vth.",
-        "otherwise set out_v = $table_model(V(vin), \"table-model-temperature-profile.tbl\")."
+        "otherwise set out_v using $table_model(V(vin), \"table-model-temperature-profile.tbl\", control) with first-degree interpolation and clamp extrapolation on both ends."
       ],
       "visible_tests": [
         "visible.scs exercises the public Table Model Temperature Profile stimulus and checks the primary observable behavior."
@@ -5546,7 +5549,7 @@
         "treat V(vin) as a raw normalized code coordinate.",
         "initialize out_v and metric_v to 0.0.",
         "on each rising crossing of clk, reset out_v and metric_v to zero when rst > vth.",
-        "otherwise set out_v = $table_model(V(vin), \"table-model-piecewise-calibrator.tbl\")."
+        "otherwise set out_v using $table_model(V(vin), \"table-model-piecewise-calibrator.tbl\", control) with first-degree interpolation and clamp extrapolation on both ends."
       ],
       "visible_tests": [
         "visible.scs exercises the public Table Model Piecewise Calibrator stimulus and checks the primary observable behavior."

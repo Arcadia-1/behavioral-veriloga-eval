@@ -17,17 +17,22 @@ real metric_v;
 integer seek_hit_q;
 integer fd;
 integer seek_status;
+integer parsed_count;
+integer mode_value;
 string line_buf;
 analog begin
     @(initial_step) begin
         out_v = 0.0;
         metric_v = 0.0;
         seek_hit_q = 0;
+        parsed_count = 0;
+        mode_value = 0;
         fd = $fopen("config_lines.txt", "r");
         seek_status = $fseek(fd, 9, 0);
         $fgets(line_buf, fd);
         $fclose(fd);
-        if ((seek_status == 0) && (line_buf == "mode=1")) seek_hit_q = 1;
+        parsed_count = $sscanf(line_buf, "mode=%d", mode_value);
+        if ((seek_status == 0) && (parsed_count == 1) && (mode_value == 1)) seek_hit_q = 1;
         else seek_hit_q = 0;
         if (seek_hit_q != 0) metric_v = vhi;
         else metric_v = 0.0;

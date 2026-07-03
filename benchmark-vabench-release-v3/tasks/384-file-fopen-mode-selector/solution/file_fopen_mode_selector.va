@@ -14,18 +14,23 @@ parameter real vhi = 0.9;
 parameter real tr = 200p;
 real out_v;
 real metric_v;
+real gain_value;
 integer mode_hit_q;
 integer fd;
+integer parsed_count;
 string line_buf;
 analog begin
     @(initial_step) begin
         out_v = 0.0;
         metric_v = 0.0;
         mode_hit_q = 0;
+        gain_value = 0.0;
+        parsed_count = 0;
         fd = $fopen("config_lines.txt", "r");
         $fgets(line_buf, fd);
         $fclose(fd);
-        if (line_buf == "gain=0.8") mode_hit_q = 1;
+        parsed_count = $sscanf(line_buf, "gain=%f", gain_value);
+        if ((parsed_count == 1) && (gain_value > 0.799999) && (gain_value < 0.800001)) mode_hit_q = 1;
         else mode_hit_q = 0;
         if (mode_hit_q != 0) metric_v = vhi;
         else metric_v = 0.0;
