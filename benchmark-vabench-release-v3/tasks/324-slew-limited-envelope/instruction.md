@@ -1,10 +1,14 @@
 # Slew Limited Envelope
 
-Implement one behavioral Verilog-A DUT file named `slew_limited_envelope.va`.
+## Task Contract
 
-This is a language-semantics extension task based on the Cadence Verilog-A Language Reference. Keep the model pure voltage-domain behavioral Verilog-A: do not instantiate transistor-level devices and do not use current-domain `I(...)` branch contributions.
+Implement one behavioral Verilog-A DUT file named `slew_limited_envelope.va`. The DUT samples a voltage envelope target and drives both public outputs through the Verilog-A `slew()` operator.
 
-## Interface
+## Form-Specific Requirements
+
+This is a DUT-only Verilog-A modeling task. The supplied testbenches are verification scenarios; do not hard-code their stop times, sample times, or waveform breakpoints into the DUT.
+
+## Public Verilog-A Interface
 
 ```verilog
 module slew_limited_envelope (
@@ -17,13 +21,15 @@ module slew_limited_envelope (
 );
 ```
 
+## Public Parameter Contract
+
+- `vth = 0.45` V is the reset, clock, and mode threshold.
+- `rise_rate = 8.0e8` V/s is the positive output slew-rate limit.
+- `fall_rate = 3.0e8` V/s is the positive magnitude of the falling slew-rate limit. Cadence Verilog-A `slew(expr, SRpos, SRneg)` expects `SRneg` to be negative, so use `-fall_rate` as the third argument.
+
 ## Required Behavior
 
-Use `slew()` to limit a sampled voltage envelope output.
-
-Use voltage-coded logic with `vth = 0.45` V, `rise_rate = 8.0e8` V/s, and `fall_rate = 3.0e8` V/s.
-
-On reset, clear the envelope to zero. On each rising crossing of `clk` while reset is low:
+On reset, clear the envelope to zero. On each rising crossing of `clk` through `vth` while reset is low:
 
 - if `mode` is low, update the envelope to `max(previous_envelope, vin)`
 - if `mode` is high, release the envelope to the current `vin`
@@ -31,8 +37,12 @@ On reset, clear the envelope to zero. On each rising crossing of `clk` while res
 - set target `out = envelope`
 - set target `metric = envelope / 0.8`
 
-Drive both outputs using `slew(target, rise_rate, fall_rate)`. The hidden evaluator checks the rising ramp, held envelope plateau, and slew-limited release. Do not use `I(...)`, `ddt(...)`, or `idt(...)`.
+Both `out` and `metric` must preserve the envelope hold behavior while changing with slew-limited rising and falling slopes.
 
-## Output
+## Modeling Constraints
+
+Use pure voltage-domain behavioral Verilog-A. Do not instantiate devices, do not drive `I(...)` branch contributions, and do not use `ddt(...)` or `idt(...)`. Drive the public outputs with `slew(target, rise_rate, -fall_rate)`, not with an immediate assignment or `transition()`.
+
+## Output Contract
 
 Return exactly one source artifact named `slew_limited_envelope.va`. Do not generate a Spectre testbench for this task.

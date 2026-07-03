@@ -5120,7 +5120,7 @@
       - metric_equals_out_divided_by_0p9
       - output_updates_only_after_clocked_samples
   notes:
-    - "Extension task promoted from syntax-only to executable behavior candidate."
+    - "Boundary semantic row for Cadence Verilog-A slew(); public fall_rate is a positive magnitude and the model passes -fall_rate as SRneg."
 302-function-deadband-map: |
   # vabench-release-v2-checks
   version: 1
@@ -5162,7 +5162,7 @@
       - metric_maps_low_mid_high_to_minus_one_zero_plus_one
       - output_updates_only_after_clocked_samples
   notes:
-    - "Extension task promoted from syntax-only to executable behavior candidate."
+    - "Boundary semantic row for Cadence Verilog-A slew(); public fall_rate is a positive magnitude and the model passes -fall_rate as SRneg."
 303-function-piecewise-gain: |
   # vabench-release-v2-checks
   version: 1
@@ -5204,7 +5204,7 @@
       - metric_equals_out
       - output_updates_only_after_clocked_samples
   notes:
-    - "Extension task promoted from syntax-only to executable behavior candidate."
+    - "Boundary semantic row for Cadence Verilog-A slew(); public fall_rate is a positive magnitude and the model passes -fall_rate as SRneg."
 304-function-code-normalizer: |
   # vabench-release-v2-checks
   version: 1
@@ -5246,7 +5246,7 @@
       - metric_equals_out_divided_by_0p9
       - output_updates_only_after_clocked_samples
   notes:
-    - "Extension task promoted from syntax-only to executable behavior candidate."
+    - "Boundary semantic row for Cadence Verilog-A slew(); public fall_rate is a positive magnitude and the model passes -fall_rate as SRneg."
 305-function-soft-threshold: |
   # vabench-release-v2-checks
   version: 1
@@ -5288,7 +5288,7 @@
       - metric_equals_out
       - output_updates_only_after_clocked_samples
   notes:
-    - "Extension task promoted from syntax-only to executable behavior candidate."
+    - "Boundary semantic row for Cadence Verilog-A slew(); public fall_rate is a positive magnitude and the model passes -fall_rate as SRneg."
 306-case-mode-gain-selector: |
   # vabench-release-v2-checks
   version: 1

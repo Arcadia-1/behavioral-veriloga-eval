@@ -1,14 +1,14 @@
-# Honest SOP Audit: Slew Limited Voltage Follower
+# v3 Audit: Slew Limited Voltage Follower
 
-## Scope
+## Gate 1
 
-This task is part of the Verilog-A language-semantics extension set. It is a pure voltage-domain behavioral DUT task.
+- Counting label: `cadence_boundary_only`.
+- Rationale: this row primarily exercises the Verilog-A `slew()` operator with clocked voltage-domain state. It is useful compatibility coverage and a reusable support idiom, but as written it should not be counted as an independent core circuit-function benchmark.
 
-## Four Standards
+## Gate 2
 
-- Useful scenario: exercises `Use slew() to limit voltage-domain output slope.` from the Cadence Verilog-A Language Reference in a behavioral modeling context.
-- Reasonable task: the public prompt fixes the port contract and voltage-coded behavior family.
-- Complete tests: visible/hidden harness placeholders and five concrete negative variants are materialized for evaluator integration.
-- Fair evaluation: negatives are intended to compile while changing only small behavioral details that should pass shallow smoke but fail full behavior checks.
+- Public prompt uses the mandatory vaBench v3 instruction sections and avoids private evaluation-mechanism wording.
+- Public contract treats `fall_rate` as a positive falling-slope magnitude while requiring Cadence-compatible `slew(target, rise_rate, -fall_rate)` usage.
+- Gold and concrete negatives use the negative third `slew()` argument required by Cadence Verilog-A semantics.
 
-Certification status: syntax-extension-candidate. These tasks extend language coverage beyond the original full-300 claim and must be certified separately before being included in paper-facing full-suite pass counts.
+Certification status: targeted validation completed after the `slew()` sign repair. EVAS2 reference implementation passed; EVAS2 negative variants were rejected. Spectre reference implementation passed; Spectre negative variants were rejected. The only Spectre warning observed was environment-level `VACOMP-2435` for deprecated `CDS_AHDLCMI_ENABLE`, not a model warning.
