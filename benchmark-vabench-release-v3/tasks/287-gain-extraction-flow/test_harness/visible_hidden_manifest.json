@@ -1,7 +1,18 @@
 {
-  "task": "287-gain-extraction-flow",
-  "form": "e2e",
-  "source": "v2/vbr1_l2_gain_extraction_convergence_measurement_flow:e2e",
+  "task_id": "v3_287_gain_extraction_flow",
+  "checker_id": "v3_287_gain_extraction_flow",
+  "primary_target": "tb_gain_extraction_ref.scs",
+  "artifact_targets": [
+    "dither_adder.va",
+    "gain_amp_fixed.va",
+    "lfsr.va",
+    "vin_src.va",
+    "tb_gain_extraction_ref.scs"
+  ],
+  "hidden_testbench": "test_hidden/tests/tb_gain_extraction_ref.scs",
+  "visible_smoke": "test_visible/tests/tb_visible_smoke.scs",
+  "gate1_label": "l2_measurement_ready",
+  "gate2_status": "cadence_modeling_ready",
   "visible": [
     "instruction.md",
     "starter/",

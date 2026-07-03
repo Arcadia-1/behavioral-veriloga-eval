@@ -1127,8 +1127,7 @@
       "id": "v3_098_edge_crossing_interval_timer",
       "level": "L1",
       "target": [
-        "cross_interval_163p333_ref.va",
-        "./cross_interval_163p333_ref.va"
+        "cross_interval_163p333_ref.va"
       ],
       "title": "Edge Crossing Interval Timer"
     },
@@ -1137,12 +1136,9 @@
       "difficulty": "D2",
       "form": "dut",
       "id": "v3_099_dither_adder",
-      "level": "L2",
+      "level": "L1",
       "target": [
-        "dither_adder.va",
-        "vin_src.va",
-        "lfsr.va",
-        "gain_amp_fixed.va"
+        "dither_adder.va"
       ],
       "title": "Dither Adder"
     },
@@ -1151,10 +1147,9 @@
       "difficulty": "D2",
       "form": "dut",
       "id": "v3_100_final_step_file_metric",
-      "level": "L2",
+      "level": "L1",
       "target": [
-        "final_step_file_metric_ref.va",
-        "./final_step_file_metric_ref.va"
+        "final_step_file_metric_ref.va"
       ],
       "title": "Final Step File Metric"
     },
@@ -1163,12 +1158,9 @@
       "difficulty": "D2",
       "form": "dut",
       "id": "v3_101_fixed_gain_amplifier",
-      "level": "L2",
+      "level": "L1",
       "target": [
-        "gain_amp_fixed.va",
-        "vin_src.va",
-        "lfsr.va",
-        "dither_adder.va"
+        "gain_amp_fixed.va"
       ],
       "title": "Fixed Gain Amplifier"
     },
@@ -1179,8 +1171,7 @@
       "id": "v3_102_gain_estimator",
       "level": "L1",
       "target": [
-        "gain_estimator.va",
-        "./gain_estimator.va"
+        "gain_estimator.va"
       ],
       "title": "Gain Estimator"
     },
@@ -1281,10 +1272,7 @@
       "id": "v3_111_clocked_sine_source",
       "level": "L2",
       "target": [
-        "vin_src.va",
-        "lfsr.va",
-        "dither_adder.va",
-        "gain_amp_fixed.va"
+        "vin_src.va"
       ],
       "title": "Clocked Sine Source"
     },

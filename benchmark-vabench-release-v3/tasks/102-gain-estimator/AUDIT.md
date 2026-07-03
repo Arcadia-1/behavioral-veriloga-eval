@@ -1,22 +1,25 @@
-# Honest SOP Audit: Task 102 Gain Estimator
+# Measurement Instrumentation Audit: Task 102 Gain Estimator
 
-## Scope
+## Gate 1
 
-Task boundary is one primary Verilog-A DUT artifact, `gain_estimator.va`, migrated from `vbr1_l1_gain_estimator:tb`, plus the original EVAS/Spectre-compatible `.scs` transient scenario. Companion Verilog-A files listed in the top-level `TASKS.json` index are supplied by the harness when needed by the original system testbench.
+- Label: `independent_l1_ready`.
+- Function boundary: standalone gain measurement helper that tracks differential
+  input/output spans and reports a normalized gain metric with a validity flag.
+- Counting note: measurement/instrumentation L1 row.
 
-## Four Standards
+## Gate 2
 
-- Useful scenario: accepted. The module is a reusable behavioral Verilog-A block or flow component with a concrete transient use case.
-- Reasonable task: accepted for this migration slice. The public prompt names the target artifact, interface, and behavior context.
-- Complete tests: accepted for current v3 smoke. Hidden gold passes and `neg_001_zero` is non-full-credit; further hand-authored negatives can still strengthen release evidence.
-- Fair evaluation: accepted for current v3 smoke. The checker is bound through the v3 alias and the hidden behavior is covered by the public prompt context.
+- Status: `cadence_modeling_ready`.
+- Prompt hygiene: old testbench-generation context and evaluator wording were
+  removed.
+- Metadata repair: duplicate `./gain_estimator.va` target entry was removed.
+- Modeling repair: `transition()` is fed by event-updated normalized targets,
+  with `V(VDD,VSS)` scaling outside the transition expression.
+- Checker alignment: checker compares waveform gain, reported gain metric, and
+  final validity.
 
-## Checker And Evidence
+## Validation
 
-- Source checker id: `vbr1_l1_gain_estimator_tb`
-- EVAS 0.4.5 hidden gold smoke: PASS
-- Concrete negative `neg_001_zero`: non-full-credit
-
-## Remaining Risk
-
-Initial migration artifact. Do not count this task in a final release surface until gold smoke and negative evidence are attached.
+- AHDL-style preflight: PASS with 0 diagnostics.
+- EVAS reference/negative sweep: reference PASS; 5/5 negatives rejected.
+- Spectre private-split reference audit: PASS.

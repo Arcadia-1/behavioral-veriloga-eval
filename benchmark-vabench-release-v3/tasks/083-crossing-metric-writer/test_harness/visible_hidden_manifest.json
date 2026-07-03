@@ -1,4 +1,14 @@
 {
+  "task_id": "v3_083_crossing_metric_writer",
+  "checker_id": "v3_083_crossing_metric_writer",
+  "primary_target": "file_metric_writer.va",
+  "artifact_targets": [
+    "file_metric_writer.va"
+  ],
+  "hidden_testbench": "test_hidden/tests/tb_file_metric_writer_ref.scs",
+  "visible_smoke": "test_visible/tests/tb_visible_smoke.scs",
+  "gate1_label": "independent_l1_ready",
+  "gate2_status": "cadence_modeling_ready",
   "visible": [
     "instruction.md",
     "starter/",

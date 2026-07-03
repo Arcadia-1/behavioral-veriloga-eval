@@ -50,8 +50,8 @@ single-ended stimulus component.
 
 Use `vth` with a default near 0.45 V to interpret the voltage-coded `CLK` and
 `RST_N` control inputs, and keep the model pure behavioral Verilog-A. Do not use
-transistor-level devices, AC/noise analysis, private test hooks, or
-simulator-private side channels.
+transistor-level devices, AC/noise analysis, waveform files, checker artifacts,
+or simulator side channels.
 
 Only `vin_src.va` is the support component under review; companion modules may
 be supplied by the harness for composed-flow evaluation.

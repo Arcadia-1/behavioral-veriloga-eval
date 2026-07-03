@@ -8,24 +8,45 @@ Implement `gain_estimator.va` in Verilog-A.
 module gain_estimator(VDD, VSS, vinp, vinn, voutp, voutn, gain_out, valid);
 ```
 
+Ports:
+
+- `VDD`, `VSS`: electrical supply/reference rails.
+- `vinp`, `vinn`: electrical differential input being measured.
+- `voutp`, `voutn`: electrical differential output being measured.
+- `gain_out`: electrical voltage-coded gain metric.
+- `valid`: electrical completion flag using the `VDD/VSS` logic range.
+
 ## Required Behavior
 
-This task asks for the `gain_estimator` behavioral module, not a Spectre testbench. The hidden evaluator instantiates this module in the original `vbr1_l1_gain_estimator` transient scenario and checks the saved waveform/metric behavior with EVAS.
+Write a pure voltage-domain gain measurement helper. After a configurable start
+time, sample the input and output differential spans on a periodic timer. Once
+the observed input span is large enough, report the span ratio as a normalized
+voltage metric and assert `valid`.
 
-Original public behavior context:
+Public parameters:
 
-Write a Spectre transient testbench for the supplied `gain_estimator` behavioral measurement helper.
+- `sample_period = 1 ns`: timer interval for span updates.
+- `start_time = 20 ns`: time before samples begin contributing to the spans.
+- `gain_scale = 10.0`: gain value represented by a full-scale `gain_out`.
+- `min_input_span = 0.02 V`: minimum observed input span before the metric is
+  considered valid.
+- `tedge = 200 ps`: rise/fall smoothing for `gain_out` and `valid`.
 
-Public requirements:
+Required observable behavior:
 
-- Instantiate `gain_estimator` with ports `(VDD VSS vinp vinn voutp voutn gain_out valid)`.
-- Drive `VDD=0.9 V` and `VSS=0 V`.
-- Provide a differential input with about 60 mV peak-to-peak span.
-- Provide a differential output with about 360 mV peak-to-peak span, corresponding to gain near 6.
-- Run long enough for `valid` to assert and for `gain_out` to settle.
-- Save exactly `vinp`, `vinn`, `voutp`, `voutn`, `gain_out`, and `valid`.
-- Use voltage-domain behavioral sources only; avoid transistor-level devices, AC/noise analysis, and current-domain solver assumptions.
+- Track minimum and maximum values of `V(vinp,vinn)` and `V(voutp,voutn)` after
+  `start_time`.
+- Compute input and output spans from those extrema.
+- When input span exceeds `min_input_span`, set `gain = output_span/input_span`
+  and assert `valid`.
+- Drive `gain_out` as `V(VDD,VSS) * gain / gain_scale`.
+- Drive `valid` low before the metric is valid and high afterwards.
 
-Use voltage-coded logic with a 0.45 V threshold where applicable, drive high logic outputs near 0.9 V and low outputs near 0 V, and keep the model pure behavioral Verilog-A. Do not use transistor-level devices, AC/noise analysis, hidden checker logic, or simulator-private side channels.
+Use event-updated real state for the measured gain and validity flag. Smooth
+only discrete metric targets with `transition()`. Do not generate a Spectre
+testbench, waveform files, checker artifacts, transistor-level devices, current
+contributions, `ddt()`, or `idt()`.
 
-Only the target artifact is graded as the candidate implementation; companion Verilog-A files listed by the testbench are supplied by the harness for this task.
+## Output
+
+Return exactly one complete Verilog-A file named `gain_estimator.va`.

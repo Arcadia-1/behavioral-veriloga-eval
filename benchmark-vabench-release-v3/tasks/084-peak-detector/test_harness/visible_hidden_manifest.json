@@ -1,4 +1,14 @@
 {
+  "task_id": "v3_084_peak_detector",
+  "checker_id": "v3_084_peak_detector",
+  "primary_target": "peak_detector.va",
+  "artifact_targets": [
+    "peak_detector.va"
+  ],
+  "hidden_testbench": "test_hidden/tests/tb_peak_detector_ref.scs",
+  "visible_smoke": "test_visible/tests/tb_visible_smoke.scs",
+  "gate1_label": "independent_l1_ready",
+  "gate2_status": "cadence_modeling_ready",
   "visible": [
     "instruction.md",
     "starter/",

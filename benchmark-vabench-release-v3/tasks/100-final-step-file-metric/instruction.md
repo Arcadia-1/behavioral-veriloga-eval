@@ -15,32 +15,30 @@ module final_step_file_metric_ref (
 
 ## Required Behavior
 
-This task asks for the `final_step_file_metric_ref` behavioral module, not a Spectre testbench. The hidden evaluator instantiates this module in the original `vbr1_l2_measurement_flow` transient scenario and checks the saved waveform/metric behavior with EVAS.
+Write a pure voltage-domain measurement helper that counts rising reference
+events during transient simulation, exposes a voltage-coded metric, and writes
+the final metric at `final_step`.
 
-Original public behavior context:
+Public parameters:
 
-# Measurement flow Testbench Companion
+- `vth = 0.45 V`: rising-crossing threshold for `ref` relative to `VSS`.
+- `tedge = 200 ps`: rise/fall smoothing for `metric_out`.
 
-Write a Spectre transient testbench for the `Measurement flow` behavioral
-Verilog-A release task. This is the testbench-generation companion for an
-already materialized end-to-end task.
+Required observable behavior:
 
-The testbench should instantiate the same behavioral DUT or system module used
-by the corresponding end-to-end form, drive the public transient scenario, save
-the observable waveform or metric signals, and preserve the EVAS/Spectre
-validation contract.
+- Initialize the event count and metric to zero.
+- On every rising crossing of `ref` through `vth`, increment the event count.
+- Expose the normalized metric as `metric_out = V(VDD,VSS) * count / 4`.
+- At `final_step`, write a text metric record containing the final count and
+  normalized metric.
 
-Domain: pure voltage-domain behavioral Verilog-A.
+Use voltage-coded logic referenced to `VDD` and `VSS`. Smooth only event-updated
+metric state; do not feed a continuously varying branch expression directly
+into `transition()`. Do not generate a Spectre testbench, waveform files,
+checker artifacts, transistor-level devices, current contributions, `ddt()`, or
+`idt()`.
 
-Public requirements:
+## Output
 
-- include a transient `tran` analysis
-- save the public observables needed by the public behavior checks
-- include or instantiate the Verilog-A behavioral module under test
-- satisfy the named behavior checks using only public waveforms and side outputs
-- avoid transistor-level devices, AC/noise analysis, and current-domain
-  solver assumptions
-
-Use voltage-coded logic with a 0.45 V threshold where applicable, drive high logic outputs near 0.9 V and low outputs near 0 V, and keep the model pure behavioral Verilog-A. Do not use transistor-level devices, AC/noise analysis, hidden checker logic, or simulator-private side channels.
-
-Only the target artifact is graded as the candidate implementation; companion Verilog-A files listed by the testbench are supplied by the harness for this task.
+Return exactly one complete Verilog-A file named
+`final_step_file_metric_ref.va`.

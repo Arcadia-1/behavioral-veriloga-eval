@@ -1,66 +1,45 @@
-# Task: vbr1_l1_peak_detector:dut
+# Peak Detector
 
-## Release Task Contract
+Implement `peak_detector.va` in Verilog-A.
 
-- Form: `dut`
-- Level: `L1`
-- Category: Measurement Instrumentation Flows
-- Base function: Peak detector
-- Domain: `voltage`
-- Target artifact(s): `peak_detector.va`
-- Supplied/reference support artifact(s): `tb_peak_detector_ref.scs`
-- Visible context: public task, interface, artifact, stimulus, and observable contract only.
-- Hidden evaluator boundary: deterministic checker and EVAS/Spectre validation are external; do not generate checker logic.
+## Interface
 
-## Form-Specific Requirements
-
-- Implement only the requested Verilog-A DUT artifact(s); do not generate a Spectre testbench in this form.
-- Preserve the public module names, port order, parameters, and waveform observable names.
-
-## Public Verilog-A Interface
-
-- `peak_detector.va` declares module `peak_detector` with positional ports: `vin`, `rst`, `vout`.
-
-## Public Testbench And Observable Contract
-
-Public transient setting used by the release harness:
-
-```spectre
-tran tran stop=180n maxstep=500p
+```verilog
+module peak_detector(vin, rst, vout);
 ```
 
-The release harness expects these exact public scalar observables:
+Inputs:
 
-- `vin`
-- `rst`
-- `vout`
+- `vin`: electrical input to measure.
+- `rst`: electrical reset input using 0/0.9 V logic levels.
 
-When this form generates a testbench, use plain scalar save names for these observables; do not rely on instance-qualified or aliased save names.
+Outputs:
 
-## Public Behavior Checks
+- `vout`: electrical output holding the measured peak.
 
-- `first_peak_is_held`
-- `reset_clears_peak`
-- `second_peak_updates_to_larger_value`
+## Required Behavior
 
-## Output Contract
+Write a pure voltage-domain resettable peak detector. The model should sample
+`vin` on a 500 ps timer, retain the maximum sampled value, and drive `vout`
+from that retained peak.
 
-Return exactly one source artifact named `peak_detector.va`.
-Do not include explanatory prose outside the source artifact contents.
+Public parameters:
 
-## Task-Specific Public Description
+- `vth = 0.45 V`: reset threshold for `rst`.
+- `tr = 500 ps`: rise/fall smoothing for `vout`.
 
-# Task: vbm1_peak_detector_dut
+Required observable behavior:
 
-Write a pure voltage-domain Verilog-A module for a resettable peak detector.
+- Initialize the retained peak to 0 V.
+- While `rst` is above `vth`, clear the retained peak to 0 V.
+- While reset is inactive, update the retained peak when a sampled `vin` value
+  is larger than the current peak.
+- Hold the first peak, clear it on reset, and update to a larger later peak.
 
-The DUT module is `peak_detector` with ports `vin, rst, vout`. All ports are electrical; digital-control ports use 0/0.9 V logic levels.
+Use voltage contributions only. Smooth `vout` with `transition()`. Do not
+generate a Spectre testbench, waveform files, checker artifacts,
+transistor-level devices, current contributions, `ddt()`, or `idt()`.
 
-Required behavior:
-- Track the maximum observed `vin` value using a timer-sampled internal peak.
-- High `rst` clears the peak to 0 V.
-- Drive `vout` from the peak value through `transition()`.
-
-Use voltage contributions only. Do not use current contributions, `ddt()`, or `idt()`.
+## Output
 
 Return exactly one complete Verilog-A file named `peak_detector.va`.

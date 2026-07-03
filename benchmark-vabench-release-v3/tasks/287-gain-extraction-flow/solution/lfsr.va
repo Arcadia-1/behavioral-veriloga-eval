@@ -28,7 +28,6 @@ analog begin
             lfsr_r[i] = 1;
         end
         dpn_level = lfsr_r[31] > 0 ? V(VDD) : V(VSS);
-        $strobe("[lfsr] t=%.3f ns | INIT/RST | DPN=%d", $abstime*1e9, lfsr_r[31]);
     end
 
     @(cross(V(CLK) - 0.5, +1)) begin

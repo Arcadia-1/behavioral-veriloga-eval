@@ -1,13 +1,23 @@
 {
   "task_id": "v3_110_settling_time_measurement",
-  "source_task": "vbr1_l1_settling_time_detector",
-  "source_form": "tb_migrated_to_dut",
-  "source_checker_id": "vbr1_l1_settling_time_detector_tb",
+  "checker_id": "v3_110_settling_time_measurement",
   "primary_target": "settling_time_measurement_tb.va",
   "artifact_targets": [
     "settling_time_measurement_tb.va"
   ],
   "hidden_testbench": "test_hidden/tests/tb_settling_time_measurement_tb_ref.scs",
-  "visible_smoke": "tb_visible_smoke.scs",
-  "status": "initial_migration_pending_negative_audit"
+  "visible_smoke": "test_visible/tests/tb_visible_smoke.scs",
+  "gate1_label": "independent_l1_ready",
+  "gate2_status": "cadence_modeling_ready",
+  "visible": [
+    "instruction.md",
+    "starter/",
+    "test_visible/"
+  ],
+  "hidden": [
+    "solution/",
+    "test_hidden/",
+    "test_harness/",
+    "negative_variants/"
+  ]
 }

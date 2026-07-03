@@ -26,6 +26,6 @@ analog begin
         $fwrite(fd, "count=%0d metric=%.3f", count_q, metric_q);
         $fclose(fd);
     end
-    V(metric_out, VSS) <+ transition(metric_q * V(VDD, VSS), 0.0, tedge, tedge);
+    V(metric_out, VSS) <+ V(VDD, VSS) * transition(metric_q, 0.0, tedge, tedge);
 end
 endmodule

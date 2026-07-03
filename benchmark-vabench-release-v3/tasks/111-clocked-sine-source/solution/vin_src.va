@@ -30,8 +30,6 @@ analog begin
     @(initial_step) begin
         vp = vdd / 2.0;
         vn = vdd / 2.0;
-        $strobe("[vin_src] INIT | ampl=%.3fV freq=%.0fkHz sigma=%.1fmV",
-                ampl, freq*1e-3, sigma*1e3);
     end
 
     @(cross(V(CLK) - vth, +1)) begin
@@ -42,8 +40,8 @@ analog begin
         end
     end
 
-    V(VOUT_P) <+ transition(vp, 0);
-    V(VOUT_N) <+ transition(vn, 0);
+    V(VOUT_P) <+ transition(vp, 0, 30p, 30p);
+    V(VOUT_N) <+ transition(vn, 0, 30p, 30p);
 end
 
 endmodule
