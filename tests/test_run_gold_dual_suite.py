@@ -218,6 +218,23 @@ VALUE
         captured.setdefault("text_scripts", []).append(script)
         if "mktemp" in script:
             return SimpleNamespace(stdout="/tmp/vaevas-direct-spectre/case.test\n", stderr="", returncode=0)
+        if "AHDLCMI_CACHE_STATUS" in script:
+            return SimpleNamespace(
+                stdout=(
+                    "AHDLCMI_LOCK_DIR=/tmp/vaevas-direct-spectre/_ahdlcmi_cache/key.lock\n"
+                    "AHDLCMI_CACHE_STATUS=enabled\n"
+                    "AHDLCMI_CACHE_DIR=/tmp/vaevas-direct-spectre/_ahdlcmi_cache/key\n"
+                    "AHDLCMI_LINK=/tmp/vaevas-direct-spectre/case.test/case__tb.ahdlSimDB\n"
+                ),
+                stderr="",
+                returncode=0,
+            )
+        if script.startswith("rmdir "):
+            captured.setdefault("unlock_scripts", []).append(script)
+            return SimpleNamespace(stdout="", stderr="", returncode=0)
+        if "rm -rf" in script:
+            captured.setdefault("cleanup_scripts", []).append(script)
+            return SimpleNamespace(stdout="", stderr="", returncode=0)
         return SimpleNamespace(stdout="spectre done\n", stderr="", returncode=0)
 
     def fake_run_ssh_bytes(host, script, *, timeout_s, input_data=None):
@@ -254,6 +271,46 @@ VALUE
     assert captured["uploaded_bytes"] > 0
     assert any("tcsh -c" in script for script in captured["text_scripts"])
     assert any('fallback_root="$HOME/WORK/vaevas-direct-spectre"' in script for script in captured["text_scripts"])
+    assert any("_ahdlcmi_cache" in script and "ln -s" in script for script in captured["text_scripts"])
+    assert result["ahdlcmi_cache"]["enabled"] is True
+    assert result["ahdlcmi_cache"]["remote_cache_dir"].startswith("/tmp/vaevas-direct-spectre/_ahdlcmi_cache/")
+    assert len(captured["unlock_scripts"]) == 1
+    assert captured["unlock_scripts"][0].startswith("rmdir /tmp/vaevas-direct-spectre/_ahdlcmi_cache/")
+    assert captured["unlock_scripts"][0].endswith(".lock")
+
+
+def test_direct_sui_ahdlcmi_cache_key_reuses_same_va_across_tb_labels(tmp_path: Path) -> None:
+    out = tmp_path / "out"
+    out.mkdir()
+    tb_a = out / "task_visible__tb.scs"
+    tb_b = out / "task_hidden__tb.scs"
+    va = out / "dut.va"
+    tb_a.write_text('ahdl_include "dut.va"\n', encoding="utf-8")
+    tb_b.write_text('ahdl_include "dut.va"\ntran tran stop=2n\n', encoding="utf-8")
+    va.write_text("module dut; endmodule\n", encoding="utf-8")
+
+    key_a = dual.direct_sui_ahdlcmi_cache_key(
+        input_files=[tb_a, va],
+        output_dir=out,
+        host="thu-wei",
+        cadence_cshrc="/cadence.cshrc",
+    )
+    key_b = dual.direct_sui_ahdlcmi_cache_key(
+        input_files=[tb_b, va],
+        output_dir=out,
+        host="thu-wei",
+        cadence_cshrc="/cadence.cshrc",
+    )
+    assert key_a == key_b
+
+    va.write_text("module dut; electrical out; endmodule\n", encoding="utf-8")
+    key_changed = dual.direct_sui_ahdlcmi_cache_key(
+        input_files=[tb_b, va],
+        output_dir=out,
+        host="thu-wei",
+        cadence_cshrc="/cadence.cshrc",
+    )
+    assert key_changed != key_a
 
 
 def test_copy_direct_spectre_inputs_rewrites_parent_solution_ahdl_include(tmp_path: Path) -> None:
@@ -416,6 +473,17 @@ def test_direct_sui_backend_reports_license_checkout_failure(monkeypatch, tmp_pa
         captured.setdefault("text_scripts", []).append(script)
         if "mktemp" in script:
             return SimpleNamespace(stdout="/tmp/vaevas-direct-spectre/case.test\n", stderr="", returncode=0)
+        if "AHDLCMI_CACHE_STATUS" in script:
+            return SimpleNamespace(
+                stdout=(
+                    "AHDLCMI_LOCK_DIR=/tmp/vaevas-direct-spectre/_ahdlcmi_cache/key.lock\n"
+                    "AHDLCMI_CACHE_STATUS=enabled\n"
+                ),
+                stderr="",
+                returncode=0,
+            )
+        if script.startswith("rmdir "):
+            return SimpleNamespace(stdout="", stderr="", returncode=0)
         if "rm -rf" in script:
             return SimpleNamespace(stdout="", stderr="", returncode=0)
         return SimpleNamespace(
