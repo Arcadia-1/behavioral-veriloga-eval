@@ -1,10 +1,14 @@
 # Analysis Aware Noise Metric
 
-Implement one behavioral Verilog-A source file named `analysis_aware_noise_metric.va`.
+## Task Contract
 
-This is a noise/analysis extension task based on the Cadence Verilog-A Language Reference. It intentionally exercises noise or analysis-dependent source functions. These tasks may require an AC/noise-capable simulator such as Spectre for final certification.
+Implement one behavioral Verilog-A source file named `analysis_aware_noise_metric.va`. This is a support/L0 Verilog-A semantics task for combining `analysis("noise")`, `white_noise()`, and a deterministic sampled metric, not a standalone core circuit macro.
 
-## Interface
+## Form-Specific Requirements
+
+This is a DUT source task. Implement only the `analysis_aware_noise_metric` module; no external testbench or extra helper module is part of the requested artifact.
+
+## Public Verilog-A Interface
 
 ```verilog
 module analysis_aware_noise_metric (
@@ -15,29 +19,23 @@ module analysis_aware_noise_metric (
 );
 ```
 
+## Public Parameter Contract
+
+- `vth = 0.45`: clock crossing threshold in volts.
+- `vhi = 0.9`: retained compatibility parameter for the shared source-task interface.
+- `tr = 200p`: rise/fall time for the event-updated `metric` transition.
+- `noise_power = 1.0e-12`: white-noise power spectral density parameter used when noise analysis is active.
+
 ## Required Behavior
 
-Use `analysis()` and a noise contribution while maintaining deterministic transient outputs:
+In transient analysis, drive `out` directly from the instantaneous control voltage: `V(out) <+ V(ctrl)`. When `analysis("noise")` is true, add a voltage-domain noise contribution using `white_noise(noise_power, "metric_noise")`.
 
-```verilog
-V(out) <+ transition(V(ctrl), 0.0, tr, tr);
-if (analysis("noise")) V(out) <+ white_noise(noise_power, "metric_noise");
-```
+Initialize `metric_v` to zero and an integer clock counter to zero at `initial_step`. On every rising crossing of `clk` through `vth`, increment the counter by one and set `metric_v` to `count / 8.0`. Drive `metric` with `transition(metric_v, 0.0, tr, tr)`.
 
-Also provide a transient-checkable metric counter. Initialize `metric_v` and `count_q` to zero at `initial_step`; on every rising crossing of `clk` through `vth`, increment `count_q` and update `metric_v` to `count_q / 8.0`:
+## Modeling Constraints
 
-```verilog
-@(cross(V(clk)-vth,+1)) begin
-    count_q = count_q + 1;
-    metric_v = count_q / 8.0;
-end
-V(metric) <+ transition(metric_v, 0.0, tr, tr);
-```
+Use `white_noise()` directly in a voltage branch contribution and guard it with `analysis("noise")`. Do not assign the noise function result to a real variable. Do not place continuously varying branch voltages such as `V(ctrl)` inside `transition()`; drive continuous voltage behavior directly as a branch contribution.
 
-The transient checker verifies that `out` follows `ctrl` and that `metric` advances by one eighth per sampled clock edge. Noise-analysis behavior itself requires a noise-analysis-capable certification layer.
-
-Keep the model behavioral and voltage-domain. Do not use current-domain `I(...)` contributions or transistor-level devices.
-
-## Output
+## Output Contract
 
 Return exactly one source artifact named `analysis_aware_noise_metric.va`.

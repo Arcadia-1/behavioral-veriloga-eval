@@ -6728,7 +6728,7 @@
   version: 1
   task_id: v3_361_white_noise_voltage_source
   backend: evas
-  status: behavior-certified-candidate
+  status: support-semantics-candidate
   checker: white_noise_transient_sideband_contract
   # vabench-release-v2-checks
   required_columns:
@@ -6762,13 +6762,13 @@
       - transient_sideband_only_not_spectral_noise_certification
       - no_current_domain_contribution
   notes:
-    - "Noise/source extension task promoted for executable transient sideband behavior."
-    - "The checker verifies the deterministic metric sideband; spectral white_noise power still requires a noise-analysis-capable layer."
+    - "Noise/source support semantics row retained for executable transient sideband behavior."
+    - "The deterministic transient contract records the metric sideband; spectral white_noise power still requires a noise-analysis-capable layer."
 362-white-noise-gated-source: |
   version: 1
   task_id: v3_362_white_noise_gated_source
   backend: evas
-  status: behavior-certified-candidate
+  status: support-semantics-candidate
   checker: gated_white_noise_transient_sideband_contract
   # vabench-release-v2-checks
   required_columns:
@@ -6805,13 +6805,13 @@
       - transient_sideband_only_not_spectral_noise_certification
       - no_current_domain_contribution
   notes:
-    - "Noise/source extension task promoted for executable transient sideband behavior."
-    - "The checker verifies the deterministic gate-status sideband; spectral white_noise power still requires a noise-analysis-capable layer."
+    - "Noise/source support semantics row retained for executable transient sideband behavior."
+    - "The deterministic transient contract records the gate-status sideband; spectral white_noise power still requires a noise-analysis-capable layer."
 363-flicker-noise-voltage-source: |
   version: 1
   task_id: v3_363_flicker_noise_voltage_source
   backend: evas
-  status: behavior-certified-candidate
+  status: support-semantics-candidate
   checker: flicker_noise_transient_sideband_contract
   # vabench-release-v2-checks
   required_columns:
@@ -6845,13 +6845,13 @@
       - transient_sideband_only_not_spectral_noise_certification
       - no_current_domain_contribution
   notes:
-    - "Noise/source extension task promoted for executable transient sideband behavior."
-    - "The checker verifies the deterministic kf-scale sideband; spectral flicker_noise behavior still requires a noise-analysis-capable layer."
+    - "Noise/source support semantics row retained for executable transient sideband behavior."
+    - "The deterministic transient contract records the kf-scale sideband; spectral flicker_noise behavior still requires a noise-analysis-capable layer."
 364-flicker-noise-corner-selector: |
   version: 1
   task_id: v3_364_flicker_noise_corner_selector
   backend: evas
-  status: behavior-certified-candidate
+  status: support-semantics-candidate
   checker: flicker_noise_corner_transient_sideband_contract
   # vabench-release-v2-checks
   required_columns:
@@ -6888,13 +6888,13 @@
       - transient_sideband_only_not_spectral_noise_certification
       - no_current_domain_contribution
   notes:
-    - "Noise/source extension task promoted for executable transient sideband behavior."
-    - "The checker verifies the deterministic corner-select sideband; spectral flicker_noise behavior still requires a noise-analysis-capable layer."
+    - "Noise/source support semantics row retained for executable transient sideband behavior."
+    - "The deterministic transient contract records the corner-select sideband; spectral flicker_noise behavior still requires a noise-analysis-capable layer."
 365-noise-table-voltage-shaper: |
   version: 1
   task_id: v3_365_noise_table_voltage_shaper
   backend: evas
-  status: behavior-certified-candidate
+  status: support-semantics-candidate
   checker: noise_table_transient_sideband_contract
   # vabench-release-v2-checks
   required_columns:
@@ -6928,13 +6928,13 @@
       - transient_sideband_only_not_spectral_noise_certification
       - no_current_domain_contribution
   notes:
-    - "Noise/source extension task promoted for executable transient sideband behavior if the simulator supports noise_table."
-    - "The checker verifies the deterministic table-shaper sideband; spectral noise_table behavior still requires a noise-analysis-capable layer."
+    - "Noise/source support semantics row retained for executable transient sideband behavior if the simulator supports noise_table."
+    - "The deterministic transient contract records the table-shaper sideband; spectral noise_table behavior still requires a noise-analysis-capable layer."
 366-noise-table-gated-shaper: |
   version: 1
   task_id: v3_366_noise_table_gated_shaper
   backend: evas
-  status: behavior-certified-candidate
+  status: support-semantics-candidate
   checker: gated_noise_table_transient_sideband_contract
   # vabench-release-v2-checks
   required_columns:
@@ -6971,13 +6971,13 @@
       - transient_sideband_only_not_spectral_noise_certification
       - no_current_domain_contribution
   notes:
-    - "Noise/source extension task promoted for executable transient sideband behavior if the simulator supports noise_table."
-    - "The checker verifies the deterministic gate-status sideband; spectral noise_table behavior still requires a noise-analysis-capable layer."
+    - "Noise/source support semantics row retained for executable transient sideband behavior if the simulator supports noise_table."
+    - "The deterministic transient contract records the gate-status sideband; spectral noise_table behavior still requires a noise-analysis-capable layer."
 367-analysis-dependent-dc-tran-mode: |
   version: 1
   task_id: v3_367_analysis_dependent_dc_tran_mode
   backend: evas
-  status: behavior-certified-candidate
+  status: support-semantics-candidate
   checker: analysis_dependent_dc_tran_contract
   # vabench-release-v2-checks
   required_columns:
@@ -7012,13 +7012,13 @@
       - metric_reports_tran_mode_on_clk_rising_crossing
       - no_current_domain_contribution
   notes:
-    - "Analysis-aware extension task promoted to executable EVAS transient behavior candidate."
-    - "The checker verifies transient analysis behavior; separate DC analysis certification is out of this transient harness."
+    - "Analysis-aware support semantics row retained for executable transient behavior."
+    - "The deterministic transient contract records transient analysis behavior; DC-analysis behavior is not independently certified by this sideband row."
 368-analysis-dependent-noise-enable: |
   version: 1
   task_id: v3_368_analysis_dependent_noise_enable
   backend: evas
-  status: behavior-certified-candidate
+  status: support-semantics-candidate
   checker: analysis_dependent_noise_enable_transient_sideband_contract
   # vabench-release-v2-checks
   required_columns:
@@ -7054,13 +7054,13 @@
       - transient_sideband_only_not_noise_analysis_certification
       - no_current_domain_contribution
   notes:
-    - "Analysis/noise extension task promoted for executable transient sideband behavior."
-    - "The checker verifies the deterministic metric sideband; analysis(\"noise\") behavior requires a noise-analysis-capable layer."
+    - "Analysis/noise support semantics row retained for executable transient sideband behavior."
+    - "The deterministic transient contract records the metric sideband; analysis(\"noise\") behavior requires a noise-analysis-capable layer."
 369-ac-stim-small-signal-source: |
   version: 1
   task_id: v3_369_ac_stim_small_signal_source
   backend: evas
-  status: behavior-certified-candidate
+  status: support-semantics-candidate
   checker: ac_stim_transient_sideband_contract
   # vabench-release-v2-checks
   required_columns:
@@ -7096,13 +7096,13 @@
       - transient_sideband_only_not_ac_analysis_certification
       - no_current_domain_contribution
   notes:
-    - "AC analysis extension task promoted for executable transient sideband behavior."
-    - "The checker verifies transient behavior and the deterministic magnitude sideband; AC small-signal behavior requires an AC-capable layer."
+    - "AC analysis support semantics row retained for executable transient sideband behavior."
+    - "The deterministic transient contract records transient behavior and the magnitude sideband; AC small-signal behavior requires an AC-capable layer."
 370-ac-stim-phase-selector: |
   version: 1
   task_id: v3_370_ac_stim_phase_selector
   backend: evas
-  status: behavior-certified-candidate
+  status: support-semantics-candidate
   checker: ac_stim_phase_transient_sideband_contract
   # vabench-release-v2-checks
   required_columns:
@@ -7116,7 +7116,7 @@
       - "analysis("
       - "ac_stim"
       - 'analysis("ac")'
-      - "V(ctrl) > vth ? 90.0 : 0.0"
+      - "V(ctrl) > vth ? 1.5707963267948966 : 0.0"
       - "V(out)"
       - "cross"
       - "V(metric)"
@@ -7139,13 +7139,13 @@
       - transient_sideband_only_not_ac_analysis_certification
       - no_current_domain_contribution
   notes:
-    - "AC analysis extension task promoted for executable transient sideband behavior."
-    - "The checker verifies transient behavior and the deterministic phase-selection sideband; AC phase behavior requires an AC-capable layer."
+    - "AC analysis support semantics row retained for executable transient sideband behavior."
+    - "The deterministic transient contract records transient behavior and the phase-selection sideband; AC phase behavior requires an AC-capable layer."
 371-combined-white-flicker-noise: |
   version: 1
   task_id: v3_371_combined_white_flicker_noise
   backend: evas
-  status: behavior-certified-candidate
+  status: support-semantics-candidate
   checker: combined_white_flicker_transient_sideband_contract
   # vabench-release-v2-checks
   required_columns:
@@ -7180,13 +7180,13 @@
       - transient_sideband_only_not_spectral_noise_certification
       - no_current_domain_contribution
   notes:
-    - "Noise/source extension task promoted for executable transient sideband behavior."
-    - "The checker verifies the deterministic parameter-sum sideband; combined white/flicker spectral behavior requires a noise-analysis-capable layer."
+    - "Noise/source support semantics row retained for executable transient sideband behavior."
+    - "The deterministic transient contract records the parameter-sum sideband; combined white/flicker spectral behavior requires a noise-analysis-capable layer."
 372-analysis-aware-noise-metric: |
   version: 1
   task_id: v3_372_analysis_aware_noise_metric
   backend: evas
-  status: behavior-certified-candidate
+  status: support-semantics-candidate
   checker: analysis_aware_noise_counter_contract
   # vabench-release-v2-checks
   required_columns:
@@ -7223,8 +7223,8 @@
       - transient_sideband_only_not_noise_analysis_certification
       - no_current_domain_contribution
   notes:
-    - "Analysis/noise extension task promoted for executable transient sideband behavior."
-    - "The checker verifies transient output and counter metric behavior; analysis(\"noise\") behavior requires a noise-analysis-capable layer."
+    - "Analysis/noise support semantics row retained for executable transient sideband behavior."
+    - "The deterministic transient contract records transient output and counter metric behavior; analysis(\"noise\") behavior requires a noise-analysis-capable layer."
 379-file-fgets-config-loader: |
   version: 1
   task_id: v3_379_file_fgets_config_loader

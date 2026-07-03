@@ -1,10 +1,14 @@
 # Flicker Noise Voltage Source
 
-Implement one behavioral Verilog-A source file named `flicker_noise_voltage_source.va`.
+## Task Contract
 
-This is a noise/analysis extension task based on the Cadence Verilog-A Language Reference. It intentionally exercises noise or analysis-dependent source functions. These tasks may require an AC/noise-capable simulator such as Spectre for final certification.
+Implement one behavioral Verilog-A source file named `flicker_noise_voltage_source.va`. This is a support/L0 Verilog-A semantics task for `flicker_noise()` in a voltage-domain behavioral source, not a standalone core circuit macro.
 
-## Interface
+## Form-Specific Requirements
+
+This is a DUT source task. Implement only the `flicker_noise_voltage_source` module; no external testbench or extra helper module is part of the requested artifact.
+
+## Public Verilog-A Interface
 
 ```verilog
 module flicker_noise_voltage_source (
@@ -15,25 +19,24 @@ module flicker_noise_voltage_source (
 );
 ```
 
+## Public Parameter Contract
+
+- `vth = 0.45`: clock crossing threshold in volts.
+- `vhi = 0.9`: retained compatibility parameter for the shared source-task interface.
+- `tr = 200p`: rise/fall time for the event-updated `metric` transition.
+- `kf = 1.0e-12`: flicker-noise coefficient.
+- `af = 1.0`: flicker-noise exponent.
+
 ## Required Behavior
 
-Use `flicker_noise()` as a behavioral 1/f noise contribution on `out`:
+Contribute a voltage-domain flicker-noise source on `out` using `flicker_noise(kf, af, "flicker_voltage_noise")`. In ordinary transient analysis this small-signal noise contribution is not a deterministic time-domain waveform; the transient-observable behavior is carried by `metric`.
 
-```verilog
-V(out) <+ flicker_noise(kf, af, "flicker_voltage_noise");
-```
+Initialize `metric_v` to zero at `initial_step`. On every rising crossing of `clk` through `vth`, set `metric_v` to `kf * 1.0e12`. Drive `metric` with `transition(metric_v, 0.0, tr, tr)`.
 
-Also provide a deterministic transient-checkable sideband on `metric`. Initialize `metric_v` to zero at `initial_step`; on every rising crossing of `clk` through `vth`, update `metric_v` to `kf * 1.0e12`:
+## Modeling Constraints
 
-```verilog
-@(cross(V(clk)-vth,+1)) metric_v = kf * 1.0e12;
-V(metric) <+ transition(metric_v, 0.0, tr, tr);
-```
+Use `flicker_noise()` directly in a voltage branch contribution. Do not assign the noise function result to a real variable, do not use current-domain `I(...)` contributions, and do not add transistor-level devices. Use real-valued arithmetic for the metric scaling.
 
-The transient checker verifies the clocked parameter sideband. The flicker noise source is covered as an executable language feature; spectral 1/f behavior requires a noise-analysis-capable certification layer.
-
-Keep the model behavioral and voltage-domain. Do not use current-domain `I(...)` contributions or transistor-level devices.
-
-## Output
+## Output Contract
 
 Return exactly one source artifact named `flicker_noise_voltage_source.va`.

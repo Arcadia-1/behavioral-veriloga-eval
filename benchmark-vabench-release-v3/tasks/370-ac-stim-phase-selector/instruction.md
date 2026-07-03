@@ -1,10 +1,14 @@
-# Ac Stim Phase Selector
+# AC Stim Phase Selector
 
-Implement one behavioral Verilog-A source file named `ac_stim_phase_selector.va`.
+## Task Contract
 
-This is a noise/analysis extension task based on the Cadence Verilog-A Language Reference. It intentionally exercises noise or analysis-dependent source functions. These tasks may require an AC/noise-capable simulator such as Spectre for final certification.
+Implement one behavioral Verilog-A source file named `ac_stim_phase_selector.va`. This is a support/L0 Verilog-A semantics task for selecting an `ac_stim()` phase from an analog control level, not a standalone core circuit macro.
 
-## Interface
+## Form-Specific Requirements
+
+This is a DUT source task. Implement only the `ac_stim_phase_selector` module; no external testbench or extra helper module is part of the requested artifact.
+
+## Public Verilog-A Interface
 
 ```verilog
 module ac_stim_phase_selector (
@@ -15,26 +19,22 @@ module ac_stim_phase_selector (
 );
 ```
 
+## Public Parameter Contract
+
+- `vth = 0.45`: control and clock threshold in volts.
+- `vhi = 0.9`: high value reported on `metric` when the high-phase state is selected.
+- `tr = 200p`: rise/fall time for the event-updated `metric` transition.
+
 ## Required Behavior
 
-Select `ac_stim()` phase from a behavioral control voltage:
+In transient analysis, drive `out` directly from the instantaneous control voltage: `V(out) <+ V(ctrl)`. When `analysis("ac")` is true, add `ac_stim("ac", 1.0, selected_phase)` where `selected_phase` is `1.5707963267948966` radians when `V(ctrl) > vth` and `0.0` otherwise.
 
-```verilog
-V(out) <+ transition(V(ctrl), 0.0, tr, tr);
-if (analysis("ac")) V(out) <+ ac_stim("ac", 1.0, V(ctrl) > vth ? 90.0 : 0.0);
-```
+Initialize `metric_v` to zero at `initial_step`. On every rising crossing of `clk` through `vth`, set `metric_v` to `vhi` when `V(ctrl) > vth`, otherwise set it to zero. Drive `metric` with `transition(metric_v, 0.0, tr, tr)`.
 
-Also provide a deterministic transient-checkable sideband on `metric`. Initialize `metric_v` to zero at `initial_step`; on every rising crossing of `clk` through `vth`, update `metric_v` to `vhi` when `ctrl` selects the 90 degree phase, otherwise zero:
+## Modeling Constraints
 
-```verilog
-@(cross(V(clk)-vth,+1)) metric_v = V(ctrl) > vth ? vhi : 0.0;
-V(metric) <+ transition(metric_v, 0.0, tr, tr);
-```
+Use `ac_stim()` directly in a voltage branch contribution and only under the AC-analysis guard. The `ac_stim()` phase argument is in radians. Do not place continuously varying branch voltages such as `V(ctrl)` inside `transition()`; drive continuous voltage behavior directly as a branch contribution.
 
-The transient checker verifies that `out` follows `ctrl` and that `metric` reports the selected AC phase state. AC small-signal phase behavior itself requires an AC-capable certification layer.
-
-Keep the model behavioral and voltage-domain. Do not use current-domain `I(...)` contributions or transistor-level devices.
-
-## Output
+## Output Contract
 
 Return exactly one source artifact named `ac_stim_phase_selector.va`.

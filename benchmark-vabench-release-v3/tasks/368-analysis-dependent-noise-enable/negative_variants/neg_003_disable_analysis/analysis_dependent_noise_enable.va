@@ -18,7 +18,7 @@ analog begin
         metric_v = 0.0;
     end
 
-    V(out) <+ transition(0.0, 0.0, tr, tr);
+    V(out) <+ 0.0;
     if (analysis("noise")) V(out) <+ white_noise(noise_power, "enabled_noise");
 
     @(cross(V(clk)-vth,+1)) metric_v = metric_v;

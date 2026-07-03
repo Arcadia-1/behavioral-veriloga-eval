@@ -19,7 +19,7 @@ analog begin
         count_q = 0;
     end
 
-    V(out) <+ transition(V(ctrl), 0.0, tr, tr);
+    V(out) <+ V(ctrl);
     if (analysis("noise")) V(out) <+ white_noise(noise_power, "metric_noise");
 
     @(cross(V(clk)-vth,+1)) begin
