@@ -1,13 +1,32 @@
 {
-  "visible": [
-    "instruction.md",
-    "starter/",
-    "test_visible/"
-  ],
-  "hidden": [
-    "solution/",
-    "test_hidden/",
-    "test_harness/",
-    "negative_variants/"
-  ]
+  "certification": {
+    "scope": "EVAS hidden gold/negative, Spectre hidden gold/negative, and Cadence AHDL lint evidence tracked in AUDIT.md",
+    "status": "dual_hidden_gold_and_negative_reviewed"
+  },
+  "form": "dut",
+  "hidden": {
+    "checker": "../../../CHECKS.yaml",
+    "gold": [
+      "solution/bias_voltage_generator_with_enable_trim.va"
+    ],
+    "negative_variants": "negative_variants",
+    "testbenches": [
+      "test_hidden/hidden.scs",
+      "test_hidden/tests/tb_bias_voltage_generator_with_enable_trim.scs"
+    ]
+  },
+  "level": "L1",
+  "status": "v3_candidate",
+  "task": "082-bias-voltage-generator-with-enable-trim",
+  "visible": {
+    "instruction": "instruction.md",
+    "public_smoke": {
+      "hidden_dependency": false,
+      "runner": "test_visible/tests/run_visible_smoke.py",
+      "testbench": "test_visible/tests/tb_visible_smoke.scs"
+    },
+    "starter_files": [
+      "starter/bias_voltage_generator_with_enable_trim.va"
+    ]
+  }
 }

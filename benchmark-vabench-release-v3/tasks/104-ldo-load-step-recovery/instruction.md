@@ -1,35 +1,16 @@
-# LDO Load Step Recovery
+# LDO Load-Step Recovery Flow
 
-Implement `ldo_load_step_recovery_flow.va` in Verilog-A.
+## Task Contract
 
-## Interface
+- Form: `dut`
+- Level: `L2`
+- Category: Bias Reference and Power Management
+- Target artifact: `ldo_load_step_recovery_flow.va`
+- Implement only the requested Verilog-A flow DUT. Do not generate a Spectre testbench, checker logic, or auxiliary test hooks.
+- Preserve the public module name, port order, starter parameters, and saved waveform observable names.
+- The visible testbench is a public smoke scenario. Use it to understand wiring and observables, but do not hard-code its stop time, maxstep, or exact waveform breakpoints into the DUT behavior.
 
-```verilog
-module ldo_load_step_recovery_flow(clk, rst, vin, out, metric, load_mon, ctrl_mon);
-```
-
-## Required Behavior
-
-This task asks for the `ldo_load_step_recovery_flow` behavioral module, not a Spectre testbench. The hidden evaluator instantiates this module in the original `vbr1_l2_ldo_load_step_recovery_flow` transient scenario and checks the saved waveform/metric behavior with EVAS.
-
-Original public behavior context:
-
-### LDO load-step recovery flow (tb-generation)
-
-Write a Spectre transient testbench for the described behavioral Verilog-A module.
-
-Behavioral intent:
-
-Compose a regulator macro model with repeated load-step disturbances and recovery-status observation.
-
-Module name: `ldo_load_step_recovery_flow`.
-Domain: pure voltage-domain behavioral Verilog-A.
-Do not use current contributions, transistor-level devices, AC/noise analysis,
-or KCL/KVL solving assumptions.
-
-This is a voltage-domain macro-model task for bias/reference/power management behavior. Model observable startup, threshold, trim, hysteresis, droop, or recovery behavior with event-driven voltage state updates. Do not use branch currents, transistor devices, process-device equations, or true current-mode regulation loops.
-
-Public port contract:
+## Public Verilog-A Interface
 
 ```verilog
 module ldo_load_step_recovery_flow(clk, rst, vin, out, metric, load_mon, ctrl_mon);
@@ -38,22 +19,41 @@ output out, metric, load_mon, ctrl_mon;
 electrical clk, rst, vin, out, metric, load_mon, ctrl_mon;
 ```
 
-Signal contract:
+Starter parameter declarations are part of the public contract:
 
-clk and rst are voltage-coded logic signals. vin is the public load-step stimulus. load_mon tracks the bounded load request seen by the regulator macro, ctrl_mon is an abstract voltage-domain pass/recovery control monitor, out is the regulator output after transient droop and recovery, and metric marks recovered regulation after each load transition. This remains a behavioral load-step recovery macro, not a transistor/pass-device LDO implementation.
+- `tr = 100p`: output transition rise/fall time.
+- `vth = 0.45`: voltage-coded logic threshold.
 
-Saved waveform columns:
+## Public Behavioral Contract
+
+- `clk` and `rst` are voltage-coded logic signals.
+- Treat `vin` as a bounded load-step request for a behavioral LDO recovery flow.
+- `load_mon` should track the bounded load request seen by the regulator macro.
+- `ctrl_mon` should expose an abstract voltage-domain pass/recovery control response that rises under heavier load or droop and relaxes after recovery.
+- `out` is the regulator output after transient load droop and closed-loop recovery.
+- A load increase should produce a visible transient droop in `out`, followed by gradual recovery toward the load-dependent regulation target.
+- A load reduction should allow `out` to recover upward toward the light-load target.
+- Repeated load steps should reset recovery observation and then settle again.
+- Drive `metric` high only after the flow has recovered regulation following a load transition.
+- Keep the model pure voltage-domain behavioral Verilog-A. Do not use branch-current contributions, transistor-level devices, AC/noise analysis, or KCL/KVL regulation loops.
+
+## Public Observables
+
+Verification scenarios observe these scalar waveforms:
 
 ```text
 clk rst vin out metric load_mon ctrl_mon
 ```
 
-Public transient contract:
+Expected behavior categories:
 
-```spectre
-tran tran stop=80n maxstep=0.5n
-```
+- `load_step_transient_droop_visible`
+- `closed_loop_recovery_after_step`
+- `metric_marks_recovered_regulation`
+- `load_monitor_tracks_step`
+- `control_monitor_responds_to_droop`
 
-Use voltage-coded logic with a 0.45 V threshold where applicable, drive high logic outputs near 0.9 V and low outputs near 0 V, and keep the model pure behavioral Verilog-A. Do not use transistor-level devices, AC/noise analysis, hidden checker logic, or simulator-private side channels.
+## Output Contract
 
-Only the target artifact is graded as the candidate implementation; companion Verilog-A files listed by the testbench are supplied by the harness for this task.
+Return exactly one source artifact named `ldo_load_step_recovery_flow.va`.
+Do not include explanatory prose outside the source artifact contents.

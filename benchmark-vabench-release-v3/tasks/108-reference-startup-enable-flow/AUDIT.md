@@ -2,21 +2,32 @@
 
 ## Scope
 
-Task boundary is one primary Verilog-A DUT artifact, `reference_startup_enable_flow.va`, migrated from `vbr1_l2_reference_startup_enable_flow:tb`, plus the original EVAS/Spectre-compatible `.scs` transient scenario. Companion Verilog-A files listed in the top-level `TASKS.json` index are supplied by the harness when needed by the original system testbench.
+Task boundary is one L2 Verilog-A flow DUT, `reference_startup_enable_flow.va`. Public solver materials are `instruction.md`, `starter/`, and `test_visible/`. Evaluation materials are `solution/`, `test_hidden/`, `test_harness/`, and `negative_variants/`.
 
-## Four Standards
+## Gate 1
 
-- Useful scenario: accepted. The module is a reusable behavioral Verilog-A block or flow component with a concrete transient use case.
-- Reasonable task: accepted for this migration slice. The public prompt names the target artifact, interface, and behavior context.
-- Complete tests: accepted for current v3 smoke. Hidden gold passes and `neg_001_zero` is non-full-credit; further hand-authored negatives can still strengthen release evidence.
-- Fair evaluation: accepted for current v3 smoke. The checker is bound through the v3 alias and the hidden behavior is covered by the public prompt context.
+- Proposed label: `l2_core_ready`.
+- Reasoning: this row evaluates an integrated startup flow with supply-good detection, enable gating, startup progress, state monitor, output reference, valid metric, supply-dip reset, and recovery. It is distinct from task 022, which is a single reference macro without explicit enable/state/startup monitor flow behavior.
+- Human confirmation: confirmed by reviewer; retain as an L2 core flow row for this category.
+
+## Gate 2
+
+- Status: `cadence_modeling_ready`.
+- Public prompt now states the L2 flow DUT boundary and no longer asks for a Spectre testbench or includes source-migration context.
+- `CHECKS.yaml` syntax expectations now match the Verilog-A DUT artifact (`transition(` and `@(cross(`) rather than stale testbench keywords.
+- Hidden deck was repaired so it is no longer byte-identical to the visible smoke deck; it now uses distinct supply levels and enable timing while preserving the same observable contract.
+- Cadence/Verilog-A correspondence: the gold uses event-updated real state/counters and `transition()` on discrete monitor/output targets, matching Cadence-style event-driven behavioral flow modeling.
 
 ## Checker And Evidence
 
-- Source checker id: `vbr1_l2_reference_startup_enable_flow_tb`
-- EVAS 0.4.5 hidden gold smoke: PASS
-- Concrete negative `neg_001_zero`: non-full-credit
+- Checker id: `v3_108_reference_startup_enable_flow`.
+- EVAS hidden gold: PASS.
+- EVAS negative variants: 5/5 rejected.
+- Spectre hidden gold: PASS.
+- Spectre negative variants: 5/5 rejected.
+- EVAS lint preflight: PASS, 0 diagnostics.
+- Cadence AHDL lint: PASS with no task-specific `AHDLLINT-*`; only global `VACOMP-2435` environment notice observed.
 
 ## Remaining Risk
 
-Initial migration artifact. Do not count this task in a final release surface until gold smoke and negative evidence are attached.
+Reviewer confirmed this row should be retained as an L2 core flow task. The prompt, hidden coverage, checker, EVAS, Spectre, and AHDL evidence are aligned for this row.
