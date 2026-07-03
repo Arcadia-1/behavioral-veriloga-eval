@@ -3194,16 +3194,16 @@
       ],
       "title": "Window Comparator Testbench"
     },
-    "285-aperture-delay-sample-hold": {
+    "285-dual-track-sample-hold": {
       "category": "sampling_analog_memory",
       "difficulty": "D2",
       "form": "dut",
-      "id": "v3_285_aperture_delay_sample_hold",
+      "id": "v3_285_dual_track_sample_hold",
       "level": "L1",
       "target": [
-        "sample_hold_aperture_ref.va"
+        "dual_track_sample_hold.va"
       ],
-      "title": "Aperture Delay Sample Hold"
+      "title": "Dual Track Sample Hold"
     },
     "286-first-order-lowpass-bugfix": {
       "category": "baseband_signal_conditioning",

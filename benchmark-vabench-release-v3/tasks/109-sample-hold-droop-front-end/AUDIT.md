@@ -1,22 +1,26 @@
-# Honest SOP Audit: Task 109 Sample Hold Droop Front End
+# Two-Gate SOP Audit: Task 109 Sample Hold Droop Front End
 
-## Scope
+## Gate 1 Counting
 
-Task boundary is one primary Verilog-A DUT artifact, `sample_hold_droop_ref.va`, migrated from `vbr1_l2_converter_front_end:tb`, plus the original EVAS/Spectre-compatible `.scs` transient scenario. Companion Verilog-A files listed in the top-level `TASKS.json` index are supplied by the harness when needed by the original system testbench.
+- Label: `independent_l1_ready`
+- Function boundary: compact sampling front-end component with aperture-delayed
+  sampling, bounded droop, valid pulse, and coarse decision output.
+- Independence note: this is more than a plain sample-and-hold because it
+  combines aperture scheduling, droop memory, a completion pulse, and a coarse
+  voltage-coded decision. It remains a single DUT component, so it is L1 rather
+  than an L2 flow as written.
 
-## Four Standards
+## Gate 2 Modeling
 
-- Useful scenario: accepted. The module is a reusable behavioral Verilog-A block or flow component with a concrete transient use case.
-- Reasonable task: accepted for this migration slice. The public prompt names the target artifact, interface, and behavior context.
-- Complete tests: accepted for current v3 smoke. Hidden gold passes and `neg_001_zero` is non-full-credit; further hand-authored negatives can still strengthen release evidence.
-- Fair evaluation: accepted for current v3 smoke. The checker is bound through the v3 alias and the hidden behavior is covered by the public prompt context.
+- Status: `cadence_modeling_ready`
+- Public prompt now removes old testbench-companion and hidden-evaluator text.
+- `CHECKS.yaml` now treats the task as a function-checked DUT, not as a
+  testbench-generation row.
+- Hidden stimulus now differs from the visible waveform while preserving the
+  public aperture/droop/coarse/valid contract.
 
-## Checker And Evidence
+## Validation
 
-- Source checker id: `vbr1_l2_converter_front_end_tb`
-- EVAS 0.4.5 hidden gold smoke: PASS
-- Concrete negative `neg_001_zero`: non-full-credit
-
-## Remaining Risk
-
-Initial migration artifact. Do not count this task in a final release surface until gold smoke and negative evidence are attached.
+- EVAS gold/negative: gold PASS; 5/5 concrete negatives rejected.
+- EVAS preflight: visible and hidden decks PASS with zero diagnostics.
+- Spectre hidden gold: PASS with zero simulator warnings.
