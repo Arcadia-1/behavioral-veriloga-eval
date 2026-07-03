@@ -43,7 +43,9 @@ The public smoke test instantiates the DUT, drives `data`, `clk`, and `retimed_d
 - `up`
 - `down`
 
-The hidden evaluator uses broader deterministic stimulus and checks data-edge response, presence of both pulse directions, and non-overlap of `up` and `down`.
+Additional verification may use broader deterministic stimulus to check
+data-edge response, presence of both pulse directions, and non-overlap of `up`
+and `down`.
 
 ## Output
 

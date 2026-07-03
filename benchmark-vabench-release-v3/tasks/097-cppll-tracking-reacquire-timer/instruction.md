@@ -19,7 +19,7 @@ module cppll_timer_ref (
 ## Required Behavior
 
 This task asks for the `cppll_timer_ref` behavioral module, not a Spectre
-testbench. The evaluator supplies a reference-step clock source and
+testbench. The verification harness supplies a reference-step clock source and
 instantiates your module in a CPPLL frequency-step reacquire scenario.
 
 Support these public `cppll_timer_ref` parameters and legal overrides:
