@@ -1,22 +1,39 @@
 # Offset Halving Search
 
-Implement a voltage-domain comparator-driven offset-search primitive.
+## Task Contract
 
-## Public Interface
+- Form: `dut`
+- Level: `L1`
+- Category: Calibration, Trim, and DEM Control
+- Base function: comparator-driven offset-search primitive
+- Domain: `voltage`
+- Target artifact(s): `offset_halving_search.va`
+- Output boundary: implement only the requested DUT artifact; validation harnesses and simulator-private hooks are external to the requested output.
 
-Return exactly one Verilog-A source file named `offset_halving_search.va`.
-Declare module `offset_halving_search` with positional ports `clk, dcmpp, vinp,
-vinn`. All ports are electrical.
+## Form-Specific Requirements
 
-`clk` is the search update clock, `dcmpp` is the comparator decision input, and
-`vinp/vinn` are the generated differential stimulus outputs.
+- Return exactly one Verilog-A source file named `offset_halving_search.va`.
+- Preserve the public module name, positional port order, electrical disciplines, differential output orientation, and clock-edge behavior.
+- Do not generate or modify a Spectre testbench.
+
+## Public Verilog-A Interface
+
+Declare module `offset_halving_search` with positional ports:
+
+```verilog
+module offset_halving_search(clk, dcmpp, vinp, vinn);
+```
+
+All ports are electrical. `clk` is the search update clock, `dcmpp` is the
+comparator decision input, and `vinp/vinn` are the generated differential
+stimulus outputs.
 
 ## Public Parameter Contract
 
 Provide overrideable parameter `vdd = 0.9 V`. Treat comparator decisions with
 threshold `0.5*vdd`.
 
-## Functional Contract
+## Required Behavior
 
 Initialize the differential residue to zero and the search step to `0.1 V`.
 On each falling crossing of `clk`, sample `dcmpp`, update the signed search
@@ -28,7 +45,11 @@ from the current residue.
 
 Use voltage contributions only. Use event-updated behavioral state on clock
 crossings and smooth event-updated output voltages with `transition(...)`. Do
-not modify or emit the support testbench, add checker logic, hard-code private
-waveform sample points, add simulator-private side channels, use current
-contributions, transistor-level devices, `ddt()`, `idt()`, or AC/noise-analysis
-behavior.
+not add checker logic, hard-code private waveform sample points, add
+simulator-private side channels, use current contributions, transistor-level
+devices, `ddt()`, `idt()`, or AC/noise-analysis behavior.
+
+## Output Contract
+
+Return exactly one complete Verilog-A file named `offset_halving_search.va`.
+Do not include explanatory prose outside the source artifact contents.

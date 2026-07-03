@@ -1,26 +1,51 @@
 # Trim Ctrl 4bit
 
-Implement a voltage-domain scalar trim-code decoder.
+## Task Contract
 
-## Public Interface
+- Form: `dut`
+- Level: `L1`
+- Category: Calibration, Trim, and DEM Control
+- Base function: scalar trim-code decoder
+- Domain: `voltage`
+- Target artifact(s): `trim_ctrl_4bit.va`
+- Output boundary: implement only the requested DUT artifact; validation harnesses and simulator-private hooks are external to the requested output.
 
-Return exactly one Verilog-A source file named `trim_ctrl_4bit.va`. Declare
-module `trim_ctrl_4bit` with positional ports `ain, dout0, dout1, dout2,
-dout3`. All ports are electrical.
+## Form-Specific Requirements
 
-`ain` is an analog code-level input. `dout0..dout3` are voltage-coded trim
-control rails ordered from least-significant bit to most-significant bit.
+- Return exactly one Verilog-A source file named `trim_ctrl_4bit.va`.
+- Preserve the public module name, positional port order, electrical disciplines, and output bit order.
+- Do not generate or modify a Spectre testbench.
 
-## Functional Contract
+## Public Verilog-A Interface
+
+Declare module `trim_ctrl_4bit` with positional ports:
+
+```verilog
+module trim_ctrl_4bit(ain, dout0, dout1, dout2, dout3);
+```
+
+All ports are electrical. `ain` is an analog code-level input. `dout0..dout3`
+are voltage-coded trim control rails ordered from least-significant bit to
+most-significant bit.
+
+## Public Parameter Contract
+
+No overrideable public parameters are required. Drive active output bits near
+0.9 V and inactive output bits near 0 V.
+
+## Required Behavior
 
 Round `ain` to the nearest integer code level and emit the low four bits on
-`dout0..dout3`. Active output bits should be near `0.9 V`; inactive output bits
-should be near `0 V`. Smooth output transitions with `transition(...)`.
+`dout0..dout3`. Smooth output transitions with `transition(...)`.
 
 ## Modeling Constraints
 
 Use voltage contributions only. Keep the implementation deterministic and
-voltage-domain only. Do not modify or emit the support testbench, add checker
-logic, hard-code private waveform sample points, add simulator-private side
-channels, use current contributions, transistor-level devices, `ddt()`, `idt()`,
-or AC/noise-analysis behavior.
+voltage-domain only. Do not add checker logic, hard-code private waveform
+sample points, add simulator-private side channels, use current contributions,
+transistor-level devices, `ddt()`, `idt()`, or AC/noise-analysis behavior.
+
+## Output Contract
+
+Return exactly one complete Verilog-A file named `trim_ctrl_4bit.va`.
+Do not include explanatory prose outside the source artifact contents.
