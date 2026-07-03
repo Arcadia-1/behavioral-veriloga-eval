@@ -27,7 +27,8 @@ Use voltage-coded logic with `vth = 0.45` V and high outputs near `0.9` V.
 
 Implement:
 
-- continuously evaluate `lc_q = last_crossing(V(vin) - vth, +1, 0.0, 1e-12)`
+- continuously evaluate `lc_q = last_crossing(V(vin) - vth, +1)` using the
+  Cadence/Spectre-supported `last_crossing(expr, dir)` form
 - `@(cross(V(vin) - vth, +1, 0.0, 1e-12))` records the latest rising crossing time from `lc_q`
 - after the first crossing, keep `out = 0.0` and `metric = 0.0`
 - after the second and later crossings, compute `period_q = last_t - prev_t`
@@ -35,7 +36,10 @@ Implement:
 - drive `metric = 0.9` once a valid period has been measured, otherwise `0.0`
 - `@(cross(V(rst) - vth, +1))` clears the period state and both outputs
 
-The hidden testbench drives rising crossings about `200 ns`, then `300 ns`, then `400 ns` apart with a reset before the last single crossing. The evaluator checks the measured-period voltage and reset clearing behavior.
+The visible testbench is a public wiring and smoke scenario. Do not hard-code
+its transient stop time, waveform breakpoints, or sample windows into the DUT.
+The evaluator checks measured-period voltage and reset clearing behavior across
+private timing windows.
 
 ## Output
 
