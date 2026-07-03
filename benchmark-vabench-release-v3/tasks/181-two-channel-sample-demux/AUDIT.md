@@ -1,11 +1,24 @@
-# Source Two Channel Sample Demux Audit
+# Two-Gate SOP Audit: Task 181 Two Channel Sample Demux
 
-- Scenario: time-interleaved two-channel analog sample selection.
-- Import status: certified only after visible compile, EVAS/Spectre semantic validation, and EVAS/Spectre parity pass.
-- Evaluation: stable sampled behavior from `tran.csv`; raw simulator timestep equality is not used.
+## Scope
 
-## Digital/Control/Logic Closeout Review
+Task 181 is a two-source clocked analog sample router. It is distinct from task 170 because it uses separate source clocks instead of a latched binary select word.
 
-- Gate 1 status: `independent_l1_ready`.
-- Rationale: this is clocked analog sample routing with two independent sampling clocks, a sampled-data behavior rather than a pure logic truth table.
-- Counting recommendation: retain as sampled-data routing/control L1.
+## Gate 1: Admission And Counting
+
+- Admission label: `independent_l1_ready`.
+- Counting decision: retain as sampled-data routing/control L1.
+- Function boundary: rising edges on two separate clocks select and hold samples from two analog inputs onto one output.
+
+## Gate 2: Cadence Modeling Quality
+
+- Modeling status: `cadence_modeling_ready` after targeted EVAS, Spectre visible/hidden gold validation, and AHDL warning triage.
+- Prompt hygiene: public instruction now exposes initialization, clock thresholds, both source clocks, and fixed output transition timing.
+- Checker alignment: checker now derives expected output from source-specific clock events and sampled inputs.
+- Hidden coverage: private deck now differs from visible stimulus and covers both source clocks with different input values.
+
+## Evidence
+
+- Fresh EVAS gold after checker/hidden repair: PASS.
+- Fresh EVAS negatives after checker repair: all concrete negatives rejected behaviorally.
+- Spectre gold validation: visible and hidden repaired-batch checks passed; task-specific AHDL warnings were triaged.

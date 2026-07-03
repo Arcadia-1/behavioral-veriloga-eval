@@ -1,9 +1,24 @@
-# Source Max Detector Hold Audit
+# Two-Gate SOP Audit: Task 132 Max Detector Hold
 
-- Source: `hexy/maxDetector.va`
-- Scenario: peak/max voltage detector with monotonic hold output.
-- Import status: certified only after visible compile, EVAS hidden semantic check, Spectre AX hidden semantic check, and EVAS/Spectre parity pass.
-- Evaluation: stable semantic samples from `tran.csv`; raw simulator timestep equality is not used.
-- Evidence:
-  - `WORK/source-import-batch4-evas/132-max-detector-hold`
-  - `WORK/source-import-batch4-spectre/132-max-detector-hold`
+## Scope
+
+Task 132 is a continuous maximum detector with held output. It matches Cadence-style max-detector/sample-hold modeling practice and is distinct from resettable peak-detector rows because it has no reset or timer behavior.
+
+## Gate 1: Admission And Counting
+
+- Admission label: `independent_l1_ready`.
+- Counting decision: retain as an analog memory/primitive L1 row.
+- Function boundary: initialize from the input, update only on new maxima, and hold through input decreases.
+
+## Gate 2: Cadence Modeling Quality
+
+- Modeling status: `cadence_modeling_ready` after targeted EVAS, Spectre visible/hidden gold validation, and AHDL warning triage.
+- Prompt hygiene: public instruction now exposes the monotone held-maximum invariant without source-provenance text.
+- Checker alignment: checker now derives the running maximum from the input waveform and verifies monotone hold behavior.
+- Hidden coverage: private deck now uses a different peak sequence with explicit post-peak input drops.
+
+## Evidence
+
+- Fresh EVAS gold after checker/hidden repair: PASS.
+- Fresh EVAS negatives after checker repair: all concrete negatives rejected behaviorally.
+- Spectre gold validation: visible and hidden repaired-batch checks passed; task-specific AHDL warnings were triaged.

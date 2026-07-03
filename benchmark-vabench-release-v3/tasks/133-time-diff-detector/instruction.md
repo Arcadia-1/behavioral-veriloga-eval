@@ -1,10 +1,22 @@
-Implement an edge time-difference detector.
+# Time Difference Detector
 
-The module must be named `time_diff_detector` and use this port order:
+## Task Contract
+Implement the Verilog-A DUT `time_diff_detector.va` for a clocked timing detector that reports the previous cycle's input edge-time difference as a bounded voltage.
 
-`clk, vinp, vinn, vout`
+## Form-Specific Requirements
+This is a single-DUT measurement utility. The DUT should derive timing from threshold crossings in the provided analog waveforms rather than from fixed testbench timestamps.
 
-On each rising `clk` edge, output the previous cycle's `vinp` rising time minus
-`vinn` rising time, scaled by `scale` and clipped to `[-vdd, vdd]`. After the
-clock edge, arm detection for the first rising edge on each input in the new
-cycle.
+## Public Verilog-A Interface
+Provide `module time_diff_detector(clk, vinp, vinn, vout);` with electrical inputs `clk`, `vinp`, `vinn` and electrical output `vout`.
+
+## Public Parameter Contract
+Expose `vdd = 0.9`, `vth_clk = 0.45`, `vth_in = 0.45`, `td = 0`, `tr = 1p`, and `scale = 1e9`. Testbenches may override these parameters.
+
+## Required Behavior
+On each rising `clk` crossing of `vth_clk`, output the stored difference between the first rising `vinp` crossing and first rising `vinn` crossing captured in the previous clock window. Scale the time difference by `scale`, clip the output to `[-vdd, vdd]`, then rearm detection for the next window.
+
+## Modeling Constraints
+Use `cross`-style event detection and `transition(vout_value, td, tr)` or equivalent Spectre-compatible event behavior. Do not accumulate multiple edges in one clock window or fail to rearm after each clock event.
+
+## Output Contract
+Submit only the completed Verilog-A module in `time_diff_detector.va`.
