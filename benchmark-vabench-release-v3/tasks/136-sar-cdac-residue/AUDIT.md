@@ -1,9 +1,12 @@
-# Source SAR CDAC Residue Audit
+# SAR CDAC Residue Audit
 
-- Source: `caiyizeng25/L3_SAR2_cdac_7b_ideal.va`
-- Scenario: sample-and-step SAR CDAC residue update.
-- Import status: certified only after visible compile, EVAS hidden semantic check, Spectre AX hidden semantic check, and EVAS/Spectre parity pass.
-- Evaluation: stable semantic samples from `tran.csv`; raw simulator timestep equality is not used.
-- Evidence:
-  - `WORK/source-import-batch4-evas/136-sar-cdac-residue`
-  - `WORK/source-import-batch4-spectre/136-sar-cdac-residue`
+- Gate 1: `independent_l1_ready`. Retain as a scalar-port SAR CDAC residue
+  update primitive for data-converter behavior.
+- Duplicate review: distinct from full DAC rows because it models sampled
+  residue evolution under SAR decision-control edges rather than static code to
+  voltage conversion.
+- Gate 2: public prompt now uses the mandatory v3 instruction shape and exposes
+  sample events, reference span, control thresholds, edge directions, and CDAC
+  bit weights.
+- Validation focus: stable samples cover the initial sample, the S6 positive
+  half-scale step, and monotone downward residue updates from S5 through S1.

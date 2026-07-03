@@ -1,11 +1,14 @@
-# Source Analog Mux Threshold Audit
+# Analog Mux Threshold Audit
 
-- Scenario: threshold-controlled two-input analog multiplexer.
-- Import status: certified only after visible compile, EVAS/Spectre semantic validation, and EVAS/Spectre parity pass.
-- Evaluation: stable semantic samples from `tran.csv`; raw simulator timestep equality is not used.
-
-## Digital/Control/Logic Closeout Review
-
-- Gate 1 status: `independent_l1_ready`.
-- Rationale: this is an analog signal selector controlled by voltage threshold, not merely a Boolean gate. It is distinct from clocked mux samplers because selection follows both rising and falling threshold crossings.
-- Counting recommendation: retain as a small AMS selector L1 row.
+- Gate 1: `independent_l1_ready`. Retain as a small AMS analog-routing
+  primitive. It is threshold-controlled continuous analog selection, not a pure
+  digital mux.
+- Duplicate review: distinct from clocked mux/sampler rows because selection
+  follows the analog control threshold on both rising and falling crossings
+  instead of latching only on a clock edge.
+- Gate 2: public prompt now uses the mandatory v3 instruction shape and exposes
+  module interface, `vth`, initial selection, both crossing directions, and
+  voltage-domain output behavior without validation-internal wording.
+- Validation focus: stable samples cover both selected inputs and both select
+  polarities; negative variants exercise swapped inputs, missing falling update,
+  averaging, and scale failures.

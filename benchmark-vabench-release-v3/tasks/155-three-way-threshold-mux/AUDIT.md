@@ -1,9 +1,12 @@
-# Source Three Way Threshold Mux Audit
+# Three Way Threshold Mux Audit
 
-- Source: `wangx/multiplexer.va`
-- Scenario: three-input analog mux selected by a differential threshold window.
-- Import status: certified only after visible compile, EVAS hidden semantic check, Spectre AX hidden semantic check, and EVAS/Spectre parity pass.
-- Evaluation: stable analog samples from `tran.csv`; raw simulator timestep equality is not used.
-- Evidence:
-  - `WORK/source-import-batch7-evas/155-three-way-threshold-mux`
-  - `WORK/source-import-batch7-spectre/155-three-way-threshold-mux`
+- Gate 1: `independent_l1_ready`. Retain as a three-input differential-control
+  analog routing primitive.
+- Duplicate review: distinct from `130-analog-mux-threshold` because this row
+  uses a differential control signal and a three-region threshold window with a
+  middle selected input.
+- Gate 2: public prompt now uses the mandatory v3 instruction shape and exposes
+  differential control, inclusive window behavior, and the three output regions.
+- Validation focus: stable samples cover below-window, inside-window, and
+  above-window regions; negatives cover wrong input selection and threshold
+  mistakes.

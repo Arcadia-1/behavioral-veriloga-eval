@@ -1,9 +1,14 @@
-# Source Two Period Sample Delay Audit
+# Two Period Sample Delay Audit
 
-- Source: `zhangzixuan/_tool_delay_two_period.va` from the exact-deduplicated historical Verilog-A corpus.
-- Scenario: clocked one-sample analog pipeline delay.
-- Import status: certified only after visible compile, EVAS hidden semantic check, Spectre AX hidden semantic check, and EVAS/Spectre parity pass.
-- Evaluation: stable sampled behavior from `tran.csv`; raw simulator timestep equality is not used.
-- Evidence:
-  - `WORK/source-import-batch10-evas/169-two-period-sample-delay`
-  - `WORK/source-import-batch10-spectre/169-two-period-sample-delay`
+- Gate 1: `independent_l1_ready`. Retain as an analog sample-delay utility for
+  sampled-data paths.
+- Duplicate review: distinct from ordinary sample-and-hold rows because it
+  outputs the previous update sample rather than the current input sample.
+  Distinct from multi-channel sampler/router rows because the core function is
+  temporal delay, not channel selection.
+- Gate 2: public prompt now uses the mandatory v3 instruction shape and exposes
+  `vth`, `init`, transition time, rising-edge sampling, previous-sample output,
+  and pre-valid-sample behavior.
+- Validation focus: stable samples cover the initial value and multiple delayed
+  update cycles; negatives cover tracking/current-sample and initialization
+  errors.

@@ -1,9 +1,12 @@
-# Source Ideal Differential Opamp Audit
+# Ideal Differential Opamp Audit
 
-- Source: `taoy/OPAMP.va`
-- Scenario: ideal differential output opamp centered around common-mode.
-- Import status: certified only after visible compile, EVAS hidden semantic check, Spectre AX hidden semantic check, and EVAS/Spectre parity pass.
-- Evaluation: stable analog samples from `tran.csv`; raw simulator timestep equality is not used.
-- Evidence:
-  - `WORK/source-import-batch8-evas/161-ideal-differential-opamp`
-  - `WORK/source-import-batch8-spectre/161-ideal-differential-opamp`
+- Gate 1: `independent_l1_ready`. Retain as the stronger differential amplifier
+  primitive in this tail group.
+- Duplicate review: distinct from `134-differential-buffer` because this row
+  generates a fixed output common-mode and applies differential output gain;
+  134 is unity pass-through support.
+- Gate 2: public prompt now uses the mandatory v3 instruction shape and makes
+  explicit that the fixed `4.0` gain is differential output gain, with each
+  output moving symmetrically around `0.5 V`.
+- Validation focus: stable samples cover multiple input polarities and verify
+  output common-mode preservation.
