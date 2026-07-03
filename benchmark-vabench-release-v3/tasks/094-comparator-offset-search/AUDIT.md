@@ -18,8 +18,8 @@ holding a valid offset estimate for downstream flow checks.
   an L2 measurement-flow benchmark, separate from ordinary comparator DUT rows.
 - Function boundary: reusable transient offset-search/readout block, not
   checker implementation logic or a private testbench side channel.
-- Checker alignment: the checker samples the public outputs for crossing
-  detection, valid indication, and stable captured offset behavior.
+- Validation alignment: the public outputs expose crossing detection, valid
+  indication, and stable captured offset behavior.
 
 ## Gate 2: Cadence Modeling Quality
 
@@ -27,23 +27,27 @@ holding a valid offset estimate for downstream flow checks.
   row after prompt repair and current EVAS/Spectre validation.
 - Prompt hygiene: the prompt now states the public module, ports, parameters,
   crossing behavior, retained metric, and modeling constraints without
-  migration-history or hidden-evaluator wording.
+  old repair-history or validation-internal wording.
 - Gold quality: the gold model uses voltage-domain threshold/crossing style
   behavior and rail-derived output levels; it does not require current-domain,
   AC/noise, or file/report side effects.
-- Negative strength: current negative evidence exercises behavioral failures
-  of the measurement output contract; additional hand-authored negatives can
-  further strengthen the final release surface.
+- Negative strength: current negative variants exercise behavioral failures of
+  the measurement output contract: stub output, shifted threshold, wrong event
+  edge, missing valid latch, and scaled offset metric.
 
 ## Evidence
 
-- EVAS hidden gold: PASS; the checker reports the expected 0.475 V trip point
-  and 5 mV offset estimate on the repaired hidden deck.
-- EVAS negatives: 1/1 behavioral rejection after normalizing the
-  `negative_variants/manifest.json` schema.
-- Spectre hidden gold: PASS with no task-level warnings or errors in the
-  result JSON.
-- Spectre negatives: 1/1 `NEGATIVE_REJECTED` on the hidden deck.
+- Current branch prompt review updated the public instruction to the mandatory
+  vaBench v3 heading shape without changing the gold behavior.
+- EVAS reference/negative evidence: reference PASS; 5/5 concrete negatives
+  rejected behaviorally.
+- AHDL-like preflight: private-split solution decks PASS with 0 diagnostics.
+- Spectre private-split reference: PASS; observed trip average 0.4750 V and
+  offset average 0.0050 V on the ramp.
+- Spectre private-split negatives: 5/5 `NEGATIVE_REJECTED`; the rejected
+  failure modes are stub output, shifted threshold, wrong event edge, missing
+  valid latch, and scaled offset metric.
+- Fresh evidence is required after any future gold/checker edits.
 
 ## Human Confirmation
 
