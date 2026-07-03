@@ -84,6 +84,11 @@ TIER_TO_LAYER = {
         "compile_supported_candidate",
         "Materialized data-converter replacement candidate; behavior certification is tracked outside the original full-300 denominator and final counted numbering remains an upstream policy decision.",
     ),
+    "behavior-extension-candidate": (
+        "behavioral_language_extension",
+        "compile_supported_candidate",
+        "PLL/clock-timing behavioral extension candidate; behavior certification is tracked outside the original full-300 denominator.",
+    ),
     "behavioral-continuous-time-candidate": (
         "behavioral_continuous_time_extension",
         "compile_supported_continuous_time_candidate",

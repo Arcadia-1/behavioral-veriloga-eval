@@ -1,0 +1,15 @@
+{
+  "task": "504-charge-pump-pfd-state-machine",
+  "visible": "test_visible/visible.scs",
+  "hidden": "test_hidden/hidden.scs",
+  "observables": [
+    "ref",
+    "fb",
+    "vctrl",
+    "metric"
+  ],
+  "support": [
+    "ref_fb_clk.va"
+  ],
+  "status": "syntax-extension-candidate"
+}

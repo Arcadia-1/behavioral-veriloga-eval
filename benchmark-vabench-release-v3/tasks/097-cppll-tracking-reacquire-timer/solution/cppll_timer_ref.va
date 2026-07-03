@@ -134,7 +134,7 @@ module cppll_timer_ref (
 
         V(dco_clk) <+ vl + (vh - vl) * transition(dco_state ? 1.0 : 0.0, 0.0, tedge, tedge);
         V(fb_clk) <+ vl + (vh - vl) * transition(fb_state ? 1.0 : 0.0, 0.0, tedge, tedge);
-        V(vctrl_mon) <+ vctrl;
+        V(vctrl_mon) <+ transition(vctrl, 0.0, tedge, tedge);
         V(lock) <+ vl + (vh - vl) * transition(lock_state ? 1.0 : 0.0, 0.0, tedge, tedge);
     end
 

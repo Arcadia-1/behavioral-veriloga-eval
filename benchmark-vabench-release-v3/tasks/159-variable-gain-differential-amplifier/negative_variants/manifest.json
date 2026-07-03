@@ -23,7 +23,7 @@
       "path": "negative_variants/neg_004_no_clamp/variable_gain_differential_amplifier.va"
     },
     {
-      "description": "Variable Gain Differential Amplifier: scales the metric output, preserving the main path while failing measurement checks.",
+      "description": "Scales the limited variable-gain output too low while preserving the module/interface shape.",
       "id": "neg_005_metric_scale_low",
       "path": "negative_variants/neg_005_metric_scale_low/variable_gain_differential_amplifier.va"
     }

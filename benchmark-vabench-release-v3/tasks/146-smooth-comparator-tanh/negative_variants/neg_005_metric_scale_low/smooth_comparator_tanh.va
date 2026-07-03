@@ -1,5 +1,5 @@
-// vaBench generated partial-pass negative: metric_scale_low
-// Preserves module/interface shape while intentionally violating one hidden behavior contract.
+// vaBench negative: scaled smooth comparator output.
+// Preserves module/interface shape while intentionally violating the transfer contract.
 `include "disciplines.vams"
 
 module smooth_comparator_tanh (sigin, sigref, sigout);

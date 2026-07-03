@@ -1,6 +1,6 @@
 checker:
-  task_id: v3_source_smooth_comparator_tanh
-  metric: stable_samples
+  task_id: v3_smooth_comparator_tanh
+  metric: smooth_tanh_transfer
 scoring:
   axes:
     - dut_compile

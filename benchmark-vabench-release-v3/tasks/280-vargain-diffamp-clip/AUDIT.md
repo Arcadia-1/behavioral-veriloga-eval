@@ -1,9 +1,8 @@
-# Source Vargain Diffamp Clip Audit
+# Vargain Diffamp Clip Audit
 
-- Source: `wangx/vargain_diffamp.va` from the exact-deduplicated historical Verilog-A corpus.
-- Scenario: Implement a voltage-controlled differential gain block with output clipping. The output is 3*(CTRL_P-CTRL_N)*((INP-INN)-0.05) limited to +/-1 V.
-- Import status: certified only after visible compile, EVAS hidden semantic check, Spectre AX hidden semantic check, EVAS/Spectre parity pass, and negative variant rejection.
-- Evaluation: stable sampled behavior from `tran.csv`; raw simulator timestep equality is not used.
-- Evidence:
-  - `WORK/source-import-batch31-evas/280-vargain-diffamp-clip`
-  - `WORK/source-import-batch31-spectre/280-vargain-diffamp-clip`
+- Gate 1 counting status: retain as the strongest L1 representative of the variable-gain differential clip family. It is parameterized by gain constant, input offset, and output limits.
+- Duplicate relationship: overlaps with `159-variable-gain-differential-amplifier` and `160-voltage-controlled-gain-amplifier`; this task is the preferred canonical retained version if the set is de-duplicated strictly.
+- Gate 2 modeling status: prompt now exposes all public parameters, differential input/control roles, target computation, clipping limits, and voltage-domain boundary.
+- Checker status: stable sampled waveform checks cover offset, control polarity, gain scaling, positive clip, and negative clip behavior through gold and negative variants.
+- Cadence reference anchor: voltage-domain gain/control macromodels with explicit limiting and real target variables before contribution.
+- Current validation status: 2026-07-03 rerun passed EVAS hidden gold, EVAS negative rejection, visible smoke, EVAS AHDL-like lint, and Spectre hidden gold.

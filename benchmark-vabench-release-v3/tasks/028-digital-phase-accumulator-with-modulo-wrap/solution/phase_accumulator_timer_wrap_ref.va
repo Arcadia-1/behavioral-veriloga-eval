@@ -25,7 +25,7 @@ analog begin
         clk_state = (phase_q < 0.5) ? 1 : 0;
         next_t = next_t + dt;
     end
-    V(clk_out, VSS) <+ transition(clk_state ? V(VDD, VSS) : 0.0, 0.0, tedge, tedge);
-    V(phase_out, VSS) <+ transition(phase_q * V(VDD, VSS), 0.0, tedge, tedge);
+    V(clk_out, VSS) <+ V(VDD, VSS) * transition(clk_state ? 1.0 : 0.0, 0.0, tedge, tedge);
+    V(phase_out, VSS) <+ V(VDD, VSS) * transition(phase_q, 0.0, tedge, tedge);
 end
 endmodule

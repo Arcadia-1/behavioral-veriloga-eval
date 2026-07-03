@@ -1,0 +1,31 @@
+{
+  "negative_count": 5,
+  "policy": "five_behavioral_near_miss_negatives_per_task",
+  "variants": [
+    {
+      "description": "Continuously updates the output from vin, so the low-clock hold phase is transparent.",
+      "id": "neg_001_transparent_output",
+      "path": "negative_variants/neg_001_transparent_output/dual_track_sample_hold.va"
+    },
+    {
+      "description": "Uses a single ideal rising-edge sampler instead of the dual complementary track/hold behavior.",
+      "id": "neg_002_single_edge_sampler",
+      "path": "negative_variants/neg_002_single_edge_sampler/dual_track_sample_hold.va"
+    },
+    {
+      "description": "Tracks the two internal stages in the wrong clock phases.",
+      "id": "neg_003_wrong_track_phase",
+      "path": "negative_variants/neg_003_wrong_track_phase/dual_track_sample_hold.va"
+    },
+    {
+      "description": "Lets the output stage keep tracking outside the output-track phase.",
+      "id": "neg_004_no_output_hold",
+      "path": "negative_variants/neg_004_no_output_hold/dual_track_sample_hold.va"
+    },
+    {
+      "description": "Implements the main signal path but reports the phase monitor with inverted polarity.",
+      "id": "neg_005_phase_monitor_wrong",
+      "path": "negative_variants/neg_005_phase_monitor_wrong/dual_track_sample_hold.va"
+    }
+  ]
+}

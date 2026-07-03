@@ -1,84 +1,46 @@
 # Digital Phase Accumulator With Modulo Wrap
 
-## Task Contract
+Implement `phase_accumulator_timer_wrap_ref.va` in Verilog-A.
 
-- Form: `dut`
-- Level: `L1`
-- Category: PLL Clock and Timing Systems
-- Base function: Digital phase accumulator with modulo wrap
-- Domain: `voltage`
-- Target artifact(s): `phase_accumulator_timer_wrap_ref.va`
-- Supplied/reference support artifact(s): `tb_phase_accumulator_timer_wrap_ref.scs`
-- Visible context: public task, interface, artifact, stimulus, and observable contract only.
-- Hidden evaluator boundary: deterministic checker and EVAS/Spectre validation are external; do not generate checker logic.
+## Interface
 
-## Form-Specific Requirements
-
-- Implement only the requested Verilog-A DUT artifact(s); do not generate a Spectre testbench in this form.
-- Preserve the public module names, port order, parameters, and waveform observable names.
-
-## Public Verilog-A Interface
-
-- `phase_accumulator_timer_wrap_ref.va` declares module `phase_accumulator_timer_wrap_ref` with positional ports: `VDD`, `VSS`, `clk_out`, `phase_out`.
-
-## Public Testbench And Observable Contract
-
-Public transient setting used by the evaluator:
-
-```spectre
-tran tran stop=75n maxstep=20p errpreset=conservative
+```verilog
+module phase_accumulator_timer_wrap_ref (
+    inout  electrical VDD,
+    inout  electrical VSS,
+    output electrical clk_out,
+    output electrical phase_out
+);
 ```
 
-The evaluator expects these exact public scalar observables:
+## Required Behavior
 
-- `clk_out`
-- `phase_out`
+This task asks for the `phase_accumulator_timer_wrap_ref` behavioral DUT module,
+not a Spectre testbench. The module is an ADPLL/NCO phase-timing primitive that
+keeps a wrapped phase state and derives voltage-domain timing outputs.
 
-When this form generates a testbench, use plain scalar save names for these observables; do not rely on instance-qualified or aliased save names.
+Support these public parameters and legal overrides:
 
-## Public Behavior Checks
+| Parameter | Default | Unit / range | Contract |
+| --- | ---: | --- | --- |
+| `dt` | `5 ns` | time, `(0:inf)` | Timer update interval for the phase accumulator. |
+| `phase_step` | `0.25` | normalized phase, `(0:1)` | Phase increment per timer update. |
+| `tedge` | `200 ps` | time, `(0:inf)` | Rise/fall smoothing for `clk_out` and `phase_out`. |
 
-- `phase_accumulator_timer_wrap`
+Required observable behavior:
 
-## Output Contract
+- Maintain a normalized phase state in `[0, 1)`.
+- Advance the phase by `phase_step` on each `dt` timer event.
+- Manually wrap phase back into `[0, 1)` instead of letting it grow unbounded.
+- Drive `phase_out` as the wrapped phase scaled by the rail voltage
+  `V(VDD,VSS)`.
+- Drive `clk_out` as a rail-referenced voltage-coded clock derived from the
+  wrapped phase.
+
+Use voltage contributions only. Do not use current contributions, `ddt()`,
+`idt()`, transistor-level devices, AC/noise analysis, checker logic, private
+test hooks, or simulator-private side channels.
+
+## Output
 
 Return exactly one source artifact named `phase_accumulator_timer_wrap_ref.va`.
-Do not include explanatory prose outside the source artifact contents.
-
-## Task-Specific Description
-
-This entry is scoped as an ADPLL/NCO phase-timing primitive, not as a generic digital-logic benchmark. Model the wrapped phase state and derived voltage-domain timing outputs that a behavioral PLL loop would consume.
-
-## Digital phase accumulator with modulo wrap DUT
-
-Write the Verilog-A DUT artifact(s) for `Digital phase accumulator with modulo wrap`.
-
-This is a function-checked DUT task, not a generic companion wrapper. The
-public contract below defines the exact module interface, voltage-domain
-behavior, and waveform observables used by the release checker.
-
-Domain: pure voltage-domain behavioral Verilog-A.
-
-## Module Contract
-
-- Declaration: `phase_accumulator_timer_wrap_ref(VDD, VSS, clk_out, phase_out)`
-
-Ports:
-
-- `VDD`, `VSS`: electrical supply rails
-- `clk_out`: output electrical derived clock
-- `phase_out`: output electrical normalized phase monitor
-
-## Behavioral Contract
-
-- advance phase by `phase_step` every `dt` using `@(timer(...))`
-- wrap phase manually into `[0, 1)` rather than letting it grow unbounded
-- drive `phase_out` as a normalized monitor and toggle `clk_out` from the wrapped phase
-
-## Public Evaluation Observables
-
-The companion validation testbench saves these waveform columns:
-
-- `time`
-- `clk_out`
-- `phase_out`

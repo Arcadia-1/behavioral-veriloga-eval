@@ -1,69 +1,35 @@
 # Sample And Hold With Droop Leakage
 
-## Task Contract
+Implement `leaky_hold.va` in Verilog-A.
 
-- Form: `dut`
-- Level: `L1`
-- Category: Sampling and Analog Memory
-- Base function: Sample-and-hold with droop/leakage
-- Domain: `voltage`
-- Target artifact(s): `leaky_hold.va`
-- Supplied/reference support artifact(s): `tb_leaky_hold_ref.scs`
-- Visible context: public task, interface, artifact, stimulus, and observable contract only.
-- Hidden evaluator boundary: deterministic checker and EVAS/Spectre validation are external; do not generate checker logic.
+## Public Interface
 
-## Form-Specific Requirements
+Declare module `leaky_hold(sample, rst, vin, vout)` with scalar electrical
+voltage-domain ports.
 
-- Implement only the requested Verilog-A DUT artifact(s); do not generate a Spectre testbench in this form.
-- Preserve the public module names, port order, parameters, and waveform observable names.
+- `sample`: voltage-coded sample control.
+- `rst`: active-high voltage-coded reset.
+- `vin`: analog input voltage to be sampled.
+- `vout`: held output voltage with leakage.
 
-## Public Verilog-A Interface
+## Public Parameter Contract
 
-- `leaky_hold.va` declares module `leaky_hold` with positional ports: `sample`, `rst`, `vin`, `vout`.
+- `vth`: logic threshold, default `0.45`.
+- `decay`: held-value multiplier per leakage update, default `0.985`.
+- `leak_period`: leakage update interval, default `1n`.
+- `tr`: output transition smoothing time, default `500p`.
 
-## Public Testbench And Observable Contract
+## Functional Contract
 
-Public transient setting used by the evaluator:
+- On each rising `sample` crossing while reset is low, capture the current
+  `vin` voltage into the held state.
+- While reset is low, apply leakage by periodically multiplying the held state
+  by `decay`.
+- While reset is high, clear the held state to zero.
+- Drive `vout` from the held state with smooth voltage-domain transitions.
 
-```spectre
-tran tran stop=170n maxstep=250p
-```
+## Modeling Constraints
 
-The evaluator expects these exact public scalar observables:
-
-- `sample`
-- `rst`
-- `vin`
-- `vout`
-
-When this form generates a testbench, use plain scalar save names for these observables; do not rely on instance-qualified or aliased save names.
-
-## Public Behavior Checks
-
-- `rising_sample_edge_captures_vin`
-- `multiple_input_levels_are_preserved`
-- `held_output_droops_over_time`
-- `reset_clears_output`
-- `post_reset_sample_recovers_to_vin`
-
-## Output Contract
-
-Return exactly one source artifact named `leaky_hold.va`.
-Do not include explanatory prose outside the source artifact contents.
-
-## Task-Specific Description
-
-Write a pure voltage-domain Verilog-A module for a sample-and-hold with
-observable droop/leakage.
-
-The DUT module is `leaky_hold` with ports `sample, rst, vin, vout`. All ports
-are electrical; digital-control ports use 0/0.9 V logic levels.
-
-Required behavior:
-- A rising `sample` edge captures the current value of `V(vin)`, not a fixed
-  internal level.
-- A 1 ns timer applies exponential droop by multiplying the held value by
-  0.985 while reset is low.
-- High `rst` clears the held value; drive `vout` through `transition()`.
-
-Use voltage contributions only. Do not use current contributions, `ddt()`, or `idt()`.
+Return only `leaky_hold.va`. Do not emit a Spectre testbench, checker logic,
+private test hooks, or simulator-private side channels. Use voltage
+contributions only; do not use current contributions, `ddt()`, or `idt()`.

@@ -1398,16 +1398,19 @@
       ],
       "title": "DFF Reset Voltage"
     },
-    "122-offset-search-comparator": {
-      "category": "data_converter",
-      "difficulty": "D2",
+    "122-comparator-offset-calibration-loop": {
+      "category": "comparator",
+      "difficulty": "D3",
       "form": "dut",
-      "id": "v3_122_offset_search_comparator",
-      "level": "L1",
-      "target": [
-        "offset_search_comparator.va"
+      "id": "v3_122_comparator_offset_calibration_loop",
+      "level": "L2",
+      "support": [
+        "support_offset_comparator.va"
       ],
-      "title": "Offset Search Comparator"
+      "target": [
+        "comparator_offset_calibration_loop.va"
+      ],
+      "title": "Comparator Offset Calibration Loop"
     },
     "123-start-gated-offset-search": {
       "category": "data_converter",
@@ -1420,16 +1423,19 @@
       ],
       "title": "Start Gated Offset Search"
     },
-    "124-comp-os-detect": {
-      "category": "data_converter",
-      "difficulty": "D2",
+    "124-hysteresis-trip-characterizer": {
+      "category": "comparator",
+      "difficulty": "D3",
       "form": "dut",
-      "id": "v3_124_comp_os_detect",
-      "level": "L1",
-      "target": [
-        "comp_os_detect.va"
+      "id": "v3_124_hysteresis_trip_characterizer",
+      "level": "L2",
+      "support": [
+        "support_hysteretic_comparator.va"
       ],
-      "title": "Comparator Offset Detect"
+      "target": [
+        "hysteresis_trip_characterizer.va"
+      ],
+      "title": "Hysteresis Trip Characterizer"
     },
     "125-clocked-dac-4b-binary": {
       "category": "data_converter",
@@ -1663,7 +1669,7 @@
       "title": "Hard Voltage Clamp"
     },
     "146-smooth-comparator-tanh": {
-      "category": "mixed_signal",
+      "category": "comparator",
       "difficulty": "D2",
       "form": "dut",
       "id": "v3_146_smooth_comparator_tanh",
@@ -2278,16 +2284,19 @@
       ],
       "title": "Linear PFD Gain"
     },
-    "202-l2-cmp-ideal-clocked": {
+    "202-comparator-delay-overdrive-meter": {
       "category": "comparator",
-      "difficulty": "D2",
+      "difficulty": "D3",
       "form": "dut",
-      "id": "v3_202_l2_cmp_ideal_clocked",
-      "level": "L1",
-      "target": [
-        "l2_cmp_ideal_clocked.va"
+      "id": "v3_202_comparator_delay_overdrive_meter",
+      "level": "L2",
+      "support": [
+        "support_overdrive_delay_comparator.va"
       ],
-      "title": "L2 CMP Ideal Clocked"
+      "target": [
+        "comparator_delay_overdrive_meter.va"
+      ],
+      "title": "Comparator Delay Overdrive Meter"
     },
     "203-comparator-offset-driver": {
       "category": "comparator",
@@ -3194,16 +3203,16 @@
       ],
       "title": "Window Comparator Testbench"
     },
-    "285-aperture-delay-sample-hold": {
+    "285-dual-track-sample-hold": {
       "category": "sampling_analog_memory",
       "difficulty": "D2",
       "form": "dut",
-      "id": "v3_285_aperture_delay_sample_hold",
+      "id": "v3_285_dual_track_sample_hold",
       "level": "L1",
       "target": [
-        "sample_hold_aperture_ref.va"
+        "dual_track_sample_hold.va"
       ],
-      "title": "Aperture Delay Sample Hold"
+      "title": "Dual Track Sample Hold"
     },
     "286-first-order-lowpass-bugfix": {
       "category": "baseband_signal_conditioning",
@@ -10383,6 +10392,144 @@
         "neg_003_reversed_observed_bits",
         "neg_004_rounds_ideal_code",
         "neg_005_wrong_code_span"
+      ]
+    },
+    "502-sine-vco-idtmod-bound-step": {
+      "id": "v3_502_sine_vco_idtmod_bound_step",
+      "form": "dut",
+      "level": "L1",
+      "difficulty": "D2",
+      "category": "pll_clock_timing",
+      "target": [
+        "sine_vco_idtmod_bound_step.va"
+      ],
+      "tier": "behavior-extension-candidate",
+      "title": "Sine VCO With Idtmod And Bound Step",
+      "syntax_focus": "Use idtmod() phase integration and $bound_step() timestep control in a voltage-domain sine VCO.",
+      "certification_scope": "extension_not_part_of_original_full_300_claim",
+      "description": "Continuous-time sine VCO whose control voltage sets positive instantaneous frequency, wrapped phase, bipolar sine output, and phase metric.",
+      "required_behavior": [
+        "Integrate center_freq + vco_gain*V(vin) with idtmod() as a modulo-1 phase.",
+        "Drive a bipolar sine output centered at 0 V and a wrapped-phase metric scaled by vco_amp.",
+        "Call $bound_step from the public points-per-cycle parameter when the operating frequency is positive."
+      ],
+      "visible_tests": [
+        "visible.scs holds vin at one constant operating point and checks the sine/phase relationship."
+      ],
+      "hidden_tests": [
+        "hidden.scs uses a different constant vin so frequency control and phase reintegration are checked away from the visible point."
+      ],
+      "negative_variants": [
+        "neg_001_drive_out_zero",
+        "neg_002_drive_metric_zero",
+        "neg_003_output_phase_shifted",
+        "neg_004_gain_sign_flipped",
+        "neg_005_output_scale_low"
+      ]
+    },
+    "503-differential-vco-clip-idtmod": {
+      "id": "v3_503_differential_vco_clip_idtmod",
+      "form": "dut",
+      "level": "L1",
+      "difficulty": "D2",
+      "category": "pll_clock_timing",
+      "target": [
+        "differential_vco_clip_idtmod.va"
+      ],
+      "tier": "behavior-extension-candidate",
+      "title": "Differential VCO With Clip And Idtmod",
+      "syntax_focus": "Use a public clip helper and idtmod() phase integration for a fully differential sine VCO.",
+      "certification_scope": "extension_not_part_of_original_full_300_claim",
+      "description": "Fully differential sine VCO with clipped instantaneous frequency, opposite output arms around common mode, and wrapped-phase metric.",
+      "required_behavior": [
+        "Compute frequency from Fnom + dFdV*V(vinp,vinm) and clamp it into [Fmin,Fmax].",
+        "Integrate the clipped frequency with idtmod() as a modulo-1 phase.",
+        "Drive outp/outm as opposite sine arms around Vcm and metric as the wrapped phase."
+      ],
+      "visible_tests": [
+        "visible.scs checks an in-band differential-control operating point."
+      ],
+      "hidden_tests": [
+        "hidden.scs drives a raw frequency above Fmax so the clamp behavior is exercised."
+      ],
+      "negative_variants": [
+        "neg_001_drive_outputs_zero",
+        "neg_002_drive_metric_zero",
+        "neg_003_wrong_phase_modulus",
+        "neg_004_gain_sign_flipped",
+        "neg_005_single_ended_output"
+      ]
+    },
+    "504-charge-pump-pfd-state-machine": {
+      "id": "v3_504_charge_pump_pfd_state_machine",
+      "form": "dut",
+      "level": "L1",
+      "difficulty": "D2",
+      "category": "pll_clock_timing",
+      "target": [
+        "charge_pump_pfd_state_machine.va"
+      ],
+      "support": [
+        "ref_fb_clk.va"
+      ],
+      "tier": "behavior-extension-candidate",
+      "title": "Charge Pump PFD State Machine",
+      "syntax_focus": "Use @cross edge events, @timer sampled integration, and transition-smoothed voltage outputs in a tri-state PFD.",
+      "certification_scope": "extension_not_part_of_original_full_300_claim",
+      "description": "Voltage-domain charge-pump PFD model whose reference/feedback edge order drives a tri-state detector, bounded vctrl, and state metric.",
+      "required_behavior": [
+        "Increment/decrement a clamped -1/0/+1 detector state on reference and feedback rising crossings.",
+        "Update a bounded control-voltage monitor on timer ticks from the detector state.",
+        "Move vctrl toward the rail implied by the lead/lag relation and report detector polarity on metric."
+      ],
+      "visible_tests": [
+        "visible.scs drives feedback leading reference and expects vctrl to move downward."
+      ],
+      "hidden_tests": [
+        "hidden.scs drives reference leading feedback and expects vctrl to move upward."
+      ],
+      "negative_variants": [
+        "neg_001_drive_vctrl_mid",
+        "neg_002_drive_metric_mid",
+        "neg_003_dead_zone_state",
+        "neg_004_gain_sign_flipped",
+        "neg_005_vctrl_unclamped"
+      ]
+    },
+    "505-fractional-n-divider-accumulator-flow": {
+      "id": "v3_505_fractional_n_divider_accumulator_flow",
+      "form": "dut",
+      "level": "L2",
+      "difficulty": "D3",
+      "category": "pll_clock_timing_systems",
+      "target": [
+        "fracn_pll_timer_ref.va"
+      ],
+      "support": [
+        "ref_step_clk.va"
+      ],
+      "tier": "behavior-extension-candidate",
+      "title": "Fractional-N Divider Accumulator Flow",
+      "syntax_focus": "Use a fractional accumulator divider, DCO timer scheduling, PFD-style tracking, and reacquire lock behavior.",
+      "certification_scope": "extension_not_part_of_original_full_300_claim",
+      "description": "Fractional-N PLL flow with dithered feedback division, bounded control monitor, lock drop, and reference-step reacquisition.",
+      "required_behavior": [
+        "Generate a DCO clock and a feedback clock whose toggle counts are dithered by a modulo accumulator.",
+        "Use proportional plus bounded-integral phase correction to move vctrl_mon within the supply rails.",
+        "Drop lock around a reference-period step and reassert lock after reacquisition."
+      ],
+      "visible_tests": [
+        "visible.scs uses one fractional word and a small reference-period step for smoke reacquisition."
+      ],
+      "hidden_tests": [
+        "hidden.scs uses a different fractional word and step to check reacquisition and fractional divide behavior."
+      ],
+      "negative_variants": [
+        "neg_001_zero",
+        "neg_002_lock_stuck_high",
+        "neg_003_wrong_integer_divider",
+        "neg_004_no_loop_correction",
+        "neg_005_vctrl_out_of_range"
       ]
     },
     "candidate-bias-supply-bias-validity-gate": {

@@ -14,9 +14,13 @@ Task boundary is one primary Verilog-A DUT artifact, `bbpd_data_edge_alignment_r
 ## Checker And Evidence
 
 - Source checker id: `vbr1_l1_bang_bang_phase_detector_tb`
-- EVAS 0.4.5 hidden gold smoke: PASS
-- Concrete negative `neg_001_zero`: non-full-credit
+- EVAS private-split gold and five concrete behavioral negatives: PASS/rejected in
+  the current PLL/clock hygiene rerun.
+- EVAS AHDL-like lint preflight on private decks: PASS with zero diagnostics.
+- Spectre private-split gold was not rerun in this prompt-hygiene pass.
 
 ## Remaining Risk
 
-Initial migration artifact. Do not count this task in a final release surface until gold smoke and negative evidence are attached.
+Counting status remains an upstream benchmark-policy decision, but the public
+prompt now states the BBPD data-edge timing contract directly instead of
+listing private metric names or hidden-evaluator context.

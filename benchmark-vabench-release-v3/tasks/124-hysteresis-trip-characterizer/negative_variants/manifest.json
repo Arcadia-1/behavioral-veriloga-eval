@@ -1,0 +1,31 @@
+{
+  "negative_count": 5,
+  "policy": "five_partial_pass_near_miss_negatives_per_task",
+  "variants": [
+    {
+      "description": "Leaves all measurement outputs at zero.",
+      "id": "neg_001_zero",
+      "path": "negative_variants/neg_001_zero/hysteresis_trip_characterizer.va"
+    },
+    {
+      "description": "Swaps the rising and falling trip captures.",
+      "id": "neg_002_swap_edges",
+      "path": "negative_variants/neg_002_swap_edges/hysteresis_trip_characterizer.va"
+    },
+    {
+      "description": "Computes hysteresis width with the wrong sign.",
+      "id": "neg_003_wrong_width_sign",
+      "path": "negative_variants/neg_003_wrong_width_sign/hysteresis_trip_characterizer.va"
+    },
+    {
+      "description": "Captures comparator output rail levels instead of the input voltage at each trip event.",
+      "id": "neg_004_capture_output",
+      "path": "negative_variants/neg_004_capture_output/hysteresis_trip_characterizer.va"
+    },
+    {
+      "description": "Captures trip voltages but never asserts valid.",
+      "id": "neg_005_no_valid",
+      "path": "negative_variants/neg_005_no_valid/hysteresis_trip_characterizer.va"
+    }
+  ]
+}

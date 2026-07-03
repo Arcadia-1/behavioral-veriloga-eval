@@ -6,6 +6,8 @@ input sigin_p, sigin_n, sigref;
 output sigout_p, sigout_n;
 electrical sigin_p, sigin_n, sigout_p, sigout_n, sigref;
 
+parameter real gain = 1;
+
 analog begin
     V(sigout_p) <+ 0;
     V(sigout_n) <+ 0;
