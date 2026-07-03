@@ -1398,16 +1398,19 @@
       ],
       "title": "DFF Reset Voltage"
     },
-    "122-offset-search-comparator": {
-      "category": "data_converter",
-      "difficulty": "D2",
+    "122-comparator-offset-calibration-loop": {
+      "category": "comparator",
+      "difficulty": "D3",
       "form": "dut",
-      "id": "v3_122_offset_search_comparator",
-      "level": "L1",
-      "target": [
-        "offset_search_comparator.va"
+      "id": "v3_122_comparator_offset_calibration_loop",
+      "level": "L2",
+      "support": [
+        "support_offset_comparator.va"
       ],
-      "title": "Offset Search Comparator"
+      "target": [
+        "comparator_offset_calibration_loop.va"
+      ],
+      "title": "Comparator Offset Calibration Loop"
     },
     "123-start-gated-offset-search": {
       "category": "data_converter",
@@ -1420,16 +1423,19 @@
       ],
       "title": "Start Gated Offset Search"
     },
-    "124-comp-os-detect": {
-      "category": "data_converter",
-      "difficulty": "D2",
+    "124-hysteresis-trip-characterizer": {
+      "category": "comparator",
+      "difficulty": "D3",
       "form": "dut",
-      "id": "v3_124_comp_os_detect",
-      "level": "L1",
-      "target": [
-        "comp_os_detect.va"
+      "id": "v3_124_hysteresis_trip_characterizer",
+      "level": "L2",
+      "support": [
+        "support_hysteretic_comparator.va"
       ],
-      "title": "Comparator Offset Detect"
+      "target": [
+        "hysteresis_trip_characterizer.va"
+      ],
+      "title": "Hysteresis Trip Characterizer"
     },
     "125-clocked-dac-4b-binary": {
       "category": "data_converter",
@@ -1663,7 +1669,7 @@
       "title": "Hard Voltage Clamp"
     },
     "146-smooth-comparator-tanh": {
-      "category": "mixed_signal",
+      "category": "comparator",
       "difficulty": "D2",
       "form": "dut",
       "id": "v3_146_smooth_comparator_tanh",
@@ -2278,16 +2284,19 @@
       ],
       "title": "Linear PFD Gain"
     },
-    "202-l2-cmp-ideal-clocked": {
+    "202-comparator-delay-overdrive-meter": {
       "category": "comparator",
-      "difficulty": "D2",
+      "difficulty": "D3",
       "form": "dut",
-      "id": "v3_202_l2_cmp_ideal_clocked",
-      "level": "L1",
-      "target": [
-        "l2_cmp_ideal_clocked.va"
+      "id": "v3_202_comparator_delay_overdrive_meter",
+      "level": "L2",
+      "support": [
+        "support_overdrive_delay_comparator.va"
       ],
-      "title": "L2 CMP Ideal Clocked"
+      "target": [
+        "comparator_delay_overdrive_meter.va"
+      ],
+      "title": "Comparator Delay Overdrive Meter"
     },
     "203-comparator-offset-driver": {
       "category": "comparator",

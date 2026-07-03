@@ -1,0 +1,12 @@
+{
+  "task": "202-comparator-delay-overdrive-meter",
+  "form": "dut",
+  "visible": [
+    "test_visible/tests/tb_visible_smoke.scs"
+  ],
+  "hidden": [
+    "test_hidden/tests/tb_source_ref.scs"
+  ],
+  "checker": "v3_comparator_delay_overdrive_meter",
+  "coverage_note": "Hidden stimulus changes comparator delay parameters, clock period, and overdrive/polarity sequence."
+}

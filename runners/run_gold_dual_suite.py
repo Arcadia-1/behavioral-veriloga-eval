@@ -1184,7 +1184,7 @@ STABLE_LOGIC_PARITY_TASK_IDS = {
     "v3_ideal_clkmux_8channel",
     "v3_dac_ideal_4b_offset",
     "v3_linear_pfd_gain",
-    "v3_l2_cmp_ideal_clocked",
+    "v3_202_comparator_delay_overdrive_meter",
     "v3_comparator_offset_driver",
     "v3_pipe_2lane_edge_align",
     "v3_dac_serial_accumulator",

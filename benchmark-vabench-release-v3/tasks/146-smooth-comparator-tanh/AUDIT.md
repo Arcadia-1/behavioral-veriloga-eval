@@ -2,51 +2,44 @@
 
 ## Scope
 
-Task 146 is the canonical generic smooth tanh comparator in the reviewed
-146/292 pair. It exposes the output levels, input offset, and slope as public
-parameters.
+Task 146 is an independent L1 comparator row. It models a memoryless smooth
+comparator transfer from the differential input `V(sigin,sigref)` to `sigout`
+using a public tanh expression with overrideable output levels, input offset,
+and slope.
 
 ## Gate 1: Admission And Counting
 
 - Admission label: `independent_l1_ready`.
-- Counting decision: keep task 146 as the scored independent L1 smooth
-  comparator row. Treat task 292 as a non-counted transfer-curve variant unless
-  an explicit counting policy or rewrite makes it distinct.
-- Function boundary: parameterized continuous comparator transfer from
-  `V(sigin,sigref)` to `sigout`.
-- Checker alignment: the checker samples the public tanh transfer at multiple
-  operating points and rejects polarity, slope, and output-span errors.
+- Counting decision: keep task 146 as the scored smooth-transfer comparator.
+- Function boundary: continuous, memoryless soft-decision comparator behavior.
+- Duplicate check: task 292 is no longer a duplicate of 146 after its rewrite
+  into a hysteretic comparator receiver with state, separate rising/falling
+  thresholds, propagation delay, and rail-coded output.
 
 ## Gate 2: Cadence Modeling Quality
 
-- Modeling status: `cadence_modeling_ready` for this audited artifact.
-- Prompt hygiene: the public prompt now removes source-provenance wording and
-  declares the public parameter contract required by the visible testbench.
-- Gold quality: the gold model is a pure voltage-domain tanh contribution with
-  declared ports and overrideable parameters.
-- Negative strength: four concrete negatives reject zero output, inverted
-  input difference, half slope, and half output span.
+- Modeling status: `cadence_modeling_ready` for the audited task definition.
+- Prompt hygiene: the public prompt declares the module interface, public
+  parameters, observable tanh transfer, and DUT/testbench boundary without
+  hidden-checker or gold-history wording.
+- Gold quality: the gold model is a pure voltage-domain Verilog-A contribution
+  using the public tanh transfer.
+- Checker alignment: the task checker evaluates the smooth tanh transfer over
+  the saved waveform instead of relying only on a small fixed sample table.
+- Negative strength: five concrete negatives compile and target behavior
+  classes including zero output, polarity inversion, slope error, output-span
+  error, and scaled-output error.
 
-## Evidence
+## Evidence Summary
 
-- Human confirmation: the reviewed 146/292 pair was confirmed as overlapping
-  smooth-tanh-comparator coverage; different names, defaults, and sample points
-  are not enough by themselves to make 292 a second independent function.
-- Visible/hidden relationship: `test_visible/tests/tb_visible_smoke.scs` is a
-  public smoke deck; `test_hidden/tests/tb_source_ref.scs` now uses different
-  PWL input/reference timing and stop time while keeping the public
-  high/low/offset/slope contract.
-- EVAS gold: visible PASS and hidden PASS
-  (`external-evidence/v3_evas_phase1_5/gold_summary.json`).
-- EVAS negatives: 4/4 behavioral rejections, all with DUT/TB compile and
-  `FAIL_SIM_CORRECTNESS`
-  (`external-evidence/v3_evas_phase1_5/negative_summary.json`).
-- Spectre gold: visible PASS and hidden PASS
-  (`external-evidence/v3_spectre_phase1_5_visible.json`,
-  `external-evidence/v3_spectre_phase1_5_hidden.json`).
-- Spectre negatives: 4/4 `NEGATIVE_REJECTED`
-  (`external-evidence/v3_spectre_phase1_5_negatives.json`).
-- AHDL lint/read-in triage: Spectre visible/hidden/negative logs were
-  inspected for `AHDLLINT-*` messages; none were present. The remaining
-  warnings are the shared `VACOMP-2435` environment notice and `SPECTRE-592`
-  setup notice, not task-specific AHDL lint failures.
+- Visible and hidden decks exercise different input/reference trajectories
+  under the same public parameter contract.
+- The task has been reviewed as comparator-category content, not as a generic
+  mixed-signal utility row.
+- EVAS evidence for the current checker: visible gold PASS, hidden gold PASS,
+  and 5/5 hidden negatives rejected with `FAIL_SIM_CORRECTNESS`.
+- Spectre evidence for the current checker: hidden gold PASS and 5/5 hidden
+  negatives `NEGATIVE_REJECTED`.
+- AHDL warning triage: the targeted Spectre runs reported no task-specific
+  AHDL lint failure; the remaining warnings were the shared
+  `VACOMP-2435`/`SPECTRE-592` environment/setup notices.

@@ -1,0 +1,17 @@
+`include "disciplines.vams"
+
+module comparator_delay_overdrive_meter(vdd, vss, clk, vinp, vinn, outp, outn, delay_ps, overdrive_mv, polarity, valid);
+input vdd, vss, clk, vinp, vinn, outp, outn;
+output delay_ps, overdrive_mv, polarity, valid;
+electrical vdd, vss, clk, vinp, vinn, outp, outn, delay_ps, overdrive_mv, polarity, valid;
+
+parameter real tr = 20p;
+
+analog begin
+    V(delay_ps, vss) <+ transition(0.0, 0.0, tr, tr);
+    V(overdrive_mv, vss) <+ transition(0.0, 0.0, tr, tr);
+    V(polarity, vss) <+ transition(0.0, 0.0, tr, tr);
+    V(valid, vss) <+ transition(0.0, 0.0, tr, tr);
+end
+
+endmodule
