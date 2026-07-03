@@ -1,10 +1,16 @@
 # Above Resettable Peak Marker
 
+## Task Contract
+
 Implement one behavioral Verilog-A DUT file named `above_resettable_peak_marker.va`.
 
-This is a language-semantics extension task based on the Cadence Verilog-A Language Reference. Keep the model pure voltage-domain behavioral Verilog-A: do not instantiate transistor-level devices and do not use current-domain `I(...)` branch contributions.
+This task focuses on `above()`-armed sampled peak tracking. The DUT is a reusable voltage-domain behavioral helper and must be implemented in Verilog-A.
 
-## Interface
+## Form-Specific Requirements
+
+Build a resettable voltage-domain peak marker that arms on an input threshold event and samples the peak on a timer.
+
+## Public Verilog-A Interface
 
 ```verilog
 module above_resettable_peak_marker (
@@ -17,25 +23,29 @@ module above_resettable_peak_marker (
 );
 ```
 
+## Public Parameter Contract
+
+- Use `vth = 0.45` V.
+- Use high output level `vhi = 0.9` V.
+- Use transition edge time `tr = 200p`.
+- Use `timer(0, 50n)` for periodic peak sampling after the tracker is armed.
+
 ## Required Behavior
 
-Use `above()` to arm a resettable peak marker and track the largest input level seen after the arm event.
+- `@(above(V(vin) - vth))` arms the peak tracker.
+- While armed, periodically sample `V(vin)` and retain the largest sampled value as `peak_q`.
+- Drive `out = vhi` once armed, otherwise `0.0`.
+- Drive `metric = peak_q`, clipped to `0.0 ... vhi`.
+- On a rising reset crossing, clear the armed state and peak value.
+- Smooth `out` and `metric` with `transition(..., 0.0, tr, tr)`.
 
-This is a pure voltage-domain behavioral task. Do not use current-domain `I(...)` branch contributions.
+## Modeling Constraints
 
-Use voltage-coded logic with `vth = 0.45` V and high outputs near `0.9` V.
+- Keep the model pure voltage-domain behavioral Verilog-A.
+- Do not instantiate transistor-level devices.
+- Do not use current-domain `I(...)` branch contributions.
+- Use voltage-coded logic; treat voltages above `vth` as logic high where a threshold is specified.
 
-Implement:
-
-- `@(above(V(vin) - vth))` arms the peak tracker
-- while armed, sample `V(vin)` on `@(timer(0, 50n))`
-- track `peak_q` as the largest sampled `V(vin)` since the tracker was armed
-- drive `out = 0.9` once armed, otherwise `0.0`
-- drive `metric = peak_q`, clamped to `0.0 ... 0.9`
-- `@(cross(V(rst) - vth, +1))` clears the armed state and peak value
-
-The hidden testbench ramps `vin` above threshold, later to a larger peak, then asserts reset and drives a smaller post-reset peak. The evaluator checks arming, peak retention, and reset clearing.
-
-## Output
+## Output Contract
 
 Return exactly one source artifact named `above_resettable_peak_marker.va`. Do not generate a Spectre testbench for this task.

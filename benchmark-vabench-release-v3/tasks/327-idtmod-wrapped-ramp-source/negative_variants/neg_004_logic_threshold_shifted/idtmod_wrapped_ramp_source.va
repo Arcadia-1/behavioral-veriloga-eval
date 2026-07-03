@@ -32,7 +32,7 @@ analog begin
         metric_v = 0.0;
     end else begin
         out_v = phase_q * vhi;
-        metric_v = (phase_q > (V(mode) + 0.15)) ? vhi : 0.0;
+        metric_v = (phase_q > (V(mode) + 0.45)) ? vhi : 0.0;
     end
     V(out) <+ transition(out_v, 0.0, tr, tr);
     V(metric) <+ transition(metric_v, 0.0, tr, tr);

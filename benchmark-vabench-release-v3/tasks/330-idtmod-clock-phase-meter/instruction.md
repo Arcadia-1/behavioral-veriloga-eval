@@ -1,10 +1,16 @@
 # Idtmod Clock Phase Meter
 
+## Task Contract
+
 Implement one behavioral Verilog-A DUT file named `idtmod_clock_phase_meter.va`.
 
-This is a language-semantics extension task based on the Cadence Verilog-A Language Reference. Keep the model pure voltage-domain behavioral Verilog-A: do not instantiate transistor-level devices and do not use current-domain `I(...)` branch contributions.
+This task focuses on clock-sampled `idtmod()` phase measurement. The DUT is a reusable voltage-domain behavioral helper and must be implemented in Verilog-A.
 
-## Interface
+## Form-Specific Requirements
+
+Build a mixed continuous-time/event helper. The phase must accumulate continuously with `idtmod()`, and a held sampled phase must update only on rising clock crossings.
+
+## Public Verilog-A Interface
 
 ```verilog
 module idtmod_clock_phase_meter (
@@ -17,25 +23,30 @@ module idtmod_clock_phase_meter (
 );
 ```
 
+## Public Parameter Contract
+
+- Use `vth = 0.45` V.
+- Use high output level `vhi = 0.9` V.
+- Use transition edge time `tr = 200p`.
+- Use `freq_q = 1.25e6 + 0.5e6 * V(vin)`.
+- Use `phase_q = idtmod((V(rst) > vth) ? 0.0 : freq_q, 0.0, 1.0)`.
+
 ## Required Behavior
 
-Use `idtmod()` as a voltage-domain phase accumulator and sample its phase on clock edges.
+- On each rising crossing of `V(clk) - vth`, sample the current `phase_q`.
+- If reset is high at the clock crossing, clear the sampled phase and `metric` to `0.0`.
+- Otherwise drive `out = vhi * sampled_phase`.
+- Otherwise drive `metric = vhi` when the sampled phase is greater than `V(mode)`, else `0.0`.
+- The held output must report the most recent clock-sampled phase, not the continuously changing instantaneous phase.
+- Smooth `out` and `metric` with `transition(..., 0.0, tr, tr)`.
 
-This is a behavioral continuous-time/event task, not a conservative-current/KCL task. Do not use `I(...)`, `ddt(...)`, or `idt(...)`.
+## Modeling Constraints
 
-Use voltage-coded logic with `vth = 0.45` V and high outputs near `0.9` V.
+- Keep the model pure voltage-domain behavioral Verilog-A.
+- Do not instantiate transistor-level devices.
+- Do not use current-domain `I(...)` branch contributions.
+- Use voltage-coded logic; treat voltages above `vth` as logic high where a threshold is specified.
 
-Implement:
-
-- `freq_q = 1.25e6 + 0.5e6 * V(vin)`
-- `phase_q = idtmod((V(rst) > vth) ? 0.0 : freq_q, 0.0, 1.0)`
-- on each rising crossing of `V(clk) - vth`, sample `phase_q`
-- while `V(rst) > vth`, the sampled phase and `metric` must reset to `0.0`
-- otherwise drive `out = 0.9 * sampled_phase`
-- otherwise drive `metric = 0.9` when the sampled phase is greater than `V(mode)`, else `0.0`
-
-The hidden testbench drives `vin = 0.4`, `mode = 0.55`, and clock rising edges near `100 ns`, `300 ns`, `500 ns`, and `700 ns`. The evaluator samples just after each edge to verify that the held output reports the clock-sampled phase rather than the continuously changing instantaneous phase.
-
-## Output
+## Output Contract
 
 Return exactly one source artifact named `idtmod_clock_phase_meter.va`. Do not generate a Spectre testbench for this task.

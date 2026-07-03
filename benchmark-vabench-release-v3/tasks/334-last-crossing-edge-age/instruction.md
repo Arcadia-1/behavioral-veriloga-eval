@@ -1,10 +1,16 @@
 # Last Crossing Edge Age
 
+## Task Contract
+
 Implement one behavioral Verilog-A DUT file named `last_crossing_edge_age.va`.
 
-This is a language-semantics extension task based on the Cadence Verilog-A Language Reference. Keep the model pure voltage-domain behavioral Verilog-A: do not instantiate transistor-level devices and do not use current-domain `I(...)` branch contributions.
+This task focuses on edge-age measurement using Cadence `last_crossing()`. The DUT is a reusable voltage-domain behavioral helper and must be implemented in Verilog-A.
 
-## Interface
+## Form-Specific Requirements
+
+Build an age meter that reports elapsed time since the most recent rising threshold crossing.
+
+## Public Verilog-A Interface
 
 ```verilog
 module last_crossing_edge_age (
@@ -17,26 +23,33 @@ module last_crossing_edge_age (
 );
 ```
 
+## Public Parameter Contract
+
+- Use `vth = 0.45` V.
+- Use high output level `vhi = 0.9` V.
+- Use transition edge time `tr = 200p`.
+- Use `last_crossing(V(vin) - vth, +1)` to obtain the latest rising crossing time.
+- Use a periodic `timer(0, 50n)` update to refresh the reported age.
+- Scale age by `300 ns` for `out`.
+- Treat ages up to `150 ns` as short-age events for `metric`.
+
 ## Required Behavior
 
-Use `last_crossing()` to report the age of the most recent rising threshold crossing.
+- Use `@(above(V(vin) - vth))` to mark that at least one rising threshold event has occurred.
+- Before any rising crossing, drive both outputs to `0.0`.
+- On timer updates after a rising crossing, compute `age_q = $abstime - lc_q`.
+- Drive `out = vhi * age_q / 300 ns`, clipped to `0.0 ... vhi`.
+- Drive `metric = vhi` while `age_q <= 150 ns`, otherwise `0.0`.
+- On a rising reset crossing, clear the observed-edge state and both outputs.
+- Smooth `out` and `metric` with `transition(..., 0.0, tr, tr)`.
 
-This is a pure voltage-domain behavioral task. Do not use current-domain `I(...)` branch contributions.
+## Modeling Constraints
 
-Use voltage-coded logic with `vth = 0.45` V and high outputs near `0.9` V.
+- Keep the model pure voltage-domain behavioral Verilog-A.
+- Do not instantiate transistor-level devices.
+- Do not use current-domain `I(...)` branch contributions.
+- Use voltage-coded logic; treat voltages above `vth` as logic high where a threshold is specified.
 
-Implement:
-
-- continuously evaluate `lc_q = last_crossing(V(vin) - vth, +1, 0.0, 1e-12)`
-- use `@(above(V(vin) - vth))` to mark that at least one rising threshold event has occurred
-- before any rising crossing, drive both outputs to `0.0`
-- on `@(timer(0, 50n))`, after a rising crossing, compute `age_q = $abstime - lc_q`
-- drive `out = 0.9 * age_q / 300 ns`, clamped to `0.0 ... 0.9`
-- drive `metric = 0.9` while `age_q <= 150 ns`, otherwise `0.0`
-- `@(cross(V(rst) - vth, +1))` clears the observed-edge state and both outputs
-
-The hidden testbench drives rising crossings around `100 ns` and `500 ns`, with reset around `700 ns`. The evaluator samples the age ramp, short-age marker, and reset clearing behavior.
-
-## Output
+## Output Contract
 
 Return exactly one source artifact named `last_crossing_edge_age.va`. Do not generate a Spectre testbench for this task.

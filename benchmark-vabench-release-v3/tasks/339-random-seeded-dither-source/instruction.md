@@ -1,10 +1,16 @@
 # Random Seeded Dither Source
 
+## Task Contract
+
 Implement one behavioral Verilog-A DUT file named `random_seeded_dither_source.va`.
 
-This is a language-semantics extension task based on the Cadence Verilog-A Language Reference. Keep the model pure voltage-domain behavioral Verilog-A: do not instantiate transistor-level devices and do not use current-domain `I(...)` branch contributions.
+This task focuses on clocked seeded-random dither generation with `$random(seed)`. The DUT is a reusable voltage-domain behavioral helper and must be implemented in Verilog-A.
 
-## Interface
+## Form-Specific Requirements
+
+Build a clocked dither source that derives a small discrete dither code from a deterministic seeded Verilog-A random call.
+
+## Public Verilog-A Interface
 
 ```verilog
 module random_seeded_dither_source (
@@ -17,25 +23,32 @@ module random_seeded_dither_source (
 );
 ```
 
+## Public Parameter Contract
+
+- Use `vth = 0.45` V.
+- Use high output level limit `vhi = 0.9` V.
+- Use transition edge time `tr = 200p`.
+- On `initial_step`, initialize an integer seed state to `17`.
+- Use `$random(seed_q)` inside the clocked event body; do not replace it with a fixed pattern.
+
 ## Required Behavior
 
-Use a deterministic seeded random function call, `$random(seed_q)`, inside the clocked behavior.
+- On each rising crossing of `V(clk) - vth`, update both outputs.
+- If reset is high, clear both outputs to `0.0`.
+- Otherwise call `$random(seed_q)` and convert the returned value to a non-negative integer code source.
+- Compute `code = random_value % 5`.
+- When mode is high, increment `code` by one.
+- Drive `metric = 0.1 * code`.
+- Drive `out = V(vin) + 0.05 * code`, clipped to `0.0 ... vhi`.
+- Smooth `out` and `metric` with `transition(..., 0.0, tr, tr)`.
 
-Use voltage-coded logic with `vth = 0.45` V and high outputs limited to `vhi = 0.9` V.
+## Modeling Constraints
 
-On `initial_step`, initialize an integer seed to `17`.
+- Keep the model pure voltage-domain behavioral Verilog-A.
+- Do not instantiate transistor-level devices.
+- Do not use current-domain `I(...)` branch contributions.
+- Use voltage-coded logic; treat voltages above `vth` as logic high where a threshold is specified.
 
-On every rising crossing of `clk`:
-
-1. If `rst` is high, drive both `out` and `metric` low.
-2. Otherwise call `$random(seed_q)` and convert the returned value to a non-negative integer.
-3. Compute `code = random_value % 5`.
-4. When `mode` is high, increment `code` by one.
-5. Drive `metric = 0.1 * code`.
-6. Drive `out = V(vin) + 0.05 * code`, clipped to `[0.0, vhi]`.
-
-The evaluator samples the deterministic random sequence, the mode-dependent code offset, and reset clearing.
-
-## Output
+## Output Contract
 
 Return exactly one source artifact named `random_seeded_dither_source.va`. Do not generate a Spectre testbench for this task.

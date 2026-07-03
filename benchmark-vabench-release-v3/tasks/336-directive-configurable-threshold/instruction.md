@@ -1,10 +1,16 @@
 # Directive Configurable Threshold
 
+## Task Contract
+
 Implement one behavioral Verilog-A DUT file named `directive_configurable_threshold.va`.
 
-This is a language-semantics extension task based on the Cadence Verilog-A Language Reference. Keep the model pure voltage-domain behavioral Verilog-A: do not instantiate transistor-level devices and do not use current-domain `I(...)` branch contributions.
+This task focuses on Verilog-A compiler-directive controlled threshold selection. The DUT is a reusable voltage-domain behavioral helper and must be implemented in Verilog-A.
 
-## Interface
+## Form-Specific Requirements
+
+Build a sampled comparator whose default threshold is selected by a compile-time directive and then adjusted by a voltage-coded mode input.
+
+## Public Verilog-A Interface
 
 ```verilog
 module directive_configurable_threshold (
@@ -17,27 +23,31 @@ module directive_configurable_threshold (
 );
 ```
 
+## Public Parameter Contract
+
+- Define `` `USE_HIGH_THRESHOLD`` as `1` in the source.
+- Under `` `ifdef USE_HIGH_THRESHOLD``, declare `parameter real base_th = 0.60`.
+- Under the `` `else`` branch, declare `parameter real base_th = 0.40`.
+- Use `vth = 0.45` V for clock, mode, and reset decisions.
+- Use high output level `vhi = 0.9` V.
+- Use transition edge time `tr = 200p`.
+
 ## Required Behavior
 
-Use compiler directives to select the default threshold used by a clocked comparator.
+- Compute `eff_th = base_th - 0.10` when `V(mode) > vth`, otherwise `base_th`.
+- On each rising crossing of `V(clk) - vth`, sample the comparator decision.
+- If reset is high, clear both outputs to `0.0`.
+- Otherwise drive `out = vhi` when `V(vin) > eff_th`, else `0.0`.
+- Drive `metric = eff_th`.
+- Smooth `out` and `metric` with `transition(..., 0.0, tr, tr)`.
 
-This is a pure voltage-domain behavioral task. Do not use current-domain `I(...)` branch contributions.
+## Modeling Constraints
 
-Use voltage-coded logic with high outputs near `0.9` V.
+- Keep the model pure voltage-domain behavioral Verilog-A.
+- Do not instantiate transistor-level devices.
+- Do not use current-domain `I(...)` branch contributions.
+- Use voltage-coded logic; treat voltages above `vth` as logic high where a threshold is specified.
 
-Implement:
-
-- define ``USE_HIGH_THRESHOLD`` as ``1`` in the source
-- under `` `ifdef USE_HIGH_THRESHOLD``, declare `parameter real base_th = 0.60`
-- under the `` `else`` branch, declare `parameter real base_th = 0.40`
-- compute `eff_th = base_th - 0.10` when `V(mode) > 0.45`, otherwise `base_th`
-- on each rising crossing of `V(clk) - 0.45`, sample the comparison
-- if `V(rst) > 0.45`, clear both outputs to `0.0`
-- otherwise drive `out = 0.9` when `V(vin) > eff_th`, else `0.0`
-- drive `metric = eff_th`
-
-The hidden testbench drives `vin = 0.55` and toggles `mode`. With the high-threshold compile path, the first clock sample must stay low at threshold `0.60`, while the later mode-enabled sample must go high at threshold `0.50`.
-
-## Output
+## Output Contract
 
 Return exactly one source artifact named `directive_configurable_threshold.va`. Do not generate a Spectre testbench for this task.

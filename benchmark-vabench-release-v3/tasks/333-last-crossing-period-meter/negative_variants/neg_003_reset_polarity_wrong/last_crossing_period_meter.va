@@ -33,7 +33,7 @@ analog begin
         lc_q = -1.0;
         scaled_q = 0.0;
     end
-    lc_q = last_crossing(V(vin) - vth, +1, 0.0, 1e-12);
+    lc_q = last_crossing(V(vin) - vth, +1);
     @(cross(V(vin) - vth, +1, 0.0, 1e-12)) begin
         prev_t = last_t;
         last_t = lc_q;
