@@ -1,9 +1,7 @@
-# Source Offset Gain Amplifier Audit
+# Offset Gain Amplifier Audit
 
-- Source: `wangx/amp.va`
-- Scenario: linear amplifier with input offset subtraction.
-- Import status: certified only after visible compile, EVAS hidden semantic check, Spectre AX hidden semantic check, and EVAS/Spectre parity pass.
-- Evaluation: stable analog samples from `tran.csv`; raw simulator timestep equality is not used.
-- Evidence:
-  - `WORK/source-import-batch7-evas/149-offset-gain-amplifier`
-  - `WORK/source-import-batch7-spectre/149-offset-gain-amplifier`
+- Gate 1 counting status: retain as a small L1 analog primitive, with low complexity noted. It covers a single-ended offset-correcting gain stage.
+- Gate 2 modeling status: prompt now states the fixed input offset and voltage gain as the public circuit contract, without checker or testbench leakage.
+- Checker status: stable sampled waveform checks cover offset subtraction and gain.
+- Cadence reference anchor: voltage-domain macromodel guidance for simple gain stages.
+- Current validation status: 2026-07-03 rerun passed EVAS hidden gold, EVAS negative rejection, visible smoke, EVAS AHDL-like lint, and Spectre hidden gold.

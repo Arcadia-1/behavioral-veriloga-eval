@@ -14,9 +14,14 @@ Task boundary is one primary Verilog-A DUT artifact, `adpll_ratio_hop_ref.va`, m
 ## Checker And Evidence
 
 - Source checker id: `vbr1_l2_adpll_lock_ratio_hop_timer_flow_tb`
-- EVAS 0.4.5 hidden gold smoke: PASS
-- Concrete negative `neg_001_zero`: non-full-credit
+- EVAS private-split gold and five concrete behavioral negatives: PASS/rejected in
+  the current PLL/clock hygiene rerun.
+- EVAS AHDL-like lint preflight on private decks: PASS with zero diagnostics
+  after smoothing the control-code monitor output.
+- Spectre 21.1 private-split gold audit: PASS in the current PLL/clock hygiene rerun.
 
 ## Remaining Risk
 
-Initial migration artifact. Do not count this task in a final release surface until gold smoke and negative evidence are attached.
+Counting status remains an upstream benchmark-policy decision, but the public
+prompt no longer depends on private-evaluator context wording and the current gold has
+EVAS negative, EVAS lint-preflight, and Spectre private-split gold evidence.

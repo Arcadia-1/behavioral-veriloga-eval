@@ -48,8 +48,8 @@ analog begin
         end
     end
 
-    V(delay_out, VSS) <+ transition(V(VDD, VSS) * delay_ps / scale_ps, 0.0, tedge, tedge);
-    V(seen_out, VSS) <+ transition(done ? V(VDD, VSS) : 0.0, 0.0, tedge, tedge);
+    V(delay_out, VSS) <+ V(VDD, VSS) * transition(delay_ps / scale_ps, 0.0, tedge, tedge);
+    V(seen_out, VSS) <+ V(VDD, VSS) * transition(done ? 1.0 : 0.0, 0.0, tedge, tedge);
 end
 
 endmodule

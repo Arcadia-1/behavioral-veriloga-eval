@@ -1,0 +1,16 @@
+{
+  "task": "505-fractional-n-divider-accumulator-flow",
+  "visible": "test_visible/visible.scs",
+  "hidden": "test_hidden/hidden.scs",
+  "observables": [
+    "ref_clk",
+    "fb_clk",
+    "dco_clk",
+    "vctrl_mon",
+    "lock"
+  ],
+  "support": [
+    "ref_step_clk.va"
+  ],
+  "status": "syntax-extension-candidate"
+}

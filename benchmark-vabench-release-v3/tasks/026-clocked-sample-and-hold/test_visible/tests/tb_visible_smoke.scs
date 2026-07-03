@@ -11,4 +11,4 @@ V_CLK (CLK 0) vsource type=pulse val0=0 val1=0.9 period=1n delay=100p rise=20p f
 XDUT (VDD VSS IN CLK OUT) sample_hold
 
 tran tran stop=5n maxstep=100p
-save VDD VSS IN CLK
+save VDD VSS IN CLK OUT

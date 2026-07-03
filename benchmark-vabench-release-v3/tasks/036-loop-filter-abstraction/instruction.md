@@ -1,40 +1,55 @@
-# Loop Filter Abstraction
+# Sampled Loop-Filter Abstraction
 
 Implement `loop_filter_abstraction.va` in Verilog-A.
 
-Declare module `loop_filter_abstraction(clk, rst, vin, out, metric)` with all
-ports electrical. `clk` and `rst` are voltage-coded logic signals with a
-0.45 V threshold. `vin` is a signed loop-error stimulus around 0.45 V, `out`
-is a bounded loop-control voltage, and `metric` marks valid convergence/update
-state.
+## Interface
 
-Public parameters:
+```verilog
+module loop_filter_abstraction(
+    input  electrical clk,
+    input  electrical rst,
+    input  electrical vin,
+    output electrical out,
+    output electrical metric
+);
+```
 
-- `tr`: output transition time, default `100p`.
-- `deadband`: input error deadband around common mode, default `0.05`.
+## Required Behavior
 
-Behavior:
+This task asks for the `loop_filter_abstraction` behavioral DUT module, not a
+Spectre testbench. The module is a sampled/event-driven PLL loop-filter
+abstraction that approximates proportional and integral loop-control trends
+without modeling a transistor-level or KCL/KVL RC network.
 
-- Initialize `out` to 0.45 V and clear the convergence metric.
-- Update the internal loop-filter state on rising `clk` crossings.
-- When `rst` is high, clear the proportional step, integral residual, output
-  state, and `metric`.
-- Interpret `V(vin) - 0.45` as signed error.
-- Ignore errors inside the `deadband`.
-- For repeated same-sign errors outside the deadband, move `out` in the error
-  direction with a proportional step that decays over successive updates.
-- Accumulate a small integral residual so the output can retain a corrected
-  level after the proportional step has decayed.
-- Drive `metric` high only after enough valid loop updates have occurred, and
-  clear it on reset.
-- Keep the output voltage bounded in the 0 V to 0.9 V range.
+Support these public parameters and legal overrides:
 
-Modeling requirements:
+| Parameter | Default | Unit / range | Contract |
+| --- | ---: | --- | --- |
+| `tr` | `100 ps` | time, `(0:inf)` | Rise/fall smoothing for `out` and `metric`. |
+| `deadband` | `0.05` | V, `[0:inf)` | Input-error magnitude below which loop updates hold state. |
 
-- Use voltage contributions only; do not use current contributions,
-  transistor-level devices, continuous-time RC storage, `ddt`, `idt`, or
-  KCL/KVL assumptions.
-- Use a sampled/event-driven state update and drive output voltages through
-  `transition(...)`.
-- Return only `loop_filter_abstraction.va`; do not emit a Spectre testbench or
-  checker.
+Required observable behavior:
+
+- Treat `clk` and `rst` as voltage-coded logic with a 0.45 V threshold.
+- Interpret `vin` as a signed loop-error stimulus around 0.45 V.
+- On each rising `clk` edge, update sampled loop-filter state when reset is
+  low and `abs(V(vin) - 0.45)` exceeds `deadband`.
+- Use a proportional correction whose step size decays across successive valid
+  updates.
+- Accumulate a smaller integral residual from the signed loop-error input.
+- Drive `out` as a bounded loop-control voltage that responds upward for
+  positive error and downward for negative error.
+- Keep `out` bounded in the 0 V to 0.9 V range.
+- Drive `metric` high only after several valid loop-filter updates and clear
+  it on reset.
+- When reset is high, clear the sampled state back near midscale and clear the
+  update metric.
+
+Use voltage contributions only. Do not use current contributions, `ddt()`,
+`idt()`, transistor-level devices, AC/noise analysis, checker logic, private
+test hooks, or simulator-private side channels.
+Use `transition(...)` for the driven output voltages.
+
+## Output
+
+Return exactly one source artifact named `loop_filter_abstraction.va`.

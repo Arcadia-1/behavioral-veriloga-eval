@@ -1,9 +1,7 @@
-# Source Attenuator Gain Audit
+# Attenuator Gain Audit
 
-- Source: `wangx/attenuator.va`
-- Scenario: decibel-configured voltage attenuation primitive.
-- Import status: certified only after visible compile, EVAS hidden semantic check, Spectre AX hidden semantic check, and EVAS/Spectre parity pass.
-- Evaluation: stable analog samples from `tran.csv`; raw simulator timestep equality is not used.
-- Evidence:
-  - `WORK/source-import-batch6-evas/142-attenuator-gain`
-  - `WORK/source-import-batch6-spectre/142-attenuator-gain`
+- Gate 1 counting status: retain as an L1 analog primitive. The task covers dB-to-linear voltage attenuation, which is a distinct gain-block contract rather than only a renamed linear amplifier.
+- Gate 2 modeling status: prompt now exposes the module, `attenuation` parameter, voltage-domain boundary, and dB amplitude-ratio behavior without referencing private evaluator details.
+- Checker status: stable sampled waveform checks cover input scaling at the configured attenuation.
+- Cadence reference anchor: basic voltage-domain macromodel guidance; no transistor-level or current-domain behavior is expected.
+- Current validation status: 2026-07-03 rerun passed EVAS hidden gold, EVAS negative rejection, visible smoke, EVAS AHDL-like lint, and Spectre hidden gold.

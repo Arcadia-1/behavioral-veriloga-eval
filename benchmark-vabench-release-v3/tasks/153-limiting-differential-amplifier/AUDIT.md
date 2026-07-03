@@ -1,9 +1,7 @@
-# Source Limiting Differential Amplifier Audit
+# Limiting Differential Amplifier Audit
 
-- Source: `wangx/limiting_diffamp.va`
-- Scenario: gain-limited differential amplifier with asymmetric rails.
-- Import status: certified only after visible compile, EVAS hidden semantic check, Spectre AX hidden semantic check, and EVAS/Spectre parity pass.
-- Evaluation: stable analog samples from `tran.csv`; raw simulator timestep equality is not used.
-- Evidence:
-  - `WORK/source-import-batch7-evas/153-limiting-differential-amplifier`
-  - `WORK/source-import-batch7-spectre/153-limiting-differential-amplifier`
+- Gate 1 counting status: retain as an L1 limiting differential amplifier. It combines differential gain, input offset, rail midpoint centering, and output limiting.
+- Gate 2 modeling status: prompt now exposes all public parameters and the target-then-clamp modeling contract.
+- Checker status: stable sampled waveform checks cover input offset, rail midpoint, and output clipping.
+- Cadence reference anchor: region/limiting macromodels should make boundary behavior explicit and keep contributions voltage-domain.
+- Current validation status: 2026-07-03 rerun passed EVAS hidden gold, EVAS negative rejection, visible smoke, EVAS AHDL-like lint, and Spectre hidden gold.

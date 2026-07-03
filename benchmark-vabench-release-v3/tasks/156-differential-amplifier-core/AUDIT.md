@@ -1,9 +1,7 @@
-# Source Differential Amplifier Core Audit
+# Differential Amplifier Core Audit
 
-- Source: `wangx/diffamp.va`
-- Scenario: single-ended output differential amplifier primitive.
-- Import status: certified only after visible compile, EVAS hidden semantic check, Spectre AX hidden semantic check, and EVAS/Spectre parity pass.
-- Evaluation: stable analog samples from `tran.csv`; raw simulator timestep equality is not used.
-- Evidence:
-  - `WORK/source-import-batch8-evas/156-differential-amplifier-core`
-  - `WORK/source-import-batch8-spectre/156-differential-amplifier-core`
+- Gate 1 counting status: retain as a small L1 analog primitive, with low complexity noted. It covers a differential-input single-ended gain core with input-referred offset.
+- Gate 2 modeling status: prompt now states the differential input, offset, fixed gain, and voltage-domain boundary.
+- Checker status: stable sampled waveform checks cover true differential input, offset subtraction, and fixed gain.
+- Cadence reference anchor: differential voltage-domain macromodeling.
+- Current validation status: 2026-07-03 rerun passed EVAS hidden gold, EVAS negative rejection, visible smoke, EVAS AHDL-like lint, and Spectre hidden gold.

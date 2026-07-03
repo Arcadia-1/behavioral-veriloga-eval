@@ -1,0 +1,28 @@
+version: 1
+task_id: v3_502_sine_vco_idtmod_bound_step
+backend: evas
+status: evas2-pending-extension-candidate
+checker:
+  task_id: v3_502_sine_vco_idtmod_bound_step
+  metric: sampled_sine_vco_idtmod_bound_step
+required_columns:
+  - time
+  - vin
+  - out
+  - metric
+syntax:
+  must_include:
+    - "idtmod("
+    - "$bound_step("
+    - "sin("
+  must_not_include:
+    - "I("
+    - "ddt("
+pending:
+  reason: "Current EVAS2 full-model lowering rejects this Cadence-style idtmod sine VCO with no_event_transition_ir."
+  spectre_status: "visible_hidden_gold_pass"
+  required_before_behavior_promotion:
+    - "Extend EVAS2 support or checker execution for continuous idtmod/sin VCO rows."
+    - "Re-enable sim_correct only after EVAS2 gold passes and negatives are behaviorally rejected."
+notes:
+  - "PLL task recast from Cadence VCO1.va; pure voltage-domain idtmod sine VCO with $bound_step."

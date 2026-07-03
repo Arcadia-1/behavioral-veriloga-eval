@@ -1,0 +1,17 @@
+`include "disciplines.vams"
+
+module hysteresis_trip_characterizer(vdd, vss, vin, cmp_out, trip_rise, trip_fall, hyst_width, valid);
+input vdd, vss, vin, cmp_out;
+output trip_rise, trip_fall, hyst_width, valid;
+electrical vdd, vss, vin, cmp_out, trip_rise, trip_fall, hyst_width, valid;
+
+parameter real tr = 20p;
+
+analog begin
+    V(trip_rise, vss) <+ transition(0.0, 0.0, tr, tr);
+    V(trip_fall, vss) <+ transition(0.0, 0.0, tr, tr);
+    V(hyst_width, vss) <+ transition(0.0, 0.0, tr, tr);
+    V(valid, vss) <+ transition(0.0, 0.0, tr, tr);
+end
+
+endmodule

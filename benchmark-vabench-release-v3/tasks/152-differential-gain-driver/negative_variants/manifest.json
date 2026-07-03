@@ -23,7 +23,7 @@
       "path": "negative_variants/neg_004_inverted_polarity/differential_gain_driver.va"
     },
     {
-      "description": "Differential Gain Driver: scales the metric output, preserving the main path while failing measurement checks.",
+      "description": "Scales both differential output halves too low while preserving the module/interface shape.",
       "id": "neg_005_metric_scale_low",
       "path": "negative_variants/neg_005_metric_scale_low/differential_gain_driver.va"
     }

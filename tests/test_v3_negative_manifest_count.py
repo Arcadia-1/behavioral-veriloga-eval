@@ -62,7 +62,8 @@ def case_file_candidates(task_dir: Path, case: dict[str, Any], target: str) -> l
 
 def test_every_v3_task_declares_exactly_five_negative_variants() -> None:
     tasks = read_json(TASKS)["tasks"]
-    assert len(tasks) == 501
+    task_dirs = {path.name for path in TASK_ROOT.iterdir() if path.is_dir()}
+    assert set(tasks) == task_dirs
 
     for slug, task in tasks.items():
         task_dir = TASK_ROOT / slug
