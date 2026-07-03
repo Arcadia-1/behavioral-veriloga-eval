@@ -9,6 +9,6 @@ module precision_rectifier_envelope_detector(clk, rst, vin, rect, env, metric);
         rect_v = vcm + abs(V(vin)-vcm); if (rect_v > 0.9) rect_v=0.9; if (rect_v < 0.0) rect_v=0.0;
         @(cross(V(clk)-vth,+1)) begin if (V(rst)>vth) env_state=vcm; else begin env_state = rect_v; end end
         metric_v = 0.0;
-        V(rect)<+transition(rect_v,0,tr,tr); V(env)<+transition(env_state,0,tr,tr); V(metric)<+transition(metric_v,0,tr,tr);
+        V(rect)<+rect_v; V(env)<+transition(env_state,0,tr,tr); V(metric)<+transition(metric_v,0,tr,tr);
     end
 endmodule

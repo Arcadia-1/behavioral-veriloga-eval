@@ -38,7 +38,7 @@ module precision_rectifier_envelope_detector(clk, rst, vin, rect, env, metric);
 
         metric_v = (env_state - rect_v > 0.030) ? 0.9 : 0.0;
 
-        V(rect) <+ transition(rect_v, 0, tr, tr);
+        V(rect) <+ rect_v;
         V(env) <+ transition(env_state, 0, tr, tr);
         V(metric) <+ transition(metric_v, 0, tr, tr);
     end

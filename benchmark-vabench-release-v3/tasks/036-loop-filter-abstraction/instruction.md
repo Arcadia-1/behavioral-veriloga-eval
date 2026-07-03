@@ -39,6 +39,7 @@ Required observable behavior:
 - Accumulate a smaller integral residual from the signed loop-error input.
 - Drive `out` as a bounded loop-control voltage that responds upward for
   positive error and downward for negative error.
+- Keep `out` bounded in the 0 V to 0.9 V range.
 - Drive `metric` high only after several valid loop-filter updates and clear
   it on reset.
 - When reset is high, clear the sampled state back near midscale and clear the
@@ -47,6 +48,7 @@ Required observable behavior:
 Use voltage contributions only. Do not use current contributions, `ddt()`,
 `idt()`, transistor-level devices, AC/noise analysis, checker logic, private
 test hooks, or simulator-private side channels.
+Use `transition(...)` for the driven output voltages.
 
 ## Output
 

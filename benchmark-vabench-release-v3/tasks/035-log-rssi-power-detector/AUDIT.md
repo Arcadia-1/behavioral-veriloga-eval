@@ -2,23 +2,36 @@
 
 ## Scope
 
-Task boundary is one Verilog-A DUT, `log_rssi_power_detector.va`, plus EVAS/Spectre-compatible `.scs` testbenches. Agent-visible materials are limited to `instruction.md`, `starter/`, and `test_visible/`. Evaluator-only materials are `solution/`, `test_hidden/`, `test_harness/`, and `negative_variants/`. No `meta.json` is present.
+Task boundary is one Verilog-A DUT, `log_rssi_power_detector.va`, plus
+EVAS/Spectre-compatible `.scs` testbenches. Public solver materials are
+`instruction.md`, `starter/`, and `test_visible/`. Evaluator-only materials are
+`solution/`, `test_hidden/`, `test_harness/`, and `negative_variants/`.
 
-## Four Standards
+## Gate 1
 
-- Useful scenario: pass. A log RSSI/power detector is a useful RF receiver behavioral macro.
-- Reasonable task: pass. The public prompt fixes floor behavior, monotonic log-like response, compressed large-step behavior, metric output, and voltage-domain constraints.
-- Complete tests: pass for EVAS. Hidden samples check floor, small/mid/high response, log-like monotonicity, compression of large input steps, and metric output. Five concrete negatives cover flat output, linear response, wrong floor, nonmonotonic response, and missing metric.
-- Fair evaluation: pass for EVAS. The checker evaluates public RSSI transfer behavior with tolerant windows.
+- Admission label: independent L1 DUT.
+- Function: RF receiver RSSI/power-detector macro with floor behavior,
+  monotonic log-like amplitude response, compression of large input steps, and
+  a valid metric output.
+- Duplicate risk: low within the reviewed RF/baseband batch.
 
-## Checker And Evidence
+## Gate 2
 
-- Checker id: `v3_035_log_rssi_power_detector`
-- Runner mapping: `CHECKS["v3_035_log_rssi_power_detector"] = check_log_rssi_power_detector`
-- EVAS/Python-engine hidden gold smoke: `PASS`
-- Concrete negative recertification: 5/5 expected failures, all `FAIL_SIM_CORRECTNESS` with simulator `returncode=0`
-- Visible compile/sim smoke: `COMPILE_SIM_OK`
+- Modeling status: `cadence_modeling_ready` for the audited hidden gold slice.
+- Prompt contract: public interface, parameters, monotonic response shape,
+  floor/compression behavior, metric semantics, and voltage-only constraints are
+  stated without hidden-checker or gold-history wording.
+- Cadence semantics: the model uses voltage-domain behavioral contributions and
+  transition-smoothed output/metric updates.
 
-## Remaining Risk
+## Verification
 
-Spectre/Spectre-AX correlation has not been run from this working tree; use EVAS-only wording until that evidence exists.
+- EVAS hidden gold: PASS.
+- Concrete negative recertification: 5/5 expected failures; all failed
+  behavioral correctness with simulator return code 0.
+- Visible smoke: PASS.
+- Targeted Spectre hidden gold: PASS.
+- AHDL lint/read-in triage: starter and solution preflight produced 0
+  diagnostics; Spectre read-in showed no task-specific `AHDLLINT-*`,
+  `VACOMP-1116`, or AHDL compile errors. The remaining Spectre warnings are
+  global AHDL-CMI/environment or small-design setup notices.

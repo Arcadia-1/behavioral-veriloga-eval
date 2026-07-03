@@ -975,9 +975,9 @@
       - "limiting_metric_asserted"
   parity:
     reference: "spectre"
-    status: "pending_until_evas_spectre_rerun"
+    status: "pass"
     notes:
-      - "Designed release source; no imported historical EVAS/Spectre dual evidence yet."
+      - "Fresh targeted review: EVAS hidden gold passed, targeted Spectre hidden gold passed, five concrete negatives were rejected behaviorally, and AHDL triage found no task-specific warnings or compile errors."
 034-lna-gain-compression-macro: |
   syntax:
     must_include:
@@ -999,9 +999,10 @@
       - "compressed_output_bounded"
   parity:
     reference: "spectre"
-    status: "pending_until_evas_spectre_rerun"
+    status: "pass"
     notes:
-      - "Designed release source; no imported historical EVAS/Spectre dual evidence yet."
+      - "Fresh targeted review: EVAS hidden gold passed, targeted Spectre hidden gold passed, five concrete negatives were rejected behaviorally, and AHDL triage found no task-specific warnings or compile errors."
+      - "Counting remains a category policy decision because this LNA compression row is related to the PA compression macro row."
 035-log-rssi-power-detector: |
   syntax:
     must_include:
@@ -1023,9 +1024,9 @@
       - "low_input_floor_bounded"
   parity:
     reference: "spectre"
-    status: "pending_until_evas_spectre_rerun"
+    status: "pass"
     notes:
-      - "Designed release source; no imported historical EVAS/Spectre dual evidence yet."
+      - "Fresh targeted review: EVAS hidden gold passed, targeted Spectre hidden gold passed, five concrete negatives were rejected behaviorally, and AHDL triage found no task-specific warnings or compile errors."
 036-loop-filter-abstraction: |
   syntax:
     must_include:
@@ -1049,9 +1050,9 @@
       - "filtered_output_bounded"
   parity:
     reference: "spectre"
-    status: "pending_until_evas_spectre_rerun"
+    status: "pass"
     notes:
-      - "Designed release source; no imported historical EVAS/Spectre dual evidence yet."
+      - "Fresh targeted review: EVAS hidden gold passed, targeted Spectre hidden gold passed, five concrete negatives were rejected behaviorally, and AHDL triage found no task-specific warnings or compile errors."
 037-pa-compression-macro: |
   syntax:
     must_include:
@@ -1073,9 +1074,10 @@
       - "pa_output_limit_metric"
   parity:
     reference: "spectre"
-    status: "pending_until_evas_spectre_rerun"
+    status: "pass"
     notes:
-      - "Designed release source; no imported historical EVAS/Spectre dual evidence yet."
+      - "Fresh targeted review: EVAS hidden gold passed, targeted Spectre hidden gold passed, five concrete negatives were rejected behaviorally, and AHDL triage found no task-specific warnings or compile errors."
+      - "Counting remains a category policy decision because this PA compression row is related to the LNA compression macro row."
 038-power-on-reset-detector: |
   syntax:
     must_include:
@@ -1132,9 +1134,10 @@
       - "metric"
   parity:
     reference: "spectre"
-    status: "pending"
+    status: "pass"
     notes:
-      - "Fresh EVAS/Spectre dual validation is required after the ahdlLib-guided quality refinement."
+      - "Fresh targeted review: EVAS hidden gold passed, targeted Spectre hidden gold passed, five concrete negatives were rejected behaviorally, and AHDL triage found no task-specific warnings or compile errors."
+      - "The rectified output is modeled as a continuous direct contribution; transition filtering is reserved for event-updated envelope and metric state."
 040-programmable-gain-amplifier: |
   syntax:
     must_include:
@@ -1166,9 +1169,9 @@
       - "metric"
   parity:
     reference: "spectre"
-    status: "pending"
+    status: "pass"
     notes:
-      - "Fresh EVAS/Spectre dual validation is required after adding this release entry."
+      - "Fresh targeted review: EVAS hidden gold passed, targeted Spectre hidden gold passed, five concrete negatives were rejected behaviorally, and AHDL triage found no task-specific warnings or compile errors."
 041-propagation-delay-comparator: |
   syntax:
     must_include:

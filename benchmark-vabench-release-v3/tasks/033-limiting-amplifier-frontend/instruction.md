@@ -1,101 +1,34 @@
 # Limiting Amplifier Frontend
 
-## Task Contract
+Implement `limiting_amplifier_frontend.va` in Verilog-A.
 
-- Form: `dut`
-- Level: `L1`
-- Category: RF and AFE Behavioral Macromodels
-- Base function: Limiting amplifier front-end
-- Domain: `voltage`
-- Target artifact(s): `limiting_amplifier_frontend.va`
-- Supplied/reference support artifact(s): `tb_limiting_amplifier_frontend.scs`
-- Visible context: public task, interface, artifact, stimulus, and observable contract only.
-- Hidden evaluator boundary: deterministic checker and EVAS/Spectre validation are external; do not generate checker logic.
+Declare module `limiting_amplifier_frontend(clk, rst, vin, out, metric)` with
+all ports electrical. `clk` and `rst` are voltage-coded logic signals with a
+0.45 V threshold. `vin` is an AFE input voltage centered around 0.45 V, `out`
+is the bounded limiting-amplifier output, and `metric` marks limiting activity.
 
-## Form-Specific Requirements
+Public parameters:
 
-- Implement only the requested Verilog-A DUT artifact(s); do not generate a Spectre testbench in this form.
-- Preserve the public module names, port order, parameters, and waveform observable names.
+- `tr`: output transition time, default `100p`.
+- `vth`: logic threshold, default `0.45`.
 
-## Public Verilog-A Interface
+Behavior:
 
-- `limiting_amplifier_frontend.va` declares module `limiting_amplifier_frontend` with positional ports: `clk`, `rst`, `vin`, `out`, `metric`.
+- Initialize `out` to the 0.45 V common-mode level and `metric` low.
+- Update the held output state on rising `clk` crossings.
+- When `rst` is high, return the output to common mode and clear `metric`.
+- For small excursions of `vin` around common mode, apply voltage gain above
+  unity while preserving polarity.
+- For large positive or negative excursions, limit the output toward bounded
+  high and low levels instead of continuing linearly.
+- Drive `metric` high only while large-signal limiting is active.
+- Keep `out` and `metric` in the 0 V to 0.9 V voltage range.
 
-## Public Testbench And Observable Contract
+Modeling requirements:
 
-Public transient setting used by the evaluator:
-
-```spectre
-tran tran stop=80n maxstep=0.5n
-```
-
-The evaluator expects these exact public scalar observables:
-
-- `clk`
-- `rst`
-- `vin`
-- `out`
-- `metric`
-
-When this form generates a testbench, use plain scalar save names for these observables; do not rely on instance-qualified or aliased save names.
-
-## Public Behavior Checks
-
-- `small_input_gain_preserved`
-- `large_input_limited_high_low`
-- `limiting_metric_asserted`
-
-## Public Behavioral Targets
-
-- Treat vin around 0.45 V common mode and preserve signal polarity around that common mode.
-- For small input excursions, apply gain around common mode.
-- For large positive or negative excursions, limit/compress output toward bounded high/low levels instead of continuing linearly.
-- Assert metric high only when limiting/compression is active.
-- Keep out in the 0-0.9 V range and avoid hard digital switching for small signals.
-
-## Output Contract
-
-Return exactly one source artifact named `limiting_amplifier_frontend.va`.
-Do not include explanatory prose outside the source artifact contents.
-
-## Task-Specific Description
-
-### Limiting amplifier front-end (spec-to-va)
-
-Write the Verilog-A behavioral module only.
-
-Behavioral intent:
-
-Normalize AFE input amplitude with a limiting amplifier that preserves polarity and asserts a limiting status metric.
-
-Module name: `limiting_amplifier_frontend`.
-Domain: pure voltage-domain behavioral Verilog-A.
-Do not use current contributions, transistor-level devices, AC/noise analysis,
-or KCL/KVL solving assumptions.
-
-This is a voltage-domain RF/AFE behavioral macromodel task. Model observable gain, compression, LO polarity, RSSI, limiting, AGC, or I/Q baseband behavior with event-driven voltage states. Do not implement transistor RF physics, S-parameters, current-domain loads, communication modem algorithms, or full link-level decoding.
-
-Public port contract:
-
-```verilog
-module limiting_amplifier_frontend(clk, rst, vin, out, metric);
-input clk, rst, vin;
-output out, metric;
-electrical clk, rst, vin, out, metric;
-```
-
-Signal contract:
-
-clk and rst are voltage-coded logic signals. vin is the receiver front-end voltage around 0.45 V common mode. out is a bounded limiting-amplifier output that preserves polarity. metric marks limiting operation.
-
-Saved waveform columns:
-
-```text
-clk rst vin out metric
-```
-
-Public transient contract:
-
-```spectre
-tran tran stop=80n maxstep=0.5n
-```
+- Use voltage contributions only; do not use current contributions,
+  transistor-level devices, AC/noise analysis, or KCL/KVL assumptions.
+- Use a clocked state update and drive output voltages through
+  `transition(...)`.
+- Return only `limiting_amplifier_frontend.va`; do not emit a Spectre
+  testbench or checker.

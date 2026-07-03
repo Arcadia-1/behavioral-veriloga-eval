@@ -8,6 +8,5 @@ electrical clk, rst, vin, out, metric;
 parameter real tr = 100p;
 parameter real deadband = 0.05;
 
-    // TODO: implement the behavior described in visible/prompt.md.
-    // This starter is intentionally incomplete; hidden tests grade behavior.
+    // TODO: implement the behavior described in instruction.md.
 endmodule
