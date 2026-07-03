@@ -12857,10 +12857,10 @@
       - metric_scaled_by_lsb_out
       - five_negative_variants_rejected_by_behavior_checker
 502-sine-vco-idtmod-bound-step: |
-  version: 1
+  version: 2
   task_id: v3_502_sine_vco_idtmod_bound_step
   backend: evas
-  status: evas2-pending-extension-candidate
+  status: behavior-certified-extension
   checker: v3_502_sine_vco_idtmod_bound_step
   required_columns:
     - time
@@ -12875,17 +12875,29 @@
     must_not_include:
       - "I("
       - "ddt("
-  pending:
-    reason: "Current EVAS2 full-model lowering rejects this Cadence-style idtmod sine VCO with no_event_transition_ir."
-    spectre_status: "visible_hidden_gold_pass"
-    required_before_behavior_promotion:
-      - "Extend EVAS2 support or checker execution for continuous idtmod/sin VCO rows."
-      - "Re-enable sim_correct only after EVAS2 gold passes and negatives are behaviorally rejected."
+  sim_correct:
+    trace_signals:
+      time: "time"
+      vin: "vin"
+      out: "out"
+      metric: "metric"
+    checks:
+      - "integrates_center_freq_plus_vco_gain_times_vin_with_idtmod"
+      - "out_matches_bipolar_sine_of_wrapped_phase"
+      - "metric_matches_vco_amp_scaled_wrapped_phase"
+      - "bound_step_request_is_present_in_the_model"
+      - "five_negative_variants_rejected_by_behavior_checker"
+  promotion_evidence:
+    command: "VAEVAS_EVAS_REPO=<EVAS checkout with Arcadia-1/EVAS#69> VAEVAS_DEFAULT_EVAS_ENGINE=evas2 VAEVAS_EVAS_PERSISTENT_WORKER=0 PYTHONPATH=runners python3 scripts/run_v3_gold_negative_verification.py --start 502 --end 503 --tasks 502,503 --include-staged --timeout 180 --jobs 1 --out <tmp>/verify_pll_502_503_after_evas2_idtmod.json"
+    result: "502/503 gold PASS; 10/10 negative variants rejected; 0 expectation_fail after EVAS2 continuous idtmod/sin VCO support."
+    dependency: "Requires EVAS continuous idtmod/sin full-model support from https://github.com/Arcadia-1/EVAS/pull/69 or an equivalent merged commit."
+  notes:
+    - "Cadence-style voltage-domain sine VCO promoted using EVAS2 continuous idtmod/sin behavior support; remains outside the original full-300 denominator."
 503-differential-vco-clip-idtmod: |
-  version: 1
+  version: 2
   task_id: v3_503_differential_vco_clip_idtmod
   backend: evas
-  status: evas2-pending-extension-candidate
+  status: behavior-certified-extension
   checker: v3_503_differential_vco_clip_idtmod
   required_columns:
     - time
@@ -12902,12 +12914,26 @@
     must_not_include:
       - "I("
       - "ddt("
-  pending:
-    reason: "Current EVAS2 full-model lowering rejects this Cadence-style clipped idtmod differential VCO with no_event_transition_ir."
-    spectre_status: "visible_hidden_gold_pass_and_ahdllint_pass"
-    required_before_behavior_promotion:
-      - "Extend EVAS2 support or checker execution for continuous clipped idtmod/sin VCO rows."
-      - "Re-enable sim_correct only after EVAS2 gold passes and negatives are behaviorally rejected."
+  sim_correct:
+    trace_signals:
+      time: "time"
+      vinp: "vinp"
+      vinm: "vinm"
+      outp: "outp"
+      outm: "outm"
+      metric: "metric"
+    checks:
+      - "differential_control_frequency_is_clipped_into_public_band"
+      - "clipped_frequency_is_integrated_with_idtmod"
+      - "outp_and_outm_are_opposite_sine_arms_around_vcm"
+      - "metric_matches_0p9_scaled_wrapped_phase"
+      - "five_negative_variants_rejected_by_behavior_checker"
+  promotion_evidence:
+    command: "VAEVAS_EVAS_REPO=<EVAS checkout with Arcadia-1/EVAS#69> VAEVAS_DEFAULT_EVAS_ENGINE=evas2 VAEVAS_EVAS_PERSISTENT_WORKER=0 PYTHONPATH=runners python3 scripts/run_v3_gold_negative_verification.py --start 502 --end 503 --tasks 502,503 --include-staged --timeout 180 --jobs 1 --out <tmp>/verify_pll_502_503_after_evas2_idtmod.json"
+    result: "502/503 gold PASS; 10/10 negative variants rejected; 0 expectation_fail after EVAS2 continuous idtmod/sin VCO support."
+    dependency: "Requires EVAS continuous idtmod/sin full-model support from https://github.com/Arcadia-1/EVAS/pull/69 or an equivalent merged commit."
+  notes:
+    - "Cadence-style differential VCO promoted using EVAS2 continuous idtmod/sin behavior support; hidden stimulus exercises the upper clamp."
 504-charge-pump-pfd-state-machine: |
   version: 1
   task_id: v3_504_charge_pump_pfd_state_machine

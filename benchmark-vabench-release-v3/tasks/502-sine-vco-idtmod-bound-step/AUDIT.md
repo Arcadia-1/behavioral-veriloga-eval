@@ -10,11 +10,11 @@ integrator and a `$bound_step()` points-per-cycle timestep request.
 
 - Gate 1: `independent_l1_rework` until upstream decides whether PLL extension
   candidates are counted outside the original full-300 denominator.
-- Gate 2: `cadence_modeling_ready_evas2_pending`; EVAS AHDL-like lint is clean
-  and targeted Spectre simulation passes, but current EVAS2 full-model
-  execution rejects the continuous `idtmod()`/`sin()` VCO row with
-  `no_event_transition_ir`. A separate `spectre -ahdllint` oracle run has not
-  been recorded in this public audit.
+- Gate 2: `cadence_modeling_ready_evas2_behavior_checked`; EVAS AHDL-like lint
+  is clean, targeted Spectre simulation passes, and strict EVAS2 gold/negative
+  behavior verification passes when run against the continuous `idtmod()`/`sin()`
+  VCO support from Arcadia-1/EVAS#69 or an equivalent merged commit. A separate
+  `spectre -ahdllint` oracle run has not been recorded in this public audit.
 - Prompt hygiene: removed private evaluator wording and fixed the old
   output-range mismatch. The public contract now states the output is a bipolar
   sine centered at 0 V.
@@ -33,16 +33,17 @@ integrator and a `$bound_step()` points-per-cycle timestep request.
   Python EVAS backend does not use it as a timestep oracle, so checker evidence
   is functional phase/sine evidence plus syntax coverage, not an independent
   timestep-density proof.
-- The release `CHECKS.yaml` intentionally does not enable `sim_correct` for
-  this row yet. Re-enable it only after EVAS2 can execute this VCO pattern and
-  reject the negative variants behaviorally.
+- The release `CHECKS.yaml` enables `sim_correct` for this row. Promotion
+  remains an extension claim outside the original full-300 denominator and
+  depends on EVAS continuous `idtmod()`/`sin()` support.
 
 ## Validation Status
 
 Fresh validation from this clean branch:
 
-- EVAS2 gold/negative: pending. Current strict EVAS2 execution rejects the gold
-  with `no_event_transition_ir`, so this row is not behavior-certified by EVAS2.
+- EVAS2 gold/negative: PASS with the local EVAS continuous `idtmod()`/`sin()`
+  support branch. In the paired 502/503 run, 2/2 gold cases pass and 10/10
+  negative variants are rejected with 0 expectation failures.
 - EVAS AHDL-like lint preflight: visible and hidden decks PASS with zero
   diagnostics.
 - Spectre simulation: visible gold PASS, hidden gold PASS, and five hidden

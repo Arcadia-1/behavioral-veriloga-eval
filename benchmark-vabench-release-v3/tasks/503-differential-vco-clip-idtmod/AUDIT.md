@@ -11,12 +11,13 @@ output arms around a common-mode voltage.
 
 - Gate 1: `independent_l1_rework` until upstream decides whether PLL extension
   candidates are counted outside the original full-300 denominator.
-- Gate 2: `cadence_modeling_ready_evas2_pending`; targeted Spectre simulation
-  and real Cadence `spectre -ahdllint +diagnose` visible/hidden runs pass.
-  Current EVAS2 full-model execution rejects the continuous clipped-frequency
-  `idtmod()`/`sin()` VCO row with `no_event_transition_ir`. EVAS AHDL-like lint
-  also reports conservative static warnings around the continuous expression,
-  but Spectre reports no task-level lint issue for this modeling pattern.
+- Gate 2: `cadence_modeling_ready_evas2_behavior_checked`; targeted Spectre
+  simulation and real Cadence `spectre -ahdllint +diagnose` visible/hidden runs
+  pass. Strict EVAS2 gold/negative behavior verification passes when run
+  against the continuous `idtmod()`/`sin()` VCO support from Arcadia-1/EVAS#69
+  or an equivalent merged commit. EVAS AHDL-like lint still reports conservative
+  static warnings around the continuous expression, but Spectre reports no
+  task-level lint issue for this modeling pattern.
 - Prompt hygiene: removed private evaluator wording and described the clamp as
   public circuit behavior rather than checker-only behavior.
 - Artifact boundary: target is only `differential_vco_clip_idtmod.va`; no
@@ -33,16 +34,17 @@ output arms around a common-mode voltage.
 - Checker id: `v3_503_differential_vco_clip_idtmod`.
 - The checker reintegrates clipped phase from the differential input and
   compares both output arms plus the wrapped-phase metric.
-- The release `CHECKS.yaml` intentionally does not enable `sim_correct` for
-  this row yet. Re-enable it only after EVAS2 can execute this VCO pattern and
-  reject the negative variants behaviorally.
+- The release `CHECKS.yaml` enables `sim_correct` for this row. Promotion
+  remains an extension claim outside the original full-300 denominator and
+  depends on EVAS continuous `idtmod()`/`sin()` support.
 
 ## Validation Status
 
 Fresh validation from this clean branch:
 
-- EVAS2 gold/negative: pending. Current strict EVAS2 execution rejects the gold
-  with `no_event_transition_ir`, so this row is not behavior-certified by EVAS2.
+- EVAS2 gold/negative: PASS with the local EVAS continuous `idtmod()`/`sin()`
+  support branch. In the paired 502/503 run, 2/2 gold cases pass and 10/10
+  negative variants are rejected with 0 expectation failures.
 - EVAS AHDL-like lint preflight: WARN on `clip()`/`idtmod()`/`sin()` continuous
   expression classification; no compatibility errors.
 - Spectre simulation: visible gold PASS, hidden gold PASS with upper clamp
