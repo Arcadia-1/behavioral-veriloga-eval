@@ -3,6 +3,8 @@ module deadband_voltage(sigin, sigout);
 input sigin;
 output sigout;
 electrical sigin, sigout;
+parameter real sigin_dead_low = -0.25;
+parameter real sigin_dead_high = 0.25;
 analog begin
     V(sigout) <+ 0.0;
 end

@@ -3212,6 +3212,19 @@
   checker:
     task_id: v3_deadband_window
     metric: stable_samples
+  gate_review:
+    gate1: valid_variant_needs_counting_policy
+    duplicate_note: "Functionally close to 289-deadband-voltage; count at most one single-ended signed deadband-residue row unless both parameter-naming variants are explicitly retained."
+    gate2: cadence_modeling_ready
+  sim_correct:
+    dut_companion_role: function_checked_dut
+    strong_benchmark_claim: true
+    checks:
+      - signed_residue_below_deadband
+      - zero_output_inside_deadband
+      - signed_residue_above_deadband
+      - instance_overridden_dead_low_dead_high
+    public_behavior_envelope: "Voltage-domain single-ended deadband shaper with overridable dead_low/dead_high thresholds and continuous signed residue outside the window."
   scoring:
     axes:
       - dut_compile
@@ -3221,6 +3234,19 @@
   checker:
     task_id: v3_differential_deadband
     metric: stable_samples
+  gate_review:
+    gate1: independent_l1_ready
+    gate2: cadence_modeling_ready
+  sim_correct:
+    dut_companion_role: function_checked_dut
+    strong_benchmark_claim: true
+    checks:
+      - differential_input_polarity
+      - leakage_output_inside_deadband
+      - low_side_signed_residue_with_gain
+      - high_side_signed_residue_with_gain
+      - instance_overridden_deadband_gain_leak
+    public_behavior_envelope: "Symmetric-gain differential deadband amplifier using V(sigin_p,sigin_n), leakage inside the window, and one shared gain outside both thresholds."
   scoring:
     axes:
       - dut_compile
@@ -3230,6 +3256,19 @@
   checker:
     task_id: v3_hard_voltage_clamp
     metric: stable_samples
+  gate_review:
+    gate1: independent_l1_ready
+    gate2: cadence_modeling_ready
+  sim_correct:
+    dut_companion_role: function_checked_dut
+    strong_benchmark_claim: true
+    checks:
+      - reference_to_vgnd
+      - lower_rail_clamp
+      - pass_through_inside_rails
+      - upper_rail_clamp
+      - instance_overridden_clamp_rails
+    public_behavior_envelope: "Ground-referenced hard voltage clamp with overridable lower and upper clamp rails."
   scoring:
     axes:
       - dut_compile
@@ -3413,6 +3452,18 @@
   checker:
     task_id: v3_soft_voltage_clamp
     metric: stable_samples
+  gate_review:
+    gate1: independent_l1_ready
+    gate2: cadence_modeling_ready
+  sim_correct:
+    dut_companion_role: function_checked_dut
+    strong_benchmark_claim: true
+    checks:
+      - central_region_pass_through
+      - exponential_lower_soft_limit
+      - exponential_upper_soft_limit
+      - monotonic_continuous_soft_limited_response
+    public_behavior_envelope: "Ground-referenced soft clamp with 0.0 V/0.4 V knees, 0.2 V softness span, and -0.2 V/0.6 V asymptotes."
   scoring:
     axes:
       - dut_compile
@@ -4992,6 +5043,19 @@
   checker:
     task_id: v3_deadband_voltage
     metric: stable_samples
+  gate_review:
+    gate1: valid_variant_needs_counting_policy
+    duplicate_note: "Functionally close to 143-deadband-window; count at most one single-ended signed deadband-residue row unless both parameter-naming variants are explicitly retained."
+    gate2: cadence_modeling_ready
+  sim_correct:
+    dut_companion_role: function_checked_dut
+    strong_benchmark_claim: true
+    checks:
+      - signed_excess_below_deadband
+      - zero_output_inside_deadband
+      - signed_excess_above_deadband
+      - sigin_dead_low_high_parameter_contract
+    public_behavior_envelope: "Single-ended deadband shaper with sigin_dead_low/sigin_dead_high threshold names, zero central output, and signed excess outside the nearest edge."
   scoring:
     axes:
       - dut_compile
@@ -5001,6 +5065,19 @@
   checker:
     task_id: v3_deadband_diffamp
     metric: stable_samples
+  gate_review:
+    gate1: independent_l1_ready
+    gate2: cadence_modeling_ready
+  sim_correct:
+    dut_companion_role: function_checked_dut
+    strong_benchmark_claim: true
+    checks:
+      - differential_input_polarity
+      - leakage_output_inside_deadband
+      - low_side_gain_low_residue
+      - high_side_gain_high_residue
+      - asymmetric_gain_contract
+    public_behavior_envelope: "Asymmetric-gain differential deadband amplifier with independent gain_low/gain_high and leakage output in the deadband."
   scoring:
     axes:
       - dut_compile
@@ -5010,6 +5087,19 @@
   checker:
     task_id: v3_limiting_diffamp
     metric: stable_samples
+  gate_review:
+    gate1: valid_variant_needs_counting_policy
+    duplicate_note: "Simple centered hard-limiting differential amplifier; overlaps with richer limiting-diffamp rows such as 153-limiting-differential-amplifier."
+    gate2: cadence_modeling_ready
+  sim_correct:
+    dut_companion_role: function_checked_dut
+    strong_benchmark_claim: true
+    checks:
+      - differential_gain_linear_region
+      - lower_output_saturation
+      - upper_output_saturation
+      - polarity_preserved
+    public_behavior_envelope: "Centered differential gain block with hard saturation to overridable sigout_low/sigout_high rails."
   scoring:
     axes:
       - dut_compile

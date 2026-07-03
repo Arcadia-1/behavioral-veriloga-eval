@@ -1,5 +1,15 @@
-# Source Deadband Voltage
+# Deadband Voltage
 
-Implement a deadband shaper. OUT is zero within [-0.25 V, +0.25 V], otherwise it reports the excess beyond the nearest threshold.
+Implement `deadband_voltage` in `deadband_voltage.va`.
 
-The module name and port list must match `deadband_voltage.va`. Keep the implementation deterministic and voltage-domain only. The historical source normalized for this task is `wangx/deadband.va`.
+The module is a voltage-domain DUT with port order `sigin, sigout`. Declare
+both ports as `electrical`; `sigin` is the input and `sigout` is the output.
+
+Treat `V(sigin)` as a signed signal to be shaped by a zero-output deadband
+around zero. Inside the threshold window, including both edges, drive `sigout`
+to zero. Below the lower threshold, drive the signed excess below the lower
+edge. Above the upper threshold, drive the signed excess above the upper edge.
+The output should preserve sign and be continuous at the two thresholds.
+
+Provide overridable real parameters `sigin_dead_low=-0.25` and
+`sigin_dead_high=0.25`, in volts.

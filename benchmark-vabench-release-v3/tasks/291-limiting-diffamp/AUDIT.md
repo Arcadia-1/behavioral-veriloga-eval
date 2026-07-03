@@ -1,9 +1,18 @@
-# Source Limiting Diffamp Audit
+# Limiting Diffamp Audit
 
-- Source: `wangx/limiting_diffamp.va` from the exact-deduplicated historical Verilog-A corpus.
-- Scenario: Implement a differential amplifier with hard output limits. OUT is 4*(INP-INN) clipped to +/-0.75 V.
-- Import status: certified only after visible compile, EVAS hidden semantic check, Spectre AX hidden semantic check, EVAS/Spectre parity pass, and negative variant rejection.
-- Evaluation: stable sampled behavior from `tran.csv`; raw simulator timestep equality is not used.
-- Evidence:
-  - `WORK/source-import-batch32-evas/291-limiting-diffamp`
-  - `WORK/source-import-batch32-spectre/291-limiting-diffamp`
+- Gate 1: `valid_variant_needs_counting_policy`. This row is a simple centered
+  hard-limiting differential amplifier. It overlaps with richer limiting
+  differential-amplifier rows such as `153-limiting-differential-amplifier`;
+  count it only if the release policy keeps a simpler centered-rail variant.
+- Gate 2: `cadence_modeling_ready` after this revision's targeted
+  EVAS/negative, Spectre, and AHDL-lint validation. The reference
+  implementation computes a real target and contributes once.
+- AHDL triage: EVAS AHDL-like lint reports zero diagnostics, and Spectre
+  read-in reports no task-level AHDL errors; remaining notices are global setup
+  notices.
+- Public contract: differential gain followed by hard saturation to
+  overridable lower and upper output rails.
+- Coverage: validation samples exercise lower saturation, linear negative output,
+  linear positive output, and upper saturation; five behavior negatives reject
+  zero, missing-limit, wrong-gain, inverted-polarity, and scaling
+  implementations.

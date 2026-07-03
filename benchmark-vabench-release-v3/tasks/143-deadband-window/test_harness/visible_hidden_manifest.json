@@ -5,9 +5,5 @@
   "hidden": [
     "test_hidden/tests/tb_source_ref.scs"
   ],
-  "checker": "v3_deadband_window",
-  "evidence": {
-    "evas": "WORK/source-import-batch6-evas/143-deadband-window",
-    "spectre": "WORK/source-import-batch6-spectre/143-deadband-window"
-  }
+  "checker": "v3_deadband_window"
 }
