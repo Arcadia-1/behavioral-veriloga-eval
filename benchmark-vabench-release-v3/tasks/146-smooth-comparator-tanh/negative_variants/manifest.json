@@ -23,7 +23,7 @@
       "path": "negative_variants/neg_004_half_output_span/smooth_comparator_tanh.va"
     },
     {
-      "description": "Smooth Comparator Tanh: scales the metric output, preserving the main path while failing measurement checks.",
+      "description": "Scales the tanh output and therefore violates the public smooth-transfer contract.",
       "id": "neg_005_metric_scale_low",
       "path": "negative_variants/neg_005_metric_scale_low/smooth_comparator_tanh.va"
     }

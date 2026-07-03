@@ -1,101 +1,38 @@
 # Log RSSI Power Detector
 
-## Task Contract
+Implement `log_rssi_power_detector.va` in Verilog-A.
 
-- Form: `dut`
-- Level: `L1`
-- Category: RF and AFE Behavioral Macromodels
-- Base function: Log/RSSI power detector
-- Domain: `voltage`
-- Target artifact(s): `log_rssi_power_detector.va`
-- Supplied/reference support artifact(s): `tb_log_rssi_power_detector.scs`
-- Visible context: public task, interface, artifact, stimulus, and observable contract only.
-- Hidden evaluator boundary: deterministic checker and EVAS/Spectre validation are external; do not generate checker logic.
+Declare module `log_rssi_power_detector(clk, rst, vin, out, metric)` with all
+ports electrical. `clk` and `rst` are voltage-coded logic signals with a
+0.45 V threshold. `vin` is a received signal envelope around 0.45 V common
+mode, `out` is a compressed RSSI-style voltage code, and `metric` exposes a
+bounded envelope-magnitude estimate.
 
-## Form-Specific Requirements
+Public parameters:
 
-- Implement only the requested Verilog-A DUT artifact(s); do not generate a Spectre testbench in this form.
-- Preserve the public module names, port order, parameters, and waveform observable names.
+- `tr`: output transition time, default `100p`.
+- `vth`: logic threshold, default `0.45`.
 
-## Public Verilog-A Interface
+Behavior:
 
-- `log_rssi_power_detector.va` declares module `log_rssi_power_detector` with positional ports: `clk`, `rst`, `vin`, `out`, `metric`.
+- Initialize `out` near the low RSSI floor and `metric` low.
+- Update the held RSSI state on rising `clk` crossings.
+- When `rst` is high, return `out` to the low floor and clear `metric`.
+- Estimate input amplitude from `abs(V(vin) - 0.45)`.
+- Keep `out` monotonic with amplitude.
+- Use a log-like or piecewise-compressed transfer: near-zero input should stay
+  near the low floor, moderate input should move through the middle of the
+  range, and larger input should increase with smaller incremental spacing.
+- Keep `metric` proportional to envelope magnitude and bounded in the 0 V to
+  0.9 V range.
 
-## Public Testbench And Observable Contract
+Modeling requirements:
 
-Public transient setting used by the evaluator:
-
-```spectre
-tran tran stop=80n maxstep=0.5n
-```
-
-The evaluator expects these exact public scalar observables:
-
-- `clk`
-- `rst`
-- `vin`
-- `out`
-- `metric`
-
-When this form generates a testbench, use plain scalar save names for these observables; do not rely on instance-qualified or aliased save names.
-
-## Public Behavior Checks
-
-- `rssi_monotonic_with_envelope`
-- `log_spacing_compresses_large_steps`
-- `low_input_floor_bounded`
-
-## Public Behavioral Targets
-
-- Treat vin as an envelope around 0.45 V common mode and estimate amplitude as abs(vin - 0.45).
-- Use a Spectre/EVAS-friendly compressed or piecewise approximation; do not rely on unsupported log10, round, integer casts, or digital Verilog.
-- out should be monotonic with amplitude, but large-amplitude steps should be compressed rather than linear.
-- Keep a low-input floor near the bottom of the RSSI range.
-- metric should expose normalized envelope magnitude and remain bounded within 0-0.9 V.
-
-## Output Contract
-
-Return exactly one source artifact named `log_rssi_power_detector.va`.
-Do not include explanatory prose outside the source artifact contents.
-
-## Task-Specific Description
-
-### Log/RSSI power detector (spec-to-va)
-
-Write the Verilog-A behavioral module only.
-
-Behavioral intent:
-
-Convert received envelope magnitude into a monotonic logarithmic RSSI-style voltage code.
-
-Module name: `log_rssi_power_detector`.
-Domain: pure voltage-domain behavioral Verilog-A.
-Do not use current contributions, transistor-level devices, AC/noise analysis,
-or KCL/KVL solving assumptions.
-
-This is a voltage-domain RF/AFE behavioral macromodel task. Model observable gain, compression, LO polarity, RSSI, limiting, AGC, or I/Q baseband behavior with event-driven voltage states. Do not implement transistor RF physics, S-parameters, current-domain loads, communication modem algorithms, or full link-level decoding.
-
-Public port contract:
-
-```verilog
-module log_rssi_power_detector(clk, rst, vin, out, metric);
-input clk, rst, vin;
-output out, metric;
-electrical clk, rst, vin, out, metric;
-```
-
-Signal contract:
-
-clk and rst are voltage-coded logic signals. vin is the received signal envelope around 0.45 V common mode. out is a monotonic logarithmic RSSI voltage code. metric exposes normalized envelope magnitude.
-
-Saved waveform columns:
-
-```text
-clk rst vin out metric
-```
-
-Public transient contract:
-
-```spectre
-tran tran stop=80n maxstep=0.5n
-```
+- Use voltage contributions only; do not use current contributions,
+  transistor-level devices, AC/noise analysis, or KCL/KVL assumptions.
+- Use Spectre/EVAS-friendly real arithmetic. Do not rely on unsupported
+  `log10`, rounding, digital Verilog, or integer casts.
+- Use a clocked state update and drive output voltages through
+  `transition(...)`.
+- Return only `log_rssi_power_detector.va`; do not emit a Spectre testbench or
+  checker.

@@ -14,9 +14,14 @@ Task boundary is one primary Verilog-A DUT artifact, `cross_interval_163p333_ref
 ## Checker And Evidence
 
 - Source checker id: `vbr1_l1_edge_interval_timer_tb`
-- EVAS 0.4.5 hidden gold smoke: PASS
-- Concrete negative `neg_001_zero`: non-full-credit
+- EVAS private-split gold and five concrete behavioral negatives: PASS/rejected in
+  the current PLL/clock hygiene rerun.
+- EVAS AHDL-like lint preflight on private decks: PASS with zero diagnostics
+  after moving rail scaling outside `transition()`.
+- Spectre 21.1 private-split gold audit: PASS in the current PLL/clock hygiene rerun.
 
 ## Remaining Risk
 
-Initial migration artifact. Do not count this task in a final release surface until gold smoke and negative evidence are attached.
+Counting status remains an upstream benchmark-policy decision, but the public
+prompt now defines the edge-interval timer DUT directly instead of importing
+testbench-companion or hidden-evaluator context.

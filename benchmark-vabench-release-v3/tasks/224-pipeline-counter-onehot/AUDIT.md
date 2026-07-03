@@ -1,9 +1,11 @@
 # Source Pipeline Counter Onehot Audit
 
-- Source: `caiyizeng25/V_counter.va` from the exact-deduplicated historical Verilog-A corpus.
 - Scenario: falling-edge modulo-six pipeline counter with one-hot phase and binary count outputs.
-- Import status: certified only after visible compile, EVAS hidden semantic check, Spectre AX hidden semantic check, and EVAS/Spectre parity pass.
+- Import status: certified only after visible compile, EVAS/Spectre semantic validation, and EVAS/Spectre parity pass.
 - Evaluation: stable sampled behavior from `tran.csv`; raw simulator timestep equality is not used.
-- Evidence:
-  - `WORK/source-import-batch20-evas/224-pipeline-counter-onehot`
-  - `WORK/source-import-batch20-spectre/224-pipeline-counter-onehot`
+
+## Digital/Control/Logic Closeout Review
+
+- Gate 1 status: `l2_support_component`.
+- Rationale: pipeline phase counting is a plausible AMS support sequencer, but the row is currently a generic counter/one-hot generator.
+- Counting recommendation: support component unless embedded in a pipeline ADC, sampler, or calibration L2 flow.

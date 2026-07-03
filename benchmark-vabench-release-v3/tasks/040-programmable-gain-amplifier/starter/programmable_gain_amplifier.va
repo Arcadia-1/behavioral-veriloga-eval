@@ -14,6 +14,5 @@ module programmable_gain_amplifier(clk, rst, gain_sel, vin, out, metric);
     parameter real vmax = 0.9;
     parameter real tr = 200p from (0:inf);
 
-    // TODO: implement the behavior described in visible/prompt.md.
-    // This starter is intentionally incomplete; hidden tests grade behavior.
+    // TODO: implement the behavior described in instruction.md.
 endmodule

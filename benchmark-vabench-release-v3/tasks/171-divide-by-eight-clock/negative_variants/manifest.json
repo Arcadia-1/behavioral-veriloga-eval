@@ -8,24 +8,24 @@
       "path": "negative_variants/neg_001_zero/divide_by_eight_clock.va"
     },
     {
-      "description": "Uses divide-by-four instead of divide-by-eight.",
+      "description": "Uses divide-by-four timing while still exposing reset and enable ports.",
       "id": "neg_002_divide_by_four",
       "path": "negative_variants/neg_002_divide_by_four/divide_by_eight_clock.va"
     },
     {
-      "description": "Uses one high count and seven low counts instead of 50 percent duty.",
+      "description": "Uses the correct reset and enable behavior but the wrong high/low duty split.",
       "id": "neg_003_wrong_duty",
       "path": "negative_variants/neg_003_wrong_duty/divide_by_eight_clock.va"
     },
     {
-      "description": "Starts at zero, shifting output phase.",
-      "id": "neg_004_wrong_initial_count",
-      "path": "negative_variants/neg_004_wrong_initial_count/divide_by_eight_clock.va"
+      "description": "Ignores the enable input and advances on disabled input-clock edges.",
+      "id": "neg_004_ignore_enable",
+      "path": "negative_variants/neg_004_ignore_enable/divide_by_eight_clock.va"
     },
     {
-      "description": "Divide By Eight Clock: scales the metric output, preserving the main path while failing measurement checks.",
-      "id": "neg_005_metric_scale_low",
-      "path": "negative_variants/neg_005_metric_scale_low/divide_by_eight_clock.va"
+      "description": "Ignores the active-high reset after startup and does not reload the high phase.",
+      "id": "neg_005_ignore_reset",
+      "path": "negative_variants/neg_005_ignore_reset/divide_by_eight_clock.va"
     }
   ]
 }

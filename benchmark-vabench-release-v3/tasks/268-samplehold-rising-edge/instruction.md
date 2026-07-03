@@ -1,5 +1,32 @@
 # Source Samplehold Rising Edge
 
-Implement a rising-edge sample-and-hold. Each control rising edge captures IN and holds that voltage on OUT until the next capture.
+Implement `samplehold_rising_edge.va` in Verilog-A.
 
-The module name and port list must match `samplehold_rising_edge.va`. Keep the implementation deterministic and voltage-domain only. The historical source normalized for this task is `hexy/samplehold.va`.
+## Public Interface
+
+Declare module `samplehold_rising_edge(control, vin, vout)` with scalar
+electrical voltage-domain ports.
+
+- `control`: voltage-coded sampling control.
+- `vin`: analog input voltage to be sampled.
+- `vout`: held output voltage.
+
+## Public Parameter Contract
+
+- `thresh`: rising-edge control threshold, default `2.5`.
+- `tdel`: output transition delay, default `20p`.
+- `tr`: output transition rise/fall smoothing time, default `20p`.
+
+## Functional Contract
+
+- Sample `vin` on each rising `control` crossing of `thresh`.
+- Hold the sampled voltage on `vout` until the next rising control crossing.
+- Do not continuously track `vin` between sample events.
+- Drive `vout` with smooth voltage-domain `transition(...)` behavior.
+
+## Modeling Constraints
+
+Return only `samplehold_rising_edge.va`. Do not emit a Spectre testbench,
+checker logic, private test hooks, or simulator-private side channels. Use
+voltage contributions only; do not use current contributions, `ddt()`, or
+`idt()`.

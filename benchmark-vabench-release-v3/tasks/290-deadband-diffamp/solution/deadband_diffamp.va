@@ -9,13 +9,15 @@ parameter real sigout_leak = 0.02;
 parameter real gain_low = 2.0;
 parameter real gain_high = 3.0;
 real diff;
+real target;
 analog begin
     diff = V(sigin_p, sigin_n);
     if (diff < sigin_dead_low)
-        V(sigout) <+ gain_low * (diff - sigin_dead_low) + sigout_leak;
+        target = gain_low * (diff - sigin_dead_low) + sigout_leak;
     else if (diff > sigin_dead_high)
-        V(sigout) <+ gain_high * (diff - sigin_dead_high) + sigout_leak;
+        target = gain_high * (diff - sigin_dead_high) + sigout_leak;
     else
-        V(sigout) <+ sigout_leak;
+        target = sigout_leak;
+    V(sigout) <+ target;
 end
 endmodule

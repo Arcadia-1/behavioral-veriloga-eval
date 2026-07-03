@@ -2,23 +2,38 @@
 
 ## Scope
 
-Task boundary is one Verilog-A DUT, `precision_rectifier_envelope_detector.va`, plus EVAS/Spectre-compatible `.scs` testbenches. Agent-visible materials are limited to `instruction.md`, `starter/`, and `test_visible/`. Evaluator-only materials are `solution/`, `test_hidden/`, `test_harness/`, and `negative_variants/`. No `meta.json` is present.
+Task boundary is one Verilog-A DUT, `precision_rectifier_envelope_detector.va`,
+plus EVAS/Spectre-compatible `.scs` testbenches. Public solver materials are
+`instruction.md`, `starter/`, and `test_visible/`. Evaluator-only materials are
+`solution/`, `test_hidden/`, `test_harness/`, and `negative_variants/`.
 
-## Four Standards
+## Gate 1
 
-- Useful scenario: pass. A precision rectifier/envelope detector is a common analog front-end and measurement macro.
-- Reasonable task: pass. The public prompt fixes full-wave rectification around common mode, envelope hold/decay, reset behavior, and metric output.
-- Complete tests: pass for EVAS. Hidden samples check rectification polarity, envelope peak hold, decay behavior, and memory metric. Five concrete negatives cover half-wave-only behavior, missing envelope hold, wrong common-mode handling, reset mistakes, and stuck outputs.
-- Fair evaluation: pass for EVAS. The checker uses public waveform columns and behavioral targets described in the prompt.
+- Admission label: independent L1 DUT.
+- Function: precision rectifier/envelope-detector macro with full-wave
+  rectification around common mode, peak hold/decay memory, reset behavior, and
+  a memory metric output.
+- Duplicate risk: low within the reviewed RF/baseband batch.
 
-## Checker And Evidence
+## Gate 2
 
-- Checker id: `v3_039_precision_rectifier_envelope_detector`
-- Runner mapping: `CHECKS["v3_039_precision_rectifier_envelope_detector"] = check_precision_rectifier_envelope_detector`
-- EVAS/Python-engine hidden gold smoke: `PASS`
-- Concrete negative recertification: 5/5 expected failures, all `FAIL_SIM_CORRECTNESS` with simulator `returncode=0`
-- Visible compile/sim smoke: `COMPILE_SIM_OK`
+- Modeling status: `cadence_modeling_ready` for the audited hidden gold slice.
+- Prompt contract: public interface, parameters, rectifier behavior,
+  envelope-hold behavior, reset behavior, metric semantics, and voltage-only
+  constraints are stated without hidden-checker or gold-history wording.
+- Cadence semantics: the rectified output is a continuous direct voltage
+  contribution; the envelope and metric are event-updated state outputs smoothed
+  with `transition()`. The gold and negatives were adjusted to avoid applying
+  `transition()` directly to a continuously varying input expression.
 
-## Remaining Risk
+## Verification
 
-Spectre/Spectre-AX correlation has not been run from this working tree; use EVAS-only wording until that evidence exists.
+- EVAS hidden gold: PASS.
+- Concrete negative recertification: 5/5 expected failures; all failed
+  behavioral correctness with simulator return code 0.
+- Visible smoke: PASS.
+- Targeted Spectre hidden gold: PASS.
+- AHDL lint/read-in triage: starter and solution preflight produced 0
+  diagnostics; Spectre read-in showed no task-specific `AHDLLINT-*`,
+  `VACOMP-1116`, or AHDL compile errors. The remaining Spectre warnings are
+  global AHDL-CMI/environment or small-design setup notices.

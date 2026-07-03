@@ -16,7 +16,7 @@ preserves a bugfix-form repair workflow for the same lowpass function.
   response are public, and the prompt now states that this is a repair task
   rather than a new lowpass design task.
 - Complete tests: pass for the current reviewed slice. The visible smoke uses a
-  shorter public transient, while the hidden bench keeps the full 160 ns
+  shorter public transient, while the private validation bench keeps the full
   settling scenario required by the lowpass checker.
 - Fair evaluation: pass. The checker enforces only the public finite-bandwidth
   step behavior: input step exercised, non-instantaneous lag, monotonic first
@@ -24,20 +24,25 @@ preserves a bugfix-form repair workflow for the same lowpass function.
 
 ## Evidence
 
-- Hidden gold: PASS under EVAS with `v3_286_first_order_lowpass_bugfix`.
-- Concrete negative variants: 4/4 compile and fail with
+- Reference solution: PASS under EVAS and targeted Spectre with
+  `v3_286_first_order_lowpass_bugfix`.
+- Concrete negative variants: 5/5 compile and fail with
   `FAIL_SIM_CORRECTNESS`:
   - `neg_001_leave_buggy`: original too-slow alpha.
   - `neg_002_passthrough_timer`: timer-delayed passthrough.
   - `neg_003_inverted_input`: wrong input polarity/final value.
   - `neg_004_output_clamped`: clips the repaired output below the late level.
-- Cadence/Spectre evidence from `scripts/run_v3_spectre_audit.py`: hidden
-  gold PASS and 4/4 hidden negative variants `NEGATIVE_REJECTED`.
-- Gate 2 Cadence status: `cadence_lint_pending`.
+  - `neg_005_metric_scale_low`: wrong response scaling.
+- Current-branch targeted Spectre gold validation: PASS. Current five-negative
+  EVAS evidence is attached; Spectre negative recertification has not been run.
+- AHDL lint/read-in triage: EVAS AHDL-like lint preflight reports PASS with
+  zero diagnostics for the hidden solution case. Spectre AHDL read-in reports
+  no task-level `AHDLLINT-*`, AHDL compile, or VACOMP errors; the remaining
+  `VACOMP-2435` and `SPECTRE-592` warnings are shared environment/mode notices.
+- Gate 2 Cadence status: `cadence_modeling_ready` for the reviewed gold, while
+  the row remains a bugfix variant rather than independent lowpass coverage.
 
 ## Remaining Risk
 
-- AHDL lint evidence is not attached yet; do not mark
-  `cadence_modeling_ready` until lint/triage is recorded.
 - Counting reports must not claim this row as independent lowpass circuit
   coverage in addition to task 007.

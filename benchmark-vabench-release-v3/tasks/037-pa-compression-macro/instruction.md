@@ -1,101 +1,36 @@
 # PA Compression Macro
 
-## Task Contract
+Implement `pa_compression_macro.va` in Verilog-A.
 
-- Form: `dut`
-- Level: `L1`
-- Category: RF and AFE Behavioral Macromodels
-- Base function: PA compression macro
-- Domain: `voltage`
-- Target artifact(s): `pa_compression_macro.va`
-- Supplied/reference support artifact(s): `tb_pa_compression_macro.scs`
-- Visible context: public task, interface, artifact, stimulus, and observable contract only.
-- Hidden evaluator boundary: deterministic checker and EVAS/Spectre validation are external; do not generate checker logic.
+Declare module `pa_compression_macro(clk, rst, vin, out, metric)` with all
+ports electrical. `clk` and `rst` are voltage-coded logic signals with a
+0.45 V threshold. `vin` is a PA drive voltage around 0.45 V common mode, `out`
+is the amplified output with large-signal compression, and `metric` marks
+compression or limiting operation.
 
-## Form-Specific Requirements
+Public parameters:
 
-- Implement only the requested Verilog-A DUT artifact(s); do not generate a Spectre testbench in this form.
-- Preserve the public module names, port order, parameters, and waveform observable names.
+- `tr`: output transition time, default `100p`.
+- `vth`: logic threshold, default `0.45`.
+- `gain`: moderate-drive voltage gain, default `3.0`.
 
-## Public Verilog-A Interface
+Behavior:
 
-- `pa_compression_macro.va` declares module `pa_compression_macro` with positional ports: `clk`, `rst`, `vin`, `out`, `metric`.
+- Initialize `out` to the 0.45 V common-mode level and `metric` low.
+- Update the held output state on rising `clk` crossings.
+- When `rst` is high, return the output to common mode and clear `metric`.
+- For moderate drive, apply gain above unity around common mode.
+- For large positive and negative drive, compress the output toward bounded
+  rail-adjacent limits rather than continuing linearly.
+- Drive `metric` high when the PA output is in compression or near limiting.
+- Keep `out` and `metric` in the 0 V to 0.9 V voltage range.
 
-## Public Testbench And Observable Contract
+Modeling requirements:
 
-Public transient setting used by the evaluator:
-
-```spectre
-tran tran stop=80n maxstep=0.5n
-```
-
-The evaluator expects these exact public scalar observables:
-
-- `clk`
-- `rst`
-- `vin`
-- `out`
-- `metric`
-
-When this form generates a testbench, use plain scalar save names for these observables; do not rely on instance-qualified or aliased save names.
-
-## Public Behavior Checks
-
-- `pa_gain_above_unity`
-- `pa_large_signal_compression`
-- `pa_output_limit_metric`
-
-## Public Behavioral Targets
-
-- Treat vin as PA drive around 0.45 V common mode.
-- Moderate drive should show gain above unity.
-- Large drive should compress toward bounded high/low output limits rather than continuing linear gain.
-- metric should rise when the output is near compression or limiting.
-- Keep out and metric within the 0-0.9 V voltage-domain range.
-
-## Output Contract
-
-Return exactly one source artifact named `pa_compression_macro.va`.
-Do not include explanatory prose outside the source artifact contents.
-
-## Task-Specific Description
-
-### PA compression macro (spec-to-va)
-
-Write the Verilog-A behavioral module only.
-
-Behavioral intent:
-
-Model a power-amplifier behavioral macro with high gain at moderate drive and compressed output near large-signal limits.
-
-Module name: `pa_compression_macro`.
-Domain: pure voltage-domain behavioral Verilog-A.
-Do not use current contributions, transistor-level devices, AC/noise analysis,
-or KCL/KVL solving assumptions.
-
-This is a voltage-domain RF/AFE behavioral macromodel task. Model observable gain, compression, LO polarity, RSSI, limiting, AGC, or I/Q baseband behavior with event-driven voltage states. Do not implement transistor RF physics, S-parameters, current-domain loads, communication modem algorithms, or full link-level decoding.
-
-Public port contract:
-
-```verilog
-module pa_compression_macro(clk, rst, vin, out, metric);
-input clk, rst, vin;
-output out, metric;
-electrical clk, rst, vin, out, metric;
-```
-
-Signal contract:
-
-clk and rst are voltage-coded logic signals. vin is the PA drive voltage around 0.45 V common mode. out is the amplified output with large-signal compression and rail limits. metric marks compression/limit operation.
-
-Saved waveform columns:
-
-```text
-clk rst vin out metric
-```
-
-Public transient contract:
-
-```spectre
-tran tran stop=80n maxstep=0.5n
-```
+- Use voltage contributions only; do not use current contributions,
+  transistor-level devices, RF S-parameters, AC/noise analysis, or KCL/KVL
+  assumptions.
+- Use a clocked state update and drive output voltages through
+  `transition(...)`.
+- Return only `pa_compression_macro.va`; do not emit a Spectre testbench or
+  checker.

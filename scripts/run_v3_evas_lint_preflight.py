@@ -57,6 +57,13 @@ def task_matches_filter(task_dir: Path, task_filter: set[str]) -> bool:
     return task_dir.name in task_filter or (number is not None and f"{number:03d}" in task_filter)
 
 
+def task_in_requested_range(task_dir: Path, task_filter: set[str], start: int, end: int) -> bool:
+    number = task_number(task_dir)
+    if number is not None:
+        return start <= number <= end
+    return bool(task_filter) and task_dir.name in task_filter
+
+
 def split_testbenches(task_dir: Path, split: str) -> list[Path]:
     split_root = task_dir / f"test_{split}"
     if not split_root.exists():
@@ -321,8 +328,7 @@ def main() -> int:
     skipped: list[dict[str, Any]] = []
 
     for task_dir in sorted(path for path in root.iterdir() if path.is_dir()):
-        number = task_number(task_dir)
-        if number is None or number < args.start or number > args.end:
+        if not task_in_requested_range(task_dir, task_filter, args.start, args.end):
             continue
         if not task_matches_filter(task_dir, task_filter):
             continue

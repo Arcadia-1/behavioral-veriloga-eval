@@ -3,6 +3,11 @@ module deadband_diffamp(sigin_p, sigin_n, sigout);
 input sigin_p, sigin_n;
 output sigout;
 electrical sigin_p, sigin_n, sigout;
+parameter real sigin_dead_low = -0.1;
+parameter real sigin_dead_high = 0.1;
+parameter real sigout_leak = 0.02;
+parameter real gain_low = 2.0;
+parameter real gain_high = 3.0;
 analog begin
     V(sigout) <+ 0.0;
 end

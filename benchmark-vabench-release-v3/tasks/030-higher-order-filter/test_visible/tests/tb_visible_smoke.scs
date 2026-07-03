@@ -10,4 +10,4 @@ V_vin (vin 0) vsource type=pulse val0=0 val1=0.9 period=3n delay=200p rise=50p f
 XDUT (clk rst vin out metric) higher_order_filter
 
 tran tran stop=5n maxstep=100p
-save clk rst vin
+save clk rst vin out metric

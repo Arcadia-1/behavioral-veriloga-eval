@@ -8,8 +8,8 @@ Status: EVAS formal candidate with reset-restart checker coverage.
 
 - Useful scenario: pass. A deterministic one-hot element shuffler is a common calibration and DEM control primitive.
 - Reasonable task: pass. The public prompt fixes the module name, port order, active-low reset, rising-clock update rule, voltage-domain output levels, and required non-monotonic sequence `out2,out0,out3,out1`.
-- Complete tests: candidate. `test_visible/visible.scs` covers the first six active samples. `test_hidden/hidden.scs` covers the same public window plus a mid-run reset and a second post-reset sequence window.
-- Fair evaluation: candidate. The checker samples only public signals and checks requirements stated in `instruction.md`: one-hot output, exact sequence, released reset at sample points, and reset restart after the hidden mid-run reset.
+- Complete tests: candidate. `test_visible/visible.scs` covers the first six active samples. Private validation covers the same public window plus a mid-run reset and a second post-reset sequence window.
+- Fair evaluation: candidate. The checker samples only public signals and checks requirements stated in `instruction.md`: one-hot output, exact sequence, released reset at sample points, and reset restart after the private mid-run reset.
 
 ## Checker Contract
 
@@ -37,3 +37,9 @@ At each sample time listed in `CHECKS.yaml`, classify an output as high when its
 - Paper-facing certification still needs fresh EVAS/Spectre correlation or an explicit EVAS-only label.
 
 Certification status: certified as an EVAS formal candidate on 2026-06-26.
+
+## Digital/Control/Logic Closeout Review
+
+- Gate 1 status: `independent_l1_ready`.
+- Rationale: deterministic one-hot element shuffle is a DEM/control primitive with reset restart and non-monotonic element-order behavior.
+- Counting recommendation: retain as DEM/control L1.

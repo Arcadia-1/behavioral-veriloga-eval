@@ -1,0 +1,17 @@
+`include "disciplines.vams"
+
+module dynamic_supply_level_driver(din, vdd, vss, out);
+input din, vdd, vss;
+output out;
+electrical din, vdd, vss, out;
+
+parameter real vsup_min = 0.55;
+parameter real vth_frac = 0.5;
+parameter real vlo_frac = 0.0;
+parameter real vhi_frac = 1.0;
+parameter real tr = 40p;
+
+analog begin
+    // Implement instruction.md behavior here.
+end
+endmodule

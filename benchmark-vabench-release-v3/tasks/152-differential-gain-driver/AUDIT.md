@@ -1,9 +1,7 @@
-# Source Differential Gain Driver Audit
+# Differential Gain Driver Audit
 
-- Source: `wangx/diffdriver.va`
-- Scenario: single-ended reference plus symmetric differential output driver.
-- Import status: certified only after visible compile, EVAS hidden semantic check, Spectre AX hidden semantic check, and EVAS/Spectre parity pass.
-- Evaluation: stable analog samples from `tran.csv`; raw simulator timestep equality is not used.
-- Evidence:
-  - `WORK/source-import-batch7-evas/152-differential-gain-driver`
-  - `WORK/source-import-batch7-spectre/152-differential-gain-driver`
+- Gate 1 counting status: retain as an L1 differential driver. The function is balanced output-pair generation around a reference node, not only scalar gain.
+- Gate 2 modeling status: prompt now exposes the `gain` parameter and the half-swing split around `sigref`.
+- Checker status: stable sampled waveform checks cover output symmetry, gain split, and polarity.
+- Cadence reference anchor: differential voltage-domain macromodeling and explicit reference/common-mode handling.
+- Current validation status: 2026-07-03 rerun passed EVAS hidden gold, EVAS negative rejection, visible smoke, EVAS AHDL-like lint, and Spectre hidden gold.

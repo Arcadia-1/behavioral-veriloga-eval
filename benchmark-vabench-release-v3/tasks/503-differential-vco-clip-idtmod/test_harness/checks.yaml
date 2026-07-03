@@ -1,0 +1,30 @@
+version: 1
+task_id: v3_503_differential_vco_clip_idtmod
+backend: evas
+status: evas2-pending-extension-candidate
+checker:
+  task_id: v3_503_differential_vco_clip_idtmod
+  metric: sampled_differential_vco_clip_idtmod
+required_columns:
+  - time
+  - vinp
+  - vinm
+  - outp
+  - outm
+  - metric
+syntax:
+  must_include:
+    - "idtmod("
+    - "sin("
+    - "clip("
+  must_not_include:
+    - "I("
+    - "ddt("
+pending:
+  reason: "Current EVAS2 full-model lowering rejects this Cadence-style clipped idtmod differential VCO with no_event_transition_ir."
+  spectre_status: "visible_hidden_gold_pass_and_ahdllint_pass"
+  required_before_behavior_promotion:
+    - "Extend EVAS2 support or checker execution for continuous clipped idtmod/sin VCO rows."
+    - "Re-enable sim_correct only after EVAS2 gold passes and negatives are behaviorally rejected."
+notes:
+  - "PLL differential VCO recast from Cadence VCO_ams.vams; voltage-domain idtmod differential oscillator with a clip macro and frequency clamp."

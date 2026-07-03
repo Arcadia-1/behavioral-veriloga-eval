@@ -6,6 +6,9 @@ input sigin;
 output sigout;
 electrical sigin, sigout;
 
+parameter real dead_high = 0.1;
+parameter real dead_low = -0.1;
+
 analog begin
     V(sigout) <+ 0;
 end

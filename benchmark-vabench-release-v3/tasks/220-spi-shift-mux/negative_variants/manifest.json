@@ -23,9 +23,9 @@
       "path": "negative_variants/neg_004_wrong_sdo_bit/spi_shift_mux.va"
     },
     {
-      "description": "SPI Shift Mux: scales the metric output, preserving the main path while failing measurement checks.",
-      "id": "neg_005_metric_scale_low",
-      "path": "negative_variants/neg_005_metric_scale_low/spi_shift_mux.va"
+      "description": "Ignores the active-high reset reload and therefore keeps the pre-reset shifted state.",
+      "id": "neg_005_ignore_reset_reload",
+      "path": "negative_variants/neg_005_ignore_reset_reload/spi_shift_mux.va"
     }
   ]
 }

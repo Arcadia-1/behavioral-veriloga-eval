@@ -2,23 +2,37 @@
 
 ## Scope
 
-Task boundary is one Verilog-A DUT, `limiting_amplifier_frontend.va`, plus EVAS/Spectre-compatible `.scs` testbenches. Agent-visible materials are limited to `instruction.md`, `starter/`, and `test_visible/`. Evaluator-only materials are `solution/`, `test_hidden/`, `test_harness/`, and `negative_variants/`. No `meta.json` is present.
+Task boundary is one Verilog-A DUT, `limiting_amplifier_frontend.va`, plus
+EVAS/Spectre-compatible `.scs` testbenches. Public solver materials are
+`instruction.md`, `starter/`, and `test_visible/`. Evaluator-only materials are
+`solution/`, `test_hidden/`, `test_harness/`, and `negative_variants/`.
 
-## Four Standards
+## Gate 1
 
-- Useful scenario: pass. A limiting amplifier frontend is a useful RF/AFE behavioral macro.
-- Reasonable task: pass. The public prompt fixes small-signal gain, output limiting, polarity, metric output, and voltage-only constraints.
-- Complete tests: pass for EVAS. Hidden samples check small-signal gain and limited low/high output behavior. Five concrete negatives cover missing gain, weak limits, wrong polarity/scale, stuck output, and missing metric.
-- Fair evaluation: pass for EVAS. The checker uses public input/output windows and tolerant level requirements.
+- Admission label: independent L1 DUT.
+- Function: RF/AFE limiting amplifier frontend with small-signal gain, output
+  limiting, polarity preservation, and a limiting metric output.
+- Duplicate risk: low within the reviewed RF/baseband batch. It is related to
+  gain-compression amplifier rows, but its main benchmark role is hard limiting
+  rather than compression curve modeling.
 
-## Checker And Evidence
+## Gate 2
 
-- Checker id: `v3_033_limiting_amplifier_frontend`
-- Runner mapping: `CHECKS["v3_033_limiting_amplifier_frontend"] = check_limiting_amplifier_frontend`
-- EVAS/Python-engine hidden gold smoke: `PASS`
-- Concrete negative recertification: 5/5 expected failures, all `FAIL_SIM_CORRECTNESS` with simulator `returncode=0`
-- Visible compile/sim smoke: `COMPILE_SIM_OK`
+- Modeling status: `cadence_modeling_ready` for the audited hidden gold slice.
+- Prompt contract: public interface, parameters, output limiting behavior,
+  metric semantics, and voltage-only modeling constraints are stated without
+  hidden-checker or gold-history wording.
+- Cadence semantics: the model uses voltage-domain behavioral contributions and
+  transition-smoothed state/output updates.
 
-## Remaining Risk
+## Verification
 
-Spectre/Spectre-AX correlation has not been run from this working tree; use EVAS-only wording until that evidence exists.
+- EVAS hidden gold: PASS.
+- Concrete negative recertification: 5/5 expected failures; all failed
+  behavioral correctness with simulator return code 0.
+- Visible smoke: PASS.
+- Targeted Spectre hidden gold: PASS.
+- AHDL lint/read-in triage: starter and solution preflight produced 0
+  diagnostics; Spectre read-in showed no task-specific `AHDLLINT-*`,
+  `VACOMP-1116`, or AHDL compile errors. The remaining Spectre warnings are
+  global AHDL-CMI/environment or small-design setup notices.

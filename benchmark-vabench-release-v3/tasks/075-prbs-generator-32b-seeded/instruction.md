@@ -17,7 +17,9 @@ module prbs_generator_32b(
 Inputs: `clk`, `rst`, `load_seed`, and `seed[0:31]`.
 Outputs: `out[0:31]`.
 
-The evaluator's Spectre testbench connects the 32 seed nodes and 32 output nodes positionally. Keep the `[0:31]` index direction so `seed0` maps to `seed[0]` and `out0` maps to `out[0]`.
+The supplied Spectre harness connects the 32 seed nodes and 32 output nodes
+positionally. Keep the `[0:31]` index direction so `seed0` maps to `seed[0]`
+and `out0` maps to `out[0]`.
 
 ## Required Behavior
 

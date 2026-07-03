@@ -1,0 +1,44 @@
+{
+  "negative_variants": [
+    {
+      "id": "neg_001_no_turnon_delay",
+      "description": "Power Enable Turn-On Delay Gate: asserts drive enable immediately when power is valid.",
+      "files": [
+        "neg_001_no_turnon_delay/power_enable_turnon_delay_gate.va"
+      ],
+      "expected": "compile_but_fail_full_behavior"
+    },
+    {
+      "id": "neg_002_ignore_bias_validity",
+      "description": "Power Enable Turn-On Delay Gate: ignores the bias-voltage validity window.",
+      "files": [
+        "neg_002_ignore_bias_validity/power_enable_turnon_delay_gate.va"
+      ],
+      "expected": "compile_but_fail_full_behavior"
+    },
+    {
+      "id": "neg_003_ignore_powerdown",
+      "description": "Power Enable Turn-On Delay Gate: ignores the power-down input.",
+      "files": [
+        "neg_003_ignore_powerdown/power_enable_turnon_delay_gate.va"
+      ],
+      "expected": "compile_but_fail_full_behavior"
+    },
+    {
+      "id": "neg_004_no_fault_reset",
+      "description": "Power Enable Turn-On Delay Gate: does not clear the turn-on counter after a fault.",
+      "files": [
+        "neg_004_no_fault_reset/power_enable_turnon_delay_gate.va"
+      ],
+      "expected": "compile_but_fail_full_behavior"
+    },
+    {
+      "id": "neg_005_short_delay",
+      "description": "Power Enable Turn-On Delay Gate: uses too few valid cycles before asserting drive enable.",
+      "files": [
+        "neg_005_short_delay/power_enable_turnon_delay_gate.va"
+      ],
+      "expected": "compile_but_fail_full_behavior"
+    }
+  ]
+}

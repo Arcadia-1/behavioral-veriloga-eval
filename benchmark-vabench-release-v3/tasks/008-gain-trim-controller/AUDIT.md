@@ -8,13 +8,13 @@ Status: EVAS formal candidate.
 
 - Useful scenario: pass. A clocked gain trim controller is a common calibration/control primitive for mixed-signal behavioral models.
 - Reasonable task: pass. The public prompt fixes the DUT artifact, module name, port order, voltage-domain logic threshold, reset value, update edge, deadband, 50 mV step size, clamp range, and `transition()` output drive.
-- Complete tests: pass for EVAS. `test_visible/visible.scs` is an agent-visible compile/basic-behavior smoke. `test_hidden/hidden.scs` runs a 660 ns hidden waveform that exercises reset, repeated upward correction to the high clamp, an in-deadband hold segment, repeated downward correction to the low clamp, and range bounding.
-- Fair evaluation: pass for EVAS. Hidden correctness requirements are all stated in `instruction.md`; the hidden testbench keeps only the exact stimulus private. The runner maps the v3 checker id to a task-specific trace checker.
+- Complete tests: pass for EVAS. The public visible deck is a compile/basic-behavior smoke. Private validation exercises reset, repeated upward correction to the high clamp, an in-deadband hold segment, repeated downward correction to the low clamp, and range bounding.
+- Fair evaluation: pass for EVAS. Correctness requirements are stated in `instruction.md`; private validation varies stimulus without adding unstated behavior. The runner maps the v3 checker id to a task-specific trace checker.
 
 ## Agent/Evaluator Boundary
 
 - Agent-visible files: `instruction.md`, `starter/gain_trim_controller.va`, and `test_visible/visible.scs`.
-- Evaluator-only files: `solution/gain_trim_controller.va`, `test_hidden/hidden.scs`, `CHECKS.yaml`, and `negative_variants/`.
+- Private validation files: `solution/gain_trim_controller.va`, validation decks, `CHECKS.yaml`, and `negative_variants/`.
 - No `meta.json` is present or required.
 
 ## Checker Contract
@@ -23,7 +23,7 @@ Status: EVAS formal candidate.
 - Checker name: `check_v3_gain_trim_controller`.
 - Runner mapping: `CHECKS["v3_008_gain_trim_controller"] = check_v3_gain_trim_controller`.
 - Required trace columns: `time`, `gain_ctrl`.
-- Hidden sample times: 20 ns, 70 ns, 150 ns, 250 ns, 290 ns, 330 ns, 470 ns, 590 ns, and 650 ns.
+- Validation sample times: 20 ns, 70 ns, 150 ns, 250 ns, 290 ns, 330 ns, 470 ns, 590 ns, and 650 ns.
 
 Expected gold result:
 
@@ -40,7 +40,7 @@ Expected negative results:
 
 ## Certification Evidence
 
-- EVAS/Python-engine hidden gold smoke: `PASS`.
+- EVAS/Python-engine gold semantic validation: `PASS`.
 - Concrete negative recertification: 6/6 expected failures, all `FAIL_SIM_CORRECTNESS`.
 - The previous deadband-missing negative now fails because the hidden waveform includes an in-deadband segment and the checker samples the held control value.
 

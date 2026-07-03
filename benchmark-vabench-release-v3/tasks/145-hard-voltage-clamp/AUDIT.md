@@ -1,9 +1,17 @@
-# Source Hard Voltage Clamp Audit
+# Hard Voltage Clamp Audit
 
-- Source: `wangx/hard_voltage_clamp.va`
-- Scenario: hard-limited voltage clamp for behavioral signal conditioning.
-- Import status: certified only after visible compile, EVAS hidden semantic check, Spectre AX hidden semantic check, and EVAS/Spectre parity pass.
-- Evaluation: stable analog samples from `tran.csv`; raw simulator timestep equality is not used.
-- Evidence:
-  - `WORK/source-import-batch6-evas/145-hard-voltage-clamp`
-  - `WORK/source-import-batch6-spectre/145-hard-voltage-clamp`
+- Gate 1: `independent_l1_ready`. This is a hard ground-referenced voltage
+  clamp with overridable clamp rails; it is distinct from supply-headroom
+  limiter rows and from the soft exponential clamp in `158-soft-voltage-clamp`.
+- Gate 2: `cadence_modeling_ready` after this revision's targeted
+  EVAS/negative, Spectre, and AHDL-lint validation. The reference
+  implementation computes the clamp target first and contributes once to avoid
+  branch-switched voltage contributions.
+- AHDL triage: EVAS AHDL-like lint reports zero diagnostics, and Spectre
+  read-in reports no task-level AHDL errors; remaining notices are global setup
+  notices.
+- Public contract: use `vgnd` as the reference, pass through inside the rail
+  interval, clamp below the lower rail, and clamp above the upper rail.
+- Coverage: validation samples exercise lower clamp, pass-through, upper clamp, and
+  return to pass-through; five behavior negatives reject zero, missing lower
+  clamp, missing upper clamp, swapped rails, and scaling implementations.

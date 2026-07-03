@@ -23,7 +23,7 @@
       "path": "negative_variants/neg_004_double_attenuation/attenuator_gain.va"
     },
     {
-      "description": "Attenuator Gain: scales the metric output, preserving the main path while failing measurement checks.",
+      "description": "Scales the attenuated output too low while preserving the module/interface shape.",
       "id": "neg_005_metric_scale_low",
       "path": "negative_variants/neg_005_metric_scale_low/attenuator_gain.va"
     }

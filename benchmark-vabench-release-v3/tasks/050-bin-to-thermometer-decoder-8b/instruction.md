@@ -30,7 +30,8 @@ Drive high outputs near `vdd` and low outputs near 0 V using smooth Verilog-A co
 
 ## Public Smoke
 
-The public smoke test checks interface and simulation viability; hidden tests exercise enable gating and multiple binary codes.
+The public smoke test checks interface and simulation viability. The behavioral
+contract includes enable gating and multiple binary codes.
 
 ## Output
 

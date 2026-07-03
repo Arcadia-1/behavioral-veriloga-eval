@@ -9,14 +9,17 @@ electrical sigin, sigout;
 parameter real dead_high = 0.1;
 parameter real dead_low = -0.1;
 
+real target;
+
 analog begin
     if (V(sigin) < dead_low) begin
-        V(sigout) <+ V(sigin) - dead_low;
+        target = V(sigin) - dead_low;
     end else if (V(sigin) > dead_high) begin
-        V(sigout) <+ V(sigin) - dead_high;
+        target = V(sigin) - dead_high;
     end else begin
-        V(sigout) <+ 0;
+        target = 0.0;
     end
+    V(sigout) <+ target;
 end
 
 endmodule

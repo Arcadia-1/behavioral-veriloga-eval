@@ -890,6 +890,12 @@
       - "two_filter_states"
       - "step_response_is_smoothed"
       - "reset_clears_states"
+    public_observables:
+      - "clk"
+      - "rst"
+      - "vin"
+      - "out"
+      - "metric"
   parity:
     reference: "spectre"
     status: "pending_until_evas_spectre_rerun"
@@ -969,9 +975,9 @@
       - "limiting_metric_asserted"
   parity:
     reference: "spectre"
-    status: "pending_until_evas_spectre_rerun"
+    status: "pass"
     notes:
-      - "Designed release source; no imported historical EVAS/Spectre dual evidence yet."
+      - "Fresh targeted review: EVAS hidden gold passed, targeted Spectre hidden gold passed, five concrete negatives were rejected behaviorally, and AHDL triage found no task-specific warnings or compile errors."
 034-lna-gain-compression-macro: |
   syntax:
     must_include:
@@ -993,9 +999,10 @@
       - "compressed_output_bounded"
   parity:
     reference: "spectre"
-    status: "pending_until_evas_spectre_rerun"
+    status: "pass"
     notes:
-      - "Designed release source; no imported historical EVAS/Spectre dual evidence yet."
+      - "Fresh targeted review: EVAS hidden gold passed, targeted Spectre hidden gold passed, five concrete negatives were rejected behaviorally, and AHDL triage found no task-specific warnings or compile errors."
+      - "Counting remains a category policy decision because this LNA compression row is related to the PA compression macro row."
 035-log-rssi-power-detector: |
   syntax:
     must_include:
@@ -1017,9 +1024,9 @@
       - "low_input_floor_bounded"
   parity:
     reference: "spectre"
-    status: "pending_until_evas_spectre_rerun"
+    status: "pass"
     notes:
-      - "Designed release source; no imported historical EVAS/Spectre dual evidence yet."
+      - "Fresh targeted review: EVAS hidden gold passed, targeted Spectre hidden gold passed, five concrete negatives were rejected behaviorally, and AHDL triage found no task-specific warnings or compile errors."
 036-loop-filter-abstraction: |
   syntax:
     must_include:
@@ -1043,9 +1050,9 @@
       - "filtered_output_bounded"
   parity:
     reference: "spectre"
-    status: "pending_until_evas_spectre_rerun"
+    status: "pass"
     notes:
-      - "Designed release source; no imported historical EVAS/Spectre dual evidence yet."
+      - "Fresh targeted review: EVAS hidden gold passed, targeted Spectre hidden gold passed, five concrete negatives were rejected behaviorally, and AHDL triage found no task-specific warnings or compile errors."
 037-pa-compression-macro: |
   syntax:
     must_include:
@@ -1067,9 +1074,10 @@
       - "pa_output_limit_metric"
   parity:
     reference: "spectre"
-    status: "pending_until_evas_spectre_rerun"
+    status: "pass"
     notes:
-      - "Designed release source; no imported historical EVAS/Spectre dual evidence yet."
+      - "Fresh targeted review: EVAS hidden gold passed, targeted Spectre hidden gold passed, five concrete negatives were rejected behaviorally, and AHDL triage found no task-specific warnings or compile errors."
+      - "Counting remains a category policy decision because this PA compression row is related to the LNA compression macro row."
 038-power-on-reset-detector: |
   syntax:
     must_include:
@@ -1126,9 +1134,10 @@
       - "metric"
   parity:
     reference: "spectre"
-    status: "pending"
+    status: "pass"
     notes:
-      - "Fresh EVAS/Spectre dual validation is required after the ahdlLib-guided quality refinement."
+      - "Fresh targeted review: EVAS hidden gold passed, targeted Spectre hidden gold passed, five concrete negatives were rejected behaviorally, and AHDL triage found no task-specific warnings or compile errors."
+      - "The rectified output is modeled as a continuous direct contribution; transition filtering is reserved for event-updated envelope and metric state."
 040-programmable-gain-amplifier: |
   syntax:
     must_include:
@@ -1160,9 +1169,9 @@
       - "metric"
   parity:
     reference: "spectre"
-    status: "pending"
+    status: "pass"
     notes:
-      - "Fresh EVAS/Spectre dual validation is required after adding this release entry."
+      - "Fresh targeted review: EVAS hidden gold passed, targeted Spectre hidden gold passed, five concrete negatives were rejected behaviorally, and AHDL triage found no task-specific warnings or compile errors."
 041-propagation-delay-comparator: |
   syntax:
     must_include:
@@ -2291,11 +2300,12 @@
 092-amplifier-filter-chain: |
   syntax:
     must_include:
-      - "tran"
-      - "save"
+      - "@(cross("
+      - "transition("
     must_not_include:
       - "I("
       - "ddt("
+      - "idt("
   dut_compile:
     backend: "evas"
   tb_compile:
@@ -2308,11 +2318,21 @@
       - "filtered_output_lags_input"
       - "metric_tracks_settling"
       - "settle_status_asserts_after_output_recovery"
+    public_observables:
+      - "clk"
+      - "rst"
+      - "vin"
+      - "out"
+      - "metric"
+      - "preamp_mon"
+      - "filt1_mon"
+      - "filt2_mon"
+      - "settle_metric"
   parity:
     reference: "spectre"
-    status: "certified"
+    status: "cadence_modeling_ready"
     notes:
-      - "Current release dual_certification report certifies this form as EVAS/Spectre pass; rerun is required after checker/gold behavior changes."
+      - "EVAS reference solution, EVAS concrete negatives, current-branch targeted Spectre gold validation, and AHDL warning triage pass after checker strengthening."
 093-bbpd-data-edge-alignment: |
   syntax:
     must_include:
@@ -2704,16 +2724,20 @@
 109-sample-hold-droop-front-end: |
   syntax:
     must_include:
-      - "ahdl_include"
-      - "tran"
-      - "save"
+      - "@(cross("
+      - "@(timer("
+      - "transition("
     must_not_include:
       - "I("
       - "ddt("
       - "idt("
+  dut_compile:
+    backend: "evas"
   tb_compile:
     backend: "evas"
   sim_correct:
+    dut_companion_role: "function_checked_dut"
+    strong_benchmark_claim: true
     checks:
       - "aperture_delayed_sample_tracks_vin"
       - "hold_windows_show_bounded_droop"
@@ -2978,10 +3002,25 @@
   parity:
     required: true
     tolerance_notes: "Compare stable sample windows and logical event behavior, not raw timestep equality."
-122-offset-search-comparator: |
+122-comparator-offset-calibration-loop: |
   checker:
-    task_id: v3_offset_search_comparator
-    metric: stable_samples
+    task_id: v3_comparator_offset_calibration_loop
+    metric: closed_loop_offset_estimate
+  sim_correct:
+    checks:
+      - falling_clock_updates_successive_approximation_estimate
+      - generated_differential_stimulus_is_symmetric_about_mid_supply
+      - offset_est_matches_final_stimulus_and_support_offset
+      - valid_asserts_after_configured_search_iterations
+    public_observables:
+      - clk
+      - dcmpp
+      - vinp
+      - vinn
+      - offset_est
+      - valid
+    public_behavior_envelope: "The public spec defines a voltage-domain comparator offset calibration loop that drives a supplied comparator, performs a halving successive-approximation search from comparator decisions, reports the signed offset estimate, and asserts valid after the configured update count."
+    private_threshold_policy: "Checker derives convergence, symmetry, and final offset error from saved waveforms and the support reference offset in the testbench; exact tolerances are not agent-visible."
   scoring:
     axes:
       - dut_compile
@@ -2996,10 +3035,25 @@
       - dut_compile
       - tb_compile
       - sim_correct
-124-comp-os-detect: |
+124-hysteresis-trip-characterizer: |
   checker:
-    task_id: v3_comp_os_detect
-    metric: stable_samples
+    task_id: v3_hysteresis_trip_characterizer
+    metric: trip_capture
+  sim_correct:
+    checks:
+      - captures_input_voltage_at_rising_output_trip
+      - captures_input_voltage_at_falling_output_trip
+      - reports_positive_hysteresis_width_from_latest_trip_pair
+      - valid_asserts_after_both_trip_directions
+    public_observables:
+      - vin
+      - cmp_out
+      - trip_rise
+      - trip_fall
+      - hyst_width
+      - valid
+    public_behavior_envelope: "The public spec defines a measurement component that observes a supplied hysteretic comparator, captures observable rising and falling trip voltages from the comparator output transitions, and reports the resulting hysteresis width."
+    private_threshold_policy: "Checker derives expected trip voltages from waveform crossing events rather than hard-coded support parameters; exact tolerances are not agent-visible."
   scoring:
     axes:
       - dut_compile
@@ -3162,6 +3216,13 @@
   checker:
     task_id: v3_attenuator_gain
     metric: stable_samples
+  sim_correct:
+    checks:
+      - db_attenuation_to_linear_gain
+      - input_waveform_scaled_without_offset
+    public_observables:
+      - vin
+      - vout
   scoring:
     axes:
       - dut_compile
@@ -3171,6 +3232,19 @@
   checker:
     task_id: v3_deadband_window
     metric: stable_samples
+  gate_review:
+    gate1: valid_variant_needs_counting_policy
+    duplicate_note: "Functionally close to 289-deadband-voltage; count at most one single-ended signed deadband-residue row unless both parameter-naming variants are explicitly retained."
+    gate2: cadence_modeling_ready
+  sim_correct:
+    dut_companion_role: function_checked_dut
+    strong_benchmark_claim: true
+    checks:
+      - signed_residue_below_deadband
+      - zero_output_inside_deadband
+      - signed_residue_above_deadband
+      - instance_overridden_dead_low_dead_high
+    public_behavior_envelope: "Voltage-domain single-ended deadband shaper with overridable dead_low/dead_high thresholds and continuous signed residue outside the window."
   scoring:
     axes:
       - dut_compile
@@ -3180,6 +3254,19 @@
   checker:
     task_id: v3_differential_deadband
     metric: stable_samples
+  gate_review:
+    gate1: independent_l1_ready
+    gate2: cadence_modeling_ready
+  sim_correct:
+    dut_companion_role: function_checked_dut
+    strong_benchmark_claim: true
+    checks:
+      - differential_input_polarity
+      - leakage_output_inside_deadband
+      - low_side_signed_residue_with_gain
+      - high_side_signed_residue_with_gain
+      - instance_overridden_deadband_gain_leak
+    public_behavior_envelope: "Symmetric-gain differential deadband amplifier using V(sigin_p,sigin_n), leakage inside the window, and one shared gain outside both thresholds."
   scoring:
     axes:
       - dut_compile
@@ -3189,6 +3276,19 @@
   checker:
     task_id: v3_hard_voltage_clamp
     metric: stable_samples
+  gate_review:
+    gate1: independent_l1_ready
+    gate2: cadence_modeling_ready
+  sim_correct:
+    dut_companion_role: function_checked_dut
+    strong_benchmark_claim: true
+    checks:
+      - reference_to_vgnd
+      - lower_rail_clamp
+      - pass_through_inside_rails
+      - upper_rail_clamp
+      - instance_overridden_clamp_rails
+    public_behavior_envelope: "Ground-referenced hard voltage clamp with overridable lower and upper clamp rails."
   scoring:
     axes:
       - dut_compile
@@ -3197,7 +3297,7 @@
 146-smooth-comparator-tanh: |
   checker:
     task_id: v3_smooth_comparator_tanh
-    metric: stable_samples
+    metric: smooth_tanh_transfer
   sim_correct:
     checks:
       - smooth_tanh_transfer
@@ -3216,6 +3316,18 @@
   checker:
     task_id: v3_limiter_rails
     metric: stable_samples
+  sim_correct:
+    checks:
+      - passes_input_inside_supply_window
+      - clamps_to_upper_headroom_limit
+      - clamps_to_lower_headroom_limit
+    public_observables:
+      - vdd
+      - vss
+      - vin
+      - vmax
+      - vmin
+      - vout
   scoring:
     axes:
       - dut_compile
@@ -3234,6 +3346,13 @@
   checker:
     task_id: v3_offset_gain_amplifier
     metric: stable_samples
+  sim_correct:
+    checks:
+      - subtracts_input_offset_before_gain
+      - applies_fixed_voltage_gain
+    public_observables:
+      - sigin
+      - sigout
   scoring:
     axes:
       - dut_compile
@@ -3261,6 +3380,17 @@
   checker:
     task_id: v3_differential_gain_driver
     metric: stable_samples
+  sim_correct:
+    checks:
+      - converts_input_differential_to_output_differential
+      - splits_output_swing_symmetrically_around_reference
+      - preserves_differential_polarity
+    public_observables:
+      - sigin_p
+      - sigin_n
+      - sigout_p
+      - sigout_n
+      - sigref
   scoring:
     axes:
       - dut_compile
@@ -3270,6 +3400,15 @@
   checker:
     task_id: v3_limiting_differential_amplifier
     metric: stable_samples
+  sim_correct:
+    checks:
+      - subtracts_input_offset_before_gain
+      - centers_output_at_rail_midpoint
+      - clamps_output_to_parameterized_rails
+    public_observables:
+      - sigin_p
+      - sigin_n
+      - sigout
   scoring:
     axes:
       - dut_compile
@@ -3297,6 +3436,15 @@
   checker:
     task_id: v3_differential_amplifier_core
     metric: stable_samples
+  sim_correct:
+    checks:
+      - reads_true_differential_input
+      - subtracts_input_referred_offset
+      - applies_fixed_voltage_gain
+    public_observables:
+      - sigin_p
+      - sigin_n
+      - sigout
   scoring:
     axes:
       - dut_compile
@@ -3306,6 +3454,15 @@
   checker:
     task_id: v3_logarithmic_amplifier
     metric: stable_samples
+  sim_correct:
+    checks:
+      - subtracts_input_offset
+      - uses_absolute_value_before_log
+      - floors_log_argument_for_domain_guard
+      - outputs_natural_logarithm
+    public_observables:
+      - sigin
+      - sigout
   scoring:
     axes:
       - dut_compile
@@ -3315,6 +3472,18 @@
   checker:
     task_id: v3_soft_voltage_clamp
     metric: stable_samples
+  gate_review:
+    gate1: independent_l1_ready
+    gate2: cadence_modeling_ready
+  sim_correct:
+    dut_companion_role: function_checked_dut
+    strong_benchmark_claim: true
+    checks:
+      - central_region_pass_through
+      - exponential_lower_soft_limit
+      - exponential_upper_soft_limit
+      - monotonic_continuous_soft_limited_response
+    public_behavior_envelope: "Ground-referenced soft clamp with 0.0 V/0.4 V knees, 0.2 V softness span, and -0.2 V/0.6 V asymptotes."
   scoring:
     axes:
       - dut_compile
@@ -3324,6 +3493,17 @@
   checker:
     task_id: v3_variable_gain_differential_amplifier
     metric: stable_samples
+  sim_correct:
+    checks:
+      - multiplies_differential_input_by_differential_control
+      - applies_output_midpoint
+      - clamps_output_to_fixed_window
+    public_observables:
+      - sigin_p
+      - sigin_n
+      - sigctrl_p
+      - sigctrl_n
+      - sigout
   scoring:
     axes:
       - dut_compile
@@ -3333,6 +3513,18 @@
   checker:
     task_id: v3_voltage_controlled_gain_amplifier
     metric: stable_samples
+  sim_correct:
+    checks:
+      - subtracts_input_referred_offset
+      - multiplies_by_differential_control
+      - centers_output_at_unipolar_midpoint
+      - clamps_output_to_unipolar_window
+    public_observables:
+      - vin_p
+      - vin_n
+      - vctrl_p
+      - vctrl_n
+      - vout
   scoring:
     axes:
       - dut_compile
@@ -3707,21 +3899,28 @@
       - dut_compile
       - tb_compile
       - sim_correct
-202-l2-cmp-ideal-clocked: |
+202-comparator-delay-overdrive-meter: |
   checker:
-    task_id: v3_l2_cmp_ideal_clocked
-    metric: stable_samples
+    task_id: v3_comparator_delay_overdrive_meter
+    metric: delay_overdrive_measurement
   sim_correct:
     checks:
-      - reset_both_high_when_clock_low
-      - positive_and_negative_decisions_after_rising_edges
-      - equal_input_decision_clears_both_outputs
+      - arms_measurement_on_clock_rising_edge
+      - captures_first_resolving_decision_output_delay
+      - reports_absolute_input_overdrive_from_sampled_clock_edge
+      - reports_decision_polarity_and_valid_flag
     public_observables:
-      - cmpck
+      - clk
       - vinp
       - vinn
-      - dcmpp
-      - dcmpn
+      - outp
+      - outn
+      - delay_ps
+      - overdrive_mv
+      - polarity
+      - valid
+    public_behavior_envelope: "The public spec defines a comparator characterization meter that observes a supplied clocked comparator, measures clock-to-decision delay for each resolved comparison, and reports the sampled input overdrive and decision polarity."
+    private_threshold_policy: "Checker derives expected delay, overdrive, and polarity from saved clock/input/output crossings; exact tolerances are not agent-visible."
   scoring:
     axes:
       - dut_compile
@@ -4453,9 +4652,32 @@
       - tb_compile
       - sim_correct
 268-samplehold-rising-edge: |
-  checker:
-    task_id: v3_samplehold_rising_edge
-    metric: stable_samples
+  syntax:
+    must_include:
+      - "@(cross("
+      - "transition("
+    must_not_include:
+      - "I("
+      - "ddt("
+      - "idt("
+  dut_compile:
+    backend: "evas"
+  tb_compile:
+    backend: "evas"
+  sim_correct:
+    dut_companion_role: "function_checked_dut"
+    strong_benchmark_claim: "valid_variant_needs_counting_policy"
+    checks:
+      - "rising_control_edge_captures_vin"
+      - "held_output_remains_between_edges"
+      - "held_output_does_not_track_vin_between_edges"
+    public_observables:
+      - "control"
+      - "vin"
+      - "vout"
+  parity:
+    required: true
+    tolerance_notes: "Use event-derived edge and hold windows rather than fixed source-import sample times."
   scoring:
     axes:
       - dut_compile
@@ -4564,6 +4786,18 @@
   checker:
     task_id: v3_vargain_diffamp_clip
     metric: stable_samples
+  sim_correct:
+    checks:
+      - subtracts_parameterized_input_offset
+      - multiplies_differential_input_by_differential_control
+      - applies_parameterized_gain_constant
+      - clips_to_parameterized_output_limits
+    public_observables:
+      - sigin_p
+      - sigin_n
+      - sigctrl_p
+      - sigctrl_n
+      - sigout
   scoring:
     axes:
       - dut_compile
@@ -4679,21 +4913,24 @@
   parity:
     required: true
     tolerance_notes: "Use waveform resampling so EVAS dense CSV and Spectre adaptive breakpoints are judged on the same behavior."
-285-aperture-delay-sample-hold: |
-  schema_version: "vabench-release-v2-checks"
-  task_id: "vbr1_l1_aperture_delay_track_and_hold:dut"
+285-dual-track-sample-hold: |
+  schema_version: "vabench-release-v3-checks"
+  task_id: "v3_285_dual_track_sample_hold"
   checker:
-    task_id: "vbr1_l1_aperture_delay_track_and_hold"
-    function: "check_vbm1_track_hold_aperture"
+    task_id: "v3_285_dual_track_sample_hold"
+    function: "check_v3_285_dual_track_sample_hold"
     source: "runners/simulate_evas.py"
   syntax:
     policy: "behavior_first"
-    must_include: []
+    must_include:
+      - "@(cross("
+      - "@(timer("
+      - "transition("
     must_not_include:
       - "I("
       - "ddt("
       - "idt("
-    notes: "Do not require private variable names, timer variable names, or a fixed implementation template. Compile and behavior checks decide correctness."
+    notes: "Do not require private variable names or a fixed implementation template. Compile and behavior checks decide correctness."
   dut_compile:
     backend: "evas"
   tb_compile:
@@ -4702,17 +4939,19 @@
     dut_companion_role: "function_checked_dut"
     strong_benchmark_claim: true
     checks:
-      - "sampled_values_match_aperture_delayed_input"
-      - "held_output_remains_between_samples"
+      - "low_phase_input_stage_tracks_vin"
+      - "high_phase_output_stage_tracks_retained_input_stage"
+      - "falling_edge_freezes_output_stage"
+      - "phase_monitor_marks_output_track_phase"
     public_observables:
       - "vin"
       - "clk"
       - "vout"
-    public_behavior_envelope: "The public spec specifies a 200 ps aperture delay after each rising clock transition, delayed capture of vin rather than edge-time capture, held vout between delayed samples, broad held-level coverage, and smooth voltage-domain output transitions."
-    private_sample_policy: "Internal checker samples vin at the aperture point and vout after a safe post-aperture settling window."
+      - "phase"
+    public_behavior_envelope: "Dual complementary track/hold sample-and-hold: input stage tracks during low clock, output stage tracks the retained input-stage value during high clock, and phase is high only during output-stage tracking."
   parity:
     required: true
-    tolerance_notes: "Use post-aperture settled sample windows away from transition edges."
+    tolerance_notes: "Use event-derived phase windows and a reference update model derived from the public tick/alpha parameter contract."
 286-first-order-lowpass-bugfix: |
   schema_version: "vabench-release-v2-checks"
   task_id: "vbr1_l1_first_order_lowpass:bugfix"
@@ -4824,6 +5063,19 @@
   checker:
     task_id: v3_deadband_voltage
     metric: stable_samples
+  gate_review:
+    gate1: valid_variant_needs_counting_policy
+    duplicate_note: "Functionally close to 143-deadband-window; count at most one single-ended signed deadband-residue row unless both parameter-naming variants are explicitly retained."
+    gate2: cadence_modeling_ready
+  sim_correct:
+    dut_companion_role: function_checked_dut
+    strong_benchmark_claim: true
+    checks:
+      - signed_excess_below_deadband
+      - zero_output_inside_deadband
+      - signed_excess_above_deadband
+      - sigin_dead_low_high_parameter_contract
+    public_behavior_envelope: "Single-ended deadband shaper with sigin_dead_low/sigin_dead_high threshold names, zero central output, and signed excess outside the nearest edge."
   scoring:
     axes:
       - dut_compile
@@ -4833,6 +5085,19 @@
   checker:
     task_id: v3_deadband_diffamp
     metric: stable_samples
+  gate_review:
+    gate1: independent_l1_ready
+    gate2: cadence_modeling_ready
+  sim_correct:
+    dut_companion_role: function_checked_dut
+    strong_benchmark_claim: true
+    checks:
+      - differential_input_polarity
+      - leakage_output_inside_deadband
+      - low_side_gain_low_residue
+      - high_side_gain_high_residue
+      - asymmetric_gain_contract
+    public_behavior_envelope: "Asymmetric-gain differential deadband amplifier with independent gain_low/gain_high and leakage output in the deadband."
   scoring:
     axes:
       - dut_compile
@@ -4842,6 +5107,19 @@
   checker:
     task_id: v3_limiting_diffamp
     metric: stable_samples
+  gate_review:
+    gate1: valid_variant_needs_counting_policy
+    duplicate_note: "Simple centered hard-limiting differential amplifier; overlaps with richer limiting-diffamp rows such as 153-limiting-differential-amplifier."
+    gate2: cadence_modeling_ready
+  sim_correct:
+    dut_companion_role: function_checked_dut
+    strong_benchmark_claim: true
+    checks:
+      - differential_gain_linear_region
+      - lower_output_saturation
+      - upper_output_saturation
+      - polarity_preserved
+    public_behavior_envelope: "Centered differential gain block with hard saturation to overridable sigout_low/sigout_high rails."
   scoring:
     axes:
       - dut_compile
@@ -12860,4 +13138,337 @@
       - observed_code_decoded_msb_first
       - maximum_sampled_code_error_retained
       - metric_scaled_by_lsb_out
+      - five_negative_variants_rejected_by_behavior_checker
+candidate-bias-supply-bias-validity-gate: |
+  version: 1
+  task_id: v3_candidate_bias_supply_bias_validity_gate
+  backend: evas
+  status: formal-candidate
+  checker: v3_candidate_bias_supply_bias_validity_gate
+  required_columns:
+    - time
+    - vdd
+    - vss
+    - vbias
+    - en
+    - pd
+    - ok
+    - gated
+  checks:
+    hidden:
+      - supply_window_measured_between_local_rails
+      - ground_displacement_rejects_operation
+      - bias_window_measured_relative_to_vss
+      - enable_and_powerdown_gate_downstream_drive
+      - five_negative_variants_rejected_by_behavior_checker
+  sim_correct:
+    positive:
+      - solution/supply_bias_validity_gate.va
+    negative:
+      - negative_variants/neg_001_always_valid/supply_bias_validity_gate.va
+      - negative_variants/neg_002_ignore_bias/supply_bias_validity_gate.va
+      - negative_variants/neg_003_ignore_enable_powerdown/supply_bias_validity_gate.va
+      - negative_variants/neg_004_absolute_bias_reference/supply_bias_validity_gate.va
+      - negative_variants/neg_005_ignore_high_supply_fault/supply_bias_validity_gate.va
+    checks:
+      - supply_window_measured_between_local_rails
+      - ground_displacement_rejects_operation
+      - bias_window_measured_relative_to_vss
+      - enable_and_powerdown_gate_downstream_drive
+      - five_negative_variants_rejected_by_behavior_checker
+candidate-bias-power-mode-supply-current-metric: |
+  version: 1
+  task_id: v3_candidate_bias_power_mode_supply_current_metric
+  backend: evas
+  status: formal-candidate
+  checker: v3_candidate_bias_power_mode_supply_current_metric
+  required_columns:
+    - time
+    - vdd
+    - vss
+    - en
+    - pd
+    - mode
+    - load
+    - isup_metric
+  checks:
+    hidden:
+      - metric_scales_with_local_supply_ratio
+      - disabled_or_powerdown_state_uses_ipd_metric
+      - active_mode_selects_quiescent_metric
+      - active_load_adds_clipped_metric_term
+      - five_negative_variants_rejected_by_behavior_checker
+  sim_correct:
+    positive:
+      - solution/power_mode_supply_current_metric.va
+    negative:
+      - negative_variants/neg_001_constant_metric/power_mode_supply_current_metric.va
+      - negative_variants/neg_002_ignore_supply_scaling/power_mode_supply_current_metric.va
+      - negative_variants/neg_003_ignore_powerdown/power_mode_supply_current_metric.va
+      - negative_variants/neg_004_ignore_mode/power_mode_supply_current_metric.va
+      - negative_variants/neg_005_ignore_load/power_mode_supply_current_metric.va
+    checks:
+      - metric_scales_with_local_supply_ratio
+      - disabled_or_powerdown_state_uses_ipd_metric
+      - active_mode_selects_quiescent_metric
+      - active_load_adds_clipped_metric_term
+      - five_negative_variants_rejected_by_behavior_checker
+candidate-bias-dynamic-supply-level-driver: |
+  version: 1
+  task_id: v3_candidate_bias_dynamic_supply_level_driver
+  backend: evas
+  status: formal-candidate
+  checker: v3_candidate_bias_dynamic_supply_level_driver
+  required_columns:
+    - time
+    - din
+    - vdd
+    - vss
+    - out
+  checks:
+    hidden:
+      - input_threshold_referenced_to_local_supply
+      - output_levels_track_local_rails
+      - low_supply_falls_back_to_local_low
+      - nonzero_vss_offset_handled
+      - five_negative_variants_rejected_by_behavior_checker
+  sim_correct:
+    positive:
+      - solution/dynamic_supply_level_driver.va
+    negative:
+      - negative_variants/neg_001_fixed_output_rails/dynamic_supply_level_driver.va
+      - negative_variants/neg_002_absolute_input_threshold/dynamic_supply_level_driver.va
+      - negative_variants/neg_003_ignore_vss_offset/dynamic_supply_level_driver.va
+      - negative_variants/neg_004_drive_when_supply_invalid/dynamic_supply_level_driver.va
+      - negative_variants/neg_005_inverted_logic/dynamic_supply_level_driver.va
+    checks:
+      - input_threshold_referenced_to_local_supply
+      - output_levels_track_local_rails
+      - low_supply_falls_back_to_local_low
+      - nonzero_vss_offset_handled
+      - five_negative_variants_rejected_by_behavior_checker
+candidate-bias-power-enable-turnon-delay-gate: |
+  version: 1
+  task_id: v3_candidate_bias_power_enable_turnon_delay_gate
+  backend: evas
+  status: formal-candidate
+  checker: v3_candidate_bias_power_enable_turnon_delay_gate
+  required_columns:
+    - time
+    - clk
+    - vdd
+    - vss
+    - vbias
+    - en
+    - pd
+    - pwr_ok
+    - drive_en
+    - delay_mon
+  checks:
+    hidden:
+      - supply_and_bias_measured_between_local_rails
+      - pwr_ok_reports_sampled_validity
+      - drive_enable_requires_consecutive_valid_updates
+      - invalid_sample_clears_turnon_progress
+      - five_negative_variants_rejected_by_behavior_checker
+  sim_correct:
+    positive:
+      - solution/power_enable_turnon_delay_gate.va
+    negative:
+      - negative_variants/neg_001_no_turnon_delay/power_enable_turnon_delay_gate.va
+      - negative_variants/neg_002_ignore_bias_validity/power_enable_turnon_delay_gate.va
+      - negative_variants/neg_003_ignore_powerdown/power_enable_turnon_delay_gate.va
+      - negative_variants/neg_004_no_fault_reset/power_enable_turnon_delay_gate.va
+      - negative_variants/neg_005_short_delay/power_enable_turnon_delay_gate.va
+    checks:
+      - supply_and_bias_measured_between_local_rails
+      - pwr_ok_reports_sampled_validity
+      - drive_enable_requires_consecutive_valid_updates
+      - invalid_sample_clears_turnon_progress
+      - five_negative_variants_rejected_by_behavior_checker
+candidate-bias-reference-settling-window-monitor: |
+  version: 1
+  task_id: v3_candidate_bias_reference_settling_window_monitor
+  backend: evas
+  status: formal-candidate
+  checker: v3_candidate_bias_reference_settling_window_monitor
+  required_columns:
+    - time
+    - clk
+    - rst
+    - ref
+    - target
+    - valid
+    - err_metric
+    - settle_mon
+  checks:
+    hidden:
+      - err_metric_tracks_absolute_target_error
+      - reset_clears_settling_state
+      - valid_requires_consecutive_in_window_samples
+      - target_changes_are_followed
+      - five_negative_variants_rejected_by_behavior_checker
+  sim_correct:
+    positive:
+      - solution/reference_settling_window_monitor.va
+    negative:
+      - negative_variants/neg_001_always_valid/reference_settling_window_monitor.va
+      - negative_variants/neg_002_no_settle_window/reference_settling_window_monitor.va
+      - negative_variants/neg_003_fixed_target/reference_settling_window_monitor.va
+      - negative_variants/neg_004_ignore_reset/reference_settling_window_monitor.va
+      - negative_variants/neg_005_wrong_err_metric/reference_settling_window_monitor.va
+    checks:
+      - err_metric_tracks_absolute_target_error
+      - reset_clears_settling_state
+      - valid_requires_consecutive_in_window_samples
+      - target_changes_are_followed
+      - five_negative_variants_rejected_by_behavior_checker
+502-sine-vco-idtmod-bound-step: |
+  version: 2
+  task_id: v3_502_sine_vco_idtmod_bound_step
+  backend: evas
+  status: behavior-certified-extension
+  checker: v3_502_sine_vco_idtmod_bound_step
+  required_columns:
+    - time
+    - vin
+    - out
+    - metric
+  syntax:
+    must_include:
+      - "idtmod("
+      - "$bound_step("
+      - "sin("
+    must_not_include:
+      - "I("
+      - "ddt("
+  sim_correct:
+    trace_signals:
+      time: "time"
+      vin: "vin"
+      out: "out"
+      metric: "metric"
+    checks:
+      - "integrates_center_freq_plus_vco_gain_times_vin_with_idtmod"
+      - "out_matches_bipolar_sine_of_wrapped_phase"
+      - "metric_matches_vco_amp_scaled_wrapped_phase"
+      - "bound_step_request_is_present_in_the_model"
+      - "five_negative_variants_rejected_by_behavior_checker"
+  promotion_evidence:
+    command: "VAEVAS_EVAS_REPO=<EVAS checkout with Arcadia-1/EVAS#69> VAEVAS_DEFAULT_EVAS_ENGINE=evas2 VAEVAS_EVAS_PERSISTENT_WORKER=0 PYTHONPATH=runners python3 scripts/run_v3_gold_negative_verification.py --start 502 --end 503 --tasks 502,503 --include-staged --timeout 180 --jobs 1 --out <tmp>/verify_pll_502_503_after_evas2_idtmod.json"
+    result: "502/503 gold PASS; 10/10 negative variants rejected; 0 expectation_fail after EVAS2 continuous idtmod/sin VCO support."
+    dependency: "Requires EVAS continuous idtmod/sin full-model support from https://github.com/Arcadia-1/EVAS/pull/69 or an equivalent merged commit."
+  notes:
+    - "Cadence-style voltage-domain sine VCO promoted using EVAS2 continuous idtmod/sin behavior support; remains outside the original full-300 denominator."
+503-differential-vco-clip-idtmod: |
+  version: 2
+  task_id: v3_503_differential_vco_clip_idtmod
+  backend: evas
+  status: behavior-certified-extension
+  checker: v3_503_differential_vco_clip_idtmod
+  required_columns:
+    - time
+    - vinp
+    - vinm
+    - outp
+    - outm
+    - metric
+  syntax:
+    must_include:
+      - "idtmod("
+      - "sin("
+      - "clip("
+    must_not_include:
+      - "I("
+      - "ddt("
+  sim_correct:
+    trace_signals:
+      time: "time"
+      vinp: "vinp"
+      vinm: "vinm"
+      outp: "outp"
+      outm: "outm"
+      metric: "metric"
+    checks:
+      - "differential_control_frequency_is_clipped_into_public_band"
+      - "clipped_frequency_is_integrated_with_idtmod"
+      - "outp_and_outm_are_opposite_sine_arms_around_vcm"
+      - "metric_matches_0p9_scaled_wrapped_phase"
+      - "five_negative_variants_rejected_by_behavior_checker"
+  promotion_evidence:
+    command: "VAEVAS_EVAS_REPO=<EVAS checkout with Arcadia-1/EVAS#69> VAEVAS_DEFAULT_EVAS_ENGINE=evas2 VAEVAS_EVAS_PERSISTENT_WORKER=0 PYTHONPATH=runners python3 scripts/run_v3_gold_negative_verification.py --start 502 --end 503 --tasks 502,503 --include-staged --timeout 180 --jobs 1 --out <tmp>/verify_pll_502_503_after_evas2_idtmod.json"
+    result: "502/503 gold PASS; 10/10 negative variants rejected; 0 expectation_fail after EVAS2 continuous idtmod/sin VCO support."
+    dependency: "Requires EVAS continuous idtmod/sin full-model support from https://github.com/Arcadia-1/EVAS/pull/69 or an equivalent merged commit."
+  notes:
+    - "Cadence-style differential VCO promoted using EVAS2 continuous idtmod/sin behavior support; hidden stimulus exercises the upper clamp."
+504-charge-pump-pfd-state-machine: |
+  version: 1
+  task_id: v3_504_charge_pump_pfd_state_machine
+  backend: evas
+  status: formal-candidate
+  checker: v3_504_charge_pump_pfd_state_machine
+  required_columns:
+    - time
+    - ref
+    - fb
+    - vctrl
+    - metric
+  syntax:
+    must_include:
+      - "@(cross("
+      - "@(timer("
+      - "transition("
+    must_not_include:
+      - "I("
+      - "ddt("
+  sim_correct:
+    positive:
+      - solution/charge_pump_pfd_state_machine.va
+    negative:
+      - negative_variants/neg_001_drive_vctrl_mid/charge_pump_pfd_state_machine.va
+      - negative_variants/neg_002_drive_metric_mid/charge_pump_pfd_state_machine.va
+      - negative_variants/neg_003_dead_zone_state/charge_pump_pfd_state_machine.va
+      - negative_variants/neg_004_gain_sign_flipped/charge_pump_pfd_state_machine.va
+      - negative_variants/neg_005_vctrl_unclamped/charge_pump_pfd_state_machine.va
+    checks:
+      - lead_lag_direction_inferred_from_ref_fb_edges
+      - vctrl_moves_toward_corresponding_clamp_rail
+      - metric_reports_detector_state_polarity
+      - vctrl_stays_within_clamp
+      - five_negative_variants_rejected_by_behavior_checker
+505-fractional-n-divider-accumulator-flow: |
+  version: 1
+  task_id: v3_505_fractional_n_divider_accumulator_flow
+  backend: evas
+  status: formal-candidate
+  checker: v3_505_fractional_n_divider_accumulator_flow
+  required_columns:
+    - time
+    - ref_clk
+    - fb_clk
+    - dco_clk
+    - vctrl_mon
+    - lock
+  syntax:
+    must_include:
+      - "@(cross("
+      - "@(timer("
+      - "transition("
+    must_not_include:
+      - "I("
+      - "ddt("
+  sim_correct:
+    positive:
+      - solution/fracn_pll_timer_ref.va
+    negative:
+      - negative_variants/neg_001_zero/fracn_pll_timer_ref.va
+      - negative_variants/neg_002_lock_stuck_high/fracn_pll_timer_ref.va
+      - negative_variants/neg_003_wrong_integer_divider/fracn_pll_timer_ref.va
+      - negative_variants/neg_004_no_loop_correction/fracn_pll_timer_ref.va
+      - negative_variants/neg_005_vctrl_out_of_range/fracn_pll_timer_ref.va
+    checks:
+      - fractional_divider_uses_dithered_dco_edge_counts
+      - late_window_tracks_new_reference
+      - lock_drops_near_reference_step_and_reasserts
+      - vctrl_stays_bounded_and_moves_during_reacquire
       - five_negative_variants_rejected_by_behavior_checker
