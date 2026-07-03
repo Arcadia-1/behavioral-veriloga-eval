@@ -253,6 +253,65 @@ VALUE
     assert (output_dir / "tran_spectre.csv").exists()
     assert captured["uploaded_bytes"] > 0
     assert any("tcsh -c" in script for script in captured["text_scripts"])
+    assert any('fallback_root="$HOME/WORK/vaevas-direct-spectre"' in script for script in captured["text_scripts"])
+
+
+def test_copy_direct_spectre_inputs_rewrites_parent_solution_ahdl_include(tmp_path: Path) -> None:
+    task_dir = tmp_path / "task"
+    tb_dir = task_dir / "test_hidden"
+    solution_dir = task_dir / "solution"
+    output_dir = tmp_path / "out"
+    tb_dir.mkdir(parents=True)
+    solution_dir.mkdir()
+    tb_path = tb_dir / "hidden.scs"
+    dut_path = solution_dir / "generate_genvar_replicated_stage.vams"
+    tb_path.write_text(
+        'simulator lang=spectre\nahdl_include "../solution/generate_genvar_replicated_stage.vams"\n',
+        encoding="utf-8",
+    )
+    dut_path.write_text("module generate_genvar_replicated_stage; endmodule\n", encoding="utf-8")
+
+    staged_tb, copied = dual.copy_direct_spectre_inputs(
+        task_id="449-generate-genvar-replicated-stage:hidden:gold",
+        tb_path=tb_path,
+        include_paths=[dut_path],
+        output_dir=output_dir,
+    )
+
+    assert 'ahdl_include "generate_genvar_replicated_stage.vams"' in staged_tb.read_text(encoding="utf-8")
+    assert "../solution" not in staged_tb.read_text(encoding="utf-8")
+    assert output_dir / "generate_genvar_replicated_stage.vams" in copied
+
+
+def test_copy_direct_spectre_inputs_stages_support_files_from_va_literals(tmp_path: Path) -> None:
+    task_dir = tmp_path / "task"
+    tb_dir = task_dir / "test_hidden"
+    solution_dir = task_dir / "solution"
+    output_dir = tmp_path / "out"
+    tb_dir.mkdir(parents=True)
+    solution_dir.mkdir()
+    tb_path = tb_dir / "hidden.scs"
+    dut_path = solution_dir / "noise_table_voltage_shaper.va"
+    table_path = solution_dir / "noise_profile.tbl"
+    tb_path.write_text(
+        'simulator lang=spectre\nahdl_include "noise_table_voltage_shaper.va"\n',
+        encoding="utf-8",
+    )
+    dut_path.write_text(
+        'analog begin\n    V(out) <+ noise_table("noise_profile.tbl", "profile_noise");\nend\n',
+        encoding="utf-8",
+    )
+    table_path.write_text("profile_noise 1 1\n", encoding="utf-8")
+
+    _staged_tb, copied = dual.copy_direct_spectre_inputs(
+        task_id="365-noise-table-voltage-shaper:hidden:gold",
+        tb_path=tb_path,
+        include_paths=[dut_path],
+        output_dir=output_dir,
+    )
+
+    assert output_dir / "noise_profile.tbl" in copied
+    assert (output_dir / "noise_profile.tbl").read_text(encoding="utf-8") == "profile_noise 1 1\n"
 
 
 def test_direct_sui_backend_reports_license_checkout_failure(monkeypatch, tmp_path: Path) -> None:
