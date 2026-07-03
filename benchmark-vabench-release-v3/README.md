@@ -1,12 +1,19 @@
 # Behavioral Verilog-A v3
 
-This directory is a clean, RTL-Forge-style packaging of 494 Verilog-A
-DUT/support/testbench/e2e and language-extension tasks.
+This directory is a clean, RTL-Forge-style packaging of 451 numbered
+standalone-Spectre-compatible Verilog-A DUT/support/testbench/e2e and
+language-extension tasks, plus five unnumbered replacement candidates.
 
-The first 300 tasks remain the original behavior-certified full-300 surface.
-Tasks `301`-`494` are LRM/course-material extension candidates. They are
-compile-supported language rows unless promoted by layer-specific behavior
-evidence; they are not part of the original full-300 behavior claim.
+The default `tasks/` tree is the Spectre-compatible denominator. Task numbers
+are not contiguous: 54 rows that standalone Cadence/Spectre rejects as written
+were moved to `spectre-unsupported-tasks/` and removed from `TASKS.json` and
+`CHECKS.yaml`. Those rows are archived for future AMS/digital or version-gated
+work, but they are not part of the default EVAS/Spectre parity score.
+
+Rows `001`-`300` remain the original behavior-certified surface except for
+seven converter/vector rows (`052`-`057`, `075`) that used procedural vector
+indexing patterns rejected by Spectre. Rows `301+` are LRM/course-material
+extension candidates unless promoted by layer-specific behavior evidence.
 
 Top-level indexes:
 
@@ -15,9 +22,14 @@ Top-level indexes:
 - `CHECKS.yaml`: canonical checker configuration for all tasks, replacing
   per-task `test_harness/checks.yaml` files.
 - `reports/layered_certification.json`: machine-readable certification-layer
-  boundary for the 300 certified rows and 194 extension candidates.
+  boundary for the current Spectre-compatible default denominator.
 - `reports/layered_certification.md`: human-readable version of the layered
   certification summary.
+- `reports/spectre_unsupported_removed_20260703.{json,md}`: archived-row list
+  and reasons for removing 54 Spectre-rejected rows from the default
+  denominator.
+- `reports/spectre_default_after_removal_20260703.{json,md}`: hidden-gold
+  Spectre audit over the retained 451-row default denominator.
 
 Partitions:
 
@@ -27,9 +39,10 @@ Partitions:
 - `090`-`111`: additional useful Verilog-A module tasks promoted into v3.
 - `112`-`300`: imported and repaired DUT/module tasks, including the obsolete
   v2 five-task slice absorbed as normal v3 tasks.
-- `301`-`494`: Verilog-A / Verilog-AMS language extension candidates covering
-  functions/tasks, file I/O, table models, random/noise helpers, AMS digital
-  syntax, Cadence LRM helper calls, continuous-time operators, and KCL syntax.
+- `301`-`505`: Verilog-A language extension candidates covering functions,
+  file I/O, table models, random/noise helpers, Cadence LRM helper calls,
+  continuous-time operators, and KCL syntax, with Spectre-rejected AMS/digital,
+  user-task, and unsupported vector/helper rows archived outside `tasks/`.
 
 Each task is self-contained under `tasks/NNN-name/`:
 

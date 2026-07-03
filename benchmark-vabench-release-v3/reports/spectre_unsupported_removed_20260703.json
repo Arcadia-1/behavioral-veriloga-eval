@@ -1,0 +1,495 @@
+{
+  "date": "2026-07-03",
+  "policy": "Removed from the default standalone-Spectre-compatible denominator because Cadence/Spectre rejects these constructs in the current bridge. The task assets are archived, not deleted.",
+  "before_numbered_default_tasks": 505,
+  "removed_tasks": 54,
+  "after_numbered_default_tasks": 451,
+  "tasks": [
+    {
+      "task": "341-wreal-gain-pass-through",
+      "title": "Wreal Gain Pass Through",
+      "category": "verilog_ams_mixed_signal",
+      "tier": "ams-mixed-signal-candidate",
+      "reason": "verilog_ams_or_digital_not_standalone_spectre",
+      "note": "Uses Verilog-AMS/digital constructs such as wreal, logic, assign, always, connectmodule/connectrules, specify/specparam, or packed logic buses that are outside this standalone Spectre Verilog-A compatibility target.",
+      "archived_path": "spectre-unsupported-tasks/341-wreal-gain-pass-through"
+    },
+    {
+      "task": "342-wreal-two-input-summer",
+      "title": "Wreal Two Input Summer",
+      "category": "verilog_ams_mixed_signal",
+      "tier": "ams-mixed-signal-candidate",
+      "reason": "verilog_ams_or_digital_not_standalone_spectre",
+      "note": "Uses Verilog-AMS/digital constructs such as wreal, logic, assign, always, connectmodule/connectrules, specify/specparam, or packed logic buses that are outside this standalone Spectre Verilog-A compatibility target.",
+      "archived_path": "spectre-unsupported-tasks/342-wreal-two-input-summer"
+    },
+    {
+      "task": "343-wreal-threshold-flag",
+      "title": "Wreal Threshold Flag",
+      "category": "verilog_ams_mixed_signal",
+      "tier": "ams-mixed-signal-candidate",
+      "reason": "verilog_ams_or_digital_not_standalone_spectre",
+      "note": "Uses Verilog-AMS/digital constructs such as wreal, logic, assign, always, connectmodule/connectrules, specify/specparam, or packed logic buses that are outside this standalone Spectre Verilog-A compatibility target.",
+      "archived_path": "spectre-unsupported-tasks/343-wreal-threshold-flag"
+    },
+    {
+      "task": "344-wreal-clamped-mux",
+      "title": "Wreal Clamped Mux",
+      "category": "verilog_ams_mixed_signal",
+      "tier": "ams-mixed-signal-candidate",
+      "reason": "verilog_ams_or_digital_not_standalone_spectre",
+      "note": "Uses Verilog-AMS/digital constructs such as wreal, logic, assign, always, connectmodule/connectrules, specify/specparam, or packed logic buses that are outside this standalone Spectre Verilog-A compatibility target.",
+      "archived_path": "spectre-unsupported-tasks/344-wreal-clamped-mux"
+    },
+    {
+      "task": "345-wreal-scale-offset",
+      "title": "Wreal Scale Offset",
+      "category": "verilog_ams_mixed_signal",
+      "tier": "ams-mixed-signal-candidate",
+      "reason": "verilog_ams_or_digital_not_standalone_spectre",
+      "note": "Uses Verilog-AMS/digital constructs such as wreal, logic, assign, always, connectmodule/connectrules, specify/specparam, or packed logic buses that are outside this standalone Spectre Verilog-A compatibility target.",
+      "archived_path": "spectre-unsupported-tasks/345-wreal-scale-offset"
+    },
+    {
+      "task": "346-logic-assign-inverter",
+      "title": "Logic Assign Inverter",
+      "category": "verilog_ams_mixed_signal",
+      "tier": "ams-mixed-signal-candidate",
+      "reason": "verilog_ams_or_digital_not_standalone_spectre",
+      "note": "Uses Verilog-AMS/digital constructs such as wreal, logic, assign, always, connectmodule/connectrules, specify/specparam, or packed logic buses that are outside this standalone Spectre Verilog-A compatibility target.",
+      "archived_path": "spectre-unsupported-tasks/346-logic-assign-inverter"
+    },
+    {
+      "task": "347-logic-assign-and-or",
+      "title": "Logic Assign And Or",
+      "category": "verilog_ams_mixed_signal",
+      "tier": "ams-mixed-signal-candidate",
+      "reason": "verilog_ams_or_digital_not_standalone_spectre",
+      "note": "Uses Verilog-AMS/digital constructs such as wreal, logic, assign, always, connectmodule/connectrules, specify/specparam, or packed logic buses that are outside this standalone Spectre Verilog-A compatibility target.",
+      "archived_path": "spectre-unsupported-tasks/347-logic-assign-and-or"
+    },
+    {
+      "task": "348-logic-assign-xor-flag",
+      "title": "Logic Assign Xor Flag",
+      "category": "verilog_ams_mixed_signal",
+      "tier": "ams-mixed-signal-candidate",
+      "reason": "verilog_ams_or_digital_not_standalone_spectre",
+      "note": "Uses Verilog-AMS/digital constructs such as wreal, logic, assign, always, connectmodule/connectrules, specify/specparam, or packed logic buses that are outside this standalone Spectre Verilog-A compatibility target.",
+      "archived_path": "spectre-unsupported-tasks/348-logic-assign-xor-flag"
+    },
+    {
+      "task": "349-logic-assign-priority-mux",
+      "title": "Logic Assign Priority Mux",
+      "category": "verilog_ams_mixed_signal",
+      "tier": "ams-mixed-signal-candidate",
+      "reason": "verilog_ams_or_digital_not_standalone_spectre",
+      "note": "Uses Verilog-AMS/digital constructs such as wreal, logic, assign, always, connectmodule/connectrules, specify/specparam, or packed logic buses that are outside this standalone Spectre Verilog-A compatibility target.",
+      "archived_path": "spectre-unsupported-tasks/349-logic-assign-priority-mux"
+    },
+    {
+      "task": "350-logic-assign-reduction",
+      "title": "Logic Assign Reduction",
+      "category": "verilog_ams_mixed_signal",
+      "tier": "ams-mixed-signal-candidate",
+      "reason": "verilog_ams_or_digital_not_standalone_spectre",
+      "note": "Uses Verilog-AMS/digital constructs such as wreal, logic, assign, always, connectmodule/connectrules, specify/specparam, or packed logic buses that are outside this standalone Spectre Verilog-A compatibility target.",
+      "archived_path": "spectre-unsupported-tasks/350-logic-assign-reduction"
+    },
+    {
+      "task": "351-always-posedged-dff",
+      "title": "Always Posedged Dff",
+      "category": "verilog_ams_mixed_signal",
+      "tier": "ams-mixed-signal-candidate",
+      "reason": "verilog_ams_or_digital_not_standalone_spectre",
+      "note": "Uses Verilog-AMS/digital constructs such as wreal, logic, assign, always, connectmodule/connectrules, specify/specparam, or packed logic buses that are outside this standalone Spectre Verilog-A compatibility target.",
+      "archived_path": "spectre-unsupported-tasks/351-always-posedged-dff"
+    },
+    {
+      "task": "352-always-negedge-sampler",
+      "title": "Always Negedge Sampler",
+      "category": "verilog_ams_mixed_signal",
+      "tier": "ams-mixed-signal-candidate",
+      "reason": "verilog_ams_or_digital_not_standalone_spectre",
+      "note": "Uses Verilog-AMS/digital constructs such as wreal, logic, assign, always, connectmodule/connectrules, specify/specparam, or packed logic buses that are outside this standalone Spectre Verilog-A compatibility target.",
+      "archived_path": "spectre-unsupported-tasks/352-always-negedge-sampler"
+    },
+    {
+      "task": "353-always-resettable-toggle",
+      "title": "Always Resettable Toggle",
+      "category": "verilog_ams_mixed_signal",
+      "tier": "ams-mixed-signal-candidate",
+      "reason": "verilog_ams_or_digital_not_standalone_spectre",
+      "note": "Uses Verilog-AMS/digital constructs such as wreal, logic, assign, always, connectmodule/connectrules, specify/specparam, or packed logic buses that are outside this standalone Spectre Verilog-A compatibility target.",
+      "archived_path": "spectre-unsupported-tasks/353-always-resettable-toggle"
+    },
+    {
+      "task": "354-always-counter-two-bit",
+      "title": "Always Counter Two Bit",
+      "category": "verilog_ams_mixed_signal",
+      "tier": "ams-mixed-signal-candidate",
+      "reason": "verilog_ams_or_digital_not_standalone_spectre",
+      "note": "Uses Verilog-AMS/digital constructs such as wreal, logic, assign, always, connectmodule/connectrules, specify/specparam, or packed logic buses that are outside this standalone Spectre Verilog-A compatibility target.",
+      "archived_path": "spectre-unsupported-tasks/354-always-counter-two-bit"
+    },
+    {
+      "task": "355-always-enable-hold",
+      "title": "Always Enable Hold",
+      "category": "verilog_ams_mixed_signal",
+      "tier": "ams-mixed-signal-candidate",
+      "reason": "verilog_ams_or_digital_not_standalone_spectre",
+      "note": "Uses Verilog-AMS/digital constructs such as wreal, logic, assign, always, connectmodule/connectrules, specify/specparam, or packed logic buses that are outside this standalone Spectre Verilog-A compatibility target.",
+      "archived_path": "spectre-unsupported-tasks/355-always-enable-hold"
+    },
+    {
+      "task": "356-mixed-logic-enable-voltage-driver",
+      "title": "Mixed Logic Enable Voltage Driver",
+      "category": "verilog_ams_mixed_signal",
+      "tier": "ams-mixed-signal-candidate",
+      "reason": "verilog_ams_or_digital_not_standalone_spectre",
+      "note": "Uses Verilog-AMS/digital constructs such as wreal, logic, assign, always, connectmodule/connectrules, specify/specparam, or packed logic buses that are outside this standalone Spectre Verilog-A compatibility target.",
+      "archived_path": "spectre-unsupported-tasks/356-mixed-logic-enable-voltage-driver"
+    },
+    {
+      "task": "357-mixed-wreal-to-electrical-buffer",
+      "title": "Mixed Wreal To Electrical Buffer",
+      "category": "verilog_ams_mixed_signal",
+      "tier": "ams-mixed-signal-candidate",
+      "reason": "verilog_ams_or_digital_not_standalone_spectre",
+      "note": "Uses Verilog-AMS/digital constructs such as wreal, logic, assign, always, connectmodule/connectrules, specify/specparam, or packed logic buses that are outside this standalone Spectre Verilog-A compatibility target.",
+      "archived_path": "spectre-unsupported-tasks/357-mixed-wreal-to-electrical-buffer"
+    },
+    {
+      "task": "358-mixed-electrical-threshold-logic-flag",
+      "title": "Mixed Electrical Threshold Logic Flag",
+      "category": "verilog_ams_mixed_signal",
+      "tier": "ams-mixed-signal-candidate",
+      "reason": "verilog_ams_or_digital_not_standalone_spectre",
+      "note": "Uses Verilog-AMS/digital constructs such as wreal, logic, assign, always, connectmodule/connectrules, specify/specparam, or packed logic buses that are outside this standalone Spectre Verilog-A compatibility target.",
+      "archived_path": "spectre-unsupported-tasks/358-mixed-electrical-threshold-logic-flag"
+    },
+    {
+      "task": "359-mixed-logic-clocked-voltage-sampler",
+      "title": "Mixed Logic Clocked Voltage Sampler",
+      "category": "verilog_ams_mixed_signal",
+      "tier": "ams-mixed-signal-candidate",
+      "reason": "verilog_ams_or_digital_not_standalone_spectre",
+      "note": "Uses Verilog-AMS/digital constructs such as wreal, logic, assign, always, connectmodule/connectrules, specify/specparam, or packed logic buses that are outside this standalone Spectre Verilog-A compatibility target.",
+      "archived_path": "spectre-unsupported-tasks/359-mixed-logic-clocked-voltage-sampler"
+    },
+    {
+      "task": "360-mixed-wreal-logic-select-driver",
+      "title": "Mixed Wreal Logic Select Driver",
+      "category": "verilog_ams_mixed_signal",
+      "tier": "ams-mixed-signal-candidate",
+      "reason": "verilog_ams_or_digital_not_standalone_spectre",
+      "note": "Uses Verilog-AMS/digital constructs such as wreal, logic, assign, always, connectmodule/connectrules, specify/specparam, or packed logic buses that are outside this standalone Spectre Verilog-A compatibility target.",
+      "archived_path": "spectre-unsupported-tasks/360-mixed-wreal-logic-select-driver"
+    },
+    {
+      "task": "373-task-output-limiter",
+      "title": "Task Output Limiter",
+      "category": "veriloga_task_semantics",
+      "tier": "syntax-extension-candidate",
+      "reason": "user_task_decl_rejected_by_spectre",
+      "note": "Uses Verilog task/endtask declarations or task-style event-body composition that the current standalone Spectre Verilog-A compiler rejects.",
+      "archived_path": "spectre-unsupported-tasks/373-task-output-limiter"
+    },
+    {
+      "task": "374-task-dual-output-update",
+      "title": "Task Dual Output Update",
+      "category": "veriloga_task_semantics",
+      "tier": "syntax-extension-candidate",
+      "reason": "user_task_decl_rejected_by_spectre",
+      "note": "Uses Verilog task/endtask declarations or task-style event-body composition that the current standalone Spectre Verilog-A compiler rejects.",
+      "archived_path": "spectre-unsupported-tasks/374-task-dual-output-update"
+    },
+    {
+      "task": "375-task-event-counter-service",
+      "title": "Task Event Counter Service",
+      "category": "veriloga_task_semantics",
+      "tier": "syntax-extension-candidate",
+      "reason": "user_task_decl_rejected_by_spectre",
+      "note": "Uses Verilog task/endtask declarations or task-style event-body composition that the current standalone Spectre Verilog-A compiler rejects.",
+      "archived_path": "spectre-unsupported-tasks/375-task-event-counter-service"
+    },
+    {
+      "task": "376-task-reset-sequencer",
+      "title": "Task Reset Sequencer",
+      "category": "veriloga_task_semantics",
+      "tier": "syntax-extension-candidate",
+      "reason": "user_task_decl_rejected_by_spectre",
+      "note": "Uses Verilog task/endtask declarations or task-style event-body composition that the current standalone Spectre Verilog-A compiler rejects.",
+      "archived_path": "spectre-unsupported-tasks/376-task-reset-sequencer"
+    },
+    {
+      "task": "377-task-stateful-threshold-update",
+      "title": "Task Stateful Threshold Update",
+      "category": "veriloga_task_semantics",
+      "tier": "syntax-extension-candidate",
+      "reason": "user_task_decl_rejected_by_spectre",
+      "note": "Uses Verilog task/endtask declarations or task-style event-body composition that the current standalone Spectre Verilog-A compiler rejects.",
+      "archived_path": "spectre-unsupported-tasks/377-task-stateful-threshold-update"
+    },
+    {
+      "task": "378-task-metric-normalizer",
+      "title": "Task Metric Normalizer",
+      "category": "veriloga_task_semantics",
+      "tier": "syntax-extension-candidate",
+      "reason": "user_task_decl_rejected_by_spectre",
+      "note": "Uses Verilog task/endtask declarations or task-style event-body composition that the current standalone Spectre Verilog-A compiler rejects.",
+      "archived_path": "spectre-unsupported-tasks/378-task-metric-normalizer"
+    },
+    {
+      "task": "394-rdist-chi-square-energy",
+      "title": "Rdist Chi Square Energy",
+      "category": "veriloga_random_distribution_semantics",
+      "tier": "syntax-extension-candidate",
+      "reason": "random_distribution_rejected_by_spectre_version",
+      "note": "Uses $rdist_chi_square or $rdist_t, which this Cadence/Spectre environment rejects; keep out of the default parity denominator unless version-gated.",
+      "archived_path": "spectre-unsupported-tasks/394-rdist-chi-square-energy"
+    },
+    {
+      "task": "395-rdist-t-tail-dither",
+      "title": "Rdist T Tail Dither",
+      "category": "veriloga_random_distribution_semantics",
+      "tier": "syntax-extension-candidate",
+      "reason": "random_distribution_rejected_by_spectre_version",
+      "note": "Uses $rdist_chi_square or $rdist_t, which this Cadence/Spectre environment rejects; keep out of the default parity denominator unless version-gated.",
+      "archived_path": "spectre-unsupported-tasks/395-rdist-t-tail-dither"
+    },
+    {
+      "task": "403-vector-bit-select-flag",
+      "title": "Vector Bit Select Flag",
+      "category": "veriloga_vector_operator_semantics",
+      "tier": "syntax-extension-candidate",
+      "reason": "runtime_or_procedural_vector_indexing_rejected",
+      "note": "Uses procedural/runtime vector or electrical-node indexing patterns rejected by Spectre; static generate expansion may be legal, but these rows are not Spectre-compatible as written.",
+      "archived_path": "spectre-unsupported-tasks/403-vector-bit-select-flag"
+    },
+    {
+      "task": "406-vector-replication-mask",
+      "title": "Vector Replication Mask",
+      "category": "veriloga_vector_operator_semantics",
+      "tier": "syntax-extension-candidate",
+      "reason": "runtime_or_procedural_vector_indexing_rejected",
+      "note": "Uses procedural/runtime vector or electrical-node indexing patterns rejected by Spectre; static generate expansion may be legal, but these rows are not Spectre-compatible as written.",
+      "archived_path": "spectre-unsupported-tasks/406-vector-replication-mask"
+    },
+    {
+      "task": "415-logic-vector-assign-slice",
+      "title": "Logic Vector Assign Slice",
+      "category": "verilogams_digital_mixed_semantics",
+      "tier": "ams-mixed-signal-candidate",
+      "reason": "verilog_ams_or_digital_not_standalone_spectre",
+      "note": "Uses Verilog-AMS/digital constructs such as wreal, logic, assign, always, connectmodule/connectrules, specify/specparam, or packed logic buses that are outside this standalone Spectre Verilog-A compatibility target.",
+      "archived_path": "spectre-unsupported-tasks/415-logic-vector-assign-slice"
+    },
+    {
+      "task": "416-logic-vector-reduction-flag",
+      "title": "Logic Vector Reduction Flag",
+      "category": "verilogams_digital_mixed_semantics",
+      "tier": "ams-mixed-signal-candidate",
+      "reason": "verilog_ams_or_digital_not_standalone_spectre",
+      "note": "Uses Verilog-AMS/digital constructs such as wreal, logic, assign, always, connectmodule/connectrules, specify/specparam, or packed logic buses that are outside this standalone Spectre Verilog-A compatibility target.",
+      "archived_path": "spectre-unsupported-tasks/416-logic-vector-reduction-flag"
+    },
+    {
+      "task": "417-always-async-reset-counter",
+      "title": "Always Async Reset Counter",
+      "category": "verilogams_digital_mixed_semantics",
+      "tier": "ams-mixed-signal-candidate",
+      "reason": "verilog_ams_or_digital_not_standalone_spectre",
+      "note": "Uses Verilog-AMS/digital constructs such as wreal, logic, assign, always, connectmodule/connectrules, specify/specparam, or packed logic buses that are outside this standalone Spectre Verilog-A compatibility target.",
+      "archived_path": "spectre-unsupported-tasks/417-always-async-reset-counter"
+    },
+    {
+      "task": "418-always-enable-saturating-counter",
+      "title": "Always Enable Saturating Counter",
+      "category": "verilogams_digital_mixed_semantics",
+      "tier": "ams-mixed-signal-candidate",
+      "reason": "verilog_ams_or_digital_not_standalone_spectre",
+      "note": "Uses Verilog-AMS/digital constructs such as wreal, logic, assign, always, connectmodule/connectrules, specify/specparam, or packed logic buses that are outside this standalone Spectre Verilog-A compatibility target.",
+      "archived_path": "spectre-unsupported-tasks/418-always-enable-saturating-counter"
+    },
+    {
+      "task": "419-wreal-logic-threshold-bridge",
+      "title": "Wreal Logic Threshold Bridge",
+      "category": "verilogams_digital_mixed_semantics",
+      "tier": "ams-mixed-signal-candidate",
+      "reason": "verilog_ams_or_digital_not_standalone_spectre",
+      "note": "Uses Verilog-AMS/digital constructs such as wreal, logic, assign, always, connectmodule/connectrules, specify/specparam, or packed logic buses that are outside this standalone Spectre Verilog-A compatibility target.",
+      "archived_path": "spectre-unsupported-tasks/419-wreal-logic-threshold-bridge"
+    },
+    {
+      "task": "420-mixed-analog-digital-mode-latch",
+      "title": "Mixed Analog Digital Mode Latch",
+      "category": "verilogams_digital_mixed_semantics",
+      "tier": "ams-mixed-signal-candidate",
+      "reason": "verilog_ams_or_digital_not_standalone_spectre",
+      "note": "Uses Verilog-AMS/digital constructs such as wreal, logic, assign, always, connectmodule/connectrules, specify/specparam, or packed logic buses that are outside this standalone Spectre Verilog-A compatibility target.",
+      "archived_path": "spectre-unsupported-tasks/420-mixed-analog-digital-mode-latch"
+    },
+    {
+      "task": "421-task-local-variable-transform",
+      "title": "Task Local Variable Transform",
+      "category": "veriloga_task_semantics",
+      "tier": "syntax-extension-candidate",
+      "reason": "user_task_decl_rejected_by_spectre",
+      "note": "Uses Verilog task/endtask declarations or task-style event-body composition that the current standalone Spectre Verilog-A compiler rejects.",
+      "archived_path": "spectre-unsupported-tasks/421-task-local-variable-transform"
+    },
+    {
+      "task": "433-preprocessor-ifndef-elsif-undef",
+      "title": "Preprocessor Ifndef Elsif Undef",
+      "category": "veriloga_preprocessor_control_semantics",
+      "tier": "syntax-extension-candidate",
+      "reason": "spectre_preprocessor_subset_rejected",
+      "note": "Uses an ifndef/elsif/undef directive subset rejected by the current standalone Spectre bridge.",
+      "archived_path": "spectre-unsupported-tasks/433-preprocessor-ifndef-elsif-undef"
+    },
+    {
+      "task": "449-generate-genvar-replicated-stage",
+      "title": "Generate Genvar Replicated Stage",
+      "category": "veriloga_generate_semantics",
+      "tier": "ams-mixed-signal-candidate",
+      "reason": "verilog_ams_or_digital_not_standalone_spectre",
+      "note": "Uses Verilog-AMS/digital constructs such as wreal, logic, assign, always, connectmodule/connectrules, specify/specparam, or packed logic buses that are outside this standalone Spectre Verilog-A compatibility target.",
+      "archived_path": "spectre-unsupported-tasks/449-generate-genvar-replicated-stage"
+    },
+    {
+      "task": "451-connectmodule-electrical-bridge",
+      "title": "Connectmodule Electrical Bridge",
+      "category": "verilogams_connect_semantics",
+      "tier": "syntax-extension-candidate",
+      "reason": "verilog_ams_or_digital_not_standalone_spectre",
+      "note": "Uses Verilog-AMS/digital constructs such as wreal, logic, assign, always, connectmodule/connectrules, specify/specparam, or packed logic buses that are outside this standalone Spectre Verilog-A compatibility target.",
+      "archived_path": "spectre-unsupported-tasks/451-connectmodule-electrical-bridge"
+    },
+    {
+      "task": "452-connectrules-electrical-map",
+      "title": "Connectrules Electrical Map",
+      "category": "verilogams_connect_semantics",
+      "tier": "syntax-extension-candidate",
+      "reason": "verilog_ams_or_digital_not_standalone_spectre",
+      "note": "Uses Verilog-AMS/digital constructs such as wreal, logic, assign, always, connectmodule/connectrules, specify/specparam, or packed logic buses that are outside this standalone Spectre Verilog-A compatibility target.",
+      "archived_path": "spectre-unsupported-tasks/452-connectrules-electrical-map"
+    },
+    {
+      "task": "453-specify-specparam-delay",
+      "title": "Specify Specparam Delay",
+      "category": "verilogams_specify_semantics",
+      "tier": "ams-mixed-signal-candidate",
+      "reason": "verilog_ams_or_digital_not_standalone_spectre",
+      "note": "Uses Verilog-AMS/digital constructs such as wreal, logic, assign, always, connectmodule/connectrules, specify/specparam, or packed logic buses that are outside this standalone Spectre Verilog-A compatibility target.",
+      "archived_path": "spectre-unsupported-tasks/453-specify-specparam-delay"
+    },
+    {
+      "task": "454-multidimensional-array-state",
+      "title": "Multidimensional Array State",
+      "category": "veriloga_array_semantics",
+      "tier": "syntax-extension-candidate",
+      "reason": "runtime_or_procedural_vector_indexing_rejected",
+      "note": "Uses procedural/runtime vector or electrical-node indexing patterns rejected by Spectre; static generate expansion may be legal, but these rows are not Spectre-compatible as written.",
+      "archived_path": "spectre-unsupported-tasks/454-multidimensional-array-state"
+    },
+    {
+      "task": "455-packed-logic-bus-slice",
+      "title": "Packed Logic Bus Slice",
+      "category": "verilogams_vector_semantics",
+      "tier": "ams-mixed-signal-candidate",
+      "reason": "verilog_ams_or_digital_not_standalone_spectre",
+      "note": "Uses Verilog-AMS/digital constructs such as wreal, logic, assign, always, connectmodule/connectrules, specify/specparam, or packed logic buses that are outside this standalone Spectre Verilog-A compatibility target.",
+      "archived_path": "spectre-unsupported-tasks/455-packed-logic-bus-slice"
+    },
+    {
+      "task": "458-recursive-function-candidate",
+      "title": "Recursive Function Candidate",
+      "category": "veriloga_function_semantics",
+      "tier": "syntax-extension-candidate",
+      "reason": "recursive_function_rejected",
+      "note": "Uses recursive analog/user function semantics rejected by standalone Spectre.",
+      "archived_path": "spectre-unsupported-tasks/458-recursive-function-candidate"
+    },
+    {
+      "task": "459-do-while-loop-accumulator",
+      "title": "Do While Loop Accumulator",
+      "category": "veriloga_control_flow_semantics",
+      "tier": "syntax-extension-candidate",
+      "reason": "do_while_rejected",
+      "note": "Uses do...while control flow rejected by the current standalone Spectre bridge.",
+      "archived_path": "spectre-unsupported-tasks/459-do-while-loop-accumulator"
+    },
+    {
+      "task": "490-event-task-function-state-update",
+      "title": "Event Task Function State Update",
+      "category": "veriloga_event_semantics",
+      "tier": "syntax-extension-candidate",
+      "reason": "user_task_decl_rejected_by_spectre",
+      "note": "Uses Verilog task/endtask declarations or task-style event-body composition that the current standalone Spectre Verilog-A compiler rejects.",
+      "archived_path": "spectre-unsupported-tasks/490-event-task-function-state-update"
+    },
+    {
+      "task": "052-gray-to-binary-converter-8b",
+      "title": "Gray To Binary Converter 8b",
+      "category": "testbench_utility_modules",
+      "tier": "support-formal-candidate",
+      "reason": "runtime_or_procedural_vector_indexing_rejected",
+      "note": "Uses procedural/runtime vector or electrical-node indexing patterns rejected by Spectre; static generate expansion may be legal, but these rows are not Spectre-compatible as written.",
+      "archived_path": "spectre-unsupported-tasks/052-gray-to-binary-converter-8b"
+    },
+    {
+      "task": "053-binary-to-gray-converter-8b",
+      "title": "Binary To Gray Converter 8b",
+      "category": "testbench_utility_modules",
+      "tier": "support-formal-candidate",
+      "reason": "runtime_or_procedural_vector_indexing_rejected",
+      "note": "Uses procedural/runtime vector or electrical-node indexing patterns rejected by Spectre; static generate expansion may be legal, but these rows are not Spectre-compatible as written.",
+      "archived_path": "spectre-unsupported-tasks/053-binary-to-gray-converter-8b"
+    },
+    {
+      "task": "054-onehot-to-binary-encoder-16b",
+      "title": "Onehot To Binary Encoder 16b",
+      "category": "testbench_utility_modules",
+      "tier": "support-formal-candidate",
+      "reason": "runtime_or_procedural_vector_indexing_rejected",
+      "note": "Uses procedural/runtime vector or electrical-node indexing patterns rejected by Spectre; static generate expansion may be legal, but these rows are not Spectre-compatible as written.",
+      "archived_path": "spectre-unsupported-tasks/054-onehot-to-binary-encoder-16b"
+    },
+    {
+      "task": "055-binary-to-onehot-decoder-16b",
+      "title": "Binary To Onehot Decoder 16b",
+      "category": "testbench_utility_modules",
+      "tier": "support-formal-candidate",
+      "reason": "runtime_or_procedural_vector_indexing_rejected",
+      "note": "Uses procedural/runtime vector or electrical-node indexing patterns rejected by Spectre; static generate expansion may be legal, but these rows are not Spectre-compatible as written.",
+      "archived_path": "spectre-unsupported-tasks/055-binary-to-onehot-decoder-16b"
+    },
+    {
+      "task": "056-decimal-digit-to-bcd-encoder",
+      "title": "Decimal Digit To BCD Encoder",
+      "category": "testbench_utility_modules",
+      "tier": "support-formal-candidate",
+      "reason": "runtime_or_procedural_vector_indexing_rejected",
+      "note": "Uses procedural/runtime vector or electrical-node indexing patterns rejected by Spectre; static generate expansion may be legal, but these rows are not Spectre-compatible as written.",
+      "archived_path": "spectre-unsupported-tasks/056-decimal-digit-to-bcd-encoder"
+    },
+    {
+      "task": "057-signed-magnitude-to-twos-complement-8b",
+      "title": "Signed Magnitude To Twos Complement 8b",
+      "category": "testbench_utility_modules",
+      "tier": "support-formal-candidate",
+      "reason": "runtime_or_procedural_vector_indexing_rejected",
+      "note": "Uses procedural/runtime vector or electrical-node indexing patterns rejected by Spectre; static generate expansion may be legal, but these rows are not Spectre-compatible as written.",
+      "archived_path": "spectre-unsupported-tasks/057-signed-magnitude-to-twos-complement-8b"
+    },
+    {
+      "task": "075-prbs-generator-32b-seeded",
+      "title": "PRBS Generator 32b Seeded",
+      "category": "testbench_utility_modules",
+      "tier": "support-formal-candidate",
+      "reason": "runtime_or_procedural_vector_indexing_rejected",
+      "note": "Uses procedural/runtime vector or electrical-node indexing patterns rejected by Spectre; static generate expansion may be legal, but these rows are not Spectre-compatible as written.",
+      "archived_path": "spectre-unsupported-tasks/075-prbs-generator-32b-seeded"
+    }
+  ]
+}

@@ -1,178 +1,103 @@
 # Verilog-A Language-Semantics Extension Tasks
 
-Tasks `001` through `300` remain the original certified full-300 vaBench surface.
-Tasks `301` through `494` are extension candidates added to cover behavioral
-Verilog-A and Verilog-AMS language features called out by the Cadence Verilog-A
-Language Reference and the local training material.
+The default `tasks/` tree is now the standalone-Spectre-compatible v3
+denominator:
 
-Tasks `495` through `501` are different: they are materialized data-converter
-replacement candidates, not final appended benchmark numbers. They exist at
-temporary `495+` IDs only so their assets can be reviewed and executed. If one
-of those rows is accepted as scored benchmark content, upstream should assign it
-to a replacement slot inside the original `001`-`300` surface or explicitly keep
-it outside the scored denominator. See
-`DATA_CONVERTER_REPLACEMENT_CANDIDATES.md`.
+- numbered default rows: `451`
+- unnumbered replacement candidates: `5`
+- archived Spectre-rejected rows: `54`
 
-These extension tasks keep the same behavioral boundary as the benchmark: no
-transistor-level devices and no current contribution through `I(...)`. The AMS
-rows intentionally exercise digital/mixed-signal syntax (`logic`, `wreal`,
-`assign`, `always`) because practical behavioral models often need that surface.
+Numbering is intentionally non-contiguous. The benchmark keeps the historical
+task ids, but rows that Cadence/Spectre rejects as written are archived under
+`spectre-unsupported-tasks/` and removed from `TASKS.json` and `CHECKS.yaml`.
+See `reports/spectre_unsupported_removed_20260703.md` for the exact task list
+and removal reason for each row.
 
-## Coverage Added
+This boundary is stricter than “EVAS can parse or run it”. A row belongs in the
+default denominator only if it is intended to be legal in the current
+standalone Spectre Verilog-A flow. Rows that require Verilog-AMS digital
+semantics, a digital event kernel, unsupported user-task syntax, unsupported
+runtime electrical-vector indexing, or version-gated system functions stay out
+of the default EVAS/Spectre parity score.
 
-- `301`-`305`: user-defined `function` declarations and calls.
-- `306`-`310`: `case` / `endcase` mode decoding.
-- `311`-`315`: `for` loops with small array state.
-- `316`-`320`: `final_step`, `$fopen`, `$fwrite`, `$fclose`, and `$strobe`.
-- `321`-`325`: `slew()` voltage-domain output limiting.
-- `326`-`330`: `idtmod()` wrapped phase accumulation.
-- `331`-`335`: `above()` and `last_crossing()` threshold timing.
-- `336`-`340`: compiler directives, parameter ranges, math functions,
-  deterministic `$random`, and `$bound_step`.
-- `341`-`360`: Verilog-AMS `wreal`, `logic`, continuous `assign`, edge-triggered
-  `always`, and mixed electrical/digital bridge tasks.
-- `361`-`372`: `white_noise()`, `flicker_noise()`, `noise_table()`, `analysis()`,
-  and `ac_stim()`.
-- `373`-`378`: user-defined `task` declarations and calls.
-- `379`-`384`: file-read and file-positioning helpers including `$fgets()`,
-  `$feof()`, `$fseek()`, `$ftell()`, `$rewind()`, and `$fopen()` mode handling.
-- `385`-`390`: one-dimensional `$table_model()` lookup tasks.
-- `391`-`396`: seeded random distributions: `$rdist_exponential()`,
-  `$rdist_poisson()`, `$rdist_normal()`, `$rdist_chi_square()`, `$rdist_t()`, and
-  `$rdist_erlang()`.
-- `397`-`402`: hierarchical module instantiation, named/ordered port maps, and
-  parameter override patterns.
-- `403`-`408`: bit-select, part-select, concatenation, replication, reduction,
-  and shift/mask vector expressions.
-- `409`-`414`: function-like macros, `ifdef` selection, escaped identifiers,
-  combined `initial_step`/`final_step`, `while` loops, and parameter ranges.
-- `415`-`420`: additional digital/mixed-signal vector, reduction, `always`,
-  `wreal`, and electrical-to-logic bridge rows.
-- `421`-`434`: explicit gap-fill rows for task-local variables, `$fscanf()`,
-  combined file replay, string formatting with `$swrite()` / `$sformat()`,
-  seed reproducibility, staged hierarchy, `ifndef` / `elsif` / `undef`, and
-  `repeat` loops.
-- `435`-`458`: manual syntax-completion rows for `ddt()`, `idt()`, Laplace
-  filters, Z-domain filters, `limexp()`, `$fstrobe()`, system output calls,
-  `$rdist_uniform()`, `generate` / `genvar`, custom nature/discipline,
-  `connectmodule` / `connectrules`, `specify` / `specparam`, multi-dimensional
-  arrays, packed bus declarations, analog event-or expressions, nested
-  functions, and recursive function candidates.
-- `459`: explicit `do ... while` control-flow candidate.
-- `460`-`470`: course-material gap-fill rows for `analog initial`, `$vt`,
-  `$discontinuity`, `$param_given()`, `$port_connected()`, `$temperature`,
-  `$simparam()`, explicit `branch` declarations, and `I(...)` current
-  contribution syntax.
-- `471`-`494`: LRM gap-fill rows for indirect branch assignments,
-  attribute/access functions, OOMR and alias helpers, inherited port/m-factor
-  attributes, analog primitive instantiation, Cadence assert/conversion/Monte
-  Carlo/RF helpers, 2D/string `$table_model()`, deeper analog event
-  expressions, KCL `ddt`/`idt` current/voltage forms, and explicit
-  continuous-time Laplace/Z-domain tier rows.
-- `495`-`501`: materialized data-converter replacement candidates. These are
-  not language-extension rows and are not final scored benchmark numbering.
+## Default Coverage
 
-Each `301+` staging row currently contains:
+Rows `001`-`300` remain the original behavior-certified surface except for
+seven converter/vector rows (`052`-`057`, `075`) that Spectre rejects because of
+procedural vector/electrical indexing patterns. Those assets are archived, not
+deleted.
 
-- `instruction.md`
-- `solution/`
-- `starter/`
-- `test_visible/`
-- `test_hidden/`
-- `test_harness/visible_hidden_manifest.json`
-- five concrete negative variants under `negative_variants/`
+Rows `301+` are language-extension candidates. The retained default rows cover
+these Verilog-A-oriented surfaces:
+
+- user-defined function declarations and calls
+- `case` / `endcase` decoding
+- `for`, `while`, and `repeat` loops that do not rely on Spectre-rejected
+  runtime electrical indexing
+- `initial_step`, `final_step`, `$fopen`, `$fwrite`, `$fclose`, `$fgets`,
+  `$fscanf`, `$feof`, `$fseek`, `$ftell`, and `$rewind`
+- `slew()`, `idtmod()`, `above()`, `last_crossing()`, `limexp()`, and selected
+  continuous-time/KCL syntax rows that remain in the Verilog-A lane
+- compiler directives and macro rows accepted by the current Spectre bridge
+- parameter ranges, math functions, deterministic `$random`, seeded random
+  helper rows that Spectre accepts, and `$bound_step`
+- `white_noise()`, `flicker_noise()`, `noise_table()`, `analysis()`, and
+  `ac_stim()` transient-compatible helper contracts
+- one-dimensional and selected multi-dimensional `$table_model()` rows
+- hierarchical module instantiation, named/ordered port maps, parameter
+  overrides, and staged support artifacts
+- scalar/vector arithmetic expressions that Spectre accepts as written
+- string formatting/output rows that remain intended for Spectre-compatible
+  syntax after audit cleanup
+- Cadence helper calls such as `$vt`, `$temperature`, `$simparam()`,
+  `$param_given()`, `$port_connected()`, conversion helpers, Monte Carlo/RF
+  helper candidates, branch declarations, indirect branch syntax, and selected
+  analog primitive/current-contribution rows
+
+Default membership does not mean every retained extension row already has a
+final passing Spectre behavior certificate. It means the row is not currently
+classified as categorically outside standalone Spectre. Remaining Spectre
+failures in retained rows should be treated as benchmark rewrites or
+case-by-case EVAS/Spectre audit items, not as reasons to count unsupported
+syntax in the default denominator.
+
+## Archived Rows
+
+The 54 archived rows fall into these groups:
+
+- Verilog-AMS/digital constructs outside standalone Spectre Verilog-A:
+  `wreal`, `logic`, continuous `assign`, edge-triggered `always`,
+  `connectmodule`, `connectrules`, `specify`, `specparam`, and packed logic
+  bus rows.
+- User `task` / `endtask` rows rejected by the current standalone Spectre
+  compiler.
+- Procedural or runtime vector/electrical indexing rows rejected by Spectre;
+  static generate-style expansion is a separate, more constrained question.
+- `$rdist_chi_square()` and `$rdist_t()` rows rejected by the current Spectre
+  environment and therefore requiring version-gating before promotion.
+- A small set of recursive-function, `do ... while`, and preprocessor-subset
+  rows rejected by the current Spectre bridge.
+
+Archived rows are preserved for future AMS/digital suites, version-gated
+extensions, or deliberate EVAS extension-mode tests. They are not part of the
+current default Spectre-compatible benchmark score.
 
 ## Certification Boundary
 
-The `301+` staging rows are marked as candidate rows in `TASKS.json` and
-`CHECKS.yaml`. They are not part of the original full-300 certification claim.
-Before any paper-facing full-suite claim, promote only the rows whose reference
-solutions, hidden checks, and five negative variants are behavior-certified.
+The original full-300 behavior claim should be read with the archived-row note
+above: seven historical support/vector rows are no longer in the default
+Spectre-compatible denominator because Spectre rejects their syntax as written.
 
-Re-run the SOP audit for this staging layer with:
+For the retained extension layer, continue to separate these claims:
 
-```bash
-python3 benchmark-vabench-release-v3/scripts/audit_v3_extension_sop.py
-```
+- repository behavior-checker evidence
+- EVAS Python/Rust execution evidence
+- Spectre visible/hidden execution evidence
+- continuous-time accuracy claims
+- KCL/MNA solver claims
 
-As of 2026-07-02, the SOP audit covers the `301`-`501` staging layer, including
-`301`-`494` language-extension rows and seven materialized data-converter
-replacement candidates at `495`-`501`. The generated report still uses
-historical extension terminology for the whole staging layer and reports:
-
-- audited staging tasks: `201`
-- SOP-ready staging tasks: `201`
-- rows with executable visible+hidden SCS evidence: `201`
-- rows with behavior-checker evidence: `201`
-
-The current extension layer has no SOP blocker issues. Each extension row has a
-public required-behavior contract, executable visible and hidden SCS benches,
-repository `sim_correct` evidence, and five concrete negative variants that are
-rejected by the behavior checker.
-
-The same boundary is confirmed by local EVAS simulation using the Python
-engine. The gold/negative verification script is layer-aware by default: it
-runs only tasks with a `sim_correct:` behavior contract and reports syntax,
-continuous-time, KCL, and AMS-staged tasks as skipped unless `--include-staged`
-is explicitly requested for diagnosis.
-
-```bash
-PYTHONPATH=runners VAEVAS_DEFAULT_EVAS_ENGINE=python \
-  VAEVAS_EVAS_PERSISTENT_WORKER=0 \
-  PATH="$PWD/.venv-evas/bin:$PATH" \
-  .venv-evas/bin/python scripts/run_v3_gold_negative_verification.py \
-  --start 301 --end 501 --timeout 180 --jobs 4 --include-staged \
-  --out benchmark-vabench-release-v3/reports/verify_301_501_layered.json
-```
-
-The current `301`-`501` local EVAS run reports `201/201` staging-layer gold
-rows pass, `1005/1005` negative rows rejected, and `0` expectation failures.
-These rows remain outside the original full-300 denominator unless a later
-upstream decision assigns a replacement candidate to a `001`-`300` benchmark
-slot. Targeted Cadence/Spectre bridge validation for `498`-`501` reports visible
-gold `4/4` pass, hidden gold `4/4` pass, and hidden negative variants `20/20`
-rejected. AHDL log triage found no task-level `AHDLLINT-*` messages or AHDL
-compile errors for those replacement candidates; only the global `VACOMP-2435`
-environment-variable deprecation warning appears.
-
-Current local EVAS compile status after this expansion:
-
-- `001`-`300`: unchanged original benchmark surface.
-- `301`-`459`: extension reference solutions currently parse and compile with
-  local EVAS.
-- `435`-`445`, `451`, `454`, and `458`: previously tracked as unsupported, but
-  now compile with current local EVAS.
-- `461`, `463`, `466`, `468`, `469`, and `470`: course-material gap-fill rows
-  that currently compile with local EVAS.
-- `460`, `462`, `464`, `465`, and `467`: course-material environment
-  helper rows that now compile with current local EVAS.
-- `471`-`494`: newly added LRM gap-fill rows; all reference solutions now
-  compile and pass their repository behavior checks.
-- `495`-`501`: materialized Cadence-derived data-converter replacement
-  candidates; all reference solutions now compile and pass their repository
-  behavior checks, but final numbering/counting remains an upstream replacement
-  decision.
-- `471`, `472`, `493`, and `494`: behavioral continuous-time candidates;
-  these are compile-supported language rows, not full dynamic-solver accuracy
-  claims.
-- `469`, `470`, `481`, `482`, `491`, and `492`: KCL/current-contribution or
-  analog-primitive rows certify observable branch-current/primitive behavior
-  only; they are not full unknown-node KCL/MNA claims.
-- `367`, `368`, `369`, `370`, and `372` were adjusted so `transition()` is no
-  longer inside conditionally executed `analysis()` branches.
-
-## Remaining Language Gaps Worth Tracking
-
-Upstream EVAS issues #35 and #36 are closed. The extension rows are now
-behavior-certified for their layer-specific transient/checker contracts, but
-the benchmark still intentionally separates those contracts from broader analog
-solver claims.
-
-The newly added rows avoid current-domain KCL and still leave some manual
-features as future work:
-
-- broader analog-solver accuracy for arbitrary continuous-time transfer
-  functions beyond the finite task contracts.
-- true unknown-node MNA/KCL solving beyond observable branch-current contracts.
-- AC/noise analysis semantics beyond the transient helper contracts currently
-  certified here.
+Continuous-time rows such as `ddt`, `idt`, Laplace, Z-domain, and `limexp`
+remain a separate tier from event-style behavioral rows. KCL/current rows remain
+a separate tier from pure voltage/event helper rows. Do not collapse those
+layers into one “full behavior-certified” statement without matching Spectre
+and checker evidence.
