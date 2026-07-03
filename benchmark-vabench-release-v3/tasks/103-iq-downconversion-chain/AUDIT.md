@@ -1,22 +1,42 @@
-# Honest SOP Audit: Task 103 IQ Downconversion Chain
+# Two-Gate Audit: Task 103 IQ Downconversion Chain
 
-## Scope
+## Gate 1: Admission
 
-Task boundary is one primary Verilog-A DUT artifact, `iq_downconversion_chain.va`, migrated from `vbr1_l2_iq_downconversion_chain:tb`, plus the original EVAS/Spectre-compatible `.scs` transient scenario. Companion Verilog-A files listed in the top-level `TASKS.json` index are supplied by the harness when needed by the original system testbench.
+- Label: `l2_core_ready`.
+- Human-review status: proposed for retention as an RF/AFE I/Q downconversion
+  L2 row.
+- Function boundary: a composed receiver macromodel with quadrature LO phase
+  sequencing, I/Q LO monitors, two mixer paths, bounded I/Q baseband
+  observables, and a phase monitor.
+- Duplicate check: distinct from the single mixer row because it evaluates a
+  four-state quadrature chain with two mixer paths and I/Q observability rather
+  than one polarity-controlled baseband output.
 
-## Four Standards
+## Gate 2: Modeling And Evidence
 
-- Useful scenario: accepted. The module is a reusable behavioral Verilog-A block or flow component with a concrete transient use case.
-- Reasonable task: accepted for this migration slice. The public prompt names the target artifact, interface, and behavior context.
-- Complete tests: accepted for current v3 smoke. Hidden gold passes and `neg_001_zero` is non-full-credit; further hand-authored negatives can still strengthen release evidence.
-- Fair evaluation: accepted for current v3 smoke. The checker is bound through the v3 alias and the hidden behavior is covered by the public prompt context.
+- Status: `cadence_modeling_ready`.
+- Prompt hygiene: public prompt now states the DUT interface and observable I/Q
+  chain behavior directly. Migration history, hidden-evaluator wording, and
+  testbench-generation text were removed.
+- Cadence/Verilog-A correspondence: the model uses event-updated phase state,
+  voltage-coded I/Q monitor outputs, bounded mixer targets, and `transition()`
+  smoothing. Stored quadrature phase is documented as transient behavioral
+  state, not a Spectre RF/PSS claim.
+- Visible/hidden coverage: hidden stimulus now differs from visible by RF
+  envelope levels while still exercising positive I, positive Q, negative I,
+  negative Q, and common-mode return windows.
+- Checker strength: checker requires positive and negative quadrature output
+  windows, four-state phase monitor ordering, I/Q LO polarity monitors, mixer
+  monitor polarity and common-mode return when the input envelope returns to
+  common mode.
+- Negatives: 5/5 concrete variants reject behaviorally under EVAS.
+- EVAS evidence: hidden gold PASS; concrete negatives 5/5 rejected with
+  `FAIL_SIM_CORRECTNESS`.
+- Spectre evidence: hidden gold PASS under the RF/AFE remaining review rerun.
+- AHDL lint status: EVAS AHDL-like lint preflight PASS with zero diagnostics.
 
-## Checker And Evidence
+## Residual Risk
 
-- Source checker id: `vbr1_l2_iq_downconversion_chain_tb`
-- EVAS 0.4.5 hidden gold smoke: PASS
-- Concrete negative `neg_001_zero`: non-full-credit
-
-## Remaining Risk
-
-Initial migration artifact. Do not count this task in a final release surface until gold smoke and negative evidence are attached.
+Spectre negatives were not rerun for every concrete negative variant in this
+category closeout. The row is a transient voltage-domain behavioral I/Q
+downconversion chain, not a transistor-level RF receiver or RF/PSS-ready model.

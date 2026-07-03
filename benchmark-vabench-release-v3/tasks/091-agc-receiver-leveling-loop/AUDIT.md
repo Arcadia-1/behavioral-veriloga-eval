@@ -1,22 +1,41 @@
-# Honest SOP Audit: Task 091 AGC Receiver Leveling Loop
+# Two-Gate Audit: Task 091 AGC Receiver Leveling Loop
 
-## Scope
+## Gate 1: Admission
 
-Task boundary is one primary Verilog-A DUT artifact, `agc_receiver_leveling_loop.va`, migrated from `vbr1_l2_agc_receiver_leveling_loop:tb`, plus the original EVAS/Spectre-compatible `.scs` transient scenario. Companion Verilog-A files listed in the top-level `TASKS.json` index are supplied by the harness when needed by the original system testbench.
+- Label: `l2_core_ready`.
+- Human-review status: proposed for retention as an RF/AFE receiver-control L2
+  row.
+- Function boundary: a composed AGC receiver macromodel combining receiver gain
+  path, output-envelope/RSSI observation, gain-control update, bounded output,
+  and lock/target metric.
+- Duplicate check: distinct from simple gain/limiter rows because the behavior
+  is closed-loop gain reduction and settling toward a target amplitude, not a
+  static gain or compression transfer curve.
 
-## Four Standards
+## Gate 2: Modeling And Evidence
 
-- Useful scenario: accepted. The module is a reusable behavioral Verilog-A block or flow component with a concrete transient use case.
-- Reasonable task: accepted for this migration slice. The public prompt names the target artifact, interface, and behavior context.
-- Complete tests: accepted for current v3 smoke. Hidden gold passes and `neg_001_zero` is non-full-credit; further hand-authored negatives can still strengthen release evidence.
-- Fair evaluation: accepted for current v3 smoke. The checker is bound through the v3 alias and the hidden behavior is covered by the public prompt context.
+- Status: `cadence_modeling_ready`.
+- Prompt hygiene: public prompt now states the DUT interface and observable AGC
+  behavior directly. Migration history, hidden-evaluator wording, and
+  testbench-generation text were removed.
+- Cadence/Verilog-A correspondence: the model uses event-updated state on the
+  gain-control clock, explicit reset initialization, bounded monitor variables,
+  and `transition()` smoothing for output contributions. Stored state is
+  documented as transient behavioral state, not a Spectre RF/PSS claim.
+- Visible/hidden coverage: hidden stimulus now differs from visible by reset
+  release timing and input-envelope levels while still exercising low-input,
+  overload, and settled-gain windows.
+- Checker strength: checker requires small-signal amplification, overload
+  response, gain-monitor reduction, RSSI overload sensitivity, settled output
+  amplitude, and metric assertion near target.
+- Negatives: 5/5 concrete variants reject behaviorally under EVAS.
+- EVAS evidence: hidden gold PASS; concrete negatives 5/5 rejected with
+  `FAIL_SIM_CORRECTNESS`.
+- Spectre evidence: hidden gold PASS under the RF/AFE remaining review rerun.
+- AHDL lint status: EVAS AHDL-like lint preflight PASS with zero diagnostics.
 
-## Checker And Evidence
+## Residual Risk
 
-- Source checker id: `vbr1_l2_agc_receiver_leveling_loop_tb`
-- EVAS 0.4.5 hidden gold smoke: PASS
-- Concrete negative `neg_001_zero`: non-full-credit
-
-## Remaining Risk
-
-Initial migration artifact. Do not count this task in a final release surface until gold smoke and negative evidence are attached.
+Spectre negatives were not rerun for every concrete negative variant in this
+category closeout. The row is a transient voltage-domain behavioral receiver
+subsystem, not a transistor-level AGC implementation or RF/PSS-ready model.

@@ -9,6 +9,9 @@ parameter real tr = 80p;
 parameter real vth = 0.45;
 parameter real conv_gain = 1.25;
 
-    // TODO: implement the behavior described in visible/prompt.md.
-    // This starter is intentionally incomplete; hidden tests grade behavior.
+analog begin
+    V(out) <+ transition(0.45, 0, tr, tr);
+    V(metric) <+ transition(0.0, 0, tr, tr);
+end
+
 endmodule

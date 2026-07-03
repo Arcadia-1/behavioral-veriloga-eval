@@ -704,9 +704,9 @@
       - "trim_clamped_to_range"
   parity:
     reference: "spectre"
-    status: "pending_until_evas_spectre_rerun"
+    status: "pass"
     notes:
-      - "Designed release source; no imported historical EVAS/Spectre dual evidence yet."
+      - "Fresh RF/AFE remaining review evidence: EVAS hidden gold PASS, EVAS negatives rejected 5/5, Spectre hidden gold PASS, and EVAS AHDL-like lint has zero diagnostics."
 024-charge-pump-abstraction: |
   syntax:
     must_include:
@@ -2276,11 +2276,13 @@
 091-agc-receiver-leveling-loop: |
   syntax:
     must_include:
-      - "tran"
-      - "save"
+      - "@(cross("
+      - "transition("
     must_not_include:
       - "I("
       - "ddt("
+  dut_companion_role: "l2_receiver_control_subsystem"
+  strong_benchmark_claim: true
   dut_compile:
     backend: "evas"
   tb_compile:
@@ -2294,9 +2296,9 @@
       - "gain_monitor_decreases_after_high_rssi"
   parity:
     reference: "spectre"
-    status: "pending_fresh_dual_rerun"
+    status: "pass"
     notes:
-      - "Fresh dual rerun required after adding gain_mon/rssi_mon intermediate observability."
+      - "Fresh RF/AFE remaining review evidence: EVAS hidden gold PASS, EVAS negatives rejected 5/5, Spectre hidden gold PASS, and EVAS AHDL-like lint has zero diagnostics."
 092-amplifier-filter-chain: |
   syntax:
     must_include:
@@ -2570,11 +2572,13 @@
 103-iq-downconversion-chain: |
   syntax:
     must_include:
-      - "tran"
-      - "save"
+      - "@(cross("
+      - "transition("
     must_not_include:
       - "I("
       - "ddt("
+  dut_companion_role: "l2_iq_downconversion_subsystem"
+  strong_benchmark_claim: true
   dut_compile:
     backend: "evas"
   tb_compile:
@@ -2589,9 +2593,9 @@
       - "common_mode_hold_when_input_centered"
   parity:
     reference: "spectre"
-    status: "certified"
+    status: "pass"
     notes:
-      - "Current release dual_certification report certifies this form as EVAS/Spectre pass; rerun is required after checker/gold behavior changes."
+      - "Fresh RF/AFE remaining review evidence: EVAS hidden gold PASS, EVAS negatives rejected 5/5, Spectre hidden gold PASS, and EVAS AHDL-like lint has zero diagnostics."
 104-ldo-load-step-recovery: |
   syntax:
     must_include:

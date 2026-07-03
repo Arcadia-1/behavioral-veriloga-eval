@@ -1,13 +1,30 @@
 {
-  "task_id": "v3_091_agc_receiver_leveling_loop",
-  "source_task": "vbr1_l2_agc_receiver_leveling_loop",
-  "source_form": "tb",
-  "source_checker_id": "vbr1_l2_agc_receiver_leveling_loop_tb",
-  "primary_target": "agc_receiver_leveling_loop.va",
-  "artifact_targets": [
-    "agc_receiver_leveling_loop.va"
-  ],
-  "hidden_testbench": "tb_agc_receiver_leveling_loop.scs",
-  "visible_smoke": "tb_visible_smoke.scs",
-  "status": "initial_migration_pending_negative_audit"
+  "certification": {
+    "scope": "EVAS hidden gold, EVAS negative recertification, EVAS AHDL-like lint, Spectre hidden gold, and visible/hidden coverage evidence tracked in AUDIT.md",
+    "status": "cadence_modeling_ready"
+  },
+  "form": "dut",
+  "hidden": {
+    "checker": "../../../CHECKS.yaml",
+    "gold": [
+      "solution/agc_receiver_leveling_loop.va"
+    ],
+    "negative_variants": "negative_variants",
+    "testbenches": [
+      "test_hidden/hidden.scs",
+      "test_hidden/tests/tb_agc_receiver_leveling_loop.scs"
+    ]
+  },
+  "status": "v3_candidate",
+  "task": "091-agc-receiver-leveling-loop",
+  "visible": {
+    "instruction": "instruction.md",
+    "public_smoke": {
+      "hidden_dependency": false,
+      "testbench": "test_visible/tests/tb_visible_smoke.scs"
+    },
+    "starter_files": [
+      "starter/agc_receiver_leveling_loop.va"
+    ]
+  }
 }

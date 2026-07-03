@@ -1,59 +1,44 @@
 # IQ Downconversion Chain
 
-Implement `iq_downconversion_chain.va` in Verilog-A.
+Implement a voltage-domain I/Q downconversion receiver macromodel.
 
-## Interface
+## Public Interface
 
-```verilog
-module iq_downconversion_chain(clk, rst, vin, out, metric, lo_i, lo_q, mix_i, mix_q, phase_mon);
-```
+Declare module `iq_downconversion_chain` with positional ports `clk, rst, vin,
+out, metric, lo_i, lo_q, mix_i, mix_q, phase_mon`. All ports are electrical.
 
-## Required Behavior
+`clk` advances the quadrature LO phase, `rst` is an active-high voltage-coded
+reset, `vin` is the RF input envelope centered around common mode, `out` is the
+I-path baseband output, `metric` is the Q-path baseband output, `lo_i` and
+`lo_q` expose voltage-coded I/Q LO polarity, `mix_i` and `mix_q` expose the
+corresponding bounded mixer outputs, and `phase_mon` exposes the quadrature
+phase state.
 
-This task asks for the `iq_downconversion_chain` behavioral module, not a Spectre testbench. The hidden evaluator instantiates this module in the original `vbr1_l2_iq_downconversion_chain` transient scenario and checks the saved waveform/metric behavior with EVAS.
+## Public Parameter Contract
 
-Original public behavior context:
+Provide these overrideable public parameters:
 
-### I/Q downconversion chain (tb-generation)
+- `tr = 80p`: transition time used for smoothed voltage contributions.
+- `vth = 0.45 V`: threshold for voltage-coded logic decisions.
 
-Write a Spectre transient testbench for the described behavioral Verilog-A module.
+## Functional Contract
 
-Behavioral intent:
+On reset, return the I/Q outputs and mixer monitors to the 0.45 V common-mode
+level and initialize the quadrature phase monitor. After reset releases,
+advance a four-state quadrature LO sequence on rising clock crossings. The I
+and Q LO monitors should represent the expected quadrature polarity sequence.
+The mixer monitors should apply the corresponding I or Q LO coefficient to the
+input-envelope deviation from common mode and remain bounded in the 0 V to
+0.9 V signal range. `out` should follow the I-path baseband behavior, `metric`
+should follow the Q-path baseband behavior, and both baseband outputs should
+settle back near common mode when the input returns to common mode.
 
-Compose quadrature LO sequencing, two mixer paths, and baseband I/Q observables in a voltage-domain receiver chain.
+## Modeling Constraints
 
-Module name: `iq_downconversion_chain`.
-Domain: pure voltage-domain behavioral Verilog-A.
-Do not use current contributions, transistor-level devices, AC/noise analysis,
-or KCL/KVL solving assumptions.
-
-This is a voltage-domain RF/AFE behavioral macromodel task. Model observable gain, compression, LO polarity, RSSI, limiting, AGC, or I/Q baseband behavior with event-driven voltage states. Do not implement transistor RF physics, S-parameters, current-domain loads, communication modem algorithms, or full link-level decoding.
-
-Public port contract:
-
-```verilog
-module iq_downconversion_chain(clk, rst, vin, out, metric, lo_i, lo_q, mix_i, mix_q, phase_mon);
-input clk, rst, vin;
-output out, metric, lo_i, lo_q, mix_i, mix_q, phase_mon;
-electrical clk, rst, vin, out, metric, lo_i, lo_q, mix_i, mix_q, phase_mon;
-```
-
-Signal contract:
-
-clk is the quadrature LO phase-advance clock and rst is voltage-coded reset. vin is the RF input envelope around 0.45 V common mode. phase_mon exposes the four-phase LO state, lo_i and lo_q expose voltage-coded I/Q LO polarity, mix_i and mix_q expose bounded mixer outputs, out is the I-path baseband observable, and metric is the Q-path baseband observable.
-
-Saved waveform columns:
-
-```text
-clk rst vin out metric lo_i lo_q mix_i mix_q phase_mon
-```
-
-Public transient contract:
-
-```spectre
-tran tran stop=80n maxstep=0.5n
-```
-
-Use voltage-coded logic with a 0.45 V threshold where applicable, drive high logic outputs near 0.9 V and low outputs near 0 V, and keep the model pure behavioral Verilog-A. Do not use transistor-level devices, AC/noise analysis, hidden checker logic, or simulator-private side channels.
-
-Only the target artifact is graded as the candidate implementation; companion Verilog-A files listed by the testbench are supplied by the harness for this task.
+Return only `iq_downconversion_chain.va`. Use voltage contributions only. Use
+event-updated behavioral state on the clock edge and `transition(...)`
+smoothing for output contributions. Do not modify or emit the support
+testbench, add checker logic, hard-code private waveform sample points, add
+simulator-private side channels, use current contributions, transistor-level
+devices, S-parameters, AC/noise-analysis behavior, communication modem
+algorithms, or full link-level decoding.
