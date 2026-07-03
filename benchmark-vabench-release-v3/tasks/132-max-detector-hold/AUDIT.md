@@ -1,11 +1,9 @@
-# Max Detector Hold Audit
+# Source Max Detector Hold Audit
 
-- Gate 1: `independent_l1_ready`. Retain as a stateful analog peak/max detector
-  utility. Cadence Verilog-A course notes include max/min detector and
-  sample/hold patterns as real behavioral-modeling idioms.
-- Duplicate review: distinct from sample-and-hold rows because the state updates
-  whenever the input exceeds the retained maximum, not only on an external clock.
-- Gate 2: public prompt now uses the mandatory v3 instruction shape and exposes
-  initialization, monotone hold behavior, and direct voltage-domain output.
-- Validation focus: stable samples check rising updates and hold-through-falling
-  behavior, with an additional monotonic held-maximum check.
+- Source: `hexy/maxDetector.va`
+- Scenario: peak/max voltage detector with monotonic hold output.
+- Import status: certified only after visible compile, EVAS hidden semantic check, Spectre AX hidden semantic check, and EVAS/Spectre parity pass.
+- Evaluation: stable semantic samples from `tran.csv`; raw simulator timestep equality is not used.
+- Evidence:
+  - `WORK/source-import-batch4-evas/132-max-detector-hold`
+  - `WORK/source-import-batch4-spectre/132-max-detector-hold`

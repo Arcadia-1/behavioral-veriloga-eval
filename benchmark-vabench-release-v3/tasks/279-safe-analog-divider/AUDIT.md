@@ -1,15 +1,9 @@
-# Safe Analog Divider Audit
+# Source Safe Analog Divider Audit
 
-- Gate 1: `hard_duplicate_rewrite_or_remove` / support policy candidate. This
-  row is valid Verilog-A, but it should not be counted separately together with
-  `150-safe-voltage-divider`; both implement a guarded analog quotient with
-  sign-sensitive denominator clamping.
-- Current disposition: keep as historical/support material unless upstream
-  chooses it as the representative safe-divider row. This review retains 150 as
-  the canonical scored representative because it already has a positive-range
-  denominator parameter and a more general mixed-signal utility placement.
-- Gate 2: public prompt now uses the mandatory v3 instruction shape and exposes
-  the same denominator-clamp contract as 150, with this row's artifact name and
-  default `min_sigdenom`.
-- Validation focus: stable samples cover normal division and positive/negative
-  clamp branches.
+- Source: `wangx/divider.va` from the exact-deduplicated historical Verilog-A corpus.
+- Scenario: Implement a guarded voltage divider. OUT equals NUM/DEN, except small-magnitude denominators are clamped to +/-0.2 V with the original sign.
+- Import status: certified only after visible compile, EVAS hidden semantic check, Spectre AX hidden semantic check, EVAS/Spectre parity pass, and negative variant rejection.
+- Evaluation: stable sampled behavior from `tran.csv`; raw simulator timestep equality is not used.
+- Evidence:
+  - `WORK/source-import-batch31-evas/279-safe-analog-divider`
+  - `WORK/source-import-batch31-spectre/279-safe-analog-divider`

@@ -1,13 +1,9 @@
-# Safe Voltage Divider Audit
+# Source Safe Voltage Divider Audit
 
-- Gate 1: `independent_l1_ready` as the canonical safe-divider representative
-  in this review. Retain this row over `279-safe-analog-divider` if the scored
-  set keeps only one guarded voltage divider.
-- Duplicate review: `279-safe-analog-divider` implements the same function with
-  a different default clamp magnitude and artifact name. Different defaults are
-  not enough for independent benchmark credit.
-- Gate 2: public prompt now uses the mandatory v3 instruction shape and exposes
-  `gain`, positive `min_sigdenom`, sign-sensitive denominator clamping, and
-  deterministic voltage-domain quotient behavior.
-- Validation focus: stable samples include unclamped and clamped denominator cases;
-  negatives cover zero, wrong sign/clamp, and scaling failures.
+- Source: `wangx/divider.va`
+- Scenario: bounded denominator division for behavioral arithmetic.
+- Import status: certified only after visible compile, EVAS hidden semantic check, Spectre AX hidden semantic check, and EVAS/Spectre parity pass.
+- Evaluation: stable analog samples from `tran.csv`; raw simulator timestep equality is not used.
+- Evidence:
+  - `WORK/source-import-batch7-evas/150-safe-voltage-divider`
+  - `WORK/source-import-batch7-spectre/150-safe-voltage-divider`

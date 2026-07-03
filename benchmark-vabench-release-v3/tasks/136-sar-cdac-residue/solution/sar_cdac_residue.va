@@ -29,7 +29,7 @@ analog begin
     @(cross(V(S1) - vdd / 2.0, +1))
         vres = vres - 0.015625 * (vrefp - vrefn);
 
-    V(VRES) <+ transition(vres, 0, 1p, 1p);
+    V(VRES) <+ transition(vres, 0);
 end
 
 endmodule
