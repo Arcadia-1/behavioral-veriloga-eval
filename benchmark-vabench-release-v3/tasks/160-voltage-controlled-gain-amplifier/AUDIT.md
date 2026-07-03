@@ -1,9 +1,8 @@
-# Source Voltage Controlled Gain Amplifier Audit
+# Voltage Controlled Gain Amplifier Audit
 
-- Source: `wangx/vc_vg_diffamp.va`
-- Scenario: voltage-controlled differential gain block with output rails.
-- Import status: certified only after visible compile, EVAS hidden semantic check, Spectre AX hidden semantic check, and EVAS/Spectre parity pass.
-- Evaluation: stable analog samples from `tran.csv`; raw simulator timestep equality is not used.
-- Evidence:
-  - `WORK/source-import-batch8-evas/160-voltage-controlled-gain-amplifier`
-  - `WORK/source-import-batch8-spectre/160-voltage-controlled-gain-amplifier`
+- Gate 1 counting status: duplicate-risk L1 candidate. It is a valid unipolar voltage-controlled gain block, but functionally overlaps strongly with `159-variable-gain-differential-amplifier` and `280-vargain-diffamp-clip`.
+- Recommended counting treatment: retain only if the benchmark set wants a unipolar output-range VCA variant; otherwise prefer `280` as the more parameterized canonical variable-gain differential clip task.
+- Gate 2 modeling status: prompt now exposes differential input/control roles, input offset, output midpoint, unipolar clamp range, and voltage-domain boundary.
+- Checker status: stable sampled waveform checks cover input offset, differential control, midpoint, and clamp behavior.
+- Cadence reference anchor: voltage-domain gain/control macromodels with explicit limiting.
+- Current validation status: 2026-07-03 rerun passed EVAS hidden gold, EVAS negative rejection, visible smoke, EVAS AHDL-like lint, and Spectre hidden gold.

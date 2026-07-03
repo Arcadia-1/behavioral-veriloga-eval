@@ -3157,6 +3157,13 @@
   checker:
     task_id: v3_attenuator_gain
     metric: stable_samples
+  sim_correct:
+    checks:
+      - db_attenuation_to_linear_gain
+      - input_waveform_scaled_without_offset
+    public_observables:
+      - vin
+      - vout
   scoring:
     axes:
       - dut_compile
@@ -3211,6 +3218,18 @@
   checker:
     task_id: v3_limiter_rails
     metric: stable_samples
+  sim_correct:
+    checks:
+      - passes_input_inside_supply_window
+      - clamps_to_upper_headroom_limit
+      - clamps_to_lower_headroom_limit
+    public_observables:
+      - vdd
+      - vss
+      - vin
+      - vmax
+      - vmin
+      - vout
   scoring:
     axes:
       - dut_compile
@@ -3229,6 +3248,13 @@
   checker:
     task_id: v3_offset_gain_amplifier
     metric: stable_samples
+  sim_correct:
+    checks:
+      - subtracts_input_offset_before_gain
+      - applies_fixed_voltage_gain
+    public_observables:
+      - sigin
+      - sigout
   scoring:
     axes:
       - dut_compile
@@ -3256,6 +3282,17 @@
   checker:
     task_id: v3_differential_gain_driver
     metric: stable_samples
+  sim_correct:
+    checks:
+      - converts_input_differential_to_output_differential
+      - splits_output_swing_symmetrically_around_reference
+      - preserves_differential_polarity
+    public_observables:
+      - sigin_p
+      - sigin_n
+      - sigout_p
+      - sigout_n
+      - sigref
   scoring:
     axes:
       - dut_compile
@@ -3265,6 +3302,15 @@
   checker:
     task_id: v3_limiting_differential_amplifier
     metric: stable_samples
+  sim_correct:
+    checks:
+      - subtracts_input_offset_before_gain
+      - centers_output_at_rail_midpoint
+      - clamps_output_to_parameterized_rails
+    public_observables:
+      - sigin_p
+      - sigin_n
+      - sigout
   scoring:
     axes:
       - dut_compile
@@ -3292,6 +3338,15 @@
   checker:
     task_id: v3_differential_amplifier_core
     metric: stable_samples
+  sim_correct:
+    checks:
+      - reads_true_differential_input
+      - subtracts_input_referred_offset
+      - applies_fixed_voltage_gain
+    public_observables:
+      - sigin_p
+      - sigin_n
+      - sigout
   scoring:
     axes:
       - dut_compile
@@ -3301,6 +3356,15 @@
   checker:
     task_id: v3_logarithmic_amplifier
     metric: stable_samples
+  sim_correct:
+    checks:
+      - subtracts_input_offset
+      - uses_absolute_value_before_log
+      - floors_log_argument_for_domain_guard
+      - outputs_natural_logarithm
+    public_observables:
+      - sigin
+      - sigout
   scoring:
     axes:
       - dut_compile
@@ -3319,6 +3383,17 @@
   checker:
     task_id: v3_variable_gain_differential_amplifier
     metric: stable_samples
+  sim_correct:
+    checks:
+      - multiplies_differential_input_by_differential_control
+      - applies_output_midpoint
+      - clamps_output_to_fixed_window
+    public_observables:
+      - sigin_p
+      - sigin_n
+      - sigctrl_p
+      - sigctrl_n
+      - sigout
   scoring:
     axes:
       - dut_compile
@@ -3328,6 +3403,18 @@
   checker:
     task_id: v3_voltage_controlled_gain_amplifier
     metric: stable_samples
+  sim_correct:
+    checks:
+      - subtracts_input_referred_offset
+      - multiplies_by_differential_control
+      - centers_output_at_unipolar_midpoint
+      - clamps_output_to_unipolar_window
+    public_observables:
+      - vin_p
+      - vin_n
+      - vctrl_p
+      - vctrl_n
+      - vout
   scoring:
     axes:
       - dut_compile
@@ -4559,6 +4646,18 @@
   checker:
     task_id: v3_vargain_diffamp_clip
     metric: stable_samples
+  sim_correct:
+    checks:
+      - subtracts_parameterized_input_offset
+      - multiplies_differential_input_by_differential_control
+      - applies_parameterized_gain_constant
+      - clips_to_parameterized_output_limits
+    public_observables:
+      - sigin_p
+      - sigin_n
+      - sigctrl_p
+      - sigctrl_n
+      - sigout
   scoring:
     axes:
       - dut_compile
