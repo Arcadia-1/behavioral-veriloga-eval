@@ -898,9 +898,9 @@
       - "metric"
   parity:
     reference: "spectre"
-    status: "pending_until_evas_spectre_rerun"
+    status: "cadence_modeling_ready"
     notes:
-      - "Designed release source; no imported historical EVAS/Spectre dual evidence yet."
+      - "Current-main spot-check: EVAS hidden gold, EVAS negatives, targeted Spectre hidden gold, and AHDL-like lint preflight pass."
 031-hysteresis-comparator: |
   syntax:
     must_include:
