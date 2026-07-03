@@ -57,6 +57,8 @@ SPECTRE_MODE_ARGS = {
     "ax": ("+preset=ax", "+mt"),
     "reference": (),
 }
+AHDL_INCLUDE_LINE_RE = re.compile(r'(?m)^(\s*ahdl_include\s+")([^"]+)(".*)$')
+SPECTRE_SUPPORT_FILE_RE = re.compile(r'"([^"]+\.(?:tbl|txt|csv|dat))"', re.IGNORECASE)
 
 
 def normalize_spectre_backend(value: str | None) -> str:
@@ -1923,19 +1925,21 @@ def copy_direct_spectre_inputs(
     include_paths: list[Path],
     output_dir: Path,
 ) -> tuple[Path, list[Path]]:
+    output_dir.mkdir(parents=True, exist_ok=True)
     safe_task_id = safe_path_component(task_id)
     spectre_tb_path = output_dir / f"{safe_task_id}__{tb_path.name}"
-    spectre_tb_path.write_text(tb_path.read_text(encoding="utf-8"), encoding="utf-8")
+    staged_include_paths = list(include_paths)
+    support_paths = discover_spectre_support_files(tb_path, staged_include_paths)
+    input_paths = [*staged_include_paths, *support_paths]
+    spectre_tb_path.write_text(
+        rewrite_ahdl_includes_for_staging(tb_path, staged_include_paths),
+        encoding="utf-8",
+    )
 
     copied = [spectre_tb_path]
     seen = {spectre_tb_path.resolve()}
-    for include_path in include_paths:
-        try:
-            rel = include_path.relative_to(tb_path.parent)
-        except ValueError:
-            rel = Path(include_path.name)
-        if rel.is_absolute() or any(part == ".." for part in rel.parts):
-            rel = Path(include_path.name)
+    for include_path in input_paths:
+        rel = staged_input_rel(tb_path, include_path)
         dst = output_dir / rel
         dst.parent.mkdir(parents=True, exist_ok=True)
         shutil.copy2(include_path, dst)
@@ -1944,6 +1948,60 @@ def copy_direct_spectre_inputs(
             copied.append(dst)
             seen.add(resolved)
     return spectre_tb_path, copied
+
+
+def staged_input_rel(tb_path: Path, input_path: Path) -> Path:
+    try:
+        rel = input_path.relative_to(tb_path.parent)
+    except ValueError:
+        rel = Path(input_path.name)
+    if rel.is_absolute() or any(part == ".." for part in rel.parts):
+        return Path(input_path.name)
+    return rel
+
+
+def rewrite_ahdl_includes_for_staging(tb_path: Path, include_paths: list[Path]) -> str:
+    text = tb_path.read_text(encoding="utf-8")
+    by_name = {path.name: staged_input_rel(tb_path, path).as_posix() for path in include_paths}
+
+    def replace(match: re.Match[str]) -> str:
+        include_name = Path(match.group(2).replace("\\", "/")).name
+        staged_name = by_name.get(include_name)
+        if staged_name is None:
+            return match.group(0)
+        return f"{match.group(1)}{staged_name}{match.group(3)}"
+
+    return AHDL_INCLUDE_LINE_RE.sub(replace, text)
+
+
+def discover_spectre_support_files(tb_path: Path, include_paths: list[Path]) -> list[Path]:
+    search_dirs = [tb_path.parent]
+    source_paths = [tb_path, *include_paths]
+    for include_path in include_paths:
+        if include_path.parent not in search_dirs:
+            search_dirs.append(include_path.parent)
+
+    support_paths: list[Path] = []
+    seen: set[Path] = set()
+    for source_path in source_paths:
+        if not source_path.exists():
+            continue
+        text = source_path.read_text(encoding="utf-8", errors="ignore")
+        for literal in SPECTRE_SUPPORT_FILE_RE.findall(text):
+            literal_path = Path(literal.replace("\\", "/"))
+            candidates = []
+            if not literal_path.is_absolute() and not any(part == ".." for part in literal_path.parts):
+                candidates.extend(search_dir / literal_path for search_dir in search_dirs)
+            candidates.append((source_path.parent / literal_path).resolve())
+            for candidate in candidates:
+                if not candidate.exists() or not candidate.is_file():
+                    continue
+                resolved = candidate.resolve()
+                if resolved not in seen:
+                    support_paths.append(candidate)
+                    seen.add(resolved)
+                break
+    return support_paths
 
 
 def tar_input_files(files: list[Path], root: Path) -> bytes:
@@ -1993,7 +2051,6 @@ def run_spectre_case_sui_direct(
     work_root = (sui_work_root or default_sui_work_root()).rstrip("/")
     cshrc = cadence_cshrc or default_sui_cadence_cshrc()
     remote_prefix = f"{safe_path_component(task_id)}_{uuid.uuid4().hex[:10]}"
-    remote_template = f"{work_root}/{remote_prefix}.XXXXXX"
     remote_dir = ""
     combined_output = ""
     side_outputs: dict[str, object] = {}
@@ -2024,9 +2081,22 @@ def run_spectre_case_sui_direct(
     ]
 
     try:
+        create_script = " ".join(
+            [
+                f"primary_root={shlex.quote(work_root)};",
+                'fallback_root="$HOME/WORK/vaevas-direct-spectre";',
+                'if mkdir -p "$primary_root" >/dev/null 2>&1 && [ -w "$primary_root" ]; then',
+                'chosen_root="$primary_root";',
+                "else",
+                'mkdir -p "$fallback_root";',
+                'chosen_root="$fallback_root";',
+                "fi;",
+                f"mktemp -d \"$chosen_root/{remote_prefix}.XXXXXX\"",
+            ]
+        )
         create = run_ssh_text(
             host,
-            f"mkdir -p {shlex.quote(work_root)} && mktemp -d {shlex.quote(remote_template)}",
+            create_script,
             timeout_s=30,
         )
         combined_output += (create.stdout or "") + "\n" + (create.stderr or "")

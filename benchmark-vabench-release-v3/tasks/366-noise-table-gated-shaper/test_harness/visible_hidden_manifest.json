@@ -2,5 +2,8 @@
   "task": "366-noise-table-gated-shaper",
   "visible": "test_visible/visible.scs",
   "hidden": "test_hidden/hidden.scs",
+  "support": [
+    "noise_profile.tbl"
+  ],
   "status": "noise-analysis-candidate"
 }
