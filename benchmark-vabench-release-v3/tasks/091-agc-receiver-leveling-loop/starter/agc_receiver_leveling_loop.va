@@ -12,10 +12,10 @@ parameter real deadband = 0.025;
 real gainv, gain_mon_v, rawv, yv, ampv, rssi_mon_v, errv, metricv;
 
 analog begin
-    V(out) <+ transition(0.0);
-    V(metric) <+ transition(0.0);
-    V(gain_mon) <+ transition(0.0);
-    V(rssi_mon) <+ transition(0.0);
+    V(out) <+ transition(0.45, 0, tr, tr);
+    V(metric) <+ transition(0.0, 0, tr, tr);
+    V(gain_mon) <+ transition(0.0, 0, tr, tr);
+    V(rssi_mon) <+ transition(0.0, 0, tr, tr);
 end
 
 endmodule
