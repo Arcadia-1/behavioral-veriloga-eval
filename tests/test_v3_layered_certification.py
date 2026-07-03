@@ -18,16 +18,35 @@ def task_manifest() -> dict[str, dict]:
     return json.loads(TASKS.read_text(encoding="utf-8"))["tasks"]
 
 
+def task_number(task_key: str) -> int | None:
+    match = re.match(r"^(\d{3})-", task_key)
+    return int(match.group(1)) if match else None
+
+
 def extension_tasks() -> dict[str, dict]:
     return {
         key: task
         for key, task in task_manifest().items()
-        if int(key.split("-", 1)[0]) > 300
+        if (number := task_number(key)) is not None and number > 300
     }
 
 
+def report_task_rows() -> list[dict]:
+    return json.loads(REPORT.read_text(encoding="utf-8"))["task_rows"]
+
+
+def report_extension_task_keys() -> list[str]:
+    return [
+        row["task_key"]
+        for row in report_task_rows()
+        if row["extension_candidate"]
+    ]
+
+
 def extension_bounds() -> tuple[int, int]:
-    numbers = [int(key.split("-", 1)[0]) for key in extension_tasks()]
+    numbers = [task_number(key) for key in report_extension_task_keys()]
+    assert all(number is not None for number in numbers)
+    numbers = [int(number) for number in numbers if number is not None]
     return min(numbers), max(numbers)
 
 
@@ -42,9 +61,11 @@ def test_v3_layered_certification_counts_match_task_manifest() -> None:
     sop_audit = json.loads(SOP_AUDIT.read_text(encoding="utf-8"))
     sop_ready_count = sop_audit["summary"]["sop_ready_count"]
     summary = report["summary"]
-    expected_extension_count = len(extension_tasks())
+    rows = report["task_rows"]
+    expected_extension_count = len(report_extension_task_keys())
 
-    assert summary["task_count"] == len(tasks)
+    assert summary["task_count"] == len(rows)
+    assert set(report_extension_task_keys()).issubset(tasks)
     assert summary["original_full_300_count"] == 300
     assert summary["extension_candidate_count"] == expected_extension_count
     assert summary["behavior_certified_count"] == 300 + sop_ready_count
@@ -52,7 +73,7 @@ def test_v3_layered_certification_counts_match_task_manifest() -> None:
     assert summary["compile_supported_candidate_count"] == expected_extension_count - sop_ready_count
     assert summary["unsupported_candidate_count"] == 0
 
-    tier_counts = Counter((task.get("tier") or "<none>") for task in tasks.values())
+    tier_counts = Counter((row.get("tier") or "<none>") for row in rows)
     assert summary["tier_counts"] == dict(sorted(tier_counts.items()))
 
 
@@ -63,7 +84,7 @@ def test_v3_extension_sop_audit_tracks_visible_hidden_diversity() -> None:
 
     distinct_rows = [row for row in rows if row["visible_hidden_distinct"]]
     identical_rows = [row for row in rows if not row["visible_hidden_distinct"]]
-    expected_extension_count = len(extension_tasks())
+    expected_extension_count = summary["task_count"]
 
     assert summary["visible_hidden_distinct_count"] == len(distinct_rows) == expected_extension_count
     assert summary["visible_hidden_identical_count"] == len(identical_rows) == 0
@@ -90,7 +111,11 @@ def test_v3_extension_rows_do_not_overclaim_behavior_certification() -> None:
     rows = report["task_rows"]
 
     extension_rows = [row for row in rows if row["extension_candidate"]]
-    assert len(extension_rows) == len(extension_tasks())
+    assert len(extension_rows) == len(sop_audit["tasks"]) == report["summary"]["extension_candidate_count"]
+    assert {row["task_key"] for row in extension_rows} == {
+        row["task"]
+        for row in sop_audit["tasks"]
+    }
     for row in extension_rows:
         if row["task_key"] in sop_ready_tasks:
             assert row["behavior_certified"]
