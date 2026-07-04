@@ -94,6 +94,13 @@ Direct SUI Spectre backend:
   temporary directory under `/tmp/vaevas-direct-spectre`, runs
   `spectre -format psfascii`, downloads the raw directory and side-output files,
   converts PSFASCII to `tran_spectre.csv`, then reuses the same checker path.
+- Direct-SUI keeps isolated per-case run directories, but symlinks each case's
+  Spectre `*.ahdlSimDB` directory into a content-addressed
+  `_ahdlcmi_cache/` under the selected remote work root. This preserves
+  Spectre AHDL-CMI warm-cache behavior across repeated visible/hidden reruns of
+  the same Verilog-A source while still deleting the temporary run directory.
+  Set `VAEVAS_SUI_DIRECT_AHDLCMI_CACHE=0` to restore fully cold runs; remove
+  `<sui-work-root>/_ahdlcmi_cache` manually when a remote cache reset is needed.
 - Direct-SUI Spectre uses a bounded license queue timeout derived from the
   runner timeout. Override it with `--spectre-license-wait-s`, and make sure
   `--timeout-s` is larger than the requested license wait.

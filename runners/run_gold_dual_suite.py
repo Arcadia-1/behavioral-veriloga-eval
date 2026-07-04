@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import argparse
 import csv
+import hashlib
 import io
 import json
 import math
@@ -132,6 +133,32 @@ def direct_sui_retry_backoff_s(attempt_number: int) -> float:
     return max(0.0, min(base * max(1, attempt_number), 30.0))
 
 
+def env_flag(name: str, default: bool) -> bool:
+    raw = os.environ.get(name)
+    if raw is None:
+        return default
+    value = raw.strip().lower()
+    if value in {"1", "true", "yes", "on"}:
+        return True
+    if value in {"0", "false", "no", "off"}:
+        return False
+    return default
+
+
+def direct_sui_ahdlcmi_cache_enabled() -> bool:
+    return env_flag("VAEVAS_SUI_DIRECT_AHDLCMI_CACHE", True)
+
+
+def direct_sui_ahdlcmi_cache_lock_wait_s(timeout_s: int) -> int:
+    raw = os.environ.get("VAEVAS_SUI_DIRECT_AHDLCMI_CACHE_LOCK_WAIT_S")
+    if raw is not None:
+        try:
+            return max(1, min(int(raw), 900))
+        except ValueError:
+            pass
+    return max(30, min(int(timeout_s), 180))
+
+
 def retryable_direct_sui_result(result: dict) -> tuple[bool, str]:
     if result.get("ok"):
         return False, ""
@@ -154,6 +181,34 @@ def write_spectre_result_json(output_dir: Path, result: dict) -> None:
 def safe_path_component(value: object) -> str:
     text = str(value or "case")
     return re.sub(r"[^A-Za-z0-9_.-]+", "_", text).strip("_") or "case"
+
+
+def direct_sui_ahdlcmi_cache_key(
+    *,
+    input_files: list[Path],
+    output_dir: Path,
+    host: str,
+    cadence_cshrc: str | None,
+) -> str:
+    hasher = hashlib.sha256()
+    hasher.update(b"vaevas-sui-direct-ahdlcmi-cache-v1\0")
+    hasher.update(f"host={host}\0".encode("utf-8"))
+    hasher.update(f"cadence_cshrc={cadence_cshrc or ''}\0".encode("utf-8"))
+    source_files = [path for path in input_files if path.suffix.lower() in {".va", ".vams"}]
+    for path in sorted(source_files, key=lambda item: item.relative_to(output_dir).as_posix()):
+        rel = path.relative_to(output_dir).as_posix()
+        hasher.update(f"path={rel}\0".encode("utf-8"))
+        hasher.update(path.read_bytes())
+        hasher.update(b"\0")
+    return hasher.hexdigest()[:32]
+
+
+def remote_parent(path: str) -> str:
+    stripped = path.rstrip("/")
+    if "/" not in stripped:
+        return "."
+    parent = stripped.rsplit("/", 1)[0]
+    return parent or "/"
 
 
 def parse_duration_seconds(text: str) -> float | None:
@@ -2089,6 +2144,20 @@ def run_spectre_case_sui_direct(
     cshrc = cadence_cshrc or default_sui_cadence_cshrc()
     remote_prefix = f"{safe_path_component(task_id)}_{uuid.uuid4().hex[:10]}"
     remote_dir = ""
+    ahdlcmi_cache_requested = direct_sui_ahdlcmi_cache_enabled()
+    ahdlcmi_cache_key = direct_sui_ahdlcmi_cache_key(
+        input_files=input_files,
+        output_dir=output_dir,
+        host=host,
+        cadence_cshrc=cshrc,
+    )
+    ahdlcmi_db_name = f"{spectre_tb_path.stem}.ahdlSimDB"
+    ahdlcmi_cache: dict[str, object] = {
+        "requested": ahdlcmi_cache_requested,
+        "enabled": False,
+        "key": ahdlcmi_cache_key if ahdlcmi_cache_requested else "",
+    }
+    ahdlcmi_lock_dir = ""
     combined_output = ""
     side_outputs: dict[str, object] = {}
     errors: list[str] = []
@@ -2148,6 +2217,57 @@ def run_spectre_case_sui_direct(
         if not remote_dir:
             errors.append("remote_workdir_unresolved")
             raise RuntimeError("remote_workdir_unresolved")
+
+        if ahdlcmi_cache_requested:
+            cache_root = f"{remote_parent(remote_dir)}/_ahdlcmi_cache"
+            cache_dir = f"{cache_root}/{ahdlcmi_cache_key}"
+            lock_dir = f"{cache_dir}.lock"
+            link_path = f"{remote_dir}/{ahdlcmi_db_name}"
+            wait_s = direct_sui_ahdlcmi_cache_lock_wait_s(timeout_s)
+            ahdlcmi_cache.update(
+                {
+                    "remote_cache_dir": cache_dir,
+                    "remote_link": link_path,
+                    "remote_lock_dir": lock_dir,
+                    "lock_wait_s": wait_s,
+                }
+            )
+            cache_script = " ".join(
+                [
+                    "set -eu;",
+                    f"cache_dir={shlex.quote(cache_dir)};",
+                    f"lock_dir={shlex.quote(lock_dir)};",
+                    f"link_path={shlex.quote(link_path)};",
+                    f"wait_s={wait_s};",
+                    'mkdir -p "$(dirname "$cache_dir")";',
+                    'start="$(date +%s)";',
+                    'while ! mkdir "$lock_dir" 2>/dev/null; do',
+                    'now="$(date +%s)";',
+                    'if [ $((now - start)) -ge "$wait_s" ]; then',
+                    'echo "AHDLCMI_CACHE_STATUS=lock_timeout";',
+                    "exit 75;",
+                    "fi;",
+                    "sleep 1;",
+                    "done;",
+                    'echo "AHDLCMI_LOCK_DIR=$lock_dir";',
+                    'mkdir -p "$cache_dir";',
+                    'rm -rf "$link_path";',
+                    'ln -s "$cache_dir" "$link_path";',
+                    'echo "AHDLCMI_CACHE_STATUS=enabled";',
+                    'echo "AHDLCMI_CACHE_DIR=$cache_dir";',
+                    'echo "AHDLCMI_LINK=$link_path";',
+                ]
+            )
+            cache_prep = run_ssh_text(host, cache_script, timeout_s=max(wait_s + 30, 60))
+            combined_output += "\n" + (cache_prep.stdout or "") + "\n" + (cache_prep.stderr or "")
+            if "AHDLCMI_LOCK_DIR=" in (cache_prep.stdout or ""):
+                ahdlcmi_lock_dir = lock_dir
+            if cache_prep.returncode == 0 and "AHDLCMI_CACHE_STATUS=enabled" in (cache_prep.stdout or ""):
+                ahdlcmi_cache["enabled"] = True
+                ahdlcmi_cache["status"] = "enabled"
+            else:
+                ahdlcmi_cache["status"] = "prepare_failed"
+                warnings.append(f"remote_ahdlcmi_cache_prepare_failed rc={cache_prep.returncode}")
 
         upload = run_ssh_bytes(
             host,
@@ -2220,6 +2340,13 @@ def run_spectre_case_sui_direct(
                     warnings.append(f"remote_cleanup_failed rc={cleanup.returncode}")
             except Exception as exc:  # pragma: no cover - best-effort cleanup only
                 warnings.append(f"remote_cleanup_exception={type(exc).__name__}: {str(exc)[:200]}")
+        if ahdlcmi_lock_dir:
+            try:
+                unlock = run_ssh_text(host, f"rmdir {shlex.quote(ahdlcmi_lock_dir)}", timeout_s=30)
+                if unlock.returncode != 0:
+                    warnings.append(f"remote_ahdlcmi_cache_unlock_failed rc={unlock.returncode}")
+            except Exception as exc:  # pragma: no cover - best-effort cleanup only
+                warnings.append(f"remote_ahdlcmi_cache_unlock_exception={type(exc).__name__}: {str(exc)[:200]}")
 
     for name in side_output_files:
         local_path = output_dir / name
@@ -2247,6 +2374,7 @@ def run_spectre_case_sui_direct(
         "remote_run_dir": remote_dir,
         "command": " ".join(command),
         "timing": parse_spectre_timing(combined_output),
+        "ahdlcmi_cache": ahdlcmi_cache,
         "psf_parse": psf_parse or {},
         "stdout_tail": combined_output[-4000:],
     }
