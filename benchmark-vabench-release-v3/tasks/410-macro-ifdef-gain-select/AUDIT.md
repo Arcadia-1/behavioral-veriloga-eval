@@ -2,18 +2,23 @@
 
 - Task id: `v3_410_macro_ifdef_gain_select`
 - Category: `veriloga_preprocessor_control_semantics`
-- Required syntax focus: `Use ifdef selection to alter a behavioral gain constant.`
-- EVAS status: `behavior-certified`
-- Score claim: `extension_behavior_certified_outside_original_300`.
+- Gate 1 label: L0/support language-semantics row, not an independent AMS
+  circuit-function benchmark and not part of the original full-300 claim.
+- Gate 2 status: `cadence_boundary_only`; the public prompt, gold, checker,
+  negatives, EVAS2, and Spectre behavior are aligned for this support boundary.
 
-## Behavior Certification
+## Public Contract
 
-- Checker: `macro_ifdef_gain_select_contract`.
-- Required behavior: compile-time macro selection changes the gain used by the behavioral output.
-- Visible/hidden coverage: hidden stimulus exercises the non-default gain path and calibrated output samples.
-- Negative evidence: 5/5 variants are rejected by `FAIL_SIM_CORRECTNESS`.
-- Evidence: `benchmark-vabench-release-v3/reports/verify_301_497_layered.json`.
+The row checks an object-like preprocessor define and `ifdef`/`else` selection
+inside a clocked voltage-domain model. With `V3_HIGH_GAIN` defined, sampled
+`vin` is scaled by the high-gain branch and `metric` reports the selected gain.
 
-## Boundary
+## Validation
 
-This task certifies the repository transient/checker contract for preprocessor-controlled behavioral modeling. It is not part of the original full-300 denominator.
+- Default EVAS2/Rust: gold passed and all five concrete negatives were rejected.
+- Python EVAS fallback: gold passed and all five concrete negatives were
+  rejected.
+- Targeted Spectre validation: passed.
+- AHDL-like lint/preflight: passed with zero diagnostics.
+- Spectre warning triage: only the shared `VACOMP-2435` environment warning was
+  observed; no task-specific AHDL warning or compile error was found.

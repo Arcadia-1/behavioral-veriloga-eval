@@ -6085,8 +6085,8 @@
       "tier": "syntax-extension-candidate",
       "title": "Macro Functionlike Clamp",
       "syntax_focus": "Use a function-like preprocessor macro in analog behavior.",
-      "certification_scope": "language_extension_not_part_of_original_full_300_claim",
-      "description": "Use a function-like preprocessor macro in analog behavior. This task is verified with executable visible and hidden benches for Macro Functionlike Clamp.",
+      "certification_scope": "l0_language_extension_not_part_of_original_full_300_claim",
+      "description": "L0/support row for a function-like preprocessor macro in a clocked voltage-domain Verilog-A model.",
       "required_behavior": [
         "Use a function-like preprocessor macro in analog behavior.",
         "define and use a function-like macro named V3_CLAMP(x).",
@@ -6106,7 +6106,8 @@
         "neg_003_reset_bias",
         "neg_004_metric_offset",
         "neg_005_scale_output"
-      ]
+      ],
+      "spectre_parity_status": "spectre-evas2-ready"
     },
     "410-macro-ifdef-gain-select": {
       "category": "veriloga_preprocessor_control_semantics",
@@ -6120,7 +6121,7 @@
       "tier": "syntax-extension-candidate",
       "title": "Macro Ifdef Gain Select",
       "syntax_focus": "Use `ifdef selection to alter a behavioral gain constant.",
-      "description": "Select a compile-time gain branch with `ifdef and expose both the sampled output and selected gain metric.",
+      "description": "L0/support row for `ifdef compile-time gain selection in a clocked voltage-domain Verilog-A model.",
       "required_behavior": [
         "On each rising clock edge, sample vin unless reset is asserted.",
         "When V3_HIGH_GAIN is defined, drive out to 1.25 times the sampled vin and metric to 1.25.",
@@ -6139,7 +6140,8 @@
         "neg_004_metric_offset",
         "neg_005_scale_output"
       ],
-      "certification_scope": "language_extension_not_part_of_original_full_300_claim"
+      "certification_scope": "l0_language_extension_not_part_of_original_full_300_claim",
+      "spectre_parity_status": "spectre-evas2-ready"
     },
     "411-escaped-identifier-state": {
       "category": "veriloga_preprocessor_control_semantics",
@@ -6153,8 +6155,8 @@
       "tier": "syntax-extension-candidate",
       "title": "Escaped Identifier State",
       "syntax_focus": "Use an escaped identifier for internal analog state.",
-      "certification_scope": "language_extension_not_part_of_original_full_300_claim",
-      "description": "Use an escaped identifier for internal analog state. This task is verified with executable visible and hidden benches for Escaped Identifier State.",
+      "certification_scope": "l0_language_extension_not_part_of_original_full_300_claim",
+      "description": "L0/support row for an escaped internal identifier used as sampled behavioral state.",
       "required_behavior": [
         "Use an escaped identifier for internal analog state.",
         "declare real escaped identifier \\trim.state.",
@@ -6174,7 +6176,8 @@
         "neg_003_reset_bias",
         "neg_004_metric_offset",
         "neg_005_scale_output"
-      ]
+      ],
+      "spectre_parity_status": "spectre-evas2-ready"
     },
     "412-initial-final-step-lifecycle": {
       "category": "veriloga_preprocessor_control_semantics",
@@ -6188,8 +6191,8 @@
       "tier": "syntax-extension-candidate",
       "title": "Initial Final Step Lifecycle",
       "syntax_focus": "Use initial_step and final_step in one behavioral model.",
-      "certification_scope": "language_extension_not_part_of_original_full_300_claim",
-      "description": "Use initial_step and final_step in one behavioral model. This task is verified with executable visible and hidden benches for Initial Final Step Lifecycle.",
+      "certification_scope": "l0_language_extension_not_part_of_original_full_300_claim",
+      "description": "L0/support row for initial_step and final_step lifecycle events in a clocked voltage-domain Verilog-A model.",
       "required_behavior": [
         "Use initial_step and final_step in one behavioral model.",
         "use @(initial_step) to initialize out_v = 0.0, metric_v = 0.0, count_q = 0, and state_q = 0.",
@@ -6209,7 +6212,8 @@
         "neg_003_reset_bias",
         "neg_004_metric_offset",
         "neg_005_scale_output"
-      ]
+      ],
+      "spectre_parity_status": "spectre-evas2-ready"
     },
     "413-while-loop-array-sum": {
       "category": "veriloga_preprocessor_control_semantics",
@@ -6223,8 +6227,8 @@
       "tier": "syntax-extension-candidate",
       "title": "While Loop Array Sum",
       "syntax_focus": "Use a while loop over small behavioral state.",
-      "certification_scope": "language_extension_not_part_of_original_full_300_claim",
-      "description": "Use a while loop over small behavioral state. This task is verified with executable visible and hidden benches for While Loop Array Sum.",
+      "certification_scope": "l0_language_extension_not_part_of_original_full_300_claim",
+      "description": "L0/support row for a bounded while loop in a clocked voltage-domain Verilog-A model.",
       "required_behavior": [
         "Use a while loop over small behavioral state.",
         "initialize count_q = 0, out_v = 0.0, metric_v = 0.0, and state_q = 0.",
@@ -6244,7 +6248,8 @@
         "neg_003_reset_bias",
         "neg_004_metric_offset",
         "neg_005_scale_output"
-      ]
+      ],
+      "spectre_parity_status": "spectre-evas2-ready"
     },
     "414-parameter-range-real-control": {
       "category": "veriloga_preprocessor_control_semantics",
@@ -6258,8 +6263,8 @@
       "tier": "syntax-extension-candidate",
       "title": "Parameter Range Real Control",
       "syntax_focus": "Use parameter range constraints for real-valued controls.",
-      "certification_scope": "language_extension_not_part_of_original_full_300_claim",
-      "description": "Use parameter range constraints for real-valued controls. This task is verified with executable visible and hidden benches for Parameter Range Real Control.",
+      "certification_scope": "l0_language_extension_not_part_of_original_full_300_claim",
+      "description": "L0/support row for ranged real and integer parameters in a clocked voltage-domain Verilog-A model.",
       "required_behavior": [
         "Use parameter range constraints for real-valued controls.",
         "declare parameter real gain_limited = 0.8 from [0.0:2.0].",
@@ -6279,7 +6284,8 @@
         "neg_003_reset_bias",
         "neg_004_metric_offset",
         "neg_005_scale_output"
-      ]
+      ],
+      "spectre_parity_status": "spectre-evas2-ready"
     },
     "422-file-fscanf-table-stimulus": {
       "category": "veriloga_file_read_semantics",

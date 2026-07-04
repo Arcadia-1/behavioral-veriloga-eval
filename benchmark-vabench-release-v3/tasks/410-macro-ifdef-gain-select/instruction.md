@@ -1,8 +1,19 @@
 # Macro Ifdef Gain Select
 
-Implement one behavioral Verilog-A source file named `macro_ifdef_gain_select.va`.
+## Task Contract
 
-## Interface
+Implement one behavioral Verilog-A source file named `macro_ifdef_gain_select.va`.
+This is a Spectre-compatible Verilog-A language-semantics support row for
+conditional preprocessor selection inside a clocked voltage-domain model, not a
+standalone AMS circuit-function row.
+
+## Form-Specific Requirements
+
+Return the DUT source artifact only. The model is sampled on the rising crossing
+of `clk`, reset by `rst`, and drives voltage outputs `out` and `metric`; it must
+not introduce current contributions.
+
+## Public Verilog-A Interface
 
 Use this exact module interface:
 
@@ -17,23 +28,32 @@ module macro_ifdef_gain_select (
 );
 ```
 
-Keep the model behavioral and do not introduce current contributions.
+## Public Parameter Contract
+
+Declare `parameter real vth = 0.45`, `parameter real vhi = 0.9`, and
+`parameter real tr = 200p`. Use `vth` for clock and reset thresholding and `tr`
+as the transition rise/fall time. Keep `vhi` as a public compatibility
+parameter even though this row's gain-selection behavior does not otherwise use
+it. These parameters may be overridden by a testbench.
 
 ## Required Behavior
 
-Use conditional preprocessor selection to alter a behavioral gain constant.
+Define `V3_HIGH_GAIN` before the module declaration. Use
+`` `ifdef V3_HIGH_GAIN`` / `` `else`` / `` `endif`` to select a real-valued
+`selected_gain`: `1.25` when `V3_HIGH_GAIN` is defined and `0.75` otherwise.
 
-Required behavior:
+Initialize `count_q = 0`, `out_v = 0.0`, `metric_v = 0.0`, and `state_q = 0`.
+On each rising crossing of `clk`, clear these state values when `rst > vth`.
+Otherwise set `out_v` to the selected gain times the sampled `vin`, set
+`metric_v` to the selected gain, and increment `count_q` after computing the
+outputs.
 
-- define `V3_HIGH_GAIN` before the module declaration;
-- use `` `ifdef V3_HIGH_GAIN`` / `` `else`` / `` `endif`` to select `selected_gain`;
-- when `V3_HIGH_GAIN` is defined, set `selected_gain = 1.25`;
-- otherwise set `selected_gain = 0.75`;
-- initialize `count_q = 0`, `out_v = 0.0`, and `metric_v = 0.0`;
-- on each rising crossing of `clk`, reset `out_v`, `metric_v`, `count_q`, and state when `rst > vth`;
-- otherwise set `out_v = selected_gain * V(vin)`;
-- set `metric_v = selected_gain`;
-- increment `count_q` after computing the outputs;
-- drive `out` and `metric` with `transition(...)`.
+## Modeling Constraints
+
+Use `cross()` for the sampling event and `transition(...)` to drive `out` and
+`metric`. Keep the behavior voltage-domain and behavioral; do not use `I(...)`,
+devices, or testbench stop-time constants.
+
+## Output Contract
 
 Return exactly one source artifact named `macro_ifdef_gain_select.va`.
