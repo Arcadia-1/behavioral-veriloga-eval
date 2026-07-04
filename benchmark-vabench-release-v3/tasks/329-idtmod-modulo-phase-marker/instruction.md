@@ -1,10 +1,16 @@
 # Idtmod Modulo Phase Marker
 
+## Task Contract
+
 Implement one behavioral Verilog-A DUT file named `idtmod_modulo_phase_marker.va`.
 
-This is a language-semantics extension task based on the Cadence Verilog-A Language Reference. Keep the model pure voltage-domain behavioral Verilog-A: do not instantiate transistor-level devices and do not use current-domain `I(...)` branch contributions.
+This task focuses on explicit-modulo `idtmod()` phase wrapping and marker generation. The DUT is a reusable voltage-domain behavioral helper and must be implemented in Verilog-A.
 
-## Interface
+## Form-Specific Requirements
+
+Build a wrapped phase marker using a modulo value of `0.25`. The marker output must be derived from the wrapped phase interval after each modulo reset.
+
+## Public Verilog-A Interface
 
 ```verilog
 module idtmod_modulo_phase_marker (
@@ -17,25 +23,28 @@ module idtmod_modulo_phase_marker (
 );
 ```
 
+## Public Parameter Contract
+
+- Use `vth = 0.45` V.
+- Use high output level `vhi = 0.9` V.
+- Use `freq_q = 0.5e6 + 0.5e6 * V(vin)`.
+- Use `phase_q = idtmod((V(rst) > vth) ? 0.0 : freq_q, 0.0, 0.25)`.
+- Use `marker_width_q = 0.05` when `V(mode) > vth`, otherwise `0.025`.
+
 ## Required Behavior
 
-Use `idtmod()` with an explicit modulo value to build a wrapped phase marker.
+- While reset is high, drive both outputs to `0.0`.
+- Otherwise drive `out = vhi * phase_q / 0.25`.
+- Otherwise drive `metric = vhi` when `phase_q < marker_width_q`, else `0.0`.
+- The marker must follow the modulo-wrapped phase, not elapsed absolute time.
 
-This is a behavioral continuous-time task, not a conservative-current/KCL task. Do not use `I(...)`, `ddt(...)`, or `idt(...)`.
+## Modeling Constraints
 
-Use voltage-coded logic with `vth = 0.45` V and high outputs near `0.9` V.
+- Keep the model pure voltage-domain behavioral Verilog-A.
+- Do not instantiate transistor-level devices.
+- Do not use current-domain `I(...)` branch contributions.
+- Use voltage-coded logic; treat voltages above `vth` as logic high where a threshold is specified.
 
-Implement:
-
-- `freq_q = 0.5e6 + 0.5e6 * V(vin)`
-- `phase_q = idtmod((V(rst) > vth) ? 0.0 : freq_q, 0.0, 0.25)`
-- `marker_width_q = 0.05` when `V(mode) > vth`, otherwise `0.025`
-- while `V(rst) > vth`, drive both outputs to `0.0`
-- otherwise drive `out = 0.9 * phase_q / 0.25`
-- otherwise drive `metric = 0.9` when `phase_q < marker_width_q`, else `0.0`
-
-The hidden testbench drives `vin = 0.5` and `mode = 0.9`, so the 0.25-modulo phase wraps about every `333 ns`. The evaluator samples the scaled sawtooth and checks that `metric` marks only the short post-wrap phase interval.
-
-## Output
+## Output Contract
 
 Return exactly one source artifact named `idtmod_modulo_phase_marker.va`. Do not generate a Spectre testbench for this task.

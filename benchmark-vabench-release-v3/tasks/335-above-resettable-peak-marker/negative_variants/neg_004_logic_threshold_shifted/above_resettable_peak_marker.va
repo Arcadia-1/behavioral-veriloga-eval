@@ -27,13 +27,13 @@ analog begin
         peak_q = 0.0;
         sample_q = 0.0;
     end
-    @(above(V(vin) - vth)) begin
+    @(above(V(vin) - (vth + 0.25))) begin
         state_q = 1;
     end
     @(timer(0, 50n)) begin
         if (state_q != 0) begin
             sample_q = V(vin);
-            peak_q = sample_q;
+            if (sample_q > peak_q) peak_q = sample_q;
             if (peak_q < 0.0) peak_q = 0.0;
             if (peak_q > vhi) peak_q = vhi;
             metric_v = peak_q;

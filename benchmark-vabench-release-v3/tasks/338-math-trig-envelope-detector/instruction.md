@@ -1,10 +1,16 @@
 # Math Trig Envelope Detector
 
+## Task Contract
+
 Implement one behavioral Verilog-A DUT file named `math_trig_envelope_detector.va`.
 
-This is a language-semantics extension task based on the Cadence Verilog-A Language Reference. Keep the model pure voltage-domain behavioral Verilog-A: do not instantiate transistor-level devices and do not use current-domain `I(...)` branch contributions.
+This task focuses on sampled envelope behavior using `sin()`, `sqrt()`, and `abs()`. The DUT is a reusable voltage-domain behavioral helper and must be implemented in Verilog-A.
 
-## Interface
+## Form-Specific Requirements
+
+Build a clocked voltage-domain envelope helper that uses standard Verilog-A math functions in the sampled computation.
+
+## Public Verilog-A Interface
 
 ```verilog
 module math_trig_envelope_detector (
@@ -17,22 +23,31 @@ module math_trig_envelope_detector (
 );
 ```
 
+## Public Parameter Contract
+
+- Use `vth = 0.45` V.
+- Use high output level limit `vhi = 0.9` V.
+- Use transition edge time `tr = 200p`.
+- Use `pi = 3.141592653589793` or an equivalent accurate local constant.
+
 ## Required Behavior
 
-Use trigonometric and math functions in the behavior: `sin()`, `sqrt()`, and `abs()`.
+- On each rising crossing of `V(clk) - vth`, update both outputs.
+- If reset is high, clear both outputs to `0.0`.
+- Otherwise compute `phase = 2*pi*V(vin)`.
+- When mode is low, compute `out_sample = 0.45 + 0.25*sin(phase)`.
+- When mode is high, compute `out_sample = 0.45 + 0.25*sin(phase - pi/2)`.
+- Drive `out = out_sample` clipped to `0.0 ... vhi`.
+- Drive `metric = sqrt(abs(out_sample))`.
+- Smooth `out` and `metric` with `transition(..., 0.0, tr, tr)`.
 
-Use voltage-coded logic with `vth = 0.45` V and high outputs below `vhi = 0.9` V.
+## Modeling Constraints
 
-On every rising crossing of `clk`:
+- Keep the model pure voltage-domain behavioral Verilog-A.
+- Do not instantiate transistor-level devices.
+- Do not use current-domain `I(...)` branch contributions.
+- Use voltage-coded logic; treat voltages above `vth` as logic high where a threshold is specified.
 
-1. If `rst` is high, drive both `out` and `metric` low.
-2. Otherwise compute `phase = 2*pi*V(vin)`.
-3. When `mode` is low, compute `out = 0.45 + 0.25*sin(phase)`.
-4. When `mode` is high, compute `out = 0.45 + 0.25*sin(phase - pi/2)`.
-5. Drive `metric = sqrt(abs(out))`.
-
-The evaluator samples the low-mode sine envelope, the high-mode phase-shifted envelope, and reset clearing.
-
-## Output
+## Output Contract
 
 Return exactly one source artifact named `math_trig_envelope_detector.va`. Do not generate a Spectre testbench for this task.

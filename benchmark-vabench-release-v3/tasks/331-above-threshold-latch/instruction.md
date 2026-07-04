@@ -6,7 +6,9 @@ Implement one behavioral Verilog-A DUT file named `above_threshold_latch.va`.
 
 ## Form-Specific Requirements
 
-This is a language-semantics extension task based on the Cadence Verilog-A Language Reference. Use `above()` to set a threshold latch and `last_crossing()` to classify the timing between rising threshold crossings.
+This task focuses on `above()` threshold detection plus `last_crossing()` timing classification. The DUT is a reusable voltage-domain behavioral helper and must be implemented in Verilog-A.
+
+Build a threshold latch that remains asserted after an input threshold event and uses consecutive rising crossing times to classify close event spacing.
 
 For Spectre compatibility, call `last_crossing` with the supported crossing-expression and direction arguments, for example `last_crossing(V(vin) - vth, +1)`. Do not use extra tolerance arguments on `last_crossing`.
 
@@ -25,20 +27,27 @@ module above_threshold_latch (
 
 ## Public Parameter Contract
 
-Use voltage-coded logic with `vth = 0.45` V and high outputs near `vhi = 0.9` V. Drive output transitions with rise/fall time `tr = 200p`. These values may be implemented as compatible Verilog-A parameters or internal constants.
+- Use `vth = 0.45` V.
+- Use high output level `vhi = 0.9` V.
+- Use transition edge time `tr = 200p`.
+- Use `last_crossing(V(vin) - vth, +1)` to obtain the most recent rising crossing time.
+- Treat two consecutive rising crossings less than `250 ns` apart as a close pair.
 
 ## Required Behavior
 
 - `@(above(V(vin) - vth))` sets a latch.
-- Continuously evaluate the latest rising threshold-crossing time with `last_crossing(V(vin) - vth, +1)`.
-- On each rising `vin` threshold crossing, compare the current crossing time with the previous rising crossing time.
-- When two consecutive rising crossings are less than `250 ns` apart, drive `metric = vhi`; otherwise drive `metric = 0.0`.
-- `@(cross(V(rst) - vth, +1))` clears the latch, metric, and stored crossing time.
+- On each rising crossing of `V(vin) - vth`, record the latest crossing time from `last_crossing()`.
+- Drive `metric = vhi` when the current and previous rising crossing times are less than `250 ns` apart; otherwise drive `metric = 0.0`.
+- On a rising reset crossing, clear the latch, metric, and stored crossing time.
 - Drive `out = vhi` when the latch is set, otherwise `0.0`.
+- Smooth `out` and `metric` with `transition(..., 0.0, tr, tr)`.
 
 ## Modeling Constraints
 
-Keep the model pure voltage-domain behavioral Verilog-A: do not instantiate transistor-level devices and do not use current-domain `I(...)` branch contributions. Use `transition(..., 0, tr, tr)` for both outputs.
+- Keep the model pure voltage-domain behavioral Verilog-A.
+- Do not instantiate transistor-level devices.
+- Do not use current-domain `I(...)` branch contributions.
+- Use voltage-coded logic; treat voltages above `vth` as logic high where a threshold is specified.
 
 ## Output Contract
 

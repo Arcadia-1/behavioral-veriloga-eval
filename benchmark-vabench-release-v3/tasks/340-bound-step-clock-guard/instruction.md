@@ -1,10 +1,16 @@
 # Bound Step Clock Guard
 
+## Task Contract
+
 Implement one behavioral Verilog-A DUT file named `bound_step_clock_guard.va`.
 
-This is a language-semantics extension task based on the Cadence Verilog-A Language Reference. Keep the model pure voltage-domain behavioral Verilog-A: do not instantiate transistor-level devices and do not use current-domain `I(...)` branch contributions.
+This task focuses on `$bound_step` time-step guarding in a clocked voltage helper. The DUT is a reusable voltage-domain behavioral helper and must be implemented in Verilog-A.
 
-## Interface
+## Form-Specific Requirements
+
+Build a clocked guard helper that requests a bounded simulator time step while updating a sampled output only when mode enables the update.
+
+## Public Verilog-A Interface
 
 ```verilog
 module bound_step_clock_guard (
@@ -17,20 +23,28 @@ module bound_step_clock_guard (
 );
 ```
 
+## Public Parameter Contract
+
+- Use `vth = 0.45` V.
+- Use high output level limit `vhi = 0.9` V.
+- Use transition edge time `tr = 200p`.
+- Call `$bound_step(0.5n)` inside the analog block.
+
 ## Required Behavior
 
-Use `$bound_step(0.5n)` inside the analog block for time-step control.
+- On each rising crossing of `V(clk) - vth`, update the guard state.
+- If reset is high, clear both outputs to `0.0`.
+- If reset is low and mode is low, keep `out` unchanged and drive `metric = 0.2`.
+- If reset is low and mode is high, sample `V(vin)` into `out`, clipped to `0.0 ... vhi`, and drive `metric = 0.8`.
+- Smooth `out` and `metric` with `transition(..., 0.0, tr, tr)`.
 
-Use voltage-coded logic with `vth = 0.45` V and high outputs below `vhi = 0.9` V.
+## Modeling Constraints
 
-On every rising crossing of `clk`:
+- Keep the model pure voltage-domain behavioral Verilog-A.
+- Do not instantiate transistor-level devices.
+- Do not use current-domain `I(...)` branch contributions.
+- Use voltage-coded logic; treat voltages above `vth` as logic high where a threshold is specified.
 
-1. If `rst` is high, drive both `out` and `metric` low.
-2. If `rst` is low and `mode` is low, guard the clock update: keep `out` unchanged and drive `metric = 0.2`.
-3. If `rst` is low and `mode` is high, sample `vin` into `out`, clipped to `[0.0, vhi]`, and drive `metric = 0.8`.
-
-The evaluator checks the low-mode guard, the high-mode sampled update, reset clearing, and the presence of `$bound_step`.
-
-## Output
+## Output Contract
 
 Return exactly one source artifact named `bound_step_clock_guard.va`. Do not generate a Spectre testbench for this task.
