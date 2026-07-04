@@ -8354,16 +8354,15 @@
       "target": [
         "kcl_inductor_idt_voltage.va"
       ],
-      "tier": "kcl-syntax-candidate",
+      "tier": "conservative-current/KCL-behavior-certified",
       "title": "Kcl Inductor Idt Voltage",
       "syntax_focus": "Use voltage contribution with idt() of branch current for an inductor-style model.",
-      "certification_scope": "spectre_divergent_pending_spectre_golden_not_part_of_original_full_300_claim",
-      "spectre_parity_status": "spectre-divergent",
-      "description": "Use voltage contribution with idt() of branch current to model an inductor-style conservative element.",
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim",
+      "description": "Use voltage contribution with idt() of branch current to model an inductor-style conservative element with Spectre branch-current polarity.",
       "required_behavior": [
         "Integrate branch current to determine the contributed branch voltage.",
         "Participate in the KCL/MNA solution with internal dynamic state.",
-        "Remain staged until inductor-style idt voltage behavior is certified."
+        "Match Spectre branch-current sign convention for independent current sources."
       ],
       "visible_tests": [
         "visible.scs drives a current-related condition to expose integrated voltage behavior."

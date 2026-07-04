@@ -10761,8 +10761,7 @@
   version: 1
   task_id: v3_492_kcl_inductor_idt_voltage
   backend: evas
-  status: spectre-divergent
-  spectre_status: pending_spectre_golden_recalibration
+  status: behavior-certified-candidate
   checker: kcl_inductor_idt_voltage_contract
   # vabench-release-v2-checks
   required_columns:
@@ -10787,8 +10786,13 @@
       - independent_isource_branch_current_probe
       - idt_branch_current_integral_shape
       - hidden_pwl_current_reversal_recovery
+      - five_negative_variants_rejected_by_behavior_checker
+  promotion_evidence:
+    evas_commit: "c83cc63 Support branch-current idt in evas-rust"
+    report: "benchmark-vabench-release-v3/reports/verify_task_492_spectre_recalibrated_20260704.json"
+    result: "1/1 gold PASS; 5/5 negative variants rejected; 0 expectation_fail with evas-rust and Spectre branch-current polarity."
   notes:
-    - "Temporarily not full Spectre-certified: branch-current sign convention for idt(I(p,n)) diverges from Spectre and EVAS/evas-rust promotion remains blocked by https://github.com/Arcadia-1/EVAS/issues/88."
+    - "Promoted after EVAS #88 aligned independent-source branch-current polarity and lowered V(p,n)<+L*idt(I(p,n),0) into evas-rust."
 493-continuous-laplace-nd-filter: |
   version: 1
   task_id: v3_493_continuous_laplace_nd_filter

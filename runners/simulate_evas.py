@@ -10390,7 +10390,7 @@ def check_v3_492_kcl_inductor_idt_voltage(rows: list[dict[str, float]]) -> tuple
             area += 0.5 * (i0 + i_end) * (end - t0)
             if time_s <= t1:
                 break
-        return 1e-9 * area
+        return -1e-9 * area
 
     failures: list[str] = []
     max_err = 0.0
