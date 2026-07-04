@@ -5979,7 +5979,7 @@
       - metric_tracks_normalized_slew_target
       - immediate_step_output_is_rejected
   notes:
-    - "Extension task promoted from syntax-only to executable behavior candidate."
+    - "Boundary semantic row for Cadence Verilog-A slew(); public fall_rate is a positive magnitude and the model passes -fall_rate as SRneg."
 322-slew-limited-mode-stepper: |
   # vabench-release-v2-checks
   version: 1
@@ -6022,7 +6022,7 @@
       - upward_step_is_slew_limited
       - downward_step_is_slew_limited
   notes:
-    - "Extension task promoted from syntax-only to executable behavior candidate."
+    - "Boundary semantic row for Cadence Verilog-A slew(); public fall_rate is a positive magnitude and the model passes -fall_rate as SRneg."
 323-slew-output-reset-recovery: |
   # vabench-release-v2-checks
   version: 1
@@ -6064,7 +6064,7 @@
       - post_reset_clock_recovers_high_target
       - metric_follows_same_recovery_sequence
   notes:
-    - "Extension task promoted from syntax-only to executable behavior candidate."
+    - "Boundary semantic row for Cadence Verilog-A slew(); public fall_rate is a positive magnitude and the model passes -fall_rate as SRneg."
 324-slew-limited-envelope: |
   # vabench-release-v2-checks
   version: 1
@@ -6107,7 +6107,7 @@
       - output_slew_limits_envelope_changes
       - metric_tracks_normalized_envelope
   notes:
-    - "Extension task promoted from syntax-only to executable behavior candidate."
+    - "Boundary semantic row for Cadence Verilog-A slew(); public fall_rate is a positive magnitude and the model passes -fall_rate as SRneg."
 325-slew-asymmetric-rise-fall: |
   # vabench-release-v2-checks
   version: 1
@@ -6150,7 +6150,7 @@
       - fall_rate_is_slew_limited
       - metric_tracks_normalized_asymmetric_output
   notes:
-    - "Extension task promoted from syntax-only to executable behavior candidate."
+    - "Boundary semantic row for Cadence Verilog-A slew(); public fall_rate is a positive magnitude and the model passes -fall_rate as SRneg."
 326-idtmod-phase-accumulator: |
   # vabench-release-v2-checks
   version: 1

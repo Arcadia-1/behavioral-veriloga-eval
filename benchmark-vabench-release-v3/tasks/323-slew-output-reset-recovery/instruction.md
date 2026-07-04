@@ -1,10 +1,14 @@
 # Slew Output Reset Recovery
 
-Implement one behavioral Verilog-A DUT file named `slew_output_reset_recovery.va`.
+## Task Contract
 
-This is a language-semantics extension task based on the Cadence Verilog-A Language Reference. Keep the model pure voltage-domain behavioral Verilog-A: do not instantiate transistor-level devices and do not use current-domain `I(...)` branch contributions.
+Implement one behavioral Verilog-A DUT file named `slew_output_reset_recovery.va`. The DUT models a resettable slew-limited output that ramps up after clock qualification, slews down during reset, and slews up again after reset release.
 
-## Interface
+## Form-Specific Requirements
+
+This is a DUT-only Verilog-A modeling task. The supplied testbenches are verification scenarios; do not hard-code their stop times, sample times, or waveform breakpoints into the DUT.
+
+## Public Verilog-A Interface
 
 ```verilog
 module slew_output_reset_recovery (
@@ -17,16 +21,22 @@ module slew_output_reset_recovery (
 );
 ```
 
+## Public Parameter Contract
+
+- `vth = 0.45` V is the reset and clock threshold.
+- `rise_rate = 8.0e8` V/s is the positive output slew-rate limit.
+- `fall_rate = 3.0e8` V/s is the positive magnitude of the falling slew-rate limit. Cadence Verilog-A `slew(expr, SRpos, SRneg)` expects `SRneg` to be negative, so use `-fall_rate` as the third argument.
+
 ## Required Behavior
 
-Use `slew()` to limit output slope through a reset-and-recovery sequence.
+On a rising `rst` event, clear target `out` and `metric` to zero. On each rising crossing of `clk` through `vth` while reset is low, set target `out = 0.80` and target `metric = 1.00`.
 
-Use voltage-coded logic with `vth = 0.45` V, `rise_rate = 8.0e8` V/s, and `fall_rate = 3.0e8` V/s.
+Both public outputs must slew toward zero while reset is asserted and then slew back toward their high targets after reset release and the next clock event.
 
-On a rising `rst` event, clear target `out` and `metric` to zero. On each rising crossing of `clk` while reset is low, set target `out = 0.80` and target `metric = 1.00`. Drive both public outputs using `slew(target, rise_rate, fall_rate)`.
+## Modeling Constraints
 
-The hidden testbench first slews up to the high target, then asserts reset long enough to force a falling slew toward zero, then releases reset and clocks the DUT again to verify slew-limited recovery. Do not use `I(...)`, `ddt(...)`, or `idt(...)`.
+Use pure voltage-domain behavioral Verilog-A. Do not instantiate devices, do not drive `I(...)` branch contributions, and do not use `ddt(...)` or `idt(...)`. Drive the public outputs with `slew(target, rise_rate, -fall_rate)`, not with an immediate assignment or `transition()`.
 
-## Output
+## Output Contract
 
 Return exactly one source artifact named `slew_output_reset_recovery.va`. Do not generate a Spectre testbench for this task.
