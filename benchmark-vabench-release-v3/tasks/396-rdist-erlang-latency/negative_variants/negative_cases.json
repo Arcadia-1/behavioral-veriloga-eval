@@ -16,7 +16,7 @@
     },
     {
       "id": "neg_003_reset_bias",
-      "why_wrong": "Rdist Erlang Latency: mishandles reset or initialization, passing steady-state samples but failing startup or recovery checks.",
+      "why_wrong": "Rdist Erlang Latency: drops the reported random metric after computing the output, breaking the output/metric consistency check.",
       "files": [
         "neg_003_reset_bias/rdist_erlang_latency.va"
       ]

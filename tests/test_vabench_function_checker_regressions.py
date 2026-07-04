@@ -2407,15 +2407,35 @@ def _rdist_sequence_rows(metric_sequence: list[float], *, wrong: bool = False) -
 
 def test_v3_rdist_checkers_follow_hidden_vin_values() -> None:
     cases = [
-        (sim.check_v3_391_rdist_exponential_jitter, [3.7943, 0.5581, 0.6179, 0.1685]),
-        (sim.check_v3_392_rdist_poisson_count_noise, [3.0, 2.0, 0.0, 0.0]),
-        (sim.check_v3_393_rdist_normal_offset_dither, [0.0113, -0.0160, 0.0591, 0.0312]),
+        (
+            sim.check_v3_391_rdist_exponential_jitter,
+            [3.7943, 0.5581, 0.6179, 0.1685],
+            [5.06912, 1.22615, 1.74085, 0.261145],
+        ),
+        (
+            sim.check_v3_392_rdist_poisson_count_noise,
+            [3.0, 2.0, 0.0, 0.0],
+            [0.0, 2.0, 3.0, 6.0],
+        ),
+        (
+            sim.check_v3_393_rdist_normal_offset_dither,
+            [0.0113, -0.0160, 0.0591, 0.0312],
+            [-0.0110707, -0.0234803, -0.0361837, -0.062261],
+        ),
         (sim.check_v3_394_rdist_chi_square_energy, [0.5044, 0.5387, 0.9852, 1.6858]),
         (sim.check_v3_395_rdist_t_tail_dither, [-1.7540, 0.0963, 0.4683, -1.5343]),
-        (sim.check_v3_396_rdist_erlang_latency, [1.0851, 1.0945, 0.5121, 0.2559]),
+        (
+            sim.check_v3_396_rdist_erlang_latency,
+            [1.0851, 1.0945, 0.5121, 0.2559],
+            [1.30561, 0.24618, 0.275805, 0.191614],
+        ),
     ]
-    for checker, sequence in cases:
+    for case in cases:
+        checker = case[0]
+        sequence = case[1]
         assert checker(_rdist_sequence_rows(sequence))[0]
+        if len(case) > 2:
+            assert checker(_rdist_sequence_rows(case[2]))[0]
         assert not checker(_rdist_sequence_rows(sequence, wrong=True))[0]
 
 

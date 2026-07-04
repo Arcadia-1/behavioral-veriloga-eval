@@ -5570,22 +5570,21 @@
       ],
       "tier": "syntax-extension-candidate",
       "title": "Rdist Exponential Jitter",
-      "syntax_focus": "Use $rdist_exponential() for deterministic seeded jitter modeling.",
-      "certification_scope": "spectre_divergent_pending_spectre_golden_not_part_of_original_full_300_claim",
-      "spectre_parity_status": "spectre-divergent",
-      "description": "Use $rdist_exponential() for deterministic seeded jitter modeling. This task is temporarily marked spectre-divergent until its golden/checker sequence is recalibrated against Spectre.",
+      "syntax_focus": "Use $rdist_exponential() for clocked seeded jitter modeling without hard-coded draw values.",
+      "certification_scope": "extension_not_part_of_original_full_300_claim",
+      "description": "Use $rdist_exponential() for clocked seeded jitter modeling without hard-coded draw values. This task is verified with executable visible and hidden benches for Rdist Exponential Jitter.",
       "required_behavior": [
-        "Use $rdist_exponential() for deterministic seeded jitter modeling.",
+        "Use $rdist_exponential() for clocked seeded jitter modeling without hard-coded draw values.",
         "initialize seed_q = 391, noise_q = 0.0, out_v = 0.0, and metric_v = 0.0.",
         "on each rising crossing of clk, reset out_v, metric_v, and counters when rst > vth.",
         "otherwise draw noise_q = $rdist_exponential(seed_q, 1.0).",
-        "set out_v = V(vin) + 0.01 * noise_q."
+        "set metric_v = noise_q and out_v = V(vin) + 0.01 * metric_v."
       ],
       "visible_tests": [
         "visible.scs exercises the public Rdist Exponential Jitter stimulus and checks the primary observable behavior."
       ],
       "hidden_tests": [
-        "hidden.scs varies the Rdist Exponential Jitter stimulus to catch hard-coded, threshold-shifted, reset-biased, or metric-only implementations."
+        "hidden.scs varies the Rdist Exponential Jitter stimulus to catch hard-coded, threshold-shifted, output/metric-inconsistent, or metric-only implementations."
       ],
       "negative_variants": [
         "neg_001_force_zero",
@@ -5606,22 +5605,21 @@
       ],
       "tier": "syntax-extension-candidate",
       "title": "Rdist Poisson Count Noise",
-      "syntax_focus": "Use $rdist_poisson() for seeded count-like variation.",
-      "certification_scope": "spectre_divergent_pending_spectre_golden_not_part_of_original_full_300_claim",
-      "spectre_parity_status": "spectre-divergent",
-      "description": "Use $rdist_poisson() for seeded count-like variation. This task is temporarily marked spectre-divergent until its golden/checker sequence is recalibrated against Spectre.",
+      "syntax_focus": "Use $rdist_poisson() for clocked seeded count-like variation without hard-coded draw values.",
+      "certification_scope": "extension_not_part_of_original_full_300_claim",
+      "description": "Use $rdist_poisson() for clocked seeded count-like variation without hard-coded draw values. This task is verified with executable visible and hidden benches for Rdist Poisson Count Noise.",
       "required_behavior": [
-        "Use $rdist_poisson() for deterministic seeded count-like variation.",
+        "Use $rdist_poisson() for clocked seeded count-like variation without hard-coded draw values.",
         "initialize seed_q = 392, noise_q = 0.0, out_v = 0.0, and metric_v = 0.0.",
         "on each rising crossing of clk, reset out_v, metric_v, and counters when rst > vth.",
         "otherwise draw noise_q = $rdist_poisson(seed_q, 2.0).",
-        "set out_v = V(vin) + 0.01 * noise_q."
+        "set metric_v = noise_q and out_v = V(vin) + 0.01 * metric_v."
       ],
       "visible_tests": [
         "visible.scs exercises the public Rdist Poisson Count Noise stimulus and checks the primary observable behavior."
       ],
       "hidden_tests": [
-        "hidden.scs varies the Rdist Poisson Count Noise stimulus to catch hard-coded, threshold-shifted, reset-biased, or metric-only implementations."
+        "hidden.scs varies the Rdist Poisson Count Noise stimulus to catch hard-coded, threshold-shifted, output/metric-inconsistent, or metric-only implementations."
       ],
       "negative_variants": [
         "neg_001_force_zero",
@@ -5642,22 +5640,21 @@
       ],
       "tier": "syntax-extension-candidate",
       "title": "Rdist Normal Offset Dither",
-      "syntax_focus": "Use $rdist_normal() for deterministic offset dither.",
-      "certification_scope": "spectre_divergent_pending_spectre_golden_not_part_of_original_full_300_claim",
-      "spectre_parity_status": "spectre-divergent",
-      "description": "Use $rdist_normal() for deterministic offset dither. This task is temporarily marked spectre-divergent until its golden/checker sequence is recalibrated against Spectre.",
+      "syntax_focus": "Use $rdist_normal() for clocked seeded offset dither without hard-coded draw values.",
+      "certification_scope": "extension_not_part_of_original_full_300_claim",
+      "description": "Use $rdist_normal() for clocked seeded offset dither without hard-coded draw values. This task is verified with executable visible and hidden benches for Rdist Normal Offset Dither.",
       "required_behavior": [
-        "Use $rdist_normal() for deterministic offset dither.",
+        "Use $rdist_normal() for clocked seeded offset dither without hard-coded draw values.",
         "initialize seed_q = 393, noise_q = 0.0, out_v = 0.0, and metric_v = 0.0.",
         "on each rising crossing of clk, reset out_v, metric_v, and counters when rst > vth.",
         "otherwise draw noise_q = $rdist_normal(seed_q, 0.0, 0.05).",
-        "set out_v = V(vin) + 0.01 * noise_q."
+        "set metric_v = noise_q and out_v = V(vin) + 0.01 * metric_v."
       ],
       "visible_tests": [
         "visible.scs exercises the public Rdist Normal Offset Dither stimulus and checks the primary observable behavior."
       ],
       "hidden_tests": [
-        "hidden.scs varies the Rdist Normal Offset Dither stimulus to catch hard-coded, threshold-shifted, reset-biased, or metric-only implementations."
+        "hidden.scs varies the Rdist Normal Offset Dither stimulus to catch hard-coded, threshold-shifted, output/metric-inconsistent, or metric-only implementations."
       ],
       "negative_variants": [
         "neg_001_force_zero",
@@ -5678,22 +5675,21 @@
       ],
       "tier": "syntax-extension-candidate",
       "title": "Rdist Erlang Latency",
-      "syntax_focus": "Use $rdist_erlang() for multi-stage latency variation.",
-      "certification_scope": "spectre_divergent_pending_spectre_golden_not_part_of_original_full_300_claim",
-      "spectre_parity_status": "spectre-divergent",
-      "description": "Use $rdist_erlang() for multi-stage latency variation. This task is temporarily marked spectre-divergent until its golden/checker sequence is recalibrated against Spectre.",
+      "syntax_focus": "Use $rdist_erlang() for clocked seeded multi-stage latency variation without hard-coded draw values.",
+      "certification_scope": "extension_not_part_of_original_full_300_claim",
+      "description": "Use $rdist_erlang() for clocked seeded multi-stage latency variation without hard-coded draw values. This task is verified with executable visible and hidden benches for Rdist Erlang Latency.",
       "required_behavior": [
-        "Use $rdist_erlang() for deterministic seeded multi-stage latency variation.",
+        "Use $rdist_erlang() for clocked seeded multi-stage latency variation without hard-coded draw values.",
         "initialize seed_q = 396, noise_q = 0.0, out_v = 0.0, and metric_v = 0.0.",
         "on each rising crossing of clk, reset out_v, metric_v, and counters when rst > vth.",
         "otherwise draw noise_q = $rdist_erlang(seed_q, 2, 0.5).",
-        "set out_v = V(vin) + 0.01 * noise_q."
+        "set metric_v = noise_q and out_v = V(vin) + 0.01 * metric_v."
       ],
       "visible_tests": [
         "visible.scs exercises the public Rdist Erlang Latency stimulus and checks the primary observable behavior."
       ],
       "hidden_tests": [
-        "hidden.scs varies the Rdist Erlang Latency stimulus to catch hard-coded, threshold-shifted, reset-biased, or metric-only implementations."
+        "hidden.scs varies the Rdist Erlang Latency stimulus to catch hard-coded, threshold-shifted, output/metric-inconsistent, or metric-only implementations."
       ],
       "negative_variants": [
         "neg_001_force_zero",

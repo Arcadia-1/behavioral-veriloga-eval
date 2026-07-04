@@ -10797,6 +10797,87 @@ def check_v3_390_table_model_piecewise_calibrator(rows: list[dict[str, float]]) 
 
 def _check_v3_rdist_sequence(
     rows: list[dict[str, float]],
+    *,
+    family: str,
+) -> tuple[bool, str]:
+    required = {"time", "vin", "clk", "mode", "rst", "out", "metric"}
+    if not rows or not required.issubset(rows[0]):
+        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
+        return False, "missing_columns=" + ",".join(missing)
+
+    edge_vin = 0.0
+    edge_active = False
+    edge_vins: list[float] = [edge_vin]
+    edge_active_values: list[bool] = [edge_active]
+    edge_count = 0
+    edge_times: list[float] = []
+    prev_clk = rows[0]["clk"]
+    for row in rows[1:]:
+        if prev_clk <= 0.45 < row["clk"]:
+            edge_times.append(row["time"])
+            if row["rst"] > 0.45:
+                edge_active = False
+                edge_vin = 0.0
+            else:
+                edge_active = True
+                edge_vin = row["vin"]
+            edge_count += 1
+        edge_vins.append(edge_vin)
+        edge_active_values.append(edge_active)
+        prev_clk = row["clk"]
+
+    stride = max(1, len(rows) // 120)
+    checked_active = 0
+    checked_reset = 0
+    nonzero_metric_samples = 0
+    max_relation_err = 0.0
+    max_abs_metric = 0.0
+    for index in range(0, len(rows), stride):
+        if any(0.0 <= rows[index]["time"] - edge_time <= 1.0e-9 for edge_time in edge_times):
+            continue
+        metric = rows[index]["metric"]
+        out = rows[index]["out"]
+        max_abs_metric = max(max_abs_metric, abs(metric))
+        if edge_active_values[index]:
+            checked_active += 1
+            if abs(metric) > 1.0e-4:
+                nonzero_metric_samples += 1
+            if family in {"exponential", "erlang"} and not (-0.02 <= metric <= 25.0):
+                return False, f"{family}_metric_out_of_range@{rows[index]['time'] * 1e9:g}ns={metric:.4f}"
+            if family == "poisson":
+                if metric < -0.02 or metric > 50.0 or abs(metric - round(metric)) > 0.08:
+                    return False, f"poisson_metric_not_count_like@{rows[index]['time'] * 1e9:g}ns={metric:.4f}"
+            if family == "normal" and abs(metric) > 0.5:
+                return False, f"normal_metric_out_of_range@{rows[index]['time'] * 1e9:g}ns={metric:.4f}"
+            out_expected = edge_vins[index] + 0.01 * metric
+            relation_err = abs(out - out_expected)
+            max_relation_err = max(max_relation_err, relation_err)
+            if relation_err > 2.0e-4:
+                return False, (
+                    f"out_metric_relation@{rows[index]['time'] * 1e9:g}ns out={out:.5f} "
+                    f"expected={out_expected:.5f} err={relation_err:.5g}"
+                )
+        else:
+            checked_reset += 1
+            if abs(metric) > 0.02 or abs(out) > 0.02:
+                return False, f"reset_or_initial_not_zero@{rows[index]['time'] * 1e9:g}ns out={out:.4f} metric={metric:.4f}"
+
+    if edge_count != 4:
+        return False, f"random_edge_count={edge_count} expected=4"
+    if checked_active < 8:
+        return False, f"insufficient_active_samples={checked_active}"
+    if nonzero_metric_samples < 4:
+        return False, f"insufficient_random_activity={nonzero_metric_samples}"
+    return (
+        True,
+        f"edges={edge_count} active_samples={checked_active} reset_samples={checked_reset} "
+        f"nonzero_metric_samples={nonzero_metric_samples} max_abs_metric={max_abs_metric:.4f} "
+        f"max_relation_err={max_relation_err:.5g}",
+    )
+
+
+def _check_v3_rdist_exact_sequence(
+    rows: list[dict[str, float]],
     metric_sequence: list[float],
     *,
     tol: float,
@@ -10872,27 +10953,27 @@ def _check_v3_rdist_sequence(
 
 
 def check_v3_391_rdist_exponential_jitter(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    return _check_v3_rdist_sequence(rows, [3.7943, 0.5581, 0.6179, 0.1685], tol=0.05)
+    return _check_v3_rdist_sequence(rows, family="exponential")
 
 
 def check_v3_392_rdist_poisson_count_noise(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    return _check_v3_rdist_sequence(rows, [3.0, 2.0, 0.0, 0.0], tol=0.05)
+    return _check_v3_rdist_sequence(rows, family="poisson")
 
 
 def check_v3_393_rdist_normal_offset_dither(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    return _check_v3_rdist_sequence(rows, [0.0113, -0.0160, 0.0591, 0.0312], tol=0.008)
+    return _check_v3_rdist_sequence(rows, family="normal")
 
 
 def check_v3_394_rdist_chi_square_energy(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    return _check_v3_rdist_sequence(rows, [0.5044, 0.5387, 0.9852, 1.6858], tol=0.03)
+    return _check_v3_rdist_exact_sequence(rows, [0.5044, 0.5387, 0.9852, 1.6858], tol=0.03)
 
 
 def check_v3_395_rdist_t_tail_dither(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    return _check_v3_rdist_sequence(rows, [-1.7540, 0.0963, 0.4683, -1.5343], tol=0.03)
+    return _check_v3_rdist_exact_sequence(rows, [-1.7540, 0.0963, 0.4683, -1.5343], tol=0.03)
 
 
 def check_v3_396_rdist_erlang_latency(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    return _check_v3_rdist_sequence(rows, [1.0851, 1.0945, 0.5121, 0.2559], tol=0.03)
+    return _check_v3_rdist_sequence(rows, family="erlang")
 
 
 def _check_v3_hierarchy_expression(

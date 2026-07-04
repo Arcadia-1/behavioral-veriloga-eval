@@ -18,7 +18,7 @@
     },
     {
       "id": "neg_003_reset_bias",
-      "description": "Rdist Exponential Jitter: mishandles reset or initialization, passing steady-state samples but failing startup or recovery checks.",
+      "description": "Rdist Exponential Jitter: drops the reported random metric after computing the output, breaking the output/metric consistency check.",
       "files": [
         "neg_003_reset_bias/rdist_exponential_jitter.va"
       ],
