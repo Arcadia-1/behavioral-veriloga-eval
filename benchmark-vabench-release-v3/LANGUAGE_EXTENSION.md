@@ -61,17 +61,22 @@ failures in retained rows should be treated as benchmark rewrites or
 case-by-case EVAS/Spectre audit items, not as reasons to count unsupported
 syntax in the default denominator.
 
-As of the 2026-07-04 Spectre-parity audit, eight retained rows are explicitly
+As of the 2026-07-04 Spectre-parity audit, seven retained rows are explicitly
 marked `spectre-divergent` rather than full Spectre-certified:
 `391-rdist-exponential-jitter`, `392-rdist-poisson-count-noise`,
 `393-rdist-normal-offset-dither`, `396-rdist-erlang-latency`,
 `404-vector-part-select-window`, `405-vector-concat-code-build`,
-`492-kcl-inductor-idt-voltage`, and `494-continuous-zi-nd-filter`. Spectre
+and `492-kcl-inductor-idt-voltage`. Spectre
 compiles and simulates these rows, but EVAS/checker behavior was previously
 using EVAS-side expectations for seeded random sequences, integer select and
-concatenation semantics, branch-current polarity, or sampled `zi_nd()` response.
+concatenation semantics, or branch-current polarity.
 Their golden/checker contracts must be recalibrated against Spectre output
 before they can be counted in a full Spectre-certified claim.
+
+`494-continuous-zi-nd-filter` was restored after recalibrating the checker to
+Spectre sampled `zi_nd()` values and adding `evas-rust` sample-interval
+breakpoints so the operator updates at the exact configured interval even when
+the netlist does not specify `maxstep`.
 
 ## Archived Rows
 

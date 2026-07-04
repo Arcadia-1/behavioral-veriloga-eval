@@ -10830,8 +10830,7 @@
   version: 1
   task_id: v3_494_continuous_zi_nd_filter
   backend: evas
-  status: spectre-divergent
-  spectre_status: pending_spectre_golden_recalibration
+  status: behavior-certified-candidate
   checker: continuous_zi_nd_filter_contract
   # vabench-release-v2-checks
   required_columns:
@@ -10861,10 +10860,11 @@
       - hidden_falling_step_state_decay_checked
       - five_negative_variants_rejected_by_behavior_checker
   promotion_evidence:
-    evas_commit: "159fb92 Support first-order zi_nd behavior"
-    result: "1/1 gold PASS; 5/5 negative variants rejected; 0 expectation_fail with sampled zi_nd IIR response checker."
+    evas_commit: "6507aa3 Schedule zi_nd sample breakpoints"
+    report: "benchmark-vabench-release-v3/reports/verify_task_494_spectre_recalibrated_20260704.json"
+    result: "1/1 gold PASS; 5/5 negative variants rejected; 0 expectation_fail with evas-rust and Spectre-recalibrated sampled zi_nd response checker."
   notes:
-    - "Temporarily not full Spectre-certified: zi_nd sampled-data response/golden must be checked against Spectre output before promotion."
+    - "Promoted after recalibrating the checker to Spectre zi_nd sample values and forcing evas-rust sampled-data breakpoints at the zi_nd interval."
 495-slew-rate-dac4: |
   version: 1
   task_id: v3_495_slew_rate_dac4

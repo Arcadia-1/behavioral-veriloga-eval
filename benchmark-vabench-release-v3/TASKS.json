@@ -8424,13 +8424,12 @@
       "tier": "behavioral-continuous-time-candidate",
       "title": "Continuous Zi Nd Filter",
       "syntax_focus": "Use zi_nd() as a sampled-data behavioral transfer function.",
-      "certification_scope": "spectre_divergent_pending_spectre_golden_not_part_of_original_full_300_claim",
-      "spectre_parity_status": "spectre-divergent",
+      "certification_scope": "language_extension_not_part_of_original_full_300_claim",
       "description": "Use zi_nd() as a sampled-data behavioral transfer function with visible stateful output.",
       "required_behavior": [
         "Apply sampled-data numerator/denominator filtering to the input waveform.",
         "Preserve filter state across sample intervals.",
-        "Remain staged until continuous/sampled zi_nd behavior is certified."
+        "Match Spectre sampled-data zi_nd response at the configured sample interval."
       ],
       "visible_tests": [
         "visible.scs drives a sequence that should update zi_nd filter state."
