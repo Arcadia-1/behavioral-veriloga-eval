@@ -6,6 +6,11 @@ input VIN, CLK, S6, S5, S4, S3, S2, S1;
 output VRES;
 electrical VIN, CLK, S6, S5, S4, S3, S2, S1, VRES;
 
+parameter real vdd = 0.9;
+parameter real vrefp = 0.9;
+parameter real vrefn = 0;
+parameter real tr = 1p;
+
 analog begin
     V(VRES) <+ 0;
 end

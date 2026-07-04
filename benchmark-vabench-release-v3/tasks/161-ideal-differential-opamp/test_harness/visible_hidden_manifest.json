@@ -5,9 +5,5 @@
   "hidden": [
     "test_hidden/tests/tb_source_ref.scs"
   ],
-  "checker": "v3_ideal_differential_opamp",
-  "evidence": {
-    "evas": "WORK/source-import-batch8-evas/161-ideal-differential-opamp",
-    "spectre": "WORK/source-import-batch8-spectre/161-ideal-differential-opamp"
-  }
+  "checker": "v3_ideal_differential_opamp"
 }

@@ -11717,15 +11717,96 @@ def check_v3_two_input_xor_gate(rows: list[dict[str, float]]) -> tuple[bool, str
     )
 
 
+def _v3_edge_times(
+    rows: list[dict[str, float]],
+    signal: str,
+    *,
+    threshold: float,
+    direction: int,
+) -> list[float]:
+    edges: list[float] = []
+    for idx in range(1, len(rows)):
+        prev = rows[idx - 1]
+        cur = rows[idx]
+        v0 = prev.get(signal)
+        v1 = cur.get(signal)
+        t0 = prev.get("time")
+        t1 = cur.get("time")
+        if v0 is None or v1 is None or t0 is None or t1 is None:
+            continue
+        crossed = (v0 < threshold <= v1) if direction > 0 else (v0 > threshold >= v1)
+        if not crossed:
+            continue
+        if v1 == v0:
+            edges.append(t1)
+        else:
+            frac = (threshold - v0) / (v1 - v0)
+            edges.append(t0 + frac * (t1 - t0))
+    return edges
+
+
+def _v3_first_edge_between(edges: list[float], start_s: float, stop_s: float) -> float | None:
+    for edge in edges:
+        if start_s < edge < stop_s:
+            return edge
+    return None
+
+
+def _v3_formula_check(
+    rows: list[dict[str, float]],
+    *,
+    required: set[str],
+    output: str,
+    expected_fn,
+    tol: float,
+    min_checked: int,
+    max_rows: int = 240,
+    stable_fn=None,
+) -> tuple[bool, str]:
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing " + "/".join(sorted(required))
+    stride = max(1, len(rows) // max_rows)
+    checked = 0
+    max_err = 0.0
+    for row in rows[::stride]:
+        if stable_fn is not None and not stable_fn(row):
+            continue
+        expected = expected_fn(row)
+        if expected is None:
+            continue
+        observed = row.get(output)
+        if observed is None:
+            return False, f"missing_{output}_sample"
+        max_err = max(max_err, abs(observed - expected))
+        checked += 1
+    if checked < min_checked:
+        return False, f"too_few_formula_samples={checked}"
+    return max_err <= tol, f"checked={checked} max_error={max_err:.5f}"
+
+
 def check_v3_analog_mux_threshold(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "vin1", "vin2", "vsel", "vout"}
-    if not rows or not required.issubset(rows[0]):
-        return False, "missing time/vin1/vin2/vsel/vout"
-    return _sample_many(
+    modes: set[int] = set()
+
+    def expected(row: dict[str, float]) -> float:
+        mode = 1 if row["vsel"] > 0.45 else 0
+        modes.add(mode)
+        return row["vin1"] if mode else row["vin2"]
+
+    ok, detail = _v3_formula_check(
         rows,
-        {"vout": [(5.0, 0.75), (15.0, 0.20), (25.0, 0.55), (35.0, 0.45)]},
-        tol=0.025,
+        required=required,
+        output="vout",
+        expected_fn=expected,
+        stable_fn=lambda row: abs(row["vsel"] - 0.45) > 0.05,
+        tol=0.035,
+        min_checked=20,
     )
+    if not ok:
+        return ok, detail
+    if modes != {0, 1}:
+        return False, f"insufficient_mux_selection_coverage={sorted(modes)}"
+    return True, detail + " modes=0,1"
 
 
 def check_v3_two_bit_counter_marker(rows: list[dict[str, float]]) -> tuple[bool, str]:
@@ -11743,29 +11824,66 @@ def check_v3_max_detector_hold(rows: list[dict[str, float]]) -> tuple[bool, str]
     required = {"time", "vin", "vout"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing time/vin/vout"
-    ok, detail = _sample_many(
-        rows,
-        {"vout": [(5.0, 0.20), (15.0, 0.70), (25.0, 0.70), (35.0, 0.85)]},
-        tol=0.025,
-    )
-    if not ok:
-        return ok, detail
-    values = [float(sample_signal_at(rows, "vout", time_ns * 1e-9) or 0.0) for time_ns in (5.0, 15.0, 25.0, 35.0)]
-    monotonic_hold = all(b >= a - 0.005 for a, b in zip(values, values[1:]))
-    if not monotonic_hold:
-        return False, f"max_detector_not_monotonic samples={','.join(f'{v:.3f}' for v in values)}"
-    return True, detail + " monotonic_hold=True"
+    running_max = rows[0]["vin"]
+    stride = max(1, len(rows) // 240)
+    checked = 0
+    max_err = 0.0
+    input_dropped_after_peak = False
+    previous_vout = rows[0]["vout"]
+    monotone_ok = True
+    for idx, row in enumerate(rows):
+        running_max = max(running_max, row["vin"])
+        if row["vin"] < running_max - 0.05:
+            input_dropped_after_peak = True
+        if row["vout"] < previous_vout - 0.01:
+            monotone_ok = False
+        previous_vout = row["vout"]
+        if idx % stride == 0:
+            max_err = max(max_err, abs(row["vout"] - running_max))
+            checked += 1
+    if checked < 20:
+        return False, f"too_few_max_hold_samples={checked}"
+    if not monotone_ok:
+        return False, "max_detector_output_not_monotonic"
+    if not input_dropped_after_peak:
+        return False, "max_detector_missing_hold_after_input_drop"
+    return max_err <= 0.03, f"checked={checked} max_error={max_err:.5f} monotonic_hold=True"
 
 
 def check_v3_time_diff_detector(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "clk", "vinp", "vinn", "vout"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing time/clk/vinp/vinn/vout"
-    return _sample_many(
-        rows,
-        {"vout": [(6.0, 0.0), (26.0, -0.9), (46.0, 0.9)]},
-        tol=0.08,
-    )
+    clk_edges = _v3_edge_times(rows, "clk", threshold=0.45, direction=1)
+    p_edges = _v3_edge_times(rows, "vinp", threshold=0.45, direction=1)
+    n_edges = _v3_edge_times(rows, "vinn", threshold=0.45, direction=1)
+    if len(clk_edges) < 3:
+        return False, f"too_few_clk_edges={len(clk_edges)}"
+    max_err = 0.0
+    checked = 0
+    details: list[str] = []
+    for idx, edge in enumerate(clk_edges):
+        sample_t = edge + 1.0e-9
+        if sample_t > rows[-1]["time"]:
+            continue
+        if idx == 0:
+            expected = 0.0
+        else:
+            start = clk_edges[idx - 1]
+            p_edge = _v3_first_edge_between(p_edges, start, edge)
+            n_edge = _v3_first_edge_between(n_edges, start, edge)
+            p_time = p_edge if p_edge is not None else 0.0
+            n_time = n_edge if n_edge is not None else 0.0
+            expected = max(-0.9, min(0.9, (p_time - n_time) * 1.0e9))
+        observed = sample_signal_at(rows, "vout", sample_t)
+        if observed is None:
+            return False, f"missing_tdiff_sample_at={sample_t * 1e9:.3f}ns"
+        max_err = max(max_err, abs(observed - expected))
+        details.append(f"{sample_t * 1e9:.1f}ns:{observed:.3f}/{expected:.3f}")
+        checked += 1
+    if checked < 3:
+        return False, f"too_few_tdiff_output_checks={checked}"
+    return max_err <= 0.10, f"checked={checked} max_error={max_err:.5f} samples=" + ",".join(details[:5])
 
 
 def check_v3_differential_buffer(rows: list[dict[str, float]]) -> tuple[bool, str]:
@@ -11808,23 +11926,43 @@ def check_v3_sar_cdac_residue(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "vin", "clk", "s6", "s5", "s4", "s3", "s2", "s1", "vres"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing time/vin/clk/s6/s5/s4/s3/s2/s1/vres"
-    expected = [
-        (6.0, 0.20),
-        (12.0, 0.65),
-        (17.0, 0.425),
-        (22.0, 0.3125),
-        (27.0, 0.25625),
-        (32.0, 0.228125),
-        (37.0, 0.2140625),
-    ]
-    ok, detail = _sample_many(rows, {"vres": expected}, tol=0.025)
-    if not ok:
-        return ok, detail
-    observed = [float(sample_signal_at(rows, "vres", time_ns * 1e-9) or 0.0) for time_ns, _ in expected]
-    has_expected_step = observed[1] > observed[0] + 0.35 and all(a > b for a, b in zip(observed[1:], observed[2:]))
-    if not has_expected_step:
-        return False, f"cdac_sequence_unexpected samples={','.join(f'{v:.4f}' for v in observed)}"
-    return True, detail + " sample_then_monotone_down=True"
+    events: list[tuple[float, str, float]] = [(rows[0]["time"], "sample", 0.0)]
+    for edge in _v3_edge_times(rows, "clk", threshold=0.45, direction=1):
+        events.append((edge, "sample", 0.0))
+    events.extend((edge, "step", 0.5 * 0.9) for edge in _v3_edge_times(rows, "s6", threshold=0.45, direction=-1))
+    for signal, weight in (("s5", -0.25), ("s4", -0.125), ("s3", -0.0625), ("s2", -0.03125), ("s1", -0.015625)):
+        events.extend((edge, "step", weight * 0.9) for edge in _v3_edge_times(rows, signal, threshold=0.45, direction=1))
+    events.sort(key=lambda item: item[0])
+    if len(events) < 7:
+        return False, f"too_few_cdac_events={len(events)}"
+    state = rows[0]["vin"]
+    checked = 0
+    max_err = 0.0
+    observed_values: list[float] = []
+    for event_time, kind, delta in events:
+        if kind == "sample":
+            vin_value = sample_signal_at(rows, "vin", event_time)
+            if vin_value is None:
+                return False, f"missing_vin_at_event={event_time * 1e9:.3f}ns"
+            state = vin_value
+        else:
+            state += delta
+        sample_t = event_time + 0.8e-9
+        if sample_t > rows[-1]["time"]:
+            continue
+        observed = sample_signal_at(rows, "vres", sample_t)
+        if observed is None:
+            return False, f"missing_vres_sample_at={sample_t * 1e9:.3f}ns"
+        observed_values.append(observed)
+        max_err = max(max_err, abs(observed - state))
+        checked += 1
+    if checked < 7:
+        return False, f"too_few_cdac_checks={checked}"
+    has_up_step = any(b > a + 0.30 for a, b in zip(observed_values, observed_values[1:]))
+    has_down_steps = sum(1 for a, b in zip(observed_values, observed_values[1:]) if b < a - 0.01) >= 4
+    if not has_up_step or not has_down_steps:
+        return False, f"cdac_sequence_missing_up_or_down_steps samples={','.join(f'{v:.4f}' for v in observed_values)}"
+    return max_err <= 0.010, f"checked={checked} max_error={max_err:.5f}"
 
 
 def check_v3_two_input_nand_gate(rows: list[dict[str, float]]) -> tuple[bool, str]:
@@ -12002,43 +12140,60 @@ def check_v3_offset_gain_amplifier(rows: list[dict[str, float]]) -> tuple[bool, 
 
 def check_v3_safe_voltage_divider(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "signumer", "sigdenom", "sigout"}
-    if not rows or not required.issubset(rows[0]):
-        return False, "missing time/signumer/sigdenom/sigout"
-    ok, detail = _sample_many(
+    guarded = 0
+    negative_guarded = 0
+
+    def expected(row: dict[str, float]) -> float:
+        nonlocal guarded, negative_guarded
+        denominator = row["sigdenom"]
+        if abs(denominator) < 0.25:
+            guarded += 1
+            if denominator < 0:
+                negative_guarded += 1
+            denominator = 0.25 if denominator >= 0 else -0.25
+        return 2.0 * row["signumer"] / denominator
+
+    ok, detail = _v3_formula_check(
         rows,
-        {"sigout": [(5.0, 1.00), (15.0, 2.40), (25.0, 1.60)]},
-        tol=0.03,
+        required=required,
+        output="sigout",
+        expected_fn=expected,
+        tol=0.05,
+        min_checked=20,
     )
     if not ok:
         return ok, detail
-    denominators = [sample_signal_at(rows, "sigdenom", time_ns * 1e-9) for time_ns in (5.0, 15.0, 25.0)]
-    if any(value is None for value in denominators):
-        return False, "missing_divider_denominator_samples"
-    return True, f"{detail} denom=" + ",".join(f"{float(value):.3f}" for value in denominators if value is not None)
+    if guarded == 0 or negative_guarded == 0:
+        return False, f"insufficient_guard_coverage guarded={guarded} negative_guarded={negative_guarded}"
+    return True, f"{detail} guarded={guarded} negative_guarded={negative_guarded}"
 
 
 def check_v3_polynomial_differential_vcvs(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "inp", "inn", "outp", "outn"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing time/inp/inn/outp/outn"
-    ok, detail = _sample_many(
-        rows,
-        {
-            "outp": [(5.0, 0.3995), (15.0, 0.5000), (25.0, 0.6005), (35.0, 0.7578)],
-            "outn": [(5.0, 0.6005), (15.0, 0.5000), (25.0, 0.3995), (35.0, 0.2422)],
-        },
-        tol=0.025,
-    )
-    if not ok:
-        return ok, detail
+    stride = max(1, len(rows) // 240)
+    checked = 0
+    max_err = 0.0
     max_cm_error = 0.0
-    for time_ns in (5.0, 15.0, 25.0, 35.0):
-        outp = sample_signal_at(rows, "outp", time_ns * 1e-9)
-        outn = sample_signal_at(rows, "outn", time_ns * 1e-9)
-        if outp is None or outn is None:
-            return False, f"missing_vcvs_output_sample_at={time_ns:g}ns"
+    for row in rows[::stride]:
+        vid = row["inp"] - row["inn"]
+        vod = (2.0 * vid + vid * vid * vid) / 2.0
+        if vod > 0.3:
+            vod = 0.3
+        if vod < -0.3:
+            vod = -0.3
+        expected_p = 0.5 + vod
+        expected_n = 0.5 - vod
+        max_err = max(max_err, abs(row["outp"] - expected_p), abs(row["outn"] - expected_n))
+        outp = row["outp"]
+        outn = row["outn"]
         max_cm_error = max(max_cm_error, abs(0.5 * (outp + outn) - 0.5))
-    return max_cm_error <= 0.015, f"{detail} max_cm_error={max_cm_error:.5f}"
+        checked += 1
+    if checked < 20:
+        return False, f"too_few_vcvs_samples={checked}"
+    ok = max_err <= 0.035 and max_cm_error <= 0.02
+    return ok, f"checked={checked} max_error={max_err:.5f} max_cm_error={max_cm_error:.5f}"
 
 
 def check_v3_differential_gain_driver(rows: list[dict[str, float]]) -> tuple[bool, str]:
@@ -12071,35 +12226,58 @@ def check_v3_limiting_differential_amplifier(rows: list[dict[str, float]]) -> tu
 
 def check_v3_analog_multiplier(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "sigin1", "sigin2", "sigout"}
-    if not rows or not required.issubset(rows[0]):
-        return False, "missing time/sigin1/sigin2/sigout"
-    ok, detail = _sample_many(
+    has_negative_product = False
+
+    def expected(row: dict[str, float]) -> float:
+        nonlocal has_negative_product
+        product = 2.0 * row["sigin1"] * row["sigin2"]
+        has_negative_product = has_negative_product or product < -0.05
+        return product
+
+    ok, detail = _v3_formula_check(
         rows,
-        {"sigout": [(5.0, 0.20), (15.0, 0.48), (25.0, -0.40)]},
-        tol=0.015,
+        required=required,
+        output="sigout",
+        expected_fn=expected,
+        tol=0.025,
+        min_checked=20,
     )
     if not ok:
         return ok, detail
-    max_product_error = 0.0
-    for time_ns in (5.0, 15.0, 25.0):
-        sigin1 = sample_signal_at(rows, "sigin1", time_ns * 1e-9)
-        sigin2 = sample_signal_at(rows, "sigin2", time_ns * 1e-9)
-        sigout = sample_signal_at(rows, "sigout", time_ns * 1e-9)
-        if sigin1 is None or sigin2 is None or sigout is None:
-            return False, f"missing_multiplier_sample_at={time_ns:g}ns"
-        max_product_error = max(max_product_error, abs(sigout - 2.0 * sigin1 * sigin2))
-    return max_product_error <= 0.015, f"{detail} max_product_error={max_product_error:.5f}"
+    if not has_negative_product:
+        return False, "multiplier_missing_negative_product_coverage"
+    return True, detail
 
 
 def check_v3_three_way_threshold_mux(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "sigin1", "sigin2", "sigin3", "cntrlp", "cntrlm", "sigout"}
-    if not rows or not required.issubset(rows[0]):
-        return False, "missing time/sigin1/sigin2/sigin3/cntrlp/cntrlm/sigout"
-    return _sample_many(
+    regions: set[str] = set()
+
+    def expected(row: dict[str, float]) -> float:
+        ctrl = row["cntrlp"] - row["cntrlm"]
+        if ctrl < -0.2:
+            regions.add("low")
+            return row["sigin1"]
+        if ctrl <= 0.2:
+            regions.add("mid")
+            return row["sigin2"]
+        regions.add("high")
+        return row["sigin3"]
+
+    ok, detail = _v3_formula_check(
         rows,
-        {"sigout": [(5.0, 0.10), (15.0, 0.50), (25.0, 0.90)]},
-        tol=0.02,
+        required=required,
+        output="sigout",
+        expected_fn=expected,
+        stable_fn=lambda row: min(abs((row["cntrlp"] - row["cntrlm"]) + 0.2), abs((row["cntrlp"] - row["cntrlm"]) - 0.2)) > 0.03,
+        tol=0.03,
+        min_checked=20,
     )
+    if not ok:
+        return ok, detail
+    if regions != {"low", "mid", "high"}:
+        return False, f"insufficient_threshold_mux_regions={sorted(regions)}"
+    return True, detail + " regions=low,mid,high"
 
 
 def check_v3_differential_amplifier_core(rows: list[dict[str, float]]) -> tuple[bool, str]:
@@ -12161,24 +12339,28 @@ def check_v3_ideal_differential_opamp(rows: list[dict[str, float]]) -> tuple[boo
     required = {"time", "vinp", "vinn", "voutp", "voutn"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing time/vinp/vinn/voutp/voutn"
-    ok, detail = _sample_many(
-        rows,
-        {
-            "voutp": [(5.0, 0.30), (15.0, 0.50), (25.0, 0.80), (35.0, 0.10)],
-            "voutn": [(5.0, 0.70), (15.0, 0.50), (25.0, 0.20), (35.0, 0.90)],
-        },
-        tol=0.025,
-    )
-    if not ok:
-        return ok, detail
+    stride = max(1, len(rows) // 240)
+    checked = 0
+    max_err = 0.0
     max_cm_error = 0.0
-    for time_ns in (5.0, 15.0, 25.0, 35.0):
-        voutp = sample_signal_at(rows, "voutp", time_ns * 1e-9)
-        voutn = sample_signal_at(rows, "voutn", time_ns * 1e-9)
-        if voutp is None or voutn is None:
-            return False, f"missing_opamp_output_sample_at={time_ns:g}ns"
+    signed_gain_coverage = {"pos": False, "neg": False}
+    for row in rows[::stride]:
+        diff = 2.0 * (row["vinp"] - row["vinn"])
+        expected_p = 0.5 + diff
+        expected_n = 0.5 - diff
+        signed_gain_coverage["pos"] = signed_gain_coverage["pos"] or diff > 0.05
+        signed_gain_coverage["neg"] = signed_gain_coverage["neg"] or diff < -0.05
+        max_err = max(max_err, abs(row["voutp"] - expected_p), abs(row["voutn"] - expected_n))
+        voutp = row["voutp"]
+        voutn = row["voutn"]
         max_cm_error = max(max_cm_error, abs(0.5 * (voutp + voutn) - 0.5))
-    return max_cm_error <= 0.02, f"{detail} max_cm_error={max_cm_error:.5f}"
+        checked += 1
+    if checked < 20:
+        return False, f"too_few_opamp_samples={checked}"
+    if not all(signed_gain_coverage.values()):
+        return False, f"insufficient_signed_gain_coverage={signed_gain_coverage}"
+    ok = max_err <= 0.035 and max_cm_error <= 0.02
+    return ok, f"checked={checked} max_error={max_err:.5f} max_cm_error={max_cm_error:.5f}"
 
 
 def check_v3_half_adder_logic(rows: list[dict[str, float]]) -> tuple[bool, str]:
@@ -12314,22 +12496,64 @@ def check_v3_two_period_sample_delay(rows: list[dict[str, float]]) -> tuple[bool
     required = {"time", "update", "ain", "aout"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing time/update/ain/aout"
-    return _sample_many(
-        rows,
-        {"aout": [(4.0, 0.0), (14.0, 0.1), (24.0, 0.4), (34.0, 0.8), (44.0, 0.2)]},
-        tol=0.025,
-    )
+    edges = _v3_edge_times(rows, "update", threshold=0.5, direction=1)
+    if len(edges) < 4:
+        return False, f"too_few_update_edges={len(edges)}"
+    prev_sample = 0.0
+    max_err = 0.0
+    checked = 0
+    for edge in edges:
+        expected = prev_sample
+        new_sample = sample_signal_at(rows, "ain", edge)
+        if new_sample is None:
+            return False, f"missing_ain_at_update={edge * 1e9:.3f}ns"
+        prev_sample = new_sample
+        sample_t = edge + 1.0e-9
+        if sample_t > rows[-1]["time"]:
+            continue
+        observed = sample_signal_at(rows, "aout", sample_t)
+        if observed is None:
+            return False, f"missing_aout_sample_at={sample_t * 1e9:.3f}ns"
+        max_err = max(max_err, abs(observed - expected))
+        checked += 1
+    if checked < 4:
+        return False, f"too_few_delay_checks={checked}"
+    return max_err <= 0.035, f"checked={checked} max_error={max_err:.5f}"
 
 
 def check_v3_clocked_four_input_mux(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "dsel0", "dsel1", "din0", "din1", "din2", "din3", "clks", "dout"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing mux input/output signals"
-    return _sample_many(
-        rows,
-        {"dout": [(4.0, 0.15), (14.0, 0.35), (24.0, 0.65), (34.0, 0.85)]},
-        tol=0.025,
-    )
+    edges = _v3_edge_times(rows, "clks", threshold=0.45, direction=-1)
+    if len(edges) < 4:
+        return False, f"too_few_mux_clock_edges={len(edges)}"
+    max_err = 0.0
+    checked = 0
+    selected_codes: set[int] = set()
+    for edge in edges:
+        dsel0 = sample_signal_at(rows, "dsel0", edge)
+        dsel1 = sample_signal_at(rows, "dsel1", edge)
+        if dsel0 is None or dsel1 is None:
+            return False, f"missing_select_at_edge={edge * 1e9:.3f}ns"
+        code = (1 if dsel0 > 0.45 else 0) + (2 if dsel1 > 0.45 else 0)
+        selected_codes.add(code)
+        expected = sample_signal_at(rows, f"din{code}", edge)
+        if expected is None:
+            return False, f"missing_din{code}_at_edge={edge * 1e9:.3f}ns"
+        sample_t = edge + 1.0e-9
+        if sample_t > rows[-1]["time"]:
+            continue
+        observed = sample_signal_at(rows, "dout", sample_t)
+        if observed is None:
+            return False, f"missing_dout_sample_at={sample_t * 1e9:.3f}ns"
+        max_err = max(max_err, abs(observed - expected))
+        checked += 1
+    if checked < 4:
+        return False, f"too_few_mux_output_checks={checked}"
+    if len(selected_codes) < 4:
+        return False, f"insufficient_mux_code_coverage={sorted(selected_codes)}"
+    return max_err <= 0.035, f"checked={checked} max_error={max_err:.5f} codes={sorted(selected_codes)}"
 
 
 def check_v3_divide_by_eight_clock(rows: list[dict[str, float]]) -> tuple[bool, str]:
@@ -12467,16 +12691,25 @@ def check_v3_four_channel_edge_sampler(rows: list[dict[str, float]]) -> tuple[bo
     required = {"time", "clk", "vin0", "vin1", "vin2", "vin3", "vout0", "vout1", "vout2", "vout3"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing sampler input/output signals"
-    return _sample_many(
-        rows,
-        {
-            "vout0": [(4.0, 0.1), (14.0, 0.2), (24.0, 0.3), (34.0, 0.4)],
-            "vout1": [(4.0, 0.2), (14.0, 0.4), (24.0, 0.6), (34.0, 0.8)],
-            "vout2": [(4.0, 0.3), (14.0, 0.6), (24.0, 0.9), (34.0, 0.1)],
-            "vout3": [(4.0, 0.4), (14.0, 0.8), (24.0, 0.2), (34.0, 0.6)],
-        },
-        tol=0.025,
-    )
+    edges = _v3_edge_times(rows, "clk", threshold=0.6, direction=1)
+    if len(edges) < 4:
+        return False, f"too_few_sampler_edges={len(edges)}"
+    max_err = 0.0
+    checked = 0
+    for edge in edges:
+        sample_t = edge + 1.0e-9
+        if sample_t > rows[-1]["time"]:
+            continue
+        for idx in range(4):
+            expected = sample_signal_at(rows, f"vin{idx}", edge)
+            observed = sample_signal_at(rows, f"vout{idx}", sample_t)
+            if expected is None or observed is None:
+                return False, f"missing_sampler_channel={idx}_edge={edge * 1e9:.3f}ns"
+            max_err = max(max_err, abs(observed - expected))
+        checked += 1
+    if checked < 4:
+        return False, f"too_few_sampler_checks={checked}"
+    return max_err <= 0.035, f"checked={checked} max_error={max_err:.5f}"
 
 
 def check_v3_dual_modulus_divider_16_17(rows: list[dict[str, float]]) -> tuple[bool, str]:
@@ -12602,11 +12835,33 @@ def check_v3_two_channel_sample_demux(rows: list[dict[str, float]]) -> tuple[boo
     required = {"time", "samp1", "samp2", "clks1", "clks2", "vout"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing demux input/output signals"
-    return _sample_many(
-        rows,
-        {"vout": [(4.0, 0.1), (14.0, 0.4), (24.0, 0.5), (34.0, 0.8)]},
-        tol=0.025,
-    )
+    events: list[tuple[float, str]] = []
+    events.extend((edge, "samp1") for edge in _v3_edge_times(rows, "clks1", threshold=0.45, direction=1))
+    events.extend((edge, "samp2") for edge in _v3_edge_times(rows, "clks2", threshold=0.45, direction=1))
+    events.sort(key=lambda item: item[0])
+    if len(events) < 4:
+        return False, f"too_few_demux_events={len(events)}"
+    max_err = 0.0
+    checked = 0
+    covered = {"samp1": 0, "samp2": 0}
+    for edge, source in events:
+        expected = sample_signal_at(rows, source, edge)
+        if expected is None:
+            return False, f"missing_{source}_at_edge={edge * 1e9:.3f}ns"
+        sample_t = edge + 1.0e-9
+        if sample_t > rows[-1]["time"]:
+            continue
+        observed = sample_signal_at(rows, "vout", sample_t)
+        if observed is None:
+            return False, f"missing_demux_output_at={sample_t * 1e9:.3f}ns"
+        max_err = max(max_err, abs(observed - expected))
+        covered[source] += 1
+        checked += 1
+    if checked < 4:
+        return False, f"too_few_demux_checks={checked}"
+    if not all(count >= 2 for count in covered.values()):
+        return False, f"insufficient_demux_channel_coverage={covered}"
+    return max_err <= 0.035, f"checked={checked} max_error={max_err:.5f} covered={covered}"
 
 
 def check_v3_differential_dac_calc_6b(rows: list[dict[str, float]]) -> tuple[bool, str]:
@@ -15118,14 +15373,13 @@ def check_v3_rs_phase_detector(rows: list[dict[str, float]]) -> tuple[bool, str]
 
 def check_v3_level_shifter_offset(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "sigin", "sigout"}
-    if not rows or not required.issubset(rows[0]):
-        return False, "missing level shifter offset signals"
-    return _sample_many(
+    return _v3_formula_check(
         rows,
-        {
-            "sigout": [(0.4, 0.45), (1.2, 0.75), (2.0, 0.15), (2.8, 1.15)],
-        },
-        tol=0.02,
+        required=required,
+        output="sigout",
+        expected_fn=lambda row: row["sigin"] + 0.35,
+        tol=0.025,
+        min_checked=20,
     )
 
 
@@ -15201,14 +15455,13 @@ def check_v3_decision_router_logic(rows: list[dict[str, float]]) -> tuple[bool, 
 
 def check_v3_safe_analog_divider(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "signumer", "sigdenom", "sigout"}
-    if not rows or not required.issubset(rows[0]):
-        return False, "missing safe analog divider signals"
-    return _sample_many(
+    return _v3_formula_check(
         rows,
-        {
-            "sigout": [(0.4, 0.3), (1.2, 3.0), (2.0, -3.0), (2.8, -0.6)],
-        },
-        tol=0.04,
+        required=required,
+        output="sigout",
+        expected_fn=lambda row: row["signumer"] / (0.2 if 0 <= row["sigdenom"] < 0.2 else (-0.2 if -0.2 < row["sigdenom"] < 0 else row["sigdenom"])),
+        tol=0.05,
+        min_checked=20,
     )
 
 

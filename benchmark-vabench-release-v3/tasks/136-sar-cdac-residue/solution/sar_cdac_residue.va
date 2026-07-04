@@ -9,6 +9,7 @@ electrical VIN, CLK, S6, S5, S4, S3, S2, S1, VRES;
 parameter real vdd = 0.9;
 parameter real vrefp = 0.9;
 parameter real vrefn = 0;
+parameter real tr = 1p;
 
 real vres;
 
@@ -29,7 +30,7 @@ analog begin
     @(cross(V(S1) - vdd / 2.0, +1))
         vres = vres - 0.015625 * (vrefp - vrefn);
 
-    V(VRES) <+ transition(vres, 0);
+    V(VRES) <+ transition(vres, 0, tr, tr);
 end
 
 endmodule

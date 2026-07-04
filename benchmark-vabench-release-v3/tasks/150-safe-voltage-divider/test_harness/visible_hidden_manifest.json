@@ -5,9 +5,5 @@
   "hidden": [
     "test_hidden/tests/tb_source_ref.scs"
   ],
-  "checker": "v3_safe_voltage_divider",
-  "evidence": {
-    "evas": "WORK/source-import-batch7-evas/150-safe-voltage-divider",
-    "spectre": "WORK/source-import-batch7-spectre/150-safe-voltage-divider"
-  }
+  "checker": "v3_safe_voltage_divider"
 }

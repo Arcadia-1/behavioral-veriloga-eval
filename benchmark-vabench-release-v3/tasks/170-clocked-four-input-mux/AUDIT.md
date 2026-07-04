@@ -1,11 +1,24 @@
-# Source Clocked Four Input Mux Audit
+# Two-Gate SOP Audit: Task 170 Clocked Four Input Mux
 
-- Scenario: clocked analog mux sampling for switched-cap/control flows.
-- Import status: certified only after visible compile, EVAS/Spectre semantic validation, and EVAS/Spectre parity pass.
-- Evaluation: stable sampled behavior from `tran.csv`; raw simulator timestep equality is not used.
+## Scope
 
-## Digital/Control/Logic Closeout Review
+Task 170 is a falling-edge sampled 4:1 analog mux. It is distinct from task 130 because selection is latched on a clock edge, and distinct from rewritten task 216 because it is the plain clocked mux baseline without reset/update qualification.
 
-- Gate 1 status: `independent_l1_ready`.
-- Rationale: falling-edge clocked analog input capture/hold is a real AMS sampler-selector behavior. It is distinct from threshold-only mux selection and from the rescued update-qualified mux sampler.
-- Counting recommendation: retain as the plain clocked mux sampler baseline.
+## Gate 1: Admission And Counting
+
+- Admission label: `independent_l1_ready`.
+- Counting decision: retain as sampled-data routing/control L1.
+- Function boundary: two thresholded select bits choose one of four analog inputs on falling clock edges.
+
+## Gate 2: Cadence Modeling Quality
+
+- Modeling status: `cadence_modeling_ready` after targeted EVAS, Spectre visible/hidden gold validation, and AHDL warning triage.
+- Prompt hygiene: public instruction now exposes the clock edge, select-bit order, transition timing, and initialization.
+- Checker alignment: checker now derives expected selected input from the select and data waveforms at clock edges.
+- Hidden coverage: private deck now differs from visible stimulus and covers all four select codes with different data levels.
+
+## Evidence
+
+- Fresh EVAS gold after checker/hidden repair: PASS.
+- Fresh EVAS negatives after checker repair: all concrete negatives rejected behaviorally.
+- Spectre gold validation: visible and hidden repaired-batch checks passed; task-specific AHDL warnings were triaged.
