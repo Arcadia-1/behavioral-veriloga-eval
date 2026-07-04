@@ -6455,6 +6455,7 @@
       - no_current_domain_contribution
   notes:
     - "Extension task promoted from syntax-only to executable behavior candidate."
+    - "Issue #69 Spectre legality repair: public contract, gold, and concrete negatives use the portable two-argument last_crossing(expr, dir) form; fresh targeted EVAS Python, Spectre hidden gold, Spectre hidden negative, and AHDL-like lint validation passed."
 334-last-crossing-edge-age: |
   version: 1
   task_id: v3_334_last_crossing_edge_age
@@ -6494,6 +6495,7 @@
       - no_current_domain_contribution
   notes:
     - "Extension task promoted from syntax-only to executable behavior candidate."
+    - "Issue #69 Spectre legality repair: public contract, gold, and concrete negatives use the portable two-argument last_crossing(expr, dir) form; fresh targeted EVAS Python, Spectre hidden gold, Spectre hidden negative, and AHDL-like lint validation passed."
 335-above-resettable-peak-marker: |
   version: 1
   task_id: v3_335_above_resettable_peak_marker
