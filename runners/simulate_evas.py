@@ -23,7 +23,7 @@ import time
 import traceback
 import warnings
 from pathlib import Path
-from typing import Iterable
+from typing import Callable, Iterable
 
 from main120_stable_checks import (
     check_background_calibration_accumulator as check_vbm1_background_calibration_accumulator,
@@ -9107,170 +9107,193 @@ def _v3_rising_cross_times(
     return times
 
 
-def check_v3_435_ddt_voltage_derivative_source(rows: list[dict[str, float]]) -> tuple[bool, str]:
+def _v3_local_signal_slope(rows: list[dict[str, float]], signal: str, time_s: float) -> float:
+    for prev, cur in zip(rows, rows[1:]):
+        t0 = prev["time"]
+        t1 = cur["time"]
+        if t0 <= time_s <= t1 and t1 > t0:
+            return (cur[signal] - prev[signal]) / (t1 - t0)
+    for prev, cur in zip(rows, rows[1:]):
+        t0 = prev["time"]
+        t1 = cur["time"]
+        if t1 > t0:
+            return (cur[signal] - prev[signal]) / (t1 - t0)
+    return 0.0
+
+
+def _v3_first_order_lowpass_at(
+    rows: list[dict[str, float]],
+    signal: str,
+    time_s: float,
+    *,
+    tau_s: float = 100e-9,
+) -> float:
+    if not rows:
+        return 0.0
+    y = rows[0][signal]
+    prev_t = rows[0]["time"]
+    prev_x = rows[0][signal]
+    for cur in rows[1:]:
+        cur_t = min(cur["time"], time_s)
+        if cur_t <= prev_t:
+            if cur["time"] >= time_s:
+                break
+            prev_t = cur["time"]
+            prev_x = cur[signal]
+            continue
+        cur_x = _v3_interp_signal(rows, signal, cur_t)
+        dt = cur_t - prev_t
+        slope = (cur_x - prev_x) / dt
+        decay = math.exp(-dt / tau_s)
+        y = cur_x - slope * tau_s + (y - prev_x + slope * tau_s) * decay
+        if cur["time"] >= time_s:
+            break
+        prev_t = cur["time"]
+        prev_x = cur[signal]
+    return y
+
+
+def _check_v3_clocked_operator_samples(
+    rows: list[dict[str, float]],
+    *,
+    operator: str,
+    expected_at: Callable[[float], float],
+    min_samples: int = 2,
+    abs_tol: float = 1.0e-3,
+    rel_tol: float = 0.05,
+) -> tuple[bool, str]:
     ok, note = _v3_required_columns(rows, {"time", "vin", "clk", "rst", "out", "metric"})
     if not ok:
         return False, note
     crossings = _v3_rising_cross_times(rows, "clk", 0.45)
-    if len(crossings) < 2:
-        return False, f"missing_two_clk_rising_crossings count={len(crossings)}"
-    first_t, second_t = crossings[0], crossings[1]
-    first_sample_t = first_t + 8e-9
-    second_sample_t = second_t + 8e-9
-    vin_first = _v3_interp_signal(rows, "vin", first_t)
-    vin_second = _v3_interp_signal(rows, "vin", second_t)
-    expected = (vin_second - vin_first) / (second_t - first_t)
+    if len(crossings) < min_samples:
+        return False, f"missing_clk_rising_crossings count={len(crossings)}"
     failures: list[str] = []
-    for signal in ("out", "metric"):
-        first_value = _v3_interp_signal(rows, signal, first_sample_t)
-        if abs(first_value) > 0.05:
-            failures.append(f"{signal}_first_sample={first_value:.4g} expected_initial_ddt=0")
-        second_value = _v3_interp_signal(rows, signal, second_sample_t)
-        tol = max(1.0e4, abs(expected) * 0.04)
-        if abs(second_value - expected) > tol:
-            failures.append(f"{signal}_second_sample={second_value:.4g} expected_ddt={expected:.4g}")
-    out_second = _v3_interp_signal(rows, "out", second_sample_t)
-    metric_second = _v3_interp_signal(rows, "metric", second_sample_t)
-    if abs(out_second - metric_second) > max(1.0, abs(expected) * 0.005):
-        failures.append(f"metric_mismatch out={out_second:.4g} metric={metric_second:.4g}")
+    expected_values: list[float] = []
+    for index, crossing_t in enumerate(crossings[:min_samples]):
+        expected = expected_at(crossing_t)
+        expected_values.append(expected)
+        sample_t = crossing_t + 8e-9
+        tol = max(abs_tol, abs(expected) * rel_tol)
+        out_value = _v3_interp_signal(rows, "out", sample_t)
+        metric_value = _v3_interp_signal(rows, "metric", sample_t)
+        if abs(out_value - expected) > tol:
+            failures.append(f"out_sample{index}={out_value:.4g} expected={expected:.4g}")
+        if abs(metric_value - expected) > tol:
+            failures.append(f"metric_sample{index}={metric_value:.4g} expected={expected:.4g}")
+        if abs(out_value - metric_value) > max(abs_tol * 0.2, abs(expected) * 0.01):
+            failures.append(f"metric_mismatch{index} out={out_value:.4g} metric={metric_value:.4g}")
+    if len(expected_values) >= 2 and max(expected_values) - min(expected_values) <= abs_tol * 0.5:
+        failures.append("operator_samples_do_not_exercise_dynamic_response")
     if failures:
-        return False, " ".join(failures[:5])
-    return True, f"ddt_event_derivative_matches_clk_samples expected={expected:.4g}"
+        return False, " ".join(failures[:6])
+    samples = ",".join(f"{value:.4g}" for value in expected_values)
+    return True, f"{operator}_clocked_samples_match expected={samples}"
+
+
+def check_v3_435_ddt_voltage_derivative_source(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    return _check_v3_clocked_operator_samples(
+        rows,
+        operator="ddt",
+        expected_at=lambda crossing_t: _v3_local_signal_slope(rows, "vin", crossing_t),
+        abs_tol=2.0e4,
+        rel_tol=0.01,
+    )
 
 
 def check_v3_436_idt_voltage_integrator_source(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    ok, note = _v3_required_columns(rows, {"time", "vin", "clk", "rst", "out", "metric"})
-    if not ok:
-        return False, note
-    crossings = _v3_rising_cross_times(rows, "clk", 0.45)
-    if len(crossings) < 2:
-        return False, f"missing_two_clk_rising_crossings count={len(crossings)}"
-    first_t, second_t = crossings[0], crossings[1]
-    first_sample_t = first_t + 8e-9
-    second_sample_t = second_t + 8e-9
-    vin_first = _v3_interp_signal(rows, "vin", first_t)
-    vin_second = _v3_interp_signal(rows, "vin", second_t)
-    expected = 0.5 * (vin_first + vin_second) * (second_t - first_t)
-    failures: list[str] = []
-    for signal in ("out", "metric"):
-        first_value = _v3_interp_signal(rows, signal, first_sample_t)
-        if abs(first_value) > 1.0e-10:
-            failures.append(f"{signal}_first_sample={first_value:.4g} expected_initial_idt=0")
-        second_value = _v3_interp_signal(rows, signal, second_sample_t)
-        tol = max(1.0e-10, abs(expected) * 0.04)
-        if abs(second_value - expected) > tol:
-            failures.append(f"{signal}_second_sample={second_value:.4g} expected_idt={expected:.4g}")
-    out_second = _v3_interp_signal(rows, "out", second_sample_t)
-    metric_second = _v3_interp_signal(rows, "metric", second_sample_t)
-    if abs(out_second - metric_second) > max(1.0e-11, abs(expected) * 0.005):
-        failures.append(f"metric_mismatch out={out_second:.4g} metric={metric_second:.4g}")
-    if failures:
-        return False, " ".join(failures[:5])
-    return True, f"idt_event_integral_matches_clk_samples expected={expected:.4g}"
+    return _check_v3_clocked_operator_samples(
+        rows,
+        operator="idt",
+        expected_at=lambda crossing_t: _v3_trapezoid_integral_to(rows, "vin", crossing_t),
+        abs_tol=2.0e-9,
+        rel_tol=0.05,
+    )
 
 
-def _check_v3_first_order_laplace_event_response(
+def _check_v3_first_order_laplace_response(
     rows: list[dict[str, float]],
     operator: str,
+    *,
+    response: str,
 ) -> tuple[bool, str]:
-    ok, note = _v3_required_columns(rows, {"time", "vin", "clk", "rst", "out", "metric"})
-    if not ok:
-        return False, note
-    crossings = _v3_rising_cross_times(rows, "clk", 0.45)
-    if len(crossings) < 2:
-        return False, f"missing_two_clk_rising_crossings count={len(crossings)}"
-    first_t, second_t = crossings[0], crossings[1]
-    first_sample_t = first_t + 8e-9
-    second_sample_t = second_t + 8e-9
-    vin_first = _v3_interp_signal(rows, "vin", first_t)
-    vin_second = _v3_interp_signal(rows, "vin", second_t)
-    dt = second_t - first_t
-    expected_first = vin_first
-    expected_second = expected_first + (1.0 - math.exp(-dt / 1.0)) * (vin_second - expected_first)
-    failures: list[str] = []
-    for signal in ("out", "metric"):
-        first_value = _v3_interp_signal(rows, signal, first_sample_t)
-        first_tol = max(1.0e-9, abs(expected_first) * 0.01)
-        if abs(first_value - expected_first) > first_tol:
-            failures.append(f"{signal}_first_sample={first_value:.4g} expected_laplace_init={expected_first:.4g}")
-        second_value = _v3_interp_signal(rows, signal, second_sample_t)
-        second_tol = max(1.0e-9, abs(expected_second) * 0.05)
-        if abs(second_value - expected_second) > second_tol:
-            failures.append(f"{signal}_second_sample={second_value:.4g} expected_laplace={expected_second:.4g}")
-    out_second = _v3_interp_signal(rows, "out", second_sample_t)
-    metric_second = _v3_interp_signal(rows, "metric", second_sample_t)
-    if abs(out_second - metric_second) > max(1.0e-10, abs(expected_second) * 0.005):
-        failures.append(f"metric_mismatch out={out_second:.4g} metric={metric_second:.4g}")
-    if failures:
-        return False, " ".join(failures[:5])
-    return True, f"{operator}_first_order_event_response expected_second={expected_second:.4g}"
+    def expected(crossing_t: float) -> float:
+        lowpass = _v3_first_order_lowpass_at(rows, "vin", crossing_t)
+        if response == "highpass":
+            return _v3_interp_signal(rows, "vin", crossing_t) - lowpass
+        return lowpass
+
+    return _check_v3_clocked_operator_samples(
+        rows,
+        operator=operator,
+        expected_at=expected,
+        abs_tol=0.012,
+        rel_tol=0.02,
+    )
 
 
 def check_v3_437_laplace_nd_lowpass_filter(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    return _check_v3_first_order_laplace_event_response(rows, "laplace_nd")
+    return _check_v3_first_order_laplace_response(rows, "laplace_nd", response="lowpass")
 
 
 def check_v3_438_laplace_np_pole_filter(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    return _check_v3_first_order_laplace_event_response(rows, "laplace_np")
+    return _check_v3_first_order_laplace_response(rows, "laplace_np", response="lowpass")
 
 
 def check_v3_439_laplace_zd_zero_den_filter(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    return _check_v3_first_order_laplace_event_response(rows, "laplace_zd")
+    return _check_v3_first_order_laplace_response(rows, "laplace_zd", response="highpass")
 
 
 def check_v3_440_laplace_zp_zero_pole_filter(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    return _check_v3_first_order_laplace_event_response(rows, "laplace_zp")
+    return _check_v3_first_order_laplace_response(rows, "laplace_zp", response="highpass")
 
 
-def _check_v3_sampled_first_order_difference(
+def _v3_zi_expected_at(rows: list[dict[str, float]], crossing_t: float, *, operator: str) -> float:
+    sample_t = 100e-9
+    eps = 1.0e-15
+    if operator == "zi_np":
+        y = _v3_interp_signal(rows, "vin", 0.0)
+    else:
+        y = 0.0
+    prev_x = _v3_interp_signal(rows, "vin", 0.0)
+    while sample_t < crossing_t - eps:
+        x = _v3_interp_signal(rows, "vin", sample_t)
+        if operator in {"zi_nd", "zi_np"}:
+            y = 0.25 * x + 0.75 * y
+        else:
+            y = (x - prev_x) + 0.75 * y
+            prev_x = x
+        sample_t += 100e-9
+    return y
+
+
+def _check_v3_sampled_first_order_filter(
     rows: list[dict[str, float]], *, operator: str
 ) -> tuple[bool, str]:
-    ok, note = _v3_required_columns(rows, {"time", "vin", "clk", "rst", "out", "metric"})
-    if not ok:
-        return False, note
-    crossings = _v3_rising_cross_times(rows, "clk", 0.45)
-    if len(crossings) < 2:
-        return False, f"missing_two_clk_rising_crossings count={len(crossings)}"
-    first_t, second_t = crossings[0], crossings[1]
-    first_sample_t = first_t + 8e-9
-    second_sample_t = second_t + 8e-9
-    vin_first = _v3_interp_signal(rows, "vin", first_t)
-    vin_second = _v3_interp_signal(rows, "vin", second_t)
-    expected_first = vin_first
-    expected_second = vin_second - expected_first
-    failures: list[str] = []
-    for signal in ("out", "metric"):
-        first_value = _v3_interp_signal(rows, signal, first_sample_t)
-        first_tol = max(1.0e-9, abs(expected_first) * 0.01)
-        if abs(first_value - expected_first) > first_tol:
-            failures.append(f"{signal}_first_sample={first_value:.4g} expected_zi_init={expected_first:.4g}")
-        second_value = _v3_interp_signal(rows, signal, second_sample_t)
-        second_tol = max(1.0e-9, abs(expected_second) * 0.05)
-        if abs(second_value - expected_second) > second_tol:
-            failures.append(f"{signal}_second_sample={second_value:.4g} expected_zi={expected_second:.4g}")
-    out_second = _v3_interp_signal(rows, "out", second_sample_t)
-    metric_second = _v3_interp_signal(rows, "metric", second_sample_t)
-    if abs(out_second - metric_second) > max(1.0e-10, abs(expected_second) * 0.005):
-        failures.append(f"metric_mismatch out={out_second:.4g} metric={metric_second:.4g}")
-    if failures:
-        return False, " ".join(failures[:5])
-    return True, f"{operator}_first_order_difference_response expected_second={expected_second:.4g}"
+    return _check_v3_clocked_operator_samples(
+        rows,
+        operator=operator,
+        expected_at=lambda crossing_t: _v3_zi_expected_at(rows, crossing_t, operator=operator),
+        min_samples=3,
+        abs_tol=0.012,
+        rel_tol=0.02,
+    )
 
 
 def check_v3_441_zi_nd_discrete_filter(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    return _check_v3_sampled_first_order_difference(rows, operator="zi_nd")
+    return _check_v3_sampled_first_order_filter(rows, operator="zi_nd")
 
 
 def check_v3_442_zi_np_discrete_filter(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    return _check_v3_sampled_first_order_difference(rows, operator="zi_np")
+    return _check_v3_sampled_first_order_filter(rows, operator="zi_np")
 
 
 def check_v3_443_zi_zd_discrete_filter(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    return _check_v3_sampled_first_order_difference(rows, operator="zi_zd")
+    return _check_v3_sampled_first_order_filter(rows, operator="zi_zd")
 
 
 def check_v3_444_zi_zp_discrete_filter(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    return _check_v3_sampled_first_order_difference(rows, operator="zi_zp")
+    return _check_v3_sampled_first_order_filter(rows, operator="zi_zp")
 
 
 def check_v3_445_limexp_soft_exponential(rows: list[dict[str, float]]) -> tuple[bool, str]:

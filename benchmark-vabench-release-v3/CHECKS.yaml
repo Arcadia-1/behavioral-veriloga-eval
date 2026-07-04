@@ -9124,16 +9124,14 @@
       - negative_variants/neg_004_metric_offset/ddt_voltage_derivative_source.va
       - negative_variants/neg_005_scale_output/ddt_voltage_derivative_source.va
     checks:
-      - ddt_expression_used_in_event_body
-      - first_clk_sample_initializes_derivative_state
-      - second_clk_sample_matches_interpolated_vin_slope
+      - ddt_expression_computed_in_continuous_context
+      - clock_samples_local_pwl_vin_derivative
       - out_and_metric_track_same_derivative_value
       - five_negative_variants_rejected_by_behavior_checker
   promotion_evidence:
-    command: "PYTHONPATH=\"/Users/mac/Documents/github-repos/EVAS:$PWD/runners\" VAEVAS_DEFAULT_EVAS_ENGINE=python VAEVAS_EVAS_PERSISTENT_WORKER=0 PATH=\"$PWD/.venv-evas/bin:$PATH\" .venv-evas/bin/python scripts/run_v3_gold_negative_verification.py --start 435 --end 435 --include-staged --timeout 120 --jobs 1 --out benchmark-vabench-release-v3/reports/verify_task_435_after_checker.json"
-    result: "1/1 gold PASS; 5/5 negative variants rejected; 0 expectation_fail with event-sampled ddt behavior checker."
+    result: "Final Spectre repair: hidden gold PASS and hidden negatives rejected with continuous-context ddt sampled at clock edges."
   notes:
-    - "Promoted using EVAS behavioral ddt() finite-difference support; checker validates clock-event derivative samples without KCL/MNA claims."
+    - "Issue #69 repair: ddt() is evaluated in continuous analog context and the checker validates local PWL slope sampled by clock events."
 436-idt-voltage-integrator-source: |
   version: 1
   task_id: v3_436_idt_voltage_integrator_source
@@ -9164,16 +9162,15 @@
       - negative_variants/neg_004_metric_offset/idt_voltage_integrator_source.va
       - negative_variants/neg_005_scale_output/idt_voltage_integrator_source.va
     checks:
-      - idt_expression_used_in_event_body
-      - first_clk_sample_initializes_integrator_state
-      - second_clk_sample_matches_trapezoidal_vin_integral
+      - idt_expression_computed_in_continuous_context
+      - idt_uses_explicit_zero_initial_condition
+      - clock_samples_trapezoidal_vin_integral
       - out_and_metric_track_same_integral_value
       - five_negative_variants_rejected_by_behavior_checker
   promotion_evidence:
-    command: "PYTHONPATH=\"/Users/mac/Documents/github-repos/EVAS:$PWD/runners\" VAEVAS_DEFAULT_EVAS_ENGINE=python VAEVAS_EVAS_PERSISTENT_WORKER=0 PATH=\"$PWD/.venv-evas/bin:$PATH\" .venv-evas/bin/python scripts/run_v3_gold_negative_verification.py --start 436 --end 436 --include-staged --timeout 120 --jobs 1 --out benchmark-vabench-release-v3/reports/verify_task_436_after_checker.json"
-    result: "1/1 gold PASS; 5/5 negative variants rejected; 0 expectation_fail with event-sampled idt behavior checker."
+    result: "Final Spectre repair: hidden gold PASS and hidden negatives rejected with idt(V(vin), 0.0) sampled at clock edges."
   notes:
-    - "Promoted using EVAS behavioral idt() trapezoidal support; checker validates clock-event integral samples without KCL/MNA claims."
+    - "Issue #69 repair: idt() is evaluated in continuous analog context with an explicit initial condition to avoid the standalone source singularity."
 437-laplace-nd-lowpass-filter: |
   version: 1
   task_id: v3_437_laplace_nd_lowpass_filter
@@ -9204,17 +9201,14 @@
       - negative_variants/neg_004_metric_offset/laplace_nd_lowpass_filter.va
       - negative_variants/neg_005_scale_output/laplace_nd_lowpass_filter.va
     checks:
-      - laplace_nd_expression_used_in_event_body
-      - first_clk_sample_initializes_lowpass_state
-      - second_clk_sample_matches_first_order_exponential_update
+      - laplace_nd_expression_computed_in_continuous_context
+      - clock_samples_100ns_first_order_lowpass
       - out_and_metric_track_same_lowpass_value
       - five_negative_variants_rejected_by_behavior_checker
   promotion_evidence:
-    evas_commit: "b2d3609 Support first-order laplace_nd behavior"
-    command: "PYTHONPATH=\"/Users/mac/Documents/github-repos/EVAS:$PWD/runners\" VAEVAS_DEFAULT_EVAS_ENGINE=python VAEVAS_EVAS_PERSISTENT_WORKER=0 PATH=\"$PWD/.venv-evas/bin:$PATH\" .venv-evas/bin/python scripts/run_v3_gold_negative_verification.py --start 437 --end 437 --include-staged --timeout 120 --jobs 1 --out benchmark-vabench-release-v3/reports/verify_task_437_after_checker.json"
-    result: "1/1 gold PASS; 5/5 negative variants rejected; 0 expectation_fail with event-sampled first-order laplace_nd checker."
+    result: "Final Spectre repair: hidden gold PASS and hidden negatives rejected with continuous-context laplace_nd sampled at clock edges."
   notes:
-    - "Promoted using EVAS first-order laplace_nd behavioral support; checker validates event-sampled low-pass response without claiming high-order Laplace, Z-domain, or KCL/MNA support."
+    - "Issue #69 repair: laplace_nd() is evaluated in continuous analog context with a visible 100 ns first-order low-pass response."
 438-laplace-np-pole-filter: |
   version: 1
   task_id: v3_438_laplace_np_pole_filter
@@ -9245,17 +9239,15 @@
       - negative_variants/neg_004_metric_offset/laplace_np_pole_filter.va
       - negative_variants/neg_005_scale_output/laplace_np_pole_filter.va
     checks:
-      - laplace_np_expression_used_in_event_body
-      - first_clk_sample_initializes_pole_state
-      - second_clk_sample_matches_first_real_pole_exponential_update
+      - laplace_np_expression_computed_in_continuous_context
+      - real_pole_vector_uses_real_imaginary_pair
+      - clock_samples_100ns_first_order_lowpass
       - out_and_metric_track_same_pole_filter_value
       - five_negative_variants_rejected_by_behavior_checker
   promotion_evidence:
-    evas_commit: "de978be Support first-order laplace_np behavior"
-    command: "PYTHONPATH=\"/Users/mac/Documents/github-repos/EVAS:$PWD/runners\" VAEVAS_DEFAULT_EVAS_ENGINE=python VAEVAS_EVAS_PERSISTENT_WORKER=0 PATH=\"$PWD/.venv-evas/bin:$PATH\" .venv-evas/bin/python scripts/run_v3_gold_negative_verification.py --start 438 --end 438 --include-staged --timeout 120 --jobs 1 --out benchmark-vabench-release-v3/reports/verify_task_438_after_checker.json"
-    result: "1/1 gold PASS; 5/5 negative variants rejected; 0 expectation_fail with event-sampled first-real-pole laplace_np checker."
+    result: "Final Spectre repair: hidden gold PASS and hidden negatives rejected with continuous-context laplace_np sampled at clock edges."
   notes:
-    - "Promoted using EVAS first-order laplace_np behavioral support; checker validates event-sampled pole response without claiming high-order, complex-pole, Z-domain, or KCL/MNA support."
+    - "Issue #69 repair: laplace_np() uses a Cadence real/imag pole pair and a voltage-scale numerator."
 439-laplace-zd-zero-den-filter: |
   version: 1
   task_id: v3_439_laplace_zd_zero_den_filter
@@ -9286,17 +9278,15 @@
       - negative_variants/neg_004_metric_offset/laplace_zd_zero_den_filter.va
       - negative_variants/neg_005_scale_output/laplace_zd_zero_den_filter.va
     checks:
-      - laplace_zd_expression_used_in_event_body
-      - first_clk_sample_initializes_zero_denominator_state
-      - second_clk_sample_matches_first_order_denominator_exponential_update
-      - out_and_metric_track_same_zero_denominator_filter_value
+      - laplace_zd_expression_computed_in_continuous_context
+      - zero_vector_uses_real_imaginary_pair
+      - clock_samples_100ns_first_order_highpass
+      - out_and_metric_track_same_zero_denominator_highpass_value
       - five_negative_variants_rejected_by_behavior_checker
   promotion_evidence:
-    evas_commit: "eb009ef Support first-order laplace_zd behavior"
-    command: "PYTHONPATH=\"/Users/mac/Documents/github-repos/EVAS:$PWD/runners\" VAEVAS_DEFAULT_EVAS_ENGINE=python VAEVAS_EVAS_PERSISTENT_WORKER=0 PATH=\"$PWD/.venv-evas/bin:$PATH\" .venv-evas/bin/python scripts/run_v3_gold_negative_verification.py --start 439 --end 439 --tasks 439 --include-staged --timeout 120 --jobs 1 --out benchmark-vabench-release-v3/reports/verify_task_439_after_checker.json"
-    result: "1/1 gold PASS; 5/5 negative variants rejected; 0 expectation_fail with event-sampled first-order laplace_zd checker."
+    result: "Final Spectre repair: hidden gold PASS and hidden negatives rejected with continuous-context laplace_zd sampled at clock edges."
   notes:
-    - "Promoted using EVAS first-order laplace_zd behavioral support; checker validates event-sampled zero/denominator response without claiming high-order, complex-zero, Z-domain, or KCL/MNA support."
+    - "Issue #69 repair: laplace_zd() uses an explicit real zero pair and 100 ns scaling for a voltage-domain high-pass response."
 440-laplace-zp-zero-pole-filter: |
   version: 1
   task_id: v3_440_laplace_zp_zero_pole_filter
@@ -9327,17 +9317,15 @@
       - negative_variants/neg_004_metric_offset/laplace_zp_zero_pole_filter.va
       - negative_variants/neg_005_scale_output/laplace_zp_zero_pole_filter.va
     checks:
-      - laplace_zp_expression_used_in_event_body
-      - first_clk_sample_initializes_zero_pole_state
-      - second_clk_sample_matches_first_real_pole_exponential_update
-      - out_and_metric_track_same_zero_pole_filter_value
+      - laplace_zp_expression_computed_in_continuous_context
+      - zero_and_pole_vectors_use_real_imaginary_pairs
+      - clock_samples_100ns_first_order_highpass
+      - out_and_metric_track_same_zero_pole_highpass_value
       - five_negative_variants_rejected_by_behavior_checker
   promotion_evidence:
-    evas_commit: "a50b507 Support first-order laplace_zp behavior"
-    command: "PYTHONPATH=\"/Users/mac/Documents/github-repos/EVAS:$PWD/runners\" VAEVAS_DEFAULT_EVAS_ENGINE=python VAEVAS_EVAS_PERSISTENT_WORKER=0 PATH=\"$PWD/.venv-evas/bin:$PATH\" .venv-evas/bin/python scripts/run_v3_gold_negative_verification.py --start 440 --end 440 --tasks 440 --include-staged --timeout 120 --jobs 1 --out benchmark-vabench-release-v3/reports/verify_task_440_after_checker.json"
-    result: "1/1 gold PASS; 5/5 negative variants rejected; 0 expectation_fail with event-sampled first-order laplace_zp checker."
+    result: "Final Spectre repair: hidden gold PASS and hidden negatives rejected with continuous-context laplace_zp sampled at clock edges."
   notes:
-    - "Promoted using EVAS first-order laplace_zp behavioral support; checker validates event-sampled zero/pole response without claiming high-order, complex-zero/pole, Z-domain, or KCL/MNA support."
+    - "Issue #69 repair: laplace_zp() uses explicit real/imag zero and pole pairs plus 100 ns voltage scaling."
 441-zi-nd-discrete-filter: |
   version: 1
   task_id: v3_441_zi_nd_discrete_filter
@@ -9368,17 +9356,15 @@
       - negative_variants/neg_004_metric_offset/zi_nd_discrete_filter.va
       - negative_variants/neg_005_scale_output/zi_nd_discrete_filter.va
     checks:
-      - zi_nd_expression_used_in_event_body
-      - first_clk_sample_initializes_difference_state
-      - second_clk_sample_matches_first_order_difference_equation
+      - zi_nd_expression_computed_in_continuous_context
+      - clock_samples_100ns_discrete_lowpass_state
+      - third_clk_sample_exercises_discrete_state_update
       - out_and_metric_track_same_discrete_filter_value
       - five_negative_variants_rejected_by_behavior_checker
   promotion_evidence:
-    evas_commit: "159fb92 Support first-order zi_nd behavior"
-    command: "PYTHONPATH=\"/Users/mac/Documents/github-repos/EVAS:$PWD/runners\" VAEVAS_DEFAULT_EVAS_ENGINE=python VAEVAS_EVAS_PERSISTENT_WORKER=0 PATH=\"$PWD/.venv-evas/bin:$PATH\" .venv-evas/bin/python scripts/run_v3_gold_negative_verification.py --start 441 --end 441 --tasks 441 --include-staged --timeout 120 --jobs 1 --out benchmark-vabench-release-v3/reports/verify_task_441_after_checker.json"
-    result: "1/1 gold PASS; 5/5 negative variants rejected; 0 expectation_fail with first-order zi_nd difference-equation checker."
+    result: "Final Spectre repair: hidden gold PASS and hidden negatives rejected with continuous-context zi_nd sampled at three clock edges."
   notes:
-    - "Promoted using EVAS first-order zi_nd sampled-data support; checker validates the task's y[n]=x[n]-y[n-1] form without claiming full Z-domain, multirate, or KCL/MNA support."
+    - "Issue #69 repair: zi_nd() is evaluated in continuous analog context with a 100 ns sampled-data low-pass contract."
 442-zi-np-discrete-filter: |
   version: 1
   task_id: v3_442_zi_np_discrete_filter
@@ -9409,18 +9395,16 @@
       - negative_variants/neg_004_metric_offset/zi_np_discrete_filter.va
       - negative_variants/neg_005_scale_output/zi_np_discrete_filter.va
     checks:
-      - zi_np_expression_used_in_event_body
-      - first_clk_sample_initializes_difference_state
-      - second_clk_sample_matches_first_order_difference_equation
-      - hidden_stimulus_distinguishes_stateful_filter_from_passthrough
+      - zi_np_expression_computed_in_continuous_context
+      - real_pole_vector_uses_real_imaginary_pair
+      - clock_samples_100ns_discrete_lowpass_state
+      - third_clk_sample_exercises_discrete_state_update
       - out_and_metric_track_same_discrete_filter_value
       - five_negative_variants_rejected_by_behavior_checker
   promotion_evidence:
-    evas_commit: "96d202b Support first-order zi_np behavior"
-    command: "PYTHONPATH=\"/Users/mac/Documents/github-repos/EVAS:$PWD/runners\" VAEVAS_DEFAULT_EVAS_ENGINE=python VAEVAS_EVAS_PERSISTENT_WORKER=0 PATH=\"$PWD/.venv-evas/bin:$PATH\" .venv-evas/bin/python scripts/run_v3_gold_negative_verification.py --start 442 --end 442 --tasks 442 --include-staged --timeout 120 --jobs 1 --out benchmark-vabench-release-v3/reports/verify_task_442_after_checker.json"
-    result: "1/1 gold PASS; 5/5 negative variants rejected; 0 expectation_fail with first-order zi_np difference-equation checker."
+    result: "Final Spectre repair: hidden gold PASS and hidden negatives rejected with continuous-context zi_np sampled at three clock edges."
   notes:
-    - "Promoted using EVAS first-order zi_np sampled-data support; checker validates the task's y[n]=x[n]-y[n-1] form without claiming full numerator/pole, multirate, or KCL/MNA support."
+    - "Issue #69 repair: zi_np() uses a Cadence real/imag pole pair and a third clock sample to exercise state evolution."
 443-zi-zd-discrete-filter: |
   version: 1
   task_id: v3_443_zi_zd_discrete_filter
@@ -9451,18 +9435,16 @@
       - negative_variants/neg_004_metric_offset/zi_zd_discrete_filter.va
       - negative_variants/neg_005_scale_output/zi_zd_discrete_filter.va
     checks:
-      - zi_zd_expression_used_in_event_body
-      - first_clk_sample_initializes_difference_state
-      - second_clk_sample_matches_first_order_difference_equation
-      - hidden_stimulus_distinguishes_stateful_filter_from_passthrough
+      - zi_zd_expression_computed_in_continuous_context
+      - real_zero_vector_uses_real_imaginary_pair
+      - clock_samples_100ns_discrete_highpass_state
+      - third_clk_sample_exercises_discrete_state_update
       - out_and_metric_track_same_discrete_filter_value
       - five_negative_variants_rejected_by_behavior_checker
   promotion_evidence:
-    evas_commit: "7bc6fdd Support first-order zi_zd behavior"
-    command: "PYTHONPATH=\"/Users/mac/Documents/github-repos/EVAS:$PWD/runners\" VAEVAS_DEFAULT_EVAS_ENGINE=python VAEVAS_EVAS_PERSISTENT_WORKER=0 PATH=\"$PWD/.venv-evas/bin:$PATH\" .venv-evas/bin/python scripts/run_v3_gold_negative_verification.py --start 443 --end 443 --tasks 443 --include-staged --timeout 120 --jobs 1 --out benchmark-vabench-release-v3/reports/verify_task_443_after_checker.json"
-    result: "1/1 gold PASS; 5/5 negative variants rejected; 0 expectation_fail with first-order zi_zd difference-equation checker."
+    result: "Final Spectre repair: hidden gold PASS and hidden negatives rejected with continuous-context zi_zd sampled at three clock edges."
   notes:
-    - "Promoted using EVAS first-order zi_zd sampled-data support; checker validates the task's y[n]=x[n]-y[n-1] form without claiming full zero/denominator, multirate, or KCL/MNA support."
+    - "Issue #69 repair: zi_zd() uses an explicit zero at z=1 and a third clock sample to exercise the high-pass state."
 444-zi-zp-discrete-filter: |
   version: 1
   task_id: v3_444_zi_zp_discrete_filter
@@ -9493,18 +9475,16 @@
       - negative_variants/neg_004_metric_offset/zi_zp_discrete_filter.va
       - negative_variants/neg_005_scale_output/zi_zp_discrete_filter.va
     checks:
-      - zi_zp_expression_used_in_event_body
-      - first_clk_sample_initializes_difference_state
-      - second_clk_sample_matches_first_order_difference_equation
-      - hidden_stimulus_distinguishes_stateful_filter_from_passthrough
+      - zi_zp_expression_computed_in_continuous_context
+      - zero_and_pole_vectors_use_real_imaginary_pairs
+      - clock_samples_100ns_discrete_highpass_state
+      - third_clk_sample_exercises_discrete_state_update
       - out_and_metric_track_same_discrete_filter_value
       - five_negative_variants_rejected_by_behavior_checker
   promotion_evidence:
-    evas_commit: "f231058 Support first-order zi_zp behavior"
-    command: "PYTHONPATH=\"/Users/mac/Documents/github-repos/EVAS:$PWD/runners\" VAEVAS_DEFAULT_EVAS_ENGINE=python VAEVAS_EVAS_PERSISTENT_WORKER=0 PATH=\"$PWD/.venv-evas/bin:$PATH\" .venv-evas/bin/python scripts/run_v3_gold_negative_verification.py --start 444 --end 444 --tasks 444 --include-staged --timeout 120 --jobs 1 --out benchmark-vabench-release-v3/reports/verify_task_444_after_checker.json"
-    result: "1/1 gold PASS; 5/5 negative variants rejected; 0 expectation_fail with first-order zi_zp difference-equation checker."
+    result: "Final Spectre repair: hidden gold PASS and hidden negatives rejected with continuous-context zi_zp sampled at three clock edges."
   notes:
-    - "Promoted using EVAS first-order zi_zp sampled-data support; checker validates the task's y[n]=x[n]-y[n-1] form without claiming full zero/pole, multirate, or KCL/MNA support."
+    - "Issue #69 repair: zi_zp() uses explicit real/imag zero and pole pairs and a third clock sample to exercise state evolution."
 445-limexp-soft-exponential: |
   version: 1
   task_id: v3_445_limexp_soft_exponential
@@ -9939,7 +9919,6 @@
       - "metric_ovr_reports_param_given"
       - "five_negative_variants_rejected_by_behavior_checker"
   promotion_evidence:
-    command: "PYTHONPATH=\"/Users/mac/Documents/github-repos/EVAS:$PWD/runners\" VAEVAS_DEFAULT_EVAS_ENGINE=python VAEVAS_EVAS_PERSISTENT_WORKER=0 PATH=\"$PWD/.venv-evas/bin:$PATH\" .venv-evas/bin/python scripts/run_v3_gold_negative_verification.py --start 464 --end 464 --tasks 464 --include-staged --timeout 120 --jobs 1 --out benchmark-vabench-release-v3/reports/verify_task_464_after_param_given.json"
     result: "1/1 gold PASS; 5/5 negative variants rejected; 0 expectation_fail after EVAS $param_given() instance metadata support."
   notes:
     - "Promoted after EVAS tracked explicit Spectre instance parameter names for $param_given()."
@@ -10080,7 +10059,6 @@
       - "no_current_domain_contribution"
       - "five_negative_variants_rejected_by_behavior_checker"
   promotion_evidence:
-    command: "PYTHONPATH=\"/Users/mac/Documents/github-repos/EVAS:$PWD/runners\" VAEVAS_DEFAULT_EVAS_ENGINE=python VAEVAS_EVAS_PERSISTENT_WORKER=0 PATH=\"$PWD/.venv-evas/bin:$PATH\" .venv-evas/bin/python scripts/run_v3_gold_negative_verification.py --start 468 --end 468 --tasks 468 --include-staged --timeout 120 --jobs 1 --out benchmark-vabench-release-v3/reports/verify_task_468_after_branch_probe.json"
     result: "1/1 gold PASS; 5/5 negative variants rejected; 0 expectation_fail after EVAS explicit branch voltage probe support."
   notes:
     - "Promoted after EVAS parsed explicit branch declarations and resolved V(br) as V(p,n)."
@@ -10116,7 +10094,6 @@
       - hidden_negative_branch_voltage_signed_current
       - five_negative_variants_rejected_by_behavior_checker
   promotion_evidence:
-    command: "PYTHONPATH=\"/Users/mac/Documents/github-repos/EVAS:$PWD/runners\" VAEVAS_DEFAULT_EVAS_ENGINE=python VAEVAS_EVAS_PERSISTENT_WORKER=0 PATH=\"$PWD/.venv-evas/bin:$PATH\" .venv-evas/bin/python scripts/run_v3_gold_negative_verification.py --start 469 --end 469 --include-staged --timeout 120 --jobs 1 --out benchmark-vabench-release-v3/reports/verify_task_469_after_current_patch.json"
     result: "1/1 gold PASS; 5/5 negative variants rejected; 0 expectation_fail after EVAS ordinary branch-current contribution observability support."
   notes:
     - "Promoted after EVAS exposes ordinary I(p,n)<+ branch-current contributions to later I(p,n) probes; this certifies branch-current observability, not unknown-node MNA solving."
@@ -10152,7 +10129,6 @@
       - hidden_pwl_step_sequence_samples
       - five_negative_variants_rejected_by_behavior_checker
   promotion_evidence:
-    command: "PYTHONPATH=\"/Users/mac/Documents/github-repos/EVAS:$PWD/runners\" VAEVAS_DEFAULT_EVAS_ENGINE=python VAEVAS_EVAS_PERSISTENT_WORKER=0 PATH=\"$PWD/.venv-evas/bin:$PATH\" .venv-evas/bin/python scripts/run_v3_gold_negative_verification.py --start 470 --end 470 --include-staged --timeout 120 --jobs 1 --out benchmark-vabench-release-v3/reports/verify_task_470_after_evas_patch.json"
     result: "1/1 gold PASS; 5/5 negative variants rejected; 0 expectation_fail after EVAS named branch current contribution/probe support."
   notes:
     - "Promoted after EVAS records I(br)<+ contributions on explicit named branches and resolves later I(br) probes in the same analog evaluation."
@@ -10190,7 +10166,6 @@
       - no_current_domain_contribution
       - five_negative_variants_rejected_by_behavior_checker
   promotion_evidence:
-    command: "PYTHONPATH=\"/Users/mac/Documents/github-repos/EVAS:$PWD/runners\" VAEVAS_DEFAULT_EVAS_ENGINE=python VAEVAS_EVAS_PERSISTENT_WORKER=0 PATH=\"$PWD/.venv-evas/bin:$PATH\" .venv-evas/bin/python scripts/run_v3_gold_negative_verification.py --start 471 --end 471 --tasks 471 --include-staged --timeout 120 --jobs 1 --out benchmark-vabench-release-v3/reports/verify_task_471_after_indirect_branch_support.json"
     result: "1/1 gold PASS; 5/5 negative variants rejected; 0 expectation_fail after EVAS commit 1c193f6 indirect branch voltage-equation support."
   notes:
     - "Promoted after changing the task contract to a solvable null-balance equation V(out)-V(in)==0 and adding a behavior checker over visible and hidden PWL segments."
@@ -10227,7 +10202,6 @@
       - no_current_domain_contribution
       - five_negative_variants_rejected_by_behavior_checker
   promotion_evidence:
-    command: "PYTHONPATH=\"/Users/mac/Documents/github-repos/EVAS:$PWD/runners\" VAEVAS_DEFAULT_EVAS_ENGINE=python VAEVAS_EVAS_PERSISTENT_WORKER=0 PATH=\"$PWD/.venv-evas/bin:$PATH\" .venv-evas/bin/python scripts/run_v3_gold_negative_verification.py --start 472 --end 472 --tasks 472 --include-staged --timeout 120 --jobs 1 --out benchmark-vabench-release-v3/reports/verify_task_472_after_indirect_branch_support.json"
     result: "1/1 gold PASS; 5/5 negative variants rejected; 0 expectation_fail after EVAS commit 1c193f6 indirect ddt branch-equation support."
   notes:
     - "Promoted as a behavioral-continuous-time extension using a repository checker that compares out against the input waveform integral."
@@ -10349,7 +10323,6 @@
       - "ordinary_input_port_bypass_is_forbidden"
       - "five_negative_variants_rejected_by_behavior_checker"
   promotion_evidence:
-    command: "PYTHONPATH=\"/Users/mac/Documents/github-repos/EVAS:$PWD/runners\" VAEVAS_DEFAULT_EVAS_ENGINE=python VAEVAS_EVAS_PERSISTENT_WORKER=0 PATH=\"$PWD/.venv-evas/bin:$PATH\" .venv-evas/bin/python scripts/run_v3_gold_negative_verification.py --start 476 --end 476 --tasks 476 --include-staged --timeout 120 --jobs 1 --out benchmark-vabench-release-v3/reports/verify_tasks_353_476_487_probe.json"
     result: "1/1 gold PASS; 5/5 negative variants rejected; 0 expectation_fail for task 476."
   notes:
     - "Promoted after EVAS resolved string out-of-module voltage probes such as V(sigpath)."
@@ -10379,7 +10352,6 @@
       - "ordinary_input_port_bypass_is_forbidden"
       - "five_negative_variants_rejected_by_behavior_checker"
   promotion_evidence:
-    command: "PYTHONPATH=\"/Users/mac/Documents/github-repos/EVAS:$PWD/runners\" VAEVAS_DEFAULT_EVAS_ENGINE=python VAEVAS_EVAS_PERSISTENT_WORKER=0 PATH=\"$PWD/.venv-evas/bin:$PATH\" .venv-evas/bin/python scripts/run_v3_gold_negative_verification.py --start 477 --end 477 --tasks 477 --include-staged --timeout 120 --jobs 1 --out benchmark-vabench-release-v3/reports/verify_task_477_after_analog_node_alias.json"
     result: "1/1 gold PASS; 5/5 negative variants rejected; 0 expectation_fail after EVAS analog node alias support."
   notes:
     - "Promoted after EVAS mapped an internal alias node to the requested $root path during analog initial."
@@ -10471,7 +10443,6 @@
       - "five_negative_variants_rejected_by_behavior_checker"
       - "no_current_domain_contribution"
   promotion_evidence:
-    command: "PYTHONPATH=\"/Users/mac/Documents/github-repos/EVAS:$PWD/runners\" VAEVAS_DEFAULT_EVAS_ENGINE=python VAEVAS_EVAS_PERSISTENT_WORKER=0 PATH=\"$PWD/.venv-evas/bin:$PATH\" .venv-evas/bin/python scripts/run_v3_gold_negative_verification.py --start 480 --end 480 --tasks 480 --include-staged --timeout 120 --jobs 1 --out benchmark-vabench-release-v3/reports/verify_task_480_after_mfactor.json"
     result: "1/1 gold PASS; 5/5 negative variants rejected; 0 expectation_fail after EVAS $mfactor() support."
   notes:
     - "Promoted after EVAS read Spectre instance m= as the runtime value returned by $mfactor()."
@@ -10502,7 +10473,6 @@
       - "wrong resistor values and behavioral/current replacements are rejected"
       - "KCL current behavior is intentionally not certified by this task"
   promotion_evidence:
-    command: "PYTHONPATH=\"/Users/mac/Documents/github-repos/EVAS:$PWD/runners\" VAEVAS_DEFAULT_EVAS_ENGINE=python VAEVAS_EVAS_PERSISTENT_WORKER=0 PATH=\"$PWD/.venv-evas/bin:$PATH\" .venv-evas/bin/python scripts/run_v3_gold_negative_verification.py --start 481 --end 482 --tasks 481,482 --include-staged --timeout 120 --jobs 1 --out benchmark-vabench-release-v3/reports/verify_task_481_482_after_primitive_metadata.json"
     result: "481 gold PASS; 5/5 negative variants rejected; 0 expectation_fail after EVAS records inert analog primitive metadata."
   notes:
     - "Structure-certified primitive-instantiation task. EVAS records the primitive metadata but still does not certify resistor current or MNA/KCL behavior."
@@ -10534,7 +10504,6 @@
       - "wrong dc expressions and behavioral/current replacements are rejected"
       - "KCL current behavior is intentionally not certified by this task"
   promotion_evidence:
-    command: "PYTHONPATH=\"/Users/mac/Documents/github-repos/EVAS:$PWD/runners\" VAEVAS_DEFAULT_EVAS_ENGINE=python VAEVAS_EVAS_PERSISTENT_WORKER=0 PATH=\"$PWD/.venv-evas/bin:$PATH\" .venv-evas/bin/python scripts/run_v3_gold_negative_verification.py --start 481 --end 482 --tasks 481,482 --include-staged --timeout 120 --jobs 1 --out benchmark-vabench-release-v3/reports/verify_task_481_482_after_primitive_metadata.json"
     result: "482 gold PASS; 5/5 negative variants rejected; 0 expectation_fail after EVAS records inert analog primitive metadata."
   notes:
     - "Structure-certified primitive-instantiation task. EVAS records the primitive metadata but still does not certify current source or MNA/KCL behavior."
@@ -10681,7 +10650,6 @@
       - "no_current_domain_contribution"
       - "five_negative_variants_rejected_by_behavior_checker"
   promotion_evidence:
-    command: "PYTHONPATH=\"/Users/mac/Documents/github-repos/EVAS:$PWD/runners\" VAEVAS_DEFAULT_EVAS_ENGINE=python VAEVAS_EVAS_PERSISTENT_WORKER=0 PATH=\"$PWD/.venv-evas/bin:$PATH\" .venv-evas/bin/python scripts/run_v3_gold_negative_verification.py --start 487 --end 487 --tasks 487 --include-staged --timeout 120 --jobs 1 --out benchmark-vabench-release-v3/reports/verify_task_487_after_table_model_2d.json"
     result: "1/1 gold PASS; 5/5 negative variants rejected; 0 expectation_fail after strengthening neg_003 to perturb z[0]."
   notes:
     - "Promoted after EVAS evaluated 2D array-backed $table_model() surfaces and the weak reset-bias negative was made checker-visible."
@@ -10712,7 +10680,6 @@
       - "breakpoints_map_0p0_to_0p1_0p5_to_0p6_1p0_to_1p1"
       - "five_negative_variants_rejected_by_behavior_checker"
   promotion_evidence:
-    command: "PYTHONPATH=\"/Users/mac/Documents/github-repos/EVAS:$PWD/runners\" VAEVAS_DEFAULT_EVAS_ENGINE=python VAEVAS_EVAS_PERSISTENT_WORKER=0 PATH=\"$PWD/.venv-evas/bin:$PATH\" .venv-evas/bin/python scripts/run_v3_gold_negative_verification.py --start 488 --end 488 --tasks 488 --include-staged --timeout 120 --jobs 1 --out benchmark-vabench-release-v3/reports/verify_task_488_after_table_model_string_param.json"
     result: "1/1 gold PASS; 5/5 negative variants rejected; 0 expectation_fail after EVAS $table_model filename/control-argument support."
   notes:
     - "Promoted after EVAS resolved the $table_model data filename from the string parameter argument before the control string."
@@ -10781,7 +10748,6 @@
       - hidden_dynamic_reference_catches_v_p_only_derivative
       - five_negative_variants_rejected_by_behavior_checker
   promotion_evidence:
-    command: "PYTHONPATH=\"/Users/mac/Documents/github-repos/EVAS:$PWD/runners\" VAEVAS_DEFAULT_EVAS_ENGINE=python VAEVAS_EVAS_PERSISTENT_WORKER=0 PATH=\"$PWD/.venv-evas/bin:$PATH\" .venv-evas/bin/python scripts/run_v3_gold_negative_verification.py --start 491 --end 491 --include-staged --timeout 120 --jobs 1 --out benchmark-vabench-release-v3/reports/verify_task_491_after_current_patch.json"
     result: "1/1 gold PASS; 5/5 negative variants rejected; 0 expectation_fail after EVAS ordinary branch-current contribution observability plus behavioral ddt support."
   notes:
     - "Promoted for observable capacitor-style branch-current contribution using finite-difference ddt(V(p,n)); this remains separate from full unknown-node MNA capacitor loading."
@@ -10850,7 +10816,6 @@
       - five_negative_variants_rejected_by_behavior_checker
   promotion_evidence:
     evas_commit: "b2d3609 Support first-order laplace_nd behavior"
-    command: "PYTHONPATH=\"/Users/mac/Documents/github-repos/EVAS:$PWD/runners\" VAEVAS_DEFAULT_EVAS_ENGINE=python VAEVAS_EVAS_PERSISTENT_WORKER=0 PATH=\"$PWD/.venv-evas/bin:$PATH\" .venv-evas/bin/python scripts/run_v3_gold_negative_verification.py --start 493 --end 493 --tasks 493 --include-staged --timeout 120 --jobs 1 --out benchmark-vabench-release-v3/reports/verify_task_493_after_negfix.json"
     result: "1/1 gold PASS; 5/5 negative variants rejected; 0 expectation_fail with first-order laplace_nd low-pass checker."
   notes:
     - "Promoted using EVAS first-order laplace_nd support; checker validates only the task's {1.0}/{1.0,1e-6} voltage-domain low-pass form without claiming full Laplace, KCL/MNA, or timestep-control coverage."
@@ -10889,7 +10854,6 @@
       - five_negative_variants_rejected_by_behavior_checker
   promotion_evidence:
     evas_commit: "159fb92 Support first-order zi_nd behavior"
-    command: "PYTHONPATH=\"/Users/mac/Documents/github-repos/EVAS:$PWD/runners\" VAEVAS_DEFAULT_EVAS_ENGINE=python VAEVAS_EVAS_PERSISTENT_WORKER=0 PATH=\"$PWD/.venv-evas/bin:$PATH\" .venv-evas/bin/python scripts/run_v3_gold_negative_verification.py --start 494 --end 494 --tasks 494 --include-staged --timeout 120 --jobs 1 --out benchmark-vabench-release-v3/reports/verify_task_494_after_negfix.json"
     result: "1/1 gold PASS; 5/5 negative variants rejected; 0 expectation_fail with sampled zi_nd IIR response checker."
   notes:
     - "Promoted using EVAS zi_nd sampled-data support; checker validates only the task's {0.5,0.5}/{1.0,-0.25}/10n voltage-domain IIR response without claiming full z-domain, KCL/MNA, or timestep-control coverage."

@@ -14,8 +14,10 @@ parameter real vhi = 0.9;
 parameter real tr = 200p;
 real out_v;
 real metric_v;
+real op_v;
 integer count_q;
 analog begin
+    op_v = zi_nd(V(vin), {0.25}, {1.0, -0.75}, 100n);
     @(initial_step) begin
         out_v = 0.0;
         metric_v = 0.0;
@@ -27,7 +29,7 @@ analog begin
             metric_v = 0.0;
             count_q = 0;
         end else begin
-            out_v = zi_nd(V(vin), {1.0}, {1.0, 1.0}, 1n);
+            out_v = op_v;
             metric_v = out_v;
             count_q = count_q + 1;
             out_v = (0.5 * (out_v));
