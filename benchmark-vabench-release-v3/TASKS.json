@@ -4828,6 +4828,9 @@
       "form": "dut",
       "id": "v3_365_noise_table_voltage_shaper",
       "level": "NA",
+      "support": [
+        "noise_profile.tbl"
+      ],
       "target": [
         "noise_table_voltage_shaper.va"
       ],
@@ -4862,6 +4865,9 @@
       "form": "dut",
       "id": "v3_366_noise_table_gated_shaper",
       "level": "NA",
+      "support": [
+        "noise_profile.tbl"
+      ],
       "target": [
         "noise_table_gated_shaper.va"
       ],
