@@ -1,8 +1,14 @@
 # File Rewind Second Pass
 
-Implement one behavioral Verilog-A source file named `file_rewind_second_pass.va`.
+## Task Contract
 
-## Interface
+Implement one behavioral Verilog-A DUT source file named `file_rewind_second_pass.va`. The DUT uses the supplied `config_lines.txt` support artifact to prove that an opened file can be read, rewound, and read again before driving a clocked threshold output.
+
+## Form-Specific Requirements
+
+This is a DUT task. Keep the provided module name and port list, read the public support file at runtime, and do not generate a testbench or auxiliary artifacts. Keep the model voltage-domain behavioral and do not introduce current contributions.
+
+## Public Verilog-A Interface
 
 Use this exact module interface:
 
@@ -17,22 +23,24 @@ module file_rewind_second_pass (
 );
 ```
 
-Keep the model behavioral and do not introduce current contributions.
+The `mode` port is present for interface consistency and is not part of the file-rewind decision.
+
+## Public Parameter Contract
+
+Use `vth = 0.45` as the analog logic threshold, `vhi = 0.9` as the high output and metric level, and `tr = 200p` as the transition rise/fall time. These parameters may be overridden by the testbench and should be used consistently for thresholding, output level, and transitions.
+
+The support file `config_lines.txt` is public. It contains a gain key/value row followed by a mode key/value row. Ordinary line terminators from `$fgets` must not prevent parsing the key/value content.
 
 ## Required Behavior
 
-Use `$fopen()`, `$fgets(line, fd)`, `$rewind()`, and `$fclose()` in `initial_step` file-read initialization logic. The solution must read `config_lines.txt`.
+During `initial_step`, open `config_lines.txt`, read the first two lines with `$fgets`, call `$rewind(fd)`, read the first line again, and close the file. Treat the rewind qualification as successful only when the first pass observes gain `0.8` then mode `1`, and the second pass again observes gain `0.8`.
 
-Required behavior:
+Set `metric` high when that rewind qualification succeeds, otherwise low. On each rising crossing of `clk`, reset `out` low when `rst` is above `vth`; otherwise drive `out` high only when the rewind qualification succeeded and `vin` is above `vth`.
 
-- read the first two lines into `line0` and `line1`;
-- call `$rewind(fd)`;
-- read one more line into `line_again`;
-- set `rewind_hit_q = 1` only when `line0 == "gain=0.8"`, `line1 == "mode=1"`, and `line_again == "gain=0.8"`;
-- set `metric_v = vhi` when `rewind_hit_q == 1`, otherwise `0.0`;
-- on each rising crossing of `clk`, reset `out_v` to zero when `rst > vth`;
-- otherwise drive `out_v = vhi` only when `rewind_hit_q == 1` and `V(vin) > vth`, else `0.0`.
+## Modeling Constraints
 
-Drive `out` and `metric` with `transition(...)`.
+Use `$fopen`, `$fgets`, `$rewind`, `$fclose`, `cross`, and `transition`. Parse the loaded text content rather than comparing against strings that include simulator-dependent line terminators. Do not hard-code behavior from a testbench waveform.
 
-Return exactly one source artifact named `file_rewind_second_pass.va`.
+## Output Contract
+
+Return exactly one source artifact named `file_rewind_second_pass.va`. Drive both `out` and `metric` with `transition(...)`.

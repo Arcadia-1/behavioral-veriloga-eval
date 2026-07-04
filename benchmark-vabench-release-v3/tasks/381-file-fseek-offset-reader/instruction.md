@@ -1,8 +1,14 @@
 # File Fseek Offset Reader
 
-Implement one behavioral Verilog-A source file named `file_fseek_offset_reader.va`.
+## Task Contract
 
-## Interface
+Implement one behavioral Verilog-A DUT source file named `file_fseek_offset_reader.va`. The DUT uses the supplied `config_lines.txt` support artifact to qualify a clocked threshold output and a status metric.
+
+## Form-Specific Requirements
+
+This is a DUT task. Keep the provided module name and port list, read the public support file at runtime, and do not generate a testbench or auxiliary artifacts. Keep the model voltage-domain behavioral and do not introduce current contributions.
+
+## Public Verilog-A Interface
 
 Use this exact module interface:
 
@@ -17,22 +23,24 @@ module file_fseek_offset_reader (
 );
 ```
 
-Keep the model behavioral and do not introduce current contributions.
+The `mode` port is present for interface consistency and is not part of the file-position decision.
+
+## Public Parameter Contract
+
+Use `vth = 0.45` as the analog logic threshold, `vhi = 0.9` as the high output and metric level, and `tr = 200p` as the transition rise/fall time. These parameters may be overridden by the testbench and should be used consistently for thresholding, output level, and transitions.
+
+The support file `config_lines.txt` is public. Its first line is a gain key/value row and its second line is a mode key/value row. Ordinary line terminators from `$fgets` must not prevent parsing the key/value content.
 
 ## Required Behavior
 
-Use `$fopen()`, `$fseek()`, `$fgets(line, fd)`, and `$fclose()` in `initial_step` file-read initialization logic. The solution must read `config_lines.txt`.
+During `initial_step`, open `config_lines.txt`, call `$fseek(fd, 9, 0)` to seek past the first line, read the following line with `$fgets`, and close the file. Treat the seek/read as successful when the seek succeeds and the loaded key/value content indicates mode `1`.
 
-Required behavior:
+Set `metric` high when that file-position qualification succeeds, otherwise low. On each rising crossing of `clk`, reset `out` low when `rst` is above `vth`; otherwise drive `out` high only when the file-position qualification succeeded and `vin` is above `vth`.
 
-- open `config_lines.txt`;
-- call `$fseek(fd, 9, 0)` to skip the first line `gain=0.8`;
-- call `$fgets(line_buf, fd)` after the seek;
-- set `seek_hit_q = 1` only when the loaded line is exactly `mode=1`;
-- set `metric_v = vhi` when `seek_hit_q == 1`, otherwise `0.0`;
-- on each rising crossing of `clk`, reset `out_v` to zero when `rst > vth`;
-- otherwise drive `out_v = vhi` only when `seek_hit_q == 1` and `V(vin) > vth`, else `0.0`.
+## Modeling Constraints
 
-Drive `out` and `metric` with `transition(...)`.
+Use `$fopen`, `$fseek`, `$fgets`, `$fclose`, `cross`, and `transition`. Parse the loaded text content rather than comparing against a string that includes simulator-dependent line terminators. Do not hard-code behavior from a testbench waveform.
 
-Return exactly one source artifact named `file_fseek_offset_reader.va`.
+## Output Contract
+
+Return exactly one source artifact named `file_fseek_offset_reader.va`. Drive both `out` and `metric` with `transition(...)`.

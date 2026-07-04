@@ -14,8 +14,14 @@ parameter real vhi = 0.9;
 parameter real tr = 200p;
 real out_v;
 real metric_v;
+real gain0;
+real gain_again;
 integer rewind_hit_q;
 integer fd;
+integer mode_value;
+integer parsed0;
+integer parsed1;
+integer parsed_again;
 string line0;
 string line1;
 string line_again;
@@ -24,13 +30,25 @@ analog begin
         out_v = 0.0;
         metric_v = 0.0;
         rewind_hit_q = 0;
+        gain0 = 0.0;
+        gain_again = 0.0;
+        mode_value = 0;
+        parsed0 = 0;
+        parsed1 = 0;
+        parsed_again = 0;
         fd = $fopen("config_lines.txt", "r");
         $fgets(line0, fd);
         $fgets(line1, fd);
         $rewind(fd);
         $fgets(line_again, fd);
         $fclose(fd);
-        if ((line0 == "gain=0.8") && (line1 == "mode=1") && (line_again == "gain=0.8")) rewind_hit_q = 1;
+        parsed0 = $sscanf(line0, "gain=%f", gain0);
+        parsed1 = $sscanf(line1, "mode=%d", mode_value);
+        parsed_again = $sscanf(line_again, "gain=%f", gain_again);
+        if ((parsed0 == 1) && (parsed1 == 1) && (parsed_again == 1) &&
+            (gain0 > 0.799999) && (gain0 < 0.800001) &&
+            (mode_value == 1) &&
+            (gain_again > 0.799999) && (gain_again < 0.800001)) rewind_hit_q = 1;
         else rewind_hit_q = 0;
         if (rewind_hit_q != 0) metric_v = vhi;
         else metric_v = 0.0;

@@ -2455,11 +2455,14 @@ def run_spectre_case(
     # Spectre names its AHDL CMI cache from the testbench basename. Parallel
     # release forms often share one gold TB, so isolate the basename per task.
     spectre_tb_path.write_text(tb_path.read_text(encoding="utf-8"), encoding="utf-8")
+    support_paths = discover_spectre_support_files(tb_path, include_paths)
+    input_paths = [*include_paths, *support_paths]
 
     payload = {
         "bridge_repo": str(bridge_repo.resolve()),
         "tb_path": str(spectre_tb_path.resolve()),
-        "include_paths": [str(p.resolve()) for p in include_paths],
+        "include_paths": [str(p.resolve()) for p in input_paths],
+        "support_paths": [str(p.resolve()) for p in support_paths],
         "output_dir": str(output_dir.resolve()),
         "result_json": str(result_json.resolve()),
         "csv_path": str(csv_path.resolve()),
