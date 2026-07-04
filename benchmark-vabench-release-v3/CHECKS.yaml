@@ -10788,7 +10788,7 @@
       - idt_branch_current_integral_shape
       - hidden_pwl_current_reversal_recovery
   notes:
-    - "Temporarily not full Spectre-certified: branch-current sign convention for idt(I(p,n)) diverged from Spectre and golden/checker must use Spectre polarity."
+    - "Temporarily not full Spectre-certified: branch-current sign convention for idt(I(p,n)) diverges from Spectre and EVAS/evas-rust promotion remains blocked by https://github.com/Arcadia-1/EVAS/issues/88."
 493-continuous-laplace-nd-filter: |
   version: 1
   task_id: v3_493_continuous_laplace_nd_filter
