@@ -1,10 +1,14 @@
-# Analysis Dependent Dc Tran Mode
+# Analysis Dependent DC/TRAN Mode
 
-Implement one behavioral Verilog-A source file named `analysis_dependent_dc_tran_mode.va`.
+## Task Contract
 
-This is a noise/analysis extension task based on the Cadence Verilog-A Language Reference. It intentionally exercises noise or analysis-dependent source functions. These tasks may require an AC/noise-capable simulator such as Spectre for final certification.
+Implement one behavioral Verilog-A source file named `analysis_dependent_dc_tran_mode.va`. This is a support/L0 Verilog-A semantics task for `analysis()` mode-dependent voltage behavior, not a standalone core circuit macro.
 
-## Interface
+## Form-Specific Requirements
+
+This is a DUT source task. Implement only the `analysis_dependent_dc_tran_mode` module; no external testbench or extra helper module is part of the requested artifact.
+
+## Public Verilog-A Interface
 
 ```verilog
 module analysis_dependent_dc_tran_mode (
@@ -15,28 +19,22 @@ module analysis_dependent_dc_tran_mode (
 );
 ```
 
+## Public Parameter Contract
+
+- `vth = 0.45`: clock crossing threshold in volts.
+- `vhi = 0.9`: high value reported on `metric` when transient analysis is active.
+- `tr = 200p`: rise/fall time for the event-updated `metric` transition.
+
 ## Required Behavior
 
-Use `analysis()` to choose DC versus transient behavior:
+Drive `out` as an analysis-dependent voltage contribution: `0.25` during `analysis("dc")`, the instantaneous `V(ctrl)` during `analysis("tran")`, and `0.0` otherwise.
 
-```verilog
-if (analysis("dc")) out_drive_v = 0.25;
-else if (analysis("tran")) out_drive_v = V(ctrl);
-else out_drive_v = 0.0;
-V(out) <+ transition(out_drive_v, 0.0, tr, tr);
-```
+Initialize `metric_v` to zero at `initial_step`. On every rising crossing of `clk` through `vth`, set `metric_v` to `vhi` when `analysis("tran")` is true, otherwise set it to zero. Drive `metric` with `transition(metric_v, 0.0, tr, tr)`.
 
-Also provide a deterministic transient-checkable sideband on `metric`. Initialize `metric_v` to zero at `initial_step`; on every rising crossing of `clk` through `vth`, update `metric_v` to `vhi` when the current analysis is transient, otherwise zero:
+## Modeling Constraints
 
-```verilog
-@(cross(V(clk)-vth,+1)) metric_v = analysis("tran") ? vhi : 0.0;
-V(metric) <+ transition(metric_v, 0.0, tr, tr);
-```
+Use `analysis()` only to select branch behavior, not to infer private simulator state. Do not place continuously varying branch voltages such as `V(ctrl)` inside `transition()`; drive continuous voltage behavior directly as a branch contribution. Use `transition()` only for event-updated state such as `metric_v`.
 
-In a transient run, `out` must follow `ctrl` and `metric` must report `vhi` after each sampled clock edge.
-
-Keep the model behavioral and voltage-domain. Do not use current-domain `I(...)` contributions or transistor-level devices.
-
-## Output
+## Output Contract
 
 Return exactly one source artifact named `analysis_dependent_dc_tran_mode.va`.

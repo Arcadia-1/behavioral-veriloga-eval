@@ -19,7 +19,7 @@ analog begin
     end
     // TODO: drive ctrl in transient, guard white_noise with analysis("noise"),
     // and increment the metric counter on clk rising crossings.
-    V(out) <+ transition(0.0, 0.0, tr, tr);
+    V(out) <+ 0.0;
     V(metric) <+ transition(metric_v, 0.0, tr, tr);
 end
 endmodule

@@ -14,7 +14,7 @@ real metric_v;
 analog begin
     @(initial_step) metric_v = 0.0;
     // TODO: drive ctrl in transient and add ac_stim during analysis("ac").
-    V(out) <+ transition(0.0, 0.0, tr, tr);
+    V(out) <+ 0.0;
     V(metric) <+ transition(metric_v, 0.0, tr, tr);
 end
 endmodule

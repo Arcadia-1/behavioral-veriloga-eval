@@ -1,10 +1,14 @@
-# Ac Stim Small Signal Source
+# AC Stim Small Signal Source
 
-Implement one behavioral Verilog-A source file named `ac_stim_small_signal_source.va`.
+## Task Contract
 
-This is a noise/analysis extension task based on the Cadence Verilog-A Language Reference. It intentionally exercises noise or analysis-dependent source functions. These tasks may require an AC/noise-capable simulator such as Spectre for final certification.
+Implement one behavioral Verilog-A source file named `ac_stim_small_signal_source.va`. This is a support/L0 Verilog-A semantics task for `ac_stim()` in a voltage-domain behavioral source, not a standalone core circuit macro.
 
-## Interface
+## Form-Specific Requirements
+
+This is a DUT source task. Implement only the `ac_stim_small_signal_source` module; no external testbench or extra helper module is part of the requested artifact.
+
+## Public Verilog-A Interface
 
 ```verilog
 module ac_stim_small_signal_source (
@@ -15,26 +19,24 @@ module ac_stim_small_signal_source (
 );
 ```
 
+## Public Parameter Contract
+
+- `vth = 0.45`: clock crossing threshold in volts.
+- `vhi = 0.9`: retained compatibility parameter for the shared source-task interface.
+- `tr = 200p`: rise/fall time for the event-updated `metric` transition.
+- `mag = 1.0`: AC stimulus magnitude.
+- `phase_rad = 0.0`: AC stimulus phase in radians.
+
 ## Required Behavior
 
-Use `ac_stim()` for small-signal AC stimulus while retaining transient behavior:
+In transient analysis, drive `out` directly from the instantaneous control voltage: `V(out) <+ V(ctrl)`. When `analysis("ac")` is true, add an AC small-signal source contribution using `ac_stim("ac", mag, phase_rad)`.
 
-```verilog
-V(out) <+ transition(V(ctrl), 0.0, tr, tr);
-if (analysis("ac")) V(out) <+ ac_stim("ac", mag, phase_deg);
-```
+Initialize `metric_v` to zero at `initial_step`. On every rising crossing of `clk` through `vth`, set `metric_v` to `mag`. Drive `metric` with `transition(metric_v, 0.0, tr, tr)`.
 
-Also provide a deterministic transient-checkable sideband on `metric`. Initialize `metric_v` to zero at `initial_step`; on every rising crossing of `clk` through `vth`, update `metric_v` to `mag`:
+## Modeling Constraints
 
-```verilog
-@(cross(V(clk)-vth,+1)) metric_v = mag;
-V(metric) <+ transition(metric_v, 0.0, tr, tr);
-```
+Use `ac_stim()` directly in a voltage branch contribution and only under the AC-analysis guard. The `ac_stim()` phase argument is in radians. Do not place continuously varying branch voltages such as `V(ctrl)` inside `transition()`; drive continuous voltage behavior directly as a branch contribution.
 
-The transient checker verifies that `out` follows `ctrl` and that `metric` reports the configured AC magnitude. AC small-signal behavior itself requires an AC-capable certification layer.
-
-Keep the model behavioral and voltage-domain. Do not use current-domain `I(...)` contributions or transistor-level devices.
-
-## Output
+## Output Contract
 
 Return exactly one source artifact named `ac_stim_small_signal_source.va`.

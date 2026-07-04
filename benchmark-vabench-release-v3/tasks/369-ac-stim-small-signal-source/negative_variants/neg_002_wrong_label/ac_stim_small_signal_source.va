@@ -11,7 +11,7 @@ parameter real vth = 0.45;
 parameter real vhi = 0.9;
 parameter real tr = 200p;
 parameter real mag = 1.0;
-parameter real phase_deg = 0.0;
+parameter real phase_rad = 0.0;
 real metric_v;
 
 analog begin
@@ -19,8 +19,8 @@ analog begin
         metric_v = 0.0;
     end
 
-    V(out) <+ transition(V(ctrl) + 0.1, 0.0, tr, tr);
-    if (analysis("ac")) V(out) <+ ac_stim("wrong_ac", mag, phase_deg);
+    V(out) <+ V(ctrl) + 0.1;
+    if (analysis("ac")) V(out) <+ ac_stim("wrong_ac", mag, phase_rad);
 
     @(cross(V(clk)-vth,+1)) metric_v = mag;
 

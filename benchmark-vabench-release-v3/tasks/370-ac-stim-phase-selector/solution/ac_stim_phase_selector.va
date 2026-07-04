@@ -17,8 +17,8 @@ analog begin
         metric_v = 0.0;
     end
 
-    V(out) <+ transition(V(ctrl), 0.0, tr, tr);
-    if (analysis("ac")) V(out) <+ ac_stim("ac", 1.0, V(ctrl) > vth ? 90.0 : 0.0);
+    V(out) <+ V(ctrl);
+    if (analysis("ac")) V(out) <+ ac_stim("ac", 1.0, V(ctrl) > vth ? 1.5707963267948966 : 0.0);
 
     @(cross(V(clk)-vth,+1)) metric_v = V(ctrl) > vth ? vhi : 0.0;
 

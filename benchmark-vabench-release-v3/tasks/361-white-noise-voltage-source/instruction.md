@@ -1,10 +1,14 @@
 # White Noise Voltage Source
 
-Implement one behavioral Verilog-A source file named `white_noise_voltage_source.va`.
+## Task Contract
 
-This is a noise/analysis extension task based on the Cadence Verilog-A Language Reference. It intentionally exercises noise or analysis-dependent source functions. These tasks may require an AC/noise-capable simulator such as Spectre for final certification.
+Implement one behavioral Verilog-A source file named `white_noise_voltage_source.va`. This is a support/L0 Verilog-A semantics task for `white_noise()` in a voltage-domain behavioral source, not a standalone core circuit macro.
 
-## Interface
+## Form-Specific Requirements
+
+This is a DUT source task. Implement only the `white_noise_voltage_source` module; no external testbench or extra helper module is part of the requested artifact.
+
+## Public Verilog-A Interface
 
 ```verilog
 module white_noise_voltage_source (
@@ -15,25 +19,23 @@ module white_noise_voltage_source (
 );
 ```
 
+## Public Parameter Contract
+
+- `vth = 0.45`: clock crossing threshold in volts.
+- `vhi = 0.9`: retained compatibility parameter for the shared source-task interface.
+- `tr = 200p`: rise/fall time for the event-updated `metric` transition.
+- `noise_power = 1.0e-12`: white-noise power spectral density parameter for the `white_noise()` contribution.
+
 ## Required Behavior
 
-Use `white_noise()` as a voltage-domain behavioral noise source on `out`:
+Contribute a voltage-domain white-noise source on `out` using `white_noise(noise_power, "white_voltage_noise")`. In ordinary transient analysis this small-signal noise contribution is not a deterministic time-domain waveform; the transient-observable behavior is carried by `metric`.
 
-```verilog
-V(out) <+ white_noise(noise_power, "white_voltage_noise");
-```
+Initialize an internal real `metric_v` to zero at `initial_step`. On every rising crossing of `clk` through `vth`, sample the current control voltage and assign it to `metric_v`. Drive `metric` with `transition(metric_v, 0.0, tr, tr)`.
 
-Also provide a deterministic transient-checkable sideband on `metric`. Initialize `metric_v` to zero at `initial_step`; on every rising crossing of `clk` through `vth`, update `metric_v` to the current control voltage:
+## Modeling Constraints
 
-```verilog
-@(cross(V(clk)-vth,+1)) metric_v = V(ctrl);
-V(metric) <+ transition(metric_v, 0.0, tr, tr);
-```
+Use `white_noise()` directly in a branch contribution to `V(out)`. Do not assign the noise function result to a real variable, do not use current-domain `I(...)` contributions, and do not add transistor-level devices. Use `transition()` only for event-updated state such as `metric_v`, not for continuously varying branch voltages.
 
-The transient checker verifies the clocked `metric` behavior. The noise source is covered as an executable language feature; spectral noise power requires a noise-analysis-capable certification layer.
-
-Keep the model behavioral and voltage-domain. Do not use current-domain `I(...)` contributions or transistor-level devices.
-
-## Output
+## Output Contract
 
 Return exactly one source artifact named `white_noise_voltage_source.va`.

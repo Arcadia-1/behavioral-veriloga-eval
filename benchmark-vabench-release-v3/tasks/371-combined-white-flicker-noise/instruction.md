@@ -1,10 +1,14 @@
 # Combined White Flicker Noise
 
-Implement one behavioral Verilog-A source file named `combined_white_flicker_noise.va`.
+## Task Contract
 
-This is a noise/analysis extension task based on the Cadence Verilog-A Language Reference. It intentionally exercises noise or analysis-dependent source functions. These tasks may require an AC/noise-capable simulator such as Spectre for final certification.
+Implement one behavioral Verilog-A source file named `combined_white_flicker_noise.va`. This is a support/L0 Verilog-A semantics task for combining white-noise and flicker-noise voltage contributions, not a standalone core circuit macro.
 
-## Interface
+## Form-Specific Requirements
+
+This is a DUT source task. Implement only the `combined_white_flicker_noise` module; no external testbench or extra helper module is part of the requested artifact.
+
+## Public Verilog-A Interface
 
 ```verilog
 module combined_white_flicker_noise (
@@ -15,25 +19,24 @@ module combined_white_flicker_noise (
 );
 ```
 
+## Public Parameter Contract
+
+- `vth = 0.45`: clock crossing threshold in volts.
+- `vhi = 0.9`: retained compatibility parameter for the shared source-task interface.
+- `tr = 200p`: rise/fall time for the event-updated `metric` transition.
+- `white_pwr = 1.0e-12`: white-noise power spectral density parameter.
+- `kf = 5.0e-13`: flicker-noise coefficient.
+
 ## Required Behavior
 
-Combine `white_noise()` and `flicker_noise()` in one behavioral voltage source:
+Contribute both `white_noise(white_pwr, "white")` and `flicker_noise(kf, 1.0, "flicker")` to `V(out)` as a summed voltage-domain noise source. In ordinary transient analysis these small-signal noise contributions are not deterministic time-domain waveforms; the transient-observable behavior is carried by `metric`.
 
-```verilog
-V(out) <+ white_noise(white_pwr, "white") + flicker_noise(kf, 1.0, "flicker");
-```
+Initialize `metric_v` to zero at `initial_step`. On every rising crossing of `clk` through `vth`, set `metric_v` to `white_pwr * 1.0e12 + kf * 1.0e12`. Drive `metric` with `transition(metric_v, 0.0, tr, tr)`.
 
-Also provide a deterministic transient-checkable sideband on `metric`. Initialize `metric_v` to zero at `initial_step`; on every rising crossing of `clk` through `vth`, update `metric_v` to the normalized sum of the two noise-strength parameters:
+## Modeling Constraints
 
-```verilog
-@(cross(V(clk)-vth,+1)) metric_v = white_pwr * 1.0e12 + kf * 1.0e12;
-V(metric) <+ transition(metric_v, 0.0, tr, tr);
-```
+Use the noise functions directly in voltage branch contributions. Do not assign noise function results to real variables, do not use current-domain `I(...)` contributions, and do not add transistor-level devices. Use real-valued arithmetic for the metric scaling.
 
-The transient checker verifies the clocked parameter sideband. The combined noise spectrum itself requires a noise-analysis-capable certification layer.
-
-Keep the model behavioral and voltage-domain. Do not use current-domain `I(...)` contributions or transistor-level devices.
-
-## Output
+## Output Contract
 
 Return exactly one source artifact named `combined_white_flicker_noise.va`.

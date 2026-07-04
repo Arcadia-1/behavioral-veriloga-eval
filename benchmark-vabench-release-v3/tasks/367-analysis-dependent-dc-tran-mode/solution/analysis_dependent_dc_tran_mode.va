@@ -11,19 +11,13 @@ parameter real vth = 0.45;
 parameter real vhi = 0.9;
 parameter real tr = 200p;
 real metric_v;
-real out_drive_v;
 
 analog begin
     @(initial_step) begin
         metric_v = 0.0;
-        out_drive_v = 0.0;
     end
 
-    if (analysis("dc")) out_drive_v = 0.25;
-    else if (analysis("tran")) out_drive_v = V(ctrl);
-    else out_drive_v = 0.0;
-
-    V(out) <+ transition(out_drive_v, 0.0, tr, tr);
+    V(out) <+ (analysis("dc") ? 0.25 : (analysis("tran") ? V(ctrl) : 0.0));
 
     @(cross(V(clk)-vth,+1)) metric_v = analysis("tran") ? vhi : 0.0;
 
