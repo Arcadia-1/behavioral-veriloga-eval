@@ -1,18 +1,48 @@
 # Configurable Pulse Train Generator
 
-Implement `configurable_pulse_train.va` in Verilog-A.
+## Task Contract
 
-## Interface
+Implement `configurable_pulse_train.va`, a clocked support source that captures pulse-train control words and emits a finite sequence of voltage-coded pulses.
+
+## Form-Specific Requirements
+
+- This is a DUT/support-component task: implement only the requested Verilog-A source artifact.
+- Do not generate a Spectre testbench or checker.
+- Preserve the public module name, port order, port directions, and parameter names.
+- Treat any public validation harness as an observable use case, not as values to hard-code into the DUT.
+
+## Public Verilog-A Interface
 
 ```verilog
 module configurable_pulse_train(clk, start, period0, period1, period2, period3, width0, width1, width2, width3, count0, count1, count2, count3, pulse, done);
 ```
 
-Inputs: `clk, start, period0, period1, period2, period3, width0, width1, width2, width3, count0, count1, count2, count3`.
-Outputs: `pulse, done`.
+Inputs are `clk`, `start`, 4-bit `period`, 4-bit `width`, and 4-bit `count`. Outputs are `pulse` and `done`. All ports are electrical.
+
+## Public Parameter Contract
+
+| Parameter | Default | Contract |
+| --- | ---: | --- |
+| `vdd` | `0.9` | Logic-high output voltage. |
+| `vth` | `0.45` | Decision threshold for voltage-coded digital inputs. |
+| `tr` | `20p` | Output transition rise/fall smoothing time. |
 
 ## Required Behavior
 
-On a rising `clk` while idle and `start` is high, capture `period[3:0]`, `width[3:0]`, and `count[3:0]`. Emit exactly `count` pulses, each `width` clock samples wide, with starts separated by `period` clock samples; then assert `done`.
+- Sample controls on rising `clk` crossings.
+- While idle, a sampled high `start` captures unsigned 4-bit `period`, `width`, and `count` control words.
+- Interpret each captured control word as at least one clock sample: zero-coded period, width, or count values map to 1.
+- Emit exactly `count` pulses. Each pulse is high for `width` clock samples, and pulse starts are separated by `period` clock samples.
+- After the final pulse completes, drive `pulse` low and assert `done`.
 
-Use logic threshold 0.45 V for digital decisions, drive high outputs to 0.9 V and low outputs to 0 V, and use short transition edges so EVAS transient traces are stable away from switching instants.
+## Modeling Constraints
+
+- Keep the model pure voltage-domain behavioral Verilog-A.
+- Treat voltage-coded logic low as near 0 V and logic high as near `vdd`.
+- Use `transition(...)` or equivalent smooth voltage contributions for driven logic outputs.
+- Do not instantiate transistor-level devices, use current-branch contributions, AC/noise analysis, checker logic, private test hooks, or simulator-private side channels.
+- Use clocked state for running/idle state, captured controls, tick count, emitted-pulse count, pulse output, and done flag.
+
+## Output Contract
+
+Return exactly one complete Verilog-A source file named `configurable_pulse_train.va`.

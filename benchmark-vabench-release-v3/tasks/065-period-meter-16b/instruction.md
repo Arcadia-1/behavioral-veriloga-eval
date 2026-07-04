@@ -1,18 +1,47 @@
 # Period Meter 16b
 
-Implement `period_meter_16b.va` in Verilog-A.
+## Task Contract
 
-## Interface
+Implement `period_meter_16b.va`, a voltage-domain instrumentation helper that measures rising-edge-to-rising-edge clock period and reports it as a 16-bit digital code.
+
+## Form-Specific Requirements
+
+- This is a DUT/support-component task: implement only the requested Verilog-A source artifact.
+- Do not generate a Spectre testbench or checker.
+- Preserve the public module name, port order, port directions, and parameter names.
+- Treat any public validation harness as an observable use case, not as values to hard-code into the DUT.
+
+## Public Verilog-A Interface
 
 ```verilog
 module period_meter_16b(clk_in, valid, period0, period1, period2, period3, period4, period5, period6, period7, period8, period9, period10, period11, period12, period13, period14, period15);
 ```
 
-Inputs: `clk_in`.
-Outputs: `valid, period0, period1, period2, period3, period4, period5, period6, period7, period8, period9, period10, period11, period12, period13, period14, period15`.
+Input is `clk_in`. Outputs are `valid` and `period0` through `period15`. All ports are electrical.
+
+## Public Parameter Contract
+
+| Parameter | Default | Contract |
+| --- | ---: | --- |
+| `vdd` | `0.9` | Logic-high output voltage. |
+| `vth` | `0.45` | Decision threshold for voltage-coded digital inputs. |
+| `tr` | `20p` | Output transition rise/fall smoothing time. |
 
 ## Required Behavior
 
-Measure the interval between consecutive rising edges of `clk_in`. After the second and later rising edges, assert `valid` and output the period in 1 ns LSBs on `period[15:0]`.
+- Measure the interval between consecutive rising crossings of `clk_in`.
+- After the second and later rising edges, compute `round(period / 1 ns)` and saturate to 0 through 65535.
+- Drive `period0` as the least significant bit through `period15` as the most significant bit.
+- Assert and hold `valid` after a period has been measured, updating the code on later periods.
 
-Use logic threshold 0.45 V for digital decisions, drive high outputs to 0.9 V and low outputs to 0 V, and use short transition edges so EVAS transient traces are stable away from switching instants.
+## Modeling Constraints
+
+- Keep the model pure voltage-domain behavioral Verilog-A.
+- Treat voltage-coded logic low as near 0 V and logic high as near `vdd`.
+- Use `transition(...)` or equivalent smooth voltage contributions for driven logic outputs.
+- Do not instantiate transistor-level devices, use current-branch contributions, AC/noise analysis, checker logic, private test hooks, or simulator-private side channels.
+- Use event state for the previous edge time, seen-edge flag, measured code, and validity flag.
+
+## Output Contract
+
+Return exactly one complete Verilog-A source file named `period_meter_16b.va`.

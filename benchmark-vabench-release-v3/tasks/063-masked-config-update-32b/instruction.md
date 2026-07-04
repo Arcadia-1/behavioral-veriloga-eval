@@ -1,28 +1,48 @@
 # Masked Config Update 32b
 
-Implement one Verilog-A DUT file named `masked_config_update_32b.va`.
+## Task Contract
 
-## Interface
+Implement `masked_config_update_32b.va`, a voltage-coded masked configuration-update helper for AMS trim/configuration flows.
 
-Define module `masked_config_update_32b` with vector electrical ports in this exact order:
+## Form-Specific Requirements
+
+- This is a DUT/support-component task: implement only the requested Verilog-A source artifact.
+- Do not generate a Spectre testbench or checker.
+- Preserve the public module name, port order, port directions, and parameter names.
+- Treat any public validation harness as an observable use case, not as values to hard-code into the DUT.
+
+## Public Verilog-A Interface
 
 ```verilog
-module masked_config_update_32b(
-    input electrical [31:0] old_cfg,
-    input electrical [31:0] new_cfg,
-    input electrical [31:0] mask,
-    output electrical [31:0] out_cfg
-);
+module masked_config_update_32b(old_cfg, new_cfg, mask, out_cfg);
+    input [31:0] old_cfg, new_cfg, mask;
+    output [31:0] out_cfg;
 ```
 
-Use `vdd=0.9`, `vth=0.45`, and `tr=20p` unless compatible parameters are needed.
+All ports are electrical.
+
+## Public Parameter Contract
+
+| Parameter | Default | Contract |
+| --- | ---: | --- |
+| `vdd` | `0.9` | Logic-high output voltage. |
+| `vth` | `0.45` | Decision threshold for voltage-coded digital inputs. |
+| `tr` | `20p` | Output transition rise/fall smoothing time. |
 
 ## Required Behavior
 
-Treat all input bits as 0/0.9 V logic using `vth`. For each bit `N`, drive `out_cfg[N] = new_cfg[N]` when `mask[N]` is high, otherwise drive `out_cfg[N] = old_cfg[N]`.
+- Treat `old_cfg`, `new_cfg`, and `mask` as voltage-coded logic using `vth`.
+- For each bit `N`, drive `out_cfg[N]` from `new_cfg[N]` when `mask[N]` is high.
+- Otherwise drive `out_cfg[N]` from `old_cfg[N]`.
 
-Drive high outputs near `vdd` and low outputs near 0 V using smooth Verilog-A contributions. Compact loop-based Verilog-A is preferred; do not manually expand 32 scalar input/output ports.
+## Modeling Constraints
 
-## Output
+- Keep the model pure voltage-domain behavioral Verilog-A.
+- Treat voltage-coded logic low as near 0 V and logic high as near `vdd`.
+- Use `transition(...)` or equivalent smooth voltage contributions for driven logic outputs.
+- Do not instantiate transistor-level devices, use current-branch contributions, AC/noise analysis, checker logic, private test hooks, or simulator-private side channels.
+- Compact loop-based Verilog-A is preferred for the 32-bit buses.
 
-Return exactly `masked_config_update_32b.va`. Do not generate a Spectre testbench.
+## Output Contract
+
+Return exactly one complete Verilog-A source file named `masked_config_update_32b.va`.

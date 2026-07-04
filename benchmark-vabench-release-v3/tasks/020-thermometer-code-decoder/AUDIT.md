@@ -1,30 +1,12 @@
-# Honest SOP Audit: Task 020 Thermometer Code Decoder
+# Task 020 Audit
 
-## Scope
+Task: `020-thermometer-code-decoder`
 
-Task boundary is one Verilog-A DUT, `thermometer_decoder_guarded.va`, plus EVAS/Spectre-compatible `.scs` testbenches. Agent-visible materials are limited to `instruction.md`, `starter/`, and `test_visible/`. Private validation materials include the reference solution, validation decks, harness code, and negative variants. No `meta.json` is present.
+## 2026-07 Testbench Utility Review
 
-## Four Standards
+- Gate 1: support utility, not an independent core AMS benchmark as written. The guarded two-bit thermometer decoder is useful as a small converter/helper primitive, but it overlaps the broader 8-bit thermometer decoder coverage in task 050.
+- Gate 2: public prompt now uses the mandatory vaBench v3 instruction shape and states module boundary, thresholding, enable behavior, invalid-code guarding, bit order, and voltage-domain constraints.
+- Validation: the 24-row testbench-utility EVAS batch passed 24/24 gold cases and rejected 120/120 concrete negatives. Targeted Spectre gold coverage for this row passed. AHDL-like preflight reported no diagnostics for this row.
+- Counting recommendation: keep as a support-formal candidate or small smoke utility; do not count separately as a representative data-converter function when task 050 is counted.
 
-- Useful scenario: pass as a support utility. A guarded thermometer-code decoder is a common data-converter helper block, but this two-bit version is intentionally classified as utility/support rather than as a core analog-circuit benchmark task.
-- Reasonable task: pass. The public prompt fixes the module artifact, decoder behavior, guarded invalid-code handling, voltage-domain outputs, and voltage-only implementation constraints.
-- Complete tests: pass for EVAS. Hidden stimulus checks the expected guarded output sequence over valid and invalid thermometer patterns. Five concrete negatives cover off-by-one decoding, missing guarded behavior, reversed mapping, stuck outputs, and incomplete decode width.
-- Fair evaluation: pass for EVAS. Hidden scoring follows the public guarded decoder contract; exact stimulus timing remains private.
-
-## Checker And Evidence
-
-- Checker id: `v3_020_thermometer_code_decoder`
-- Runner mapping: `CHECKS["v3_020_thermometer_code_decoder"] = check_vbm1_thermometer_decoder_guarded`
-- EVAS/Python-engine gold semantic validation: `PASS`
-- Concrete negative recertification: 5/5 expected failures, all `FAIL_SIM_CORRECTNESS`
-- Visible compile/sim smoke: `COMPILE_SIM_OK`
-
-## Release Classification
-
-This task remains useful and should not be dropped, but it is classified as
-`testbench_utility_modules` / `support-formal-candidate` so it is not presented
-as a representative core analog/mixed-signal circuit-function task.
-
-## Remaining Risk
-
-Spectre/Spectre-AX correlation has not been run from this working tree; use EVAS-only wording until that evidence exists.
+Certification status: `cadence_modeling_ready` for support-formal scope.

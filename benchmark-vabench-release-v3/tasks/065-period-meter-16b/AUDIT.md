@@ -1,8 +1,12 @@
-# SOP Audit: Period Meter 16b
+# Task 065 Audit
 
-- Useful scenario: testbench utility module for behavioral Verilog-A validation flows.
-- Reasonable task: public prompt states the scored interface and deterministic behavior.
-- Complete tests: visible smoke plus hidden EVAS/Spectre-compatible transient testbench.
-- Fair evaluation: hidden checker derives expected behavior from the public contract and concrete negative variants are expected to compile but fail correctness.
+Task: `065-period-meter-16b`
 
-Certification status: certified with EVAS gold PASS and concrete negative FAIL_SIM_CORRECTNESS evidence.
+## 2026-07 Testbench Utility Review
+
+- Gate 1: retained as measurement-support instrumentation. Period measurement is a recognizable AMS verification helper for clocks, oscillators, and timing flows.
+- Gate 2: public prompt now states rising-edge period capture, code scaling, valid behavior, bit order, thresholding, output levels, transition behavior, and voltage-domain constraints.
+- Validation: the 24-row testbench-utility EVAS batch passed 24/24 gold cases and rejected 120/120 concrete negatives. Targeted Spectre gold coverage for this row passed. AHDL-like preflight produced one transition-related warning per deck; no compatibility or linter failures were observed.
+- Counting recommendation: keep as support/measurement utility; count separately from duty-cycle and latency rows only under a measurement/instrumentation support category.
+
+Certification status: `cadence_modeling_ready` for support-formal scope.

@@ -1,59 +1,52 @@
 # Thermometer To Binary Encoder 8b
 
-Implement one Verilog-A DUT file named `therm_to_bin_8b.va`.
+## Task Contract
 
-The DUT is a voltage-domain utility module for analog/mixed-signal testbenches.
+Implement `therm_to_bin_8b.va`, the inverse utility of the 8-bit thermometer decoder. It converts a cumulative 256-line voltage-coded thermometer input into an 8-bit binary count plus a validity flag.
 
-## Interface
+## Form-Specific Requirements
 
-The file must define module `therm_to_bin_8b` with vector electrical ports in this exact order:
+- This is a DUT/support-component task: implement only the requested Verilog-A source artifact.
+- Do not generate a Spectre testbench or checker.
+- Preserve the public module name, port order, port directions, and parameter names.
+- Treat any public validation harness as an observable use case, not as values to hard-code into the DUT.
 
-```text
-th[255:0], b[7:0], valid
-```
-
-Use Verilog-A vector ports, for example:
+## Public Verilog-A Interface
 
 ```verilog
-module therm_to_bin_8b(
-    input electrical [255:0] th,
-    output electrical [7:0] b,
-    output electrical valid
-);
+module therm_to_bin_8b(th, b, valid);
+    input [255:0] th;
+    output [7:0] b;
+    output valid;
 ```
 
-Use these public parameters unless you have a compatible reason to add more:
+All ports are electrical.
 
-- `vdd = 0.9`
-- `vth = 0.45`
-- `tr = 20p`
+## Public Parameter Contract
+
+| Parameter | Default | Contract |
+| --- | ---: | --- |
+| `vdd` | `0.9` | Logic-high output voltage. |
+| `vth` | `0.45` | Decision threshold for voltage-coded digital inputs. |
+| `tr` | `20p` | Output transition rise/fall smoothing time. |
 
 ## Required Behavior
 
-Treat all logic inputs as 0/0.9 V logic using the `vth` threshold. The least
-significant thermometer bit is `th[0]`; the most significant thermometer bit is
-`th[255]`. The least significant binary output bit is `b[0]`; the most
-significant binary output bit is `b[7]`.
+- Treat every `th[N]` input as voltage-coded logic using `vth`.
+- A valid thermometer word is cumulative from `th[0]`: exactly `th[0]` through `th[count-1]` are high and all higher inputs are low.
+- Code 0 is valid and means all thermometer inputs are low.
+- Code 255 is valid and means `th[0]` through `th[254]` are high and `th[255]` is low.
+- For a valid word, drive `b[7:0]` to the unsigned count with `b[7]` as the most significant bit and drive `valid` high.
+- For a non-cumulative or otherwise invalid word, drive `valid` low and drive `b[7:0]` to zero.
 
-Encode `th[255:0]` into an 8-bit count and a `valid` flag. A valid
-thermometer input is cumulative from `th[0]`: exactly `th[0]` through
-`th[count-1]` are high and all higher thermometer inputs are low. For valid
-inputs, drive `b[7:0]` to the unsigned count, where `b[7]` is the most
-significant bit. Code 0 is valid and means all thermometer inputs are low. Code
-255 is valid and means `th[0]` through `th[254]` are high and `th[255]` is low.
+## Modeling Constraints
 
-For any non-cumulative bubble, gap, isolated high pattern, or all-256-high
-pattern, drive `valid` low and drive `b[7:0]` to zero.
+- Keep the model pure voltage-domain behavioral Verilog-A.
+- Treat voltage-coded logic low as near 0 V and logic high as near `vdd`.
+- Use `transition(...)` or equivalent smooth voltage contributions for driven logic outputs.
+- Do not instantiate transistor-level devices, use current-branch contributions, AC/noise analysis, checker logic, private test hooks, or simulator-private side channels.
+- Compact loop-based Verilog-A is preferred; do not manually expand 256 input checks unless required by the simulator subset.
 
-Drive high outputs near `vdd` and low outputs near 0 V. Use smooth Verilog-A
-voltage contributions such as `transition(...)`. Compact loop-based Verilog-A is
-preferred; do not manually expand 256 scalar input ports.
+## Output Contract
 
-## Public Smoke
-
-The public smoke test checks interface and simulation viability. The behavioral
-contract includes boundary thermometer codes and invalid non-cumulative inputs.
-
-## Output
-
-Return exactly one source artifact named `therm_to_bin_8b.va`. Do not generate a Spectre testbench for this task.
+Return exactly one complete Verilog-A source file named `therm_to_bin_8b.va`.

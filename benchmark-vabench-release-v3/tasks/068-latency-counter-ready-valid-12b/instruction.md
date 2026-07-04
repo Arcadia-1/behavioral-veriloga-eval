@@ -1,18 +1,48 @@
 # Ready/Valid Latency Counter 12b
 
-Implement `ready_valid_latency_counter_12b.va` in Verilog-A.
+## Task Contract
 
-## Interface
+Implement `ready_valid_latency_counter_12b.va`, a clocked instrumentation helper that measures the number of clock cycles from a sampled valid request to a sampled ready response.
+
+## Form-Specific Requirements
+
+- This is a DUT/support-component task: implement only the requested Verilog-A source artifact.
+- Do not generate a Spectre testbench or checker.
+- Preserve the public module name, port order, port directions, and parameter names.
+- Treat any public validation harness as an observable use case, not as values to hard-code into the DUT.
+
+## Public Verilog-A Interface
 
 ```verilog
 module ready_valid_latency_counter_12b(clk, valid_i, ready_i, done, lat0, lat1, lat2, lat3, lat4, lat5, lat6, lat7, lat8, lat9, lat10, lat11);
 ```
 
-Inputs: `clk, valid_i, ready_i`.
-Outputs: `done, lat0, lat1, lat2, lat3, lat4, lat5, lat6, lat7, lat8, lat9, lat10, lat11`.
+Inputs are `clk`, `valid_i`, and `ready_i`. Outputs are `done` and `lat0` through `lat11`. All ports are electrical.
+
+## Public Parameter Contract
+
+| Parameter | Default | Contract |
+| --- | ---: | --- |
+| `vdd` | `0.9` | Logic-high output voltage. |
+| `vth` | `0.45` | Decision threshold for voltage-coded digital inputs. |
+| `tr` | `20p` | Output transition rise/fall smoothing time. |
 
 ## Required Behavior
 
-On rising `clk`, start counting when `valid_i` is high. Count clock cycles while waiting for `ready_i`; when `ready_i` is sampled high, assert `done` and output the latency count on `lat[11:0]`.
+- Sample `valid_i` and `ready_i` on rising `clk` crossings.
+- While idle, a sampled high `valid_i` starts a latency measurement with count zero and clears `done`.
+- While active, increment the count on each rising clock where `ready_i` is sampled low.
+- When `ready_i` is sampled high while active, latch the current count to `lat[11:0]`, assert `done`, and return to idle.
+- If `valid_i` and `ready_i` are both sampled high on the starting edge, report zero latency.
 
-Use logic threshold 0.45 V for digital decisions, drive high outputs to 0.9 V and low outputs to 0 V, and use short transition edges so EVAS transient traces are stable away from switching instants.
+## Modeling Constraints
+
+- Keep the model pure voltage-domain behavioral Verilog-A.
+- Treat voltage-coded logic low as near 0 V and logic high as near `vdd`.
+- Use `transition(...)` or equivalent smooth voltage contributions for driven logic outputs.
+- Do not instantiate transistor-level devices, use current-branch contributions, AC/noise analysis, checker logic, private test hooks, or simulator-private side channels.
+- Use clocked event state for active/idle state, cycle count, latched output code, and done flag.
+
+## Output Contract
+
+Return exactly one complete Verilog-A source file named `ready_valid_latency_counter_12b.va`.

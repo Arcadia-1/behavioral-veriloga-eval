@@ -2,69 +2,45 @@
 
 ## Task Contract
 
-- Form: `dut`
-- Level: `L1`
-- Category: Data Converter Models
-- Base function: Thermometer-code decoder
-- Domain: `voltage`
-- Target artifact(s): `thermometer_decoder_guarded.va`
-- Supplied/reference support artifact(s): `tb_thermometer_decoder_guarded_ref.scs`
-- Visible context: public task, interface, artifact, stimulus, and observable contract only.
-- Output boundary: implement only the requested DUT artifact; validation harnesses and simulator-private hooks are external to the requested output.
+Implement `thermometer_decoder_guarded.va`, a small guarded binary-to-thermometer voltage-domain utility for compact AMS validation harnesses.
 
 ## Form-Specific Requirements
 
-- Implement only the requested Verilog-A DUT artifact(s); do not generate a Spectre testbench in this form.
-- Preserve the public module names, port order, parameters, and waveform observable names.
+- This is a DUT/support-component task: implement only the requested Verilog-A source artifact.
+- Do not generate a Spectre testbench or checker.
+- Preserve the public module name, port order, port directions, and parameter names.
+- Treat any public validation harness as an observable use case, not as values to hard-code into the DUT.
 
 ## Public Verilog-A Interface
 
-- `thermometer_decoder_guarded.va` declares module `thermometer_decoder_guarded` with positional ports: `b0`, `b1`, `en`, `th0`, `th1`, `th2`, `th3`.
-
-## Public Testbench And Observable Contract
-
-Public transient context:
-
-```spectre
-tran tran stop=120n maxstep=500p
+```verilog
+module thermometer_decoder_guarded(b0, b1, en, th0, th1, th2, th3);
 ```
 
-The public scalar observables are:
+All ports are electrical. Inputs are `b0`, `b1`, and `en`; outputs are `th0`, `th1`, `th2`, and `th3`.
 
-- `b0`
-- `b1`
-- `en`
-- `th0`
-- `th1`
-- `th2`
-- `th3`
+## Public Parameter Contract
 
-When this form generates a testbench, use plain scalar save names for these observables; do not rely on instance-qualified or aliased save names.
+| Parameter | Default | Contract |
+| --- | ---: | --- |
+| `vdd` | `0.9` | Logic-high output voltage. |
+| `vth` | `0.45` | Decision threshold for `b0`, `b1`, and `en`. |
+| `tr` | `300p` | Output transition rise/fall smoothing time. |
 
-## Public Behavior Checks
+## Required Behavior
 
-- `enable_low_forces_all_low`
-- `cumulative_sequence_for_codes_1_2_3`
-- `guarded_th3_remains_low`
+- Decode `b1:b0` as an unsigned two-bit code with `b1` as the most significant bit.
+- When `en` is high, drive a cumulative thermometer prefix: code 0 drives all outputs low, code 1 drives only `th0` high, code 2 drives `th0` and `th1` high, and code 3 drives `th0`, `th1`, and `th2` high.
+- Keep `th3` guarded low for the two-bit input range.
+- When `en` is low, force all thermometer outputs low regardless of the code.
+
+## Modeling Constraints
+
+- Keep the model pure voltage-domain behavioral Verilog-A.
+- Treat voltage-coded logic low as near 0 V and logic high as near `vdd`.
+- Use `transition(...)` or equivalent smooth voltage contributions for driven logic outputs.
+- Do not instantiate transistor-level devices, use current-branch contributions, AC/noise analysis, checker logic, private test hooks, or simulator-private side channels.
 
 ## Output Contract
 
-Return exactly one source artifact named `thermometer_decoder_guarded.va`.
-Do not include explanatory prose outside the source artifact contents.
-
-## Task-Specific Description
-
-## Additional Task Details
-
-Write a pure voltage-domain Verilog-A module for a guarded thermometer decoder.
-
-The DUT module is `thermometer_decoder_guarded` with ports `b0, b1, en, th0, th1, th2, th3`. All ports are electrical; digital-control ports use 0/0.9 V logic levels.
-
-Required behavior:
-- Decode a 2-bit binary input into cumulative thermometer outputs while `en` is high.
-- With `en` low, force all thermometer outputs low.
-- For codes 1, 2, and 3, assert `th0`, then `th0:th1`, then `th0:th2`; `th3` remains guarded low for this 2-bit input space.
-
-Use voltage contributions only. Do not use current contributions, `ddt()`, or `idt()`.
-
-Return exactly one complete Verilog-A file named `thermometer_decoder_guarded.va`.
+Return exactly one complete Verilog-A source file named `thermometer_decoder_guarded.va`.
