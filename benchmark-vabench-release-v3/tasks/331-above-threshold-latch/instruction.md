@@ -1,10 +1,16 @@
 # Above Threshold Latch
 
+## Task Contract
+
 Implement one behavioral Verilog-A DUT file named `above_threshold_latch.va`.
 
-This is a language-semantics extension task based on the Cadence Verilog-A Language Reference. Keep the model pure voltage-domain behavioral Verilog-A: do not instantiate transistor-level devices and do not use current-domain `I(...)` branch contributions.
+## Form-Specific Requirements
 
-## Interface
+This is a language-semantics extension task based on the Cadence Verilog-A Language Reference. Use `above()` to set a threshold latch and `last_crossing()` to classify the timing between rising threshold crossings.
+
+For Spectre compatibility, call `last_crossing` with the supported crossing-expression and direction arguments, for example `last_crossing(V(vin) - vth, +1)`. Do not use extra tolerance arguments on `last_crossing`.
+
+## Public Verilog-A Interface
 
 ```verilog
 module above_threshold_latch (
@@ -17,25 +23,23 @@ module above_threshold_latch (
 );
 ```
 
+## Public Parameter Contract
+
+Use voltage-coded logic with `vth = 0.45` V and high outputs near `vhi = 0.9` V. Drive output transitions with rise/fall time `tr = 200p`. These values may be implemented as compatible Verilog-A parameters or internal constants.
+
 ## Required Behavior
 
-Use `above()` to set a threshold latch and `last_crossing()` to classify the timing between rising threshold crossings.
+- `@(above(V(vin) - vth))` sets a latch.
+- Continuously evaluate the latest rising threshold-crossing time with `last_crossing(V(vin) - vth, +1)`.
+- On each rising `vin` threshold crossing, compare the current crossing time with the previous rising crossing time.
+- When two consecutive rising crossings are less than `250 ns` apart, drive `metric = vhi`; otherwise drive `metric = 0.0`.
+- `@(cross(V(rst) - vth, +1))` clears the latch, metric, and stored crossing time.
+- Drive `out = vhi` when the latch is set, otherwise `0.0`.
 
-This is a pure voltage-domain behavioral task. Do not use current-domain `I(...)` branch contributions.
+## Modeling Constraints
 
-Use voltage-coded logic with `vth = 0.45` V and high outputs near `0.9` V.
+Keep the model pure voltage-domain behavioral Verilog-A: do not instantiate transistor-level devices and do not use current-domain `I(...)` branch contributions. Use `transition(..., 0, tr, tr)` for both outputs.
 
-Implement:
-
-- `@(above(V(vin) - vth))` sets a latch and drives `out` high
-- continuously evaluate `lc_q = last_crossing(V(vin) - vth, +1, 0.0, 1e-12)`
-- `@(cross(V(vin) - vth, +1, 0.0, 1e-12))` records `lc_q`
-- when two consecutive rising crossings are less than `250 ns` apart, drive `metric = 0.9`; otherwise drive `metric = 0.0`
-- `@(cross(V(rst) - vth, +1))` clears the latch, metric, and stored crossing time
-- drive `out = 0.9` when the latch is set, otherwise `0.0`
-
-The hidden testbench drives two close rising threshold crossings, then asserts reset, then drives one more crossing. The evaluator checks that `out` latches high across a falling input, reset clears it, and `metric` only marks the close pre-reset crossing pair.
-
-## Output
+## Output Contract
 
 Return exactly one source artifact named `above_threshold_latch.va`. Do not generate a Spectre testbench for this task.

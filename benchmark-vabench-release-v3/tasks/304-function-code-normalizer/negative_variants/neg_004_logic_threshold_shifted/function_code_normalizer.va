@@ -16,8 +16,9 @@ real out_v;
 real metric_v;
 integer count_q;
 integer state_q;
-function real normalize4;
-    input real x;
+analog function real normalize4;
+    input x;
+    real x;
     integer code;
     begin
         code = x < 0.0 ? 0 : (x > 0.9 ? 15 : floor(16.0 * x / 0.9));

@@ -1,10 +1,16 @@
 # Above Window Qualifier
 
+## Task Contract
+
 Implement one behavioral Verilog-A DUT file named `above_window_qualifier.va`.
 
-This is a language-semantics extension task based on the Cadence Verilog-A Language Reference. Keep the model pure voltage-domain behavioral Verilog-A: do not instantiate transistor-level devices and do not use current-domain `I(...)` branch contributions.
+## Form-Specific Requirements
 
-## Interface
+This is a language-semantics extension task based on the Cadence Verilog-A Language Reference. Use `above()` and `last_crossing()` to qualify whether two rising threshold crossings arrive inside a bounded timing window.
+
+For Spectre compatibility, call `last_crossing` with the supported crossing-expression and direction arguments, for example `last_crossing(V(vin) - vth, +1)`. Do not use extra tolerance arguments on `last_crossing`.
+
+## Public Verilog-A Interface
 
 ```verilog
 module above_window_qualifier (
@@ -17,26 +23,23 @@ module above_window_qualifier (
 );
 ```
 
+## Public Parameter Contract
+
+Use voltage-coded logic with `vth = 0.45` V and high outputs near `vhi = 0.9` V. Drive output transitions with rise/fall time `tr = 200p`. These values may be implemented as compatible Verilog-A parameters or internal constants.
+
 ## Required Behavior
 
-Use `above()` and `last_crossing()` to qualify whether two rising threshold crossings arrive inside a timing window.
+- `@(above(V(vin) - vth))` sets a latch.
+- Continuously evaluate the latest rising threshold-crossing time with `last_crossing(V(vin) - vth, +1)`.
+- On each rising `vin` threshold crossing, compare the current crossing time with the previous rising crossing time.
+- When two consecutive rising crossings are separated by at least `120 ns` and at most `260 ns`, drive `metric = vhi`; otherwise drive `metric = 0.0`.
+- `@(cross(V(rst) - vth, +1))` clears the latch, metric, and stored crossing time.
+- Drive `out = vhi` when the latch is set, otherwise `0.0`.
 
-This is a pure voltage-domain behavioral task. Do not use current-domain `I(...)` branch contributions.
+## Modeling Constraints
 
-Use voltage-coded logic with `vth = 0.45` V and high outputs near `0.9` V.
+Keep the model pure voltage-domain behavioral Verilog-A: do not instantiate transistor-level devices and do not use current-domain `I(...)` branch contributions. Use `transition(..., 0, tr, tr)` for both outputs.
 
-Implement:
-
-- `@(above(V(vin) - vth))` sets a latch and drives `out` high
-- continuously evaluate `lc_q = last_crossing(V(vin) - vth, +1, 0.0, 1e-12)`
-- `@(cross(V(vin) - vth, +1, 0.0, 1e-12))` records `lc_q`
-- when two consecutive rising crossings are separated by at least `120 ns` and at most `260 ns`, drive `metric = 0.9`
-- otherwise drive `metric = 0.0`
-- `@(cross(V(rst) - vth, +1))` clears the latch, metric, and stored crossing time
-- drive `out = 0.9` when the latch is set, otherwise `0.0`
-
-The hidden testbench drives three rising threshold crossings: the second is inside the qualification window and the third is too late after reset. The evaluator checks latch behavior and the bounded timing-window metric.
-
-## Output
+## Output Contract
 
 Return exactly one source artifact named `above_window_qualifier.va`. Do not generate a Spectre testbench for this task.
