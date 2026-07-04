@@ -7773,7 +7773,8 @@
   version: 1
   task_id: v3_391_rdist_exponential_jitter
   backend: evas
-  status: behavior-certified-candidate
+  status: spectre-divergent
+  spectre_status: pending_spectre_golden_recalibration
   checker: rdist_exponential_jitter_contract
   # vabench-release-v2-checks
   required_columns:
@@ -7810,12 +7811,13 @@
       - wrong_seed_is_rejected
       - no_current_domain_contribution
   notes:
-    - "Random-distribution language extension promoted to executable EVAS behavior candidate."
+    - "Temporarily not full Spectre-certified: seeded $rdist_exponential() sequence semantics diverge from Spectre and golden/checker must be recalibrated against Spectre output."
 392-rdist-poisson-count-noise: |
   version: 1
   task_id: v3_392_rdist_poisson_count_noise
   backend: evas
-  status: behavior-certified-candidate
+  status: spectre-divergent
+  spectre_status: pending_spectre_golden_recalibration
   checker: rdist_poisson_count_noise_contract
   # vabench-release-v2-checks
   required_columns:
@@ -7852,12 +7854,13 @@
       - wrong_seed_is_rejected
       - no_current_domain_contribution
   notes:
-    - "Random-distribution language extension promoted to executable EVAS behavior candidate."
+    - "Temporarily not full Spectre-certified: seeded $rdist_poisson() sequence semantics diverge from Spectre and golden/checker must be recalibrated against Spectre output."
 393-rdist-normal-offset-dither: |
   version: 1
   task_id: v3_393_rdist_normal_offset_dither
   backend: evas
-  status: behavior-certified-candidate
+  status: spectre-divergent
+  spectre_status: pending_spectre_golden_recalibration
   checker: rdist_normal_offset_dither_contract
   # vabench-release-v2-checks
   required_columns:
@@ -7894,12 +7897,13 @@
       - wrong_seed_is_rejected
       - no_current_domain_contribution
   notes:
-    - "Random-distribution language extension promoted to executable EVAS behavior candidate."
+    - "Temporarily not full Spectre-certified: seeded $rdist_normal() sequence semantics diverge from Spectre and golden/checker must be recalibrated against Spectre output."
 396-rdist-erlang-latency: |
   version: 1
   task_id: v3_396_rdist_erlang_latency
   backend: evas
-  status: behavior-certified-candidate
+  status: spectre-divergent
+  spectre_status: pending_spectre_golden_recalibration
   checker: rdist_erlang_latency_contract
   # vabench-release-v2-checks
   required_columns:
@@ -7936,7 +7940,7 @@
       - wrong_seed_is_rejected
       - no_current_domain_contribution
   notes:
-    - "Random-distribution language extension promoted to executable EVAS behavior candidate."
+    - "Temporarily not full Spectre-certified: seeded $rdist_erlang() sequence semantics diverge from Spectre and golden/checker must be recalibrated against Spectre output."
 397-hierarchy-gain-child: |
   version: 1
   task_id: v3_397_hierarchy_gain_child
@@ -8191,7 +8195,8 @@
   version: 1
   task_id: v3_404_vector_part_select_window
   backend: evas
-  status: behavior-certified-candidate
+  status: spectre-divergent
+  spectre_status: pending_spectre_golden_recalibration
   checker: vector_part_select_window_contract
   # vabench-release-v2-checks
   required_columns:
@@ -8229,12 +8234,13 @@
       - off_by_one_code_sequence_is_rejected
       - no_current_domain_contribution
   notes:
-    - "Vector/operator language extension promoted to executable EVAS behavior candidate."
+    - "Temporarily not full Spectre-certified: integer scalar part-select behavior diverges from Spectre and golden/checker must be recalibrated against Spectre output."
 405-vector-concat-code-build: |
   version: 1
   task_id: v3_405_vector_concat_code_build
   backend: evas
-  status: behavior-certified-candidate
+  status: spectre-divergent
+  spectre_status: pending_spectre_golden_recalibration
   checker: vector_concat_code_build_contract
   # vabench-release-v2-checks
   required_columns:
@@ -8271,7 +8277,7 @@
       - shifted_concat_code_is_rejected
       - no_current_domain_contribution
   notes:
-    - "Vector/operator language extension promoted to executable EVAS behavior candidate."
+    - "Temporarily not full Spectre-certified: integer select/concatenation behavior diverges from Spectre and golden/checker must be recalibrated against Spectre output."
 407-vector-reduction-parity: |
   version: 1
   task_id: v3_407_vector_reduction_parity
@@ -10755,7 +10761,8 @@
   version: 1
   task_id: v3_492_kcl_inductor_idt_voltage
   backend: evas
-  status: behavior-certified-candidate
+  status: spectre-divergent
+  spectre_status: pending_spectre_golden_recalibration
   checker: kcl_inductor_idt_voltage_contract
   # vabench-release-v2-checks
   required_columns:
@@ -10781,7 +10788,7 @@
       - idt_branch_current_integral_shape
       - hidden_pwl_current_reversal_recovery
   notes:
-    - "Branch-current idt voltage contribution promoted with executable EVAS behavior verification."
+    - "Temporarily not full Spectre-certified: branch-current sign convention for idt(I(p,n)) diverged from Spectre and golden/checker must use Spectre polarity."
 493-continuous-laplace-nd-filter: |
   version: 1
   task_id: v3_493_continuous_laplace_nd_filter
@@ -10823,7 +10830,8 @@
   version: 1
   task_id: v3_494_continuous_zi_nd_filter
   backend: evas
-  status: behavior-certified-candidate
+  status: spectre-divergent
+  spectre_status: pending_spectre_golden_recalibration
   checker: continuous_zi_nd_filter_contract
   # vabench-release-v2-checks
   required_columns:
@@ -10856,7 +10864,7 @@
     evas_commit: "159fb92 Support first-order zi_nd behavior"
     result: "1/1 gold PASS; 5/5 negative variants rejected; 0 expectation_fail with sampled zi_nd IIR response checker."
   notes:
-    - "Promoted using EVAS zi_nd sampled-data support; checker validates only the task's {0.5,0.5}/{1.0,-0.25}/10n voltage-domain IIR response without claiming full z-domain, KCL/MNA, or timestep-control coverage."
+    - "Temporarily not full Spectre-certified: zi_nd sampled-data response/golden must be checked against Spectre output before promotion."
 495-slew-rate-dac4: |
   version: 1
   task_id: v3_495_slew_rate_dac4
