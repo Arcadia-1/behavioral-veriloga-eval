@@ -15,41 +15,212 @@ module prbs_generator_32b(
     integer state[0:31];
     integer feedback;
     integer any_seed;
-    integer i;
-    genvar bit;
 
     analog begin
         @(initial_step) begin
             state[0] = 1;
-            for (i = 1; i < 32; i = i + 1) begin
-                state[i] = 0;
-            end
+            state[1] = 0;
+            state[2] = 0;
+            state[3] = 0;
+            state[4] = 0;
+            state[5] = 0;
+            state[6] = 0;
+            state[7] = 0;
+            state[8] = 0;
+            state[9] = 0;
+            state[10] = 0;
+            state[11] = 0;
+            state[12] = 0;
+            state[13] = 0;
+            state[14] = 0;
+            state[15] = 0;
+            state[16] = 0;
+            state[17] = 0;
+            state[18] = 0;
+            state[19] = 0;
+            state[20] = 0;
+            state[21] = 0;
+            state[22] = 0;
+            state[23] = 0;
+            state[24] = 0;
+            state[25] = 0;
+            state[26] = 0;
+            state[27] = 0;
+            state[28] = 0;
+            state[29] = 0;
+            state[30] = 0;
+            state[31] = 0;
         end
 
         @(cross(V(clk) - vth, +1)) begin
             if (V(rst) > vth) begin
                 state[0] = 1;
-                for (i = 1; i < 32; i = i + 1) begin
-                    state[i] = 0;
-                end
+                state[1] = 0;
+                state[2] = 0;
+                state[3] = 0;
+                state[4] = 0;
+                state[5] = 0;
+                state[6] = 0;
+                state[7] = 0;
+                state[8] = 0;
+                state[9] = 0;
+                state[10] = 0;
+                state[11] = 0;
+                state[12] = 0;
+                state[13] = 0;
+                state[14] = 0;
+                state[15] = 0;
+                state[16] = 0;
+                state[17] = 0;
+                state[18] = 0;
+                state[19] = 0;
+                state[20] = 0;
+                state[21] = 0;
+                state[22] = 0;
+                state[23] = 0;
+                state[24] = 0;
+                state[25] = 0;
+                state[26] = 0;
+                state[27] = 0;
+                state[28] = 0;
+                state[29] = 0;
+                state[30] = 0;
+                state[31] = 0;
             end else if (V(load_seed) > vth) begin
                 any_seed = 0;
-                for (i = 0; i < 32; i = i + 1) begin
-                    state[i] = (V(seed[i]) > vth) ? 1 : 0;
-                    any_seed = any_seed | state[i];
-                end
+                state[0] = (V(seed[0]) > vth) ? 1 : 0;
+                any_seed = any_seed | state[0];
+                state[1] = (V(seed[1]) > vth) ? 1 : 0;
+                any_seed = any_seed | state[1];
+                state[2] = (V(seed[2]) > vth) ? 1 : 0;
+                any_seed = any_seed | state[2];
+                state[3] = (V(seed[3]) > vth) ? 1 : 0;
+                any_seed = any_seed | state[3];
+                state[4] = (V(seed[4]) > vth) ? 1 : 0;
+                any_seed = any_seed | state[4];
+                state[5] = (V(seed[5]) > vth) ? 1 : 0;
+                any_seed = any_seed | state[5];
+                state[6] = (V(seed[6]) > vth) ? 1 : 0;
+                any_seed = any_seed | state[6];
+                state[7] = (V(seed[7]) > vth) ? 1 : 0;
+                any_seed = any_seed | state[7];
+                state[8] = (V(seed[8]) > vth) ? 1 : 0;
+                any_seed = any_seed | state[8];
+                state[9] = (V(seed[9]) > vth) ? 1 : 0;
+                any_seed = any_seed | state[9];
+                state[10] = (V(seed[10]) > vth) ? 1 : 0;
+                any_seed = any_seed | state[10];
+                state[11] = (V(seed[11]) > vth) ? 1 : 0;
+                any_seed = any_seed | state[11];
+                state[12] = (V(seed[12]) > vth) ? 1 : 0;
+                any_seed = any_seed | state[12];
+                state[13] = (V(seed[13]) > vth) ? 1 : 0;
+                any_seed = any_seed | state[13];
+                state[14] = (V(seed[14]) > vth) ? 1 : 0;
+                any_seed = any_seed | state[14];
+                state[15] = (V(seed[15]) > vth) ? 1 : 0;
+                any_seed = any_seed | state[15];
+                state[16] = (V(seed[16]) > vth) ? 1 : 0;
+                any_seed = any_seed | state[16];
+                state[17] = (V(seed[17]) > vth) ? 1 : 0;
+                any_seed = any_seed | state[17];
+                state[18] = (V(seed[18]) > vth) ? 1 : 0;
+                any_seed = any_seed | state[18];
+                state[19] = (V(seed[19]) > vth) ? 1 : 0;
+                any_seed = any_seed | state[19];
+                state[20] = (V(seed[20]) > vth) ? 1 : 0;
+                any_seed = any_seed | state[20];
+                state[21] = (V(seed[21]) > vth) ? 1 : 0;
+                any_seed = any_seed | state[21];
+                state[22] = (V(seed[22]) > vth) ? 1 : 0;
+                any_seed = any_seed | state[22];
+                state[23] = (V(seed[23]) > vth) ? 1 : 0;
+                any_seed = any_seed | state[23];
+                state[24] = (V(seed[24]) > vth) ? 1 : 0;
+                any_seed = any_seed | state[24];
+                state[25] = (V(seed[25]) > vth) ? 1 : 0;
+                any_seed = any_seed | state[25];
+                state[26] = (V(seed[26]) > vth) ? 1 : 0;
+                any_seed = any_seed | state[26];
+                state[27] = (V(seed[27]) > vth) ? 1 : 0;
+                any_seed = any_seed | state[27];
+                state[28] = (V(seed[28]) > vth) ? 1 : 0;
+                any_seed = any_seed | state[28];
+                state[29] = (V(seed[29]) > vth) ? 1 : 0;
+                any_seed = any_seed | state[29];
+                state[30] = (V(seed[30]) > vth) ? 1 : 0;
+                any_seed = any_seed | state[30];
+                state[31] = (V(seed[31]) > vth) ? 1 : 0;
+                any_seed = any_seed | state[31];
                 if (!any_seed) state[0] = 1;
             end else begin
                 feedback = (state[31] ^ state[21] ^ state[1] ^ state[0]) & 1;
-                for (i = 31; i > 0; i = i - 1) begin
-                    state[i] = state[i - 1];
-                end
+                state[31] = state[30];
+                state[30] = state[29];
+                state[29] = state[28];
+                state[28] = state[27];
+                state[27] = state[26];
+                state[26] = state[25];
+                state[25] = state[24];
+                state[24] = state[23];
+                state[23] = state[22];
+                state[22] = state[21];
+                state[21] = state[20];
+                state[20] = state[19];
+                state[19] = state[18];
+                state[18] = state[17];
+                state[17] = state[16];
+                state[16] = state[15];
+                state[15] = state[14];
+                state[14] = state[13];
+                state[13] = state[12];
+                state[12] = state[11];
+                state[11] = state[10];
+                state[10] = state[9];
+                state[9] = state[8];
+                state[8] = state[7];
+                state[7] = state[6];
+                state[6] = state[5];
+                state[5] = state[4];
+                state[4] = state[3];
+                state[3] = state[2];
+                state[2] = state[1];
+                state[1] = state[0];
                 state[0] = feedback;
             end
         end
 
-        for (bit = 0; bit < 32; bit = bit + 1) begin
-            V(out[bit]) <+ transition(((bit == 0) ? !state[bit] : state[bit]) ? vdd : 0.0, 0, tr, tr);
-        end
+        V(out[0]) <+ transition((!state[0]) ? vdd : 0.0, 0, tr, tr);
+        V(out[1]) <+ transition((state[1]) ? vdd : 0.0, 0, tr, tr);
+        V(out[2]) <+ transition((state[2]) ? vdd : 0.0, 0, tr, tr);
+        V(out[3]) <+ transition((state[3]) ? vdd : 0.0, 0, tr, tr);
+        V(out[4]) <+ transition((state[4]) ? vdd : 0.0, 0, tr, tr);
+        V(out[5]) <+ transition((state[5]) ? vdd : 0.0, 0, tr, tr);
+        V(out[6]) <+ transition((state[6]) ? vdd : 0.0, 0, tr, tr);
+        V(out[7]) <+ transition((state[7]) ? vdd : 0.0, 0, tr, tr);
+        V(out[8]) <+ transition((state[8]) ? vdd : 0.0, 0, tr, tr);
+        V(out[9]) <+ transition((state[9]) ? vdd : 0.0, 0, tr, tr);
+        V(out[10]) <+ transition((state[10]) ? vdd : 0.0, 0, tr, tr);
+        V(out[11]) <+ transition((state[11]) ? vdd : 0.0, 0, tr, tr);
+        V(out[12]) <+ transition((state[12]) ? vdd : 0.0, 0, tr, tr);
+        V(out[13]) <+ transition((state[13]) ? vdd : 0.0, 0, tr, tr);
+        V(out[14]) <+ transition((state[14]) ? vdd : 0.0, 0, tr, tr);
+        V(out[15]) <+ transition((state[15]) ? vdd : 0.0, 0, tr, tr);
+        V(out[16]) <+ transition((state[16]) ? vdd : 0.0, 0, tr, tr);
+        V(out[17]) <+ transition((state[17]) ? vdd : 0.0, 0, tr, tr);
+        V(out[18]) <+ transition((state[18]) ? vdd : 0.0, 0, tr, tr);
+        V(out[19]) <+ transition((state[19]) ? vdd : 0.0, 0, tr, tr);
+        V(out[20]) <+ transition((state[20]) ? vdd : 0.0, 0, tr, tr);
+        V(out[21]) <+ transition((state[21]) ? vdd : 0.0, 0, tr, tr);
+        V(out[22]) <+ transition((state[22]) ? vdd : 0.0, 0, tr, tr);
+        V(out[23]) <+ transition((state[23]) ? vdd : 0.0, 0, tr, tr);
+        V(out[24]) <+ transition((state[24]) ? vdd : 0.0, 0, tr, tr);
+        V(out[25]) <+ transition((state[25]) ? vdd : 0.0, 0, tr, tr);
+        V(out[26]) <+ transition((state[26]) ? vdd : 0.0, 0, tr, tr);
+        V(out[27]) <+ transition((state[27]) ? vdd : 0.0, 0, tr, tr);
+        V(out[28]) <+ transition((state[28]) ? vdd : 0.0, 0, tr, tr);
+        V(out[29]) <+ transition((state[29]) ? vdd : 0.0, 0, tr, tr);
+        V(out[30]) <+ transition((state[30]) ? vdd : 0.0, 0, tr, tr);
+        V(out[31]) <+ transition((state[31]) ? vdd : 0.0, 0, tr, tr);
     end
 endmodule

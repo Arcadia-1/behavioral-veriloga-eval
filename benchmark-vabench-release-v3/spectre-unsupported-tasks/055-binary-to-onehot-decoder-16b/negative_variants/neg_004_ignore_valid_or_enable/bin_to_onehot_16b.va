@@ -11,14 +11,30 @@ module bin_to_onehot_16b(
     parameter real tr = 20p;
 
     integer code;
-    integer j;
-    genvar i;
+    integer en_q;
 
     analog begin
         code = 0;
-        for (j = 0; j < 4; j = j + 1) if (V(b[j]) > vth) code = code + (1 << j);
-        for (i = 0; i < 16; i = i + 1) begin
-            V(oh[i]) <+ transition((i == code) ? vdd : 0.0, 0, tr, tr);
-        end
+        if (V(b[0]) > vth) code = code + 1;
+        if (V(b[1]) > vth) code = code + 2;
+        if (V(b[2]) > vth) code = code + 4;
+        if (V(b[3]) > vth) code = code + 8;
+        en_q = (V(en) > vth) ? 1 : 0;
+        V(oh[0]) <+ transition(((0 == code)) ? vdd : 0.0, 0, tr, tr);
+        V(oh[1]) <+ transition(((1 == code)) ? vdd : 0.0, 0, tr, tr);
+        V(oh[2]) <+ transition(((2 == code)) ? vdd : 0.0, 0, tr, tr);
+        V(oh[3]) <+ transition(((3 == code)) ? vdd : 0.0, 0, tr, tr);
+        V(oh[4]) <+ transition(((4 == code)) ? vdd : 0.0, 0, tr, tr);
+        V(oh[5]) <+ transition(((5 == code)) ? vdd : 0.0, 0, tr, tr);
+        V(oh[6]) <+ transition(((6 == code)) ? vdd : 0.0, 0, tr, tr);
+        V(oh[7]) <+ transition(((7 == code)) ? vdd : 0.0, 0, tr, tr);
+        V(oh[8]) <+ transition(((8 == code)) ? vdd : 0.0, 0, tr, tr);
+        V(oh[9]) <+ transition(((9 == code)) ? vdd : 0.0, 0, tr, tr);
+        V(oh[10]) <+ transition(((10 == code)) ? vdd : 0.0, 0, tr, tr);
+        V(oh[11]) <+ transition(((11 == code)) ? vdd : 0.0, 0, tr, tr);
+        V(oh[12]) <+ transition(((12 == code)) ? vdd : 0.0, 0, tr, tr);
+        V(oh[13]) <+ transition(((13 == code)) ? vdd : 0.0, 0, tr, tr);
+        V(oh[14]) <+ transition(((14 == code)) ? vdd : 0.0, 0, tr, tr);
+        V(oh[15]) <+ transition(((15 == code)) ? vdd : 0.0, 0, tr, tr);
     end
 endmodule

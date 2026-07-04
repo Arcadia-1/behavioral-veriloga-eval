@@ -12,16 +12,25 @@ module signmag_to_twos_8b(
 
     integer magnitude;
     integer value;
-    integer j;
-    genvar i;
 
     analog begin
         magnitude = 0;
-        for (j = 0; j < 7; j = j + 1) if (V(mag[j]) > vth) magnitude = magnitude + (1 << (6 - j));
+        if (V(mag[0]) > vth) magnitude = magnitude + 64;
+        if (V(mag[1]) > vth) magnitude = magnitude + 32;
+        if (V(mag[2]) > vth) magnitude = magnitude + 16;
+        if (V(mag[3]) > vth) magnitude = magnitude + 8;
+        if (V(mag[4]) > vth) magnitude = magnitude + 4;
+        if (V(mag[5]) > vth) magnitude = magnitude + 2;
+        if (V(mag[6]) > vth) magnitude = magnitude + 1;
         if ((V(sign) > vth) && (magnitude != 0)) value = 256 - magnitude;
         else value = magnitude;
-        for (i = 0; i < 8; i = i + 1) begin
-            V(y[i]) <+ transition((((value / (1 << i)) % 2) != 0) ? vdd : 0.0, 0, tr, tr);
-        end
+        V(y[0]) <+ transition((((value & 1) != 0)) ? vdd : 0.0, 0, tr, tr);
+        V(y[1]) <+ transition((((value & 2) != 0)) ? vdd : 0.0, 0, tr, tr);
+        V(y[2]) <+ transition((((value & 4) != 0)) ? vdd : 0.0, 0, tr, tr);
+        V(y[3]) <+ transition((((value & 8) != 0)) ? vdd : 0.0, 0, tr, tr);
+        V(y[4]) <+ transition((((value & 16) != 0)) ? vdd : 0.0, 0, tr, tr);
+        V(y[5]) <+ transition((((value & 32) != 0)) ? vdd : 0.0, 0, tr, tr);
+        V(y[6]) <+ transition((((value & 64) != 0)) ? vdd : 0.0, 0, tr, tr);
+        V(y[7]) <+ transition((((value & 128) != 0)) ? vdd : 0.0, 0, tr, tr);
     end
 endmodule

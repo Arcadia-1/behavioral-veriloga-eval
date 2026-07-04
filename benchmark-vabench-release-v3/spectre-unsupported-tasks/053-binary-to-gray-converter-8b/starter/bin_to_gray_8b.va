@@ -8,8 +8,14 @@ module bin_to_gray_8b(
     parameter real vdd = 0.9;
     parameter real vth = 0.45;
     parameter real tr = 20p;
-    genvar i;
     analog begin
-        for (i = 0; i < 8; i = i + 1) V(g[i]) <+ transition(0.0, 0, tr, tr);
+        V(g[7]) <+ transition(0.0, 0, tr, tr);
+        V(g[6]) <+ transition(0.0, 0, tr, tr);
+        V(g[5]) <+ transition(0.0, 0, tr, tr);
+        V(g[4]) <+ transition(0.0, 0, tr, tr);
+        V(g[3]) <+ transition(0.0, 0, tr, tr);
+        V(g[2]) <+ transition(0.0, 0, tr, tr);
+        V(g[1]) <+ transition(0.0, 0, tr, tr);
+        V(g[0]) <+ transition(0.0, 0, tr, tr);
     end
 endmodule

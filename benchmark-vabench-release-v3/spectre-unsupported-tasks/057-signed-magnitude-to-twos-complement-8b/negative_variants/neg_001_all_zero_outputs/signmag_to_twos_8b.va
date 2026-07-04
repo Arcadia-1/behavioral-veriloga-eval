@@ -12,16 +12,15 @@ module signmag_to_twos_8b(
 
     integer magnitude;
     integer value;
-    integer j;
-    genvar i;
 
     analog begin
-        magnitude = 0;
-        for (j = 0; j < 7; j = j + 1) if (V(mag[j]) > vth) magnitude = magnitude + (1 << j);
-        if ((V(sign) > vth) && (magnitude != 0)) value = 256 - magnitude;
-        else value = magnitude;
-        for (i = 0; i < 8; i = i + 1) begin
-            V(y[i]) <+ transition((0) ? vdd : 0.0, 0, tr, tr);
-        end
+        V(y[0]) <+ transition((0) ? vdd : 0.0, 0, tr, tr);
+        V(y[1]) <+ transition((0) ? vdd : 0.0, 0, tr, tr);
+        V(y[2]) <+ transition((0) ? vdd : 0.0, 0, tr, tr);
+        V(y[3]) <+ transition((0) ? vdd : 0.0, 0, tr, tr);
+        V(y[4]) <+ transition((0) ? vdd : 0.0, 0, tr, tr);
+        V(y[5]) <+ transition((0) ? vdd : 0.0, 0, tr, tr);
+        V(y[6]) <+ transition((0) ? vdd : 0.0, 0, tr, tr);
+        V(y[7]) <+ transition((0) ? vdd : 0.0, 0, tr, tr);
     end
 endmodule
