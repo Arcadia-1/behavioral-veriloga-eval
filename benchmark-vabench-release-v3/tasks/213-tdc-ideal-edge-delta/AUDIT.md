@@ -1,9 +1,13 @@
-# Source TDC Ideal Edge Delta Audit
+# TDC Ideal Edge Delta Audit
 
-- Source: `zhangm/TDC_IDEAL.va` from the exact-deduplicated historical Verilog-A corpus.
-- Scenario: time-to-digital edge interval measurement between two threshold crossings.
-- Import status: certified only after visible compile, EVAS hidden semantic check, Spectre AX hidden semantic check, and EVAS/Spectre parity pass.
-- Evaluation: stable sampled behavior from `tran.csv`; raw simulator timestep equality is not used.
-- Evidence:
-  - `WORK/source-import-batch18-evas/213-tdc-ideal-edge-delta`
-  - `WORK/source-import-batch18-spectre/213-tdc-ideal-edge-delta`
+- Gate 1: `independent_l1_ready`. Retain as a TDC-style timing measurement
+  primitive.
+- Duplicate review: distinct from `133-time-diff-detector`. This row resets a
+  measurement window with `samp`, updates after both input edges are observed,
+  and normalizes by `fullrange`; 133 is a clocked previous-cycle detector with
+  scale and output clipping.
+- Gate 2: public prompt now uses the mandatory v3 instruction shape and exposes
+  reset-window semantics, edge thresholds, retained output across `samp`, and
+  normalized edge-delta output.
+- Validation focus: stable samples cover negative and positive edge deltas across
+  multiple sample windows.
