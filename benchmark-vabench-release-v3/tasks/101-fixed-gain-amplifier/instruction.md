@@ -40,6 +40,7 @@ Honor legal testbench overrides of both parameters while preserving positive
 differential polarity and common-mode behavior.
 
 Keep the model pure behavioral Verilog-A. Do not use transistor-level devices,
-AC/noise analysis, private test hooks, or simulator-private side channels.
+AC/noise analysis, waveform files, checker artifacts, or simulator side
+channels.
 
 Only `gain_amp_fixed.va` is graded as the candidate implementation.

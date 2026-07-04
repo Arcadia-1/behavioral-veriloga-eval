@@ -6,6 +6,18 @@
     "gain_amp_fixed.va"
   ],
   "hidden_testbench": "test_hidden/tests/tb_gain_amp_fixed_ref.scs",
-  "visible_smoke": "tb_visible_smoke.scs",
-  "status": "standalone_l1_component_pending_fresh_dual_rerun"
+  "visible_smoke": "test_visible/tests/tb_visible_smoke.scs",
+  "gate1_label": "independent_l1_ready",
+  "gate2_status": "cadence_modeling_ready",
+  "visible": [
+    "instruction.md",
+    "starter/",
+    "test_visible/"
+  ],
+  "hidden": [
+    "solution/",
+    "test_hidden/",
+    "test_harness/",
+    "negative_variants/"
+  ]
 }

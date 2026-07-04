@@ -46,8 +46,9 @@ Public parameters:
 
 Honor legal testbench overrides of these parameters. Use `vth` to interpret the
 voltage-coded `DPN` polarity input, and keep the model pure behavioral
-Verilog-A. Do not use
-transistor-level devices, AC/noise analysis, private test hooks, or
-simulator-private side channels.
+Verilog-A. Smooth the event-updated dither target with a short transition so
+the output does not introduce discontinuous digital steps. Do not use
+transistor-level devices, AC/noise analysis, waveform files, checker artifacts,
+or simulator side channels.
 
 Only `dither_adder.va` is graded as the candidate implementation.

@@ -1,30 +1,26 @@
-# Task 101 Audit
+# Measurement Instrumentation Audit: Task 101 Fixed Gain Amplifier
 
-## Scope
+## Gate 1
 
-Task boundary is one standalone Verilog-A DUT artifact, `gain_amp_fixed.va`.
-It is admitted as an L1 baseband signal-conditioning component: a fixed-gain
-differential amplifier that can support composed measurement flows such as
-`287-gain-extraction-flow`, but is evaluated independently from that flow.
+- Label: `independent_l1_ready`.
+- Function boundary: standalone differential fixed-gain amplifier with output
+  common-mode centered at `vdd/2`.
+- Counting note: independent L1 support component; it is also reused by the
+  gain-extraction measurement flow.
 
-## Four Standards
+## Gate 2
 
-- Useful scenario: accepted. Fixed-gain differential amplification is a recognizable reusable AMS behavioral block.
-- Reasonable task: accepted. The public prompt names only the target module, interface, gain parameter, positive polarity, and output common-mode invariant.
-- Complete tests: pass for the current reviewed slice. Private and visible decks
-  are no longer byte-identical and use different `ACTUAL_GAIN` values.
-- Fair evaluation: accepted for EVAS audit shape. The checker is task-specific and checks requested gain, polarity, and common-mode rather than the enclosing gain-extraction flow.
+- Status: `cadence_modeling_ready`.
+- Prompt hygiene: public prompt names only `gain_amp_fixed.va` as the graded
+  artifact and avoids private-hook wording.
+- Metadata repair: release metadata now targets only `gain_amp_fixed.va`; the
+  stale multi-artifact L2 target list was removed.
+- Modeling repair: debug `$strobe` output was removed from the reference model.
+- Checker alignment: checker measures differential gain and common-mode
+  preservation from public waveforms.
 
-## Checker And Evidence
+## Validation
 
-- Checker id: `v3_101_fixed_gain_amplifier`
-- Private bench: `test_hidden/tests/tb_gain_amp_fixed_ref.scs`
-- Concrete negatives: `neg_001_zero`, `neg_002_unity_gain`, `neg_003_inverted_polarity`, `neg_004_ignores_gain_parameter`
-- Cadence/Spectre evidence from `scripts/run_v3_spectre_audit.py`: private
-  reference PASS and 4/4 private negative variants `NEGATIVE_REJECTED`.
-- Gate 2 Cadence status: `cadence_lint_pending`.
-
-## Remaining Risk
-
-AHDL lint evidence is not attached yet; do not mark `cadence_modeling_ready`
-until lint/triage is recorded.
+- AHDL-style preflight: PASS with 0 diagnostics.
+- EVAS reference/negative sweep: reference PASS; 5/5 negatives rejected.
+- Spectre private-split reference audit: PASS.

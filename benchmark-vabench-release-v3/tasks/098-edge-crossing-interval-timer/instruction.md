@@ -44,8 +44,7 @@ Required observable behavior:
 
 Use voltage-coded logic referenced to `VDD` and `VSS`, keep the model pure
 behavioral Verilog-A, and do not use transistor-level devices, AC/noise
-analysis, checker logic, private test hooks, or simulator-private side
-channels.
+analysis, waveform files, checker artifacts, or simulator side channels.
 
 ## Output
 

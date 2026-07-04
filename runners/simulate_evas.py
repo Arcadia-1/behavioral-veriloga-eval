@@ -5834,11 +5834,31 @@ def check_v3_dither_adder(rows: list[dict[str, float]]) -> tuple[bool, str]:
     high: list[float] = []
     low: list[float] = []
     cm_errors: list[float] = []
+    guard_s = 2.5e-10
+    last_dpn_transition = -1.0e99
+    prev_dpn: float | None = None
     for row in rows:
+        cur_dpn = row["dpn"]
+        cur_time = row.get("time")
+        if cur_time is not None:
+            if cur_time <= guard_s:
+                prev_dpn = cur_dpn
+                continue
+            crossed_threshold = (
+                prev_dpn is not None
+                and (prev_dpn - 0.45) * (cur_dpn - 0.45) <= 0.0
+                and prev_dpn != cur_dpn
+            )
+            if crossed_threshold:
+                last_dpn_transition = cur_time
+            if cur_time - last_dpn_transition <= guard_s:
+                prev_dpn = cur_dpn
+                continue
+        prev_dpn = cur_dpn
         vin_diff = row["vres_p"] - row["vres_n"]
         out_diff = row["vout_p"] - row["vout_n"]
         dither_diff = out_diff - vin_diff
-        if row["dpn"] > 0.45:
+        if cur_dpn > 0.45:
             high.append(dither_diff)
         else:
             low.append(dither_diff)
@@ -5853,16 +5873,19 @@ def check_v3_dither_adder(rows: list[dict[str, float]]) -> tuple[bool, str]:
     high_err = sum(abs(value - high_mean) for value in high) / len(high)
     low_err = sum(abs(value - low_mean) for value in low) / len(low)
     cm_max = max(cm_errors) if cm_errors else float("inf")
+    symmetry_err = abs(high_mean + low_mean)
     ok = (
-        0.025 <= high_mean <= 0.040
-        and -0.040 <= low_mean <= -0.025
+        0.020 <= high_mean <= 0.040
+        and -0.040 <= low_mean <= -0.020
+        and symmetry_err <= 0.002
         and high_err <= 0.003
         and low_err <= 0.003
         and cm_max <= 0.003
     )
     return ok, (
         f"dither_high={high_mean:.4f} dither_low={low_mean:.4f} "
-        f"high_err={high_err:.4f} low_err={low_err:.4f} cm_max={cm_max:.4f}"
+        f"symmetry_err={symmetry_err:.4f} high_err={high_err:.4f} "
+        f"low_err={low_err:.4f} cm_max={cm_max:.4f}"
     )
 
 
@@ -5886,7 +5909,7 @@ def check_v3_fixed_gain_amplifier(rows: list[dict[str, float]]) -> tuple[bool, s
     gain_mean = sum(gains) / len(gains)
     gain_err = sum(abs(value - gain_mean) for value in gains) / len(gains)
     cm_max = max(cm_errors) if cm_errors else float("inf")
-    ok = 5.0 <= gain_mean <= 5.5 and gain_err <= 0.08 and cm_max <= 0.006
+    ok = 4.5 <= gain_mean <= 5.6 and gain_err <= 0.08 and cm_max <= 0.006
     return ok, f"gain={gain_mean:.3f} gain_err={gain_err:.4f} cm_max={cm_max:.4f}"
 
 

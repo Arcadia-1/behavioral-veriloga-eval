@@ -17,13 +17,18 @@ parameter real DITHER_AMP = 0.014063;
 real dither_diff;
 
 analog begin
-    @(initial_step)
-        $strobe("[dither_adder] INIT | DITHER_AMP=%.4fmV", DITHER_AMP*1e3);
+    @(initial_step) begin
+        dither_diff = (V(DPN) > vth) ? DITHER_AMP : -DITHER_AMP;
+    end
+    @(cross(V(DPN) - vth, +1)) begin
+        dither_diff = DITHER_AMP;
+    end
+    @(cross(V(DPN) - vth, -1)) begin
+        dither_diff = -DITHER_AMP;
+    end
 
-    dither_diff = (V(DPN) > vth) ? DITHER_AMP : -DITHER_AMP;
-
-    V(VOUT_P) <+ V(VRES_P) + dither_diff * 0.5;
-    V(VOUT_N) <+ V(VRES_N) - dither_diff * 0.5;
+    V(VOUT_P) <+ V(VRES_P) + 0.5 * transition(dither_diff, 0, 2p, 2p);
+    V(VOUT_N) <+ V(VRES_N) - 0.5 * transition(dither_diff, 0, 2p, 2p);
 end
 
 endmodule

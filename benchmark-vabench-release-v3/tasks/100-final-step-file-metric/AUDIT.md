@@ -1,22 +1,27 @@
-# Honest SOP Audit: Task 100 Final Step File Metric
+# Measurement Instrumentation Audit: Task 100 Final Step File Metric
 
-## Scope
+## Gate 1
 
-Task boundary is one primary Verilog-A DUT artifact, `final_step_file_metric_ref.va`, migrated from `vbr1_l2_measurement_flow:tb`, plus the original EVAS/Spectre-compatible `.scs` transient scenario. Companion Verilog-A files listed in the top-level `TASKS.json` index are supplied by the harness when needed by the original system testbench.
+- Label: `independent_l1_ready`.
+- Function boundary: standalone measurement helper that counts reference
+  crossings, exposes a normalized metric, and writes the final metric at
+  `final_step`.
+- Counting note: measurement/instrumentation L1 row, not a composed L2 flow by
+  itself.
 
-## Four Standards
+## Gate 2
 
-- Useful scenario: accepted. The module is a reusable behavioral Verilog-A block or flow component with a concrete transient use case.
-- Reasonable task: accepted for this migration slice. The public prompt names the target artifact, interface, and behavior context.
-- Complete tests: accepted for current v3 smoke. Hidden gold passes and `neg_001_zero` is non-full-credit; further hand-authored negatives can still strengthen release evidence.
-- Fair evaluation: accepted for current v3 smoke. The checker is bound through the v3 alias and the hidden behavior is covered by the public prompt context.
+- Status: `cadence_modeling_ready`.
+- Prompt hygiene: old testbench-companion and provenance wording were removed.
+- Metadata repair: duplicate `./final_step_file_metric_ref.va` target entry was
+  removed; level is L1.
+- Modeling repair: `transition()` is fed by the event-updated normalized metric,
+  with the supply scaling outside the transition expression.
+- Checker alignment: checker measures crossing count progression, metric
+  levels, and final metric behavior.
 
-## Checker And Evidence
+## Validation
 
-- Source checker id: `vbr1_l2_measurement_flow_tb`
-- EVAS 0.4.5 hidden gold smoke: PASS
-- Concrete negative `neg_001_zero`: non-full-credit
-
-## Remaining Risk
-
-Initial migration artifact. Do not count this task in a final release surface until gold smoke and negative evidence are attached.
+- AHDL-style preflight: PASS with 0 diagnostics.
+- EVAS reference/negative sweep: reference PASS; 5/5 negatives rejected.
+- Spectre private-split reference audit: PASS.

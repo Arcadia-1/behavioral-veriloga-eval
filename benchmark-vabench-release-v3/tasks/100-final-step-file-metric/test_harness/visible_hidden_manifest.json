@@ -1,14 +1,23 @@
 {
   "task_id": "v3_100_final_step_file_metric",
-  "source_task": "vbr1_l2_measurement_flow",
-  "source_form": "tb",
-  "source_checker_id": "vbr1_l2_measurement_flow_tb",
+  "checker_id": "v3_100_final_step_file_metric",
   "primary_target": "final_step_file_metric_ref.va",
   "artifact_targets": [
-    "final_step_file_metric_ref.va",
-    "./final_step_file_metric_ref.va"
+    "final_step_file_metric_ref.va"
   ],
-  "hidden_testbench": "tb_final_step_file_metric_ref.scs",
-  "visible_smoke": "tb_visible_smoke.scs",
-  "status": "initial_migration_pending_negative_audit"
+  "hidden_testbench": "test_hidden/tests/tb_final_step_file_metric_ref.scs",
+  "visible_smoke": "test_visible/tests/tb_visible_smoke.scs",
+  "gate1_label": "independent_l1_ready",
+  "gate2_status": "cadence_modeling_ready",
+  "visible": [
+    "instruction.md",
+    "starter/",
+    "test_visible/"
+  ],
+  "hidden": [
+    "solution/",
+    "test_hidden/",
+    "test_harness/",
+    "negative_variants/"
+  ]
 }

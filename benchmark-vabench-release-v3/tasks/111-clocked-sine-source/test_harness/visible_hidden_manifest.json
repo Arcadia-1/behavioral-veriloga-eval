@@ -10,8 +10,19 @@
     "dither_adder.va",
     "gain_amp_fixed.va"
   ],
-  "hidden_testbench": "tb_gain_extraction_ref.scs",
-  "visible_smoke": "tb_visible_smoke.scs",
+  "hidden_testbench": "test_hidden/tests/tb_gain_extraction_ref.scs",
+  "visible_smoke": "test_visible/tests/tb_visible_smoke.scs",
   "gate1_label": "l2_support_component",
-  "status": "support_l2_flow_private_coverage_repair_pending_recertification"
+  "gate2_status": "cadence_modeling_ready",
+  "visible": [
+    "instruction.md",
+    "starter/",
+    "test_visible/"
+  ],
+  "hidden": [
+    "solution/",
+    "test_hidden/",
+    "test_harness/",
+    "negative_variants/"
+  ]
 }

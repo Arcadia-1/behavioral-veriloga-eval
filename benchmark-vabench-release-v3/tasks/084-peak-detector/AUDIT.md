@@ -1,22 +1,23 @@
-# Honest SOP Audit: Task 084 Peak Detector
+# Measurement Instrumentation Audit: Task 084 Peak Detector
 
-## Scope
+## Gate 1
 
-Task boundary is one Verilog-A DUT migrated from `vbr1_l1_peak_detector:dut`, plus EVAS/Spectre-compatible `.scs` testbenches. Agent-visible materials are `instruction.md`, `starter/`, and `test_visible/`. Evaluator-only materials are `solution/`, `test_hidden/`, `test_harness/`, and `negative_variants/`. No `meta.json` is present.
+- Label: `independent_l1_ready`.
+- Function boundary: standalone resettable peak detector that samples `vin`,
+  retains the maximum value, clears on reset, and drives `vout`.
+- Counting note: useful as a measurement/helper L1 row.
 
-## Four Standards
+## Gate 2
 
-- Useful scenario: accepted. The module is a reusable behavioral Verilog-A block or flow component with a concrete transient use case.
-- Reasonable task: accepted for this migration slice. The public prompt names the target artifact, interface, and behavior context.
-- Complete tests: accepted for current v3 smoke. Hidden gold passes and `neg_001_zero` is non-full-credit; further hand-authored negatives can still strengthen release evidence.
-- Fair evaluation: accepted for current v3 smoke. The checker is bound through the v3 alias and the hidden behavior is covered by the public prompt context.
+- Status: `cadence_modeling_ready`.
+- Prompt hygiene: release-wrapper and evaluator-boundary wording were removed.
+- Modeling contract: the 500 ps sampling timer, reset threshold, and output
+  transition are public behavior, not checker-only detail.
+- Checker alignment: visible and private cases check hold, reset clear, and
+  update to a larger later peak.
 
-## Checker And Evidence
+## Validation
 
-- Source checker id: `vbm1_peak_detector_dut`
-- EVAS 0.4.5 hidden gold smoke: PASS
-- Concrete negative `neg_001_zero`: non-full-credit
-
-## Remaining Risk
-
-This is an initial migration artifact. Do not count this task in a release denominator until gold and negative evidence are attached.
+- AHDL-style preflight: PASS with 0 diagnostics.
+- EVAS reference/negative sweep: reference PASS; 5/5 negatives rejected.
+- Spectre private-split reference audit: PASS.

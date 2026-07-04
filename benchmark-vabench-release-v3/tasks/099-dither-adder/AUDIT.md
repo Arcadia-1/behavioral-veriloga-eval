@@ -1,31 +1,29 @@
-# Task 099 Audit
+# Measurement Instrumentation Audit: Task 099 Dither Adder
 
-## Scope
+## Gate 1
 
-Task boundary is one standalone Verilog-A DUT artifact, `dither_adder.va`.
-It is admitted as an L1 support/component function: a reusable differential
-dither injection block that can be used inside measurement flows such as
-`287-gain-extraction-flow`, but is evaluated independently from that flow.
+- Label: `independent_l1_ready`.
+- Function boundary: standalone differential dither injection block with a
+  voltage-coded polarity input, symmetric differential offset, and preserved
+  common mode.
+- Counting note: independent L1 support component; it is also reused by the
+  gain-extraction measurement flow.
 
-## Four Standards
+## Gate 2
 
-- Useful scenario: accepted. Differential dither injection is a recognizable AMS support function for decorrelation, calibration, and measurement excitation.
-- Reasonable task: accepted. The public prompt names only the target module, interface, polarity rule, dither amplitude parameter, and common-mode invariant.
-- Complete tests: pass for the current reviewed slice. Private and visible decks
-  are no longer byte-identical and exercise different `DITHER_AMP`/input
-  trajectories.
-- Fair evaluation: accepted for EVAS audit shape. The checker is task-specific and checks dither sign plus common-mode preservation, not the enclosing gain-extraction flow.
+- Status: `cadence_modeling_ready`.
+- Prompt hygiene: public prompt names only `dither_adder.va` as the graded
+  artifact and removes private-hook language.
+- Metadata repair: release metadata now targets only `dither_adder.va`; the
+  stale multi-artifact L2 target list was removed.
+- Modeling repair: the dither polarity target is updated on events and smoothed
+  with a short explicit transition, avoiding a discrete expression directly
+  driving analog contributions.
+- Checker alignment: the checker ignores DPN transition guard samples and
+  measures steady high/low dither sign plus common-mode preservation.
 
-## Checker And Evidence
+## Validation
 
-- Checker id: `v3_099_dither_adder`
-- Private bench: `test_hidden/tests/tb_dither_adder_ref.scs`
-- Concrete negatives: `neg_001_zero`, `neg_002_wrong_polarity`, `neg_003_common_mode_shift`, `neg_004_fixed_positive_dither`
-- Cadence/Spectre evidence from `scripts/run_v3_spectre_audit.py`: private
-  reference PASS and 4/4 private negative variants `NEGATIVE_REJECTED`.
-- Gate 2 Cadence status: `cadence_lint_pending`.
-
-## Remaining Risk
-
-AHDL lint evidence is not attached yet; do not mark `cadence_modeling_ready`
-until lint/triage is recorded.
+- AHDL-style preflight: PASS with 0 diagnostics.
+- EVAS reference/negative sweep: reference PASS; 5/5 negatives rejected.
+- Spectre private-split reference audit: PASS.

@@ -48,7 +48,7 @@ module gain_estimator(VDD, VSS, vinp, vinn, voutp, voutn, gain_out, valid);
             end
         end
 
-        V(gain_out, VSS) <+ transition(V(VDD, VSS) * gain_q / gain_scale, 0, tedge, tedge);
-        V(valid, VSS) <+ transition(valid_q ? V(VDD, VSS) : 0.0, 0, tedge, tedge);
+        V(gain_out, VSS) <+ V(VDD, VSS) * transition(gain_q / gain_scale, 0, tedge, tedge);
+        V(valid, VSS) <+ V(VDD, VSS) * transition(valid_q ? 1.0 : 0.0, 0, tedge, tedge);
     end
 endmodule

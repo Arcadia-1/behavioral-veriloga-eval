@@ -1,22 +1,26 @@
-# Task 287 Audit
+# Measurement Instrumentation Audit: Task 287 Gain Extraction Flow
 
-Absorbs v2 `vbr1_l2_gain_extraction_convergence_measurement_flow:e2e` into v3.
-Existing v3 tasks 099/101/111 cover component/support slices; this task
-preserves the composed measurement L2 flow.
+## Gate 1
 
-- Useful scenario: pass as Measurement L2. Differential stimulus, dither, and fixed-gain measurement flows are useful verification/instrumentation building blocks.
-- Reasonable task: pass. The public prompt fixes interfaces, required files, saved observables, and expected amplification behavior.
-- Complete tests: pass for the current reviewed slice. The v2 checker/testbench
-  and one concrete unity-gain negative are included; more near-miss flow
-  negatives would strengthen final release evidence.
-- Fair evaluation: pass in design. The checker measures only public differential gain separation from saved public observables.
+- Label: `l2_measurement_ready`.
+- Function boundary: composed measurement flow connecting clocked stimulus,
+  repeatable dither, fixed-gain amplification, and a transient Spectre testbench
+  for gain extraction.
+- Counting note: valid Measurement L2 row. It is not a Core Circuit L2 row.
 
-Classification note: this is not a Core Circuit L2 task. Its independent value is the measurement-flow composition and support harness behavior.
+## Gate 2
 
-## Gate 2 Cadence Status
+- Status: `cadence_modeling_ready`.
+- Prompt hygiene: public prompt defines the composed artifacts, interfaces,
+  public testbench parameters, saved observables, and flow-level behavior.
+- Modeling repair: support copies remove debug `$strobe` output, use explicit
+  transition rise/fall on clocked source outputs, and use event-updated dither
+  target smoothing.
+- Checker alignment: checker measures public differential input/output
+  separation and rejects flow variants that break gain extraction.
 
-- Cadence/Spectre evidence from `scripts/run_v3_spectre_audit.py`: hidden
-  gold PASS and 1/1 hidden negative variant `NEGATIVE_REJECTED`.
-- Status: `cadence_lint_pending`.
-- Remaining risk: AHDL lint evidence is not attached yet; do not mark
-  `cadence_modeling_ready` until lint/triage is recorded.
+## Validation
+
+- AHDL-style preflight: PASS with 0 diagnostics.
+- EVAS reference/negative sweep: reference PASS; 5/5 negatives rejected.
+- Spectre private-split reference audit: PASS.

@@ -38,8 +38,8 @@ logic outputs near 0.9 V and low outputs near 0 V. Keep the model pure
 behavioral Verilog-A.
 
 Do not generate a Spectre `.scs` file. Do not use transistor-level devices,
-AC/noise analysis, current contributions, hidden checker logic, or
-simulator-private side channels.
+AC/noise analysis, current contributions, waveform files, checker artifacts, or
+simulator side channels.
 
 ## Output Contract
 
