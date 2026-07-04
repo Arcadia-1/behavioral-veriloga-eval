@@ -2,7 +2,7 @@
   "negative_variants": [
     {
       "id": "neg_001_force_zero",
-      "description": "Kcl Capacitor Ddt Current: clips negative ddt current to zero, so rising-ramp smoke tests can pass but falling-ramp checks fail.",
+      "description": "Kcl Capacitor Ddt Current: keeps the ddt branch form but forces the branch current to zero, so the model compiles but fails rising and falling ramp current checks.",
       "files": [
         "neg_001_force_zero/kcl_capacitor_ddt_current.va"
       ],

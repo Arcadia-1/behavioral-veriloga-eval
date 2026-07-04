@@ -1,12 +1,16 @@
 # Indirect Branch Ddt Balance
 
-Implement one Verilog-A source file named `indirect_branch_ddt_balance.va`.
+## Task Contract
 
-## Required Feature
+Implement one Verilog-A source file named `indirect_branch_ddt_balance.va`. The task models a stable dynamic indirect branch equation with a `ddt()` term.
 
-Use indirect branch assignment with a ddt() equation term.
+## Form-Specific Requirements
 
-## Required Interface
+This is a DUT task. The behavior should be implemented with an indirect branch assignment, not by replacing the equation with a normal voltage contribution.
+
+## Public Verilog-A Interface
+
+Use this exact module interface:
 
 ```verilog
 module indirect_branch_ddt_balance(
@@ -15,11 +19,18 @@ module indirect_branch_ddt_balance(
 );
 ```
 
+## Public Parameter Contract
+
+Declare `parameter real tau = 20n from (0:inf)`. `tau` is the time constant of the dynamic balance.
+
 ## Required Behavior
 
-- Use the Verilog-A indirect branch assignment/equation form.
-- Constrain `out` with the dynamic equation `V(out) : ddt(V(out)) == V(in)`.
-- Do not use explicit current contributions.
-- The visible and hidden testbenches drive the input node and require `out` to match the time integral implied by the indirect `ddt()` branch equation.
+Use the indirect assignment target `V(out)` with the dynamic equation `ddt(V(out)) == (V(in) - V(out)) / tau`. This gives a Spectre-solvable first-order dynamic balance with a DC operating point.
+
+## Modeling Constraints
+
+Keep `ddt(V(out))` in the indirect branch equation. Do not use a pure unconstrained integrator, event-only approximation, or explicit current contribution.
+
+## Output Contract
 
 Return exactly one source artifact named `indirect_branch_ddt_balance.va`.

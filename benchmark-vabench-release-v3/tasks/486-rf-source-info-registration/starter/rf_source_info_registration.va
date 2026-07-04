@@ -8,9 +8,7 @@ module rf_source_info_registration (
 parameter string fundname = "rf";
 parameter real freq = 1G;
 analog begin
-    @(initial_step) begin
-        $cds_set_rf_source_info(fundname, freq);
-    end
+    $cds_set_rf_source_info(fundname, freq);
     V(out) <+ transition(V(in), 0.0, 200p, 200p);
 end
 endmodule

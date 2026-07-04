@@ -9724,7 +9724,7 @@
     - out
   syntax:
     must_include:
-      - "function real f1"
+      - "analog function real f1"
       - "f2("
       - "endfunction"
     must_not_include:
@@ -10089,14 +10089,14 @@
       - negative_variants/neg_004_metric_offset/current_contribution_conductance.va
       - negative_variants/neg_005_scale_output/current_contribution_conductance.va
     checks:
-      - branch_current_monitor_support_artifact
+      - branch_current_probe_exposed_on_imon_port
       - imon_tracks_gain_times_v_p_minus_v_n
       - hidden_negative_branch_voltage_signed_current
       - five_negative_variants_rejected_by_behavior_checker
   promotion_evidence:
     result: "1/1 gold PASS; 5/5 negative variants rejected; 0 expectation_fail after EVAS ordinary branch-current contribution observability support."
   notes:
-    - "Promoted after EVAS exposes ordinary I(p,n)<+ branch-current contributions to later I(p,n) probes; this certifies branch-current observability, not unknown-node MNA solving."
+    - "Current contribution is observed through the DUT imon monitor port to avoid a separate rigid-branch monitor harness."
 470-branch-current-probe-contribution: |
   version: 1
   task_id: v3_470_branch_current_probe_contribution
@@ -10147,7 +10147,7 @@
     must_include:
       - "V(out) :"
       - "V(in)"
-      - "== 0"
+      - "V(out) == V(in)"
     must_not_include:
       - "I("
   sim_correct:
@@ -10168,7 +10168,7 @@
   promotion_evidence:
     result: "1/1 gold PASS; 5/5 negative variants rejected; 0 expectation_fail after EVAS commit 1c193f6 indirect branch voltage-equation support."
   notes:
-    - "Promoted after changing the task contract to a solvable null-balance equation V(out)-V(in)==0 and adding a behavior checker over visible and hidden PWL segments."
+    - "Uses Cadence-compatible indirect branch syntax with a branch quantity on the equation left side."
 472-indirect-branch-ddt-balance: |
   version: 1
   task_id: v3_472_indirect_branch_ddt_balance
@@ -10197,14 +10197,14 @@
       - negative_variants/neg_005_scale_output/indirect_branch_ddt_balance.va
     checks:
       - indirect_branch_ddt_equation_syntax
-      - output_matches_trapezoid_integral_of_input
-      - hidden_dynamic_segment_changes_integral
+      - output_matches_first_order_dynamic_balance
+      - hidden_dynamic_segment_changes_response
       - no_current_domain_contribution
       - five_negative_variants_rejected_by_behavior_checker
   promotion_evidence:
     result: "1/1 gold PASS; 5/5 negative variants rejected; 0 expectation_fail after EVAS commit 1c193f6 indirect ddt branch-equation support."
   notes:
-    - "Promoted as a behavioral-continuous-time extension using a repository checker that compares out against the input waveform integral."
+    - "Uses ddt(V(out)) == (V(in)-V(out))/tau so the indirect branch equation has a DC operating point."
 473-attribute-potential-abstol-probe: |
   version: 1
   task_id: v3_473_attribute_potential_abstol_probe
@@ -10425,7 +10425,7 @@
   checker: v3_480_mfactor_system_function_gain
   syntax:
     must_include:
-      - "$mfactor()"
+      - "$mfactor"
       - "transition"
       - "V(in)"
       - "V(out)"
@@ -10445,7 +10445,7 @@
   promotion_evidence:
     result: "1/1 gold PASS; 5/5 negative variants rejected; 0 expectation_fail after EVAS $mfactor() support."
   notes:
-    - "Promoted after EVAS read Spectre instance m= as the runtime value returned by $mfactor()."
+    - "Uses Cadence-compatible $mfactor syntax without parentheses."
 481-analog-primitive-resistor-instance: |
   version: 2
   task_id: v3_481_analog_primitive_resistor_instance
@@ -10743,14 +10743,14 @@
       - negative_variants/neg_004_metric_offset/kcl_capacitor_ddt_current.va
       - negative_variants/neg_005_scale_output/kcl_capacitor_ddt_current.va
     checks:
-      - branch_current_monitor_support_artifact
+      - branch_current_probe_exposed_on_imon_port
       - imon_tracks_c_times_ddt_v_p_minus_v_n
       - hidden_dynamic_reference_catches_v_p_only_derivative
       - five_negative_variants_rejected_by_behavior_checker
   promotion_evidence:
     result: "1/1 gold PASS; 5/5 negative variants rejected; 0 expectation_fail after EVAS ordinary branch-current contribution observability plus behavioral ddt support."
   notes:
-    - "Promoted for observable capacitor-style branch-current contribution using finite-difference ddt(V(p,n)); this remains separate from full unknown-node MNA capacitor loading."
+    - "Capacitor-style ddt current is observed through the DUT imon monitor port to avoid a separate rigid-branch monitor harness."
 492-kcl-inductor-idt-voltage: |
   version: 1
   task_id: v3_492_kcl_inductor_idt_voltage

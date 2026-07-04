@@ -7,7 +7,7 @@ module mfactor_system_function_gain (
 );
 real m_eff;
 analog begin
-    m_eff = $mfactor();
+    m_eff = $mfactor;
     V(out) <+ transition(0.0, 0.0, 200p, 200p);
 end
 endmodule

@@ -6,8 +6,8 @@ module port_connected_output_enable (
     input  electrical clk,
     input  electrical mode,
     input  electrical rst,
-    output electrical out,
-    output electrical metric
+    output electrical metric,
+    output electrical out
 );
 parameter real vth = 0.45;
 parameter real vhi = 0.9;

@@ -2,13 +2,11 @@ simulator lang=spectre
 global 0
 
 ahdl_include "current_contribution_conductance.va"
-ahdl_include "branch_current_monitor.va"
 
 Vp (p 0) vsource type=pwl wave=[0 0.00 20n 0.00 21n 0.50 60n 0.50 61n 0.20 100n 0.20]
 Vn (n 0) vsource type=pwl wave=[0 0.00 40n 0.00 41n 0.10 100n 0.10]
 
-XDUT (p n) current_contribution_conductance
-XMON (p n imon) branch_current_monitor
+XDUT (p n imon) current_contribution_conductance
 
 tran tran stop=100n
 save p n imon

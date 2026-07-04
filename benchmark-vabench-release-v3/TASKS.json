@@ -7258,8 +7258,8 @@
       "description": "Use nested user-defined function calls in a behavioral pipeline. This task is verified with executable visible and hidden benches for Nested Function Pipeline.",
       "required_behavior": [
         "Use nested user-defined function calls in a behavioral pipeline.",
-        "define a user function f2 that returns x * x.",
-        "define a user function f1 that calls f2(x) and adds 1.0.",
+        "define an analog function f2 that returns x * x.",
+        "define an analog function f1 that calls f2(x) and adds 1.0.",
         "drive out with f1(V(vin)).",
         "keep the nested function path active in the analog contribution."
       ],
@@ -7462,13 +7462,13 @@
       "title": "Port Connected Output Enable",
       "syntax_focus": "Use $port_connected() to choose behavior based on optional port binding.",
       "certification_scope": "language_extension_not_part_of_original_full_300_claim",
-      "description": "Use $port_connected() to choose behavior based on optional port binding. This task is verified with executable visible and hidden benches for Port Connected Output Enable.",
+      "description": "Use $port_connected to guard an optional output port. The optional out port is last in the module interface for Spectre compatibility.",
       "required_behavior": [
         "Initialize out, metric, and an internal event counter to zero.",
         "On each rising crossing of clk through 0.45 V.",
         "If rst is above 0.45 V, clear out, metric, and the event counter.",
-        "Otherwise use $port_connected(out) to decide whether the output port is connected.",
-        "When out is connected, drive out = V(vin) and metric = 1.0."
+        "Otherwise latch V(vin) for the connected-output path.",
+        "Use $port_connected(out) in continuous analog context to derive the optional-port state and report metric."
       ],
       "visible_tests": [
         "visible.scs exercises the public Port Connected Output Enable stimulus and checks the primary observable behavior."
@@ -7596,21 +7596,18 @@
       "target": [
         "current_contribution_conductance.va"
       ],
-      "support": [
-        "branch_current_monitor.va"
-      ],
       "tier": "kcl-syntax-candidate",
       "title": "Current Contribution Conductance",
       "syntax_focus": "Use I(p,n) current contribution for a conductance-style model.",
       "certification_scope": "language_extension_not_part_of_original_full_300_claim",
-      "description": "Use I(p,n) <+ gain*V(p,n) as a conductance-style conservative current contribution.",
+      "description": "Use I(p,n) <+ gain*V(p,n) as a conductance-style conservative current contribution and expose the probed branch current on imon.",
       "required_behavior": [
         "Contribute branch current proportional to V(p,n).",
-        "Expose the contributed branch current through the harness monitor without writing voltage-domain outputs from the DUT.",
-        "Stay scoped to branch-current observability, not unknown-node MNA solving."
+        "Expose the contributed branch current through the DUT imon monitor port.",
+        "Keep the conservative current contribution as the modeled circuit behavior."
       ],
       "visible_tests": [
-        "visible.scs biases p/n and records imon=I(p,n) through a support monitor."
+        "visible.scs biases p/n and records imon from the DUT branch-current monitor."
       ],
       "hidden_tests": [
         "hidden.scs changes p and n independently, including a negative branch voltage, to catch absolute-node, positive-only, wrong-sign, and wrong-scale current contributions."
@@ -7672,7 +7669,7 @@
       "description": "Use an indirect branch assignment equation to impose a null-balance relationship between out and in.",
       "required_behavior": [
         "Declare the indirect branch equation form.",
-        "Constrain out with V(out) : V(out) - V(in) == 0.",
+        "Constrain out with V(out) : V(out) == V(in).",
         "Drive the observable output from the solved branch relationship across the visible and hidden PWL segments."
       ],
       "visible_tests": [
@@ -7702,17 +7699,17 @@
       "title": "Indirect Branch Ddt Balance",
       "syntax_focus": "Use indirect branch assignment with a ddt() equation term.",
       "certification_scope": "language_extension_not_part_of_original_full_300_claim",
-      "description": "Use indirect branch assignment with ddt() to express a dynamic branch-balance equation.",
+      "description": "Use indirect branch assignment with ddt() to express a stable first-order dynamic branch-balance equation.",
       "required_behavior": [
         "Combine indirect branch equation solving with a ddt() dynamic term.",
-        "Preserve dynamic state needed by the branch-balance equation.",
-        "Drive out as the time integral implied by ddt(V(out)) == V(in)."
+        "Declare tau = 20n from (0:inf).",
+        "Solve ddt(V(out)) == (V(in)-V(out))/tau through the indirect branch equation."
       ],
       "visible_tests": [
-        "visible.scs exercises a dynamic input and checks the resulting integral trajectory."
+        "visible.scs exercises a dynamic input and checks the resulting first-order trajectory."
       ],
       "hidden_tests": [
-        "hidden.scs adds a late input segment to catch zero, biased, leaky, or wrong-scale integration."
+        "hidden.scs adds a late input segment to catch zero, biased, wrong-scale, or wrong-time-constant dynamics."
       ],
       "negative_variants": [
         "neg_001_force_zero",
@@ -7970,8 +7967,8 @@
       ],
       "tier": "syntax-extension-candidate",
       "title": "Mfactor System Function Gain",
-      "syntax_focus": "Use $mfactor() to scale behavioral gain.",
-      "description": "Read the instance m factor through $mfactor() and use it as a behavioral gain.",
+      "syntax_focus": "Use $mfactor to scale behavioral gain.",
+      "description": "Read the instance m factor through Cadence-compatible $mfactor syntax and use it as a behavioral gain.",
       "required_behavior": [
         "For an instance with m=2.0, drive out to two times the input voltage.",
         "Track positive and negative input levels without using a hard-coded waveform.",
@@ -8178,7 +8175,7 @@
       "required_behavior": [
         "Declare parameter string fundname = \"rf\".",
         "Declare parameter real freq = 1G.",
-        "In an @(initial_step) block, call $cds_set_rf_source_info(fundname, freq).",
+        "In the continuous analog context, call $cds_set_rf_source_info(fundname, freq).",
         "Drive out with V(in) + freq / 1.0e10 using transition(..., 0, 200p, 200p).",
         "The output term makes the registered frequency parameter observable in ordinary transient tests."
       ],
@@ -8309,21 +8306,18 @@
       "target": [
         "kcl_capacitor_ddt_current.va"
       ],
-      "support": [
-        "branch_current_monitor.va"
-      ],
       "tier": "kcl-syntax-candidate",
       "title": "Kcl Capacitor Ddt Current",
       "syntax_focus": "Use current contribution with ddt() for a capacitor-style conservative model.",
       "certification_scope": "language_extension_not_part_of_original_full_300_claim",
-      "description": "Use I(p,n) <+ C*ddt(V(p,n)) to model a capacitor-style conservative current contribution.",
+      "description": "Use I(p,n) <+ C*ddt(V(p,n)) to model a capacitor-style conservative current contribution and expose the probed dynamic branch current on imon.",
       "required_behavior": [
         "Contribute current proportional to the time derivative of branch voltage.",
-        "Expose the dynamic branch-current contribution through the harness monitor without adding DUT voltage outputs.",
-        "Stay scoped to finite-difference branch-current observability, not unknown-node MNA capacitor loading."
+        "Expose the dynamic branch-current contribution through the DUT imon monitor port.",
+        "Keep the conservative ddt current contribution as the modeled circuit behavior."
       ],
       "visible_tests": [
-        "visible.scs applies rising and falling V(p,n) ramps and records imon=I(p,n)."
+        "visible.scs applies rising and falling V(p,n) ramps and records imon from the DUT branch-current monitor."
       ],
       "hidden_tests": [
         "hidden.scs changes both p and n slopes to catch static, p-only, wrong-sign, and wrong-scale ddt current substitutes."

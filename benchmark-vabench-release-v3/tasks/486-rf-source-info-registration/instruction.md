@@ -1,12 +1,16 @@
-# Rf Source Info Registration
+# RF Source Info Registration
 
-Implement one Verilog-A source file named `rf_source_info_registration.va`.
+## Task Contract
 
-## Required Feature
+Implement one Verilog-A source file named `rf_source_info_registration.va`. The task models an RF source-info registration helper with an ordinary transient-observable frequency offset.
 
-Use $cds_set_rf_source_info() to register an RF source name and frequency.
+## Form-Specific Requirements
 
-## Required Interface
+This is a DUT task for a Cadence simulator function. The registration call is part of the public modeling contract even though the transient checker observes the frequency parameter through `out`.
+
+## Public Verilog-A Interface
+
+Use this exact module interface:
 
 ```verilog
 module rf_source_info_registration(
@@ -15,12 +19,18 @@ module rf_source_info_registration(
 );
 ```
 
+## Public Parameter Contract
+
+Declare `parameter string fundname = "rf"` and `parameter real freq = 1G`. `fundname` is the RF source name and `freq` is the registered frequency in hertz.
+
 ## Required Behavior
 
-- Declare `parameter string fundname = "rf";`.
-- Declare `parameter real freq = 1G;`.
-- In an `@(initial_step)` block, call `$cds_set_rf_source_info(fundname, freq)`.
-- Drive `out` with `V(in) + freq / 1.0e10` using `transition(..., 0, 200p, 200p)`.
-- The output term makes the registered frequency parameter observable in ordinary transient tests.
+Call `$cds_set_rf_source_info(fundname, freq)` in the continuous analog context. Drive `out` with `V(in) + freq / 1.0e10`.
+
+## Modeling Constraints
+
+Do not place `$cds_set_rf_source_info` inside `@(initial_step)`, a conditional statement, or an expression. Use `transition(..., 0, 200p, 200p)` for the output contribution.
+
+## Output Contract
 
 Return exactly one source artifact named `rf_source_info_registration.va`.

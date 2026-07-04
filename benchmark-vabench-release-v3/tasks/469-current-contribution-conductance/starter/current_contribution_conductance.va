@@ -6,7 +6,9 @@ module current_contribution_conductance (
     input electrical n
 );
 parameter real gain = 1e-3;
+parameter real tr = 200p;
 analog begin
     I(p, n) <+ 0.0;
+    V(imon) <+ transition(I(p, n), 0.0, tr, tr);
 end
 endmodule
