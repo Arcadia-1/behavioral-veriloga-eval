@@ -47,3 +47,10 @@ Expected negative results:
 ## Remaining Risk
 
 - Per SOP, paper-facing final certification still needs Spectre/Spectre-AX correlation or an explicit EVAS-only label.
+
+## Window B Calibration Closeout
+
+- Gate 2 status: `cadence_modeling_ready`.
+- Evidence: Window B targeted review on 2026-07-03 recorded EVAS hidden gold PASS, 6/6 concrete negatives rejected, AHDL-like lint PASS with 0 diagnostics, and targeted Spectre hidden gold PASS.
+- Counting recommendation: retain as an independent gain-trim controller L1 row.
+- This supersedes the earlier EVAS-only remaining-risk note for this category-level review; final release still requires the global denominator sweep.

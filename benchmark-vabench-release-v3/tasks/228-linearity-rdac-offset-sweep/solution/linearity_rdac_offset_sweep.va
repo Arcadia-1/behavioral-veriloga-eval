@@ -47,10 +47,10 @@ analog begin
             vin = vref;
         end
     end
-    V(vinp) <+ vcm + 0.5 * vin;
-    V(vinn) <+ vcm - 0.5 * vin;
-    V(vrefp) <+ vcm + 0.5 * vref;
-    V(vrefn) <+ vcm - 0.5 * vref;
+    V(vinp) <+ transition(vcm + 0.5 * vin, 0, 10p, 10p);
+    V(vinn) <+ transition(vcm - 0.5 * vin, 0, 10p, 10p);
+    V(vrefp) <+ transition(vcm + 0.5 * vref, 0, 10p, 10p);
+    V(vrefn) <+ transition(vcm - 0.5 * vref, 0, 10p, 10p);
     V(dc0) <+ transition(d0 ? vdd : 0.0, 0, 10p, 10p);
     V(dc1) <+ transition(d1 ? vdd : 0.0, 0, 10p, 10p);
     V(dc2) <+ transition(d2 ? vdd : 0.0, 0, 10p, 10p);

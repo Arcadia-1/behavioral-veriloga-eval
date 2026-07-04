@@ -8,27 +8,33 @@ electrical ck, d, vrefp, vrefn, dcp0, dcp1, dcp2, dcp3, dcp4, dcn0, dcn1, dcn2, 
 parameter real vdd = 1.0;
 integer iter;
 integer flag_calib;
-integer dp[0:4];
-integer dn[0:4];
-genvar i;
+integer dp0, dp1, dp2, dp3, dp4;
+integer dn0, dn1, dn2, dn3, dn4;
 
 analog begin
     @(initial_step) begin
         iter = 4;
         flag_calib = 1;
-        for (i = 0; i < 5; i = i + 1) begin
-            dp[i] = 0;
-            dn[i] = 0;
-        end
+        dp0 = 0; dp1 = 0; dp2 = 0; dp3 = 0; dp4 = 0;
+        dn0 = 0; dn1 = 0; dn2 = 0; dn3 = 0; dn4 = 0;
     end
     @(cross(V(ck) - 0.5 * vdd, +1)) begin
         if (iter > -1) begin
-            if (V(d) < 0.5 * vdd) begin
-                dp[iter] = 1;
-                dn[iter] = 0;
+            if (iter == 4) begin
+                if (V(d) < 0.5 * vdd) begin dp4 = 1; dn4 = 0; end
+                else begin dp4 = 0; dn4 = 1; end
+            end else if (iter == 3) begin
+                if (V(d) < 0.5 * vdd) begin dp3 = 1; dn3 = 0; end
+                else begin dp3 = 0; dn3 = 1; end
+            end else if (iter == 2) begin
+                if (V(d) < 0.5 * vdd) begin dp2 = 1; dn2 = 0; end
+                else begin dp2 = 0; dn2 = 1; end
+            end else if (iter == 1) begin
+                if (V(d) < 0.5 * vdd) begin dp1 = 1; dn1 = 0; end
+                else begin dp1 = 0; dn1 = 1; end
             end else begin
-                dp[iter] = 0;
-                dn[iter] = 1;
+                if (V(d) < 0.5 * vdd) begin dp0 = 1; dn0 = 0; end
+                else begin dp0 = 0; dn0 = 1; end
             end
             iter = iter - 1;
         end else begin
@@ -37,10 +43,18 @@ analog begin
     end
     V(cvinp) <+ V(vrefp);
     V(cvinn) <+ V(vrefn);
-    V(en) <+ transition(flag_calib, 0, 20p, 20p);
-    V(enb) <+ transition(1 - flag_calib, 0, 20p, 20p);
-    V(dcp0) <+ dp[0]; V(dcp1) <+ dp[1]; V(dcp2) <+ dp[2]; V(dcp3) <+ dp[3]; V(dcp4) <+ dp[4];
-    V(dcn0) <+ dn[0]; V(dcn1) <+ dn[1]; V(dcn2) <+ dn[2]; V(dcn3) <+ dn[3]; V(dcn4) <+ dn[4];
+    V(en) <+ transition(flag_calib ? vdd : 0.0, 0, 20p, 20p);
+    V(enb) <+ transition(flag_calib ? 0.0 : vdd, 0, 20p, 20p);
+    V(dcp0) <+ transition(dp0 ? vdd : 0.0, 0, 20p, 20p);
+    V(dcp1) <+ transition(dp1 ? vdd : 0.0, 0, 20p, 20p);
+    V(dcp2) <+ transition(dp2 ? vdd : 0.0, 0, 20p, 20p);
+    V(dcp3) <+ transition(dp3 ? vdd : 0.0, 0, 20p, 20p);
+    V(dcp4) <+ transition(dp4 ? vdd : 0.0, 0, 20p, 20p);
+    V(dcn0) <+ transition(dn0 ? vdd : 0.0, 0, 20p, 20p);
+    V(dcn1) <+ transition(dn1 ? vdd : 0.0, 0, 20p, 20p);
+    V(dcn2) <+ transition(dn2 ? vdd : 0.0, 0, 20p, 20p);
+    V(dcn3) <+ transition(dn3 ? vdd : 0.0, 0, 20p, 20p);
+    V(dcn4) <+ transition(dn4 ? vdd : 0.0, 0, 20p, 20p);
 end
 
 endmodule

@@ -22,3 +22,11 @@ Task boundary is one Verilog-A DUT, `successive_approximation_calibration_search
 ## Remaining Risk
 
 Spectre/Spectre-AX correlation has not been rerun from this working tree; use EVAS-only wording unless fresh dual-simulator evidence is attached.
+
+## Window B Calibration Closeout
+
+- Gate 1 status: `independent_l1_ready`.
+- Gate 2 status: `cadence_modeling_ready`.
+- Evidence: Window B targeted review on 2026-07-03 recorded EVAS hidden gold PASS, 5/5 concrete negatives rejected, AHDL-like lint PASS with 0 diagnostics, and targeted Spectre hidden gold PASS.
+- Counting recommendation: retain as an independent SAR-style calibration/search FSM L1 row.
+- This supersedes the earlier EVAS-only wording for this category-level review; final release still requires the global denominator sweep.

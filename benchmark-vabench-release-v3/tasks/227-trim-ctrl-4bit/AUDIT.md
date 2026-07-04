@@ -5,3 +5,9 @@
 - Scenario: analog trim-code decoder that converts an input code voltage into four binary trim control rails.
 - Import status: certified only after visible compile, EVAS/Spectre semantic validation, and EVAS/Spectre parity pass.
 - Evaluation: stable sampled behavior from `tran.csv`; raw simulator timestep equality is not used.
+
+## Window B Calibration Closeout
+
+- Gate 2 status: `duplicate_support_not_counted`.
+- Evidence: Window B targeted review on 2026-07-03 recorded EVAS hidden gold PASS, 5/5 concrete negatives rejected, AHDL-like lint PASS with 0 diagnostics, and targeted Spectre hidden gold PASS.
+- Counting recommendation: keep as valid support/historical material only. Do not count separately with retained `269-trim-ctrl-5bit`; `296-cal4bit-modulo` is the same duplicate/support family rather than an additional independent function.

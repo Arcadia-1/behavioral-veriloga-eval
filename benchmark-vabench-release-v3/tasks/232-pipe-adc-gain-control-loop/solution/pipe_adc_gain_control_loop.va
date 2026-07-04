@@ -25,13 +25,14 @@ analog begin
               + ((V(din26) > vth) ? 64 : 0);
         if (status == 1) begin
             doutp = dout2;
-            stepcode = abs(doutp - doutm - 64);
             ddifcode = doutp - doutm;
-            if (doutp - doutm > 64) begin
+            stepcode = ddifcode - 64;
+            if (stepcode < 0) stepcode = -stepcode;
+            if (ddifcode > 64) begin
                 gainctrlcode = gainctrlcode - stepcode;
                 if (gainctrlcode < 0) gainctrlcode = 0;
             end
-            if (doutp - doutm < 64) begin
+            if (ddifcode < 64) begin
                 gainctrlcode = gainctrlcode + stepcode;
                 if (gainctrlcode > 127) gainctrlcode = 127;
             end

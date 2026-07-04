@@ -1,7 +1,7 @@
 {
   "certification": {
-    "scope": "EVAS hidden gold, negative recertification, and visible smoke evidence tracked in AUDIT.md",
-    "status": "evas_certified"
+    "scope": "EVAS hidden gold, EVAS negative recertification, EVAS AHDL-like lint, targeted Spectre hidden gold, and visible smoke evidence tracked in AUDIT.md",
+    "status": "cadence_modeling_ready"
   },
   "coverage": [
     "synchronous reset to 0.45 V on a rising clk edge",
@@ -22,7 +22,7 @@
       "test_hidden/hidden.scs"
     ]
   },
-  "status": "formal_candidate",
+  "status": "cadence_modeling_ready",
   "task": "004-trim-calibration-controller",
   "visible": {
     "instruction": "instruction.md",

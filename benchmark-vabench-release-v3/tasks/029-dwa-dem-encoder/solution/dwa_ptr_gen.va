@@ -77,8 +77,8 @@ analog begin
     end
 
     for (i = 0; i < 16; i = i + 1) begin
-        V(cell_en_o[i]) <+ transition(cell_en_val[i]);
-        V(ptr_o[i])     <+ transition(ptr_val[i]);
+        V(cell_en_o[i]) <+ transition(cell_en_val[i], 0, 10p, 10p);
+        V(ptr_o[i])     <+ transition(ptr_val[i], 0, 10p, 10p);
     end
 end
 

@@ -9,3 +9,10 @@
 - Gate 1 status: `l2_core_ready`.
 - Rationale: this is an ADC-oriented calibration loop with alternating test stimulus, measured code difference, and gain-control update.
 - Counting recommendation: retain as calibration/control L2.
+
+## Window B Calibration Closeout
+
+- Gate 2 status: `cadence_modeling_ready`.
+- Evidence: Window B targeted review on 2026-07-03 recorded EVAS hidden gold PASS, 5/5 concrete negatives rejected, AHDL-like lint PASS with 0 diagnostics, and targeted Spectre hidden gold PASS.
+- Gold cleanup: integer absolute error is now computed without implicit real-to-integer conversion.
+- Counting recommendation: retain as a calibration/control L2 row. `TASKS.json` level is updated from L1 to L2 to match this boundary.

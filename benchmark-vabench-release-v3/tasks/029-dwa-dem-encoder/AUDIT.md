@@ -23,3 +23,11 @@ Task boundary is Verilog-A DUT artifact `dwa_ptr_gen.va` plus companion converte
 ## Remaining Risk
 
 Spectre/Spectre-AX correlation has not been run from this working tree; use EVAS-only wording until that evidence exists.
+
+## Window B Calibration Closeout
+
+- Gate 1 status: `independent_l1_ready`.
+- Gate 2 status: `cadence_modeling_ready`.
+- Evidence: Window B targeted review on 2026-07-03 recorded EVAS hidden gold PASS, 5/5 concrete negatives rejected, AHDL-like lint PASS with 0 diagnostics, and targeted Spectre hidden gold PASS.
+- Gold cleanup: explicit `transition(..., 0, 10p, 10p)` was added to the DWA output masks to satisfy AHDL-style transition hygiene without changing pointer or selected-cell behavior.
+- Counting recommendation: retain as an independent DWA/DEM encoder L1 row.

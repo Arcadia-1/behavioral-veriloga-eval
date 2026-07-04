@@ -48,7 +48,15 @@ def main() -> int:
             return 1
 
         output_dir = run_dir / "out"
-        result = run_evas(run_dir, tb_dst, output_dir, timeout_s=30)
+        old = os.environ.get("EVAS_ENGINE")
+        os.environ["EVAS_ENGINE"] = "python"
+        try:
+            result = run_evas(run_dir, tb_dst, output_dir, timeout_s=30)
+        finally:
+            if old is None:
+                os.environ.pop("EVAS_ENGINE", None)
+            else:
+                os.environ["EVAS_ENGINE"] = old
         combined = (result.stdout or "") + "\n" + (result.stderr or "")
         if result.returncode != 0:
             print("VISIBLE_SMOKE_EVAS_FAIL")

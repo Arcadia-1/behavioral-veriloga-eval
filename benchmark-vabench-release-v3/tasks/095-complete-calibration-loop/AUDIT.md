@@ -26,3 +26,10 @@ Task boundary is one primary Verilog-A DUT artifact, `complete_calibration_loop.
 ## Remaining Risk
 
 Initial migration artifact. Do not count this task in a final release surface until gold semantic validation and stronger negative evidence are attached.
+
+## Window B Calibration Closeout
+
+- Gate 2 status: `cadence_modeling_ready`.
+- Evidence: Window B targeted review on 2026-07-03 recorded EVAS hidden gold PASS, 5/5 concrete negatives rejected, AHDL-like lint PASS with 0 diagnostics across both hidden decks, and targeted Spectre hidden gold PASS.
+- Counting recommendation: retain as a calibration/control L2 row because it closes a loop from error stimulus through trim, residual monitor, corrected output, and metric output.
+- This supersedes the earlier initial-migration and weak-negative wording for this category-level review; final release still requires the global denominator sweep.
