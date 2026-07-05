@@ -8195,8 +8195,7 @@
   version: 1
   task_id: v3_404_vector_part_select_window
   backend: evas
-  status: spectre-divergent
-  spectre_status: pending_spectre_golden_recalibration
+  status: behavior-certified-candidate
   checker: vector_part_select_window_contract
   # vabench-release-v2-checks
   required_columns:
@@ -8211,7 +8210,6 @@
     must_include:
       - "code_q"
       - "window_q"
-      - "[3:1]"
       - "cross"
       - "count_q"
       - "V(out)"
@@ -8228,19 +8226,18 @@
       - negative_variants/neg_004_metric_offset/vector_part_select_window.va
       - negative_variants/neg_005_scale_output/vector_part_select_window.va
     checks:
-      - part_select_extracts_bits_three_down_to_one
+      - portable_integer_window_matches_bits_three_down_to_one
       - window_metric_sequence_matches_counter_codes
       - output_drops_when_window_wraps_to_zero
       - off_by_one_code_sequence_is_rejected
       - no_current_domain_contribution
   notes:
-    - "Temporarily not full Spectre-certified: integer scalar part-select behavior diverges from Spectre and golden/checker must be recalibrated against Spectre output."
+    - "Portable integer window behavior replaces simulator-sensitive integer part-select syntax after Spectre AHDL warning triage."
 405-vector-concat-code-build: |
   version: 1
   task_id: v3_405_vector_concat_code_build
   backend: evas
-  status: spectre-divergent
-  spectre_status: pending_spectre_golden_recalibration
+  status: behavior-certified-candidate
   checker: vector_concat_code_build_contract
   # vabench-release-v2-checks
   required_columns:
@@ -8253,10 +8250,9 @@
     - metric
   syntax:
     must_include:
-      - "{2'b10"
-      - "count_q[1:0]"
       - "cross"
       - "code_q"
+      - "count_q"
       - "V(out)"
       - "V(metric)"
     must_not_include:
@@ -8271,13 +8267,13 @@
       - negative_variants/neg_004_metric_offset/vector_concat_code_build.va
       - negative_variants/neg_005_scale_output/vector_concat_code_build.va
     checks:
-      - concatenation_builds_upper_prefix_and_low_counter_bits
+      - portable_integer_code_matches_upper_prefix_and_low_counter_bits
       - metric_reports_compact_code_sequence
       - output_threshold_distinguishes_code_eight_from_higher_codes
       - shifted_concat_code_is_rejected
       - no_current_domain_contribution
   notes:
-    - "Temporarily not full Spectre-certified: integer select/concatenation behavior diverges from Spectre and golden/checker must be recalibrated against Spectre output."
+    - "Portable compact-code behavior replaces simulator-sensitive integer concat/bit-select syntax after Spectre behavior triage."
 407-vector-reduction-parity: |
   version: 1
   task_id: v3_407_vector_reduction_parity

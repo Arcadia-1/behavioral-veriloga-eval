@@ -1,8 +1,14 @@
 # Vector Part Select Window
 
-Implement one behavioral Verilog-A source file named `vector_part_select_window.va`.
+## Task Contract
 
-## Interface
+Implement one behavioral Verilog-A source file named `vector_part_select_window.va`. The model is a clocked control-code window decoder with an analog voltage output and an analog metric output.
+
+## Form-Specific Requirements
+
+This is a DUT task. Keep the implementation behavioral, voltage-domain, and event-driven; do not add branch-current contributions or extra modules.
+
+## Public Verilog-A Interface
 
 Use this exact module interface:
 
@@ -17,21 +23,18 @@ module vector_part_select_window (
 );
 ```
 
-Keep the model behavioral and do not introduce current contributions.
+## Public Parameter Contract
+
+Declare `parameter real vth = 0.45`, `parameter real vhi = 0.9`, and `parameter real tr = 200p`. These parameters may be overridden by the testbench. Use `vth` for clock and reset thresholds, `vhi` for the high output level, and `tr` for output transitions.
 
 ## Required Behavior
 
-Use Verilog part-select syntax on integer vector state.
+Initialize `count_q = 0`, `out_v = 0.0`, and `metric_v = 0.0`. On each rising crossing of `V(clk) - vth`, reset `out_v`, `metric_v`, and `count_q` when `V(rst) > vth`. Otherwise, compute `code_q = count_q + 9`, derive a three-bit window equivalent to bits 3 down to 1 of that nonnegative code, drive `out_v = vhi` when the window is greater than 3 and `0.0` otherwise, report the window value on `metric_v`, and increment `count_q` after computing the outputs.
 
-Required behavior:
+## Modeling Constraints
 
-- initialize `count_q = 0`, `out_v = 0.0`, and `metric_v = 0.0`;
-- on each rising crossing of `clk`, reset `out_v`, `metric_v`, `count_q`, and state when `rst > vth`;
-- otherwise set `code_q = count_q + 9`;
-- set `window_q = code_q[3:1]`;
-- set `out_v = window_q > 3 ? vhi : 0.0`;
-- set `metric_v = window_q`;
-- increment `count_q` after computing the outputs;
-- drive `out` and `metric` with `transition(...)`.
+Implement the window extraction with Spectre-portable integer arithmetic rather than simulator-sensitive integer vector part-select syntax. Drive `out` and `metric` with `transition(..., 0.0, tr, tr)`.
+
+## Output Contract
 
 Return exactly one source artifact named `vector_part_select_window.va`.

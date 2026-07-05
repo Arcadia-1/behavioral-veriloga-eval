@@ -33,7 +33,7 @@ analog begin
             state_q = 0;
         end else begin
         code_q = count_q + 9;
-        window_q = code_q[3:1];
+        window_q = ((code_q - (code_q % 2)) / 2) % 8;
         out_v = window_q > 4 ? vhi : 0.0;
         metric_v = window_q;
         count_q = count_q + 1;
