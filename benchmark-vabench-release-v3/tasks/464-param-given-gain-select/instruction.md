@@ -1,12 +1,16 @@
 # Param Given Gain Select
 
-Implement one Verilog-A source file named `param_given_gain_select.va`.
+## Task Contract
 
-## Required Feature
+Implement one Verilog-A source file named `param_given_gain_select.va`. The task is an L0/support row for using `$param_given()` to select behavior based on whether an instance parameter was explicitly overridden.
 
-Use $param_given() to choose behavior based on parameter override presence.
+## Form-Specific Requirements
 
-## Required Interface
+This is a DUT task for environment-function semantics. The supplied testbenches instantiate both default and explicitly overridden parameter paths.
+
+## Public Verilog-A Interface
+
+Use this exact module interface:
 
 ```verilog
 module param_given_gain_select (
@@ -19,16 +23,18 @@ module param_given_gain_select (
 );
 ```
 
+## Public Parameter Contract
+
+Declare `parameter real gain = 0.8`, `parameter real vth = 0.45`, `parameter real vhi = 0.9`, and `parameter real tr = 200p`. `gain` is used only when `$param_given(gain)` is true. `vth` is the clock/reset threshold and `tr` is the transition rise/fall time. `vhi` is retained as a compatibility parameter.
+
 ## Required Behavior
 
-- Declare `parameter real gain = 0.8`.
-- Initialize `out`, `metric`, and an internal event counter to zero.
-- On each rising crossing of `clk` through 0.45 V:
-  - If `rst` is above 0.45 V, clear `out`, `metric`, and the event counter.
-  - Otherwise use `$param_given(gain)` to choose the active gain.
-  - When `gain` was explicitly provided on the instance, drive `out = gain * V(vin)` and `metric = 1.0`.
-  - When `gain` was not explicitly provided, drive `out = V(vin)` and `metric = 0.0`.
-- Drive `out` and `metric` with `transition(..., 0, 200p, 200p)`.
-- Use only voltage-domain contributions; do not use `I(...)`.
+Initialize `out`, `metric`, and an internal event counter to zero. On each rising crossing of `clk` through `vth`, clear the state when `rst > vth`; otherwise use `$param_given(gain)` to choose the active gain. If `gain` was explicitly provided, drive `out = gain * V(vin)` and `metric = 1.0`; otherwise drive `out = V(vin)` and `metric = 0.0`.
+
+## Modeling Constraints
+
+Use `$param_given(gain)` for the selection. Drive `out` and `metric` with `transition(..., 0, tr, tr)`. Use only voltage-domain contributions and do not use `I(...)`.
+
+## Output Contract
 
 Return exactly one source artifact named `param_given_gain_select.va`.

@@ -10,6 +10,6 @@ analog begin
     end else begin
         out_v = V(in);
     end
-    V(out) <+ transition(out_v, 0.0, 200p, 200p);
+    V(out) <+ out_v;
 end
 endmodule

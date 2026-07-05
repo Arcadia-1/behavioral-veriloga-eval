@@ -8,6 +8,6 @@ module cds_violation_threshold_assert (
 real out_v;
 analog begin
     out_v = V(in);
-    V(out) <+ transition(out_v, 0.0, 200p, 200p);
+    V(out) <+ out_v;
 end
 endmodule

@@ -6,6 +6,6 @@ parameter string fundname = "rf";
 parameter real freq = 1G;
 analog begin
     $cds_set_rf_source_info(fundname, freq);
-    V(out) <+ transition(V(in) + freq / 1.0e10, 0.0, 200p, 200p);
+    V(out) <+ V(in) + freq / 1.0e10;
 end
 endmodule
