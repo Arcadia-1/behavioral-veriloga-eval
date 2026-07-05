@@ -16,7 +16,6 @@ real out_v;
 real metric_v;
 integer count_q;
 string label_q;
-integer fd;
 analog begin
     @(initial_step) begin
         out_v = 0.0;

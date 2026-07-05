@@ -6443,13 +6443,14 @@
       "title": "String Sformat Mode Tag",
       "syntax_focus": "Use $sformat() to generate a mode-tagged behavioral label.",
       "certification_scope": "language_extension_not_part_of_original_full_300_claim",
-      "description": "Use $sformat() to generate a mode-tagged behavioral label. This task is verified with executable visible and hidden benches for String Sformat Mode Tag.",
+      "description": "Use task-form $sformat() to generate a mode-tagged string side effect while preserving a sampled voltage-domain output contract. This is a language-extension/L0 support row outside the original full-300 circuit-function claim.",
       "required_behavior": [
         "Use $sformat() to generate a mode-tagged behavioral label.",
-        "declare a string state variable such as label_q.",
-        "initialize out_v, metric_v, and count_q at initial_step.",
-        "on each rising clk crossing, reset out_v, metric_v, and count_q when rst is high.",
-        "otherwise set out_v to vhi when V(vin) > vth, else 0.0."
+        "Declare string state and initialize voltage, metric, and count state at initial_step.",
+        "Reset output, metric, and count state when rst is high on a rising clk crossing.",
+        "On non-reset samples, threshold vin into out and expose the current count on metric before incrementing.",
+        "Use task-form $sformat with an explicit destination string.",
+        "Keep the formatted string as a simulator side effect that does not alter the voltage outputs."
       ],
       "visible_tests": [
         "visible.scs exercises the public String Sformat Mode Tag stimulus and checks the primary observable behavior."
@@ -6513,13 +6514,14 @@
       "title": "String Mode Tagged Log",
       "syntax_focus": "Use $sformat() to create mode-tagged log text for $strobe().",
       "certification_scope": "language_extension_not_part_of_original_full_300_claim",
-      "description": "Use $sformat() to create mode-tagged log text for $strobe(). This task is verified with executable visible and hidden benches for String Mode Tagged Log.",
+      "description": "Use task-form $sformat() to create mode-tagged text and emit it with $strobe while preserving a sampled voltage-domain output contract. This is a language-extension/L0 support row outside the original full-300 circuit-function claim.",
       "required_behavior": [
         "Use $sformat() to create mode-tagged log text for $strobe().",
-        "declare a string state variable such as label_q.",
-        "initialize out_v, metric_v, and count_q at initial_step.",
-        "on each rising clk crossing, reset out_v, metric_v, and count_q when rst is high.",
-        "otherwise set out_v to vhi when V(vin) > vth, else 0.0."
+        "Declare string state and initialize voltage, metric, and count state at initial_step.",
+        "Reset output, metric, and count state when rst is high on a rising clk crossing.",
+        "On non-reset samples, threshold vin into out and expose the current count on metric before incrementing.",
+        "Use task-form $sformat with an explicit destination string and emit the label with $strobe.",
+        "Keep the formatted string and strobe output as simulator side effects that do not alter the voltage outputs."
       ],
       "visible_tests": [
         "visible.scs exercises the public String Mode Tagged Log stimulus and checks the primary observable behavior."
@@ -6548,13 +6550,14 @@
       "title": "String Config Label Select",
       "syntax_focus": "Use string formatting to select and record configuration labels.",
       "certification_scope": "language_extension_not_part_of_original_full_300_claim",
-      "description": "Use string formatting to select and record configuration labels. This task is verified with executable visible and hidden benches for String Config Label Select.",
+      "description": "Use task-form $sformat() to select configuration A/B labels while preserving a sampled mode-dependent voltage and metric contract. This is a language-extension/L0 support row outside the original full-300 circuit-function claim.",
       "required_behavior": [
         "Use string formatting to select and record configuration labels.",
-        "declare a string state variable such as label_q.",
-        "initialize out_v, metric_v, and count_q at initial_step.",
-        "on each rising clk crossing, reset out_v, metric_v, and count_q when rst is high.",
-        "when mode is low, select configuration A: set out_v to vhi when V(vin) > vth, else 0.0, set metric_v = count_q, and format a cfg=A label."
+        "Declare string state and initialize voltage, metric, and count state at initial_step.",
+        "Reset output, metric, and count state when rst is high on a rising clk crossing.",
+        "When mode is low, select configuration A: threshold vin into out, expose count on metric, and format a cfg=A label.",
+        "When mode is high, select configuration B: invert the thresholded output, expose count plus ten on metric, and format a cfg=B label.",
+        "Keep the formatted labels as simulator side effects that do not alter the voltage outputs."
       ],
       "visible_tests": [
         "visible.scs exercises the public String Config Label Select stimulus and checks the primary observable behavior."
@@ -7095,13 +7098,14 @@
       "title": "Fstrobe File Line Writer",
       "syntax_focus": "Use $fstrobe() to write a formatted line to a file handle.",
       "certification_scope": "language_extension_not_part_of_original_full_300_claim",
-      "description": "Use $fstrobe() to write a formatted line to a file handle. This task is verified with executable visible and hidden benches for Fstrobe File Line Writer.",
+      "description": "Use $fopen/$fstrobe/$fclose to write formatted sampled lines while preserving a sampled voltage-domain output contract. This is a language-extension/L0 support row outside the original full-300 circuit-function claim.",
       "required_behavior": [
         "Use $fstrobe() to write a formatted line to a file handle.",
-        "open fstrobe_lines.log with $fopen at initial_step.",
-        "on each rising clk crossing, reset out_v, metric_v, and count_q when rst is high.",
-        "otherwise set out_v to vhi when V(vin) > vth, else 0.0.",
-        "set metric_v to the current count_q."
+        "Open fstrobe_lines.log with $fopen at initial_step and close the handle at final_step.",
+        "Reset output, metric, and count state when rst is high on a rising clk crossing.",
+        "On non-reset samples, threshold vin into out and expose the current count on metric before incrementing.",
+        "Write a formatted line containing the count and output value with $fstrobe.",
+        "Keep the file output as a simulator side effect that does not alter the voltage outputs."
       ],
       "visible_tests": [
         "visible.scs exercises the public Fstrobe File Line Writer stimulus and checks the primary observable behavior."
@@ -7130,13 +7134,14 @@
       "title": "Display Warning Debug Log",
       "syntax_focus": "Use $display(), $warning(), $error(), and $debug() system output calls.",
       "certification_scope": "language_extension_not_part_of_original_full_300_claim",
-      "description": "Use $display(), $warning(), $error(), and $debug() system output calls. This task is verified with executable visible and hidden benches for Display Warning Debug Log.",
+      "description": "Use simulator output calls on a sampled voltage-domain update path while preserving the voltage output contract. This is a language-extension/L0 support row outside the original full-300 circuit-function claim.",
       "required_behavior": [
         "Use $display(), $warning(), $error(), and $debug() system output calls.",
-        "on each rising clk crossing, reset out_v, metric_v, and count_q when rst is high.",
-        "otherwise set out_v to vhi when V(vin) > vth, else 0.0.",
-        "set metric_v to the current count_q.",
-        "call $display, $warning, and $debug with formatted count text on the non-reset path."
+        "Initialize voltage, metric, and count state at initial_step.",
+        "Reset output, metric, and count state when rst is high on a rising clk crossing.",
+        "On non-reset samples, threshold vin into out and expose the current count on metric before incrementing.",
+        "Call $display, $warning, and $debug with formatted count text on the non-reset path.",
+        "Include an unreachable $error branch so the syntax is parsed without terminating normal simulation."
       ],
       "visible_tests": [
         "visible.scs exercises the public Display Warning Debug Log stimulus and checks the primary observable behavior."

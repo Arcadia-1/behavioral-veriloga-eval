@@ -8819,8 +8819,8 @@
       - reset_clears_outputs
       - no_current_domain_contribution
   notes:
-    - "String sformat mode-tag behavior promoted to executable EVAS behavior candidate."
-    - "Issue #69 repair: use task-form $sformat with an explicit destination string; Spectre hidden gold and hidden negative variants pass the expected behavior contract."
+    - "String sformat mode-tag is retained as a language-extension/L0 support row outside the original full-300 circuit-function claim; task-form $sformat is a simulator side effect and the voltage-domain output contract remains sampled threshold/count behavior."
+    - "Issue #69 repair: use task-form $sformat with an explicit destination string; fresh S1 Spectre hidden/visible gold and hidden negative variants passed the expected behavior contract."
 427-string-formatted-metric-line: |
   version: 1
   task_id: v3_427_string_formatted_metric_line
@@ -8902,8 +8902,8 @@
       - reset_clears_outputs
       - no_current_domain_contribution
   notes:
-    - "String mode-tagged strobe log behavior promoted to executable EVAS behavior candidate."
-    - "Issue #69 repair: use task-form $sformat with an explicit destination string; Spectre hidden gold and hidden negative variants pass the expected behavior contract."
+    - "String mode-tagged strobe log is retained as a language-extension/L0 support row outside the original full-300 circuit-function claim; $sformat/$strobe output is a simulator side effect and the voltage-domain output contract remains sampled threshold/count behavior."
+    - "Issue #69 repair: use task-form $sformat with an explicit destination string; fresh S1 Spectre hidden/visible gold and hidden negative variants passed the expected behavior contract."
 429-string-config-label-select: |
   version: 1
   task_id: v3_429_string_config_label_select
@@ -8943,8 +8943,8 @@
       - reset_clears_outputs
       - no_current_domain_contribution
   notes:
-    - "String config label select behavior promoted to executable EVAS behavior candidate."
-    - "Issue #69 repair: use task-form $sformat with an explicit destination string; Spectre hidden gold and hidden negative variants pass the expected behavior contract."
+    - "String config label select is retained as a language-extension/L0 support row outside the original full-300 circuit-function claim; formatted cfg=A/B labels are simulator side effects while mode controls the sampled voltage/metric contract."
+    - "Issue #69 repair: use task-form $sformat with an explicit destination string; fresh S1 Spectre hidden/visible gold and hidden negative variants passed the expected behavior contract."
 430-rdist-seed-reproducibility: |
   version: 1
   task_id: v3_430_rdist_seed_reproducibility
@@ -9567,7 +9567,7 @@
       - reset_clears_outputs
       - no_current_domain_contribution
   notes:
-    - "fstrobe file-line writer behavior promoted to executable EVAS behavior candidate."
+    - "fstrobe file-line writer is retained as a language-extension/L0 support row outside the original full-300 circuit-function claim; $fopen/$fstrobe/$fclose file output is a simulator side effect and the voltage-domain output contract remains sampled threshold/count behavior."
 447-display-warning-debug-log: |
   version: 1
   task_id: v3_447_display_warning_debug_log
@@ -9607,7 +9607,7 @@
       - reset_clears_outputs
       - no_current_domain_contribution
   notes:
-    - "System output logging behavior promoted to executable EVAS behavior candidate."
+    - "System output logging is retained as a language-extension/L0 support row outside the original full-300 circuit-function claim; display/warning/debug/error calls are simulator-output side effects and the voltage-domain output contract remains sampled threshold/count behavior."
 448-rdist-uniform-seeded-dither: |
   version: 1
   task_id: v3_448_rdist_uniform_seeded_dither
