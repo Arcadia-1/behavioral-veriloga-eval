@@ -8938,20 +8938,15 @@ def check_v3_431_hierarchy_support_artifact_staging(rows: list[dict[str, float]]
     if not rows or not required.issubset(rows[0]):
         missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
         return False, "missing_columns=" + ",".join(missing)
-    return _sample_many(
-        rows,
-        {
-            "out": [
-                (100.0, 0.7125),
-                (220.0, 0.90),
-            ],
-            "metric": [
-                (100.0, 0.7125),
-                (220.0, 1.20),
-            ],
-        },
-        tol=0.08,
-    )
+    samples: dict[str, list[tuple[float, float]]] = {"out": [], "metric": []}
+    for time_ns in (100.0, 220.0):
+        vin = sample_signal_at(rows, "vin", time_ns * 1e-9)
+        if vin is None:
+            return False, f"missing_vin_sample_at={time_ns:g}ns"
+        metric = 0.75 * vin
+        samples["metric"].append((time_ns, metric))
+        samples["out"].append((time_ns, min(metric, 0.9)))
+    return _sample_many(rows, samples, tol=0.08)
 
 
 def check_v3_432_hierarchy_nested_parameter_chain(rows: list[dict[str, float]]) -> tuple[bool, str]:
@@ -8959,20 +8954,15 @@ def check_v3_432_hierarchy_nested_parameter_chain(rows: list[dict[str, float]]) 
     if not rows or not required.issubset(rows[0]):
         missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
         return False, "missing_columns=" + ",".join(missing)
-    return _sample_many(
-        rows,
-        {
-            "out": [
-                (80.0, 0.18),
-                (220.0, 0.72),
-            ],
-            "metric": [
-                (80.0, 0.36),
-                (220.0, 1.44),
-            ],
-        },
-        tol=0.08,
-    )
+    samples: dict[str, list[tuple[float, float]]] = {"out": [], "metric": []}
+    for time_ns in (80.0, 220.0):
+        vin = sample_signal_at(rows, "vin", time_ns * 1e-9)
+        if vin is None:
+            return False, f"missing_vin_sample_at={time_ns:g}ns"
+        metric = 1.2 * vin
+        samples["metric"].append((time_ns, metric))
+        samples["out"].append((time_ns, 0.5 * metric))
+    return _sample_many(rows, samples, tol=0.08)
 
 
 def check_v3_433_preprocessor_ifndef_elsif_undef(rows: list[dict[str, float]]) -> tuple[bool, str]:

@@ -2,18 +2,10 @@
 
 - Task id: `v3_432_hierarchy_nested_parameter_chain`
 - Category: `veriloga_hierarchy_semantics`
-- Required syntax focus: `Use nested child module instances with parameter overrides across two stages.`
-- EVAS status: `behavior-certified`
-- Score claim: `extension_behavior_certified_outside_original_300`.
-
-## Behavior Certification
-
-- Checker: `hierarchy_nested_parameter_chain_contract`.
-- Required behavior: two staged child instances apply their parameter overrides in sequence and expose the intermediate metric.
-- Visible/hidden coverage: hidden stimulus varies input and reset windows to catch missing child lookup, wrong parameter override, and metric-only mistakes.
-- Negative evidence: 5/5 variants are rejected by `FAIL_SIM_CORRECTNESS`.
-- Evidence: `benchmark-vabench-release-v3/reports/verify_301_497_layered.json`.
-
-## Boundary
-
-This task certifies the benchmark's support-artifact hierarchy contract and transient behavior checker. It does not expand the original full-300 denominator.
+- Gate 1 label: language-extension/L0 support row, not part of the original full-300 circuit-function claim.
+- Independent value: exercises reuse of a supplied child module twice with distinct parameter overrides across a two-stage voltage chain.
+- Duplicate boundary: distinct from `431-hierarchy-support-artifact-staging` because this row checks repeated use of the same child with parameter propagation rather than staging a gain child into a limiter child.
+- Prompt status: updated to mandatory vaBench v3 section format and explicit target/support boundary.
+- Reference artifact: parent source instantiates `staged_gain_child` twice with gains 1.2 and 0.5; support file remains a supplied artifact.
+- Boundary: behavioral voltage-domain modeling only; no `I(...)` current contribution.
+- Validation: EVAS reference run 7/7 PASS across S2 and 35/35 negative variants rejected; targeted Spectre visible/private reference runs 7/7 PASS and private negative variants 35/35 rejected; AHDL preflight 14/14 PASS with zero task-specific diagnostics.

@@ -9,12 +9,10 @@ module hierarchy_support_artifact_staging (
     output electrical out,
     output electrical metric
 );
-parameter real tr = 200p;
 electrical mid;
     staged_gain_child #(.gain(0.75)) u_gain(.vin(vin), .out(mid));
     staged_limit_child u_limit(.vin(mid), .out(out));
 analog begin
-    V(metric) <+ transition(V(mid), 0.0, tr, tr);
+    V(metric) <+ V(mid);
 end
 endmodule
-
