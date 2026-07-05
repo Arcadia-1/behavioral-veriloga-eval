@@ -61,6 +61,14 @@ failures in retained rows should be treated as benchmark rewrites or
 case-by-case EVAS/Spectre audit items, not as reasons to count unsupported
 syntax in the default denominator.
 
+The preprocessor/control rows `409-macro-functionlike-clamp`,
+`410-macro-ifdef-gain-select`, `411-escaped-identifier-state`,
+`412-initial-final-step-lifecycle`, `413-while-loop-array-sum`, and
+`414-parameter-range-real-control` are retained as L0/support language-semantics
+rows. They are not independent AMS circuit-function benchmarks, but their public
+contracts now use the mandatory prompt shape and have EVAS2, Python EVAS,
+targeted Spectre validation, and AHDL-like lint coverage for their support boundary.
+
 As of the 2026-07-04 Spectre-parity audit, six retained rows are explicitly
 marked `spectre-divergent` rather than full Spectre-certified:
 `391-rdist-exponential-jitter`, `392-rdist-poisson-count-noise`,
