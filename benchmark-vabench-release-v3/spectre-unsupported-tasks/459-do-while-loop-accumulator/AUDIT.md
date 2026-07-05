@@ -1,6 +1,9 @@
-# Audit: Do While Loop Accumulator
+# Archived Audit: Do While Loop Accumulator
 
-- Task id: `v3_459_do_while_loop_accumulator`
-- Category: `veriloga_control_flow_semantics`
-- Required syntax focus: `do ... while` loop syntax.
-- EVAS status: `behavior promotion in progress`
+- Task: `459-do-while-loop-accumulator`
+- Status: archived Spectre-unsupported candidate; not counted in the active default v3 denominator.
+- Removal reason: do...while control flow rejected by standalone Spectre in this environment.
+- Gate 1: not an ordinary standalone Spectre-compatible circuit-function benchmark in the current v3 surface.
+- Gate 2: public instruction has been normalized to the current vaBench section format. Starter, solution, tests, and negative variants are unchanged in this cleanup.
+- Verification status: no fresh Spectre or AHDL rerun was performed for this cleanup because the row remains archived and unsupported by the current default Spectre target.
+- Future action: Keep archived/non-counted unless a future extension-suite or support-row policy explicitly restores it.

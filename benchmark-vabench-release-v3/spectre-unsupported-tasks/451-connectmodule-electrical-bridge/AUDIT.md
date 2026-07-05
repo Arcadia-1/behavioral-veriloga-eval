@@ -1,8 +1,9 @@
-# Audit: Connectmodule Electrical Bridge
+# Archived Audit: Connectmodule Electrical Bridge
 
-- Task id: `v3_451_connectmodule_electrical_bridge`
-- Category: `verilogams_connect_semantics`
-- Required syntax focus: `Declare a connectmodule bridge for mixed-signal connection behavior.`
-- EVAS status: `behavior-certified`
-- Boundary: language coverage candidate; KCL/current solving is outside this task unless explicitly required by the syntax itself.
-- Status: promoted to executable EVAS behavior candidate with gold and five negative variants verified.
+- Task: `451-connectmodule-electrical-bridge`
+- Status: archived Spectre-unsupported candidate; not counted in the active default v3 denominator.
+- Removal reason: Verilog-AMS connectmodule construct outside the default standalone Spectre Verilog-A target.
+- Gate 1: not an ordinary standalone Spectre-compatible circuit-function benchmark in the current v3 surface.
+- Gate 2: public instruction has been normalized to the current vaBench section format. Starter, solution, tests, and negative variants are unchanged in this cleanup.
+- Verification status: no fresh Spectre or AHDL rerun was performed for this cleanup because the row remains archived and unsupported by the current default Spectre target.
+- Future action: Future AMS extension-suite material; do not restore to default v3 without a separate connectmodule policy.

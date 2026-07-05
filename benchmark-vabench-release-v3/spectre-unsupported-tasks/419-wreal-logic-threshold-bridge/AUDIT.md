@@ -1,7 +1,9 @@
-# Audit: Wreal Logic Threshold Bridge
+# Archived Audit: Wreal Logic Threshold Bridge
 
-- Task id: `v3_419_wreal_logic_threshold_bridge`
-- Category: `verilogams_digital_mixed_semantics`
-- Required syntax focus: `Bridge wreal input into logic threshold behavior.`
-- Boundary: behavioral voltage/digital modeling only; no `I(...)` current contribution.
-- Status: promoted to executable EVAS behavior candidate with gold and five negative variants verified.
+- Task: `419-wreal-logic-threshold-bridge`
+- Status: archived Spectre-unsupported candidate; not counted in the active default v3 denominator.
+- Removal reason: mixed wreal/logic bridge outside the default standalone Spectre Verilog-A target.
+- Gate 1: not an ordinary standalone Spectre-compatible circuit-function benchmark in the current v3 surface.
+- Gate 2: public instruction has been normalized to the current vaBench section format. Starter, solution, tests, and negative variants are unchanged in this cleanup.
+- Verification status: no fresh Spectre or AHDL rerun was performed for this cleanup because the row remains archived and unsupported by the current default Spectre target.
+- Future action: Keep archived/non-counted unless a future extension-suite or support-row policy explicitly restores it.

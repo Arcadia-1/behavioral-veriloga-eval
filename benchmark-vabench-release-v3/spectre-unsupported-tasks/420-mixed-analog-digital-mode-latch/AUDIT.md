@@ -1,7 +1,9 @@
-# Audit: Mixed Analog Digital Mode Latch
+# Archived Audit: Mixed Analog Digital Mode Latch
 
-- Task id: `v3_420_mixed_analog_digital_mode_latch`
-- Category: `verilogams_digital_mixed_semantics`
-- Required syntax focus: `Combine electrical threshold sampling with logic state output.`
-- Boundary: behavioral voltage/digital modeling only; no `I(...)` current contribution.
-- Status: promoted to executable EVAS behavior candidate with gold and five negative variants verified.
+- Task: `420-mixed-analog-digital-mode-latch`
+- Status: archived Spectre-unsupported candidate; not counted in the active default v3 denominator.
+- Removal reason: mixed analog/digital latch outside the default standalone Spectre Verilog-A target.
+- Gate 1: not an ordinary standalone Spectre-compatible circuit-function benchmark in the current v3 surface.
+- Gate 2: public instruction has been normalized to the current vaBench section format. Starter, solution, tests, and negative variants are unchanged in this cleanup.
+- Verification status: no fresh Spectre or AHDL rerun was performed for this cleanup because the row remains archived and unsupported by the current default Spectre target.
+- Future action: Keep archived/non-counted unless a future extension-suite or support-row policy explicitly restores it.

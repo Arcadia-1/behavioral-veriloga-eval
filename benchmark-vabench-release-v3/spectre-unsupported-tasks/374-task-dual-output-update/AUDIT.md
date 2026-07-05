@@ -1,7 +1,9 @@
-# Audit: Task Dual Output Update
+# Archived Audit: Task Dual Output Update
 
-- Task id: `v3_374_task_dual_output_update`
-- Category: `veriloga_task_semantics`
-- Required syntax focus: `Use a task with two real inputs to update output and metric state.`
-- Boundary: behavioral voltage/digital modeling only; no `I(...)` current contribution.
-- Status: language extension candidate pending full behavioral certification.
+- Task: `374-task-dual-output-update`
+- Status: archived Spectre-unsupported candidate; not counted in the active default v3 denominator.
+- Removal reason: Verilog task/endtask declaration rejected by standalone Spectre in this environment.
+- Gate 1: not an ordinary standalone Spectre-compatible circuit-function benchmark in the current v3 surface.
+- Gate 2: public instruction has been normalized to the current vaBench section format. Starter, solution, tests, and negative variants are unchanged in this cleanup.
+- Verification status: no fresh Spectre or AHDL rerun was performed for this cleanup because the row remains archived and unsupported by the current default Spectre target.
+- Future action: Keep archived/non-counted unless a future extension-suite or support-row policy explicitly restores it.
