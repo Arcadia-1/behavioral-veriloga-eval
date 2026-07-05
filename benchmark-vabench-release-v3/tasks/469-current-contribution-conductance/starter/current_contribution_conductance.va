@@ -2,8 +2,9 @@
 `include "disciplines.vams"
 
 module current_contribution_conductance (
-    input electrical p,
-    input electrical n
+    inout electrical p,
+    inout electrical n,
+    output electrical imon
 );
 parameter real gain = 1e-3;
 parameter real tr = 200p;

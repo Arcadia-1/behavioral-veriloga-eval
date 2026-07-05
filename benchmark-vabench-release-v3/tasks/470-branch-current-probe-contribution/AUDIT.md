@@ -2,18 +2,16 @@
 
 - Task id: `v3_470_branch_current_probe_contribution`
 - Category: `veriloga_kcl_contribution_semantics`
-- Required syntax focus: `Use a named branch with current contribution and current probing.`
-- EVAS status: `behavior-certified for named branch current contribution/probe`
-- Score claim: `extension_behavior_certified_outside_original_300`.
+- Gate 1 label: `l0_support_semantic`
+- Certification scope: `language_extension_not_part_of_original_full_300_claim`
+- Required semantic focus: named branch current contribution and later `I(br)` probing.
 
-## Behavior Certification
+## Review Boundary
 
-- Checker: `branch_current_probe_contribution_contract`.
-- Required behavior: named branch current contributions are accumulated and later `I(br)` probes drive `out`.
-- Visible/hidden coverage: hidden PWL bias points catch missing branch contribution, wrong thresholding, offset, and scale errors.
-- Negative evidence: 5/5 variants are rejected by `FAIL_SIM_CORRECTNESS`.
-- Evidence: `benchmark-vabench-release-v3/reports/verify_301_497_layered.json`.
+This task is retained as a conservative-current branch semantic/support row. It checks named branch current contribution/probe behavior, but does not by itself establish a scored standalone AMS circuit function.
 
-## Boundary
+## S4 Repair Notes
 
-This task certifies named-branch current observability in the behavioral checker. It does not claim full unknown-node MNA/KCL solving.
+- Replaced the old prompt shape with the mandatory vaBench v3 instruction sections.
+- Repaired the starter interface so it matches the public DUT ports.
+- Updated the checker to derive expected monitor values from saved `p` and `n` waveforms and to cover the longer hidden stimulus when present.

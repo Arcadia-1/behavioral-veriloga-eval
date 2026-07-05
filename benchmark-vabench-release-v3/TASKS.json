@@ -8024,17 +8024,17 @@
       "title": "Analog Primitive Resistor Instance",
       "syntax_focus": "Instantiate a Spectre analog resistor primitive inside a Verilog-A module.",
       "certification_scope": "language_extension_not_part_of_original_full_300_claim",
-      "description": "Instantiate a Spectre resistor primitive inside the Verilog-A module and expose its KCL behavior.",
+      "description": "Instantiate a Spectre resistor primitive inside the Verilog-A module as a structure-certified language-extension artifact.",
       "required_behavior": [
-        "Instantiate the resistor primitive as an internal analog primitive.",
-        "Let the primitive participate in the conservative circuit solution.",
-        "Remain staged until analog primitive instantiation is supported and behavior-certified."
+        "Instantiate exactly one resistor primitive as an internal analog primitive.",
+        "Use .r(1000.0) and positional ports (p, n).",
+        "Certify primitive-instantiation structure only; resistor current and full MNA/KCL behavior are intentionally outside this row."
       ],
       "visible_tests": [
-        "visible.scs biases the primitive instance to check resistor participation."
+        "visible.scs provides a bias smoke deck while the artifact checker verifies the primitive structure."
       ],
       "hidden_tests": [
-        "hidden.scs changes the bias condition to catch missing primitive instances."
+        "hidden.scs changes the bias condition while the artifact checker catches missing or wrong primitive instances."
       ],
       "negative_variants": [
         "neg_001_force_zero",
@@ -8057,17 +8057,17 @@
       "title": "Analog Primitive Isource Instance",
       "syntax_focus": "Instantiate a Spectre analog current-source primitive inside a Verilog-A module.",
       "certification_scope": "language_extension_not_part_of_original_full_300_claim",
-      "description": "Instantiate a Spectre current-source primitive inside the Verilog-A module and expose its KCL behavior.",
+      "description": "Instantiate a Spectre current-source primitive inside the Verilog-A module as a structure-certified language-extension artifact.",
       "required_behavior": [
-        "Instantiate the current-source primitive as an internal analog primitive.",
-        "Let the primitive inject current through the conservative circuit solution.",
-        "Remain staged until analog primitive current-source instantiation is certified."
+        "Declare parameter real ibias = 1u.",
+        "Instantiate exactly one current-source primitive using .dc(ibias) and positional ports (n, p).",
+        "Certify primitive-instantiation structure only; current-source circuit behavior and full MNA/KCL behavior are intentionally outside this row."
       ],
       "visible_tests": [
-        "visible.scs checks observable behavior from the internal current-source primitive."
+        "visible.scs provides a bias smoke deck while the artifact checker verifies the primitive structure."
       ],
       "hidden_tests": [
-        "hidden.scs varies the external bias to catch missing or wrong primitive source behavior."
+        "hidden.scs varies the external bias while the artifact checker catches missing or wrong primitive source instances."
       ],
       "negative_variants": [
         "neg_001_force_zero",

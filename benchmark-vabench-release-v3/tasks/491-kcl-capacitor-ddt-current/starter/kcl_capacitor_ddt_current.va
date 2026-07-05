@@ -3,12 +3,13 @@
 
 module kcl_capacitor_ddt_current (
     inout electrical p,
-    inout electrical n
+    inout electrical n,
+    output electrical imon
 );
 parameter real c = 1p;
 parameter real tr = 200p;
 analog begin
-    I(p, n) <+ c * ddt(V(p, n));
+    I(p, n) <+ 0.0;
     V(imon) <+ transition(I(p, n), 0.0, tr, tr);
 end
 endmodule
