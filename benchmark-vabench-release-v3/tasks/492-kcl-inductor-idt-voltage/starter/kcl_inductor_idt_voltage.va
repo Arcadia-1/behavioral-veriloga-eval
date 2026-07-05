@@ -7,6 +7,6 @@ module kcl_inductor_idt_voltage (
 );
 parameter real l = 1n;
 analog begin
-    V(p, n) <+ l * idt(I(p, n), 0.0);
+    V(p, n) <+ 0.0;
 end
 endmodule

@@ -27,6 +27,7 @@ from run_gold_dual_suite import (  # noqa: E402
 )
 from run_gold_suite import ahdl_includes  # noqa: E402
 from simulate_evas import (  # noqa: E402
+    ARTIFACT_BEHAVIOR_CHECKS,
     CHECKS,
     behavior_side_output_names,
     evaluate_behavior_with_timeout,
@@ -400,6 +401,27 @@ def run_audit_case(
         row["status"] = "FAIL_SPECTRE"
         return row
 
+    artifact_pass = True
+    artifact_checker = ARTIFACT_BEHAVIOR_CHECKS.get(checker_id)
+    if artifact_checker is not None:
+        artifact_results = []
+        for target in targets:
+            target_path = candidate_root / target
+            if not target_path.exists():
+                continue
+            ok, note = artifact_checker(target_path)
+            artifact_results.append(
+                {"target": target, "ok": bool(ok), "note": str(note)}
+            )
+            if not ok:
+                artifact_pass = False
+        if not artifact_results:
+            artifact_pass = False
+            artifact_results.append(
+                {"target": "", "ok": False, "note": "missing_artifact_target_for_checker"}
+            )
+        row["artifact_checks"] = artifact_results
+
     csv_path = Path(str(spectre.get("csv_path") or case_out / "tran_spectre.csv"))
     if not csv_path.exists():
         row["status"] = "FAIL_NO_CSV"
@@ -416,7 +438,7 @@ def run_audit_case(
     side_validation = validate_behavior_side_outputs(checker_id, case_out, csv_path)
     if side_validation is not None:
         row["side_output_ok"], row["side_output_note"] = side_validation
-    passed = behavior_score == 1.0 and not row["syntax_failures"] and (
+    passed = behavior_score == 1.0 and artifact_pass and not row["syntax_failures"] and (
         side_validation is None or bool(side_validation[0])
     )
     if expected_pass:

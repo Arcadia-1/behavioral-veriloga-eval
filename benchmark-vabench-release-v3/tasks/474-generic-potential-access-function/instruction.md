@@ -1,12 +1,16 @@
 # Generic Potential Access Function
 
-Implement one Verilog-A source file named `generic_potential_access_function.va`.
+## Task Contract
 
-## Required Feature
+Implement one Verilog-A source file named `generic_potential_access_function.va`. This row is a Verilog-A generic-access semantic/support task: it verifies reading an electrical node through `potential()`.
 
-Use the generic potential() access function for an electrical node.
+## Form-Specific Requirements
 
-## Required Interface
+This is a DUT task in the language-semantic support layer. The public tests drive `in` and observe that `out` follows the generic potential access result.
+
+## Public Verilog-A Interface
+
+Use this exact module interface:
 
 ```verilog
 module generic_potential_access_function(
@@ -15,11 +19,18 @@ module generic_potential_access_function(
 );
 ```
 
+## Public Parameter Contract
+
+This module has no public module parameters. Use a fixed `transition(..., 0, 200p, 200p)` smoothing contract for the observable output.
+
 ## Required Behavior
 
-- Read the input node potential using the generic access function `potential(in)`.
-- Drive `out` with the value returned by `potential(in)`.
-- Smooth `out` with `transition(..., 0, 200p, 200p)`.
-- Use only voltage-domain contributions; do not use `I(...)`.
+Read the input node potential with the generic access function `potential(in)`. Drive `out` with that value after the fixed transition smoothing so it tracks the input potential across the supplied voltage waveform.
+
+## Modeling Constraints
+
+Use `potential(in)` for the input read. Do not replace the generic access with a threshold detector, fixed sample table, or unrelated state machine. Use only voltage-domain output contribution; do not use `I(...)`.
+
+## Output Contract
 
 Return exactly one source artifact named `generic_potential_access_function.va`.

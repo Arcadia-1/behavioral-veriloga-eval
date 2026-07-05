@@ -9839,22 +9839,28 @@ def check_v3_467_simparam_query_tnom(rows: list[dict[str, float]]) -> tuple[bool
 
 
 def check_v3_468_branch_declaration_voltage_probe(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    required = {"time", "p", "n", "out"}
-    if not rows or not required.issubset(rows[0]):
-        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
-        return False, "missing_columns=" + ",".join(missing)
-    return _sample_many(
-        rows,
-        {
-            "out": [
-                (10.0, 0.10),
-                (50.0, 0.40),
-                (90.0, 0.70),
-                (130.0, -0.05),
-            ],
-        },
-        tol=0.035,
-    )
+    ok, note = _v3_required_columns(rows, {"time", "p", "n", "out"})
+    if not ok:
+        return False, note
+    sample_times_ns = [10.0, 50.0, 90.0]
+    if rows[-1]["time"] >= 150e-9:
+        sample_times_ns.extend([130.0, 150.0])
+    failures: list[str] = []
+    max_err = 0.0
+    for time_ns in sample_times_ns:
+        time_s = time_ns * 1e-9
+        expected = _v3_interp_signal(rows, "p", time_s) - _v3_interp_signal(rows, "n", time_s)
+        observed = _v3_interp_signal(rows, "out", time_s)
+        err = abs(observed - expected)
+        max_err = max(max_err, err)
+        if err > 0.035:
+            failures.append(f"out@{time_ns:g}ns={observed:.4f} expected_vpn={expected:.4f}")
+    out_range = _v3_signal_range(rows, "out")
+    if out_range < 0.50:
+        failures.append(f"out_range_too_small={out_range:.4f}")
+    if failures:
+        return False, " ".join(failures[:4])
+    return True, f"branch_voltage_tracks_vpn out_range={out_range:.4f} max_err={max_err:.4f}"
 
 
 def check_v3_469_current_contribution_conductance(rows: list[dict[str, float]]) -> tuple[bool, str]:
@@ -9892,15 +9898,26 @@ def check_v3_470_branch_current_probe_contribution(rows: list[dict[str, float]])
     ok, note = _v3_required_columns(rows, {"time", "p", "n", "out"})
     if not ok:
         return False, note
+    sample_times_ns = [10.0, 50.0, 90.0]
+    if rows[-1]["time"] >= 150e-9:
+        sample_times_ns.extend([130.0, 150.0])
     failures: list[str] = []
-    for time_ns in (10.0, 50.0, 90.0):
-        row = min(rows, key=lambda item: abs(item["time"] - time_ns * 1e-9))
-        expected = row["p"] - row["n"]
-        if abs(row["out"] - expected) > 0.08:
-            failures.append(f"out@{time_ns:g}ns={row['out']:.4f} expected_branch_current={expected:.4f}")
+    max_err = 0.0
+    for time_ns in sample_times_ns:
+        time_s = time_ns * 1e-9
+        expected = _v3_interp_signal(rows, "p", time_s) - _v3_interp_signal(rows, "n", time_s)
+        observed = _v3_interp_signal(rows, "out", time_s)
+        err = abs(observed - expected)
+        max_err = max(max_err, err)
+        if err > 0.08:
+            failures.append(f"out@{time_ns:g}ns={observed:.4f} expected_branch_current={expected:.4f}")
+    out_range = _v3_signal_range(rows, "out")
+    min_range = 0.55 if rows[-1]["time"] >= 150e-9 else 0.35
+    if out_range < min_range:
+        failures.append(f"out_range_too_small={out_range:.4f}")
     if failures:
         return False, " ".join(failures[:4])
-    return True, "branch_current_probe_tracks_contributed_current"
+    return True, f"branch_current_probe_tracks_contributed_current out_range={out_range:.4f} max_err={max_err:.4f}"
 
 
 def check_v3_471_indirect_branch_null_balance(rows: list[dict[str, float]]) -> tuple[bool, str]:
@@ -9956,60 +9973,75 @@ def check_v3_472_indirect_branch_ddt_balance(rows: list[dict[str, float]]) -> tu
 
 
 def check_v3_473_attribute_potential_abstol_probe(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    required = {"time", "inp", "out"}
-    if not rows or not required.issubset(rows[0]):
-        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
-        return False, "missing_columns=" + ",".join(missing)
-    return _sample_many(
-        rows,
-        {
-            "out": [
-                (10.0, 0.10),
-                (50.0, 0.40),
-                (90.0, 0.70),
-                (130.0, 0.00),
-            ],
-        },
-        tol=0.035,
-    )
+    ok, note = _v3_required_columns(rows, {"time", "inp", "out"})
+    if not ok:
+        return False, note
+    sample_times_ns = [10.0, 50.0, 90.0]
+    if rows[-1]["time"] >= 150e-9:
+        sample_times_ns.extend([130.0, 150.0])
+    failures: list[str] = []
+    max_err = 0.0
+    for time_ns in sample_times_ns:
+        time_s = time_ns * 1e-9
+        expected = _v3_interp_signal(rows, "inp", time_s) + 0.1
+        observed = _v3_interp_signal(rows, "out", time_s)
+        err = abs(observed - expected)
+        max_err = max(max_err, err)
+        if err > 0.035:
+            failures.append(f"out@{time_ns:g}ns={observed:.4f} expected_in_plus_abstol={expected:.4f}")
+    if _v3_signal_range(rows, "out") < 0.50:
+        failures.append(f"out_range_too_small={_v3_signal_range(rows, 'out'):.4f}")
+    if failures:
+        return False, " ".join(failures[:4])
+    return True, f"potential_abstol_offset_tracks_input max_err={max_err:.4f}"
 
 
 def check_v3_474_generic_potential_access_function(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    required = {"time", "inp", "out"}
-    if not rows or not required.issubset(rows[0]):
-        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
-        return False, "missing_columns=" + ",".join(missing)
-    return _sample_many(
-        rows,
-        {
-            "out": [
-                (10.0, 0.00),
-                (50.0, 0.30),
-                (90.0, 0.60),
-                (130.0, -0.10),
-            ],
-        },
-        tol=0.035,
-    )
+    ok, note = _v3_required_columns(rows, {"time", "inp", "out"})
+    if not ok:
+        return False, note
+    sample_times_ns = [10.0, 50.0, 90.0]
+    if rows[-1]["time"] >= 150e-9:
+        sample_times_ns.extend([130.0, 150.0])
+    failures: list[str] = []
+    max_err = 0.0
+    for time_ns in sample_times_ns:
+        time_s = time_ns * 1e-9
+        expected = _v3_interp_signal(rows, "inp", time_s)
+        observed = _v3_interp_signal(rows, "out", time_s)
+        err = abs(observed - expected)
+        max_err = max(max_err, err)
+        if err > 0.035:
+            failures.append(f"out@{time_ns:g}ns={observed:.4f} expected_potential={expected:.4f}")
+    if _v3_signal_range(rows, "out") < 0.50:
+        failures.append(f"out_range_too_small={_v3_signal_range(rows, 'out'):.4f}")
+    if failures:
+        return False, " ".join(failures[:4])
+    return True, f"generic_potential_access_tracks_input max_err={max_err:.4f}"
 
 
 def check_v3_475_generic_potential_contribution(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    required = {"time", "inp", "out"}
-    if not rows or not required.issubset(rows[0]):
-        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
-        return False, "missing_columns=" + ",".join(missing)
-    return _sample_many(
-        rows,
-        {
-            "out": [
-                (10.0, 0.00),
-                (50.0, 0.25),
-                (90.0, 0.55),
-                (130.0, -0.15),
-            ],
-        },
-        tol=0.035,
-    )
+    ok, note = _v3_required_columns(rows, {"time", "inp", "out"})
+    if not ok:
+        return False, note
+    sample_times_ns = [10.0, 50.0, 90.0]
+    if rows[-1]["time"] >= 150e-9:
+        sample_times_ns.extend([130.0, 150.0])
+    failures: list[str] = []
+    max_err = 0.0
+    for time_ns in sample_times_ns:
+        time_s = time_ns * 1e-9
+        expected = _v3_interp_signal(rows, "inp", time_s)
+        observed = _v3_interp_signal(rows, "out", time_s)
+        err = abs(observed - expected)
+        max_err = max(max_err, err)
+        if err > 0.035:
+            failures.append(f"out@{time_ns:g}ns={observed:.4f} expected_potential_contribution={expected:.4f}")
+    if _v3_signal_range(rows, "out") < 0.50:
+        failures.append(f"out_range_too_small={_v3_signal_range(rows, 'out'):.4f}")
+    if failures:
+        return False, " ".join(failures[:4])
+    return True, f"generic_potential_contribution_tracks_input max_err={max_err:.4f}"
 
 
 def check_v3_476_oomr_string_voltage_probe(rows: list[dict[str, float]]) -> tuple[bool, str]:
@@ -10394,7 +10426,10 @@ def check_v3_492_kcl_inductor_idt_voltage(rows: list[dict[str, float]]) -> tuple
 
     failures: list[str] = []
     max_err = 0.0
-    for time_ns in (21.0, 40.0, 80.0, 100.0, 120.0, 160.0):
+    sample_times_ns = [21.0, 40.0, 80.0]
+    if rows[-1]["time"] >= 150e-9:
+        sample_times_ns.extend([100.0, 120.0, 160.0])
+    for time_ns in sample_times_ns:
         expected = expected_p(time_ns * 1e-9)
         observed = sample_signal_at(rows, "p", time_ns * 1e-9)
         if observed is None:
@@ -10408,7 +10443,8 @@ def check_v3_492_kcl_inductor_idt_voltage(rows: list[dict[str, float]]) -> tuple
                 f"p@{time_ns:g}ns={observed:.3e} expected={expected:.3e} tol={tol:.3e}"
             )
     p_range = _v3_signal_range(rows, "p")
-    if p_range < 7.0e-23:
+    min_range = 7.0e-23 if rows[-1]["time"] >= 150e-9 else 4.0e-23
+    if p_range < min_range:
         failures.append(f"p_range_too_small={p_range:.3e}")
     if failures:
         return False, " ".join(failures[:4])
