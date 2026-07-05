@@ -579,11 +579,20 @@ def test_xor_pd_checker_rejects_non_xor_logic() -> None:
 def _bbpd_rows(*, swapped_outputs: bool = False) -> list[dict[str, float]]:
     rows: list[dict[str, float]] = []
     data_high = False
-    for idx in range(12):
+    for idx in range(16):
         edge_t = idx * 1.0e-9 + 0.2e-9
-        expect_up = idx < 6
-        clk = 0.9 if expect_up else 0.0
-        retimed_data = 0.0 if expect_up else 0.9
+        if idx < 6:
+            expected_kind: str | None = "up"
+            clk = 0.9
+            retimed_data = 0.0
+        elif idx < 12:
+            expected_kind = "down"
+            clk = 0.0
+            retimed_data = 0.9
+        else:
+            expected_kind = None
+            clk = 0.9
+            retimed_data = 0.9
         rows.append(
             {
                 "time": edge_t - 0.02e-9,
@@ -595,13 +604,13 @@ def _bbpd_rows(*, swapped_outputs: bool = False) -> list[dict[str, float]]:
             }
         )
         data_high = not data_high
-        correct_signal = "up" if expect_up else "down"
-        if swapped_outputs:
-            observed_signal = "down" if correct_signal == "up" else "up"
-        else:
-            observed_signal = correct_signal
         pulse = {"up": 0.0, "down": 0.0}
-        pulse[observed_signal] = 0.9
+        if expected_kind is not None:
+            if swapped_outputs:
+                observed_signal = "down" if expected_kind == "up" else "up"
+            else:
+                observed_signal = expected_kind
+            pulse[observed_signal] = 0.9
         rows.append(
             {
                 "time": edge_t,
@@ -1724,11 +1733,20 @@ def _acquisition_limited_sample_hold_rows(*, mode: str = "good") -> list[dict[st
     rows: list[dict[str, float]] = []
     held = 0.45
     tracking = False
+    sample_windows = [(5.0, 10.0), (25.0, 30.0), (45.0, 50.0)]
+
+    def vin_at(time_ns: float) -> float:
+        if time_ns < 20.0:
+            return 0.25
+        if time_ns < 40.0:
+            return 0.72
+        return 0.32
+
     for idx in range(181):
         time_ns = idx * 0.5
         rst = time_ns <= 2.0
-        sample = 5.0 <= time_ns < 10.0
-        vin = 0.25
+        sample = any(start <= time_ns < stop for start, stop in sample_windows)
+        vin = vin_at(time_ns)
         if rst:
             held = 0.45
             tracking = False
@@ -1740,7 +1758,7 @@ def _acquisition_limited_sample_hold_rows(*, mode: str = "good") -> list[dict[st
             tracking = False
 
         if sample and mode != "instantaneous" and abs(time_ns - round(time_ns)) < 1e-12:
-            held = held + 0.42 * (vin - held)
+            held = held + 0.32 * (vin - held)
         if not sample and mode == "hold_drift" and time_ns > 10.0:
             held += 0.003
 
@@ -3337,7 +3355,7 @@ def _ct04_rows(kind: str, *, mode: str = "good") -> list[dict[str, float]]:
                     out, metric = 0.45, 0.45
         elif kind == "amp_filter":
             if 12.5 <= time_ns <= 15.0:
-                out, metric = 0.62, 0.90
+                out, metric = 0.70, 0.90
                 extra.update({"preamp_mon": 0.90, "filt1_mon": 0.76, "filt2_mon": 0.70})
             elif 24.0 <= time_ns <= 28.0:
                 out, metric = 0.84, 0.90
@@ -3353,7 +3371,7 @@ def _ct04_rows(kind: str, *, mode: str = "good") -> list[dict[str, float]]:
                 extra.update({"preamp_mon": 0.0, "filt1_mon": 0.12, "filt2_mon": 0.25})
             else:
                 extra.update({"preamp_mon": metric, "filt1_mon": out, "filt2_mon": out})
-            extra["settle_metric"] = 0.9 if 54.0 <= time_ns <= 58.0 else 0.0
+            extra["settle_metric"] = 0.9 if 24.0 <= time_ns <= 28.0 or 54.0 <= time_ns <= 58.0 else 0.0
             if mode == "direct_gain":
                 out = metric
         else:
@@ -3581,11 +3599,11 @@ def test_release_sar_streaming_checker_matches_row_based(tmp_path: Path) -> None
 
     assert stream_score == row_score
     assert stream_notes[0] == "streaming_checker:public_contract"
-    assert stream_notes[1].startswith("streaming_checker:edge_samples=")
+    assert stream_notes[1].startswith("streaming_checker:done_samples=")
     assert "avg_quant_err=" in stream_notes[1]
     assert e2e_score == row_score
     assert e2e_notes[0] == "streaming_checker:public_contract"
-    assert e2e_notes[1].startswith("streaming_checker:edge_samples=")
+    assert e2e_notes[1].startswith("streaming_checker:done_samples=")
     assert "avg_quant_err=" in e2e_notes[1]
 
 

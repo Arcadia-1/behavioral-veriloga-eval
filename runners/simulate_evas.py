@@ -2234,6 +2234,10 @@ def _stream_bbpd_csv(csv_path: Path) -> tuple[float, list[str]]:
 
     def update_window(window: dict[str, object], up: float, down: float) -> None:
         expected = str(window["expected"])
+        if expected == "none":
+            if up > vth or down > vth:
+                window["false_hit"] = True
+            return
         wrong = str(window["wrong"])
         if (expected == "up" and up > vth) or (expected == "down" and down > vth):
             window["expected_hit"] = True
@@ -2242,6 +2246,12 @@ def _stream_bbpd_csv(csv_path: Path) -> tuple[float, list[str]]:
 
     def finalize_window(window: dict[str, object]) -> None:
         expected = str(window["expected"])
+        if expected == "none":
+            if bool(window["false_hit"]):
+                directional_counts["false_pulse"] += 1
+            else:
+                directional_counts["none_correct"] += 1
+            return
         if bool(window["expected_hit"]) and not bool(window["wrong_hit"]):
             directional_counts[f"{expected}_correct"] += 1
         elif bool(window["wrong_hit"]):
@@ -2290,8 +2300,17 @@ def _stream_bbpd_csv(csv_path: Path) -> tuple[float, list[str]]:
                     elif not clk_high and retimed_high:
                         expected = "down"
                     else:
-                        expected = None
-                    if expected is not None:
+                        expected = "none"
+                    if expected == "none":
+                        directional_counts["none_expected"] += 1
+                        window = {
+                            "end_time": time_s + response_window_s,
+                            "expected": expected,
+                            "false_hit": False,
+                        }
+                        update_window(window, up, down)
+                        pending_windows.append(window)
+                    else:
                         directional_counts[f"{expected}_expected"] += 1
                         wrong = "down" if expected == "up" else "up"
                         window = {
@@ -2324,6 +2343,8 @@ def _stream_bbpd_csv(csv_path: Path) -> tuple[float, list[str]]:
         and directional_counts["up_correct"] >= max(2, int(0.75 * directional_counts["up_expected"]))
         and directional_counts["down_correct"] >= max(2, int(0.75 * directional_counts["down_expected"]))
         and directional_counts["wrong"] == 0
+        and directional_counts["none_expected"] >= 2
+        and directional_counts["false_pulse"] == 0
     )
     ok = edge_trigger_ok and pulse_presence_ok and non_overlap_ok and directional_ok
     return (1.0 if ok else 0.0), [
@@ -2331,7 +2352,9 @@ def _stream_bbpd_csv(csv_path: Path) -> tuple[float, list[str]]:
         f"overlap_frac={overlap_frac:.4f} "
         f"direction_up={directional_counts['up_correct']}/{directional_counts['up_expected']} "
         f"direction_down={directional_counts['down_correct']}/{directional_counts['down_expected']} "
-        f"wrong_direction={directional_counts['wrong']} missing_direction={directional_counts['missing']}"
+        f"none={directional_counts['none_correct']}/{directional_counts['none_expected']} "
+        f"wrong_direction={directional_counts['wrong']} missing_direction={directional_counts['missing']} "
+        f"false_pulse={directional_counts['false_pulse']}"
     ]
 
 
