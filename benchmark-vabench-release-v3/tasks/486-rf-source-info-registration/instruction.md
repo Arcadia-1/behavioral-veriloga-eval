@@ -29,7 +29,7 @@ Call `$cds_set_rf_source_info(fundname, freq)` in the continuous analog context.
 
 ## Modeling Constraints
 
-Do not place `$cds_set_rf_source_info` inside `@(initial_step)`, a conditional statement, or an expression. Use `transition(..., 0, 200p, 200p)` for the output contribution.
+Do not place `$cds_set_rf_source_info` inside `@(initial_step)`, a conditional statement, or an expression. Drive `out` as a continuous voltage-domain contribution; do not wrap the continuous input-dependent expression in `transition()`.
 
 ## Output Contract
 

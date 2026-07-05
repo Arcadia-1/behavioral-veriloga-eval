@@ -1,12 +1,16 @@
 # Analog Initial Block State
 
-Implement one Verilog-A source file named `analog_initial_block_state.va`.
+## Task Contract
 
-## Required Feature
+Implement one Verilog-A source file named `analog_initial_block_state.va`. The task is an L0/support row for analog-initial state initialization in voltage-domain behavioral models.
 
-Use an analog initial block to initialize behavioral state.
+## Form-Specific Requirements
 
-## Required Interface
+This is a DUT task for Verilog-A language semantics. It is not a standalone AMS circuit macro.
+
+## Public Verilog-A Interface
+
+Use this exact module interface:
 
 ```verilog
 module analog_initial_block_state(
@@ -15,11 +19,18 @@ module analog_initial_block_state(
 );
 ```
 
+## Public Parameter Contract
+
+This task has no public parameters.
+
 ## Required Behavior
 
-- Declare a real-valued state variable.
-- In an `analog initial` block, initialize that state variable to exactly `0.25`.
-- In the main `analog` block, drive `out` as `V(vin) + initialized_state`.
-- Use only voltage-domain contributions; do not use `I(...)`.
+Declare a real-valued state variable. Initialize that state to `0.25` in an `analog initial` block. In the main `analog` block, drive `out` as `V(vin) + initialized_state`.
+
+## Modeling Constraints
+
+Use the `analog initial` construct for initialization. Use only voltage-domain contributions and do not use `I(...)`.
+
+## Output Contract
 
 Return exactly one source artifact named `analog_initial_block_state.va`.

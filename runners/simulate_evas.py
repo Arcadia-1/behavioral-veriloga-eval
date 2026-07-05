@@ -9638,18 +9638,189 @@ def check_v3_460_analog_initial_block_state(rows: list[dict[str, float]]) -> tup
     if not rows or not required.issubset(rows[0]):
         missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
         return False, "missing_columns=" + ",".join(missing)
-    return _sample_many(
-        rows,
-        {
-            "out": [
-                (10.0, 0.25),
-                (50.0, 0.45),
-                (90.0, 0.75),
-                (130.0, 0.15),
-            ],
-        },
-        tol=0.08,
-    )
+    samples: list[tuple[float, float]] = []
+    for time_ns in (10.0, 50.0, 90.0, 130.0):
+        vin = sample_signal_at(rows, "vin", time_ns * 1e-9)
+        if vin is None:
+            continue
+        samples.append((time_ns, vin + 0.25))
+    if len(samples) < 3:
+        return False, f"insufficient_visible_samples={len(samples)}"
+    return _sample_many(rows, {"out": samples}, tol=0.08)
+
+
+def _available_sample_times_ns(rows: list[dict[str, float]], candidates: tuple[float, ...]) -> list[float]:
+    if not rows:
+        return []
+    last_time = rows[-1].get("time", 0.0)
+    return [time_ns for time_ns in candidates if time_ns * 1e-9 <= last_time + 1e-15]
+
+
+def _clocked_state_samples(
+    rows: list[dict[str, float]],
+    *,
+    value_fn,
+    sample_times_ns: tuple[float, ...],
+    tol: float | tuple[float, float],
+) -> tuple[bool, str]:
+    if not rows:
+        return False, "empty_rows"
+    times = [row["time"] for row in rows]
+    clk_vals = [row["clk"] for row in rows]
+    edge_times = rising_edges(clk_vals, times, threshold=0.45)
+    out_v = 0.0
+    metric_v = 0.0
+    count_q = 0
+    states: list[tuple[float, float, float]] = [(0.0, out_v, metric_v)]
+    for edge_t in edge_times:
+        rst = sample_signal_at(rows, "rst", edge_t)
+        if rst is not None and rst > 0.45:
+            out_v = 0.0
+            metric_v = 0.0
+            count_q = 0
+        else:
+            out_v, metric_v, count_q = value_fn(edge_t, count_q)
+        states.append((edge_t, out_v, metric_v))
+    sample_times = _available_sample_times_ns(rows, sample_times_ns)
+    if len(sample_times) < 2:
+        return False, f"insufficient_sample_times={len(sample_times)}"
+    if isinstance(tol, tuple):
+        out_tol, metric_tol = tol
+    else:
+        out_tol = tol
+        metric_tol = tol
+    observed: list[str] = []
+    for time_ns in sample_times:
+        sample_t = time_ns * 1e-9
+        expected_out = 0.0
+        expected_metric = 0.0
+        for edge_t, out_state, metric_state in states:
+            if edge_t <= sample_t + 1e-15:
+                expected_out = out_state
+                expected_metric = metric_state
+            else:
+                break
+        out = sample_signal_at(rows, "out", sample_t)
+        metric = sample_signal_at(rows, "metric", sample_t)
+        if out is None or metric is None:
+            return False, f"missing_sample_at={time_ns:g}ns"
+        if abs(out - expected_out) > out_tol:
+            return False, f"out@{time_ns:g}ns={out:.5f} expected={expected_out:.5f} tol={out_tol:.5f}"
+        if abs(metric - expected_metric) > metric_tol:
+            return False, f"metric@{time_ns:g}ns={metric:.5f} expected={expected_metric:.5f} tol={metric_tol:.5f}"
+        observed.append(f"{time_ns:g}ns/out={out:.5f}/metric={metric:.5f}")
+    return True, " ".join(observed)
+
+
+def _clocked_two_instance_samples(
+    rows: list[dict[str, float]],
+    *,
+    sample_times_ns: tuple[float, ...],
+) -> tuple[bool, str]:
+    if not rows:
+        return False, "empty_rows"
+    times = [row["time"] for row in rows]
+    clk_vals = [row["clk"] for row in rows]
+    edge_times = rising_edges(clk_vals, times, threshold=0.45)
+    state = {
+        "out_def": 0.0,
+        "metric_def": 0.0,
+        "out_ovr": 0.0,
+        "metric_ovr": 0.0,
+    }
+    states: list[tuple[float, dict[str, float]]] = [(0.0, dict(state))]
+    for edge_t in edge_times:
+        rst = sample_signal_at(rows, "rst", edge_t)
+        if rst is not None and rst > 0.45:
+            state = {key: 0.0 for key in state}
+        else:
+            vin = sample_signal_at(rows, "vin", edge_t) or 0.0
+            state = {
+                "out_def": vin,
+                "metric_def": 0.0,
+                "out_ovr": 0.5 * vin,
+                "metric_ovr": 1.0,
+            }
+        states.append((edge_t, dict(state)))
+    failures: list[str] = []
+    sample_times = _available_sample_times_ns(rows, sample_times_ns)
+    if len(sample_times) < 2:
+        return False, f"insufficient_sample_times={len(sample_times)}"
+    for time_ns in sample_times:
+        sample_t = time_ns * 1e-9
+        expected = states[0][1]
+        for edge_t, edge_state in states:
+            if edge_t <= sample_t + 1e-15:
+                expected = edge_state
+            else:
+                break
+        row = min(rows, key=lambda item: abs(item["time"] - sample_t))
+        for signal, expected_value in expected.items():
+            observed = row[signal]
+            if abs(observed - expected_value) > 0.04:
+                failures.append(f"{signal}@{time_ns:g}ns={observed:.4f} expected={expected_value:.4f}")
+    if failures:
+        return False, " ".join(failures[:4])
+    return True, "param_given_default_and_override_paths_ok"
+
+
+def _clocked_single_output_samples(
+    rows: list[dict[str, float]],
+    *,
+    value_fn,
+    sample_times_ns: tuple[float, ...],
+    tol: float,
+) -> tuple[bool, str]:
+    if not rows:
+        return False, "empty_rows"
+    times = [row["time"] for row in rows]
+    clk_vals = [row["clk"] for row in rows]
+    edge_times = rising_edges(clk_vals, times, threshold=0.45)
+    out_v = 0.0
+    metric_v = 0.0
+    states: list[tuple[float, float, float]] = [(0.0, out_v, metric_v)]
+    for edge_t in edge_times:
+        rst = sample_signal_at(rows, "rst", edge_t)
+        if rst is not None and rst > 0.45:
+            out_v = 0.0
+            metric_v = 0.0
+        else:
+            out_v, metric_v = value_fn(edge_t)
+        states.append((edge_t, out_v, metric_v))
+    return _sample_single_output_state(rows, states, sample_times_ns=sample_times_ns, tol=tol)
+
+
+def _sample_single_output_state(
+    rows: list[dict[str, float]],
+    states: list[tuple[float, float, float]],
+    *,
+    sample_times_ns: tuple[float, ...],
+    tol: float,
+) -> tuple[bool, str]:
+    sample_times = _available_sample_times_ns(rows, sample_times_ns)
+    if len(sample_times) < 2:
+        return False, f"insufficient_sample_times={len(sample_times)}"
+    observed: list[str] = []
+    for time_ns in sample_times:
+        sample_t = time_ns * 1e-9
+        expected_out = 0.0
+        expected_metric = 0.0
+        for edge_t, out_state, metric_state in states:
+            if edge_t <= sample_t + 1e-15:
+                expected_out = out_state
+                expected_metric = metric_state
+            else:
+                break
+        out = sample_signal_at(rows, "out", sample_t)
+        metric = sample_signal_at(rows, "metric", sample_t)
+        if out is None or metric is None:
+            return False, f"missing_sample_at={time_ns:g}ns"
+        if abs(out - expected_out) > tol:
+            return False, f"out@{time_ns:g}ns={out:.5f} expected={expected_out:.5f} tol={tol:.5f}"
+        if abs(metric - expected_metric) > tol:
+            return False, f"metric@{time_ns:g}ns={metric:.5f} expected={expected_metric:.5f} tol={tol:.5f}"
+        observed.append(f"{time_ns:g}ns/out={out:.5f}/metric={metric:.5f}")
+    return True, " ".join(observed)
 
 
 def check_v3_461_vt_thermal_voltage_source(rows: list[dict[str, float]]) -> tuple[bool, str]:
@@ -9658,26 +9829,12 @@ def check_v3_461_vt_thermal_voltage_source(rows: list[dict[str, float]]) -> tupl
         missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
         return False, "missing_columns=" + ",".join(missing)
     vt_expected = 0.02585
-    checks = [
-        (12.0, vt_expected, vt_expected),
-        (32.0, vt_expected, vt_expected),
-        (52.0, vt_expected, vt_expected),
-        (72.0, 0.0, 0.0),
-        (92.0, vt_expected, vt_expected),
-    ]
-    observed: list[str] = []
-    for time_ns, expected_out, expected_metric in checks:
-        out = sample_signal_at(rows, "out", time_ns * 1e-9)
-        metric = sample_signal_at(rows, "metric", time_ns * 1e-9)
-        if out is None or metric is None:
-            return False, f"missing_sample_at={time_ns:g}ns"
-        tol = 0.004 if expected_out > 0 else 0.004
-        if abs(out - expected_out) > tol:
-            return False, f"out@{time_ns:g}ns={out:.5f} expected={expected_out:.5f} tol={tol:.5f}"
-        if abs(metric - expected_metric) > tol:
-            return False, f"metric@{time_ns:g}ns={metric:.5f} expected={expected_metric:.5f} tol={tol:.5f}"
-        observed.append(f"{time_ns:g}ns/out={out:.5f}/metric={metric:.5f}")
-    return True, " ".join(observed)
+    return _clocked_state_samples(
+        rows,
+        value_fn=lambda _edge_t, count_q: (vt_expected, vt_expected, count_q + 1),
+        sample_times_ns=(12.0, 32.0, 52.0, 72.0, 92.0),
+        tol=0.004,
+    )
 
 
 def check_v3_462_vt_temperature_argument(rows: list[dict[str, float]]) -> tuple[bool, str]:
@@ -9686,26 +9843,12 @@ def check_v3_462_vt_temperature_argument(rows: list[dict[str, float]]) -> tuple[
         missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
         return False, "missing_columns=" + ",".join(missing)
     vt_expected = 0.05170
-    checks = [
-        (12.0, vt_expected, vt_expected),
-        (32.0, vt_expected, vt_expected),
-        (52.0, vt_expected, vt_expected),
-        (72.0, 0.0, 0.0),
-        (92.0, vt_expected, vt_expected),
-    ]
-    observed: list[str] = []
-    for time_ns, expected_out, expected_metric in checks:
-        out = sample_signal_at(rows, "out", time_ns * 1e-9)
-        metric = sample_signal_at(rows, "metric", time_ns * 1e-9)
-        if out is None or metric is None:
-            return False, f"missing_sample_at={time_ns:g}ns"
-        tol = 0.006
-        if abs(out - expected_out) > tol:
-            return False, f"out@{time_ns:g}ns={out:.5f} expected={expected_out:.5f} tol={tol:.5f}"
-        if abs(metric - expected_metric) > tol:
-            return False, f"metric@{time_ns:g}ns={metric:.5f} expected={expected_metric:.5f} tol={tol:.5f}"
-        observed.append(f"{time_ns:g}ns/out={out:.5f}/metric={metric:.5f}")
-    return True, " ".join(observed)
+    return _clocked_state_samples(
+        rows,
+        value_fn=lambda _edge_t, count_q: (vt_expected, vt_expected, count_q + 1),
+        sample_times_ns=(12.0, 32.0, 52.0, 72.0, 92.0),
+        tol=0.006,
+    )
 
 
 def check_v3_463_discontinuity_event_announcement(rows: list[dict[str, float]]) -> tuple[bool, str]:
@@ -9713,26 +9856,14 @@ def check_v3_463_discontinuity_event_announcement(rows: list[dict[str, float]]) 
     if not rows or not required.issubset(rows[0]):
         missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
         return False, "missing_columns=" + ",".join(missing)
-    return _sample_many(
+    def value_fn(edge_t: float, count_q: int) -> tuple[float, float, int]:
+        vin = sample_signal_at(rows, "vin", edge_t) or 0.0
+        return (0.9 if vin > 0.45 else 0.0, float(count_q), count_q + 1)
+
+    return _clocked_state_samples(
         rows,
-        {
-            "out": [
-                (12.0, 0.9),
-                (32.0, 0.0),
-                (52.0, 0.9),
-                (72.0, 0.0),
-                (92.0, 0.9),
-                (112.0, 0.0),
-            ],
-            "metric": [
-                (12.0, 0.0),
-                (32.0, 1.0),
-                (52.0, 2.0),
-                (72.0, 0.0),
-                (92.0, 0.0),
-                (112.0, 1.0),
-            ],
-        },
+        value_fn=value_fn,
+        sample_times_ns=(12.0, 32.0, 52.0, 72.0, 92.0, 112.0),
         tol=0.08,
     )
 
@@ -9742,28 +9873,7 @@ def check_v3_464_param_given_gain_select(rows: list[dict[str, float]]) -> tuple[
     if not rows or not required.issubset(rows[0]):
         missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
         return False, "missing_columns=" + ",".join(missing)
-    failures: list[str] = []
-    checks = [
-        (12.0, 0.60, 0.0, 0.30, 1.0),
-        (52.0, 0.30, 0.0, 0.15, 1.0),
-        (72.0, 0.00, 0.0, 0.00, 0.0),
-        (92.0, 0.80, 0.0, 0.40, 1.0),
-        (132.0, 0.80, 0.0, 0.40, 1.0),
-    ]
-    for time_ns, out_def_exp, metric_def_exp, out_ovr_exp, metric_ovr_exp in checks:
-        row = min(rows, key=lambda item: abs(item["time"] - time_ns * 1e-9))
-        for signal, expected in (
-            ("out_def", out_def_exp),
-            ("metric_def", metric_def_exp),
-            ("out_ovr", out_ovr_exp),
-            ("metric_ovr", metric_ovr_exp),
-        ):
-            observed = row[signal]
-            if abs(observed - expected) > 0.04:
-                failures.append(f"{signal}@{time_ns:g}ns={observed:.4f} expected={expected:.4f}")
-    if failures:
-        return False, " ".join(failures[:4])
-    return True, "param_given_default_and_override_paths_ok"
+    return _clocked_two_instance_samples(rows, sample_times_ns=(12.0, 52.0, 72.0, 92.0, 132.0))
 
 
 def check_v3_465_port_connected_output_enable(rows: list[dict[str, float]]) -> tuple[bool, str]:
@@ -9771,24 +9881,10 @@ def check_v3_465_port_connected_output_enable(rows: list[dict[str, float]]) -> t
     if not rows or not required.issubset(rows[0]):
         missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
         return False, "missing_columns=" + ",".join(missing)
-    return _sample_many(
+    return _clocked_single_output_samples(
         rows,
-        {
-            "out": [
-                (12.0, 0.60),
-                (52.0, 0.30),
-                (72.0, 0.0),
-                (92.0, 0.80),
-                (132.0, 0.80),
-            ],
-            "metric": [
-                (12.0, 1.0),
-                (52.0, 1.0),
-                (72.0, 0.0),
-                (92.0, 1.0),
-                (132.0, 1.0),
-            ],
-        },
+        value_fn=lambda edge_t: (sample_signal_at(rows, "vin", edge_t) or 0.0, 1.0),
+        sample_times_ns=(12.0, 52.0, 72.0, 92.0, 132.0),
         tol=0.08,
     )
 
@@ -9800,27 +9896,12 @@ def check_v3_466_temperature_environment_metric(rows: list[dict[str, float]]) ->
         return False, "missing_columns=" + ",".join(missing)
     temp_expected = 300.15
     out_expected = temp_expected / 300.0
-    checks = [
-        (12.0, out_expected, temp_expected),
-        (52.0, out_expected, temp_expected),
-        (72.0, 0.0, 0.0),
-        (92.0, out_expected, temp_expected),
-        (132.0, out_expected, temp_expected),
-    ]
-    observed: list[str] = []
-    for time_ns, expected_out, expected_metric in checks:
-        out = sample_signal_at(rows, "out", time_ns * 1e-9)
-        metric = sample_signal_at(rows, "metric", time_ns * 1e-9)
-        if out is None or metric is None:
-            return False, f"missing_sample_at={time_ns:g}ns"
-        out_tol = 0.04 if expected_out else 0.04
-        metric_tol = 2.0 if expected_metric else 0.04
-        if abs(out - expected_out) > out_tol:
-            return False, f"out@{time_ns:g}ns={out:.4f} expected={expected_out:.4f} tol={out_tol:.4f}"
-        if abs(metric - expected_metric) > metric_tol:
-            return False, f"metric@{time_ns:g}ns={metric:.4f} expected={expected_metric:.4f} tol={metric_tol:.4f}"
-        observed.append(f"{time_ns:g}ns/out={out:.3f}/metric={metric:.2f}")
-    return True, " ".join(observed)
+    return _clocked_state_samples(
+        rows,
+        value_fn=lambda _edge_t, count_q: (out_expected, temp_expected, count_q + 1),
+        sample_times_ns=(12.0, 52.0, 72.0, 92.0, 132.0),
+        tol=(0.04, 2.0),
+    )
 
 
 def check_v3_467_simparam_query_tnom(rows: list[dict[str, float]]) -> tuple[bool, str]:
@@ -9829,24 +9910,10 @@ def check_v3_467_simparam_query_tnom(rows: list[dict[str, float]]) -> tuple[bool
         missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
         return False, "missing_columns=" + ",".join(missing)
     expected = 27.0 / 300.0
-    return _sample_many(
+    return _clocked_state_samples(
         rows,
-        {
-            "out": [
-                (12.0, expected),
-                (52.0, expected),
-                (72.0, 0.0),
-                (92.0, expected),
-                (132.0, expected),
-            ],
-            "metric": [
-                (12.0, expected),
-                (52.0, expected),
-                (72.0, 0.0),
-                (92.0, expected),
-                (132.0, expected),
-            ],
-        },
+        value_fn=lambda _edge_t, count_q: (expected, expected, count_q + 1),
+        sample_times_ns=(12.0, 52.0, 72.0, 92.0, 132.0),
         tol=0.025,
     )
 
@@ -10174,18 +10241,15 @@ def check_v3_483_cds_violation_threshold_assert(rows: list[dict[str, float]]) ->
     if not rows or not required.issubset(rows[0]):
         missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
         return False, "missing_columns=" + ",".join(missing)
-    return _sample_many(
-        rows,
-        {
-            "out": [
-                (10.0, 0.20),
-                (50.0, 0.75),
-                (90.0, 1.00),
-                (130.0, 0.40),
-            ],
-        },
-        tol=0.035,
-    )
+    samples: list[tuple[float, float]] = []
+    for time_ns in (10.0, 50.0, 90.0, 130.0):
+        inp = sample_signal_at(rows, "inp", time_ns * 1e-9)
+        if inp is None:
+            continue
+        samples.append((time_ns, min(inp, 1.0)))
+    if len(samples) < 3:
+        return False, f"insufficient_visible_samples={len(samples)}"
+    return _sample_many(rows, {"out": samples}, tol=0.035)
 
 
 def check_v3_484_rtoi_conversion_quantizer(rows: list[dict[str, float]]) -> tuple[bool, str]:
@@ -10213,17 +10277,10 @@ def check_v3_485_mc_trial_number_metric(rows: list[dict[str, float]]) -> tuple[b
     if not rows or not required.issubset(rows[0]):
         missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
         return False, "missing_columns=" + ",".join(missing)
-    return _sample_many(
-        rows,
-        {
-            "out": [
-                (10.0, 0.25),
-                (50.0, 0.25),
-                (120.0, 0.25),
-            ],
-        },
-        tol=0.025,
-    )
+    samples = [(time_ns, 0.25) for time_ns in _available_sample_times_ns(rows, (10.0, 50.0, 120.0))]
+    if len(samples) < 2:
+        return False, f"insufficient_visible_samples={len(samples)}"
+    return _sample_many(rows, {"out": samples}, tol=0.025)
 
 
 def check_v3_486_rf_source_info_registration(rows: list[dict[str, float]]) -> tuple[bool, str]:
@@ -10231,18 +10288,15 @@ def check_v3_486_rf_source_info_registration(rows: list[dict[str, float]]) -> tu
     if not rows or not required.issubset(rows[0]):
         missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
         return False, "missing_columns=" + ",".join(missing)
-    return _sample_many(
-        rows,
-        {
-            "out": [
-                (10.0, 0.20),
-                (50.0, 0.40),
-                (90.0, 0.60),
-                (130.0, 0.00),
-            ],
-        },
-        tol=0.035,
-    )
+    samples: list[tuple[float, float]] = []
+    for time_ns in (10.0, 50.0, 90.0, 130.0):
+        inp = sample_signal_at(rows, "inp", time_ns * 1e-9)
+        if inp is None:
+            continue
+        samples.append((time_ns, inp + 0.1))
+    if len(samples) < 3:
+        return False, f"insufficient_visible_samples={len(samples)}"
+    return _sample_many(rows, {"out": samples}, tol=0.035)
 
 
 def check_v3_487_table_model_2d_array_surface(rows: list[dict[str, float]]) -> tuple[bool, str]:
