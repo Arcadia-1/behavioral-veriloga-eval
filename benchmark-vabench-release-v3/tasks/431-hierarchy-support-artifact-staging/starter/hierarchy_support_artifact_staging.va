@@ -9,9 +9,8 @@ module hierarchy_support_artifact_staging (
     output electrical out,
     output electrical metric
 );
-parameter real tr = 200p;
 analog begin
-    V(out) <+ transition(0.0, 0.0, tr, tr);
-    V(metric) <+ transition(0.0, 0.0, tr, tr);
+    V(out) <+ 0.0;
+    V(metric) <+ 0.0;
 end
 endmodule

@@ -68,6 +68,33 @@ def test_promoted_duts_have_release_behavior_aliases() -> None:
         assert sim.has_behavior_check(f"{entry_id}_dut"), entry_id
 
 
+def test_hierarchy_l0_checkers_follow_visible_input_values() -> None:
+    base_columns = {
+        "clk": 0.0,
+        "mode": 0.0,
+        "rst": 0.0,
+    }
+    rows_431 = [
+        {"time": 0.0, "vin": 0.40, "out": 0.30, "metric": 0.30, **base_columns},
+        {"time": 100e-9, "vin": 0.40, "out": 0.30, "metric": 0.30, **base_columns},
+        {"time": 220e-9, "vin": 1.40, "out": 0.90, "metric": 1.05, **base_columns},
+        {"time": 260e-9, "vin": 1.40, "out": 0.90, "metric": 1.05, **base_columns},
+    ]
+    rows_432 = [
+        {"time": 0.0, "vin": 0.50, "out": 0.30, "metric": 0.60, **base_columns},
+        {"time": 80e-9, "vin": 0.50, "out": 0.30, "metric": 0.60, **base_columns},
+        {"time": 220e-9, "vin": 1.00, "out": 0.60, "metric": 1.20, **base_columns},
+        {"time": 260e-9, "vin": 1.00, "out": 0.60, "metric": 1.20, **base_columns},
+    ]
+
+    assert sim.check_v3_431_hierarchy_support_artifact_staging(rows_431)[0]
+    assert sim.check_v3_432_hierarchy_nested_parameter_chain(rows_432)[0]
+
+    rows_431_bad = [dict(row) for row in rows_431]
+    rows_431_bad[1]["out"] = 0.7125
+    assert not sim.check_v3_431_hierarchy_support_artifact_staging(rows_431_bad)[0]
+
+
 def _sar_calibration_rows_with_dense_transition_samples() -> list[dict[str, float]]:
     rows: list[dict[str, float]] = [
         {"time": 0.0, "clk": 0.0, "rst": 0.9, "vin": 0.45, "out": 0.45, "metric": 0.0},

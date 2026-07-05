@@ -2,11 +2,11 @@
 
 ## Task Contract
 
-Implement one behavioral Verilog-A source file named `nested_function_pipeline.va`. The task models a reusable nested user-defined function pipeline in an analog contribution.
+Implement one behavioral Verilog-A source file named `nested_function_pipeline.va`. This is a language-extension/L0 support task for nested user-defined analog functions in a voltage-domain contribution, not a standalone core circuit macro.
 
 ## Form-Specific Requirements
 
-This is a DUT task. Provide only the Verilog-A source file; the Spectre testbenches are supplied.
+Provide only the Verilog-A source file. The nested function call path is the public language feature under review.
 
 ## Public Verilog-A Interface
 

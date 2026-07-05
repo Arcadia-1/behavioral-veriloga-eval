@@ -10,7 +10,6 @@ module limexp_soft_exponential (
     output electrical metric
 );
 parameter real vth = 0.45;
-parameter real vhi = 0.9;
 parameter real tr = 200p;
 real out_v;
 real metric_v;

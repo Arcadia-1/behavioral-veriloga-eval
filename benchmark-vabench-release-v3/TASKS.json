@@ -6626,13 +6626,13 @@
         "staged_limit_child.va"
       ],
       "certification_scope": "language_extension_not_part_of_original_full_300_claim",
-      "description": "Use a parent module plus staged support child artifacts. This task is verified with executable visible and hidden benches for Hierarchy Support Artifact Staging.",
+      "description": "Use supplied support child modules from a parent source while preserving a voltage-domain transfer contract. This is a language-extension/L0 support row outside the original full-300 circuit-function claim.",
       "required_behavior": [
-        "Use a parent module plus staged child modules supplied as support artifacts.",
-        "define the top module hierarchy_support_artifact_staging.",
-        "instantiate staged_gain_child from the parent with a parameter override gain=0.75.",
-        "instantiate staged_limit_child after the gain stage.",
-        "connect the parent input vin through the gain child into an internal electrical node such as mid."
+        "Define the top module hierarchy_support_artifact_staging.",
+        "Instantiate the supplied staged_gain_child from the parent with parameter override gain=0.75.",
+        "Instantiate the supplied staged_limit_child after the gain stage.",
+        "Connect vin through the gain child into an internal electrical node such as mid.",
+        "Drive metric from the gained intermediate node and drive out from the supplied limiter child output."
       ],
       "visible_tests": [
         "visible.scs exercises the public Hierarchy Support Artifact Staging stimulus and checks the primary observable behavior."
@@ -6664,13 +6664,13 @@
         "staged_gain_child.va"
       ],
       "certification_scope": "language_extension_not_part_of_original_full_300_claim",
-      "description": "Use nested child module instances from a support artifact with parameter overrides. This task is verified with executable visible and hidden benches for Hierarchy Nested Parameter Chain.",
+      "description": "Use a supplied gain child module twice with distinct parameter overrides while preserving a two-stage voltage-domain chain. This is a language-extension/L0 support row outside the original full-300 circuit-function claim.",
       "required_behavior": [
-        "Use nested child module instances with parameter overrides across two stages.",
-        "define the top module hierarchy_nested_parameter_chain.",
-        "instantiate the supplied reusable child gain module.",
-        "instantiate two gain stages from the parent using named port maps.",
-        "override the first child gain to 1.2 and the second child gain to 0.5."
+        "Define the top module hierarchy_nested_parameter_chain.",
+        "Instantiate the supplied reusable child gain module twice using named port maps.",
+        "Override the first child gain to 1.2 and the second child gain to 0.5.",
+        "Connect vin to gain0, gain0 to mid, and mid to gain1/out.",
+        "Drive metric from the intermediate node V(mid)."
       ],
       "visible_tests": [
         "visible.scs exercises the public Hierarchy Nested Parameter Chain stimulus and checks the primary observable behavior."
@@ -6699,13 +6699,13 @@
       "title": "Repeat Loop Accumulator",
       "syntax_focus": "Use repeat-loop syntax to accumulate bounded behavioral state.",
       "certification_scope": "language_extension_not_part_of_original_full_300_claim",
-      "description": "Use repeat-loop syntax to accumulate bounded behavioral state. This task is verified with executable visible and hidden benches for Repeat Loop Accumulator.",
+      "description": "Use repeat-loop syntax to accumulate bounded sampled state while preserving a voltage-domain output contract. This is a language-extension/L0 support row outside the original full-300 circuit-function claim.",
       "required_behavior": [
-        "Use repeat-loop syntax to accumulate bounded behavioral state.",
-        "declare integer state for count_q and acc_q.",
-        "initialize output state and count_q at initial_step.",
-        "on each rising clk crossing, reset out_v, metric_v, and count_q when rst is high.",
-        "otherwise set acc_q = 0, execute repeat (4), and add count_q + 1 on each repeat iteration."
+        "Declare integer state for count_q and acc_q.",
+        "Initialize output state and count_q at initial_step.",
+        "On each rising clk crossing, reset out_v, metric_v, and count_q when rst is high.",
+        "On non-reset samples, set acc_q = 0, execute repeat (4), and add count_q + 1 on each repeat iteration.",
+        "Drive out from the accumulator threshold and metric from acc_q."
       ],
       "visible_tests": [
         "visible.scs exercises the public Repeat Loop Accumulator stimulus and checks the primary observable behavior."
@@ -7064,13 +7064,13 @@
       "title": "Limexp Soft Exponential",
       "syntax_focus": "Use limexp() for a limited exponential behavioral transform.",
       "certification_scope": "language_extension_not_part_of_original_full_300_claim",
-      "description": "Use limexp() for a limited exponential behavioral transform. This task is verified with executable visible and hidden benches for Limexp Soft Exponential.",
+      "description": "Use limexp() as a sampled limited-exponential voltage transform. This is a language-extension/L0 support row outside the original full-300 circuit-function claim, not a standalone device-level current model.",
       "required_behavior": [
-        "Use limexp() for a limited exponential behavioral transform.",
-        "initialize output state and count_q at initial_step.",
-        "on each rising clk crossing, reset out_v, metric_v, and count_q when rst is high.",
-        "otherwise compute out_v = limexp(V(vin)).",
-        "set metric_v = out_v."
+        "Initialize output state and count_q at initial_step.",
+        "On each rising clk crossing, reset out_v, metric_v, and count_q when rst is high.",
+        "On non-reset samples, compute out_v = limexp(V(vin)).",
+        "Set metric_v = out_v.",
+        "Drive out and metric with transition smoothing."
       ],
       "visible_tests": [
         "visible.scs exercises the public Limexp Soft Exponential stimulus and checks the primary observable behavior."
@@ -7242,13 +7242,13 @@
       "title": "Event Or Cross Timer",
       "syntax_focus": "Use an analog event expression combining cross() and timer() with or.",
       "certification_scope": "language_extension_not_part_of_original_full_300_claim",
-      "description": "Use an analog event expression combining cross() and timer() with or. This task is verified with executable visible and hidden benches for Event Or Cross Timer.",
+      "description": "Use one analog event expression combining cross() and timer() with or while preserving a sampled voltage-domain output contract. This is a language-extension/L0 support row outside the original full-300 circuit-function claim.",
       "required_behavior": [
-        "Use an analog event expression combining cross() and timer() with or.",
-        "initialize out_v and event_count at initial_step.",
-        "use one analog event statement combining cross(V(clk) - vth, +1) and timer(1n, 1n) with or.",
-        "on either event, sample V(vin) into out_v.",
-        "increment event_count once per event body execution."
+        "Initialize out_v and event_count at initial_step.",
+        "Use one analog event statement combining cross(V(clk) - vth, +1) and timer(1n, 1n) with or.",
+        "On either event source, sample V(vin) into out_v.",
+        "Increment event_count once per event body execution.",
+        "Drive out from out_v and metric from event_count."
       ],
       "visible_tests": [
         "visible.scs exercises the public Event Or Cross Timer stimulus and checks the primary observable behavior."
@@ -7277,13 +7277,13 @@
       "title": "Nested Function Pipeline",
       "syntax_focus": "Use nested user-defined function calls in a behavioral pipeline.",
       "certification_scope": "language_extension_not_part_of_original_full_300_claim",
-      "description": "Use nested user-defined function calls in a behavioral pipeline. This task is verified with executable visible and hidden benches for Nested Function Pipeline.",
+      "description": "Use nested user-defined analog function calls in a voltage-domain contribution. This is a language-extension/L0 support row outside the original full-300 circuit-function claim.",
       "required_behavior": [
-        "Use nested user-defined function calls in a behavioral pipeline.",
-        "define an analog function f2 that returns x * x.",
-        "define an analog function f1 that calls f2(x) and adds 1.0.",
-        "drive out with f1(V(vin)).",
-        "keep the nested function path active in the analog contribution."
+        "Define an analog function f2 that returns x * x.",
+        "Define an analog function f1 that calls f2(x) and adds 1.0.",
+        "Drive out with f1(V(vin)).",
+        "Keep the nested function path active in the analog contribution.",
+        "Use the public two-port vin/out interface."
       ],
       "visible_tests": [
         "visible.scs exercises the public Nested Function Pipeline stimulus and checks the primary observable behavior."
@@ -8297,13 +8297,13 @@
       "title": "Event Nested Or Expression",
       "syntax_focus": "Use a deeper analog event expression with nested cross/above/timer terms.",
       "certification_scope": "language_extension_not_part_of_original_full_300_claim",
-      "description": "Use a deeper analog event expression with nested cross/above/timer terms. This task is verified with executable visible and hidden benches for Event Nested Or Expression.",
+      "description": "Use one nested analog event expression combining cross(), above(), and timer() terms with or. This is a language-extension/L0 support row outside the original full-300 circuit-function claim.",
       "required_behavior": [
         "Initialize real state q to 0.0 at initial_step.",
-        "Use one analog event statement combining these terms with or.",
-        "cross(V(a) - 0.45, +1).",
-        "above(V(b) - 0.45).",
-        "timer(10n, 20n)."
+        "Use one analog event statement combining cross(V(a) - 0.45, +1), above(V(b) - 0.45), and timer(10n, 20n) with or.",
+        "On every event, increment q by 0.1.",
+        "Wrap q back to 0.0 when q > 0.9.",
+        "Drive out with q using transition smoothing."
       ],
       "visible_tests": [
         "visible.scs exercises the public Event Nested Or Expression stimulus and checks the primary observable behavior."

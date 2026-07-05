@@ -1,12 +1,16 @@
 # Hierarchy Nested Parameter Chain
 
-Implement one behavioral Verilog-A source file named `hierarchy_nested_parameter_chain.va`.
-The test harness also supplies the read-only support child module
-`staged_gain_child.va`.
+## Task Contract
 
-## Interface
+Implement one behavioral Verilog-A source file named `hierarchy_nested_parameter_chain.va`. This is a language-extension/L0 support task for hierarchical child-module reuse and parameter override propagation, not a standalone core circuit macro.
 
-Use this exact module interface:
+## Form-Specific Requirements
+
+The public harness supplies a read-only support child module in `staged_gain_child.va`. Return only the parent source file and instantiate the supplied child module twice from it.
+
+## Public Verilog-A Interface
+
+Use this exact parent module interface:
 
 ```verilog
 module hierarchy_nested_parameter_chain (
@@ -19,20 +23,22 @@ module hierarchy_nested_parameter_chain (
 );
 ```
 
-Keep the model behavioral and do not introduce current contributions.
+## Public Parameter Contract
+
+The supplied `staged_gain_child` exposes a `gain` parameter. Override the first instance to `1.2` and the second instance to `0.5`.
 
 ## Required Behavior
 
-Use nested child module instances with parameter overrides across two stages.
+- Define the top module `hierarchy_nested_parameter_chain`.
+- Instantiate the supplied reusable child gain module twice using named port maps.
+- Connect `vin -> gain0 -> mid -> gain1 -> out`.
+- Drive `metric` directly from the intermediate node `V(mid)`.
+- Preserve the two-stage gain chain so the final output reflects the 1.2 gain followed by the 0.5 gain.
 
-Required behavior:
+## Modeling Constraints
 
-- define the top module `hierarchy_nested_parameter_chain`;
-- instantiate the supplied reusable child gain module;
-- instantiate two gain stages from the parent using named port maps;
-- override the first child gain to 1.2 and the second child gain to 0.5;
-- connect `vin -> gain0 -> mid -> gain1 -> out`;
-- drive `metric` from the intermediate node `V(mid)`;
-- keep the implementation behavioral and avoid current contributions.
+Keep the implementation behavioral and voltage-domain only. Do not introduce current contributions or redefine the supplied support module in the returned artifact.
+
+## Output Contract
 
 Return exactly one source artifact named `hierarchy_nested_parameter_chain.va`.

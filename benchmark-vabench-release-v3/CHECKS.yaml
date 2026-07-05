@@ -9025,7 +9025,7 @@
       - named_child_instances_are_exercised
       - no_current_domain_contribution
   notes:
-    - "Hierarchy support artifact candidate promoted to executable EVAS behavior evidence."
+    - "Hierarchy support artifact staging is retained as a language-extension/L0 support row outside the original full-300 circuit-function claim; supplied child modules define the hierarchy boundary while the checked output remains voltage-domain behavior."
 432-hierarchy-nested-parameter-chain: |
   version: 1
   task_id: v3_432_hierarchy_nested_parameter_chain
@@ -9065,7 +9065,7 @@
       - parameter_overrides_affect_hidden_waveform
       - no_current_domain_contribution
   notes:
-    - "Hierarchy nested parameter-chain candidate promoted to executable EVAS behavior evidence."
+    - "Hierarchy nested parameter chain is retained as a language-extension/L0 support row outside the original full-300 circuit-function claim; the checked behavior is child-module reuse with parameter overrides on a voltage-domain chain."
 434-repeat-loop-accumulator: |
   version: 1
   task_id: v3_434_repeat_loop_accumulator
@@ -9102,7 +9102,7 @@
       - reset_clears_count_and_outputs
       - no_current_domain_contribution
   notes:
-    - "Repeat-loop accumulator behavior promoted to executable EVAS behavior candidate."
+    - "Repeat-loop accumulator is retained as a language-extension/L0 support row outside the original full-300 circuit-function claim; repeat-loop execution is checked through sampled voltage/count behavior."
 435-ddt-voltage-derivative-source: |
   version: 1
   task_id: v3_435_ddt_voltage_derivative_source
@@ -9530,7 +9530,7 @@
       - reset_clears_outputs
       - no_current_domain_contribution
   notes:
-    - "limexp small-signal exponential behavior promoted to executable EVAS behavior candidate."
+    - "limexp soft exponential is retained as a language-extension/L0 support row outside the original full-300 circuit-function claim; this row checks the limited exponential operator on sampled voltage behavior, not a device-level current model."
 446-fstrobe-file-line-writer: |
   version: 1
   task_id: v3_446_fstrobe_file_line_writer
@@ -9719,7 +9719,7 @@
       - event_count_monotonic_range
       - no_current_domain_contribution
   notes:
-    - "Analog event-or cross/timer behavior promoted to executable EVAS behavior candidate."
+    - "Event-or cross/timer is retained as a language-extension/L0 support row outside the original full-300 circuit-function claim; the checked behavior is one combined cross/timer event expression driving sampled voltage/count state."
 457-nested-function-pipeline: |
   version: 1
   task_id: v3_457_nested_function_pipeline
@@ -9753,7 +9753,7 @@
       - squared_plus_one_transfer
       - no_current_domain_contribution
   notes:
-    - "Nested user-defined function pipeline behavior promoted to executable EVAS behavior candidate."
+    - "Nested user-defined function pipeline is retained as a language-extension/L0 support row outside the original full-300 circuit-function claim; the public two-port interface checks nested analog function calls in a voltage-domain contribution."
 460-analog-initial-block-state: |
   version: 1
   task_id: v3_460_analog_initial_block_state
@@ -10723,7 +10723,7 @@
       - nested_or_event_parse
       - cross_above_timer_events_increment_state
   notes:
-    - "Nested analog event-or expression promoted with executable cross/above/timer behavior verification."
+    - "Nested analog event-or expression is retained as a language-extension/L0 support row outside the original full-300 circuit-function claim; the checked behavior combines cross, above, and timer event terms in one voltage-domain state update."
 491-kcl-capacitor-ddt-current: |
   version: 1
   task_id: v3_491_kcl_capacitor_ddt_current
