@@ -1,23 +1,35 @@
 # Custom Nature Discipline Voltage
 
-Implement one behavioral Verilog-A/AMS source file named `custom_nature_discipline_voltage.vams`.
+## Task Contract
 
-## Interface
+Implement one Verilog-AMS source file named `custom_nature_discipline_voltage.vams`. This task exercises a custom nature and discipline used for a voltage-domain pass-through model.
 
-Use the exact Verilog-AMS interface shown in the starter file. This is a language-declaration candidate, not part of the built-in `electrical` behavioral-event certification layer.
+## Form-Specific Requirements
 
-## Required Feature
+This is a Verilog-AMS semantic/support task. Preserve the custom nature and custom discipline declarations instead of replacing the model with the built-in `electrical` discipline.
 
-Declare a custom nature and discipline for behavioral voltage modeling.
+## Public Verilog-A Interface
+
+Declare a custom nature named `V3Voltage` and a custom discipline named `v3electrical`. Use this exact module interface:
+
+```verilog
+module custom_nature_discipline_voltage(a, y);
+```
+
+Port `a` is the input and port `y` is the output. Both ports must use the custom `v3electrical` discipline.
+
+## Public Parameter Contract
+
+This task has no public Verilog-A parameters.
 
 ## Required Behavior
 
-Required behavior:
+`V3Voltage` must use voltage units, the access function `V`, and an absolute tolerance. `v3electrical` must use `V3Voltage` as its potential nature. The module must drive the output potential `V(y)` from the input potential `V(a)`.
 
-- declare a custom `nature` with units, access function, and absolute tolerance;
-- declare a custom `discipline` using that nature as its potential;
-- declare module ports using the custom discipline;
-- drive the output potential from the input potential using a behavioral voltage contribution;
-- do not use current contributions.
+## Modeling Constraints
+
+Use a behavioral voltage contribution for the pass-through behavior. Do not use current contributions or built-in `electrical` port declarations for the target module.
+
+## Output Contract
 
 Return exactly one source artifact named `custom_nature_discipline_voltage.vams`.

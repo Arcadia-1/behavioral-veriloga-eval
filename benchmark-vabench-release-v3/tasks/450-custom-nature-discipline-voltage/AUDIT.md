@@ -2,7 +2,7 @@
 
 - Task id: `v3_450_custom_nature_discipline_voltage`
 - Category: `verilogams_discipline_semantics`
-- Required syntax focus: `Declare a custom nature and discipline for behavioral voltage modeling.`
-- EVAS status: `behavior-certified`
-- Boundary: language coverage candidate; KCL/current solving is outside this task unless explicitly required by the syntax itself.
-- Status: promoted to executable EVAS behavior candidate with gold and five negative variants verified.
+- Scope: Verilog-AMS semantic/support row for custom nature and discipline declarations.
+- Public behavior: `V(y)` follows `V(a)` through ports declared on the custom `v3electrical` discipline.
+- Review note: starter and public testbenches use the same custom-discipline module interface as the solution.
+- Validation: Rust EVAS gold/negative, targeted Spectre visible/hidden gold, and AHDL read-in triage pass. Spectre reports only the shared `VACOMP-2435` environment notice.

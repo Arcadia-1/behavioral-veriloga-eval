@@ -1,6 +1,6 @@
 simulator lang=spectre
 global 0
-ahdl_include "../solution/custom_nature_discipline_voltage.vams"
+ahdl_include "custom_nature_discipline_voltage.vams"
 
 Vin (a 0) vsource type=pwl wave=[0n 0 10n 0.2 30n 0.7 60n 0.4]
 Xdut (a y) custom_nature_discipline_voltage
