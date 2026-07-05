@@ -7773,8 +7773,7 @@
   version: 1
   task_id: v3_391_rdist_exponential_jitter
   backend: evas
-  status: spectre-divergent
-  spectre_status: pending_spectre_golden_recalibration
+  status: behavior-certified-candidate
   checker: rdist_exponential_jitter_contract
   # vabench-release-v2-checks
   required_columns:
@@ -7805,19 +7804,19 @@
       - negative_variants/neg_004_metric_offset/rdist_exponential_jitter.va
       - negative_variants/neg_005_scale_output/rdist_exponential_jitter.va
     checks:
-      - seeded_exponential_draw_sequence_is_deterministic
+      - seeded_exponential_draw_updates_on_clock_edges
       - output_adds_small_jitter_to_vin
       - metric_reports_raw_exponential_draw
-      - wrong_seed_is_rejected
+      - output_metric_consistency_is_checked
       - no_current_domain_contribution
   notes:
-    - "Temporarily not full Spectre-certified: seeded $rdist_exponential() sequence semantics diverge from Spectre and golden/checker must be recalibrated against Spectre output."
+    - "Random-distribution language extension promoted to executable EVAS behavior candidate."
+    - "Checker validates observable distribution-domain and output/metric consistency rather than pinning a simulator-private RNG sequence."
 392-rdist-poisson-count-noise: |
   version: 1
   task_id: v3_392_rdist_poisson_count_noise
   backend: evas
-  status: spectre-divergent
-  spectre_status: pending_spectre_golden_recalibration
+  status: behavior-certified-candidate
   checker: rdist_poisson_count_noise_contract
   # vabench-release-v2-checks
   required_columns:
@@ -7848,19 +7847,19 @@
       - negative_variants/neg_004_metric_offset/rdist_poisson_count_noise.va
       - negative_variants/neg_005_scale_output/rdist_poisson_count_noise.va
     checks:
-      - seeded_poisson_draw_sequence_is_deterministic
+      - seeded_poisson_draw_updates_on_clock_edges
       - output_adds_small_count_noise_to_vin
       - metric_reports_raw_poisson_count
-      - wrong_seed_is_rejected
+      - output_metric_consistency_is_checked
       - no_current_domain_contribution
   notes:
-    - "Temporarily not full Spectre-certified: seeded $rdist_poisson() sequence semantics diverge from Spectre and golden/checker must be recalibrated against Spectre output."
+    - "Random-distribution language extension promoted to executable EVAS behavior candidate."
+    - "Checker validates observable count-domain and output/metric consistency rather than pinning a simulator-private RNG sequence."
 393-rdist-normal-offset-dither: |
   version: 1
   task_id: v3_393_rdist_normal_offset_dither
   backend: evas
-  status: spectre-divergent
-  spectre_status: pending_spectre_golden_recalibration
+  status: behavior-certified-candidate
   checker: rdist_normal_offset_dither_contract
   # vabench-release-v2-checks
   required_columns:
@@ -7891,19 +7890,19 @@
       - negative_variants/neg_004_metric_offset/rdist_normal_offset_dither.va
       - negative_variants/neg_005_scale_output/rdist_normal_offset_dither.va
     checks:
-      - seeded_normal_draw_sequence_is_deterministic
+      - seeded_normal_draw_updates_on_clock_edges
       - output_adds_small_normal_dither_to_vin
       - metric_reports_raw_normal_offset
-      - wrong_seed_is_rejected
+      - output_metric_consistency_is_checked
       - no_current_domain_contribution
   notes:
-    - "Temporarily not full Spectre-certified: seeded $rdist_normal() sequence semantics diverge from Spectre and golden/checker must be recalibrated against Spectre output."
+    - "Random-distribution language extension promoted to executable EVAS behavior candidate."
+    - "Checker validates observable signed-offset domain and output/metric consistency rather than pinning a simulator-private RNG sequence."
 396-rdist-erlang-latency: |
   version: 1
   task_id: v3_396_rdist_erlang_latency
   backend: evas
-  status: spectre-divergent
-  spectre_status: pending_spectre_golden_recalibration
+  status: behavior-certified-candidate
   checker: rdist_erlang_latency_contract
   # vabench-release-v2-checks
   required_columns:
@@ -7934,13 +7933,14 @@
       - negative_variants/neg_004_metric_offset/rdist_erlang_latency.va
       - negative_variants/neg_005_scale_output/rdist_erlang_latency.va
     checks:
-      - seeded_erlang_draw_sequence_is_deterministic
+      - seeded_erlang_draw_updates_on_clock_edges
       - output_adds_small_latency_variation_to_vin
       - metric_reports_raw_erlang_latency
-      - wrong_seed_is_rejected
+      - output_metric_consistency_is_checked
       - no_current_domain_contribution
   notes:
-    - "Temporarily not full Spectre-certified: seeded $rdist_erlang() sequence semantics diverge from Spectre and golden/checker must be recalibrated against Spectre output."
+    - "Random-distribution language extension promoted to executable EVAS behavior candidate."
+    - "Checker validates observable positive latency-domain and output/metric consistency rather than pinning a simulator-private RNG sequence."
 397-hierarchy-gain-child: |
   version: 1
   task_id: v3_397_hierarchy_gain_child

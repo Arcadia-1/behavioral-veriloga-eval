@@ -18,7 +18,7 @@
     },
     {
       "id": "neg_003_reset_bias",
-      "description": "Rdist Normal Offset Dither: mishandles reset or initialization, passing steady-state samples but failing startup or recovery checks.",
+      "description": "Rdist Normal Offset Dither: drops the reported random metric after computing the output, breaking the output/metric consistency check.",
       "files": [
         "neg_003_reset_bias/rdist_normal_offset_dither.va"
       ],

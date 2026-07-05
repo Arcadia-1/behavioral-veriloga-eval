@@ -1,8 +1,19 @@
 # Rdist Exponential Jitter
 
-Implement one behavioral Verilog-A source file named `rdist_exponential_jitter.va`.
+## Task Contract
 
-## Interface
+Implement one behavioral Verilog-A source file named `rdist_exponential_jitter.va`.
+The DUT is a clocked voltage-domain jitter injection model that draws an
+exponential random value and exposes both the perturbed output and the raw
+random metric.
+
+## Form-Specific Requirements
+
+This is a DUT task. Do not implement a testbench, checker, or simulator-private
+helper. The visible Spectre netlist is a public validation scenario, not part of
+the DUT implementation.
+
+## Public Verilog-A Interface
 
 Use this exact module interface:
 
@@ -17,19 +28,32 @@ module rdist_exponential_jitter (
 );
 ```
 
-Keep the model behavioral and do not introduce current contributions.
+## Public Parameter Contract
+
+Use `vth` as the clock/reset decision threshold with default value `0.45`.
+Use `tr` as the output transition rise/fall time with default value `200p`.
+Initialize the internal integer seed to `391`. The random draw values themselves
+are determined by the simulator's seeded `$rdist_exponential` implementation and
+must not be hard-coded as numeric constants.
 
 ## Required Behavior
 
-Use `$rdist_exponential()` for deterministic seeded jitter modeling.
+On `initial_step`, initialize the output state, metric state, counters, and
+random state to zero except for the internal seed.
 
-Required behavior:
+On each rising crossing of `clk` through `vth`:
 
-- initialize `seed_q = 391`, `noise_q = 0.0`, `out_v = 0.0`, and `metric_v = 0.0`;
-- on each rising crossing of `clk`, reset `out_v`, `metric_v`, and counters when `rst > vth`;
-- otherwise draw `noise_q = $rdist_exponential(seed_q, 1.0)`;
-- set `out_v = V(vin) + 0.01 * noise_q`;
-- set `metric_v = noise_q`;
-- drive `out` and `metric` with `transition(...)`.
+- if `rst > vth`, clear `out` and `metric` back to zero;
+- otherwise draw one exponential random value with `$rdist_exponential(seed_q, 1.0)`;
+- report that draw on `metric`;
+- drive `out` to the sampled input voltage plus `0.01` times the reported metric.
+
+## Modeling Constraints
+
+Keep the model behavioral and voltage-domain only. Use `cross(...)` for the
+clocked update and `transition(...)` for the output and metric drives. Do not
+introduce current contributions or hard-code a fixed random sequence.
+
+## Output Contract
 
 Return exactly one source artifact named `rdist_exponential_jitter.va`.
