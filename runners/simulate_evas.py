@@ -6836,6 +6836,29 @@ def _sample_many(
     return True, " ".join(details)
 
 
+def _sample_many_within_trace(
+    rows: list[dict[str, float]],
+    samples: dict[str, list[tuple[float, float]]],
+    *,
+    tol: float,
+) -> tuple[bool, str]:
+    if not rows:
+        return _sample_many(rows, samples, tol=tol)
+    end_time = rows[-1].get("time")
+    if end_time is None:
+        return _sample_many(rows, samples, tol=tol)
+    end_ns = end_time * 1e9
+    filtered: dict[str, list[tuple[float, float]]] = {}
+    for signal, expected_samples in samples.items():
+        visible_samples = [
+            (time_ns, expected)
+            for time_ns, expected in expected_samples
+            if time_ns <= end_ns + 1e-3
+        ]
+        filtered[signal] = visible_samples or expected_samples
+    return _sample_many(rows, filtered, tol=tol)
+
+
 def _signal_threshold_edges(
     rows: list[dict[str, float]],
     signal: str,
@@ -10017,7 +10040,7 @@ def check_v3_476_oomr_string_voltage_probe(rows: list[dict[str, float]]) -> tupl
     if not rows or not required.issubset(rows[0]):
         missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
         return False, "missing_columns=" + ",".join(missing)
-    return _sample_many(
+    return _sample_many_within_trace(
         rows,
         {
             "out": [
@@ -10036,7 +10059,7 @@ def check_v3_477_analog_node_alias_initial(rows: list[dict[str, float]]) -> tupl
     if not rows or not required.issubset(rows[0]):
         missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
         return False, "missing_columns=" + ",".join(missing)
-    return _sample_many(
+    return _sample_many_within_trace(
         rows,
         {
             "out": [
@@ -10055,7 +10078,7 @@ def check_v3_478_inherited_port_attribute_supply(rows: list[dict[str, float]]) -
     if not rows or not required.issubset(rows[0]):
         missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
         return False, "missing_columns=" + ",".join(missing)
-    return _sample_many(
+    return _sample_many_within_trace(
         rows,
         {
             "out": [
@@ -10074,7 +10097,7 @@ def check_v3_479_inherited_mfactor_parameter(rows: list[dict[str, float]]) -> tu
     if not rows or not required.issubset(rows[0]):
         missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
         return False, "missing_columns=" + ",".join(missing)
-    return _sample_many(
+    return _sample_many_within_trace(
         rows,
         {
             "out": [
@@ -10093,7 +10116,7 @@ def check_v3_480_mfactor_system_function_gain(rows: list[dict[str, float]]) -> t
     if not rows or not required.issubset(rows[0]):
         missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
         return False, "missing_columns=" + ",".join(missing)
-    return _sample_many(
+    return _sample_many_within_trace(
         rows,
         {
             "out": [
@@ -10180,7 +10203,7 @@ def check_v3_484_rtoi_conversion_quantizer(rows: list[dict[str, float]]) -> tupl
     if not rows or not required.issubset(rows[0]):
         missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
         return False, "missing_columns=" + ",".join(missing)
-    return _sample_many(
+    return _sample_many_within_trace(
         rows,
         {
             "out": [
@@ -10237,7 +10260,7 @@ def check_v3_487_table_model_2d_array_surface(rows: list[dict[str, float]]) -> t
     if not rows or not required.issubset(rows[0]):
         missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
         return False, "missing_columns=" + ",".join(missing)
-    return _sample_many(
+    return _sample_many_within_trace(
         rows,
         {
             "out": [
@@ -10256,7 +10279,7 @@ def check_v3_488_table_model_string_param_source(rows: list[dict[str, float]]) -
     if not rows or not required.issubset(rows[0]):
         missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
         return False, "missing_columns=" + ",".join(missing)
-    return _sample_many(
+    return _sample_many_within_trace(
         rows,
         {
             "out": [

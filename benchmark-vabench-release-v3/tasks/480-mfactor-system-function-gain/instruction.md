@@ -2,11 +2,11 @@
 
 ## Task Contract
 
-Implement one Verilog-A source file named `mfactor_system_function_gain.va`. The task models a voltage-domain gain controlled by the Spectre instance multiplicity factor.
+Implement one Verilog-A source file named `mfactor_system_function_gain.va`. This task exercises the Cadence-compatible `$mfactor` system function as a voltage gain source.
 
 ## Form-Specific Requirements
 
-This is a DUT task. The supplied testbenches set instance multiplicity with Spectre `m=...`.
+This is a Verilog-A semantic/support task. Read the effective Spectre instance multiplicity with `$mfactor` instead of using a public gain parameter or a hard-coded gain.
 
 ## Public Verilog-A Interface
 
@@ -21,15 +21,15 @@ module mfactor_system_function_gain(
 
 ## Public Parameter Contract
 
-This task has no public Verilog-A parameters. The effective multiplicity is read from Spectre using `$mfactor`.
+This task has no public Verilog-A parameters. Instance multiplicity is supplied by the simulator instance metadata and must be read with `$mfactor`.
 
 ## Required Behavior
 
-Read the effective instance multiplicity with Cadence-compatible `$mfactor` syntax and drive `out` with that value times `V(in)`. The supplied tests instantiate the DUT with `m=2.0`.
+Drive `out` with the effective instance multiplicity times `V(in)`.
 
 ## Modeling Constraints
 
-Use `transition(..., 0, 200p, 200p)` for the output. Use only voltage-domain behavior and do not hard-code the gain waveform.
+Use `transition(..., 0, 200p, 200p)` on the output contribution. Use only voltage-domain behavior and do not use current contributions.
 
 ## Output Contract
 

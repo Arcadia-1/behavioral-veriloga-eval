@@ -9679,7 +9679,8 @@
       - output_follows_input_potential
       - no_current_domain_contribution
   notes:
-    - "Custom nature/discipline voltage pass-through behavior promoted to executable EVAS behavior candidate."
+    - "Custom nature/discipline voltage pass-through behavior uses the public custom-discipline contract."
+    - "Fresh S5 review: Rust EVAS gold passed, five negatives were rejected, Spectre visible/hidden gold passed, and AHDL read-in triage found no task-specific warnings."
 456-event-or-cross-timer: |
   version: 1
   task_id: v3_456_event_or_cross_timer
@@ -10328,10 +10329,9 @@
       - "negative_segment_rejects_constant_alias"
       - "ordinary_input_port_bypass_is_forbidden"
       - "five_negative_variants_rejected_by_behavior_checker"
-  promotion_evidence:
-    result: "1/1 gold PASS; 5/5 negative variants rejected; 0 expectation_fail for task 476."
   notes:
-    - "Promoted after EVAS resolved string out-of-module voltage probes such as V(sigpath)."
+    - "String out-of-module voltage probe behavior must resolve the public sigpath parameter."
+    - "Fresh S5 review: Rust EVAS gold passed, five negatives were rejected, Spectre visible/hidden gold passed, and AHDL read-in triage found no task-specific warnings."
 477-analog-node-alias-initial: |
   version: 2
   task_id: v3_477_analog_node_alias_initial
@@ -10357,10 +10357,9 @@
       - "output_follows_aliased_node_voltage"
       - "ordinary_input_port_bypass_is_forbidden"
       - "five_negative_variants_rejected_by_behavior_checker"
-  promotion_evidence:
-    result: "1/1 gold PASS; 5/5 negative variants rejected; 0 expectation_fail after EVAS analog node alias support."
   notes:
-    - "Promoted after EVAS mapped an internal alias node to the requested $root path during analog initial."
+    - "Analog-initial node alias behavior must map the internal node to the public target_path parameter."
+    - "Fresh S5 review: Rust EVAS gold passed, five negatives were rejected, Spectre visible/hidden gold passed, and AHDL read-in triage found no task-specific warnings."
 478-inherited-port-attribute-supply: |
   version: 1
   task_id: v3_478_inherited_port_attribute_supply
@@ -10391,7 +10390,8 @@
       - inherited_port_attribute_parse
       - output_tracks_input_with_explicit_supplies
   notes:
-    - "Inherited supply-port attribute syntax promoted with explicit-supply behavioral verification."
+    - "Inherited supply-port attributes are part of the public syntax contract; explicit supply pins still define the behavior."
+    - "Fresh S5 review: Rust EVAS gold passed, five negatives were rejected, Spectre visible/hidden gold passed, and AHDL read-in triage found no task-specific warnings."
 479-inherited-mfactor-parameter: |
   version: 1
   task_id: v3_479_inherited_mfactor_parameter
@@ -10422,7 +10422,8 @@
       - inherited_mfactor_attribute_parse
       - output_uses_instance_m_gain
   notes:
-    - "Inherited m-factor parameter attribute promoted with executable parameter-gain behavior verification."
+    - "Inherited m-factor parameter attribute is part of the public syntax contract; the effective m value defines the gain."
+    - "Fresh S5 review: Rust EVAS gold passed, five negatives were rejected, Spectre visible/hidden gold passed, and AHDL read-in triage found no task-specific warnings."
 480-mfactor-system-function-gain: |
   version: 2
   task_id: v3_480_mfactor_system_function_gain
@@ -10448,10 +10449,9 @@
       - "transition_output_settles_within_behavior_tolerance"
       - "five_negative_variants_rejected_by_behavior_checker"
       - "no_current_domain_contribution"
-  promotion_evidence:
-    result: "1/1 gold PASS; 5/5 negative variants rejected; 0 expectation_fail after EVAS $mfactor() support."
   notes:
-    - "Uses Cadence-compatible $mfactor syntax without parentheses."
+    - "Uses Cadence-compatible $mfactor syntax to read effective instance multiplicity."
+    - "Fresh S5 review: Rust EVAS gold passed, five negatives were rejected, Spectre visible/hidden gold passed, and AHDL read-in triage found no task-specific warnings."
 481-analog-primitive-resistor-instance: |
   version: 2
   task_id: v3_481_analog_primitive_resistor_instance
@@ -10572,7 +10572,8 @@
       - rtoi_parse
       - quantized_output_saturates
   notes:
-    - "Real-to-integer conversion helper promoted with executable quantizer behavior verification."
+    - "Real-to-integer conversion helper is part of the public quantizer contract."
+    - "Fresh S5 review: Rust EVAS gold passed, five negatives were rejected, Spectre visible/hidden gold passed, and AHDL read-in triage found no task-specific warnings."
 485-mc-trial-number-metric: |
   version: 1
   task_id: v3_485_mc_trial_number_metric
@@ -10655,10 +10656,9 @@
       - "zero_corner_bias_negative_is_rejected"
       - "no_current_domain_contribution"
       - "five_negative_variants_rejected_by_behavior_checker"
-  promotion_evidence:
-    result: "1/1 gold PASS; 5/5 negative variants rejected; 0 expectation_fail after strengthening neg_003 to perturb z[0]."
   notes:
-    - "Promoted after EVAS evaluated 2D array-backed $table_model() surfaces and the weak reset-bias negative was made checker-visible."
+    - "2D array-backed $table_model() surface behavior uses four public table points."
+    - "Fresh S5 review: Rust EVAS gold passed, five negatives were rejected, Spectre visible/hidden gold passed, and AHDL read-in triage found no task-specific warnings."
 488-table-model-string-param-source: |
   version: 2
   task_id: v3_488_table_model_string_param_source
@@ -10685,10 +10685,9 @@
       - "table_model_control_string_does_not_mask_filename"
       - "breakpoints_map_0p0_to_0p1_0p5_to_0p6_1p0_to_1p1"
       - "five_negative_variants_rejected_by_behavior_checker"
-  promotion_evidence:
-    result: "1/1 gold PASS; 5/5 negative variants rejected; 0 expectation_fail after EVAS $table_model filename/control-argument support."
   notes:
-    - "Promoted after EVAS resolved the $table_model data filename from the string parameter argument before the control string."
+    - "$table_model() reads the support table through the public string parameter before applying the control string."
+    - "Fresh S5 review: Rust EVAS gold passed, five negatives were rejected, Spectre visible/hidden gold passed, and AHDL read-in triage found no task-specific warnings."
 489-event-nested-or-expression: |
   version: 1
   task_id: v3_489_event_nested_or_expression

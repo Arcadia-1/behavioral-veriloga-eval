@@ -1,12 +1,16 @@
 # Inherited Mfactor Parameter
 
-Implement one Verilog-A source file named `inherited_mfactor_parameter.va`.
+## Task Contract
 
-## Required Feature
+Implement one Verilog-A source file named `inherited_mfactor_parameter.va`. This task exercises an inherited m-factor parameter used as a voltage gain.
 
-Declare an inherited m-factor parameter attribute.
+## Form-Specific Requirements
 
-## Required Interface
+This is a Verilog-A semantic/support task. Preserve the inherited-parameter attribute and use the public parameter value rather than a hard-coded gain.
+
+## Public Verilog-A Interface
+
+Use this exact module interface:
 
 ```verilog
 module inherited_mfactor_parameter(
@@ -15,11 +19,18 @@ module inherited_mfactor_parameter(
 );
 ```
 
+## Public Parameter Contract
+
+Declare `(* inherited_mfactor *) parameter real m = 1.0;`. The testbench may override `m`, and the model must use the effective parameter value.
+
 ## Required Behavior
 
-- Declare a real parameter named `m` with the Verilog-A attribute `(* inherited_mfactor *)`.
-- Drive `out` with `m * V(in)` using `transition(..., 0, 200p, 200p)`.
-- The testbench may override `m`; your model must use the parameter value, not a hard-coded gain.
-- Use only voltage-domain behavior; do not use `I(...)`.
+Drive `out` with `m * V(in)`.
+
+## Modeling Constraints
+
+Use `transition(..., 0, 200p, 200p)` on the output contribution. Use only voltage-domain behavior and do not use current contributions.
+
+## Output Contract
 
 Return exactly one source artifact named `inherited_mfactor_parameter.va`.
