@@ -1,17 +1,9 @@
-# Audit: Always Async Reset Counter
+# Archived Audit: Always Async Reset Counter
 
-- Task id: `v3_417_always_async_reset_counter`
-- Category: `verilogams_digital_mixed_semantics`
-- Required syntax focus: `Use an always block with asynchronous reset sensitivity.`
-- Boundary: behavioral voltage/digital modeling only; no `I(...)` current contribution.
-- Status: behavior-certified AMS/digital always/event extension task.
-- Former EVAS tracking: https://github.com/Arcadia-1/EVAS/issues/39
-
-## Staged Promotion Gate
-
-- Score claim: `behavior-certified-extension`.
-- Current probe status: `PASS`.
-- Current verification summary: 1/1 gold PASS, 5/5 negative variants rejected, and zero expectation_fail.
-- Promotion evidence: `benchmark-vabench-release-v3/reports/verify_tasks_417_418_after_digital_fixes.json`.
-- Per-task promotion command: `PYTHONPATH="/Users/mac/Documents/github-repos/EVAS:$PWD/runners" VAEVAS_DEFAULT_EVAS_ENGINE=python VAEVAS_EVAS_PERSISTENT_WORKER=0 PATH="$PWD/.venv-evas/bin:$PATH" .venv-evas/bin/python scripts/run_v3_gold_negative_verification.py --start 417 --end 418 --tasks 417,418 --include-staged --timeout 120 --jobs 1 --out benchmark-vabench-release-v3/reports/verify_tasks_417_418_after_digital_fixes.json`
-- Acceptance basis: EVAS masks bitwise `~` to the declared logic width, so `q = ~q` toggles 0/1 instead of producing Python-style negative integers; the enable-polarity negative is rejected.
+- Task: `417-always-async-reset-counter`
+- Status: archived Spectre-unsupported candidate; not counted in the active default v3 denominator.
+- Removal reason: digital always-block construct outside the default standalone Spectre Verilog-A target.
+- Gate 1: not an ordinary standalone Spectre-compatible circuit-function benchmark in the current v3 surface.
+- Gate 2: public instruction has been normalized to the current vaBench section format. Starter, solution, tests, and negative variants are unchanged in this cleanup.
+- Verification status: no fresh Spectre or AHDL rerun was performed for this cleanup because the row remains archived and unsupported by the current default Spectre target.
+- Future action: Keep archived/non-counted unless a future extension-suite or support-row policy explicitly restores it.

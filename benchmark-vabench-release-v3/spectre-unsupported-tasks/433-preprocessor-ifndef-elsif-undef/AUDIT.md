@@ -1,8 +1,9 @@
-# Audit: Preprocessor Ifndef Elsif Undef
+# Archived Audit: Preprocessor Ifndef Elsif Undef
 
-- Task id: `v3_433_preprocessor_ifndef_elsif_undef`
-- Category: `veriloga_preprocessor_control_semantics`
-- Required syntax focus: `Use `ifndef, `elsif, and `undef to select a behavioral constant.`
-- EVAS status: `supported`
-- Boundary: behavioral voltage/digital modeling only; no `I(...)` current contribution.
-- Status: promoted to executable EVAS behavior candidate with gold and five negative variants verified.
+- Task: `433-preprocessor-ifndef-elsif-undef`
+- Status: archived Spectre-unsupported candidate; not counted in the active default v3 denominator.
+- Removal reason: preprocessor directive subset rejected by standalone Spectre in this environment.
+- Gate 1: not an ordinary standalone Spectre-compatible circuit-function benchmark in the current v3 surface.
+- Gate 2: public instruction has been normalized to the current vaBench section format. Starter, solution, tests, and negative variants are unchanged in this cleanup.
+- Verification status: no fresh Spectre or AHDL rerun was performed for this cleanup because the row remains archived and unsupported by the current default Spectre target.
+- Future action: Keep archived/non-counted unless a future extension-suite or support-row policy explicitly restores it.

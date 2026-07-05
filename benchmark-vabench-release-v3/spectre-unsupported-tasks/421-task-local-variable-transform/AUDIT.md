@@ -1,8 +1,9 @@
-# Audit: Task Local Variable Transform
+# Archived Audit: Task Local Variable Transform
 
-- Task id: `v3_421_task_local_variable_transform`
-- Category: `veriloga_task_semantics`
-- Required syntax focus: `Use a task with an internal local variable before updating output and metric state.`
-- EVAS status: `behavior-certified`
-- Boundary: behavioral voltage/digital modeling only; no `I(...)` current contribution.
-- Status: promoted to executable EVAS behavior candidate with gold and five negative variants verified.
+- Task: `421-task-local-variable-transform`
+- Status: archived Spectre-unsupported candidate; not counted in the active default v3 denominator.
+- Removal reason: Verilog task/endtask declaration rejected by standalone Spectre in this environment.
+- Gate 1: not an ordinary standalone Spectre-compatible circuit-function benchmark in the current v3 surface.
+- Gate 2: public instruction has been normalized to the current vaBench section format. Starter, solution, tests, and negative variants are unchanged in this cleanup.
+- Verification status: no fresh Spectre or AHDL rerun was performed for this cleanup because the row remains archived and unsupported by the current default Spectre target.
+- Future action: Keep archived/non-counted unless a future extension-suite or support-row policy explicitly restores it.
