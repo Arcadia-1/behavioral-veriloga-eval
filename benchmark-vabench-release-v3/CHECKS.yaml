@@ -8782,7 +8782,7 @@
       - reset_clears_outputs
       - no_current_domain_contribution
   notes:
-    - "String swrite label-builder behavior promoted to executable EVAS behavior candidate."
+    - "String swrite label-builder is retained as a language-extension/L0 support row outside the original full-300 circuit-function claim; the formatted string is intentionally internal-only."
 426-string-sformat-mode-tag: |
   version: 1
   task_id: v3_426_string_sformat_mode_tag
@@ -8864,7 +8864,7 @@
       - reset_clears_outputs
       - no_current_domain_contribution
   notes:
-    - "String formatted metric line behavior promoted to executable EVAS behavior candidate."
+    - "String formatted metric line is retained as a language-extension/L0 support row outside the original full-300 circuit-function claim; unlike 425, the formatted string is emitted through file I/O."
 428-string-mode-tagged-log: |
   version: 1
   task_id: v3_428_string_mode_tagged_log
@@ -8984,7 +8984,7 @@
       - reset_clears_outputs
       - no_current_domain_contribution
   notes:
-    - "Seeded random distribution reproducibility behavior promoted to executable EVAS behavior candidate."
+    - "Seeded random distribution reproducibility is retained as a language-extension/L0 support row outside the original full-300 circuit-function claim; it is distinct from Poisson noise rows by exercising paired same-seed call structure, but the checker does not claim statistical equivalence."
 431-hierarchy-support-artifact-staging: |
   version: 1
   task_id: v3_431_hierarchy_support_artifact_staging
@@ -9647,7 +9647,7 @@
       - reset_clears_outputs
       - no_current_domain_contribution
   notes:
-    - "Seeded uniform dither behavior promoted to executable EVAS behavior candidate."
+    - "Seeded uniform dither is retained as a language-extension/L0 support row outside the original full-300 circuit-function claim; it is the uniform-distribution counterpart to the broader seeded random-source family."
 450-custom-nature-discipline-voltage: |
   version: 1
   task_id: v3_450_custom_nature_discipline_voltage

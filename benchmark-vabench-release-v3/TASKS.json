@@ -6408,13 +6408,13 @@
       "title": "String Swrite Label Builder",
       "syntax_focus": "Use $swrite() to build an internal label string.",
       "certification_scope": "language_extension_not_part_of_original_full_300_claim",
-      "description": "Use $swrite() to build an internal label string. This task is verified with executable visible and hidden benches for String Swrite Label Builder.",
+      "description": "Use $swrite() to build an internal label string on the sampled update path while preserving the voltage-domain output contract.",
       "required_behavior": [
         "Use $swrite() to build an internal label string.",
-        "declare a string state variable such as label_q.",
-        "initialize out_v, metric_v, and count_q at initial_step.",
-        "on each rising clk crossing, reset out_v, metric_v, and count_q when rst is high.",
-        "otherwise set out_v to vhi when V(vin) > vth, else 0.0."
+        "Declare string state and initialize voltage, metric, and count state at initial_step.",
+        "Reset output, metric, and count state when rst is high on a rising clk crossing.",
+        "On non-reset samples, threshold vin into out and expose the current count on metric before incrementing.",
+        "Keep the formatted string as a simulator side effect that does not alter the voltage outputs."
       ],
       "visible_tests": [
         "visible.scs exercises the public String Swrite Label Builder stimulus and checks the primary observable behavior."
@@ -6478,13 +6478,13 @@
       "title": "String Formatted Metric Line",
       "syntax_focus": "Use $swrite() to format a metric file line before writing it.",
       "certification_scope": "language_extension_not_part_of_original_full_300_claim",
-      "description": "Use $swrite() to format a metric file line before writing it. This task is verified with executable visible and hidden benches for String Formatted Metric Line.",
+      "description": "Use $swrite() to format a metric line and append it through $fopen/$fwrite/$fclose while preserving the voltage-domain output contract.",
       "required_behavior": [
         "Use $swrite() to format a metric file line before writing it.",
-        "declare a string state variable such as label_q.",
-        "initialize out_v, metric_v, and count_q at initial_step.",
-        "on each rising clk crossing, reset out_v, metric_v, and count_q when rst is high.",
-        "otherwise set out_v to vhi when V(vin) > vth, else 0.0."
+        "Declare string state and initialize voltage, metric, and count state at initial_step.",
+        "Reset output, metric, and count state when rst is high on a rising clk crossing.",
+        "On non-reset samples, threshold vin into out and expose the current count on metric before incrementing.",
+        "Append the formatted line to metric_lines.log with $fopen, $fwrite, and $fclose."
       ],
       "visible_tests": [
         "visible.scs exercises the public String Formatted Metric Line stimulus and checks the primary observable behavior."
@@ -6583,13 +6583,14 @@
       "title": "Rdist Seed Reproducibility",
       "syntax_focus": "Use repeated seeded random distribution calls to make reproducibility explicit.",
       "certification_scope": "language_extension_not_part_of_original_full_300_claim",
-      "description": "Use repeated seeded random distribution calls to make reproducibility explicit. This task is verified with executable visible and hidden benches for Rdist Seed Reproducibility.",
+      "description": "Use paired seeded $rdist_poisson() calls to exercise deterministic seed reproducibility and assert a sampled metric after the paired calls complete.",
       "required_behavior": [
         "Use repeated seeded random distribution calls to make reproducibility explicit.",
-        "declare two integer seeds and initialize both to the same value at initial_step.",
-        "on each rising clk crossing, reset out_v, metric_v, and count_q when rst is high.",
-        "otherwise set seed_a and seed_b to the same deterministic value for that sample, such as 430 + count_q.",
-        "call $rdist_poisson(seed_a, 2.0) and $rdist_poisson(seed_b, 2.0) once each."
+        "Declare two integer seeds and initialize both to the same deterministic value at initial_step.",
+        "Reset output, metric, and count state when rst is high on a rising clk crossing.",
+        "On each non-reset sample, set both seeds to the same deterministic per-sample value derived from count_q.",
+        "Call $rdist_poisson(seed_a, 2.0) and $rdist_poisson(seed_b, 2.0) once each after setting matched seeds.",
+        "Assert metric after the paired calls complete and add a small scaled random offset to out."
       ],
       "visible_tests": [
         "visible.scs exercises the public Rdist Seed Reproducibility stimulus and checks the primary observable behavior."
@@ -7165,13 +7166,14 @@
       "title": "Rdist Uniform Seeded Dither",
       "syntax_focus": "Use $rdist_uniform() for seeded uniform dither.",
       "certification_scope": "language_extension_not_part_of_original_full_300_claim",
-      "description": "Use $rdist_uniform() for seeded uniform dither. This task is verified with executable visible and hidden benches for Rdist Uniform Seeded Dither.",
+      "description": "Use seeded $rdist_uniform() to add a small sampled uniform dither term while exposing the current draw on metric.",
       "required_behavior": [
         "Use $rdist_uniform() for seeded uniform dither.",
-        "initialize seed_q to 448 at initial_step.",
-        "on each rising clk crossing, reset out_v, metric_v, and count_q when rst is high.",
-        "otherwise call $rdist_uniform(seed_q, 0.0, 1.0).",
-        "set out_v = V(vin) + 0.01 * rnd_q."
+        "Initialize an integer seed state at initial_step.",
+        "Reset output, metric, and count state when rst is high on a rising clk crossing.",
+        "On each non-reset sample, call $rdist_uniform(seed_q, 0.0, 1.0).",
+        "Expose the uniform draw on metric and add a small scaled version of that draw to out.",
+        "Do not hard-code expected random waveform values."
       ],
       "visible_tests": [
         "visible.scs exercises the public Rdist Uniform Seeded Dither stimulus and checks the primary observable behavior."
