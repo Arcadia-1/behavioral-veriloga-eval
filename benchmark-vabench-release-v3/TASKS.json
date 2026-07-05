@@ -7283,7 +7283,7 @@
         "Define an analog function f1 that calls f2(x) and adds 1.0.",
         "Drive out with f1(V(vin)).",
         "Keep the nested function path active in the analog contribution.",
-        "Use the public two-port vin/out interface."
+        "Use the public vin/out ports for the two-port behavioral signal path."
       ],
       "visible_tests": [
         "visible.scs exercises the public Nested Function Pipeline stimulus and checks the primary observable behavior."
