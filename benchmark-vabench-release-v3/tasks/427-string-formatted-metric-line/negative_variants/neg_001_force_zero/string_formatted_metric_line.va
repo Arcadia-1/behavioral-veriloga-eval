@@ -32,7 +32,7 @@ analog begin
             out_v = V(vin) > vth ? vhi : 0.0;
             metric_v = count_q;
         $swrite(label_q, "mode=%0d metric=%0.3f", count_q, metric_v);
-        fd = $fopen("metric_lines.log", "w");
+        fd = $fopen("metric_lines.log", "a");
         $fwrite(fd, "%s\n", label_q);
         $fclose(fd);
             count_q = count_q + 1;

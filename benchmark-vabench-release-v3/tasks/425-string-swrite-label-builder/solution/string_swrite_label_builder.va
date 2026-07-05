@@ -16,7 +16,6 @@ real out_v;
 real metric_v;
 integer count_q;
 string label_q;
-integer fd;
 analog begin
     @(initial_step) begin
         out_v = 0.0;
@@ -31,7 +30,8 @@ analog begin
         end else begin
             out_v = V(vin) > vth ? vhi : 0.0;
             metric_v = count_q;
-        $swrite(label_q, "mode=%0d metric=%0.3f", count_q, metric_v);
+            $swrite(label_q, "count=%0d metric=%0.3f mode=%0.3f",
+                    count_q, metric_v, V(mode));
             count_q = count_q + 1;
         end
     end
