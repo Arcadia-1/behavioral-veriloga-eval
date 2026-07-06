@@ -1,6 +1,6 @@
 // vaBench generated partial-pass negative: reset_polarity_wrong
-// Preserves module/interface shape while intentionally violating one hidden behavior contract.
-// Two-stage 2-bit/stage pipeline ADC residue chain, EVAS-compatible behavioral model.
+// Preserves module/interface shape while intentionally violating one behavior contract.
+// Two-stage 2-bit/stage pipeline ADC residue chain, behavioral model.
 // Stage 1 makes a 2-bit coarse decision, amplifies the residue by 4, and
 // stage 2 quantizes that residue into the lower 2 output bits.
 
