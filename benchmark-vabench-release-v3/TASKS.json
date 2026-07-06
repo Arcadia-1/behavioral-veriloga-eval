@@ -910,7 +910,7 @@
       "id": "v3_086_dither_noise_like_deterministic_source",
       "level": "L1",
       "target": [
-        "noise_gen.va"
+        "noise_gen_ref.va"
       ],
       "title": "Dither Noise Like Deterministic Source"
     },
@@ -921,7 +921,7 @@
       "id": "v3_087_lfsr_prbs_generator",
       "level": "L1",
       "target": [
-        "prbs7.va"
+        "prbs7_ref.va"
       ],
       "title": "LFSR PRBS Generator"
     },

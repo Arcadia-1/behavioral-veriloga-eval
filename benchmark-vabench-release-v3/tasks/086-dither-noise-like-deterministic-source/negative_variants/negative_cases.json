@@ -21,9 +21,9 @@
   },
   {
     "files": [
-      "neg_005_metric_scale_low/noise_gen.va"
+      "neg_005_metric_scale_low/noise_gen_ref.va"
     ],
     "id": "neg_005_metric_scale_low",
-    "why_wrong": "Dither Noise Like Deterministic Source: scales the metric output, preserving the main path while failing measurement checks."
+    "why_wrong": "Scales the generated output amplitude, preserving the sample timing while violating the dither-source amplitude contract."
   }
 ]

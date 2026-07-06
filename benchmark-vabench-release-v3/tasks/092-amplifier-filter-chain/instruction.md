@@ -1,8 +1,16 @@
 # Amplifier Filter Chain
 
+## Task Contract
+
+Implement the requested Verilog-A artifact for `Amplifier Filter Chain`.
+- Form: `dut`
+- Level: `L2`
+- Category: `baseband_signal_conditioning`
+- Target artifact(s): `amplifier_filter_chain.va`
+
 Implement `amplifier_filter_chain.va` in Verilog-A.
 
-## Public Interface
+## Public Verilog-A Interface
 
 ```verilog
 module amplifier_filter_chain(clk, rst, vin, out, metric, preamp_mon, filt1_mon, filt2_mon, settle_metric);
@@ -20,7 +28,7 @@ voltage-coded logic signals with a `0.45 V` threshold.
 - `alpha`: sampled low-pass update coefficient for each cascaded filter state,
   default `0.30`.
 
-## Functional Contract
+## Required Behavior
 
 - Implement a composed baseband conditioning block: a bounded gain stage
   followed by two cascaded sampled low-pass states.
@@ -46,6 +54,12 @@ sample windows into the DUT.
 ## Modeling Constraints
 
 Return only `amplifier_filter_chain.va`. Do not emit a Spectre testbench,
-checker logic, private test hooks, or simulator-private side channels. Use
+validation logic, validation-only hooks, or simulator-specific side channels. Use
 voltage contributions only; do not use current contributions, transistor-level
 devices, AC/noise analysis, `ddt()`, or `idt()`.
+
+Use deterministic Verilog-A behavioral modeling appropriate for the public circuit contract. The visible testbench is a public validation scenario; do not hard-code a particular stimulus table, transient stop time, or validation sample window into the DUT unless that behavior is part of the public circuit contract.
+
+## Output Contract
+
+Return exactly one complete source artifact named `amplifier_filter_chain.va`. Do not include explanatory prose outside the source artifact contents.

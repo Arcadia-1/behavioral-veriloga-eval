@@ -1,8 +1,16 @@
 # Sine Periodic Voltage Source
 
+## Task Contract
+
+Implement the requested Verilog-A artifact for `Sine Periodic Voltage Source`.
+- Form: `dut`
+- Level: `L1`
+- Category: `stimulus_source_generators`
+- Target artifact(s): `multitone.va`
+
 Implement `multitone.va` in Verilog-A.
 
-## Interface
+## Public Verilog-A Interface
 
 Declare module `multitone` with positional port `OUT`. The port is an
 electrical output.
@@ -14,7 +22,7 @@ Provide these overrideable real parameters:
 - `f1 = 1.0e6 Hz`, `f2 = 2.0e6 Hz`, `f3 = 3.0e6 Hz`
 - `a1 = 0.2 V`, `a2 = 0.1 V`, `a3 = 0.05 V`
 
-## Functional Contract
+## Required Behavior
 
 Drive `OUT` with a three-tone voltage source:
 
@@ -27,6 +35,12 @@ tone frequency so the waveform is well resolved in transient simulation.
 
 ## Modeling Constraints
 
-Return only `multitone.va`. Do not generate a Spectre testbench or checker
+Return only `multitone.va`. Do not generate a Spectre testbench or validation harness
 logic. Do not use current contributions, `ddt()`, transistor-level devices,
-AC/noise analysis, or simulator-private side channels.
+AC/noise analysis, or simulator-specific side channels.
+
+Use deterministic Verilog-A behavioral modeling appropriate for the public circuit contract. The visible testbench is a public validation scenario; do not hard-code a particular stimulus table, transient stop time, or validation sample window into the DUT unless that behavior is part of the public circuit contract.
+
+## Output Contract
+
+Return exactly one complete source artifact named `multitone.va`. Do not include explanatory prose outside the source artifact contents.

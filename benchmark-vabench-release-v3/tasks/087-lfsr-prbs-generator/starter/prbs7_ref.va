@@ -1,9 +1,6 @@
 `include "constants.vams"
 `include "disciplines.vams"
 
-// Reference PRBS-7 generator using a 7-bit LFSR.
-// Serial output is the MSB state bit.
-// Parallel outputs expose all 7 state bits individually.
 module prbs7_ref (
     input  electrical clk,
     input  electrical rst_n,
@@ -35,53 +32,14 @@ integer feedback;
 integer serial_bit;
 
 analog begin
-    @(initial_step) begin
-        state_0_i = (seed >> 0) & 1;
-        state_1_i = (seed >> 1) & 1;
-        state_2_i = (seed >> 2) & 1;
-        state_3_i = (seed >> 3) & 1;
-        state_4_i = (seed >> 4) & 1;
-        state_5_i = (seed >> 5) & 1;
-        state_6_i = (seed >> 6) & 1;
-        if (state_0_i == 0 && state_1_i == 0 && state_2_i == 0 && state_3_i == 0 &&
-            state_4_i == 0 && state_5_i == 0 && state_6_i == 0)
-            state_6_i = 1;
-    end
-
-    @(cross(V(clk) - vth, +1)) begin
-        if (V(rst_n) < vth) begin
-            state_0_i = (seed >> 0) & 1;
-            state_1_i = (seed >> 1) & 1;
-            state_2_i = (seed >> 2) & 1;
-            state_3_i = (seed >> 3) & 1;
-            state_4_i = (seed >> 4) & 1;
-            state_5_i = (seed >> 5) & 1;
-            state_6_i = (seed >> 6) & 1;
-            if (state_0_i == 0 && state_1_i == 0 && state_2_i == 0 && state_3_i == 0 &&
-                state_4_i == 0 && state_5_i == 0 && state_6_i == 0)
-                state_6_i = 1;
-        end else if (V(en) > vth) begin
-            feedback = state_6_i ^ state_5_i;
-            state_6_i = state_5_i;
-            state_5_i = state_4_i;
-            state_4_i = state_3_i;
-            state_3_i = state_2_i;
-            state_2_i = state_1_i;
-            state_1_i = state_0_i;
-            state_0_i = feedback;
-        end
-    end
-
-    serial_bit = state_6_i;
-
-    V(serial_out) <+ transition(serial_bit ? vdd : 0.0, td, trf, trf);
-    V(state_0)    <+ transition(state_0_i ? vdd : 0.0, td, trf, trf);
-    V(state_1)    <+ transition(state_1_i ? vdd : 0.0, td, trf, trf);
-    V(state_2)    <+ transition(state_2_i ? vdd : 0.0, td, trf, trf);
-    V(state_3)    <+ transition(state_3_i ? vdd : 0.0, td, trf, trf);
-    V(state_4)    <+ transition(state_4_i ? vdd : 0.0, td, trf, trf);
-    V(state_5)    <+ transition(state_5_i ? vdd : 0.0, td, trf, trf);
-    V(state_6)    <+ transition(state_6_i ? vdd : 0.0, td, trf, trf);
+    V(serial_out) <+ transition(0.0, td, trf, trf);
+    V(state_0)    <+ transition(0.0, td, trf, trf);
+    V(state_1)    <+ transition(0.0, td, trf, trf);
+    V(state_2)    <+ transition(0.0, td, trf, trf);
+    V(state_3)    <+ transition(0.0, td, trf, trf);
+    V(state_4)    <+ transition(0.0, td, trf, trf);
+    V(state_5)    <+ transition(0.0, td, trf, trf);
+    V(state_6)    <+ transition(0.0, td, trf, trf);
 end
 
 endmodule

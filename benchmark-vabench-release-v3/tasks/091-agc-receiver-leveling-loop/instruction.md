@@ -1,8 +1,16 @@
 # AGC Receiver Leveling Loop
 
+## Task Contract
+
+Implement the requested Verilog-A artifact for `AGC Receiver Leveling Loop`.
+- Form: `dut`
+- Level: `L2`
+- Category: `rf_afe_behavioral_macromodels`
+- Target artifact(s): `agc_receiver_leveling_loop.va`
+
 Implement a voltage-domain automatic-gain-control receiver leveling loop.
 
-## Public Interface
+## Public Verilog-A Interface
 
 Declare module `agc_receiver_leveling_loop` with positional ports `clk, rst,
 vin, out, metric, gain_mon, rssi_mon`. All ports are electrical.
@@ -23,7 +31,7 @@ Provide these overrideable public parameters:
 - `deadband = 0.025 V`: tolerance band around the target amplitude before gain
   correction is needed.
 
-## Functional Contract
+## Required Behavior
 
 On reset, initialize the receiver to a high-gain state, return `out` to the
 0.45 V common-mode level, and clear the monitor outputs. After reset releases,
@@ -41,7 +49,13 @@ target band.
 Return only `agc_receiver_leveling_loop.va`. Use voltage contributions only.
 Use event-updated behavioral state on the clock edge and `transition(...)`
 smoothing for output contributions. Do not modify or emit the support
-testbench, add checker logic, hard-code private waveform sample points, add
-simulator-private side channels, use current contributions, transistor-level
+testbench, add validation logic, hard-code specific waveform sample points, add
+simulator-specific side channels, use current contributions, transistor-level
 devices, S-parameters, AC/noise-analysis behavior, communication modem
 algorithms, or full link-level decoding.
+
+Use deterministic Verilog-A behavioral modeling appropriate for the public circuit contract. The visible testbench is a public validation scenario; do not hard-code a particular stimulus table, transient stop time, or validation sample window into the DUT unless that behavior is part of the public circuit contract.
+
+## Output Contract
+
+Return exactly one complete source artifact named `agc_receiver_leveling_loop.va`. Do not include explanatory prose outside the source artifact contents.

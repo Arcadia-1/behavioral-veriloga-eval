@@ -1,9 +1,17 @@
 # Converter Static Linearity Measurement
 
+## Task Contract
+
+Implement the requested Verilog-A artifact for `Converter Static Linearity Measurement`.
+- Form: `dut`
+- Level: `L2`
+- Category: `data_converter_models`
+- Target artifact(s): `converter_static_linearity_measurement_flow.va`
+
 Implement one Verilog-A source file named
 `converter_static_linearity_measurement_flow.va`.
 
-## Public Interface
+## Public Verilog-A Interface
 
 ```verilog
 module converter_static_linearity_measurement_flow(clk, rst, vin, code, recon, dnl, inl);
@@ -36,15 +44,21 @@ as a bounded analog metric centered near 0.45 V that reflects the most recent
 positive code-step error relative to the ideal step size; when there is no prior
 valid increasing code step, return the DNL metric to its common-mode value.
 
-## Public Verification Context
+**Public Verification Context**
 
 The public transient scenario saves `clk`, `rst`, `vin`, `code`, `recon`, `dnl`,
-and `inl` over a 96 ns converter sweep. Treat those values as the verification
-scenario for observable behavior, not as private checker implementation details.
+and `inl` over a converter sweep. Treat those values as the verification
+scenario for observable behavior, not as DUT implementation details.
 
 ## Modeling Constraints
 
 Use voltage-domain event-driven Verilog-A only. Do not emit a Spectre
-testbench, checker logic, private waveform sample points, current
+testbench, validation logic, specific waveform sample points, current
 contributions, transistor-level devices, AC/noise analysis, `ddt()`, or
 `idt()`.
+
+Use deterministic Verilog-A behavioral modeling appropriate for the public circuit contract. The visible testbench is a public validation scenario; do not hard-code a particular stimulus table, transient stop time, or validation sample window into the DUT unless that behavior is part of the public circuit contract.
+
+## Output Contract
+
+Return exactly one complete source artifact named `converter_static_linearity_measurement_flow.va`. Do not include explanatory prose outside the source artifact contents.

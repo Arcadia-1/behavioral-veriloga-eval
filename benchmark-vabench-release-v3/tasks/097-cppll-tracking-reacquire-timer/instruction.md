@@ -1,8 +1,16 @@
 # CPPLL Tracking Reacquire Timer
 
+## Task Contract
+
+Implement the requested Verilog-A artifact for `CPPLL Tracking Reacquire Timer`.
+- Form: `dut`
+- Level: `L2`
+- Category: `pll_clock_timing_systems`
+- Target artifact(s): `cppll_timer_ref.va`, `ref_step_clk.va`
+
 Implement `cppll_timer_ref.va` in Verilog-A.
 
-## Interface
+## Public Verilog-A Interface
 
 ```verilog
 module cppll_timer_ref (
@@ -16,13 +24,7 @@ module cppll_timer_ref (
 );
 ```
 
-## Required Behavior
-
-This task asks for the `cppll_timer_ref` behavioral module, not a Spectre
-testbench. The verification harness supplies a reference-step clock source and
-instantiates your module in a CPPLL frequency-step reacquire scenario.
-
-Support these public `cppll_timer_ref` parameters and legal overrides:
+## Public Parameter Contract
 
 | Parameter | Default | Unit / range | Contract |
 | --- | ---: | --- | --- |
@@ -40,11 +42,20 @@ Support these public `cppll_timer_ref` parameters and legal overrides:
 | `lock_tol` | `0.4 ns` | time, `(0:inf)` | Phase-error tolerance for counting lock streaks. |
 | `lock_count_target` | `6` | integer, `[1:inf)` | Number of consecutive in-tolerance events before asserting `lock`. |
 
+Support legal overrides of these public `cppll_timer_ref` parameters.
+
 The supplied reference-step support clock uses public defaults
 `period_pre = 20 ns`, `period_post = 19.5 ns`, `t_switch = 2 us`, and
 `tedge = 100 ps`. That support source is not the candidate implementation, but
 the CPPLL model must work when the harness supplies a legal nearby reference
 cadence.
+
+## Required Behavior
+
+This task asks for the `cppll_timer_ref` behavioral module, not a Spectre
+testbench. The supplied support artifact `ref_step_clk.va` is part of the
+public package for this L2 flow; preserve its interface and overrideable
+parameters when returning source artifacts.
 
 Required observable behavior:
 
@@ -60,7 +71,17 @@ Required observable behavior:
 Use voltage-coded logic with a mid-supply decision threshold where applicable,
 drive high logic outputs near `VDD` and low outputs near `VSS`, and keep the
 model pure behavioral Verilog-A. Do not use transistor-level devices, AC/noise
-analysis, checker logic, private test hooks, or simulator-private side channels.
+analysis, validation logic, validation-only hooks, or simulator-specific side channels.
 
-Only the target artifact is graded as the candidate implementation; companion
-support files are supplied by the harness for this task.
+Only `cppll_timer_ref.va` is the primary candidate implementation; `ref_step_clk.va`
+is a public support artifact used by the flow.
+
+## Modeling Constraints
+
+Use deterministic Verilog-A behavioral modeling appropriate for the public circuit contract. The visible testbench is a public validation scenario; do not hard-code a particular stimulus table, transient stop time, or validation sample window into the DUT unless that behavior is part of the public circuit contract.
+
+## Output Contract
+
+Return exactly the requested source artifact(s): `cppll_timer_ref.va`,
+`ref_step_clk.va`. Do not include explanatory prose outside the source artifact
+contents.

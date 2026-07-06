@@ -2,12 +2,16 @@
 
 ## Task Contract
 
+Implement the requested Verilog-A artifact for `Period Meter 16b`.
+- Form: `dut`
+- Level: `L1`
+- Category: `testbench_utility_modules`
+- Target artifact(s): `period_meter_16b.va`
+
 Implement `period_meter_16b.va`, a voltage-domain instrumentation helper that measures rising-edge-to-rising-edge clock period and reports it as a 16-bit digital code.
 
-## Form-Specific Requirements
-
 - This is a DUT/support-component task: implement only the requested Verilog-A source artifact.
-- Do not generate a Spectre testbench or checker.
+- Do not generate a Spectre testbench or validation harness.
 - Preserve the public module name, port order, port directions, and parameter names.
 - Treat any public validation harness as an observable use case, not as values to hard-code into the DUT.
 
@@ -39,8 +43,10 @@ Input is `clk_in`. Outputs are `valid` and `period0` through `period15`. All por
 - Keep the model pure voltage-domain behavioral Verilog-A.
 - Treat voltage-coded logic low as near 0 V and logic high as near `vdd`.
 - Use `transition(...)` or equivalent smooth voltage contributions for driven logic outputs.
-- Do not instantiate transistor-level devices, use current-branch contributions, AC/noise analysis, checker logic, private test hooks, or simulator-private side channels.
+- Do not instantiate transistor-level devices, use current-branch contributions, AC/noise analysis, validation logic, validation-only hooks, or simulator-specific side channels.
 - Use event state for the previous edge time, seen-edge flag, measured code, and validity flag.
+
+Use deterministic Verilog-A behavioral modeling appropriate for the public circuit contract. The visible testbench is a public validation scenario; do not hard-code a particular stimulus table, transient stop time, or validation sample window into the DUT unless that behavior is part of the public circuit contract.
 
 ## Output Contract
 

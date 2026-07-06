@@ -21,9 +21,9 @@
   },
   {
     "files": [
-      "neg_005_metric_scale_low/prbs7.va"
+      "neg_005_metric_scale_low/prbs7_ref.va"
     ],
     "id": "neg_005_metric_scale_low",
-    "why_wrong": "LFSR PRBS Generator: scales the metric output, preserving the main path while failing measurement checks."
+    "why_wrong": "Scales the serial output level while preserving the LFSR sequence, violating the public voltage-coded output contract."
   }
 ]
