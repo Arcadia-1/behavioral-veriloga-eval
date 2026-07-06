@@ -1,4 +1,4 @@
-// 3-bit Flash ADC (behavioral) — EVAS-compatible
+// 3-bit Flash ADC behavioral model.
 // 7 comparator levels uniformly spaced between vrefn and vrefp.
 // Thermometer code -> binary encoding. Output latched on rising CLK edge.
 // Bit outputs stored as piecewise-constant reals (updated in @(cross) block).
@@ -33,7 +33,6 @@ analog begin
         lsb  = (vrefp - vrefn) / 8.0;
         code = 0;
         b2 = 0.0; b1 = 0.0; b0 = 0.0;
-        $strobe("[flash_adc_3b] INIT | lsb=%.4gV", lsb);
     end
 
     @(cross(V(CLK) - vth, +1)) begin
@@ -45,7 +44,6 @@ analog begin
         b2 = ((code >> 2) & 1) ? V(VDD) : V(VSS);
         b1 = ((code >> 1) & 1) ? V(VDD) : V(VSS);
         b0 = ((code >> 0) & 1) ? V(VDD) : V(VSS);
-        $strobe("[flash_adc_3b] t=%.3f ns | vin=%.4gV code=%d", $abstime*1e9, V(VIN), code);
     end
 
     V(DOUT2) <+ transition(b2, 0, tedge, tedge);
