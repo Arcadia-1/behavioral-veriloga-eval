@@ -9,5 +9,8 @@
   ],
   "hidden_testbench": "tb_converter_static_linearity_measurement_flow.scs",
   "visible_smoke": "tb_visible_smoke.scs",
-  "status": "initial_migration_pending_negative_audit"
+  "gate1_label": "measurement_l2_ready",
+  "gate2_status": "cadence_modeling_ready",
+  "coverage_note": "Visible validates the 96 ns converter sweep; hidden uses a longer 120 ns sweep and different clock/reset cadence while preserving the same static-linearity measurement contract.",
+  "status": "cadence_modeling_ready"
 }

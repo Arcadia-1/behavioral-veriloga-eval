@@ -9,5 +9,8 @@
   ],
   "hidden_testbench": "tb_bbpd_data_edge_alignment_ref.scs",
   "visible_smoke": "tb_visible_smoke.scs",
-  "status": "initial_migration_pending_negative_audit"
+  "gate1_label": "independent_l1_ready",
+  "gate2_status": "cadence_modeling_ready",
+  "coverage_note": "Visible exercises lead and lag data transitions; hidden adds dead-zone data transitions that must suppress UP/DN pulses.",
+  "status": "cadence_modeling_ready"
 }

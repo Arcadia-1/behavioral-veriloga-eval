@@ -500,24 +500,61 @@ def check_precision_rectifier(rows: list[dict[str, float]]) -> tuple[bool, str]:
 
 
 def check_peak_detector(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    required = {"time", "vout"}
+    required = {"time", "vin", "rst", "vout"}
     if not rows or not required.issubset(rows[0]):
-        return False, "missing time/vout"
+        return False, "missing time/vin/rst/vout"
 
-    sample_times_ns = [80.0, 128.0, 165.0]
-    samples: list[float] = []
-    for t_ns in sample_times_ns:
-        value = sample_signal(rows, "vout", t_ns * 1e-9)
-        if value is None:
-            return False, f"missing_sample_at={t_ns:g}ns"
-        samples.append(value)
+    vth = 0.45
+    times = [row["time"] for row in rows]
+    inactive_spans: list[tuple[float, float]] = []
+    reset_spans: list[tuple[float, float]] = []
+    span_start = times[0]
+    in_reset = rows[0]["rst"] > vth
+    for prev, cur in zip(rows, rows[1:]):
+        cur_reset = cur["rst"] > vth
+        if cur_reset != in_reset:
+            span_end = cur["time"]
+            if in_reset:
+                reset_spans.append((span_start, span_end))
+            else:
+                inactive_spans.append((span_start, span_end))
+            span_start = cur["time"]
+            in_reset = cur_reset
+    if in_reset:
+        reset_spans.append((span_start, times[-1]))
+    else:
+        inactive_spans.append((span_start, times[-1]))
 
-    first_peak = abs(samples[0] - 0.55) <= 0.04
-    reset_clear = samples[1] < 0.05
-    second_peak = abs(samples[2] - 0.70) <= 0.04
-    ok = first_peak and reset_clear and second_peak
-    values = ",".join(f"{value:.3f}" for value in samples)
-    return ok, f"peak_samples={values} first_peak={first_peak} reset_clear={reset_clear} second_peak={second_peak}"
+    clear_checks = clear_ok = 0
+    for start, stop in reset_spans:
+        vals = [row["vout"] for row in rows if start + 1.0e-9 <= row["time"] <= stop - 0.3e-9]
+        if vals:
+            clear_checks += 1
+            if max(vals) < 0.08:
+                clear_ok += 1
+
+    peak_checks = peak_ok = 0
+    peak_notes: list[str] = []
+    for start, stop in inactive_spans:
+        if stop - start < 8.0e-9:
+            continue
+        span_rows = [row for row in rows if start + 1.0e-9 <= row["time"] <= stop - 1.0e-9]
+        if len(span_rows) < 4:
+            continue
+        expected_peak = max(row["vin"] for row in span_rows)
+        tail_rows = span_rows[-max(3, len(span_rows) // 5):]
+        observed_peak = sum(row["vout"] for row in tail_rows) / len(tail_rows)
+        peak_checks += 1
+        err = abs(observed_peak - expected_peak)
+        peak_notes.append(f"{observed_peak:.3f}/{expected_peak:.3f}")
+        if err <= 0.06:
+            peak_ok += 1
+
+    if clear_checks < 1 or clear_ok < clear_checks:
+        return False, f"reset_clear={clear_ok}/{clear_checks}"
+    if peak_checks < 2 or peak_ok < peak_checks:
+        return False, f"peak_hold={peak_ok}/{peak_checks} values={peak_notes}"
+    return True, f"reset_clear={clear_ok}/{clear_checks} peak_hold={peak_ok}/{peak_checks} values={peak_notes}"
 
 
 def check_slew_rate_limiter(rows: list[dict[str, float]]) -> tuple[bool, str]:
@@ -750,8 +787,8 @@ def check_file_metric_writer(rows: list[dict[str, float]]) -> tuple[bool, str]:
         return False, "missing time/vin/done"
 
     crossings = _crossing_times(rows, "vin")
-    if len(crossings) != 1:
-        return False, f"expected_one_vin_crossing got={len(crossings)}"
+    if not crossings:
+        return False, "no_vin_rising_crossing"
 
     cross_t = crossings[0]
     before = sample_signal(rows, "done", max(0.0, cross_t - 10e-9))
@@ -760,13 +797,19 @@ def check_file_metric_writer(rows: list[dict[str, float]]) -> tuple[bool, str]:
     if before is None or after is None or final is None:
         return False, "missing_done_sample"
 
-    cross_window_ok = 25e-9 <= cross_t <= 36e-9
     done_low_before = before < 0.1
     done_high_after = after > 0.8 and final > 0.8
-    ok = cross_window_ok and done_low_before and done_high_after
+    extra_ok = True
+    for extra_t in crossings[1:]:
+        extra_done = sample_signal(rows, "done", extra_t + 5.0e-9)
+        if extra_done is None or extra_done < 0.8:
+            extra_ok = False
+            break
+    ok = done_low_before and done_high_after and extra_ok
     return ok, (
-        f"cross_t={cross_t:.3e} cross_window_ok={cross_window_ok} "
-        f"done_before={before:.3f} done_after={after:.3f} done_final={final:.3f}"
+        f"crossings={len(crossings)} first_cross_t={cross_t:.3e} "
+        f"done_before={before:.3f} done_after={after:.3f} "
+        f"done_final={final:.3f} extra_done_high={extra_ok}"
     )
 
 

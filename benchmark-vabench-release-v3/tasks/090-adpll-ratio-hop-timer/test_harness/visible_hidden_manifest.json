@@ -9,5 +9,8 @@
   ],
   "hidden_testbench": "tb_adpll_ratio_hop_ref.scs",
   "visible_smoke": "tb_visible_smoke.scs",
-  "status": "initial_migration_pending_negative_audit"
+  "gate1_label": "independent_l2_ready",
+  "gate2_status": "cadence_modeling_ready",
+  "coverage_note": "Visible validates a 4-to-6 ratio hop; hidden validates a 3-to-7 ratio hop with a later hop time and longer reacquisition window.",
+  "status": "cadence_modeling_ready"
 }

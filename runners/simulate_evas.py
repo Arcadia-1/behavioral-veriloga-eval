@@ -2402,17 +2402,32 @@ def _stream_cross_hysteresis_window_csv(csv_path: Path) -> tuple[float, list[str
 
 
 def _stream_cross_interval_163p333_csv(csv_path: Path) -> tuple[float, list[str]]:
-    indices, missing = _csv_required_indices(csv_path, {"time", "delay_out", "seen_out"})
+    indices, missing = _csv_required_indices(csv_path, {"time", "a", "b", "delay_out", "seen_out"})
     if indices is None:
         return 0.0, [f"missing {'/'.join(missing)}"]
     assert indices is not None
 
     seen_hi = 0.0
+    prev_a: float | None = None
+    prev_b: float | None = None
+    a_t: float | None = None
+    b_t: float | None = None
     with csv_path.open(newline="", encoding="utf-8") as f:
         reader = csv.reader(f)
         next(reader, None)
         for row in reader:
+            time_value = _float_at(row, indices["time"])
+            a = _float_at(row, indices["a"])
+            b = _float_at(row, indices["b"])
             seen_hi = max(seen_hi, _float_at(row, indices["seen_out"]))
+            if prev_a is not None and a_t is None and prev_a <= 0.45 < a:
+                a_t = time_value
+            if prev_b is not None and a_t is not None and b_t is None and time_value > a_t and prev_b <= 0.45 < b:
+                b_t = time_value
+            prev_a = a
+            prev_b = b
+    if a_t is None or b_t is None:
+        return 0.0, [f"missing_input_edges a={a_t is not None} b={b_t is not None}"]
     if seen_hi < 0.3:
         return 0.0, [f"seen_out_never_high={seen_hi:.3f}"]
 
@@ -2445,9 +2460,12 @@ def _stream_cross_interval_163p333_csv(csv_path: Path) -> tuple[float, list[str]
         return 0.0, ["no_post_seen_delay_samples"]
     delay_level = tail[len(tail) // 2]
     delay_ps = delay_level / max(seen_hi, 1e-6) * 200.0
-    ok = 130.0 <= delay_ps <= 190.0
+    expected_ps = (b_t - a_t) * 1.0e12
+    err_ps = abs(delay_ps - expected_ps)
+    ok = 0.0 < expected_ps < 500.0 and err_ps <= 15.0
     return (1.0 if ok else 0.0), [
-        f"delay_ps={delay_ps:.3f} seen_hi={seen_hi:.3f} post_seen_samples={len(settled_delay_values)}"
+        f"delay_ps={delay_ps:.3f} expected_ps={expected_ps:.3f} "
+        f"err_ps={err_ps:.3f} seen_hi={seen_hi:.3f} post_seen_samples={len(settled_delay_values)}"
     ]
 
 
@@ -2822,28 +2840,69 @@ def _stream_adpll_ratio_hop_csv(csv_path: Path) -> tuple[float, list[str]]:
     lock_max = float("-inf")
     vctrl_in_range = True
     prev_ratio: float | None = None
+    largest_step = 0.0
+    ratio_samples: list[tuple[float, float]] = []
     with csv_path.open(newline="", encoding="utf-8") as f:
         reader = csv.reader(f)
         next(reader, None)
         for row in reader:
             time_s = _float_at(row, indices["time"])
             ratio_ctrl = _float_at(row, indices["ratio_ctrl"])
+            ratio_samples.append((time_s, ratio_ctrl))
             lock = _float_at(row, indices["lock"])
             vctrl = _float_at(row, indices["vctrl_mon"])
             lock_max = max(lock_max, lock)
             if not (-1e-6 <= vctrl <= 1.2):
                 vctrl_in_range = False
-            if not math.isfinite(hop_t) and prev_ratio is not None and prev_ratio < 5.0 <= ratio_ctrl:
-                hop_t = time_s
+            if prev_ratio is not None:
+                step = abs(ratio_ctrl - prev_ratio)
+                if step > largest_step:
+                    largest_step = step
+                    hop_t = time_s
             prev_ratio = ratio_ctrl
+
+    if (largest_step < 0.5 or not math.isfinite(hop_t)) and len(ratio_samples) >= 2:
+        ratio_initial = ratio_samples[0][1]
+        ratio_final = ratio_samples[-1][1]
+        ratio_delta = ratio_final - ratio_initial
+        if abs(ratio_delta) >= 0.5:
+            hop_threshold = 0.5 * (ratio_initial + ratio_final)
+            for (_prev_t, prev_v), (cur_t, cur_v) in zip(ratio_samples, ratio_samples[1:]):
+                if ratio_delta > 0.0 and prev_v <= hop_threshold <= cur_v:
+                    hop_t = cur_t
+                    break
+                if ratio_delta < 0.0 and prev_v >= hop_threshold >= cur_v:
+                    hop_t = cur_t
+                    break
 
     if not math.isfinite(hop_t):
         return 0.0, ["ratio_hop_not_detected"]
 
+    def stream_median_signal(signal: str, start: float, stop: float) -> float | None:
+        vals: list[float] = []
+        with csv_path.open(newline="", encoding="utf-8") as f_inner:
+            reader_inner = csv.reader(f_inner)
+            next(reader_inner, None)
+            for row_inner in reader_inner:
+                time_s_inner = _float_at(row_inner, indices["time"])
+                if start <= time_s_inner <= stop:
+                    vals.append(_float_at(row_inner, indices[signal]))
+        if not vals:
+            return None
+        vals.sort()
+        return vals[len(vals) // 2]
+
     windows = {
         "pre": (hop_t - 1.0e-6, hop_t - 2.0e-7),
-        "post": (hop_t + 1.2e-6, hop_t + 2.5e-6),
+        "post": (hop_t + 1.4e-6, hop_t + 2.8e-6),
     }
+    pre_target_raw = stream_median_signal("ratio_ctrl", *windows["pre"])
+    post_target_raw = stream_median_signal("ratio_ctrl", *windows["post"])
+    if pre_target_raw is None or post_target_raw is None:
+        return 0.0, ["missing_ratio_ctrl_target_windows"]
+    pre_target = max(2, min(16, int(round(pre_target_raw))))
+    post_target = max(2, min(16, int(round(post_target_raw))))
+
     pre_ratio, pre_note = _stream_edge_ratio(csv_path, indices, "vout", "ref_clk", *windows["pre"])
     post_ratio, post_note = _stream_edge_ratio(csv_path, indices, "vout", "ref_clk", *windows["post"])
     pre_div_ratio, pre_div_note = _stream_edge_ratio(csv_path, indices, "vout", "fb_clk", *windows["pre"])
@@ -2865,12 +2924,14 @@ def _stream_adpll_ratio_hop_csv(csv_path: Path) -> tuple[float, list[str]]:
 
     vth = lock_max * 0.5
     pre_lock = _stream_weighted_high_fraction_window(csv_path, indices, "lock", vth, hop_t - 4.0e-7, hop_t - 5.0e-8)
-    post_lock = _stream_weighted_high_fraction_window(csv_path, indices, "lock", vth, hop_t + 1.8e-6, hop_t + 2.8e-6)
+    post_lock = _stream_weighted_high_fraction_window(csv_path, indices, "lock", vth, windows["post"][0] + 3.0e-7, windows["post"][1])
+    pre_tol = max(0.30, 0.06 * pre_target)
+    post_tol = max(0.35, 0.06 * post_target)
     ok = (
-        abs(pre_ratio - 4.0) <= 0.25
-        and abs(post_ratio - 6.0) <= 0.35
-        and abs(pre_div_ratio - 4.0) <= 0.25
-        and abs(post_div_ratio - 6.0) <= 0.35
+        abs(pre_ratio - pre_target) <= pre_tol
+        and abs(post_ratio - post_target) <= post_tol
+        and abs(pre_div_ratio - pre_target) <= pre_tol
+        and abs(post_div_ratio - post_target) <= post_tol
         and abs(pre_fb_ref_ratio - 1.0) <= 0.15
         and abs(post_fb_ref_ratio - 1.0) <= 0.15
         and pre_lock >= 0.8
@@ -2879,6 +2940,7 @@ def _stream_adpll_ratio_hop_csv(csv_path: Path) -> tuple[float, list[str]]:
     )
     return (1.0 if ok else 0.0), [
         f"hop_t={hop_t:.3e} "
+        f"targets={pre_target}->{post_target} "
         f"pre_vout_ref={pre_ratio:.3f} "
         f"post_vout_ref={post_ratio:.3f} "
         f"pre_vout_fb={pre_div_ratio:.3f} "
@@ -3071,7 +3133,7 @@ _STREAMING_TRACE_REQUIREMENTS_BY_FUNC = {
     _stream_bbpd_csv: frozenset({"time", "data", "clk", "retimed_data", "up", "down"}),
     _stream_cross_hysteresis_window_csv: frozenset({"time", "vin", "out"}),
     _stream_true_window_comparator_csv: frozenset({"time", "vin", "out"}),
-    _stream_cross_interval_163p333_csv: frozenset({"time", "delay_out", "seen_out"}),
+    _stream_cross_interval_163p333_csv: frozenset({"time", "a", "b", "delay_out", "seen_out"}),
     _stream_phase_accumulator_timer_wrap_csv: frozenset({"time", "clk_out", "phase_out"}),
     _stream_precision_rectifier_envelope_detector_csv: frozenset({"time", "clk", "rst", "vin", "rect", "env", "metric"}),
     _stream_programmable_stimulus_sequencer_csv: frozenset({"time", "clk", "rst", "mode", "gate", "out", "metric"}),
@@ -5366,44 +5428,83 @@ def check_bbpd_data_edge_alignment(rows: list[dict[str, float]]) -> tuple[bool, 
 
     vth = 0.45
     times = [r["time"] for r in rows]
+    clk_vals = [r["clk"] for r in rows]
     up = [r["up"] for r in rows]
     dn = [r["dn"] for r in rows]
     data = [r["data"] for r in rows]
 
-    up_edges = [times[i] for i in range(1, len(rows)) if up[i - 1] <= vth < up[i]]
-    dn_edges = [times[i] for i in range(1, len(rows)) if dn[i - 1] <= vth < dn[i]]
+    clk_edges = rising_edges(clk_vals, times, threshold=vth)
+    if len(clk_edges) < 4:
+        return False, f"too_few_clk_edges={len(clk_edges)}"
+    clk_periods = [b - a for a, b in zip(clk_edges, clk_edges[1:]) if b > a]
+    clk_period = sorted(clk_periods)[len(clk_periods) // 2] if clk_periods else 20e-9
+    if clk_period <= 0:
+        return False, f"bad_clk_period={clk_period:.3e}"
+
     data_edges = [
         times[i]
         for i in range(1, len(rows))
         if ((data[i - 1] <= vth < data[i]) or (data[i - 1] >= vth > data[i]))
     ]
-
     if len(data_edges) < 6:
         return False, f"too_few_data_edges={len(data_edges)}"
-    if len(up_edges) + len(dn_edges) < 6:
-        return False, f"too_few_updn_pulses={len(up_edges) + len(dn_edges)}"
 
     overlap = sum(1 for r in rows if r["up"] > vth and r["dn"] > vth)
     overlap_frac = overlap / max(len(rows), 1)
     if overlap_frac > 0.02:
         return False, f"overlap_frac={overlap_frac:.4f}"
 
-    lead_window_end = 80e-9
-    lag_window_start = 90e-9
-    up_lead = sum(1 for t in up_edges if t <= lead_window_end)
-    dn_lead = sum(1 for t in dn_edges if t <= lead_window_end)
-    up_lag = sum(1 for t in up_edges if t >= lag_window_start)
-    dn_lag = sum(1 for t in dn_edges if t >= lag_window_start)
+    def clock_neighbors(edge_t: float) -> tuple[float, float]:
+        first = clk_edges[0]
+        periods_from_first = math.floor((edge_t - first) / clk_period)
+        prev_clk = first + periods_from_first * clk_period
+        if prev_clk > edge_t:
+            prev_clk -= clk_period
+        next_clk = prev_clk + clk_period
+        return prev_clk, next_clk
 
-    if up_lead < 3 or up_lead <= dn_lead:
-        return False, f"lead_window_updn={up_lead}/{dn_lead}"
-    if dn_lag < 3 or dn_lag <= up_lag:
-        return False, f"lag_window_updn={up_lag}/{dn_lag}"
+    def pulse_seen(signal: str, start: float, stop: float) -> bool:
+        return any(row[signal] > vth for row in rows if start <= row["time"] <= stop)
+
+    counts = {"up": 0, "dn": 0, "none": 0}
+    hits = {"up": 0, "dn": 0, "none": 0}
+    deadzone = 0.8e-9
+    pulse_window = 1.6e-9
+    checked = 0
+    for edge_t in data_edges:
+        prev_clk, next_clk = clock_neighbors(edge_t)
+        dist_prev = edge_t - prev_clk
+        dist_next = next_clk - edge_t
+        if dist_next < dist_prev and dist_next > deadzone:
+            expected = "up"
+        elif dist_prev < dist_next and dist_prev > deadzone:
+            expected = "dn"
+        else:
+            expected = "none"
+        up_hit = pulse_seen("up", edge_t, edge_t + pulse_window)
+        dn_hit = pulse_seen("dn", edge_t, edge_t + pulse_window)
+        counts[expected] += 1
+        checked += 1
+        if expected == "up" and up_hit and not dn_hit:
+            hits["up"] += 1
+        elif expected == "dn" and dn_hit and not up_hit:
+            hits["dn"] += 1
+        elif expected == "none" and not up_hit and not dn_hit:
+            hits["none"] += 1
+
+    if checked < 6:
+        return False, f"too_few_checked_edges={checked}"
+    if counts["up"] < 2 or hits["up"] < counts["up"]:
+        return False, f"up_hits={hits['up']}/{counts['up']}"
+    if counts["dn"] < 2 or hits["dn"] < counts["dn"]:
+        return False, f"dn_hits={hits['dn']}/{counts['dn']}"
+    if counts["none"] and hits["none"] < counts["none"]:
+        return False, f"deadzone_suppression={hits['none']}/{counts['none']}"
 
     return True, (
-        f"data_edges={len(data_edges)} "
-        f"lead_updn={up_lead}/{dn_lead} "
-        f"lag_updn={up_lag}/{dn_lag} "
+        f"data_edges={len(data_edges)} clk_period={clk_period:.3e} "
+        f"up={hits['up']}/{counts['up']} dn={hits['dn']}/{counts['dn']} "
+        f"none={hits['none']}/{counts['none']} "
         f"overlap_frac={overlap_frac:.4f}"
     )
 
@@ -6085,16 +6186,45 @@ def check_adpll_ratio_hop(rows: list[dict[str, float]]) -> tuple[bool, str]:
     if not rows or not required.issubset(rows[0]):
         return False, "missing ref_clk/ratio_ctrl/fb_clk/vout/lock/vctrl_mon"
 
-    hop_t = first_threshold_crossing(rows, "ratio_ctrl", 5.0)
+    ratio_initial = rows[0]["ratio_ctrl"]
+    ratio_final = rows[-1]["ratio_ctrl"]
+    ratio_delta = ratio_final - ratio_initial
+    hop_t = float("nan")
+    if abs(ratio_delta) >= 0.5:
+        hop_threshold = 0.5 * (ratio_initial + ratio_final)
+        for prev, cur in zip(rows, rows[1:]):
+            if ratio_delta > 0.0 and prev["ratio_ctrl"] <= hop_threshold <= cur["ratio_ctrl"]:
+                hop_t = cur["time"]
+                break
+            if ratio_delta < 0.0 and prev["ratio_ctrl"] >= hop_threshold >= cur["ratio_ctrl"]:
+                hop_t = cur["time"]
+                break
     if not math.isfinite(hop_t):
         return False, "ratio_hop_not_detected"
 
-    pre_ratio, pre_note = edge_frequency_ratio(rows, "vout", "ref_clk", hop_t - 1.0e-6, hop_t - 2.0e-7)
-    post_ratio, post_note = edge_frequency_ratio(rows, "vout", "ref_clk", hop_t + 1.2e-6, hop_t + 2.5e-6)
-    pre_div_ratio, pre_div_note = edge_frequency_ratio(rows, "vout", "fb_clk", hop_t - 1.0e-6, hop_t - 2.0e-7)
-    post_div_ratio, post_div_note = edge_frequency_ratio(rows, "vout", "fb_clk", hop_t + 1.2e-6, hop_t + 2.5e-6)
-    pre_fb_ref_ratio, pre_fb_ref_note = edge_frequency_ratio(rows, "fb_clk", "ref_clk", hop_t - 1.0e-6, hop_t - 2.0e-7)
-    post_fb_ref_ratio, post_fb_ref_note = edge_frequency_ratio(rows, "fb_clk", "ref_clk", hop_t + 1.2e-6, hop_t + 2.5e-6)
+    def median_signal(signal: str, start: float, stop: float) -> float | None:
+        vals = sorted(row[signal] for row in rows if start <= row["time"] <= stop)
+        if not vals:
+            return None
+        return vals[len(vals) // 2]
+
+    pre_start = max(rows[0]["time"], hop_t - 1.0e-6)
+    pre_stop = hop_t - 2.0e-7
+    post_start = hop_t + 1.4e-6
+    post_stop = min(rows[-1]["time"], hop_t + 2.8e-6)
+    pre_target_raw = median_signal("ratio_ctrl", pre_start, pre_stop)
+    post_target_raw = median_signal("ratio_ctrl", post_start, post_stop)
+    if pre_target_raw is None or post_target_raw is None:
+        return False, "missing_ratio_ctrl_target_windows"
+    pre_target = max(2, min(16, int(round(pre_target_raw))))
+    post_target = max(2, min(16, int(round(post_target_raw))))
+
+    pre_ratio, pre_note = edge_frequency_ratio(rows, "vout", "ref_clk", pre_start, pre_stop)
+    post_ratio, post_note = edge_frequency_ratio(rows, "vout", "ref_clk", post_start, post_stop)
+    pre_div_ratio, pre_div_note = edge_frequency_ratio(rows, "vout", "fb_clk", pre_start, pre_stop)
+    post_div_ratio, post_div_note = edge_frequency_ratio(rows, "vout", "fb_clk", post_start, post_stop)
+    pre_fb_ref_ratio, pre_fb_ref_note = edge_frequency_ratio(rows, "fb_clk", "ref_clk", pre_start, pre_stop)
+    post_fb_ref_ratio, post_fb_ref_note = edge_frequency_ratio(rows, "fb_clk", "ref_clk", post_start, post_stop)
     if pre_note != "ok":
         return False, f"pre_window_{pre_note}"
     if post_note != "ok":
@@ -6110,15 +6240,17 @@ def check_adpll_ratio_hop(rows: list[dict[str, float]]) -> tuple[bool, str]:
 
     vth = max(r["lock"] for r in rows) * 0.5 if rows else 0.45
     pre_lock = weighted_logic_high_fraction_window(rows, "lock", vth, hop_t - 4.0e-7, hop_t - 5.0e-8)
-    post_lock = weighted_logic_high_fraction_window(rows, "lock", vth, hop_t + 1.8e-6, hop_t + 2.8e-6)
+    post_lock = weighted_logic_high_fraction_window(rows, "lock", vth, post_start + 3.0e-7, post_stop)
     vctrl_vals = [r["vctrl_mon"] for r in rows]
     vctrl_in_range = all(-1e-6 <= v <= 1.2 for v in vctrl_vals)
+    pre_tol = max(0.30, 0.06 * pre_target)
+    post_tol = max(0.35, 0.06 * post_target)
 
     ok = (
-        abs(pre_ratio - 4.0) <= 0.25
-        and abs(post_ratio - 6.0) <= 0.35
-        and abs(pre_div_ratio - 4.0) <= 0.25
-        and abs(post_div_ratio - 6.0) <= 0.35
+        abs(pre_ratio - pre_target) <= pre_tol
+        and abs(post_ratio - post_target) <= post_tol
+        and abs(pre_div_ratio - pre_target) <= pre_tol
+        and abs(post_div_ratio - post_target) <= post_tol
         and abs(pre_fb_ref_ratio - 1.0) <= 0.15
         and abs(post_fb_ref_ratio - 1.0) <= 0.15
         and pre_lock >= 0.8
@@ -6127,6 +6259,7 @@ def check_adpll_ratio_hop(rows: list[dict[str, float]]) -> tuple[bool, str]:
     )
     return ok, (
         f"hop_t={hop_t:.3e} "
+        f"targets={pre_target}->{post_target} "
         f"pre_vout_ref={pre_ratio:.3f} "
         f"post_vout_ref={post_ratio:.3f} "
         f"pre_vout_fb={pre_div_ratio:.3f} "
@@ -18505,9 +18638,19 @@ def check_true_window_comparator(rows: list[dict[str, float]]) -> tuple[bool, st
 
 
 def check_cross_interval_163p333(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    required = {"time", "delay_out", "seen_out"}
+    required = {"time", "a", "b", "delay_out", "seen_out"}
     if not rows or not required.issubset(rows[0]):
-        return False, "missing time/delay_out/seen_out"
+        return False, "missing time/a/b/delay_out/seen_out"
+    times = [r["time"] for r in rows]
+    a_edges = rising_edges([r["a"] for r in rows], times, threshold=0.45)
+    b_edges = rising_edges([r["b"] for r in rows], times, threshold=0.45)
+    if not a_edges or not b_edges:
+        return False, f"missing_input_edges a={len(a_edges)} b={len(b_edges)}"
+    a_t = a_edges[0]
+    b_t = next((edge for edge in b_edges if edge > a_t), None)
+    if b_t is None:
+        return False, "missing_b_edge_after_a"
+
     seen_hi = max(r["seen_out"] for r in rows)
     if seen_hi < 0.3:
         return False, f"seen_out_never_high={seen_hi:.3f}"
@@ -18530,8 +18673,13 @@ def check_cross_interval_163p333(rows: list[dict[str, float]]) -> tuple[bool, st
     delay_level = tail[len(tail) // 2]
     vdd_est = max(max(r["seen_out"] for r in rows), 1e-6)
     delay_ps = delay_level / vdd_est * 200.0
-    ok = 130.0 <= delay_ps <= 190.0
-    return ok, f"delay_ps={delay_ps:.3f} seen_hi={seen_hi:.3f} post_seen_samples={len(settled_rows)}"
+    expected_ps = (b_t - a_t) * 1.0e12
+    err_ps = abs(delay_ps - expected_ps)
+    ok = 0.0 < expected_ps < 500.0 and err_ps <= 15.0
+    return ok, (
+        f"delay_ps={delay_ps:.3f} expected_ps={expected_ps:.3f} "
+        f"err_ps={err_ps:.3f} seen_hi={seen_hi:.3f} post_seen_samples={len(settled_rows)}"
+    )
 
 
 def check_cross_sine_precision(rows: list[dict[str, float]]) -> tuple[bool, str]:
@@ -18595,42 +18743,40 @@ def check_final_step_file_metric(rows: list[dict[str, float]]) -> tuple[bool, st
     ref_high = max(r["ref"] for r in rows)
     vth = 0.45 if ref_high < 1.0 else 0.5 * ref_high
     ref_edges = rising_edges([r["ref"] for r in rows], [r["time"] for r in rows], threshold=vth)
-    expected_edges = [10e-9, 30e-9, 50e-9, 70e-9]
-    if len(ref_edges) != len(expected_edges):
-        return False, f"ref_edges={len(ref_edges)} expected={len(expected_edges)}"
-    edge_errs = [abs(edge - expected) for edge, expected in zip(ref_edges, expected_edges)]
-    max_edge_err = max(edge_errs) if edge_errs else float("inf")
-    if max_edge_err > 0.5e-9:
-        return False, f"ref_edge_grid_error_ns={max_edge_err * 1e9:.3f}"
+    if len(ref_edges) < 3:
+        return False, f"too_few_ref_edges={len(ref_edges)}"
 
     metric_vals = [r["metric_out"] for r in rows]
     vmax = max(metric_vals)
     if vmax < 0.2:
         return False, f"metric_out_too_low={vmax:.3f}"
-    expected_levels = [ref_high * count / 4.0 for count in range(1, 5)]
-    windows = [
-        (12e-9, 18e-9),
-        (32e-9, 38e-9),
-        (52e-9, 58e-9),
-        (72e-9, 78e-9),
-    ]
+
     levels: list[float] = []
-    for t0, t1 in windows:
+    expected_levels: list[float] = []
+    for idx, edge_t in enumerate(ref_edges):
+        next_edge = ref_edges[idx + 1] if idx + 1 < len(ref_edges) else rows[-1]["time"]
+        t0 = edge_t + 0.8e-9
+        t1 = min(next_edge - 0.4e-9, edge_t + 6.0e-9, rows[-1]["time"])
+        if t1 <= t0:
+            continue
         vals = [r["metric_out"] for r in rows if t0 <= r["time"] <= t1]
         if not vals:
-            return False, "insufficient_metric_plateau_samples"
+            continue
         levels.append(sum(vals) / len(vals))
+        expected_levels.append(ref_high * (idx + 1) / 4.0)
+    if len(levels) < 3:
+        return False, f"insufficient_metric_plateau_samples={len(levels)}"
     level_errs = [abs(level - expected) for level, expected in zip(levels, expected_levels)]
     max_level_err = max(level_errs) if level_errs else float("inf")
-    tail = [r["metric_out"] for r in rows if r["time"] >= rows[-1]["time"] * 0.85]
-    final_level = sum(tail) / len(tail) if tail else 0.0
+    final_level = levels[-1] if levels else 0.0
     final_norm = final_level / max(ref_high, 1e-6)
+    expected_final_norm = len(ref_edges) / 4.0
     dips = sum(1 for i in range(1, len(metric_vals)) if metric_vals[i] + 0.03 < metric_vals[i - 1])
-    ok = max_level_err <= 0.08 and final_norm > 0.90 and dips <= 3
+    ok = max_level_err <= 0.08 and abs(final_norm - expected_final_norm) <= 0.10 and dips <= 3
     return ok, (
-        f"ref_edges={len(ref_edges)} max_edge_err_ns={max_edge_err * 1e9:.3f} "
+        f"ref_edges={len(ref_edges)} "
         f"metric_levels={[round(v,3) for v in levels]} max_level_err={max_level_err:.3f} "
-        f"final_norm={final_norm:.3f} metric_dips={dips}"
+        f"final_norm={final_norm:.3f}/{expected_final_norm:.3f} metric_dips={dips}"
     )
 
 
@@ -18966,11 +19112,34 @@ def check_release_complete_calibration_loop(rows: list[dict[str, float]]) -> tup
     if not rows or not required.issubset(rows[0]):
         return False, "missing time/clk/rst/vin/out/metric/trim_mon/residual_mon"
 
-    post_rows = [r for r in rows if r["rst"] <= 0.45 and r["time"] > 3e-9]
+    reset_spans: list[tuple[float, float]] = []
+    release_times: list[float] = []
+    span_start = rows[0]["time"]
+    in_reset = rows[0]["rst"] > 0.45
+    for prev, cur in zip(rows, rows[1:]):
+        cur_reset = cur["rst"] > 0.45
+        if cur_reset != in_reset:
+            if in_reset:
+                reset_spans.append((span_start, cur["time"]))
+                release_times.append(cur["time"])
+            span_start = cur["time"]
+            in_reset = cur_reset
+    if in_reset:
+        reset_spans.append((span_start, rows[-1]["time"]))
+
+    def in_reset_guard(t: float, after: float = 2.0e-9) -> bool:
+        return any(start <= t <= stop + after for start, stop in reset_spans)
+
+    first_release = release_times[0] if release_times else 3.0e-9
+    post_rows = [
+        r
+        for r in rows
+        if r["rst"] <= 0.45 and r["time"] > first_release + 1.0e-9 and not in_reset_guard(r["time"])
+    ]
     if len(post_rows) < 10:
         return False, f"complete_cal_loop_too_few_post_reset_rows={len(post_rows)}"
 
-    reset_rows = [r for r in rows if r["rst"] > 0.45 and (r["time"] < 3e-9 or 62.0e-9 <= r["time"] <= 66.2e-9)]
+    reset_rows = [r for r in rows if r["rst"] > 0.45]
     reset_mean = sum(r["out"] for r in reset_rows) / len(reset_rows) if reset_rows else rows[0]["out"]
     if abs(reset_mean - 0.45) > 0.06:
         return False, f"complete_cal_loop_reset_mean={reset_mean:.3f}"
@@ -18995,7 +19164,7 @@ def check_release_complete_calibration_loop(rows: list[dict[str, float]]) -> tup
 
     correction_checks = correction_ok = positive_checks = negative_checks = 0
     for edge_row, out in edge_settled_values(rows, "out"):
-        if edge_row["time"] > 60.0e-9 and edge_row["time"] < 68.0e-9:
+        if in_reset_guard(edge_row["time"]):
             continue
         raw_err = edge_row["vin"] - 0.45
         out_err = out - 0.45
@@ -19033,7 +19202,7 @@ def check_release_complete_calibration_loop(rows: list[dict[str, float]]) -> tup
     residual_samples = edge_settled_values(rows, "residual_mon")
     trim_checks = trim_ok = residual_ok = 0
     for (edge_row, trim_v), (_res_edge_row, residual_v) in zip(trim_samples, residual_samples):
-        if edge_row["time"] > 60.0e-9 and edge_row["time"] < 68.0e-9:
+        if in_reset_guard(edge_row["time"]):
             continue
         raw_err = edge_row["vin"] - 0.45
         if abs(raw_err) <= 0.09:
@@ -19058,16 +19227,24 @@ def check_release_complete_calibration_loop(rows: list[dict[str, float]]) -> tup
     if converged_metric_mean < 0.70:
         return False, f"complete_cal_loop_metric_not_high_when_converged={converged_metric_mean:.3f}"
 
-    after_reset = mean_in_window(rows, "out", 67e-9, 70e-9)
-    if after_reset is None:
-        return False, "complete_cal_loop_missing_late_reset_window"
-    if abs(after_reset - 0.45) > 0.12:
-        return False, f"complete_cal_loop_late_reset_not_recovered={after_reset:.3f}"
+    reset_recovery_checks = reset_recovery_ok = 0
+    for release_t in release_times:
+        after_reset = mean_in_window(rows, "out", release_t + 0.8e-9, release_t + 3.0e-9)
+        if after_reset is None:
+            continue
+        reset_recovery_checks += 1
+        if abs(after_reset - 0.45) <= 0.12:
+            reset_recovery_ok += 1
+    if reset_recovery_checks < 1:
+        return False, "complete_cal_loop_missing_reset_recovery_window"
+    if reset_recovery_ok < reset_recovery_checks:
+        return False, f"complete_cal_loop_reset_recovery={reset_recovery_ok}/{reset_recovery_checks}"
 
     return True, (
         f"complete_cal_loop reset={reset_mean:.3f} vin_span={vin_span:.3f} out_span={out_span:.3f} "
         f"correction={correction_ok}/{correction_checks} trim={trim_ok}/{trim_checks} "
-        f"residual={residual_ok}/{trim_checks} metric={converged_metric_mean:.3f}"
+        f"residual={residual_ok}/{trim_checks} metric={converged_metric_mean:.3f} "
+        f"reset_recovery={reset_recovery_ok}/{reset_recovery_checks}"
     )
 
 

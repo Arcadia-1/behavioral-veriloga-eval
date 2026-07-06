@@ -3,10 +3,10 @@ global 0
 
 ahdl_include "peak_detector.va"
 
-Vin (vin 0) vsource type=pwl wave=[0 0.1 30n 0.1 40n 0.55 80n 0.55 90n 0.25 130n 0.25 140n 0.7 175n 0.7]
-Vrst (rst 0) vsource type=pwl wave=[0 0.9 10n 0.9 11n 0 120n 0 121n 0.9 135n 0.9 136n 0 180n 0]
+Vin (vin 0) vsource type=pwl wave=[0 0.05 20n 0.05 30n 0.62 70n 0.62 82n 0.30 118n 0.30 128n 0.82 195n 0.82]
+Vrst (rst 0) vsource type=pwl wave=[0 0.9 8n 0.9 9n 0 96n 0 97n 0.9 114n 0.9 115n 0 205n 0]
 
 XDUT (vin rst vout) peak_detector
 
-tran tran stop=180n maxstep=500p
+tran tran stop=205n maxstep=500p
 save vin rst vout
