@@ -12614,69 +12614,101 @@ def check_v3_three_input_xor_gate(rows: list[dict[str, float]]) -> tuple[bool, s
 
 
 def check_v3_attenuator_gain(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    required = {"time", "vin", "vout"}
-    if not rows or not required.issubset(rows[0]):
-        return False, "missing time/vin/vout"
-    ok, detail = _sample_many(
+    return _v3_formula_check(
         rows,
-        {"vout": [(5.0, 0.10), (15.0, 0.40), (25.0, 0.20), (32.0, 0.20)]},
+        required={"time", "vin", "vout"},
+        output="vout",
+        expected_fn=lambda row: 0.5 * row["vin"],
         tol=0.015,
+        min_checked=20,
     )
-    if not ok:
-        return ok, detail
-    max_gain_error = 0.0
-    for time_ns in (5.0, 15.0, 25.0, 32.0):
-        vin = sample_signal_at(rows, "vin", time_ns * 1e-9)
-        vout = sample_signal_at(rows, "vout", time_ns * 1e-9)
-        if vin is None or vout is None:
-            return False, f"missing_gain_sample_at={time_ns:g}ns"
-        max_gain_error = max(max_gain_error, abs(vout - 0.5 * vin))
-    return max_gain_error <= 0.015, f"{detail} max_gain_error={max_gain_error:.5f}"
 
 
 def check_v3_deadband_window(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    required = {"time", "sigin", "sigout"}
-    if not rows or not required.issubset(rows[0]):
-        return False, "missing time/sigin/sigout"
-    return _sample_many(
-        rows,
-        {"sigout": [(5.0, -0.30), (15.0, 0.0), (25.0, 0.30), (35.0, 0.0)]},
-        tol=0.015,
-    )
+    regions: set[str] = set()
 
+    def expected(row: dict[str, float]) -> float:
+        value = row["sigin"]
+        if value < -0.2:
+            regions.add("below")
+            return value + 0.2
+        if value > 0.2:
+            regions.add("above")
+            return value - 0.2
+        regions.add("inside")
+        return 0.0
 
-def check_v3_differential_deadband(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    required = {"time", "sigin_p", "sigin_n", "sigout"}
-    if not rows or not required.issubset(rows[0]):
-        return False, "missing time/sigin_p/sigin_n/sigout"
-    ok, detail = _sample_many(
+    ok, detail = _v3_formula_check(
         rows,
-        {"sigout": [(5.0, -0.25), (15.0, 0.05), (25.0, 0.35), (35.0, 0.05)]},
+        required={"time", "sigin", "sigout"},
+        output="sigout",
+        expected_fn=expected,
         tol=0.015,
+        min_checked=20,
     )
     if not ok:
         return ok, detail
-    diffs: list[float] = []
-    for time_ns in (5.0, 15.0, 25.0, 35.0):
-        vp = sample_signal_at(rows, "sigin_p", time_ns * 1e-9)
-        vn = sample_signal_at(rows, "sigin_n", time_ns * 1e-9)
-        if vp is None or vn is None:
-            return False, f"missing_diff_sample_at={time_ns:g}ns"
-        diffs.append(vp - vn)
-    if not (diffs[0] < -0.45 and abs(diffs[1]) < 0.03 and diffs[2] > 0.45 and abs(diffs[3]) < 0.10):
-        return False, "unexpected_input_diff_sequence=" + ",".join(f"{value:.3f}" for value in diffs)
-    return True, detail + " diff_sequence=" + ",".join(f"{value:.3f}" for value in diffs)
+    if regions != {"below", "inside", "above"}:
+        return False, f"insufficient_deadband_region_coverage={sorted(regions)}"
+    return True, f"{detail} regions={sorted(regions)}"
+
+
+def check_v3_differential_deadband(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    regions: set[str] = set()
+
+    def expected(row: dict[str, float]) -> float:
+        diff = row["sigin_p"] - row["sigin_n"]
+        if diff < -0.2:
+            regions.add("below")
+            return diff + 0.25
+        if diff > 0.2:
+            regions.add("above")
+            return diff - 0.15
+        regions.add("inside")
+        return 0.05
+
+    ok, detail = _v3_formula_check(
+        rows,
+        required={"time", "sigin_p", "sigin_n", "sigout"},
+        output="sigout",
+        expected_fn=expected,
+        tol=0.015,
+        min_checked=20,
+    )
+    if not ok:
+        return ok, detail
+    if regions != {"below", "inside", "above"}:
+        return False, f"insufficient_diff_deadband_region_coverage={sorted(regions)}"
+    return True, f"{detail} regions={sorted(regions)}"
 
 
 def check_v3_hard_voltage_clamp(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    required = {"time", "vin", "vout"}
-    if not rows or not required.issubset(rows[0]):
-        return False, "missing time/vin/vout"
-    return _sample_many(
+    regions: set[str] = set()
+
+    def expected(row: dict[str, float]) -> float:
+        value = row["vin"]
+        if value < -0.2:
+            regions.add("below")
+            return -0.2
+        if value > 0.6:
+            regions.add("above")
+            return 0.6
+        regions.add("inside")
+        return value
+
+    ok, detail = _v3_formula_check(
         rows,
-        {"vout": [(5.0, -0.20), (15.0, 0.30), (25.0, 0.60), (35.0, 0.10)]},
+        required={"time", "vin", "vout"},
+        output="vout",
+        expected_fn=expected,
         tol=0.015,
+        min_checked=20,
     )
+    if not ok:
+        return ok, detail
+    if regions != {"below", "inside", "above"}:
+        return False, f"insufficient_clamp_region_coverage={sorted(regions)}"
+    return True, f"{detail} regions={sorted(regions)}"
 
 
 def check_v3_smooth_comparator_tanh(rows: list[dict[str, float]]) -> tuple[bool, str]:
@@ -12684,23 +12716,34 @@ def check_v3_smooth_comparator_tanh(rows: list[dict[str, float]]) -> tuple[bool,
 
 
 def check_v3_limiter_rails(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    required = {"time", "vdd", "vss", "vmax", "vmin", "vin", "vout"}
-    if not rows or not required.issubset(rows[0]):
-        return False, "missing time/vdd/vss/vmax/vmin/vin/vout"
-    ok, detail = _sample_many(
+    regions: set[str] = set()
+
+    def expected(row: dict[str, float]) -> float:
+        upper = row["vdd"] - row["vmax"]
+        lower = row["vss"] + row["vmin"]
+        value = row["vin"]
+        if value < lower:
+            regions.add("below")
+            return lower
+        if value > upper:
+            regions.add("above")
+            return upper
+        regions.add("inside")
+        return value
+
+    ok, detail = _v3_formula_check(
         rows,
-        {"vout": [(5.0, 0.10), (15.0, 0.40), (25.0, 0.70), (35.0, 0.10)]},
+        required={"time", "vdd", "vss", "vmax", "vmin", "vin", "vout"},
+        output="vout",
+        expected_fn=expected,
         tol=0.015,
+        min_checked=20,
     )
     if not ok:
         return ok, detail
-    upper = sample_signal_at(rows, "vdd", 25e-9)
-    margin = sample_signal_at(rows, "vmax", 25e-9)
-    lower_base = sample_signal_at(rows, "vss", 5e-9)
-    lower_margin = sample_signal_at(rows, "vmin", 5e-9)
-    if upper is None or margin is None or lower_base is None or lower_margin is None:
-        return False, "missing_limiter_margin_samples"
-    return True, f"{detail} rails=[{lower_base + lower_margin:.3f},{upper - margin:.3f}]"
+    if regions != {"below", "inside", "above"}:
+        return False, f"insufficient_limiter_region_coverage={sorted(regions)}"
+    return True, f"{detail} regions={sorted(regions)}"
 
 
 def check_v3_absolute_value(rows: list[dict[str, float]]) -> tuple[bool, str]:
@@ -12721,13 +12764,13 @@ def check_v3_absolute_value(rows: list[dict[str, float]]) -> tuple[bool, str]:
 
 
 def check_v3_offset_gain_amplifier(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    required = {"time", "sigin", "sigout"}
-    if not rows or not required.issubset(rows[0]):
-        return False, "missing time/sigin/sigout"
-    return _sample_many(
+    return _v3_formula_check(
         rows,
-        {"sigout": [(5.0, -0.30), (15.0, 0.90), (25.0, -0.90)]},
+        required={"time", "sigin", "sigout"},
+        output="sigout",
+        expected_fn=lambda row: 3.0 * (row["sigin"] - 0.2),
         tol=0.015,
+        min_checked=20,
     )
 
 
