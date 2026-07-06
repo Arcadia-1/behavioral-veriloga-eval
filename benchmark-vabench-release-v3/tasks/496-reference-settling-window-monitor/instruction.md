@@ -2,7 +2,13 @@
 
 Implement one Verilog-A source file named `reference_settling_window_monitor.va`.
 
-## Public Interface
+## Task Contract
+
+Build a measurement-style bias/reference monitor. The module samples a
+reference voltage against a target, reports the bounded error magnitude, and
+asserts validity only after consecutive in-window samples.
+
+## Public Verilog-A Interface
 
 ```verilog
 module reference_settling_window_monitor(clk, rst, ref, target, valid, err_metric, settle_mon);
@@ -39,3 +45,10 @@ Smooth all outputs with `transition()`.
 Use voltage-domain behavioral Verilog-A only. Do not generate a testbench,
 checker logic, branch current contributions, transistor devices, `ddt()`, or
 `idt()`. Do not hard-code visible or hidden stimulus times.
+
+## Output Contract
+
+Return only `reference_settling_window_monitor.va` implementing the public
+module. The file must compile under Spectre-compatible Verilog-A and must not
+require additional modules, include files beyond standard disciplines, or
+testbench changes.

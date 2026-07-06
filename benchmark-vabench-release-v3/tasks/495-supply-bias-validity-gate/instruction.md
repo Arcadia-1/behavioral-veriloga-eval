@@ -2,7 +2,13 @@
 
 Implement one Verilog-A source file named `supply_bias_validity_gate.va`.
 
-## Public Interface
+## Task Contract
+
+Build a voltage-domain bias/reference/power-management DUT. The module reports
+whether local supply, local ground, and local bias conditions are valid, then
+gates a downstream drive-enable output with public enable and power-down inputs.
+
+## Public Verilog-A Interface
 
 ```verilog
 module supply_bias_validity_gate(vdd, vss, vbias, en, pd, ok, gated);
@@ -40,3 +46,10 @@ with `transition()`.
 Use voltage-domain behavioral Verilog-A only. Do not generate a testbench,
 checker logic, current contributions, transistor devices, `ddt()`, or `idt()`.
 Do not hard-code visible or hidden stimulus times.
+
+## Output Contract
+
+Return only `supply_bias_validity_gate.va` implementing the public module. The
+file must compile under Spectre-compatible Verilog-A and must not require
+additional modules, include files beyond standard disciplines, or testbench
+changes.

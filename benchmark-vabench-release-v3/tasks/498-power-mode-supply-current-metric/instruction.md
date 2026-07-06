@@ -2,7 +2,14 @@
 
 Implement one Verilog-A source file named `power_mode_supply_current_metric.va`.
 
-## Public Interface
+## Task Contract
+
+Build a voltage-domain bias/reference/power-management macro-model metric. The
+module exposes an observable supply-current demand estimate as a voltage-coded
+output across enable, power-down, operating mode, load demand, and local supply
+conditions.
+
+## Public Verilog-A Interface
 
 ```verilog
 module power_mode_supply_current_metric(vdd, vss, en, pd, mode, load, isup_metric);
@@ -39,3 +46,10 @@ behavioral macro-model output.
 Use voltage-domain behavioral Verilog-A only. Do not generate a testbench,
 checker logic, branch current contributions, transistor devices, `ddt()`, or
 `idt()`. Do not hard-code visible or hidden stimulus times.
+
+## Output Contract
+
+Return only `power_mode_supply_current_metric.va` implementing the public
+module. The file must compile under Spectre-compatible Verilog-A and must not
+require additional modules, include files beyond standard disciplines, or
+testbench changes.

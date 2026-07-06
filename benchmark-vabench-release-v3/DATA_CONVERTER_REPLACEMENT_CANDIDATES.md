@@ -8,8 +8,10 @@ Issue #109 accepted six materialized candidates and one fresh replacement into
 the original full-300 surface at `052`-`057` and `075`. The previous
 `500-deterministic-mismatch-dac6` candidate was retired after duplicate review
 because it was too close to the existing mismatch-DAC coverage. The old
-temporary `495`-`501` task ids are no longer active benchmark rows; they are
-referenced below only as provenance for the re-slot mapping.
+temporary data-converter `495`-`501` task ids are no longer active
+data-converter benchmark rows; they are referenced below only as provenance for
+the re-slot mapping. The current `495`-`499` task ids are now separate
+issue #109 bias/reference/power-management replacements.
 
 ## Current Closure Status
 
@@ -17,7 +19,8 @@ As of the issue #109 re-slot, `TASKS.json` contains 91 data-converter-category
 rows when `data_converter` and `data_converter_models` are counted together.
 Six formerly temporary candidates plus the new correlated-double-sampler row are
 now active replacement rows inside the original `001`-`300` surface at
-`052`-`057` and `075`; no active `495`-`501` task directories remain.
+`052`-`057` and `075`; no active data-converter `495`-`501` task directories
+remain.
 
 The 2026-07-02 closeout EVAS sweep over the pre-slot candidate pool reported
 `88/88` gold pass and `326/326` negative variants rejected. After the 056

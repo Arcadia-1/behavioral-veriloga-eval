@@ -1,14 +1,15 @@
 # Behavioral Verilog-A v3
 
-This directory is a clean, RTL-Forge-style packaging of 451 numbered
+This directory is a clean, RTL-Forge-style packaging of 456 numbered
 standalone-Spectre-compatible Verilog-A DUT/support/testbench/e2e and
-language-extension tasks, plus five unnumbered replacement candidates.
+language-extension tasks.
 
 The default `tasks/` tree is the Spectre-compatible denominator. Task numbers
-are not contiguous: 54 rows that standalone Cadence/Spectre rejects as written
-were moved to `spectre-unsupported-tasks/` and removed from `TASKS.json` and
-`CHECKS.yaml`. Those rows are archived for future AMS/digital or version-gated
-work, but they are not part of the default EVAS/Spectre parity score.
+are not contiguous: 49 numbering holes remain after issue #109 replacement
+batches, and the original 54 rows that standalone Cadence/Spectre rejects as
+written remain archived under `spectre-unsupported-tasks/`. Those archived rows
+are preserved for future AMS/digital or version-gated work, but they are not
+part of the default EVAS/Spectre parity score.
 
 Rows `001`-`300` remain the original behavior-certified surface with issue #109
 backfills in the legacy gaps `052`-`057` and `075`. The old converter/vector
@@ -31,8 +32,9 @@ Top-level indexes:
 - `reports/spectre_unsupported_removed_20260703.{json,md}`: archived-row list
   and reasons for removing 54 Spectre-rejected rows from the default
   denominator.
-- `reports/spectre_default_after_removal_20260703.{json,md}`: hidden-gold
-  Spectre audit over the retained 451-row default denominator.
+- `reports/spectre_default_after_removal_20260703.{json,md}`: historical
+  hidden-gold Spectre audit over the retained 451-row default denominator before
+  issue #109 replacement batches.
 
 Partitions:
 
@@ -45,8 +47,9 @@ Partitions:
   v2 five-task slice absorbed as normal v3 tasks.
 - `301`-`505`: Verilog-A language extension candidates covering functions,
   file I/O, table models, random/noise helpers, Cadence LRM helper calls,
-  continuous-time operators, and KCL syntax, with Spectre-rejected AMS/digital,
-  user-task, and unsupported vector/helper rows archived outside `tasks/`.
+  continuous-time operators, KCL syntax, and issue #109 bias/power replacement
+  rows at `495`-`499`, with Spectre-rejected AMS/digital, user-task, and
+  unsupported vector/helper rows archived outside `tasks/`.
 
 Each task is self-contained under `tasks/NNN-name/`:
 

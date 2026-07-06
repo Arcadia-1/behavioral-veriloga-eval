@@ -11152,15 +11152,12 @@
     result: "1/1 gold PASS; 5/5 negative variants rejected; 0 expectation_fail with evas-rust and Spectre-recalibrated sampled zi_nd response checker."
   notes:
     - "Promoted after recalibrating the checker to Spectre zi_nd sample values and forcing evas-rust sampled-data breakpoints at the zi_nd interval."
-candidate-bias-supply-bias-validity-gate: |
+495-supply-bias-validity-gate: |
   version: 1
-  task_id: v3_candidate_bias_supply_bias_validity_gate
+  task_id: v3_495_supply_bias_validity_gate
   backend: evas
   status: formal-candidate
-  candidate_scope: opt_in_replacement_only
-  default_sweep: false
-  counted_in_score: false
-  checker: v3_candidate_bias_supply_bias_validity_gate
+  checker: v3_495_supply_bias_validity_gate
   required_columns:
     - time
     - vdd
@@ -11192,92 +11189,49 @@ candidate-bias-supply-bias-validity-gate: |
       - bias_window_measured_relative_to_vss
       - enable_and_powerdown_gate_downstream_drive
       - five_negative_variants_rejected_by_behavior_checker
-candidate-bias-power-mode-supply-current-metric: |
+496-reference-settling-window-monitor: |
   version: 1
-  task_id: v3_candidate_bias_power_mode_supply_current_metric
+  task_id: v3_496_reference_settling_window_monitor
   backend: evas
   status: formal-candidate
-  candidate_scope: opt_in_replacement_only
-  default_sweep: false
-  counted_in_score: false
-  checker: v3_candidate_bias_power_mode_supply_current_metric
+  checker: v3_496_reference_settling_window_monitor
   required_columns:
     - time
-    - vdd
-    - vss
-    - en
-    - pd
-    - mode
-    - load
-    - isup_metric
+    - clk
+    - rst
+    - ref
+    - target
+    - valid
+    - err_metric
+    - settle_mon
   checks:
     hidden:
-      - metric_scales_with_local_supply_ratio
-      - disabled_or_powerdown_state_uses_ipd_metric
-      - active_mode_selects_quiescent_metric
-      - active_load_adds_clipped_metric_term
+      - err_metric_tracks_absolute_target_error
+      - reset_clears_settling_state
+      - valid_requires_consecutive_in_window_samples
+      - target_changes_are_followed
       - five_negative_variants_rejected_by_behavior_checker
   sim_correct:
     positive:
-      - solution/power_mode_supply_current_metric.va
+      - solution/reference_settling_window_monitor.va
     negative:
-      - negative_variants/neg_001_constant_metric/power_mode_supply_current_metric.va
-      - negative_variants/neg_002_ignore_supply_scaling/power_mode_supply_current_metric.va
-      - negative_variants/neg_003_ignore_powerdown/power_mode_supply_current_metric.va
-      - negative_variants/neg_004_ignore_mode/power_mode_supply_current_metric.va
-      - negative_variants/neg_005_ignore_load/power_mode_supply_current_metric.va
+      - negative_variants/neg_001_always_valid/reference_settling_window_monitor.va
+      - negative_variants/neg_002_no_settle_window/reference_settling_window_monitor.va
+      - negative_variants/neg_003_fixed_target/reference_settling_window_monitor.va
+      - negative_variants/neg_004_ignore_reset/reference_settling_window_monitor.va
+      - negative_variants/neg_005_wrong_err_metric/reference_settling_window_monitor.va
     checks:
-      - metric_scales_with_local_supply_ratio
-      - disabled_or_powerdown_state_uses_ipd_metric
-      - active_mode_selects_quiescent_metric
-      - active_load_adds_clipped_metric_term
+      - err_metric_tracks_absolute_target_error
+      - reset_clears_settling_state
+      - valid_requires_consecutive_in_window_samples
+      - target_changes_are_followed
       - five_negative_variants_rejected_by_behavior_checker
-candidate-bias-dynamic-supply-level-driver: |
+497-power-enable-turnon-delay-gate: |
   version: 1
-  task_id: v3_candidate_bias_dynamic_supply_level_driver
+  task_id: v3_497_power_enable_turnon_delay_gate
   backend: evas
   status: formal-candidate
-  candidate_scope: opt_in_replacement_only
-  default_sweep: false
-  counted_in_score: false
-  checker: v3_candidate_bias_dynamic_supply_level_driver
-  required_columns:
-    - time
-    - din
-    - vdd
-    - vss
-    - out
-  checks:
-    hidden:
-      - input_threshold_referenced_to_local_supply
-      - output_levels_track_local_rails
-      - low_supply_falls_back_to_local_low
-      - nonzero_vss_offset_handled
-      - five_negative_variants_rejected_by_behavior_checker
-  sim_correct:
-    positive:
-      - solution/dynamic_supply_level_driver.va
-    negative:
-      - negative_variants/neg_001_fixed_output_rails/dynamic_supply_level_driver.va
-      - negative_variants/neg_002_absolute_input_threshold/dynamic_supply_level_driver.va
-      - negative_variants/neg_003_ignore_vss_offset/dynamic_supply_level_driver.va
-      - negative_variants/neg_004_drive_when_supply_invalid/dynamic_supply_level_driver.va
-      - negative_variants/neg_005_inverted_logic/dynamic_supply_level_driver.va
-    checks:
-      - input_threshold_referenced_to_local_supply
-      - output_levels_track_local_rails
-      - low_supply_falls_back_to_local_low
-      - nonzero_vss_offset_handled
-      - five_negative_variants_rejected_by_behavior_checker
-candidate-bias-power-enable-turnon-delay-gate: |
-  version: 1
-  task_id: v3_candidate_bias_power_enable_turnon_delay_gate
-  backend: evas
-  status: formal-candidate
-  candidate_scope: opt_in_replacement_only
-  default_sweep: false
-  counted_in_score: false
-  checker: v3_candidate_bias_power_enable_turnon_delay_gate
+  checker: v3_497_power_enable_turnon_delay_gate
   required_columns:
     - time
     - clk
@@ -11311,45 +11265,76 @@ candidate-bias-power-enable-turnon-delay-gate: |
       - drive_enable_requires_consecutive_valid_updates
       - invalid_sample_clears_turnon_progress
       - five_negative_variants_rejected_by_behavior_checker
-candidate-bias-reference-settling-window-monitor: |
+498-power-mode-supply-current-metric: |
   version: 1
-  task_id: v3_candidate_bias_reference_settling_window_monitor
+  task_id: v3_498_power_mode_supply_current_metric
   backend: evas
   status: formal-candidate
-  candidate_scope: opt_in_replacement_only
-  default_sweep: false
-  counted_in_score: false
-  checker: v3_candidate_bias_reference_settling_window_monitor
+  checker: v3_498_power_mode_supply_current_metric
   required_columns:
     - time
-    - clk
-    - rst
-    - ref
-    - target
-    - valid
-    - err_metric
-    - settle_mon
+    - vdd
+    - vss
+    - en
+    - pd
+    - mode
+    - load
+    - isup_metric
   checks:
     hidden:
-      - err_metric_tracks_absolute_target_error
-      - reset_clears_settling_state
-      - valid_requires_consecutive_in_window_samples
-      - target_changes_are_followed
+      - metric_scales_with_local_supply_ratio
+      - disabled_or_powerdown_state_uses_ipd_metric
+      - active_mode_selects_quiescent_metric
+      - active_load_adds_clipped_metric_term
       - five_negative_variants_rejected_by_behavior_checker
   sim_correct:
     positive:
-      - solution/reference_settling_window_monitor.va
+      - solution/power_mode_supply_current_metric.va
     negative:
-      - negative_variants/neg_001_always_valid/reference_settling_window_monitor.va
-      - negative_variants/neg_002_no_settle_window/reference_settling_window_monitor.va
-      - negative_variants/neg_003_fixed_target/reference_settling_window_monitor.va
-      - negative_variants/neg_004_ignore_reset/reference_settling_window_monitor.va
-      - negative_variants/neg_005_wrong_err_metric/reference_settling_window_monitor.va
+      - negative_variants/neg_001_constant_metric/power_mode_supply_current_metric.va
+      - negative_variants/neg_002_ignore_supply_scaling/power_mode_supply_current_metric.va
+      - negative_variants/neg_003_ignore_powerdown/power_mode_supply_current_metric.va
+      - negative_variants/neg_004_ignore_mode/power_mode_supply_current_metric.va
+      - negative_variants/neg_005_ignore_load/power_mode_supply_current_metric.va
     checks:
-      - err_metric_tracks_absolute_target_error
-      - reset_clears_settling_state
-      - valid_requires_consecutive_in_window_samples
-      - target_changes_are_followed
+      - metric_scales_with_local_supply_ratio
+      - disabled_or_powerdown_state_uses_ipd_metric
+      - active_mode_selects_quiescent_metric
+      - active_load_adds_clipped_metric_term
+      - five_negative_variants_rejected_by_behavior_checker
+499-dynamic-supply-level-driver: |
+  version: 1
+  task_id: v3_499_dynamic_supply_level_driver
+  backend: evas
+  status: formal-candidate
+  checker: v3_499_dynamic_supply_level_driver
+  required_columns:
+    - time
+    - din
+    - vdd
+    - vss
+    - out
+  checks:
+    hidden:
+      - input_threshold_referenced_to_local_supply
+      - output_levels_track_local_rails
+      - low_supply_falls_back_to_local_low
+      - nonzero_vss_offset_handled
+      - five_negative_variants_rejected_by_behavior_checker
+  sim_correct:
+    positive:
+      - solution/dynamic_supply_level_driver.va
+    negative:
+      - negative_variants/neg_001_fixed_output_rails/dynamic_supply_level_driver.va
+      - negative_variants/neg_002_absolute_input_threshold/dynamic_supply_level_driver.va
+      - negative_variants/neg_003_ignore_vss_offset/dynamic_supply_level_driver.va
+      - negative_variants/neg_004_drive_when_supply_invalid/dynamic_supply_level_driver.va
+      - negative_variants/neg_005_inverted_logic/dynamic_supply_level_driver.va
+    checks:
+      - input_threshold_referenced_to_local_supply
+      - output_levels_track_local_rails
+      - low_supply_falls_back_to_local_low
+      - nonzero_vss_offset_handled
       - five_negative_variants_rejected_by_behavior_checker
 502-sine-vco-idtmod-bound-step: |
   version: 2

@@ -2,7 +2,13 @@
 
 Implement one Verilog-A source file named `dynamic_supply_level_driver.va`.
 
-## Public Interface
+## Task Contract
+
+Build a dynamic-supply voltage-domain level driver. The module thresholds its
+input relative to local supply rails, drives its output relative to those same
+rails, and falls back to the local low level when the supply is invalid.
+
+## Public Verilog-A Interface
 
 ```verilog
 module dynamic_supply_level_driver(din, vdd, vss, out);
@@ -35,3 +41,10 @@ whether the normalized input exceeds `vth_frac`. When the supply is below
 Use voltage-domain behavioral Verilog-A only. Do not generate a testbench,
 checker logic, connectmodule code, branch current contributions, transistor
 devices, `ddt()`, or `idt()`. Do not hard-code visible or hidden stimulus times.
+
+## Output Contract
+
+Return only `dynamic_supply_level_driver.va` implementing the public module. The
+file must compile under Spectre-compatible Verilog-A and must not require
+additional modules, include files beyond standard disciplines, or testbench
+changes.

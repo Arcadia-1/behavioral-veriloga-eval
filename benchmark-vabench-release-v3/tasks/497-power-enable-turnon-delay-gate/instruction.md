@@ -2,7 +2,14 @@
 
 Implement one Verilog-A source file named `power_enable_turnon_delay_gate.va`.
 
-## Public Interface
+## Task Contract
+
+Build a voltage-domain power sequencing DUT for a biased analog block. The
+module samples supply, bias, enable, and power-down conditions, reports sampled
+power validity, and releases downstream drive only after a consecutive valid
+turn-on delay.
+
+## Public Verilog-A Interface
 
 ```verilog
 module power_enable_turnon_delay_gate(clk, vdd, vss, vbias, en, pd, pwr_ok, drive_en, delay_mon);
@@ -40,3 +47,10 @@ bounded voltage-coded progress value from 0 to `vhi`. Smooth all outputs with
 Use voltage-domain behavioral Verilog-A only. Do not generate a testbench,
 checker logic, branch current contributions, transistor devices, `ddt()`, or
 `idt()`. Do not hard-code visible or hidden stimulus times.
+
+## Output Contract
+
+Return only `power_enable_turnon_delay_gate.va` implementing the public module.
+The file must compile under Spectre-compatible Verilog-A and must not require
+additional modules, include files beyond standard disciplines, or testbench
+changes.
