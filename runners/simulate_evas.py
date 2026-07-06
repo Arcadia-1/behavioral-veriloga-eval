@@ -12836,28 +12836,58 @@ def check_v3_differential_gain_driver(rows: list[dict[str, float]]) -> tuple[boo
     required = {"time", "sigin_p", "sigin_n", "sigout_p", "sigout_n", "sigref"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing time/sigin_p/sigin_n/sigout_p/sigout_n/sigref"
-    ok, detail = _sample_many(
-        rows,
-        {
-            "sigout_p": [(5.0, 0.35), (15.0, 0.45), (25.0, 0.60)],
-            "sigout_n": [(5.0, 0.55), (15.0, 0.45), (25.0, 0.30)],
-        },
-        tol=0.02,
-    )
-    if not ok:
-        return ok, detail
-    return True, detail
+    stride = max(1, len(rows) // 240)
+    checked = 0
+    max_err = 0.0
+    regions: set[str] = set()
+    for row in rows[::stride]:
+        diff = row["sigin_p"] - row["sigin_n"]
+        if diff < -0.03:
+            regions.add("negative")
+        elif diff > 0.03:
+            regions.add("positive")
+        else:
+            regions.add("zero")
+        expected_p = row["sigref"] + diff
+        expected_n = row["sigref"] - diff
+        max_err = max(max_err, abs(row["sigout_p"] - expected_p), abs(row["sigout_n"] - expected_n))
+        checked += 1
+    if checked < 20:
+        return False, f"too_few_differential_gain_samples={checked}"
+    if max_err > 0.02:
+        return False, f"checked={checked} max_error={max_err:.5f}"
+    if regions != {"negative", "zero", "positive"}:
+        return False, f"insufficient_differential_gain_regions={sorted(regions)}"
+    return True, f"checked={checked} max_error={max_err:.5f} regions={sorted(regions)}"
 
 
 def check_v3_limiting_differential_amplifier(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    required = {"time", "sigin_p", "sigin_n", "sigout"}
-    if not rows or not required.issubset(rows[0]):
-        return False, "missing time/sigin_p/sigin_n/sigout"
-    return _sample_many(
+    regions: set[str] = set()
+
+    def expected(row: dict[str, float]) -> float:
+        target = 0.2 + 3.0 * ((row["sigin_p"] - row["sigin_n"]) - 0.05)
+        if target < -0.4:
+            regions.add("low")
+            return -0.4
+        if target > 0.8:
+            regions.add("high")
+            return 0.8
+        regions.add("linear")
+        return target
+
+    ok, detail = _v3_formula_check(
         rows,
-        {"sigout": [(5.0, -0.40), (15.0, 0.20), (25.0, 0.80), (35.0, 0.50)]},
+        required={"time", "sigin_p", "sigin_n", "sigout"},
+        output="sigout",
+        expected_fn=expected,
         tol=0.02,
+        min_checked=20,
     )
+    if not ok:
+        return ok, detail
+    if regions != {"low", "linear", "high"}:
+        return False, f"insufficient_limiting_diffamp_regions={sorted(regions)}"
+    return True, f"{detail} regions={sorted(regions)}"
 
 
 def check_v3_analog_multiplier(rows: list[dict[str, float]]) -> tuple[bool, str]:
@@ -12917,58 +12947,131 @@ def check_v3_three_way_threshold_mux(rows: list[dict[str, float]]) -> tuple[bool
 
 
 def check_v3_differential_amplifier_core(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    required = {"time", "sigin_p", "sigin_n", "sigout"}
-    if not rows or not required.issubset(rows[0]):
-        return False, "missing time/sigin_p/sigin_n/sigout"
-    return _sample_many(
+    return _v3_formula_check(
         rows,
-        {"sigout": [(5.0, -0.50), (15.0, -0.10), (25.0, 0.30), (35.0, 0.10)]},
+        required={"time", "sigin_p", "sigin_n", "sigout"},
+        output="sigout",
+        expected_fn=lambda row: 2.0 * ((row["sigin_p"] - row["sigin_n"]) - 0.05),
         tol=0.02,
+        min_checked=20,
     )
 
 
 def check_v3_logarithmic_amplifier(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    required = {"time", "sigin", "sigout"}
-    if not rows or not required.issubset(rows[0]):
-        return False, "missing time/sigin/sigout"
-    return _sample_many(
+    regions: set[str] = set()
+
+    def expected(row: dict[str, float]) -> float:
+        adjusted = row["sigin"] - 0.2
+        magnitude = abs(adjusted)
+        if magnitude < 0.1:
+            regions.add("floored")
+            magnitude = 0.1
+        elif adjusted < 0:
+            regions.add("negative")
+        else:
+            regions.add("positive")
+        return math.log(magnitude)
+
+    ok, detail = _v3_formula_check(
         rows,
-        {"sigout": [(5.0, -2.302585), (15.0, -0.693147), (25.0, -0.693147), (35.0, 0.0)]},
+        required={"time", "sigin", "sigout"},
+        output="sigout",
+        expected_fn=expected,
         tol=0.035,
+        min_checked=20,
     )
+    if not ok:
+        return ok, detail
+    if regions != {"floored", "negative", "positive"}:
+        return False, f"insufficient_logamp_regions={sorted(regions)}"
+    return True, f"{detail} regions={sorted(regions)}"
 
 
 def check_v3_soft_voltage_clamp(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    required = {"time", "vin", "vout"}
-    if not rows or not required.issubset(rows[0]):
-        return False, "missing time/vin/vout"
-    return _sample_many(
+    regions: set[str] = set()
+
+    def expected(row: dict[str, float]) -> float:
+        vin = row["vin"]
+        if vin < 0.0:
+            regions.add("low")
+            return -0.2 * (1.0 - math.exp(vin / 0.2))
+        if vin > 0.4:
+            regions.add("high")
+            return 0.4 + 0.2 * (1.0 - math.exp(-(vin - 0.4) / 0.2))
+        regions.add("linear")
+        return vin
+
+    ok, detail = _v3_formula_check(
         rows,
-        {"vout": [(5.0, -0.17293), (15.0, 0.20), (25.0, 0.57293), (35.0, 0.47869)]},
+        required={"time", "vin", "vout"},
+        output="vout",
+        expected_fn=expected,
         tol=0.025,
+        min_checked=20,
     )
+    if not ok:
+        return ok, detail
+    if regions != {"low", "linear", "high"}:
+        return False, f"insufficient_soft_clamp_regions={sorted(regions)}"
+    return True, f"{detail} regions={sorted(regions)}"
 
 
 def check_v3_variable_gain_differential_amplifier(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    required = {"time", "sigin_p", "sigin_n", "sigctrl_p", "sigctrl_n", "sigout"}
-    if not rows or not required.issubset(rows[0]):
-        return False, "missing time/sigin_p/sigin_n/sigctrl_p/sigctrl_n/sigout"
-    return _sample_many(
+    regions: set[str] = set()
+
+    def expected(row: dict[str, float]) -> float:
+        target = 2.0 * (row["sigctrl_p"] - row["sigctrl_n"]) * (row["sigin_p"] - row["sigin_n"]) + 0.2
+        if target < -0.4:
+            regions.add("low")
+            return -0.4
+        if target > 0.8:
+            regions.add("high")
+            return 0.8
+        regions.add("linear")
+        return target
+
+    ok, detail = _v3_formula_check(
         rows,
-        {"sigout": [(5.0, 0.0), (15.0, 0.40), (25.0, 0.80), (35.0, -0.40)]},
+        required={"time", "sigin_p", "sigin_n", "sigctrl_p", "sigctrl_n", "sigout"},
+        output="sigout",
+        expected_fn=expected,
         tol=0.025,
+        min_checked=20,
     )
+    if not ok:
+        return ok, detail
+    if regions != {"low", "linear", "high"}:
+        return False, f"insufficient_variable_gain_regions={sorted(regions)}"
+    return True, f"{detail} regions={sorted(regions)}"
 
 
 def check_v3_voltage_controlled_gain_amplifier(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    required = {"time", "vin_p", "vin_n", "vctrl_p", "vctrl_n", "vout"}
-    if not rows or not required.issubset(rows[0]):
-        return False, "missing time/vin_p/vin_n/vctrl_p/vctrl_n/vout"
-    return _sample_many(
+    regions: set[str] = set()
+
+    def expected(row: dict[str, float]) -> float:
+        target = 1.5 * (row["vctrl_p"] - row["vctrl_n"]) * ((row["vin_p"] - row["vin_n"]) - 0.05) + 0.5
+        if target < 0.1:
+            regions.add("low")
+            return 0.1
+        if target > 0.9:
+            regions.add("high")
+            return 0.9
+        regions.add("linear")
+        return target
+
+    ok, detail = _v3_formula_check(
         rows,
-        {"vout": [(5.0, 0.3125), (15.0, 0.5750), (25.0, 0.9000), (35.0, 0.1000)]},
+        required={"time", "vin_p", "vin_n", "vctrl_p", "vctrl_n", "vout"},
+        output="vout",
+        expected_fn=expected,
         tol=0.025,
+        min_checked=20,
     )
+    if not ok:
+        return ok, detail
+    if regions != {"low", "linear", "high"}:
+        return False, f"insufficient_vcga_regions={sorted(regions)}"
+    return True, f"{detail} regions={sorted(regions)}"
 
 
 def check_v3_ideal_differential_opamp(rows: list[dict[str, float]]) -> tuple[bool, str]:

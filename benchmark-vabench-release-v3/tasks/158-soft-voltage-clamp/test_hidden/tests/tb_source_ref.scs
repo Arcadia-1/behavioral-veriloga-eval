@@ -3,7 +3,7 @@ global 0
 
 ahdl_include "soft_voltage_clamp_behavior.va"
 
-Vin (vin 0) vsource type=pwl wave=[0 -0.4 10n -0.4 10.1n 0.2 20n 0.2 20.1n 0.8 30n 0.8 30.1n 0.5 45n 0.5]
+Vin (vin 0) vsource type=pwl wave=[0 -0.6 8n -0.6 8.1n 0.1 18n 0.1 18.1n 0.75 28n 0.75 28.1n 0.4 38n 0.4 38.1n 0 45n 0]
 
 XDUT (vin vout 0) soft_voltage_clamp_behavior
 
