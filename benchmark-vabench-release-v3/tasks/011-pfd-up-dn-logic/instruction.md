@@ -1,8 +1,16 @@
 # PFD UP/DN Reset-Race Logic
 
+## Task Contract
+
+Implement the requested Verilog-A artifact for `PFD Up DN Logic`.
+- Form: `dut`
+- Level: `L1`
+- Category: `pll_clock_timing`
+- Target artifact(s): `pfd_updn.va`
+
 Implement `pfd_updn.va` in Verilog-A.
 
-## Interface
+## Public Verilog-A Interface
 
 ```verilog
 module pfd_updn (
@@ -15,20 +23,18 @@ module pfd_updn (
 );
 ```
 
-## Required Behavior
+## Public Parameter Contract
 
-This task asks for the `pfd_updn` behavioral DUT module, not a Spectre
-testbench. The module is a voltage-domain phase-frequency detector UP/DN
-generator with reset-race clearing.
+Provide these overrideable public parameters:
 
-Support these public parameters and legal overrides:
-
-| Parameter | Default | Unit / range | Contract |
+| Parameter | Default | Unit / Range | Contract |
 | --- | ---: | --- | --- |
 | `vth` | `0.45` | V | Rising-edge threshold for `REF` and `DIV`. |
 | `tedge` | `20 ps` | time, `(0:inf)` | Rise/fall smoothing for `UP` and `DN`. |
 
-Required observable behavior:
+## Required Behavior
+
+The module is a voltage-domain phase-frequency detector UP/DN generator with reset-race clearing.
 
 - Detect rising `REF` and `DIV` crossings at `vth`.
 - Set `UP` high on a rising `REF` edge and keep it high until a qualifying
@@ -46,10 +52,14 @@ Required observable behavior:
 - Drive `UP` and `DN` as smoothed voltage-domain logic levels referenced to
   `VDD` for high and `VSS` for low.
 
-Use voltage contributions only. Do not use current contributions, `ddt()`,
-`idt()`, transistor-level devices, AC/noise analysis, checker logic, private
-test hooks, or simulator-private side channels.
+## Modeling Constraints
 
-## Output
+Use voltage contributions only. Do not use current contributions, `ddt()`,
+`idt()`, transistor-level devices, AC/noise analysis, validation logic, validation-only
+test hooks, or simulator-specific side channels.
+
+Use deterministic Verilog-A behavioral modeling appropriate for the public circuit contract. The visible testbench is a public validation scenario; do not hard-code a particular stimulus table, transient stop time, or validation sample window into the DUT unless that behavior is part of the public circuit contract.
+
+## Output Contract
 
 Return exactly one source artifact named `pfd_updn.va`.

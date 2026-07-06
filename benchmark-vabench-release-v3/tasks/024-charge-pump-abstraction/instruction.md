@@ -1,8 +1,16 @@
 # Charge Pump Abstraction
 
+## Task Contract
+
+Implement the requested Verilog-A artifact for `Charge Pump Abstraction`.
+- Form: `dut`
+- Level: `L1`
+- Category: `pll_clock_timing`
+- Target artifact(s): `charge_pump_abstraction.va`
+
 Implement `charge_pump_abstraction.va` in Verilog-A.
 
-## Interface
+## Public Verilog-A Interface
 
 ```verilog
 module charge_pump_abstraction(
@@ -15,16 +23,11 @@ module charge_pump_abstraction(
 );
 ```
 
-## Required Behavior
+## Public Parameter Contract
 
-This task asks for the `charge_pump_abstraction` behavioral DUT module, not a
-Spectre testbench. The module represents UP/DN pulse effects as a sampled
-voltage-domain control-node update without current-domain charge-pump
-contributions.
+Provide these overrideable public parameters:
 
-Support these public parameters and legal overrides:
-
-| Parameter | Default | Unit / range | Contract |
+| Parameter | Default | Unit / Range | Contract |
 | --- | ---: | --- | --- |
 | `tr` | `100 ps` | time, `(0:inf)` | Rise/fall smoothing for `vctrl` and `metric`. |
 | `vth` | `0.45` | V | Logic threshold for `clk`, `rst`, `up`, and `dn`. |
@@ -32,7 +35,9 @@ Support these public parameters and legal overrides:
 | `vmin` | `0.05` | V | Lower clamp for `vctrl`. |
 | `vmax` | `0.85` | V | Upper clamp for `vctrl`. |
 
-Required observable behavior:
+## Required Behavior
+
+The module represents UP/DN pulse effects as a sampled voltage-domain control-node update without current-domain charge-pump contributions.
 
 - Treat `clk`, `rst`, `up`, and `dn` as voltage-coded logic inputs.
 - On rising `clk` edges, sample the UP/DN request when reset is low.
@@ -44,10 +49,14 @@ Required observable behavior:
 - Drive `metric` as a voltage-coded status observable: high for UP movement,
   low for DN movement, and midscale for hold/reset.
 
-Use voltage contributions only. Do not use current contributions, `ddt()`,
-`idt()`, transistor-level devices, AC/noise analysis, checker logic, private
-test hooks, or simulator-private side channels.
+## Modeling Constraints
 
-## Output
+Use voltage contributions only. Do not use current contributions, `ddt()`,
+`idt()`, transistor-level devices, AC/noise analysis, validation logic, validation-only
+test hooks, or simulator-specific side channels.
+
+Use deterministic Verilog-A behavioral modeling appropriate for the public circuit contract. The visible testbench is a public validation scenario; do not hard-code a particular stimulus table, transient stop time, or validation sample window into the DUT unless that behavior is part of the public circuit contract.
+
+## Output Contract
 
 Return exactly one source artifact named `charge_pump_abstraction.va`.

@@ -2,13 +2,15 @@
 
 ## Task Contract
 
+Implement the requested Verilog-A artifact for `LDO Regulator Macro Model`.
 - Form: `dut`
 - Level: `L1`
-- Category: Bias Reference and Power Management
+- Category: `bias_reference_power_management`
+- Target artifact(s): `ldo_regulator_macro_model.va`
+
 - Target artifact: `ldo_regulator_macro_model.va`
-- Implement only the requested Verilog-A DUT. Do not generate a Spectre testbench, checker logic, or auxiliary test hooks.
+- Implement only the requested Verilog-A DUT. Do not generate a Spectre testbench, validation logic, or auxiliary test hooks.
 - Preserve the public module name, port order, starter parameters, and saved waveform observable names.
-- The visible testbench is a public smoke scenario. Use it to understand wiring and observables, but do not hard-code its stop time, maxstep, or exact waveform breakpoints into the DUT behavior.
 
 ## Public Verilog-A Interface
 
@@ -19,12 +21,14 @@ output out, metric;
 electrical clk, rst, vin, out, metric;
 ```
 
-Starter parameter declarations are part of the public contract:
+## Public Parameter Contract
 
-- `tr = 100p`: output transition rise/fall time.
-- `vth = 0.45`: voltage-coded logic threshold.
+Provide these overrideable public parameters:
 
-## Public Behavioral Contract
+- `tr = 100 ps`: output transition rise/fall smoothing time.
+- `vth = 0.45 V`: voltage-coded logic threshold for `clk` and `rst`.
+
+## Required Behavior
 
 - `clk` and `rst` are voltage-coded logic signals.
 - Treat `vin` as a bounded load/disturbance-control voltage, not as the regulator supply rail.
@@ -35,19 +39,9 @@ Starter parameter declarations are part of the public contract:
 - Keep all outputs in the 0 V to 0.9 V voltage-domain range.
 - Keep the model pure voltage-domain behavioral Verilog-A. Do not use branch-current contributions, transistor-level devices, AC/noise analysis, or KCL/KVL regulation loops.
 
-## Public Observables
+## Modeling Constraints
 
-Verification scenarios observe these scalar waveforms:
-
-```text
-clk rst vin out metric
-```
-
-Expected behavior categories:
-
-- `regulated_output_bounded`
-- `load_step_causes_droop`
-- `output_recovers_after_load_reduction`
+Use deterministic Verilog-A behavioral modeling appropriate for the public circuit contract. The visible testbench is a public validation scenario; do not hard-code a particular stimulus table, transient stop time, or validation sample window into the DUT unless that behavior is part of the public circuit contract.
 
 ## Output Contract
 

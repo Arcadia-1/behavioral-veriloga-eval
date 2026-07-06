@@ -11,5 +11,5 @@ module sar_logic_4b(VDD, VSS, CLKS, DCOMP, DP_DAC_3, DP_DAC_2, DP_DAC_1, DP_DAC_
     parameter real tedge = 1n;
 
     // TODO: implement the behavior described in instruction.md.
-    // This starter is intentionally incomplete; hidden tests grade behavior.
+    // This starter is intentionally incomplete; implement the public behavior contract.
 endmodule

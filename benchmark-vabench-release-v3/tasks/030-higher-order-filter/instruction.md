@@ -1,8 +1,16 @@
 # Clocked Cascaded Two-Pole Filter
 
+## Task Contract
+
+Implement the requested Verilog-A artifact for `Clocked Cascaded Two-Pole Filter`.
+- Form: `dut`
+- Level: `L1`
+- Category: `baseband_signal_conditioning`
+- Target artifact(s): `higher_order_filter.va`
+
 Implement `higher_order_filter.va` in Verilog-A.
 
-## Public Interface
+## Public Verilog-A Interface
 
 Declare module `higher_order_filter(clk, rst, vin, out, metric)` with scalar
 electrical voltage-domain ports. `clk` and `rst` are voltage-coded logic inputs
@@ -16,7 +24,7 @@ with a `0.45 V` threshold.
 - `alpha`: sampled low-pass update coefficient for each cascaded state,
   default `0.18`.
 
-## Functional Contract
+## Required Behavior
 
 - Initialize the two filter states, output state, and metric baseline near
   `0.45 V`.
@@ -29,7 +37,7 @@ with a `0.45 V` threshold.
 - Drive `out` from the second filtered state, bounded to the signal rails.
 - Drive `metric` as a voltage observable of the lag between the cascaded filter
   states, centered around the common-mode level, so the settling transient is
-  visible without exposing private sample windows.
+  visible without exposing validation-only sample windows.
 
 The visible testbench is a public verification scenario for wiring and saved
 observables. Do not hard-code its transient stop time, waveform breakpoints, or
@@ -37,6 +45,12 @@ sample windows into the DUT.
 
 ## Modeling Constraints
 
-Return only `higher_order_filter.va`. Do not emit a Spectre testbench, checker
-logic, private test hooks, or simulator-private side channels. Use voltage
+Return only `higher_order_filter.va`. Do not emit a Spectre testbench, validation harness
+logic, validation-only hooks, or simulator-specific side channels. Use voltage
 contributions only; do not use current contributions or `ddt()`.
+
+Use deterministic Verilog-A behavioral modeling appropriate for the public circuit contract. The visible testbench is a public validation scenario; do not hard-code a particular stimulus table, transient stop time, or validation sample window into the DUT unless that behavior is part of the public circuit contract.
+
+## Output Contract
+
+Return exactly one complete source artifact named `higher_order_filter.va`. Do not include explanatory prose outside the source artifact contents.

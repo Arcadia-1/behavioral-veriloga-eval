@@ -5,5 +5,5 @@ module cdac_calibration(clk,rst,err,trim);
     parameter real vth=0.45; parameter real tr=500p; real acc;
 
     // TODO: implement the behavior described in instruction.md.
-    // This starter is intentionally incomplete; hidden tests grade behavior.
+    // This starter is intentionally incomplete; implement the public behavior contract.
 endmodule

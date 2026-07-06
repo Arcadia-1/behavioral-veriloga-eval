@@ -1,10 +1,18 @@
 # Propagation Delay Comparator
 
+## Task Contract
+
+Implement the requested Verilog-A artifact for `Propagation Delay Comparator`.
+- Form: `dut`
+- Level: `L1`
+- Category: `comparator_decision`
+- Target artifact(s): `cmp_delay.va`, `edge_interval_timer.va`
+
 Implement a voltage-domain clocked comparator whose clock-to-output delay grows
 as the effective differential input becomes smaller, plus the supplied timing
 helper artifact.
 
-## Public Interface
+## Public Verilog-A Interface
 
 Return these Verilog-A artifacts:
 
@@ -32,7 +40,7 @@ For `cmp_delay`, provide these overrideable public parameters:
 For `edge_interval_timer`, provide `VTH = 0.4 V` as the edge-detection
 threshold.
 
-## Functional Contract
+## Required Behavior
 
 - Initialize the comparator decision outputs low.
 - Use `V(VDD,VSS)/2` as the comparator clock threshold.
@@ -51,7 +59,13 @@ threshold.
 ## Modeling Constraints
 
 Return only `cmp_delay.va` and `edge_interval_timer.va`. Use voltage
-contributions only. Do not modify or emit the support testbench, add checker
-logic, hard-code waveform sample points, add simulator-private side channels,
+contributions only. Do not modify or emit the support testbench, add validation
+logic, hard-code waveform sample points, add simulator-specific side channels,
 use current contributions, `ddt()`, or `idt()`. Update event-driven state in
 analog event blocks and place voltage contributions outside those event blocks.
+
+Use deterministic Verilog-A behavioral modeling appropriate for the public circuit contract. The visible testbench is a public validation scenario; do not hard-code a particular stimulus table, transient stop time, or validation sample window into the DUT unless that behavior is part of the public circuit contract.
+
+## Output Contract
+
+Return exactly the requested source artifact(s): `cmp_delay.va`, `edge_interval_timer.va`. Do not include explanatory prose outside the source artifact contents.

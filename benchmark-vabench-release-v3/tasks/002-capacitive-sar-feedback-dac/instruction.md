@@ -1,8 +1,16 @@
 # Capacitive SAR Feedback DAC
 
+## Task Contract
+
+Implement the requested Verilog-A artifact for `Capacitive Weighted SAR Feedback DAC`.
+- Form: `dut`
+- Level: `L1`
+- Category: `data_converter`
+- Target artifact(s): `cdac_cal.va`
+
 Implement a clocked capacitive feedback DAC for a SAR ADC.
 
-## Public Interface
+## Public Verilog-A Interface
 
 Declare module `cdac_cal` with positional ports `VDD, VSS, CLK, D9, D8, D7,
 D6, D5, D4, D3, D2, D1, D0, CAL0, CAL1, VDAC_P, VDAC_N`. All ports are
@@ -20,7 +28,7 @@ Provide these overrideable public parameters:
 Use a 0.45 V logic threshold for the sampled clock, DAC control bits, and
 calibration bits.
 
-## Functional Contract
+## Required Behavior
 
 On each rising `CLK` edge, sample `D9..D0`, `CAL0`, and `CAL1`. Interpret
 `D9..D0` as an unsigned 10-bit binary word with `D9` as the most significant
@@ -38,5 +46,11 @@ effective code over the full 10-bit main-code range.
 
 Return only `cdac_cal.va`. Use deterministic voltage-domain Verilog-A and
 smooth output transitions. Do not modify or emit the support testbench, add
-checker logic, hard-code private waveform sample points, add simulator-private
+validation logic, hard-code specific waveform sample points, add simulator-specific
 side channels, use current contributions, `ddt()`, or `idt()`.
+
+Use deterministic Verilog-A behavioral modeling appropriate for the public circuit contract. The visible testbench is a public validation scenario; do not hard-code a particular stimulus table, transient stop time, or validation sample window into the DUT unless that behavior is part of the public circuit contract.
+
+## Output Contract
+
+Return exactly one complete source artifact named `cdac_cal.va`. Do not include explanatory prose outside the source artifact contents.

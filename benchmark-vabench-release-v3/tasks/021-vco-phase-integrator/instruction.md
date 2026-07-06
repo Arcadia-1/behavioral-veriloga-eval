@@ -1,8 +1,16 @@
 # VCO Phase Integrator
 
+## Task Contract
+
+Implement the requested Verilog-A artifact for `VCO Phase Integrator`.
+- Form: `dut`
+- Level: `L1`
+- Category: `pll_clock_timing`
+- Target artifact(s): `vco_phase_integrator.va`
+
 Implement `vco_phase_integrator.va` in Verilog-A.
 
-## Interface
+## Public Verilog-A Interface
 
 ```verilog
 module vco_phase_integrator(
@@ -12,19 +20,17 @@ module vco_phase_integrator(
 );
 ```
 
-## Required Behavior
+## Public Parameter Contract
 
-This task asks for the `vco_phase_integrator` behavioral DUT module, not a
-Spectre testbench. The module is a voltage-controlled oscillator phase
-accumulator that exposes both wrapped phase and a voltage-coded clock.
+Provide this overrideable public parameter:
 
-Support this public parameter and legal override:
-
-| Parameter | Default | Unit / range | Contract |
+| Parameter | Default | Unit / Range | Contract |
 | --- | ---: | --- | --- |
 | `tr` | `200 ps` | time, `(0:inf)` | Rise/fall smoothing for `phase` and `clk`. |
 
-Required observable behavior:
+## Required Behavior
+
+The module is a voltage-controlled oscillator phase accumulator that exposes both wrapped phase and a voltage-coded clock.
 
 - Maintain a real phase state normalized to the range `[0, 1)`.
 - Update the phase state on a periodic 1 ns timer.
@@ -36,10 +42,14 @@ Required observable behavior:
 - Later clock-edge rate should increase when `vctrl` is higher than earlier
   `vctrl`.
 
-Use voltage contributions only. Do not use current contributions, `ddt()`,
-`idt()`, transistor-level devices, AC/noise analysis, checker logic, private
-test hooks, or simulator-private side channels.
+## Modeling Constraints
 
-## Output
+Use voltage contributions only. Do not use current contributions, `ddt()`,
+`idt()`, transistor-level devices, AC/noise analysis, validation logic, validation-only
+test hooks, or simulator-specific side channels.
+
+Use deterministic Verilog-A behavioral modeling appropriate for the public circuit contract. The visible testbench is a public validation scenario; do not hard-code a particular stimulus table, transient stop time, or validation sample window into the DUT unless that behavior is part of the public circuit contract.
+
+## Output Contract
 
 Return exactly one source artifact named `vco_phase_integrator.va`.

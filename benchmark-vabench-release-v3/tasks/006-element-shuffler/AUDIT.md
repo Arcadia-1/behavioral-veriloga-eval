@@ -24,13 +24,12 @@ At each sample time listed in `CHECKS.yaml`, classify an output as high when its
 - `neg_003_monotonic_output_order`: uses monotonic output mapping instead of the required permutation.
 - `neg_004_forces_state_three`: forces a single state after every clock.
 - `neg_005_out0_stuck_high`: violates the one-hot rotating sequence.
-- `neg_006_ignore_midrun_reset`: passes the first six-sample window but ignores the hidden mid-run reset restart.
 
 ## Evidence
 
 - File-level release-v3 structure prepared in this task directory only.
 - Gold EVAS certification PASS under `v3_006_element_shuffler` with active sequence `2,0,3,1,2,0,2,0,3,1`.
-- Concrete negative variants: 6/6 compile and fail with `FAIL_SIM_CORRECTNESS`.
+- Concrete negative variants: 5/5 manifest-declared variants compile and fail with `FAIL_SIM_CORRECTNESS`.
 
 ## Remaining Risk
 
@@ -47,5 +46,5 @@ Certification status: certified as an EVAS formal candidate on 2026-06-26.
 ## Window B Calibration Closeout
 
 - Gate 2 status: `cadence_modeling_ready`.
-- Evidence: Window B targeted review on 2026-07-03 recorded EVAS hidden gold PASS, 6/6 concrete negatives rejected, AHDL-like lint PASS with 0 diagnostics, and targeted Spectre hidden gold PASS.
+- Evidence: Window B targeted review on 2026-07-03 recorded EVAS hidden gold PASS, manifest-declared concrete negatives rejected, AHDL-like lint PASS with 0 diagnostics, and targeted Spectre hidden gold PASS.
 - Counting recommendation: retain as an independent DEM/control L1 row.

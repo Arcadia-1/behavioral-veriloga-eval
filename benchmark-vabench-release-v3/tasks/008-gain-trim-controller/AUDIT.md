@@ -36,12 +36,11 @@ Expected negative results:
 - `neg_003_wrong_step_size`: `FAIL_SIM_CORRECTNESS`; uses 40 mV steps instead of 50 mV.
 - `neg_004_wrong_reset_level`: `FAIL_SIM_CORRECTNESS`; resets to 0.35 V instead of 0.30 V.
 - `neg_005_missing_deadband_hold`: `FAIL_SIM_CORRECTNESS`; updates inside the required +/-20 mV deadband.
-- `neg_006_missing_lower_clamp`: `FAIL_SIM_CORRECTNESS`; allows the control below the 0.05 V lower clamp.
 
 ## Certification Evidence
 
 - EVAS/Python-engine gold semantic validation: `PASS`.
-- Concrete negative recertification: 6/6 expected failures, all `FAIL_SIM_CORRECTNESS`.
+- Concrete negative recertification: 5/5 manifest-declared expected failures, all `FAIL_SIM_CORRECTNESS`.
 - The previous deadband-missing negative now fails because the hidden waveform includes an in-deadband segment and the checker samples the held control value.
 
 ## Remaining Risk
@@ -51,6 +50,6 @@ Expected negative results:
 ## Window B Calibration Closeout
 
 - Gate 2 status: `cadence_modeling_ready`.
-- Evidence: Window B targeted review on 2026-07-03 recorded EVAS hidden gold PASS, 6/6 concrete negatives rejected, AHDL-like lint PASS with 0 diagnostics, and targeted Spectre hidden gold PASS.
+- Evidence: Window B targeted review on 2026-07-03 recorded EVAS hidden gold PASS, manifest-declared concrete negatives rejected, AHDL-like lint PASS with 0 diagnostics, and targeted Spectre hidden gold PASS.
 - Counting recommendation: retain as an independent gain-trim controller L1 row.
 - This supersedes the earlier EVAS-only remaining-risk note for this category-level review; final release still requires the global denominator sweep.

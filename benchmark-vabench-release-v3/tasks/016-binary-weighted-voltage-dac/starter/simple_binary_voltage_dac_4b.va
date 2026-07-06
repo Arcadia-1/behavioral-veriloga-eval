@@ -9,5 +9,5 @@ module simple_binary_voltage_dac_4b(code_0, code_1, code_2, code_3, vref, vss, a
     parameter real tr = 500p;
 
     // TODO: implement the behavior described in instruction.md.
-    // This starter is intentionally incomplete; hidden tests grade behavior.
+    // This starter is intentionally incomplete; implement the public behavior contract.
 endmodule

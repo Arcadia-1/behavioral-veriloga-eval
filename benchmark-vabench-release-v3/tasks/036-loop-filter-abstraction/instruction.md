@@ -1,8 +1,16 @@
 # Sampled Loop-Filter Abstraction
 
+## Task Contract
+
+Implement the requested Verilog-A artifact for `Loop Filter Abstraction`.
+- Form: `dut`
+- Level: `L1`
+- Category: `pll_clock_timing`
+- Target artifact(s): `loop_filter_abstraction.va`
+
 Implement `loop_filter_abstraction.va` in Verilog-A.
 
-## Interface
+## Public Verilog-A Interface
 
 ```verilog
 module loop_filter_abstraction(
@@ -14,21 +22,18 @@ module loop_filter_abstraction(
 );
 ```
 
-## Required Behavior
+## Public Parameter Contract
 
-This task asks for the `loop_filter_abstraction` behavioral DUT module, not a
-Spectre testbench. The module is a sampled/event-driven PLL loop-filter
-abstraction that approximates proportional and integral loop-control trends
-without modeling a transistor-level or KCL/KVL RC network.
+Provide these overrideable public parameters:
 
-Support these public parameters and legal overrides:
-
-| Parameter | Default | Unit / range | Contract |
+| Parameter | Default | Unit / Range | Contract |
 | --- | ---: | --- | --- |
 | `tr` | `100 ps` | time, `(0:inf)` | Rise/fall smoothing for `out` and `metric`. |
 | `deadband` | `0.05` | V, `[0:inf)` | Input-error magnitude below which loop updates hold state. |
 
-Required observable behavior:
+## Required Behavior
+
+The module is a sampled/event-driven PLL loop-filter abstraction that approximates proportional and integral loop-control trends without modeling a transistor-level or KCL/KVL RC network.
 
 - Treat `clk` and `rst` as voltage-coded logic with a 0.45 V threshold.
 - Interpret `vin` as a signed loop-error stimulus around 0.45 V.
@@ -45,11 +50,15 @@ Required observable behavior:
 - When reset is high, clear the sampled state back near midscale and clear the
   update metric.
 
-Use voltage contributions only. Do not use current contributions, `ddt()`,
-`idt()`, transistor-level devices, AC/noise analysis, checker logic, private
-test hooks, or simulator-private side channels.
-Use `transition(...)` for the driven output voltages.
+## Modeling Constraints
 
-## Output
+Use voltage contributions only. Do not use current contributions, `ddt()`,
+`idt()`, transistor-level devices, AC/noise analysis, validation logic, validation-only
+test hooks, or simulator-specific side channels. Use `transition(...)` for the
+driven output voltages.
+
+Use deterministic Verilog-A behavioral modeling appropriate for the public circuit contract. The visible testbench is a public validation scenario; do not hard-code a particular stimulus table, transient stop time, or validation sample window into the DUT unless that behavior is part of the public circuit contract.
+
+## Output Contract
 
 Return exactly one source artifact named `loop_filter_abstraction.va`.

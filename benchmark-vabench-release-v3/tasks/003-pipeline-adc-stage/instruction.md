@@ -1,8 +1,16 @@
 # Pipeline ADC Stage
 
+## Task Contract
+
+Implement the requested Verilog-A artifact for `Pipeline ADC Stage`.
+- Form: `dut`
+- Level: `L1`
+- Category: `data_converter`
+- Target artifact(s): `pipeline_stage.va`
+
 Implement a clocked 1.5-bit pipeline ADC MDAC stage.
 
-## Public Interface
+## Public Verilog-A Interface
 
 Declare module `pipeline_stage` with positional ports `VDD, VSS, PHI1, PHI2,
 VIN, VREF, VRES, D1, D0`. All ports are electrical. `VRES` is the residue
@@ -16,7 +24,7 @@ Provide these overrideable public parameters:
 - `vdd = 0.9 V`: nominal output high level used for initialization.
 - `tedge = 200 ps`: output transition smoothing time.
 
-## Functional Contract
+## Required Behavior
 
 On each rising `PHI1` edge, sample `VIN`. On each rising `PHI2` edge, compare
 the sampled input around `V(VDD)/2` against the 1.5-bit thresholds
@@ -35,6 +43,12 @@ voltage-domain transitions.
 ## Modeling Constraints
 
 Return only `pipeline_stage.va`. Use deterministic voltage-domain Verilog-A.
-Do not modify or emit the support testbench, add checker logic, hard-code
-private waveform sample points, add simulator-private side channels, use
+Do not modify or emit the support testbench, add validation logic, hard-code
+specific waveform sample points, add simulator-specific side channels, use
 current contributions, `ddt()`, or `idt()`.
+
+Use deterministic Verilog-A behavioral modeling appropriate for the public circuit contract. The visible testbench is a public validation scenario; do not hard-code a particular stimulus table, transient stop time, or validation sample window into the DUT unless that behavior is part of the public circuit contract.
+
+## Output Contract
+
+Return exactly one complete source artifact named `pipeline_stage.va`. Do not include explanatory prose outside the source artifact contents.

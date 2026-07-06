@@ -1,8 +1,16 @@
 # Soft Hysteretic Limiter
 
+## Task Contract
+
+Implement the requested Verilog-A artifact for `Soft Hysteretic Limiter`.
+- Form: `dut`
+- Level: `L1`
+- Category: `baseband_signal_conditioning`
+- Target artifact(s): `soft_hysteretic_limiter.va`
+
 Implement `soft_hysteretic_limiter.va` in Verilog-A.
 
-## Public Interface
+## Public Verilog-A Interface
 
 Declare module `soft_hysteretic_limiter(clk, rst, vin, out, metric)`:
 
@@ -25,7 +33,7 @@ output voltage. `metric` is a voltage-coded hysteresis-state monitor.
 - `hys_step`: signed hysteresis offset applied after upper/lower threshold
   excursions, default `0.08 V`.
 
-## Functional Contract
+## Required Behavior
 
 - Implement a clocked soft limiter with hysteresis memory around the `0.45 V`
   common-mode level.
@@ -51,7 +59,13 @@ sample windows into the DUT.
 ## Modeling Constraints
 
 Return only `soft_hysteretic_limiter.va`. Do not emit a Spectre testbench,
-checker logic, private test hooks, or simulator-private side channels. Use
+validation logic, validation-only hooks, or simulator-specific side channels. Use
 voltage contributions only; do not use current contributions, transistor-level
 devices, AC/noise analysis, `ddt()`, or `idt()`. Use event-updated state and
 `transition(...)` for smoothed voltage outputs.
+
+Use deterministic Verilog-A behavioral modeling appropriate for the public circuit contract. The visible testbench is a public validation scenario; do not hard-code a particular stimulus table, transient stop time, or validation sample window into the DUT unless that behavior is part of the public circuit contract.
+
+## Output Contract
+
+Return exactly one complete source artifact named `soft_hysteretic_limiter.va`. Do not include explanatory prose outside the source artifact contents.
