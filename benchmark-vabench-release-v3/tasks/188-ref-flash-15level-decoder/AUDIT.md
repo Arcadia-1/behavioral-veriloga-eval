@@ -4,6 +4,3 @@
 - Scenario: 15-level flash thermometer count normalization.
 - Import status: certified only after visible compile, EVAS hidden semantic check, Spectre AX hidden semantic check, and EVAS/Spectre parity pass.
 - Evaluation: stable sampled behavior from `tran.csv`; raw simulator timestep equality is not used.
-- Evidence:
-  - `WORK/source-import-batch13-evas/188-ref-flash-15level-decoder`
-  - `WORK/source-import-batch13-spectre/188-ref-flash-15level-decoder`

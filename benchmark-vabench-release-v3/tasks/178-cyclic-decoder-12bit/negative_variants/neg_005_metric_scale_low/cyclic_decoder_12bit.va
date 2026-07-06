@@ -1,5 +1,5 @@
 // vaBench generated partial-pass negative: metric_scale_low
-// Preserves module/interface shape while intentionally violating one hidden behavior contract.
+// Preserves module/interface shape while intentionally violating one public contract.
 `include "disciplines.vams"
 
 module cyclic_decoder_12bit(d0, d1, d2, d3, d4, d5, d6, d7, d8, d9, d10, d11, clks, dout);

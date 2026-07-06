@@ -1,5 +1,5 @@
 // vaBench generated partial-pass negative: metric_scale_low
-// Preserves module/interface shape while intentionally violating one hidden behavior contract.
+// Preserves module/interface shape while intentionally violating one public contract.
 `include "disciplines.vams"
 
 module three_way_threshold_mux(sigin1, sigin2, sigin3, cntrlp, cntrlm, sigout);

@@ -1,5 +1,5 @@
 // vaBench generated partial-pass negative: metric_scale_low
-// Preserves module/interface shape while intentionally violating one hidden behavior contract.
+// Preserves module/interface shape while intentionally violating one public contract.
 `include "disciplines.vams"
 
 module ref_flash_8level_decoder(vin, dt0, dt1, dt2, dt3, dt4, dt5, dt6, dt7, clks, dout, vres);

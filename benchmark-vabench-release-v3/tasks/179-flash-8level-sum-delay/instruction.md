@@ -1,39 +1,19 @@
-# Flash 8-Level Sum With One-Cycle Delay
+# Flash 8level Sum Delay
 
-Implement a differential 8-level flash threshold summarizer with one-cycle
-delay.
+## Task Contract
+Implement the Verilog-A DUT `flash_8level_sum_delay.va` for a differential 8-level flash threshold summarizer with a one-cycle delayed summary output.
 
-## Public Interface
-
-Declare module `flash_8level_sum_delay` with positional ports `vip, vim,
-clks, reset, refp, refn, doutsum, doutsumdelay`. All ports are electrical.
-The `reset` port is present for interface compatibility; this task does not
-require it to change the sampled state.
+## Public Verilog-A Interface
+Provide `module flash_8level_sum_delay(vip, vim, clks, reset, refp, refn, doutsum, doutsumdelay);` with electrical inputs `vip`, `vim`, `clks`, `reset`, `refp`, `refn` and electrical outputs `doutsum`, `doutsumdelay`.
 
 ## Public Parameter Contract
+Expose real parameters `vth = 0.45`, `ref_scaling = 0.5`, and `tt = 10p`. Testbenches may override these parameters.
 
-Provide these overrideable public parameters:
-
-- `vth = 0.45 V`: rising-edge threshold for `clks`.
-- `ref_scaling = 0.5`: scale factor applied to the differential reference span
-  before forming flash thresholds.
-- `tt = 10 ps`: output transition smoothing time.
-
-## Functional Contract
-
-On each rising `clks` edge, compare the differential input `V(vip)-V(vim)`
-against eight symmetric flash thresholds derived from `V(refp)-V(refn)`. The
-threshold magnitudes are the odd eighths of the scaled reference span:
-`1/8`, `3/8`, `5/8`, and `7/8`, with both positive and negative polarities.
-
-Drive `doutsum` with the current threshold count normalized by eight. Drive
-`doutsumdelay` with the previous sampled normalized count, so it represents a
-one-cycle delayed flash summary.
+## Required Behavior
+On each rising crossing of `clks` through `vth`, compare `V(vip, vim)` against eight symmetric thresholds derived from `V(refp)-V(refn)`, `ref_scaling`, and the 1/8, 3/8, 5/8, and 7/8 flash tap positions. Drive `doutsum` with the current asserted-threshold fraction and `doutsumdelay` with the previous conversion's fraction. The `reset` port is present for interface compatibility and is not part of the state update.
 
 ## Modeling Constraints
+Use event-driven flash counting and retained previous-sum state. Do not use the wrong reference scaling, make the delayed output equal to the current output, or omit normalization by the eight threshold decisions.
 
-Return only `flash_8level_sum_delay.va`. Use deterministic voltage-domain
-Verilog-A and smooth output transitions. Do not modify or emit the support
-testbench, add checker logic, hard-code private waveform sample points, add
-simulator-private side channels, use current contributions, `ddt()`, or
-`idt()`.
+## Output Contract
+Submit only the completed Verilog-A module in `flash_8level_sum_delay.va`.

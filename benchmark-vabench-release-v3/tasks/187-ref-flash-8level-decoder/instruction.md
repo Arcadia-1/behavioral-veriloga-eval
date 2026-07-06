@@ -1,35 +1,19 @@
-# Reference Flash 8-Level Decoder With Residue
+# Reference Flash 8level Decoder
 
-Implement an 8-level reference flash decoder with residue output.
+## Task Contract
+Implement the Verilog-A DUT `ref_flash_8level_decoder.va` for an 8-level reference flash decoder with a residue output.
 
-## Public Interface
-
-Declare module `ref_flash_8level_decoder` with positional ports `vin, dt0,
-dt1, dt2, dt3, dt4, dt5, dt6, dt7, clks, dout, vres`. All ports are
-electrical.
+## Public Verilog-A Interface
+Provide `module ref_flash_8level_decoder(vin, dt0, dt1, dt2, dt3, dt4, dt5, dt6, dt7, clks, dout, vres);` with electrical input `vin`, tap inputs `dt0` through `dt7`, clock input `clks`, and electrical outputs `dout`, `vres`.
 
 ## Public Parameter Contract
+Expose real parameters `vth = 0.45`, `tt = 10p`, and `vref = 1`. Testbenches may override these parameters.
 
-Provide these overrideable public parameters:
-
-- `vth = 0.45 V`: digital decision threshold for thermometer taps and rising
-  edge threshold for `clks`.
-- `vref = 1.0 V`: reference step scale for the residue correction.
-- `tt = 10 ps`: output transition smoothing time.
-
-## Functional Contract
-
-On each rising `clks` edge, count thermometer taps `dt0..dt7` whose voltages
-are greater than `vth`. Drive `dout` with the count normalized by eight.
-
-Also compute a centered residue around the mid-code reference: four asserted
-taps represent zero correction, and each tap step corresponds to `vref/8`.
-Drive `vres` as the sampled input minus that centered reference correction.
+## Required Behavior
+On each rising crossing of `clks` through `vth`, count the asserted flash taps. Drive `dout` with the count divided by eight. Drive `vres` with the sampled `vin` minus the centered tap count scaled by `vref/8`.
 
 ## Modeling Constraints
+Use clocked tap counting and retained output values. Do not use the wrong count normalization, leave the residue uncentered, ignore upper taps, or continuously track taps between clocks.
 
-Return only `ref_flash_8level_decoder.va`. Use deterministic voltage-domain
-Verilog-A and smooth output transitions. Do not modify or emit the support
-testbench, add checker logic, hard-code private waveform sample points, add
-simulator-private side channels, use current contributions, `ddt()`, or
-`idt()`.
+## Output Contract
+Submit only the completed Verilog-A module in `ref_flash_8level_decoder.va`.

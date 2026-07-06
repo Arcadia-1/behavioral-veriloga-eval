@@ -23,7 +23,7 @@ the canonical parameterized divide-by-two toggle contract.
 
 - Modeling status: `cadence_modeling_rework` for counted coverage. The gold
   model is Spectre-valid, but the row remains non-counted because it duplicates
-  task 275 and its public/hidden decks are still byte-identical.
+  task 275 and its paired simulator decks are still byte-identical.
 - Checker role: the checker now derives expected output state from detected
   rising input edges rather than relying on one fixed waveform table.
 - Functional-math invariant: before the first rising edge the output is low;
@@ -38,7 +38,7 @@ the canonical parameterized divide-by-two toggle contract.
 
 - Human confirmation: user confirmed only one divide-by-two toggle row should
   remain counted; task 275 is retained as canonical.
-- Visible/hidden relationship: task 184 visible and hidden decks are
+- Visible/hidden relationship: task 184 paired simulator decks are
   byte-identical, which is one reason it should not remain counted.
 - EVAS gold after dynamic-checker repair: PASS.
 - EVAS negatives after dynamic-checker repair: 4/4 `FAIL_SIM_CORRECTNESS`.

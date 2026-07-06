@@ -1,5 +1,5 @@
 // vaBench generated partial-pass negative: metric_scale_low
-// Preserves module/interface shape while intentionally violating one hidden behavior contract.
+// Preserves module/interface shape while intentionally violating one public contract.
 `include "disciplines.vams"
 
 module flash_thermometer_centered_sum(b0, b1, b2, b3, b4, b5, b6, b7, dout);

@@ -1,38 +1,19 @@
 # Limiting Differential Amplifier
 
 ## Task Contract
-
-- Form: `dut`
-- Level: `L1`
-- Category: Baseband / analog primitive gain blocks
-- Base function: Differential amplifier with output limiting
-- Domain: `voltage`
-- Target artifact(s): `limiting_differential_amplifier.va`
-- Visible context: public task, module interface, parameters, and limiting contract.
-- Evaluator boundary: validation logic is external; do not generate checker, testbench, or measurement helper artifacts.
+Implement the Verilog-A DUT `limiting_differential_amplifier.va` for a differential-input single-ended amplifier with output limiting.
 
 ## Public Verilog-A Interface
+Provide `module limiting_differential_amplifier(sigin_p, sigin_n, sigout);` with electrical inputs `sigin_p`, `sigin_n` and electrical output `sigout`.
 
-`limiting_differential_amplifier.va` must declare:
+## Public Parameter Contract
+Expose real parameters `gain = 1`, `sigout_high = 10`, `sigout_low = -10`, and `sigin_offset = 0`. Testbenches may override these parameters.
 
-```verilog
-module limiting_differential_amplifier(sigin_p, sigin_n, sigout);
-input sigin_p, sigin_n;
-output sigout;
-electrical sigin_p, sigin_n, sigout;
-parameter real gain = 1;
-parameter real sigout_high = 10;
-parameter real sigout_low = -10;
-parameter real sigin_offset = 0;
-```
+## Required Behavior
+Read `V(sigin_p, sigin_n)`, subtract the input-referred offset, multiply by `gain`, and center the result at the midpoint of `sigout_high` and `sigout_low`. Clamp the final output target to the inclusive output rail interval.
 
-## Behavioral Contract
-
-Read the differential input `V(sigin_p, sigin_n)`, subtract `sigin_offset`, and apply the voltage gain `gain`. Center the amplified output at the midpoint between `sigout_high` and `sigout_low`, then clamp the target to those two output rails.
-
-Compute the limited target as a real variable and drive `sigout` with a single voltage contribution. Do not use current contributions, transistor devices, smoothing filters, or testbench-specific constants.
+## Modeling Constraints
+Use real-valued analog arithmetic and one voltage contribution to `sigout`. Do not omit the offset, remove the clamp, use current contributions, or add filtering that changes the static transfer.
 
 ## Output Contract
-
-Return exactly one source artifact named `limiting_differential_amplifier.va`.
-Do not include explanatory prose outside the source artifact contents.
+Submit only the completed Verilog-A module in `limiting_differential_amplifier.va`.

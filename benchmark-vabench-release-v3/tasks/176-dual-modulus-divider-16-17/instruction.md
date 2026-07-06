@@ -1,40 +1,19 @@
-# Dual-Modulus Divider 16/17
+# Dual Modulus Divider 16/17
 
-Implement `dual_modulus_divider_16_17.va` in Verilog-A.
+## Task Contract
+Implement the Verilog-A DUT `dual_modulus_divider_16_17.va` for a voltage-domain dual-modulus divider primitive used in PLL-style timing paths.
 
-## Interface
+## Public Verilog-A Interface
+Provide `module dual_modulus_divider_16_17(fin, mc, fout);` with electrical inputs `fin`, `mc` and electrical output `fout`.
 
-```verilog
-module dual_modulus_divider_16_17(
-    input  electrical fin,
-    input  electrical mc,
-    output electrical fout
-);
-```
+## Public Parameter Contract
+This task has no public parameters.
 
 ## Required Behavior
+Count rising crossings of `fin` through 0.5 V. Produce the divider output pulse pattern for divide-by-16 when `mc` is low, and extend the terminal count by one input edge for divide-by-17 when `mc` is high at the modulus decision point. The output is high for the divider marker interval and low after the internal midpoint marker.
 
-This task asks for the `dual_modulus_divider_16_17` behavioral DUT module, not
-a Spectre testbench. The module is a voltage-domain divider that switches
-between divide-by-16 and divide-by-17 operation from a modulus-control input.
+## Modeling Constraints
+Use event-driven counter state and `transition` on `fout`. Do not force a fixed divide-by-16 or fixed divide-by-17 mode, change the low-marker count, or use a time table instead of input edges.
 
-Required observable behavior:
-
-- Count rising `fin` crossings using a 0.5 V threshold.
-- Treat `mc` above 0.5 V as the divide-by-17 mode and `mc` below 0.5 V as the
-  divide-by-16 mode.
-- In divide-by-16 mode, assert a high marker on `fout` once every 16 input
-  rising edges.
-- In divide-by-17 mode, assert a high marker on `fout` once every 17 input
-  rising edges.
-- Deassert the marker after the mid-count portion of the cycle so `fout`
-  carries both high and low intervals.
-- Drive `fout` as a smoothed voltage-domain logic output.
-
-Use voltage contributions only. Do not use current contributions,
-transistor-level devices, AC/noise analysis, checker logic, private test hooks,
-or simulator-private side channels.
-
-## Output
-
-Return exactly one source artifact named `dual_modulus_divider_16_17.va`.
+## Output Contract
+Submit only the completed Verilog-A module in `dual_modulus_divider_16_17.va`.

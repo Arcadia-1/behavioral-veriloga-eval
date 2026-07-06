@@ -1,5 +1,5 @@
 // vaBench generated partial-pass negative: metric_scale_low
-// Preserves module/interface shape while intentionally violating one hidden behavior contract.
+// Preserves module/interface shape while intentionally violating one public contract.
 `include "disciplines.vams"
 
 module dac_restore_10bit_offset(D1, D2, D3, D4, D5, D6, D7, D8, D9, D10, D0, clk, vout);

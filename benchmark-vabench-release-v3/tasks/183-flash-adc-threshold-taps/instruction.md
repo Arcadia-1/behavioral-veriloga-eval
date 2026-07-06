@@ -1,37 +1,19 @@
-# Flash ADC Selected Threshold Taps
+# Flash ADC Threshold Taps
 
-Implement a clocked selected-tap flash ADC thermometer output.
+## Task Contract
+Implement the Verilog-A DUT `flash_adc_threshold_taps.va` for a clocked selected-tap flash ADC thermometer output.
 
-## Public Interface
-
-Declare module `flash_adc_threshold_taps` with positional ports `vin, clk,
-dout0, dout1, dout2, dout3, dout4, dout5, dout6`. All ports are electrical.
+## Public Verilog-A Interface
+Provide `module flash_adc_threshold_taps(vin, clk, dout0, dout1, dout2, dout3, dout4, dout5, dout6);` with electrical inputs `vin`, `clk` and electrical outputs `dout0` through `dout6`.
 
 ## Public Parameter Contract
+Expose real parameters `vrefp = 0.125`, `vrefn = -0.125`, `vl = 0.0`, `vh = 0.9`, and `vth = 0.45`. Testbenches may override these parameters.
 
-Provide these overrideable public parameters:
-
-- `vrefp = 0.125 V`: upper endpoint of the flash reference range.
-- `vrefn = -0.125 V`: lower endpoint of the flash reference range.
-- `vl = 0.0 V`: low output level.
-- `vh = 0.9 V`: high output level.
-- `vth = 0.45 V`: rising-edge threshold for `clk`.
-
-## Functional Contract
-
-On each rising `clk` edge, sample analog input `vin` and update seven scalar
-thermometer outputs. Use the parameterized flash range from `vrefn` to `vrefp`
-and expose selected thresholds from a 31-level flash ADC ladder. The selected
-tap indices are 1, 5, 10, 15, 20, 25, and 30, where threshold index `k`
-corresponds to the kth subdivision between `vrefn` and `vrefp`.
-
-Each output should drive `vh` when the sampled `vin` is above its selected
-threshold and `vl` otherwise.
+## Required Behavior
+On each rising crossing of `clk` through `vth`, compare `vin` against seven selected thresholds at tap indices 1, 5, 10, 15, 20, 25, and 30 of a 31-step span from `vrefn` to `vrefp`. Drive each `dout` high at `vh` when `vin` exceeds its tap threshold and low at `vl` otherwise.
 
 ## Modeling Constraints
+Use clocked sampling and voltage-coded thermometer outputs. Do not omit the top tap, invert the outputs, use half high level, or continuously update the outputs without a clock event.
 
-Return only `flash_adc_threshold_taps.va`. Use deterministic voltage-domain
-Verilog-A and smooth output transitions. Do not modify or emit the support
-testbench, add checker logic, hard-code private waveform sample points, add
-simulator-private side channels, use current contributions, `ddt()`, or
-`idt()`.
+## Output Contract
+Submit only the completed Verilog-A module in `flash_adc_threshold_taps.va`.

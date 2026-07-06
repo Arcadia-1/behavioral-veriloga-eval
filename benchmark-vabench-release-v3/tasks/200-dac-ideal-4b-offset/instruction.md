@@ -1,35 +1,19 @@
 # DAC Ideal 4b Offset
 
-Implement the Verilog-A DUT `dac_ideal_4b_offset` in `dac_ideal_4b_offset.va`.
+## Task Contract
+Implement the Verilog-A DUT `dac_ideal_4b_offset.va` for an event-updated 4-bit offset DAC.
 
-## Public Interface
+## Public Verilog-A Interface
+Provide `module dac_ideal_4b_offset(din0, din1, din2, din3, dout);` with electrical bit inputs `din0` through `din3` and electrical output `dout`.
 
-The module port order is:
+## Public Parameter Contract
+Expose real parameters `vth = 0.45`, `offset = 0.239`, and `scaling = 32.0 * 10.0 / 9.0`. Testbenches may override these parameters.
 
-```text
-din0, din1, din2, din3, dout
-```
-
-All ports are electrical. `din3` is the MSB and `din0` is the LSB.
-
-## Public Parameters
-
-- `vth = 0.45`: input logic threshold in volts.
-- `offset = 0.239`: calibrated output baseline in volts.
-- `scaling = 32.0*10.0/9.0`: calibration scale for the code-dependent trim step.
-
-## Functional Contract
-
-Decode the four input voltages into an unsigned binary trim code. An input bit is logic 1 when its voltage is greater than `vth`, otherwise it is logic 0. `din3` has weight 8, `din2` has weight 4, `din1` has weight 2, and `din0` has weight 1.
-
-Drive `dout` as a calibrated trim output. Code 0 must produce `offset`, and each one-code increase must raise `dout` by `1/scaling` volts.
-
-This task is a calibrated offset/trim DAC, not a plain full-scale binary DAC.
+## Required Behavior
+Interpret `din3` as the MSB and `din0` as the LSB of a 4-bit unsigned code using threshold `vth`. Add the code-scaled trim increment to `offset`, using `scaling` as the public code-to-voltage scale, and drive the result on `dout`.
 
 ## Modeling Constraints
-
-Use voltage-domain Verilog-A behavior only. Do not use current contributions, file I/O, random behavior, or simulator-private side channels. Use a short analog transition on `dout` so event-driven code changes are observable as smooth voltage updates.
+Update on input threshold crossings or initial step and drive a smooth voltage output. Do not omit the offset, use the wrong scaling, swap MSB/LSB roles, or hard-code a fixed stimulus sequence.
 
 ## Output Contract
-
-Return exactly one source artifact named `dac_ideal_4b_offset.va`. Do not include explanatory prose outside the source artifact contents.
+Submit only the completed Verilog-A module in `dac_ideal_4b_offset.va`.

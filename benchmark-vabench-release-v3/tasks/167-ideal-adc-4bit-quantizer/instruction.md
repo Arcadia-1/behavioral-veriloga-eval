@@ -1,36 +1,19 @@
 # Ideal ADC 4bit Quantizer
 
-Implement the Verilog-A DUT `ideal_adc_4bit_quantizer` in `ideal_adc_4bit_quantizer.va`.
+## Task Contract
+Implement the Verilog-A DUT `ideal_adc_4bit_quantizer.va` for a clocked ideal differential ADC quantizer with an analog-coded output code.
 
-## Public Interface
+## Public Verilog-A Interface
+Provide `module ideal_adc_4bit_quantizer(vclk, vip, vin, digital);` with electrical inputs `vclk`, `vip`, `vin` and electrical output `digital`.
 
-The module port order is:
+## Public Parameter Contract
+Expose `trise = 20p`, `tfall = 20p`, `tdel = 0`, `vtrans_clk = 0.5`, `vref = 1.0`, and integer `levels = 16` with the ranges declared in the starter file. Testbenches may override these parameters.
 
-```text
-vclk, vip, vin, digital
-```
-
-All ports are electrical. `vip` and `vin` form the differential analog input, `vclk` is the sampling clock, and `digital` is a scalar analog output that carries the quantized code value.
-
-## Public Parameters
-
-- `vref = 1.0`: differential full-scale half range in volts.
-- `levels = 16`: number of quantizer output levels.
-- `vtrans_clk = 0.5`: rising-edge clock threshold in volts.
-- `tdel = 0`, `trise = 20p`, `tfall = 20p`: transition timing for `digital`.
-
-## Functional Contract
-
-On each rising crossing of `vclk` through `vtrans_clk`, sample the differential input voltage `V(vip) - V(vin)`.
-
-Quantize the sample into an unsigned 4-bit code over the differential range `-vref` to `+vref`. Use `levels` uniformly spaced output regions across that range. The code equals the number of interior decision thresholds that the sample strictly exceeds, then clips to `0..levels-1`.
-
-Drive the scalar analog output `digital` to the resulting code value.
+## Required Behavior
+On each rising crossing of `vclk` through `vtrans_clk`, sample the differential input `V(vip) - V(vin)`. Quantize the sample over the symmetric input span from `-vref` to `+vref` using `levels` uniformly spaced output codes, and drive `digital` with the resulting analog code value.
 
 ## Modeling Constraints
-
-Use voltage-domain Verilog-A behavior only. Do not use current contributions, file I/O, random behavior, or simulator-private side channels.
+Use event-driven sampling and `transition` for the code output. Do not continuously track the input between clock edges, use a unipolar range, halve the code scale, or reverse the LSB behavior.
 
 ## Output Contract
-
-Return exactly one source artifact named `ideal_adc_4bit_quantizer.va`. Do not include explanatory prose outside the source artifact contents.
+Submit only the completed Verilog-A module in `ideal_adc_4bit_quantizer.va`.
