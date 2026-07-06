@@ -13102,59 +13102,100 @@ def check_v3_ideal_differential_opamp(rows: list[dict[str, float]]) -> tuple[boo
     return ok, f"checked={checked} max_error={max_err:.5f} max_cm_error={max_cm_error:.5f}"
 
 
-def check_v3_half_adder_logic(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    required = {"time", "vin1", "vin2", "vout_sum", "vout_carry"}
+def _v3_logic_stable_rows(
+    rows: list[dict[str, float]],
+    inputs: list[str],
+    *,
+    threshold: float = 0.45,
+    settle_after_edge_s: float = 0.4e-9,
+):
+    edges: list[float] = []
+    for signal in inputs:
+        edges.extend(_v3_edge_times(rows, signal, threshold=threshold, direction=1))
+        edges.extend(_v3_edge_times(rows, signal, threshold=threshold, direction=-1))
+    for row in rows:
+        if any(abs(row[signal] - threshold) <= 0.12 for signal in inputs):
+            continue
+        t = row["time"]
+        if any(edge <= t <= edge + settle_after_edge_s for edge in edges):
+            continue
+        yield row
+
+
+def _v3_check_logic_truth_table(
+    rows: list[dict[str, float]],
+    *,
+    inputs: list[str],
+    outputs: list[str],
+    expected_fn,
+    min_states: int,
+    label: str,
+) -> tuple[bool, str]:
+    required = {"time", *inputs, *outputs}
     if not rows or not required.issubset(rows[0]):
-        return False, "missing time/vin1/vin2/vout_sum/vout_carry"
-    return _sample_many(
+        return False, "missing " + "/".join(sorted(required))
+    stride = max(1, len(rows) // 260)
+    checked = 0
+    max_err = 0.0
+    states: set[tuple[int, ...]] = set()
+    for row in list(_v3_logic_stable_rows(rows, inputs))[::stride]:
+        bits = tuple(1 if row[signal] > 0.45 else 0 for signal in inputs)
+        states.add(bits)
+        expected = expected_fn(bits)
+        for output, logic_value in zip(outputs, expected):
+            target = 0.9 if logic_value else 0.0
+            max_err = max(max_err, abs(row[output] - target))
+        checked += 1
+    if checked < 20:
+        return False, f"too_few_{label}_samples={checked}"
+    if max_err > 0.08:
+        return False, f"checked={checked} max_error={max_err:.5f} states={sorted(states)}"
+    if len(states) < min_states:
+        return False, f"insufficient_{label}_state_coverage={sorted(states)}"
+    return True, f"checked={checked} max_error={max_err:.5f} states={sorted(states)}"
+
+
+def check_v3_half_adder_logic(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    return _v3_check_logic_truth_table(
         rows,
-        {
-            "vout_sum": [(5.0, 0.0), (15.0, 0.9), (25.0, 0.9), (35.0, 0.0)],
-            "vout_carry": [(5.0, 0.0), (15.0, 0.0), (25.0, 0.0), (35.0, 0.9)],
-        },
-        tol=0.08,
+        inputs=["vin1", "vin2"],
+        outputs=["vout_sum", "vout_carry"],
+        expected_fn=lambda bits: ((bits[0] + bits[1]) == 1, bits[0] == 1 and bits[1] == 1),
+        min_states=4,
+        label="half_adder",
     )
 
 
 def check_v3_full_adder_logic(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    required = {"time", "vin1", "vin2", "vin_carry", "vout_sum", "vout_carry"}
-    if not rows or not required.issubset(rows[0]):
-        return False, "missing time/vin1/vin2/vin_carry/vout_sum/vout_carry"
-    return _sample_many(
+    return _v3_check_logic_truth_table(
         rows,
-        {
-            "vout_sum": [(5.0, 0.0), (15.0, 0.9), (25.0, 0.9), (35.0, 0.9), (45.0, 0.0), (55.0, 0.0), (65.0, 0.9)],
-            "vout_carry": [(5.0, 0.0), (15.0, 0.0), (25.0, 0.0), (35.0, 0.0), (45.0, 0.9), (55.0, 0.9), (65.0, 0.9)],
-        },
-        tol=0.08,
+        inputs=["vin1", "vin2", "vin_carry"],
+        outputs=["vout_sum", "vout_carry"],
+        expected_fn=lambda bits: ((sum(bits) % 2) == 1, sum(bits) >= 2),
+        min_states=7,
+        label="full_adder",
     )
 
 
 def check_v3_half_subtractor_logic(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    required = {"time", "vin1", "vin2", "vout_diff", "vout_borrow"}
-    if not rows or not required.issubset(rows[0]):
-        return False, "missing time/vin1/vin2/vout_diff/vout_borrow"
-    return _sample_many(
+    return _v3_check_logic_truth_table(
         rows,
-        {
-            "vout_diff": [(5.0, 0.0), (15.0, 0.9), (25.0, 0.9), (35.0, 0.0)],
-            "vout_borrow": [(5.0, 0.0), (15.0, 0.9), (25.0, 0.0), (35.0, 0.0)],
-        },
-        tol=0.08,
+        inputs=["vin1", "vin2"],
+        outputs=["vout_diff", "vout_borrow"],
+        expected_fn=lambda bits: ((bits[0] + bits[1]) == 1, bits[0] == 0 and bits[1] == 1),
+        min_states=4,
+        label="half_subtractor",
     )
 
 
 def check_v3_full_subtractor_logic(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    required = {"time", "vin1", "vin2", "vin_borrow", "vout_diff", "vout_borrow"}
-    if not rows or not required.issubset(rows[0]):
-        return False, "missing time/vin1/vin2/vin_borrow/vout_diff/vout_borrow"
-    return _sample_many(
+    return _v3_check_logic_truth_table(
         rows,
-        {
-            "vout_diff": [(5.0, 0.0), (15.0, 0.9), (25.0, 0.9), (35.0, 0.9), (45.0, 0.0), (55.0, 0.0), (65.0, 0.9)],
-            "vout_borrow": [(5.0, 0.0), (15.0, 0.9), (25.0, 0.9), (35.0, 0.0), (45.0, 0.0), (55.0, 0.0), (65.0, 0.9)],
-        },
-        tol=0.08,
+        inputs=["vin1", "vin2", "vin_borrow"],
+        outputs=["vout_diff", "vout_borrow"],
+        expected_fn=lambda bits: ((sum(bits) % 2) == 1, (bits[1] + bits[2]) > bits[0]),
+        min_states=7,
+        label="full_subtractor",
     )
 
 
@@ -13162,14 +13203,36 @@ def check_v3_rs_latch_voltage(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "vin_s", "vin_r", "vout_q", "vout_qbar"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing time/vin_s/vin_r/vout_q/vout_qbar"
-    return _sample_many(
-        rows,
-        {
-            "vout_q": [(5.0, 0.0), (12.0, 0.9), (22.0, 0.9), (32.0, 0.0), (42.0, 0.0), (52.0, 0.9), (62.0, 0.9)],
-            "vout_qbar": [(5.0, 0.9), (12.0, 0.0), (22.0, 0.0), (32.0, 0.9), (42.0, 0.9), (52.0, 0.0), (62.0, 0.0)],
-        },
-        tol=0.08,
-    )
+    q = 0
+    checked = 0
+    max_err = 0.0
+    modes: set[str] = set()
+    stable_rows = list(_v3_logic_stable_rows(rows, ["vin_s", "vin_r"]))
+    stride = max(1, len(stable_rows) // 260)
+    for row in stable_rows[::stride]:
+        s = 1 if row["vin_s"] > 0.45 else 0
+        r = 1 if row["vin_r"] > 0.45 else 0
+        if s and not r:
+            q = 1
+            modes.add("set")
+        elif r and not s:
+            q = 0
+            modes.add("reset")
+        elif not s and not r:
+            modes.add("hold_high" if q else "hold_low")
+        else:
+            continue
+        q_target = 0.9 if q else 0.0
+        qbar_target = 0.0 if q else 0.9
+        max_err = max(max_err, abs(row["vout_q"] - q_target), abs(row["vout_qbar"] - qbar_target))
+        checked += 1
+    if checked < 20:
+        return False, f"too_few_rs_latch_samples={checked}"
+    if max_err > 0.08:
+        return False, f"checked={checked} max_error={max_err:.5f} modes={sorted(modes)}"
+    if not {"set", "reset", "hold_high", "hold_low"}.issubset(modes):
+        return False, f"insufficient_rs_latch_modes={sorted(modes)}"
+    return True, f"checked={checked} max_error={max_err:.5f} modes={sorted(modes)}"
 
 
 def check_v3_ideal_adc_4bit_quantizer(rows: list[dict[str, float]]) -> tuple[bool, str]:

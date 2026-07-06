@@ -3,8 +3,8 @@ global 0
 
 ahdl_include "half_adder_logic.va"
 
-Vin1 (vin1 0) vsource type=pwl wave=[0 0 10n 0 10.1n 0 20n 0 20.1n 0.9 30n 0.9 30.1n 0.9 45n 0.9]
-Vin2 (vin2 0) vsource type=pwl wave=[0 0 10n 0 10.1n 0.9 20n 0.9 20.1n 0 30n 0 30.1n 0.9 45n 0.9]
+Vin1 (vin1 0) vsource type=pwl wave=[0 0.9 8n 0.9 8.1n 0 18n 0 18.1n 0.9 28n 0.9 28.1n 0 45n 0]
+Vin2 (vin2 0) vsource type=pwl wave=[0 0 8n 0 8.1n 0.9 18n 0.9 18.1n 0.9 28n 0.9 28.1n 0 45n 0]
 
 XDUT (vin1 vin2 vout_sum vout_carry) half_adder_logic
 
