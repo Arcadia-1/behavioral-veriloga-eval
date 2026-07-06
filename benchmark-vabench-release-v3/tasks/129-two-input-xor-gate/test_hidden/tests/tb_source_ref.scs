@@ -3,8 +3,8 @@ global 0
 
 ahdl_include "two_input_xor_gate.va"
 
-Vin1 (in1 0) vsource type=pwl wave=[0 0 9n 0 9.1n 0.9 29n 0.9 29.1n 0 60n 0]
-Vin2 (in2 0) vsource type=pwl wave=[0 0 19n 0 19.1n 0.9 39n 0.9 39.1n 0 60n 0]
+Vin1 (in1 0) vsource type=pwl wave=[0 0 14n 0 14.1n 0.9 34n 0.9 34.1n 0 60n 0]
+Vin2 (in2 0) vsource type=pwl wave=[0 0.9 24n 0.9 24.1n 0 44n 0 44.1n 0.9 60n 0.9]
 
 XDUT (out in1 in2) two_input_xor_gate vh=0.9 vl=0 vth=0.45 tt=0
 

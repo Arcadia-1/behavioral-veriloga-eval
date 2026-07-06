@@ -3,9 +3,9 @@ global 0
 
 ahdl_include "three_input_or_gate.va"
 
-Vin1 (vin1 0) vsource type=pwl wave=[0 0 9n 0 9.1n 0.9 49n 0.9 49.1n 0 70n 0]
-Vin2 (vin2 0) vsource type=pwl wave=[0 0 19n 0 19.1n 0.9 39n 0.9 39.1n 0 70n 0]
-Vin3 (vin3 0) vsource type=pwl wave=[0 0 29n 0 29.1n 0.9 59n 0.9 59.1n 0 70n 0]
+Vin1 (vin1 0) vsource type=pwl wave=[0 0 14n 0 14.1n 0.9 44n 0.9 44.1n 0 70n 0]
+Vin2 (vin2 0) vsource type=pwl wave=[0 0.9 24n 0.9 24.1n 0 54n 0 54.1n 0.9 70n 0.9]
+Vin3 (vin3 0) vsource type=pwl wave=[0 0 9n 0 9.1n 0.9 34n 0.9 34.1n 0 59n 0 59.1n 0.9 70n 0.9]
 
 XDUT (vin1 vin2 vin3 vout) three_input_or_gate vlogic_high=0.9 vlogic_low=0 vtrans=0.45 tdel=0 trise=0 tfall=0
 
