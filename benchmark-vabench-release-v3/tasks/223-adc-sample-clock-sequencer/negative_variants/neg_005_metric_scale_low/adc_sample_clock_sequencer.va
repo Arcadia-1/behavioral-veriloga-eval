@@ -1,5 +1,5 @@
 // vaBench generated partial-pass negative: metric_scale_low
-// Preserves module/interface shape while intentionally violating one hidden behavior contract.
+// Preserves module/interface shape while intentionally violating one public behavior contract.
 `include "disciplines.vams"
 module adc_sample_clock_sequencer(rst, s, ss, nc_az, nc, conv);
 output rst, s, ss, nc_az, nc, conv;

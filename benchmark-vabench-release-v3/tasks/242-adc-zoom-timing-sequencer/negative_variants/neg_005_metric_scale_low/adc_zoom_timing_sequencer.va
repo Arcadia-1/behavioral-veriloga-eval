@@ -1,5 +1,5 @@
 // vaBench generated partial-pass negative: metric_scale_low
-// Preserves module/interface shape while intentionally violating one hidden behavior contract.
+// Preserves module/interface shape while intentionally violating one public behavior contract.
 `include "disciplines.vams"
 module adc_zoom_timing_sequencer(rst, s, sar, res, intg, clk_sar, zoom, clk_zoom, rst_zoom);
 output rst, s, sar, res, intg, clk_sar, zoom, clk_zoom, rst_zoom;

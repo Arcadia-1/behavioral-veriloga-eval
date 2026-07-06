@@ -1,28 +1,36 @@
 # SPI Shift Mux
 
-Implement a voltage-domain serial configuration shift register for a mux-control word.
+## Task Contract
 
-## Public Interface
+- Form: `dut`.
+- Level: `L1`.
+- Category: AMS serial configuration/control support.
+- Target artifact: `spi_shift_mux.va`.
+- Role: voltage-domain serial configuration shift register.
+- Output boundary: implement only the requested public Verilog-A DUT artifact.
 
-Declare module `spi_shift_mux` with positional ports:
+## Public Verilog-A Interface
+
+Declare the public module exactly as:
 
 ```verilog
-module spi_shift_mux(scki, sdi, rst, out0, out1, out2, out3,
-                     out4, out5, out6, out7, sdo, scko);
+module spi_shift_mux(scki, sdi, rst, out0, out1, out2, out3, out4, out5, out6, out7, sdo, scko);
 ```
 
-All ports are scalar `electrical` voltage-domain ports.
+`scki` is the serial clock, `sdi` is serial data in, `rst` is active-high reset, `out0..out7` expose the configuration word, `sdo` is serial data out, and `scko` mirrors the clock state. All ports are electrical.
 
-## Functional Contract
+## Public Parameter Contract
 
-- Treat `scki`, `sdi`, and `rst` as 0/0.9 V logic with a 0.45 V threshold.
-- Initialize the 8-bit configuration word to `10110010`, where the leftmost bit is exposed on `out7` and `sdo`, and the rightmost bit is exposed on `out0`.
-- `rst` is active high. While `rst` is high, reload the configuration word to `10110010` and do not shift in serial data.
-- On each `scki` threshold crossing after reset is inactive, shift the word toward `out7`: previous `out0` moves to `out1`, previous `out6` moves to `out7`, and sampled `sdi` enters `out0`.
-- Drive `sdo` from the current `out7` bit.
-- Forward `scki` to `scko` as a voltage-coded clock output.
-- Drive all digital outputs near 0.9 V for logic high and near 0 V for logic low, using smooth Verilog-A transitions.
+No overrideable public parameters are required. Use 0/0.9 V logic with a 0.45 V threshold.
 
-## Output
+## Required Behavior
 
-Return exactly one source artifact named `spi_shift_mux.va`. Do not generate a Spectre testbench.
+Initialize and reset the 8-bit configuration word to `10110010`, with the leftmost bit exposed on `out7` and `sdo` and the rightmost bit on `out0`. While `rst` is high, reload that word and block serial shifting. On each `scki` threshold crossing while reset is inactive, shift the word toward `out7`; sampled `sdi` enters `out0`. Drive `sdo` from the current `out7` bit and drive `scko` from the current `scki` logic state.
+
+## Modeling Constraints
+
+Use deterministic voltage-domain Verilog-A with voltage contributions and event-driven state where needed. Do not add checker logic, hard-code testbench-only sample times, add simulator-private side channels, use transistor-level devices, or introduce current-domain behavior.
+
+## Output Contract
+
+Return exactly one complete Verilog-A source file named `spi_shift_mux.va`. Do not generate a testbench, checker, waveform postprocessor, companion support module, or explanatory prose outside the requested source artifact.
