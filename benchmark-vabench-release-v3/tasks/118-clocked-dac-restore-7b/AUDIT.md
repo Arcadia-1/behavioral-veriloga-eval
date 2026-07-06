@@ -6,9 +6,7 @@
 - Spectre: PASS, mode AX via SUI direct
 - EVAS/Spectre parity: `passed`
 - Spectre checker note: vout=-0.893,-0.302,0.302,0.893 monotonic=True
-- Evidence:
-  - `WORK/source-import-batch2-evas/summary.json`
-  - `WORK/source-import-batch2-spectre/summary.json`
+- Evidence: historical local source-import report paths are omitted from the public package; rerun current validation scripts for fresh evidence.
 
 ## Four-Standard Review
 

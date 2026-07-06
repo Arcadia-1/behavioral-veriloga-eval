@@ -21,6 +21,6 @@ sim_correct:
     - "CLK"
 parity:
   reference: "spectre"
-  status: "needs_rerun"
+  status: "current_main_validated"
   notes:
-    - "Task 107 was split from the CPPLL system-level checker into a standalone reference-step-clock checker; rerun EVAS/Spectre certification after this task change."
+    - "Visible smoke validates the default 20 ns to 19.5 ns step; hidden coverage validates an 18 ns to 22 ns legal override with an earlier switch time."

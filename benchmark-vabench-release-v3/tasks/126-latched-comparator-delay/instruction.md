@@ -1,10 +1,18 @@
 # Latched Comparator Delay
 
+## Task Contract
+
+Implement the requested Verilog-A artifact for `Latched Comparator Delay`.
+- Form: `dut`
+- Level: `L1`
+- Category: `data_converter`
+- Target artifact(s): `latched_comparator_delay.va`
+
 Implement `latched_comparator_delay.va` in Verilog-A as a converter front-end
 interface primitive: a differential analog input is sampled by a latch clock and
 published as a supply-referenced voltage-coded decision.
 
-## Public Interface
+## Public Verilog-A Interface
 
 Declare module `latched_comparator_delay(DOUT, GND, VDD, CLK, VINN, VINP)` with
 scalar electrical voltage-domain ports. `GND` and `VDD` are the output rail
@@ -22,7 +30,7 @@ Provide these overrideable public parameters:
 - `vn = 1m`: standard deviation of the input-referred random decision term.
 - `seed_init = 0`: seed used to initialize the random decision sequence.
 
-## Functional Contract
+## Required Behavior
 
 - At `initial_step`, derive `vh`, `vl`, and the clock threshold from `VDD` and
   `GND`, and initialize the random seed from `seed_init`.
@@ -37,6 +45,12 @@ Provide these overrideable public parameters:
 ## Modeling Constraints
 
 Return only `latched_comparator_delay.va`. Do not emit a Spectre testbench,
-checker logic, private test hooks, or simulator-private side channels. Use
+validation logic, validation-only hooks, or simulator-specific side channels. Use
 voltage contributions only; do not use current contributions, `ddt()`, or
 `idt()`.
+
+Use deterministic Verilog-A behavioral modeling appropriate for the public circuit contract. The visible testbench is a public validation scenario; do not hard-code a particular stimulus table, transient stop time, or validation sample window into the DUT unless that behavior is part of the public circuit contract.
+
+## Output Contract
+
+Return exactly one complete source artifact named `latched_comparator_delay.va`. Do not include explanatory prose outside the source artifact contents.

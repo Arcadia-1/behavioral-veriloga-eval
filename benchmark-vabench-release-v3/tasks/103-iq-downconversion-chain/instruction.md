@@ -1,8 +1,16 @@
 # IQ Downconversion Chain
 
+## Task Contract
+
+Implement the requested Verilog-A artifact for `IQ Downconversion Chain`.
+- Form: `dut`
+- Level: `L2`
+- Category: `rf_afe_behavioral_macromodels`
+- Target artifact(s): `iq_downconversion_chain.va`
+
 Implement a voltage-domain I/Q downconversion receiver macromodel.
 
-## Public Interface
+## Public Verilog-A Interface
 
 Declare module `iq_downconversion_chain` with positional ports `clk, rst, vin,
 out, metric, lo_i, lo_q, mix_i, mix_q, phase_mon`. All ports are electrical.
@@ -21,7 +29,7 @@ Provide these overrideable public parameters:
 - `tr = 80p`: transition time used for smoothed voltage contributions.
 - `vth = 0.45 V`: threshold for voltage-coded logic decisions.
 
-## Functional Contract
+## Required Behavior
 
 On reset, return the I/Q outputs and mixer monitors to the 0.45 V common-mode
 level and initialize the quadrature phase monitor. After reset releases,
@@ -38,7 +46,13 @@ settle back near common mode when the input returns to common mode.
 Return only `iq_downconversion_chain.va`. Use voltage contributions only. Use
 event-updated behavioral state on the clock edge and `transition(...)`
 smoothing for output contributions. Do not modify or emit the support
-testbench, add checker logic, hard-code private waveform sample points, add
-simulator-private side channels, use current contributions, transistor-level
+testbench, add validation logic, hard-code specific waveform sample points, add
+simulator-specific side channels, use current contributions, transistor-level
 devices, S-parameters, AC/noise-analysis behavior, communication modem
 algorithms, or full link-level decoding.
+
+Use deterministic Verilog-A behavioral modeling appropriate for the public circuit contract. The visible testbench is a public validation scenario; do not hard-code a particular stimulus table, transient stop time, or validation sample window into the DUT unless that behavior is part of the public circuit contract.
+
+## Output Contract
+
+Return exactly one complete source artifact named `iq_downconversion_chain.va`. Do not include explanatory prose outside the source artifact contents.

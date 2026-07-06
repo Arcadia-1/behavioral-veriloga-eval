@@ -2,13 +2,15 @@
 
 ## Task Contract
 
+Implement the requested Verilog-A artifact for `LDO Load Step Recovery`.
 - Form: `dut`
 - Level: `L2`
-- Category: Bias Reference and Power Management
+- Category: `bias_reference_power_management`
+- Target artifact(s): `ldo_load_step_recovery_flow.va`
+
 - Target artifact: `ldo_load_step_recovery_flow.va`
-- Implement only the requested Verilog-A flow DUT. Do not generate a Spectre testbench, checker logic, or auxiliary test hooks.
+- Implement only the requested Verilog-A flow DUT. Do not generate a Spectre testbench, validation logic, or auxiliary test hooks.
 - Preserve the public module name, port order, starter parameters, and saved waveform observable names.
-- The visible testbench is a public smoke scenario. Use it to understand wiring and observables, but do not hard-code its stop time, maxstep, or exact waveform breakpoints into the DUT behavior.
 
 ## Public Verilog-A Interface
 
@@ -24,7 +26,14 @@ Starter parameter declarations are part of the public contract:
 - `tr = 100p`: output transition rise/fall time.
 - `vth = 0.45`: voltage-coded logic threshold.
 
-## Public Behavioral Contract
+## Public Parameter Contract
+
+The public parameters declared by the target artifact are part of the contract and may be overridden by validation harnesses. Preserve their names, defaults, ranges, and meanings:
+
+- `parameter real tr = 100p;` in `ldo_load_step_recovery_flow.va`.
+- `parameter real vth = 0.45;` in `ldo_load_step_recovery_flow.va`.
+
+## Required Behavior
 
 - `clk` and `rst` are voltage-coded logic signals.
 - Treat `vin` as a bounded load-step request for a behavioral LDO recovery flow.
@@ -37,21 +46,9 @@ Starter parameter declarations are part of the public contract:
 - Drive `metric` high only after the flow has recovered regulation following a load transition.
 - Keep the model pure voltage-domain behavioral Verilog-A. Do not use branch-current contributions, transistor-level devices, AC/noise analysis, or KCL/KVL regulation loops.
 
-## Public Observables
+## Modeling Constraints
 
-Verification scenarios observe these scalar waveforms:
-
-```text
-clk rst vin out metric load_mon ctrl_mon
-```
-
-Expected behavior categories:
-
-- `load_step_transient_droop_visible`
-- `closed_loop_recovery_after_step`
-- `metric_marks_recovered_regulation`
-- `load_monitor_tracks_step`
-- `control_monitor_responds_to_droop`
+Use deterministic Verilog-A behavioral modeling appropriate for the public circuit contract. The visible testbench is a public validation scenario; do not hard-code a particular stimulus table, transient stop time, or validation sample window into the DUT unless that behavior is part of the public circuit contract.
 
 ## Output Contract
 

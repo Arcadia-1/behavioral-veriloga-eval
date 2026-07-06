@@ -1,8 +1,16 @@
 # Pipeline ADC Chain 4b
 
+## Task Contract
+
+Implement the requested Verilog-A artifact for `Pipeline ADC Chain 4b`.
+- Form: `dut`
+- Level: `L2`
+- Category: `data_converter_models`
+- Target artifact(s): `pipeline_adc_chain_4b.va`
+
 Implement one Verilog-A source file named `pipeline_adc_chain_4b.va`.
 
-## Public Interface
+## Public Verilog-A Interface
 
 ```verilog
 module pipeline_adc_chain_4b(VDD, VSS, VIN, CLK, RES1, RES2, S1B1, S1B0, S2B1, S2B0, DOUT3, DOUT2, DOUT1, DOUT0);
@@ -42,7 +50,7 @@ decision: `DOUT3/DOUT2` are the stage-1 bits and `DOUT1/DOUT0` are the stage-2
 bits. High logic outputs should be near `VDD`; low logic outputs should be near
 `VSS`.
 
-## Public Verification Context
+**Public Verification Context**
 
 The public transient scenario drives representative points across all 16 final
 4-bit code bins, alternates lower-half and upper-half points inside adjacent
@@ -53,6 +61,12 @@ to hard-code into the DUT.
 ## Modeling Constraints
 
 Use voltage-domain event-driven Verilog-A only. Do not emit a Spectre
-testbench, checker logic, private waveform sample points, current
+testbench, validation logic, specific waveform sample points, current
 contributions, transistor-level devices, AC/noise analysis, `ddt()`, or
 `idt()`.
+
+Use deterministic Verilog-A behavioral modeling appropriate for the public circuit contract. The visible testbench is a public validation scenario; do not hard-code a particular stimulus table, transient stop time, or validation sample window into the DUT unless that behavior is part of the public circuit contract.
+
+## Output Contract
+
+Return exactly one complete source artifact named `pipeline_adc_chain_4b.va`. Do not include explanatory prose outside the source artifact contents.

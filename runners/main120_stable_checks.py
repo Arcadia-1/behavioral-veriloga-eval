@@ -880,25 +880,47 @@ def check_settling_time_measurement_tb(rows: list[dict[str, float]]) -> tuple[bo
     if not rows or not required.issubset(rows[0]):
         return False, "missing time/step/vout/done"
 
-    sample_times_ns = [40.0, 80.0, 119.0, 121.0, 150.0]
+    times = [row["time"] for row in rows]
+    step_final = rows[-1]["step"]
+    step_threshold = max(0.05, 0.5 * step_final)
+    step_edges = _crossing_times(rows, "step", threshold=step_threshold, direction="rising")
+    done_edges = _crossing_times(rows, "done", threshold=0.45, direction="rising")
+    if not step_edges:
+        return False, "missing_step_rising_edge"
+    if not done_edges:
+        return False, "missing_done_rising_edge"
+
+    step_t = step_edges[0]
+    done_t = done_edges[0]
+    if done_t <= step_t + 50e-9:
+        return False, f"done_too_early step={step_t:.3e} done={done_t:.3e}"
+
+    sample_times = [
+        step_t + 0.18 * (done_t - step_t),
+        step_t + 0.50 * (done_t - step_t),
+        done_t - 1.0e-9,
+        done_t + 1.5e-9,
+        min(times[-1] - 1.0e-9, done_t + 30.0e-9),
+    ]
     values: list[float] = []
     done_values: list[float] = []
-    for t_ns in sample_times_ns:
-        vout = sample_signal(rows, "vout", t_ns * 1e-9)
-        done = sample_signal(rows, "done", t_ns * 1e-9)
+    for time_s in sample_times:
+        vout = sample_signal(rows, "vout", time_s)
+        done = sample_signal(rows, "done", time_s)
         if vout is None or done is None:
-            return False, f"missing_sample_at={t_ns:g}ns"
+            return False, f"missing_sample_at={time_s:.3e}"
         values.append(vout)
         done_values.append(done)
 
     monotone = values[0] < values[1] < values[2] <= values[3] + 0.02 <= values[4] + 0.02
     boundary_ok = done_values[2] < 0.1 and done_values[3] > 0.8 and done_values[4] > 0.8
-    late_settled = values[4] > 0.75
+    late_settled = values[4] > 0.75 and abs(values[4] - step_final) <= max(0.12, 0.18 * max(abs(step_final), 1e-9))
     ok = monotone and boundary_ok and late_settled
     value_text = ",".join(f"{value:.3f}" for value in values)
     done_text = ",".join(f"{value:.3f}" for value in done_values)
     return ok, (
         f"vout_samples={value_text} done_samples={done_text} "
+        f"step_t={step_t:.3e} done_t={done_t:.3e} "
         f"monotone={monotone} boundary_ok={boundary_ok} late_settled={late_settled}"
     )
 

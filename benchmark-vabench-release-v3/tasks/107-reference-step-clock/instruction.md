@@ -1,8 +1,16 @@
 # Reference Step Clock
 
+## Task Contract
+
+Implement the requested Verilog-A artifact for `Reference Step Clock`.
+- Form: `dut`
+- Level: `L1`
+- Category: `clock_timing`
+- Target artifact(s): `ref_step_clk.va`
+
 Implement `ref_step_clk.va` in Verilog-A.
 
-## Interface
+## Public Verilog-A Interface
 
 ```verilog
 module ref_step_clk (
@@ -11,6 +19,15 @@ module ref_step_clk (
     output electrical CLK
 );
 ```
+
+## Public Parameter Contract
+
+The public parameters declared by the target artifact are part of the contract and may be overridden by validation harnesses. Preserve their names, defaults, ranges, and meanings:
+
+- `parameter real period_pre = 20n from (0:inf);` in `ref_step_clk.va`.
+- `parameter real period_post = 19.5n from (0:inf);` in `ref_step_clk.va`.
+- `parameter real t_switch = 2u from [0:inf);` in `ref_step_clk.va`.
+- `parameter real tedge = 100p from (0:inf);` in `ref_step_clk.va`.
 
 ## Required Behavior
 
@@ -45,6 +62,14 @@ implementation template.
 Use voltage-coded logic with a mid-supply decision threshold where applicable,
 drive high logic outputs near `VDD` and low outputs near `VSS`, and keep the
 model pure behavioral Verilog-A. Do not use transistor-level devices, AC/noise
-analysis, checker logic, private test hooks, or simulator-private side channels.
+analysis, validation logic, validation-only hooks, or simulator-specific side channels.
 
 Only `ref_step_clk.va` is graded as the candidate implementation.
+
+## Modeling Constraints
+
+Use deterministic Verilog-A behavioral modeling appropriate for the public circuit contract. The visible testbench is a public validation scenario; do not hard-code a particular stimulus table, transient stop time, or validation sample window into the DUT unless that behavior is part of the public circuit contract.
+
+## Output Contract
+
+Return exactly one complete source artifact named `ref_step_clk.va`. Do not include explanatory prose outside the source artifact contents.

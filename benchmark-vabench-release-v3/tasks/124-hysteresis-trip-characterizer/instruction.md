@@ -1,10 +1,19 @@
 # Hysteresis Trip Characterizer
 
+## Task Contract
+
+Implement the requested Verilog-A artifact for `Hysteresis Trip Characterizer`.
+- Form: `dut`
+- Level: `L2`
+- Category: `comparator`
+- Target artifact(s): `hysteresis_trip_characterizer.va`
+- Public support artifact(s): `support_hysteretic_comparator.va`
+
 Implement a voltage-domain measurement component that observes a comparator
 input ramp and output decision waveform, captures the observable rising and
 falling trip voltages, and reports the hysteresis width.
 
-## Public Interface
+## Public Verilog-A Interface
 
 Declare module `hysteresis_trip_characterizer` with positional ports `vdd, vss,
 vin, cmp_out, trip_rise, trip_fall, hyst_width, valid`. All ports are
@@ -20,7 +29,7 @@ Provide this overrideable public parameter:
 
 - `tr = 20p`: output transition time for reported measurement voltages.
 
-## Functional Contract
+## Required Behavior
 
 - Use the midpoint between `vdd` and `vss` as the decision threshold for
   `cmp_out`.
@@ -38,6 +47,12 @@ Provide this overrideable public parameter:
 Return only `hysteresis_trip_characterizer.va`. Use deterministic
 voltage-domain Verilog-A and voltage contributions only. The hysteretic
 comparator under measurement is a supplied support artifact, not part of the
-returned DUT. Do not modify or emit the support testbench, add checker logic,
-hard-code waveform sample points, add simulator-private side channels, use
+returned DUT. Do not modify or emit the support testbench, add validation logic,
+hard-code waveform sample points, add simulator-specific side channels, use
 current contributions, `ddt()`, or `idt()`.
+
+Use deterministic Verilog-A behavioral modeling appropriate for the public circuit contract. The visible testbench is a public validation scenario; do not hard-code a particular stimulus table, transient stop time, or validation sample window into the DUT unless that behavior is part of the public circuit contract.
+
+## Output Contract
+
+Return exactly one complete source artifact named `hysteresis_trip_characterizer.va`. Do not include explanatory prose outside the source artifact contents.

@@ -1,8 +1,16 @@
 # Clocked Sine Source
 
+## Task Contract
+
+Implement the requested Verilog-A artifact for `Clocked Sine Source`.
+- Form: `dut`
+- Level: `L2`
+- Category: `measurement_instrumentation_flows`
+- Target artifact(s): `vin_src.va`
+
 Implement `vin_src.va` in Verilog-A.
 
-## Interface
+## Public Verilog-A Interface
 
 ```verilog
 module vin_src(
@@ -12,6 +20,17 @@ module vin_src(
     output electrical VOUT_N
 );
 ```
+
+## Public Parameter Contract
+
+The public parameters declared by the target artifact are part of the contract and may be overridden by validation harnesses. Preserve their names, defaults, ranges, and meanings:
+
+- `parameter real vdd = 0.9;` in `vin_src.va`.
+- `parameter real vth = 0.45;` in `vin_src.va`.
+- `parameter real ampl = 0.15;` in `vin_src.va`.
+- `parameter real freq = 300e3;` in `vin_src.va`.
+- `parameter real sigma = 0.01;` in `vin_src.va`.
+- `parameter integer SEED = 0;` in `vin_src.va`.
 
 ## Required Behavior
 
@@ -50,8 +69,16 @@ single-ended stimulus component.
 
 Use `vth` with a default near 0.45 V to interpret the voltage-coded `CLK` and
 `RST_N` control inputs, and keep the model pure behavioral Verilog-A. Do not use
-transistor-level devices, AC/noise analysis, waveform files, checker artifacts,
+transistor-level devices, AC/noise analysis, waveform files, validation artifacts,
 or simulator side channels.
 
 Only `vin_src.va` is the support component under review; companion modules may
 be supplied by the harness for composed-flow evaluation.
+
+## Modeling Constraints
+
+Use deterministic Verilog-A behavioral modeling appropriate for the public circuit contract. The visible testbench is a public validation scenario; do not hard-code a particular stimulus table, transient stop time, or validation sample window into the DUT unless that behavior is part of the public circuit contract.
+
+## Output Contract
+
+Return exactly one complete source artifact named `vin_src.va`. Do not include explanatory prose outside the source artifact contents.

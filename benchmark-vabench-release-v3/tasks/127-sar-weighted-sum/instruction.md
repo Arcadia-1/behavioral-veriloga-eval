@@ -1,8 +1,16 @@
 # SAR Weighted Sum
 
+## Task Contract
+
+Implement the requested Verilog-A artifact for `SAR Weighted Sum`.
+- Form: `dut`
+- Level: `L1`
+- Category: `data_converter`
+- Target artifact(s): `sar_weighted_sum.va`
+
 Implement `sar_weighted_sum.va` in Verilog-A.
 
-## Public Interface
+## Public Verilog-A Interface
 
 Declare module `sar_weighted_sum(D10, D9, D8, D7, D6, D5, D4, D3, D2, D1, D0,
 VOUT)` with scalar electrical voltage-domain ports. `D10` is the most
@@ -14,7 +22,7 @@ Provide this overrideable public parameter:
 
 - `vth = 0.45 V`: digital decision threshold for each input.
 
-## Functional Contract
+## Required Behavior
 
 - Treat each `D*` input as logic `1` when its voltage is greater than `vth`,
   otherwise logic `0`.
@@ -31,7 +39,13 @@ Provide this overrideable public parameter:
 
 ## Modeling Constraints
 
-Return only `sar_weighted_sum.va`. Do not emit a Spectre testbench, checker
-logic, private test hooks, hard-coded private sample points, or
-simulator-private side channels. Use voltage contributions only; do not use
+Return only `sar_weighted_sum.va`. Do not emit a Spectre testbench, validation harness
+logic, validation-only hooks, hard-coded validation-only sample points, or
+simulator-specific side channels. Use voltage contributions only; do not use
 current contributions, `ddt()`, or `idt()`.
+
+Use deterministic Verilog-A behavioral modeling appropriate for the public circuit contract. The visible testbench is a public validation scenario; do not hard-code a particular stimulus table, transient stop time, or validation sample window into the DUT unless that behavior is part of the public circuit contract.
+
+## Output Contract
+
+Return exactly one complete source artifact named `sar_weighted_sum.va`. Do not include explanatory prose outside the source artifact contents.

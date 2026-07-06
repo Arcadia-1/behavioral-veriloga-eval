@@ -1,8 +1,16 @@
 # Single-Shot Pulse
 
+## Task Contract
+
+Implement the requested Verilog-A artifact for `Single Shot Pulse`.
+- Form: `dut`
+- Level: `L1`
+- Category: `timing_primitive`
+- Target artifact(s): `source_single_shot.va`
+
 Implement `source_single_shot.va` in Verilog-A.
 
-## Interface
+## Public Verilog-A Interface
 
 ```verilog
 module source_single_shot(
@@ -10,6 +18,18 @@ module source_single_shot(
     output electrical vout
 );
 ```
+
+## Public Parameter Contract
+
+The public parameters declared by the target artifact are part of the contract and may be overridden by validation harnesses. Preserve their names, defaults, ranges, and meanings:
+
+- `parameter real pulse_width = 10n from (0:inf);` in `source_single_shot.va`.
+- `parameter real vlogic_high = 0.9;` in `source_single_shot.va`.
+- `parameter real vlogic_low = 0.0;` in `source_single_shot.va`.
+- `parameter real vtrans = 0.45;` in `source_single_shot.va`.
+- `parameter real tdel = 1n from [0:inf);` in `source_single_shot.va`.
+- `parameter real trise = 20p;` in `source_single_shot.va`.
+- `parameter real tfall = 20p;` in `source_single_shot.va`.
 
 ## Required Behavior
 
@@ -37,9 +57,13 @@ Required observable behavior:
 - Drive `vout` through smoothed voltage contributions.
 
 Use voltage contributions only. Do not use current contributions, `ddt()`,
-`idt()`, transistor-level devices, AC/noise analysis, checker logic, private
-test hooks, or simulator-private side channels.
+`idt()`, transistor-level devices, AC/noise analysis, validation logic, validation-only
+test hooks, or simulator-specific side channels.
 
-## Output
+## Modeling Constraints
+
+Use deterministic Verilog-A behavioral modeling appropriate for the public circuit contract. The visible testbench is a public validation scenario; do not hard-code a particular stimulus table, transient stop time, or validation sample window into the DUT unless that behavior is part of the public circuit contract.
+
+## Output Contract
 
 Return exactly one source artifact named `source_single_shot.va`.

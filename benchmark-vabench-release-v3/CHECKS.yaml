@@ -2532,33 +2532,29 @@
 107-reference-step-clock: |
   syntax:
     must_include:
-      - "@(cross("
       - "@(timer("
       - "transition("
-      - "tran"
-      - "save"
     must_not_include:
       - "I("
       - "ddt("
       - "idt("
+  dut_compile:
+    backend: "evas"
   tb_compile:
     backend: "evas"
   sim_correct:
     checks:
-      - "cppll_reacquires_after_reference_step"
-      - "late_window_tracks_new_reference"
-      - "vctrl_stays_bounded"
+      - "visible_default_clock_steps_from_20ns_to_19p5ns"
+      - "hidden_override_clock_steps_from_18ns_to_22ns"
+      - "clock_rails_track_vdd_vss"
+      - "duty_cycle_near_50_percent"
     public_observables:
-      - "ref_clk"
-      - "fb_clk"
-      - "dco_clk"
-      - "vctrl_mon"
-      - "lock"
+      - "CLK"
   parity:
     reference: "spectre"
     status: "certified"
     notes:
-      - "Current release dual_certification report certifies this form as EVAS/Spectre pass; rerun is required after checker/gold behavior changes."
+      - "Current targeted EVAS/Spectre rerun validates both default visible and overridden hidden step-clock scenarios."
 108-reference-startup-enable-flow: |
   syntax:
     must_include:
@@ -2688,8 +2684,9 @@
     backend: "evas"
   sim_correct:
     checks:
-      - codes_0_5_10_15_sampled_after_clock_edges
+      - saved_input_bits_determine_latched_code_after_clock_edges
       - restored_midrise_levels_match_lsb_formula
+      - visible_and_hidden_use_distinct_code_sequences
   checker:
     task_id: "v3_clocked_dac_restore_4b"
   parity:
@@ -2892,7 +2889,13 @@
 123-start-gated-offset-search: |
   checker:
     task_id: v3_start_gated_offset_search
-    metric: stable_samples
+    metric: edge_replayed_search_sequence
+  sim_correct:
+    checks:
+      - start_gate_enables_falling_clock_updates
+      - comparator_decision_changes_halve_the_search_step
+      - vinp_vinn_remain_symmetric_about_public_common_mode
+      - visible_and_hidden_use_distinct_decision_sequences
   scoring:
     axes:
       - dut_compile
@@ -2943,7 +2946,12 @@
 127-sar-weighted-sum: |
   checker:
     task_id: v3_sar_weighted_sum
-    metric: stable_samples
+    metric: waveform_derived_weighted_sum
+  sim_correct:
+    checks:
+      - saved_decision_bits_determine_weighted_sum_voltage
+      - redundant_split_weights_are_distinct_from_binary_tail
+      - visible_and_hidden_use_distinct_code_sequences
   scoring:
     axes:
       - dut_compile

@@ -1,10 +1,19 @@
 # Comparator Offset Calibration Loop
 
+## Task Contract
+
+Implement the requested Verilog-A artifact for `Comparator Offset Calibration Loop`.
+- Form: `dut`
+- Level: `L2`
+- Category: `comparator`
+- Target artifact(s): `comparator_offset_calibration_loop.va`
+- Public support artifact(s): `support_offset_comparator.va`
+
 Implement a voltage-domain calibration loop that drives a comparator with a
 successive-approximation differential stimulus and reports the estimated input
 offset after the search completes.
 
-## Public Interface
+## Public Verilog-A Interface
 
 Declare module `comparator_offset_calibration_loop` with positional ports `vdd,
 vss, clk, dcmpp, vinp, vinn, offset_est, valid`. All ports are electrical.
@@ -22,7 +31,7 @@ Provide these overrideable public parameters:
   reported valid.
 - `tr = 20p`: output transition time for generated analog outputs.
 
-## Functional Contract
+## Required Behavior
 
 - Initialize the signed differential estimate to zero and the search step to
   `step_initial`.
@@ -43,7 +52,13 @@ Provide these overrideable public parameters:
 Return only `comparator_offset_calibration_loop.va`. Use deterministic
 voltage-domain Verilog-A and voltage contributions only. The companion
 comparator model is a supplied support artifact, not part of the returned DUT.
-Do not modify or emit the support testbench, add checker logic, hard-code
-waveform sample points, add simulator-private side channels, use current
+Do not modify or emit the support testbench, add validation logic, hard-code
+waveform sample points, add simulator-specific side channels, use current
 contributions, `ddt()`, or `idt()`. Update calibration state in analog event
 blocks and drive voltage outputs outside those event blocks.
+
+Use deterministic Verilog-A behavioral modeling appropriate for the public circuit contract. The visible testbench is a public validation scenario; do not hard-code a particular stimulus table, transient stop time, or validation sample window into the DUT unless that behavior is part of the public circuit contract.
+
+## Output Contract
+
+Return exactly one complete source artifact named `comparator_offset_calibration_loop.va`. Do not include explanatory prose outside the source artifact contents.
