@@ -1,39 +1,19 @@
 # VA LX ADC Ideal 4b
 
-Implement the Verilog-A DUT `va_lx_adc_ideal_4b` in `va_lx_adc_ideal_4b.va`.
+## Task Contract
+Implement the Verilog-A DUT `va_lx_adc_ideal_4b.va` for a sampled 4-bit successive-approximation ADC model with voltage-coded output bits.
 
-## Public Interface
+## Public Verilog-A Interface
+Provide `module va_lx_adc_ideal_4b(vin, clks, d1, d2, d3, d4);` with electrical inputs `vin`, `clks` and electrical outputs `d1`, `d2`, `d3`, `d4`.
 
-The module port order is:
+## Public Parameter Contract
+Expose `parameter real vdd = 1;`. Testbenches may override this parameter.
 
-```text
-vin, clks, d1, d2, d3, d4
-```
-
-All ports are electrical. `vin` is the analog input, `clks` is the track/convert clock, `d4` is the MSB, and `d1` is the LSB.
-
-## Public Parameters
-
-- `vdd = 1.0`: input full-scale reference and clock-high voltage in volts.
-- The clock threshold is `vdd/2`.
-- Output bits use scalar voltage levels 0.0 and 1.0.
-
-## Functional Contract
-
-While `clks` is above `vdd/2`, track the current value of `vin`. On the falling crossing of `clks` through `vdd/2`, convert the last tracked value with a four-step binary-search ADC:
-
-1. Compare against `vdd/2` to decide `d4`.
-2. Move the comparison threshold by `vdd/4` toward the selected half range.
-3. Compare to decide `d3`, then move by `vdd/8`.
-4. Compare to decide `d2`, then move by `vdd/16`.
-5. Compare to decide `d1`.
-
-Reset the output bits to zero at initialization and on each rising crossing of `clks` through `vdd/2`.
+## Required Behavior
+Sample `vin` while `clks` is high relative to `vdd/2`. On the falling clock edge, perform a 4-bit binary-search conversion: start with a threshold at `vdd/2`, emit MSB `d4`, then move the threshold by successively halved steps for `d3`, `d2`, and `d1`. Drive output bits as voltage-coded 1.0 or 0.0 levels.
 
 ## Modeling Constraints
-
-Use voltage-domain Verilog-A behavior only. Do not use current contributions, file I/O, random behavior, or simulator-private side channels.
+Use sampled conversion behavior, not a continuously tracking comparator bank. Do not invert the MSB decision, use the wrong first step, or swap the output bit order.
 
 ## Output Contract
-
-Return exactly one source artifact named `va_lx_adc_ideal_4b.va`. Do not include explanatory prose outside the source artifact contents.
+Submit only the completed Verilog-A module in `va_lx_adc_ideal_4b.va`.

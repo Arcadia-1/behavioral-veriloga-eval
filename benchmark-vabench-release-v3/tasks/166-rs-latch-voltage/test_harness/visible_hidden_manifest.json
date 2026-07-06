@@ -5,9 +5,5 @@
   "hidden": [
     "test_hidden/tests/tb_source_ref.scs"
   ],
-  "checker": "v3_rs_latch_voltage",
-  "evidence": {
-    "evas": "WORK/source-import-batch9-evas/166-rs-latch-voltage",
-    "spectre": "WORK/source-import-batch9-spectre/166-rs-latch-voltage"
-  }
+  "checker": "v3_rs_latch_voltage"
 }

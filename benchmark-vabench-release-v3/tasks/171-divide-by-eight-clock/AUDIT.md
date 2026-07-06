@@ -10,7 +10,6 @@
 - Scenario: resettable, enable-qualified clock divider for AMS timing/control models.
 - Import status: repaired from a weak imported row into an AMS-facing control task.
 - Evaluation: stable sampled behavior from `tran.csv`; raw simulator timestep equality is not used.
-- Evidence:
   - EVAS2 gold semantic validation: PASS.
   - EVAS2 negative variants: five behavioral negatives rejected.
   - EVAS AHDL-like lint preflight: PASS with zero diagnostics.

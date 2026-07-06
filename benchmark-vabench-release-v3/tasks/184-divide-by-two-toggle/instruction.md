@@ -1,24 +1,19 @@
 # Divide By Two Toggle
 
-Implement `divide_by_two_toggle.va` in Verilog-A.
+## Task Contract
+Implement the Verilog-A DUT `divide_by_two_toggle.va` for a legacy voltage-domain divide-by-two toggle row.
 
-## Public Interface
+## Public Verilog-A Interface
+Provide `module divide_by_two_toggle(clkin, clkout);` with electrical input `clkin` and electrical output `clkout`.
 
-Declare module `divide_by_two_toggle(clkin, clkout)` with scalar electrical
-voltage-domain ports. `clkin` is the input clock and `clkout` is the divided
-toggle output.
+## Public Parameter Contract
+This task has no public parameters.
 
-## Functional Contract
-
-- Initialize `clkout` low.
-- Toggle the internal output state on every rising crossing of `clkin`.
-- After the first rising edge, drive `clkout` high; after the second rising
-  edge, drive it low; continue alternating on subsequent rising edges.
-- Drive `clkout` as a smoothed voltage-coded logic signal.
+## Required Behavior
+Initialize the internal state low. On each rising crossing of `clkin` through 0.5 V, toggle the internal state. Drive `clkout` to 0.9 V when the state is high and 0.0 V when it is low.
 
 ## Modeling Constraints
+Use event-driven retained state and `transition` for the output. Do not set high only once, start in the wrong state, use half high level, or derive the output from absolute time.
 
-Return only `divide_by_two_toggle.va`. Do not emit a Spectre testbench, checker
-logic, private test hooks, or simulator-private side channels. Use
-voltage-domain, event-driven Verilog-A; do not use transistor-level devices,
-current contributions, `ddt()`, or `idt()`.
+## Output Contract
+Submit only the completed Verilog-A module in `divide_by_two_toggle.va`.

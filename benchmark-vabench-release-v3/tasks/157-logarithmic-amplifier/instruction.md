@@ -1,34 +1,19 @@
 # Logarithmic Amplifier
 
 ## Task Contract
-
-- Form: `dut`
-- Level: `L1`
-- Category: Baseband / analog primitive nonlinear amplifiers
-- Base function: Offset-corrected logarithmic voltage amplifier
-- Domain: `voltage`
-- Target artifact(s): `logarithmic_amplifier.va`
-- Visible context: public task, module interface, and nonlinear transfer contract.
-- Evaluator boundary: validation logic is external; do not generate checker, testbench, or measurement helper artifacts.
+Implement the Verilog-A DUT `logarithmic_amplifier.va` for an offset-corrected logarithmic voltage amplifier.
 
 ## Public Verilog-A Interface
+Provide `module logarithmic_amplifier(sigin, sigout);` with electrical input `sigin` and electrical output `sigout`.
 
-`logarithmic_amplifier.va` must declare:
+## Public Parameter Contract
+This task has no public parameters.
 
-```verilog
-module logarithmic_amplifier(sigin, sigout);
-input sigin;
-output sigout;
-electrical sigin, sigout;
-```
+## Required Behavior
+Subtract a 0.2 V input offset, take the absolute value of the adjusted voltage, floor the magnitude at 0.1 V to keep the logarithm well-defined, and drive `sigout` with the natural logarithm of that guarded magnitude.
 
-## Behavioral Contract
-
-Subtract a 0.2 V input offset, take the absolute value of the adjusted signal, floor the magnitude at 0.1 V to keep the logarithm well-defined, and drive `sigout` with the natural logarithm of that guarded magnitude.
-
-Use Verilog-A real arithmetic and math operators. Do not use current contributions, transistor devices, smoothing filters, or testbench-specific constants.
+## Modeling Constraints
+Use Verilog-A real arithmetic and math operators. Do not remove the absolute value, omit the input offset or magnitude floor, use current contributions, or specialize to one waveform.
 
 ## Output Contract
-
-Return exactly one source artifact named `logarithmic_amplifier.va`.
-Do not include explanatory prose outside the source artifact contents.
+Submit only the completed Verilog-A module in `logarithmic_amplifier.va`.

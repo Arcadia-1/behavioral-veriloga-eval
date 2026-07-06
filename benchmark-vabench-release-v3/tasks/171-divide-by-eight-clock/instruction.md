@@ -1,27 +1,19 @@
-# Reset Enable Clock Divider
+# Divide By Eight Clock
 
-Implement a voltage-domain resettable, enable-qualified clock divider for an AMS timing/control path.
+## Task Contract
+Implement the Verilog-A DUT `divide_by_eight_clock.va` for a resettable, enable-qualified voltage-domain clock divider.
 
-## Public Interface
+## Public Verilog-A Interface
+Provide `module divide_by_eight_clock(vin, rst, en, vout);` with electrical inputs `vin`, `rst`, `en` and electrical output `vout`.
 
-Declare module `divide_by_eight_clock` with positional ports:
+## Public Parameter Contract
+Expose integer `divisor = 8` and real parameters `tdel = 10p`, `tr = 20p`, `tf = 20p`, `vdd = 0.9`, and `vth = 0.45`. Testbenches may override these parameters.
 
-```verilog
-module divide_by_eight_clock(vin, rst, en, vout);
-```
+## Required Behavior
+Initialize the divided output high. An active-high reset forces the counter to zero and the output high. On rising input-clock crossings through `vth`, advance the counter only when reset is low and enable is high. Wrap the counter modulo `divisor` and drive the output high for the first half of the count range and low for the second half.
 
-All ports are scalar `electrical` voltage-domain ports.
+## Modeling Constraints
+Use event-driven state updates and `transition` for the output. Do not ignore reset or enable, use divide-by-four behavior, or change the output duty rule.
 
-## Functional Contract
-
-- Treat `vin`, `rst`, and `en` as 0/0.9 V logic with a 0.45 V threshold.
-- Provide an integer parameter `divisor` with default value 8. The intended public contract uses an even divisor of at least 2.
-- `rst` is active high. When reset is active, reload the divider phase to the start of a high output half-cycle and drive `vout` high.
-- When reset is inactive and `en` is high, advance the divider phase on rising threshold crossings of `vin`.
-- When `en` is low, ignore `vin` edges and hold the current divider phase/output.
-- Drive `vout` high for the first half of the divider phase count and low for the second half, yielding a 50% duty-cycle divided clock.
-- Use smooth Verilog-A transitions for the voltage-coded output.
-
-## Output
-
-Return exactly one source artifact named `divide_by_eight_clock.va`. Do not generate a Spectre testbench.
+## Output Contract
+Submit only the completed Verilog-A module in `divide_by_eight_clock.va`.

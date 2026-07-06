@@ -3522,6 +3522,19 @@
   checker:
     task_id: v3_control_word_encoder_7b
     metric: stable_samples
+  sim_correct:
+    checks:
+      - decodes_ctrl_parameter_lsb_first
+      - supports_multiple_control_words_in_one_deck
+      - drives_public_vhi_vlo_logic_levels
+    public_observables:
+      - d0
+      - d1
+      - d2
+      - d3
+      - d4
+      - d5
+      - d6
   scoring:
     axes:
       - dut_compile

@@ -1,34 +1,19 @@
 # Differential Amplifier Core
 
 ## Task Contract
-
-- Form: `dut`
-- Level: `L1`
-- Category: Baseband / analog primitive gain blocks
-- Base function: Differential-input single-ended gain core
-- Domain: `voltage`
-- Target artifact(s): `differential_amplifier_core.va`
-- Visible context: public task, module interface, fixed gain/offset contract.
-- Evaluator boundary: validation logic is external; do not generate checker, testbench, or measurement helper artifacts.
+Implement the Verilog-A DUT `differential_amplifier_core.va` for a differential-input, single-ended gain core with a fixed input-referred offset.
 
 ## Public Verilog-A Interface
+Provide `module differential_amplifier_core(sigin_p, sigin_n, sigout);` with electrical inputs `sigin_p`, `sigin_n` and electrical output `sigout`.
 
-`differential_amplifier_core.va` must declare:
+## Public Parameter Contract
+This task has no public parameters.
 
-```verilog
-module differential_amplifier_core(sigin_p, sigin_n, sigout);
-input sigin_p, sigin_n;
-output sigout;
-electrical sigin_p, sigin_n, sigout;
-```
+## Required Behavior
+Use `V(sigin_p, sigin_n)` as the input. Subtract a 0.05 V input-referred offset, apply a fixed voltage gain of 2.0, and drive the resulting single-ended output voltage on `sigout`.
 
-## Behavioral Contract
-
-Model a single-ended output gain core driven by the differential input voltage. Subtract a 0.05 V input-referred offset from `V(sigin_p, sigin_n)`, then apply a fixed voltage gain of 2.0 and drive `sigout`.
-
-Use a direct voltage-domain contribution. Do not add rail clipping, filtering, current contributions, transistor devices, or testbench-specific constants.
+## Modeling Constraints
+Use a direct voltage-domain contribution. Do not add rail clipping, filtering, current contributions, transistor devices, or testbench-specific behavior.
 
 ## Output Contract
-
-Return exactly one source artifact named `differential_amplifier_core.va`.
-Do not include explanatory prose outside the source artifact contents.
+Submit only the completed Verilog-A module in `differential_amplifier_core.va`.

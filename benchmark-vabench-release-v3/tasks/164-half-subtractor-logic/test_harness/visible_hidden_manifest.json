@@ -5,9 +5,5 @@
   "hidden": [
     "test_hidden/tests/tb_source_ref.scs"
   ],
-  "checker": "v3_half_subtractor_logic",
-  "evidence": {
-    "evas": "WORK/source-import-batch9-evas/164-half-subtractor-logic",
-    "spectre": "WORK/source-import-batch9-spectre/164-half-subtractor-logic"
-  }
+  "checker": "v3_half_subtractor_logic"
 }

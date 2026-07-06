@@ -13212,22 +13212,39 @@ def check_v3_weighted_sar_decoder_9b(rows: list[dict[str, float]]) -> tuple[bool
 
 
 def check_v3_control_word_encoder_7b(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    required = {"time", "d0", "d1", "d2", "d3", "d4", "d5", "d6"}
-    if not rows or not required.issubset(rows[0]):
+    if not rows or "time" not in rows[0]:
+        return False, "missing encoder waveform"
+
+    available = set(rows[0])
+    groups = [
+        ("", 85),
+        ("_85", 85),
+        ("_42", 42),
+        ("_0", 0),
+        ("_19", 19),
+        ("_108", 108),
+        ("_127", 127),
+    ]
+    expected_by_signal: dict[str, list[tuple[float, float]]] = {}
+    covered_ctrls: list[int] = []
+    for suffix, ctrl in groups:
+        signals = [f"d{bit}{suffix}" for bit in range(7)]
+        if not set(signals).issubset(available):
+            continue
+        covered_ctrls.append(ctrl)
+        for bit, signal in enumerate(signals):
+            expected = 0.9 if ((ctrl >> bit) & 1) else 0.0
+            expected_by_signal[signal] = [(5.0, expected), (15.0, expected)]
+
+    if not expected_by_signal:
         return False, "missing encoder output signals"
-    return _sample_many(
-        rows,
-        {
-            "d0": [(5.0, 0.9), (15.0, 0.9)],
-            "d1": [(5.0, 0.0), (15.0, 0.0)],
-            "d2": [(5.0, 0.9), (15.0, 0.9)],
-            "d3": [(5.0, 0.0), (15.0, 0.0)],
-            "d4": [(5.0, 0.9), (15.0, 0.9)],
-            "d5": [(5.0, 0.0), (15.0, 0.0)],
-            "d6": [(5.0, 0.9), (15.0, 0.9)],
-        },
-        tol=0.08,
-    )
+
+    ok, detail = _sample_many(rows, expected_by_signal, tol=0.08)
+    if not ok:
+        return ok, detail
+    if len(set(covered_ctrls)) < 2 and set(covered_ctrls) != {85}:
+        return False, f"insufficient_control_word_coverage={covered_ctrls}"
+    return True, f"{detail} ctrl_values={covered_ctrls}"
 
 
 def check_v3_four_channel_edge_sampler(rows: list[dict[str, float]]) -> tuple[bool, str]:
