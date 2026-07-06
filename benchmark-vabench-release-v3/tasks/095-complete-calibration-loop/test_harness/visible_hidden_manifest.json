@@ -4,6 +4,7 @@
     "status": "cadence_modeling_ready"
   },
   "form": "dut",
+  "coverage_note": "Visible validates the original closed-loop correction and reset recovery schedule; hidden shifts the late reset and input-error sequence to verify behavior-derived reset handling and correction polarity.",
   "hidden": {
     "checker": "../../../CHECKS.yaml",
     "gold": [

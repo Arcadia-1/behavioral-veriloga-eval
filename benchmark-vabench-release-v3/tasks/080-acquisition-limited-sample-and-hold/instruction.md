@@ -1,8 +1,16 @@
 # Acquisition Limited Sample And Hold
 
+## Task Contract
+
+Implement the requested Verilog-A artifact for `Acquisition Limited Sample And Hold`.
+- Form: `dut`
+- Level: `L1`
+- Category: `sampling_analog_memory`
+- Target artifact(s): `acquisition_limited_sample_hold.va`
+
 Implement `acquisition_limited_sample_hold.va` in Verilog-A.
 
-## Public Interface
+## Public Verilog-A Interface
 
 Declare module `acquisition_limited_sample_hold(sample, rst, vin, vout, metric)`
 with scalar electrical voltage-domain ports.
@@ -22,7 +30,7 @@ with scalar electrical voltage-domain ports.
 - `tick`: acquisition update interval, default `1n`.
 - `tr`: output and monitor transition smoothing time, default `200p`.
 
-## Functional Contract
+## Required Behavior
 
 Model finite acquisition bandwidth rather than an ideal instantaneous sampler:
 
@@ -37,6 +45,12 @@ Model finite acquisition bandwidth rather than an ideal instantaneous sampler:
 ## Modeling Constraints
 
 Return only `acquisition_limited_sample_hold.va`. Do not emit a Spectre
-testbench, checker logic, private test hooks, or simulator-private side
+testbench, validation logic, validation-only hooks, or simulator-specific side
 channels. Use voltage contributions only; do not use current contributions,
 `ddt()`, or `idt()`.
+
+Use deterministic Verilog-A behavioral modeling appropriate for the public circuit contract. The visible testbench is a public validation scenario; do not hard-code a particular stimulus table, transient stop time, or validation sample window into the DUT unless that behavior is part of the public circuit contract.
+
+## Output Contract
+
+Return exactly one complete source artifact named `acquisition_limited_sample_hold.va`. Do not include explanatory prose outside the source artifact contents.

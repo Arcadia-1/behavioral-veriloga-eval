@@ -9,6 +9,7 @@
   "visible_smoke": "test_visible/tests/tb_visible_smoke.scs",
   "gate1_label": "independent_l1_ready",
   "gate2_status": "cadence_modeling_ready",
+  "coverage_note": "Visible measures the original 163.333 ps a-to-b interval; hidden measures a distinct 260 ps interval and the checker derives expected delay from the saved input crossings.",
   "visible": [
     "instruction.md",
     "starter/",

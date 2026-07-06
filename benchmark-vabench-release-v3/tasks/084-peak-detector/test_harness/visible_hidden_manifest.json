@@ -9,6 +9,7 @@
   "visible_smoke": "test_visible/tests/tb_visible_smoke.scs",
   "gate1_label": "independent_l1_ready",
   "gate2_status": "cadence_modeling_ready",
+  "coverage_note": "Visible exercises 0.55 V then 0.70 V peaks with reset; hidden changes peak levels and reset timing to verify reset clearing and post-reset larger-peak reacquisition.",
   "visible": [
     "instruction.md",
     "starter/",

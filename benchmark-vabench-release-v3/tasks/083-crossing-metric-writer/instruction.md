@@ -1,8 +1,16 @@
 # Crossing Metric Writer
 
+## Task Contract
+
+Implement the requested Verilog-A artifact for `Crossing Metric Writer`.
+- Form: `dut`
+- Level: `L1`
+- Category: `measurement_instrumentation_flows`
+- Target artifact(s): `file_metric_writer.va`
+
 Implement `file_metric_writer.va` in Verilog-A.
 
-## Interface
+## Public Verilog-A Interface
 
 ```verilog
 module file_metric_writer(vin, done);
@@ -16,16 +24,18 @@ Outputs:
 
 - `done`: electrical completion flag.
 
+## Public Parameter Contract
+
+| Parameter | Default | Contract |
+| --- | ---: | --- |
+| `filename` | `"metric.out"` | Text file opened by the model at startup. |
+| `vth` | `0.45 V` | Rising-crossing threshold for `vin`. |
+| `tr` | `300 ps` | Rise/fall smoothing for `done`. |
+
 ## Required Behavior
 
 Write a pure voltage-domain measurement helper that records the first rising
 threshold crossing of `vin`.
-
-Public parameters:
-
-- `filename = "metric.out"`: text file opened by the model at startup.
-- `vth = 0.45 V`: rising-crossing threshold for `vin`.
-- `tr = 300 ps`: rise/fall smoothing for `done`.
 
 Required observable behavior:
 
@@ -36,9 +46,13 @@ Required observable behavior:
 - Ignore later crossings after the first recorded event.
 
 Use voltage contributions only. Smooth the `done` output with `transition()`.
-Do not generate a Spectre testbench, waveform files, checker artifacts,
+Do not generate a Spectre testbench, waveform files, validation artifacts,
 transistor-level devices, current contributions, `ddt()`, or `idt()`.
 
-## Output
+## Modeling Constraints
+
+Use deterministic Verilog-A behavioral modeling appropriate for the public circuit contract. The visible testbench is a public validation scenario; do not hard-code a particular stimulus table, transient stop time, or validation sample window into the DUT unless that behavior is part of the public circuit contract.
+
+## Output Contract
 
 Return exactly one complete Verilog-A file named `file_metric_writer.va`.

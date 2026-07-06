@@ -2,15 +2,14 @@
 
 ## Task Contract
 
+Implement the requested Verilog-A artifact for `Complete Calibration Loop`.
 - Form: `dut`
 - Level: `L2`
-- Category: Calibration, Trim, and DEM Control
+- Category: `calibration_dem_control`
+- Target artifact(s): `complete_calibration_loop.va`
+
 - Base function: closed calibration loop
 - Domain: `voltage`
-- Target artifact(s): `complete_calibration_loop.va`
-- Output boundary: implement only the requested DUT artifact; validation harnesses and simulator-private hooks are external to the requested output.
-
-## Form-Specific Requirements
 
 - Return exactly one Verilog-A source file named `complete_calibration_loop.va`.
 - Preserve the public module name, positional port order, electrical disciplines, and observable output meanings.
@@ -56,11 +55,13 @@ target and should decrease as the output error grows.
 
 Use voltage contributions only. Use event-updated behavioral state on the clock
 edge and `transition(...)` smoothing for output contributions. Do not add
-checker logic, hard-code private waveform sample points, add simulator-private
+validation logic, hard-code specific waveform sample points, add simulator-specific
 side channels, use current contributions, transistor-level devices, `ddt()`,
 `idt()`, or AC/noise-analysis behavior. Companion Verilog-A files referenced by
 a testbench are supplied by the harness; the candidate implementation should
 contain only `complete_calibration_loop.va`.
+
+Use deterministic Verilog-A behavioral modeling appropriate for the public circuit contract. The visible testbench is a public validation scenario; do not hard-code a particular stimulus table, transient stop time, or validation sample window into the DUT unless that behavior is part of the public circuit contract.
 
 ## Output Contract
 

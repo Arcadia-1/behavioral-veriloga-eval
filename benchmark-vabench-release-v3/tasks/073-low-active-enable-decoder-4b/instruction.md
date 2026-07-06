@@ -2,12 +2,16 @@
 
 ## Task Contract
 
+Implement the requested Verilog-A artifact for `Low Active Enable Decoder 4b`.
+- Form: `dut`
+- Level: `L1`
+- Category: `testbench_utility_modules`
+- Target artifact(s): `low_active_enable_decoder_4b.va`
+
 Implement `low_active_enable_decoder_4b.va`, a voltage-coded active-low one-hot decoder helper for support/control wiring.
 
-## Form-Specific Requirements
-
 - This is a DUT/support-component task: implement only the requested Verilog-A source artifact.
-- Do not generate a Spectre testbench or checker.
+- Do not generate a Spectre testbench or validation harness.
 - Preserve the public module name, port order, port directions, and parameter names.
 - Treat any public validation harness as an observable use case, not as values to hard-code into the DUT.
 
@@ -39,7 +43,9 @@ Inputs are `en_n` and address bits `a0` through `a3`. Outputs are active-low `y0
 - Keep the model pure voltage-domain behavioral Verilog-A.
 - Treat voltage-coded logic low as near 0 V and logic high as near `vdd`.
 - Use `transition(...)` or equivalent smooth voltage contributions for driven logic outputs.
-- Do not instantiate transistor-level devices, use current-branch contributions, AC/noise analysis, checker logic, private test hooks, or simulator-private side channels.
+- Do not instantiate transistor-level devices, use current-branch contributions, AC/noise analysis, validation logic, validation-only hooks, or simulator-specific side channels.
+
+Use deterministic Verilog-A behavioral modeling appropriate for the public circuit contract. The visible testbench is a public validation scenario; do not hard-code a particular stimulus table, transient stop time, or validation sample window into the DUT unless that behavior is part of the public circuit contract.
 
 ## Output Contract
 

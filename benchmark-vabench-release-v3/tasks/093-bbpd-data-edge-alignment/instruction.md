@@ -1,21 +1,22 @@
 # BBPD Data Edge Alignment
 
+## Task Contract
+
+Implement the requested Verilog-A artifact for `BBPD Data Edge Alignment`.
+- Form: `dut`
+- Level: `L1`
+- Category: `pll_clock_timing_systems`
+- Target artifact(s): `bbpd_data_edge_alignment_ref.va`
+
 Implement `bbpd_data_edge_alignment_ref.va` in Verilog-A.
 
-## Interface
+## Public Verilog-A Interface
 
 ```verilog
 module bbpd_data_edge_alignment_ref(vdd, vss, clk, data, up, dn, retimed_data);
 ```
 
-## Required Behavior
-
-This task asks for the `bbpd_data_edge_alignment_ref` behavioral module, not a
-Spectre testbench. The module is a bang-bang phase detector front end that
-compares data-transition timing against a voltage-coded clock and emits
-short UP/DN correction pulses.
-
-Support these public parameters and legal overrides:
+## Public Parameter Contract
 
 | Parameter | Default | Unit / range | Contract |
 | --- | ---: | --- | --- |
@@ -26,6 +27,15 @@ Support these public parameters and legal overrides:
 | `deadzone` | `0.8 ns` | time, `[0:inf)` | Timing region around a clock edge where correction pulses are suppressed. |
 | `pulse_w` | `1 ns` | time, `(0:inf)` | Width of each UP or DN correction pulse. |
 | `poll_dt` | `50 ps` | time, `(0:inf)` | Timer cadence used to clear expired pulses. |
+
+Support legal overrides of these public parameters.
+
+## Required Behavior
+
+This task asks for the `bbpd_data_edge_alignment_ref` behavioral module, not a
+Spectre testbench. The module is a bang-bang phase detector front end that
+compares data-transition timing against a voltage-coded clock and emits
+short UP/DN correction pulses.
 
 Required observable behavior:
 
@@ -43,10 +53,14 @@ Required observable behavior:
 
 Use voltage-coded logic referenced to `vdd` and `vss`, keep the model pure
 behavioral Verilog-A, and do not use transistor-level devices, AC/noise
-analysis, checker logic, private test hooks, or simulator-private side
+analysis, validation logic, validation-only hooks, or simulator-specific side
 channels.
 
-## Output
+## Modeling Constraints
+
+Use deterministic Verilog-A behavioral modeling appropriate for the public circuit contract. The visible testbench is a public validation scenario; do not hard-code a particular stimulus table, transient stop time, or validation sample window into the DUT unless that behavior is part of the public circuit contract.
+
+## Output Contract
 
 Return exactly one source artifact named `bbpd_data_edge_alignment_ref.va`.
 Companion support files are supplied by the verification harness for this task.

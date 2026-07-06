@@ -2,12 +2,16 @@
 
 ## Task Contract
 
+Implement the requested Verilog-A artifact for `Comparator Offset Search`.
+- Form: `dut`
+- Level: `L2`
+- Category: `comparator_decision_circuits`
+- Target artifact(s): `comparator_offset_search_ref.va`
+
 Implement `comparator_offset_search_ref.va` in Verilog-A. This is a
 voltage-domain comparator characterization block: it observes a differential
 input ramp, exposes the comparator decision, captures the first positive
 decision trip point, and reports the measured input-referred offset.
-
-## Form-Specific Requirements
 
 Return the DUT/source artifact only, not a Spectre testbench. The target module
 is a public measurement companion for a comparator offset-search flow, not a
@@ -51,11 +55,13 @@ Provide these overrideable public parameters:
 ## Modeling Constraints
 
 Use voltage contributions only. Do not modify or emit the support testbench,
-add checker logic, hard-code waveform sample points, add private test hooks,
-use simulator-private side channels, instantiate transistor-level devices, use
+add validation logic, hard-code waveform sample points, add validation-only hooks,
+use simulator-specific side channels, instantiate transistor-level devices, use
 current contributions, use AC/noise analysis, or rely on `ddt()` or `idt()`.
 Update retained decision and measurement state at crossing events and drive
 voltage contributions outside those event blocks.
+
+Use deterministic Verilog-A behavioral modeling appropriate for the public circuit contract. The visible testbench is a public validation scenario; do not hard-code a particular stimulus table, transient stop time, or validation sample window into the DUT unless that behavior is part of the public circuit contract.
 
 ## Output Contract
 

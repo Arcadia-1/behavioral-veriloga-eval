@@ -1,8 +1,16 @@
 # ADPLL Ratio Hop Timer
 
+## Task Contract
+
+Implement the requested Verilog-A artifact for `ADPLL Ratio Hop Timer`.
+- Form: `dut`
+- Level: `L2`
+- Category: `pll_clock_timing_systems`
+- Target artifact(s): `adpll_ratio_hop_ref.va`
+
 Implement `adpll_ratio_hop_ref.va` in Verilog-A.
 
-## Interface
+## Public Verilog-A Interface
 
 ```verilog
 module adpll_ratio_hop_ref (
@@ -17,13 +25,7 @@ module adpll_ratio_hop_ref (
 );
 ```
 
-## Required Behavior
-
-This task asks for the `adpll_ratio_hop_ref` behavioral module, not a Spectre
-testbench. The module models an ADPLL timing loop that locks to a reference,
-responds to a commanded divider-ratio hop, and reacquires lock after the hop.
-
-Support these public parameters and legal overrides:
+## Public Parameter Contract
 
 | Parameter | Default | Unit / range | Contract |
 | --- | ---: | --- | --- |
@@ -40,6 +42,14 @@ Support these public parameters and legal overrides:
 | `tedge` | `200 ps` | time, `(0:inf)` | Rise/fall smoothing for voltage-coded outputs. |
 | `lock_tol` | `2 ns` | time, `(0:inf)` | Timing-error tolerance used for lock qualification. |
 | `lock_count_target` | `5` | integer, `[1:inf)` | Consecutive in-tolerance feedback events before asserting `lock`. |
+
+Support legal overrides of these public parameters.
+
+## Required Behavior
+
+This task asks for the `adpll_ratio_hop_ref` behavioral module, not a Spectre
+testbench. The module models an ADPLL timing loop that locks to a reference,
+responds to a commanded divider-ratio hop, and reacquires lock after the hop.
 
 Required observable behavior:
 
@@ -61,10 +71,14 @@ Required observable behavior:
 Use voltage-coded logic with a mid-supply decision threshold where applicable,
 drive high logic outputs near `VDD` and low outputs near `VSS`, and keep the
 model pure behavioral Verilog-A. Do not use transistor-level devices, AC/noise
-analysis, checker logic, private test hooks, or simulator-private side
+analysis, validation logic, validation-only hooks, or simulator-specific side
 channels.
 
-## Output
+## Modeling Constraints
+
+Use deterministic Verilog-A behavioral modeling appropriate for the public circuit contract. The visible testbench is a public validation scenario; do not hard-code a particular stimulus table, transient stop time, or validation sample window into the DUT unless that behavior is part of the public circuit contract.
+
+## Output Contract
 
 Return exactly one source artifact named `adpll_ratio_hop_ref.va`. Companion
 support files are supplied by the verification harness for this task.

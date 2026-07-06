@@ -1,8 +1,16 @@
 # LFSR PRBS Generator
 
+## Task Contract
+
+Implement the requested Verilog-A artifact for `LFSR PRBS Generator`.
+- Form: `dut`
+- Level: `L1`
+- Category: `stimulus_source_generators`
+- Target artifact(s): `prbs7_ref.va`
+
 Implement `prbs7_ref.va` in Verilog-A.
 
-## Interface
+## Public Verilog-A Interface
 
 Declare module `prbs7_ref` with positional ports:
 
@@ -21,7 +29,7 @@ All ports are electrical.
 - `seed = 127`: reset seed. If an override provides an all-zero seed, force a
   nonzero state.
 
-## Functional Contract
+## Required Behavior
 
 Create a clocked PRBS-7 stimulus source using a 7-bit LFSR with polynomial
 `x^7 + x^6 + 1`. Treat `state_0` as bit 0 and `state_6` as bit 6. On reset,
@@ -39,6 +47,12 @@ Drive `serial_out` from `state_6` and expose each state bit on its matching
 
 ## Modeling Constraints
 
-Return only `prbs7_ref.va`. Do not generate a Spectre testbench or checker
+Return only `prbs7_ref.va`. Do not generate a Spectre testbench or validation harness
 logic. Do not use current contributions, `ddt()`, transistor-level devices,
-AC/noise analysis, or simulator-private side channels.
+AC/noise analysis, or simulator-specific side channels.
+
+Use deterministic Verilog-A behavioral modeling appropriate for the public circuit contract. The visible testbench is a public validation scenario; do not hard-code a particular stimulus table, transient stop time, or validation sample window into the DUT unless that behavior is part of the public circuit contract.
+
+## Output Contract
+
+Return exactly one complete source artifact named `prbs7_ref.va`. Do not include explanatory prose outside the source artifact contents.
