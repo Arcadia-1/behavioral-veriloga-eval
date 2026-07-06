@@ -1,40 +1,36 @@
 # Offset Bisection Driver
 
-Implement a comparator-offset bisection stimulus driver with an explicit
-common-mode input.
+## Task Contract
 
-## Public Interface
+- Form: `dut`.
+- Level: `L1`.
+- Category: comparator calibration/control primitive.
+- Target artifact: `offset_bisection_driver.va`.
+- Role: bisection-style differential offset stimulus driver.
+- Output boundary: implement only the requested public Verilog-A DUT artifact.
 
-Declare module `offset_bisection_driver` with positional ports `clk, vout, vcm,
-vinp, vinn`. All ports are electrical. `clk` is the update clock, `vout` is the
-comparator decision input, `vcm` is the analog common-mode reference, and
-`vinp`/`vinn` are the generated differential stimulus outputs.
+## Public Verilog-A Interface
+
+Declare the public module exactly as:
+
+```verilog
+module offset_bisection_driver(clk, vout, vcm, vinp, vinn);
+```
+
+All ports are electrical. `clk` is the update clock, `vout` is the sampled comparator output, `vcm` is the output common-mode input, and `vinp`/`vinn` are generated differential stimulus outputs.
 
 ## Public Parameter Contract
 
-Provide these overrideable public parameters:
+Provide overrideable parameters `vth = 0.45` and `step_initial = 10m`. Use `vth` for the update clock and comparator decision threshold.
 
-- `vth = 0.45 V`: logic threshold used for `clk` and `vout`.
-- `step_initial = 10m V`: initial differential bisection step.
+## Required Behavior
 
-## Functional Contract
-
-- Initialize the signed differential search value to zero and start with
-  `step_initial`.
-- On each falling crossing of `clk` through `vth`, sample `vout` against
-  `vth`.
-- A sampled low decision should increase `vinp - vinn`; a sampled high decision
-  should decrease `vinp - vinn`.
-- Halve the bisection step only when the sampled comparator polarity changes
-  from the previous update.
-- Drive `vinp = vcm + diff/2` and `vinn = vcm - diff/2`, where `diff` is the
-  current signed search value.
-- Hold the generated stimulus between update events.
+Initialize the differential residue to zero and the search step to `step_initial`. On each falling `clk` crossing, sample `vout`. A low decision increases `vinp-vinn`, and a high decision decreases `vinp-vinn`. Halve the step only when the sampled polarity changes relative to the previous update. Drive `vinp` and `vinn` symmetrically around `V(vcm)`.
 
 ## Modeling Constraints
 
-Return only `offset_bisection_driver.va`. Use voltage contributions only. Do
-not modify or emit the support testbench, add checker logic, hard-code waveform
-sample points, add simulator-private side channels, use current contributions,
-`ddt()`, or `idt()`. Update bisection state in analog event blocks and drive
-voltage outputs outside those event blocks.
+Use deterministic voltage-domain Verilog-A with voltage contributions and event-driven state where needed. Do not add checker logic, hard-code testbench-only sample times, add simulator-private side channels, use transistor-level devices, or introduce current-domain behavior.
+
+## Output Contract
+
+Return exactly one complete Verilog-A source file named `offset_bisection_driver.va`. Do not generate a testbench, checker, waveform postprocessor, companion support module, or explanatory prose outside the requested source artifact.

@@ -2,59 +2,35 @@
 
 ## Task Contract
 
-Implement a clocked seven-output voltage-coded counter source for DAC stimulus.
-
-- Form: `dut`
-- Level: support/L1 policy candidate
-- Category: stimulus support component
-- Target artifact: `dac7_code_generator.va`
-
-## Form-Specific Requirements
-
-Return only the DUT source file. Do not generate a simulation harness, validation script, waveform
-postprocessor, or companion support module.
+- Form: `dut`.
+- Level: `L1`.
+- Category: data-converter stimulus/control support.
+- Target artifact: `dac7_code_generator.va`.
+- Role: clocked 7-bit binary code generator.
+- Output boundary: implement only the requested public Verilog-A DUT artifact.
 
 ## Public Verilog-A Interface
 
-`dac7_code_generator.va` must declare:
+Declare the public module exactly as:
 
 ```verilog
 module dac7_code_generator(clks, din0, din1, din2, din3, din4, din5, din6);
-input clks;
-output din0, din1, din2, din3, din4, din5, din6;
-electrical clks, din0, din1, din2, din3, din4, din5, din6;
 ```
+
+`clks` is the code-update clock and `din0..din6` are voltage-coded code outputs ordered from LSB to MSB. All ports are electrical.
 
 ## Public Parameter Contract
 
-- `vlo = 0`: low output voltage.
-- `vhi = 0.9`: high output voltage.
-- `vth = 0.45`: rising clock-edge threshold in volts.
-- `tt = 20p`: output transition rise/fall time.
+Provide overrideable parameters `vlo = 0`, `vhi = 0.9`, `vth = 0.45`, and `tt = 20p`.
 
 ## Required Behavior
 
-Initialize an 8-bit counter and all seven outputs low. On each rising threshold
-crossing of `clks`, increment the counter and wrap it from 255 back to 0.
-
-Drive inverted counter bits onto the outputs after each update:
-
-- `din0`: inverted counter bit 7
-- `din1`: inverted counter bit 6
-- `din2`: inverted counter bit 5
-- `din3`: inverted counter bit 4
-- `din4`: inverted counter bit 3
-- `din5`: inverted counter bit 2
-- `din6`: inverted counter bit 1
-
-Use `vhi` for logic one and `vlo` for logic zero.
+Initialize the code to zero. On each rising `clks` crossing, increment the 7-bit binary code modulo its range and publish the bits on `din0..din6` using `vlo`/`vhi`. Hold outputs between clock events.
 
 ## Modeling Constraints
 
-Use voltage-coded outputs and transition-shaped edges. Do not use a packed bus,
-change the bit order, omit inversion, update on falling edges, or hard-code
-testbench clock times.
+Use deterministic voltage-domain Verilog-A with voltage contributions and event-driven state where needed. Do not add checker logic, hard-code testbench-only sample times, add simulator-private side channels, use transistor-level devices, or introduce current-domain behavior.
 
 ## Output Contract
 
-Return exactly one source artifact named `dac7_code_generator.va`.
+Return exactly one complete Verilog-A source file named `dac7_code_generator.va`. Do not generate a testbench, checker, waveform postprocessor, companion support module, or explanatory prose outside the requested source artifact.

@@ -1,32 +1,36 @@
-# Pipe 2-Lane Edge Align
+# Pipe Two-Lane Edge Align
 
-Implement `pipe_2lane_edge_align.va` as a voltage-domain two-lane alignment
-selector for a time-interleaved converter path.
+## Task Contract
 
-## Public Interface
+- Form: `dut`.
+- Level: `L1`.
+- Category: sampled-data alignment primitive.
+- Target artifact: `pipe_2lane_edge_align.va`.
+- Role: two-lane clock-edge data aligner.
+- Output boundary: implement only the requested public Verilog-A DUT artifact.
 
-Use this module signature:
+## Public Verilog-A Interface
+
+Declare the public module exactly as:
 
 ```verilog
 module pipe_2lane_edge_align(din1, din2, clk_align, dout);
 ```
 
-All ports are electrical. `din1` and `din2` are analog lane values,
-`clk_align` is the alignment clock, and `dout` is the held aligned output.
+All ports are electrical. `din1` and `din2` are voltage-coded input lanes, `clk_align` selects the capture edge, and `dout` is the aligned output.
 
 ## Public Parameter Contract
 
-- `vth` is the clock threshold, default `0.45`.
-- The output should use short transition smoothing suitable for sampled analog
-  behavioral models.
+Provide overrideable parameter `vth = 0.45` for input and clock decisions. Use smooth voltage transitions for `dout`.
 
-## Functional Contract
+## Required Behavior
 
-Initialize the held output from `din1`. On each rising crossing of `clk_align`
-through `vth`, sample and hold `din1`. On each falling crossing, sample and hold
-`din2`. Between clock edges, keep driving the most recently selected lane.
+Initialize the output state from `din1`. On a rising `clk_align` crossing, sample and publish `din1`. On a falling `clk_align` crossing, sample and publish `din2`. Hold the last sampled lane between clock events.
 
 ## Modeling Constraints
 
-Use pure voltage-domain event-driven Verilog-A. Do not hard-code stimulus times,
-testbench waveforms, simulator-private signals, or checker-only sample points.
+Use deterministic voltage-domain Verilog-A with voltage contributions and event-driven state where needed. Do not add checker logic, hard-code testbench-only sample times, add simulator-private side channels, use transistor-level devices, or introduce current-domain behavior.
+
+## Output Contract
+
+Return exactly one complete Verilog-A source file named `pipe_2lane_edge_align.va`. Do not generate a testbench, checker, waveform postprocessor, companion support module, or explanatory prose outside the requested source artifact.

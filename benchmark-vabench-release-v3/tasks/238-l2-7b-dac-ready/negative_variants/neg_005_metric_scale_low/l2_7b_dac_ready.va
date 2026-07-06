@@ -1,5 +1,5 @@
 // vaBench generated partial-pass negative: metric_scale_low
-// Preserves module/interface shape while intentionally violating one hidden behavior contract.
+// Preserves module/interface shape while intentionally violating one public behavior contract.
 `include "disciplines.vams"
 module l2_7b_dac_ready(din1, din2, din3, din4, din5, din6, din7, rdy, aout);
 input din1, din2, din3, din4, din5, din6, din7, rdy;

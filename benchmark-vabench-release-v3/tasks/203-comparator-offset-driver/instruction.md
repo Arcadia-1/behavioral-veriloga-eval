@@ -1,39 +1,36 @@
-# Comparator Offset Driver
+# Comparator Offset Binary Driver
 
-Implement a clocked binary-search stimulus driver for comparator offset
-calibration.
+## Task Contract
 
-## Public Interface
+- Form: `dut`.
+- Level: `L1`.
+- Category: comparator calibration/control primitive.
+- Target artifact: `comparator_offset_binary_driver.va`.
+- Role: binary-search differential stimulus driver for comparator offset measurement.
+- Output boundary: implement only the requested public Verilog-A DUT artifact.
 
-Declare module `comparator_offset_binary_driver` with positional ports `clk,
-dcmpp, vinp, vinn`. All ports are electrical. `clk` is the update clock,
-`dcmpp` is the comparator decision input, and `vinp`/`vinn` are the generated
-differential stimulus outputs.
+## Public Verilog-A Interface
+
+Declare the public module exactly as:
+
+```verilog
+module comparator_offset_binary_driver(clk, dcmpp, vinp, vinn);
+```
+
+All ports are electrical. `clk` is the update clock, `dcmpp` is a voltage-coded comparator decision input, and `vinp`/`vinn` are generated differential stimulus outputs.
 
 ## Public Parameter Contract
 
-Provide this overrideable public parameter:
+Provide overrideable parameter `vdd = 0.9`. Use `0.5*vdd` as the clock and decision threshold. Use a 0.1 V initial search step.
 
-- `vdd = 0.9 V`: logic high level, decision threshold reference, and default
-  common-mode reference for the generated differential stimulus.
+## Required Behavior
 
-## Functional Contract
-
-- Initialize the differential search value to zero and the differential search
-  step to `100m V`.
-- On each falling crossing of `clk` through `vdd/2`, sample `dcmpp` against
-  `vdd/2`.
-- If the sampled decision is high, decrease the signed differential search
-  value; if the sampled decision is low, increase it.
-- Halve the search step after each update.
-- Drive `vinp` and `vinn` symmetrically around `vdd/2` so their difference is
-  the current signed search value.
-- Hold the generated stimulus between update events.
+Initialize the differential search residue to zero. On each falling `clk` threshold crossing, sample `dcmpp`: a high decision moves the differential input in the negative direction, and a low decision moves it in the positive direction. Halve the search step after every update. Drive `vinp` and `vinn` symmetrically around `0.5*vdd` from the current residue.
 
 ## Modeling Constraints
 
-Return only `comparator_offset_binary_driver.va`. Use voltage contributions
-only. Do not modify or emit the support testbench, add checker logic, hard-code
-waveform sample points, add simulator-private side channels, use current
-contributions, `ddt()`, or `idt()`. Update search state in analog event blocks
-and drive voltage outputs outside those event blocks.
+Use deterministic voltage-domain Verilog-A with voltage contributions and event-driven state where needed. Do not add checker logic, hard-code testbench-only sample times, add simulator-private side channels, use transistor-level devices, or introduce current-domain behavior.
+
+## Output Contract
+
+Return exactly one complete Verilog-A source file named `comparator_offset_binary_driver.va`. Do not generate a testbench, checker, waveform postprocessor, companion support module, or explanatory prose outside the requested source artifact.

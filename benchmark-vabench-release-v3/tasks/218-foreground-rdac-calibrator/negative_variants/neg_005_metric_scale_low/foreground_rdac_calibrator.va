@@ -1,5 +1,5 @@
 // vaBench generated partial-pass negative: metric_scale_low
-// Preserves module/interface shape while intentionally violating one hidden behavior contract.
+// Preserves module/interface shape while intentionally violating one public behavior contract.
 `include "disciplines.vams"
 module foreground_rdac_calibrator(ck, d, vrefp, vrefn, dc0, dc1, dc2, dc3, dc4, dc5, dc6, cvinp, cvinn, en, enb);
 input ck, d, vrefp, vrefn;

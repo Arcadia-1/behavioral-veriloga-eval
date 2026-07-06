@@ -10,7 +10,6 @@
 - Scenario: resettable, update-qualified four-input mux sampler used for glitch-free AMS control selection.
 - Import status: repaired from a duplicate imported row into an AMS-facing control task.
 - Evaluation: stable sampled behavior from `tran.csv`; raw simulator timestep equality is not used.
-- Evidence:
   - EVAS2 gold semantic validation: PASS.
   - EVAS2 negative variants: five behavioral negatives rejected.
   - EVAS AHDL-like lint preflight: PASS with zero diagnostics.

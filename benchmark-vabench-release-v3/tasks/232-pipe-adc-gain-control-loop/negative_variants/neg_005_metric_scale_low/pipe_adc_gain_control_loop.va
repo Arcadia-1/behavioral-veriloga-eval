@@ -1,5 +1,5 @@
 // vaBench generated partial-pass negative: metric_scale_low
-// Preserves module/interface shape while intentionally violating one hidden behavior contract.
+// Preserves module/interface shape while intentionally violating one public behavior contract.
 `include "disciplines.vams"
 module pipe_adc_gain_control_loop(din20, din21, din22, din23, din24, din25, din26, clks, dout10, dout11, dout12, dout13, gainctrl0, gainctrl1, gainctrl2, gainctrl3, gainctrl4, gainctrl5, gainctrl6, ddiff, dop, dom, gctrlcode);
 input din20, din21, din22, din23, din24, din25, din26, clks;

@@ -1,27 +1,36 @@
-# Update-Latched Mux4 Sampler
+# Clocked Mux4 Sampler
 
-Implement a voltage-domain glitch-free 4:1 mux sampler with reset and update-qualified select latching.
+## Task Contract
 
-## Public Interface
+- Form: `dut`.
+- Level: `L1`.
+- Category: sampled-data routing primitive.
+- Target artifact: `clocked_mux4_sampler.va`.
+- Role: clocked four-input mux sampler with update hold and reset.
+- Output boundary: implement only the requested public Verilog-A DUT artifact.
 
-Declare module `clocked_mux4_sampler` with positional ports:
+## Public Verilog-A Interface
+
+Declare the public module exactly as:
 
 ```verilog
-module clocked_mux4_sampler(dsel0, dsel1, din0, din1, din2, din3,
-                            update, rst, clks, dout);
+module clocked_mux4_sampler(dsel0, dsel1, din0, din1, din2, din3, update, rst, clks, dout);
 ```
 
-All ports are scalar `electrical` voltage-domain ports.
+`dsel0/dsel1` select one of four input voltages, `din0..din3` are data inputs, `update` enables reselection, `rst` is an active-high reset, `clks` is the sampling clock, and `dout` is the held output. All ports are electrical.
 
-## Functional Contract
+## Public Parameter Contract
 
-- Treat `dsel0`, `dsel1`, `update`, `rst`, and `clks` as 0/0.9 V logic with a 0.45 V threshold.
-- `rst` is active high. While reset is active, force the selected channel to `din0` and drive `dout` from `din0`.
-- On each falling threshold crossing of `clks`, if reset is inactive and `update` is high, latch the current two-bit select code and sample the selected data input.
-- If `update` is low on a falling clock edge, ignore changes on `dsel0/dsel1` and hold the previous sampled output.
-- Use `dsel0` as the least significant select bit: `00 -> din0`, `01 -> din1`, `10 -> din2`, `11 -> din3`.
-- Drive `dout` using smooth Verilog-A transitions from the sampled value.
+Provide overrideable parameters `vth = 0.45`, `tdel = 1p`, `tr = 20p`, and `tf = 20p`.
 
-## Output
+## Required Behavior
 
-Return exactly one source artifact named `clocked_mux4_sampler.va`. Do not generate a Spectre testbench.
+When `rst` is high, force the selected channel to `din0` and drive `dout` from `din0`. On each falling `clks` crossing while reset is inactive, if `update` is high, latch the two select bits and sample the selected input; if `update` is low, hold the previous selection and output value. Drive the held output with the public transition timing.
+
+## Modeling Constraints
+
+Use deterministic voltage-domain Verilog-A with voltage contributions and event-driven state where needed. Do not add checker logic, hard-code testbench-only sample times, add simulator-private side channels, use transistor-level devices, or introduce current-domain behavior.
+
+## Output Contract
+
+Return exactly one complete Verilog-A source file named `clocked_mux4_sampler.va`. Do not generate a testbench, checker, waveform postprocessor, companion support module, or explanatory prose outside the requested source artifact.

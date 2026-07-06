@@ -1,43 +1,36 @@
 # CDAC 8b Monodown
 
-Implement `cdac_8b_monodown.va` as an 8-bit SAR CDAC residue model using
-monotonic downward switching.
+## Task Contract
 
-## Public Interface
+- Form: `dut`.
+- Level: `L1`.
+- Category: data-converter CDAC residue model.
+- Target artifact: `cdac_8b_monodown.va`.
+- Role: sampled SAR CDAC residue with monotonic downward switching.
+- Output boundary: implement only the requested public Verilog-A DUT artifact.
 
-Use this module signature:
+## Public Verilog-A Interface
+
+Declare the public module exactly as:
 
 ```verilog
 module cdac_8b_monodown(vin, clks, dctrl1, dctrl2, dctrl3, dctrl4, dctrl5, dctrl6, dctrl7, vres);
 ```
 
-All ports are electrical. `vin` is the sampled input, `clks` is the sampling
-clock, `dctrl1..dctrl7` are decision/control edges, and `vres` is the residue
-output.
+`vin` is the sampled analog input, `clks` is the sampling clock, `dctrl1..dctrl7` are decision/control edges, and `vres` is the residue output. All ports are electrical.
 
 ## Public Parameter Contract
 
-- `vth`: logic threshold, default `0.5`.
-- `tr`: output transition time, default `20p`.
-- The normalized CDAC reference span is 1 V.
+Provide overrideable parameter `vdd = 1.0`. Use `vdd/2` as the clock/control threshold and a normalized 1 V CDAC reference span.
 
-## Functional Contract
+## Required Behavior
 
-On each falling `clks` crossing, sample `vin` into the held residue. On rising
-control crossings, subtract the corresponding binary-weighted fraction from the
-held residue:
-
-- `dctrl7`: subtract `1/2`
-- `dctrl6`: subtract `1/4`
-- `dctrl5`: subtract `1/8`
-- `dctrl4`: subtract `1/16`
-- `dctrl3`: subtract `1/32`
-- `dctrl2`: subtract `1/64`
-- `dctrl1`: subtract `1/128`
-
-Between sampling and control events, hold the current residue value.
+At initialization and on each falling `clks` crossing, sample `vin` into the held residue. On rising control crossings, subtract the corresponding binary-weighted fraction from the held residue: `dctrl7` subtracts 1/2, `dctrl6` 1/4, continuing down to `dctrl1` at 1/128. Hold the current residue value between events.
 
 ## Modeling Constraints
 
-Use pure voltage-domain event-driven Verilog-A. Do not hard-code visible
-stimulus timing, private sample points, or checker-only values.
+Use deterministic voltage-domain Verilog-A with voltage contributions and event-driven state where needed. Do not add checker logic, hard-code testbench-only sample times, add simulator-private side channels, use transistor-level devices, or introduce current-domain behavior.
+
+## Output Contract
+
+Return exactly one complete Verilog-A source file named `cdac_8b_monodown.va`. Do not generate a testbench, checker, waveform postprocessor, companion support module, or explanatory prose outside the requested source artifact.

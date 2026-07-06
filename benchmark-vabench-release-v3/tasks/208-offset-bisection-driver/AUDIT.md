@@ -26,7 +26,7 @@ polarity.
   notices rather than task-specific Verilog-A modeling findings.
 - Prompt hygiene: the prompt now states the public interface, parameters,
   update rule, common-mode behavior, and constraints without source-import or
-  hidden-evaluator wording.
+  evaluator-boundary wording.
 - Metadata repair: release-level `CHECKS.yaml` now includes a current
   `sim_correct:` block.
 - Counting risk: task 122 is the duplicate/rewrite candidate for this

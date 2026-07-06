@@ -1,5 +1,5 @@
 // vaBench generated partial-pass negative: metric_scale_low
-// Preserves module/interface shape while intentionally violating one hidden behavior contract.
+// Preserves module/interface shape while intentionally violating one public behavior contract.
 `include "disciplines.vams"
 
 module sar_sum_weighted_11b(din0, din1, din2, din3, din4, din5, din6, din7, din8, din9, din10, vout);
