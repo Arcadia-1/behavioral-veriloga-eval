@@ -1,17 +1,29 @@
 # Converter Static Linearity Measurement
 
-Implement one Verilog-A source file named
-`converter_static_linearity_measurement_flow.va`.
+## Task Contract
 
-## Public Interface
+- Form: `dut`
+- Level: `L2`
+- Category: Data Converter Measurement
+- Domain: voltage-domain behavioral Verilog-A
+- Target artifact: `converter_static_linearity_measurement_flow.va`
+- Required module: `converter_static_linearity_measurement_flow`
+
+## Form-Specific Requirements
+
+- Implement only the requested Verilog-A DUT artifact.
+- Preserve the public module name, port order, parameters, and waveform observable names.
+- Model a converter measurement-flow component, not just an ideal quantizer.
+
+## Public Verilog-A Interface
 
 ```verilog
 module converter_static_linearity_measurement_flow(clk, rst, vin, code, recon, dnl, inl);
 ```
 
-All ports are electrical. `clk` is the sampling strobe, `rst` is an
-active-high reset, `vin` is the swept converter input, and `code`, `recon`,
-`dnl`, and `inl` are analog metric outputs.
+All ports are electrical. `clk` is the sampling strobe, `rst` is an active-high
+reset, `vin` is the swept converter input, and `code`, `recon`, `dnl`, and
+`inl` are analog metric outputs.
 
 ## Public Parameter Contract
 
@@ -21,7 +33,6 @@ active-high reset, `vin` is the swept converter input, and `code`, `recon`,
 
 ## Required Behavior
 
-This is an L2 converter measurement-flow component, not just an ideal quantizer.
 On each rising crossing of `clk`, reset the retained state when `rst` is high.
 Otherwise, clip `vin` to the 0-to-`vfs` range, quantize it to a 4-bit code, and
 drive `code` as the code index times `vfs / 15`.
@@ -36,15 +47,17 @@ as a bounded analog metric centered near 0.45 V that reflects the most recent
 positive code-step error relative to the ideal step size; when there is no prior
 valid increasing code step, return the DNL metric to its common-mode value.
 
-## Public Verification Context
-
-The public transient scenario saves `clk`, `rst`, `vin`, `code`, `recon`, `dnl`,
-and `inl` over a 96 ns converter sweep. Treat those values as the verification
-scenario for observable behavior, not as private checker implementation details.
+The public observable waveforms are `clk`, `rst`, `vin`, `code`, `recon`,
+`dnl`, and `inl`.
 
 ## Modeling Constraints
 
 Use voltage-domain event-driven Verilog-A only. Do not emit a Spectre
-testbench, checker logic, private waveform sample points, current
-contributions, transistor-level devices, AC/noise analysis, `ddt()`, or
-`idt()`.
+testbench, checker, waveform sampler, current contribution, transistor-level
+device, AC/noise analysis, `ddt()`, or `idt()`.
+
+## Output Contract
+
+Return exactly one complete Verilog-A source artifact named
+`converter_static_linearity_measurement_flow.va`. Do not include explanatory
+prose outside the source artifact contents.

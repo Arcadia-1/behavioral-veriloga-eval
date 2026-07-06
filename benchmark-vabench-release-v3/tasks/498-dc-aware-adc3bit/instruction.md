@@ -1,8 +1,21 @@
 # DC Aware ADC3bit
 
-Implement one Verilog-A source file named `dc_aware_adc3bit.va`.
+## Task Contract
 
-## Public Interface
+- Form: `dut`
+- Level: `L1`
+- Category: Data Converter Models
+- Domain: voltage-domain behavioral Verilog-A
+- Target artifact: `dc_aware_adc3bit.va`
+- Required module: `dc_aware_adc3bit`
+
+## Form-Specific Requirements
+
+- Implement only the requested Verilog-A DUT artifact.
+- Preserve the public module name, port order, parameters, and waveform observable names.
+- Model a static, analysis-friendly three-bit ADC without a sampling clock.
+
+## Public Verilog-A Interface
 
 ```verilog
 module dc_aware_adc3bit(vin, d2, d1, d0);
@@ -19,15 +32,20 @@ is the LSB of the voltage-coded output word.
 
 ## Required Behavior
 
-Model a static, analysis-friendly three-bit ADC. Clip `vin` to the 0-to-`vref`
-range, quantize the clipped value into eight uniform output codes, and drive
-`d2..d0` as the binary representation of that code. The conversion is
-combinational/static rather than clocked: the output word should represent the
-current input level after transition smoothing, including at the beginning of a
-transient run.
+Clip `vin` to the 0-to-`vref` range, quantize the clipped value into eight
+uniform output codes using bin-floor quantization, and drive `d2..d0` as the
+binary representation of that code. The conversion is combinational/static
+rather than clocked: the output word should represent the current input level
+after transition smoothing, including at the beginning of a transient run.
 
 ## Modeling Constraints
 
 Use voltage-domain Verilog-A with smooth output transitions. Do not introduce a
-clock, hidden state, testbench-specific sample times, private checker vectors,
-current contributions, `ddt()`, or `idt()`.
+clock, sampling state, test-specific sample times or lookup vectors, current
+contributions, `ddt()`, or `idt()`.
+
+## Output Contract
+
+Return exactly one complete Verilog-A source artifact named
+`dc_aware_adc3bit.va`. Do not include explanatory prose outside the source
+artifact contents.

@@ -52,8 +52,9 @@ module last_crossing_edge_age (
 
 The visible testbench is a public wiring and smoke scenario. Do not hard-code
 its transient stop time, waveform breakpoints, or sample windows into the DUT.
-The evaluator checks the age ramp, short-age marker, and reset clearing behavior
-across private timing windows.
+Validation may vary timing windows, so implement the age ramp, short-age marker,
+and reset-clearing behavior from the circuit contract rather than from a
+particular sample table.
 
 ## Output Contract
 

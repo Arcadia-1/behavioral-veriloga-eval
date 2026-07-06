@@ -1,26 +1,34 @@
 # Settling Time Measurement
 
-Implement `settling_time_measurement_tb.va` in Verilog-A.
+## Task Contract
 
-## Interface
+- Form: `dut`
+- Level: `L2`
+- Category: Measurement Helper
+- Domain: voltage-domain behavioral Verilog-A
+- Target artifact: `settling_time_measurement_tb.va`
+- Required module: `settling_time_measurement_tb`
+
+## Form-Specific Requirements
+
+- Implement only the requested Verilog-A DUT artifact.
+- Do not generate a Spectre `.scs` file, checker, waveform file, or extra support artifact.
+- Preserve the public module name, port order, and observable names.
+
+## Public Verilog-A Interface
 
 ```verilog
 module settling_time_measurement_tb(step, vout, done);
 ```
 
-Inputs:
+All ports are electrical. `step` is the input step stimulus, `vout` is the
+settling-response output, and `done` is a voltage-coded completion flag.
 
-- `step`: electrical input step stimulus.
+## Public Parameter Contract
 
-Outputs:
-
-- `vout`: electrical settling-response output.
-- `done`: electrical completion flag.
+- `tr = 300p`: transition smoothing time for `vout` and `done`.
 
 ## Required Behavior
-
-This is a measurement-helper DUT task, not a Spectre testbench-generation task.
-Return only the Verilog-A source file `settling_time_measurement_tb.va`.
 
 Use a 1 ns timer update to model a first-order settling response:
 
@@ -29,20 +37,19 @@ y += 0.04 * (V(step) - y)
 ```
 
 Drive `vout` from the internal state `y`. Drive `done` low before the settling
-boundary and high only after the simulation time is beyond 120 ns and the
-settled state is above 0.75 V. The evaluator applies a step input, runs past
-the 120 ns boundary, and saves `step`, `vout`, and `done`.
+boundary and high only after simulation time is beyond 120 ns and the settled
+state is above 0.75 V. Use low output near 0 V and high output near 0.9 V. The
+public observable waveforms are `step`, `vout`, and `done`.
 
-Use voltage-coded logic with a 0.45 V threshold where applicable. Drive high
-logic outputs near 0.9 V and low outputs near 0 V. Keep the model pure
-behavioral Verilog-A.
+## Modeling Constraints
 
-Do not generate a Spectre `.scs` file. Do not use transistor-level devices,
-AC/noise analysis, current contributions, waveform files, checker artifacts, or
-simulator side channels.
+Use pure behavioral Verilog-A with voltage-domain outputs and `transition()`.
+Do not use transistor-level devices, AC/noise analysis, current contributions,
+waveform-file IO, checker artifacts, simulator-specific side channels, `ddt()`,
+or `idt()`.
 
 ## Output Contract
 
-Return exactly one complete Verilog-A file named
+Return exactly one complete Verilog-A source artifact named
 `settling_time_measurement_tb.va`. Do not include explanatory prose outside the
 source artifact contents.
