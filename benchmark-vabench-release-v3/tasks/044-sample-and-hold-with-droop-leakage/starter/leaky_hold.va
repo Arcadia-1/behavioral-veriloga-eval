@@ -12,5 +12,5 @@ module leaky_hold(sample, rst, vin, vout);
     parameter real tr = 500p from (0:inf);
 
     // TODO: implement the behavior described in visible/prompt.md.
-    // This starter is intentionally incomplete; hidden tests grade behavior.
+    // This starter is intentionally incomplete; implement the public behavior contract.
 endmodule

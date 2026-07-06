@@ -1,8 +1,16 @@
 # Slew Rate Limiter
 
+## Task Contract
+
+Implement the requested Verilog-A artifact for `Slew Rate Limiter`.
+- Form: `dut`
+- Level: `L1`
+- Category: `baseband_signal_conditioning`
+- Target artifact(s): `slew_rate_limiter.va`
+
 Implement `slew_rate_limiter.va` in Verilog-A.
 
-## Public Interface
+## Public Verilog-A Interface
 
 Declare module `slew_rate_limiter(vin, vout)` with scalar electrical
 voltage-domain ports.
@@ -12,7 +20,7 @@ voltage-domain ports.
 - `step`: maximum internal output change per update, default `0.015`.
 - `tr`: output transition smoothing time, default `200p`.
 
-## Functional Contract
+## Required Behavior
 
 - Initialize the internal output state at `0 V`.
 - Update the state on a `1 ns` timer.
@@ -30,6 +38,12 @@ sample windows into the DUT.
 
 ## Modeling Constraints
 
-Return only `slew_rate_limiter.va`. Do not emit a Spectre testbench, checker
-logic, private test hooks, or simulator-private side channels. Use voltage
+Return only `slew_rate_limiter.va`. Do not emit a Spectre testbench, validation harness
+logic, validation-only hooks, or simulator-specific side channels. Use voltage
 contributions only; do not use current contributions, `ddt()`, or `idt()`.
+
+Use deterministic Verilog-A behavioral modeling appropriate for the public circuit contract. The visible testbench is a public validation scenario; do not hard-code a particular stimulus table, transient stop time, or validation sample window into the DUT unless that behavior is part of the public circuit contract.
+
+## Output Contract
+
+Return exactly one complete source artifact named `slew_rate_limiter.va`. Do not include explanatory prose outside the source artifact contents.

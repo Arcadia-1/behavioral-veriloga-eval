@@ -1,0 +1,16 @@
+`include "constants.vams"
+`include "disciplines.vams"
+
+module v2b_4b (
+    input  electrical clk,
+    input  electrical vin,
+    output electrical out_3,
+    output electrical out_2,
+    output electrical out_1,
+    output electrical out_0
+);
+    parameter real vdd = 0.9;
+    parameter real tedge = 100p;
+
+    // TODO: implement the companion voltage-to-4-bit helper described in instruction.md.
+endmodule

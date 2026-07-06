@@ -2,90 +2,49 @@
 
 ## Task Contract
 
+Implement the requested Verilog-A artifact for `Calibration Deadband Controller`.
 - Form: `dut`
 - Level: `L1`
-- Category: Calibration, DEM, and Control
-- Base function: Calibration deadband controller
-- Domain: `voltage`
+- Category: `calibration_control`
 - Target artifact(s): `calibration_deadband_controller.va`
-- Supplied/reference support artifact(s): `tb_calibration_deadband_controller.scs`
-- Visible context: public task, interface, artifact, stimulus, and observable contract only.
-- Output boundary: implement only the requested DUT artifact; validation harnesses and simulator-private hooks are external to the requested output.
 
-## Form-Specific Requirements
-
-- Implement only the requested Verilog-A DUT artifact(s); do not generate a Spectre testbench in this form.
-- Preserve the public module names, port order, parameters, and waveform observable names.
+Implement a clocked voltage-domain calibration deadband controller. Return only the requested DUT artifact; do not generate a Spectre testbench.
 
 ## Public Verilog-A Interface
 
-- `calibration_deadband_controller.va` declares module `calibration_deadband_controller` with positional ports: `clk`, `rst`, `vin`, `out`, `metric`.
+Declare module `calibration_deadband_controller` with positional ports `clk, rst, vin, out, metric`. All ports are electrical. `clk` and `rst` are voltage-coded control inputs, `vin` is the signed calibration-error input around the target voltage, `out` is the bounded trim output, and `metric` reports whether the last sample accepted an update.
 
-## Public Testbench And Observable Contract
+## Public Parameter Contract
 
-Public transient context:
+Provide these overrideable public parameters:
 
-```spectre
-tran tran stop=80n maxstep=0.5n
-```
+- `tr = 100 ps`: transition smoothing time for `out` and `metric`.
+- `vth = 0.45 V`: logic threshold for `clk` and `rst`.
+- `target = 0.45 V`: zero-error target for `vin`.
+- `deadband = 0.05 V`: signed error magnitude below which the trim holds.
+- `step_size = 0.06 V`: trim increment or decrement per accepted update.
+- `vmin = 0.05 V`: lower clamp for `out`.
+- `vmax = 0.85 V`: upper clamp for `out`.
 
-The public scalar observables are:
+## Required Behavior
 
-- `clk`
-- `rst`
-- `vin`
-- `out`
-- `metric`
+- Initialize the trim output to `target`.
+- On each rising crossing of `clk` through `vth`, sample `vin` and update the trim state.
+- While `rst` is above `vth`, reset the trim state to `target` and drive `metric` low.
+- Compute signed error as `V(vin) - target`.
+- If the error is greater than `deadband`, increase the trim by `step_size`.
+- If the error is less than `-deadband`, decrease the trim by `step_size`.
+- If the error is inside the deadband, hold the trim state.
+- Clamp the trim state between `vmin` and `vmax`.
+- Drive `metric` high only on accepted trim updates and low otherwise.
 
-When this form generates a testbench, use plain scalar save names for these observables; do not rely on instance-qualified or aliased save names.
+## Modeling Constraints
 
-## Public Behavior Checks
+Use pure voltage-domain behavioral Verilog-A. Do not use current contributions, transistor-level devices, AC/noise analysis, validation logic, validation-only hooks, simulator-specific side channels, or KCL/KVL solving assumptions.
 
-- `trim_holds_inside_deadband`
-- `trim_moves_for_large_error`
-- `trim_clamped_to_range`
+Use deterministic Verilog-A behavioral modeling appropriate for the public circuit contract. The visible testbench is a public validation scenario; do not hard-code a particular stimulus table, transient stop time, or validation sample window into the DUT unless that behavior is part of the public circuit contract.
 
 ## Output Contract
 
 Return exactly one source artifact named `calibration_deadband_controller.va`.
 Do not include explanatory prose outside the source artifact contents.
-
-## Task-Specific Description
-
-### Calibration deadband controller (spec-to-va)
-
-Write the Verilog-A behavioral module only.
-
-Behavioral intent:
-
-Update a bounded trim code only when the signed error is outside a deadband.
-
-Module name: `calibration_deadband_controller`.
-Domain: pure voltage-domain behavioral Verilog-A.
-Do not use current contributions, transistor-level devices, AC/noise analysis,
-or KCL/KVL solving assumptions.
-
-Public port contract:
-
-```verilog
-module calibration_deadband_controller(clk, rst, vin, out, metric);
-input clk, rst, vin;
-output out, metric;
-electrical clk, rst, vin, out, metric;
-```
-
-Signal contract:
-
-clk and rst are voltage-coded logic signals, low=0 V and high=0.9 V with threshold 0.45 V. vin is a signed calibration error around 0.45 V. out is a bounded trim voltage that holds inside the deadband and steps only outside it. metric is high only on an accepted trim update.
-
-Saved waveform columns:
-
-```text
-clk rst vin out metric
-```
-
-Public transient contract:
-
-```spectre
-tran tran stop=80n maxstep=0.5n
-```

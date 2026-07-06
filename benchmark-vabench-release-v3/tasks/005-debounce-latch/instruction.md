@@ -1,8 +1,16 @@
 # Debounce Latch
 
+## Task Contract
+
+Implement the requested Verilog-A artifact for `Debounce Latch`.
+- Form: `dut`
+- Level: `L1`
+- Category: `comparator_decision`
+- Target artifact(s): `debounce_latch.va`
+
 Implement a voltage-domain comparator decision debounce latch.
 
-## Public Interface
+## Public Verilog-A Interface
 
 Declare module `debounce_latch` with positional ports `sig, rst_n, out`. All
 ports are electrical. `sig` is the noisy voltage-coded comparator decision,
@@ -18,7 +26,7 @@ Provide these overrideable public parameters:
 - `stable = 12n`: qualification time after a rising comparator-decision edge.
 - `tr = 500p`: transition smoothing time for output changes.
 
-## Functional Contract
+## Required Behavior
 
 - Initialize `out` low.
 - When `rst_n` is below `vth`, force `out` low and cancel any pending
@@ -34,8 +42,14 @@ Provide these overrideable public parameters:
 ## Modeling Constraints
 
 Return only `debounce_latch.va`. Use voltage contributions only. Do not modify
-or emit the support testbench, add checker logic, hard-code waveform sample
-points, add simulator-private side channels, use current contributions,
+or emit the support testbench, add validation logic, hard-code waveform sample
+points, add simulator-specific side channels, use current contributions,
 `ddt()`, or `idt()`. For event-driven behavior, update local state in analog
 event blocks and drive the output contribution outside those event blocks with
 finite transition-style smoothing.
+
+Use deterministic Verilog-A behavioral modeling appropriate for the public circuit contract. The visible testbench is a public validation scenario; do not hard-code a particular stimulus table, transient stop time, or validation sample window into the DUT unless that behavior is part of the public circuit contract.
+
+## Output Contract
+
+Return exactly one complete source artifact named `debounce_latch.va`. Do not include explanatory prose outside the source artifact contents.

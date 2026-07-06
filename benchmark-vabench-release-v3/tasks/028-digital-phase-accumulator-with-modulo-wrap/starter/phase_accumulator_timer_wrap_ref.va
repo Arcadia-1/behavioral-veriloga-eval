@@ -12,5 +12,5 @@ parameter real phase_step = 0.25 from (0:1);
 parameter real tedge = 200p from (0:inf);
 
     // TODO: implement the behavior described in visible/prompt.md.
-    // This starter is intentionally incomplete; hidden tests grade behavior.
+    // This starter is intentionally incomplete; implement the public behavior contract.
 endmodule

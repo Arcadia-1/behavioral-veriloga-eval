@@ -1,0 +1,12 @@
+`include "constants.vams"
+`include "disciplines.vams"
+
+module edge_interval_timer(CLK_1, CLK_2, OUT_PS);
+    input CLK_1, CLK_2;
+    output OUT_PS;
+    electrical CLK_1, CLK_2, OUT_PS;
+
+    parameter real VTH = 0.4;
+
+    // TODO: implement the edge-interval helper described in instruction.md.
+endmodule

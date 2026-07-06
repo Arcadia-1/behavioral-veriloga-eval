@@ -1,8 +1,16 @@
 # LNA Gain Compression Macro
 
+## Task Contract
+
+Implement the requested Verilog-A artifact for `LNA Gain Compression Macro`.
+- Form: `dut`
+- Level: `L1`
+- Category: `rf_afe_behavioral_macromodels`
+- Target artifact(s): `lna_gain_compression_macro.va`
+
 Implement `lna_gain_compression_macro.va` in Verilog-A.
 
-## Public Interface
+## Public Verilog-A Interface
 
 Declare module `lna_gain_compression_macro(clk, rst, vin, out, metric)`:
 
@@ -24,7 +32,7 @@ whether the macro is operating in compression.
 - `vth`: logic threshold, default `0.45`.
 - `gain`: small-signal voltage gain, default `2.2`.
 
-## Functional Contract
+## Required Behavior
 
 - Initialize `out` to the 0.45 V common-mode level and `metric` low.
 - Update the held output state on rising `clk` crossings.
@@ -43,7 +51,13 @@ sample windows into the DUT.
 ## Modeling Constraints
 
 Return only `lna_gain_compression_macro.va`. Do not emit a Spectre testbench,
-checker logic, private test hooks, or simulator-private side channels. Use
+validation logic, validation-only hooks, or simulator-specific side channels. Use
 voltage contributions only; do not use current contributions, transistor-level
 devices, AC/noise analysis, or KCL/KVL assumptions. Use a clocked state update
 and drive output voltages through `transition(...)`.
+
+Use deterministic Verilog-A behavioral modeling appropriate for the public circuit contract. The visible testbench is a public validation scenario; do not hard-code a particular stimulus table, transient stop time, or validation sample window into the DUT unless that behavior is part of the public circuit contract.
+
+## Output Contract
+
+Return exactly one complete source artifact named `lna_gain_compression_macro.va`. Do not include explanatory prose outside the source artifact contents.

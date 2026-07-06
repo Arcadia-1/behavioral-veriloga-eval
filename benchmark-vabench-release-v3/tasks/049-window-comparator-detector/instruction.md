@@ -1,8 +1,16 @@
 # Window Comparator Detector
 
+## Task Contract
+
+Implement the requested Verilog-A artifact for `Window Comparator Detector`.
+- Form: `dut`
+- Level: `L1`
+- Category: `comparator_decision`
+- Target artifact(s): `window_comparator_ref.va`
+
 Implement a voltage-domain window comparator detector.
 
-## Public Interface
+## Public Verilog-A Interface
 
 Declare module `window_comparator_ref` with positional ports `VDD, VSS, vin,
 out`. All ports are electrical. `VDD` and `VSS` are supply rails, `vin` is the
@@ -16,7 +24,7 @@ Provide these overrideable public parameters:
 - `vhigh = 0.6 V`: upper window threshold.
 - `tedge = 200p`: output transition smoothing time.
 
-## Functional Contract
+## Required Behavior
 
 - Initialize the decision from the initial input voltage.
 - Drive `out` high only while `vlow < V(vin,VSS) < vhigh`.
@@ -28,8 +36,14 @@ Provide these overrideable public parameters:
 ## Modeling Constraints
 
 Return only `window_comparator_ref.va`. Use voltage contributions only. Do not
-modify or emit the support testbench, add checker logic, hard-code waveform
-sample points, add simulator-private side channels, use transistor-level
+modify or emit the support testbench, add validation logic, hard-code waveform
+sample points, add simulator-specific side channels, use transistor-level
 devices, current contributions, `ddt()`, or `idt()`. Update retained in-window
 state at threshold-crossing events and drive the output contribution outside
 those event blocks.
+
+Use deterministic Verilog-A behavioral modeling appropriate for the public circuit contract. The visible testbench is a public validation scenario; do not hard-code a particular stimulus table, transient stop time, or validation sample window into the DUT unless that behavior is part of the public circuit contract.
+
+## Output Contract
+
+Return exactly one complete source artifact named `window_comparator_ref.va`. Do not include explanatory prose outside the source artifact contents.

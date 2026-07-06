@@ -1,8 +1,16 @@
 # PLL Feedback Clock Divider
 
+## Task Contract
+
+Implement the requested Verilog-A artifact for `Clock Divider`.
+- Form: `dut`
+- Level: `L1`
+- Category: `pll_clock_timing`
+- Target artifact(s): `clk_divider_ref.va`
+
 Implement `clk_divider_ref.va` in Verilog-A.
 
-## Interface
+## Public Verilog-A Interface
 
 ```verilog
 module clk_divider_ref (
@@ -21,22 +29,20 @@ module clk_divider_ref (
 );
 ```
 
-## Required Behavior
+## Public Parameter Contract
 
-This task asks for the `clk_divider_ref` behavioral DUT module, not a Spectre
-testbench. The module is a resettable, voltage-domain PLL/ADPLL feedback
-divider with an 8-bit programmable ratio code and a lock indicator.
+Provide these overrideable public parameters:
 
-Support these public parameters and legal overrides:
-
-| Parameter | Default | Unit / range | Contract |
+| Parameter | Default | Unit / Range | Contract |
 | --- | ---: | --- | --- |
 | `vdd` | `0.9` | V, `(0:inf)` | High level for voltage-coded outputs. |
 | `vth` | `0.45` | V | Logic threshold for clock, reset, and ratio-code inputs. |
 | `trf` | `10 ps` | time, `(0:inf)` | Rise/fall smoothing for `clk_out` and `lock`. |
 | `td` | `0 ps` | time, `[0:inf)` | Transition delay for voltage-coded outputs. |
 
-Required observable behavior:
+## Required Behavior
+
+The module is a resettable, voltage-domain PLL/ADPLL feedback divider with an 8-bit programmable ratio code and a lock indicator.
 
 - Treat all inputs and outputs as electrical voltage-domain signals.
 - Interpret `rst_n` as active-low reset. While reset is low, clear the divider
@@ -55,10 +61,14 @@ Required observable behavior:
   decoded ratio. If the ratio code changes after reset, clear divider phase and
   `lock`, then reacquire using the new ratio.
 
-Use voltage contributions only. Do not use current contributions, `ddt()`,
-`idt()`, transistor-level devices, AC/noise analysis, checker logic, private
-test hooks, or simulator-private side channels.
+## Modeling Constraints
 
-## Output
+Use voltage contributions only. Do not use current contributions, `ddt()`,
+`idt()`, transistor-level devices, AC/noise analysis, validation logic, validation-only
+test hooks, or simulator-specific side channels.
+
+Use deterministic Verilog-A behavioral modeling appropriate for the public circuit contract. The visible testbench is a public validation scenario; do not hard-code a particular stimulus table, transient stop time, or validation sample window into the DUT unless that behavior is part of the public circuit contract.
+
+## Output Contract
 
 Return exactly one source artifact named `clk_divider_ref.va`.

@@ -1,8 +1,16 @@
 # Hysteresis Comparator
 
+## Task Contract
+
+Implement the requested Verilog-A artifact for `Hysteresis Comparator`.
+- Form: `dut`
+- Level: `L1`
+- Category: `comparator_decision`
+- Target artifact(s): `cmp_hysteresis.va`
+
 Implement a voltage-domain differential comparator with hysteresis.
 
-## Public Interface
+## Public Verilog-A Interface
 
 Declare module `cmp_hysteresis` with positional ports `VINN, VINP, OUTN, OUTP,
 VSS, VDD`. All ports are electrical. `VINP` and `VINN` are the differential
@@ -16,7 +24,7 @@ Provide these overrideable public parameters:
 - `vhys = 10m V`: total hysteresis width.
 - `tedge = 50p`: transition smoothing time for the complementary outputs.
 
-## Functional Contract
+## Required Behavior
 
 - Initialize `OUTP` high only when `V(VINP,VSS) - V(VINN,VSS)` is above
   `+vhys/2`; otherwise initialize `OUTP` low and `OUTN` high.
@@ -32,7 +40,13 @@ Provide these overrideable public parameters:
 ## Modeling Constraints
 
 Return only `cmp_hysteresis.va`. Use voltage contributions only. Do not modify
-or emit the support testbench, add checker logic, hard-code waveform sample
-points, add simulator-private side channels, use current contributions,
+or emit the support testbench, add validation logic, hard-code waveform sample
+points, add simulator-specific side channels, use current contributions,
 `ddt()`, or `idt()`. For event-driven hysteresis, update a retained local state
 at threshold crossings and keep output contributions outside the event blocks.
+
+Use deterministic Verilog-A behavioral modeling appropriate for the public circuit contract. The visible testbench is a public validation scenario; do not hard-code a particular stimulus table, transient stop time, or validation sample window into the DUT unless that behavior is part of the public circuit contract.
+
+## Output Contract
+
+Return exactly one complete source artifact named `cmp_hysteresis.va`. Do not include explanatory prose outside the source artifact contents.

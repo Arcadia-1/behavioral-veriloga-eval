@@ -2,75 +2,40 @@
 
 ## Task Contract
 
+Implement the requested Verilog-A artifact for `Gain Trim Controller`.
 - Form: `dut`
 - Level: `L1`
-- Category: Calibration, DEM, and Control
-- Base function: Gain trim controller
-- Domain: `voltage`
+- Category: `calibration_control`
 - Target artifact(s): `gain_trim_controller.va`
-- Supplied visible support artifact(s): `test_visible/visible.scs`
-- Visible context: public task, interface, artifact, stimulus, and observable contract only.
-- Output boundary: implement only the requested DUT artifact; validation harnesses and simulator-private hooks are external to the requested output.
 
-## Form-Specific Requirements
-
-- Implement only the requested Verilog-A DUT artifact(s); do not generate a Spectre testbench in this form.
-- Preserve the public module names, port order, parameters, and waveform observable names.
+Implement a clocked voltage-domain gain-trim controller. Return only the requested DUT artifact; do not generate a Spectre testbench.
 
 ## Public Verilog-A Interface
 
-- `gain_trim_controller.va` declares module `gain_trim_controller` with positional ports: `clk`, `rst`, `meas`, `target`, `gain_ctrl`.
+Declare module `gain_trim_controller` with positional ports `clk, rst, meas, target, gain_ctrl`. All ports are electrical. `clk` and `rst` are voltage-coded control inputs, `meas` and `target` are analog comparison inputs, and `gain_ctrl` is the analog trim-control output.
 
-## Public Testbench And Observable Contract
+## Public Parameter Contract
 
-Public transient context:
+Provide these overrideable public parameters:
 
-```spectre
-tran tran stop=620n maxstep=500p
-```
+- `vth = 0.45 V`: logic threshold for `clk` and `rst`.
+- `tr = 500 ps`: transition smoothing time for `gain_ctrl`.
 
-The DUT must implement the clocked control law for arbitrary valid rising `clk`
-event sequences within the public operating contract.
+## Required Behavior
 
-The public scalar observables are:
+- Initialize `gain_ctrl` to 0.30 V before the first clocked update.
+- Treat `clk` and `rst` as voltage-coded logic with threshold `vth`.
+- On every rising crossing of `clk` through `vth`, update the internal
+  control state.
+- Reset `gain_ctrl` to 0.30 V on a rising `clk` while `rst` is above `vth`.
+- When `meas` is below `target - 0.02`, increase the control by 0.05 V; when above `target + 0.02`, decrease it by 0.05 V.
+- Hold inside the deadband, clamp to 0.05 V to 0.85 V, and drive through `transition()`.
 
-- `clk`
-- `rst`
-- `meas`
-- `target`
-- `gain_ctrl`
+## Modeling Constraints
 
-When this form generates a testbench, use plain scalar save names for these observables; do not rely on instance-qualified or aliased save names.
-
-## Public Behavior Checks
-
-- `reset_gain_control_near_0p30`
-- `low_measured_value_increases_control`
-- `high_measured_value_decreases_control`
-- `gain_control_reaches_high_and_low_clamps`
+Use deterministic Verilog-A behavioral modeling appropriate for the public circuit contract. The visible testbench is a public validation scenario; do not hard-code a particular stimulus table, transient stop time, or validation sample window into the DUT unless that behavior is part of the public circuit contract.
 
 ## Output Contract
 
 Return exactly one source artifact named `gain_trim_controller.va`.
 Do not include explanatory prose outside the source artifact contents.
-
-## Task-Specific Description
-
-## Gain trim controller DUT
-
-Write a pure voltage-domain Verilog-A module for a gain trim controller.
-
-The DUT module is `gain_trim_controller` with ports `clk, rst, meas, target, gain_ctrl`. All ports are electrical; digital-control ports use 0/0.9 V logic levels.
-
-Required behavior:
-- Initialize `gain_ctrl` to 0.30 V before the first clocked update.
-- Treat `clk` and `rst` as voltage-coded logic with a 0.45 V threshold.
-- On every rising crossing of `clk` through 0.45 V, update the internal
-  control state.
-- Reset `gain_ctrl` to 0.30 V on a rising `clk` while `rst` is above 0.45 V.
-- When `meas` is below `target - 0.02`, increase the control by 0.05 V; when above `target + 0.02`, decrease it by 0.05 V.
-- Hold inside the deadband, clamp to 0.05 V to 0.85 V, and drive through `transition()`.
-
-Use voltage contributions only. Do not use current contributions, `ddt()`, or `idt()`.
-
-Return exactly one complete Verilog-A file named `gain_trim_controller.va`.

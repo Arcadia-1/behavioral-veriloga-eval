@@ -1,8 +1,16 @@
 # Resettable Integrator
 
+## Task Contract
+
+Implement the requested Verilog-A artifact for `Resettable Integrator`.
+- Form: `dut`
+- Level: `L1`
+- Category: `baseband_signal_conditioning`
+- Target artifact(s): `resettable_integrator.va`
+
 Implement `resettable_integrator.va` in Verilog-A.
 
-## Public Interface
+## Public Verilog-A Interface
 
 Declare module `resettable_integrator(vin, rst, vout)` with scalar electrical
 voltage-domain ports. `rst` is a voltage-coded control input.
@@ -15,7 +23,7 @@ voltage-domain ports. `rst` is a voltage-coded control input.
 - `vmax`: accumulator clamp level, default `0.85`.
 - `tr`: output transition smoothing time, default `500p`.
 
-## Functional Contract
+## Required Behavior
 
 - Initialize the internal accumulator to `0 V`.
 - Update state only on `@(timer(0, dt))`.
@@ -35,6 +43,12 @@ sample windows into the DUT.
 ## Modeling Constraints
 
 Return only `resettable_integrator.va`. Do not emit a Spectre testbench,
-checker logic, private test hooks, or simulator-private side channels. Use
+validation logic, validation-only hooks, or simulator-specific side channels. Use
 voltage contributions only; do not use current contributions, `ddt()`, or
 `idt()`.
+
+Use deterministic Verilog-A behavioral modeling appropriate for the public circuit contract. The visible testbench is a public validation scenario; do not hard-code a particular stimulus table, transient stop time, or validation sample window into the DUT unless that behavior is part of the public circuit contract.
+
+## Output Contract
+
+Return exactly one complete source artifact named `resettable_integrator.va`. Do not include explanatory prose outside the source artifact contents.
