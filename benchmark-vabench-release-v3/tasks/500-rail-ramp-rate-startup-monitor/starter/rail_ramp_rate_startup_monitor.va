@@ -1,0 +1,25 @@
+`include "disciplines.vams"
+
+module rail_ramp_rate_startup_monitor(clk, vdd, vss, en, rail_ok, ramp_ok, startup_ready, slew_metric);
+input clk, vdd, vss, en;
+output rail_ok, ramp_ok, startup_ready, slew_metric;
+electrical clk, vdd, vss, en, rail_ok, ramp_ok, startup_ready, slew_metric;
+
+parameter real vth = 0.45;
+parameter real vhi = 0.9;
+parameter real vdd_min = 0.72;
+parameter real vdd_max = 1.08;
+parameter real vready = 0.86;
+parameter real dv_min = 0.025;
+parameter real dv_max = 0.20;
+parameter real dv_settle_max = 0.030;
+parameter integer ready_cycles = 3;
+parameter real tr = 60p;
+
+analog begin
+    V(rail_ok) <+ 0.0;
+    V(ramp_ok) <+ 0.0;
+    V(startup_ready) <+ 0.0;
+    V(slew_metric) <+ 0.0;
+end
+endmodule

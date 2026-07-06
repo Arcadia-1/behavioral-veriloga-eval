@@ -1,0 +1,44 @@
+{
+  "negative_variants": [
+    {
+      "id": "neg_001_diff_only_valid",
+      "description": "Differential Common Mode Window Monitor: drives valid from the differential window only.",
+      "files": [
+        "neg_001_diff_only_valid/differential_common_mode_window_monitor.va"
+      ],
+      "expected": "compile_but_fail_full_behavior"
+    },
+    {
+      "id": "neg_002_common_mode_only_valid",
+      "description": "Differential Common Mode Window Monitor: drives valid from the common-mode window only.",
+      "files": [
+        "neg_002_common_mode_only_valid/differential_common_mode_window_monitor.va"
+      ],
+      "expected": "compile_but_fail_full_behavior"
+    },
+    {
+      "id": "neg_003_absolute_input_window",
+      "description": "Differential Common Mode Window Monitor: checks vip/vin individually instead of using differential and common-mode quantities.",
+      "files": [
+        "neg_003_absolute_input_window/differential_common_mode_window_monitor.va"
+      ],
+      "expected": "compile_but_fail_full_behavior"
+    },
+    {
+      "id": "neg_004_ignore_enable",
+      "description": "Differential Common Mode Window Monitor: ignores the active-high enable input.",
+      "files": [
+        "neg_004_ignore_enable/differential_common_mode_window_monitor.va"
+      ],
+      "expected": "compile_but_fail_full_behavior"
+    },
+    {
+      "id": "neg_005_wrong_metric_scaling",
+      "description": "Differential Common Mode Window Monitor: uses unclipped or incorrectly scaled error metrics.",
+      "files": [
+        "neg_005_wrong_metric_scaling/differential_common_mode_window_monitor.va"
+      ],
+      "expected": "compile_but_fail_full_behavior"
+    }
+  ]
+}

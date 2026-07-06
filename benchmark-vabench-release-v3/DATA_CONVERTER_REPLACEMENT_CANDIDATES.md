@@ -10,8 +10,8 @@ the original full-300 surface at `052`-`057` and `075`. The previous
 because it was too close to the existing mismatch-DAC coverage. The old
 temporary data-converter `495`-`501` task ids are no longer active
 data-converter benchmark rows; they are referenced below only as provenance for
-the re-slot mapping. The current `495`-`499` task ids are now separate
-issue #109 bias/reference/power-management replacements.
+the re-slot mapping. The current `495`-`501` task ids are now separate
+issue #109 bias/reference/power-management and measurement replacements.
 
 ## Current Closure Status
 
@@ -20,7 +20,8 @@ rows when `data_converter` and `data_converter_models` are counted together.
 Six formerly temporary candidates plus the new correlated-double-sampler row are
 now active replacement rows inside the original `001`-`300` surface at
 `052`-`057` and `075`; no active data-converter `495`-`501` task directories
-remain.
+remain, even though those numeric ids now host non-converter issue #109
+replacement rows.
 
 The 2026-07-02 closeout EVAS sweep over the pre-slot candidate pool reported
 `88/88` gold pass and `326/326` negative variants rejected. After the 056

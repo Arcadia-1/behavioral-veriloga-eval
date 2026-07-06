@@ -11336,6 +11336,83 @@
       - low_supply_falls_back_to_local_low
       - nonzero_vss_offset_handled
       - five_negative_variants_rejected_by_behavior_checker
+500-rail-ramp-rate-startup-monitor: |
+  version: 1
+  task_id: v3_500_rail_ramp_rate_startup_monitor
+  backend: evas
+  status: formal-candidate
+  checker: v3_500_rail_ramp_rate_startup_monitor
+  required_columns:
+    - time
+    - clk
+    - vdd
+    - vss
+    - en
+    - rail_ok
+    - ramp_ok
+    - startup_ready
+    - slew_metric
+  checks:
+    hidden:
+      - rail_window_measured_between_local_rails
+      - ramp_rate_window_applies_before_ready_threshold
+      - settled_ready_requires_consecutive_low_slew_samples
+      - enable_and_high_rail_fault_clear_outputs
+      - five_negative_variants_rejected_by_behavior_checker
+  sim_correct:
+    positive:
+      - solution/rail_ramp_rate_startup_monitor.va
+    negative:
+      - negative_variants/neg_001_threshold_only_ready/rail_ramp_rate_startup_monitor.va
+      - negative_variants/neg_002_no_settle_requirement/rail_ramp_rate_startup_monitor.va
+      - negative_variants/neg_003_ignore_enable/rail_ramp_rate_startup_monitor.va
+      - negative_variants/neg_004_ignore_high_rail_fault/rail_ramp_rate_startup_monitor.va
+      - negative_variants/neg_005_wrong_slew_metric/rail_ramp_rate_startup_monitor.va
+    checks:
+      - rail_window_measured_between_local_rails
+      - ramp_rate_window_applies_before_ready_threshold
+      - settled_ready_requires_consecutive_low_slew_samples
+      - enable_and_high_rail_fault_clear_outputs
+      - five_negative_variants_rejected_by_behavior_checker
+501-differential-common-mode-window-monitor: |
+  version: 1
+  task_id: v3_501_differential_common_mode_window_monitor
+  backend: evas
+  status: formal-candidate
+  checker: v3_501_differential_common_mode_window_monitor
+  required_columns:
+    - time
+    - vip
+    - vin
+    - vcm_ref
+    - en
+    - diff_ok
+    - cm_ok
+    - valid
+    - diff_metric
+    - cm_metric
+  checks:
+    hidden:
+      - differential_window_uses_vip_minus_vin
+      - common_mode_window_uses_input_average_against_vcm_ref
+      - valid_requires_diff_cm_and_enable
+      - metrics_track_clipped_differential_and_common_mode_errors
+      - five_negative_variants_rejected_by_behavior_checker
+  sim_correct:
+    positive:
+      - solution/differential_common_mode_window_monitor.va
+    negative:
+      - negative_variants/neg_001_diff_only_valid/differential_common_mode_window_monitor.va
+      - negative_variants/neg_002_common_mode_only_valid/differential_common_mode_window_monitor.va
+      - negative_variants/neg_003_absolute_input_window/differential_common_mode_window_monitor.va
+      - negative_variants/neg_004_ignore_enable/differential_common_mode_window_monitor.va
+      - negative_variants/neg_005_wrong_metric_scaling/differential_common_mode_window_monitor.va
+    checks:
+      - differential_window_uses_vip_minus_vin
+      - common_mode_window_uses_input_average_against_vcm_ref
+      - valid_requires_diff_cm_and_enable
+      - metrics_track_clipped_differential_and_common_mode_errors
+      - five_negative_variants_rejected_by_behavior_checker
 502-sine-vco-idtmod-bound-step: |
   version: 2
   task_id: v3_502_sine_vco_idtmod_bound_step

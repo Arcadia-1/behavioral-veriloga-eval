@@ -3,7 +3,7 @@
 The default `tasks/` tree is now the standalone-Spectre-compatible v3
 denominator:
 
-- numbered default rows: `456`
+- numbered default rows: `458`
 - unnumbered replacement candidates: `0`
 - archived Spectre-rejected rows: `54`
 
@@ -29,13 +29,16 @@ assets for those ids are archived, not deleted, because Spectre rejects their
 procedural vector/electrical indexing patterns. The active `tasks/` ids now
 point at reference-backed data-converter replacements.
 
-Issue #109 also promotes five former unnumbered bias/reference/power candidates
-into the `495`-`499` holes as voltage-domain replacements:
+Issue #109 also promotes seven former unnumbered bias/reference/power and
+measurement candidates into the `495`-`501` holes as voltage-domain
+replacements:
 `495-supply-bias-validity-gate`,
 `496-reference-settling-window-monitor`,
 `497-power-enable-turnon-delay-gate`,
-`498-power-mode-supply-current-metric`, and
-`499-dynamic-supply-level-driver`.
+`498-power-mode-supply-current-metric`,
+`499-dynamic-supply-level-driver`,
+`500-rail-ramp-rate-startup-monitor`, and
+`501-differential-common-mode-window-monitor`.
 
 Rows `301+` are language-extension candidates. The retained default rows cover
 these Verilog-A-oriented surfaces:

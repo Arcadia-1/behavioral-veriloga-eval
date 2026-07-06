@@ -16925,6 +16925,156 @@ def check_v3_candidate_bias_reference_settling_window_monitor(rows: list[dict[st
         return False, f"reference_settling_error={max_err:.4f}"
     return True, f"samples={checked} max_err={max_err:.4f}"
 
+
+def check_v3_candidate_bias_rail_ramp_rate_startup_monitor(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "clk", "vdd", "vss", "en", "rail_ok", "ramp_ok", "startup_ready", "slew_metric"}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing rail ramp rate startup monitor signals"
+    times = [row["time"] for row in rows]
+    clk_edges = _threshold_crossings([row["clk"] for row in rows], times, threshold=0.45, direction="rising")
+    if len(clk_edges) < 10:
+        return False, f"too_few_rail_startup_clk_edges={len(clk_edges)}"
+    min_period = min((b - a for a, b in zip(clk_edges, clk_edges[1:])), default=1.0e-9)
+    output_delay = min(0.45e-9, 0.45 * min_period)
+    initial_vdd = sample_signal_at(rows, "vdd", times[0])
+    initial_vss = sample_signal_at(rows, "vss", times[0])
+    if initial_vdd is None or initial_vss is None:
+        return False, "missing_initial_supply"
+    previous_supply = initial_vdd - initial_vss
+    settled_count = 0
+    checked = 0
+    max_err = 0.0
+    rail_high = rail_low = ramp_high = ramp_low = ready_high = delayed_low = False
+    settled_clear = high_fault_seen = enable_clear_seen = metric_nonzero = False
+    for edge_t in clk_edges:
+        output_t = edge_t + output_delay
+        if output_t >= times[-1] - 0.05e-9:
+            continue
+        input_values = {
+            name: sample_signal_at(rows, name, edge_t + 1.0e-12)
+            for name in ("vdd", "vss", "en")
+        }
+        output_values = {
+            name: sample_signal_at(rows, name, output_t)
+            for name in ("rail_ok", "ramp_ok", "startup_ready", "slew_metric")
+        }
+        if any(value is None for value in input_values.values()) or any(value is None for value in output_values.values()):
+            continue
+        prior_count = settled_count
+        supply = input_values["vdd"] - input_values["vss"]
+        delta_v = supply - previous_supply
+        delta_abs = abs(delta_v)
+        enabled = input_values["en"] > 0.45
+        rail_valid = enabled and 0.72 <= supply <= 1.08
+        if not enabled:
+            ramp_valid = False
+        elif supply < 0.86:
+            ramp_valid = 0.025 <= delta_v <= 0.20
+        else:
+            ramp_valid = delta_abs <= 0.030
+        if rail_valid and ramp_valid and supply >= 0.86:
+            settled_count = min(settled_count + 1, 3)
+        else:
+            settled_count = 0
+        rail_expected = 0.9 if rail_valid else 0.0
+        ramp_expected = 0.9 if ramp_valid else 0.0
+        ready_expected = 0.9 if settled_count >= 3 else 0.0
+        metric_expected = min(1.0, max(0.0, delta_abs / 0.20)) * 0.9
+        max_err = max(
+            max_err,
+            abs(output_values["rail_ok"] - rail_expected),
+            abs(output_values["ramp_ok"] - ramp_expected),
+            abs(output_values["startup_ready"] - ready_expected),
+            abs(output_values["slew_metric"] - metric_expected),
+        )
+        rail_high = rail_high or rail_expected > 0.45
+        rail_low = rail_low or rail_expected < 0.45
+        ramp_high = ramp_high or ramp_expected > 0.45
+        ramp_low = ramp_low or ramp_expected < 0.45
+        ready_high = ready_high or ready_expected > 0.45
+        delayed_low = delayed_low or (rail_expected > 0.45 and ramp_expected > 0.45 and ready_expected < 0.45)
+        settled_clear = settled_clear or (prior_count > 0 and settled_count == 0 and ready_expected < 0.45)
+        high_fault_seen = high_fault_seen or (enabled and supply > 1.08)
+        enable_clear_seen = enable_clear_seen or (not enabled)
+        metric_nonzero = metric_nonzero or metric_expected > 0.25
+        previous_supply = supply
+        checked += 1
+    if checked < 10:
+        return False, f"insufficient_rail_startup_samples={checked}"
+    if not (
+        rail_high
+        and rail_low
+        and ramp_high
+        and ramp_low
+        and ready_high
+        and delayed_low
+        and settled_clear
+        and high_fault_seen
+        and enable_clear_seen
+        and metric_nonzero
+    ):
+        return False, "insufficient_rail_startup_coverage"
+    if max_err > 0.10:
+        return False, f"rail_startup_error={max_err:.4f}"
+    return True, f"samples={checked} max_err={max_err:.4f}"
+
+
+def check_v3_candidate_afe_differential_common_mode_window_monitor(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "vip", "vin", "vcm_ref", "en", "diff_ok", "cm_ok", "valid", "diff_metric", "cm_metric"}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing differential common mode window monitor signals"
+    end_t = rows[-1]["time"]
+    sample_t = 0.75e-9
+    checked = 0
+    max_err = 0.0
+    valid_high = valid_low = diff_fail = cm_fail = enable_low = negative_diff = ref_changed = False
+    first_ref: float | None = None
+    while sample_t < end_t - 0.2e-9:
+        values = {name: sample_signal_at(rows, name, sample_t) for name in required if name != "time"}
+        if any(value is None for value in values.values()):
+            sample_t += 1.0e-9
+            continue
+        if first_ref is None:
+            first_ref = values["vcm_ref"]
+        vdiff = values["vip"] - values["vin"]
+        vcm = 0.5 * (values["vip"] + values["vin"])
+        diff_abs = abs(vdiff)
+        cm_err = abs(vcm - values["vcm_ref"])
+        enabled = values["en"] > 0.45
+        diff_valid = enabled and diff_abs <= 0.30
+        cm_valid = enabled and cm_err <= 0.080
+        valid_expected = diff_valid and cm_valid
+        diff_expected = 0.9 if diff_valid else 0.0
+        cm_expected = 0.9 if cm_valid else 0.0
+        full_expected = 0.9 if valid_expected else 0.0
+        diff_metric_expected = min(1.0, max(0.0, diff_abs / 0.45)) * 0.9
+        cm_metric_expected = min(1.0, max(0.0, cm_err / 0.160)) * 0.9
+        max_err = max(
+            max_err,
+            abs(values["diff_ok"] - diff_expected),
+            abs(values["cm_ok"] - cm_expected),
+            abs(values["valid"] - full_expected),
+            abs(values["diff_metric"] - diff_metric_expected),
+            abs(values["cm_metric"] - cm_metric_expected),
+        )
+        valid_high = valid_high or full_expected > 0.45
+        valid_low = valid_low or full_expected < 0.45
+        diff_fail = diff_fail or (enabled and diff_abs > 0.30 and cm_err <= 0.080)
+        cm_fail = cm_fail or (enabled and diff_abs <= 0.30 and cm_err > 0.080)
+        enable_low = enable_low or (not enabled)
+        negative_diff = negative_diff or (vdiff < -0.05)
+        ref_changed = ref_changed or abs(values["vcm_ref"] - first_ref) > 0.04
+        checked += 1
+        sample_t += 1.0e-9
+    if checked < 10:
+        return False, f"insufficient_diff_cm_samples={checked}"
+    if not (valid_high and valid_low and diff_fail and cm_fail and enable_low and negative_diff and ref_changed):
+        return False, "insufficient_diff_cm_coverage"
+    if max_err > 0.08:
+        return False, f"diff_cm_monitor_error={max_err:.4f}"
+    return True, f"samples={checked} max_err={max_err:.4f}"
+
+
 def check_v3_502_sine_vco_idtmod_bound_step(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "vin", "out", "metric"}
     if not rows or not required.issubset(rows[0]):
@@ -23344,6 +23494,8 @@ CHECKS["v3_496_reference_settling_window_monitor"] = check_v3_candidate_bias_ref
 CHECKS["v3_497_power_enable_turnon_delay_gate"] = check_v3_candidate_bias_power_enable_turnon_delay_gate
 CHECKS["v3_498_power_mode_supply_current_metric"] = check_v3_candidate_bias_power_mode_supply_current_metric
 CHECKS["v3_499_dynamic_supply_level_driver"] = check_v3_candidate_bias_dynamic_supply_level_driver
+CHECKS["v3_500_rail_ramp_rate_startup_monitor"] = check_v3_candidate_bias_rail_ramp_rate_startup_monitor
+CHECKS["v3_501_differential_common_mode_window_monitor"] = check_v3_candidate_afe_differential_common_mode_window_monitor
 CHECKS["v3_502_sine_vco_idtmod_bound_step"] = check_v3_502_sine_vco_idtmod_bound_step
 CHECKS["v3_503_differential_vco_clip_idtmod"] = check_v3_503_differential_vco_clip_idtmod
 CHECKS["v3_504_charge_pump_pfd_state_machine"] = check_v3_504_charge_pump_pfd_state_machine
@@ -23386,6 +23538,8 @@ CHECKS["496-reference-settling-window-monitor"] = check_v3_candidate_bias_refere
 CHECKS["497-power-enable-turnon-delay-gate"] = check_v3_candidate_bias_power_enable_turnon_delay_gate
 CHECKS["498-power-mode-supply-current-metric"] = check_v3_candidate_bias_power_mode_supply_current_metric
 CHECKS["499-dynamic-supply-level-driver"] = check_v3_candidate_bias_dynamic_supply_level_driver
+CHECKS["500-rail-ramp-rate-startup-monitor"] = check_v3_candidate_bias_rail_ramp_rate_startup_monitor
+CHECKS["501-differential-common-mode-window-monitor"] = check_v3_candidate_afe_differential_common_mode_window_monitor
 CHECKS["502-sine-vco-idtmod-bound-step"] = check_v3_502_sine_vco_idtmod_bound_step
 CHECKS["503-differential-vco-clip-idtmod"] = check_v3_503_differential_vco_clip_idtmod
 CHECKS["504-charge-pump-pfd-state-machine"] = check_v3_504_charge_pump_pfd_state_machine

@@ -8850,6 +8850,74 @@
         "neg_005_inverted_logic"
       ]
     },
+    "500-rail-ramp-rate-startup-monitor": {
+      "id": "v3_500_rail_ramp_rate_startup_monitor",
+      "form": "dut",
+      "level": "L2",
+      "difficulty": "D2",
+      "category": "bias_reference_power_management",
+      "target": [
+        "rail_ramp_rate_startup_monitor.va"
+      ],
+      "tier": "behavior-extension-candidate",
+      "title": "Rail Ramp Rate Startup Monitor",
+      "syntax_focus": "Sample local rail movement, qualify startup ramp rate, and delay readiness until the rail has settled.",
+      "description": "Startup monitor for a locally supplied analog block that checks supply window, ramp rate, settling, and readiness.",
+      "required_behavior": [
+        "Sample V(vdd,vss) on rising clock crossings and compute movement from the previous sampled rail value.",
+        "Drive rail_ok high only when en is high and the sampled local rail is inside the public operating window.",
+        "Drive ramp_ok high during startup only when sampled positive rail movement is inside the public ramp-rate window.",
+        "Above the ready threshold, require sampled movement to stay inside the public settling bound before counting readiness.",
+        "Assert startup_ready only after the public number of consecutive settled sampled updates and report bounded sampled slew on slew_metric."
+      ],
+      "visible_tests": [
+        "visible.scs exercises ramping below ready, delayed settled readiness, high-rail fault, enable clearing, vss offset, and large downward rail movement."
+      ],
+      "hidden_tests": [
+        "hidden.scs changes clock phase, ramp increments, vss offset polarity, high-supply fault timing, and enable clearing."
+      ],
+      "negative_variants": [
+        "neg_001_threshold_only_ready",
+        "neg_002_no_settle_requirement",
+        "neg_003_ignore_enable",
+        "neg_004_ignore_high_rail_fault",
+        "neg_005_wrong_slew_metric"
+      ]
+    },
+    "501-differential-common-mode-window-monitor": {
+      "id": "v3_501_differential_common_mode_window_monitor",
+      "form": "dut",
+      "level": "L2",
+      "difficulty": "D2",
+      "category": "measurement_instrumentation_flows",
+      "target": [
+        "differential_common_mode_window_monitor.va"
+      ],
+      "tier": "behavior-extension-candidate",
+      "title": "Differential Common Mode Window Monitor",
+      "syntax_focus": "Compute differential magnitude and common-mode error for an enabled analog-front-end input-validity monitor.",
+      "description": "Differential input monitor that validates linear-range differential amplitude and common-mode proximity to a reference.",
+      "required_behavior": [
+        "Continuously compute vdiff as V(vip)-V(vin) and vcm as the average of vip and vin.",
+        "Drive diff_ok high only while enabled and abs(vdiff) is inside the public differential window.",
+        "Drive cm_ok high only while enabled and abs(vcm-V(vcm_ref)) is inside the public common-mode window.",
+        "Drive valid high only when both differential and common-mode checks pass under enable.",
+        "Expose clipped voltage-coded diff_metric and cm_metric values using the public full-scale parameters."
+      ],
+      "visible_tests": [
+        "visible.scs exercises valid input, differential overrange, common-mode overrange, vcm_ref change, enable clearing, and metric scaling."
+      ],
+      "hidden_tests": [
+        "hidden.scs changes reference level, input polarity, overrange cases, and enable timing."
+      ],
+      "negative_variants": [
+        "neg_001_diff_only_valid",
+        "neg_002_common_mode_only_valid",
+        "neg_003_absolute_input_window",
+        "neg_004_ignore_enable",
+        "neg_005_wrong_metric_scaling"
+      ]
+    },
     "502-sine-vco-idtmod-bound-step": {
       "id": "v3_502_sine_vco_idtmod_bound_step",
       "form": "dut",
