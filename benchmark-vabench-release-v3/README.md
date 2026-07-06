@@ -1,15 +1,15 @@
 # Behavioral Verilog-A v3
 
-This directory is a clean, RTL-Forge-style packaging of 466 numbered
+This directory is a clean, RTL-Forge-style packaging of 505 numbered
 standalone-Spectre-compatible Verilog-A DUT/support/testbench/e2e and
 language-extension tasks.
 
 The default `tasks/` tree is the Spectre-compatible denominator. Task numbers
-are not contiguous: 39 numbering holes remain after issue #109 replacement
-batches, and the original 54 rows that standalone Cadence/Spectre rejects as
-written remain archived under `spectre-unsupported-tasks/`. Those archived rows
-are preserved for future AMS/digital or version-gated work, but they are not
-part of the default EVAS/Spectre parity score.
+are now contiguous from `001` through `505` after issue #109 replacement
+batches. The original 54 rows that standalone Cadence/Spectre rejects as written
+remain archived under `spectre-unsupported-tasks/`. Those archived rows are
+preserved for future AMS/digital or version-gated work, but they are not part of
+the default EVAS/Spectre parity score.
 
 Rows `001`-`300` remain the original behavior-certified surface with issue #109
 backfills in the legacy gaps `052`-`057` and `075`. The old converter/vector
@@ -47,9 +47,11 @@ Partitions:
   v2 five-task slice absorbed as normal v3 tasks.
 - `301`-`505`: Verilog-A language extension candidates covering functions,
   file I/O, table models, random/noise helpers, Cadence LRM helper calls,
-  continuous-time operators, KCL syntax, issue #109 helper/monitor replacement rows at `373`-`378`, `421`, and `490`,
-  and issue #109 bias/power replacement rows at `495`-`501`, with Spectre-rejected AMS/digital, user-task, and
-  unsupported vector/helper rows archived outside `tasks/`.
+  continuous-time operators, KCL syntax, and issue #109 voltage-domain
+  replacement rows. The issue #109 backfills include `341`-`360`, `373`-`378`,
+  `394`-`395`, `403`, `406`, `415`-`421`, `433`, `449`, `451`-`455`,
+  `458`-`459`, `490`, and `495`-`501`, with Spectre-rejected AMS/digital,
+  user-task, and unsupported vector/helper rows archived outside `tasks/`.
 
 Each task is self-contained under `tasks/NNN-name/`:
 

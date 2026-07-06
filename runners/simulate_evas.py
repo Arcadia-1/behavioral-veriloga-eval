@@ -17815,6 +17815,447 @@ def check_v3_505_fractional_n_divider_accumulator_flow(rows: list[dict[str, floa
     )
 
 
+
+# BEGIN ISSUE109_REMAINING_HOLES_GENERATED
+ISSUE109_REMAINING_HOLE_SPECS = {
+    "v3_341_rail_referenced_gain_buffer": {
+        "slug": "341-rail-referenced-gain-buffer",
+        "family": "cont",
+        "mode": "gain",
+        "edge": 1
+    },
+    "v3_342_weighted_balance_summer": {
+        "slug": "342-weighted-balance-summer",
+        "family": "cont",
+        "mode": "sum",
+        "edge": 1
+    },
+    "v3_343_supply_qualified_window_flag": {
+        "slug": "343-supply-qualified-window-flag",
+        "family": "cont",
+        "mode": "window",
+        "edge": 1
+    },
+    "v3_344_power_mode_clamped_mux": {
+        "slug": "344-power-mode-clamped-mux",
+        "family": "cont",
+        "mode": "mux",
+        "edge": 1
+    },
+    "v3_345_bias_trim_affine_mapper": {
+        "slug": "345-bias-trim-affine-mapper",
+        "family": "cont",
+        "mode": "gain",
+        "edge": 1
+    },
+    "v3_346_reset_polarity_qualifier": {
+        "slug": "346-reset-polarity-qualifier",
+        "family": "cont",
+        "mode": "window",
+        "edge": 1
+    },
+    "v3_347_multi_condition_enable_combiner": {
+        "slug": "347-multi-condition-enable-combiner",
+        "family": "cont",
+        "mode": "reduction",
+        "edge": 1
+    },
+    "v3_348_phase_mismatch_qualifier": {
+        "slug": "348-phase-mismatch-qualifier",
+        "family": "cont",
+        "mode": "phase",
+        "edge": 1
+    },
+    "v3_349_priority_fault_code_driver": {
+        "slug": "349-priority-fault-code-driver",
+        "family": "cont",
+        "mode": "priority",
+        "edge": 1
+    },
+    "v3_350_lane_validity_reduction_monitor": {
+        "slug": "350-lane-validity-reduction-monitor",
+        "family": "cont",
+        "mode": "reduction",
+        "edge": 1
+    },
+    "v3_351_comparator_decision_capture": {
+        "slug": "351-comparator-decision-capture",
+        "family": "clock",
+        "mode": "edge",
+        "edge": 1
+    },
+    "v3_352_falling_edge_calibration_sampler": {
+        "slug": "352-falling-edge-calibration-sampler",
+        "family": "clock",
+        "mode": "sample_fall",
+        "edge": -1
+    },
+    "v3_353_resettable_phase_toggle_monitor": {
+        "slug": "353-resettable-phase-toggle-monitor",
+        "family": "clock",
+        "mode": "toggle",
+        "edge": 1
+    },
+    "v3_354_settling_progress_counter": {
+        "slug": "354-settling-progress-counter",
+        "family": "clock",
+        "mode": "counter",
+        "edge": 1
+    },
+    "v3_355_enable_qualified_bias_hold": {
+        "slug": "355-enable-qualified-bias-hold",
+        "family": "clock",
+        "mode": "latch",
+        "edge": 1
+    },
+    "v3_356_dynamic_supply_enable_driver": {
+        "slug": "356-dynamic-supply-enable-driver",
+        "family": "cont",
+        "mode": "translate",
+        "edge": 1
+    },
+    "v3_357_local_domain_buffer_translator": {
+        "slug": "357-local-domain-buffer-translator",
+        "family": "cont",
+        "mode": "translate",
+        "edge": 1
+    },
+    "v3_358_bias_window_threshold_bridge": {
+        "slug": "358-bias-window-threshold-bridge",
+        "family": "cont",
+        "mode": "window",
+        "edge": 1
+    },
+    "v3_359_clocked_power_ready_sampler": {
+        "slug": "359-clocked-power-ready-sampler",
+        "family": "clock",
+        "mode": "counter",
+        "edge": 1
+    },
+    "v3_360_mode_selected_bias_driver": {
+        "slug": "360-mode-selected-bias-driver",
+        "family": "cont",
+        "mode": "mux",
+        "edge": 1
+    },
+    "v3_394_deterministic_energy_accumulator": {
+        "slug": "394-deterministic-energy-accumulator",
+        "family": "clock",
+        "mode": "accum",
+        "edge": 1
+    },
+    "v3_395_bounded_tail_dither_shaper": {
+        "slug": "395-bounded-tail-dither-shaper",
+        "family": "clock",
+        "mode": "accum",
+        "edge": 1
+    },
+    "v3_403_calibration_bit_select_flag": {
+        "slug": "403-calibration-bit-select-flag",
+        "family": "cont",
+        "mode": "mux",
+        "edge": 1
+    },
+    "v3_406_lane_mask_replication_driver": {
+        "slug": "406-lane-mask-replication-driver",
+        "family": "cont",
+        "mode": "reduction",
+        "edge": 1
+    },
+    "v3_415_explicit_sar_slice_router": {
+        "slug": "415-explicit-sar-slice-router",
+        "family": "cont",
+        "mode": "mux",
+        "edge": 1
+    },
+    "v3_416_ready_reduction_fault_monitor": {
+        "slug": "416-ready-reduction-fault-monitor",
+        "family": "cont",
+        "mode": "reduction",
+        "edge": 1
+    },
+    "v3_417_async_reset_event_counter": {
+        "slug": "417-async-reset-event-counter",
+        "family": "clock",
+        "mode": "counter",
+        "edge": 1
+    },
+    "v3_418_enable_saturating_ready_counter": {
+        "slug": "418-enable-saturating-ready-counter",
+        "family": "clock",
+        "mode": "counter",
+        "edge": 1
+    },
+    "v3_419_rail_aware_threshold_bridge": {
+        "slug": "419-rail-aware-threshold-bridge",
+        "family": "cont",
+        "mode": "window",
+        "edge": 1
+    },
+    "v3_420_mode_latch_calibration_gate": {
+        "slug": "420-mode-latch-calibration-gate",
+        "family": "clock",
+        "mode": "latch",
+        "edge": 1
+    },
+    "v3_433_configurable_startup_policy": {
+        "slug": "433-configurable-startup-policy",
+        "family": "cont",
+        "mode": "window",
+        "edge": 1
+    },
+    "v3_449_explicit_replicated_stage_chain": {
+        "slug": "449-explicit-replicated-stage-chain",
+        "family": "cont",
+        "mode": "sum",
+        "edge": 1
+    },
+    "v3_451_electrical_threshold_bridge": {
+        "slug": "451-electrical-threshold-bridge",
+        "family": "cont",
+        "mode": "window",
+        "edge": 1
+    },
+    "v3_452_local_rail_domain_translator": {
+        "slug": "452-local-rail-domain-translator",
+        "family": "cont",
+        "mode": "translate",
+        "edge": 1
+    },
+    "v3_453_edge_delay_qualified_driver": {
+        "slug": "453-edge-delay-qualified-driver",
+        "family": "clock",
+        "mode": "edge",
+        "edge": 1
+    },
+    "v3_454_calibration_quadrant_mapper": {
+        "slug": "454-calibration-quadrant-mapper",
+        "family": "cont",
+        "mode": "mux",
+        "edge": 1
+    },
+    "v3_455_explicit_bus_slice_router": {
+        "slug": "455-explicit-bus-slice-router",
+        "family": "cont",
+        "mode": "mux",
+        "edge": 1
+    },
+    "v3_458_iterative_decay_estimator": {
+        "slug": "458-iterative-decay-estimator",
+        "family": "clock",
+        "mode": "accum",
+        "edge": 1
+    },
+    "v3_459_bounded_window_accumulator": {
+        "slug": "459-bounded-window-accumulator",
+        "family": "clock",
+        "mode": "accum",
+        "edge": 1
+    }
+}
+
+
+def _issue109_clip01(value: float) -> float:
+    return min(1.0, max(0.0, value))
+
+
+def _issue109_inputs(values: dict[str, float]) -> dict[str, float]:
+    span = values["vdd"] - values["vss"]
+    if span < 0.05:
+        span = 0.05
+    return {
+        "span": span,
+        "valid": 1.0 if values["en"] > 0.45 and 0.62 <= values["vdd"] - values["vss"] <= 1.28 else 0.0,
+        "x0": _issue109_clip01((values["in0"] - values["vss"]) / span),
+        "x1": _issue109_clip01((values["in1"] - values["vss"]) / span),
+        "x2": _issue109_clip01((values["in2"] - values["vss"]) / span),
+        "x3": _issue109_clip01((values["in3"] - values["vss"]) / span),
+        "c0": _issue109_clip01(values["ctrl0"] / 0.9),
+        "c1": _issue109_clip01(values["ctrl1"] / 0.9),
+    }
+
+
+def _issue109_cont_expected(mode: str, values: dict[str, float]) -> dict[str, float]:
+    s = _issue109_inputs(values)
+    x0, x1, x2, x3, c0, c1 = s["x0"], s["x1"], s["x2"], s["x3"], s["c0"], s["c1"]
+    if mode == "gain":
+        core = 0.82 * x0 + 0.18 * c0 + 0.08
+        flag = core > 0.78
+        metric = abs(core - x0) / 0.55
+    elif mode == "sum":
+        core = 0.36 * x0 + 0.28 * x1 + 0.18 * x2 + 0.10 * x3 + 0.04
+        flag = core > 0.48
+        metric = abs(x0 - x1) / 0.55
+    elif mode == "window":
+        core = x0
+        flag = 0.24 <= x0 <= 0.72 and c0 > 0.35
+        metric = abs(x0 - 0.48) / 0.48
+    elif mode == "mux":
+        idx = (2 if c1 > 0.5 else 0) + (1 if c0 > 0.5 else 0)
+        chosen = [x0, x1, x2, x3][idx]
+        core = chosen * 0.88 + 0.04
+        flag = idx > 0
+        metric = idx / 3.0
+    elif mode == "reduction":
+        count = sum(1 for item in (x0, x1, x2, x3) if item > 0.50)
+        core = count / 4.0
+        flag = count >= 3
+        metric = core
+    elif mode == "phase":
+        core = _issue109_clip01(0.5 + (x0 - x1) + 0.25 * (c0 - c1))
+        flag = (x0 > 0.50) != (x1 > 0.50)
+        metric = abs(x0 - x1)
+    elif mode == "priority":
+        core = 0.25 if x0 > 0.58 else 0.50 if x1 > 0.58 else 0.75 if x2 > 0.58 else 1.0 if c0 > 0.58 else 0.0
+        flag = core >= 0.50
+        metric = core
+    elif mode == "translate":
+        core = 0.76 * x0 + 0.18 * c1 + 0.12
+        flag = s["span"] >= 0.78
+        metric = abs((values["in0"] - values["vss"]) - 0.5 * s["span"]) / s["span"]
+    else:
+        core = 0.55 * x0 + 0.25 * x1 + 0.20 * c0
+        flag = x0 > x1
+        metric = abs(x0 - x1)
+    if s["valid"] <= 0.5:
+        return {"out": 0.0, "flag": 0.0, "metric": 0.0}
+    return {"out": 0.9 * _issue109_clip01(core), "flag": 0.9 if flag else 0.0, "metric": 0.9 * _issue109_clip01(metric)}
+
+
+def _check_issue109_cont(rows: list[dict[str, float]], spec: dict[str, object]) -> tuple[bool, str]:
+    required = {"time", "in0", "in1", "in2", "in3", "ctrl0", "ctrl1", "vdd", "vss", "en", "out", "flag", "metric"}
+    if not rows or not required.issubset(rows[0]):
+        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
+        return False, "missing_columns=" + ",".join(missing)
+    checked = 0
+    max_err = 0.0
+    out_values, flag_values, metric_values = [], [], []
+    saw_enable_low = False
+    for time_s in _v3_uniform_sample_times(rows):
+        values = _v3_values_at(rows, ("in0", "in1", "in2", "in3", "ctrl0", "ctrl1", "vdd", "vss", "en", "out", "flag", "metric"), time_s)
+        if values is None:
+            continue
+        expected = _issue109_cont_expected(str(spec["mode"]), values)
+        before = _v3_values_at(rows, ("in0", "in1", "in2", "in3", "ctrl0", "ctrl1", "vdd", "vss", "en"), max(rows[0]["time"], time_s - 0.12e-9))
+        after = _v3_values_at(rows, ("in0", "in1", "in2", "in3", "ctrl0", "ctrl1", "vdd", "vss", "en"), min(rows[-1]["time"], time_s + 0.12e-9))
+        if before is not None and after is not None:
+            if abs(_issue109_cont_expected(str(spec["mode"]), before)["flag"] - _issue109_cont_expected(str(spec["mode"]), after)["flag"]) > 0.45:
+                continue
+        max_err = max(max_err, abs(values["out"] - expected["out"]), abs(values["flag"] - expected["flag"]), abs(values["metric"] - expected["metric"]))
+        out_values.append(expected["out"])
+        flag_values.append(expected["flag"])
+        metric_values.append(expected["metric"])
+        saw_enable_low = saw_enable_low or values["en"] <= 0.45
+        checked += 1
+    if checked < 10:
+        return False, f"insufficient_issue109_samples={checked}"
+    if not saw_enable_low:
+        return False, "missing_enable_low_coverage"
+    if max(out_values) - min(out_values) < 0.16:
+        return False, "insufficient_out_dynamic_range"
+    if max(flag_values) - min(flag_values) < 0.45:
+        return False, "insufficient_flag_dynamic_range"
+    if max(metric_values) - min(metric_values) < 0.12:
+        return False, "insufficient_metric_dynamic_range"
+    if max_err > 0.085:
+        return False, f"issue109_remaining_error={max_err:.4f}"
+    return True, f"samples={checked} max_err={max_err:.4f}"
+
+
+def _check_issue109_clock(rows: list[dict[str, float]], spec: dict[str, object]) -> tuple[bool, str]:
+    required = {"time", "clk", "rst", "in0", "in1", "in2", "in3", "ctrl0", "ctrl1", "vdd", "vss", "en", "out", "flag", "metric"}
+    if not rows or not required.issubset(rows[0]):
+        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
+        return False, "missing_columns=" + ",".join(missing)
+    times = [row["time"] for row in rows]
+    direction = int(spec.get("edge", 1))
+    edges = _threshold_crossings([row["clk"] for row in rows], times, threshold=0.45, direction="rising" if direction > 0 else "falling")
+    if len(edges) < 8:
+        return False, f"too_few_issue109_clock_edges={len(edges)}"
+    min_period = min((b - a for a, b in zip(edges, edges[1:])), default=1.0e-9)
+    delay = min(0.12e-9, 0.12 * min_period)
+    mode = str(spec["mode"])
+    core_state = 0.0
+    out_state = 0.0
+    checked = 0
+    max_err = 0.0
+    out_values, flag_values, metric_values = [], [], []
+    saw_reset = saw_enable_low = False
+    for edge_t in edges:
+        output_t = edge_t + delay
+        if output_t >= times[-1] - 0.05e-9:
+            continue
+        inputs = _v3_values_at(rows, ("rst", "in0", "in1", "in2", "in3", "ctrl0", "ctrl1", "vdd", "vss", "en"), edge_t + 1.0e-12)
+        outputs = _v3_values_at(rows, ("out", "flag", "metric"), output_t)
+        if inputs is None or outputs is None:
+            continue
+        values = {"in0": inputs["in0"], "in1": inputs["in1"], "in2": inputs["in2"], "in3": inputs["in3"], "ctrl0": inputs["ctrl0"], "ctrl1": inputs["ctrl1"], "vdd": inputs["vdd"], "vss": inputs["vss"], "en": inputs["en"]}
+        base = _issue109_inputs(values)
+        x0, x1, x2, c0 = base["x0"], base["x1"], base["x2"], base["c0"]
+        if inputs["rst"] > 0.45 or base["valid"] <= 0.5:
+            core_state = 0.0
+            out_state = 0.0
+            expected = {"out": 0.0, "flag": 0.0, "metric": 0.0}
+            saw_reset = saw_reset or inputs["rst"] > 0.45
+            saw_enable_low = saw_enable_low or inputs["en"] <= 0.45
+        elif mode in {"edge", "sample_fall"}:
+            decision = x0 > x1
+            expected = {"out": 0.9 if decision else 0.0, "flag": 0.9 if decision else 0.0, "metric": 0.9 * _issue109_clip01(abs(x0 - x1))}
+        elif mode == "toggle":
+            if x0 > 0.50:
+                out_state = 0.0 if out_state > 0.45 else 0.9
+            expected = {"out": out_state, "flag": out_state, "metric": 0.9 * _issue109_clip01(abs(x0 - x1))}
+        elif mode == "counter":
+            if x0 > 0.25 and x1 > 0.20:
+                core_state = min(4.0, core_state + 1.0)
+            else:
+                core_state = 0.0
+            expected = {"out": 0.9 * _issue109_clip01(core_state / 4.0), "flag": 0.9 if core_state >= 3.0 else 0.0, "metric": 0.9 * _issue109_clip01(abs(x0 - x1))}
+        elif mode == "latch":
+            if c0 > 0.45:
+                out_state = 0.9 * _issue109_clip01(0.70 * x0 + 0.30 * x1)
+            expected = {"out": out_state, "flag": 0.9 if c0 > 0.45 else 0.0, "metric": 0.9 * _issue109_clip01(abs((out_state / 0.9) - x2))}
+        else:  # accum
+            aux = _issue109_clip01(abs(x0 - x1) + 0.35 * c0)
+            core_state = _issue109_clip01(0.62 * core_state + 0.32 * aux)
+            expected = {"out": 0.9 * core_state, "flag": 0.9 if core_state > 0.58 else 0.0, "metric": 0.9 * aux}
+        max_err = max(max_err, abs(outputs["out"] - expected["out"]), abs(outputs["flag"] - expected["flag"]), abs(outputs["metric"] - expected["metric"]))
+        out_values.append(expected["out"])
+        flag_values.append(expected["flag"])
+        metric_values.append(expected["metric"])
+        checked += 1
+    if checked < 8:
+        return False, f"insufficient_issue109_clock_samples={checked}"
+    if not (saw_reset and saw_enable_low):
+        return False, "missing_reset_or_enable_low_coverage"
+    if max(out_values) - min(out_values) < 0.16:
+        return False, "insufficient_clock_out_dynamic_range"
+    if max(flag_values) - min(flag_values) < 0.45:
+        return False, "insufficient_clock_flag_dynamic_range"
+    if max(metric_values) - min(metric_values) < 0.12:
+        return False, "insufficient_clock_metric_dynamic_range"
+    if max_err > 0.10:
+        return False, f"issue109_remaining_clock_error={max_err:.4f}"
+    return True, f"samples={checked} max_err={max_err:.4f}"
+
+
+def _make_issue109_remaining_checker(task_id: str):
+    def _checker(rows: list[dict[str, float]]) -> tuple[bool, str]:
+        spec = ISSUE109_REMAINING_HOLE_SPECS[task_id]
+        if spec["family"] == "clock":
+            return _check_issue109_clock(rows, spec)
+        return _check_issue109_cont(rows, spec)
+
+    return _checker
+# END ISSUE109_REMAINING_HOLES_GENERATED
+
+
+
+
+
+
+
+
 def check_v3_cal4bit_modulo(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "ain", "d0", "d1", "d2", "d3"}
     if not rows or not required.issubset(rows[0]):
@@ -24766,6 +25207,94 @@ V3_STANDALONE_SPLIT_CHECKS = {
     "v3_494_continuous_zi_nd_filter": check_v3_494_continuous_zi_nd_filter,
     "494-continuous-zi-nd-filter": check_v3_494_continuous_zi_nd_filter,
 }
+
+# BEGIN ISSUE109_REMAINING_HOLES_ALIASES
+CHECKS["v3_341_rail_referenced_gain_buffer"] = _make_issue109_remaining_checker("v3_341_rail_referenced_gain_buffer")
+CHECKS["341-rail-referenced-gain-buffer"] = CHECKS["v3_341_rail_referenced_gain_buffer"]
+CHECKS["v3_342_weighted_balance_summer"] = _make_issue109_remaining_checker("v3_342_weighted_balance_summer")
+CHECKS["342-weighted-balance-summer"] = CHECKS["v3_342_weighted_balance_summer"]
+CHECKS["v3_343_supply_qualified_window_flag"] = _make_issue109_remaining_checker("v3_343_supply_qualified_window_flag")
+CHECKS["343-supply-qualified-window-flag"] = CHECKS["v3_343_supply_qualified_window_flag"]
+CHECKS["v3_344_power_mode_clamped_mux"] = _make_issue109_remaining_checker("v3_344_power_mode_clamped_mux")
+CHECKS["344-power-mode-clamped-mux"] = CHECKS["v3_344_power_mode_clamped_mux"]
+CHECKS["v3_345_bias_trim_affine_mapper"] = _make_issue109_remaining_checker("v3_345_bias_trim_affine_mapper")
+CHECKS["345-bias-trim-affine-mapper"] = CHECKS["v3_345_bias_trim_affine_mapper"]
+CHECKS["v3_346_reset_polarity_qualifier"] = _make_issue109_remaining_checker("v3_346_reset_polarity_qualifier")
+CHECKS["346-reset-polarity-qualifier"] = CHECKS["v3_346_reset_polarity_qualifier"]
+CHECKS["v3_347_multi_condition_enable_combiner"] = _make_issue109_remaining_checker("v3_347_multi_condition_enable_combiner")
+CHECKS["347-multi-condition-enable-combiner"] = CHECKS["v3_347_multi_condition_enable_combiner"]
+CHECKS["v3_348_phase_mismatch_qualifier"] = _make_issue109_remaining_checker("v3_348_phase_mismatch_qualifier")
+CHECKS["348-phase-mismatch-qualifier"] = CHECKS["v3_348_phase_mismatch_qualifier"]
+CHECKS["v3_349_priority_fault_code_driver"] = _make_issue109_remaining_checker("v3_349_priority_fault_code_driver")
+CHECKS["349-priority-fault-code-driver"] = CHECKS["v3_349_priority_fault_code_driver"]
+CHECKS["v3_350_lane_validity_reduction_monitor"] = _make_issue109_remaining_checker("v3_350_lane_validity_reduction_monitor")
+CHECKS["350-lane-validity-reduction-monitor"] = CHECKS["v3_350_lane_validity_reduction_monitor"]
+CHECKS["v3_351_comparator_decision_capture"] = _make_issue109_remaining_checker("v3_351_comparator_decision_capture")
+CHECKS["351-comparator-decision-capture"] = CHECKS["v3_351_comparator_decision_capture"]
+CHECKS["v3_352_falling_edge_calibration_sampler"] = _make_issue109_remaining_checker("v3_352_falling_edge_calibration_sampler")
+CHECKS["352-falling-edge-calibration-sampler"] = CHECKS["v3_352_falling_edge_calibration_sampler"]
+CHECKS["v3_353_resettable_phase_toggle_monitor"] = _make_issue109_remaining_checker("v3_353_resettable_phase_toggle_monitor")
+CHECKS["353-resettable-phase-toggle-monitor"] = CHECKS["v3_353_resettable_phase_toggle_monitor"]
+CHECKS["v3_354_settling_progress_counter"] = _make_issue109_remaining_checker("v3_354_settling_progress_counter")
+CHECKS["354-settling-progress-counter"] = CHECKS["v3_354_settling_progress_counter"]
+CHECKS["v3_355_enable_qualified_bias_hold"] = _make_issue109_remaining_checker("v3_355_enable_qualified_bias_hold")
+CHECKS["355-enable-qualified-bias-hold"] = CHECKS["v3_355_enable_qualified_bias_hold"]
+CHECKS["v3_356_dynamic_supply_enable_driver"] = _make_issue109_remaining_checker("v3_356_dynamic_supply_enable_driver")
+CHECKS["356-dynamic-supply-enable-driver"] = CHECKS["v3_356_dynamic_supply_enable_driver"]
+CHECKS["v3_357_local_domain_buffer_translator"] = _make_issue109_remaining_checker("v3_357_local_domain_buffer_translator")
+CHECKS["357-local-domain-buffer-translator"] = CHECKS["v3_357_local_domain_buffer_translator"]
+CHECKS["v3_358_bias_window_threshold_bridge"] = _make_issue109_remaining_checker("v3_358_bias_window_threshold_bridge")
+CHECKS["358-bias-window-threshold-bridge"] = CHECKS["v3_358_bias_window_threshold_bridge"]
+CHECKS["v3_359_clocked_power_ready_sampler"] = _make_issue109_remaining_checker("v3_359_clocked_power_ready_sampler")
+CHECKS["359-clocked-power-ready-sampler"] = CHECKS["v3_359_clocked_power_ready_sampler"]
+CHECKS["v3_360_mode_selected_bias_driver"] = _make_issue109_remaining_checker("v3_360_mode_selected_bias_driver")
+CHECKS["360-mode-selected-bias-driver"] = CHECKS["v3_360_mode_selected_bias_driver"]
+CHECKS["v3_394_deterministic_energy_accumulator"] = _make_issue109_remaining_checker("v3_394_deterministic_energy_accumulator")
+CHECKS["394-deterministic-energy-accumulator"] = CHECKS["v3_394_deterministic_energy_accumulator"]
+CHECKS["v3_395_bounded_tail_dither_shaper"] = _make_issue109_remaining_checker("v3_395_bounded_tail_dither_shaper")
+CHECKS["395-bounded-tail-dither-shaper"] = CHECKS["v3_395_bounded_tail_dither_shaper"]
+CHECKS["v3_403_calibration_bit_select_flag"] = _make_issue109_remaining_checker("v3_403_calibration_bit_select_flag")
+CHECKS["403-calibration-bit-select-flag"] = CHECKS["v3_403_calibration_bit_select_flag"]
+CHECKS["v3_406_lane_mask_replication_driver"] = _make_issue109_remaining_checker("v3_406_lane_mask_replication_driver")
+CHECKS["406-lane-mask-replication-driver"] = CHECKS["v3_406_lane_mask_replication_driver"]
+CHECKS["v3_415_explicit_sar_slice_router"] = _make_issue109_remaining_checker("v3_415_explicit_sar_slice_router")
+CHECKS["415-explicit-sar-slice-router"] = CHECKS["v3_415_explicit_sar_slice_router"]
+CHECKS["v3_416_ready_reduction_fault_monitor"] = _make_issue109_remaining_checker("v3_416_ready_reduction_fault_monitor")
+CHECKS["416-ready-reduction-fault-monitor"] = CHECKS["v3_416_ready_reduction_fault_monitor"]
+CHECKS["v3_417_async_reset_event_counter"] = _make_issue109_remaining_checker("v3_417_async_reset_event_counter")
+CHECKS["417-async-reset-event-counter"] = CHECKS["v3_417_async_reset_event_counter"]
+CHECKS["v3_418_enable_saturating_ready_counter"] = _make_issue109_remaining_checker("v3_418_enable_saturating_ready_counter")
+CHECKS["418-enable-saturating-ready-counter"] = CHECKS["v3_418_enable_saturating_ready_counter"]
+CHECKS["v3_419_rail_aware_threshold_bridge"] = _make_issue109_remaining_checker("v3_419_rail_aware_threshold_bridge")
+CHECKS["419-rail-aware-threshold-bridge"] = CHECKS["v3_419_rail_aware_threshold_bridge"]
+CHECKS["v3_420_mode_latch_calibration_gate"] = _make_issue109_remaining_checker("v3_420_mode_latch_calibration_gate")
+CHECKS["420-mode-latch-calibration-gate"] = CHECKS["v3_420_mode_latch_calibration_gate"]
+CHECKS["v3_433_configurable_startup_policy"] = _make_issue109_remaining_checker("v3_433_configurable_startup_policy")
+CHECKS["433-configurable-startup-policy"] = CHECKS["v3_433_configurable_startup_policy"]
+CHECKS["v3_449_explicit_replicated_stage_chain"] = _make_issue109_remaining_checker("v3_449_explicit_replicated_stage_chain")
+CHECKS["449-explicit-replicated-stage-chain"] = CHECKS["v3_449_explicit_replicated_stage_chain"]
+CHECKS["v3_451_electrical_threshold_bridge"] = _make_issue109_remaining_checker("v3_451_electrical_threshold_bridge")
+CHECKS["451-electrical-threshold-bridge"] = CHECKS["v3_451_electrical_threshold_bridge"]
+CHECKS["v3_452_local_rail_domain_translator"] = _make_issue109_remaining_checker("v3_452_local_rail_domain_translator")
+CHECKS["452-local-rail-domain-translator"] = CHECKS["v3_452_local_rail_domain_translator"]
+CHECKS["v3_453_edge_delay_qualified_driver"] = _make_issue109_remaining_checker("v3_453_edge_delay_qualified_driver")
+CHECKS["453-edge-delay-qualified-driver"] = CHECKS["v3_453_edge_delay_qualified_driver"]
+CHECKS["v3_454_calibration_quadrant_mapper"] = _make_issue109_remaining_checker("v3_454_calibration_quadrant_mapper")
+CHECKS["454-calibration-quadrant-mapper"] = CHECKS["v3_454_calibration_quadrant_mapper"]
+CHECKS["v3_455_explicit_bus_slice_router"] = _make_issue109_remaining_checker("v3_455_explicit_bus_slice_router")
+CHECKS["455-explicit-bus-slice-router"] = CHECKS["v3_455_explicit_bus_slice_router"]
+CHECKS["v3_458_iterative_decay_estimator"] = _make_issue109_remaining_checker("v3_458_iterative_decay_estimator")
+CHECKS["458-iterative-decay-estimator"] = CHECKS["v3_458_iterative_decay_estimator"]
+CHECKS["v3_459_bounded_window_accumulator"] = _make_issue109_remaining_checker("v3_459_bounded_window_accumulator")
+CHECKS["459-bounded-window-accumulator"] = CHECKS["v3_459_bounded_window_accumulator"]
+# END ISSUE109_REMAINING_HOLES_ALIASES
+
+
+
+
+
+
+
 
 for _alias, _checker in V3_STANDALONE_SPLIT_CHECKS.items():
     CHECKS[_alias] = _checker

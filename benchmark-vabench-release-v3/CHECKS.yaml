@@ -11880,3 +11880,1862 @@
       - lock_drops_near_reference_step_and_reasserts
       - vctrl_stays_bounded_and_moves_during_reacquire
       - five_negative_variants_rejected_by_behavior_checker
+341-rail-referenced-gain-buffer: |
+  version: 1
+  task_id: v3_341_rail_referenced_gain_buffer
+  backend: evas
+  status: formal-candidate
+  checker: v3_341_rail_referenced_gain_buffer
+  required_columns:
+    - time
+    - in0
+    - in1
+    - in2
+    - in3
+    - ctrl0
+    - ctrl1
+    - vdd
+    - vss
+    - en
+    - out
+    - flag
+    - metric
+  syntax:
+    must_include:
+      - "transition("
+    must_not_include:
+      - "wreal"
+      - "logic"
+      - "task "
+      - "endtask"
+      - "connectmodule"
+      - "connectrules"
+      - "specify"
+      - "generate"
+  sim_correct:
+    positive:
+      - solution/rail_referenced_gain_buffer.va
+    negative:
+      - negative_variants/neg_001_zero_outputs/rail_referenced_gain_buffer.va
+      - negative_variants/neg_002_ignore_enable/rail_referenced_gain_buffer.va
+      - negative_variants/neg_003_wrong_scale/rail_referenced_gain_buffer.va
+      - negative_variants/neg_004_ignore_control_or_reset/rail_referenced_gain_buffer.va
+      - negative_variants/neg_005_wrong_flag_metric/rail_referenced_gain_buffer.va
+    checks:
+      - rail_normalized_behavior_matches_public_contract
+      - enable_or_reset_clears_observables
+      - visible_and_hidden_stimuli_exercise_distinct_regions
+      - five_negative_variants_rejected_by_behavior_checker
+342-weighted-balance-summer: |
+  version: 1
+  task_id: v3_342_weighted_balance_summer
+  backend: evas
+  status: formal-candidate
+  checker: v3_342_weighted_balance_summer
+  required_columns:
+    - time
+    - in0
+    - in1
+    - in2
+    - in3
+    - ctrl0
+    - ctrl1
+    - vdd
+    - vss
+    - en
+    - out
+    - flag
+    - metric
+  syntax:
+    must_include:
+      - "transition("
+    must_not_include:
+      - "wreal"
+      - "logic"
+      - "task "
+      - "endtask"
+      - "connectmodule"
+      - "connectrules"
+      - "specify"
+      - "generate"
+  sim_correct:
+    positive:
+      - solution/weighted_balance_summer.va
+    negative:
+      - negative_variants/neg_001_zero_outputs/weighted_balance_summer.va
+      - negative_variants/neg_002_ignore_enable/weighted_balance_summer.va
+      - negative_variants/neg_003_wrong_scale/weighted_balance_summer.va
+      - negative_variants/neg_004_ignore_control_or_reset/weighted_balance_summer.va
+      - negative_variants/neg_005_wrong_flag_metric/weighted_balance_summer.va
+    checks:
+      - rail_normalized_behavior_matches_public_contract
+      - enable_or_reset_clears_observables
+      - visible_and_hidden_stimuli_exercise_distinct_regions
+      - five_negative_variants_rejected_by_behavior_checker
+
+343-supply-qualified-window-flag: |
+  version: 1
+  task_id: v3_343_supply_qualified_window_flag
+  backend: evas
+  status: formal-candidate
+  checker: v3_343_supply_qualified_window_flag
+  required_columns:
+    - time
+    - in0
+    - in1
+    - in2
+    - in3
+    - ctrl0
+    - ctrl1
+    - vdd
+    - vss
+    - en
+    - out
+    - flag
+    - metric
+  syntax:
+    must_include:
+      - "transition("
+    must_not_include:
+      - "wreal"
+      - "logic"
+      - "task "
+      - "endtask"
+      - "connectmodule"
+      - "connectrules"
+      - "specify"
+      - "generate"
+  sim_correct:
+    positive:
+      - solution/supply_qualified_window_flag.va
+    negative:
+      - negative_variants/neg_001_zero_outputs/supply_qualified_window_flag.va
+      - negative_variants/neg_002_ignore_enable/supply_qualified_window_flag.va
+      - negative_variants/neg_003_wrong_scale/supply_qualified_window_flag.va
+      - negative_variants/neg_004_ignore_control_or_reset/supply_qualified_window_flag.va
+      - negative_variants/neg_005_wrong_flag_metric/supply_qualified_window_flag.va
+    checks:
+      - rail_normalized_behavior_matches_public_contract
+      - enable_or_reset_clears_observables
+      - visible_and_hidden_stimuli_exercise_distinct_regions
+      - five_negative_variants_rejected_by_behavior_checker
+
+344-power-mode-clamped-mux: |
+  version: 1
+  task_id: v3_344_power_mode_clamped_mux
+  backend: evas
+  status: formal-candidate
+  checker: v3_344_power_mode_clamped_mux
+  required_columns:
+    - time
+    - in0
+    - in1
+    - in2
+    - in3
+    - ctrl0
+    - ctrl1
+    - vdd
+    - vss
+    - en
+    - out
+    - flag
+    - metric
+  syntax:
+    must_include:
+      - "transition("
+    must_not_include:
+      - "wreal"
+      - "logic"
+      - "task "
+      - "endtask"
+      - "connectmodule"
+      - "connectrules"
+      - "specify"
+      - "generate"
+  sim_correct:
+    positive:
+      - solution/power_mode_clamped_mux.va
+    negative:
+      - negative_variants/neg_001_zero_outputs/power_mode_clamped_mux.va
+      - negative_variants/neg_002_ignore_enable/power_mode_clamped_mux.va
+      - negative_variants/neg_003_wrong_scale/power_mode_clamped_mux.va
+      - negative_variants/neg_004_ignore_control_or_reset/power_mode_clamped_mux.va
+      - negative_variants/neg_005_wrong_flag_metric/power_mode_clamped_mux.va
+    checks:
+      - rail_normalized_behavior_matches_public_contract
+      - enable_or_reset_clears_observables
+      - visible_and_hidden_stimuli_exercise_distinct_regions
+      - five_negative_variants_rejected_by_behavior_checker
+
+345-bias-trim-affine-mapper: |
+  version: 1
+  task_id: v3_345_bias_trim_affine_mapper
+  backend: evas
+  status: formal-candidate
+  checker: v3_345_bias_trim_affine_mapper
+  required_columns:
+    - time
+    - in0
+    - in1
+    - in2
+    - in3
+    - ctrl0
+    - ctrl1
+    - vdd
+    - vss
+    - en
+    - out
+    - flag
+    - metric
+  syntax:
+    must_include:
+      - "transition("
+    must_not_include:
+      - "wreal"
+      - "logic"
+      - "task "
+      - "endtask"
+      - "connectmodule"
+      - "connectrules"
+      - "specify"
+      - "generate"
+  sim_correct:
+    positive:
+      - solution/bias_trim_affine_mapper.va
+    negative:
+      - negative_variants/neg_001_zero_outputs/bias_trim_affine_mapper.va
+      - negative_variants/neg_002_ignore_enable/bias_trim_affine_mapper.va
+      - negative_variants/neg_003_wrong_scale/bias_trim_affine_mapper.va
+      - negative_variants/neg_004_ignore_control_or_reset/bias_trim_affine_mapper.va
+      - negative_variants/neg_005_wrong_flag_metric/bias_trim_affine_mapper.va
+    checks:
+      - rail_normalized_behavior_matches_public_contract
+      - enable_or_reset_clears_observables
+      - visible_and_hidden_stimuli_exercise_distinct_regions
+      - five_negative_variants_rejected_by_behavior_checker
+
+346-reset-polarity-qualifier: |
+  version: 1
+  task_id: v3_346_reset_polarity_qualifier
+  backend: evas
+  status: formal-candidate
+  checker: v3_346_reset_polarity_qualifier
+  required_columns:
+    - time
+    - in0
+    - in1
+    - in2
+    - in3
+    - ctrl0
+    - ctrl1
+    - vdd
+    - vss
+    - en
+    - out
+    - flag
+    - metric
+  syntax:
+    must_include:
+      - "transition("
+    must_not_include:
+      - "wreal"
+      - "logic"
+      - "task "
+      - "endtask"
+      - "connectmodule"
+      - "connectrules"
+      - "specify"
+      - "generate"
+  sim_correct:
+    positive:
+      - solution/reset_polarity_qualifier.va
+    negative:
+      - negative_variants/neg_001_zero_outputs/reset_polarity_qualifier.va
+      - negative_variants/neg_002_ignore_enable/reset_polarity_qualifier.va
+      - negative_variants/neg_003_wrong_scale/reset_polarity_qualifier.va
+      - negative_variants/neg_004_ignore_control_or_reset/reset_polarity_qualifier.va
+      - negative_variants/neg_005_wrong_flag_metric/reset_polarity_qualifier.va
+    checks:
+      - rail_normalized_behavior_matches_public_contract
+      - enable_or_reset_clears_observables
+      - visible_and_hidden_stimuli_exercise_distinct_regions
+      - five_negative_variants_rejected_by_behavior_checker
+
+347-multi-condition-enable-combiner: |
+  version: 1
+  task_id: v3_347_multi_condition_enable_combiner
+  backend: evas
+  status: formal-candidate
+  checker: v3_347_multi_condition_enable_combiner
+  required_columns:
+    - time
+    - in0
+    - in1
+    - in2
+    - in3
+    - ctrl0
+    - ctrl1
+    - vdd
+    - vss
+    - en
+    - out
+    - flag
+    - metric
+  syntax:
+    must_include:
+      - "transition("
+    must_not_include:
+      - "wreal"
+      - "logic"
+      - "task "
+      - "endtask"
+      - "connectmodule"
+      - "connectrules"
+      - "specify"
+      - "generate"
+  sim_correct:
+    positive:
+      - solution/multi_condition_enable_combiner.va
+    negative:
+      - negative_variants/neg_001_zero_outputs/multi_condition_enable_combiner.va
+      - negative_variants/neg_002_ignore_enable/multi_condition_enable_combiner.va
+      - negative_variants/neg_003_wrong_scale/multi_condition_enable_combiner.va
+      - negative_variants/neg_004_ignore_control_or_reset/multi_condition_enable_combiner.va
+      - negative_variants/neg_005_wrong_flag_metric/multi_condition_enable_combiner.va
+    checks:
+      - rail_normalized_behavior_matches_public_contract
+      - enable_or_reset_clears_observables
+      - visible_and_hidden_stimuli_exercise_distinct_regions
+      - five_negative_variants_rejected_by_behavior_checker
+
+348-phase-mismatch-qualifier: |
+  version: 1
+  task_id: v3_348_phase_mismatch_qualifier
+  backend: evas
+  status: formal-candidate
+  checker: v3_348_phase_mismatch_qualifier
+  required_columns:
+    - time
+    - in0
+    - in1
+    - in2
+    - in3
+    - ctrl0
+    - ctrl1
+    - vdd
+    - vss
+    - en
+    - out
+    - flag
+    - metric
+  syntax:
+    must_include:
+      - "transition("
+    must_not_include:
+      - "wreal"
+      - "logic"
+      - "task "
+      - "endtask"
+      - "connectmodule"
+      - "connectrules"
+      - "specify"
+      - "generate"
+  sim_correct:
+    positive:
+      - solution/phase_mismatch_qualifier.va
+    negative:
+      - negative_variants/neg_001_zero_outputs/phase_mismatch_qualifier.va
+      - negative_variants/neg_002_ignore_enable/phase_mismatch_qualifier.va
+      - negative_variants/neg_003_wrong_scale/phase_mismatch_qualifier.va
+      - negative_variants/neg_004_ignore_control_or_reset/phase_mismatch_qualifier.va
+      - negative_variants/neg_005_wrong_flag_metric/phase_mismatch_qualifier.va
+    checks:
+      - rail_normalized_behavior_matches_public_contract
+      - enable_or_reset_clears_observables
+      - visible_and_hidden_stimuli_exercise_distinct_regions
+      - five_negative_variants_rejected_by_behavior_checker
+
+349-priority-fault-code-driver: |
+  version: 1
+  task_id: v3_349_priority_fault_code_driver
+  backend: evas
+  status: formal-candidate
+  checker: v3_349_priority_fault_code_driver
+  required_columns:
+    - time
+    - in0
+    - in1
+    - in2
+    - in3
+    - ctrl0
+    - ctrl1
+    - vdd
+    - vss
+    - en
+    - out
+    - flag
+    - metric
+  syntax:
+    must_include:
+      - "transition("
+    must_not_include:
+      - "wreal"
+      - "logic"
+      - "task "
+      - "endtask"
+      - "connectmodule"
+      - "connectrules"
+      - "specify"
+      - "generate"
+  sim_correct:
+    positive:
+      - solution/priority_fault_code_driver.va
+    negative:
+      - negative_variants/neg_001_zero_outputs/priority_fault_code_driver.va
+      - negative_variants/neg_002_ignore_enable/priority_fault_code_driver.va
+      - negative_variants/neg_003_wrong_scale/priority_fault_code_driver.va
+      - negative_variants/neg_004_ignore_control_or_reset/priority_fault_code_driver.va
+      - negative_variants/neg_005_wrong_flag_metric/priority_fault_code_driver.va
+    checks:
+      - rail_normalized_behavior_matches_public_contract
+      - enable_or_reset_clears_observables
+      - visible_and_hidden_stimuli_exercise_distinct_regions
+      - five_negative_variants_rejected_by_behavior_checker
+
+350-lane-validity-reduction-monitor: |
+  version: 1
+  task_id: v3_350_lane_validity_reduction_monitor
+  backend: evas
+  status: formal-candidate
+  checker: v3_350_lane_validity_reduction_monitor
+  required_columns:
+    - time
+    - in0
+    - in1
+    - in2
+    - in3
+    - ctrl0
+    - ctrl1
+    - vdd
+    - vss
+    - en
+    - out
+    - flag
+    - metric
+  syntax:
+    must_include:
+      - "transition("
+    must_not_include:
+      - "wreal"
+      - "logic"
+      - "task "
+      - "endtask"
+      - "connectmodule"
+      - "connectrules"
+      - "specify"
+      - "generate"
+  sim_correct:
+    positive:
+      - solution/lane_validity_reduction_monitor.va
+    negative:
+      - negative_variants/neg_001_zero_outputs/lane_validity_reduction_monitor.va
+      - negative_variants/neg_002_ignore_enable/lane_validity_reduction_monitor.va
+      - negative_variants/neg_003_wrong_scale/lane_validity_reduction_monitor.va
+      - negative_variants/neg_004_ignore_control_or_reset/lane_validity_reduction_monitor.va
+      - negative_variants/neg_005_wrong_flag_metric/lane_validity_reduction_monitor.va
+    checks:
+      - rail_normalized_behavior_matches_public_contract
+      - enable_or_reset_clears_observables
+      - visible_and_hidden_stimuli_exercise_distinct_regions
+      - five_negative_variants_rejected_by_behavior_checker
+
+351-comparator-decision-capture: |
+  version: 1
+  task_id: v3_351_comparator_decision_capture
+  backend: evas
+  status: formal-candidate
+  checker: v3_351_comparator_decision_capture
+  required_columns:
+    - time
+    - clk
+    - rst
+    - in0
+    - in1
+    - in2
+    - in3
+    - ctrl0
+    - ctrl1
+    - vdd
+    - vss
+    - en
+    - out
+    - flag
+    - metric
+  syntax:
+    must_include:
+      - "transition("
+    must_not_include:
+      - "wreal"
+      - "logic"
+      - "task "
+      - "endtask"
+      - "connectmodule"
+      - "connectrules"
+      - "specify"
+      - "generate"
+  sim_correct:
+    positive:
+      - solution/comparator_decision_capture.va
+    negative:
+      - negative_variants/neg_001_zero_outputs/comparator_decision_capture.va
+      - negative_variants/neg_002_ignore_enable/comparator_decision_capture.va
+      - negative_variants/neg_003_wrong_scale/comparator_decision_capture.va
+      - negative_variants/neg_004_ignore_control_or_reset/comparator_decision_capture.va
+      - negative_variants/neg_005_wrong_flag_metric/comparator_decision_capture.va
+    checks:
+      - rail_normalized_behavior_matches_public_contract
+      - enable_or_reset_clears_observables
+      - visible_and_hidden_stimuli_exercise_distinct_regions
+      - five_negative_variants_rejected_by_behavior_checker
+
+352-falling-edge-calibration-sampler: |
+  version: 1
+  task_id: v3_352_falling_edge_calibration_sampler
+  backend: evas
+  status: formal-candidate
+  checker: v3_352_falling_edge_calibration_sampler
+  required_columns:
+    - time
+    - clk
+    - rst
+    - in0
+    - in1
+    - in2
+    - in3
+    - ctrl0
+    - ctrl1
+    - vdd
+    - vss
+    - en
+    - out
+    - flag
+    - metric
+  syntax:
+    must_include:
+      - "transition("
+    must_not_include:
+      - "wreal"
+      - "logic"
+      - "task "
+      - "endtask"
+      - "connectmodule"
+      - "connectrules"
+      - "specify"
+      - "generate"
+  sim_correct:
+    positive:
+      - solution/falling_edge_calibration_sampler.va
+    negative:
+      - negative_variants/neg_001_zero_outputs/falling_edge_calibration_sampler.va
+      - negative_variants/neg_002_ignore_enable/falling_edge_calibration_sampler.va
+      - negative_variants/neg_003_wrong_scale/falling_edge_calibration_sampler.va
+      - negative_variants/neg_004_ignore_control_or_reset/falling_edge_calibration_sampler.va
+      - negative_variants/neg_005_wrong_flag_metric/falling_edge_calibration_sampler.va
+    checks:
+      - rail_normalized_behavior_matches_public_contract
+      - enable_or_reset_clears_observables
+      - visible_and_hidden_stimuli_exercise_distinct_regions
+      - five_negative_variants_rejected_by_behavior_checker
+
+353-resettable-phase-toggle-monitor: |
+  version: 1
+  task_id: v3_353_resettable_phase_toggle_monitor
+  backend: evas
+  status: formal-candidate
+  checker: v3_353_resettable_phase_toggle_monitor
+  required_columns:
+    - time
+    - clk
+    - rst
+    - in0
+    - in1
+    - in2
+    - in3
+    - ctrl0
+    - ctrl1
+    - vdd
+    - vss
+    - en
+    - out
+    - flag
+    - metric
+  syntax:
+    must_include:
+      - "transition("
+    must_not_include:
+      - "wreal"
+      - "logic"
+      - "task "
+      - "endtask"
+      - "connectmodule"
+      - "connectrules"
+      - "specify"
+      - "generate"
+  sim_correct:
+    positive:
+      - solution/resettable_phase_toggle_monitor.va
+    negative:
+      - negative_variants/neg_001_zero_outputs/resettable_phase_toggle_monitor.va
+      - negative_variants/neg_002_ignore_enable/resettable_phase_toggle_monitor.va
+      - negative_variants/neg_003_wrong_scale/resettable_phase_toggle_monitor.va
+      - negative_variants/neg_004_ignore_control_or_reset/resettable_phase_toggle_monitor.va
+      - negative_variants/neg_005_wrong_flag_metric/resettable_phase_toggle_monitor.va
+    checks:
+      - rail_normalized_behavior_matches_public_contract
+      - enable_or_reset_clears_observables
+      - visible_and_hidden_stimuli_exercise_distinct_regions
+      - five_negative_variants_rejected_by_behavior_checker
+
+354-settling-progress-counter: |
+  version: 1
+  task_id: v3_354_settling_progress_counter
+  backend: evas
+  status: formal-candidate
+  checker: v3_354_settling_progress_counter
+  required_columns:
+    - time
+    - clk
+    - rst
+    - in0
+    - in1
+    - in2
+    - in3
+    - ctrl0
+    - ctrl1
+    - vdd
+    - vss
+    - en
+    - out
+    - flag
+    - metric
+  syntax:
+    must_include:
+      - "transition("
+    must_not_include:
+      - "wreal"
+      - "logic"
+      - "task "
+      - "endtask"
+      - "connectmodule"
+      - "connectrules"
+      - "specify"
+      - "generate"
+  sim_correct:
+    positive:
+      - solution/settling_progress_counter.va
+    negative:
+      - negative_variants/neg_001_zero_outputs/settling_progress_counter.va
+      - negative_variants/neg_002_ignore_enable/settling_progress_counter.va
+      - negative_variants/neg_003_wrong_scale/settling_progress_counter.va
+      - negative_variants/neg_004_ignore_control_or_reset/settling_progress_counter.va
+      - negative_variants/neg_005_wrong_flag_metric/settling_progress_counter.va
+    checks:
+      - rail_normalized_behavior_matches_public_contract
+      - enable_or_reset_clears_observables
+      - visible_and_hidden_stimuli_exercise_distinct_regions
+      - five_negative_variants_rejected_by_behavior_checker
+
+355-enable-qualified-bias-hold: |
+  version: 1
+  task_id: v3_355_enable_qualified_bias_hold
+  backend: evas
+  status: formal-candidate
+  checker: v3_355_enable_qualified_bias_hold
+  required_columns:
+    - time
+    - clk
+    - rst
+    - in0
+    - in1
+    - in2
+    - in3
+    - ctrl0
+    - ctrl1
+    - vdd
+    - vss
+    - en
+    - out
+    - flag
+    - metric
+  syntax:
+    must_include:
+      - "transition("
+    must_not_include:
+      - "wreal"
+      - "logic"
+      - "task "
+      - "endtask"
+      - "connectmodule"
+      - "connectrules"
+      - "specify"
+      - "generate"
+  sim_correct:
+    positive:
+      - solution/enable_qualified_bias_hold.va
+    negative:
+      - negative_variants/neg_001_zero_outputs/enable_qualified_bias_hold.va
+      - negative_variants/neg_002_ignore_enable/enable_qualified_bias_hold.va
+      - negative_variants/neg_003_wrong_scale/enable_qualified_bias_hold.va
+      - negative_variants/neg_004_ignore_control_or_reset/enable_qualified_bias_hold.va
+      - negative_variants/neg_005_wrong_flag_metric/enable_qualified_bias_hold.va
+    checks:
+      - rail_normalized_behavior_matches_public_contract
+      - enable_or_reset_clears_observables
+      - visible_and_hidden_stimuli_exercise_distinct_regions
+      - five_negative_variants_rejected_by_behavior_checker
+
+356-dynamic-supply-enable-driver: |
+  version: 1
+  task_id: v3_356_dynamic_supply_enable_driver
+  backend: evas
+  status: formal-candidate
+  checker: v3_356_dynamic_supply_enable_driver
+  required_columns:
+    - time
+    - in0
+    - in1
+    - in2
+    - in3
+    - ctrl0
+    - ctrl1
+    - vdd
+    - vss
+    - en
+    - out
+    - flag
+    - metric
+  syntax:
+    must_include:
+      - "transition("
+    must_not_include:
+      - "wreal"
+      - "logic"
+      - "task "
+      - "endtask"
+      - "connectmodule"
+      - "connectrules"
+      - "specify"
+      - "generate"
+  sim_correct:
+    positive:
+      - solution/dynamic_supply_enable_driver.va
+    negative:
+      - negative_variants/neg_001_zero_outputs/dynamic_supply_enable_driver.va
+      - negative_variants/neg_002_ignore_enable/dynamic_supply_enable_driver.va
+      - negative_variants/neg_003_wrong_scale/dynamic_supply_enable_driver.va
+      - negative_variants/neg_004_ignore_control_or_reset/dynamic_supply_enable_driver.va
+      - negative_variants/neg_005_wrong_flag_metric/dynamic_supply_enable_driver.va
+    checks:
+      - rail_normalized_behavior_matches_public_contract
+      - enable_or_reset_clears_observables
+      - visible_and_hidden_stimuli_exercise_distinct_regions
+      - five_negative_variants_rejected_by_behavior_checker
+
+357-local-domain-buffer-translator: |
+  version: 1
+  task_id: v3_357_local_domain_buffer_translator
+  backend: evas
+  status: formal-candidate
+  checker: v3_357_local_domain_buffer_translator
+  required_columns:
+    - time
+    - in0
+    - in1
+    - in2
+    - in3
+    - ctrl0
+    - ctrl1
+    - vdd
+    - vss
+    - en
+    - out
+    - flag
+    - metric
+  syntax:
+    must_include:
+      - "transition("
+    must_not_include:
+      - "wreal"
+      - "logic"
+      - "task "
+      - "endtask"
+      - "connectmodule"
+      - "connectrules"
+      - "specify"
+      - "generate"
+  sim_correct:
+    positive:
+      - solution/local_domain_buffer_translator.va
+    negative:
+      - negative_variants/neg_001_zero_outputs/local_domain_buffer_translator.va
+      - negative_variants/neg_002_ignore_enable/local_domain_buffer_translator.va
+      - negative_variants/neg_003_wrong_scale/local_domain_buffer_translator.va
+      - negative_variants/neg_004_ignore_control_or_reset/local_domain_buffer_translator.va
+      - negative_variants/neg_005_wrong_flag_metric/local_domain_buffer_translator.va
+    checks:
+      - rail_normalized_behavior_matches_public_contract
+      - enable_or_reset_clears_observables
+      - visible_and_hidden_stimuli_exercise_distinct_regions
+      - five_negative_variants_rejected_by_behavior_checker
+
+358-bias-window-threshold-bridge: |
+  version: 1
+  task_id: v3_358_bias_window_threshold_bridge
+  backend: evas
+  status: formal-candidate
+  checker: v3_358_bias_window_threshold_bridge
+  required_columns:
+    - time
+    - in0
+    - in1
+    - in2
+    - in3
+    - ctrl0
+    - ctrl1
+    - vdd
+    - vss
+    - en
+    - out
+    - flag
+    - metric
+  syntax:
+    must_include:
+      - "transition("
+    must_not_include:
+      - "wreal"
+      - "logic"
+      - "task "
+      - "endtask"
+      - "connectmodule"
+      - "connectrules"
+      - "specify"
+      - "generate"
+  sim_correct:
+    positive:
+      - solution/bias_window_threshold_bridge.va
+    negative:
+      - negative_variants/neg_001_zero_outputs/bias_window_threshold_bridge.va
+      - negative_variants/neg_002_ignore_enable/bias_window_threshold_bridge.va
+      - negative_variants/neg_003_wrong_scale/bias_window_threshold_bridge.va
+      - negative_variants/neg_004_ignore_control_or_reset/bias_window_threshold_bridge.va
+      - negative_variants/neg_005_wrong_flag_metric/bias_window_threshold_bridge.va
+    checks:
+      - rail_normalized_behavior_matches_public_contract
+      - enable_or_reset_clears_observables
+      - visible_and_hidden_stimuli_exercise_distinct_regions
+      - five_negative_variants_rejected_by_behavior_checker
+
+359-clocked-power-ready-sampler: |
+  version: 1
+  task_id: v3_359_clocked_power_ready_sampler
+  backend: evas
+  status: formal-candidate
+  checker: v3_359_clocked_power_ready_sampler
+  required_columns:
+    - time
+    - clk
+    - rst
+    - in0
+    - in1
+    - in2
+    - in3
+    - ctrl0
+    - ctrl1
+    - vdd
+    - vss
+    - en
+    - out
+    - flag
+    - metric
+  syntax:
+    must_include:
+      - "transition("
+    must_not_include:
+      - "wreal"
+      - "logic"
+      - "task "
+      - "endtask"
+      - "connectmodule"
+      - "connectrules"
+      - "specify"
+      - "generate"
+  sim_correct:
+    positive:
+      - solution/clocked_power_ready_sampler.va
+    negative:
+      - negative_variants/neg_001_zero_outputs/clocked_power_ready_sampler.va
+      - negative_variants/neg_002_ignore_enable/clocked_power_ready_sampler.va
+      - negative_variants/neg_003_wrong_scale/clocked_power_ready_sampler.va
+      - negative_variants/neg_004_ignore_control_or_reset/clocked_power_ready_sampler.va
+      - negative_variants/neg_005_wrong_flag_metric/clocked_power_ready_sampler.va
+    checks:
+      - rail_normalized_behavior_matches_public_contract
+      - enable_or_reset_clears_observables
+      - visible_and_hidden_stimuli_exercise_distinct_regions
+      - five_negative_variants_rejected_by_behavior_checker
+
+360-mode-selected-bias-driver: |
+  version: 1
+  task_id: v3_360_mode_selected_bias_driver
+  backend: evas
+  status: formal-candidate
+  checker: v3_360_mode_selected_bias_driver
+  required_columns:
+    - time
+    - in0
+    - in1
+    - in2
+    - in3
+    - ctrl0
+    - ctrl1
+    - vdd
+    - vss
+    - en
+    - out
+    - flag
+    - metric
+  syntax:
+    must_include:
+      - "transition("
+    must_not_include:
+      - "wreal"
+      - "logic"
+      - "task "
+      - "endtask"
+      - "connectmodule"
+      - "connectrules"
+      - "specify"
+      - "generate"
+  sim_correct:
+    positive:
+      - solution/mode_selected_bias_driver.va
+    negative:
+      - negative_variants/neg_001_zero_outputs/mode_selected_bias_driver.va
+      - negative_variants/neg_002_ignore_enable/mode_selected_bias_driver.va
+      - negative_variants/neg_003_wrong_scale/mode_selected_bias_driver.va
+      - negative_variants/neg_004_ignore_control_or_reset/mode_selected_bias_driver.va
+      - negative_variants/neg_005_wrong_flag_metric/mode_selected_bias_driver.va
+    checks:
+      - rail_normalized_behavior_matches_public_contract
+      - enable_or_reset_clears_observables
+      - visible_and_hidden_stimuli_exercise_distinct_regions
+      - five_negative_variants_rejected_by_behavior_checker
+
+394-deterministic-energy-accumulator: |
+  version: 1
+  task_id: v3_394_deterministic_energy_accumulator
+  backend: evas
+  status: formal-candidate
+  checker: v3_394_deterministic_energy_accumulator
+  required_columns:
+    - time
+    - clk
+    - rst
+    - in0
+    - in1
+    - in2
+    - in3
+    - ctrl0
+    - ctrl1
+    - vdd
+    - vss
+    - en
+    - out
+    - flag
+    - metric
+  syntax:
+    must_include:
+      - "transition("
+    must_not_include:
+      - "wreal"
+      - "logic"
+      - "task "
+      - "endtask"
+      - "connectmodule"
+      - "connectrules"
+      - "specify"
+      - "generate"
+  sim_correct:
+    positive:
+      - solution/deterministic_energy_accumulator.va
+    negative:
+      - negative_variants/neg_001_zero_outputs/deterministic_energy_accumulator.va
+      - negative_variants/neg_002_ignore_enable/deterministic_energy_accumulator.va
+      - negative_variants/neg_003_wrong_scale/deterministic_energy_accumulator.va
+      - negative_variants/neg_004_ignore_control_or_reset/deterministic_energy_accumulator.va
+      - negative_variants/neg_005_wrong_flag_metric/deterministic_energy_accumulator.va
+    checks:
+      - rail_normalized_behavior_matches_public_contract
+      - enable_or_reset_clears_observables
+      - visible_and_hidden_stimuli_exercise_distinct_regions
+      - five_negative_variants_rejected_by_behavior_checker
+
+395-bounded-tail-dither-shaper: |
+  version: 1
+  task_id: v3_395_bounded_tail_dither_shaper
+  backend: evas
+  status: formal-candidate
+  checker: v3_395_bounded_tail_dither_shaper
+  required_columns:
+    - time
+    - clk
+    - rst
+    - in0
+    - in1
+    - in2
+    - in3
+    - ctrl0
+    - ctrl1
+    - vdd
+    - vss
+    - en
+    - out
+    - flag
+    - metric
+  syntax:
+    must_include:
+      - "transition("
+    must_not_include:
+      - "wreal"
+      - "logic"
+      - "task "
+      - "endtask"
+      - "connectmodule"
+      - "connectrules"
+      - "specify"
+      - "generate"
+  sim_correct:
+    positive:
+      - solution/bounded_tail_dither_shaper.va
+    negative:
+      - negative_variants/neg_001_zero_outputs/bounded_tail_dither_shaper.va
+      - negative_variants/neg_002_ignore_enable/bounded_tail_dither_shaper.va
+      - negative_variants/neg_003_wrong_scale/bounded_tail_dither_shaper.va
+      - negative_variants/neg_004_ignore_control_or_reset/bounded_tail_dither_shaper.va
+      - negative_variants/neg_005_wrong_flag_metric/bounded_tail_dither_shaper.va
+    checks:
+      - rail_normalized_behavior_matches_public_contract
+      - enable_or_reset_clears_observables
+      - visible_and_hidden_stimuli_exercise_distinct_regions
+      - five_negative_variants_rejected_by_behavior_checker
+
+403-calibration-bit-select-flag: |
+  version: 1
+  task_id: v3_403_calibration_bit_select_flag
+  backend: evas
+  status: formal-candidate
+  checker: v3_403_calibration_bit_select_flag
+  required_columns:
+    - time
+    - in0
+    - in1
+    - in2
+    - in3
+    - ctrl0
+    - ctrl1
+    - vdd
+    - vss
+    - en
+    - out
+    - flag
+    - metric
+  syntax:
+    must_include:
+      - "transition("
+    must_not_include:
+      - "wreal"
+      - "logic"
+      - "task "
+      - "endtask"
+      - "connectmodule"
+      - "connectrules"
+      - "specify"
+      - "generate"
+  sim_correct:
+    positive:
+      - solution/calibration_bit_select_flag.va
+    negative:
+      - negative_variants/neg_001_zero_outputs/calibration_bit_select_flag.va
+      - negative_variants/neg_002_ignore_enable/calibration_bit_select_flag.va
+      - negative_variants/neg_003_wrong_scale/calibration_bit_select_flag.va
+      - negative_variants/neg_004_ignore_control_or_reset/calibration_bit_select_flag.va
+      - negative_variants/neg_005_wrong_flag_metric/calibration_bit_select_flag.va
+    checks:
+      - rail_normalized_behavior_matches_public_contract
+      - enable_or_reset_clears_observables
+      - visible_and_hidden_stimuli_exercise_distinct_regions
+      - five_negative_variants_rejected_by_behavior_checker
+
+406-lane-mask-replication-driver: |
+  version: 1
+  task_id: v3_406_lane_mask_replication_driver
+  backend: evas
+  status: formal-candidate
+  checker: v3_406_lane_mask_replication_driver
+  required_columns:
+    - time
+    - in0
+    - in1
+    - in2
+    - in3
+    - ctrl0
+    - ctrl1
+    - vdd
+    - vss
+    - en
+    - out
+    - flag
+    - metric
+  syntax:
+    must_include:
+      - "transition("
+    must_not_include:
+      - "wreal"
+      - "logic"
+      - "task "
+      - "endtask"
+      - "connectmodule"
+      - "connectrules"
+      - "specify"
+      - "generate"
+  sim_correct:
+    positive:
+      - solution/lane_mask_replication_driver.va
+    negative:
+      - negative_variants/neg_001_zero_outputs/lane_mask_replication_driver.va
+      - negative_variants/neg_002_ignore_enable/lane_mask_replication_driver.va
+      - negative_variants/neg_003_wrong_scale/lane_mask_replication_driver.va
+      - negative_variants/neg_004_ignore_control_or_reset/lane_mask_replication_driver.va
+      - negative_variants/neg_005_wrong_flag_metric/lane_mask_replication_driver.va
+    checks:
+      - rail_normalized_behavior_matches_public_contract
+      - enable_or_reset_clears_observables
+      - visible_and_hidden_stimuli_exercise_distinct_regions
+      - five_negative_variants_rejected_by_behavior_checker
+
+415-explicit-sar-slice-router: |
+  version: 1
+  task_id: v3_415_explicit_sar_slice_router
+  backend: evas
+  status: formal-candidate
+  checker: v3_415_explicit_sar_slice_router
+  required_columns:
+    - time
+    - in0
+    - in1
+    - in2
+    - in3
+    - ctrl0
+    - ctrl1
+    - vdd
+    - vss
+    - en
+    - out
+    - flag
+    - metric
+  syntax:
+    must_include:
+      - "transition("
+    must_not_include:
+      - "wreal"
+      - "logic"
+      - "task "
+      - "endtask"
+      - "connectmodule"
+      - "connectrules"
+      - "specify"
+      - "generate"
+  sim_correct:
+    positive:
+      - solution/explicit_sar_slice_router.va
+    negative:
+      - negative_variants/neg_001_zero_outputs/explicit_sar_slice_router.va
+      - negative_variants/neg_002_ignore_enable/explicit_sar_slice_router.va
+      - negative_variants/neg_003_wrong_scale/explicit_sar_slice_router.va
+      - negative_variants/neg_004_ignore_control_or_reset/explicit_sar_slice_router.va
+      - negative_variants/neg_005_wrong_flag_metric/explicit_sar_slice_router.va
+    checks:
+      - rail_normalized_behavior_matches_public_contract
+      - enable_or_reset_clears_observables
+      - visible_and_hidden_stimuli_exercise_distinct_regions
+      - five_negative_variants_rejected_by_behavior_checker
+
+416-ready-reduction-fault-monitor: |
+  version: 1
+  task_id: v3_416_ready_reduction_fault_monitor
+  backend: evas
+  status: formal-candidate
+  checker: v3_416_ready_reduction_fault_monitor
+  required_columns:
+    - time
+    - in0
+    - in1
+    - in2
+    - in3
+    - ctrl0
+    - ctrl1
+    - vdd
+    - vss
+    - en
+    - out
+    - flag
+    - metric
+  syntax:
+    must_include:
+      - "transition("
+    must_not_include:
+      - "wreal"
+      - "logic"
+      - "task "
+      - "endtask"
+      - "connectmodule"
+      - "connectrules"
+      - "specify"
+      - "generate"
+  sim_correct:
+    positive:
+      - solution/ready_reduction_fault_monitor.va
+    negative:
+      - negative_variants/neg_001_zero_outputs/ready_reduction_fault_monitor.va
+      - negative_variants/neg_002_ignore_enable/ready_reduction_fault_monitor.va
+      - negative_variants/neg_003_wrong_scale/ready_reduction_fault_monitor.va
+      - negative_variants/neg_004_ignore_control_or_reset/ready_reduction_fault_monitor.va
+      - negative_variants/neg_005_wrong_flag_metric/ready_reduction_fault_monitor.va
+    checks:
+      - rail_normalized_behavior_matches_public_contract
+      - enable_or_reset_clears_observables
+      - visible_and_hidden_stimuli_exercise_distinct_regions
+      - five_negative_variants_rejected_by_behavior_checker
+
+417-async-reset-event-counter: |
+  version: 1
+  task_id: v3_417_async_reset_event_counter
+  backend: evas
+  status: formal-candidate
+  checker: v3_417_async_reset_event_counter
+  required_columns:
+    - time
+    - clk
+    - rst
+    - in0
+    - in1
+    - in2
+    - in3
+    - ctrl0
+    - ctrl1
+    - vdd
+    - vss
+    - en
+    - out
+    - flag
+    - metric
+  syntax:
+    must_include:
+      - "transition("
+    must_not_include:
+      - "wreal"
+      - "logic"
+      - "task "
+      - "endtask"
+      - "connectmodule"
+      - "connectrules"
+      - "specify"
+      - "generate"
+  sim_correct:
+    positive:
+      - solution/async_reset_event_counter.va
+    negative:
+      - negative_variants/neg_001_zero_outputs/async_reset_event_counter.va
+      - negative_variants/neg_002_ignore_enable/async_reset_event_counter.va
+      - negative_variants/neg_003_wrong_scale/async_reset_event_counter.va
+      - negative_variants/neg_004_ignore_control_or_reset/async_reset_event_counter.va
+      - negative_variants/neg_005_wrong_flag_metric/async_reset_event_counter.va
+    checks:
+      - rail_normalized_behavior_matches_public_contract
+      - enable_or_reset_clears_observables
+      - visible_and_hidden_stimuli_exercise_distinct_regions
+      - five_negative_variants_rejected_by_behavior_checker
+
+418-enable-saturating-ready-counter: |
+  version: 1
+  task_id: v3_418_enable_saturating_ready_counter
+  backend: evas
+  status: formal-candidate
+  checker: v3_418_enable_saturating_ready_counter
+  required_columns:
+    - time
+    - clk
+    - rst
+    - in0
+    - in1
+    - in2
+    - in3
+    - ctrl0
+    - ctrl1
+    - vdd
+    - vss
+    - en
+    - out
+    - flag
+    - metric
+  syntax:
+    must_include:
+      - "transition("
+    must_not_include:
+      - "wreal"
+      - "logic"
+      - "task "
+      - "endtask"
+      - "connectmodule"
+      - "connectrules"
+      - "specify"
+      - "generate"
+  sim_correct:
+    positive:
+      - solution/enable_saturating_ready_counter.va
+    negative:
+      - negative_variants/neg_001_zero_outputs/enable_saturating_ready_counter.va
+      - negative_variants/neg_002_ignore_enable/enable_saturating_ready_counter.va
+      - negative_variants/neg_003_wrong_scale/enable_saturating_ready_counter.va
+      - negative_variants/neg_004_ignore_control_or_reset/enable_saturating_ready_counter.va
+      - negative_variants/neg_005_wrong_flag_metric/enable_saturating_ready_counter.va
+    checks:
+      - rail_normalized_behavior_matches_public_contract
+      - enable_or_reset_clears_observables
+      - visible_and_hidden_stimuli_exercise_distinct_regions
+      - five_negative_variants_rejected_by_behavior_checker
+
+419-rail-aware-threshold-bridge: |
+  version: 1
+  task_id: v3_419_rail_aware_threshold_bridge
+  backend: evas
+  status: formal-candidate
+  checker: v3_419_rail_aware_threshold_bridge
+  required_columns:
+    - time
+    - in0
+    - in1
+    - in2
+    - in3
+    - ctrl0
+    - ctrl1
+    - vdd
+    - vss
+    - en
+    - out
+    - flag
+    - metric
+  syntax:
+    must_include:
+      - "transition("
+    must_not_include:
+      - "wreal"
+      - "logic"
+      - "task "
+      - "endtask"
+      - "connectmodule"
+      - "connectrules"
+      - "specify"
+      - "generate"
+  sim_correct:
+    positive:
+      - solution/rail_aware_threshold_bridge.va
+    negative:
+      - negative_variants/neg_001_zero_outputs/rail_aware_threshold_bridge.va
+      - negative_variants/neg_002_ignore_enable/rail_aware_threshold_bridge.va
+      - negative_variants/neg_003_wrong_scale/rail_aware_threshold_bridge.va
+      - negative_variants/neg_004_ignore_control_or_reset/rail_aware_threshold_bridge.va
+      - negative_variants/neg_005_wrong_flag_metric/rail_aware_threshold_bridge.va
+    checks:
+      - rail_normalized_behavior_matches_public_contract
+      - enable_or_reset_clears_observables
+      - visible_and_hidden_stimuli_exercise_distinct_regions
+      - five_negative_variants_rejected_by_behavior_checker
+
+420-mode-latch-calibration-gate: |
+  version: 1
+  task_id: v3_420_mode_latch_calibration_gate
+  backend: evas
+  status: formal-candidate
+  checker: v3_420_mode_latch_calibration_gate
+  required_columns:
+    - time
+    - clk
+    - rst
+    - in0
+    - in1
+    - in2
+    - in3
+    - ctrl0
+    - ctrl1
+    - vdd
+    - vss
+    - en
+    - out
+    - flag
+    - metric
+  syntax:
+    must_include:
+      - "transition("
+    must_not_include:
+      - "wreal"
+      - "logic"
+      - "task "
+      - "endtask"
+      - "connectmodule"
+      - "connectrules"
+      - "specify"
+      - "generate"
+  sim_correct:
+    positive:
+      - solution/mode_latch_calibration_gate.va
+    negative:
+      - negative_variants/neg_001_zero_outputs/mode_latch_calibration_gate.va
+      - negative_variants/neg_002_ignore_enable/mode_latch_calibration_gate.va
+      - negative_variants/neg_003_wrong_scale/mode_latch_calibration_gate.va
+      - negative_variants/neg_004_ignore_control_or_reset/mode_latch_calibration_gate.va
+      - negative_variants/neg_005_wrong_flag_metric/mode_latch_calibration_gate.va
+    checks:
+      - rail_normalized_behavior_matches_public_contract
+      - enable_or_reset_clears_observables
+      - visible_and_hidden_stimuli_exercise_distinct_regions
+      - five_negative_variants_rejected_by_behavior_checker
+
+433-configurable-startup-policy: |
+  version: 1
+  task_id: v3_433_configurable_startup_policy
+  backend: evas
+  status: formal-candidate
+  checker: v3_433_configurable_startup_policy
+  required_columns:
+    - time
+    - in0
+    - in1
+    - in2
+    - in3
+    - ctrl0
+    - ctrl1
+    - vdd
+    - vss
+    - en
+    - out
+    - flag
+    - metric
+  syntax:
+    must_include:
+      - "transition("
+    must_not_include:
+      - "wreal"
+      - "logic"
+      - "task "
+      - "endtask"
+      - "connectmodule"
+      - "connectrules"
+      - "specify"
+      - "generate"
+  sim_correct:
+    positive:
+      - solution/configurable_startup_policy.va
+    negative:
+      - negative_variants/neg_001_zero_outputs/configurable_startup_policy.va
+      - negative_variants/neg_002_ignore_enable/configurable_startup_policy.va
+      - negative_variants/neg_003_wrong_scale/configurable_startup_policy.va
+      - negative_variants/neg_004_ignore_control_or_reset/configurable_startup_policy.va
+      - negative_variants/neg_005_wrong_flag_metric/configurable_startup_policy.va
+    checks:
+      - rail_normalized_behavior_matches_public_contract
+      - enable_or_reset_clears_observables
+      - visible_and_hidden_stimuli_exercise_distinct_regions
+      - five_negative_variants_rejected_by_behavior_checker
+
+449-explicit-replicated-stage-chain: |
+  version: 1
+  task_id: v3_449_explicit_replicated_stage_chain
+  backend: evas
+  status: formal-candidate
+  checker: v3_449_explicit_replicated_stage_chain
+  required_columns:
+    - time
+    - in0
+    - in1
+    - in2
+    - in3
+    - ctrl0
+    - ctrl1
+    - vdd
+    - vss
+    - en
+    - out
+    - flag
+    - metric
+  syntax:
+    must_include:
+      - "transition("
+    must_not_include:
+      - "wreal"
+      - "logic"
+      - "task "
+      - "endtask"
+      - "connectmodule"
+      - "connectrules"
+      - "specify"
+      - "generate"
+  sim_correct:
+    positive:
+      - solution/explicit_replicated_stage_chain.va
+    negative:
+      - negative_variants/neg_001_zero_outputs/explicit_replicated_stage_chain.va
+      - negative_variants/neg_002_ignore_enable/explicit_replicated_stage_chain.va
+      - negative_variants/neg_003_wrong_scale/explicit_replicated_stage_chain.va
+      - negative_variants/neg_004_ignore_control_or_reset/explicit_replicated_stage_chain.va
+      - negative_variants/neg_005_wrong_flag_metric/explicit_replicated_stage_chain.va
+    checks:
+      - rail_normalized_behavior_matches_public_contract
+      - enable_or_reset_clears_observables
+      - visible_and_hidden_stimuli_exercise_distinct_regions
+      - five_negative_variants_rejected_by_behavior_checker
+
+451-electrical-threshold-bridge: |
+  version: 1
+  task_id: v3_451_electrical_threshold_bridge
+  backend: evas
+  status: formal-candidate
+  checker: v3_451_electrical_threshold_bridge
+  required_columns:
+    - time
+    - in0
+    - in1
+    - in2
+    - in3
+    - ctrl0
+    - ctrl1
+    - vdd
+    - vss
+    - en
+    - out
+    - flag
+    - metric
+  syntax:
+    must_include:
+      - "transition("
+    must_not_include:
+      - "wreal"
+      - "logic"
+      - "task "
+      - "endtask"
+      - "connectmodule"
+      - "connectrules"
+      - "specify"
+      - "generate"
+  sim_correct:
+    positive:
+      - solution/electrical_threshold_bridge.va
+    negative:
+      - negative_variants/neg_001_zero_outputs/electrical_threshold_bridge.va
+      - negative_variants/neg_002_ignore_enable/electrical_threshold_bridge.va
+      - negative_variants/neg_003_wrong_scale/electrical_threshold_bridge.va
+      - negative_variants/neg_004_ignore_control_or_reset/electrical_threshold_bridge.va
+      - negative_variants/neg_005_wrong_flag_metric/electrical_threshold_bridge.va
+    checks:
+      - rail_normalized_behavior_matches_public_contract
+      - enable_or_reset_clears_observables
+      - visible_and_hidden_stimuli_exercise_distinct_regions
+      - five_negative_variants_rejected_by_behavior_checker
+
+452-local-rail-domain-translator: |
+  version: 1
+  task_id: v3_452_local_rail_domain_translator
+  backend: evas
+  status: formal-candidate
+  checker: v3_452_local_rail_domain_translator
+  required_columns:
+    - time
+    - in0
+    - in1
+    - in2
+    - in3
+    - ctrl0
+    - ctrl1
+    - vdd
+    - vss
+    - en
+    - out
+    - flag
+    - metric
+  syntax:
+    must_include:
+      - "transition("
+    must_not_include:
+      - "wreal"
+      - "logic"
+      - "task "
+      - "endtask"
+      - "connectmodule"
+      - "connectrules"
+      - "specify"
+      - "generate"
+  sim_correct:
+    positive:
+      - solution/local_rail_domain_translator.va
+    negative:
+      - negative_variants/neg_001_zero_outputs/local_rail_domain_translator.va
+      - negative_variants/neg_002_ignore_enable/local_rail_domain_translator.va
+      - negative_variants/neg_003_wrong_scale/local_rail_domain_translator.va
+      - negative_variants/neg_004_ignore_control_or_reset/local_rail_domain_translator.va
+      - negative_variants/neg_005_wrong_flag_metric/local_rail_domain_translator.va
+    checks:
+      - rail_normalized_behavior_matches_public_contract
+      - enable_or_reset_clears_observables
+      - visible_and_hidden_stimuli_exercise_distinct_regions
+      - five_negative_variants_rejected_by_behavior_checker
+
+453-edge-delay-qualified-driver: |
+  version: 1
+  task_id: v3_453_edge_delay_qualified_driver
+  backend: evas
+  status: formal-candidate
+  checker: v3_453_edge_delay_qualified_driver
+  required_columns:
+    - time
+    - clk
+    - rst
+    - in0
+    - in1
+    - in2
+    - in3
+    - ctrl0
+    - ctrl1
+    - vdd
+    - vss
+    - en
+    - out
+    - flag
+    - metric
+  syntax:
+    must_include:
+      - "transition("
+    must_not_include:
+      - "wreal"
+      - "logic"
+      - "task "
+      - "endtask"
+      - "connectmodule"
+      - "connectrules"
+      - "specify"
+      - "generate"
+  sim_correct:
+    positive:
+      - solution/edge_delay_qualified_driver.va
+    negative:
+      - negative_variants/neg_001_zero_outputs/edge_delay_qualified_driver.va
+      - negative_variants/neg_002_ignore_enable/edge_delay_qualified_driver.va
+      - negative_variants/neg_003_wrong_scale/edge_delay_qualified_driver.va
+      - negative_variants/neg_004_ignore_control_or_reset/edge_delay_qualified_driver.va
+      - negative_variants/neg_005_wrong_flag_metric/edge_delay_qualified_driver.va
+    checks:
+      - rail_normalized_behavior_matches_public_contract
+      - enable_or_reset_clears_observables
+      - visible_and_hidden_stimuli_exercise_distinct_regions
+      - five_negative_variants_rejected_by_behavior_checker
+
+454-calibration-quadrant-mapper: |
+  version: 1
+  task_id: v3_454_calibration_quadrant_mapper
+  backend: evas
+  status: formal-candidate
+  checker: v3_454_calibration_quadrant_mapper
+  required_columns:
+    - time
+    - in0
+    - in1
+    - in2
+    - in3
+    - ctrl0
+    - ctrl1
+    - vdd
+    - vss
+    - en
+    - out
+    - flag
+    - metric
+  syntax:
+    must_include:
+      - "transition("
+    must_not_include:
+      - "wreal"
+      - "logic"
+      - "task "
+      - "endtask"
+      - "connectmodule"
+      - "connectrules"
+      - "specify"
+      - "generate"
+  sim_correct:
+    positive:
+      - solution/calibration_quadrant_mapper.va
+    negative:
+      - negative_variants/neg_001_zero_outputs/calibration_quadrant_mapper.va
+      - negative_variants/neg_002_ignore_enable/calibration_quadrant_mapper.va
+      - negative_variants/neg_003_wrong_scale/calibration_quadrant_mapper.va
+      - negative_variants/neg_004_ignore_control_or_reset/calibration_quadrant_mapper.va
+      - negative_variants/neg_005_wrong_flag_metric/calibration_quadrant_mapper.va
+    checks:
+      - rail_normalized_behavior_matches_public_contract
+      - enable_or_reset_clears_observables
+      - visible_and_hidden_stimuli_exercise_distinct_regions
+      - five_negative_variants_rejected_by_behavior_checker
+
+455-explicit-bus-slice-router: |
+  version: 1
+  task_id: v3_455_explicit_bus_slice_router
+  backend: evas
+  status: formal-candidate
+  checker: v3_455_explicit_bus_slice_router
+  required_columns:
+    - time
+    - in0
+    - in1
+    - in2
+    - in3
+    - ctrl0
+    - ctrl1
+    - vdd
+    - vss
+    - en
+    - out
+    - flag
+    - metric
+  syntax:
+    must_include:
+      - "transition("
+    must_not_include:
+      - "wreal"
+      - "logic"
+      - "task "
+      - "endtask"
+      - "connectmodule"
+      - "connectrules"
+      - "specify"
+      - "generate"
+  sim_correct:
+    positive:
+      - solution/explicit_bus_slice_router.va
+    negative:
+      - negative_variants/neg_001_zero_outputs/explicit_bus_slice_router.va
+      - negative_variants/neg_002_ignore_enable/explicit_bus_slice_router.va
+      - negative_variants/neg_003_wrong_scale/explicit_bus_slice_router.va
+      - negative_variants/neg_004_ignore_control_or_reset/explicit_bus_slice_router.va
+      - negative_variants/neg_005_wrong_flag_metric/explicit_bus_slice_router.va
+    checks:
+      - rail_normalized_behavior_matches_public_contract
+      - enable_or_reset_clears_observables
+      - visible_and_hidden_stimuli_exercise_distinct_regions
+      - five_negative_variants_rejected_by_behavior_checker
+
+458-iterative-decay-estimator: |
+  version: 1
+  task_id: v3_458_iterative_decay_estimator
+  backend: evas
+  status: formal-candidate
+  checker: v3_458_iterative_decay_estimator
+  required_columns:
+    - time
+    - clk
+    - rst
+    - in0
+    - in1
+    - in2
+    - in3
+    - ctrl0
+    - ctrl1
+    - vdd
+    - vss
+    - en
+    - out
+    - flag
+    - metric
+  syntax:
+    must_include:
+      - "transition("
+    must_not_include:
+      - "wreal"
+      - "logic"
+      - "task "
+      - "endtask"
+      - "connectmodule"
+      - "connectrules"
+      - "specify"
+      - "generate"
+  sim_correct:
+    positive:
+      - solution/iterative_decay_estimator.va
+    negative:
+      - negative_variants/neg_001_zero_outputs/iterative_decay_estimator.va
+      - negative_variants/neg_002_ignore_enable/iterative_decay_estimator.va
+      - negative_variants/neg_003_wrong_scale/iterative_decay_estimator.va
+      - negative_variants/neg_004_ignore_control_or_reset/iterative_decay_estimator.va
+      - negative_variants/neg_005_wrong_flag_metric/iterative_decay_estimator.va
+    checks:
+      - rail_normalized_behavior_matches_public_contract
+      - enable_or_reset_clears_observables
+      - visible_and_hidden_stimuli_exercise_distinct_regions
+      - five_negative_variants_rejected_by_behavior_checker
+
+459-bounded-window-accumulator: |
+  version: 1
+  task_id: v3_459_bounded_window_accumulator
+  backend: evas
+  status: formal-candidate
+  checker: v3_459_bounded_window_accumulator
+  required_columns:
+    - time
+    - clk
+    - rst
+    - in0
+    - in1
+    - in2
+    - in3
+    - ctrl0
+    - ctrl1
+    - vdd
+    - vss
+    - en
+    - out
+    - flag
+    - metric
+  syntax:
+    must_include:
+      - "transition("
+    must_not_include:
+      - "wreal"
+      - "logic"
+      - "task "
+      - "endtask"
+      - "connectmodule"
+      - "connectrules"
+      - "specify"
+      - "generate"
+  sim_correct:
+    positive:
+      - solution/bounded_window_accumulator.va
+    negative:
+      - negative_variants/neg_001_zero_outputs/bounded_window_accumulator.va
+      - negative_variants/neg_002_ignore_enable/bounded_window_accumulator.va
+      - negative_variants/neg_003_wrong_scale/bounded_window_accumulator.va
+      - negative_variants/neg_004_ignore_control_or_reset/bounded_window_accumulator.va
+      - negative_variants/neg_005_wrong_flag_metric/bounded_window_accumulator.va
+    checks:
+      - rail_normalized_behavior_matches_public_contract
+      - enable_or_reset_clears_observables
+      - visible_and_hidden_stimuli_exercise_distinct_regions
+      - five_negative_variants_rejected_by_behavior_checker

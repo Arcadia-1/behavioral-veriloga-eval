@@ -4915,6 +4915,666 @@
         "neg_005_output_scale_low"
       ]
     },
+    "341-rail-referenced-gain-buffer": {
+      "id": "v3_341_rail_referenced_gain_buffer",
+      "form": "dut",
+      "level": "L1",
+      "difficulty": "D2",
+      "category": "signal_conditioning_and_measurement",
+      "target": [
+        "rail_referenced_gain_buffer.va"
+      ],
+      "tier": "behavior-extension-candidate",
+      "title": "Rail Referenced Gain Buffer",
+      "syntax_focus": "Replace an issue #109 unsupported language-extension hole with a Spectre-compatible voltage-domain AMS helper or monitor.",
+      "description": "Rail-aware gain buffer that normalizes an input against local supply rails and reports clipping margin.",
+      "required_behavior": [
+        "Normalize public inputs against local rails and reject invalid supply or disabled operation.",
+        "Drive out, flag, and metric as bounded voltage-coded observables.",
+        "Use explicit electrical ports and Spectre-compatible Verilog-A constructs rather than the archived unsupported syntax.",
+        "Keep visible and hidden behavior parameterized by the public inputs rather than hard-coded stimulus times."
+      ],
+      "visible_tests": [
+        "visible.scs exercises the public Rail Referenced Gain Buffer behavior across enable, control, and rail-normalized input changes."
+      ],
+      "hidden_tests": [
+        "hidden.scs changes timing, rails, controls, and input ordering for Rail Referenced Gain Buffer."
+      ],
+      "negative_variants": [
+        "neg_001_zero_outputs",
+        "neg_002_ignore_enable",
+        "neg_003_wrong_scale",
+        "neg_004_ignore_control_or_reset",
+        "neg_005_wrong_flag_metric"
+      ]
+    },
+    "342-weighted-balance-summer": {
+      "id": "v3_342_weighted_balance_summer",
+      "form": "dut",
+      "level": "L1",
+      "difficulty": "D2",
+      "category": "signal_conditioning_and_measurement",
+      "target": [
+        "weighted_balance_summer.va"
+      ],
+      "tier": "behavior-extension-candidate",
+      "title": "Weighted Balance Summer",
+      "syntax_focus": "Replace an issue #109 unsupported language-extension hole with a Spectre-compatible voltage-domain AMS helper or monitor.",
+      "description": "Weighted analog summer with balance qualification and a voltage-coded imbalance metric.",
+      "required_behavior": [
+        "Normalize public inputs against local rails and reject invalid supply or disabled operation.",
+        "Drive out, flag, and metric as bounded voltage-coded observables.",
+        "Use explicit electrical ports and Spectre-compatible Verilog-A constructs rather than the archived unsupported syntax.",
+        "Keep visible and hidden behavior parameterized by the public inputs rather than hard-coded stimulus times."
+      ],
+      "visible_tests": [
+        "visible.scs exercises the public Weighted Balance Summer behavior across enable, control, and rail-normalized input changes."
+      ],
+      "hidden_tests": [
+        "hidden.scs changes timing, rails, controls, and input ordering for Weighted Balance Summer."
+      ],
+      "negative_variants": [
+        "neg_001_zero_outputs",
+        "neg_002_ignore_enable",
+        "neg_003_wrong_scale",
+        "neg_004_ignore_control_or_reset",
+        "neg_005_wrong_flag_metric"
+      ]
+    },
+    "343-supply-qualified-window-flag": {
+      "id": "v3_343_supply_qualified_window_flag",
+      "form": "dut",
+      "level": "L1",
+      "difficulty": "D2",
+      "category": "bias_reference_power_management",
+      "target": [
+        "supply_qualified_window_flag.va"
+      ],
+      "tier": "behavior-extension-candidate",
+      "title": "Supply Qualified Window Flag",
+      "syntax_focus": "Replace an issue #109 unsupported language-extension hole with a Spectre-compatible voltage-domain AMS helper or monitor.",
+      "description": "Supply-qualified window detector that gates a signal-valid flag with local rail and enable conditions.",
+      "required_behavior": [
+        "Normalize public inputs against local rails and reject invalid supply or disabled operation.",
+        "Drive out, flag, and metric as bounded voltage-coded observables.",
+        "Use explicit electrical ports and Spectre-compatible Verilog-A constructs rather than the archived unsupported syntax.",
+        "Keep visible and hidden behavior parameterized by the public inputs rather than hard-coded stimulus times."
+      ],
+      "visible_tests": [
+        "visible.scs exercises the public Supply Qualified Window Flag behavior across enable, control, and rail-normalized input changes."
+      ],
+      "hidden_tests": [
+        "hidden.scs changes timing, rails, controls, and input ordering for Supply Qualified Window Flag."
+      ],
+      "negative_variants": [
+        "neg_001_zero_outputs",
+        "neg_002_ignore_enable",
+        "neg_003_wrong_scale",
+        "neg_004_ignore_control_or_reset",
+        "neg_005_wrong_flag_metric"
+      ]
+    },
+    "344-power-mode-clamped-mux": {
+      "id": "v3_344_power_mode_clamped_mux",
+      "form": "dut",
+      "level": "L1",
+      "difficulty": "D2",
+      "category": "calibration_control",
+      "target": [
+        "power_mode_clamped_mux.va"
+      ],
+      "tier": "behavior-extension-candidate",
+      "title": "Power Mode Clamped Mux",
+      "syntax_focus": "Replace an issue #109 unsupported language-extension hole with a Spectre-compatible voltage-domain AMS helper or monitor.",
+      "description": "Mode-selected analog routing helper with output clamp and mode metric.",
+      "required_behavior": [
+        "Normalize public inputs against local rails and reject invalid supply or disabled operation.",
+        "Drive out, flag, and metric as bounded voltage-coded observables.",
+        "Use explicit electrical ports and Spectre-compatible Verilog-A constructs rather than the archived unsupported syntax.",
+        "Keep visible and hidden behavior parameterized by the public inputs rather than hard-coded stimulus times."
+      ],
+      "visible_tests": [
+        "visible.scs exercises the public Power Mode Clamped Mux behavior across enable, control, and rail-normalized input changes."
+      ],
+      "hidden_tests": [
+        "hidden.scs changes timing, rails, controls, and input ordering for Power Mode Clamped Mux."
+      ],
+      "negative_variants": [
+        "neg_001_zero_outputs",
+        "neg_002_ignore_enable",
+        "neg_003_wrong_scale",
+        "neg_004_ignore_control_or_reset",
+        "neg_005_wrong_flag_metric"
+      ]
+    },
+    "345-bias-trim-affine-mapper": {
+      "id": "v3_345_bias_trim_affine_mapper",
+      "form": "dut",
+      "level": "L1",
+      "difficulty": "D2",
+      "category": "calibration_control",
+      "target": [
+        "bias_trim_affine_mapper.va"
+      ],
+      "tier": "behavior-extension-candidate",
+      "title": "Bias Trim Affine Mapper",
+      "syntax_focus": "Replace an issue #109 unsupported language-extension hole with a Spectre-compatible voltage-domain AMS helper or monitor.",
+      "description": "Bias-trim affine mapper with rail-referenced input scaling and residual metric.",
+      "required_behavior": [
+        "Normalize public inputs against local rails and reject invalid supply or disabled operation.",
+        "Drive out, flag, and metric as bounded voltage-coded observables.",
+        "Use explicit electrical ports and Spectre-compatible Verilog-A constructs rather than the archived unsupported syntax.",
+        "Keep visible and hidden behavior parameterized by the public inputs rather than hard-coded stimulus times."
+      ],
+      "visible_tests": [
+        "visible.scs exercises the public Bias Trim Affine Mapper behavior across enable, control, and rail-normalized input changes."
+      ],
+      "hidden_tests": [
+        "hidden.scs changes timing, rails, controls, and input ordering for Bias Trim Affine Mapper."
+      ],
+      "negative_variants": [
+        "neg_001_zero_outputs",
+        "neg_002_ignore_enable",
+        "neg_003_wrong_scale",
+        "neg_004_ignore_control_or_reset",
+        "neg_005_wrong_flag_metric"
+      ]
+    },
+    "346-reset-polarity-qualifier": {
+      "id": "v3_346_reset_polarity_qualifier",
+      "form": "dut",
+      "level": "L1",
+      "difficulty": "D2",
+      "category": "reset_power_control",
+      "target": [
+        "reset_polarity_qualifier.va"
+      ],
+      "tier": "behavior-extension-candidate",
+      "title": "Reset Polarity Qualifier",
+      "syntax_focus": "Replace an issue #109 unsupported language-extension hole with a Spectre-compatible voltage-domain AMS helper or monitor.",
+      "description": "Electrical reset-polarity qualifier that produces a release flag only inside a valid supply window.",
+      "required_behavior": [
+        "Normalize public inputs against local rails and reject invalid supply or disabled operation.",
+        "Drive out, flag, and metric as bounded voltage-coded observables.",
+        "Use explicit electrical ports and Spectre-compatible Verilog-A constructs rather than the archived unsupported syntax.",
+        "Keep visible and hidden behavior parameterized by the public inputs rather than hard-coded stimulus times."
+      ],
+      "visible_tests": [
+        "visible.scs exercises the public Reset Polarity Qualifier behavior across enable, control, and rail-normalized input changes."
+      ],
+      "hidden_tests": [
+        "hidden.scs changes timing, rails, controls, and input ordering for Reset Polarity Qualifier."
+      ],
+      "negative_variants": [
+        "neg_001_zero_outputs",
+        "neg_002_ignore_enable",
+        "neg_003_wrong_scale",
+        "neg_004_ignore_control_or_reset",
+        "neg_005_wrong_flag_metric"
+      ]
+    },
+    "347-multi-condition-enable-combiner": {
+      "id": "v3_347_multi_condition_enable_combiner",
+      "form": "dut",
+      "level": "L1",
+      "difficulty": "D2",
+      "category": "bias_reference_power_management",
+      "target": [
+        "multi_condition_enable_combiner.va"
+      ],
+      "tier": "behavior-extension-candidate",
+      "title": "Multi Condition Enable Combiner",
+      "syntax_focus": "Replace an issue #109 unsupported language-extension hole with a Spectre-compatible voltage-domain AMS helper or monitor.",
+      "description": "Voltage-domain enable combiner that reduces multiple ready/fault conditions into an AMS drive permission.",
+      "required_behavior": [
+        "Normalize public inputs against local rails and reject invalid supply or disabled operation.",
+        "Drive out, flag, and metric as bounded voltage-coded observables.",
+        "Use explicit electrical ports and Spectre-compatible Verilog-A constructs rather than the archived unsupported syntax.",
+        "Keep visible and hidden behavior parameterized by the public inputs rather than hard-coded stimulus times."
+      ],
+      "visible_tests": [
+        "visible.scs exercises the public Multi Condition Enable Combiner behavior across enable, control, and rail-normalized input changes."
+      ],
+      "hidden_tests": [
+        "hidden.scs changes timing, rails, controls, and input ordering for Multi Condition Enable Combiner."
+      ],
+      "negative_variants": [
+        "neg_001_zero_outputs",
+        "neg_002_ignore_enable",
+        "neg_003_wrong_scale",
+        "neg_004_ignore_control_or_reset",
+        "neg_005_wrong_flag_metric"
+      ]
+    },
+    "348-phase-mismatch-qualifier": {
+      "id": "v3_348_phase_mismatch_qualifier",
+      "form": "dut",
+      "level": "L1",
+      "difficulty": "D2",
+      "category": "pll_clock_timing",
+      "target": [
+        "phase_mismatch_qualifier.va"
+      ],
+      "tier": "behavior-extension-candidate",
+      "title": "Phase Mismatch Qualifier",
+      "syntax_focus": "Replace an issue #109 unsupported language-extension hole with a Spectre-compatible voltage-domain AMS helper or monitor.",
+      "description": "Electrical phase-decision mismatch qualifier with signed mismatch metric.",
+      "required_behavior": [
+        "Normalize public inputs against local rails and reject invalid supply or disabled operation.",
+        "Drive out, flag, and metric as bounded voltage-coded observables.",
+        "Use explicit electrical ports and Spectre-compatible Verilog-A constructs rather than the archived unsupported syntax.",
+        "Keep visible and hidden behavior parameterized by the public inputs rather than hard-coded stimulus times."
+      ],
+      "visible_tests": [
+        "visible.scs exercises the public Phase Mismatch Qualifier behavior across enable, control, and rail-normalized input changes."
+      ],
+      "hidden_tests": [
+        "hidden.scs changes timing, rails, controls, and input ordering for Phase Mismatch Qualifier."
+      ],
+      "negative_variants": [
+        "neg_001_zero_outputs",
+        "neg_002_ignore_enable",
+        "neg_003_wrong_scale",
+        "neg_004_ignore_control_or_reset",
+        "neg_005_wrong_flag_metric"
+      ]
+    },
+    "349-priority-fault-code-driver": {
+      "id": "v3_349_priority_fault_code_driver",
+      "form": "dut",
+      "level": "L1",
+      "difficulty": "D2",
+      "category": "bias_reference_power_management",
+      "target": [
+        "priority_fault_code_driver.va"
+      ],
+      "tier": "behavior-extension-candidate",
+      "title": "Priority Fault Code Driver",
+      "syntax_focus": "Replace an issue #109 unsupported language-extension hole with a Spectre-compatible voltage-domain AMS helper or monitor.",
+      "description": "Priority fault encoder for supply, bias, reset, and mode faults using voltage-coded outputs.",
+      "required_behavior": [
+        "Normalize public inputs against local rails and reject invalid supply or disabled operation.",
+        "Drive out, flag, and metric as bounded voltage-coded observables.",
+        "Use explicit electrical ports and Spectre-compatible Verilog-A constructs rather than the archived unsupported syntax.",
+        "Keep visible and hidden behavior parameterized by the public inputs rather than hard-coded stimulus times."
+      ],
+      "visible_tests": [
+        "visible.scs exercises the public Priority Fault Code Driver behavior across enable, control, and rail-normalized input changes."
+      ],
+      "hidden_tests": [
+        "hidden.scs changes timing, rails, controls, and input ordering for Priority Fault Code Driver."
+      ],
+      "negative_variants": [
+        "neg_001_zero_outputs",
+        "neg_002_ignore_enable",
+        "neg_003_wrong_scale",
+        "neg_004_ignore_control_or_reset",
+        "neg_005_wrong_flag_metric"
+      ]
+    },
+    "350-lane-validity-reduction-monitor": {
+      "id": "v3_350_lane_validity_reduction_monitor",
+      "form": "dut",
+      "level": "L1",
+      "difficulty": "D2",
+      "category": "measurement_control",
+      "target": [
+        "lane_validity_reduction_monitor.va"
+      ],
+      "tier": "behavior-extension-candidate",
+      "title": "Lane Validity Reduction Monitor",
+      "syntax_focus": "Replace an issue #109 unsupported language-extension hole with a Spectre-compatible voltage-domain AMS helper or monitor.",
+      "description": "Explicit-lane validity reduction monitor for multi-lane sampled-data readiness.",
+      "required_behavior": [
+        "Normalize public inputs against local rails and reject invalid supply or disabled operation.",
+        "Drive out, flag, and metric as bounded voltage-coded observables.",
+        "Use explicit electrical ports and Spectre-compatible Verilog-A constructs rather than the archived unsupported syntax.",
+        "Keep visible and hidden behavior parameterized by the public inputs rather than hard-coded stimulus times."
+      ],
+      "visible_tests": [
+        "visible.scs exercises the public Lane Validity Reduction Monitor behavior across enable, control, and rail-normalized input changes."
+      ],
+      "hidden_tests": [
+        "hidden.scs changes timing, rails, controls, and input ordering for Lane Validity Reduction Monitor."
+      ],
+      "negative_variants": [
+        "neg_001_zero_outputs",
+        "neg_002_ignore_enable",
+        "neg_003_wrong_scale",
+        "neg_004_ignore_control_or_reset",
+        "neg_005_wrong_flag_metric"
+      ]
+    },
+    "351-comparator-decision-capture": {
+      "id": "v3_351_comparator_decision_capture",
+      "form": "dut",
+      "level": "L2",
+      "difficulty": "D2",
+      "category": "comparator_decision",
+      "target": [
+        "comparator_decision_capture.va"
+      ],
+      "tier": "behavior-extension-candidate",
+      "title": "Comparator Decision Capture",
+      "syntax_focus": "Replace an issue #109 unsupported language-extension hole with a Spectre-compatible voltage-domain AMS helper or monitor.",
+      "description": "Clocked comparator-decision capture with reset clearing and margin metric.",
+      "required_behavior": [
+        "Normalize public inputs against local rails and reject invalid supply or disabled operation.",
+        "Drive out, flag, and metric as bounded voltage-coded observables.",
+        "Use explicit electrical ports and Spectre-compatible Verilog-A constructs rather than the archived unsupported syntax.",
+        "Keep visible and hidden behavior parameterized by the public inputs rather than hard-coded stimulus times."
+      ],
+      "visible_tests": [
+        "visible.scs exercises the public Comparator Decision Capture behavior across enable, control, and rail-normalized input changes."
+      ],
+      "hidden_tests": [
+        "hidden.scs changes timing, rails, controls, and input ordering for Comparator Decision Capture."
+      ],
+      "negative_variants": [
+        "neg_001_zero_outputs",
+        "neg_002_ignore_enable",
+        "neg_003_wrong_scale",
+        "neg_004_ignore_control_or_reset",
+        "neg_005_wrong_flag_metric"
+      ]
+    },
+    "352-falling-edge-calibration-sampler": {
+      "id": "v3_352_falling_edge_calibration_sampler",
+      "form": "dut",
+      "level": "L2",
+      "difficulty": "D2",
+      "category": "calibration_control",
+      "target": [
+        "falling_edge_calibration_sampler.va"
+      ],
+      "tier": "behavior-extension-candidate",
+      "title": "Falling Edge Calibration Sampler",
+      "syntax_focus": "Replace an issue #109 unsupported language-extension hole with a Spectre-compatible voltage-domain AMS helper or monitor.",
+      "description": "Falling-edge calibration sampler that holds a rail-normalized analog value and reports update magnitude.",
+      "required_behavior": [
+        "Normalize public inputs against local rails and reject invalid supply or disabled operation.",
+        "Drive out, flag, and metric as bounded voltage-coded observables.",
+        "Use explicit electrical ports and Spectre-compatible Verilog-A constructs rather than the archived unsupported syntax.",
+        "Keep visible and hidden behavior parameterized by the public inputs rather than hard-coded stimulus times."
+      ],
+      "visible_tests": [
+        "visible.scs exercises the public Falling Edge Calibration Sampler behavior across enable, control, and rail-normalized input changes."
+      ],
+      "hidden_tests": [
+        "hidden.scs changes timing, rails, controls, and input ordering for Falling Edge Calibration Sampler."
+      ],
+      "negative_variants": [
+        "neg_001_zero_outputs",
+        "neg_002_ignore_enable",
+        "neg_003_wrong_scale",
+        "neg_004_ignore_control_or_reset",
+        "neg_005_wrong_flag_metric"
+      ]
+    },
+    "353-resettable-phase-toggle-monitor": {
+      "id": "v3_353_resettable_phase_toggle_monitor",
+      "form": "dut",
+      "level": "L2",
+      "difficulty": "D2",
+      "category": "pll_clock_timing",
+      "target": [
+        "resettable_phase_toggle_monitor.va"
+      ],
+      "tier": "behavior-extension-candidate",
+      "title": "Resettable Phase Toggle Monitor",
+      "syntax_focus": "Replace an issue #109 unsupported language-extension hole with a Spectre-compatible voltage-domain AMS helper or monitor.",
+      "description": "Resettable phase toggle monitor for divided-clock or phase-state observation.",
+      "required_behavior": [
+        "Normalize public inputs against local rails and reject invalid supply or disabled operation.",
+        "Drive out, flag, and metric as bounded voltage-coded observables.",
+        "Use explicit electrical ports and Spectre-compatible Verilog-A constructs rather than the archived unsupported syntax.",
+        "Keep visible and hidden behavior parameterized by the public inputs rather than hard-coded stimulus times."
+      ],
+      "visible_tests": [
+        "visible.scs exercises the public Resettable Phase Toggle Monitor behavior across enable, control, and rail-normalized input changes."
+      ],
+      "hidden_tests": [
+        "hidden.scs changes timing, rails, controls, and input ordering for Resettable Phase Toggle Monitor."
+      ],
+      "negative_variants": [
+        "neg_001_zero_outputs",
+        "neg_002_ignore_enable",
+        "neg_003_wrong_scale",
+        "neg_004_ignore_control_or_reset",
+        "neg_005_wrong_flag_metric"
+      ]
+    },
+    "354-settling-progress-counter": {
+      "id": "v3_354_settling_progress_counter",
+      "form": "dut",
+      "level": "L2",
+      "difficulty": "D2",
+      "category": "measurement_control",
+      "target": [
+        "settling_progress_counter.va"
+      ],
+      "tier": "behavior-extension-candidate",
+      "title": "Settling Progress Counter",
+      "syntax_focus": "Replace an issue #109 unsupported language-extension hole with a Spectre-compatible voltage-domain AMS helper or monitor.",
+      "description": "Saturating sampled settling counter with explicit readiness and progress metric.",
+      "required_behavior": [
+        "Normalize public inputs against local rails and reject invalid supply or disabled operation.",
+        "Drive out, flag, and metric as bounded voltage-coded observables.",
+        "Use explicit electrical ports and Spectre-compatible Verilog-A constructs rather than the archived unsupported syntax.",
+        "Keep visible and hidden behavior parameterized by the public inputs rather than hard-coded stimulus times."
+      ],
+      "visible_tests": [
+        "visible.scs exercises the public Settling Progress Counter behavior across enable, control, and rail-normalized input changes."
+      ],
+      "hidden_tests": [
+        "hidden.scs changes timing, rails, controls, and input ordering for Settling Progress Counter."
+      ],
+      "negative_variants": [
+        "neg_001_zero_outputs",
+        "neg_002_ignore_enable",
+        "neg_003_wrong_scale",
+        "neg_004_ignore_control_or_reset",
+        "neg_005_wrong_flag_metric"
+      ]
+    },
+    "355-enable-qualified-bias-hold": {
+      "id": "v3_355_enable_qualified_bias_hold",
+      "form": "dut",
+      "level": "L2",
+      "difficulty": "D2",
+      "category": "bias_reference_power_management",
+      "target": [
+        "enable_qualified_bias_hold.va"
+      ],
+      "tier": "behavior-extension-candidate",
+      "title": "Enable Qualified Bias Hold",
+      "syntax_focus": "Replace an issue #109 unsupported language-extension hole with a Spectre-compatible voltage-domain AMS helper or monitor.",
+      "description": "Enable-qualified bias hold latch with reset clear and hold-error metric.",
+      "required_behavior": [
+        "Normalize public inputs against local rails and reject invalid supply or disabled operation.",
+        "Drive out, flag, and metric as bounded voltage-coded observables.",
+        "Use explicit electrical ports and Spectre-compatible Verilog-A constructs rather than the archived unsupported syntax.",
+        "Keep visible and hidden behavior parameterized by the public inputs rather than hard-coded stimulus times."
+      ],
+      "visible_tests": [
+        "visible.scs exercises the public Enable Qualified Bias Hold behavior across enable, control, and rail-normalized input changes."
+      ],
+      "hidden_tests": [
+        "hidden.scs changes timing, rails, controls, and input ordering for Enable Qualified Bias Hold."
+      ],
+      "negative_variants": [
+        "neg_001_zero_outputs",
+        "neg_002_ignore_enable",
+        "neg_003_wrong_scale",
+        "neg_004_ignore_control_or_reset",
+        "neg_005_wrong_flag_metric"
+      ]
+    },
+    "356-dynamic-supply-enable-driver": {
+      "id": "v3_356_dynamic_supply_enable_driver",
+      "form": "dut",
+      "level": "L1",
+      "difficulty": "D2",
+      "category": "bias_reference_power_management",
+      "target": [
+        "dynamic_supply_enable_driver.va"
+      ],
+      "tier": "behavior-extension-candidate",
+      "title": "Dynamic Supply Enable Driver",
+      "syntax_focus": "Replace an issue #109 unsupported language-extension hole with a Spectre-compatible voltage-domain AMS helper or monitor.",
+      "description": "Dynamic local-supply enable driver with rail normalization and undervoltage fallback.",
+      "required_behavior": [
+        "Normalize public inputs against local rails and reject invalid supply or disabled operation.",
+        "Drive out, flag, and metric as bounded voltage-coded observables.",
+        "Use explicit electrical ports and Spectre-compatible Verilog-A constructs rather than the archived unsupported syntax.",
+        "Keep visible and hidden behavior parameterized by the public inputs rather than hard-coded stimulus times."
+      ],
+      "visible_tests": [
+        "visible.scs exercises the public Dynamic Supply Enable Driver behavior across enable, control, and rail-normalized input changes."
+      ],
+      "hidden_tests": [
+        "hidden.scs changes timing, rails, controls, and input ordering for Dynamic Supply Enable Driver."
+      ],
+      "negative_variants": [
+        "neg_001_zero_outputs",
+        "neg_002_ignore_enable",
+        "neg_003_wrong_scale",
+        "neg_004_ignore_control_or_reset",
+        "neg_005_wrong_flag_metric"
+      ]
+    },
+    "357-local-domain-buffer-translator": {
+      "id": "v3_357_local_domain_buffer_translator",
+      "form": "dut",
+      "level": "L1",
+      "difficulty": "D2",
+      "category": "bias_reference_power_management",
+      "target": [
+        "local_domain_buffer_translator.va"
+      ],
+      "tier": "behavior-extension-candidate",
+      "title": "Local Domain Buffer Translator",
+      "syntax_focus": "Replace an issue #109 unsupported language-extension hole with a Spectre-compatible voltage-domain AMS helper or monitor.",
+      "description": "Local-domain voltage translator that maps a rail-referenced input into a global voltage-coded output.",
+      "required_behavior": [
+        "Normalize public inputs against local rails and reject invalid supply or disabled operation.",
+        "Drive out, flag, and metric as bounded voltage-coded observables.",
+        "Use explicit electrical ports and Spectre-compatible Verilog-A constructs rather than the archived unsupported syntax.",
+        "Keep visible and hidden behavior parameterized by the public inputs rather than hard-coded stimulus times."
+      ],
+      "visible_tests": [
+        "visible.scs exercises the public Local Domain Buffer Translator behavior across enable, control, and rail-normalized input changes."
+      ],
+      "hidden_tests": [
+        "hidden.scs changes timing, rails, controls, and input ordering for Local Domain Buffer Translator."
+      ],
+      "negative_variants": [
+        "neg_001_zero_outputs",
+        "neg_002_ignore_enable",
+        "neg_003_wrong_scale",
+        "neg_004_ignore_control_or_reset",
+        "neg_005_wrong_flag_metric"
+      ]
+    },
+    "358-bias-window-threshold-bridge": {
+      "id": "v3_358_bias_window_threshold_bridge",
+      "form": "dut",
+      "level": "L1",
+      "difficulty": "D2",
+      "category": "bias_reference_power_management",
+      "target": [
+        "bias_window_threshold_bridge.va"
+      ],
+      "tier": "behavior-extension-candidate",
+      "title": "Bias Window Threshold Bridge",
+      "syntax_focus": "Replace an issue #109 unsupported language-extension hole with a Spectre-compatible voltage-domain AMS helper or monitor.",
+      "description": "Bias-window threshold bridge with supply qualification and bounded distance metric.",
+      "required_behavior": [
+        "Normalize public inputs against local rails and reject invalid supply or disabled operation.",
+        "Drive out, flag, and metric as bounded voltage-coded observables.",
+        "Use explicit electrical ports and Spectre-compatible Verilog-A constructs rather than the archived unsupported syntax.",
+        "Keep visible and hidden behavior parameterized by the public inputs rather than hard-coded stimulus times."
+      ],
+      "visible_tests": [
+        "visible.scs exercises the public Bias Window Threshold Bridge behavior across enable, control, and rail-normalized input changes."
+      ],
+      "hidden_tests": [
+        "hidden.scs changes timing, rails, controls, and input ordering for Bias Window Threshold Bridge."
+      ],
+      "negative_variants": [
+        "neg_001_zero_outputs",
+        "neg_002_ignore_enable",
+        "neg_003_wrong_scale",
+        "neg_004_ignore_control_or_reset",
+        "neg_005_wrong_flag_metric"
+      ]
+    },
+    "359-clocked-power-ready-sampler": {
+      "id": "v3_359_clocked_power_ready_sampler",
+      "form": "dut",
+      "level": "L2",
+      "difficulty": "D2",
+      "category": "reset_power_control",
+      "target": [
+        "clocked_power_ready_sampler.va"
+      ],
+      "tier": "behavior-extension-candidate",
+      "title": "Clocked Power Ready Sampler",
+      "syntax_focus": "Replace an issue #109 unsupported language-extension hole with a Spectre-compatible voltage-domain AMS helper or monitor.",
+      "description": "Clocked power-ready sampler that requires consecutive valid rail observations before asserting ready.",
+      "required_behavior": [
+        "Normalize public inputs against local rails and reject invalid supply or disabled operation.",
+        "Drive out, flag, and metric as bounded voltage-coded observables.",
+        "Use explicit electrical ports and Spectre-compatible Verilog-A constructs rather than the archived unsupported syntax.",
+        "Keep visible and hidden behavior parameterized by the public inputs rather than hard-coded stimulus times."
+      ],
+      "visible_tests": [
+        "visible.scs exercises the public Clocked Power Ready Sampler behavior across enable, control, and rail-normalized input changes."
+      ],
+      "hidden_tests": [
+        "hidden.scs changes timing, rails, controls, and input ordering for Clocked Power Ready Sampler."
+      ],
+      "negative_variants": [
+        "neg_001_zero_outputs",
+        "neg_002_ignore_enable",
+        "neg_003_wrong_scale",
+        "neg_004_ignore_control_or_reset",
+        "neg_005_wrong_flag_metric"
+      ]
+    },
+    "360-mode-selected-bias-driver": {
+      "id": "v3_360_mode_selected_bias_driver",
+      "form": "dut",
+      "level": "L1",
+      "difficulty": "D2",
+      "category": "bias_reference_power_management",
+      "target": [
+        "mode_selected_bias_driver.va"
+      ],
+      "tier": "behavior-extension-candidate",
+      "title": "Mode Selected Bias Driver",
+      "syntax_focus": "Replace an issue #109 unsupported language-extension hole with a Spectre-compatible voltage-domain AMS helper or monitor.",
+      "description": "Mode-selected bias driver with rail-aware selection and output clamp.",
+      "required_behavior": [
+        "Normalize public inputs against local rails and reject invalid supply or disabled operation.",
+        "Drive out, flag, and metric as bounded voltage-coded observables.",
+        "Use explicit electrical ports and Spectre-compatible Verilog-A constructs rather than the archived unsupported syntax.",
+        "Keep visible and hidden behavior parameterized by the public inputs rather than hard-coded stimulus times."
+      ],
+      "visible_tests": [
+        "visible.scs exercises the public Mode Selected Bias Driver behavior across enable, control, and rail-normalized input changes."
+      ],
+      "hidden_tests": [
+        "hidden.scs changes timing, rails, controls, and input ordering for Mode Selected Bias Driver."
+      ],
+      "negative_variants": [
+        "neg_001_zero_outputs",
+        "neg_002_ignore_enable",
+        "neg_003_wrong_scale",
+        "neg_004_ignore_control_or_reset",
+        "neg_005_wrong_flag_metric"
+      ]
+    },
     "361-white-noise-voltage-source": {
       "category": "veriloga_noise_analysis_semantics",
       "difficulty": "D3",
@@ -6097,6 +6757,72 @@
         "neg_005_scale_output"
       ]
     },
+    "394-deterministic-energy-accumulator": {
+      "id": "v3_394_deterministic_energy_accumulator",
+      "form": "dut",
+      "level": "L2",
+      "difficulty": "D2",
+      "category": "measurement_control",
+      "target": [
+        "deterministic_energy_accumulator.va"
+      ],
+      "tier": "behavior-extension-candidate",
+      "title": "Deterministic Energy Accumulator",
+      "syntax_focus": "Replace an issue #109 unsupported language-extension hole with a Spectre-compatible voltage-domain AMS helper or monitor.",
+      "description": "Deterministic energy-style accumulator that replaces unsupported chi-square random sampling with observable squared-error integration.",
+      "required_behavior": [
+        "Normalize public inputs against local rails and reject invalid supply or disabled operation.",
+        "Drive out, flag, and metric as bounded voltage-coded observables.",
+        "Use explicit electrical ports and Spectre-compatible Verilog-A constructs rather than the archived unsupported syntax.",
+        "Keep visible and hidden behavior parameterized by the public inputs rather than hard-coded stimulus times."
+      ],
+      "visible_tests": [
+        "visible.scs exercises the public Deterministic Energy Accumulator behavior across enable, control, and rail-normalized input changes."
+      ],
+      "hidden_tests": [
+        "hidden.scs changes timing, rails, controls, and input ordering for Deterministic Energy Accumulator."
+      ],
+      "negative_variants": [
+        "neg_001_zero_outputs",
+        "neg_002_ignore_enable",
+        "neg_003_wrong_scale",
+        "neg_004_ignore_control_or_reset",
+        "neg_005_wrong_flag_metric"
+      ]
+    },
+    "395-bounded-tail-dither-shaper": {
+      "id": "v3_395_bounded_tail_dither_shaper",
+      "form": "dut",
+      "level": "L2",
+      "difficulty": "D2",
+      "category": "signal_conditioning_and_measurement",
+      "target": [
+        "bounded_tail_dither_shaper.va"
+      ],
+      "tier": "behavior-extension-candidate",
+      "title": "Bounded Tail Dither Shaper",
+      "syntax_focus": "Replace an issue #109 unsupported language-extension hole with a Spectre-compatible voltage-domain AMS helper or monitor.",
+      "description": "Bounded tail-like dither shaper using deterministic rail-coded inputs instead of unsupported t-distribution sampling.",
+      "required_behavior": [
+        "Normalize public inputs against local rails and reject invalid supply or disabled operation.",
+        "Drive out, flag, and metric as bounded voltage-coded observables.",
+        "Use explicit electrical ports and Spectre-compatible Verilog-A constructs rather than the archived unsupported syntax.",
+        "Keep visible and hidden behavior parameterized by the public inputs rather than hard-coded stimulus times."
+      ],
+      "visible_tests": [
+        "visible.scs exercises the public Bounded Tail Dither Shaper behavior across enable, control, and rail-normalized input changes."
+      ],
+      "hidden_tests": [
+        "hidden.scs changes timing, rails, controls, and input ordering for Bounded Tail Dither Shaper."
+      ],
+      "negative_variants": [
+        "neg_001_zero_outputs",
+        "neg_002_ignore_enable",
+        "neg_003_wrong_scale",
+        "neg_004_ignore_control_or_reset",
+        "neg_005_wrong_flag_metric"
+      ]
+    },
     "396-rdist-erlang-latency": {
       "category": "veriloga_random_distribution_semantics",
       "difficulty": "D3",
@@ -6360,6 +7086,39 @@
         "neg_005_scale_output"
       ]
     },
+    "403-calibration-bit-select-flag": {
+      "id": "v3_403_calibration_bit_select_flag",
+      "form": "dut",
+      "level": "L1",
+      "difficulty": "D2",
+      "category": "calibration_control",
+      "target": [
+        "calibration_bit_select_flag.va"
+      ],
+      "tier": "behavior-extension-candidate",
+      "title": "Calibration Bit Select Flag",
+      "syntax_focus": "Replace an issue #109 unsupported language-extension hole with a Spectre-compatible voltage-domain AMS helper or monitor.",
+      "description": "Explicit electrical calibration-bit select helper that avoids runtime vector bit-select syntax.",
+      "required_behavior": [
+        "Normalize public inputs against local rails and reject invalid supply or disabled operation.",
+        "Drive out, flag, and metric as bounded voltage-coded observables.",
+        "Use explicit electrical ports and Spectre-compatible Verilog-A constructs rather than the archived unsupported syntax.",
+        "Keep visible and hidden behavior parameterized by the public inputs rather than hard-coded stimulus times."
+      ],
+      "visible_tests": [
+        "visible.scs exercises the public Calibration Bit Select Flag behavior across enable, control, and rail-normalized input changes."
+      ],
+      "hidden_tests": [
+        "hidden.scs changes timing, rails, controls, and input ordering for Calibration Bit Select Flag."
+      ],
+      "negative_variants": [
+        "neg_001_zero_outputs",
+        "neg_002_ignore_enable",
+        "neg_003_wrong_scale",
+        "neg_004_ignore_control_or_reset",
+        "neg_005_wrong_flag_metric"
+      ]
+    },
     "404-vector-part-select-window": {
       "category": "veriloga_integer_control_semantics",
       "difficulty": "D3",
@@ -6428,6 +7187,39 @@
         "neg_003_reset_bias",
         "neg_004_metric_offset",
         "neg_005_scale_output"
+      ]
+    },
+    "406-lane-mask-replication-driver": {
+      "id": "v3_406_lane_mask_replication_driver",
+      "form": "dut",
+      "level": "L1",
+      "difficulty": "D2",
+      "category": "calibration_control",
+      "target": [
+        "lane_mask_replication_driver.va"
+      ],
+      "tier": "behavior-extension-candidate",
+      "title": "Lane Mask Replication Driver",
+      "syntax_focus": "Replace an issue #109 unsupported language-extension hole with a Spectre-compatible voltage-domain AMS helper or monitor.",
+      "description": "Lane-mask replication monitor using explicit electrical pins rather than vector replication syntax.",
+      "required_behavior": [
+        "Normalize public inputs against local rails and reject invalid supply or disabled operation.",
+        "Drive out, flag, and metric as bounded voltage-coded observables.",
+        "Use explicit electrical ports and Spectre-compatible Verilog-A constructs rather than the archived unsupported syntax.",
+        "Keep visible and hidden behavior parameterized by the public inputs rather than hard-coded stimulus times."
+      ],
+      "visible_tests": [
+        "visible.scs exercises the public Lane Mask Replication Driver behavior across enable, control, and rail-normalized input changes."
+      ],
+      "hidden_tests": [
+        "hidden.scs changes timing, rails, controls, and input ordering for Lane Mask Replication Driver."
+      ],
+      "negative_variants": [
+        "neg_001_zero_outputs",
+        "neg_002_ignore_enable",
+        "neg_003_wrong_scale",
+        "neg_004_ignore_control_or_reset",
+        "neg_005_wrong_flag_metric"
       ]
     },
     "407-vector-reduction-parity": {
@@ -6713,6 +7505,204 @@
         "neg_005_scale_output"
       ],
       "spectre_parity_status": "spectre-evas2-ready"
+    },
+    "415-explicit-sar-slice-router": {
+      "id": "v3_415_explicit_sar_slice_router",
+      "form": "dut",
+      "level": "L1",
+      "difficulty": "D2",
+      "category": "data_converter",
+      "target": [
+        "explicit_sar_slice_router.va"
+      ],
+      "tier": "behavior-extension-candidate",
+      "title": "Explicit SAR Slice Router",
+      "syntax_focus": "Replace an issue #109 unsupported language-extension hole with a Spectre-compatible voltage-domain AMS helper or monitor.",
+      "description": "Explicit scalar SAR-control slice router replacing packed logic slice syntax with voltage-domain routing.",
+      "required_behavior": [
+        "Normalize public inputs against local rails and reject invalid supply or disabled operation.",
+        "Drive out, flag, and metric as bounded voltage-coded observables.",
+        "Use explicit electrical ports and Spectre-compatible Verilog-A constructs rather than the archived unsupported syntax.",
+        "Keep visible and hidden behavior parameterized by the public inputs rather than hard-coded stimulus times."
+      ],
+      "visible_tests": [
+        "visible.scs exercises the public Explicit SAR Slice Router behavior across enable, control, and rail-normalized input changes."
+      ],
+      "hidden_tests": [
+        "hidden.scs changes timing, rails, controls, and input ordering for Explicit SAR Slice Router."
+      ],
+      "negative_variants": [
+        "neg_001_zero_outputs",
+        "neg_002_ignore_enable",
+        "neg_003_wrong_scale",
+        "neg_004_ignore_control_or_reset",
+        "neg_005_wrong_flag_metric"
+      ]
+    },
+    "416-ready-reduction-fault-monitor": {
+      "id": "v3_416_ready_reduction_fault_monitor",
+      "form": "dut",
+      "level": "L1",
+      "difficulty": "D2",
+      "category": "measurement_control",
+      "target": [
+        "ready_reduction_fault_monitor.va"
+      ],
+      "tier": "behavior-extension-candidate",
+      "title": "Ready Reduction Fault Monitor",
+      "syntax_focus": "Replace an issue #109 unsupported language-extension hole with a Spectre-compatible voltage-domain AMS helper or monitor.",
+      "description": "Readiness reduction and fault monitor for explicit voltage-coded lane flags.",
+      "required_behavior": [
+        "Normalize public inputs against local rails and reject invalid supply or disabled operation.",
+        "Drive out, flag, and metric as bounded voltage-coded observables.",
+        "Use explicit electrical ports and Spectre-compatible Verilog-A constructs rather than the archived unsupported syntax.",
+        "Keep visible and hidden behavior parameterized by the public inputs rather than hard-coded stimulus times."
+      ],
+      "visible_tests": [
+        "visible.scs exercises the public Ready Reduction Fault Monitor behavior across enable, control, and rail-normalized input changes."
+      ],
+      "hidden_tests": [
+        "hidden.scs changes timing, rails, controls, and input ordering for Ready Reduction Fault Monitor."
+      ],
+      "negative_variants": [
+        "neg_001_zero_outputs",
+        "neg_002_ignore_enable",
+        "neg_003_wrong_scale",
+        "neg_004_ignore_control_or_reset",
+        "neg_005_wrong_flag_metric"
+      ]
+    },
+    "417-async-reset-event-counter": {
+      "id": "v3_417_async_reset_event_counter",
+      "form": "dut",
+      "level": "L2",
+      "difficulty": "D2",
+      "category": "measurement_control",
+      "target": [
+        "async_reset_event_counter.va"
+      ],
+      "tier": "behavior-extension-candidate",
+      "title": "Async Reset Event Counter",
+      "syntax_focus": "Replace an issue #109 unsupported language-extension hole with a Spectre-compatible voltage-domain AMS helper or monitor.",
+      "description": "Clocked event counter with asynchronous reset observation and saturated progress output.",
+      "required_behavior": [
+        "Normalize public inputs against local rails and reject invalid supply or disabled operation.",
+        "Drive out, flag, and metric as bounded voltage-coded observables.",
+        "Use explicit electrical ports and Spectre-compatible Verilog-A constructs rather than the archived unsupported syntax.",
+        "Keep visible and hidden behavior parameterized by the public inputs rather than hard-coded stimulus times."
+      ],
+      "visible_tests": [
+        "visible.scs exercises the public Async Reset Event Counter behavior across enable, control, and rail-normalized input changes."
+      ],
+      "hidden_tests": [
+        "hidden.scs changes timing, rails, controls, and input ordering for Async Reset Event Counter."
+      ],
+      "negative_variants": [
+        "neg_001_zero_outputs",
+        "neg_002_ignore_enable",
+        "neg_003_wrong_scale",
+        "neg_004_ignore_control_or_reset",
+        "neg_005_wrong_flag_metric"
+      ]
+    },
+    "418-enable-saturating-ready-counter": {
+      "id": "v3_418_enable_saturating_ready_counter",
+      "form": "dut",
+      "level": "L2",
+      "difficulty": "D2",
+      "category": "reset_power_control",
+      "target": [
+        "enable_saturating_ready_counter.va"
+      ],
+      "tier": "behavior-extension-candidate",
+      "title": "Enable Saturating Ready Counter",
+      "syntax_focus": "Replace an issue #109 unsupported language-extension hole with a Spectre-compatible voltage-domain AMS helper or monitor.",
+      "description": "Enable-qualified saturating ready counter for power/reference settling flows.",
+      "required_behavior": [
+        "Normalize public inputs against local rails and reject invalid supply or disabled operation.",
+        "Drive out, flag, and metric as bounded voltage-coded observables.",
+        "Use explicit electrical ports and Spectre-compatible Verilog-A constructs rather than the archived unsupported syntax.",
+        "Keep visible and hidden behavior parameterized by the public inputs rather than hard-coded stimulus times."
+      ],
+      "visible_tests": [
+        "visible.scs exercises the public Enable Saturating Ready Counter behavior across enable, control, and rail-normalized input changes."
+      ],
+      "hidden_tests": [
+        "hidden.scs changes timing, rails, controls, and input ordering for Enable Saturating Ready Counter."
+      ],
+      "negative_variants": [
+        "neg_001_zero_outputs",
+        "neg_002_ignore_enable",
+        "neg_003_wrong_scale",
+        "neg_004_ignore_control_or_reset",
+        "neg_005_wrong_flag_metric"
+      ]
+    },
+    "419-rail-aware-threshold-bridge": {
+      "id": "v3_419_rail_aware_threshold_bridge",
+      "form": "dut",
+      "level": "L1",
+      "difficulty": "D2",
+      "category": "bias_reference_power_management",
+      "target": [
+        "rail_aware_threshold_bridge.va"
+      ],
+      "tier": "behavior-extension-candidate",
+      "title": "Rail Aware Threshold Bridge",
+      "syntax_focus": "Replace an issue #109 unsupported language-extension hole with a Spectre-compatible voltage-domain AMS helper or monitor.",
+      "description": "Rail-aware threshold bridge with local-ground normalization and validity reporting.",
+      "required_behavior": [
+        "Normalize public inputs against local rails and reject invalid supply or disabled operation.",
+        "Drive out, flag, and metric as bounded voltage-coded observables.",
+        "Use explicit electrical ports and Spectre-compatible Verilog-A constructs rather than the archived unsupported syntax.",
+        "Keep visible and hidden behavior parameterized by the public inputs rather than hard-coded stimulus times."
+      ],
+      "visible_tests": [
+        "visible.scs exercises the public Rail Aware Threshold Bridge behavior across enable, control, and rail-normalized input changes."
+      ],
+      "hidden_tests": [
+        "hidden.scs changes timing, rails, controls, and input ordering for Rail Aware Threshold Bridge."
+      ],
+      "negative_variants": [
+        "neg_001_zero_outputs",
+        "neg_002_ignore_enable",
+        "neg_003_wrong_scale",
+        "neg_004_ignore_control_or_reset",
+        "neg_005_wrong_flag_metric"
+      ]
+    },
+    "420-mode-latch-calibration-gate": {
+      "id": "v3_420_mode_latch_calibration_gate",
+      "form": "dut",
+      "level": "L2",
+      "difficulty": "D2",
+      "category": "calibration_control",
+      "target": [
+        "mode_latch_calibration_gate.va"
+      ],
+      "tier": "behavior-extension-candidate",
+      "title": "Mode Latch Calibration Gate",
+      "syntax_focus": "Replace an issue #109 unsupported language-extension hole with a Spectre-compatible voltage-domain AMS helper or monitor.",
+      "description": "Clocked calibration mode latch that gates a held mode value with reset and enable.",
+      "required_behavior": [
+        "Normalize public inputs against local rails and reject invalid supply or disabled operation.",
+        "Drive out, flag, and metric as bounded voltage-coded observables.",
+        "Use explicit electrical ports and Spectre-compatible Verilog-A constructs rather than the archived unsupported syntax.",
+        "Keep visible and hidden behavior parameterized by the public inputs rather than hard-coded stimulus times."
+      ],
+      "visible_tests": [
+        "visible.scs exercises the public Mode Latch Calibration Gate behavior across enable, control, and rail-normalized input changes."
+      ],
+      "hidden_tests": [
+        "hidden.scs changes timing, rails, controls, and input ordering for Mode Latch Calibration Gate."
+      ],
+      "negative_variants": [
+        "neg_001_zero_outputs",
+        "neg_002_ignore_enable",
+        "neg_003_wrong_scale",
+        "neg_004_ignore_control_or_reset",
+        "neg_005_wrong_flag_metric"
+      ]
     },
     "421-calibration-affine-transform": {
       "category": "calibration_control",
@@ -7151,6 +8141,39 @@
         "neg_003_reset_bias",
         "neg_004_metric_offset",
         "neg_005_scale_output"
+      ]
+    },
+    "433-configurable-startup-policy": {
+      "id": "v3_433_configurable_startup_policy",
+      "form": "dut",
+      "level": "L1",
+      "difficulty": "D2",
+      "category": "reset_power_control",
+      "target": [
+        "configurable_startup_policy.va"
+      ],
+      "tier": "behavior-extension-candidate",
+      "title": "Configurable Startup Policy",
+      "syntax_focus": "Replace an issue #109 unsupported language-extension hole with a Spectre-compatible voltage-domain AMS helper or monitor.",
+      "description": "Parameter-style startup policy selector replacing unsupported preprocessor variants with runtime-observable behavior.",
+      "required_behavior": [
+        "Normalize public inputs against local rails and reject invalid supply or disabled operation.",
+        "Drive out, flag, and metric as bounded voltage-coded observables.",
+        "Use explicit electrical ports and Spectre-compatible Verilog-A constructs rather than the archived unsupported syntax.",
+        "Keep visible and hidden behavior parameterized by the public inputs rather than hard-coded stimulus times."
+      ],
+      "visible_tests": [
+        "visible.scs exercises the public Configurable Startup Policy behavior across enable, control, and rail-normalized input changes."
+      ],
+      "hidden_tests": [
+        "hidden.scs changes timing, rails, controls, and input ordering for Configurable Startup Policy."
+      ],
+      "negative_variants": [
+        "neg_001_zero_outputs",
+        "neg_002_ignore_enable",
+        "neg_003_wrong_scale",
+        "neg_004_ignore_control_or_reset",
+        "neg_005_wrong_flag_metric"
       ]
     },
     "434-repeat-loop-accumulator": {
@@ -7661,6 +8684,39 @@
         "neg_005_scale_output"
       ]
     },
+    "449-explicit-replicated-stage-chain": {
+      "id": "v3_449_explicit_replicated_stage_chain",
+      "form": "dut",
+      "level": "L1",
+      "difficulty": "D2",
+      "category": "signal_conditioning_and_measurement",
+      "target": [
+        "explicit_replicated_stage_chain.va"
+      ],
+      "tier": "behavior-extension-candidate",
+      "title": "Explicit Replicated Stage Chain",
+      "syntax_focus": "Replace an issue #109 unsupported language-extension hole with a Spectre-compatible voltage-domain AMS helper or monitor.",
+      "description": "Explicitly unrolled replicated-stage chain metric replacing generate/genvar syntax with observable stage composition.",
+      "required_behavior": [
+        "Normalize public inputs against local rails and reject invalid supply or disabled operation.",
+        "Drive out, flag, and metric as bounded voltage-coded observables.",
+        "Use explicit electrical ports and Spectre-compatible Verilog-A constructs rather than the archived unsupported syntax.",
+        "Keep visible and hidden behavior parameterized by the public inputs rather than hard-coded stimulus times."
+      ],
+      "visible_tests": [
+        "visible.scs exercises the public Explicit Replicated Stage Chain behavior across enable, control, and rail-normalized input changes."
+      ],
+      "hidden_tests": [
+        "hidden.scs changes timing, rails, controls, and input ordering for Explicit Replicated Stage Chain."
+      ],
+      "negative_variants": [
+        "neg_001_zero_outputs",
+        "neg_002_ignore_enable",
+        "neg_003_wrong_scale",
+        "neg_004_ignore_control_or_reset",
+        "neg_005_wrong_flag_metric"
+      ]
+    },
     "450-custom-nature-discipline-voltage": {
       "category": "verilogams_discipline_semantics",
       "difficulty": "D3",
@@ -7694,6 +8750,171 @@
         "neg_003_reset_bias",
         "neg_004_metric_offset",
         "neg_005_scale_output"
+      ]
+    },
+    "451-electrical-threshold-bridge": {
+      "id": "v3_451_electrical_threshold_bridge",
+      "form": "dut",
+      "level": "L1",
+      "difficulty": "D2",
+      "category": "bias_reference_power_management",
+      "target": [
+        "electrical_threshold_bridge.va"
+      ],
+      "tier": "behavior-extension-candidate",
+      "title": "Electrical Threshold Bridge",
+      "syntax_focus": "Replace an issue #109 unsupported language-extension hole with a Spectre-compatible voltage-domain AMS helper or monitor.",
+      "description": "Pure electrical threshold bridge replacing connectmodule behavior with explicit voltage-domain ports.",
+      "required_behavior": [
+        "Normalize public inputs against local rails and reject invalid supply or disabled operation.",
+        "Drive out, flag, and metric as bounded voltage-coded observables.",
+        "Use explicit electrical ports and Spectre-compatible Verilog-A constructs rather than the archived unsupported syntax.",
+        "Keep visible and hidden behavior parameterized by the public inputs rather than hard-coded stimulus times."
+      ],
+      "visible_tests": [
+        "visible.scs exercises the public Electrical Threshold Bridge behavior across enable, control, and rail-normalized input changes."
+      ],
+      "hidden_tests": [
+        "hidden.scs changes timing, rails, controls, and input ordering for Electrical Threshold Bridge."
+      ],
+      "negative_variants": [
+        "neg_001_zero_outputs",
+        "neg_002_ignore_enable",
+        "neg_003_wrong_scale",
+        "neg_004_ignore_control_or_reset",
+        "neg_005_wrong_flag_metric"
+      ]
+    },
+    "452-local-rail-domain-translator": {
+      "id": "v3_452_local_rail_domain_translator",
+      "form": "dut",
+      "level": "L1",
+      "difficulty": "D2",
+      "category": "bias_reference_power_management",
+      "target": [
+        "local_rail_domain_translator.va"
+      ],
+      "tier": "behavior-extension-candidate",
+      "title": "Local Rail Domain Translator",
+      "syntax_focus": "Replace an issue #109 unsupported language-extension hole with a Spectre-compatible voltage-domain AMS helper or monitor.",
+      "description": "Local-rail domain translator replacing connectrules mapping with explicit supply and enable ports.",
+      "required_behavior": [
+        "Normalize public inputs against local rails and reject invalid supply or disabled operation.",
+        "Drive out, flag, and metric as bounded voltage-coded observables.",
+        "Use explicit electrical ports and Spectre-compatible Verilog-A constructs rather than the archived unsupported syntax.",
+        "Keep visible and hidden behavior parameterized by the public inputs rather than hard-coded stimulus times."
+      ],
+      "visible_tests": [
+        "visible.scs exercises the public Local Rail Domain Translator behavior across enable, control, and rail-normalized input changes."
+      ],
+      "hidden_tests": [
+        "hidden.scs changes timing, rails, controls, and input ordering for Local Rail Domain Translator."
+      ],
+      "negative_variants": [
+        "neg_001_zero_outputs",
+        "neg_002_ignore_enable",
+        "neg_003_wrong_scale",
+        "neg_004_ignore_control_or_reset",
+        "neg_005_wrong_flag_metric"
+      ]
+    },
+    "453-edge-delay-qualified-driver": {
+      "id": "v3_453_edge_delay_qualified_driver",
+      "form": "dut",
+      "level": "L2",
+      "difficulty": "D2",
+      "category": "pll_clock_timing",
+      "target": [
+        "edge_delay_qualified_driver.va"
+      ],
+      "tier": "behavior-extension-candidate",
+      "title": "Edge Delay Qualified Driver",
+      "syntax_focus": "Replace an issue #109 unsupported language-extension hole with a Spectre-compatible voltage-domain AMS helper or monitor.",
+      "description": "Clock-edge qualified delay-style driver replacing specify/specparam timing with explicit event state.",
+      "required_behavior": [
+        "Normalize public inputs against local rails and reject invalid supply or disabled operation.",
+        "Drive out, flag, and metric as bounded voltage-coded observables.",
+        "Use explicit electrical ports and Spectre-compatible Verilog-A constructs rather than the archived unsupported syntax.",
+        "Keep visible and hidden behavior parameterized by the public inputs rather than hard-coded stimulus times."
+      ],
+      "visible_tests": [
+        "visible.scs exercises the public Edge Delay Qualified Driver behavior across enable, control, and rail-normalized input changes."
+      ],
+      "hidden_tests": [
+        "hidden.scs changes timing, rails, controls, and input ordering for Edge Delay Qualified Driver."
+      ],
+      "negative_variants": [
+        "neg_001_zero_outputs",
+        "neg_002_ignore_enable",
+        "neg_003_wrong_scale",
+        "neg_004_ignore_control_or_reset",
+        "neg_005_wrong_flag_metric"
+      ]
+    },
+    "454-calibration-quadrant-mapper": {
+      "id": "v3_454_calibration_quadrant_mapper",
+      "form": "dut",
+      "level": "L1",
+      "difficulty": "D2",
+      "category": "calibration_control",
+      "target": [
+        "calibration_quadrant_mapper.va"
+      ],
+      "tier": "behavior-extension-candidate",
+      "title": "Calibration Quadrant Mapper",
+      "syntax_focus": "Replace an issue #109 unsupported language-extension hole with a Spectre-compatible voltage-domain AMS helper or monitor.",
+      "description": "Calibration quadrant mapper using explicit scalar conditions rather than multidimensional array state.",
+      "required_behavior": [
+        "Normalize public inputs against local rails and reject invalid supply or disabled operation.",
+        "Drive out, flag, and metric as bounded voltage-coded observables.",
+        "Use explicit electrical ports and Spectre-compatible Verilog-A constructs rather than the archived unsupported syntax.",
+        "Keep visible and hidden behavior parameterized by the public inputs rather than hard-coded stimulus times."
+      ],
+      "visible_tests": [
+        "visible.scs exercises the public Calibration Quadrant Mapper behavior across enable, control, and rail-normalized input changes."
+      ],
+      "hidden_tests": [
+        "hidden.scs changes timing, rails, controls, and input ordering for Calibration Quadrant Mapper."
+      ],
+      "negative_variants": [
+        "neg_001_zero_outputs",
+        "neg_002_ignore_enable",
+        "neg_003_wrong_scale",
+        "neg_004_ignore_control_or_reset",
+        "neg_005_wrong_flag_metric"
+      ]
+    },
+    "455-explicit-bus-slice-router": {
+      "id": "v3_455_explicit_bus_slice_router",
+      "form": "dut",
+      "level": "L1",
+      "difficulty": "D2",
+      "category": "data_converter",
+      "target": [
+        "explicit_bus_slice_router.va"
+      ],
+      "tier": "behavior-extension-candidate",
+      "title": "Explicit Bus Slice Router",
+      "syntax_focus": "Replace an issue #109 unsupported language-extension hole with a Spectre-compatible voltage-domain AMS helper or monitor.",
+      "description": "Explicit voltage-domain bus-slice router replacing packed logic slice syntax.",
+      "required_behavior": [
+        "Normalize public inputs against local rails and reject invalid supply or disabled operation.",
+        "Drive out, flag, and metric as bounded voltage-coded observables.",
+        "Use explicit electrical ports and Spectre-compatible Verilog-A constructs rather than the archived unsupported syntax.",
+        "Keep visible and hidden behavior parameterized by the public inputs rather than hard-coded stimulus times."
+      ],
+      "visible_tests": [
+        "visible.scs exercises the public Explicit Bus Slice Router behavior across enable, control, and rail-normalized input changes."
+      ],
+      "hidden_tests": [
+        "hidden.scs changes timing, rails, controls, and input ordering for Explicit Bus Slice Router."
+      ],
+      "negative_variants": [
+        "neg_001_zero_outputs",
+        "neg_002_ignore_enable",
+        "neg_003_wrong_scale",
+        "neg_004_ignore_control_or_reset",
+        "neg_005_wrong_flag_metric"
       ]
     },
     "456-event-or-cross-timer": {
@@ -7764,6 +8985,72 @@
         "neg_003_reset_bias",
         "neg_004_metric_offset",
         "neg_005_scale_output"
+      ]
+    },
+    "458-iterative-decay-estimator": {
+      "id": "v3_458_iterative_decay_estimator",
+      "form": "dut",
+      "level": "L2",
+      "difficulty": "D2",
+      "category": "measurement_control",
+      "target": [
+        "iterative_decay_estimator.va"
+      ],
+      "tier": "behavior-extension-candidate",
+      "title": "Iterative Decay Estimator",
+      "syntax_focus": "Replace an issue #109 unsupported language-extension hole with a Spectre-compatible voltage-domain AMS helper or monitor.",
+      "description": "Bounded iterative decay estimator replacing recursive helper syntax with clocked state updates.",
+      "required_behavior": [
+        "Normalize public inputs against local rails and reject invalid supply or disabled operation.",
+        "Drive out, flag, and metric as bounded voltage-coded observables.",
+        "Use explicit electrical ports and Spectre-compatible Verilog-A constructs rather than the archived unsupported syntax.",
+        "Keep visible and hidden behavior parameterized by the public inputs rather than hard-coded stimulus times."
+      ],
+      "visible_tests": [
+        "visible.scs exercises the public Iterative Decay Estimator behavior across enable, control, and rail-normalized input changes."
+      ],
+      "hidden_tests": [
+        "hidden.scs changes timing, rails, controls, and input ordering for Iterative Decay Estimator."
+      ],
+      "negative_variants": [
+        "neg_001_zero_outputs",
+        "neg_002_ignore_enable",
+        "neg_003_wrong_scale",
+        "neg_004_ignore_control_or_reset",
+        "neg_005_wrong_flag_metric"
+      ]
+    },
+    "459-bounded-window-accumulator": {
+      "id": "v3_459_bounded_window_accumulator",
+      "form": "dut",
+      "level": "L2",
+      "difficulty": "D2",
+      "category": "measurement_control",
+      "target": [
+        "bounded_window_accumulator.va"
+      ],
+      "tier": "behavior-extension-candidate",
+      "title": "Bounded Window Accumulator",
+      "syntax_focus": "Replace an issue #109 unsupported language-extension hole with a Spectre-compatible voltage-domain AMS helper or monitor.",
+      "description": "Bounded sampled-window accumulator replacing do-while syntax with Spectre-compatible clocked state.",
+      "required_behavior": [
+        "Normalize public inputs against local rails and reject invalid supply or disabled operation.",
+        "Drive out, flag, and metric as bounded voltage-coded observables.",
+        "Use explicit electrical ports and Spectre-compatible Verilog-A constructs rather than the archived unsupported syntax.",
+        "Keep visible and hidden behavior parameterized by the public inputs rather than hard-coded stimulus times."
+      ],
+      "visible_tests": [
+        "visible.scs exercises the public Bounded Window Accumulator behavior across enable, control, and rail-normalized input changes."
+      ],
+      "hidden_tests": [
+        "hidden.scs changes timing, rails, controls, and input ordering for Bounded Window Accumulator."
+      ],
+      "negative_variants": [
+        "neg_001_zero_outputs",
+        "neg_002_ignore_enable",
+        "neg_003_wrong_scale",
+        "neg_004_ignore_control_or_reset",
+        "neg_005_wrong_flag_metric"
       ]
     },
     "460-analog-initial-block-state": {

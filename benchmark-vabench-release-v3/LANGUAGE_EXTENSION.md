@@ -3,12 +3,12 @@
 The default `tasks/` tree is now the standalone-Spectre-compatible v3
 denominator:
 
-- numbered default rows: `466`
+- numbered default rows: `505`
 - unnumbered replacement candidates: `0`
 - archived Spectre-rejected rows: `54`
 
-Numbering is intentionally non-contiguous while issue #109 replacement work is
-in progress. The benchmark keeps the historical task ids, but rows that
+Numbering is contiguous from `001` through `505` after the issue #109
+replacement batches. The benchmark keeps the historical task ids, but rows that
 Cadence/Spectre rejects as written are archived under
 `spectre-unsupported-tasks/` and removed from `TASKS.json` and `CHECKS.yaml`.
 See `reports/spectre_unsupported_removed_20260703.md` for the exact task list
@@ -47,6 +47,15 @@ updates to model limiter recovery, sampled calibration/error updates, qualified
 event-rate measurement, reset-release sequencing, adaptive threshold tracking,
 rail-normalized metrics, affine calibration transforms, and PLL/clock
 reacquisition lock detection.
+
+Issue #109 also fills the remaining numbering holes `341`-`360`, `394`-`395`,
+`403`, `406`, `415`-`420`, `433`, `449`, `451`-`455`, and `458`-`459` with
+Spectre-compatible voltage-domain AMS helper/monitor rows. These replacements
+cover rail-referenced gain/summing/window/translation helpers, sampled
+comparator/calibration/reset/control monitors, deterministic accumulator and
+bounded iterative-update flows, explicit scalar routing/reduction helpers for
+archived vector/generate/connect/specify forms, and reset/power startup policy
+contracts.
 
 Rows `301+` are language-extension candidates. The retained default rows cover
 these Verilog-A-oriented surfaces:
