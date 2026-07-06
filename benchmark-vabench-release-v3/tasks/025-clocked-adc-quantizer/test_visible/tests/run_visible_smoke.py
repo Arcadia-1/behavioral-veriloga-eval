@@ -30,6 +30,7 @@ def main() -> int:
         raise SystemExit(f"missing visible smoke testbench: {tb_src}")
 
     repo_root = find_repo_root(tests_dir)
+    os.environ.setdefault("VAEVAS_DEFAULT_EVAS_ENGINE", "python")
     sys.path.insert(0, str(repo_root / "runners"))
     from simulate_evas import run_evas, spectre_aligned_veriloga_preflight
 
