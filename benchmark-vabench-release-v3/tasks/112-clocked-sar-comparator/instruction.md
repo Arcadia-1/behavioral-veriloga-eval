@@ -1,10 +1,18 @@
 # Clocked SAR Comparator
 
+## Task Contract
+
+Implement the requested Verilog-A artifact for `Clocked SAR Comparator`.
+- Form: `dut`
+- Level: `L1`
+- Category: `data_converter`
+- Target artifact(s): `clocked_sar_comparator.va`
+
 Implement `clocked_sar_comparator.va` in Verilog-A as a converter front-end
 interface primitive: a differential analog input is latched into voltage-coded
 decision outputs for a SAR-style readout path.
 
-## Public Interface
+## Public Verilog-A Interface
 
 Declare module `clocked_sar_comparator(CMPCK, VINN, VINP, DCMPN, DCMPP)` with
 scalar electrical voltage-domain ports. `CMPCK` is the comparator clock,
@@ -20,7 +28,7 @@ Provide these overrideable public parameters:
 - `td_cmp = 20p`: comparator output delay.
 - `tr = 5p`: output transition smoothing time.
 
-## Functional Contract
+## Required Behavior
 
 - Initialize both decision outputs high.
 - Whenever `CMPCK` falls through `vdd/2`, precharge/reset both decision outputs
@@ -35,6 +43,12 @@ Provide these overrideable public parameters:
 ## Modeling Constraints
 
 Return only `clocked_sar_comparator.va`. Do not emit a Spectre testbench,
-checker logic, private test hooks, or simulator-private side channels. Use
+validation logic, validation-only hooks, or simulator-specific side channels. Use
 voltage contributions only; do not use current contributions, `ddt()`, or
 `idt()`.
+
+Use deterministic Verilog-A behavioral modeling appropriate for the public circuit contract. The visible testbench is a public validation scenario; do not hard-code a particular stimulus table, transient stop time, or validation sample window into the DUT unless that behavior is part of the public circuit contract.
+
+## Output Contract
+
+Return exactly one complete source artifact named `clocked_sar_comparator.va`. Do not include explanatory prose outside the source artifact contents.

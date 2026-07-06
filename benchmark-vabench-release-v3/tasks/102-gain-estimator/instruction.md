@@ -1,8 +1,16 @@
 # Gain Estimator
 
+## Task Contract
+
+Implement the requested Verilog-A artifact for `Gain Estimator`.
+- Form: `dut`
+- Level: `L1`
+- Category: `measurement_instrumentation_flows`
+- Target artifact(s): `gain_estimator.va`
+
 Implement `gain_estimator.va` in Verilog-A.
 
-## Interface
+## Public Verilog-A Interface
 
 ```verilog
 module gain_estimator(VDD, VSS, vinp, vinn, voutp, voutn, gain_out, valid);
@@ -15,6 +23,16 @@ Ports:
 - `voutp`, `voutn`: electrical differential output being measured.
 - `gain_out`: electrical voltage-coded gain metric.
 - `valid`: electrical completion flag using the `VDD/VSS` logic range.
+
+## Public Parameter Contract
+
+The public parameters declared by the target artifact are part of the contract and may be overridden by validation harnesses. Preserve their names, defaults, ranges, and meanings:
+
+- `parameter real sample_period = 1n from (0:inf);` in `gain_estimator.va`.
+- `parameter real start_time = 20n;` in `gain_estimator.va`.
+- `parameter real gain_scale = 10.0 from (0:inf);` in `gain_estimator.va`.
+- `parameter real min_input_span = 0.02 from (0:inf);` in `gain_estimator.va`.
+- `parameter real tedge = 200p from (0:inf);` in `gain_estimator.va`.
 
 ## Required Behavior
 
@@ -44,9 +62,13 @@ Required observable behavior:
 
 Use event-updated real state for the measured gain and validity flag. Smooth
 only discrete metric targets with `transition()`. Do not generate a Spectre
-testbench, waveform files, checker artifacts, transistor-level devices, current
+testbench, waveform files, validation artifacts, transistor-level devices, current
 contributions, `ddt()`, or `idt()`.
 
-## Output
+## Modeling Constraints
+
+Use deterministic Verilog-A behavioral modeling appropriate for the public circuit contract. The visible testbench is a public validation scenario; do not hard-code a particular stimulus table, transient stop time, or validation sample window into the DUT unless that behavior is part of the public circuit contract.
+
+## Output Contract
 
 Return exactly one complete Verilog-A file named `gain_estimator.va`.

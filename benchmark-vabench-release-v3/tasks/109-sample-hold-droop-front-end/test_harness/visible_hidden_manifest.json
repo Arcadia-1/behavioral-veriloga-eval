@@ -9,5 +9,8 @@
   ],
   "hidden_testbench": "tb_sample_hold_droop_ref.scs",
   "visible_smoke": "tb_visible_smoke.scs",
-  "status": "initial_migration_pending_negative_audit"
+  "gate1_label": "measurement_l2_ready",
+  "gate2_status": "cadence_modeling_ready",
+  "coverage_note": "Visible exercises aperture-sensitive sampling and droop with 0.18/0.72/0.32/0.78/0.40 V input plateaus; hidden uses shifted 0.22/0.74/0.28/0.81/0.36 V plateaus while preserving the same sample-hold, valid-pulse, coarse-decision, and droop contract.",
+  "status": "cadence_modeling_ready"
 }

@@ -6,9 +6,7 @@
 - Spectre: PASS, mode AX via SUI direct
 - EVAS/Spectre parity: `passed`
 - Spectre checker note: sigout=0.000,0.900,0.000,0.900,0.000,0.900,0.000,0.900,0.000
-- Evidence:
-  - `WORK/source-import-batch2-evas/summary.json`
-  - `WORK/source-import-batch2-spectre/summary.json`
+- Evidence: historical local source-import report paths are omitted from the public package; rerun current validation scripts for fresh evidence.
 
 ## Four-Standard Review
 

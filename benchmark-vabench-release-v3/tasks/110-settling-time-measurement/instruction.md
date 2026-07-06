@@ -1,8 +1,16 @@
 # Settling Time Measurement
 
+## Task Contract
+
+Implement the requested Verilog-A artifact for `Settling Time Measurement`.
+- Form: `dut`
+- Level: `L1`
+- Category: `measurement_instrumentation_flows`
+- Target artifact(s): `settling_time_measurement_tb.va`
+
 Implement `settling_time_measurement_tb.va` in Verilog-A.
 
-## Interface
+## Public Verilog-A Interface
 
 ```verilog
 module settling_time_measurement_tb(step, vout, done);
@@ -17,6 +25,10 @@ Outputs:
 - `vout`: electrical settling-response output.
 - `done`: electrical completion flag.
 
+## Public Parameter Contract
+
+This task has no public parameters.
+
 ## Required Behavior
 
 This is a measurement-helper DUT task, not a Spectre testbench-generation task.
@@ -30,7 +42,7 @@ y += 0.04 * (V(step) - y)
 
 Drive `vout` from the internal state `y`. Drive `done` low before the settling
 boundary and high only after the simulation time is beyond 120 ns and the
-settled state is above 0.75 V. The evaluator applies a step input, runs past
+settled state is above 0.75 V. The validation applies a step input, runs past
 the 120 ns boundary, and saves `step`, `vout`, and `done`.
 
 Use voltage-coded logic with a 0.45 V threshold where applicable. Drive high
@@ -38,8 +50,12 @@ logic outputs near 0.9 V and low outputs near 0 V. Keep the model pure
 behavioral Verilog-A.
 
 Do not generate a Spectre `.scs` file. Do not use transistor-level devices,
-AC/noise analysis, current contributions, waveform files, checker artifacts, or
+AC/noise analysis, current contributions, waveform files, validation artifacts, or
 simulator side channels.
+
+## Modeling Constraints
+
+Use deterministic Verilog-A behavioral modeling appropriate for the public circuit contract. The visible testbench is a public validation scenario; do not hard-code a particular stimulus table, transient stop time, or validation sample window into the DUT unless that behavior is part of the public circuit contract.
 
 ## Output Contract
 

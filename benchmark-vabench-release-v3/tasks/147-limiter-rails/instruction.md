@@ -2,14 +2,15 @@
 
 ## Task Contract
 
+Implement the requested Verilog-A artifact for `Limiter Rails`.
 - Form: `dut`
 - Level: `L1`
-- Category: Baseband / analog primitive limiters
+- Category: `mixed_signal`
+- Target artifact(s): `limiter_rails.va`
+
 - Base function: Supply-referenced voltage limiter
 - Domain: `voltage`
-- Target artifact(s): `limiter_rails.va`
-- Visible context: public task, module interface, port roles, and behavioral contract.
-- Evaluator boundary: validation logic is external; do not generate checker, testbench, or measurement helper artifacts.
+- Output boundary: validation logic is external; do not generate validation harness or testbench, or measurement helper artifacts.
 
 ## Public Verilog-A Interface
 
@@ -22,7 +23,11 @@ output vout;
 electrical vdd, vss, vin, vmax, vmin, vout;
 ```
 
-## Behavioral Contract
+## Public Parameter Contract
+
+This task has no public parameters.
+
+## Required Behavior
 
 Implement a voltage limiter whose allowed output window is referenced to the supply rails:
 
@@ -32,6 +37,10 @@ Implement a voltage limiter whose allowed output window is referenced to the sup
 Pass `vin` when it is inside this window. Clamp to the corresponding limit when the input exceeds either bound.
 
 Compute the limited target with real-valued behavioral logic, then drive `vout` with one voltage contribution. This keeps the model friendly to analog linting while preserving hard limiter behavior. Do not use current contributions, transistor devices, or testbench-specific constants.
+
+## Modeling Constraints
+
+Use deterministic Verilog-A behavioral modeling appropriate for the public circuit contract. The visible testbench is a public validation scenario; do not hard-code a particular stimulus table, transient stop time, or validation sample window into the DUT unless that behavior is part of the public circuit contract.
 
 ## Output Contract
 

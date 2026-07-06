@@ -6,9 +6,7 @@
 - Spectre: PASS, mode AX via SUI direct
 - EVAS/Spectre parity: `passed`
 - Spectre checker note: max_sample_error=0.0024 max_hold_span=0.0000
-- Evidence:
-  - `WORK/source-import-pilot-evas/summary.json`
-  - `WORK/source-import-pilot-spectre/summary.json`
+- Evidence: historical local source-import report paths are omitted from the public package; rerun current validation scripts for fresh evidence.
 
 ## Four-Standard Review
 

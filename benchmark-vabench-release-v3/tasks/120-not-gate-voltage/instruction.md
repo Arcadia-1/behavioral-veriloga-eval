@@ -2,17 +2,15 @@
 
 ## Task Contract
 
+Implement the requested Verilog-A artifact for `Not Gate Voltage`.
 - Form: `dut`
 - Level: `L1`
-- Category: Logic
+- Category: `logic`
+- Target artifact(s): `source_not_gate.va`
+
 - Base function: source-derived `source_not_gate`
 - Domain: `voltage`
-- Target artifact(s): `source_not_gate.va`
 - Source provenance: `wangx/not_gate.va`
-- Visible context: public task, interface, artifact, stimulus, and observable contract only.
-- Output boundary: implement only the requested DUT artifact; validation harnesses and simulator-private hooks are external to the requested output.
-
-## Form-Specific Requirements
 
 - Implement only the requested Verilog-A DUT artifact.
 - Preserve the public module name, port order, parameters, and waveform observable names.
@@ -26,23 +24,26 @@
 vin, vout
 ```
 
-## Public Testbench And Observable Contract
+## Public Parameter Contract
 
-The public testbench provides a voltage-coded input stimulus and saves `vin` and
-`vout`. The observable contract samples stable windows after event edges and
-checks source-derived behavior; it does not require pointwise equality at
-simulator timesteps.
+The public parameters declared by `source_not_gate.va` are part of the contract and may be overridden by validation harnesses:
 
-## Public Behavior Checks
+- `parameter real vlogic_high = 0.9;`
+- `parameter real vlogic_low = 0.0;`
+- `parameter real vtrans = 0.45;`
+- `parameter real tdel = 500p from [0:inf);`
+- `parameter real trise = 20p from (0:inf);`
+- `parameter real tfall = 20p from (0:inf);`
 
-- inverts_voltage_logic
-- stable_after_propagation_delay
+## Required Behavior
+
+Implement a voltage-domain inverter. Interpret `vin` as logic high when `V(vin)` is above `vtrans`; otherwise interpret it as logic low. Drive `vout` to `vlogic_low` for a high input and to `vlogic_high` for a low input. The output must respond to both rising and falling input threshold crossings and use the configured transition delay/rise/fall smoothing.
+
+## Modeling Constraints
+
+Use deterministic Verilog-A behavioral modeling appropriate for the public circuit contract. The visible testbench is a public validation scenario; do not hard-code a particular stimulus table, transient stop time, or validation sample window into the DUT unless that behavior is part of the public circuit contract.
 
 ## Output Contract
 
 Return exactly one source artifact named `source_not_gate.va`.
 Do not include explanatory prose outside the source artifact contents.
-
-## Task-Specific Description
-
-Implement the source-derived voltage-domain behavior represented by `source_not_gate`. This benchmark case is included because it captures a reusable primitive from the deduplicated historical Verilog-A corpus while remaining small enough for deterministic EVAS/Spectre parity evaluation.

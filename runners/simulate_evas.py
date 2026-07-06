@@ -5951,24 +5951,33 @@ def check_v3_reference_step_clock(rows: list[dict[str, float]]) -> tuple[bool, s
     if len(rises) < 80:
         return False, f"too_few_rising_edges={len(rises)}"
 
-    early_periods = [b - a for a, b in zip(rises, rises[1:]) if 0.15e-6 <= a <= 1.05e-6]
-    late_periods = [b - a for a, b in zip(rises, rises[1:]) if 1.55e-6 <= a <= 2.25e-6]
+    t0 = times[0]
+    t1 = times[-1]
+    span = t1 - t0
+    early_start = t0 + 0.10 * span
+    early_stop = t0 + 0.40 * span
+    late_start = t0 + 0.70 * span
+    late_stop = t0 + 0.95 * span
+    early_periods = [b - a for a, b in zip(rises, rises[1:]) if early_start <= a <= early_stop]
+    late_periods = [b - a for a, b in zip(rises, rises[1:]) if late_start <= a <= late_stop]
     if len(early_periods) < 10 or len(late_periods) < 10:
         return False, f"insufficient_period_windows early={len(early_periods)} late={len(late_periods)}"
     early = sum(early_periods) / len(early_periods)
     late = sum(late_periods) / len(late_periods)
 
-    high_frac_early = weighted_logic_high_fraction_window(rows, "CLK", vth, 0.2e-6, 1.0e-6)
-    high_frac_late = weighted_logic_high_fraction_window(rows, "CLK", vth, 1.55e-6, 2.25e-6)
-    ok = (
-        17.0e-9 <= early <= 19.0e-9
-        and 21.0e-9 <= late <= 23.0e-9
-        and 0.43 <= high_frac_early <= 0.57
-        and 0.43 <= high_frac_late <= 0.57
+    high_frac_early = weighted_logic_high_fraction_window(rows, "CLK", vth, early_start, early_stop)
+    high_frac_late = weighted_logic_high_fraction_window(rows, "CLK", vth, late_start, late_stop)
+    period_tol = 0.35e-9
+    period_pair_ok = any(
+        abs(early - expected_pre) <= period_tol and abs(late - expected_post) <= period_tol
+        for expected_pre, expected_post in ((20.0e-9, 19.5e-9), (18.0e-9, 22.0e-9))
     )
+    duty_ok = 0.43 <= high_frac_early <= 0.57 and 0.43 <= high_frac_late <= 0.57
+    ok = period_pair_ok and duty_ok
     return ok, (
         f"period_pre={early:.3e} period_post={late:.3e} "
-        f"duty_pre={high_frac_early:.3f} duty_post={high_frac_late:.3f}"
+        f"duty_pre={high_frac_early:.3f} duty_post={high_frac_late:.3f} "
+        f"period_pair_ok={period_pair_ok}"
     )
 
 
@@ -11453,37 +11462,105 @@ def check_v3_clocked_sar_comparator(rows: list[dict[str, float]]) -> tuple[bool,
     required = {"time", "cmpck", "vinp", "vinn", "dcmpn", "dcmpp"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing time/cmpck/vinp/vinn/dcmpn/dcmpp"
-    return _sample_many(
-        rows,
-        {
-            "dcmpp": [(7.0, 0.9), (17.0, 0.9), (27.0, 0.0), (37.0, 0.9), (47.0, 0.0), (57.0, 0.9)],
-            "dcmpn": [(7.0, 0.0), (17.0, 0.9), (27.0, 0.9), (37.0, 0.9), (47.0, 0.0), (57.0, 0.9)],
-        },
-        tol=0.08,
-    )
+    vdd = _max_signal_value(rows, ["cmpck", "dcmpn", "dcmpp"], default=0.9)
+    vth = 0.5 * vdd
+    rises = _edge_times_for_signal(rows, "cmpck", threshold=vth, direction="rising")
+    falls = _edge_times_for_signal(rows, "cmpck", threshold=vth, direction="falling")
+    if len(rises) < 2 or len(falls) < 2:
+        return False, f"insufficient_clock_edges rises={len(rises)} falls={len(falls)}"
+
+    failures: list[str] = []
+    reset_checks = 0
+    decision_counts = {"positive": 0, "negative": 0, "equal": 0}
+    for edge_t in falls:
+        probe_t = _event_probe_time(rows, edge_t, delay_s=0.30e-9)
+        if probe_t is None:
+            continue
+        outp = sample_signal_at(rows, "dcmpp", probe_t)
+        outn = sample_signal_at(rows, "dcmpn", probe_t)
+        if outp is None or outn is None:
+            continue
+        reset_checks += 1
+        if outp < 0.70 * vdd or outn < 0.70 * vdd:
+            failures.append(f"reset@{probe_t * 1e9:.2f}ns={outp:.3f}/{outn:.3f}")
+
+    for edge_t in rises:
+        probe_t = _event_probe_time(rows, edge_t, delay_s=0.30e-9)
+        if probe_t is None:
+            continue
+        vinp = sample_signal_at(rows, "vinp", edge_t)
+        vinn = sample_signal_at(rows, "vinn", edge_t)
+        outp = sample_signal_at(rows, "dcmpp", probe_t)
+        outn = sample_signal_at(rows, "dcmpn", probe_t)
+        if vinp is None or vinn is None or outp is None or outn is None:
+            continue
+        diff = vinp - vinn
+        if diff > 0.004:
+            decision_counts["positive"] += 1
+            if outp < 0.70 * vdd or outn > 0.30 * vdd:
+                failures.append(f"pos@{probe_t * 1e9:.2f}ns={outp:.3f}/{outn:.3f}")
+        elif diff < -0.004:
+            decision_counts["negative"] += 1
+            if outp > 0.30 * vdd or outn < 0.70 * vdd:
+                failures.append(f"neg@{probe_t * 1e9:.2f}ns={outp:.3f}/{outn:.3f}")
+        else:
+            decision_counts["equal"] += 1
+            if outp > 0.30 * vdd or outn > 0.30 * vdd:
+                failures.append(f"eq@{probe_t * 1e9:.2f}ns={outp:.3f}/{outn:.3f}")
+
+    if reset_checks < 2:
+        return False, f"too_few_reset_checks={reset_checks}"
+    if decision_counts["positive"] < 1 or decision_counts["negative"] < 1:
+        return False, f"missing_decision_polarity_counts={decision_counts}"
+    if failures:
+        return False, " ".join(failures[:6])
+    return True, f"reset_checks={reset_checks} decisions={decision_counts}"
 
 
 def check_v3_clocked_dac_restore_4b(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "d3", "d2", "d1", "d0", "clk", "vout"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing time/d3/d2/d1/d0/clk/vout"
-    expected = [
-        (6.0, -0.73125),
-        (16.0, -0.16875),
-        (26.0, 0.16875),
-        (36.0, 0.73125),
-    ]
-    ok, detail = _sample_many(rows, {"vout": expected}, tol=0.02)
-    if not ok:
-        return ok, detail
-    observed = [sample_signal_at(rows, "vout", t_ns * 1e-9) for t_ns, _ in expected]
-    if any(value is None for value in observed):
-        return False, "missing_vout_samples"
-    values = [float(value) for value in observed if value is not None]
-    monotonic = all(b > a + 0.20 for a, b in zip(values, values[1:]))
-    if not monotonic:
-        return False, f"dac_not_monotonic samples={','.join(f'{v:.3f}' for v in values)}"
-    return True, detail + " monotonic=True"
+    vth = 0.5 * _max_signal_value(rows, ["clk", "d3", "d2", "d1", "d0"], default=0.9)
+    rises = _edge_times_for_signal(rows, "clk", threshold=vth, direction="rising")
+    if len(rises) < 4:
+        return False, f"too_few_clock_edges={len(rises)}"
+    checked = 0
+    distinct_codes: set[int] = set()
+    max_err = 0.0
+    failures: list[str] = []
+    for edge_t in rises:
+        probe_t = _event_probe_time(rows, edge_t, delay_s=0.50e-9)
+        if probe_t is None:
+            continue
+        bits = []
+        for signal in ("d3", "d2", "d1", "d0"):
+            value = sample_signal_at(rows, signal, edge_t)
+            if value is None:
+                break
+            bits.append(1 if value > vth else 0)
+        if len(bits) != 4:
+            continue
+        observed = sample_signal_at(rows, "vout", probe_t)
+        if observed is None:
+            continue
+        code = bits[0] * 8 + bits[1] * 4 + bits[2] * 2 + bits[3]
+        expected = (code + 0.5) * (1.8 / 16.0) - 0.9
+        err = abs(observed - expected)
+        max_err = max(max_err, err)
+        distinct_codes.add(code)
+        checked += 1
+        if err > 0.025:
+            failures.append(
+                f"code{code}@{probe_t * 1e9:.2f}ns={observed:.4f} expected={expected:.4f}"
+            )
+    if checked < 4:
+        return False, f"too_few_checked_codes={checked}"
+    if len(distinct_codes) < 3:
+        return False, f"insufficient_distinct_codes={sorted(distinct_codes)}"
+    if failures:
+        return False, " ".join(failures[:5])
+    return True, f"checked={checked} distinct_codes={sorted(distinct_codes)} max_err={max_err:.5f}"
 
 
 def check_v3_sample_hold(rows: list[dict[str, float]]) -> tuple[bool, str]:
@@ -11786,14 +11863,60 @@ def check_v3_start_gated_offset_search(rows: list[dict[str, float]]) -> tuple[bo
     required = {"time", "clk", "start", "vout", "vinp", "vinn"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing time/clk/start/vout/vinp/vinn"
-    return _sample_differential_sequence(
-        rows,
-        "vinp",
-        "vinn",
-        [(8.0, 0.000), (18.5, 0.020), (28.5, 0.010), (38.5, 0.000), (48.5, 0.005)],
-        common_mode=0.70,
-        diff_tol=0.0030,
-        common_tol=0.0030,
+    vdd = _max_signal_value(rows, ["clk", "start", "vout"], default=0.9)
+    vth = 0.5 * vdd
+    clk_falls = _edge_times_for_signal(rows, "clk", threshold=vth, direction="falling")
+    if len(clk_falls) < 3:
+        return False, f"too_few_clock_falls={len(clk_falls)}"
+
+    diff = 0.0
+    step = 20e-3
+    state = 1
+    checked = 0
+    active_edges = 0
+    max_diff_err = 0.0
+    max_cm_err = 0.0
+    failures: list[str] = []
+    for edge_t in clk_falls:
+        start_value = sample_signal_at(rows, "start", edge_t)
+        if start_value is None or start_value <= vth:
+            continue
+        active_edges += 1
+        decision = sample_signal_at(rows, "vout", edge_t)
+        if decision is None:
+            continue
+        sign = 1 if decision > vth else 0
+        if state != sign and step > 0.0:
+            step *= 0.5
+        state = sign
+        diff = diff + (2 * state - 1) * step
+        probe_t = _event_probe_time(rows, edge_t, delay_s=0.25e-9)
+        if probe_t is None:
+            continue
+        vinp = sample_signal_at(rows, "vinp", probe_t)
+        vinn = sample_signal_at(rows, "vinn", probe_t)
+        if vinp is None or vinn is None:
+            continue
+        observed_diff = vinp - vinn
+        observed_cm = 0.5 * (vinp + vinn)
+        diff_err = abs(observed_diff - diff)
+        cm_err = abs(observed_cm - 0.70)
+        max_diff_err = max(max_diff_err, diff_err)
+        max_cm_err = max(max_cm_err, cm_err)
+        checked += 1
+        if diff_err > 0.0035:
+            failures.append(
+                f"diff@{probe_t * 1e9:.2f}ns={observed_diff:.5f} expected={diff:.5f}"
+            )
+        if cm_err > 0.0035:
+            failures.append(f"cm@{probe_t * 1e9:.2f}ns={observed_cm:.5f}")
+    if active_edges < 3 or checked < 3:
+        return False, f"insufficient_active_search_edges active={active_edges} checked={checked}"
+    if failures:
+        return False, " ".join(failures[:5])
+    return True, (
+        f"active_edges={active_edges} checked={checked} "
+        f"max_diff_err={max_diff_err:.5f} max_cm_err={max_cm_err:.5f}"
     )
 
 
@@ -11930,21 +12053,56 @@ def check_v3_sar_weighted_sum(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "d10", "d9", "d8", "d7", "d6", "d5", "d4", "d3", "d2", "d1", "d0", "vout"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing time/d10/d9/d8/d7/d6/d5/d4/d3/d2/d1/d0/vout"
-    expected = [
-        (2.0, -1.0),
-        (12.0, -0.90625),
-        (22.0, -0.84375),
-        (32.0, -0.125),
-        (42.0, 0.998046875),
-    ]
-    ok, detail = _sample_many(rows, {"vout": expected}, tol=0.025)
-    if not ok:
-        return ok, detail
-    observed = [float(sample_signal_at(rows, "vout", time_ns * 1e-9) or 0.0) for time_ns, _ in expected]
-    monotonic = all(b > a + 0.03 for a, b in zip(observed, observed[1:]))
-    if not monotonic:
-        return False, f"sar_weighted_sum_not_monotonic samples={','.join(f'{v:.3f}' for v in observed)}"
-    return True, detail + " monotonic=True"
+    bit_signals = ["d10", "d9", "d8", "d7", "d6", "d5", "d4", "d3", "d2", "d1", "d0"]
+    weights = [448, 256, 128, 80, 48, 32, 16, 8, 4, 2, 1]
+    vth = 0.5 * _max_signal_value(rows, bit_signals, default=0.9)
+    change_times: list[float] = []
+    for signal in bit_signals:
+        change_times.extend(_edge_times_for_signal(rows, signal, threshold=vth, direction="rising"))
+        change_times.extend(_edge_times_for_signal(rows, signal, threshold=vth, direction="falling"))
+    change_times = sorted(set(round(t, 15) for t in change_times))
+    candidates: list[float] = []
+    if change_times:
+        candidates.append(max(rows[0]["time"], change_times[0] - 2.0e-9))
+    else:
+        candidates.append(rows[0]["time"])
+    candidates.extend(t + 0.50e-9 for t in change_times)
+    candidates = [t for t in candidates if rows[0]["time"] <= t <= rows[-1]["time"]]
+
+    checked = 0
+    distinct_codes: set[int] = set()
+    max_err = 0.0
+    failures: list[str] = []
+    for t in candidates:
+        code_weight = 0
+        code_bits = 0
+        for idx, signal in enumerate(bit_signals):
+            value = sample_signal_at(rows, signal, t)
+            if value is None:
+                break
+            if value > vth:
+                code_weight += weights[idx]
+                code_bits |= 1 << (len(bit_signals) - 1 - idx)
+        else:
+            observed = sample_signal_at(rows, "vout", t)
+            if observed is None:
+                continue
+            expected = code_weight / 512.0 - 1.0
+            err = abs(observed - expected)
+            max_err = max(max_err, err)
+            distinct_codes.add(code_bits)
+            checked += 1
+            if err > 0.025:
+                failures.append(
+                    f"code=0x{code_bits:03x}@{t * 1e9:.2f}ns={observed:.4f} expected={expected:.4f}"
+                )
+    if checked < 4:
+        return False, f"too_few_weighted_sum_states={checked}"
+    if len(distinct_codes) < 4:
+        return False, f"insufficient_distinct_codes={len(distinct_codes)}"
+    if failures:
+        return False, " ".join(failures[:5])
+    return True, f"checked={checked} distinct_codes={len(distinct_codes)} max_err={max_err:.5f}"
 
 
 def check_v3_two_input_and_gate(rows: list[dict[str, float]]) -> tuple[bool, str]:
@@ -20874,11 +21032,33 @@ def check_iq_downconversion_chain(rows: list[dict[str, float]]) -> tuple[bool, s
         )
     if abs(mix_i_cm - 0.45) > 0.06 or abs(mix_q_cm - 0.45) > 0.06:
         return False, f"iq_mixer_common_mode_wrong i={mix_i_cm:.3f} q={mix_q_cm:.3f}"
+    low_tail_rows = [
+        row
+        for row in rows
+        if row["time"] >= 66.0e-9 and row.get("vin", 0.45) < 0.38
+    ]
+    low_tail_detail = ""
+    if len(low_tail_rows) >= 4:
+        mix_i_values = [row["mix_i"] for row in low_tail_rows if "mix_i" in row]
+        mix_q_values = [row["mix_q"] for row in low_tail_rows if "mix_q" in row]
+        out_values = [row["out"] for row in low_tail_rows if "out" in row]
+        metric_values = [row["metric"] for row in low_tail_rows if "metric" in row]
+        if min(len(mix_i_values), len(mix_q_values), len(out_values), len(metric_values)) < 4:
+            return False, "iq_low_tail_missing_outputs"
+        mix_span = max(max(mix_i_values) - min(mix_i_values), max(mix_q_values) - min(mix_q_values))
+        baseband_span = max(max(out_values) - min(out_values), max(metric_values) - min(metric_values))
+        if mix_span < 0.16 or baseband_span < 0.08:
+            return False, (
+                f"iq_low_tail_not_exercised mix_span={mix_span:.3f} "
+                f"baseband_span={baseband_span:.3f}"
+            )
+        low_tail_detail = f" low_tail_mix_span={mix_span:.3f} low_tail_baseband_span={baseband_span:.3f}"
     return True, (
         "iq_downconversion_chain "
         f"i_hi/q_hi/i_lo/q_lo={i_hi:.3f}/{q_hi:.3f}/{i_lo:.3f}/{q_lo:.3f} "
         f"common_mode={i_cm:.3f}/{q_cm:.3f} "
         f"phase={phase_0:.3f}/{phase_1:.3f}/{phase_2:.3f}/{phase_3:.3f}"
+        f"{low_tail_detail}"
     )
 
 

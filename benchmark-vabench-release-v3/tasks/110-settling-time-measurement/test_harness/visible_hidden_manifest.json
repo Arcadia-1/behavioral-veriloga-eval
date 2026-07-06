@@ -9,6 +9,7 @@
   "visible_smoke": "test_visible/tests/tb_visible_smoke.scs",
   "gate1_label": "independent_l1_ready",
   "gate2_status": "cadence_modeling_ready",
+  "coverage_note": "Visible uses a 0.8 V step from 20 ns to 21 ns over a 160 ns run; hidden uses a 0.85 V step from 15 ns to 16 ns over a 170 ns run while preserving the same first-order settling and done-flag contract.",
   "visible": [
     "instruction.md",
     "starter/",

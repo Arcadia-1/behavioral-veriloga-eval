@@ -1,10 +1,8 @@
 {
   "certification": {
     "evidence": {
-      "evas_summary": "WORK/source-import-batch2-evas/summary.json",
       "spectre_backend": "sui-direct zhangz@101.6.68.147",
-      "spectre_mode": "ax",
-      "spectre_summary": "WORK/source-import-batch2-spectre/summary.json"
+      "spectre_mode": "ax"
     },
     "scope": "Visible smoke passed; EVAS hidden gold passed; Spectre AX hidden gold passed; EVAS/Spectre parity passed on stable-window checker.",
     "status": "certified"

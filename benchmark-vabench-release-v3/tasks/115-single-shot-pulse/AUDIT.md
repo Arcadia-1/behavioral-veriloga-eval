@@ -6,9 +6,7 @@
 - Spectre: PASS, mode AX via SUI direct
 - EVAS/Spectre parity: `passed`
 - Spectre checker note: vout=0.000,0.900,0.900,0.000,0.000,0.900,0.900,0.000 high_windows=[8.0, 14.0, 28.0, 34.0] low_windows=[4.0, 18.0, 24.0, 38.0]
-- Evidence:
-  - `WORK/source-import-pilot-evas/summary.json`
-  - `WORK/source-import-pilot-spectre/summary.json`
+- Evidence: historical local source-import report paths are omitted from the public package; rerun current validation scripts for fresh evidence.
 
 ## Four-Standard Review
 

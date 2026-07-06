@@ -1,51 +1,44 @@
-# Source Ideal Sample And Hold
+# Ideal Sample And Hold
 
 ## Task Contract
 
-- Form: `dut`
-- Level: `L1`
-- Category: Data Converter
-- Base function: source-derived `source_sample_hold`
-- Domain: `voltage`
-- Target artifact(s): `source_sample_hold.va`
-- Source provenance: `wangx/sah_ideal.va`
-- Visible context: public task, interface, artifact, stimulus, and observable contract only.
-- Hidden evaluator boundary: deterministic checker and EVAS/Spectre validation are external; do not generate checker logic.
-
-## Form-Specific Requirements
-
-- Implement only the requested Verilog-A DUT artifact.
-- Preserve the public module name, port order, parameters, and waveform observable names.
-- Use voltage contributions only. Do not use current contributions, `ddt()`, or `idt()`.
+Implement the single-DUT Verilog-A artifact `source_sample_hold.va` for an ideal
+voltage-domain sample-and-hold primitive. The model should capture an analog
+input on clock events and hold the sampled value between events.
 
 ## Public Verilog-A Interface
 
-`source_sample_hold.va` declares module `source_sample_hold` with positional ports:
+The file `source_sample_hold.va` must define:
 
-```text
-vin, vout, vclk
+```verilog
+module source_sample_hold(vin, vout, vclk);
 ```
 
-## Public Testbench And Observable Contract
+All ports are electrical. `vin` is the analog input, `vclk` is the sampling
+clock, and `vout` is the held analog output.
 
-Public transient setting used by the evaluator:
+## Public Parameter Contract
 
-```spectre
-tran tran stop=45n maxstep=50p
-```
+- `vtrans_clk = 0.45 V`: rising-clock threshold.
+- `tr = 20p`: transition smoothing time for `vout`.
 
-The evaluator samples stable windows after event edges and checks the intended source-derived behavior. It does not require pointwise equality at simulator timesteps.
+These parameters may be overridden by the validation harness.
 
-## Public Behavior Checks
+## Required Behavior
 
-- samples_input_on_rising_edges
-- holds_between_edges
+On each rising crossing of `vclk` through `vtrans_clk`, sample the instantaneous
+input voltage `V(vin)`. Hold that sampled value until the next rising sampling
+event and drive it on `vout`.
+
+## Modeling Constraints
+
+Use voltage-domain event-driven Verilog-A and voltage contributions only. Do
+not use current contributions, transistor-level devices, `ddt()`, `idt()`,
+validation logic, auxiliary test hooks, or testbench-specific timing constants
+inside the DUT.
 
 ## Output Contract
 
-Return exactly one source artifact named `source_sample_hold.va`.
-Do not include explanatory prose outside the source artifact contents.
-
-## Task-Specific Description
-
-Implement the source-derived voltage-domain behavior represented by `source_sample_hold`. This benchmark case is included because it captures a reusable mixed-signal behavioral primitive from the deduplicated historical Verilog-A corpus while remaining small enough for deterministic EVAS/Spectre parity evaluation.
+Return exactly one complete Verilog-A source artifact named
+`source_sample_hold.va`. Do not include explanatory prose outside the source
+artifact contents.

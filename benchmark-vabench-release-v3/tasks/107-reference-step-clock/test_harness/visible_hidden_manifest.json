@@ -7,5 +7,6 @@
   ],
   "hidden_testbench": "hidden.scs",
   "visible_smoke": "visible.scs",
-  "status": "standalone_checker_evas_reference_and_negatives_pass_spectre_pending"
+  "status": "current_main_validated",
+  "coverage_note": "Visible smoke uses the default 20 ns to 19.5 ns frequency step; hidden coverage uses an overridden 18 ns to 22 ns step with an earlier switching time."
 }

@@ -1,9 +1,17 @@
 # Clocked Comparator Reset Low
 
+## Task Contract
+
+Implement the requested Verilog-A artifact for `Clocked Comparator Reset Low`.
+- Form: `dut`
+- Level: `L1`
+- Category: `data_converter`
+- Target artifact(s): `clocked_comparator_reset_low.va`
+
 Implement a clocked differential comparator with reset-low voltage-coded
 decision outputs.
 
-## Public Interface
+## Public Verilog-A Interface
 
 Declare module `clocked_comparator_reset_low` with positional ports `CMPCK,
 VINN, VINP, DCMPN, DCMPP`. All ports are electrical. `CMPCK` is the comparator
@@ -18,7 +26,7 @@ Provide these overrideable public parameters:
 - `td_cmp = 100p`: output decision delay.
 - `tr = 10p`: output transition smoothing time.
 
-## Functional Contract
+## Required Behavior
 
 - Initialize both decision outputs low.
 - Whenever `CMPCK` falls through `vdd/2`, reset both decision outputs low.
@@ -32,7 +40,13 @@ Provide these overrideable public parameters:
 ## Modeling Constraints
 
 Return only `clocked_comparator_reset_low.va`. Use voltage contributions only.
-Do not modify or emit the support testbench, add checker logic, hard-code
-waveform sample points, add simulator-private side channels, use current
+Do not modify or emit the support testbench, add validation logic, hard-code
+waveform sample points, add simulator-specific side channels, use current
 contributions, `ddt()`, or `idt()`. Update local decision state in analog event
 blocks and drive smoothed output contributions outside those event blocks.
+
+Use deterministic Verilog-A behavioral modeling appropriate for the public circuit contract. The visible testbench is a public validation scenario; do not hard-code a particular stimulus table, transient stop time, or validation sample window into the DUT unless that behavior is part of the public circuit contract.
+
+## Output Contract
+
+Return exactly one complete source artifact named `clocked_comparator_reset_low.va`. Do not include explanatory prose outside the source artifact contents.

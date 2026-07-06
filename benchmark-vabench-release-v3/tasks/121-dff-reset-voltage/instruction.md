@@ -2,17 +2,15 @@
 
 ## Task Contract
 
+Implement the requested Verilog-A artifact for `DFF Reset Voltage`.
 - Form: `dut`
 - Level: `L1`
-- Category: Logic
+- Category: `logic`
+- Target artifact(s): `source_dff_reset.va`
+
 - Base function: source-derived `source_dff_reset`
 - Domain: `voltage`
-- Target artifact(s): `source_dff_reset.va`
 - Source provenance: `hexy/dff_rst.va`
-- Visible context: public task, interface, artifact, stimulus, and observable contract only.
-- Output boundary: implement only the requested DUT artifact; validation harnesses and simulator-private hooks are external to the requested output.
-
-## Form-Specific Requirements
 
 - Implement only the requested Verilog-A DUT artifact.
 - Preserve the public module name, port order, parameters, and waveform observable names.
@@ -26,23 +24,27 @@
 vin_d, vclk, rst, vout_q, vout_qbar
 ```
 
-## Public Testbench And Observable Contract
+## Public Parameter Contract
 
-The public testbench provides voltage-coded `vin_d`, `vclk`, and `rst` stimuli
-and saves `vout_q` and `vout_qbar`. The observable contract samples stable
-windows after clock/reset events and checks source-derived behavior; it does not
-require pointwise equality at simulator timesteps.
+The public parameters declared by `source_dff_reset.va` are part of the contract and may be overridden by validation harnesses:
 
-## Public Behavior Checks
+- `parameter real vlogic_high = 0.9;`
+- `parameter real vlogic_low = 0.0;`
+- `parameter real vtrans_clk = 0.45;`
+- `parameter real vtrans = 0.45;`
+- `parameter real tdel = 500p from [0:inf);`
+- `parameter real trise = 20p from (0:inf);`
+- `parameter real tfall = 20p from (0:inf);`
 
-- samples_d_on_rising_clock
-- reset_forces_both_outputs_low
+## Required Behavior
+
+Implement a voltage-domain D flip-flop with reset and complementary outputs. On each rising crossing of `vclk` through `vtrans_clk`, sample `vin_d` using threshold `vtrans`; drive `vout_q` high and `vout_qbar` low for a sampled high data value, and the opposite for a sampled low data value. On a rising reset crossing, force the reset state defined by the target model and drive both outputs through the configured transition delay/rise/fall smoothing. Keep `vout_qbar` complementary to `vout_q` during normal sampled operation.
+
+## Modeling Constraints
+
+Use deterministic Verilog-A behavioral modeling appropriate for the public circuit contract. The visible testbench is a public validation scenario; do not hard-code a particular stimulus table, transient stop time, or validation sample window into the DUT unless that behavior is part of the public circuit contract.
 
 ## Output Contract
 
 Return exactly one source artifact named `source_dff_reset.va`.
 Do not include explanatory prose outside the source artifact contents.
-
-## Task-Specific Description
-
-Implement the source-derived voltage-domain behavior represented by `source_dff_reset`. This benchmark case is included because it captures a reusable primitive from the deduplicated historical Verilog-A corpus while remaining small enough for deterministic EVAS/Spectre parity evaluation.
