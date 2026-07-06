@@ -1,46 +1,41 @@
 # Single-Shot Timer Pulse
 
-Implement `single_shot_timer_pulse.va` in Verilog-A.
+## Task Contract
 
-## Interface
+Implement `single_shot_timer_pulse.va` as a voltage-domain one-shot pulse generator for clock/timing support.
+
+## Public Verilog-A Interface
+
+Use this module signature:
 
 ```verilog
-module single_shot_timer_pulse(
-    input  electrical vin,
-    output electrical vout
-);
+module single_shot_timer_pulse(vin, vout);
 ```
+
+Both ports are scalar `electrical` nodes. `vin` is the voltage-coded trigger input and `vout` is the voltage-coded pulse output.
+
+## Public Parameter Contract
+
+- `pulse_width`: output high duration after a qualifying rising input edge, default `2n`.
+- `vlogic_high`: output high level, default `0.9`.
+- `vlogic_low`: output low level, default `0.0`.
+- `vtrans`: rising-edge threshold for `vin`, default `0.45`.
+- `tdel`: output transition delay, default `100p`.
+- `trise`: output rise time, default `10p`.
+- `tfall`: output fall time, default `10p`.
 
 ## Required Behavior
 
-This task asks for the `single_shot_timer_pulse` behavioral DUT module, not a
-Spectre testbench. The module is a timer-based single-shot pulse generator.
-
-Support these public parameters and legal overrides:
-
-| Parameter | Default | Unit / range | Contract |
-| --- | ---: | --- | --- |
-| `pulse_width` | `2 ns` | time, `(0:inf)` | Output high duration after a qualifying rising input edge. |
-| `vlogic_high` | `0.9` | V | Output high level. |
-| `vlogic_low` | `0.0` | V | Output low level. |
-| `vtrans` | `0.45` | V | Rising-edge threshold for `vin`. |
-| `tdel` | `100 ps` | time, `[0:inf)` | Output transition delay. |
-| `trise` | `10 ps` | time, `(0:inf)` | Output rise time. |
-| `tfall` | `10 ps` | time, `(0:inf)` | Output fall time. |
-
-Required observable behavior:
-
 - Detect rising `vin` crossings at `vtrans`.
-- On each qualifying rising edge, drive `vout` high after the configured
-  transition delay.
+- On each qualifying rising edge, drive `vout` high after the configured transition delay.
 - Use a timer to return `vout` low after the configured pulse width.
 - Generate one output pulse per input rising edge.
-- Drive `vout` through smoothed voltage contributions.
+- Hold the low output level between pulses.
 
-Use voltage contributions only. Do not use current contributions,
-transistor-level devices, AC/noise analysis, checker logic, private test hooks,
-or simulator-private side channels.
+## Modeling Constraints
 
-## Output
+Use voltage contributions only. Do not use current contributions, transistor-level devices, AC/noise analysis, checker logic, out-of-band test hooks, or simulator side channels.
+
+## Output Contract
 
 Return exactly one source artifact named `single_shot_timer_pulse.va`.

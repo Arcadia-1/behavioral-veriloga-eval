@@ -1,31 +1,22 @@
 # Subradix DAC10
 
-Implement a 10-bit voltage-coded sub-radix weighted DAC.
+## Task Contract
+Implement `subradix_dac10.va`, a 10-bit voltage-coded sub-radix weighted DAC. This is a data-converter L1 DUT distinct from binary-weighted DAC rows because adjacent weights follow radix `1.8`.
 
-## Public Interface
-
-Declare module `subradix_dac10` with positional ports `vd9, vd8, vd7, vd6,
-vd5, vd4, vd3, vd2, vd1, vd0, vout`. All ports are electrical.
+## Public Verilog-A Interface
+Declare module `subradix_dac10(vd9, vd8, vd7, vd6, vd5, vd4, vd3, vd2, vd1, vd0, vout)` with scalar electrical ports. `vd9` is the MSB and `vd0` is the LSB.
 
 ## Public Parameter Contract
+Provide overrideable public parameters:
 
-Provide these overrideable public parameters:
-
-- `vth = 0.45 V`: digital decision threshold for each input bit.
+- `vth = 0.45 V`: decision threshold for each input bit.
 - `vref = 1.0 V`: output full-scale/reference voltage.
 
-## Functional Contract
-
-Treat each input as logic `1` when its voltage is greater than `vth`, otherwise
-logic `0`. Interpret `vd9` through `vd0` as a sub-radix word with `vd9` as the
-most significant bit and `vd0` as the least significant bit. Adjacent bit
-weights follow radix `1.8`. The output voltage should represent that decoded
-sub-radix value scaled by `vref`, with the all-ones input code corresponding to
-full scale.
+## Required Behavior
+Treat each input as logic one when its voltage is greater than `vth`. Decode `vd9..vd0` as a sub-radix word whose adjacent bit weights follow radix `1.8`, with `vd0` weight one and `vd9` weight `1.8^9`. Scale the active-weight sum by the all-ones sub-radix weight sum so that all ones maps to `vref`.
 
 ## Modeling Constraints
+Use deterministic voltage-domain Verilog-A and voltage contributions only. It is acceptable to express sub-radix weights with portable real arithmetic such as `pow(1.8, k)`. Do not emit a testbench, checker logic, out-of-band test hooks, hard-code testbench sample points, use current contributions, transistor-level devices, `ddt()`, `idt()`, or simulator side channels.
 
-Return only `subradix_dac10.va`. Use voltage contributions only. Do not modify
-or emit the support testbench, add checker logic, hard-code private waveform
-sample points, add simulator-private side channels, use current contributions,
-`ddt()`, or `idt()`.
+## Output Contract
+Return exactly one source artifact named `subradix_dac10.va`.

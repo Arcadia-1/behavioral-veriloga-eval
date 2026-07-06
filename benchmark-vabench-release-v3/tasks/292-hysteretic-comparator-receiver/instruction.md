@@ -1,52 +1,26 @@
 # Hysteretic Comparator Receiver
 
-Implement a pure voltage-domain analog comparator receiver with input
-hysteresis, a fixed propagation delay, and a rail-coded voltage output. This
-task adapts the Cadence Verilog-AMS comparator modeling pattern that uses
-`OFFSET` and `HYST` to form upper and lower switching thresholds, while keeping
-the output in the voltage-domain Verilog-A style used by this benchmark.
+## Task Contract
+Implement `hysteretic_comparator_receiver.va`, a voltage-domain comparator receiver with input hysteresis, propagation delay, and rail-coded output. This follows the Cadence-style comparator modeling pattern of using an offset and hysteresis width to form upper and lower switching thresholds.
 
-## Public Interface
-
-Declare module `hysteretic_comparator_receiver` with positional ports `inp,
-inm, out`. All ports are electrical. `inp` and `inm` form the differential
-comparator input, and `out` is a voltage-coded digital receiver output.
+## Public Verilog-A Interface
+Declare module `hysteretic_comparator_receiver(inp, inm, out)` with scalar electrical ports. `inp` and `inm` form the differential input, and `out` is the voltage-coded receiver output.
 
 ## Public Parameter Contract
-
-Provide these overrideable public parameters:
+Provide overrideable public parameters:
 
 - `vout_high = 0.9 V`: high output rail.
 - `vout_low = 0.0 V`: low output rail.
 - `offset = 0.0 V`: input-referred switching offset.
-- `vhys = 40 mV`: total hysteresis width. It must be non-negative.
-- `td = 400 ps`: propagation delay from a qualifying input threshold crossing
-  to the output state change. It must be non-negative.
-- `tr = 80 ps`: output transition rise/fall smoothing time. It must be
-  non-negative.
+- `vhys = 40 mV from [0:inf)`: total hysteresis width.
+- `td = 400 ps from [0:inf)`: propagation delay from a qualifying threshold crossing to the output state change.
+- `tr = 80 ps from [0:inf)`: output transition smoothing time.
 
-## Functional Contract
-
-Define the upper and lower decision thresholds as:
-
-```text
-upper_th = offset + vhys / 2
-lower_th = offset - vhys / 2
-```
-
-On initialization, drive the high state when `V(inp,inm)` is already at or
-above `upper_th`; otherwise drive the low state. After initialization, set the
-internal state high only on a rising crossing of `upper_th`, and set it low
-only on a falling crossing of `lower_th`. Hold the previous state while the
-differential input remains between those two thresholds.
-
-Drive `out` to `vout_high` for the high state and to `vout_low` for the low
-state. Apply the public propagation delay `td` and smooth each output edge with
-the public transition time `tr`.
+## Required Behavior
+Define `upper_th = offset + vhys/2` and `lower_th = offset - vhys/2`. On initialization, set the output state high if `V(inp,inm)` is at or above the upper threshold; otherwise set it low. After initialization, switch high only on a rising crossing of `upper_th`, switch low only on a falling crossing of `lower_th`, and hold the previous state inside the hysteresis band. Drive `out` to the selected rail with delay `td` and transition time `tr`.
 
 ## Modeling Constraints
+Use voltage contributions and event-driven Verilog-A threshold crossings. Do not emit a testbench, checker logic, out-of-band test hooks, hard-code waveform sample points, use current contributions, transistor-level devices, `ddt()`, `idt()`, or simulator side channels.
 
-Return only `hysteretic_comparator_receiver.va`. Use voltage contributions
-only. Do not modify or emit the support testbench, add checker logic,
-hard-code waveform sample points, add simulator-private side channels, use
-current contributions, `ddt()`, or `idt()`.
+## Output Contract
+Return exactly one source artifact named `hysteretic_comparator_receiver.va`.

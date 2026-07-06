@@ -4363,7 +4363,22 @@
 251-dac-restore-6bit-1p8: |
   checker:
     task_id: v3_dac_restore_6bit_1p8
-    metric: stable_samples
+    metric: clocked_midrise_restore
+  sim_correct:
+    checks:
+      - rising_clock_samples_six_bit_code
+      - d1_through_d6_decode_msb_to_lsb
+      - bipolar_midrise_restore_mapping
+      - holds_output_between_clock_edges
+    public_observables:
+      - clk
+      - d1
+      - d2
+      - d3
+      - d4
+      - d5
+      - d6
+      - vout
   scoring:
     axes:
       - dut_compile
@@ -4372,7 +4387,16 @@
 252-sample-hold-5v-clock: |
   checker:
     task_id: v3_sample_hold_5v_clock
-    metric: stable_samples
+    metric: rising_edge_sample_hold
+  sim_correct:
+    checks:
+      - rising_clock_edge_samples_vin
+      - falling_edges_do_not_update_output
+      - held_output_does_not_track_vin_between_edges
+    public_observables:
+      - vin
+      - vclk
+      - vout
   scoring:
     axes:
       - dut_compile
@@ -4381,7 +4405,19 @@
 253-sum5-signed-sar-weight: |
   checker:
     task_id: v3_sum5_signed_sar_weight
-    metric: stable_samples
+    metric: signed_weighted_sum_formula
+  sim_correct:
+    checks:
+      - threshold_decodes_each_signed_decision
+      - d5_to_d1_weights_half_through_one_over_32
+      - output_uses_public_signed_scale
+    public_observables:
+      - d1
+      - d2
+      - d3
+      - d4
+      - d5
+      - out
   scoring:
     axes:
       - dut_compile
@@ -4390,7 +4426,19 @@
 254-lt-readout-sar4: |
   checker:
     task_id: v3_lt_readout_sar4
-    metric: stable_samples
+    metric: unsigned_sar4_readout_formula
+  sim_correct:
+    checks:
+      - d0_lsb_d3_msb_unsigned_decode
+      - output_scales_code_by_vref_over_16
+      - continuous_readout_updates_after_bit_changes
+    public_observables:
+      - d0
+      - d1
+      - d2
+      - d3
+      - vout
+      - gnd
   scoring:
     axes:
       - dut_compile
@@ -4400,6 +4448,18 @@
   checker:
     task_id: v3_tool_4bit_sar_signed_dac
     metric: sample_signed_weighted_sum
+  sim_correct:
+    checks:
+      - rising_sample_trigger_latches_decision_bits
+      - d3_to_d0_signed_weights_8_4_2_1
+      - output_holds_between_sample_triggers
+    public_observables:
+      - sh
+      - d0
+      - d1
+      - d2
+      - d3
+      - aout
   scoring:
     axes:
       - dut_compile
@@ -4408,7 +4468,19 @@
 256-dac4bit-small-swing: |
   checker:
     task_id: v3_dac4bit_small_swing
-    metric: stable_samples
+    metric: centered_small_swing_dac_formula
+  sim_correct:
+    checks:
+      - vd3_to_vd0_unsigned_decode
+      - all_zero_maps_to_negative_vref
+      - all_one_maps_to_positive_vref
+      - interior_codes_are_uniformly_spaced
+    public_observables:
+      - vd3
+      - vd2
+      - vd1
+      - vd0
+      - vout
   scoring:
     axes:
       - dut_compile
@@ -4437,7 +4509,21 @@
 258-lt-read-sar6b-weighted: |
   checker:
     task_id: v3_lt_read_sar6b_weighted
-    metric: stable_samples
+    metric: weighted_sar6_readout_formula
+  sim_correct:
+    checks:
+      - d5_to_d1_binary_fraction_weights
+      - d0_is_present_but_ignored
+      - output_has_negative_vref_offset
+    public_observables:
+      - d0
+      - d1
+      - d2
+      - d3
+      - d4
+      - d5
+      - vout
+      - gnd
   scoring:
     axes:
       - dut_compile
@@ -4446,7 +4532,23 @@
 259-lt-read-sar7b-weighted: |
   checker:
     task_id: v3_lt_read_sar7b_weighted
-    metric: stable_samples
+    metric: weighted_sar7_readout_formula
+  sim_correct:
+    checks:
+      - d7_to_d0_binary_fraction_weights
+      - output_has_negative_vref_offset
+      - full_eight_input_weight_chain_is_observable
+    public_observables:
+      - d0
+      - d1
+      - d2
+      - d3
+      - d4
+      - d5
+      - d6
+      - d7
+      - vout
+      - gnd
   scoring:
     axes:
       - dut_compile
@@ -4455,7 +4557,18 @@
 260-dac-serial-16b-nobridge: |
   checker:
     task_id: v3_dac_serial_16b_nobridge
-    metric: stable_samples
+    metric: serial_prefix_accumulator
+  sim_correct:
+    checks:
+      - falling_sample_clock_resets_prefix_state
+      - falling_ready_clock_accumulates_serial_prefix_weights
+      - lower_array_weights_define_normalization_basis
+      - output_is_bipolar_scaled_from_accumulated_state
+    public_observables:
+      - clk_sample
+      - clk_sarready
+      - data
+      - out
   scoring:
     axes:
       - dut_compile
@@ -4473,7 +4586,7 @@
 262-single-shot-timer-pulse: |
   checker:
     task_id: v3_single_shot_timer_pulse
-    metric: stable_samples
+    metric: trigger_derived_pulse_windows
   scoring:
     axes:
       - dut_compile
@@ -4502,7 +4615,7 @@
 264-dac4bit-bipolar-252m: |
   checker:
     task_id: v3_dac4bit_bipolar_252m
-    metric: stable_samples
+    metric: static_bipolar_dac_formula
   scoring:
     axes:
       - dut_compile
@@ -4511,7 +4624,7 @@
 265-bin2ther-2b: |
   checker:
     task_id: v3_bin2ther_2b
-    metric: stable_samples
+    metric: rail_referenced_segment_decode
   scoring:
     axes:
       - dut_compile
@@ -4520,7 +4633,7 @@
 266-dff-set-reset: |
   checker:
     task_id: v3_dff_set_reset
-    metric: stable_samples
+    metric: async_set_reset_clocked_dff_state
   scoring:
     axes:
       - dut_compile
@@ -4529,7 +4642,7 @@
 267-pfd-up-down-state: |
   checker:
     task_id: v3_pfd_up_down_state
-    metric: stable_samples
+    metric: event_derived_bounded_pfd_state
   scoring:
     axes:
       - dut_compile
@@ -4570,7 +4683,7 @@
 269-trim-ctrl-5bit: |
   checker:
     task_id: v3_trim_ctrl_5bit
-    metric: stable_samples
+    metric: rounded_clamped_trim_code
   scoring:
     axes:
       - dut_compile
@@ -4579,7 +4692,7 @@
 270-therm8-to-bin4-count: |
   checker:
     task_id: v3_therm8_to_bin4_count
-    metric: stable_samples
+    metric: thermometer_popcount_binary_outputs
   scoring:
     axes:
       - dut_compile
@@ -4588,7 +4701,7 @@
 271-coarse-qtz-3bit-residue: |
   checker:
     task_id: v3_coarse_qtz_3bit_residue
-    metric: stable_samples
+    metric: quantized_code_and_residue_formula
   scoring:
     axes:
       - dut_compile
@@ -4597,7 +4710,7 @@
 272-rs-phase-detector: |
   checker:
     task_id: v3_rs_phase_detector
-    metric: stable_samples
+    metric: event_derived_rs_latch_state
   scoring:
     axes:
       - dut_compile
@@ -4606,7 +4719,7 @@
 273-level-shifter-offset: |
   checker:
     task_id: v3_level_shifter_offset
-    metric: stable_samples
+    metric: continuous_offset_formula
   scoring:
     axes:
       - dut_compile
@@ -4615,7 +4728,7 @@
 274-weighted-decoder-6bit: |
   checker:
     task_id: v3_weighted_decoder_6bit
-    metric: stable_samples
+    metric: static_weighted_code_formula
   scoring:
     axes:
       - dut_compile
@@ -4624,7 +4737,7 @@
 275-divide-by-two-toggle: |
   checker:
     task_id: v3_divide_by_two_toggle_v2
-    metric: stable_samples
+    metric: event_derived_divide_by_two_state
   scoring:
     axes:
       - dut_compile
@@ -4633,7 +4746,7 @@
 276-accum3-pulse: |
   checker:
     task_id: v3_accum3_pulse
-    metric: stable_samples
+    metric: modulo8_accumulator_pulse_state
   scoring:
     axes:
       - dut_compile
@@ -4642,7 +4755,7 @@
 277-xor-phase-detector: |
   checker:
     task_id: v3_xor_phase_detector
-    metric: stable_samples
+    metric: combinational_xor_phase_truth_table
   scoring:
     axes:
       - dut_compile
@@ -4651,7 +4764,7 @@
 278-decision-router-logic: |
   checker:
     task_id: v3_decision_router_logic
-    metric: stable_samples
+    metric: decision_router_truth_table
   scoring:
     axes:
       - dut_compile
@@ -4660,7 +4773,7 @@
 279-safe-analog-divider: |
   checker:
     task_id: v3_safe_analog_divider
-    metric: stable_samples
+    metric: guarded_denominator_formula
   scoring:
     axes:
       - dut_compile
@@ -4669,7 +4782,7 @@
 280-vargain-diffamp-clip: |
   checker:
     task_id: v3_vargain_diffamp_clip
-    metric: stable_samples
+    metric: differential_gain_clip_formula
   sim_correct:
     checks:
       - subtracts_parameterized_input_offset
@@ -4688,18 +4801,48 @@
       - tb_compile
       - sim_correct
 281-programmable-divider-by-n: |
+  schema_version: "vabench-release-v3-checks"
+  task_id: "v3_281_programmable_divider_by_n"
   checker:
-    task_id: v3_programmable_divider_by_n
-    metric: stable_samples
+    task_id: "v3_programmable_divider_by_n"
+    function: "check_v3_programmable_divider_by_n"
+    source: "runners/simulate_evas.py"
+  gate_review:
+    gate1: independent_l1_ready
+    gate2: cadence_modeling_ready
+  sim_correct:
+    dut_companion_role: function_checked_dut
+    strong_benchmark_claim: true
+    checks:
+      - rounded_analog_divide_ratio
+      - ratio_below_one_clipped_to_one
+      - modulo_edge_counter_output_high_only_at_zero
+    public_behavior_envelope: "Programmable voltage-domain clock divider whose divide ratio is rounded from divctrl and can vary across visible/hidden stimulus."
   scoring:
     axes:
       - dut_compile
       - tb_compile
       - sim_correct
 282-pfd-timer-reset: |
+  schema_version: "vabench-release-v3-checks"
+  task_id: "v3_282_pfd_timer_reset"
   checker:
-    task_id: v3_pfd_timer_reset
-    metric: stable_samples
+    task_id: "v3_pfd_timer_reset"
+    function: "check_v3_pfd_timer_reset"
+    source: "runners/simulate_evas.py"
+  gate_review:
+    gate1: independent_l1_ready
+    duplicate_note: "Previously close to 300-pfd-active-low-reset. After task 300 was rewritten to include an explicit asynchronous reset input, this row remains the complementary-output timer-reset PFD variant."
+    gate2: cadence_modeling_ready
+  sim_correct:
+    dut_companion_role: function_checked_dut
+    strong_benchmark_claim: true
+    checks:
+      - ref_edge_asserts_active_low_up
+      - fb_edge_asserts_down
+      - delayed_mutual_timer_reset
+      - visible_hidden_edge_order_variation
+    public_behavior_envelope: "PFD state machine with active-low UP output, active-high DOWN output, and reset_delay-based mutual reset derived from public input edges."
   scoring:
     axes:
       - dut_compile
@@ -4935,9 +5078,26 @@
     required: true
     tolerance_notes: "Use saved differential input/output waveforms and broad statistical separation, not an internal estimator code."
 288-absolute-value: |
+  schema_version: "vabench-release-v3-checks"
+  task_id: "v3_288_smooth_absolute_value"
   checker:
-    task_id: v3_absolute_value
-    metric: stable_samples
+    task_id: "v3_smooth_absolute_value"
+    function: "check_v3_smooth_absolute_value"
+    source: "runners/simulate_evas.py"
+  gate_review:
+    gate1: independent_l1_ready
+    duplicate_note: "Distinct from 148-absolute-value because this row requires a smooth zero-crossing soft-rectifier transfer rather than an exact ideal abs() cusp."
+    gate2: cadence_modeling_ready
+  sim_correct:
+    dut_companion_role: function_checked_dut
+    strong_benchmark_claim: true
+    checks:
+      - smooth_even_transfer
+      - rounded_zero_crossing
+      - positive_and_negative_magnitude_coverage
+      - positive_input_passed_through
+      - zero_maps_to_zero
+    public_behavior_envelope: "Memoryless voltage-domain absolute-value primitive checked over positive, negative, and zero input regions."
   scoring:
     axes:
       - dut_compile
@@ -4989,31 +5149,39 @@
       - sim_correct
 291-limiting-diffamp: |
   checker:
-    task_id: v3_limiting_diffamp
+    task_id: v3_smooth_limiting_diffamp
     metric: stable_samples
   gate_review:
-    gate1: valid_variant_needs_counting_policy
-    duplicate_note: "Simple centered hard-limiting differential amplifier; overlaps with richer limiting-diffamp rows such as 153-limiting-differential-amplifier."
+    gate1: independent_l1_ready
+    duplicate_note: "Distinct from hard-clamped limiting-amplifier rows because this row requires a smooth tanh soft-limiting differential transfer."
     gate2: cadence_modeling_ready
   sim_correct:
     dut_companion_role: function_checked_dut
     strong_benchmark_claim: true
     checks:
-      - differential_gain_linear_region
-      - lower_output_saturation
-      - upper_output_saturation
+      - differential_gain_near_zero
+      - smooth_lower_soft_limit
+      - smooth_upper_soft_limit
       - polarity_preserved
-    public_behavior_envelope: "Centered differential gain block with hard saturation to overridable sigout_low/sigout_high rails."
+    public_behavior_envelope: "Centered differential gain block with tanh soft limiting to a symmetric output magnitude."
   scoring:
     axes:
       - dut_compile
       - tb_compile
       - sim_correct
 292-hysteretic-comparator-receiver: |
+  schema_version: "vabench-release-v3-checks"
+  task_id: "v3_292_hysteretic_comparator_receiver"
   checker:
-    task_id: v3_hysteretic_comparator_receiver
-    metric: stable_samples
+    task_id: "v3_hysteretic_comparator_receiver"
+    function: "check_v3_hysteretic_comparator_receiver"
+    source: "runners/simulate_evas.py"
+  gate_review:
+    gate1: independent_l1_ready
+    gate2: cadence_modeling_ready
   sim_correct:
+    dut_companion_role: function_checked_dut
+    strong_benchmark_claim: true
     checks:
       - upper_lower_hysteresis_thresholds
       - fixed_propagation_delay
@@ -5023,78 +5191,198 @@
       - inp
       - inm
       - out
+    public_behavior_envelope: "Cadence-style offset plus hysteresis comparator receiver with delayed rail-coded output and state hold inside the hysteresis band."
   scoring:
     axes:
       - dut_compile
       - tb_compile
       - sim_correct
 293-flash-folded-dac4: |
+  schema_version: "vabench-release-v3-checks"
+  task_id: "v3_293_flash_folded_dac4"
   checker:
-    task_id: v3_flash_folded_dac4
-    metric: stable_samples
+    task_id: "v3_flash_folded_dac4"
+    function: "check_v3_flash_folded_dac4"
+    source: "runners/simulate_evas.py"
+  gate_review:
+    gate1: independent_l1_ready
+    gate2: cadence_modeling_ready
+  sim_correct:
+    dut_companion_role: function_checked_dut
+    strong_benchmark_claim: true
+    checks:
+      - msb_selects_folded_half
+      - lower_bits_add_or_subtract_from_midscale
+      - vref_scaled_output
+    public_behavior_envelope: "Folded 4-input flash DAC transfer checked from public input bits rather than fixed visible sample times."
   scoring:
     axes:
       - dut_compile
       - tb_compile
       - sim_correct
 294-subradix-dac10: |
+  schema_version: "vabench-release-v3-checks"
+  task_id: "v3_294_subradix_dac10"
   checker:
-    task_id: v3_subradix_dac10
-    metric: stable_samples
+    task_id: "v3_subradix_dac10"
+    function: "check_v3_subradix_dac10"
+    source: "runners/simulate_evas.py"
+  gate_review:
+    gate1: independent_l1_ready
+    gate2: cadence_modeling_ready
+  sim_correct:
+    dut_companion_role: function_checked_dut
+    strong_benchmark_claim: true
+    checks:
+      - radix_1p8_weight_decode
+      - all_ones_weight_sum_full_scale
+      - msb_to_lsb_bit_order
+    public_behavior_envelope: "10-bit sub-radix DAC whose output is derived from radix-1.8 public bit weights and normalized by the all-ones sub-radix sum."
   scoring:
     axes:
       - dut_compile
       - tb_compile
       - sim_correct
 295-clocked-adc3bit: |
+  schema_version: "vabench-release-v3-checks"
+  task_id: "v3_295_clocked_adc3bit"
   checker:
-    task_id: v3_clocked_adc3bit
-    metric: stable_samples
+    task_id: "v3_clocked_adc3bit"
+    function: "check_v3_clocked_adc3bit"
+    source: "runners/simulate_evas.py"
+  gate_review:
+    gate1: independent_l1_ready
+    gate2: cadence_modeling_ready
+  sim_correct:
+    dut_companion_role: function_checked_dut
+    strong_benchmark_claim: true
+    checks:
+      - rising_edge_sampling
+      - eight_uniform_bins
+      - binary_bit_bus_output_order
+      - input_clipping_to_code_range
+    public_behavior_envelope: "Clocked 3-bit ADC with explicit bit-bus outputs and input-derived quantization checks."
   scoring:
     axes:
       - dut_compile
       - tb_compile
       - sim_correct
 296-cal4bit-modulo: |
+  schema_version: "vabench-release-v3-checks"
+  task_id: "v3_296_cal4bit_modulo"
   checker:
-    task_id: v3_cal4bit_modulo
-    metric: stable_samples
+    task_id: "v3_cal4bit_modulo"
+    function: "check_v3_cal4bit_modulo"
+    source: "runners/simulate_evas.py"
+  gate_review:
+    gate1: independent_l1_ready
+    gate2: cadence_modeling_ready
+  sim_correct:
+    dut_companion_role: function_checked_dut
+    strong_benchmark_claim: true
+    checks:
+      - floor_then_clamp_code
+      - lsb_to_msb_output_bit_order
+      - negative_and_overrange_clipping
+    public_behavior_envelope: "Calibration encoder that floors analog code input, clamps to 0..15, and emits voltage-coded d0..d3 bits."
   scoring:
     axes:
       - dut_compile
       - tb_compile
       - sim_correct
 297-mux4-priority: |
+  schema_version: "vabench-release-v3-checks"
+  task_id: "v3_297_mux4_priority"
   checker:
-    task_id: v3_mux4_priority
-    metric: stable_samples
+    task_id: "v3_mux4_priority"
+    function: "check_v3_mux4_priority"
+    source: "runners/simulate_evas.py"
+  gate_review:
+    gate1: l2_support_component
+    duplicate_note: "Analog 4:1 mux is useful as an AMS routing/helper primitive, but should be counted as support unless upstream explicitly counts standalone routing helpers."
+    gate2: cadence_modeling_ready
+  sim_correct:
+    dut_companion_role: function_checked_dut
+    strong_benchmark_claim: false
+    checks:
+      - two_bit_select_decode
+      - selected_analog_input_forwarded
+      - all_four_channels_covered
+    public_behavior_envelope: "Voltage-domain analog 4:1 mux; checker derives expected output from public select bits and input voltages."
   scoring:
     axes:
       - dut_compile
       - tb_compile
       - sim_correct
-298-xnor-gate-voltage: |
+298-voltage-match-window: |
+  schema_version: "vabench-release-v3-checks"
+  task_id: "v3_298_voltage_match_window"
   checker:
-    task_id: v3_xnor_gate_voltage
-    metric: stable_samples
+    task_id: "v3_voltage_match_window"
+    function: "check_v3_voltage_match_window"
+    source: "runners/simulate_evas.py"
+  gate_review:
+    gate1: independent_l1_ready
+    duplicate_note: "Rewritten from pure voltage-coded XNOR into an analog voltage-coincidence window detector for calibration/lock-detect style monitor flows."
+    gate2: cadence_modeling_ready
+  sim_correct:
+    dut_companion_role: function_checked_dut
+    strong_benchmark_claim: true
+    checks:
+      - direct_analog_difference_window
+      - within_tolerance_match_output
+      - outside_tolerance_mismatch_output
+      - smoothed_rail_coded_output
+    public_behavior_envelope: "Rail-coded monitor output driven by the absolute analog voltage difference between two inputs."
   scoring:
     axes:
       - dut_compile
       - tb_compile
       - sim_correct
 299-bipolar-dff-sample: |
+  schema_version: "vabench-release-v3-checks"
+  task_id: "v3_299_bipolar_dff_sample"
   checker:
-    task_id: v3_bipolar_dff_sample
-    metric: stable_samples
+    task_id: "v3_bipolar_dff_sample"
+    function: "check_v3_bipolar_dff_sample"
+    source: "runners/simulate_evas.py"
+  gate_review:
+    gate1: independent_l1_ready
+    gate2: cadence_modeling_ready
+  sim_correct:
+    dut_companion_role: function_checked_dut
+    strong_benchmark_claim: true
+    checks:
+      - rising_edge_data_sampling
+      - held_state_between_edges
+      - complementary_bipolar_outputs
+    public_behavior_envelope: "Rising-edge DFF helper with +1/-1 complementary outputs checked from public data and clock waveforms."
   scoring:
     axes:
       - dut_compile
       - tb_compile
       - sim_correct
 300-pfd-active-low-reset: |
+  schema_version: "vabench-release-v3-checks"
+  task_id: "v3_300_pfd_active_low_reset"
   checker:
-    task_id: v3_pfd_active_low_reset
-    metric: stable_samples
+    task_id: "v3_pfd_active_low_reset"
+    function: "check_v3_pfd_active_low_reset"
+    source: "runners/simulate_evas.py"
+  gate_review:
+    gate1: independent_l1_ready
+    duplicate_note: "Distinct from 282-pfd-timer-reset because this row adds an explicit asynchronous active-low reset input that clears pending one-sided PFD state."
+    gate2: cadence_modeling_ready
+  sim_correct:
+    dut_companion_role: function_checked_dut
+    strong_benchmark_claim: true
+    checks:
+      - rstb_low_holds_outputs_low
+      - ref_edge_asserts_active_high_up
+      - fb_edge_asserts_active_high_down
+      - delayed_mutual_timer_reset
+      - external_reset_clears_pending_state
+    public_behavior_envelope: "PFD state machine with active-high UP/DOWN outputs, delayed mutual reset, and an external active-low asynchronous reset input."
   scoring:
     axes:
       - dut_compile

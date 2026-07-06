@@ -1,42 +1,37 @@
 # Accum3 Pulse
 
-Implement `accum3_pulse.va` in Verilog-A.
+## Task Contract
 
-## Interface
+Implement `accum3_pulse.va` as a 3-bit modulo accumulator pulse generator.
+
+## Public Verilog-A Interface
+
+Use this module signature:
 
 ```verilog
-module accum3_pulse(
-    input  electrical clk,
-    output electrical out
-);
+module accum3_pulse(clk, out);
 ```
+
+Both ports are scalar `electrical` nodes. `clk` is the input clock and `out` is the voltage-coded modulo pulse output.
+
+## Public Parameter Contract
+
+- `vth`: rising-edge threshold for `clk`, default `0.45`.
+- `vdd`: high level for the output, default `0.9`.
+- `tdel`: output transition delay, default `10p`.
+- `tr`: output rise/fall smoothing time, default `10p`.
 
 ## Required Behavior
 
-This task asks for the `accum3_pulse` behavioral DUT module, not a Spectre
-testbench. The module is a 3-bit modulo accumulator pulse generator.
-
-Support these public parameters and legal overrides:
-
-| Parameter | Default | Unit / range | Contract |
-| --- | ---: | --- | --- |
-| `vth` | `0.45` | V | Rising-edge threshold for `clk`. |
-| `vdd` | `0.9` | V, `(0:inf)` | High level for the voltage-coded output. |
-| `tdel` | `10 ps` | time, `[0:inf)` | Output transition delay. |
-| `tr` | `10 ps` | time, `(0:inf)` | Output rise/fall smoothing. |
-
-Required observable behavior:
-
 - Initialize the internal 3-bit count to 7.
-- Detect rising `clk` crossings at `vth`.
-- Increment the count modulo 8 on each qualifying clock edge.
+- Increment the count modulo 8 on each rising `clk` crossing.
 - Drive `out` high only when the modulo count is 0.
 - Drive `out` low for all other count values.
 
-Use voltage contributions only. Do not use current contributions,
-transistor-level devices, AC/noise analysis, checker logic, private test hooks,
-or simulator-private side channels.
+## Modeling Constraints
 
-## Output
+Use voltage contributions only. Do not use current contributions, transistor-level devices, AC/noise analysis, checker logic, out-of-band test hooks, or simulator side channels.
+
+## Output Contract
 
 Return exactly one source artifact named `accum3_pulse.va`.

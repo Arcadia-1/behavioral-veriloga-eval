@@ -1,46 +1,26 @@
 # Dual Track Sample Hold
 
-Implement `dual_track_sample_hold.va` in Verilog-A.
+## Task Contract
+Implement `dual_track_sample_hold.va`, a voltage-domain dual complementary track/hold DUT. This is a sampling/analog-memory L1 component, not a standalone L2 flow.
 
-## Public Interface
-
-Declare module `dual_track_sample_hold(vdd, vss, clk, vin, vout, phase)` with
-scalar electrical voltage-domain ports.
-
-- `vdd`, `vss`: local supply rails.
-- `clk`: voltage-coded clock/control input.
-- `vin`: analog input to be sampled.
-- `vout`: held analog output.
-- `phase`: voltage-coded monitor that is high while the output stage is in its
-  track phase and low while the output stage is holding.
+## Public Verilog-A Interface
+Declare module `dual_track_sample_hold(vdd, vss, clk, vin, vout, phase)` with scalar electrical ports. `vdd` and `vss` are local rails, `clk` is the voltage-coded phase control, `vin` is the sampled analog input, `vout` is the held output, and `phase` is high while the output stage tracks.
 
 ## Public Parameter Contract
+Provide overrideable public parameters:
 
-- `vth`: clock threshold, default `0.45`.
-- `tick`: internal behavioral update interval, default `0.5n`.
-- `alpha_in`: first-stage tracking fraction per update, default `0.45`.
-- `alpha_out`: output-stage tracking fraction per update, default `0.55`.
-- `tedge`: output transition smoothing time, default `50p`.
-- `vinit`: initial stored voltage, default `0.0`.
+- `vth = 0.45 V`: clock threshold.
+- `tick = 0.5 ns from (0:inf)`: behavioral update interval.
+- `alpha_in = 0.45 from (0:1]`: input-stage tracking fraction per update.
+- `alpha_out = 0.55 from (0:1]`: output-stage tracking fraction per update.
+- `tedge = 50 ps from (0:inf)`: output smoothing time.
+- `vinit = 0.0 V`: initial stored value.
 
-## Functional Contract
-
-Model a dual complementary track/hold sample-and-hold cell:
-
-- During the low clock phase, the input stage tracks `vin` with finite
-  acquisition bandwidth while the output stage holds its previous value.
-- On the rising clock transition, the input stage stops tracking and retains the
-  value acquired during the preceding low phase.
-- During the high clock phase, the output stage tracks the retained input-stage
-  value with finite output bandwidth.
-- On the falling clock transition, the output stage holds its current value
-  until the next high clock phase.
-- Clamp stored stage values to the local `vss`-to-`vdd` voltage range.
-- Drive `vout` and `phase` with smooth voltage-domain transitions.
+## Required Behavior
+During low clock phase, the input stage tracks `vin` with finite acquisition while the output stage holds. On the rising clock transition, the input stage retains its acquired value. During high clock phase, the output stage tracks that retained input-stage value with finite bandwidth. On falling clock transition, the output stage holds until the next high phase. Clamp internal stored voltages to the local rail span and drive `phase` high only during output-stage tracking.
 
 ## Modeling Constraints
+Use voltage contributions and smooth voltage-domain transitions. Do not emit a Spectre testbench, checker logic, out-of-band test hooks, current contributions, transistor-level devices, `ddt()`, `idt()`, or simulator side channels.
 
-Return only `dual_track_sample_hold.va`. Do not emit a Spectre testbench,
-checker logic, private test hooks, or simulator-private side channels. Use
-voltage contributions only; do not use current contributions, `ddt()`, or
-`idt()`.
+## Output Contract
+Return exactly one source artifact named `dual_track_sample_hold.va`.

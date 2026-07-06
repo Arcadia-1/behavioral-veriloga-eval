@@ -2779,7 +2779,7 @@
       "difficulty": "D2",
       "form": "dut",
       "id": "v3_255_tool_4bit_sar_signed_dac",
-      "level": "L2",
+      "level": "L1",
       "target": [
         "tool_4bit_sar_signed_dac.va"
       ],
@@ -2845,7 +2845,7 @@
       "difficulty": "D3",
       "form": "dut",
       "id": "v3_261_sar_13bit_serial_decoder",
-      "level": "L3",
+      "level": "L1",
       "target": [
         "sar_13bit_serial_decoder.va"
       ],
@@ -2856,7 +2856,7 @@
       "difficulty": "D2",
       "form": "dut",
       "id": "v3_262_single_shot_timer_pulse",
-      "level": "L2",
+      "level": "L1",
       "target": [
         "single_shot_timer_pulse.va"
       ],
@@ -2900,7 +2900,7 @@
       "difficulty": "D2",
       "form": "dut",
       "id": "v3_266_dff_set_reset",
-      "level": "L2",
+      "level": "L1",
       "target": [
         "dff_set_reset.va"
       ],
@@ -2911,7 +2911,7 @@
       "difficulty": "D2",
       "form": "dut",
       "id": "v3_267_pfd_up_down_state",
-      "level": "L2",
+      "level": "L1",
       "target": [
         "pfd_up_down_state.va"
       ],
@@ -2955,7 +2955,7 @@
       "difficulty": "D2",
       "form": "dut",
       "id": "v3_271_coarse_qtz_3bit_residue",
-      "level": "L2",
+      "level": "L1",
       "target": [
         "coarse_qtz_3bit_residue.va"
       ],
@@ -2966,7 +2966,7 @@
       "difficulty": "D2",
       "form": "dut",
       "id": "v3_272_rs_phase_detector",
-      "level": "L2",
+      "level": "L1",
       "target": [
         "rs_phase_detector.va"
       ],
@@ -3010,7 +3010,7 @@
       "difficulty": "D2",
       "form": "dut",
       "id": "v3_276_accum3_pulse",
-      "level": "L2",
+      "level": "L1",
       "target": [
         "accum3_pulse.va"
       ],
@@ -3065,7 +3065,7 @@
       "difficulty": "D2",
       "form": "dut",
       "id": "v3_281_programmable_divider_by_n",
-      "level": "L2",
+      "level": "L1",
       "target": [
         "programmable_divider_by_n.va"
       ],
@@ -3076,7 +3076,7 @@
       "difficulty": "D2",
       "form": "dut",
       "id": "v3_282_pfd_timer_reset",
-      "level": "L2",
+      "level": "L1",
       "target": [
         "pfd_timer_reset.va"
       ],
@@ -3148,12 +3148,12 @@
       "category": "analog_primitive",
       "difficulty": "D1",
       "form": "dut",
-      "id": "v3_288_absolute_value",
+      "id": "v3_288_smooth_absolute_value",
       "level": "L1",
       "target": [
         "absolute_value.va"
       ],
-      "title": "Absolute Value"
+      "title": "Smooth Absolute Value"
     },
     "289-deadband-voltage": {
       "category": "baseband_signal_conditioning",
@@ -3181,12 +3181,12 @@
       "category": "baseband_signal_conditioning",
       "difficulty": "D2",
       "form": "dut",
-      "id": "v3_291_limiting_diffamp",
+      "id": "v3_291_smooth_limiting_diffamp",
       "level": "L1",
       "target": [
         "limiting_diffamp.va"
       ],
-      "title": "Limiting Diffamp"
+      "title": "Smooth Limiting Diffamp"
     },
     "292-hysteretic-comparator-receiver": {
       "category": "comparator",
@@ -3254,16 +3254,16 @@
       ],
       "title": "Mux4 Priority"
     },
-    "298-xnor-gate-voltage": {
-      "category": "digital_logic",
-      "difficulty": "D1",
+    "298-voltage-match-window": {
+      "category": "calibration_control",
+      "difficulty": "D2",
       "form": "dut",
-      "id": "v3_298_xnor_gate_voltage",
+      "id": "v3_298_voltage_match_window",
       "level": "L1",
       "target": [
-        "xnor_gate_voltage.va"
+        "voltage_match_window.va"
       ],
-      "title": "XNOR Gate Voltage"
+      "title": "Voltage Match Window"
     },
     "299-bipolar-dff-sample": {
       "category": "clock_timing",
@@ -3281,11 +3281,11 @@
       "difficulty": "D2",
       "form": "dut",
       "id": "v3_300_pfd_active_low_reset",
-      "level": "L2",
+      "level": "L1",
       "target": [
         "pfd_active_low_reset.va"
       ],
-      "title": "PFD Active Low Reset"
+      "title": "PFD With External Active Low Reset"
     },
     "301-function-clamp-window": {
       "category": "veriloga_language_semantics",

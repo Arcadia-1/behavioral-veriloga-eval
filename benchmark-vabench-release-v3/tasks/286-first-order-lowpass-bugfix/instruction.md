@@ -1,59 +1,24 @@
 # First Order Lowpass Bugfix
 
-One-shot bugfix task for a voltage-domain first-order low-pass filter.
+## Task Contract
+Repair the supplied buggy voltage-domain first-order low-pass DUT and return `dut_fixed.va`. This is a bugfix L1 task: preserve the public interface while correcting the response envelope.
 
-## Agent-Visible Inputs
+## Public Verilog-A Interface
+Preserve module `first_order_lowpass(vin, vout)` with scalar electrical voltage-domain ports. The visible starter and support decks are public inputs for understanding the bug and validation scenario.
 
-- `dut_buggy.va`
-- `tb_first_order_lowpass_buggy.scs`
-- `tb_first_order_lowpass_ref.scs`
+## Public Parameter Contract
+The supplied buggy DUT exposes `alpha` and `tr`:
 
-## Required Output
-
-- `dut_fixed.va`
-
-## Public Interface
-
-Preserve module `first_order_lowpass(vin, vout)` with electrical
-voltage-domain ports.
-
-## Public Parameter And Bugfix Contract
-
-The supplied buggy DUT exposes public parameters `alpha` and `tr`:
-
-- `alpha = 0.010` in the buggy input: dimensionless recurrence coefficient.
-  This value makes the supplied discrete-time response too slow for the public
-  settling envelope and is the bug to repair if retaining the starter-style
-  recurrence.
+- `alpha = 0.010`: dimensionless recurrence coefficient in the buggy starter; this makes the discrete-time response too slow if the starter recurrence is retained.
 - `tr = 200 ps`: output transition smoothing time.
 
-The visible source uses a timer-updated recurrence. The exact timer update
-cadence and internal variable names are not the repair target by themselves;
-the fixed artifact must instead produce the public finite-bandwidth response
-shape below. If the fix keeps the same recurrence structure, increase the
-effective recurrence gain to match a tens-of-nanoseconds time constant while
-leaving legal parameter overrides meaningful.
+The starter uses a timer-updated recurrence. The exact internal variable names and update cadence are not the target by themselves; legal parameter overrides should remain meaningful.
 
-## Public Scenario
-
-The supplied testbenches drive `vin` from about `0 V` to about `0.8 V` and
-observe the transient response through the settling window.
-
-## Functional Contract
-
-- `vout` should be a stable finite-bandwidth low-pass response with an
-  effective time constant on the order of tens of nanoseconds.
-- After the step, `vout` should move smoothly and monotonically toward `0.8 V`.
-- `vout` should lag the input transition, not behave as a direct passthrough.
-- Within several tens of nanoseconds, `vout` should cross a substantial
-  fraction of the final level; by the end of the supplied transient it should
-  be close to the final input level.
-- The output should remain bounded and should not overshoot the input rail.
+## Required Behavior
+After an input step from about `0 V` to about `0.8 V`, `vout` should move smoothly and monotonically toward the final level with a finite-bandwidth response on the order of tens of nanoseconds. The output should lag the input rather than act as a direct passthrough, make substantial progress within several tens of nanoseconds, settle close to the final level by the end of the supplied transient, and remain bounded without overshoot.
 
 ## Modeling Constraints
+Use voltage-domain, event-driven Verilog-A and voltage contributions. Declare real state and helper quantities at module scope. Do not modify or emit support testbenches, add checker logic, hard-code testbench sample points, add simulator side channels, use current contributions, transistor-level devices, `ddt()`, `idt()`, or `last_crossing()`.
 
-Use voltage-domain, event-driven Verilog-A and drive `vout` with voltage
-contributions. Declare real state and helper quantities at module scope, not
-inside `analog` or event blocks. Do not modify or emit support testbenches, add
-checker logic, private test hooks, simulator-private side channels, hard-code private waveform sample points, use current
-contributions, `ddt()`, `idt()`, or `last_crossing()`.
+## Output Contract
+Return exactly one source artifact named `dut_fixed.va`.

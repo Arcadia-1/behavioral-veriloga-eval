@@ -1,40 +1,31 @@
 # Sample-Hold With 5 V Clock
 
-Implement `sample_hold_5v_clock.va` in Verilog-A.
+## Task Contract
 
-## Interface
+Implement `sample_hold_5v_clock.va` as an ideal rising-edge sample-and-hold DUT controlled by a 5 V clock.
+
+## Public Verilog-A Interface
+
+Use this exact module signature:
 
 ```verilog
-module sample_hold_5v_clock(
-    input  electrical vin,
-    output electrical vout,
-    input  electrical vclk
-);
+module sample_hold_5v_clock(vin, vout, vclk);
 ```
+
+All ports are electrical. `vin` is the analog input, `vclk` is the sampling clock, and `vout` is the held output.
+
+## Public Parameter Contract
+
+Provide `parameter real vtrans_clk = 2.5;` as the rising-edge threshold for the 5 V clock.
 
 ## Required Behavior
 
-This task asks for the `sample_hold_5v_clock` behavioral DUT module, not a
-Spectre testbench. The module is an ideal voltage sample-and-hold controlled by
-a 5 V clock.
+Detect rising crossings of `vclk` through `vtrans_clk`. At each qualifying edge, sample the instantaneous value of `vin` and hold that sampled value on `vout` until the next rising clock edge. Falling clock edges must not update the held value.
 
-Support this public parameter and legal override:
+## Modeling Constraints
 
-| Parameter | Default | Unit / range | Contract |
-| --- | ---: | --- | --- |
-| `vtrans_clk` | `2.5` | V | Rising-edge threshold for the 5 V sampling clock. |
+Use voltage contributions only. Do not continuously track `vin` between sampling edges. Do not add current contributions, transistor devices, checker logic, out-of-band test hooks, simulator side channels, or hard-coded testbench sample times.
 
-Required observable behavior:
-
-- Detect rising `vclk` crossings at `vtrans_clk`.
-- At each qualifying clock edge, sample the instantaneous value of `vin`.
-- Hold the sampled value on `vout` until the next qualifying clock edge.
-- Do not update `vout` on falling clock edges.
-
-Use voltage contributions only. Do not use current contributions,
-transistor-level devices, AC/noise analysis, checker logic, private test hooks,
-or simulator-private side channels.
-
-## Output
+## Output Contract
 
 Return exactly one source artifact named `sample_hold_5v_clock.va`.

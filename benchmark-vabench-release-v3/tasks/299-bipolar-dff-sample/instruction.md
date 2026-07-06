@@ -1,44 +1,24 @@
 # Bipolar DFF Sample
 
-Implement `bipolar_dff_sample.va` in Verilog-A.
+## Task Contract
+Implement `bipolar_dff_sample.va`, a rising-edge voltage-domain D flip-flop with complementary bipolar outputs. This is a clocked AMS control/helper component.
 
-## Interface
+## Public Verilog-A Interface
+Declare module `bipolar_dff_sample(vin_d, vclk, vout_q, vout_qbar)` with scalar electrical ports. `vin_d` is the sampled data input, `vclk` is the clock, and `vout_q`/`vout_qbar` are complementary bipolar outputs.
 
-```verilog
-module bipolar_dff_sample(
-    input  electrical vin_d,
-    input  electrical vclk,
-    output electrical vout_q,
-    output electrical vout_qbar
-);
-```
+## Public Parameter Contract
+Provide overrideable public parameters:
+
+- `vth = 0.0 V`: data threshold for `vin_d`.
+- `vclk_th = 0.45 V`: rising-edge threshold for `vclk`.
+
+Output levels are `+1 V` and `-1 V`.
 
 ## Required Behavior
+On each rising crossing of `vclk` through `vclk_th`, sample whether `vin_d` is above `vth`. Hold the sampled state between clock edges. Drive `vout_q` to `+1 V` for sampled high and `-1 V` for sampled low. Drive `vout_qbar` as the complementary bipolar output.
 
-This task asks for the `bipolar_dff_sample` behavioral DUT module, not a
-Spectre testbench. The module is a rising-edge D flip-flop with bipolar
-complementary outputs.
+## Modeling Constraints
+Use deterministic voltage-domain Verilog-A and smooth voltage-coded output transitions. Do not emit a testbench, checker logic, out-of-band test hooks, hard-code testbench sample points, use current contributions, transistor-level devices, AC/noise analysis, `ddt()`, `idt()`, or simulator side channels.
 
-Support these public parameters and legal overrides:
-
-| Parameter | Default | Unit / range | Contract |
-| --- | ---: | --- | --- |
-| `vth` | `0.0` | V | Data threshold for `vin_d`. |
-| `vclk_th` | `0.45` | V | Rising-edge threshold for `vclk`. |
-
-Required observable behavior:
-
-- Detect rising `vclk` crossings at `vclk_th`.
-- At each qualifying clock edge, sample whether `vin_d` is above `vth`.
-- Hold the sampled state between clock edges.
-- Drive `vout_q` to `+1 V` when the sampled state is high and `-1 V` when it is
-  low.
-- Drive `vout_qbar` as the complementary bipolar output.
-
-Use voltage contributions only. Do not use current contributions,
-transistor-level devices, AC/noise analysis, checker logic, private test hooks,
-or simulator-private side channels.
-
-## Output
-
+## Output Contract
 Return exactly one source artifact named `bipolar_dff_sample.va`.

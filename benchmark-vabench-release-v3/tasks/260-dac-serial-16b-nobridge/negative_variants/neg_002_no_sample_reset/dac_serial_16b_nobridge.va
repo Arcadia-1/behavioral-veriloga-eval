@@ -24,6 +24,6 @@ analog begin
         else if (counter == 5) state = state + 8.0 / 145.015625 * (V(data) > vcm ? 1.0 : 0.0);
         counter = counter + 1;
     end
-    V(out) <+ transition(state * 2.0 * vdd - vdd, 1p, 0, 1p);
+    V(out) <+ transition(state * 2.0 * vdd - vdd, 1p, 1p, 1p);
 end
 endmodule

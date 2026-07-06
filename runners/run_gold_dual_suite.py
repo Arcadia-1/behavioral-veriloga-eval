@@ -16,7 +16,7 @@ import tarfile
 import tempfile
 import time
 import uuid
-from pathlib import Path
+from pathlib import Path, PurePosixPath
 
 from bridge_preflight import bridge_preflight, resolve_cadence_cshrc
 from run_gold_suite import (
@@ -2044,14 +2044,33 @@ def run_ssh_bytes(
     )
 
 
+def _safe_tar_member_parts(member_name: str) -> tuple[str, ...] | None:
+    rel = PurePosixPath(member_name)
+    parts = tuple(part for part in rel.parts if part not in ("", "."))
+    if rel.is_absolute() or any(part == ".." for part in parts):
+        raise ValueError(f"unsafe tar member path: {member_name}")
+    return parts or None
+
+
 def safe_extract_tar_bytes(data: bytes, target_dir: Path) -> None:
     target_root = target_dir.resolve()
     with tarfile.open(fileobj=io.BytesIO(data), mode="r:gz") as archive:
         for member in archive.getmembers():
-            member_target = (target_root / member.name).resolve()
-            if member_target != target_root and target_root not in member_target.parents:
-                raise ValueError(f"unsafe tar member path: {member.name}")
-        archive.extractall(target_root)
+            parts = _safe_tar_member_parts(member.name)
+            if parts is None:
+                continue
+            member_target = target_root.joinpath(*parts)
+            if member_target.is_symlink():
+                member_target.unlink()
+            if member.issym() or member.islnk():
+                continue
+            for parent in member_target.parents:
+                if parent == target_root:
+                    break
+                if parent.is_symlink():
+                    raise ValueError(f"unsafe tar member path: {member.name}")
+            member.name = PurePosixPath(*parts).as_posix()
+            archive.extract(member, target_root)
 
 
 def copy_direct_spectre_inputs(
@@ -2196,6 +2215,12 @@ def run_spectre_case_sui_direct(
         cadence_cshrc=cshrc,
     )
     ahdlcmi_db_name = f"{spectre_tb_path.stem}.ahdlSimDB"
+    ahdlcmi_db_path = output_dir / ahdlcmi_db_name
+    if ahdlcmi_db_path.is_symlink() or ahdlcmi_db_path.exists():
+        if ahdlcmi_db_path.is_dir() and not ahdlcmi_db_path.is_symlink():
+            shutil.rmtree(ahdlcmi_db_path)
+        else:
+            ahdlcmi_db_path.unlink()
     ahdlcmi_cache: dict[str, object] = {
         "requested": ahdlcmi_cache_requested,
         "enabled": False,

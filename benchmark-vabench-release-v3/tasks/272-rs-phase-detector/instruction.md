@@ -1,44 +1,38 @@
 # RS Phase Detector
 
-Implement `rs_phase_detector.va` in Verilog-A.
+## Task Contract
 
-## Interface
+Implement `rs_phase_detector.va` as an RS-latch style phase detector for voltage-coded reference and feedback clocks.
+
+## Public Verilog-A Interface
+
+Use this module signature:
 
 ```verilog
-module rs_phase_detector(
-    input  electrical ref,
-    input  electrical fb,
-    output electrical up,
-    output electrical down
-);
+module rs_phase_detector(ref, fb, up, down);
 ```
+
+All ports are scalar `electrical` nodes. `ref` and `fb` are voltage-coded clock inputs. `up` and `down` are complementary voltage-coded latch outputs.
+
+## Public Parameter Contract
+
+- `vdd`: high level for outputs and threshold reference, default `1.2`.
+- `tdel`: output transition delay, default `10p`.
+- `tr`: output rise time, default `10p`.
+- `tf`: output fall time, default `10p`.
 
 ## Required Behavior
 
-This task asks for the `rs_phase_detector` behavioral DUT module, not a Spectre
-testbench. The module is an RS-latch style phase detector.
-
-Support these public parameters and legal overrides:
-
-| Parameter | Default | Unit / range | Contract |
-| --- | ---: | --- | --- |
-| `vdd` | `1.2` | V, `(0:inf)` | High level for voltage-coded outputs and threshold reference. |
-| `tdel` | `10 ps` | time, `[0:inf)` | Transition delay for outputs. |
-| `tr` | `10 ps` | time, `(0:inf)` | Output rise time. |
-| `tf` | `10 ps` | time, `(0:inf)` | Output fall time. |
-
-Required observable behavior:
-
-- Detect rising `ref` and `fb` crossings at `vdd / 2`.
+- Detect rising `ref` and `fb` crossings at `vdd/2`.
 - A rising `ref` edge sets the latch state so `up` is high and `down` is low.
 - A rising `fb` edge resets the latch state so `up` is low and `down` is high.
 - Hold the most recent latch state between qualifying input edges.
-- Drive outputs as smoothed 0 V / `vdd` voltage-coded signals.
+- Initialize to the reset state with `up` low and `down` high.
 
-Use voltage contributions only. Do not use current contributions,
-transistor-level devices, AC/noise analysis, checker logic, private test hooks,
-or simulator-private side channels.
+## Modeling Constraints
 
-## Output
+Use voltage contributions only. Do not use current contributions, transistor-level devices, AC/noise analysis, checker logic, out-of-band test hooks, or simulator side channels.
+
+## Output Contract
 
 Return exactly one source artifact named `rs_phase_detector.va`.
