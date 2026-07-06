@@ -7,5 +7,5 @@ Vclk (clkin 0) vsource type=pulse val0=0 val1=1 delay=5n period=10n width=4n ris
 
 XDUT (clkin mc) two_bit_counter_marker
 
-tran tran stop=55n maxstep=25p
+tran tran stop=42n maxstep=25p
 save clkin mc

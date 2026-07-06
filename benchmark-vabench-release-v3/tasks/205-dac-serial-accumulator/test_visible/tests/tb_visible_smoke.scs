@@ -9,5 +9,5 @@ Vdata (data 0) vsource type=pwl wave=[0 1.1 4.75n 1.1 4.8n 0 6.75n 0 6.8n 1.1 14
 
 XDUT (clk_sample clk_sarready data out) dac_serial_accumulator
 
-tran tran stop=24n maxstep=20p
+tran tran stop=16n maxstep=20p
 save clk_sample clk_sarready data out

@@ -3,5 +3,5 @@ global 0
 ahdl_include "pipeline_counter_onehot.va"
 Vclk (clk 0) vsource type=pulse val0=0 val1=0.9 delay=0.2n period=1n width=0.45n rise=20p fall=20p
 XDUT (clk dout0 dout1 dout2 s0 s1 s2 s3 s4 s5) pipeline_counter_onehot
-tran tran stop=7n maxstep=10p
+tran tran stop=4.9n maxstep=10p
 save clk dout0 dout1 dout2 s0 s1 s2 s3 s4 s5

@@ -15,5 +15,5 @@ Vin7 (in7 0) vsource dc=0.8
 
 XDUT (clk in0 in1 in2 in3 in4 in5 in6 in7 out count_x) ideal_clkmux_8channel
 
-tran tran stop=18n maxstep=20p
+tran tran stop=12.5n maxstep=20p
 save clk out count_x in0 in1 in2 in3 in4 in5 in6 in7

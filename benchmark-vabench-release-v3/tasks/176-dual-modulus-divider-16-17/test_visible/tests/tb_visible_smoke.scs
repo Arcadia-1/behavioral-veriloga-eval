@@ -8,5 +8,5 @@ Vmc (mc 0) vsource type=pwl wave=[0 0 35n 0 35.1n 0.9 90n 0.9]
 
 XDUT (fin mc fout) dual_modulus_divider_16_17
 
-tran tran stop=86n maxstep=20p
+tran tran stop=52n maxstep=20p
 save fin mc fout

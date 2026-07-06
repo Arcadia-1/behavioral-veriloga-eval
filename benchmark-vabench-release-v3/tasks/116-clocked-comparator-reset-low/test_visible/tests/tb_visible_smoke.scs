@@ -9,5 +9,5 @@ Vinn (vinn 0) vsource dc=0.45
 
 XDUT (cmpck vinn vinp dcmpn dcmpp) clocked_comparator_reset_low
 
-tran tran stop=55n maxstep=50p
+tran tran stop=42n maxstep=50p
 save cmpck vinp vinn dcmpn dcmpp

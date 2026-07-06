@@ -8,5 +8,5 @@ Vmc (mc 0) vsource type=pwl wave=[0 0 12n 0 12.05n 1.2 24n 1.2 24.05n 0]
 
 XDUT (clkin mc out) divide_by_8_9_switch
 
-tran tran stop=32n maxstep=20p
+tran tran stop=22n maxstep=20p
 save clkin mc out

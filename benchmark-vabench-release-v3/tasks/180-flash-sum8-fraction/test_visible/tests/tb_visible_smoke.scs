@@ -15,5 +15,5 @@ Vclk (clks 0) vsource type=pwl wave=[0 0 2n 0 2.1n 0.9 2.5n 0.9 2.6n 0 12n 0 12.
 
 XDUT (din0 din1 din2 din3 din4 din5 din6 din7 clks dout) flash_sum8_fraction
 
-tran tran stop=36n maxstep=20p
+tran tran stop=25n maxstep=20p
 save din0 din1 din2 din3 din4 din5 din6 din7 clks dout

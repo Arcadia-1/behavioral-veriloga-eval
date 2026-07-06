@@ -7,5 +7,5 @@ Vclk (clkin 0) vsource type=pwl wave=[0 0 1n 0 1.05n 0.9 1.5n 0.9 1.55n 0 4n 0 4
 
 XDUT (clkin clkout) divide_by_two_toggle
 
-tran tran stop=27n maxstep=20p
+tran tran stop=18n maxstep=20p
 save clkin clkout
