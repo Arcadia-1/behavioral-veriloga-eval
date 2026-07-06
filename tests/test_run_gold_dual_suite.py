@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import io
 import json
+import shutil
 import sys
 import tarfile
 from pathlib import Path
@@ -277,6 +278,94 @@ VALUE
     assert len(captured["unlock_scripts"]) == 1
     assert captured["unlock_scripts"][0].startswith("rmdir /tmp/vaevas-direct-spectre/_ahdlcmi_cache/")
     assert captured["unlock_scripts"][0].endswith(".lock")
+
+
+def test_run_spectre_case_can_use_labctl_backend(monkeypatch, tmp_path: Path) -> None:
+    output_dir = tmp_path / "out"
+    tb_path = tmp_path / "tb.scs"
+    va_path = tmp_path / "dut.va"
+    tb_path.write_text('simulator lang=spectre\nahdl_include "dut.va"\n', encoding="utf-8")
+    va_path.write_text("// stub dut\n", encoding="utf-8")
+    psf_text = """HEADER
+TYPE
+SWEEP
+TRACE
+"time" "time"
+"out" "voltage"
+VALUE
+"time" 0
+"out" 0
+"time" 1e-9
+"out" 1
+"""
+    captured: dict[str, object] = {"commands": []}
+
+    def fake_run_labctl(cmd, *, timeout_s):
+        captured["commands"].append(cmd)
+        if "up" in cmd:
+            captured["upload_dir"] = cmd[cmd.index("up") + 1]
+            captured["remote_dir"] = cmd[cmd.index("up") + 2]
+            return SimpleNamespace(stdout="uploaded\n", stderr="", returncode=0)
+        if "sh" in cmd:
+            script_path = Path(cmd[cmd.index("sh") + 1])
+            script_text = script_path.read_text(encoding="utf-8")
+            if "cleanup" in script_path.name:
+                captured["cleanup_script"] = script_text
+                return SimpleNamespace(stdout="removed=/home/zhangz/WORK/vaevas-direct-spectre/case\n", stderr="", returncode=0)
+            captured["run_script"] = script_text
+            captured["spectre_line"] = cmd[-1]
+            return SimpleNamespace(stdout="spectre completes\nTime used: elapsed = 1.5 s\n", stderr="", returncode=0)
+        if "down" in cmd:
+            local_dir = Path(cmd[cmd.index("down") + 2])
+            if local_dir.exists():
+                shutil.rmtree(local_dir)
+            raw_dir = local_dir / "case__tb.raw"
+            raw_dir.mkdir(parents=True)
+            (raw_dir / "tran.tran.tran").write_text(psf_text, encoding="utf-8")
+            (local_dir / "spectre.out").write_text(
+                "Number of accepted tran steps = 2\nTime used: elapsed = 1.5 s\n",
+                encoding="utf-8",
+            )
+            (local_dir / "candidate.out").write_text("side output\n", encoding="utf-8")
+            return SimpleNamespace(stdout="downloaded\n", stderr="", returncode=0)
+        raise AssertionError(f"unexpected labctl command: {cmd}")
+
+    monkeypatch.setattr(dual, "run_labctl", fake_run_labctl)
+
+    result = dual.run_spectre_case(
+        task_id="case",
+        tb_path=tb_path,
+        include_paths=[va_path],
+        output_dir=output_dir,
+        bridge_repo=tmp_path / "bridge",
+        cadence_cshrc="/cadence.cshrc",
+        timeout_s=5,
+        side_output_files=("candidate.out",),
+        spectre_backend="labctl",
+        sui_host="zhangz@101.6.68.147",
+        sui_work_root="/home/zhangz/WORK/vaevas-direct-spectre",
+    )
+
+    assert result["ok"] is True
+    assert result["spectre_backend"] == "labctl"
+    assert result["labctl_host"] == "zhangz@101.6.68.147"
+    assert result["rows"] == 2
+    assert result["signals"] == ["time", "out"]
+    assert result["side_outputs"]["candidate.out"]["downloaded"] is True
+    assert (output_dir / "tran_spectre.csv").exists()
+    commands = captured["commands"]
+    assert any("--host" in cmd and "101.6.68.147" in cmd for cmd in commands)
+    assert any("--user" in cmd and "zhangz" in cmd for cmd in commands)
+    assert any(cmd[cmd.index("up")] == "up" for cmd in commands if "up" in cmd)
+    assert any(cmd[cmd.index("down")] == "down" for cmd in commands if "down" in cmd)
+    assert "/bin/csh -f __run_spectre.csh" in captured["run_script"]
+    assert "spectre -64 case__tb.scs" in captured["spectre_line"]
+
+
+def test_normalize_spectre_backend_accepts_labctl_aliases() -> None:
+    assert dual.normalize_spectre_backend("labctl") == "labctl"
+    assert dual.normalize_spectre_backend("lab") == "labctl"
+    assert dual.normalize_spectre_backend("lab-ctl") == "labctl"
 
 
 def test_direct_sui_ahdlcmi_cache_key_reuses_same_va_across_tb_labels(tmp_path: Path) -> None:

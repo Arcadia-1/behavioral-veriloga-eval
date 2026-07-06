@@ -23,10 +23,12 @@ import time
 from typing import Any
 
 from run_gold_dual_suite import (
+    REMOTE_SPECTRE_BACKENDS,
     default_bridge_repo,
+    default_remote_cadence_cshrc,
+    default_remote_host,
+    default_remote_work_root,
     default_sui_cadence_cshrc,
-    default_sui_host,
-    default_sui_work_root,
     normalize_spectre_backend,
     run_dual_case,
 )
@@ -554,6 +556,8 @@ def run_rows(
     final["finished_at"] = datetime.now(timezone.utc).isoformat()
     final["workers"] = effective_workers
     final["spectre_backend"] = spectre_backend
+    final["remote_host"] = sui_host or ""
+    final["remote_work_root"] = sui_work_root or ""
     final["sui_host"] = sui_host or ""
     final["sui_work_root"] = sui_work_root or ""
     final["cadence_cshrc"] = cadence_cshrc or ""
@@ -593,12 +597,12 @@ def main() -> int:
     )
     ap.add_argument(
         "--spectre-backend",
-        default=os.environ.get("VAEVAS_SPECTRE_BACKEND", "sui-direct"),
-        help="Spectre execution backend: sui-direct or bridge.",
+        default=os.environ.get("VAEVAS_SPECTRE_BACKEND", "labctl"),
+        help="Spectre execution backend: labctl, sui-direct, or bridge.",
     )
-    ap.add_argument("--sui-host", default=default_sui_host())
-    ap.add_argument("--sui-work-root", default=default_sui_work_root())
-    ap.add_argument("--cadence-cshrc", default=os.environ.get("VB_CADENCE_CSHRC", default_sui_cadence_cshrc()))
+    ap.add_argument("--sui-host", "--labctl-host", dest="sui_host", default=None)
+    ap.add_argument("--sui-work-root", "--labctl-work-root", dest="sui_work_root", default=None)
+    ap.add_argument("--cadence-cshrc", default="")
     args = ap.parse_args()
 
     if args.spectre_license_wait_s is not None:
@@ -631,6 +635,10 @@ def main() -> int:
     if not output_root.is_absolute():
         output_root = ROOT / output_root
     spectre_backend = normalize_spectre_backend(args.spectre_backend)
+    remote_backend = spectre_backend in REMOTE_SPECTRE_BACKENDS
+    remote_host = (args.sui_host or default_remote_host(spectre_backend)) if remote_backend else ""
+    remote_work_root = (args.sui_work_root or default_remote_work_root(spectre_backend)) if remote_backend else ""
+    effective_cshrc = args.cadence_cshrc or default_remote_cadence_cshrc(spectre_backend) or default_sui_cadence_cshrc()
     bridge_repo = Path(args.bridge_repo).resolve()
 
     print(
@@ -645,15 +653,18 @@ def main() -> int:
         sample_idx=args.sample_idx,
         output_root=output_root,
         bridge_repo=bridge_repo,
-        cadence_cshrc=args.cadence_cshrc or None,
+        cadence_cshrc=effective_cshrc or None,
         timeout_s=args.timeout_s,
         spectre_backend=spectre_backend,
-        sui_host=args.sui_host if spectre_backend == "sui-direct" else None,
-        sui_work_root=args.sui_work_root if spectre_backend == "sui-direct" else None,
+        sui_host=remote_host if remote_backend else None,
+        sui_work_root=remote_work_root if remote_backend else None,
         selection=args.selection,
         workers=args.workers,
         resume=args.resume,
     )
+    summary["remote_host"] = remote_host
+    summary["remote_work_root"] = remote_work_root
+    summary["cadence_cshrc"] = effective_cshrc
     print(
         f"[model-dual] done status={summary['status']} "
         f"spectre_pass={summary['spectre_final_pass_count']}/{summary['completed_dual_count']} "

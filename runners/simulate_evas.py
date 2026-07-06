@@ -9101,24 +9101,20 @@ def check_v3_410_macro_ifdef_gain_select(rows: list[dict[str, float]]) -> tuple[
     if not rows or not required.issubset(rows[0]):
         missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
         return False, "missing_columns=" + ",".join(missing)
-    return _sample_many(
-        rows,
-        {
-            "out": [
-                (60.0, 0.15),
-                (160.0, 0.80),
-                (260.0, 0.00),
-                (360.0, 0.90),
-            ],
-            "metric": [
-                (60.0, 1.25),
-                (160.0, 1.25),
-                (260.0, 0.00),
-                (360.0, 1.25),
-            ],
-        },
-        tol=0.08,
-    )
+    samples: dict[str, list[tuple[float, float]]] = {"out": [], "metric": []}
+    for sample_ns in (60.0, 160.0, 260.0, 360.0):
+        edge_t = (sample_ns - 10.0) * 1e-9
+        vin = sample_signal_at(rows, "vin", edge_t)
+        rst = sample_signal_at(rows, "rst", edge_t)
+        if vin is None or rst is None:
+            return False, f"missing_input_sample_at={sample_ns:g}ns"
+        if rst > 0.45:
+            out, metric = 0.0, 0.0
+        else:
+            out, metric = 1.25 * vin, 1.25
+        samples["out"].append((sample_ns, out))
+        samples["metric"].append((sample_ns, metric))
+    return _sample_many(rows, samples, tol=0.08)
 
 
 def check_v3_431_hierarchy_support_artifact_staging(rows: list[dict[str, float]]) -> tuple[bool, str]:

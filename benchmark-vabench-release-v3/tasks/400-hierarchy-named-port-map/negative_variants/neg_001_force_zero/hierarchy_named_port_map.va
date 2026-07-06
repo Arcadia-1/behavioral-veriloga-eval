@@ -13,9 +13,8 @@ parameter real vth = 0.45;
 parameter real vhi = 0.9;
 parameter real tr = 200p;
 electrical mid;
-    v3_child_gain u1(.out(out), .vin(vin));
+    v3_child_gain #(.gain(0.0)) u1(.out(out), .vin(vin));
 analog begin
-    V(out) <+ transition(-0.56, 0.0, tr, tr);
     V(metric) <+ transition(0.0, 0.0, tr, tr);
 end
 endmodule

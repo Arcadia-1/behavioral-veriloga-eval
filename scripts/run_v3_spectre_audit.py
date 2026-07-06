@@ -6,6 +6,7 @@ from __future__ import annotations
 import argparse
 import ast
 import json
+import os
 import re
 import sys
 import time
@@ -389,6 +390,13 @@ def run_audit_case(
     row["spectre"] = {
         "ok": bool(spectre.get("ok")),
         "status": spectre.get("status"),
+        "spectre_backend": spectre.get("spectre_backend"),
+        "spectre_mode": spectre.get("spectre_mode"),
+        "remote_run_dir": spectre.get("remote_run_dir"),
+        "labctl_host": spectre.get("labctl_host"),
+        "labctl_work_root": spectre.get("labctl_work_root"),
+        "sui_host": spectre.get("sui_host"),
+        "sui_work_root": spectre.get("sui_work_root"),
         "errors": spectre.get("errors") or [],
         "warnings": spectre.get("warnings") or [],
         "signals": spectre.get("signals") or [],
@@ -484,10 +492,10 @@ def main() -> int:
     parser.add_argument("--work-root", default="results/v3_spectre_audit")
     parser.add_argument("--bridge-repo", default=None)
     parser.add_argument("--cadence-cshrc", default=None)
-    parser.add_argument("--spectre-backend", default="bridge")
+    parser.add_argument("--spectre-backend", default=os.environ.get("VAEVAS_SPECTRE_BACKEND", "labctl"))
     parser.add_argument("--spectre-mode", default="ax")
-    parser.add_argument("--sui-host", default=None)
-    parser.add_argument("--sui-work-root", default=None)
+    parser.add_argument("--sui-host", "--labctl-host", dest="sui_host", default=None)
+    parser.add_argument("--sui-work-root", "--labctl-work-root", dest="sui_work_root", default=None)
     args = parser.parse_args()
 
     root = Path(args.root)

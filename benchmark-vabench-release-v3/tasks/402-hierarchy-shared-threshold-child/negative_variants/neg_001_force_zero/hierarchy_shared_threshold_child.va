@@ -15,7 +15,6 @@ parameter real tr = 200p;
 electrical mid;
     v3_child_threshold #(.vth(0.45)) u1(.vin(vin), .out(out));
 analog begin
-    V(out) <+ transition(-0.9, 0.0, tr, tr);
     V(metric) <+ transition(0.0, 0.0, tr, tr);
 end
 endmodule
@@ -30,6 +29,6 @@ endmodule
 module v3_child_threshold(input electrical vin, output electrical out);
 parameter real vth = 0.45;
 analog begin
-    V(out) <+ transition(V(vin) > vth ? 0.9 : 0.0, 0.0, 200p, 200p);
+    V(out) <+ transition(0.0, 0.0, 200p, 200p);
 end
 endmodule

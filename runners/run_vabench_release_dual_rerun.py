@@ -13,10 +13,12 @@ from pathlib import Path
 
 from bridge_preflight import bridge_preflight, resolve_cadence_cshrc
 from run_gold_dual_suite import (
+    REMOTE_SPECTRE_BACKENDS,
     default_bridge_repo,
+    default_remote_cadence_cshrc,
+    default_remote_host,
+    default_remote_work_root,
     default_sui_cadence_cshrc,
-    default_sui_host,
-    default_sui_work_root,
     normalize_spectre_backend,
     normalize_spectre_mode,
     run_dual_case,
@@ -319,7 +321,7 @@ def parse_args() -> argparse.Namespace:
     ap.add_argument(
         "--spectre-backend",
         default=os.environ.get("VAEVAS_SPECTRE_BACKEND", "bridge"),
-        help="Spectre execution backend: bridge (default) or sui-direct.",
+        help="Spectre execution backend: bridge (default), labctl, or sui-direct.",
     )
     ap.add_argument(
         "--spectre-mode",
@@ -328,17 +330,21 @@ def parse_args() -> argparse.Namespace:
     )
     ap.add_argument(
         "--sui-host",
-        default=default_sui_host(),
-        help="SSH host used by --spectre-backend=sui-direct.",
+        "--labctl-host",
+        dest="sui_host",
+        default=None,
+        help="Override SSH host used by --spectre-backend=labctl or sui-direct.",
     )
     ap.add_argument(
         "--sui-work-root",
-        default=default_sui_work_root(),
-        help="Remote scratch root used by --spectre-backend=sui-direct.",
+        "--labctl-work-root",
+        dest="sui_work_root",
+        default=None,
+        help="Override remote scratch root used by --spectre-backend=labctl or sui-direct.",
     )
     ap.add_argument(
         "--cadence-cshrc",
-        default=os.environ.get("VB_CADENCE_CSHRC", ""),
+        default="",
         help="Remote Cadence cshrc path used to expose spectre on PATH.",
     )
     ap.add_argument("--timeout-s", type=int, default=180, help="Per-bundle simulator timeout.")
@@ -367,6 +373,9 @@ def main() -> int:
         os.environ["VAEVAS_SPECTRE_LQTIMEOUT_S"] = str(args.spectre_license_wait_s)
     spectre_backend = normalize_spectre_backend(args.spectre_backend)
     spectre_mode = normalize_spectre_mode(args.spectre_mode)
+    remote_backend = spectre_backend in REMOTE_SPECTRE_BACKENDS
+    remote_host = (args.sui_host or default_remote_host(spectre_backend)) if remote_backend else ""
+    remote_work_root = (args.sui_work_root or default_remote_work_root(spectre_backend)) if remote_backend else ""
     manifest_path = Path(args.manifest)
     if not manifest_path.is_absolute():
         manifest_path = ROOT / manifest_path
@@ -392,8 +401,8 @@ def main() -> int:
             workers=args.workers,
             spectre_backend=spectre_backend,
             spectre_mode=spectre_mode,
-            sui_host=args.sui_host if spectre_backend == "sui-direct" else None,
-            sui_work_root=args.sui_work_root if spectre_backend == "sui-direct" else None,
+            sui_host=remote_host if remote_backend else None,
+            sui_work_root=remote_work_root if remote_backend else None,
         )
         print(json.dumps(summary, indent=2))
         return 0
@@ -428,16 +437,18 @@ def main() -> int:
     if spectre_backend == "bridge":
         effective_cshrc = resolve_cadence_cshrc(bridge_repo, args.cadence_cshrc, bridge_profile or None)
     else:
-        effective_cshrc = args.cadence_cshrc or default_sui_cadence_cshrc()
+        effective_cshrc = args.cadence_cshrc or default_remote_cadence_cshrc(spectre_backend) or default_sui_cadence_cshrc()
 
-    if spectre_backend == "sui-direct":
+    if remote_backend:
         preflight = {
             "status": "skipped",
-            "reason": "direct SUI backend selected; bridge preflight is not required",
+            "reason": f"{spectre_backend} backend selected; bridge preflight is not required",
             "spectre_backend": spectre_backend,
             "spectre_mode": spectre_mode,
-            "sui_host": args.sui_host,
-            "sui_work_root": args.sui_work_root,
+            "remote_host": remote_host,
+            "remote_work_root": remote_work_root,
+            "sui_host": remote_host,
+            "sui_work_root": remote_work_root,
             "cadence_cshrc": effective_cshrc,
         }
     elif args.skip_bridge_preflight:
@@ -473,15 +484,17 @@ def main() -> int:
         workers=args.workers,
         spectre_backend=spectre_backend,
         spectre_mode=spectre_mode,
-        sui_host=args.sui_host if spectre_backend == "sui-direct" else None,
-        sui_work_root=args.sui_work_root if spectre_backend == "sui-direct" else None,
+        sui_host=remote_host if remote_backend else None,
+        sui_work_root=remote_work_root if remote_backend else None,
     )
     summary["spectre_backend"] = spectre_backend
     summary["spectre_mode"] = spectre_mode
     summary["bridge_repo"] = str(bridge_repo)
     summary["bridge_profile"] = bridge_profile
-    summary["sui_host"] = args.sui_host if spectre_backend == "sui-direct" else ""
-    summary["sui_work_root"] = args.sui_work_root if spectre_backend == "sui-direct" else ""
+    summary["remote_host"] = remote_host
+    summary["remote_work_root"] = remote_work_root
+    summary["sui_host"] = remote_host if remote_backend else ""
+    summary["sui_work_root"] = remote_work_root if remote_backend else ""
     summary["cadence_cshrc"] = effective_cshrc
     summary["bridge_preflight"] = preflight
     write_summary(output_root / "summary.json", summary)

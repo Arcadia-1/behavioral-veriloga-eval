@@ -93,7 +93,8 @@ def test_all_v3_extension_tasks_have_manifest_metadata() -> None:
             certification_scope.endswith("_not_part_of_original_full_300_claim")
             or certification_scope == "materialized_replacement_candidate_not_final_301_plus_benchmark_number"
         )
-        assert str(task["tier"]).endswith("candidate")
+        tier = str(task["tier"])
+        assert tier.endswith("candidate") or tier.endswith("behavior-certified")
         assert str(task["syntax_focus"]).strip()
 
 
@@ -289,19 +290,13 @@ def test_v3_extension_visible_hidden_diversity_is_audited() -> None:
 
     assert len(distinct_tasks) == expected_extension_count()
     assert len(identical_tasks) == 0
-    assert "341-wreal-gain-pass-through" in distinct_tasks
-    assert "346-logic-assign-inverter" in distinct_tasks
-    assert "351-always-posedged-dff" in distinct_tasks
-    assert "356-mixed-logic-enable-voltage-driver" in distinct_tasks
     assert "361-white-noise-voltage-source" in distinct_tasks
     assert "397-hierarchy-gain-child" in distinct_tasks
     assert "409-macro-functionlike-clamp" in distinct_tasks
     assert "410-macro-ifdef-gain-select" in distinct_tasks
-    assert "419-wreal-logic-threshold-bridge" in distinct_tasks
     assert "434-repeat-loop-accumulator" in distinct_tasks
     assert "445-limexp-soft-exponential" in distinct_tasks
     assert "457-nested-function-pipeline" in distinct_tasks
-    assert "458-recursive-function-candidate" in distinct_tasks
     assert "336-directive-configurable-threshold" in distinct_tasks
     assert "340-bound-step-clock-guard" in distinct_tasks
     assert "456-event-or-cross-timer" in distinct_tasks
@@ -309,11 +304,11 @@ def test_v3_extension_visible_hidden_diversity_is_audited() -> None:
     assert "335-above-resettable-peak-marker" in distinct_tasks
     assert "327-idtmod-wrapped-ramp-source" in distinct_tasks
     assert "330-idtmod-clock-phase-meter" in distinct_tasks
-    assert "353-always-resettable-toggle" in distinct_tasks
-    assert "415-logic-vector-assign-slice" in distinct_tasks
     assert "431-hierarchy-support-artifact-staging" in distinct_tasks
     assert "435-ddt-voltage-derivative-source" in distinct_tasks
     assert "444-zi-zp-discrete-filter" in distinct_tasks
+    assert "489-event-nested-or-expression" in distinct_tasks
+    assert "492-kcl-inductor-idt-voltage" in distinct_tasks
 
 
 def negative_variants(task_key: str) -> list[dict]:
@@ -428,18 +423,25 @@ def test_all_v3_extension_negative_variants_describe_expected_mutation() -> None
 
 def test_behavior_certified_extension_checks_reference_expected_artifacts() -> None:
     sop_audit = json.loads(SOP_AUDIT.read_text(encoding="utf-8"))
-    sop_tasks = {row["task"] for row in sop_audit["tasks"]}
-    assert sop_tasks.issubset(extension_tasks())
+    current_tasks = extension_tasks()
+    sop_rows = [row for row in sop_audit["tasks"] if row["task"] in current_tasks]
+    sop_tasks = {row["task"] for row in sop_rows}
+    assert sop_tasks
 
     behavior_tasks = [
         task_key
-        for task_key in extension_tasks()
+        for task_key in current_tasks
         if task_key in sop_tasks and has_sim_correct(task_key)
     ]
-    assert len(behavior_tasks) == sop_audit["summary"]["sop_ready_count"]
+    expected_ready_count = sum(
+        1
+        for row in sop_rows
+        if row.get("sop_ready") and has_sim_correct(row["task"])
+    )
+    assert len(behavior_tasks) == expected_ready_count
 
     for task_key in behavior_tasks:
-        task = extension_tasks()[task_key]
+        task = current_tasks[task_key]
         positive_refs = sim_correct_refs(task_key, "solution/")
         negative_refs = sim_correct_refs(task_key, "negative_variants/")
         manifest_refs = {

@@ -13,6 +13,7 @@ import shlex
 import shutil
 import subprocess
 import tarfile
+import tempfile
 import time
 import uuid
 from pathlib import Path
@@ -50,10 +51,14 @@ DEFAULT_SUI_NESTED_HOST = ""
 SPECTRE_BACKEND_ALIASES = {
     "bridge": "bridge",
     "virtuoso-bridge": "bridge",
+    "lab": "labctl",
+    "labctl": "labctl",
+    "lab-ctl": "labctl",
     "sui": "sui-direct",
     "sui-direct": "sui-direct",
     "direct-sui": "sui-direct",
 }
+REMOTE_SPECTRE_BACKENDS = {"labctl", "sui-direct"}
 SPECTRE_MODE_ARGS = {
     "ax": ("+preset=ax", "+mt"),
     "reference": (),
@@ -93,6 +98,45 @@ def default_sui_work_root() -> str:
 
 def default_sui_cadence_cshrc() -> str:
     return os.environ.get("VAEVAS_SUI_CADENCE_CSHRC") or os.environ.get("VB_CADENCE_CSHRC") or DEFAULT_SUI_CADENCE_CSHRC
+
+
+def default_labctl_host() -> str:
+    return os.environ.get("VAEVAS_LABCTL_HOST") or default_sui_host()
+
+
+def default_labctl_work_root() -> str:
+    return os.environ.get("VAEVAS_LABCTL_WORK_ROOT") or default_sui_work_root()
+
+
+def default_labctl_cadence_cshrc() -> str:
+    return os.environ.get("VAEVAS_LABCTL_CADENCE_CSHRC") or default_sui_cadence_cshrc()
+
+
+def default_remote_host(spectre_backend: str) -> str:
+    backend = normalize_spectre_backend(spectre_backend)
+    if backend == "labctl":
+        return default_labctl_host()
+    if backend == "sui-direct":
+        return default_sui_host()
+    return ""
+
+
+def default_remote_work_root(spectre_backend: str) -> str:
+    backend = normalize_spectre_backend(spectre_backend)
+    if backend == "labctl":
+        return default_labctl_work_root()
+    if backend == "sui-direct":
+        return default_sui_work_root()
+    return ""
+
+
+def default_remote_cadence_cshrc(spectre_backend: str) -> str:
+    backend = normalize_spectre_backend(spectre_backend)
+    if backend == "labctl":
+        return default_labctl_cadence_cshrc()
+    if backend == "sui-direct":
+        return default_sui_cadence_cshrc()
+    return ""
 
 
 def default_sui_proxy_jump() -> str:
@@ -2382,6 +2426,293 @@ def run_spectre_case_sui_direct(
     return result
 
 
+def split_ssh_target(target: str | None) -> tuple[str | None, str | None]:
+    text = (target or "").strip()
+    if not text:
+        return None, None
+    if "@" not in text:
+        return text, None
+    user, host = text.rsplit("@", 1)
+    return host or None, user or None
+
+
+def labctl_executable() -> str:
+    return os.environ.get("VAEVAS_LABCTL", "labctl")
+
+
+def labctl_base_cmd(
+    *,
+    host: str | None,
+    work_root: str | None,
+    cadence_cshrc: str | None,
+) -> list[str]:
+    cmd = [labctl_executable()]
+    env_path = os.environ.get("VAEVAS_LABCTL_ENV", "").strip()
+    profile = os.environ.get("VAEVAS_LABCTL_PROFILE", "").strip()
+    if env_path:
+        cmd.extend(["--env", env_path])
+    if profile:
+        cmd.extend(["--profile", profile])
+
+    explicit_host, explicit_user = split_ssh_target(host or os.environ.get("VAEVAS_LABCTL_HOST"))
+    explicit_user = explicit_user or os.environ.get("VAEVAS_LABCTL_USER", "").strip() or None
+    if explicit_host:
+        cmd.extend(["--host", explicit_host])
+    if explicit_user:
+        cmd.extend(["--user", explicit_user])
+
+    jump_host = os.environ.get("VAEVAS_LABCTL_JUMP_HOST", "").strip()
+    jump_user = os.environ.get("VAEVAS_LABCTL_JUMP_USER", "").strip()
+    if jump_host:
+        cmd.extend(["--jump-host", jump_host])
+    if jump_user:
+        cmd.extend(["--jump-user", jump_user])
+
+    ssh_cmd = os.environ.get("VAEVAS_LABCTL_SSH_CMD", "").strip()
+    ssh_config = os.environ.get("VAEVAS_LABCTL_SSH_CONFIG", "").strip()
+    if ssh_cmd:
+        cmd.extend(["--ssh-cmd", ssh_cmd])
+    if ssh_config:
+        cmd.extend(["--ssh-config", ssh_config])
+
+    if work_root:
+        cmd.extend(["--remote-root", work_root])
+    if cadence_cshrc:
+        cmd.extend(["--cadence-cshrc", cadence_cshrc])
+    return cmd
+
+
+def run_labctl(
+    args: list[str],
+    *,
+    timeout_s: int,
+) -> subprocess.CompletedProcess[str]:
+    return subprocess.run(
+        args,
+        capture_output=True,
+        text=True,
+        timeout=timeout_s,
+        check=False,
+    )
+
+
+def csh_command_line(parts: list[str]) -> str:
+    return " ".join(shlex.quote(part) for part in parts)
+
+
+def run_spectre_case_labctl(
+    *,
+    task_id: str,
+    tb_path: Path,
+    include_paths: list[Path],
+    output_dir: Path,
+    cadence_cshrc: str | None,
+    timeout_s: int,
+    side_output_files: tuple[str, ...] = (),
+    sui_host: str | None = None,
+    sui_work_root: str | None = None,
+    spectre_mode: str = "ax",
+) -> dict:
+    output_dir.mkdir(parents=True, exist_ok=True)
+    result_json = output_dir / "spectre_result.json"
+    csv_path = output_dir / "tran_spectre.csv"
+    if result_json.exists():
+        result_json.unlink()
+    if csv_path.exists():
+        csv_path.unlink()
+
+    spectre_tb_path, _input_files = copy_direct_spectre_inputs(
+        task_id=task_id,
+        tb_path=tb_path,
+        include_paths=include_paths,
+        output_dir=output_dir,
+    )
+    raw_name = f"{spectre_tb_path.stem}.raw"
+    raw_dir = output_dir / raw_name
+    if raw_dir.exists():
+        shutil.rmtree(raw_dir)
+    for stale in (output_dir / "spectre.out", *[output_dir / name for name in side_output_files]):
+        if stale.exists() and stale.is_file():
+            stale.unlink()
+
+    host = sui_host or default_labctl_host()
+    work_root = (
+        sui_work_root
+        or default_labctl_work_root()
+    ).rstrip("/")
+    cshrc = cadence_cshrc or default_labctl_cadence_cshrc()
+    remote_prefix = f"{safe_path_component(task_id)}_{uuid.uuid4().hex[:10]}"
+    remote_dir = f"{work_root}/{remote_prefix}"
+    base_cmd = labctl_base_cmd(host=host, work_root=work_root, cadence_cshrc=cshrc)
+    combined_output = ""
+    side_outputs: dict[str, object] = {}
+    errors: list[str] = []
+    warnings: list[str] = []
+    psf_parse: dict[str, object] | None = None
+    license_queue_timeout_s = spectre_license_queue_timeout(timeout_s)
+    mode = normalize_spectre_mode(spectre_mode)
+    command = [
+        "spectre",
+        "-64",
+        spectre_tb_path.name,
+        "+escchars",
+        "+log",
+        "spectre.out",
+        "-format",
+        "psfascii",
+        "-raw",
+        raw_name,
+        *SPECTRE_MODE_ARGS[mode],
+        "+lqtimeout",
+        str(license_queue_timeout_s),
+        "-maxw",
+        "5",
+        "-maxn",
+        "5",
+        "+logstatus",
+    ]
+
+    with tempfile.TemporaryDirectory(prefix="vaevas-labctl-") as td:
+        run_script_path = Path(td) / "run_spectre_case.sh"
+        cleanup_script_path = Path(td) / "cleanup_remote.sh"
+        run_script_path.write_text(
+            """#!/usr/bin/env bash
+set -euo pipefail
+remote_dir=$1
+cadence_cshrc=$2
+spectre_line=$3
+cd "$remote_dir"
+{
+  if [ -n "$cadence_cshrc" ]; then
+    printf 'source %s\\n' "$cadence_cshrc"
+  fi
+  printf 'cd %s\\n' "$remote_dir"
+  printf '%s\\n' "$spectre_line"
+} > __run_spectre.csh
+set +e
+/bin/csh -f __run_spectre.csh
+rc=$?
+set -e
+exit "$rc"
+""",
+            encoding="utf-8",
+        )
+        cleanup_script_path.write_text(
+            """#!/usr/bin/env bash
+set -euo pipefail
+target=$1
+allowed_root=$2
+case "$target" in
+  "$allowed_root"/*) rm -rf -- "$target"; echo "removed=$target" ;;
+  *) echo "refusing_to_remove=$target allowed_root=$allowed_root" >&2; exit 2 ;;
+esac
+""",
+            encoding="utf-8",
+        )
+        run_script_path.chmod(0o755)
+        cleanup_script_path.chmod(0o755)
+
+        try:
+            upload = run_labctl(
+                [*base_cmd, "up", str(output_dir), remote_dir, "--clean"],
+                timeout_s=max(timeout_s, 60),
+            )
+            combined_output += (upload.stdout or "") + "\n" + (upload.stderr or "")
+            if upload.returncode != 0:
+                errors.append(f"remote_upload_failed rc={upload.returncode}")
+                raise RuntimeError("remote_upload_failed")
+
+            spectre_line = csh_command_line(command)
+            run = run_labctl(
+                [
+                    *base_cmd,
+                    "sh",
+                    str(run_script_path),
+                    remote_dir,
+                    cshrc or "",
+                    spectre_line,
+                ],
+                timeout_s=max(timeout_s, 600),
+            )
+            combined_output += "\n" + (run.stdout or "") + "\n" + (run.stderr or "")
+            if run.returncode != 0:
+                errors.append(f"spectre_failed rc={run.returncode}")
+
+            download = run_labctl(
+                [*base_cmd, "down", remote_dir, str(output_dir), "--clean"],
+                timeout_s=max(timeout_s, 600),
+            )
+            combined_output += "\n" + (download.stdout or "") + "\n" + (download.stderr or "")
+            if download.returncode != 0:
+                errors.append(f"remote_download_failed rc={download.returncode}")
+
+            spectre_log = output_dir / "spectre.out"
+            if spectre_log.exists():
+                combined_output += "\n" + spectre_log.read_text(encoding="utf-8", errors="replace")
+
+            if "SPECTRE-209" in combined_output or "required license could not be checked out" in combined_output:
+                errors.append("spectre_license_checkout_failed:SPECTRE-209")
+            if raw_dir.exists():
+                try:
+                    psf_parse = write_spectre_psf_csv(raw_dir, csv_path)
+                except Exception as exc:  # pragma: no cover - reported in JSON for field debugging
+                    errors.append(f"psf_parse_failed={type(exc).__name__}: {str(exc)[:300]}")
+            elif run.returncode == 0:
+                errors.append(f"spectre_raw_missing={raw_name}")
+        except subprocess.TimeoutExpired as exc:
+            errors.append(f"labctl_timeout_after_s={exc.timeout}")
+            combined_output += "\n" + (
+                ((exc.stdout or "") if isinstance(exc.stdout, str) else "")
+                + "\n"
+                + ((exc.stderr or "") if isinstance(exc.stderr, str) else "")
+            )
+        except Exception as exc:
+            if not errors:
+                errors.append(f"labctl_exception={type(exc).__name__}: {str(exc)[:300]}")
+        finally:
+            try:
+                cleanup = run_labctl(
+                    [*base_cmd, "sh", str(cleanup_script_path), remote_dir, work_root],
+                    timeout_s=60,
+                )
+                combined_output += "\n" + (cleanup.stdout or "") + "\n" + (cleanup.stderr or "")
+                if cleanup.returncode != 0:
+                    warnings.append(f"remote_cleanup_failed rc={cleanup.returncode}")
+            except Exception as exc:  # pragma: no cover - best-effort cleanup only
+                warnings.append(f"remote_cleanup_exception={type(exc).__name__}: {str(exc)[:200]}")
+
+    for name in side_output_files:
+        local_path = output_dir / name
+        side_outputs[name] = {
+            "downloaded": local_path.exists(),
+            "path": str(local_path) if local_path.exists() else "",
+            "remote_path": f"{remote_dir}/{name}",
+        }
+
+    ok = not errors and csv_path.exists()
+    result = {
+        "status": "success" if ok else "error",
+        "ok": ok,
+        "errors": errors,
+        "warnings": warnings,
+        "signals": list(psf_parse.get("columns", [])) if psf_parse else [],
+        "rows": int(psf_parse.get("rows", 0)) if psf_parse else 0,
+        "csv_path": str(csv_path),
+        "side_outputs": side_outputs,
+        "spectre_backend": "labctl",
+        "spectre_mode": mode,
+        "labctl_host": host,
+        "labctl_work_root": work_root,
+        "remote_run_dir": remote_dir,
+        "command": " ".join(command),
+        "timing": parse_spectre_timing(combined_output),
+        "psf_parse": psf_parse or {},
+        "stdout_tail": combined_output[-4000:],
+    }
+    result_json.write_text(json.dumps(result, indent=2), encoding="utf-8")
+    return result
+
+
 def run_spectre_case(
     *,
     task_id: str,
@@ -2399,23 +2730,37 @@ def run_spectre_case(
 ) -> dict:
     backend = normalize_spectre_backend(spectre_backend)
     mode = normalize_spectre_mode(spectre_mode)
-    if backend == "sui-direct":
+    if backend in {"sui-direct", "labctl"}:
         max_attempts = 1 + direct_sui_retry_count()
         attempts: list[dict[str, object]] = []
         retry_warnings: list[str] = []
         for attempt_number in range(1, max_attempts + 1):
-            result = run_spectre_case_sui_direct(
-                task_id=task_id,
-                tb_path=tb_path,
-                include_paths=include_paths,
-                output_dir=output_dir,
-                cadence_cshrc=cadence_cshrc,
-                timeout_s=timeout_s,
-                side_output_files=side_output_files,
-                sui_host=sui_host,
-                sui_work_root=sui_work_root,
-                spectre_mode=mode,
-            )
+            if backend == "labctl":
+                result = run_spectre_case_labctl(
+                    task_id=task_id,
+                    tb_path=tb_path,
+                    include_paths=include_paths,
+                    output_dir=output_dir,
+                    cadence_cshrc=cadence_cshrc,
+                    timeout_s=timeout_s,
+                    side_output_files=side_output_files,
+                    sui_host=sui_host,
+                    sui_work_root=sui_work_root,
+                    spectre_mode=mode,
+                )
+            else:
+                result = run_spectre_case_sui_direct(
+                    task_id=task_id,
+                    tb_path=tb_path,
+                    include_paths=include_paths,
+                    output_dir=output_dir,
+                    cadence_cshrc=cadence_cshrc,
+                    timeout_s=timeout_s,
+                    side_output_files=side_output_files,
+                    sui_host=sui_host,
+                    sui_work_root=sui_work_root,
+                    spectre_mode=mode,
+                )
             retryable, retry_reason = retryable_direct_sui_result(result)
             attempts.append(
                 {
@@ -2429,15 +2774,18 @@ def run_spectre_case(
                 }
             )
             if result.get("ok") or not retryable or attempt_number >= max_attempts:
-                result["sui_direct_attempts"] = attempts
-                result["sui_direct_retry_count"] = attempt_number - 1
+                attempt_key = "labctl_attempts" if backend == "labctl" else "sui_direct_attempts"
+                retry_key = "labctl_retry_count" if backend == "labctl" else "sui_direct_retry_count"
+                result[attempt_key] = attempts
+                result[retry_key] = attempt_number - 1
                 if retry_warnings:
                     result.setdefault("warnings", []).extend(retry_warnings)
                 write_spectre_result_json(output_dir, result)
                 return result
             backoff_s = direct_sui_retry_backoff_s(attempt_number)
+            retry_label = "labctl_retry" if backend == "labctl" else "sui_direct_retry"
             retry_warnings.append(
-                "sui_direct_retry "
+                f"{retry_label} "
                 f"attempt={attempt_number} next_attempt={attempt_number + 1} "
                 f"reason={retry_reason} backoff_s={backoff_s:g}"
             )
@@ -2807,21 +3155,25 @@ def parse_args() -> argparse.Namespace:
     ap.add_argument(
         "--spectre-backend",
         default=os.environ.get("VAEVAS_SPECTRE_BACKEND", "bridge"),
-        help="Spectre execution backend: bridge (default) or sui-direct.",
+        help="Spectre execution backend: bridge (default), labctl, or sui-direct.",
     )
     ap.add_argument(
         "--sui-host",
-        default=default_sui_host(),
-        help="SSH host used by --spectre-backend=sui-direct.",
+        "--labctl-host",
+        dest="sui_host",
+        default=None,
+        help="Override SSH host used by --spectre-backend=labctl or sui-direct.",
     )
     ap.add_argument(
         "--sui-work-root",
-        default=default_sui_work_root(),
-        help="Remote scratch root used by --spectre-backend=sui-direct.",
+        "--labctl-work-root",
+        dest="sui_work_root",
+        default=None,
+        help="Override remote scratch root used by --spectre-backend=labctl or sui-direct.",
     )
     ap.add_argument(
         "--cadence-cshrc",
-        default=os.environ.get("VB_CADENCE_CSHRC", ""),
+        default="",
         help="Remote Cadence cshrc path used to expose spectre on PATH.",
     )
     ap.add_argument(
@@ -2869,18 +3221,24 @@ def main() -> int:
         out_root = benchmark_root() / out_root
     out_root.mkdir(parents=True, exist_ok=True)
 
+    remote_backend = spectre_backend in REMOTE_SPECTRE_BACKENDS
+    remote_host = (args.sui_host or default_remote_host(spectre_backend)) if remote_backend else ""
+    remote_work_root = (args.sui_work_root or default_remote_work_root(spectre_backend)) if remote_backend else ""
+
     if spectre_backend == "bridge":
         effective_cshrc = resolve_cadence_cshrc(bridge_repo, args.cadence_cshrc)
     else:
-        effective_cshrc = args.cadence_cshrc or default_sui_cadence_cshrc()
+        effective_cshrc = args.cadence_cshrc or default_remote_cadence_cshrc(spectre_backend)
 
-    if spectre_backend == "sui-direct":
+    if remote_backend:
         preflight = {
             "status": "skipped",
-            "reason": "direct SUI backend selected; bridge preflight is not required",
+            "reason": f"{spectre_backend} backend selected; bridge preflight is not required",
             "spectre_backend": spectre_backend,
-            "sui_host": args.sui_host,
-            "sui_work_root": args.sui_work_root,
+            "remote_host": remote_host,
+            "remote_work_root": remote_work_root,
+            "sui_host": remote_host,
+            "sui_work_root": remote_work_root,
             "cadence_cshrc": effective_cshrc,
         }
     elif args.skip_bridge_preflight:
@@ -2923,8 +3281,8 @@ def main() -> int:
             cadence_cshrc=effective_cshrc or None,
             timeout_s=args.timeout_s,
             spectre_backend=spectre_backend,
-            sui_host=args.sui_host,
-            sui_work_root=args.sui_work_root,
+            sui_host=remote_host if remote_backend else None,
+            sui_work_root=remote_work_root if remote_backend else None,
         )
         for task_dir in list_gold_task_dirs(selected, families=families)
     ]
@@ -2937,8 +3295,10 @@ def main() -> int:
         "families": list(families),
         "spectre_backend": spectre_backend,
         "bridge_repo": str(bridge_repo),
-        "sui_host": args.sui_host if spectre_backend == "sui-direct" else "",
-        "sui_work_root": args.sui_work_root if spectre_backend == "sui-direct" else "",
+        "remote_host": remote_host,
+        "remote_work_root": remote_work_root,
+        "sui_host": remote_host if remote_backend else "",
+        "sui_work_root": remote_work_root if remote_backend else "",
         "cadence_cshrc": effective_cshrc,
         "bridge_preflight": preflight,
         "results": results,

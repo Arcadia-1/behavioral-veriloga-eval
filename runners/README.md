@@ -75,6 +75,20 @@ Current implemented executable runner:
 
 Recommended Spectre workflow:
 
+1. `labctl -v check`
+   Quick preflight for SSH, remote bash/tar/timeout, and Spectre visibility
+   after sourcing the Cadence cshrc.
+2. `python3 scripts/run_v3_spectre_audit.py --spectre-backend labctl ...`
+   Recommended v3 path. The runner stages the Spectre case locally, uses
+   `labctl up` to transfer it, runs the final Spectre command behind a tiny
+   remote csh boundary, downloads the completed run directory, and reuses the
+   existing PSFASCII/checker path.
+
+See `docs/LABCTL_SPECTRE_WORKFLOW.md` for the distilled THU configuration and
+the 451-row chunked audit commands.
+
+Legacy bridge workflow:
+
 1. `./scripts/check_bridge_ready.sh`
    Quick preflight-only sanity check for bridge, tunnel, and Spectre visibility.
 2. `./scripts/run_with_bridge.sh python3 runners/run_gold_dual_suite.py ...`
@@ -82,12 +96,31 @@ Recommended Spectre workflow:
    the child command, runs bridge preflight, and cleans the listener up on exit.
 
 Keep `start_bridge_tunnel.sh` and `stop_bridge_tunnel.sh` for manual debugging.
-For routine validation runs, prefer the wrapper so background tunnel state does
-not drift away from the command you actually care about.
+For old bridge validation runs, prefer the wrapper so background tunnel state
+does not drift away from the command you actually care about.
+
+Labctl Spectre backend:
+
+- `--spectre-backend labctl` is the standard remote execution path for new v3
+  Spectre evidence. It uses the same staged-input and PSF parsing logic as the
+  old direct path, but delegates remote transfer, remote bash execution, and
+  cleanup to the `labctl` CLI.
+- The backend accepts `--sui-host` / `--sui-work-root` for compatibility and
+  `--labctl-host` / `--labctl-work-root` as the preferred labctl spelling.
+- Environment variables:
+
+```bash
+export VAEVAS_SPECTRE_BACKEND=labctl
+export VAEVAS_SPECTRE_MODE=ax
+export VAEVAS_LABCTL_HOST=zhangz@101.6.68.147
+export VAEVAS_LABCTL_WORK_ROOT=/home/zhangz/WORK/vaevas-direct-spectre
+export VAEVAS_LABCTL_CADENCE_CSHRC=/home/cshrc/.cshrc.cadence.IC618SP201
+```
 
 Direct SUI Spectre backend:
 
-- `--spectre-backend sui-direct` bypasses `virtuoso-bridge-lite` and runs
+- `--spectre-backend sui-direct` is retained as a legacy fallback. It bypasses
+  `virtuoso-bridge-lite` and runs
   Spectre over SSH on `thu-wei` by default, using `thu-sui` as the SSH jump
   host.
 - The runner uploads an isolated gold testbench plus `ahdl_include` files to a
@@ -119,7 +152,7 @@ python3 runners/run_vabench_release_dual_rerun.py \
   --workers 8
 ```
 
-The default remains `--spectre-backend bridge`. The direct backend uses
+The direct backend uses
 `/home/cshrc/.cshrc.cadence.IC618SP201` unless overridden by
 `--cadence-cshrc`, `VAEVAS_SUI_CADENCE_CSHRC`, or `VB_CADENCE_CSHRC`.
 

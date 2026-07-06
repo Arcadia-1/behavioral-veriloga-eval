@@ -3,10 +3,10 @@ global 0
 
 ahdl_include "event_nested_or_expression.va"
 
-Va (a 0) vsource type=pwl wave=[0 0.0 24n 0.0 25n 0.9 160n 0.9]
-Vb (b 0) vsource type=pwl wave=[0 0.0 64n 0.0 65n 0.9 160n 0.9]
+Va (a 0) vsource type=pwl wave=[0 0.0 24n 0.0 25n 0.9 161n 0.9]
+Vb (b 0) vsource type=pwl wave=[0 0.0 64n 0.0 65n 0.9 161n 0.9]
 
 XDUT (a b out) event_nested_or_expression
 
-tran tran stop=160n
+tran tran stop=161n maxstep=2n
 save a b out

@@ -175,11 +175,11 @@ def choose_dut(
     return None, notes
 
 
-def choose_hidden_tb(task_dir: Path) -> Path | None:
-    tb = task_dir / "test_hidden" / "hidden.scs"
+def choose_split_tb(task_dir: Path, split: str) -> Path | None:
+    tb = task_dir / f"test_{split}" / f"{split}.scs"
     if tb.exists():
         return tb
-    candidates = sorted((task_dir / "test_hidden" / "tests").glob("*.scs"))
+    candidates = sorted((task_dir / f"test_{split}" / "tests").glob("*.scs"))
     return candidates[0] if len(candidates) == 1 else None
 
 
@@ -234,6 +234,7 @@ def run_one(
     variant: str | None,
     timeout_s: int,
     negative_case: dict[str, Any] | None = None,
+    split: str = "hidden",
 ) -> dict[str, Any]:
     started = time.perf_counter()
     targets = read_task_artifact_targets(task_dir)
@@ -245,6 +246,7 @@ def run_one(
         "task_slug": task_dir.name,
         "task_id": task_index_id,
         "kind": kind,
+        "split": split,
         "variant": variant,
     }
     if not targets:
@@ -258,9 +260,9 @@ def run_one(
             "wall_s": round(time.perf_counter() - started, 6),
         })
         return row
-    tb = choose_hidden_tb(task_dir)
+    tb = choose_split_tb(task_dir, split)
     if tb is None:
-        notes = ["missing hidden.scs or unique test_hidden/tests/*.scs"]
+        notes = [f"missing {split}.scs or unique test_{split}/tests/*.scs"]
         row.update({
             "status": "FAIL_NO_TB",
             "expected_ok": False,
@@ -433,6 +435,7 @@ def main() -> int:
     )
     parser.add_argument("--gold-only", action="store_true")
     parser.add_argument("--negatives-only", action="store_true")
+    parser.add_argument("--split", choices=("hidden", "visible"), default="hidden")
     parser.add_argument(
         "--checks",
         default="benchmark-vabench-release-v3/CHECKS.yaml",
@@ -464,10 +467,10 @@ def main() -> int:
             print(task_dir.name, "SKIP_STAGED", flush=True)
             continue
         if not args.negatives_only:
-            cases.append((task_dir, None, args.timeout, None))
+            cases.append((task_dir, None, args.timeout, None, args.split))
         if not args.gold_only:
             for negative_case in negative_variant_cases(task_dir):
-                cases.append((task_dir, str(negative_case["id"]), args.timeout, negative_case))
+                cases.append((task_dir, str(negative_case["id"]), args.timeout, negative_case, args.split))
 
     rows: list[dict[str, Any]] = []
     started = time.perf_counter()

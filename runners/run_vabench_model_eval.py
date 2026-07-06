@@ -13,6 +13,7 @@ from __future__ import annotations
 import argparse
 from datetime import datetime, timezone
 import json
+import os
 from pathlib import Path
 import shlex
 import subprocess
@@ -456,9 +457,13 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     ap.add_argument("--spectre-timeout-s", type=int, default=240)
     ap.add_argument("--spectre-license-wait-s", type=int, default=None)
     ap.add_argument("--bridge-repo", default="")
-    ap.add_argument("--spectre-backend", choices=["sui-direct", "bridge"], default="sui-direct")
-    ap.add_argument("--sui-host", default="")
-    ap.add_argument("--sui-work-root", default="")
+    ap.add_argument(
+        "--spectre-backend",
+        choices=["labctl", "sui-direct", "bridge"],
+        default=os.environ.get("VAEVAS_SPECTRE_BACKEND", "labctl"),
+    )
+    ap.add_argument("--sui-host", "--labctl-host", dest="sui_host", default="")
+    ap.add_argument("--sui-work-root", "--labctl-work-root", dest="sui_work_root", default="")
     ap.add_argument("--cadence-cshrc", default="")
     return ap.parse_args(argv)
 
