@@ -1,6 +1,6 @@
 # vaBench Top-Level Positioning
 
-Date: 2026-07-06
+Date: 2026-05-15
 
 This is the current top-level wording for vaBench after reviewing duplicate
 function risk, analog/mixed-signal IC terminology, historical examples, and
@@ -49,20 +49,21 @@ measurement/stimulus entries. The support suite tests whether a model can write
 reusable measurement artifacts and source/schedule behavior, but it must not be
 used to inflate the count of core signal-path or decision-circuit functions.
 
-## Current v3 Count Vocabulary
+## Current Count Vocabulary
 
 | Pool | Count | Meaning |
 | --- | ---: | --- |
-| Active v3 tasks | 456 | Current `benchmark-vabench-release-v3/tasks/` rows after issue #109 gap backfills: 451 numbered rows plus 5 unnumbered candidates. |
-| Current v3 core score denominator | 258 tasks | Current `001`-`300` tasks that are not measurement, stimulus, or testbench utility support categories. |
-| Current v3 support suite | 42 tasks | Measurement, stimulus, and testbench utility tasks retained as certified support assets and excluded from the core score. |
-| Non-scored language-extension coverage | 147 tasks | Numbered `301+` Verilog-A language/semantics extension rows; useful coverage, not current core score. |
-| Non-scored candidate/provenance rows | 9 tasks | Four numbered behavior-extension candidates plus five unnumbered bias/power candidates; excluded until explicit future promotion. |
+| Current promoted L1 seed functions | 22 | Countable current-seed functions retained in the release package after duplicate/removal policy. |
+| Promoted top-level L1 additions | 40 | Additional L1 functions selected into the release coverage contract. |
+| Selected L2 complete-circuit targets | 17 | System/flow tasks selected into the release coverage contract because they compose multiple L1 functions after duplicate kernels were removed. |
+| Top-level L1/L2 coverage target | 79 | 66 core circuit entries plus 13 measurement/stimulus support entries, before task-form multiplication. |
+| Core score denominator | 66 entries / 236 forms | Certified `track=core` rows currently counted by `score_denominator_manifest.json`. |
+| Support suite | 13 entries / 35 forms | Measurement/stimulus rows reported separately from the main circuit-function score. |
+| Removed weak/duplicate entries in the rebalance | 10 | Readout/control/PLL/DEM duplicates were removed from the core release set. |
 
-`benchmark-vabench-release-v3/reports/score_support_manifest.json` is the
-current v3 source of truth for these roles. Historical v1/v1.1 entry/form
-denominators are provenance only and must not be used as the current v3 score
-denominator.
+The release score counts only materialized and certified `track=core` tasks.
+Support tasks are still certified benchmark assets, but remain outside the main
+analog circuit-function denominator.
 
 ## Ten Top-Level Categories
 
@@ -109,8 +110,8 @@ Avoid this wording:
 
 > vaBench has 28 functions.
 
-Reason: historical seed, release-entry, and form counts are construction
-provenance. Current v3 score claims must cite the score/support manifest.
+Reason: the current-seed count and the full 79-entry release target are
+different quantities and should be reported separately.
 
 Also avoid:
 
@@ -121,11 +122,10 @@ definition.
 
 ## Next Experimental Direction
 
-1. Keep the current v3 score/support manifest aligned with task metadata,
+1. Keep the current 79-entry package aligned with the score denominator,
    certification reports, and model-baseline protocol.
-2. Run model baselines on the 258-task scored core denominator, with Spectre as
-   the final judge and support, language-extension, and candidate/provenance
-   rows excluded from the main score.
-3. Run same-slice speed timing for every scored task before making a
+2. Run model baselines on the 66-entry / 236-form scored core denominator, with
+   Spectre as the final judge and support rows excluded from the main score.
+3. Run same-slice speed timing for every scored form before making a
    release-wide EVAS speedup claim.
 4. Keep L0 conformance growth parallel but separate from benchmark scoring.

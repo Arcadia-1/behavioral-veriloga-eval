@@ -4,19 +4,11 @@ This directory is a clean, RTL-Forge-style packaging of 451 numbered
 standalone-Spectre-compatible Verilog-A DUT/support/testbench/e2e and
 language-extension tasks, plus five unnumbered replacement candidates.
 
-The default `tasks/` tree is the Spectre-compatible task set. This is not the
-same thing as the core score denominator. The current score/support split is
-defined by `reports/score_support_manifest.json`: 258 tasks are counted in the
-current v3 core benchmark score, 42 tasks are certified support, 147 tasks are
-non-scored language-extension coverage, and 9 tasks are non-scored
-candidate/provenance material. Historical v1/v1.1 entry/form denominators are
-provenance only for v3 scoring.
-
-Task numbers are not contiguous: 54 rows that standalone Cadence/Spectre
-rejects as written were moved to `spectre-unsupported-tasks/` and removed from
-`TASKS.json` and `CHECKS.yaml`. Those rows are archived for future AMS/digital
-or version-gated work, but they are not part of the default EVAS/Spectre parity
-score.
+The default `tasks/` tree is the Spectre-compatible denominator. Task numbers
+are not contiguous: 54 rows that standalone Cadence/Spectre rejects as written
+were moved to `spectre-unsupported-tasks/` and removed from `TASKS.json` and
+`CHECKS.yaml`. Those rows are archived for future AMS/digital or version-gated
+work, but they are not part of the default EVAS/Spectre parity score.
 
 Rows `001`-`300` remain the original behavior-certified surface with issue #109
 backfills in the legacy gaps `052`-`057` and `075`. The old converter/vector
@@ -36,8 +28,6 @@ Top-level indexes:
   boundary for the current Spectre-compatible default denominator.
 - `reports/layered_certification.md`: human-readable version of the layered
   certification summary.
-- `reports/score_support_manifest.{json,md}`: current v3 source of truth for
-  scored benchmark, support, language-extension, and candidate/provenance roles.
 - `reports/spectre_unsupported_removed_20260703.{json,md}`: archived-row list
   and reasons for removing 54 Spectre-rejected rows from the default
   denominator.

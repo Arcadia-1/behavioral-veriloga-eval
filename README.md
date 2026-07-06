@@ -13,20 +13,15 @@ benchmark-vabench-release-v3/
 ```
 
 Use `benchmark-vabench-release-v3/tasks/` as the authoritative public task
-root for new evaluation work. After issue #109 gap backfills, tasks `001`-`300`
-are the current behavior-certified v3 surface. The current v3 score/support
-split is defined by `benchmark-vabench-release-v3/reports/score_support_manifest.json`:
-258 tasks are counted in the core benchmark score, 42 tasks are certified
-support, and `301+` plus unnumbered candidates remain non-scored
-language-extension or provenance material unless a future score policy promotes
-them. The release-level indexes are:
+root for new evaluation work. Tasks `001`-`300` are the original certified
+full-300 surface; tasks `301`-`340` are Verilog-A language-semantics extension
+candidates and tasks `341`-`360` are Verilog-AMS mixed-signal extension
+candidates, and tasks `361` and above are noise/analysis extension candidates that must be certified separately before being included in full-suite
+claims. The release-level indexes are:
 
 - `benchmark-vabench-release-v3/TASKS.json`: canonical task metadata and target
   artifacts.
 - `benchmark-vabench-release-v3/CHECKS.yaml`: canonical checker configuration.
-- `benchmark-vabench-release-v3/reports/score_support_manifest.json`: current
-  v3 source of truth for scored benchmark, support, language-extension, and
-  candidate/provenance roles.
 
 Each v3 task is self-contained under `tasks/NNN-name/` with:
 

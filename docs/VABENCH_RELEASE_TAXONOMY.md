@@ -1,12 +1,10 @@
 # vaBench Release Taxonomy
 
-Date: 2026-07-06
+Date: 2026-05-26
 
-This is the clean release-facing taxonomy for the current v3 vaBench task tree.
-It should be read together with
-`benchmark-vabench-release-v3/reports/score_support_manifest.json`, which is the
-current source of truth for scored benchmark, support, language-extension, and
-candidate/provenance roles.
+This is the clean release-facing taxonomy for the current 79-entry
+vaBench release. It is the benchmark coverage contract and should be read
+together with the current certification and score-denominator reports.
 
 The scored benchmark surface is L1/L2 behavioral analog/mixed-signal circuit
 work. L0 EVAS/Spectre conformance cases are maintained separately because they
@@ -72,11 +70,11 @@ Every released task must provide:
 | Gold assets | Gold Verilog-A and reference testbench or source artifacts. |
 | Evidence | Static integrity, EVAS gold validation, and Spectre gold validation links. |
 
-The current v3 package has 456 active tasks after issue #109 gap backfills.
-The current core score denominator is 258 tasks. The current support suite is
-42 tasks and remains certified/reported separately from the core score. The
-remaining 147 language-extension rows and 9 candidate/provenance rows are
-non-scored unless a future policy explicitly promotes them.
+The current 79-entry package is materialized, static-certified, and
+EVAS/Spectre-certified across all 271 forms with zero EVAS PASS / Spectre FAIL
+mismatches. The current core score denominator is enabled for 66 core entries /
+236 core forms. The 13-entry / 35-form support suite remains certified and
+reported, but outside that core denominator.
 
 ## Function-Level Checker Contract
 
@@ -97,18 +95,17 @@ non-scored unless a future policy explicitly promotes them.
 
 | Pool | Count | Score status |
 | --- | ---: | --- |
-| Active v3 tasks | 456 | 451 numbered rows plus 5 unnumbered candidates in `benchmark-vabench-release-v3/tasks/`. |
-| Current scored denominator | 258 tasks | Current `001`-`300` rows excluding measurement, stimulus, and testbench utility support categories. |
-| Support suite | 42 tasks | Measurement, stimulus, and testbench utility tasks reported separately; excluded from the core circuit score. |
-| Language-extension coverage | 147 tasks | Numbered `301+` Verilog-A language/semantics extension rows; excluded from the current core score. |
-| Candidate/provenance rows | 9 tasks | Four numbered behavior-extension candidates plus five unnumbered bias/power candidates; excluded until explicit promotion. |
-| Historical entry/form denominators | provenance only | v1/v1.1 counts such as 66/236 or 73/265 are not current v3 scoring inputs. |
+| Current promoted L1 seeds | 22 | Included when `track=core` and certified. |
+| Promoted top-level L1 additions | 40 | Materialized additions that expand the core/support coverage contract. |
+| Selected L2 package targets | 17 | Complete-circuit targets after removing duplicate kernels. |
+| Top-level L1/L2 package target | 79 | 62 L1 + 17 L2 rows, split into 66 core entries and 13 support entries. |
+| Core content denominator | 66 entries / 236 forms | Full certified core content target. |
+| Current scored denominator | 66 entries / 236 forms | Enabled for certified `track=core` rows. |
+| Support suite | 13 entries / 35 forms | Report separately; excluded from the core circuit score. |
+| Materialized task forms | 271 | Static-certified and EVAS/Spectre-certified with zero pending forms. |
+| Difficulty split | D1=7, D2=54, D3=18 | Difficulty is orthogonal to L1/L2 and core/support. |
 
-## Historical v1 Release Coverage Table
-
-The table below records the older release-entry taxonomy. It is retained as
-construction and provenance context only. Do not use it as the current v3 score
-denominator; use `benchmark-vabench-release-v3/reports/score_support_manifest.json`.
+## Release Coverage Table
 
 | Category | Base function | Level | Required task forms | Score surface |
 | --- | --- | --- | --- | --- |
@@ -204,6 +201,6 @@ PLL timing slice, rotating DEM selector, and windowed DEM pointer.
 Two stronger analog rows were added during that rebalance:
 acquisition-limited sample-and-hold and programmable gain amplifier. Later
 coverage work added CT07 bias/reference/power-management macromodels and CT08
-RF/AFE behavioral macromodels in the historical release-entry taxonomy. Those
-historical entry/form counts are provenance only for current v3 scoring; the
-current v3 score/support manifest is the active denominator.
+RF/AFE behavioral macromodels; these core rows are now static-certified,
+EVAS/Spectre-certified, and included in the 66-entry / 236-form scored core
+denominator.
