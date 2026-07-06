@@ -1,0 +1,17 @@
+`include "disciplines.vams"
+
+module reset_release_sequencer(clk, rst, supply_ok, bias_ok, stage1, stage2, ready, progress);
+input clk, rst, supply_ok, bias_ok;
+output stage1, stage2, ready, progress;
+electrical clk, rst, supply_ok, bias_ok, stage1, stage2, ready, progress;
+parameter real vth = 0.45;
+parameter real vhi = 0.9;
+parameter integer final_stage = 3;
+parameter real tr = 60p;
+analog begin
+    V(stage1) <+ 0.0;
+    V(stage2) <+ 0.0;
+    V(ready) <+ 0.0;
+    V(progress) <+ 0.0;
+end
+endmodule

@@ -1,0 +1,17 @@
+`include "disciplines.vams"
+
+module saturation_recovery_limiter(vin, en, out, sat, recovery_metric);
+input vin, en;
+output out, sat, recovery_metric;
+electrical vin, en, out, sat, recovery_metric;
+parameter real vth = 0.45;
+parameter real vhi = 0.9;
+parameter real vlo = 0.12;
+parameter real vlimit = 0.78;
+parameter real tr = 60p;
+analog begin
+    V(out) <+ 0.0;
+    V(sat) <+ 0.0;
+    V(recovery_metric) <+ 0.0;
+end
+endmodule

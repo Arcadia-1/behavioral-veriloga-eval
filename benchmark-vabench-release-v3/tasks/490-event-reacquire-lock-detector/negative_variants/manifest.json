@@ -1,0 +1,30 @@
+{
+  "task_id": "v3_490_event_reacquire_lock_detector",
+  "negative_variants": [
+    {
+      "id": "neg_001_lock_after_one_hit",
+      "path": "neg_001_lock_after_one_hit/event_reacquire_lock_detector.va",
+      "expected": "fail_behavior"
+    },
+    {
+      "id": "neg_002_too_wide_phase_window",
+      "path": "neg_002_too_wide_phase_window/event_reacquire_lock_detector.va",
+      "expected": "fail_behavior"
+    },
+    {
+      "id": "neg_003_no_reset_clear",
+      "path": "neg_003_no_reset_clear/event_reacquire_lock_detector.va",
+      "expected": "fail_behavior"
+    },
+    {
+      "id": "neg_004_ignore_ref_timing",
+      "path": "neg_004_ignore_ref_timing/event_reacquire_lock_detector.va",
+      "expected": "fail_behavior"
+    },
+    {
+      "id": "neg_005_constant_phase_metric",
+      "path": "neg_005_constant_phase_metric/event_reacquire_lock_detector.va",
+      "expected": "fail_behavior"
+    }
+  ]
+}

@@ -1,0 +1,18 @@
+`include "disciplines.vams"
+
+module sampled_error_update_monitor(clk, rst, sample, target, coef, out, err_metric, progress);
+input clk, rst, sample, target, coef;
+output out, err_metric, progress;
+electrical clk, rst, sample, target, coef, out, err_metric, progress;
+parameter real vth = 0.45;
+parameter real vhi = 0.9;
+parameter real err_fullscale = 0.50;
+parameter real err_window = 0.040;
+parameter integer ready_count = 3;
+parameter real tr = 60p;
+analog begin
+    V(out) <+ 0.0;
+    V(err_metric) <+ 0.0;
+    V(progress) <+ 0.0;
+end
+endmodule

@@ -1,0 +1,18 @@
+`include "disciplines.vams"
+
+module calibration_affine_transform(clk, rst, raw, gain_ctrl, offset_ctrl, en, out, resid_metric);
+input clk, rst, raw, gain_ctrl, offset_ctrl, en;
+output out, resid_metric;
+electrical clk, rst, raw, gain_ctrl, offset_ctrl, en, out, resid_metric;
+parameter real vth = 0.45;
+parameter real vhi = 0.9;
+parameter real center = 0.45;
+parameter real gain_base = 0.50;
+parameter real gain_span = 1.00;
+parameter real resid_fullscale = 0.45;
+parameter real tr = 60p;
+analog begin
+    V(out) <+ 0.0;
+    V(resid_metric) <+ 0.0;
+end
+endmodule

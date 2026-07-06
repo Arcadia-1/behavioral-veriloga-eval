@@ -3,7 +3,7 @@
 The default `tasks/` tree is now the standalone-Spectre-compatible v3
 denominator:
 
-- numbered default rows: `458`
+- numbered default rows: `466`
 - unnumbered replacement candidates: `0`
 - archived Spectre-rejected rows: `54`
 
@@ -39,6 +39,14 @@ replacements:
 `499-dynamic-supply-level-driver`,
 `500-rail-ramp-rate-startup-monitor`, and
 `501-differential-common-mode-window-monitor`.
+
+Issue #109 additionally replaces the archived user `task` / `endtask` holes
+`373`-`378`, `421`, and `490` with Spectre-compatible voltage-domain
+helper/monitor rows. These active rows use analog functions and event-body state
+updates to model limiter recovery, sampled calibration/error updates, qualified
+event-rate measurement, reset-release sequencing, adaptive threshold tracking,
+rail-normalized metrics, affine calibration transforms, and PLL/clock
+reacquisition lock detection.
 
 Rows `301+` are language-extension candidates. The retained default rows cover
 these Verilog-A-oriented surfaces:

@@ -1,0 +1,5 @@
+# Windowed Event Rate Monitor Audit
+
+- Gate 1: issue #109 numbered replacement row `375`. This row replaces an archived `task/endtask` language-extension shape with a Spectre-compatible AMS-facing helper/monitor contract.
+- Gate 2: `cadence_modeling_ready` for this replacement slice. Public prompt exposes the observable behavioral contract, hidden testbenches vary the stimulus away from visible timing, and five concrete negative variants target common shortcut implementations. Fresh 2026-07-07 validation: EVAS visible/hidden gold PASS and ten visible/hidden negative runs rejected; Spectre visible/hidden gold PASS; Spectre hidden negative variants rejected; AHDL lint preflight diagnostics=0.
+- Cadence reference correspondence: Cadence behavioral-modeling guidance emphasizes Verilog-A behavioral abstraction with explicit electrical observables and simulator-portable analog events/functions. This row keeps that boundary by using local analog helper functions and voltage-coded outputs rather than unsupported user tasks.

@@ -1,0 +1,20 @@
+`include "disciplines.vams"
+
+module adaptive_threshold_tracker(clk, rst, vin, adapt, trip, threshold_mon, margin_metric);
+input clk, rst, vin, adapt;
+output trip, threshold_mon, margin_metric;
+electrical clk, rst, vin, adapt, trip, threshold_mon, margin_metric;
+parameter real vth = 0.45;
+parameter real vhi = 0.9;
+parameter real threshold_init = 0.45;
+parameter real threshold_min = 0.25;
+parameter real threshold_max = 0.70;
+parameter real adapt_alpha = 0.75;
+parameter real margin_fullscale = 0.45;
+parameter real tr = 60p;
+analog begin
+    V(trip) <+ 0.0;
+    V(threshold_mon) <+ threshold_init;
+    V(margin_metric) <+ 0.0;
+end
+endmodule

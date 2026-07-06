@@ -1,11 +1,11 @@
 # Behavioral Verilog-A v3
 
-This directory is a clean, RTL-Forge-style packaging of 458 numbered
+This directory is a clean, RTL-Forge-style packaging of 466 numbered
 standalone-Spectre-compatible Verilog-A DUT/support/testbench/e2e and
 language-extension tasks.
 
 The default `tasks/` tree is the Spectre-compatible denominator. Task numbers
-are not contiguous: 47 numbering holes remain after issue #109 replacement
+are not contiguous: 39 numbering holes remain after issue #109 replacement
 batches, and the original 54 rows that standalone Cadence/Spectre rejects as
 written remain archived under `spectre-unsupported-tasks/`. Those archived rows
 are preserved for future AMS/digital or version-gated work, but they are not
@@ -47,8 +47,8 @@ Partitions:
   v2 five-task slice absorbed as normal v3 tasks.
 - `301`-`505`: Verilog-A language extension candidates covering functions,
   file I/O, table models, random/noise helpers, Cadence LRM helper calls,
-  continuous-time operators, KCL syntax, and issue #109 bias/power replacement
-  rows at `495`-`501`, with Spectre-rejected AMS/digital, user-task, and
+  continuous-time operators, KCL syntax, issue #109 helper/monitor replacement rows at `373`-`378`, `421`, and `490`,
+  and issue #109 bias/power replacement rows at `495`-`501`, with Spectre-rejected AMS/digital, user-task, and
   unsupported vector/helper rows archived outside `tasks/`.
 
 Each task is self-contained under `tasks/NNN-name/`:

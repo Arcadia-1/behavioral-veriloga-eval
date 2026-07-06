@@ -1,0 +1,30 @@
+{
+  "task_id": "v3_376_reset_release_sequencer",
+  "negative_variants": [
+    {
+      "id": "neg_001_ready_immediate",
+      "path": "neg_001_ready_immediate/reset_release_sequencer.va",
+      "expected": "fail_behavior"
+    },
+    {
+      "id": "neg_002_ignore_bias_ok",
+      "path": "neg_002_ignore_bias_ok/reset_release_sequencer.va",
+      "expected": "fail_behavior"
+    },
+    {
+      "id": "neg_003_ignore_supply_ok",
+      "path": "neg_003_ignore_supply_ok/reset_release_sequencer.va",
+      "expected": "fail_behavior"
+    },
+    {
+      "id": "neg_004_no_reset_clear",
+      "path": "neg_004_no_reset_clear/reset_release_sequencer.va",
+      "expected": "fail_behavior"
+    },
+    {
+      "id": "neg_005_wrong_progress_scale",
+      "path": "neg_005_wrong_progress_scale/reset_release_sequencer.va",
+      "expected": "fail_behavior"
+    }
+  ]
+}

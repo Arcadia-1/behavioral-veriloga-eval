@@ -7515,6 +7515,244 @@
   notes:
     - "Analysis/noise support semantics row retained for executable transient sideband behavior."
     - "The deterministic transient contract records transient output and counter metric behavior; analysis(\"noise\") behavior requires a noise-analysis-capable layer."
+373-saturation-recovery-limiter: |
+  version: 1
+  task_id: v3_373_saturation_recovery_limiter
+  backend: evas
+  status: formal-candidate
+  checker: v3_373_saturation_recovery_limiter
+  required_columns:
+    - time
+    - vin
+    - en
+    - out
+    - sat
+    - recovery_metric
+  checks:
+    hidden:
+    - asymmetric_low_high_limiter_applied
+    - saturation_flag_reports_both_clip_sides
+    - enable_clears_output_and_flag
+    - recovery_metric_tracks_clipped_error
+    - five_negative_variants_rejected_by_behavior_checker
+  sim_correct:
+    positive:
+    - solution/saturation_recovery_limiter.va
+    negative:
+    - negative_variants/neg_001_passthrough_no_limit/saturation_recovery_limiter.va
+    - negative_variants/neg_002_high_only_limit/saturation_recovery_limiter.va
+    - negative_variants/neg_003_ignore_enable/saturation_recovery_limiter.va
+    - negative_variants/neg_004_saturation_flag_high_only/saturation_recovery_limiter.va
+    - negative_variants/neg_005_wrong_recovery_metric/saturation_recovery_limiter.va
+    checks:
+    - asymmetric_low_high_limiter_applied
+    - saturation_flag_reports_both_clip_sides
+    - enable_clears_output_and_flag
+    - recovery_metric_tracks_clipped_error
+    - five_negative_variants_rejected_by_behavior_checker
+  notes:
+    - "Issue #109 replacement row for archived task/endtask syntax; implemented as Spectre-compatible voltage-domain AMS helper behavior."
+
+374-sampled-error-update-monitor: |
+  version: 1
+  task_id: v3_374_sampled_error_update_monitor
+  backend: evas
+  status: formal-candidate
+  checker: v3_374_sampled_error_update_monitor
+  required_columns:
+    - time
+    - clk
+    - rst
+    - sample
+    - target
+    - coef
+    - out
+    - err_metric
+    - progress
+  checks:
+    hidden:
+    - clocked_dual_output_update_matches_coefficient_target_blend
+    - error_metric_tracks_absolute_sample_target_error
+    - progress_requires_consecutive_in_window_samples
+    - reset_clears_output_metric_and_progress
+    - five_negative_variants_rejected_by_behavior_checker
+  sim_correct:
+    positive:
+    - solution/sampled_error_update_monitor.va
+    negative:
+    - negative_variants/neg_001_ignore_coefficient/sampled_error_update_monitor.va
+    - negative_variants/neg_002_ignore_target/sampled_error_update_monitor.va
+    - negative_variants/neg_003_no_reset_clear/sampled_error_update_monitor.va
+    - negative_variants/neg_004_progress_without_window/sampled_error_update_monitor.va
+    - negative_variants/neg_005_wrong_error_metric/sampled_error_update_monitor.va
+    checks:
+    - clocked_dual_output_update_matches_coefficient_target_blend
+    - error_metric_tracks_absolute_sample_target_error
+    - progress_requires_consecutive_in_window_samples
+    - reset_clears_output_metric_and_progress
+    - five_negative_variants_rejected_by_behavior_checker
+  notes:
+    - "Issue #109 replacement row for archived task/endtask syntax; implemented as Spectre-compatible voltage-domain AMS helper behavior."
+
+375-windowed-event-rate-monitor: |
+  version: 1
+  task_id: v3_375_windowed_event_rate_monitor
+  backend: evas
+  status: formal-candidate
+  checker: v3_375_windowed_event_rate_monitor
+  required_columns:
+    - time
+    - clk
+    - rst
+    - event_in
+    - gate
+    - rate
+    - average
+  checks:
+    hidden:
+    - qualified_event_count_respects_gate_and_reset
+    - rate_metric_scales_to_public_window_count
+    - average_metric_uses_observed_sample_count
+    - gate_low_clears_measurement_window
+    - five_negative_variants_rejected_by_behavior_checker
+  sim_correct:
+    positive:
+    - solution/windowed_event_rate_monitor.va
+    negative:
+    - negative_variants/neg_001_count_all_clocks/windowed_event_rate_monitor.va
+    - negative_variants/neg_002_ignore_gate/windowed_event_rate_monitor.va
+    - negative_variants/neg_003_no_reset_clear/windowed_event_rate_monitor.va
+    - negative_variants/neg_004_unscaled_rate/windowed_event_rate_monitor.va
+    - negative_variants/neg_005_average_uses_window_count/windowed_event_rate_monitor.va
+    checks:
+    - qualified_event_count_respects_gate_and_reset
+    - rate_metric_scales_to_public_window_count
+    - average_metric_uses_observed_sample_count
+    - gate_low_clears_measurement_window
+    - five_negative_variants_rejected_by_behavior_checker
+  notes:
+    - "Issue #109 replacement row for archived task/endtask syntax; implemented as Spectre-compatible voltage-domain AMS helper behavior."
+
+376-reset-release-sequencer: |
+  version: 1
+  task_id: v3_376_reset_release_sequencer
+  backend: evas
+  status: formal-candidate
+  checker: v3_376_reset_release_sequencer
+  required_columns:
+    - time
+    - clk
+    - rst
+    - supply_ok
+    - bias_ok
+    - stage1
+    - stage2
+    - ready
+    - progress
+  checks:
+    hidden:
+    - stage_outputs_release_in_order_after_valid_supply_and_bias
+    - ready_requires_final_stage_count
+    - reset_supply_and_bias_faults_clear_sequence
+    - progress_tracks_stage_index
+    - five_negative_variants_rejected_by_behavior_checker
+  sim_correct:
+    positive:
+    - solution/reset_release_sequencer.va
+    negative:
+    - negative_variants/neg_001_ready_immediate/reset_release_sequencer.va
+    - negative_variants/neg_002_ignore_bias_ok/reset_release_sequencer.va
+    - negative_variants/neg_003_ignore_supply_ok/reset_release_sequencer.va
+    - negative_variants/neg_004_no_reset_clear/reset_release_sequencer.va
+    - negative_variants/neg_005_wrong_progress_scale/reset_release_sequencer.va
+    checks:
+    - stage_outputs_release_in_order_after_valid_supply_and_bias
+    - ready_requires_final_stage_count
+    - reset_supply_and_bias_faults_clear_sequence
+    - progress_tracks_stage_index
+    - five_negative_variants_rejected_by_behavior_checker
+  notes:
+    - "Issue #109 replacement row for archived task/endtask syntax; implemented as Spectre-compatible voltage-domain AMS helper behavior."
+
+377-adaptive-threshold-tracker: |
+  version: 1
+  task_id: v3_377_adaptive_threshold_tracker
+  backend: evas
+  status: formal-candidate
+  checker: v3_377_adaptive_threshold_tracker
+  required_columns:
+    - time
+    - clk
+    - rst
+    - vin
+    - adapt
+    - trip
+    - threshold_mon
+    - margin_metric
+  checks:
+    hidden:
+    - trip_uses_previous_sampled_threshold
+    - adapt_updates_threshold_with_clipped_iir_rule
+    - reset_restores_initial_threshold
+    - margin_metric_tracks_absolute_distance_to_threshold
+    - five_negative_variants_rejected_by_behavior_checker
+  sim_correct:
+    positive:
+    - solution/adaptive_threshold_tracker.va
+    negative:
+    - negative_variants/neg_001_fixed_threshold/adaptive_threshold_tracker.va
+    - negative_variants/neg_002_threshold_follows_input/adaptive_threshold_tracker.va
+    - negative_variants/neg_003_ignore_reset/adaptive_threshold_tracker.va
+    - negative_variants/neg_004_no_threshold_clip/adaptive_threshold_tracker.va
+    - negative_variants/neg_005_wrong_margin_metric/adaptive_threshold_tracker.va
+    checks:
+    - trip_uses_previous_sampled_threshold
+    - adapt_updates_threshold_with_clipped_iir_rule
+    - reset_restores_initial_threshold
+    - margin_metric_tracks_absolute_distance_to_threshold
+    - five_negative_variants_rejected_by_behavior_checker
+  notes:
+    - "Issue #109 replacement row for archived task/endtask syntax; implemented as Spectre-compatible voltage-domain AMS helper behavior."
+
+378-rail-normalized-metric-mapper: |
+  version: 1
+  task_id: v3_378_rail_normalized_metric_mapper
+  backend: evas
+  status: formal-candidate
+  checker: v3_378_rail_normalized_metric_mapper
+  required_columns:
+    - time
+    - meas
+    - vdd
+    - vss
+    - en
+    - norm
+    - valid
+  checks:
+    hidden:
+    - metric_normalized_to_local_supply_span
+    - local_vss_offset_is_subtracted
+    - valid_requires_enable_span_and_measurement_window
+    - metric_clips_out_of_window_measurements
+    - five_negative_variants_rejected_by_behavior_checker
+  sim_correct:
+    positive:
+    - solution/rail_normalized_metric_mapper.va
+    negative:
+    - negative_variants/neg_001_absolute_ground_reference/rail_normalized_metric_mapper.va
+    - negative_variants/neg_002_fixed_supply_span/rail_normalized_metric_mapper.va
+    - negative_variants/neg_003_ignore_enable/rail_normalized_metric_mapper.va
+    - negative_variants/neg_004_no_clipping/rail_normalized_metric_mapper.va
+    - negative_variants/neg_005_valid_ignores_measurement_window/rail_normalized_metric_mapper.va
+    checks:
+    - metric_normalized_to_local_supply_span
+    - local_vss_offset_is_subtracted
+    - valid_requires_enable_span_and_measurement_window
+    - metric_clips_out_of_window_measurements
+    - five_negative_variants_rejected_by_behavior_checker
+  notes:
+    - "Issue #109 replacement row for archived task/endtask syntax; implemented as Spectre-compatible voltage-domain AMS helper behavior."
+
 379-file-fgets-config-loader: |
   version: 1
   task_id: v3_379_file_fgets_config_loader
@@ -8896,6 +9134,47 @@
   notes:
     - "L0/support language-semantics row, not an independent AMS circuit-function benchmark."
     - "Default EVAS2 and Python EVAS pass gold and reject all five concrete negatives; targeted Spectre validation passes; AHDL-like lint reports zero diagnostics."
+421-calibration-affine-transform: |
+  version: 1
+  task_id: v3_421_calibration_affine_transform
+  backend: evas
+  status: formal-candidate
+  checker: v3_421_calibration_affine_transform
+  required_columns:
+    - time
+    - clk
+    - rst
+    - raw
+    - gain_ctrl
+    - offset_ctrl
+    - en
+    - out
+    - resid_metric
+  checks:
+    hidden:
+    - gain_control_sets_affine_slope
+    - offset_control_sets_centered_correction
+    - output_clips_to_voltage_coded_range
+    - residual_metric_tracks_transform_magnitude
+    - five_negative_variants_rejected_by_behavior_checker
+  sim_correct:
+    positive:
+    - solution/calibration_affine_transform.va
+    negative:
+    - negative_variants/neg_001_ignore_gain_ctrl/calibration_affine_transform.va
+    - negative_variants/neg_002_ignore_offset_ctrl/calibration_affine_transform.va
+    - negative_variants/neg_003_ignore_enable/calibration_affine_transform.va
+    - negative_variants/neg_004_no_output_clip/calibration_affine_transform.va
+    - negative_variants/neg_005_wrong_residual_metric/calibration_affine_transform.va
+    checks:
+    - gain_control_sets_affine_slope
+    - offset_control_sets_centered_correction
+    - output_clips_to_voltage_coded_range
+    - residual_metric_tracks_transform_magnitude
+    - five_negative_variants_rejected_by_behavior_checker
+  notes:
+    - "Issue #109 replacement row for archived task/endtask syntax; implemented as Spectre-compatible voltage-domain AMS helper behavior."
+
 422-file-fscanf-table-stimulus: |
   version: 1
   task_id: v3_422_file_fscanf_table_stimulus
@@ -11004,6 +11283,45 @@
       - cross_above_timer_events_increment_state
   notes:
     - "Nested analog event-or expression is retained as a language-extension/L0 support row outside the original full-300 circuit-function claim; the checked behavior combines cross, above, and timer event terms in one voltage-domain state update."
+490-event-reacquire-lock-detector: |
+  version: 1
+  task_id: v3_490_event_reacquire_lock_detector
+  backend: evas
+  status: formal-candidate
+  checker: v3_490_event_reacquire_lock_detector
+  required_columns:
+    - time
+    - ref_clk
+    - fb_clk
+    - rst
+    - lock
+    - phase_metric
+    - state_mon
+  checks:
+    hidden:
+    - feedback_edges_compare_against_latest_reference_edge
+    - lock_requires_consecutive_in_window_phase_hits
+    - reset_clears_and_reacquisition_is_required
+    - phase_metric_tracks_ref_feedback_edge_error
+    - five_negative_variants_rejected_by_behavior_checker
+  sim_correct:
+    positive:
+    - solution/event_reacquire_lock_detector.va
+    negative:
+    - negative_variants/neg_001_lock_after_one_hit/event_reacquire_lock_detector.va
+    - negative_variants/neg_002_too_wide_phase_window/event_reacquire_lock_detector.va
+    - negative_variants/neg_003_no_reset_clear/event_reacquire_lock_detector.va
+    - negative_variants/neg_004_ignore_ref_timing/event_reacquire_lock_detector.va
+    - negative_variants/neg_005_constant_phase_metric/event_reacquire_lock_detector.va
+    checks:
+    - feedback_edges_compare_against_latest_reference_edge
+    - lock_requires_consecutive_in_window_phase_hits
+    - reset_clears_and_reacquisition_is_required
+    - phase_metric_tracks_ref_feedback_edge_error
+    - five_negative_variants_rejected_by_behavior_checker
+  notes:
+    - "Issue #109 replacement row for archived task/endtask syntax; implemented as Spectre-compatible voltage-domain AMS helper behavior."
+
 491-kcl-capacitor-ddt-current: |
   version: 1
   task_id: v3_491_kcl_capacitor_ddt_current

@@ -1,0 +1,18 @@
+`include "disciplines.vams"
+
+module event_reacquire_lock_detector(ref_clk, fb_clk, rst, lock, phase_metric, state_mon);
+input ref_clk, fb_clk, rst;
+output lock, phase_metric, state_mon;
+electrical ref_clk, fb_clk, rst, lock, phase_metric, state_mon;
+parameter real vth = 0.45;
+parameter real vhi = 0.9;
+parameter real lock_window = 180p;
+parameter real metric_fullscale = 600p;
+parameter integer lock_count = 3;
+parameter real tr = 60p;
+analog begin
+    V(lock) <+ 0.0;
+    V(phase_metric) <+ 0.0;
+    V(state_mon) <+ 0.0;
+end
+endmodule

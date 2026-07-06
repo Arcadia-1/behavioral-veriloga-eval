@@ -1,0 +1,30 @@
+{
+  "task_id": "v3_373_saturation_recovery_limiter",
+  "negative_variants": [
+    {
+      "id": "neg_001_passthrough_no_limit",
+      "path": "neg_001_passthrough_no_limit/saturation_recovery_limiter.va",
+      "expected": "fail_behavior"
+    },
+    {
+      "id": "neg_002_high_only_limit",
+      "path": "neg_002_high_only_limit/saturation_recovery_limiter.va",
+      "expected": "fail_behavior"
+    },
+    {
+      "id": "neg_003_ignore_enable",
+      "path": "neg_003_ignore_enable/saturation_recovery_limiter.va",
+      "expected": "fail_behavior"
+    },
+    {
+      "id": "neg_004_saturation_flag_high_only",
+      "path": "neg_004_saturation_flag_high_only/saturation_recovery_limiter.va",
+      "expected": "fail_behavior"
+    },
+    {
+      "id": "neg_005_wrong_recovery_metric",
+      "path": "neg_005_wrong_recovery_metric/saturation_recovery_limiter.va",
+      "expected": "fail_behavior"
+    }
+  ]
+}

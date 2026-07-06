@@ -10969,6 +10969,477 @@ def check_v3_378_task_metric_normalizer(rows: list[dict[str, float]]) -> tuple[b
     )
 
 
+def _v3_uniform_sample_times(
+    rows: list[dict[str, float]],
+    *,
+    start_s: float = 0.75e-9,
+    step_s: float = 0.75e-9,
+    end_margin_s: float = 0.25e-9,
+) -> list[float]:
+    if not rows:
+        return []
+    start = max(rows[0]["time"] + start_s, rows[0]["time"])
+    stop = rows[-1]["time"] - end_margin_s
+    times: list[float] = []
+    t = start
+    while t <= stop:
+        times.append(t)
+        t += step_s
+    return times
+
+
+def _v3_values_at(
+    rows: list[dict[str, float]],
+    names: tuple[str, ...],
+    time_s: float,
+) -> dict[str, float] | None:
+    values = {name: sample_signal_at(rows, name, time_s) for name in names}
+    if any(value is None for value in values.values()):
+        return None
+    return {name: float(value) for name, value in values.items() if value is not None}
+
+
+def check_v3_373_saturation_recovery_limiter(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "vin", "en", "out", "sat", "recovery_metric"}
+    if not rows or not required.issubset(rows[0]):
+        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
+        return False, "missing_columns=" + ",".join(missing)
+    vlo = 0.12
+    vlimit = 0.78
+    vhi = 0.9
+    checked = 0
+    max_err = 0.0
+    saw_low_clip = saw_high_clip = saw_linear = saw_disabled = saw_metric = False
+    for time_s in _v3_uniform_sample_times(rows):
+        values = _v3_values_at(rows, ("vin", "en", "out", "sat", "recovery_metric"), time_s)
+        if values is None:
+            continue
+        raw = values["vin"]
+        enabled = values["en"] > 0.45
+        limited = min(vlimit, max(vlo, raw))
+        clipped = abs(raw - limited) > 1.0e-9
+        out_expected = limited if enabled else 0.0
+        sat_expected = vhi if enabled and clipped else 0.0
+        metric_expected = vhi * min(1.0, max(0.0, abs(raw - limited) / (vlimit - vlo))) if enabled else 0.0
+        max_err = max(
+            max_err,
+            abs(values["out"] - out_expected),
+            abs(values["sat"] - sat_expected),
+            abs(values["recovery_metric"] - metric_expected),
+        )
+        saw_low_clip = saw_low_clip or (enabled and raw < vlo)
+        saw_high_clip = saw_high_clip or (enabled and raw > vlimit)
+        saw_linear = saw_linear or (enabled and vlo < raw < vlimit)
+        saw_disabled = saw_disabled or (not enabled)
+        saw_metric = saw_metric or metric_expected > 0.05
+        checked += 1
+    if checked < 10:
+        return False, f"insufficient_saturation_limiter_samples={checked}"
+    if not (saw_low_clip and saw_high_clip and saw_linear and saw_disabled and saw_metric):
+        return False, "insufficient_saturation_limiter_coverage"
+    if max_err > 0.085:
+        return False, f"saturation_limiter_error={max_err:.4f}"
+    return True, f"samples={checked} max_err={max_err:.4f}"
+
+
+def check_v3_374_sampled_error_update_monitor(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "clk", "rst", "sample", "target", "coef", "out", "err_metric", "progress"}
+    if not rows or not required.issubset(rows[0]):
+        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
+        return False, "missing_columns=" + ",".join(missing)
+    times = [row["time"] for row in rows]
+    clk_edges = _threshold_crossings([row["clk"] for row in rows], times, threshold=0.45, direction="rising")
+    if len(clk_edges) < 8:
+        return False, f"too_few_sampled_error_edges={len(clk_edges)}"
+    min_period = min((b - a for a, b in zip(clk_edges, clk_edges[1:])), default=1.0e-9)
+    output_delay = min(0.42e-9, 0.42 * min_period)
+    stable_count = 0
+    checked = 0
+    max_err = 0.0
+    saw_reset = saw_progress_high = saw_progress_low = saw_coeff_change = saw_target_change = saw_high_error = False
+    first_coef: float | None = None
+    first_target: float | None = None
+    for edge_t in clk_edges:
+        output_t = edge_t + output_delay
+        if output_t >= times[-1] - 0.05e-9:
+            continue
+        inputs = _v3_values_at(rows, ("rst", "sample", "target", "coef"), edge_t + 1.0e-12)
+        outputs = _v3_values_at(rows, ("out", "err_metric", "progress"), output_t)
+        if inputs is None or outputs is None:
+            continue
+        if first_coef is None:
+            first_coef = inputs["coef"]
+        if first_target is None:
+            first_target = inputs["target"]
+        coeff = min(1.0, max(0.0, inputs["coef"] / 0.9))
+        err_v = inputs["target"] - inputs["sample"]
+        if inputs["rst"] > 0.45:
+            stable_count = 0
+            out_expected = err_expected = progress_expected = 0.0
+            saw_reset = True
+        else:
+            corrected = inputs["sample"] + coeff * err_v
+            out_expected = min(0.9, max(0.0, corrected))
+            err_expected = 0.9 * min(1.0, max(0.0, abs(err_v) / 0.50))
+            if abs(err_v) <= 0.040:
+                stable_count = min(stable_count + 1, 3)
+            else:
+                stable_count = 0
+            progress_expected = 0.9 * min(1.0, max(0.0, stable_count / 3.0))
+        max_err = max(
+            max_err,
+            abs(outputs["out"] - out_expected),
+            abs(outputs["err_metric"] - err_expected),
+            abs(outputs["progress"] - progress_expected),
+        )
+        saw_progress_high = saw_progress_high or progress_expected > 0.70
+        saw_progress_low = saw_progress_low or progress_expected < 0.15
+        saw_high_error = saw_high_error or err_expected > 0.45
+        saw_coeff_change = saw_coeff_change or abs(inputs["coef"] - first_coef) > 0.05
+        saw_target_change = saw_target_change or abs(inputs["target"] - first_target) > 0.05
+        checked += 1
+    if checked < 8:
+        return False, f"insufficient_sampled_error_samples={checked}"
+    if not (saw_reset and saw_progress_high and saw_progress_low and saw_coeff_change and saw_target_change and saw_high_error):
+        return False, "insufficient_sampled_error_coverage"
+    if max_err > 0.10:
+        return False, f"sampled_error_update_error={max_err:.4f}"
+    return True, f"samples={checked} max_err={max_err:.4f}"
+
+
+def check_v3_375_windowed_event_rate_monitor(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "clk", "rst", "event_in", "gate", "rate", "average"}
+    if not rows or not required.issubset(rows[0]):
+        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
+        return False, "missing_columns=" + ",".join(missing)
+    times = [row["time"] for row in rows]
+    clk_edges = _threshold_crossings([row["clk"] for row in rows], times, threshold=0.45, direction="rising")
+    if len(clk_edges) < 8:
+        return False, f"too_few_event_rate_edges={len(clk_edges)}"
+    min_period = min((b - a for a, b in zip(clk_edges, clk_edges[1:])), default=1.0e-9)
+    output_delay = min(0.42e-9, 0.42 * min_period)
+    event_count = 0
+    sample_count = 0
+    checked = 0
+    max_err = 0.0
+    saw_reset = saw_gate_clear = saw_event_high = saw_event_low = saw_rate_high = saw_average_mid = False
+    for edge_t in clk_edges:
+        output_t = edge_t + output_delay
+        if output_t >= times[-1] - 0.05e-9:
+            continue
+        inputs = _v3_values_at(rows, ("rst", "event_in", "gate"), edge_t + 1.0e-12)
+        outputs = _v3_values_at(rows, ("rate", "average"), output_t)
+        if inputs is None or outputs is None:
+            continue
+        prior_samples = sample_count
+        if inputs["rst"] > 0.45 or inputs["gate"] <= 0.45:
+            event_count = 0
+            sample_count = 0
+            rate_expected = average_expected = 0.0
+            saw_reset = saw_reset or inputs["rst"] > 0.45
+            saw_gate_clear = saw_gate_clear or (inputs["gate"] <= 0.45 and prior_samples > 0)
+        else:
+            sample_count += 1
+            if inputs["event_in"] > 0.45:
+                event_count += 1
+                saw_event_high = True
+            else:
+                saw_event_low = True
+            rate_expected = 0.9 * min(1.0, max(0.0, event_count / 5.0))
+            average_expected = 0.9 * min(1.0, max(0.0, event_count / sample_count))
+        max_err = max(max_err, abs(outputs["rate"] - rate_expected), abs(outputs["average"] - average_expected))
+        saw_rate_high = saw_rate_high or rate_expected > 0.50
+        saw_average_mid = saw_average_mid or 0.20 < average_expected < 0.80
+        checked += 1
+    if checked < 8:
+        return False, f"insufficient_event_rate_samples={checked}"
+    if not (saw_reset and saw_gate_clear and saw_event_high and saw_event_low and saw_rate_high and saw_average_mid):
+        return False, "insufficient_event_rate_coverage"
+    if max_err > 0.10:
+        return False, f"event_rate_monitor_error={max_err:.4f}"
+    return True, f"samples={checked} max_err={max_err:.4f}"
+
+
+def check_v3_376_reset_release_sequencer(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "clk", "rst", "supply_ok", "bias_ok", "stage1", "stage2", "ready", "progress"}
+    if not rows or not required.issubset(rows[0]):
+        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
+        return False, "missing_columns=" + ",".join(missing)
+    times = [row["time"] for row in rows]
+    clk_edges = _threshold_crossings([row["clk"] for row in rows], times, threshold=0.45, direction="rising")
+    if len(clk_edges) < 8:
+        return False, f"too_few_reset_release_edges={len(clk_edges)}"
+    min_period = min((b - a for a, b in zip(clk_edges, clk_edges[1:])), default=1.0e-9)
+    output_delay = min(0.42e-9, 0.42 * min_period)
+    stage_q = 0
+    checked = 0
+    max_err = 0.0
+    saw_reset = saw_supply_fault = saw_bias_fault = saw_stage1_only = saw_stage2 = saw_ready = saw_clear = False
+    for edge_t in clk_edges:
+        output_t = edge_t + output_delay
+        if output_t >= times[-1] - 0.05e-9:
+            continue
+        inputs = _v3_values_at(rows, ("rst", "supply_ok", "bias_ok"), edge_t + 1.0e-12)
+        outputs = _v3_values_at(rows, ("stage1", "stage2", "ready", "progress"), output_t)
+        if inputs is None or outputs is None:
+            continue
+        prior_stage = stage_q
+        if inputs["rst"] > 0.45 or inputs["supply_ok"] <= 0.45 or inputs["bias_ok"] <= 0.45:
+            stage_q = 0
+            saw_reset = saw_reset or inputs["rst"] > 0.45
+            saw_supply_fault = saw_supply_fault or inputs["supply_ok"] <= 0.45
+            saw_bias_fault = saw_bias_fault or inputs["bias_ok"] <= 0.45
+            saw_clear = saw_clear or prior_stage > 0
+        elif stage_q < 3:
+            stage_q += 1
+        expected = {
+            "stage1": 0.9 if stage_q >= 1 else 0.0,
+            "stage2": 0.9 if stage_q >= 2 else 0.0,
+            "ready": 0.9 if stage_q >= 3 else 0.0,
+            "progress": 0.9 * min(1.0, max(0.0, stage_q / 3.0)),
+        }
+        max_err = max(max_err, *(abs(outputs[name] - expected[name]) for name in expected))
+        saw_stage1_only = saw_stage1_only or stage_q == 1
+        saw_stage2 = saw_stage2 or stage_q == 2
+        saw_ready = saw_ready or stage_q >= 3
+        checked += 1
+    if checked < 8:
+        return False, f"insufficient_reset_release_samples={checked}"
+    if not (saw_reset and saw_supply_fault and saw_bias_fault and saw_stage1_only and saw_stage2 and saw_ready and saw_clear):
+        return False, "insufficient_reset_release_coverage"
+    if max_err > 0.10:
+        return False, f"reset_release_error={max_err:.4f}"
+    return True, f"samples={checked} max_err={max_err:.4f}"
+
+
+def check_v3_377_adaptive_threshold_tracker(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "clk", "rst", "vin", "adapt", "trip", "threshold_mon", "margin_metric"}
+    if not rows or not required.issubset(rows[0]):
+        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
+        return False, "missing_columns=" + ",".join(missing)
+    times = [row["time"] for row in rows]
+    clk_edges = _threshold_crossings([row["clk"] for row in rows], times, threshold=0.45, direction="rising")
+    if len(clk_edges) < 8:
+        return False, f"too_few_threshold_tracker_edges={len(clk_edges)}"
+    min_period = min((b - a for a, b in zip(clk_edges, clk_edges[1:])), default=1.0e-9)
+    output_delay = min(0.42e-9, 0.42 * min_period)
+    threshold_q = 0.45
+    checked = 0
+    max_err = 0.0
+    saw_reset = saw_adapt = saw_hold = saw_trip_high = saw_trip_low = saw_clip_high = saw_margin = False
+    for edge_t in clk_edges:
+        output_t = edge_t + output_delay
+        if output_t >= times[-1] - 0.05e-9:
+            continue
+        inputs = _v3_values_at(rows, ("rst", "vin", "adapt"), edge_t + 1.0e-12)
+        outputs = _v3_values_at(rows, ("trip", "threshold_mon", "margin_metric"), output_t)
+        if inputs is None or outputs is None:
+            continue
+        if inputs["rst"] > 0.45:
+            threshold_q = 0.45
+            trip_expected = 0.0
+            margin_expected = 0.0
+            saw_reset = True
+        else:
+            old_threshold = threshold_q
+            trip_expected = 0.9 if inputs["vin"] > old_threshold else 0.0
+            margin_expected = 0.9 * min(1.0, max(0.0, abs(inputs["vin"] - old_threshold) / 0.45))
+            if inputs["adapt"] > 0.45:
+                threshold_q = min(0.70, max(0.25, 0.75 * old_threshold + 0.25 * inputs["vin"]))
+                saw_adapt = True
+            else:
+                saw_hold = True
+        threshold_expected = threshold_q
+        max_err = max(
+            max_err,
+            abs(outputs["trip"] - trip_expected),
+            abs(outputs["threshold_mon"] - threshold_expected),
+            abs(outputs["margin_metric"] - margin_expected),
+        )
+        saw_trip_high = saw_trip_high or trip_expected > 0.45
+        saw_trip_low = saw_trip_low or trip_expected < 0.45
+        saw_clip_high = saw_clip_high or abs(threshold_expected - 0.70) < 0.015
+        saw_margin = saw_margin or margin_expected > 0.35
+        checked += 1
+    if checked < 8:
+        return False, f"insufficient_threshold_tracker_samples={checked}"
+    if not (saw_reset and saw_adapt and saw_hold and saw_trip_high and saw_trip_low and saw_clip_high and saw_margin):
+        return False, "insufficient_threshold_tracker_coverage"
+    if max_err > 0.10:
+        return False, f"adaptive_threshold_error={max_err:.4f}"
+    return True, f"samples={checked} max_err={max_err:.4f}"
+
+
+def check_v3_378_rail_normalized_metric_mapper(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "meas", "vdd", "vss", "en", "norm", "valid"}
+    if not rows or not required.issubset(rows[0]):
+        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
+        return False, "missing_columns=" + ",".join(missing)
+    checked = 0
+    max_err = 0.0
+    saw_vss_offset = saw_enable_low = saw_span_low = saw_span_high = saw_valid = saw_invalid_window = False
+    saw_clip_low = saw_clip_high = False
+    for time_s in _v3_uniform_sample_times(rows):
+        values = _v3_values_at(rows, ("meas", "vdd", "vss", "en", "norm", "valid"), time_s)
+        if values is None:
+            continue
+        span = values["vdd"] - values["vss"]
+        local_meas = values["meas"] - values["vss"]
+        enabled = values["en"] > 0.45
+        if enabled and span >= 0.60:
+            norm_expected = 0.9 * min(1.0, max(0.0, local_meas / span))
+        else:
+            norm_expected = 0.0
+        valid_expected = 0.9 if (enabled and 0.60 <= span <= 1.20 and 0.0 <= local_meas <= span) else 0.0
+        max_err = max(max_err, abs(values["norm"] - norm_expected), abs(values["valid"] - valid_expected))
+        saw_vss_offset = saw_vss_offset or abs(values["vss"]) > 0.025
+        saw_enable_low = saw_enable_low or (not enabled)
+        saw_span_low = saw_span_low or (span < 0.60)
+        saw_span_high = saw_span_high or (span > 1.20)
+        saw_valid = saw_valid or valid_expected > 0.45
+        saw_invalid_window = saw_invalid_window or (enabled and span >= 0.60 and (local_meas < 0.0 or local_meas > span))
+        saw_clip_low = saw_clip_low or (enabled and span >= 0.60 and local_meas < 0.0)
+        saw_clip_high = saw_clip_high or (enabled and span >= 0.60 and local_meas > span)
+        checked += 1
+    if checked < 10:
+        return False, f"insufficient_rail_norm_samples={checked}"
+    if not (saw_vss_offset and saw_enable_low and saw_span_low and saw_span_high and saw_valid and saw_invalid_window and saw_clip_low and saw_clip_high):
+        return False, "insufficient_rail_norm_coverage"
+    if max_err > 0.08:
+        return False, f"rail_normalized_metric_error={max_err:.4f}"
+    return True, f"samples={checked} max_err={max_err:.4f}"
+
+
+def check_v3_421_calibration_affine_transform(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "clk", "rst", "raw", "gain_ctrl", "offset_ctrl", "en", "out", "resid_metric"}
+    if not rows or not required.issubset(rows[0]):
+        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
+        return False, "missing_columns=" + ",".join(missing)
+    times = [row["time"] for row in rows]
+    clk_edges = _threshold_crossings([row["clk"] for row in rows], times, threshold=0.45, direction="rising")
+    if len(clk_edges) < 8:
+        return False, f"too_few_affine_transform_edges={len(clk_edges)}"
+    min_period = min((b - a for a, b in zip(clk_edges, clk_edges[1:])), default=1.0e-9)
+    output_delay = min(0.42e-9, 0.42 * min_period)
+    checked = 0
+    max_err = 0.0
+    saw_gain_change = saw_offset_change = saw_enable_low = saw_reset = saw_clip_high = saw_clip_low = saw_resid = False
+    first_gain: float | None = None
+    first_offset: float | None = None
+    for edge_t in clk_edges:
+        output_t = edge_t + output_delay
+        if output_t >= times[-1] - 0.05e-9:
+            continue
+        inputs = _v3_values_at(rows, ("rst", "raw", "gain_ctrl", "offset_ctrl", "en"), edge_t + 1.0e-12)
+        outputs = _v3_values_at(rows, ("out", "resid_metric"), output_t)
+        if inputs is None or outputs is None:
+            continue
+        if first_gain is None:
+            first_gain = inputs["gain_ctrl"]
+        if first_offset is None:
+            first_offset = inputs["offset_ctrl"]
+        gain = 0.50 + min(1.0, max(0.0, inputs["gain_ctrl"] / 0.9))
+        offset = inputs["offset_ctrl"] - 0.45
+        transformed = 0.45 + gain * (inputs["raw"] - 0.45) + offset
+        if inputs["rst"] > 0.45 or inputs["en"] <= 0.45:
+            out_expected = 0.0
+            resid_expected = 0.0
+            saw_reset = saw_reset or inputs["rst"] > 0.45
+            saw_enable_low = saw_enable_low or inputs["en"] <= 0.45
+        else:
+            out_expected = min(0.9, max(0.0, transformed))
+            resid_expected = 0.9 * min(1.0, max(0.0, abs(transformed - inputs["raw"]) / 0.45))
+            saw_clip_high = saw_clip_high or transformed > 0.9
+            saw_clip_low = saw_clip_low or transformed < 0.0
+        max_err = max(max_err, abs(outputs["out"] - out_expected), abs(outputs["resid_metric"] - resid_expected))
+        saw_gain_change = saw_gain_change or abs(inputs["gain_ctrl"] - first_gain) > 0.08
+        saw_offset_change = saw_offset_change or abs(inputs["offset_ctrl"] - first_offset) > 0.08
+        saw_resid = saw_resid or resid_expected > 0.20
+        checked += 1
+    if checked < 8:
+        return False, f"insufficient_affine_transform_samples={checked}"
+    if not (saw_gain_change and saw_offset_change and saw_enable_low and saw_reset and saw_clip_high and saw_clip_low and saw_resid):
+        return False, "insufficient_affine_transform_coverage"
+    if max_err > 0.085:
+        return False, f"calibration_affine_error={max_err:.4f}"
+    return True, f"samples={checked} max_err={max_err:.4f}"
+
+
+def check_v3_490_event_reacquire_lock_detector(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "ref_clk", "fb_clk", "rst", "lock", "phase_metric", "state_mon"}
+    if not rows or not required.issubset(rows[0]):
+        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
+        return False, "missing_columns=" + ",".join(missing)
+    times = [row["time"] for row in rows]
+    ref_edges = _threshold_crossings([row["ref_clk"] for row in rows], times, threshold=0.45, direction="rising")
+    fb_edges = _threshold_crossings([row["fb_clk"] for row in rows], times, threshold=0.45, direction="rising")
+    rst_edges = _threshold_crossings([row["rst"] for row in rows], times, threshold=0.45, direction="rising")
+    if len(ref_edges) < 6 or len(fb_edges) < 6:
+        return False, f"too_few_lock_detector_edges=ref{len(ref_edges)}_fb{len(fb_edges)}"
+    min_gap = min((b - a for a, b in zip(sorted(ref_edges + fb_edges), sorted(ref_edges + fb_edges)[1:])), default=1.0e-9)
+    output_delay = min(0.30e-9, max(0.12e-9, 0.35 * min_gap))
+    events = [(t, "ref") for t in ref_edges] + [(t, "fb") for t in fb_edges] + [(t, "rst") for t in rst_edges]
+    events.sort(key=lambda item: (item[0], {"rst": 0, "ref": 1, "fb": 2}[item[1]]))
+    last_ref: float | None = None
+    good_count = 0
+    checked = 0
+    max_err = 0.0
+    saw_lock = saw_unlock = saw_reset = saw_reacquire = saw_phase_high = saw_phase_low = saw_fail_clear = False
+    lock_seen_before_reset = False
+    for event_t, kind in events:
+        if kind == "ref":
+            last_ref = event_t
+            continue
+        output_t = event_t + output_delay
+        if output_t >= times[-1] - 0.05e-9:
+            continue
+        if kind == "rst":
+            good_count = 0
+            expected = {"lock": 0.0, "phase_metric": 0.0, "state_mon": 0.0}
+            saw_reset = True
+        else:
+            rst_now = sample_signal_at(rows, "rst", event_t + 1.0e-12)
+            if rst_now is not None and rst_now > 0.45:
+                good_count = 0
+                expected = {"lock": 0.0, "phase_metric": 0.0, "state_mon": 0.0}
+                saw_reset = True
+            else:
+                phase_err = abs(event_t - last_ref) if last_ref is not None else 0.60e-9
+                prior_good = good_count
+                if last_ref is not None and phase_err <= 0.18e-9:
+                    good_count = min(good_count + 1, 3)
+                else:
+                    good_count = 0
+                expected = {
+                    "lock": 0.9 if good_count >= 3 else 0.0,
+                    "phase_metric": 0.9 * min(1.0, max(0.0, phase_err / 0.60e-9)),
+                    "state_mon": 0.9 * min(1.0, max(0.0, good_count / 3.0)),
+                }
+                saw_phase_high = saw_phase_high or expected["phase_metric"] > 0.55
+                saw_phase_low = saw_phase_low or expected["phase_metric"] < 0.25
+                saw_fail_clear = saw_fail_clear or (prior_good > 0 and good_count == 0)
+        outputs = _v3_values_at(rows, ("lock", "phase_metric", "state_mon"), output_t)
+        if outputs is None:
+            continue
+        max_err = max(max_err, *(abs(outputs[name] - expected[name]) for name in expected))
+        saw_lock = saw_lock or expected["lock"] > 0.45
+        saw_unlock = saw_unlock or expected["lock"] < 0.45
+        if expected["lock"] > 0.45:
+            if saw_reset:
+                saw_reacquire = True
+            else:
+                lock_seen_before_reset = True
+        saw_reacquire = saw_reacquire or (saw_reset and expected["lock"] > 0.45)
+        checked += 1
+    if checked < 6:
+        return False, f"insufficient_lock_detector_samples={checked}"
+    if not (saw_lock and saw_unlock and saw_reset and lock_seen_before_reset and saw_reacquire and saw_phase_high and saw_phase_low and saw_fail_clear):
+        return False, "insufficient_lock_detector_coverage"
+    if max_err > 0.10:
+        return False, f"event_reacquire_lock_error={max_err:.4f}"
+    return True, f"samples={checked} max_err={max_err:.4f}"
+
+
 def _check_v3_file_io_gate(rows: list[dict[str, float]]) -> tuple[bool, str]:
     def update(_state: dict[str, float | int], row: dict[str, float]) -> tuple[float, float]:
         if row["rst"] > 0.45:
@@ -24036,16 +24507,28 @@ V3_STANDALONE_SPLIT_CHECKS = {
     "372-analysis-aware-noise-metric": check_v3_372_analysis_aware_noise_metric,
     "v3_373_task_output_limiter": check_v3_373_task_output_limiter,
     "373-task-output-limiter": check_v3_373_task_output_limiter,
+    "v3_373_saturation_recovery_limiter": check_v3_373_saturation_recovery_limiter,
+    "373-saturation-recovery-limiter": check_v3_373_saturation_recovery_limiter,
     "v3_374_task_dual_output_update": check_v3_374_task_dual_output_update,
     "374-task-dual-output-update": check_v3_374_task_dual_output_update,
+    "v3_374_sampled_error_update_monitor": check_v3_374_sampled_error_update_monitor,
+    "374-sampled-error-update-monitor": check_v3_374_sampled_error_update_monitor,
     "v3_375_task_event_counter_service": check_v3_375_task_event_counter_service,
     "375-task-event-counter-service": check_v3_375_task_event_counter_service,
+    "v3_375_windowed_event_rate_monitor": check_v3_375_windowed_event_rate_monitor,
+    "375-windowed-event-rate-monitor": check_v3_375_windowed_event_rate_monitor,
     "v3_376_task_reset_sequencer": check_v3_376_task_reset_sequencer,
     "376-task-reset-sequencer": check_v3_376_task_reset_sequencer,
+    "v3_376_reset_release_sequencer": check_v3_376_reset_release_sequencer,
+    "376-reset-release-sequencer": check_v3_376_reset_release_sequencer,
     "v3_377_task_stateful_threshold_update": check_v3_377_task_stateful_threshold_update,
     "377-task-stateful-threshold-update": check_v3_377_task_stateful_threshold_update,
+    "v3_377_adaptive_threshold_tracker": check_v3_377_adaptive_threshold_tracker,
+    "377-adaptive-threshold-tracker": check_v3_377_adaptive_threshold_tracker,
     "v3_378_task_metric_normalizer": check_v3_378_task_metric_normalizer,
     "378-task-metric-normalizer": check_v3_378_task_metric_normalizer,
+    "v3_378_rail_normalized_metric_mapper": check_v3_378_rail_normalized_metric_mapper,
+    "378-rail-normalized-metric-mapper": check_v3_378_rail_normalized_metric_mapper,
     "v3_379_file_fgets_config_loader": check_v3_379_file_fgets_config_loader,
     "379-file-fgets-config-loader": check_v3_379_file_fgets_config_loader,
     "v3_380_file_feof_line_counter": check_v3_380_file_feof_line_counter,
@@ -24132,6 +24615,8 @@ V3_STANDALONE_SPLIT_CHECKS = {
     "420-mixed-analog-digital-mode-latch": check_v3_420_mixed_analog_digital_mode_latch,
     "v3_421_task_local_variable_transform": check_v3_421_task_local_variable_transform,
     "421-task-local-variable-transform": check_v3_421_task_local_variable_transform,
+    "v3_421_calibration_affine_transform": check_v3_421_calibration_affine_transform,
+    "421-calibration-affine-transform": check_v3_421_calibration_affine_transform,
     "v3_422_file_fscanf_table_stimulus": check_v3_422_file_fscanf_table_stimulus,
     "422-file-fscanf-table-stimulus": check_v3_422_file_fscanf_table_stimulus,
     "v3_423_file_profile_replay_controller": check_v3_423_file_profile_replay_controller,
@@ -24270,6 +24755,8 @@ V3_STANDALONE_SPLIT_CHECKS = {
     "489-event-nested-or-expression": check_v3_489_event_nested_or_expression,
     "v3_490_event_task_function_state_update": check_v3_490_event_task_function_state_update,
     "490-event-task-function-state-update": check_v3_490_event_task_function_state_update,
+    "v3_490_event_reacquire_lock_detector": check_v3_490_event_reacquire_lock_detector,
+    "490-event-reacquire-lock-detector": check_v3_490_event_reacquire_lock_detector,
     "v3_491_kcl_capacitor_ddt_current": check_v3_491_kcl_capacitor_ddt_current,
     "491-kcl-capacitor-ddt-current": check_v3_491_kcl_capacitor_ddt_current,
     "v3_492_kcl_inductor_idt_voltage": check_v3_492_kcl_inductor_idt_voltage,

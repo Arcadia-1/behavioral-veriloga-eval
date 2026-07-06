@@ -5329,6 +5329,210 @@
         "neg_005_scale_output"
       ]
     },
+    "373-saturation-recovery-limiter": {
+      "category": "signal_conditioning_and_measurement",
+      "description": "Voltage-domain limiter that exposes saturation and recovery metrics for downstream analog signal conditioning.",
+      "difficulty": "D2",
+      "form": "dut",
+      "hidden_tests": [
+        "hidden.scs varies the Saturation Recovery Limiter stimulus to catch hard-coded, threshold-shifted, reset-biased, or metric-only implementations."
+      ],
+      "id": "v3_373_saturation_recovery_limiter",
+      "level": "L1",
+      "negative_variants": [
+        "neg_001_passthrough_no_limit",
+        "neg_002_high_only_limit",
+        "neg_003_ignore_enable",
+        "neg_004_saturation_flag_high_only",
+        "neg_005_wrong_recovery_metric"
+      ],
+      "required_behavior": [
+        "Clamp the enabled input between the public low and high limiter levels.",
+        "Drive a saturation flag when either limiter boundary is active.",
+        "Clear output, flag, and recovery metric while enable is low.",
+        "Expose a bounded recovery metric proportional to clipped error.",
+        "Use local analog functions rather than user task/endtask syntax."
+      ],
+      "syntax_focus": "Replace archived task/endtask semantics with Spectre-compatible analog helper functions and observable voltage-domain behavior.",
+      "target": [
+        "saturation_recovery_limiter.va"
+      ],
+      "tier": "behavior-extension-candidate",
+      "title": "Saturation Recovery Limiter",
+      "visible_tests": [
+        "visible.scs exercises the public Saturation Recovery Limiter stimulus and checks the primary observable behavior."
+      ]
+    },
+    "374-sampled-error-update-monitor": {
+      "category": "calibration_control",
+      "description": "Clocked calibration helper that updates a corrected value and its error/progress metrics.",
+      "difficulty": "D2",
+      "form": "dut",
+      "hidden_tests": [
+        "hidden.scs varies the Sampled Error Update Monitor stimulus to catch hard-coded, threshold-shifted, reset-biased, or metric-only implementations."
+      ],
+      "id": "v3_374_sampled_error_update_monitor",
+      "level": "L2",
+      "negative_variants": [
+        "neg_001_ignore_coefficient",
+        "neg_002_ignore_target",
+        "neg_003_no_reset_clear",
+        "neg_004_progress_without_window",
+        "neg_005_wrong_error_metric"
+      ],
+      "required_behavior": [
+        "On each rising clock crossing, blend sample toward target using the public coefficient voltage.",
+        "Drive the corrected output and an absolute error metric as correlated outputs.",
+        "Accumulate progress only after consecutive in-window sampled errors.",
+        "Clear all sampled state while reset is high.",
+        "Use local analog helper functions rather than user task/endtask syntax."
+      ],
+      "syntax_focus": "Replace archived task/endtask semantics with Spectre-compatible analog helper functions and observable voltage-domain behavior.",
+      "target": [
+        "sampled_error_update_monitor.va"
+      ],
+      "tier": "behavior-extension-candidate",
+      "title": "Sampled Error Update Monitor",
+      "visible_tests": [
+        "visible.scs exercises the public Sampled Error Update Monitor stimulus and checks the primary observable behavior."
+      ]
+    },
+    "375-windowed-event-rate-monitor": {
+      "category": "measurement_instrumentation_flows",
+      "description": "Clocked measurement helper that reports event rate and observed average over a qualified window.",
+      "difficulty": "D2",
+      "form": "dut",
+      "hidden_tests": [
+        "hidden.scs varies the Windowed Event Rate Monitor stimulus to catch hard-coded, threshold-shifted, reset-biased, or metric-only implementations."
+      ],
+      "id": "v3_375_windowed_event_rate_monitor",
+      "level": "L1",
+      "negative_variants": [
+        "neg_001_count_all_clocks",
+        "neg_002_ignore_gate",
+        "neg_003_no_reset_clear",
+        "neg_004_unscaled_rate",
+        "neg_005_average_uses_window_count"
+      ],
+      "required_behavior": [
+        "Sample event_in on rising clock crossings only while gate is high and reset is low.",
+        "Clear the measurement window on reset or gate-low samples.",
+        "Drive rate as a clipped count/window metric.",
+        "Drive average as count divided by sampled gated updates.",
+        "Use local analog helper functions rather than user task/endtask syntax."
+      ],
+      "syntax_focus": "Replace archived task/endtask semantics with Spectre-compatible analog helper functions and observable voltage-domain behavior.",
+      "target": [
+        "windowed_event_rate_monitor.va"
+      ],
+      "tier": "behavior-extension-candidate",
+      "title": "Windowed Event Rate Monitor",
+      "visible_tests": [
+        "visible.scs exercises the public Windowed Event Rate Monitor stimulus and checks the primary observable behavior."
+      ]
+    },
+    "376-reset-release-sequencer": {
+      "category": "bias_reference_power_management",
+      "description": "Clocked reset-release sequencer for power and bias qualification before analog block startup.",
+      "difficulty": "D2",
+      "form": "dut",
+      "hidden_tests": [
+        "hidden.scs varies the Reset Release Sequencer stimulus to catch hard-coded, threshold-shifted, reset-biased, or metric-only implementations."
+      ],
+      "id": "v3_376_reset_release_sequencer",
+      "level": "L1",
+      "negative_variants": [
+        "neg_001_ready_immediate",
+        "neg_002_ignore_bias_ok",
+        "neg_003_ignore_supply_ok",
+        "neg_004_no_reset_clear",
+        "neg_005_wrong_progress_scale"
+      ],
+      "required_behavior": [
+        "Release stage outputs in order on rising clock crossings.",
+        "Require reset low, supply_ok high, and bias_ok high before advancing.",
+        "Clear all stages on reset, supply fault, or bias fault.",
+        "Assert ready only at the public final stage.",
+        "Use local analog helper functions rather than user task/endtask syntax."
+      ],
+      "syntax_focus": "Replace archived task/endtask semantics with Spectre-compatible analog helper functions and observable voltage-domain behavior.",
+      "target": [
+        "reset_release_sequencer.va"
+      ],
+      "tier": "behavior-extension-candidate",
+      "title": "Reset Release Sequencer",
+      "visible_tests": [
+        "visible.scs exercises the public Reset Release Sequencer stimulus and checks the primary observable behavior."
+      ]
+    },
+    "377-adaptive-threshold-tracker": {
+      "category": "comparator_decision",
+      "description": "Comparator-support helper that adapts an observable decision threshold from sampled input behavior.",
+      "difficulty": "D2",
+      "form": "dut",
+      "hidden_tests": [
+        "hidden.scs varies the Adaptive Threshold Tracker stimulus to catch hard-coded, threshold-shifted, reset-biased, or metric-only implementations."
+      ],
+      "id": "v3_377_adaptive_threshold_tracker",
+      "level": "L1",
+      "negative_variants": [
+        "neg_001_fixed_threshold",
+        "neg_002_threshold_follows_input",
+        "neg_003_ignore_reset",
+        "neg_004_no_threshold_clip",
+        "neg_005_wrong_margin_metric"
+      ],
+      "required_behavior": [
+        "Compare vin to the previously stored threshold on each rising clock crossing.",
+        "When adapt is high, update the threshold with the public clipped IIR rule after the comparison.",
+        "Report the next-sample threshold on threshold_mon.",
+        "Clear threshold and outputs on reset.",
+        "Use local analog helper functions rather than user task/endtask syntax."
+      ],
+      "syntax_focus": "Replace archived task/endtask semantics with Spectre-compatible analog helper functions and observable voltage-domain behavior.",
+      "target": [
+        "adaptive_threshold_tracker.va"
+      ],
+      "tier": "behavior-extension-candidate",
+      "title": "Adaptive Threshold Tracker",
+      "visible_tests": [
+        "visible.scs exercises the public Adaptive Threshold Tracker stimulus and checks the primary observable behavior."
+      ]
+    },
+    "378-rail-normalized-metric-mapper": {
+      "category": "measurement_instrumentation_flows",
+      "description": "Rail-aware metric normalizer for voltage-domain measurement support across shifted local supplies.",
+      "difficulty": "D2",
+      "form": "dut",
+      "hidden_tests": [
+        "hidden.scs varies the Rail Normalized Metric Mapper stimulus to catch hard-coded, threshold-shifted, reset-biased, or metric-only implementations."
+      ],
+      "id": "v3_378_rail_normalized_metric_mapper",
+      "level": "L1",
+      "negative_variants": [
+        "neg_001_absolute_ground_reference",
+        "neg_002_fixed_supply_span",
+        "neg_003_ignore_enable",
+        "neg_004_no_clipping",
+        "neg_005_valid_ignores_measurement_window"
+      ],
+      "required_behavior": [
+        "Normalize meas relative to the local V(vdd,vss) span and vss rail.",
+        "Clip the normalized metric to the public voltage-coded range.",
+        "Assert valid only when enable is high, supply span is valid, and the measurement lies inside the local rail window.",
+        "Clear norm and valid while disabled or under the minimum supply span.",
+        "Use local analog helper functions rather than user task/endtask syntax."
+      ],
+      "syntax_focus": "Replace archived task/endtask semantics with Spectre-compatible analog helper functions and observable voltage-domain behavior.",
+      "target": [
+        "rail_normalized_metric_mapper.va"
+      ],
+      "tier": "behavior-extension-candidate",
+      "title": "Rail Normalized Metric Mapper",
+      "visible_tests": [
+        "visible.scs exercises the public Rail Normalized Metric Mapper stimulus and checks the primary observable behavior."
+      ]
+    },
     "379-file-fgets-config-loader": {
       "category": "veriloga_file_read_semantics",
       "difficulty": "D3",
@@ -6509,6 +6713,40 @@
         "neg_005_scale_output"
       ],
       "spectre_parity_status": "spectre-evas2-ready"
+    },
+    "421-calibration-affine-transform": {
+      "category": "calibration_control",
+      "description": "Calibration helper that applies a rail-coded gain and offset transform with observable residual error.",
+      "difficulty": "D2",
+      "form": "dut",
+      "hidden_tests": [
+        "hidden.scs varies the Calibration Affine Transform stimulus to catch hard-coded, threshold-shifted, reset-biased, or metric-only implementations."
+      ],
+      "id": "v3_421_calibration_affine_transform",
+      "level": "L1",
+      "negative_variants": [
+        "neg_001_ignore_gain_ctrl",
+        "neg_002_ignore_offset_ctrl",
+        "neg_003_ignore_enable",
+        "neg_004_no_output_clip",
+        "neg_005_wrong_residual_metric"
+      ],
+      "required_behavior": [
+        "On each rising clock crossing, compute a local affine calibration transform from raw, gain_ctrl, and offset_ctrl while reset is low and enable is high.",
+        "Map gain_ctrl to a public gain range and offset_ctrl to a centered offset.",
+        "Clear output and metric while reset is high or enable is low; otherwise clip the transformed output into the public voltage-coded range.",
+        "Expose a bounded residual metric for the transform magnitude.",
+        "Use local analog helper functions rather than user task/endtask syntax."
+      ],
+      "syntax_focus": "Replace archived task/endtask semantics with Spectre-compatible analog helper functions and observable voltage-domain behavior.",
+      "target": [
+        "calibration_affine_transform.va"
+      ],
+      "tier": "behavior-extension-candidate",
+      "title": "Calibration Affine Transform",
+      "visible_tests": [
+        "visible.scs exercises the public Calibration Affine Transform stimulus and checks the primary observable behavior."
+      ]
     },
     "422-file-fscanf-table-stimulus": {
       "category": "veriloga_file_read_semantics",
@@ -8546,6 +8784,40 @@
         "neg_003_reset_bias",
         "neg_004_metric_offset",
         "neg_005_scale_output"
+      ]
+    },
+    "490-event-reacquire-lock-detector": {
+      "category": "pll_clock_timing",
+      "description": "PLL/clock timing monitor that detects lock, reset clearing, and reacquisition from event-ordered ref/fb edges.",
+      "difficulty": "D2",
+      "form": "dut",
+      "hidden_tests": [
+        "hidden.scs varies the Event Reacquire Lock Detector stimulus to catch hard-coded, threshold-shifted, reset-biased, or metric-only implementations."
+      ],
+      "id": "v3_490_event_reacquire_lock_detector",
+      "level": "L2",
+      "negative_variants": [
+        "neg_001_lock_after_one_hit",
+        "neg_002_too_wide_phase_window",
+        "neg_003_no_reset_clear",
+        "neg_004_ignore_ref_timing",
+        "neg_005_constant_phase_metric"
+      ],
+      "required_behavior": [
+        "Record reference clock rising-edge time and evaluate feedback clock rising edges against it.",
+        "Require consecutive in-window feedback edge errors before lock asserts.",
+        "Clear lock state and progress when reset rises or is sampled high.",
+        "Expose phase_metric and state_mon as bounded voltage-coded observables.",
+        "Use event-body state updates plus local analog helper functions rather than user task/endtask syntax."
+      ],
+      "syntax_focus": "Replace archived task/endtask semantics with Spectre-compatible analog helper functions and observable voltage-domain behavior.",
+      "target": [
+        "event_reacquire_lock_detector.va"
+      ],
+      "tier": "behavior-extension-candidate",
+      "title": "Event Reacquire Lock Detector",
+      "visible_tests": [
+        "visible.scs exercises the public Event Reacquire Lock Detector stimulus and checks the primary observable behavior."
       ]
     },
     "491-kcl-capacitor-ddt-current": {

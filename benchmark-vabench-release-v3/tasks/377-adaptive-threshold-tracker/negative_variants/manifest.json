@@ -1,0 +1,30 @@
+{
+  "task_id": "v3_377_adaptive_threshold_tracker",
+  "negative_variants": [
+    {
+      "id": "neg_001_fixed_threshold",
+      "path": "neg_001_fixed_threshold/adaptive_threshold_tracker.va",
+      "expected": "fail_behavior"
+    },
+    {
+      "id": "neg_002_threshold_follows_input",
+      "path": "neg_002_threshold_follows_input/adaptive_threshold_tracker.va",
+      "expected": "fail_behavior"
+    },
+    {
+      "id": "neg_003_ignore_reset",
+      "path": "neg_003_ignore_reset/adaptive_threshold_tracker.va",
+      "expected": "fail_behavior"
+    },
+    {
+      "id": "neg_004_no_threshold_clip",
+      "path": "neg_004_no_threshold_clip/adaptive_threshold_tracker.va",
+      "expected": "fail_behavior"
+    },
+    {
+      "id": "neg_005_wrong_margin_metric",
+      "path": "neg_005_wrong_margin_metric/adaptive_threshold_tracker.va",
+      "expected": "fail_behavior"
+    }
+  ]
+}

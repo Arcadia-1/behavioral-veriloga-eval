@@ -1,0 +1,16 @@
+`include "disciplines.vams"
+
+module rail_normalized_metric_mapper(meas, vdd, vss, en, norm, valid);
+input meas, vdd, vss, en;
+output norm, valid;
+electrical meas, vdd, vss, en, norm, valid;
+parameter real vth = 0.45;
+parameter real vhi = 0.9;
+parameter real span_min = 0.60;
+parameter real span_max = 1.20;
+parameter real tr = 50p;
+analog begin
+    V(norm) <+ 0.0;
+    V(valid) <+ 0.0;
+end
+endmodule
