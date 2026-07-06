@@ -1,11 +1,18 @@
 # Verilog-A Language-Semantics Extension Tasks
 
 The default `tasks/` tree is now the standalone-Spectre-compatible v3
-denominator:
+task set:
 
 - numbered default rows: `451`
 - unnumbered replacement candidates: `5`
 - archived Spectre-rejected rows: `54`
+
+This Spectre-compatible task set is broader than the current core score
+denominator. `reports/score_support_manifest.json` is the current v3 source of
+truth for scoring: `258` tasks are counted as scored benchmark content, `42`
+tasks are certified support, `147` tasks are non-scored language-extension
+coverage, and `9` tasks are non-scored candidate/provenance rows. Historical
+v1/v1.1 score denominators are provenance only for v3 scoring.
 
 Numbering is intentionally non-contiguous. The benchmark keeps the historical
 task ids, but rows that Cadence/Spectre rejects as written are archived under
@@ -28,7 +35,8 @@ assets for those ids are archived, not deleted, because Spectre rejects their
 procedural vector/electrical indexing patterns. The active `tasks/` ids now
 point at reference-backed data-converter replacements.
 
-Rows `301+` are language-extension candidates. The retained default rows cover
+Rows `301+` are language-extension or behavior-extension candidates unless a
+future score policy explicitly promotes them. The retained default rows cover
 these Verilog-A-oriented surfaces:
 
 - user-defined function declarations and calls
@@ -109,7 +117,7 @@ The 54 archived rows fall into these groups:
 
 Archived rows are preserved for future AMS/digital suites, version-gated
 extensions, or deliberate EVAS extension-mode tests. They are not part of the
-current default Spectre-compatible benchmark score.
+current default Spectre-compatible task set or the current v3 core score.
 
 ## Certification Boundary
 

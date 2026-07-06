@@ -168,7 +168,7 @@ const I18N = {
     benchmarkEyebrow: "Benchmark",
     benchmarkPageTitle: "vaBench 300 task set",
     benchmarkPageText:
-      "Browse the benchmark by function family, task form, level, difficulty, and score surface. The public management denominator is 300 rows; the current core-score roster is 265 forms plus 35 certified support forms reported separately.",
+      "Browse the benchmark by function family, task form, level, difficulty, and score surface. The current v3 score/support manifest counts 258 core-score tasks, 42 support tasks, 147 language-extension tasks, and 9 candidate/provenance tasks.",
     coverageEyebrow: "Coverage",
     coverageTitle: "Function categories",
     coverageDescription: "Entry and row coverage across analog and mixed-signal behavioral function families.",
