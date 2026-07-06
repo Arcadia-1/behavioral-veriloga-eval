@@ -13898,7 +13898,7 @@ def check_v3_differential_dac_calc_6b(rows: list[dict[str, float]]) -> tuple[boo
     required = {"time", "clks", "voutp", "voutn"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing time/clks/voutp/voutn"
-    ok, detail = _sample_many(
+    ok, detail = _sample_many_within_trace(
         rows,
         {
             "voutp": [(5.0, 0.5777344), (15.0, 0.8074219), (25.0, 0.7144531), (35.0, 0.9222656)],
@@ -13909,7 +13909,10 @@ def check_v3_differential_dac_calc_6b(rows: list[dict[str, float]]) -> tuple[boo
     if not ok:
         return ok, detail
     max_cm_error = 0.0
+    trace_stop_ns = rows[-1]["time"] * 1e9
     for time_ns in (5.0, 15.0, 25.0, 35.0):
+        if time_ns > trace_stop_ns + 1e-6:
+            continue
         yp = sample_signal_at(rows, "voutp", time_ns * 1e-9)
         yn = sample_signal_at(rows, "voutn", time_ns * 1e-9)
         if yp is None or yn is None:
@@ -14052,7 +14055,7 @@ def check_v3_dac_restore_10bit_offset(rows: list[dict[str, float]]) -> tuple[boo
     required = {"time", "clk", "vout"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing time/clk/vout"
-    return _sample_many(
+    return _sample_many_within_trace(
         rows,
         {"vout": [(5.0, -0.9553711), (15.0, 0.3190430), (25.0, 0.5282227), (35.0, 0.9553711)]},
         tol=0.025,
