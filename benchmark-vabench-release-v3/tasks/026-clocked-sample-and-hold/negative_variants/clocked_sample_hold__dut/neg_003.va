@@ -1,4 +1,4 @@
-// Sample and Hold — EVAS-compatible
+// Sample and Hold behavioral model
 // Samples V(IN) on rising edge of CLK; holds value at V(OUT) until next sample.
 
 `include "constants.vams"

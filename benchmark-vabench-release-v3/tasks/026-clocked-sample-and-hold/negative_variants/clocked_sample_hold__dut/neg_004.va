@@ -1,6 +1,6 @@
 // vaBench partial-pass negative 4 for clocked_sample_hold:dut
 // Intended to preserve interface/smoke behavior while failing full checks.
-// Sample and Hold — EVAS-compatible
+// Sample and Hold behavioral model
 // Samples V(IN) on rising edge of CLK; holds value at V(OUT) until next sample.
 
 `include "constants.vams"
