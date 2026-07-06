@@ -3,11 +3,11 @@ global 0
 
 ahdl_include "limiter_rails.va"
 
-Vdd (vdd 0) vsource dc=0.9
-Vss (vss 0) vsource dc=0
-Vmax (vmax 0) vsource dc=0.2
-Vmin (vmin 0) vsource dc=0.1
-Vin (vin 0) vsource type=pwl wave=[0 -0.2 10n -0.2 10.1n 0.4 20n 0.4 20.1n 0.9 30n 0.9 30.1n 0.05 45n 0.05]
+Vdd (vdd 0) vsource dc=1.0
+Vss (vss 0) vsource dc=-0.1
+Vmax (vmax 0) vsource dc=0.25
+Vmin (vmin 0) vsource dc=0.15
+Vin (vin 0) vsource type=pwl wave=[0 -0.2 8n -0.2 8.1n 0.35 18n 0.35 18.1n 0.95 28n 0.95 28.1n 0.05 38n 0.05 38.1n 0.75 45n 0.75]
 
 XDUT (vdd vss vin vmax vmin vout) limiter_rails
 
