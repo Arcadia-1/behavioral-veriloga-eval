@@ -11841,13 +11841,14 @@ def check_v3_crossing_pulse_detector(rows: list[dict[str, float]]) -> tuple[bool
 
 
 def check_v3_not_gate(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    required = {"time", "vin", "vout"}
-    if not rows or not required.issubset(rows[0]):
-        return False, "missing time/vin/vout"
-    return _sample_many(
+    return _check_v3_logic_formula(
         rows,
-        {"vout": [(2.0, 0.9), (7.0, 0.0), (17.0, 0.9), (27.0, 0.0), (37.0, 0.9)]},
-        tol=0.08,
+        inputs=["vin"],
+        output="vout",
+        predicate=lambda bits: bits[0] == 0,
+        min_states=2,
+        label="not1",
+        settle_after_edge_s=0.8e-9,
     )
 
 
@@ -12235,24 +12236,24 @@ def check_v3_sar_weighted_sum(rows: list[dict[str, float]]) -> tuple[bool, str]:
 
 
 def check_v3_two_input_and_gate(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    required = {"time", "in1", "in2", "out"}
-    if not rows or not required.issubset(rows[0]):
-        return False, "missing time/in1/in2/out"
-    return _sample_many(
+    return _check_v3_logic_formula(
         rows,
-        {"out": [(5.0, 0.0), (15.0, 0.0), (25.0, 0.9), (35.0, 0.0), (45.0, 0.0)]},
-        tol=0.08,
+        inputs=["in1", "in2"],
+        output="out",
+        predicate=lambda bits: bits[0] == 1 and bits[1] == 1,
+        min_states=4,
+        label="and2",
     )
 
 
 def check_v3_two_input_xor_gate(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    required = {"time", "in1", "in2", "out"}
-    if not rows or not required.issubset(rows[0]):
-        return False, "missing time/in1/in2/out"
-    return _sample_many(
+    return _check_v3_logic_formula(
         rows,
-        {"out": [(5.0, 0.0), (15.0, 0.9), (25.0, 0.0), (35.0, 0.9), (45.0, 0.0)]},
-        tol=0.08,
+        inputs=["in1", "in2"],
+        output="out",
+        predicate=lambda bits: (bits[0] + bits[1]) == 1,
+        min_states=4,
+        label="xor2",
     )
 
 
@@ -12321,6 +12322,59 @@ def _v3_formula_check(
     if checked < min_checked:
         return False, f"too_few_formula_samples={checked}"
     return max_err <= tol, f"checked={checked} max_error={max_err:.5f}"
+
+
+def _check_v3_logic_formula(
+    rows: list[dict[str, float]],
+    *,
+    inputs: list[str],
+    output: str,
+    predicate,
+    min_states: int,
+    label: str,
+    threshold: float = 0.45,
+    low: float = 0.0,
+    high: float = 0.9,
+    settle_after_edge_s: float = 0.0,
+) -> tuple[bool, str]:
+    required = {"time", output, *inputs}
+    states: set[tuple[int, ...]] = set()
+    output_levels: set[int] = set()
+    input_edges: list[float] = []
+    if settle_after_edge_s > 0.0:
+        for signal in inputs:
+            input_edges.extend(_v3_edge_times(rows, signal, threshold=threshold, direction=1))
+            input_edges.extend(_v3_edge_times(rows, signal, threshold=threshold, direction=-1))
+
+    def expected(row: dict[str, float]) -> float:
+        bits = tuple(1 if row[signal] > threshold else 0 for signal in inputs)
+        states.add(bits)
+        logic_high = bool(predicate(bits))
+        output_levels.add(1 if logic_high else 0)
+        return high if logic_high else low
+
+    def stable(row: dict[str, float]) -> bool:
+        if not all(abs(row[signal] - threshold) > 0.12 for signal in inputs):
+            return False
+        t = row["time"]
+        return not any(edge <= t <= edge + settle_after_edge_s for edge in input_edges)
+
+    ok, detail = _v3_formula_check(
+        rows,
+        required=required,
+        output=output,
+        expected_fn=expected,
+        stable_fn=stable,
+        tol=0.08,
+        min_checked=20,
+    )
+    if not ok:
+        return ok, detail
+    if len(states) < min_states:
+        return False, f"insufficient_{label}_input_state_coverage={sorted(states)}"
+    if output_levels != {0, 1}:
+        return False, f"insufficient_{label}_output_level_coverage={sorted(output_levels)}"
+    return True, f"{detail} states={sorted(states)}"
 
 
 def check_v3_analog_mux_threshold(rows: list[dict[str, float]]) -> tuple[bool, str]:
@@ -12451,13 +12505,13 @@ def check_v3_differential_buffer(rows: list[dict[str, float]]) -> tuple[bool, st
 
 
 def check_v3_two_input_or_gate(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    required = {"time", "in1", "in2", "out"}
-    if not rows or not required.issubset(rows[0]):
-        return False, "missing time/in1/in2/out"
-    return _sample_many(
+    return _check_v3_logic_formula(
         rows,
-        {"out": [(5.0, 0.0), (15.0, 0.9), (25.0, 0.9), (35.0, 0.9), (45.0, 0.0)]},
-        tol=0.08,
+        inputs=["in1", "in2"],
+        output="out",
+        predicate=lambda bits: bits[0] == 1 or bits[1] == 1,
+        min_states=4,
+        label="or2",
     )
 
 
@@ -12505,57 +12559,57 @@ def check_v3_sar_cdac_residue(rows: list[dict[str, float]]) -> tuple[bool, str]:
 
 
 def check_v3_two_input_nand_gate(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    required = {"time", "in1", "in2", "out"}
-    if not rows or not required.issubset(rows[0]):
-        return False, "missing time/in1/in2/out"
-    return _sample_many(
+    return _check_v3_logic_formula(
         rows,
-        {"out": [(5.0, 0.9), (15.0, 0.9), (25.0, 0.0), (35.0, 0.9), (45.0, 0.9)]},
-        tol=0.08,
+        inputs=["in1", "in2"],
+        output="out",
+        predicate=lambda bits: not (bits[0] == 1 and bits[1] == 1),
+        min_states=4,
+        label="nand2",
     )
 
 
 def check_v3_two_input_nor_gate(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    required = {"time", "in1", "in2", "out"}
-    if not rows or not required.issubset(rows[0]):
-        return False, "missing time/in1/in2/out"
-    return _sample_many(
+    return _check_v3_logic_formula(
         rows,
-        {"out": [(5.0, 0.9), (15.0, 0.0), (25.0, 0.0), (35.0, 0.0), (45.0, 0.9)]},
-        tol=0.08,
+        inputs=["in1", "in2"],
+        output="out",
+        predicate=lambda bits: bits[0] == 0 and bits[1] == 0,
+        min_states=4,
+        label="nor2",
     )
 
 
 def check_v3_three_input_and_gate(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    required = {"time", "vin1", "vin2", "vin3", "vout"}
-    if not rows or not required.issubset(rows[0]):
-        return False, "missing time/vin1/vin2/vin3/vout"
-    return _sample_many(
+    return _check_v3_logic_formula(
         rows,
-        {"vout": [(5.0, 0.0), (15.0, 0.0), (25.0, 0.0), (35.0, 0.9), (45.0, 0.0), (55.0, 0.0)]},
-        tol=0.08,
+        inputs=["vin1", "vin2", "vin3"],
+        output="vout",
+        predicate=lambda bits: bits[0] == 1 and bits[1] == 1 and bits[2] == 1,
+        min_states=6,
+        label="and3",
     )
 
 
 def check_v3_three_input_or_gate(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    required = {"time", "vin1", "vin2", "vin3", "vout"}
-    if not rows or not required.issubset(rows[0]):
-        return False, "missing time/vin1/vin2/vin3/vout"
-    return _sample_many(
+    return _check_v3_logic_formula(
         rows,
-        {"vout": [(5.0, 0.0), (15.0, 0.9), (25.0, 0.9), (35.0, 0.9), (45.0, 0.9), (55.0, 0.9), (62.0, 0.0)]},
-        tol=0.08,
+        inputs=["vin1", "vin2", "vin3"],
+        output="vout",
+        predicate=lambda bits: any(bit == 1 for bit in bits),
+        min_states=6,
+        label="or3",
     )
 
 
 def check_v3_three_input_xor_gate(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    required = {"time", "vin1", "vin2", "vin3", "vout"}
-    if not rows or not required.issubset(rows[0]):
-        return False, "missing time/vin1/vin2/vin3/vout"
-    return _sample_many(
+    return _check_v3_logic_formula(
         rows,
-        {"vout": [(5.0, 0.0), (15.0, 0.9), (25.0, 0.0), (35.0, 0.9), (45.0, 0.0), (55.0, 0.9), (62.0, 0.0)]},
-        tol=0.08,
+        inputs=["vin1", "vin2", "vin3"],
+        output="vout",
+        predicate=lambda bits: (bits[0] + bits[1] + bits[2]) % 2 == 1,
+        min_states=6,
+        label="xor3",
     )
 
 

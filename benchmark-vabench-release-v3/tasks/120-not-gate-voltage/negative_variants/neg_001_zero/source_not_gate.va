@@ -12,5 +12,7 @@ module source_not_gate(vin, vout);
     parameter real trise = 20p from (0:inf);
     parameter real tfall = 20p from (0:inf);
 
-    // TODO: implement voltage-domain inverter behavior.
+    analog begin
+        V(vout) <+ transition(vlogic_low, tdel, trise, tfall);
+    end
 endmodule
