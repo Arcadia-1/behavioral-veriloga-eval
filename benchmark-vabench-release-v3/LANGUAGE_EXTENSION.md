@@ -22,10 +22,11 @@ of the default EVAS/Spectre parity score.
 
 ## Default Coverage
 
-Rows `001`-`300` remain the original behavior-certified surface except for
-seven converter/vector rows (`052`-`057`, `075`) that Spectre rejects because of
-procedural vector/electrical indexing patterns. Those assets are archived, not
-deleted.
+Rows `001`-`300` remain the original behavior-certified surface with issue #109
+backfills in the legacy gaps `052`-`057` and `075`. The old converter/vector
+assets for those ids are archived, not deleted, because Spectre rejects their
+procedural vector/electrical indexing patterns. The active `tasks/` ids now
+point at reference-backed data-converter replacements.
 
 Rows `301+` are language-extension candidates. The retained default rows cover
 these Verilog-A-oriented surfaces:
@@ -112,9 +113,11 @@ current default Spectre-compatible benchmark score.
 
 ## Certification Boundary
 
-The original full-300 behavior claim should be read with the archived-row note
-above: seven historical support/vector rows are no longer in the default
-Spectre-compatible denominator because Spectre rejects their syntax as written.
+The original full-300 behavior claim should be read with the archived-row and
+issue #109 notes above: seven historical support/vector assets are no longer in
+the default Spectre-compatible denominator because Spectre rejects their syntax
+as written, and their active ids now contain reference-backed data-converter
+replacement tasks.
 
 For the retained extension layer, continue to separate these claims:
 

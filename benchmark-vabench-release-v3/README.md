@@ -10,10 +10,13 @@ were moved to `spectre-unsupported-tasks/` and removed from `TASKS.json` and
 `CHECKS.yaml`. Those rows are archived for future AMS/digital or version-gated
 work, but they are not part of the default EVAS/Spectre parity score.
 
-Rows `001`-`300` remain the original behavior-certified surface except for
-seven converter/vector rows (`052`-`057`, `075`) that used procedural vector
-indexing patterns rejected by Spectre. Rows `301+` are LRM/course-material
-extension candidates unless promoted by layer-specific behavior evidence.
+Rows `001`-`300` remain the original behavior-certified surface with issue #109
+backfills in the legacy gaps `052`-`057` and `075`. The old converter/vector
+assets for those ids remain archived under `spectre-unsupported-tasks/` because
+they used procedural vector indexing patterns rejected by Spectre; the active
+`tasks/` ids now point at reference-backed data-converter replacements. Rows
+`301+` are LRM/course-material extension candidates unless promoted by
+layer-specific behavior evidence.
 
 Top-level indexes:
 
@@ -34,7 +37,8 @@ Top-level indexes:
 Partitions:
 
 - `001`-`049`: migrated v1 DUT tasks.
-- `050`-`079`: testbench utility / Verilog-A helper module tasks.
+- `050`-`079`: Verilog-A helper/source tasks, including issue #109
+  data-converter replacements at `052`-`057` and `075`.
 - `080`-`089`: additional migrated DUT/support modules from v1.
 - `090`-`111`: additional useful Verilog-A module tasks promoted into v3.
 - `112`-`300`: imported and repaired DUT/module tasks, including the obsolete

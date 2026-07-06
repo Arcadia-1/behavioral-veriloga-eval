@@ -4,29 +4,32 @@ This note records data-converter candidates that should be reviewed as
 replacement or backfill material for the original `001`-`300` benchmark
 surface, not as additional final benchmark numbers after `300`.
 
-The current `495`-`501` rows are materialized review candidates only. Their
-temporary IDs make the assets executable in the repository, but they should not
-be interpreted as final scored benchmark numbering. If upstream accepts one of
-these rows as benchmark content, it should be assigned to a replacement slot
-inside the original full-300 surface, or explicitly kept outside the scored
-denominator.
+Issue #109 accepted six materialized candidates and one fresh replacement into
+the original full-300 surface at `052`-`057` and `075`. The previous
+`500-deterministic-mismatch-dac6` candidate was retired after duplicate review
+because it was too close to the existing mismatch-DAC coverage. The old
+temporary `495`-`501` task ids are no longer active benchmark rows; they are
+referenced below only as provenance for the re-slot mapping.
 
 ## Current Closure Status
 
-As of the 2026-07-02 closeout sweep, `TASKS.json` contains 88
-data-converter-category rows when `data_converter` and `data_converter_models`
-are counted together: 81 rows inside the original `001`-`300` surface and seven
-temporary replacement candidates at `495`-`501`.
+As of the issue #109 re-slot, `TASKS.json` contains 91 data-converter-category
+rows when `data_converter` and `data_converter_models` are counted together.
+Six formerly temporary candidates plus the new correlated-double-sampler row are
+now active replacement rows inside the original `001`-`300` surface at
+`052`-`057` and `075`; no active `495`-`501` task directories remain.
 
-The closeout EVAS sweep over those 88 rows reports `88/88` gold pass and
-`326/326` negative variants rejected. Targeted Spectre bridge validation also
-passes the L2 closeout rows `096`, `105`, and `283` on visible/hidden gold and
-rejects their available hidden negative variants. The materialized replacement
-candidates `498`-`501` pass visible/hidden Spectre gold and reject all 20 hidden
-negative variants.
+The 2026-07-02 closeout EVAS sweep over the pre-slot candidate pool reported
+`88/88` gold pass and `326/326` negative variants rejected. After the 056
+replacement, fresh issue #109 validation on the seven active rows passes EVAS
+visible and hidden sweeps (`7/7` gold PASS and `35/35` negatives rejected for
+each split), Spectre hidden gold (`7/7` PASS), and Spectre hidden negatives
+(`35/35` rejected). The changed visible Spectre surface also passes gold for
+`053`, `054`, `056`, and `075` and rejects their `20/20` visible negative
+variants.
 
-Rows `096`, `105`, `283`, and `501` should be treated as L2 data-converter
-tasks: `096` and `501` are measurement/support flows, `105` is a pipeline ADC
+Rows `096`, `105`, `283`, and `075` should be treated as L2 data-converter
+tasks: `096` and `075` are measurement/support flows, `105` is a pipeline ADC
 residue-chain flow, and `283` is an end-to-end SAR ADC/DAC loop. That L2 label
 does not by itself assign final scoring slots; final replacement, removal, and
 counting decisions remain upstream review decisions.
@@ -43,17 +46,17 @@ counting decisions remain upstream review decisions.
   are part of the public circuit contract. The public prompt should describe
   observable converter behavior rather than copying private reference code.
 
-## Materialized Candidates
+## Accepted Re-slot Mapping
 
-| Temporary row | Candidate function | Why it is distinct | Suggested replacement use | Open decision |
+| Former temporary row | Active replacement row | Candidate function | Why it is distinct | Current decision |
 | --- | --- | --- | --- | --- |
-| `495-slew-rate-dac4` | Four-bit DAC with finite `slew()` output motion | Output slew rate is part of the converter macro behavior, not only a cosmetic `transition()` edge | Replace an ideal binary/restore DAC variant if upstream wants one DAC row to cover finite output slew | Whether this is sufficiently converter-specific or should remain an operator-support row |
-| `496-first-order-sigma-delta-modulator` | First-order sigma-delta modulator with one-bit feedback stream | Adds a converter architecture absent from the SAR/flash/weighted-DAC families | High-priority replacement/backfill for a duplicate weighted-DAC or simple ideal-ADC row | Exact L1 vs small L2 label; it is a loop, but the target is one reusable modulator DUT |
-| `497-thermometer-bus-encoder` | Analog input to thermometer-prefix output bus | Models a reusable thermometer-bus source/encoder instead of decoding or summarizing an existing bus | Replace a simple thermometer helper only if upstream counts source/support components as benchmark rows | L1 support component vs standalone converter-interface function |
-| `498-dc-aware-adc3bit` | Static three-bit ADC whose output is valid without a sampling clock | Separates combinational/DC-compatible conversion from clocked transient ADC rows | Replace or upgrade an ideal ADC row that differs mostly by bit count or rail choice | Whether the benchmark wants an explicitly static ADC row in the scored set |
-| `499-latched-bus-dac8` | Parallel DAC that latches an input bus on update-clock edges and holds between updates | Adds update-strobe and hold behavior missing from transparent binary DAC rows | Replace a repeated binary DAC or restore-DAC variant if clocked bus update is preferred | Whether this should replace an existing clocked DAC rather than add another DAC family row |
-| `500-deterministic-mismatch-dac6` | Binary DAC with public deterministic element-weight errors and actual-weight normalization | Models calibration/mismatch behavior without random or hidden coefficients | Upgrade or replace a weak mismatch/weighted-DAC row | Exact mismatch values are public circuit parameters, not private checker data |
-| `501-adc-static-linearity-monitor` | Sampled monitor that accumulates maximum ADC static code error over a sweep | Adds measurement-flow coverage rather than another converter core | Replace or upgrade a weak static-linearity/measurement row | Confirmed L2 measurement/support candidate; final replacement slot and counted status remain upstream decisions |
+| `498-dc-aware-adc3bit` | `052-dc-aware-adc3bit` | Static three-bit ADC whose output is valid without a sampling clock | Separates combinational/DC-compatible conversion from clocked transient ADC rows | Accepted as an L1 data-converter replacement |
+| `499-latched-bus-dac8` | `053-latched-bus-dac8` | Parallel DAC that latches an input bus on update-clock edges and holds between updates | Adds update-strobe and hold behavior missing from transparent binary DAC rows | Accepted as an L1 data-converter replacement |
+| `497-thermometer-bus-encoder` | `054-thermometer-bus-encoder` | Analog input to thermometer-prefix output bus | Models a reusable thermometer-bus source/encoder instead of decoding or summarizing an existing bus | Accepted as an L1 data-converter replacement |
+| `495-slew-rate-dac4` | `055-slew-rate-dac4` | Four-bit DAC with finite `slew()` output motion | Output slew rate is part of the converter macro behavior, not only a cosmetic `transition()` edge | Accepted as an L1 data-converter replacement |
+| Retired: `500-deterministic-mismatch-dac6` | `056-correlated-double-sampler` | Two-phase correlated double sampler that subtracts a stored reset level from a later signal sample | Adds ADC/front-end reset/signal correction behavior absent from simple sample-hold and ADC/DAC rows; avoids duplicating mismatch-DAC coverage from `027` | Accepted as an L1 data-converter-front-end replacement |
+| `496-first-order-sigma-delta-modulator` | `057-first-order-sigma-delta-modulator` | First-order sigma-delta modulator with one-bit feedback stream | Adds a converter architecture absent from the SAR/flash/weighted-DAC families | Accepted as an L1 data-converter replacement |
+| `501-adc-static-linearity-monitor` | `075-adc-static-linearity-monitor` | Sampled monitor that accumulates maximum ADC static code error over a sweep | Adds measurement-flow coverage rather than another converter core | Accepted as an L2 measurement replacement |
 
 ## Additional Candidates To Materialize After Slot Review
 

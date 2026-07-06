@@ -1,5 +1,3 @@
-# Canonical v3 checker contracts. Each task key maps to the original
-# checker configuration text used by the EVAS runner.
 001-bang-bang-phase-detector: |
   version: 1
   task_id: v3_001_bang_bang_phase_detector
@@ -1440,6 +1438,230 @@
       - valid_for_cumulative_inputs
       - binary_count_matches_population
       - invalid_for_bubble_patterns
+052-dc-aware-adc3bit: |
+  version: 1
+  task_id: v3_052_dc_aware_adc3bit
+  backend: evas
+  status: formal-candidate
+  checker: v3_052_dc_aware_adc3bit
+  required_columns:
+    - time
+    - vin
+    - d2
+    - d1
+    - d0
+  checks:
+    hidden:
+      - static_bin_floor_quantization
+      - input_clipping_to_0_to_vref
+      - d2_to_d0_msb_lsb_order
+      - no_clock_or_sample_state_required
+      - five_negative_variants_rejected_by_behavior_checker
+  sim_correct:
+    positive:
+      - solution/dc_aware_adc3bit.va
+    negative:
+      - negative_variants/neg_001_force_zero/dc_aware_adc3bit.va
+      - negative_variants/neg_002_wrong_code_span/dc_aware_adc3bit.va
+      - negative_variants/neg_003_reversed_bit_order/dc_aware_adc3bit.va
+      - negative_variants/neg_004_no_clipping/dc_aware_adc3bit.va
+      - negative_variants/neg_005_round_to_nearest/dc_aware_adc3bit.va
+    checks:
+      - static_bin_floor_quantization
+      - input_clipping_to_0_to_vref
+      - d2_to_d0_msb_lsb_order
+      - no_clock_or_sample_state_required
+      - five_negative_variants_rejected_by_behavior_checker
+053-latched-bus-dac8: |
+  version: 1
+  task_id: v3_053_latched_bus_dac8
+  backend: evas
+  status: formal-candidate
+  checker: v3_053_latched_bus_dac8
+  required_columns:
+    - time
+    - vclk
+    - b7
+    - b6
+    - b5
+    - b4
+    - b3
+    - b2
+    - b1
+    - b0
+    - vout
+  checks:
+    hidden:
+      - rising_clock_latches_parallel_bus
+      - output_holds_between_update_edges
+      - b7_to_b0_msb_lsb_order
+      - endpoint_mapping_uses_code_span_255
+      - five_negative_variants_rejected_by_behavior_checker
+  sim_correct:
+    positive:
+      - solution/latched_bus_dac8.va
+    negative:
+      - negative_variants/neg_001_force_zero/latched_bus_dac8.va
+      - negative_variants/neg_002_transparent_bus/latched_bus_dac8.va
+      - negative_variants/neg_003_falling_edge_update/latched_bus_dac8.va
+      - negative_variants/neg_004_reversed_bit_order/latched_bus_dac8.va
+      - negative_variants/neg_005_wrong_denominator/latched_bus_dac8.va
+    checks:
+      - rising_clock_latches_parallel_bus
+      - output_holds_between_update_edges
+      - b7_to_b0_msb_lsb_order
+      - endpoint_mapping_uses_code_span_255
+      - five_negative_variants_rejected_by_behavior_checker
+054-thermometer-bus-encoder: |
+  version: 1
+  task_id: v3_054_thermometer_bus_encoder
+  backend: evas
+  status: formal-candidate
+  checker: v3_054_thermometer_bus_encoder
+  required_columns:
+    - time
+    - vin
+    - t0
+    - t1
+    - t2
+    - t3
+    - t4
+    - t5
+    - t6
+    - t7
+    - t8
+    - t9
+    - t10
+    - t11
+    - t12
+    - t13
+    - t14
+    - t15
+  checks:
+    hidden:
+      - input_clipping_to_0_to_vref
+      - active_segment_count_matches_input_bin
+      - t0_to_t15_prefix_order
+      - no_binary_or_reversed_thermometer_word
+      - five_negative_variants_rejected_by_behavior_checker
+  sim_correct:
+    positive:
+      - solution/thermometer_bus_encoder.va
+    negative:
+      - negative_variants/neg_001_force_zero/thermometer_bus_encoder.va
+      - negative_variants/neg_002_off_by_one/thermometer_bus_encoder.va
+      - negative_variants/neg_003_binary_code_outputs/thermometer_bus_encoder.va
+      - negative_variants/neg_004_reversed_thermometer_order/thermometer_bus_encoder.va
+      - negative_variants/neg_005_round_to_nearest/thermometer_bus_encoder.va
+    checks:
+      - input_clipping_to_0_to_vref
+      - active_segment_count_matches_input_bin
+      - t0_to_t15_prefix_order
+      - no_binary_or_reversed_thermometer_word
+      - five_negative_variants_rejected_by_behavior_checker
+055-slew-rate-dac4: |
+  version: 1
+  task_id: v3_055_slew_rate_dac4
+  backend: evas
+  status: formal-candidate
+  checker: v3_055_slew_rate_dac4
+  required_columns:
+    - time
+    - d3
+    - d2
+    - d1
+    - d0
+    - vout
+  checks:
+    hidden:
+      - binary_bit_order_matches_d3_msb
+      - endpoint_mapping_uses_code_span_15
+      - large_code_steps_are_slew_rate_limited
+      - settled_codes_match_monotonic_dac_levels
+      - five_negative_variants_rejected_by_behavior_checker
+  sim_correct:
+    positive:
+      - solution/slew_rate_dac4.va
+    negative:
+      - negative_variants/neg_001_force_zero/slew_rate_dac4.va
+      - negative_variants/neg_002_direct_transition/slew_rate_dac4.va
+      - negative_variants/neg_003_wrong_denominator/slew_rate_dac4.va
+      - negative_variants/neg_004_reversed_bit_order/slew_rate_dac4.va
+      - negative_variants/neg_005_half_slew_rate/slew_rate_dac4.va
+    checks:
+      - binary_bit_order_matches_d3_msb
+      - endpoint_mapping_uses_code_span_15
+      - large_code_steps_are_slew_rate_limited
+      - settled_codes_match_monotonic_dac_levels
+      - five_negative_variants_rejected_by_behavior_checker
+056-correlated-double-sampler: |
+  version: 1
+  task_id: v3_056_correlated_double_sampler
+  backend: evas
+  status: formal-candidate
+  checker: v3_056_correlated_double_sampler
+  required_columns:
+    - time
+    - phi_reset
+    - phi_signal
+    - vin
+    - vout
+    - valid
+  checks:
+    hidden:
+      - reset_phase_samples_baseline_and_clears_valid
+      - signal_phase_outputs_signal_minus_reset_correction
+      - output_holds_between_sampling_events
+      - high_clip_and_delta_polarity_coverage
+      - five_negative_variants_rejected_by_behavior_checker
+  sim_correct:
+    positive:
+      - solution/correlated_double_sampler.va
+    negative:
+      - negative_variants/neg_001_force_zero/correlated_double_sampler.va
+      - negative_variants/neg_002_track_input_directly/correlated_double_sampler.va
+      - negative_variants/neg_003_wrong_difference_sign/correlated_double_sampler.va
+      - negative_variants/neg_004_signal_only_no_reset_sample/correlated_double_sampler.va
+      - negative_variants/neg_005_valid_never_clears/correlated_double_sampler.va
+    checks:
+      - reset_phase_samples_baseline_and_clears_valid
+      - signal_phase_outputs_signal_minus_reset_correction
+      - output_holds_between_sampling_events
+      - high_clip_and_delta_polarity_coverage
+      - five_negative_variants_rejected_by_behavior_checker
+057-first-order-sigma-delta-modulator: |
+  version: 1
+  task_id: v3_057_first_order_sigma_delta_modulator
+  backend: evas
+  status: formal-candidate
+  checker: v3_057_first_order_sigma_delta_modulator
+  required_columns:
+    - time
+    - vin
+    - vclk
+    - bitout
+  checks:
+    hidden:
+      - rising_clock_updates_only
+      - one_bit_feedback_bounds_accumulator
+      - output_bitstream_matches_first_order_loop
+      - high_input_window_has_higher_density_than_low_input_window
+      - five_negative_variants_rejected_by_behavior_checker
+  sim_correct:
+    positive:
+      - solution/first_order_sigma_delta_modulator.va
+    negative:
+      - negative_variants/neg_001_force_zero/first_order_sigma_delta_modulator.va
+      - negative_variants/neg_002_no_feedback/first_order_sigma_delta_modulator.va
+      - negative_variants/neg_003_inverted_decision/first_order_sigma_delta_modulator.va
+      - negative_variants/neg_004_falling_edge_update/first_order_sigma_delta_modulator.va
+      - negative_variants/neg_005_half_feedback/first_order_sigma_delta_modulator.va
+    checks:
+      - rising_clock_updates_only
+      - one_bit_feedback_bounds_accumulator
+      - output_bitstream_matches_first_order_loop
+      - high_input_window_has_higher_density_than_low_input_window
+      - five_negative_variants_rejected_by_behavior_checker
 058-config-latch-32b-clocked: |
   version: 2
   task_id: config_latch_32b_clocked
@@ -1751,6 +1973,44 @@
     hidden:
       - gold_reference_passes
       - concrete_negative_variants_fail
+075-adc-static-linearity-monitor: |
+  version: 1
+  task_id: v3_075_adc_static_linearity_monitor
+  backend: evas
+  status: formal-candidate
+  checker: v3_075_adc_static_linearity_monitor
+  required_columns:
+    - time
+    - vsample
+    - vin
+    - d2
+    - d1
+    - d0
+    - maxerr
+  checks:
+    hidden:
+      - rising_sample_strobe_updates_metric
+      - ideal_bin_floor_code_from_clipped_input
+      - observed_code_decoded_msb_first
+      - maximum_sampled_code_error_retained
+      - metric_scaled_by_lsb_out
+      - five_negative_variants_rejected_by_behavior_checker
+  sim_correct:
+    positive:
+      - solution/adc_static_linearity_monitor.va
+    negative:
+      - negative_variants/neg_001_force_zero/adc_static_linearity_monitor.va
+      - negative_variants/neg_002_instantaneous_error_only/adc_static_linearity_monitor.va
+      - negative_variants/neg_003_reversed_observed_bits/adc_static_linearity_monitor.va
+      - negative_variants/neg_004_rounds_ideal_code/adc_static_linearity_monitor.va
+      - negative_variants/neg_005_wrong_code_span/adc_static_linearity_monitor.va
+    checks:
+      - rising_sample_strobe_updates_metric
+      - ideal_bin_floor_code_from_clipped_input
+      - observed_code_decoded_msb_first
+      - maximum_sampled_code_error_retained
+      - metric_scaled_by_lsb_out
+      - five_negative_variants_rejected_by_behavior_checker
 076-multiphase-clock-generator-4ph: |
   version: 1
   task_id: v3_076_multiphase_clock_generator_4ph
@@ -10892,270 +11152,6 @@
     result: "1/1 gold PASS; 5/5 negative variants rejected; 0 expectation_fail with evas-rust and Spectre-recalibrated sampled zi_nd response checker."
   notes:
     - "Promoted after recalibrating the checker to Spectre zi_nd sample values and forcing evas-rust sampled-data breakpoints at the zi_nd interval."
-495-slew-rate-dac4: |
-  version: 1
-  task_id: v3_495_slew_rate_dac4
-  backend: evas
-  status: formal-candidate
-  checker: v3_495_slew_rate_dac4
-  required_columns:
-    - time
-    - d3
-    - d2
-    - d1
-    - d0
-    - vout
-  checks:
-    hidden:
-      - binary_bit_order_matches_d3_msb
-      - endpoint_mapping_uses_code_span_15
-      - large_code_steps_are_slew_rate_limited
-      - settled_codes_match_monotonic_dac_levels
-      - five_negative_variants_rejected_by_behavior_checker
-  sim_correct:
-    positive:
-      - solution/slew_rate_dac4.va
-    negative:
-      - negative_variants/neg_001_force_zero/slew_rate_dac4.va
-      - negative_variants/neg_002_direct_transition/slew_rate_dac4.va
-      - negative_variants/neg_003_wrong_denominator/slew_rate_dac4.va
-      - negative_variants/neg_004_reversed_bit_order/slew_rate_dac4.va
-      - negative_variants/neg_005_half_slew_rate/slew_rate_dac4.va
-    checks:
-      - binary_bit_order_matches_d3_msb
-      - endpoint_mapping_uses_code_span_15
-      - large_code_steps_are_slew_rate_limited
-      - settled_codes_match_monotonic_dac_levels
-      - five_negative_variants_rejected_by_behavior_checker
-496-first-order-sigma-delta-modulator: |
-  version: 1
-  task_id: v3_496_first_order_sigma_delta_modulator
-  backend: evas
-  status: formal-candidate
-  checker: v3_496_first_order_sigma_delta_modulator
-  required_columns:
-    - time
-    - vin
-    - vclk
-    - bitout
-  checks:
-    hidden:
-      - rising_clock_updates_only
-      - one_bit_feedback_bounds_accumulator
-      - output_bitstream_matches_first_order_loop
-      - high_input_window_has_higher_density_than_low_input_window
-      - five_negative_variants_rejected_by_behavior_checker
-  sim_correct:
-    positive:
-      - solution/first_order_sigma_delta_modulator.va
-    negative:
-      - negative_variants/neg_001_force_zero/first_order_sigma_delta_modulator.va
-      - negative_variants/neg_002_no_feedback/first_order_sigma_delta_modulator.va
-      - negative_variants/neg_003_inverted_decision/first_order_sigma_delta_modulator.va
-      - negative_variants/neg_004_falling_edge_update/first_order_sigma_delta_modulator.va
-      - negative_variants/neg_005_half_feedback/first_order_sigma_delta_modulator.va
-    checks:
-      - rising_clock_updates_only
-      - one_bit_feedback_bounds_accumulator
-      - output_bitstream_matches_first_order_loop
-      - high_input_window_has_higher_density_than_low_input_window
-      - five_negative_variants_rejected_by_behavior_checker
-497-thermometer-bus-encoder: |
-  version: 1
-  task_id: v3_497_thermometer_bus_encoder
-  backend: evas
-  status: formal-candidate
-  checker: v3_497_thermometer_bus_encoder
-  required_columns:
-    - time
-    - vin
-    - t0
-    - t1
-    - t2
-    - t3
-    - t4
-    - t5
-    - t6
-    - t7
-    - t8
-    - t9
-    - t10
-    - t11
-    - t12
-    - t13
-    - t14
-    - t15
-  checks:
-    hidden:
-      - input_clipping_to_0_to_vref
-      - active_segment_count_matches_input_bin
-      - t0_to_t15_prefix_order
-      - no_binary_or_reversed_thermometer_word
-      - five_negative_variants_rejected_by_behavior_checker
-  sim_correct:
-    positive:
-      - solution/thermometer_bus_encoder.va
-    negative:
-      - negative_variants/neg_001_force_zero/thermometer_bus_encoder.va
-      - negative_variants/neg_002_off_by_one/thermometer_bus_encoder.va
-      - negative_variants/neg_003_binary_code_outputs/thermometer_bus_encoder.va
-      - negative_variants/neg_004_reversed_thermometer_order/thermometer_bus_encoder.va
-      - negative_variants/neg_005_round_to_nearest/thermometer_bus_encoder.va
-    checks:
-      - input_clipping_to_0_to_vref
-      - active_segment_count_matches_input_bin
-      - t0_to_t15_prefix_order
-      - no_binary_or_reversed_thermometer_word
-      - five_negative_variants_rejected_by_behavior_checker
-498-dc-aware-adc3bit: |
-  version: 1
-  task_id: v3_498_dc_aware_adc3bit
-  backend: evas
-  status: formal-candidate
-  checker: v3_498_dc_aware_adc3bit
-  required_columns:
-    - time
-    - vin
-    - d2
-    - d1
-    - d0
-  checks:
-    hidden:
-      - static_bin_floor_quantization
-      - input_clipping_to_0_to_vref
-      - d2_to_d0_msb_lsb_order
-      - no_clock_or_sample_state_required
-      - five_negative_variants_rejected_by_behavior_checker
-  sim_correct:
-    positive:
-      - solution/dc_aware_adc3bit.va
-    negative:
-      - negative_variants/neg_001_force_zero/dc_aware_adc3bit.va
-      - negative_variants/neg_002_wrong_code_span/dc_aware_adc3bit.va
-      - negative_variants/neg_003_reversed_bit_order/dc_aware_adc3bit.va
-      - negative_variants/neg_004_no_clipping/dc_aware_adc3bit.va
-      - negative_variants/neg_005_round_to_nearest/dc_aware_adc3bit.va
-    checks:
-      - static_bin_floor_quantization
-      - input_clipping_to_0_to_vref
-      - d2_to_d0_msb_lsb_order
-      - no_clock_or_sample_state_required
-      - five_negative_variants_rejected_by_behavior_checker
-499-latched-bus-dac8: |
-  version: 1
-  task_id: v3_499_latched_bus_dac8
-  backend: evas
-  status: formal-candidate
-  checker: v3_499_latched_bus_dac8
-  required_columns:
-    - time
-    - vclk
-    - b7
-    - b6
-    - b5
-    - b4
-    - b3
-    - b2
-    - b1
-    - b0
-    - vout
-  checks:
-    hidden:
-      - rising_clock_latches_parallel_bus
-      - output_holds_between_update_edges
-      - b7_to_b0_msb_lsb_order
-      - endpoint_mapping_uses_code_span_255
-      - five_negative_variants_rejected_by_behavior_checker
-  sim_correct:
-    positive:
-      - solution/latched_bus_dac8.va
-    negative:
-      - negative_variants/neg_001_force_zero/latched_bus_dac8.va
-      - negative_variants/neg_002_transparent_bus/latched_bus_dac8.va
-      - negative_variants/neg_003_falling_edge_update/latched_bus_dac8.va
-      - negative_variants/neg_004_reversed_bit_order/latched_bus_dac8.va
-      - negative_variants/neg_005_wrong_denominator/latched_bus_dac8.va
-    checks:
-      - rising_clock_latches_parallel_bus
-      - output_holds_between_update_edges
-      - b7_to_b0_msb_lsb_order
-      - endpoint_mapping_uses_code_span_255
-      - five_negative_variants_rejected_by_behavior_checker
-500-deterministic-mismatch-dac6: |
-  version: 1
-  task_id: v3_500_deterministic_mismatch_dac6
-  backend: evas
-  status: formal-candidate
-  checker: v3_500_deterministic_mismatch_dac6
-  required_columns:
-    - time
-    - d5
-    - d4
-    - d3
-    - d2
-    - d1
-    - d0
-    - vout
-  checks:
-    hidden:
-      - deterministic_weight_errors_applied
-      - actual_weight_full_scale_normalization
-      - d5_to_d0_msb_lsb_order
-      - all_ones_maps_to_vref
-      - five_negative_variants_rejected_by_behavior_checker
-  sim_correct:
-    positive:
-      - solution/deterministic_mismatch_dac6.va
-    negative:
-      - negative_variants/neg_001_force_zero/deterministic_mismatch_dac6.va
-      - negative_variants/neg_002_ideal_binary_only/deterministic_mismatch_dac6.va
-      - negative_variants/neg_003_wrong_mismatch_sign/deterministic_mismatch_dac6.va
-      - negative_variants/neg_004_reversed_bit_order/deterministic_mismatch_dac6.va
-      - negative_variants/neg_005_nominal_normalization/deterministic_mismatch_dac6.va
-    checks:
-      - deterministic_weight_errors_applied
-      - actual_weight_full_scale_normalization
-      - d5_to_d0_msb_lsb_order
-      - all_ones_maps_to_vref
-      - five_negative_variants_rejected_by_behavior_checker
-501-adc-static-linearity-monitor: |
-  version: 1
-  task_id: v3_501_adc_static_linearity_monitor
-  backend: evas
-  status: formal-candidate
-  checker: v3_501_adc_static_linearity_monitor
-  required_columns:
-    - time
-    - vsample
-    - vin
-    - d2
-    - d1
-    - d0
-    - maxerr
-  checks:
-    hidden:
-      - rising_sample_strobe_updates_metric
-      - ideal_bin_floor_code_from_clipped_input
-      - observed_code_decoded_msb_first
-      - maximum_sampled_code_error_retained
-      - metric_scaled_by_lsb_out
-      - five_negative_variants_rejected_by_behavior_checker
-  sim_correct:
-    positive:
-      - solution/adc_static_linearity_monitor.va
-    negative:
-      - negative_variants/neg_001_force_zero/adc_static_linearity_monitor.va
-      - negative_variants/neg_002_instantaneous_error_only/adc_static_linearity_monitor.va
-      - negative_variants/neg_003_reversed_observed_bits/adc_static_linearity_monitor.va
-      - negative_variants/neg_004_rounds_ideal_code/adc_static_linearity_monitor.va
-      - negative_variants/neg_005_wrong_code_span/adc_static_linearity_monitor.va
-    checks:
-      - rising_sample_strobe_updates_metric
-      - ideal_bin_floor_code_from_clipped_input
-      - observed_code_decoded_msb_first
-      - maximum_sampled_code_error_retained
-      - metric_scaled_by_lsb_out
-      - five_negative_variants_rejected_by_behavior_checker
 candidate-bias-supply-bias-validity-gate: |
   version: 1
   task_id: v3_candidate_bias_supply_bias_validity_gate

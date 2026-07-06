@@ -16508,51 +16508,126 @@ def check_v3_499_latched_bus_dac8(rows: list[dict[str, float]]) -> tuple[bool, s
     )
 
 
-def check_v3_500_deterministic_mismatch_dac6(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    required = {"time", "vout", *{f"d{i}" for i in range(6)}}
+def check_v3_056_correlated_double_sampler(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "phi_reset", "phi_signal", "vin", "vout", "valid"}
     if not rows or not required.issubset(rows[0]):
-        return False, "missing deterministic mismatch dac6 signals"
-    weights = {
-        5: 32.0 * 1.08,
-        4: 16.0 * 0.94,
-        3: 8.0 * 1.04,
-        2: 4.0 * 0.97,
-        1: 2.0 * 1.025,
-        0: 1.0 * 0.985,
-    }
-    total = sum(weights.values())
-    sample_times = [0.7e-9, 2.0e-9, 4.0e-9, 6.0e-9, 8.0e-9, 10.0e-9, 12.0e-9]
+        return False, "missing correlated double sampler signals"
+    times = [row["time"] for row in rows]
+    reset_edges = _threshold_crossings(
+        [row["phi_reset"] for row in rows],
+        times,
+        threshold=0.45,
+        direction="rising",
+    )
+    signal_edges = _threshold_crossings(
+        [row["phi_signal"] for row in rows],
+        times,
+        threshold=0.45,
+        direction="rising",
+    )
+    if len(reset_edges) < 3 or len(signal_edges) < 3:
+        return False, f"insufficient_cds_edges=reset{len(reset_edges)}_signal{len(signal_edges)}"
+
+    def _median(values: list[float]) -> float:
+        ordered = sorted(values)
+        n = len(ordered)
+        mid = n // 2
+        if n % 2:
+            return ordered[mid]
+        return 0.5 * (ordered[mid - 1] + ordered[mid])
+
+    reset_outs: list[float] = []
+    reset_valids: list[float] = []
+    for reset_t in reset_edges:
+        sample_t = reset_t + 0.32e-9
+        if sample_t >= times[-1]:
+            continue
+        out = sample_signal_at(rows, "vout", sample_t)
+        valid = sample_signal_at(rows, "valid", sample_t)
+        if out is None or valid is None:
+            return False, f"missing_reset_observable@{reset_t * 1e9:.2f}ns"
+        reset_outs.append(out)
+        reset_valids.append(valid)
+    if len(reset_outs) < 3:
+        return False, f"insufficient_cds_reset_observations={len(reset_outs)}"
+    vcm = _median(reset_outs)
+    max_reset_out_err = max(abs(value - vcm) for value in reset_outs)
+    max_reset_valid = max(reset_valids)
+    if max_reset_out_err > 0.045:
+        return False, f"reset_output_not_common_mode=max_err{max_reset_out_err:.4f}_samples{reset_outs}"
+    if max_reset_valid > 0.18:
+        return False, f"valid_not_cleared_on_reset=max{max_reset_valid:.4f}"
+
+    signal_valids: list[float] = []
+    for signal_t in signal_edges:
+        sample_t = signal_t + 0.32e-9
+        if sample_t >= times[-1]:
+            continue
+        valid = sample_signal_at(rows, "valid", sample_t)
+        if valid is None:
+            return False, f"missing_signal_valid@{signal_t * 1e9:.2f}ns"
+        signal_valids.append(valid)
+    if len(signal_valids) < 3:
+        return False, f"insufficient_cds_signal_observations={len(signal_valids)}"
+    vhi = _median(signal_valids)
+    if vhi < 0.65:
+        return False, f"valid_not_asserted_after_signal=median{vhi:.4f}_samples{signal_valids}"
+
     checked = 0
-    max_err = 0.0
-    max_nominal_delta = 0.0
-    codes: list[int] = []
-    for sample_t in sample_times:
-        active = 0.0
-        nominal_code = 0
-        for bit in range(6):
-            value = sample_signal_at(rows, f"d{bit}", sample_t)
-            if value is None:
-                return False, f"missing_d{bit}@{sample_t * 1e9:.2f}ns"
-            if value > 0.45:
-                active += weights[bit]
-                nominal_code += 1 << bit
-        expected = active / total
-        got = sample_signal_at(rows, "vout", sample_t)
-        if got is None:
-            return False, f"missing_vout@{sample_t * 1e9:.2f}ns"
-        max_err = max(max_err, abs(got - expected))
-        max_nominal_delta = max(max_nominal_delta, abs(expected - nominal_code / 63.0))
-        codes.append(nominal_code)
+    hold_checked = 0
+    max_out_err = 0.0
+    max_hold_err = 0.0
+    deltas: list[float] = []
+    clipped_hi = False
+    clipped_lo = False
+    for signal_t in signal_edges:
+        prior_resets = [reset_t for reset_t in reset_edges if reset_t < signal_t]
+        if not prior_resets:
+            continue
+        reset_t = prior_resets[-1]
+        reset_v = sample_signal_at(rows, "vin", reset_t + 1e-12)
+        signal_v = sample_signal_at(rows, "vin", signal_t + 1e-12)
+        got = sample_signal_at(rows, "vout", signal_t + 0.32e-9)
+        valid = sample_signal_at(rows, "valid", signal_t + 0.32e-9)
+        if reset_v is None or signal_v is None or got is None or valid is None:
+            return False, f"missing_cds_pair_observable@{signal_t * 1e9:.2f}ns"
+        delta = signal_v - reset_v
+        expected_raw = vcm + delta
+        expected = min(vhi, max(0.0, expected_raw))
+        clipped_hi = clipped_hi or expected_raw > vhi + 0.02
+        clipped_lo = clipped_lo or expected_raw < -0.02
+        max_out_err = max(max_out_err, abs(got - expected))
+        if valid < 0.65 * vhi:
+            return False, f"valid_low_after_signal@{signal_t * 1e9:.2f}ns={valid:.4f}"
+        deltas.append(delta)
         checked += 1
-    if checked < 6:
-        return False, f"insufficient_mismatch_dac_samples={checked}"
-    if 0 not in codes or 63 not in codes or len(set(codes)) < 5:
-        return False, f"insufficient_mismatch_dac_code_coverage={codes}"
-    if max_nominal_delta < 0.012:
-        return False, f"mismatch_not_exercised=max_nominal_delta{max_nominal_delta:.4f}"
-    if max_err > 0.018:
-        return False, f"max_mismatch_dac_err={max_err:.4f} codes={codes}"
-    return True, f"samples={checked} codes={codes} max_err={max_err:.4f} nominal_delta={max_nominal_delta:.4f}"
+
+        next_resets = [reset_t2 for reset_t2 in reset_edges if reset_t2 > signal_t]
+        hold_t = signal_t + 0.85e-9
+        if next_resets:
+            hold_t = min(hold_t, next_resets[0] - 0.20e-9)
+        if hold_t > signal_t + 0.36e-9 and hold_t < times[-1]:
+            held = sample_signal_at(rows, "vout", hold_t)
+            if held is None:
+                return False, f"missing_cds_hold@{hold_t * 1e9:.2f}ns"
+            max_hold_err = max(max_hold_err, abs(held - expected))
+            hold_checked += 1
+
+    if checked < 3 or hold_checked < 2:
+        return False, f"insufficient_cds_pair_checks=pair{checked}_hold{hold_checked}"
+    if not any(delta > 0.12 for delta in deltas) or not any(delta < -0.12 for delta in deltas):
+        return False, f"insufficient_cds_delta_polarity_coverage={deltas}"
+    if not clipped_hi:
+        return False, f"missing_cds_high_clip_coverage={deltas}"
+    if max_out_err > 0.045:
+        return False, f"max_cds_output_err={max_out_err:.4f}_vcm={vcm:.4f}_vhi={vhi:.4f}_deltas={deltas}"
+    if max_hold_err > 0.045:
+        return False, f"max_cds_hold_err={max_hold_err:.4f}_deltas={deltas}"
+    return True, (
+        f"pairs={checked} hold={hold_checked} vcm={vcm:.4f} vhi={vhi:.4f} "
+        f"deltas={[round(delta, 4) for delta in deltas]} max_err={max_out_err:.4f} "
+        f"max_hold_err={max_hold_err:.4f} clipped_lo={clipped_lo}"
+    )
 
 
 def check_v3_501_adc_static_linearity_monitor(rows: list[dict[str, float]]) -> tuple[bool, str]:
@@ -23257,13 +23332,13 @@ CHECKS["v3_hysteretic_comparator_receiver"] = check_v3_hysteretic_comparator_rec
 CHECKS["v3_flash_folded_dac4"] = check_v3_flash_folded_dac4
 CHECKS["v3_subradix_dac10"] = check_v3_subradix_dac10
 CHECKS["v3_clocked_adc3bit"] = check_v3_clocked_adc3bit
-CHECKS["v3_495_slew_rate_dac4"] = check_v3_495_slew_rate_dac4
-CHECKS["v3_496_first_order_sigma_delta_modulator"] = check_v3_496_first_order_sigma_delta_modulator
-CHECKS["v3_497_thermometer_bus_encoder"] = check_v3_497_thermometer_bus_encoder
-CHECKS["v3_498_dc_aware_adc3bit"] = check_v3_498_dc_aware_adc3bit
-CHECKS["v3_499_latched_bus_dac8"] = check_v3_499_latched_bus_dac8
-CHECKS["v3_500_deterministic_mismatch_dac6"] = check_v3_500_deterministic_mismatch_dac6
-CHECKS["v3_501_adc_static_linearity_monitor"] = check_v3_501_adc_static_linearity_monitor
+CHECKS["v3_052_dc_aware_adc3bit"] = check_v3_498_dc_aware_adc3bit
+CHECKS["v3_053_latched_bus_dac8"] = check_v3_499_latched_bus_dac8
+CHECKS["v3_054_thermometer_bus_encoder"] = check_v3_497_thermometer_bus_encoder
+CHECKS["v3_055_slew_rate_dac4"] = check_v3_495_slew_rate_dac4
+CHECKS["v3_056_correlated_double_sampler"] = check_v3_056_correlated_double_sampler
+CHECKS["v3_057_first_order_sigma_delta_modulator"] = check_v3_496_first_order_sigma_delta_modulator
+CHECKS["v3_075_adc_static_linearity_monitor"] = check_v3_501_adc_static_linearity_monitor
 CHECKS["v3_candidate_bias_supply_bias_validity_gate"] = check_v3_candidate_bias_supply_bias_validity_gate
 CHECKS["v3_candidate_bias_power_mode_supply_current_metric"] = check_v3_candidate_bias_power_mode_supply_current_metric
 CHECKS["v3_candidate_bias_dynamic_supply_level_driver"] = check_v3_candidate_bias_dynamic_supply_level_driver
@@ -23299,13 +23374,13 @@ CHECKS["292-hysteretic-comparator-receiver"] = check_v3_hysteretic_comparator_re
 CHECKS["293-flash-folded-dac4"] = check_v3_flash_folded_dac4
 CHECKS["294-subradix-dac10"] = check_v3_subradix_dac10
 CHECKS["295-clocked-adc3bit"] = check_v3_clocked_adc3bit
-CHECKS["495-slew-rate-dac4"] = check_v3_495_slew_rate_dac4
-CHECKS["496-first-order-sigma-delta-modulator"] = check_v3_496_first_order_sigma_delta_modulator
-CHECKS["497-thermometer-bus-encoder"] = check_v3_497_thermometer_bus_encoder
-CHECKS["498-dc-aware-adc3bit"] = check_v3_498_dc_aware_adc3bit
-CHECKS["499-latched-bus-dac8"] = check_v3_499_latched_bus_dac8
-CHECKS["500-deterministic-mismatch-dac6"] = check_v3_500_deterministic_mismatch_dac6
-CHECKS["501-adc-static-linearity-monitor"] = check_v3_501_adc_static_linearity_monitor
+CHECKS["052-dc-aware-adc3bit"] = check_v3_498_dc_aware_adc3bit
+CHECKS["053-latched-bus-dac8"] = check_v3_499_latched_bus_dac8
+CHECKS["054-thermometer-bus-encoder"] = check_v3_497_thermometer_bus_encoder
+CHECKS["055-slew-rate-dac4"] = check_v3_495_slew_rate_dac4
+CHECKS["056-correlated-double-sampler"] = check_v3_056_correlated_double_sampler
+CHECKS["057-first-order-sigma-delta-modulator"] = check_v3_496_first_order_sigma_delta_modulator
+CHECKS["075-adc-static-linearity-monitor"] = check_v3_501_adc_static_linearity_monitor
 CHECKS["candidate-bias-supply-bias-validity-gate"] = check_v3_candidate_bias_supply_bias_validity_gate
 CHECKS["candidate-bias-power-mode-supply-current-metric"] = check_v3_candidate_bias_power_mode_supply_current_metric
 CHECKS["candidate-bias-dynamic-supply-level-driver"] = check_v3_candidate_bias_dynamic_supply_level_driver
