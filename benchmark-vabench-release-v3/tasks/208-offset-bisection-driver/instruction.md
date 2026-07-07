@@ -25,7 +25,7 @@ Provide overrideable parameters `vth = 0.45` and `step_initial = 10m`. Use `vth`
 
 ## Required Behavior
 
-Initialize the differential residue to zero and the search step to `step_initial`. On each falling `clk` crossing, sample `vout`. A low decision increases `vinp-vinn`, and a high decision decreases `vinp-vinn`. Halve the step only when the sampled polarity changes relative to the previous update. Drive `vinp` and `vinn` symmetrically around `V(vcm)`.
+Initialize the differential residue to zero, the search step to `step_initial`, and the previous decision polarity to the low-decision direction. On each falling `clk` crossing, sample `vout`. A low decision (`vout < vth`) increases `vinp-vinn`, and a high decision (`vout >= vth`) decreases `vinp-vinn`. Halve the step only when the sampled polarity changes relative to the previous update; therefore the first low decision does not halve the step, while the first high decision halves the step before moving in the negative direction. Drive `vinp` and `vinn` symmetrically around `V(vcm)`.
 
 ## Modeling Constraints
 

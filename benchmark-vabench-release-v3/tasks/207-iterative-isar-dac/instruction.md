@@ -25,7 +25,7 @@ Provide overrideable parameters `vth = 0.5`, `tr = 100p`, `range = 0.1`, `lsb = 
 
 ## Required Behavior
 
-At initialization and reset, set `vdac` to zero and set the search step to `range`. On each rising `clk` crossing while the step remains above `lsb`, update `vdac` according to the comparator decision and divide the step by `radix`. Hold the DAC value after the step reaches the LSB limit.
+At initialization and reset, set `vdac` to zero and set the search step to `range`. On each rising `clk` crossing while the step remains above `lsb`, update `vdac` according to the comparator decision: if `dcmp > vth`, subtract the current step from `vdac`; if `dcmp <= vth`, add the current step to `vdac`. After each update, divide the step by `radix`. Hold the DAC value after the step reaches the LSB limit.
 
 ## Modeling Constraints
 
