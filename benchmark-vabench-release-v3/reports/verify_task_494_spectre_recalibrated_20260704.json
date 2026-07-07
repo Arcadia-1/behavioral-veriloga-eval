@@ -19,7 +19,7 @@
       "notes": [
         "returncode=0",
         "evas_engine=evas-rust",
-        "checker_config=/Users/mac/Documents/github-repos/behavioral-veriloga-eval/benchmark-vabench-release-v3/CHECKS.yaml:494-continuous-zi-nd-filter",
+        "checker_config=<local-path>",
         "continuous_zi_nd_sampled_iir_response"
       ],
       "scores": {
@@ -29,7 +29,6 @@
         "weighted_total": 1.0
       },
       "status": "PASS",
-      "stdout_tail": " 0\n        rust_event_due_shadow_timer_periodic_checks = 0\n        rust_event_interpolation_batches = 0\n        rust_event_interpolation_cache_hits = 0\n        rust_event_interpolation_fallbacks = 0\n        rust_event_interpolation_nodes = 0\n        rust_event_linear_write_batches = 0\n        rust_event_linear_write_production_calls = 0\n        rust_event_linear_write_production_executed = 0\n        rust_event_linear_write_production_fallbacks = 0\n        rust_event_linear_write_shadow_checks = 0\n        rust_event_linear_write_shadow_errors = 0\n        rust_event_linear_write_shadow_matches = 0\n        rust_event_linear_write_shadow_mismatches = 0\n        rust_event_write_production_calls = 0\n        rust_event_write_production_executed = 0\n        rust_event_write_production_fallbacks = 0\n        rust_event_write_shadow_checks = 0\n        rust_event_write_shadow_errors = 0\n        rust_event_write_shadow_matches = 0\n        rust_event_write_shadow_mismatches = 0\n        rust_timer_breakpoint_fallbacks = 0\n        rust_timer_breakpoint_scans = 0\n        rust_timer_breakpoint_state_scans = 0\n        rust_timer_event_production_absolute_calls = 0\n        rust_timer_event_production_expirations = 0\n        rust_timer_event_production_fallbacks = 0\n        rust_timer_event_production_fires = 0\n        rust_timer_event_production_periodic_calls = 0\n        rust_timer_event_production_skips = 0\n        rust_timer_lfsr_output_batches = 0\n        rust_timer_lfsr_output_calls = 0\n        rust_timer_lfsr_output_due = 0\n        rust_timer_lfsr_output_executed = 0\n        rust_timer_lfsr_output_fallbacks = 0\n        rust_timer_lfsr_output_skips = 0\n        rust_timer_lfsr_output_writes = 0\n        rust_transition_batch_fallbacks = 0\n        rust_transition_batch_flushes = 0\n        rust_transition_batch_max_slots = 0\n        rust_transition_batch_slot_total = 0\n        rust_transition_breakpoint_fallbacks = 0\n        rust_transition_breakpoint_scans = 0\n        rust_transition_breakpoint_state_scans = 0\n        rust_transition_lazy_enqueues = 0\n        rust_transition_state_buffer_alloc_total = 0\n        rust_transition_state_buffer_reuse_calls = 0\n        rust_transition_state_production_calls = 0\n        rust_transition_state_production_fallbacks = 0\n        rust_transition_state_production_outputs = 0\n        static_branch_fastpath_fallbacks = 0\n        timer_absolute_checks = 0\n        timer_absolute_expirations = 0\n        timer_absolute_fires = 0\n        timer_array_sidecar_rebuilds = 0\n        timer_array_sidecar_scans = 0\n        timer_array_sidecar_updates = 0\n        timer_batch_due_calls = 0\n        timer_batch_due_events = 0\n        timer_batch_due_fallbacks = 0\n        timer_batch_due_fires = 0\n        timer_breakpoint_cache_hits = 0\n        timer_breakpoint_hits = 0\n        timer_breakpoint_scans = 0\n        timer_periodic_checks = 0\n        timer_periodic_fires = 0\n        timer_periodic_skips = 0\n        timer_reschedules = 0\n        timer_state_owned_checks = 0\n        timer_state_owned_fallbacks = 0\n        timer_state_owned_fast_skips = 0\n        timer_state_owned_fires = 0\n        timer_state_owned_target_reads = 0\n        timer_state_updates = 0\n        transition_breakpoint_active_scans = 0\n        transition_breakpoint_inactive_skips = 0\n        transition_breakpoint_scans = 0\n        transition_calls = 0\n        transition_evaluate_calls = 0\n        transition_output_fastpath_calls = 0\n        transition_set_target_calls = 0\n        transition_unchanged_target_fastpath = 0\n\nMaximum value achieved for any signal of each quantity:\n    V: V(out) = 1.33 V\n\nTran analysis time: CPU = 2.5 ms, elapsed = 2.5 ms.\nRunner timing counters:\n    derive_bus_signals_s = 0.000047 s\n    csv_write_s = 0.001993 s\n\nWriting CSV: /var/folders/tc/xljvs46x0xn64sknvbxjcz4w0000gn/T/v3_494_continuous_zi_nd_filter_cwkn90le/output/tran.csv (signals: inp, out)\n\nevas completes with 0 errors, 0 warnings.\nTotal time: CPU = 0.0 s, elapsed = 0.0 s.\n\n",
       "task_id": "v3_494_continuous_zi_nd_filter",
       "task_slug": "494-continuous-zi-nd-filter",
       "variant": null,
@@ -45,7 +44,7 @@
       "notes": [
         "returncode=1",
         "evas_engine=evas-rust",
-        "checker_config=/Users/mac/Documents/github-repos/behavioral-veriloga-eval/benchmark-vabench-release-v3/CHECKS.yaml:494-continuous-zi-nd-filter",
+        "checker_config=<local-path>",
         "tran.csv missing"
       ],
       "scores": {
@@ -55,7 +54,6 @@
         "weighted_total": 0.6667
       },
       "status": "FAIL_SIM_CORRECTNESS",
-      "stdout_tail": "EVAS -- Event-driven Verilog-A Simulator\nVersion 0.6.1 -- Jul 2026\n\nSimulating `hidden.scs' at 3:42:11 PM, Sat Jul 04, 2026.\nCommand line:\n    /Users/mac/Documents/github-repos/EVAS/evas/__main__.py simulate hidden.scs -o /var/folders/tc/xljvs46x0xn64sknvbxjcz4w0000gn/T/v3_494_continuous_zi_nd_filter_j0x1j_15/output\n\nReading file: hidden.scs\nCompiled Verilog-A module: continuous_zi_nd_filter\n\nCircuit inventory:\n               nodes 2\ncontinuous_zi_nd_filter 1\n             vsource 1\n\n*****************************************************\nTransient Analysis `tran': time = (0 s -> 160 ns)\n*****************************************************\nImportant parameter values:\n    start = 0 s\n    stop  = 160 ns\n    step  = 160 ps\n    reltol = 0.001\n    vabstol = 1e-06\n    iabstol = 1e-12\n    refine_factor = 16\n    refine_steps  = 8\n    evas_rust_full_model_fastpath = true\n    evas_rust_full_model_required = true\n    evas_engine = evas-rust\n    evas_rust_required = true\n\n\nTraceback (most recent call last):\n  File \"<frozen runpy>\", line 198, in _run_module_as_main\n  File \"<frozen runpy>\", line 88, in _run_code\n  File \"/Users/mac/Documents/github-repos/EVAS/evas/__main__.py\", line 6, in <module>\n    main()\n  File \"/Users/mac/Documents/github-repos/EVAS/evas/cli.py\", line 258, in main\n    sys.exit(args.func(args))\n             ^^^^^^^^^^^^^^^\n  File \"/Users/mac/Documents/github-repos/EVAS/evas/cli.py\", line 68, in cmd_simulate\n    ok = evas_simulate(\n         ^^^^^^^^^^^^^^\n  File \"/Users/mac/Documents/github-repos/EVAS/evas/netlist/runner.py\", line 1615, in evas_simulate\n    result = sim.run(tstop, tstep=tstep,\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/mac/Documents/github-repos/EVAS/evas/simulator/engine.py\", line 5045, in run\n    raise RuntimeError(\nRuntimeError: evas-rust full-model path was required but no supported whole-segment Rust runtime matched this design. Use the python engine for fallback or extend the evas-rust Rust lowering coverage. RustSimProgram rejection: model:0:continuous_zi_nd_filter_Model:no_continuous_linear_ir\n",
       "task_id": "v3_494_continuous_zi_nd_filter",
       "task_slug": "494-continuous-zi-nd-filter",
       "variant": "neg_001_force_zero",
@@ -71,7 +69,7 @@
       "notes": [
         "returncode=1",
         "evas_engine=evas-rust",
-        "checker_config=/Users/mac/Documents/github-repos/behavioral-veriloga-eval/benchmark-vabench-release-v3/CHECKS.yaml:494-continuous-zi-nd-filter",
+        "checker_config=<local-path>",
         "tran.csv missing"
       ],
       "scores": {
@@ -81,7 +79,6 @@
         "weighted_total": 0.6667
       },
       "status": "FAIL_SIM_CORRECTNESS",
-      "stdout_tail": "EVAS -- Event-driven Verilog-A Simulator\nVersion 0.6.1 -- Jul 2026\n\nSimulating `hidden.scs' at 3:42:11 PM, Sat Jul 04, 2026.\nCommand line:\n    /Users/mac/Documents/github-repos/EVAS/evas/__main__.py simulate hidden.scs -o /var/folders/tc/xljvs46x0xn64sknvbxjcz4w0000gn/T/v3_494_continuous_zi_nd_filter_945vina4/output\n\nReading file: hidden.scs\nCompiled Verilog-A module: continuous_zi_nd_filter\n\nCircuit inventory:\n               nodes 2\ncontinuous_zi_nd_filter 1\n             vsource 1\n\n*****************************************************\nTransient Analysis `tran': time = (0 s -> 160 ns)\n*****************************************************\nImportant parameter values:\n    start = 0 s\n    stop  = 160 ns\n    step  = 160 ps\n    reltol = 0.001\n    vabstol = 1e-06\n    iabstol = 1e-12\n    refine_factor = 16\n    refine_steps  = 8\n    evas_rust_full_model_fastpath = true\n    evas_rust_full_model_required = true\n    evas_engine = evas-rust\n    evas_rust_required = true\n\n\nTraceback (most recent call last):\n  File \"<frozen runpy>\", line 198, in _run_module_as_main\n  File \"<frozen runpy>\", line 88, in _run_code\n  File \"/Users/mac/Documents/github-repos/EVAS/evas/__main__.py\", line 6, in <module>\n    main()\n  File \"/Users/mac/Documents/github-repos/EVAS/evas/cli.py\", line 258, in main\n    sys.exit(args.func(args))\n             ^^^^^^^^^^^^^^^\n  File \"/Users/mac/Documents/github-repos/EVAS/evas/cli.py\", line 68, in cmd_simulate\n    ok = evas_simulate(\n         ^^^^^^^^^^^^^^\n  File \"/Users/mac/Documents/github-repos/EVAS/evas/netlist/runner.py\", line 1615, in evas_simulate\n    result = sim.run(tstop, tstep=tstep,\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/mac/Documents/github-repos/EVAS/evas/simulator/engine.py\", line 5045, in run\n    raise RuntimeError(\nRuntimeError: evas-rust full-model path was required but no supported whole-segment Rust runtime matched this design. Use the python engine for fallback or extend the evas-rust Rust lowering coverage. RustSimProgram rejection: model:0:continuous_zi_nd_filter_Model:no_continuous_linear_ir\n",
       "task_id": "v3_494_continuous_zi_nd_filter",
       "task_slug": "494-continuous-zi-nd-filter",
       "variant": "neg_002_wrong_threshold",
@@ -97,7 +94,7 @@
       "notes": [
         "returncode=1",
         "evas_engine=evas-rust",
-        "checker_config=/Users/mac/Documents/github-repos/behavioral-veriloga-eval/benchmark-vabench-release-v3/CHECKS.yaml:494-continuous-zi-nd-filter",
+        "checker_config=<local-path>",
         "tran.csv missing"
       ],
       "scores": {
@@ -107,7 +104,6 @@
         "weighted_total": 0.6667
       },
       "status": "FAIL_SIM_CORRECTNESS",
-      "stdout_tail": "EVAS -- Event-driven Verilog-A Simulator\nVersion 0.6.1 -- Jul 2026\n\nSimulating `hidden.scs' at 3:42:11 PM, Sat Jul 04, 2026.\nCommand line:\n    /Users/mac/Documents/github-repos/EVAS/evas/__main__.py simulate hidden.scs -o /var/folders/tc/xljvs46x0xn64sknvbxjcz4w0000gn/T/v3_494_continuous_zi_nd_filter_0cwvjzwk/output\n\nReading file: hidden.scs\nCompiled Verilog-A module: continuous_zi_nd_filter\n\nCircuit inventory:\n               nodes 2\ncontinuous_zi_nd_filter 1\n             vsource 1\n\n*****************************************************\nTransient Analysis `tran': time = (0 s -> 160 ns)\n*****************************************************\nImportant parameter values:\n    start = 0 s\n    stop  = 160 ns\n    step  = 160 ps\n    reltol = 0.001\n    vabstol = 1e-06\n    iabstol = 1e-12\n    refine_factor = 16\n    refine_steps  = 8\n    evas_rust_full_model_fastpath = true\n    evas_rust_full_model_required = true\n    evas_engine = evas-rust\n    evas_rust_required = true\n\n\nTraceback (most recent call last):\n  File \"<frozen runpy>\", line 198, in _run_module_as_main\n  File \"<frozen runpy>\", line 88, in _run_code\n  File \"/Users/mac/Documents/github-repos/EVAS/evas/__main__.py\", line 6, in <module>\n    main()\n  File \"/Users/mac/Documents/github-repos/EVAS/evas/cli.py\", line 258, in main\n    sys.exit(args.func(args))\n             ^^^^^^^^^^^^^^^\n  File \"/Users/mac/Documents/github-repos/EVAS/evas/cli.py\", line 68, in cmd_simulate\n    ok = evas_simulate(\n         ^^^^^^^^^^^^^^\n  File \"/Users/mac/Documents/github-repos/EVAS/evas/netlist/runner.py\", line 1615, in evas_simulate\n    result = sim.run(tstop, tstep=tstep,\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/mac/Documents/github-repos/EVAS/evas/simulator/engine.py\", line 5045, in run\n    raise RuntimeError(\nRuntimeError: evas-rust full-model path was required but no supported whole-segment Rust runtime matched this design. Use the python engine for fallback or extend the evas-rust Rust lowering coverage. RustSimProgram rejection: model:0:continuous_zi_nd_filter_Model:no_continuous_linear_ir\n",
       "task_id": "v3_494_continuous_zi_nd_filter",
       "task_slug": "494-continuous-zi-nd-filter",
       "variant": "neg_003_reset_bias",
@@ -123,7 +119,7 @@
       "notes": [
         "returncode=1",
         "evas_engine=evas-rust",
-        "checker_config=/Users/mac/Documents/github-repos/behavioral-veriloga-eval/benchmark-vabench-release-v3/CHECKS.yaml:494-continuous-zi-nd-filter",
+        "checker_config=<local-path>",
         "tran.csv missing"
       ],
       "scores": {
@@ -133,7 +129,6 @@
         "weighted_total": 0.6667
       },
       "status": "FAIL_SIM_CORRECTNESS",
-      "stdout_tail": "EVAS -- Event-driven Verilog-A Simulator\nVersion 0.6.1 -- Jul 2026\n\nSimulating `hidden.scs' at 3:42:11 PM, Sat Jul 04, 2026.\nCommand line:\n    /Users/mac/Documents/github-repos/EVAS/evas/__main__.py simulate hidden.scs -o /var/folders/tc/xljvs46x0xn64sknvbxjcz4w0000gn/T/v3_494_continuous_zi_nd_filter_54mfjkai/output\n\nReading file: hidden.scs\nCompiled Verilog-A module: continuous_zi_nd_filter\n\nCircuit inventory:\n               nodes 2\ncontinuous_zi_nd_filter 1\n             vsource 1\n\n*****************************************************\nTransient Analysis `tran': time = (0 s -> 160 ns)\n*****************************************************\nImportant parameter values:\n    start = 0 s\n    stop  = 160 ns\n    step  = 160 ps\n    reltol = 0.001\n    vabstol = 1e-06\n    iabstol = 1e-12\n    refine_factor = 16\n    refine_steps  = 8\n    evas_rust_full_model_fastpath = true\n    evas_rust_full_model_required = true\n    evas_engine = evas-rust\n    evas_rust_required = true\n\n\nTraceback (most recent call last):\n  File \"<frozen runpy>\", line 198, in _run_module_as_main\n  File \"<frozen runpy>\", line 88, in _run_code\n  File \"/Users/mac/Documents/github-repos/EVAS/evas/__main__.py\", line 6, in <module>\n    main()\n  File \"/Users/mac/Documents/github-repos/EVAS/evas/cli.py\", line 258, in main\n    sys.exit(args.func(args))\n             ^^^^^^^^^^^^^^^\n  File \"/Users/mac/Documents/github-repos/EVAS/evas/cli.py\", line 68, in cmd_simulate\n    ok = evas_simulate(\n         ^^^^^^^^^^^^^^\n  File \"/Users/mac/Documents/github-repos/EVAS/evas/netlist/runner.py\", line 1615, in evas_simulate\n    result = sim.run(tstop, tstep=tstep,\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/mac/Documents/github-repos/EVAS/evas/simulator/engine.py\", line 5045, in run\n    raise RuntimeError(\nRuntimeError: evas-rust full-model path was required but no supported whole-segment Rust runtime matched this design. Use the python engine for fallback or extend the evas-rust Rust lowering coverage. RustSimProgram rejection: model:0:continuous_zi_nd_filter_Model:no_continuous_linear_ir\n",
       "task_id": "v3_494_continuous_zi_nd_filter",
       "task_slug": "494-continuous-zi-nd-filter",
       "variant": "neg_004_metric_offset",
@@ -149,7 +144,7 @@
       "notes": [
         "returncode=1",
         "evas_engine=evas-rust",
-        "checker_config=/Users/mac/Documents/github-repos/behavioral-veriloga-eval/benchmark-vabench-release-v3/CHECKS.yaml:494-continuous-zi-nd-filter",
+        "checker_config=<local-path>",
         "tran.csv missing"
       ],
       "scores": {
@@ -159,7 +154,6 @@
         "weighted_total": 0.6667
       },
       "status": "FAIL_SIM_CORRECTNESS",
-      "stdout_tail": "EVAS -- Event-driven Verilog-A Simulator\nVersion 0.6.1 -- Jul 2026\n\nSimulating `hidden.scs' at 3:42:11 PM, Sat Jul 04, 2026.\nCommand line:\n    /Users/mac/Documents/github-repos/EVAS/evas/__main__.py simulate hidden.scs -o /var/folders/tc/xljvs46x0xn64sknvbxjcz4w0000gn/T/v3_494_continuous_zi_nd_filter_4zgh9geu/output\n\nReading file: hidden.scs\nCompiled Verilog-A module: continuous_zi_nd_filter\n\nCircuit inventory:\n               nodes 2\ncontinuous_zi_nd_filter 1\n             vsource 1\n\n*****************************************************\nTransient Analysis `tran': time = (0 s -> 160 ns)\n*****************************************************\nImportant parameter values:\n    start = 0 s\n    stop  = 160 ns\n    step  = 160 ps\n    reltol = 0.001\n    vabstol = 1e-06\n    iabstol = 1e-12\n    refine_factor = 16\n    refine_steps  = 8\n    evas_rust_full_model_fastpath = true\n    evas_rust_full_model_required = true\n    evas_engine = evas-rust\n    evas_rust_required = true\n\n\nTraceback (most recent call last):\n  File \"<frozen runpy>\", line 198, in _run_module_as_main\n  File \"<frozen runpy>\", line 88, in _run_code\n  File \"/Users/mac/Documents/github-repos/EVAS/evas/__main__.py\", line 6, in <module>\n    main()\n  File \"/Users/mac/Documents/github-repos/EVAS/evas/cli.py\", line 258, in main\n    sys.exit(args.func(args))\n             ^^^^^^^^^^^^^^^\n  File \"/Users/mac/Documents/github-repos/EVAS/evas/cli.py\", line 68, in cmd_simulate\n    ok = evas_simulate(\n         ^^^^^^^^^^^^^^\n  File \"/Users/mac/Documents/github-repos/EVAS/evas/netlist/runner.py\", line 1615, in evas_simulate\n    result = sim.run(tstop, tstep=tstep,\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/mac/Documents/github-repos/EVAS/evas/simulator/engine.py\", line 5045, in run\n    raise RuntimeError(\nRuntimeError: evas-rust full-model path was required but no supported whole-segment Rust runtime matched this design. Use the python engine for fallback or extend the evas-rust Rust lowering coverage. RustSimProgram rejection: model:0:continuous_zi_nd_filter_Model:no_continuous_linear_ir\n",
       "task_id": "v3_494_continuous_zi_nd_filter",
       "task_slug": "494-continuous-zi-nd-filter",
       "variant": "neg_005_scale_output",
