@@ -34,15 +34,31 @@ On each rising crossing of `clk`, reset the retained state when `rst` is high.
 Otherwise, clip `vin` to the 0-to-`vfs` range, quantize it to a 4-bit code, and
 drive `code` as the code index times `vfs / 15`.
 
-Drive `recon` as a monotonic but deliberately non-ideal DAC reconstruction of
-the current code. The reconstruction should have visibly non-uniform step sizes
-so that DNL-like behavior can be observed from the waveform history.
+Drive `recon` from this public monotonic non-ideal reconstruction table for
+codes 0 through 15, in volts:
 
-Drive `inl` as a bounded analog metric centered near 0.45 V that reflects the
-current reconstruction error relative to an ideal `vfs / 15` ramp. Drive `dnl`
-as a bounded analog metric centered near 0.45 V that reflects the most recent
-positive code-step error relative to the ideal step size; when there is no prior
-valid increasing code step, return the DNL metric to its common-mode value.
+```text
+0.000, 0.055, 0.118, 0.182, 0.245, 0.303, 0.366, 0.428,
+0.491, 0.553, 0.612, 0.674, 0.735, 0.798, 0.855, 0.900
+```
+
+Use the ideal 4-bit reference ramp `ideal_recon = 0.06 * code_index` for the
+default `vfs = 0.9 V` sweep. Drive `inl` as:
+
+```text
+inl = clamp(0.45 + 3.0 * (recon - ideal_recon), 0.05, 0.85)
+```
+
+For `dnl`, retain the previous valid code and reconstruction. When the current
+code is greater than the previous code, compute:
+
+```text
+ideal_step = 0.06 * (code_index - previous_code_index)
+step_err = (recon - previous_recon) - ideal_step
+dnl = clamp(0.45 + 4.0 * step_err, 0.05, 0.85)
+```
+
+When there is no previous valid increasing code step, drive `dnl = 0.45`.
 
 **Public Verification Context**
 

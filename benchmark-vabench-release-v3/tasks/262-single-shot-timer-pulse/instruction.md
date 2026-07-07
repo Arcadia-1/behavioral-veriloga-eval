@@ -28,7 +28,7 @@ Both ports are scalar `electrical` nodes. `vin` is the voltage-coded trigger inp
 
 - Detect rising `vin` crossings at `vtrans`.
 - On each qualifying rising edge, drive `vout` high after the configured transition delay.
-- Use a timer to return `vout` low after the configured pulse width.
+- Use a timer to schedule the low-going state update at `edge_time + pulse_width + trise`, where `edge_time` is the qualifying rising input edge time. The voltage contribution still uses the public `tdel`, `trise`, and `tfall` transition parameters.
 - Generate one output pulse per input rising edge.
 - Hold the low output level between pulses.
 

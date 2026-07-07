@@ -25,7 +25,14 @@ Provide overrideable parameters `vdd = 1.0` and `vth = 0.5`. Use `vth` for input
 
 ## Required Behavior
 
-On each rising `rdy` crossing, sample `din0..din5` with switched weights `0.5, 1, 2, 4, 8, 16` from `din0` through `din5`. Map the sampled weighted code to a bipolar single-ended output scaled by `vdd`, using the source normalization basis that includes the fixed reference contribution in addition to the switchable weights.
+On each rising `rdy` crossing, sample `din0..din5` with switched weights `0.5, 1, 2, 4, 8, 16` from `din0` through `din5`. Map the sampled weighted code to a bipolar single-ended output scaled by `vdd` using this public normalization:
+
+```text
+weighted_code = 16*din5 + 8*din4 + 4*din3 + 2*din2 + 1*din1 + 0.5*din0
+aout = (weighted_code / 47.5) * 2.0 * vdd - vdd
+```
+
+Each `din*` term is `1` when the corresponding voltage is above `vth` and `0` otherwise. The denominator `47.5` is the fixed source normalization basis including the non-switching reference contribution.
 
 ## Modeling Constraints
 

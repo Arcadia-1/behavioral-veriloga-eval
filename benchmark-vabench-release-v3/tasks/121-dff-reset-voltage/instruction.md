@@ -38,7 +38,7 @@ The public parameters declared by `source_dff_reset.va` are part of the contract
 
 ## Required Behavior
 
-Implement a voltage-domain D flip-flop with reset and complementary outputs. On each rising crossing of `vclk` through `vtrans_clk`, sample `vin_d` using threshold `vtrans`; drive `vout_q` high and `vout_qbar` low for a sampled high data value, and the opposite for a sampled low data value. On a rising reset crossing, force the reset state defined by the target model and drive both outputs through the configured transition delay/rise/fall smoothing. Keep `vout_qbar` complementary to `vout_q` during normal sampled operation.
+Implement a voltage-domain D flip-flop with reset and complementary outputs. On each rising crossing of `vclk` through `vtrans_clk`, sample `vin_d` using threshold `vtrans`; drive `vout_q` high and `vout_qbar` low for a sampled high data value, and the opposite for a sampled low data value. On a rising reset crossing, force both `vout_q` and `vout_qbar` to the configured low output level through the configured transition delay/rise/fall smoothing. Keep `vout_qbar` complementary to `vout_q` during normal sampled operation after data-sampling clock events.
 
 ## Modeling Constraints
 

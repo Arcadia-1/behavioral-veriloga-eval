@@ -1,10 +1,13 @@
 # Bounded Tail Dither Shaper
 
-Implement one Verilog-A source file named `bounded_tail_dither_shaper.va`.
-
 ## Task Contract
 
-Build a voltage-domain analog/mixed-signal helper or monitor. Bounded tail-like dither shaper using deterministic rail-coded inputs instead of unsupported t-distribution sampling.
+Build a voltage-domain analog/mixed-signal helper or monitor: a bounded tail-like dither shaper using deterministic rail-coded inputs instead of unsupported t-distribution sampling.
+- Form: `dut`.
+- Level: `L1`.
+- Category: deterministic dither/monitor helper.
+- Target artifact: `bounded_tail_dither_shaper.va`.
+- Output boundary: implement only the requested public Verilog-A DUT artifact.
 
 ## Public Verilog-A Interface
 
@@ -29,10 +32,27 @@ clock and `rst` clears the observable state.
 ## Required Behavior
 
 Measure analog inputs relative to the local `vss` rail and normalize by the
-current local supply span. Clear all observables when `en` is low or when the
-local supply span is outside the public range. The DUT updates its observable state on the public clock edge and clears state while reset is high. Drive `out` with the
-task-specific bounded analog result, drive `flag` with the task-specific
-qualification condition, and drive `metric` with a bounded diagnostic magnitude.
+current local supply span `span = V(vdd, vss)`. Clear all observables when `en`
+is low or when `span` is outside `[span_min, span_max]`. The DUT updates its
+observable state on rising `clk` crossings and clears state while `rst` is high.
+
+For each valid update, compute:
+
+```text
+x0 = clip01((V(in0) - V(vss)) / span)
+x1 = clip01((V(in1) - V(vss)) / span)
+c0 = clip01(V(ctrl0) / vhi)
+aux = clip01(abs(x0 - x1) + 0.35*c0)
+acc = clip01(0.62*previous_acc + 0.32*aux)
+out = vhi*acc
+flag = vhi when acc > 0.58, otherwise 0
+metric = vhi*aux
+```
+
+Reset, disabled, and out-of-range supply conditions set `previous_acc`, `out`,
+`flag`, and `metric` to 0. Preserve `in2`, `in3`, and `ctrl1` as public
+interface inputs; they are not part of the bounded-tail update formula for this
+task.
 
 ## Modeling Constraints
 
