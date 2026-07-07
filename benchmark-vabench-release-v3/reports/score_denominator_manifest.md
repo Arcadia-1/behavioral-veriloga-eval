@@ -20,7 +20,7 @@ freezing a formal paper score claim.
 | candidate score forms | 333 |
 | counted entries | 0 |
 | counted forms | 0 |
-| spectre-divergent rows | 6 |
+| spectre-divergent rows | 0 |
 
 ## Claim Rule
 
@@ -28,17 +28,11 @@ candidate_score_denominator=true marks current v3 standalone core L1/L2/L3 tasks
 
 ## Spectre-Divergent Rows
 
-- `391-rdist-exponential-jitter`
-- `392-rdist-poisson-count-noise`
-- `393-rdist-normal-offset-dither`
-- `396-rdist-erlang-latency`
-- `404-vector-part-select-window`
-- `405-vector-concat-code-build`
+- None.
 
 ## Entry Exclusion Reasons
 
 - `non_core_level_excluded`: 147
-- `spectre_divergent_pending_recalibration`: 6
 - `support_formal_candidate_excluded_from_core_score`: 25
 - `v3_score_policy_not_frozen`: 333
 

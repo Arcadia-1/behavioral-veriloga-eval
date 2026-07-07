@@ -323,8 +323,11 @@ def write_markdown(report: dict[str, Any]) -> None:
         "## Spectre-Divergent Rows",
         "",
     ]
-    for task in summary["spectre_divergent_tasks"]:
-        lines.append(f"- `{task}`")
+    if summary["spectre_divergent_tasks"]:
+        for task in summary["spectre_divergent_tasks"]:
+            lines.append(f"- `{task}`")
+    else:
+        lines.append("- None.")
     lines.extend(["", "## Entry Exclusion Reasons", ""])
     for key, value in summary["entry_exclusion_reason_counts"].items():
         lines.append(f"- `{key}`: {value}")

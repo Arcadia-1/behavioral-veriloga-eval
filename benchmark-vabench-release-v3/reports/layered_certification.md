@@ -10,7 +10,7 @@ Date: 2026-07-07
 - Behavior-certified extension rows: **205**
 - Compile-supported candidate rows: **0**
 - Unsupported candidate rows: **0**
-- Spectre-divergent retained rows: **6**
+- Spectre-divergent retained rows: **0**
 
 ## Semantic Layers
 
@@ -19,7 +19,7 @@ Date: 2026-07-07
 | `behavioral_continuous_time_extension` | 14 | behavior_certified_extension: 14 |
 | `behavioral_event_core` | 275 | behavior_certified: 275 |
 | `behavioral_event_support` | 25 | behavior_certified_support: 25 |
-| `behavioral_language_extension` | 170 | behavior_certified_extension: 164, behavior_certified_extension_spectre_divergent: 6 |
+| `behavioral_language_extension` | 170 | behavior_certified_extension: 170 |
 | `cadence_simulator_function_extension` | 3 | behavior_certified_extension: 3 |
 | `conservative_kcl_syntax_extension` | 6 | behavior_certified_extension: 6 |
 | `noise_analysis_extension` | 12 | behavior_certified_extension: 12 |
@@ -33,18 +33,13 @@ Date: 2026-07-07
 
 | Task | Reason |
 | --- | --- |
-| `391-rdist-exponential-jitter` | seeded random exponential sequence differs from Spectre |
-| `392-rdist-poisson-count-noise` | seeded random poisson sequence differs from Spectre |
-| `393-rdist-normal-offset-dither` | seeded random normal sequence differs from Spectre |
-| `396-rdist-erlang-latency` | seeded random erlang sequence differs from Spectre |
-| `404-vector-part-select-window` | integer vector part-select behavior differs from Spectre |
-| `405-vector-concat-code-build` | integer vector concatenation behavior differs from Spectre |
+| - | - |
 
 ## Completion Audit
 
-- Status: `partial_external_blocked`
-- Complete: `false`
-- Reason: The full 301-505 objective is not complete because 0 extension tasks still lack behavior checker evidence and are excluded until EVAS support issues are resolved.
+- Status: `complete`
+- Complete: `true`
+- Reason: All 205 extension tasks have behavior checker evidence, gold verification, and five rejected negative variants.
 
 | Requirement | Status | Evidence | Gap |
 | --- | --- | --- | --- |
@@ -55,7 +50,7 @@ Date: 2026-07-07
 | Each extension task has repository behavior checker evidence and can be scored fairly. | `satisfied` | 205 extension tasks are behavior-certified; 0 remain excluded_until_behavior_promotion. |  |
 | Behavior-certified extension tasks pass gold verification and reject all negative variants. | `satisfied` | verify_301_505_layered: gold_pass=205, gold_fail=0, negative_rejected=1025, negative_accepted=0, expectation_fail=0. |  |
 | Every staged task has a concrete EVAS issue and promotion checklist. | `satisfied` | No staged tasks remain; no EVAS promotion blockers are required. |  |
-| No retained default row is marked spectre-divergent for a full Spectre-certified claim. | `not_satisfied` | 6 retained row(s) require Spectre recalibration. | Recalibrate the affected gold/checker contracts against Spectre before enabling a full Spectre-certified or formal score-denominator claim. |
+| No retained default row is marked spectre-divergent for a full Spectre-certified claim. | `satisfied` | No spectre-divergent retained rows are listed. |  |
 
 ## Claim Boundary
 

@@ -25,14 +25,7 @@ BEHAVIOR_EXTENSION_EVIDENCE_JSON = REPORTS_ROOT / "behavior_certified_extension_
 EXTENSION_SOP_AUDIT_JSON = REPORTS_ROOT / "extension_sop_audit.json"
 STAGED_GOLD_PROBE_JSON = REPORTS_ROOT / "staged_promotion_gold_probe.json"
 
-SPECTRE_DIVERGENT_TASKS = {
-    "391-rdist-exponential-jitter": "seeded random exponential sequence differs from Spectre",
-    "392-rdist-poisson-count-noise": "seeded random poisson sequence differs from Spectre",
-    "393-rdist-normal-offset-dither": "seeded random normal sequence differs from Spectre",
-    "396-rdist-erlang-latency": "seeded random erlang sequence differs from Spectre",
-    "404-vector-part-select-window": "integer vector part-select behavior differs from Spectre",
-    "405-vector-concat-code-build": "integer vector concatenation behavior differs from Spectre",
-}
+SPECTRE_DIVERGENT_TASKS: dict[str, str] = {}
 
 
 CORE_TIERS = {

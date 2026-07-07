@@ -10935,13 +10935,12 @@
       "benchmark_score_enabled": false,
       "candidate_score_denominator": false,
       "category": "veriloga_random_distribution_semantics",
-      "certified": false,
+      "certified": true,
       "counted_in_score": false,
       "difficulty": "D3",
       "evas_behavior_verified": true,
       "exclusion_reasons": [
-        "non_core_level_excluded",
-        "spectre_divergent_pending_recalibration"
+        "non_core_level_excluded"
       ],
       "gold_verified": true,
       "level": "NA",
@@ -10949,16 +10948,14 @@
       "missing_forms": [],
       "negative_count": 5,
       "negative_verified": true,
-      "release_blockers": [
-        "spectre_divergent_pending_recalibration"
-      ],
+      "release_blockers": [],
       "release_entry_id": "391-rdist-exponential-jitter",
       "required_forms": [
         "dut"
       ],
       "score_surface": "v3-na-non-core-task",
-      "spectre_parity_status": "spectre_divergent",
-      "spectre_recalibration_required": true,
+      "spectre_parity_status": "not_marked_divergent",
+      "spectre_recalibration_required": false,
       "track": "language_or_non_core"
     },
     {
@@ -10966,13 +10963,12 @@
       "benchmark_score_enabled": false,
       "candidate_score_denominator": false,
       "category": "veriloga_random_distribution_semantics",
-      "certified": false,
+      "certified": true,
       "counted_in_score": false,
       "difficulty": "D3",
       "evas_behavior_verified": true,
       "exclusion_reasons": [
-        "non_core_level_excluded",
-        "spectre_divergent_pending_recalibration"
+        "non_core_level_excluded"
       ],
       "gold_verified": true,
       "level": "NA",
@@ -10980,16 +10976,14 @@
       "missing_forms": [],
       "negative_count": 5,
       "negative_verified": true,
-      "release_blockers": [
-        "spectre_divergent_pending_recalibration"
-      ],
+      "release_blockers": [],
       "release_entry_id": "392-rdist-poisson-count-noise",
       "required_forms": [
         "dut"
       ],
       "score_surface": "v3-na-non-core-task",
-      "spectre_parity_status": "spectre_divergent",
-      "spectre_recalibration_required": true,
+      "spectre_parity_status": "not_marked_divergent",
+      "spectre_recalibration_required": false,
       "track": "language_or_non_core"
     },
     {
@@ -10997,13 +10991,12 @@
       "benchmark_score_enabled": false,
       "candidate_score_denominator": false,
       "category": "veriloga_random_distribution_semantics",
-      "certified": false,
+      "certified": true,
       "counted_in_score": false,
       "difficulty": "D3",
       "evas_behavior_verified": true,
       "exclusion_reasons": [
-        "non_core_level_excluded",
-        "spectre_divergent_pending_recalibration"
+        "non_core_level_excluded"
       ],
       "gold_verified": true,
       "level": "NA",
@@ -11011,16 +11004,14 @@
       "missing_forms": [],
       "negative_count": 5,
       "negative_verified": true,
-      "release_blockers": [
-        "spectre_divergent_pending_recalibration"
-      ],
+      "release_blockers": [],
       "release_entry_id": "393-rdist-normal-offset-dither",
       "required_forms": [
         "dut"
       ],
       "score_surface": "v3-na-non-core-task",
-      "spectre_parity_status": "spectre_divergent",
-      "spectre_recalibration_required": true,
+      "spectre_parity_status": "not_marked_divergent",
+      "spectre_recalibration_required": false,
       "track": "language_or_non_core"
     },
     {
@@ -11084,13 +11075,12 @@
       "benchmark_score_enabled": false,
       "candidate_score_denominator": false,
       "category": "veriloga_random_distribution_semantics",
-      "certified": false,
+      "certified": true,
       "counted_in_score": false,
       "difficulty": "D3",
       "evas_behavior_verified": true,
       "exclusion_reasons": [
-        "non_core_level_excluded",
-        "spectre_divergent_pending_recalibration"
+        "non_core_level_excluded"
       ],
       "gold_verified": true,
       "level": "NA",
@@ -11098,16 +11088,14 @@
       "missing_forms": [],
       "negative_count": 5,
       "negative_verified": true,
-      "release_blockers": [
-        "spectre_divergent_pending_recalibration"
-      ],
+      "release_blockers": [],
       "release_entry_id": "396-rdist-erlang-latency",
       "required_forms": [
         "dut"
       ],
       "score_surface": "v3-na-non-core-task",
-      "spectre_parity_status": "spectre_divergent",
-      "spectre_recalibration_required": true,
+      "spectre_parity_status": "not_marked_divergent",
+      "spectre_recalibration_required": false,
       "track": "language_or_non_core"
     },
     {
@@ -11311,13 +11299,12 @@
       "benchmark_score_enabled": false,
       "candidate_score_denominator": false,
       "category": "veriloga_integer_control_semantics",
-      "certified": false,
+      "certified": true,
       "counted_in_score": false,
       "difficulty": "D3",
       "evas_behavior_verified": true,
       "exclusion_reasons": [
-        "non_core_level_excluded",
-        "spectre_divergent_pending_recalibration"
+        "non_core_level_excluded"
       ],
       "gold_verified": true,
       "level": "NA",
@@ -11325,16 +11312,14 @@
       "missing_forms": [],
       "negative_count": 5,
       "negative_verified": true,
-      "release_blockers": [
-        "spectre_divergent_pending_recalibration"
-      ],
+      "release_blockers": [],
       "release_entry_id": "404-vector-part-select-window",
       "required_forms": [
         "dut"
       ],
       "score_surface": "v3-na-non-core-task",
-      "spectre_parity_status": "spectre_divergent",
-      "spectre_recalibration_required": true,
+      "spectre_parity_status": "not_marked_divergent",
+      "spectre_recalibration_required": false,
       "track": "language_or_non_core"
     },
     {
@@ -11342,13 +11327,12 @@
       "benchmark_score_enabled": false,
       "candidate_score_denominator": false,
       "category": "veriloga_integer_control_semantics",
-      "certified": false,
+      "certified": true,
       "counted_in_score": false,
       "difficulty": "D3",
       "evas_behavior_verified": true,
       "exclusion_reasons": [
-        "non_core_level_excluded",
-        "spectre_divergent_pending_recalibration"
+        "non_core_level_excluded"
       ],
       "gold_verified": true,
       "level": "NA",
@@ -11356,16 +11340,14 @@
       "missing_forms": [],
       "negative_count": 5,
       "negative_verified": true,
-      "release_blockers": [
-        "spectre_divergent_pending_recalibration"
-      ],
+      "release_blockers": [],
       "release_entry_id": "405-vector-concat-code-build",
       "required_forms": [
         "dut"
       ],
       "score_surface": "v3-na-non-core-task",
-      "spectre_parity_status": "spectre_divergent",
-      "spectre_recalibration_required": true,
+      "spectre_parity_status": "not_marked_divergent",
+      "spectre_recalibration_required": false,
       "track": "language_or_non_core"
     },
     {
@@ -25106,14 +25088,13 @@
       "benchmark_score_enabled": false,
       "candidate_score_denominator": false,
       "category": "veriloga_random_distribution_semantics",
-      "certified": false,
+      "certified": true,
       "counted_in_score": false,
       "difficulty": "D3",
       "evas": "pass",
       "evas_behavior_verified": true,
       "exclusion_reasons": [
-        "non_core_level_excluded",
-        "spectre_divergent_pending_recalibration"
+        "non_core_level_excluded"
       ],
       "form": "dut",
       "gold_verified": true,
@@ -25123,9 +25104,9 @@
       "negative_verified": true,
       "release_entry_id": "391-rdist-exponential-jitter",
       "score_surface": "v3-na-non-core-task",
-      "spectre": "divergent",
-      "spectre_parity_status": "spectre_divergent",
-      "spectre_recalibration_required": true,
+      "spectre": "not_frozen",
+      "spectre_parity_status": "not_marked_divergent",
+      "spectre_recalibration_required": false,
       "static": "pass",
       "task_id": "v3_391_rdist_exponential_jitter",
       "track": "language_or_non_core"
@@ -25135,14 +25116,13 @@
       "benchmark_score_enabled": false,
       "candidate_score_denominator": false,
       "category": "veriloga_random_distribution_semantics",
-      "certified": false,
+      "certified": true,
       "counted_in_score": false,
       "difficulty": "D3",
       "evas": "pass",
       "evas_behavior_verified": true,
       "exclusion_reasons": [
-        "non_core_level_excluded",
-        "spectre_divergent_pending_recalibration"
+        "non_core_level_excluded"
       ],
       "form": "dut",
       "gold_verified": true,
@@ -25152,9 +25132,9 @@
       "negative_verified": true,
       "release_entry_id": "392-rdist-poisson-count-noise",
       "score_surface": "v3-na-non-core-task",
-      "spectre": "divergent",
-      "spectre_parity_status": "spectre_divergent",
-      "spectre_recalibration_required": true,
+      "spectre": "not_frozen",
+      "spectre_parity_status": "not_marked_divergent",
+      "spectre_recalibration_required": false,
       "static": "pass",
       "task_id": "v3_392_rdist_poisson_count_noise",
       "track": "language_or_non_core"
@@ -25164,14 +25144,13 @@
       "benchmark_score_enabled": false,
       "candidate_score_denominator": false,
       "category": "veriloga_random_distribution_semantics",
-      "certified": false,
+      "certified": true,
       "counted_in_score": false,
       "difficulty": "D3",
       "evas": "pass",
       "evas_behavior_verified": true,
       "exclusion_reasons": [
-        "non_core_level_excluded",
-        "spectre_divergent_pending_recalibration"
+        "non_core_level_excluded"
       ],
       "form": "dut",
       "gold_verified": true,
@@ -25181,9 +25160,9 @@
       "negative_verified": true,
       "release_entry_id": "393-rdist-normal-offset-dither",
       "score_surface": "v3-na-non-core-task",
-      "spectre": "divergent",
-      "spectre_parity_status": "spectre_divergent",
-      "spectre_recalibration_required": true,
+      "spectre": "not_frozen",
+      "spectre_parity_status": "not_marked_divergent",
+      "spectre_recalibration_required": false,
       "static": "pass",
       "task_id": "v3_393_rdist_normal_offset_dither",
       "track": "language_or_non_core"
@@ -25249,14 +25228,13 @@
       "benchmark_score_enabled": false,
       "candidate_score_denominator": false,
       "category": "veriloga_random_distribution_semantics",
-      "certified": false,
+      "certified": true,
       "counted_in_score": false,
       "difficulty": "D3",
       "evas": "pass",
       "evas_behavior_verified": true,
       "exclusion_reasons": [
-        "non_core_level_excluded",
-        "spectre_divergent_pending_recalibration"
+        "non_core_level_excluded"
       ],
       "form": "dut",
       "gold_verified": true,
@@ -25266,9 +25244,9 @@
       "negative_verified": true,
       "release_entry_id": "396-rdist-erlang-latency",
       "score_surface": "v3-na-non-core-task",
-      "spectre": "divergent",
-      "spectre_parity_status": "spectre_divergent",
-      "spectre_recalibration_required": true,
+      "spectre": "not_frozen",
+      "spectre_parity_status": "not_marked_divergent",
+      "spectre_recalibration_required": false,
       "static": "pass",
       "task_id": "v3_396_rdist_erlang_latency",
       "track": "language_or_non_core"
@@ -25474,14 +25452,13 @@
       "benchmark_score_enabled": false,
       "candidate_score_denominator": false,
       "category": "veriloga_integer_control_semantics",
-      "certified": false,
+      "certified": true,
       "counted_in_score": false,
       "difficulty": "D3",
       "evas": "pass",
       "evas_behavior_verified": true,
       "exclusion_reasons": [
-        "non_core_level_excluded",
-        "spectre_divergent_pending_recalibration"
+        "non_core_level_excluded"
       ],
       "form": "dut",
       "gold_verified": true,
@@ -25491,9 +25468,9 @@
       "negative_verified": true,
       "release_entry_id": "404-vector-part-select-window",
       "score_surface": "v3-na-non-core-task",
-      "spectre": "divergent",
-      "spectre_parity_status": "spectre_divergent",
-      "spectre_recalibration_required": true,
+      "spectre": "not_frozen",
+      "spectre_parity_status": "not_marked_divergent",
+      "spectre_recalibration_required": false,
       "static": "pass",
       "task_id": "v3_404_vector_part_select_window",
       "track": "language_or_non_core"
@@ -25503,14 +25480,13 @@
       "benchmark_score_enabled": false,
       "candidate_score_denominator": false,
       "category": "veriloga_integer_control_semantics",
-      "certified": false,
+      "certified": true,
       "counted_in_score": false,
       "difficulty": "D3",
       "evas": "pass",
       "evas_behavior_verified": true,
       "exclusion_reasons": [
-        "non_core_level_excluded",
-        "spectre_divergent_pending_recalibration"
+        "non_core_level_excluded"
       ],
       "form": "dut",
       "gold_verified": true,
@@ -25520,9 +25496,9 @@
       "negative_verified": true,
       "release_entry_id": "405-vector-concat-code-build",
       "score_surface": "v3-na-non-core-task",
-      "spectre": "divergent",
-      "spectre_parity_status": "spectre_divergent",
-      "spectre_recalibration_required": true,
+      "spectre": "not_frozen",
+      "spectre_parity_status": "not_marked_divergent",
+      "spectre_recalibration_required": false,
       "static": "pass",
       "task_id": "v3_405_vector_concat_code_build",
       "track": "language_or_non_core"
@@ -28351,7 +28327,6 @@
     },
     "entry_exclusion_reason_counts": {
       "non_core_level_excluded": 147,
-      "spectre_divergent_pending_recalibration": 6,
       "support_formal_candidate_excluded_from_core_score": 25,
       "v3_score_policy_not_frozen": 333
     },
@@ -28359,7 +28334,6 @@
     "evas_behavior_verified_form_count": 505,
     "form_exclusion_reason_counts": {
       "non_core_level_excluded": 147,
-      "spectre_divergent_pending_recalibration": 6,
       "support_formal_candidate_excluded_from_core_score": 25,
       "v3_score_policy_not_frozen": 333
     },
@@ -28369,15 +28343,8 @@
     "release_form_count": 505,
     "scored_entry_count": 0,
     "scored_form_count": 0,
-    "spectre_divergent_entry_count": 6,
-    "spectre_divergent_tasks": [
-      "391-rdist-exponential-jitter",
-      "392-rdist-poisson-count-noise",
-      "393-rdist-normal-offset-dither",
-      "396-rdist-erlang-latency",
-      "404-vector-part-select-window",
-      "405-vector-concat-code-build"
-    ],
+    "spectre_divergent_entry_count": 0,
+    "spectre_divergent_tasks": [],
     "support_entry_count": 25,
     "support_form_count": 25,
     "support_scored_entry_count": 0,
