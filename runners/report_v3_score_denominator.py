@@ -31,6 +31,13 @@ def rel(path: Path) -> str:
     return path.relative_to(ROOT).as_posix()
 
 
+def task_manifest_path(slug: str) -> Path:
+    task_toml = PACKAGE_ROOT / "tasks" / slug / "task.toml"
+    if task_toml.exists():
+        return task_toml
+    return TASKS_JSON
+
+
 def read_json(path: Path) -> dict[str, Any]:
     if not path.exists():
         return {}
@@ -171,7 +178,7 @@ def build_rows() -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
             "category": str(task.get("category") or ""),
             "base_function": str(task.get("title") or ""),
             "score_surface": score_surface(level, track),
-            "manifest": rel(PACKAGE_ROOT / "tasks" / slug / "task.toml"),
+            "manifest": rel(task_manifest_path(slug)),
             "candidate_score_denominator": candidate_score_denominator,
             "counted_in_score": False,
             "exclusion_reasons": reasons,
