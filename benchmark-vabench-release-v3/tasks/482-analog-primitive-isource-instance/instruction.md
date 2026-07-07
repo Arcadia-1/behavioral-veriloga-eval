@@ -4,8 +4,6 @@
 
 Implement one Verilog-A source file named `analog_primitive_isource_instance.va`. This row is a Spectre analog-primitive instantiation semantic/support task, not a standalone current-source behavior benchmark.
 
-## Form-Specific Requirements
-
 This is a DUT-form structure row. The benchmark checks the public source artifact for the primitive instance contract and does not claim current-source circuit behavior or full MNA/KCL behavior.
 
 ## Public Verilog-A Interface

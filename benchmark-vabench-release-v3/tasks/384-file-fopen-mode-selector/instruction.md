@@ -4,8 +4,6 @@
 
 Implement one behavioral Verilog-A DUT source file named `file_fopen_mode_selector.va`. The DUT explicitly opens the supplied `config_lines.txt` support artifact in read mode, parses the first configuration row, and uses that result to qualify a clocked threshold output.
 
-## Form-Specific Requirements
-
 This is a DUT task. Keep the provided module name and port list, read the public support file at runtime, and do not generate a testbench or auxiliary artifacts. Keep the model voltage-domain behavioral and do not introduce current contributions.
 
 ## Public Verilog-A Interface

@@ -4,8 +4,6 @@
 
 Implement one Verilog-A source file named `rtoi_conversion_quantizer.va`. This task exercises `$rtoi()` as part of a voltage-domain quantizer.
 
-## Form-Specific Requirements
-
 This is a Verilog-A semantic/support task. The real-to-integer conversion must use `$rtoi()` rather than an equivalent hand-written threshold tree.
 
 ## Public Verilog-A Interface

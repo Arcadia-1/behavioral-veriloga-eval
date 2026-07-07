@@ -4,8 +4,6 @@
 
 Implement one behavioral Verilog-A source file named `noise_table_voltage_shaper.va`. This is a support/L0 Verilog-A semantics task for using `noise_table()` with a supplied noise-profile file, not a standalone core circuit macro.
 
-## Form-Specific Requirements
-
 This is a DUT source task with a supplied support table named `noise_profile.tbl`. Implement only the Verilog-A source file and read the table by that exact filename; do not rename or regenerate the support table.
 
 ## Public Verilog-A Interface

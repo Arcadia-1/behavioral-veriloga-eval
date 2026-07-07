@@ -6,8 +6,6 @@ Implement one behavioral Verilog-A DUT file named `idtmod_wrapped_ramp_source.va
 
 This task focuses on a resettable Cadence `idtmod()` wrapped ramp source. The DUT is a reusable voltage-domain behavioral helper and must be implemented in Verilog-A.
 
-## Form-Specific Requirements
-
 Build a continuous-time wrapped ramp helper with voltage-coded reset. The reset must suppress phase accumulation through the `idtmod()` input rather than through a separate output-only mask.
 
 ## Public Verilog-A Interface

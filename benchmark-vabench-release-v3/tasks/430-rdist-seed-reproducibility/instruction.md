@@ -4,8 +4,6 @@
 
 Implement one behavioral Verilog-A source file named `rdist_seed_reproducibility.va`.
 
-## Form-Specific Requirements
-
 Use two repeated seeded random distribution calls to make reproducibility explicit. The model should call `$rdist_poisson()` twice with equal deterministic seed state for a given sample and assert the metric output after the paired calls complete.
 
 ## Public Verilog-A Interface

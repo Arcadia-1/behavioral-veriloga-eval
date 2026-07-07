@@ -4,8 +4,6 @@
 
 Implement one behavioral Verilog-A source file named `string_sformat_mode_tag.va`.
 
-## Form-Specific Requirements
-
 Use `$sformat` to generate a mode-tagged behavioral label. For Spectre compatibility, call `$sformat` in task form with a destination string, for example `$sformat(label_q, "mode=%0d vin=%0.3f", count_q, V(vin));`. Do not assign the return value of `$sformat`.
 
 ## Public Verilog-A Interface

@@ -4,8 +4,6 @@
 
 Implement one Verilog-A source file named `generic_potential_access_function.va`. This row is a Verilog-A generic-access semantic/support task: it verifies reading an electrical node through `potential()`.
 
-## Form-Specific Requirements
-
 This is a DUT task in the language-semantic support layer. The public tests drive `in` and observe that `out` follows the generic potential access result.
 
 ## Public Verilog-A Interface

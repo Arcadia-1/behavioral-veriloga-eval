@@ -1,5 +1,7 @@
 # Sine VCO With Idtmod And Bound Step
 
+## Task Contract
+
 Implement one behavioral Verilog-A DUT file named `sine_vco_idtmod_bound_step.va`.
 
 This is a PLL clock-and-timing task following the common behavioral VCO pattern
@@ -8,7 +10,7 @@ output. Keep the model pure voltage-domain behavioral Verilog-A: do not
 instantiate transistor-level devices and do not use current-domain `I(...)`
 branch contributions.
 
-## Interface
+## Public Verilog-A Interface
 
 ```verilog
 module sine_vco_idtmod_bound_step (
@@ -17,6 +19,22 @@ module sine_vco_idtmod_bound_step (
     output electrical metric
 );
 ```
+
+## Public Parameter Contract
+
+Public parameters and legal overrides:
+
+| Parameter | Default | Unit / range | Contract |
+| --- | ---: | --- | --- |
+| `center_freq` | `20.0e6` | Hz, `(0:inf)` | Output frequency at `V(vin) = 0`. |
+| `vco_gain` | `40.0e6` | Hz/V, `(-inf:inf) exclude 0.0` | Frequency shift per volt of `V(vin)`. |
+| `vco_amp` | `0.9` | V, `(0:inf)` | Sine and metric peak amplitude. |
+| `vco_ppc` | `40` | integer, `[4:inf)` | Minimum points per output cycle enforced via `$bound_step`. |
+
+Valid operating points keep `freq_q > 0` so the requested `$bound_step` interval
+is positive. The supplied verification scenarios hold `V(vin)` constant over
+each measurement window, so the output should be a pure sine whose frequency is
+set by `center_freq + vco_gain * V(vin)`.
 
 ## Required Behavior
 
@@ -35,21 +53,17 @@ Implement:
 - call `$bound_step(1.0 / (vco_ppc * freq_q))` every step so the sine is resolved
   with at least `vco_ppc` timepoints per cycle
 
-Public parameters and legal overrides:
+## Modeling Constraints
 
-| Parameter | Default | Unit / range | Contract |
-| --- | ---: | --- | --- |
-| `center_freq` | `20.0e6` | Hz, `(0:inf)` | Output frequency at `V(vin) = 0`. |
-| `vco_gain` | `40.0e6` | Hz/V, `(-inf:inf) exclude 0.0` | Frequency shift per volt of `V(vin)`. |
-| `vco_amp` | `0.9` | V, `(0:inf)` | Sine and metric peak amplitude. |
-| `vco_ppc` | `40` | integer, `[4:inf)` | Minimum points per output cycle enforced via `$bound_step`. |
+This is a PLL clock-and-timing task following the common behavioral VCO pattern
+of integrating instantaneous frequency into wrapped phase and driving a sine
+output. Keep the model pure voltage-domain behavioral Verilog-A: do not
+instantiate transistor-level devices and do not use current-domain `I(...)`
+branch contributions.
 
-Valid operating points keep `freq_q > 0` so the requested `$bound_step` interval
-is positive. The supplied verification scenarios hold `V(vin)` constant over
-each measurement window, so the output should be a pure sine whose frequency is
-set by `center_freq + vco_gain * V(vin)`.
+Keep the implementation behavioral and public-interface compatible. Do not add Spectre testbench code, simulator-private hooks, or extra output artifacts.
 
-## Output
+## Output Contract
 
 Return exactly one source artifact named `sine_vco_idtmod_bound_step.va`. Do not
 generate a Spectre testbench for this task.

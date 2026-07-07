@@ -4,8 +4,6 @@
 
 Implement one Verilog-A source file named `kcl_inductor_idt_voltage.va`. This row is a conservative-current plus continuous-time-operator semantic/support task for an inductor-style branch equation.
 
-## Form-Specific Requirements
-
 This is a DUT task in the conservative-current support layer. It verifies that branch current `I(p,n)` can feed `idt()` in a voltage contribution.
 
 ## Public Verilog-A Interface

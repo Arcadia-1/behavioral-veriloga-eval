@@ -7,8 +7,6 @@ The DUT is a clocked voltage-domain latency-variation model that draws an
 Erlang random value and exposes both the perturbed output and the raw latency
 metric.
 
-## Form-Specific Requirements
-
 This is a DUT task. Do not implement a testbench, checker, or simulator-private
 helper. The visible Spectre netlist is a public validation scenario, not part of
 the DUT implementation.

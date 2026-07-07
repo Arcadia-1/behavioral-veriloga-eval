@@ -4,8 +4,6 @@
 
 Implement one Verilog-A source file named `attribute_potential_abstol_probe.va`. This row is a Verilog-A electrical-attribute semantic/support task: it verifies access to the potential abstol attribute on a public electrical input.
 
-## Form-Specific Requirements
-
 This is a DUT task in the language-semantic support layer. The public tests drive the input node voltage and observe the attribute-derived offset at `out`.
 
 ## Public Verilog-A Interface

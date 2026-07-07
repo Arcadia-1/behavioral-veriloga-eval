@@ -4,8 +4,6 @@
 
 Implement one behavioral Verilog-A DUT file named `above_threshold_latch.va`.
 
-## Form-Specific Requirements
-
 This task focuses on `above()` threshold detection plus `last_crossing()` timing classification. The DUT is a reusable voltage-domain behavioral helper and must be implemented in Verilog-A.
 
 Build a threshold latch that remains asserted after an input threshold event and uses consecutive rising crossing times to classify close event spacing.

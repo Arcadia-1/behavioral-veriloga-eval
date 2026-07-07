@@ -4,8 +4,6 @@
 
 Implement one Verilog-A source file named `oomr_string_voltage_probe.va`. This task exercises a string out-of-module reference used as a voltage probe target.
 
-## Form-Specific Requirements
-
 This is a Verilog-A semantic/support task. The observable behavior must come from the string OOMR voltage probe, not from an ordinary input port added to the module.
 
 ## Public Verilog-A Interface

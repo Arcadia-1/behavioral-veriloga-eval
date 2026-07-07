@@ -4,8 +4,6 @@
 
 Implement one Verilog-A source file named `generic_potential_contribution.va`. This row is a Verilog-A generic-contribution semantic/support task: it verifies using `potential()` as the output contribution target.
 
-## Form-Specific Requirements
-
 This is a DUT task in the language-semantic support layer. The public tests drive `in` and observe that the generic contribution target makes `out` follow the input voltage.
 
 ## Public Verilog-A Interface

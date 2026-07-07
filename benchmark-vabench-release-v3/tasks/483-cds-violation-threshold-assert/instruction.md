@@ -4,8 +4,6 @@
 
 Implement one Verilog-A source file named `cds_violation_threshold_assert.va`. The task is an L0/support row for the Cadence `$cds_violation()` assertion system task.
 
-## Form-Specific Requirements
-
 This is a DUT task for Cadence simulator-function semantics. The output clamp is the transient-observable behavior used to validate the same threshold that triggers the assertion.
 
 ## Public Verilog-A Interface

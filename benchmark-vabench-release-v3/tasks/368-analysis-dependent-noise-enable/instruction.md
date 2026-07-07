@@ -4,8 +4,6 @@
 
 Implement one behavioral Verilog-A source file named `analysis_dependent_noise_enable.va`. This is a support/L0 Verilog-A semantics task for combining `analysis("noise")` with a voltage-domain `white_noise()` contribution, not a standalone core circuit macro.
 
-## Form-Specific Requirements
-
 This is a DUT source task. Implement only the `analysis_dependent_noise_enable` module; no external testbench or extra helper module is part of the requested artifact.
 
 ## Public Verilog-A Interface

@@ -1,8 +1,10 @@
 # Fractional-N Divider Accumulator Flow
 
+## Task Contract
+
 Implement `fracn_pll_timer_ref.va` in Verilog-A.
 
-## Interface
+## Public Verilog-A Interface
 
 ```verilog
 module fracn_pll_timer_ref (
@@ -16,14 +18,7 @@ module fracn_pll_timer_ref (
 );
 ```
 
-## Required Behavior
-
-This task asks for the `fracn_pll_timer_ref` behavioral module, not a Spectre
-testbench. The verification harness supplies a reference-step clock source and
-instantiates your module in a fractional-N PLL tracking/reacquire scenario.
-
-This is a behavioral continuous-time task. Do not use `I(...)`, `ddt(...)`, or
-`idt(...)`. Use voltage contributions only.
+## Public Parameter Contract
 
 Support these public parameters and legal overrides:
 
@@ -45,6 +40,15 @@ Support these public parameters and legal overrides:
 | `lock_tol` | `0.4 ns` | time, `(0:inf)` | Phase-error tolerance for counting lock streaks. |
 | `lock_count_target` | `6` | integer, `[1:inf)` | Consecutive in-tolerance events before asserting `lock`. |
 
+## Required Behavior
+
+This task asks for the `fracn_pll_timer_ref` behavioral module, not a Spectre
+testbench. The verification harness supplies a reference-step clock source and
+instantiates your module in a fractional-N PLL tracking/reacquire scenario.
+
+This is a behavioral continuous-time task. Do not use `I(...)`, `ddt(...)`, or
+`idt(...)`. Use voltage contributions only.
+
 Required observable behavior:
 
 - Use `ref_clk` as the reference timing input.
@@ -62,7 +66,7 @@ Required observable behavior:
 Use voltage-coded logic with a mid-supply decision threshold where applicable,
 drive high logic outputs near `VDD` and low outputs near `VSS`. Keep the model
 pure behavioral Verilog-A. Do not use transistor-level devices, AC/noise
-analysis, checker logic, or private test hooks.
+analysis, external validation code, or private test hooks.
 
 The supplied reference-step support clock uses public defaults
 `period_pre = 20 ns`, `period_post = 19.5 ns`, `t_switch = 2 us`, and
@@ -70,7 +74,11 @@ The supplied reference-step support clock uses public defaults
 the fractional-N model must work when the harness supplies a legal nearby
 reference cadence.
 
-## Output
+## Modeling Constraints
+
+Keep the implementation behavioral and public-interface compatible. Do not add Spectre testbench code, simulator-private hooks, or extra output artifacts.
+
+## Output Contract
 
 Return exactly one source artifact named `fracn_pll_timer_ref.va`. Do not
 generate a Spectre testbench or the reference-step support clock for this task.

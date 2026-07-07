@@ -4,8 +4,6 @@
 
 Implement one behavioral Verilog-A source file named `string_swrite_label_builder.va`.
 
-## Form-Specific Requirements
-
 Use `$swrite()` to build an internal string label during clocked updates. This task focuses on string-format side effects that coexist with ordinary voltage-domain outputs; do not add file I/O or console logging for this row.
 
 ## Public Verilog-A Interface

@@ -4,8 +4,6 @@
 
 Implement one behavioral Verilog-A source file named `ac_stim_phase_selector.va`. This is a support/L0 Verilog-A semantics task for selecting an `ac_stim()` phase from an analog control level, not a standalone core circuit macro.
 
-## Form-Specific Requirements
-
 This is a DUT source task. Implement only the `ac_stim_phase_selector` module; no external testbench or extra helper module is part of the requested artifact.
 
 ## Public Verilog-A Interface

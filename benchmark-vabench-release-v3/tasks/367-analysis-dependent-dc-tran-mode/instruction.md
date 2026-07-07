@@ -4,8 +4,6 @@
 
 Implement one behavioral Verilog-A source file named `analysis_dependent_dc_tran_mode.va`. This is a support/L0 Verilog-A semantics task for `analysis()` mode-dependent voltage behavior, not a standalone core circuit macro.
 
-## Form-Specific Requirements
-
 This is a DUT source task. Implement only the `analysis_dependent_dc_tran_mode` module; no external testbench or extra helper module is part of the requested artifact.
 
 ## Public Verilog-A Interface

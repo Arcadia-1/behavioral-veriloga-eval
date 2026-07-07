@@ -1,8 +1,10 @@
 # File Fscanf Table Stimulus
 
+## Task Contract
+
 Implement one behavioral Verilog-A source file named `file_fscanf_table_stimulus.va`.
 
-## Interface
+## Public Verilog-A Interface
 
 Use this exact module interface:
 
@@ -17,7 +19,9 @@ module file_fscanf_table_stimulus (
 );
 ```
 
-Keep the model behavioral and do not introduce current contributions. The source must read the sidecar file `stimulus_profile.txt`.
+## Public Parameter Contract
+
+Use the public parameter names, default values, legal ranges, filenames, and thresholds stated in the required behavior below. Do not add task-private configuration ports or extra configuration parameters.
 
 ## Required Behavior
 
@@ -32,5 +36,13 @@ Required behavior:
 - on each rising `clk` crossing, reset `out_v`, `metric_v`, and the internal count when `rst` is high;
 - otherwise drive `out_v = prof_v` and `metric_v = prof_t`;
 - drive `out` and `metric` with `transition(...)`.
+
+## Modeling Constraints
+
+Keep the model behavioral and do not introduce current contributions. The source must read the sidecar file `stimulus_profile.txt`.
+
+Keep the implementation behavioral and public-interface compatible. Do not add Spectre testbench code, simulator-private hooks, or extra output artifacts.
+
+## Output Contract
 
 Return exactly one source artifact named `file_fscanf_table_stimulus.va`.

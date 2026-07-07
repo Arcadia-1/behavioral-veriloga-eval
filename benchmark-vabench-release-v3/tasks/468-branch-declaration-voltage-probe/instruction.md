@@ -4,8 +4,6 @@
 
 Implement one Verilog-A source file named `branch_declaration_voltage_probe.va`. This row is a Verilog-A branch-declaration semantic/support task: it verifies that a named branch voltage can be observed through a public output.
 
-## Form-Specific Requirements
-
 This is a DUT task in the language-semantic support layer. The public testbenches drive voltages on `p` and `n`; the DUT must expose the branch voltage, not synthesize an unrelated waveform.
 
 ## Public Verilog-A Interface

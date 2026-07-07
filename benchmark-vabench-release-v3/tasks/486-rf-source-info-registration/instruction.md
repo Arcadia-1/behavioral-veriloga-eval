@@ -4,8 +4,6 @@
 
 Implement one Verilog-A source file named `rf_source_info_registration.va`. The task models an RF source-info registration helper with an ordinary transient-observable frequency offset.
 
-## Form-Specific Requirements
-
 This is a DUT task for a Cadence simulator function. The registration call is part of the public modeling contract even though the transient checker observes the frequency parameter through `out`.
 
 ## Public Verilog-A Interface

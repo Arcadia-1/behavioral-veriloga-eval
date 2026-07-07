@@ -4,8 +4,6 @@
 
 Implement one Verilog-A source file named `table_model_string_param_source.va`. This task exercises a `$table_model()` data source supplied through a string parameter.
 
-## Form-Specific Requirements
-
 This is a Verilog-A semantic/support task. The table data source must be named by the string parameter and then passed to `$table_model()`.
 
 ## Public Verilog-A Interface

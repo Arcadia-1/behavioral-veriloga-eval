@@ -1,8 +1,10 @@
 # Vector Reduction Parity
 
+## Task Contract
+
 Implement one behavioral Verilog-A source file named `vector_reduction_parity.va`.
 
-## Interface
+## Public Verilog-A Interface
 
 Use this exact module interface:
 
@@ -17,7 +19,9 @@ module vector_reduction_parity (
 );
 ```
 
-Keep the model behavioral and do not introduce current contributions.
+## Public Parameter Contract
+
+Use the public parameter names, default values, legal ranges, filenames, and thresholds stated in the required behavior below. Do not add task-private configuration ports or extra configuration parameters.
 
 ## Required Behavior
 
@@ -32,5 +36,13 @@ Required behavior:
 - set `metric_v = |code_q`;
 - increment `count_q` after computing the outputs;
 - drive `out` and `metric` with `transition(...)`.
+
+## Modeling Constraints
+
+Keep the model behavioral and do not introduce current contributions.
+
+Keep the implementation behavioral and public-interface compatible. Do not add Spectre testbench code, simulator-private hooks, or extra output artifacts.
+
+## Output Contract
 
 Return exactly one source artifact named `vector_reduction_parity.va`.

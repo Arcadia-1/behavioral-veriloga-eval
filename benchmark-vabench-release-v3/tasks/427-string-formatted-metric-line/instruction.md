@@ -4,8 +4,6 @@
 
 Implement one behavioral Verilog-A source file named `string_formatted_metric_line.va`.
 
-## Form-Specific Requirements
-
 Use `$swrite()` to build a formatted metric line and append that line to `metric_lines.log` with `$fopen`, `$fwrite`, and `$fclose`. This row is distinct from an internal-only string label because the formatted string is emitted through a file side effect.
 
 ## Public Verilog-A Interface

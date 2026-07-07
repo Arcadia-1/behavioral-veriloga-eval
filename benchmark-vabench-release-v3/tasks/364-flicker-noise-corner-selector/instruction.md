@@ -4,8 +4,6 @@
 
 Implement one behavioral Verilog-A source file named `flicker_noise_corner_selector.va`. This is a support/L0 Verilog-A semantics task for selecting a flicker-noise coefficient from an analog control level, not a standalone core circuit macro.
 
-## Form-Specific Requirements
-
 This is a DUT source task. Implement only the `flicker_noise_corner_selector` module; no external testbench or extra helper module is part of the requested artifact.
 
 ## Public Verilog-A Interface

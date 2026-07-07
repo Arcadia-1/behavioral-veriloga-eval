@@ -4,8 +4,6 @@
 
 Implement one behavioral Verilog-A DUT file named `function_piecewise_gain.va`.
 
-## Form-Specific Requirements
-
 This is a language-semantics extension task based on the Cadence Verilog-A Language Reference. Use a Verilog-A analog function named `gain_map` or an equivalently clear helper function to implement the piecewise gain.
 
 For Spectre compatibility, declare analog function arguments in Cadence-style Verilog-A form, for example `input x; real x;`, rather than ANSI-style `input real x;`.

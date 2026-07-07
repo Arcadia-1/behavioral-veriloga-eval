@@ -6,8 +6,6 @@ Implement one behavioral Verilog-A DUT file named `idtmod_modulo_phase_marker.va
 
 This task focuses on explicit-modulo `idtmod()` phase wrapping and marker generation. The DUT is a reusable voltage-domain behavioral helper and must be implemented in Verilog-A.
 
-## Form-Specific Requirements
-
 Build a wrapped phase marker using a modulo value of `0.25`. The marker output must be derived from the wrapped phase interval after each modulo reset.
 
 ## Public Verilog-A Interface

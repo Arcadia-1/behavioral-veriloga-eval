@@ -7,8 +7,6 @@ The DUT is a clocked voltage-domain count-noise injection model that draws a
 Poisson random count and exposes both the perturbed output and the raw count
 metric.
 
-## Form-Specific Requirements
-
 This is a DUT task. Do not implement a testbench, checker, or simulator-private
 helper. The visible Spectre netlist is a public validation scenario, not part of
 the DUT implementation.

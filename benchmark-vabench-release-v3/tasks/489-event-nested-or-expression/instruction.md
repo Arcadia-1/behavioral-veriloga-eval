@@ -4,8 +4,6 @@
 
 Implement one behavioral Verilog-A source file named `event_nested_or_expression.va`. This is a language-extension/L0 support task for a nested analog event expression combining `cross()`, `above()`, and `timer()` terms with `or`, not a standalone core circuit macro.
 
-## Form-Specific Requirements
-
 Use one analog event statement combining these terms with `or`: `cross(V(a) - 0.45, +1)`, `above(V(b) - 0.45)`, and `timer(10n, 20n)`. Keep the event terms in a single combined expression rather than splitting them into separate event statements.
 
 ## Public Verilog-A Interface

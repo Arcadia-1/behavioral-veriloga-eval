@@ -4,8 +4,6 @@
 
 Implement one Verilog-A source file named `kcl_capacitor_ddt_current.va`. The task models a capacitor-style conservative current contribution and exposes a monitor of the contributed dynamic branch current.
 
-## Form-Specific Requirements
-
 This is a DUT task in the conservative-current layer. The `imon` voltage is a validation monitor for the branch current contribution.
 
 ## Public Verilog-A Interface

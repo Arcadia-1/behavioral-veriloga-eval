@@ -4,8 +4,6 @@
 
 Implement one behavioral Verilog-A source file named `vector_part_select_window.va`. The model is a clocked control-code window decoder with an analog voltage output and an analog metric output.
 
-## Form-Specific Requirements
-
 This is a DUT task. Keep the implementation behavioral, voltage-domain, and event-driven; do not add branch-current contributions or extra modules.
 
 ## Public Verilog-A Interface

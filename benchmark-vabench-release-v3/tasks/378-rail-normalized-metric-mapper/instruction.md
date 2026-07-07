@@ -1,14 +1,10 @@
 # Rail Normalized Metric Mapper
 
-Implement one Verilog-A source file named `rail_normalized_metric_mapper.va`.
-
 ## Task Contract
 
 Build a Spectre-compatible voltage-domain behavioral model for Rail-aware metric normalizer for voltage-domain measurement support across shifted local supplies.
 
-## Form-Specific Requirements
-
-This is a DUT source task. Implement only the `rail_normalized_metric_mapper` module; no external testbench, checker logic, transistor devices, or extra helper module is part of the requested artifact.
+This is a DUT source task. Implement only the `rail_normalized_metric_mapper` module; no external validation code, transistor devices, or extra helper module is part of the requested artifact.
 
 ## Public Verilog-A Interface
 
@@ -34,7 +30,7 @@ module rail_normalized_metric_mapper(meas, vdd, vss, en, norm, valid);
 
 ## Modeling Constraints
 
-Use voltage-domain behavioral Verilog-A only. Do not use user `task`/`endtask`, Verilog-AMS digital kernels, branch current contributions, transistor devices, `ddt()`, or `idt()`. Do not hard-code visible or hidden stimulus times.
+Use voltage-domain behavioral Verilog-A only. Do not use user `task`/`endtask`, Verilog-AMS digital kernels, branch current contributions, transistor devices, `ddt()`, or `idt()`. Do not hard-code testbench-specific stimulus timing.
 
 ## Output Contract
 

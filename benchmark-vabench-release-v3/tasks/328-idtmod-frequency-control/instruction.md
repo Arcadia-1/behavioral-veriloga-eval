@@ -6,8 +6,6 @@ Implement one behavioral Verilog-A DUT file named `idtmod_frequency_control.va`.
 
 This task focuses on voltage-controlled `idtmod()` phase slope behavior. The DUT is a reusable voltage-domain behavioral helper and must be implemented in Verilog-A.
 
-## Form-Specific Requirements
-
 Build a wrapped phase helper whose slope changes with the input voltage and a voltage-coded mode control. The mode must change the gain used in the continuous frequency expression.
 
 ## Public Verilog-A Interface

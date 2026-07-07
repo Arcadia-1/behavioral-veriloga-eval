@@ -6,8 +6,6 @@ Implement one behavioral Verilog-A DUT file named `random_seeded_dither_source.v
 
 This task focuses on clocked seeded-random dither generation with `$random(seed)`. The DUT is a reusable voltage-domain behavioral helper and must be implemented in Verilog-A.
 
-## Form-Specific Requirements
-
 Build a clocked dither source that derives a small discrete dither code from a deterministic seeded Verilog-A random call.
 
 ## Public Verilog-A Interface

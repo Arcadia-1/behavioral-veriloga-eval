@@ -4,8 +4,6 @@
 
 Implement one behavioral Verilog-A source file named `nested_function_pipeline.va`. This is a language-extension/L0 support task for nested user-defined analog functions in a voltage-domain contribution, not a standalone core circuit macro.
 
-## Form-Specific Requirements
-
 Provide only the Verilog-A source file. The nested function call path is the public language feature under review.
 
 ## Public Verilog-A Interface

@@ -1,8 +1,10 @@
 # Hierarchy Two Stage Chain
 
+## Task Contract
+
 Implement one behavioral Verilog-A source file named `hierarchy_two_stage_chain.va`.
 
-## Interface
+## Public Verilog-A Interface
 
 Use this exact module interface:
 
@@ -17,7 +19,9 @@ module hierarchy_two_stage_chain (
 );
 ```
 
-Keep the model behavioral and do not introduce current contributions.
+## Public Parameter Contract
+
+Use the public parameter names, default values, legal ranges, filenames, and thresholds stated in the required behavior below. Do not add task-private configuration ports or extra configuration parameters.
 
 ## Required Behavior
 
@@ -32,5 +36,13 @@ Required behavior:
 - therefore produce `V(mid) = 0.8 * V(vin)` and `V(out) = 0.5 * V(mid)`;
 - drive `metric` from `V(mid)` through `transition(...)`;
 - do not introduce current contributions.
+
+## Modeling Constraints
+
+Keep the model behavioral and do not introduce current contributions.
+
+Keep the implementation behavioral and public-interface compatible. Do not add Spectre testbench code, simulator-private hooks, or extra output artifacts.
+
+## Output Contract
 
 Return exactly one source artifact named `hierarchy_two_stage_chain.va`.

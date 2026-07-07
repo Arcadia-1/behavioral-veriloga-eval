@@ -4,8 +4,6 @@
 
 Implement one Verilog-A source file named `vt_thermal_voltage_source.va`. The task is an L0/support row for using `$vt` as a simulator thermal-voltage environment value.
 
-## Form-Specific Requirements
-
 This is a DUT task for environment-function semantics. It is not a standalone voltage source benchmark beyond exposing the sampled `$vt` value.
 
 ## Public Verilog-A Interface

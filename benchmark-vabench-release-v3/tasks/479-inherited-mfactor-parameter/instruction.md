@@ -4,8 +4,6 @@
 
 Implement one Verilog-A source file named `inherited_mfactor_parameter.va`. This task exercises an inherited m-factor parameter used as a voltage gain.
 
-## Form-Specific Requirements
-
 This is a Verilog-A semantic/support task. Preserve the inherited-parameter attribute and use the public parameter value rather than a hard-coded gain.
 
 ## Public Verilog-A Interface

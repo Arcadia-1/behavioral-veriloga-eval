@@ -1,14 +1,10 @@
 # Event Reacquire Lock Detector
 
-Implement one Verilog-A source file named `event_reacquire_lock_detector.va`.
-
 ## Task Contract
 
 Build a Spectre-compatible voltage-domain behavioral model for PLL/clock timing monitor that detects lock, reset clearing, and reacquisition from event-ordered ref/fb edges.
 
-## Form-Specific Requirements
-
-This is a DUT source task. Implement only the `event_reacquire_lock_detector` module; no external testbench, checker logic, transistor devices, or extra helper module is part of the requested artifact.
+This is a DUT source task. Implement only the `event_reacquire_lock_detector` module; no external validation code, transistor devices, or extra helper module is part of the requested artifact.
 
 ## Public Verilog-A Interface
 
@@ -35,7 +31,7 @@ module event_reacquire_lock_detector(ref_clk, fb_clk, rst, lock, phase_metric, s
 
 ## Modeling Constraints
 
-Use voltage-domain behavioral Verilog-A only. Do not use user `task`/`endtask`, Verilog-AMS digital kernels, branch current contributions, transistor devices, `ddt()`, or `idt()`. Do not hard-code visible or hidden stimulus times.
+Use voltage-domain behavioral Verilog-A only. Do not use user `task`/`endtask`, Verilog-AMS digital kernels, branch current contributions, transistor devices, `ddt()`, or `idt()`. Do not hard-code testbench-specific stimulus timing.
 
 ## Output Contract
 

@@ -4,8 +4,6 @@
 
 Implement one Verilog-A source file named `analog_initial_block_state.va`. The task is an L0/support row for analog-initial state initialization in voltage-domain behavioral models.
 
-## Form-Specific Requirements
-
 This is a DUT task for Verilog-A language semantics. It is not a standalone AMS circuit macro.
 
 ## Public Verilog-A Interface

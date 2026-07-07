@@ -4,8 +4,6 @@
 
 Implement one behavioral Verilog-A source file named `event_or_cross_timer.va`. This is a language-extension/L0 support task for a flat analog event expression that combines `cross()` and `timer()` with `or`, not a standalone core circuit macro.
 
-## Form-Specific Requirements
-
 Use one analog event statement whose sensitivity expression is `cross(V(clk) - vth, +1) or timer(1n, 1n)`. Both event sources must execute the same sampled update body.
 
 ## Public Verilog-A Interface

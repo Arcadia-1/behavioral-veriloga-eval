@@ -1,14 +1,10 @@
 # Calibration Affine Transform
 
-Implement one Verilog-A source file named `calibration_affine_transform.va`.
-
 ## Task Contract
 
 Build a Spectre-compatible voltage-domain behavioral model for Calibration helper that applies a rail-coded gain and offset transform with observable residual error.
 
-## Form-Specific Requirements
-
-This is a DUT source task. Implement only the `calibration_affine_transform` module; no external testbench, checker logic, transistor devices, or extra helper module is part of the requested artifact.
+This is a DUT source task. Implement only the `calibration_affine_transform` module; no external validation code, transistor devices, or extra helper module is part of the requested artifact.
 
 ## Public Verilog-A Interface
 
@@ -36,7 +32,7 @@ module calibration_affine_transform(clk, rst, raw, gain_ctrl, offset_ctrl, en, o
 
 ## Modeling Constraints
 
-Use voltage-domain behavioral Verilog-A only. Do not use user `task`/`endtask`, Verilog-AMS digital kernels, branch current contributions, transistor devices, `ddt()`, or `idt()`. Do not hard-code visible or hidden stimulus times.
+Use voltage-domain behavioral Verilog-A only. Do not use user `task`/`endtask`, Verilog-AMS digital kernels, branch current contributions, transistor devices, `ddt()`, or `idt()`. Do not hard-code testbench-specific stimulus timing.
 
 ## Output Contract
 

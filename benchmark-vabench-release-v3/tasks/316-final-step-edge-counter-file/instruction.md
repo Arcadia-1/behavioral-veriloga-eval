@@ -1,10 +1,12 @@
 # Final Step Edge Counter File
 
+## Task Contract
+
 Implement one behavioral Verilog-A DUT file named `final_step_edge_counter_file.va`.
 
 This is a language-semantics extension task based on the Cadence Verilog-A Language Reference. Keep the model pure voltage-domain behavioral Verilog-A: do not instantiate transistor-level devices and do not use current-domain `I(...)` branch contributions.
 
-## Interface
+## Public Verilog-A Interface
 
 ```verilog
 module final_step_edge_counter_file (
@@ -16,6 +18,10 @@ module final_step_edge_counter_file (
     output electrical metric
 );
 ```
+
+## Public Parameter Contract
+
+Use the public parameter names, default values, legal ranges, filenames, and thresholds stated in the required behavior below. Do not add task-private configuration ports or extra configuration parameters.
 
 ## Required Behavior
 
@@ -36,8 +42,18 @@ A rising `rst` event must also clear the outputs immediately. During `@(final_st
 count=<integer> metric=<real>
 ```
 
-For the hidden testbench, the first clock edge occurs while reset is high and must not count. Four later post-reset clock edges must produce `candidate.out` with `count=4 metric=1.000`. Use `$fopen`, `$fwrite`, and `$fclose`. Do not use `I(...)`, `ddt(...)`, or `idt(...)`.
+Clock events that occur while reset is high must not contribute to the count.
+Each accepted post-reset clock edge increments the count and updates the
+normalized metric. Use `$fopen`, `$fwrite`, and `$fclose`; do not hard-code
+testbench-specific waveform times or sample values. Do not use `I(...)`,
+`ddt(...)`, or `idt(...)`.
 
-## Output
+## Modeling Constraints
+
+This is a language-semantics extension task based on the Cadence Verilog-A Language Reference. Keep the model pure voltage-domain behavioral Verilog-A: do not instantiate transistor-level devices and do not use current-domain `I(...)` branch contributions.
+
+Keep the implementation behavioral and public-interface compatible. Do not add Spectre testbench code, simulator-private hooks, or extra output artifacts.
+
+## Output Contract
 
 Return exactly one source artifact named `final_step_edge_counter_file.va`. Do not generate a Spectre testbench for this task.

@@ -4,8 +4,6 @@
 
 Implement one behavioral Verilog-A DUT source file named `table_model_clamped_transfer.va`. The DUT uses the supplied one-dimensional table file to sample a clamped analog transfer curve on clock edges.
 
-## Form-Specific Requirements
-
 This is a DUT task. Keep the provided module name and port list, read the public table support artifact at runtime, and do not generate a testbench or auxiliary artifacts. Keep the model voltage-domain behavioral and do not introduce current contributions.
 
 ## Public Verilog-A Interface
