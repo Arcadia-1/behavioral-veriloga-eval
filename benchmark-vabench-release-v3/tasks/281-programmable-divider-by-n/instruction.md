@@ -1,44 +1,24 @@
 # Programmable Divider By N
 
-Implement `programmable_divider_by_n.va` in Verilog-A.
+## Task Contract
+Implement `programmable_divider_by_n.va`, a single voltage-domain DUT for a programmable clock divider. This is a clock/control L1 component, not a Spectre testbench or a composed L2 flow.
 
-## Interface
+## Public Verilog-A Interface
+Declare module `programmable_divider_by_n(clk, divctrl, out)` with scalar electrical ports. `clk` is a voltage-coded clock input, `divctrl` is an analog-coded divide-ratio control input, and `out` is the voltage-coded divider output.
 
-```verilog
-module programmable_divider_by_n(
-    input  electrical clk,
-    input  electrical divctrl,
-    output electrical out
-);
-```
+## Public Parameter Contract
+Provide overrideable public parameters:
+
+- `vth = 0.45 V`: rising-edge threshold for `clk`.
+- `vh = 0.9 V`: logic-high output level for `out`.
+
+The output low level is `0 V`.
 
 ## Required Behavior
+Detect rising crossings of `clk` through `vth`. At each qualifying edge, interpret `divctrl` as the requested divide ratio by rounding it to the nearest integer; clip ratios below one to one. Maintain an internal modulo counter for the current ratio and drive `out` high only when the counter state is zero, low otherwise. For a requested ratio of three, the output is high once every three input clock edges.
 
-This task asks for the `programmable_divider_by_n` behavioral DUT module, not a
-Spectre testbench. The module is a voltage-domain programmable pulse divider.
+## Modeling Constraints
+Use deterministic voltage-domain Verilog-A and smooth the voltage-coded output transitions. Do not emit a testbench, checker logic, out-of-band test hooks, waveform files, current contributions, transistor-level devices, `ddt()`, `idt()`, or simulator side channels.
 
-Support these public parameters and legal overrides:
-
-| Parameter | Default | Unit / range | Contract |
-| --- | ---: | --- | --- |
-| `vth` | `0.45` | V | Rising-edge threshold for `clk`. |
-| `vh` | `0.9` | V, `(0:inf)` | High level for the voltage-coded output. |
-
-Required observable behavior:
-
-- Detect rising `clk` crossings at `vth`.
-- Interpret `divctrl` as an analog-coded requested divide ratio by rounding it
-  to the nearest integer.
-- Clip requested ratios below 1 to divide ratio 1.
-- Maintain an internal edge counter modulo the current divide ratio.
-- Drive `out` high only when the internal counter is zero and low otherwise.
-- For example, when `divctrl` requests ratio 3, `out` is high every third
-  rising clock edge.
-
-Use voltage contributions only. Do not use current contributions,
-transistor-level devices, AC/noise analysis, checker logic, private test hooks,
-or simulator-private side channels.
-
-## Output
-
+## Output Contract
 Return exactly one source artifact named `programmable_divider_by_n.va`.

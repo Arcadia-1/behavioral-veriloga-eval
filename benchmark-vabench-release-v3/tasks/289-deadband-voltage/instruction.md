@@ -1,15 +1,22 @@
 # Deadband Voltage
 
-Implement `deadband_voltage` in `deadband_voltage.va`.
+## Task Contract
+Implement `deadband_voltage.va`, a single-ended voltage-domain deadband shaper. This row is a baseband signal-conditioning variant and should be counted carefully against other single-ended deadband primitives.
 
-The module is a voltage-domain DUT with port order `sigin, sigout`. Declare
-both ports as `electrical`; `sigin` is the input and `sigout` is the output.
+## Public Verilog-A Interface
+Declare module `deadband_voltage(sigin, sigout)` with scalar electrical ports. `sigin` is the signed input voltage and `sigout` is the shaped output voltage.
 
-Treat `V(sigin)` as a signed signal to be shaped by a zero-output deadband
-around zero. Inside the threshold window, including both edges, drive `sigout`
-to zero. Below the lower threshold, drive the signed excess below the lower
-edge. Above the upper threshold, drive the signed excess above the upper edge.
-The output should preserve sign and be continuous at the two thresholds.
+## Public Parameter Contract
+Provide overrideable public parameters:
 
-Provide overridable real parameters `sigin_dead_low=-0.25` and
-`sigin_dead_high=0.25`, in volts.
+- `sigin_dead_low = -0.25 V`: inclusive lower deadband edge.
+- `sigin_dead_high = 0.25 V`: inclusive upper deadband edge.
+
+## Required Behavior
+Inside the deadband window, including both edges, drive `sigout` to `0 V`. Below the lower edge, drive the signed excess below `sigin_dead_low`. Above the upper edge, drive the signed excess above `sigin_dead_high`. The output should preserve sign outside the window and be continuous at both thresholds.
+
+## Modeling Constraints
+Use deterministic voltage-domain Verilog-A and voltage contributions only. Do not emit a testbench, checker logic, out-of-band test hooks, hard-code testbench sample points, use current contributions, transistor-level devices, `ddt()`, `idt()`, or simulator side channels.
+
+## Output Contract
+Return exactly one source artifact named `deadband_voltage.va`.

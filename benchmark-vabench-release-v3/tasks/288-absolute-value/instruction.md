@@ -1,23 +1,21 @@
-# Absolute Value
+# Smooth Absolute Value
 
-Implement a pure voltage-domain absolute-value primitive.
+## Task Contract
+Implement `absolute_value.va`, a memoryless smooth absolute-value / soft-rectifier analog primitive DUT.
 
-## Public Interface
+## Public Verilog-A Interface
+Declare module `absolute_value(sigin, sigout)` with scalar electrical ports. `sigin` is the input voltage and `sigout` is the output voltage.
 
-Declare module `absolute_value` with positional ports `sigin, sigout`. Both
-ports are electrical.
+## Public Parameter Contract
+Provide one overrideable public parameter:
 
-## Functional Contract
+- `smooth = 0.05 V from (0:inf)`: smoothing voltage that rounds the cusp around zero.
 
-- Drive `sigout` to `abs(V(sigin))`.
-- Preserve positive input voltages unchanged.
-- Reflect negative input voltages to positive output voltages with the same
-  magnitude.
-- The model is memoryless and deterministic.
+## Required Behavior
+Drive `sigout` as the smooth absolute-value transfer `V(sigin) * tanh(V(sigin) / smooth)`. The transfer should be even in the input, nonnegative, deterministic, memoryless, and rounded near zero instead of using a sharp ideal absolute-value cusp. For large positive and negative inputs, the output should approach the corresponding input magnitude.
 
 ## Modeling Constraints
+Use voltage contributions only. Do not emit or modify support testbenches, checker logic, out-of-band test hooks, hard-code testbench waveform sample points, use current contributions, transistor-level devices, `ddt()`, `idt()`, or simulator side channels.
 
-Return only `absolute_value.va`. Use voltage contributions only. Do not modify
-or emit the support testbench, add checker logic, hard-code private waveform
-sample points, add simulator-private side channels, use current contributions,
-`ddt()`, or `idt()`.
+## Output Contract
+Return exactly one source artifact named `absolute_value.va`.

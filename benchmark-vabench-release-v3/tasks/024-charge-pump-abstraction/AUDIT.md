@@ -9,7 +9,7 @@ Task boundary is one Verilog-A DUT, `charge_pump_abstraction.va`, plus EVAS/Spec
 - Useful scenario: pass. A charge-pump abstraction is a useful PLL control-loop behavioral block.
 - Reasonable task: pass. The public prompt fixes reset behavior, UP/DOWN polarity, control-voltage movement, output range, and voltage-only constraints.
 - Complete tests: pass for EVAS. Hidden stimulus checks reset window, control span, and correct UP/DOWN polarity over multiple windows. Five concrete negatives cover wrong polarity, missing movement, reset mistakes, and incorrect response direction.
-- Fair evaluation: pass for EVAS. The hidden checker scores public `vctrl` response to UP/DOWN/reset behavior, not implementation internals.
+- Fair evaluation: pass for EVAS. The evaluation scores the public `vctrl` response to UP/DOWN/reset behavior, not implementation internals.
 
 ## Checker And Evidence
 

@@ -1,16 +1,22 @@
-# Limiting Diffamp
+# Smooth Limiting Diffamp
 
-Implement `limiting_diffamp` in `limiting_diffamp.va`.
+## Task Contract
+Implement `limiting_diffamp.va`, a centered differential gain stage with smooth tanh output limiting.
 
-The module is a voltage-domain DUT with port order `sigin_p, sigin_n, sigout`.
-Declare all ports as `electrical`; `sigin_p` and `sigin_n` are inputs and
-`sigout` is the output.
+## Public Verilog-A Interface
+Declare module `limiting_diffamp(sigin_p, sigin_n, sigout)` with scalar electrical ports. `sigin_p` and `sigin_n` form the differential input; `sigout` is the output voltage.
 
-Use the differential input voltage from `sigin_p` to `sigin_n`. The small-signal
-output is the differential input multiplied by `gain`. Hard-limit the output to
-the lower and upper output rails, preserving differential polarity in the
-linear region and saturating cleanly when either rail is reached.
+## Public Parameter Contract
+Provide overrideable public parameters:
 
-Provide overridable real parameters `gain=4.0`, `sigout_low=-0.75`, and
-`sigout_high=0.75`. The rail parameters are voltages and `gain` is
-dimensionless.
+- `gain = 4.0`: small-signal differential gain near zero differential input.
+- `limit = 0.75 V from (0:inf)`: symmetric soft output limiting magnitude.
+
+## Required Behavior
+Compute the differential input from `sigin_p` to `sigin_n`, preserve polarity, and drive a smooth odd transfer that is approximately `gain * V(sigin_p, sigin_n)` near zero while asymptotically approaching `+limit` and `-limit` for large positive and negative differential inputs. The limiting behavior should be continuous and smooth rather than a hard clamp.
+
+## Modeling Constraints
+Use deterministic voltage-domain Verilog-A and voltage contributions only. Do not emit a testbench, checker logic, out-of-band test hooks, hard-code testbench sample points, use current contributions, transistor-level devices, `ddt()`, `idt()`, or simulator side channels.
+
+## Output Contract
+Return exactly one source artifact named `limiting_diffamp.va`.

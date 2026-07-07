@@ -3,7 +3,8 @@ module absolute_value(sigin, sigout);
 input sigin;
 output sigout;
 electrical sigin, sigout;
+parameter real smooth = 0.05 from (0:inf);
 analog begin
-    V(sigout) <+ abs(V(sigin));
+    V(sigout) <+ V(sigin) * tanh(V(sigin) / smooth);
 end
 endmodule

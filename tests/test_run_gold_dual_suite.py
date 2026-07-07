@@ -198,6 +198,11 @@ VALUE
 
     tar_buffer = io.BytesIO()
     with tarfile.open(fileobj=tar_buffer, mode="w:gz") as archive:
+        cache_link = tarfile.TarInfo("./case__tb.ahdlSimDB")
+        cache_link.type = tarfile.SYMTYPE
+        cache_link.linkname = "/tmp/vaevas-direct-spectre/_ahdlcmi_cache/key"
+        archive.addfile(cache_link)
+
         psf_bytes = psf_text.encode("utf-8")
         psf_info = tarfile.TarInfo("case__tb.raw/tran.tran.tran")
         psf_info.size = len(psf_bytes)
@@ -214,6 +219,8 @@ VALUE
         archive.addfile(side_info, io.BytesIO(side_bytes))
     download_tar = tar_buffer.getvalue()
     captured: dict[str, object] = {}
+    output_dir.mkdir()
+    (output_dir / "case__tb.ahdlSimDB").symlink_to(tmp_path / "stale-cache")
 
     def fake_run_ssh_text(host, script, *, timeout_s, input_data=None):
         captured.setdefault("text_scripts", []).append(script)
@@ -269,6 +276,7 @@ VALUE
     assert result["signals"] == ["time", "out"]
     assert result["side_outputs"]["candidate.out"]["downloaded"] is True
     assert (output_dir / "tran_spectre.csv").exists()
+    assert not (output_dir / "case__tb.ahdlSimDB").is_symlink()
     assert captured["uploaded_bytes"] > 0
     assert any("tcsh -c" in script for script in captured["text_scripts"])
     assert any('fallback_root="$HOME/WORK/vaevas-direct-spectre"' in script for script in captured["text_scripts"])

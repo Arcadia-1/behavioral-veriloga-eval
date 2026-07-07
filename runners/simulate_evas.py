@@ -15449,28 +15449,144 @@ def check_v3_dac_restore_7bit_clocked(rows: list[dict[str, float]]) -> tuple[boo
     return max_err <= 0.014, f"checked={checked} codes={codes} max_error={max_err:.5f}"
 
 
+def _v3_away_from_edges(row_time: float, edge_times: list[float], margin_s: float = 80e-12) -> bool:
+    return all(abs(row_time - edge_time) > margin_s for edge_time in edge_times)
+
+
+def _v3_logic_value(row: dict[str, float], signal: str, threshold: float) -> int:
+    return 1 if row[signal] > threshold else 0
+
+
+def _v3_stable_formula_check(
+    rows: list[dict[str, float]],
+    *,
+    required: set[str],
+    output: str,
+    logic_signals: list[str],
+    threshold: float,
+    expected_fn,
+    tol: float,
+    min_checked: int,
+    margin_s: float = 80e-12,
+) -> tuple[bool, str]:
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing " + "/".join(sorted(required))
+    edge_times: list[float] = []
+    for signal in logic_signals:
+        edge_times.extend(
+            _signal_threshold_edges(
+                rows,
+                signal,
+                threshold=threshold,
+                directions=("rising", "falling"),
+            )
+        )
+
+    def stable(row: dict[str, float]) -> bool:
+        row_time = row.get("time")
+        if row_time is None or row_time < 50e-12:
+            return False
+        if not _v3_away_from_edges(row_time, edge_times, margin_s=margin_s):
+            return False
+        return all(abs(row[signal] - threshold) > 0.05 for signal in logic_signals)
+
+    return _v3_formula_check(
+        rows,
+        required=required,
+        output=output,
+        expected_fn=expected_fn,
+        tol=tol,
+        min_checked=min_checked,
+        stable_fn=stable,
+    )
+
+
 def check_v3_dac_restore_6bit_1p8(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "clk", "vout", *{f"d{i}" for i in range(1, 7)}}
     if not rows or not required.issubset(rows[0]):
         return False, "missing dac restore 6bit 1p8 signals"
-    return _sample_many(
-        rows,
-        {"vout": [(0.5, -1.771875), (1.5, -0.590625), (2.5, 0.590625), (3.5, 1.771875)]},
-        tol=0.02,
-    )
+    vth = 0.5 * _max_signal_value(rows, ["clk", *[f"d{i}" for i in range(1, 7)]], default=1.8)
+    rising_edges = _edge_times_for_signal(rows, "clk", threshold=vth, direction="rising")
+    if len(rising_edges) < 3:
+        return False, f"too_few_restore6_clock_edges={len(rising_edges)}"
+    weights = {1: 32, 2: 16, 3: 8, 4: 4, 5: 2, 6: 1}
+    checked = 0
+    max_err = 0.0
+    codes: list[int] = []
+    failures: list[str] = []
+    for edge_t in rising_edges:
+        probe_t = _event_probe_time(rows, edge_t, delay_s=0.12e-9)
+        if probe_t is None:
+            continue
+        code = 0
+        for bit, weight in weights.items():
+            value = sample_signal_at(rows, f"d{bit}", edge_t + 1e-12)
+            if value is None:
+                return False, f"missing_d{bit}_at={edge_t * 1e9:.3f}ns"
+            code += weight if value > vth else 0
+        expected = (code + 0.5) * 3.6 / 64.0 - 1.8
+        observed = sample_signal_at(rows, "vout", probe_t)
+        if observed is None:
+            return False, f"missing_vout_after_clk={edge_t * 1e9:.3f}ns"
+        err = abs(observed - expected)
+        max_err = max(max_err, err)
+        checked += 1
+        codes.append(code)
+        if err > 0.035:
+            failures.append(
+                f"vout@{probe_t * 1e9:.3f}ns={observed:.4f} expected={expected:.4f} code={code}"
+            )
+    if checked < 3:
+        return False, f"insufficient_restore6_checks={checked}"
+    if len(set(codes)) < 3:
+        return False, f"insufficient_restore6_code_coverage={codes}"
+    if failures:
+        return False, " ".join(failures[:5])
+    return True, f"restore6_edges={checked} codes={codes} max_err={max_err:.4f}"
 
 
 def check_v3_sample_hold_5v_clock(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "vin", "vclk", "vout"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing sample hold 5v clock signals"
-    return _sample_many(
-        rows,
-        {
-            "vout": [(0.2, 0.0), (0.5, 0.1), (1.5, 0.65), (2.5, -0.2), (3.5, 0.35)],
-            "vclk": [(0.5, 5.0), (0.95, 0.0), (1.5, 5.0)],
-        },
-        tol=0.02,
+    threshold = 0.5 * _max_signal_value(rows, ["vclk"], default=5.0)
+    rising_edges = _edge_times_for_signal(rows, "vclk", threshold=threshold, direction="rising")
+    if len(rising_edges) < 3:
+        return False, f"too_few_sample_hold_edges={len(rising_edges)}"
+    sample_errors: list[float] = []
+    hold_errors: list[float] = []
+    nontracking_windows = 0
+    for idx, edge_t in enumerate(rising_edges):
+        vin_edge = sample_signal_at(rows, "vin", edge_t + 1e-12)
+        probe_t = _event_probe_time(rows, edge_t, delay_s=0.12e-9)
+        if vin_edge is None or probe_t is None:
+            return False, f"missing_sample_edge={edge_t * 1e9:.3f}ns"
+        vout_edge = sample_signal_at(rows, "vout", probe_t)
+        if vout_edge is None:
+            return False, f"missing_vout_after_edge={edge_t * 1e9:.3f}ns"
+        sample_errors.append(abs(vout_edge - vin_edge))
+        if idx + 1 >= len(rising_edges):
+            continue
+        start = edge_t + 0.20e-9
+        stop = rising_edges[idx + 1] - 0.15e-9
+        if stop <= start:
+            continue
+        hold_t = start + 0.55 * (stop - start)
+        vout_hold = sample_signal_at(rows, "vout", hold_t)
+        if vout_hold is None:
+            continue
+        hold_errors.append(abs(vout_hold - vin_edge))
+        vin_values = [row["vin"] for row in rows if start <= row["time"] <= stop]
+        vout_values = [row["vout"] for row in rows if start <= row["time"] <= stop]
+        if vin_values and vout_values:
+            if max(vin_values) - min(vin_values) > 0.20 and max(vout_values) - min(vout_values) < 0.08:
+                nontracking_windows += 1
+    max_sample_err = max(sample_errors) if sample_errors else 1e9
+    max_hold_err = max(hold_errors) if hold_errors else 1e9
+    ok = max_sample_err <= 0.05 and max_hold_err <= 0.06 and nontracking_windows >= 1
+    return ok, (
+        f"edges={len(rising_edges)} max_sample_err={max_sample_err:.4f} "
+        f"max_hold_err={max_hold_err:.4f} nontracking={nontracking_windows}"
     )
 
 
@@ -15478,10 +15594,24 @@ def check_v3_sum5_signed_sar_weight(rows: list[dict[str, float]]) -> tuple[bool,
     required = {"time", "out", *{f"d{i}" for i in range(1, 6)}}
     if not rows or not required.issubset(rows[0]):
         return False, "missing sum5 signed sar weight signals"
-    return _sample_many(
+    vth = 0.55
+    weights = {5: 0.5, 4: 0.25, 3: 0.125, 2: 0.0625, 1: 0.03125}
+
+    def expected(row: dict[str, float]) -> float:
+        signed_sum = 0.0
+        for bit, weight in weights.items():
+            signed_sum += weight if row[f"d{bit}"] > vth else -weight
+        return 1.1 * (2.0 * signed_sum - 1.0)
+
+    return _v3_stable_formula_check(
         rows,
-        {"out": [(0.5, -3.23125), (1.5, -0.34375), (2.5, 0.06875), (3.5, 1.03125)]},
-        tol=0.025,
+        required=required,
+        output="out",
+        logic_signals=[f"d{i}" for i in range(1, 6)],
+        threshold=vth,
+        expected_fn=expected,
+        tol=0.04,
+        min_checked=20,
     )
 
 
@@ -15489,10 +15619,21 @@ def check_v3_lt_readout_sar4(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "vout", "gnd", *{f"d{i}" for i in range(4)}}
     if not rows or not required.issubset(rows[0]):
         return False, "missing lt readout sar4 signals"
-    return _sample_many(
+    vth = 0.9
+
+    def expected(row: dict[str, float]) -> float:
+        code = sum((1 << bit) if row[f"d{bit}"] > vth else 0 for bit in range(4))
+        return code * 1.8 / 16.0
+
+    return _v3_stable_formula_check(
         rows,
-        {"vout": [(0.5, 0.0), (1.5, 0.5625), (2.5, 1.125), (3.5, 1.6875)]},
-        tol=0.02,
+        required=required,
+        output="vout",
+        logic_signals=[f"d{i}" for i in range(4)],
+        threshold=vth,
+        expected_fn=expected,
+        tol=0.035,
+        min_checked=20,
     )
 
 
@@ -15546,10 +15687,25 @@ def check_v3_dac4bit_small_swing(rows: list[dict[str, float]]) -> tuple[bool, st
     required = {"time", "vd3", "vd2", "vd1", "vd0", "vout"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing dac4bit small swing signals"
-    return _sample_many(
+    vth = 0.45
+
+    def expected(row: dict[str, float]) -> float:
+        code = 0
+        code += 8 if row["vd3"] > vth else 0
+        code += 4 if row["vd2"] > vth else 0
+        code += 2 if row["vd1"] > vth else 0
+        code += 1 if row["vd0"] > vth else 0
+        return 0.020 * (2.0 * code / 15.0 - 1.0)
+
+    return _v3_stable_formula_check(
         rows,
-        {"vout": [(0.5, -0.02), (1.5, -0.0066667), (2.5, 0.0066667), (3.5, 0.02)]},
-        tol=0.0015,
+        required=required,
+        output="vout",
+        logic_signals=["vd3", "vd2", "vd1", "vd0"],
+        threshold=vth,
+        expected_fn=expected,
+        tol=0.0025,
+        min_checked=20,
     )
 
 
@@ -15557,13 +15713,64 @@ def check_v3_comparator_reset_low_1p8(rows: list[dict[str, float]]) -> tuple[boo
     required = {"time", "cmpck", "vinn", "vinp", "dcmpn", "dcmpp"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing comparator reset low 1p8 signals"
-    return _sample_many(
-        rows,
-        {
-            "dcmpp": [(0.2, 0.0), (0.55, 1.8), (0.95, 0.0), (1.55, 0.0), (1.95, 0.0), (2.55, 1.8)],
-            "dcmpn": [(0.2, 0.0), (0.55, 0.0), (0.95, 0.0), (1.55, 1.8), (1.95, 0.0), (2.55, 0.0)],
-        },
-        tol=0.08,
+    vdd = _max_signal_value(rows, ["cmpck", "dcmpp", "dcmpn"], default=1.8)
+    vth = 0.5 * vdd
+    rising_edges = _edge_times_for_signal(rows, "cmpck", threshold=vth, direction="rising")
+    falling_edges = _edge_times_for_signal(rows, "cmpck", threshold=vth, direction="falling")
+    if len(rising_edges) < 2 or not falling_edges:
+        return False, f"insufficient_comparator_edges rise={len(rising_edges)} fall={len(falling_edges)}"
+
+    decision_checks = 0
+    reset_checks = 0
+    saw_positive = False
+    saw_negative = False
+    saw_equal = False
+    failures: list[str] = []
+    for edge_t in rising_edges:
+        probe_t = _event_probe_time(rows, edge_t, delay_s=0.20e-9)
+        if probe_t is None:
+            continue
+        vinp = sample_signal_at(rows, "vinp", edge_t + 1e-12)
+        vinn = sample_signal_at(rows, "vinn", edge_t + 1e-12)
+        outp = sample_signal_at(rows, "dcmpp", probe_t)
+        outn = sample_signal_at(rows, "dcmpn", probe_t)
+        if vinp is None or vinn is None or outp is None or outn is None:
+            continue
+        if vinp > vinn + 1e-6:
+            exp_p, exp_n = vdd, 0.0
+            saw_positive = True
+        elif vinn > vinp + 1e-6:
+            exp_p, exp_n = 0.0, vdd
+            saw_negative = True
+        else:
+            exp_p, exp_n = 0.0, 0.0
+            saw_equal = True
+        decision_checks += 1
+        if abs(outp - exp_p) > 0.10 or abs(outn - exp_n) > 0.10:
+            failures.append(
+                f"decision@{probe_t * 1e9:.3f}ns outp/outn={outp:.3f}/{outn:.3f} "
+                f"expected={exp_p:.3f}/{exp_n:.3f}"
+            )
+    for edge_t in falling_edges:
+        probe_t = _event_probe_time(rows, edge_t, delay_s=0.18e-9)
+        if probe_t is None:
+            continue
+        outp = sample_signal_at(rows, "dcmpp", probe_t)
+        outn = sample_signal_at(rows, "dcmpn", probe_t)
+        if outp is None or outn is None:
+            continue
+        reset_checks += 1
+        if abs(outp) > 0.10 or abs(outn) > 0.10:
+            failures.append(f"reset@{probe_t * 1e9:.3f}ns outp/outn={outp:.3f}/{outn:.3f}")
+    if decision_checks < 2 or reset_checks < 1:
+        return False, f"insufficient_comparator_checks decisions={decision_checks} resets={reset_checks}"
+    if not (saw_positive and saw_negative):
+        return False, f"missing_comparator_polarity positive={saw_positive} negative={saw_negative} equal={saw_equal}"
+    if failures:
+        return False, " ".join(failures[:5])
+    return True, (
+        f"decisions={decision_checks} resets={reset_checks} "
+        f"positive={saw_positive} negative={saw_negative} equal={saw_equal}"
     )
 
 
@@ -15571,10 +15778,22 @@ def check_v3_lt_read_sar6b_weighted(rows: list[dict[str, float]]) -> tuple[bool,
     required = {"time", "vout", "gnd", *{f"d{i}" for i in range(6)}}
     if not rows or not required.issubset(rows[0]):
         return False, "missing lt read sar6b weighted signals"
-    return _sample_many(
+    vth = 0.45
+    weights = {5: 1.0, 4: 0.5, 3: 0.25, 2: 0.125, 1: 0.0625}
+
+    def expected(row: dict[str, float]) -> float:
+        total = sum(weight if row[f"d{bit}"] > vth else 0.0 for bit, weight in weights.items())
+        return -0.9 + 0.9 * total
+
+    return _v3_stable_formula_check(
         rows,
-        {"vout": [(0.5, -0.9), (1.5, 0.225), (2.5, 0.45), (3.5, 0.73125)]},
-        tol=0.02,
+        required=required,
+        output="vout",
+        logic_signals=[f"d{i}" for i in range(6)],
+        threshold=vth,
+        expected_fn=expected,
+        tol=0.018,
+        min_checked=20,
     )
 
 
@@ -15582,10 +15801,22 @@ def check_v3_lt_read_sar7b_weighted(rows: list[dict[str, float]]) -> tuple[bool,
     required = {"time", "vout", "gnd", *{f"d{i}" for i in range(8)}}
     if not rows or not required.issubset(rows[0]):
         return False, "missing lt read sar7b weighted signals"
-    return _sample_many(
+    vth = 0.45
+    weights = {7: 1.0, 6: 0.5, 5: 0.25, 4: 0.125, 3: 0.0625, 2: 0.03125, 1: 0.015625, 0: 0.0078125}
+
+    def expected(row: dict[str, float]) -> float:
+        total = sum(weight if row[f"d{bit}"] > vth else 0.0 for bit, weight in weights.items())
+        return -0.9 + 0.9 * total
+
+    return _v3_stable_formula_check(
         rows,
-        {"vout": [(0.5, -0.9), (1.5, 0.225), (2.5, 0.478125), (3.5, 0.82265625)]},
-        tol=0.02,
+        required=required,
+        output="vout",
+        logic_signals=[f"d{i}" for i in range(8)],
+        threshold=vth,
+        expected_fn=expected,
+        tol=0.035,
+        min_checked=20,
     )
 
 
@@ -15708,14 +15939,44 @@ def check_v3_single_shot_timer_pulse(rows: list[dict[str, float]]) -> tuple[bool
     required = {"time", "vin", "vout"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing single shot timer pulse signals"
-    return _sample_many(
-        rows,
-        {
-            "vout": [(0.5, 0.0), (0.9, 0.9), (2.4, 0.9), (2.9, 0.0), (3.9, 0.9), (5.6, 0.9)],
-            "vin": [(0.5, 0.0), (0.9, 0.9), (1.5, 0.0), (3.9, 0.9), (4.5, 0.0)],
-        },
-        tol=0.08,
-    )
+    times = [row["time"] for row in rows]
+    vhigh = _max_signal_value(rows, ["vin", "vout"], default=0.9)
+    if vhigh < 0.5:
+        vhigh = 0.9
+    vtrans = 0.5 * vhigh
+    edges = _threshold_crossings([row["vin"] for row in rows], times, threshold=vtrans, direction="rising")
+    if len(edges) < 2:
+        return False, f"too_few_trigger_edges={len(edges)}"
+
+    high_checks = 0
+    low_checks = 0
+    max_err = 0.0
+    failures: list[str] = []
+    transition_times: list[float] = []
+    for edge_t in edges:
+        transition_times.extend([edge_t, edge_t + 0.12e-9, edge_t + 2.12e-9])
+
+    stride = max(1, len(rows) // 120)
+    for row in rows[::stride]:
+        t = row["time"]
+        if t < 0.05e-9 or not _v3_away_from_edges(t, transition_times, margin_s=90e-12):
+            continue
+        expected_high = any(edge_t + 0.18e-9 <= t <= edge_t + 2.10e-9 for edge_t in edges)
+        expected = vhigh if expected_high else 0.0
+        err = abs(row["vout"] - expected)
+        max_err = max(max_err, err)
+        if expected_high:
+            high_checks += 1
+        else:
+            low_checks += 1
+        if err > 0.10:
+            failures.append(f"t={t * 1e9:.3f}ns vout={row['vout']:.3f} expected={expected:.3f}")
+
+    if high_checks < 8 or low_checks < 8:
+        return False, f"insufficient_pulse_checks high={high_checks} low={low_checks}"
+    if failures:
+        return False, " ".join(failures[:6])
+    return True, f"trigger_edges={len(edges)} high_checks={high_checks} low_checks={low_checks} max_err={max_err:.3f}"
 
 
 def check_v3_clocked_comparator_dual_output(rows: list[dict[str, float]]) -> tuple[bool, str]:
@@ -15792,10 +16053,27 @@ def check_v3_dac4bit_bipolar_252m(rows: list[dict[str, float]]) -> tuple[bool, s
     required = {"time", "d3", "d2", "d1", "d0", "vout"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing dac4bit bipolar signals"
-    return _sample_many(
+    logic_signals = ["d3", "d2", "d1", "d0"]
+    threshold = 0.5 * _max_signal_value(rows, logic_signals, default=0.9)
+
+    def expected(row: dict[str, float]) -> float:
+        code = (
+            8 * _v3_logic_value(row, "d3", threshold)
+            + 4 * _v3_logic_value(row, "d2", threshold)
+            + 2 * _v3_logic_value(row, "d1", threshold)
+            + _v3_logic_value(row, "d0", threshold)
+        )
+        return 0.252 * (2.0 * code / 15.0 - 1.0)
+
+    return _v3_stable_formula_check(
         rows,
-        {"vout": [(0.5, -0.252), (1.5, -0.2184), (2.5, -0.1848), (3.5, -0.0168)]},
-        tol=0.01,
+        required=required,
+        output="vout",
+        logic_signals=logic_signals,
+        threshold=threshold,
+        expected_fn=expected,
+        tol=0.012,
+        min_checked=20,
     )
 
 
@@ -15803,28 +16081,97 @@ def check_v3_bin2ther_2b(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "vdd", "gnd", "b1", "b0", "t0", "t1", "t2"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing bin2ther 2b signals"
-    return _sample_many(
-        rows,
-        {
-            "t0": [(0.5, 0.0), (1.5, 0.0), (2.5, 0.9), (3.5, 0.9)],
-            "t1": [(0.5, 0.0), (1.5, 0.0), (2.5, 0.9), (3.5, 0.9)],
-            "t2": [(0.5, 0.0), (1.5, 0.9), (2.5, 0.0), (3.5, 0.9)],
-        },
-        tol=0.05,
+    logic_signals = ["b1", "b0"]
+    threshold = 0.5 * (
+        max(row["vdd"] for row in rows) + min(row["gnd"] for row in rows)
     )
+    edge_times: list[float] = []
+    for signal in logic_signals:
+        edge_times.extend(_signal_threshold_edges(rows, signal, threshold=threshold, directions=("rising", "falling")))
+    checked = 0
+    max_err = 0.0
+    failures: list[str] = []
+    stride = max(1, len(rows) // 120)
+    for row in rows[::stride]:
+        if row["time"] < 0.05e-9 or not _v3_away_from_edges(row["time"], edge_times, margin_s=90e-12):
+            continue
+        vh = row["vdd"]
+        vl = row["gnd"]
+        vth = 0.5 * (vh + vl)
+        expected = {
+            "t0": vh if row["b1"] > vth else vl,
+            "t1": vh if row["b1"] > vth else vl,
+            "t2": vh if row["b0"] > vth else vl,
+        }
+        checked += 1
+        for signal, exp in expected.items():
+            err = abs(row[signal] - exp)
+            max_err = max(max_err, err)
+            if err > 0.08:
+                failures.append(f"{signal}@{row['time'] * 1e9:.3f}ns={row[signal]:.3f} expected={exp:.3f}")
+    if checked < 16:
+        return False, f"insufficient_bin2ther_checks={checked}"
+    if failures:
+        return False, " ".join(failures[:6])
+    return True, f"checked={checked} max_err={max_err:.3f}"
 
 
 def check_v3_dff_set_reset(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "setb", "rstb", "clk", "vdd", "gnd", "d", "q", "qb"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing dff set reset signals"
-    return _sample_many(
-        rows,
-        {
-            "q": [(0.7, 0.0), (1.7, 0.9), (2.3, 0.0), (3.0, 0.9), (3.5, 0.0)],
-            "qb": [(0.7, 0.9), (1.7, 0.0), (2.3, 0.9), (3.0, 0.0), (3.5, 0.9)],
-        },
-        tol=0.05,
+    threshold = 0.5 * (
+        max(row["vdd"] for row in rows) + min(row["gnd"] for row in rows)
+    )
+    edge_times: list[float] = []
+    for signal in ("clk", "setb", "rstb", "d"):
+        edge_times.extend(_signal_threshold_edges(rows, signal, threshold=threshold, directions=("rising", "falling")))
+
+    q_state = 0
+    checked = 0
+    clock_samples = 0
+    reset_checks = 0
+    set_checks = 0
+    max_err = 0.0
+    failures: list[str] = []
+    prev = rows[0]
+    for row in rows[1:]:
+        vh = row["vdd"]
+        vl = row["gnd"]
+        vth = 0.5 * (vh + vl)
+        if prev["clk"] <= vth < row["clk"] and row["rstb"] > vth and row["setb"] > vth:
+            q_state = 1 if row["d"] > vth else 0
+            clock_samples += 1
+        if row["rstb"] < vth:
+            q_state = 0
+            reset_checks += 1
+        if row["setb"] < vth:
+            q_state = 1
+            set_checks += 1
+        prev = row
+        if row["time"] < 0.08e-9 or not _v3_away_from_edges(row["time"], edge_times, margin_s=90e-12):
+            continue
+        exp_q = vh if q_state else vl
+        exp_qb = vl if q_state else vh
+        err_q = abs(row["q"] - exp_q)
+        err_qb = abs(row["qb"] - exp_qb)
+        max_err = max(max_err, err_q, err_qb)
+        checked += 1
+        if err_q > 0.08 or err_qb > 0.08:
+            failures.append(
+                f"t={row['time'] * 1e9:.3f}ns q/qb={row['q']:.3f}/{row['qb']:.3f} "
+                f"expected={exp_q:.3f}/{exp_qb:.3f}"
+            )
+    if checked < 20 or clock_samples < 2 or reset_checks < 1 or set_checks < 1:
+        return False, (
+            f"insufficient_dff_coverage checked={checked} clock={clock_samples} "
+            f"reset={reset_checks} set={set_checks}"
+        )
+    if failures:
+        return False, " ".join(failures[:6])
+    return True, (
+        f"checked={checked} clock_samples={clock_samples} reset_rows={reset_checks} "
+        f"set_rows={set_checks} max_err={max_err:.3f}"
     )
 
 
@@ -15832,14 +16179,49 @@ def check_v3_pfd_up_down_state(rows: list[dict[str, float]]) -> tuple[bool, str]
     required = {"time", "ref", "fb", "up", "down"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing pfd up down state signals"
-    return _sample_many(
-        rows,
-        {
-            "up": [(0.7, 0.0), (1.5, 0.0), (2.25, 1.2), (2.65, 0.0)],
-            "down": [(0.7, 1.2), (1.5, 0.0), (2.25, 0.0), (2.65, 0.0)],
-        },
-        tol=0.08,
-    )
+    vdd = _max_signal_value(rows, ["ref", "fb", "up", "down"], default=1.2)
+    if vdd < 0.6:
+        vdd = 1.2
+    threshold = 0.5 * vdd
+    edge_times: list[float] = []
+    for signal in ("ref", "fb"):
+        edge_times.extend(_signal_threshold_edges(rows, signal, threshold=threshold, directions=("rising", "falling")))
+
+    state = 0
+    checked = 0
+    saw_up = False
+    saw_down = False
+    saw_zero = False
+    max_err = 0.0
+    failures: list[str] = []
+    prev = rows[0]
+    for row in rows[1:]:
+        if prev["ref"] <= threshold < row["ref"]:
+            state = min(1, state + 1)
+        if prev["fb"] <= threshold < row["fb"]:
+            state = max(-1, state - 1)
+        prev = row
+        if row["time"] < 0.05e-9 or not _v3_away_from_edges(row["time"], edge_times, margin_s=90e-12):
+            continue
+        exp_up = vdd if state == 1 else 0.0
+        exp_down = vdd if state == -1 else 0.0
+        saw_up = saw_up or state == 1
+        saw_down = saw_down or state == -1
+        saw_zero = saw_zero or state == 0
+        err_up = abs(row["up"] - exp_up)
+        err_down = abs(row["down"] - exp_down)
+        max_err = max(max_err, err_up, err_down)
+        checked += 1
+        if err_up > 0.10 or err_down > 0.10:
+            failures.append(
+                f"t={row['time'] * 1e9:.3f}ns up/down={row['up']:.3f}/{row['down']:.3f} "
+                f"expected={exp_up:.3f}/{exp_down:.3f}"
+            )
+    if checked < 20 or not (saw_up and saw_down and saw_zero):
+        return False, f"insufficient_pfd_coverage checked={checked} up={saw_up} down={saw_down} zero={saw_zero}"
+    if failures:
+        return False, " ".join(failures[:6])
+    return True, f"checked={checked} up={saw_up} down={saw_down} zero={saw_zero} max_err={max_err:.3f}"
 
 
 def check_v3_samplehold_rising_edge(rows: list[dict[str, float]]) -> tuple[bool, str]:
@@ -15903,33 +16285,75 @@ def check_v3_trim_ctrl_5bit(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "ain", "dout0", "dout1", "dout2", "dout3", "dout4"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing trim ctrl 5bit signals"
-    return _sample_many(
-        rows,
-        {
-            "dout0": [(0.5, 0.0), (1.2, 0.9), (2.1, 0.0), (3.0, 0.9)],
-            "dout1": [(0.5, 0.0), (1.2, 0.9), (2.1, 0.9), (3.0, 0.9)],
-            "dout2": [(0.5, 0.0), (1.2, 0.0), (2.1, 0.0), (3.0, 0.0)],
-            "dout3": [(0.5, 0.0), (1.2, 0.0), (2.1, 0.0), (3.0, 0.9)],
-            "dout4": [(0.5, 0.0), (1.2, 0.0), (2.1, 0.9), (3.0, 0.9)],
-        },
-        tol=0.05,
+    edge_times = _signal_threshold_edges(rows, "ain", threshold=0.5, directions=("rising", "falling"))
+    edge_times.extend(
+        row["time"]
+        for prev, row in zip(rows, rows[1:])
+        if abs(row["ain"] - prev["ain"]) > 0.25
     )
+    checked = 0
+    saw_clamp_low = False
+    saw_clamp_high = False
+    max_err = 0.0
+    failures: list[str] = []
+    stride = max(1, len(rows) // 120)
+    for row in rows[::stride]:
+        if row["time"] < 0.05e-9 or not _v3_away_from_edges(row["time"], edge_times, margin_s=90e-12):
+            continue
+        code = math.floor(row["ain"] + 0.5)
+        if code < 0:
+            code = 0
+            saw_clamp_low = True
+        if code > 31:
+            code = 31
+            saw_clamp_high = True
+        checked += 1
+        for bit in range(5):
+            signal = f"dout{bit}"
+            expected = 0.9 if ((code >> bit) & 1) else 0.0
+            err = abs(row[signal] - expected)
+            max_err = max(max_err, err)
+            if err > 0.08:
+                failures.append(f"{signal}@{row['time'] * 1e9:.3f}ns={row[signal]:.3f} expected={expected:.3f}")
+    if checked < 20:
+        return False, f"insufficient_trim_checks={checked}"
+    if failures:
+        return False, " ".join(failures[:6])
+    return True, f"checked={checked} clamp_low={saw_clamp_low} clamp_high={saw_clamp_high} max_err={max_err:.3f}"
 
 
 def check_v3_therm8_to_bin4_count(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "b0", "b1", "b2", "b3", *{f"th{i}" for i in range(8)}}
     if not rows or not required.issubset(rows[0]):
         return False, "missing therm8 to bin4 count signals"
-    return _sample_many(
-        rows,
-        {
-            "b0": [(0.5, 0.0), (1.2, 0.9), (2.1, 0.9), (3.0, 0.0)],
-            "b1": [(0.5, 0.0), (1.2, 0.9), (2.1, 0.0), (3.0, 0.0)],
-            "b2": [(0.5, 0.0), (1.2, 0.0), (2.1, 0.9), (3.0, 0.0)],
-            "b3": [(0.5, 0.0), (1.2, 0.0), (2.1, 0.0), (3.0, 0.9)],
-        },
-        tol=0.05,
-    )
+    input_signals = [f"th{i}" for i in range(8)]
+    threshold = 0.45
+    edge_times: list[float] = []
+    for signal in input_signals:
+        edge_times.extend(_signal_threshold_edges(rows, signal, threshold=threshold, directions=("rising", "falling")))
+    checked = 0
+    max_err = 0.0
+    counts_seen: set[int] = set()
+    failures: list[str] = []
+    stride = max(1, len(rows) // 120)
+    for row in rows[::stride]:
+        if row["time"] < 0.05e-9 or not _v3_away_from_edges(row["time"], edge_times, margin_s=90e-12):
+            continue
+        count = sum(1 for signal in input_signals if row[signal] > threshold)
+        counts_seen.add(count)
+        checked += 1
+        for bit in range(4):
+            signal = f"b{bit}"
+            expected = 0.9 if ((count >> bit) & 1) else 0.0
+            err = abs(row[signal] - expected)
+            max_err = max(max_err, err)
+            if err > 0.08:
+                failures.append(f"{signal}@{row['time'] * 1e9:.3f}ns={row[signal]:.3f} expected={expected:.3f}")
+    if checked < 20 or len(counts_seen) < 3:
+        return False, f"insufficient_therm_count_checks={checked} counts={sorted(counts_seen)}"
+    if failures:
+        return False, " ".join(failures[:6])
+    return True, f"checked={checked} counts={sorted(counts_seen)} max_err={max_err:.3f}"
 
 
 def check_v3_coarse_qtz_3bit_residue(rows: list[dict[str, float]]) -> tuple[bool, str]:
@@ -15988,14 +16412,47 @@ def check_v3_rs_phase_detector(rows: list[dict[str, float]]) -> tuple[bool, str]
     required = {"time", "ref", "fb", "up", "down"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing rs phase detector signals"
-    return _sample_many(
-        rows,
-        {
-            "up": [(0.2, 0.0), (0.8, 1.2), (1.4, 0.0), (2.2, 1.2), (2.7, 0.0)],
-            "down": [(0.2, 1.2), (0.8, 0.0), (1.4, 1.2), (2.2, 0.0), (2.7, 1.2)],
-        },
-        tol=0.08,
-    )
+    vdd = _max_signal_value(rows, ["ref", "fb", "up", "down"], default=1.2)
+    if vdd < 0.6:
+        vdd = 1.2
+    threshold = 0.5 * vdd
+    edge_times: list[float] = []
+    for signal in ("ref", "fb"):
+        edge_times.extend(_signal_threshold_edges(rows, signal, threshold=threshold, directions=("rising", "falling")))
+
+    state = 0
+    checked = 0
+    saw_set = False
+    saw_reset = False
+    max_err = 0.0
+    failures: list[str] = []
+    prev = rows[0]
+    for row in rows[1:]:
+        if prev["ref"] <= threshold < row["ref"]:
+            state = 1
+            saw_set = True
+        if prev["fb"] <= threshold < row["fb"]:
+            state = 0
+            saw_reset = True
+        prev = row
+        if row["time"] < 0.05e-9 or not _v3_away_from_edges(row["time"], edge_times, margin_s=90e-12):
+            continue
+        exp_up = vdd if state == 1 else 0.0
+        exp_down = 0.0 if state == 1 else vdd
+        err_up = abs(row["up"] - exp_up)
+        err_down = abs(row["down"] - exp_down)
+        max_err = max(max_err, err_up, err_down)
+        checked += 1
+        if err_up > 0.10 or err_down > 0.10:
+            failures.append(
+                f"t={row['time'] * 1e9:.3f}ns up/down={row['up']:.3f}/{row['down']:.3f} "
+                f"expected={exp_up:.3f}/{exp_down:.3f}"
+            )
+    if checked < 20 or not (saw_set and saw_reset):
+        return False, f"insufficient_rs_phase_coverage checked={checked} set={saw_set} reset={saw_reset}"
+    if failures:
+        return False, " ".join(failures[:6])
+    return True, f"checked={checked} set={saw_set} reset={saw_reset} max_err={max_err:.3f}"
 
 
 def check_v3_level_shifter_offset(rows: list[dict[str, float]]) -> tuple[bool, str]:
@@ -16014,12 +16471,24 @@ def check_v3_weighted_decoder_6bit(rows: list[dict[str, float]]) -> tuple[bool, 
     required = {"time", "vd1", "vd2", "vd3", "vd4", "vd5", "vd6", "vout"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing weighted decoder 6bit signals"
-    return _sample_many(
+    logic_signals = ["vd1", "vd2", "vd3", "vd4", "vd5", "vd6"]
+    threshold = 0.5 * _max_signal_value(rows, logic_signals, default=0.9)
+
+    def expected(row: dict[str, float]) -> float:
+        code = 0
+        for weight, signal in zip([32, 16, 8, 4, 2, 1], logic_signals):
+            code += weight * _v3_logic_value(row, signal, threshold)
+        return code / 63.0
+
+    return _v3_stable_formula_check(
         rows,
-        {
-            "vout": [(0.4, 0.0), (1.2, 33.0 / 32.0), (2.0, 18.0 / 32.0), (2.8, 63.0 / 32.0)],
-        },
-        tol=0.03,
+        required=required,
+        output="vout",
+        logic_signals=logic_signals,
+        threshold=threshold,
+        expected_fn=expected,
+        tol=0.025,
+        min_checked=20,
     )
 
 
@@ -16027,57 +16496,155 @@ def check_v3_divide_by_two_toggle_v2(rows: list[dict[str, float]]) -> tuple[bool
     required = {"time", "clk", "out"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing divide by two toggle signals"
-    return _sample_many(
-        rows,
-        {
-            "out": [(0.2, 0.0), (0.8, 0.9), (1.6, 0.0), (2.4, 0.9), (3.2, 0.0), (3.9, 0.9)],
-        },
-        tol=0.06,
-    )
+    vdd = _max_signal_value(rows, ["clk", "out"], default=0.9)
+    if vdd < 0.5:
+        vdd = 0.9
+    threshold = 0.5 * vdd
+    edge_times = _signal_threshold_edges(rows, "clk", threshold=threshold, directions=("rising", "falling"))
+    state = 0
+    toggles = 0
+    checked = 0
+    max_err = 0.0
+    failures: list[str] = []
+    prev = rows[0]
+    for row in rows[1:]:
+        if prev["clk"] <= threshold < row["clk"]:
+            state = 1 - state
+            toggles += 1
+        prev = row
+        if row["time"] < 0.05e-9 or not _v3_away_from_edges(row["time"], edge_times, margin_s=90e-12):
+            continue
+        expected = vdd if state else 0.0
+        err = abs(row["out"] - expected)
+        max_err = max(max_err, err)
+        checked += 1
+        if err > 0.08:
+            failures.append(f"t={row['time'] * 1e9:.3f}ns out={row['out']:.3f} expected={expected:.3f}")
+    if checked < 20 or toggles < 4:
+        return False, f"insufficient_div2_coverage checked={checked} toggles={toggles}"
+    if failures:
+        return False, " ".join(failures[:6])
+    return True, f"checked={checked} toggles={toggles} max_err={max_err:.3f}"
 
 
 def check_v3_accum3_pulse(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "clk", "out"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing accum3 pulse signals"
-    return _sample_many(
-        rows,
-        {
-            "out": [(0.2, 0.0), (0.8, 0.9), (1.8, 0.0), (7.8, 0.0), (8.8, 0.9), (9.2, 0.9)],
-        },
-        tol=0.06,
-    )
+    vdd = _max_signal_value(rows, ["clk", "out"], default=0.9)
+    if vdd < 0.5:
+        vdd = 0.9
+    threshold = 0.5 * vdd
+    edge_times = _signal_threshold_edges(rows, "clk", threshold=threshold, directions=("rising", "falling"))
+    count = 7
+    rising_edges = 0
+    pulse_rows = 0
+    low_rows = 0
+    max_err = 0.0
+    failures: list[str] = []
+    prev = rows[0]
+    for row in rows[1:]:
+        if prev["clk"] <= threshold < row["clk"]:
+            count = (count + 1) % 8
+            rising_edges += 1
+        prev = row
+        if row["time"] < 0.05e-9 or not _v3_away_from_edges(row["time"], edge_times, margin_s=90e-12):
+            continue
+        expected = vdd if count == 0 else 0.0
+        if count == 0:
+            pulse_rows += 1
+        else:
+            low_rows += 1
+        err = abs(row["out"] - expected)
+        max_err = max(max_err, err)
+        if err > 0.08:
+            failures.append(f"t={row['time'] * 1e9:.3f}ns out={row['out']:.3f} expected={expected:.3f}")
+    if rising_edges < 8 or pulse_rows < 4 or low_rows < 12:
+        return False, f"insufficient_accum3_coverage edges={rising_edges} pulse_rows={pulse_rows} low_rows={low_rows}"
+    if failures:
+        return False, " ".join(failures[:6])
+    return True, f"edges={rising_edges} pulse_rows={pulse_rows} low_rows={low_rows} max_err={max_err:.3f}"
 
 
 def check_v3_xor_phase_detector(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "ref", "fb", "up", "down"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing xor phase detector signals"
-    return _sample_many(
-        rows,
-        {
-            "up": [(0.4, 0.0), (1.2, 1.2), (2.0, 0.0), (2.8, 1.2)],
-            "down": [(0.4, 1.2), (1.2, 0.0), (2.0, 1.2), (2.8, 0.0)],
-        },
-        tol=0.06,
-    )
+    vdd = _max_signal_value(rows, ["ref", "fb", "up", "down"], default=1.2)
+    if vdd < 0.6:
+        vdd = 1.2
+    threshold = 0.5 * vdd
+    edge_times: list[float] = []
+    for signal in ("ref", "fb"):
+        edge_times.extend(_signal_threshold_edges(rows, signal, threshold=threshold, directions=("rising", "falling")))
+    checked = 0
+    saw_equal = False
+    saw_diff = False
+    max_err = 0.0
+    failures: list[str] = []
+    stride = max(1, len(rows) // 120)
+    for row in rows[::stride]:
+        if row["time"] < 0.05e-9 or not _v3_away_from_edges(row["time"], edge_times, margin_s=90e-12):
+            continue
+        ref = row["ref"] > threshold
+        fb = row["fb"] > threshold
+        diff = ref != fb
+        saw_diff = saw_diff or diff
+        saw_equal = saw_equal or not diff
+        exp_up = vdd if diff else 0.0
+        exp_down = 0.0 if diff else vdd
+        err_up = abs(row["up"] - exp_up)
+        err_down = abs(row["down"] - exp_down)
+        max_err = max(max_err, err_up, err_down)
+        checked += 1
+        if err_up > 0.08 or err_down > 0.08:
+            failures.append(f"t={row['time'] * 1e9:.3f}ns up/down={row['up']:.3f}/{row['down']:.3f}")
+    if checked < 20 or not (saw_equal and saw_diff):
+        return False, f"insufficient_xor_coverage checked={checked} equal={saw_equal} diff={saw_diff}"
+    if failures:
+        return False, " ".join(failures[:6])
+    return True, f"checked={checked} equal={saw_equal} diff={saw_diff} max_err={max_err:.3f}"
 
 
 def check_v3_decision_router_logic(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "vin1", "vin2", "valid", "x", "y", "z", "dm", "dl"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing decision router logic signals"
-    return _sample_many(
-        rows,
-        {
-            "x": [(0.4, 0.0), (1.2, 0.9), (2.0, 0.0), (2.8, 0.0), (3.5, 0.0)],
-            "y": [(0.4, 0.0), (1.2, 0.0), (2.0, 0.0), (2.8, 0.9), (3.5, 0.0)],
-            "z": [(0.4, 0.0), (1.2, 0.0), (2.0, 0.9), (2.8, 0.0), (3.5, 0.0)],
-            "dm": [(0.4, 0.0), (1.2, 0.0), (2.0, 0.0), (2.8, 0.9), (3.5, 0.9)],
-            "dl": [(0.4, 0.0), (1.2, 0.0), (2.0, 0.9), (2.8, 0.0), (3.5, 0.0)],
-        },
-        tol=0.05,
-    )
+    input_signals = ["vin1", "vin2", "valid"]
+    threshold = 0.5 * _max_signal_value(rows, input_signals, default=0.9)
+    edge_times: list[float] = []
+    for signal in input_signals:
+        edge_times.extend(_signal_threshold_edges(rows, signal, threshold=threshold, directions=("rising", "falling")))
+    checked = 0
+    combos_seen: set[tuple[int, int, int]] = set()
+    max_err = 0.0
+    failures: list[str] = []
+    stride = max(1, len(rows) // 120)
+    for row in rows[::stride]:
+        if row["time"] < 0.05e-9 or not _v3_away_from_edges(row["time"], edge_times, margin_s=90e-12):
+            continue
+        a = 1 if row["vin1"] > threshold else 0
+        b = 1 if row["vin2"] > threshold else 0
+        ok = 1 if row["valid"] > threshold else 0
+        combos_seen.add((a, b, ok))
+        expected = {
+            "dm": 0.9 if a else 0.0,
+            "dl": 0.9 if ((not a) and b) else 0.0,
+            "x": 0.9 if ((not a) and (not b) and ok) else 0.0,
+            "y": 0.9 if (a and b and ok) else 0.0,
+            "z": 0.9 if ((not a) and b and ok) else 0.0,
+        }
+        checked += 1
+        for signal, exp in expected.items():
+            err = abs(row[signal] - exp)
+            max_err = max(max_err, err)
+            if err > 0.08:
+                failures.append(f"{signal}@{row['time'] * 1e9:.3f}ns={row[signal]:.3f} expected={exp:.3f}")
+    if checked < 20 or len(combos_seen) < 4:
+        return False, f"insufficient_router_coverage checked={checked} combos={sorted(combos_seen)}"
+    if failures:
+        return False, " ".join(failures[:6])
+    return True, f"checked={checked} combos={sorted(combos_seen)} max_err={max_err:.3f}"
 
 
 def check_v3_safe_analog_divider(rows: list[dict[str, float]]) -> tuple[bool, str]:
@@ -16096,25 +16663,154 @@ def check_v3_vargain_diffamp_clip(rows: list[dict[str, float]]) -> tuple[bool, s
     required = {"time", "sigin_p", "sigin_n", "sigctrl_p", "sigctrl_n", "sigout"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing vargain diffamp clip signals"
-    return _sample_many(
-        rows,
-        {
-            "sigout": [(0.4, 0.375), (1.2, 1.0), (2.0, -1.0), (2.8, -0.675)],
-        },
-        tol=0.04,
-    )
+    edge_times: list[float] = []
+    for signal in ("sigin_p", "sigin_n", "sigctrl_p", "sigctrl_n"):
+        edge_times.extend(
+            row["time"]
+            for prev, row in zip(rows, rows[1:])
+            if abs(row[signal] - prev[signal]) > 1.0e-6
+        )
+    checked = 0
+    saw_hi_clip = False
+    saw_lo_clip = False
+    saw_linear = False
+    max_err = 0.0
+    failures: list[str] = []
+    stride = max(1, len(rows) // 120)
+    for row in rows[::stride]:
+        if row["time"] < 0.05e-9 or not _v3_away_from_edges(row["time"], edge_times, margin_s=90e-12):
+            continue
+        raw = 3.0 * (row["sigctrl_p"] - row["sigctrl_n"]) * (row["sigin_p"] - row["sigin_n"] - 0.05)
+        expected = max(-1.0, min(1.0, raw))
+        saw_hi_clip = saw_hi_clip or raw > 1.0
+        saw_lo_clip = saw_lo_clip or raw < -1.0
+        saw_linear = saw_linear or (-1.0 <= raw <= 1.0)
+        err = abs(row["sigout"] - expected)
+        max_err = max(max_err, err)
+        checked += 1
+        if err > 0.05:
+            failures.append(f"t={row['time'] * 1e9:.3f}ns sigout={row['sigout']:.3f} expected={expected:.3f}")
+    if checked < 20 or not (saw_hi_clip and saw_lo_clip and saw_linear):
+        return False, f"insufficient_vargain_coverage checked={checked} hi={saw_hi_clip} lo={saw_lo_clip} linear={saw_linear}"
+    if failures:
+        return False, " ".join(failures[:6])
+    return True, f"checked={checked} hi_clip={saw_hi_clip} lo_clip={saw_lo_clip} linear={saw_linear} max_err={max_err:.3f}"
 
 
 def check_v3_programmable_divider_by_n(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "clk", "divctrl", "out"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing programmable divider by n signals"
-    return _sample_many(
-        rows,
+    edges = _signal_threshold_edges(rows, "clk", threshold=0.45, directions=("rising",))
+    if len(edges) < 4:
+        return False, f"too_few_divider_edges={len(edges)}"
+    state = 0
+    checks = 0
+    max_err = 0.0
+    highs = 0
+    lows = 0
+    for edge_t in edges:
+        ratio_v = sample_signal_at(rows, "divctrl", edge_t + 1e-12)
+        if ratio_v is None:
+            return False, f"missing_divctrl_at={edge_t * 1e9:.3f}ns"
+        ratio = int(math.floor(ratio_v + 0.5))
+        if ratio < 1:
+            ratio = 1
+        state += 1
+        if state >= ratio:
+            state = 0
+        out_t = edge_t + 0.12e-9
+        got = sample_signal_at(rows, "out", out_t)
+        if got is None:
+            return False, f"missing_out_at={out_t * 1e9:.3f}ns"
+        want = 0.9 if state == 0 else 0.0
+        max_err = max(max_err, abs(got - want))
+        checks += 1
+        if want > 0.45:
+            highs += 1
+        else:
+            lows += 1
+    if checks < 4 or highs == 0 or lows == 0:
+        return False, f"insufficient_divider_coverage checks={checks} highs={highs} lows={lows}"
+    if max_err > 0.08:
+        return False, f"divider_max_err={max_err:.4f} edges={len(edges)}"
+    return True, f"edges={len(edges)} checks={checks} highs={highs} lows={lows} max_err={max_err:.4f}"
+
+
+def _check_v3_pfd_active_low_reset_generic(
+    rows: list[dict[str, float]],
+    ref_name: str,
+    fb_name: str,
+    upb_name: str,
+    down_name: str,
+    *,
+    reset_delay: float,
+) -> tuple[bool, str]:
+    ref_edges = _signal_threshold_edges(rows, ref_name, threshold=0.45, directions=("rising",))
+    fb_edges = _signal_threshold_edges(rows, fb_name, threshold=0.45, directions=("rising",))
+    events = sorted([(t, "ref") for t in ref_edges] + [(t, "fb") for t in fb_edges])
+    if len(ref_edges) < 1 or len(fb_edges) < 1 or len(events) < 3:
+        return False, f"too_few_pfd_edges ref={len(ref_edges)} fb={len(fb_edges)}"
+
+    samples = sorted(
         {
-            "out": [(0.2, 0.9), (0.6, 0.0), (1.4, 0.0), (2.2, 0.9), (3.0, 0.0), (3.8, 0.0), (4.6, 0.9)],
-        },
-        tol=0.06,
+            row["time"]
+            for row in rows
+            if row["time"] > rows[0]["time"] + 0.05e-9
+            and _v3_away_from_edges(row["time"], [t for t, _ in events], 80e-12)
+        }
+    )
+    if len(samples) < 20:
+        return False, f"too_few_pfd_samples={len(samples)}"
+
+    up = 0
+    down = 0
+    reset_time: float | None = None
+    idx = 0
+    max_err = 0.0
+    checked = 0
+    up_asserted = 0
+    down_asserted = 0
+    reset_seen = 0
+    for t in samples:
+        while idx < len(events) and events[idx][0] <= t:
+            _, kind = events[idx]
+            if kind == "ref":
+                up = 1
+                if down:
+                    reset_time = events[idx][0] + reset_delay
+            else:
+                down = 1
+                if up:
+                    reset_time = events[idx][0] + reset_delay
+            idx += 1
+        if reset_time is not None and t >= reset_time:
+            up = 0
+            down = 0
+            reset_time = None
+            reset_seen += 1
+        got_upb = sample_signal_at(rows, upb_name, t)
+        got_down = sample_signal_at(rows, down_name, t)
+        if got_upb is None or got_down is None:
+            continue
+        want_upb = 0.0 if up else 0.9
+        want_down = 0.9 if down else 0.0
+        max_err = max(max_err, abs(got_upb - want_upb), abs(got_down - want_down))
+        checked += 1
+        if up:
+            up_asserted += 1
+        if down:
+            down_asserted += 1
+    if checked < 20 or up_asserted == 0 or down_asserted == 0 or reset_seen == 0:
+        return False, (
+            f"insufficient_pfd_state_coverage checked={checked} up={up_asserted} "
+            f"down={down_asserted} resets={reset_seen}"
+        )
+    if max_err > 0.10:
+        return False, f"pfd_level_error={max_err:.4f} checked={checked}"
+    return True, (
+        f"ref_edges={len(ref_edges)} fb_edges={len(fb_edges)} checked={checked} "
+        f"up={up_asserted} down={down_asserted} resets={reset_seen} max_err={max_err:.4f}"
     )
 
 
@@ -16122,14 +16818,7 @@ def check_v3_pfd_timer_reset(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "a", "b", "ub", "d"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing pfd timer reset signals"
-    return _sample_many(
-        rows,
-        {
-            "ub": [(0.2, 0.9), (0.6, 0.0), (1.22, 0.0), (1.4, 0.9), (2.3, 0.9), (2.72, 0.0), (2.9, 0.9)],
-            "d": [(0.2, 0.0), (0.6, 0.0), (1.22, 0.9), (1.4, 0.0), (2.3, 0.9), (2.72, 0.9), (2.9, 0.0)],
-        },
-        tol=0.08,
-    )
+    return _check_v3_pfd_active_low_reset_generic(rows, "a", "b", "ub", "d", reset_delay=100e-12)
 
 
 def check_v3_absolute_value(rows: list[dict[str, float]]) -> tuple[bool, str]:
@@ -16149,37 +16838,128 @@ def check_v3_absolute_value(rows: list[dict[str, float]]) -> tuple[bool, str]:
     return max_err <= 0.02, f"checked={checked} max_abs_error={max_err:.5f}"
 
 
+def check_v3_smooth_absolute_value(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "sigin", "sigout"}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing smooth absolute value signals"
+    smooth = 0.05
+    max_err = 0.0
+    checked = 0
+    positive = negative = near_zero = 0
+    for row in rows:
+        if row.get("time", 0.0) < 0.2e-9:
+            continue
+        sigin = row["sigin"]
+        expected = sigin * math.tanh(sigin / smooth)
+        max_err = max(max_err, abs(row["sigout"] - expected))
+        checked += 1
+        if sigin > 0.10:
+            positive += 1
+        elif sigin < -0.10:
+            negative += 1
+        else:
+            near_zero += 1
+    if checked < 20 or positive == 0 or negative == 0 or near_zero == 0:
+        return False, (
+            f"insufficient_smooth_abs_coverage checked={checked} "
+            f"positive={positive} negative={negative} near_zero={near_zero}"
+        )
+    return max_err <= 0.008, (
+        f"checked={checked} positive={positive} negative={negative} "
+        f"near_zero={near_zero} max_smooth_abs_error={max_err:.5f}"
+    )
+
+
 def check_v3_deadband_voltage(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "sigin", "sigout"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing deadband voltage signals"
-    return _sample_many(
-        rows,
-        {"sigout": [(0.4, -0.45), (1.2, 0.0), (2.0, 0.0), (2.8, 0.55)]},
-        tol=0.02,
-    )
+    max_err = 0.0
+    checked = 0
+    below = inside = above = 0
+    for row in rows:
+        if row["time"] < 0.15e-9:
+            continue
+        sigin = row["sigin"]
+        if sigin < -0.25:
+            expected = sigin + 0.25
+            below += 1
+        elif sigin > 0.25:
+            expected = sigin - 0.25
+            above += 1
+        else:
+            expected = 0.0
+            inside += 1
+        max_err = max(max_err, abs(row["sigout"] - expected))
+        checked += 1
+    if checked < 20 or below == 0 or inside == 0 or above == 0:
+        return False, f"insufficient_deadband_voltage_coverage checked={checked} below={below} inside={inside} above={above}"
+    return max_err <= 0.025, f"checked={checked} below={below} inside={inside} above={above} max_err={max_err:.5f}"
 
 
 def check_v3_deadband_diffamp(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "sigin_p", "sigin_n", "sigout"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing deadband diffamp signals"
-    return _sample_many(
-        rows,
-        {"sigout": [(0.4, -0.58), (1.2, 0.02), (2.0, 0.02), (2.8, 1.22)]},
-        tol=0.03,
-    )
+    max_err = 0.0
+    checked = 0
+    below = inside = above = 0
+    for row in rows:
+        if row["time"] < 0.15e-9:
+            continue
+        diff = row["sigin_p"] - row["sigin_n"]
+        if diff < -0.1:
+            expected = 2.0 * (diff + 0.1) + 0.02
+            below += 1
+        elif diff > 0.1:
+            expected = 3.0 * (diff - 0.1) + 0.02
+            above += 1
+        else:
+            expected = 0.02
+            inside += 1
+        max_err = max(max_err, abs(row["sigout"] - expected))
+        checked += 1
+    if checked < 20 or below == 0 or inside == 0 or above == 0:
+        return False, f"insufficient_deadband_diffamp_coverage checked={checked} below={below} inside={inside} above={above}"
+    return max_err <= 0.04, f"checked={checked} below={below} inside={inside} above={above} max_err={max_err:.5f}"
 
 
 def check_v3_limiting_diffamp(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "sigin_p", "sigin_n", "sigout"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing limiting diffamp signals"
-    return _sample_many(
-        rows,
-        {"sigout": [(0.4, -0.75), (1.2, -0.4), (2.0, 0.4), (2.8, 0.75)]},
-        tol=0.03,
+    max_err = 0.0
+    checked = 0
+    low_soft = linear = high_soft = 0
+    limit = 0.75
+    gain = 4.0
+    for row in rows:
+        if row["time"] < 0.15e-9:
+            continue
+        raw = gain * (row["sigin_p"] - row["sigin_n"])
+        expected = limit * math.tanh(raw / limit)
+        if raw <= -limit:
+            low_soft += 1
+        elif raw >= limit:
+            high_soft += 1
+        else:
+            linear += 1
+        max_err = max(max_err, abs(row["sigout"] - expected))
+        checked += 1
+    if checked < 20 or low_soft == 0 or linear == 0 or high_soft == 0:
+        return False, (
+            f"insufficient_smooth_limiting_diffamp_coverage checked={checked} "
+            f"low={low_soft} linear={linear} high={high_soft}"
+        )
+    return max_err <= 0.03, (
+        f"checked={checked} low={low_soft} linear={linear} "
+        f"high={high_soft} max_err={max_err:.5f}"
     )
+
+
+def check_v3_smooth_limiting_diffamp(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    return check_v3_limiting_diffamp(rows)
+
 
 
 def check_v3_smooth_tanh_comparator(rows: list[dict[str, float]]) -> tuple[bool, str]:
@@ -16304,22 +17084,59 @@ def check_v3_flash_folded_dac4(rows: list[dict[str, float]]) -> tuple[bool, str]
     required = {"time", "vd4", "vd3", "vd2", "vd1", "vout"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing flash folded dac4 signals"
-    return _sample_many(
-        rows,
-        {"vout": [(0.4, 0.5), (1.2, 0.25), (2.0, 0.625), (2.8, 0.9375)]},
-        tol=0.03,
-    )
+    edge_times: list[float] = []
+    for signal in ["vd4", "vd3", "vd2", "vd1"]:
+        edge_times.extend(_signal_threshold_edges(rows, signal, threshold=0.45, directions=("rising", "falling")))
+    max_err = 0.0
+    checked = 0
+    msb_low = 0
+    msb_high = 0
+    for row in rows:
+        if row["time"] < 0.15e-9:
+            continue
+        if not _v3_away_from_edges(row["time"], edge_times, 80e-12):
+            continue
+        lower = 0.0
+        lower += 4.0 if row["vd3"] > 0.45 else 0.0
+        lower += 2.0 if row["vd2"] > 0.45 else 0.0
+        lower += 1.0 if row["vd1"] > 0.45 else 0.0
+        if row["vd4"] > 0.45:
+            code = 8.0 + lower
+            msb_high += 1
+        else:
+            code = 8.0 - lower
+            msb_low += 1
+        expected = code / 16.0
+        max_err = max(max_err, abs(row["vout"] - expected))
+        checked += 1
+    if checked < 20 or msb_low == 0 or msb_high == 0:
+        return False, f"insufficient_flash_folded_dac4_coverage checked={checked} low={msb_low} high={msb_high}"
+    return max_err <= 0.035, f"checked={checked} msb_low={msb_low} msb_high={msb_high} max_err={max_err:.5f}"
 
 
 def check_v3_subradix_dac10(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "vd9", "vd8", "vd7", "vd6", "vd5", "vd4", "vd3", "vd2", "vd1", "vd0", "vout"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing subradix dac10 signals"
-    return _sample_many(
-        rows,
-        {"vout": [(0.4, 0.0), (1.2, 0.194687), (2.0, 0.118845), (2.8, 0.314313)]},
-        tol=0.02,
-    )
+    weights = {f"vd{i}": 1.8 ** i for i in range(10)}
+    denom = sum(weights.values())
+    max_err = 0.0
+    checked = 0
+    varied = set()
+    for row in rows:
+        if row["time"] < 0.15e-9:
+            continue
+        code = 0.0
+        for name, weight in weights.items():
+            if row[name] > 0.45:
+                code += weight
+                varied.add(name)
+        expected = code / denom
+        max_err = max(max_err, abs(row["vout"] - expected))
+        checked += 1
+    if checked < 20 or len(varied) < 3:
+        return False, f"insufficient_subradix_coverage checked={checked} active_bits={sorted(varied)}"
+    return max_err <= 0.025, f"checked={checked} active_bits={sorted(varied)} max_err={max_err:.5f}"
 
 
 def check_v3_clocked_adc3bit(rows: list[dict[str, float]]) -> tuple[bool, str]:
@@ -17194,37 +18011,127 @@ def check_v3_cal4bit_modulo(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "ain", "d0", "d1", "d2", "d3"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing cal4bit modulo signals"
-    return _sample_many(
-        rows,
-        {
-            "d0": [(0.4, 0.0), (1.2, 0.9), (2.0, 0.0), (2.8, 0.9)],
-            "d1": [(0.4, 0.0), (1.2, 0.9), (2.0, 0.9), (2.8, 0.9)],
-            "d2": [(0.4, 0.0), (1.2, 0.0), (2.0, 0.0), (2.8, 0.9)],
-            "d3": [(0.4, 0.0), (1.2, 0.0), (2.0, 0.9), (2.8, 0.9)],
-        },
-        tol=0.06,
-    )
+    code_by_time = [(row["time"], max(0, min(15, math.floor(row["ain"])))) for row in rows]
+    code_change_times = [
+        t
+        for (prev_t, prev_code), (t, code) in zip(code_by_time, code_by_time[1:])
+        if code != prev_code and t >= prev_t
+    ]
+    max_err = 0.0
+    checked = 0
+    codes = set()
+    for row in rows:
+        if row["time"] < 0.15e-9:
+            continue
+        if not _v3_away_from_edges(row["time"], code_change_times, 80e-12):
+            continue
+        code = math.floor(row["ain"])
+        code = max(0, min(15, code))
+        codes.add(code)
+        expected = {
+            "d0": 0.9 if (code & 1) else 0.0,
+            "d1": 0.9 if ((code >> 1) & 1) else 0.0,
+            "d2": 0.9 if ((code >> 2) & 1) else 0.0,
+            "d3": 0.9 if ((code >> 3) & 1) else 0.0,
+        }
+        for signal, want in expected.items():
+            max_err = max(max_err, abs(row[signal] - want))
+        checked += 1
+    if checked < 20 or len(codes) < 3 or 0 not in codes or 15 not in codes:
+        return False, f"insufficient_cal4bit_coverage checked={checked} codes={sorted(codes)}"
+    return max_err <= 0.08, f"checked={checked} codes={sorted(codes)} max_err={max_err:.4f}"
 
 
 def check_v3_mux4_priority(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "sel0", "sel1", "in0", "in1", "in2", "in3", "out"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing mux4 priority signals"
-    return _sample_many(
-        rows,
-        {"out": [(0.4, 0.1), (1.2, 0.4), (2.0, -0.2), (2.8, 0.8)]},
-        tol=0.02,
-    )
+    edge_times: list[float] = []
+    for signal in ["sel0", "sel1"]:
+        edge_times.extend(_signal_threshold_edges(rows, signal, threshold=0.45, directions=("rising", "falling")))
+    max_err = 0.0
+    checked = 0
+    codes = set()
+    for row in rows:
+        if row["time"] < 0.15e-9:
+            continue
+        if not _v3_away_from_edges(row["time"], edge_times, 80e-12):
+            continue
+        code = (1 if row["sel0"] > 0.45 else 0) + (2 if row["sel1"] > 0.45 else 0)
+        expected = row[f"in{code}"]
+        max_err = max(max_err, abs(row["out"] - expected))
+        codes.add(code)
+        checked += 1
+    if checked < 20 or codes != {0, 1, 2, 3}:
+        return False, f"insufficient_mux4_coverage checked={checked} codes={sorted(codes)}"
+    return max_err <= 0.025, f"checked={checked} codes={sorted(codes)} max_err={max_err:.5f}"
 
 
 def check_v3_xnor_gate_voltage(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "vin1", "vin2", "vout"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing xnor gate voltage signals"
-    return _sample_many(
-        rows,
-        {"vout": [(0.4, 0.9), (1.2, 0.0), (2.0, 0.0), (2.8, 0.9)]},
-        tol=0.06,
+    edge_times: list[float] = []
+    for signal in ["vin1", "vin2"]:
+        edge_times.extend(_signal_threshold_edges(rows, signal, threshold=0.45, directions=("rising", "falling")))
+    max_err = 0.0
+    checked = 0
+    combos = set()
+    for row in rows:
+        if row["time"] < 0.15e-9:
+            continue
+        if not _v3_away_from_edges(row["time"], edge_times, 80e-12):
+            continue
+        a = row["vin1"] > 0.45
+        b = row["vin2"] > 0.45
+        combos.add((a, b))
+        expected = 0.9 if a == b else 0.0
+        max_err = max(max_err, abs(row["vout"] - expected))
+        checked += 1
+    if checked < 20 or len(combos) < 4:
+        return False, f"insufficient_xnor_coverage checked={checked} combos={sorted(combos)}"
+    return max_err <= 0.08, f"checked={checked} combos={sorted(combos)} max_err={max_err:.4f}"
+
+
+def check_v3_voltage_match_window(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "vin1", "vin2", "vout"}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing voltage match window signals"
+    change_times: list[float] = []
+    for signal in ["vin1", "vin2"]:
+        for prev, cur in zip(rows, rows[1:]):
+            if abs(cur[signal] - prev[signal]) > 0.01:
+                change_times.append(cur["time"])
+    match_tol = 0.05
+    vh = 0.9
+    max_err = 0.0
+    checked = 0
+    matched = 0
+    mismatched = 0
+    near_boundary = 0
+    for row in rows:
+        if row["time"] < 0.15e-9:
+            continue
+        if not _v3_away_from_edges(row["time"], change_times, 80e-12):
+            continue
+        diff = abs(row["vin1"] - row["vin2"])
+        expected = vh if diff <= match_tol else 0.0
+        max_err = max(max_err, abs(row["vout"] - expected))
+        checked += 1
+        if expected > 0.45:
+            matched += 1
+        else:
+            mismatched += 1
+        if 0.02 <= diff <= 0.08:
+            near_boundary += 1
+    if checked < 20 or matched == 0 or mismatched == 0 or near_boundary == 0:
+        return False, (
+            f"insufficient_voltage_match_coverage checked={checked} "
+            f"matched={matched} mismatched={mismatched} near_boundary={near_boundary}"
+        )
+    return max_err <= 0.08, (
+        f"checked={checked} matched={matched} mismatched={mismatched} "
+        f"near_boundary={near_boundary} max_err={max_err:.4f}"
     )
 
 
@@ -17232,27 +18139,156 @@ def check_v3_bipolar_dff_sample(rows: list[dict[str, float]]) -> tuple[bool, str
     required = {"time", "vin_d", "vclk", "vout_q", "vout_qbar"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing bipolar dff sample signals"
-    return _sample_many(
-        rows,
-        {
-            "vout_q": [(0.6, -1.0), (1.4, 1.0), (2.2, -1.0), (2.9, 1.0)],
-            "vout_qbar": [(0.6, 1.0), (1.4, -1.0), (2.2, 1.0), (2.9, -1.0)],
-        },
-        tol=0.08,
+    edges = _signal_threshold_edges(rows, "vclk", threshold=0.45, directions=("rising",))
+    if len(edges) < 3:
+        return False, f"too_few_bipolar_dff_edges={len(edges)}"
+    max_err = 0.0
+    checked = 0
+    high = 0
+    low = 0
+    for edge_t in edges:
+        vin = sample_signal_at(rows, "vin_d", edge_t)
+        q = sample_signal_at(rows, "vout_q", edge_t + 0.10e-9)
+        qb = sample_signal_at(rows, "vout_qbar", edge_t + 0.10e-9)
+        if vin is None or q is None or qb is None:
+            return False, f"missing_bipolar_dff_sample_at={edge_t * 1e9:.3f}ns"
+        is_high = vin > 0.0
+        if is_high:
+            high += 1
+        else:
+            low += 1
+        want_q = 1.0 if is_high else -1.0
+        want_qb = -want_q
+        max_err = max(max_err, abs(q - want_q), abs(qb - want_qb))
+        checked += 1
+    if checked < 3 or high == 0 or low == 0:
+        return False, f"insufficient_bipolar_dff_coverage checked={checked} high={high} low={low}"
+    return max_err <= 0.10, f"edges={len(edges)} high={high} low={low} max_err={max_err:.4f}"
+
+
+def _external_reset_pfd_state_changes(
+    rows: list[dict[str, float]],
+    *,
+    reset_delay: float,
+    threshold: float = 0.45,
+) -> tuple[list[tuple[float, int, int, str]], list[float], int]:
+    ref_edges = _signal_threshold_edges(rows, "ref", threshold=threshold, directions=("rising",))
+    fb_edges = _signal_threshold_edges(rows, "fb", threshold=threshold, directions=("rising",))
+    rstb_falls = _signal_threshold_edges(rows, "rstb", threshold=threshold, directions=("falling",))
+    events = sorted(
+        [(t, "ref") for t in ref_edges]
+        + [(t, "fb") for t in fb_edges]
+        + [(t, "rstb_fall") for t in rstb_falls]
     )
+    up = 0
+    down = 0
+    timer_time: float | None = None
+    timer_times: list[float] = []
+    state_changes: list[tuple[float, int, int, str]] = [(rows[0]["time"], up, down, "initial")]
+    external_reset_clears = 0
+    idx = 0
+    while idx < len(events) or timer_time is not None:
+        event_time = events[idx][0] if idx < len(events) else math.inf
+        next_timer = timer_time if timer_time is not None else math.inf
+        if next_timer <= event_time:
+            up = 0
+            down = 0
+            state_changes.append((next_timer, up, down, "timer_reset"))
+            timer_times.append(next_timer)
+            timer_time = None
+            continue
+        t, kind = events[idx]
+        idx += 1
+        rstb_value = sample_signal_at(rows, "rstb", t)
+        rstb_high = rstb_value is not None and rstb_value > threshold
+        if kind == "rstb_fall":
+            if up or down:
+                external_reset_clears += 1
+            up = 0
+            down = 0
+            timer_time = None
+            state_changes.append((t, up, down, "external_reset"))
+            continue
+        if not rstb_high:
+            state_changes.append((t, up, down, f"{kind}_ignored_reset_low"))
+            continue
+        if kind == "ref":
+            up = 1
+            if down:
+                timer_time = t + reset_delay
+        elif kind == "fb":
+            down = 1
+            if up:
+                timer_time = t + reset_delay
+        state_changes.append((t, up, down, kind))
+    return state_changes, sorted(timer_times), external_reset_clears
 
 
 def check_v3_pfd_active_low_reset(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    required = {"time", "ref", "fb", "upb", "down"}
+    required = {"time", "ref", "fb", "rstb", "up", "down"}
     if not rows or not required.issubset(rows[0]):
-        return False, "missing pfd active low reset signals"
-    return _sample_many(
+        return False, "missing pfd active-low reset signals"
+    ref_edges = _signal_threshold_edges(rows, "ref", threshold=0.45, directions=("rising",))
+    fb_edges = _signal_threshold_edges(rows, "fb", threshold=0.45, directions=("rising",))
+    rstb_edges = _signal_threshold_edges(rows, "rstb", threshold=0.45, directions=("rising", "falling"))
+    if len(ref_edges) < 2 or len(fb_edges) < 2 or len(rstb_edges) < 2:
+        return False, f"too_few_pfd_reset_edges ref={len(ref_edges)} fb={len(fb_edges)} rstb={len(rstb_edges)}"
+    state_changes, timer_times, external_reset_clears = _external_reset_pfd_state_changes(
         rows,
-        {
-            "upb": [(0.2, 0.9), (0.7, 0.0), (1.1, 0.0), (1.25, 0.9), (2.1, 0.9), (2.5, 0.0), (2.7, 0.9)],
-            "down": [(0.2, 0.0), (0.7, 0.0), (1.1, 0.9), (1.25, 0.0), (2.1, 0.9), (2.5, 0.9), (2.7, 0.0)],
-        },
-        tol=0.08,
+        reset_delay=80e-12,
+    )
+    guard_times = sorted(ref_edges + fb_edges + rstb_edges + timer_times)
+    if not timer_times:
+        return False, "no_delayed_timer_reset_seen"
+    max_err = 0.0
+    checked = 0
+    up_rows = down_rows = both_rows = reset_low_rows = idle_rows = 0
+    change_idx = 0
+    up_state = 0
+    down_state = 0
+    for row in rows:
+        t = row["time"]
+        while change_idx + 1 < len(state_changes) and state_changes[change_idx + 1][0] <= t:
+            change_idx += 1
+            _, up_state, down_state, _ = state_changes[change_idx]
+        if t < rows[0]["time"] + 0.05e-9:
+            continue
+        if not _v3_away_from_edges(t, guard_times, 35e-12):
+            continue
+        rstb_high = row["rstb"] > 0.45
+        expected_up = 0.9 if (rstb_high and up_state) else 0.0
+        expected_down = 0.9 if (rstb_high and down_state) else 0.0
+        max_err = max(max_err, abs(row["up"] - expected_up), abs(row["down"] - expected_down))
+        checked += 1
+        if not rstb_high:
+            reset_low_rows += 1
+        elif up_state and down_state:
+            both_rows += 1
+        elif up_state:
+            up_rows += 1
+        elif down_state:
+            down_rows += 1
+        else:
+            idle_rows += 1
+    if (
+        checked < 30
+        or up_rows == 0
+        or down_rows == 0
+        or both_rows == 0
+        or reset_low_rows == 0
+        or idle_rows == 0
+        or external_reset_clears == 0
+    ):
+        return False, (
+            f"insufficient_pfd_external_reset_coverage checked={checked} up={up_rows} "
+            f"down={down_rows} both={both_rows} reset_low={reset_low_rows} idle={idle_rows} "
+            f"external_reset_clears={external_reset_clears}"
+        )
+    if max_err > 0.12:
+        return False, f"pfd_external_reset_level_error={max_err:.4f} checked={checked}"
+    return True, (
+        f"ref_edges={len(ref_edges)} fb_edges={len(fb_edges)} timer_resets={len(timer_times)} "
+        f"external_reset_clears={external_reset_clears} checked={checked} max_err={max_err:.4f}"
     )
 
 
@@ -17451,14 +18487,7 @@ def check_v3_source_pfd_timer_reset(rows: list[dict[str, float]]) -> tuple[bool,
 
 
 def check_v3_source_pfd_active_low_reset(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    return _check_source_pfd_reset(
-        rows,
-        first_signal="ref",
-        second_signal="fb",
-        first_output="upb",
-        second_output="down",
-        reset_delay=80e-12,
-    )
+    return check_v3_pfd_active_low_reset(rows)
 
 
 def _checker_float_param(params: dict[str, object], key: str, default: float) -> float:
@@ -23320,9 +24349,11 @@ CHECKS["280-vargain-diffamp-clip"] = check_v3_vargain_diffamp_clip
 CHECKS["281-programmable-divider-by-n"] = check_v3_programmable_divider_by_n
 CHECKS["282-pfd-timer-reset"] = check_v3_pfd_timer_reset
 CHECKS["v3_absolute_value"] = check_v3_absolute_value
+CHECKS["v3_smooth_absolute_value"] = check_v3_smooth_absolute_value
 CHECKS["v3_deadband_voltage"] = check_v3_deadband_voltage
 CHECKS["v3_deadband_diffamp"] = check_v3_deadband_diffamp
 CHECKS["v3_limiting_diffamp"] = check_v3_limiting_diffamp
+CHECKS["v3_smooth_limiting_diffamp"] = check_v3_smooth_limiting_diffamp
 CHECKS["v3_smooth_tanh_comparator"] = check_v3_smooth_tanh_comparator
 CHECKS["v3_hysteretic_comparator_receiver"] = check_v3_hysteretic_comparator_receiver
 CHECKS["v3_flash_folded_dac4"] = check_v3_flash_folded_dac4
@@ -23347,25 +24378,29 @@ CHECKS["v3_505_fractional_n_divider_accumulator_flow"] = check_v3_505_fractional
 CHECKS["v3_cal4bit_modulo"] = check_v3_cal4bit_modulo
 CHECKS["v3_mux4_priority"] = check_v3_mux4_priority
 CHECKS["v3_xnor_gate_voltage"] = check_v3_xnor_gate_voltage
+CHECKS["v3_voltage_match_window"] = check_v3_voltage_match_window
 CHECKS["v3_bipolar_dff_sample"] = check_v3_bipolar_dff_sample
 CHECKS["v3_pfd_active_low_reset"] = check_v3_pfd_active_low_reset
-CHECKS["v3_288_absolute_value"] = check_v3_absolute_value
+CHECKS["v3_288_absolute_value"] = check_v3_smooth_absolute_value
+CHECKS["v3_288_smooth_absolute_value"] = check_v3_smooth_absolute_value
 CHECKS["v3_289_deadband_voltage"] = check_v3_deadband_voltage
 CHECKS["v3_290_deadband_diffamp"] = check_v3_deadband_diffamp
-CHECKS["v3_291_limiting_diffamp"] = check_v3_limiting_diffamp
+CHECKS["v3_291_limiting_diffamp"] = check_v3_smooth_limiting_diffamp
+CHECKS["v3_291_smooth_limiting_diffamp"] = check_v3_smooth_limiting_diffamp
 CHECKS["v3_292_hysteretic_comparator_receiver"] = check_v3_hysteretic_comparator_receiver
 CHECKS["v3_293_flash_folded_dac4"] = check_v3_flash_folded_dac4
 CHECKS["v3_294_subradix_dac10"] = check_v3_subradix_dac10
 CHECKS["v3_295_clocked_adc3bit"] = check_v3_clocked_adc3bit
 CHECKS["v3_296_cal4bit_modulo"] = check_v3_cal4bit_modulo
 CHECKS["v3_297_mux4_priority"] = check_v3_mux4_priority
-CHECKS["v3_298_xnor_gate_voltage"] = check_v3_xnor_gate_voltage
+CHECKS["v3_298_xnor_gate_voltage"] = check_v3_voltage_match_window
+CHECKS["v3_298_voltage_match_window"] = check_v3_voltage_match_window
 CHECKS["v3_299_bipolar_dff_sample"] = check_v3_bipolar_dff_sample
 CHECKS["v3_300_pfd_active_low_reset"] = check_v3_pfd_active_low_reset
-CHECKS["288-absolute-value"] = check_v3_absolute_value
+CHECKS["288-absolute-value"] = check_v3_smooth_absolute_value
 CHECKS["289-deadband-voltage"] = check_v3_deadband_voltage
 CHECKS["290-deadband-diffamp"] = check_v3_deadband_diffamp
-CHECKS["291-limiting-diffamp"] = check_v3_limiting_diffamp
+CHECKS["291-limiting-diffamp"] = check_v3_smooth_limiting_diffamp
 CHECKS["292-hysteretic-comparator-receiver"] = check_v3_hysteretic_comparator_receiver
 CHECKS["293-flash-folded-dac4"] = check_v3_flash_folded_dac4
 CHECKS["294-subradix-dac10"] = check_v3_subradix_dac10
@@ -23388,7 +24423,8 @@ CHECKS["504-charge-pump-pfd-state-machine"] = check_v3_504_charge_pump_pfd_state
 CHECKS["505-fractional-n-divider-accumulator-flow"] = check_v3_505_fractional_n_divider_accumulator_flow
 CHECKS["296-cal4bit-modulo"] = check_v3_cal4bit_modulo
 CHECKS["297-mux4-priority"] = check_v3_mux4_priority
-CHECKS["298-xnor-gate-voltage"] = check_v3_xnor_gate_voltage
+CHECKS["298-xnor-gate-voltage"] = check_v3_voltage_match_window
+CHECKS["298-voltage-match-window"] = check_v3_voltage_match_window
 CHECKS["299-bipolar-dff-sample"] = check_v3_bipolar_dff_sample
 CHECKS["300-pfd-active-low-reset"] = check_v3_pfd_active_low_reset
 # V3 task id aliases generated from task metadata.
@@ -23564,17 +24600,20 @@ V3_TASK_ID_ALIASES = {
     "v3_280_vargain_diffamp_clip": "v3_vargain_diffamp_clip",
     "v3_281_programmable_divider_by_n": "v3_programmable_divider_by_n",
     "v3_282_pfd_timer_reset": "v3_pfd_timer_reset",
-    "v3_288_absolute_value": "v3_absolute_value",
+    "v3_288_absolute_value": "v3_smooth_absolute_value",
+    "v3_288_smooth_absolute_value": "v3_smooth_absolute_value",
     "v3_289_deadband_voltage": "v3_deadband_voltage",
     "v3_290_deadband_diffamp": "v3_deadband_diffamp",
-    "v3_291_limiting_diffamp": "v3_limiting_diffamp",
+    "v3_291_limiting_diffamp": "v3_smooth_limiting_diffamp",
+    "v3_291_smooth_limiting_diffamp": "v3_smooth_limiting_diffamp",
     "v3_292_hysteretic_comparator_receiver": "v3_hysteretic_comparator_receiver",
     "v3_293_flash_folded_dac4": "v3_flash_folded_dac4",
     "v3_294_subradix_dac10": "v3_subradix_dac10",
     "v3_295_clocked_adc3bit": "v3_clocked_adc3bit",
     "v3_296_cal4bit_modulo": "v3_cal4bit_modulo",
     "v3_297_mux4_priority": "v3_mux4_priority",
-    "v3_298_xnor_gate_voltage": "v3_xnor_gate_voltage",
+    "v3_298_xnor_gate_voltage": "v3_voltage_match_window",
+    "v3_298_voltage_match_window": "v3_voltage_match_window",
     "v3_299_bipolar_dff_sample": "v3_bipolar_dff_sample",
     "v3_300_pfd_active_low_reset": "v3_pfd_active_low_reset",
 }
@@ -23584,6 +24623,7 @@ for _task_id_alias, _checker_id in V3_TASK_ID_ALIASES.items():
 # End v3 task id aliases.
 
 CHECKS["v3_source_smooth_comparator_tanh"] = check_v3_source_smooth_comparator_tanh
+CHECKS["v3_source_smooth_absolute_value"] = check_v3_smooth_absolute_value
 CHECKS["v3_source_weighted_decoder_6bit"] = check_v3_source_weighted_decoder_6bit
 CHECKS["v3_source_pfd_timer_reset"] = check_v3_source_pfd_timer_reset
 CHECKS["v3_source_smooth_tanh_comparator"] = check_v3_source_smooth_tanh_comparator
@@ -23595,7 +24635,9 @@ V3_SOURCE_FORM_CHECK_ALIASES = {
     "v3_146_source_smooth_comparator_tanh": "v3_source_smooth_comparator_tanh",
     "v3_source_absolute_value": "v3_absolute_value",
     "v3_148_source_absolute_value": "v3_absolute_value",
-    "v3_288_source_absolute_value": "v3_absolute_value",
+    "v3_source_smooth_absolute_value": "v3_smooth_absolute_value",
+    "v3_288_source_absolute_value": "v3_smooth_absolute_value",
+    "v3_288_source_smooth_absolute_value": "v3_smooth_absolute_value",
     "v3_source_weighted_decoder_6bit": "v3_source_weighted_decoder_6bit",
     "v3_274_source_weighted_decoder_6bit": "v3_source_weighted_decoder_6bit",
     "v3_source_pfd_timer_reset": "v3_source_pfd_timer_reset",

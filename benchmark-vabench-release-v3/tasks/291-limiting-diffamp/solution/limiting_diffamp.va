@@ -4,13 +4,8 @@ input sigin_p, sigin_n;
 output sigout;
 electrical sigin_p, sigin_n, sigout;
 parameter real gain = 4.0;
-parameter real sigout_high = 0.75;
-parameter real sigout_low = -0.75;
-real y;
+parameter real limit = 0.75 from (0:inf);
 analog begin
-    y = gain * V(sigin_p, sigin_n);
-    if (y > sigout_high) y = sigout_high;
-    if (y < sigout_low) y = sigout_low;
-    V(sigout) <+ y;
+    V(sigout) <+ limit * tanh(gain * V(sigin_p, sigin_n) / limit);
 end
 endmodule

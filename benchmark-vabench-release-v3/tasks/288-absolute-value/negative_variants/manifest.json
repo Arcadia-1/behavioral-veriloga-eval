@@ -8,9 +8,9 @@
       "path": "negative_variants/neg_001_zero/absolute_value.va"
     },
     {
-      "description": "Passes the signed input through instead of taking absolute value.",
-      "id": "neg_002_passthrough_negative",
-      "path": "negative_variants/neg_002_passthrough_negative/absolute_value.va"
+      "description": "Implements a sharp ideal absolute value and misses the required smooth zero-crossing behavior.",
+      "id": "neg_002_sharp_abs",
+      "path": "negative_variants/neg_002_sharp_abs/absolute_value.va"
     },
     {
       "description": "Computes the absolute value with the wrong gain.",
@@ -18,12 +18,12 @@
       "path": "negative_variants/neg_003_half_scale/absolute_value.va"
     },
     {
-      "description": "Squares the input magnitude instead of preserving absolute magnitude.",
-      "id": "neg_004_squared",
-      "path": "negative_variants/neg_004_squared/absolute_value.va"
+      "description": "Uses the wrong nonlinear smoothing formula and therefore produces the wrong magnitude transfer.",
+      "id": "neg_004_wrong_smoothing",
+      "path": "negative_variants/neg_004_wrong_smoothing/absolute_value.va"
     },
     {
-      "description": "Absolute Value: scales the metric output, preserving the main path while failing measurement checks.",
+      "description": "Scales the smooth absolute-value transfer by the wrong output gain.",
       "id": "neg_005_metric_scale_low",
       "path": "negative_variants/neg_005_metric_scale_low/absolute_value.va"
     }

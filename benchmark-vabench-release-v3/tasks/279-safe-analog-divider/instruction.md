@@ -1,22 +1,36 @@
 # Safe Analog Divider
 
 ## Task Contract
-Implement the Verilog-A module `safe_analog_divider.va` for an analog divider with a sign-preserving minimum denominator magnitude.
 
-## Form-Specific Requirements
-This is a small analog arithmetic component. The public contract is the divider behavior, not the specific stimulus waveform.
+Implement `safe_analog_divider.va` as an analog divider with a sign-preserving minimum denominator magnitude.
 
 ## Public Verilog-A Interface
-Provide `module safe_analog_divider(signumer, sigdenom, sigout);` with electrical inputs `signumer`, `sigdenom` and electrical output `sigout`.
+
+Use this module signature:
+
+```verilog
+module safe_analog_divider(signumer, sigdenom, sigout);
+```
+
+All ports are scalar `electrical` nodes. `signumer` is the numerator input, `sigdenom` is the denominator input, and `sigout` is the divided output.
 
 ## Public Parameter Contract
-Expose `gain = 1.0` and `min_sigdenom = 0.2` as real parameters. Testbenches may override these parameters.
+
+- `gain`: multiplier applied to the divided result, default `1.0`.
+- `min_sigdenom`: minimum denominator magnitude, default `0.2`.
 
 ## Required Behavior
-Drive `sigout` to `gain * V(signumer) / denominator`, where `denominator` is `V(sigdenom)` unless its magnitude is below `min_sigdenom`. In that guarded region, use `+min_sigdenom` for nonnegative denominators and `-min_sigdenom` for negative denominators.
+
+- Use `V(sigdenom)` directly when its magnitude is at least `min_sigdenom`.
+- When `V(sigdenom)` is positive but smaller than `min_sigdenom`, use `+min_sigdenom`.
+- When `V(sigdenom)` is exactly zero, use `+min_sigdenom`.
+- When `V(sigdenom)` is negative but its magnitude is smaller than `min_sigdenom`, use `-min_sigdenom`.
+- Drive `sigout` to `gain * V(signumer) / guarded_denominator`.
 
 ## Modeling Constraints
-Use continuous voltage-domain arithmetic. Preserve denominator sign under the guard and keep the gain parameter active.
+
+Use continuous voltage-domain arithmetic. Preserve denominator sign under the guard, keep the gain parameter active, and do not depend on private stimulus timing or checker-only hooks.
 
 ## Output Contract
-Submit only the completed Verilog-A module in `safe_analog_divider.va`.
+
+Return exactly one source artifact named `safe_analog_divider.va`.

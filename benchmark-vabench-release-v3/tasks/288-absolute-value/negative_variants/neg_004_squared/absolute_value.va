@@ -1,5 +1,0 @@
-`include "disciplines.vams"
-module absolute_value(sigin, sigout);
-input sigin; output sigout; electrical sigin, sigout;
-analog begin V(sigout) <+ V(sigin) * V(sigin); end
-endmodule

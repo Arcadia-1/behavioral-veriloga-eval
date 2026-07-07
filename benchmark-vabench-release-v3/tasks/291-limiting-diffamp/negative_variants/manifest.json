@@ -8,9 +8,9 @@
       "path": "negative_variants/neg_001_zero/limiting_diffamp.va"
     },
     {
-      "description": "Applies gain but omits output limiting.",
-      "id": "neg_002_no_limit",
-      "path": "negative_variants/neg_002_no_limit/limiting_diffamp.va"
+      "description": "Uses a hard clamp instead of the required smooth tanh limiting.",
+      "id": "neg_002_hard_clamp",
+      "path": "negative_variants/neg_002_hard_clamp/limiting_diffamp.va"
     },
     {
       "description": "Uses an incorrect small-signal gain.",
@@ -23,7 +23,7 @@
       "path": "negative_variants/neg_004_inverted_polarity/limiting_diffamp.va"
     },
     {
-      "description": "Limiting Diffamp: scales the metric output, preserving the main path while failing measurement checks.",
+      "description": "Scales the smooth limiting amplifier transfer by the wrong output gain.",
       "id": "neg_005_metric_scale_low",
       "path": "negative_variants/neg_005_metric_scale_low/limiting_diffamp.va"
     }

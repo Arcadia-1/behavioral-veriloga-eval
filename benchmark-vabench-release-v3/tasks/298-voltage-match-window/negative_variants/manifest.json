@@ -1,0 +1,31 @@
+{
+  "negative_count": 5,
+  "policy": "five_partial_pass_near_miss_negatives_per_task",
+  "variants": [
+    {
+      "description": "Keeps the output at its trivial zero behavior and therefore fails the stable waveform contract.",
+      "id": "neg_001_zero",
+      "path": "negative_variants/neg_001_zero/voltage_match_window.va"
+    },
+    {
+      "description": "Thresholds both inputs and implements Boolean equality instead of direct analog voltage matching.",
+      "id": "neg_002_threshold_xnor",
+      "path": "negative_variants/neg_002_threshold_xnor/voltage_match_window.va"
+    },
+    {
+      "description": "Uses a signed greater-than comparator instead of an absolute voltage-difference window.",
+      "id": "neg_003_signed_comparator",
+      "path": "negative_variants/neg_003_signed_comparator/voltage_match_window.va"
+    },
+    {
+      "description": "Uses a much wider match window than the public tolerance contract.",
+      "id": "neg_004_wrong_tolerance",
+      "path": "negative_variants/neg_004_wrong_tolerance/voltage_match_window.va"
+    },
+    {
+      "description": "Scales the rail-coded match output by the wrong output gain.",
+      "id": "neg_005_metric_scale_low",
+      "path": "negative_variants/neg_005_metric_scale_low/voltage_match_window.va"
+    }
+  ]
+}

@@ -11,6 +11,6 @@ analog begin
          + (V(d3) > vth ? 1.0 : -1.0) / 8.0
          + (V(d2) > vth ? 1.0 : -1.0) / 16.0
          + (V(d1) > vth ? 1.0 : -1.0) / 32.0;
-    V(out) <+ transition(0.5 * (vout * 2.0 - 1.0) * 1.1, 0, 10f, 10f);
+    V(out) <+ transition(0.5 * (vout * 2.0 - 1.0) * 1.1, 0, 1p, 1p);
 end
 endmodule
