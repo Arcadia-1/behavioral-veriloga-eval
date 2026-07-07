@@ -25,7 +25,7 @@ Provide overrideable parameter `vdd = 1.0`. Use `0.5*vdd` as the clock and decis
 
 ## Required Behavior
 
-Initialize calibration active with all trim bits low. On each rising `ck` crossing while the five-bit capture phase is active, sample `d` and capture one complementary trim decision from bit 4 down to bit 0. A low decision sets the matching `dcp` bit high and `dcn` bit low; a high decision sets `dcn` high and `dcp` low. After the capture phase completes, deassert `en` and assert `enb`. Continuously drive `cvinp` from `vrefp` and `cvinn` from `vrefn`.
+Initialize calibration active with all trim bits low. On each rising `ck` crossing while the five-bit capture phase is active, sample `d` and capture one complementary trim decision from bit 4 down to bit 0. A low decision sets the matching `dcp` bit high and `dcn` bit low; a high decision sets `dcn` high and `dcp` low. Keep `en` asserted and `enb` deasserted through all five capture clocks, including the bit-0 capture. On the next rising `ck` after the bit-0 capture, deassert `en` and assert `enb`. Continuously drive `cvinp` from `vrefp` and `cvinn` from `vrefn`.
 
 ## Modeling Constraints
 

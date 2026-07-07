@@ -6,7 +6,7 @@
 - Level: `L1`.
 - Category: data-converter stimulus/control support.
 - Target artifact: `dac7_code_generator.va`.
-- Role: clocked 7-bit binary code generator.
+- Role: clocked inverted high-bit DAC stimulus generator.
 - Output boundary: implement only the requested public Verilog-A DUT artifact.
 
 ## Public Verilog-A Interface
@@ -17,7 +17,7 @@ Declare the public module exactly as:
 module dac7_code_generator(clks, din0, din1, din2, din3, din4, din5, din6);
 ```
 
-`clks` is the code-update clock and `din0..din6` are voltage-coded code outputs ordered from LSB to MSB. All ports are electrical.
+`clks` is the code-update clock and `din0..din6` are voltage-coded code outputs. All ports are electrical.
 
 ## Public Parameter Contract
 
@@ -25,7 +25,17 @@ Provide overrideable parameters `vlo = 0`, `vhi = 0.9`, `vth = 0.45`, and `tt = 
 
 ## Required Behavior
 
-Initialize the code to zero. On each rising `clks` crossing, increment the 7-bit binary code modulo its range and publish the bits on `din0..din6` using `vlo`/`vhi`. Hold outputs between clock events.
+Initialize the internal counter to zero and initialize all seven outputs low. On each rising `clks` crossing, first increment an 8-bit counter modulo 256, then publish the inverted high-bit slice using `vlo`/`vhi`:
+
+- `din0 = inverse(counter[7])`
+- `din1 = inverse(counter[6])`
+- `din2 = inverse(counter[5])`
+- `din3 = inverse(counter[4])`
+- `din4 = inverse(counter[3])`
+- `din5 = inverse(counter[2])`
+- `din6 = inverse(counter[1])`
+
+Here `inverse(0)` drives `vhi` and `inverse(1)` drives `vlo`. Hold outputs between clock events.
 
 ## Modeling Constraints
 

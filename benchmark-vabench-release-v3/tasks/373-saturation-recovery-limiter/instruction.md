@@ -1,20 +1,23 @@
 # Saturation Recovery Limiter
 
-Implement one Verilog-A source file named `saturation_recovery_limiter.va`.
-
 ## Task Contract
 
-Build a Spectre-compatible voltage-domain behavioral model for Voltage-domain limiter that exposes saturation and recovery metrics for downstream analog signal conditioning.
-
-## Form-Specific Requirements
-
-This is a DUT source task. Implement only the `saturation_recovery_limiter` module; no external testbench, checker logic, transistor devices, or extra helper module is part of the requested artifact.
+Build a Spectre-compatible voltage-domain limiter that exposes saturation and recovery metrics for downstream analog signal conditioning.
+- Form: `dut`.
+- Level: `L1`.
+- Category: voltage-domain analog signal conditioning.
+- Target artifact: `saturation_recovery_limiter.va`.
+- Output boundary: implement only the requested public Verilog-A DUT artifact.
 
 ## Public Verilog-A Interface
 
 ```verilog
 module saturation_recovery_limiter(vin, en, out, sat, recovery_metric);
 ```
+
+All ports are electrical. `vin` is the analog input, `en` is an active-high
+voltage-coded enable, `out` is the limited output, `sat` is the saturation flag,
+and `recovery_metric` reports normalized clipped error.
 
 ## Public Parameter Contract
 
@@ -29,12 +32,18 @@ module saturation_recovery_limiter(vin, en, out, sat, recovery_metric);
 - Clamp the enabled input between the public low and high limiter levels.
 - Drive a saturation flag when either limiter boundary is active.
 - Clear output, flag, and recovery metric while enable is low.
-- Expose a bounded recovery metric proportional to clipped error.
+- Compute `limited = clamp(V(vin), vlo, vlimit)` while enabled and drive `out`
+  to `limited`.
+- Drive `sat = vhi` when enabled and `V(vin)` is outside `[vlo, vlimit]`;
+  otherwise drive `sat = 0`.
+- Drive the recovery metric as
+  `recovery_metric = vhi * clip01(abs(V(vin) - limited) / (vlimit - vlo))`
+  while enabled, and `0` while disabled.
 - Use local analog functions rather than user task/endtask syntax.
 
 ## Modeling Constraints
 
-Use voltage-domain behavioral Verilog-A only. Do not use user `task`/`endtask`, Verilog-AMS digital kernels, branch current contributions, transistor devices, `ddt()`, or `idt()`. Do not hard-code visible or hidden stimulus times.
+Use voltage-domain behavioral Verilog-A only. Do not use user `task`/`endtask`, Verilog-AMS digital kernels, branch current contributions, transistor devices, `ddt()`, or `idt()`. Do not hard-code testbench-only stimulus times.
 
 ## Output Contract
 

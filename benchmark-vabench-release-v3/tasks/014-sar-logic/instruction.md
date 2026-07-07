@@ -27,9 +27,11 @@ Provide these overrideable public parameters:
 Implement a 4-bit successive-approximation state machine clocked by rising
 `CLKS` edges. Initialize the conversion by trying the most significant DAC bit.
 At each decision step, use `DCOMP` to decide whether the current trial bit stays
-set or is cleared, then advance the trial to the next lower bit. After bit 0 is
-resolved, assert `RDY` and hold the final DAC decision pins. On the following
-clock, restart the sequencer for the next conversion.
+set or is cleared, then advance the trial to the next lower bit. A `DCOMP`
+voltage at or above `vth` keeps the active trial bit set; a `DCOMP` voltage
+below `vth` clears that trial bit before advancing. After bit 0 is resolved,
+assert `RDY` and hold the final DAC decision pins. On the following clock,
+restart the sequencer for the next conversion.
 
 Drive `DP_DAC_3..DP_DAC_0` and `RDY` as voltage-coded outputs between `VSS`
 and `VDD`.
