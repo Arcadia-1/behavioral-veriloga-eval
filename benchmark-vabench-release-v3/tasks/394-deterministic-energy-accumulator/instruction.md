@@ -4,7 +4,9 @@ Implement one Verilog-A source file named `deterministic_energy_accumulator.va`.
 
 ## Task Contract
 
-Build a voltage-domain analog/mixed-signal helper or monitor. Deterministic energy-style accumulator that replaces unsupported chi-square random sampling with observable squared-error integration.
+Build a voltage-domain analog/mixed-signal helper or monitor. Deterministic
+energy-style accumulator that replaces unsupported chi-square random sampling
+with observable error/control accumulation.
 
 ## Public Verilog-A Interface
 
@@ -15,7 +17,7 @@ module deterministic_energy_accumulator(clk, rst, in0, in1, in2, in3, ctrl0, ctr
 All ports are electrical. `vdd` and `vss` are the local rails, `en` is an
 active-high enable, `in0` through `in3` are voltage-coded analog or lane inputs,
 `ctrl0` and `ctrl1` are voltage-coded control inputs, and `out`, `flag`, and
-`metric` are voltage-coded observables. For clocked rows, `clk` is the sampling
+`metric` are voltage-coded observables. For this row, `clk` is the sampling
 clock and `rst` clears the observable state.
 
 ## Public Parameter Contract
@@ -29,10 +31,19 @@ clock and `rst` clears the observable state.
 ## Required Behavior
 
 Measure analog inputs relative to the local `vss` rail and normalize by the
-current local supply span. Clear all observables when `en` is low or when the
-local supply span is outside the public range. The DUT updates its observable state on the public clock edge and clears state while reset is high. Drive `out` with the
-task-specific bounded analog result, drive `flag` with the task-specific
-qualification condition, and drive `metric` with a bounded diagnostic magnitude.
+current local supply span. Let `span = V(vdd, vss)` and treat the row as valid
+only when `V(en) > vth` and `span_min <= span <= span_max`. If `span` is below
+`0.05 V`, use `0.05 V` as the normalization span. Define `clip01(y)` as `y`
+limited to the range `[0, 1]`, `x0..x3 = clip01((V(inN) - V(vss)) / span)`,
+and `c0 = clip01(V(ctrl0) / vhi)`.
+
+Initialize the accumulator state and all observables to `0 V`. On a rising edge
+of `clk` or on reset assertion, clear the accumulator and all observables when
+`rst` is high or the row is not valid. Otherwise compute
+`aux = clip01(abs(x0 - x1) + 0.35 * c0)`, update
+`acc = clip01(0.62 * acc + 0.32 * aux)`, drive `out = vhi * acc`, assert
+`flag = vhi` when `acc > 0.58`, otherwise drive `flag = 0 V`, and drive
+`metric = vhi * aux`. Hold the last observable values between update events.
 
 ## Modeling Constraints
 
