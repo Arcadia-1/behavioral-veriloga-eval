@@ -25,7 +25,7 @@ Provide overrideable parameters `vth = 0.45` and `tt = 20p` for input/clock deci
 
 ## Required Behavior
 
-On each rising `samp` crossing, sample all input bits. Publish `do0..do2` from the current sample, `do3..do6` from the previous sample group, `do7..do10` from the two-sample-delayed group, and `do11..do14` from the three-sample-delayed group. Hold outputs between sample events.
+On each rising `samp` crossing, sample all input bits. Publish `do0..do2` from the current sample, `do3..do6` from the one-sample-delayed group, `do7..do10` from the two-sample-delayed group, and `do11..do14` from the four-sample-delayed group. Use zero for delayed history that is not yet available after startup, and hold outputs between sample events.
 
 ## Modeling Constraints
 

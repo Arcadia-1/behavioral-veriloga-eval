@@ -10,7 +10,7 @@ Provide `module dual_modulus_divider_16_17(fin, mc, fout);` with electrical inpu
 This task has no public parameters.
 
 ## Required Behavior
-Count rising crossings of `fin` through 0.5 V. Produce the divider output pulse pattern for divide-by-16 when `mc` is low, and extend the terminal count by one input edge for divide-by-17 when `mc` is high at the modulus decision point. The output is high for the divider marker interval and low after the internal midpoint marker.
+Start with `fout` low. Count rising crossings of `fin` through 0.5 V. Produce the divider output pulse pattern for divide-by-16 when `mc` is low, and extend the terminal count by one input edge for divide-by-17 when `mc` is high at the modulus decision point. Assert the high marker on the terminal divide event: count 15 for divide-by-16 and count 16 for divide-by-17. Return `fout` low at the midpoint marker, count 8 within the following marker interval.
 
 ## Modeling Constraints
 Use event-driven counter state and `transition` on `fout`. Do not force a fixed divide-by-16 or fixed divide-by-17 mode, change the low-marker count, or use a time table instead of input edges.

@@ -25,7 +25,7 @@ Provide overrideable parameter `vth = 0.5`. Interpret high input bits as `+1` an
 
 ## Required Behavior
 
-Produce three related decoded analog outputs. `aout7b` decodes the shared ladder from `d1..d8`. `aout8b` adds the half-weight `d0` contribution. `aout7b5` uses `d0` and `d1` as a three-level subrange pair: both high selects the positive sublevel, both low selects the negative sublevel, and mixed decisions select the middle sublevel. Normalize the outputs against the public redundant SAR array basis, including the fixed reference basis rather than only the switchable weights.
+Produce three related decoded analog outputs using a shared normalization denominator of `272.0`, corresponding to twice the public redundant SAR array basis including the fixed reference basis rather than only the switchable weights. Let `b0..b8` be the signed input decisions, where a high input is `+1` and a low input is `-1`. `aout7b` decodes the shared ladder from `d1..d8` as `(b1 + 2*b2 + 4*b3 + 8*b4 + 8*b5 + 16*b6 + 32*b7 + 64*b8) / 272.0`. `aout8b` adds the half-weight `d0` contribution as `(0.5*b0 + b1 + 2*b2 + 4*b3 + 8*b4 + 8*b5 + 16*b6 + 32*b7 + 64*b8) / 272.0`. For `aout7b5`, use `d0` and `d1` as a three-level subrange pair: both high selects `+1`, both low selects `-1`, and mixed decisions select `0`; then decode `(sublevel + 2*b2 + 4*b3 + 8*b4 + 8*b5 + 16*b6 + 32*b7 + 64*b8) / 272.0`.
 
 ## Modeling Constraints
 
