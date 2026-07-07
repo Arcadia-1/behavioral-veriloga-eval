@@ -3,9 +3,9 @@ global 0
 
 ahdl_include "duty_cycle_meter_8b.va"
 
-V_clk_in (clk_in 0) vsource type=pulse val0=0 val1=0.9 period=1n delay=100p rise=20p fall=20p width=450p
+V_clk_in (clk_in 0) vsource type=pwl wave=[0 0 8n 0 8.1n 0.9 13n 0 25n 0 25.1n 0.9 34n 0 49n 0 49.1n 0.9 65n 0 84n 0 84.1n 0.9 95n 0 116n 0]
 
 XDUT (clk_in valid duty0 duty1 duty2 duty3 duty4 duty5 duty6 duty7) duty_cycle_meter_8b
 
-tran tran stop=8n maxstep=100p
+tran tran stop=116n maxstep=100p
 save clk_in valid duty0 duty1 duty2 duty3 duty4 duty5 duty6 duty7
