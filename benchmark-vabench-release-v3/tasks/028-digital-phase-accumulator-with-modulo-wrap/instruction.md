@@ -41,7 +41,8 @@ The module is an ADPLL/NCO phase-timing primitive that keeps a wrapped phase sta
 - Drive `phase_out` as the wrapped phase scaled by the rail voltage
   `V(VDD,VSS)`.
 - Drive `clk_out` as a rail-referenced voltage-coded clock derived from the
-  wrapped phase.
+  wrapped phase: high at `V(VDD,VSS)` when `phase < 0.5`, and low at 0 V when
+  `phase >= 0.5`.
 
 ## Modeling Constraints
 
