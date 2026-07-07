@@ -27,13 +27,24 @@ Provide these overrideable public parameters:
 
 ## Required Behavior
 
-Before `START` is asserted, hold both outputs at `vcm` and reset the internal
-search state. After a rising `START`, update the search on falling `CLK`
-crossings. Interpret `VOUT` as the comparator decision, reverse search
-direction when the decision sign changes, and halve the search step on those
-sign changes. Drive `VINP` and `VINN` symmetrically around `vcm` so their
-difference equals the accumulated differential search value. When `START`
-falls, return to the reset common-mode state.
+Before `START` is asserted, hold both outputs at `vcm` and reset the search
+state to differential value `0`, step `20 mV`, and high direction. On each
+rising `START` crossing through `vstart_th`, reinitialize the same search
+state. When `START` falls below `vstart_th`, disable the search and return both
+outputs to `vcm`.
+
+While `START` is high, update the search only on falling `CLK` crossings through
+`0.5 * vdd`. Use that same `0.5 * vdd` threshold for the comparator decision:
+treat `VOUT > 0.5 * vdd` as the high decision direction and `VOUT <= 0.5 * vdd`
+as the low decision direction. If the newly sampled direction differs from the
+previous search direction, halve the current step before moving. Then update
+the differential search value by `+step` for the high direction or `-step` for
+the low direction, and remember the sampled direction for the next update.
+
+Drive `VINP = vcm + 0.5 * differential_value` and
+`VINN = vcm - 0.5 * differential_value` while the search is enabled. This keeps
+the output common mode at `vcm` and makes `VINP - VINN` equal to the accumulated
+differential search value.
 
 ## Modeling Constraints
 

@@ -37,14 +37,15 @@ The public parameters declared by the target artifact are part of the contract a
 
 - `clk`, `rst`, and `en` are voltage-coded logic signals.
 - `vdd_in` is the monitored supply waveform for the reference-startup flow.
-- `supply_ok` should expose supply-good detection.
-- `enable_mon` should expose the enable latch/command state.
-- `state_mon` should expose the off, disabled, startup, and valid flow states as bounded voltage-coded monitor levels.
-- `startup_mon` should expose bounded startup progress.
-- Hold `out` low when reset is active, supply is not good, or enable is low.
-- Once supply is good and enable is asserted, start the reference gradually toward a settled value near 0.55 V.
-- Drive `metric` high only after the reference has settled to a valid state.
-- A supply dip should reset valid status and startup progress; after the supply returns and enable remains asserted, the flow should recover.
+- Update the startup flow on rising `clk` crossings through `vth`.
+- Treat the supply as good when `vdd_in > 0.32 V`; drive `supply_ok` to 0.9 V when good and to 0 V otherwise.
+- Drive `enable_mon` to 0.9 V when `en > vth` and to 0 V otherwise.
+- When reset is active or the supply is not good, reset `out = 0 V`, `metric = 0 V`, startup count `0`, and state `0`.
+- When supply is good but enable is low, hold the disabled reference at `out = 0.05 V`, drive `metric = 0.1 V`, reset startup count to `0`, and use state `1`.
+- When supply is good and enable is high, update the reference as `out_next = out_prev + 0.32 * (0.55 - out_prev)` and increment the startup count by one until it saturates at `8`.
+- The startup is valid after the enabled update when the count is at least `5` and `out > 0.48 V`. In startup but not yet valid, drive `metric = 0.25 V` and use state `2`; when valid, drive `metric = 0.9 V` and use state `3`.
+- Drive `state_mon = 0.9 * state / 3.0`. Drive `startup_mon = 0.9 * count / 8.0` using the saturated startup count.
+- A supply dip should reset valid status and startup progress; after the supply returns and enable remains asserted, the flow should recover through the same startup sequence.
 - Keep the model pure voltage-domain behavioral Verilog-A. Do not use branch-current contributions, transistor-level devices, AC/noise analysis, or KCL/KVL regulation loops.
 
 ## Modeling Constraints
