@@ -3657,10 +3657,10 @@ def required_trace_signals_for_checker(task_id: str) -> frozenset[str]:
         | frozenset({f"sp{idx}" for idx in range(1, 7)})
         | frozenset({f"sn{idx}" for idx in range(1, 7)}),
         "v3_245_cdac_8b_monodown": frozenset({"time", "vin", "clks", "vres"})
-        | frozenset({f"dctrl{idx}" for idx in range(1, 8)}),
+        | frozenset({f"dctrl{idx}" for idx in range(0, 8)}),
         "v3_246_va_dac_6b_se": frozenset({"time", "rdy", "aout"})
         | frozenset({f"din{idx}" for idx in range(6)}),
-        "v3_250_dac_restore_7bit_clocked": frozenset({"time", "clk", "vout"})
+        "v3_250_dac_restore_7bit_clocked": frozenset({"time", "clk", "rst", "vout"})
         | frozenset({f"d{idx}" for idx in range(7)}),
         "v3_251_dac_restore_6bit_1p8": frozenset({"time", "clk", "vout"})
         | frozenset({f"d{idx}" for idx in range(1, 7)}),
@@ -15260,7 +15260,7 @@ def check_v3_l3_sar2_logic_7b(rows: list[dict[str, float]]) -> tuple[bool, str]:
 
 
 def check_v3_cdac_8b_monodown(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    required = {"time", "vin", "clks", "vres", *{f"dctrl{i}" for i in range(1, 8)}}
+    required = {"time", "vin", "clks", "vres", *{f"dctrl{i}" for i in range(0, 8)}}
     if not rows or not required.issubset(rows[0]):
         return False, "missing cdac 8b monodown signals"
     times = [row["time"] for row in rows]
@@ -15270,7 +15270,7 @@ def check_v3_cdac_8b_monodown(rows: list[dict[str, float]]) -> tuple[bool, str]:
         (t, "sample", None)
         for t in _threshold_crossings([row["clks"] for row in rows], times, threshold=threshold, direction="falling")
     ]
-    for bit in range(1, 8):
+    for bit in range(0, 8):
         signal = f"dctrl{bit}"
         events += [
             (t, "subtract", bit)
@@ -15326,14 +15326,46 @@ def check_v3_offset_halving_search(rows: list[dict[str, float]]) -> tuple[bool, 
     required = {"time", "clk", "dcmpp", "vinp", "vinn"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing offset halving search signals"
-    return _sample_many(
-        rows,
-        {
-            "vinp": [(0.5, 0.45), (1.0, 0.4), (2.0, 0.425), (3.0, 0.4375), (4.0, 0.43125)],
-            "vinn": [(0.5, 0.45), (1.0, 0.5), (2.0, 0.475), (3.0, 0.4625), (4.0, 0.46875)],
-        },
-        tol=0.01,
-    )
+    falling_edges = _v3_edge_times(rows, "clk", threshold=0.45, direction=-1)
+    if len(falling_edges) < 4:
+        return False, f"too_few_halving_clock_edges={len(falling_edges)}"
+    vin = 0.0
+    step = 0.16
+    locked = False
+    max_err = 0.0
+    checked = 0
+    decisions: list[int] = []
+    for edge in falling_edges:
+        if not locked:
+            dcmpp = sample_signal_at(rows, "dcmpp", edge)
+            if dcmpp is None:
+                return False, f"missing_dcmpp_at={edge * 1e9:.3f}ns"
+            decision_high = dcmpp > 0.45
+            decisions.append(1 if decision_high else 0)
+            vin += -step if decision_high else step
+            vin = max(-0.12, min(0.12, vin))
+            if step <= 0.02:
+                locked = True
+            else:
+                step *= 0.5
+                if step < 0.02:
+                    locked = True
+        sample_t = edge + 0.25e-9
+        if sample_t > rows[-1]["time"]:
+            continue
+        expected_vinp = 0.45 + 0.5 * vin
+        expected_vinn = 0.45 - 0.5 * vin
+        vinp = sample_signal_at(rows, "vinp", sample_t)
+        vinn = sample_signal_at(rows, "vinn", sample_t)
+        if vinp is None or vinn is None:
+            return False, f"missing_halving_output_at={sample_t * 1e9:.3f}ns"
+        max_err = max(max_err, abs(vinp - expected_vinp), abs(vinn - expected_vinn))
+        checked += 1
+    if checked < 4:
+        return False, f"too_few_halving_output_checks={checked}"
+    if set(decisions) != {0, 1}:
+        return False, f"insufficient_halving_decision_coverage={decisions}"
+    return max_err <= 0.015, f"checked={checked} decisions={decisions} max_error={max_err:.5f}"
 
 
 def check_v3_sar_comparator_reset_high(rows: list[dict[str, float]]) -> tuple[bool, str]:
@@ -15368,14 +15400,53 @@ def check_v3_dac_restore_4bit_clocked(rows: list[dict[str, float]]) -> tuple[boo
 
 
 def check_v3_dac_restore_7bit_clocked(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    required = {"time", "clk", "vout", *{f"d{i}" for i in range(7)}}
+    required = {"time", "clk", "rst", "vout", *{f"d{i}" for i in range(7)}}
     if not rows or not required.issubset(rows[0]):
         return False, "missing dac restore 7bit clocked signals"
-    return _sample_many(
-        rows,
-        {"vout": [(0.5, -0.89296875), (1.5, -0.30234375), (2.5, 0.30234375), (3.5, 0.89296875)]},
-        tol=0.012,
-    )
+    events: list[tuple[float, str]] = []
+    events.extend((edge, "reset") for edge in _v3_edge_times(rows, "rst", threshold=0.45, direction=1))
+    events.extend((edge, "clock") for edge in _v3_edge_times(rows, "clk", threshold=0.45, direction=1))
+    events.sort(key=lambda item: item[0])
+    if not any(kind == "clock" for _, kind in events):
+        return False, "missing_dac_restore_clock_edges"
+    out_v = 0.0
+    max_err = 0.0
+    checked = 0
+    codes: list[int] = []
+    reset_checked = False
+    for event_t, kind in events:
+        if kind == "reset":
+            out_v = 0.0
+            reset_checked = True
+        else:
+            rst = sample_signal_at(rows, "rst", event_t)
+            if rst is None:
+                return False, f"missing_rst_at={event_t * 1e9:.3f}ns"
+            if rst <= 0.45:
+                code = 0
+                for bit in range(7):
+                    value = sample_signal_at(rows, f"d{bit}", event_t)
+                    if value is None:
+                        return False, f"missing_d{bit}_at={event_t * 1e9:.3f}ns"
+                    if value > 0.45:
+                        code += 1 << bit
+                out_v = (code + 0.5) * 1.8 / 128.0 - 0.9
+                codes.append(code)
+        sample_t = event_t + 0.20e-9
+        if sample_t > rows[-1]["time"]:
+            continue
+        observed = sample_signal_at(rows, "vout", sample_t)
+        if observed is None:
+            return False, f"missing_dac_restore_output_at={sample_t * 1e9:.3f}ns"
+        max_err = max(max_err, abs(observed - out_v))
+        checked += 1
+    if checked < 4:
+        return False, f"too_few_dac_restore_checks={checked}"
+    if reset_checked is False:
+        return False, "missing_reset_coverage"
+    if len(set(codes)) < 4 or min(codes) > 1 or max(codes) < 120:
+        return False, f"insufficient_dac_restore_code_coverage={codes}"
+    return max_err <= 0.014, f"checked={checked} codes={codes} max_error={max_err:.5f}"
 
 
 def check_v3_dac_restore_6bit_1p8(rows: list[dict[str, float]]) -> tuple[bool, str]:
