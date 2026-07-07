@@ -4,17 +4,19 @@ Implement one Verilog-A source file named `windowed_event_rate_monitor.va`.
 
 ## Task Contract
 
-Build a Spectre-compatible voltage-domain behavioral model for Clocked measurement helper that reports event rate and observed average over a qualified window.
-
-## Form-Specific Requirements
-
-This is a DUT source task. Implement only the `windowed_event_rate_monitor` module; no external testbench, checker logic, transistor devices, or extra helper module is part of the requested artifact.
+Build a Spectre-compatible voltage-domain behavioral DUT source for a clocked
+measurement helper that reports event rate and observed average over a
+qualified window. Implement only the `windowed_event_rate_monitor` module.
 
 ## Public Verilog-A Interface
 
 ```verilog
 module windowed_event_rate_monitor(clk, rst, event_in, gate, rate, average);
 ```
+
+All ports are electrical. `clk` is the sampling clock, `rst` is an active-high
+reset, `event_in` is a voltage-coded event input, `gate` qualifies the
+measurement window, and `rate` and `average` are voltage-coded observables.
 
 ## Public Parameter Contract
 
@@ -25,15 +27,22 @@ module windowed_event_rate_monitor(clk, rst, event_in, gate, rate, average);
 
 ## Required Behavior
 
-- Sample event_in on rising clock crossings only while gate is high and reset is low.
-- Clear the measurement window on reset or gate-low samples.
-- Drive rate as a clipped count/window metric.
-- Drive average as count divided by sampled gated updates.
-- Use local analog helper functions rather than user task/endtask syntax.
+Initialize `event_count`, `sample_count`, `rate`, and `average` to zero. On each
+rising clock crossing, clear the measurement window and both observables when
+`rst` is high or `gate <= vth`. Otherwise increment `sample_count`, increment
+`event_count` when `event_in > vth`, and drive
+`rate = vhi * clip01(event_count / window_count)`.
+
+For the same gated sample window, drive
+`average = vhi * clip01(event_count / sample_count)`. Hold the last observable
+values between rising clock crossings.
 
 ## Modeling Constraints
 
-Use voltage-domain behavioral Verilog-A only. Do not use user `task`/`endtask`, Verilog-AMS digital kernels, branch current contributions, transistor devices, `ddt()`, or `idt()`. Do not hard-code visible or hidden stimulus times.
+Use voltage-domain behavioral Verilog-A only. Use local analog helper functions
+rather than user `task`/`endtask` syntax. Do not use Verilog-AMS digital
+kernels, branch current contributions, transistor devices, `ddt()`, or
+`idt()`. Do not hard-code testbench stimulus times.
 
 ## Output Contract
 
