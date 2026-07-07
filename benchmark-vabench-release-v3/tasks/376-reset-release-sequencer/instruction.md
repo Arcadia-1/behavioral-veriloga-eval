@@ -4,17 +4,19 @@ Implement one Verilog-A source file named `reset_release_sequencer.va`.
 
 ## Task Contract
 
-Build a Spectre-compatible voltage-domain behavioral model for Clocked reset-release sequencer for power and bias qualification before analog block startup.
-
-## Form-Specific Requirements
-
-This is a DUT source task. Implement only the `reset_release_sequencer` module; no external testbench, checker logic, transistor devices, or extra helper module is part of the requested artifact.
+Build a Spectre-compatible voltage-domain behavioral DUT source for a clocked
+reset-release sequencer that qualifies supply and bias before analog block
+startup. Implement only the `reset_release_sequencer` module.
 
 ## Public Verilog-A Interface
 
 ```verilog
 module reset_release_sequencer(clk, rst, supply_ok, bias_ok, stage1, stage2, ready, progress);
 ```
+
+All ports are electrical. `clk` is the sequencing clock, `rst` is active-high
+reset, `supply_ok` and `bias_ok` are voltage-coded qualification inputs, and
+`stage1`, `stage2`, `ready`, and `progress` are voltage-coded observables.
 
 ## Public Parameter Contract
 
@@ -25,15 +27,23 @@ module reset_release_sequencer(clk, rst, supply_ok, bias_ok, stage1, stage2, rea
 
 ## Required Behavior
 
-- Release stage outputs in order on rising clock crossings.
-- Require reset low, supply_ok high, and bias_ok high before advancing.
-- Clear all stages on reset, supply fault, or bias fault.
-- Assert ready only at the public final stage.
-- Use local analog helper functions rather than user task/endtask syntax.
+Initialize the internal stage count and all observables to zero. On each rising
+clock crossing, clear the stage count when `rst` is high, `supply_ok <= vth`, or
+`bias_ok <= vth`. Otherwise increment the stage count by one until it reaches
+`final_stage`.
+
+After updating the stage count, drive `stage1 = vhi` when `stage_count >= 1`,
+`stage2 = vhi` when `stage_count >= 2`, and `ready = vhi` when
+`stage_count >= final_stage`; otherwise drive each of those observables to
+`0 V`. Drive `progress = vhi * clip01(stage_count / final_stage)`. Hold the
+last observable values between rising clock crossings.
 
 ## Modeling Constraints
 
-Use voltage-domain behavioral Verilog-A only. Do not use user `task`/`endtask`, Verilog-AMS digital kernels, branch current contributions, transistor devices, `ddt()`, or `idt()`. Do not hard-code visible or hidden stimulus times.
+Use voltage-domain behavioral Verilog-A only. Use local analog helper functions
+rather than user `task`/`endtask` syntax. Do not use Verilog-AMS digital
+kernels, branch current contributions, transistor devices, `ddt()`, or
+`idt()`. Do not hard-code testbench stimulus times.
 
 ## Output Contract
 
