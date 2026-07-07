@@ -4,7 +4,7 @@ Implement one Verilog-A source file named `reset_polarity_qualifier.va`.
 
 ## Task Contract
 
-Build a voltage-domain analog/mixed-signal helper or monitor. Electrical reset-polarity qualifier that produces a release flag only inside a valid supply window.
+Build a voltage-domain analog/mixed-signal helper or monitor. Electrical reset-release qualifier that uses a rail-normalized input window and a voltage-coded control qualifier to produce a release flag inside a valid supply window.
 
 ## Public Verilog-A Interface
 
@@ -15,8 +15,8 @@ module reset_polarity_qualifier(in0, in1, in2, in3, ctrl0, ctrl1, vdd, vss, en, 
 All ports are electrical. `vdd` and `vss` are the local rails, `en` is an
 active-high enable, `in0` through `in3` are voltage-coded analog or lane inputs,
 `ctrl0` and `ctrl1` are voltage-coded control inputs, and `out`, `flag`, and
-`metric` are voltage-coded observables. For clocked rows, `clk` is the sampling
-clock and `rst` clears the observable state.
+`metric` are voltage-coded observables. `in0` is the release-level input and
+`ctrl0` is the voltage-coded release qualifier for this row.
 
 ## Public Parameter Contract
 
@@ -29,10 +29,18 @@ clock and `rst` clears the observable state.
 ## Required Behavior
 
 Measure analog inputs relative to the local `vss` rail and normalize by the
-current local supply span. Clear all observables when `en` is low or when the
-local supply span is outside the public range. Drive `out` with the
-task-specific bounded analog result, drive `flag` with the task-specific
-qualification condition, and drive `metric` with a bounded diagnostic magnitude.
+current local supply span. Let `span = V(vdd, vss)` and treat the row as valid
+only when `V(en) > vth` and `span_min <= span <= span_max`; otherwise drive
+`out`, `flag`, and `metric` to `0 V`. If `span` is below `0.05 V`, use
+`0.05 V` as the normalization span. Define `clip01(y)` as `y` limited to the
+range `[0, 1]`, `x0 = clip01((V(in0) - V(vss)) / span)`, and
+`c0 = clip01(V(ctrl0) / vhi)`.
+
+Drive `out = vhi * clip01(x0)`. Assert `flag = vhi` only when the normalized
+release level is inside the public window `0.24 <= x0 <= 0.72` and `c0 > 0.35`;
+otherwise drive `flag = 0 V`. Drive
+`metric = vhi * clip01(abs(x0 - 0.48) / 0.48)` as the bounded distance from the
+center of the release window.
 
 ## Modeling Constraints
 
