@@ -10969,6 +10969,477 @@ def check_v3_378_task_metric_normalizer(rows: list[dict[str, float]]) -> tuple[b
     )
 
 
+def _v3_uniform_sample_times(
+    rows: list[dict[str, float]],
+    *,
+    start_s: float = 0.75e-9,
+    step_s: float = 0.75e-9,
+    end_margin_s: float = 0.25e-9,
+) -> list[float]:
+    if not rows:
+        return []
+    start = max(rows[0]["time"] + start_s, rows[0]["time"])
+    stop = rows[-1]["time"] - end_margin_s
+    times: list[float] = []
+    t = start
+    while t <= stop:
+        times.append(t)
+        t += step_s
+    return times
+
+
+def _v3_values_at(
+    rows: list[dict[str, float]],
+    names: tuple[str, ...],
+    time_s: float,
+) -> dict[str, float] | None:
+    values = {name: sample_signal_at(rows, name, time_s) for name in names}
+    if any(value is None for value in values.values()):
+        return None
+    return {name: float(value) for name, value in values.items() if value is not None}
+
+
+def check_v3_373_saturation_recovery_limiter(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "vin", "en", "out", "sat", "recovery_metric"}
+    if not rows or not required.issubset(rows[0]):
+        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
+        return False, "missing_columns=" + ",".join(missing)
+    vlo = 0.12
+    vlimit = 0.78
+    vhi = 0.9
+    checked = 0
+    max_err = 0.0
+    saw_low_clip = saw_high_clip = saw_linear = saw_disabled = saw_metric = False
+    for time_s in _v3_uniform_sample_times(rows):
+        values = _v3_values_at(rows, ("vin", "en", "out", "sat", "recovery_metric"), time_s)
+        if values is None:
+            continue
+        raw = values["vin"]
+        enabled = values["en"] > 0.45
+        limited = min(vlimit, max(vlo, raw))
+        clipped = abs(raw - limited) > 1.0e-9
+        out_expected = limited if enabled else 0.0
+        sat_expected = vhi if enabled and clipped else 0.0
+        metric_expected = vhi * min(1.0, max(0.0, abs(raw - limited) / (vlimit - vlo))) if enabled else 0.0
+        max_err = max(
+            max_err,
+            abs(values["out"] - out_expected),
+            abs(values["sat"] - sat_expected),
+            abs(values["recovery_metric"] - metric_expected),
+        )
+        saw_low_clip = saw_low_clip or (enabled and raw < vlo)
+        saw_high_clip = saw_high_clip or (enabled and raw > vlimit)
+        saw_linear = saw_linear or (enabled and vlo < raw < vlimit)
+        saw_disabled = saw_disabled or (not enabled)
+        saw_metric = saw_metric or metric_expected > 0.05
+        checked += 1
+    if checked < 10:
+        return False, f"insufficient_saturation_limiter_samples={checked}"
+    if not (saw_low_clip and saw_high_clip and saw_linear and saw_disabled and saw_metric):
+        return False, "insufficient_saturation_limiter_coverage"
+    if max_err > 0.085:
+        return False, f"saturation_limiter_error={max_err:.4f}"
+    return True, f"samples={checked} max_err={max_err:.4f}"
+
+
+def check_v3_374_sampled_error_update_monitor(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "clk", "rst", "sample", "target", "coef", "out", "err_metric", "progress"}
+    if not rows or not required.issubset(rows[0]):
+        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
+        return False, "missing_columns=" + ",".join(missing)
+    times = [row["time"] for row in rows]
+    clk_edges = _threshold_crossings([row["clk"] for row in rows], times, threshold=0.45, direction="rising")
+    if len(clk_edges) < 8:
+        return False, f"too_few_sampled_error_edges={len(clk_edges)}"
+    min_period = min((b - a for a, b in zip(clk_edges, clk_edges[1:])), default=1.0e-9)
+    output_delay = min(0.42e-9, 0.42 * min_period)
+    stable_count = 0
+    checked = 0
+    max_err = 0.0
+    saw_reset = saw_progress_high = saw_progress_low = saw_coeff_change = saw_target_change = saw_high_error = False
+    first_coef: float | None = None
+    first_target: float | None = None
+    for edge_t in clk_edges:
+        output_t = edge_t + output_delay
+        if output_t >= times[-1] - 0.05e-9:
+            continue
+        inputs = _v3_values_at(rows, ("rst", "sample", "target", "coef"), edge_t + 1.0e-12)
+        outputs = _v3_values_at(rows, ("out", "err_metric", "progress"), output_t)
+        if inputs is None or outputs is None:
+            continue
+        if first_coef is None:
+            first_coef = inputs["coef"]
+        if first_target is None:
+            first_target = inputs["target"]
+        coeff = min(1.0, max(0.0, inputs["coef"] / 0.9))
+        err_v = inputs["target"] - inputs["sample"]
+        if inputs["rst"] > 0.45:
+            stable_count = 0
+            out_expected = err_expected = progress_expected = 0.0
+            saw_reset = True
+        else:
+            corrected = inputs["sample"] + coeff * err_v
+            out_expected = min(0.9, max(0.0, corrected))
+            err_expected = 0.9 * min(1.0, max(0.0, abs(err_v) / 0.50))
+            if abs(err_v) <= 0.040:
+                stable_count = min(stable_count + 1, 3)
+            else:
+                stable_count = 0
+            progress_expected = 0.9 * min(1.0, max(0.0, stable_count / 3.0))
+        max_err = max(
+            max_err,
+            abs(outputs["out"] - out_expected),
+            abs(outputs["err_metric"] - err_expected),
+            abs(outputs["progress"] - progress_expected),
+        )
+        saw_progress_high = saw_progress_high or progress_expected > 0.70
+        saw_progress_low = saw_progress_low or progress_expected < 0.15
+        saw_high_error = saw_high_error or err_expected > 0.45
+        saw_coeff_change = saw_coeff_change or abs(inputs["coef"] - first_coef) > 0.05
+        saw_target_change = saw_target_change or abs(inputs["target"] - first_target) > 0.05
+        checked += 1
+    if checked < 8:
+        return False, f"insufficient_sampled_error_samples={checked}"
+    if not (saw_reset and saw_progress_high and saw_progress_low and saw_coeff_change and saw_target_change and saw_high_error):
+        return False, "insufficient_sampled_error_coverage"
+    if max_err > 0.10:
+        return False, f"sampled_error_update_error={max_err:.4f}"
+    return True, f"samples={checked} max_err={max_err:.4f}"
+
+
+def check_v3_375_windowed_event_rate_monitor(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "clk", "rst", "event_in", "gate", "rate", "average"}
+    if not rows or not required.issubset(rows[0]):
+        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
+        return False, "missing_columns=" + ",".join(missing)
+    times = [row["time"] for row in rows]
+    clk_edges = _threshold_crossings([row["clk"] for row in rows], times, threshold=0.45, direction="rising")
+    if len(clk_edges) < 8:
+        return False, f"too_few_event_rate_edges={len(clk_edges)}"
+    min_period = min((b - a for a, b in zip(clk_edges, clk_edges[1:])), default=1.0e-9)
+    output_delay = min(0.42e-9, 0.42 * min_period)
+    event_count = 0
+    sample_count = 0
+    checked = 0
+    max_err = 0.0
+    saw_reset = saw_gate_clear = saw_event_high = saw_event_low = saw_rate_high = saw_average_mid = False
+    for edge_t in clk_edges:
+        output_t = edge_t + output_delay
+        if output_t >= times[-1] - 0.05e-9:
+            continue
+        inputs = _v3_values_at(rows, ("rst", "event_in", "gate"), edge_t + 1.0e-12)
+        outputs = _v3_values_at(rows, ("rate", "average"), output_t)
+        if inputs is None or outputs is None:
+            continue
+        prior_samples = sample_count
+        if inputs["rst"] > 0.45 or inputs["gate"] <= 0.45:
+            event_count = 0
+            sample_count = 0
+            rate_expected = average_expected = 0.0
+            saw_reset = saw_reset or inputs["rst"] > 0.45
+            saw_gate_clear = saw_gate_clear or (inputs["gate"] <= 0.45 and prior_samples > 0)
+        else:
+            sample_count += 1
+            if inputs["event_in"] > 0.45:
+                event_count += 1
+                saw_event_high = True
+            else:
+                saw_event_low = True
+            rate_expected = 0.9 * min(1.0, max(0.0, event_count / 5.0))
+            average_expected = 0.9 * min(1.0, max(0.0, event_count / sample_count))
+        max_err = max(max_err, abs(outputs["rate"] - rate_expected), abs(outputs["average"] - average_expected))
+        saw_rate_high = saw_rate_high or rate_expected > 0.50
+        saw_average_mid = saw_average_mid or 0.20 < average_expected < 0.80
+        checked += 1
+    if checked < 8:
+        return False, f"insufficient_event_rate_samples={checked}"
+    if not (saw_reset and saw_gate_clear and saw_event_high and saw_event_low and saw_rate_high and saw_average_mid):
+        return False, "insufficient_event_rate_coverage"
+    if max_err > 0.10:
+        return False, f"event_rate_monitor_error={max_err:.4f}"
+    return True, f"samples={checked} max_err={max_err:.4f}"
+
+
+def check_v3_376_reset_release_sequencer(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "clk", "rst", "supply_ok", "bias_ok", "stage1", "stage2", "ready", "progress"}
+    if not rows or not required.issubset(rows[0]):
+        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
+        return False, "missing_columns=" + ",".join(missing)
+    times = [row["time"] for row in rows]
+    clk_edges = _threshold_crossings([row["clk"] for row in rows], times, threshold=0.45, direction="rising")
+    if len(clk_edges) < 8:
+        return False, f"too_few_reset_release_edges={len(clk_edges)}"
+    min_period = min((b - a for a, b in zip(clk_edges, clk_edges[1:])), default=1.0e-9)
+    output_delay = min(0.42e-9, 0.42 * min_period)
+    stage_q = 0
+    checked = 0
+    max_err = 0.0
+    saw_reset = saw_supply_fault = saw_bias_fault = saw_stage1_only = saw_stage2 = saw_ready = saw_clear = False
+    for edge_t in clk_edges:
+        output_t = edge_t + output_delay
+        if output_t >= times[-1] - 0.05e-9:
+            continue
+        inputs = _v3_values_at(rows, ("rst", "supply_ok", "bias_ok"), edge_t + 1.0e-12)
+        outputs = _v3_values_at(rows, ("stage1", "stage2", "ready", "progress"), output_t)
+        if inputs is None or outputs is None:
+            continue
+        prior_stage = stage_q
+        if inputs["rst"] > 0.45 or inputs["supply_ok"] <= 0.45 or inputs["bias_ok"] <= 0.45:
+            stage_q = 0
+            saw_reset = saw_reset or inputs["rst"] > 0.45
+            saw_supply_fault = saw_supply_fault or inputs["supply_ok"] <= 0.45
+            saw_bias_fault = saw_bias_fault or inputs["bias_ok"] <= 0.45
+            saw_clear = saw_clear or prior_stage > 0
+        elif stage_q < 3:
+            stage_q += 1
+        expected = {
+            "stage1": 0.9 if stage_q >= 1 else 0.0,
+            "stage2": 0.9 if stage_q >= 2 else 0.0,
+            "ready": 0.9 if stage_q >= 3 else 0.0,
+            "progress": 0.9 * min(1.0, max(0.0, stage_q / 3.0)),
+        }
+        max_err = max(max_err, *(abs(outputs[name] - expected[name]) for name in expected))
+        saw_stage1_only = saw_stage1_only or stage_q == 1
+        saw_stage2 = saw_stage2 or stage_q == 2
+        saw_ready = saw_ready or stage_q >= 3
+        checked += 1
+    if checked < 8:
+        return False, f"insufficient_reset_release_samples={checked}"
+    if not (saw_reset and saw_supply_fault and saw_bias_fault and saw_stage1_only and saw_stage2 and saw_ready and saw_clear):
+        return False, "insufficient_reset_release_coverage"
+    if max_err > 0.10:
+        return False, f"reset_release_error={max_err:.4f}"
+    return True, f"samples={checked} max_err={max_err:.4f}"
+
+
+def check_v3_377_adaptive_threshold_tracker(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "clk", "rst", "vin", "adapt", "trip", "threshold_mon", "margin_metric"}
+    if not rows or not required.issubset(rows[0]):
+        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
+        return False, "missing_columns=" + ",".join(missing)
+    times = [row["time"] for row in rows]
+    clk_edges = _threshold_crossings([row["clk"] for row in rows], times, threshold=0.45, direction="rising")
+    if len(clk_edges) < 8:
+        return False, f"too_few_threshold_tracker_edges={len(clk_edges)}"
+    min_period = min((b - a for a, b in zip(clk_edges, clk_edges[1:])), default=1.0e-9)
+    output_delay = min(0.42e-9, 0.42 * min_period)
+    threshold_q = 0.45
+    checked = 0
+    max_err = 0.0
+    saw_reset = saw_adapt = saw_hold = saw_trip_high = saw_trip_low = saw_clip_high = saw_margin = False
+    for edge_t in clk_edges:
+        output_t = edge_t + output_delay
+        if output_t >= times[-1] - 0.05e-9:
+            continue
+        inputs = _v3_values_at(rows, ("rst", "vin", "adapt"), edge_t + 1.0e-12)
+        outputs = _v3_values_at(rows, ("trip", "threshold_mon", "margin_metric"), output_t)
+        if inputs is None or outputs is None:
+            continue
+        if inputs["rst"] > 0.45:
+            threshold_q = 0.45
+            trip_expected = 0.0
+            margin_expected = 0.0
+            saw_reset = True
+        else:
+            old_threshold = threshold_q
+            trip_expected = 0.9 if inputs["vin"] > old_threshold else 0.0
+            margin_expected = 0.9 * min(1.0, max(0.0, abs(inputs["vin"] - old_threshold) / 0.45))
+            if inputs["adapt"] > 0.45:
+                threshold_q = min(0.70, max(0.25, 0.75 * old_threshold + 0.25 * inputs["vin"]))
+                saw_adapt = True
+            else:
+                saw_hold = True
+        threshold_expected = threshold_q
+        max_err = max(
+            max_err,
+            abs(outputs["trip"] - trip_expected),
+            abs(outputs["threshold_mon"] - threshold_expected),
+            abs(outputs["margin_metric"] - margin_expected),
+        )
+        saw_trip_high = saw_trip_high or trip_expected > 0.45
+        saw_trip_low = saw_trip_low or trip_expected < 0.45
+        saw_clip_high = saw_clip_high or abs(threshold_expected - 0.70) < 0.015
+        saw_margin = saw_margin or margin_expected > 0.35
+        checked += 1
+    if checked < 8:
+        return False, f"insufficient_threshold_tracker_samples={checked}"
+    if not (saw_reset and saw_adapt and saw_hold and saw_trip_high and saw_trip_low and saw_clip_high and saw_margin):
+        return False, "insufficient_threshold_tracker_coverage"
+    if max_err > 0.10:
+        return False, f"adaptive_threshold_error={max_err:.4f}"
+    return True, f"samples={checked} max_err={max_err:.4f}"
+
+
+def check_v3_378_rail_normalized_metric_mapper(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "meas", "vdd", "vss", "en", "norm", "valid"}
+    if not rows or not required.issubset(rows[0]):
+        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
+        return False, "missing_columns=" + ",".join(missing)
+    checked = 0
+    max_err = 0.0
+    saw_vss_offset = saw_enable_low = saw_span_low = saw_span_high = saw_valid = saw_invalid_window = False
+    saw_clip_low = saw_clip_high = False
+    for time_s in _v3_uniform_sample_times(rows):
+        values = _v3_values_at(rows, ("meas", "vdd", "vss", "en", "norm", "valid"), time_s)
+        if values is None:
+            continue
+        span = values["vdd"] - values["vss"]
+        local_meas = values["meas"] - values["vss"]
+        enabled = values["en"] > 0.45
+        if enabled and span >= 0.60:
+            norm_expected = 0.9 * min(1.0, max(0.0, local_meas / span))
+        else:
+            norm_expected = 0.0
+        valid_expected = 0.9 if (enabled and 0.60 <= span <= 1.20 and 0.0 <= local_meas <= span) else 0.0
+        max_err = max(max_err, abs(values["norm"] - norm_expected), abs(values["valid"] - valid_expected))
+        saw_vss_offset = saw_vss_offset or abs(values["vss"]) > 0.025
+        saw_enable_low = saw_enable_low or (not enabled)
+        saw_span_low = saw_span_low or (span < 0.60)
+        saw_span_high = saw_span_high or (span > 1.20)
+        saw_valid = saw_valid or valid_expected > 0.45
+        saw_invalid_window = saw_invalid_window or (enabled and span >= 0.60 and (local_meas < 0.0 or local_meas > span))
+        saw_clip_low = saw_clip_low or (enabled and span >= 0.60 and local_meas < 0.0)
+        saw_clip_high = saw_clip_high or (enabled and span >= 0.60 and local_meas > span)
+        checked += 1
+    if checked < 10:
+        return False, f"insufficient_rail_norm_samples={checked}"
+    if not (saw_vss_offset and saw_enable_low and saw_span_low and saw_span_high and saw_valid and saw_invalid_window and saw_clip_low and saw_clip_high):
+        return False, "insufficient_rail_norm_coverage"
+    if max_err > 0.08:
+        return False, f"rail_normalized_metric_error={max_err:.4f}"
+    return True, f"samples={checked} max_err={max_err:.4f}"
+
+
+def check_v3_421_calibration_affine_transform(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "clk", "rst", "raw", "gain_ctrl", "offset_ctrl", "en", "out", "resid_metric"}
+    if not rows or not required.issubset(rows[0]):
+        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
+        return False, "missing_columns=" + ",".join(missing)
+    times = [row["time"] for row in rows]
+    clk_edges = _threshold_crossings([row["clk"] for row in rows], times, threshold=0.45, direction="rising")
+    if len(clk_edges) < 8:
+        return False, f"too_few_affine_transform_edges={len(clk_edges)}"
+    min_period = min((b - a for a, b in zip(clk_edges, clk_edges[1:])), default=1.0e-9)
+    output_delay = min(0.42e-9, 0.42 * min_period)
+    checked = 0
+    max_err = 0.0
+    saw_gain_change = saw_offset_change = saw_enable_low = saw_reset = saw_clip_high = saw_clip_low = saw_resid = False
+    first_gain: float | None = None
+    first_offset: float | None = None
+    for edge_t in clk_edges:
+        output_t = edge_t + output_delay
+        if output_t >= times[-1] - 0.05e-9:
+            continue
+        inputs = _v3_values_at(rows, ("rst", "raw", "gain_ctrl", "offset_ctrl", "en"), edge_t + 1.0e-12)
+        outputs = _v3_values_at(rows, ("out", "resid_metric"), output_t)
+        if inputs is None or outputs is None:
+            continue
+        if first_gain is None:
+            first_gain = inputs["gain_ctrl"]
+        if first_offset is None:
+            first_offset = inputs["offset_ctrl"]
+        gain = 0.50 + min(1.0, max(0.0, inputs["gain_ctrl"] / 0.9))
+        offset = inputs["offset_ctrl"] - 0.45
+        transformed = 0.45 + gain * (inputs["raw"] - 0.45) + offset
+        if inputs["rst"] > 0.45 or inputs["en"] <= 0.45:
+            out_expected = 0.0
+            resid_expected = 0.0
+            saw_reset = saw_reset or inputs["rst"] > 0.45
+            saw_enable_low = saw_enable_low or inputs["en"] <= 0.45
+        else:
+            out_expected = min(0.9, max(0.0, transformed))
+            resid_expected = 0.9 * min(1.0, max(0.0, abs(transformed - inputs["raw"]) / 0.45))
+            saw_clip_high = saw_clip_high or transformed > 0.9
+            saw_clip_low = saw_clip_low or transformed < 0.0
+        max_err = max(max_err, abs(outputs["out"] - out_expected), abs(outputs["resid_metric"] - resid_expected))
+        saw_gain_change = saw_gain_change or abs(inputs["gain_ctrl"] - first_gain) > 0.08
+        saw_offset_change = saw_offset_change or abs(inputs["offset_ctrl"] - first_offset) > 0.08
+        saw_resid = saw_resid or resid_expected > 0.20
+        checked += 1
+    if checked < 8:
+        return False, f"insufficient_affine_transform_samples={checked}"
+    if not (saw_gain_change and saw_offset_change and saw_enable_low and saw_reset and saw_clip_high and saw_clip_low and saw_resid):
+        return False, "insufficient_affine_transform_coverage"
+    if max_err > 0.085:
+        return False, f"calibration_affine_error={max_err:.4f}"
+    return True, f"samples={checked} max_err={max_err:.4f}"
+
+
+def check_v3_490_event_reacquire_lock_detector(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "ref_clk", "fb_clk", "rst", "lock", "phase_metric", "state_mon"}
+    if not rows or not required.issubset(rows[0]):
+        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
+        return False, "missing_columns=" + ",".join(missing)
+    times = [row["time"] for row in rows]
+    ref_edges = _threshold_crossings([row["ref_clk"] for row in rows], times, threshold=0.45, direction="rising")
+    fb_edges = _threshold_crossings([row["fb_clk"] for row in rows], times, threshold=0.45, direction="rising")
+    rst_edges = _threshold_crossings([row["rst"] for row in rows], times, threshold=0.45, direction="rising")
+    if len(ref_edges) < 6 or len(fb_edges) < 6:
+        return False, f"too_few_lock_detector_edges=ref{len(ref_edges)}_fb{len(fb_edges)}"
+    min_gap = min((b - a for a, b in zip(sorted(ref_edges + fb_edges), sorted(ref_edges + fb_edges)[1:])), default=1.0e-9)
+    output_delay = min(0.30e-9, max(0.12e-9, 0.35 * min_gap))
+    events = [(t, "ref") for t in ref_edges] + [(t, "fb") for t in fb_edges] + [(t, "rst") for t in rst_edges]
+    events.sort(key=lambda item: (item[0], {"rst": 0, "ref": 1, "fb": 2}[item[1]]))
+    last_ref: float | None = None
+    good_count = 0
+    checked = 0
+    max_err = 0.0
+    saw_lock = saw_unlock = saw_reset = saw_reacquire = saw_phase_high = saw_phase_low = saw_fail_clear = False
+    lock_seen_before_reset = False
+    for event_t, kind in events:
+        if kind == "ref":
+            last_ref = event_t
+            continue
+        output_t = event_t + output_delay
+        if output_t >= times[-1] - 0.05e-9:
+            continue
+        if kind == "rst":
+            good_count = 0
+            expected = {"lock": 0.0, "phase_metric": 0.0, "state_mon": 0.0}
+            saw_reset = True
+        else:
+            rst_now = sample_signal_at(rows, "rst", event_t + 1.0e-12)
+            if rst_now is not None and rst_now > 0.45:
+                good_count = 0
+                expected = {"lock": 0.0, "phase_metric": 0.0, "state_mon": 0.0}
+                saw_reset = True
+            else:
+                phase_err = abs(event_t - last_ref) if last_ref is not None else 0.60e-9
+                prior_good = good_count
+                if last_ref is not None and phase_err <= 0.18e-9:
+                    good_count = min(good_count + 1, 3)
+                else:
+                    good_count = 0
+                expected = {
+                    "lock": 0.9 if good_count >= 3 else 0.0,
+                    "phase_metric": 0.9 * min(1.0, max(0.0, phase_err / 0.60e-9)),
+                    "state_mon": 0.9 * min(1.0, max(0.0, good_count / 3.0)),
+                }
+                saw_phase_high = saw_phase_high or expected["phase_metric"] > 0.55
+                saw_phase_low = saw_phase_low or expected["phase_metric"] < 0.25
+                saw_fail_clear = saw_fail_clear or (prior_good > 0 and good_count == 0)
+        outputs = _v3_values_at(rows, ("lock", "phase_metric", "state_mon"), output_t)
+        if outputs is None:
+            continue
+        max_err = max(max_err, *(abs(outputs[name] - expected[name]) for name in expected))
+        saw_lock = saw_lock or expected["lock"] > 0.45
+        saw_unlock = saw_unlock or expected["lock"] < 0.45
+        if expected["lock"] > 0.45:
+            if saw_reset:
+                saw_reacquire = True
+            else:
+                lock_seen_before_reset = True
+        saw_reacquire = saw_reacquire or (saw_reset and expected["lock"] > 0.45)
+        checked += 1
+    if checked < 6:
+        return False, f"insufficient_lock_detector_samples={checked}"
+    if not (saw_lock and saw_unlock and saw_reset and lock_seen_before_reset and saw_reacquire and saw_phase_high and saw_phase_low and saw_fail_clear):
+        return False, "insufficient_lock_detector_coverage"
+    if max_err > 0.10:
+        return False, f"event_reacquire_lock_error={max_err:.4f}"
+    return True, f"samples={checked} max_err={max_err:.4f}"
+
+
 def _check_v3_file_io_gate(rows: list[dict[str, float]]) -> tuple[bool, str]:
     def update(_state: dict[str, float | int], row: dict[str, float]) -> tuple[float, float]:
         if row["rst"] > 0.45:
@@ -17396,51 +17867,126 @@ def check_v3_499_latched_bus_dac8(rows: list[dict[str, float]]) -> tuple[bool, s
     )
 
 
-def check_v3_500_deterministic_mismatch_dac6(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    required = {"time", "vout", *{f"d{i}" for i in range(6)}}
+def check_v3_056_correlated_double_sampler(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "phi_reset", "phi_signal", "vin", "vout", "valid"}
     if not rows or not required.issubset(rows[0]):
-        return False, "missing deterministic mismatch dac6 signals"
-    weights = {
-        5: 32.0 * 1.08,
-        4: 16.0 * 0.94,
-        3: 8.0 * 1.04,
-        2: 4.0 * 0.97,
-        1: 2.0 * 1.025,
-        0: 1.0 * 0.985,
-    }
-    total = sum(weights.values())
-    sample_times = [0.7e-9, 2.0e-9, 4.0e-9, 6.0e-9, 8.0e-9, 10.0e-9, 12.0e-9]
+        return False, "missing correlated double sampler signals"
+    times = [row["time"] for row in rows]
+    reset_edges = _threshold_crossings(
+        [row["phi_reset"] for row in rows],
+        times,
+        threshold=0.45,
+        direction="rising",
+    )
+    signal_edges = _threshold_crossings(
+        [row["phi_signal"] for row in rows],
+        times,
+        threshold=0.45,
+        direction="rising",
+    )
+    if len(reset_edges) < 3 or len(signal_edges) < 3:
+        return False, f"insufficient_cds_edges=reset{len(reset_edges)}_signal{len(signal_edges)}"
+
+    def _median(values: list[float]) -> float:
+        ordered = sorted(values)
+        n = len(ordered)
+        mid = n // 2
+        if n % 2:
+            return ordered[mid]
+        return 0.5 * (ordered[mid - 1] + ordered[mid])
+
+    reset_outs: list[float] = []
+    reset_valids: list[float] = []
+    for reset_t in reset_edges:
+        sample_t = reset_t + 0.32e-9
+        if sample_t >= times[-1]:
+            continue
+        out = sample_signal_at(rows, "vout", sample_t)
+        valid = sample_signal_at(rows, "valid", sample_t)
+        if out is None or valid is None:
+            return False, f"missing_reset_observable@{reset_t * 1e9:.2f}ns"
+        reset_outs.append(out)
+        reset_valids.append(valid)
+    if len(reset_outs) < 3:
+        return False, f"insufficient_cds_reset_observations={len(reset_outs)}"
+    vcm = _median(reset_outs)
+    max_reset_out_err = max(abs(value - vcm) for value in reset_outs)
+    max_reset_valid = max(reset_valids)
+    if max_reset_out_err > 0.045:
+        return False, f"reset_output_not_common_mode=max_err{max_reset_out_err:.4f}_samples{reset_outs}"
+    if max_reset_valid > 0.18:
+        return False, f"valid_not_cleared_on_reset=max{max_reset_valid:.4f}"
+
+    signal_valids: list[float] = []
+    for signal_t in signal_edges:
+        sample_t = signal_t + 0.32e-9
+        if sample_t >= times[-1]:
+            continue
+        valid = sample_signal_at(rows, "valid", sample_t)
+        if valid is None:
+            return False, f"missing_signal_valid@{signal_t * 1e9:.2f}ns"
+        signal_valids.append(valid)
+    if len(signal_valids) < 3:
+        return False, f"insufficient_cds_signal_observations={len(signal_valids)}"
+    vhi = _median(signal_valids)
+    if vhi < 0.65:
+        return False, f"valid_not_asserted_after_signal=median{vhi:.4f}_samples{signal_valids}"
+
     checked = 0
-    max_err = 0.0
-    max_nominal_delta = 0.0
-    codes: list[int] = []
-    for sample_t in sample_times:
-        active = 0.0
-        nominal_code = 0
-        for bit in range(6):
-            value = sample_signal_at(rows, f"d{bit}", sample_t)
-            if value is None:
-                return False, f"missing_d{bit}@{sample_t * 1e9:.2f}ns"
-            if value > 0.45:
-                active += weights[bit]
-                nominal_code += 1 << bit
-        expected = active / total
-        got = sample_signal_at(rows, "vout", sample_t)
-        if got is None:
-            return False, f"missing_vout@{sample_t * 1e9:.2f}ns"
-        max_err = max(max_err, abs(got - expected))
-        max_nominal_delta = max(max_nominal_delta, abs(expected - nominal_code / 63.0))
-        codes.append(nominal_code)
+    hold_checked = 0
+    max_out_err = 0.0
+    max_hold_err = 0.0
+    deltas: list[float] = []
+    clipped_hi = False
+    clipped_lo = False
+    for signal_t in signal_edges:
+        prior_resets = [reset_t for reset_t in reset_edges if reset_t < signal_t]
+        if not prior_resets:
+            continue
+        reset_t = prior_resets[-1]
+        reset_v = sample_signal_at(rows, "vin", reset_t + 1e-12)
+        signal_v = sample_signal_at(rows, "vin", signal_t + 1e-12)
+        got = sample_signal_at(rows, "vout", signal_t + 0.32e-9)
+        valid = sample_signal_at(rows, "valid", signal_t + 0.32e-9)
+        if reset_v is None or signal_v is None or got is None or valid is None:
+            return False, f"missing_cds_pair_observable@{signal_t * 1e9:.2f}ns"
+        delta = signal_v - reset_v
+        expected_raw = vcm + delta
+        expected = min(vhi, max(0.0, expected_raw))
+        clipped_hi = clipped_hi or expected_raw > vhi + 0.02
+        clipped_lo = clipped_lo or expected_raw < -0.02
+        max_out_err = max(max_out_err, abs(got - expected))
+        if valid < 0.65 * vhi:
+            return False, f"valid_low_after_signal@{signal_t * 1e9:.2f}ns={valid:.4f}"
+        deltas.append(delta)
         checked += 1
-    if checked < 6:
-        return False, f"insufficient_mismatch_dac_samples={checked}"
-    if 0 not in codes or 63 not in codes or len(set(codes)) < 5:
-        return False, f"insufficient_mismatch_dac_code_coverage={codes}"
-    if max_nominal_delta < 0.012:
-        return False, f"mismatch_not_exercised=max_nominal_delta{max_nominal_delta:.4f}"
-    if max_err > 0.018:
-        return False, f"max_mismatch_dac_err={max_err:.4f} codes={codes}"
-    return True, f"samples={checked} codes={codes} max_err={max_err:.4f} nominal_delta={max_nominal_delta:.4f}"
+
+        next_resets = [reset_t2 for reset_t2 in reset_edges if reset_t2 > signal_t]
+        hold_t = signal_t + 0.85e-9
+        if next_resets:
+            hold_t = min(hold_t, next_resets[0] - 0.20e-9)
+        if hold_t > signal_t + 0.36e-9 and hold_t < times[-1]:
+            held = sample_signal_at(rows, "vout", hold_t)
+            if held is None:
+                return False, f"missing_cds_hold@{hold_t * 1e9:.2f}ns"
+            max_hold_err = max(max_hold_err, abs(held - expected))
+            hold_checked += 1
+
+    if checked < 3 or hold_checked < 2:
+        return False, f"insufficient_cds_pair_checks=pair{checked}_hold{hold_checked}"
+    if not any(delta > 0.12 for delta in deltas) or not any(delta < -0.12 for delta in deltas):
+        return False, f"insufficient_cds_delta_polarity_coverage={deltas}"
+    if not clipped_hi:
+        return False, f"missing_cds_high_clip_coverage={deltas}"
+    if max_out_err > 0.045:
+        return False, f"max_cds_output_err={max_out_err:.4f}_vcm={vcm:.4f}_vhi={vhi:.4f}_deltas={deltas}"
+    if max_hold_err > 0.045:
+        return False, f"max_cds_hold_err={max_hold_err:.4f}_deltas={deltas}"
+    return True, (
+        f"pairs={checked} hold={hold_checked} vcm={vcm:.4f} vhi={vhi:.4f} "
+        f"deltas={[round(delta, 4) for delta in deltas]} max_err={max_out_err:.4f} "
+        f"max_hold_err={max_hold_err:.4f} clipped_lo={clipped_lo}"
+    )
 
 
 def check_v3_501_adc_static_linearity_monitor(rows: list[dict[str, float]]) -> tuple[bool, str]:
@@ -17738,6 +18284,156 @@ def check_v3_candidate_bias_reference_settling_window_monitor(rows: list[dict[st
         return False, f"reference_settling_error={max_err:.4f}"
     return True, f"samples={checked} max_err={max_err:.4f}"
 
+
+def check_v3_candidate_bias_rail_ramp_rate_startup_monitor(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "clk", "vdd", "vss", "en", "rail_ok", "ramp_ok", "startup_ready", "slew_metric"}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing rail ramp rate startup monitor signals"
+    times = [row["time"] for row in rows]
+    clk_edges = _threshold_crossings([row["clk"] for row in rows], times, threshold=0.45, direction="rising")
+    if len(clk_edges) < 10:
+        return False, f"too_few_rail_startup_clk_edges={len(clk_edges)}"
+    min_period = min((b - a for a, b in zip(clk_edges, clk_edges[1:])), default=1.0e-9)
+    output_delay = min(0.45e-9, 0.45 * min_period)
+    initial_vdd = sample_signal_at(rows, "vdd", times[0])
+    initial_vss = sample_signal_at(rows, "vss", times[0])
+    if initial_vdd is None or initial_vss is None:
+        return False, "missing_initial_supply"
+    previous_supply = initial_vdd - initial_vss
+    settled_count = 0
+    checked = 0
+    max_err = 0.0
+    rail_high = rail_low = ramp_high = ramp_low = ready_high = delayed_low = False
+    settled_clear = high_fault_seen = enable_clear_seen = metric_nonzero = False
+    for edge_t in clk_edges:
+        output_t = edge_t + output_delay
+        if output_t >= times[-1] - 0.05e-9:
+            continue
+        input_values = {
+            name: sample_signal_at(rows, name, edge_t + 1.0e-12)
+            for name in ("vdd", "vss", "en")
+        }
+        output_values = {
+            name: sample_signal_at(rows, name, output_t)
+            for name in ("rail_ok", "ramp_ok", "startup_ready", "slew_metric")
+        }
+        if any(value is None for value in input_values.values()) or any(value is None for value in output_values.values()):
+            continue
+        prior_count = settled_count
+        supply = input_values["vdd"] - input_values["vss"]
+        delta_v = supply - previous_supply
+        delta_abs = abs(delta_v)
+        enabled = input_values["en"] > 0.45
+        rail_valid = enabled and 0.72 <= supply <= 1.08
+        if not enabled:
+            ramp_valid = False
+        elif supply < 0.86:
+            ramp_valid = 0.025 <= delta_v <= 0.20
+        else:
+            ramp_valid = delta_abs <= 0.030
+        if rail_valid and ramp_valid and supply >= 0.86:
+            settled_count = min(settled_count + 1, 3)
+        else:
+            settled_count = 0
+        rail_expected = 0.9 if rail_valid else 0.0
+        ramp_expected = 0.9 if ramp_valid else 0.0
+        ready_expected = 0.9 if settled_count >= 3 else 0.0
+        metric_expected = min(1.0, max(0.0, delta_abs / 0.20)) * 0.9
+        max_err = max(
+            max_err,
+            abs(output_values["rail_ok"] - rail_expected),
+            abs(output_values["ramp_ok"] - ramp_expected),
+            abs(output_values["startup_ready"] - ready_expected),
+            abs(output_values["slew_metric"] - metric_expected),
+        )
+        rail_high = rail_high or rail_expected > 0.45
+        rail_low = rail_low or rail_expected < 0.45
+        ramp_high = ramp_high or ramp_expected > 0.45
+        ramp_low = ramp_low or ramp_expected < 0.45
+        ready_high = ready_high or ready_expected > 0.45
+        delayed_low = delayed_low or (rail_expected > 0.45 and ramp_expected > 0.45 and ready_expected < 0.45)
+        settled_clear = settled_clear or (prior_count > 0 and settled_count == 0 and ready_expected < 0.45)
+        high_fault_seen = high_fault_seen or (enabled and supply > 1.08)
+        enable_clear_seen = enable_clear_seen or (not enabled)
+        metric_nonzero = metric_nonzero or metric_expected > 0.25
+        previous_supply = supply
+        checked += 1
+    if checked < 10:
+        return False, f"insufficient_rail_startup_samples={checked}"
+    if not (
+        rail_high
+        and rail_low
+        and ramp_high
+        and ramp_low
+        and ready_high
+        and delayed_low
+        and settled_clear
+        and high_fault_seen
+        and enable_clear_seen
+        and metric_nonzero
+    ):
+        return False, "insufficient_rail_startup_coverage"
+    if max_err > 0.10:
+        return False, f"rail_startup_error={max_err:.4f}"
+    return True, f"samples={checked} max_err={max_err:.4f}"
+
+
+def check_v3_candidate_afe_differential_common_mode_window_monitor(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "vip", "vin", "vcm_ref", "en", "diff_ok", "cm_ok", "valid", "diff_metric", "cm_metric"}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing differential common mode window monitor signals"
+    end_t = rows[-1]["time"]
+    sample_t = 0.75e-9
+    checked = 0
+    max_err = 0.0
+    valid_high = valid_low = diff_fail = cm_fail = enable_low = negative_diff = ref_changed = False
+    first_ref: float | None = None
+    while sample_t < end_t - 0.2e-9:
+        values = {name: sample_signal_at(rows, name, sample_t) for name in required if name != "time"}
+        if any(value is None for value in values.values()):
+            sample_t += 1.0e-9
+            continue
+        if first_ref is None:
+            first_ref = values["vcm_ref"]
+        vdiff = values["vip"] - values["vin"]
+        vcm = 0.5 * (values["vip"] + values["vin"])
+        diff_abs = abs(vdiff)
+        cm_err = abs(vcm - values["vcm_ref"])
+        enabled = values["en"] > 0.45
+        diff_valid = enabled and diff_abs <= 0.30
+        cm_valid = enabled and cm_err <= 0.080
+        valid_expected = diff_valid and cm_valid
+        diff_expected = 0.9 if diff_valid else 0.0
+        cm_expected = 0.9 if cm_valid else 0.0
+        full_expected = 0.9 if valid_expected else 0.0
+        diff_metric_expected = min(1.0, max(0.0, diff_abs / 0.45)) * 0.9
+        cm_metric_expected = min(1.0, max(0.0, cm_err / 0.160)) * 0.9
+        max_err = max(
+            max_err,
+            abs(values["diff_ok"] - diff_expected),
+            abs(values["cm_ok"] - cm_expected),
+            abs(values["valid"] - full_expected),
+            abs(values["diff_metric"] - diff_metric_expected),
+            abs(values["cm_metric"] - cm_metric_expected),
+        )
+        valid_high = valid_high or full_expected > 0.45
+        valid_low = valid_low or full_expected < 0.45
+        diff_fail = diff_fail or (enabled and diff_abs > 0.30 and cm_err <= 0.080)
+        cm_fail = cm_fail or (enabled and diff_abs <= 0.30 and cm_err > 0.080)
+        enable_low = enable_low or (not enabled)
+        negative_diff = negative_diff or (vdiff < -0.05)
+        ref_changed = ref_changed or abs(values["vcm_ref"] - first_ref) > 0.04
+        checked += 1
+        sample_t += 1.0e-9
+    if checked < 10:
+        return False, f"insufficient_diff_cm_samples={checked}"
+    if not (valid_high and valid_low and diff_fail and cm_fail and enable_low and negative_diff and ref_changed):
+        return False, "insufficient_diff_cm_coverage"
+    if max_err > 0.08:
+        return False, f"diff_cm_monitor_error={max_err:.4f}"
+    return True, f"samples={checked} max_err={max_err:.4f}"
+
+
 def check_v3_502_sine_vco_idtmod_bound_step(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "vin", "out", "metric"}
     if not rows or not required.issubset(rows[0]):
@@ -18005,6 +18701,447 @@ def check_v3_505_fractional_n_divider_accumulator_flow(rows: list[dict[str, floa
         f"dco_counts={dco_counts[:8]} avg_dco_per_fb={avg_dco_per_fb:.3f} "
         f"vctrl_min={vctrl_min:.3f} vctrl_max={vctrl_max:.3f} vctrl_span={vctrl_span:.3f}"
     )
+
+
+
+# BEGIN ISSUE109_REMAINING_HOLES_GENERATED
+ISSUE109_REMAINING_HOLE_SPECS = {
+    "v3_341_rail_referenced_gain_buffer": {
+        "slug": "341-rail-referenced-gain-buffer",
+        "family": "cont",
+        "mode": "gain",
+        "edge": 1
+    },
+    "v3_342_weighted_balance_summer": {
+        "slug": "342-weighted-balance-summer",
+        "family": "cont",
+        "mode": "sum",
+        "edge": 1
+    },
+    "v3_343_supply_qualified_window_flag": {
+        "slug": "343-supply-qualified-window-flag",
+        "family": "cont",
+        "mode": "window",
+        "edge": 1
+    },
+    "v3_344_power_mode_clamped_mux": {
+        "slug": "344-power-mode-clamped-mux",
+        "family": "cont",
+        "mode": "mux",
+        "edge": 1
+    },
+    "v3_345_bias_trim_affine_mapper": {
+        "slug": "345-bias-trim-affine-mapper",
+        "family": "cont",
+        "mode": "gain",
+        "edge": 1
+    },
+    "v3_346_reset_polarity_qualifier": {
+        "slug": "346-reset-polarity-qualifier",
+        "family": "cont",
+        "mode": "window",
+        "edge": 1
+    },
+    "v3_347_multi_condition_enable_combiner": {
+        "slug": "347-multi-condition-enable-combiner",
+        "family": "cont",
+        "mode": "reduction",
+        "edge": 1
+    },
+    "v3_348_phase_mismatch_qualifier": {
+        "slug": "348-phase-mismatch-qualifier",
+        "family": "cont",
+        "mode": "phase",
+        "edge": 1
+    },
+    "v3_349_priority_fault_code_driver": {
+        "slug": "349-priority-fault-code-driver",
+        "family": "cont",
+        "mode": "priority",
+        "edge": 1
+    },
+    "v3_350_lane_validity_reduction_monitor": {
+        "slug": "350-lane-validity-reduction-monitor",
+        "family": "cont",
+        "mode": "reduction",
+        "edge": 1
+    },
+    "v3_351_comparator_decision_capture": {
+        "slug": "351-comparator-decision-capture",
+        "family": "clock",
+        "mode": "edge",
+        "edge": 1
+    },
+    "v3_352_falling_edge_calibration_sampler": {
+        "slug": "352-falling-edge-calibration-sampler",
+        "family": "clock",
+        "mode": "sample_fall",
+        "edge": -1
+    },
+    "v3_353_resettable_phase_toggle_monitor": {
+        "slug": "353-resettable-phase-toggle-monitor",
+        "family": "clock",
+        "mode": "toggle",
+        "edge": 1
+    },
+    "v3_354_settling_progress_counter": {
+        "slug": "354-settling-progress-counter",
+        "family": "clock",
+        "mode": "counter",
+        "edge": 1
+    },
+    "v3_355_enable_qualified_bias_hold": {
+        "slug": "355-enable-qualified-bias-hold",
+        "family": "clock",
+        "mode": "latch",
+        "edge": 1
+    },
+    "v3_356_dynamic_supply_enable_driver": {
+        "slug": "356-dynamic-supply-enable-driver",
+        "family": "cont",
+        "mode": "translate",
+        "edge": 1
+    },
+    "v3_357_local_domain_buffer_translator": {
+        "slug": "357-local-domain-buffer-translator",
+        "family": "cont",
+        "mode": "translate",
+        "edge": 1
+    },
+    "v3_358_bias_window_threshold_bridge": {
+        "slug": "358-bias-window-threshold-bridge",
+        "family": "cont",
+        "mode": "window",
+        "edge": 1
+    },
+    "v3_359_clocked_power_ready_sampler": {
+        "slug": "359-clocked-power-ready-sampler",
+        "family": "clock",
+        "mode": "counter",
+        "edge": 1
+    },
+    "v3_360_mode_selected_bias_driver": {
+        "slug": "360-mode-selected-bias-driver",
+        "family": "cont",
+        "mode": "mux",
+        "edge": 1
+    },
+    "v3_394_deterministic_energy_accumulator": {
+        "slug": "394-deterministic-energy-accumulator",
+        "family": "clock",
+        "mode": "accum",
+        "edge": 1
+    },
+    "v3_395_bounded_tail_dither_shaper": {
+        "slug": "395-bounded-tail-dither-shaper",
+        "family": "clock",
+        "mode": "accum",
+        "edge": 1
+    },
+    "v3_403_calibration_bit_select_flag": {
+        "slug": "403-calibration-bit-select-flag",
+        "family": "cont",
+        "mode": "mux",
+        "edge": 1
+    },
+    "v3_406_lane_mask_replication_driver": {
+        "slug": "406-lane-mask-replication-driver",
+        "family": "cont",
+        "mode": "reduction",
+        "edge": 1
+    },
+    "v3_415_explicit_sar_slice_router": {
+        "slug": "415-explicit-sar-slice-router",
+        "family": "cont",
+        "mode": "mux",
+        "edge": 1
+    },
+    "v3_416_ready_reduction_fault_monitor": {
+        "slug": "416-ready-reduction-fault-monitor",
+        "family": "cont",
+        "mode": "reduction",
+        "edge": 1
+    },
+    "v3_417_async_reset_event_counter": {
+        "slug": "417-async-reset-event-counter",
+        "family": "clock",
+        "mode": "counter",
+        "edge": 1
+    },
+    "v3_418_enable_saturating_ready_counter": {
+        "slug": "418-enable-saturating-ready-counter",
+        "family": "clock",
+        "mode": "counter",
+        "edge": 1
+    },
+    "v3_419_rail_aware_threshold_bridge": {
+        "slug": "419-rail-aware-threshold-bridge",
+        "family": "cont",
+        "mode": "window",
+        "edge": 1
+    },
+    "v3_420_mode_latch_calibration_gate": {
+        "slug": "420-mode-latch-calibration-gate",
+        "family": "clock",
+        "mode": "latch",
+        "edge": 1
+    },
+    "v3_433_configurable_startup_policy": {
+        "slug": "433-configurable-startup-policy",
+        "family": "cont",
+        "mode": "window",
+        "edge": 1
+    },
+    "v3_449_explicit_replicated_stage_chain": {
+        "slug": "449-explicit-replicated-stage-chain",
+        "family": "cont",
+        "mode": "sum",
+        "edge": 1
+    },
+    "v3_451_electrical_threshold_bridge": {
+        "slug": "451-electrical-threshold-bridge",
+        "family": "cont",
+        "mode": "window",
+        "edge": 1
+    },
+    "v3_452_local_rail_domain_translator": {
+        "slug": "452-local-rail-domain-translator",
+        "family": "cont",
+        "mode": "translate",
+        "edge": 1
+    },
+    "v3_453_edge_delay_qualified_driver": {
+        "slug": "453-edge-delay-qualified-driver",
+        "family": "clock",
+        "mode": "edge",
+        "edge": 1
+    },
+    "v3_454_calibration_quadrant_mapper": {
+        "slug": "454-calibration-quadrant-mapper",
+        "family": "cont",
+        "mode": "mux",
+        "edge": 1
+    },
+    "v3_455_explicit_bus_slice_router": {
+        "slug": "455-explicit-bus-slice-router",
+        "family": "cont",
+        "mode": "mux",
+        "edge": 1
+    },
+    "v3_458_iterative_decay_estimator": {
+        "slug": "458-iterative-decay-estimator",
+        "family": "clock",
+        "mode": "accum",
+        "edge": 1
+    },
+    "v3_459_bounded_window_accumulator": {
+        "slug": "459-bounded-window-accumulator",
+        "family": "clock",
+        "mode": "accum",
+        "edge": 1
+    }
+}
+
+
+def _issue109_clip01(value: float) -> float:
+    return min(1.0, max(0.0, value))
+
+
+def _issue109_inputs(values: dict[str, float]) -> dict[str, float]:
+    span = values["vdd"] - values["vss"]
+    if span < 0.05:
+        span = 0.05
+    return {
+        "span": span,
+        "valid": 1.0 if values["en"] > 0.45 and 0.62 <= values["vdd"] - values["vss"] <= 1.28 else 0.0,
+        "x0": _issue109_clip01((values["in0"] - values["vss"]) / span),
+        "x1": _issue109_clip01((values["in1"] - values["vss"]) / span),
+        "x2": _issue109_clip01((values["in2"] - values["vss"]) / span),
+        "x3": _issue109_clip01((values["in3"] - values["vss"]) / span),
+        "c0": _issue109_clip01(values["ctrl0"] / 0.9),
+        "c1": _issue109_clip01(values["ctrl1"] / 0.9),
+    }
+
+
+def _issue109_cont_expected(mode: str, values: dict[str, float]) -> dict[str, float]:
+    s = _issue109_inputs(values)
+    x0, x1, x2, x3, c0, c1 = s["x0"], s["x1"], s["x2"], s["x3"], s["c0"], s["c1"]
+    if mode == "gain":
+        core = 0.82 * x0 + 0.18 * c0 + 0.08
+        flag = core > 0.78
+        metric = abs(core - x0) / 0.55
+    elif mode == "sum":
+        core = 0.36 * x0 + 0.28 * x1 + 0.18 * x2 + 0.10 * x3 + 0.04
+        flag = core > 0.48
+        metric = abs(x0 - x1) / 0.55
+    elif mode == "window":
+        core = x0
+        flag = 0.24 <= x0 <= 0.72 and c0 > 0.35
+        metric = abs(x0 - 0.48) / 0.48
+    elif mode == "mux":
+        idx = (2 if c1 > 0.5 else 0) + (1 if c0 > 0.5 else 0)
+        chosen = [x0, x1, x2, x3][idx]
+        core = chosen * 0.88 + 0.04
+        flag = idx > 0
+        metric = idx / 3.0
+    elif mode == "reduction":
+        count = sum(1 for item in (x0, x1, x2, x3) if item > 0.50)
+        core = count / 4.0
+        flag = count >= 3
+        metric = core
+    elif mode == "phase":
+        core = _issue109_clip01(0.5 + (x0 - x1) + 0.25 * (c0 - c1))
+        flag = (x0 > 0.50) != (x1 > 0.50)
+        metric = abs(x0 - x1)
+    elif mode == "priority":
+        core = 0.25 if x0 > 0.58 else 0.50 if x1 > 0.58 else 0.75 if x2 > 0.58 else 1.0 if c0 > 0.58 else 0.0
+        flag = core >= 0.50
+        metric = core
+    elif mode == "translate":
+        core = 0.76 * x0 + 0.18 * c1 + 0.12
+        flag = s["span"] >= 0.78
+        metric = abs((values["in0"] - values["vss"]) - 0.5 * s["span"]) / s["span"]
+    else:
+        core = 0.55 * x0 + 0.25 * x1 + 0.20 * c0
+        flag = x0 > x1
+        metric = abs(x0 - x1)
+    if s["valid"] <= 0.5:
+        return {"out": 0.0, "flag": 0.0, "metric": 0.0}
+    return {"out": 0.9 * _issue109_clip01(core), "flag": 0.9 if flag else 0.0, "metric": 0.9 * _issue109_clip01(metric)}
+
+
+def _check_issue109_cont(rows: list[dict[str, float]], spec: dict[str, object]) -> tuple[bool, str]:
+    required = {"time", "in0", "in1", "in2", "in3", "ctrl0", "ctrl1", "vdd", "vss", "en", "out", "flag", "metric"}
+    if not rows or not required.issubset(rows[0]):
+        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
+        return False, "missing_columns=" + ",".join(missing)
+    checked = 0
+    max_err = 0.0
+    out_values, flag_values, metric_values = [], [], []
+    saw_enable_low = False
+    for time_s in _v3_uniform_sample_times(rows):
+        values = _v3_values_at(rows, ("in0", "in1", "in2", "in3", "ctrl0", "ctrl1", "vdd", "vss", "en", "out", "flag", "metric"), time_s)
+        if values is None:
+            continue
+        expected = _issue109_cont_expected(str(spec["mode"]), values)
+        before = _v3_values_at(rows, ("in0", "in1", "in2", "in3", "ctrl0", "ctrl1", "vdd", "vss", "en"), max(rows[0]["time"], time_s - 0.12e-9))
+        after = _v3_values_at(rows, ("in0", "in1", "in2", "in3", "ctrl0", "ctrl1", "vdd", "vss", "en"), min(rows[-1]["time"], time_s + 0.12e-9))
+        if before is not None and after is not None:
+            if abs(_issue109_cont_expected(str(spec["mode"]), before)["flag"] - _issue109_cont_expected(str(spec["mode"]), after)["flag"]) > 0.45:
+                continue
+        max_err = max(max_err, abs(values["out"] - expected["out"]), abs(values["flag"] - expected["flag"]), abs(values["metric"] - expected["metric"]))
+        out_values.append(expected["out"])
+        flag_values.append(expected["flag"])
+        metric_values.append(expected["metric"])
+        saw_enable_low = saw_enable_low or values["en"] <= 0.45
+        checked += 1
+    if checked < 10:
+        return False, f"insufficient_issue109_samples={checked}"
+    if not saw_enable_low:
+        return False, "missing_enable_low_coverage"
+    if max(out_values) - min(out_values) < 0.16:
+        return False, "insufficient_out_dynamic_range"
+    if max(flag_values) - min(flag_values) < 0.45:
+        return False, "insufficient_flag_dynamic_range"
+    if max(metric_values) - min(metric_values) < 0.12:
+        return False, "insufficient_metric_dynamic_range"
+    if max_err > 0.085:
+        return False, f"issue109_remaining_error={max_err:.4f}"
+    return True, f"samples={checked} max_err={max_err:.4f}"
+
+
+def _check_issue109_clock(rows: list[dict[str, float]], spec: dict[str, object]) -> tuple[bool, str]:
+    required = {"time", "clk", "rst", "in0", "in1", "in2", "in3", "ctrl0", "ctrl1", "vdd", "vss", "en", "out", "flag", "metric"}
+    if not rows or not required.issubset(rows[0]):
+        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
+        return False, "missing_columns=" + ",".join(missing)
+    times = [row["time"] for row in rows]
+    direction = int(spec.get("edge", 1))
+    edges = _threshold_crossings([row["clk"] for row in rows], times, threshold=0.45, direction="rising" if direction > 0 else "falling")
+    if len(edges) < 8:
+        return False, f"too_few_issue109_clock_edges={len(edges)}"
+    min_period = min((b - a for a, b in zip(edges, edges[1:])), default=1.0e-9)
+    delay = min(0.12e-9, 0.12 * min_period)
+    mode = str(spec["mode"])
+    core_state = 0.0
+    out_state = 0.0
+    checked = 0
+    max_err = 0.0
+    out_values, flag_values, metric_values = [], [], []
+    saw_reset = saw_enable_low = False
+    for edge_t in edges:
+        output_t = edge_t + delay
+        if output_t >= times[-1] - 0.05e-9:
+            continue
+        inputs = _v3_values_at(rows, ("rst", "in0", "in1", "in2", "in3", "ctrl0", "ctrl1", "vdd", "vss", "en"), edge_t + 1.0e-12)
+        outputs = _v3_values_at(rows, ("out", "flag", "metric"), output_t)
+        if inputs is None or outputs is None:
+            continue
+        values = {"in0": inputs["in0"], "in1": inputs["in1"], "in2": inputs["in2"], "in3": inputs["in3"], "ctrl0": inputs["ctrl0"], "ctrl1": inputs["ctrl1"], "vdd": inputs["vdd"], "vss": inputs["vss"], "en": inputs["en"]}
+        base = _issue109_inputs(values)
+        x0, x1, x2, c0 = base["x0"], base["x1"], base["x2"], base["c0"]
+        if inputs["rst"] > 0.45 or base["valid"] <= 0.5:
+            core_state = 0.0
+            out_state = 0.0
+            expected = {"out": 0.0, "flag": 0.0, "metric": 0.0}
+            saw_reset = saw_reset or inputs["rst"] > 0.45
+            saw_enable_low = saw_enable_low or inputs["en"] <= 0.45
+        elif mode in {"edge", "sample_fall"}:
+            decision = x0 > x1
+            expected = {"out": 0.9 if decision else 0.0, "flag": 0.9 if decision else 0.0, "metric": 0.9 * _issue109_clip01(abs(x0 - x1))}
+        elif mode == "toggle":
+            if x0 > 0.50:
+                out_state = 0.0 if out_state > 0.45 else 0.9
+            expected = {"out": out_state, "flag": out_state, "metric": 0.9 * _issue109_clip01(abs(x0 - x1))}
+        elif mode == "counter":
+            if x0 > 0.25 and x1 > 0.20:
+                core_state = min(4.0, core_state + 1.0)
+            else:
+                core_state = 0.0
+            expected = {"out": 0.9 * _issue109_clip01(core_state / 4.0), "flag": 0.9 if core_state >= 3.0 else 0.0, "metric": 0.9 * _issue109_clip01(abs(x0 - x1))}
+        elif mode == "latch":
+            if c0 > 0.45:
+                out_state = 0.9 * _issue109_clip01(0.70 * x0 + 0.30 * x1)
+            expected = {"out": out_state, "flag": 0.9 if c0 > 0.45 else 0.0, "metric": 0.9 * _issue109_clip01(abs((out_state / 0.9) - x2))}
+        else:  # accum
+            aux = _issue109_clip01(abs(x0 - x1) + 0.35 * c0)
+            core_state = _issue109_clip01(0.62 * core_state + 0.32 * aux)
+            expected = {"out": 0.9 * core_state, "flag": 0.9 if core_state > 0.58 else 0.0, "metric": 0.9 * aux}
+        max_err = max(max_err, abs(outputs["out"] - expected["out"]), abs(outputs["flag"] - expected["flag"]), abs(outputs["metric"] - expected["metric"]))
+        out_values.append(expected["out"])
+        flag_values.append(expected["flag"])
+        metric_values.append(expected["metric"])
+        checked += 1
+    if checked < 8:
+        return False, f"insufficient_issue109_clock_samples={checked}"
+    if not (saw_reset and saw_enable_low):
+        return False, "missing_reset_or_enable_low_coverage"
+    if max(out_values) - min(out_values) < 0.16:
+        return False, "insufficient_clock_out_dynamic_range"
+    if max(flag_values) - min(flag_values) < 0.45:
+        return False, "insufficient_clock_flag_dynamic_range"
+    if max(metric_values) - min(metric_values) < 0.12:
+        return False, "insufficient_clock_metric_dynamic_range"
+    if max_err > 0.10:
+        return False, f"issue109_remaining_clock_error={max_err:.4f}"
+    return True, f"samples={checked} max_err={max_err:.4f}"
+
+
+def _make_issue109_remaining_checker(task_id: str):
+    def _checker(rows: list[dict[str, float]]) -> tuple[bool, str]:
+        spec = ISSUE109_REMAINING_HOLE_SPECS[task_id]
+        if spec["family"] == "clock":
+            return _check_issue109_clock(rows, spec)
+        return _check_issue109_cont(rows, spec)
+
+    return _checker
+# END ISSUE109_REMAINING_HOLES_GENERATED
+
+
+
+
+
+
 
 
 def check_v3_cal4bit_modulo(rows: list[dict[str, float]]) -> tuple[bool, str]:
@@ -24359,18 +25496,20 @@ CHECKS["v3_hysteretic_comparator_receiver"] = check_v3_hysteretic_comparator_rec
 CHECKS["v3_flash_folded_dac4"] = check_v3_flash_folded_dac4
 CHECKS["v3_subradix_dac10"] = check_v3_subradix_dac10
 CHECKS["v3_clocked_adc3bit"] = check_v3_clocked_adc3bit
-CHECKS["v3_495_slew_rate_dac4"] = check_v3_495_slew_rate_dac4
-CHECKS["v3_496_first_order_sigma_delta_modulator"] = check_v3_496_first_order_sigma_delta_modulator
-CHECKS["v3_497_thermometer_bus_encoder"] = check_v3_497_thermometer_bus_encoder
-CHECKS["v3_498_dc_aware_adc3bit"] = check_v3_498_dc_aware_adc3bit
-CHECKS["v3_499_latched_bus_dac8"] = check_v3_499_latched_bus_dac8
-CHECKS["v3_500_deterministic_mismatch_dac6"] = check_v3_500_deterministic_mismatch_dac6
-CHECKS["v3_501_adc_static_linearity_monitor"] = check_v3_501_adc_static_linearity_monitor
-CHECKS["v3_candidate_bias_supply_bias_validity_gate"] = check_v3_candidate_bias_supply_bias_validity_gate
-CHECKS["v3_candidate_bias_power_mode_supply_current_metric"] = check_v3_candidate_bias_power_mode_supply_current_metric
-CHECKS["v3_candidate_bias_dynamic_supply_level_driver"] = check_v3_candidate_bias_dynamic_supply_level_driver
-CHECKS["v3_candidate_bias_power_enable_turnon_delay_gate"] = check_v3_candidate_bias_power_enable_turnon_delay_gate
-CHECKS["v3_candidate_bias_reference_settling_window_monitor"] = check_v3_candidate_bias_reference_settling_window_monitor
+CHECKS["v3_052_dc_aware_adc3bit"] = check_v3_498_dc_aware_adc3bit
+CHECKS["v3_053_latched_bus_dac8"] = check_v3_499_latched_bus_dac8
+CHECKS["v3_054_thermometer_bus_encoder"] = check_v3_497_thermometer_bus_encoder
+CHECKS["v3_055_slew_rate_dac4"] = check_v3_495_slew_rate_dac4
+CHECKS["v3_056_correlated_double_sampler"] = check_v3_056_correlated_double_sampler
+CHECKS["v3_057_first_order_sigma_delta_modulator"] = check_v3_496_first_order_sigma_delta_modulator
+CHECKS["v3_075_adc_static_linearity_monitor"] = check_v3_501_adc_static_linearity_monitor
+CHECKS["v3_495_supply_bias_validity_gate"] = check_v3_candidate_bias_supply_bias_validity_gate
+CHECKS["v3_496_reference_settling_window_monitor"] = check_v3_candidate_bias_reference_settling_window_monitor
+CHECKS["v3_497_power_enable_turnon_delay_gate"] = check_v3_candidate_bias_power_enable_turnon_delay_gate
+CHECKS["v3_498_power_mode_supply_current_metric"] = check_v3_candidate_bias_power_mode_supply_current_metric
+CHECKS["v3_499_dynamic_supply_level_driver"] = check_v3_candidate_bias_dynamic_supply_level_driver
+CHECKS["v3_500_rail_ramp_rate_startup_monitor"] = check_v3_candidate_bias_rail_ramp_rate_startup_monitor
+CHECKS["v3_501_differential_common_mode_window_monitor"] = check_v3_candidate_afe_differential_common_mode_window_monitor
 CHECKS["v3_502_sine_vco_idtmod_bound_step"] = check_v3_502_sine_vco_idtmod_bound_step
 CHECKS["v3_503_differential_vco_clip_idtmod"] = check_v3_503_differential_vco_clip_idtmod
 CHECKS["v3_504_charge_pump_pfd_state_machine"] = check_v3_504_charge_pump_pfd_state_machine
@@ -24405,18 +25544,20 @@ CHECKS["292-hysteretic-comparator-receiver"] = check_v3_hysteretic_comparator_re
 CHECKS["293-flash-folded-dac4"] = check_v3_flash_folded_dac4
 CHECKS["294-subradix-dac10"] = check_v3_subradix_dac10
 CHECKS["295-clocked-adc3bit"] = check_v3_clocked_adc3bit
-CHECKS["495-slew-rate-dac4"] = check_v3_495_slew_rate_dac4
-CHECKS["496-first-order-sigma-delta-modulator"] = check_v3_496_first_order_sigma_delta_modulator
-CHECKS["497-thermometer-bus-encoder"] = check_v3_497_thermometer_bus_encoder
-CHECKS["498-dc-aware-adc3bit"] = check_v3_498_dc_aware_adc3bit
-CHECKS["499-latched-bus-dac8"] = check_v3_499_latched_bus_dac8
-CHECKS["500-deterministic-mismatch-dac6"] = check_v3_500_deterministic_mismatch_dac6
-CHECKS["501-adc-static-linearity-monitor"] = check_v3_501_adc_static_linearity_monitor
-CHECKS["candidate-bias-supply-bias-validity-gate"] = check_v3_candidate_bias_supply_bias_validity_gate
-CHECKS["candidate-bias-power-mode-supply-current-metric"] = check_v3_candidate_bias_power_mode_supply_current_metric
-CHECKS["candidate-bias-dynamic-supply-level-driver"] = check_v3_candidate_bias_dynamic_supply_level_driver
-CHECKS["candidate-bias-power-enable-turnon-delay-gate"] = check_v3_candidate_bias_power_enable_turnon_delay_gate
-CHECKS["candidate-bias-reference-settling-window-monitor"] = check_v3_candidate_bias_reference_settling_window_monitor
+CHECKS["052-dc-aware-adc3bit"] = check_v3_498_dc_aware_adc3bit
+CHECKS["053-latched-bus-dac8"] = check_v3_499_latched_bus_dac8
+CHECKS["054-thermometer-bus-encoder"] = check_v3_497_thermometer_bus_encoder
+CHECKS["055-slew-rate-dac4"] = check_v3_495_slew_rate_dac4
+CHECKS["056-correlated-double-sampler"] = check_v3_056_correlated_double_sampler
+CHECKS["057-first-order-sigma-delta-modulator"] = check_v3_496_first_order_sigma_delta_modulator
+CHECKS["075-adc-static-linearity-monitor"] = check_v3_501_adc_static_linearity_monitor
+CHECKS["495-supply-bias-validity-gate"] = check_v3_candidate_bias_supply_bias_validity_gate
+CHECKS["496-reference-settling-window-monitor"] = check_v3_candidate_bias_reference_settling_window_monitor
+CHECKS["497-power-enable-turnon-delay-gate"] = check_v3_candidate_bias_power_enable_turnon_delay_gate
+CHECKS["498-power-mode-supply-current-metric"] = check_v3_candidate_bias_power_mode_supply_current_metric
+CHECKS["499-dynamic-supply-level-driver"] = check_v3_candidate_bias_dynamic_supply_level_driver
+CHECKS["500-rail-ramp-rate-startup-monitor"] = check_v3_candidate_bias_rail_ramp_rate_startup_monitor
+CHECKS["501-differential-common-mode-window-monitor"] = check_v3_candidate_afe_differential_common_mode_window_monitor
 CHECKS["502-sine-vco-idtmod-bound-step"] = check_v3_502_sine_vco_idtmod_bound_step
 CHECKS["503-differential-vco-clip-idtmod"] = check_v3_503_differential_vco_clip_idtmod
 CHECKS["504-charge-pump-pfd-state-machine"] = check_v3_504_charge_pump_pfd_state_machine
@@ -24920,16 +26061,28 @@ V3_STANDALONE_SPLIT_CHECKS = {
     "372-analysis-aware-noise-metric": check_v3_372_analysis_aware_noise_metric,
     "v3_373_task_output_limiter": check_v3_373_task_output_limiter,
     "373-task-output-limiter": check_v3_373_task_output_limiter,
+    "v3_373_saturation_recovery_limiter": check_v3_373_saturation_recovery_limiter,
+    "373-saturation-recovery-limiter": check_v3_373_saturation_recovery_limiter,
     "v3_374_task_dual_output_update": check_v3_374_task_dual_output_update,
     "374-task-dual-output-update": check_v3_374_task_dual_output_update,
+    "v3_374_sampled_error_update_monitor": check_v3_374_sampled_error_update_monitor,
+    "374-sampled-error-update-monitor": check_v3_374_sampled_error_update_monitor,
     "v3_375_task_event_counter_service": check_v3_375_task_event_counter_service,
     "375-task-event-counter-service": check_v3_375_task_event_counter_service,
+    "v3_375_windowed_event_rate_monitor": check_v3_375_windowed_event_rate_monitor,
+    "375-windowed-event-rate-monitor": check_v3_375_windowed_event_rate_monitor,
     "v3_376_task_reset_sequencer": check_v3_376_task_reset_sequencer,
     "376-task-reset-sequencer": check_v3_376_task_reset_sequencer,
+    "v3_376_reset_release_sequencer": check_v3_376_reset_release_sequencer,
+    "376-reset-release-sequencer": check_v3_376_reset_release_sequencer,
     "v3_377_task_stateful_threshold_update": check_v3_377_task_stateful_threshold_update,
     "377-task-stateful-threshold-update": check_v3_377_task_stateful_threshold_update,
+    "v3_377_adaptive_threshold_tracker": check_v3_377_adaptive_threshold_tracker,
+    "377-adaptive-threshold-tracker": check_v3_377_adaptive_threshold_tracker,
     "v3_378_task_metric_normalizer": check_v3_378_task_metric_normalizer,
     "378-task-metric-normalizer": check_v3_378_task_metric_normalizer,
+    "v3_378_rail_normalized_metric_mapper": check_v3_378_rail_normalized_metric_mapper,
+    "378-rail-normalized-metric-mapper": check_v3_378_rail_normalized_metric_mapper,
     "v3_379_file_fgets_config_loader": check_v3_379_file_fgets_config_loader,
     "379-file-fgets-config-loader": check_v3_379_file_fgets_config_loader,
     "v3_380_file_feof_line_counter": check_v3_380_file_feof_line_counter,
@@ -25016,6 +26169,8 @@ V3_STANDALONE_SPLIT_CHECKS = {
     "420-mixed-analog-digital-mode-latch": check_v3_420_mixed_analog_digital_mode_latch,
     "v3_421_task_local_variable_transform": check_v3_421_task_local_variable_transform,
     "421-task-local-variable-transform": check_v3_421_task_local_variable_transform,
+    "v3_421_calibration_affine_transform": check_v3_421_calibration_affine_transform,
+    "421-calibration-affine-transform": check_v3_421_calibration_affine_transform,
     "v3_422_file_fscanf_table_stimulus": check_v3_422_file_fscanf_table_stimulus,
     "422-file-fscanf-table-stimulus": check_v3_422_file_fscanf_table_stimulus,
     "v3_423_file_profile_replay_controller": check_v3_423_file_profile_replay_controller,
@@ -25154,6 +26309,8 @@ V3_STANDALONE_SPLIT_CHECKS = {
     "489-event-nested-or-expression": check_v3_489_event_nested_or_expression,
     "v3_490_event_task_function_state_update": check_v3_490_event_task_function_state_update,
     "490-event-task-function-state-update": check_v3_490_event_task_function_state_update,
+    "v3_490_event_reacquire_lock_detector": check_v3_490_event_reacquire_lock_detector,
+    "490-event-reacquire-lock-detector": check_v3_490_event_reacquire_lock_detector,
     "v3_491_kcl_capacitor_ddt_current": check_v3_491_kcl_capacitor_ddt_current,
     "491-kcl-capacitor-ddt-current": check_v3_491_kcl_capacitor_ddt_current,
     "v3_492_kcl_inductor_idt_voltage": check_v3_492_kcl_inductor_idt_voltage,
@@ -25163,6 +26320,94 @@ V3_STANDALONE_SPLIT_CHECKS = {
     "v3_494_continuous_zi_nd_filter": check_v3_494_continuous_zi_nd_filter,
     "494-continuous-zi-nd-filter": check_v3_494_continuous_zi_nd_filter,
 }
+
+# BEGIN ISSUE109_REMAINING_HOLES_ALIASES
+CHECKS["v3_341_rail_referenced_gain_buffer"] = _make_issue109_remaining_checker("v3_341_rail_referenced_gain_buffer")
+CHECKS["341-rail-referenced-gain-buffer"] = CHECKS["v3_341_rail_referenced_gain_buffer"]
+CHECKS["v3_342_weighted_balance_summer"] = _make_issue109_remaining_checker("v3_342_weighted_balance_summer")
+CHECKS["342-weighted-balance-summer"] = CHECKS["v3_342_weighted_balance_summer"]
+CHECKS["v3_343_supply_qualified_window_flag"] = _make_issue109_remaining_checker("v3_343_supply_qualified_window_flag")
+CHECKS["343-supply-qualified-window-flag"] = CHECKS["v3_343_supply_qualified_window_flag"]
+CHECKS["v3_344_power_mode_clamped_mux"] = _make_issue109_remaining_checker("v3_344_power_mode_clamped_mux")
+CHECKS["344-power-mode-clamped-mux"] = CHECKS["v3_344_power_mode_clamped_mux"]
+CHECKS["v3_345_bias_trim_affine_mapper"] = _make_issue109_remaining_checker("v3_345_bias_trim_affine_mapper")
+CHECKS["345-bias-trim-affine-mapper"] = CHECKS["v3_345_bias_trim_affine_mapper"]
+CHECKS["v3_346_reset_polarity_qualifier"] = _make_issue109_remaining_checker("v3_346_reset_polarity_qualifier")
+CHECKS["346-reset-polarity-qualifier"] = CHECKS["v3_346_reset_polarity_qualifier"]
+CHECKS["v3_347_multi_condition_enable_combiner"] = _make_issue109_remaining_checker("v3_347_multi_condition_enable_combiner")
+CHECKS["347-multi-condition-enable-combiner"] = CHECKS["v3_347_multi_condition_enable_combiner"]
+CHECKS["v3_348_phase_mismatch_qualifier"] = _make_issue109_remaining_checker("v3_348_phase_mismatch_qualifier")
+CHECKS["348-phase-mismatch-qualifier"] = CHECKS["v3_348_phase_mismatch_qualifier"]
+CHECKS["v3_349_priority_fault_code_driver"] = _make_issue109_remaining_checker("v3_349_priority_fault_code_driver")
+CHECKS["349-priority-fault-code-driver"] = CHECKS["v3_349_priority_fault_code_driver"]
+CHECKS["v3_350_lane_validity_reduction_monitor"] = _make_issue109_remaining_checker("v3_350_lane_validity_reduction_monitor")
+CHECKS["350-lane-validity-reduction-monitor"] = CHECKS["v3_350_lane_validity_reduction_monitor"]
+CHECKS["v3_351_comparator_decision_capture"] = _make_issue109_remaining_checker("v3_351_comparator_decision_capture")
+CHECKS["351-comparator-decision-capture"] = CHECKS["v3_351_comparator_decision_capture"]
+CHECKS["v3_352_falling_edge_calibration_sampler"] = _make_issue109_remaining_checker("v3_352_falling_edge_calibration_sampler")
+CHECKS["352-falling-edge-calibration-sampler"] = CHECKS["v3_352_falling_edge_calibration_sampler"]
+CHECKS["v3_353_resettable_phase_toggle_monitor"] = _make_issue109_remaining_checker("v3_353_resettable_phase_toggle_monitor")
+CHECKS["353-resettable-phase-toggle-monitor"] = CHECKS["v3_353_resettable_phase_toggle_monitor"]
+CHECKS["v3_354_settling_progress_counter"] = _make_issue109_remaining_checker("v3_354_settling_progress_counter")
+CHECKS["354-settling-progress-counter"] = CHECKS["v3_354_settling_progress_counter"]
+CHECKS["v3_355_enable_qualified_bias_hold"] = _make_issue109_remaining_checker("v3_355_enable_qualified_bias_hold")
+CHECKS["355-enable-qualified-bias-hold"] = CHECKS["v3_355_enable_qualified_bias_hold"]
+CHECKS["v3_356_dynamic_supply_enable_driver"] = _make_issue109_remaining_checker("v3_356_dynamic_supply_enable_driver")
+CHECKS["356-dynamic-supply-enable-driver"] = CHECKS["v3_356_dynamic_supply_enable_driver"]
+CHECKS["v3_357_local_domain_buffer_translator"] = _make_issue109_remaining_checker("v3_357_local_domain_buffer_translator")
+CHECKS["357-local-domain-buffer-translator"] = CHECKS["v3_357_local_domain_buffer_translator"]
+CHECKS["v3_358_bias_window_threshold_bridge"] = _make_issue109_remaining_checker("v3_358_bias_window_threshold_bridge")
+CHECKS["358-bias-window-threshold-bridge"] = CHECKS["v3_358_bias_window_threshold_bridge"]
+CHECKS["v3_359_clocked_power_ready_sampler"] = _make_issue109_remaining_checker("v3_359_clocked_power_ready_sampler")
+CHECKS["359-clocked-power-ready-sampler"] = CHECKS["v3_359_clocked_power_ready_sampler"]
+CHECKS["v3_360_mode_selected_bias_driver"] = _make_issue109_remaining_checker("v3_360_mode_selected_bias_driver")
+CHECKS["360-mode-selected-bias-driver"] = CHECKS["v3_360_mode_selected_bias_driver"]
+CHECKS["v3_394_deterministic_energy_accumulator"] = _make_issue109_remaining_checker("v3_394_deterministic_energy_accumulator")
+CHECKS["394-deterministic-energy-accumulator"] = CHECKS["v3_394_deterministic_energy_accumulator"]
+CHECKS["v3_395_bounded_tail_dither_shaper"] = _make_issue109_remaining_checker("v3_395_bounded_tail_dither_shaper")
+CHECKS["395-bounded-tail-dither-shaper"] = CHECKS["v3_395_bounded_tail_dither_shaper"]
+CHECKS["v3_403_calibration_bit_select_flag"] = _make_issue109_remaining_checker("v3_403_calibration_bit_select_flag")
+CHECKS["403-calibration-bit-select-flag"] = CHECKS["v3_403_calibration_bit_select_flag"]
+CHECKS["v3_406_lane_mask_replication_driver"] = _make_issue109_remaining_checker("v3_406_lane_mask_replication_driver")
+CHECKS["406-lane-mask-replication-driver"] = CHECKS["v3_406_lane_mask_replication_driver"]
+CHECKS["v3_415_explicit_sar_slice_router"] = _make_issue109_remaining_checker("v3_415_explicit_sar_slice_router")
+CHECKS["415-explicit-sar-slice-router"] = CHECKS["v3_415_explicit_sar_slice_router"]
+CHECKS["v3_416_ready_reduction_fault_monitor"] = _make_issue109_remaining_checker("v3_416_ready_reduction_fault_monitor")
+CHECKS["416-ready-reduction-fault-monitor"] = CHECKS["v3_416_ready_reduction_fault_monitor"]
+CHECKS["v3_417_async_reset_event_counter"] = _make_issue109_remaining_checker("v3_417_async_reset_event_counter")
+CHECKS["417-async-reset-event-counter"] = CHECKS["v3_417_async_reset_event_counter"]
+CHECKS["v3_418_enable_saturating_ready_counter"] = _make_issue109_remaining_checker("v3_418_enable_saturating_ready_counter")
+CHECKS["418-enable-saturating-ready-counter"] = CHECKS["v3_418_enable_saturating_ready_counter"]
+CHECKS["v3_419_rail_aware_threshold_bridge"] = _make_issue109_remaining_checker("v3_419_rail_aware_threshold_bridge")
+CHECKS["419-rail-aware-threshold-bridge"] = CHECKS["v3_419_rail_aware_threshold_bridge"]
+CHECKS["v3_420_mode_latch_calibration_gate"] = _make_issue109_remaining_checker("v3_420_mode_latch_calibration_gate")
+CHECKS["420-mode-latch-calibration-gate"] = CHECKS["v3_420_mode_latch_calibration_gate"]
+CHECKS["v3_433_configurable_startup_policy"] = _make_issue109_remaining_checker("v3_433_configurable_startup_policy")
+CHECKS["433-configurable-startup-policy"] = CHECKS["v3_433_configurable_startup_policy"]
+CHECKS["v3_449_explicit_replicated_stage_chain"] = _make_issue109_remaining_checker("v3_449_explicit_replicated_stage_chain")
+CHECKS["449-explicit-replicated-stage-chain"] = CHECKS["v3_449_explicit_replicated_stage_chain"]
+CHECKS["v3_451_electrical_threshold_bridge"] = _make_issue109_remaining_checker("v3_451_electrical_threshold_bridge")
+CHECKS["451-electrical-threshold-bridge"] = CHECKS["v3_451_electrical_threshold_bridge"]
+CHECKS["v3_452_local_rail_domain_translator"] = _make_issue109_remaining_checker("v3_452_local_rail_domain_translator")
+CHECKS["452-local-rail-domain-translator"] = CHECKS["v3_452_local_rail_domain_translator"]
+CHECKS["v3_453_edge_delay_qualified_driver"] = _make_issue109_remaining_checker("v3_453_edge_delay_qualified_driver")
+CHECKS["453-edge-delay-qualified-driver"] = CHECKS["v3_453_edge_delay_qualified_driver"]
+CHECKS["v3_454_calibration_quadrant_mapper"] = _make_issue109_remaining_checker("v3_454_calibration_quadrant_mapper")
+CHECKS["454-calibration-quadrant-mapper"] = CHECKS["v3_454_calibration_quadrant_mapper"]
+CHECKS["v3_455_explicit_bus_slice_router"] = _make_issue109_remaining_checker("v3_455_explicit_bus_slice_router")
+CHECKS["455-explicit-bus-slice-router"] = CHECKS["v3_455_explicit_bus_slice_router"]
+CHECKS["v3_458_iterative_decay_estimator"] = _make_issue109_remaining_checker("v3_458_iterative_decay_estimator")
+CHECKS["458-iterative-decay-estimator"] = CHECKS["v3_458_iterative_decay_estimator"]
+CHECKS["v3_459_bounded_window_accumulator"] = _make_issue109_remaining_checker("v3_459_bounded_window_accumulator")
+CHECKS["459-bounded-window-accumulator"] = CHECKS["v3_459_bounded_window_accumulator"]
+# END ISSUE109_REMAINING_HOLES_ALIASES
+
+
+
+
+
+
+
 
 for _alias, _checker in V3_STANDALONE_SPLIT_CHECKS.items():
     CHECKS[_alias] = _checker

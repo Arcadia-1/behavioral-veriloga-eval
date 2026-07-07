@@ -1,0 +1,23 @@
+`include "disciplines.vams"
+
+module differential_common_mode_window_monitor(vip, vin, vcm_ref, en, diff_ok, cm_ok, valid, diff_metric, cm_metric);
+input vip, vin, vcm_ref, en;
+output diff_ok, cm_ok, valid, diff_metric, cm_metric;
+electrical vip, vin, vcm_ref, en, diff_ok, cm_ok, valid, diff_metric, cm_metric;
+
+parameter real vth = 0.45;
+parameter real vhi = 0.9;
+parameter real diff_max = 0.30;
+parameter real diff_fullscale = 0.45;
+parameter real cm_tol = 0.080;
+parameter real cm_fullscale = 0.160;
+parameter real tr = 50p;
+
+analog begin
+    V(diff_ok) <+ 0.0;
+    V(cm_ok) <+ 0.0;
+    V(valid) <+ 0.0;
+    V(diff_metric) <+ 0.0;
+    V(cm_metric) <+ 0.0;
+end
+endmodule

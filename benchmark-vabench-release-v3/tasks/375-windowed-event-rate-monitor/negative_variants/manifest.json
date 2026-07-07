@@ -1,0 +1,30 @@
+{
+  "task_id": "v3_375_windowed_event_rate_monitor",
+  "negative_variants": [
+    {
+      "id": "neg_001_count_all_clocks",
+      "path": "neg_001_count_all_clocks/windowed_event_rate_monitor.va",
+      "expected": "fail_behavior"
+    },
+    {
+      "id": "neg_002_ignore_gate",
+      "path": "neg_002_ignore_gate/windowed_event_rate_monitor.va",
+      "expected": "fail_behavior"
+    },
+    {
+      "id": "neg_003_no_reset_clear",
+      "path": "neg_003_no_reset_clear/windowed_event_rate_monitor.va",
+      "expected": "fail_behavior"
+    },
+    {
+      "id": "neg_004_unscaled_rate",
+      "path": "neg_004_unscaled_rate/windowed_event_rate_monitor.va",
+      "expected": "fail_behavior"
+    },
+    {
+      "id": "neg_005_average_uses_window_count",
+      "path": "neg_005_average_uses_window_count/windowed_event_rate_monitor.va",
+      "expected": "fail_behavior"
+    }
+  ]
+}

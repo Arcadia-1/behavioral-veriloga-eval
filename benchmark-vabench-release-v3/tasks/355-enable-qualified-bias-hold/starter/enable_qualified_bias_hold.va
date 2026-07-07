@@ -1,0 +1,13 @@
+`include "disciplines.vams"
+
+module enable_qualified_bias_hold(clk, rst, in0, in1, in2, in3, ctrl0, ctrl1, vdd, vss, en, out, flag, metric);
+input clk, rst, in0, in1, in2, in3, ctrl0, ctrl1, vdd, vss, en;
+output out, flag, metric;
+electrical clk, rst, in0, in1, in2, in3, ctrl0, ctrl1, vdd, vss, en, out, flag, metric;
+
+analog begin
+    V(out) <+ 0.0;
+    V(flag) <+ 0.0;
+    V(metric) <+ 0.0;
+end
+endmodule

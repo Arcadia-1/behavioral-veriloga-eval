@@ -1,0 +1,15 @@
+`include "disciplines.vams"
+
+module windowed_event_rate_monitor(clk, rst, event_in, gate, rate, average);
+input clk, rst, event_in, gate;
+output rate, average;
+electrical clk, rst, event_in, gate, rate, average;
+parameter real vth = 0.45;
+parameter real vhi = 0.9;
+parameter integer window_count = 5;
+parameter real tr = 60p;
+analog begin
+    V(rate) <+ 0.0;
+    V(average) <+ 0.0;
+end
+endmodule

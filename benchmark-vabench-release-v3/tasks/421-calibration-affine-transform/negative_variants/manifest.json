@@ -1,0 +1,30 @@
+{
+  "task_id": "v3_421_calibration_affine_transform",
+  "negative_variants": [
+    {
+      "id": "neg_001_ignore_gain_ctrl",
+      "path": "neg_001_ignore_gain_ctrl/calibration_affine_transform.va",
+      "expected": "fail_behavior"
+    },
+    {
+      "id": "neg_002_ignore_offset_ctrl",
+      "path": "neg_002_ignore_offset_ctrl/calibration_affine_transform.va",
+      "expected": "fail_behavior"
+    },
+    {
+      "id": "neg_003_ignore_enable",
+      "path": "neg_003_ignore_enable/calibration_affine_transform.va",
+      "expected": "fail_behavior"
+    },
+    {
+      "id": "neg_004_no_output_clip",
+      "path": "neg_004_no_output_clip/calibration_affine_transform.va",
+      "expected": "fail_behavior"
+    },
+    {
+      "id": "neg_005_wrong_residual_metric",
+      "path": "neg_005_wrong_residual_metric/calibration_affine_transform.va",
+      "expected": "fail_behavior"
+    }
+  ]
+}

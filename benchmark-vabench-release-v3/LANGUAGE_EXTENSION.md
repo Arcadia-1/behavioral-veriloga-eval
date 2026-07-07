@@ -3,12 +3,13 @@
 The default `tasks/` tree is now the standalone-Spectre-compatible v3
 denominator:
 
-- numbered default rows: `451`
-- unnumbered replacement candidates: `5`
+- numbered default rows: `505`
+- unnumbered replacement candidates: `0`
 - archived Spectre-rejected rows: `54`
 
-Numbering is intentionally non-contiguous. The benchmark keeps the historical
-task ids, but rows that Cadence/Spectre rejects as written are archived under
+Numbering is contiguous from `001` through `505` after the issue #109
+replacement batches. The benchmark keeps the historical task ids, but rows that
+Cadence/Spectre rejects as written are archived under
 `spectre-unsupported-tasks/` and removed from `TASKS.json` and `CHECKS.yaml`.
 See `reports/spectre_unsupported_removed_20260703.md` for the exact task list
 and removal reason for each row.
@@ -22,10 +23,39 @@ of the default EVAS/Spectre parity score.
 
 ## Default Coverage
 
-Rows `001`-`300` remain the original behavior-certified surface except for
-seven converter/vector rows (`052`-`057`, `075`) that Spectre rejects because of
-procedural vector/electrical indexing patterns. Those assets are archived, not
-deleted.
+Rows `001`-`300` remain the original behavior-certified surface with issue #109
+backfills in the legacy gaps `052`-`057` and `075`. The old converter/vector
+assets for those ids are archived, not deleted, because Spectre rejects their
+procedural vector/electrical indexing patterns. The active `tasks/` ids now
+point at reference-backed data-converter replacements.
+
+Issue #109 also promotes seven former unnumbered bias/reference/power and
+measurement candidates into the `495`-`501` holes as voltage-domain
+replacements:
+`495-supply-bias-validity-gate`,
+`496-reference-settling-window-monitor`,
+`497-power-enable-turnon-delay-gate`,
+`498-power-mode-supply-current-metric`,
+`499-dynamic-supply-level-driver`,
+`500-rail-ramp-rate-startup-monitor`, and
+`501-differential-common-mode-window-monitor`.
+
+Issue #109 additionally replaces the archived user `task` / `endtask` holes
+`373`-`378`, `421`, and `490` with Spectre-compatible voltage-domain
+helper/monitor rows. These active rows use analog functions and event-body state
+updates to model limiter recovery, sampled calibration/error updates, qualified
+event-rate measurement, reset-release sequencing, adaptive threshold tracking,
+rail-normalized metrics, affine calibration transforms, and PLL/clock
+reacquisition lock detection.
+
+Issue #109 also fills the remaining numbering holes `341`-`360`, `394`-`395`,
+`403`, `406`, `415`-`420`, `433`, `449`, `451`-`455`, and `458`-`459` with
+Spectre-compatible voltage-domain AMS helper/monitor rows. These replacements
+cover rail-referenced gain/summing/window/translation helpers, sampled
+comparator/calibration/reset/control monitors, deterministic accumulator and
+bounded iterative-update flows, explicit scalar routing/reduction helpers for
+archived vector/generate/connect/specify forms, and reset/power startup policy
+contracts.
 
 Rows `301+` are language-extension candidates. The retained default rows cover
 these Verilog-A-oriented surfaces:
@@ -112,9 +142,11 @@ current default Spectre-compatible benchmark score.
 
 ## Certification Boundary
 
-The original full-300 behavior claim should be read with the archived-row note
-above: seven historical support/vector rows are no longer in the default
-Spectre-compatible denominator because Spectre rejects their syntax as written.
+The original full-300 behavior claim should be read with the archived-row and
+issue #109 notes above: seven historical support/vector assets are no longer in
+the default Spectre-compatible denominator because Spectre rejects their syntax
+as written, and their active ids now contain reference-backed data-converter
+replacement tasks.
 
 For the retained extension layer, continue to separate these claims:
 

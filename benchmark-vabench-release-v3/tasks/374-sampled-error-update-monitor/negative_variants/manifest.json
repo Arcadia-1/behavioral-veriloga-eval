@@ -1,0 +1,30 @@
+{
+  "task_id": "v3_374_sampled_error_update_monitor",
+  "negative_variants": [
+    {
+      "id": "neg_001_ignore_coefficient",
+      "path": "neg_001_ignore_coefficient/sampled_error_update_monitor.va",
+      "expected": "fail_behavior"
+    },
+    {
+      "id": "neg_002_ignore_target",
+      "path": "neg_002_ignore_target/sampled_error_update_monitor.va",
+      "expected": "fail_behavior"
+    },
+    {
+      "id": "neg_003_no_reset_clear",
+      "path": "neg_003_no_reset_clear/sampled_error_update_monitor.va",
+      "expected": "fail_behavior"
+    },
+    {
+      "id": "neg_004_progress_without_window",
+      "path": "neg_004_progress_without_window/sampled_error_update_monitor.va",
+      "expected": "fail_behavior"
+    },
+    {
+      "id": "neg_005_wrong_error_metric",
+      "path": "neg_005_wrong_error_metric/sampled_error_update_monitor.va",
+      "expected": "fail_behavior"
+    }
+  ]
+}

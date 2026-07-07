@@ -1,0 +1,13 @@
+`include "disciplines.vams"
+
+module electrical_threshold_bridge(in0, in1, in2, in3, ctrl0, ctrl1, vdd, vss, en, out, flag, metric);
+input in0, in1, in2, in3, ctrl0, ctrl1, vdd, vss, en;
+output out, flag, metric;
+electrical in0, in1, in2, in3, ctrl0, ctrl1, vdd, vss, en, out, flag, metric;
+
+analog begin
+    V(out) <+ 0.0;
+    V(flag) <+ 0.0;
+    V(metric) <+ 0.0;
+end
+endmodule

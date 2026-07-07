@@ -1,0 +1,44 @@
+{
+  "negative_variants": [
+    {
+      "id": "neg_001_threshold_only_ready",
+      "description": "Rail Ramp Rate Startup Monitor: asserts readiness from thresholded rail validity without ramp-rate or settling qualification.",
+      "files": [
+        "neg_001_threshold_only_ready/rail_ramp_rate_startup_monitor.va"
+      ],
+      "expected": "compile_but_fail_full_behavior"
+    },
+    {
+      "id": "neg_002_no_settle_requirement",
+      "description": "Rail Ramp Rate Startup Monitor: releases startup_ready as soon as the rail crosses vready.",
+      "files": [
+        "neg_002_no_settle_requirement/rail_ramp_rate_startup_monitor.va"
+      ],
+      "expected": "compile_but_fail_full_behavior"
+    },
+    {
+      "id": "neg_003_ignore_enable",
+      "description": "Rail Ramp Rate Startup Monitor: ignores the active-high enable input.",
+      "files": [
+        "neg_003_ignore_enable/rail_ramp_rate_startup_monitor.va"
+      ],
+      "expected": "compile_but_fail_full_behavior"
+    },
+    {
+      "id": "neg_004_ignore_high_rail_fault",
+      "description": "Rail Ramp Rate Startup Monitor: treats only undervoltage as a rail fault.",
+      "files": [
+        "neg_004_ignore_high_rail_fault/rail_ramp_rate_startup_monitor.va"
+      ],
+      "expected": "compile_but_fail_full_behavior"
+    },
+    {
+      "id": "neg_005_wrong_slew_metric",
+      "description": "Rail Ramp Rate Startup Monitor: reports slew_metric from absolute supply level instead of sampled rail movement.",
+      "files": [
+        "neg_005_wrong_slew_metric/rail_ramp_rate_startup_monitor.va"
+      ],
+      "expected": "compile_but_fail_full_behavior"
+    }
+  ]
+}
