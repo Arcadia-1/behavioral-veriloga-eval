@@ -25,7 +25,7 @@ Provide overrideable parameter `vdd = 1.0`. Use `0.5*vdd` as the clock and decis
 
 ## Required Behavior
 
-Initialize calibration active with the MSB trial code set. On each rising `ck` crossing while calibration is active, sample `d` and refine the 7-bit RDAC code from MSB toward LSB. Keep the next trial bit asserted as the search advances. After the seven-bit capture phase completes, deassert `en` and assert `enb`. Continuously drive `cvinp` from `vrefp` and `cvinn` from `vrefn`.
+Initialize calibration active with the MSB trial code set (`dc6 = vdd`, all lower RDAC bits low). On each rising `ck` crossing while calibration is active, sample `d` against the `0.5*vdd` threshold and refine the 7-bit RDAC code from MSB toward LSB. For the current trial bit, keep that bit when `d < 0.5*vdd`; clear that bit when `d >= 0.5*vdd`. In both cases, assert the next lower trial bit as the search advances. After the seven-bit capture phase completes, deassert `en` and assert `enb`. Continuously drive `cvinp` from `vrefp` and `cvinn` from `vrefn`.
 
 ## Modeling Constraints
 

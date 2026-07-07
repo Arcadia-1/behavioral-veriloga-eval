@@ -25,7 +25,9 @@ Provide overrideable parameters `vlo = 0.0`, `vhi = 0.9`, `vth = 0.45`, and inte
 
 ## Required Behavior
 
-On each rising `clks` crossing, read `din20..din26` as a 7-bit unsigned code. Alternate between minus and plus test-DAC phases. Store the minus-phase and plus-phase ADC codes, compute the plus-minus code difference, and compare it against a target difference of 64 codes. If the difference is too large, reduce the gain-control code by the absolute error; if too small, increase it by the absolute error. Clamp the gain-control code to `0..127`, emit its bits, and expose the scalar monitor values scaled by `1/100`.
+Initialize the gain-control code to `gaincodeinit`. Initialize the test-DAC controls to the minus phase with `dout13..dout10 = 1000`, initialize the phase so the first sampled backend code is stored as the minus-phase code, and initialize the scalar monitor codes to `dop = 96`, `dom = 32`, and `ddiff = 0` before scaling.
+
+On each rising `clks` crossing, read `din20..din26` as a 7-bit unsigned code. Alternate between minus and plus test-DAC phases: after a minus-phase sample, drive the next plus phase with `dout13..dout10 = 0111`; after a plus-phase sample, return to the minus phase with `dout13..dout10 = 1000`. Store the minus-phase and plus-phase ADC codes, compute the plus-minus code difference, and compare it against a target difference of 64 codes. If the difference is too large, reduce the gain-control code by the absolute error; if too small, increase it by the absolute error. Clamp the gain-control code to `0..127`, emit its bits, and expose the scalar monitor values scaled by `1/100`.
 
 ## Modeling Constraints
 
