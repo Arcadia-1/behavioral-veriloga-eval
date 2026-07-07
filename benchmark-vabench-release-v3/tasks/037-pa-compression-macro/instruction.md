@@ -34,14 +34,14 @@ marks compression or limiting operation.
 
 ## Required Behavior
 
-- Initialize `out` to the 0.45 V common-mode level and `metric` low.
-- Update the held output state on rising `clk` crossings.
+- Initialize `out` to the 0.45 V common-mode level and `metric` to `0 V`.
+- Update the held output state on rising `clk` crossings through `vth`.
 - When `rst` is high, return the output to common mode and clear `metric`.
-- For moderate drive, apply gain above unity around common mode.
-- For large positive and negative drive, compress the output toward bounded
-  rail-adjacent limits rather than continuing linearly.
-- Drive `metric` high when the PA output is in compression or near limiting.
-- Keep `out` and `metric` in the 0 V to 0.9 V voltage range.
+- Treat `x = V(vin) - 0.45 V` as the signed drive and compute `drive = 0.45 + gain * x`.
+- In the moderate-drive region, `0.12 V <= drive <= 0.78 V`, drive `out = drive` and `metric = 0.1 V`.
+- For high-side compression, when `drive > 0.78 V`, drive `out = 0.78 + 0.18 * (drive - 0.78)` and `metric = 0.85 V`.
+- For low-side compression, when `drive < 0.12 V`, drive `out = 0.12 + 0.18 * (drive - 0.12)` and `metric = 0.85 V`.
+- Clamp the output to `[0.02 V, 0.88 V]`.
 
 The visible testbench is a public verification scenario for wiring and saved
 observables. Do not hard-code its transient stop time, waveform breakpoints, or

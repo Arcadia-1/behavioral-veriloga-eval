@@ -8,41 +8,9 @@ Implement the requested Verilog-A artifact for `Log RSSI Power Detector`.
 - Category: `rf_afe_behavioral_macromodels`
 - Target artifact(s): `log_rssi_power_detector.va`
 
-Implement `log_rssi_power_detector.va` in Verilog-A.
-
-Declare module `log_rssi_power_detector(clk, rst, vin, out, metric)` with all
-ports electrical. `clk` and `rst` are voltage-coded logic signals with a
-0.45 V threshold. `vin` is a received signal envelope around 0.45 V common
-mode, `out` is a compressed RSSI-style voltage code, and `metric` exposes a
-bounded envelope-magnitude estimate.
-
-Public parameters:
-
-- `tr`: output transition time, default `100p`.
-- `vth`: logic threshold, default `0.45`.
-
-Behavior:
-
-- Initialize `out` near the low RSSI floor and `metric` low.
-- Update the held RSSI state on rising `clk` crossings.
-- When `rst` is high, return `out` to the low floor and clear `metric`.
-- Estimate input amplitude from `abs(V(vin) - 0.45)`.
-- Keep `out` monotonic with amplitude.
-- Use a log-like or piecewise-compressed transfer: near-zero input should stay
-  near the low floor, moderate input should move through the middle of the
-  range, and larger input should increase with smaller incremental spacing.
-- Keep `metric` proportional to envelope magnitude and bounded in the 0 V to
-  0.9 V range.
-
-Modeling requirements:
-
-- Use voltage contributions only; do not use current contributions,
-  transistor-level devices, AC/noise analysis, or KCL/KVL assumptions.
-  `log10`, rounding, digital Verilog, or integer casts.
-- Use a clocked state update and drive output voltages through
-  `transition(...)`.
-- Return only `log_rssi_power_detector.va`; do not emit a Spectre testbench or
-  validation.
+- Target artifact: `log_rssi_power_detector.va`
+- Implement only the requested Verilog-A DUT. Do not generate a Spectre testbench, validation logic, or auxiliary test hooks.
+- Preserve the public module name, port order, starter parameters, and saved waveform observable names.
 
 ## Public Verilog-A Interface
 
@@ -57,13 +25,15 @@ Provide these overrideable public parameters:
 
 ## Required Behavior
 
-- Initialize RSSI output to a low floor and `metric` low.
-- On each rising `clk` crossing, sample the input magnitude unless reset is active.
-- While `rst` is above `vth`, reset the RSSI output to the low floor and clear `metric`.
-- Measure input magnitude as `abs(V(vin) - 0.45 V)`.
-- Map increasing input magnitude to increasing piecewise RSSI levels, approximating a coarse logarithmic power detector.
-- Keep the RSSI output bounded away from the rails.
-- Drive `metric` as a bounded voltage proportional to the sampled input magnitude.
+- Initialize and reset RSSI output to `0.12 V` and `metric` to `0 V`.
+- On each rising `clk` crossing through `vth`, sample the input magnitude unless reset is active.
+- Measure input magnitude as `amp = abs(V(vin) - 0.45 V)`.
+- Map `amp < 0.035 V` to `out = 0.12 V`.
+- Map `0.035 V <= amp < 0.11 V` to `out = 0.30 V`.
+- Map `0.11 V <= amp < 0.22 V` to `out = 0.54 V`.
+- Map `amp >= 0.22 V` to `out = 0.72 V`.
+- Clamp the RSSI output to `[0.08 V, 0.82 V]`.
+- Drive `metric = 3.0 * amp`, clamped to `[0 V, 0.9 V]`.
 
 ## Modeling Constraints
 
