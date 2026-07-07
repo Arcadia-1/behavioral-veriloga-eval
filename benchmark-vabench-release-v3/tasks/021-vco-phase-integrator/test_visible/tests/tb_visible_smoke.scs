@@ -3,9 +3,9 @@ global 0
 
 ahdl_include "vco_phase_integrator.va"
 
-V_vctrl (vctrl 0) vsource type=pulse val0=0 val1=0.9 period=3n delay=0p rise=50p fall=50p width=1.4n
+V_vctrl (vctrl 0) vsource type=pwl wave=[0 0.2 60n 0.2 61n 0.7 170n 0.7]
 
 XDUT (vctrl phase clk) vco_phase_integrator
 
-tran tran stop=5n maxstep=100p
-save vctrl
+tran tran stop=170n maxstep=500p
+save vctrl phase clk

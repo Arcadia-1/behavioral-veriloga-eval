@@ -3,9 +3,9 @@ global 0
 
 ahdl_include "period_meter_16b.va"
 
-V_clk_in (clk_in 0) vsource type=pulse val0=0 val1=0.9 period=1n delay=100p rise=20p fall=20p width=450p
+V_clk_in (clk_in 0) vsource type=pwl wave=[0 0 1n 0 1.1n 0.9 2.0n 0 8.1n 0 8.2n 0.9 9.0n 0 20.2n 0 20.3n 0.9 21n 0 35.3n 0 35.4n 0.9 36n 0 55n 0]
 
 XDUT (clk_in valid period0 period1 period2 period3 period4 period5 period6 period7 period8 period9 period10 period11 period12 period13 period14 period15) period_meter_16b
 
-tran tran stop=8n maxstep=100p
+tran tran stop=55n maxstep=100p
 save clk_in valid period0 period1 period2 period3 period4 period5 period6 period7 period8 period9 period10 period11 period12 period13 period14 period15
