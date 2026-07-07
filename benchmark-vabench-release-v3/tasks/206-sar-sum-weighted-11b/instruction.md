@@ -25,7 +25,7 @@ Provide overrideable parameter `vth = 0.45` for bit decisions. The public nonbin
 
 ## Required Behavior
 
-Treat each input as high when it is above `vth`. Sum the selected nonbinary SAR weights and drive a normalized bipolar analog output from that weighted code. The mapping should make zero selected weight negative and larger selected weights monotonic positive according to the public array basis.
+Treat each input as high when it is above `vth`. Sum the selected nonbinary SAR weights into `code` and drive the normalized bipolar analog output as `vout = code / 512.0 - 1.0`. This mapping makes zero selected weight equal to `-1.0` and keeps larger selected weights monotonic positive according to the public array basis.
 
 ## Modeling Constraints
 
