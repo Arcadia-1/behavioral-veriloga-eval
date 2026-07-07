@@ -46,8 +46,8 @@ The module represents UP/DN pulse effects as a sampled voltage-domain control-no
 - Simultaneous UP/DN or absent pulses hold the current control voltage.
 - Clamp `vctrl` between `vmin` and `vmax`.
 - When `rst` is high, reset `vctrl` to midscale.
-- Drive `metric` as a voltage-coded status observable: high for UP movement,
-  low for DN movement, and midscale for hold/reset.
+- Drive `metric` as a voltage-coded status observable: 0.75 V for UP movement,
+  0.15 V for DN movement, and 0.45 V for hold/reset.
 
 ## Modeling Constraints
 

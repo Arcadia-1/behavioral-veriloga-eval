@@ -37,20 +37,20 @@ output voltage. `metric` is a voltage-coded hysteresis-state monitor.
 
 - Implement a clocked soft limiter with hysteresis memory around the `0.45 V`
   common-mode level.
-- Initialize the held output and state monitor near common mode.
+- Initialize the held output and state monitor to `0.45 V`, with neutral
+  hysteresis offset `0 V`.
 - On each rising `clk` crossing, update the held limiter state. While `rst` is
-  active high, reset the output and hysteresis state to their common-mode
-  values.
-- When reset is low, amplify the input deviation from common mode, add the
-  current hysteresis offset, and bound the result inside the `0 V` to `0.9 V`
-  signal range.
-- A sufficiently high input excursion should set high-memory hysteresis; a
-  sufficiently low input excursion should set low-memory hysteresis.
-- During mid-level hold intervals, preserve the previous high or low memory
-  state rather than collapsing immediately to a neutral state.
-- Drive `metric` as a voltage-coded state monitor: above common mode for the
-  high-memory state, below common mode for the low-memory state, and near common
-  mode after reset.
+  active high, reset the output and hysteresis state to their neutral
+  common-mode values.
+- When reset is low, set the hysteresis offset to `+hys_step` after a sampled
+  input above `0.62 V`, set it to `-hys_step` after a sampled input below
+  `0.38 V`, and otherwise preserve the previous hysteresis offset.
+- Compute the held output target as
+  `gain * (vin - 0.45 V) + 0.45 V + hysteresis_offset`.
+- Clamp the driven `out` voltage to `[0.10 V, 0.82 V]`.
+- Drive `metric` as a voltage-coded state monitor:
+  `0.45 V + 2.0 * hysteresis_offset`, so the default high- and low-memory
+  states produce 0.61 V and 0.29 V respectively.
 
 The visible testbench is a public verification scenario for wiring and saved
 observables. Do not hard-code its transient stop time, waveform breakpoints, or
