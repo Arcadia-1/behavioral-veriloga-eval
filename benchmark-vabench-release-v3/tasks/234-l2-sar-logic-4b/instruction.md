@@ -25,7 +25,9 @@ Provide overrideable parameters `vdd = 1.1` and `t_logic_delay = 100p`. Use `vdd
 
 ## Required Behavior
 
-On initialization and rising `clks`, reset the step counter, code bits, control bits, and `cmpck`. A rising `clkc` asserts `cmpck`. Each rising comparator pulse records the current MSB-to-LSB decision, lowers `cmpck`, and updates the matching capacitor-control side while bits remain. When the comparator output falls, advance to the next step and reassert `cmpck` until the conversion finishes.
+On initialization and rising `clks`, reset the conversion to step 3, clear `do0..do3`, clear `dctrlp1..dctrlp3` and `dctrln1..dctrln3`, and clear `cmpck`. A rising `clkc` asserts `cmpck`.
+
+Each rising comparator pulse on `dcmpp` or `dcmpn` records the current MSB-to-LSB decision and lowers `cmpck`. Treat `dcmpp > dcmpn` as a positive decision. For the current step sequence 3, 2, 1, 0, store the decision in `do{step}`. For steps 3, 2, and 1, a positive decision sets `dctrln{step}` high, while a negative decision sets `dctrlp{step}` high. Step 0 only latches `do0` and does not update a capacitor-control output. When the comparator output falls, decrement the step and reassert `cmpck` if the new step is still 0 or greater.
 
 ## Modeling Constraints
 

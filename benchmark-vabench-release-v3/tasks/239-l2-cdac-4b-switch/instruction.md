@@ -25,7 +25,9 @@ Provide overrideable parameters `vdd = 1.1` and `vth = 0.55`. Use `vth` for inpu
 
 ## Required Behavior
 
-The first rising `rdy` edge only arms the DAC and leaves the initialized output at zero. On each later rising `rdy` edge, sample `din1..din4` with switched weights `0.5, 1, 2, 4` from `din1` through `din4`. Map the sampled switched-capacitor ratio to a bipolar single-ended output scaled by `vdd`, using the source normalization basis that includes its fixed non-switching reference contribution.
+The first rising `rdy` edge only arms the DAC and leaves the initialized output at zero. On each later rising `rdy` edge, sample `din1..din4` against `vth` with switched weights `0.5, 1, 2, 4` from `din1` through `din4`. The source-normalization basis is a total weight of 8.5: the 7.5 total switched weight plus a fixed non-switching reference contribution of 1.0.
+
+Let `switched_weight` be the sum of the enabled switched weights on that `rdy` edge. Map the sampled ratio to a bipolar single-ended output as `(switched_weight / 8.5) * 2.0 * vdd - vdd`. Thus no enabled input bits produce `-vdd`, and all enabled input bits produce `((7.5 / 8.5) * 2.0 - 1.0) * vdd`.
 
 ## Modeling Constraints
 
