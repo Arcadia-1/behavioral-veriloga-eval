@@ -37,18 +37,13 @@ The module is a sampled/event-driven PLL loop-filter abstraction that approximat
 
 - Treat `clk` and `rst` as voltage-coded logic with a 0.45 V threshold.
 - Interpret `vin` as a signed loop-error stimulus around 0.45 V.
-- On each rising `clk` edge, update sampled loop-filter state when reset is
-  low and `abs(V(vin) - 0.45)` exceeds `deadband`.
-- Use a proportional correction whose step size decays across successive valid
-  updates.
-- Accumulate a smaller integral residual from the signed loop-error input.
-- Drive `out` as a bounded loop-control voltage that responds upward for
-  positive error and downward for negative error.
-- Keep `out` bounded in the 0 V to 0.9 V range.
-- Drive `metric` high only after several valid loop-filter updates and clear
-  it on reset.
-- When reset is high, clear the sampled state back near midscale and clear the
-  update metric.
+- Initialize and reset the proportional state to `0.45 V`, the proportional step to `0.20 V`, the integral residual to `0`, the accepted-update count to `0`, and `metric` to `0 V`.
+- On each rising `clk` crossing, compute `err = V(vin) - 0.45`.
+- When reset is low and `abs(err) > deadband`, accept an update: increase the proportional state by the current step for positive `err`, decrease it by the current step for negative `err`, then accumulate `integral += 0.04 * err`.
+- After each accepted update, halve the step and increment the accepted-update count.
+- Clamp the proportional state to `[0.05 V, 0.85 V]`.
+- Drive `out` from the proportional state plus the accumulated integral residual.
+- Drive `metric` to `0.9 V` once the accepted-update count reaches `4`, otherwise keep it at `0 V`. Reset clears the count and metric.
 
 ## Modeling Constraints
 
