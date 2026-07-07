@@ -27,7 +27,7 @@ status output.
 - `gain = 1.0`: gain applied to the signal-minus-reset difference.
 - `vlo = 0.0 V`: lower clamp for `vout`.
 - `vhi = 0.9 V`: upper clamp for `vout` and high level for `valid`.
-- `tr = 100p s`: transition rise/fall time for `vout` and `valid`.
+- `tr = 100p`: transition rise/fall time for `vout` and `valid`.
 
 ## Required Behavior
 

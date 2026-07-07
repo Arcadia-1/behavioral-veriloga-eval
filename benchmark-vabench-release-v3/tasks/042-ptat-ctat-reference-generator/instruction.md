@@ -30,11 +30,18 @@ Provide these overrideable public parameters:
 
 - `clk` and `rst` are voltage-coded logic signals.
 - Treat `vin` as a normalized temperature/control voltage in the 0 V to 0.9 V range.
-- Build opposing PTAT and CTAT branch abstractions.
-- Drive `metric` as a public PTAT-like observable that increases with the temperature/control voltage.
-- Combine PTAT and CTAT behavior so `out` stays near a bounded reference around mid-scale instead of strongly tracking `vin`.
-- Reset should initialize `out` near mid-scale and keep `metric` low until valid updates occur.
-- Clamp `out` and `metric` to the public 0 V to 0.9 V voltage-domain range.
+- Reset should initialize `out` to 0.45 V and drive `metric` to 0 V until
+  valid updates occur.
+- On each rising `clk` crossing with reset low, clamp the sampled temperature
+  input to `[0 V, 0.9 V]`.
+- Compute the PTAT branch as `0.18 V + 0.34 * vin_clamped` and the CTAT branch
+  as `0.78 V - 0.34 * vin_clamped`.
+- Drive the reference output as the equal-weight branch average:
+  `out = 0.5 * ptat + 0.5 * ctat`.
+- Drive `metric` as the PTAT branch voltage so it increases with the
+  temperature/control input.
+- Clamp the driven `out` voltage to the public 0 V to 0.9 V voltage-domain
+  range.
 - Keep the model pure voltage-domain behavioral Verilog-A. Do not use branch-current contributions, transistor-level devices, AC/noise analysis, or KCL/KVL regulation loops.
 
 ## Modeling Constraints
