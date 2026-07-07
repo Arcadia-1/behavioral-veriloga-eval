@@ -4,8 +4,6 @@
 
 Implement one behavioral Verilog-A source file named `ac_stim_small_signal_source.va`. This is a support/L0 Verilog-A semantics task for `ac_stim()` in a voltage-domain behavioral source, not a standalone core circuit macro.
 
-## Form-Specific Requirements
-
 This is a DUT source task. Implement only the `ac_stim_small_signal_source` module; no external testbench or extra helper module is part of the requested artifact.
 
 ## Public Verilog-A Interface

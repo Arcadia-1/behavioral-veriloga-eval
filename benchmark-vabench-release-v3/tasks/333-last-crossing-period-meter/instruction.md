@@ -6,8 +6,6 @@ Implement one behavioral Verilog-A DUT file named `last_crossing_period_meter.va
 
 This task focuses on period measurement using Cadence `last_crossing()`. The DUT is a reusable voltage-domain behavioral helper and must be implemented in Verilog-A.
 
-## Form-Specific Requirements
-
 Build a rising-edge period meter that stores the previous and current threshold crossing times reported by `last_crossing()`.
 
 ## Public Verilog-A Interface

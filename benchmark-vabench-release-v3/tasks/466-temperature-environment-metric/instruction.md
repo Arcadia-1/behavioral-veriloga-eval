@@ -4,8 +4,6 @@
 
 Implement one Verilog-A source file named `temperature_environment_metric.va`. The task is an L0/support row for exposing `$temperature` in a sampled voltage-domain metric.
 
-## Form-Specific Requirements
-
 This is a DUT task for environment-function semantics. It is not a standalone temperature sensor circuit.
 
 ## Public Verilog-A Interface

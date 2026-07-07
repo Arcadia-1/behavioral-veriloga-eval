@@ -1,10 +1,12 @@
 # File Io Sampled Metric Writer
 
+## Task Contract
+
 Implement one behavioral Verilog-A DUT file named `file_io_sampled_metric_writer.va`.
 
 This is a language-semantics extension task based on the Cadence Verilog-A Language Reference. Keep the model pure voltage-domain behavioral Verilog-A: do not instantiate transistor-level devices and do not use current-domain `I(...)` branch contributions.
 
-## Interface
+## Public Verilog-A Interface
 
 ```verilog
 module file_io_sampled_metric_writer (
@@ -16,6 +18,10 @@ module file_io_sampled_metric_writer (
     output electrical metric
 );
 ```
+
+## Public Parameter Contract
+
+Use the public parameter names, default values, legal ranges, filenames, and thresholds stated in the required behavior below. Do not add task-private configuration ports or extra configuration parameters.
 
 ## Required Behavior
 
@@ -37,8 +43,18 @@ On each rising crossing of `clk` through `vth` while reset is low:
 sample=<integer> value=<real> metric=<real>
 ```
 
-During `@(final_step)`, close the file with `$fclose`. The first hidden clock edge occurs while reset is high and must not write a sample record. Four later post-reset samples must write the values `0.18`, `0.36`, `0.72`, and `0.54`, with metrics `0.20`, `0.40`, `0.80`, and `0.60`. Do not use `I(...)`, `ddt(...)`, or `idt(...)`.
+During `@(final_step)`, close the file with `$fclose`. Clock events that occur
+while reset is high must not write a sample record. Each accepted post-reset
+clock edge must write the current `vin` sample and its normalized metric using
+the public line format above. Do not hard-code testbench-specific waveform times
+or sample values. Do not use `I(...)`, `ddt(...)`, or `idt(...)`.
 
-## Output
+## Modeling Constraints
+
+This is a language-semantics extension task based on the Cadence Verilog-A Language Reference. Keep the model pure voltage-domain behavioral Verilog-A: do not instantiate transistor-level devices and do not use current-domain `I(...)` branch contributions.
+
+Keep the implementation behavioral and public-interface compatible. Do not add Spectre testbench code, simulator-private hooks, or extra output artifacts.
+
+## Output Contract
 
 Return exactly one source artifact named `file_io_sampled_metric_writer.va`. Do not generate a Spectre testbench for this task.

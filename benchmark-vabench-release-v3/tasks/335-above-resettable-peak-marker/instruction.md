@@ -6,8 +6,6 @@ Implement one behavioral Verilog-A DUT file named `above_resettable_peak_marker.
 
 This task focuses on `above()`-armed sampled peak tracking. The DUT is a reusable voltage-domain behavioral helper and must be implemented in Verilog-A.
 
-## Form-Specific Requirements
-
 Build a resettable voltage-domain peak marker that arms on an input threshold event and samples the peak on a timer.
 
 ## Public Verilog-A Interface

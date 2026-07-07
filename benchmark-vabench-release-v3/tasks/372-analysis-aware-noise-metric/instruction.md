@@ -4,8 +4,6 @@
 
 Implement one behavioral Verilog-A source file named `analysis_aware_noise_metric.va`. This is a support/L0 Verilog-A semantics task for combining `analysis("noise")`, `white_noise()`, and a deterministic sampled metric, not a standalone core circuit macro.
 
-## Form-Specific Requirements
-
 This is a DUT source task. Implement only the `analysis_aware_noise_metric` module; no external testbench or extra helper module is part of the requested artifact.
 
 ## Public Verilog-A Interface

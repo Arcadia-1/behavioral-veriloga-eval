@@ -4,8 +4,6 @@
 
 Implement one behavioral Verilog-A source file named `rdist_uniform_seeded_dither.va`.
 
-## Form-Specific Requirements
-
 Use `$rdist_uniform()` to generate seeded uniform dither for a sampled voltage output. The model should expose the current uniform draw on `metric` and add a small scaled version of that draw to the sampled input voltage.
 
 ## Public Verilog-A Interface

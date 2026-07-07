@@ -6,8 +6,6 @@ Implement one behavioral Verilog-A source file named `rdist_normal_offset_dither
 The DUT is a clocked voltage-domain offset-dither model that draws a normal
 random offset and exposes both the perturbed output and the raw offset metric.
 
-## Form-Specific Requirements
-
 This is a DUT task. Do not implement a testbench, checker, or simulator-private
 helper. The visible Spectre netlist is a public validation scenario, not part of
 the DUT implementation.

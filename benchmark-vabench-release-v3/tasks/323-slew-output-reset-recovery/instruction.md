@@ -4,8 +4,6 @@
 
 Implement one behavioral Verilog-A DUT file named `slew_output_reset_recovery.va`. The DUT models a resettable slew-limited output that ramps up after clock qualification, slews down during reset, and slews up again after reset release.
 
-## Form-Specific Requirements
-
 This is a DUT-only Verilog-A modeling task. The supplied testbenches are verification scenarios; do not hard-code their stop times, sample times, or waveform breakpoints into the DUT.
 
 ## Public Verilog-A Interface

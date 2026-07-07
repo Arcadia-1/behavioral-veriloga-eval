@@ -4,8 +4,6 @@
 
 Implement one Verilog-A source file named `indirect_branch_null_balance.va`. The task models a static indirect branch assignment that solves `out` from a voltage equality.
 
-## Form-Specific Requirements
-
 This is a DUT task. The solver should implement the indirect branch assignment form directly, not a normal `V(out) <+ ...` contribution.
 
 ## Public Verilog-A Interface

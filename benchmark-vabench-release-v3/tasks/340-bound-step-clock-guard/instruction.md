@@ -6,8 +6,6 @@ Implement one behavioral Verilog-A DUT file named `bound_step_clock_guard.va`.
 
 This task focuses on `$bound_step` time-step guarding in a clocked voltage helper. The DUT is a reusable voltage-domain behavioral helper and must be implemented in Verilog-A.
 
-## Form-Specific Requirements
-
 Build a clocked guard helper that requests a bounded simulator time step while updating a sampled output only when mode enables the update.
 
 ## Public Verilog-A Interface

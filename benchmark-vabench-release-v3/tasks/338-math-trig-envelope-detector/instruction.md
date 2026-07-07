@@ -6,8 +6,6 @@ Implement one behavioral Verilog-A DUT file named `math_trig_envelope_detector.v
 
 This task focuses on sampled envelope behavior using `sin()`, `sqrt()`, and `abs()`. The DUT is a reusable voltage-domain behavioral helper and must be implemented in Verilog-A.
 
-## Form-Specific Requirements
-
 Build a clocked voltage-domain envelope helper that uses standard Verilog-A math functions in the sampled computation.
 
 ## Public Verilog-A Interface

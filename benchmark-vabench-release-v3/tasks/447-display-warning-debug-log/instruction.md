@@ -4,8 +4,6 @@
 
 Implement one behavioral Verilog-A source file named `display_warning_debug_log.va`. This is a language-extension/L0 support task for Spectre-compatible simulator output calls on a clocked voltage-domain update path, not a standalone core circuit macro.
 
-## Form-Specific Requirements
-
 Use `$display`, `$warning`, and `$debug` on the non-reset sampled update path. Include an unreachable `$error` branch so the source exercises `$error` syntax without terminating normal simulation. The simulator-output side effects are part of the language-semantics contract but must not change the voltage-domain output behavior.
 
 ## Public Verilog-A Interface

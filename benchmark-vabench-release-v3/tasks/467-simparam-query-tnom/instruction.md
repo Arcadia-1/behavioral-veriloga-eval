@@ -4,8 +4,6 @@
 
 Implement one Verilog-A source file named `simparam_query_tnom.va`. The task is an L0/support row for querying simulator/environment parameters with `$simparam()`.
 
-## Form-Specific Requirements
-
 This is a DUT task for simulator environment-function semantics. It is not a standalone temperature-reference circuit.
 
 ## Public Verilog-A Interface

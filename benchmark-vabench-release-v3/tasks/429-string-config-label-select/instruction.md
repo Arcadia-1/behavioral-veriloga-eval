@@ -4,8 +4,6 @@
 
 Implement one behavioral Verilog-A source file named `string_config_label_select.va`.
 
-## Form-Specific Requirements
-
 Use `$sformat` to select and record configuration labels. For Spectre compatibility, call `$sformat` in task form with a destination string, for example `$sformat(label_q, "cfg=A count=%0d vin=%0.3f", count_q, V(vin));`. Do not assign the return value of `$sformat`.
 
 ## Public Verilog-A Interface

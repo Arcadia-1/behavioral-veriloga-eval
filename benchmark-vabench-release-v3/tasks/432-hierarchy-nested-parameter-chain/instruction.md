@@ -4,8 +4,6 @@
 
 Implement one behavioral Verilog-A source file named `hierarchy_nested_parameter_chain.va`. This is a language-extension/L0 support task for hierarchical child-module reuse and parameter override propagation, not a standalone core circuit macro.
 
-## Form-Specific Requirements
-
 The public harness supplies a read-only support child module in `staged_gain_child.va`. Return only the parent source file and instantiate the supplied child module twice from it.
 
 ## Public Verilog-A Interface

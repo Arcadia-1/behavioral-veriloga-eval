@@ -4,8 +4,6 @@
 
 Implement one Verilog-A source file named `current_contribution_conductance.va`. The task models a conservative conductance current contribution and exposes a voltage-domain monitor of the contributed branch current for validation.
 
-## Form-Specific Requirements
-
 This is a DUT task in the conservative-current layer. The saved `imon` voltage is an observable monitor port, not a replacement for the required current contribution.
 
 ## Public Verilog-A Interface

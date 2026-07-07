@@ -4,8 +4,6 @@
 
 Implement one behavioral Verilog-A source file named `limexp_soft_exponential.va`. This is a language-extension/L0 support task for the Spectre-compatible `limexp()` analog math operator on a sampled voltage-domain path, not a standalone diode or transistor-level device model.
 
-## Form-Specific Requirements
-
 Use `limexp(V(vin))` for the sampled transform. The limited exponential expression is the public modeling feature under review; keep the result observable through both `out` and `metric`.
 
 ## Public Verilog-A Interface

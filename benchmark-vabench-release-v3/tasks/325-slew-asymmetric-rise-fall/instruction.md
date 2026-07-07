@@ -4,8 +4,6 @@
 
 Implement one behavioral Verilog-A DUT file named `slew_asymmetric_rise_fall.va`. The DUT switches between high and low voltage targets while enforcing intentionally asymmetric rising and falling slew-rate limits.
 
-## Form-Specific Requirements
-
 This is a DUT-only Verilog-A modeling task. The supplied testbenches are verification scenarios; do not hard-code their stop times, sample times, or waveform breakpoints into the DUT.
 
 ## Public Verilog-A Interface

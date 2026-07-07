@@ -7,8 +7,6 @@ This is a Spectre-compatible Verilog-A language-semantics support row for a
 bounded `while` loop in a clocked voltage-domain model, not a standalone AMS
 circuit-function row.
 
-## Form-Specific Requirements
-
 Return the DUT source artifact only. The model is sampled on the rising crossing
 of `clk`, reset by `rst`, and drives voltage outputs `out` and `metric`; it must
 not introduce current contributions.

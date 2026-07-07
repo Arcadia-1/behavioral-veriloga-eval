@@ -6,8 +6,6 @@ Implement one behavioral Verilog-A DUT file named `parameter_range_limited_gain.
 
 This task focuses on Cadence parameter range syntax in a sampled gain helper. The DUT is a reusable voltage-domain behavioral helper and must be implemented in Verilog-A.
 
-## Form-Specific Requirements
-
 Build a sampled voltage gain block that uses a range-limited Verilog-A parameter declaration as part of its public interface.
 
 ## Public Verilog-A Interface

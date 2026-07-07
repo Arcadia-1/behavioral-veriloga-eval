@@ -4,8 +4,6 @@
 
 Implement one Verilog-A source file named `analog_node_alias_initial.va`. This task exercises analog-initial node aliasing from an internal node to a named external node.
 
-## Form-Specific Requirements
-
 This is a Verilog-A semantic/support task. The output must depend on the alias installed by `$analog_node_alias`, not on an added ordinary input port.
 
 ## Public Verilog-A Interface

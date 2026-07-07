@@ -4,8 +4,6 @@
 
 Implement one Verilog-A source file named `port_connected_output_enable.va`. The task models a clocked output-enable helper that uses `$port_connected` to guard an optional output port.
 
-## Form-Specific Requirements
-
 This is a DUT task. The supplied testbenches instantiate the connected-output path; the DUT should still define the unconnected optional-port behavior.
 
 ## Public Verilog-A Interface

@@ -4,8 +4,6 @@
 
 Implement one Verilog-A source file named `indirect_branch_ddt_balance.va`. The task models a stable dynamic indirect branch equation with a `ddt()` term.
 
-## Form-Specific Requirements
-
 This is a DUT task. The behavior should be implemented with an indirect branch assignment, not by replacing the equation with a normal voltage contribution.
 
 ## Public Verilog-A Interface

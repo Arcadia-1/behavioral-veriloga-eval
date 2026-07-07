@@ -1,8 +1,10 @@
 # Table Model Linear Gain
 
+## Task Contract
+
 Implement one behavioral Verilog-A source file named `table_model_linear_gain.va`.
 
-## Interface
+## Public Verilog-A Interface
 
 Use this exact module interface:
 
@@ -17,7 +19,9 @@ module table_model_linear_gain (
 );
 ```
 
-Keep the model behavioral and do not introduce current contributions.
+## Public Parameter Contract
+
+Use the public parameter names, default values, legal ranges, filenames, and thresholds stated in the required behavior below. Do not add task-private configuration ports or extra configuration parameters.
 
 ## Required Behavior
 
@@ -30,5 +34,13 @@ Required behavior:
 - otherwise set `out_v = $table_model(V(vin), "table-model-linear-gain.tbl")`;
 - set `metric_v = out_v / vhi`;
 - drive `out` and `metric` with `transition(...)`.
+
+## Modeling Constraints
+
+Keep the model behavioral and do not introduce current contributions.
+
+Keep the implementation behavioral and public-interface compatible. Do not add Spectre testbench code, simulator-private hooks, or extra output artifacts.
+
+## Output Contract
 
 Return exactly one source artifact named `table_model_linear_gain.va`.

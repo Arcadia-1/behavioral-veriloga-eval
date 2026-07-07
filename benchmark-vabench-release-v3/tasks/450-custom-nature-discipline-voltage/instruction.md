@@ -4,8 +4,6 @@
 
 Implement one Verilog-AMS source file named `custom_nature_discipline_voltage.vams`. This task exercises a custom nature and discipline used for a voltage-domain pass-through model.
 
-## Form-Specific Requirements
-
 This is a Verilog-AMS semantic/support task. Preserve the custom nature and custom discipline declarations instead of replacing the model with the built-in `electrical` discipline.
 
 ## Public Verilog-A Interface

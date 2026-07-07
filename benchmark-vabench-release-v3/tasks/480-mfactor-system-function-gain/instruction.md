@@ -4,8 +4,6 @@
 
 Implement one Verilog-A source file named `mfactor_system_function_gain.va`. This task exercises the Cadence-compatible `$mfactor` system function as a voltage gain source.
 
-## Form-Specific Requirements
-
 This is a Verilog-A semantic/support task. Read the effective Spectre instance multiplicity with `$mfactor` instead of using a public gain parameter or a hard-coded gain.
 
 ## Public Verilog-A Interface

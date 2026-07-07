@@ -4,8 +4,6 @@
 
 Implement one Verilog-A source file named `mc_trial_number_metric.va`. The task is an L0/support row for exposing the Cadence Monte Carlo trial index.
 
-## Form-Specific Requirements
-
 This is a DUT task for Cadence simulator-function semantics. In ordinary non-Monte-Carlo transient tests, the trial index is expected to be zero.
 
 ## Public Verilog-A Interface

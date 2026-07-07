@@ -4,8 +4,6 @@
 
 Implement one Verilog-A source file named `branch_current_probe_contribution.va`. This row is a conservative-current branch semantic/support task: it verifies named-branch current contribution and current probing.
 
-## Form-Specific Requirements
-
 This is a DUT task in the conservative-current language-semantic layer. The saved `out` voltage is a validation monitor for the contributed branch current.
 
 ## Public Verilog-A Interface

@@ -6,8 +6,6 @@ Implement one behavioral Verilog-A DUT file named `directive_configurable_thresh
 
 This task focuses on Verilog-A compiler-directive controlled threshold selection. The DUT is a reusable voltage-domain behavioral helper and must be implemented in Verilog-A.
 
-## Form-Specific Requirements
-
 Build a sampled comparator whose default threshold is selected by a compile-time directive and then adjusted by a voltage-coded mode input.
 
 ## Public Verilog-A Interface

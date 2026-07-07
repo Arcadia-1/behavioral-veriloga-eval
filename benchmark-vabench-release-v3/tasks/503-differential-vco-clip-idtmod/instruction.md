@@ -1,5 +1,7 @@
 # Differential VCO With Clip And Idtmod
 
+## Task Contract
+
 Implement one behavioral Verilog-A DUT file named `differential_vco_clip_idtmod.va`.
 
 This is a PLL clock-and-timing task following the common differential
@@ -9,7 +11,7 @@ opposite sine arms are driven around a common mode. Keep the model pure
 voltage-domain behavioral Verilog-A: do not instantiate transistor-level
 devices and do not use current-domain `I(...)` branch contributions.
 
-## Interface
+## Public Verilog-A Interface
 
 ```verilog
 module differential_vco_clip_idtmod (
@@ -20,6 +22,24 @@ module differential_vco_clip_idtmod (
     output electrical metric
 );
 ```
+
+## Public Parameter Contract
+
+Public parameters and legal overrides:
+
+| Parameter | Default | Unit / range | Contract |
+| --- | ---: | --- | --- |
+| `Fnom` | `20.0e6` | Hz, `(0:inf)` | Frequency at zero differential input. |
+| `dFdV` | `160.0e6` | Hz/V, `(-inf:inf) exclude 0.0` | Frequency shift per volt of `V(vinp, vinm)`. |
+| `Fmin` | `5.0e6` | Hz, `(0:inf)` | Lower clamp for the oscillation frequency. |
+| `Fmax` | `80.0e6` | Hz, `(0:inf)` | Upper clamp for the oscillation frequency. |
+| `Vcm` | `0.45` | V | Common-mode output center voltage. |
+| `Vac` | `0.4` | V, `(0:inf)` | Per-arm sine amplitude. |
+
+The supplied verification scenarios hold `V(vinp)` and `V(vinm)` constant so
+the differential control is a fixed offset. At least one scenario drives the
+raw frequency above the public clamp band, so the implemented oscillator must
+use the clipped frequency rather than the unclipped expression.
 
 ## Required Behavior
 
@@ -45,23 +65,18 @@ Implement:
 - `outm = Vcm - Vac * sin(M_TWO_PI * phase_q)` (negative differential arm)
 - `metric = 0.9 * phase_q` (voltage-coded instantaneous wrapped phase, `0 V` to `0.9 V`)
 
-Public parameters and legal overrides:
+## Modeling Constraints
 
-| Parameter | Default | Unit / range | Contract |
-| --- | ---: | --- | --- |
-| `Fnom` | `20.0e6` | Hz, `(0:inf)` | Frequency at zero differential input. |
-| `dFdV` | `160.0e6` | Hz/V, `(-inf:inf) exclude 0.0` | Frequency shift per volt of `V(vinp, vinm)`. |
-| `Fmin` | `5.0e6` | Hz, `(0:inf)` | Lower clamp for the oscillation frequency. |
-| `Fmax` | `80.0e6` | Hz, `(0:inf)` | Upper clamp for the oscillation frequency. |
-| `Vcm` | `0.45` | V | Common-mode output center voltage. |
-| `Vac` | `0.4` | V, `(0:inf)` | Per-arm sine amplitude. |
+This is a PLL clock-and-timing task following the common differential
+behavioral VCO pattern: a differential control voltage sets a clipped
+instantaneous frequency, wrapped phase is integrated with `idtmod()`, and two
+opposite sine arms are driven around a common mode. Keep the model pure
+voltage-domain behavioral Verilog-A: do not instantiate transistor-level
+devices and do not use current-domain `I(...)` branch contributions.
 
-The supplied verification scenarios hold `V(vinp)` and `V(vinm)` constant so
-the differential control is a fixed offset. At least one scenario drives the
-raw frequency above the public clamp band, so the implemented oscillator must
-use the clipped frequency rather than the unclipped expression.
+Keep the implementation behavioral and public-interface compatible. Do not add Spectre testbench code, simulator-private hooks, or extra output artifacts.
 
-## Output
+## Output Contract
 
 Return exactly one source artifact named `differential_vco_clip_idtmod.va`. Do
 not generate a Spectre testbench for this task.

@@ -1,10 +1,12 @@
 # For Loop Weighted Accumulator
 
+## Task Contract
+
 Implement one behavioral Verilog-A DUT file named `for_loop_weighted_accumulator.va`.
 
 This is a language-semantics extension task based on the Cadence Verilog-A Language Reference. Keep the model pure voltage-domain behavioral Verilog-A: do not instantiate transistor-level devices and do not use current-domain `I(...)` branch contributions.
 
-## Interface
+## Public Verilog-A Interface
 
 ```verilog
 module for_loop_weighted_accumulator (
@@ -16,6 +18,10 @@ module for_loop_weighted_accumulator (
     output electrical metric
 );
 ```
+
+## Public Parameter Contract
+
+Use the public parameter names, default values, legal ranges, filenames, and thresholds stated in the required behavior below. Do not add task-private configuration ports or extra configuration parameters.
 
 ## Required Behavior
 
@@ -31,6 +37,12 @@ The model keeps `samples[0:3]` and `weights[0:3] = {4.0, 3.0, 2.0, 1.0}`, all in
 
 A rising `rst` event must also clear the sample history immediately. Drive outputs with `transition(..., 0, tr, tr)` using `tr = 200p`. Do not use `I(...)`, `ddt(...)`, or `idt(...)`.
 
-## Output
+## Modeling Constraints
+
+This is a language-semantics extension task based on the Cadence Verilog-A Language Reference. Keep the model pure voltage-domain behavioral Verilog-A: do not instantiate transistor-level devices and do not use current-domain `I(...)` branch contributions.
+
+Keep the implementation behavioral and public-interface compatible. Do not add Spectre testbench code, simulator-private hooks, or extra output artifacts.
+
+## Output Contract
 
 Return exactly one source artifact named `for_loop_weighted_accumulator.va`. Do not generate a Spectre testbench for this task.

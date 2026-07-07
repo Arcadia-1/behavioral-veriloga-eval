@@ -4,8 +4,6 @@
 
 Implement one Verilog-A source file named `inherited_port_attribute_supply.va`. This task exercises inherited connection attributes on supply-like ports while preserving explicit supply-pin behavior.
 
-## Form-Specific Requirements
-
 This is a Verilog-A semantic/support task. Keep the inherited connection attributes on the supply ports even when the testbench connects the supplies explicitly.
 
 ## Public Verilog-A Interface

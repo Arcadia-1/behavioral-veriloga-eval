@@ -4,8 +4,6 @@
 
 Implement one behavioral Verilog-A source file named `combined_white_flicker_noise.va`. This is a support/L0 Verilog-A semantics task for combining white-noise and flicker-noise voltage contributions, not a standalone core circuit macro.
 
-## Form-Specific Requirements
-
 This is a DUT source task. Implement only the `combined_white_flicker_noise` module; no external testbench or extra helper module is part of the requested artifact.
 
 ## Public Verilog-A Interface

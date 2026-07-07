@@ -4,8 +4,6 @@
 
 Implement one Verilog-A source file named `table_model_2d_array_surface.va`. This task exercises a 2D `$table_model()` surface backed by Verilog-A real arrays.
 
-## Form-Specific Requirements
-
 This is a Verilog-A semantic/support task. The surface value must come from `$table_model()` using the supplied arrays, not from a manually coded closed-form replacement.
 
 ## Public Verilog-A Interface

@@ -6,8 +6,6 @@ Implement one behavioral Verilog-A DUT file named `idtmod_phase_accumulator.va`.
 
 This task focuses on a Cadence `idtmod()` wrapped phase accumulator. The DUT is a reusable voltage-domain behavioral helper and must be implemented in Verilog-A.
 
-## Form-Specific Requirements
-
 Build a continuous-time wrapped phase helper. The phase must be produced by `idtmod()`, not by a manually updated discrete counter or an unwrapped `idt()` state.
 
 ## Public Verilog-A Interface

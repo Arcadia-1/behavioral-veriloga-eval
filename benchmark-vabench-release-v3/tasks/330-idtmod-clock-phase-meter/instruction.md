@@ -6,8 +6,6 @@ Implement one behavioral Verilog-A DUT file named `idtmod_clock_phase_meter.va`.
 
 This task focuses on clock-sampled `idtmod()` phase measurement. The DUT is a reusable voltage-domain behavioral helper and must be implemented in Verilog-A.
 
-## Form-Specific Requirements
-
 Build a mixed continuous-time/event helper. The phase must accumulate continuously with `idtmod()`, and a held sampled phase must update only on rising clock crossings.
 
 ## Public Verilog-A Interface

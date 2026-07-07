@@ -4,8 +4,6 @@
 
 Implement one behavioral Verilog-A DUT file named `slew_limited_mode_stepper.va`. The DUT converts a voltage-coded mode input into stepped target levels and drives both public outputs through the Verilog-A `slew()` operator.
 
-## Form-Specific Requirements
-
 This is a DUT-only Verilog-A modeling task. The supplied testbenches are verification scenarios; do not hard-code their stop times, sample times, or waveform breakpoints into the DUT.
 
 ## Public Verilog-A Interface

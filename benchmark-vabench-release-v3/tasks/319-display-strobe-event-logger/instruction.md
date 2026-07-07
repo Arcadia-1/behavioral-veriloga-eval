@@ -1,10 +1,12 @@
 # Display Strobe Event Logger
 
+## Task Contract
+
 Implement one behavioral Verilog-A DUT file named `display_strobe_event_logger.va`.
 
 This is a language-semantics extension task based on the Cadence Verilog-A Language Reference. Keep the model pure voltage-domain behavioral Verilog-A: do not instantiate transistor-level devices and do not use current-domain `I(...)` branch contributions.
 
-## Interface
+## Public Verilog-A Interface
 
 ```verilog
 module display_strobe_event_logger (
@@ -16,6 +18,10 @@ module display_strobe_event_logger (
     output electrical metric
 );
 ```
+
+## Public Parameter Contract
+
+Use the public parameter names, default values, legal ranges, filenames, and thresholds stated in the required behavior below. Do not add task-private configuration ports or extra configuration parameters.
 
 ## Required Behavior
 
@@ -35,8 +41,18 @@ On each rising crossing of `clk` through `vth` while reset is low:
 - drive `metric = count_q / 4.0`, capped at `1.0`
 - call `$strobe` with the event count, class, and sampled `vin`
 
-The first hidden clock edge occurs while reset is high and must not be counted. Four later post-reset clock edges must produce classes `1, 2, 3, 2` and metric levels `0.25, 0.50, 0.75, 1.00`. Do not use `I(...)`, `ddt(...)`, or `idt(...)`.
+Clock events that occur while reset is high must not be counted. Each accepted
+post-reset clock edge must classify the current `vin` sample using the public
+thresholds above, update `out` from that class, advance the normalized event
+metric, and emit the `$strobe` record. Do not hard-code testbench-specific
+waveform times or sample values. Do not use `I(...)`, `ddt(...)`, or `idt(...)`.
 
-## Output
+## Modeling Constraints
+
+This is a language-semantics extension task based on the Cadence Verilog-A Language Reference. Keep the model pure voltage-domain behavioral Verilog-A: do not instantiate transistor-level devices and do not use current-domain `I(...)` branch contributions.
+
+Keep the implementation behavioral and public-interface compatible. Do not add Spectre testbench code, simulator-private hooks, or extra output artifacts.
+
+## Output Contract
 
 Return exactly one source artifact named `display_strobe_event_logger.va`. Do not generate a Spectre testbench for this task.

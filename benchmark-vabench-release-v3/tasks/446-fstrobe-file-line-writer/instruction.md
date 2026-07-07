@@ -4,8 +4,6 @@
 
 Implement one behavioral Verilog-A source file named `fstrobe_file_line_writer.va`. This is a language-extension/L0 support task for Spectre-compatible `$fstrobe()` file-output syntax on a clocked voltage-domain update path, not a standalone core circuit macro.
 
-## Form-Specific Requirements
-
 Use `$fopen` at `initial_step` to open `fstrobe_lines.log`, use `$fstrobe(fd, ...)` on each non-reset sampled update to write a formatted line containing the count and output value, and close the handle with `$fclose` at `final_step`. The file-output side effect is part of the language-semantics contract but must not change the voltage-domain output behavior.
 
 ## Public Verilog-A Interface

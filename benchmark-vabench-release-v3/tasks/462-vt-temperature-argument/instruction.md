@@ -4,8 +4,6 @@
 
 Implement one Verilog-A source file named `vt_temperature_argument.va`. The task is an L0/support row for `$vt(...)` with an explicit temperature argument.
 
-## Form-Specific Requirements
-
 This is a DUT task for environment-function semantics. It is not a standalone thermal sensor circuit.
 
 ## Public Verilog-A Interface

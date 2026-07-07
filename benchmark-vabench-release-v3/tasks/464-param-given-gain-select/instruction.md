@@ -4,8 +4,6 @@
 
 Implement one Verilog-A source file named `param_given_gain_select.va`. The task is an L0/support row for using `$param_given()` to select behavior based on whether an instance parameter was explicitly overridden.
 
-## Form-Specific Requirements
-
 This is a DUT task for environment-function semantics. The supplied testbenches instantiate both default and explicitly overridden parameter paths.
 
 ## Public Verilog-A Interface

@@ -4,8 +4,6 @@
 
 Implement one behavioral Verilog-A source file named `hierarchy_support_artifact_staging.va`. This is a language-extension/L0 support task for hierarchy and support-artifact staging around a voltage-domain transfer path, not a standalone core circuit macro.
 
-## Form-Specific Requirements
-
 The public harness supplies read-only support child modules in `staged_gain_child.va` and `staged_limit_child.va`. Return only the parent source file and instantiate the supplied child modules from it.
 
 ## Public Verilog-A Interface

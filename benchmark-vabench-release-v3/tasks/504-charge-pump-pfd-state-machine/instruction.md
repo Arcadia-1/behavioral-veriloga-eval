@@ -1,5 +1,7 @@
 # Charge Pump PFD State Machine
 
+## Task Contract
+
 Implement one behavioral Verilog-A DUT file named `charge_pump_pfd_state_machine.va`.
 
 This is a PLL clock-and-timing task following the common charge-pump PFD
@@ -8,7 +10,7 @@ phase-detector state, and that state moves a bounded control-voltage monitor.
 Keep the model pure voltage-domain behavioral Verilog-A, with no current
 contributions and no instantiated devices.
 
-## Interface
+## Public Verilog-A Interface
 
 ```verilog
 module charge_pump_pfd_state_machine (
@@ -18,6 +20,32 @@ module charge_pump_pfd_state_machine (
     output electrical metric
 );
 ```
+
+## Public Parameter Contract
+
+Public parameters and legal overrides:
+
+| Parameter | Default | Unit / range | Contract |
+| --- | ---: | --- | --- |
+| `vth` | `0.45` | V | Logic decision threshold. |
+| `tstep` | `1.0e-9` | s, `(0:inf)` | Control-voltage integration timestep. |
+| `pump_rate` | `60.0e6` | V/s, `[0:inf)` | Control-voltage slew rate per unit state. |
+| `vctrl_init` | `0.45` | V | Initial control voltage. |
+| `vctrl_min` | `0.05` | V | Lower clamp for the control voltage. |
+| `vctrl_max` | `0.85` | V | Upper clamp for the control voltage. |
+| `tedge` | `200p` | s, `(0:inf)` | Output smoothing time. |
+| `metric_lo` | `0.1` | V | Metric voltage for state `-1`. |
+| `metric_mid` | `0.45` | V | Metric voltage for state `0`. |
+| `metric_hi` | `0.8` | V | Metric voltage for state `+1`. |
+
+The supplied verification scenarios drive `ref` and `fb` as same-frequency
+square waves with fixed phase offsets. Positive phase offset means the
+reference edge leads and `vctrl` should move toward the upper rail; negative
+phase offset means feedback leads and `vctrl` should move toward the lower
+rail.
+
+The verification harness supplies a companion support artifact `ref_fb_clk.va`
+that generates the two phase-offset clock waves; you do not author it.
 
 ## Required Behavior
 
@@ -46,31 +74,17 @@ Implement:
 - Drive `metric` as a voltage-coded copy of the detector state:
   `metric = transition((state_q < 0) ? metric_lo : (state_q > 0) ? metric_hi : metric_mid, 0, tedge, tedge)`.
 
-Public parameters and legal overrides:
+## Modeling Constraints
 
-| Parameter | Default | Unit / range | Contract |
-| --- | ---: | --- | --- |
-| `vth` | `0.45` | V | Logic decision threshold. |
-| `tstep` | `1.0e-9` | s, `(0:inf)` | Control-voltage integration timestep. |
-| `pump_rate` | `60.0e6` | V/s, `[0:inf)` | Control-voltage slew rate per unit state. |
-| `vctrl_init` | `0.45` | V | Initial control voltage. |
-| `vctrl_min` | `0.05` | V | Lower clamp for the control voltage. |
-| `vctrl_max` | `0.85` | V | Upper clamp for the control voltage. |
-| `tedge` | `200p` | s, `(0:inf)` | Output smoothing time. |
-| `metric_lo` | `0.1` | V | Metric voltage for state `-1`. |
-| `metric_mid` | `0.45` | V | Metric voltage for state `0`. |
-| `metric_hi` | `0.8` | V | Metric voltage for state `+1`. |
+This is a PLL clock-and-timing task following the common charge-pump PFD
+behavioral pattern: rising reference and feedback edges update a tri-state
+phase-detector state, and that state moves a bounded control-voltage monitor.
+Keep the model pure voltage-domain behavioral Verilog-A, with no current
+contributions and no instantiated devices.
 
-The supplied verification scenarios drive `ref` and `fb` as same-frequency
-square waves with fixed phase offsets. Positive phase offset means the
-reference edge leads and `vctrl` should move toward the upper rail; negative
-phase offset means feedback leads and `vctrl` should move toward the lower
-rail.
+Keep the implementation behavioral and public-interface compatible. Do not add Spectre testbench code, simulator-private hooks, or extra output artifacts.
 
-The verification harness supplies a companion support artifact `ref_fb_clk.va`
-that generates the two phase-offset clock waves; you do not author it.
-
-## Output
+## Output Contract
 
 Return exactly one source artifact named `charge_pump_pfd_state_machine.va`. Do
 not generate a Spectre testbench or the support clock for this task.

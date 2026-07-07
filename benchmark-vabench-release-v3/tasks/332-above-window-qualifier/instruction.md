@@ -4,8 +4,6 @@
 
 Implement one behavioral Verilog-A DUT file named `above_window_qualifier.va`.
 
-## Form-Specific Requirements
-
 This task focuses on `above()` threshold latching plus bounded `last_crossing()` interval qualification. The DUT is a reusable voltage-domain behavioral helper and must be implemented in Verilog-A.
 
 Build a threshold latch and timing-window qualifier for pairs of rising input threshold crossings.

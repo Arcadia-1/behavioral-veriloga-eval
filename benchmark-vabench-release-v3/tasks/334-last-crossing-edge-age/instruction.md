@@ -6,8 +6,6 @@ Implement one behavioral Verilog-A DUT file named `last_crossing_edge_age.va`.
 
 This task focuses on edge-age measurement using Cadence `last_crossing()`. The DUT is a reusable voltage-domain behavioral helper and must be implemented in Verilog-A.
 
-## Form-Specific Requirements
-
 Build an age meter that reports elapsed time since the most recent rising threshold crossing.
 
 ## Public Verilog-A Interface

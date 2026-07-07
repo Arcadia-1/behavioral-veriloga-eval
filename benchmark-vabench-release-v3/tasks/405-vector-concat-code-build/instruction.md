@@ -4,8 +4,6 @@
 
 Implement one behavioral Verilog-A source file named `vector_concat_code_build.va`. The model is a clocked compact-code generator that reports the generated code and asserts an analog high level for codes above the threshold.
 
-## Form-Specific Requirements
-
 This is a DUT task. Keep the implementation behavioral, voltage-domain, and event-driven; do not add branch-current contributions or extra modules.
 
 ## Public Verilog-A Interface

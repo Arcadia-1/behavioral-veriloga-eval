@@ -4,8 +4,6 @@
 
 Implement one Verilog-A source file named `discontinuity_event_announcement.va`. The task is an L0/support row for using `$discontinuity()` inside a sampled event body.
 
-## Form-Specific Requirements
-
 This is a DUT task for simulator-control semantics. It is not a standalone comparator; the thresholded output is the observable carrier for the discontinuity event.
 
 ## Public Verilog-A Interface

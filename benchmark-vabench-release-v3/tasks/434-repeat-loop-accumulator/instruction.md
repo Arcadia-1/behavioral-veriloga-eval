@@ -4,8 +4,6 @@
 
 Implement one behavioral Verilog-A source file named `repeat_loop_accumulator.va`. This is a language-extension/L0 support task for `repeat` loop execution on sampled voltage-domain state, not a standalone core circuit macro.
 
-## Form-Specific Requirements
-
 Use Verilog-A `repeat` loop syntax in the non-reset sampled update path. The loop is the public language feature under review; do not replace it with an unrolled arithmetic expression.
 
 ## Public Verilog-A Interface
