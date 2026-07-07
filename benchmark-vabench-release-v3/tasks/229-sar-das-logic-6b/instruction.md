@@ -25,7 +25,9 @@ Provide overrideable parameters `tde = 50p`, `tdc = 50p`, `vdd = 1.1`, and `vcm 
 
 ## Required Behavior
 
-On a rising `clk_sampling` transition, clear all bit controls and decision pulses and reset the internal bit pointer. On a falling `clk_sampling` transition, preset all differential bit controls high while keeping `co/cob` low. On each rising `clk_sar` transition, compare `vcomp` against `vcm`, emit `co` or `cob`, and update the next differential bit-control pair in MSB-to-LSB order. On each falling `clk_sar` transition, clear `co/cob` back low.
+On a rising `clk_sampling` transition through `vcm`, clear all bit controls and decision pulses and reset the decision index to the start of a conversion. On a falling `clk_sampling` transition through `vcm`, preset all `d1..d6` and `db1..db6` controls high while keeping `co/cob` low. The first subsequent `clk_sar` rising decision uses decision index 7, then the index decrements after each `clk_sar` rising decision.
+
+On each rising `clk_sar` transition through `vcm`, compare `vcomp` against `vcm`. If `vcomp > vcm`, drive `co` high and `cob` low; if the decision index is 7, set or keep `d6` high, and for later indices 6, 5, 4, 3, and 2 clear `db5`, `db4`, `db3`, `db2`, and `db1` respectively. If `vcomp <= vcm`, drive `cob` high and `co` low; if the decision index is 7, set or keep `db6` high, and for later indices 6, 5, 4, 3, and 2 clear `d5`, `d4`, `d3`, `d2`, and `d1` respectively. Bit controls not listed for the current decision retain their previous states. On each falling `clk_sar` transition through `vcm`, clear `co/cob` back low.
 
 ## Modeling Constraints
 

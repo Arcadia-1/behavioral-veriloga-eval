@@ -25,7 +25,9 @@ Provide overrideable parameter `t_logic_delay = 100p`. Derive logic high, low, a
 
 ## Required Behavior
 
-At initialization and on each rising `rst` transition, reset the conversion state, clear `cmpck` and `dout1..dout4`, and initialize bottom-plate controls high. A rising `clkc` transition schedules `cmpck` high after the logic delay. Each rising comparator pulse on `dcmpp` or `dcmpn` lowers `cmpck` after the logic delay, stores the current MSB-to-LSB decision, and updates the matching positive or negative bottom-plate control for the remaining steps. When the comparator pulse falls, advance to the next step and re-enable `cmpck` after the delay until all decisions are complete.
+At initialization and on each rising `rst` transition, reset the conversion to step 4, clear `cmpck` and `dout1..dout4`, and initialize `dbotp1..dbotp3` and `dbotn1..dbotn3` high. A rising `clkc` transition schedules `cmpck` high after `t_logic_delay`.
+
+Each rising comparator pulse on `dcmpp` or `dcmpn` schedules `cmpck` low after `t_logic_delay`. At the pulse, treat `dcmpp > dcmpn` as a positive decision and store that decision in `dout{step}` for the current MSB-to-LSB step sequence 4, 3, 2, 1. For steps above 1, a positive decision clears the positive bottom-plate control `dbotp{step-1}`, while a negative decision clears the negative bottom-plate control `dbotn{step-1}`. Step 1 only latches `dout1` and does not update a bottom-plate control. When the comparator pulse falls, decrement the step and re-enable `cmpck` after `t_logic_delay` while further decisions remain.
 
 ## Modeling Constraints
 
