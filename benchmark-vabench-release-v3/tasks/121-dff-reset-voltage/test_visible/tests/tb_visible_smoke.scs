@@ -9,5 +9,5 @@ Vrst (rst 0) vsource type=pwl wave=[0 0 26n 0 27n 0.9 30n 0.9 31n 0 42n 0]
 
 XDUT (vin_d vclk rst vout_q vout_qbar) source_dff_reset
 
-tran tran stop=42n maxstep=50p
+tran tran stop=32n maxstep=50p
 save vin_d vclk rst vout_q vout_qbar

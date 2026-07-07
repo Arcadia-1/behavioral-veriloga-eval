@@ -8,5 +8,5 @@ Vinn (vinn 0) vsource type=pwl wave=[0 0.55 15n 0.55 15.1n 0.30 30n 0.30 30.1n 0
 
 XDUT (vinp vinn voutp voutn) differential_buffer
 
-tran tran stop=40n maxstep=25p
+tran tran stop=22n maxstep=25p
 save vinp vinn voutp voutn

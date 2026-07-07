@@ -14,5 +14,5 @@ Vd0 (d0 0) vsource type=pwl wave=[0 0 14n 0 14.2n 0 24n 0.9 24.2n 0.9 34n 0.9 34
 
 XDUT (d1 d2 d3 d4 d5 d6 d0 clk vout) clocked_dac_restore_7b
 
-tran tran stop=50n maxstep=50p
+tran tran stop=40n maxstep=50p
 save d0 d1 d2 d3 d4 d5 d6 clk vout

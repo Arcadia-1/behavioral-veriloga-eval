@@ -1,15 +1,19 @@
 simulator lang=spectre
 global 0
+
 ahdl_include "deterministic_jittered_clock.va"
-Vjitter_en (jitter_en 0) vsource type=pwl wave=[0 0.9 220n 0.9]
-Vseed0 (seed0 0) vsource type=pwl wave=[0 0.9 9.5n 0.9 10n 0.9]
-Vseed1 (seed1 0) vsource type=pwl wave=[0 0.9 9.5n 0.9 10n 0.9]
-Vseed2 (seed2 0) vsource type=pwl wave=[0 0 9.5n 0 10n 0]
-Vseed3 (seed3 0) vsource type=pwl wave=[0 0.9 9.5n 0.9 10n 0.9]
-Vseed4 (seed4 0) vsource type=pwl wave=[0 0.9 9.5n 0.9 10n 0.9]
-Vseed5 (seed5 0) vsource type=pwl wave=[0 0 9.5n 0 10n 0]
-Vseed6 (seed6 0) vsource type=pwl wave=[0 0.9 9.5n 0.9 10n 0.9]
-Vseed7 (seed7 0) vsource type=pwl wave=[0 0 9.5n 0 10n 0]
+
+V_jitter_en (jitter_en 0) vsource type=pulse val0=0 val1=0.9 period=4n delay=200p rise=50p fall=50p width=1.5n
+V_seed0 (seed0 0) vsource dc=0.9
+V_seed1 (seed1 0) vsource dc=0.0
+V_seed2 (seed2 0) vsource dc=0.9
+V_seed3 (seed3 0) vsource dc=0.0
+V_seed4 (seed4 0) vsource dc=0.9
+V_seed5 (seed5 0) vsource dc=0.0
+V_seed6 (seed6 0) vsource dc=0.9
+V_seed7 (seed7 0) vsource dc=0.0
+
 XDUT (jitter_en seed0 seed1 seed2 seed3 seed4 seed5 seed6 seed7 clk_out) deterministic_jittered_clock
-tran tran stop=220n maxstep=50p
+
+tran tran stop=8n maxstep=100p
 save jitter_en seed0 seed1 seed2 seed3 seed4 seed5 seed6 seed7 clk_out

@@ -6,5 +6,5 @@ Vd (d 0) vsource type=pwl wave=[0 0 2.8n 0 2.9n 1 4.8n 1 4.9n 0 6.8n 0 6.9n 1 8.
 Vvrefp (vrefp 0) vsource dc=0.78
 Vvrefn (vrefn 0) vsource dc=0.22
 XDUT (ck d vrefp vrefn dc0 dc1 dc2 dc3 dc4 dc5 dc6 cvinp cvinn en enb) foreground_rdac_calibrator
-tran tran stop=15n maxstep=20p
+tran tran stop=12n maxstep=20p
 save ck d vrefp vrefn dc0 dc1 dc2 dc3 dc4 dc5 dc6 cvinp cvinn en enb

@@ -24,5 +24,5 @@ Vdl8 (dl8 0) vsource type=pwl wave=[0 0.9 9.8n 0.9 10n 0]
 
 XDUT (ck1 ck2 ck3 ck4 ck5 ck6 ck7 ck8 ck9 dl0 dl1 dl2 dl3 dl4 dl5 dl6 dl7 dl8 do0 do1 do2 do3 do4 do5 do6 do7 do8) sync_8b_dffs_v2
 
-tran tran stop=21n maxstep=20p
+tran tran stop=10.5n maxstep=20p
 save ck1 ck2 ck3 ck4 ck5 ck6 ck7 ck8 ck9 dl0 dl1 dl2 dl3 dl4 dl5 dl6 dl7 dl8 do0 do1 do2 do3 do4 do5 do6 do7 do8

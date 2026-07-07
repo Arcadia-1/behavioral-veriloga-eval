@@ -8,5 +8,5 @@ Vvin (vin 0) vsource type=pwl wave=[0 0.10 4n 0.20 14n 0.55 24n 0.30 34n 0.78 50
 
 XDUT (vin vout vclk) source_sample_hold
 
-tran tran stop=45n maxstep=50p
+tran tran stop=30n maxstep=50p
 save vin vout vclk

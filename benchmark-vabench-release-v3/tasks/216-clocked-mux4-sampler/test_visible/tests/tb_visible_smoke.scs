@@ -15,5 +15,5 @@ Vdin3 (din3 0) vsource dc=0.83
 
 XDUT (dsel0 dsel1 din0 din1 din2 din3 update rst clks dout) clocked_mux4_sampler
 
-tran tran stop=10n maxstep=20p
+tran tran stop=6n maxstep=20p
 save dsel0 dsel1 din0 din1 din2 din3 update rst clks dout

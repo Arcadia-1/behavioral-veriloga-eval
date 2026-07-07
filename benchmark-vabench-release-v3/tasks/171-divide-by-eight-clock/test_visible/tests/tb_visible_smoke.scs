@@ -9,5 +9,5 @@ Ven (en 0) vsource type=pwl wave=[0 0.9 11.60n 0.9 11.65n 0 15.55n 0 15.60n 0.9 
 
 XDUT (vin rst en vout) divide_by_eight_clock
 
-tran tran stop=24n maxstep=10p
+tran tran stop=18n maxstep=10p
 save vin rst en vout

@@ -11,5 +11,5 @@ Vd4 (d4 0) vsource type=pwl wave=[0 0 11n 0 11.1n 0.9 21n 0.9 21.1n 0 31n 0 31.1
 
 XDUT (d1 d2 d3 d4 clk vout) clocked_dac_4b_binary
 
-tran tran stop=45n maxstep=25p
+tran tran stop=32n maxstep=25p
 save clk d1 d2 d3 d4 vout

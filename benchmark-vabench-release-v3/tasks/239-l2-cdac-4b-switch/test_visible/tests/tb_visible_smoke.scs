@@ -7,5 +7,5 @@ Vd2 (din2 0) vsource type=pwl wave=[0 0 2n 0 2.05n 1.1 3n 1.1 3.05n 1.1 4n 1.1]
 Vd3 (din3 0) vsource type=pwl wave=[0 0 2n 0 2.05n 0 3n 0 3.05n 1.1 4n 1.1]
 Vd4 (din4 0) vsource type=pwl wave=[0 0 2n 0 2.05n 1.1 3n 1.1 3.05n 1.1 4n 1.1]
 XDUT (din1 din2 din3 din4 rdy aout) l2_cdac_4b_switch
-tran tran stop=3.8n maxstep=10p
+tran tran stop=2.8n maxstep=10p
 save rdy din1 din2 din3 din4 aout

@@ -10,5 +10,5 @@ Vd2 (dctrl2 0) vsource type=pulse val0=0 val1=1 delay=3.0n period=20n width=8n r
 Vd1 (dctrl1 0) vsource dc=0
 Vd0 (dctrl0 0) vsource dc=0
 XDUT (vin clks dctrl0 dctrl1 dctrl2 dctrl3 dctrl4 dctrl5 vres) cdac_6b_stage1_up
-tran tran stop=3.8n maxstep=10p
+tran tran stop=3.4n maxstep=10p
 save vin clks dctrl0 dctrl1 dctrl2 dctrl3 dctrl4 dctrl5 vres

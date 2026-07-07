@@ -9,5 +9,5 @@ Vvin (vin 0) vsource type=pwl wave=[0 0.25 7n 0.25 14n 0.80 28n 0.80 34n 0.20 49
 
 XDUT (sample rst vin vout metric) acquisition_limited_sample_hold
 
-tran tran stop=90n maxstep=250p
+tran tran stop=70n maxstep=250p
 save sample rst vin vout metric

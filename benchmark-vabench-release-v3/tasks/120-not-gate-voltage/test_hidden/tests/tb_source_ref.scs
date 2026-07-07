@@ -3,7 +3,7 @@ global 0
 
 ahdl_include "source_not_gate.va"
 
-Vin (vin 0) vsource type=pulse val0=0 val1=0.9 delay=5n period=20n width=10n rise=100p fall=100p
+Vin (vin 0) vsource type=pwl wave=[0 0.9 8n 0.9 8.1n 0 22n 0 22.1n 0.9 33n 0.9 33.1n 0 45n 0]
 
 XDUT (vin vout) source_not_gate
 
