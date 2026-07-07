@@ -36,11 +36,15 @@ progress.
 
 On each rising crossing of `clk`, evaluate whether supply, bias, enable, and
 power-down conditions allow operation. Drive `pwr_ok` high whenever the sampled
-conditions are valid. Accumulate consecutive valid clock updates, reset the
-accumulator immediately on any sampled invalid condition, and assert `drive_en`
-only after `delay_cycles` consecutive valid updates. Drive `delay_mon` as a
-bounded voltage-coded progress value from 0 to `vhi`. Smooth all outputs with
-`transition()`.
+conditions are valid, meaning `vdd_min <= V(vdd, vss) <= vdd_max`,
+`vbias_min <= V(vbias, vss) <= vbias_max`, `V(en) > vth`, and `V(pd) <= vth`.
+Maintain an integer consecutive-valid counter. Increment the counter by one on
+each sampled valid rising-clock update until it reaches `delay_cycles`; reset
+the counter to zero on any sampled invalid update. After applying that update,
+assert `drive_en` when the counter is greater than or equal to `delay_cycles`.
+Drive `delay_mon = min(vhi, vhi * counter / delay_cycles)` as the bounded
+voltage-coded turn-on progress value from `0 V` to `vhi`. Smooth all outputs
+with `transition()`.
 
 ## Modeling Constraints
 

@@ -35,11 +35,14 @@ of supply-current demand for checking and system-level accounting.
 ## Required Behavior
 
 Drive `isup_metric` as a voltage-coded supply-current estimate. The estimate
-must scale with the local supply ratio `V(vdd, vss) / vnom`, use `ipd` whenever
-the block is disabled or powered down, choose `iq0` or `iq1` according to
-`mode` during active operation, and add a clipped load-dependent term during
-active operation. The metric is not a real branch current; it is an observable
-behavioral macro-model output.
+must scale with the local supply ratio `V(vdd, vss) / vnom` clipped to the
+range `[0, 1.5]`. Normalize load as `V(load, vss) / vhi` clipped to `[0, 1]`.
+When the block is disabled or powered down, meaning `V(en) <= vth` or
+`V(pd) > vth`, drive `isup_metric = ipd * supply_scale`. Otherwise choose the
+active base metric as `iq1` when `V(mode) > vth` and `iq0` when `V(mode) <= vth`,
+then drive `isup_metric = (base_metric + load_gain * load_norm) * supply_scale`.
+The metric is not a real branch current; it is an observable behavioral
+macro-model output.
 
 ## Modeling Constraints
 
