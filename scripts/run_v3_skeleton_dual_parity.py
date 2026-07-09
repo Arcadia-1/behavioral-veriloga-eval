@@ -396,6 +396,23 @@ def find_spectre_cache_source(*, task_dir: Path, split: str, cache_root: Path, r
     return None
 
 
+def spectre_cache_matches_case(cache_dir: Path, case: dict[str, Any]) -> tuple[bool, str]:
+    tb = case.get("tb")
+    if not isinstance(tb, Path) or not tb.exists():
+        return False, "current testbench missing"
+    cached_scs = sorted(cache_dir.glob("*.scs"))
+    if not cached_scs:
+        return False, "cached materialized spectre netlist missing"
+    current_text = tb.read_text(encoding="utf-8").strip()
+    for candidate in cached_scs:
+        try:
+            if candidate.read_text(encoding="utf-8").strip() == current_text:
+                return True, f"matched {candidate.name}"
+        except UnicodeDecodeError:
+            continue
+    return False, "cached spectre netlist does not match current testbench"
+
+
 def score_cached_spectre_lane(case: dict[str, Any], out_dir: Path, timeout_s: int, source: Path) -> dict[str, Any]:
     csv_path = out_dir / "tran_spectre.csv"
     behavior_score = 0.0
@@ -454,9 +471,30 @@ def run_or_reuse_spectre_lane(
             reuse_roots=reuse_roots,
         )
         if cache_source is not None:
-            copy_artifact_dir(cache_source, out_dir)
-            copy_artifact_dir(cache_source, cache_dst)
-            return score_cached_spectre_lane(case, out_dir, args.spectre_timeout_s, cache_source)
+            cache_ok, cache_note = spectre_cache_matches_case(cache_source, case)
+            if cache_ok:
+                copy_artifact_dir(cache_source, out_dir)
+                copy_artifact_dir(cache_source, cache_dst)
+                result = score_cached_spectre_lane(case, out_dir, args.spectre_timeout_s, cache_source)
+                result.setdefault("behavior_notes", []).append(f"cache_validation={cache_note}")
+                return result
+            if args.spectre_cache_only:
+                return {
+                    "ok": False,
+                    "status": "blocked_stale_cache",
+                    "backend": spectre_backend,
+                    "mode": spectre_mode,
+                    "csv_path": str(out_dir / "tran_spectre.csv"),
+                    "csv_exists": False,
+                    "wall_s": 0.0,
+                    "behavior_score": None,
+                    "behavior_notes": [f"spectre cache rejected: {cache_note}"],
+                    "errors": [],
+                    "warnings": [],
+                    "remote_run_dir": None,
+                    "cache_hit": False,
+                    "cache_source": str(cache_source),
+                }
     if args.spectre_cache_only:
         return {
             "ok": False,
