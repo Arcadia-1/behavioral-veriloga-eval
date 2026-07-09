@@ -1,0 +1,56 @@
+{
+  "wrapper_version": "v4-pilot-wrapper-v2",
+  "modes": {
+    "G0": {
+      "label": "direct_clean_one_shot",
+      "tool_access": false,
+      "veriloga_skill": false,
+      "feedback_debug_skill": false,
+      "public_feedback_access": "none",
+      "canonical_prompt_allowed": true,
+      "clean_direct_baseline": true
+    },
+    "G1": {
+      "label": "direct_one_shot_veriloga_skill",
+      "tool_access": false,
+      "veriloga_skill": true,
+      "feedback_debug_skill": false,
+      "public_feedback_access": "none",
+      "canonical_prompt_allowed": true,
+      "clean_direct_baseline": false
+    },
+    "G2": {
+      "label": "agentic_visible_feedback_oracle_no_additional_skill",
+      "tool_access": true,
+      "veriloga_skill": false,
+      "feedback_debug_skill": false,
+      "public_feedback_access": "runnable_oracle",
+      "canonical_prompt_allowed": true
+    },
+    "G3": {
+      "label": "agentic_visible_feedback_oracle_veriloga_skill",
+      "tool_access": true,
+      "veriloga_skill": true,
+      "feedback_debug_skill": false,
+      "public_feedback_access": "runnable_oracle",
+      "canonical_prompt_allowed": true
+    },
+    "G4": {
+      "label": "agentic_visible_feedback_oracle_feedback_debug_skill",
+      "tool_access": true,
+      "veriloga_skill": false,
+      "feedback_debug_skill": true,
+      "public_feedback_access": "runnable_oracle",
+      "canonical_prompt_allowed": true
+    },
+    "G5": {
+      "label": "agentic_visible_feedback_oracle_both_skills",
+      "tool_access": true,
+      "veriloga_skill": true,
+      "feedback_debug_skill": true,
+      "public_feedback_access": "runnable_oracle",
+      "canonical_prompt_allowed": true,
+      "clean_direct_baseline": false
+    }
+  }
+}

@@ -1,0 +1,208 @@
+{
+  "defaults": {
+    "checker_profile": "evaluator/checker_profile.json",
+    "feedback_dir": "test_feedback",
+    "feedback_public_tb": "test_feedback/public_tb.scs",
+    "feedback_runner": "test_feedback/run_feedback.py",
+    "harness_dir": "test_harness",
+    "instruction": "instruction.md",
+    "language": "verilog-a",
+    "negative_variants_dir": "negative_variants",
+    "score_runner": "evaluator/run_score.py",
+    "score_tb": "evaluator/score_tb.scs",
+    "simulator": "evas",
+    "solution_dir": "solution"
+  },
+  "package": "benchmark-vabench-release-v4",
+  "prompt_policy": {
+    "agentic_feedback_oracle_modes": [
+      "G2",
+      "G3",
+      "G4",
+      "G5"
+    ],
+    "canonical_prompt_surface": "task_contract_only",
+    "direct_clean_modes": [
+      "G0"
+    ],
+    "direct_modes": [
+      "G0",
+      "G1"
+    ],
+    "main_ablation_policy": "G0 direct baseline; G1 direct plus Verilog-A skill; G2 agent with visible feedback oracle and no additional Verilog-A or feedback/debug skill wrapper; G3 agent with visible feedback oracle plus Verilog-A skill; G4 agent with visible feedback oracle plus feedback/debug skill; G5 agent with visible feedback oracle plus both skills. All final scoring uses the private score TB and hidden checker.",
+    "wrapper_modes": [
+      "G0",
+      "G1",
+      "G2",
+      "G3",
+      "G4",
+      "G5"
+    ]
+  },
+  "purpose": "Small 10-task shadow-release pilot for v4 canonical prompts, G0-G5 prompt modes, and black-box agentic feedback-oracle experiments.",
+  "source_package": "benchmark-vabench-release-v3",
+  "status": "pilot_10_task",
+  "tasks": {
+    "001-bang-bang-phase-detector": {
+      "category": "pll_clock_timing",
+      "difficulty": "D2",
+      "feedback_checker_task_id": "v3_001_bang_bang_phase_detector",
+      "form": "dut",
+      "id": "v4_001_bang_bang_phase_detector",
+      "level": "L1",
+      "pilot": true,
+      "source_release_entry_id": "001-bang-bang-phase-detector",
+      "source_task_id": "v3_001_bang_bang_phase_detector",
+      "target": [
+        "bbpd_ref.va"
+      ],
+      "title": "Bang-Bang Phase Detector",
+      "track": "core"
+    },
+    "007-first-order-lowpass": {
+      "category": "baseband_signal_conditioning",
+      "difficulty": "D1",
+      "feedback_checker_task_id": "v3_007_first_order_lowpass",
+      "form": "dut",
+      "id": "v4_007_first_order_lowpass",
+      "level": "L1",
+      "pilot": true,
+      "source_release_entry_id": "007-first-order-lowpass",
+      "source_task_id": "v3_007_first_order_lowpass",
+      "target": [
+        "first_order_lowpass.va"
+      ],
+      "title": "First Order Lowpass",
+      "track": "core"
+    },
+    "010-offset-comparator": {
+      "category": "comparator_decision",
+      "difficulty": "D1",
+      "feedback_checker_task_id": "v3_010_offset_comparator",
+      "form": "dut",
+      "id": "v4_010_offset_comparator",
+      "level": "L1",
+      "pilot": true,
+      "source_release_entry_id": "010-offset-comparator",
+      "source_task_id": "v3_010_offset_comparator",
+      "target": [
+        "cmp_offset_ref.va"
+      ],
+      "title": "Offset Comparator",
+      "track": "core"
+    },
+    "013-resettable-integrator": {
+      "category": "baseband_signal_conditioning",
+      "difficulty": "D2",
+      "feedback_checker_task_id": "v3_013_resettable_integrator",
+      "form": "dut",
+      "id": "v4_013_resettable_integrator",
+      "level": "L1",
+      "pilot": true,
+      "source_release_entry_id": "013-resettable-integrator",
+      "source_task_id": "v3_013_resettable_integrator",
+      "target": [
+        "resettable_integrator.va"
+      ],
+      "title": "Resettable Integrator",
+      "track": "core"
+    },
+    "014-sar-logic": {
+      "category": "data_converter",
+      "difficulty": "D2",
+      "feedback_checker_task_id": "v3_014_sar_logic",
+      "form": "dut",
+      "id": "v4_014_sar_logic",
+      "level": "L1",
+      "pilot": true,
+      "source_release_entry_id": "014-sar-logic",
+      "source_task_id": "v3_014_sar_logic",
+      "target": [
+        "sar_logic_4b.va"
+      ],
+      "title": "SAR Logic",
+      "track": "core"
+    },
+    "017-slew-rate-limiter": {
+      "category": "baseband_signal_conditioning",
+      "difficulty": "D2",
+      "feedback_checker_task_id": "v3_017_slew_rate_limiter",
+      "form": "dut",
+      "id": "v4_017_slew_rate_limiter",
+      "level": "L1",
+      "pilot": true,
+      "source_release_entry_id": "017-slew-rate-limiter",
+      "source_task_id": "v3_017_slew_rate_limiter",
+      "target": [
+        "slew_rate_limiter.va"
+      ],
+      "title": "Slew Rate Limiter",
+      "track": "core"
+    },
+    "021-vco-phase-integrator": {
+      "category": "pll_clock_timing",
+      "difficulty": "D2",
+      "feedback_checker_task_id": "v3_021_vco_phase_integrator",
+      "form": "dut",
+      "id": "v4_021_vco_phase_integrator",
+      "level": "L1",
+      "pilot": true,
+      "source_release_entry_id": "021-vco-phase-integrator",
+      "source_task_id": "v3_021_vco_phase_integrator",
+      "target": [
+        "vco_phase_integrator.va"
+      ],
+      "title": "VCO Phase Integrator",
+      "track": "core"
+    },
+    "026-clocked-sample-and-hold": {
+      "category": "sampling_analog_memory",
+      "difficulty": "D1",
+      "feedback_checker_task_id": "v3_026_clocked_sample_and_hold",
+      "form": "dut",
+      "id": "v4_026_clocked_sample_and_hold",
+      "level": "L1",
+      "pilot": true,
+      "source_release_entry_id": "026-clocked-sample-and-hold",
+      "source_task_id": "v3_026_clocked_sample_and_hold",
+      "target": [
+        "sample_hold.va"
+      ],
+      "title": "Clocked Sample And Hold",
+      "track": "core"
+    },
+    "029-dwa-dem-encoder": {
+      "category": "calibration_control",
+      "difficulty": "D3",
+      "feedback_checker_task_id": "v3_029_dwa_dem_encoder",
+      "form": "dut",
+      "id": "v4_029_dwa_dem_encoder",
+      "level": "L1",
+      "pilot": true,
+      "source_release_entry_id": "029-dwa-dem-encoder",
+      "source_task_id": "v3_029_dwa_dem_encoder",
+      "target": [
+        "dwa_ptr_gen.va",
+        "v2b_4b.va"
+      ],
+      "title": "DWA DEM Encoder",
+      "track": "core"
+    },
+    "040-programmable-gain-amplifier": {
+      "category": "baseband_signal_conditioning",
+      "difficulty": "D2",
+      "feedback_checker_task_id": "v3_040_programmable_gain_amplifier",
+      "form": "dut",
+      "id": "v4_040_programmable_gain_amplifier",
+      "level": "L1",
+      "pilot": true,
+      "source_release_entry_id": "040-programmable-gain-amplifier",
+      "source_task_id": "v3_040_programmable_gain_amplifier",
+      "target": [
+        "programmable_gain_amplifier.va"
+      ],
+      "title": "Programmable Gain Amplifier",
+      "track": "core"
+    }
+  }
+}

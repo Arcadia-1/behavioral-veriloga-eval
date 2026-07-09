@@ -1,0 +1,36 @@
+{
+  "agent_inaccessible_evaluator": [
+    "solution/",
+    "evaluator/score_tb.scs",
+    "evaluator/checker_profile.json",
+    "evaluator/run_score.py",
+    "negative_variants/"
+  ],
+  "agent_visible": [
+    "instruction.md",
+    "public_contract.json",
+    "test_feedback/public_tb.scs",
+    "test_feedback/run_feedback.py"
+  ],
+  "removed_public_surfaces": [
+    "starter/",
+    "test_visible/",
+    "test_hidden/",
+    "test_harness/visible_hidden_manifest.json",
+    "evaluator/profiles/"
+  ],
+  "schema_version": "v4-oracle-manifest-v2",
+  "score_policy": {
+    "checker_is_private": true,
+    "final_spectre_judge_not_materialized_by_this_pilot_migration": true,
+    "score_oracle_is_not_agent_queryable": true,
+    "score_profile_checks_the_same_public_contract": true,
+    "score_tb_is_private": true
+  },
+  "task_id": "v4_029_dwa_dem_encoder",
+  "task_slug": "029-dwa-dem-encoder",
+  "testbench_provenance": {
+    "private_score_tb": "tasks/029-dwa-dem-encoder/test_hidden/tests/tb_dwa_ptr_gen_ref.scs",
+    "public_feedback_tb": "tasks/029-dwa-dem-encoder/test_visible/tests/tb_visible_smoke.scs"
+  }
+}

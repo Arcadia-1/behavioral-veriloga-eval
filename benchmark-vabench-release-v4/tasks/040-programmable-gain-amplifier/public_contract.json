@@ -1,0 +1,60 @@
+{
+  "agent_visible_files": [
+    "instruction.md",
+    "public_contract.json",
+    "test_feedback/run_feedback.py",
+    "test_feedback/public_tb.scs"
+  ],
+  "canonical_instruction": "instruction.md",
+  "category": "baseband_signal_conditioning",
+  "feedback_oracle": {
+    "command": "VABENCH_FEEDBACK_SOURCE_DIR=<candidate-dir> python3 test_feedback/run_feedback.py",
+    "feedback_channels": [
+      "ahdl_like_preflight",
+      "evas_simulation",
+      "behavior_property_diagnostics"
+    ],
+    "profile_exposed": false,
+    "public_tb": "test_feedback/public_tb.scs",
+    "public_tb_exposed": true,
+    "queryable_by_agentic_modes": true,
+    "raw_scs_exposed": true
+  },
+  "form": "dut",
+  "language": "verilog-a",
+  "level": "L1",
+  "oracle_policy": {
+    "checker_private": true,
+    "feedback_and_score_share_checker_family": true,
+    "no_model_visible_raw_scs": false,
+    "no_model_visible_starter": true,
+    "public_feedback_tb_exposed": true,
+    "score_tb_private": true,
+    "scs_files_are_generated_artifacts": false,
+    "single_contract": true,
+    "testbench_and_checker_split": true
+  },
+  "public_observables": [
+    "clk",
+    "rst",
+    "gain_sel",
+    "vin",
+    "out",
+    "metric"
+  ],
+  "schema_version": "v4-public-contract-v1",
+  "score_oracle": {
+    "checker_profile_exposed": false,
+    "private_score_tb_exposed": false,
+    "profile_exposed": false,
+    "queryable_by_agentic_modes": false,
+    "raw_scs_exposed": false
+  },
+  "source_task_id": "v3_040_programmable_gain_amplifier",
+  "target_artifacts": [
+    "programmable_gain_amplifier.va"
+  ],
+  "task_id": "v4_040_programmable_gain_amplifier",
+  "task_slug": "040-programmable-gain-amplifier",
+  "title": "Programmable Gain Amplifier"
+}
