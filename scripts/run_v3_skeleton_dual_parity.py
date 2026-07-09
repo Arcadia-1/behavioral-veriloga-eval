@@ -9,6 +9,7 @@ import os
 import random
 import shutil
 import statistics
+import subprocess
 import sys
 import time
 from pathlib import Path
@@ -69,6 +70,86 @@ DEFAULT_VISIBLE_EVAS_REUSE_ROOTS = [
     Path("/private/tmp/evas_rust_visible_probe_all_with_assets"),
     Path("/private/tmp/evas_rust_visible_probe_all"),
 ]
+
+
+def git_capture(repo: Path, *args: str) -> tuple[int, str]:
+    try:
+        proc = subprocess.run(
+            ["git", "-C", str(repo), *args],
+            check=False,
+            text=True,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+        )
+    except FileNotFoundError:
+        return 127, "git not found"
+    text = proc.stdout.strip() or proc.stderr.strip()
+    return proc.returncode, text
+
+
+def collect_evas_repo_info(repo: Path) -> dict[str, Any]:
+    resolved = repo.resolve()
+    info: dict[str, Any] = {"path": str(resolved), "exists": resolved.exists()}
+    if not resolved.exists():
+        info["error"] = "repo path missing"
+        return info
+    rc, head = git_capture(resolved, "rev-parse", "HEAD")
+    info["head"] = head if rc == 0 else None
+    if rc != 0:
+        info["error"] = head
+        return info
+    rc, describe = git_capture(resolved, "describe", "--tags", "--always", "--dirty")
+    info["describe"] = describe if rc == 0 else None
+    rc, upstream = git_capture(resolved, "rev-parse", "upstream/main")
+    info["upstream_main"] = upstream if rc == 0 else None
+    if rc == 0:
+        ancestor_rc, _ = git_capture(resolved, "merge-base", "--is-ancestor", "upstream/main", "HEAD")
+        info["contains_upstream_main"] = ancestor_rc == 0
+    else:
+        info["contains_upstream_main"] = None
+        info["notes"] = ["missing local upstream/main ref; run git fetch upstream main before final evidence"]
+    rc, dirty = git_capture(resolved, "status", "--porcelain")
+    info["dirty"] = bool(dirty) if rc == 0 else None
+    return info
+
+
+def build_evas_version_report(main_repo: Path, skeleton_repo: Path) -> dict[str, Any]:
+    main_info = collect_evas_repo_info(main_repo)
+    skeleton_info = collect_evas_repo_info(skeleton_repo)
+    same_head = bool(main_info.get("head") and main_info.get("head") == skeleton_info.get("head"))
+    latest_ok = all(
+        info.get("contains_upstream_main") is True
+        for info in (main_info, skeleton_info)
+        if info.get("head")
+    )
+    return {
+        "policy": "same EVAS kernel HEAD across lanes; each lane must contain local upstream/main",
+        "main_evas_repo": main_info,
+        "skeleton_repo": skeleton_info,
+        "same_kernel_head": same_head,
+        "latest_upstream_checked": latest_ok,
+    }
+
+
+def enforce_evas_version_policy(version_report: dict[str, Any], args: argparse.Namespace) -> None:
+    problems: list[str] = []
+    if not version_report.get("same_kernel_head"):
+        main_desc = (version_report.get("main_evas_repo") or {}).get("describe")
+        skel_desc = (version_report.get("skeleton_repo") or {}).get("describe")
+        problems.append(f"EVAS lane repos resolve to different HEADs: main={main_desc} skeleton={skel_desc}")
+    for label in ("main_evas_repo", "skeleton_repo"):
+        info = version_report.get(label) or {}
+        if info.get("contains_upstream_main") is False:
+            problems.append(f"{label} does not contain local upstream/main: {info.get('describe')}")
+        if info.get("error"):
+            problems.append(f"{label} version check failed: {info.get('error')}")
+    if problems and not args.allow_mixed_evas_repos:
+        detail = "\n  - ".join(problems)
+        raise SystemExit(
+            "EVAS version check failed; use the same latest EVAS repo for both lanes, "
+            "or pass --allow-mixed-evas-repos for an explicit version-comparison run.\n"
+            f"  - {detail}"
+        )
 
 
 def task_number(task_dir: Path) -> int | None:
@@ -560,6 +641,9 @@ def summarize(rows: list[dict[str, Any]]) -> dict[str, Any]:
 
 
 def write_markdown(report: dict[str, Any], path: Path) -> None:
+    version = report.get("evas_version_check") or {}
+    main_version = version.get("main_evas_repo") or {}
+    skeleton_version = version.get("skeleton_repo") or {}
     lines = [
         "# v3 Skeleton Dual Parity",
         "",
@@ -568,6 +652,10 @@ def write_markdown(report: dict[str, Any], path: Path) -> None:
         f"- spectre_mode: `{report['spectre_mode']}`",
         f"- artifact_cache_root: `{report['artifact_cache_root']}`",
         f"- sample_n: `{report['sample_n']}`",
+        f"- evas_same_kernel_head: `{version.get('same_kernel_head')}`",
+        f"- evas_latest_upstream_checked: `{version.get('latest_upstream_checked')}`",
+        f"- main_evas: `{main_version.get('describe')}`",
+        f"- skeleton_evas: `{skeleton_version.get('describe')}`",
         "",
         "## Summary",
         "",
@@ -633,11 +721,18 @@ def main() -> int:
     parser.add_argument("--no-default-reuse-roots", action="store_true")
     parser.add_argument("--no-reuse-cache", action="store_true")
     parser.add_argument("--spectre-cache-only", action="store_true")
+    parser.add_argument(
+        "--allow-mixed-evas-repos",
+        action="store_true",
+        help="Allow EVAS lanes to use different git HEADs; default is to require one latest kernel baseline.",
+    )
     args = parser.parse_args()
 
     root = Path(args.root)
     out_dir = Path(args.out_dir)
     out_dir.mkdir(parents=True, exist_ok=True)
+    evas_version_check = build_evas_version_report(args.main_evas_repo, args.skeleton_repo)
+    enforce_evas_version_policy(evas_version_check, args)
     spectre_backend = normalize_spectre_backend(args.spectre_backend)
     spectre_mode = normalize_spectre_mode(args.spectre_mode)
     cache_root = args.artifact_cache_root
@@ -755,6 +850,7 @@ def main() -> int:
         "artifact_cache_root": str(cache_root),
         "reuse_evas_roots": [str(path) for path in reuse_evas_roots],
         "reuse_spectre_roots": [str(path) for path in reuse_spectre_roots],
+        "evas_version_check": evas_version_check,
         "sample_n": args.sample_n,
         "tasks": [path.name for path in tasks],
         "summary": summarize(rows),
