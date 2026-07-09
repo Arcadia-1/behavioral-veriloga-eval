@@ -18,7 +18,11 @@ RUNNERS_DIR = REPO_ROOT / "runners"
 if str(RUNNERS_DIR) not in sys.path:
     sys.path.insert(0, str(RUNNERS_DIR))
 
-from simulate_evas import read_task_artifact_targets, read_task_index_id, run_case  # noqa: E402
+import simulate_evas  # noqa: E402
+
+read_task_artifact_targets = simulate_evas.read_task_artifact_targets
+read_task_index_id = simulate_evas.read_task_index_id
+run_case = simulate_evas.run_case
 
 
 def task_number(task_dir: Path) -> int | None:
@@ -117,6 +121,9 @@ def note_brief(notes: object) -> str:
 
 
 def run_engine(label: str, tasks: list[Path], args: argparse.Namespace) -> dict[str, object]:
+    # The persistent worker captures EVAS_ENGINE and VAEVAS_EVAS_REPO when it is
+    # spawned, so each engine lane must get a fresh worker process.
+    simulate_evas._close_persistent_evas_worker()
     os.environ.update(engine_env(label, args.main_evas_repo, args.skeleton_repo))
     if args.no_persistent_worker:
         os.environ["VAEVAS_EVAS_PERSISTENT_WORKER"] = "0"
@@ -180,7 +187,7 @@ def run_engine(label: str, tasks: list[Path], args: argparse.Namespace) -> dict[
         if row.get("status") in {"PASS", "FAIL_SIM_CORRECTNESS"}
     )
     walls = [float(row["wall_s"]) for row in rows]
-    return {
+    result = {
         "label": label,
         "total_wall_s": total_wall_s,
         "tasks": len(rows),
@@ -198,6 +205,8 @@ def run_engine(label: str, tasks: list[Path], args: argparse.Namespace) -> dict[
         "mean_wall_s": statistics.mean(walls) if walls else 0.0,
         "rows": rows,
     }
+    simulate_evas._close_persistent_evas_worker()
+    return result
 
 
 def write_markdown(report: dict[str, object], path: Path) -> None:
