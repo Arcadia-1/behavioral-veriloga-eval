@@ -9,7 +9,7 @@
   },
   "family_id": "340",
   "negative_assignment": {
-    "bugfix_seed": "neg_002_temperature_subsampled_on_falling_edge",
+    "bugfix_seed": "neg_004_foldback_state_stuck_after_overtemperature",
     "testbench_suite": [
       "neg_002_temperature_subsampled_on_falling_edge",
       "neg_003_below_trip_command_attenuated",
