@@ -39,7 +39,8 @@ Export one runtime record without mounting evaluator-private files:
 
 ```bash
 python3 operations/tri_form_derivation_prep/export_tri_form_runtime.py \
-  --task-id v4-501 --mode G2 --output /tmp/vabench-runtime-v4-501-g2
+  --task v4-501 --mode G2 --working-token-budget 32768 \
+  --output /tmp/vabench-runtime-v4-501-g2
 python3 operations/tri_form_derivation_prep/audit_runtime_export.py \
   --run /tmp/vabench-runtime-v4-501-g2
 ```
