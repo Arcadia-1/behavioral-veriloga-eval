@@ -35,6 +35,15 @@ def canonical_sha(value: Any) -> str:
     return hashlib.sha256(payload.encode()).hexdigest()
 
 
+def is_dual_behavioral_kill(certification: dict[str, Any]) -> bool:
+    evaluators = certification.get("evaluators") or {}
+    return (
+        certification.get("outcome") == "killed_behaviorally"
+        and evaluators.get("evas") == "compile_pass_behavior_fail"
+        and evaluators.get("spectre") == "compile_pass_behavior_fail"
+    )
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--release", type=Path, required=True)
@@ -96,6 +105,8 @@ def main() -> int:
                 problems.append(f"{family}/{mutation_id}: release certification path mismatch")
             if not cert.is_file() or item.get("certification_sha256") != file_sha(cert):
                 problems.append(f"{family}/{mutation_id}: certification hash mismatch")
+            elif not is_dual_behavioral_kill(read_json(cert)):
+                problems.append(f"{family}/{mutation_id}: certification lacks dual behavioral kill")
             if item.get("mutation_bundle_sha256") != tree_sha(bundle):
                 problems.append(f"{family}/{mutation_id}: mutation bundle hash mismatch")
     if len(active_pairs) != 2000 or denominator.get("active_mutation_count") != 2000:
@@ -128,6 +139,8 @@ def main() -> int:
             problems.append(f"{family}/{mutation_id}: archived catalog certification is incomplete")
         if not cert.is_file() or row.get("certification_sha256") != file_sha(cert):
             problems.append(f"{family}/{mutation_id}: archived certification hash mismatch")
+        elif not is_dual_behavioral_kill(read_json(cert)):
+            problems.append(f"{family}/{mutation_id}: archived certification lacks dual behavioral kill")
         if row.get("mutation_bundle_sha256") != tree_sha(bundle):
             problems.append(f"{family}/{mutation_id}: archived mutation bundle hash mismatch")
     if review.get("reviewed_family_count") != 36 or len(review.get("families") or []) != 36:

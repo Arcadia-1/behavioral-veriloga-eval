@@ -12,6 +12,10 @@ ROOT = Path(__file__).resolve().parents[2]
 RELEASE = ROOT / "release" / "dut-base-v3-exact-five-hash-bound-v2"
 AUDITOR = ROOT / "scripts" / "audit_exact_five_dut_release.py"
 DECISIONS = ROOT / "operations" / "dut_base_exact_five" / "SEMANTIC_SELECTION_DECISIONS.json"
+if str(ROOT / "scripts") not in sys.path:
+    sys.path.insert(0, str(ROOT / "scripts"))
+
+from audit_exact_five_dut_release import is_dual_behavioral_kill  # noqa: E402
 
 
 def test_exact_five_release_passes_strict_audit() -> None:
@@ -42,3 +46,16 @@ def test_semantic_decisions_cover_overfive_and_duplicate_proxy_reviews() -> None
     assert len(decisions["families"]) == 36
     assert all(len(row["active_mutation_ids"]) == 5 for row in decisions["families"])
     assert {row["family_id"] for row in decisions["supplemental_exact_five_reviews"]} == {"092", "098"}
+
+
+def test_dual_behavioral_kill_requires_evas_and_spectre() -> None:
+    certification = {
+        "outcome": "killed_behaviorally",
+        "evaluators": {
+            "evas": "compile_pass_behavior_fail",
+            "spectre": "compile_pass_behavior_fail",
+        },
+    }
+    assert is_dual_behavioral_kill(certification)
+    certification["evaluators"]["spectre"] = "pass"
+    assert not is_dual_behavioral_kill(certification)
