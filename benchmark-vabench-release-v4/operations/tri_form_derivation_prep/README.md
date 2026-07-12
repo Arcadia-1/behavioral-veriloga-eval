@@ -41,7 +41,7 @@ Export one runtime record without mounting evaluator-private files:
 python3 operations/tri_form_derivation_prep/export_tri_form_runtime.py \
   --task-id v4-501 --mode G2 --output /tmp/vabench-runtime-v4-501-g2
 python3 operations/tri_form_derivation_prep/audit_runtime_export.py \
-  --bundle /tmp/vabench-runtime-v4-501-g2
+  --run /tmp/vabench-runtime-v4-501-g2
 ```
 
 Rebuild the historical preparation snapshot only when its input inventory is
