@@ -1,0 +1,19 @@
+{
+  "active_mutations_per_family": 5,
+  "family_count": 400,
+  "prompt_record_count": 7200,
+  "release_status": "materialized_gate3_audit_pending",
+  "schema_version": "v4-tri-form-release-manifest-v1",
+  "simulation_rerun_count_for_materialization": 0,
+  "source_active_mutation_count": 2000,
+  "source_release": "release/dut-base-v3-exact-five-hash-bound-v2",
+  "source_score_denominator_manifest_sha256": "52278bac89017d62349a2577944cda8717bde78c3adef975280ba2bf988c643b",
+  "spectre_final_judge": true,
+  "task_count": 1200,
+  "task_counts": {
+    "bugfix": 400,
+    "dut": 400,
+    "testbench": 400
+  },
+  "tasks_index": "TASK_INDEX.json"
+}
