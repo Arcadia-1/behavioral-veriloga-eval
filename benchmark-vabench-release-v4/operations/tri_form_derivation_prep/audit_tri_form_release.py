@@ -189,6 +189,13 @@ def audit_task(
             certification = read_json(cert_path)
             if certification.get("outcome") != "killed_behaviorally":
                 problems.append(f"{prefix} source certification is not behaviorally killed for {mutation_id}")
+            evaluators = certification.get("evaluators") or {}
+            for evaluator_name in ("evas", "spectre"):
+                if evaluators.get(evaluator_name) != "compile_pass_behavior_fail":
+                    problems.append(
+                        f"{prefix} source certification lacks {evaluator_name} behavioral kill "
+                        f"for {mutation_id}"
+                    )
         if reference.get("negative_suite_status") != "five_of_five_killed_behaviorally":
             problems.append(f"{prefix} reference testbench is not five-of-five certified")
         public_text = (task_dir / "instruction.md").read_text(encoding="utf-8") + json.dumps(contract)
