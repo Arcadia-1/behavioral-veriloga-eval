@@ -39,6 +39,13 @@ FEEDBACK_ADAPTERS = {
     "testbench": "feedback_testbench.md",
     "bugfix": "feedback_bugfix.md",
 }
+MATERIALIZED_ARTIFACTS = (
+    "TASK_INDEX.json",
+    "BUGFIX_SEED_REVIEW.json",
+    "prompt_modes/PROMPT_RECORDS.jsonl",
+    "prompt_modes/modes.json",
+    "prompt_modes/skills/manifest.json",
+)
 NEUTRAL_WRAPPER = "neutral_wrapper.md"
 REFERENCE_TOKENIZER = {
     "id": "vabench_utf8_lexeme",
@@ -120,6 +127,17 @@ def tree_sha(path: Path) -> str:
             digest.update(item.read_bytes())
             digest.update(b"\0")
     return digest.hexdigest()
+
+
+def materialized_artifact_hashes(output: Path) -> dict[str, str]:
+    return {relative: file_sha(output / relative) for relative in MATERIALIZED_ARTIFACTS}
+
+
+def negative_assignment(row: dict[str, Any], seed_review: dict[str, Any]) -> dict[str, Any]:
+    return {
+        "bugfix_seed": seed_review["mutation_id"],
+        "testbench_suite": [str(item["mutation_id"]) for item in row["active_mutations"]],
+    }
 
 
 def rel(path: Path, root: Path) -> str:
@@ -435,7 +453,7 @@ def build_dut_view(
 
 def build_testbench_view(
     output: Path, source_task: Path, row: dict[str, Any], spec: dict[str, Any], spec_sha: str,
-    source_manifest_sha: str,
+    source_manifest_sha: str, seed_review: dict[str, Any],
 ) -> dict[str, Any]:
     family = str(row["canonical_dut_id"])
     task_num = 500 + int(family)
@@ -478,7 +496,7 @@ def build_testbench_view(
             "mutation_catalog_sha256": row["hashes"]["mutation_catalog_sha256"],
             "canonical_score_tb_sha256": row["hashes"]["score_deck_sha256"],
         },
-        "negative_assignment": {"bugfix_seed": row["bugfix_seed"], "testbench_suite": suite},
+        "negative_assignment": negative_assignment(row, seed_review),
     }
     write_json(evaluator / "derivation_manifest.json", derivation)
     write_json(evaluator / "score_policy.json", {
@@ -569,10 +587,7 @@ def build_bugfix_view(
             "source_release_manifest_sha256": source_manifest_sha,
             "mutation_catalog_sha256": row["hashes"]["mutation_catalog_sha256"],
         },
-        "negative_assignment": {
-            "bugfix_seed": seed_review["mutation_id"],
-            "testbench_suite": [str(item["mutation_id"]) for item in row["active_mutations"]],
-        },
+        "negative_assignment": negative_assignment(row, seed_review),
         "selection_evidence": seed_review,
         "private_materialization": {
             "changed_artifacts": changed,
@@ -726,7 +741,7 @@ def main() -> int:
         seed_rows.append({"family_id": family, **seed_review})
         task_rows.extend([
             build_dut_view(output, source, source_task, row, spec, spec_sha),
-            build_testbench_view(output, source_task, row, spec, spec_sha, source_manifest_sha),
+            build_testbench_view(output, source_task, row, spec, spec_sha, source_manifest_sha, seed_review),
             build_bugfix_view(output, source_task, row, spec, spec_sha, source_manifest_sha, seed_review),
         ])
 
@@ -738,10 +753,11 @@ def main() -> int:
         "selection_policy": "semantic_fault_complexity_v1",
         "families": seed_rows,
     })
+    write_json(output / "TASK_INDEX.json", {"schema_version": "v4-tri-form-task-index-v1", "tasks": task_rows})
     counts = {form: sum(item["form"] == form for item in task_rows) for form in ("dut", "testbench", "bugfix")}
     manifest = {
         "schema_version": "v4-tri-form-release-manifest-v1",
-        "release_status": "materialized_gate3_audit_pending",
+        "release_status": "materialized_hash_bound_certification_reuse_audit_pending",
         "family_count": 400,
         "task_count": len(task_rows),
         "task_counts": counts,
@@ -751,10 +767,16 @@ def main() -> int:
         "active_mutations_per_family": denominator.get("active_mutations_per_family"),
         "spectre_final_judge": True,
         "simulation_rerun_count_for_materialization": 0,
+        "certification_reuse": {
+            "policy": "source_denominator_hash_bound",
+            "source_dut_gold_certification_count": 400,
+            "source_negative_certification_count": 2000,
+            "simulation_rerun_required_for_materialization": False,
+        },
         "prompt_record_count": len(task_rows) * len(MODES),
         "tasks_index": "TASK_INDEX.json",
+        "materialized_artifact_sha256": materialized_artifact_hashes(output),
     }
-    write_json(output / "TASK_INDEX.json", {"schema_version": "v4-tri-form-task-index-v1", "tasks": task_rows})
     write_json(output / "MANIFEST.json", manifest)
     print(json.dumps(manifest, indent=2, sort_keys=True))
     return 0

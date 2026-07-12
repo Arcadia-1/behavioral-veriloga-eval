@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import json
 import sys
 from pathlib import Path
 
@@ -12,6 +13,7 @@ from materialize_tri_form_release import (  # noqa: E402
     COMPONENT_METADATA,
     MODES,
     REFERENCE_TOKENIZER,
+    negative_assignment,
     reference_token_count,
     render_bugfix_instruction,
     render_testbench_instruction,
@@ -20,6 +22,8 @@ from materialize_tri_form_release import (  # noqa: E402
 from export_tri_form_runtime import install_public  # noqa: E402
 from record_runtime_ingestion_evidence import verified_audit  # noqa: E402
 from audit_tri_form_release import (  # noqa: E402
+    RELEASE_SEAL_ARTIFACTS,
+    build_release_seal,
     expected_buggy_artifact_hashes,
     file_sha,
     mutation_certification_hashes,
@@ -73,6 +77,21 @@ def test_seed_policy_prefers_temporal_semantic_fault_over_force_zero() -> None:
     selected = select_bugfix_seed(row)
     assert selected["mutation_id"] == "neg_002_wrong_edge"
     assert not selected["triviality_markers"]
+
+
+def test_testbench_and_bugfix_share_one_selected_negative_assignment() -> None:
+    row = {
+        "bugfix_seed": "neg_001_force_zero",
+        "active_mutations": [
+            {"mutation_id": "neg_001_force_zero"},
+            {"mutation_id": "neg_002_wrong_edge"},
+        ],
+    }
+    selected = {"mutation_id": "neg_002_wrong_edge"}
+    assert negative_assignment(row, selected) == {
+        "bugfix_seed": "neg_002_wrong_edge",
+        "testbench_suite": ["neg_001_force_zero", "neg_002_wrong_edge"],
+    }
 
 
 def test_prompt_components_have_pinned_reference_tokenizer_metadata() -> None:
@@ -143,3 +162,21 @@ def test_bugfix_bundle_hashes_include_unchanged_gold_artifacts(tmp_path: Path) -
         "changed.va": mutated_hash,
         "unchanged.va": file_sha(solution / "unchanged.va"),
     }
+
+
+def test_release_seal_binds_transitive_release_and_reused_certifications(tmp_path: Path) -> None:
+    for relative in RELEASE_SEAL_ARTIFACTS:
+        path = tmp_path / relative
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text(json.dumps({"artifact": relative}) + "\n", encoding="utf-8")
+    reuse = {
+        "policy": "source_denominator_hash_bound",
+        "source_dut_gold_certification_count": 400,
+        "source_negative_certification_count": 2000,
+        "evaluators": ["evas", "spectre"],
+        "simulation_rerun_required_for_materialization": False,
+    }
+    seal = build_release_seal(tmp_path, "a" * 64, reuse)
+    assert seal["release_status"] == "gate3_hash_bound_certification_reused"
+    assert seal["certification_reuse"] == reuse
+    assert set(seal["artifact_sha256"]) == set(RELEASE_SEAL_ARTIFACTS)
