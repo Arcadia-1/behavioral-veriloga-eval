@@ -19,6 +19,11 @@ from materialize_tri_form_release import (  # noqa: E402
 )
 from export_tri_form_runtime import install_public  # noqa: E402
 from record_runtime_ingestion_evidence import verified_audit  # noqa: E402
+from audit_tri_form_release import (  # noqa: E402
+    expected_buggy_artifact_hashes,
+    file_sha,
+    mutation_certification_hashes,
+)
 
 
 def sample_spec() -> dict:
@@ -111,3 +116,30 @@ def test_runtime_evidence_rejects_handwritten_pass_report(tmp_path: Path) -> Non
         assert "not a valid pass" in str(exc)
     else:
         raise AssertionError("handwritten pass report was accepted")
+
+
+def test_reference_certification_hashes_are_bound_to_exact_five_rows() -> None:
+    rows = [
+        {"mutation_id": "m1", "certification_sha256": "a" * 64},
+        {"mutation_id": "m2", "certification_sha256": "b" * 64},
+    ]
+    assert mutation_certification_hashes(rows) == {
+        "m1": "a" * 64,
+        "m2": "b" * 64,
+    }
+
+
+def test_bugfix_bundle_hashes_include_unchanged_gold_artifacts(tmp_path: Path) -> None:
+    solution = tmp_path / "solution"
+    solution.mkdir()
+    (solution / "changed.va").write_text("gold changed\n", encoding="utf-8")
+    (solution / "unchanged.va").write_text("gold unchanged\n", encoding="utf-8")
+    mutated_hash = "c" * 64
+    assert expected_buggy_artifact_hashes(
+        ["changed.va", "unchanged.va"],
+        {"changed.va": mutated_hash},
+        solution,
+    ) == {
+        "changed.va": mutated_hash,
+        "unchanged.va": file_sha(solution / "unchanged.va"),
+    }

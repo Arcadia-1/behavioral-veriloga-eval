@@ -65,7 +65,32 @@ def expected_task_id(form: str, family: str) -> str:
     return f"v4-{value:0{width}d}"
 
 
-def audit_task(release: Path, source: Path, row: dict[str, Any], problems: list[str]) -> None:
+def mutation_certification_hashes(active_mutations: list[dict[str, Any]]) -> dict[str, str]:
+    return {
+        str(item.get("mutation_id") or ""): str(item.get("certification_sha256") or "")
+        for item in active_mutations
+    }
+
+
+def expected_buggy_artifact_hashes(
+    artifact_paths: list[str],
+    changed_hashes: dict[str, str],
+    solution: Path,
+) -> dict[str, str]:
+    return {
+        artifact: changed_hashes.get(artifact, file_sha(solution / artifact))
+        for artifact in artifact_paths
+    }
+
+
+def audit_task(
+    release: Path,
+    source: Path,
+    source_manifest_sha: str,
+    source_rows: dict[str, dict[str, Any]],
+    row: dict[str, Any],
+    problems: list[str],
+) -> None:
     task_dir = release / str(row.get("task_dir") or "")
     task_id = str(row.get("task_id") or "")
     form = str(row.get("form") or "")
@@ -99,6 +124,10 @@ def audit_task(release: Path, source: Path, row: dict[str, Any], problems: list[
         return
     spec = read_json(spec_path)
     artifact_paths = [str(item["path"]) for item in spec["artifact_contract"]["files"]]
+    source_row = source_rows.get(family)
+    if source_row is None:
+        problems.append(f"{prefix} canonical denominator row missing")
+        return
     if form == "dut":
         if record.get("candidate_artifacts") != artifact_paths:
             problems.append(f"{prefix} DUT candidate artifacts differ from family spec")
@@ -112,9 +141,24 @@ def audit_task(release: Path, source: Path, row: dict[str, Any], problems: list[
     suite = assignment.get("testbench_suite") or []
     if len(suite) != 5 or len(set(suite)) != 5:
         problems.append(f"{prefix} testbench suite is not exactly five unique mutations")
+    active_mutations = source_row.get("active_mutations") or []
+    expected_suite = [str(item.get("mutation_id") or "") for item in active_mutations]
+    if suite != expected_suite:
+        problems.append(f"{prefix} testbench suite differs from the exact-five denominator")
     if assignment.get("bugfix_seed") not in suite:
         problems.append(f"{prefix} bugfix seed is not a member of the testbench suite")
-    if derivation.get("base_dut", {}).get("family_spec_sha256") != file_sha(spec_path):
+    base_dut = derivation.get("base_dut") or {}
+    expected_base = {
+        "canonical_task_id": f"v4-{family}",
+        "canonical_task_slug": source_task.name,
+        "family_spec_sha256": file_sha(spec_path),
+        "mutation_catalog_sha256": file_sha(source_task / "evaluator" / "mutation_catalog.json"),
+        "source_release_manifest_sha256": source_manifest_sha,
+    }
+    for field, expected in expected_base.items():
+        if base_dut.get(field) != expected:
+            problems.append(f"{prefix} derivation base hash mismatch for {field}")
+    if base_dut.get("family_spec_sha256") != file_sha(spec_path):
         problems.append(f"{prefix} derivation family hash mismatch")
     if form == "testbench":
         if record.get("candidate_artifacts") != ["testbench.scs"] or contract.get("target_artifacts") != ["testbench.scs"]:
@@ -126,6 +170,25 @@ def audit_task(release: Path, source: Path, row: dict[str, Any], problems: list[
         if tree_sha(supplied) != tree_sha(source_task / "evaluator" / "solution"):
             problems.append(f"{prefix} supplied DUT differs from canonical gold")
         reference = read_json(evaluator / "reference_certificate.json")
+        score_tb = source_task / "evaluator" / "score_tb.scs"
+        score_tb_sha = file_sha(score_tb)
+        if file_sha(evaluator / "reference_tb.scs") != score_tb_sha:
+            problems.append(f"{prefix} reference testbench differs from the canonical score deck")
+        expected_cert_hashes = mutation_certification_hashes(active_mutations)
+        if reference.get("reference_tb_sha256") != score_tb_sha:
+            problems.append(f"{prefix} reference testbench certificate hash mismatch")
+        if reference.get("mutation_certification_sha256") != expected_cert_hashes:
+            problems.append(f"{prefix} mutation certification hash map differs from the denominator")
+        for item in active_mutations:
+            mutation_id = str(item.get("mutation_id") or "")
+            cert_path = source_task / str(item.get("certification_path") or "")
+            expected_sha = str(item.get("certification_sha256") or "")
+            if not cert_path.is_file() or file_sha(cert_path) != expected_sha:
+                problems.append(f"{prefix} source certification hash mismatch for {mutation_id}")
+                continue
+            certification = read_json(cert_path)
+            if certification.get("outcome") != "killed_behaviorally":
+                problems.append(f"{prefix} source certification is not behaviorally killed for {mutation_id}")
         if reference.get("negative_suite_status") != "five_of_five_killed_behaviorally":
             problems.append(f"{prefix} reference testbench is not five-of-five certified")
         public_text = (task_dir / "instruction.md").read_text(encoding="utf-8") + json.dumps(contract)
@@ -138,8 +201,39 @@ def audit_task(release: Path, source: Path, row: dict[str, Any], problems: list[
         buggy_paths = sorted(path.relative_to(buggy).as_posix() for path in buggy.rglob("*.va"))
         if buggy_paths != sorted(artifact_paths):
             problems.append(f"{prefix} buggy bundle file set mismatch")
+        seed_id = str(assignment.get("bugfix_seed") or "")
+        mutation_catalog = read_json(source_task / "evaluator" / "mutation_catalog.json")
+        mutation_rows = {
+            str(item.get("id") or ""): item for item in mutation_catalog.get("mutations") or []
+        }
+        seed_catalog = mutation_rows.get(seed_id)
+        if seed_catalog is None:
+            problems.append(f"{prefix} Bugfix seed is missing from the canonical mutation catalog")
+        else:
+            changed_hashes = seed_catalog.get("artifact_hashes") or {}
+            expected_hashes = expected_buggy_artifact_hashes(
+                artifact_paths,
+                changed_hashes,
+                source_task / "evaluator" / "solution",
+            )
+            actual_hashes = {
+                path.relative_to(buggy).as_posix(): file_sha(path)
+                for path in buggy.rglob("*.va")
+            }
+            if actual_hashes != expected_hashes:
+                problems.append(f"{prefix} buggy bundle differs from the selected canonical mutation")
         if tree_sha(buggy) == tree_sha(source_task / "evaluator" / "solution"):
             problems.append(f"{prefix} buggy bundle is byte-identical to gold")
+        private_materialization = derivation.get("private_materialization") or {}
+        if private_materialization.get("buggy_bundle_sha256") != tree_sha(buggy):
+            problems.append(f"{prefix} buggy bundle hash mismatch")
+        gold_reference = read_json(evaluator / "gold_repair_reference.json")
+        if gold_reference.get("solution_tree_sha256") != tree_sha(source_task / "evaluator" / "solution"):
+            problems.append(f"{prefix} gold repair solution hash mismatch")
+        if gold_reference.get("gold_dut_certification_sha256") != (
+            source_row.get("hashes") or {}
+        ).get("task_certification_sha256"):
+            problems.append(f"{prefix} gold DUT certification hash mismatch")
         public_text = (task_dir / "instruction.md").read_text(encoding="utf-8") + json.dumps(contract)
         forbidden = ("neg_", "faulty file", "root cause", "changed line", "public summary")
         for marker in forbidden:
@@ -233,13 +327,22 @@ def main() -> int:
     tasks = read_json(release / "TASK_INDEX.json").get("tasks") or []
     source = PACKAGE_ROOT / str(manifest.get("source_release") or "")
     problems: list[str] = []
+    source_manifest_path = source / "score_denominator_manifest.json"
+    if not source_manifest_path.is_file():
+        raise SystemExit(f"source denominator missing: {source_manifest_path}")
+    source_manifest = read_json(source_manifest_path)
+    source_manifest_sha = file_sha(source_manifest_path)
+    source_rows = {
+        str(item.get("canonical_dut_id") or ""): item
+        for item in source_manifest.get("tasks") or []
+    }
     counts = Counter(str(row.get("form") or "") for row in tasks)
     if len(tasks) != 1200 or counts != Counter({form: 400 for form in FORMS}):
         problems.append(f"task counts mismatch: total={len(tasks)} forms={dict(counts)}")
     family_forms: dict[str, set[str]] = defaultdict(set)
     for row in tasks:
         family_forms[str(row.get("family_id") or "")].add(str(row.get("form") or ""))
-        audit_task(release, source, row, problems)
+        audit_task(release, source, source_manifest_sha, source_rows, row, problems)
     expected_families = {f"{value:03d}" for value in range(1, 401)}
     if set(family_forms) != expected_families:
         problems.append("family coverage is not exactly 001-400")
