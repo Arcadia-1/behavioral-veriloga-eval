@@ -1,0 +1,23 @@
+{
+  "candidate_artifacts": [
+    "rail_ramp_rate_startup_monitor.va"
+  ],
+  "canonical_dut_source": "release/dut-base-v3-exact-five-hash-bound-v2/297-rail-ramp-rate-startup-monitor",
+  "family_id": "297",
+  "family_spec_sha256": "292130ad04bc4ce59b643070005c279f7435183da759b9fcfd84388ca947bef1",
+  "form": "bugfix",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "c1418d660fb32065c427caa6ca95c223f0cf9308baca6aa51848fd4725ae32aa",
+  "schema_version": "v4-tri-form-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/bugfix/1297-rail-ramp-rate-startup-monitor-bugfix",
+  "task_dir_sha256": "3fb88a8de9eee3a475ec63d335ae19d128b1f997264320db2fefff81413f4da5",
+  "task_id": "v4-1297"
+}

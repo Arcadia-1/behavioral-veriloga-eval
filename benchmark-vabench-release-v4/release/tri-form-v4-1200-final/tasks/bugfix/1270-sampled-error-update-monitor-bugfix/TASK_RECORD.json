@@ -1,0 +1,23 @@
+{
+  "candidate_artifacts": [
+    "sampled_error_update_monitor.va"
+  ],
+  "canonical_dut_source": "release/dut-base-v3-exact-five-hash-bound-v2/270-sampled-error-update-monitor",
+  "family_id": "270",
+  "family_spec_sha256": "f2e0dde1363f1ea384f1fd5fb05109f072fcf739927e59dd9c32f700881968e1",
+  "form": "bugfix",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "61e6c0c34f75031e21a6322030a01e1ea9e62346d690494a445a104db1d17db9",
+  "schema_version": "v4-tri-form-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/bugfix/1270-sampled-error-update-monitor-bugfix",
+  "task_dir_sha256": "9e801ef9902a6033168f8548148e6506995116986e6bb763e25905e452528187",
+  "task_id": "v4-1270"
+}

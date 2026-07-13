@@ -1,0 +1,291 @@
+{
+  "artifact_contract": {
+    "files": [
+      {
+        "modules": [
+          {
+            "depends_on": [],
+            "name": "clocked_sar_comparator",
+            "parameters": [
+              {
+                "default": 0.9,
+                "name": "vdd",
+                "override_behavior": "sets the logic-high level and twice the CMPCK crossing threshold",
+                "type": "real",
+                "units": "V",
+                "valid_range": "vdd > 0"
+              },
+              {
+                "default": 2e-11,
+                "name": "td_cmp",
+                "override_behavior": "sets output delay after clock events",
+                "type": "real",
+                "units": "s",
+                "valid_range": "td_cmp >= 0"
+              },
+              {
+                "default": 5e-12,
+                "name": "tr",
+                "override_behavior": "sets decision-output transition smoothing",
+                "type": "real",
+                "units": "s",
+                "valid_range": "tr >= 0"
+              }
+            ],
+            "ports": [
+              {
+                "direction": "input",
+                "discipline": "electrical",
+                "name": "CMPCK",
+                "position": 0
+              },
+              {
+                "direction": "input",
+                "discipline": "electrical",
+                "name": "VINN",
+                "position": 1
+              },
+              {
+                "direction": "input",
+                "discipline": "electrical",
+                "name": "VINP",
+                "position": 2
+              },
+              {
+                "direction": "output",
+                "discipline": "electrical",
+                "name": "DCMPN",
+                "position": 3
+              },
+              {
+                "direction": "output",
+                "discipline": "electrical",
+                "name": "DCMPP",
+                "position": 4
+              }
+            ],
+            "role": "entry"
+          }
+        ],
+        "path": "clocked_sar_comparator.va"
+      }
+    ],
+    "mode": "single_file"
+  },
+  "evaluation_summary": {
+    "anonymous_negative_cases": 5,
+    "full_credit": "valid candidate and reference pass and all five negatives killed behaviorally",
+    "reference_cases": 1
+  },
+  "family_id": "103",
+  "feedback": {
+    "available_in_modes": [
+      "G2",
+      "G3",
+      "G4",
+      "G5"
+    ],
+    "command": "vabench feedback run"
+  },
+  "form": "testbench",
+  "identity": {
+    "category": "data_converter",
+    "difficulty": "D2",
+    "level": "L1",
+    "supported_scope": "pure voltage-domain event-driven transient behavioral Verilog-A",
+    "title": "Clocked SAR Comparator"
+  },
+  "modeling_constraints": [
+    "Update decision state only at CMPCK crossings through vdd/2 and hold it between events.",
+    "Drive smooth voltage-coded outputs using td_cmp and tr.",
+    "Do not use current contributions, ddt(), idt(), validation hooks, testbench-specific sample points, or simulator-specific side channels."
+  ],
+  "properties": [
+    {
+      "id": "P_INITIAL_PRECHARGE",
+      "observable_contract": "Both decision outputs initialize high at vdd.",
+      "required_signals": [
+        "time",
+        "cmpck",
+        "vinn",
+        "vinp",
+        "dcmpn",
+        "dcmpp"
+      ]
+    },
+    {
+      "id": "P_FALLING_EDGE_PRECHARGE",
+      "observable_contract": "Each falling CMPCK crossing through vdd/2 resets both DCMPN and DCMPP high.",
+      "required_signals": [
+        "time",
+        "cmpck",
+        "vinn",
+        "vinp",
+        "dcmpn",
+        "dcmpp"
+      ]
+    },
+    {
+      "id": "P_POSITIVE_DIFFERENTIAL_DECISION",
+      "observable_contract": "On a rising CMPCK crossing with VINP greater than VINN, DCMPP is high and DCMPN is low.",
+      "required_signals": [
+        "time",
+        "cmpck",
+        "vinn",
+        "vinp",
+        "dcmpn",
+        "dcmpp"
+      ]
+    },
+    {
+      "id": "P_NEGATIVE_DIFFERENTIAL_DECISION",
+      "observable_contract": "On a rising CMPCK crossing with VINP less than VINN, DCMPN is high and DCMPP is low.",
+      "required_signals": [
+        "time",
+        "cmpck",
+        "vinn",
+        "vinp",
+        "dcmpn",
+        "dcmpp"
+      ]
+    },
+    {
+      "id": "P_EQUAL_INPUT_DECISION",
+      "observable_contract": "On a rising CMPCK crossing with equal differential inputs, both decision outputs become low.",
+      "required_signals": [
+        "time",
+        "cmpck",
+        "vinn",
+        "vinp",
+        "dcmpn",
+        "dcmpp"
+      ]
+    },
+    {
+      "id": "P_LATCHED_HOLD_AND_TIMING",
+      "observable_contract": "The precharged or decided state holds between clock events and output changes use td_cmp delay and tr smoothing.",
+      "required_signals": [
+        "time",
+        "cmpck",
+        "vinn",
+        "vinp",
+        "dcmpn",
+        "dcmpp"
+      ]
+    }
+  ],
+  "schema_version": "v4-tri-form-public-contract-v2",
+  "security_policy": {
+    "allowed_include_paths": [
+      "./dut/clocked_sar_comparator.va"
+    ],
+    "candidate_artifacts": [
+      "testbench.scs"
+    ],
+    "forbidden_rules": [
+      "undeclared_include",
+      "absolute_path",
+      "path_traversal",
+      "process_execution",
+      "network_access",
+      "simulator_scripting_escape",
+      "dut_redefinition",
+      "direct_dut_output_drive",
+      "private_hierarchical_probe",
+      "unbounded_resource_use"
+    ],
+    "limits": {
+      "max_analyses": 1,
+      "max_candidate_bytes": 1000000,
+      "max_cpu_time_s": 120,
+      "max_memory_mb": 2048,
+      "max_output_bytes": 100000000,
+      "max_saved_signals": 64,
+      "max_stop_time_s": 1.0,
+      "max_wall_time_s": 180
+    },
+    "rejection_outcome": "invalid_run",
+    "required_rules": [
+      "declared_dut_binding",
+      "transient_analysis",
+      "all_required_public_traces"
+    ],
+    "schema_version": "v4-testbench-security-policy-v2"
+  },
+  "security_summary": [
+    "only the declared testbench_include_path values are allowed for DUT sources",
+    "DUT redefinition, direct output drive, private hierarchical probes, arbitrary file access, and unbounded analyses are rejected"
+  ],
+  "submission_contract": {
+    "agentic_submission_root": "public/submission",
+    "exact_declared_file_set_required": true,
+    "target_artifacts_relative_to": "submission_root"
+  },
+  "supplied_inputs": {
+    "dut_instances": [
+      {
+        "connections": [
+          {
+            "net": "cmpck",
+            "port_ref": "CMPCK",
+            "position": 0
+          },
+          {
+            "net": "vinn",
+            "port_ref": "VINN",
+            "position": 1
+          },
+          {
+            "net": "vinp",
+            "port_ref": "VINP",
+            "position": 2
+          },
+          {
+            "net": "dcmpn",
+            "port_ref": "DCMPN",
+            "position": 3
+          },
+          {
+            "net": "dcmpp",
+            "port_ref": "DCMPP",
+            "position": 4
+          }
+        ],
+        "module_ref": "clocked_sar_comparator",
+        "name": "XDUT",
+        "ordered_nets": [
+          "cmpck",
+          "vinn",
+          "vinp",
+          "dcmpn",
+          "dcmpp"
+        ],
+        "public_output_nets": [
+          "dcmpn",
+          "dcmpp"
+        ]
+      }
+    ],
+    "read_only_dut_artifacts": [
+      {
+        "public_input_path": "supplied_dut/clocked_sar_comparator.va",
+        "testbench_include_path": "./dut/clocked_sar_comparator.va"
+      }
+    ],
+    "read_only_support_artifacts": []
+  },
+  "target_artifacts": [
+    "testbench.scs"
+  ],
+  "task_id": "v4-603",
+  "trace_contract": {
+    "required_signals": [
+      "time",
+      "cmpck",
+      "vinn",
+      "vinp",
+      "dcmpn",
+      "dcmpp"
+    ]
+  }
+}

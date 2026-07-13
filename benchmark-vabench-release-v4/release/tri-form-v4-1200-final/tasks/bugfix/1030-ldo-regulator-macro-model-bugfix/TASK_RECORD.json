@@ -1,0 +1,23 @@
+{
+  "candidate_artifacts": [
+    "ldo_regulator_macro_model.va"
+  ],
+  "canonical_dut_source": "release/dut-base-v3-exact-five-hash-bound-v2/030-ldo-regulator-macro-model",
+  "family_id": "030",
+  "family_spec_sha256": "8bda7644ea899a74d9817a7394268380e0861bc22028e5c46b5de985dd6668fc",
+  "form": "bugfix",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "947976562a7370060ebe425ecd2f8dbca019dd11c6ba9ad9bc756df2af76fa44",
+  "schema_version": "v4-tri-form-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/bugfix/1030-ldo-regulator-macro-model-bugfix",
+  "task_dir_sha256": "8203904cb1453845e84c0d2467236d76468586d795a3a49d2c1906f5d9443c91",
+  "task_id": "v4-1030"
+}

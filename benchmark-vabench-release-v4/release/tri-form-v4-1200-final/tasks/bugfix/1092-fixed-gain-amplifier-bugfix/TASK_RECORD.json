@@ -1,0 +1,23 @@
+{
+  "candidate_artifacts": [
+    "gain_amp_fixed.va"
+  ],
+  "canonical_dut_source": "release/dut-base-v3-exact-five-hash-bound-v2/092-fixed-gain-amplifier",
+  "family_id": "092",
+  "family_spec_sha256": "f8f6360659f35186b3e75786024e9cf17efa4138e7b918341c6e8cbfa8f10b35",
+  "form": "bugfix",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "cf81758a20f3ed8c756214bf010c43a020ca2d21cf097f1ec680279ff54fce5f",
+  "schema_version": "v4-tri-form-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/bugfix/1092-fixed-gain-amplifier-bugfix",
+  "task_dir_sha256": "6741a25ca7f12f42a53946bf3ea21acd0ce1afa12b60253206f84b19e2a9f6b2",
+  "task_id": "v4-1092"
+}

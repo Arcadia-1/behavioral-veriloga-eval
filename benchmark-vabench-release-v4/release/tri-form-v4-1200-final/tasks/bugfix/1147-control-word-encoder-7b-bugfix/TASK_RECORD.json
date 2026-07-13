@@ -1,0 +1,23 @@
+{
+  "candidate_artifacts": [
+    "control_word_encoder_7b.va"
+  ],
+  "canonical_dut_source": "release/dut-base-v3-exact-five-hash-bound-v2/147-control-word-encoder-7b",
+  "family_id": "147",
+  "family_spec_sha256": "2677925b669b6271ecb7735c0ba67e26b08b3feb6323fde52a0ec11ba27aff5a",
+  "form": "bugfix",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "748e9fc79af03714365f372dd41710337a9f9877814f72660cb46437e9009639",
+  "schema_version": "v4-tri-form-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/bugfix/1147-control-word-encoder-7b-bugfix",
+  "task_dir_sha256": "e0b5f832e2c8da58992b40e7eefd51256c9a0b769ec2a7dbb80acbf1db0d2d8f",
+  "task_id": "v4-1147"
+}

@@ -1,0 +1,18 @@
+{
+  "family_id": "334",
+  "mutation_catalog_sha256": "2b54a228e3684b46a5b5ba42f4e946f4e3d9d5c4e549d40d126dfc60ba759f20",
+  "mutation_partition": {
+    "bugfix_seed": [
+      "neg_003_bandwidth_metric_wrong"
+    ],
+    "testbench_private_score": [
+      "neg_002_bandwidth_code_effect_missing",
+      "neg_004_reset_disable_clear_missing",
+      "neg_005_valid_flag_missing"
+    ],
+    "testbench_public_feedback": [
+      "neg_001_bandwidth_order_reversed"
+    ]
+  },
+  "schema_version": "v4-derivation-manifest-v1"
+}

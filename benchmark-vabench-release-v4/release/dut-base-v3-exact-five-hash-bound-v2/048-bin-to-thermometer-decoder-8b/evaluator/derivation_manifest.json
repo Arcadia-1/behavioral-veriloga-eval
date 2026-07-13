@@ -1,0 +1,18 @@
+{
+  "family_id": "048",
+  "mutation_catalog_sha256": "72e89f108f72acec9dac4a98110f3800a9318c4a47eb5080c534326c943e6b92",
+  "mutation_partition": {
+    "bugfix_seed": [
+      "neg_001_off_by_one_count"
+    ],
+    "testbench_private_score": [
+      "neg_005_reversed_bit_order",
+      "neg_006_weak_high_level",
+      "neg_003_enable_ignored"
+    ],
+    "testbench_public_feedback": [
+      "neg_002_reversed_thermometer_bus"
+    ]
+  },
+  "schema_version": "v4-derivation-manifest-v1"
+}

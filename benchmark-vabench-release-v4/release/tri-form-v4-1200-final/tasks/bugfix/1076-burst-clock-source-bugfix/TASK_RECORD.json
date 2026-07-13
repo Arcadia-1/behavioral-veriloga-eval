@@ -1,0 +1,23 @@
+{
+  "candidate_artifacts": [
+    "clk_burst_gen.va"
+  ],
+  "canonical_dut_source": "release/dut-base-v3-exact-five-hash-bound-v2/076-burst-clock-source",
+  "family_id": "076",
+  "family_spec_sha256": "87b3e847f92ed3696e65fc3f26dd2f5e04a6e24af676aa7de173a1718b304fc9",
+  "form": "bugfix",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "844625d8614ebf1d95e918dbfbc229c1c5de2eed8b55b2d6c3bf2be7d2a160c4",
+  "schema_version": "v4-tri-form-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/bugfix/1076-burst-clock-source-bugfix",
+  "task_dir_sha256": "687c76873941a11012bbbd291c9428c9dd83050c8adaac8042003b1fc47a9203",
+  "task_id": "v4-1076"
+}

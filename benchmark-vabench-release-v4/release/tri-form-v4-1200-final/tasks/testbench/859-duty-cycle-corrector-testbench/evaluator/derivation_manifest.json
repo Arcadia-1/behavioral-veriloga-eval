@@ -1,0 +1,22 @@
+{
+  "base_dut": {
+    "canonical_score_tb_sha256": "2ce576096f164dde90a930deccae28e455b0688b581d5a241966798e7f173e96",
+    "canonical_task_id": "v4-359",
+    "canonical_task_slug": "359-duty-cycle-corrector",
+    "family_spec_sha256": "7a8a7da162e64a5286ab440e726c9ccf9a1046dea4366161554d682732c434f7",
+    "mutation_catalog_sha256": "66a6dd655241e3657fb812c8325e4b059a0a2aabfb500be2bf335f017ae0e630",
+    "source_release_manifest_sha256": "66951fd8580c37e2fbf70c3381d2e7f54f538e55588c199c63181d8c6a740623"
+  },
+  "family_id": "359",
+  "negative_assignment": {
+    "bugfix_seed": "neg_003_falling_edge_not_delayed",
+    "testbench_suite": [
+      "neg_001_reports_low_fraction",
+      "neg_003_falling_edge_not_delayed",
+      "neg_004_lock_asserts_early",
+      "neg_005_reset_trim_fullscale",
+      "neg_002_trim_direction_reversed"
+    ]
+  },
+  "schema_version": "v4-derivation-manifest-v2"
+}

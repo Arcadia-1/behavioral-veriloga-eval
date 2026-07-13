@@ -1,0 +1,25 @@
+{
+  "buggy_bundle_sha256": "8eb8d39d816660ac2edc4068a3d634795cbacb764c22d32e1d22c18323dc7989",
+  "buggy_seed_fingerprint_mismatches": [
+    "component_fingerprints.missing",
+    "task_inputs.candidate_bundle_sha256",
+    "task_inputs.deck_sha256",
+    "task_inputs.gold_bundle_sha256",
+    "task_inputs.profile_sha256",
+    "task_inputs.property_contract_sha256",
+    "task_inputs.trace_contract_sha256"
+  ],
+  "buggy_seed_status": "canonical_deck_replay_pending",
+  "evidence_rebinding_required": true,
+  "evidence_source": "hash_bound_canonical_case_reuse_v1",
+  "gold_fingerprint_mismatches": [],
+  "gold_repair_status": "pass",
+  "gold_solution_sha256": "dd1bb36de8bfd7f5f9b7e8ef9f0139998d89fe2ce2ed1eded17088b14d963145",
+  "gold_source_certification_sha256": "01a18eeaba7b6ac648aa3da4655281719227c0e8f54456e78e2f21a937b1b049",
+  "mutation_source_certification_sha256": "dc576c3180564759a1d143bfae52ddf08725d8bfac4ca36479e05be7a01a5886",
+  "schema_version": "v4-bugfix-repair-certificate-v1",
+  "score_deck_sha256": "c76028b74d0e971e5115cc96ba40deca1b4a9c8683d6984c4b7339bc6ab15de7",
+  "simulation_rerun_required_for_materialization": false,
+  "simulation_rerun_requirement_status": "not_determined_by_materialization",
+  "status": "canonical_deck_replay_pending"
+}

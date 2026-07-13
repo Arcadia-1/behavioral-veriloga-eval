@@ -1,0 +1,283 @@
+{
+  "artifact_contract": {
+    "files": [
+      {
+        "modules": [
+          {
+            "depends_on": [],
+            "name": "clocked_adc3bit",
+            "parameters": [
+              {
+                "default": "0.45",
+                "name": "vth_clk",
+                "override_behavior": "overrides vth_clk",
+                "type": "real",
+                "units": "",
+                "valid_range": "finite"
+              },
+              {
+                "default": "0.9",
+                "name": "vh",
+                "override_behavior": "overrides vh",
+                "type": "real",
+                "units": "",
+                "valid_range": "finite"
+              }
+            ],
+            "ports": [
+              {
+                "direction": "output",
+                "discipline": "electrical",
+                "name": "vd2",
+                "position": 0
+              },
+              {
+                "direction": "output",
+                "discipline": "electrical",
+                "name": "vd1",
+                "position": 1
+              },
+              {
+                "direction": "output",
+                "discipline": "electrical",
+                "name": "vd0",
+                "position": 2
+              },
+              {
+                "direction": "input",
+                "discipline": "electrical",
+                "name": "vin",
+                "position": 3
+              },
+              {
+                "direction": "input",
+                "discipline": "electrical",
+                "name": "vclk",
+                "position": 4
+              }
+            ],
+            "role": "entry"
+          }
+        ],
+        "path": "clocked_adc3bit.va"
+      }
+    ],
+    "mode": "single_file"
+  },
+  "evaluation_summary": {
+    "anonymous_negative_cases": 5,
+    "full_credit": "valid candidate and reference pass and all five negatives killed behaviorally",
+    "reference_cases": 1
+  },
+  "family_id": "244",
+  "feedback": {
+    "available_in_modes": [
+      "G2",
+      "G3",
+      "G4",
+      "G5"
+    ],
+    "command": "vabench feedback run"
+  },
+  "form": "testbench",
+  "identity": {
+    "category": "data_converter",
+    "difficulty": "D2",
+    "level": "L1",
+    "supported_scope": "pure voltage-domain event-driven transient behavioral Verilog-A",
+    "title": "Clocked ADC3bit"
+  },
+  "modeling_constraints": [
+    "Use deterministic voltage-domain behavioral Verilog-A.",
+    "Do not hard-code validation stimulus, stop times, sample windows, gold internals, or simulator side channels."
+  ],
+  "properties": [
+    {
+      "id": "P_ON_EACH_RISING_CROSSING_OF_VCLK",
+      "observable_contract": "On each rising crossing of `vclk` through `vth_clk`, sample `vin` and quantize the `0 V` to `1 V` range into eight uniform lower-inclusive bins. Values below `0 V` clip to code `0`; values at or above `1 V` clip to code `7`. Drive `vd2`, `vd1`, and `vd0` as the binary representation of the held sampled code using `vh` for logic one and `0 V` for logic zero.",
+      "required_signals": [
+        "time",
+        "vclk",
+        "vd0",
+        "vd1",
+        "vd2",
+        "vin"
+      ]
+    },
+    {
+      "id": "P_VTH_CLK_0_45_V_RISING",
+      "observable_contract": "`vth_clk = 0.45 V`: rising-edge threshold for `vclk`.",
+      "required_signals": [
+        "time",
+        "vclk",
+        "vd0",
+        "vd1",
+        "vd2",
+        "vin"
+      ]
+    },
+    {
+      "id": "P_VH_0_9_V_LOGIC_HIGH",
+      "observable_contract": "`vh = 0.9 V`: logic-high output level.",
+      "required_signals": [
+        "time",
+        "vclk",
+        "vd0",
+        "vd1",
+        "vd2",
+        "vin"
+      ]
+    },
+    {
+      "id": "P_VTH_CLK_0_45_V_RISING_2",
+      "observable_contract": "- `vth_clk = 0.45 V`: rising-edge threshold for `vclk`. - `vh = 0.9 V`: logic-high output level.",
+      "required_signals": [
+        "time",
+        "vclk",
+        "vd0",
+        "vd1",
+        "vd2",
+        "vin"
+      ]
+    },
+    {
+      "id": "P_THE_OUTPUT_LOW_LEVEL_IS_0",
+      "observable_contract": "The output low level is `0 V`; the public input conversion range is `0 V` to `1 V`.",
+      "required_signals": [
+        "time",
+        "vclk",
+        "vd0",
+        "vd1",
+        "vd2",
+        "vin"
+      ]
+    },
+    {
+      "id": "P_USE_DETERMINISTIC_VOLTAGE_DOMAIN_VERILOG_A",
+      "observable_contract": "Use deterministic voltage-domain Verilog-A and voltage contributions only. Do not emit a testbench, checker logic, out-of-band test hooks, file I/O, random behavior, current contributions, transistor-level devices, `ddt()`, `idt()`, or simulator side channels.",
+      "required_signals": [
+        "time",
+        "vclk",
+        "vd0",
+        "vd1",
+        "vd2",
+        "vin"
+      ]
+    }
+  ],
+  "schema_version": "v4-tri-form-public-contract-v2",
+  "security_policy": {
+    "allowed_include_paths": [
+      "./dut/clocked_adc3bit.va"
+    ],
+    "candidate_artifacts": [
+      "testbench.scs"
+    ],
+    "forbidden_rules": [
+      "undeclared_include",
+      "absolute_path",
+      "path_traversal",
+      "process_execution",
+      "network_access",
+      "simulator_scripting_escape",
+      "dut_redefinition",
+      "direct_dut_output_drive",
+      "private_hierarchical_probe",
+      "unbounded_resource_use"
+    ],
+    "limits": {
+      "max_analyses": 1,
+      "max_candidate_bytes": 1000000,
+      "max_cpu_time_s": 120,
+      "max_memory_mb": 2048,
+      "max_output_bytes": 100000000,
+      "max_saved_signals": 64,
+      "max_stop_time_s": 1.0,
+      "max_wall_time_s": 180
+    },
+    "rejection_outcome": "invalid_run",
+    "required_rules": [
+      "declared_dut_binding",
+      "transient_analysis",
+      "all_required_public_traces"
+    ],
+    "schema_version": "v4-testbench-security-policy-v2"
+  },
+  "security_summary": [
+    "only the declared testbench_include_path values are allowed for DUT sources",
+    "DUT redefinition, direct output drive, private hierarchical probes, arbitrary file access, and unbounded analyses are rejected"
+  ],
+  "submission_contract": {
+    "agentic_submission_root": "public/submission",
+    "exact_declared_file_set_required": true,
+    "target_artifacts_relative_to": "submission_root"
+  },
+  "supplied_inputs": {
+    "dut_instances": [
+      {
+        "connections": [
+          {
+            "net": "vd2",
+            "port_ref": "vd2",
+            "position": 0
+          },
+          {
+            "net": "vd1",
+            "port_ref": "vd1",
+            "position": 1
+          },
+          {
+            "net": "vd0",
+            "port_ref": "vd0",
+            "position": 2
+          },
+          {
+            "net": "vin",
+            "port_ref": "vin",
+            "position": 3
+          },
+          {
+            "net": "vclk",
+            "port_ref": "vclk",
+            "position": 4
+          }
+        ],
+        "module_ref": "clocked_adc3bit",
+        "name": "XDUT",
+        "ordered_nets": [
+          "vd2",
+          "vd1",
+          "vd0",
+          "vin",
+          "vclk"
+        ],
+        "public_output_nets": [
+          "vd2",
+          "vd1",
+          "vd0"
+        ]
+      }
+    ],
+    "read_only_dut_artifacts": [
+      {
+        "public_input_path": "supplied_dut/clocked_adc3bit.va",
+        "testbench_include_path": "./dut/clocked_adc3bit.va"
+      }
+    ],
+    "read_only_support_artifacts": []
+  },
+  "target_artifacts": [
+    "testbench.scs"
+  ],
+  "task_id": "v4-744",
+  "trace_contract": {
+    "required_signals": [
+      "time",
+      "vclk",
+      "vd0",
+      "vd1",
+      "vd2",
+      "vin"
+    ]
+  }
+}

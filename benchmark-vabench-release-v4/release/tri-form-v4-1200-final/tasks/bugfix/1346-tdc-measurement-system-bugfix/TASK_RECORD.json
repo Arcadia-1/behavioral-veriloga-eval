@@ -1,0 +1,27 @@
+{
+  "candidate_artifacts": [
+    "tdc_measurement_top.va",
+    "edge_detector.va",
+    "interval_counter.va",
+    "binary_encoder.va",
+    "valid_latch.va"
+  ],
+  "canonical_dut_source": "release/dut-base-v3-exact-five-hash-bound-v2/346-tdc-measurement-system",
+  "family_id": "346",
+  "family_spec_sha256": "3ab9da12ea64b107edcdbdf1f675c0d4b4cf07729bf37c8964e4ac0c7c5cc42b",
+  "form": "bugfix",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "d572e028d63da71ef48c65aa146a9534aa6b4832d917e21609f74d377920cfb6",
+  "schema_version": "v4-tri-form-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/bugfix/1346-tdc-measurement-system-bugfix",
+  "task_dir_sha256": "bdbcc2cc31fa3d10b9ba856656d067e6a1e3014577c9fbcc035a81996277d4a4",
+  "task_id": "v4-1346"
+}

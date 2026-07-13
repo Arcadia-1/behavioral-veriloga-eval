@@ -1,0 +1,22 @@
+{
+  "base_dut": {
+    "canonical_score_tb_sha256": "9fe797d15d76d3c65ab971f7cb3e7fc178aba8abf826906b607252c933037a0e",
+    "canonical_task_id": "v4-360",
+    "canonical_task_slug": "360-digitally-controlled-delay-cell",
+    "family_spec_sha256": "ca78744f78268e2a317e0fc7ebf3682ad76cf4e1d9ff877861291bb369d113d7",
+    "mutation_catalog_sha256": "53dbb5829a8c22c6bbc9bcc78cf9ee255ecde7c00d273110d964329b00f8d6bd",
+    "source_release_manifest_sha256": "66951fd8580c37e2fbf70c3381d2e7f54f538e55588c199c63181d8c6a740623"
+  },
+  "family_id": "360",
+  "negative_assignment": {
+    "bugfix_seed": "neg_004_valid_stuck_low",
+    "testbench_suite": [
+      "neg_001_ignore_code_msb",
+      "neg_004_valid_stuck_low",
+      "neg_005_reset_metric_not_cleared",
+      "neg_002_fixed_minimum_delay",
+      "neg_003_metric_stuck_low"
+    ]
+  },
+  "schema_version": "v4-derivation-manifest-v2"
+}

@@ -1,0 +1,23 @@
+{
+  "candidate_artifacts": [
+    "linearity_rdac_offset_sweep.va"
+  ],
+  "canonical_dut_source": "release/dut-base-v3-exact-five-hash-bound-v2/190-linearity-rdac-offset-sweep",
+  "family_id": "190",
+  "family_spec_sha256": "53804768aef762e26cb45c57b668c05c897970dfac8972e049ea863d98a4c9b6",
+  "form": "bugfix",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "d7fa84f821bf7666b85b5010b89ebaa521b00bc1f957d3917ee0de6922411caa",
+  "schema_version": "v4-tri-form-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/bugfix/1190-linearity-rdac-offset-sweep-bugfix",
+  "task_dir_sha256": "c63cb52a5611b7c4f31b062a2590fbcc1399f0e0b8b90a1f1d777fe0a2d1f3bf",
+  "task_id": "v4-1190"
+}

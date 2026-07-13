@@ -1,0 +1,22 @@
+{
+  "base_dut": {
+    "canonical_score_tb_sha256": "e5d87d77e12509056c60af36bceee5de0c5a7e2f3a6974e9236fd3d52ac7a389",
+    "canonical_task_id": "v4-126",
+    "canonical_task_slug": "126-absolute-value",
+    "family_spec_sha256": "642472df236718ff8407f37cc4a8208d6b2e1f736d995f985c8bc3d7b89c994d",
+    "mutation_catalog_sha256": "15af9e071f0a96cb5c3fd42b07ded4e8fc9ea04ffa2d21f7eb3bf0277011c82a",
+    "source_release_manifest_sha256": "66951fd8580c37e2fbf70c3381d2e7f54f538e55588c199c63181d8c6a740623"
+  },
+  "family_id": "126",
+  "negative_assignment": {
+    "bugfix_seed": "neg_004_half_abs",
+    "testbench_suite": [
+      "neg_002_identity",
+      "neg_004_half_abs",
+      "neg_003_negative_abs",
+      "neg_005_metric_scale_low",
+      "neg_001_zero"
+    ]
+  },
+  "schema_version": "v4-derivation-manifest-v2"
+}

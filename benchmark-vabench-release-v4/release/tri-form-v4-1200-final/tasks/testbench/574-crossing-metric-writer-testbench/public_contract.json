@@ -1,0 +1,224 @@
+{
+  "artifact_contract": {
+    "files": [
+      {
+        "modules": [
+          {
+            "depends_on": [],
+            "name": "file_metric_writer",
+            "parameters": [
+              {
+                "default": "metric.out",
+                "name": "filename",
+                "override_behavior": "selects the basename of the single metric text file opened at startup and receiving the first-crossing time",
+                "type": "string",
+                "units": null,
+                "valid_range": "non-empty relative basename without directory separators; runner supplies the writable working directory"
+              },
+              {
+                "default": 0.45,
+                "name": "vth",
+                "override_behavior": "sets the rising-crossing threshold for vin",
+                "type": "real",
+                "units": "V",
+                "valid_range": "any finite voltage"
+              },
+              {
+                "default": 3e-10,
+                "name": "tr",
+                "override_behavior": "sets done output rise and fall smoothing",
+                "type": "real",
+                "units": "s",
+                "valid_range": "tr > 0"
+              }
+            ],
+            "ports": [
+              {
+                "direction": "input",
+                "discipline": "electrical",
+                "name": "vin",
+                "position": 0
+              },
+              {
+                "direction": "output",
+                "discipline": "electrical",
+                "name": "done",
+                "position": 1
+              }
+            ],
+            "role": "entry"
+          }
+        ],
+        "path": "file_metric_writer.va"
+      }
+    ],
+    "mode": "single_file"
+  },
+  "evaluation_summary": {
+    "anonymous_negative_cases": 5,
+    "full_credit": "valid candidate and reference pass and all five negatives killed behaviorally",
+    "reference_cases": 1
+  },
+  "family_id": "074",
+  "feedback": {
+    "available_in_modes": [
+      "G2",
+      "G3",
+      "G4",
+      "G5"
+    ],
+    "command": "vabench feedback run"
+  },
+  "form": "testbench",
+  "identity": {
+    "category": "measurement_instrumentation_flows",
+    "difficulty": "D2",
+    "level": "L1",
+    "supported_scope": "pure voltage-domain event-driven transient behavioral Verilog-A with deterministic text-file metric output",
+    "title": "Crossing Metric Writer"
+  },
+  "modeling_constraints": [
+    "Use deterministic rising-threshold event detection and a latched completion state.",
+    "Limit file output to the declared metric record and filename basename parameter in the runner-provided writable directory.",
+    "Do not create waveform dumps, undeclared files, or validation-only outputs."
+  ],
+  "properties": [
+    {
+      "id": "P_FILE_OPEN",
+      "observable_contract": "The filename parameter names exactly one metric file basename in the runner-provided writable working directory; absolute paths and directory traversal are outside the public contract.",
+      "required_signals": [
+        "time",
+        "vin",
+        "done"
+      ]
+    },
+    {
+      "id": "P_FIRST_RISING_CROSSING",
+      "observable_contract": "The first rising crossing of vin through vth is the event that records the metric and latches completion.",
+      "required_signals": [
+        "time",
+        "vin",
+        "done"
+      ]
+    },
+    {
+      "id": "P_RECORDED_TIME",
+      "observable_contract": "The metric file contains exactly one text record of the form `cross <time_seconds>` followed by a newline, where <time_seconds> is the first rising crossing time.",
+      "required_signals": [
+        "time",
+        "vin",
+        "done"
+      ]
+    },
+    {
+      "id": "P_DONE_LATCH",
+      "observable_contract": "done remains low before the first qualifying crossing and high after it, with transition smoothing set by tr.",
+      "required_signals": [
+        "time",
+        "vin",
+        "done"
+      ]
+    },
+    {
+      "id": "P_SINGLE_RECORD",
+      "observable_contract": "Later vin crossings do not clear done or create additional metric records.",
+      "required_signals": [
+        "time",
+        "vin",
+        "done"
+      ]
+    }
+  ],
+  "schema_version": "v4-tri-form-public-contract-v2",
+  "security_policy": {
+    "allowed_include_paths": [
+      "./dut/file_metric_writer.va"
+    ],
+    "candidate_artifacts": [
+      "testbench.scs"
+    ],
+    "forbidden_rules": [
+      "undeclared_include",
+      "absolute_path",
+      "path_traversal",
+      "process_execution",
+      "network_access",
+      "simulator_scripting_escape",
+      "dut_redefinition",
+      "direct_dut_output_drive",
+      "private_hierarchical_probe",
+      "unbounded_resource_use"
+    ],
+    "limits": {
+      "max_analyses": 1,
+      "max_candidate_bytes": 1000000,
+      "max_cpu_time_s": 120,
+      "max_memory_mb": 2048,
+      "max_output_bytes": 100000000,
+      "max_saved_signals": 64,
+      "max_stop_time_s": 1.0,
+      "max_wall_time_s": 180
+    },
+    "rejection_outcome": "invalid_run",
+    "required_rules": [
+      "declared_dut_binding",
+      "transient_analysis",
+      "all_required_public_traces"
+    ],
+    "schema_version": "v4-testbench-security-policy-v2"
+  },
+  "security_summary": [
+    "only the declared testbench_include_path values are allowed for DUT sources",
+    "DUT redefinition, direct output drive, private hierarchical probes, arbitrary file access, and unbounded analyses are rejected"
+  ],
+  "submission_contract": {
+    "agentic_submission_root": "public/submission",
+    "exact_declared_file_set_required": true,
+    "target_artifacts_relative_to": "submission_root"
+  },
+  "supplied_inputs": {
+    "dut_instances": [
+      {
+        "connections": [
+          {
+            "net": "vin",
+            "port_ref": "vin",
+            "position": 0
+          },
+          {
+            "net": "done",
+            "port_ref": "done",
+            "position": 1
+          }
+        ],
+        "module_ref": "file_metric_writer",
+        "name": "XDUT",
+        "ordered_nets": [
+          "vin",
+          "done"
+        ],
+        "public_output_nets": [
+          "done"
+        ]
+      }
+    ],
+    "read_only_dut_artifacts": [
+      {
+        "public_input_path": "supplied_dut/file_metric_writer.va",
+        "testbench_include_path": "./dut/file_metric_writer.va"
+      }
+    ],
+    "read_only_support_artifacts": []
+  },
+  "target_artifacts": [
+    "testbench.scs"
+  ],
+  "task_id": "v4-574",
+  "trace_contract": {
+    "required_signals": [
+      "time",
+      "vin",
+      "done"
+    ]
+  }
+}

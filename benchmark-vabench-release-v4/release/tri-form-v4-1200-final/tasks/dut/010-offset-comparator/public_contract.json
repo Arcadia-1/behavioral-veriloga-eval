@@ -1,0 +1,164 @@
+{
+  "artifact_contract": {
+    "files": [
+      {
+        "modules": [
+          {
+            "depends_on": [],
+            "name": "cmp_offset_ref",
+            "parameters": [
+              {
+                "default": 0.005,
+                "name": "vos",
+                "override_behavior": "sets positive input-referred decision offset",
+                "type": "real",
+                "units": "V",
+                "valid_range": "vos >= 0"
+              },
+              {
+                "default": 2e-11,
+                "name": "tt",
+                "override_behavior": "sets output transition smoothing",
+                "type": "real",
+                "units": "s",
+                "valid_range": "tt > 0"
+              }
+            ],
+            "ports": [
+              {
+                "direction": "input",
+                "discipline": "electrical",
+                "name": "VDD",
+                "position": 0
+              },
+              {
+                "direction": "input",
+                "discipline": "electrical",
+                "name": "VSS",
+                "position": 1
+              },
+              {
+                "direction": "input",
+                "discipline": "electrical",
+                "name": "CLK",
+                "position": 2
+              },
+              {
+                "direction": "input",
+                "discipline": "electrical",
+                "name": "VINP",
+                "position": 3
+              },
+              {
+                "direction": "input",
+                "discipline": "electrical",
+                "name": "VINN",
+                "position": 4
+              },
+              {
+                "direction": "output",
+                "discipline": "electrical",
+                "name": "OUT_P",
+                "position": 5
+              }
+            ],
+            "role": "entry"
+          }
+        ],
+        "path": "cmp_offset_ref.va"
+      }
+    ],
+    "mode": "single_file"
+  },
+  "family_id": "010",
+  "feedback": {
+    "available_in_modes": [
+      "G2",
+      "G3",
+      "G4",
+      "G5"
+    ],
+    "command": "vabench feedback run"
+  },
+  "form": "dut",
+  "identity": {
+    "category": "comparator_decision",
+    "difficulty": "D1",
+    "level": "L1",
+    "supported_scope": "pure voltage-domain event-driven transient behavioral Verilog-A",
+    "title": "Offset Comparator"
+  },
+  "modeling_constraints": [
+    "Use deterministic voltage-domain behavior and voltage contributions only.",
+    "Keep sampled state updates in event blocks and output contribution unconditional.",
+    "Do not expose undeclared state or validation outputs."
+  ],
+  "properties": [
+    {
+      "id": "P_RISING_EDGE_SAMPLE",
+      "observable_contract": "OUT_P updates only on CLK rising crossings through the local rail midpoint.",
+      "required_signals": [
+        "time",
+        "VDD",
+        "VSS",
+        "CLK",
+        "VINP",
+        "VINN",
+        "OUT_P"
+      ]
+    },
+    {
+      "id": "P_OFFSET_DECISION",
+      "observable_contract": "OUT_P latches high only when VINP relative to VINN is greater than the positive vos threshold.",
+      "required_signals": [
+        "time",
+        "CLK",
+        "VINP",
+        "VINN",
+        "OUT_P"
+      ]
+    },
+    {
+      "id": "P_LATCH_HOLD",
+      "observable_contract": "OUT_P holds its sampled decision between rising clock edges.",
+      "required_signals": [
+        "time",
+        "CLK",
+        "VINP",
+        "VINN",
+        "OUT_P"
+      ]
+    },
+    {
+      "id": "P_RAIL_REFERENCE",
+      "observable_contract": "OUT_P low and high levels track VSS and VDD respectively with finite smoothing.",
+      "required_signals": [
+        "time",
+        "VDD",
+        "VSS",
+        "OUT_P"
+      ]
+    }
+  ],
+  "schema_version": "v4-tri-form-public-contract-v2",
+  "submission_contract": {
+    "agentic_submission_root": "public/submission",
+    "exact_declared_file_set_required": true,
+    "target_artifacts_relative_to": "submission_root"
+  },
+  "target_artifacts": [
+    "cmp_offset_ref.va"
+  ],
+  "task_id": "v4-010",
+  "trace_contract": {
+    "required_signals": [
+      "time",
+      "VDD",
+      "VSS",
+      "CLK",
+      "VINP",
+      "VINN",
+      "OUT_P"
+    ]
+  }
+}

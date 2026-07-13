@@ -1,0 +1,23 @@
+{
+  "candidate_artifacts": [
+    "multi_condition_enable_combiner.va"
+  ],
+  "canonical_dut_source": "release/dut-base-v3-exact-five-hash-bound-v2/256-multi-condition-enable-combiner",
+  "family_id": "256",
+  "family_spec_sha256": "45371d926a961c087e208fe099e14e22a6a2c7ac1d7d2fd67e5caad14ab3a276",
+  "form": "bugfix",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "53de77d15e8f8b937a85f7eb843c5121d91beed743e27d45f618f5de61e80257",
+  "schema_version": "v4-tri-form-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/bugfix/1256-multi-condition-enable-combiner-bugfix",
+  "task_dir_sha256": "7bbf9a75b7772728e46c4ec3765ebdbe01dac9e56eac962b9d19fb6edbd0945e",
+  "task_id": "v4-1256"
+}

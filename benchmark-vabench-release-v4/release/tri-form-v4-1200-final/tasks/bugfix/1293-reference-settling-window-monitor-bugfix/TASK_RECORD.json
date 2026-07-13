@@ -1,0 +1,23 @@
+{
+  "candidate_artifacts": [
+    "reference_settling_window_monitor.va"
+  ],
+  "canonical_dut_source": "release/dut-base-v3-exact-five-hash-bound-v2/293-reference-settling-window-monitor",
+  "family_id": "293",
+  "family_spec_sha256": "65d4129246b366cc6b3d32c5b380dbf810fccf2a1f8c31ceb864c2cf90b33f6f",
+  "form": "bugfix",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "d707e1b3ba01984289bfb68af3a2c12f82799ad97b52b5b417f9d33f28f12bee",
+  "schema_version": "v4-tri-form-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/bugfix/1293-reference-settling-window-monitor-bugfix",
+  "task_dir_sha256": "5f931ce44bced3103e5d64e1453fedc3862eac9df59f8b6f3de513486adaa63d",
+  "task_id": "v4-1293"
+}

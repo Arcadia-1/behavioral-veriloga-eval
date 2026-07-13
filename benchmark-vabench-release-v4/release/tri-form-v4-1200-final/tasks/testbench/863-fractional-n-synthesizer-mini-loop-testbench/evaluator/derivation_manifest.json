@@ -1,0 +1,22 @@
+{
+  "base_dut": {
+    "canonical_score_tb_sha256": "3228cc5e8b88e0b43a65b16a31dcdb69240427cca180ac9e10ffeac514105e1f",
+    "canonical_task_id": "v4-363",
+    "canonical_task_slug": "363-fractional-n-synthesizer-mini-loop",
+    "family_spec_sha256": "9049b85075df6f56169fb9d3adec2281d050c98934c738242885e6a56fb83c3a",
+    "mutation_catalog_sha256": "f76a0078754b15c95738480df02592117a6026de95babc3c7c9d8952e5c16e77",
+    "source_release_manifest_sha256": "66951fd8580c37e2fbf70c3381d2e7f54f538e55588c199c63181d8c6a740623"
+  },
+  "family_id": "363",
+  "negative_assignment": {
+    "bugfix_seed": "neg_001_accumulator_modulus_15",
+    "testbench_suite": [
+      "neg_001_accumulator_modulus_15",
+      "neg_004_fraction_mapping_reversed",
+      "neg_003_divider_off_by_one",
+      "neg_005_reset_valid_not_cleared",
+      "neg_002_divider_ignores_carry"
+    ]
+  },
+  "schema_version": "v4-derivation-manifest-v2"
+}

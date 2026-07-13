@@ -1,0 +1,22 @@
+{
+  "base_dut": {
+    "canonical_score_tb_sha256": "846f3501b6da21dcc0d9618099843f86742e9fb46843dfd66e7f77f07bb91707",
+    "canonical_task_id": "v4-196",
+    "canonical_task_slug": "196-phase-detector-chopper",
+    "family_spec_sha256": "f9e0afe8c1cf81a6b76472168c8b2c033c661c85c6f9073663dadeb865bd5b19",
+    "mutation_catalog_sha256": "95d383f5b75cc003c5f13345b0609bf002dd1a06071e1ec262e6d34a6854188d",
+    "source_release_manifest_sha256": "66951fd8580c37e2fbf70c3381d2e7f54f538e55588c199c63181d8c6a740623"
+  },
+  "family_id": "196",
+  "negative_assignment": {
+    "bugfix_seed": "neg_004_inverted_lo_polarity",
+    "testbench_suite": [
+      "neg_003_wrong_gain",
+      "neg_001_zero",
+      "neg_002_no_chop_inversion",
+      "neg_004_inverted_lo_polarity",
+      "neg_005_metric_scale_low"
+    ]
+  },
+  "schema_version": "v4-derivation-manifest-v2"
+}

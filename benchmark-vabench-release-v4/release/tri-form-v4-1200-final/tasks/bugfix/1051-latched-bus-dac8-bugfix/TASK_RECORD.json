@@ -1,0 +1,23 @@
+{
+  "candidate_artifacts": [
+    "latched_bus_dac8.va"
+  ],
+  "canonical_dut_source": "release/dut-base-v3-exact-five-hash-bound-v2/051-latched-bus-dac8",
+  "family_id": "051",
+  "family_spec_sha256": "8fb0d2cd7b84adda9907600f92291d66852f487a2d20c232312c2531282d8d6e",
+  "form": "bugfix",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "30c4f795c6d32f7e5760fb526c74de5513acc9a9ec669bf7d9f957964a2a6509",
+  "schema_version": "v4-tri-form-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/bugfix/1051-latched-bus-dac8-bugfix",
+  "task_dir_sha256": "1fc69ea6aaac45840c5b042f0dc588b0dd2c3aea4bbca1e5087569dce2627c8f",
+  "task_id": "v4-1051"
+}

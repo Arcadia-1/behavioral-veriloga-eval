@@ -1,0 +1,23 @@
+{
+  "candidate_artifacts": [
+    "cyclic_decoder_12bit.va"
+  ],
+  "canonical_dut_source": "release/dut-base-v3-exact-five-hash-bound-v2/150-cyclic-decoder-12bit",
+  "family_id": "150",
+  "family_spec_sha256": "a7c905ca57960ec896ad04b83203780e74d0b45f29359aac9b58894b673a04a4",
+  "form": "bugfix",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "240be1862429b7fd7632b864ac3aaf8d2fc740b870ef5f615bedc10a23e914fc",
+  "schema_version": "v4-tri-form-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/bugfix/1150-cyclic-decoder-12bit-bugfix",
+  "task_dir_sha256": "924f46e6f455fdc80955199a38f3bd4053d447831e59f9347796d0b4096e97b2",
+  "task_id": "v4-1150"
+}

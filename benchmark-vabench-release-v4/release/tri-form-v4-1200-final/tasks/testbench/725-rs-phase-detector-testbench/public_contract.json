@@ -1,0 +1,268 @@
+{
+  "artifact_contract": {
+    "files": [
+      {
+        "modules": [
+          {
+            "depends_on": [],
+            "name": "rs_phase_detector",
+            "parameters": [
+              {
+                "default": "1.2",
+                "name": "vdd",
+                "override_behavior": "overrides vdd",
+                "type": "real",
+                "units": "",
+                "valid_range": "finite"
+              },
+              {
+                "default": "10p",
+                "name": "tdel",
+                "override_behavior": "overrides tdel",
+                "type": "real",
+                "units": "",
+                "valid_range": "finite"
+              },
+              {
+                "default": "10p",
+                "name": "tr",
+                "override_behavior": "overrides tr",
+                "type": "real",
+                "units": "",
+                "valid_range": "finite"
+              },
+              {
+                "default": "10p",
+                "name": "tf",
+                "override_behavior": "overrides tf",
+                "type": "real",
+                "units": "",
+                "valid_range": "finite"
+              }
+            ],
+            "ports": [
+              {
+                "direction": "input",
+                "discipline": "electrical",
+                "name": "ref",
+                "position": 0
+              },
+              {
+                "direction": "input",
+                "discipline": "electrical",
+                "name": "fb",
+                "position": 1
+              },
+              {
+                "direction": "output",
+                "discipline": "electrical",
+                "name": "up",
+                "position": 2
+              },
+              {
+                "direction": "output",
+                "discipline": "electrical",
+                "name": "down",
+                "position": 3
+              }
+            ],
+            "role": "entry"
+          }
+        ],
+        "path": "rs_phase_detector.va"
+      }
+    ],
+    "mode": "single_file"
+  },
+  "evaluation_summary": {
+    "anonymous_negative_cases": 5,
+    "full_credit": "valid candidate and reference pass and all five negatives killed behaviorally",
+    "reference_cases": 1
+  },
+  "family_id": "225",
+  "feedback": {
+    "available_in_modes": [
+      "G2",
+      "G3",
+      "G4",
+      "G5"
+    ],
+    "command": "vabench feedback run"
+  },
+  "form": "testbench",
+  "identity": {
+    "category": "clock_timing",
+    "difficulty": "D2",
+    "level": "L1",
+    "supported_scope": "pure voltage-domain event-driven transient behavioral Verilog-A",
+    "title": "RS Phase Detector"
+  },
+  "modeling_constraints": [
+    "Use deterministic voltage-domain behavioral Verilog-A.",
+    "Do not hard-code validation stimulus, stop times, sample windows, gold internals, or simulator side channels."
+  ],
+  "properties": [
+    {
+      "id": "P_DETECT_RISING_REF_AND_FB_CROSSINGS",
+      "observable_contract": "Detect rising `ref` and `fb` crossings at `vdd/2`.",
+      "required_signals": [
+        "time",
+        "ref",
+        "fb",
+        "up",
+        "down"
+      ]
+    },
+    {
+      "id": "P_A_RISING_REF_EDGE_SETS_THE",
+      "observable_contract": "A rising `ref` edge sets the latch state so `up` is high and `down` is low.",
+      "required_signals": [
+        "time",
+        "ref",
+        "fb",
+        "up",
+        "down"
+      ]
+    },
+    {
+      "id": "P_A_RISING_FB_EDGE_RESETS_THE",
+      "observable_contract": "A rising `fb` edge resets the latch state so `up` is low and `down` is high.",
+      "required_signals": [
+        "time",
+        "ref",
+        "fb",
+        "up",
+        "down"
+      ]
+    },
+    {
+      "id": "P_HOLD_THE_MOST_RECENT_LATCH_STATE",
+      "observable_contract": "Hold the most recent latch state between qualifying input edges.",
+      "required_signals": [
+        "time",
+        "ref",
+        "fb",
+        "up",
+        "down"
+      ]
+    },
+    {
+      "id": "P_INITIALIZE_TO_THE_RESET_STATE_WITH",
+      "observable_contract": "Initialize to the reset state with `up` low and `down` high.",
+      "required_signals": [
+        "time",
+        "ref",
+        "fb",
+        "up",
+        "down"
+      ]
+    }
+  ],
+  "schema_version": "v4-tri-form-public-contract-v2",
+  "security_policy": {
+    "allowed_include_paths": [
+      "./dut/rs_phase_detector.va"
+    ],
+    "candidate_artifacts": [
+      "testbench.scs"
+    ],
+    "forbidden_rules": [
+      "undeclared_include",
+      "absolute_path",
+      "path_traversal",
+      "process_execution",
+      "network_access",
+      "simulator_scripting_escape",
+      "dut_redefinition",
+      "direct_dut_output_drive",
+      "private_hierarchical_probe",
+      "unbounded_resource_use"
+    ],
+    "limits": {
+      "max_analyses": 1,
+      "max_candidate_bytes": 1000000,
+      "max_cpu_time_s": 120,
+      "max_memory_mb": 2048,
+      "max_output_bytes": 100000000,
+      "max_saved_signals": 64,
+      "max_stop_time_s": 1.0,
+      "max_wall_time_s": 180
+    },
+    "rejection_outcome": "invalid_run",
+    "required_rules": [
+      "declared_dut_binding",
+      "transient_analysis",
+      "all_required_public_traces"
+    ],
+    "schema_version": "v4-testbench-security-policy-v2"
+  },
+  "security_summary": [
+    "only the declared testbench_include_path values are allowed for DUT sources",
+    "DUT redefinition, direct output drive, private hierarchical probes, arbitrary file access, and unbounded analyses are rejected"
+  ],
+  "submission_contract": {
+    "agentic_submission_root": "public/submission",
+    "exact_declared_file_set_required": true,
+    "target_artifacts_relative_to": "submission_root"
+  },
+  "supplied_inputs": {
+    "dut_instances": [
+      {
+        "connections": [
+          {
+            "net": "ref",
+            "port_ref": "ref",
+            "position": 0
+          },
+          {
+            "net": "fb",
+            "port_ref": "fb",
+            "position": 1
+          },
+          {
+            "net": "up",
+            "port_ref": "up",
+            "position": 2
+          },
+          {
+            "net": "down",
+            "port_ref": "down",
+            "position": 3
+          }
+        ],
+        "module_ref": "rs_phase_detector",
+        "name": "XDUT",
+        "ordered_nets": [
+          "ref",
+          "fb",
+          "up",
+          "down"
+        ],
+        "public_output_nets": [
+          "up",
+          "down"
+        ]
+      }
+    ],
+    "read_only_dut_artifacts": [
+      {
+        "public_input_path": "supplied_dut/rs_phase_detector.va",
+        "testbench_include_path": "./dut/rs_phase_detector.va"
+      }
+    ],
+    "read_only_support_artifacts": []
+  },
+  "target_artifacts": [
+    "testbench.scs"
+  ],
+  "task_id": "v4-725",
+  "trace_contract": {
+    "required_signals": [
+      "time",
+      "ref",
+      "fb",
+      "up",
+      "down"
+    ]
+  }
+}

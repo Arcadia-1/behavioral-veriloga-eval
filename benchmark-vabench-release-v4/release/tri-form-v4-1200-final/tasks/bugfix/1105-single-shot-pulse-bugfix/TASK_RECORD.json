@@ -1,0 +1,23 @@
+{
+  "candidate_artifacts": [
+    "source_single_shot.va"
+  ],
+  "canonical_dut_source": "release/dut-base-v3-exact-five-hash-bound-v2/105-single-shot-pulse",
+  "family_id": "105",
+  "family_spec_sha256": "c0e105c64eeababe7a964807753465f3fa9fb9154360b5ab5a63dad02ab18c25",
+  "form": "bugfix",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "499c1d1edaae2eae742ebfa8276ec3fe5dc1edcbe7492d5344d6ad548039f034",
+  "schema_version": "v4-tri-form-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/bugfix/1105-single-shot-pulse-bugfix",
+  "task_dir_sha256": "a792db33a97b0c1d1f7a838d1c7780d88aa5ea4aabb1008fced9433c0556d017",
+  "task_id": "v4-1105"
+}

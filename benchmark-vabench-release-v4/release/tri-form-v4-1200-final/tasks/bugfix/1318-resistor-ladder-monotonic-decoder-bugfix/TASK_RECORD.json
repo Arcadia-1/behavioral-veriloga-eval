@@ -1,0 +1,23 @@
+{
+  "candidate_artifacts": [
+    "resistor_ladder_monotonic_decoder.va"
+  ],
+  "canonical_dut_source": "release/dut-base-v3-exact-five-hash-bound-v2/318-resistor-ladder-monotonic-decoder",
+  "family_id": "318",
+  "family_spec_sha256": "abbf12010a03af2de9769b1eb2fb91069e790664bde1b5124fbe33d2b3429a61",
+  "form": "bugfix",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "f1c0910a3d9d420d1d0f72ddad6fb27eb60ca3050a99229486afa60b942b43bb",
+  "schema_version": "v4-tri-form-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/bugfix/1318-resistor-ladder-monotonic-decoder-bugfix",
+  "task_dir_sha256": "837379982c4d024a5d96ed7f5f8f3776f1d7cff181b2ff10bbe4e8b6cf307cf5",
+  "task_id": "v4-1318"
+}

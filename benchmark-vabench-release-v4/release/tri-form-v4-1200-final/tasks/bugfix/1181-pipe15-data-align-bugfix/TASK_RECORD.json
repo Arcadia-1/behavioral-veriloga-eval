@@ -1,0 +1,23 @@
+{
+  "candidate_artifacts": [
+    "pipe15_data_align.va"
+  ],
+  "canonical_dut_source": "release/dut-base-v3-exact-five-hash-bound-v2/181-pipe15-data-align",
+  "family_id": "181",
+  "family_spec_sha256": "6e6bc6d9344699301210155b25b80b60b5130b6f37c9645555ccea2b52cd1031",
+  "form": "bugfix",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "5aa3e44ada404f8943d90ccba82a28f53a603b634819abf597f690ab7fee4ca5",
+  "schema_version": "v4-tri-form-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/bugfix/1181-pipe15-data-align-bugfix",
+  "task_dir_sha256": "67c99d05225cd7b64fee486712ba7c51ac36543d848175bf25ecfa6ad8ebfb91",
+  "task_id": "v4-1181"
+}

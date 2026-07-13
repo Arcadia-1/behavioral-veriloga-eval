@@ -1,0 +1,22 @@
+{
+  "base_dut": {
+    "canonical_score_tb_sha256": "ff36cd5ac918b6af8a15e69d29cc8078d1f4d56e98808d088b10c669073ad609",
+    "canonical_task_id": "v4-131",
+    "canonical_task_slug": "131-limiting-differential-amplifier",
+    "family_spec_sha256": "61d07a32aecfd8c66c4b5f8a221a9cff5082d2c825f9e1fe094da53ef8656277",
+    "mutation_catalog_sha256": "38ce78a44e64f9a72cb2171c5a14b1056585b07d9c26f033df10c946699b5cc9",
+    "source_release_manifest_sha256": "66951fd8580c37e2fbf70c3381d2e7f54f538e55588c199c63181d8c6a740623"
+  },
+  "family_id": "131",
+  "negative_assignment": {
+    "bugfix_seed": "neg_002_missing_input_offset",
+    "testbench_suite": [
+      "neg_002_missing_input_offset",
+      "neg_003_no_clamp",
+      "neg_004_wrong_reference",
+      "neg_005_metric_scale_low",
+      "neg_001_zero"
+    ]
+  },
+  "schema_version": "v4-derivation-manifest-v2"
+}

@@ -1,0 +1,37 @@
+{
+  "base_dut": {
+    "canonical_task_id": "v4-014",
+    "canonical_task_slug": "014-segmented-dac",
+    "family_spec_sha256": "567bf2a92711abf0d00fa6e548abf7067be3eac1fcd8e8ee18e64183957f4f32",
+    "mutation_catalog_sha256": "b4f2924c69a52070b86fa057d686c7e4b0894cf18d8173475f06210fdb1d7988",
+    "source_release_manifest_sha256": "66951fd8580c37e2fbf70c3381d2e7f54f538e55588c199c63181d8c6a740623"
+  },
+  "family_id": "014",
+  "negative_assignment": {
+    "bugfix_seed": "neg_003_polarity_direction",
+    "testbench_suite": [
+      "neg_001_boundary",
+      "neg_003_polarity_direction",
+      "neg_005_metric_writeout",
+      "neg_004_state_reset",
+      "neg_002_timing_window"
+    ]
+  },
+  "private_materialization": {
+    "buggy_bundle_sha256": "e8b7004f1c53181d2568aa680311471b8a3ca4038e545beb3b44c5e10cc3e5c9",
+    "changed_artifacts": [
+      "segmented_dac.va"
+    ]
+  },
+  "schema_version": "v4-derivation-manifest-v2",
+  "selection_evidence": {
+    "mutation_id": "neg_003_polarity_direction",
+    "rationale": "Select fault class binary_lsb_weight_swap under trigger 'the code sequence distinguishes b0 from b1 weighting' because it exercises P_CODE_MONOTONICITY, P_SEGMENT_WEIGHTS as one compile-pass semantic defect.",
+    "selection_policy": "semantic_fault_complexity_v1",
+    "selection_status": "policy_reviewed",
+    "semantic_score": 30,
+    "source_preferred_seed": "neg_001_boundary",
+    "source_preferred_seed_preserved": false,
+    "triviality_markers": []
+  }
+}

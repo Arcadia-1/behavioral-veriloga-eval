@@ -1,0 +1,22 @@
+{
+  "base_dut": {
+    "canonical_score_tb_sha256": "03cb0fd1baec470327e3199be7111da3ab3ae8caa14a94a011ef836625b73cd6",
+    "canonical_task_id": "v4-011",
+    "canonical_task_slug": "011-pfd-up-dn-logic",
+    "family_spec_sha256": "e8f6e89675c1ee3b70fafbac899267440606007c4b1a88a55305894ebcdb65ff",
+    "mutation_catalog_sha256": "63d9987daf7235c9094fa9f892a77bd1352be8edccfbe893146249fa65bbb88c",
+    "source_release_manifest_sha256": "66951fd8580c37e2fbf70c3381d2e7f54f538e55588c199c63181d8c6a740623"
+  },
+  "family_id": "011",
+  "negative_assignment": {
+    "bugfix_seed": "neg_001_swapped_outputs",
+    "testbench_suite": [
+      "neg_001_swapped_outputs",
+      "neg_005_div_lead_clear_leaves_up",
+      "neg_006_fixed_nominal_rails",
+      "neg_002_missing_ref_lead_clear",
+      "neg_003_div_falling_edge"
+    ]
+  },
+  "schema_version": "v4-derivation-manifest-v2"
+}

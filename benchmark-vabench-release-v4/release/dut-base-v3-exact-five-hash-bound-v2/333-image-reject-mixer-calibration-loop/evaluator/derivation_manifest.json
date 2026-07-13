@@ -1,0 +1,28 @@
+{
+  "family_id": "333",
+  "mutation_catalog_sha256": "51b4d33a0e245731db1cfcb4d599719b408a584f2cd27cad921df8e9b8a844d6",
+  "mutation_partition": {
+    "bugfix_seed": [
+      "neg_003_i_mixer_polarity_inverted"
+    ],
+    "testbench_private_score": [
+      "neg_004_correction_direction_reversed",
+      "neg_005_calibrated_after_one_update",
+      "neg_002_falling_edge_input_sampling"
+    ],
+    "testbench_public_feedback": [
+      "neg_001_clear_retains_mixer_outputs"
+    ]
+  },
+  "schema_version": "v4-derivation-manifest-v1",
+  "tri_form_partition": {
+    "bugfix_seed": "neg_003_i_mixer_polarity_inverted",
+    "testbench_suite": [
+      "neg_002_falling_edge_input_sampling",
+      "neg_003_i_mixer_polarity_inverted",
+      "neg_004_correction_direction_reversed",
+      "neg_005_calibrated_after_one_update",
+      "neg_001_clear_retains_mixer_outputs"
+    ]
+  }
+}

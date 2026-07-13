@@ -1,0 +1,18 @@
+{
+  "correct_dut_status": "pass",
+  "evidence_source": "canonical_score_profile_hash_reuse",
+  "mutation_certification_sha256": {
+    "neg_001_zero": "b662f8bb4be1ac0b2e5e6736cdd6691ee42ce3e351b90089f65d5e6ba1bce87e",
+    "neg_002_period_code": "4726e45edfd7e529aa0bb61afd8567d445d271bbe06b74fceb23d63479e17dc1",
+    "neg_003_inverted": "58c3ce68f3ea88bb81aed2fc2944f91b8f00492267404489eaaf0410cb00bd23",
+    "neg_004_no_valid": "f345d27cb0e51d0d57ffcff2153a0c3cdee2589d0a34fd096a28441c0193b907",
+    "neg_005_constant_half": "ab720d15447c08bd7667ad042cc096eb26eb2f1d22f5835ce35dcfe8600ac5de"
+  },
+  "negative_suite_status": "five_of_five_killed_behaviorally",
+  "reference_tb_sha256": "2ece5c350844acc13bae942938431e1953b1dd88f539cdf492c427d11e063268",
+  "release_repair_notes": [
+    "reference deck, public contract, and v2 security policy aligned during final release freeze"
+  ],
+  "schema_version": "v4-reference-testbench-certificate-v1",
+  "simulation_rerun_required_for_materialization": false
+}

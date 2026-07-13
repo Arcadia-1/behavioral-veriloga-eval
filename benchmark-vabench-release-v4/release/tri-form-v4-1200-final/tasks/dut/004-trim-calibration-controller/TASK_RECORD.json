@@ -1,0 +1,22 @@
+{
+  "candidate_artifacts": [
+    "cdac_calibration.va"
+  ],
+  "canonical_dut_source": "release/dut-base-v3-exact-five-hash-bound-v2/004-trim-calibration-controller",
+  "family_id": "004",
+  "family_spec_sha256": "fd38ec40548d730a456db488979ec6ebf6430566eff455370934297d435fd1c4",
+  "form": "dut",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "be1c3dfff329c7900f5f8251e830ef619ceccfeae187998b5e1a4b6f2e739b5d",
+  "schema_version": "v4-tri-form-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/dut/004-trim-calibration-controller",
+  "task_id": "v4-004"
+}

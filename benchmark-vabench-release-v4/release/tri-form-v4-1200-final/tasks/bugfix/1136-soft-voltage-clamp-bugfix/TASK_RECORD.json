@@ -1,0 +1,23 @@
+{
+  "candidate_artifacts": [
+    "soft_voltage_clamp_behavior.va"
+  ],
+  "canonical_dut_source": "release/dut-base-v3-exact-five-hash-bound-v2/136-soft-voltage-clamp",
+  "family_id": "136",
+  "family_spec_sha256": "7ac8efe6d6ce658ff193410cda91c06de8f2ef0329fc49ff60f482e578a81e6f",
+  "form": "bugfix",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "88ea61ad77abb96bd791c6298aa73fc3010d70bc9b37bfb74c05444da81fcd89",
+  "schema_version": "v4-tri-form-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/bugfix/1136-soft-voltage-clamp-bugfix",
+  "task_dir_sha256": "b53756483f47dc7dd3e119dc1ae5f2bf7e45facc6dea720573e3a7b7f6c3da9b",
+  "task_id": "v4-1136"
+}

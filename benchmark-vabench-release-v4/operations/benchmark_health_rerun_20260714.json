@@ -1,0 +1,143 @@
+{
+  "dut_release": {
+    "cert_schema_distribution": {
+      "v4-negative-certification-v1": 365,
+      "v4-negative-certification-v2": 1635
+    },
+    "cert_state_distribution": {
+      "carried_forward": 1568,
+      "fresh": 67,
+      "legacy": 365
+    },
+    "changed_artifact_mismatch_count": 0,
+    "hash_mismatch_count": 0,
+    "id_range_ok": true,
+    "mutation_count_distribution": {
+      "5": 400
+    },
+    "outcome_distribution": {
+      "killed_behaviorally": 2000
+    },
+    "problem_count": 0,
+    "sample_changed_artifact_mismatches": [],
+    "sample_hash_mismatches": [],
+    "sample_problems": [],
+    "task_count": 400
+  },
+  "generated_at": "2026-07-14",
+  "issues": [],
+  "pass": true,
+  "schema_version": "v4-benchmark-health-audit-v1",
+  "source_plan_317": {
+    "plan_diagnostic_patterns": {
+      "neg_001_accumulator_update_direction_wrong": [
+        "(?s:(?=.*\\bv4_1015\\b)(?=.*\\bmonotonic_up=False\\b))"
+      ],
+      "neg_002_correction_metric_lsb_wrong": [
+        "(?s:(?=.*\\bv4_1015\\b)(?=.*\\bmetric_errors=[1-9]))"
+      ],
+      "neg_003_reset_disable_clear_missing": [
+        "(?s:(?=.*\\bv4_1015\\b)(?=.*\\bclear_errors=[1-9]))"
+      ],
+      "neg_004_done_qualification_too_early": [
+        "(?s:(?=.*\\bv4_1015\\b)(?=.*\\bdone_errors=[1-9]))"
+      ],
+      "neg_005_saturation_endpoint_wrong": [
+        "(?s:(?=.*\\bv4_1015\\b)(?=.*\\bhigh_code_seen=False\\b))"
+      ]
+    },
+    "plan_violated_property_ids": {
+      "neg_001_accumulator_update_direction_wrong": [
+        "P_ON_EACH_ENABLED_RISING_CLK_EDGE"
+      ],
+      "neg_002_correction_metric_lsb_wrong": [
+        "P_DRIVE_CORRECTION_METRIC_AS_THE_VOLTAGE"
+      ],
+      "neg_003_reset_disable_clear_missing": [
+        "P_ON_RESET_OR_WHEN_DISABLED_CLEAR"
+      ],
+      "neg_004_done_qualification_too_early": [
+        "P_ASSERT_DONE_AFTER_EIGHT_ENABLED_UPDATES"
+      ],
+      "neg_005_saturation_endpoint_wrong": [
+        "P_SATURATE_THE_PUBLIC_4_BIT_CALIBRATION"
+      ]
+    },
+    "source_manifest_changed_artifacts": {
+      "neg_001_accumulator_update_direction_wrong": [
+        "cal_code_accumulator.va"
+      ],
+      "neg_002_correction_metric_lsb_wrong": [
+        "correction_metric_dac.va"
+      ],
+      "neg_003_reset_disable_clear_missing": [
+        "cal_code_accumulator.va"
+      ],
+      "neg_004_done_qualification_too_early": [
+        "cal_code_accumulator.va"
+      ],
+      "neg_005_saturation_endpoint_wrong": [
+        "cal_code_accumulator.va"
+      ]
+    },
+    "source_manifest_violated_property_ids": {
+      "neg_001_accumulator_update_direction_wrong": [
+        "P_ON_EACH_ENABLED_RISING_CLK_EDGE"
+      ],
+      "neg_002_correction_metric_lsb_wrong": [
+        "P_DRIVE_CORRECTION_METRIC_AS_THE_VOLTAGE"
+      ],
+      "neg_003_reset_disable_clear_missing": [
+        "P_ON_RESET_OR_WHEN_DISABLED_CLEAR"
+      ],
+      "neg_004_done_qualification_too_early": [
+        "P_ASSERT_DONE_AFTER_EIGHT_ENABLED_UPDATES"
+      ],
+      "neg_005_saturation_endpoint_wrong": [
+        "P_SATURATE_THE_PUBLIC_4_BIT_CALIBRATION"
+      ]
+    }
+  },
+  "source_release": "benchmark-vabench-release-v4/release/dut-base-v3-exact-five-hash-bound-v2",
+  "targeted_reruns": {
+    "317": {
+      "cache_hits": 0,
+      "evas_executed_rows": 5,
+      "raw_evidence": "/tmp/vabench_317_recert/raw_evidence_317.json",
+      "row_status_counts": {
+        "PASS": 5
+      },
+      "spectre_executed_rows": 5,
+      "status": "pass",
+      "summary": {
+        "all_pass": true,
+        "cache_hit_rows": 0,
+        "evas_behavior_pass_rows": 0,
+        "evas_executed_rows": 5,
+        "failed_rows": 0,
+        "materialized_rows": 5,
+        "passed_rows": 5,
+        "requested_rows": 5,
+        "selected_rows": 5,
+        "spectre_behavior_pass_rows": 0,
+        "spectre_executed_rows": 5,
+        "status_counts": {
+          "PASS": 5
+        }
+      }
+    }
+  },
+  "tri_form": {
+    "expected_form_counts_ok": true,
+    "form_counts": {
+      "bugfix": 400,
+      "dut": 400,
+      "testbench": 400
+    },
+    "hash_mismatch_count": 0,
+    "issue_count": 0,
+    "sample_hash_mismatches": [],
+    "sample_issues": []
+  },
+  "tri_form_release": "benchmark-vabench-release-v4/release/tri-form-v4-1200-final"
+}

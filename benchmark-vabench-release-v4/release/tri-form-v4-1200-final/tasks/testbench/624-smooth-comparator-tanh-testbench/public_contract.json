@@ -1,0 +1,229 @@
+{
+  "artifact_contract": {
+    "files": [
+      {
+        "modules": [
+          {
+            "depends_on": [],
+            "name": "smooth_comparator_tanh",
+            "parameters": [
+              {
+                "default": "1",
+                "name": "high",
+                "override_behavior": "overrides high",
+                "type": "real",
+                "units": "",
+                "valid_range": "finite"
+              },
+              {
+                "default": "-1",
+                "name": "low",
+                "override_behavior": "overrides low",
+                "type": "real",
+                "units": "",
+                "valid_range": "finite"
+              },
+              {
+                "default": "0",
+                "name": "offset",
+                "override_behavior": "overrides offset",
+                "type": "real",
+                "units": "",
+                "valid_range": "finite"
+              },
+              {
+                "default": "1000",
+                "name": "comp_slope",
+                "override_behavior": "overrides comp_slope",
+                "type": "real",
+                "units": "",
+                "valid_range": "finite"
+              }
+            ],
+            "ports": [
+              {
+                "direction": "input",
+                "discipline": "electrical",
+                "name": "sigin",
+                "position": 0
+              },
+              {
+                "direction": "input",
+                "discipline": "electrical",
+                "name": "sigref",
+                "position": 1
+              },
+              {
+                "direction": "output",
+                "discipline": "electrical",
+                "name": "sigout",
+                "position": 2
+              }
+            ],
+            "role": "entry"
+          }
+        ],
+        "path": "smooth_comparator_tanh.va"
+      }
+    ],
+    "mode": "single_file"
+  },
+  "evaluation_summary": {
+    "anonymous_negative_cases": 5,
+    "full_credit": "valid candidate and reference pass and all five negatives killed behaviorally",
+    "reference_cases": 1
+  },
+  "family_id": "124",
+  "feedback": {
+    "available_in_modes": [
+      "G2",
+      "G3",
+      "G4",
+      "G5"
+    ],
+    "command": "vabench feedback run"
+  },
+  "form": "testbench",
+  "identity": {
+    "category": "comparator",
+    "difficulty": "D2",
+    "level": "L1",
+    "supported_scope": "pure voltage-domain event-driven transient behavioral Verilog-A",
+    "title": "Smooth Comparator Tanh"
+  },
+  "modeling_constraints": [
+    "Use deterministic voltage-domain behavioral Verilog-A.",
+    "Do not hard-code validation stimulus, stop times, sample windows, gold internals, or simulator side channels."
+  ],
+  "properties": [
+    {
+      "id": "P_TANH_TRANSFER",
+      "observable_contract": "Drive `sigout` as `0.5 * (high - low) * tanh(comp_slope * (V(sigin, sigref) - offset)) + 0.5 * (high + low)`.",
+      "required_signals": [
+        "time",
+        "sigin",
+        "sigout",
+        "sigref"
+      ]
+    },
+    {
+      "id": "P_INPUT_POLARITY",
+      "observable_contract": "A larger `V(sigin, sigref)` must move the output toward `high`, not toward `low`.",
+      "required_signals": [
+        "time",
+        "sigin",
+        "sigout",
+        "sigref"
+      ]
+    },
+    {
+      "id": "P_SMOOTH_TRANSITION",
+      "observable_contract": "The output must transition smoothly between `low` and `high` according to the tanh slope, not as a hard switch.",
+      "required_signals": [
+        "time",
+        "sigin",
+        "sigout",
+        "sigref"
+      ]
+    }
+  ],
+  "schema_version": "v4-tri-form-public-contract-v2",
+  "security_policy": {
+    "allowed_include_paths": [
+      "./dut/smooth_comparator_tanh.va"
+    ],
+    "candidate_artifacts": [
+      "testbench.scs"
+    ],
+    "forbidden_rules": [
+      "undeclared_include",
+      "absolute_path",
+      "path_traversal",
+      "process_execution",
+      "network_access",
+      "simulator_scripting_escape",
+      "dut_redefinition",
+      "direct_dut_output_drive",
+      "private_hierarchical_probe",
+      "unbounded_resource_use"
+    ],
+    "limits": {
+      "max_analyses": 1,
+      "max_candidate_bytes": 1000000,
+      "max_cpu_time_s": 120,
+      "max_memory_mb": 2048,
+      "max_output_bytes": 100000000,
+      "max_saved_signals": 64,
+      "max_stop_time_s": 1.0,
+      "max_wall_time_s": 180
+    },
+    "rejection_outcome": "invalid_run",
+    "required_rules": [
+      "declared_dut_binding",
+      "transient_analysis",
+      "all_required_public_traces"
+    ],
+    "schema_version": "v4-testbench-security-policy-v2"
+  },
+  "security_summary": [
+    "only the declared testbench_include_path values are allowed for DUT sources",
+    "DUT redefinition, direct output drive, private hierarchical probes, arbitrary file access, and unbounded analyses are rejected"
+  ],
+  "submission_contract": {
+    "agentic_submission_root": "public/submission",
+    "exact_declared_file_set_required": true,
+    "target_artifacts_relative_to": "submission_root"
+  },
+  "supplied_inputs": {
+    "dut_instances": [
+      {
+        "connections": [
+          {
+            "net": "sigin",
+            "port_ref": "sigin",
+            "position": 0
+          },
+          {
+            "net": "sigref",
+            "port_ref": "sigref",
+            "position": 1
+          },
+          {
+            "net": "sigout",
+            "port_ref": "sigout",
+            "position": 2
+          }
+        ],
+        "module_ref": "smooth_comparator_tanh",
+        "name": "XDUT",
+        "ordered_nets": [
+          "sigin",
+          "sigref",
+          "sigout"
+        ],
+        "public_output_nets": [
+          "sigout"
+        ]
+      }
+    ],
+    "read_only_dut_artifacts": [
+      {
+        "public_input_path": "supplied_dut/smooth_comparator_tanh.va",
+        "testbench_include_path": "./dut/smooth_comparator_tanh.va"
+      }
+    ],
+    "read_only_support_artifacts": []
+  },
+  "target_artifacts": [
+    "testbench.scs"
+  ],
+  "task_id": "v4-624",
+  "trace_contract": {
+    "required_signals": [
+      "time",
+      "sigin",
+      "sigout",
+      "sigref"
+    ]
+  }
+}

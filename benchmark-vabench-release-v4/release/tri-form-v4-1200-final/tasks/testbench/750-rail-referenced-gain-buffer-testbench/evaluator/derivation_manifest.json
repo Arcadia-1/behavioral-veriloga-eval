@@ -1,0 +1,22 @@
+{
+  "base_dut": {
+    "canonical_score_tb_sha256": "034657a8d185c90f5254aa3fc2adbe19081faf3a4f6d7ac4c2678c60c906a2d6",
+    "canonical_task_id": "v4-250",
+    "canonical_task_slug": "250-rail-referenced-gain-buffer",
+    "family_spec_sha256": "63d418ccb6185e398c22c408af30b27392d5b44adbdf72c6da282bb130082805",
+    "mutation_catalog_sha256": "c5215e9471058b1b58d2309e4bd95946e7c96b1955dc8ef07580508bd5560795",
+    "source_release_manifest_sha256": "66951fd8580c37e2fbf70c3381d2e7f54f538e55588c199c63181d8c6a740623"
+  },
+  "family_id": "250",
+  "negative_assignment": {
+    "bugfix_seed": "neg_002_ignore_enable",
+    "testbench_suite": [
+      "neg_005_wrong_flag_metric",
+      "neg_002_ignore_enable",
+      "neg_001_zero_outputs",
+      "neg_004_ignore_control_or_reset",
+      "neg_003_wrong_scale"
+    ]
+  },
+  "schema_version": "v4-derivation-manifest-v2"
+}

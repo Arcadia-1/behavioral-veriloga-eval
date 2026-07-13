@@ -1,0 +1,22 @@
+{
+  "base_dut": {
+    "canonical_score_tb_sha256": "22474023c869ec4b0bb27a74ba6f3e9e1da1fbf4c736778cb5e030b92f43bdca",
+    "canonical_task_id": "v4-147",
+    "canonical_task_slug": "147-control-word-encoder-7b",
+    "family_spec_sha256": "2677925b669b6271ecb7735c0ba67e26b08b3feb6323fde52a0ec11ba27aff5a",
+    "mutation_catalog_sha256": "5102c6237f5cca00be1745909da493da90521b6629160f6e1b94854b60f325ba",
+    "source_release_manifest_sha256": "66951fd8580c37e2fbf70c3381d2e7f54f538e55588c199c63181d8c6a740623"
+  },
+  "family_id": "147",
+  "negative_assignment": {
+    "bugfix_seed": "neg_003_inverted_bits",
+    "testbench_suite": [
+      "neg_002_shifted_bits",
+      "neg_001_zero",
+      "neg_003_inverted_bits",
+      "neg_004_half_high_level",
+      "neg_005_metric_scale_low"
+    ]
+  },
+  "schema_version": "v4-derivation-manifest-v2"
+}

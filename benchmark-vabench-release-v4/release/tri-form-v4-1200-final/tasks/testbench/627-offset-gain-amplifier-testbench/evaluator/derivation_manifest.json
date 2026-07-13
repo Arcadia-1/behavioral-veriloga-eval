@@ -1,0 +1,22 @@
+{
+  "base_dut": {
+    "canonical_score_tb_sha256": "2b8cfe3e8a9a80ca8a2b0c84cf1f4bed77170b3d9f5bad43130278a399d4ad9c",
+    "canonical_task_id": "v4-127",
+    "canonical_task_slug": "127-offset-gain-amplifier",
+    "family_spec_sha256": "eee986a7d0b55578bb70b0bfd6d88d6300239495a1b91fa45ad599f4e2b6572c",
+    "mutation_catalog_sha256": "d64e4fffe012bfc96a0a9aa1a83328799fde3f01041220ff11a77d55c89e82b9",
+    "source_release_manifest_sha256": "66951fd8580c37e2fbf70c3381d2e7f54f538e55588c199c63181d8c6a740623"
+  },
+  "family_id": "127",
+  "negative_assignment": {
+    "bugfix_seed": "neg_002_missing_offset",
+    "testbench_suite": [
+      "neg_002_missing_offset",
+      "neg_001_zero",
+      "neg_003_wrong_gain",
+      "neg_004_adds_offset",
+      "neg_005_metric_scale_low"
+    ]
+  },
+  "schema_version": "v4-derivation-manifest-v2"
+}

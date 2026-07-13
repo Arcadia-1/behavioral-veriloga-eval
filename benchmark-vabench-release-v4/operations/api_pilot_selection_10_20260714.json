@@ -1,0 +1,215 @@
+{
+  "families": [
+    {
+      "domain": "Comparator / decision threshold",
+      "family_id": "010",
+      "family_slug": "010-offset-comparator",
+      "forms": {
+        "bugfix": {
+          "path": "release/tri-form-v4-1200-final/tasks/bugfix/1010-offset-comparator-bugfix",
+          "task_id": "v4-1010"
+        },
+        "dut": {
+          "path": "release/tri-form-v4-1200-final/tasks/dut/010-offset-comparator",
+          "task_id": "v4-010"
+        },
+        "testbench": {
+          "path": "release/tri-form-v4-1200-final/tasks/testbench/510-offset-comparator-testbench",
+          "task_id": "v4-510"
+        }
+      },
+      "selection_rationale": "Simple but representative voltage comparator; useful low-complexity anchor."
+    },
+    {
+      "domain": "Sampling circuit",
+      "family_id": "024",
+      "family_slug": "024-clocked-sample-and-hold",
+      "forms": {
+        "bugfix": {
+          "path": "release/tri-form-v4-1200-final/tasks/bugfix/1024-clocked-sample-and-hold-bugfix",
+          "task_id": "v4-1024"
+        },
+        "dut": {
+          "path": "release/tri-form-v4-1200-final/tasks/dut/024-clocked-sample-and-hold",
+          "task_id": "v4-024"
+        },
+        "testbench": {
+          "path": "release/tri-form-v4-1200-final/tasks/testbench/524-clocked-sample-and-hold-testbench",
+          "task_id": "v4-524"
+        }
+      },
+      "selection_rationale": "Core sampled-data behavior with hold/leakage style checks."
+    },
+    {
+      "domain": "Data converter loop",
+      "family_id": "055",
+      "family_slug": "055-first-order-sigma-delta-modulator",
+      "forms": {
+        "bugfix": {
+          "path": "release/tri-form-v4-1200-final/tasks/bugfix/1055-first-order-sigma-delta-modulator-bugfix",
+          "task_id": "v4-1055"
+        },
+        "dut": {
+          "path": "release/tri-form-v4-1200-final/tasks/dut/055-first-order-sigma-delta-modulator",
+          "task_id": "v4-055"
+        },
+        "testbench": {
+          "path": "release/tri-form-v4-1200-final/tasks/testbench/555-first-order-sigma-delta-modulator-testbench",
+          "task_id": "v4-555"
+        }
+      },
+      "selection_rationale": "Converter feedback/sequencing without being an oversized system task."
+    },
+    {
+      "domain": "TDC / timing measurement",
+      "family_id": "059",
+      "family_slug": "059-edge-interval-tdc-8b",
+      "forms": {
+        "bugfix": {
+          "path": "release/tri-form-v4-1200-final/tasks/bugfix/1059-edge-interval-tdc-8b-bugfix",
+          "task_id": "v4-1059"
+        },
+        "dut": {
+          "path": "release/tri-form-v4-1200-final/tasks/dut/059-edge-interval-tdc-8b",
+          "task_id": "v4-059"
+        },
+        "testbench": {
+          "path": "release/tri-form-v4-1200-final/tasks/testbench/559-edge-interval-tdc-8b-testbench",
+          "task_id": "v4-559"
+        }
+      },
+      "selection_rationale": "Timing-to-code behavior and edge interval measurement."
+    },
+    {
+      "domain": "PLL / lock timing",
+      "family_id": "088",
+      "family_slug": "088-cppll-tracking-reacquire-timer",
+      "forms": {
+        "bugfix": {
+          "path": "release/tri-form-v4-1200-final/tasks/bugfix/1088-cppll-tracking-reacquire-timer-bugfix",
+          "task_id": "v4-1088"
+        },
+        "dut": {
+          "path": "release/tri-form-v4-1200-final/tasks/dut/088-cppll-tracking-reacquire-timer",
+          "task_id": "v4-088"
+        },
+        "testbench": {
+          "path": "release/tri-form-v4-1200-final/tasks/testbench/588-cppll-tracking-reacquire-timer-testbench",
+          "task_id": "v4-588"
+        }
+      },
+      "selection_rationale": "PLL-oriented control/timer behavior with reacquisition semantics."
+    },
+    {
+      "domain": "RF mixer / IQ chain",
+      "family_id": "094",
+      "family_slug": "094-iq-downconversion-chain",
+      "forms": {
+        "bugfix": {
+          "path": "release/tri-form-v4-1200-final/tasks/bugfix/1094-iq-downconversion-chain-bugfix",
+          "task_id": "v4-1094"
+        },
+        "dut": {
+          "path": "release/tri-form-v4-1200-final/tasks/dut/094-iq-downconversion-chain",
+          "task_id": "v4-094"
+        },
+        "testbench": {
+          "path": "release/tri-form-v4-1200-final/tasks/testbench/594-iq-downconversion-chain-testbench",
+          "task_id": "v4-594"
+        }
+      },
+      "selection_rationale": "RF/baseband chain coverage beyond converter-heavy tasks."
+    },
+    {
+      "domain": "Amplifier + calibration",
+      "family_id": "306",
+      "family_slug": "306-instrumentation-amplifier-offset-trim",
+      "forms": {
+        "bugfix": {
+          "path": "release/tri-form-v4-1200-final/tasks/bugfix/1306-instrumentation-amplifier-offset-trim-bugfix",
+          "task_id": "v4-1306"
+        },
+        "dut": {
+          "path": "release/tri-form-v4-1200-final/tasks/dut/306-instrumentation-amplifier-offset-trim",
+          "task_id": "v4-306"
+        },
+        "testbench": {
+          "path": "release/tri-form-v4-1200-final/tasks/testbench/806-instrumentation-amplifier-offset-trim-testbench",
+          "task_id": "v4-806"
+        }
+      },
+      "selection_rationale": "Multi-module analog frontend with offset trim behavior."
+    },
+    {
+      "domain": "Charge pump / pulse balance",
+      "family_id": "321",
+      "family_slug": "321-charge-pump-pulse-balancer",
+      "forms": {
+        "bugfix": {
+          "path": "release/tri-form-v4-1200-final/tasks/bugfix/1321-charge-pump-pulse-balancer-bugfix",
+          "task_id": "v4-1321"
+        },
+        "dut": {
+          "path": "release/tri-form-v4-1200-final/tasks/dut/321-charge-pump-pulse-balancer",
+          "task_id": "v4-321"
+        },
+        "testbench": {
+          "path": "release/tri-form-v4-1200-final/tasks/testbench/821-charge-pump-pulse-balancer-testbench",
+          "task_id": "v4-821"
+        }
+      },
+      "selection_rationale": "Charge-pump style pulse balancing and control behavior."
+    },
+    {
+      "domain": "RF calibration loop",
+      "family_id": "333",
+      "family_slug": "333-image-reject-mixer-calibration-loop",
+      "forms": {
+        "bugfix": {
+          "path": "release/tri-form-v4-1200-final/tasks/bugfix/1333-image-reject-mixer-calibration-loop-bugfix",
+          "task_id": "v4-1333"
+        },
+        "dut": {
+          "path": "release/tri-form-v4-1200-final/tasks/dut/333-image-reject-mixer-calibration-loop",
+          "task_id": "v4-333"
+        },
+        "testbench": {
+          "path": "release/tri-form-v4-1200-final/tasks/testbench/833-image-reject-mixer-calibration-loop-testbench",
+          "task_id": "v4-833"
+        }
+      },
+      "selection_rationale": "Calibration loop with mixer/image-rejection semantics."
+    },
+    {
+      "domain": "Composed ADC system",
+      "family_id": "342",
+      "family_slug": "342-sar-adc-system-4b",
+      "forms": {
+        "bugfix": {
+          "path": "release/tri-form-v4-1200-final/tasks/bugfix/1342-sar-adc-system-4b-bugfix",
+          "task_id": "v4-1342"
+        },
+        "dut": {
+          "path": "release/tri-form-v4-1200-final/tasks/dut/342-sar-adc-system-4b",
+          "task_id": "v4-342"
+        },
+        "testbench": {
+          "path": "release/tri-form-v4-1200-final/tasks/testbench/842-sar-adc-system-4b-testbench",
+          "task_id": "v4-842"
+        }
+      },
+      "selection_rationale": "Multi-module system-level SAR ADC anchor for harder cases."
+    }
+  ],
+  "family_count": 10,
+  "generated_at": "2026-07-14",
+  "release": "benchmark-vabench-release-v4/release/tri-form-v4-1200-final",
+  "schema_version": "v4-api-pilot-selection-v1",
+  "selection_policy": [
+    "Select 10 paired circuit families from the scored 400 DUT families.",
+    "Cover simple anchor tasks, sampled-data/converter tasks, timing/PLL tasks, RF/IQ tasks, calibration loops, and multi-module systems.",
+    "Use all three forms per family: DUT, Testbench, Bugfix, preserving the v4 ID convention N, N+500, N+1000.",
+    "Avoid selecting the freshly re-audited 317 family as a pilot anchor so pilot results are not entangled with the latest metadata repair."
+  ],
+  "task_count_if_all_forms": 30
+}

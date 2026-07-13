@@ -1,0 +1,23 @@
+{
+  "candidate_artifacts": [
+    "resettable_integrator.va"
+  ],
+  "canonical_dut_source": "release/dut-base-v3-exact-five-hash-bound-v2/013-resettable-integrator",
+  "family_id": "013",
+  "family_spec_sha256": "aa14c5bf21ca7e3ae3832755f96d422751a6244043d0f9c40247a362c76946cd",
+  "form": "bugfix",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "9cd8bb57ecb43fe477d59548a770a354ef2feff4df91064da1dbcbe840d17910",
+  "schema_version": "v4-tri-form-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/bugfix/1013-resettable-integrator-bugfix",
+  "task_dir_sha256": "8583084701d8d0d75858283321c5621e964f3b02a567a01d71cc552e9aa2c87c",
+  "task_id": "v4-1013"
+}

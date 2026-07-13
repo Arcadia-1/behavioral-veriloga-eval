@@ -1,0 +1,22 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source": "release/dut-base-v3-exact-five-hash-bound-v2/105-single-shot-pulse",
+  "family_id": "105",
+  "family_spec_sha256": "c0e105c64eeababe7a964807753465f3fa9fb9154360b5ab5a63dad02ab18c25",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "ab618510ad38c3b4bcf21e2853517b7e947e6a024f1a9f6a3104560e97b48a31",
+  "schema_version": "v4-tri-form-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/testbench/605-single-shot-pulse-testbench",
+  "task_id": "v4-605"
+}

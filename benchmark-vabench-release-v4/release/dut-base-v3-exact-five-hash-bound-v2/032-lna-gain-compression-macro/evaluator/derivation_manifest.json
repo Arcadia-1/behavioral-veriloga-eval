@@ -1,0 +1,18 @@
+{
+  "family_id": "032",
+  "mutation_catalog_sha256": "76105cc5f7697d5c97265e88ddedb602c116fa8ab095e15552eb31be0c697adb",
+  "mutation_partition": {
+    "bugfix_seed": [
+      "neg_001_reduced_small_signal_gain"
+    ],
+    "testbench_private_score": [
+      "neg_003_negative_compression_bypass",
+      "neg_005_output_clamp_bypass",
+      "neg_007_reset_ignored"
+    ],
+    "testbench_public_feedback": [
+      "neg_002_positive_compression_bypass"
+    ]
+  },
+  "schema_version": "v4-derivation-manifest-v1"
+}

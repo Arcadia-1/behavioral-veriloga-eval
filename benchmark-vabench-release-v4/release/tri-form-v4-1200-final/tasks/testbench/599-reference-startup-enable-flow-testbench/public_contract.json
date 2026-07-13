@@ -1,0 +1,382 @@
+{
+  "artifact_contract": {
+    "files": [
+      {
+        "modules": [
+          {
+            "depends_on": [],
+            "name": "reference_startup_enable_flow",
+            "parameters": [
+              {
+                "default": 1e-10,
+                "name": "tr",
+                "override_behavior": "sets smoothing for all voltage-coded outputs",
+                "type": "real",
+                "units": "s",
+                "valid_range": "finite real; use tr >= 0 for physical transition smoothing"
+              },
+              {
+                "default": 0.45,
+                "name": "vth",
+                "override_behavior": "sets clk, rst, and en decision thresholds",
+                "type": "real",
+                "units": "V",
+                "valid_range": "finite real"
+              }
+            ],
+            "ports": [
+              {
+                "direction": "input",
+                "discipline": "electrical",
+                "name": "clk",
+                "position": 0
+              },
+              {
+                "direction": "input",
+                "discipline": "electrical",
+                "name": "rst",
+                "position": 1
+              },
+              {
+                "direction": "input",
+                "discipline": "electrical",
+                "name": "vdd_in",
+                "position": 2
+              },
+              {
+                "direction": "input",
+                "discipline": "electrical",
+                "name": "en",
+                "position": 3
+              },
+              {
+                "direction": "output",
+                "discipline": "electrical",
+                "name": "out",
+                "position": 4
+              },
+              {
+                "direction": "output",
+                "discipline": "electrical",
+                "name": "metric",
+                "position": 5
+              },
+              {
+                "direction": "output",
+                "discipline": "electrical",
+                "name": "supply_ok",
+                "position": 6
+              },
+              {
+                "direction": "output",
+                "discipline": "electrical",
+                "name": "enable_mon",
+                "position": 7
+              },
+              {
+                "direction": "output",
+                "discipline": "electrical",
+                "name": "state_mon",
+                "position": 8
+              },
+              {
+                "direction": "output",
+                "discipline": "electrical",
+                "name": "startup_mon",
+                "position": 9
+              }
+            ],
+            "role": "entry"
+          }
+        ],
+        "path": "reference_startup_enable_flow.va"
+      }
+    ],
+    "mode": "single_file"
+  },
+  "evaluation_summary": {
+    "anonymous_negative_cases": 5,
+    "full_credit": "valid candidate and reference pass and all five negatives killed behaviorally",
+    "reference_cases": 1
+  },
+  "family_id": "099",
+  "feedback": {
+    "available_in_modes": [
+      "G2",
+      "G3",
+      "G4",
+      "G5"
+    ],
+    "command": "vabench feedback run"
+  },
+  "form": "testbench",
+  "identity": {
+    "category": "bias_reference_power_management",
+    "difficulty": "D2",
+    "level": "L2",
+    "supported_scope": "pure voltage-domain event-driven transient behavioral Verilog-A",
+    "title": "Reference Startup Enable Flow"
+  },
+  "modeling_constraints": [
+    "Update startup state only on rising clk crossings and derive all monitor outputs from public state.",
+    "Use deterministic smoothed voltage contributions only.",
+    "Do not use branch-current contributions, transistor-level devices, AC/noise analysis, KCL/KVL regulation loops, validation hooks, or simulator-specific side channels."
+  ],
+  "properties": [
+    {
+      "id": "P_SUPPLY_AND_ENABLE_MONITORS",
+      "observable_contract": "Supply_ok is 0.9 V exactly when vdd_in exceeds 0.32 V, while enable_mon is 0.9 V exactly when en exceeds vth.",
+      "required_signals": [
+        "time",
+        "clk",
+        "rst",
+        "vdd_in",
+        "en",
+        "out",
+        "metric",
+        "supply_ok",
+        "enable_mon",
+        "state_mon",
+        "startup_mon"
+      ]
+    },
+    {
+      "id": "P_RESET_OR_BROWNOUT",
+      "observable_contract": "Active reset or a bad supply clears out, metric, startup progress, and state; a supply dip also removes valid status.",
+      "required_signals": [
+        "time",
+        "clk",
+        "rst",
+        "vdd_in",
+        "en",
+        "out",
+        "metric",
+        "supply_ok",
+        "enable_mon",
+        "state_mon",
+        "startup_mon"
+      ]
+    },
+    {
+      "id": "P_DISABLED_REFERENCE",
+      "observable_contract": "With supply good and enable low, out is 0.05 V, metric is 0.1 V, startup progress is cleared, and state_mon represents state 1.",
+      "required_signals": [
+        "time",
+        "clk",
+        "rst",
+        "vdd_in",
+        "en",
+        "out",
+        "metric",
+        "supply_ok",
+        "enable_mon",
+        "state_mon",
+        "startup_mon"
+      ]
+    },
+    {
+      "id": "P_ENABLED_SETTLING",
+      "observable_contract": "On each rising clk crossing with supply good and enable high, out advances by 0.32 times its remaining error to 0.55 V and the startup count increments up to 8.",
+      "required_signals": [
+        "time",
+        "clk",
+        "rst",
+        "vdd_in",
+        "en",
+        "out",
+        "metric",
+        "supply_ok",
+        "enable_mon",
+        "state_mon",
+        "startup_mon"
+      ]
+    },
+    {
+      "id": "P_STARTUP_VALIDITY",
+      "observable_contract": "During enabled startup metric is 0.25 V and state is 2; after at least five enabled updates with out above 0.48 V, metric is 0.9 V and state is 3.",
+      "required_signals": [
+        "time",
+        "clk",
+        "rst",
+        "vdd_in",
+        "en",
+        "out",
+        "metric",
+        "supply_ok",
+        "enable_mon",
+        "state_mon",
+        "startup_mon"
+      ]
+    },
+    {
+      "id": "P_BROWNOUT_RECOVERY",
+      "observable_contract": "After a supply dip and restoration with enable asserted, the output and monitors repeat the same startup sequence before returning valid.",
+      "required_signals": [
+        "time",
+        "clk",
+        "rst",
+        "vdd_in",
+        "en",
+        "out",
+        "metric",
+        "supply_ok",
+        "enable_mon",
+        "state_mon",
+        "startup_mon"
+      ]
+    }
+  ],
+  "schema_version": "v4-tri-form-public-contract-v2",
+  "security_policy": {
+    "allowed_include_paths": [
+      "./dut/reference_startup_enable_flow.va"
+    ],
+    "candidate_artifacts": [
+      "testbench.scs"
+    ],
+    "forbidden_rules": [
+      "undeclared_include",
+      "absolute_path",
+      "path_traversal",
+      "process_execution",
+      "network_access",
+      "simulator_scripting_escape",
+      "dut_redefinition",
+      "direct_dut_output_drive",
+      "private_hierarchical_probe",
+      "unbounded_resource_use"
+    ],
+    "limits": {
+      "max_analyses": 1,
+      "max_candidate_bytes": 1000000,
+      "max_cpu_time_s": 120,
+      "max_memory_mb": 2048,
+      "max_output_bytes": 100000000,
+      "max_saved_signals": 64,
+      "max_stop_time_s": 1.0,
+      "max_wall_time_s": 180
+    },
+    "rejection_outcome": "invalid_run",
+    "required_rules": [
+      "declared_dut_binding",
+      "transient_analysis",
+      "all_required_public_traces"
+    ],
+    "schema_version": "v4-testbench-security-policy-v2"
+  },
+  "security_summary": [
+    "only the declared testbench_include_path values are allowed for DUT sources",
+    "DUT redefinition, direct output drive, private hierarchical probes, arbitrary file access, and unbounded analyses are rejected"
+  ],
+  "submission_contract": {
+    "agentic_submission_root": "public/submission",
+    "exact_declared_file_set_required": true,
+    "target_artifacts_relative_to": "submission_root"
+  },
+  "supplied_inputs": {
+    "dut_instances": [
+      {
+        "connections": [
+          {
+            "net": "clk",
+            "port_ref": "clk",
+            "position": 0
+          },
+          {
+            "net": "rst",
+            "port_ref": "rst",
+            "position": 1
+          },
+          {
+            "net": "vdd_in",
+            "port_ref": "vdd_in",
+            "position": 2
+          },
+          {
+            "net": "en",
+            "port_ref": "en",
+            "position": 3
+          },
+          {
+            "net": "out",
+            "port_ref": "out",
+            "position": 4
+          },
+          {
+            "net": "metric",
+            "port_ref": "metric",
+            "position": 5
+          },
+          {
+            "net": "supply_ok",
+            "port_ref": "supply_ok",
+            "position": 6
+          },
+          {
+            "net": "enable_mon",
+            "port_ref": "enable_mon",
+            "position": 7
+          },
+          {
+            "net": "state_mon",
+            "port_ref": "state_mon",
+            "position": 8
+          },
+          {
+            "net": "startup_mon",
+            "port_ref": "startup_mon",
+            "position": 9
+          }
+        ],
+        "module_ref": "reference_startup_enable_flow",
+        "name": "XDUT",
+        "ordered_nets": [
+          "clk",
+          "rst",
+          "vdd_in",
+          "en",
+          "out",
+          "metric",
+          "supply_ok",
+          "enable_mon",
+          "state_mon",
+          "startup_mon"
+        ],
+        "public_output_nets": [
+          "out",
+          "metric",
+          "supply_ok",
+          "enable_mon",
+          "state_mon",
+          "startup_mon"
+        ]
+      }
+    ],
+    "read_only_dut_artifacts": [
+      {
+        "public_input_path": "supplied_dut/reference_startup_enable_flow.va",
+        "testbench_include_path": "./dut/reference_startup_enable_flow.va"
+      }
+    ],
+    "read_only_support_artifacts": []
+  },
+  "target_artifacts": [
+    "testbench.scs"
+  ],
+  "task_id": "v4-599",
+  "trace_contract": {
+    "required_signals": [
+      "time",
+      "clk",
+      "rst",
+      "vdd_in",
+      "en",
+      "out",
+      "metric",
+      "supply_ok",
+      "enable_mon",
+      "state_mon",
+      "startup_mon"
+    ]
+  }
+}

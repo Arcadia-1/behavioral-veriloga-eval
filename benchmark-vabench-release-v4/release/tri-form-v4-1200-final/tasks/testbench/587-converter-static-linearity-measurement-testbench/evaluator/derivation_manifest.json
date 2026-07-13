@@ -1,0 +1,22 @@
+{
+  "base_dut": {
+    "canonical_score_tb_sha256": "f0730e59a5ac860ad955263b8374fed3532ee05cc3a970cf3982191bd8cedfa4",
+    "canonical_task_id": "v4-087",
+    "canonical_task_slug": "087-converter-static-linearity-measurement",
+    "family_spec_sha256": "7a8450ac3a5cbbb87999b2e5421ae1b3f0f4fd5ae033cfa1dfe8fae566ddb7f1",
+    "mutation_catalog_sha256": "3d320d04f5edbd8feb77c0819729682acedd23ec4a67f794d3de14c560b202ca",
+    "source_release_manifest_sha256": "66951fd8580c37e2fbf70c3381d2e7f54f538e55588c199c63181d8c6a740623"
+  },
+  "family_id": "087",
+  "negative_assignment": {
+    "bugfix_seed": "neg_004_reset_polarity_wrong",
+    "testbench_suite": [
+      "neg_002_threshold_shifted",
+      "neg_001_zero",
+      "neg_005_metric_scale_low",
+      "neg_004_reset_polarity_wrong",
+      "neg_003_event_edge_wrong"
+    ]
+  },
+  "schema_version": "v4-derivation-manifest-v2"
+}

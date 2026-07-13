@@ -1,0 +1,23 @@
+{
+  "candidate_artifacts": [
+    "therm_to_bin_8b.va"
+  ],
+  "canonical_dut_source": "release/dut-base-v3-exact-five-hash-bound-v2/049-thermometer-to-binary-encoder-8b",
+  "family_id": "049",
+  "family_spec_sha256": "caa7e4ca393c14127000932bcaf42786ad28977ee02565b6f72cd8545f546b03",
+  "form": "bugfix",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "c12e5e5671b3463163ffd0d1bc7db942c10add7192d635a6c149861d1afac0f3",
+  "schema_version": "v4-tri-form-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/bugfix/1049-thermometer-to-binary-encoder-8b-bugfix",
+  "task_dir_sha256": "3615ab37bd7e8b4768abc3081139cfc2534e61eab883343ef3e69785f83fdbbf",
+  "task_id": "v4-1049"
+}

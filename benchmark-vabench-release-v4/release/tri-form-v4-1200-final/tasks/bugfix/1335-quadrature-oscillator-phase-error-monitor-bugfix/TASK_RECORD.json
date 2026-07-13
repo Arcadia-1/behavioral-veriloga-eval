@@ -1,0 +1,23 @@
+{
+  "candidate_artifacts": [
+    "quadrature_oscillator_phase_error_monitor.va"
+  ],
+  "canonical_dut_source": "release/dut-base-v3-exact-five-hash-bound-v2/335-quadrature-oscillator-phase-error-monitor",
+  "family_id": "335",
+  "family_spec_sha256": "88cb9113b178500df3b08cda05a30e2c696f9d9ab7528684c4f2a42a1f7c59c1",
+  "form": "bugfix",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "a1f36b6823c6265fd1b39f0362e88293c7e08533cc8f83d069cbf07a9b28f2a6",
+  "schema_version": "v4-tri-form-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/bugfix/1335-quadrature-oscillator-phase-error-monitor-bugfix",
+  "task_dir_sha256": "b70f4dbece3f6880eef4c64ea0482e8274032d1ba9192ae97452b372cb712da5",
+  "task_id": "v4-1335"
+}

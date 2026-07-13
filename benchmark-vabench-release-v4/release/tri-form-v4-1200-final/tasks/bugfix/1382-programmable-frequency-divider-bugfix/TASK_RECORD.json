@@ -1,0 +1,23 @@
+{
+  "candidate_artifacts": [
+    "programmable_frequency_divider.va"
+  ],
+  "canonical_dut_source": "release/dut-base-v3-exact-five-hash-bound-v2/382-programmable-frequency-divider",
+  "family_id": "382",
+  "family_spec_sha256": "3a29be845c02b9735c93f9bd12a33fdacd5bbb22b16de20136125da9d6bb2298",
+  "form": "bugfix",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "733f3941d8d754970abf70f2850dd731f4ceed59aa8e3c5fda79130ab1da7f9c",
+  "schema_version": "v4-tri-form-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/bugfix/1382-programmable-frequency-divider-bugfix",
+  "task_dir_sha256": "6dcbed0a06a0a1074b26d42926415ee07e04d34ba708c717e14545f3aa66e22f",
+  "task_id": "v4-1382"
+}

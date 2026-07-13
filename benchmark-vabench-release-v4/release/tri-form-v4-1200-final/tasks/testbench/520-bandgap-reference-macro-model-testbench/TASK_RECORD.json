@@ -1,0 +1,22 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source": "release/dut-base-v3-exact-five-hash-bound-v2/020-bandgap-reference-macro-model",
+  "family_id": "020",
+  "family_spec_sha256": "f9897f139adddb8e616941f9533ed98fb5376d73abbfbff0683caae39796e65f",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "57fda1b8fb44b9a95d6f20260ace4580d379dc48603390305839d7107e3c4b31",
+  "schema_version": "v4-tri-form-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/testbench/520-bandgap-reference-macro-model-testbench",
+  "task_id": "v4-520"
+}

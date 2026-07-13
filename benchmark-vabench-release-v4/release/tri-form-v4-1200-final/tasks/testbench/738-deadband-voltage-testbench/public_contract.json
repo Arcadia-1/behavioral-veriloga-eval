@@ -1,0 +1,197 @@
+{
+  "artifact_contract": {
+    "files": [
+      {
+        "modules": [
+          {
+            "depends_on": [],
+            "name": "deadband_voltage",
+            "parameters": [
+              {
+                "default": "-0.25",
+                "name": "sigin_dead_low",
+                "override_behavior": "overrides sigin_dead_low",
+                "type": "real",
+                "units": "",
+                "valid_range": "finite"
+              },
+              {
+                "default": "0.25",
+                "name": "sigin_dead_high",
+                "override_behavior": "overrides sigin_dead_high",
+                "type": "real",
+                "units": "",
+                "valid_range": "finite"
+              }
+            ],
+            "ports": [
+              {
+                "direction": "input",
+                "discipline": "electrical",
+                "name": "sigin",
+                "position": 0
+              },
+              {
+                "direction": "output",
+                "discipline": "electrical",
+                "name": "sigout",
+                "position": 1
+              }
+            ],
+            "role": "entry"
+          }
+        ],
+        "path": "deadband_voltage.va"
+      }
+    ],
+    "mode": "single_file"
+  },
+  "evaluation_summary": {
+    "anonymous_negative_cases": 5,
+    "full_credit": "valid candidate and reference pass and all five negatives killed behaviorally",
+    "reference_cases": 1
+  },
+  "family_id": "238",
+  "feedback": {
+    "available_in_modes": [
+      "G2",
+      "G3",
+      "G4",
+      "G5"
+    ],
+    "command": "vabench feedback run"
+  },
+  "form": "testbench",
+  "identity": {
+    "category": "baseband_signal_conditioning",
+    "difficulty": "D2",
+    "level": "L1",
+    "supported_scope": "pure voltage-domain event-driven transient behavioral Verilog-A",
+    "title": "Deadband Voltage"
+  },
+  "modeling_constraints": [
+    "Use deterministic voltage-domain behavioral Verilog-A.",
+    "Do not hard-code validation stimulus, stop times, sample windows, gold internals, or simulator side channels."
+  ],
+  "properties": [
+    {
+      "id": "P_DEADBAND_ZERO_REGION",
+      "observable_contract": "Inside the inclusive deadband window from `sigin_dead_low` to `sigin_dead_high`, drive `sigout` to `0 V`.",
+      "required_signals": [
+        "time",
+        "sigin",
+        "sigout"
+      ]
+    },
+    {
+      "id": "P_SIGNED_RESIDUE_OUTSIDE_WINDOW",
+      "observable_contract": "Below the lower edge, drive the signed excess below `sigin_dead_low`; above the upper edge, drive the signed excess above `sigin_dead_high` while preserving sign.",
+      "required_signals": [
+        "time",
+        "sigin",
+        "sigout"
+      ]
+    },
+    {
+      "id": "P_DEADBAND_EDGE_CONTINUITY",
+      "observable_contract": "Use the public lower and upper threshold values so the output is continuous at both deadband edges.",
+      "required_signals": [
+        "time",
+        "sigin",
+        "sigout"
+      ]
+    }
+  ],
+  "schema_version": "v4-tri-form-public-contract-v2",
+  "security_policy": {
+    "allowed_include_paths": [
+      "./dut/deadband_voltage.va"
+    ],
+    "candidate_artifacts": [
+      "testbench.scs"
+    ],
+    "forbidden_rules": [
+      "undeclared_include",
+      "absolute_path",
+      "path_traversal",
+      "process_execution",
+      "network_access",
+      "simulator_scripting_escape",
+      "dut_redefinition",
+      "direct_dut_output_drive",
+      "private_hierarchical_probe",
+      "unbounded_resource_use"
+    ],
+    "limits": {
+      "max_analyses": 1,
+      "max_candidate_bytes": 1000000,
+      "max_cpu_time_s": 120,
+      "max_memory_mb": 2048,
+      "max_output_bytes": 100000000,
+      "max_saved_signals": 64,
+      "max_stop_time_s": 1.0,
+      "max_wall_time_s": 180
+    },
+    "rejection_outcome": "invalid_run",
+    "required_rules": [
+      "declared_dut_binding",
+      "transient_analysis",
+      "all_required_public_traces"
+    ],
+    "schema_version": "v4-testbench-security-policy-v2"
+  },
+  "security_summary": [
+    "only the declared testbench_include_path values are allowed for DUT sources",
+    "DUT redefinition, direct output drive, private hierarchical probes, arbitrary file access, and unbounded analyses are rejected"
+  ],
+  "submission_contract": {
+    "agentic_submission_root": "public/submission",
+    "exact_declared_file_set_required": true,
+    "target_artifacts_relative_to": "submission_root"
+  },
+  "supplied_inputs": {
+    "dut_instances": [
+      {
+        "connections": [
+          {
+            "net": "sigin",
+            "port_ref": "sigin",
+            "position": 0
+          },
+          {
+            "net": "sigout",
+            "port_ref": "sigout",
+            "position": 1
+          }
+        ],
+        "module_ref": "deadband_voltage",
+        "name": "XDUT",
+        "ordered_nets": [
+          "sigin",
+          "sigout"
+        ],
+        "public_output_nets": [
+          "sigout"
+        ]
+      }
+    ],
+    "read_only_dut_artifacts": [
+      {
+        "public_input_path": "supplied_dut/deadband_voltage.va",
+        "testbench_include_path": "./dut/deadband_voltage.va"
+      }
+    ],
+    "read_only_support_artifacts": []
+  },
+  "target_artifacts": [
+    "testbench.scs"
+  ],
+  "task_id": "v4-738",
+  "trace_contract": {
+    "required_signals": [
+      "time",
+      "sigin",
+      "sigout"
+    ]
+  }
+}

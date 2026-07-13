@@ -1,0 +1,22 @@
+{
+  "base_dut": {
+    "canonical_score_tb_sha256": "a3c0db1694260e730b49005a93049417ded9d3b730cdef3bb0520e322cd2f636",
+    "canonical_task_id": "v4-083",
+    "canonical_task_slug": "083-amplifier-filter-chain",
+    "family_spec_sha256": "fd70e77c9b67228ff0168cb5c86badc26d284af6c7d4dc692330c48320f21339",
+    "mutation_catalog_sha256": "b33aaa3cbc5e2dc26d22dce32136438516a29d5ff0b44efe4194a6673dae7316",
+    "source_release_manifest_sha256": "66951fd8580c37e2fbf70c3381d2e7f54f538e55588c199c63181d8c6a740623"
+  },
+  "family_id": "083",
+  "negative_assignment": {
+    "bugfix_seed": "neg_003_event_edge_wrong",
+    "testbench_suite": [
+      "neg_002_threshold_shifted",
+      "neg_005_metric_scale_low",
+      "neg_003_event_edge_wrong",
+      "neg_001_zero",
+      "neg_004_reset_polarity_wrong"
+    ]
+  },
+  "schema_version": "v4-derivation-manifest-v2"
+}

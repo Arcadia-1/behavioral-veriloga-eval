@@ -1,0 +1,23 @@
+{
+  "candidate_artifacts": [
+    "spi_shift_mux.va"
+  ],
+  "canonical_dut_source": "release/dut-base-v3-exact-five-hash-bound-v2/185-spi-shift-mux",
+  "family_id": "185",
+  "family_spec_sha256": "d799411e6138ac220107ff2c112de00a41a39c5d94f7a179088855f6bb14f31e",
+  "form": "bugfix",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "747aa98115231a050ec54553dc0f5c95d56330e671982bac0c18d897461f93be",
+  "schema_version": "v4-tri-form-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/bugfix/1185-spi-shift-mux-bugfix",
+  "task_dir_sha256": "6fcfed728d01ceffc7f544722eb0f342dfbcdd19543f66991120f9b016f35d7d",
+  "task_id": "v4-1185"
+}

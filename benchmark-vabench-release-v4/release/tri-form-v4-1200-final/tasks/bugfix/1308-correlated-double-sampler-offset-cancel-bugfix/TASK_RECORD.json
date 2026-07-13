@@ -1,0 +1,25 @@
+{
+  "candidate_artifacts": [
+    "correlated_double_sampler_top.va",
+    "reset_sample_latch.va",
+    "signal_sample_latch.va"
+  ],
+  "canonical_dut_source": "release/dut-base-v3-exact-five-hash-bound-v2/308-correlated-double-sampler-offset-cancel",
+  "family_id": "308",
+  "family_spec_sha256": "14a68835afe8051115536ea3645cb80e90b219c4e802a1d56980f89d9bfcaae1",
+  "form": "bugfix",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "809660e9594bc18f3e8992e3aa6db02b211d56b2e01968e9346a071483d6f203",
+  "schema_version": "v4-tri-form-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/bugfix/1308-correlated-double-sampler-offset-cancel-bugfix",
+  "task_dir_sha256": "2a920d460c89d317409ceb169a49af806c83e8d5366b1936d86a3e3a82507081",
+  "task_id": "v4-1308"
+}

@@ -1,0 +1,119 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://vabench.local/schemas/v4/derivation_manifest-v2-draft.schema.json",
+  "title": "vaBench v4 tri-form derivation assignment draft",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "family_id",
+    "base_dut",
+    "negative_assignment",
+    "selection_evidence"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "v4-derivation-manifest-v2-draft"
+    },
+    "family_id": {
+      "type": "string",
+      "pattern": "^[0-9]{3}$"
+    },
+    "base_dut": {
+      "type": "object",
+      "required": [
+        "canonical_task_id",
+        "canonical_task_slug",
+        "mutation_catalog_sha256",
+        "canonical_score_tb_sha256"
+      ],
+      "properties": {
+        "canonical_task_id": {
+          "type": "string",
+          "pattern": "^v4-[0-9]{3}$"
+        },
+        "canonical_task_slug": {
+          "type": "string",
+          "minLength": 5
+        },
+        "mutation_catalog_sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "canonical_score_tb_sha256": {
+          "$ref": "#/$defs/sha256"
+        }
+      },
+      "additionalProperties": false
+    },
+    "negative_assignment": {
+      "type": "object",
+      "required": [
+        "bugfix_seed",
+        "testbench_suite"
+      ],
+      "properties": {
+        "bugfix_seed": {
+          "$ref": "#/$defs/mutation_id"
+        },
+        "testbench_suite": {
+          "type": "array",
+          "minItems": 5,
+          "maxItems": 5,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/mutation_id"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "selection_evidence": {
+      "type": "object",
+      "required": [
+        "bugfix_seed_source",
+        "bugfix_seed_rationale",
+        "suite_selection_policy",
+        "semantic_review_status"
+      ],
+      "properties": {
+        "bugfix_seed_source": {
+          "enum": [
+            "legacy_semantic_assignment",
+            "semantic_heuristic_fallback"
+          ]
+        },
+        "bugfix_seed_rationale": {
+          "type": "string",
+          "minLength": 1
+        },
+        "suite_selection_policy": {
+          "type": "string",
+          "minLength": 1
+        },
+        "semantic_review_status": {
+          "enum": [
+            "provisional_complete",
+            "manual_review_required",
+            "blocked"
+          ]
+        }
+      },
+      "additionalProperties": true
+    }
+  },
+  "$defs": {
+    "mutation_id": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9_]*$"
+    },
+    "sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    }
+  },
+  "allOf": [
+    {
+      "$comment": "The validator must additionally enforce bugfix_seed in testbench_suite."
+    }
+  ],
+  "additionalProperties": false
+}

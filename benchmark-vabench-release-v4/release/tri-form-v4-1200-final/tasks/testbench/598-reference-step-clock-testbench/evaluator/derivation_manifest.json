@@ -1,0 +1,22 @@
+{
+  "base_dut": {
+    "canonical_score_tb_sha256": "d90b47843bda96674c155a3230925cfc42605ceafd5bb147fa2b68d93b9b3a6c",
+    "canonical_task_id": "v4-098",
+    "canonical_task_slug": "098-reference-step-clock",
+    "family_spec_sha256": "8f654d61171c2a4a68f399503485b66c1b40c9701bda1790b31e1781624e73fc",
+    "mutation_catalog_sha256": "9e948762365d8d18f5f96bbb46fa566c70fa010f9e4a4019d3db5fd515a4105d",
+    "source_release_manifest_sha256": "66951fd8580c37e2fbf70c3381d2e7f54f538e55588c199c63181d8c6a740623"
+  },
+  "family_id": "098",
+  "negative_assignment": {
+    "bugfix_seed": "neg_005_bad_duty_cycle",
+    "testbench_suite": [
+      "neg_002_no_frequency_step",
+      "neg_005_bad_duty_cycle",
+      "neg_003_wrong_post_period",
+      "neg_001_zero",
+      "neg_004_late_switch"
+    ]
+  },
+  "schema_version": "v4-derivation-manifest-v2"
+}

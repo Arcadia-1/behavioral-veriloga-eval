@@ -1,0 +1,85 @@
+{
+  "schema_version": "v4-pre-evas-closeout-summary-v1",
+  "generated_at": "2026-07-13T09:07:38Z",
+  "status": "pre_evas_structure_and_spectre_evidence_ready",
+  "claim_boundary": {
+    "final_evas_identity_frozen": false,
+    "final_gate2_or_gate3_sealed": false,
+    "spectre_final_judge": true,
+    "structure_seal_is_behavior_certification": false
+  },
+  "release_shape": {
+    "family_count": 400,
+    "dut_task_count": 400,
+    "testbench_task_count": 400,
+    "bugfix_task_count": 400,
+    "prompt_record_count": 7200,
+    "active_mutation_count": 2000,
+    "active_mutations_per_family": 5,
+    "bugfix_seed_count_per_family": 1,
+    "testbench_suite_count_per_family": 5
+  },
+  "current_spectre_evidence": {
+    "gold_unique_pass_count": 400,
+    "mutation_unique_pass_count": 2000,
+    "mutation_replay_identity_matched_count": 2000,
+    "stale_local_rerun_labels_reconciled_count": 95,
+    "current_unreconciled_case_count": 0,
+    "spectre_execution_required_now_count": 0
+  },
+  "structure_and_boundary_audit": {
+    "tri_form_audit_status": "pass",
+    "runtime_ingestion_status": "pass",
+    "runtime_sample_count": 3,
+    "runtime_evaluator_mounted_count": 0,
+    "public_boundary_problem_count": 0,
+    "checker_property_ready_family_count": 400,
+    "checker_property_warning_count": 76
+  },
+  "authoring_diagnostic": {
+    "assignment_ready_family_count": 398,
+    "assignment_stale_family_ids": [
+      "342",
+      "367"
+    ],
+    "local_certification_ready_family_count": 361,
+    "local_certification_pending_family_count": 39,
+    "strict_gate2_ready_family_count": 0,
+    "strict_gate2_not_ready_family_count": 400,
+    "strict_gate3_ready_family_count": 346,
+    "strict_gate3_not_ready_family_count": 54,
+    "interpretation": "Strict readiness is a diagnostic over current authoring assets. It is not the final release result: Gate 2 awaits the frozen EVAS identity and current evidence schemas, while Gate 3 awaits local hash-bound certification promotion and source-release rebuild."
+  },
+  "verification": {
+    "focused_regression_pass_count": 84,
+    "focused_regression_deselected_count": 1,
+    "deselected_reason": "The checked-in draft tri-form release seal intentionally remains stale until the final EVAS-bound source release is rebuilt.",
+    "known_draft_seal_difference": {
+      "actual_release_status": "gate3_static_sealed_simulation_pending",
+      "expected_release_status": "package_structure_sealed",
+      "other_seal_fields_match": true
+    },
+    "python_compile": "pass",
+    "derivation_schema_parse": "pass",
+    "diff_check": "pass",
+    "target_trailing_whitespace_check": "pass"
+  },
+  "evidence_sha256": {
+    "pre_evas_full_local_report": "ab1c26260f0ff5f5bb8958d34b9ffb9630f4bae24594daa665d4ceb0ab4c4d59",
+    "strict_readiness_diagnostic": "10798090f6749ae93f828dab3bb3f53ed1f7a210c5c0f700a3680e04a5761d94",
+    "spectre_gold_union": "f6d0276edc6f2220757915555ba7552be5e0a5decaa92e1720af500512975fb4",
+    "spectre_mutation_replay": "897c46875577331514dc4b2a3f17f057ee149ebe605a06c4bc4635ef62c9f1dd",
+    "property_diagnostic_audit": "af128e16e7a1a41bc24073d6c13863df483f23310de961f4c92229ebd640a8cb",
+    "mutation_readiness": "ac54128f1e290ef49e69f3349eebb8d25d62307ae098317c252c419ba05bd556",
+    "tri_form_audit": "ac54e768e676c967891a4f3432fd0dfe0a66c029422e173f71c714b5c2b5d309",
+    "tri_form_structure_seal": "f1fd557b21cc7c1d45ae396e4cd7637f3f34c5c86303c556bf3936e1d6bca633"
+  },
+  "next_required_work": [
+    "Freeze the final EVAS source, runtime, ABI, and executable identity.",
+    "Run current gold and mutation EVAS validation under that identity.",
+    "Promote hash-bound certifications and rebuild the exact-five DUT source release.",
+    "Rematerialize and audit the repository tri-form release from the rebuilt source.",
+    "Run Spectre only for cases invalidated by a real simulation-component change.",
+    "Seal final Gate 2 and Gate 3 reports only after all prior steps pass."
+  ]
+}

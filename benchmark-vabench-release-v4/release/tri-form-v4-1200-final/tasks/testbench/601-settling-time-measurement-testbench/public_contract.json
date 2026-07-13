@@ -1,0 +1,227 @@
+{
+  "artifact_contract": {
+    "files": [
+      {
+        "modules": [
+          {
+            "depends_on": [],
+            "name": "settling_time_measurement_tb",
+            "parameters": [
+              {
+                "default": 3e-10,
+                "name": "tr",
+                "override_behavior": "sets smoothing for vout and done",
+                "type": "real",
+                "units": "s",
+                "valid_range": "finite real; use tr >= 0 for physical transition smoothing"
+              }
+            ],
+            "ports": [
+              {
+                "direction": "input",
+                "discipline": "electrical",
+                "name": "step",
+                "position": 0
+              },
+              {
+                "direction": "output",
+                "discipline": "electrical",
+                "name": "vout",
+                "position": 1
+              },
+              {
+                "direction": "output",
+                "discipline": "electrical",
+                "name": "done",
+                "position": 2
+              }
+            ],
+            "role": "entry"
+          }
+        ],
+        "path": "settling_time_measurement_tb.va"
+      }
+    ],
+    "mode": "single_file"
+  },
+  "evaluation_summary": {
+    "anonymous_negative_cases": 5,
+    "full_credit": "valid candidate and reference pass and all five negatives killed behaviorally",
+    "reference_cases": 1
+  },
+  "family_id": "101",
+  "feedback": {
+    "available_in_modes": [
+      "G2",
+      "G3",
+      "G4",
+      "G5"
+    ],
+    "command": "vabench feedback run"
+  },
+  "form": "testbench",
+  "identity": {
+    "category": "measurement_instrumentation_flows",
+    "difficulty": "D2",
+    "level": "L1",
+    "supported_scope": "pure voltage-domain event-driven transient behavioral Verilog-A",
+    "title": "Settling Time Measurement"
+  },
+  "modeling_constraints": [
+    "Implement the public 1 ns discrete-time first-order settling response and completion flag as a DUT measurement helper.",
+    "Use smoothed voltage contributions only.",
+    "Do not emit a Spectre deck or use current contributions, transistor-level devices, waveform files, validation artifacts, or simulator-specific side channels."
+  ],
+  "properties": [
+    {
+      "id": "P_INITIAL_ZERO_STATE",
+      "observable_contract": "The settling-response state initializes to 0 V and vout begins from that state.",
+      "required_signals": [
+        "time",
+        "step",
+        "vout",
+        "done"
+      ]
+    },
+    {
+      "id": "P_FIRST_ORDER_UPDATE",
+      "observable_contract": "At each 1 ns update, the response advances by 0.04 times the difference between step and its previous value.",
+      "required_signals": [
+        "time",
+        "step",
+        "vout",
+        "done"
+      ]
+    },
+    {
+      "id": "P_RESPONSE_CONVERGENCE",
+      "observable_contract": "For a constant input step, vout approaches the step value monotonically without overshoot under the public recurrence.",
+      "required_signals": [
+        "time",
+        "step",
+        "vout",
+        "done"
+      ]
+    },
+    {
+      "id": "P_DONE_TIME_GATE",
+      "observable_contract": "Done remains low through 120 ns regardless of the response level.",
+      "required_signals": [
+        "time",
+        "step",
+        "vout",
+        "done"
+      ]
+    },
+    {
+      "id": "P_DONE_SETTLED_GATE",
+      "observable_contract": "After 120 ns, done is high only while the internal settled response is above 0.75 V and otherwise remains low.",
+      "required_signals": [
+        "time",
+        "step",
+        "vout",
+        "done"
+      ]
+    }
+  ],
+  "schema_version": "v4-tri-form-public-contract-v2",
+  "security_policy": {
+    "allowed_include_paths": [
+      "./dut/settling_time_measurement_tb.va"
+    ],
+    "candidate_artifacts": [
+      "testbench.scs"
+    ],
+    "forbidden_rules": [
+      "undeclared_include",
+      "absolute_path",
+      "path_traversal",
+      "process_execution",
+      "network_access",
+      "simulator_scripting_escape",
+      "dut_redefinition",
+      "direct_dut_output_drive",
+      "private_hierarchical_probe",
+      "unbounded_resource_use"
+    ],
+    "limits": {
+      "max_analyses": 1,
+      "max_candidate_bytes": 1000000,
+      "max_cpu_time_s": 120,
+      "max_memory_mb": 2048,
+      "max_output_bytes": 100000000,
+      "max_saved_signals": 64,
+      "max_stop_time_s": 1.0,
+      "max_wall_time_s": 180
+    },
+    "rejection_outcome": "invalid_run",
+    "required_rules": [
+      "declared_dut_binding",
+      "transient_analysis",
+      "all_required_public_traces"
+    ],
+    "schema_version": "v4-testbench-security-policy-v2"
+  },
+  "security_summary": [
+    "only the declared testbench_include_path values are allowed for DUT sources",
+    "DUT redefinition, direct output drive, private hierarchical probes, arbitrary file access, and unbounded analyses are rejected"
+  ],
+  "submission_contract": {
+    "agentic_submission_root": "public/submission",
+    "exact_declared_file_set_required": true,
+    "target_artifacts_relative_to": "submission_root"
+  },
+  "supplied_inputs": {
+    "dut_instances": [
+      {
+        "connections": [
+          {
+            "net": "step",
+            "port_ref": "step",
+            "position": 0
+          },
+          {
+            "net": "vout",
+            "port_ref": "vout",
+            "position": 1
+          },
+          {
+            "net": "done",
+            "port_ref": "done",
+            "position": 2
+          }
+        ],
+        "module_ref": "settling_time_measurement_tb",
+        "name": "XDUT",
+        "ordered_nets": [
+          "step",
+          "vout",
+          "done"
+        ],
+        "public_output_nets": [
+          "vout",
+          "done"
+        ]
+      }
+    ],
+    "read_only_dut_artifacts": [
+      {
+        "public_input_path": "supplied_dut/settling_time_measurement_tb.va",
+        "testbench_include_path": "./dut/settling_time_measurement_tb.va"
+      }
+    ],
+    "read_only_support_artifacts": []
+  },
+  "target_artifacts": [
+    "testbench.scs"
+  ],
+  "task_id": "v4-601",
+  "trace_contract": {
+    "required_signals": [
+      "time",
+      "step",
+      "vout",
+      "done"
+    ]
+  }
+}

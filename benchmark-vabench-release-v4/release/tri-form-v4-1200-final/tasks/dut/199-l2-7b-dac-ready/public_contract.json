@@ -1,0 +1,203 @@
+{
+  "artifact_contract": {
+    "files": [
+      {
+        "modules": [
+          {
+            "depends_on": [],
+            "name": "l2_7b_dac_ready",
+            "parameters": [
+              {
+                "default": "0.9",
+                "name": "vdd",
+                "override_behavior": "overrides vdd",
+                "type": "real",
+                "units": "",
+                "valid_range": "finite"
+              },
+              {
+                "default": "0.45",
+                "name": "vth",
+                "override_behavior": "overrides vth",
+                "type": "real",
+                "units": "",
+                "valid_range": "finite"
+              }
+            ],
+            "ports": [
+              {
+                "direction": "input",
+                "discipline": "electrical",
+                "name": "din1",
+                "position": 0
+              },
+              {
+                "direction": "input",
+                "discipline": "electrical",
+                "name": "din2",
+                "position": 1
+              },
+              {
+                "direction": "input",
+                "discipline": "electrical",
+                "name": "din3",
+                "position": 2
+              },
+              {
+                "direction": "input",
+                "discipline": "electrical",
+                "name": "din4",
+                "position": 3
+              },
+              {
+                "direction": "input",
+                "discipline": "electrical",
+                "name": "din5",
+                "position": 4
+              },
+              {
+                "direction": "input",
+                "discipline": "electrical",
+                "name": "din6",
+                "position": 5
+              },
+              {
+                "direction": "input",
+                "discipline": "electrical",
+                "name": "din7",
+                "position": 6
+              },
+              {
+                "direction": "input",
+                "discipline": "electrical",
+                "name": "rdy",
+                "position": 7
+              },
+              {
+                "direction": "output",
+                "discipline": "electrical",
+                "name": "aout",
+                "position": 8
+              }
+            ],
+            "role": "entry"
+          }
+        ],
+        "path": "l2_7b_dac_ready.va"
+      }
+    ],
+    "mode": "single_file"
+  },
+  "family_id": "199",
+  "feedback": {
+    "available_in_modes": [
+      "G2",
+      "G3",
+      "G4",
+      "G5"
+    ],
+    "command": "vabench feedback run"
+  },
+  "form": "dut",
+  "identity": {
+    "category": "data_converter",
+    "difficulty": "D2",
+    "level": "L1",
+    "supported_scope": "pure voltage-domain event-driven transient behavioral Verilog-A",
+    "title": "L2 7b DAC Ready"
+  },
+  "modeling_constraints": [
+    "Use deterministic voltage-domain behavioral Verilog-A.",
+    "Do not hard-code validation stimulus, stop times, sample windows, gold internals, or simulator side channels."
+  ],
+  "properties": [
+    {
+      "id": "P_FIRST_READY_EDGE_ARMS_ONLY",
+      "observable_contract": "The first rising `rdy` edge arms the DAC and leaves the initialized output at zero.",
+      "required_signals": [
+        "time",
+        "aout",
+        "din1",
+        "din2",
+        "din3",
+        "din4",
+        "din5",
+        "din6",
+        "din7",
+        "rdy"
+      ]
+    },
+    {
+      "id": "P_READY_SAMPLES_SEVEN_BITS",
+      "observable_contract": "Each later rising `rdy` edge samples `din1..din7` against `vth` with the declared switched-capacitor weights.",
+      "required_signals": [
+        "time",
+        "aout",
+        "din1",
+        "din2",
+        "din3",
+        "din4",
+        "din5",
+        "din6",
+        "din7",
+        "rdy"
+      ]
+    },
+    {
+      "id": "P_BIPOLAR_WEIGHTED_DAC_OUTPUT",
+      "observable_contract": "Map the sampled 7-bit weight to the declared bipolar single-ended output with the correct denominator and offset.",
+      "required_signals": [
+        "time",
+        "aout",
+        "din1",
+        "din2",
+        "din3",
+        "din4",
+        "din5",
+        "din6",
+        "din7",
+        "rdy"
+      ]
+    },
+    {
+      "id": "P_DAC_OUTPUT_LEVEL_AND_HOLD",
+      "observable_contract": "Hold `aout` between ready edges and drive the declared voltage scale without half-level errors.",
+      "required_signals": [
+        "time",
+        "aout",
+        "din1",
+        "din2",
+        "din3",
+        "din4",
+        "din5",
+        "din6",
+        "din7",
+        "rdy"
+      ]
+    }
+  ],
+  "schema_version": "v4-tri-form-public-contract-v2",
+  "submission_contract": {
+    "agentic_submission_root": "public/submission",
+    "exact_declared_file_set_required": true,
+    "target_artifacts_relative_to": "submission_root"
+  },
+  "target_artifacts": [
+    "l2_7b_dac_ready.va"
+  ],
+  "task_id": "v4-199",
+  "trace_contract": {
+    "required_signals": [
+      "time",
+      "aout",
+      "din1",
+      "din2",
+      "din3",
+      "din4",
+      "din5",
+      "din6",
+      "din7",
+      "rdy"
+    ]
+  }
+}

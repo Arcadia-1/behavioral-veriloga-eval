@@ -1,0 +1,23 @@
+{
+  "candidate_artifacts": [
+    "two_period_sample_delay.va"
+  ],
+  "canonical_dut_source": "release/dut-base-v3-exact-five-hash-bound-v2/143-two-period-sample-delay",
+  "family_id": "143",
+  "family_spec_sha256": "2d31ef6045cdd88661274e7fc1d96be951b317ebe01b5b179246844b83ba9017",
+  "form": "bugfix",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "90d36c8d7d7a9fcad60a2d462b9a4566f628ca3ad18aac70170da8c11f758271",
+  "schema_version": "v4-tri-form-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/bugfix/1143-two-period-sample-delay-bugfix",
+  "task_dir_sha256": "f6f5168c6732899fb23491184a8f90c89a0e7ab16b96eafca34396b501372e58",
+  "task_id": "v4-1143"
+}

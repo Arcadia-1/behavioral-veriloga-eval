@@ -1,0 +1,22 @@
+{
+  "base_dut": {
+    "canonical_score_tb_sha256": "ee780fe9cacda2334964207e6da7a17c042bb5bb79234ec1afeea33567d52a4b",
+    "canonical_task_id": "v4-143",
+    "canonical_task_slug": "143-two-period-sample-delay",
+    "family_spec_sha256": "2d31ef6045cdd88661274e7fc1d96be951b317ebe01b5b179246844b83ba9017",
+    "mutation_catalog_sha256": "552eac3336363daf1ef7161c21765d6fbe2d80c2fe2c20f08a4848f200cd7027",
+    "source_release_manifest_sha256": "66951fd8580c37e2fbf70c3381d2e7f54f538e55588c199c63181d8c6a740623"
+  },
+  "family_id": "143",
+  "negative_assignment": {
+    "bugfix_seed": "neg_003_half_output_gain",
+    "testbench_suite": [
+      "neg_004_wrong_initial_value",
+      "neg_002_one_period_delay",
+      "neg_001_zero",
+      "neg_003_half_output_gain",
+      "neg_005_metric_scale_low"
+    ]
+  },
+  "schema_version": "v4-derivation-manifest-v2"
+}

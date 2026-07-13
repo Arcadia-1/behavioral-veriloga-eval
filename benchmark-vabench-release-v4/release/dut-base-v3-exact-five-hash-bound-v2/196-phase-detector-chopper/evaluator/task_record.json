@@ -1,0 +1,36 @@
+{
+  "canonical_dut_id": "196",
+  "checker_task_id": "v4_196_phase_detector_chopper",
+  "counted_in_score": true,
+  "evaluator_hashes": {
+    "certification.json": "301897b0d4da98e9be8617f883acf2d24ecb0b895f99b24446f7ae51ac4c367f",
+    "checker_profile.json": "5936f4f05e92a3cc0d4633f70524a8d786216edcd2b6ea00c4639261b15f4745",
+    "derivation_manifest.json": "e888f461b0e2de860a50e321259a1f3d475bc0eeda9dda77763668f032c70c23",
+    "family_spec.json": "f9e0afe8c1cf81a6b76472168c8b2c033c661c85c6f9073663dadeb865bd5b19",
+    "harness_spec.json": "8c649dee4dfc497d6177b0c890c51df7ae41861784e8961a86f052f9d2c09986",
+    "mutation_catalog.json": "95d383f5b75cc003c5f13345b0609bf002dd1a06071e1ec262e6d34a6854188d",
+    "profiles/feedback.json": "ce69620b133b5800b2f8a8f7739446b9e846a0f6a0f6161fbe76d7baac595f60",
+    "profiles/score.json": "8e77b4376b1ab9d377ffaa85abd79d2c70abe34147fba3fb8a0b83774bf439c6",
+    "score_tb.scs": "846f3501b6da21dcc0d9618099843f86742e9fb46843dfd66e7f77f07bb91707",
+    "solution_tree": "737e85010ddbf52a6de7af79e864c03dc61d59b65e7341e66ce3860f9dcd1a17",
+    "toolchain_lock.json": "97f05b4212cf53c691a3b9296d9993d0dea1c0cf5a2b1bdf4fca9eab6246461c"
+  },
+  "form": "dut",
+  "public_hashes": {
+    "feedback_tb.scs": "67be263b5a2ec7fbc904f90004f658f24bc1f3f79c1468db9173881330fde667",
+    "instruction.md": "ffd92057188f4ba261f4724c0ec1bb3bd46ad7c9b366443ccc4d44ff5a745107",
+    "public_contract.json": "734d9fcb826d0b4218c9b011a50a261b067326da229c495959cad7734cedfc17"
+  },
+  "readiness_evidence": {
+    "kind": "task_certification",
+    "path": "evaluator/certification.json",
+    "sha256": "301897b0d4da98e9be8617f883acf2d24ecb0b895f99b24446f7ae51ac4c367f"
+  },
+  "release_dir": "196-phase-detector-chopper",
+  "schema_version": "v4-canonical-dut-release-task-v1",
+  "source_slug": "235-phase-detector-chopper",
+  "support_root": "",
+  "target_artifacts": [
+    "phase_detector_chopper.va"
+  ]
+}

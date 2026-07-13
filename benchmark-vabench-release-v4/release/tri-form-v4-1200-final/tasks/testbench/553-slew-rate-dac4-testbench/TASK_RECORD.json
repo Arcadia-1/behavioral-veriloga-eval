@@ -1,0 +1,22 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source": "release/dut-base-v3-exact-five-hash-bound-v2/053-slew-rate-dac4",
+  "family_id": "053",
+  "family_spec_sha256": "a28e0a44651afcd7d417e33526d52382007f0563cce22fac5db38292ec89b717",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "ec311774c093ec7bd54f9217cd21306d04cf971f39c2e2642359571c955002ef",
+  "schema_version": "v4-tri-form-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/testbench/553-slew-rate-dac4-testbench",
+  "task_id": "v4-553"
+}

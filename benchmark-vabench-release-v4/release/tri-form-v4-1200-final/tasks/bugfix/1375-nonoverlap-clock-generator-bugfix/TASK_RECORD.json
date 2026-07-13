@@ -1,0 +1,23 @@
+{
+  "candidate_artifacts": [
+    "nonoverlap_clock_generator.va"
+  ],
+  "canonical_dut_source": "release/dut-base-v3-exact-five-hash-bound-v2/375-nonoverlap-clock-generator",
+  "family_id": "375",
+  "family_spec_sha256": "81e0b531a07b110d1db9fe0d729baf22401efa8208262c78896a5a203c730131",
+  "form": "bugfix",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "8418d2c81009ef2e064b1aaef8541b314a9b3e0e4cdb35c3b97ead93b823a35d",
+  "schema_version": "v4-tri-form-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/bugfix/1375-nonoverlap-clock-generator-bugfix",
+  "task_dir_sha256": "313dc0f3cce5052459db35cde5ac0553659e0f24051c39de369057325c2864bd",
+  "task_id": "v4-1375"
+}

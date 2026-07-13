@@ -1,0 +1,23 @@
+{
+  "candidate_artifacts": [
+    "time_diff_detector.va"
+  ],
+  "canonical_dut_source": "release/dut-base-v3-exact-five-hash-bound-v2/117-time-diff-detector",
+  "family_id": "117",
+  "family_spec_sha256": "dba1c78c7145ddf725c8f37612d79fa7e8633910e9e70ae884b958788147d915",
+  "form": "bugfix",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "bd69c27b368ee7669b9ab2c98d1c9745669965502054cf87e560e6052a2e33e7",
+  "schema_version": "v4-tri-form-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/bugfix/1117-time-diff-detector-bugfix",
+  "task_dir_sha256": "53e34231f0d15a224bf85558a93f2850f3df6a83bb325d39065aeb0b6a7ca33c",
+  "task_id": "v4-1117"
+}

@@ -1,0 +1,36 @@
+{
+  "canonical_dut_id": "289",
+  "checker_task_id": "v4_289_iterative_decay_estimator",
+  "counted_in_score": true,
+  "evaluator_hashes": {
+    "certification.json": "c305b93feb5384437cc3b9b172fc9c1d7520ae386c4c1a0aa596f969aa2c134c",
+    "checker_profile.json": "0d255a7ca36237cf3845a2574a391a715ad3a0f0b3ca6aa656ee0d7f31d6de6d",
+    "derivation_manifest.json": "b29e7bab0efee92014890964df8999e93c621279038c625f2aa392f642b255c5",
+    "family_spec.json": "fe69e82f542bc8cb511c58c88e5fce52817a64ed6b0e36a7e3dff54bd9e0e844",
+    "harness_spec.json": "bb88cad714c0a3b092a45e03393720e2ec20e6489c7dafe896e3d69bda0e3272",
+    "mutation_catalog.json": "5f736ca30dab9ceb3cc1a71be0aee0a8db32f6e6e46fdbc1a0c3362b1a085116",
+    "profiles/feedback.json": "a8ab8156f0e6cfb704aa2687b0dee37fcf73b7d60813bdbe017bc8ac20ba1c3f",
+    "profiles/score.json": "e177a239698d8dccd52d89be73defec7228023a30656be4948416a09773eb63f",
+    "score_tb.scs": "0796d5abfa660cd072f4f6926e495975caf5337a3128553dee01bad175d026a5",
+    "solution_tree": "03767b834b11408f06e380a6c0c1118f2d4bfb5e3bc4e2411500bf423d862d3b",
+    "toolchain_lock.json": "97f05b4212cf53c691a3b9296d9993d0dea1c0cf5a2b1bdf4fca9eab6246461c"
+  },
+  "form": "dut",
+  "public_hashes": {
+    "feedback_tb.scs": "012c2fb17f5f3356732dc04ab2ba10d3e132c46ba2de7a240d94c72a83e50295",
+    "instruction.md": "5d804744f397b86536aeb4c5380f6d14fb0715559e404ea4621f92de6af76ac8",
+    "public_contract.json": "7a16f0d6759a02548d727609cd7680dcef7e94dbea948a62889e6ecba6dd46ab"
+  },
+  "readiness_evidence": {
+    "kind": "task_certification",
+    "path": "evaluator/certification.json",
+    "sha256": "c305b93feb5384437cc3b9b172fc9c1d7520ae386c4c1a0aa596f969aa2c134c"
+  },
+  "release_dir": "289-iterative-decay-estimator",
+  "schema_version": "v4-canonical-dut-release-task-v1",
+  "source_slug": "458-iterative-decay-estimator",
+  "support_root": "",
+  "target_artifacts": [
+    "iterative_decay_estimator.va"
+  ]
+}

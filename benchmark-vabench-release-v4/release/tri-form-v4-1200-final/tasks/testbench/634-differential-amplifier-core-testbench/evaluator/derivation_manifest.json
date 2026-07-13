@@ -1,0 +1,22 @@
+{
+  "base_dut": {
+    "canonical_score_tb_sha256": "6a5534474b71ca1c749672a7125e6e3874d622957f5a79445d7ebddbbc68cc49",
+    "canonical_task_id": "v4-134",
+    "canonical_task_slug": "134-differential-amplifier-core",
+    "family_spec_sha256": "f3cb58a47b0561c23f5edfe2bcc120964672afe102e665637232aa502b4eb797",
+    "mutation_catalog_sha256": "a364d3d7103145dce79eee6ada73e72e1856320fac0cdf80d895f9c7d5ae57e0",
+    "source_release_manifest_sha256": "66951fd8580c37e2fbf70c3381d2e7f54f538e55588c199c63181d8c6a740623"
+  },
+  "family_id": "134",
+  "negative_assignment": {
+    "bugfix_seed": "neg_003_missing_offset",
+    "testbench_suite": [
+      "neg_003_missing_offset",
+      "neg_002_single_ended_input",
+      "neg_004_wrong_gain",
+      "neg_001_zero",
+      "neg_005_metric_scale_low"
+    ]
+  },
+  "schema_version": "v4-derivation-manifest-v2"
+}

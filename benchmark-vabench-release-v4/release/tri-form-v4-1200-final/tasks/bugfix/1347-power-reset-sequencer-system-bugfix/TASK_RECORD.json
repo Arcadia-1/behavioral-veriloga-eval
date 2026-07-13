@@ -1,0 +1,27 @@
+{
+  "candidate_artifacts": [
+    "power_reset_seq_top.va",
+    "por_detector.va",
+    "reset_synchronizer.va",
+    "enable_sequencer.va",
+    "ready_flag.va"
+  ],
+  "canonical_dut_source": "release/dut-base-v3-exact-five-hash-bound-v2/347-power-reset-sequencer-system",
+  "family_id": "347",
+  "family_spec_sha256": "53f53541156402704f92c484744f4c56a086e8ca283c13cb3b633f0a85f4a920",
+  "form": "bugfix",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "01062c7b2e6de29cb9b10a724116c4c632e5d953e340c211c0f5b25a34b3b29a",
+  "schema_version": "v4-tri-form-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/bugfix/1347-power-reset-sequencer-system-bugfix",
+  "task_dir_sha256": "9535c779aab105da8030d100ae0ad5a68feaa744a3b5ee300cc64b9978f1e61a",
+  "task_id": "v4-1347"
+}

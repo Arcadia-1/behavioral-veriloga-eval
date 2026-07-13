@@ -1,0 +1,23 @@
+{
+  "candidate_artifacts": [
+    "calibration_deadband_controller.va"
+  ],
+  "canonical_dut_source": "release/dut-base-v3-exact-five-hash-bound-v2/021-calibration-deadband-controller",
+  "family_id": "021",
+  "family_spec_sha256": "c8596920d250967035f35c3c2117a5d4954e9ddb10dda684a531f2429d820b38",
+  "form": "bugfix",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "d015dac52938de00e0e6d6fe3ae337c1efcafe27f490a520c567c949b64af630",
+  "schema_version": "v4-tri-form-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/bugfix/1021-calibration-deadband-controller-bugfix",
+  "task_dir_sha256": "cb1f719734de5373ac17ea8e023b5936e2accdc442f5a77837836787bc75cdef",
+  "task_id": "v4-1021"
+}

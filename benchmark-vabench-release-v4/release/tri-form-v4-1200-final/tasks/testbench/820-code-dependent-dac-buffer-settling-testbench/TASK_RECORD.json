@@ -1,0 +1,22 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source": "release/dut-base-v3-exact-five-hash-bound-v2/320-code-dependent-dac-buffer-settling",
+  "family_id": "320",
+  "family_spec_sha256": "fa05e3a81f9ac287e2858a489dba34bff08af535896812f87b935bf35f8f17d0",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "a8e8774c4554d97990a03c6f24841c246f076a8e11ab802f3bd4276701d37405",
+  "schema_version": "v4-tri-form-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/testbench/820-code-dependent-dac-buffer-settling-testbench",
+  "task_id": "v4-820"
+}

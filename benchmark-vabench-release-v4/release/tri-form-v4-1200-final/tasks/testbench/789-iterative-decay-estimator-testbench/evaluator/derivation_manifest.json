@@ -1,0 +1,22 @@
+{
+  "base_dut": {
+    "canonical_score_tb_sha256": "0796d5abfa660cd072f4f6926e495975caf5337a3128553dee01bad175d026a5",
+    "canonical_task_id": "v4-289",
+    "canonical_task_slug": "289-iterative-decay-estimator",
+    "family_spec_sha256": "fe69e82f542bc8cb511c58c88e5fce52817a64ed6b0e36a7e3dff54bd9e0e844",
+    "mutation_catalog_sha256": "5f736ca30dab9ceb3cc1a71be0aee0a8db32f6e6e46fdbc1a0c3362b1a085116",
+    "source_release_manifest_sha256": "66951fd8580c37e2fbf70c3381d2e7f54f538e55588c199c63181d8c6a740623"
+  },
+  "family_id": "289",
+  "negative_assignment": {
+    "bugfix_seed": "neg_002_ignore_enable",
+    "testbench_suite": [
+      "neg_003_wrong_scale",
+      "neg_002_ignore_enable",
+      "neg_001_zero_outputs",
+      "neg_004_ignore_control_or_reset",
+      "neg_005_wrong_flag_metric"
+    ]
+  },
+  "schema_version": "v4-derivation-manifest-v2"
+}

@@ -1,0 +1,23 @@
+{
+  "candidate_artifacts": [
+    "lna_gain_compression_macro.va"
+  ],
+  "canonical_dut_source": "release/dut-base-v3-exact-five-hash-bound-v2/032-lna-gain-compression-macro",
+  "family_id": "032",
+  "family_spec_sha256": "32bcce191186b6cee39ae08d20c751915ff3917d6a3b30719b8a60b996601b5c",
+  "form": "bugfix",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "b134be23cb31fd501470b7a53fae6a3dcc661e3e33c318d6fb0a117f63975662",
+  "schema_version": "v4-tri-form-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/bugfix/1032-lna-gain-compression-macro-bugfix",
+  "task_dir_sha256": "e4e12b47b8e617e93c170d17e113a9fad7716fdcfd06e10bc6ecc7004a9ef4cb",
+  "task_id": "v4-1032"
+}

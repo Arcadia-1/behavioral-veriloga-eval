@@ -1,0 +1,22 @@
+{
+  "base_dut": {
+    "canonical_score_tb_sha256": "9c67e0b5fbdf57c7d8489aa3e0495afb2675637db116e5950c93787e62ada5ad",
+    "canonical_task_id": "v4-135",
+    "canonical_task_slug": "135-logarithmic-amplifier",
+    "family_spec_sha256": "5167db504b93186000791fdbc91d719d97dd1e2f454f6b0c41c43f795a4f7159",
+    "mutation_catalog_sha256": "9aa141cb0d9a610482df85667f2b6d6bf84b719cb5b14303b765fd4fea0d3874",
+    "source_release_manifest_sha256": "66951fd8580c37e2fbf70c3381d2e7f54f538e55588c199c63181d8c6a740623"
+  },
+  "family_id": "135",
+  "negative_assignment": {
+    "bugfix_seed": "neg_003_missing_floor",
+    "testbench_suite": [
+      "neg_004_wrong_offset",
+      "neg_002_no_abs",
+      "neg_005_metric_scale_low",
+      "neg_003_missing_floor",
+      "neg_001_zero"
+    ]
+  },
+  "schema_version": "v4-derivation-manifest-v2"
+}

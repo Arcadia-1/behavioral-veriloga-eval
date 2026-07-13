@@ -1,0 +1,23 @@
+{
+  "candidate_artifacts": [
+    "rs_latch_voltage.va"
+  ],
+  "canonical_dut_source": "release/dut-base-v3-exact-five-hash-bound-v2/140-rs-latch-voltage",
+  "family_id": "140",
+  "family_spec_sha256": "c590a9dac1b970520868f440ed1d57dee29839130ab29415feee5a5cd5c954d9",
+  "form": "bugfix",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "2c7a90d68f002efd72f44dde3900d9661679f61e543138e88c6eca8fbdbf7740",
+  "schema_version": "v4-tri-form-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/bugfix/1140-rs-latch-voltage-bugfix",
+  "task_dir_sha256": "e12cd1c06b1b403faed8e18ebaa7c2bf78bfcbdc1262f1e6ec0da89bfa2f2ee1",
+  "task_id": "v4-1140"
+}

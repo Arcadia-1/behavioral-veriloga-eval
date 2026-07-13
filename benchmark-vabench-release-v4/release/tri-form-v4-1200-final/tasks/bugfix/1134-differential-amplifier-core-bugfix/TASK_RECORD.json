@@ -1,0 +1,23 @@
+{
+  "candidate_artifacts": [
+    "differential_amplifier_core.va"
+  ],
+  "canonical_dut_source": "release/dut-base-v3-exact-five-hash-bound-v2/134-differential-amplifier-core",
+  "family_id": "134",
+  "family_spec_sha256": "f3cb58a47b0561c23f5edfe2bcc120964672afe102e665637232aa502b4eb797",
+  "form": "bugfix",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "08b623de795872eb1d7d28671edeecb639d15362e8d29067cea25921888cd7ea",
+  "schema_version": "v4-tri-form-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/bugfix/1134-differential-amplifier-core-bugfix",
+  "task_dir_sha256": "b2931f54d7c3b758b56196921b24dbe8cefb624bd96bbe0e3876d150be254298",
+  "task_id": "v4-1134"
+}

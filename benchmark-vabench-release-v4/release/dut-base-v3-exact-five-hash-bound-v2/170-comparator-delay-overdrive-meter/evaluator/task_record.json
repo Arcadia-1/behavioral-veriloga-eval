@@ -1,0 +1,37 @@
+{
+  "canonical_dut_id": "170",
+  "checker_task_id": "v4_170_comparator_delay_overdrive_meter",
+  "counted_in_score": true,
+  "evaluator_hashes": {
+    "certification.json": "e6fba21c69e383855506b07def9ecca78f4e94c340c1ebd3fe568bb288607b9f",
+    "checker_profile.json": "59fcd24b407f6bc09c7e62e223f6318e0e0c0884a7a006b84fa31ac3af994ef5",
+    "derivation_manifest.json": "b9ab96256f3de22f3ce8ad449d4941199faf127d942ae1ffe4761cf8ca19102f",
+    "family_spec.json": "e460aea06dab3c90d3c899bfcf4bf6fc263eabadc5268ea7a50c62c8cc973917",
+    "harness_spec.json": "a15f1efcb824a21d7098b5d2339b74290fd8d1ac18f1c8fc57f34698d84b5b0b",
+    "mutation_catalog.json": "d11dc95f365d66d5c2f5e0c4afb4c8867d9f768a4a84d5be1778c228ab946477",
+    "profiles/feedback.json": "999bc45f004ad54ee59095950b0ac253f5f1d7cd27b9387c273da27814c19c53",
+    "profiles/score.json": "185f66aea42ea75765926b756edf889f46f316e1465852f57882d4e0eef89571",
+    "score_tb.scs": "85cbd2b1e75f364bbd186364f773ee8dd6334963913b797d5bafdfb0e201cb6f",
+    "solution_tree": "aa5b03a8220b1dc55f3ca28ae5f9197765786c9fb046eae82384a37d79bc0855",
+    "toolchain_lock.json": "97f05b4212cf53c691a3b9296d9993d0dea1c0cf5a2b1bdf4fca9eab6246461c"
+  },
+  "form": "dut",
+  "public_hashes": {
+    "feedback_tb.scs": "94957b5f3dd6ea874c2fb50af725771867a76d25308240edb402f06b8543bbb3",
+    "instruction.md": "9564767c17c56eac8b66820090a32fd369607e54acd6c93474606df452c224f6",
+    "public_contract.json": "dfd0e521e7a98d7fcecf949d2f54d618cb1bc28ecf875fef6a7023b377026094",
+    "public_support/support_overdrive_delay_comparator.va": "8248b3a926f0b351041b3c63b74d4ec4822aafcf6d9f45c224f37e21626bcbf5"
+  },
+  "readiness_evidence": {
+    "kind": "task_certification",
+    "path": "evaluator/certification.json",
+    "sha256": "e6fba21c69e383855506b07def9ecca78f4e94c340c1ebd3fe568bb288607b9f"
+  },
+  "release_dir": "170-comparator-delay-overdrive-meter",
+  "schema_version": "v4-canonical-dut-release-task-v1",
+  "source_slug": "202-comparator-delay-overdrive-meter",
+  "support_root": "public_support",
+  "target_artifacts": [
+    "comparator_delay_overdrive_meter.va"
+  ]
+}

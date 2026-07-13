@@ -1,0 +1,23 @@
+{
+  "candidate_artifacts": [
+    "amplifier_filter_chain.va"
+  ],
+  "canonical_dut_source": "release/dut-base-v3-exact-five-hash-bound-v2/083-amplifier-filter-chain",
+  "family_id": "083",
+  "family_spec_sha256": "fd70e77c9b67228ff0168cb5c86badc26d284af6c7d4dc692330c48320f21339",
+  "form": "bugfix",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "183df1be88e1b93f3ab18d429844e9dc501227ff381f2bd10da98d97cf301f75",
+  "schema_version": "v4-tri-form-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/bugfix/1083-amplifier-filter-chain-bugfix",
+  "task_dir_sha256": "e096d974f90c9946f9e15a881d3d464c3a57f94b60375acf473c1b6f94730c6c",
+  "task_id": "v4-1083"
+}

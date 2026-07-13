@@ -1,0 +1,23 @@
+{
+  "candidate_artifacts": [
+    "debounce_latch.va"
+  ],
+  "canonical_dut_source": "release/dut-base-v3-exact-five-hash-bound-v2/005-debounce-latch",
+  "family_id": "005",
+  "family_spec_sha256": "6a4eff93bfc7d4619ed1a5514716da42179825fa46a6f9599f075430f9baed45",
+  "form": "bugfix",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "7513a22a871e573934a547be05636a308a7fcd73e48475b3bd367c5cc46887b8",
+  "schema_version": "v4-tri-form-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/bugfix/1005-debounce-latch-bugfix",
+  "task_dir_sha256": "c4d9d3dd4ea0a84cfcbadd070d5ca22f7152906dac922b1d2c3dd65f53bc5ed2",
+  "task_id": "v4-1005"
+}

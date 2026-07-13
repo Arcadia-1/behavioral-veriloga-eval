@@ -1,0 +1,22 @@
+{
+  "buggy_bundle_sha256": "62b65936f8d93e164e97284791a04f340e27db72a3e3ff4d48e3982385d08592",
+  "buggy_seed_fingerprint_mismatches": [
+    "task_inputs.deck_sha256",
+    "task_inputs.profile_sha256",
+    "oracle.checker_binding_sha256",
+    "oracle.checker_implementation_sha256"
+  ],
+  "buggy_seed_status": "canonical_deck_replay_pending",
+  "evidence_rebinding_required": true,
+  "evidence_source": "hash_bound_canonical_case_reuse_v1",
+  "gold_fingerprint_mismatches": [],
+  "gold_repair_status": "pass",
+  "gold_solution_sha256": "b403f519b505ca3c971c7607972aad0fff446f77ca62f7ffc7e81f9db55837f0",
+  "gold_source_certification_sha256": "f6e13811ac60530147bad5ed160986ba38db4e4af78738391b45b5845f8e5942",
+  "mutation_source_certification_sha256": "581ac25f08c3395f7edb15f04a00d500d3c61ce04f8e7b93016536ddb375c485",
+  "schema_version": "v4-bugfix-repair-certificate-v1",
+  "score_deck_sha256": "04170ba0207fbf3c27259e4bf4eafa8e056c4ba1a6a9698fe2c0a2db2df953ac",
+  "simulation_rerun_required_for_materialization": false,
+  "simulation_rerun_requirement_status": "not_determined_by_materialization",
+  "status": "canonical_deck_replay_pending"
+}

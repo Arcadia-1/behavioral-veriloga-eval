@@ -1,0 +1,22 @@
+{
+  "base_dut": {
+    "canonical_score_tb_sha256": "b61a5dca1002c819d05a13d8a7d71757971b67a9f9dd171fd721c8120e3b7225",
+    "canonical_task_id": "v4-120",
+    "canonical_task_slug": "120-attenuator-gain",
+    "family_spec_sha256": "055aff6498bd1f10bab701189a5581ac55bef3526a02c98474a3a842e7270fdf",
+    "mutation_catalog_sha256": "f2d30e09b97e2c0f65f694616223c5a546e07c4ab38738495d428e1796ea7e1b",
+    "source_release_manifest_sha256": "66951fd8580c37e2fbf70c3381d2e7f54f538e55588c199c63181d8c6a740623"
+  },
+  "family_id": "120",
+  "negative_assignment": {
+    "bugfix_seed": "neg_003_amplifies_by_db_factor",
+    "testbench_suite": [
+      "neg_001_zero",
+      "neg_003_amplifies_by_db_factor",
+      "neg_004_double_attenuation",
+      "neg_005_metric_scale_low",
+      "neg_002_no_attenuation"
+    ]
+  },
+  "schema_version": "v4-derivation-manifest-v2"
+}

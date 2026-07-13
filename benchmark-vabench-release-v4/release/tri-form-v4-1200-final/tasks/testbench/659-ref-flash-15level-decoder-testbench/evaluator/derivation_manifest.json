@@ -1,0 +1,22 @@
+{
+  "base_dut": {
+    "canonical_score_tb_sha256": "5f2c8f2a06529429a209f8745112f171d668d688ec348ff4a365ddd91fb62d73",
+    "canonical_task_id": "v4-159",
+    "canonical_task_slug": "159-ref-flash-15level-decoder",
+    "family_spec_sha256": "0978bee71fe2d6754746b922e169cc62418931b622a96af249816f5da636d536",
+    "mutation_catalog_sha256": "13562f37d8be73f78a22ba8e0c6c2a92299ad4ec8d3ec0e141662b250b356c8a",
+    "source_release_manifest_sha256": "66951fd8580c37e2fbf70c3381d2e7f54f538e55588c199c63181d8c6a740623"
+  },
+  "family_id": "159",
+  "negative_assignment": {
+    "bugfix_seed": "neg_004_half_output_gain",
+    "testbench_suite": [
+      "neg_002_wrong_normalization",
+      "neg_001_zero",
+      "neg_004_half_output_gain",
+      "neg_003_ignore_upper_taps",
+      "neg_005_metric_scale_low"
+    ]
+  },
+  "schema_version": "v4-derivation-manifest-v2"
+}

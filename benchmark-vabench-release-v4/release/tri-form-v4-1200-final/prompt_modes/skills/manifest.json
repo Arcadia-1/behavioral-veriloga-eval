@@ -1,0 +1,226 @@
+{
+  "reference_tokenizer": {
+    "algorithm": "Unicode word runs and individual non-whitespace punctuation marks",
+    "id": "vabench_utf8_lexeme",
+    "version": "1.0.0"
+  },
+  "schema_version": "v4-skill-manifest-v1",
+  "skills": {
+    "bugfix_diagnosis.md": {
+      "applicable_forms": [
+        "bugfix"
+      ],
+      "bytes": 584,
+      "id": "bugfix_diagnosis.md",
+      "kind": "form_skill",
+      "license": {
+        "spdx": null,
+        "status": "repository_license_pending"
+      },
+      "path": "prompt_modes/skills/bugfix_diagnosis.md",
+      "provenance": {
+        "commands": [
+          "spectre -h veriloga",
+          "spectre -h ahdllint"
+        ],
+        "derivation": "Concise repair checklist grounded in general Verilog-A structure and AHDL lint categories; no benchmark mutations or outputs were used.",
+        "retrieved_on": "2026-07-13",
+        "tool": "Cadence Spectre",
+        "tool_version": "21.1.0.509.isr12",
+        "type": "derived_from_installed_vendor_help"
+      },
+      "semantic_version": "1.0.0",
+      "sha256": "cbf99f1418cada7093d4e389160084ae3360b856015be1cefdc17a77cb55c6ac",
+      "stable_id": "skill.form.bugfix",
+      "token_counts": {
+        "vabench_utf8_lexeme@1.0.0": 94
+      }
+    },
+    "dut_modeling.md": {
+      "applicable_forms": [
+        "dut"
+      ],
+      "bytes": 851,
+      "id": "dut_modeling.md",
+      "kind": "form_skill",
+      "license": {
+        "spdx": null,
+        "status": "repository_license_pending"
+      },
+      "path": "prompt_modes/skills/dut_modeling.md",
+      "provenance": {
+        "commands": [
+          "spectre -h veriloga",
+          "spectre -h ahdllint"
+        ],
+        "derivation": "Concise paraphrase of general Verilog-A language, transition, event, and lint guidance; no benchmark outputs were used.",
+        "retrieved_on": "2026-07-13",
+        "tool": "Cadence Spectre",
+        "tool_version": "21.1.0.509.isr12",
+        "type": "derived_from_installed_vendor_help"
+      },
+      "semantic_version": "1.0.0",
+      "sha256": "379e416afe5bb67e0217497fed36e6ddd42e7599f86e78509de09ae0f4e09735",
+      "stable_id": "skill.form.dut",
+      "token_counts": {
+        "vabench_utf8_lexeme@1.0.0": 145
+      }
+    },
+    "feedback_bugfix.md": {
+      "applicable_forms": [
+        "bugfix"
+      ],
+      "bytes": 268,
+      "id": "feedback_bugfix.md",
+      "kind": "feedback_skill",
+      "license": {
+        "spdx": null,
+        "status": "repository_license_pending"
+      },
+      "path": "prompt_modes/skills/feedback_bugfix.md",
+      "provenance": {
+        "derivation": "Bugfix-specific interpretation of public vaBench feedback channels.",
+        "source": "operations/calibration_pilot/feedback_adapter.py",
+        "type": "project_authored_facility_guidance"
+      },
+      "semantic_version": "1.0.0",
+      "sha256": "a5c548f183596c7cf37f1f01606bff03eb31ed4ee345259552e4a46cc6bc3ecd",
+      "stable_id": "skill.feedback.bugfix",
+      "token_counts": {
+        "vabench_utf8_lexeme@1.0.0": 45
+      }
+    },
+    "feedback_core.md": {
+      "applicable_forms": [
+        "dut",
+        "testbench",
+        "bugfix"
+      ],
+      "bytes": 815,
+      "id": "feedback_core.md",
+      "kind": "feedback_skill",
+      "license": {
+        "spdx": null,
+        "status": "repository_license_pending"
+      },
+      "path": "prompt_modes/skills/feedback_core.md",
+      "provenance": {
+        "derivation": "Describes the observable vaBench feedback surface without prescribing a repair strategy.",
+        "source": "operations/calibration_pilot/feedback_adapter.py",
+        "type": "project_authored_facility_guidance"
+      },
+      "semantic_version": "1.0.0",
+      "sha256": "1728a7665b1d71bb7bd069d25ebb1ddd1953a3abc0f692babd037fe45b8f0a25",
+      "stable_id": "skill.feedback.core",
+      "token_counts": {
+        "vabench_utf8_lexeme@1.0.0": 148
+      }
+    },
+    "feedback_dut.md": {
+      "applicable_forms": [
+        "dut"
+      ],
+      "bytes": 286,
+      "id": "feedback_dut.md",
+      "kind": "feedback_skill",
+      "license": {
+        "spdx": null,
+        "status": "repository_license_pending"
+      },
+      "path": "prompt_modes/skills/feedback_dut.md",
+      "provenance": {
+        "derivation": "DUT-specific interpretation of public vaBench feedback channels.",
+        "source": "operations/calibration_pilot/feedback_adapter.py",
+        "type": "project_authored_facility_guidance"
+      },
+      "semantic_version": "1.0.0",
+      "sha256": "66fc993776c6f7c204b18c46b203a1d92b61143130316814592a35b3f2be898b",
+      "stable_id": "skill.feedback.dut",
+      "token_counts": {
+        "vabench_utf8_lexeme@1.0.0": 51
+      }
+    },
+    "feedback_testbench.md": {
+      "applicable_forms": [
+        "testbench"
+      ],
+      "bytes": 351,
+      "id": "feedback_testbench.md",
+      "kind": "feedback_skill",
+      "license": {
+        "spdx": null,
+        "status": "repository_license_pending"
+      },
+      "path": "prompt_modes/skills/feedback_testbench.md",
+      "provenance": {
+        "derivation": "Testbench-specific interpretation of reference and anonymous negative-case outcomes.",
+        "source": "operations/calibration_pilot/feedback_adapter.py",
+        "type": "project_authored_facility_guidance"
+      },
+      "semantic_version": "1.0.0",
+      "sha256": "7de753bf65d023387085dfec310a8391ecb9c8bc94a361e7830cb1f4237eacb6",
+      "stable_id": "skill.feedback.testbench",
+      "token_counts": {
+        "vabench_utf8_lexeme@1.0.0": 56
+      }
+    },
+    "neutral_wrapper.md": {
+      "applicable_forms": [
+        "dut",
+        "testbench",
+        "bugfix"
+      ],
+      "bytes": 850,
+      "id": "neutral_wrapper.md",
+      "kind": "wrapper",
+      "license": {
+        "spdx": null,
+        "status": "repository_license_pending"
+      },
+      "path": "prompt_modes/skills/neutral_wrapper.md",
+      "provenance": {
+        "derivation": "Shared transport and submission-root contract; contains no circuit or debugging guidance.",
+        "source": "V4_TRI_FORM_BENCHMARK_REQUIREMENTS.md",
+        "type": "project_authored_experiment_protocol"
+      },
+      "semantic_version": "1.0.0",
+      "sha256": "50de76a9071b7c0cf2b5d0e0b14a09d6c2ce3e8fac8c68dde108bd8570a18e8c",
+      "stable_id": "wrapper.neutral",
+      "token_counts": {
+        "vabench_utf8_lexeme@1.0.0": 174
+      }
+    },
+    "testbench_verification.md": {
+      "applicable_forms": [
+        "testbench"
+      ],
+      "bytes": 916,
+      "id": "testbench_verification.md",
+      "kind": "form_skill",
+      "license": {
+        "spdx": null,
+        "status": "repository_license_pending"
+      },
+      "path": "prompt_modes/skills/testbench_verification.md",
+      "provenance": {
+        "commands": [
+          "spectre -h veriloga",
+          "spectre -h vsource",
+          "spectre -h tran",
+          "spectre -h save"
+        ],
+        "derivation": "Concise paraphrase of general Spectre instance, ahdl_include, DC/pulse/sine/PWL source, transient-analysis, and save syntax; no benchmark outputs were used.",
+        "retrieved_on": "2026-07-13",
+        "tool": "Cadence Spectre",
+        "tool_version": "21.1.0.509.isr12",
+        "type": "derived_from_installed_vendor_help"
+      },
+      "semantic_version": "1.0.0",
+      "sha256": "be15418e06c3b563c40b06c1542e1d15cd01bbda185c05d735ad38c7ef55bf1b",
+      "stable_id": "skill.form.testbench",
+      "token_counts": {
+        "vabench_utf8_lexeme@1.0.0": 204
+      }
+    }
+  }
+}

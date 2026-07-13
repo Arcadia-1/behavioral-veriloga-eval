@@ -1,0 +1,22 @@
+{
+  "candidate_artifacts": [
+    "bipolar_dff_sample.va"
+  ],
+  "canonical_dut_source": "release/dut-base-v3-exact-five-hash-bound-v2/248-bipolar-dff-sample",
+  "family_id": "248",
+  "family_spec_sha256": "d4f6a91ab92b996dbd17b7730c65dfebe03c5f5feaac769217c54272b4d998ab",
+  "form": "dut",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "d5f12a0fa44df1aac1564243d0de9a65271e1bd8a2c3ff13c890d4b3ff8b1d56",
+  "schema_version": "v4-tri-form-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/dut/248-bipolar-dff-sample",
+  "task_id": "v4-248"
+}

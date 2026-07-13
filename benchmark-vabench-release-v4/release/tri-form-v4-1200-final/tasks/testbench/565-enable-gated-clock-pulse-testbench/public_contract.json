@@ -1,0 +1,233 @@
+{
+  "artifact_contract": {
+    "files": [
+      {
+        "modules": [
+          {
+            "depends_on": [],
+            "name": "enable_gated_clock_pulse",
+            "parameters": [
+              {
+                "default": 0.9,
+                "name": "vdd",
+                "override_behavior": "sets the voltage-coded high level of pulse",
+                "type": "real",
+                "units": "V",
+                "valid_range": "vdd > 0"
+              },
+              {
+                "default": 0.45,
+                "name": "vth",
+                "override_behavior": "sets the logic decision threshold for clk and en",
+                "type": "real",
+                "units": "V",
+                "valid_range": "0 < vth < vdd"
+              },
+              {
+                "default": 2e-11,
+                "name": "tr",
+                "override_behavior": "sets the rise and fall smoothing time of pulse",
+                "type": "real",
+                "units": "s",
+                "valid_range": "tr > 0"
+              }
+            ],
+            "ports": [
+              {
+                "direction": "input",
+                "discipline": "electrical",
+                "name": "clk",
+                "position": 0
+              },
+              {
+                "direction": "input",
+                "discipline": "electrical",
+                "name": "en",
+                "position": 1
+              },
+              {
+                "direction": "output",
+                "discipline": "electrical",
+                "name": "pulse",
+                "position": 2
+              }
+            ],
+            "role": "entry"
+          }
+        ],
+        "path": "enable_gated_clock_pulse.va"
+      }
+    ],
+    "mode": "single_file"
+  },
+  "evaluation_summary": {
+    "anonymous_negative_cases": 5,
+    "full_credit": "valid candidate and reference pass and all five negatives killed behaviorally",
+    "reference_cases": 1
+  },
+  "family_id": "065",
+  "feedback": {
+    "available_in_modes": [
+      "G2",
+      "G3",
+      "G4",
+      "G5"
+    ],
+    "command": "vabench feedback run"
+  },
+  "form": "testbench",
+  "identity": {
+    "category": "testbench_utility_modules",
+    "difficulty": "D1",
+    "level": "L1",
+    "supported_scope": "pure voltage-domain combinational transient behavioral Verilog-A for AMS clock gating",
+    "title": "Enable Gated Clock Pulse"
+  },
+  "modeling_constraints": [
+    "AMS role: enable-qualified clock/control pulse gate for sampled-data timing.",
+    "Use deterministic pure voltage-domain behavior.",
+    "Derive logic decisions from vth and the output high level from vdd.",
+    "Do not add undeclared state, ports, artifacts, or validation-only behavior."
+  ],
+  "properties": [
+    {
+      "id": "P_ENABLED_HIGH",
+      "observable_contract": "pulse approaches vdd whenever both clk and en are above vth.",
+      "required_signals": [
+        "time",
+        "clk",
+        "en",
+        "pulse"
+      ]
+    },
+    {
+      "id": "P_DISABLED_LOW",
+      "observable_contract": "pulse approaches 0 V whenever either clk or en is below vth.",
+      "required_signals": [
+        "time",
+        "clk",
+        "en",
+        "pulse"
+      ]
+    },
+    {
+      "id": "P_ENABLE_GATING",
+      "observable_contract": "Changing en gates the observed clock level without creating a high output while clk is logically low.",
+      "required_signals": [
+        "time",
+        "clk",
+        "en",
+        "pulse"
+      ]
+    },
+    {
+      "id": "P_OUTPUT_LEVELS",
+      "observable_contract": "pulse uses voltage-coded 0 V and vdd levels with finite transition smoothing set by tr.",
+      "required_signals": [
+        "time",
+        "clk",
+        "en",
+        "pulse"
+      ]
+    }
+  ],
+  "schema_version": "v4-tri-form-public-contract-v2",
+  "security_policy": {
+    "allowed_include_paths": [
+      "./dut/enable_gated_clock_pulse.va"
+    ],
+    "candidate_artifacts": [
+      "testbench.scs"
+    ],
+    "forbidden_rules": [
+      "undeclared_include",
+      "absolute_path",
+      "path_traversal",
+      "process_execution",
+      "network_access",
+      "simulator_scripting_escape",
+      "dut_redefinition",
+      "direct_dut_output_drive",
+      "private_hierarchical_probe",
+      "unbounded_resource_use"
+    ],
+    "limits": {
+      "max_analyses": 1,
+      "max_candidate_bytes": 1000000,
+      "max_cpu_time_s": 120,
+      "max_memory_mb": 2048,
+      "max_output_bytes": 100000000,
+      "max_saved_signals": 64,
+      "max_stop_time_s": 1.0,
+      "max_wall_time_s": 180
+    },
+    "rejection_outcome": "invalid_run",
+    "required_rules": [
+      "declared_dut_binding",
+      "transient_analysis",
+      "all_required_public_traces"
+    ],
+    "schema_version": "v4-testbench-security-policy-v2"
+  },
+  "security_summary": [
+    "only the declared testbench_include_path values are allowed for DUT sources",
+    "DUT redefinition, direct output drive, private hierarchical probes, arbitrary file access, and unbounded analyses are rejected"
+  ],
+  "submission_contract": {
+    "agentic_submission_root": "public/submission",
+    "exact_declared_file_set_required": true,
+    "target_artifacts_relative_to": "submission_root"
+  },
+  "supplied_inputs": {
+    "dut_instances": [
+      {
+        "connections": [
+          {
+            "net": "clk",
+            "port_ref": "clk",
+            "position": 0
+          },
+          {
+            "net": "en",
+            "port_ref": "en",
+            "position": 1
+          },
+          {
+            "net": "pulse",
+            "port_ref": "pulse",
+            "position": 2
+          }
+        ],
+        "module_ref": "enable_gated_clock_pulse",
+        "name": "XDUT",
+        "ordered_nets": [
+          "clk",
+          "en",
+          "pulse"
+        ],
+        "public_output_nets": [
+          "pulse"
+        ]
+      }
+    ],
+    "read_only_dut_artifacts": [
+      {
+        "public_input_path": "supplied_dut/enable_gated_clock_pulse.va",
+        "testbench_include_path": "./dut/enable_gated_clock_pulse.va"
+      }
+    ],
+    "read_only_support_artifacts": []
+  },
+  "target_artifacts": [
+    "testbench.scs"
+  ],
+  "task_id": "v4-565",
+  "trace_contract": {
+    "required_signals": [
+      "time",
+      "clk",
+      "en",
+      "pulse"
+    ]
+  }
+}

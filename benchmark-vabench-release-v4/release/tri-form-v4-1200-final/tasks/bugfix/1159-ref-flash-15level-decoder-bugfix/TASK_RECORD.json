@@ -1,0 +1,23 @@
+{
+  "candidate_artifacts": [
+    "ref_flash_15level_decoder.va"
+  ],
+  "canonical_dut_source": "release/dut-base-v3-exact-five-hash-bound-v2/159-ref-flash-15level-decoder",
+  "family_id": "159",
+  "family_spec_sha256": "0978bee71fe2d6754746b922e169cc62418931b622a96af249816f5da636d536",
+  "form": "bugfix",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "ff55ab9737d4240d6c5ac509319b5cfd384645d5d3fb71ce3f997f9964c72932",
+  "schema_version": "v4-tri-form-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/bugfix/1159-ref-flash-15level-decoder-bugfix",
+  "task_dir_sha256": "04320bd53bfe6f04f2d2af16046e4eb1da652ade64ed5a067bbb551f8c922c77",
+  "task_id": "v4-1159"
+}

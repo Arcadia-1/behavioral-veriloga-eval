@@ -1,0 +1,22 @@
+{
+  "base_dut": {
+    "canonical_score_tb_sha256": "f2398ab3db0fd95e439c524a7f0d8ba528ad4a1d220de03551a79a453795835d",
+    "canonical_task_id": "v4-342",
+    "canonical_task_slug": "342-sar-adc-system-4b",
+    "family_spec_sha256": "6daef18c68b2077ee47e1262b1192430cdfb89058c4f459c840014df247a6072",
+    "mutation_catalog_sha256": "b6d4f1c82b1e2dfcbd4c3f6a530a2ae36ea4a46b76e390c905b2bd417dab0929",
+    "source_release_manifest_sha256": "66951fd8580c37e2fbf70c3381d2e7f54f538e55588c199c63181d8c6a740623"
+  },
+  "family_id": "342",
+  "negative_assignment": {
+    "bugfix_seed": "neg_003_comparator_polarity",
+    "testbench_suite": [
+      "neg_001_sample_stuck_zero",
+      "neg_004_wrong_first_trial",
+      "neg_005_reset_clear_incomplete",
+      "neg_003_comparator_polarity",
+      "neg_002_cdac_divisor_15"
+    ]
+  },
+  "schema_version": "v4-derivation-manifest-v2"
+}

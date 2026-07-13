@@ -1,0 +1,37 @@
+{
+  "base_dut": {
+    "canonical_task_id": "v4-355",
+    "canonical_task_slug": "355-pam4-tx-driver",
+    "family_spec_sha256": "0da82fac2756b44f8b1036107a4a06ddae152fb592cccecf812805f291f61af3",
+    "mutation_catalog_sha256": "be6099ab691b412c23bae1a5cc879e6323c8510ee594e97f4cbb0f3d6357ad35",
+    "source_release_manifest_sha256": "66951fd8580c37e2fbf70c3381d2e7f54f538e55588c199c63181d8c6a740623"
+  },
+  "family_id": "355",
+  "negative_assignment": {
+    "bugfix_seed": "neg_004_output_not_clamped",
+    "testbench_suite": [
+      "neg_001_binary_not_gray_map",
+      "neg_003_emphasis_polarity_reversed",
+      "neg_004_output_not_clamped",
+      "neg_005_reset_drives_high",
+      "neg_002_level_gain_low"
+    ]
+  },
+  "private_materialization": {
+    "buggy_bundle_sha256": "ea9d96d6d37a5c8ef5d2a27af12d11aa8e3b18f48330d10e77dc4cbe2b390046",
+    "changed_artifacts": [
+      "preemphasis_driver.va"
+    ]
+  },
+  "schema_version": "v4-derivation-manifest-v2",
+  "selection_evidence": {
+    "mutation_id": "neg_004_output_not_clamped",
+    "rationale": "Select fault class clipping_error under trigger 'emphasis pushes an endpoint level beyond a rail' because it exercises P_OUTPUT_CLAMP as one compile-pass semantic defect.",
+    "selection_policy": "semantic_fault_complexity_v1",
+    "selection_status": "policy_reviewed",
+    "semantic_score": 17,
+    "source_preferred_seed": "neg_001_binary_not_gray_map",
+    "source_preferred_seed_preserved": false,
+    "triviality_markers": []
+  }
+}

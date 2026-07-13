@@ -1,0 +1,22 @@
+{
+  "base_dut": {
+    "canonical_score_tb_sha256": "0209842ff4eb37a77934fa5fedde60edf8d715d33b704ade22340d6f1d872f17",
+    "canonical_task_id": "v4-338",
+    "canonical_task_slug": "338-lna-blocker-compression-detector",
+    "family_spec_sha256": "e20f784230f1de26a917a62c03ff71218988c224bb8c03b2dbdaed30664797ce",
+    "mutation_catalog_sha256": "4d478e0fdbef61ce117ce75257dfbfe6cbfa103df58d33daef80f382b028bfc9",
+    "source_release_manifest_sha256": "66951fd8580c37e2fbf70c3381d2e7f54f538e55588c199c63181d8c6a740623"
+  },
+  "family_id": "338",
+  "negative_assignment": {
+    "bugfix_seed": "neg_005_gain_polarity_wrong",
+    "testbench_suite": [
+      "neg_005_gain_polarity_wrong",
+      "neg_001_no_compression",
+      "neg_004_missing_clear",
+      "neg_002_metric_stuck_low",
+      "neg_003_flag_stuck_low"
+    ]
+  },
+  "schema_version": "v4-derivation-manifest-v2"
+}

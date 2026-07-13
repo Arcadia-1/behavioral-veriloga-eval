@@ -1,0 +1,26 @@
+{
+  "candidate_artifacts": [
+    "quad_corr_top.va",
+    "gain_trim.va",
+    "skew_estimator.va",
+    "corrector.va"
+  ],
+  "canonical_dut_source": "release/dut-base-v3-exact-five-hash-bound-v2/365-quadrature-correction-loop",
+  "family_id": "365",
+  "family_spec_sha256": "8c84dbb4c16bc89b6e27eb4b845b3f15062ceb24152f3d67a567f8283ccc8b29",
+  "form": "bugfix",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "e9ce5c18bba08ec9ac84c4a4bf1193ac4b64bdf35b0264cb91609b9d1915a06b",
+  "schema_version": "v4-tri-form-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/bugfix/1365-quadrature-correction-loop-bugfix",
+  "task_dir_sha256": "123713ed1b7c68d56237f3f3f98cac8ce118e58dc3a7fe209fbdeca19dbeff81",
+  "task_id": "v4-1365"
+}

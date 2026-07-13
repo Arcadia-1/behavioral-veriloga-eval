@@ -1,0 +1,23 @@
+{
+  "candidate_artifacts": [
+    "charge_pump_pulse_balancer.va"
+  ],
+  "canonical_dut_source": "release/dut-base-v3-exact-five-hash-bound-v2/321-charge-pump-pulse-balancer",
+  "family_id": "321",
+  "family_spec_sha256": "9f330b32082ec5615fff82ff27e7dbc983fdd07fb2e648ca1987b8cfae344f1f",
+  "form": "bugfix",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "8de57d2569910a3051c01f83647d69afc7343321ff15544d3521828bc974a994",
+  "schema_version": "v4-tri-form-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/bugfix/1321-charge-pump-pulse-balancer-bugfix",
+  "task_dir_sha256": "e90a26910ba34f82b99f8a321871d1d76cf04d1323d94c5040c6175fe37a3b26",
+  "task_id": "v4-1321"
+}

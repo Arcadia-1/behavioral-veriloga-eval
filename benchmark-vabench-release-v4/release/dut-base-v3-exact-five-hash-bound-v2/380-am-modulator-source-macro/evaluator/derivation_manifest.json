@@ -1,0 +1,18 @@
+{
+  "family_id": "380",
+  "mutation_catalog_sha256": "1fa56bd5245dd4796bf3de466f9cccab37d70ffc5e43960bc565f7b5c02ac141",
+  "mutation_partition": {
+    "bugfix_seed": [
+      "neg_002_envelope_dbg_stuck"
+    ],
+    "testbench_private_score": [
+      "neg_001_no_modulation",
+      "neg_004_missing_clear",
+      "neg_006_output_not_clamped"
+    ],
+    "testbench_public_feedback": [
+      "neg_005_carrier_inverted"
+    ]
+  },
+  "schema_version": "v4-derivation-manifest-v1"
+}

@@ -1,0 +1,22 @@
+{
+  "candidate_artifacts": [
+    "vco_phase_integrator.va"
+  ],
+  "canonical_dut_source": "release/dut-base-v3-exact-five-hash-bound-v2/019-vco-phase-integrator",
+  "family_id": "019",
+  "family_spec_sha256": "00a387a882e873655a5247a5cc5c4a91755c03ea5ee82f20c58bb7d4aec40fc4",
+  "form": "dut",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "990307e6f0bb5bb673ad25f9a065970c9db2dc4bb1ca2da0a9de78d58b5c086a",
+  "schema_version": "v4-tri-form-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/dut/019-vco-phase-integrator",
+  "task_id": "v4-019"
+}

@@ -1,0 +1,24 @@
+{
+  "candidate_artifacts": [
+    "image_reject_mixer_cal_loop_top.va",
+    "quadrature_mixer_proxy.va",
+    "image_cal_controller.va"
+  ],
+  "canonical_dut_source": "release/dut-base-v3-exact-five-hash-bound-v2/333-image-reject-mixer-calibration-loop",
+  "family_id": "333",
+  "family_spec_sha256": "d28048912b0f079af9e56f33f3ab9c66ee72106ba24842e89ebce187fc7d0fee",
+  "form": "dut",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "379d3419c77af77aa184588dcbe84f2730794822ba30b34e51648703e7e1bce9",
+  "schema_version": "v4-tri-form-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/dut/333-image-reject-mixer-calibration-loop",
+  "task_id": "v4-333"
+}

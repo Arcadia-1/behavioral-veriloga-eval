@@ -1,0 +1,12 @@
+{
+  "buggy_bundle_sha256": "5fd0f7081975e152e8d83f049a1bf1f60c86cbc879b8852bf6d43478cf88999b",
+  "changed_artifacts": [
+    "reset_sample_latch.va",
+    "signal_sample_latch.va"
+  ],
+  "gold_dut_certification_sha256": "e4f8e8cae9c880137b2600955731bfd84278910c87ab241876fd270314dc3e10",
+  "schema_version": "v4-gold-repair-reference-v1",
+  "simulation_rerun_required_for_materialization": false,
+  "solution_tree_sha256": "80710646259240976a9c01043ab65e6815b4c01dd27faf120854bffdb994e5dd",
+  "source_solution": "release/dut-base-v3-exact-five-hash-bound-v2/308-correlated-double-sampler-offset-cancel/evaluator/solution"
+}

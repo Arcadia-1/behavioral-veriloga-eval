@@ -1,0 +1,132 @@
+{
+  "family_id": "385",
+  "gold_bundle_sha256": "48abfe45582d390a414668a47f682f88ed4c6ea267058bd722bdada6eb7bb77f",
+  "mutations": [
+    {
+      "artifact_hashes": {
+        "nonoverlap_phase_gen.va": "76fdb5b8da2fe5a820ea219ab3a172764568cce77b0a77347a6cc5bba642be45"
+      },
+      "certification": {
+        "activated_property_ids": [
+          "P_ONE_HOT_SEQUENCE"
+        ],
+        "behavior_status": "killed_behaviorally",
+        "compile_status": "pass",
+        "evidence_path": "negative_variants/neg_001_overlapping_phases/certification.json",
+        "profile": "feedback",
+        "simulation_status": "pass",
+        "status": "pass"
+      },
+      "changed_artifacts": [
+        "nonoverlap_phase_gen.va"
+      ],
+      "fault_class": "phase_overlap",
+      "id": "neg_001_overlapping_phases",
+      "trigger_condition": "the generator selects phase zero",
+      "violated_property_ids": [
+        "P_ONE_HOT_SEQUENCE"
+      ]
+    },
+    {
+      "artifact_hashes": {
+        "sample_switch_scheduler.va": "9d4046561a087324a9296062f5ab661cf89be5cb902ae4dc5c86e2d05ea4d8b0"
+      },
+      "certification": {
+        "activated_property_ids": [
+          "P_COMMAND_MAPPING"
+        ],
+        "behavior_status": "killed_behaviorally",
+        "compile_status": "pass",
+        "evidence_path": "negative_variants/neg_003_swapped_sample_hold/certification.json",
+        "profile": "score",
+        "simulation_status": "pass",
+        "status": "pass"
+      },
+      "changed_artifacts": [
+        "sample_switch_scheduler.va"
+      ],
+      "fault_class": "wrong_command_mapping",
+      "id": "neg_003_swapped_sample_hold",
+      "trigger_condition": "a sample phase is active",
+      "violated_property_ids": [
+        "P_COMMAND_MAPPING"
+      ]
+    },
+    {
+      "artifact_hashes": {
+        "nonoverlap_phase_gen.va": "223c21651e54d1ac5f0ea5b0abbfd2fa21532f8a89f3fcaf3195f481f89606f2"
+      },
+      "certification": {
+        "activated_property_ids": [
+          "P_PHASE_CODE"
+        ],
+        "behavior_status": "killed_behaviorally",
+        "compile_status": "pass",
+        "evidence_path": "negative_variants/neg_004_phase_code_lsb_stuck/certification.json",
+        "profile": "score",
+        "simulation_status": "pass",
+        "status": "pass"
+      },
+      "changed_artifacts": [
+        "nonoverlap_phase_gen.va"
+      ],
+      "fault_class": "stuck_output",
+      "id": "neg_004_phase_code_lsb_stuck",
+      "trigger_condition": "phase one or phase three is active",
+      "violated_property_ids": [
+        "P_PHASE_CODE"
+      ]
+    },
+    {
+      "artifact_hashes": {
+        "hold_flagger.va": "9f5d6572b0d9a200f6b0a14a2887975dbc2ba4db296eea909b12e510ec092562"
+      },
+      "certification": {
+        "activated_property_ids": [
+          "P_VALID_AFTER_SEQUENCE"
+        ],
+        "behavior_status": "killed_behaviorally",
+        "compile_status": "pass",
+        "evidence_path": "negative_variants/neg_005_valid_asserts_early/certification.json",
+        "profile": "score",
+        "simulation_status": "pass",
+        "status": "pass"
+      },
+      "changed_artifacts": [
+        "hold_flagger.va"
+      ],
+      "fault_class": "qualification_count_error",
+      "id": "neg_005_valid_asserts_early",
+      "trigger_condition": "phase one is observed before a complete sequence",
+      "violated_property_ids": [
+        "P_VALID_AFTER_SEQUENCE"
+      ]
+    },
+    {
+      "artifact_hashes": {
+        "hold_flagger.va": "0d5fc2e973cc27e9c1f82700e8704f9977cd54d6f1994330e992f9b4208ae1c7"
+      },
+      "certification": {
+        "activated_property_ids": [
+          "P_RESET_DISABLE_CLEAR"
+        ],
+        "behavior_status": "killed_behaviorally",
+        "compile_status": "pass",
+        "evidence_path": "negative_variants/neg_002_reset_not_cleared/certification.json",
+        "profile": "feedback",
+        "simulation_status": "pass",
+        "status": "pass"
+      },
+      "changed_artifacts": [
+        "hold_flagger.va"
+      ],
+      "fault_class": "missing_reset",
+      "id": "neg_002_reset_not_cleared",
+      "trigger_condition": "rst is asserted while enable remains high",
+      "violated_property_ids": [
+        "P_RESET_DISABLE_CLEAR"
+      ]
+    }
+  ],
+  "schema_version": "v4-mutation-catalog-v1"
+}

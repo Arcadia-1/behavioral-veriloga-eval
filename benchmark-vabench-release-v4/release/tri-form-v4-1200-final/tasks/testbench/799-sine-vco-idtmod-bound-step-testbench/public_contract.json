@@ -1,0 +1,250 @@
+{
+  "artifact_contract": {
+    "files": [
+      {
+        "modules": [
+          {
+            "depends_on": [],
+            "name": "sine_vco_idtmod_bound_step",
+            "parameters": [
+              {
+                "default": "20.0e6 from (0:inf)",
+                "name": "center_freq",
+                "override_behavior": "overrides center_freq",
+                "type": "real",
+                "units": "",
+                "valid_range": "finite"
+              },
+              {
+                "default": "40.0e6 exclude 0.0",
+                "name": "vco_gain",
+                "override_behavior": "overrides vco_gain",
+                "type": "real",
+                "units": "",
+                "valid_range": "finite"
+              },
+              {
+                "default": "0.9 from (0:inf)",
+                "name": "vco_amp",
+                "override_behavior": "overrides vco_amp",
+                "type": "real",
+                "units": "",
+                "valid_range": "finite"
+              },
+              {
+                "default": "40 from [4:inf)",
+                "name": "vco_ppc",
+                "override_behavior": "overrides vco_ppc",
+                "type": "integer",
+                "units": "",
+                "valid_range": "finite"
+              }
+            ],
+            "ports": [
+              {
+                "direction": "input",
+                "discipline": "electrical",
+                "name": "vin",
+                "position": 0
+              },
+              {
+                "direction": "output",
+                "discipline": "electrical",
+                "name": "out",
+                "position": 1
+              },
+              {
+                "direction": "output",
+                "discipline": "electrical",
+                "name": "metric",
+                "position": 2
+              }
+            ],
+            "role": "entry"
+          }
+        ],
+        "path": "sine_vco_idtmod_bound_step.va"
+      }
+    ],
+    "mode": "single_file"
+  },
+  "evaluation_summary": {
+    "anonymous_negative_cases": 5,
+    "full_credit": "valid candidate and reference pass and all five negatives killed behaviorally",
+    "reference_cases": 1
+  },
+  "family_id": "299",
+  "feedback": {
+    "available_in_modes": [
+      "G2",
+      "G3",
+      "G4",
+      "G5"
+    ],
+    "command": "vabench feedback run"
+  },
+  "form": "testbench",
+  "identity": {
+    "category": "pll_clock_timing",
+    "difficulty": "D2",
+    "level": "L1",
+    "supported_scope": "pure voltage-domain event-driven transient behavioral Verilog-A",
+    "title": "Sine VCO With Idtmod And Bound Step"
+  },
+  "modeling_constraints": [
+    "Use deterministic voltage-domain behavioral Verilog-A.",
+    "Do not hard-code validation stimulus, stop times, sample windows, gold internals, or simulator side channels."
+  ],
+  "properties": [
+    {
+      "id": "P_FREQ_Q_CENTER_FREQ_VCO_GAIN",
+      "observable_contract": "`freq_q = center_freq + vco_gain * V(vin)`",
+      "required_signals": [
+        "time",
+        "vin",
+        "out",
+        "metric"
+      ]
+    },
+    {
+      "id": "P_PHASE_Q_IDTMOD_FREQ_Q_0",
+      "observable_contract": "`phase_q = idtmod(freq_q, 0.0, 1.0)` (modulo-1 phase accumulator)",
+      "required_signals": [
+        "time",
+        "vin",
+        "out",
+        "metric"
+      ]
+    },
+    {
+      "id": "P_OUT_VCO_AMP_SIN_M_TWO",
+      "observable_contract": "`out = vco_amp * sin(M_TWO_PI * phase_q)` (bipolar sine centered at `0 V`)",
+      "required_signals": [
+        "time",
+        "vin",
+        "out",
+        "metric"
+      ]
+    },
+    {
+      "id": "P_METRIC_VCO_AMP_PHASE_Q_VOLTAGE",
+      "observable_contract": "`metric = vco_amp * phase_q` (voltage-coded instantaneous wrapped phase, `0 V` to `vco_amp`)",
+      "required_signals": [
+        "time",
+        "vin",
+        "out",
+        "metric"
+      ]
+    },
+    {
+      "id": "P_CALL_BOUND_STEP_1_0_VCO",
+      "observable_contract": "call `$bound_step(1.0 / (vco_ppc * freq_q))` every step so the sine is resolved",
+      "required_signals": [
+        "time",
+        "vin",
+        "out",
+        "metric"
+      ]
+    }
+  ],
+  "schema_version": "v4-tri-form-public-contract-v2",
+  "security_policy": {
+    "allowed_include_paths": [
+      "./dut/sine_vco_idtmod_bound_step.va"
+    ],
+    "candidate_artifacts": [
+      "testbench.scs"
+    ],
+    "forbidden_rules": [
+      "undeclared_include",
+      "absolute_path",
+      "path_traversal",
+      "process_execution",
+      "network_access",
+      "simulator_scripting_escape",
+      "dut_redefinition",
+      "direct_dut_output_drive",
+      "private_hierarchical_probe",
+      "unbounded_resource_use"
+    ],
+    "limits": {
+      "max_analyses": 1,
+      "max_candidate_bytes": 1000000,
+      "max_cpu_time_s": 120,
+      "max_memory_mb": 2048,
+      "max_output_bytes": 100000000,
+      "max_saved_signals": 64,
+      "max_stop_time_s": 1.0,
+      "max_wall_time_s": 180
+    },
+    "rejection_outcome": "invalid_run",
+    "required_rules": [
+      "declared_dut_binding",
+      "transient_analysis",
+      "all_required_public_traces"
+    ],
+    "schema_version": "v4-testbench-security-policy-v2"
+  },
+  "security_summary": [
+    "only the declared testbench_include_path values are allowed for DUT sources",
+    "DUT redefinition, direct output drive, private hierarchical probes, arbitrary file access, and unbounded analyses are rejected"
+  ],
+  "submission_contract": {
+    "agentic_submission_root": "public/submission",
+    "exact_declared_file_set_required": true,
+    "target_artifacts_relative_to": "submission_root"
+  },
+  "supplied_inputs": {
+    "dut_instances": [
+      {
+        "connections": [
+          {
+            "net": "vin",
+            "port_ref": "vin",
+            "position": 0
+          },
+          {
+            "net": "out",
+            "port_ref": "out",
+            "position": 1
+          },
+          {
+            "net": "metric",
+            "port_ref": "metric",
+            "position": 2
+          }
+        ],
+        "module_ref": "sine_vco_idtmod_bound_step",
+        "name": "XDUT",
+        "ordered_nets": [
+          "vin",
+          "out",
+          "metric"
+        ],
+        "public_output_nets": [
+          "out",
+          "metric"
+        ]
+      }
+    ],
+    "read_only_dut_artifacts": [
+      {
+        "public_input_path": "supplied_dut/sine_vco_idtmod_bound_step.va",
+        "testbench_include_path": "./dut/sine_vco_idtmod_bound_step.va"
+      }
+    ],
+    "read_only_support_artifacts": []
+  },
+  "target_artifacts": [
+    "testbench.scs"
+  ],
+  "task_id": "v4-799",
+  "trace_contract": {
+    "required_signals": [
+      "time",
+      "vin",
+      "out",
+      "metric"
+    ]
+  }
+}

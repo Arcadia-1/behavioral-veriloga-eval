@@ -1,0 +1,23 @@
+{
+  "candidate_artifacts": [
+    "sample_hold_5v_clock.va"
+  ],
+  "canonical_dut_source": "release/dut-base-v3-exact-five-hash-bound-v2/210-sample-hold-5v-clock",
+  "family_id": "210",
+  "family_spec_sha256": "484cbcef68817e92c5b2c51c4b18af1e933cf90369068c7677084bf7e90f04df",
+  "form": "bugfix",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "1b682a98fdcd2d2a39f947a7c98f0add35110bae25b9c21f0bbbaca4690a9a9f",
+  "schema_version": "v4-tri-form-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/bugfix/1210-sample-hold-5v-clock-bugfix",
+  "task_dir_sha256": "a033b98562b970f336af6e67b6748ae3a3c6d664a5fa7b78904c26a9a43a304f",
+  "task_id": "v4-1210"
+}

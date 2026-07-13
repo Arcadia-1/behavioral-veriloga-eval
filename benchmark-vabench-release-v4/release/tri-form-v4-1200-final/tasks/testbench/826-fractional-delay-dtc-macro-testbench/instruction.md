@@ -1,0 +1,45 @@
+# Fractional-delay DTC Macro Testbench
+
+## Task Contract
+
+Write one top-level Spectre testbench that verifies the public contract of the
+supplied read-only `Fractional-delay DTC Macro` DUT. The evaluator runs the same submitted bytes
+against the correct DUT and five anonymous semantic negative DUTs. Your
+testbench must accept the correct DUT and expose all five behavioral faults.
+The accompanying `solver_contract.json` is the authoritative structured contract.
+
+## Public Verilog-A Interface
+
+The exact read-only source paths, modules, ports, instance names, and ordered
+terminal bindings are declared in `solver_contract.json`.
+
+## Public Parameter Contract
+
+Honor the public parameter declarations in `solver_contract.json` when choosing
+stimulus and coverage.
+
+## Required Behavior
+
+Create stimulus and save traces sufficient for the fixed evaluator oracle to check:
+
+- `P_ON_RESET_OR_WHEN_DISABLED_CLEAR`: On reset or when disabled, clear output, phase metric, and `valid`.
+- `P_DECODE_FRAC_3_FRAC_0_AS`: Decode `frac_3..frac_0` as a fractional delay setting.
+- `P_FOR_EACH_INPUT_EDGE_EMIT_ONE`: For each input edge, emit one output edge with a delay proportional to the fractional code.
+- `P_EXPOSE_THE_FRACTIONAL_DELAY_AS_PHASE`: Expose the fractional delay as `phase_metric`.
+- `P_PRESERVE_INPUT_EDGE_ORDER_AND_ASSERT`: Preserve input-edge order and assert `valid` after the first emitted delayed edge.
+
+The required trace names are: `time`, `clk_in`, `rst`, `enable`, `frac_3`, `frac_2`, `frac_1`, `frac_0`, `clk_out`, `phase_metric`, `valid`.
+
+## Modeling Constraints
+
+- Submit one self-contained top-level transient `.scs` file.
+- Use only the exact declared testbench include paths and public DUT interfaces.
+- Do not redefine the DUT, drive declared DUT outputs, inspect private internals,
+  access undeclared files, or emit a self-reported result.
+- Respect every public resource limit in `solver_contract.json`.
+- Missing traces, setup errors, and invalid runs do not count as behavioral kills.
+
+## Output Contract
+
+Return exactly one submission-root-relative artifact named `testbench.scs`. Do not return a DUT,
+checker, script, data file, waveform, or auxiliary deck.

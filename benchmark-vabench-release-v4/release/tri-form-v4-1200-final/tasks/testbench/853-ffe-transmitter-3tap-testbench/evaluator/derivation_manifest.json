@@ -1,0 +1,22 @@
+{
+  "base_dut": {
+    "canonical_score_tb_sha256": "295686307d269cc31170ae7fd0b903d84487cb948823c6d59b0df75e0caaf69d",
+    "canonical_task_id": "v4-353",
+    "canonical_task_slug": "353-ffe-transmitter-3tap",
+    "family_spec_sha256": "48070b562efbe38ed280971493ce0b86418d0f9ef0fe0eaabaac5bd55acb7e91",
+    "mutation_catalog_sha256": "9328befc35d64b448c69c36ef02f2c7daaec645a49589bf4aebe19fb1957d2b0",
+    "source_release_manifest_sha256": "66951fd8580c37e2fbf70c3381d2e7f54f538e55588c199c63181d8c6a740623"
+  },
+  "family_id": "353",
+  "negative_assignment": {
+    "bugfix_seed": "neg_005_event_edge_wrong",
+    "testbench_suite": [
+      "neg_004_threshold_shifted",
+      "neg_001_zero",
+      "neg_002_half_scale",
+      "neg_005_event_edge_wrong",
+      "neg_003_inverted_transfer"
+    ]
+  },
+  "schema_version": "v4-derivation-manifest-v2"
+}

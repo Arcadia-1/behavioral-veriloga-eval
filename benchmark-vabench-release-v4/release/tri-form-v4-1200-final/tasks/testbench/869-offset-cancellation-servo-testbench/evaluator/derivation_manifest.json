@@ -1,0 +1,22 @@
+{
+  "base_dut": {
+    "canonical_score_tb_sha256": "198832e21a4639207b836de9b2e85078443c76650b145ddc6e29dd7f9e5f72d5",
+    "canonical_task_id": "v4-369",
+    "canonical_task_slug": "369-offset-cancellation-servo",
+    "family_spec_sha256": "75187efa6b83a65562a3c5d86db3edb5f9be4a7d5c96ca88563a7c1ef5b0ecbe",
+    "mutation_catalog_sha256": "97f6118f38329da768516f06c3ab6facb6cac5aaf64d9915483399703cf24bda",
+    "source_release_manifest_sha256": "66951fd8580c37e2fbf70c3381d2e7f54f538e55588c199c63181d8c6a740623"
+  },
+  "family_id": "369",
+  "negative_assignment": {
+    "bugfix_seed": "neg_004_reset_does_not_clear_outputs",
+    "testbench_suite": [
+      "neg_001_trim_direction_reversed",
+      "neg_003_corrected_output_uncorrected",
+      "neg_004_reset_does_not_clear_outputs",
+      "neg_005_error_metric_inverted",
+      "neg_002_done_asserts_too_early"
+    ]
+  },
+  "schema_version": "v4-derivation-manifest-v2"
+}

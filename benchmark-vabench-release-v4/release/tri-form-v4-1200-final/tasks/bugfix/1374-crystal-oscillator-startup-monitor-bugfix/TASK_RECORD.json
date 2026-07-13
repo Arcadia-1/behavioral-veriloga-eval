@@ -1,0 +1,23 @@
+{
+  "candidate_artifacts": [
+    "crystal_oscillator_startup_monitor.va"
+  ],
+  "canonical_dut_source": "release/dut-base-v3-exact-five-hash-bound-v2/374-crystal-oscillator-startup-monitor",
+  "family_id": "374",
+  "family_spec_sha256": "cef84789ae7759a1b5d6cba78b14cecff1a02bf6b2d7018ea9ab32fe18915222",
+  "form": "bugfix",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "51f77c663f40b0840a8396e1a661fbc859776ef805006360a78a0feffa3806a2",
+  "schema_version": "v4-tri-form-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/bugfix/1374-crystal-oscillator-startup-monitor-bugfix",
+  "task_dir_sha256": "e1e05da5ef5251cfdbef547a38648475a104cf41cf10a6c79412698fffb3ceaa",
+  "task_id": "v4-1374"
+}

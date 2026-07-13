@@ -1,0 +1,342 @@
+{
+  "artifact_contract": {
+    "files": [
+      {
+        "modules": [
+          {
+            "depends_on": [],
+            "name": "differential_dac_calc_6b",
+            "parameters": [
+              {
+                "default": "0.75",
+                "name": "vth",
+                "override_behavior": "overrides vth",
+                "type": "real",
+                "units": "",
+                "valid_range": "finite"
+              },
+              {
+                "default": "0.75",
+                "name": "vcm",
+                "override_behavior": "overrides vcm",
+                "type": "real",
+                "units": "",
+                "valid_range": "finite"
+              },
+              {
+                "default": "0.925",
+                "name": "refp",
+                "override_behavior": "overrides refp",
+                "type": "real",
+                "units": "",
+                "valid_range": "finite"
+              },
+              {
+                "default": "0.575",
+                "name": "refn",
+                "override_behavior": "overrides refn",
+                "type": "real",
+                "units": "",
+                "valid_range": "finite"
+              },
+              {
+                "default": "200p",
+                "name": "tt",
+                "override_behavior": "overrides tt",
+                "type": "real",
+                "units": "",
+                "valid_range": "finite"
+              },
+              {
+                "default": "1n",
+                "name": "convdelay",
+                "override_behavior": "overrides convdelay",
+                "type": "real",
+                "units": "",
+                "valid_range": "finite"
+              }
+            ],
+            "ports": [
+              {
+                "direction": "input",
+                "discipline": "electrical",
+                "name": "din0",
+                "position": 0
+              },
+              {
+                "direction": "input",
+                "discipline": "electrical",
+                "name": "din1",
+                "position": 1
+              },
+              {
+                "direction": "input",
+                "discipline": "electrical",
+                "name": "din2",
+                "position": 2
+              },
+              {
+                "direction": "input",
+                "discipline": "electrical",
+                "name": "din3",
+                "position": 3
+              },
+              {
+                "direction": "input",
+                "discipline": "electrical",
+                "name": "din4",
+                "position": 4
+              },
+              {
+                "direction": "input",
+                "discipline": "electrical",
+                "name": "din5",
+                "position": 5
+              },
+              {
+                "direction": "input",
+                "discipline": "electrical",
+                "name": "clks",
+                "position": 6
+              },
+              {
+                "direction": "output",
+                "discipline": "electrical",
+                "name": "voutp",
+                "position": 7
+              },
+              {
+                "direction": "output",
+                "discipline": "electrical",
+                "name": "voutn",
+                "position": 8
+              }
+            ],
+            "role": "entry"
+          }
+        ],
+        "path": "differential_dac_calc_6b.va"
+      }
+    ],
+    "mode": "single_file"
+  },
+  "evaluation_summary": {
+    "anonymous_negative_cases": 5,
+    "full_credit": "valid candidate and reference pass and all five negatives killed behaviorally",
+    "reference_cases": 1
+  },
+  "family_id": "153",
+  "feedback": {
+    "available_in_modes": [
+      "G2",
+      "G3",
+      "G4",
+      "G5"
+    ],
+    "command": "vabench feedback run"
+  },
+  "form": "testbench",
+  "identity": {
+    "category": "data_converter",
+    "difficulty": "D2",
+    "level": "L1",
+    "supported_scope": "pure voltage-domain event-driven transient behavioral Verilog-A",
+    "title": "Differential DAC Calc 6b"
+  },
+  "modeling_constraints": [
+    "Use deterministic voltage-domain behavioral Verilog-A.",
+    "Do not hard-code validation stimulus, stop times, sample windows, gold internals, or simulator side channels."
+  ],
+  "properties": [
+    {
+      "id": "P_CLOCKED_SIX_BIT_WEIGHTED_CODE",
+      "observable_contract": "Each rising `clks` crossing samples `din0` through `din5` into the declared six-bit weighted DAC code.",
+      "required_signals": [
+        "time",
+        "clks",
+        "din0",
+        "din1",
+        "din2",
+        "din3",
+        "din4",
+        "din5",
+        "voutn",
+        "voutp"
+      ]
+    },
+    {
+      "id": "P_COMPLEMENTARY_DIFFERENTIAL_OUTPUTS",
+      "observable_contract": "`voutp` and `voutn` use complementary weighted sums about the common-mode value.",
+      "required_signals": [
+        "time",
+        "clks",
+        "din0",
+        "din1",
+        "din2",
+        "din3",
+        "din4",
+        "din5",
+        "voutn",
+        "voutp"
+      ]
+    },
+    {
+      "id": "P_OUTPUT_SWING_SCALE",
+      "observable_contract": "The differential outputs use the declared reference span and bit weights without extra swing scaling.",
+      "required_signals": [
+        "time",
+        "clks",
+        "din0",
+        "din1",
+        "din2",
+        "din3",
+        "din4",
+        "din5",
+        "voutn",
+        "voutp"
+      ]
+    }
+  ],
+  "schema_version": "v4-tri-form-public-contract-v2",
+  "security_policy": {
+    "allowed_include_paths": [
+      "./dut/differential_dac_calc_6b.va"
+    ],
+    "candidate_artifacts": [
+      "testbench.scs"
+    ],
+    "forbidden_rules": [
+      "undeclared_include",
+      "absolute_path",
+      "path_traversal",
+      "process_execution",
+      "network_access",
+      "simulator_scripting_escape",
+      "dut_redefinition",
+      "direct_dut_output_drive",
+      "private_hierarchical_probe",
+      "unbounded_resource_use"
+    ],
+    "limits": {
+      "max_analyses": 1,
+      "max_candidate_bytes": 1000000,
+      "max_cpu_time_s": 120,
+      "max_memory_mb": 2048,
+      "max_output_bytes": 100000000,
+      "max_saved_signals": 64,
+      "max_stop_time_s": 1.0,
+      "max_wall_time_s": 180
+    },
+    "rejection_outcome": "invalid_run",
+    "required_rules": [
+      "declared_dut_binding",
+      "transient_analysis",
+      "all_required_public_traces"
+    ],
+    "schema_version": "v4-testbench-security-policy-v2"
+  },
+  "security_summary": [
+    "only the declared testbench_include_path values are allowed for DUT sources",
+    "DUT redefinition, direct output drive, private hierarchical probes, arbitrary file access, and unbounded analyses are rejected"
+  ],
+  "submission_contract": {
+    "agentic_submission_root": "public/submission",
+    "exact_declared_file_set_required": true,
+    "target_artifacts_relative_to": "submission_root"
+  },
+  "supplied_inputs": {
+    "dut_instances": [
+      {
+        "connections": [
+          {
+            "net": "din0",
+            "port_ref": "din0",
+            "position": 0
+          },
+          {
+            "net": "din1",
+            "port_ref": "din1",
+            "position": 1
+          },
+          {
+            "net": "din2",
+            "port_ref": "din2",
+            "position": 2
+          },
+          {
+            "net": "din3",
+            "port_ref": "din3",
+            "position": 3
+          },
+          {
+            "net": "din4",
+            "port_ref": "din4",
+            "position": 4
+          },
+          {
+            "net": "din5",
+            "port_ref": "din5",
+            "position": 5
+          },
+          {
+            "net": "clks",
+            "port_ref": "clks",
+            "position": 6
+          },
+          {
+            "net": "voutp",
+            "port_ref": "voutp",
+            "position": 7
+          },
+          {
+            "net": "voutn",
+            "port_ref": "voutn",
+            "position": 8
+          }
+        ],
+        "module_ref": "differential_dac_calc_6b",
+        "name": "XDUT",
+        "ordered_nets": [
+          "din0",
+          "din1",
+          "din2",
+          "din3",
+          "din4",
+          "din5",
+          "clks",
+          "voutp",
+          "voutn"
+        ],
+        "public_output_nets": [
+          "voutp",
+          "voutn"
+        ]
+      }
+    ],
+    "read_only_dut_artifacts": [
+      {
+        "public_input_path": "supplied_dut/differential_dac_calc_6b.va",
+        "testbench_include_path": "./dut/differential_dac_calc_6b.va"
+      }
+    ],
+    "read_only_support_artifacts": []
+  },
+  "target_artifacts": [
+    "testbench.scs"
+  ],
+  "task_id": "v4-653",
+  "trace_contract": {
+    "required_signals": [
+      "time",
+      "clks",
+      "din0",
+      "din1",
+      "din2",
+      "din3",
+      "din4",
+      "din5",
+      "voutn",
+      "voutp"
+    ]
+  }
+}

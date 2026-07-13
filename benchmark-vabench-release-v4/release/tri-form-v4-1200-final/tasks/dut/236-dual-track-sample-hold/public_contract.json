@@ -1,0 +1,189 @@
+{
+  "artifact_contract": {
+    "files": [
+      {
+        "modules": [
+          {
+            "depends_on": [],
+            "name": "dual_track_sample_hold",
+            "parameters": [
+              {
+                "default": "0.45",
+                "name": "vth",
+                "override_behavior": "overrides vth",
+                "type": "real",
+                "units": "",
+                "valid_range": "finite"
+              },
+              {
+                "default": "0.5n from (0:inf)",
+                "name": "tick",
+                "override_behavior": "overrides tick",
+                "type": "real",
+                "units": "",
+                "valid_range": "finite"
+              },
+              {
+                "default": "0.45 from (0:1]",
+                "name": "alpha_in",
+                "override_behavior": "overrides alpha_in",
+                "type": "real",
+                "units": "",
+                "valid_range": "finite"
+              },
+              {
+                "default": "0.55 from (0:1]",
+                "name": "alpha_out",
+                "override_behavior": "overrides alpha_out",
+                "type": "real",
+                "units": "",
+                "valid_range": "finite"
+              },
+              {
+                "default": "50p from (0:inf)",
+                "name": "tedge",
+                "override_behavior": "overrides tedge",
+                "type": "real",
+                "units": "",
+                "valid_range": "finite"
+              },
+              {
+                "default": "0.0",
+                "name": "vinit",
+                "override_behavior": "overrides vinit",
+                "type": "real",
+                "units": "",
+                "valid_range": "finite"
+              }
+            ],
+            "ports": [
+              {
+                "direction": "inout",
+                "discipline": "electrical",
+                "name": "vdd",
+                "position": 0
+              },
+              {
+                "direction": "inout",
+                "discipline": "electrical",
+                "name": "vss",
+                "position": 1
+              },
+              {
+                "direction": "input",
+                "discipline": "electrical",
+                "name": "clk",
+                "position": 2
+              },
+              {
+                "direction": "input",
+                "discipline": "electrical",
+                "name": "vin",
+                "position": 3
+              },
+              {
+                "direction": "output",
+                "discipline": "electrical",
+                "name": "vout",
+                "position": 4
+              },
+              {
+                "direction": "output",
+                "discipline": "electrical",
+                "name": "phase",
+                "position": 5
+              }
+            ],
+            "role": "entry"
+          }
+        ],
+        "path": "dual_track_sample_hold.va"
+      }
+    ],
+    "mode": "single_file"
+  },
+  "family_id": "236",
+  "feedback": {
+    "available_in_modes": [
+      "G2",
+      "G3",
+      "G4",
+      "G5"
+    ],
+    "command": "vabench feedback run"
+  },
+  "form": "dut",
+  "identity": {
+    "category": "sampling_analog_memory",
+    "difficulty": "D2",
+    "level": "L1",
+    "supported_scope": "pure voltage-domain event-driven transient behavioral Verilog-A",
+    "title": "Dual Track Sample Hold"
+  },
+  "modeling_constraints": [
+    "Use deterministic voltage-domain behavioral Verilog-A.",
+    "Do not hard-code validation stimulus, stop times, sample windows, gold internals, or simulator side channels."
+  ],
+  "properties": [
+    {
+      "id": "P_COMPLEMENTARY_TRACK_HOLD_SEQUENCE",
+      "observable_contract": "During low clock phase the input stage tracks `vin` while output holds; after the rising edge, the output stage tracks the retained input-stage value during high clock phase; after the falling edge, output holds until the next high phase.",
+      "required_signals": [
+        "time",
+        "clk",
+        "phase",
+        "vin",
+        "vout",
+        "vdd",
+        "vss"
+      ]
+    },
+    {
+      "id": "P_FINITE_TRACKING_AND_HOLD",
+      "observable_contract": "Use finite acquisition updates and preserve held values between tracking windows rather than making the output continuously transparent or a single ideal edge sample.",
+      "required_signals": [
+        "time",
+        "clk",
+        "phase",
+        "vin",
+        "vout",
+        "vdd",
+        "vss"
+      ]
+    },
+    {
+      "id": "P_PHASE_MONITOR_POLARITY",
+      "observable_contract": "Drive `phase` high only during output-stage tracking and low otherwise.",
+      "required_signals": [
+        "time",
+        "clk",
+        "phase",
+        "vin",
+        "vout",
+        "vdd",
+        "vss"
+      ]
+    }
+  ],
+  "schema_version": "v4-tri-form-public-contract-v2",
+  "submission_contract": {
+    "agentic_submission_root": "public/submission",
+    "exact_declared_file_set_required": true,
+    "target_artifacts_relative_to": "submission_root"
+  },
+  "target_artifacts": [
+    "dual_track_sample_hold.va"
+  ],
+  "task_id": "v4-236",
+  "trace_contract": {
+    "required_signals": [
+      "time",
+      "clk",
+      "phase",
+      "vin",
+      "vout",
+      "vdd",
+      "vss"
+    ]
+  }
+}

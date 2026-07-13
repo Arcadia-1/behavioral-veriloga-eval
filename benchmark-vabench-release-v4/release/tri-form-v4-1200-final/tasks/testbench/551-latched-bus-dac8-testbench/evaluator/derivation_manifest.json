@@ -1,0 +1,22 @@
+{
+  "base_dut": {
+    "canonical_score_tb_sha256": "4971f46c329977fa79d0d358316df962811e2a24c09f159ee0b0ffa2bdb761df",
+    "canonical_task_id": "v4-051",
+    "canonical_task_slug": "051-latched-bus-dac8",
+    "family_spec_sha256": "8fb0d2cd7b84adda9907600f92291d66852f487a2d20c232312c2531282d8d6e",
+    "mutation_catalog_sha256": "7919cfafb787dfd85a11a326ea754aab7f5c3ccced613a87b7217647cb8ed520",
+    "source_release_manifest_sha256": "66951fd8580c37e2fbf70c3381d2e7f54f538e55588c199c63181d8c6a740623"
+  },
+  "family_id": "051",
+  "negative_assignment": {
+    "bugfix_seed": "neg_002_transparent_bus",
+    "testbench_suite": [
+      "neg_001_force_zero",
+      "neg_003_falling_edge_update",
+      "neg_004_reversed_bit_order",
+      "neg_005_wrong_denominator",
+      "neg_002_transparent_bus"
+    ]
+  },
+  "schema_version": "v4-derivation-manifest-v2"
+}

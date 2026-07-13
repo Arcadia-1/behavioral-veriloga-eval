@@ -1,0 +1,22 @@
+{
+  "base_dut": {
+    "canonical_score_tb_sha256": "34e2ff13a0e1f14cf50d64ca9953d133be3b5553c053d56d86a50707c5f6a245",
+    "canonical_task_id": "v4-290",
+    "canonical_task_slug": "290-bounded-window-accumulator",
+    "family_spec_sha256": "8007395e30cc99d3769883607283a767640e5b743d6ec5423045aa45d74aa970",
+    "mutation_catalog_sha256": "d21d2720b267413ee33c7828e3e8859c6262ce994d66543408f87eb95fd20267",
+    "source_release_manifest_sha256": "66951fd8580c37e2fbf70c3381d2e7f54f538e55588c199c63181d8c6a740623"
+  },
+  "family_id": "290",
+  "negative_assignment": {
+    "bugfix_seed": "neg_002_ignore_enable",
+    "testbench_suite": [
+      "neg_003_wrong_scale",
+      "neg_002_ignore_enable",
+      "neg_001_zero_outputs",
+      "neg_004_ignore_control_or_reset",
+      "neg_005_wrong_flag_metric"
+    ]
+  },
+  "schema_version": "v4-derivation-manifest-v2"
+}

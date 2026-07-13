@@ -1,0 +1,22 @@
+{
+  "base_dut": {
+    "canonical_score_tb_sha256": "411eaba1c70c3814bf8494e142a1e55a221aa3f69ffd10f60187a49413290e33",
+    "canonical_task_id": "v4-396",
+    "canonical_task_slug": "396-quadrature-lo-generator-divided-clock",
+    "family_spec_sha256": "0e462f2083bb57adfb947a51c8b0f3acedd3eaa413390fcb14452f2630886c5e",
+    "mutation_catalog_sha256": "e12a796a26bca3541571ade971e18eec2ddb5bf111df30e0c38518a7ad2d2fc9",
+    "source_release_manifest_sha256": "66951fd8580c37e2fbf70c3381d2e7f54f538e55588c199c63181d8c6a740623"
+  },
+  "family_id": "396",
+  "negative_assignment": {
+    "bugfix_seed": "neg_001_wrong_second_state",
+    "testbench_suite": [
+      "neg_001_wrong_second_state",
+      "neg_003_quad_ok_after_one_cycle",
+      "neg_004_metric_reversed",
+      "neg_005_enable_disable_not_cleared",
+      "neg_002_lo_q_copies_lo_i"
+    ]
+  },
+  "schema_version": "v4-derivation-manifest-v2"
+}

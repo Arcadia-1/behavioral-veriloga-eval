@@ -1,0 +1,22 @@
+{
+  "base_dut": {
+    "canonical_score_tb_sha256": "5877fb53e9f3b787e822dd4599193146eb2fae2a3e190f0f6821fbd4623e0d8d",
+    "canonical_task_id": "v4-037",
+    "canonical_task_slug": "037-precision-rectifier-envelope-detector",
+    "family_spec_sha256": "85474ce75c3decf9096201486fe0dbcb5b1c5da429071610ab37ba03d535044c",
+    "mutation_catalog_sha256": "ecb5eda5b1c4639ba67a280bbe1c8b3a4574731d8c33f298be72570f4d9f44b8",
+    "source_release_manifest_sha256": "66951fd8580c37e2fbf70c3381d2e7f54f538e55588c199c63181d8c6a740623"
+  },
+  "family_id": "037",
+  "negative_assignment": {
+    "bugfix_seed": "neg_001_boundary",
+    "testbench_suite": [
+      "neg_001_boundary",
+      "neg_003_polarity_direction",
+      "neg_004_state_reset",
+      "neg_005_metric_writeout",
+      "neg_002_timing_window"
+    ]
+  },
+  "schema_version": "v4-derivation-manifest-v2"
+}

@@ -1,0 +1,22 @@
+{
+  "base_dut": {
+    "canonical_score_tb_sha256": "9a94e85c2050343e210c0f8bd7090e3aef6c1ec0074c2021d6bf14579685217c",
+    "canonical_task_id": "v4-329",
+    "canonical_task_slug": "329-ctle-adaptation-loop",
+    "family_spec_sha256": "dba1323267d6a4300c62cbdd99da6569100aecd8270111de945154dcc443d616",
+    "mutation_catalog_sha256": "a1811b007dfc1343e7f7111fbc0d746c5beea7d99a1f8b2401d168897f189a95",
+    "source_release_manifest_sha256": "66951fd8580c37e2fbf70c3381d2e7f54f538e55588c199c63181d8c6a740623"
+  },
+  "family_id": "329",
+  "negative_assignment": {
+    "bugfix_seed": "neg_002_edge_metric_sample_delayed_two_cycles",
+    "testbench_suite": [
+      "neg_002_edge_metric_sample_delayed_two_cycles",
+      "neg_003_boost_direction_reversed",
+      "neg_004_boost_output_polarity_inverted",
+      "neg_005_lock_after_one_update",
+      "neg_001_vout_not_cleared_on_disable"
+    ]
+  },
+  "schema_version": "v4-derivation-manifest-v2"
+}

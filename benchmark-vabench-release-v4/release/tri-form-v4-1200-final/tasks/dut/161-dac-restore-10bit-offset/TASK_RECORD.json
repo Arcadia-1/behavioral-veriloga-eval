@@ -1,0 +1,22 @@
+{
+  "candidate_artifacts": [
+    "dac_restore_10bit_offset.va"
+  ],
+  "canonical_dut_source": "release/dut-base-v3-exact-five-hash-bound-v2/161-dac-restore-10bit-offset",
+  "family_id": "161",
+  "family_spec_sha256": "cb7b49944376084ebf9860b009c7f1c05bc778a881c63bf8193be5da20203b92",
+  "form": "dut",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "0aaf29668e98f0c1e9f1a50f6ffa6d9a02f3f201749722b5cd3be2c7bc35bbe0",
+  "schema_version": "v4-tri-form-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/dut/161-dac-restore-10bit-offset",
+  "task_id": "v4-161"
+}

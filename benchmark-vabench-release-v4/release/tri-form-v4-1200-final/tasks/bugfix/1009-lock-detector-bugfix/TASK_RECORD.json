@@ -1,0 +1,23 @@
+{
+  "candidate_artifacts": [
+    "lock_detector.va"
+  ],
+  "canonical_dut_source": "release/dut-base-v3-exact-five-hash-bound-v2/009-lock-detector",
+  "family_id": "009",
+  "family_spec_sha256": "6eb54297af6b6bbdc9cccc98df60e93c238c5c2889be02fdbe5e24c9d153ca74",
+  "form": "bugfix",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "6379c0c4ecc840d63962dc6dc542fdc99422ddc2b3fcbdaef2442c29628e4250",
+  "schema_version": "v4-tri-form-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/bugfix/1009-lock-detector-bugfix",
+  "task_dir_sha256": "8161f9fd4ba75427a1593a549f2d8ed31a7b3cd9af6b56a538e5c0ae67f4e46c",
+  "task_id": "v4-1009"
+}

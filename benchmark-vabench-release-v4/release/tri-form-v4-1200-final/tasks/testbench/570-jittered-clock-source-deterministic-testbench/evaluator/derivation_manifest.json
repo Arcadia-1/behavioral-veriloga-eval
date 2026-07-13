@@ -1,0 +1,22 @@
+{
+  "base_dut": {
+    "canonical_score_tb_sha256": "fb3dc5609985c56d4b0bdab4eb16600848f4049d2ab1921abc4d3b6324d7a2f2",
+    "canonical_task_id": "v4-070",
+    "canonical_task_slug": "070-jittered-clock-source-deterministic",
+    "family_spec_sha256": "2715ac259ec5ad41dd4af756e1a8ceae575fcf37854940011583c8774d235fc4",
+    "mutation_catalog_sha256": "82b006ee4ffdf847ca3e7fb57ec17a1d6aee78f077fec90f3429107d4bd31e9a",
+    "source_release_manifest_sha256": "66951fd8580c37e2fbf70c3381d2e7f54f538e55588c199c63181d8c6a740623"
+  },
+  "family_id": "070",
+  "negative_assignment": {
+    "bugfix_seed": "neg_006_nonrepeating_sequence",
+    "testbench_suite": [
+      "neg_001_zero",
+      "neg_002_no_jitter",
+      "neg_004_unbounded",
+      "neg_005_ignore_seed",
+      "neg_006_nonrepeating_sequence"
+    ]
+  },
+  "schema_version": "v4-derivation-manifest-v2"
+}

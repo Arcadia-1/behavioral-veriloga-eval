@@ -1,0 +1,25 @@
+{
+  "candidate_artifacts": [
+    "autozero_comparator_preamplifier_top.va",
+    "offset_store_cell.va",
+    "clocked_comparator_core.va"
+  ],
+  "canonical_dut_source": "release/dut-base-v3-exact-five-hash-bound-v2/309-autozero-comparator-preamplifier",
+  "family_id": "309",
+  "family_spec_sha256": "1862a824380d039b4a2aeb3c96594f55fcf2dd3187431c68fe2b549f48372a03",
+  "form": "bugfix",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "c0b2813346babe9b7c27958a75da3fde75da5c0fbd9b4b8cb45d24f9fa6ea880",
+  "schema_version": "v4-tri-form-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/bugfix/1309-autozero-comparator-preamplifier-bugfix",
+  "task_dir_sha256": "f1021def73381b20388c43723d0981ebc7f95b284436bd5355e3e9dca5bdd5e7",
+  "task_id": "v4-1309"
+}

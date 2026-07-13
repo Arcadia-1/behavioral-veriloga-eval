@@ -1,0 +1,18 @@
+{
+  "family_id": "372",
+  "mutation_catalog_sha256": "644b8f5805a41e07a248be424bc3c124ea8ec8de205a6709808044f77d02d9f7",
+  "mutation_partition": {
+    "bugfix_seed": [
+      "neg_001_missing_reset_clear"
+    ],
+    "testbench_private_score": [
+      "neg_003_double_soft_step",
+      "neg_004_pgood_asserts_early",
+      "neg_005_weak_pwm_high"
+    ],
+    "testbench_public_feedback": [
+      "neg_002_reversed_duty_direction"
+    ]
+  },
+  "schema_version": "v4-derivation-manifest-v1"
+}

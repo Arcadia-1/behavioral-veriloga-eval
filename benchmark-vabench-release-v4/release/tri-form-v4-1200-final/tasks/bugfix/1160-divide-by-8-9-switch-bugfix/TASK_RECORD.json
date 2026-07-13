@@ -1,0 +1,23 @@
+{
+  "candidate_artifacts": [
+    "divide_by_8_9_switch.va"
+  ],
+  "canonical_dut_source": "release/dut-base-v3-exact-five-hash-bound-v2/160-divide-by-8-9-switch",
+  "family_id": "160",
+  "family_spec_sha256": "e649db99f4d464e35d12ca1a7fcc8ceb3108abd4f8c66330d16e036c70006fba",
+  "form": "bugfix",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "5600bb83bf2d29d5ab29a4fefc2d84b04211e80e36e20e09b1760b88a56e984e",
+  "schema_version": "v4-tri-form-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/bugfix/1160-divide-by-8-9-switch-bugfix",
+  "task_dir_sha256": "2a31c89390d7346ad3b9e1f204e52916def42075f51eeb439b9b33a6bf63e489",
+  "task_id": "v4-1160"
+}

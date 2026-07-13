@@ -1,0 +1,23 @@
+{
+  "candidate_artifacts": [
+    "segmented_dac.va"
+  ],
+  "canonical_dut_source": "release/dut-base-v3-exact-five-hash-bound-v2/014-segmented-dac",
+  "family_id": "014",
+  "family_spec_sha256": "567bf2a92711abf0d00fa6e548abf7067be3eac1fcd8e8ee18e64183957f4f32",
+  "form": "bugfix",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "4cf3c5321af8ccfa0ac9bcae2f8384ec770c9a8b6e3d9d42a0debe53208c7ba4",
+  "schema_version": "v4-tri-form-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/bugfix/1014-segmented-dac-bugfix",
+  "task_dir_sha256": "81af3087391138461ac30db394eeaabbcde093f29776e229204cb358db11af2c",
+  "task_id": "v4-1014"
+}

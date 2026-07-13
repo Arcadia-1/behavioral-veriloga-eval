@@ -1,0 +1,23 @@
+{
+  "candidate_artifacts": [
+    "adpll_ratio_hop_ref.va"
+  ],
+  "canonical_dut_source": "release/dut-base-v3-exact-five-hash-bound-v2/081-adpll-ratio-hop-timer",
+  "family_id": "081",
+  "family_spec_sha256": "7e4de541f7a253044781f037d3752e923f080422f612c3ed5dfe94eed01591cd",
+  "form": "bugfix",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "ca112c6b0813a77ae557bdfeb8edd7999bc60df47ac68c586e77d0834758fee8",
+  "schema_version": "v4-tri-form-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/bugfix/1081-adpll-ratio-hop-timer-bugfix",
+  "task_dir_sha256": "f56a1ee2337ae2b71415ba7ec600c6e56d280928b2dece29f0b897283ee50250",
+  "task_id": "v4-1081"
+}

@@ -1,0 +1,37 @@
+{
+  "base_dut": {
+    "canonical_task_id": "v4-331",
+    "canonical_task_slug": "331-dfe-error-proxy-loop",
+    "family_spec_sha256": "aff74cd1c4d319da6af3dc91607b30d568ff9a211018d4ec38bb60cf928d7b4c",
+    "mutation_catalog_sha256": "6fd31319c6d62e58537b92d085dd06f758dba25d1009f4d66d0af9afa11e0f1d",
+    "source_release_manifest_sha256": "66951fd8580c37e2fbf70c3381d2e7f54f538e55588c199c63181d8c6a740623"
+  },
+  "family_id": "331",
+  "negative_assignment": {
+    "bugfix_seed": "neg_001_clear_retains_corrected_offset",
+    "testbench_suite": [
+      "neg_002_decision_sign_inverted",
+      "neg_003_corrected_output_adds_feedback",
+      "neg_004_error_metric_complements_absolute",
+      "neg_005_converged_after_one_sample",
+      "neg_001_clear_retains_corrected_offset"
+    ]
+  },
+  "private_materialization": {
+    "buggy_bundle_sha256": "1178e859d5df77e0527e71e4f5a79269a9c47b524066f4dd96310c057af5876e",
+    "changed_artifacts": [
+      "feedback_correction_core.va"
+    ]
+  },
+  "schema_version": "v4-derivation-manifest-v2",
+  "selection_evidence": {
+    "mutation_id": "neg_001_clear_retains_corrected_offset",
+    "rationale": "Select fault class clear_state_retains_corrected_output_offset under trigger 'reset is asserted or enable is low' because it exercises P_ON_RESET_OR_WHEN_DISABLED_CLEAR as one compile-pass semantic defect.",
+    "selection_policy": "semantic_fault_complexity_v1",
+    "selection_status": "policy_reviewed",
+    "semantic_score": 20,
+    "source_preferred_seed": "neg_002_decision_sign_inverted",
+    "source_preferred_seed_preserved": false,
+    "triviality_markers": []
+  }
+}

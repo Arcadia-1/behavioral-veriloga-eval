@@ -1,0 +1,24 @@
+{
+  "buggy_bundle_sha256": "5202d72f9ed897440e5f3bb6e467e325e368ce02c30172ae211b4d5a5146a763",
+  "buggy_seed_fingerprint_mismatches": [
+    "component_fingerprints.missing",
+    "task_inputs.candidate_bundle_sha256",
+    "task_inputs.deck_sha256",
+    "task_inputs.gold_bundle_sha256",
+    "task_inputs.property_contract_sha256",
+    "task_inputs.trace_contract_sha256"
+  ],
+  "buggy_seed_status": "canonical_deck_replay_pending",
+  "evidence_rebinding_required": true,
+  "evidence_source": "hash_bound_canonical_case_reuse_v1",
+  "gold_fingerprint_mismatches": [],
+  "gold_repair_status": "pass",
+  "gold_solution_sha256": "9f44ef454119437c5c48863b9bc877925299991f726588f65c7115305b14dd46",
+  "gold_source_certification_sha256": "cad60351ec9ba1fc0bd288e29bd2fb08e9ff2b7ff20eab952ca08bf6bd1829b4",
+  "mutation_source_certification_sha256": "97b0c9dbfbc24292805bdfc00e8cdf63406057e61fa029b4b188b8d12f30d820",
+  "schema_version": "v4-bugfix-repair-certificate-v1",
+  "score_deck_sha256": "8cd3de9cf81e3a4e0f70d334da758d7aa70c0107a858cbae4858c20f27e2dcaa",
+  "simulation_rerun_required_for_materialization": false,
+  "simulation_rerun_requirement_status": "not_determined_by_materialization",
+  "status": "canonical_deck_replay_pending"
+}

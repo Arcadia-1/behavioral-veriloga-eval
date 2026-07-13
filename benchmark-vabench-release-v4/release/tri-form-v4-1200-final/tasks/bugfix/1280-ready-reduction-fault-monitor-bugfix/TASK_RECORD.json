@@ -1,0 +1,23 @@
+{
+  "candidate_artifacts": [
+    "ready_reduction_fault_monitor.va"
+  ],
+  "canonical_dut_source": "release/dut-base-v3-exact-five-hash-bound-v2/280-ready-reduction-fault-monitor",
+  "family_id": "280",
+  "family_spec_sha256": "261a5f79ad650f7e6e03ec4bc183a95756f25f54806949256a35cce4c336972b",
+  "form": "bugfix",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "62a268cd27c3f6569de515fcf759fc3d0ac0e7d5300a7ace9bd3d9b2d4b166f5",
+  "schema_version": "v4-tri-form-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/bugfix/1280-ready-reduction-fault-monitor-bugfix",
+  "task_dir_sha256": "807e3adeda87b2e10da5820fe4f6884289f57c0a300b6824aef1a82998c44d90",
+  "task_id": "v4-1280"
+}

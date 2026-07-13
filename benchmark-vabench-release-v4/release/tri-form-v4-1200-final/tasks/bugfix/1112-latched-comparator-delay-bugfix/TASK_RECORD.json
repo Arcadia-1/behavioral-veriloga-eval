@@ -1,0 +1,23 @@
+{
+  "candidate_artifacts": [
+    "latched_comparator_delay.va"
+  ],
+  "canonical_dut_source": "release/dut-base-v3-exact-five-hash-bound-v2/112-latched-comparator-delay",
+  "family_id": "112",
+  "family_spec_sha256": "8142f6d70c216de0efdd3d2e9228480999d40df3f96b65efd95281c7657d2e42",
+  "form": "bugfix",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "1fd3b813c9911987140329611acd513d2ddd5b26efaf2a10988aa0ee2d67dc89",
+  "schema_version": "v4-tri-form-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/bugfix/1112-latched-comparator-delay-bugfix",
+  "task_dir_sha256": "40af66b5fff2cea37cf7adea4f18c8c0f5cc85fa916599a5c756c70411a19b34",
+  "task_id": "v4-1112"
+}

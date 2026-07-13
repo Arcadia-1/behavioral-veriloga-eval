@@ -1,0 +1,27 @@
+{
+  "candidate_artifacts": [
+    "vga_cal_loop_top.va",
+    "peak_detector.va",
+    "gain_controller.va",
+    "vga_model.va",
+    "lock_detector.va"
+  ],
+  "canonical_dut_source": "release/dut-base-v3-exact-five-hash-bound-v2/348-vga-gain-calibration-loop",
+  "family_id": "348",
+  "family_spec_sha256": "661d3b16bd2234a7b00e85d30b57df124c9e308dd14b56908509635257207959",
+  "form": "bugfix",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "4f637a37c18d4df90589cdc7d4e146843630cc46042d6779546426b79a9c1c1a",
+  "schema_version": "v4-tri-form-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/bugfix/1348-vga-gain-calibration-loop-bugfix",
+  "task_dir_sha256": "e4a72bd65fa80133ff4a34fc86cf0dc059b37fe55a277c767138682034e27b21",
+  "task_id": "v4-1348"
+}

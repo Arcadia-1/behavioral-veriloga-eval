@@ -1,0 +1,23 @@
+{
+  "candidate_artifacts": [
+    "gain_estimator.va"
+  ],
+  "canonical_dut_source": "release/dut-base-v3-exact-five-hash-bound-v2/093-gain-estimator",
+  "family_id": "093",
+  "family_spec_sha256": "f4814c60da3ce742d75f49433bb59ac84eb1b7b552443025bfaa4ef42e9e4976",
+  "form": "bugfix",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "da0ccce9ad3285fc5baff37518a17de964ad3f1e55521317204b0c781a58aa9e",
+  "schema_version": "v4-tri-form-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/bugfix/1093-gain-estimator-bugfix",
+  "task_dir_sha256": "3089695617a46ef40b5c7608cbb99cb2b2e7b635cdfa209f480aad99302c04a8",
+  "task_id": "v4-1093"
+}

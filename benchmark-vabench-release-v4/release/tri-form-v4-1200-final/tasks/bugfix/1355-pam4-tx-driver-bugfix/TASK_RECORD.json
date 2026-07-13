@@ -1,0 +1,26 @@
+{
+  "candidate_artifacts": [
+    "pam4_tx_top.va",
+    "gray_mapper.va",
+    "level_dac.va",
+    "preemphasis_driver.va"
+  ],
+  "canonical_dut_source": "release/dut-base-v3-exact-five-hash-bound-v2/355-pam4-tx-driver",
+  "family_id": "355",
+  "family_spec_sha256": "0da82fac2756b44f8b1036107a4a06ddae152fb592cccecf812805f291f61af3",
+  "form": "bugfix",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "770be3dd0cd0e3e628a725306bdab9b4cd8787399dc89117bfa00ee35288e507",
+  "schema_version": "v4-tri-form-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/bugfix/1355-pam4-tx-driver-bugfix",
+  "task_dir_sha256": "e621bdafec3bd7b1a9b0245e5919e1f4a7b34f9438d63f09c2fca6da2dfa51f3",
+  "task_id": "v4-1355"
+}

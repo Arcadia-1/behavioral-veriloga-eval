@@ -1,0 +1,18 @@
+{
+  "family_id": "320",
+  "mutation_catalog_sha256": "b4b59821b2270bb1a0dc5b1fd756220c35628ebac223c716c11bc09dd2541f17",
+  "mutation_partition": {
+    "bugfix_seed": [
+      "neg_002_wrong_clock_edge"
+    ],
+    "testbench_private_score": [
+      "neg_003_wrong_msb_weight",
+      "neg_004_unbounded_settling_jump",
+      "neg_005_single_update_settled"
+    ],
+    "testbench_public_feedback": [
+      "neg_001_wrong_clear_level"
+    ]
+  },
+  "schema_version": "v4-derivation-manifest-v1"
+}

@@ -1,0 +1,23 @@
+{
+  "candidate_artifacts": [
+    "quadrature_phase_interpolator.va"
+  ],
+  "canonical_dut_source": "release/dut-base-v3-exact-five-hash-bound-v2/358-quadrature-phase-interpolator",
+  "family_id": "358",
+  "family_spec_sha256": "4f3348c1878040f9ec850823b712b36c254e3a03af5a9206abb609f939da422f",
+  "form": "bugfix",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "02f8e1af0012d506458fa7764e1d0dbaa860a341c650d75a3a4f47a73246d56d",
+  "schema_version": "v4-tri-form-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/bugfix/1358-quadrature-phase-interpolator-bugfix",
+  "task_dir_sha256": "6f62922cd3c846ab2560854681bf87cdfe777a1835b41745da18792a78404a90",
+  "task_id": "v4-1358"
+}

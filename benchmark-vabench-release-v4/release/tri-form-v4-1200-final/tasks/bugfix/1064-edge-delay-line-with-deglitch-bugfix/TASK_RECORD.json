@@ -1,0 +1,23 @@
+{
+  "candidate_artifacts": [
+    "edge_delay_line_deglitch.va"
+  ],
+  "canonical_dut_source": "release/dut-base-v3-exact-five-hash-bound-v2/064-edge-delay-line-with-deglitch",
+  "family_id": "064",
+  "family_spec_sha256": "f296ae77c677de246ec352800e67c1923271bf29dc78198dc0135a148f4e2eba",
+  "form": "bugfix",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "3860f1a300ebbd4a861976a42afb5fb4d9544865bb69e20b8c096a0888a728a0",
+  "schema_version": "v4-tri-form-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/bugfix/1064-edge-delay-line-with-deglitch-bugfix",
+  "task_dir_sha256": "048dec89cc50ff169b0f8812648d2521d1cab26d8e3f2d150d6d6b2120bb5956",
+  "task_id": "v4-1064"
+}

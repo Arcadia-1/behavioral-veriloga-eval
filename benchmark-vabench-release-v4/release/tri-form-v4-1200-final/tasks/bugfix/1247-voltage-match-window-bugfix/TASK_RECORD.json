@@ -1,0 +1,23 @@
+{
+  "candidate_artifacts": [
+    "voltage_match_window.va"
+  ],
+  "canonical_dut_source": "release/dut-base-v3-exact-five-hash-bound-v2/247-voltage-match-window",
+  "family_id": "247",
+  "family_spec_sha256": "1acd01f3bfffab52be6b8225841958f4f813c49cdbd8ee104f436d37dcb28866",
+  "form": "bugfix",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "88ffa313aea2710039a82fcfae4317e31d8a272038526cda925dfe33e6980d39",
+  "schema_version": "v4-tri-form-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/bugfix/1247-voltage-match-window-bugfix",
+  "task_dir_sha256": "7dc3c4eab19462e1265ce904e10a7a6d8787b9f6afc024ea7c6bcb9b9ba100a5",
+  "task_id": "v4-1247"
+}

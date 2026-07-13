@@ -1,0 +1,230 @@
+{
+  "artifact_contract": {
+    "files": [
+      {
+        "modules": [
+          {
+            "depends_on": [],
+            "name": "ref_flash_8level_decoder",
+            "parameters": [
+              {
+                "default": "0.45",
+                "name": "vth",
+                "override_behavior": "overrides vth",
+                "type": "real",
+                "units": "",
+                "valid_range": "finite"
+              },
+              {
+                "default": "10p",
+                "name": "tt",
+                "override_behavior": "overrides tt",
+                "type": "real",
+                "units": "",
+                "valid_range": "finite"
+              },
+              {
+                "default": "1",
+                "name": "vref",
+                "override_behavior": "overrides vref",
+                "type": "real",
+                "units": "",
+                "valid_range": "finite"
+              }
+            ],
+            "ports": [
+              {
+                "direction": "input",
+                "discipline": "electrical",
+                "name": "vin",
+                "position": 0
+              },
+              {
+                "direction": "input",
+                "discipline": "electrical",
+                "name": "dt0",
+                "position": 1
+              },
+              {
+                "direction": "input",
+                "discipline": "electrical",
+                "name": "dt1",
+                "position": 2
+              },
+              {
+                "direction": "input",
+                "discipline": "electrical",
+                "name": "dt2",
+                "position": 3
+              },
+              {
+                "direction": "input",
+                "discipline": "electrical",
+                "name": "dt3",
+                "position": 4
+              },
+              {
+                "direction": "input",
+                "discipline": "electrical",
+                "name": "dt4",
+                "position": 5
+              },
+              {
+                "direction": "input",
+                "discipline": "electrical",
+                "name": "dt5",
+                "position": 6
+              },
+              {
+                "direction": "input",
+                "discipline": "electrical",
+                "name": "dt6",
+                "position": 7
+              },
+              {
+                "direction": "input",
+                "discipline": "electrical",
+                "name": "dt7",
+                "position": 8
+              },
+              {
+                "direction": "input",
+                "discipline": "electrical",
+                "name": "clks",
+                "position": 9
+              },
+              {
+                "direction": "output",
+                "discipline": "electrical",
+                "name": "dout",
+                "position": 10
+              },
+              {
+                "direction": "output",
+                "discipline": "electrical",
+                "name": "vres",
+                "position": 11
+              }
+            ],
+            "role": "entry"
+          }
+        ],
+        "path": "ref_flash_8level_decoder.va"
+      }
+    ],
+    "mode": "single_file"
+  },
+  "buggy_input_artifacts": [
+    "buggy_bundle/ref_flash_8level_decoder.va"
+  ],
+  "editable_scope": "complete_declared_verilog_a_bundle",
+  "family_id": "158",
+  "feedback": {
+    "available_in_modes": [
+      "G2",
+      "G3",
+      "G4",
+      "G5"
+    ],
+    "command": "vabench feedback run"
+  },
+  "form": "bugfix",
+  "identity": {
+    "category": "data_converter",
+    "difficulty": "D2",
+    "level": "L1",
+    "supported_scope": "pure voltage-domain event-driven transient behavioral Verilog-A",
+    "title": "Ref Flash 8level Decoder"
+  },
+  "modeling_constraints": [
+    "Use deterministic voltage-domain behavioral Verilog-A.",
+    "Do not hard-code validation stimulus, stop times, sample windows, gold internals, or simulator side channels."
+  ],
+  "problem_statement": "the supplied system violates the public contract",
+  "properties": [
+    {
+      "id": "P_CLOCKED_EIGHT_TAP_COUNT",
+      "observable_contract": "Each rising `clks` crossing counts all eight asserted flash taps into the held decoder count.",
+      "required_signals": [
+        "time",
+        "clks",
+        "dout",
+        "dt0",
+        "dt1",
+        "dt2",
+        "dt3",
+        "dt4",
+        "dt5",
+        "dt6",
+        "dt7",
+        "vin",
+        "vres"
+      ]
+    },
+    {
+      "id": "P_RESIDUE_CENTERING",
+      "observable_contract": "`vres` subtracts the centered four-count flash estimate from the sampled input residue.",
+      "required_signals": [
+        "time",
+        "clks",
+        "dout",
+        "dt0",
+        "dt1",
+        "dt2",
+        "dt3",
+        "dt4",
+        "dt5",
+        "dt6",
+        "dt7",
+        "vin",
+        "vres"
+      ]
+    },
+    {
+      "id": "P_OUTPUT_NORMALIZATION",
+      "observable_contract": "`dout` reports the tap count normalized by eight without extra output scaling.",
+      "required_signals": [
+        "time",
+        "clks",
+        "dout",
+        "dt0",
+        "dt1",
+        "dt2",
+        "dt3",
+        "dt4",
+        "dt5",
+        "dt6",
+        "dt7",
+        "vin",
+        "vres"
+      ]
+    }
+  ],
+  "schema_version": "v4-tri-form-public-contract-v2",
+  "submission_contract": {
+    "agentic_submission_root": "public/submission",
+    "exact_declared_file_set_required": true,
+    "target_artifacts_relative_to": "submission_root"
+  },
+  "target_artifacts": [
+    "ref_flash_8level_decoder.va"
+  ],
+  "task_id": "v4-1158",
+  "trace_contract": {
+    "required_signals": [
+      "time",
+      "clks",
+      "dout",
+      "dt0",
+      "dt1",
+      "dt2",
+      "dt3",
+      "dt4",
+      "dt5",
+      "dt6",
+      "dt7",
+      "vin",
+      "vres"
+    ]
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "candidate_artifacts": [
+    "cmp_delay.va",
+    "edge_interval_timer.va"
+  ],
+  "canonical_dut_source": "release/dut-base-v3-exact-five-hash-bound-v2/039-propagation-delay-comparator",
+  "family_id": "039",
+  "family_spec_sha256": "0d30674a183b6c80566924acdd2d0f8050956135c9e06ded8753e5069b0d8f95",
+  "form": "bugfix",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "3b45b2736ed5ce4a1a9e7e070cafcad8640d1b94631f27ca7ca81846b4aa64e2",
+  "schema_version": "v4-tri-form-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/bugfix/1039-propagation-delay-comparator-bugfix",
+  "task_dir_sha256": "94f177a6194b2bd0344ec0feb9a38edccc0248550fda487c7d6ac19ed27ddd2b",
+  "task_id": "v4-1039"
+}

@@ -1,0 +1,22 @@
+{
+  "base_dut": {
+    "canonical_score_tb_sha256": "32f409334d769e902d6d23b0590adf64b99b9c12b5a40047b0db04f2726679b3",
+    "canonical_task_id": "v4-078",
+    "canonical_task_slug": "078-lfsr-prbs-generator",
+    "family_spec_sha256": "89a9f61a1c08879a2527f15e99d61e6423285fc6f847173a7f3c888630a2532d",
+    "mutation_catalog_sha256": "e65b8dcf9228077bf12a7b16b1607228576d5616a91b2eb322242307528401b6",
+    "source_release_manifest_sha256": "66951fd8580c37e2fbf70c3381d2e7f54f538e55588c199c63181d8c6a740623"
+  },
+  "family_id": "078",
+  "negative_assignment": {
+    "bugfix_seed": "neg_003_ignore_enable",
+    "testbench_suite": [
+      "neg_001_zero",
+      "neg_005_metric_scale_low",
+      "neg_003_ignore_enable",
+      "neg_006_shift_sequence_wrong",
+      "neg_002_wrong_taps"
+    ]
+  },
+  "schema_version": "v4-derivation-manifest-v2"
+}

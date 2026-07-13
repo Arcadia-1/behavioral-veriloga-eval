@@ -1,0 +1,219 @@
+{
+  "artifact_contract": {
+    "files": [
+      {
+        "modules": [
+          {
+            "depends_on": [],
+            "name": "differential_dac_calc_6b",
+            "parameters": [
+              {
+                "default": "0.75",
+                "name": "vth",
+                "override_behavior": "overrides vth",
+                "type": "real",
+                "units": "",
+                "valid_range": "finite"
+              },
+              {
+                "default": "0.75",
+                "name": "vcm",
+                "override_behavior": "overrides vcm",
+                "type": "real",
+                "units": "",
+                "valid_range": "finite"
+              },
+              {
+                "default": "0.925",
+                "name": "refp",
+                "override_behavior": "overrides refp",
+                "type": "real",
+                "units": "",
+                "valid_range": "finite"
+              },
+              {
+                "default": "0.575",
+                "name": "refn",
+                "override_behavior": "overrides refn",
+                "type": "real",
+                "units": "",
+                "valid_range": "finite"
+              },
+              {
+                "default": "200p",
+                "name": "tt",
+                "override_behavior": "overrides tt",
+                "type": "real",
+                "units": "",
+                "valid_range": "finite"
+              },
+              {
+                "default": "1n",
+                "name": "convdelay",
+                "override_behavior": "overrides convdelay",
+                "type": "real",
+                "units": "",
+                "valid_range": "finite"
+              }
+            ],
+            "ports": [
+              {
+                "direction": "input",
+                "discipline": "electrical",
+                "name": "din0",
+                "position": 0
+              },
+              {
+                "direction": "input",
+                "discipline": "electrical",
+                "name": "din1",
+                "position": 1
+              },
+              {
+                "direction": "input",
+                "discipline": "electrical",
+                "name": "din2",
+                "position": 2
+              },
+              {
+                "direction": "input",
+                "discipline": "electrical",
+                "name": "din3",
+                "position": 3
+              },
+              {
+                "direction": "input",
+                "discipline": "electrical",
+                "name": "din4",
+                "position": 4
+              },
+              {
+                "direction": "input",
+                "discipline": "electrical",
+                "name": "din5",
+                "position": 5
+              },
+              {
+                "direction": "input",
+                "discipline": "electrical",
+                "name": "clks",
+                "position": 6
+              },
+              {
+                "direction": "output",
+                "discipline": "electrical",
+                "name": "voutp",
+                "position": 7
+              },
+              {
+                "direction": "output",
+                "discipline": "electrical",
+                "name": "voutn",
+                "position": 8
+              }
+            ],
+            "role": "entry"
+          }
+        ],
+        "path": "differential_dac_calc_6b.va"
+      }
+    ],
+    "mode": "single_file"
+  },
+  "family_id": "153",
+  "feedback": {
+    "available_in_modes": [
+      "G2",
+      "G3",
+      "G4",
+      "G5"
+    ],
+    "command": "vabench feedback run"
+  },
+  "form": "dut",
+  "identity": {
+    "category": "data_converter",
+    "difficulty": "D2",
+    "level": "L1",
+    "supported_scope": "pure voltage-domain event-driven transient behavioral Verilog-A",
+    "title": "Differential DAC Calc 6b"
+  },
+  "modeling_constraints": [
+    "Use deterministic voltage-domain behavioral Verilog-A.",
+    "Do not hard-code validation stimulus, stop times, sample windows, gold internals, or simulator side channels."
+  ],
+  "properties": [
+    {
+      "id": "P_CLOCKED_SIX_BIT_WEIGHTED_CODE",
+      "observable_contract": "Each rising `clks` crossing samples `din0` through `din5` into the declared six-bit weighted DAC code.",
+      "required_signals": [
+        "time",
+        "clks",
+        "din0",
+        "din1",
+        "din2",
+        "din3",
+        "din4",
+        "din5",
+        "voutn",
+        "voutp"
+      ]
+    },
+    {
+      "id": "P_COMPLEMENTARY_DIFFERENTIAL_OUTPUTS",
+      "observable_contract": "`voutp` and `voutn` use complementary weighted sums about the common-mode value.",
+      "required_signals": [
+        "time",
+        "clks",
+        "din0",
+        "din1",
+        "din2",
+        "din3",
+        "din4",
+        "din5",
+        "voutn",
+        "voutp"
+      ]
+    },
+    {
+      "id": "P_OUTPUT_SWING_SCALE",
+      "observable_contract": "The differential outputs use the declared reference span and bit weights without extra swing scaling.",
+      "required_signals": [
+        "time",
+        "clks",
+        "din0",
+        "din1",
+        "din2",
+        "din3",
+        "din4",
+        "din5",
+        "voutn",
+        "voutp"
+      ]
+    }
+  ],
+  "schema_version": "v4-tri-form-public-contract-v2",
+  "submission_contract": {
+    "agentic_submission_root": "public/submission",
+    "exact_declared_file_set_required": true,
+    "target_artifacts_relative_to": "submission_root"
+  },
+  "target_artifacts": [
+    "differential_dac_calc_6b.va"
+  ],
+  "task_id": "v4-153",
+  "trace_contract": {
+    "required_signals": [
+      "time",
+      "clks",
+      "din0",
+      "din1",
+      "din2",
+      "din3",
+      "din4",
+      "din5",
+      "voutn",
+      "voutp"
+    ]
+  }
+}

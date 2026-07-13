@@ -1,0 +1,11 @@
+{
+  "buggy_bundle_sha256": "baf564b653e1a39bfb2a8dd9281318a187b2a36cd20550170893996176607c8d",
+  "changed_artifacts": [
+    "leaky_hold.va"
+  ],
+  "gold_dut_certification_sha256": "d51c962174fceef62fce5b098ec4c91af9caf5ecb4618c10cf385ca7d1d26a75",
+  "schema_version": "v4-gold-repair-reference-v1",
+  "simulation_rerun_required_for_materialization": false,
+  "solution_tree_sha256": "548da3e63ff1310fd6c114581141d3cc78c1546e0e328e1b5c04899bb2a97711",
+  "source_solution": "release/dut-base-v3-exact-five-hash-bound-v2/042-sample-and-hold-with-droop-leakage/evaluator/solution"
+}

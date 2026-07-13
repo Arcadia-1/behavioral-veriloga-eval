@@ -1,0 +1,560 @@
+{
+  "artifact_contract": {
+    "files": [
+      {
+        "modules": [
+          {
+            "depends_on": [],
+            "name": "control_word_encoder_7b",
+            "parameters": [
+              {
+                "default": "85",
+                "name": "ctrl",
+                "override_behavior": "overrides ctrl",
+                "type": "integer",
+                "units": "",
+                "valid_range": "finite"
+              },
+              {
+                "default": "0.9",
+                "name": "vhi",
+                "override_behavior": "overrides vhi",
+                "type": "real",
+                "units": "",
+                "valid_range": "finite"
+              },
+              {
+                "default": "0.0",
+                "name": "vlo",
+                "override_behavior": "overrides vlo",
+                "type": "real",
+                "units": "",
+                "valid_range": "finite"
+              },
+              {
+                "default": "20p",
+                "name": "tr",
+                "override_behavior": "overrides tr",
+                "type": "real",
+                "units": "",
+                "valid_range": "finite"
+              }
+            ],
+            "ports": [
+              {
+                "direction": "output",
+                "discipline": "electrical",
+                "name": "d0",
+                "position": 0
+              },
+              {
+                "direction": "output",
+                "discipline": "electrical",
+                "name": "d1",
+                "position": 1
+              },
+              {
+                "direction": "output",
+                "discipline": "electrical",
+                "name": "d2",
+                "position": 2
+              },
+              {
+                "direction": "output",
+                "discipline": "electrical",
+                "name": "d3",
+                "position": 3
+              },
+              {
+                "direction": "output",
+                "discipline": "electrical",
+                "name": "d4",
+                "position": 4
+              },
+              {
+                "direction": "output",
+                "discipline": "electrical",
+                "name": "d5",
+                "position": 5
+              },
+              {
+                "direction": "output",
+                "discipline": "electrical",
+                "name": "d6",
+                "position": 6
+              }
+            ],
+            "role": "entry"
+          }
+        ],
+        "path": "control_word_encoder_7b.va"
+      }
+    ],
+    "mode": "single_file"
+  },
+  "evaluation_summary": {
+    "anonymous_negative_cases": 5,
+    "full_credit": "valid candidate and reference pass and all five negatives killed behaviorally",
+    "reference_cases": 1
+  },
+  "family_id": "147",
+  "feedback": {
+    "available_in_modes": [
+      "G2",
+      "G3",
+      "G4",
+      "G5"
+    ],
+    "command": "vabench feedback run"
+  },
+  "form": "testbench",
+  "identity": {
+    "category": "digital_logic",
+    "difficulty": "D2",
+    "level": "L1",
+    "supported_scope": "pure voltage-domain event-driven transient behavioral Verilog-A",
+    "title": "Control Word Encoder 7b"
+  },
+  "modeling_constraints": [
+    "Use deterministic voltage-domain behavioral Verilog-A.",
+    "Do not hard-code validation stimulus, stop times, sample windows, gold internals, or simulator side channels."
+  ],
+  "properties": [
+    {
+      "id": "P_SEVEN_BIT_DECODE",
+      "observable_contract": "`ctrl` is decoded LSB-first so `d0` carries bit 0 and `d6` carries bit 6.",
+      "required_signals": [
+        "time",
+        "d0_0",
+        "d1_0",
+        "d2_0",
+        "d3_0",
+        "d4_0",
+        "d5_0",
+        "d6_0",
+        "d0_19",
+        "d1_19",
+        "d2_19",
+        "d3_19",
+        "d4_19",
+        "d5_19",
+        "d6_19",
+        "d0_108",
+        "d1_108",
+        "d2_108",
+        "d3_108",
+        "d4_108",
+        "d5_108",
+        "d6_108",
+        "d0_127",
+        "d1_127",
+        "d2_127",
+        "d3_127",
+        "d4_127",
+        "d5_127",
+        "d6_127"
+      ]
+    },
+    {
+      "id": "P_BIT_POLARITY",
+      "observable_contract": "A decoded one drives its output high and a decoded zero drives its output low.",
+      "required_signals": [
+        "time",
+        "d0_0",
+        "d1_0",
+        "d2_0",
+        "d3_0",
+        "d4_0",
+        "d5_0",
+        "d6_0",
+        "d0_19",
+        "d1_19",
+        "d2_19",
+        "d3_19",
+        "d4_19",
+        "d5_19",
+        "d6_19",
+        "d0_108",
+        "d1_108",
+        "d2_108",
+        "d3_108",
+        "d4_108",
+        "d5_108",
+        "d6_108",
+        "d0_127",
+        "d1_127",
+        "d2_127",
+        "d3_127",
+        "d4_127",
+        "d5_127",
+        "d6_127"
+      ]
+    },
+    {
+      "id": "P_OUTPUT_RAIL_LEVELS",
+      "observable_contract": "Each output uses the declared `vhi` and `vlo` voltage levels for its decoded bit.",
+      "required_signals": [
+        "time",
+        "d0_0",
+        "d1_0",
+        "d2_0",
+        "d3_0",
+        "d4_0",
+        "d5_0",
+        "d6_0",
+        "d0_19",
+        "d1_19",
+        "d2_19",
+        "d3_19",
+        "d4_19",
+        "d5_19",
+        "d6_19",
+        "d0_108",
+        "d1_108",
+        "d2_108",
+        "d3_108",
+        "d4_108",
+        "d5_108",
+        "d6_108",
+        "d0_127",
+        "d1_127",
+        "d2_127",
+        "d3_127",
+        "d4_127",
+        "d5_127",
+        "d6_127"
+      ]
+    }
+  ],
+  "schema_version": "v4-tri-form-public-contract-v2",
+  "security_policy": {
+    "allowed_include_paths": [
+      "./dut/control_word_encoder_7b.va"
+    ],
+    "candidate_artifacts": [
+      "testbench.scs"
+    ],
+    "forbidden_rules": [
+      "undeclared_include",
+      "absolute_path",
+      "path_traversal",
+      "process_execution",
+      "network_access",
+      "simulator_scripting_escape",
+      "dut_redefinition",
+      "direct_dut_output_drive",
+      "private_hierarchical_probe",
+      "unbounded_resource_use"
+    ],
+    "limits": {
+      "max_analyses": 1,
+      "max_candidate_bytes": 1000000,
+      "max_cpu_time_s": 120,
+      "max_memory_mb": 2048,
+      "max_output_bytes": 100000000,
+      "max_saved_signals": 64,
+      "max_stop_time_s": 1.0,
+      "max_wall_time_s": 180
+    },
+    "rejection_outcome": "invalid_run",
+    "required_rules": [
+      "declared_dut_binding",
+      "transient_analysis",
+      "all_required_public_traces"
+    ],
+    "schema_version": "v4-testbench-security-policy-v2"
+  },
+  "security_summary": [
+    "only the declared testbench_include_path values are allowed for DUT sources",
+    "DUT redefinition, direct output drive, private hierarchical probes, arbitrary file access, and unbounded analyses are rejected"
+  ],
+  "submission_contract": {
+    "agentic_submission_root": "public/submission",
+    "exact_declared_file_set_required": true,
+    "target_artifacts_relative_to": "submission_root"
+  },
+  "supplied_inputs": {
+    "dut_instances": [
+      {
+        "connections": [
+          {
+            "net": "d0_0",
+            "port_ref": "d0",
+            "position": 0
+          },
+          {
+            "net": "d1_0",
+            "port_ref": "d1",
+            "position": 1
+          },
+          {
+            "net": "d2_0",
+            "port_ref": "d2",
+            "position": 2
+          },
+          {
+            "net": "d3_0",
+            "port_ref": "d3",
+            "position": 3
+          },
+          {
+            "net": "d4_0",
+            "port_ref": "d4",
+            "position": 4
+          },
+          {
+            "net": "d5_0",
+            "port_ref": "d5",
+            "position": 5
+          },
+          {
+            "net": "d6_0",
+            "port_ref": "d6",
+            "position": 6
+          }
+        ],
+        "module_ref": "control_word_encoder_7b",
+        "name": "XCTRL0",
+        "ordered_nets": [
+          "d0_0",
+          "d1_0",
+          "d2_0",
+          "d3_0",
+          "d4_0",
+          "d5_0",
+          "d6_0"
+        ],
+        "public_output_nets": [
+          "d0_0",
+          "d1_0",
+          "d2_0",
+          "d3_0",
+          "d4_0",
+          "d5_0",
+          "d6_0"
+        ]
+      },
+      {
+        "connections": [
+          {
+            "net": "d0_19",
+            "port_ref": "d0",
+            "position": 0
+          },
+          {
+            "net": "d1_19",
+            "port_ref": "d1",
+            "position": 1
+          },
+          {
+            "net": "d2_19",
+            "port_ref": "d2",
+            "position": 2
+          },
+          {
+            "net": "d3_19",
+            "port_ref": "d3",
+            "position": 3
+          },
+          {
+            "net": "d4_19",
+            "port_ref": "d4",
+            "position": 4
+          },
+          {
+            "net": "d5_19",
+            "port_ref": "d5",
+            "position": 5
+          },
+          {
+            "net": "d6_19",
+            "port_ref": "d6",
+            "position": 6
+          }
+        ],
+        "module_ref": "control_word_encoder_7b",
+        "name": "XCTRL19",
+        "ordered_nets": [
+          "d0_19",
+          "d1_19",
+          "d2_19",
+          "d3_19",
+          "d4_19",
+          "d5_19",
+          "d6_19"
+        ],
+        "public_output_nets": [
+          "d0_19",
+          "d1_19",
+          "d2_19",
+          "d3_19",
+          "d4_19",
+          "d5_19",
+          "d6_19"
+        ]
+      },
+      {
+        "connections": [
+          {
+            "net": "d0_108",
+            "port_ref": "d0",
+            "position": 0
+          },
+          {
+            "net": "d1_108",
+            "port_ref": "d1",
+            "position": 1
+          },
+          {
+            "net": "d2_108",
+            "port_ref": "d2",
+            "position": 2
+          },
+          {
+            "net": "d3_108",
+            "port_ref": "d3",
+            "position": 3
+          },
+          {
+            "net": "d4_108",
+            "port_ref": "d4",
+            "position": 4
+          },
+          {
+            "net": "d5_108",
+            "port_ref": "d5",
+            "position": 5
+          },
+          {
+            "net": "d6_108",
+            "port_ref": "d6",
+            "position": 6
+          }
+        ],
+        "module_ref": "control_word_encoder_7b",
+        "name": "XCTRL108",
+        "ordered_nets": [
+          "d0_108",
+          "d1_108",
+          "d2_108",
+          "d3_108",
+          "d4_108",
+          "d5_108",
+          "d6_108"
+        ],
+        "public_output_nets": [
+          "d0_108",
+          "d1_108",
+          "d2_108",
+          "d3_108",
+          "d4_108",
+          "d5_108",
+          "d6_108"
+        ]
+      },
+      {
+        "connections": [
+          {
+            "net": "d0_127",
+            "port_ref": "d0",
+            "position": 0
+          },
+          {
+            "net": "d1_127",
+            "port_ref": "d1",
+            "position": 1
+          },
+          {
+            "net": "d2_127",
+            "port_ref": "d2",
+            "position": 2
+          },
+          {
+            "net": "d3_127",
+            "port_ref": "d3",
+            "position": 3
+          },
+          {
+            "net": "d4_127",
+            "port_ref": "d4",
+            "position": 4
+          },
+          {
+            "net": "d5_127",
+            "port_ref": "d5",
+            "position": 5
+          },
+          {
+            "net": "d6_127",
+            "port_ref": "d6",
+            "position": 6
+          }
+        ],
+        "module_ref": "control_word_encoder_7b",
+        "name": "XCTRL127",
+        "ordered_nets": [
+          "d0_127",
+          "d1_127",
+          "d2_127",
+          "d3_127",
+          "d4_127",
+          "d5_127",
+          "d6_127"
+        ],
+        "public_output_nets": [
+          "d0_127",
+          "d1_127",
+          "d2_127",
+          "d3_127",
+          "d4_127",
+          "d5_127",
+          "d6_127"
+        ]
+      }
+    ],
+    "read_only_dut_artifacts": [
+      {
+        "public_input_path": "supplied_dut/control_word_encoder_7b.va",
+        "testbench_include_path": "./dut/control_word_encoder_7b.va"
+      }
+    ],
+    "read_only_support_artifacts": []
+  },
+  "target_artifacts": [
+    "testbench.scs"
+  ],
+  "task_id": "v4-647",
+  "trace_contract": {
+    "required_signals": [
+      "time",
+      "d0_0",
+      "d1_0",
+      "d2_0",
+      "d3_0",
+      "d4_0",
+      "d5_0",
+      "d6_0",
+      "d0_19",
+      "d1_19",
+      "d2_19",
+      "d3_19",
+      "d4_19",
+      "d5_19",
+      "d6_19",
+      "d0_108",
+      "d1_108",
+      "d2_108",
+      "d3_108",
+      "d4_108",
+      "d5_108",
+      "d6_108",
+      "d0_127",
+      "d1_127",
+      "d2_127",
+      "d3_127",
+      "d4_127",
+      "d5_127",
+      "d6_127"
+    ]
+  }
+}

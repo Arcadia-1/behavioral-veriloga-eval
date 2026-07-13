@@ -1,0 +1,22 @@
+{
+  "base_dut": {
+    "canonical_score_tb_sha256": "d5f9dabf2faf8e8bce9b0f7d212c4327afd8404ce398346e61fd70fefa2592cf",
+    "canonical_task_id": "v4-021",
+    "canonical_task_slug": "021-calibration-deadband-controller",
+    "family_spec_sha256": "c8596920d250967035f35c3c2117a5d4954e9ddb10dda684a531f2429d820b38",
+    "mutation_catalog_sha256": "5ff346dd55339931d40d730586153b318d2c287b835251cd837e192dfe085db1",
+    "source_release_manifest_sha256": "66951fd8580c37e2fbf70c3381d2e7f54f538e55588c199c63181d8c6a740623"
+  },
+  "family_id": "021",
+  "negative_assignment": {
+    "bugfix_seed": "neg_001_boundary",
+    "testbench_suite": [
+      "neg_001_boundary",
+      "neg_003_polarity_direction",
+      "neg_004_state_reset",
+      "neg_005_metric_writeout",
+      "neg_002_timing_window"
+    ]
+  },
+  "schema_version": "v4-derivation-manifest-v2"
+}

@@ -1,0 +1,244 @@
+{
+  "artifact_contract": {
+    "files": [
+      {
+        "modules": [
+          {
+            "depends_on": [],
+            "name": "analog_mux_threshold",
+            "parameters": [
+              {
+                "default": 0.45,
+                "name": "vth",
+                "override_behavior": "sets the select threshold used for initial selection and subsequent threshold crossings",
+                "type": "real",
+                "units": "V",
+                "valid_range": "finite real value"
+              }
+            ],
+            "ports": [
+              {
+                "direction": "input",
+                "discipline": "electrical",
+                "name": "vin1",
+                "position": 0
+              },
+              {
+                "direction": "input",
+                "discipline": "electrical",
+                "name": "vin2",
+                "position": 1
+              },
+              {
+                "direction": "input",
+                "discipline": "electrical",
+                "name": "vsel",
+                "position": 2
+              },
+              {
+                "direction": "output",
+                "discipline": "electrical",
+                "name": "vout",
+                "position": 3
+              }
+            ],
+            "role": "entry"
+          }
+        ],
+        "path": "analog_mux_threshold.va"
+      }
+    ],
+    "mode": "single_file"
+  },
+  "evaluation_summary": {
+    "anonymous_negative_cases": 5,
+    "full_credit": "valid candidate and reference pass and all five negatives killed behaviorally",
+    "reference_cases": 1
+  },
+  "family_id": "114",
+  "feedback": {
+    "available_in_modes": [
+      "G2",
+      "G3",
+      "G4",
+      "G5"
+    ],
+    "command": "vabench feedback run"
+  },
+  "form": "testbench",
+  "identity": {
+    "category": "mixed_signal",
+    "difficulty": "D2",
+    "level": "L1",
+    "supported_scope": "pure voltage-domain event-driven transient behavioral Verilog-A",
+    "title": "Analog Mux Threshold"
+  },
+  "modeling_constraints": [
+    "Use deterministic voltage-domain threshold selection.",
+    "Respond to both select directions and establish selection at simulation start.",
+    "Do not add input mixing, unrelated retained state, current contributions, or validation-only hooks."
+  ],
+  "properties": [
+    {
+      "id": "P_HIGH_SELECTS_VIN1",
+      "observable_contract": "When vsel is above vth, vout follows vin1 rather than vin2.",
+      "required_signals": [
+        "time",
+        "vin1",
+        "vin2",
+        "vsel",
+        "vout"
+      ]
+    },
+    {
+      "id": "P_LOW_SELECTS_VIN2",
+      "observable_contract": "When vsel is at or below vth, vout follows vin2 rather than vin1.",
+      "required_signals": [
+        "time",
+        "vin1",
+        "vin2",
+        "vsel",
+        "vout"
+      ]
+    },
+    {
+      "id": "P_BIDIRECTIONAL_SELECTION",
+      "observable_contract": "The selected input updates after both rising and falling crossings of vsel through vth.",
+      "required_signals": [
+        "time",
+        "vin1",
+        "vin2",
+        "vsel",
+        "vout"
+      ]
+    },
+    {
+      "id": "P_INITIAL_SELECTION",
+      "observable_contract": "Before any select transition, vout is selected from the initial vsel level using the same strict-greater-than threshold rule.",
+      "required_signals": [
+        "time",
+        "vin1",
+        "vin2",
+        "vsel",
+        "vout"
+      ]
+    },
+    {
+      "id": "P_NO_MIXING",
+      "observable_contract": "The output represents one selected input and does not average or sum vin1 and vin2.",
+      "required_signals": [
+        "time",
+        "vin1",
+        "vin2",
+        "vsel",
+        "vout"
+      ]
+    }
+  ],
+  "schema_version": "v4-tri-form-public-contract-v2",
+  "security_policy": {
+    "allowed_include_paths": [
+      "./dut/analog_mux_threshold.va"
+    ],
+    "candidate_artifacts": [
+      "testbench.scs"
+    ],
+    "forbidden_rules": [
+      "undeclared_include",
+      "absolute_path",
+      "path_traversal",
+      "process_execution",
+      "network_access",
+      "simulator_scripting_escape",
+      "dut_redefinition",
+      "direct_dut_output_drive",
+      "private_hierarchical_probe",
+      "unbounded_resource_use"
+    ],
+    "limits": {
+      "max_analyses": 1,
+      "max_candidate_bytes": 1000000,
+      "max_cpu_time_s": 120,
+      "max_memory_mb": 2048,
+      "max_output_bytes": 100000000,
+      "max_saved_signals": 64,
+      "max_stop_time_s": 1.0,
+      "max_wall_time_s": 180
+    },
+    "rejection_outcome": "invalid_run",
+    "required_rules": [
+      "declared_dut_binding",
+      "transient_analysis",
+      "all_required_public_traces"
+    ],
+    "schema_version": "v4-testbench-security-policy-v2"
+  },
+  "security_summary": [
+    "only the declared testbench_include_path values are allowed for DUT sources",
+    "DUT redefinition, direct output drive, private hierarchical probes, arbitrary file access, and unbounded analyses are rejected"
+  ],
+  "submission_contract": {
+    "agentic_submission_root": "public/submission",
+    "exact_declared_file_set_required": true,
+    "target_artifacts_relative_to": "submission_root"
+  },
+  "supplied_inputs": {
+    "dut_instances": [
+      {
+        "connections": [
+          {
+            "net": "vin1",
+            "port_ref": "vin1",
+            "position": 0
+          },
+          {
+            "net": "vin2",
+            "port_ref": "vin2",
+            "position": 1
+          },
+          {
+            "net": "vsel",
+            "port_ref": "vsel",
+            "position": 2
+          },
+          {
+            "net": "vout",
+            "port_ref": "vout",
+            "position": 3
+          }
+        ],
+        "module_ref": "analog_mux_threshold",
+        "name": "XDUT",
+        "ordered_nets": [
+          "vin1",
+          "vin2",
+          "vsel",
+          "vout"
+        ],
+        "public_output_nets": [
+          "vout"
+        ]
+      }
+    ],
+    "read_only_dut_artifacts": [
+      {
+        "public_input_path": "supplied_dut/analog_mux_threshold.va",
+        "testbench_include_path": "./dut/analog_mux_threshold.va"
+      }
+    ],
+    "read_only_support_artifacts": []
+  },
+  "target_artifacts": [
+    "testbench.scs"
+  ],
+  "task_id": "v4-614",
+  "trace_contract": {
+    "required_signals": [
+      "time",
+      "vin1",
+      "vin2",
+      "vsel",
+      "vout"
+    ]
+  }
+}

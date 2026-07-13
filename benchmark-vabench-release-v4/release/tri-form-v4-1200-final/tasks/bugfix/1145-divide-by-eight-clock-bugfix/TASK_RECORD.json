@@ -1,0 +1,23 @@
+{
+  "candidate_artifacts": [
+    "divide_by_eight_clock.va"
+  ],
+  "canonical_dut_source": "release/dut-base-v3-exact-five-hash-bound-v2/145-divide-by-eight-clock",
+  "family_id": "145",
+  "family_spec_sha256": "6125e37aaea5ed73ba971fb412b1f84bb78a131c3695c7f34cfffbcee84f3596",
+  "form": "bugfix",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "0488e60c74c7cf10b2a728e4c6d4eba5873856f364b44281e3e403c6808022ea",
+  "schema_version": "v4-tri-form-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/bugfix/1145-divide-by-eight-clock-bugfix",
+  "task_dir_sha256": "217ea6f191d2315e4da07961a00fd235ceb7b3aef774469a6e02e61a86c617ba",
+  "task_id": "v4-1145"
+}

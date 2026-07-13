@@ -1,0 +1,23 @@
+{
+  "candidate_artifacts": [
+    "differential_gain_driver.va"
+  ],
+  "canonical_dut_source": "release/dut-base-v3-exact-five-hash-bound-v2/130-differential-gain-driver",
+  "family_id": "130",
+  "family_spec_sha256": "331ced7489af5ae20cf6e57f7f73cab8ccf0532e09aa39382615b17e9cda3788",
+  "form": "bugfix",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "5a58f07d9074121d1f3c8ff7cb96c29b587943daf54117f0b7a0b722fb0a0b73",
+  "schema_version": "v4-tri-form-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/bugfix/1130-differential-gain-driver-bugfix",
+  "task_dir_sha256": "1cb874933c942dab14773559d9edca851a0ef35971fa49bae519817c77cbaf7b",
+  "task_id": "v4-1130"
+}

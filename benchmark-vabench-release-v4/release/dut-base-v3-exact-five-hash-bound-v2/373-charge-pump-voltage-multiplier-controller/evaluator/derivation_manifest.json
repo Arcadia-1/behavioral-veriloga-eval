@@ -1,0 +1,18 @@
+{
+  "family_id": "373",
+  "mutation_catalog_sha256": "98d105c7a56f632fb4312f3b9078b5789d0be6fffa770bb70bc0336401168f36",
+  "mutation_partition": {
+    "bugfix_seed": [
+      "neg_001_missing_vout_reset"
+    ],
+    "testbench_private_score": [
+      "neg_003_wrong_pump_polarity",
+      "neg_004_half_pump_step",
+      "neg_005_ready_asserts_early"
+    ],
+    "testbench_public_feedback": [
+      "neg_002_overlapping_phases"
+    ]
+  },
+  "schema_version": "v4-derivation-manifest-v1"
+}

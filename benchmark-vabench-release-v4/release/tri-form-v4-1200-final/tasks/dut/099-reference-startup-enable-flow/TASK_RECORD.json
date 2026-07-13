@@ -1,0 +1,22 @@
+{
+  "candidate_artifacts": [
+    "reference_startup_enable_flow.va"
+  ],
+  "canonical_dut_source": "release/dut-base-v3-exact-five-hash-bound-v2/099-reference-startup-enable-flow",
+  "family_id": "099",
+  "family_spec_sha256": "fe844945a0460dd22430069c2f6141657ba81855d809562081b459c90485deb3",
+  "form": "dut",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "3a329432abb35804051c2d3a1b62fb04e1bbbcdfee6347223f138f9fc9804549",
+  "schema_version": "v4-tri-form-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/dut/099-reference-startup-enable-flow",
+  "task_id": "v4-099"
+}

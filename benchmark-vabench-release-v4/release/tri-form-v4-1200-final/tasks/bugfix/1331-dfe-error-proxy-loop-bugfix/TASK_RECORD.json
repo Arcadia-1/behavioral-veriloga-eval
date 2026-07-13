@@ -1,0 +1,25 @@
+{
+  "candidate_artifacts": [
+    "dfe_error_proxy_loop_top.va",
+    "decision_history.va",
+    "feedback_correction_core.va"
+  ],
+  "canonical_dut_source": "release/dut-base-v3-exact-five-hash-bound-v2/331-dfe-error-proxy-loop",
+  "family_id": "331",
+  "family_spec_sha256": "aff74cd1c4d319da6af3dc91607b30d568ff9a211018d4ec38bb60cf928d7b4c",
+  "form": "bugfix",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "bd41be4b8dde323506dcee9ad39e099f995f42becc13c35910b6ea7419ae8b32",
+  "schema_version": "v4-tri-form-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/bugfix/1331-dfe-error-proxy-loop-bugfix",
+  "task_dir_sha256": "dc949510f312d27c54b79d2cfeb07efd0c49148eefc8f1dcd99d85166bd2ae31",
+  "task_id": "v4-1331"
+}

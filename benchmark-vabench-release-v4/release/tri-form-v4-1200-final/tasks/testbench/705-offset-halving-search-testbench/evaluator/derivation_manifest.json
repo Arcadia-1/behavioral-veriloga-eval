@@ -1,0 +1,22 @@
+{
+  "base_dut": {
+    "canonical_score_tb_sha256": "38d789af1fe7d6737f4251a6a77cb3b44b7a13930b9e593233a735edc72d79ab",
+    "canonical_task_id": "v4-205",
+    "canonical_task_slug": "205-offset-halving-search",
+    "family_spec_sha256": "1b185feb9e582636429eb662263552a4eb9271b4a410f68c3222cbdfcb691a75",
+    "mutation_catalog_sha256": "937ac8ecd828d206b19013279cdb1ffe29814eb7cf08925c4073eec18e744b77",
+    "source_release_manifest_sha256": "66951fd8580c37e2fbf70c3381d2e7f54f538e55588c199c63181d8c6a740623"
+  },
+  "family_id": "205",
+  "negative_assignment": {
+    "bugfix_seed": "neg_003_inverted_update",
+    "testbench_suite": [
+      "neg_002_no_step_halving",
+      "neg_001_zero",
+      "neg_004_full_diff_scale",
+      "neg_003_inverted_update",
+      "neg_005_metric_scale_low"
+    ]
+  },
+  "schema_version": "v4-derivation-manifest-v2"
+}

@@ -1,0 +1,110 @@
+{
+  "artifact_contract": {
+    "files": [
+      {
+        "modules": [
+          {
+            "depends_on": [],
+            "name": "differential_amplifier_core",
+            "parameters": [],
+            "ports": [
+              {
+                "direction": "input",
+                "discipline": "electrical",
+                "name": "sigin_p",
+                "position": 0
+              },
+              {
+                "direction": "input",
+                "discipline": "electrical",
+                "name": "sigin_n",
+                "position": 1
+              },
+              {
+                "direction": "output",
+                "discipline": "electrical",
+                "name": "sigout",
+                "position": 2
+              }
+            ],
+            "role": "entry"
+          }
+        ],
+        "path": "differential_amplifier_core.va"
+      }
+    ],
+    "mode": "single_file"
+  },
+  "family_id": "134",
+  "feedback": {
+    "available_in_modes": [
+      "G2",
+      "G3",
+      "G4",
+      "G5"
+    ],
+    "command": "vabench feedback run"
+  },
+  "form": "dut",
+  "identity": {
+    "category": "mixed_signal",
+    "difficulty": "D2",
+    "level": "L1",
+    "supported_scope": "pure voltage-domain event-driven transient behavioral Verilog-A",
+    "title": "Differential Amplifier Core"
+  },
+  "modeling_constraints": [
+    "Use deterministic voltage-domain behavioral Verilog-A.",
+    "Do not hard-code validation stimulus, stop times, sample windows, gold internals, or simulator side channels."
+  ],
+  "properties": [
+    {
+      "id": "P_DIFFERENTIAL_INPUT",
+      "observable_contract": "Use `V(sigin_p, sigin_n)` as the input signal.",
+      "required_signals": [
+        "time",
+        "sigin_p",
+        "sigin_n",
+        "sigout"
+      ]
+    },
+    {
+      "id": "P_INPUT_OFFSET",
+      "observable_contract": "Subtract the fixed 0.05 V input-referred offset before applying gain.",
+      "required_signals": [
+        "time",
+        "sigin_p",
+        "sigin_n",
+        "sigout"
+      ]
+    },
+    {
+      "id": "P_GAIN_TWO_OUTPUT",
+      "observable_contract": "Drive `sigout` to `2.0 * (V(sigin_p, sigin_n) - 0.05)`.",
+      "required_signals": [
+        "time",
+        "sigin_p",
+        "sigin_n",
+        "sigout"
+      ]
+    }
+  ],
+  "schema_version": "v4-tri-form-public-contract-v2",
+  "submission_contract": {
+    "agentic_submission_root": "public/submission",
+    "exact_declared_file_set_required": true,
+    "target_artifacts_relative_to": "submission_root"
+  },
+  "target_artifacts": [
+    "differential_amplifier_core.va"
+  ],
+  "task_id": "v4-134",
+  "trace_contract": {
+    "required_signals": [
+      "time",
+      "sigin_n",
+      "sigin_p",
+      "sigout"
+    ]
+  }
+}

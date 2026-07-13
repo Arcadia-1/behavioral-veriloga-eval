@@ -1,0 +1,27 @@
+{
+  "buggy_bundle_sha256": "6944e4735ae2c46af3547eee1b5fdb583d2bad7bdafe54bfe5054189c0819f9e",
+  "buggy_seed_fingerprint_mismatches": [
+    "task_inputs.profile_sha256",
+    "task_inputs.harness_spec_sha256",
+    "task_inputs.property_contract_sha256",
+    "oracle.checker_implementation_sha256"
+  ],
+  "buggy_seed_status": "canonical_deck_replay_pending",
+  "evidence_rebinding_required": true,
+  "evidence_source": "hash_bound_canonical_case_reuse_v1",
+  "gold_fingerprint_mismatches": [
+    "task_inputs.family_spec_sha256",
+    "task_inputs.harness_spec_sha256",
+    "task_inputs.score_profile_sha256",
+    "oracle.checker_implementation_sha256"
+  ],
+  "gold_repair_status": "canonical_deck_replay_pending",
+  "gold_solution_sha256": "f339225aaaba78c21305c5531cc6910df5ee9fa4b0db501207cf0041f29f7629",
+  "gold_source_certification_sha256": "f1847d7200325f6123f70bdd2686cc3b8a18c324547d18c0bbd856e3aadc8d2d",
+  "mutation_source_certification_sha256": "40796555a2f6b7df08706b8d6d7ca446d463fae95674534280f4342106980b2a",
+  "schema_version": "v4-bugfix-repair-certificate-v1",
+  "score_deck_sha256": "f2398ab3db0fd95e439c524a7f0d8ba528ad4a1d220de03551a79a453795835d",
+  "simulation_rerun_required_for_materialization": false,
+  "simulation_rerun_requirement_status": "not_determined_by_materialization",
+  "status": "canonical_deck_replay_pending"
+}

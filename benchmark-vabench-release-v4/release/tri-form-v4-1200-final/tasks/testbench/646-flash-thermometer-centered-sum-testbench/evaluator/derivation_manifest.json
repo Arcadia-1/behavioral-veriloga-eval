@@ -1,0 +1,22 @@
+{
+  "base_dut": {
+    "canonical_score_tb_sha256": "e99b66a765ba08bb94d1b656d545cb207b9aeb57764fcfb121ed6015dc2f8305",
+    "canonical_task_id": "v4-146",
+    "canonical_task_slug": "146-flash-thermometer-centered-sum",
+    "family_spec_sha256": "760c4352437eab416022b040ff623fcdfdd40a41cf08b90acc88361255389683",
+    "mutation_catalog_sha256": "3424928a2267f646f73eb88152d9e77b844988d55a085a591aa56c9ab8af2fbe",
+    "source_release_manifest_sha256": "66951fd8580c37e2fbf70c3381d2e7f54f538e55588c199c63181d8c6a740623"
+  },
+  "family_id": "146",
+  "negative_assignment": {
+    "bugfix_seed": "neg_002_uncentered_sum",
+    "testbench_suite": [
+      "neg_003_wrong_gain",
+      "neg_002_uncentered_sum",
+      "neg_004_ignores_upper_bits",
+      "neg_001_zero",
+      "neg_005_metric_scale_low"
+    ]
+  },
+  "schema_version": "v4-derivation-manifest-v2"
+}

@@ -1,0 +1,22 @@
+{
+  "base_dut": {
+    "canonical_score_tb_sha256": "471c026df355ed0dd25c4d9fce7e31b659be8ffe3743840979330577869d1c51",
+    "canonical_task_id": "v4-003",
+    "canonical_task_slug": "003-pipeline-adc-stage",
+    "family_spec_sha256": "ff644321a125572be576d4b3c7bf42b7ac500ba5942330d0eba31f15aa2a618d",
+    "mutation_catalog_sha256": "10461bde59c48155fc21ca57d476f0d7ca90546cc34183a5dec209e35f2c64e5",
+    "source_release_manifest_sha256": "66951fd8580c37e2fbf70c3381d2e7f54f538e55588c199c63181d8c6a740623"
+  },
+  "family_id": "003",
+  "negative_assignment": {
+    "bugfix_seed": "neg_001_threshold_too_wide",
+    "testbench_suite": [
+      "neg_004_middle_code_wrong",
+      "neg_001_threshold_too_wide",
+      "neg_006_live_vin_on_phi2",
+      "neg_007_missing_residue_clamp",
+      "neg_003_residue_feedback_sign_swapped"
+    ]
+  },
+  "schema_version": "v4-derivation-manifest-v2"
+}

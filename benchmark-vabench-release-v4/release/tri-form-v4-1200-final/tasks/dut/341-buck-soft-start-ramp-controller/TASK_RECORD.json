@@ -1,0 +1,22 @@
+{
+  "candidate_artifacts": [
+    "buck_soft_start_ramp_controller.va"
+  ],
+  "canonical_dut_source": "release/dut-base-v3-exact-five-hash-bound-v2/341-buck-soft-start-ramp-controller",
+  "family_id": "341",
+  "family_spec_sha256": "812b7ac824fe8845bd81da0cf18dfbdb0f25a90a495885d21ae20ca354ba125b",
+  "form": "dut",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "ea50d0d1aa9cb23c5ea0416bfab23010bc1ef04b7442b09eb32564e4688abb71",
+  "schema_version": "v4-tri-form-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/dut/341-buck-soft-start-ramp-controller",
+  "task_id": "v4-341"
+}

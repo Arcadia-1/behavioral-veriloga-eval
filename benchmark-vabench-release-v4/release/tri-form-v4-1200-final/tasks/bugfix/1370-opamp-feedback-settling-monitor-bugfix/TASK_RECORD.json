@@ -1,0 +1,23 @@
+{
+  "candidate_artifacts": [
+    "opamp_feedback_settling.va"
+  ],
+  "canonical_dut_source": "release/dut-base-v3-exact-five-hash-bound-v2/370-opamp-feedback-settling-monitor",
+  "family_id": "370",
+  "family_spec_sha256": "9b0c92f6a8db2c74ab46a13a134452b7233b666bf243dc89153ecbc5c5d2a8bf",
+  "form": "bugfix",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "8f8c387be7cf927e77bcf4b8641ee37c629cc8e522393cca1cd73f77d9159127",
+  "schema_version": "v4-tri-form-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/bugfix/1370-opamp-feedback-settling-monitor-bugfix",
+  "task_dir_sha256": "9bf322477aed2e0d44481ea73d8ea10dce54d231b387644b228a768ba23e63f7",
+  "task_id": "v4-1370"
+}

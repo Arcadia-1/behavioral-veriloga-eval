@@ -1,0 +1,23 @@
+{
+  "candidate_artifacts": [
+    "adc_static_linearity_monitor.va"
+  ],
+  "canonical_dut_source": "release/dut-base-v3-exact-five-hash-bound-v2/067-adc-static-linearity-monitor",
+  "family_id": "067",
+  "family_spec_sha256": "d64c2848083e828a00735584905ebd7e28f5d5dbb1a4940bacedd17268d45749",
+  "form": "bugfix",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "36189506333fcf93d7ad20d3151a7d4123d9741f33921b04c125a3bde437c194",
+  "schema_version": "v4-tri-form-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/bugfix/1067-adc-static-linearity-monitor-bugfix",
+  "task_dir_sha256": "af0c3b92df01db72fc0e4ae271de33593597854b2dee0693e351736230b80ba5",
+  "task_id": "v4-1067"
+}

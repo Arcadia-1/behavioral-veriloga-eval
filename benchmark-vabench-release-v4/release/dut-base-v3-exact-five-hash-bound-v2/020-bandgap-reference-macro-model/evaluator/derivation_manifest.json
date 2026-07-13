@@ -1,0 +1,18 @@
+{
+  "family_id": "020",
+  "mutation_catalog_sha256": "a45f4a55397a5b3822f2a820545fb55f852a4f4b2b6239bbf83b119d1da62eea",
+  "mutation_partition": {
+    "bugfix_seed": [
+      "neg_001_boundary"
+    ],
+    "testbench_private_score": [
+      "neg_003_polarity_direction",
+      "neg_004_state_reset",
+      "neg_005_metric_writeout"
+    ],
+    "testbench_public_feedback": [
+      "neg_002_timing_window"
+    ]
+  },
+  "schema_version": "v4-derivation-manifest-v1"
+}

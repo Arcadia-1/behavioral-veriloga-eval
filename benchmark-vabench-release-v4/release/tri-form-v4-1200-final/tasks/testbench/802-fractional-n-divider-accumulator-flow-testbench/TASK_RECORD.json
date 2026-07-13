@@ -1,0 +1,22 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source": "release/dut-base-v3-exact-five-hash-bound-v2/302-fractional-n-divider-accumulator-flow",
+  "family_id": "302",
+  "family_spec_sha256": "6c69bb15c15c8e4d18a318bd2a201bf54e4a9a85f3627b0801bfb8d1c4ec3763",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "c7f5685df6964c37e579a4c3f0d06e8d1da8ef91921b477d68b4f376e53bde06",
+  "schema_version": "v4-tri-form-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/testbench/802-fractional-n-divider-accumulator-flow-testbench",
+  "task_id": "v4-802"
+}

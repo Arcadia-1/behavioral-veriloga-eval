@@ -1,0 +1,22 @@
+{
+  "base_dut": {
+    "canonical_score_tb_sha256": "f85bac0a13805d84b944b5106ace02212664c08960158c7ba49b3bf8fd155401",
+    "canonical_task_id": "v4-065",
+    "canonical_task_slug": "065-enable-gated-clock-pulse",
+    "family_spec_sha256": "f38b3ae98309b96112db628e720f5088788729de00317bfde5a65d6da891c36e",
+    "mutation_catalog_sha256": "3a67cf7e3d58fdc558f7d7368a0e38cf76bba89563848ef389ae2a96f2357508",
+    "source_release_manifest_sha256": "66951fd8580c37e2fbf70c3381d2e7f54f538e55588c199c63181d8c6a740623"
+  },
+  "family_id": "065",
+  "negative_assignment": {
+    "bugfix_seed": "neg_001_zero",
+    "testbench_suite": [
+      "neg_001_zero",
+      "neg_003_ignore_clock",
+      "neg_004_invert_enable",
+      "neg_002_ignore_enable",
+      "neg_005_invert_output"
+    ]
+  },
+  "schema_version": "v4-derivation-manifest-v2"
+}

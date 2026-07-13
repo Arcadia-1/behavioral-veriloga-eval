@@ -1,0 +1,22 @@
+{
+  "base_dut": {
+    "canonical_score_tb_sha256": "e2554a90e67dfcc90209f84d2545182c9812f7d185f5487d50dff8d54652512c",
+    "canonical_task_id": "v4-007",
+    "canonical_task_slug": "007-first-order-lowpass",
+    "family_spec_sha256": "5518438b82d9a11eb203c8701fbe7bdf1a947af714b908a044506d6a89eee800",
+    "mutation_catalog_sha256": "a6ce0cf896c961464a985739ca831f54bfbc4454f5cf241d7cad020f4d9cef06",
+    "source_release_manifest_sha256": "66951fd8580c37e2fbf70c3381d2e7f54f538e55588c199c63181d8c6a740623"
+  },
+  "family_id": "007",
+  "negative_assignment": {
+    "bugfix_seed": "neg_003_inverted_input",
+    "testbench_suite": [
+      "neg_001_too_slow_alpha",
+      "neg_003_inverted_input",
+      "neg_002_passthrough_timer",
+      "neg_006_wrong_initial_state",
+      "neg_007_wrong_update_period"
+    ]
+  },
+  "schema_version": "v4-derivation-manifest-v2"
+}

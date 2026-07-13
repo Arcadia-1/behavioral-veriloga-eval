@@ -1,0 +1,22 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source": "release/dut-base-v3-exact-five-hash-bound-v2/012-clock-divider",
+  "family_id": "012",
+  "family_spec_sha256": "416e0322e499209d81dc0291a3034763fafa26b128a4fb688227b53d5aac0833",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "629e90d7a67fb62d328ce6c13fa6e3a472ab02eb6e237b471757697d3ca3ab12",
+  "schema_version": "v4-tri-form-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/testbench/512-clock-divider-testbench",
+  "task_id": "v4-512"
+}

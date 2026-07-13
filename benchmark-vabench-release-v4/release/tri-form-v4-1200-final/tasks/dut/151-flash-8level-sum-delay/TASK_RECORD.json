@@ -1,0 +1,22 @@
+{
+  "candidate_artifacts": [
+    "flash_8level_sum_delay.va"
+  ],
+  "canonical_dut_source": "release/dut-base-v3-exact-five-hash-bound-v2/151-flash-8level-sum-delay",
+  "family_id": "151",
+  "family_spec_sha256": "c31d3294b89c2196daf05000f01039da0ce395b88eca4596cda1adaf1e3f6e98",
+  "form": "dut",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "988246d715583cd90ee031f116f5b95ece815b9cd502a0e443b6e59138378290",
+  "schema_version": "v4-tri-form-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/dut/151-flash-8level-sum-delay",
+  "task_id": "v4-151"
+}

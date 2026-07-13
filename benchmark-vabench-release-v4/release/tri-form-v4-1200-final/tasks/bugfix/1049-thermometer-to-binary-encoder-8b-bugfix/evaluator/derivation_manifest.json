@@ -1,0 +1,37 @@
+{
+  "base_dut": {
+    "canonical_task_id": "v4-049",
+    "canonical_task_slug": "049-thermometer-to-binary-encoder-8b",
+    "family_spec_sha256": "caa7e4ca393c14127000932bcaf42786ad28977ee02565b6f72cd8545f546b03",
+    "mutation_catalog_sha256": "7e6681acb70ef7cab84ddc429042139c0ec2bd77ec6c399a0ba1e8091bc949af",
+    "source_release_manifest_sha256": "66951fd8580c37e2fbf70c3381d2e7f54f538e55588c199c63181d8c6a740623"
+  },
+  "family_id": "049",
+  "negative_assignment": {
+    "bugfix_seed": "neg_003_reversed_direction",
+    "testbench_suite": [
+      "neg_001_count_plus_one",
+      "neg_002_valid_always_high",
+      "neg_004_valid_always_low",
+      "neg_005_bit_order_reversed",
+      "neg_003_reversed_direction"
+    ]
+  },
+  "private_materialization": {
+    "buggy_bundle_sha256": "164e4dc72b73acaecae02e6e6cbe99c44b63606efd98390afd852f906b29dd60",
+    "changed_artifacts": [
+      "therm_to_bin_8b.va"
+    ]
+  },
+  "schema_version": "v4-derivation-manifest-v2",
+  "selection_evidence": {
+    "mutation_id": "neg_003_reversed_direction",
+    "rationale": "Select fault class reversed_direction under trigger 'expects high side cumulative' because it exercises P_INVALID_ZERO_CODE as one compile-pass semantic defect.",
+    "selection_policy": "semantic_fault_complexity_v1",
+    "selection_status": "policy_reviewed",
+    "semantic_score": 11,
+    "source_preferred_seed": "neg_001_count_plus_one",
+    "source_preferred_seed_preserved": false,
+    "triviality_markers": []
+  }
+}

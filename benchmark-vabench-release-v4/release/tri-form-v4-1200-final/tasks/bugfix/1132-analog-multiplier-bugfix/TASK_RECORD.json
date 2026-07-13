@@ -1,0 +1,23 @@
+{
+  "candidate_artifacts": [
+    "analog_multiplier_gain.va"
+  ],
+  "canonical_dut_source": "release/dut-base-v3-exact-five-hash-bound-v2/132-analog-multiplier",
+  "family_id": "132",
+  "family_spec_sha256": "17141b1418cfffdc0dd71a67049776fb193bcc03250823ec0439be4d1636b53a",
+  "form": "bugfix",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "ec75ef1554306249df2463a6728f7e45a4cd005566c095f920f7073b78d99d9c",
+  "schema_version": "v4-tri-form-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/bugfix/1132-analog-multiplier-bugfix",
+  "task_dir_sha256": "62bf0d320d34009839f87d65601c7177825738821819dc59cbc5e86ae64f2fec",
+  "task_id": "v4-1132"
+}

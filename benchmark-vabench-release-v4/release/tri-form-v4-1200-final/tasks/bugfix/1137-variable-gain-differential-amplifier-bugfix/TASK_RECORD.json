@@ -1,0 +1,23 @@
+{
+  "candidate_artifacts": [
+    "variable_gain_differential_amplifier.va"
+  ],
+  "canonical_dut_source": "release/dut-base-v3-exact-five-hash-bound-v2/137-variable-gain-differential-amplifier",
+  "family_id": "137",
+  "family_spec_sha256": "99e22b16ceea6fd6db2d03748f4cd91375a301b81ffe9913b5a274e6b3f153aa",
+  "form": "bugfix",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "28e5fb2add84b1054cce2ff91a2a6e27448418db6828adb48e49236f1d4b7185",
+  "schema_version": "v4-tri-form-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/bugfix/1137-variable-gain-differential-amplifier-bugfix",
+  "task_dir_sha256": "fd260247108c7bfbf8e3aac4e077d5b401dd9da1cc424a132d6c17c58145c0cd",
+  "task_id": "v4-1137"
+}

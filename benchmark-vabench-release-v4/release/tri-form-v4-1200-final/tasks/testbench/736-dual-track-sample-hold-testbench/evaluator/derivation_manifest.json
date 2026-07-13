@@ -1,0 +1,22 @@
+{
+  "base_dut": {
+    "canonical_score_tb_sha256": "e9b2f3584b4ef6743c38ea0624272a519c65b62208792211a6b36ec609aea212",
+    "canonical_task_id": "v4-236",
+    "canonical_task_slug": "236-dual-track-sample-hold",
+    "family_spec_sha256": "22d42b9dfc56a3bad2612bb6be98190f07cfcb5e4c049160f180a53c455d42b4",
+    "mutation_catalog_sha256": "e95a92f6be5966d6e5522d0c4950eefd00a7cb45b476ca35c1b7c74d18acb0fb",
+    "source_release_manifest_sha256": "66951fd8580c37e2fbf70c3381d2e7f54f538e55588c199c63181d8c6a740623"
+  },
+  "family_id": "236",
+  "negative_assignment": {
+    "bugfix_seed": "neg_002_single_edge_sampler",
+    "testbench_suite": [
+      "neg_003_wrong_track_phase",
+      "neg_004_no_output_hold",
+      "neg_005_phase_monitor_wrong",
+      "neg_001_transparent_output",
+      "neg_002_single_edge_sampler"
+    ]
+  },
+  "schema_version": "v4-derivation-manifest-v2"
+}

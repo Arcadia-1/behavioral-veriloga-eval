@@ -1,0 +1,23 @@
+{
+  "candidate_artifacts": [
+    "trim_ctrl_4bit.va"
+  ],
+  "canonical_dut_source": "release/dut-base-v3-exact-five-hash-bound-v2/189-trim-ctrl-4bit",
+  "family_id": "189",
+  "family_spec_sha256": "2e63303eac696ad7ee6351c730518113aaff5defe7b13683684ea7c4c86d6bff",
+  "form": "bugfix",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "378ecc4e92c16818671dda18a4c69b8b714a8ad584cc84604cb107a47d68920e",
+  "schema_version": "v4-tri-form-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/bugfix/1189-trim-ctrl-4bit-bugfix",
+  "task_dir_sha256": "b16eb043b78d6fecc2b3f7cb3c4d89aac7c15b485920b775c95f5f2acf82e9ed",
+  "task_id": "v4-1189"
+}

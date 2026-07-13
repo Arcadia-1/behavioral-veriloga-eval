@@ -1,0 +1,22 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source": "release/dut-base-v3-exact-five-hash-bound-v2/083-amplifier-filter-chain",
+  "family_id": "083",
+  "family_spec_sha256": "fd70e77c9b67228ff0168cb5c86badc26d284af6c7d4dc692330c48320f21339",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "2895c7322f37e2266bd5cdd372137a15e111984a675cbde80c1ee3d77e07d347",
+  "schema_version": "v4-tri-form-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/testbench/583-amplifier-filter-chain-testbench",
+  "task_id": "v4-583"
+}

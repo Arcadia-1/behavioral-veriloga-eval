@@ -1,0 +1,23 @@
+{
+  "candidate_artifacts": [
+    "bias_voltage_generator_with_enable_trim.va"
+  ],
+  "canonical_dut_source": "release/dut-base-v3-exact-five-hash-bound-v2/073-bias-voltage-generator-with-enable-trim",
+  "family_id": "073",
+  "family_spec_sha256": "90d54d0c495e7076dff22333fa2a40d2d0e526d484c2652c4922b89f1f37239a",
+  "form": "bugfix",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "032fbd0385efea35d6177aaad25b990758f313af7789e410cf3544ff136ee508",
+  "schema_version": "v4-tri-form-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/bugfix/1073-bias-voltage-generator-with-enable-trim-bugfix",
+  "task_dir_sha256": "bc4a1bb73a31f1349ffb55c690e2a0a6861a767fc1a64f7e576b79ffc6ff7552",
+  "task_id": "v4-1073"
+}

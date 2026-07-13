@@ -1,0 +1,22 @@
+{
+  "base_dut": {
+    "canonical_score_tb_sha256": "30716a7662e63d1f8cc3e092deb80c3222918c95838fb032fd46799bd3fabc41",
+    "canonical_task_id": "v4-291",
+    "canonical_task_slug": "291-event-reacquire-lock-detector",
+    "family_spec_sha256": "1b5aff7ee8c2131b3d60e548155fc951184edaa5896d721b189111031c962608",
+    "mutation_catalog_sha256": "0978b36c6cb8906b8b26f5f8fb6aa80a11c3809c06e6d559159360e4fe0b4722",
+    "source_release_manifest_sha256": "66951fd8580c37e2fbf70c3381d2e7f54f538e55588c199c63181d8c6a740623"
+  },
+  "family_id": "291",
+  "negative_assignment": {
+    "bugfix_seed": "neg_002_too_wide_phase_window",
+    "testbench_suite": [
+      "neg_002_too_wide_phase_window",
+      "neg_003_no_reset_clear",
+      "neg_005_constant_phase_metric",
+      "neg_001_lock_after_one_hit",
+      "neg_004_ignore_ref_timing"
+    ]
+  },
+  "schema_version": "v4-derivation-manifest-v2"
+}

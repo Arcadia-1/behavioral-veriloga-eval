@@ -1,0 +1,22 @@
+{
+  "base_dut": {
+    "canonical_score_tb_sha256": "5ab6fac1d9748a9d1035d6b6c7e74b4313bd8985edfddca7a5c7a980bb8400b4",
+    "canonical_task_id": "v4-009",
+    "canonical_task_slug": "009-lock-detector",
+    "family_spec_sha256": "6eb54297af6b6bbdc9cccc98df60e93c238c5c2889be02fdbe5e24c9d153ca74",
+    "mutation_catalog_sha256": "3d2bcc8ab749be390446605748dbdf55fecbfebf61970a819139bbb08fd95f98",
+    "source_release_manifest_sha256": "66951fd8580c37e2fbf70c3381d2e7f54f538e55588c199c63181d8c6a740623"
+  },
+  "family_id": "009",
+  "negative_assignment": {
+    "bugfix_seed": "neg_002_tolerance_too_wide",
+    "testbench_suite": [
+      "neg_002_tolerance_too_wide",
+      "neg_004_reset_ignored",
+      "neg_001_requires_four_hits",
+      "neg_003_does_not_reset_on_mismatch",
+      "neg_005_counts_feedback_events"
+    ]
+  },
+  "schema_version": "v4-derivation-manifest-v2"
+}

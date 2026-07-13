@@ -1,0 +1,23 @@
+{
+  "candidate_artifacts": [
+    "periodic_sampler_aperture_metric.va"
+  ],
+  "canonical_dut_source": "release/dut-base-v3-exact-five-hash-bound-v2/379-periodic-sampler-aperture-metric",
+  "family_id": "379",
+  "family_spec_sha256": "0825ff8a997b659120122472e67c77f70df8418e3053bab9e13d5efad8e4665a",
+  "form": "bugfix",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "91d9cd42afb6865e8cb9697908bf59fe1e85c95a181d7cfeb490e5a2dd53066d",
+  "schema_version": "v4-tri-form-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/bugfix/1379-periodic-sampler-aperture-metric-bugfix",
+  "task_dir_sha256": "8863f47ed0cf2a86b922a1a88fb37e7ae256c29dc1a787e99e52a010cfbf971f",
+  "task_id": "v4-1379"
+}

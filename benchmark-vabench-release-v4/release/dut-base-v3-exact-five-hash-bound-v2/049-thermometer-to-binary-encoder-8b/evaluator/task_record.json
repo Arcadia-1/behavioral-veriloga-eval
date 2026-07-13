@@ -1,0 +1,36 @@
+{
+  "canonical_dut_id": "049",
+  "checker_task_id": "v4_049_thermometer_to_binary_encoder_8b",
+  "counted_in_score": true,
+  "evaluator_hashes": {
+    "certification.json": "29e03839dbfe7eb9b7030728cd92862d56895f2e6f984ae3a664aad57b0e8344",
+    "checker_profile.json": "f29826789bd939259a3396f414ca0bbb07bff34f16eb40e68304e7c438359508",
+    "derivation_manifest.json": "50c5e5a4d904dc487a83ae0bd27300394a21cfc074b1c80116a4d8e923eb58c1",
+    "family_spec.json": "caa7e4ca393c14127000932bcaf42786ad28977ee02565b6f72cd8545f546b03",
+    "harness_spec.json": "2aaac40582f0e33078e0041681d9c910cf76083fd30720850317414a0d0dbb11",
+    "mutation_catalog.json": "7e6681acb70ef7cab84ddc429042139c0ec2bd77ec6c399a0ba1e8091bc949af",
+    "profiles/feedback.json": "cd7c6772f79f433879e6d5caf6a395a4448bd8b7991f92dfa86dd65162c3f125",
+    "profiles/score.json": "799c8b629239de0419a99554beda649241a8da7f89d0e99dfeb736dc0ceabb1e",
+    "score_tb.scs": "d24a9a62b6e248bf779b80ed76c8e6858d889f49b6e566c4a654b0fa5dda64ff",
+    "solution_tree": "0535b2ca05235f1c2a5fe4b8309009ee126d6fcf3b0aed80c51a420a98a4b0b3",
+    "toolchain_lock.json": "97f05b4212cf53c691a3b9296d9993d0dea1c0cf5a2b1bdf4fca9eab6246461c"
+  },
+  "form": "dut",
+  "public_hashes": {
+    "feedback_tb.scs": "2506e5c413ce764b5de35f8fb09474732eacac4a16620ddb3624d17391f42516",
+    "instruction.md": "cb9353db11af3175c7e008bca1a9cf71b95551df6944d849032d6923968e26d6",
+    "public_contract.json": "9f750329fb1c25f234e293f6b2ba26b4c406eef2f14c6967ae67ed35047defbb"
+  },
+  "readiness_evidence": {
+    "kind": "task_certification",
+    "path": "evaluator/certification.json",
+    "sha256": "29e03839dbfe7eb9b7030728cd92862d56895f2e6f984ae3a664aad57b0e8344"
+  },
+  "release_dir": "049-thermometer-to-binary-encoder-8b",
+  "schema_version": "v4-canonical-dut-release-task-v1",
+  "source_slug": "051-thermometer-to-binary-encoder-8b",
+  "support_root": "",
+  "target_artifacts": [
+    "therm_to_bin_8b.va"
+  ]
+}

@@ -1,0 +1,22 @@
+{
+  "candidate_artifacts": [
+    "flash_adc_3b.va"
+  ],
+  "canonical_dut_source": "release/dut-base-v3-exact-five-hash-bound-v2/023-clocked-adc-quantizer",
+  "family_id": "023",
+  "family_spec_sha256": "4d47713ebf463474cd85f8f706805824495be8c3df1d063bf675ae0906de6e7e",
+  "form": "dut",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "28679a28b6dd459ea0dbf4c816f901f4f7796076bac43f386bc707a55a17abd8",
+  "schema_version": "v4-tri-form-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/dut/023-clocked-adc-quantizer",
+  "task_id": "v4-023"
+}

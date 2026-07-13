@@ -1,0 +1,37 @@
+{
+  "allowed_include_paths": [
+    "./dut/sar_weighted_sum.va"
+  ],
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "forbidden_rules": [
+    "undeclared_include",
+    "absolute_path",
+    "path_traversal",
+    "process_execution",
+    "network_access",
+    "simulator_scripting_escape",
+    "dut_redefinition",
+    "direct_dut_output_drive",
+    "private_hierarchical_probe",
+    "unbounded_resource_use"
+  ],
+  "limits": {
+    "max_analyses": 1,
+    "max_candidate_bytes": 1000000,
+    "max_cpu_time_s": 120,
+    "max_memory_mb": 2048,
+    "max_output_bytes": 100000000,
+    "max_saved_signals": 64,
+    "max_stop_time_s": 1.0,
+    "max_wall_time_s": 180
+  },
+  "rejection_outcome": "invalid_run",
+  "required_rules": [
+    "declared_dut_binding",
+    "transient_analysis",
+    "all_required_public_traces"
+  ],
+  "schema_version": "v4-testbench-security-policy-v2"
+}

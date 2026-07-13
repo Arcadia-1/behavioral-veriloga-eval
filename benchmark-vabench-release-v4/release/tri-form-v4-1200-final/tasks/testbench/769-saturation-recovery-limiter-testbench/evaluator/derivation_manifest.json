@@ -1,0 +1,22 @@
+{
+  "base_dut": {
+    "canonical_score_tb_sha256": "481e1867dde6bef344fec1590351fad6000f8d73b60bea4ac10ceef56f00ab55",
+    "canonical_task_id": "v4-269",
+    "canonical_task_slug": "269-saturation-recovery-limiter",
+    "family_spec_sha256": "46a32763c11e8c15f03d8dda059967ad5da9553d2cd21acda36e4eadcf003d12",
+    "mutation_catalog_sha256": "10d87c3cf3a558c22d3965fd3cf4bd3bebb5e4e8f552bd260b4b56c3c2aebb4b",
+    "source_release_manifest_sha256": "66951fd8580c37e2fbf70c3381d2e7f54f538e55588c199c63181d8c6a740623"
+  },
+  "family_id": "269",
+  "negative_assignment": {
+    "bugfix_seed": "neg_003_ignore_enable",
+    "testbench_suite": [
+      "neg_001_passthrough_no_limit",
+      "neg_005_wrong_recovery_metric",
+      "neg_003_ignore_enable",
+      "neg_004_saturation_flag_high_only",
+      "neg_002_high_only_limit"
+    ]
+  },
+  "schema_version": "v4-derivation-manifest-v2"
+}

@@ -1,0 +1,23 @@
+{
+  "candidate_artifacts": [
+    "peak_detector.va"
+  ],
+  "canonical_dut_source": "release/dut-base-v3-exact-five-hash-bound-v2/075-peak-detector",
+  "family_id": "075",
+  "family_spec_sha256": "23194842a80ba3a3fdfb829b78156803d77ec92c803ddd011c0afeee1124fa5d",
+  "form": "bugfix",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "8ba3b5c1c51be7aa3d539febb2c517ca3d8dc4799d820449e2713c37e4efe7e2",
+  "schema_version": "v4-tri-form-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/bugfix/1075-peak-detector-bugfix",
+  "task_dir_sha256": "b9944f2472c3b6a6d64cc048c81cb09a32e9e602b0dc63b781447b523a13e26f",
+  "task_id": "v4-1075"
+}

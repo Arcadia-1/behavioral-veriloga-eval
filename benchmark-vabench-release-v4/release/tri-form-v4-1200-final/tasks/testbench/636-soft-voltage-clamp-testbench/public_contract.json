@@ -1,0 +1,201 @@
+{
+  "artifact_contract": {
+    "files": [
+      {
+        "modules": [
+          {
+            "depends_on": [],
+            "name": "soft_voltage_clamp_behavior",
+            "parameters": [],
+            "ports": [
+              {
+                "direction": "input",
+                "discipline": "electrical",
+                "name": "vin",
+                "position": 0
+              },
+              {
+                "direction": "output",
+                "discipline": "electrical",
+                "name": "vout",
+                "position": 1
+              },
+              {
+                "direction": "input",
+                "discipline": "electrical",
+                "name": "vgnd",
+                "position": 2
+              }
+            ],
+            "role": "entry"
+          }
+        ],
+        "path": "soft_voltage_clamp_behavior.va"
+      }
+    ],
+    "mode": "single_file"
+  },
+  "evaluation_summary": {
+    "anonymous_negative_cases": 5,
+    "full_credit": "valid candidate and reference pass and all five negatives killed behaviorally",
+    "reference_cases": 1
+  },
+  "family_id": "136",
+  "feedback": {
+    "available_in_modes": [
+      "G2",
+      "G3",
+      "G4",
+      "G5"
+    ],
+    "command": "vabench feedback run"
+  },
+  "form": "testbench",
+  "identity": {
+    "category": "mixed_signal",
+    "difficulty": "D2",
+    "level": "L1",
+    "supported_scope": "pure voltage-domain event-driven transient behavioral Verilog-A",
+    "title": "Soft Voltage Clamp"
+  },
+  "modeling_constraints": [
+    "Use deterministic voltage-domain behavioral Verilog-A.",
+    "Do not hard-code validation stimulus, stop times, sample windows, gold internals, or simulator side channels."
+  ],
+  "properties": [
+    {
+      "id": "P_REFERENCED_INPUT_OUTPUT",
+      "observable_contract": "Use `V(vin, vgnd)` as input and drive `V(vout, vgnd)` as output.",
+      "required_signals": [
+        "time",
+        "vin",
+        "vout"
+      ]
+    },
+    {
+      "id": "P_LINEAR_MIDDLE_REGION",
+      "observable_contract": "Pass the input linearly for `0.0 V <= V(vin, vgnd) <= 0.4 V`.",
+      "required_signals": [
+        "time",
+        "vin",
+        "vout"
+      ]
+    },
+    {
+      "id": "P_SOFT_LOWER_LIMIT",
+      "observable_contract": "Below 0.0 V, apply an exponential soft lower limit that approaches -0.2 V with a 0.2 V softness span.",
+      "required_signals": [
+        "time",
+        "vin",
+        "vout"
+      ]
+    },
+    {
+      "id": "P_SOFT_UPPER_LIMIT",
+      "observable_contract": "Above 0.4 V, apply an exponential soft upper limit that approaches 0.6 V with a 0.2 V softness span.",
+      "required_signals": [
+        "time",
+        "vin",
+        "vout"
+      ]
+    }
+  ],
+  "schema_version": "v4-tri-form-public-contract-v2",
+  "security_policy": {
+    "allowed_include_paths": [
+      "./dut/soft_voltage_clamp_behavior.va"
+    ],
+    "candidate_artifacts": [
+      "testbench.scs"
+    ],
+    "forbidden_rules": [
+      "undeclared_include",
+      "absolute_path",
+      "path_traversal",
+      "process_execution",
+      "network_access",
+      "simulator_scripting_escape",
+      "dut_redefinition",
+      "direct_dut_output_drive",
+      "private_hierarchical_probe",
+      "unbounded_resource_use"
+    ],
+    "limits": {
+      "max_analyses": 1,
+      "max_candidate_bytes": 1000000,
+      "max_cpu_time_s": 120,
+      "max_memory_mb": 2048,
+      "max_output_bytes": 100000000,
+      "max_saved_signals": 64,
+      "max_stop_time_s": 1.0,
+      "max_wall_time_s": 180
+    },
+    "rejection_outcome": "invalid_run",
+    "required_rules": [
+      "declared_dut_binding",
+      "transient_analysis",
+      "all_required_public_traces"
+    ],
+    "schema_version": "v4-testbench-security-policy-v2"
+  },
+  "security_summary": [
+    "only the declared testbench_include_path values are allowed for DUT sources",
+    "DUT redefinition, direct output drive, private hierarchical probes, arbitrary file access, and unbounded analyses are rejected"
+  ],
+  "submission_contract": {
+    "agentic_submission_root": "public/submission",
+    "exact_declared_file_set_required": true,
+    "target_artifacts_relative_to": "submission_root"
+  },
+  "supplied_inputs": {
+    "dut_instances": [
+      {
+        "connections": [
+          {
+            "net": "vin",
+            "port_ref": "vin",
+            "position": 0
+          },
+          {
+            "net": "vout",
+            "port_ref": "vout",
+            "position": 1
+          },
+          {
+            "net": "0",
+            "port_ref": "vgnd",
+            "position": 2
+          }
+        ],
+        "module_ref": "soft_voltage_clamp_behavior",
+        "name": "XDUT",
+        "ordered_nets": [
+          "vin",
+          "vout",
+          "0"
+        ],
+        "public_output_nets": [
+          "vout"
+        ]
+      }
+    ],
+    "read_only_dut_artifacts": [
+      {
+        "public_input_path": "supplied_dut/soft_voltage_clamp_behavior.va",
+        "testbench_include_path": "./dut/soft_voltage_clamp_behavior.va"
+      }
+    ],
+    "read_only_support_artifacts": []
+  },
+  "target_artifacts": [
+    "testbench.scs"
+  ],
+  "task_id": "v4-636",
+  "trace_contract": {
+    "required_signals": [
+      "time",
+      "vin",
+      "vout"
+    ]
+  }
+}

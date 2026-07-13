@@ -1,0 +1,22 @@
+{
+  "base_dut": {
+    "canonical_score_tb_sha256": "f6c3af69eab80b17a5231c3f289d739c0f02eca00edd1bbc7b8179c1c09840ec",
+    "canonical_task_id": "v4-378",
+    "canonical_task_slug": "378-current-limited-regulator-macro",
+    "family_spec_sha256": "d02e5ca23859dda912ba33b1ecf66de89d35118a48c86b592339ac4903cc3120",
+    "mutation_catalog_sha256": "8356785d4d9b6afd7fdd2484d7ea3ab628060ac348979b3002fe54a355327b3d",
+    "source_release_manifest_sha256": "66951fd8580c37e2fbf70c3381d2e7f54f538e55588c199c63181d8c6a740623"
+  },
+  "family_id": "378",
+  "negative_assignment": {
+    "bugfix_seed": "neg_001_reset_ignored",
+    "testbench_suite": [
+      "neg_001_reset_ignored",
+      "neg_003_half_overload",
+      "neg_004_regulation_always_ok",
+      "neg_005_wrong_reference",
+      "neg_002_wrong_dropout_sign"
+    ]
+  },
+  "schema_version": "v4-derivation-manifest-v2"
+}

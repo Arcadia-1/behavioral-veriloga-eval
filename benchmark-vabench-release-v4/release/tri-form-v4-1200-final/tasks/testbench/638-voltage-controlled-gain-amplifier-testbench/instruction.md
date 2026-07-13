@@ -1,0 +1,43 @@
+# Voltage Controlled Gain Amplifier Testbench
+
+## Task Contract
+
+Write one top-level Spectre testbench that verifies the public contract of the
+supplied read-only `Voltage Controlled Gain Amplifier` DUT. The evaluator runs the same submitted bytes
+against the correct DUT and five anonymous semantic negative DUTs. Your
+testbench must accept the correct DUT and expose all five behavioral faults.
+The accompanying `solver_contract.json` is the authoritative structured contract.
+
+## Public Verilog-A Interface
+
+The exact read-only source paths, modules, ports, instance names, and ordered
+terminal bindings are declared in `solver_contract.json`.
+
+## Public Parameter Contract
+
+Honor the public parameter declarations in `solver_contract.json` when choosing
+stimulus and coverage.
+
+## Required Behavior
+
+Create stimulus and save traces sufficient for the fixed evaluator oracle to check:
+
+- `P_DIFFERENTIAL_CONTROL`: Use `V(vctrl_p, vctrl_n)` as the gain-control voltage.
+- `P_INPUT_OFFSET_AND_GAIN`: Compute the unclamped target as `1.5 * V(vctrl_p, vctrl_n) * (V(vin_p, vin_n) - 0.05) + 0.5`.
+- `P_UNIPOLAR_OUTPUT_CLAMP`: Clamp the final output target to the inclusive interval `[0.1 V, 0.9 V]`.
+
+The required trace names are: `time`, `vctrl_n`, `vctrl_p`, `vin_n`, `vin_p`, `vout`.
+
+## Modeling Constraints
+
+- Submit one self-contained top-level transient `.scs` file.
+- Use only the exact declared testbench include paths and public DUT interfaces.
+- Do not redefine the DUT, drive declared DUT outputs, inspect private internals,
+  access undeclared files, or emit a self-reported result.
+- Respect every public resource limit in `solver_contract.json`.
+- Missing traces, setup errors, and invalid runs do not count as behavioral kills.
+
+## Output Contract
+
+Return exactly one submission-root-relative artifact named `testbench.scs`. Do not return a DUT,
+checker, script, data file, waveform, or auxiliary deck.

@@ -1,0 +1,23 @@
+{
+  "candidate_artifacts": [
+    "bin_to_therm_8b.va"
+  ],
+  "canonical_dut_source": "release/dut-base-v3-exact-five-hash-bound-v2/048-bin-to-thermometer-decoder-8b",
+  "family_id": "048",
+  "family_spec_sha256": "eea718d574c2baceeab9380b1ee6865e551d81290be00c241808707fd0445573",
+  "form": "bugfix",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "7a6f617af1dbd008dd3fb01017d8bd331802a2de13654f0c6656f8fa8df95c4e",
+  "schema_version": "v4-tri-form-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/bugfix/1048-bin-to-thermometer-decoder-8b-bugfix",
+  "task_dir_sha256": "15228861434a1468cf13ba95bff58cc32c5e12655d3db2f206659c7bfeb1210a",
+  "task_id": "v4-1048"
+}

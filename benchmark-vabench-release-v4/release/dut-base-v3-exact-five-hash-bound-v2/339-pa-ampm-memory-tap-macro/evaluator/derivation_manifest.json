@@ -1,0 +1,18 @@
+{
+  "family_id": "339",
+  "mutation_catalog_sha256": "a776fc8a7ea6486bb89a20c88c5eb3fb742cbc329d8bdd0e5a5ffa40225df3ae",
+  "mutation_partition": {
+    "bugfix_seed": [
+      "neg_002_pm_metric_stuck_low"
+    ],
+    "testbench_private_score": [
+      "neg_003_valid_stuck_low",
+      "neg_004_missing_clear",
+      "neg_005_memory_missing"
+    ],
+    "testbench_public_feedback": [
+      "neg_001_no_compression"
+    ]
+  },
+  "schema_version": "v4-derivation-manifest-v1"
+}

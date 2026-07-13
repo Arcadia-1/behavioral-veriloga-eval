@@ -1,0 +1,23 @@
+{
+  "candidate_artifacts": [
+    "baseband_offset_gain_trim_macro.va"
+  ],
+  "canonical_dut_source": "release/dut-base-v3-exact-five-hash-bound-v2/397-baseband-offset-gain-trim-macro",
+  "family_id": "397",
+  "family_spec_sha256": "3fd94ab8ea9306d3129d191787941cfd859865d5fa86c21d2466f344a3deb801",
+  "form": "bugfix",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "18770b3467ec323156ee6aadd380626dbeff805fb3d5647b7b336f26a996d126",
+  "schema_version": "v4-tri-form-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/bugfix/1397-baseband-offset-gain-trim-macro-bugfix",
+  "task_dir_sha256": "afdedafa920485252baa9e1643d2aeb5c51acc1e29a6ae03c8f542031e801c52",
+  "task_id": "v4-1397"
+}

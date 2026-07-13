@@ -1,0 +1,23 @@
+{
+  "candidate_artifacts": [
+    "linear_pfd_gain.va"
+  ],
+  "canonical_dut_source": "release/dut-base-v3-exact-five-hash-bound-v2/169-linear-pfd-gain",
+  "family_id": "169",
+  "family_spec_sha256": "a35a3352fcbedc984d344fe0bcd1903b24aec234ab88c4f4b25bca894be6ea6f",
+  "form": "bugfix",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "870f43b92b9f427c5cec857d43ed1b02000efa4554ee2e090bb386c1ea145a3e",
+  "schema_version": "v4-tri-form-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/bugfix/1169-linear-pfd-gain-bugfix",
+  "task_dir_sha256": "5fe772499271f78257e3023d9ff224b2dcf3ed8e8b6799f94b30ca704c451589",
+  "task_id": "v4-1169"
+}

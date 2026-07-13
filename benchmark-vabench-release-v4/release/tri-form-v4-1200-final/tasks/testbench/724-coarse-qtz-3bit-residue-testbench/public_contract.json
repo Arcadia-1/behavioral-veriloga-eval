@@ -1,0 +1,284 @@
+{
+  "artifact_contract": {
+    "files": [
+      {
+        "modules": [
+          {
+            "depends_on": [],
+            "name": "coarse_qtz_3bit_residue",
+            "parameters": [
+              {
+                "default": "1.0",
+                "name": "vref",
+                "override_behavior": "overrides vref",
+                "type": "real",
+                "units": "",
+                "valid_range": "finite"
+              },
+              {
+                "default": "1.0",
+                "name": "vdd",
+                "override_behavior": "overrides vdd",
+                "type": "real",
+                "units": "",
+                "valid_range": "finite"
+              }
+            ],
+            "ports": [
+              {
+                "direction": "input",
+                "discipline": "electrical",
+                "name": "vin",
+                "position": 0
+              },
+              {
+                "direction": "output",
+                "discipline": "electrical",
+                "name": "d0",
+                "position": 1
+              },
+              {
+                "direction": "output",
+                "discipline": "electrical",
+                "name": "d1",
+                "position": 2
+              },
+              {
+                "direction": "output",
+                "discipline": "electrical",
+                "name": "d2",
+                "position": 3
+              },
+              {
+                "direction": "output",
+                "discipline": "electrical",
+                "name": "vres",
+                "position": 4
+              }
+            ],
+            "role": "entry"
+          }
+        ],
+        "path": "coarse_qtz_3bit_residue.va"
+      }
+    ],
+    "mode": "single_file"
+  },
+  "evaluation_summary": {
+    "anonymous_negative_cases": 5,
+    "full_credit": "valid candidate and reference pass and all five negatives killed behaviorally",
+    "reference_cases": 1
+  },
+  "family_id": "224",
+  "feedback": {
+    "available_in_modes": [
+      "G2",
+      "G3",
+      "G4",
+      "G5"
+    ],
+    "command": "vabench feedback run"
+  },
+  "form": "testbench",
+  "identity": {
+    "category": "data_converter",
+    "difficulty": "D2",
+    "level": "L1",
+    "supported_scope": "pure voltage-domain event-driven transient behavioral Verilog-A",
+    "title": "Coarse QTZ 3bit Residue"
+  },
+  "modeling_constraints": [
+    "Use deterministic voltage-domain behavioral Verilog-A.",
+    "Do not hard-code validation stimulus, stop times, sample windows, gold internals, or simulator side channels."
+  ],
+  "properties": [
+    {
+      "id": "P_CLIP_VIN_TO_THE_RANGE_FROM",
+      "observable_contract": "Clip `vin` to the range from `-vref` to `+vref`.",
+      "required_signals": [
+        "time",
+        "vin",
+        "d0",
+        "d1",
+        "d2",
+        "vres"
+      ]
+    },
+    {
+      "id": "P_QUANTIZE_THE_CLIPPED_VALUE_INTO_EIGHT",
+      "observable_contract": "Quantize the clipped value into eight 3-bit codes using round-to-nearest behavior.",
+      "required_signals": [
+        "time",
+        "vin",
+        "d0",
+        "d1",
+        "d2",
+        "vres"
+      ]
+    },
+    {
+      "id": "P_SATURATE_THE_CODE_AT_THE_ENDPOINTS",
+      "observable_contract": "Saturate the code at the endpoints.",
+      "required_signals": [
+        "time",
+        "vin",
+        "d0",
+        "d1",
+        "d2",
+        "vres"
+      ]
+    },
+    {
+      "id": "P_USE_UNIFORMLY_SPACED_QUANTIZATION_LEVELS_START",
+      "observable_contract": "Use uniformly spaced quantization levels starting at `-vref`, with one LSB equal to one eighth of the full input span.",
+      "required_signals": [
+        "time",
+        "vin",
+        "d0",
+        "d1",
+        "d2",
+        "vres"
+      ]
+    },
+    {
+      "id": "P_DRIVE_D0_D1_AND_D2_AS",
+      "observable_contract": "Drive `d0`, `d1`, and `d2` as LSB-to-MSB voltage-coded bits.",
+      "required_signals": [
+        "time",
+        "vin",
+        "d0",
+        "d1",
+        "d2",
+        "vres"
+      ]
+    },
+    {
+      "id": "P_DRIVE_VRES_AS_THE_CLIPPED_INPUT",
+      "observable_contract": "Drive `vres` as the clipped input minus the selected quantized analog level.",
+      "required_signals": [
+        "time",
+        "vin",
+        "d0",
+        "d1",
+        "d2",
+        "vres"
+      ]
+    }
+  ],
+  "schema_version": "v4-tri-form-public-contract-v2",
+  "security_policy": {
+    "allowed_include_paths": [
+      "./dut/coarse_qtz_3bit_residue.va"
+    ],
+    "candidate_artifacts": [
+      "testbench.scs"
+    ],
+    "forbidden_rules": [
+      "undeclared_include",
+      "absolute_path",
+      "path_traversal",
+      "process_execution",
+      "network_access",
+      "simulator_scripting_escape",
+      "dut_redefinition",
+      "direct_dut_output_drive",
+      "private_hierarchical_probe",
+      "unbounded_resource_use"
+    ],
+    "limits": {
+      "max_analyses": 1,
+      "max_candidate_bytes": 1000000,
+      "max_cpu_time_s": 120,
+      "max_memory_mb": 2048,
+      "max_output_bytes": 100000000,
+      "max_saved_signals": 64,
+      "max_stop_time_s": 1.0,
+      "max_wall_time_s": 180
+    },
+    "rejection_outcome": "invalid_run",
+    "required_rules": [
+      "declared_dut_binding",
+      "transient_analysis",
+      "all_required_public_traces"
+    ],
+    "schema_version": "v4-testbench-security-policy-v2"
+  },
+  "security_summary": [
+    "only the declared testbench_include_path values are allowed for DUT sources",
+    "DUT redefinition, direct output drive, private hierarchical probes, arbitrary file access, and unbounded analyses are rejected"
+  ],
+  "submission_contract": {
+    "agentic_submission_root": "public/submission",
+    "exact_declared_file_set_required": true,
+    "target_artifacts_relative_to": "submission_root"
+  },
+  "supplied_inputs": {
+    "dut_instances": [
+      {
+        "connections": [
+          {
+            "net": "vin",
+            "port_ref": "vin",
+            "position": 0
+          },
+          {
+            "net": "d0",
+            "port_ref": "d0",
+            "position": 1
+          },
+          {
+            "net": "d1",
+            "port_ref": "d1",
+            "position": 2
+          },
+          {
+            "net": "d2",
+            "port_ref": "d2",
+            "position": 3
+          },
+          {
+            "net": "vres",
+            "port_ref": "vres",
+            "position": 4
+          }
+        ],
+        "module_ref": "coarse_qtz_3bit_residue",
+        "name": "XDUT",
+        "ordered_nets": [
+          "vin",
+          "d0",
+          "d1",
+          "d2",
+          "vres"
+        ],
+        "public_output_nets": [
+          "d0",
+          "d1",
+          "d2",
+          "vres"
+        ]
+      }
+    ],
+    "read_only_dut_artifacts": [
+      {
+        "public_input_path": "supplied_dut/coarse_qtz_3bit_residue.va",
+        "testbench_include_path": "./dut/coarse_qtz_3bit_residue.va"
+      }
+    ],
+    "read_only_support_artifacts": []
+  },
+  "target_artifacts": [
+    "testbench.scs"
+  ],
+  "task_id": "v4-724",
+  "trace_contract": {
+    "required_signals": [
+      "time",
+      "vin",
+      "d0",
+      "d1",
+      "d2",
+      "vres"
+    ]
+  }
+}

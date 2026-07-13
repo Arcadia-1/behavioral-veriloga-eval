@@ -1,0 +1,22 @@
+{
+  "base_dut": {
+    "canonical_score_tb_sha256": "bb49d0affc772b9acfaee7486a461c6749d217eb5f0a878a4541d3576b86630b",
+    "canonical_task_id": "v4-209",
+    "canonical_task_slug": "209-dac-restore-6bit-1p8",
+    "family_spec_sha256": "51786abf1ab2247761061ef124d783500966454b3a226f57bff3fdc739ceb347",
+    "mutation_catalog_sha256": "bf448bcbccef89d0398ab5672fc8fae958b7c6ed6cfa4b8a7431191d290d7b6a",
+    "source_release_manifest_sha256": "66951fd8580c37e2fbf70c3381d2e7f54f538e55588c199c63181d8c6a740623"
+  },
+  "family_id": "209",
+  "negative_assignment": {
+    "bugfix_seed": "neg_004_unipolar_output",
+    "testbench_suite": [
+      "neg_003_wrong_denominator",
+      "neg_004_unipolar_output",
+      "neg_005_metric_scale_low",
+      "neg_001_zero",
+      "neg_002_omit_msb"
+    ]
+  },
+  "schema_version": "v4-derivation-manifest-v2"
+}

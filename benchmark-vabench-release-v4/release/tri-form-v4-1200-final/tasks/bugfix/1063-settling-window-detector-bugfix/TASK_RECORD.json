@@ -1,0 +1,23 @@
+{
+  "candidate_artifacts": [
+    "settling_window_detector.va"
+  ],
+  "canonical_dut_source": "release/dut-base-v3-exact-five-hash-bound-v2/063-settling-window-detector",
+  "family_id": "063",
+  "family_spec_sha256": "53f746f228722228727bd0f717df19e2c3d00e4bb08e9a1871b4fb69a14c7be8",
+  "form": "bugfix",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "c1b58ebb8fb8f70a93d65a36101ff35bcb1bf742e0d4c670be9c2bcd26ddaa1d",
+  "schema_version": "v4-tri-form-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/bugfix/1063-settling-window-detector-bugfix",
+  "task_dir_sha256": "919a4fbf842d2db70681e82b42385e8aeac0167bc4a7937b15eeea5f378417cb",
+  "task_id": "v4-1063"
+}

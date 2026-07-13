@@ -1,0 +1,269 @@
+{
+  "artifact_contract": {
+    "files": [
+      {
+        "modules": [
+          {
+            "depends_on": [],
+            "name": "flash_folded_dac4",
+            "parameters": [
+              {
+                "default": "0.45",
+                "name": "vth",
+                "override_behavior": "overrides vth",
+                "type": "real",
+                "units": "",
+                "valid_range": "finite"
+              },
+              {
+                "default": "1.0",
+                "name": "vref",
+                "override_behavior": "overrides vref",
+                "type": "real",
+                "units": "",
+                "valid_range": "finite"
+              }
+            ],
+            "ports": [
+              {
+                "direction": "input",
+                "discipline": "electrical",
+                "name": "vd4",
+                "position": 0
+              },
+              {
+                "direction": "input",
+                "discipline": "electrical",
+                "name": "vd3",
+                "position": 1
+              },
+              {
+                "direction": "input",
+                "discipline": "electrical",
+                "name": "vd2",
+                "position": 2
+              },
+              {
+                "direction": "input",
+                "discipline": "electrical",
+                "name": "vd1",
+                "position": 3
+              },
+              {
+                "direction": "output",
+                "discipline": "electrical",
+                "name": "vout",
+                "position": 4
+              }
+            ],
+            "role": "entry"
+          }
+        ],
+        "path": "flash_folded_dac4.va"
+      }
+    ],
+    "mode": "single_file"
+  },
+  "evaluation_summary": {
+    "anonymous_negative_cases": 5,
+    "full_credit": "valid candidate and reference pass and all five negatives killed behaviorally",
+    "reference_cases": 1
+  },
+  "family_id": "242",
+  "feedback": {
+    "available_in_modes": [
+      "G2",
+      "G3",
+      "G4",
+      "G5"
+    ],
+    "command": "vabench feedback run"
+  },
+  "form": "testbench",
+  "identity": {
+    "category": "data_converter",
+    "difficulty": "D2",
+    "level": "L1",
+    "supported_scope": "pure voltage-domain event-driven transient behavioral Verilog-A",
+    "title": "Flash Folded DAC4"
+  },
+  "modeling_constraints": [
+    "Use deterministic voltage-domain behavioral Verilog-A.",
+    "Do not hard-code validation stimulus, stop times, sample windows, gold internals, or simulator side channels."
+  ],
+  "properties": [
+    {
+      "id": "P_TREAT_EACH_INPUT_BIT_AS_LOGIC",
+      "observable_contract": "Treat each input bit as logic one when its voltage is above `vth`. The MSB selects the folded half of the transfer. When `vd4` is high, add the lower-bit weighted value above midscale. When `vd4` is low, subtract the lower-bit weighted value from midscale. The lower bits use binary weights `4`, `2`, and `1`, and the output is scaled by `vref/16`.",
+      "required_signals": [
+        "time",
+        "vd1",
+        "vd2",
+        "vd3",
+        "vd4",
+        "vout"
+      ]
+    },
+    {
+      "id": "P_VTH_0_45_V_DECISION_THRESHOLD",
+      "observable_contract": "`vth = 0.45 V`: decision threshold for each voltage-coded input bit.",
+      "required_signals": [
+        "time",
+        "vd1",
+        "vd2",
+        "vd3",
+        "vd4",
+        "vout"
+      ]
+    },
+    {
+      "id": "P_VREF_1_0_V_OUTPUT_REFERENCE",
+      "observable_contract": "`vref = 1.0 V`: output reference/full-scale voltage.",
+      "required_signals": [
+        "time",
+        "vd1",
+        "vd2",
+        "vd3",
+        "vd4",
+        "vout"
+      ]
+    },
+    {
+      "id": "P_VTH_0_45_V_DECISION_THRESHOLD_2",
+      "observable_contract": "- `vth = 0.45 V`: decision threshold for each voltage-coded input bit. - `vref = 1.0 V`: output reference/full-scale voltage.",
+      "required_signals": [
+        "time",
+        "vd1",
+        "vd2",
+        "vd3",
+        "vd4",
+        "vout"
+      ]
+    },
+    {
+      "id": "P_USE_DETERMINISTIC_VOLTAGE_DOMAIN_VERILOG_A",
+      "observable_contract": "Use deterministic voltage-domain Verilog-A and voltage contributions only. Do not emit a testbench, checker logic, out-of-band test hooks, hard-code testbench sample points, use current contributions, transistor-level devices, `ddt()`, `idt()`, or simulator side channels.",
+      "required_signals": [
+        "time",
+        "vd1",
+        "vd2",
+        "vd3",
+        "vd4",
+        "vout"
+      ]
+    }
+  ],
+  "schema_version": "v4-tri-form-public-contract-v2",
+  "security_policy": {
+    "allowed_include_paths": [
+      "./dut/flash_folded_dac4.va"
+    ],
+    "candidate_artifacts": [
+      "testbench.scs"
+    ],
+    "forbidden_rules": [
+      "undeclared_include",
+      "absolute_path",
+      "path_traversal",
+      "process_execution",
+      "network_access",
+      "simulator_scripting_escape",
+      "dut_redefinition",
+      "direct_dut_output_drive",
+      "private_hierarchical_probe",
+      "unbounded_resource_use"
+    ],
+    "limits": {
+      "max_analyses": 1,
+      "max_candidate_bytes": 1000000,
+      "max_cpu_time_s": 120,
+      "max_memory_mb": 2048,
+      "max_output_bytes": 100000000,
+      "max_saved_signals": 64,
+      "max_stop_time_s": 1.0,
+      "max_wall_time_s": 180
+    },
+    "rejection_outcome": "invalid_run",
+    "required_rules": [
+      "declared_dut_binding",
+      "transient_analysis",
+      "all_required_public_traces"
+    ],
+    "schema_version": "v4-testbench-security-policy-v2"
+  },
+  "security_summary": [
+    "only the declared testbench_include_path values are allowed for DUT sources",
+    "DUT redefinition, direct output drive, private hierarchical probes, arbitrary file access, and unbounded analyses are rejected"
+  ],
+  "submission_contract": {
+    "agentic_submission_root": "public/submission",
+    "exact_declared_file_set_required": true,
+    "target_artifacts_relative_to": "submission_root"
+  },
+  "supplied_inputs": {
+    "dut_instances": [
+      {
+        "connections": [
+          {
+            "net": "vd4",
+            "port_ref": "vd4",
+            "position": 0
+          },
+          {
+            "net": "vd3",
+            "port_ref": "vd3",
+            "position": 1
+          },
+          {
+            "net": "vd2",
+            "port_ref": "vd2",
+            "position": 2
+          },
+          {
+            "net": "vd1",
+            "port_ref": "vd1",
+            "position": 3
+          },
+          {
+            "net": "vout",
+            "port_ref": "vout",
+            "position": 4
+          }
+        ],
+        "module_ref": "flash_folded_dac4",
+        "name": "XDUT",
+        "ordered_nets": [
+          "vd4",
+          "vd3",
+          "vd2",
+          "vd1",
+          "vout"
+        ],
+        "public_output_nets": [
+          "vout"
+        ]
+      }
+    ],
+    "read_only_dut_artifacts": [
+      {
+        "public_input_path": "supplied_dut/flash_folded_dac4.va",
+        "testbench_include_path": "./dut/flash_folded_dac4.va"
+      }
+    ],
+    "read_only_support_artifacts": []
+  },
+  "target_artifacts": [
+    "testbench.scs"
+  ],
+  "task_id": "v4-742",
+  "trace_contract": {
+    "required_signals": [
+      "time",
+      "vd1",
+      "vd2",
+      "vd3",
+      "vd4",
+      "vout"
+    ]
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "base_dut": {
+    "canonical_score_tb_sha256": "4bbb528a62687dbcb41bab4c9f4ca0e27df5cc89572aa83bbeebf7d991c12f71",
+    "canonical_task_id": "v4-121",
+    "canonical_task_slug": "121-deadband-window",
+    "family_spec_sha256": "6d10f9d14b965bb65ca6d649e6c694f2827d25f4d9cdadba77335037af070d38",
+    "mutation_catalog_sha256": "b03566fec799d7544cce9c346d6e1e1bec0721a8b8e6741c7e053b00cbc74e59",
+    "source_release_manifest_sha256": "66951fd8580c37e2fbf70c3381d2e7f54f538e55588c199c63181d8c6a740623"
+  },
+  "family_id": "121",
+  "negative_assignment": {
+    "bugfix_seed": "neg_003_wrong_offsets",
+    "testbench_suite": [
+      "neg_002_passes_inside_deadband",
+      "neg_001_zero",
+      "neg_003_wrong_offsets",
+      "neg_005_metric_scale_low",
+      "neg_004_clips_outside_deadband"
+    ]
+  },
+  "schema_version": "v4-derivation-manifest-v2"
+}

@@ -1,0 +1,18 @@
+{
+  "family_id": "035",
+  "mutation_catalog_sha256": "86f7df4a9d76aeee70214ba260c38d78d85494a2b547d7d723aeaf93a09c7b05",
+  "mutation_partition": {
+    "bugfix_seed": [
+      "neg_003_inverted_drive"
+    ],
+    "testbench_private_score": [
+      "neg_002_compression_bypass",
+      "neg_004_reset_ignored",
+      "neg_007_asynchronous_tracking"
+    ],
+    "testbench_public_feedback": [
+      "neg_006_output_clamp_bypass"
+    ]
+  },
+  "schema_version": "v4-derivation-manifest-v1"
+}

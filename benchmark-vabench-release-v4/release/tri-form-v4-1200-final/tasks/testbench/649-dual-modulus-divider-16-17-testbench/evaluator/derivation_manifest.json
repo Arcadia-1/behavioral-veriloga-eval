@@ -1,0 +1,22 @@
+{
+  "base_dut": {
+    "canonical_score_tb_sha256": "16ce0499d8c5400cfd1be4f4696e545cde0527f0fec9a17a08450dbf34c2e5dc",
+    "canonical_task_id": "v4-149",
+    "canonical_task_slug": "149-dual-modulus-divider-16-17",
+    "family_spec_sha256": "fe676501bb228010d8c63cd0c5e7d8127d8165d758aaa69e2024d0ce1f7406f5",
+    "mutation_catalog_sha256": "8e5a4baaa6231059ec659796113bfafa57e13666516b3a342082f643f4f49544",
+    "source_release_manifest_sha256": "66951fd8580c37e2fbf70c3381d2e7f54f538e55588c199c63181d8c6a740623"
+  },
+  "family_id": "149",
+  "negative_assignment": {
+    "bugfix_seed": "neg_002_always_divide_by_16",
+    "testbench_suite": [
+      "neg_004_wrong_low_marker_count",
+      "neg_002_always_divide_by_16",
+      "neg_005_metric_scale_low",
+      "neg_001_zero",
+      "neg_003_always_divide_by_17"
+    ]
+  },
+  "schema_version": "v4-derivation-manifest-v2"
+}

@@ -1,0 +1,23 @@
+{
+  "candidate_artifacts": [
+    "bounded_tail_dither_shaper.va"
+  ],
+  "canonical_dut_source": "release/dut-base-v3-exact-five-hash-bound-v2/276-bounded-tail-dither-shaper",
+  "family_id": "276",
+  "family_spec_sha256": "447d8b290b4399b108f347213da88745e9a37ddafa2a81a9769f34f0145701dd",
+  "form": "bugfix",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "16827a22693cdbe6d21a2569b3072e2976b3e1ac1b48e66e3ca6032a8b64f083",
+  "schema_version": "v4-tri-form-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/bugfix/1276-bounded-tail-dither-shaper-bugfix",
+  "task_dir_sha256": "3711feff25e14bd00e8d61a20a24abbdd1f5d4fe26a41969f6389b1ada312cc5",
+  "task_id": "v4-1276"
+}

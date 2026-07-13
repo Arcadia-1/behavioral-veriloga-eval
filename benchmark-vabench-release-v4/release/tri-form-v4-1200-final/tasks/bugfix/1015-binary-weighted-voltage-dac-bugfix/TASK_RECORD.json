@@ -1,0 +1,23 @@
+{
+  "candidate_artifacts": [
+    "simple_binary_voltage_dac_4b.va"
+  ],
+  "canonical_dut_source": "release/dut-base-v3-exact-five-hash-bound-v2/015-binary-weighted-voltage-dac",
+  "family_id": "015",
+  "family_spec_sha256": "e9e246939f63a42840fc429a0f1eaff407bb5350c935b38ce0e657541cadecaa",
+  "form": "bugfix",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "50364e10b65045752e2d168e8774f6d86ab8ce9069e11ceca11b5d368890b302",
+  "schema_version": "v4-tri-form-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/bugfix/1015-binary-weighted-voltage-dac-bugfix",
+  "task_dir_sha256": "de24e623b8cacb4a47752ed4a3b3282847cd079f50786fcbb6129416454453b8",
+  "task_id": "v4-1015"
+}

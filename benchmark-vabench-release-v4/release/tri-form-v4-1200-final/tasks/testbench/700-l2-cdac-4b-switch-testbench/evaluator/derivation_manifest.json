@@ -1,0 +1,22 @@
+{
+  "base_dut": {
+    "canonical_score_tb_sha256": "ebf4f3956972ad048fa6eb12c1694d5a73e74f89432d8f0ac72daab1fc6611a6",
+    "canonical_task_id": "v4-200",
+    "canonical_task_slug": "200-l2-cdac-4b-switch",
+    "family_spec_sha256": "edabb7f416acf7ccb448edd0b448fc706c5c933db7365cf7bae9e9f915aceefa",
+    "mutation_catalog_sha256": "19d49e9609f5ca8ff406a70651d808331d1f9f6ca98a2147b6991ce01cb10a1b",
+    "source_release_manifest_sha256": "66951fd8580c37e2fbf70c3381d2e7f54f538e55588c199c63181d8c6a740623"
+  },
+  "family_id": "200",
+  "negative_assignment": {
+    "bugfix_seed": "neg_002_no_ready_skip",
+    "testbench_suite": [
+      "neg_003_wrong_denominator",
+      "neg_002_no_ready_skip",
+      "neg_004_unipolar_output",
+      "neg_005_metric_scale_low",
+      "neg_001_zero"
+    ]
+  },
+  "schema_version": "v4-derivation-manifest-v2"
+}

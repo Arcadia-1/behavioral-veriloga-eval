@@ -1,0 +1,37 @@
+{
+  "base_dut": {
+    "canonical_task_id": "v4-330",
+    "canonical_task_slug": "330-ffe-tap-adaptation-monitor",
+    "family_spec_sha256": "f61aa1f30bda5968e5ca3d1c3e581f5c505a190fff2b31769b6b8a9498a9587e",
+    "mutation_catalog_sha256": "3ee11ec5060c339e0ce4386fab431c94a5180be4ec93b73f87170939e1000249",
+    "source_release_manifest_sha256": "66951fd8580c37e2fbf70c3381d2e7f54f538e55588c199c63181d8c6a740623"
+  },
+  "family_id": "330",
+  "negative_assignment": {
+    "bugfix_seed": "neg_002_post_tap_polarity_matches_pre",
+    "testbench_suite": [
+      "neg_002_post_tap_polarity_matches_pre",
+      "neg_003_main_cursor_polarity_reversed",
+      "neg_004_adapt_metric_omits_post_tap",
+      "neg_005_done_after_one_update",
+      "neg_001_clear_retains_pre_tap_offset"
+    ]
+  },
+  "private_materialization": {
+    "buggy_bundle_sha256": "d9c718568a2951ca2ba95a9149246a5e1c9703c0950391f8a121e41cb2981df7",
+    "changed_artifacts": [
+      "tap_update_controller.va"
+    ]
+  },
+  "schema_version": "v4-derivation-manifest-v2",
+  "selection_evidence": {
+    "mutation_id": "neg_002_post_tap_polarity_matches_pre",
+    "rationale": "Select fault class post_tap_update_polarity_matches_pre_tap under trigger 'an enabled rising clock edge samples err_in on either side of vcm' because it exercises P_ON_EACH_ENABLED_RISING_CLK_EDGE as one compile-pass semantic defect.",
+    "selection_policy": "semantic_fault_complexity_v1",
+    "selection_status": "policy_reviewed",
+    "semantic_score": 22,
+    "source_preferred_seed": "neg_002_post_tap_polarity_matches_pre",
+    "source_preferred_seed_preserved": true,
+    "triviality_markers": []
+  }
+}

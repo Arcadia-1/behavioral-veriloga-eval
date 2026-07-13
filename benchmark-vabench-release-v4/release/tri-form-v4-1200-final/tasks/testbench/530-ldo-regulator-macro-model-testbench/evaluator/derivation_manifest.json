@@ -1,0 +1,22 @@
+{
+  "base_dut": {
+    "canonical_score_tb_sha256": "746de021c30ed0bcf738ddd89f4cca1b71aaae4975d837daaa69bbbfc579ab2c",
+    "canonical_task_id": "v4-030",
+    "canonical_task_slug": "030-ldo-regulator-macro-model",
+    "family_spec_sha256": "8bda7644ea899a74d9817a7394268380e0861bc22028e5c46b5de985dd6668fc",
+    "mutation_catalog_sha256": "85fc525f1f9062a92ef027e1dd535eaf806956aaf877743b244f2484e122f839",
+    "source_release_manifest_sha256": "66951fd8580c37e2fbf70c3381d2e7f54f538e55588c199c63181d8c6a740623"
+  },
+  "family_id": "030",
+  "negative_assignment": {
+    "bugfix_seed": "neg_001_boundary",
+    "testbench_suite": [
+      "neg_001_boundary",
+      "neg_003_polarity_direction",
+      "neg_004_state_reset",
+      "neg_005_metric_writeout",
+      "neg_002_timing_window"
+    ]
+  },
+  "schema_version": "v4-derivation-manifest-v2"
+}

@@ -1,0 +1,326 @@
+{
+  "artifact_contract": {
+    "files": [
+      {
+        "modules": [
+          {
+            "depends_on": [],
+            "name": "vin_src",
+            "parameters": [
+              {
+                "default": 0.9,
+                "name": "vdd",
+                "override_behavior": "sets twice the output common-mode level",
+                "type": "real",
+                "units": "V",
+                "valid_range": "vdd > 0"
+              },
+              {
+                "default": 0.45,
+                "name": "vth",
+                "override_behavior": "sets CLK and active-low reset decision thresholds",
+                "type": "real",
+                "units": "V",
+                "valid_range": "finite real"
+              },
+              {
+                "default": 0.15,
+                "name": "ampl",
+                "override_behavior": "sets sampled sine amplitude on VOUT_P",
+                "type": "real",
+                "units": "V",
+                "valid_range": "ampl >= 0"
+              },
+              {
+                "default": 300000.0,
+                "name": "freq",
+                "override_behavior": "sets sampled sine frequency",
+                "type": "real",
+                "units": "Hz",
+                "valid_range": "freq >= 0"
+              },
+              {
+                "default": 0.01,
+                "name": "sigma",
+                "override_behavior": "sets the scale of the optional deterministic seeded perturbation on VOUT_P",
+                "type": "real",
+                "units": "V",
+                "valid_range": "sigma >= 0"
+              },
+              {
+                "default": 0,
+                "name": "SEED",
+                "override_behavior": "initializes the repeatable perturbation sequence",
+                "type": "integer",
+                "units": null,
+                "valid_range": "any integer accepted by the simulator random function"
+              }
+            ],
+            "ports": [
+              {
+                "direction": "input",
+                "discipline": "electrical",
+                "name": "CLK",
+                "position": 0
+              },
+              {
+                "direction": "input",
+                "discipline": "electrical",
+                "name": "RST_N",
+                "position": 1
+              },
+              {
+                "direction": "output",
+                "discipline": "electrical",
+                "name": "VOUT_P",
+                "position": 2
+              },
+              {
+                "direction": "output",
+                "discipline": "electrical",
+                "name": "VOUT_N",
+                "position": 3
+              }
+            ],
+            "role": "entry"
+          }
+        ],
+        "path": "vin_src.va"
+      }
+    ],
+    "mode": "single_file"
+  },
+  "evaluation_summary": {
+    "anonymous_negative_cases": 5,
+    "full_credit": "valid candidate and reference pass and all five negatives killed behaviorally",
+    "reference_cases": 1
+  },
+  "family_id": "102",
+  "feedback": {
+    "available_in_modes": [
+      "G2",
+      "G3",
+      "G4",
+      "G5"
+    ],
+    "command": "vabench feedback run"
+  },
+  "form": "testbench",
+  "identity": {
+    "category": "measurement_instrumentation_flows",
+    "difficulty": "D2",
+    "level": "L2",
+    "supported_scope": "pure voltage-domain event-driven transient behavioral Verilog-A",
+    "title": "Clocked Sine Source"
+  },
+  "modeling_constraints": [
+    "Sample the sine and optional seeded perturbation only on rising CLK crossings after reset release.",
+    "Use deterministic seeded behavior and smoothed voltage contributions only.",
+    "Do not use transistor-level devices, AC/noise analysis, waveform files, validation artifacts, or simulator-specific side channels."
+  ],
+  "properties": [
+    {
+      "id": "P_RESET_COMMON_MODE",
+      "observable_contract": "While RST_N is below vth, both outputs hold near vdd divided by two.",
+      "required_signals": [
+        "time",
+        "clk",
+        "rst_n",
+        "vinp",
+        "vinn",
+        "vamp_p",
+        "vamp_n"
+      ]
+    },
+    {
+      "id": "P_RISING_EDGE_SAMPLE",
+      "observable_contract": "After reset release, VOUT_P updates only on rising CLK crossings through vth.",
+      "required_signals": [
+        "time",
+        "clk",
+        "rst_n",
+        "vinp",
+        "vinn",
+        "vamp_p",
+        "vamp_n"
+      ]
+    },
+    {
+      "id": "P_SAMPLED_SINE",
+      "observable_contract": "At each qualifying clock edge, VOUT_P samples vdd/2 plus ampl times sin(2*pi*freq*time), plus the optional seeded perturbation.",
+      "required_signals": [
+        "time",
+        "clk",
+        "rst_n",
+        "vinp",
+        "vinn",
+        "vamp_p",
+        "vamp_n"
+      ]
+    },
+    {
+      "id": "P_REFERENCE_SIDE_COMMON_MODE",
+      "observable_contract": "VOUT_N remains at vdd divided by two during reset and active sampling.",
+      "required_signals": [
+        "time",
+        "clk",
+        "rst_n",
+        "vinp",
+        "vinn",
+        "vamp_p",
+        "vamp_n"
+      ]
+    },
+    {
+      "id": "P_INTEREDGE_HOLD",
+      "observable_contract": "Both outputs hold their sampled values between CLK events rather than continuously recomputing the sine or perturbation.",
+      "required_signals": [
+        "time",
+        "clk",
+        "rst_n",
+        "vinp",
+        "vinn",
+        "vamp_p",
+        "vamp_n"
+      ]
+    },
+    {
+      "id": "P_SEEDED_REPEATABILITY",
+      "observable_contract": "For fixed SEED, sigma, controls, and timing, the sampled perturbation sequence and outputs are repeatable; sigma zero removes the perturbation.",
+      "required_signals": [
+        "time",
+        "clk",
+        "rst_n",
+        "vinp",
+        "vinn",
+        "vamp_p",
+        "vamp_n"
+      ]
+    }
+  ],
+  "schema_version": "v4-tri-form-public-contract-v2",
+  "security_policy": {
+    "allowed_include_paths": [
+      "./dut/vin_src.va",
+      "./support/dither_adder.va",
+      "./support/gain_amp_fixed.va",
+      "./support/lfsr.va"
+    ],
+    "candidate_artifacts": [
+      "testbench.scs"
+    ],
+    "forbidden_rules": [
+      "undeclared_include",
+      "absolute_path",
+      "path_traversal",
+      "process_execution",
+      "network_access",
+      "simulator_scripting_escape",
+      "dut_redefinition",
+      "direct_dut_output_drive",
+      "private_hierarchical_probe",
+      "unbounded_resource_use"
+    ],
+    "limits": {
+      "max_analyses": 1,
+      "max_candidate_bytes": 1000000,
+      "max_cpu_time_s": 120,
+      "max_memory_mb": 2048,
+      "max_output_bytes": 100000000,
+      "max_saved_signals": 64,
+      "max_stop_time_s": 1.0,
+      "max_wall_time_s": 180
+    },
+    "rejection_outcome": "invalid_run",
+    "required_rules": [
+      "declared_dut_binding",
+      "transient_analysis",
+      "all_required_public_traces"
+    ],
+    "schema_version": "v4-testbench-security-policy-v2"
+  },
+  "security_summary": [
+    "only the declared testbench_include_path values are allowed for DUT sources",
+    "DUT redefinition, direct output drive, private hierarchical probes, arbitrary file access, and unbounded analyses are rejected"
+  ],
+  "submission_contract": {
+    "agentic_submission_root": "public/submission",
+    "exact_declared_file_set_required": true,
+    "target_artifacts_relative_to": "submission_root"
+  },
+  "supplied_inputs": {
+    "dut_instances": [
+      {
+        "connections": [
+          {
+            "net": "clk",
+            "port_ref": "CLK",
+            "position": 0
+          },
+          {
+            "net": "rst_n",
+            "port_ref": "RST_N",
+            "position": 1
+          },
+          {
+            "net": "vinp",
+            "port_ref": "VOUT_P",
+            "position": 2
+          },
+          {
+            "net": "vinn",
+            "port_ref": "VOUT_N",
+            "position": 3
+          }
+        ],
+        "module_ref": "vin_src",
+        "name": "IVIN",
+        "ordered_nets": [
+          "clk",
+          "rst_n",
+          "vinp",
+          "vinn"
+        ],
+        "public_output_nets": [
+          "vinp",
+          "vinn"
+        ]
+      }
+    ],
+    "read_only_dut_artifacts": [
+      {
+        "public_input_path": "supplied_dut/vin_src.va",
+        "testbench_include_path": "./dut/vin_src.va"
+      }
+    ],
+    "read_only_support_artifacts": [
+      {
+        "public_input_path": "public_support/dither_adder.va",
+        "testbench_include_path": "./support/dither_adder.va"
+      },
+      {
+        "public_input_path": "public_support/gain_amp_fixed.va",
+        "testbench_include_path": "./support/gain_amp_fixed.va"
+      },
+      {
+        "public_input_path": "public_support/lfsr.va",
+        "testbench_include_path": "./support/lfsr.va"
+      }
+    ]
+  },
+  "target_artifacts": [
+    "testbench.scs"
+  ],
+  "task_id": "v4-602",
+  "trace_contract": {
+    "required_signals": [
+      "time",
+      "clk",
+      "rst_n",
+      "vinp",
+      "vinn",
+      "vamp_p",
+      "vamp_n"
+    ]
+  }
+}

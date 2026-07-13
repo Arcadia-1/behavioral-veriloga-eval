@@ -1,0 +1,227 @@
+{
+  "artifact_contract": {
+    "files": [
+      {
+        "modules": [
+          {
+            "depends_on": [],
+            "name": "decision_router_logic",
+            "parameters": [
+              {
+                "default": "0.45",
+                "name": "vth",
+                "override_behavior": "overrides vth",
+                "type": "real",
+                "units": "",
+                "valid_range": "finite"
+              },
+              {
+                "default": "0.9",
+                "name": "vh",
+                "override_behavior": "overrides vh",
+                "type": "real",
+                "units": "",
+                "valid_range": "finite"
+              }
+            ],
+            "ports": [
+              {
+                "direction": "input",
+                "discipline": "electrical",
+                "name": "vin1",
+                "position": 0
+              },
+              {
+                "direction": "input",
+                "discipline": "electrical",
+                "name": "vin2",
+                "position": 1
+              },
+              {
+                "direction": "input",
+                "discipline": "electrical",
+                "name": "valid",
+                "position": 2
+              },
+              {
+                "direction": "output",
+                "discipline": "electrical",
+                "name": "x",
+                "position": 3
+              },
+              {
+                "direction": "output",
+                "discipline": "electrical",
+                "name": "y",
+                "position": 4
+              },
+              {
+                "direction": "output",
+                "discipline": "electrical",
+                "name": "z",
+                "position": 5
+              },
+              {
+                "direction": "output",
+                "discipline": "electrical",
+                "name": "dm",
+                "position": 6
+              },
+              {
+                "direction": "output",
+                "discipline": "electrical",
+                "name": "dl",
+                "position": 7
+              }
+            ],
+            "role": "entry"
+          }
+        ],
+        "path": "decision_router_logic.va"
+      }
+    ],
+    "mode": "single_file"
+  },
+  "buggy_input_artifacts": [
+    "buggy_bundle/decision_router_logic.va"
+  ],
+  "editable_scope": "complete_declared_verilog_a_bundle",
+  "family_id": "231",
+  "feedback": {
+    "available_in_modes": [
+      "G2",
+      "G3",
+      "G4",
+      "G5"
+    ],
+    "command": "vabench feedback run"
+  },
+  "form": "bugfix",
+  "identity": {
+    "category": "digital_logic",
+    "difficulty": "D2",
+    "level": "L1",
+    "supported_scope": "pure voltage-domain event-driven transient behavioral Verilog-A",
+    "title": "Decision Router Logic"
+  },
+  "modeling_constraints": [
+    "Use deterministic voltage-domain behavioral Verilog-A.",
+    "Do not hard-code validation stimulus, stop times, sample windows, gold internals, or simulator side channels."
+  ],
+  "problem_statement": "the supplied system violates the public contract",
+  "properties": [
+    {
+      "id": "P_INTERPRET_VIN1_VIN2_AND_VALID_RELATIVE",
+      "observable_contract": "Interpret `vin1`, `vin2`, and `valid` relative to `vth`; all routed decisions below are evaluated from those voltage-coded Boolean inputs.",
+      "required_signals": [
+        "time",
+        "dl",
+        "dm",
+        "valid",
+        "vin1",
+        "vin2",
+        "x",
+        "y",
+        "z"
+      ]
+    },
+    {
+      "id": "P_DRIVE_DM_HIGH_WHEN_VIN1_IS",
+      "observable_contract": "Drive `dm` high when `vin1` is high and low otherwise.",
+      "required_signals": [
+        "time",
+        "dl",
+        "dm",
+        "valid",
+        "vin1",
+        "vin2",
+        "x",
+        "y",
+        "z"
+      ]
+    },
+    {
+      "id": "P_DRIVE_DL_HIGH_WHEN_VIN1_IS",
+      "observable_contract": "Drive `dl` high when `vin1` is low and `vin2` is high, and low otherwise.",
+      "required_signals": [
+        "time",
+        "dl",
+        "dm",
+        "valid",
+        "vin1",
+        "vin2",
+        "x",
+        "y",
+        "z"
+      ]
+    },
+    {
+      "id": "P_DRIVE_X_HIGH_WHEN_VALID_IS",
+      "observable_contract": "Drive `x` high only when `valid` is high and both decision inputs are low.",
+      "required_signals": [
+        "time",
+        "dl",
+        "dm",
+        "valid",
+        "vin1",
+        "vin2",
+        "x",
+        "y",
+        "z"
+      ]
+    },
+    {
+      "id": "P_DRIVE_Y_HIGH_WHEN_VALID_IS",
+      "observable_contract": "Drive `y` high only when `valid` is high and both decision inputs are high.",
+      "required_signals": [
+        "time",
+        "dl",
+        "dm",
+        "valid",
+        "vin1",
+        "vin2",
+        "x",
+        "y",
+        "z"
+      ]
+    },
+    {
+      "id": "P_DRIVE_Z_HIGH_WHEN_VALID_IS",
+      "observable_contract": "Drive `z` high only when `valid` is high, `vin1` is low, and `vin2` is high.",
+      "required_signals": [
+        "time",
+        "dl",
+        "dm",
+        "valid",
+        "vin1",
+        "vin2",
+        "x",
+        "y",
+        "z"
+      ]
+    }
+  ],
+  "schema_version": "v4-tri-form-public-contract-v2",
+  "submission_contract": {
+    "agentic_submission_root": "public/submission",
+    "exact_declared_file_set_required": true,
+    "target_artifacts_relative_to": "submission_root"
+  },
+  "target_artifacts": [
+    "decision_router_logic.va"
+  ],
+  "task_id": "v4-1231",
+  "trace_contract": {
+    "required_signals": [
+      "time",
+      "dl",
+      "dm",
+      "valid",
+      "vin1",
+      "vin2",
+      "x",
+      "y",
+      "z"
+    ]
+  }
+}

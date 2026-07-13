@@ -1,0 +1,23 @@
+{
+  "candidate_artifacts": [
+    "foreground_rdac_calibrator.va"
+  ],
+  "canonical_dut_source": "release/dut-base-v3-exact-five-hash-bound-v2/183-foreground-rdac-calibrator",
+  "family_id": "183",
+  "family_spec_sha256": "ee168792c0a08fb56b729917e7ada5d9d3272c01185f41efc9e2278fdba35082",
+  "form": "bugfix",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "884fdcb000294ddda37a55e96fda56126b613c3c84f8925ea0d453af086bf748",
+  "schema_version": "v4-tri-form-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/bugfix/1183-foreground-rdac-calibrator-bugfix",
+  "task_dir_sha256": "09bf6f05086649f39abb3cb328f60d32a7c22ccd0b6b11dda23b654b01b89094",
+  "task_id": "v4-1183"
+}

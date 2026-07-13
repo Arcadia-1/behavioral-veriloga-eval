@@ -1,0 +1,22 @@
+{
+  "base_dut": {
+    "canonical_score_tb_sha256": "836edcadb4b39f5cd8621e36bd4f5e22cc1c41fafcb59f8d9a15885950e84bbb",
+    "canonical_task_id": "v4-052",
+    "canonical_task_slug": "052-thermometer-bus-encoder",
+    "family_spec_sha256": "18add0d9bb52d1b9aba2e435cb1d0a204657718c6a18c6850fdc6070786acf3f",
+    "mutation_catalog_sha256": "209ce0f6b4c230b68f73eefadfd104b7ff01667d5c61c146d3b49063b5d40162",
+    "source_release_manifest_sha256": "66951fd8580c37e2fbf70c3381d2e7f54f538e55588c199c63181d8c6a740623"
+  },
+  "family_id": "052",
+  "negative_assignment": {
+    "bugfix_seed": "neg_005_round_to_nearest",
+    "testbench_suite": [
+      "neg_001_force_zero",
+      "neg_004_reversed_thermometer_order",
+      "neg_005_round_to_nearest",
+      "neg_002_off_by_one",
+      "neg_003_binary_code_outputs"
+    ]
+  },
+  "schema_version": "v4-derivation-manifest-v2"
+}

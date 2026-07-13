@@ -1,0 +1,23 @@
+{
+  "candidate_artifacts": [
+    "dac_5v_weighted_7b.va"
+  ],
+  "canonical_dut_source": "release/dut-base-v3-exact-five-hash-bound-v2/156-dac-5v-weighted-7b",
+  "family_id": "156",
+  "family_spec_sha256": "8866d1638328e950febb7ae75c74b85ce3364283641dcf69815592b27161af96",
+  "form": "bugfix",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "48d6906fe12a20c439f22b0a571fccc66d7f2bd63e5a5a7a1505c7711117e2df",
+  "schema_version": "v4-tri-form-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/bugfix/1156-dac-5v-weighted-7b-bugfix",
+  "task_dir_sha256": "0ee7e72a5b58179db2359458769e711dcd0b261d13de2221f2b0ab0867fe3651",
+  "task_id": "v4-1156"
+}

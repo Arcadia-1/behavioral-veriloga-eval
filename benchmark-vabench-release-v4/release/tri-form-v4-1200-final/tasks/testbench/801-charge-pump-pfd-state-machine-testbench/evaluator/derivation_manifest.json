@@ -1,0 +1,22 @@
+{
+  "base_dut": {
+    "canonical_score_tb_sha256": "e3548aadbebb00c32c88ac8776988f7891d73aa8296a3d423df96765ed616d21",
+    "canonical_task_id": "v4-301",
+    "canonical_task_slug": "301-charge-pump-pfd-state-machine",
+    "family_spec_sha256": "4024374ef781f421fa2815335321ff821a20b6a7e9090b9b23687e85f08e0c71",
+    "mutation_catalog_sha256": "80d86fb17914552e670069ff2d581775b76bf6d5dd8d21151ba00a2778fa3147",
+    "source_release_manifest_sha256": "66951fd8580c37e2fbf70c3381d2e7f54f538e55588c199c63181d8c6a740623"
+  },
+  "family_id": "301",
+  "negative_assignment": {
+    "bugfix_seed": "neg_001_drive_vctrl_mid",
+    "testbench_suite": [
+      "neg_002_drive_metric_mid",
+      "neg_003_dead_zone_state",
+      "neg_004_gain_sign_flipped",
+      "neg_005_vctrl_unclamped",
+      "neg_001_drive_vctrl_mid"
+    ]
+  },
+  "schema_version": "v4-derivation-manifest-v2"
+}

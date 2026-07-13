@@ -1,0 +1,23 @@
+{
+  "candidate_artifacts": [
+    "adaptive_threshold_tracker.va"
+  ],
+  "canonical_dut_source": "release/dut-base-v3-exact-five-hash-bound-v2/273-adaptive-threshold-tracker",
+  "family_id": "273",
+  "family_spec_sha256": "492c8881c715ab4f6b2b4e26aed9dafa10d1dd15d61e1818b31245826f68db11",
+  "form": "bugfix",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "8b62034d29a29872f35b3c3452ec11ab3dcaefc3a57f8ba3ea15e67e2844e544",
+  "schema_version": "v4-tri-form-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/bugfix/1273-adaptive-threshold-tracker-bugfix",
+  "task_dir_sha256": "9ad9c7b117a165c6c4887c620c3441c61936d901cb6983be714e16285055b1ae",
+  "task_id": "v4-1273"
+}

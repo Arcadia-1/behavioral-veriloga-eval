@@ -1,0 +1,181 @@
+{
+  "artifact_contract": {
+    "files": [
+      {
+        "modules": [
+          {
+            "depends_on": [],
+            "name": "ideal_clkmux_8channel",
+            "parameters": [],
+            "ports": [
+              {
+                "direction": "input",
+                "discipline": "electrical",
+                "name": "clk",
+                "position": 0
+              },
+              {
+                "direction": "input",
+                "discipline": "electrical",
+                "name": "in0",
+                "position": 1
+              },
+              {
+                "direction": "input",
+                "discipline": "electrical",
+                "name": "in1",
+                "position": 2
+              },
+              {
+                "direction": "input",
+                "discipline": "electrical",
+                "name": "in2",
+                "position": 3
+              },
+              {
+                "direction": "input",
+                "discipline": "electrical",
+                "name": "in3",
+                "position": 4
+              },
+              {
+                "direction": "input",
+                "discipline": "electrical",
+                "name": "in4",
+                "position": 5
+              },
+              {
+                "direction": "input",
+                "discipline": "electrical",
+                "name": "in5",
+                "position": 6
+              },
+              {
+                "direction": "input",
+                "discipline": "electrical",
+                "name": "in6",
+                "position": 7
+              },
+              {
+                "direction": "input",
+                "discipline": "electrical",
+                "name": "in7",
+                "position": 8
+              },
+              {
+                "direction": "output",
+                "discipline": "electrical",
+                "name": "out",
+                "position": 9
+              },
+              {
+                "direction": "output",
+                "discipline": "electrical",
+                "name": "count_x",
+                "position": 10
+              }
+            ],
+            "role": "entry"
+          }
+        ],
+        "path": "ideal_clkmux_8channel.va"
+      }
+    ],
+    "mode": "single_file"
+  },
+  "family_id": "167",
+  "feedback": {
+    "available_in_modes": [
+      "G2",
+      "G3",
+      "G4",
+      "G5"
+    ],
+    "command": "vabench feedback run"
+  },
+  "form": "dut",
+  "identity": {
+    "category": "timing",
+    "difficulty": "D2",
+    "level": "L1",
+    "supported_scope": "pure voltage-domain event-driven transient behavioral Verilog-A",
+    "title": "Ideal Clkmux 8channel"
+  },
+  "modeling_constraints": [
+    "Use deterministic voltage-domain behavioral Verilog-A.",
+    "Do not hard-code validation stimulus, stop times, sample windows, gold internals, or simulator side channels."
+  ],
+  "properties": [
+    {
+      "id": "P_MODULO8_COUNTER",
+      "observable_contract": "The internal selector starts at zero and increments modulo eight on each rising `clk` crossing through 0.5 V.",
+      "required_signals": [
+        "time",
+        "clk",
+        "count_x"
+      ]
+    },
+    {
+      "id": "P_INCREMENT_BEFORE_SELECTION",
+      "observable_contract": "The first qualifying clock event selects the incremented counter state rather than the reset state.",
+      "required_signals": [
+        "time",
+        "clk",
+        "count_x",
+        "out"
+      ]
+    },
+    {
+      "id": "P_ANALOG_CHANNEL_MUX",
+      "observable_contract": "`out` follows the input channel selected by the current counter value.",
+      "required_signals": [
+        "time",
+        "clk",
+        "out",
+        "in0",
+        "in1",
+        "in2",
+        "in3",
+        "in4",
+        "in5",
+        "in6",
+        "in7"
+      ]
+    },
+    {
+      "id": "P_COUNTER_MONITOR_LEVEL",
+      "observable_contract": "`count_x` reports the current selector count with the specified voltage scaling.",
+      "required_signals": [
+        "time",
+        "clk",
+        "count_x"
+      ]
+    }
+  ],
+  "schema_version": "v4-tri-form-public-contract-v2",
+  "submission_contract": {
+    "agentic_submission_root": "public/submission",
+    "exact_declared_file_set_required": true,
+    "target_artifacts_relative_to": "submission_root"
+  },
+  "target_artifacts": [
+    "ideal_clkmux_8channel.va"
+  ],
+  "task_id": "v4-167",
+  "trace_contract": {
+    "required_signals": [
+      "time",
+      "clk",
+      "out",
+      "count_x",
+      "in0",
+      "in1",
+      "in2",
+      "in3",
+      "in4",
+      "in5",
+      "in6",
+      "in7"
+    ]
+  }
+}

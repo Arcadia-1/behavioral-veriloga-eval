@@ -1,0 +1,22 @@
+{
+  "base_dut": {
+    "canonical_score_tb_sha256": "71dc259ab098455b22ce28e9fbfb47b949b378ee7d300f24d1c8eef2dfa180c5",
+    "canonical_task_id": "v4-273",
+    "canonical_task_slug": "273-adaptive-threshold-tracker",
+    "family_spec_sha256": "492c8881c715ab4f6b2b4e26aed9dafa10d1dd15d61e1818b31245826f68db11",
+    "mutation_catalog_sha256": "2042e0b8a05711c9124dc921019e67951c36afc539fb34f2272f29c7691ecdcb",
+    "source_release_manifest_sha256": "66951fd8580c37e2fbf70c3381d2e7f54f538e55588c199c63181d8c6a740623"
+  },
+  "family_id": "273",
+  "negative_assignment": {
+    "bugfix_seed": "neg_003_ignore_reset",
+    "testbench_suite": [
+      "neg_001_fixed_threshold",
+      "neg_003_ignore_reset",
+      "neg_005_wrong_margin_metric",
+      "neg_002_threshold_follows_input",
+      "neg_004_no_threshold_clip"
+    ]
+  },
+  "schema_version": "v4-derivation-manifest-v2"
+}

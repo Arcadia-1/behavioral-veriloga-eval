@@ -1,0 +1,22 @@
+{
+  "candidate_artifacts": [
+    "pipeline_stage.va"
+  ],
+  "canonical_dut_source": "release/dut-base-v3-exact-five-hash-bound-v2/003-pipeline-adc-stage",
+  "family_id": "003",
+  "family_spec_sha256": "ff644321a125572be576d4b3c7bf42b7ac500ba5942330d0eba31f15aa2a618d",
+  "form": "dut",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "a9d90e08ca70fd35f30fe0c4024af5ffff1f66cf8ee1d64b98bc4c6ca73d354f",
+  "schema_version": "v4-tri-form-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/dut/003-pipeline-adc-stage",
+  "task_id": "v4-003"
+}

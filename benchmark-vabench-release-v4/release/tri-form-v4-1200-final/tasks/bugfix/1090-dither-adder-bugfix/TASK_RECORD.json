@@ -1,0 +1,23 @@
+{
+  "candidate_artifacts": [
+    "dither_adder.va"
+  ],
+  "canonical_dut_source": "release/dut-base-v3-exact-five-hash-bound-v2/090-dither-adder",
+  "family_id": "090",
+  "family_spec_sha256": "d60a784cbefaecb37fb143323193513193dfee3765e08a9497d8fd602e10ea0e",
+  "form": "bugfix",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "534bcfab8c8041eeab7f8670acc4c17915c09070c1ccfb7756dcf133799b8158",
+  "schema_version": "v4-tri-form-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/bugfix/1090-dither-adder-bugfix",
+  "task_dir_sha256": "a406917a900207281e30158537995164c6f3b471a2a1f7e04883878b669d8fba",
+  "task_id": "v4-1090"
+}

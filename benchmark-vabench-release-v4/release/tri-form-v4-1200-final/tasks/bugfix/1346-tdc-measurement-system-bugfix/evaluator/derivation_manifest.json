@@ -1,0 +1,37 @@
+{
+  "base_dut": {
+    "canonical_task_id": "v4-346",
+    "canonical_task_slug": "346-tdc-measurement-system",
+    "family_spec_sha256": "3ab9da12ea64b107edcdbdf1f675c0d4b4cf07729bf37c8964e4ac0c7c5cc42b",
+    "mutation_catalog_sha256": "45ddd0211186e5dd32d7d496b8a2704a1a32befd5b2d25764951c1d3eb75c331",
+    "source_release_manifest_sha256": "66951fd8580c37e2fbf70c3381d2e7f54f538e55588c199c63181d8c6a740623"
+  },
+  "family_id": "346",
+  "negative_assignment": {
+    "bugfix_seed": "neg_001_count_by_two",
+    "testbench_suite": [
+      "neg_001_count_by_two",
+      "neg_003_valid_stuck_low",
+      "neg_004_early_overflow",
+      "neg_006_reset_clear_ignored",
+      "neg_007_restart_clear_ignored"
+    ]
+  },
+  "private_materialization": {
+    "buggy_bundle_sha256": "0568fa12b493f0c087f6caefda71eb8e4b4f7b0de95d66997271a2f63a42b973",
+    "changed_artifacts": [
+      "interval_counter.va"
+    ]
+  },
+  "schema_version": "v4-derivation-manifest-v2",
+  "selection_evidence": {
+    "mutation_id": "neg_001_count_by_two",
+    "rationale": "Select fault class counter_step_error under trigger 'an armed interval spans clock edges' because it exercises P_TDC_INTERVAL_COUNT as one compile-pass semantic defect.",
+    "selection_policy": "semantic_fault_complexity_v1",
+    "selection_status": "policy_reviewed",
+    "semantic_score": 16,
+    "source_preferred_seed": "neg_001_count_by_two",
+    "source_preferred_seed_preserved": true,
+    "triviality_markers": []
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "base_dut": {
+    "canonical_score_tb_sha256": "a6be18dc67f2d4f5b99b8f7d2deaf2335e91ddfc806c1dba24d4aba47d13d935",
+    "canonical_task_id": "v4-295",
+    "canonical_task_slug": "295-power-mode-supply-current-metric",
+    "family_spec_sha256": "6ee2aacfa8863ca63b0768dcbce4d33aaa5cf4d0d4a1c2a4cb591b02ebf116d4",
+    "mutation_catalog_sha256": "bd87b57f6e7d39dd200af1ff69433afd67a847635e8d3ce99568c91c4f24ee20",
+    "source_release_manifest_sha256": "66951fd8580c37e2fbf70c3381d2e7f54f538e55588c199c63181d8c6a740623"
+  },
+  "family_id": "295",
+  "negative_assignment": {
+    "bugfix_seed": "neg_002_ignore_supply_scaling",
+    "testbench_suite": [
+      "neg_002_ignore_supply_scaling",
+      "neg_003_ignore_powerdown",
+      "neg_004_ignore_mode",
+      "neg_005_ignore_load",
+      "neg_001_constant_metric"
+    ]
+  },
+  "schema_version": "v4-derivation-manifest-v2"
+}

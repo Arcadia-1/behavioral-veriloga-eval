@@ -1,0 +1,23 @@
+{
+  "candidate_artifacts": [
+    "configurable_startup_policy.va"
+  ],
+  "canonical_dut_source": "release/dut-base-v3-exact-five-hash-bound-v2/285-configurable-startup-policy",
+  "family_id": "285",
+  "family_spec_sha256": "de42d85886b6faab8981c587939c6018923e4df290260df327c1067ae34eb254",
+  "form": "bugfix",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "cc9f53d5e42f904cd9792077b49adbdc05dcc4d3bda935cdb10253948a84a998",
+  "schema_version": "v4-tri-form-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/bugfix/1285-configurable-startup-policy-bugfix",
+  "task_dir_sha256": "781f2fb9070a6e69fa153b413fbbdcc6b68e929f41f1dbf872a402c3731f6604",
+  "task_id": "v4-1285"
+}
