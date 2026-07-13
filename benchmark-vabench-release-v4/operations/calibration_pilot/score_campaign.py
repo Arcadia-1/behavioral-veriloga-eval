@@ -9,6 +9,7 @@ from datetime import datetime, timezone
 import importlib.util
 import json
 from pathlib import Path
+import shlex
 import statistics
 from typing import Any
 
@@ -28,7 +29,59 @@ def read_json(path: Path) -> dict[str, Any]:
 
 
 def write_json(path: Path, value: Any) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(json.dumps(value, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+
+
+def resolve_cli_path(path: Path) -> Path:
+    """Resolve a CLI path from the user's cwd before worker cwd changes.
+
+    The scoring adapter is executed by ``run_campaign.command_result`` with
+    ``cwd=RUNNER.REPO``.  If the campaign output remains relative to the caller
+    cwd, the adapter receives a relative ``VABENCH_RUNTIME_DIR`` and can resolve
+    it against the wrong directory.  Always materialize filesystem paths before
+    launching any judge process.
+    """
+    path = path.expanduser()
+    if path.is_absolute():
+        return path.resolve()
+    return (Path.cwd() / path).resolve()
+
+
+def resolve_command_path_token(token: str) -> str:
+    """Convert existing relative path tokens in a judge command to absolutes.
+
+    Two relative spellings are common in this repo:
+
+    - from the benchmark repo root: ``benchmark-vabench-release-v4/...``;
+    - from the workspace root: ``behavioral-veriloga-eval/...``.
+
+    The judge command runs with ``cwd=RUNNER.REPO`` regardless of where
+    ``score_campaign.py`` was invoked.  Normalizing existing path tokens avoids
+    accidental double-prefixes such as
+    ``behavioral-veriloga-eval/behavioral-veriloga-eval/...`` while preserving
+    ordinary executable names like ``python3``.
+    """
+    if token.startswith("-"):
+        return token
+    candidate = Path(token).expanduser()
+    if candidate.is_absolute():
+        return str(candidate.resolve()) if candidate.exists() else token
+    if "/" not in token and "\\" not in token:
+        return token
+
+    for base in (Path.cwd(), RUNNER.REPO, HERE):
+        resolved = (base / candidate).resolve()
+        if resolved.exists():
+            return str(resolved)
+    return token
+
+
+def normalize_judge_command(command: str | None) -> str | None:
+    if not command:
+        return command
+    parts = shlex.split(command)
+    return shlex.join(resolve_command_path_token(part) for part in parts)
 
 
 def provider_usage(events: list[dict[str, Any]]) -> dict[str, int]:
@@ -93,7 +146,7 @@ def elapsed_seconds(result: dict[str, Any]) -> float | None:
 def evaluate_cell(result_path: Path, command: str | None, timeout_s: int) -> dict[str, Any]:
     result = read_json(result_path)
     cell = result["cell"]
-    runtime = result_path.parents[1]
+    runtime = result_path.parents[1].resolve()
     telemetry = event_telemetry(result.get("events") or [])
     output_tokens = result.get("output_tokens")
     if not isinstance(output_tokens, int):
@@ -187,8 +240,13 @@ def parse_args() -> argparse.Namespace:
 
 def main() -> int:
     args = parse_args()
+    args.campaign_output = resolve_cli_path(args.campaign_output)
+    args.output = resolve_cli_path(args.output) if args.output else None
+    args.judge_command = normalize_judge_command(args.judge_command)
     if args.workers < 1:
         raise SystemExit("--workers must be at least 1")
+    if args.judge_kind == "final_spectre" and not args.judge_command:
+        raise SystemExit("--judge-kind final_spectre requires --judge-command")
     result_paths = sorted(args.campaign_output.glob("v4-*/evidence/campaign_result.json"))
     if not result_paths:
         raise SystemExit(f"no campaign results under {args.campaign_output}")

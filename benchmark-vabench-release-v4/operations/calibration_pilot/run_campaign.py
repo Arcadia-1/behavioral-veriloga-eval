@@ -47,6 +47,20 @@ FILENAME_TOKEN_RE = re.compile(
     re.IGNORECASE,
 )
 AGENTIC = {"G2", "G3", "G4", "G5"}
+FEEDBACK_SIGNAL_PREFIXES = (
+    "FEEDBACK_",
+    "reference:",
+    "negative_",
+    "security:",
+    "ERROR:",
+    "WARNING:",
+    "Traceback",
+)
+PROMPT_EMBEDDED_TASK_FILES = {
+    "task/instruction.md",
+    "task/solver_contract.json",
+    "task/public_contract.json",
+}
 
 
 def now() -> str:
@@ -60,6 +74,32 @@ def read_json(path: Path) -> dict[str, Any]:
 def write_json(path: Path, value: Any) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(json.dumps(value, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+
+
+def file_digest_summary(path: Path) -> dict[str, Any]:
+    data = path.read_bytes()
+    return {
+        "bytes": len(data),
+        "sha256": hashlib.sha256(data).hexdigest(),
+    }
+
+
+def read_tool_delivery_cache(runtime: Path) -> set[str]:
+    path = runtime / "evidence" / "tool_delivery_cache.json"
+    if not path.is_file():
+        return set()
+    try:
+        payload = read_json(path)
+    except (OSError, json.JSONDecodeError):
+        return set()
+    return {str(item) for item in payload.get("full_read_files") or []}
+
+
+def write_tool_delivery_cache(runtime: Path, delivered: set[str]) -> None:
+    write_json(runtime / "evidence" / "tool_delivery_cache.json", {
+        "schema_version": "v4-tool-delivery-cache-v1",
+        "full_read_files": sorted(delivered),
+    })
 
 
 def reference_tokens(text: str) -> int:
@@ -149,7 +189,16 @@ def load_key(path: str | None, env_name: str) -> str:
 
 
 class OpenAICompatible:
-    def __init__(self, *, base_url: str, model: str, api_key: str, timeout_s: int, temperature: float):
+    def __init__(
+        self,
+        *,
+        base_url: str,
+        model: str,
+        api_key: str,
+        timeout_s: int,
+        temperature: float,
+        stream: bool = False,
+    ):
         self.endpoint = base_url.rstrip("/")
         if not self.endpoint.endswith("/chat/completions"):
             self.endpoint += "/chat/completions" if self.endpoint.endswith("/v1") else "/v1/chat/completions"
@@ -157,6 +206,7 @@ class OpenAICompatible:
         self.api_key = api_key
         self.timeout_s = timeout_s
         self.temperature = temperature
+        self.stream = stream
 
     def complete(self, messages: list[dict[str, Any]], max_tokens: int, tools: list[dict[str, Any]] | None) -> dict[str, Any]:
         payload: dict[str, Any] = {
@@ -168,6 +218,9 @@ class OpenAICompatible:
         if tools:
             payload["tools"] = tools
             payload["tool_choice"] = "auto"
+        if self.stream:
+            payload["stream"] = True
+            return self._complete_stream(payload)
         completed = None
         for attempt in range(1, 4):
             with tempfile.TemporaryDirectory(prefix="v4_provider_") as td:
@@ -213,6 +266,124 @@ class OpenAICompatible:
             raise RuntimeError(f"provider error: {json.dumps(response['error'])[:2000]}")
         return response
 
+    def _curl_payload(self, payload: dict[str, Any]) -> subprocess.CompletedProcess[str]:
+        with tempfile.TemporaryDirectory(prefix="v4_provider_") as td:
+            root = Path(td)
+            payload_path = root / "payload.json"
+            header_path = root / "headers.txt"
+            payload_path.write_text(json.dumps(payload), encoding="utf-8")
+            header_path.write_text(
+                f"Authorization: Bearer {self.api_key}\nContent-Type: application/json\n",
+                encoding="utf-8",
+            )
+            header_path.chmod(0o600)
+            return subprocess.run(
+                [
+                    "curl", "-sS", "--no-buffer", "--max-time", str(self.timeout_s),
+                    self.endpoint, "-H", f"@{header_path}",
+                    "--data-binary", f"@{payload_path}",
+                ],
+                text=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+                timeout=self.timeout_s + 5, check=False,
+            )
+
+    def _complete_stream(self, payload: dict[str, Any]) -> dict[str, Any]:
+        completed = None
+        for attempt in range(1, 4):
+            completed = self._curl_payload(payload)
+            if completed.returncode == 0:
+                break
+            if attempt < 3:
+                time.sleep(2 * attempt)
+        assert completed is not None
+        if completed.returncode != 0:
+            raise RuntimeError(
+                f"provider streaming transport failed after 3 attempts rc={completed.returncode}: "
+                f"{completed.stderr[-2000:]}"
+            )
+        return parse_openai_sse_response(completed.stdout, completed.stderr)
+
+
+def parse_openai_sse_response(stdout: str, stderr: str = "") -> dict[str, Any]:
+    content_parts: list[str] = []
+    reasoning_parts: list[str] = []
+    tool_calls_by_index: dict[int, dict[str, Any]] = {}
+    finish_reason = None
+    usage = None
+    metadata: dict[str, Any] = {"object": "chat.completion"}
+    chunk_count = 0
+    for raw in stdout.splitlines():
+        line = raw.strip()
+        if not line or line.startswith(":"):
+            continue
+        if not line.startswith("data:"):
+            continue
+        data = line.removeprefix("data:").strip()
+        if data == "[DONE]":
+            continue
+        try:
+            chunk = json.loads(data)
+        except json.JSONDecodeError as exc:
+            raise RuntimeError(
+                "provider returned malformed streaming JSON "
+                f"stdout_len={len(stdout)} stderr_len={len(stderr)} "
+                f"line_tail={line[-1000:]!r} stderr_tail={stderr[-2000:]!r}"
+            ) from exc
+        chunk_count += 1
+        for key in ("id", "model", "created", "system_fingerprint"):
+            if chunk.get(key) is not None:
+                metadata[key] = chunk.get(key)
+        if chunk.get("usage") is not None:
+            usage = chunk.get("usage")
+        choices = chunk.get("choices") or []
+        if not choices:
+            continue
+        choice = choices[0]
+        if choice.get("finish_reason") is not None:
+            finish_reason = choice.get("finish_reason")
+        delta = choice.get("delta") or {}
+        if delta.get("content") is not None:
+            content_parts.append(str(delta.get("content") or ""))
+        if delta.get("reasoning_content") is not None:
+            reasoning_parts.append(str(delta.get("reasoning_content") or ""))
+        for tool_delta in delta.get("tool_calls") or []:
+            index = int(tool_delta.get("index", 0))
+            call = tool_calls_by_index.setdefault(
+                index,
+                {"id": "", "type": "function", "function": {"name": "", "arguments": ""}},
+            )
+            if tool_delta.get("id"):
+                call["id"] = str(tool_delta["id"])
+            if tool_delta.get("type"):
+                call["type"] = str(tool_delta["type"])
+            function_delta = tool_delta.get("function") or {}
+            if function_delta.get("name") is not None:
+                call["function"]["name"] += str(function_delta.get("name") or "")
+            if function_delta.get("arguments") is not None:
+                call["function"]["arguments"] += str(function_delta.get("arguments") or "")
+    if chunk_count == 0:
+        raise RuntimeError(
+            "provider returned empty streaming response "
+            f"stdout_len={len(stdout)} stderr_len={len(stderr)} stdout_tail={stdout[-2000:]!r} "
+            f"stderr_tail={stderr[-2000:]!r}"
+        )
+    message: dict[str, Any] = {
+        "role": "assistant",
+        "content": "".join(content_parts),
+    }
+    if reasoning_parts:
+        message["reasoning_content"] = "".join(reasoning_parts)
+    tool_calls = [tool_calls_by_index[index] for index in sorted(tool_calls_by_index)]
+    if tool_calls:
+        message["tool_calls"] = tool_calls
+    response = {
+        **metadata,
+        "choices": [{"index": 0, "message": message, "finish_reason": finish_reason}],
+        "usage": usage,
+        "streaming_chunk_count": chunk_count,
+    }
+    return response
+
 
 TOOLS = [
     {"type": "function", "function": {"name": "list_files", "description": "List readable task files and writable submission files.", "parameters": {"type": "object", "properties": {}}}},
@@ -244,7 +415,70 @@ def command_result(command: str, runtime: Path, timeout_s: int) -> dict[str, Any
     }
 
 
-def execute_tool(name: str, arguments: dict[str, Any], runtime: Path, feedback_command: str | None, timeout_s: int) -> tuple[str, bool]:
+def compact_text_lines(text: str, *, limit: int = 24) -> list[str]:
+    """Keep high-signal feedback lines without echoing simulator counters.
+
+    Feedback stdout can include thousands of low-level simulator timing and
+    instrumentation lines.  Returning all of that to the model repeatedly burns
+    the working-token budget without materially improving repairs.  Keep the
+    public oracle summaries, validation diagnostics, and concrete errors.
+    """
+    selected: list[str] = []
+    seen: set[str] = set()
+    for raw in text.splitlines():
+        line = raw.strip()
+        if not line:
+            continue
+        if not (
+            line.startswith(FEEDBACK_SIGNAL_PREFIXES)
+            or "simulation failed" in line
+            or "Failed to parse" in line
+            or "Invalid source" in line
+            or "missing required" in line
+            or "timed out" in line.lower()
+        ):
+            continue
+        if line in seen:
+            continue
+        selected.append(line[:1000])
+        seen.add(line)
+        if len(selected) >= limit:
+            break
+    if selected:
+        return selected
+    tail = [line.strip() for line in text.splitlines() if line.strip()]
+    return [line[:1000] for line in tail[-min(limit, 6):]]
+
+
+def compact_feedback_result(result: dict[str, Any]) -> dict[str, Any]:
+    stdout = str(result.get("stdout") or "")
+    stderr = str(result.get("stderr") or "")
+    lines = compact_text_lines(stdout)
+    markers = [line for line in lines if line.startswith("FEEDBACK_")]
+    compact: dict[str, Any] = {
+        "schema_version": "v4-feedback-tool-result-compact-v1",
+        "returncode": result.get("returncode"),
+        "elapsed_s": result.get("elapsed_s"),
+        "status": "pass" if result.get("returncode") == 0 else "fail",
+        "markers": markers[-4:],
+        "diagnostics": lines,
+        "stdout_chars": len(stdout),
+        "stderr_chars": len(stderr),
+        "compacted": True,
+    }
+    if stderr:
+        compact["stderr_excerpt"] = compact_text_lines(stderr, limit=12)
+    return compact
+
+
+def execute_tool(
+    name: str,
+    arguments: dict[str, Any],
+    runtime: Path,
+    feedback_command: str | None,
+    timeout_s: int,
+    feedback_output_mode: str,
+) -> tuple[str, bool]:
     public = runtime / "public"
     submission = public / "submission"
     if name == "list_files":
@@ -262,7 +496,35 @@ def execute_tool(name: str, arguments: dict[str, Any], runtime: Path, feedback_c
             relative = Path("submission") / relative
         path = public / relative
         path.resolve().relative_to(public.resolve())
-        return path.read_text(encoding="utf-8"), False
+        relative_key = relative.as_posix()
+        if relative_key in PROMPT_EMBEDDED_TASK_FILES:
+            summary = file_digest_summary(path)
+            return json.dumps({
+                "status": "already_in_initial_prompt",
+                "path": relative_key,
+                "note": (
+                    "This immutable task file was included verbatim in the initial prompt; "
+                    "use that copy instead of spending another tool-result round on it."
+                ),
+                **summary,
+            }), False
+        immutable_task_file = relative.parts[:1] == ("task",)
+        if immutable_task_file:
+            delivered = read_tool_delivery_cache(runtime)
+            if relative_key in delivered:
+                summary = file_digest_summary(path)
+                return json.dumps({
+                    "status": "already_provided_in_this_episode",
+                    "path": relative_key,
+                    "note": "This read-only task file was already returned earlier in the conversation.",
+                    **summary,
+                }), False
+        text = path.read_text(encoding="utf-8")
+        if immutable_task_file:
+            delivered = read_tool_delivery_cache(runtime)
+            delivered.add(relative_key)
+            write_tool_delivery_cache(runtime, delivered)
+        return text, False
     if name == "write_file":
         relative = submission_relative(str(arguments["path"]))
         path = submission / relative
@@ -273,7 +535,10 @@ def execute_tool(name: str, arguments: dict[str, Any], runtime: Path, feedback_c
     if name == "feedback":
         if not feedback_command:
             return json.dumps({"status": "unavailable", "reason": "feedback command not configured"}), False
-        return json.dumps(command_result(feedback_command, runtime, timeout_s)), False
+        result = command_result(feedback_command, runtime, timeout_s)
+        if feedback_output_mode == "compact":
+            result = compact_feedback_result(result)
+        return json.dumps(result), False
     if name == "finalize":
         return json.dumps({"status": "finalized"}), True
     raise ValueError(f"unknown tool: {name}")
@@ -635,7 +900,14 @@ def run_cell(cell: dict[str, Any], args: argparse.Namespace, client: OpenAICompa
             function = call["function"]
             try:
                 arguments = json.loads(function.get("arguments") or "{}")
-                text, done = execute_tool(function["name"], arguments, runtime, args.feedback_command, args.tool_timeout_s)
+                text, done = execute_tool(
+                    function["name"],
+                    arguments,
+                    runtime,
+                    args.feedback_command,
+                    args.tool_timeout_s,
+                    args.feedback_output_mode,
+                )
             except Exception as exc:  # Model tool mistakes are episode evidence, not runner failures.
                 text = json.dumps({
                     "status": "tool_error",
@@ -713,8 +985,15 @@ def main() -> int:
     parser.add_argument("--tool-timeout-s", type=int, default=120)
     parser.add_argument("--judge-timeout-s", type=int, default=600)
     parser.add_argument("--feedback-command")
+    parser.add_argument(
+        "--feedback-output-mode",
+        choices=("compact", "raw"),
+        default="compact",
+        help="Payload returned to the model by the feedback tool; compact keeps oracle/error summaries and omits verbose simulator counters.",
+    )
     parser.add_argument("--final-judge-command")
     parser.add_argument("--workers", type=int, default=1)
+    parser.add_argument("--stream", action="store_true", help="Use OpenAI-compatible SSE streaming responses.")
     parser.add_argument("--dry-run", action="store_true")
     parser.add_argument("--resume", action="store_true")
     args = parser.parse_args()
@@ -734,7 +1013,7 @@ def main() -> int:
     key = "" if args.dry_run else load_key(args.api_key_file, args.api_key_env)
     client = None if args.dry_run else OpenAICompatible(
         base_url=args.base_url, model=campaign["model"], api_key=key,
-        timeout_s=args.request_timeout_s, temperature=args.temperature,
+        timeout_s=args.request_timeout_s, temperature=args.temperature, stream=args.stream,
     )
     args.output.mkdir(parents=True, exist_ok=True)
     if args.workers == 1:

@@ -5,15 +5,18 @@ ahdl_include "./dut/image_reject_mixer_cal_loop_top.va"
 ahdl_include "./dut/quadrature_mixer_proxy.va"
 ahdl_include "./dut/image_cal_controller.va"
 
-Vrf_in (rf_in 0) vsource type=pwl wave=[0 0.210 9n 0.210 15n 0.700 28n 0.700 34n 0.440 48n 0.440 72n 0.292]
-Vlo_i (lo_i 0) vsource type=pwl wave=[0 0.300 9n 0.300 15n 0.680 28n 0.680 34n 0.460 48n 0.460 72n 0.315]
-Vlo_q (lo_q 0) vsource type=pwl wave=[0 0.240 9n 0.240 15n 0.680 28n 0.680 34n 0.440 48n 0.440 72n 0.300]
+// Discrete RF/LO windows exercise enabled rising-edge sampling, mixer polarity,
+// correction updates, one-update calibration faults, and reset/disable clearing.
+// The later common-mode tail increases the checked-edge denominator while the
+// nonzero RF windows remain below the correct-DUT mixer-error budget.
+Vrf_in (rf_in 0) vsource type=pwl wave=[0 0.450 4.58n 0.450 4.6n 0.450 8.98n 0.450 9n 0.650 11.98n 0.650 12n 0.250 13.98n 0.250 14n 0.650 16.98n 0.650 17n 0.250 18.98n 0.250 19n 0.650 21.98n 0.650 22n 0.250 23.98n 0.250 24n 0.650 26.98n 0.650 27n 0.250 28.98n 0.250 29n 0.650 31.98n 0.650 32n 0.250 33.98n 0.250 34n 0.650 36.98n 0.650 37n 0.250 38.98n 0.250 39n 0.650 41.98n 0.650 42n 0.250 50.88n 0.250 50.9n 0.650 53.88n 0.650 53.9n 0.250 53.98n 0.250 54n 0.650 56.98n 0.650 57n 0.250 58.98n 0.250 59n 0.650 61.98n 0.650 62n 0.250 63.98n 0.250 64n 0.650 66.98n 0.650 67n 0.250 68.98n 0.250 69n 0.650 71.98n 0.650 72n 0.250 73.98n 0.250 74n 0.650 76.98n 0.650 77n 0.250 78.98n 0.250 79n 0.650 81.98n 0.650 82n 0.250 83.98n 0.250 84n 0.450 159.98n 0.450 160n 0.450]
+Vlo_i (lo_i 0) vsource type=pwl wave=[0 0.450 4.58n 0.450 4.6n 0.750 8.98n 0.750 9n 0.750 11.98n 0.750 12n 0.750 13.98n 0.750 14n 0.750 16.98n 0.750 17n 0.750 18.98n 0.750 19n 0.750 21.98n 0.750 22n 0.750 23.98n 0.750 24n 0.750 26.98n 0.750 27n 0.750 28.98n 0.750 29n 0.750 31.98n 0.750 32n 0.750 33.98n 0.750 34n 0.750 36.98n 0.750 37n 0.750 38.98n 0.750 39n 0.750 41.98n 0.750 42n 0.750 50.88n 0.750 50.9n 0.750 53.88n 0.750 53.9n 0.750 53.98n 0.750 54n 0.750 56.98n 0.750 57n 0.750 58.98n 0.750 59n 0.750 61.98n 0.750 62n 0.750 63.98n 0.750 64n 0.750 66.98n 0.750 67n 0.750 68.98n 0.750 69n 0.750 71.98n 0.750 72n 0.750 73.98n 0.750 74n 0.750 76.98n 0.750 77n 0.750 78.98n 0.750 79n 0.750 81.98n 0.750 82n 0.750 83.98n 0.750 84n 0.750 159.98n 0.750 160n 0.750]
+Vlo_q (lo_q 0) vsource type=pwl wave=[0 0.450 4.58n 0.450 4.6n 0.750 8.98n 0.750 9n 0.750 11.98n 0.750 12n 0.150 13.98n 0.150 14n 0.750 16.98n 0.750 17n 0.150 18.98n 0.150 19n 0.750 21.98n 0.750 22n 0.150 23.98n 0.150 24n 0.750 26.98n 0.750 27n 0.150 28.98n 0.150 29n 0.750 31.98n 0.750 32n 0.150 33.98n 0.150 34n 0.750 36.98n 0.750 37n 0.150 38.98n 0.150 39n 0.750 41.98n 0.750 42n 0.150 50.88n 0.150 50.9n 0.750 53.88n 0.750 53.9n 0.150 53.98n 0.150 54n 0.750 56.98n 0.750 57n 0.150 58.98n 0.150 59n 0.750 61.98n 0.750 62n 0.150 63.98n 0.150 64n 0.750 66.98n 0.750 67n 0.150 68.98n 0.150 69n 0.750 71.98n 0.750 72n 0.150 73.98n 0.150 74n 0.750 76.98n 0.750 77n 0.150 78.98n 0.150 79n 0.750 81.98n 0.750 82n 0.150 83.98n 0.150 84n 0.450 159.98n 0.450 160n 0.450]
 Vclk (clk 0) vsource type=pulse val0=0 val1=0.9 period=5n width=2.5n delay=1.2n rise=60p fall=60p
-Vrst (rst 0) vsource type=pwl wave=[0 0.9 1.7n 0.9 1.8n 0 72n 0]
-Venable (enable 0) vsource type=pwl wave=[0 0 4.5n 0 4.6n 0.9 44.64n 0.9 44.74n 0 50.64n 0 50.74n 0.9 72n 0.9]
+Vrst (rst 0) vsource type=pwl wave=[0 0.9 1.7n 0.9 1.8n 0 160n 0]
+Venable (enable 0) vsource type=pwl wave=[0 0 4.5n 0 4.6n 0.9 44.6n 0.9 44.7n 0 50.7n 0 50.8n 0.9 160n 0.9]
 
 XDUT (rf_in lo_i lo_q clk rst enable i_out q_out image_metric calibrated) image_reject_mixer_cal_loop_top
 
-
-tran tran stop=72n maxstep=100p
+tran tran stop=160n maxstep=80p
 save rf_in lo_i lo_q clk rst enable i_out q_out image_metric calibrated

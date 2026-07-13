@@ -3,8 +3,8 @@ global 0
 
 ahdl_include "./dut/charge_pump_pulse_balancer.va"
 
-Vup (up 0) vsource type=pwl wave=[0 0 4.5n 0 4.6n 0.9 44.64n 0.9 44.74n 0 50.64n 0 50.74n 0.9 72n 0.9]
-Vdn (dn 0) vsource type=pwl wave=[0 0 4.5n 0 4.6n 0.9 44.64n 0.9 44.74n 0 50.64n 0 50.74n 0.9 72n 0.9]
+Vup (up 0) vsource type=pwl wave=[0 0 5n 0 5.1n 0.9 15n 0.9 15.1n 0 25n 0 25.1n 0.9 35n 0.9 35.1n 0 50n 0 50.1n 0.9 60n 0.9 60.1n 0 72n 0]
+Vdn (dn 0) vsource type=pwl wave=[0 0 15n 0 15.1n 0.9 25n 0.9 25.1n 0 50n 0 50.1n 0 60n 0 60.1n 0.9 72n 0.9]
 Vclk (clk 0) vsource type=pulse val0=0 val1=0.9 period=5n width=2.5n delay=1.2n rise=60p fall=60p
 Vrst (rst 0) vsource type=pwl wave=[0 0.9 1.7n 0.9 1.8n 0 72n 0]
 Venable (enable 0) vsource type=pwl wave=[0 0 4.5n 0 4.6n 0.9 44.64n 0.9 44.74n 0 50.64n 0 50.74n 0.9 72n 0.9]

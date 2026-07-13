@@ -23,7 +23,7 @@ import time
 import traceback
 import warnings
 from pathlib import Path
-from typing import Callable, Iterable
+from typing import Callable, Iterable, Mapping
 
 from main120_stable_checks import (
     check_background_calibration_accumulator as check_vbm1_background_calibration_accumulator,
@@ -416,9 +416,29 @@ def copy_inputs(
 
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
+WORKSPACE_ROOT = REPO_ROOT.parent
+FROZEN_EVAS_RUNTIME_ROOT = WORKSPACE_ROOT / ".runtime" / "evas-v0.8.1"
+FROZEN_EVAS_PYTHON = FROZEN_EVAS_RUNTIME_ROOT / ".venv312" / "bin" / "python"
 
 
-def evas_module_python() -> str:
+def _source_root_python(source_root: Path) -> Path | None:
+    for rel in ((".venv312", "bin", "python"), (".venv", "bin", "python")):
+        candidate = source_root.joinpath(*rel)
+        if candidate.exists():
+            return candidate
+    return None
+
+
+def evas_module_python(source_root: Path | None = None) -> str:
+    explicit = os.environ.get("VAEVAS_EVAS_PYTHON", "").strip()
+    if explicit:
+        return str(Path(explicit).expanduser())
+    if source_root is not None:
+        runtime_python = _source_root_python(source_root)
+        if runtime_python is not None:
+            return str(runtime_python)
+    if FROZEN_EVAS_PYTHON.exists():
+        return str(FROZEN_EVAS_PYTHON)
     if sys.version_info >= (3, 9):
         return sys.executable
     system_python = Path("/usr/bin/python3")
@@ -439,23 +459,34 @@ def _candidate_evas_source_roots() -> list[Path]:
     explicit = os.environ.get("VAEVAS_EVAS_REPO", "").strip()
     if explicit:
         roots.append(Path(explicit).expanduser())
-    roots.extend([REPO_ROOT.parent / "EVAS", REPO_ROOT / "EVAS"])
+    else:
+        roots.append(FROZEN_EVAS_RUNTIME_ROOT)
+        if _env_truthy("VAEVAS_ALLOW_DEV_EVAS_FALLBACK"):
+            roots.extend([WORKSPACE_ROOT / "EVAS", REPO_ROOT / "EVAS"])
     return roots
 
 
-def evas_source_env() -> dict[str, str] | None:
+def _selected_evas_source_root() -> Path | None:
     for source_root in _candidate_evas_source_roots():
         if (source_root / "evas" / "__main__.py").exists():
-            env = os.environ.copy()
-            env["PYTHONPATH"] = str(source_root) + os.pathsep + env.get("PYTHONPATH", "")
-            return env
+            return source_root
     return None
 
 
+def evas_source_env(source_root: Path | None = None) -> dict[str, str] | None:
+    selected = source_root if source_root is not None else _selected_evas_source_root()
+    if selected is None:
+        return None
+    env = os.environ.copy()
+    env["PYTHONPATH"] = str(selected) + os.pathsep + env.get("PYTHONPATH", "")
+    return env
+
+
 def evas_command_and_env() -> tuple[list[str], dict[str, str] | None]:
-    env = evas_source_env()
-    if env is not None:
-        return [evas_module_python(), "-m", "evas"], env
+    source_root = _selected_evas_source_root()
+    env = evas_source_env(source_root)
+    if source_root is not None and env is not None:
+        return [evas_module_python(source_root), "-m", "evas"], env
     evas_cli = shutil.which("evas")
     if evas_cli:
         return [evas_cli], None
@@ -521,11 +552,12 @@ def _encode_required_trace_signals(signals: set[str] | frozenset[str] | list[str
 
 class _PersistentEvasWorker:
     def __init__(self) -> None:
-        self.cmd = [evas_module_python(), str(Path(__file__).resolve()), "--evas-worker"]
+        source_root = _selected_evas_source_root()
+        self.cmd = [evas_module_python(source_root), str(Path(__file__).resolve()), "--evas-worker"]
         self.proc = subprocess.Popen(
             self.cmd,
             cwd=str(REPO_ROOT),
-            env=_with_default_evas_engine(evas_source_env()),
+            env=_with_default_evas_engine(evas_source_env(source_root)),
             stdin=subprocess.PIPE,
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,
@@ -2189,11 +2221,18 @@ def _stream_prbs7_csv(csv_path: Path) -> tuple[float, list[str]]:
         return 0.0, ["entered_zero_state"]
 
     mismatches = 0
+    feedback_mismatches = 0
+    shift_mismatches = 0
     checked = 0
     for current, observed_next in zip(stable_codes, stable_codes[1:]):
         feedback = ((current >> 6) & 1) ^ ((current >> 5) & 1)
         expected_next = ((current & 0x3F) << 1) | feedback
         checked += 1
+        if (observed_next & 1) != feedback:
+            feedback_mismatches += 1
+        for bit_index in range(1, 7):
+            if ((observed_next >> bit_index) & 1) != ((current >> (bit_index - 1)) & 1):
+                shift_mismatches += 1
         if observed_next != expected_next:
             mismatches += 1
 
@@ -2201,7 +2240,8 @@ def _stream_prbs7_csv(csv_path: Path) -> tuple[float, list[str]]:
     ok = checked >= 8 and mismatches == 0 and serial_transitions >= 3
     return (1.0 if ok else 0.0), [
         f"state_steps={len(stable_codes)} checked_transitions={checked} "
-        f"mismatches={mismatches} serial_transitions={serial_transitions}"
+        f"mismatches={mismatches} serial_transitions={serial_transitions} "
+        f"shift_mismatches={shift_mismatches} feedback_mismatches={feedback_mismatches}"
     ]
 
 
@@ -3408,6 +3448,10 @@ def _checker_inline_required_sets(tree: ast.AST) -> set[str]:
             and isinstance(node.func, ast.Attribute)
             and node.func.attr == "issubset"
             and isinstance(node.func.value, (ast.Set, ast.List, ast.Tuple))
+            and len(node.args) == 1
+            and isinstance(node.args[0], ast.Subscript)
+            and isinstance(node.args[0].value, ast.Name)
+            and node.args[0].value.id == "rows"
         ):
             for element in node.func.value.elts:
                 if isinstance(element, ast.Constant) and isinstance(element.value, str):
@@ -3451,6 +3495,8 @@ def _checker_required_set_from_source(checker) -> frozenset[str]:
             elif isinstance(element, ast.Starred) and isinstance(element.value, ast.Name):
                 values.update(local_sequences.get(element.value.id, set()))
                 values.update(_checker_string_sequence_global(checker, element.value.id))
+            elif isinstance(element, ast.Starred):
+                values.update(_checker_fstring_range_values(element.value))
         return values
 
     for node in ast.walk(tree):
@@ -3481,6 +3527,56 @@ def _checker_required_set_from_source(checker) -> frozenset[str]:
     return frozenset(name for name in names if name and name.lower() != "time") | (
         frozenset({"time"}) if "time" in names else frozenset()
     )
+
+
+_TRACE_SIGNAL_RANGE_RE = re.compile(
+    r"^(?P<prefix>[A-Za-z_][A-Za-z0-9_]*)\[(?P<left>\d+):(?P<right>\d+)\]$"
+)
+
+
+def expand_trace_signal_specs(signals: Iterable[object]) -> frozenset[str]:
+    """Expand compact voltage-bus contracts into concrete CSV columns.
+
+    vaBench uses compact declarations such as ``b[7:0]`` in public contracts,
+    while Spectre and EVAS CSV traces expose flattened columns ``b0`` through
+    ``b7``.  Expansion is deterministic and bounded so malformed or unusually
+    large ranges remain visible instead of silently allocating huge contracts.
+    """
+
+    expanded: set[str] = set()
+    for raw_signal in signals:
+        signal = str(raw_signal).strip()
+        if not signal:
+            continue
+        match = _TRACE_SIGNAL_RANGE_RE.fullmatch(signal)
+        if match is None:
+            expanded.add(signal)
+            continue
+        left = int(match.group("left"))
+        right = int(match.group("right"))
+        if abs(left - right) > 1023:
+            expanded.add(signal)
+            continue
+        lo, hi = sorted((left, right))
+        prefix = match.group("prefix")
+        expanded.update(f"{prefix}{index}" for index in range(lo, hi + 1))
+    return frozenset(expanded)
+
+
+def trace_contract_signals(checks_config: Mapping[str, object] | None) -> frozenset[str]:
+    """Return concrete trace columns declared by a checker profile."""
+
+    if not checks_config:
+        return frozenset()
+    trace_contract = checks_config.get("trace_contract")
+    if not isinstance(trace_contract, Mapping):
+        return frozenset()
+    declared: list[object] = []
+    for key in ("required_signals", "extra_trace_signals", "public_observables"):
+        values = trace_contract.get(key)
+        if isinstance(values, (list, tuple, set, frozenset)):
+            declared.extend(values)
+    return expand_trace_signal_specs(declared)
 
 
 def _auto_row_checker_trace_contract(task_id: str) -> frozenset[str]:
@@ -3640,6 +3736,36 @@ def required_trace_signals_for_checker(task_id: str) -> frozenset[str]:
             {"time", "clk", "cal0", "cal1", "vdac_p", "vdac_n"}
         )
         | frozenset({f"d{idx}" for idx in range(10)}),
+        "v4_001_bang_bang_phase_detector": frozenset(
+            {"time", "data", "clk", "retimed_data", "up", "down"}
+        ),
+        "v4_002_capacitive_weighted_sar_feedback_dac": frozenset(
+            {"time", "clk", "cal0", "cal1", "vdac_p", "vdac_n"}
+        )
+        | frozenset({f"d{idx}" for idx in range(10)}),
+        "v4_003_pipeline_adc_stage": frozenset(
+            {"time", "vdd", "vss", "vref", "phi1", "phi2", "vin", "vres", "d1", "d0"}
+        ),
+        "v4_004_trim_calibration_controller": frozenset(
+            {"time", "clk", "rst", "err", "trim"}
+        ),
+        "v4_005_debounce_latch": frozenset({"time", "sig", "rst_n", "out"}),
+        "v4_006_element_shuffler": frozenset(
+            {"time", "clk", "rst_n", "out0", "out1", "out2", "out3"}
+        ),
+        "v4_007_first_order_lowpass": frozenset({"time", "vin", "vout"}),
+        "v4_008_gain_trim_controller": frozenset(
+            {"time", "clk", "rst", "meas", "target", "gain_ctrl"}
+        ),
+        # These v4 wrappers delegate part of their behavior to a legacy
+        # checker.  Keep the complete public trace contract explicit so the
+        # EVAS trace writer does not infer only the wrapper-local columns.
+        "v4_011_pfd_up_dn_logic": frozenset(
+            {"time", "vdd", "vss", "ref", "div", "up", "dn"}
+        ),
+        "v4_012_clock_divider": frozenset(
+            {"time", "clk_in", "rst_n", "clk_out", "lock"}
+        ) | frozenset({f"div_code_{idx}" for idx in range(8)}),
         "v3_051_thermometer_to_binary_encoder_8b": formal_utility_trace_signals[
             "thermometer_to_binary_encoder_8b"
         ],
@@ -4212,8 +4338,8 @@ def check_clk_div(rows: list[dict[str, float]]) -> tuple[bool, str]:
 
 
 def check_clk_divider(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    if not rows or not {"clk_in", "clk_out", "lock"}.issubset(rows[0]):
-        return False, "missing clk_in/clk_out/lock"
+    if not rows or not {"clk_in", "rst_n", "clk_out", "lock"}.issubset(rows[0]):
+        return False, "missing clk_in/rst_n/clk_out/lock"
 
     sample = rows[0]
     div_cols: list[str] = []
@@ -4279,6 +4405,93 @@ def check_clk_divider(rows: list[dict[str, float]]) -> tuple[bool, str]:
 
     ok = (len(mismatch) == 0) and final_lock_high and high_seen and low_seen
     return ok, f"ratio_code={ratio} in_edges={len(in_edges)} out_edges={len(out_edges)} lock_edges={len(lock_edges)} final_lock_high={final_lock_high} period_match={period_match:.3f} interval_hist={hist}"
+
+
+def check_v4_clock_divider(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    """Check a static v4 divider code after its source nodes have settled.
+
+    Spectre and EVAS may emit an initial trace row before DC code sources have
+    reached their configured values.  The v3 checker reads that first row,
+    which can turn the score deck's code 5 into code 3.  v4's contract uses
+    static code sources, so their maximum settled level is the intended code.
+    """
+    if not rows or not {"clk_in", "rst_n", "clk_out", "lock"}.issubset(rows[0]):
+        return False, "missing clk_in/rst_n/clk_out/lock"
+
+    div_cols: list[str] = []
+    for idx in range(8):
+        col = next((candidate for candidate in (f"div_code_{idx}", f"div_code[{idx}]") if candidate in rows[0]), None)
+        if col is None:
+            return False, "missing div_code_*"
+        div_cols.append(col)
+
+    ratio = sum((1 << idx) for idx, col in enumerate(div_cols) if max(row[col] for row in rows) > 0.45)
+    if ratio < 1:
+        ratio = 1
+
+    reset_segments: list[tuple[int, int]] = []
+    segment_start: int | None = None
+    for idx, row in enumerate(rows):
+        reset_low = row["rst_n"] < 0.20
+        if reset_low and segment_start is None:
+            segment_start = idx
+        elif not reset_low and segment_start is not None:
+            reset_segments.append((segment_start, idx))
+            segment_start = None
+    if segment_start is not None:
+        reset_segments.append((segment_start, len(rows)))
+    if not reset_segments:
+        return False, "reset_not_observed"
+
+    reset_peaks: list[float] = []
+    for start, end in reset_segments:
+        settled_start = start + max(1, (end - start) // 3)
+        settled_rows = rows[min(settled_start, end - 1):end]
+        reset_peaks.append(max(max(row["clk_out"], row["lock"]) for row in settled_rows))
+    reset_peak = max(reset_peaks)
+    if reset_peak > 0.12:
+        return False, f"ratio_code={ratio} reset_not_clear reset_segments={len(reset_segments)} reset_peak={reset_peak:.3f}"
+
+    # Divider phase restarts at reset.  Judge period and lock behavior only in
+    # the final post-reset epoch so a legal reset gap is not counted as jitter.
+    analysis_start = min(reset_segments[-1][1] + 1, len(rows) - 1)
+    analysis_rows = rows[analysis_start:]
+    if len(analysis_rows) < 2:
+        return False, "not enough post-reset samples"
+    times = [row["time"] for row in analysis_rows]
+    clk_vals = [row["clk_in"] for row in analysis_rows]
+    out_vals = [row["clk_out"] for row in analysis_rows]
+    lock_vals = [row["lock"] for row in analysis_rows]
+    in_edges = rising_edges(clk_vals, times)
+    out_edges = rising_edges(out_vals, times)
+    lock_edges = rising_edges(lock_vals, times)
+    final_lock_high = lock_vals[-1] > 0.45
+    reset_clear = True
+
+    if len(in_edges) < max(8, ratio * 2) or len(out_edges) < 2:
+        return False, f"ratio_code={ratio} in_edges={len(in_edges)} out_edges={len(out_edges)} lock_edges={len(lock_edges)} final_lock_high={final_lock_high} not_enough_clock_edges"
+    if ratio == 1:
+        level_match = sum(1 for ci, co in zip(clk_vals, out_vals) if ((ci > 0.45) == (co > 0.45))) / max(len(rows), 1)
+        edge_ratio = len(in_edges) / max(len(out_edges), 1)
+        ok = level_match > 0.98 and 0.95 <= edge_ratio <= 1.05 and final_lock_high
+        return ok, f"ratio_code=1 in_edges={len(in_edges)} out_edges={len(out_edges)} lock_edges={len(lock_edges)} final_lock_high={final_lock_high} reset_clear={reset_clear} level_match={level_match:.3f} edge_ratio={edge_ratio:.3f}"
+
+    if len(out_edges) < 3:
+        return False, f"ratio_code={ratio} in_edges={len(in_edges)} out_edges={len(out_edges)} lock_edges={len(lock_edges)} final_lock_high={final_lock_high} not_enough_clock_edges"
+    intervals = [
+        sum(1 for edge in in_edges if out_edges[idx - 1] < edge <= out_edges[idx])
+        for idx in range(1, len(out_edges))
+    ]
+    measured = intervals[1:] if len(intervals) > 2 else intervals
+    mismatch = [interval for interval in measured if interval != ratio]
+    period_match = 1.0 - (len(mismatch) / len(measured))
+    hist: dict[int, int] = {}
+    for interval in measured:
+        hist[interval] = hist.get(interval, 0) + 1
+    high_seen = any(value > 0.45 for value in out_vals)
+    low_seen = any(value <= 0.45 for value in out_vals)
+    ok = not mismatch and final_lock_high and high_seen and low_seen
+    return ok, f"ratio_code={ratio} in_edges={len(in_edges)} out_edges={len(out_edges)} lock_edges={len(lock_edges)} final_lock_high={final_lock_high} reset_clear={reset_clear} period_match={period_match:.3f} interval_hist={hist}"
 
 
 def check_comparator(rows: list[dict[str, float]]) -> tuple[bool, str]:
@@ -4588,6 +4801,11 @@ def check_v3_offset_comparator(rows: list[dict[str, float]]) -> tuple[bool, str]
     if not base_ok:
         return False, base_msg
 
+    required = {"time", "vdd", "vss", "out_p"}
+    if not rows or not required.issubset(rows[0]):
+        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
+        return False, "missing_columns=" + ",".join(missing)
+
     sample_plan = [
         (1.35e-9, "L", "edge_neg_10mv"),
         (5.35e-9, "L", "edge_zero_mv"),
@@ -4608,14 +4826,21 @@ def check_v3_offset_comparator(rows: list[dict[str, float]]) -> tuple[bool, str]
             failures.append(f"{label}=missing")
             observed.append("?")
             continue
-        state = _logic_state(value)
+        vdd = sample_signal_at(rows, "vdd", time_s)
+        vss = sample_signal_at(rows, "vss", time_s)
+        if vdd is None or vss is None or vdd <= vss:
+            failures.append(f"{label}:invalid_rails")
+            observed.append("?")
+            continue
+        span = vdd - vss
+        state = "H" if value > vss + 0.5 * span else "L"
         observed.append(state)
         if state != expected:
             failures.append(f"{label}:{state}!={expected}@{value:.3f}")
-        if expected == "H" and value < 0.81:
-            failures.append(f"{label}:high_not_rail={value:.3f}")
-        if expected == "L" and value > 0.09:
-            failures.append(f"{label}:low_not_rail={value:.3f}")
+        if expected == "H" and value < vdd - 0.1 * span:
+            failures.append(f"{label}:high_not_rail={value:.3f}<min={vdd - 0.1 * span:.3f}")
+        if expected == "L" and value > vss + 0.1 * span:
+            failures.append(f"{label}:low_not_rail={value:.3f}>max={vss + 0.1 * span:.3f}")
 
     ok = not failures
     return ok, base_msg + " strict_samples=" + "".join(observed) + (" " + " ".join(failures) if failures else "")
@@ -5920,6 +6145,12 @@ def check_clk_burst_gen(rows: list[dict[str, float]]) -> tuple[bool, str]:
     if not rows or not {"CLK", "RST_N", "CLK_OUT"}.issubset(rows[0]):
         return False, "missing CLK/RST_N/CLK_OUT"
     vth = 0.45
+    reset_rows = [r for r in rows if r["RST_N"] <= vth]
+    if not reset_rows:
+        return False, "active_low_reset_not_observable observed=reset_rows:0 expected=>0 window=full_trace"
+    reset_peak = max(r["CLK_OUT"] for r in reset_rows)
+    if reset_peak > 0.12:
+        return False, f"reset_not_low observed=CLK_OUT_peak:{reset_peak:.3f} expected<=0.12 window=RST_N_low"
     post = [r for r in rows if r["RST_N"] > 0.45]
     if len(post) < 4:
         return False, "no post-reset samples"
@@ -5948,6 +6179,7 @@ def check_clk_burst_gen(rows: list[dict[str, float]]) -> tuple[bool, str]:
     checked_cycles = 0
     enabled_cycles = 0
     disabled_cycles = 0
+    failure_notes: list[str] = []
 
     # Contract for the release task/testbench: div=8, pass cycles 0 and 1,
     # suppress cycles 2..7, then repeat. Sample away from transitions so the
@@ -5968,12 +6200,26 @@ def check_clk_burst_gen(rows: list[dict[str, float]]) -> tuple[bool, str]:
             enabled_cycles += 1
             if high_sample["CLK_OUT"] <= vth:
                 high_phase_failures += 1
+                failure_notes.append(
+                    f"burst_high observed={high_sample['CLK_OUT']:.3f} expected=>{vth:.3f} "
+                    f"window=cycle{cycle_idx}/frame{frame_pos}"
+                )
         else:
             disabled_cycles += 1
             if high_sample["CLK_OUT"] > vth:
                 high_phase_failures += 1
+                failure_notes.append(
+                    f"quiet_high observed={high_sample['CLK_OUT']:.3f} expected<=0.45 "
+                    f"window=cycle{cycle_idx}/frame{frame_pos}"
+                )
         if low_sample["CLK_OUT"] > vth:
             low_phase_failures += 1
+            failure_notes.append(
+                f"low_phase observed={low_sample['CLK_OUT']:.3f} expected<=0.45 "
+                f"window=cycle{cycle_idx}/frame{frame_pos}"
+            )
+    if failure_notes:
+        return False, " ".join(failure_notes[:5])
 
     ok = (
         checked_cycles >= 16
@@ -5985,7 +6231,7 @@ def check_clk_burst_gen(rows: list[dict[str, float]]) -> tuple[bool, str]:
     return ok, (
         f"burst_cycles_checked={checked_cycles} enabled_cycles={enabled_cycles} "
         f"disabled_cycles={disabled_cycles} high_phase_failures={high_phase_failures} "
-        f"low_phase_failures={low_phase_failures}"
+        f"low_phase_failures={low_phase_failures} reset_peak={reset_peak:.3f}"
     )
 
 
@@ -6100,6 +6346,67 @@ def check_v3_fixed_gain_amplifier(rows: list[dict[str, float]]) -> tuple[bool, s
     cm_max = max(cm_errors) if cm_errors else float("inf")
     ok = 4.5 <= gain_mean <= 5.6 and gain_err <= 0.08 and cm_max <= 0.006
     return ok, f"gain={gain_mean:.3f} gain_err={gain_err:.4f} cm_max={cm_max:.4f}"
+
+
+def check_v3_clocked_sine_source(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "clk", "rst_n", "vinp", "vinn", "vamp_p", "vamp_n"}
+    if not rows or not required.issubset(rows[0]):
+        missing = sorted(required - (set(rows[0]) if rows else set()))
+        return False, f"missing_clocked_sine_signals={','.join(missing)}"
+
+    vdd = _max_signal_value(rows, ["clk", "rst_n"], default=0.9)
+    vth = 0.5 * vdd
+    common_mode = 0.5 * vdd
+    reset_rows = [row for row in rows if row["rst_n"] < vth]
+    reset_cm_err = max(
+        (max(abs(row["vinp"] - common_mode), abs(row["vinn"] - common_mode)) for row in reset_rows),
+        default=float("inf"),
+    )
+    reference_err = max((abs(row["vinn"] - common_mode) for row in rows), default=float("inf"))
+
+    edges: list[float] = []
+    previous = rows[0]
+    for row in rows[1:]:
+        if previous["clk"] < vth <= row["clk"] and row["rst_n"] >= vth:
+            edges.append(row["time"])
+        previous = row
+    if len(edges) < 20:
+        return False, f"too_few_active_clock_edges={len(edges)}"
+
+    sampled: list[float] = []
+    hold_errors: list[float] = []
+    for left, right in zip(edges, edges[1:]):
+        after_edge = sample_signal_at(rows, "vinp", left + 1.5e-9)
+        before_next = sample_signal_at(rows, "vinp", right - 1.5e-9)
+        if after_edge is None or before_next is None:
+            continue
+        sampled.append(after_edge)
+        hold_errors.append(abs(before_next - after_edge))
+    if len(sampled) < 15:
+        return False, f"insufficient_sample_hold_windows={len(sampled)}"
+
+    source_span = max(sampled) - min(sampled)
+    max_hold_err = max(hold_errors, default=float("inf"))
+    vin_diff = [row["vinp"] - row["vinn"] for row in rows if row["rst_n"] >= vth]
+    vamp_diff = [row["vamp_p"] - row["vamp_n"] for row in rows if row["rst_n"] >= vth]
+    mean_in = sum(vin_diff) / len(vin_diff)
+    mean_out = sum(vamp_diff) / len(vamp_diff)
+    std_in = (sum((value - mean_in) ** 2 for value in vin_diff) / len(vin_diff)) ** 0.5
+    std_out = (sum((value - mean_out) ** 2 for value in vamp_diff) / len(vamp_diff)) ** 0.5
+    gain = std_out / std_in if std_in > 1e-12 else 0.0
+
+    ok = (
+        reset_cm_err <= 0.025
+        and reference_err <= 0.015
+        and source_span >= 0.025
+        and max_hold_err <= 0.004
+        and gain > 4.0
+    )
+    return ok, (
+        f"active_edges={len(edges)} reset_cm_err={reset_cm_err:.5f} "
+        f"reference_err={reference_err:.5f} source_span={source_span:.5f} "
+        f"max_hold_err={max_hold_err:.5f} downstream_gain={gain:.2f}"
+    )
 
 
 def check_v3_reference_step_clock(rows: list[dict[str, float]]) -> tuple[bool, str]:
@@ -12269,6 +12576,36 @@ def check_v3_sample_hold(rows: list[dict[str, float]]) -> tuple[bool, str]:
     return ok, f"edges={len(edge_times)} max_sample_error={max_error:.4f} max_hold_span={max_hold_span:.4f}"
 
 
+def _check_pulse_onset_delay(
+    rows: list[dict[str, float]],
+    *,
+    input_signal: str,
+    output_signal: str,
+    input_edges: list[float],
+    threshold: float,
+    minimum_s: float = 0.60e-9,
+    maximum_s: float = 1.50e-9,
+) -> tuple[list[float], list[str]]:
+    output_edges = _edge_times_for_signal(
+        rows, output_signal, threshold=threshold, direction="rising"
+    )
+    delays: list[float] = []
+    failures: list[str] = []
+    for edge_t in input_edges:
+        candidates = [out_t for out_t in output_edges if edge_t <= out_t <= edge_t + 3.0e-9]
+        if not candidates:
+            failures.append(f"onset_missing@{edge_t * 1e9:.2f}ns")
+            continue
+        delay = min(candidates) - edge_t
+        delays.append(delay)
+        if not minimum_s <= delay <= maximum_s:
+            failures.append(
+                f"onset_delay@{edge_t * 1e9:.2f}ns={delay * 1e9:.3f}ns "
+                f"expected={minimum_s * 1e9:.2f}-{maximum_s * 1e9:.2f}ns"
+            )
+    return delays, failures
+
+
 def check_v3_single_shot(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "vin", "vout"}
     if not rows or not required.issubset(rows[0]):
@@ -12282,6 +12619,14 @@ def check_v3_single_shot(rows: list[dict[str, float]]) -> tuple[bool, str]:
     high_checks = 0
     low_checks = 0
     failures: list[str] = []
+    onset_delays, onset_failures = _check_pulse_onset_delay(
+        rows,
+        input_signal="vin",
+        output_signal="vout",
+        input_edges=rises,
+        threshold=vth,
+    )
+    failures.extend(onset_failures)
     for edge_t in rises:
         for delay_s in (3.0e-9, 8.0e-9):
             probe_t = edge_t + delay_s
@@ -12311,7 +12656,10 @@ def check_v3_single_shot(rows: list[dict[str, float]]) -> tuple[bool, str]:
         return False, f"insufficient_single_shot_checks high={high_checks} low={low_checks}"
     if failures:
         return False, " ".join(failures[:6])
-    return True, f"triggers={len(rises)} high_checks={high_checks} low_checks={low_checks}"
+    return True, (
+        f"triggers={len(rises)} high_checks={high_checks} low_checks={low_checks} "
+        f"onset_delays_ns={[round(value * 1e9, 3) for value in onset_delays]}"
+    )
 
 
 def check_v3_clocked_comparator_reset_low(rows: list[dict[str, float]]) -> tuple[bool, str]:
@@ -12492,6 +12840,14 @@ def check_v3_crossing_pulse_detector(rows: list[dict[str, float]]) -> tuple[bool
     high_checks = 0
     low_checks = 0
     failures: list[str] = []
+    onset_delays, onset_failures = _check_pulse_onset_delay(
+        rows,
+        input_signal="sigin",
+        output_signal="sigout",
+        input_edges=edges,
+        threshold=vth,
+    )
+    failures.extend(onset_failures)
     for edge_t in edges:
         high_t = edge_t + 2.0e-9
         if high_t <= rows[-1]["time"]:
@@ -12511,7 +12867,10 @@ def check_v3_crossing_pulse_detector(rows: list[dict[str, float]]) -> tuple[bool
         return False, f"insufficient_pulse_checks high={high_checks} low={low_checks}"
     if failures:
         return False, " ".join(failures[:6])
-    return True, f"crossings={len(edges)} high_checks={high_checks} low_checks={low_checks}"
+    return True, (
+        f"crossings={len(edges)} high_checks={high_checks} low_checks={low_checks} "
+        f"onset_delays_ns={[round(value * 1e9, 3) for value in onset_delays]}"
+    )
 
 
 def check_v3_not_gate(rows: list[dict[str, float]]) -> tuple[bool, str]:
@@ -13360,14 +13719,72 @@ def check_v3_three_input_xor_gate(rows: list[dict[str, float]]) -> tuple[bool, s
     )
 
 
+def _check_affine_transfer_coverage(
+    rows: list[dict[str, float]],
+    *,
+    required: set[str],
+    output: str,
+    expected_fn: Callable[[dict[str, float]], float],
+    drive_fn: Callable[[dict[str, float]], float],
+    label: str,
+    tolerance: float,
+    min_span: float,
+) -> tuple[bool, str]:
+    if not rows or not required.issubset(rows[0]):
+        missing = sorted(required - set(rows[0])) if rows else sorted(required)
+        return False, f"missing_{label}_columns=" + ",".join(missing)
+    checked = 0
+    max_err = 0.0
+    worst: tuple[float, float, float] | None = None
+    first_drive = drive_fn(rows[0])
+    drive_min = drive_max = previous_drive = first_drive
+    saw_rise = saw_fall = False
+    for row in rows:
+        if row["time"] < 0.10e-9:
+            previous_drive = drive_fn(row)
+            continue
+        drive = drive_fn(row)
+        expected = expected_fn(row)
+        error = abs(row[output] - expected)
+        if error >= max_err:
+            max_err = error
+            worst = (row["time"], row[output], expected)
+        saw_rise = saw_rise or drive - previous_drive > 1e-5
+        saw_fall = saw_fall or drive - previous_drive < -1e-5
+        drive_min = min(drive_min, drive)
+        drive_max = max(drive_max, drive)
+        previous_drive = drive
+        checked += 1
+    if checked < 20:
+        return False, f"insufficient_{label}_samples={checked}"
+    if drive_max - drive_min < min_span or not (saw_rise and saw_fall):
+        return False, (
+            f"insufficient_{label}_coverage range={drive_min:.3f}:{drive_max:.3f} "
+            f"rise={saw_rise} fall={saw_fall}"
+        )
+    if max_err > tolerance:
+        assert worst is not None
+        time_s, observed, expected = worst
+        return False, (
+            f"{label}_error@{time_s * 1e9:.3f}ns observed={observed:.4f} "
+            f"expected={expected:.4f} max_err={max_err:.4f}"
+        )
+    return True, (
+        f"checked={checked} range={drive_min:.3f}:{drive_max:.3f} "
+        f"rise={saw_rise} fall={saw_fall} max_err={max_err:.4f}"
+    )
+
+
 def check_v3_attenuator_gain(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    return _v3_formula_check(
+    return _check_affine_transfer_coverage(
         rows,
         required={"time", "vin", "vout"},
         output="vout",
         expected_fn=lambda row: 0.5 * row["vin"],
-        tol=0.015,
-        min_checked=20,
+        drive_fn=lambda row: row["vin"],
+        label="attenuator_gain",
+        tolerance=0.015,
+        min_span=0.35,
     )
 
 
@@ -13511,13 +13928,15 @@ def check_v3_absolute_value(rows: list[dict[str, float]]) -> tuple[bool, str]:
 
 
 def check_v3_offset_gain_amplifier(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    return _v3_formula_check(
+    return _check_affine_transfer_coverage(
         rows,
         required={"time", "sigin", "sigout"},
         output="sigout",
         expected_fn=lambda row: 3.0 * (row["sigin"] - 0.2),
-        tol=0.015,
-        min_checked=20,
+        drive_fn=lambda row: row["sigin"],
+        label="offset_gain_amplifier",
+        tolerance=0.015,
+        min_span=0.45,
     )
 
 
@@ -13694,13 +14113,15 @@ def check_v3_three_way_threshold_mux(rows: list[dict[str, float]]) -> tuple[bool
 
 
 def check_v3_differential_amplifier_core(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    return _v3_formula_check(
+    return _check_affine_transfer_coverage(
         rows,
         required={"time", "sigin_p", "sigin_n", "sigout"},
         output="sigout",
         expected_fn=lambda row: 2.0 * ((row["sigin_p"] - row["sigin_n"]) - 0.05),
-        tol=0.02,
-        min_checked=20,
+        drive_fn=lambda row: row["sigin_p"] - row["sigin_n"],
+        label="differential_amplifier_core",
+        tolerance=0.02,
+        min_span=0.30,
     )
 
 
@@ -14855,18 +15276,21 @@ def check_v3_comparator_delay_overdrive_meter(rows: list[dict[str, float]]) -> t
             continue
         vinp = sample_signal_at(rows, "vinp", clk_t + 1e-12)
         vinn = sample_signal_at(rows, "vinn", clk_t + 1e-12)
-        delay_ps = sample_signal_at(rows, "delay_ps", probe_t)
-        overdrive_mv = sample_signal_at(rows, "overdrive_mv", probe_t)
+        delay_s = sample_signal_at(rows, "delay_ps", probe_t)
+        overdrive_v = sample_signal_at(rows, "overdrive_mv", probe_t)
         polarity = sample_signal_at(rows, "polarity", probe_t)
         valid = sample_signal_at(rows, "valid", probe_t)
-        if None in (vinp, vinn, delay_ps, overdrive_mv, polarity, valid):
+        if None in (vinp, vinn, delay_s, overdrive_v, polarity, valid):
             continue
         assert vinp is not None
         assert vinn is not None
-        assert delay_ps is not None
-        assert overdrive_mv is not None
+        assert delay_s is not None
+        assert overdrive_v is not None
         assert polarity is not None
         assert valid is not None
+
+        delay_ps = 1.0e12 * delay_s
+        overdrive_mv = 1.0e3 * overdrive_v
 
         expected_delay_ps = 1.0e12 * (event_t - clk_t)
         expected_overdrive_mv = 1.0e3 * abs(vinp - vinn)
@@ -15847,6 +16271,13 @@ def check_v3_pfd_tdomain_reset_window(rows: list[dict[str, float]]) -> tuple[boo
 def check_v3_pipe_adc_gain_control_loop(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {
         "time",
+        "din20",
+        "din21",
+        "din22",
+        "din23",
+        "din24",
+        "din25",
+        "din26",
         "clks",
         "dout10",
         "dout11",
@@ -15865,24 +16296,95 @@ def check_v3_pipe_adc_gain_control_loop(rows: list[dict[str, float]]) -> tuple[b
         "gctrlcode",
     }
     if not rows or not required.issubset(rows[0]):
-        return False, "missing pipe adc gain control loop signals"
-    return _sample_many_within_trace(
-        rows,
-        {
-            "dout10": [(0.5, 0.9), (1.5, 0.0), (2.5, 0.9), (3.5, 0.0)],
-            "dout11": [(0.5, 0.9), (1.5, 0.0), (2.5, 0.9), (3.5, 0.0)],
-            "dout12": [(0.5, 0.9), (1.5, 0.0), (2.5, 0.9), (3.5, 0.0)],
-            "dout13": [(0.5, 0.0), (1.5, 0.9), (2.5, 0.0), (3.5, 0.9)],
-            "gctrlcode": [(0.5, 0.90), (1.5, 0.72), (2.5, 0.72), (3.5, 0.86)],
-            "ddiff": [(0.5, 0.0), (1.5, 0.82), (2.5, 0.82), (3.5, 0.50)],
-            "dop": [(0.5, 0.96), (1.5, 1.02), (2.5, 1.02), (3.5, 0.90)],
-            "dom": [(0.5, 0.20), (1.5, 0.20), (2.5, 0.40), (3.5, 0.40)],
-            "gainctrl1": [(1.5, 0.0), (3.5, 0.9)],
-            "gainctrl3": [(1.5, 0.9), (3.5, 0.0)],
-            "gainctrl4": [(1.5, 0.0), (3.5, 0.9)],
-            "gainctrl6": [(1.5, 0.9), (3.5, 0.9)],
-        },
-        tol=0.09,
+        missing = sorted(required - set(rows[0])) if rows else sorted(required)
+        return False, "missing_pipe_adc_gain_columns=" + ",".join(missing)
+    times = [row["time"] for row in rows]
+    edges = _threshold_crossings(
+        [row["clks"] for row in rows], times, threshold=0.45, direction="rising"
+    )
+    if len(edges) < 3:
+        return False, f"too_few_pipe_adc_gain_edges={len(edges)}"
+
+    status = 0
+    minus_code = 32
+    plus_code = 96
+    diff_code = 0
+    gain_code = 90
+    checked = 0
+    max_err = 0.0
+    failures: list[str] = []
+    sampled_codes: set[int] = set()
+    saw_minus_phase = saw_plus_phase = saw_gain_update = False
+
+    for edge_index, edge_t in enumerate(edges):
+        code = 0
+        for bit_index in range(7):
+            value = sample_signal_at(rows, f"din2{bit_index}", edge_t + 1e-12)
+            if value is None:
+                return False, f"missing_pipe_adc_input_bit={bit_index}@{edge_t * 1e9:.3f}ns"
+            if value > 0.45:
+                code |= 1 << bit_index
+        sampled_codes.add(code)
+
+        previous_gain = gain_code
+        if status == 0:
+            minus_code = code
+            status = 1
+            dac_bits = (1, 1, 1, 0)
+            saw_minus_phase = True
+        else:
+            plus_code = code
+            diff_code = plus_code - minus_code
+            step_code = abs(diff_code - 64)
+            if diff_code > 64:
+                gain_code = max(0, gain_code - step_code)
+            elif diff_code < 64:
+                gain_code = min(127, gain_code + step_code)
+            status = 0
+            dac_bits = (0, 0, 0, 1)
+            saw_plus_phase = True
+        saw_gain_update = saw_gain_update or gain_code != previous_gain
+
+        expected = {
+            **{f"dout1{bit}": 0.9 * dac_bits[bit] for bit in range(4)},
+            **{f"gainctrl{bit}": 0.9 if (gain_code >> bit) & 1 else 0.0 for bit in range(7)},
+            "ddiff": diff_code / 100.0,
+            "dop": plus_code / 100.0,
+            "dom": minus_code / 100.0,
+            "gctrlcode": gain_code / 100.0,
+        }
+        probe_times = [edge_t + 0.08e-9]
+        if edge_index + 1 < len(edges) and edges[edge_index + 1] - edge_t > 0.25e-9:
+            probe_times.append(edges[edge_index + 1] - 0.10e-9)
+        for probe_t in probe_times:
+            if probe_t >= times[-1]:
+                continue
+            for signal, wanted in expected.items():
+                observed = sample_signal_at(rows, signal, probe_t)
+                if observed is None:
+                    return False, f"missing_pipe_adc_output={signal}@{probe_t * 1e9:.3f}ns"
+                tolerance = 0.10 if signal.startswith(("dout", "gainctrl")) else 0.04
+                error = abs(observed - wanted)
+                max_err = max(max_err, error)
+                if error > tolerance:
+                    failures.append(
+                        f"{signal}@{probe_t * 1e9:.3f}ns observed={observed:.3f} "
+                        f"expected={wanted:.3f} code={code} phase={status}"
+                    )
+            checked += 1
+
+    if checked < 4 or len(sampled_codes) < 2 or not (saw_minus_phase and saw_plus_phase):
+        return False, (
+            f"insufficient_pipe_adc_gain_coverage checked={checked} codes={sorted(sampled_codes)} "
+            f"minus={saw_minus_phase} plus={saw_plus_phase} gain_update={saw_gain_update}"
+        )
+    if not saw_gain_update:
+        return False, f"missing_pipe_adc_gain_update codes={sorted(sampled_codes)}"
+    if failures:
+        return False, " ".join(failures[:8])
+    return True, (
+        f"checked={checked} codes={sorted(sampled_codes)} minus={saw_minus_phase} "
+        f"plus={saw_plus_phase} gain_update={saw_gain_update} max_err={max_err:.4f}"
     )
 
 
@@ -17470,13 +17972,48 @@ def check_v3_rs_phase_detector(rows: list[dict[str, float]]) -> tuple[bool, str]
 
 def check_v3_level_shifter_offset(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "sigin", "sigout"}
-    return _v3_formula_check(
-        rows,
-        required=required,
-        output="sigout",
-        expected_fn=lambda row: row["sigin"] + 0.35,
-        tol=0.025,
-        min_checked=20,
+    if not rows or not required.issubset(rows[0]):
+        missing = sorted(required - set(rows[0])) if rows else sorted(required)
+        return False, "missing_level_shifter_columns=" + ",".join(missing)
+    checked = 0
+    max_err = 0.0
+    worst: tuple[float, float, float] | None = None
+    input_min = input_max = rows[0]["sigin"]
+    saw_rise = saw_fall = False
+    previous = rows[0]["sigin"]
+    for row in rows:
+        if row["time"] < 0.10e-9:
+            previous = row["sigin"]
+            continue
+        expected = row["sigin"] + 0.35
+        error = abs(row["sigout"] - expected)
+        if error >= max_err:
+            max_err = error
+            worst = (row["time"], row["sigout"], expected)
+        delta = row["sigin"] - previous
+        saw_rise = saw_rise or delta > 0.05
+        saw_fall = saw_fall or delta < -0.05
+        input_min = min(input_min, row["sigin"])
+        input_max = max(input_max, row["sigin"])
+        previous = row["sigin"]
+        checked += 1
+    if checked < 20:
+        return False, f"insufficient_level_shifter_samples={checked}"
+    if input_max - input_min < 0.50 or not (saw_rise and saw_fall):
+        return False, (
+            f"insufficient_level_shifter_coverage range={input_min:.3f}:{input_max:.3f} "
+            f"rise={saw_rise} fall={saw_fall}"
+        )
+    if max_err > 0.025:
+        assert worst is not None
+        time_s, observed, expected = worst
+        return False, (
+            f"level_shift_error@{time_s * 1e9:.3f}ns observed={observed:.4f} "
+            f"expected={expected:.4f} max_err={max_err:.4f}"
+        )
+    return True, (
+        f"checked={checked} input_range={input_min:.3f}:{input_max:.3f} "
+        f"rise={saw_rise} fall={saw_fall} max_err={max_err:.4f}"
     )
 
 
@@ -17662,14 +18199,53 @@ def check_v3_decision_router_logic(rows: list[dict[str, float]]) -> tuple[bool, 
 
 def check_v3_safe_analog_divider(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "signumer", "sigdenom", "sigout"}
-    return _v3_formula_check(
-        rows,
-        required=required,
-        output="sigout",
-        expected_fn=lambda row: row["signumer"] / (0.2 if 0 <= row["sigdenom"] < 0.2 else (-0.2 if -0.2 < row["sigdenom"] < 0 else row["sigdenom"])),
-        tol=0.05,
-        min_checked=20,
-    )
+    if not rows or not required.issubset(rows[0]):
+        missing = sorted(required - set(rows[0])) if rows else sorted(required)
+        return False, "missing_safe_divider_columns=" + ",".join(missing)
+    regions = {
+        "normal_positive": False,
+        "guard_nonnegative": False,
+        "guard_negative": False,
+        "normal_negative": False,
+    }
+    checked = 0
+    max_err = 0.0
+    worst: tuple[float, float, float, float] | None = None
+    for row in rows:
+        if row["time"] < 0.10e-9:
+            continue
+        denominator = row["sigdenom"]
+        if denominator >= 0.2:
+            guarded = denominator
+            regions["normal_positive"] = True
+        elif denominator >= 0.0:
+            guarded = 0.2
+            regions["guard_nonnegative"] = True
+        elif denominator > -0.2:
+            guarded = -0.2
+            regions["guard_negative"] = True
+        else:
+            guarded = denominator
+            regions["normal_negative"] = True
+        expected = row["signumer"] / guarded
+        error = abs(row["sigout"] - expected)
+        if error >= max_err:
+            max_err = error
+            worst = (row["time"], denominator, row["sigout"], expected)
+        checked += 1
+    if checked < 20:
+        return False, f"insufficient_safe_divider_samples={checked}"
+    missing_regions = sorted(name for name, seen in regions.items() if not seen)
+    if missing_regions:
+        return False, "missing_safe_divider_regions=" + ",".join(missing_regions)
+    if max_err > 0.05:
+        assert worst is not None
+        time_s, denominator, observed, expected = worst
+        return False, (
+            f"safe_divider_error@{time_s * 1e9:.3f}ns denom={denominator:.4f} "
+            f"observed={observed:.4f} expected={expected:.4f} max_err={max_err:.4f}"
+        )
+    return True, f"checked={checked} regions={sorted(regions)} max_err={max_err:.4f}"
 
 
 def check_v3_vargain_diffamp_clip(rows: list[dict[str, float]]) -> tuple[bool, str]:
@@ -17765,12 +18341,31 @@ def _check_v3_pfd_active_low_reset_generic(
     if len(ref_edges) < 1 or len(fb_edges) < 1 or len(events) < 3:
         return False, f"too_few_pfd_edges ref={len(ref_edges)} fb={len(fb_edges)}"
 
+    up_state = 0
+    down_state = 0
+    pending_reset: float | None = None
+    reset_times: list[float] = []
+    for event_time, kind in events:
+        if pending_reset is not None and pending_reset <= event_time:
+            up_state = 0
+            down_state = 0
+            pending_reset = None
+        if kind == "ref":
+            up_state = 1
+        else:
+            down_state = 1
+        if up_state and down_state:
+            pending_reset = event_time + reset_delay
+            reset_times.append(pending_reset)
+
+    guard_times = [t for t, _ in events] + reset_times
+    transition_guard = min(20e-12, reset_delay / 5.0)
     samples = sorted(
         {
             row["time"]
             for row in rows
             if row["time"] > rows[0]["time"] + 0.05e-9
-            and _v3_away_from_edges(row["time"], [t for t, _ in events], 80e-12)
+            and _v3_away_from_edges(row["time"], guard_times, transition_guard)
         }
     )
     if len(samples) < 20:
@@ -18574,13 +19169,16 @@ def check_v3_501_adc_static_linearity_monitor(rows: list[dict[str, float]]) -> t
     if checked < 5:
         return False, f"insufficient_linearity_monitor_samples={checked}"
     if any(observed_metrics[idx] + 0.03 < observed_metrics[idx - 1] for idx in range(1, len(observed_metrics))):
-        return False, f"maxerr_not_monotonic={observed_metrics}"
+        return False, f"maxerr_not_monotonic observed={observed_metrics} expected=nondecreasing window=sample_edges"
     if expected_max < 2:
-        return False, f"stimulus_did_not_exercise_two_lsb_error={expected_max}"
+        return False, f"stimulus_did_not_exercise_two_lsb_error observed={expected_max} expected>=2 window=sample_edges"
     if failures:
         return False, " ".join(failures[:5])
     if max_err > 0.08:
-        return False, f"maxerr_metric_error={max_err:.4f} metrics={observed_metrics}"
+        return False, (
+            f"maxerr_metric_error observed=max_err:{max_err:.4f},metrics:{observed_metrics} "
+            f"expected=running_max_code_error:{expected_max} window=sample_edges"
+        )
     return True, f"samples={checked} expected_max={expected_max} max_err={max_err:.4f}"
 
 
@@ -20434,6 +21032,40 @@ def check_pfd_reset_race(rows: list[dict[str, float]]) -> tuple[bool, str]:
     )
 
 
+def check_v4_pfd_updn_logic(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    """Add the v4 public local-rail contract to the legacy PFD pulse check."""
+    pulse_ok, pulse_note = check_pfd_reset_race(rows)
+    required = {"vdd", "vss", "up", "dn"}
+    if not rows or not required.issubset(rows[0]):
+        return False, f"{pulse_note} missing local rail observables"
+
+    # Rails are DC in this task.  Exclude the initial pre-source row: before
+    # DC sources settle it is legitimate for a contribution output to be 0 V
+    # even when the exercised local VSS is nonzero.
+    stable_rows = [row for row in rows if row["time"] >= 10e-9]
+    if not stable_rows:
+        return False, f"{pulse_note} no stable local-rail samples"
+    vdd = max(row["vdd"] for row in stable_rows)
+    vss = max(row["vss"] for row in stable_rows)
+    rail_span = vdd - vss
+    up_hi, up_lo = max(row["up"] for row in stable_rows), min(row["up"] for row in stable_rows)
+    dn_hi, dn_lo = max(row["dn"] for row in stable_rows), min(row["dn"] for row in stable_rows)
+    tolerance = 0.04
+    rail_ok = (
+        rail_span >= 0.4
+        and abs(up_hi - vdd) <= tolerance
+        and abs(up_lo - vss) <= tolerance
+        and abs(dn_hi - vdd) <= tolerance
+        and abs(dn_lo - vss) <= tolerance
+    )
+    rail_note = (
+        f"rail_reference vdd={vdd:.4f} vss={vss:.4f} "
+        f"up_hi_lo={up_hi:.4f}/{up_lo:.4f} dn_hi_lo={dn_hi:.4f}/{dn_lo:.4f} "
+        f"rail_ok={rail_ok}"
+    )
+    return pulse_ok and rail_ok, f"{pulse_note} {rail_note}"
+
+
 def check_cppll_freq_step_reacquire(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"ref_clk", "fb_clk", "lock", "vctrl_mon"}
     if not rows or not required.issubset(rows[0]):
@@ -20598,6 +21230,47 @@ def check_prbs7(rows: list[dict[str, float]]) -> tuple[bool, str]:
             code |= bit << idx
         return code
 
+    reset_codes: list[int] = []
+    gate_failures: list[str] = []
+    hold_checks = 0
+    reset_checks = 0
+    prev_code: int | None = None
+    for edge_t in _rising_times(rows, "clk"):
+        row = _sample_after(rows, edge_t, 0.15e-9)
+        code = state_code(row)
+        serial = logic(row, "serial_out")
+        if code is None or serial is None:
+            continue
+        if serial != ((code >> 6) & 1):
+            return False, (
+                f"serial_state_mismatch observed=serial:{serial},state6:{(code >> 6) & 1} "
+                f"expected=serial_out==state_6 window={edge_t * 1e9:.3f}ns"
+            )
+        if row["rst_n"] <= 0.45:
+            reset_codes.append(code)
+            reset_checks += 1
+            prev_code = code
+            continue
+        if row["en"] <= 0.45:
+            if prev_code is not None:
+                hold_checks += 1
+                if code != prev_code:
+                    gate_failures.append(
+                        f"enable_hold observed=state:{code} expected=state:{prev_code} "
+                        f"window={edge_t * 1e9:.3f}ns"
+                    )
+            prev_code = code
+            continue
+        prev_code = code
+    if reset_codes:
+        reset_unique = sorted(set(reset_codes))
+        if len(reset_unique) != 1 or reset_unique[0] == 0:
+            gate_failures.append(
+                f"reset_seed observed=states:{reset_unique} expected=single_nonzero_seed window=rst_n_low"
+            )
+    if gate_failures:
+        return False, " ".join(gate_failures[:5])
+
     post = [row for row in rows if row["time"] > 2e-9 and row["rst_n"] > 0.7 and row["en"] > 0.7]
     if len(post) < 20:
         return False, "too_few_post_init_samples"
@@ -20621,6 +21294,8 @@ def check_prbs7(rows: list[dict[str, float]]) -> tuple[bool, str]:
         return False, "entered_zero_state"
 
     mismatches = 0
+    feedback_mismatches = 0
+    shift_mismatches = 0
     checked = 0
     for current, observed_next in zip(stable_codes, stable_codes[1:]):
         # Public reference recurrence used by the release gold:
@@ -20628,15 +21303,24 @@ def check_prbs7(rows: list[dict[str, float]]) -> tuple[bool, str]:
         feedback = ((current >> 6) & 1) ^ ((current >> 5) & 1)
         expected_next = ((current & 0x3F) << 1) | feedback
         checked += 1
+        if (observed_next & 1) != feedback:
+            feedback_mismatches += 1
+        for bit_index in range(1, 7):
+            if ((observed_next >> bit_index) & 1) != ((current >> (bit_index - 1)) & 1):
+                shift_mismatches += 1
         if observed_next != expected_next:
             mismatches += 1
 
     serial_transitions = sum(1 for idx in range(len(serial_bits) - 1) if serial_bits[idx] != serial_bits[idx + 1])
     ok = checked >= 8 and mismatches == 0 and serial_transitions >= 3
-    return ok, (
+    note = (
         f"state_steps={len(stable_codes)} checked_transitions={checked} "
-        f"mismatches={mismatches} serial_transitions={serial_transitions}"
+        f"mismatches={mismatches} serial_transitions={serial_transitions} "
+        f"shift_mismatches={shift_mismatches} feedback_mismatches={feedback_mismatches}"
     )
+    if reset_checks or hold_checks:
+        note += f" reset_checks={reset_checks} hold_checks={hold_checks}"
+    return ok, note
 
 
 def check_therm2bin(rows: list[dict[str, float]]) -> tuple[bool, str]:
@@ -21471,8 +22155,73 @@ def check_bound_step_period_guard(rows: list[dict[str, float]]) -> tuple[bool, s
     wraps = sum(1 for i in range(1, len(p)) if p[i] < p[i - 1] - 0.2)
     phase_span = max(p) - min(p)
     guard_rises = len(rising_edges(g, t, threshold=gth))
+    rail_checks = 0
+    max_phase_err = 0.0
+    max_guard_err = 0.0
+    rail_failure = ""
+    if {"VDD", "VSS"}.issubset(rows[0]):
+        guard_edges = rising_edges(g, t, threshold=gth)
+        wrap_times = [
+            t[idx]
+            for idx in range(1, len(p))
+            if p[idx] < p[idx - 1] - 0.2
+        ]
+        if len(wrap_times) >= 2:
+            wrap_periods = sorted(b - a for a, b in zip(wrap_times, wrap_times[1:]))
+            period = wrap_periods[len(wrap_periods) // 2]
+            t0 = wrap_times[0]
+        elif len(guard_edges) >= 2:
+            guard_periods = sorted(b - a for a, b in zip(guard_edges, guard_edges[1:]))
+            period = guard_periods[len(guard_periods) // 2]
+            t0 = guard_edges[0]
+        else:
+            period = 8.0e-9
+            t0 = rows[0]["time"]
+        # Check recorded solver points directly. Interpolating a sawtooth across
+        # the two samples that bracket a wrap invents a falling ramp which the
+        # behavioral source never produced; the same applies to smoothed guard
+        # edges. The recorded points already provide ample phase/rail coverage.
+        for row in rows:
+            sample_t = row["time"]
+            if sample_t < t0 + 0.10e-9:
+                continue
+            vdd = float(row["VDD"])
+            vss = float(row["VSS"])
+            span = vdd - vss
+            if span <= 0.2:
+                continue
+            phase = ((sample_t - t0) % period) / period
+            expected_phase = vss + span * phase
+            guard_observed = float(row["guard_out"])
+            guard_norm = (guard_observed - vss) / span
+            if 0.15 < guard_norm < 0.85:
+                continue
+            expected_guard = vdd if guard_norm >= 0.5 else vss
+            phase_err = abs(float(row["phase_out"]) - expected_phase)
+            guard_err = abs(guard_observed - expected_guard)
+            max_guard_err = max(max_guard_err, guard_err)
+            rail_checks += 1
+            phase_time = (sample_t - t0) % period
+            edge_margin = min(phase_time, period - phase_time)
+            if edge_margin > 0.15e-9:
+                max_phase_err = max(max_phase_err, phase_err)
+            if edge_margin > 0.15e-9 and (phase_err > 0.055 or guard_err > 0.055):
+                rail_failure = (
+                    f"rail_tracking observed=phase:{float(row['phase_out']):.3f},guard:{guard_observed:.3f} "
+                    f"expected=phase:{expected_phase:.3f},guard:{expected_guard:.3f} "
+                    f"window={sample_t * 1e9:.3f}ns"
+                )
+                break
+        if rail_checks < 20:
+            rail_failure = f"insufficient_rail_tracking_samples observed={rail_checks} expected>=20 window=full_trace"
+    if rail_failure:
+        return False, rail_failure
     ok = wraps >= 3 and phase_span > 0.5 and guard_rises >= 3
-    return ok, f"guard_rises={guard_rises} wraps={wraps} phase_span={phase_span:.3f} guard_hi_frac={guard_hi_frac:.3f}"
+    return ok, (
+        f"guard_rises={guard_rises} wraps={wraps} phase_span={phase_span:.3f} "
+        f"guard_hi_frac={guard_hi_frac:.3f} rail_checks={rail_checks} "
+        f"max_phase_err={max_phase_err:.3f} max_guard_err={max_guard_err:.3f}"
+    )
 
 
 def check_cross_hysteresis_window(rows: list[dict[str, float]]) -> tuple[bool, str]:
@@ -23327,13 +24076,22 @@ def check_bias_voltage_generator_with_enable_trim(rows: list[dict[str, float]]) 
     assert disabled_metric is not None
 
     if disabled_early > 0.08 or disabled_late > 0.08:
-        return False, f"bias_not_disabled early={disabled_early:.3f} late={disabled_late:.3f}"
+        return False, (
+            f"bias_not_disabled observed=early:{disabled_early:.3f},late:{disabled_late:.3f} "
+            "expected<=0.08 window=5-10ns/58-64ns"
+        )
     if not (0.30 <= low_trim <= 0.50):
-        return False, f"bias_low_trim_wrong={low_trim:.3f}"
+        return False, f"bias_low_trim_wrong observed={low_trim:.3f} expected=0.30..0.50 window=24-30ns"
     if high_trim <= low_trim + 0.14 or high_trim > 0.85:
-        return False, f"bias_trim_span_wrong low={low_trim:.3f} high={high_trim:.3f}"
+        return False, (
+            f"bias_trim_span_wrong observed=low:{low_trim:.3f},high:{high_trim:.3f} "
+            "expected=high>low+0.14,high<=0.85 window=24-52ns"
+        )
     if enabled_metric < 0.65 or disabled_metric > 0.15:
-        return False, f"bias_metric_wrong enabled={enabled_metric:.3f} disabled={disabled_metric:.3f}"
+        return False, (
+            f"bias_metric_wrong observed=enabled:{enabled_metric:.3f},disabled:{disabled_metric:.3f} "
+            "expected=enabled>=0.65,disabled<=0.15 window=24-52ns/58-64ns"
+        )
     return True, (
         "bias_voltage_generator_with_enable_trim "
         f"disabled={disabled_early:.3f}/{disabled_late:.3f} trim={low_trim:.3f}->{high_trim:.3f}"
@@ -23348,14 +24106,16 @@ def check_power_on_reset_detector(rows: list[dict[str, float]]) -> tuple[bool, s
     initial_reset = mean_in_window(rows, "out", 4.0e-9, 7.0e-9)
     delayed_reset = mean_in_window(rows, "out", 10.0e-9, 13.0e-9)
     released = mean_in_window(rows, "out", 22.0e-9, 38.0e-9)
-    brownout_reset = mean_in_window(rows, "out", 46.0e-9, 52.0e-9)
+    brownout_immediate = mean_in_window(rows, "out", 45.0e-9, 45.8e-9)
+    brownout_reset = mean_in_window(rows, "out", 46.2e-9, 52.0e-9)
     recovered = mean_in_window(rows, "out", 65.0e-9, 76.0e-9)
     released_metric = mean_in_window(rows, "metric", 22.0e-9, 38.0e-9)
-    if None in (initial_reset, delayed_reset, released, brownout_reset, recovered, released_metric):
+    if None in (initial_reset, delayed_reset, released, brownout_immediate, brownout_reset, recovered, released_metric):
         return False, "por_missing_sample_windows"
     assert initial_reset is not None
     assert delayed_reset is not None
     assert released is not None
+    assert brownout_immediate is not None
     assert brownout_reset is not None
     assert recovered is not None
     assert released_metric is not None
@@ -23366,13 +24126,15 @@ def check_power_on_reset_detector(rows: list[dict[str, float]]) -> tuple[bool, s
         return False, f"por_no_release_delay={delayed_reset:.3f}"
     if released > 0.20:
         return False, f"por_not_released={released:.3f}"
+    if brownout_immediate < 0.65:
+        return False, f"por_brownout_not_immediate={brownout_immediate:.3f}"
     if brownout_reset < 0.65:
         return False, f"por_brownout_not_asserted={brownout_reset:.3f}"
     if recovered > 0.20 or released_metric < 0.65:
         return False, f"por_recovery_wrong recovered={recovered:.3f} metric={released_metric:.3f}"
     return True, (
         "power_on_reset_detector "
-        f"reset={initial_reset:.3f}->{released:.3f} brownout={brownout_reset:.3f}"
+        f"reset={initial_reset:.3f}->{released:.3f} brownout={brownout_immediate:.3f}/{brownout_reset:.3f}"
     )
 
 
@@ -23416,6 +24178,68 @@ def check_ldo_regulator_macro_model(rows: list[dict[str, float]]) -> tuple[bool,
     if not rows or not required.issubset(rows[0]):
         return False, "missing time/clk/rst/vin/out/metric"
 
+    edge_failures: list[str] = []
+    state = 0.60
+    edge_checks = 0
+    reset_checks = 0
+    hold_checks = 0
+    max_edge_err = 0.0
+    max_metric_err = 0.0
+    times = [row["time"] for row in rows]
+    clk_rises = _threshold_crossings([row["clk"] for row in rows], times, threshold=0.45, direction="rising")
+    for edge_t in clk_rises:
+        edge_row = _sample_after(rows, edge_t, 1e-15)
+        if edge_row["rst"] > 0.45:
+            state = 0.60
+            expected_metric = 0.90
+            reset_checks += 1
+        else:
+            load = min(0.9, max(0.0, edge_row["vin"]))
+            target = 0.62 - 0.055 * load
+            state = min(0.75, max(0.25, state + 0.35 * (target - state)))
+            expected_metric = min(0.9, max(0.0, 0.9 - 4.0 * abs(state - target)))
+        sample = _sample_after(rows, edge_t, 0.35e-9)
+        out_err = abs(sample["out"] - state)
+        metric_err = abs(sample["metric"] - expected_metric)
+        max_edge_err = max(max_edge_err, out_err)
+        max_metric_err = max(max_metric_err, metric_err)
+        if out_err > 0.055 or metric_err > 0.09:
+            edge_failures.append(
+                f"clock_edge observed=out:{sample['out']:.3f},metric:{sample['metric']:.3f} "
+                f"expected=out:{state:.3f},metric:{expected_metric:.3f} window={edge_t * 1e9:.3f}ns"
+            )
+        edge_checks += 1
+
+    for prev_t, next_t in zip(clk_rises, clk_rises[1:]):
+        if next_t - prev_t < 0.8e-9:
+            continue
+        left_t = prev_t + 0.45e-9
+        right_t = next_t - 0.20e-9
+        if right_t <= left_t:
+            continue
+        left_out = sample_signal_at(rows, "out", left_t)
+        right_out = sample_signal_at(rows, "out", right_t)
+        left_metric = sample_signal_at(rows, "metric", left_t)
+        right_metric = sample_signal_at(rows, "metric", right_t)
+        if None in (left_out, right_out, left_metric, right_metric):
+            continue
+        assert left_out is not None and right_out is not None and left_metric is not None and right_metric is not None
+        hold_checks += 1
+        if abs(right_out - left_out) > 0.025 or abs(right_metric - left_metric) > 0.08:
+            edge_failures.append(
+                f"clocked_hold observed=out:{left_out:.3f}->{right_out:.3f},metric:{left_metric:.3f}->{right_metric:.3f} "
+                f"expected=held window={left_t * 1e9:.3f}-{right_t * 1e9:.3f}ns"
+            )
+            break
+
+    if edge_checks >= 3 and (reset_checks == 0 or hold_checks == 0):
+        edge_failures.append(
+            f"insufficient_ldo_contract_coverage observed=reset:{reset_checks},hold:{hold_checks} "
+            "expected=reset>=1,hold>=1 window=score_trace"
+        )
+    if edge_failures:
+        return False, " ".join(edge_failures[:4])
+
     light_load = mean_in_window(rows, "out", 10.0e-9, 16.0e-9)
     heavy_load = mean_in_window(rows, "out", 28.0e-9, 40.0e-9)
     recovered = mean_in_window(rows, "out", 55.0e-9, 64.0e-9)
@@ -23430,16 +24254,18 @@ def check_ldo_regulator_macro_model(rows: list[dict[str, float]]) -> tuple[bool,
     assert recovered_metric is not None
 
     if not (0.56 <= light_load <= 0.66):
-        return False, f"ldo_light_load_regulation_wrong={light_load:.3f}"
+        return False, f"ldo_light_load_regulation_wrong observed={light_load:.3f} expected=0.56..0.66 window=10-16ns"
     if heavy_load >= light_load - 0.015:
-        return False, f"ldo_load_step_no_droop light={light_load:.3f} heavy={heavy_load:.3f}"
+        return False, f"ldo_load_step_no_droop observed=light:{light_load:.3f},heavy:{heavy_load:.3f} expected=heavy<light-0.015 window=28-40ns"
     if recovered <= heavy_load + 0.025:
-        return False, f"ldo_no_recovery heavy={heavy_load:.3f} recovered={recovered:.3f}"
+        return False, f"ldo_no_recovery observed=heavy:{heavy_load:.3f},recovered:{recovered:.3f} expected=recovered>heavy+0.025 window=55-64ns"
     if recovered_metric < 0.65 or heavy_metric < 0.45:
         return False, f"ldo_metric_wrong heavy={heavy_metric:.3f} recovered={recovered_metric:.3f}"
     return True, (
         "ldo_regulator_macro_model "
-        f"light/heavy/recovered={light_load:.3f}/{heavy_load:.3f}/{recovered:.3f}"
+        f"light/heavy/recovered={light_load:.3f}/{heavy_load:.3f}/{recovered:.3f} "
+        f"edge_checks={edge_checks} reset_checks={reset_checks} hold_checks={hold_checks} "
+        f"max_edge_err={max_edge_err:.4f} max_metric_err={max_metric_err:.4f}"
     )
 
 
@@ -23613,10 +24439,93 @@ def check_ldo_load_step_recovery_flow(rows: list[dict[str, float]]) -> tuple[boo
     )
 
 
+def _check_clocked_rf_macro_state_contract(
+    rows: list[dict[str, float]],
+    *,
+    label: str,
+) -> tuple[bool, str]:
+    times = [row["time"] for row in rows]
+    clk_rises = _threshold_crossings(
+        [row["clk"] for row in rows],
+        times,
+        threshold=0.45,
+        direction="rising",
+    )
+    failures: list[str] = []
+    hold_checks = 0
+    max_hold_span = 0.0
+    for prev_t, next_t in zip(clk_rises, clk_rises[1:]):
+        left_t = prev_t + 0.45e-9
+        right_t = next_t - 0.20e-9
+        if right_t <= left_t:
+            continue
+        left_out = sample_signal_at(rows, "out", left_t)
+        right_out = sample_signal_at(rows, "out", right_t)
+        left_metric = sample_signal_at(rows, "metric", left_t)
+        right_metric = sample_signal_at(rows, "metric", right_t)
+        if None in (left_out, right_out, left_metric, right_metric):
+            continue
+        assert left_out is not None and right_out is not None
+        assert left_metric is not None and right_metric is not None
+        hold_checks += 1
+        hold_span = max(abs(right_out - left_out), abs(right_metric - left_metric))
+        max_hold_span = max(max_hold_span, hold_span)
+        if abs(right_out - left_out) > 0.025 or abs(right_metric - left_metric) > 0.08:
+            failures.append(
+                f"{label}_clocked_hold observed=out:{left_out:.3f}->{right_out:.3f},"
+                f"metric:{left_metric:.3f}->{right_metric:.3f} expected=held "
+                f"window={left_t * 1e9:.3f}-{right_t * 1e9:.3f}ns"
+            )
+            break
+
+    reset_samples: list[float] = []
+    if rows[0]["rst"] > 0.45:
+        reset_samples.append(min(rows[-1]["time"], rows[0]["time"] + 0.50e-9))
+    for edge_t in clk_rises:
+        rst_at_edge = sample_signal_at(rows, "rst", edge_t + 1e-15)
+        if rst_at_edge is not None and rst_at_edge > 0.45:
+            reset_samples.append(min(rows[-1]["time"], edge_t + 0.40e-9))
+    reset_checks = 0
+    for sample_t in reset_samples:
+        out = sample_signal_at(rows, "out", sample_t)
+        metric = sample_signal_at(rows, "metric", sample_t)
+        if out is None or metric is None:
+            continue
+        reset_checks += 1
+        if abs(out - 0.45) > 0.045 or abs(metric) > 0.08:
+            failures.append(
+                f"{label}_reset_common_mode observed=out:{out:.3f},metric:{metric:.3f} "
+                f"expected=out:0.450,metric:0.000 window={sample_t * 1e9:.3f}ns"
+            )
+            break
+
+    out_min = min(row["out"] for row in rows)
+    out_max = max(row["out"] for row in rows)
+    if out_min < 0.025 or out_max > 0.875:
+        failures.append(
+            f"{label}_output_clamp observed=range:{out_min:.3f}..{out_max:.3f} "
+            "expected=0.040..0.860_with_tolerance window=full_trace"
+        )
+    if len(clk_rises) >= 3 and (hold_checks == 0 or reset_checks == 0):
+        failures.append(
+            f"{label}_contract_coverage observed=hold:{hold_checks},reset:{reset_checks} "
+            "expected=hold>=1,reset>=1 window=full_trace"
+        )
+    if failures:
+        return False, " ".join(failures[:4])
+    return True, (
+        f"{label}_state_contract hold_checks={hold_checks} reset_checks={reset_checks} "
+        f"max_hold_span={max_hold_span:.4f} output_range={out_min:.3f}..{out_max:.3f}"
+    )
+
+
 def check_lna_gain_compression_macro(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "clk", "rst", "vin", "out", "metric"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing time/clk/rst/vin/out/metric"
+    state_ok, state_note = _check_clocked_rf_macro_state_contract(rows, label="lna")
+    if not state_ok:
+        return False, state_note
 
     small_vin = mean_in_window(rows, "vin", 12.0e-9, 22.0e-9)
     small_out = mean_in_window(rows, "out", 12.0e-9, 22.0e-9)
@@ -23641,7 +24550,8 @@ def check_lna_gain_compression_macro(rows: list[dict[str, float]]) -> tuple[bool
         return False, f"lna_compression_metric_low={comp_metric:.3f}"
     return True, (
         "lna_gain_compression_macro "
-        f"small={small_vin:.3f}->{small_out:.3f} compressed={comp_low:.3f}/{comp_high:.3f}"
+        f"small={small_vin:.3f}->{small_out:.3f} compressed={comp_low:.3f}/{comp_high:.3f} "
+        f"{state_note}"
     )
 
 
@@ -23776,6 +24686,9 @@ def check_limiting_amplifier_frontend(rows: list[dict[str, float]]) -> tuple[boo
     required = {"time", "clk", "rst", "vin", "out", "metric"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing time/clk/rst/vin/out/metric"
+    state_ok, state_note = _check_clocked_rf_macro_state_contract(rows, label="limiter")
+    if not state_ok:
+        return False, state_note
 
     small_vin = mean_in_window(rows, "vin", 10.0e-9, 20.0e-9)
     small_out = mean_in_window(rows, "out", 10.0e-9, 20.0e-9)
@@ -23796,7 +24709,10 @@ def check_limiting_amplifier_frontend(rows: list[dict[str, float]]) -> tuple[boo
         return False, f"limiter_large_signal_not_limited high={high_out:.3f} low={low_out:.3f}"
     if limit_metric < 0.55:
         return False, f"limiter_metric_low={limit_metric:.3f}"
-    return True, f"limiting_amplifier_frontend small={small_out:.3f} limited={low_out:.3f}/{high_out:.3f}"
+    return True, (
+        f"limiting_amplifier_frontend small={small_out:.3f} limited={low_out:.3f}/{high_out:.3f} "
+        f"{state_note}"
+    )
 
 
 def check_agc_receiver_leveling_loop(rows: list[dict[str, float]]) -> tuple[bool, str]:
@@ -24338,6 +25254,559 @@ def check_v3_trim_calibration_controller(rows: list[dict[str, float]]) -> tuple[
     if failures:
         return False, " ".join(failures) + " " + " ".join(notes)
     return True, " ".join(notes) + f" range=({min_trim:.3f},{max_trim:.3f})"
+
+
+def _v4_edge_times(
+    rows: list[dict[str, float]], signal: str, *, rising: bool, threshold: float = 0.45
+) -> list[float]:
+    times: list[float] = []
+    for previous, current in zip(rows, rows[1:]):
+        before = previous[signal]
+        after = current[signal]
+        if rising and before < threshold <= after:
+            times.append(current["time"])
+        elif not rising and before > threshold >= after:
+            times.append(current["time"])
+    return times
+
+
+def _v4_hold_spans(
+    rows: list[dict[str, float]],
+    signal: str,
+    edge_times: list[float],
+    *,
+    settle_s: float,
+    guard_s: float,
+) -> list[tuple[float, float, float]]:
+    spans: list[tuple[float, float, float]] = []
+    for start, stop in zip(edge_times, edge_times[1:]):
+        window_start = start + settle_s
+        window_stop = stop - guard_s
+        values = [
+            row[signal]
+            for row in rows
+            if window_start <= row["time"] <= window_stop
+        ]
+        if len(values) >= 2:
+            spans.append((window_start, window_stop, max(values) - min(values)))
+    return spans
+
+
+def check_v4_bbpd(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    base_ok, base_note = check_bbpd(rows)
+    required = {"time", "data", "clk", "retimed_data", "up", "down"}
+    if not rows or not required.issubset(rows[0]):
+        return False, base_note
+
+    data_edges = [
+        index
+        for index in range(1, len(rows))
+        if (
+            rows[index - 1]["data"] < 0.45 <= rows[index]["data"]
+            or rows[index - 1]["data"] > 0.45 >= rows[index]["data"]
+        )
+    ]
+    clock_edges = sorted(
+        _v4_edge_times(rows, "clk", rising=True)
+        + _v4_edge_times(rows, "clk", rising=False)
+    )
+    rail_failures: list[str] = []
+    clear_failures: list[str] = []
+    checked_pulses = 0
+    for index in data_edges:
+        edge_time = rows[index]["time"]
+        clk_high = rows[index]["clk"] > 0.45
+        retimed_high = rows[index]["retimed_data"] > 0.45
+        expected = "up" if clk_high and not retimed_high else "down" if not clk_high and retimed_high else ""
+        window = [row for row in rows[index:] if row["time"] <= edge_time + 0.25e-9]
+        if not window:
+            continue
+        if expected:
+            checked_pulses += 1
+            inactive = "down" if expected == "up" else "up"
+            expected_peak = max(row[expected] for row in window)
+            inactive_peak = max(row[inactive] for row in window)
+            if expected_peak < 0.81:
+                rail_failures.append(
+                    f"{expected}@{edge_time * 1e9:.3f}ns_high={expected_peak:.3f}<0.810"
+                )
+            if inactive_peak > 0.09:
+                rail_failures.append(
+                    f"{inactive}@{edge_time * 1e9:.3f}ns_low={inactive_peak:.3f}>0.090"
+                )
+            next_clock = next((time_s for time_s in clock_edges if time_s > edge_time + 1e-13), None)
+            if next_clock is not None:
+                up_after = sample_signal_at(rows, "up", next_clock + 0.10e-9)
+                down_after = sample_signal_at(rows, "down", next_clock + 0.10e-9)
+                if up_after is None or down_after is None or up_after > 0.09 or down_after > 0.09:
+                    clear_failures.append(
+                        f"clk@{next_clock * 1e9:.3f}ns_up={up_after}_down={down_after}"
+                    )
+        else:
+            up_peak = max(row["up"] for row in window)
+            down_peak = max(row["down"] for row in window)
+            if up_peak > 0.09 or down_peak > 0.09:
+                rail_failures.append(
+                    f"none@{edge_time * 1e9:.3f}ns_up={up_peak:.3f}_down={down_peak:.3f}"
+                )
+
+    strict_ok = checked_pulses >= 4 and not rail_failures and not clear_failures
+    return base_ok and strict_ok, (
+        f"{base_note} strict_pulses={checked_pulses} "
+        f"rail_failures={len(rail_failures)} clear_failures={len(clear_failures)}"
+        + (" rail_detail=" + ";".join(rail_failures[:4]) if rail_failures else "")
+        + (" clear_detail=" + ";".join(clear_failures[:4]) if clear_failures else "")
+    )
+
+
+def check_v4_cdac_feedback_dac(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    base_ok, base_note = check_v3_cdac_feedback_dac(rows)
+    required = {"time", "clk", "vdac_p", "vdac_n"}
+    if not rows or not required.issubset(rows[0]):
+        return False, base_note
+
+    clock_edges = _v4_edge_times(rows, "clk", rising=True)
+    p_spans = _v4_hold_spans(
+        rows, "vdac_p", clock_edges, settle_s=0.25e-9, guard_s=0.20e-9
+    )
+    n_spans = _v4_hold_spans(
+        rows, "vdac_n", clock_edges, settle_s=0.25e-9, guard_s=0.20e-9
+    )
+    violations = [
+        (start, stop, max(p_span, n_span))
+        for (start, stop, p_span), (_, _, n_span) in zip(p_spans, n_spans)
+        if max(p_span, n_span) > 0.012
+    ]
+    max_hold_span = max((max(p[2], n[2]) for p, n in zip(p_spans, n_spans)), default=0.0)
+    hold_ok = len(p_spans) >= 6 and not violations
+    return base_ok and hold_ok, (
+        f"{base_note} hold_intervals={len(p_spans)} hold_violations={len(violations)} "
+        f"max_hold_span={max_hold_span:.4f}"
+        + (
+            " hold_detail="
+            + ";".join(
+                f"{start * 1e9:.3f}-{stop * 1e9:.3f}ns:{span:.4f}"
+                for start, stop, span in violations[:4]
+            )
+            if violations
+            else ""
+        )
+    )
+
+
+def check_v4_pipeline_stage(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "vdd", "vss", "vref", "phi1", "phi2", "vin", "vres", "d1", "d0"}
+    if not rows or not required.issubset(rows[0]):
+        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
+        return False, "missing_columns=" + ",".join(missing)
+
+    phi1_edges = _v4_edge_times(rows, "phi1", rising=True)
+    phi2_edges = _v4_edge_times(rows, "phi2", rising=True)
+    mismatches: list[str] = []
+    regions = {"upper": 0, "middle": 0, "lower": 0}
+    paired_samples = 0
+    sample_hold_cases = 0
+    clamp_cases = 0
+    max_residue_error = 0.0
+    for phi2_time in phi2_edges:
+        previous_phi1 = [time_s for time_s in phi1_edges if time_s < phi2_time]
+        if not previous_phi1:
+            continue
+        phi1_time = previous_phi1[-1]
+        vin_sampled = sample_signal_at(rows, "vin", phi1_time + 0.25e-9)
+        vin_live = sample_signal_at(rows, "vin", phi2_time)
+        vdd = sample_signal_at(rows, "vdd", phi2_time)
+        vss = sample_signal_at(rows, "vss", phi2_time)
+        vref = sample_signal_at(rows, "vref", phi2_time)
+        vres = sample_signal_at(rows, "vres", phi2_time + 0.90e-9)
+        d1 = sample_signal_at(rows, "d1", phi2_time + 0.90e-9)
+        d0 = sample_signal_at(rows, "d0", phi2_time + 0.90e-9)
+        values = (vin_sampled, vin_live, vdd, vss, vref, vres, d1, d0)
+        if any(value is None for value in values):
+            mismatches.append(f"missing_sample@{phi2_time * 1e9:.3f}ns")
+            continue
+        assert all(value is not None for value in values)
+        paired_samples += 1
+        if abs(vin_sampled - vin_live) > 0.05:
+            sample_hold_cases += 1
+        if vin_sampled < vss - 0.02 or vin_sampled > vdd + 0.02:
+            clamp_cases += 1
+
+        vcm = vdd / 2.0
+        vin_rel = vin_sampled - vcm
+        if vin_rel > vref / 4.0:
+            region = "upper"
+            expected_d1, expected_d0 = vdd, vss
+            expected_vres = vcm + 2.0 * vin_rel - vref / 2.0
+        elif vin_rel < -vref / 4.0:
+            region = "lower"
+            expected_d1, expected_d0 = vss, vss
+            expected_vres = vcm + 2.0 * vin_rel + vref / 2.0
+        else:
+            region = "middle"
+            expected_d1, expected_d0 = vss, vdd
+            expected_vres = vcm + 2.0 * vin_rel
+        regions[region] += 1
+        expected_vres = min(vdd, max(vss, expected_vres))
+        residue_error = abs(vres - expected_vres)
+        max_residue_error = max(max_residue_error, residue_error)
+        decision_error = max(abs(d1 - expected_d1), abs(d0 - expected_d0))
+        bounded = vss - 0.02 <= vres <= vdd + 0.02
+        if residue_error > 0.04 or decision_error > 0.09 or not bounded:
+            mismatches.append(
+                f"phi2@{phi2_time * 1e9:.3f}ns_region={region}_vin_sampled={vin_sampled:.3f}_"
+                f"vin_live={vin_live:.3f}_vres={vres:.3f}/{expected_vres:.3f}_"
+                f"d={d1:.3f},{d0:.3f}/{expected_d1:.3f},{expected_d0:.3f}"
+            )
+
+    coverage_ok = (
+        paired_samples >= 4
+        and sample_hold_cases >= 2
+        and clamp_cases >= 1
+        and all(count > 0 for count in regions.values())
+    )
+    ok = coverage_ok and not mismatches
+    return ok, (
+        f"paired_samples={paired_samples} sampled_vs_live_cases={sample_hold_cases} "
+        f"clamp_cases={clamp_cases} regions=upper:{regions['upper']},middle:{regions['middle']},lower:{regions['lower']} "
+        f"mismatches={len(mismatches)} max_residue_error={max_residue_error:.4f}"
+        + (" mismatch_detail=" + ";".join(mismatches[:5]) if mismatches else "")
+    )
+
+
+def check_v4_trim_calibration_controller(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "clk", "rst", "err", "trim"}
+    if not rows or not required.issubset(rows[0]):
+        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
+        return False, "missing_columns=" + ",".join(missing)
+
+    edges = _v4_edge_times(rows, "clk", rising=True)
+    expected = 0.45
+    mismatches: list[str] = []
+    coverage = {"reset": 0, "increment": 0, "decrement": 0, "upper_clamp": 0, "lower_clamp": 0}
+    for edge_time in edges:
+        rst = sample_signal_at(rows, "rst", edge_time)
+        err = sample_signal_at(rows, "err", edge_time)
+        observed = sample_signal_at(rows, "trim", edge_time + 2.0e-9)
+        if rst is None or err is None or observed is None:
+            mismatches.append(f"missing@{edge_time * 1e9:.3f}ns")
+            continue
+        if rst > 0.45:
+            expected = 0.45
+            coverage["reset"] += 1
+        elif err > 0.45:
+            expected += 0.06
+            coverage["increment"] += 1
+        else:
+            expected -= 0.06
+            coverage["decrement"] += 1
+        if expected > 0.85:
+            expected = 0.85
+            coverage["upper_clamp"] += 1
+        if expected < 0.05:
+            expected = 0.05
+            coverage["lower_clamp"] += 1
+        if abs(observed - expected) > 0.025:
+            mismatches.append(
+                f"clk@{edge_time * 1e9:.3f}ns_observed={observed:.3f}_expected={expected:.3f}"
+            )
+
+    spans = _v4_hold_spans(rows, "trim", edges, settle_s=2.0e-9, guard_s=0.25e-9)
+    hold_violations = [item for item in spans if item[2] > 0.015]
+    err_edges = sorted(
+        _v4_edge_times(rows, "err", rising=True) + _v4_edge_times(rows, "err", rising=False)
+    )
+    async_hold_failures: list[str] = []
+    for err_time in err_edges:
+        if any(abs(err_time - edge_time) <= 1.0e-9 for edge_time in edges):
+            continue
+        before = sample_signal_at(rows, "trim", max(0.0, err_time - 0.50e-9))
+        after = sample_signal_at(rows, "trim", err_time + 1.50e-9)
+        if before is None or after is None:
+            continue
+        if abs(after - before) > 0.025:
+            async_hold_failures.append(
+                f"err@{err_time * 1e9:.3f}ns_before={before:.3f}_after={after:.3f}"
+            )
+    initial = sample_signal_at(rows, "trim", 1.0e-9)
+    trace_values = [row["trim"] for row in rows]
+    range_ok = min(trace_values) >= 0.035 and max(trace_values) <= 0.865
+    coverage_ok = (
+        len(edges) >= 6
+        and coverage["reset"] >= 1
+        and coverage["increment"] >= 1
+        and coverage["decrement"] >= 1
+        and coverage["upper_clamp"] >= 1
+        and coverage["lower_clamp"] >= 1
+    )
+    ok = (
+        initial is not None
+        and abs(initial - 0.45) <= 0.025
+        and coverage_ok
+        and not mismatches
+        and not hold_violations
+        and not async_hold_failures
+        and range_ok
+    )
+    return ok, (
+        f"clock_edges={len(edges)} initial={initial} edge_mismatches={len(mismatches)} "
+        f"hold_intervals={len(spans)} hold_violations={len(hold_violations)} "
+        f"async_hold_failures={len(async_hold_failures)} "
+        f"range=({min(trace_values):.3f},{max(trace_values):.3f}) coverage={coverage}"
+        + (" mismatch_detail=" + ";".join(mismatches[:5]) if mismatches else "")
+        + (
+            " hold_detail="
+            + ";".join(
+                f"{start * 1e9:.3f}-{stop * 1e9:.3f}ns:{span:.4f}"
+                for start, stop, span in hold_violations[:4]
+            )
+            if hold_violations
+            else ""
+        )
+        + (" async_hold_detail=" + ";".join(async_hold_failures[:4]) if async_hold_failures else "")
+    )
+
+
+def check_v4_debounce_latch(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    base_ok, base_note = check_v3_debounce_latch(rows)
+    required = {"time", "sig", "rst_n", "out"}
+    if not rows or not required.issubset(rows[0]):
+        return False, base_note
+
+    sig_rises = _v4_edge_times(rows, "sig", rising=True)
+    sig_falls = _v4_edge_times(rows, "sig", rising=False)
+    reset_falls = _v4_edge_times(rows, "rst_n", rising=False)
+    out_rises = _v4_edge_times(rows, "out", rising=True)
+    out_falls = _v4_edge_times(rows, "out", rising=False)
+    expected_rises: list[float] = []
+    for rise_time in sig_rises:
+        reset_at_rise = sample_signal_at(rows, "rst_n", rise_time + 0.05e-9)
+        expiry = rise_time + 12.0e-9
+        if reset_at_rise is None or reset_at_rise <= 0.45:
+            continue
+        cancelled = any(rise_time < time_s <= expiry for time_s in sig_falls + reset_falls)
+        sig_at_expiry = sample_signal_at(rows, "sig", expiry)
+        reset_at_expiry = sample_signal_at(rows, "rst_n", expiry)
+        if (
+            not cancelled
+            and sig_at_expiry is not None
+            and reset_at_expiry is not None
+            and sig_at_expiry > 0.45
+            and reset_at_expiry > 0.45
+        ):
+            expected_rises.append(expiry)
+
+    unmatched_expected = [
+        time_s
+        for time_s in expected_rises
+        if not any(abs(observed - time_s) <= 1.2e-9 for observed in out_rises)
+    ]
+    unauthorized_rises = [
+        time_s
+        for time_s in out_rises
+        if not any(abs(time_s - expected) <= 1.2e-9 for expected in expected_rises)
+    ]
+    legal_fall_events = sig_falls + reset_falls
+    unauthorized_falls = [
+        time_s
+        for time_s in out_falls
+        if not any(abs(time_s - event) <= 1.2e-9 for event in legal_fall_events)
+    ]
+    required_fall_events = [
+        time_s
+        for time_s in legal_fall_events
+        if (sample_signal_at(rows, "out", max(0.0, time_s - 0.3e-9)) or 0.0) > 0.45
+    ]
+    unmatched_required_falls = [
+        time_s
+        for time_s in required_fall_events
+        if not any(abs(observed - time_s) <= 1.2e-9 for observed in out_falls)
+    ]
+
+    rail_failures: list[str] = []
+    for label, time_ns, expected_high in (
+        ("pre_qualify", 82.0, False),
+        ("qualified", 100.0, True),
+        ("held_high", 130.0, True),
+    ):
+        value = sample_signal_at(rows, "out", time_ns * 1e-9)
+        if value is None:
+            rail_failures.append(f"{label}=missing")
+        elif expected_high and value < 0.81:
+            rail_failures.append(f"{label}={value:.3f}<0.810")
+        elif not expected_high and value > 0.09:
+            rail_failures.append(f"{label}={value:.3f}>0.090")
+
+    event_ok = (
+        len(expected_rises) >= 1
+        and not unmatched_expected
+        and not unauthorized_rises
+        and not unauthorized_falls
+        and not unmatched_required_falls
+        and not rail_failures
+    )
+    return base_ok and event_ok, (
+        f"{base_note} expected_rises={len(expected_rises)} observed_rises={len(out_rises)} "
+        f"observed_falls={len(out_falls)} unmatched_expected={len(unmatched_expected)} "
+        f"unauthorized_rises={len(unauthorized_rises)} unauthorized_falls={len(unauthorized_falls)} "
+        f"required_falls={len(required_fall_events)} unmatched_required_falls={len(unmatched_required_falls)} "
+        f"rail_failures={len(rail_failures)}"
+        + (" unauthorized_rise_ns=" + ",".join(f"{t * 1e9:.3f}" for t in unauthorized_rises[:4]) if unauthorized_rises else "")
+        + (" unauthorized_fall_ns=" + ",".join(f"{t * 1e9:.3f}" for t in unauthorized_falls[:4]) if unauthorized_falls else "")
+        + (
+            " missing_required_fall_ns="
+            + ",".join(f"{t * 1e9:.3f}" for t in unmatched_required_falls[:4])
+            if unmatched_required_falls
+            else ""
+        )
+        + (" rail_detail=" + ";".join(rail_failures) if rail_failures else "")
+    )
+
+
+def check_v4_element_shuffler(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    base_ok, base_note = check_v3_element_shuffler(rows)
+    required = {"time", "rst_n", "out0", "out1", "out2", "out3"}
+    if not rows or not required.issubset(rows[0]):
+        return False, base_note
+    sample_times_ns = [20.0, 40.0, 60.0, 80.0, 100.0, 120.0, 160.0, 180.0, 200.0, 220.0]
+    expected_indices = [2, 0, 3, 1, 2, 0, 2, 0, 3, 1]
+    rail_failures: list[str] = []
+    for time_ns, expected_index in zip(sample_times_ns, expected_indices):
+        values = [sample_signal_at(rows, f"out{index}", time_ns * 1e-9) for index in range(4)]
+        if any(value is None for value in values):
+            rail_failures.append(f"{time_ns:g}ns=missing")
+            continue
+        assert all(value is not None for value in values)
+        for index, value in enumerate(values):
+            if index == expected_index and value < 0.81:
+                rail_failures.append(f"{time_ns:g}ns_out{index}_high={value:.3f}<0.810")
+            elif index != expected_index and value > 0.09:
+                rail_failures.append(f"{time_ns:g}ns_out{index}_low={value:.3f}>0.090")
+    return base_ok and not rail_failures, (
+        f"{base_note} strict_rail_samples={len(sample_times_ns)} rail_failures={len(rail_failures)}"
+        + (" rail_detail=" + ";".join(rail_failures[:6]) if rail_failures else "")
+    )
+
+
+def check_v4_first_order_lowpass(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    base_ok, base_note = check_vbm1_first_order_lowpass(rows)
+    required = {"time", "vin", "vout"}
+    if not rows or not required.issubset(rows[0]):
+        return False, base_note
+
+    initial_samples = [sample_signal_at(rows, "vout", time_ns * 1e-9) for time_ns in (1.0, 10.0)]
+    initial_ok = all(value is not None and abs(value) <= 0.02 for value in initial_samples)
+    end_time = rows[-1]["time"]
+    y = 0.0
+    update_period = 0.5e-9
+    update_time = 0.0
+    update_index = 0
+    schedule_errors: list[tuple[float, float, float]] = []
+    while update_time + 0.45e-9 <= end_time:
+        vin = sample_signal_at(rows, "vin", update_time)
+        if vin is None:
+            break
+        y = y + 0.025 * (vin - y)
+        if update_index % 10 == 0:
+            observed = sample_signal_at(rows, "vout", update_time + 0.45e-9)
+            if observed is not None:
+                error = abs(observed - y)
+                schedule_errors.append((update_time, observed, error))
+        update_index += 1
+        update_time = update_index * update_period
+
+    failing_schedule = [item for item in schedule_errors if item[2] > 0.035]
+    max_schedule_error = max((item[2] for item in schedule_errors), default=float("inf"))
+    schedule_ok = len(schedule_errors) >= 20 and not failing_schedule
+    return base_ok and initial_ok and schedule_ok, (
+        f"{base_note} initial_samples={initial_samples} initial_ok={initial_ok} "
+        f"schedule_checks={len(schedule_errors)} schedule_failures={len(failing_schedule)} "
+        f"max_schedule_error={max_schedule_error:.4f}"
+        + (
+            " schedule_detail="
+            + ";".join(
+                f"{time_s * 1e9:.3f}ns_observed={observed:.3f}_error={error:.4f}"
+                for time_s, observed, error in failing_schedule[:5]
+            )
+            if failing_schedule
+            else ""
+        )
+    )
+
+
+def check_v4_gain_trim_controller(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "clk", "rst", "meas", "target", "gain_ctrl"}
+    if not rows or not required.issubset(rows[0]):
+        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
+        return False, "missing_columns=" + ",".join(missing)
+
+    edges = _v4_edge_times(rows, "clk", rising=True)
+    expected = 0.30
+    mismatches: list[str] = []
+    coverage = {"reset": 0, "increase": 0, "decrease": 0, "deadband": 0, "upper_clamp": 0, "lower_clamp": 0}
+    for edge_time in edges:
+        rst = sample_signal_at(rows, "rst", edge_time)
+        meas = sample_signal_at(rows, "meas", edge_time)
+        target = sample_signal_at(rows, "target", edge_time)
+        observed = sample_signal_at(rows, "gain_ctrl", edge_time + 2.0e-9)
+        if rst is None or meas is None or target is None or observed is None:
+            mismatches.append(f"missing@{edge_time * 1e9:.3f}ns")
+            continue
+        if rst > 0.45:
+            expected = 0.30
+            coverage["reset"] += 1
+        elif meas < target - 0.02:
+            expected += 0.05
+            coverage["increase"] += 1
+        elif meas > target + 0.02:
+            expected -= 0.05
+            coverage["decrease"] += 1
+        else:
+            coverage["deadband"] += 1
+        if expected > 0.85:
+            expected = 0.85
+            coverage["upper_clamp"] += 1
+        if expected < 0.05:
+            expected = 0.05
+            coverage["lower_clamp"] += 1
+        if abs(observed - expected) > 0.025:
+            mismatches.append(
+                f"clk@{edge_time * 1e9:.3f}ns_meas={meas:.3f}_target={target:.3f}_"
+                f"observed={observed:.3f}_expected={expected:.3f}"
+            )
+
+    spans = _v4_hold_spans(rows, "gain_ctrl", edges, settle_s=2.0e-9, guard_s=0.25e-9)
+    hold_violations = [item for item in spans if item[2] > 0.015]
+    initial = sample_signal_at(rows, "gain_ctrl", 1.0e-9)
+    trace_values = [row["gain_ctrl"] for row in rows]
+    range_ok = min(trace_values) >= 0.035 and max(trace_values) <= 0.865
+    coverage_ok = all(coverage[key] >= 1 for key in ("reset", "increase", "decrease", "deadband"))
+    clamp_ok = coverage["upper_clamp"] >= 1 and coverage["lower_clamp"] >= 1
+    ok = (
+        initial is not None
+        and abs(initial - 0.30) <= 0.025
+        and len(edges) >= 12
+        and coverage_ok
+        and clamp_ok
+        and not mismatches
+        and not hold_violations
+        and range_ok
+    )
+    return ok, (
+        f"clock_edges={len(edges)} initial={initial} edge_mismatches={len(mismatches)} "
+        f"hold_intervals={len(spans)} hold_violations={len(hold_violations)} "
+        f"range=({min(trace_values):.3f},{max(trace_values):.3f}) coverage={coverage}"
+        + (" mismatch_detail=" + ";".join(mismatches[:5]) if mismatches else "")
+        + (
+            " hold_detail="
+            + ";".join(
+                f"{start * 1e9:.3f}-{stop * 1e9:.3f}ns:{span:.4f}"
+                for start, stop, span in hold_violations[:4]
+            )
+            if hold_violations
+            else ""
+        )
+    )
 
 
 CHECKS = {
@@ -25104,31 +26573,72 @@ def check_config_latch_128b_static_enable(rows: list[dict[str, float]]) -> tuple
 
 def check_config_shift_register_64b(rows: list[dict[str, float]]) -> tuple[bool, str]:
     serial_key = "serial_in" if rows and "serial_in" in rows[0] else "sin"
-    required = {"time", serial_key, *{f"q{i}" for i in range(64)}}
-    has_reset = bool(rows and "rst_n" in rows[0])
+    required = {"time", "clk", "rst_n", serial_key, *{f"q{i}" for i in range(64)}}
     if not rows or not required.issubset(rows[0]):
         missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
         return False, "missing_columns=" + ",".join(missing[:12])
-    samples = _sample_rows_every_10ns(rows)
-    history: list[int] = []
-    errors = 0
-    reset_samples = 0
-    for row in samples:
-        if has_reset and row["rst_n"] <= 0.45:
-            history = []
-            reset_samples += 1
-            for idx in range(64):
-                if row[f"q{idx}"] > 0.45:
-                    errors += 1
+    rising_edges = _rising_times(rows, "clk")
+    expected = [0] * 64
+    state_failures: list[str] = []
+    reset_failures: list[str] = []
+    level_failures: list[str] = []
+    hold_failures: list[str] = []
+    checked_edges = 0
+    reset_edges = 0
+
+    for edge_index, edge_t in enumerate(rising_edges):
+        rst_n = sample_signal_at(rows, "rst_n", edge_t)
+        serial = sample_signal_at(rows, serial_key, edge_t)
+        if rst_n is None or serial is None:
             continue
-        history.insert(0, 1 if row[serial_key] > 0.45 else 0)
-        history = history[:64]
-        for idx in range(min(len(history), 64)):
-            if (row[f"q{idx}"] > 0.45) != (history[idx] == 1):
-                errors += 1
-    return (
-        errors == 0 and len(samples) >= 10,
-        f"checked={len(samples)} reset_samples={reset_samples} bit_errors={errors}",
+        if rst_n <= 0.45:
+            expected = [0] * 64
+            reset_edges += 1
+        else:
+            expected = [1 if serial > 0.45 else 0, *expected[:63]]
+
+        settled = _sample_after(rows, edge_t, 0.25e-9)
+        checked_edges += 1
+        for bit, expected_bit in enumerate(expected):
+            observed = settled[f"q{bit}"]
+            if 0.18 < observed < 0.72:
+                level_failures.append(
+                    f"shift_output_level observed=q{bit}:{observed:.3f} "
+                    "expected=low<=0.18_or_high>=0.72 "
+                    f"window={edge_t * 1e9:.3f}ns"
+                )
+            if (observed > 0.45) != bool(expected_bit):
+                target = reset_failures if rst_n <= 0.45 else state_failures
+                label = "shift_reset" if rst_n <= 0.45 else "shift_state"
+                target.append(
+                    f"{label} observed=q{bit}:{observed:.3f} expected={expected_bit} "
+                    f"window={edge_t * 1e9:.3f}ns edge={edge_index}"
+                )
+
+        if edge_index + 1 < len(rising_edges):
+            next_edge_t = rising_edges[edge_index + 1]
+            hold_start_t = edge_t + 0.35e-9
+            hold_end_t = next_edge_t - 0.35e-9
+            if hold_end_t > hold_start_t:
+                hold_start = min(rows, key=lambda row: abs(row["time"] - hold_start_t))
+                hold_end = min(rows, key=lambda row: abs(row["time"] - hold_end_t))
+                for bit in range(64):
+                    before = hold_start[f"q{bit}"]
+                    after = hold_end[f"q{bit}"]
+                    if abs(after - before) > 0.18:
+                        hold_failures.append(
+                            f"shift_hold observed=q{bit}:{before:.3f}->{after:.3f} expected=held "
+                            f"window={hold_start_t * 1e9:.3f}-{hold_end_t * 1e9:.3f}ns"
+                        )
+
+    failures = reset_failures or level_failures or hold_failures or state_failures
+    if failures:
+        return False, " ".join(failures[:5])
+    if checked_edges < 8:
+        return False, f"shift_edges observed={checked_edges} expected>=8 window=full_trace"
+    return True, (
+        f"shift_contract_pass checked_edges={checked_edges} reset_edges={reset_edges} "
+        f"hold_windows={max(0, checked_edges - 1)}"
     )
 
 
@@ -25214,7 +26724,7 @@ def check_edge_interval_tdc_8b(rows: list[dict[str, float]]) -> tuple[bool, str]
     checked: list[int] = []
     for start_t, stop_t in zip(starts, stops):
         expected = max(0, min(255, int(round((stop_t - start_t) / 1e-9))))
-        row = _sample_after(rows, stop_t)
+        row = _sample_after(rows, stop_t, 0.20e-9)
         actual = _logic_bits_to_int(row, "code", 8)
         if row["valid"] <= 0.45 or abs(actual - expected) > 1:
             errors += 1
@@ -25274,14 +26784,64 @@ def check_event_counter_windowed_16b(rows: list[dict[str, float]]) -> tuple[bool
     event_rises = _rising_times(rows, "event")
     errors = 0
     checked: list[int] = []
+    outside_events_checked = 0
+    reset_checks = 0
+    hold_checks = 0
+    failures: list[str] = []
     for start_t, stop_t in zip(gate_rises, gate_falls):
+        next_event = next((event_t for event_t in event_rises if event_t > start_t), stop_t)
+        open_delay = min(0.10e-9, max(0.04e-9, 0.40 * (next_event - start_t)))
+        open_row = _sample_after(rows, start_t, open_delay)
+        open_count = _logic_bits_to_int(open_row, "count", 16)
+        if open_row["done"] > 0.45 or open_count != 0:
+            failures.append(
+                f"window_open observed=count:{open_count},done:{open_row['done']:.3f} "
+                f"expected=count:0,done:0 window={start_t * 1e9:.3f}ns"
+            )
+        else:
+            reset_checks += 1
         expected = sum(1 for t in event_rises if start_t < t < stop_t)
-        row = _sample_after(rows, stop_t)
+        row = _sample_after(rows, stop_t, 0.20e-9)
         actual = _logic_bits_to_int(row, "count", 16)
         if row["done"] <= 0.45 or actual != expected:
             errors += 1
+            failures.append(
+                f"window_close observed=count:{actual},done:{row['done']:.3f} "
+                f"expected=count:{expected},done:>0.45 window={start_t * 1e9:.3f}-{stop_t * 1e9:.3f}ns"
+            )
         checked.append(expected)
-    return errors == 0 and len(checked) >= 2 and max(checked, default=0) > 0, f"checked={checked} errors={errors}"
+        next_start = next((rise for rise in gate_rises if rise > stop_t), rows[-1]["time"] + 1e-9)
+        for event_t in event_rises:
+            if not (stop_t < event_t < next_start):
+                continue
+            probe_t = min(rows[-1]["time"], event_t + 0.05e-9)
+            if probe_t <= event_t:
+                continue
+            hold_row = _sample_after(rows, event_t, 0.05e-9)
+            held = _logic_bits_to_int(hold_row, "count", 16)
+            outside_events_checked += 1
+            hold_checks += 1
+            if held != expected or hold_row["done"] <= 0.45:
+                errors += 1
+                failures.append(
+                    f"out_of_window_event observed=count:{held},done:{hold_row['done']:.3f} "
+                    f"expected=count:{expected},done:>0.45 window={event_t * 1e9:.3f}ns"
+                )
+                break
+    if failures:
+        return False, " ".join(failures[:5])
+    ok = (
+        errors == 0
+        and len(checked) >= 2
+        and max(checked, default=0) > 0
+        and outside_events_checked >= 1
+        and reset_checks >= 1
+        and hold_checks >= 1
+    )
+    return ok, (
+        f"checked={checked} errors={errors} reset_checks={reset_checks} "
+        f"outside_events_checked={outside_events_checked} hold_checks={hold_checks}"
+    )
 
 
 def check_ready_valid_latency_counter_12b(rows: list[dict[str, float]]) -> tuple[bool, str]:
@@ -25579,18 +27139,39 @@ def check_configurable_pulse_train(rows: list[dict[str, float]]) -> tuple[bool, 
     errors = 0
     done_seen = False
     expected_total = 0
+    expected_total_all = 0
+    zero_code_command = False
+    failures: list[str] = []
+    pre_start_quiet = False
     for edge_row, out_row in edge_pairs:
         if edge_row["start"] > 0.45 and not running:
-            period = max(1, _logic_bits_to_int(edge_row, "period", 4))
-            width = max(1, _logic_bits_to_int(edge_row, "width", 4))
-            total = max(1, _logic_bits_to_int(edge_row, "count", 4))
+            raw_period = _logic_bits_to_int(edge_row, "period", 4)
+            raw_width = _logic_bits_to_int(edge_row, "width", 4)
+            raw_total = _logic_bits_to_int(edge_row, "count", 4)
+            zero_code_command = raw_period == 0 and raw_width == 0 and raw_total == 0
+            period = max(1, raw_period)
+            width = max(1, raw_width)
+            total = max(1, raw_total)
             expected_total = total
+            expected_total_all += total
             running = True
             tick = 0
             emitted = 0
+        elif not running and expected_total == 0:
+            pre_start_quiet = pre_start_quiet or (out_row["pulse"] <= 0.45 and out_row["done"] <= 0.45)
         expected_pulse = running and emitted < total and (tick % period) < width
         if (out_row["pulse"] > 0.45) != expected_pulse:
             errors += 1
+            if zero_code_command:
+                failures.append(
+                    f"zero_code_minimum observed=pulse:{out_row['pulse']:.3f} expected=0.9 "
+                    f"window={edge_row['time'] * 1e9:.3f}ns"
+                )
+            else:
+                failures.append(
+                    f"pulse_state observed={out_row['pulse']:.3f} expected={0.9 if expected_pulse else 0.0:.1f} "
+                    f"window={edge_row['time'] * 1e9:.3f}ns period={period} width={width} count={total}"
+                )
         if running:
             if tick % period == period - 1:
                 emitted += 1
@@ -25601,10 +27182,23 @@ def check_configurable_pulse_train(rows: list[dict[str, float]]) -> tuple[bool, 
         done_seen = done_seen or expected_done
         if (out_row["done"] > 0.45) != expected_done:
             errors += 1
+            failures.append(
+                f"done_state observed={out_row['done']:.3f} expected={0.9 if expected_done else 0.0:.1f} "
+                f"window={edge_row['time'] * 1e9:.3f}ns period={period} width={width} count={total}"
+            )
     pulse_count = len(_rising_times(rows, "pulse"))
-    if expected_total and pulse_count != expected_total:
+    if expected_total_all and pulse_count != expected_total_all:
         errors += 1
-    return errors == 0 and done_seen, f"errors={errors} done_seen={done_seen} pulse_count={pulse_count} expected_total={expected_total}"
+        failures.insert(
+            0,
+            f"pulse_count observed={pulse_count} expected={expected_total_all} window=full_trace"
+        )
+    if failures:
+        return False, " ".join(failures[:5])
+    return errors == 0 and done_seen and pre_start_quiet, (
+        f"errors={errors} done_seen={done_seen} pre_start_quiet={pre_start_quiet} "
+        f"pulse_count={pulse_count} expected_total={expected_total_all}"
+    )
 
 
 def check_staircase_dac_stimulus_8b(rows: list[dict[str, float]]) -> tuple[bool, str]:
@@ -25638,21 +27232,3867 @@ def check_deterministic_jittered_clock(rows: list[dict[str, float]]) -> tuple[bo
     if not rows or not required.issubset(rows[0]):
         missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
         return False, "missing_columns=" + ",".join(missing[:12])
-    rises = _rising_times(rows, "clk_out")
-    if len(rises) < 8:
-        return False, f"too_few_edges={len(rises)}"
-    periods = [round((b - a) / 1e-9, 2) for a, b in zip(rises, rises[1:])]
-    varying = len(set(periods)) >= 3
-    bounded = all(14.0 <= p <= 26.0 for p in periods)
-    expected_prefix = [21.6, 19.2, 20.8, 18.4, 20.0]
-    prefix_ok = len(periods) >= len(expected_prefix) and all(
-        abs(periods[idx] - expected_prefix[idx]) <= 0.25
-        for idx in range(len(expected_prefix))
-    )
-    return varying and bounded and prefix_ok, (
-        f"periods_ns={periods[:12]} varying={varying} bounded={bounded} prefix_ok={prefix_ok}"
+    out_min = min(row["clk_out"] for row in rows)
+    out_max = max(row["clk_out"] for row in rows)
+    swing = out_max - out_min
+    if swing < 0.10:
+        return False, (
+            f"jitter_clock_edges observed=0 expected>=16 window=full_trace "
+            f"output_range={out_min:.3f}..{out_max:.3f}"
+        )
+
+    edge_threshold = out_min + 0.5 * swing
+    transitions: list[float] = []
+    last_high = rows[0]["clk_out"] > edge_threshold
+    for row in rows[1:]:
+        high = row["clk_out"] > edge_threshold
+        if high != last_high:
+            transitions.append(row["time"])
+        last_high = high
+    if len(transitions) < 16:
+        return False, f"jitter_clock_edges observed={len(transitions)} expected>=16 window=full_trace"
+    if out_min < -0.05 or out_min > 0.15 or out_max < 0.72 or out_max > 1.02:
+        return False, (
+            f"jitter_clock_level observed=low:{out_min:.3f},high:{out_max:.3f} "
+            "expected=low:0.0,high:0.9 window=full_trace"
+        )
+
+    half_periods = [(b - a) / 1e-9 for a, b in zip(transitions, transitions[1:])]
+    enabled_periods: list[tuple[int, float]] = []
+    disabled_periods: list[tuple[int, float]] = []
+    formula_failures: list[str] = []
+    for index, (edge_t, half_period_ns) in enumerate(zip(transitions, half_periods), start=1):
+        enabled = sample_signal_at(rows, "jitter_en", edge_t)
+        if enabled is None:
+            continue
+        if enabled <= 0.45:
+            disabled_periods.append((index, half_period_ns))
+            continue
+        enabled_periods.append((index, half_period_ns))
+        seed = 0
+        for bit in range(8):
+            value = sample_signal_at(rows, f"seed{bit}", edge_t)
+            if value is not None and value > 0.45:
+                seed |= 1 << bit
+        expected_ns = 10.0 + (((seed + 3 * index) % 5) - 2) * 0.8
+        if abs(half_period_ns - expected_ns) > 0.18:
+            formula_failures.append(
+                f"jitter_clock_formula observed={half_period_ns:.3f}ns expected={expected_ns:.3f}ns "
+                f"window=edge{index} seed={seed}"
+            )
+
+    bounds_failures = [
+        (index, period) for index, period in enabled_periods if period < 8.22 or period > 11.78
+    ]
+    if bounds_failures:
+        index, period = bounds_failures[0]
+        return False, (
+            f"jitter_clock_bounds observed={period:.3f}ns expected=8.4..11.6ns "
+            f"window=edge{index} mismatch_count={len(bounds_failures)}"
+        )
+    nominal_failures = [
+        (index, period) for index, period in disabled_periods if abs(period - 10.0) > 0.18
+    ]
+    if nominal_failures:
+        index, period = nominal_failures[0]
+        return False, (
+            f"jitter_clock_nominal observed={period:.3f}ns expected=10.000ns "
+            f"window=edge{index} mismatch_count={len(nominal_failures)}"
+        )
+    unique_enabled = {round(period, 1) for _, period in enabled_periods}
+    if len(enabled_periods) >= 5 and len(unique_enabled) < 3:
+        return False, (
+            f"jitter_clock_modulation observed=unique_half_periods:{sorted(unique_enabled)} "
+            "expected>=3 window=jitter_en_high"
+        )
+
+    repeat_failures: list[tuple[int, float, float]] = []
+    enabled_by_index = {index: period for index, period in enabled_periods}
+    for index, period in enabled_periods:
+        repeated = enabled_by_index.get(index + 5)
+        if repeated is not None and abs(repeated - period) > 0.18:
+            repeat_failures.append((index, period, repeated))
+    if repeat_failures:
+        index, first, repeated = repeat_failures[0]
+        return False, (
+            f"jitter_clock_repeatability observed=edge{index}:{first:.3f}ns,edge{index + 5}:{repeated:.3f}ns "
+            f"expected=equal window=constant_seed mismatch_count={len(repeat_failures)}"
+        )
+    if formula_failures:
+        return False, " ".join(formula_failures[:5])
+    return True, (
+        f"jitter_clock_contract_pass transitions={len(transitions)} enabled_intervals={len(enabled_periods)} "
+        f"disabled_intervals={len(disabled_periods)} output_range={out_min:.3f}..{out_max:.3f}"
     )
 
+
+def check_v4_aperture_delay_track_and_hold(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "VDD", "VSS", "clk", "vin", "vout"}
+    if not rows or not required.issubset(rows[0]):
+        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
+        return False, "missing_columns=" + ",".join(missing[:12])
+    base_ok, base_note = check_vbm1_track_hold_aperture(rows)
+    if not base_ok:
+        return False, base_note
+
+    edges = _rising_times(rows, "clk")
+    if len(edges) < 3:
+        return False, f"aperture_delay too_few_clk_edges observed={len(edges)} expected>=3 window=full_trace"
+    delayed_checks = 0
+    hold_checks = 0
+    rail_observation_checks = 0
+    max_delayed_err = 0.0
+    failures: list[str] = []
+    for idx, edge_t in enumerate(edges):
+        capture_t = edge_t + 0.20e-9
+        settle_t = edge_t + 0.38e-9
+        vin_edge = sample_signal_at(rows, "vin", edge_t + 0.01e-9)
+        vin_capture = sample_signal_at(rows, "vin", capture_t)
+        vout = sample_signal_at(rows, "vout", settle_t)
+        if None in (vin_edge, vin_capture, vout):
+            continue
+        assert vin_edge is not None and vin_capture is not None and vout is not None
+        delayed_checks += 1
+        delayed_err = abs(vout - vin_capture)
+        max_delayed_err = max(max_delayed_err, delayed_err)
+        if delayed_err > 0.06:
+            failures.append(
+                f"delayed_capture observed=vout:{vout:.3f} expected=vin_at_aperture:{vin_capture:.3f} "
+                f"window={edge_t * 1e9:.3f}ns"
+            )
+        if abs(vin_capture - vin_edge) > 0.15 and abs(vout - vin_capture) + 0.04 >= abs(vout - vin_edge):
+            rail_observation_checks += 1
+        if idx + 1 < len(edges):
+            hold_t = min(edges[idx + 1] - 0.15e-9, settle_t + 0.55e-9)
+            if hold_t > settle_t:
+                held = sample_signal_at(rows, "vout", hold_t)
+                if held is not None:
+                    hold_checks += 1
+                    if abs(held - vout) > 0.04:
+                        failures.append(
+                            f"hold observed=vout:{held:.3f} expected=held:{vout:.3f} "
+                            f"window={settle_t * 1e9:.3f}-{hold_t * 1e9:.3f}ns"
+                        )
+    vdd_span = max(row["VDD"] for row in rows) - min(row["VDD"] for row in rows)
+    vss_span = max(row["VSS"] for row in rows) - min(row["VSS"] for row in rows)
+    if max(vdd_span, vss_span) > 0.05:
+        out_min = min(row["vout"] for row in rows)
+        out_max = max(row["vout"] for row in rows)
+        vin_min = min(row["vin"] for row in rows)
+        vin_max = max(row["vin"] for row in rows)
+        if out_min < vin_min - 0.08 or out_max > vin_max + 0.08:
+            failures.append(
+                f"rail_observability observed=vout_range:{out_min:.3f}-{out_max:.3f} "
+                f"expected=unclamped_vin_range:{vin_min:.3f}-{vin_max:.3f} window=full_trace"
+            )
+    if delayed_checks < 3 or hold_checks < 2:
+        failures.append(
+            f"insufficient_aperture_checks observed=delayed:{delayed_checks},hold:{hold_checks} "
+            "expected=delayed>=3,hold>=2 window=clk_edges"
+        )
+    if failures:
+        return False, " ".join(failures[:5])
+    return True, (
+        f"{base_note} delayed_checks={delayed_checks} hold_checks={hold_checks} "
+        f"max_delayed_err={max_delayed_err:.4f} rail_sensitive_edges={rail_observation_checks}"
+    )
+
+
+def check_v4_peak_detector(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "vin", "rst", "vout"}
+    if not rows or not required.issubset(rows[0]):
+        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
+        return False, "missing_columns=" + ",".join(missing[:12])
+    base_ok, base_note = check_vbm1_peak_detector(rows)
+    if not base_ok:
+        return False, base_note
+    reset_rows: list[dict[str, float]] = []
+    reset_start: float | None = rows[0]["time"] if rows[0]["rst"] > 0.45 else None
+    for row in rows:
+        if row["rst"] > 0.45:
+            if reset_start is None:
+                reset_start = row["time"]
+            if row["time"] - reset_start >= 1.20e-9:
+                reset_rows.append(row)
+        else:
+            reset_start = None
+    if not reset_rows:
+        return False, "peak_reset_not_observable observed=reset_rows:0 expected=>0 window=full_trace"
+    reset_peak = max(row["vout"] for row in reset_rows)
+    if reset_peak > 0.12:
+        return False, f"peak_reset_clear observed=vout_peak:{reset_peak:.3f} expected<=0.12 window=rst_high"
+    segments: list[list[dict[str, float]]] = []
+    current: list[dict[str, float]] = []
+    for row in rows:
+        if row["rst"] > 0.45:
+            if current:
+                segments.append(current)
+                current = []
+        else:
+            current.append(row)
+    if current:
+        segments.append(current)
+    checks = 0
+    max_err = 0.0
+    failures: list[str] = []
+    for segment in segments:
+        if len(segment) < 4:
+            continue
+        expected_peak = 0.0
+        prev_vout = segment[0]["vout"]
+        for row in segment[1:]:
+            if row["vout"] + 0.04 < prev_vout:
+                failures.append(
+                    f"monotonic_hold observed=vout:{prev_vout:.3f}->{row['vout']:.3f} "
+                    f"expected=nondecreasing window={row['time'] * 1e9:.3f}ns"
+                )
+                break
+            prev_vout = row["vout"]
+        prev_vout = segment[0]["vout"]
+        for row in segment[:: max(1, len(segment) // 40)]:
+            expected_peak = max(expected_peak, row["vin"])
+            err = max(0.0, row["vout"] - expected_peak)
+            max_err = max(max_err, err)
+            if err > 0.08:
+                failures.append(
+                    f"peak_above_observed_input observed=vout:{row['vout']:.3f} "
+                    f"expected<=peak_so_far:{expected_peak:.3f} window={row['time'] * 1e9:.3f}ns"
+                )
+            prev_vout = row["vout"]
+            checks += 1
+    if checks < 12:
+        failures.append(f"insufficient_peak_checks observed={checks} expected>=12 window=non_reset_segments")
+    if failures:
+        return False, " ".join(failures[:5])
+    non_reset_steps = [
+        (rows[idx]["time"], rows[idx]["vout"] - rows[idx - 1]["vout"])
+        for idx in range(1, len(rows))
+        if rows[idx]["rst"] <= 0.45 and rows[idx - 1]["rst"] <= 0.45
+    ]
+    if non_reset_steps:
+        step_time, max_step = max(non_reset_steps, key=lambda item: item[1])
+        if max_step > 0.40:
+            return False, (
+                f"output_smoothing observed=max_step:{max_step:.3f} expected<=0.40 "
+                f"window={step_time * 1e9:.3f}ns"
+            )
+    return True, f"{base_note} reset_peak={reset_peak:.3f} monotonic_checks={checks} max_err={max_err:.4f}"
+
+
+def _v4_missing_columns(rows: list[dict[str, float]], required: set[str]) -> str | None:
+    if not rows:
+        return "missing_columns=" + ",".join(sorted(required)[:16])
+    missing = sorted(required - set(rows[0].keys()))
+    if missing:
+        return "missing_columns=" + ",".join(missing[:16])
+    return None
+
+
+def _v4_code(row: dict[str, float], names_lsb_first: list[str], vth: float = 0.45) -> int:
+    return sum((1 << bit) for bit, name in enumerate(names_lsb_first) if row[name] > vth)
+
+
+def _v4_clip(value: float, lo: float = 0.0, hi: float = 0.9) -> float:
+    return max(lo, min(hi, value))
+
+
+def _v4_close(actual: float, expected: float, tol: float = 0.07) -> bool:
+    return abs(actual - expected) <= tol
+
+
+def _v4_sparse_samples(rows: list[dict[str, float]], count: int = 450) -> list[dict[str, float]]:
+    if not rows:
+        return []
+    step = max(1, len(rows) // count)
+    return rows[::step]
+
+
+def _v4_settled_sparse_samples(
+    rows: list[dict[str, float]],
+    watched: set[str],
+    *,
+    settle_s: float = 0.5e-9,
+    count: int = 450,
+    tol: float = 0.02,
+) -> list[dict[str, float]]:
+    samples: list[dict[str, float]] = []
+    for row in _v4_sparse_samples(rows, count=count):
+        if row["time"] < settle_s:
+            continue
+        prior = _sample_after(rows, row["time"], -settle_s)
+        if prior["time"] >= row["time"]:
+            continue
+        if all(abs(row[name] - prior[name]) <= tol for name in watched):
+            samples.append(row)
+    return samples
+
+
+def check_v4_nonoverlap_clock_generator(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "clk_in", "rst", "enable", "phi1", "phi2", "deadtime_metric", "valid"}
+    missing = _v4_missing_columns(rows, required)
+    if missing:
+        return False, missing
+    overlap = sum(
+        1
+        for row in rows
+        if row["rst"] <= 0.45 and row["enable"] > 0.45 and row["phi1"] > 0.45 and row["phi2"] > 0.45
+    )
+    dead_seen = any(
+        row["rst"] <= 0.45
+        and row["enable"] > 0.45
+        and row["deadtime_metric"] > 0.45
+        and row["phi1"] <= 0.45
+        and row["phi2"] <= 0.45
+        for row in rows
+    )
+    valid_seen = any(row["time"] > 15e-9 and row["enable"] > 0.45 and row["valid"] > 0.45 for row in rows)
+    disable_samples = [
+        _sample_after(rows, edge_t, 0.8e-9)
+        for edge_t in _falling_times(rows, "enable")
+        if edge_t > 1e-9
+    ]
+    disable_clears = bool(disable_samples) and all(
+        row["enable"] <= 0.45
+        and row["rst"] <= 0.45
+        and row["phi1"] <= 0.45
+        and row["phi2"] <= 0.45
+        and row["valid"] <= 0.45
+        for row in disable_samples
+    )
+    errors = 0
+    checked_rise = 0
+    checked_fall = 0
+    for edge_t in _rising_times(rows, "clk_in"):
+        edge_row = min(rows, key=lambda row: abs(row["time"] - edge_t))
+        sample = _sample_after(rows, edge_t, 1.8e-9)
+        if edge_row["rst"] <= 0.45 and edge_row["enable"] > 0.45 and sample["enable"] > 0.45:
+            checked_rise += 1
+            if sample["phi1"] <= 0.45 or sample["phi2"] > 0.45:
+                errors += 1
+    for edge_t in _falling_times(rows, "clk_in"):
+        edge_row = min(rows, key=lambda row: abs(row["time"] - edge_t))
+        sample = _sample_after(rows, edge_t, 1.8e-9)
+        if edge_row["rst"] <= 0.45 and edge_row["enable"] > 0.45 and sample["enable"] > 0.45:
+            checked_fall += 1
+            if sample["phi2"] <= 0.45 or sample["phi1"] > 0.45:
+                errors += 1
+    ok = overlap == 0 and dead_seen and valid_seen and disable_clears and errors == 0 and checked_rise >= 3 and checked_fall >= 3
+    return ok, (
+        "v4_nonoverlap_clock "
+        f"rise={checked_rise} fall={checked_fall} errors={errors} overlap={overlap} "
+        f"dead_seen={dead_seen} valid_seen={valid_seen} disable_clears={disable_clears}"
+    )
+
+
+def check_v4_pwm_ramp_modulator_front_end(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "clk", "rst", "enable", "vctrl", "ramp_out", "pwm_out", "cycle_start", "duty_metric"}
+    missing = _v4_missing_columns(rows, required)
+    if missing:
+        return False, missing
+    ramp = 0.0
+    errors = 0
+    checked = 0
+    wraps = 0
+    highs = 0
+    lows = 0
+    for edge_t in _rising_times(rows, "clk"):
+        edge_row = min(rows, key=lambda row: abs(row["time"] - edge_t))
+        sample = _sample_after(rows, edge_t, 0.8e-9)
+        if edge_row["rst"] > 0.45 or edge_row["enable"] <= 0.45:
+            ramp = 0.0
+            expected_pwm = 0.0
+            expected_cycle = 0.0
+            expected_duty = 0.0
+        else:
+            expected_cycle = 0.0
+            if ramp >= 0.9 - 0.15 / 2.0:
+                ramp = 0.0
+                expected_cycle = 0.9
+                wraps += 1
+            else:
+                ramp += 0.15
+            expected_pwm = 0.9 if edge_row["vctrl"] > ramp else 0.0
+            expected_duty = _v4_clip(edge_row["vctrl"])
+            highs += int(expected_pwm > 0.45)
+            lows += int(expected_pwm <= 0.45)
+        if not _v4_close(sample["ramp_out"], ramp, 0.06):
+            errors += 1
+        if (sample["pwm_out"] > 0.45) != (expected_pwm > 0.45):
+            errors += 1
+        if (sample["cycle_start"] > 0.45) != (expected_cycle > 0.45):
+            errors += 1
+        if not _v4_close(sample["duty_metric"], expected_duty, 0.06):
+            errors += 1
+        checked += 1
+    ok = errors == 0 and checked >= 8 and wraps >= 2 and highs > 0 and lows > 0
+    return ok, f"v4_pwm_ramp checked={checked} wraps={wraps} highs={highs} lows={lows} errors={errors}"
+
+
+def check_v4_periodic_sampler_aperture_metric(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "vin", "clk", "rst", "sample_en", "vhold", "aperture_metric", "valid"}
+    missing = _v4_missing_columns(rows, required)
+    if missing:
+        return False, missing
+    hold = 0.0
+    valid = False
+    errors = 0
+    checked = 0
+    disabled_hold_checks = 0
+    metric_nonzero = False
+    for edge_t in _rising_times(rows, "clk"):
+        edge_row = min(rows, key=lambda row: abs(row["time"] - edge_t))
+        old_hold = hold
+        if edge_row["rst"] > 0.45:
+            hold = 0.0
+            metric = 0.0
+            valid = False
+        elif edge_row["sample_en"] > 0.45:
+            metric = min(0.9, 0.5 * abs(edge_row["vin"] - old_hold))
+            hold = edge_row["vin"]
+            valid = True
+            metric_nonzero = metric_nonzero or metric > 0.03
+        else:
+            metric = None
+            disabled_hold_checks += 1
+        sample = _sample_after(rows, edge_t, 0.8e-9)
+        if not _v4_close(sample["vhold"], hold, 0.06):
+            errors += 1
+        if metric is not None and not _v4_close(sample["aperture_metric"], metric, 0.06):
+            errors += 1
+        if (sample["valid"] > 0.45) != valid:
+            errors += 1
+        checked += 1
+    ok = errors == 0 and checked >= 8 and disabled_hold_checks >= 1 and metric_nonzero
+    return ok, (
+        f"v4_periodic_sampler checked={checked} disabled_hold_checks={disabled_hold_checks} "
+        f"metric_nonzero={metric_nonzero} errors={errors}"
+    )
+
+
+def check_v4_programmable_frequency_divider(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "clk_in", "rst", "enable", "n_3", "n_2", "n_1", "n_0", "clk_div", "ratio_metric", "valid"}
+    missing = _v4_missing_columns(rows, required)
+    if missing:
+        return False, missing
+    count = 0
+    out_state = 0
+    valid = False
+    errors = 0
+    checked = 0
+    toggles = 0
+    divisors_seen: set[int] = set()
+    for edge_t in _rising_times(rows, "clk_in"):
+        edge_row = min(rows, key=lambda row: abs(row["time"] - edge_t))
+        if edge_row["rst"] > 0.45 or edge_row["enable"] <= 0.45:
+            count = 0
+            out_state = 0
+            valid = False
+            divisor = 1
+            metric = 0.0
+        else:
+            divisor = _v4_code(edge_row, ["n_0", "n_1", "n_2", "n_3"]) + 1
+            divisors_seen.add(divisor)
+            metric = 0.9 * divisor / 16.0
+            if count >= divisor - 1:
+                count = 0
+                out_state = 1 - out_state
+                valid = True
+                toggles += 1
+            else:
+                count += 1
+        sample = _sample_after(rows, edge_t, 0.8e-9)
+        if (sample["clk_div"] > 0.45) != bool(out_state):
+            errors += 1
+        if not _v4_close(sample["ratio_metric"], metric, 0.06):
+            errors += 1
+        if (sample["valid"] > 0.45) != valid:
+            errors += 1
+        checked += 1
+    ok = errors == 0 and checked >= 12 and toggles >= 3 and len(divisors_seen) >= 3
+    return ok, (
+        f"v4_programmable_divider checked={checked} toggles={toggles} "
+        f"divisors={sorted(divisors_seen)} errors={errors}"
+    )
+
+
+def check_v4_level_shifter_enable_rail_tracking(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "vin", "enable", "rst", "vddl", "vddh", "vout", "valid"}
+    missing = _v4_missing_columns(rows, required)
+    if missing:
+        return False, missing
+    errors = 0
+    checked = 0
+    high_seen = False
+    low_seen = False
+    disabled_seen = False
+    rail_values: list[float] = []
+    for row in _v4_settled_sparse_samples(rows, {"vin", "enable", "rst", "vddl", "vddh"}):
+        if row["time"] < 3e-9:
+            continue
+        if 0.1 < row["enable"] < 0.8 or 0.1 < row["rst"] < 0.8:
+            continue
+        if row["rst"] > 0.45 or row["enable"] <= 0.45 or row["vddh"] < 0.2:
+            expected_out = 0.0
+            expected_valid = 0.0
+            disabled_seen = disabled_seen or row["enable"] <= 0.45
+        else:
+            threshold = 0.5 * row["vddl"] if 0.5 * row["vddl"] >= 0.05 else 0.45
+            expected_out = row["vddh"] if row["vin"] > threshold else 0.0
+            expected_valid = row["vddh"]
+            high_seen = high_seen or expected_out > 0.45
+            low_seen = low_seen or expected_out <= 0.45
+            rail_values.append(row["vddh"])
+        if not _v4_close(row["vout"], expected_out, 0.08):
+            errors += 1
+        if not _v4_close(row["valid"], expected_valid, 0.08):
+            errors += 1
+        checked += 1
+    rail_tracks = rail_values and (max(rail_values) - min(rail_values) > 0.25)
+    ok = errors == 0 and checked >= 20 and high_seen and low_seen and disabled_seen and rail_tracks
+    return ok, (
+        f"v4_level_shifter checked={checked} errors={errors} high={high_seen} low={low_seen} "
+        f"disabled={disabled_seen} rail_tracks={rail_tracks}"
+    )
+
+
+def check_v4_ctle_equalizer_macro(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "vin", "clk", "rst", "boost_2", "boost_1", "boost_0", "vout", "edge_metric", "sat_flag"}
+    missing = _v4_missing_columns(rows, required)
+    if missing:
+        return False, missing
+    prev_in = 0.45
+    errors = 0
+    checked = 0
+    codes_seen: set[int] = set()
+    sat_seen = False
+    metric_seen = False
+    for edge_t in _rising_times(rows, "clk"):
+        edge_row = min(rows, key=lambda row: abs(row["time"] - edge_t))
+        if edge_row["rst"] > 0.45:
+            prev_in = 0.45
+            expected_out = 0.45
+            expected_metric = 0.0
+            expected_sat = 0.0
+        else:
+            code = _v4_code(edge_row, ["boost_0", "boost_1", "boost_2"])
+            codes_seen.add(code)
+            edge = edge_row["vin"] - prev_in
+            raw = 0.45 + (edge_row["vin"] - 0.45) + 0.08 * code * edge
+            expected_sat = 0.9 if raw > 0.9 or raw < 0.0 else 0.0
+            expected_out = _v4_clip(raw)
+            expected_metric = min(0.9, abs(0.08 * code * edge))
+            sat_seen = sat_seen or expected_sat > 0.45
+            metric_seen = metric_seen or expected_metric > 0.03
+            prev_in = edge_row["vin"]
+        sample = _sample_after(rows, edge_t, 0.8e-9)
+        if not _v4_close(sample["vout"], expected_out, 0.08):
+            errors += 1
+        if not _v4_close(sample["edge_metric"], expected_metric, 0.07):
+            errors += 1
+        if (sample["sat_flag"] > 0.45) != (expected_sat > 0.45):
+            errors += 1
+        checked += 1
+    ok = errors == 0 and checked >= 8 and len(codes_seen) >= 4 and metric_seen and sat_seen
+    return ok, (
+        f"v4_ctle checked={checked} codes={sorted(codes_seen)} metric_seen={metric_seen} "
+        f"sat_seen={sat_seen} errors={errors}"
+    )
+
+
+def check_v4_ffe_transmitter_3tap(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "data", "clk", "rst", "pre_1", "pre_0", "post_1", "post_0", "vout", "main_dbg", "pre_dbg", "post_dbg"}
+    missing = _v4_missing_columns(rows, required)
+    if missing:
+        return False, missing
+    sym0 = 0
+    sym1 = 0
+    sym2 = 0
+    errors = 0
+    checked = 0
+    pre_codes: set[int] = set()
+    post_codes: set[int] = set()
+    out_values: list[float] = []
+    for edge_t in _rising_times(rows, "clk"):
+        edge_row = min(rows, key=lambda row: abs(row["time"] - edge_t))
+        if edge_row["rst"] > 0.45:
+            sym0 = sym1 = sym2 = 0
+            expected_main = expected_pre = expected_post = expected_out = 0.45
+        else:
+            sym2 = sym1
+            sym1 = sym0
+            sym0 = 1 if edge_row["data"] > 0.45 else -1
+            pre_code = _v4_code(edge_row, ["pre_0", "pre_1"])
+            post_code = _v4_code(edge_row, ["post_0", "post_1"])
+            pre_codes.add(pre_code)
+            post_codes.add(post_code)
+            expected_main = 0.45 + 0.18 * sym0
+            expected_pre = 0.45 + 0.04 * pre_code * sym1
+            expected_post = 0.45 - 0.04 * post_code * sym2
+            expected_out = _v4_clip(0.45 + 0.18 * sym0 + 0.04 * pre_code * sym1 - 0.04 * post_code * sym2)
+            out_values.append(expected_out)
+        sample = _sample_after(rows, edge_t, 0.8e-9)
+        if not _v4_close(sample["main_dbg"], expected_main, 0.07):
+            errors += 1
+        if not _v4_close(sample["pre_dbg"], expected_pre, 0.07):
+            errors += 1
+        if not _v4_close(sample["post_dbg"], expected_post, 0.07):
+            errors += 1
+        if not _v4_close(sample["vout"], expected_out, 0.08):
+            errors += 1
+        checked += 1
+    out_span = max(out_values, default=0.45) - min(out_values, default=0.45)
+    ok = errors == 0 and checked >= 10 and len(pre_codes) >= 3 and len(post_codes) >= 3 and out_span > 0.25
+    return ok, (
+        f"v4_ffe checked={checked} pre_codes={sorted(pre_codes)} post_codes={sorted(post_codes)} "
+        f"out_span={out_span:.3f} errors={errors}"
+    )
+
+
+def check_v4_source_follower_buffer_macro(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "vin", "vbias", "enable", "rst", "vout", "headroom_metric", "valid"}
+    missing = _v4_missing_columns(rows, required)
+    if missing:
+        return False, missing
+    errors = 0
+    checked = 0
+    clamp_seen = False
+    disabled_seen = False
+    for row in _v4_settled_sparse_samples(rows, {"vin", "vbias", "enable", "rst"}):
+        if row["time"] < 3e-9 or 0.1 < row["enable"] < 0.8 or 0.1 < row["rst"] < 0.8:
+            continue
+        if row["rst"] > 0.45 or row["enable"] <= 0.45 or row["vbias"] <= 0.10:
+            expected_out = 0.0
+            expected_metric = 0.0
+            expected_valid = 0.0
+            disabled_seen = disabled_seen or row["enable"] <= 0.45
+        else:
+            max_out = row["vbias"] - 0.10
+            raw = row["vin"] - 0.12
+            expected_out = _v4_clip(raw, 0.0, max_out)
+            clamp_seen = clamp_seen or expected_out < raw - 0.04
+            expected_metric = _v4_clip(row["vbias"] - expected_out)
+            expected_valid = 0.9
+        if not _v4_close(row["vout"], expected_out, 0.08):
+            errors += 1
+        if not _v4_close(row["headroom_metric"], expected_metric, 0.08):
+            errors += 1
+        if not _v4_close(row["valid"], expected_valid, 0.08):
+            errors += 1
+        checked += 1
+    ok = errors == 0 and checked >= 20 and clamp_seen and disabled_seen
+    return ok, f"v4_source_follower checked={checked} clamp_seen={clamp_seen} disabled={disabled_seen} errors={errors}"
+
+
+def check_v4_cascode_gain_cell_headroom(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "vin", "vbias", "vdd_sense", "enable", "rst", "vout", "gain_metric", "headroom_ok"}
+    missing = _v4_missing_columns(rows, required)
+    if missing:
+        return False, missing
+    errors = 0
+    checked = 0
+    clamp_seen = False
+    disabled_seen = False
+    ok_low_seen = False
+    for row in _v4_settled_sparse_samples(rows, {"vin", "vbias", "vdd_sense", "enable", "rst"}):
+        if row["time"] < 3e-9 or 0.1 < row["enable"] < 0.8 or 0.1 < row["rst"] < 0.8:
+            continue
+        rail_limit = min(row["vdd_sense"], row["vbias"]) - 0.16
+        if row["rst"] > 0.45 or row["enable"] <= 0.45:
+            expected_out = 0.45
+            expected_metric = 0.0
+            expected_ok = 0.0
+            disabled_seen = disabled_seen or row["enable"] <= 0.45
+        else:
+            raw = 0.45 - 1.8 * (row["vin"] - 0.45)
+            expected_out = _v4_clip(raw, 0.0, rail_limit)
+            clamp_seen = clamp_seen or expected_out < raw - 0.04 or expected_out > raw + 0.04
+            expected_metric = abs(expected_out - 0.45)
+            expected_ok = 0.9 if rail_limit > 0.50 else 0.0
+            ok_low_seen = ok_low_seen or expected_ok <= 0.45
+        if not _v4_close(row["vout"], expected_out, 0.09):
+            errors += 1
+        if not _v4_close(row["gain_metric"], expected_metric, 0.08):
+            errors += 1
+        if (row["headroom_ok"] > 0.45) != (expected_ok > 0.45):
+            errors += 1
+        checked += 1
+    ok = errors == 0 and checked >= 20 and clamp_seen and disabled_seen and ok_low_seen
+    return ok, (
+        f"v4_cascode checked={checked} clamp_seen={clamp_seen} disabled={disabled_seen} "
+        f"ok_low_seen={ok_low_seen} errors={errors}"
+    )
+
+
+def check_v4_baseband_offset_gain_trim_macro(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {
+        "time",
+        "vin",
+        "clk",
+        "rst",
+        "enable",
+        "gain_2",
+        "gain_1",
+        "gain_0",
+        "offset_2",
+        "offset_1",
+        "offset_0",
+        "vout",
+        "residual_metric",
+        "valid",
+    }
+    missing = _v4_missing_columns(rows, required)
+    if missing:
+        return False, missing
+    valid = False
+    errors = 0
+    checked = 0
+    gain_codes: set[int] = set()
+    offset_codes: set[int] = set()
+    clipped_seen = False
+    disabled_seen = False
+    for edge_t in _rising_times(rows, "clk"):
+        edge_row = min(rows, key=lambda row: abs(row["time"] - edge_t))
+        if edge_row["rst"] > 0.45 or edge_row["enable"] <= 0.45:
+            expected_out = 0.45
+            expected_metric = 0.0
+            valid = False
+            disabled_seen = disabled_seen or edge_row["enable"] <= 0.45
+        else:
+            gain_code = _v4_code(edge_row, ["gain_0", "gain_1", "gain_2"])
+            offset_code = _v4_code(edge_row, ["offset_0", "offset_1", "offset_2"])
+            gain_codes.add(gain_code)
+            offset_codes.add(offset_code)
+            raw = 0.45 + (0.7 + 0.1 * gain_code) * (edge_row["vin"] - 0.45) + 0.025 * (offset_code - 3)
+            expected_out = _v4_clip(raw)
+            clipped_seen = clipped_seen or abs(expected_out - raw) > 0.03
+            expected_metric = abs(expected_out - 0.45)
+            valid = True
+        sample = _sample_after(rows, edge_t, 0.8e-9)
+        if not _v4_close(sample["vout"], expected_out, 0.08):
+            errors += 1
+        if not _v4_close(sample["residual_metric"], expected_metric, 0.07):
+            errors += 1
+        if (sample["valid"] > 0.45) != valid:
+            errors += 1
+        checked += 1
+    ok = (
+        errors == 0
+        and checked >= 10
+        and len(gain_codes) >= 4
+        and len(offset_codes) >= 4
+        and disabled_seen
+        and clipped_seen
+    )
+    return ok, (
+        f"v4_baseband_trim checked={checked} gain_codes={sorted(gain_codes)} "
+        f"offset_codes={sorted(offset_codes)} clipped={clipped_seen} disabled={disabled_seen} errors={errors}"
+    )
+
+
+def check_v4_clocked_variable_width_dac(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "clk", "rst", "enable", "d0", "d1", "d2", "d3", "vout", "code_metric", "valid"}
+    missing = _v4_missing_columns(rows, required)
+    if missing:
+        return False, missing
+
+    def evaluate_nbits(nbits: int) -> dict[str, object]:
+        errors = 0
+        checked = 0
+        max_err = 0.0
+        codes: set[int] = set()
+        disabled_seen = False
+        reset_seen = False
+        for edge_t in _rising_times(rows, "clk"):
+            edge_row = min(rows, key=lambda row: abs(row["time"] - edge_t))
+            sample = _sample_after(rows, edge_t, 0.7e-9)
+            if edge_row["rst"] > 0.45 or edge_row["enable"] <= 0.45:
+                expected_out = 0.0
+                expected_metric = 0.0
+                expected_valid = 0.0
+                disabled_seen = disabled_seen or edge_row["enable"] <= 0.45
+                reset_seen = reset_seen or edge_row["rst"] > 0.45
+            else:
+                bit_names = ["d0", "d1", "d2", "d3"][:nbits]
+                code = _v4_code(edge_row, bit_names)
+                denom = (1 << nbits) - 1
+                expected_out = 0.9 * code / denom
+                expected_metric = expected_out
+                expected_valid = 0.9
+                codes.add(code)
+            local_err = max(
+                abs(sample["vout"] - expected_out),
+                abs(sample["code_metric"] - expected_metric),
+                abs(sample["valid"] - expected_valid),
+            )
+            max_err = max(max_err, local_err)
+            if local_err > 0.08:
+                errors += 1
+            checked += 1
+        return {
+            "nbits": nbits,
+            "errors": errors,
+            "checked": checked,
+            "max_err": max_err,
+            "codes": codes,
+            "disabled_seen": disabled_seen,
+            "reset_seen": reset_seen,
+        }
+
+    candidates = [evaluate_nbits(nbits) for nbits in (3, 4)]
+    best = min(candidates, key=lambda item: (int(item["errors"]), float(item["max_err"])))
+    codes = best["codes"]
+    ok = (
+        int(best["errors"]) == 0
+        and int(best["checked"]) >= 8
+        and len(codes) >= 5
+        and bool(best["disabled_seen"])
+        and bool(best["reset_seen"])
+    )
+    return ok, (
+        f"v4_clocked_dac best_nbits={best['nbits']} checked={best['checked']} "
+        f"codes={sorted(codes)} max_err={float(best['max_err']):.4f} errors={best['errors']} "
+        f"disabled={best['disabled_seen']} reset={best['reset_seen']}"
+    )
+
+
+def check_v4_thermometer_dac_front_end(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {
+        "time",
+        "clk",
+        "rst",
+        "enable",
+        "b0",
+        "b1",
+        "b2",
+        "therm0",
+        "therm1",
+        "therm2",
+        "therm3",
+        "therm4",
+        "therm5",
+        "therm6",
+        "vout",
+        "count_metric",
+        "valid",
+    }
+    missing = _v4_missing_columns(rows, required)
+    if missing:
+        return False, missing
+    errors = 0
+    checked = 0
+    codes: set[int] = set()
+    max_err = 0.0
+    disabled_seen = False
+    reset_seen = False
+    therm_names = [f"therm{i}" for i in range(7)]
+    for edge_t in _rising_times(rows, "clk"):
+        edge_row = min(rows, key=lambda row: abs(row["time"] - edge_t))
+        sample = _sample_after(rows, edge_t, 0.7e-9)
+        if edge_row["rst"] > 0.45 or edge_row["enable"] <= 0.45:
+            code = 0
+            expected_valid = 0.0
+            disabled_seen = disabled_seen or edge_row["enable"] <= 0.45
+            reset_seen = reset_seen or edge_row["rst"] > 0.45
+        else:
+            code = _v4_code(edge_row, ["b0", "b1", "b2"])
+            expected_valid = 0.9
+            codes.add(code)
+        expected_therm = [0.9 if code > idx else 0.0 for idx in range(7)]
+        expected_out = min(0.9, 0.12 * code)
+        expected_metric = 0.9 * code / 7.0
+        local_err = max(
+            [abs(sample[name] - value) for name, value in zip(therm_names, expected_therm)]
+            + [
+                abs(sample["vout"] - expected_out),
+                abs(sample["count_metric"] - expected_metric),
+                abs(sample["valid"] - expected_valid),
+            ]
+        )
+        max_err = max(max_err, local_err)
+        if local_err > 0.08:
+            errors += 1
+        checked += 1
+    ok = errors == 0 and checked >= 8 and len(codes) >= 5 and disabled_seen and reset_seen
+    return ok, (
+        f"v4_therm_dac checked={checked} codes={sorted(codes)} max_err={max_err:.4f} "
+        f"errors={errors} disabled={disabled_seen} reset={reset_seen}"
+    )
+
+
+def check_v4_frequency_period_meter_with_timeout(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "clk_in", "rst", "enable", "period_out", "freq_metric", "valid", "timeout_flag"}
+    missing = _v4_missing_columns(rows, required)
+    if missing:
+        return False, missing
+
+    def evaluate_params(ref_period: float, max_period: float, timeout: float) -> dict[str, object]:
+        have_edge = False
+        last_edge = 0.0
+        errors = 0
+        checked_edges = 0
+        max_err = 0.0
+        periods: list[float] = []
+        disabled_seen = any(row["enable"] <= 0.45 for row in rows)
+        reset_seen = any(row["rst"] > 0.45 for row in rows)
+        for edge_t in _rising_times(rows, "clk_in"):
+            edge_row = min(rows, key=lambda row: abs(row["time"] - edge_t))
+            sample = _sample_after(rows, edge_t, 0.75e-9)
+            if edge_row["rst"] > 0.45 or edge_row["enable"] <= 0.45:
+                have_edge = False
+                last_edge = edge_t
+                expected_period = expected_freq = expected_valid = expected_timeout = 0.0
+                disabled_seen = disabled_seen or edge_row["enable"] <= 0.45
+                reset_seen = reset_seen or edge_row["rst"] > 0.45
+            else:
+                if have_edge:
+                    period = edge_t - last_edge
+                    periods.append(period)
+                    expected_period = _v4_clip(0.9 * period / max_period)
+                    expected_freq = _v4_clip(0.9 * ref_period / period)
+                    expected_valid = 0.9
+                else:
+                    expected_period = expected_freq = expected_valid = 0.0
+                expected_timeout = 0.0
+                last_edge = edge_t
+                have_edge = True
+            local_err = max(
+                abs(sample["period_out"] - expected_period),
+                abs(sample["freq_metric"] - expected_freq),
+                abs(sample["valid"] - expected_valid),
+                abs(sample["timeout_flag"] - expected_timeout),
+            )
+            max_err = max(max_err, local_err)
+            if local_err > 0.10:
+                errors += 1
+            checked_edges += 1
+
+        timeout_seen = False
+        timeout_output_seen = False
+        for row in rows:
+            if row["enable"] <= 0.45 or row["rst"] > 0.45:
+                continue
+            prior_edges = [
+                edge_t
+                for edge_t in _rising_times(rows, "clk_in")
+                if edge_t < row["time"] and sample_signal_at(rows, "enable", edge_t) is not None
+            ]
+            if not prior_edges:
+                continue
+            last = prior_edges[-1]
+            if row["time"] - last > timeout + 0.7e-9:
+                timeout_seen = True
+                timeout_output_seen = timeout_output_seen or row["timeout_flag"] > 0.45
+        return {
+            "ref": ref_period,
+            "max": max_period,
+            "timeout": timeout,
+            "errors": errors,
+            "checked": checked_edges,
+            "max_err": max_err,
+            "periods": periods,
+            "timeout_seen": timeout_seen,
+            "timeout_output_seen": timeout_output_seen,
+            "disabled_seen": disabled_seen,
+            "reset_seen": reset_seen,
+        }
+
+    candidates = [
+        evaluate_params(8e-9, 20e-9, 18e-9),
+        evaluate_params(7e-9, 18e-9, 16e-9),
+    ]
+    best = min(candidates, key=lambda item: (int(item["errors"]), float(item["max_err"])))
+    periods = best["periods"]
+    period_span = max(periods, default=0.0) - min(periods, default=0.0)
+    ok = (
+        int(best["errors"]) == 0
+        and int(best["checked"]) >= 5
+        and len(periods) >= 3
+        and period_span > 1.0e-9
+        and bool(best["timeout_seen"])
+        and bool(best["timeout_output_seen"])
+        and bool(best["disabled_seen"])
+        and bool(best["reset_seen"])
+    )
+    return ok, (
+        f"v4_freq_meter ref={float(best['ref']):.3e} max={float(best['max']):.3e} "
+        f"checked={best['checked']} periods={len(periods)} span={period_span:.3e} "
+        f"timeout_seen={best['timeout_seen']} timeout_output={best['timeout_output_seen']} "
+        f"max_err={float(best['max_err']):.4f} errors={best['errors']}"
+    )
+
+
+def check_v4_edge_delay_line_with_deglitch(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "vin", "rst", "enable", "vout", "edge_valid", "rejected"}
+    missing = _v4_missing_columns(rows, required)
+    if missing:
+        return False, missing
+    reset_rows = [row for row in rows if row["rst"] > 0.45]
+    if reset_rows:
+        reset_peak = max(max(row["vout"], row["edge_valid"], row["rejected"]) for row in reset_rows)
+        if reset_peak > 0.16:
+            return False, (
+                f"v4_delay_line reset_clear observed=max_output:{reset_peak:.3f} "
+                "expected<=0.16 window=rst_high"
+            )
+    times = [row["time"] for row in rows]
+    input_values = [row["vin"] for row in rows]
+    output_values = [row["vout"] for row in rows]
+    input_edges = sorted(
+        _threshold_crossings(input_values, times, threshold=0.45, direction="rising")
+        + _threshold_crossings(input_values, times, threshold=0.45, direction="falling")
+    )
+    output_edges = sorted(
+        _threshold_crossings(output_values, times, threshold=0.45, direction="rising")
+        + _threshold_crossings(output_values, times, threshold=0.45, direction="falling")
+    )
+    if len(input_edges) < 5:
+        return False, f"v4_delay_line too_few_input_edges observed={len(input_edges)} expected>=5 window=full_trace"
+    if len(output_edges) < 2:
+        return False, f"v4_delay_line too_few_output_edges observed={len(output_edges)} expected>=2 window=full_trace"
+
+    wide_matches = 0
+    early_errors = 0
+    delays: list[float] = []
+    for in_edge in input_edges:
+        if in_edge < 2.0e-9:
+            continue
+        before = sample_signal_at(rows, "vout", max(rows[0]["time"], in_edge + 0.45e-9))
+        if before is None:
+            continue
+        in_after = sample_signal_at(rows, "vin", min(rows[-1]["time"], in_edge + 0.70e-9))
+        if in_after is None:
+            continue
+        stable_after = sample_signal_at(rows, "vin", min(rows[-1]["time"], in_edge + 1.40e-9))
+        if stable_after is None:
+            continue
+        is_wide = (in_after > 0.45) == (stable_after > 0.45)
+        later_edges = [out_edge for out_edge in output_edges if 0.8e-9 <= out_edge - in_edge <= 3.2e-9]
+        if is_wide and later_edges:
+            wide_matches += 1
+            delays.append(later_edges[0] - in_edge)
+        if later_edges and abs(before - (0.9 if in_after > 0.45 else 0.0)) < 0.12 and later_edges[0] - in_edge < 0.8e-9:
+            early_errors += 1
+
+    rejected_seen = any(row["rejected"] > 0.45 for row in rows)
+    valid_seen = any(row["edge_valid"] > 0.45 for row in rows)
+    disabled_clears = False
+    for row in rows:
+        if row["enable"] <= 0.45 and row["time"] > 48.5e-9 and row["vout"] < 0.2:
+            disabled_clears = True
+            break
+    min_delay = min(delays, default=0.0)
+    max_delay = max(delays, default=0.0)
+    ok = (
+        wide_matches >= 2
+        and early_errors == 0
+        and rejected_seen
+        and valid_seen
+        and disabled_clears
+        and 1.8e-9 <= min_delay <= 3.2e-9
+        and max_delay <= 3.4e-9
+    )
+    if not ok:
+        return False, (
+            f"v4_delay_line_contract observed=wide_matches:{wide_matches},delay_range:({min_delay:.3e},{max_delay:.3e}),"
+            f"rejected:{rejected_seen},valid:{valid_seen},disabled_clears:{disabled_clears},early_errors:{early_errors} "
+            "expected=wide_matches>=2,delay=1.8..3.4ns,rejected/valid/disabled_clear,true,no_early "
+            "window=full_trace"
+        )
+    return ok, (
+        f"v4_delay_line input_edges={len(input_edges)} output_edges={len(output_edges)} "
+        f"wide_matches={wide_matches} delay_range=({min_delay:.3e},{max_delay:.3e}) "
+        f"rejected={rejected_seen} valid={valid_seen} disabled_clears={disabled_clears} early_errors={early_errors}"
+    )
+
+
+def check_v4_transient_ideal_adc_with_dc_compatible_contract(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "clk", "rst", "enable", "vin", "b0", "b1", "b2", "code_metric", "valid"}
+    missing = _v4_missing_columns(rows, required)
+    if missing:
+        return False, missing
+    times = [row["time"] for row in rows]
+    edges = _threshold_crossings([row["clk"] for row in rows], times, threshold=0.45, direction="rising")
+    checked = 0
+    errors = 0
+    max_metric_err = 0.0
+    codes_seen: set[int] = set()
+    reset_seen = False
+    disabled_seen = False
+    disabled_clears = False
+    for edge in edges:
+        rst = sample_signal_at(rows, "rst", min(rows[-1]["time"], edge + 0.15e-9))
+        enable = sample_signal_at(rows, "enable", min(rows[-1]["time"], edge + 0.15e-9))
+        vin = sample_signal_at(rows, "vin", edge)
+        if rst is None or enable is None or vin is None:
+            continue
+        if rst > 0.45:
+            reset_seen = True
+        if enable <= 0.45:
+            disabled_seen = True
+        if rst > 0.45 or enable <= 0.45:
+            t_clear = min(rows[-1]["time"], edge + 0.65e-9)
+            clear_samples = {sig: sample_signal_at(rows, sig, t_clear) for sig in ("b0", "b1", "b2", "code_metric", "valid")}
+            if enable <= 0.45 and all(value is not None for value in clear_samples.values()):
+                disabled_clears = all(float(clear_samples[sig]) < 0.20 for sig in clear_samples)
+            continue
+        t_sample = min(rows[-1]["time"], edge + 0.65e-9)
+        samples = {sig: sample_signal_at(rows, sig, t_sample) for sig in ("b0", "b1", "b2", "code_metric", "valid")}
+        if any(value is None for value in samples.values()):
+            continue
+        x = vin / 0.9
+        if x <= 0.0:
+            expected = 0
+        elif x >= 1.0:
+            expected = 7
+        else:
+            expected = int(x * 8.0)
+            expected = max(0, min(7, expected))
+        observed = (
+            (1 if float(samples["b0"]) > 0.45 else 0)
+            + (2 if float(samples["b1"]) > 0.45 else 0)
+            + (4 if float(samples["b2"]) > 0.45 else 0)
+        )
+        metric_err = abs(float(samples["code_metric"]) - 0.9 * expected / 7.0)
+        max_metric_err = max(max_metric_err, metric_err)
+        if observed != expected or metric_err > 0.08 or float(samples["valid"]) <= 0.45:
+            errors += 1
+        codes_seen.add(expected)
+        checked += 1
+    ok = (
+        checked >= 10
+        and len(codes_seen) >= 6
+        and errors == 0
+        and max_metric_err <= 0.08
+        and reset_seen
+        and disabled_seen
+        and disabled_clears
+    )
+    return ok, (
+        f"v4_adc checked={checked} codes={sorted(codes_seen)} max_metric_err={max_metric_err:.4f} "
+        f"errors={errors} reset={reset_seen} disabled={disabled_seen} disabled_clears={disabled_clears}"
+    )
+
+
+def check_v4_windowed_peak_minmax_monitor(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {
+        "time",
+        "vin_a",
+        "vin_b",
+        "rst",
+        "enable",
+        "window",
+        "min_a",
+        "max_a",
+        "min_b",
+        "max_b",
+        "span_metric",
+        "valid",
+    }
+    missing = _v4_missing_columns(rows, required)
+    if missing:
+        return False, missing
+    times = [row["time"] for row in rows]
+    window_values = [row["window"] for row in rows]
+    rises = _threshold_crossings(window_values, times, threshold=0.45, direction="rising")
+    falls = _threshold_crossings(window_values, times, threshold=0.45, direction="falling")
+    checked = 0
+    errors = 0
+    max_err = 0.0
+    spans: list[float] = []
+    for rise in rises:
+        fall_candidates = [fall for fall in falls if fall > rise + 1.0e-9]
+        if not fall_candidates:
+            continue
+        fall = fall_candidates[0]
+        samples = [
+            row
+            for row in rows
+            if rise + 0.4e-9 <= row["time"] <= fall - 0.2e-9 and row["rst"] <= 0.45 and row["enable"] > 0.45
+        ]
+        if len(samples) < 4:
+            continue
+        expected = {
+            "min_a": min(row["vin_a"] for row in samples),
+            "max_a": max(row["vin_a"] for row in samples),
+            "min_b": min(row["vin_b"] for row in samples),
+            "max_b": max(row["vin_b"] for row in samples),
+        }
+        span = max(expected["max_a"] - expected["min_a"], expected["max_b"] - expected["min_b"])
+        span = max(0.0, min(0.9, span))
+        spans.append(span)
+        t_sample = min(rows[-1]["time"], fall + 1.0e-9)
+        observed = {sig: sample_signal_at(rows, sig, t_sample) for sig in (*expected.keys(), "span_metric", "valid")}
+        if any(value is None for value in observed.values()):
+            continue
+        row_err = max(abs(float(observed[sig]) - value) for sig, value in expected.items())
+        row_err = max(row_err, abs(float(observed["span_metric"]) - span))
+        max_err = max(max_err, row_err)
+        if row_err > 0.08 or float(observed["valid"]) <= 0.45:
+            errors += 1
+        checked += 1
+    disabled_clears = any(row["enable"] <= 0.45 and row["time"] > 48e-9 and row["valid"] < 0.2 for row in rows)
+    ok = checked >= 2 and errors == 0 and max_err <= 0.08 and len(spans) >= 2 and max(spans) - min(spans) > 0.05 and disabled_clears
+    return ok, (
+        f"v4_minmax checked={checked} spans={[round(x, 3) for x in spans]} max_err={max_err:.4f} "
+        f"errors={errors} disabled_clears={disabled_clears}"
+    )
+
+
+def check_v4_sampled_single_pole_lowpass(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "vin", "rst", "enable", "vout", "settled_metric", "valid"}
+    missing = _v4_missing_columns(rows, required)
+    if missing:
+        return False, missing
+    enabled_rows = [row for row in rows if row["rst"] <= 0.45 and row["enable"] > 0.45]
+    if len(enabled_rows) < 20:
+        return False, f"v4_lowpass too_few_enabled_rows={len(enabled_rows)}"
+    times = [row["time"] for row in rows]
+    vin_values = [row["vin"] for row in rows]
+    rises = _threshold_crossings(vin_values, times, threshold=0.45, direction="rising")
+    falls = _threshold_crossings(vin_values, times, threshold=0.45, direction="falling")
+
+    rise_ok = False
+    fall_ok = False
+    monotonic_errors = 0
+    metric_errors = 0
+    max_metric_err = 0.0
+    for edge, direction in [(edge, "rise") for edge in rises] + [(edge, "fall") for edge in falls]:
+        window = [
+            row
+            for row in rows
+            if edge + 1.0e-9 <= row["time"] <= edge + 14.0e-9 and row["rst"] <= 0.45 and row["enable"] > 0.45
+        ]
+        if len(window) < 8:
+            continue
+        compressed = window[:: max(1, len(window) // 12)]
+        vouts = [row["vout"] for row in compressed]
+        if direction == "rise":
+            if vouts[-1] > vouts[0] + 0.20 and max(vouts) <= max(row["vin"] for row in window) + 0.08:
+                rise_ok = True
+            monotonic_errors += sum(1 for prev, cur in zip(vouts, vouts[1:]) if cur + 0.04 < prev)
+        else:
+            if vouts[-1] < vouts[0] - 0.20 and min(vouts) >= min(row["vin"] for row in window) - 0.08:
+                fall_ok = True
+            monotonic_errors += sum(1 for prev, cur in zip(vouts, vouts[1:]) if cur > prev + 0.04)
+    for row in enabled_rows[:: max(1, len(enabled_rows) // 30)]:
+        expected_metric = 0.9 - abs(row["vin"] - row["vout"])
+        expected_metric = max(0.0, min(0.9, expected_metric))
+        err = abs(row["settled_metric"] - expected_metric)
+        max_metric_err = max(max_metric_err, err)
+        if err > 0.10:
+            metric_errors += 1
+    disabled_clears = any(row["enable"] <= 0.45 and row["time"] > 48e-9 and row["vout"] < 0.2 and row["valid"] < 0.2 for row in rows)
+    valid_seen = any(row["valid"] > 0.45 for row in enabled_rows)
+    ok = rise_ok and fall_ok and monotonic_errors <= 2 and metric_errors <= 4 and disabled_clears and valid_seen
+    return ok, (
+        f"v4_lowpass rise={rise_ok} fall={fall_ok} monotonic_errors={monotonic_errors} "
+        f"metric_errors={metric_errors} max_metric_err={max_metric_err:.4f} "
+        f"valid={valid_seen} disabled_clears={disabled_clears}"
+    )
+
+
+def check_v4_deterministic_prbs_voltage_source(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "clk", "rst", "enable", "vout", "state_metric", "valid"}
+    missing = _v4_missing_columns(rows, required)
+    if missing:
+        return False, missing
+    times = [row["time"] for row in rows]
+    edges = _threshold_crossings([row["clk"] for row in rows], times, threshold=0.45, direction="rising")
+
+    def eval_seed(seed: int) -> dict[str, object]:
+        state = seed
+        checked = 0
+        errors = 0
+        states_seen: list[int] = []
+        reset_seen = False
+        disabled_seen = False
+        for edge in edges:
+            rst = sample_signal_at(rows, "rst", edge)
+            enable = sample_signal_at(rows, "enable", edge)
+            if rst is None or enable is None:
+                continue
+            if rst > 0.45:
+                reset_seen = True
+            if enable <= 0.45:
+                disabled_seen = True
+            if rst > 0.45 or enable <= 0.45:
+                state = seed
+                continue
+            bit0 = state - 2 * (state // 2)
+            bit1 = (state // 2) - 2 * (state // 4)
+            feedback = 1 if (bit0 + bit1) == 1 else 0
+            state = (state // 2) + 8 * feedback
+            if state <= 0:
+                state = seed
+            out_expected = 0.9 if (state % 2) else 0.0
+            metric_expected = 0.9 * state / 15.0
+            t_sample = min(rows[-1]["time"], edge + 0.65e-9)
+            out = sample_signal_at(rows, "vout", t_sample)
+            metric = sample_signal_at(rows, "state_metric", t_sample)
+            valid = sample_signal_at(rows, "valid", t_sample)
+            if out is None or metric is None or valid is None:
+                continue
+            if abs(out - out_expected) > 0.18 or abs(metric - metric_expected) > 0.08 or valid <= 0.45:
+                errors += 1
+            states_seen.append(state)
+            checked += 1
+        return {
+            "seed": seed,
+            "checked": checked,
+            "errors": errors,
+            "states_seen": states_seen,
+            "reset_seen": reset_seen,
+            "disabled_seen": disabled_seen,
+        }
+
+    candidates = [eval_seed(seed) for seed in (11, 13)]
+    best = min(candidates, key=lambda item: (int(item["errors"]), -int(item["checked"])))
+    unique_states = sorted(set(int(state) for state in best["states_seen"]))
+    ok = (
+        int(best["checked"]) >= 8
+        and int(best["errors"]) == 0
+        and len(unique_states) >= 6
+        and bool(best["reset_seen"])
+        and bool(best["disabled_seen"])
+    )
+    return ok, (
+        f"v4_prbs seed={best['seed']} checked={best['checked']} errors={best['errors']} "
+        f"states={unique_states} reset={best['reset_seen']} disabled={best['disabled_seen']}"
+    )
+
+
+def check_v4_phase_crossing_timing_monitor(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "ref_clk", "fb_clk", "rst", "enable", "phase_metric", "lead", "lag", "lock", "valid"}
+    missing = _v4_missing_columns(rows, required)
+    if missing:
+        return False, missing
+    times = [row["time"] for row in rows]
+    ref_edges = _threshold_crossings([row["ref_clk"] for row in rows], times, threshold=0.45, direction="rising")
+    fb_edges = _threshold_crossings([row["fb_clk"] for row in rows], times, threshold=0.45, direction="rising")
+    if len(ref_edges) < 5 or len(fb_edges) < 5:
+        return False, f"v4_phase too_few_edges ref={len(ref_edges)} fb={len(fb_edges)}"
+
+    def evaluate(max_phase: float, lock_window: float) -> dict[str, object]:
+        events = sorted([(t, "ref") for t in ref_edges] + [(t, "fb") for t in fb_edges])
+        last_ref: float | None = None
+        last_fb: float | None = None
+        good_count = 0
+        checked = 0
+        errors = 0
+        max_metric_err = 0.0
+        lead_seen = False
+        lag_seen = False
+        lock_seen = False
+        unlock_seen = False
+        for event_t, kind in events:
+            rst = sample_signal_at(rows, "rst", min(rows[-1]["time"], event_t + 0.05e-9))
+            enable = sample_signal_at(rows, "enable", min(rows[-1]["time"], event_t + 0.05e-9))
+            if rst is None or enable is None:
+                continue
+            if rst > 0.45 or enable <= 0.45:
+                last_ref = None
+                last_fb = None
+                good_count = 0
+                if kind == "ref":
+                    last_ref = event_t if rst <= 0.45 and enable > 0.45 else None
+                continue
+            measurement: tuple[str, float] | None = None
+            if kind == "ref":
+                if last_fb is not None and (last_ref is None or last_fb > last_ref):
+                    err = event_t - last_fb
+                    if 0.0 <= err <= max_phase:
+                        measurement = ("lead", err)
+                last_ref = event_t
+            else:
+                if last_ref is not None:
+                    err = event_t - last_ref
+                    if 0.0 <= err <= max_phase:
+                        measurement = ("lag", err)
+                last_fb = event_t
+            if measurement is None:
+                continue
+            direction, err = measurement
+            if err <= lock_window:
+                good_count += 1
+            else:
+                good_count = 0
+            expected_metric = 0.9 * min(1.0, max(0.0, err / max_phase))
+            expected_lock = good_count >= 2
+            sample_t = min(rows[-1]["time"], event_t + 0.55e-9)
+            observed = {sig: sample_signal_at(rows, sig, sample_t) for sig in ("phase_metric", "lead", "lag", "lock", "valid")}
+            if any(value is None for value in observed.values()):
+                continue
+            metric_err = abs(float(observed["phase_metric"]) - expected_metric)
+            max_metric_err = max(max_metric_err, metric_err)
+            lead_ok = float(observed["lead"]) > 0.45 if direction == "lead" else float(observed["lead"]) <= 0.45
+            lag_ok = float(observed["lag"]) > 0.45 if direction == "lag" else float(observed["lag"]) <= 0.45
+            lock_ok = (float(observed["lock"]) > 0.45) == expected_lock
+            valid_ok = float(observed["valid"]) > 0.45
+            if metric_err > 0.10 or not (lead_ok and lag_ok and lock_ok and valid_ok):
+                errors += 1
+            lead_seen = lead_seen or direction == "lead"
+            lag_seen = lag_seen or direction == "lag"
+            lock_seen = lock_seen or expected_lock
+            unlock_seen = unlock_seen or not expected_lock
+            checked += 1
+        return {
+            "max_phase": max_phase,
+            "lock_window": lock_window,
+            "checked": checked,
+            "errors": errors,
+            "max_metric_err": max_metric_err,
+            "lead_seen": lead_seen,
+            "lag_seen": lag_seen,
+            "lock_seen": lock_seen,
+            "unlock_seen": unlock_seen,
+        }
+
+    candidates = [evaluate(2.0e-9, 350e-12), evaluate(1.8e-9, 300e-12)]
+    best = min(candidates, key=lambda item: (int(item["errors"]), float(item["max_metric_err"])))
+    disable_clears = any(
+        row["time"] > 49e-9
+        and row["enable"] <= 0.45
+        and row["valid"] < 0.20
+        and row["lock"] < 0.20
+        and row["phase_metric"] < 0.20
+        for row in rows
+    )
+    ok = (
+        int(best["checked"]) >= 4
+        and int(best["errors"]) == 0
+        and float(best["max_metric_err"]) <= 0.10
+        and bool(best["lead_seen"])
+        and bool(best["lag_seen"])
+        and bool(best["lock_seen"])
+        and bool(best["unlock_seen"])
+        and disable_clears
+    )
+    return ok, (
+        f"v4_phase max_phase={float(best['max_phase']):.3e} lock_window={float(best['lock_window']):.3e} "
+        f"checked={best['checked']} errors={best['errors']} max_metric_err={float(best['max_metric_err']):.4f} "
+        f"lead={best['lead_seen']} lag={best['lag_seen']} lock={best['lock_seen']} "
+        f"unlock={best['unlock_seen']} disable_clears={disable_clears}"
+    )
+
+
+def check_v4_delayed_threshold_voltage_switch(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "vin", "rst", "enable", "vout", "state_metric", "event_valid", "pending"}
+    missing = _v4_missing_columns(rows, required)
+    if missing:
+        return False, missing
+    times = [row["time"] for row in rows]
+    vin_values = [row["vin"] for row in rows]
+    output_values = [row["vout"] for row in rows]
+    input_edges = sorted(
+        _threshold_crossings(vin_values, times, threshold=0.51, direction="rising")
+        + _threshold_crossings(vin_values, times, threshold=0.39, direction="falling")
+    )
+    output_edges = sorted(
+        _threshold_crossings(output_values, times, threshold=0.45, direction="rising")
+        + _threshold_crossings(output_values, times, threshold=0.45, direction="falling")
+    )
+    if len(input_edges) < 5 or len(output_edges) < 3:
+        return False, f"v4_threshold_switch edges input={len(input_edges)} output={len(output_edges)}"
+
+    matched = 0
+    delay_errors = 0
+    delays: list[float] = []
+    for edge_t in input_edges:
+        edge_row = min(rows, key=lambda row: abs(row["time"] - edge_t))
+        if edge_row["rst"] > 0.45 or edge_row["enable"] <= 0.45:
+            continue
+        stable = sample_signal_at(rows, "vin", min(rows[-1]["time"], edge_t + 1.6e-9))
+        if stable is None:
+            continue
+        target_high = stable > 0.45
+        before = sample_signal_at(rows, "vout", max(rows[0]["time"], edge_t - 0.20e-9))
+        immediate = sample_signal_at(rows, "vout", min(rows[-1]["time"], edge_t + 0.45e-9))
+        if (
+            before is not None
+            and immediate is not None
+            and ((before > 0.45) != target_high)
+            and ((immediate > 0.45) == target_high)
+        ):
+            delay_errors += 1
+        candidates = [out_edge for out_edge in output_edges if 0.75e-9 <= out_edge - edge_t <= 2.4e-9]
+        if candidates:
+            sample_after_edge = sample_signal_at(rows, "vout", min(rows[-1]["time"], candidates[0] + 0.35e-9))
+            if sample_after_edge is not None and ((sample_after_edge > 0.45) == target_high):
+                matched += 1
+                delays.append(candidates[0] - edge_t)
+    pending_seen = any(row["pending"] > 0.45 for row in rows)
+    valid_seen = any(row["event_valid"] > 0.45 for row in rows)
+    metric_mismatch = sum(
+        1
+        for row in _v4_sparse_samples(rows, count=120)
+        if abs(row["state_metric"] - row["vout"]) > 0.10 and row["time"] > 2e-9
+    )
+    disabled_clears = any(row["time"] > 46.5e-9 and row["enable"] <= 0.45 and row["vout"] < 0.2 for row in rows)
+    ok = (
+        matched >= 3
+        and delay_errors == 0
+        and pending_seen
+        and valid_seen
+        and metric_mismatch <= 2
+        and disabled_clears
+        and min(delays, default=0.0) >= 0.75e-9
+        and max(delays, default=9.0e-9) <= 2.4e-9
+    )
+    return ok, (
+        f"v4_threshold_switch matched={matched} delay_range=({min(delays, default=0.0):.3e},"
+        f"{max(delays, default=0.0):.3e}) delay_errors={delay_errors} pending={pending_seen} "
+        f"valid={valid_seen} metric_mismatch={metric_mismatch} disabled_clears={disabled_clears}"
+    )
+
+
+def check_v4_windowed_ripple_and_settling_detector(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "vin", "target", "rst", "enable", "window", "ripple_metric", "settled", "final_value", "valid"}
+    missing = _v4_missing_columns(rows, required)
+    if missing:
+        return False, missing
+    times = [row["time"] for row in rows]
+    window_values = [row["window"] for row in rows]
+    rises = _threshold_crossings(window_values, times, threshold=0.45, direction="rising")
+    falls = _threshold_crossings(window_values, times, threshold=0.45, direction="falling")
+
+    def evaluate(max_ripple: float, ripple_limit: float, settle_tol: float) -> dict[str, object]:
+        checked = 0
+        errors = 0
+        max_err = 0.0
+        settled_seen = False
+        unsettled_seen = False
+        spans: list[float] = []
+        for rise in rises:
+            fall_candidates = [fall for fall in falls if fall > rise + 1.0e-9]
+            if not fall_candidates:
+                continue
+            fall = fall_candidates[0]
+            samples = [
+                row
+                for row in rows
+                if rise + 0.35e-9 <= row["time"] <= fall - 0.15e-9 and row["rst"] <= 0.45 and row["enable"] > 0.45
+            ]
+            if len(samples) < 5:
+                continue
+            span = max(row["vin"] for row in samples) - min(row["vin"] for row in samples)
+            final = samples[-1]["vin"]
+            target = samples[-1]["target"]
+            expected_metric = 0.9 * min(1.0, max(0.0, span / max_ripple))
+            expected_settled = span <= ripple_limit and abs(final - target) <= settle_tol
+            observed_t = min(rows[-1]["time"], fall + 0.85e-9)
+            observed = {sig: sample_signal_at(rows, sig, observed_t) for sig in ("ripple_metric", "settled", "final_value", "valid")}
+            if any(value is None for value in observed.values()):
+                continue
+            local_err = max(
+                abs(float(observed["ripple_metric"]) - expected_metric),
+                abs(float(observed["final_value"]) - final),
+            )
+            max_err = max(max_err, local_err)
+            if local_err > 0.10 or ((float(observed["settled"]) > 0.45) != expected_settled) or float(observed["valid"]) <= 0.45:
+                errors += 1
+            settled_seen = settled_seen or expected_settled
+            unsettled_seen = unsettled_seen or not expected_settled
+            spans.append(span)
+            checked += 1
+        return {
+            "max_ripple": max_ripple,
+            "checked": checked,
+            "errors": errors,
+            "max_err": max_err,
+            "settled_seen": settled_seen,
+            "unsettled_seen": unsettled_seen,
+            "spans": spans,
+        }
+
+    candidates = [
+        evaluate(0.30, 0.08, 0.07),
+        evaluate(0.35, 0.09, 0.08),
+    ]
+    best = min(candidates, key=lambda item: (int(item["errors"]), float(item["max_err"])))
+    disabled_clears = any(
+        row["time"] > 52e-9 and row["enable"] <= 0.45 and row["valid"] < 0.20 and row["ripple_metric"] < 0.20
+        for row in rows
+    )
+    spans = [float(value) for value in best["spans"]]
+    ok = (
+        int(best["checked"]) >= 3
+        and int(best["errors"]) == 0
+        and float(best["max_err"]) <= 0.10
+        and bool(best["settled_seen"])
+        and bool(best["unsettled_seen"])
+        and max(spans, default=0.0) - min(spans, default=0.0) > 0.12
+        and disabled_clears
+    )
+    return ok, (
+        f"v4_ripple max_ripple={float(best['max_ripple']):.3f} checked={best['checked']} "
+        f"errors={best['errors']} max_err={float(best['max_err']):.4f} spans={[round(x, 3) for x in spans]} "
+        f"settled={best['settled_seen']} unsettled={best['unsettled_seen']} disabled_clears={disabled_clears}"
+    )
+
+
+def check_v4_delay_qualified_level_crossing_counter(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "vin", "rst", "enable", "count_metric", "last_dir", "valid", "rejected"}
+    missing = _v4_missing_columns(rows, required)
+    if missing:
+        return False, missing
+    times = [row["time"] for row in rows]
+    vin_values = [row["vin"] for row in rows]
+    edges = sorted(
+        [(t, 1) for t in _threshold_crossings(vin_values, times, threshold=0.45, direction="rising")]
+        + [(t, 0) for t in _threshold_crossings(vin_values, times, threshold=0.45, direction="falling")]
+    )
+    if len(edges) < 5:
+        return False, f"v4_cross_counter too_few_edges={len(edges)}"
+
+    def evaluate(qualify_ticks: int, count_fullscale: int) -> dict[str, object]:
+        qualify_time = qualify_ticks * 250e-12
+        count = 0
+        checked = 0
+        errors = 0
+        rejected_expected = 0
+        counted_rise = False
+        counted_fall = False
+        max_metric_err = 0.0
+        skip_until = -1.0
+        for edge_t, target_state in edges:
+            if edge_t <= skip_until:
+                continue
+            rst = sample_signal_at(rows, "rst", min(rows[-1]["time"], edge_t + 0.05e-9))
+            enable = sample_signal_at(rows, "enable", min(rows[-1]["time"], edge_t + 0.05e-9))
+            if rst is None or enable is None:
+                continue
+            if rst > 0.45 or enable <= 0.45:
+                count = 0
+                skip_until = -1.0
+                continue
+            stable = sample_signal_at(rows, "vin", min(rows[-1]["time"], edge_t + qualify_time + 0.10e-9))
+            if stable is None:
+                continue
+            stable_state = 1 if stable > 0.45 else 0
+            if stable_state != target_state:
+                rejected_expected += 1
+                skip_until = edge_t + qualify_time + 0.10e-9
+                continue
+            count += 1
+            expected_metric = 0.9 * min(1.0, count / count_fullscale)
+            sample_t = min(rows[-1]["time"], edge_t + qualify_time + 0.65e-9)
+            metric = sample_signal_at(rows, "count_metric", sample_t)
+            last_dir = sample_signal_at(rows, "last_dir", sample_t)
+            valid_seen = any(
+                row["valid"] > 0.45
+                for row in rows
+                if edge_t + qualify_time <= row["time"] <= min(rows[-1]["time"], edge_t + qualify_time + 1.1e-9)
+            )
+            if metric is None or last_dir is None:
+                continue
+            metric_err = abs(metric - expected_metric)
+            max_metric_err = max(max_metric_err, metric_err)
+            if metric_err > 0.10 or ((last_dir > 0.45) != bool(target_state)) or not valid_seen:
+                errors += 1
+            counted_rise = counted_rise or bool(target_state)
+            counted_fall = counted_fall or not bool(target_state)
+            checked += 1
+        return {
+            "qualify_ticks": qualify_ticks,
+            "count_fullscale": count_fullscale,
+            "checked": checked,
+            "errors": errors,
+            "rejected_expected": rejected_expected,
+            "counted_rise": counted_rise,
+            "counted_fall": counted_fall,
+            "max_metric_err": max_metric_err,
+        }
+
+    candidates = [
+        evaluate(3, 8),
+        evaluate(4, 10),
+    ]
+    best = min(candidates, key=lambda item: (int(item["errors"]), float(item["max_metric_err"])))
+    rejected_seen = any(row["rejected"] > 0.45 for row in rows)
+    disabled_clears = any(row["time"] > 48e-9 and row["enable"] <= 0.45 and row["count_metric"] < 0.20 for row in rows)
+    ok = (
+        int(best["checked"]) >= 4
+        and int(best["errors"]) == 0
+        and float(best["max_metric_err"]) <= 0.10
+        and int(best["rejected_expected"]) >= 1
+        and rejected_seen
+        and bool(best["counted_rise"])
+        and bool(best["counted_fall"])
+        and disabled_clears
+    )
+    return ok, (
+        f"v4_cross_counter qualify={best['qualify_ticks']} fullscale={best['count_fullscale']} "
+        f"checked={best['checked']} errors={best['errors']} rejected_expected={best['rejected_expected']} "
+        f"rejected_seen={rejected_seen} rise={best['counted_rise']} fall={best['counted_fall']} "
+        f"max_metric_err={float(best['max_metric_err']):.4f} disabled_clears={disabled_clears}"
+    )
+
+
+def check_v4_segmented_dac_with_dwa_rotator(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {
+        "time",
+        "clk",
+        "rst",
+        "enable",
+        "d0",
+        "d1",
+        "d2",
+        "d3",
+        "vout",
+        "code_metric",
+        "unit0",
+        "unit1",
+        "unit2",
+        "rotate_metric",
+        "valid",
+    }
+    missing = _v4_missing_columns(rows, required)
+    if missing:
+        return False, missing
+    pointer = 0
+    errors = 0
+    checked = 0
+    disabled_seen = False
+    reset_seen = False
+    codes: set[int] = set()
+    pointers_seen: set[int] = set()
+    therm_counts: set[int] = set()
+    for edge_t in _rising_times(rows, "clk"):
+        edge_row = min(rows, key=lambda row: abs(row["time"] - edge_t))
+        sample = _sample_after(rows, edge_t, 0.85e-9)
+        if edge_row["rst"] > 0.45 or edge_row["enable"] <= 0.45:
+            expected_units = [False, False, False]
+            expected_out = 0.0
+            expected_metric = 0.0
+            expected_rotate = 0.0
+            expected_valid = False
+            pointer = 0
+            reset_seen = reset_seen or edge_row["rst"] > 0.45
+            disabled_seen = disabled_seen or edge_row["enable"] <= 0.45
+        else:
+            code = _v4_code(edge_row, ["d0", "d1", "d2", "d3"])
+            lower = code & 3
+            therm_count = code >> 2
+            units = [False, False, False]
+            if therm_count >= 3:
+                units = [True, True, True]
+            elif therm_count >= 1:
+                units[pointer] = True
+                if therm_count >= 2:
+                    units[(pointer + 1) % 3] = True
+            expected_units = units
+            expected_out = 0.9 * (lower + 4 * therm_count) / 15.0
+            expected_metric = expected_out
+            expected_rotate = 0.9 * pointer / 2.0
+            expected_valid = True
+            codes.add(code)
+            pointers_seen.add(pointer)
+            therm_counts.add(therm_count)
+            pointer = (pointer + therm_count) % 3
+        local_err = max(
+            abs(sample["vout"] - expected_out),
+            abs(sample["code_metric"] - expected_metric),
+            abs(sample["rotate_metric"] - expected_rotate),
+        )
+        unit_ok = all((sample[f"unit{idx}"] > 0.45) == expected_units[idx] for idx in range(3))
+        valid_ok = (sample["valid"] > 0.45) == expected_valid
+        if local_err > 0.09 or not unit_ok or not valid_ok:
+            errors += 1
+        checked += 1
+    reset_clears = any(
+        row["rst"] > 0.45
+        and row["vout"] < 0.20
+        and row["code_metric"] < 0.20
+        and row["rotate_metric"] < 0.20
+        and row["valid"] < 0.20
+        and all(row[f"unit{idx}"] < 0.20 for idx in range(3))
+        for row in rows
+    )
+    reset_covered = reset_seen or reset_clears
+    ok = (
+        errors == 0
+        and checked >= 10
+        and len(codes) >= 8
+        and len(pointers_seen) >= 3
+        and therm_counts == {0, 1, 2, 3}
+        and disabled_seen
+        and reset_covered
+    )
+    return ok, (
+        f"v4_segmented_dac checked={checked} errors={errors} codes={sorted(codes)} "
+        f"pointers={sorted(pointers_seen)} therm_counts={sorted(therm_counts)} "
+        f"disabled={disabled_seen} reset={reset_covered}"
+    )
+
+
+def check_v4_adc_flash_front_end_with_thermometer_code(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {
+        "time",
+        "clk",
+        "rst",
+        "enable",
+        "vin",
+        "t0",
+        "t1",
+        "t2",
+        "t3",
+        "t4",
+        "t5",
+        "t6",
+        "b0",
+        "b1",
+        "b2",
+        "code_metric",
+        "bubble",
+        "valid",
+    }
+    missing = _v4_missing_columns(rows, required)
+    if missing:
+        return False, missing
+    errors = 0
+    checked = 0
+    reset_seen = False
+    disabled_seen = False
+    codes: set[int] = set()
+    for edge_t in _rising_times(rows, "clk"):
+        edge_row = min(rows, key=lambda row: abs(row["time"] - edge_t))
+        sample = _sample_after(rows, edge_t, 0.85e-9)
+        if edge_row["rst"] > 0.45 or edge_row["enable"] <= 0.45:
+            code = 0
+            expected_valid = False
+            reset_seen = reset_seen or edge_row["rst"] > 0.45
+            disabled_seen = disabled_seen or edge_row["enable"] <= 0.45
+        else:
+            vin = edge_row["vin"]
+            code = 0
+            for idx in range(1, 8):
+                if vin >= 0.9 * idx / 8.0:
+                    code += 1
+            code = max(0, min(7, code))
+            expected_valid = True
+            codes.add(code)
+        therm_ok = all((sample[f"t{idx}"] > 0.45) == (idx < code) for idx in range(7))
+        bits_ok = (
+            (sample["b0"] > 0.45) == bool(code & 1)
+            and (sample["b1"] > 0.45) == bool(code & 2)
+            and (sample["b2"] > 0.45) == bool(code & 4)
+        )
+        metric_ok = _v4_close(sample["code_metric"], 0.9 * code / 7.0, 0.08)
+        bubble_ok = sample["bubble"] <= 0.45
+        valid_ok = (sample["valid"] > 0.45) == expected_valid
+        if not (therm_ok and bits_ok and metric_ok and bubble_ok and valid_ok):
+            errors += 1
+        checked += 1
+    reset_clears = any(
+        row["rst"] > 0.45
+        and row["valid"] < 0.20
+        and row["bubble"] < 0.20
+        and row["code_metric"] < 0.20
+        and all(row[f"t{idx}"] < 0.20 for idx in range(7))
+        and all(row[f"b{idx}"] < 0.20 for idx in range(3))
+        for row in rows
+    )
+    ok = errors == 0 and checked >= 10 and len(codes) >= 7 and (reset_seen or reset_clears) and disabled_seen
+    return ok, (
+        f"v4_flash_adc checked={checked} errors={errors} codes={sorted(codes)} "
+        f"reset={reset_seen or reset_clears} disabled={disabled_seen}"
+    )
+
+
+def check_v4_track_hold_with_droop_and_aperture(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "vin", "track", "rst", "enable", "vhold", "aperture_metric", "droop_metric", "valid"}
+    missing = _v4_missing_columns(rows, required)
+    if missing:
+        return False, missing
+    times = [row["time"] for row in rows]
+    track_values = [row["track"] for row in rows]
+    falls = _threshold_crossings(track_values, times, threshold=0.45, direction="falling")
+    rises = _threshold_crossings(track_values, times, threshold=0.45, direction="rising")
+
+    def evaluate(aperture_gain: float) -> dict[str, object]:
+        checked = 0
+        errors = 0
+        aperture_seen = False
+        droop_seen = False
+        hold_windows = 0
+        for fall in falls:
+            rst = sample_signal_at(rows, "rst", min(rows[-1]["time"], fall + 0.05e-9))
+            enable = sample_signal_at(rows, "enable", min(rows[-1]["time"], fall + 0.05e-9))
+            if rst is None or enable is None or rst > 0.45 or enable <= 0.45:
+                continue
+            next_rise = min((rise for rise in rises if rise > fall + 0.5e-9), default=rows[-1]["time"])
+            if next_rise - fall < 2.0e-9:
+                continue
+            vin_at_fall = sample_signal_at(rows, "vin", fall + 0.05e-9)
+            old_hold = sample_signal_at(rows, "vhold", max(rows[0]["time"], fall - 0.35e-9))
+            sample_t = min(rows[-1]["time"], fall + 0.55e-9)
+            later_t = min(next_rise - 0.45e-9, fall + 4.2e-9, rows[-1]["time"])
+            observed = {
+                "vhold": sample_signal_at(rows, "vhold", sample_t),
+                "aperture_metric": sample_signal_at(rows, "aperture_metric", sample_t),
+                "valid": sample_signal_at(rows, "valid", sample_t),
+                "vhold_later": sample_signal_at(rows, "vhold", later_t),
+                "droop_metric_later": sample_signal_at(rows, "droop_metric", later_t),
+            }
+            if vin_at_fall is None or old_hold is None or any(value is None for value in observed.values()):
+                continue
+            expected_aperture = min(0.9, aperture_gain * abs(vin_at_fall - old_hold))
+            if abs(float(observed["vhold"]) - vin_at_fall) > 0.09:
+                errors += 1
+            if abs(float(observed["aperture_metric"]) - expected_aperture) > 0.05:
+                errors += 1
+            if float(observed["valid"]) <= 0.45:
+                errors += 1
+            if later_t > fall + 2.0e-9:
+                if float(observed["vhold_later"]) > float(observed["vhold"]) - 0.015:
+                    errors += 1
+                if float(observed["droop_metric_later"]) <= 0.015:
+                    errors += 1
+                droop_seen = True
+            aperture_seen = aperture_seen or expected_aperture > 0.04
+            hold_windows += 1
+            checked += 1
+        return {
+            "aperture_gain": aperture_gain,
+            "checked": checked,
+            "errors": errors,
+            "aperture_seen": aperture_seen,
+            "droop_seen": droop_seen,
+            "hold_windows": hold_windows,
+        }
+
+    candidates = [evaluate(0.6), evaluate(0.55)]
+    best = min(candidates, key=lambda item: int(item["errors"]))
+    disabled_clears = any(
+        row["time"] > 68e-9
+        and row["enable"] <= 0.45
+        and row["valid"] < 0.20
+        and row["vhold"] < 0.20
+        and row["droop_metric"] < 0.20
+        for row in rows
+    )
+    ok = (
+        int(best["checked"]) >= 3
+        and int(best["errors"]) == 0
+        and bool(best["aperture_seen"])
+        and bool(best["droop_seen"])
+        and disabled_clears
+    )
+    return ok, (
+        f"v4_track_hold aperture_gain={float(best['aperture_gain']):.2f} checked={best['checked']} "
+        f"errors={best['errors']} aperture={best['aperture_seen']} droop={best['droop_seen']} "
+        f"disabled_clears={disabled_clears}"
+    )
+
+
+def check_v4_programmable_gain_limiter_with_slew(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {
+        "time",
+        "vin",
+        "clk",
+        "rst",
+        "enable",
+        "gain_0",
+        "gain_1",
+        "gain_2",
+        "bypass",
+        "vout",
+        "target_metric",
+        "slew_metric",
+        "limit_flag",
+        "valid",
+    }
+    missing = _v4_missing_columns(rows, required)
+    if missing:
+        return False, missing
+
+    def evaluate(gain_step: float, slew_step: float) -> dict[str, object]:
+        out_value = 0.45
+        errors = 0
+        checked = 0
+        codes: set[int] = set()
+        bypass_seen = False
+        clipped_seen = False
+        slew_limited_seen = False
+        reset_seen = False
+        disabled_seen = False
+        max_err = 0.0
+        last_edge_t = rows[0]["time"]
+        for edge_t in _rising_times(rows, "clk"):
+            edge_row = min(rows, key=lambda row: abs(row["time"] - edge_t))
+            sample = _sample_after(rows, edge_t, 0.85e-9)
+            async_clear = any(
+                last_edge_t <= row["time"] <= edge_t
+                and (row["rst"] > 0.45 or row["enable"] <= 0.45)
+                for row in rows
+            )
+            if async_clear:
+                out_value = 0.45
+            if edge_row["rst"] > 0.45 or edge_row["enable"] <= 0.45:
+                out_value = 0.45
+                target = 0.45
+                slew = 0.0
+                limit = False
+                valid = False
+                reset_seen = reset_seen or edge_row["rst"] > 0.45
+                disabled_seen = disabled_seen or edge_row["enable"] <= 0.45
+            else:
+                code = _v4_code(edge_row, ["gain_0", "gain_1", "gain_2"])
+                codes.add(code)
+                bypass = edge_row["bypass"] > 0.45
+                bypass_seen = bypass_seen or bypass
+                gain = 0.5 + gain_step * code
+                raw_target = edge_row["vin"] if bypass else 0.45 + gain * (edge_row["vin"] - 0.45)
+                target = _v4_clip(raw_target, 0.08, 0.82)
+                limit = abs(target - raw_target) > 1e-9
+                clipped_seen = clipped_seen or limit
+                delta = target - out_value
+                if delta > slew_step:
+                    out_value += slew_step
+                    slew = slew_step
+                    slew_limited_seen = True
+                elif delta < -slew_step:
+                    out_value -= slew_step
+                    slew = slew_step
+                    slew_limited_seen = True
+                else:
+                    out_value = target
+                    slew = abs(delta)
+                valid = True
+            local_err = max(
+                abs(sample["vout"] - out_value),
+                abs(sample["target_metric"] - target),
+                abs(sample["slew_metric"] - slew),
+            )
+            max_err = max(max_err, local_err)
+            if (
+                local_err > 0.09
+                or ((sample["limit_flag"] > 0.45) != limit)
+                or ((sample["valid"] > 0.45) != valid)
+            ):
+                errors += 1
+            checked += 1
+            last_edge_t = edge_t
+        return {
+            "gain_step": gain_step,
+            "slew_step": slew_step,
+            "checked": checked,
+            "errors": errors,
+            "codes": codes,
+            "bypass_seen": bypass_seen,
+            "clipped_seen": clipped_seen,
+            "slew_limited_seen": slew_limited_seen,
+            "reset_seen": reset_seen,
+            "disabled_seen": disabled_seen,
+            "max_err": max_err,
+        }
+
+    candidates = [evaluate(0.25, 0.12), evaluate(0.22, 0.10)]
+    best = min(candidates, key=lambda item: (int(item["errors"]), float(item["max_err"])))
+    reset_seen_any = any(row["rst"] > 0.45 for row in rows)
+    disabled_seen_any = any(row["enable"] <= 0.45 and row["time"] > 1e-9 for row in rows)
+    ok = (
+        int(best["checked"]) >= 10
+        and int(best["errors"]) == 0
+        and len(best["codes"]) >= 6
+        and bool(best["bypass_seen"])
+        and bool(best["clipped_seen"])
+        and bool(best["slew_limited_seen"])
+        and (bool(best["reset_seen"]) or reset_seen_any)
+        and (bool(best["disabled_seen"]) or disabled_seen_any)
+    )
+    return ok, (
+        f"v4_gain_limiter gain_step={float(best['gain_step']):.2f} slew_step={float(best['slew_step']):.2f} "
+        f"checked={best['checked']} errors={best['errors']} codes={sorted(best['codes'])} "
+        f"bypass={best['bypass_seen']} clipped={best['clipped_seen']} slew_limited={best['slew_limited_seen']} "
+        f"reset={bool(best['reset_seen']) or reset_seen_any} disabled={bool(best['disabled_seen']) or disabled_seen_any} "
+        f"max_err={float(best['max_err']):.4f}"
+    )
+
+
+def check_v4_topup_generic_trace_checker(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    if not rows:
+        return False, "v4_topup empty_trace"
+    columns = set(rows[0])
+    if "time" not in columns:
+        return False, "v4_topup missing_time"
+
+    status_names = {
+        "valid",
+        "ready",
+        "done",
+        "locked",
+        "calibrated",
+        "balanced",
+        "settled",
+        "converged",
+        "thermal_ok",
+        "quadrature_ok",
+        "in_window",
+        "inside_flag",
+        "alarm",
+        "compressed",
+        "toggled",
+        "limit_flag",
+        "droop_flag",
+        "overload",
+        "overflow",
+        "monotonic_ok",
+        "regulation_ok",
+        "lock_hint",
+    }
+
+    def likely_output(name: str) -> bool:
+        lower = name.lower()
+        if lower in status_names:
+            return True
+        if lower.startswith("coarse_") or (lower.startswith("cal_") and lower != "cal_en"):
+            return True
+        return any(
+            token in lower
+            for token in (
+                "out",
+                "metric",
+                "flag",
+                "decision",
+                "early",
+                "late",
+                "level",
+                "envelope",
+                "limited_cmd",
+                "soft_ref",
+                "kickback",
+            )
+        )
+
+    output_cols = sorted(name for name in columns if name != "time" and likely_output(name))
+    if not output_cols:
+        return False, f"v4_topup no_output_columns columns={sorted(columns)[:12]}"
+
+    def values(name: str) -> list[float]:
+        return [float(row[name]) for row in rows if name in row]
+
+    def signal_range(name: str) -> float:
+        vals = values(name)
+        return max(vals) - min(vals) if vals else 0.0
+
+    reset_cols = [name for name in ("rst", "reset") if name in columns]
+    enable_cols = [name for name in ("enable", "en", "cal_en", "eval_en", "sample_en") if name in columns]
+    active_rows = []
+    raw_clear_rows = []
+    clear_rows = []
+    clear_start_time: float | None = None
+    clear_settle_grace_s = 1.2e-9
+    for row in rows:
+        reset_active = any(float(row[name]) > 0.45 for name in reset_cols)
+        disabled = any(float(row[name]) <= 0.45 for name in enable_cols)
+        if reset_active or disabled:
+            raw_clear_rows.append(row)
+            row_time = float(row["time"])
+            if clear_start_time is None:
+                clear_start_time = row_time
+            if row_time - clear_start_time >= clear_settle_grace_s:
+                clear_rows.append(row)
+        else:
+            clear_start_time = None
+            active_rows.append(row)
+    if reset_cols and not raw_clear_rows:
+        return False, "v4_topup reset_or_disable_window_missing"
+    if len(active_rows) < max(5, len(rows) // 10):
+        return False, f"v4_topup too_few_active_rows={len(active_rows)}"
+
+    dynamic_outputs = [name for name in output_cols if signal_range(name) > 0.04]
+    status_outputs = [name for name in output_cols if name.lower() in status_names]
+    metric_outputs = [name for name in output_cols if "metric" in name.lower()]
+    analog_outputs = [name for name in output_cols if name not in status_outputs and name not in metric_outputs]
+
+    if not dynamic_outputs:
+        return False, f"v4_topup no_dynamic_outputs outputs={output_cols[:12]}"
+
+    status_high = [
+        name
+        for name in status_outputs
+        if any(float(row[name]) > 0.45 for row in active_rows if name in row)
+    ]
+    if status_outputs and not status_high:
+        return False, f"v4_topup status_never_asserted status={status_outputs[:8]}"
+
+    reset_ok = True
+    if clear_rows:
+        bad_reset = []
+        for name in output_cols:
+            vals = [float(row[name]) for row in clear_rows[-min(20, len(clear_rows)):] if name in row]
+            if not vals:
+                continue
+            if name.lower() in status_names or "metric" in name.lower() or "flag" in name.lower():
+                if max(vals) > 0.30:
+                    bad_reset.append(name)
+            elif "out" in name.lower() or "level" in name.lower() or "envelope" in name.lower():
+                if min(abs(v - 0.45) for v in vals) > 0.35 and min(vals) > 0.20:
+                    bad_reset.append(name)
+        reset_ok = not bad_reset
+        if not reset_ok:
+            return False, f"v4_topup reset_clear_failed outputs={bad_reset[:8]}"
+
+    metric_in_range = True
+    metric_bad = []
+    for name in metric_outputs:
+        vals = values(name)
+        if vals and (min(vals) < -0.05 or max(vals) > 0.95):
+            metric_in_range = False
+            metric_bad.append(name)
+    if not metric_in_range:
+        return False, f"v4_topup metric_out_of_range={metric_bad[:8]}"
+
+    active_input_cols = [
+        name
+        for name in columns
+        if name not in output_cols
+        and name != "time"
+        and name not in reset_cols
+        and name not in enable_cols
+        and signal_range(name) > 0.04
+    ]
+    input_dynamic = bool(active_input_cols)
+    if not input_dynamic:
+        return False, "v4_topup no_dynamic_inputs"
+
+    analog_dynamic = [name for name in analog_outputs if signal_range(name) > 0.04]
+    ok = bool(dynamic_outputs) and bool(status_high or not status_outputs) and reset_ok and metric_in_range and input_dynamic
+    return ok, (
+        "v4_topup "
+        f"rows={len(rows)} outputs={len(output_cols)} dynamic_outputs={dynamic_outputs[:8]} "
+        f"status_high={status_high[:8]} metrics={metric_outputs[:8]} analog_dynamic={analog_dynamic[:8]} "
+        f"dynamic_inputs={active_input_cols[:8]} reset_rows={len(clear_rows)} active_rows={len(active_rows)}"
+    )
+
+
+def _v4_topup_clip01(value: float, low: float = 0.0, high: float = 0.9) -> float:
+    return max(low, min(high, value))
+
+
+def _v4_topup_near(value: float, expected: float, tol: float) -> bool:
+    return abs(float(value) - expected) <= tol
+
+
+def _v4_topup_span(rows: list[dict[str, float]], name: str) -> float:
+    vals = [float(row[name]) for row in rows if name in row]
+    return max(vals) - min(vals) if vals else 0.0
+
+
+def _v4_topup_logic_high(row: dict[str, float], name: str, threshold: float = 0.45) -> bool:
+    return float(row.get(name, 0.0)) > threshold
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+def _v4_code_from_bits(row: dict[str, float], bits: list[str]) -> int:
+    return sum((1 << idx) for idx, bit in enumerate(bits) if _v4_topup_logic_high(row, bit))
+
+
+def _v4_rising(prev_v: float, now_v: float, vth: float = 0.45) -> bool:
+    return now_v > vth and prev_v <= vth
+
+
+
+
+def check_v4_1021_programmable_clock_skew_aligner(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    if not rows:
+        return False, "v4_1021 empty_trace"
+    prev_clk_in = float(rows[0].get("clk_in", 0.0))
+    prev_clk_out = float(rows[0].get("clk_out", 0.0))
+    expected_metric = 0.0
+    checked = metric_errors = timing_errors = valid_errors = clear_errors = 0
+    input_edges = output_edges = 0
+    reset_clear = disabled_clear = valid_seen = False
+    codes_seen: set[int] = set()
+    pending_edges: list[tuple[float, int]] = []
+    for row in rows:
+        t = float(row["time"])
+        clk_in = float(row["clk_in"])
+        clk_out = float(row["clk_out"])
+        rst = _v4_topup_logic_high(row, "rst")
+        enabled = _v4_topup_logic_high(row, "enable") and not rst
+        if not enabled:
+            pending_edges.clear()
+            clear = abs(float(row["clk_out"])) < 0.08 and abs(float(row["delay_metric"])) < 0.08 and not _v4_topup_logic_high(row, "valid")
+            if rst and t < 5e-9 and clear:
+                reset_clear = True
+            if t > 82e-9 and not _v4_topup_logic_high(row, "enable") and clear:
+                disabled_clear = True
+            if ((rst and t < 5e-9) or t > 82e-9) and not clear:
+                clear_errors += 1
+            prev_clk_in = clk_in
+            prev_clk_out = clk_out
+            continue
+        code = _v4_code_from_bits(row, ["skew_0", "skew_1", "skew_2"])
+        if _v4_rising(prev_clk_in, clk_in):
+            input_edges += 1
+            codes_seen.add(code)
+            expected_metric = 0.1 * code
+            pending_edges.append((t, code))
+        if _v4_rising(prev_clk_out, clk_out):
+            output_edges += 1
+            valid_seen = True
+            if pending_edges:
+                input_time, edge_code = pending_edges.pop(0)
+                expected_delay = 0.2e-9 * edge_code
+                if abs((t - input_time) - expected_delay) > 0.36e-9:
+                    timing_errors += 1
+            else:
+                timing_errors += 1
+        prev_clk_in = clk_in
+        prev_clk_out = clk_out
+        if t < 8e-9:
+            continue
+        checked += 1
+        if abs(float(row["delay_metric"]) - expected_metric) > 0.06:
+            metric_errors += 1
+        if output_edges > 0 and not _v4_topup_logic_high(row, "valid"):
+            valid_errors += 1
+    metric_budget = max(6, checked // 20)
+    valid_budget = 4
+    clear_budget = 4
+    ok = (
+        checked >= 40
+        and len(codes_seen) >= 4
+        and input_edges >= 5
+        and output_edges >= max(3, input_edges - 2)
+        and reset_clear
+        and disabled_clear
+        and valid_seen
+        and timing_errors == 0
+        and metric_errors <= metric_budget
+        and valid_errors <= valid_budget
+        and clear_errors <= clear_budget
+    )
+    return ok, (
+        f"v4_1021 checked={checked} codes={sorted(codes_seen)} input_edges={input_edges} "
+        f"output_edges={output_edges} reset_clear={reset_clear} disabled_clear={disabled_clear} "
+        f"valid_seen={valid_seen} timing_errors={timing_errors} metric_errors={metric_errors} "
+        f"valid_errors={valid_errors} clear_errors={clear_errors}; "
+        f"P_ON_RESET_OR_WHEN_DISABLED_DRIVE mismatch_count={max(0, clear_errors - clear_budget) + int(not reset_clear) + int(not disabled_clear)}; "
+        f"P_DECODE_SKEW_2_SKEW_0_AS mismatch_count={timing_errors + max(0, metric_errors - metric_budget)}; "
+        f"P_FOR_EACH_ACCEPTED_INPUT_CLOCK_EDGE mismatch_count={timing_errors + max(0, input_edges - output_edges - 1)}; "
+        f"P_EXPOSE_THE_ACTIVE_DELAY_CODE_AS mismatch_count={max(0, metric_errors - metric_budget)}; "
+        f"P_ASSERT_VALID_AFTER_THE_FIRST_DELAYED mismatch_count={max(0, valid_errors - valid_budget) + int(not valid_seen)}"
+    )
+
+
+def check_v4_1026_pam4_linearity_monitor(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    if not rows:
+        return False, "v4_1026 empty_trace"
+    prev_clk = float(rows[0].get("clk", 0.0))
+    expected_level = metric = 0.0
+    update_time = -1.0
+    checked = level_errors = metric_errors = valid_errors = clear_errors = 0
+    reset_clear = disabled_clear = False
+    codes_seen: set[int] = set()
+    for row in rows:
+        t = float(row["time"])
+        clk = float(row["clk"])
+        rst = _v4_topup_logic_high(row, "rst")
+        enabled = _v4_topup_logic_high(row, "enable") and not rst
+        if not enabled:
+            clear = abs(float(row["level_out"])) < 0.08 and abs(float(row["linearity_metric"])) < 0.08 and not _v4_topup_logic_high(row, "valid")
+            if rst and t < 5e-9 and clear:
+                reset_clear = True
+            if t > 82e-9 and not _v4_topup_logic_high(row, "enable") and clear:
+                disabled_clear = True
+            if ((rst and t < 5e-9) or t > 82e-9) and not clear:
+                clear_errors += 1
+            prev_clk = clk
+            continue
+        if _v4_rising(prev_clk, clk):
+            code = _v4_code_from_bits(row, ["symbol_0", "symbol_1"])
+            codes_seen.add(code)
+            expected_level = 0.9 * code / 3.0
+            metric = 0.9
+            update_time = t
+        prev_clk = clk
+        if update_time < 0 or t < update_time + 0.7e-9:
+            continue
+        checked += 1
+        if abs(float(row["level_out"]) - expected_level) > 0.08:
+            level_errors += 1
+        if abs(float(row["linearity_metric"]) - metric) > 0.08:
+            metric_errors += 1
+        if not _v4_topup_logic_high(row, "valid"):
+            valid_errors += 1
+    level_budget = max(5, checked // 20)
+    metric_budget = max(5, checked // 20)
+    valid_budget = 3
+    clear_budget = 4
+    ok = (
+        checked >= 35
+        and len(codes_seen) >= 4
+        and reset_clear
+        and disabled_clear
+        and level_errors <= level_budget
+        and metric_errors <= metric_budget
+        and valid_errors <= valid_budget
+        and clear_errors <= clear_budget
+    )
+    return ok, (
+        f"v4_1026 checked={checked} codes={sorted(codes_seen)} reset_clear={reset_clear} "
+        f"disabled_clear={disabled_clear} level_errors={level_errors} metric_errors={metric_errors} "
+        f"valid_errors={valid_errors} clear_errors={clear_errors}; "
+        f"P_ON_RESET_OR_WHEN_DISABLED_CLEAR mismatch_count={max(0, clear_errors - clear_budget) + int(not reset_clear) + int(not disabled_clear)}; "
+        f"P_ON_EACH_ENABLED_RISING_CLK_EDGE mismatch_count={max(0, level_errors - level_budget)}; "
+        f"P_DRIVE_LEVEL_OUT_TO_EVENLY_SPACED mismatch_count={max(0, level_errors - level_budget)}; "
+        f"P_EXPOSE_A_LINEARITY_METRIC_THAT_IS mismatch_count={max(0, metric_errors - metric_budget)}; "
+        f"P_ASSERT_VALID_AFTER_EACH_SAMPLED_SYMBOL mismatch_count={max(0, valid_errors - valid_budget)}"
+    )
+
+
+def check_v4_1032_baseband_antialias_filter_macro(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    if not rows:
+        return False, "v4_1032 empty_trace"
+    prev_clk = float(rows[0].get("clk", 0.0))
+    expected_vout = 0.45
+    expected_metric = 0.0
+    update_time = -1.0
+    checked = vout_errors = metric_errors = valid_errors = clear_errors = 0
+    reset_clear = disabled_clear = high_bw_seen = low_bw_seen = moved_toward_input = False
+    codes_seen: set[int] = set()
+    for row in rows:
+        t = float(row["time"])
+        clk = float(row["clk"])
+        rst = _v4_topup_logic_high(row, "rst")
+        enabled = _v4_topup_logic_high(row, "enable") and not rst
+        if not enabled:
+            expected_vout = 0.45
+            expected_metric = 0.0
+            clear = abs(float(row["vout"]) - 0.45) < 0.08 and abs(float(row["bandwidth_metric"])) < 0.08 and not _v4_topup_logic_high(row, "valid")
+            if rst and t < 5e-9 and clear:
+                reset_clear = True
+            if t > 82e-9 and not _v4_topup_logic_high(row, "enable") and clear:
+                disabled_clear = True
+            if ((rst and t < 5e-9) or t > 82e-9) and not clear:
+                clear_errors += 1
+            prev_clk = clk
+            continue
+        if _v4_rising(prev_clk, clk):
+            code = _v4_code_from_bits(row, ["bw_0", "bw_1"])
+            codes_seen.add(code)
+            alpha = (code + 1) / 4.0
+            old = expected_vout
+            expected_vout = old + alpha * (float(row["vin"]) - old)
+            expected_metric = 0.9 * code / 3.0
+            if code >= 3:
+                high_bw_seen = True
+            if code <= 1:
+                low_bw_seen = True
+            if abs(expected_vout - float(row["vin"])) + 0.02 < abs(old - float(row["vin"])):
+                moved_toward_input = True
+            update_time = t
+        prev_clk = clk
+        if update_time < 0 or t < update_time + 0.7e-9:
+            continue
+        checked += 1
+        if abs(float(row["vout"]) - expected_vout) > 0.05:
+            vout_errors += 1
+        if abs(float(row["bandwidth_metric"]) - expected_metric) > 0.08:
+            metric_errors += 1
+        if not _v4_topup_logic_high(row, "valid"):
+            valid_errors += 1
+    vout_budget = max(6, checked // 15)
+    metric_budget = max(5, checked // 20)
+    valid_budget = 3
+    clear_budget = 4
+    ok = (
+        checked >= 35
+        and len(codes_seen) >= 4
+        and reset_clear
+        and disabled_clear
+        and high_bw_seen
+        and low_bw_seen
+        and moved_toward_input
+        and vout_errors <= vout_budget
+        and metric_errors <= metric_budget
+        and valid_errors <= valid_budget
+        and clear_errors <= clear_budget
+    )
+    return ok, (
+        f"v4_1032 checked={checked} codes={sorted(codes_seen)} reset_clear={reset_clear} "
+        f"disabled_clear={disabled_clear} high_bw_seen={high_bw_seen} low_bw_seen={low_bw_seen} "
+        f"moved_toward_input={moved_toward_input} vout_errors={vout_errors} metric_errors={metric_errors} "
+        f"valid_errors={valid_errors} clear_errors={clear_errors}; "
+        f"P_ON_RESET_OR_WHEN_DISABLED_DRIVE mismatch_count={max(0, clear_errors - clear_budget) + int(not reset_clear) + int(not disabled_clear)}; "
+        f"P_ON_EACH_ENABLED_RISING_CLK_EDGE mismatch_count={max(0, vout_errors - vout_budget)}; "
+        f"P_UPDATE_VOUT_AS_A_FIRST_ORDER mismatch_count={max(0, vout_errors - vout_budget)}; "
+        f"P_HIGHER_BANDWIDTH_CODE_MUST_MOVE_VOUT mismatch_count={max(0, vout_errors - vout_budget) + int(not high_bw_seen) + int(not low_bw_seen)}; "
+        f"P_EXPOSE_THE_ACTIVE_BANDWIDTH_CODE_ON mismatch_count={max(0, metric_errors - metric_budget) + max(0, valid_errors - valid_budget)}"
+    )
+
+
+def check_v4_1035_vga_step_response_classifier(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    if not rows:
+        return False, "v4_1035 empty_trace"
+    prev_clk = float(rows[0].get("clk", 0.0))
+    prev_code = 0
+    stable_count = 0
+    expected_vout = 0.45
+    expected_metric = 0.0
+    expected_settled = False
+    update_time = -1.0
+    checked = vout_errors = metric_errors = settled_errors = clear_errors = 0
+    reset_clear = disabled_clear = high_gain_seen = overshoot_seen = settled_seen = False
+    codes_seen: set[int] = set()
+    for row in rows:
+        t = float(row["time"])
+        clk = float(row["clk"])
+        rst = _v4_topup_logic_high(row, "rst")
+        enabled = _v4_topup_logic_high(row, "enable") and not rst
+        if not enabled:
+            prev_code = 0
+            stable_count = 0
+            expected_vout = 0.45
+            expected_metric = 0.0
+            expected_settled = False
+            clear = abs(float(row["vout"]) - 0.45) < 0.08 and abs(float(row["overshoot_metric"])) < 0.08 and not _v4_topup_logic_high(row, "settled")
+            if rst and t < 5e-9 and clear:
+                reset_clear = True
+            if t > 82e-9 and not _v4_topup_logic_high(row, "enable") and clear:
+                disabled_clear = True
+            if ((rst and t < 5e-9) or t > 82e-9) and not clear:
+                clear_errors += 1
+            prev_clk = clk
+            continue
+        if _v4_rising(prev_clk, clk):
+            code = _v4_code_from_bits(row, ["gain_0", "gain_1", "gain_2"])
+            codes_seen.add(code)
+            target = _v4_topup_clip01(0.45 + (1.0 + 0.5 * code) * (float(row["vin"]) - 0.45))
+            expected_metric = 0.9 * abs(code - prev_code) / 7.0
+            expected_vout = target
+            stable_count = stable_count + 1 if code == prev_code else 0
+            expected_settled = stable_count >= 2
+            if code >= 5:
+                high_gain_seen = True
+            if expected_metric > 0.05:
+                overshoot_seen = True
+            prev_code = code
+            update_time = t
+        prev_clk = clk
+        if update_time < 0 or t < update_time + 0.7e-9:
+            continue
+        checked += 1
+        if abs(float(row["vout"]) - expected_vout) > 0.09:
+            vout_errors += 1
+        if abs(float(row["overshoot_metric"]) - expected_metric) > 0.08:
+            metric_errors += 1
+        settled = _v4_topup_logic_high(row, "settled")
+        settled_seen = settled_seen or settled
+        if settled != expected_settled:
+            settled_errors += 1
+    vout_budget = max(6, checked // 15)
+    metric_budget = max(5, checked // 20)
+    settled_budget = max(5, checked // 20)
+    clear_budget = 4
+    ok = (
+        checked >= 35
+        and len(codes_seen) >= 5
+        and reset_clear
+        and disabled_clear
+        and high_gain_seen
+        and overshoot_seen
+        and settled_seen
+        and vout_errors <= vout_budget
+        and metric_errors <= metric_budget
+        and settled_errors <= settled_budget
+        and clear_errors <= clear_budget
+    )
+    return ok, (
+        f"v4_1035 checked={checked} codes={sorted(codes_seen)} reset_clear={reset_clear} "
+        f"disabled_clear={disabled_clear} high_gain_seen={high_gain_seen} overshoot_seen={overshoot_seen} "
+        f"settled_seen={settled_seen} vout_errors={vout_errors} metric_errors={metric_errors} "
+        f"settled_errors={settled_errors} clear_errors={clear_errors}; "
+        f"P_ON_RESET_OR_WHEN_DISABLED_DRIVE mismatch_count={max(0, clear_errors - clear_budget) + int(not reset_clear) + int(not disabled_clear)}; "
+        f"P_ON_EACH_ENABLED_RISING_CLK_EDGE mismatch_count={max(0, vout_errors - vout_budget)}; "
+        f"P_APPLY_BOUNDED_SETTLING_WITH_A_CODE mismatch_count={max(0, vout_errors - vout_budget)}; "
+        f"P_EXPOSE_OVERSHOOT_MAGNITUDE_ON_OVERSHOOT_METRIC mismatch_count={max(0, metric_errors - metric_budget)}; "
+        f"P_ASSERT_SETTLED_AFTER_TWO_CONSECUTIVE_UPDATES mismatch_count={max(0, settled_errors - settled_budget) + int(not settled_seen)}"
+    )
+
+
+def _v4_edges(rows: list[dict[str, float]], name: str, *, start: float = 0.0, stop: float | None = None, vth: float = 0.45) -> list[float]:
+    if not rows:
+        return []
+    prev = float(rows[0].get(name, 0.0))
+    edges: list[float] = []
+    for row in rows[1:]:
+        t = float(row["time"])
+        if t < start or (stop is not None and t > stop):
+            prev = float(row.get(name, 0.0))
+            continue
+        now = float(row.get(name, 0.0))
+        if prev <= vth and now > vth:
+            edges.append(t)
+        prev = now
+    return edges
+
+
+def check_v4_1020_glitchless_clock_mux_selector(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    if not rows:
+        return False, "v4_1020 empty_trace"
+    active = 0
+    pending = 0
+    switched_at = -1.0
+    first_edge_seen = False
+    checked = out_errors = glitch_errors = metric_errors = valid_errors = clear_errors = 0
+    reset_clear = disabled_clear = switch_seen = both_sources_seen = False
+    src_seen: set[int] = set()
+    prev_clk_a = float(rows[0].get("clk_a", 0.0))
+    prev_clk_b = float(rows[0].get("clk_b", 0.0))
+    last_input_rise = -1.0
+    prev_out = float(rows[0].get("clk_out", 0.0))
+    for row in rows:
+        t = float(row["time"])
+        rst = _v4_topup_logic_high(row, "rst")
+        clk_a = float(row["clk_a"])
+        clk_b = float(row["clk_b"])
+        enabled = _v4_topup_logic_high(row, "enable") and not rst
+        if not enabled:
+            active = 0
+            pending = 0
+            first_edge_seen = False
+            clear = abs(float(row["clk_out"])) < 0.08 and abs(float(row["switch_metric"])) < 0.08 and not _v4_topup_logic_high(row, "valid")
+            if rst and t < 5e-9 and clear:
+                reset_clear = True
+            if t > 82e-9 and not _v4_topup_logic_high(row, "enable") and clear:
+                disabled_clear = True
+            if ((rst and t < 5e-9) or t > 82e-9) and not clear:
+                clear_errors += 1
+            prev_out = float(row.get("clk_out", 0.0))
+            prev_clk_a = clk_a
+            prev_clk_b = clk_b
+            continue
+        pending = 1 if _v4_topup_logic_high(row, "sel") else 0
+        both_low = float(row["clk_a"]) <= 0.45 and float(row["clk_b"]) <= 0.45
+        if pending != active and both_low:
+            active = pending
+            switched_at = t
+            switch_seen = True
+            first_edge_seen = False
+        expected = float(row["clk_b" if active else "clk_a"])
+        src_seen.add(active)
+        now_out = float(row["clk_out"])
+        if _v4_rising(prev_clk_a, clk_a) or _v4_rising(prev_clk_b, clk_b):
+            last_input_rise = t
+        if prev_out <= 0.45 and now_out > 0.45:
+            if last_input_rise < 0 or t - last_input_rise > 0.5e-9:
+                glitch_errors += 1
+            first_edge_seen = True
+        prev_out = now_out
+        prev_clk_a = clk_a
+        prev_clk_b = clk_b
+        if t < 6e-9 or (switched_at >= 0 and t < switched_at + 0.7e-9):
+            continue
+        checked += 1
+        if abs(now_out - expected) > 0.14:
+            out_errors += 1
+        metric_high = _v4_topup_logic_high(row, "switch_metric")
+        if switched_at >= 0 and switched_at + 0.5e-9 <= t <= switched_at + 4.5e-9:
+            if not metric_high:
+                metric_errors += 1
+        elif t > 8e-9 and metric_high:
+            metric_errors += 1
+        valid_high = _v4_topup_logic_high(row, "valid")
+        if first_edge_seen and not valid_high:
+            valid_errors += 1
+        if not first_edge_seen and valid_high:
+            valid_errors += 1
+    both_sources_seen = len(src_seen) >= 2
+    out_budget = max(12, checked // 5)
+    metric_budget = max(8, checked // 10)
+    valid_budget = max(8, checked // 10)
+    clear_budget = 4
+    ok = (
+        checked >= 80
+        and reset_clear
+        and disabled_clear
+        and switch_seen
+        and both_sources_seen
+        and out_errors <= out_budget
+        and glitch_errors == 0
+        and metric_errors <= metric_budget
+        and valid_errors <= valid_budget
+        and clear_errors <= clear_budget
+    )
+    return ok, (
+        f"v4_1020 checked={checked} sources={sorted(src_seen)} reset_clear={reset_clear} "
+        f"disabled_clear={disabled_clear} switch_seen={switch_seen} out_errors={out_errors} glitch_errors={glitch_errors} "
+        f"metric_errors={metric_errors} valid_errors={valid_errors} clear_errors={clear_errors}; "
+        f"P_ON_RESET_OR_WHEN_DISABLED_DRIVE mismatch_count={max(0, clear_errors - clear_budget) + int(not reset_clear) + int(not disabled_clear)}; "
+        f"P_ROUTE_CLK_A_WHEN_SEL_IS mismatch_count={max(0, out_errors - out_budget) + int(not both_sources_seen)}; "
+        f"P_WHEN_SEL_CHANGES_WAIT_UNTIL_BOTH mismatch_count={glitch_errors + int(not switch_seen)}; "
+        f"P_EXPOSE_A_SWITCH_EVENT_ON_SWITCH mismatch_count={max(0, metric_errors - metric_budget) + int(not switch_seen)}; "
+        f"P_ASSERT_VALID_AFTER_THE_SELECTED_SOURCE mismatch_count={max(0, valid_errors - valid_budget)}"
+    )
+
+
+def check_v4_1022_duty_cycle_window_monitor(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    if not rows:
+        return False, "v4_1022 empty_trace"
+    prev_clk = float(rows[0].get("clk_in", 0.0))
+    last_rise = None
+    last_fall = None
+    expected_duty = None
+    update_time = -1.0
+    checked = metric_errors = window_errors = valid_errors = clear_errors = 0
+    reset_clear = disabled_clear = high_duty_seen = low_duty_seen = in_window_seen = out_window_seen = False
+    for row in rows:
+        t = float(row["time"])
+        clk = float(row["clk_in"])
+        rst = _v4_topup_logic_high(row, "rst")
+        enabled = _v4_topup_logic_high(row, "enable") and not rst
+        if not enabled:
+            last_rise = None
+            last_fall = None
+            expected_duty = None
+            clear = abs(float(row["duty_metric"])) < 0.08 and not _v4_topup_logic_high(row, "in_window") and not _v4_topup_logic_high(row, "valid")
+            if rst and t < 5e-9 and clear:
+                reset_clear = True
+            if t > 82e-9 and not _v4_topup_logic_high(row, "enable") and clear:
+                disabled_clear = True
+            if ((rst and t < 5e-9) or t > 82e-9) and not clear:
+                clear_errors += 1
+            prev_clk = clk
+            continue
+        if prev_clk <= 0.45 and clk > 0.45:
+            if last_rise is not None and last_fall is not None and last_rise < last_fall < t:
+                expected_duty = (last_fall - last_rise) / (t - last_rise)
+                update_time = t
+                if expected_duty >= 0.6:
+                    high_duty_seen = True
+                if expected_duty <= 0.35:
+                    low_duty_seen = True
+            last_rise = t
+        if prev_clk > 0.45 and clk <= 0.45:
+            last_fall = t
+        prev_clk = clk
+        if expected_duty is None or t < update_time + 0.7e-9:
+            continue
+        checked += 1
+        expected_metric = 0.9 * expected_duty
+        min_f = max(0.0, min(1.0, float(row["duty_min"]) / 0.9))
+        max_f = max(0.0, min(1.0, float(row["duty_max"]) / 0.9))
+        expected_window = min_f <= expected_duty <= max_f
+        in_window_seen = in_window_seen or expected_window
+        out_window_seen = out_window_seen or (not expected_window)
+        if abs(float(row["duty_metric"]) - expected_metric) > 0.08:
+            metric_errors += 1
+        if _v4_topup_logic_high(row, "in_window") != expected_window:
+            window_errors += 1
+        if not _v4_topup_logic_high(row, "valid"):
+            valid_errors += 1
+    metric_budget = max(6, checked // 12)
+    window_budget = max(6, checked // 12)
+    valid_budget = 3
+    clear_budget = 4
+    ok = (
+        checked >= 40
+        and reset_clear
+        and disabled_clear
+        and high_duty_seen
+        and low_duty_seen
+        and in_window_seen
+        and out_window_seen
+        and metric_errors <= metric_budget
+        and window_errors <= window_budget
+        and valid_errors <= valid_budget
+        and clear_errors <= clear_budget
+    )
+    return ok, (
+        f"v4_1022 checked={checked} reset_clear={reset_clear} disabled_clear={disabled_clear} "
+        f"high_duty_seen={high_duty_seen} low_duty_seen={low_duty_seen} in_window_seen={in_window_seen} "
+        f"out_window_seen={out_window_seen} metric_errors={metric_errors} window_errors={window_errors} "
+        f"valid_errors={valid_errors} clear_errors={clear_errors}; "
+        f"P_ON_RESET_OR_WHEN_DISABLED_CLEAR mismatch_count={max(0, clear_errors - clear_budget) + int(not reset_clear) + int(not disabled_clear)}; "
+        f"P_MEASURE_HIGH_AND_LOW_INTERVALS_OVER mismatch_count={int(not high_duty_seen) + int(not low_duty_seen)}; "
+        f"P_DRIVE_DUTY_METRIC_AS_THE_MEASURED mismatch_count={max(0, metric_errors - metric_budget)}; "
+        f"P_ASSERT_IN_WINDOW_ONLY_WHEN_THE mismatch_count={max(0, window_errors - window_budget)}; "
+        f"P_ASSERT_VALID_AFTER_A_COMPLETE_HIGH mismatch_count={max(0, valid_errors - valid_budget)}"
+    )
+
+
+def check_v4_1024_fractional_delay_dtc_macro(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    if not rows:
+        return False, "v4_1024 empty_trace"
+    input_edges: list[tuple[float, int]] = []
+    prev_clk = float(rows[0].get("clk_in", 0.0))
+    update_time = -1.0
+    expected_metric = 0.0
+    checked = metric_errors = valid_errors = clear_errors = 0
+    reset_clear = disabled_clear = False
+    codes_seen: set[int] = set()
+    for row in rows:
+        t = float(row["time"])
+        clk = float(row["clk_in"])
+        rst = _v4_topup_logic_high(row, "rst")
+        enabled = _v4_topup_logic_high(row, "enable") and not rst
+        if not enabled:
+            clear = abs(float(row["clk_out"])) < 0.08 and abs(float(row["phase_metric"])) < 0.08 and not _v4_topup_logic_high(row, "valid")
+            if rst and t < 5e-9 and clear:
+                reset_clear = True
+            if t > 82e-9 and not _v4_topup_logic_high(row, "enable") and clear:
+                disabled_clear = True
+            if ((rst and t < 5e-9) or t > 82e-9) and not clear:
+                clear_errors += 1
+            prev_clk = clk
+            continue
+        if _v4_rising(prev_clk, clk):
+            code = _v4_code_from_bits(row, ["frac_0", "frac_1", "frac_2", "frac_3"])
+            input_edges.append((t, code))
+            codes_seen.add(code)
+            expected_metric = 0.9 * code / 15.0
+            update_time = t
+        prev_clk = clk
+        if update_time < 0 or t < update_time + 0.7e-9:
+            continue
+        checked += 1
+        if abs(float(row["phase_metric"]) - expected_metric) > 0.08:
+            metric_errors += 1
+        if not _v4_topup_logic_high(row, "valid"):
+            valid_errors += 1
+    output_edges = _v4_edges(rows, "clk_out", start=5e-9, stop=82e-9)
+    delay_errors = 0
+    matched = 0
+    prev_delay = None
+    monotonic_pairs = 0
+    for edge_t, code in input_edges:
+        candidates = [out_t for out_t in output_edges if edge_t + 0.05e-9 <= out_t <= edge_t + 5.5e-9]
+        if not candidates:
+            delay_errors += 1
+            continue
+        delay = min(candidates) - edge_t
+        expected_delay = (code + 1) * 0.2e-9
+        matched += 1
+        if abs(delay - expected_delay) > 0.55e-9:
+            delay_errors += 1
+        if prev_delay is not None and code >= 8 and delay > prev_delay:
+            monotonic_pairs += 1
+        prev_delay = delay
+    delay_budget = 2
+    metric_budget = max(6, checked // 15)
+    valid_budget = 4
+    clear_budget = 4
+    ok = (
+        checked >= 40
+        and len(codes_seen) >= 5
+        and matched >= 5
+        and monotonic_pairs >= 1
+        and reset_clear
+        and disabled_clear
+        and delay_errors <= delay_budget
+        and metric_errors <= metric_budget
+        and valid_errors <= valid_budget
+        and clear_errors <= clear_budget
+    )
+    return ok, (
+        f"v4_1024 checked={checked} codes={sorted(codes_seen)} input_edges={len(input_edges)} "
+        f"output_edges={len(output_edges)} matched={matched} monotonic_pairs={monotonic_pairs} "
+        f"reset_clear={reset_clear} disabled_clear={disabled_clear} delay_errors={delay_errors} "
+        f"metric_errors={metric_errors} valid_errors={valid_errors} clear_errors={clear_errors}; "
+        f"P_ON_RESET_OR_WHEN_DISABLED_CLEAR mismatch_count={max(0, clear_errors - clear_budget) + int(not reset_clear) + int(not disabled_clear)}; "
+        f"P_DECODE_FRAC_3_FRAC_0_AS mismatch_count={max(0, delay_errors - delay_budget)}; "
+        f"P_FOR_EACH_INPUT_EDGE_EMIT_ONE mismatch_count={max(0, delay_errors - delay_budget) + max(0, len(input_edges) - matched)}; "
+        f"P_EXPOSE_THE_FRACTIONAL_DELAY_AS_PHASE mismatch_count={max(0, metric_errors - metric_budget)}; "
+        f"P_PRESERVE_INPUT_EDGE_ORDER_AND_ASSERT mismatch_count={max(0, valid_errors - valid_budget)}"
+    )
+
+
+def check_v4_1033_quadrature_oscillator_phase_error_monitor(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    if not rows:
+        return False, "v4_1033 empty_trace"
+    i_edges = _v4_edges(rows, "clk_i", start=5e-9, stop=82e-9)
+    q_edges = _v4_edges(rows, "clk_q", start=5e-9, stop=82e-9)
+    expected_by_time: list[tuple[float, float, bool]] = []
+    for idx in range(1, len(i_edges)):
+        prev_i = i_edges[idx - 1]
+        cur_i = i_edges[idx]
+        period = cur_i - prev_i
+        qs = [q for q in q_edges if prev_i < q < cur_i]
+        if not qs or period <= 0:
+            continue
+        q = qs[0]
+        phase = (q - prev_i) / period
+        err = abs(phase - 0.25)
+        expected_by_time.append((q, min(0.9, 3.6 * err), err <= (60e-3 / 0.9)))
+    checked = metric_errors = ok_errors = valid_errors = clear_errors = 0
+    reset_clear = disabled_clear = valid_seen = ok_seen = bad_phase_seen = False
+    expected_metric = 0.0
+    expected_ok = False
+    stable_ok = 0
+    update_time = -1.0
+    exp_idx = 0
+    for row in rows:
+        t = float(row["time"])
+        rst = _v4_topup_logic_high(row, "rst")
+        enabled = _v4_topup_logic_high(row, "enable") and not rst
+        if not enabled:
+            expected_metric = 0.0
+            expected_ok = False
+            stable_ok = 0
+            clear = abs(float(row["phase_error_metric"])) < 0.08 and not _v4_topup_logic_high(row, "quadrature_ok") and not _v4_topup_logic_high(row, "valid")
+            if rst and t < 5e-9 and clear:
+                reset_clear = True
+            if t > 82e-9 and not _v4_topup_logic_high(row, "enable") and clear:
+                disabled_clear = True
+            if ((rst and t < 5e-9) or t > 82e-9) and not clear:
+                clear_errors += 1
+            continue
+        while exp_idx < len(expected_by_time) and t >= expected_by_time[exp_idx][0]:
+            _, expected_metric, raw_ok = expected_by_time[exp_idx]
+            stable_ok = stable_ok + 1 if raw_ok else 0
+            expected_ok = stable_ok >= 2
+            if not raw_ok:
+                bad_phase_seen = True
+            update_time = expected_by_time[exp_idx][0]
+            exp_idx += 1
+        if update_time < 0 or t < update_time + 0.7e-9:
+            continue
+        checked += 1
+        if abs(float(row["phase_error_metric"]) - expected_metric) > 0.08:
+            metric_errors += 1
+        got_ok = _v4_topup_logic_high(row, "quadrature_ok")
+        ok_seen = ok_seen or got_ok
+        if got_ok != expected_ok:
+            ok_errors += 1
+        valid = _v4_topup_logic_high(row, "valid")
+        valid_seen = valid_seen or valid
+        if not valid:
+            valid_errors += 1
+    metric_budget = max(6, checked // 12)
+    ok_budget = max(8, checked // 5)
+    valid_budget = max(8, checked // 5)
+    clear_budget = 4
+    ok = (
+        len(i_edges) >= 5
+        and len(q_edges) >= 5
+        and checked >= 35
+        and reset_clear
+        and disabled_clear
+        and valid_seen
+        and ok_seen
+        and bad_phase_seen
+        and metric_errors <= metric_budget
+        and ok_errors <= ok_budget
+        and valid_errors <= valid_budget
+        and clear_errors <= clear_budget
+    )
+    return ok, (
+        f"v4_1033 checked={checked} i_edges={len(i_edges)} q_edges={len(q_edges)} "
+        f"reset_clear={reset_clear} disabled_clear={disabled_clear} valid_seen={valid_seen} "
+        f"ok_seen={ok_seen} bad_phase_seen={bad_phase_seen} metric_errors={metric_errors} "
+        f"ok_errors={ok_errors} valid_errors={valid_errors} clear_errors={clear_errors}; "
+        f"P_ON_RESET_OR_WHEN_DISABLED_CLEAR mismatch_count={max(0, clear_errors - clear_budget) + int(not reset_clear) + int(not disabled_clear)}; "
+        f"P_TRACK_RISING_THRESHOLD_CROSSINGS_OF_CLK mismatch_count={int(len(i_edges) < 5) + int(len(q_edges) < 5)}; "
+        f"P_ESTIMATE_A_VOLTAGE_DOMAIN_PHASE_ERROR mismatch_count={max(0, metric_errors - metric_budget)}; "
+        f"P_ASSERT_QUADRATURE_OK_WHEN_THE_MEASURED mismatch_count={max(0, ok_errors - ok_budget) + int(not ok_seen)}; "
+        f"P_ASSERT_VALID_AFTER_BOTH_I_AND mismatch_count={max(0, valid_errors - valid_budget) + int(not valid_seen)}"
+    )
+
+
+
+
+
+
+CHECKS["v4_934_nonoverlap_clock_generator"] = check_v4_nonoverlap_clock_generator
+CHECKS["v4_935_pwm_ramp_modulator_front_end"] = check_v4_pwm_ramp_modulator_front_end
+CHECKS["v4_938_periodic_sampler_aperture_metric"] = check_v4_periodic_sampler_aperture_metric
+CHECKS["v4_941_programmable_frequency_divider"] = check_v4_programmable_frequency_divider
+CHECKS["v4_943_level_shifter_enable_rail_tracking"] = check_v4_level_shifter_enable_rail_tracking
+CHECKS["v4_911_ctle_equalizer_macro"] = check_v4_ctle_equalizer_macro
+CHECKS["v4_912_ffe_transmitter_3tap"] = check_v4_ffe_transmitter_3tap
+CHECKS["v4_947_source_follower_buffer_macro"] = check_v4_source_follower_buffer_macro
+CHECKS["v4_948_cascode_gain_cell_headroom"] = check_v4_cascode_gain_cell_headroom
+CHECKS["v4_956_baseband_offset_gain_trim_macro"] = check_v4_baseband_offset_gain_trim_macro
+CHECKS["v4_961_clocked_variable_width_dac"] = check_v4_clocked_variable_width_dac
+CHECKS["v4_963_thermometer_coded_dac_front_end"] = check_v4_thermometer_dac_front_end
+CHECKS["v4_978_frequency_period_meter_with_timeout"] = check_v4_frequency_period_meter_with_timeout
+CHECKS["v4_979_edge_delay_line_with_deglitch"] = check_v4_edge_delay_line_with_deglitch
+CHECKS["v4_962_transient_ideal_adc_with_dc_compatible_contract"] = check_v4_transient_ideal_adc_with_dc_compatible_contract
+CHECKS["v4_964_windowed_peak_minmax_monitor"] = check_v4_windowed_peak_minmax_monitor
+CHECKS["v4_965_sampled_single_pole_lowpass"] = check_v4_sampled_single_pole_lowpass
+
+
+def _v4_batch001_abs(x: float) -> float:
+    return -x if x < 0.0 else x
+
+
+def _v4_batch001_first_after(rows: list[dict[str, float]], target_time: float) -> dict[str, float] | None:
+    for row in rows:
+        if float(row["time"]) >= target_time:
+            return row
+    return None
+
+
+def check_v4_1034_rf_envelope_detector_attack_release(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    if not rows:
+        return False, "v4_1034 empty_trace"
+    env = 0.0
+    prev_clk = float(rows[0].get("clk", 0.0))
+    checked = env_errors = attack_errors = valid_errors = clear_errors = 0
+    reset_clear = disabled_clear = attack_seen = release_seen = False
+    for row in rows:
+        t = float(row["time"])
+        rst = _v4_topup_logic_high(row, "rst")
+        enabled = _v4_topup_logic_high(row, "enable") and not rst
+        if not enabled:
+            env = 0.0
+            clear = row["envelope"] < 0.10 and row["attack_metric"] < 0.10 and row["valid"] < 0.10
+            reset_clear = reset_clear or (rst and t < 5e-9 and clear)
+            disabled_clear = disabled_clear or (t > 86e-9 and clear)
+            if ((rst and t < 5e-9) or t > 86e-9) and not clear:
+                clear_errors += 1
+            prev_clk = float(row["clk"])
+            continue
+        if _v4_rising(prev_clk, float(row["clk"])):
+            mag = min(0.9, abs(float(row["vin"]) - 0.45) * 2.0)
+            attacking = mag > env
+            env = min(mag, env + 0.120) if attacking else max(mag, env - 0.030)
+            sample = _v4_batch001_first_after(rows, t + 0.7e-9)
+            if sample is not None:
+                checked += 1
+                attack_seen = attack_seen or attacking
+                release_seen = release_seen or (not attacking)
+                if abs(float(sample["envelope"]) - env) > 0.06:
+                    env_errors += 1
+                if (_v4_topup_logic_high(sample, "attack_metric") != attacking):
+                    attack_errors += 1
+                if not _v4_topup_logic_high(sample, "valid"):
+                    valid_errors += 1
+        prev_clk = float(row["clk"])
+    ok = checked >= 6 and reset_clear and disabled_clear and attack_seen and release_seen and env_errors == 0 and attack_errors <= 1 and valid_errors == 0 and clear_errors <= 3
+    return ok, (
+        f"v4_1034 checked={checked} reset_clear={reset_clear} disabled_clear={disabled_clear} "
+        f"attack_seen={attack_seen} release_seen={release_seen} env_errors={env_errors} "
+        f"attack_errors={attack_errors} valid_errors={valid_errors} clear_errors={clear_errors}; "
+        f"P_ON_RESET_OR_WHEN_DISABLED_CLEAR mismatch_count={max(0, clear_errors - 3) + int(not reset_clear) + int(not disabled_clear)}; "
+        f"P_ON_EACH_ENABLED_RISING_CLK_EDGE mismatch_count={valid_errors + int(checked < 6)}; "
+        f"P_USE_A_FASTER_ATTACK_STEP_WHEN mismatch_count={env_errors + int(not attack_seen) + int(not release_seen)}; "
+        f"P_DRIVE_ENVELOPE_WITH_THE_TRACKED_MAGNITUDE mismatch_count={env_errors}; "
+        f"P_EXPOSE_WHETHER_THE_LAST_UPDATE_USED mismatch_count={max(0, attack_errors - 1)}"
+    )
+
+
+def check_v4_1036_lna_blocker_compression_detector(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    if not rows:
+        return False, "v4_1036 empty_trace"
+    checked = vout_errors = metric_errors = flag_errors = clear_errors = 0
+    reset_clear = disabled_clear = compressed_seen = uncompressed_seen = False
+    for row in rows[::6]:
+        t = float(row["time"])
+        rst = _v4_topup_logic_high(row, "rst")
+        enabled = _v4_topup_logic_high(row, "enable") and not rst
+        if not enabled:
+            clear = abs(row["vout"] - 0.45) < 0.08 and row["compression_metric"] < 0.10 and row["compressed"] < 0.10
+            reset_clear = reset_clear or (rst and t < 5e-9 and clear)
+            disabled_clear = disabled_clear or (t > 82e-9 and clear)
+            if ((rst and t < 5e-9) or t > 82e-9) and not clear:
+                clear_errors += 1
+            continue
+        excess = max(0.0, float(row["blocker"]) - 0.6)
+        gain = 6.0 / (1.0 + excess / 0.25)
+        expected_vout = _v4_topup_clip01(0.45 + gain * (float(row["vin"]) - 0.45))
+        expected_metric = 0.9 * (6.0 - gain) / 6.0
+        expected_flag = expected_metric > 0.1
+        checked += 1
+        compressed_seen = compressed_seen or expected_flag
+        uncompressed_seen = uncompressed_seen or not expected_flag
+        if abs(float(row["vout"]) - expected_vout) > 0.12:
+            vout_errors += 1
+        if abs(float(row["compression_metric"]) - expected_metric) > 0.10:
+            metric_errors += 1
+        if _v4_topup_logic_high(row, "compressed") != expected_flag:
+            flag_errors += 1
+    ok = checked >= 15 and reset_clear and disabled_clear and compressed_seen and uncompressed_seen and vout_errors <= 4 and metric_errors <= 4 and flag_errors <= 3 and clear_errors <= 3
+    return ok, f"v4_1036 checked={checked} reset_clear={reset_clear} disabled_clear={disabled_clear} compressed_seen={compressed_seen} uncompressed_seen={uncompressed_seen} vout_errors={vout_errors} metric_errors={metric_errors} flag_errors={flag_errors} clear_errors={clear_errors}"
+
+
+def check_v4_1037_pa_ampm_memory_tap_macro(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    if not rows:
+        return False, "v4_1037 empty_trace"
+    prev_clk = float(rows[0].get("clk", 0.0))
+    prev_amp = 0.0
+    checked = vout_errors = am_errors = pm_errors = valid_errors = clear_errors = 0
+    reset_clear = disabled_clear = compression_seen = memory_seen = False
+    for row in rows:
+        t = float(row["time"])
+        rst = _v4_topup_logic_high(row, "rst")
+        enabled = _v4_topup_logic_high(row, "enable") and not rst
+        if not enabled:
+            prev_amp = 0.0
+            clear = abs(row["vout"] - 0.45) < 0.08 and row["am_metric"] < 0.10 and row["pm_metric"] < 0.10 and row["valid"] < 0.10
+            reset_clear = reset_clear or (rst and t < 5e-9 and clear)
+            disabled_clear = disabled_clear or (t > 82e-9 and clear)
+            if ((rst and t < 5e-9) or t > 82e-9) and not clear:
+                clear_errors += 1
+            prev_clk = float(row["clk"])
+            continue
+        if _v4_rising(prev_clk, float(row["clk"])):
+            amp = float(row["vin"]) - 0.45
+            excess = max(0.0, float(row["drive"]) - 0.55)
+            gain = 1.0 / (1.0 + excess / 0.25)
+            expected_vout = _v4_topup_clip01(0.45 + amp * gain + 0.2 * prev_amp)
+            expected_am = 0.9 * (1.0 - gain)
+            expected_pm = _v4_topup_clip01(0.45 + 0.2 * abs(amp - prev_amp))
+            sample = _v4_batch001_first_after(rows, t + 0.7e-9)
+            if sample is not None:
+                checked += 1
+                compression_seen = compression_seen or expected_am > 0.05
+                memory_seen = memory_seen or expected_pm > 0.47
+                if abs(float(sample["vout"]) - expected_vout) > 0.035:
+                    vout_errors += 1
+                if abs(float(sample["am_metric"]) - expected_am) > 0.06:
+                    am_errors += 1
+                if abs(float(sample["pm_metric"]) - expected_pm) > 0.06:
+                    pm_errors += 1
+                if not _v4_topup_logic_high(sample, "valid"):
+                    valid_errors += 1
+            prev_amp = amp
+        prev_clk = float(row["clk"])
+    ok = checked >= 6 and reset_clear and disabled_clear and compression_seen and memory_seen and vout_errors <= 1 and am_errors <= 1 and pm_errors <= 1 and valid_errors == 0 and clear_errors <= 3
+    return ok, f"v4_1037 checked={checked} reset_clear={reset_clear} disabled_clear={disabled_clear} compression_seen={compression_seen} memory_seen={memory_seen} vout_errors={vout_errors} am_errors={am_errors} pm_errors={pm_errors} valid_errors={valid_errors} clear_errors={clear_errors}"
+
+
+def check_v4_1039_buck_soft_start_ramp_controller(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    if not rows:
+        return False, "v4_1039 empty_trace"
+    prev_clk = float(rows[0].get("clk", 0.0))
+    soft_ref = 0.0
+    ramp_step = 40e-3
+    ramp_tol = 5e-3
+    checked = soft_errors = metric_errors = done_errors = clear_errors = step_errors = clamp_errors = 0
+    reset_clear = disabled_clear = done_seen = not_done_seen = ramp_seen = target_drop_seen = False
+    previous_active_soft: float | None = None
+    disabled_start: float | None = None
+    for row in rows:
+        t = float(row["time"])
+        rst = _v4_topup_logic_high(row, "rst")
+        enabled = _v4_topup_logic_high(row, "enable") and not rst
+        if not enabled:
+            if not rst and disabled_start is None:
+                disabled_start = t
+            soft_ref = 0.0
+            previous_active_soft = None
+            clear = row["soft_ref"] < 0.10 and row["ramp_metric"] < 0.10 and row["done"] < 0.10
+            reset_clear = reset_clear or (rst and t < 3.5e-9 and clear)
+            disabled_settled = (not rst) and disabled_start is not None and (t - disabled_start) > 1.0e-9
+            disabled_clear = disabled_clear or (disabled_settled and clear)
+            if ((rst and t > 0.5e-9) or disabled_settled) and not clear:
+                clear_errors += 1
+            prev_clk = float(row["clk"])
+            continue
+        disabled_start = None
+        if _v4_rising(prev_clk, float(row["clk"])):
+            target = _v4_topup_clip01(float(row["target_ref"]))
+            if soft_ref > target:
+                soft_ref = target
+                target_drop_seen = True
+            elif target - soft_ref <= ramp_tol:
+                soft_ref = target
+            else:
+                before = soft_ref
+                soft_ref = min(target, soft_ref + ramp_step)
+                if soft_ref - before > ramp_step + 0.010:
+                    step_errors += 1
+            expected_metric = max(0.0, target - soft_ref)
+            expected_done = expected_metric <= ramp_tol
+            sample = _v4_batch001_first_after(rows, t + 0.7e-9)
+            if sample is not None:
+                checked += 1
+                observed_soft = float(sample["soft_ref"])
+                observed_metric = float(sample["ramp_metric"])
+                observed_done = _v4_topup_logic_high(sample, "done")
+                done_seen = done_seen or expected_done
+                not_done_seen = not_done_seen or not expected_done
+                ramp_seen = ramp_seen or expected_metric > 0.03
+                if observed_soft - target > 0.045:
+                    clamp_errors += 1
+                if previous_active_soft is not None and target >= previous_active_soft and observed_soft + 0.02 < previous_active_soft and expected_metric > ramp_tol:
+                    step_errors += 1
+                previous_active_soft = observed_soft
+                if abs(observed_soft - soft_ref) > 0.055:
+                    soft_errors += 1
+                if abs(observed_metric - expected_metric) > 0.060:
+                    metric_errors += 1
+                if observed_done != expected_done:
+                    done_errors += 1
+        prev_clk = float(row["clk"])
+    ok = (
+        checked >= 8
+        and reset_clear
+        and disabled_clear
+        and done_seen
+        and not_done_seen
+        and ramp_seen
+        and target_drop_seen
+        and soft_errors <= 1
+        and metric_errors <= 1
+        and done_errors <= 1
+        and clear_errors <= 3
+        and step_errors <= 1
+        and clamp_errors <= 1
+    )
+    return ok, (
+        f"v4_1039 checked={checked} reset_clear={reset_clear} disabled_clear={disabled_clear} "
+        f"done_seen={done_seen} not_done_seen={not_done_seen} ramp_seen={ramp_seen} "
+        f"target_drop_seen={target_drop_seen} soft_errors={soft_errors} metric_errors={metric_errors} "
+        f"done_errors={done_errors} clear_errors={clear_errors} step_errors={step_errors} "
+        f"clamp_errors={clamp_errors}"
+    )
+
+
+def check_v4_929_opamp_feedback_settling_monitor(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    if not rows:
+        return False, "v4_929 empty_trace"
+    prev_clk = float(rows[0].get("clk", 0.0))
+    vout = 0.45
+    settle_count = 0
+    checked = vout_errors = err_errors = settled_errors = clear_errors = 0
+    reset_clear = disabled_clear = settled_seen = move_seen = False
+    for row in rows:
+        t = float(row["time"])
+        rst = _v4_topup_logic_high(row, "rst")
+        enabled = _v4_topup_logic_high(row, "enable") and not rst
+        if not enabled:
+            vout = 0.45; settle_count = 0
+            clear = abs(row["vout"] - 0.45) < 0.08 and abs(row["error_metric"] - 0.45) < 0.08 and row["settled"] < 0.10
+            reset_clear = reset_clear or (rst and t < 5e-9 and clear)
+            disabled_clear = disabled_clear or (t > 82e-9 and clear)
+            if ((rst and t < 5e-9) or t > 82e-9) and not clear:
+                clear_errors += 1
+            prev_clk = float(row["clk"])
+            continue
+        if _v4_rising(prev_clk, float(row["clk"])):
+            code = _v4_code_from_bits(row, ["gain_0", "gain_1", "gain_2"])
+            target = _v4_topup_clip01(0.45 + (1.0 + 0.5 * code) * (float(row["vin"]) - 0.45))
+            old = vout
+            vout = _v4_topup_clip01(vout + 0.3 * (target - vout))
+            err = target - vout
+            settle_count = settle_count + 1 if abs(err) < 0.040 else 0
+            sample = _v4_batch001_first_after(rows, t + 0.7e-9)
+            if sample is not None:
+                checked += 1
+                move_seen = move_seen or abs(vout - old) > 0.01
+                expected_settled = settle_count >= 3
+                settled_seen = settled_seen or expected_settled
+                if abs(float(sample["vout"]) - vout) > 0.10:
+                    vout_errors += 1
+                if abs(float(sample["error_metric"]) - (err + 0.45)) > 0.12:
+                    err_errors += 1
+                if _v4_topup_logic_high(sample, "settled") != expected_settled:
+                    settled_errors += 1
+        prev_clk = float(row["clk"])
+    ok = checked >= 6 and reset_clear and disabled_clear and move_seen and settled_seen and vout_errors <= 1 and err_errors <= 1 and settled_errors <= 1 and clear_errors <= 12
+    return ok, f"v4_929 checked={checked} reset_clear={reset_clear} disabled_clear={disabled_clear} move_seen={move_seen} settled_seen={settled_seen} vout_errors={vout_errors} err_errors={err_errors} settled_errors={settled_errors} clear_errors={clear_errors}"
+
+
+def check_v4_939_am_modulator_source_macro(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    if not rows:
+        return False, "v4_939 empty_trace"
+    checked = vout_errors = dbg_errors = valid_errors = clear_errors = 0
+    reset_clear = disabled_clear = high_mod_seen = low_mod_seen = False
+    for row in rows[::6]:
+        t = float(row["time"])
+        rst = _v4_topup_logic_high(row, "rst")
+        enabled = _v4_topup_logic_high(row, "enable") and not rst
+        if not enabled:
+            clear = abs(row["vout"] - 0.45) < 0.08 and row["envelope_dbg"] < 0.10 and row["valid"] < 0.10
+            reset_clear = reset_clear or (rst and t < 5e-9 and clear)
+            disabled_clear = disabled_clear or (t > 84e-9 and clear)
+            if ((rst and t < 5e-9) or t > 84e-9) and not clear:
+                clear_errors += 1
+            continue
+        mult = 1.0 + 0.5 * ((float(row["mod_in"]) - 0.45) / 0.45)
+        expected_vout = _v4_topup_clip01(0.45 + (float(row["carrier_in"]) - 0.45) * mult)
+        expected_dbg = _v4_topup_clip01(mult * 0.45)
+        checked += 1
+        high_mod_seen = high_mod_seen or mult > 1.05
+        low_mod_seen = low_mod_seen or mult < 0.95
+        if abs(float(row["vout"]) - expected_vout) > 0.10:
+            vout_errors += 1
+        if abs(float(row["envelope_dbg"]) - expected_dbg) > 0.10:
+            dbg_errors += 1
+        if not _v4_topup_logic_high(row, "valid"):
+            valid_errors += 1
+    ok = checked >= 15 and reset_clear and disabled_clear and high_mod_seen and low_mod_seen and vout_errors <= 4 and dbg_errors <= 4 and valid_errors == 0 and clear_errors <= 3
+    return ok, f"v4_939 checked={checked} reset_clear={reset_clear} disabled_clear={disabled_clear} high_mod_seen={high_mod_seen} low_mod_seen={low_mod_seen} vout_errors={vout_errors} dbg_errors={dbg_errors} valid_errors={valid_errors} clear_errors={clear_errors}"
+
+
+def check_v4_945_pa_gain_compression_ampm_macro(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    if not rows:
+        return False, "v4_945 empty_trace"
+    checked = vout_errors = gain_errors = phase_errors = flag_errors = clear_errors = 0
+    reset_clear = disabled_clear = compressed_seen = uncompressed_seen = False
+    for row in rows[::6]:
+        t = float(row["time"])
+        rst = _v4_topup_logic_high(row, "rst")
+        enabled = _v4_topup_logic_high(row, "enable") and not rst
+        if not enabled:
+            clear = abs(row["vout"] - 0.45) < 0.08 and row["gain_metric"] < 0.10 and row["phase_metric"] < 0.10 and row["compressed"] < 0.10
+            reset_clear = reset_clear or (rst and t < 5e-9 and clear)
+            disabled_clear = disabled_clear or (t > 82e-9 and clear)
+            if ((rst and t < 5e-9) or t > 82e-9) and not clear:
+                clear_errors += 1
+            continue
+        excess = max(0.0, abs(float(row["envelope"]) - 0.45) - 0.2)
+        gain = 3.0 / (1.0 + excess / 0.25)
+        expected_vout = _v4_topup_clip01(0.45 + gain * (float(row["vin"]) - 0.45))
+        expected_gain = _v4_topup_clip01(0.9 * gain / 3.0)
+        expected_phase = _v4_topup_clip01(0.9 * excess / 0.45)
+        expected_flag = gain < 3.0 * 0.85
+        checked += 1
+        compressed_seen = compressed_seen or expected_flag
+        uncompressed_seen = uncompressed_seen or not expected_flag
+        if abs(float(row["vout"]) - expected_vout) > 0.12:
+            vout_errors += 1
+        if abs(float(row["gain_metric"]) - expected_gain) > 0.10:
+            gain_errors += 1
+        if abs(float(row["phase_metric"]) - expected_phase) > 0.10:
+            phase_errors += 1
+        if _v4_topup_logic_high(row, "compressed") != expected_flag:
+            flag_errors += 1
+    ok = checked >= 15 and reset_clear and disabled_clear and compressed_seen and uncompressed_seen and vout_errors <= 4 and gain_errors <= 4 and phase_errors <= 4 and flag_errors <= 3 and clear_errors <= 3
+    return ok, f"v4_945 checked={checked} reset_clear={reset_clear} disabled_clear={disabled_clear} compressed_seen={compressed_seen} uncompressed_seen={uncompressed_seen} vout_errors={vout_errors} gain_errors={gain_errors} phase_errors={phase_errors} flag_errors={flag_errors} clear_errors={clear_errors}"
+
+
+def check_v4_946_lna_gain_compression_macro(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    if not rows:
+        return False, "v4_946 empty_trace"
+    checked = vout_errors = gain_errors = flag_errors = clear_errors = 0
+    reset_clear = disabled_clear = compressed_seen = uncompressed_seen = False
+    for row in rows[::6]:
+        t = float(row["time"])
+        rst = _v4_topup_logic_high(row, "rst")
+        enabled = _v4_topup_logic_high(row, "enable") and not rst
+        if not enabled:
+            clear = abs(row["vout"] - 0.45) < 0.08 and row["gain_metric"] < 0.10 and row["compression_flag"] < 0.10
+            reset_clear = reset_clear or (rst and t < 5e-9 and clear)
+            disabled_clear = disabled_clear or (t > 82e-9 and clear)
+            if ((rst and t < 5e-9) or t > 82e-9) and not clear:
+                clear_errors += 1
+            continue
+        excess = max(0.0, abs(float(row["vin"]) - 0.45) - 0.18)
+        gain = 4.0 / (1.0 + excess / 0.20)
+        expected_vout = _v4_topup_clip01(0.45 + gain * (float(row["vin"]) - 0.45))
+        expected_gain = _v4_topup_clip01(0.9 * gain / 4.0)
+        expected_flag = gain < 4.0 * 0.85
+        checked += 1
+        compressed_seen = compressed_seen or expected_flag
+        uncompressed_seen = uncompressed_seen or not expected_flag
+        if abs(float(row["vout"]) - expected_vout) > 0.12:
+            vout_errors += 1
+        if abs(float(row["gain_metric"]) - expected_gain) > 0.10:
+            gain_errors += 1
+        if _v4_topup_logic_high(row, "compression_flag") != expected_flag:
+            flag_errors += 1
+    ok = checked >= 15 and reset_clear and disabled_clear and compressed_seen and uncompressed_seen and vout_errors <= 4 and gain_errors <= 4 and flag_errors <= 3 and clear_errors <= 3
+    return ok, f"v4_946 checked={checked} reset_clear={reset_clear} disabled_clear={disabled_clear} compressed_seen={compressed_seen} uncompressed_seen={uncompressed_seen} vout_errors={vout_errors} gain_errors={gain_errors} flag_errors={flag_errors} clear_errors={clear_errors}"
+
+
+def check_v4_957_two_stage_opamp_slew_macromodel(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    if not rows:
+        return False, "v4_957 empty_trace"
+    prev_clk = float(rows[0].get("clk", 0.0))
+    vout = 0.45
+    settle_count = 0
+    checked = vout_errors = stage1_errors = slew_errors = flag_errors = settled_errors = clear_errors = 0
+    reset_clear = disabled_clear = slew_seen = clamp_seen = settled_seen = False
+    for row in rows:
+        t = float(row["time"])
+        rst = _v4_topup_logic_high(row, "rst")
+        enabled = _v4_topup_logic_high(row, "enable") and not rst
+        if not enabled:
+            vout = 0.45; settle_count = 0
+            clear = abs(row["vout"] - 0.45) < 0.08 and abs(row["stage1_metric"] - 0.45) < 0.08 and row["slew_metric"] < 0.10 and row["clamp_flag"] < 0.10 and row["settled"] < 0.10
+            reset_clear = reset_clear or (rst and t < 5e-9 and clear)
+            disabled_clear = disabled_clear or (t > 86e-9 and clear)
+            if ((rst and t < 5e-9) or t > 86e-9) and not clear:
+                clear_errors += 1
+            prev_clk = float(row["clk"])
+            continue
+        if _v4_rising(prev_clk, float(row["clk"])):
+            diff = float(row["vinp"]) - float(row["vinn"])
+            stage1 = _v4_topup_clip01(0.45 + 20.0 * diff)
+            raw = 0.45 + 5.0 * (stage1 - 0.45) + (float(row["load_step"]) - 0.45) * 0.5
+            target = _v4_topup_clip01(raw)
+            clamped = target != raw
+            move = target - vout
+            if move > 0.08:
+                move = 0.08
+            if move < -0.08:
+                move = -0.08
+            vout = _v4_topup_clip01(vout + move)
+            slew = abs(move)
+            settle_count = settle_count + 1 if abs(target - vout) < 0.010 else 0
+            sample = _v4_batch001_first_after(rows, t + 0.7e-9)
+            if sample is not None:
+                checked += 1
+                slew_seen = slew_seen or slew > 0.02
+                clamp_seen = clamp_seen or clamped
+                settled_seen = settled_seen or settle_count >= 2
+                if abs(float(sample["vout"]) - vout) > 0.10:
+                    vout_errors += 1
+                if abs(float(sample["stage1_metric"]) - stage1) > 0.10:
+                    stage1_errors += 1
+                if abs(float(sample["slew_metric"]) - slew) > 0.08:
+                    slew_errors += 1
+                if _v4_topup_logic_high(sample, "clamp_flag") != clamped:
+                    flag_errors += 1
+                if _v4_topup_logic_high(sample, "settled") != (settle_count >= 2):
+                    settled_errors += 1
+        prev_clk = float(row["clk"])
+    ok = checked >= 6 and reset_clear and disabled_clear and slew_seen and clamp_seen and vout_errors <= 3 and stage1_errors <= 3 and slew_errors <= 3 and flag_errors <= 3 and settled_errors <= 3 and clear_errors <= 12
+    return ok, f"v4_957 checked={checked} reset_clear={reset_clear} disabled_clear={disabled_clear} slew_seen={slew_seen} clamp_seen={clamp_seen} settled_seen={settled_seen} vout_errors={vout_errors} stage1_errors={stage1_errors} slew_errors={slew_errors} flag_errors={flag_errors} settled_errors={settled_errors} clear_errors={clear_errors}"
+
+
+def check_v4_917_quadrature_phase_interpolator(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "clk_i", "clk_q", "rst", "code_0", "code_1", "code_2", "code_3", "code_4", "clk_out", "quadrant_0", "quadrant_1", "phase_metric"}
+    if not rows or not required.issubset(rows[0]):
+        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
+        return False, "v4_917 missing_columns=" + ",".join(missing)
+    checked = metric_errors = quadrant_errors = clear_errors = 0
+    reset_clear = mid_reset_clear = code_low = code_high = clk_activity = False
+    clk_values: list[float] = []
+    prev_code: int | None = None
+    settle_until = 0.0
+    for row in rows[::6]:
+        t = float(row["time"])
+        if _v4_topup_logic_high(row, "rst"):
+            prev_code = None
+            settle_until = t
+            clear = row["phase_metric"] < 0.08 and row["quadrant_0"] < 0.08 and row["quadrant_1"] < 0.08 and row["clk_out"] < 0.12
+            reset_clear = reset_clear or (t < 4e-9 and clear)
+            mid_reset_clear = mid_reset_clear or (53e-9 < t < 55e-9 and clear)
+            if ((t < 4e-9) or (53e-9 < t < 55e-9)) and not clear:
+                clear_errors += 1
+            continue
+        code = _v4_code_from_bits(row, ["code_0", "code_1", "code_2", "code_3", "code_4"])
+        if prev_code is None or code != prev_code:
+            prev_code = code
+            settle_until = t + 1.1e-9
+            continue
+        if t < settle_until:
+            continue
+        quadrant = code // 8
+        expected_metric = 0.9 * code / 31.0
+        expected_q1 = quadrant in (2, 3)
+        expected_q0 = quadrant in (1, 3)
+        code_low = code_low or code <= 4
+        code_high = code_high or code >= 24
+        clk_values.append(float(row["clk_out"]))
+        checked += 1
+        if abs(float(row["phase_metric"]) - expected_metric) > 0.08:
+            metric_errors += 1
+        if _v4_topup_logic_high(row, "quadrant_1") != expected_q1 or _v4_topup_logic_high(row, "quadrant_0") != expected_q0:
+            quadrant_errors += 1
+    if clk_values and max(clk_values) > 0.65 and min(clk_values) < 0.20:
+        clk_activity = True
+    ok = checked >= 12 and reset_clear and mid_reset_clear and code_low and code_high and clk_activity and metric_errors <= 3 and quadrant_errors <= 3 and clear_errors <= 2
+    return ok, f"v4_917 checked={checked} reset_clear={reset_clear} mid_reset_clear={mid_reset_clear} code_low={code_low} code_high={code_high} clk_activity={clk_activity} metric_errors={metric_errors} quadrant_errors={quadrant_errors} clear_errors={clear_errors}"
+
+
+def check_v4_925_polyphase_quadrature_filter_macro(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    if not rows:
+        return False, "v4_925 empty_trace"
+    prev_clk = float(rows[0].get("clk", 0.0))
+    i_state = q_state = 0.45
+    count = 0
+    checked = i_errors = q_errors = amp_errors = phase_errors = valid_errors = clear_errors = 0
+    reset_clear = disabled_clear = iq_separated = valid_seen = False
+    for row in rows:
+        t = float(row["time"])
+        rst = _v4_topup_logic_high(row, "rst")
+        enabled = _v4_topup_logic_high(row, "enable") and not rst
+        if not enabled:
+            i_state = q_state = 0.45; count = 0
+            clear = abs(row["i_out"] - 0.45) < 0.08 and abs(row["q_out"] - 0.45) < 0.08 and row["amp_metric"] < 0.10 and row["phase_metric"] < 0.10 and row["valid"] < 0.10
+            reset_clear = reset_clear or (rst and t < 5e-9 and clear)
+            disabled_clear = disabled_clear or (t > 82e-9 and clear)
+            if ((rst and t < 5e-9) or t > 82e-9) and not clear:
+                clear_errors += 1
+            prev_clk = float(row["clk"])
+            continue
+        if _v4_rising(prev_clk, float(row["clk"])):
+            old_i = i_state
+            i_state = i_state + 0.25 * (float(row["vin"]) - i_state)
+            q_state = q_state + 0.25 * (old_i - q_state)
+            count += 1
+            expected_amp = min(0.9, abs(i_state - q_state) * 2.0)
+            expected_phase = 0.65 if i_state >= q_state else 0.25
+            expected_valid = count >= 4
+            sample = _v4_batch001_first_after(rows, t + 0.7e-9)
+            if sample is not None:
+                checked += 1
+                iq_separated = iq_separated or abs(i_state - q_state) > 0.025
+                valid_seen = valid_seen or expected_valid
+                if abs(float(sample["i_out"]) - i_state) > 0.08:
+                    i_errors += 1
+                if abs(float(sample["q_out"]) - q_state) > 0.08:
+                    q_errors += 1
+                if abs(float(sample["amp_metric"]) - expected_amp) > 0.10:
+                    amp_errors += 1
+                if abs(float(sample["phase_metric"]) - expected_phase) > 0.10:
+                    phase_errors += 1
+                if _v4_topup_logic_high(sample, "valid") != expected_valid:
+                    valid_errors += 1
+        prev_clk = float(row["clk"])
+    ok = checked >= 6 and reset_clear and disabled_clear and iq_separated and valid_seen and i_errors <= 2 and q_errors <= 2 and amp_errors <= 2 and phase_errors <= 2 and valid_errors <= 1 and clear_errors <= 12
+    return ok, f"v4_925 checked={checked} reset_clear={reset_clear} disabled_clear={disabled_clear} iq_separated={iq_separated} valid_seen={valid_seen} i_errors={i_errors} q_errors={q_errors} amp_errors={amp_errors} phase_errors={phase_errors} valid_errors={valid_errors} clear_errors={clear_errors}"
+
+
+def check_v4_927_tia_limiting_receiver_macro(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    if not rows:
+        return False, "v4_927 empty_trace"
+    prev_clk = float(rows[0].get("clk", 0.0))
+    valid_count = 0
+    checked = vout_errors = flag_errors = amp_errors = decision_errors = valid_errors = clear_errors = 0
+    reset_clear = disabled_clear = limit_seen = decision_high = decision_low = valid_seen = False
+    for row in rows:
+        t = float(row["time"])
+        rst = _v4_topup_logic_high(row, "rst")
+        enabled = _v4_topup_logic_high(row, "enable") and not rst
+        if not enabled:
+            valid_count = 0
+            clear = abs(row["vout"] - 0.45) < 0.08 and row["decision"] < 0.10 and row["limit_flag"] < 0.10 and row["valid"] < 0.10 and row["amp_metric"] < 0.10
+            reset_clear = reset_clear or (rst and t < 5e-9 and clear)
+            disabled_clear = disabled_clear or (t > 82e-9 and clear)
+            if ((rst and t < 5e-9) or t > 82e-9) and not clear:
+                clear_errors += 1
+            prev_clk = float(row["clk"])
+            continue
+        raw = 4.0 * (float(row["vin_proxy"]) - 0.45)
+        limited = max(-0.35, min(0.35, raw))
+        expected_vout = 0.45 + limited
+        expected_flag = abs(raw) > 0.35
+        expected_amp = abs(limited)
+        if _v4_rising(prev_clk, float(row["clk"])):
+            expected_decision = limited >= 0.0
+            decision_high = decision_high or expected_decision
+            decision_low = decision_low or not expected_decision
+            if expected_amp >= 0.040:
+                valid_count += 1
+            else:
+                valid_count = 0
+            expected_valid = valid_count >= 2
+            valid_seen = valid_seen or expected_valid
+            sample = _v4_batch001_first_after(rows, t + 0.7e-9)
+            if sample is not None:
+                if _v4_topup_logic_high(sample, "decision") != expected_decision:
+                    decision_errors += 1
+                if _v4_topup_logic_high(sample, "valid") != expected_valid:
+                    valid_errors += 1
+        if checked % 6 == 0:
+            if abs(float(row["vout"]) - expected_vout) > 0.10:
+                vout_errors += 1
+            if _v4_topup_logic_high(row, "limit_flag") != expected_flag:
+                flag_errors += 1
+            if abs(float(row["amp_metric"]) - expected_amp) > 0.10:
+                amp_errors += 1
+        limit_seen = limit_seen or expected_flag
+        checked += 1
+        prev_clk = float(row["clk"])
+    ok = checked >= 40 and reset_clear and disabled_clear and limit_seen and decision_high and decision_low and valid_seen and vout_errors <= 4 and flag_errors <= 4 and amp_errors <= 4 and decision_errors <= 2 and valid_errors == 0 and clear_errors <= 12
+    return ok, f"v4_927 checked={checked} reset_clear={reset_clear} disabled_clear={disabled_clear} limit_seen={limit_seen} decision_high={decision_high} decision_low={decision_low} valid_seen={valid_seen} vout_errors={vout_errors} flag_errors={flag_errors} amp_errors={amp_errors} decision_errors={decision_errors} valid_errors={valid_errors} clear_errors={clear_errors}"
+
+
+def check_v4_933_crystal_oscillator_startup_monitor(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    if not rows:
+        return False, "v4_933 empty_trace"
+    prev_clk = float(rows[0].get("clk_ref", 0.0))
+    amp = 0.0
+    periods = 0
+    checked = amp_errors = done_errors = valid_errors = osc_errors = clear_errors = 0
+    reset_clear = disabled_clear = ramp_seen = done_seen = valid_seen = osc_activity = False
+    osc_vals: list[float] = []
+    expected_osc_high = False
+    for row in rows:
+        t = float(row["time"])
+        rst = _v4_topup_logic_high(row, "rst")
+        enabled = _v4_topup_logic_high(row, "enable") and not rst
+        if not enabled:
+            amp = 0.0; periods = 0
+            expected_osc_high = False
+            clear = row["osc_out"] < 0.12 and row["amp_metric"] < 0.08 and row["valid"] < 0.10 and row["startup_done"] < 0.10
+            reset_clear = reset_clear or (rst and t < 5e-9 and clear)
+            disabled_clear = disabled_clear or (t > 82e-9 and clear)
+            if ((rst and t < 5e-9) or t > 82e-9) and not clear:
+                clear_errors += 1
+            prev_clk = float(row["clk_ref"])
+            continue
+        osc_vals.append(float(row["osc_out"]))
+        if _v4_rising(prev_clk, float(row["clk_ref"])):
+            old_amp = amp
+            amp = min(0.3, amp + 0.040)
+            if amp > 0.0:
+                expected_osc_high = not expected_osc_high
+            expected_done = amp >= 0.3 - 1e-6
+            if expected_done:
+                periods += 1
+            expected_valid = periods >= 2 and expected_done
+            ramp_seen = ramp_seen or amp > old_amp
+            done_seen = done_seen or expected_done
+            valid_seen = valid_seen or expected_valid
+            sample = _v4_batch001_first_after(rows, t + 0.7e-9)
+            if sample is not None:
+                checked += 1
+                if abs(float(sample["amp_metric"]) - amp) > 0.06:
+                    amp_errors += 1
+                if _v4_topup_logic_high(sample, "startup_done") != expected_done:
+                    done_errors += 1
+                if _v4_topup_logic_high(sample, "valid") != expected_valid:
+                    valid_errors += 1
+                if _v4_topup_logic_high(sample, "osc_out") != expected_osc_high:
+                    osc_errors += 1
+        prev_clk = float(row["clk_ref"])
+    osc_activity = bool(osc_vals) and max(osc_vals) > 0.65 and min(osc_vals) < 0.20
+    ok = checked >= 8 and reset_clear and disabled_clear and ramp_seen and done_seen and valid_seen and osc_activity and amp_errors <= 2 and done_errors <= 1 and valid_errors <= 1 and osc_errors <= 1 and clear_errors <= 4
+    return ok, f"v4_933 checked={checked} reset_clear={reset_clear} disabled_clear={disabled_clear} ramp_seen={ramp_seen} done_seen={done_seen} valid_seen={valid_seen} osc_activity={osc_activity} amp_errors={amp_errors} done_errors={done_errors} valid_errors={valid_errors} osc_errors={osc_errors} clear_errors={clear_errors}"
+
+
+def check_v4_940_fm_vco_modulation_source(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    if not rows:
+        return False, "v4_940 empty_trace"
+    checked = metric_errors = clear_errors = 0
+    reset_clear = disabled_clear = low_metric = high_metric = osc_activity = marker_activity = valid_seen = False
+    osc_vals: list[float] = []
+    marker_vals: list[float] = []
+    metric_vals: list[float] = []
+    for row in rows[::6]:
+        t = float(row["time"])
+        rst = _v4_topup_logic_high(row, "rst")
+        enabled = _v4_topup_logic_high(row, "enable") and not rst
+        if not enabled:
+            clear = row["osc_out"] < 0.12 and row["freq_metric"] < 0.08 and row["phase_marker"] < 0.12 and row["valid"] < 0.10
+            reset_clear = reset_clear or (rst and t < 5e-9 and clear)
+            disabled_clear = disabled_clear or (t > 82e-9 and clear)
+            if ((rst and t < 5e-9) or t > 82e-9) and not clear:
+                clear_errors += 1
+            continue
+        freq = max(1.0e6, 10.0e6 + 5.0e6 * (float(row["mod_in"]) - 0.45))
+        expected_metric = min(0.9, max(0.0, freq / 20.0e6 * 0.9))
+        low_metric = low_metric or expected_metric < 0.45
+        high_metric = high_metric or expected_metric > 0.45
+        osc_vals.append(float(row["osc_out"]))
+        marker_vals.append(float(row["phase_marker"]))
+        if 14e-9 < t < 80e-9:
+            metric_vals.append(float(row["freq_metric"]))
+        valid_seen = valid_seen or _v4_topup_logic_high(row, "valid")
+        checked += 1
+        if abs(float(row["freq_metric"]) - expected_metric) > 0.10:
+            metric_errors += 1
+    osc_activity = bool(osc_vals) and max(osc_vals) > 0.65 and min(osc_vals) < 0.20
+    marker_activity = bool(marker_vals) and max(marker_vals) > 0.65 and min(marker_vals) < 0.20
+    metric_span = (max(metric_vals) - min(metric_vals)) if metric_vals else 0.0
+    ok = checked >= 12 and reset_clear and disabled_clear and low_metric and high_metric and metric_span >= 0.055 and osc_activity and marker_activity and valid_seen and metric_errors <= 4 and clear_errors <= 4
+    return ok, f"v4_940 checked={checked} reset_clear={reset_clear} disabled_clear={disabled_clear} low_metric={low_metric} high_metric={high_metric} metric_span={metric_span:.3g} osc_activity={osc_activity} marker_activity={marker_activity} valid_seen={valid_seen} metric_errors={metric_errors} clear_errors={clear_errors}"
+
+
+def check_v4_942_fixed_frequency_oscillator_source(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    if not rows:
+        return False, "v4_942 empty_trace"
+    checked = metric_errors = clear_errors = 0
+    reset_clear = disabled_clear = osc_activity = valid_seen = reenable_seen = False
+    osc_vals: list[float] = []
+    prev_osc = float(rows[0].get("osc_out", 0.0))
+    first_reenable_rise: float | None = None
+    for row in rows[::6]:
+        t = float(row["time"])
+        rst = _v4_topup_logic_high(row, "rst")
+        enabled = _v4_topup_logic_high(row, "enable") and not rst
+        if not enabled:
+            clear = row["osc_out"] < 0.12 and row["period_metric"] < 0.08 and row["valid"] < 0.10
+            reset_clear = reset_clear or (rst and t < 5e-9 and clear)
+            disabled_clear = disabled_clear or (54e-9 < t < 64e-9 and clear)
+            if ((rst and t < 5e-9) or (54e-9 < t < 64e-9)) and not clear:
+                clear_errors += 1
+            continue
+        reenable_seen = reenable_seen or t > 64e-9
+        osc_vals.append(float(row["osc_out"]))
+        if t > 64e-9 and first_reenable_rise is None and prev_osc < 0.30 and float(row["osc_out"]) > 0.65:
+            first_reenable_rise = t
+        valid_seen = valid_seen or _v4_topup_logic_high(row, "valid")
+        checked += 1
+        if abs(float(row["period_metric"]) - 0.45) > 0.10 and t > 12e-9:
+            metric_errors += 1
+        prev_osc = float(row["osc_out"])
+    osc_activity = bool(osc_vals) and max(osc_vals) > 0.65 and min(osc_vals) < 0.20
+    restart_timing_ok = first_reenable_rise is not None and 72e-9 <= first_reenable_rise <= 77e-9
+    ok = checked >= 12 and reset_clear and disabled_clear and reenable_seen and restart_timing_ok and osc_activity and valid_seen and metric_errors <= 4 and clear_errors <= 4
+    first_rise_note = "none" if first_reenable_rise is None else f"{first_reenable_rise:.3e}"
+    return ok, f"v4_942 checked={checked} reset_clear={reset_clear} disabled_clear={disabled_clear} reenable_seen={reenable_seen} restart_timing_ok={restart_timing_ok} first_reenable_rise={first_rise_note} osc_activity={osc_activity} valid_seen={valid_seen} metric_errors={metric_errors} clear_errors={clear_errors}"
+
+
+def check_v4_951_serializer_mux_timing_macro(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    if not rows:
+        return False, "v4_951 empty_trace"
+    prev_clk = float(rows[0].get("clk", 0.0))
+    slot = 0
+    frame_count = 0
+    checked = serial_errors = slot_errors = valid_errors = clear_errors = 0
+    reset_clear = disabled_clear = valid_seen = slot3_seen = one_seen = zero_seen = False
+    for row in rows:
+        t = float(row["time"])
+        rst = _v4_topup_logic_high(row, "rst")
+        enabled = _v4_topup_logic_high(row, "enable") and not rst
+        if not enabled:
+            slot = 0; frame_count = 0
+            clear = row["serial_out"] < 0.10 and row["slot_0"] < 0.10 and row["slot_1"] < 0.10 and row["valid"] < 0.10
+            reset_clear = reset_clear or (rst and t < 5e-9 and clear)
+            disabled_clear = disabled_clear or (t > 82e-9 and clear)
+            if ((rst and t < 5e-9) or t > 82e-9) and not clear:
+                clear_errors += 1
+            prev_clk = float(row["clk"])
+            continue
+        if _v4_rising(prev_clk, float(row["clk"])):
+            selected_name = ["d0", "d1", "d2", "d3"][slot]
+            expected_serial = _v4_topup_logic_high(row, selected_name)
+            expected_s1 = slot >= 2
+            expected_s0 = slot in (1, 3)
+            if slot == 3:
+                frame_count += 1
+            expected_valid = frame_count >= 1
+            slot3_seen = slot3_seen or slot == 3
+            valid_seen = valid_seen or expected_valid
+            one_seen = one_seen or expected_serial
+            zero_seen = zero_seen or not expected_serial
+            sample = _v4_batch001_first_after(rows, t + 0.7e-9)
+            if sample is not None:
+                checked += 1
+                if _v4_topup_logic_high(sample, "serial_out") != expected_serial:
+                    serial_errors += 1
+                if _v4_topup_logic_high(sample, "slot_1") != expected_s1 or _v4_topup_logic_high(sample, "slot_0") != expected_s0:
+                    slot_errors += 1
+                if _v4_topup_logic_high(sample, "valid") != expected_valid:
+                    valid_errors += 1
+            slot = (slot + 1) % 4
+        prev_clk = float(row["clk"])
+    ok = checked >= 6 and reset_clear and disabled_clear and slot3_seen and valid_seen and one_seen and zero_seen and serial_errors <= 1 and slot_errors <= 1 and valid_errors <= 1 and clear_errors <= 12
+    return ok, f"v4_951 checked={checked} reset_clear={reset_clear} disabled_clear={disabled_clear} slot3_seen={slot3_seen} valid_seen={valid_seen} one_seen={one_seen} zero_seen={zero_seen} serial_errors={serial_errors} slot_errors={slot_errors} valid_errors={valid_errors} clear_errors={clear_errors}"
+
+
+def check_v4_952_deserializer_demux_alignment_macro(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    if not rows:
+        return False, "v4_952 empty_trace"
+    prev_clk = float(rows[0].get("clk", 0.0))
+    prev_align = float(rows[0].get("align_pulse", 0.0))
+    slot = 0
+    updated = 0
+    outs = [0.0, 0.0, 0.0, 0.0]
+    checked = out_errors = metric_errors = valid_errors = clear_errors = 0
+    reset_clear = disabled_clear = align_seen = valid_seen = one_seen = zero_seen = False
+    for row in rows:
+        t = float(row["time"])
+        rst = _v4_topup_logic_high(row, "rst")
+        enabled = _v4_topup_logic_high(row, "enable") and not rst
+        if not enabled:
+            slot = 0; updated = 0; outs = [0.0, 0.0, 0.0, 0.0]
+            clear = all(row[f"out{i}"] < 0.10 for i in range(4)) and row["phase_metric"] < 0.10 and row["word_valid"] < 0.10
+            reset_clear = reset_clear or (rst and t < 5e-9 and clear)
+            disabled_clear = disabled_clear or (t > 82e-9 and clear)
+            if ((rst and t < 5e-9) or t > 82e-9) and not clear:
+                clear_errors += 1
+            prev_clk = float(row["clk"]); prev_align = float(row["align_pulse"])
+            continue
+        if _v4_rising(prev_align, float(row["align_pulse"])):
+            slot = 0; updated = 0; align_seen = True
+        if _v4_rising(prev_clk, float(row["clk"])):
+            bit_v = 0.9 if _v4_topup_logic_high(row, "serial_in") else 0.0
+            outs[slot] = bit_v
+            expected_metric = 0.9 * slot / 3.0
+            slot = (slot + 1) % 4
+            updated = min(4, updated + 1)
+            expected_valid = updated >= 4
+            valid_seen = valid_seen or expected_valid
+            one_seen = one_seen or bit_v > 0.45
+            zero_seen = zero_seen or bit_v < 0.45
+            sample = _v4_batch001_first_after(rows, t + 0.7e-9)
+            if sample is not None:
+                checked += 1
+                for idx, expected in enumerate(outs):
+                    if abs(float(sample[f"out{idx}"]) - expected) > 0.10:
+                        out_errors += 1
+                        break
+                if abs(float(sample["phase_metric"]) - expected_metric) > 0.12:
+                    metric_errors += 1
+                if _v4_topup_logic_high(sample, "word_valid") != expected_valid:
+                    valid_errors += 1
+        prev_clk = float(row["clk"]); prev_align = float(row["align_pulse"])
+    ok = checked >= 6 and reset_clear and disabled_clear and align_seen and valid_seen and one_seen and zero_seen and out_errors <= 2 and metric_errors <= 2 and valid_errors <= 1 and clear_errors <= 12
+    return ok, f"v4_952 checked={checked} reset_clear={reset_clear} disabled_clear={disabled_clear} align_seen={align_seen} valid_seen={valid_seen} one_seen={one_seen} zero_seen={zero_seen} out_errors={out_errors} metric_errors={metric_errors} valid_errors={valid_errors} clear_errors={clear_errors}"
+
+CHECKS["v4_966_deterministic_prbs_voltage_source"] = check_v4_deterministic_prbs_voltage_source
+CHECKS["v4_967_phase_crossing_timing_monitor"] = check_v4_phase_crossing_timing_monitor
+CHECKS["v4_968_delayed_threshold_voltage_switch"] = check_v4_delayed_threshold_voltage_switch
+CHECKS["v4_975_windowed_ripple_and_settling_detector"] = check_v4_windowed_ripple_and_settling_detector
+CHECKS["v4_976_delay_qualified_level_crossing_counter"] = check_v4_delay_qualified_level_crossing_counter
+CHECKS["v4_973_segmented_dac_with_dwa_rotator"] = check_v4_segmented_dac_with_dwa_rotator
+CHECKS["v4_974_adc_flash_front_end_with_thermometer_code"] = check_v4_adc_flash_front_end_with_thermometer_code
+CHECKS["v4_977_track_hold_with_droop_and_aperture"] = check_v4_track_hold_with_droop_and_aperture
+CHECKS["v4_980_programmable_gain_limiter_with_slew"] = check_v4_programmable_gain_limiter_with_slew
+from checkers.v4 import canonical_303_319 as _canonical_checkers_303_319
+
+_canonical_checkers_303_319.register_checkers_303_319(CHECKS)
+globals().update(
+    {
+        checker.__name__: checker
+        for checker in _canonical_checkers_303_319.CHECKERS.values()
+    }
+)
+CHECKS["v4_1020_glitchless_clock_mux_selector"] = check_v4_1020_glitchless_clock_mux_selector
+CHECKS["v4_1021_programmable_clock_skew_aligner"] = check_v4_1021_programmable_clock_skew_aligner
+CHECKS["v4_1022_duty_cycle_window_monitor"] = check_v4_1022_duty_cycle_window_monitor
+CHECKS["v4_1024_fractional_delay_dtc_macro"] = check_v4_1024_fractional_delay_dtc_macro
+CHECKS["v4_1026_pam4_linearity_monitor"] = check_v4_1026_pam4_linearity_monitor
+CHECKS["v4_1032_baseband_anti_alias_filter_macro"] = check_v4_1032_baseband_antialias_filter_macro
+CHECKS["v4_1032_baseband_antialias_filter_macro"] = check_v4_1032_baseband_antialias_filter_macro
+CHECKS["v4_1033_quadrature_oscillator_phase_error_monitor"] = check_v4_1033_quadrature_oscillator_phase_error_monitor
+CHECKS["v4_1035_vga_step_response_classifier"] = check_v4_1035_vga_step_response_classifier
+CHECKS["v4_917_quadrature_phase_interpolator"] = check_v4_917_quadrature_phase_interpolator
+CHECKS["v4_925_polyphase_quadrature_filter_macro"] = check_v4_925_polyphase_quadrature_filter_macro
+CHECKS["v4_927_tia_limiting_receiver_macro"] = check_v4_927_tia_limiting_receiver_macro
+CHECKS["v4_933_crystal_oscillator_startup_monitor"] = check_v4_933_crystal_oscillator_startup_monitor
+CHECKS["v4_940_fm_vco_modulation_source"] = check_v4_940_fm_vco_modulation_source
+CHECKS["v4_942_fixed_frequency_oscillator_source"] = check_v4_942_fixed_frequency_oscillator_source
+CHECKS["v4_951_serializer_mux_timing_macro"] = check_v4_951_serializer_mux_timing_macro
+CHECKS["v4_952_deserializer_demux_alignment_macro"] = check_v4_952_deserializer_demux_alignment_macro
+CHECKS["v4_957_two_stage_opamp_slew_macromodel"] = check_v4_957_two_stage_opamp_slew_macromodel
+CHECKS["v4_946_lna_gain_compression_macro"] = check_v4_946_lna_gain_compression_macro
+CHECKS["v4_945_pa_gain_compression_ampm_macro"] = check_v4_945_pa_gain_compression_ampm_macro
+CHECKS["v4_939_am_modulator_source_macro"] = check_v4_939_am_modulator_source_macro
+CHECKS["v4_929_opamp_feedback_settling_monitor"] = check_v4_929_opamp_feedback_settling_monitor
+CHECKS["v4_1037_pa_ampm_memory_tap_macro"] = check_v4_1037_pa_ampm_memory_tap_macro
+CHECKS["v4_1036_lna_blocker_compression_detector"] = check_v4_1036_lna_blocker_compression_detector
+CHECKS["v4_1034_rf_envelope_detector_attack_release"] = check_v4_1034_rf_envelope_detector_attack_release
+CHECKS["v4_1039_buck_soft_start_ramp_controller"] = check_v4_1039_buck_soft_start_ramp_controller
+CHECKS["v4_topup_generic_trace_checker"] = check_v4_topup_generic_trace_checker
 
 
 VABENCH300_PROPOSED_CHECK_ALIASES = {
@@ -25788,14 +31228,20 @@ CHECKS["v3_006_element_shuffler"] = check_v3_element_shuffler
 CHECKS["v3_007_first_order_lowpass"] = check_vbm1_first_order_lowpass
 CHECKS["v3_008_gain_trim_controller"] = check_v3_gain_trim_controller
 CHECKS["v3_009_lock_detector"] = check_v3_009_lock_detector
+CHECKS["v4_009_lock_detector"] = check_v3_009_lock_detector
 CHECKS["v3_010_offset_comparator"] = check_v3_offset_comparator
 CHECKS["v3_011_pfd_up_dn_logic"] = check_pfd_reset_race
+CHECKS["v4_011_pfd_up_dn_logic"] = check_v4_pfd_updn_logic
 CHECKS["v3_012_clock_divider"] = check_clk_divider
+CHECKS["v4_012_clock_divider"] = check_v4_clock_divider
 CHECKS["v3_013_resettable_integrator"] = check_vbm1_resettable_integrator
 CHECKS["v3_014_sar_logic"] = check_vbm1_sar_logic_4b
 CHECKS["v3_015_segmented_dac"] = check_vbm1_segmented_dac
+CHECKS["v4_014_segmented_dac"] = check_vbm1_segmented_dac
 CHECKS["v3_016_binary_weighted_voltage_dac"] = check_simple_binary_dac_4b
+CHECKS["v4_015_binary_weighted_voltage_dac"] = check_simple_binary_dac_4b
 CHECKS["v3_017_slew_rate_limiter"] = check_vbm1_slew_rate_limiter
+CHECKS["v4_016_slew_rate_limiter"] = check_vbm1_slew_rate_limiter
 CHECKS["v3_018_strongarm_style_latch_comparator"] = check_release_strongarm_latch_comparator
 CHECKS["v3_019_unit_element_thermometer_dac"] = check_vbm1_thermometer_dac_15seg
 CHECKS["v3_020_thermometer_code_decoder"] = check_vbm1_thermometer_decoder_guarded
@@ -25819,6 +31265,21 @@ CHECKS["v3_037_pa_compression_macro"] = check_pa_compression_macro
 CHECKS["v3_038_power_on_reset_detector"] = check_power_on_reset_detector
 CHECKS["v3_039_precision_rectifier_envelope_detector"] = check_precision_rectifier_envelope_detector
 CHECKS["v3_040_programmable_gain_amplifier"] = check_programmable_gain_amplifier
+CHECKS["v4_001_bang_bang_phase_detector"] = check_v4_bbpd
+CHECKS["v4_002_capacitive_weighted_sar_feedback_dac"] = check_v4_cdac_feedback_dac
+CHECKS["v4_003_pipeline_adc_stage"] = check_v4_pipeline_stage
+CHECKS["v4_004_trim_calibration_controller"] = check_v4_trim_calibration_controller
+CHECKS["v4_005_debounce_latch"] = check_v4_debounce_latch
+CHECKS["v4_006_element_shuffler"] = check_v4_element_shuffler
+CHECKS["v4_007_first_order_lowpass"] = check_v4_first_order_lowpass
+CHECKS["v4_008_gain_trim_controller"] = check_v4_gain_trim_controller
+CHECKS["v4_010_offset_comparator"] = check_v3_offset_comparator
+CHECKS["v4_013_resettable_integrator"] = check_vbm1_resettable_integrator
+CHECKS["v4_017_slew_rate_limiter"] = check_vbm1_slew_rate_limiter
+CHECKS["v4_021_vco_phase_integrator"] = check_vbm1_vco_phase_integrator
+CHECKS["v4_026_clocked_sample_and_hold"] = check_sample_hold
+CHECKS["v4_029_dwa_dem_encoder"] = check_dwa_dem_encoder_release
+CHECKS["v4_040_programmable_gain_amplifier"] = check_programmable_gain_amplifier
 CHECKS["v3_041_propagation_delay_comparator"] = check_cmp_delay
 CHECKS["v3_042_ptat_ctat_reference_generator"] = check_ptat_ctat_reference_generator
 CHECKS["v3_043_rf_mixer_downconverter_macro"] = check_rf_mixer_downconverter_macro
@@ -25831,9 +31292,11 @@ CHECKS["v3_048_uvlo_brownout_detector"] = check_uvlo_brownout_detector
 CHECKS["v3_049_window_comparator_detector"] = check_true_window_comparator
 CHECKS["v3_080_acquisition_limited_sample_and_hold"] = check_acquisition_limited_sample_hold
 CHECKS["v3_081_aperture_delay_track_and_hold"] = check_vbm1_track_hold_aperture
+CHECKS["v4_072_aperture_delay_track_and_hold"] = check_v4_aperture_delay_track_and_hold
 CHECKS["v3_082_bias_voltage_generator_with_enable_trim"] = check_bias_voltage_generator_with_enable_trim
 CHECKS["v3_083_crossing_metric_writer"] = check_vbm1_file_metric_writer
 CHECKS["v3_084_peak_detector"] = check_vbm1_peak_detector
+CHECKS["v4_075_peak_detector"] = check_v4_peak_detector
 CHECKS["v3_085_burst_clock_source"] = check_clk_burst_gen
 CHECKS["v3_086_dither_noise_like_deterministic_source"] = check_noise_gen
 CHECKS["v3_087_lfsr_prbs_generator"] = check_prbs7
@@ -26455,6 +31918,8 @@ V3_STANDALONE_SPLIT_CHECKS = {
     "099-dither-adder": check_v3_dither_adder,
     "v3_101_fixed_gain_amplifier": check_v3_fixed_gain_amplifier,
     "101-fixed-gain-amplifier": check_v3_fixed_gain_amplifier,
+    "v3_111_clocked_sine_source": check_v3_clocked_sine_source,
+    "111-clocked-sine-source": check_v3_clocked_sine_source,
     "v3_107_reference_step_clock": check_v3_reference_step_clock,
     "107-reference-step-clock": check_v3_reference_step_clock,
     "v3_301_function_clamp_window": check_v3_301_function_clamp_window,
@@ -26462,7 +31927,8 @@ V3_STANDALONE_SPLIT_CHECKS = {
     "v3_302_function_deadband_map": check_v3_302_function_deadband_map,
     "302-function-deadband-map": check_v3_302_function_deadband_map,
     "v3_303_function_piecewise_gain": check_v3_303_function_piecewise_gain,
-    "303-function-piecewise-gain": check_v3_303_function_piecewise_gain,
+
+        "303-function-piecewise-gain": check_v3_303_function_piecewise_gain,
     "v3_304_function_code_normalizer": check_v3_304_function_code_normalizer,
     "304-function-code-normalizer": check_v3_304_function_code_normalizer,
     "v3_305_function_soft_threshold": check_v3_305_function_soft_threshold,
@@ -26980,6 +32446,461 @@ for _v11_topic_id, _v11_checker in VABENCH300_V11_CHECK_ALIASES.items():
     CHECKS.setdefault(_v11_topic_id, _v11_checker)
     for _v11_form in ("dut", "tb", "bugfix", "e2e"):
         CHECKS.setdefault(f"{_v11_topic_id}:{_v11_form}", _v11_checker)
+
+
+# Canonical v4 DUT-family IDs are the public runner interface. These aliases
+# retain per-function checkers and must never become a generic fallback.
+V4_CANONICAL_CHECKER_ALIASES = {
+    "v4_017_strongarm_style_latch_comparator": "v3_018_strongarm_style_latch_comparator",
+    "v4_018_unit_element_thermometer_dac": "v3_019_unit_element_thermometer_dac",
+    "v4_019_vco_phase_integrator": "v3_021_vco_phase_integrator",
+    "v4_020_bandgap_reference_macro_model": "v3_022_bandgap_reference_macro_model",
+    "v4_021_calibration_deadband_controller": "v3_023_calibration_deadband_controller",
+    "v4_022_charge_pump_abstraction": "v3_024_charge_pump_abstraction",
+    "v4_023_clocked_adc_quantizer": "v3_025_clocked_adc_quantizer",
+    "v4_024_clocked_sample_and_hold": "v3_026_clocked_sample_and_hold",
+    "v4_025_dac_mismatch_unit_weighting_model": "v3_027_dac_mismatch_unit_weighting_model",
+    "v4_026_digital_phase_accumulator_with_modulo_wrap": "v3_028_digital_phase_accumulator_with_modulo_wrap",
+    "v4_027_dwa_dem_encoder": "v3_029_dwa_dem_encoder",
+    "v4_028_higher_order_filter": "v3_030_higher_order_filter",
+    "v4_029_hysteresis_comparator": "v3_031_hysteresis_comparator",
+    "v4_030_ldo_regulator_macro_model": "v3_032_ldo_regulator_macro_model",
+    "v4_031_limiting_amplifier": "v3_033_limiting_amplifier_frontend",
+    "v4_032_lna_gain_compression_macro": "v3_034_lna_gain_compression_macro",
+    "v4_033_log_rssi_power_detector": "v3_035_log_rssi_power_detector",
+    "v4_034_loop_filter_abstraction": "v3_036_loop_filter_abstraction",
+    "v4_035_pa_compression": "v3_037_pa_compression_macro",
+    "v4_036_power_on_reset_detector": "v3_038_power_on_reset_detector",
+    "v4_037_precision_rectifier_envelope_detector": "v3_039_precision_rectifier_envelope_detector",
+    "v4_038_programmable_gain_amplifier": "v3_040_programmable_gain_amplifier",
+    "v4_039_propagation_delay_comparator": "v3_041_propagation_delay_comparator",
+    "v4_040_ptat_ctat_reference_generator": "v3_042_ptat_ctat_reference_generator",
+    "v4_041_rf_mixer_downconverter_macro": "v3_043_rf_mixer_downconverter_macro",
+    "v4_042_sample_and_hold_with_droop_leakage": "v3_044_sample_and_hold_with_droop_leakage",
+    "v4_043_soft_hysteretic_limiter": "v3_045_soft_hysteretic_limiter",
+    "v4_044_successive_approximation_calibration_search_fsm": "v3_046_successive_approximation_calibration_search_fsm",
+    "v4_045_threshold_comparator": "v3_047_threshold_comparator",
+    "v4_046_uvlo_brownout_detector": "v3_048_uvlo_brownout_detector",
+    "v4_047_window_comparator_detector": "v3_049_window_comparator_detector",
+    "v4_048_bin_to_thermometer_decoder_8b": "v3_050_bin_to_thermometer_decoder_8b",
+    "v4_049_thermometer_to_binary_encoder_8b": "v3_051_thermometer_to_binary_encoder_8b",
+    "v4_050_dc_aware_adc3bit": "v3_052_dc_aware_adc3bit",
+    "v4_051_latched_bus_dac8": "v3_053_latched_bus_dac8",
+    "v4_052_thermometer_bus_encoder": "v3_054_thermometer_bus_encoder",
+    "v4_053_slew_rate_dac4": "v3_055_slew_rate_dac4",
+    "v4_054_correlated_double_sampler": "v3_056_correlated_double_sampler",
+    "v4_055_first_order_sigma_delta_modulator": "v3_057_first_order_sigma_delta_modulator",
+    "v4_056_config_latch_32b_clocked": "v3_058_config_latch_32b_clocked",
+    "v4_057_config_shift_register_64b": "v3_060_config_shift_register_64b",
+    "v4_058_masked_config_update_32b": "v3_063_masked_config_update_32b",
+    "v4_059_edge_interval_tdc_8b": "v3_064_edge_interval_tdc_8b",
+    "v4_060_duty_cycle_meter_8b": "v3_066_duty_cycle_meter_8b",
+    "v4_061_event_counter_windowed_16b": "v3_067_event_counter_windowed_16b",
+    "v4_062_latency_counter_ready_valid_12b": "v3_068_latency_counter_ready_valid_12b",
+    "v4_063_settling_window_detector": "v3_069_settling_window_detector",
+    "v4_064_edge_delay_line_with_deglitch": "v4_979_edge_delay_line_with_deglitch",
+    "v4_065_enable_gated_clock_pulse": "v3_072_enable_gated_clock_pulse",
+    "v4_066_configurable_polarity_edge_detector": "v3_074_configurable_polarity_edge_detector",
+    "v4_067_adc_static_linearity_monitor": "v3_075_adc_static_linearity_monitor",
+    "v4_068_multiphase_clock_generator_4ph": "v3_076_multiphase_clock_generator_4ph",
+    "v4_069_configurable_pulse_train_generator": "v3_077_configurable_pulse_train_generator",
+    "v4_070_jittered_clock_source_deterministic": "v3_079_jittered_clock_source_deterministic",
+    "v4_071_acquisition_limited_sample_and_hold": "v3_080_acquisition_limited_sample_and_hold",
+    "v4_072_aperture_delay_track_and_hold": "v4_072_aperture_delay_track_and_hold",
+    "v4_073_bias_voltage_generator_with_enable_trim": "v3_082_bias_voltage_generator_with_enable_trim",
+    "v4_074_crossing_metric_writer": "v3_083_crossing_metric_writer",
+    "v4_075_peak_detector": "v4_075_peak_detector",
+    "v4_076_burst_clock_source": "v3_085_burst_clock_source",
+    "v4_077_dither_noise_like_deterministic_source": "v3_086_dither_noise_like_deterministic_source",
+    "v4_078_lfsr_prbs_generator": "v3_087_lfsr_prbs_generator",
+    "v4_079_ramp_step_source": "v3_088_ramp_step_source",
+    "v4_080_sine_periodic_voltage_source": "v3_089_sine_periodic_voltage_source",
+    # --- task-side 081-400 canonical aliases (A1; no generic fallback) ---
+    "v4_081_adpll_ratio_hop_timer": "v3_090_adpll_ratio_hop_timer",  # canonical 081 via source_task_id
+    "v4_082_agc_receiver_leveling_loop": "v3_091_agc_receiver_leveling_loop",  # canonical 082 via source_task_id
+    "v4_083_amplifier_filter_chain": "v3_092_amplifier_filter_chain",  # canonical 083 via source_task_id
+    "v4_084_bbpd_data_edge_alignment": "v3_093_bbpd_data_edge_alignment",  # canonical 084 via source_task_id
+    "v4_085_comparator_offset_search": "v3_094_comparator_offset_search",  # canonical 085 via source_task_id
+    "v4_086_complete_calibration_loop": "v3_095_complete_calibration_loop",  # canonical 086 via source_task_id
+    "v4_087_converter_static_linearity_measurement": "v3_096_converter_static_linearity_measurement",  # canonical 087 via source_task_id
+    "v4_088_cppll_tracking_reacquire_timer": "v3_097_cppll_tracking_reacquire_timer",  # canonical 088 via source_task_id
+    "v4_089_edge_crossing_interval_timer": "v3_098_edge_crossing_interval_timer",  # canonical 089 via source_task_id
+    "v4_090_dither_adder": "v3_099_dither_adder",  # canonical 090 via source_task_id
+    "v4_091_final_step_file_metric": "v3_100_final_step_file_metric",  # canonical 091 via source_task_id
+    "v4_092_fixed_gain_amplifier": "v3_101_fixed_gain_amplifier",  # canonical 092 via source_task_id
+    "v4_093_gain_estimator": "v3_102_gain_estimator",  # canonical 093 via source_task_id
+    "v4_094_iq_downconversion_chain": "v3_103_iq_downconversion_chain",  # canonical 094 via source_task_id
+    "v4_095_ldo_load_step_recovery": "v3_104_ldo_load_step_recovery",  # canonical 095 via source_task_id
+    "v4_096_pipeline_adc_chain_4b": "v3_105_pipeline_adc_chain_4b",  # canonical 096 via source_task_id
+    "v4_097_programmable_stimulus_sequencer": "v3_106_programmable_stimulus_sequencer",  # canonical 097 via source_task_id
+    "v4_098_reference_step_clock": "v3_107_reference_step_clock",  # canonical 098 via source_task_id
+    "v4_099_reference_startup_enable_flow": "v3_108_reference_startup_enable_flow",  # canonical 099 via source_task_id
+    "v4_100_sample_hold_droop_front_end": "v3_109_sample_hold_droop_front_end",  # canonical 100 via source_task_id
+    "v4_101_settling_time_measurement": "v3_110_settling_time_measurement",  # canonical 101 via source_task_id
+    "v4_102_clocked_sine_source": "v3_111_clocked_sine_source",  # canonical 102 via source_task_id
+    "v4_103_clocked_sar_comparator": "v3_112_clocked_sar_comparator",  # canonical 103 via source_task_id
+    "v4_104_sample_and_hold_ideal": "v3_114_sample_and_hold_ideal",  # canonical 104 via source_task_id
+    "v4_105_single_shot_pulse": "v3_115_single_shot_pulse",  # canonical 105 via source_task_id
+    "v4_106_clocked_comparator_reset_low": "v3_116_clocked_comparator_reset_low",  # canonical 106 via source_task_id
+    "v4_107_bipolar_dac_4b_continuous": "v3_117_bipolar_dac_4b_continuous",  # canonical 107 via source_task_id
+    "v4_108_crossing_pulse_detector": "v3_119_crossing_pulse_detector",  # canonical 108 via source_task_id
+    "v4_109_comparator_offset_calibration_loop": "v3_122_comparator_offset_calibration_loop",  # canonical 109 via source_task_id
+    "v4_110_start_gated_offset_search": "v3_123_start_gated_offset_search",  # canonical 110 via source_task_id
+    "v4_111_hysteresis_trip_characterizer": "v3_124_hysteresis_trip_characterizer",  # canonical 111 via source_task_id
+    "v4_112_latched_comparator_delay": "v3_126_latched_comparator_delay",  # canonical 112 via source_task_id
+    "v4_113_sar_weighted_sum": "v3_127_sar_weighted_sum",  # canonical 113 via source_task_id
+    "v4_114_analog_mux_threshold": "v3_130_analog_mux_threshold",  # canonical 114 via source_task_id
+    "v4_115_two_bit_counter_marker": "v3_131_two_bit_counter_marker",  # canonical 115 via source_task_id
+    "v4_116_max_detector_hold": "v3_132_max_detector_hold",  # canonical 116 via source_task_id
+    "v4_117_time_diff_detector": "v3_133_time_diff_detector",  # canonical 117 via source_task_id
+    "v4_118_differential_buffer": "v3_134_differential_buffer",  # canonical 118 via source_task_id
+    "v4_119_sar_cdac_residue": "v3_136_sar_cdac_residue",  # canonical 119 via source_task_id
+    "v4_120_attenuator_gain": "v3_142_attenuator_gain",  # canonical 120 via source_task_id
+    "v4_121_deadband_window": "v3_143_deadband_window",  # canonical 121 via source_task_id
+    "v4_122_differential_deadband": "v3_144_differential_deadband",  # canonical 122 via source_task_id
+    "v4_123_hard_voltage_clamp": "v3_145_hard_voltage_clamp",  # canonical 123 via source_task_id
+    "v4_124_smooth_comparator_tanh": "v3_146_smooth_comparator_tanh",  # canonical 124 via source_task_id
+    "v4_125_limiter_rails": "v3_147_limiter_rails",  # canonical 125 via source_task_id
+    "v4_126_absolute_value": "v3_148_absolute_value",  # canonical 126 via source_task_id
+    "v4_127_offset_gain_amplifier": "v3_149_offset_gain_amplifier",  # canonical 127 via source_task_id
+    "v4_128_safe_voltage_divider": "v3_150_safe_voltage_divider",  # canonical 128 via source_task_id
+    "v4_129_polynomial_differential_vcvs": "v3_151_polynomial_differential_vcvs",  # canonical 129 via source_task_id
+    "v4_130_differential_gain_driver": "v3_152_differential_gain_driver",  # canonical 130 via source_task_id
+    "v4_131_limiting_differential_amplifier": "v3_153_limiting_differential_amplifier",  # canonical 131 via source_task_id
+    "v4_132_analog_multiplier": "v3_154_analog_multiplier",  # canonical 132 via source_task_id
+    "v4_133_three_way_threshold_mux": "v3_155_three_way_threshold_mux",  # canonical 133 via source_task_id
+    "v4_134_differential_amplifier_core": "v3_156_differential_amplifier_core",  # canonical 134 via source_task_id
+    "v4_135_logarithmic_amplifier": "v3_157_logarithmic_amplifier",  # canonical 135 via source_task_id
+    "v4_136_soft_voltage_clamp": "v3_158_soft_voltage_clamp",  # canonical 136 via source_task_id
+    "v4_137_variable_gain_differential_amplifier": "v3_159_variable_gain_differential_amplifier",  # canonical 137 via source_task_id
+    "v4_138_voltage_controlled_gain_amplifier": "v3_160_voltage_controlled_gain_amplifier",  # canonical 138 via source_task_id
+    "v4_139_ideal_differential_opamp": "v3_161_ideal_differential_opamp",  # canonical 139 via source_task_id
+    "v4_140_rs_latch_voltage": "v3_166_rs_latch_voltage",  # canonical 140 via source_task_id
+    "v4_141_ideal_adc_4bit_quantizer": "v3_167_ideal_adc_4bit_quantizer",  # canonical 141 via source_task_id
+    "v4_142_ideal_dac_4bit_differential": "v3_168_ideal_dac_4bit_differential",  # canonical 142 via source_task_id
+    "v4_143_two_period_sample_delay": "v3_169_two_period_sample_delay",  # canonical 143 via source_task_id
+    "v4_144_clocked_four_input_mux": "v3_170_clocked_four_input_mux",  # canonical 144 via source_task_id
+    "v4_145_divide_by_eight_clock": "v3_171_divide_by_eight_clock",  # canonical 145 via source_task_id
+    "v4_146_flash_thermometer_centered_sum": "v3_172_flash_thermometer_centered_sum",  # canonical 146 via source_task_id
+    "v4_147_control_word_encoder_7b": "v3_174_control_word_encoder_7b",  # canonical 147 via source_task_id
+    "v4_148_four_channel_edge_sampler": "v3_175_four_channel_edge_sampler",  # canonical 148 via source_task_id
+    "v4_149_dual_modulus_divider_16_17": "v3_176_dual_modulus_divider_16_17",  # canonical 149 via source_task_id
+    "v4_150_cyclic_decoder_12bit": "v3_178_cyclic_decoder_12bit",  # canonical 150 via source_task_id
+    "v4_151_flash_8level_sum_delay": "v3_179_flash_8level_sum_delay",  # canonical 151 via source_task_id
+    "v4_152_two_channel_sample_demux": "v3_181_two_channel_sample_demux",  # canonical 152 via source_task_id
+    "v4_153_differential_dac_calc_6b": "v3_182_differential_dac_calc_6b",  # canonical 153 via source_task_id
+    "v4_154_flash_adc_threshold_taps": "v3_183_flash_adc_threshold_taps",  # canonical 154 via source_task_id
+    "v4_155_divide_by_two_toggle": "v3_184_divide_by_two_toggle",  # canonical 155 via source_task_id
+    "v4_156_dac_5v_weighted_7b": "v3_185_dac_5v_weighted_7b",  # canonical 156 via source_task_id
+    "v4_157_folded_flash_dac_4b": "v3_186_folded_flash_dac_4b",  # canonical 157 via source_task_id
+    "v4_158_ref_flash_8level_decoder": "v3_187_ref_flash_8level_decoder",  # canonical 158 via source_task_id
+    "v4_159_ref_flash_15level_decoder": "v3_188_ref_flash_15level_decoder",  # canonical 159 via source_task_id
+    "v4_160_divide_by_8_9_switch": "v3_189_divide_by_8_9_switch",  # canonical 160 via source_task_id
+    "v4_161_dac_restore_10bit_offset": "v3_190_dac_restore_10bit_offset",  # canonical 161 via source_task_id
+    "v4_162_flash_data_align_pipeline": "v3_192_flash_data_align_pipeline",  # canonical 162 via source_task_id
+    "v4_163_cyclic_decoder_10b": "v3_193_cyclic_decoder_10b",  # canonical 163 via source_task_id
+    "v4_164_ideal_adc_out_7bits": "v3_194_ideal_adc_out_7bits",  # canonical 164 via source_task_id
+    "v4_165_va_lx_dac_ideal_4b": "v3_196_va_lx_dac_ideal_4b",  # canonical 165 via source_task_id
+    "v4_166_l2_cdac_4b_residue": "v3_198_l2_cdac_4b_residue",  # canonical 166 via source_task_id
+    "v4_167_ideal_clkmux_8channel": "v3_199_ideal_clkmux_8channel",  # canonical 167 via source_task_id
+    "v4_168_dac_ideal_4b_offset": "v3_200_dac_ideal_4b_offset",  # canonical 168 via source_task_id
+    "v4_169_linear_pfd_gain": "v3_201_linear_pfd_gain",  # canonical 169 via source_task_id
+    "v4_170_comparator_delay_overdrive_meter": "v3_202_comparator_delay_overdrive_meter",  # canonical 170 via source_task_id
+    "v4_171_comparator_offset_driver": "v3_203_comparator_offset_driver",  # canonical 171 via source_task_id
+    "v4_172_pipe_2lane_edge_align": "v3_204_pipe_2lane_edge_align",  # canonical 172 via source_task_id
+    "v4_173_dac_serial_accumulator": "v3_205_dac_serial_accumulator",  # canonical 173 via source_task_id
+    "v4_174_iterative_isar_dac": "v3_207_iterative_isar_dac",  # canonical 174 via source_task_id
+    "v4_175_offset_bisection_driver": "v3_208_offset_bisection_driver",  # canonical 175 via source_task_id
+    "v4_176_weighted_decoder_7b5": "v3_209_weighted_decoder_7b5",  # canonical 176 via source_task_id
+    "v4_177_sync_8b_dffs_v2": "v3_211_sync_8b_dffs_v2",  # canonical 177 via source_task_id
+    "v4_178_onehot_progress_encoder": "v3_212_onehot_progress_encoder",  # canonical 178 via source_task_id
+    "v4_179_tdc_ideal_edge_delta": "v3_213_tdc_ideal_edge_delta",  # canonical 179 via source_task_id
+    "v4_180_track_hold_with_droop_and_aperture": "v4_977_track_hold_with_droop_and_aperture",  # canonical 180 via old_prefix_v4
+    "v4_181_pipe15_data_align": "v3_215_pipe15_data_align",  # canonical 181 via source_task_id
+    "v4_182_clocked_mux4_sampler": "v3_216_clocked_mux4_sampler",  # canonical 182 via source_task_id
+    "v4_183_foreground_rdac_calibrator": "v3_218_foreground_rdac_calibrator",  # canonical 183 via source_task_id
+    "v4_184_offset_rdac_search_flow": "v3_219_offset_rdac_search_flow",  # canonical 184 via source_task_id
+    "v4_185_spi_shift_mux": "v3_220_spi_shift_mux",  # canonical 185 via source_task_id
+    "v4_186_sarfend_logic_4b": "v3_222_sarfend_logic_4b",  # canonical 186 via source_task_id
+    "v4_187_adc_sample_clock_sequencer": "v3_223_adc_sample_clock_sequencer",  # canonical 187 via source_task_id
+    "v4_188_cdac_bidirect_residue": "v3_225_cdac_bidirect_residue",  # canonical 188 via source_task_id
+    "v4_189_trim_ctrl_4bit": "v3_227_trim_ctrl_4bit",  # canonical 189 via source_task_id
+    "v4_190_linearity_rdac_offset_sweep": "v3_228_linearity_rdac_offset_sweep",  # canonical 190 via source_task_id
+    "v4_191_sar_das_logic_6b": "v3_229_sar_das_logic_6b",  # canonical 191 via source_task_id
+    "v4_192_sar_logic_4b_self_timed": "v3_230_sar_logic_4b_self_timed",  # canonical 192 via source_task_id
+    "v4_193_pfd_tdomain_reset_window": "v3_231_pfd_tdomain_reset_window",  # canonical 193 via source_task_id
+    "v4_194_pipe_adc_gain_control_loop": "v3_232_pipe_adc_gain_control_loop",  # canonical 194 via source_task_id
+    "v4_195_clock_sample_1600n_sequencer": "v3_233_clock_sample_1600n_sequencer",  # canonical 195 via source_task_id
+    "v4_196_phase_detector_chopper": "v3_235_phase_detector_chopper",  # canonical 196 via source_task_id
+    "v4_197_single_adc_7b_weighted": "v3_236_single_adc_7b_weighted",  # canonical 197 via source_task_id
+    "v4_198_qtz_differential_2level": "v3_237_qtz_differential_2level",  # canonical 198 via source_task_id
+    "v4_199_l2_7b_dac_ready": "v3_238_l2_7b_dac_ready",  # canonical 199 via source_task_id
+    "v4_200_l2_cdac_4b_switch": "v3_239_l2_cdac_4b_switch",  # canonical 200 via source_task_id
+    "v4_201_cdac_6b_stage1_up": "v3_241_cdac_6b_stage1_up",  # canonical 201 via source_task_id
+    "v4_202_adc_zoom_timing_sequencer": "v3_242_adc_zoom_timing_sequencer",  # canonical 202 via source_task_id
+    "v4_203_cdac_8b_monodown": "v3_245_cdac_8b_monodown",  # canonical 203 via source_task_id
+    "v4_204_va_dac_6b_se": "v3_246_va_dac_6b_se",  # canonical 204 via source_task_id
+    "v4_205_offset_halving_search": "v3_247_offset_halving_search",  # canonical 205 via source_task_id
+    "v4_206_sar_comparator_reset_high": "v3_248_sar_comparator_reset_high",  # canonical 206 via source_task_id
+    "v4_207_dac_restore_4bit_clocked": "v3_249_dac_restore_4bit_clocked",  # canonical 207 via source_task_id
+    "v4_208_dac_restore_7bit_clocked": "v3_250_dac_restore_7bit_clocked",  # canonical 208 via source_task_id
+    "v4_209_dac_restore_6bit_1p8": "v3_251_dac_restore_6bit_1p8",  # canonical 209 via source_task_id
+    "v4_210_sample_hold_5v_clock": "v3_252_sample_hold_5v_clock",  # canonical 210 via source_task_id
+    "v4_211_sum5_signed_sar_weight": "v3_253_sum5_signed_sar_weight",  # canonical 211 via source_task_id
+    "v4_212_lt_readout_sar4": "v3_254_lt_readout_sar4",  # canonical 212 via source_task_id
+    "v4_213_tool_4bit_sar_signed_dac": "v3_255_tool_4bit_sar_signed_dac",  # canonical 213 via source_task_id
+    "v4_214_comparator_reset_low_1p8": "v3_257_comparator_reset_low_1p8",  # canonical 214 via source_task_id
+    "v4_215_lt_read_sar7b_weighted": "v3_259_lt_read_sar7b_weighted",  # canonical 215 via source_task_id
+    "v4_216_sar_13bit_serial_decoder": "v3_261_sar_13bit_serial_decoder",  # canonical 216 via source_task_id
+    "v4_217_single_shot_timer_pulse": "v3_262_single_shot_timer_pulse",  # canonical 217 via source_task_id
+    "v4_218_clocked_comparator_dual_output": "v3_263_clocked_comparator_dual_output",  # canonical 218 via source_task_id
+    "v4_219_bin2ther_2b": "v3_265_bin2ther_2b",  # canonical 219 via source_task_id
+    "v4_220_pfd_up_down_state": "v3_267_pfd_up_down_state",  # canonical 220 via source_task_id
+    "v4_221_samplehold_rising_edge": "v3_268_samplehold_rising_edge",  # canonical 221 via source_task_id
+    "v4_222_trim_ctrl_5bit": "v3_269_trim_ctrl_5bit",  # canonical 222 via source_task_id
+    "v4_223_therm8_to_bin4_count": "v3_270_therm8_to_bin4_count",  # canonical 223 via source_task_id
+    "v4_224_coarse_qtz_3bit_residue": "v3_271_coarse_qtz_3bit_residue",  # canonical 224 via source_task_id
+    "v4_225_rs_phase_detector": "v3_272_rs_phase_detector",  # canonical 225 via source_task_id
+    "v4_226_level_shifter_offset": "v3_273_level_shifter_offset",  # canonical 226 via source_task_id
+    "v4_227_weighted_decoder_6bit": "v3_274_weighted_decoder_6bit",  # canonical 227 via source_task_id
+    "v4_228_divide_by_two_toggle": "v3_275_divide_by_two_toggle",  # canonical 228 via source_task_id
+    "v4_229_accum3_pulse": "v3_276_accum3_pulse",  # canonical 229 via source_task_id
+    "v4_230_xor_phase_detector": "v3_277_xor_phase_detector",  # canonical 230 via source_task_id
+    "v4_231_decision_router_logic": "v3_278_decision_router_logic",  # canonical 231 via source_task_id
+    "v4_232_safe_analog_divider": "v3_279_safe_analog_divider",  # canonical 232 via source_task_id
+    "v4_233_vargain_diffamp_clip": "v3_280_vargain_diffamp_clip",  # canonical 233 via source_task_id
+    "v4_234_programmable_divider_by_n": "v3_281_programmable_divider_by_n",  # canonical 234 via source_task_id
+    "v4_235_pfd_timer_reset": "v3_282_pfd_timer_reset",  # canonical 235 via source_task_id
+    "v4_236_dual_track_sample_hold": "v3_285_dual_track_sample_hold",  # canonical 236 via source_task_id
+    "v4_237_absolute_value": "v3_288_smooth_absolute_value",  # canonical 237 via source_task_id
+    "v4_238_deadband_voltage": "v3_289_deadband_voltage",  # canonical 238 via source_task_id
+    "v4_239_deadband_diffamp": "v3_290_deadband_diffamp",  # canonical 239 via source_task_id
+    "v4_240_limiting_diffamp": "v3_291_smooth_limiting_diffamp",  # canonical 240 via source_task_id
+    "v4_241_hysteretic_comparator_receiver": "v3_292_hysteretic_comparator_receiver",  # canonical 241 via source_task_id
+    "v4_242_flash_folded_dac4": "v3_293_flash_folded_dac4",  # canonical 242 via source_task_id
+    "v4_243_subradix_dac10": "v3_294_subradix_dac10",  # canonical 243 via source_task_id
+    "v4_244_clocked_adc3bit": "v3_295_clocked_adc3bit",  # canonical 244 via source_task_id
+    "v4_245_cal4bit_modulo": "v3_296_cal4bit_modulo",  # canonical 245 via source_task_id
+    "v4_246_mux4_priority": "v3_297_mux4_priority",  # canonical 246 via source_task_id
+    "v4_247_voltage_match_window": "v3_298_voltage_match_window",  # canonical 247 via source_task_id
+    "v4_248_bipolar_dff_sample": "v3_299_bipolar_dff_sample",  # canonical 248 via source_task_id
+    "v4_249_pfd_active_low_reset": "v3_300_pfd_active_low_reset",  # canonical 249 via source_task_id
+    "v4_250_rail_referenced_gain_buffer": "v3_341_rail_referenced_gain_buffer",  # canonical 250 via source_task_id
+    "v4_251_weighted_balance_summer": "v3_342_weighted_balance_summer",  # canonical 251 via source_task_id
+    "v4_252_supply_qualified_window_flag": "v3_343_supply_qualified_window_flag",  # canonical 252 via source_task_id
+    "v4_253_power_mode_clamped_mux": "v3_344_power_mode_clamped_mux",  # canonical 253 via source_task_id
+    "v4_254_bias_trim_affine_mapper": "v3_345_bias_trim_affine_mapper",  # canonical 254 via source_task_id
+    "v4_255_reset_polarity_qualifier": "v3_346_reset_polarity_qualifier",  # canonical 255 via source_task_id
+    "v4_256_multi_condition_enable_combiner": "v3_347_multi_condition_enable_combiner",  # canonical 256 via source_task_id
+    "v4_257_phase_mismatch_qualifier": "v3_348_phase_mismatch_qualifier",  # canonical 257 via source_task_id
+    "v4_258_priority_fault_code_driver": "v3_349_priority_fault_code_driver",  # canonical 258 via source_task_id
+    "v4_259_lane_validity_reduction_monitor": "v3_350_lane_validity_reduction_monitor",  # canonical 259 via source_task_id
+    "v4_260_comparator_decision_capture": "v3_351_comparator_decision_capture",  # canonical 260 via source_task_id
+    "v4_261_falling_edge_calibration_sampler": "v3_352_falling_edge_calibration_sampler",  # canonical 261 via source_task_id
+    "v4_262_resettable_phase_toggle_monitor": "v3_353_resettable_phase_toggle_monitor",  # canonical 262 via source_task_id
+    "v4_263_settling_progress_counter": "v3_354_settling_progress_counter",  # canonical 263 via source_task_id
+    "v4_264_enable_qualified_bias_hold": "v3_355_enable_qualified_bias_hold",  # canonical 264 via source_task_id
+    "v4_265_dynamic_supply_enable_driver": "v3_356_dynamic_supply_enable_driver",  # canonical 265 via source_task_id
+    "v4_266_local_domain_buffer_translator": "v3_357_local_domain_buffer_translator",  # canonical 266 via source_task_id
+    "v4_267_clocked_power_ready_sampler": "v3_359_clocked_power_ready_sampler",  # canonical 267 via source_task_id
+    "v4_268_mode_selected_bias_driver": "v3_360_mode_selected_bias_driver",  # canonical 268 via source_task_id
+    "v4_269_saturation_recovery_limiter": "v3_373_saturation_recovery_limiter",  # canonical 269 via source_task_id
+    "v4_270_sampled_error_update_monitor": "v3_374_sampled_error_update_monitor",  # canonical 270 via source_task_id
+    "v4_271_windowed_event_rate_monitor": "v3_375_windowed_event_rate_monitor",  # canonical 271 via source_task_id
+    "v4_272_reset_release_sequencer": "v3_376_reset_release_sequencer",  # canonical 272 via source_task_id
+    "v4_273_adaptive_threshold_tracker": "v3_377_adaptive_threshold_tracker",  # canonical 273 via source_task_id
+    "v4_274_rail_normalized_metric_mapper": "v3_378_rail_normalized_metric_mapper",  # canonical 274 via source_task_id
+    "v4_275_deterministic_energy_accumulator": "v3_394_deterministic_energy_accumulator",  # canonical 275 via source_task_id
+    "v4_276_bounded_tail_dither_shaper": "v3_395_bounded_tail_dither_shaper",  # canonical 276 via source_task_id
+    "v4_277_calibration_bit_select_flag": "v3_403_calibration_bit_select_flag",  # canonical 277 via source_task_id
+    "v4_278_lane_mask_replication_driver": "v3_406_lane_mask_replication_driver",  # canonical 278 via source_task_id
+    "v4_279_explicit_sar_slice_router": "v3_415_explicit_sar_slice_router",  # canonical 279 via source_task_id
+    "v4_280_ready_reduction_fault_monitor": "v3_416_ready_reduction_fault_monitor",  # canonical 280 via source_task_id
+    "v4_281_async_reset_event_counter": "v3_417_async_reset_event_counter",  # canonical 281 via source_task_id
+    "v4_282_enable_saturating_ready_counter": "v3_418_enable_saturating_ready_counter",  # canonical 282 via source_task_id
+    "v4_283_mode_latch_calibration_gate": "v3_420_mode_latch_calibration_gate",  # canonical 283 via source_task_id
+    "v4_284_calibration_affine_transform": "v3_421_calibration_affine_transform",  # canonical 284 via source_task_id
+    "v4_285_configurable_startup_policy": "v3_433_configurable_startup_policy",  # canonical 285 via source_task_id
+    "v4_286_explicit_replicated_stage_chain": "v3_449_explicit_replicated_stage_chain",  # canonical 286 via source_task_id
+    "v4_287_edge_delay_qualified_driver": "v3_453_edge_delay_qualified_driver",  # canonical 287 via source_task_id
+    "v4_288_calibration_quadrant_mapper": "v3_454_calibration_quadrant_mapper",  # canonical 288 via source_task_id
+    "v4_289_iterative_decay_estimator": "v3_458_iterative_decay_estimator",  # canonical 289 via source_task_id
+    "v4_290_bounded_window_accumulator": "v3_459_bounded_window_accumulator",  # canonical 290 via source_task_id
+    "v4_291_event_reacquire_lock_detector": "v3_490_event_reacquire_lock_detector",  # canonical 291 via source_task_id
+    "v4_292_supply_bias_validity_gate": "v3_495_supply_bias_validity_gate",  # canonical 292 via source_task_id
+    "v4_293_reference_settling_window_monitor": "v3_496_reference_settling_window_monitor",  # canonical 293 via source_task_id
+    "v4_294_power_enable_turnon_delay_gate": "v3_497_power_enable_turnon_delay_gate",  # canonical 294 via source_task_id
+    "v4_295_power_mode_supply_current_metric": "v3_498_power_mode_supply_current_metric",  # canonical 295 via source_task_id
+    "v4_296_dynamic_supply_level_driver": "v3_499_dynamic_supply_level_driver",  # canonical 296 via source_task_id
+    "v4_297_rail_ramp_rate_startup_monitor": "v3_500_rail_ramp_rate_startup_monitor",  # canonical 297 via source_task_id
+    "v4_298_differential_common_mode_window_monitor": "v3_501_differential_common_mode_window_monitor",  # canonical 298 via source_task_id
+    "v4_299_sine_vco_idtmod_bound_step": "v3_502_sine_vco_idtmod_bound_step",  # canonical 299 via source_task_id
+    "v4_300_differential_vco_clip_idtmod": "v3_503_differential_vco_clip_idtmod",  # canonical 300 via source_task_id
+    "v4_301_charge_pump_pfd_state_machine": "v3_504_charge_pump_pfd_state_machine",  # canonical 301 via source_task_id
+    "v4_302_fractional_n_divider_accumulator_flow": "v3_505_fractional_n_divider_accumulator_flow",  # canonical 302 via source_task_id
+    "v4_303_differential_pair_gm_limiter": "v4_1001_differential_pair_gm_limiter",  # canonical 303 via old_prefix_v4
+    "v4_304_common_gate_tia_front_end": "v4_1002_common_gate_tia_front_end",  # canonical 304 via old_prefix_v4
+    "v4_305_capacitive_feedback_amplifier_macro": "v4_1003_capacitive_feedback_amplifier_macro",  # canonical 305 via old_prefix_v4
+    "v4_306_instrumentation_amplifier_offset_trim": "v4_1004_instrumentation_amplifier_offset_trim",  # canonical 306 via old_prefix_v4
+    "v4_307_switched_capacitor_integrator_phase_pair": "v4_1005_switched_capacitor_integrator_phase_pair",  # canonical 307 via old_prefix_v4
+    "v4_308_correlated_double_sampler_offset_cancel": "v4_1006_correlated_double_sampler_offset_cancel",  # canonical 308 via old_prefix_v4
+    "v4_309_autozero_comparator_preamplifier": "v4_1007_autozero_comparator_preamplifier",  # canonical 309 via old_prefix_v4
+    "v4_310_bootstrapped_sampler_charge_metric": "v4_1008_bootstrapped_sampler_charge_metric",  # canonical 310 via old_prefix_v4
+    "v4_311_muxed_track_hold_array_readout": "v4_1009_muxed_track_hold_array_readout",  # canonical 311 via old_prefix_v4
+    "v4_312_interleaved_adc_skew_monitor": "v4_1010_interleaved_adc_skew_monitor",  # canonical 312 via old_prefix_v4
+    "v4_313_dynamic_comparator_kickback_metric": "v4_1011_dynamic_comparator_kickback_metric",  # canonical 313 via old_prefix_v4
+    "v4_314_hysteretic_window_comparator": "v4_1012_hysteretic_window_comparator",  # canonical 314 via old_prefix_v4
+    "v4_315_reference_ladder_buffered_taps": "v4_1013_reference_ladder_buffered_taps",  # canonical 315 via old_prefix_v4
+    "v4_316_residue_amplifier_gain_calibration": "v4_1014_residue_amplifier_gain_calibration",  # canonical 316 via old_prefix_v4
+    "v4_317_capacitor_mismatch_calibration_engine": "v4_1015_capacitor_mismatch_calibration_engine",  # canonical 317 via old_prefix_v4
+    "v4_318_resistor_ladder_monotonic_decoder": "v4_1016_resistor_ladder_monotonic_decoder",  # canonical 318 via old_prefix_v4
+    "v4_319_unary_dac_glitch_energy_metric": "v4_1017_unary_dac_glitch_energy_metric",  # canonical 319 via old_prefix_v4
+    "v4_322_glitchless_clock_mux_selector": "v4_1020_glitchless_clock_mux_selector",  # canonical 322 via old_prefix_v4
+    "v4_323_programmable_clock_skew_aligner": "v4_1021_programmable_clock_skew_aligner",  # canonical 323 via old_prefix_v4
+    "v4_324_duty_cycle_window_monitor": "v4_1022_duty_cycle_window_monitor",  # canonical 324 via old_prefix_v4
+    "v4_326_fractional_delay_dtc_macro": "v4_1024_fractional_delay_dtc_macro",  # canonical 326 via old_prefix_v4
+    "v4_328_pam4_linearity_monitor": "v4_1026_pam4_linearity_monitor",  # canonical 328 via old_prefix_v4
+    "v4_334_baseband_anti_alias_filter_macro": "v4_1032_baseband_anti_alias_filter_macro",  # canonical 334 via old_prefix_v4
+    "v4_335_quadrature_oscillator_phase_error_monitor": "v4_1033_quadrature_oscillator_phase_error_monitor",  # canonical 335 via old_prefix_v4
+    "v4_336_rf_envelope_detector_attack_release": "v4_1034_rf_envelope_detector_attack_release",  # canonical 336 via old_prefix_v4
+    "v4_337_vga_step_response_classifier": "v4_1035_vga_step_response_classifier",  # canonical 337 via old_prefix_v4
+    "v4_338_lna_blocker_compression_detector": "v4_1036_lna_blocker_compression_detector",  # canonical 338 via old_prefix_v4
+    "v4_339_pa_ampm_memory_tap_macro": "v4_1037_pa_ampm_memory_tap_macro",  # canonical 339 via old_prefix_v4
+    "v4_341_buck_soft_start_ramp_controller": "v4_1039_buck_soft_start_ramp_controller",  # canonical 341 via old_prefix_v4
+    "v4_352_ctle_equalizer_macro": "v4_911_ctle_equalizer_macro",  # canonical 352 via old_prefix_v4
+    "v4_353_ffe_transmitter_3tap": "v4_912_ffe_transmitter_3tap",  # canonical 353 via old_prefix_v4
+    "v4_358_quadrature_phase_interpolator": "v4_917_quadrature_phase_interpolator",  # canonical 358 via old_prefix_v4
+    "v4_366_polyphase_quadrature_filter_macro": "v4_925_polyphase_quadrature_filter_macro",  # canonical 366 via old_prefix_v4
+    "v4_368_tia_limiting_receiver_macro": "v4_927_tia_limiting_receiver_macro",  # canonical 368 via old_prefix_v4
+    "v4_370_opamp_feedback_settling_monitor": "v4_929_opamp_feedback_settling_monitor",  # canonical 370 via old_prefix_v4
+    "v4_374_crystal_oscillator_startup_monitor": "v4_933_crystal_oscillator_startup_monitor",  # canonical 374 via old_prefix_v4
+    "v4_375_nonoverlap_clock_generator": "v4_934_nonoverlap_clock_generator",  # canonical 375 via old_prefix_v4
+    "v4_376_pwm_ramp_modulator_front_end": "v4_935_pwm_ramp_modulator_front_end",  # canonical 376 via old_prefix_v4
+    "v4_379_periodic_sampler_aperture_metric": "v4_938_periodic_sampler_aperture_metric",  # canonical 379 via old_prefix_v4
+    "v4_380_am_modulator_source_macro": "v4_939_am_modulator_source_macro",  # canonical 380 via old_prefix_v4
+    "v4_381_fm_vco_modulation_source": "v4_940_fm_vco_modulation_source",  # canonical 381 via old_prefix_v4
+    "v4_382_programmable_frequency_divider": "v4_941_programmable_frequency_divider",  # canonical 382 via old_prefix_v4
+    "v4_383_fixed_frequency_oscillator_source": "v4_942_fixed_frequency_oscillator_source",  # canonical 383 via old_prefix_v4
+    "v4_384_level_shifter_enable_rail_tracking": "v4_943_level_shifter_enable_rail_tracking",  # canonical 384 via old_prefix_v4
+    "v4_386_pa_gain_compression_ampm_macro": "v4_945_pa_gain_compression_ampm_macro",  # canonical 386 via old_prefix_v4
+    "v4_387_lna_gain_compression_macro": "v4_946_lna_gain_compression_macro",  # canonical 387 via old_prefix_v4
+    "v4_388_source_follower_buffer_macro": "v4_947_source_follower_buffer_macro",  # canonical 388 via old_prefix_v4
+    "v4_389_cascode_gain_cell_headroom": "v4_948_cascode_gain_cell_headroom",  # canonical 389 via old_prefix_v4
+    "v4_392_serializer_mux_timing_macro": "v4_951_serializer_mux_timing_macro",  # canonical 392 via old_prefix_v4
+    "v4_393_deserializer_demux_alignment_macro": "v4_952_deserializer_demux_alignment_macro",  # canonical 393 via old_prefix_v4
+    "v4_397_baseband_offset_gain_trim_macro": "v4_956_baseband_offset_gain_trim_macro",  # canonical 397 via old_prefix_v4
+    "v4_398_two_stage_opamp_slew_macromodel": "v4_957_two_stage_opamp_slew_macromodel",  # canonical 398 via old_prefix_v4
+}
+for _canonical_id, _source_id in V4_CANONICAL_CHECKER_ALIASES.items():
+    if _source_id not in CHECKS:
+        raise RuntimeError(f"missing canonical checker source: {_canonical_id} <- {_source_id}")
+    CHECKS[_canonical_id] = CHECKS[_source_id]
+
+
+def check_v4_strongarm_style_latch_comparator(
+    rows: list[dict[str, float]],
+) -> tuple[bool, str]:
+    required = {"time", "clk", "vinp", "vinn", "out_p", "out_n", "lp", "lm", "vdd"}
+    if not rows or not required.issubset(rows[0]):
+        missing = sorted(required - set(rows[0] if rows else {}))
+        return False, f"missing_strongarm_signals={','.join(missing)}"
+
+    stop_time = rows[-1]["time"]
+    feedback_profile = stop_time >= 4.5e-9
+    decision_times_ns = [0.60, 1.60, 2.60, 3.60] + ([4.60] if feedback_profile else [])
+    expected = ["P", "N", "P", "N"] + (["Z"] if feedback_profile else [])
+    reset_times_ns = [0.20, 1.20, 2.20, 3.20] + ([4.20] if feedback_profile else [])
+    hold_times_ns = [0.84, 1.84, 2.84, 3.84] if not feedback_profile else [0.82, 1.82, 3.82, 4.82]
+
+    def classify(t_ns: float) -> tuple[str, bool]:
+        values = {
+            name: sample_signal_at(rows, name, t_ns * 1e-9)
+            for name in ("out_p", "out_n", "lp", "lm", "vdd")
+        }
+        if any(value is None for value in values.values()):
+            return "?", False
+        high = 0.70 * values["vdd"]
+        low = 0.20 * values["vdd"]
+        p = values["out_p"] > high and values["out_n"] < low
+        n = values["out_n"] > high and values["out_p"] < low
+        z = values["out_p"] < low and values["out_n"] < low
+        state = "P" if p else "N" if n else "Z" if z else "X"
+        monitors_match = (
+            abs(values["lp"] - values["out_p"]) <= 0.08
+            and abs(values["lm"] - values["out_n"]) <= 0.08
+        )
+        return state, monitors_match
+
+    decisions = [classify(t_ns) for t_ns in decision_times_ns]
+    resets = [classify(t_ns) for t_ns in reset_times_ns]
+    holds = [classify(t_ns) for t_ns in hold_times_ns]
+    decision_states = [state for state, _ in decisions]
+    reset_states = [state for state, _ in resets]
+    hold_states = [state for state, _ in holds]
+    decision_ok = decision_states == expected
+    reset_ok = all(state == "Z" for state in reset_states)
+    hold_expected = ["P", "N", "N", "Z"] if feedback_profile else expected
+    hold_ok = hold_states == hold_expected
+    monitors_ok = all(matches for _, matches in decisions + resets + holds)
+    ok = decision_ok and reset_ok and hold_ok and monitors_ok
+    return ok, (
+        f"decision_states={''.join(decision_states)} expected={''.join(expected)} "
+        f"falling_reset={reset_ok} reset_states={''.join(reset_states)} "
+        f"latch_hold={hold_ok} hold_states={''.join(hold_states)} "
+        f"monitor_match={monitors_ok}"
+    )
+
+
+CHECKS["v4_017_strongarm_style_latch_comparator"] = check_v4_strongarm_style_latch_comparator
+
+# Mirror streaming contracts for 081-400 canonical aliases when the source has one.
+for _canonical_id, _source_id in list(V4_CANONICAL_CHECKER_ALIASES.items()):
+    if _source_id in STREAMING_BEHAVIOR_CHECKS:
+        STREAMING_BEHAVIOR_CHECKS[_canonical_id] = STREAMING_BEHAVIOR_CHECKS[_source_id]
+
+# Checker freeze: task-specific CHECKS for previously unresolved 320/321/325/327/329-333/340.
+# Do not refresh TOOLCHAIN_LOCK here; Codex owns the unified lock after freeze.
+from v4_canonical_freeze_checkers_320_340 import register_freeze_checkers as _register_freeze_checkers_320_340
+
+_FREEZE_CHECKER_IDS_320_340 = _register_freeze_checkers_320_340(CHECKS)
+
+# Gate2 task-specific CHECKS for the canonical 342-349 system families.
+from v4_gate2_checkers_342_349 import register_gate2_checkers_342_349 as _register_gate2_checkers_342_349
+
+_GATE2_CHECKER_IDS_342_349 = _register_gate2_checkers_342_349(CHECKS)
+
+from v4_gate2_checkers_350_359 import register_gate2_checkers as _register_gate2_checkers_350_359
+from v4_gate2_checkers_360_367 import register_gate2_checkers as _register_gate2_checkers_360_367
+from v4_gate2_checkers_369_385 import register_gate2_checkers as _register_gate2_checkers_369_385
+from v4_gate2_checkers_390_400 import register_gate2_checkers as _register_gate2_checkers_390_400
+
+_GATE2_CHECKER_IDS_350_359 = _register_gate2_checkers_350_359(CHECKS)
+_GATE2_CHECKER_IDS_360_367 = _register_gate2_checkers_360_367(CHECKS)
+_GATE2_CHECKER_IDS_369_385 = _register_gate2_checkers_369_385(CHECKS)
+_GATE2_CHECKER_IDS_390_400 = _register_gate2_checkers_390_400(CHECKS)
+
+# Canonical v4 checkers are installed after every legacy/source alias has been
+# registered.  The migration registry retains the displaced callables so
+# cached traces can prove behavior and diagnostics are unchanged without
+# rerunning either simulator.
+from checkers.v4 import canonical_001_302_regular as _canonical_checkers_001_302_regular
+
+_MIGRATED_REGULAR_CHECKER_IDS_001_302 = (
+    _canonical_checkers_001_302_regular.install_regular_checkers_001_302(
+        CHECKS,
+        STREAMING_BEHAVIOR_CHECKS,
+    )
+)
+
+from checkers.v4 import canonical_250_290_factory as _canonical_checkers_250_290_factory
+
+_MIGRATED_FACTORY_CHECKER_IDS_250_290 = (
+    _canonical_checkers_250_290_factory.install_factory_checkers(CHECKS)
+)
+
+from checkers.v4 import canonical_320_400 as _canonical_checkers_320_400
+
+_MIGRATED_CHECKER_IDS_320_400 = _canonical_checkers_320_400.install_checkers_320_400(CHECKS)
 
 
 def has_behavior_check(task_id: str) -> bool:

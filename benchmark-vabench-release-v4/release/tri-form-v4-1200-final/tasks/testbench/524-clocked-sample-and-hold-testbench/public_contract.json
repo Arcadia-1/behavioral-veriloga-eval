@@ -90,12 +90,14 @@
   "modeling_constraints": [
     "Use deterministic rising-edge sampled state and intersample hold.",
     "Use smoothed voltage contributions only.",
+    "For testbench coverage, drive IN values that differ at rising and neighboring falling CLK crossings, and include mid-high-phase IN changes before the next rising edge.",
+    "Exercise the local rail reference by saving VDD/VSS and using a rail span that lets OUT be checked relative to the local rails rather than absolute ground only.",
     "Do not use current contributions, ddt(), idt(), extra observability ports, or validation side channels."
   ],
   "properties": [
     {
       "id": "P_RISING_EDGE_SAMPLE",
-      "observable_contract": "OUT acquires the IN voltage present at each rising CLK crossing through vth, subject only to transition smoothing.",
+      "observable_contract": "OUT acquires the IN voltage present at each rising CLK crossing through vth, subject only to transition smoothing; a discriminating testbench should make the IN value at rising crossings differ from the value present at nearby falling crossings.",
       "required_signals": [
         "time",
         "vdd",
@@ -107,7 +109,7 @@
     },
     {
       "id": "P_INTERSAMPLE_HOLD",
-      "observable_contract": "OUT retains the most recently sampled value between rising CLK crossings.",
+      "observable_contract": "OUT retains the most recently sampled value between rising CLK crossings, including across input changes that occur after the sampled rising edge and before the next rising edge.",
       "required_signals": [
         "time",
         "vdd",
@@ -119,7 +121,7 @@
     },
     {
       "id": "P_NO_HIGH_PHASE_TRACKING",
-      "observable_contract": "Changes on IN while CLK remains high do not make OUT transparent before the next rising crossing.",
+      "observable_contract": "Changes on IN while CLK remains high do not make OUT transparent before the next rising crossing; the testbench should include at least one mid-high-phase IN step and observe OUT before the following rising edge.",
       "required_signals": [
         "time",
         "vdd",
@@ -131,7 +133,7 @@
     },
     {
       "id": "P_LOCAL_RAIL_REFERENCE",
-      "observable_contract": "The held analog voltage is driven as a smooth voltage-domain output referenced to the local VDD and VSS rails.",
+      "observable_contract": "The held analog voltage is driven as a smooth voltage-domain output referenced to the local VDD and VSS rails, so the testbench should keep the rails observable and avoid relying only on absolute-ground behavior.",
       "required_signals": [
         "time",
         "vdd",

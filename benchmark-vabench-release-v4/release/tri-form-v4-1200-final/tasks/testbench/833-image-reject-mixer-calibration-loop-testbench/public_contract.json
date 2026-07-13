@@ -387,12 +387,16 @@
   },
   "modeling_constraints": [
     "Use deterministic voltage-domain behavioral Verilog-A.",
+    "For testbench coverage, choose RF and LO waveforms whose enabled rising-edge samples make I and Q mixer products nonzero and whose values differ at neighboring rising and falling clock crossings.",
+    "Avoid fully symmetric or all-zero image stimuli that can hide I-path polarity, Q-path polarity, or edge-sampling faults.",
+    "Toggle enable low after outputs, image_metric, or calibrated have become active, then re-enable and observe public outputs clearing during disable and calibrating again afterward.",
+    "Run enough enabled clock edges after reset and after re-enable to observe three consecutive below-tolerance image_metric updates before calibrated is accepted.",
     "Do not hard-code validation stimulus, stop times, sample windows, gold internals, or simulator side channels."
   ],
   "properties": [
     {
       "id": "P_ON_RESET_OR_WHEN_DISABLED_CLEAR",
-      "observable_contract": "On reset or when disabled, clear outputs, image metric, and `calibrated`.",
+      "observable_contract": "On reset or when disabled, clear I/Q outputs to `vcm`, image metric to `vss`, and `calibrated` to `vss`; the disabled interval should occur after nonzero mixer/calibration state has been produced so the clear is observable.",
       "required_signals": [
         "time",
         "rf_in",
@@ -409,7 +413,7 @@
     },
     {
       "id": "P_ON_EACH_ENABLED_RISING_CLK_EDGE",
-      "observable_contract": "On each enabled rising `clk` edge, sample RF and quadrature LO inputs as voltage-domain mixer proxies.",
+      "observable_contract": "On each enabled rising `clk` edge, sample the current RF and quadrature LO input voltages; use stimulus values that differ between rising and falling crossings to distinguish the intended sampling edge.",
       "required_signals": [
         "time",
         "rf_in",
@@ -426,7 +430,7 @@
     },
     {
       "id": "P_GENERATE_I_AND_Q_OUTPUTS_USING",
-      "observable_contract": "Generate I and Q outputs using opposite LO polarities.",
+      "observable_contract": "Generate I and Q outputs from `rf_dev = rf_in-vcm` and LO signs decoded around `vth`: before correction I follows `rf_dev*lo_i_sign` while Q follows the opposite-polarity path `-rf_dev*lo_q_sign`; exercise RF above/below `vcm` and both LO signs.",
       "required_signals": [
         "time",
         "rf_in",
@@ -443,7 +447,7 @@
     },
     {
       "id": "P_UPDATE_A_SIMPLE_GAIN_PHASE_CORRECTION",
-      "observable_contract": "Update a simple gain/phase correction state to reduce the image metric.",
+      "observable_contract": "Update bounded gain/phase correction state away from `vcm` when the raw image metric is above `image_tol`, and decay corrections toward `vcm` when the image metric is below tolerance; the stimulus should make wrong correction direction increase or fail to reduce the public image metric.",
       "required_signals": [
         "time",
         "rf_in",
@@ -460,7 +464,7 @@
     },
     {
       "id": "P_ASSERT_CALIBRATED_AFTER_THREE_CONSECUTIVE_UPDA",
-      "observable_contract": "Assert `calibrated` after three consecutive updates with image metric below `image_tol`.",
+      "observable_contract": "Assert `calibrated` only after the third consecutive enabled update with image metric below `image_tol`; the first and second below-tolerance updates, reset, and disabled intervals must leave it deasserted.",
       "required_signals": [
         "time",
         "rf_in",

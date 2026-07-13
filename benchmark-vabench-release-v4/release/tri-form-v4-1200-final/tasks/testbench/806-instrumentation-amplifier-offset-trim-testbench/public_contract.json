@@ -389,12 +389,14 @@
   },
   "modeling_constraints": [
     "Use deterministic voltage-domain behavioral Verilog-A.",
+    "For testbench coverage, include a late reset after calibration state, ready, vout, or offset_metric have become active; hold reset high across at least one rising clk edge, then observe public outputs clearing and reacquiring after reset release.",
+    "Exercise both positive and negative differential input offsets together with multiple trim_2..trim_0 codes, including sign-bit changes, so trim direction, trim-code decoding, gain polarity, metric dynamics, and ready timing are distinguishable.",
     "Do not hard-code validation stimulus, stop times, sample windows, gold internals, or simulator side channels."
   ],
   "properties": [
     {
       "id": "P_ON_RESET_CLEAR_THE_TRIM_STATE",
-      "observable_contract": "On reset, clear the trim state, drive `vout` to `vcm`, clear `offset_metric`, and clear `ready`.",
+      "observable_contract": "On reset, public outputs are held clear; trim controller state is cleared on a rising `clk` sampled while `rst` is high, driving `vout` to `vcm`, clearing `offset_metric`, and clearing `ready`. This must be observable both at initial reset and at a later reset after nonzero calibration state has developed.",
       "required_signals": [
         "time",
         "vinp",
@@ -412,7 +414,7 @@
     },
     {
       "id": "P_DECODE_TRIM_2_TRIM_0_AS",
-      "observable_contract": "Decode `trim_2..trim_0` as a signed offset correction around zero.",
+      "observable_contract": "Decode `trim_2..trim_0` as an unsigned code with weights 4/2/1, map `signed_code = code - 4`, and form the static correction `signed_code * trim_lsb`; the testbench should exercise trim codes on both sides of zero rather than a single static trim value.",
       "required_signals": [
         "time",
         "vinp",
@@ -430,7 +432,7 @@
     },
     {
       "id": "P_WHILE_CAL_EN_IS_HIGH_UPDATE",
-      "observable_contract": "While `cal_en` is high, update the internal trim accumulator once per rising `clk` edge toward reducing the measured input offset.",
+      "observable_contract": "While `cal_en` is high, update the adaptive trim once per rising `clk`: compare `vinp-vinn` against the static plus adaptive correction, increment by `trim_lsb` above `+0.5*trim_lsb`, decrement below `-0.5*trim_lsb`, and hold state when `cal_en` is low.",
       "required_signals": [
         "time",
         "vinp",
@@ -448,7 +450,7 @@
     },
     {
       "id": "P_DRIVE_VOUT_FROM_THE_CORRECTED_DIFFERENTIAL",
-      "observable_contract": "Drive `vout` from the corrected differential input and clamp to the output rails.",
+      "observable_contract": "Drive `vout` from the corrected differential input `vcm + diff_gain*(vinp-vinn-(corr-vcm))` clamped to the rails; include positive and negative input differential cases so output gain polarity and correction polarity are observable.",
       "required_signals": [
         "time",
         "vinp",
@@ -466,7 +468,7 @@
     },
     {
       "id": "P_EXPOSE_THE_ACTIVE_CORRECTION_ON_OFFSET",
-      "observable_contract": "Expose the active correction on `offset_metric` and assert `ready` after three calibration updates.",
+      "observable_contract": "`offset_metric` exposes the active correction voltage and `ready` asserts only after at least three enabled calibration updates, while remaining deasserted before those updates and after reset clears state.",
       "required_signals": [
         "time",
         "vinp",

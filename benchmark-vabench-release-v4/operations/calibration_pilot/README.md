@@ -128,6 +128,12 @@ Neither command string nor evaluator directory is sent to the model. A formal
 pilot must configure both adapters; a provider-only smoke may omit them only to
 test API transport and direct artifact parsing.
 
+By default, the runner returns a compact feedback payload to the model: oracle
+summary lines, validation diagnostics, and concrete errors are retained, while
+verbose simulator counters are omitted from the conversation to preserve the
+working-token budget. Use `--feedback-output-mode raw` only when intentionally
+reproducing older runner behavior or debugging the feedback adapter itself.
+
 The repository-native EVAS adapter is:
 
 ```bash
@@ -156,6 +162,10 @@ python3 benchmark-vabench-release-v4/operations/calibration_pilot/score_campaign
   --judge-command \
     "python3 benchmark-vabench-release-v4/operations/calibration_pilot/feedback_adapter.py"
 ```
+
+`score_campaign.py` resolves campaign/output paths and existing judge-command
+script paths to absolutes before invoking adapters, so the command is safe to
+run from either the workspace root or `behavioral-veriloga-eval/`.
 
 `feedback_evas` reports are always marked `provisional_feedback_only`; they
 are useful for pilot tuning but are not benchmark scores. A paper-facing run

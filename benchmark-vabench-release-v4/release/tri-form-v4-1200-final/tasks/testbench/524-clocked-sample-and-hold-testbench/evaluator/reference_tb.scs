@@ -3,19 +3,20 @@ global 0
 
 ahdl_include "./dut/sample_hold.va"
 
-// sample_hold gold smoke testbench
-// Ramp input 0->0.9V over 1us, 50MHz clock (period=20ns).
-// Check: output steps at clock edges and holds between them.
+// sample_hold reference coverage testbench.
+// Use a nonzero local VSS, rising/falling-differentiated IN values, and
+// high-phase IN changes so the public oracle can distinguish rising-edge
+// sampling, intersample hold, high-phase transparency, and local-rail behavior.
 
-Vvdd (vdd 0) vsource dc=1.0 type=dc
-Vvss (vss 0) vsource dc=0.1 type=dc
+Vvdd (vdd 0) vsource dc=1.3 type=dc
+Vvss (vss 0) vsource dc=0.3 type=dc
 
-Vin (in vss) vsource type=pwl wave=[0 0 1e-6 0.9]
+Vclk (clk 0) vsource type=pulse val0=0.3 val1=1.3 td=2n tr=1n tf=1n pw=9n period=20n
 
-Vclk (clk vss) vsource type=pulse val0=0 val1=0.9 period=20n width=10n rise=200p fall=200p
+Vin (in 0) vsource type=pwl wave=[0n 0.3 8n 0.8 18n 0.8 28n 0.3 38n 1.1 48n 0.3 58n 0.5 68n 0.3 78n 0.9 88n 0.3 98n 0.8 108n 0.3 118n 1.0 128n 0.3 138n 0.6 148n 0.3 158n 0.4 168n 0.3 178n 0.7 188n 0.3 198n 0.9 208n 0.3 218n 1.1 228n 0.3 238n 0.2 248n 0.3 258n 0.5 268n 0.3 278n 0.8 288n 0.3 298n 0.6 308n 0.3 318n 1.0 328n 0.3 338n 0.4 348n 0.3 358n 0.7 368n 0.3 378n 0.2 388n 0.3 398n 0.0]
 
-IDUT (vdd vss in clk out) sample_hold vth=0.45 tedge=100p
+IDUT (vdd vss in clk out) sample_hold
 
 
-tran tran stop=1u maxstep=2n
+tran tran stop=400n maxstep=0.1n
 save vdd vss in clk out

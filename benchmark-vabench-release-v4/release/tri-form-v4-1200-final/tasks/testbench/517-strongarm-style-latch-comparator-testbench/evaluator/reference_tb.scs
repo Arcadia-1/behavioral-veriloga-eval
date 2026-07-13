@@ -25,7 +25,9 @@ Vvinp (vinp 0) vsource type=pwl wave=[ \
     1.76n  0.451 \
     2.70n  0.451 \
     2.76n  0.449 \
-    4n     0.449 \
+    4.10n  0.449 \
+    4.12n  0.450 \
+    5n     0.450 \
 ]
 Vvinn (vinn 0) vsource type=pwl wave=[ \
     0      0.449 \
@@ -35,12 +37,14 @@ Vvinn (vinn 0) vsource type=pwl wave=[ \
     1.76n  0.449 \
     2.70n  0.449 \
     2.76n  0.451 \
-    4n     0.451 \
+    4.10n  0.451 \
+    4.12n  0.450 \
+    5n     0.450 \
 ]
 
 // DUT (port order: CLK VINN VINP DCMPN DCMPP LP LM VSS VDD)
 IDUT (clk vinn vinp out_n out_p lp lm vss vdd) cmp_strongarm
 
 
-tran tran stop=4n maxstep=5p
+tran tran stop=5n maxstep=5p
 save clk vinp vinn out_p out_n lp lm vss vdd

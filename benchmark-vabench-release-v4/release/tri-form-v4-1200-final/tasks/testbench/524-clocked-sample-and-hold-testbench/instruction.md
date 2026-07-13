@@ -22,10 +22,10 @@ stimulus and coverage.
 
 Create stimulus and save traces sufficient for the fixed evaluator oracle to check:
 
-- `P_RISING_EDGE_SAMPLE`: OUT acquires the IN voltage present at each rising CLK crossing through vth, subject only to transition smoothing.
-- `P_INTERSAMPLE_HOLD`: OUT retains the most recently sampled value between rising CLK crossings.
-- `P_NO_HIGH_PHASE_TRACKING`: Changes on IN while CLK remains high do not make OUT transparent before the next rising crossing.
-- `P_LOCAL_RAIL_REFERENCE`: The held analog voltage is driven as a smooth voltage-domain output referenced to the local VDD and VSS rails.
+- `P_RISING_EDGE_SAMPLE`: OUT acquires the IN voltage present at each rising CLK crossing through vth, subject only to transition smoothing; a discriminating testbench should make the IN value at rising crossings differ from the value present at nearby falling crossings.
+- `P_INTERSAMPLE_HOLD`: OUT retains the most recently sampled value between rising CLK crossings, including across input changes that occur after the sampled rising edge and before the next rising edge.
+- `P_NO_HIGH_PHASE_TRACKING`: Changes on IN while CLK remains high do not make OUT transparent before the next rising crossing; the testbench should include at least one mid-high-phase IN step and observe OUT before the following rising edge.
+- `P_LOCAL_RAIL_REFERENCE`: The held analog voltage is driven as a smooth voltage-domain output referenced to the local VDD and VSS rails, so the testbench should keep the rails observable and avoid relying only on absolute-ground behavior.
 
 The required trace names are: `time`, `vdd`, `vss`, `in`, `clk`, `out`.
 
