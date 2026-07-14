@@ -1,0 +1,22 @@
+{
+  "artifact_mode": "single_file",
+  "bugfix_seed_mutation_id": "neg_003_reset_disable_clear_missing",
+  "bugfix_seed_selection_status": "policy_reviewed",
+  "bugfix_seed_triviality_markers": [],
+  "buggy_bundle_sha256": "0920dfa621bef1c4d11244ad4b6bb24d7de7089c9ded8ae434f4bf1458ab40fa",
+  "candidate_artifacts": [
+    "quadrature_oscillator_phase_error_monitor.va"
+  ],
+  "changed_artifacts": [
+    "quadrature_oscillator_phase_error_monitor.va"
+  ],
+  "checker_profile_sha256": "182b1891de4787318ce0de8d543d4aff6c9b5d06605208bf1f4c9e7b5ae22c61",
+  "full_contract_pass_required": true,
+  "gold_dut_certification_sha256": "05be656e75aac9a3ff0eab735fb43553e49a32053294151c392948c9841a7fe4",
+  "gold_solution_tree_sha256": "396fe45620188337f698895e0faa16705221cc3c98e7546f993faf42cee57a54",
+  "materialized_checker_profile": "evaluator/checker_profile.json",
+  "mutation_catalog_sha256": "c1500fdbdbf7d09e36fd80825895628192a9ff4faa9cc750ebbcf0cd04a44024",
+  "schema_version": "v4-bugfix-score-policy-v1",
+  "spectre_final_judge": true,
+  "task_id": "v4-1335"
+}

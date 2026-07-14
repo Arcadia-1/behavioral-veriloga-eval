@@ -1,0 +1,25 @@
+{
+  "candidate_artifacts": [
+    "reference_startup_enable_flow.va"
+  ],
+  "canonical_dut_source_slug": "099-reference-startup-enable-flow",
+  "checker_task_id": "v4_099_reference_startup_enable_flow",
+  "family_id": "099",
+  "family_spec_sha256": "fe844945a0460dd22430069c2f6141657ba81855d809562081b459c90485deb3",
+  "form": "dut",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "ba0878ade80a19af4fa1b1800984efa7d23f23846d7b90f576723200266c6f52",
+  "public_contract": "tasks/099-reference-startup-enable-flow/public_contract.json",
+  "public_contract_sha256": "1896d537ce3b370909bf69ee2a071db43e3f8b07e5bd9e97b06ed2f1d4f0ab46",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/099-reference-startup-enable-flow",
+  "task_id": "v4-099"
+}

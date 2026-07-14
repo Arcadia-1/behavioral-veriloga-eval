@@ -1,0 +1,25 @@
+{
+  "candidate_artifacts": [
+    "falling_edge_calibration_sampler.va"
+  ],
+  "canonical_dut_source_slug": "261-falling-edge-calibration-sampler",
+  "checker_task_id": "v4_261_falling_edge_calibration_sampler",
+  "family_id": "261",
+  "family_spec_sha256": "34aa516da1909285419024f44e1e770392a98f04a6035001d1111efdc9a5b24e",
+  "form": "bugfix",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "d16ce6e36da0b383e18ac738175048c61acc461200daaa1df3d400851189c3f0",
+  "public_contract": "tasks/1261-falling-edge-calibration-sampler-bugfix/public_contract.json",
+  "public_contract_sha256": "c6ffc07b5b198537cd7e08add5655d806a34f6413597e3299dba1469fe8e9a83",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/1261-falling-edge-calibration-sampler-bugfix",
+  "task_id": "v4-1261"
+}

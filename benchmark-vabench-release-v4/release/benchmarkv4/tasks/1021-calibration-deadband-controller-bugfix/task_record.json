@@ -1,0 +1,25 @@
+{
+  "candidate_artifacts": [
+    "calibration_deadband_controller.va"
+  ],
+  "canonical_dut_source_slug": "021-calibration-deadband-controller",
+  "checker_task_id": "v4_021_calibration_deadband_controller",
+  "family_id": "021",
+  "family_spec_sha256": "c8596920d250967035f35c3c2117a5d4954e9ddb10dda684a531f2429d820b38",
+  "form": "bugfix",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "2b215eae055e1efcae78704bf415eed1259e4b53ece04fc6b4dc3f39df0216e6",
+  "public_contract": "tasks/1021-calibration-deadband-controller-bugfix/public_contract.json",
+  "public_contract_sha256": "1572bc8524c0988f4bcd85f28b2e54b9cb09995b67a6f8675437c647e52f5309",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/1021-calibration-deadband-controller-bugfix",
+  "task_id": "v4-1021"
+}

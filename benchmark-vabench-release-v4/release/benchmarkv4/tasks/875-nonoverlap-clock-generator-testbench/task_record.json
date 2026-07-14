@@ -1,0 +1,25 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "375-nonoverlap-clock-generator",
+  "checker_task_id": "v4_375_nonoverlap_clock_generator",
+  "family_id": "375",
+  "family_spec_sha256": "81e0b531a07b110d1db9fe0d729baf22401efa8208262c78896a5a203c730131",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "2712312176dc5e73f58d24669cebf222400c37807377ad6ae2531856c34fedb6",
+  "public_contract": "tasks/875-nonoverlap-clock-generator-testbench/public_contract.json",
+  "public_contract_sha256": "0077d2d77bd98b3f69bd8a380d97568369d11d9e480d6c366be1c5ed4155f39c",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/875-nonoverlap-clock-generator-testbench",
+  "task_id": "v4-875"
+}

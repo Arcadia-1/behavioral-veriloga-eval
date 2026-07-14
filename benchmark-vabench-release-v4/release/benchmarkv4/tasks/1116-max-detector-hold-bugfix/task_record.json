@@ -1,0 +1,25 @@
+{
+  "candidate_artifacts": [
+    "max_detector_hold.va"
+  ],
+  "canonical_dut_source_slug": "116-max-detector-hold",
+  "checker_task_id": "v4_116_max_detector_hold",
+  "family_id": "116",
+  "family_spec_sha256": "c82ab38590eed8b2ef3244a2f60183e3032264e6b846ae7ae4a7d1b4589dcd67",
+  "form": "bugfix",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "87e6d4b128d00b1490b52caa8f80d8d6fb70dcb06927c3e9f1e57dd30debfd2f",
+  "public_contract": "tasks/1116-max-detector-hold-bugfix/public_contract.json",
+  "public_contract_sha256": "1189de73e6353061e1f589ccc3bc8b26c0c9459ff5b43d991b9564daf2fb3389",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/1116-max-detector-hold-bugfix",
+  "task_id": "v4-1116"
+}

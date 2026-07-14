@@ -1,0 +1,25 @@
+{
+  "candidate_artifacts": [
+    "ctle_equalizer.va"
+  ],
+  "canonical_dut_source_slug": "352-ctle-equalizer-macro",
+  "checker_task_id": "v4_352_ctle_equalizer_macro",
+  "family_id": "352",
+  "family_spec_sha256": "d9d7cbc5c42b158e1d9812cf4ed4ecfc551c0722561b2b8fe8090d2fd92b5d74",
+  "form": "dut",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "57328ba4c12de615ba232d44d77d55ff622f5051d6150b34eb91b47709f37e94",
+  "public_contract": "tasks/352-ctle-equalizer-macro/public_contract.json",
+  "public_contract_sha256": "37568949343f096a9fde844589b69761ff113104229131f09bc1a179c1cc5faa",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/352-ctle-equalizer-macro",
+  "task_id": "v4-352"
+}

@@ -1,0 +1,25 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "222-trim-ctrl-5bit",
+  "checker_task_id": "v4_222_trim_ctrl_5bit",
+  "family_id": "222",
+  "family_spec_sha256": "a8389a5f85b6cd6f405441a7ea4234b8517885b6b5c0219c15837a71421024e7",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "65963aa8bb4079e8e0486eb8487d339df5f9f5cf1c81489a8cfef6935c52c31a",
+  "public_contract": "tasks/722-trim-ctrl-5bit-testbench/public_contract.json",
+  "public_contract_sha256": "d414ee32d4daa637a61c394e3f25aa0b9fc9f5032928cc54047a7636ca719c5a",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/722-trim-ctrl-5bit-testbench",
+  "task_id": "v4-722"
+}

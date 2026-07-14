@@ -1,0 +1,25 @@
+{
+  "candidate_artifacts": [
+    "thermometer_dac_15seg.va"
+  ],
+  "canonical_dut_source_slug": "018-unit-element-thermometer-dac",
+  "checker_task_id": "v4_018_unit_element_thermometer_dac",
+  "family_id": "018",
+  "family_spec_sha256": "d10b15af580b2a2efb69ad70f16e51bca3f2a3c2d8e6f75b7425dd337377a631",
+  "form": "dut",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "ba77899cbe8f90260d8d8fe9362d10f40aa63d10b50157a888096c694c47f3b8",
+  "public_contract": "tasks/018-unit-element-thermometer-dac/public_contract.json",
+  "public_contract_sha256": "9517b485fc9dc85c4612869623683d00f77f3ad7e9b5e0eb6ffe15790c577b5a",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/018-unit-element-thermometer-dac",
+  "task_id": "v4-018"
+}

@@ -1,0 +1,25 @@
+{
+  "candidate_artifacts": [
+    "power_enable_turnon_delay_gate.va"
+  ],
+  "canonical_dut_source_slug": "294-power-enable-turnon-delay-gate",
+  "checker_task_id": "v4_294_power_enable_turnon_delay_gate",
+  "family_id": "294",
+  "family_spec_sha256": "884aca8734b5ca40c0e58d469f717415ac5b48bc95a370f8d13be730ab5e584c",
+  "form": "dut",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "609d5d0615d17e4cc8378f0a784a2cb3ea232e4b41b17a2bc3e17d987a606b0a",
+  "public_contract": "tasks/294-power-enable-turnon-delay-gate/public_contract.json",
+  "public_contract_sha256": "f294ee328392b151bf4d670112cf165dce93e410eb2641cf9dbcb145f4c77104",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/294-power-enable-turnon-delay-gate",
+  "task_id": "v4-294"
+}

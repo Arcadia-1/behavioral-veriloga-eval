@@ -1,0 +1,25 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "300-differential-vco-clip-idtmod",
+  "checker_task_id": "v4_300_differential_vco_clip_idtmod",
+  "family_id": "300",
+  "family_spec_sha256": "5f35b1e83a22e20b6bd28afcf134a3d61e55e9bd16f1fb9c32d2b12079c11d1c",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "502e3d562361c72f28a1cbbea0c71c9089d2f4b28e888e9640c0fd497c9047e9",
+  "public_contract": "tasks/800-differential-vco-clip-idtmod-testbench/public_contract.json",
+  "public_contract_sha256": "7a8e05dccfb9a7c1d93d5033dec041a41bd6069662f7a5dd3a569f4207dedab3",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/800-differential-vco-clip-idtmod-testbench",
+  "task_id": "v4-800"
+}

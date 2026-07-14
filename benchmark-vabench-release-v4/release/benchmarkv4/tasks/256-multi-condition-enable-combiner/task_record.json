@@ -1,0 +1,25 @@
+{
+  "candidate_artifacts": [
+    "multi_condition_enable_combiner.va"
+  ],
+  "canonical_dut_source_slug": "256-multi-condition-enable-combiner",
+  "checker_task_id": "v4_256_multi_condition_enable_combiner",
+  "family_id": "256",
+  "family_spec_sha256": "45371d926a961c087e208fe099e14e22a6a2c7ac1d7d2fd67e5caad14ab3a276",
+  "form": "dut",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "2b8abbbf998ffc8479148d08f9e579609cec30881dd977b4e13855ce13e6fde6",
+  "public_contract": "tasks/256-multi-condition-enable-combiner/public_contract.json",
+  "public_contract_sha256": "2b6e78c739ae1094f0eca72df8ec214a78494bf73e1c18f663c1626f2502eb9e",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/256-multi-condition-enable-combiner",
+  "task_id": "v4-256"
+}

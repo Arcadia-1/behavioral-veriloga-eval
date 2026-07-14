@@ -1,0 +1,25 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "172-pipe-2lane-edge-align",
+  "checker_task_id": "v4_172_pipe_2lane_edge_align",
+  "family_id": "172",
+  "family_spec_sha256": "57a91f3fd7462ed95ec0b93d7a2fa517518d26882b8db959927fb032fc741698",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "15f4446a08412ff8ea7b71f1b83880ce4f332522f61789bb5f3c72a6c7e75680",
+  "public_contract": "tasks/672-pipe-2lane-edge-align-testbench/public_contract.json",
+  "public_contract_sha256": "11745cfd14ee90f553c7ce9a4c801a223e42fa1bf1c8c510f66acebe9231ea12",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/672-pipe-2lane-edge-align-testbench",
+  "task_id": "v4-672"
+}

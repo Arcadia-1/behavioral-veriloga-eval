@@ -1,0 +1,25 @@
+{
+  "candidate_artifacts": [
+    "single_adc_7b_weighted.va"
+  ],
+  "canonical_dut_source_slug": "197-single-adc-7b-weighted",
+  "checker_task_id": "v4_197_single_adc_7b_weighted",
+  "family_id": "197",
+  "family_spec_sha256": "cb251b7c97980c7ac70d4a8842d10a72d6c2a5a4f52c2006eb23dae3ec73ffc8",
+  "form": "dut",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "0bab4e68ffe63538c7977d34dea65eb5ad417432cb62a61a9d5fb300742ff123",
+  "public_contract": "tasks/197-single-adc-7b-weighted/public_contract.json",
+  "public_contract_sha256": "890af5c3deb8ba8875f5fc64b728fd40c7cee22a8f924b887c9a0451f28fa71a",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/197-single-adc-7b-weighted",
+  "task_id": "v4-197"
+}

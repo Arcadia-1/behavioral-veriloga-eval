@@ -1,0 +1,25 @@
+{
+  "candidate_artifacts": [
+    "tia_limiting_receiver.va"
+  ],
+  "canonical_dut_source_slug": "368-tia-limiting-receiver-macro",
+  "checker_task_id": "v4_368_tia_limiting_receiver_macro",
+  "family_id": "368",
+  "family_spec_sha256": "97c1ecf0ab03d524f7b23e532445ab25deae794dc56ee991df30577ea51f60b8",
+  "form": "dut",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "3c8983015defb70b9f41f197f68eebc6488d794cb0e7a741195eb9e7845a271a",
+  "public_contract": "tasks/368-tia-limiting-receiver-macro/public_contract.json",
+  "public_contract_sha256": "fac894619a40f969f77f1e03ab0d0ebf74a7347517675000cbab71bb4624a0bf",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/368-tia-limiting-receiver-macro",
+  "task_id": "v4-368"
+}

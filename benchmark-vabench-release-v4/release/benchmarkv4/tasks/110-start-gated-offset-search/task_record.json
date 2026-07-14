@@ -1,0 +1,25 @@
+{
+  "candidate_artifacts": [
+    "start_gated_offset_search.va"
+  ],
+  "canonical_dut_source_slug": "110-start-gated-offset-search",
+  "checker_task_id": "v4_110_start_gated_offset_search",
+  "family_id": "110",
+  "family_spec_sha256": "3ab9c8f2ecabd8c4083cb4d6d4173bc45e7d5fbe5f517294a49de2e8d72d0d30",
+  "form": "dut",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "8771f370898a8dc94e32eed1bf92cec4bffb5a2858cd8c8463ccfa72cea3b593",
+  "public_contract": "tasks/110-start-gated-offset-search/public_contract.json",
+  "public_contract_sha256": "131ad1dc6bcce9d8c4f8322b777a717b5dc4a16a202da5a14756172a0b811686",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/110-start-gated-offset-search",
+  "task_id": "v4-110"
+}

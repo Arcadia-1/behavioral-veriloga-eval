@@ -1,0 +1,25 @@
+{
+  "candidate_artifacts": [
+    "sample_hold_aperture_ref.va"
+  ],
+  "canonical_dut_source_slug": "072-aperture-delay-track-and-hold",
+  "checker_task_id": "v4_072_aperture_delay_track_and_hold",
+  "family_id": "072",
+  "family_spec_sha256": "c98697dbe527499fbf0b007b4e68fe9f3beada52d09ac3abc4c3fbc0f620f44d",
+  "form": "bugfix",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "e9c80879d1a64646eeb451f6508de06b6a211695e7845966bfa62d14f9fc5d4f",
+  "public_contract": "tasks/1072-aperture-delay-track-and-hold-bugfix/public_contract.json",
+  "public_contract_sha256": "9b8291aaa5d99ea7e210b42b6dd065eec32a9eafb7f627e18f86e5b0abd5bbf4",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/1072-aperture-delay-track-and-hold-bugfix",
+  "task_id": "v4-1072"
+}

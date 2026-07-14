@@ -1,0 +1,25 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "117-time-diff-detector",
+  "checker_task_id": "v4_117_time_diff_detector",
+  "family_id": "117",
+  "family_spec_sha256": "dba1c78c7145ddf725c8f37612d79fa7e8633910e9e70ae884b958788147d915",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "14269269874c1b08b7279cff0e516a93fc1434fbefb35a745e6e6e246511f5ca",
+  "public_contract": "tasks/617-time-diff-detector-testbench/public_contract.json",
+  "public_contract_sha256": "f4b08c1da56a9cb9ac84d226b456d907edd68004ec36ae399eb9d3d6e6adc831",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/617-time-diff-detector-testbench",
+  "task_id": "v4-617"
+}

@@ -1,0 +1,25 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "014-segmented-dac",
+  "checker_task_id": "v4_014_segmented_dac",
+  "family_id": "014",
+  "family_spec_sha256": "567bf2a92711abf0d00fa6e548abf7067be3eac1fcd8e8ee18e64183957f4f32",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "406d2646a3cc2b0752179dc087405e216980662a4a8b677c7beec424dc8d46bf",
+  "public_contract": "tasks/514-segmented-dac-testbench/public_contract.json",
+  "public_contract_sha256": "192db5843516a2fc6c70f1e4a2e341c5933972ca1c68aacfe85d42340ca77a26",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/514-segmented-dac-testbench",
+  "task_id": "v4-514"
+}

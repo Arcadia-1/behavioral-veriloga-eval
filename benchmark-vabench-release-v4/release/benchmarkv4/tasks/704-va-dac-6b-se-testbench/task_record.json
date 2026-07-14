@@ -1,0 +1,25 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "204-va-dac-6b-se",
+  "checker_task_id": "v4_204_va_dac_6b_se",
+  "family_id": "204",
+  "family_spec_sha256": "343695967c1c51becb2a5286a065365d511c013c8dd3c18bdea88267eb710ac3",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "1312ed8ee8ff7b418cdfab28769152474723eac68bf36a5e768a5cab74591529",
+  "public_contract": "tasks/704-va-dac-6b-se-testbench/public_contract.json",
+  "public_contract_sha256": "44b05f90e7c9858412868eb3ee18432d46652f01ec6287e5b4fc206952b0603c",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/704-va-dac-6b-se-testbench",
+  "task_id": "v4-704"
+}

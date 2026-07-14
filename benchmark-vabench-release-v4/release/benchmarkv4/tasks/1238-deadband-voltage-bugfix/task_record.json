@@ -1,0 +1,25 @@
+{
+  "candidate_artifacts": [
+    "deadband_voltage.va"
+  ],
+  "canonical_dut_source_slug": "238-deadband-voltage",
+  "checker_task_id": "v4_238_deadband_voltage",
+  "family_id": "238",
+  "family_spec_sha256": "2cb188906ecbc367639ba574f05aecc15da0c6fe0adc6bd4c194dc182231272a",
+  "form": "bugfix",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "d3279ed5d30a85333179fdf488cda36038ebbebd7f4dfe73c736a4bbe98bcaf8",
+  "public_contract": "tasks/1238-deadband-voltage-bugfix/public_contract.json",
+  "public_contract_sha256": "f34b626a0b257cc9160f961741a89939abf27c340e1b610cb158bc36a8949dd7",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/1238-deadband-voltage-bugfix",
+  "task_id": "v4-1238"
+}

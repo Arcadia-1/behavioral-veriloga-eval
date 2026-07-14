@@ -1,0 +1,25 @@
+{
+  "candidate_artifacts": [
+    "pwm_ramp_modulator.va"
+  ],
+  "canonical_dut_source_slug": "376-pwm-ramp-modulator-front-end",
+  "checker_task_id": "v4_376_pwm_ramp_modulator_front_end",
+  "family_id": "376",
+  "family_spec_sha256": "cc1bdce2ad6c21361744a1948d501e3c445ba7dc7da9344f7ceb90ec4e55c2ec",
+  "form": "dut",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "a515275e6166e0064a62ebfffe6a26324651df9581536a6704252913caa8af54",
+  "public_contract": "tasks/376-pwm-ramp-modulator-front-end/public_contract.json",
+  "public_contract_sha256": "1a043077e50ce463e2c14c65065efe875c170cac8a237e1b353134f2fdc4364a",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/376-pwm-ramp-modulator-front-end",
+  "task_id": "v4-376"
+}

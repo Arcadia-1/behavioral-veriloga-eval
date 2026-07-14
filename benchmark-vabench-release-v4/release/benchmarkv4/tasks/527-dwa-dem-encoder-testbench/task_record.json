@@ -1,0 +1,25 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "027-dwa-dem-encoder",
+  "checker_task_id": "v4_027_dwa_dem_encoder",
+  "family_id": "027",
+  "family_spec_sha256": "5b1e24c67416378ac9d0f046df59f6436793d0a9f712f625433a04bdd350f854",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "617e65180e676ac6040b002356003526a5d9a72824e1427afbb17ea68596f1b5",
+  "public_contract": "tasks/527-dwa-dem-encoder-testbench/public_contract.json",
+  "public_contract_sha256": "8f73a6096680d35ea1ea335456666597fb662991c5e2690eb6999fcd4da0c02d",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/527-dwa-dem-encoder-testbench",
+  "task_id": "v4-527"
+}

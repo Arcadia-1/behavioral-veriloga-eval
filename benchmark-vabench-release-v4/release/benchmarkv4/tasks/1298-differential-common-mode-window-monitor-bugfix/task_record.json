@@ -1,0 +1,25 @@
+{
+  "candidate_artifacts": [
+    "differential_common_mode_window_monitor.va"
+  ],
+  "canonical_dut_source_slug": "298-differential-common-mode-window-monitor",
+  "checker_task_id": "v4_298_differential_common_mode_window_monitor",
+  "family_id": "298",
+  "family_spec_sha256": "4b38185230f4ff48537c4c407796ce6ca06872c3a42928895f6ffc239f391eb1",
+  "form": "bugfix",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "c0148551b5cd6c765e036d66d9c9224e185cf548cac631b7963fe964173ea84c",
+  "public_contract": "tasks/1298-differential-common-mode-window-monitor-bugfix/public_contract.json",
+  "public_contract_sha256": "e07b65b6067e9e82d2ade06e781260be8f091710cd69d0f828884c670ac79c35",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/1298-differential-common-mode-window-monitor-bugfix",
+  "task_id": "v4-1298"
+}

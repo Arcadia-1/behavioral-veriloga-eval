@@ -1,0 +1,25 @@
+{
+  "candidate_artifacts": [
+    "hysteresis_trip_characterizer.va"
+  ],
+  "canonical_dut_source_slug": "111-hysteresis-trip-characterizer",
+  "checker_task_id": "v4_111_hysteresis_trip_characterizer",
+  "family_id": "111",
+  "family_spec_sha256": "61e5ac5228ed7010ee7454ef22449836d645f4b6093a0a53b9326167a43e1cae",
+  "form": "dut",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "9b767386955572510bcec8ba6d42b89ce7d1bc0d510b4536f116af53ec876c62",
+  "public_contract": "tasks/111-hysteresis-trip-characterizer/public_contract.json",
+  "public_contract_sha256": "5ad764633e4e613f717dee77b43f7708a89abe878ab3fc15b7a9c1169e0d60f8",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/111-hysteresis-trip-characterizer",
+  "task_id": "v4-111"
+}

@@ -1,0 +1,25 @@
+{
+  "candidate_artifacts": [
+    "spi_shift_mux.va"
+  ],
+  "canonical_dut_source_slug": "185-spi-shift-mux",
+  "checker_task_id": "v4_185_spi_shift_mux",
+  "family_id": "185",
+  "family_spec_sha256": "d799411e6138ac220107ff2c112de00a41a39c5d94f7a179088855f6bb14f31e",
+  "form": "dut",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "c4c2be3dc983ec3f602b95061a6982c9e4a2fcc741af552e650c2aa81c8b4289",
+  "public_contract": "tasks/185-spi-shift-mux/public_contract.json",
+  "public_contract_sha256": "9d00a3b3c9e601784919bdf5e1e4546666a579c78cd59422b8b1f969dc6ef606",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/185-spi-shift-mux",
+  "task_id": "v4-185"
+}

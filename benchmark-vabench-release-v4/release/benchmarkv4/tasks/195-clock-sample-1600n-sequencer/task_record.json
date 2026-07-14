@@ -1,0 +1,25 @@
+{
+  "candidate_artifacts": [
+    "clock_sample_1600n_sequencer.va"
+  ],
+  "canonical_dut_source_slug": "195-clock-sample-1600n-sequencer",
+  "checker_task_id": "v4_195_clock_sample_1600n_sequencer",
+  "family_id": "195",
+  "family_spec_sha256": "359da5fac124d0879ff84034919283b75973d5ab10d1698ec71b6b8a7ddb62b9",
+  "form": "dut",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "acaec065ba22019758ec7eda195f1248c9c79fc755ccea23bd6fa9de1a04a8e6",
+  "public_contract": "tasks/195-clock-sample-1600n-sequencer/public_contract.json",
+  "public_contract_sha256": "af724204709e763fd6e09876b496ab7975c4e57a3f846b0f3d42de7f14916b3b",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/195-clock-sample-1600n-sequencer",
+  "task_id": "v4-195"
+}

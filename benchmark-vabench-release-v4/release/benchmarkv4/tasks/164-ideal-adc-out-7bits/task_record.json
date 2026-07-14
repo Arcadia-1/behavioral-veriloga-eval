@@ -1,0 +1,25 @@
+{
+  "candidate_artifacts": [
+    "ideal_adc_out_7bits_scalar.va"
+  ],
+  "canonical_dut_source_slug": "164-ideal-adc-out-7bits",
+  "checker_task_id": "v4_164_ideal_adc_out_7bits",
+  "family_id": "164",
+  "family_spec_sha256": "979d1e489337f70ba6fd093330b42bee491bc3415904695416f6b1689531ad0c",
+  "form": "dut",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "0edbd5f1225c5639076783db43efebf8bbe358259df75e4193e82b0f6d27efb8",
+  "public_contract": "tasks/164-ideal-adc-out-7bits/public_contract.json",
+  "public_contract_sha256": "bdaa28e4559fd70fc2e30f955e1d77a6186dc8928a234c42a53993750c0c8896",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/164-ideal-adc-out-7bits",
+  "task_id": "v4-164"
+}

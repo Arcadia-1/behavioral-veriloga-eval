@@ -1,0 +1,25 @@
+{
+  "candidate_artifacts": [
+    "differential_vco_clip_idtmod.va"
+  ],
+  "canonical_dut_source_slug": "300-differential-vco-clip-idtmod",
+  "checker_task_id": "v4_300_differential_vco_clip_idtmod",
+  "family_id": "300",
+  "family_spec_sha256": "5f35b1e83a22e20b6bd28afcf134a3d61e55e9bd16f1fb9c32d2b12079c11d1c",
+  "form": "dut",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "b95201e3fcccd5ee035b1140898975aed53bf79a78eb056edd4c3d121de4b722",
+  "public_contract": "tasks/300-differential-vco-clip-idtmod/public_contract.json",
+  "public_contract_sha256": "28b04506db59912b7dce9e2c25bf29bebfc42482899efdf7937924749d042ed1",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/300-differential-vco-clip-idtmod",
+  "task_id": "v4-300"
+}

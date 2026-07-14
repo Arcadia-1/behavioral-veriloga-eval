@@ -1,0 +1,25 @@
+{
+  "candidate_artifacts": [
+    "pam4_linearity_monitor.va"
+  ],
+  "canonical_dut_source_slug": "328-pam4-linearity-monitor",
+  "checker_task_id": "v4_328_pam4_linearity_monitor",
+  "family_id": "328",
+  "family_spec_sha256": "1b476a5e5d2ff87f2e8d7e0c136c145d7d0873c6825972777fd03355a7d78943",
+  "form": "dut",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "5303a52c7c57f6a5dda68ad3456a03ca375298b096aae000c44e68176921f781",
+  "public_contract": "tasks/328-pam4-linearity-monitor/public_contract.json",
+  "public_contract_sha256": "64d9f79cd7cfc565e149ee595e15f51fbffcaf543287e3e42fad27d0f8bbf2a7",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/328-pam4-linearity-monitor",
+  "task_id": "v4-328"
+}

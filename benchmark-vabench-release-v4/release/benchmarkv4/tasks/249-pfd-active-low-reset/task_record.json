@@ -1,0 +1,25 @@
+{
+  "candidate_artifacts": [
+    "pfd_active_low_reset.va"
+  ],
+  "canonical_dut_source_slug": "249-pfd-active-low-reset",
+  "checker_task_id": "v4_249_pfd_active_low_reset",
+  "family_id": "249",
+  "family_spec_sha256": "1129f0892cbdf88b24b306744e3acf71918b65eb613ada62c3e0d41baa185af7",
+  "form": "dut",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "5a1138b94e3020695cb1067c135623b3197166bfb41ef7fbd19ef46a1d3eefdc",
+  "public_contract": "tasks/249-pfd-active-low-reset/public_contract.json",
+  "public_contract_sha256": "53a5c3eb8cf142fb1af32c6c893f56a3670eb126c6cb09e7d3b993ca763d526b",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/249-pfd-active-low-reset",
+  "task_id": "v4-249"
+}

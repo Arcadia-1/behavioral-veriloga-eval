@@ -1,0 +1,25 @@
+{
+  "candidate_artifacts": [
+    "pipeline_adc_chain_4b.va"
+  ],
+  "canonical_dut_source_slug": "096-pipeline-adc-chain-4b",
+  "checker_task_id": "v4_096_pipeline_adc_chain_4b",
+  "family_id": "096",
+  "family_spec_sha256": "389caacd46c55320d339182ef0788d8a35ba6eefdb1e393952146924485d1f48",
+  "form": "bugfix",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "a0f08b6c2971a1047ccd998b3049dd122b4e2c2a1c95cb36697d2307fd01fb7b",
+  "public_contract": "tasks/1096-pipeline-adc-chain-4b-bugfix/public_contract.json",
+  "public_contract_sha256": "ee920191b2dcb2f021fe1e0944b0a74c2106e0deb71f1aef4f8c1eb20ba55bc3",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/1096-pipeline-adc-chain-4b-bugfix",
+  "task_id": "v4-1096"
+}

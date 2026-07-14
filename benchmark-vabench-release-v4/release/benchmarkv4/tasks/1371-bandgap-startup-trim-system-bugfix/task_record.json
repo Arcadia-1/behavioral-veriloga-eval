@@ -1,0 +1,28 @@
+{
+  "candidate_artifacts": [
+    "bandgap_trim_top.va",
+    "startup_detector.va",
+    "ptat_ctat_core.va",
+    "trim_controller.va"
+  ],
+  "canonical_dut_source_slug": "371-bandgap-startup-trim-system",
+  "checker_task_id": "v4_371_bandgap_startup_trim_system",
+  "family_id": "371",
+  "family_spec_sha256": "82e9da49caaff3fbc0b8298dfee0da669e5ace4bd1f2f84437716c8dc23feaa5",
+  "form": "bugfix",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "07e101f94b06b5e3c2a9e7519fdd59ce0aed6e69bddaa51c15bbb24150a7a87a",
+  "public_contract": "tasks/1371-bandgap-startup-trim-system-bugfix/public_contract.json",
+  "public_contract_sha256": "1ca17ed92cedaecf052fcc1ed842a67096551bb11195ddc1c4cc6e111539cb31",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/1371-bandgap-startup-trim-system-bugfix",
+  "task_id": "v4-1371"
+}

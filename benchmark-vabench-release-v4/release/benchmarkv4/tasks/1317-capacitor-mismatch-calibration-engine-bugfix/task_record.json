@@ -1,0 +1,27 @@
+{
+  "candidate_artifacts": [
+    "capacitor_mismatch_cal_engine_top.va",
+    "cal_code_accumulator.va",
+    "correction_metric_dac.va"
+  ],
+  "canonical_dut_source_slug": "317-capacitor-mismatch-calibration-engine",
+  "checker_task_id": "v4_317_capacitor_mismatch_calibration_engine",
+  "family_id": "317",
+  "family_spec_sha256": "2b29141377d9be92578a6d3bd2ffe534c3d1b1b2caf5be56ede3a322dfe78a9e",
+  "form": "bugfix",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "8c58b9c7f912f02ceeacdbadfea3d54eebada6e7af4a3872ab87a2d78a284df4",
+  "public_contract": "tasks/1317-capacitor-mismatch-calibration-engine-bugfix/public_contract.json",
+  "public_contract_sha256": "763acf9100254ca0403325affe22cb2578cd7dcbe661c68477b1f6107e453d03",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/1317-capacitor-mismatch-calibration-engine-bugfix",
+  "task_id": "v4-1317"
+}

@@ -1,0 +1,25 @@
+{
+  "candidate_artifacts": [
+    "onehot_progress_encoder.va"
+  ],
+  "canonical_dut_source_slug": "178-onehot-progress-encoder",
+  "checker_task_id": "v4_178_onehot_progress_encoder",
+  "family_id": "178",
+  "family_spec_sha256": "c57b742d9992a441851d56586747d7510dd350236300531a3664d9db215b0ac0",
+  "form": "dut",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "6e0248b16dfa935064cb449ce8419bbbd2bb32746d7e6741e679f6867e4ac5c1",
+  "public_contract": "tasks/178-onehot-progress-encoder/public_contract.json",
+  "public_contract_sha256": "879c58923dc6931d534f8875e044604280bf68553187bf9ba77f34d9cf6f8563",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/178-onehot-progress-encoder",
+  "task_id": "v4-178"
+}

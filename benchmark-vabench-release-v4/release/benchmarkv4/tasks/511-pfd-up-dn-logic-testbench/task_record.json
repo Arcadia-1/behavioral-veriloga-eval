@@ -1,0 +1,25 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "011-pfd-up-dn-logic",
+  "checker_task_id": "v4_011_pfd_up_dn_logic",
+  "family_id": "011",
+  "family_spec_sha256": "e8f6e89675c1ee3b70fafbac899267440606007c4b1a88a55305894ebcdb65ff",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "2288f6d5af07d3347ea9d238c628425e1983cf7cc68467a19916e74de961c72f",
+  "public_contract": "tasks/511-pfd-up-dn-logic-testbench/public_contract.json",
+  "public_contract_sha256": "ab1dbfd5775104b2683eb4d77a47fc8b8b6e084cce848b1497f6cf020a715a99",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/511-pfd-up-dn-logic-testbench",
+  "task_id": "v4-511"
+}

@@ -1,0 +1,25 @@
+{
+  "candidate_artifacts": [
+    "samplehold_rising_edge.va"
+  ],
+  "canonical_dut_source_slug": "221-samplehold-rising-edge",
+  "checker_task_id": "v4_221_samplehold_rising_edge",
+  "family_id": "221",
+  "family_spec_sha256": "8660b9f985608938587abf577f379090040340531320f5a96e64f7a4d260e61d",
+  "form": "dut",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "26bb941c25a8c419decb5fb804eadda4882c8f7614e425f36c4f4089129b3558",
+  "public_contract": "tasks/221-samplehold-rising-edge/public_contract.json",
+  "public_contract_sha256": "ebfa23125009edcd40384ff5fe4e0fab419d5d9b1f767e2166ad0943e9ddba43",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/221-samplehold-rising-edge",
+  "task_id": "v4-221"
+}

@@ -1,0 +1,25 @@
+{
+  "candidate_artifacts": [
+    "edge_interval_tdc_8b.va"
+  ],
+  "canonical_dut_source_slug": "059-edge-interval-tdc-8b",
+  "checker_task_id": "v4_059_edge_interval_tdc_8b",
+  "family_id": "059",
+  "family_spec_sha256": "2d5c95eeda51006ceddd5782973e52082f2ddb50acb9a6c48c27c64bbac91b10",
+  "form": "dut",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "c4ee3226d2fad6932daea6ccc90626d79a1c051f049def368f71731b8675edcf",
+  "public_contract": "tasks/059-edge-interval-tdc-8b/public_contract.json",
+  "public_contract_sha256": "b88e916e2684ea2403436355815d3b60381a38604bc4500c655834db79d998b4",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/059-edge-interval-tdc-8b",
+  "task_id": "v4-059"
+}

@@ -1,0 +1,25 @@
+{
+  "candidate_artifacts": [
+    "saturation_recovery_limiter.va"
+  ],
+  "canonical_dut_source_slug": "269-saturation-recovery-limiter",
+  "checker_task_id": "v4_269_saturation_recovery_limiter",
+  "family_id": "269",
+  "family_spec_sha256": "46a32763c11e8c15f03d8dda059967ad5da9553d2cd21acda36e4eadcf003d12",
+  "form": "bugfix",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "c4525110cf97ce731fa034154a36329449439d89209c04493ea24d240ebefc81",
+  "public_contract": "tasks/1269-saturation-recovery-limiter-bugfix/public_contract.json",
+  "public_contract_sha256": "6981a18156d0355582776ab9c0faf776895a7abc713f951a7a00a9ef62e63dd0",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/1269-saturation-recovery-limiter-bugfix",
+  "task_id": "v4-1269"
+}

@@ -1,0 +1,25 @@
+{
+  "candidate_artifacts": [
+    "foreground_rdac_calibrator.va"
+  ],
+  "canonical_dut_source_slug": "183-foreground-rdac-calibrator",
+  "checker_task_id": "v4_183_foreground_rdac_calibrator",
+  "family_id": "183",
+  "family_spec_sha256": "ee168792c0a08fb56b729917e7ada5d9d3272c01185f41efc9e2278fdba35082",
+  "form": "dut",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "f44e8f7d322f26602c35091dbf6edc15b5a442da91ecd9dc23b874784f3af503",
+  "public_contract": "tasks/183-foreground-rdac-calibrator/public_contract.json",
+  "public_contract_sha256": "7561f4bb58b92ba09db0380ebc7ca0c2a7eab98e6cebe02368716fa3337b6069",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/183-foreground-rdac-calibrator",
+  "task_id": "v4-183"
+}

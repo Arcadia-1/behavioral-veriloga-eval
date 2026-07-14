@@ -1,9 +1,11 @@
 #!/usr/bin/env python3
-"""Materialize 400 DUT, 400 Testbench, and 400 Bugfix task views.
+"""Materialize the standalone benchmarkv4 task package.
 
 The frozen exact-five DUT release is the only family source.  The generated
-views contain public inputs and small private reference records; canonical DUT
-evaluator assets stay in the source release and are addressed by hash.
+benchmarkv4 package keeps each task self-contained for running and scoring:
+solver-visible inputs live under ``public/`` and local scoring assets live
+under ``evaluator/``.  Source/provenance evidence stays in the release build
+pipeline instead of being replicated into every task directory.
 """
 from __future__ import annotations
 
@@ -18,7 +20,7 @@ from typing import Any, Iterable
 
 PACKAGE_ROOT = Path(__file__).resolve().parents[2]
 PREP_ROOT = Path(__file__).resolve().parent
-DEFAULT_SOURCE = PACKAGE_ROOT / "release" / "dut-base-v3-exact-five-hash-bound-v2"
+DEFAULT_SOURCE = PACKAGE_ROOT / "provenance" / "dut-base-v3-exact-five-hash-bound-v2"
 DEFAULT_OUTPUT = PACKAGE_ROOT / "release" / "benchmarkv4"
 PROMPT_ASSETS = PREP_ROOT / "prompt_assets"
 MODES = {
@@ -40,22 +42,16 @@ FEEDBACK_GUIDES = {
     "bugfix": "feedback_bugfix.md",
 }
 FEEDBACK_CORE = "feedback_core.md"
+MATERIALIZED_ARTIFACTS = (
+    "TASK_INDEX.json",
+    "prompt_modes/modes.json",
+    "prompt_modes/manifest.json",
+)
+PUBLIC_MATERIALIZED_ARTIFACTS = MATERIALIZED_ARTIFACTS
 WRAPPERS_BY_PROCESS = {
     "direct_one_shot": "direct_wrapper.md",
     "agentic": "agentic_wrapper.md",
 }
-COMPONENT_SUBDIR_BY_KIND = {
-    "wrapper": "wrappers",
-    "form_skill": "form_skills",
-    "feedback_guide": "feedback_guides",
-}
-MATERIALIZED_ARTIFACTS = (
-    "TASK_INDEX.json",
-    "BUGFIX_SEED_REVIEW.json",
-    "prompt_modes/PROMPT_RECORDS.jsonl",
-    "prompt_modes/modes.json",
-    "prompt_modes/manifest.json",
-)
 REFERENCE_TOKENIZER = {
     "id": "vabench_utf8_lexeme",
     "version": "1.0.0",
@@ -72,6 +68,18 @@ COMPONENT_METADATA = {
     "feedback_testbench.md": {"stable_id": "component.feedback.testbench", "kind": "feedback_guide", "applicable_forms": ["testbench"]},
     "feedback_bugfix.md": {"stable_id": "component.feedback.bugfix", "kind": "feedback_guide", "applicable_forms": ["bugfix"]},
 }
+COMPONENT_SUBDIR_BY_KIND = {
+    "wrapper": "wrappers",
+    "form_skill": "form_skills",
+    "feedback_guide": "feedback_guides",
+}
+STANDALONE_EVALUATOR_COMMON = (
+    "family_spec.json",
+    "checker_profile.json",
+    "harness_spec.json",
+    "score_tb.scs",
+)
+TASK_RECORD_FILENAME = "task_record.json"
 TRIVIAL_FAULT_CLASSES = {
     "zero_stub_output",
     "holds_clock_output_low",
@@ -139,15 +147,8 @@ def tree_sha(path: Path) -> str:
     return digest.hexdigest()
 
 
-def materialized_artifact_hashes(output: Path) -> dict[str, str]:
-    return {relative: file_sha(output / relative) for relative in MATERIALIZED_ARTIFACTS}
-
-
-def negative_assignment(row: dict[str, Any], seed_review: dict[str, Any]) -> dict[str, Any]:
-    return {
-        "bugfix_seed": seed_review["mutation_id"],
-        "testbench_suite": [str(item["mutation_id"]) for item in row["active_mutations"]],
-    }
+def materialized_artifact_hashes(output: Path, artifacts: Iterable[str]) -> dict[str, str]:
+    return {relative: file_sha(output / relative) for relative in artifacts}
 
 
 def rel(path: Path, root: Path) -> str:
@@ -171,7 +172,7 @@ def render_interface(spec: dict[str, Any]) -> str:
                     f"    - position {port['position']}: `{port['name']}` "
                     f"({port['direction']}, {port['discipline']})"
                 )
-    return "\n".join(blocks) or "- Use the interface declared in this instruction."
+    return "\n".join(blocks) or "- Use the interface declared in the public contract metadata."
 
 
 def render_parameters(spec: dict[str, Any]) -> str:
@@ -212,6 +213,25 @@ def render_binding(spec: dict[str, Any]) -> str:
 def render_constraints(spec: dict[str, Any]) -> str:
     lines = [f"- {value}" for value in spec.get("modeling_constraints") or []]
     return "\n".join(lines) or "- Keep behavior deterministic and within the declared voltage-domain scope."
+
+
+def sanitize_instruction_text(text: str, form: str) -> str:
+    """Remove evaluation-surface wording from canonical prompt text."""
+    if form != "testbench":
+        text = text.replace(
+            "Use deterministic Verilog-A behavioral modeling appropriate for the public circuit contract. "
+            "The visible testbench is a public validation scenario; do not hard-code a particular stimulus table, "
+            "transient stop time, or validation sample window into the DUT unless that behavior is part of the "
+            "public circuit contract.",
+            "Use deterministic Verilog-A behavioral modeling appropriate for the public circuit contract. "
+            "Do not hard-code validation stimulus tables, transient stop times, or sample windows into the DUT "
+            "unless that behavior is part of the public circuit contract.",
+        )
+        text = text.replace("visible testbench", "validation scenario")
+        text = text.replace("Visible testbench", "Validation scenario")
+        text = text.replace("a Spectre testbench", "a testbench")
+        text = text.replace("a the simulator example harness", "the validation harness")
+    return text
 
 
 def render_testbench_instruction(spec: dict[str, Any]) -> str:
@@ -311,6 +331,17 @@ def public_semantics(spec: dict[str, Any]) -> dict[str, Any]:
     }
 
 
+def public_contract_relative_path(task_dir: Path) -> str:
+    return f"tasks/{task_dir.name}/public_contract.json"
+
+
+def write_public_contract(output: Path, task_dir: Path, contract: dict[str, Any]) -> str:
+    target = task_dir / "public_contract.json"
+    relative = rel(target, output)
+    write_json(target, contract)
+    return relative
+
+
 def mutation_score(item: dict[str, Any], preferred: bool) -> tuple[int, str]:
     mutation_id = str(item["mutation_id"])
     fault_class = str(item.get("fault_class") or "")
@@ -393,17 +424,21 @@ def overlay_mutation(source_task: Path, mutation_id: str, destination: Path, art
 
 def common_task_record(
     *, task_id: str, form: str, family_id: str, directory: str, spec_sha: str,
-    source_task: str, candidate_artifacts: list[str], public_bundle_sha: str,
+    source_task_slug: str, checker_task_id: str, candidate_artifacts: list[str],
+    public_contract: str, public_contract_sha: str, public_bundle_sha: str,
 ) -> dict[str, Any]:
     return {
-        "schema_version": "v4-tri-form-task-record-v1",
+        "schema_version": "v4-benchmarkv4-task-record-v1",
         "task_id": task_id,
         "form": form,
         "family_id": family_id,
         "task_dir": directory,
+        "public_contract": public_contract,
+        "public_contract_sha256": public_contract_sha,
         "candidate_artifacts": candidate_artifacts,
         "family_spec_sha256": spec_sha,
-        "canonical_dut_source": source_task,
+        "canonical_dut_source_slug": source_task_slug,
+        "checker_task_id": checker_task_id,
         "public_bundle_sha256": public_bundle_sha,
         "scored": True,
         "modes": list(MODES),
@@ -411,10 +446,11 @@ def common_task_record(
 
 
 def public_bundle_hash(task_dir: Path) -> str:
-    included = [path for path in sorted(task_dir.rglob("*")) if path.is_file() and "evaluator" not in path.parts]
+    public = task_dir / "public"
+    included = [path for path in sorted(public.rglob("*")) if path.is_file()]
     digest = hashlib.sha256()
     for path in included:
-        digest.update(path.relative_to(task_dir).as_posix().encode("utf-8"))
+        digest.update(path.relative_to(public).as_posix().encode("utf-8"))
         digest.update(b"\0")
         digest.update(path.read_bytes())
         digest.update(b"\0")
@@ -422,60 +458,128 @@ def public_bundle_hash(task_dir: Path) -> str:
 
 
 def write_task_record(task_dir: Path, record: dict[str, Any]) -> None:
-    write_json(task_dir / "TASK_RECORD.json", record)
+    write_json(task_dir / TASK_RECORD_FILENAME, record)
+
+
+def copy_tree(source: Path, target: Path) -> None:
+    if source.is_dir():
+        shutil.copytree(source, target, dirs_exist_ok=True)
+
+
+def copy_tree_skipping(source: Path, target: Path, *, excluded_names: set[str]) -> None:
+    for item in sorted(source.rglob("*")):
+        if not item.is_file() or item.name in excluded_names:
+            continue
+        destination = target / item.relative_to(source)
+        destination.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copy2(item, destination)
+
+
+def materialize_standalone_evaluator(source_task: Path, evaluator: Path, *, include_negative_suite: bool) -> None:
+    """Copy local scoring assets into a benchmarkv4 task evaluator directory."""
+    source_eval = source_task / "evaluator"
+    evaluator.mkdir(parents=True, exist_ok=True)
+    for name in STANDALONE_EVALUATOR_COMMON:
+        shutil.copy2(source_eval / name, evaluator / name)
+    copy_tree(source_eval / "profiles", evaluator / "profiles")
+    copy_tree(source_eval / "solution", evaluator / "solution")
+    if include_negative_suite:
+        shutil.copy2(source_eval / "mutation_catalog.json", evaluator / "mutation_catalog.json")
+        copy_tree_skipping(
+            source_eval / "mutation_bundles",
+            evaluator / "mutation_bundles",
+            excluded_names={"certification.json"},
+        )
+
+
+def evaluator_checker_task_id(evaluator: Path) -> str:
+    checker_profile = read_json(evaluator / "checker_profile.json")
+    return str(checker_profile.get("checker_task_id") or "")
 
 
 def build_dut_view(
-    output: Path, source: Path, source_task: Path, row: dict[str, Any], spec: dict[str, Any], spec_sha: str,
+    output: Path,
+    source_task: Path,
+    row: dict[str, Any],
+    spec: dict[str, Any],
+    spec_sha: str,
 ) -> dict[str, Any]:
     family = str(row["canonical_dut_id"])
-    task_dir = output / "tasks" / "dut" / source_task.name
+    task_dir = output / "tasks" / source_task.name
     task_dir.mkdir(parents=True)
-    shutil.copy2(source_task / "public" / "task" / "instruction.md", task_dir / "instruction.md")
+    public = task_dir / "public"
+    public.mkdir()
+    write_text(
+        public / "instruction.md",
+        sanitize_instruction_text(
+            (source_task / "public" / "task" / "instruction.md").read_text(encoding="utf-8"),
+            "dut",
+        ),
+    )
     contract = public_semantics(spec)
     contract.update({
-        "schema_version": "v4-tri-form-public-contract-v1",
+        "schema_version": "v4-benchmarkv4-public-contract-v1",
         "task_id": f"v4-{family}",
         "form": "dut",
         "target_artifacts": [str(item["path"]) for item in spec["artifact_contract"]["files"]],
         "feedback": {"available_in_modes": ["G2", "G3", "G4", "G5"], "command": "vabench feedback run"},
     })
-    write_json(task_dir / "public_contract.json", contract)
+    public_contract = write_public_contract(output, task_dir, contract)
+    public_contract_sha = file_sha(output / public_contract)
     evaluator = task_dir / "evaluator"
-    evaluator.mkdir()
+    materialize_standalone_evaluator(source_task, evaluator, include_negative_suite=False)
     write_json(evaluator / "score_policy.json", {
         "schema_version": "v4-dut-score-policy-v1",
         "task_id": f"v4-{family}",
         "candidate_artifacts": contract["target_artifacts"],
         "full_contract_pass_required": True,
         "spectre_final_judge": True,
-        "source_checker_profile": rel(source_task / "evaluator" / "checker_profile.json", PACKAGE_ROOT),
+        "materialized_checker_profile": "evaluator/checker_profile.json",
+        "checker_profile_sha256": file_sha(evaluator / "checker_profile.json"),
+        "gold_solution_tree_sha256": tree_sha(evaluator / "solution"),
+        "gold_dut_certification_sha256": row["hashes"]["task_certification_sha256"],
     })
     bundle_sha = public_bundle_hash(task_dir)
     write_task_record(task_dir, common_task_record(
         task_id=f"v4-{family}", form="dut", family_id=family,
         directory=rel(task_dir, output), spec_sha=spec_sha,
-        source_task=rel(source_task, PACKAGE_ROOT),
-        candidate_artifacts=contract["target_artifacts"], public_bundle_sha=bundle_sha,
+        source_task_slug=source_task.name,
+        checker_task_id=evaluator_checker_task_id(evaluator),
+        candidate_artifacts=contract["target_artifacts"], public_contract=public_contract,
+        public_contract_sha=public_contract_sha,
+        public_bundle_sha=bundle_sha,
     ))
-    return {"task_id": f"v4-{family}", "form": "dut", "family_id": family, "task_dir": rel(task_dir, output)}
+    return {
+        "task_id": f"v4-{family}",
+        "form": "dut",
+        "family_id": family,
+        "task_dir": rel(task_dir, output),
+        "public_contract": public_contract,
+        "public_contract_sha256": public_contract_sha,
+    }
 
 
 def build_testbench_view(
-    output: Path, source_task: Path, row: dict[str, Any], spec: dict[str, Any], spec_sha: str,
-    source_manifest_sha: str, seed_review: dict[str, Any],
+    output: Path,
+    source_task: Path,
+    row: dict[str, Any],
+    spec: dict[str, Any],
+    spec_sha: str,
+    seed_review: dict[str, Any],
 ) -> dict[str, Any]:
     family = str(row["canonical_dut_id"])
     task_num = 500 + int(family)
     slug = source_task.name.split("-", 1)[1]
-    task_dir = output / "tasks" / "testbench" / f"{task_num:03d}-{slug}-testbench"
+    task_dir = output / "tasks" / f"{task_num:03d}-{slug}-testbench"
     task_dir.mkdir(parents=True)
-    write_text(task_dir / "instruction.md", render_testbench_instruction(spec))
-    supplied = task_dir / "supplied_dut"
+    public = task_dir / "public"
+    public.mkdir()
+    write_text(public / "instruction.md", render_testbench_instruction(spec))
+    supplied = public / "supplied_dut"
     artifacts = copy_solution(source_task, supplied, spec)
     contract = public_semantics(spec)
     contract.update({
-        "schema_version": "v4-tri-form-public-contract-v1",
+        "schema_version": "v4-benchmarkv4-public-contract-v1",
         "task_id": f"v4-{task_num:03d}",
         "form": "testbench",
         "target_artifacts": ["testbench.scs"],
@@ -491,24 +595,11 @@ def build_testbench_view(
             "DUT redefinition, direct output drive, private hierarchical probes, arbitrary file access, and unbounded analyses are rejected",
         ],
     })
-    write_json(task_dir / "public_contract.json", contract)
+    public_contract = write_public_contract(output, task_dir, contract)
+    public_contract_sha = file_sha(output / public_contract)
     evaluator = task_dir / "evaluator"
-    evaluator.mkdir()
+    materialize_standalone_evaluator(source_task, evaluator, include_negative_suite=True)
     suite = [str(item["mutation_id"]) for item in row["active_mutations"]]
-    derivation = {
-        "schema_version": "v4-derivation-manifest-v2",
-        "family_id": family,
-        "base_dut": {
-            "canonical_task_id": f"v4-{family}",
-            "canonical_task_slug": source_task.name,
-            "family_spec_sha256": spec_sha,
-            "source_release_manifest_sha256": source_manifest_sha,
-            "mutation_catalog_sha256": row["hashes"]["mutation_catalog_sha256"],
-            "canonical_score_tb_sha256": row["hashes"]["score_deck_sha256"],
-        },
-        "negative_assignment": negative_assignment(row, seed_review),
-    }
-    write_json(evaluator / "derivation_manifest.json", derivation)
     write_json(evaluator / "score_policy.json", {
         "schema_version": "v4-testbench-score-policy-v1",
         "task_id": f"v4-{task_num:03d}",
@@ -518,7 +609,12 @@ def build_testbench_view(
         "full_credit": "reference_gate and five_of_five_killed_behaviorally",
         "kill_ratio_denominator": 5,
         "spectre_final_judge": True,
-        "source_checker_profile": rel(source_task / "evaluator" / "checker_profile.json", PACKAGE_ROOT),
+        "materialized_checker_profile": "evaluator/checker_profile.json",
+        "checker_profile_sha256": file_sha(evaluator / "checker_profile.json"),
+        "reference_tb_sha256": row["hashes"]["score_deck_sha256"],
+        "mutation_catalog_sha256": row["hashes"]["mutation_catalog_sha256"],
+        "negative_suite_mutation_ids": suite,
+        "bugfix_seed_mutation_id": seed_review["mutation_id"],
     })
     write_json(evaluator / "testbench_security_policy.json", {
         "schema_version": "v4-testbench-security-policy-v1",
@@ -531,41 +627,49 @@ def build_testbench_view(
         "require": ["declared_dut_binding", "transient_analysis", "all_required_public_traces"],
     })
     shutil.copy2(source_task / "evaluator" / "score_tb.scs", evaluator / "reference_tb.scs")
-    write_json(evaluator / "reference_certificate.json", {
-        "schema_version": "v4-reference-testbench-certificate-v1",
-        "evidence_source": "canonical_score_profile_hash_reuse",
-        "reference_tb_sha256": file_sha(evaluator / "reference_tb.scs"),
-        "correct_dut_status": "pass",
-        "negative_suite_status": "five_of_five_killed_behaviorally",
-        "mutation_certification_sha256": {item["mutation_id"]: item["certification_sha256"] for item in row["active_mutations"]},
-        "simulation_rerun_required_for_materialization": False,
-    })
     bundle_sha = public_bundle_hash(task_dir)
     write_task_record(task_dir, common_task_record(
         task_id=f"v4-{task_num:03d}", form="testbench", family_id=family,
         directory=rel(task_dir, output), spec_sha=spec_sha,
-        source_task=rel(source_task, PACKAGE_ROOT), candidate_artifacts=["testbench.scs"],
+        source_task_slug=source_task.name,
+        checker_task_id=evaluator_checker_task_id(evaluator),
+        candidate_artifacts=["testbench.scs"],
+        public_contract=public_contract,
+        public_contract_sha=public_contract_sha,
         public_bundle_sha=bundle_sha,
     ))
-    return {"task_id": f"v4-{task_num:03d}", "form": "testbench", "family_id": family, "task_dir": rel(task_dir, output)}
+    return {
+        "task_id": f"v4-{task_num:03d}",
+        "form": "testbench",
+        "family_id": family,
+        "task_dir": rel(task_dir, output),
+        "public_contract": public_contract,
+        "public_contract_sha256": public_contract_sha,
+    }
 
 
 def build_bugfix_view(
-    output: Path, source_task: Path, row: dict[str, Any], spec: dict[str, Any], spec_sha: str,
-    source_manifest_sha: str, seed_review: dict[str, Any],
+    output: Path,
+    source_task: Path,
+    row: dict[str, Any],
+    spec: dict[str, Any],
+    spec_sha: str,
+    seed_review: dict[str, Any],
 ) -> dict[str, Any]:
     family = str(row["canonical_dut_id"])
     task_num = 1000 + int(family)
     slug = source_task.name.split("-", 1)[1]
-    task_dir = output / "tasks" / "bugfix" / f"{task_num:04d}-{slug}-bugfix"
+    task_dir = output / "tasks" / f"{task_num:04d}-{slug}-bugfix"
     task_dir.mkdir(parents=True)
-    write_text(task_dir / "instruction.md", render_bugfix_instruction(spec))
-    buggy = task_dir / "buggy_bundle"
+    public = task_dir / "public"
+    public.mkdir()
+    write_text(public / "instruction.md", render_bugfix_instruction(spec))
+    buggy = public / "buggy_bundle"
     artifacts = copy_solution(source_task, buggy, spec)
     changed = overlay_mutation(source_task, seed_review["mutation_id"], buggy, artifacts)
     contract = public_semantics(spec)
     contract.update({
-        "schema_version": "v4-tri-form-public-contract-v1",
+        "schema_version": "v4-benchmarkv4-public-contract-v1",
         "task_id": f"v4-{task_num}",
         "form": "bugfix",
         "target_artifacts": artifacts,
@@ -574,9 +678,10 @@ def build_bugfix_view(
         "problem_statement": "the supplied system violates the public contract",
         "feedback": {"available_in_modes": ["G2", "G3", "G4", "G5"], "command": "vabench feedback run"},
     })
-    write_json(task_dir / "public_contract.json", contract)
+    public_contract = write_public_contract(output, task_dir, contract)
+    public_contract_sha = file_sha(output / public_contract)
     evaluator = task_dir / "evaluator"
-    evaluator.mkdir()
+    materialize_standalone_evaluator(source_task, evaluator, include_negative_suite=False)
     write_json(evaluator / "score_policy.json", {
         "schema_version": "v4-bugfix-score-policy-v1",
         "task_id": f"v4-{task_num}",
@@ -584,56 +689,57 @@ def build_bugfix_view(
         "artifact_mode": spec["artifact_contract"]["mode"],
         "full_contract_pass_required": True,
         "spectre_final_judge": True,
-        "source_checker_profile": rel(source_task / "evaluator" / "checker_profile.json", PACKAGE_ROOT),
-        "gold_solution_tree_sha256": tree_sha(source_task / "evaluator" / "solution"),
-    })
-    write_json(evaluator / "derivation_manifest.json", {
-        "schema_version": "v4-derivation-manifest-v2",
-        "family_id": family,
-        "base_dut": {
-            "canonical_task_id": f"v4-{family}",
-            "canonical_task_slug": source_task.name,
-            "family_spec_sha256": spec_sha,
-            "source_release_manifest_sha256": source_manifest_sha,
-            "mutation_catalog_sha256": row["hashes"]["mutation_catalog_sha256"],
-        },
-        "negative_assignment": negative_assignment(row, seed_review),
-        "selection_evidence": seed_review,
-        "private_materialization": {
-            "changed_artifacts": changed,
-            "buggy_bundle_sha256": tree_sha(buggy),
-        },
-    })
-    write_json(evaluator / "gold_repair_reference.json", {
-        "schema_version": "v4-gold-repair-reference-v1",
-        "source_solution": rel(source_task / "evaluator" / "solution", PACKAGE_ROOT),
-        "solution_tree_sha256": tree_sha(source_task / "evaluator" / "solution"),
+        "materialized_checker_profile": "evaluator/checker_profile.json",
+        "checker_profile_sha256": file_sha(evaluator / "checker_profile.json"),
+        "gold_solution_tree_sha256": tree_sha(evaluator / "solution"),
+        "mutation_catalog_sha256": row["hashes"]["mutation_catalog_sha256"],
+        "bugfix_seed_mutation_id": seed_review["mutation_id"],
+        "bugfix_seed_selection_status": seed_review["selection_status"],
+        "bugfix_seed_triviality_markers": seed_review["triviality_markers"],
+        "buggy_bundle_sha256": tree_sha(buggy),
+        "changed_artifacts": changed,
         "gold_dut_certification_sha256": row["hashes"]["task_certification_sha256"],
-        "simulation_rerun_required_for_materialization": False,
     })
     bundle_sha = public_bundle_hash(task_dir)
     write_task_record(task_dir, common_task_record(
         task_id=f"v4-{task_num}", form="bugfix", family_id=family,
         directory=rel(task_dir, output), spec_sha=spec_sha,
-        source_task=rel(source_task, PACKAGE_ROOT), candidate_artifacts=artifacts,
+        source_task_slug=source_task.name,
+        checker_task_id=evaluator_checker_task_id(evaluator),
+        candidate_artifacts=artifacts,
+        public_contract=public_contract,
+        public_contract_sha=public_contract_sha,
         public_bundle_sha=bundle_sha,
     ))
-    return {"task_id": f"v4-{task_num}", "form": "bugfix", "family_id": family, "task_dir": rel(task_dir, output)}
+    return {
+        "task_id": f"v4-{task_num}",
+        "form": "bugfix",
+        "family_id": family,
+        "task_dir": rel(task_dir, output),
+        "public_contract": public_contract,
+        "public_contract_sha256": public_contract_sha,
+    }
+
+
+def prompt_component_subdir(component_id: str) -> str:
+    kind = COMPONENT_METADATA[component_id]["kind"]
+    return COMPONENT_SUBDIR_BY_KIND[kind]
 
 
 def install_prompt_assets(output: Path) -> dict[str, dict[str, Any]]:
     records: dict[str, dict[str, Any]] = {}
-    for source in sorted(PROMPT_ASSETS.glob("*.md")):
+    wrappers: dict[str, dict[str, Any]] = {}
+    form_skills: dict[str, dict[str, Any]] = {}
+    feedback_guides: dict[str, dict[str, Any]] = {}
+    for source in sorted(PROMPT_ASSETS.rglob("*.md")):
         if source.name not in COMPONENT_METADATA:
             raise SystemExit(f"prompt component lacks metadata: {source.name}")
-        metadata = COMPONENT_METADATA[source.name]
-        subdir = COMPONENT_SUBDIR_BY_KIND[metadata["kind"]]
-        target = output / "prompt_modes" / subdir
-        target.mkdir(parents=True, exist_ok=True)
-        destination = target / source.name
+        destination = output / "prompt_modes" / prompt_component_subdir(source.name) / source.name
+        destination.parent.mkdir(parents=True, exist_ok=True)
         shutil.copy2(source, destination)
+        metadata = COMPONENT_METADATA[source.name]
         fingerprint = component_fingerprint(source.name, destination)
-        records[source.name] = {
+        record = {
             "path": rel(destination, output),
             **fingerprint,
             "stable_id": metadata["stable_id"],
@@ -643,13 +749,22 @@ def install_prompt_assets(output: Path) -> dict[str, dict[str, Any]]:
             "license": {"status": "repository_license_pending", "spdx": None},
             "provenance": {"type": "project_authored", "source": "V4_TRI_FORM_BENCHMARK_REQUIREMENTS.md"},
         }
+        records[source.name] = record
+        if metadata["kind"] == "wrapper":
+            wrappers[source.name] = record
+        elif metadata["kind"] == "form_skill":
+            form_skills[source.name] = record
+        elif metadata["kind"] == "feedback_guide":
+            feedback_guides[source.name] = record
+        else:
+            raise SystemExit(f"unknown prompt component kind: {metadata['kind']}")
     write_json(output / "prompt_modes" / "manifest.json", {
         "schema_version": "v4-prompt-component-manifest-v1",
         "reference_tokenizer": REFERENCE_TOKENIZER,
         "components": records,
-        "wrappers": {name: row for name, row in records.items() if row["kind"] == "wrapper"},
-        "form_skills": {name: row for name, row in records.items() if row["kind"] == "form_skill"},
-        "feedback_guides": {name: row for name, row in records.items() if row["kind"] == "feedback_guide"},
+        "wrappers": wrappers,
+        "form_skills": form_skills,
+        "feedback_guides": feedback_guides,
     })
     write_json(output / "prompt_modes" / "modes.json", {
         "schema_version": "v4-prompt-mode-registry-v1",
@@ -666,66 +781,13 @@ def install_prompt_assets(output: Path) -> dict[str, dict[str, Any]]:
     return records
 
 
-def iter_public_inputs(task_dir: Path, form: str) -> Iterable[Path]:
-    yield task_dir / "instruction.md"
+def iter_public_inputs(task_dir: Path, form: str, mode: str | None = None) -> Iterable[Path]:
+    public = task_dir / "public"
+    yield public / "instruction.md"
     if form == "testbench":
-        yield from sorted((task_dir / "supplied_dut").rglob("*.va"))
+        yield from sorted((public / "supplied_dut").rglob("*.va"))
     elif form == "bugfix":
-        yield from sorted((task_dir / "buggy_bundle").rglob("*.va"))
-
-
-def write_prompt_records(output: Path, task_rows: list[dict[str, Any]], skills: dict[str, dict[str, Any]]) -> None:
-    path = output / "prompt_modes" / "PROMPT_RECORDS.jsonl"
-    with path.open("w", encoding="utf-8") as handle:
-        for task in task_rows:
-            task_dir = output / task["task_dir"]
-            instruction_sha = file_sha(task_dir / "instruction.md")
-            input_hashes = {rel(item, task_dir): file_sha(item) for item in iter_public_inputs(task_dir, task["form"])}
-            for mode, policy in MODES.items():
-                public_input_paths = list(iter_public_inputs(task_dir, task["form"]))
-                public_components = [
-                    component_fingerprint(
-                        "instruction" if item.name == "instruction.md" else f"public_input:{rel(item, task_dir)}",
-                        item,
-                    )
-                    for item in public_input_paths
-                ]
-                guide_ids: list[str] = []
-                if policy["form_skill"]:
-                    guide_ids.append(FORM_SKILLS[task["form"]])
-                if policy["feedback_guide"]:
-                    guide_ids.extend([FEEDBACK_CORE, FEEDBACK_GUIDES[task["form"]]])
-                wrapper = WRAPPERS_BY_PROCESS[str(policy["process"])]
-                prompt_component_ids = [*guide_ids, wrapper]
-                component_order = [item["id"] for item in public_components] + prompt_component_ids
-                static_components = public_components + [
-                    {
-                        "id": name,
-                        "sha256": skills[name]["sha256"],
-                        "bytes": skills[name]["bytes"],
-                        "token_counts": skills[name]["token_counts"],
-                    }
-                    for name in prompt_component_ids
-                ]
-                record = {
-                    "schema_version": "v4-prompt-record-v1",
-                    "task_id": task["task_id"],
-                    "family_id": task["family_id"],
-                    "form": task["form"],
-                    "mode": mode,
-                    "process": policy["process"],
-                    "feedback_cli_available": policy["feedback_cli"],
-                    "canonical_instruction_sha256": instruction_sha,
-                    "public_contract_sha256": file_sha(task_dir / "public_contract.json"),
-                    "public_input_hashes": input_hashes,
-                    "component_order": component_order,
-                    "static_components": static_components,
-                    "reference_tokenizer": REFERENCE_TOKENIZER,
-                    "skill_hashes": {name: skills[name]["sha256"] for name in guide_ids},
-                    "prompt_component_hashes": {name: skills[name]["sha256"] for name in prompt_component_ids},
-                    "response_protocol": "v4-exact-artifact-blocks-v1" if policy["process"] == "direct_one_shot" else "v4-workspace-finalizer-v1",
-                }
-                handle.write(json.dumps(record, sort_keys=True) + "\n")
+        yield from sorted((public / "buggy_bundle").rglob("*.va"))
 
 
 def main() -> int:
@@ -749,7 +811,6 @@ def main() -> int:
         raise SystemExit("source release must contain exactly 400 canonical DUT rows")
     source_manifest_sha = file_sha(denominator_path)
     task_rows: list[dict[str, Any]] = []
-    seed_rows: list[dict[str, Any]] = []
     for row in rows:
         family = str(row["canonical_dut_id"])
         source_task = source / str(row["release_dir"])
@@ -759,30 +820,23 @@ def main() -> int:
             raise SystemExit(f"{source_task.name}: family spec ID mismatch")
         spec_sha = file_sha(spec_path)
         seed_review = select_bugfix_seed(row)
-        seed_rows.append({"family_id": family, **seed_review})
         task_rows.extend([
-            build_dut_view(output, source, source_task, row, spec, spec_sha),
-            build_testbench_view(output, source_task, row, spec, spec_sha, source_manifest_sha, seed_review),
-            build_bugfix_view(output, source_task, row, spec, spec_sha, source_manifest_sha, seed_review),
+            build_dut_view(output, source_task, row, spec, spec_sha),
+            build_testbench_view(output, source_task, row, spec, spec_sha, seed_review),
+            build_bugfix_view(output, source_task, row, spec, spec_sha, seed_review),
         ])
 
-    task_rows.sort(key=lambda item: (item["form"], int(item["family_id"])))
-    skills = install_prompt_assets(output)
-    write_prompt_records(output, task_rows, skills)
-    write_json(output / "BUGFIX_SEED_REVIEW.json", {
-        "schema_version": "v4-bugfix-seed-review-v1",
-        "selection_policy": "semantic_fault_complexity_v1",
-        "families": seed_rows,
-    })
-    write_json(output / "TASK_INDEX.json", {"schema_version": "v4-tri-form-task-index-v1", "tasks": task_rows})
+    task_rows.sort(key=lambda item: int(str(item["task_id"]).split("-", 1)[1]))
+    install_prompt_assets(output)
+    write_json(output / "TASK_INDEX.json", {"schema_version": "v4-benchmarkv4-task-index-v1", "tasks": task_rows})
     counts = {form: sum(item["form"] == form for item in task_rows) for form in ("dut", "testbench", "bugfix")}
     manifest = {
-        "schema_version": "v4-tri-form-release-manifest-v1",
+        "schema_version": "v4-benchmarkv4-release-manifest-v1",
         "release_status": "materialized_hash_bound_certification_reuse_audit_pending",
         "family_count": 400,
         "task_count": len(task_rows),
         "task_counts": counts,
-        "source_release": rel(source, PACKAGE_ROOT),
+        "source_release_label": source.name,
         "source_score_denominator_manifest_sha256": source_manifest_sha,
         "source_active_mutation_count": denominator.get("active_mutation_count"),
         "active_mutations_per_family": denominator.get("active_mutations_per_family"),
@@ -795,8 +849,20 @@ def main() -> int:
             "simulation_rerun_required_for_materialization": False,
         },
         "prompt_record_count": len(task_rows) * len(MODES),
+        "release_surface": "benchmarkv4_package",
+        "public_surface": {
+            "tasks": "tasks",
+            "prompt_modes": "prompt_modes",
+            "task_index": "TASK_INDEX.json",
+        },
+        "package_layout": {
+            "task_public_inputs": "tasks/<task>/public",
+            "task_evaluator_assets": "tasks/<task>/evaluator",
+            "task_contract": "tasks/<task>/public_contract.json",
+            "task_form": "tasks/<task>/task_record.json:form",
+        },
         "tasks_index": "TASK_INDEX.json",
-        "materialized_artifact_sha256": materialized_artifact_hashes(output),
+        "materialized_artifact_sha256": materialized_artifact_hashes(output, MATERIALIZED_ARTIFACTS),
     }
     write_json(output / "MANIFEST.json", manifest)
     print(json.dumps(manifest, indent=2, sort_keys=True))

@@ -1,0 +1,25 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "265-dynamic-supply-enable-driver",
+  "checker_task_id": "v4_265_dynamic_supply_enable_driver",
+  "family_id": "265",
+  "family_spec_sha256": "9fbddca3f0dfeae842de1992205ae0b5755d68decfb577735384cf6d968b1547",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "9b68b7303ac893f43ffa4325222db1fb64dd4114fd93b0f62f7b34e6296bdbfd",
+  "public_contract": "tasks/765-dynamic-supply-enable-driver-testbench/public_contract.json",
+  "public_contract_sha256": "b5bfc0dee294e3274ca0f2811b371d185b7031ae090a0b723ab9c81a57daa1a3",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/765-dynamic-supply-enable-driver-testbench",
+  "task_id": "v4-765"
+}

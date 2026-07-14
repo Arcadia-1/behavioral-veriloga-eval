@@ -1,0 +1,25 @@
+{
+  "candidate_artifacts": [
+    "vin_src.va"
+  ],
+  "canonical_dut_source_slug": "102-clocked-sine-source",
+  "checker_task_id": "v4_102_clocked_sine_source",
+  "family_id": "102",
+  "family_spec_sha256": "9103a83f1afd39d63705510daabbe1cdd1b4487db3528e4fa20a492e30297903",
+  "form": "dut",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "81d51f50b484ddbb546fdfa4c0b5aadd399b8bf1683c3d7f40bd58d4d1c6e3fc",
+  "public_contract": "tasks/102-clocked-sine-source/public_contract.json",
+  "public_contract_sha256": "e05ecb40204d0dd99f0a9429a7cbb6be9503f6ce160ea1b83d98b3425e1de953",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/102-clocked-sine-source",
+  "task_id": "v4-102"
+}

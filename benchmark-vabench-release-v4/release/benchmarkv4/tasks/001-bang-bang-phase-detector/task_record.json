@@ -1,0 +1,25 @@
+{
+  "candidate_artifacts": [
+    "bbpd_ref.va"
+  ],
+  "canonical_dut_source_slug": "001-bang-bang-phase-detector",
+  "checker_task_id": "v4_001_bang_bang_phase_detector",
+  "family_id": "001",
+  "family_spec_sha256": "13229e77d6dc98c42efa103a9fe57f38d8cd4c3ff130114783667c0a36585a19",
+  "form": "dut",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "821988db829957f67f49b7b4dd8f846bb7ea6e16b1bdb7d9c178a9818f825af9",
+  "public_contract": "tasks/001-bang-bang-phase-detector/public_contract.json",
+  "public_contract_sha256": "ed91ed3ef7408efbb8a874bf462b217ea06466fad78c9477dcad30b30122d76a",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/001-bang-bang-phase-detector",
+  "task_id": "v4-001"
+}

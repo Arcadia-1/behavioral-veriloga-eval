@@ -1,0 +1,22 @@
+{
+  "artifact_mode": "single_file",
+  "bugfix_seed_mutation_id": "neg_002_ignore_enable",
+  "bugfix_seed_selection_status": "policy_reviewed",
+  "bugfix_seed_triviality_markers": [],
+  "buggy_bundle_sha256": "4197261436590d500431afd530fa6aba7035b34dbc5ad06ed797317cff390b1d",
+  "candidate_artifacts": [
+    "phase_mismatch_qualifier.va"
+  ],
+  "changed_artifacts": [
+    "phase_mismatch_qualifier.va"
+  ],
+  "checker_profile_sha256": "cb2e55cd6e4571179b6ed90a709a65d251f04f62cfcf4f1bc164d14f267c9aba",
+  "full_contract_pass_required": true,
+  "gold_dut_certification_sha256": "f3b4d5ffd7b45970dae0fc0cba4e77274a72a3b4fd40ddb9062d0d4cc09bf9d9",
+  "gold_solution_tree_sha256": "3e443570a68fa1f06a70c55eca7aa3f6a230618659cbad5c25ee61fba5f608bf",
+  "materialized_checker_profile": "evaluator/checker_profile.json",
+  "mutation_catalog_sha256": "1a67aa92cb1655914c64f97e5b5f96b92232f3c54765f0484862a322431896d6",
+  "schema_version": "v4-bugfix-score-policy-v1",
+  "spectre_final_judge": true,
+  "task_id": "v4-1257"
+}

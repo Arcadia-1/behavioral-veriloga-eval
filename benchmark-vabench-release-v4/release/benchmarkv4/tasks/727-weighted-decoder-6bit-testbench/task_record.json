@@ -1,0 +1,25 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "227-weighted-decoder-6bit",
+  "checker_task_id": "v4_227_weighted_decoder_6bit",
+  "family_id": "227",
+  "family_spec_sha256": "b7587b595525895325c66bab77330e636d39ba322bf3388567ed16b4f2c2264f",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "ffa5ea36e7a7045e02602a2554900a5fb8e43346bd887891f1998513adb5a514",
+  "public_contract": "tasks/727-weighted-decoder-6bit-testbench/public_contract.json",
+  "public_contract_sha256": "ae23764a363bf0e52d96672dfa046642999c78eb5b41d3530aa96d9c359191f3",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/727-weighted-decoder-6bit-testbench",
+  "task_id": "v4-727"
+}

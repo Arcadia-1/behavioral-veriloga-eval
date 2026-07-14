@@ -1,0 +1,25 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "245-cal4bit-modulo",
+  "checker_task_id": "v4_245_cal4bit_modulo",
+  "family_id": "245",
+  "family_spec_sha256": "d5f6f732b066902c4c7a4a66f6388fb84cf8698255418b65c009ae5d05c9d940",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "feb0f1d23db59f3612149367fc3f23d78629eb34f17294f66bdc46c6f73a2f2d",
+  "public_contract": "tasks/745-cal4bit-modulo-testbench/public_contract.json",
+  "public_contract_sha256": "69dab8c228fef42ad5abc69327f8fcce5530e81d3b793afbe6a2ae03168d01de",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/745-cal4bit-modulo-testbench",
+  "task_id": "v4-745"
+}

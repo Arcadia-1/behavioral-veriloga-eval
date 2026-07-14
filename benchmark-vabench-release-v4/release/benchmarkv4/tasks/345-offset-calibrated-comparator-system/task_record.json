@@ -1,0 +1,28 @@
+{
+  "candidate_artifacts": [
+    "calibrated_comparator_top.va",
+    "comparator_core.va",
+    "offset_dac.va",
+    "calibration_fsm.va"
+  ],
+  "canonical_dut_source_slug": "345-offset-calibrated-comparator-system",
+  "checker_task_id": "v4_345_offset_calibrated_comparator_system",
+  "family_id": "345",
+  "family_spec_sha256": "1e47e48013dd7fb2a4cda900e428102a4a5b8255752d9374ebdaa05a8184a234",
+  "form": "dut",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "73b8c1e7dfa2e7087b7bac77ef1f0dc7c91e81757f2008b89500676ecdd75e62",
+  "public_contract": "tasks/345-offset-calibrated-comparator-system/public_contract.json",
+  "public_contract_sha256": "8cc71d2a7d73bd68d54b89b370fb5b547b5e3596a290c0a128732081bbdd8094",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/345-offset-calibrated-comparator-system",
+  "task_id": "v4-345"
+}

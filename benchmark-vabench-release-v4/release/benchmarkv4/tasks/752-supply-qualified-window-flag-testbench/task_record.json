@@ -1,0 +1,25 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "252-supply-qualified-window-flag",
+  "checker_task_id": "v4_252_supply_qualified_window_flag",
+  "family_id": "252",
+  "family_spec_sha256": "c919f920298ec6deaae0c7fb3648cbee7a640f023ca1d4a8eb7c7ca8654011b9",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "7816140db899b45c843ccece2f54025698994b926ad76bffa50b97c6194b33db",
+  "public_contract": "tasks/752-supply-qualified-window-flag-testbench/public_contract.json",
+  "public_contract_sha256": "b42ed8dad94fcbd441d0a7fbacba1bb8960a0c1e2e6d510023e9bd55dea573e9",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/752-supply-qualified-window-flag-testbench",
+  "task_id": "v4-752"
+}

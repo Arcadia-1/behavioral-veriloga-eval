@@ -1,0 +1,25 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "319-unary-dac-glitch-energy-metric",
+  "checker_task_id": "v4_319_unary_dac_glitch_energy_metric",
+  "family_id": "319",
+  "family_spec_sha256": "b0ee317b8eecb09fd8f94314ea10a14981c84209b232d9bc54d4ba2338d727c1",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "25ea0705476d1e7dedc49ecfeef8740eb9c081223206c0999565cbec8e3a8f6d",
+  "public_contract": "tasks/819-unary-dac-glitch-energy-metric-testbench/public_contract.json",
+  "public_contract_sha256": "fafa0b8282bba512e1c7e00044b4aa249f5a26fa6c1617da11d12e7f5ba85946",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/819-unary-dac-glitch-energy-metric-testbench",
+  "task_id": "v4-819"
+}

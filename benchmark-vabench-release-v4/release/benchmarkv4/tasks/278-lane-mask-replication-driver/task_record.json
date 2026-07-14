@@ -1,0 +1,25 @@
+{
+  "candidate_artifacts": [
+    "lane_mask_replication_driver.va"
+  ],
+  "canonical_dut_source_slug": "278-lane-mask-replication-driver",
+  "checker_task_id": "v4_278_lane_mask_replication_driver",
+  "family_id": "278",
+  "family_spec_sha256": "f1559e7e1fe7a4a464e8ef338f865dab270f26f87e4021c04c4a1bf60193de3f",
+  "form": "dut",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "5135fe6cb47235336935b8959dc7262a686948452906cf2f0e1f4634d033e9a4",
+  "public_contract": "tasks/278-lane-mask-replication-driver/public_contract.json",
+  "public_contract_sha256": "01801d2d3aea7bc6bc6e3fbd78d11fc2d2d41f6611455b119af309d3ba191b57",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/278-lane-mask-replication-driver",
+  "task_id": "v4-278"
+}

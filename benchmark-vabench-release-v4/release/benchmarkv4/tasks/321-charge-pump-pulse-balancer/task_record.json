@@ -1,0 +1,25 @@
+{
+  "candidate_artifacts": [
+    "charge_pump_pulse_balancer.va"
+  ],
+  "canonical_dut_source_slug": "321-charge-pump-pulse-balancer",
+  "checker_task_id": "v4_321_charge_pump_pulse_balancer",
+  "family_id": "321",
+  "family_spec_sha256": "9f330b32082ec5615fff82ff27e7dbc983fdd07fb2e648ca1987b8cfae344f1f",
+  "form": "dut",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "e71dc84eca8672fd742526979188034a02f0e1e350d9df282e8e1db7ad96dcf1",
+  "public_contract": "tasks/321-charge-pump-pulse-balancer/public_contract.json",
+  "public_contract_sha256": "1ba0723f3eba536735a80d80802e4da8854da1aa38da61238e116bc9cb91c434",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/321-charge-pump-pulse-balancer",
+  "task_id": "v4-321"
+}

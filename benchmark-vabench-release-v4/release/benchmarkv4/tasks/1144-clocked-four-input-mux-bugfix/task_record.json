@@ -1,0 +1,25 @@
+{
+  "candidate_artifacts": [
+    "clocked_four_input_mux.va"
+  ],
+  "canonical_dut_source_slug": "144-clocked-four-input-mux",
+  "checker_task_id": "v4_144_clocked_four_input_mux",
+  "family_id": "144",
+  "family_spec_sha256": "ee52b477d55630806778aff0d3e9d32cbbf56961477d11ce3f94548207c68c6d",
+  "form": "bugfix",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "e0e392461936b605ab952bab18bb859ee361d9f983f8f8b6904e8005290645e5",
+  "public_contract": "tasks/1144-clocked-four-input-mux-bugfix/public_contract.json",
+  "public_contract_sha256": "db560a89bf2ac45713d0cd6c0c71597a491fcd48fbd160cc79058889e6fa3166",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/1144-clocked-four-input-mux-bugfix",
+  "task_id": "v4-1144"
+}

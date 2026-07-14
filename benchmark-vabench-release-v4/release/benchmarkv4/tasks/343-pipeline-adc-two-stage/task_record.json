@@ -1,0 +1,29 @@
+{
+  "candidate_artifacts": [
+    "pipeline_adc_top.va",
+    "stage1_quantizer.va",
+    "residue_amp.va",
+    "stage2_quantizer.va",
+    "code_aligner.va"
+  ],
+  "canonical_dut_source_slug": "343-pipeline-adc-two-stage",
+  "checker_task_id": "v4_343_pipeline_adc_two_stage",
+  "family_id": "343",
+  "family_spec_sha256": "0178e9fcfb5dd6a8b4e3ed7a39972a061f2cf642a549c196371d9171bff4eb14",
+  "form": "dut",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "f2b1ec530dfb8f0ec17f70f946ba080cea76b1594fd54647a8467f6e5a8734b5",
+  "public_contract": "tasks/343-pipeline-adc-two-stage/public_contract.json",
+  "public_contract_sha256": "526d854494746c416bd946352dae4222b4e42e9a09b35dd70847f65f23633b57",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/343-pipeline-adc-two-stage",
+  "task_id": "v4-343"
+}

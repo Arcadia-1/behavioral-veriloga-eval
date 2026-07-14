@@ -1,0 +1,25 @@
+{
+  "candidate_artifacts": [
+    "differential_amplifier_core.va"
+  ],
+  "canonical_dut_source_slug": "134-differential-amplifier-core",
+  "checker_task_id": "v4_134_differential_amplifier_core",
+  "family_id": "134",
+  "family_spec_sha256": "f3cb58a47b0561c23f5edfe2bcc120964672afe102e665637232aa502b4eb797",
+  "form": "bugfix",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "6e457bc4360718ffdec9cc98bf5185a486e87dfb3586406449ce11b45de01460",
+  "public_contract": "tasks/1134-differential-amplifier-core-bugfix/public_contract.json",
+  "public_contract_sha256": "942cbb464781d566f9ccaf5332a5894efe882bfcd19bdc0b0ee5f72b3e515174",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/1134-differential-amplifier-core-bugfix",
+  "task_id": "v4-1134"
+}

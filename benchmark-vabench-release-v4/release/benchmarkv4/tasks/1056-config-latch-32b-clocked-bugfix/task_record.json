@@ -1,0 +1,25 @@
+{
+  "candidate_artifacts": [
+    "config_latch_32b.va"
+  ],
+  "canonical_dut_source_slug": "056-config-latch-32b-clocked",
+  "checker_task_id": "v4_056_config_latch_32b_clocked",
+  "family_id": "056",
+  "family_spec_sha256": "465ed8723cde1935125b42094a0bdf02c7ad2373b9e6e6df2ee833ec2e5dbcf0",
+  "form": "bugfix",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "43fdb1abcee5836fd622618e3bbabe9b071a91a060ae76c99892bef6716f6817",
+  "public_contract": "tasks/1056-config-latch-32b-clocked-bugfix/public_contract.json",
+  "public_contract_sha256": "e7beb3c30b347c9d800da8099743e87a47f823c03864bb6a00dad2900d80d178",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/1056-config-latch-32b-clocked-bugfix",
+  "task_id": "v4-1056"
+}

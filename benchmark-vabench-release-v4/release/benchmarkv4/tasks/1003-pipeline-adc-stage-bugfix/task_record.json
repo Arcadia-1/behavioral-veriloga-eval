@@ -1,0 +1,25 @@
+{
+  "candidate_artifacts": [
+    "pipeline_stage.va"
+  ],
+  "canonical_dut_source_slug": "003-pipeline-adc-stage",
+  "checker_task_id": "v4_003_pipeline_adc_stage",
+  "family_id": "003",
+  "family_spec_sha256": "ff644321a125572be576d4b3c7bf42b7ac500ba5942330d0eba31f15aa2a618d",
+  "form": "bugfix",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "7c4b676c65a4a494f20a1c6f7e8e3030dfec04a84b5f49fe41478d94705c0ca9",
+  "public_contract": "tasks/1003-pipeline-adc-stage-bugfix/public_contract.json",
+  "public_contract_sha256": "cb65593e48e712e7111acf579bec415b53d18b7667d1407fc3b276d391dcc87a",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/1003-pipeline-adc-stage-bugfix",
+  "task_id": "v4-1003"
+}

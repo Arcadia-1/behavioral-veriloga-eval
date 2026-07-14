@@ -1,0 +1,25 @@
+{
+  "candidate_artifacts": [
+    "dynamic_supply_level_driver.va"
+  ],
+  "canonical_dut_source_slug": "296-dynamic-supply-level-driver",
+  "checker_task_id": "v4_296_dynamic_supply_level_driver",
+  "family_id": "296",
+  "family_spec_sha256": "d6b7e73f98d914fd52ebc658449dd0fc1d31eb7dc7cddc0e16cb7b0ae8b75090",
+  "form": "bugfix",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "7b00d77dde9b919abd52c782655a8f457b5d9bfe6d43dda47a6d273023aab575",
+  "public_contract": "tasks/1296-dynamic-supply-level-driver-bugfix/public_contract.json",
+  "public_contract_sha256": "7fd73ff3292fa02c54516f4a63b305a2006b49ee496165d69605ae329f163e3f",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/1296-dynamic-supply-level-driver-bugfix",
+  "task_id": "v4-1296"
+}

@@ -1,0 +1,25 @@
+{
+  "candidate_artifacts": [
+    "level_shifter_offset.va"
+  ],
+  "canonical_dut_source_slug": "226-level-shifter-offset",
+  "checker_task_id": "v4_226_level_shifter_offset",
+  "family_id": "226",
+  "family_spec_sha256": "47624e41abddb35f89a1c1e342272e40aadf385818e915d77bcb82544ccd2348",
+  "form": "bugfix",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "764ae558ccd73be22e25fc7a6fad6046f77bb50a35a961ecc574a772f3c9bd39",
+  "public_contract": "tasks/1226-level-shifter-offset-bugfix/public_contract.json",
+  "public_contract_sha256": "0ed19a57178294c1b07cfc8f4d2767c8b29619c7ac06ffff8f4c3338c099976e",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/1226-level-shifter-offset-bugfix",
+  "task_id": "v4-1226"
+}

@@ -1,0 +1,25 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "120-attenuator-gain",
+  "checker_task_id": "v4_120_attenuator_gain",
+  "family_id": "120",
+  "family_spec_sha256": "055aff6498bd1f10bab701189a5581ac55bef3526a02c98474a3a842e7270fdf",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "edbd954ff96ec3fe5733a27eeed926e223b2bf6dca88d18c74bb4f2a400b1b31",
+  "public_contract": "tasks/620-attenuator-gain-testbench/public_contract.json",
+  "public_contract_sha256": "0d47c0644c6205f4fefe0803c55d06e46a68c55250166cd5da3681982db3c810",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/620-attenuator-gain-testbench",
+  "task_id": "v4-620"
+}

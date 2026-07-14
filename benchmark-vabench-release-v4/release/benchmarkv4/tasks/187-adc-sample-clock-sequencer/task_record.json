@@ -1,0 +1,25 @@
+{
+  "candidate_artifacts": [
+    "adc_sample_clock_sequencer.va"
+  ],
+  "canonical_dut_source_slug": "187-adc-sample-clock-sequencer",
+  "checker_task_id": "v4_187_adc_sample_clock_sequencer",
+  "family_id": "187",
+  "family_spec_sha256": "d998dc8a5f893ab1ebc913f9855d3fd64044bb71b4379c49a482e51643ba2aec",
+  "form": "dut",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "42d739692015e14dcb5a29d85068ce8fbb9033094fcbcb197754ef6f4a2e8034",
+  "public_contract": "tasks/187-adc-sample-clock-sequencer/public_contract.json",
+  "public_contract_sha256": "d31368d71c8fd55549784fc3cbc25cf046cd4121f97368f32344ceed775ebc61",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/187-adc-sample-clock-sequencer",
+  "task_id": "v4-187"
+}

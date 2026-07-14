@@ -1,0 +1,25 @@
+{
+  "candidate_artifacts": [
+    "safe_analog_divider.va"
+  ],
+  "canonical_dut_source_slug": "232-safe-analog-divider",
+  "checker_task_id": "v4_232_safe_analog_divider",
+  "family_id": "232",
+  "family_spec_sha256": "0bc7b119b0cd02dd316663f62042d00341863e8e3c0c7aede68e72b2fa7b379b",
+  "form": "bugfix",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "48abe9d6883cc009837834c24cb0c27101fbec5a1adb286802e282f77659cd91",
+  "public_contract": "tasks/1232-safe-analog-divider-bugfix/public_contract.json",
+  "public_contract_sha256": "844f60a4367b88bd4f479567575a9a774485747b60406d94e9305a5872c703aa",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/1232-safe-analog-divider-bugfix",
+  "task_id": "v4-1232"
+}

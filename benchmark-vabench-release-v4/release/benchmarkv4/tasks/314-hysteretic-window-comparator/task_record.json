@@ -1,0 +1,25 @@
+{
+  "candidate_artifacts": [
+    "hysteretic_window_comparator.va"
+  ],
+  "canonical_dut_source_slug": "314-hysteretic-window-comparator",
+  "checker_task_id": "v4_314_hysteretic_window_comparator",
+  "family_id": "314",
+  "family_spec_sha256": "6b067e1644942c23938258763f33256c48e6d1d3224eb69b5b0d93de7dff0c8e",
+  "form": "dut",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "ba74924770381a447b7d2bf97073ad3ec51fcf8eff262dae86cd4806d54d0542",
+  "public_contract": "tasks/314-hysteretic-window-comparator/public_contract.json",
+  "public_contract_sha256": "594115573dcfaf8e36e07281c4d916979ddb83019aa666c6a692b30d396083e1",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/314-hysteretic-window-comparator",
+  "task_id": "v4-314"
+}

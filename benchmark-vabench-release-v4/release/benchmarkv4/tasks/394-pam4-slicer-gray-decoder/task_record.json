@@ -1,0 +1,25 @@
+{
+  "candidate_artifacts": [
+    "pam4_slicer_gray_decoder.va"
+  ],
+  "canonical_dut_source_slug": "394-pam4-slicer-gray-decoder",
+  "checker_task_id": "v4_394_pam4_slicer_gray_decoder",
+  "family_id": "394",
+  "family_spec_sha256": "92ae6d2754f9f5764ef7414705245ca70e7772c2259ad65d853bb2a79b39a7c5",
+  "form": "dut",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "81d9ff515f3edced2e5babb1dbaa1cd467ee5ba7c58a60f55799ef9434ad4218",
+  "public_contract": "tasks/394-pam4-slicer-gray-decoder/public_contract.json",
+  "public_contract_sha256": "f5588a41ee83727b3ad5f303af6c6e9ab4ecbe5e930bfcddcc46ebe7e75c4240",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/394-pam4-slicer-gray-decoder",
+  "task_id": "v4-394"
+}

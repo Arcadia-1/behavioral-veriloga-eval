@@ -1,0 +1,28 @@
+{
+  "candidate_artifacts": [
+    "quad_corr_top.va",
+    "gain_trim.va",
+    "skew_estimator.va",
+    "corrector.va"
+  ],
+  "canonical_dut_source_slug": "365-quadrature-correction-loop",
+  "checker_task_id": "v4_365_quadrature_correction_loop",
+  "family_id": "365",
+  "family_spec_sha256": "8c84dbb4c16bc89b6e27eb4b845b3f15062ceb24152f3d67a567f8283ccc8b29",
+  "form": "bugfix",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "79dcdd62fcb240cf3dd3933d5b1e9d0082d3b3589b15ae94efd07142a2d89886",
+  "public_contract": "tasks/1365-quadrature-correction-loop-bugfix/public_contract.json",
+  "public_contract_sha256": "e5aa37dcd4b93408b6af6dc22412bf3df489eaffbea76d3eaf0937d33a7a2d13",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/1365-quadrature-correction-loop-bugfix",
+  "task_id": "v4-1365"
+}

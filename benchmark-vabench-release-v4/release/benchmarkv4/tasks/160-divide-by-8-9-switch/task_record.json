@@ -1,0 +1,25 @@
+{
+  "candidate_artifacts": [
+    "divide_by_8_9_switch.va"
+  ],
+  "canonical_dut_source_slug": "160-divide-by-8-9-switch",
+  "checker_task_id": "v4_160_divide_by_8_9_switch",
+  "family_id": "160",
+  "family_spec_sha256": "e649db99f4d464e35d12ca1a7fcc8ceb3108abd4f8c66330d16e036c70006fba",
+  "form": "dut",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "6b2eb8f78b27816322b290ccc1897185ac8341e29a0cf81ad84ea7c988c30e90",
+  "public_contract": "tasks/160-divide-by-8-9-switch/public_contract.json",
+  "public_contract_sha256": "9700b940d123903f3526715df135212e9d57231fe3ee03439f9ab76866f9db23",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/160-divide-by-8-9-switch",
+  "task_id": "v4-160"
+}

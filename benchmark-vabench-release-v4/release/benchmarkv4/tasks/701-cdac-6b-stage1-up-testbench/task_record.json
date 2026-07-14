@@ -1,0 +1,25 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "201-cdac-6b-stage1-up",
+  "checker_task_id": "v4_201_cdac_6b_stage1_up",
+  "family_id": "201",
+  "family_spec_sha256": "58c37bb55f400a9e020ad0a921bc6206c7eba160c403a28f108f428ae3d5f601",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "bce29377dc97c111a8ec608d0f28e35c2126d19a9cb6b979afa90c70fda07f17",
+  "public_contract": "tasks/701-cdac-6b-stage1-up-testbench/public_contract.json",
+  "public_contract_sha256": "f609c5f232a3c1f15100be37bdbb6d024fa0f03e816956c61fb3571e3860cff5",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/701-cdac-6b-stage1-up-testbench",
+  "task_id": "v4-701"
+}

@@ -1,0 +1,25 @@
+{
+  "candidate_artifacts": [
+    "simple_binary_voltage_dac_4b.va"
+  ],
+  "canonical_dut_source_slug": "015-binary-weighted-voltage-dac",
+  "checker_task_id": "v4_015_binary_weighted_voltage_dac",
+  "family_id": "015",
+  "family_spec_sha256": "e9e246939f63a42840fc429a0f1eaff407bb5350c935b38ce0e657541cadecaa",
+  "form": "dut",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "d7020e8622e8185dd433385327241b3c195759b32487c65e7d06388f0f8ea58f",
+  "public_contract": "tasks/015-binary-weighted-voltage-dac/public_contract.json",
+  "public_contract_sha256": "f1129deaddd118473f2716734e4f7c8f9304e4eb3c09c0f2a4c2eae53eccf9ff",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/015-binary-weighted-voltage-dac",
+  "task_id": "v4-015"
+}

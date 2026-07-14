@@ -1,0 +1,25 @@
+{
+  "candidate_artifacts": [
+    "sample_hold.va"
+  ],
+  "canonical_dut_source_slug": "024-clocked-sample-and-hold",
+  "checker_task_id": "v4_024_clocked_sample_and_hold",
+  "family_id": "024",
+  "family_spec_sha256": "de1878d78481f36f19294418f4792cbddca439bd426a736441392d3f0b2e865f",
+  "form": "bugfix",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "94249a3807d61ce4594b92c4d99a3d3e9b3eb2e4ae10c24049e60c4c26691807",
+  "public_contract": "tasks/1024-clocked-sample-and-hold-bugfix/public_contract.json",
+  "public_contract_sha256": "a886d1db245238c4e2a75ec734f1f3aee577b047156df9d0e79cdde7d6333a28",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/1024-clocked-sample-and-hold-bugfix",
+  "task_id": "v4-1024"
+}

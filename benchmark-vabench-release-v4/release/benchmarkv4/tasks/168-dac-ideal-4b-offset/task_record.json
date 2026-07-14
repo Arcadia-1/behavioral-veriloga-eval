@@ -1,0 +1,25 @@
+{
+  "candidate_artifacts": [
+    "dac_ideal_4b_offset.va"
+  ],
+  "canonical_dut_source_slug": "168-dac-ideal-4b-offset",
+  "checker_task_id": "v4_168_dac_ideal_4b_offset",
+  "family_id": "168",
+  "family_spec_sha256": "0d334db93fd544b1bdfaa033293c6cf638e3f2f6e5ed9a1114df36864295749f",
+  "form": "dut",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "baab8348ca8d33c82a4bc89e0b3e573231c844c2f296ad492437ee377c717495",
+  "public_contract": "tasks/168-dac-ideal-4b-offset/public_contract.json",
+  "public_contract_sha256": "1c45b3e41b0ed56f5bc0e76e7fd0bf1d5c1771d47d61c429c8dd6a80d0512c6b",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/168-dac-ideal-4b-offset",
+  "task_id": "v4-168"
+}

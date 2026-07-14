@@ -1,0 +1,25 @@
+{
+  "candidate_artifacts": [
+    "ldo_load_step_recovery_flow.va"
+  ],
+  "canonical_dut_source_slug": "095-ldo-load-step-recovery",
+  "checker_task_id": "v4_095_ldo_load_step_recovery",
+  "family_id": "095",
+  "family_spec_sha256": "7362212daea43e322cc9f9a6eaf4837b3852431ad750a540603a6d5ae32f494d",
+  "form": "dut",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "ff234a49099d4903ed626aae63a21e23882b43c1c3f0e95ff360a716cd3940ca",
+  "public_contract": "tasks/095-ldo-load-step-recovery/public_contract.json",
+  "public_contract_sha256": "f2643a2a9a018f6a96d1eff3fa4a0991ff03f7a29605a4da0d8a383fe6d3c683",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/095-ldo-load-step-recovery",
+  "task_id": "v4-095"
+}

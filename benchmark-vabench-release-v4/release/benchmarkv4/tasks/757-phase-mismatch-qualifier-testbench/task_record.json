@@ -1,0 +1,25 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "257-phase-mismatch-qualifier",
+  "checker_task_id": "v4_257_phase_mismatch_qualifier",
+  "family_id": "257",
+  "family_spec_sha256": "2a147ef1b29a28b9e5728a025d30c841534a0f13242080bad8c36b13576a0c36",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "a7cf8c7fe66b8581ca5f00b41316d89bba515ac621e7b178d4d0fe8702a3b5cb",
+  "public_contract": "tasks/757-phase-mismatch-qualifier-testbench/public_contract.json",
+  "public_contract_sha256": "c0297d240c80ae3491d5704c5f200f4f8de43fba6d6e1943cbca358ae5fbdc75",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/757-phase-mismatch-qualifier-testbench",
+  "task_id": "v4-757"
+}

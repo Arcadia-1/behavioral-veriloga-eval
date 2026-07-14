@@ -1,0 +1,25 @@
+{
+  "candidate_artifacts": [
+    "cmp_hysteresis.va"
+  ],
+  "canonical_dut_source_slug": "029-hysteresis-comparator",
+  "checker_task_id": "v4_029_hysteresis_comparator",
+  "family_id": "029",
+  "family_spec_sha256": "796ef71d3155a4a57c71dd4f2dba96d18424fabd3436132ec80b4a926d62c4a1",
+  "form": "dut",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "684c42cfde76b0c3a8eea9ca123035fce8a31f00b17aa21f23904cc620730072",
+  "public_contract": "tasks/029-hysteresis-comparator/public_contract.json",
+  "public_contract_sha256": "75b9eba10b19b38a1b503b4e5a6153c8002083642f6efb814d1118bae5789c4c",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/029-hysteresis-comparator",
+  "task_id": "v4-029"
+}

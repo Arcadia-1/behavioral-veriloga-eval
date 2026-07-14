@@ -1,0 +1,25 @@
+{
+  "candidate_artifacts": [
+    "track_hold_aperture.va"
+  ],
+  "canonical_dut_source_slug": "180-track-hold-with-droop-and-aperture",
+  "checker_task_id": "v4_180_track_hold_with_droop_and_aperture",
+  "family_id": "180",
+  "family_spec_sha256": "5bb14a6be7cbe6aa3207e8b0c24092a10b2f3ee2b8175ea74ce27a5757471a23",
+  "form": "bugfix",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "35ca4fa76cd4041d274fa4d841dc07dd9b9bb6aa27be8d7843a2a72f29df27c5",
+  "public_contract": "tasks/1180-track-hold-with-droop-and-aperture-bugfix/public_contract.json",
+  "public_contract_sha256": "8b977dce5548fa93fe0db2db54993626b97568db264444d4e5611b2cb7b477cb",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/1180-track-hold-with-droop-and-aperture-bugfix",
+  "task_id": "v4-1180"
+}

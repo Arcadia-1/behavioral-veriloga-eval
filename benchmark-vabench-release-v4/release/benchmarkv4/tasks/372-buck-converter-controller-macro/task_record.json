@@ -1,0 +1,29 @@
+{
+  "candidate_artifacts": [
+    "buck_ctrl_top.va",
+    "error_comparator.va",
+    "power_good.va",
+    "pwm_modulator.va",
+    "soft_start.va"
+  ],
+  "canonical_dut_source_slug": "372-buck-converter-controller-macro",
+  "checker_task_id": "v4_372_buck_converter_controller_macro",
+  "family_id": "372",
+  "family_spec_sha256": "853e74ea47c2b30174bc619f7938c2ecbee84f6989dd0291aa8ed0d8f06f218b",
+  "form": "dut",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "3138d6db30ba3c2d521b1ad3ada8c6f206f7e0b57371021314cc34f96ed63579",
+  "public_contract": "tasks/372-buck-converter-controller-macro/public_contract.json",
+  "public_contract_sha256": "27385b72795100db64fc5ca6ebbe29344b8858780530be8fb772ffbaeb97e4c7",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/372-buck-converter-controller-macro",
+  "task_id": "v4-372"
+}

@@ -1,0 +1,25 @@
+{
+  "candidate_artifacts": [
+    "sar_cdac_residue.va"
+  ],
+  "canonical_dut_source_slug": "119-sar-cdac-residue",
+  "checker_task_id": "v4_119_sar_cdac_residue",
+  "family_id": "119",
+  "family_spec_sha256": "bbe7f990d9a65e136d24c295e26771a36eddd884540de39c3c56de5be8599a09",
+  "form": "dut",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "b31b85366c0421bccb6926e98b5c26749835d65d465e5f13837cda4ffd6cdbc5",
+  "public_contract": "tasks/119-sar-cdac-residue/public_contract.json",
+  "public_contract_sha256": "3aa466bb622fd57bf25a45a14676d1bafa46035d4bc774bade0d291e917b1ec3",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/119-sar-cdac-residue",
+  "task_id": "v4-119"
+}

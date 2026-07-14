@@ -1,0 +1,25 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "125-limiter-rails",
+  "checker_task_id": "v4_125_limiter_rails",
+  "family_id": "125",
+  "family_spec_sha256": "860d9c0671d3048a4b0fdad739a97b9a992582d9a51ea4bd83d88d0f887ae7a7",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "6ad4fb755d865f89de135eadc1341b76a61f235ec14d78f14caa2e5aca7af8db",
+  "public_contract": "tasks/625-limiter-rails-testbench/public_contract.json",
+  "public_contract_sha256": "9727081f6b2c73c0e986cba55446b515ffa918371c311c849951b7e6ba2eca21",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/625-limiter-rails-testbench",
+  "task_id": "v4-625"
+}

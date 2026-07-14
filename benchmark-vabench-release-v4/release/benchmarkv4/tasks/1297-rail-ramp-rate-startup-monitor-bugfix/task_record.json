@@ -1,0 +1,25 @@
+{
+  "candidate_artifacts": [
+    "rail_ramp_rate_startup_monitor.va"
+  ],
+  "canonical_dut_source_slug": "297-rail-ramp-rate-startup-monitor",
+  "checker_task_id": "v4_297_rail_ramp_rate_startup_monitor",
+  "family_id": "297",
+  "family_spec_sha256": "292130ad04bc4ce59b643070005c279f7435183da759b9fcfd84388ca947bef1",
+  "form": "bugfix",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "06b6e7873b8aaeda4495289a6ae99b9cfa5c7e39b9016d964d1dd3f8727fcf20",
+  "public_contract": "tasks/1297-rail-ramp-rate-startup-monitor-bugfix/public_contract.json",
+  "public_contract_sha256": "d847782f4302f6ec988680dbf449c705a75c80423697a327c0c7f0245a733a29",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/1297-rail-ramp-rate-startup-monitor-bugfix",
+  "task_id": "v4-1297"
+}

@@ -1,0 +1,25 @@
+{
+  "candidate_artifacts": [
+    "pfd_up_down_state.va"
+  ],
+  "canonical_dut_source_slug": "220-pfd-up-down-state",
+  "checker_task_id": "v4_220_pfd_up_down_state",
+  "family_id": "220",
+  "family_spec_sha256": "d5c3ac084084fd103499d96ccc90d759ca3abc4af842745fb6e0de45f4472499",
+  "form": "dut",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "ba982808c13aff384e4f6a5e4d150c16f36988ad52ea60636fbd1ad82468d8ef",
+  "public_contract": "tasks/220-pfd-up-down-state/public_contract.json",
+  "public_contract_sha256": "2e3b8d48c01ef2a36e4741f134a779a33a7bdee6e748bb98f846dc380a833a9c",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/220-pfd-up-down-state",
+  "task_id": "v4-220"
+}

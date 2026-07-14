@@ -1,0 +1,25 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "155-divide-by-two-toggle",
+  "checker_task_id": "v4_155_divide_by_two_toggle",
+  "family_id": "155",
+  "family_spec_sha256": "ed799899d9b98cec20202f88839083dd7d023019741ee75d6881c173be70c68d",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "d18bb7df7412152fb11372428d87fc413ae66a2ad258355c757086b0a68e04d3",
+  "public_contract": "tasks/655-divide-by-two-toggle-testbench/public_contract.json",
+  "public_contract_sha256": "14827fa0d5046641f496a5011ac71c00c8cf9f009461e61d0b3f544bcdc48aa5",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/655-divide-by-two-toggle-testbench",
+  "task_id": "v4-655"
+}

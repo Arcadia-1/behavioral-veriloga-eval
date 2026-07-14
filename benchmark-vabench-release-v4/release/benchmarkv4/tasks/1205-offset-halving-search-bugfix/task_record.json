@@ -1,0 +1,25 @@
+{
+  "candidate_artifacts": [
+    "offset_halving_search.va"
+  ],
+  "canonical_dut_source_slug": "205-offset-halving-search",
+  "checker_task_id": "v4_205_offset_halving_search",
+  "family_id": "205",
+  "family_spec_sha256": "1b185feb9e582636429eb662263552a4eb9271b4a410f68c3222cbdfcb691a75",
+  "form": "bugfix",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "c604d49e39b76c07faee074542f01e6ae9b6ee5f05eb913196f11593828c2875",
+  "public_contract": "tasks/1205-offset-halving-search-bugfix/public_contract.json",
+  "public_contract_sha256": "d7f87e8afb953251ba40a6c438ad68f0ad26bd087f6c37d4655a5c7707ef3e2f",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/1205-offset-halving-search-bugfix",
+  "task_id": "v4-1205"
+}

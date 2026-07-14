@@ -1,0 +1,25 @@
+{
+  "candidate_artifacts": [
+    "debounce_latch.va"
+  ],
+  "canonical_dut_source_slug": "005-debounce-latch",
+  "checker_task_id": "v4_005_debounce_latch",
+  "family_id": "005",
+  "family_spec_sha256": "6a4eff93bfc7d4619ed1a5514716da42179825fa46a6f9599f075430f9baed45",
+  "form": "dut",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "da487ed16b03e1a1850fcef4c93c94f4d1a99b8a2349fbf26c95f346b9b59379",
+  "public_contract": "tasks/005-debounce-latch/public_contract.json",
+  "public_contract_sha256": "83d790c9927b4b414ed77d208ccf574292b38a3e5f8dd6969be5afd017766788",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/005-debounce-latch",
+  "task_id": "v4-005"
+}

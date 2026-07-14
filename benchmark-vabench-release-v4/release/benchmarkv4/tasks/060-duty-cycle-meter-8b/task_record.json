@@ -1,0 +1,25 @@
+{
+  "candidate_artifacts": [
+    "duty_cycle_meter_8b.va"
+  ],
+  "canonical_dut_source_slug": "060-duty-cycle-meter-8b",
+  "checker_task_id": "v4_060_duty_cycle_meter_8b",
+  "family_id": "060",
+  "family_spec_sha256": "2b627ad1391d0cf9fa84a4dd8cb3ff3b3c92fc3cb10662f7697ccb093eec5628",
+  "form": "dut",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "8f4ff45049e6a3e19b0e7c11e920225ced9c4aae7e9d04bc85731e9931887ad9",
+  "public_contract": "tasks/060-duty-cycle-meter-8b/public_contract.json",
+  "public_contract_sha256": "fdf69c1408b56a85bc67993880cfb965e65f3586bc4f5a2e8ac634dd2cd9c049",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/060-duty-cycle-meter-8b",
+  "task_id": "v4-060"
+}

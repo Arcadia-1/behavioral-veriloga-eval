@@ -1,0 +1,29 @@
+{
+  "candidate_artifacts": [
+    "segmented_dac_dem_top.va",
+    "thermometer_decoder.va",
+    "binary_decoder.va",
+    "dwa_rotator.va",
+    "dac_driver.va"
+  ],
+  "canonical_dut_source_slug": "344-segmented-dac-dem-system",
+  "checker_task_id": "v4_344_segmented_dac_dem_system",
+  "family_id": "344",
+  "family_spec_sha256": "d3d9a8a6771967e8ec6d4fa7ea04d7a2d66641760ab1372f8b37835dc2195b06",
+  "form": "bugfix",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "57909ae351570dd2a21de760cbda25805c15380046587cdb3631caa6e8a72b15",
+  "public_contract": "tasks/1344-segmented-dac-dem-system-bugfix/public_contract.json",
+  "public_contract_sha256": "b5d352ccb62e1ec6aa3c9737155b4ebb996501828cdcd68e916921c7468c08da",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/1344-segmented-dac-dem-system-bugfix",
+  "task_id": "v4-1344"
+}

@@ -1,0 +1,28 @@
+{
+  "candidate_artifacts": [
+    "fracn_synth_top.va",
+    "accumulator.va",
+    "multi_modulus_divider.va",
+    "ratio_monitor.va"
+  ],
+  "canonical_dut_source_slug": "363-fractional-n-synthesizer-mini-loop",
+  "checker_task_id": "v4_363_fractional_n_synthesizer_mini_loop",
+  "family_id": "363",
+  "family_spec_sha256": "9049b85075df6f56169fb9d3adec2281d050c98934c738242885e6a56fb83c3a",
+  "form": "dut",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "8184bfa086b36228fabee9dd47f3371f5c7aeee868e6d6ea03debb1f008fcc0e",
+  "public_contract": "tasks/363-fractional-n-synthesizer-mini-loop/public_contract.json",
+  "public_contract_sha256": "aa009dbe4d2abe4d904b3f8b0dfb7225f7a7464bbb62f9c0383032c9738b67b1",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/363-fractional-n-synthesizer-mini-loop",
+  "task_id": "v4-363"
+}

@@ -1,0 +1,25 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "238-deadband-voltage",
+  "checker_task_id": "v4_238_deadband_voltage",
+  "family_id": "238",
+  "family_spec_sha256": "2cb188906ecbc367639ba574f05aecc15da0c6fe0adc6bd4c194dc182231272a",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "5870ebdd236fb11fa49665df884e696ad6a8bcdbc9a112d193809e34657ad131",
+  "public_contract": "tasks/738-deadband-voltage-testbench/public_contract.json",
+  "public_contract_sha256": "15e71ab8c25a0c4fa2e581810baa77fd4435e131dc8649c8d91c66fa85cf2d3c",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/738-deadband-voltage-testbench",
+  "task_id": "v4-738"
+}

@@ -1,0 +1,25 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "038-programmable-gain-amplifier",
+  "checker_task_id": "v4_038_programmable_gain_amplifier",
+  "family_id": "038",
+  "family_spec_sha256": "92867b2063aa3caab38f38af3085ab6fb3a594a755a3d36237a274338399ce0c",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "3804b6c6d1cb38430010cbabfc72265965625e3283654a325ad2d86e01791b61",
+  "public_contract": "tasks/538-programmable-gain-amplifier-testbench/public_contract.json",
+  "public_contract_sha256": "12631e554056aca71e90716715ade90e04698f2d0d0728fd11bc983b2dd92077",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/538-programmable-gain-amplifier-testbench",
+  "task_id": "v4-538"
+}

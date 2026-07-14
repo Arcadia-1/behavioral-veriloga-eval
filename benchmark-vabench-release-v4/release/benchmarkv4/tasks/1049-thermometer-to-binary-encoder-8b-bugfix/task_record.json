@@ -1,0 +1,25 @@
+{
+  "candidate_artifacts": [
+    "therm_to_bin_8b.va"
+  ],
+  "canonical_dut_source_slug": "049-thermometer-to-binary-encoder-8b",
+  "checker_task_id": "v4_049_thermometer_to_binary_encoder_8b",
+  "family_id": "049",
+  "family_spec_sha256": "caa7e4ca393c14127000932bcaf42786ad28977ee02565b6f72cd8545f546b03",
+  "form": "bugfix",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "4c4462f7a9147f3aa367c4e1ebbec7010e5b8c974aad846e16c82d622b1aa600",
+  "public_contract": "tasks/1049-thermometer-to-binary-encoder-8b-bugfix/public_contract.json",
+  "public_contract_sha256": "37348e713fd265f08e6168cd154d8df067f2dfbb6b62441f2612706b61b26500",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/1049-thermometer-to-binary-encoder-8b-bugfix",
+  "task_id": "v4-1049"
+}

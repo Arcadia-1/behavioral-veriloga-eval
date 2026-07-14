@@ -1,0 +1,25 @@
+{
+  "candidate_artifacts": [
+    "adc_zoom_timing_sequencer.va"
+  ],
+  "canonical_dut_source_slug": "202-adc-zoom-timing-sequencer",
+  "checker_task_id": "v4_202_adc_zoom_timing_sequencer",
+  "family_id": "202",
+  "family_spec_sha256": "3091409e1058e7b28b7ffd90b77e69536ea3faae06e6876f7826bb15ae084b7f",
+  "form": "dut",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "9216de206ff8a3aad3447233bd4968e4e88741a573bbd4abe5a0d804cb81555f",
+  "public_contract": "tasks/202-adc-zoom-timing-sequencer/public_contract.json",
+  "public_contract_sha256": "f106b9a9d0c561e7815ea746f3761edaea9b67951985e81a197675ec67d2f4ff",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/202-adc-zoom-timing-sequencer",
+  "task_id": "v4-202"
+}

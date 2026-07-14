@@ -1,0 +1,25 @@
+{
+  "candidate_artifacts": [
+    "deadband_diffamp.va"
+  ],
+  "canonical_dut_source_slug": "239-deadband-diffamp",
+  "checker_task_id": "v4_239_deadband_diffamp",
+  "family_id": "239",
+  "family_spec_sha256": "c5f6f01b1af7c36ad41346f07eb246d5a3884f08550b1c2df7558dcfcad59df5",
+  "form": "dut",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "b45743125835cbfba350a75dfa14875cecd0f742df70dbde951d75a488b13f2a",
+  "public_contract": "tasks/239-deadband-diffamp/public_contract.json",
+  "public_contract_sha256": "a270cc5ec788c6d255ea8085bbb7622bc78d45e2b8b7e1015886d913bb8ddc06",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/239-deadband-diffamp",
+  "task_id": "v4-239"
+}

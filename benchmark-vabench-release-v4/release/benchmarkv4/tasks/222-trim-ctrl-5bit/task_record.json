@@ -1,0 +1,25 @@
+{
+  "candidate_artifacts": [
+    "trim_ctrl_5bit.va"
+  ],
+  "canonical_dut_source_slug": "222-trim-ctrl-5bit",
+  "checker_task_id": "v4_222_trim_ctrl_5bit",
+  "family_id": "222",
+  "family_spec_sha256": "a8389a5f85b6cd6f405441a7ea4234b8517885b6b5c0219c15837a71421024e7",
+  "form": "dut",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "e2c845b023b8848746e0fb17b2bf1f570227a8bfa8c13542837faff1bc3641cc",
+  "public_contract": "tasks/222-trim-ctrl-5bit/public_contract.json",
+  "public_contract_sha256": "7de1631d5fe230fd382f671cf48a1bf11be9d7a2b6352e0385abc26b26226698",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/222-trim-ctrl-5bit",
+  "task_id": "v4-222"
+}

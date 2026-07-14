@@ -1,0 +1,25 @@
+{
+  "candidate_artifacts": [
+    "downconversion_mixer_lo_polarity.va"
+  ],
+  "canonical_dut_source_slug": "400-downconversion-mixer-lo-polarity",
+  "checker_task_id": "v4_400_downconversion_mixer_lo_polarity",
+  "family_id": "400",
+  "family_spec_sha256": "d76b65dacea1ed48dd0ae4596a4cc1c160229856e6526ba228d41c1db9357179",
+  "form": "dut",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "52a3a696d476fb7a7e59269b154e2815259c5d65b543b522b2d5c980340a8a74",
+  "public_contract": "tasks/400-downconversion-mixer-lo-polarity/public_contract.json",
+  "public_contract_sha256": "8e75dd7743dc6d4e83dc475aa01b05f57e77fd04e685b885c87fa53648c4d616",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/400-downconversion-mixer-lo-polarity",
+  "task_id": "v4-400"
+}

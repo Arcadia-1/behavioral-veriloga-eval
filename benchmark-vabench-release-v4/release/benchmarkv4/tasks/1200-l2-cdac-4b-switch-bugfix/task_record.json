@@ -1,0 +1,25 @@
+{
+  "candidate_artifacts": [
+    "l2_cdac_4b_switch.va"
+  ],
+  "canonical_dut_source_slug": "200-l2-cdac-4b-switch",
+  "checker_task_id": "v4_200_l2_cdac_4b_switch",
+  "family_id": "200",
+  "family_spec_sha256": "edabb7f416acf7ccb448edd0b448fc706c5c933db7365cf7bae9e9f915aceefa",
+  "form": "bugfix",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "d23829dce18175a08c97d08144a7145517355b1267e5f559c0080da160b0dc0d",
+  "public_contract": "tasks/1200-l2-cdac-4b-switch-bugfix/public_contract.json",
+  "public_contract_sha256": "12311a3c594b90891e0cef21d18f707be976edfd2c715521a96bdd3c5605aeec",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/1200-l2-cdac-4b-switch-bugfix",
+  "task_id": "v4-1200"
+}

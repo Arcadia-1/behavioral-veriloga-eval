@@ -2,9 +2,10 @@
 """Replay tri-form reference testbenches through Spectre and private checkers.
 
 This is intentionally narrower than the model/API runner: it validates sealed
-benchmark reference assets by running each selected testbench-form task's
-``evaluator/reference_tb.scs`` against its public ``supplied_dut`` artifacts,
-then scores the resulting Spectre CSV with the canonical private checker.
+benchmark reference assets by running each selected testbench-form task's local
+``evaluator/reference_tb.scs`` against its public ``public/supplied_dut``
+artifacts, then scores the resulting Spectre CSV with the canonical private
+checker.
 """
 from __future__ import annotations
 
@@ -105,13 +106,12 @@ def resolve_task_rows(release: Path, requested: list[str]) -> list[dict[str, Any
 
 
 def checker_task_id(task_dir: Path, task_record: dict[str, Any]) -> str:
-    source_eval = PACKAGE / str(task_record["canonical_dut_source"]) / "evaluator"
-    source_task_record = read_json(source_eval / "task_record.json")
-    checker_profile = read_json(source_eval / "checker_profile.json")
-    source_slug = str(source_task_record.get("source_slug") or "")
+    task_eval = task_dir / "evaluator"
+    checker_profile = read_json(task_eval / "checker_profile.json")
+    source_slug = str(task_record.get("canonical_dut_source_slug") or "")
     source_name = source_slug.partition("-")[2].replace("-", "_")
     candidates = [
-        str(source_task_record.get("checker_task_id") or ""),
+        str(task_record.get("checker_task_id") or ""),
         str(checker_profile.get("checker_task_id") or ""),
         str((checker_profile.get("contract") or {}).get("source_task_id") or ""),
         f"v3_{source_slug.replace('-', '_')}" if source_slug else "",
@@ -126,8 +126,8 @@ def checker_task_id(task_dir: Path, task_record: dict[str, Any]) -> str:
 
 
 def include_paths_for_reference_tb(task_dir: Path, tb_path: Path) -> tuple[list[Path], list[str]]:
-    supplied_dut = task_dir / "supplied_dut"
-    public_support = task_dir / "public_support"
+    supplied_dut = task_dir / "public" / "supplied_dut"
+    public_support = task_dir / "public" / "public_support"
     search_dirs = [supplied_dut, public_support, tb_path.parent]
     found: list[Path] = []
     missing: list[str] = []
@@ -178,7 +178,7 @@ def run_one(
 ) -> dict[str, Any]:
     task_id = str(row["task_id"])
     task_dir = release / str(row["task_dir"])
-    task_record = read_json(task_dir / "TASK_RECORD.json")
+    task_record = read_json(task_dir / "task_record.json")
     tb_path = task_dir / "evaluator" / "reference_tb.scs"
     try:
         checker_id = checker_task_id(task_dir, task_record)
@@ -324,7 +324,7 @@ def main(argv: list[str] | None = None) -> int:
 
     pass_statuses = {"PASS", "PASS_WITH_WARNINGS"}
     summary = {
-        "schema_version": "v4-tri-form-reference-spectre-audit-v1",
+        "schema_version": "v4-benchmarkv4-reference-spectre-audit-v1",
         "release": str(release),
         "started_at": started_at,
         "finished_at": now_utc(),

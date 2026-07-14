@@ -1,0 +1,25 @@
+{
+  "candidate_artifacts": [
+    "bandgap_reference_macro_model.va"
+  ],
+  "canonical_dut_source_slug": "020-bandgap-reference-macro-model",
+  "checker_task_id": "v4_020_bandgap_reference_macro_model",
+  "family_id": "020",
+  "family_spec_sha256": "f9897f139adddb8e616941f9533ed98fb5376d73abbfbff0683caae39796e65f",
+  "form": "dut",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "48f8222a07d083498ba445f2ed288ca6efece5ba77415df12c6bc0e243697b9a",
+  "public_contract": "tasks/020-bandgap-reference-macro-model/public_contract.json",
+  "public_contract_sha256": "7ed89b7f087f862ed6588ed7d5bb5b24a06ccb987ddc4770b3187ea3ee71be3d",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/020-bandgap-reference-macro-model",
+  "task_id": "v4-020"
+}

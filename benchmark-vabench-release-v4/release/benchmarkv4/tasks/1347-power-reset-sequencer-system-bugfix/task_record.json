@@ -1,0 +1,29 @@
+{
+  "candidate_artifacts": [
+    "power_reset_seq_top.va",
+    "por_detector.va",
+    "reset_synchronizer.va",
+    "enable_sequencer.va",
+    "ready_flag.va"
+  ],
+  "canonical_dut_source_slug": "347-power-reset-sequencer-system",
+  "checker_task_id": "v4_347_power_reset_sequencer_system",
+  "family_id": "347",
+  "family_spec_sha256": "53f53541156402704f92c484744f4c56a086e8ca283c13cb3b633f0a85f4a920",
+  "form": "bugfix",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "98ae07b0d68a7125646d4c1ce8ed939f77a8e4a2ce0f599b735bf29806611c1c",
+  "public_contract": "tasks/1347-power-reset-sequencer-system-bugfix/public_contract.json",
+  "public_contract_sha256": "0a8873fb338e8f7b166a6fae751b64f456718395a73a6f77342a2e091d4c48d1",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/1347-power-reset-sequencer-system-bugfix",
+  "task_id": "v4-1347"
+}

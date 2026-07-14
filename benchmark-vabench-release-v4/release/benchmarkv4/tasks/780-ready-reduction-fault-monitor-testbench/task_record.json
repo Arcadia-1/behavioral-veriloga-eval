@@ -1,0 +1,25 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "280-ready-reduction-fault-monitor",
+  "checker_task_id": "v4_280_ready_reduction_fault_monitor",
+  "family_id": "280",
+  "family_spec_sha256": "261a5f79ad650f7e6e03ec4bc183a95756f25f54806949256a35cce4c336972b",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "b7c634c8e0abfa0fb3b9e9d425523b983b79fe9b407d458589d4961c70894881",
+  "public_contract": "tasks/780-ready-reduction-fault-monitor-testbench/public_contract.json",
+  "public_contract_sha256": "5f0b70a0807ffd3f3e884a19f1c5e8945687ca2a88bfa2bfc6520398cee6a467",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/780-ready-reduction-fault-monitor-testbench",
+  "task_id": "v4-780"
+}

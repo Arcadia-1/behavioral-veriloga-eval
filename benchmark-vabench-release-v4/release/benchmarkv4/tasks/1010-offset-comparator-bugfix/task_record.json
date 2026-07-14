@@ -1,0 +1,25 @@
+{
+  "candidate_artifacts": [
+    "cmp_offset_ref.va"
+  ],
+  "canonical_dut_source_slug": "010-offset-comparator",
+  "checker_task_id": "v4_010_offset_comparator",
+  "family_id": "010",
+  "family_spec_sha256": "bf5d9aa96c735ca948c1ecf437acc0659979f4a78a49a0270bf4b89828b62d1d",
+  "form": "bugfix",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "576c6fed4806991f89a4955b477ee7d62c4435702d1bf74fbe94a3020afc9d07",
+  "public_contract": "tasks/1010-offset-comparator-bugfix/public_contract.json",
+  "public_contract_sha256": "693ff2d3f5e2cc14c715cc807991e13f1a9112384797880cc336bc92c7271fef",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/1010-offset-comparator-bugfix",
+  "task_id": "v4-1010"
+}

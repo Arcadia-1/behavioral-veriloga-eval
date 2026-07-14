@@ -1,0 +1,25 @@
+{
+  "candidate_artifacts": [
+    "correlated_double_sampler.va"
+  ],
+  "canonical_dut_source_slug": "054-correlated-double-sampler",
+  "checker_task_id": "v4_054_correlated_double_sampler",
+  "family_id": "054",
+  "family_spec_sha256": "541c0b453fafa43eee5f79ba73bb4d8acfa326df6ed23d63373eeaa9771d2513",
+  "form": "dut",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "4e8f94098ab8c31c246c5a323c22e33cc3c89428642fafc3c9b6c0dc9fa9fffd",
+  "public_contract": "tasks/054-correlated-double-sampler/public_contract.json",
+  "public_contract_sha256": "55fc9a7cdab9f0459895b064edbdac340a358f4dc5f12c85465da31e4d95fd22",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/054-correlated-double-sampler",
+  "task_id": "v4-054"
+}

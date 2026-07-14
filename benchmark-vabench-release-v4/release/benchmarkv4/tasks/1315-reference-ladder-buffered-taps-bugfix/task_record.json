@@ -1,0 +1,25 @@
+{
+  "candidate_artifacts": [
+    "reference_ladder_buffered_taps.va"
+  ],
+  "canonical_dut_source_slug": "315-reference-ladder-buffered-taps",
+  "checker_task_id": "v4_315_reference_ladder_buffered_taps",
+  "family_id": "315",
+  "family_spec_sha256": "d3f729206c0bfa7cf043257225dd0972a2043fd8cf7b9dd1f68aef386b736ac5",
+  "form": "bugfix",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "db9e715405dd87d3fee34156153e694ac6de98f48398939d3c8903024a62bf6e",
+  "public_contract": "tasks/1315-reference-ladder-buffered-taps-bugfix/public_contract.json",
+  "public_contract_sha256": "973b92c64314e14c0dca017b07f00b76c547738853314166e769b324fe5cf4b8",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/1315-reference-ladder-buffered-taps-bugfix",
+  "task_id": "v4-1315"
+}

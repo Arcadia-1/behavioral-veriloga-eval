@@ -1,0 +1,25 @@
+{
+  "candidate_artifacts": [
+    "limiting_differential_amplifier.va"
+  ],
+  "canonical_dut_source_slug": "131-limiting-differential-amplifier",
+  "checker_task_id": "v4_131_limiting_differential_amplifier",
+  "family_id": "131",
+  "family_spec_sha256": "61d07a32aecfd8c66c4b5f8a221a9cff5082d2c825f9e1fe094da53ef8656277",
+  "form": "dut",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "e2c11de41ea63e413d808e439585cfbf70496ea605b8c96e6740ec7514cf1280",
+  "public_contract": "tasks/131-limiting-differential-amplifier/public_contract.json",
+  "public_contract_sha256": "eaaae124311a520e32bbdab3e7ad3f7aae14695fe0258bda983bc39b5c7a3ef0",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/131-limiting-differential-amplifier",
+  "task_id": "v4-131"
+}

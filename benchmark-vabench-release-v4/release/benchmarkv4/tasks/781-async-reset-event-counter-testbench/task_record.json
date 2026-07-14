@@ -1,0 +1,25 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "281-async-reset-event-counter",
+  "checker_task_id": "v4_281_async_reset_event_counter",
+  "family_id": "281",
+  "family_spec_sha256": "c9c42c6d6791ed2c114d499dfe9682692594a004d26dfa0da53c71f54cfdb725",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "52fec24cd0e1db1b679b1d53e5e6c2fc76db6dff5aa21958bcd2c3c3efbd9c33",
+  "public_contract": "tasks/781-async-reset-event-counter-testbench/public_contract.json",
+  "public_contract_sha256": "4fd33ab078a9ff46d6ce98e417cdfbe1cc8deeece3ac9b4b55c9007dcba213a1",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/781-async-reset-event-counter-testbench",
+  "task_id": "v4-781"
+}

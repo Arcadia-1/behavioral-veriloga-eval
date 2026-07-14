@@ -1,0 +1,28 @@
+{
+  "candidate_artifacts": [
+    "sample_mux_readout_top.va",
+    "sample_hold_bank.va",
+    "mux_controller.va",
+    "output_driver.va"
+  ],
+  "canonical_dut_source_slug": "349-multichannel-sample-readout",
+  "checker_task_id": "v4_349_multichannel_sample_readout",
+  "family_id": "349",
+  "family_spec_sha256": "6953452553b858267d8c95197d7d18a614698ea4d2ff55b207cf980a38b72132",
+  "form": "bugfix",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "96393e4482250ba6776bbea75fa36c03fa212cf0e420a308ad2491a49102991e",
+  "public_contract": "tasks/1349-multichannel-sample-readout-bugfix/public_contract.json",
+  "public_contract_sha256": "40e3ac36121c071ed915610aa17dea07aa1aabc7a7838b9303de0461362f4968",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/1349-multichannel-sample-readout-bugfix",
+  "task_id": "v4-1349"
+}

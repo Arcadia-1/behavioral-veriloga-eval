@@ -1,0 +1,25 @@
+{
+  "candidate_artifacts": [
+    "pfd_tdomain_reset_window.va"
+  ],
+  "canonical_dut_source_slug": "193-pfd-tdomain-reset-window",
+  "checker_task_id": "v4_193_pfd_tdomain_reset_window",
+  "family_id": "193",
+  "family_spec_sha256": "f3e45096b05673f83790b51f9e39064c4e866da48d28e883e36ab611f793438b",
+  "form": "dut",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "4e862151bc4ccf69a404ecf987bc5578248b304b96b6f86b3182052122347106",
+  "public_contract": "tasks/193-pfd-tdomain-reset-window/public_contract.json",
+  "public_contract_sha256": "8a5cea8c0effdafa43bf555bdc91bd7b8846703c3e357a4897cdeba08f0c2ca8",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/193-pfd-tdomain-reset-window",
+  "task_id": "v4-193"
+}

@@ -1,0 +1,25 @@
+{
+  "candidate_artifacts": [
+    "sar_logic_4b_self_timed.va"
+  ],
+  "canonical_dut_source_slug": "192-sar-logic-4b-self-timed",
+  "checker_task_id": "v4_192_sar_logic_4b_self_timed",
+  "family_id": "192",
+  "family_spec_sha256": "5f936d8d2426b956bf10102b56dcd2e9732cf5cf7c75cc00275a90964a70e5f4",
+  "form": "dut",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "b78f41a4b1777836a0361c83cdbf23b2d3ba754cff1e2e5ea2423465a4547055",
+  "public_contract": "tasks/192-sar-logic-4b-self-timed/public_contract.json",
+  "public_contract_sha256": "ff5e9d5fc4b8c82aa0363b9e66eb5213e52cdb62f7022162c6c99282e4634957",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/192-sar-logic-4b-self-timed",
+  "task_id": "v4-192"
+}

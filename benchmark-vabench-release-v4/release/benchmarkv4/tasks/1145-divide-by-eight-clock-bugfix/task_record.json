@@ -1,0 +1,25 @@
+{
+  "candidate_artifacts": [
+    "divide_by_eight_clock.va"
+  ],
+  "canonical_dut_source_slug": "145-divide-by-eight-clock",
+  "checker_task_id": "v4_145_divide_by_eight_clock",
+  "family_id": "145",
+  "family_spec_sha256": "6125e37aaea5ed73ba971fb412b1f84bb78a131c3695c7f34cfffbcee84f3596",
+  "form": "bugfix",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "c23d632d0126f6e5c3505b937774a7a697db7f275411ef5956150799920bb1a8",
+  "public_contract": "tasks/1145-divide-by-eight-clock-bugfix/public_contract.json",
+  "public_contract_sha256": "7de94888bdeb04ac2feacfb210f49383f3e6e2e26a23c9d51f9be67c37b0d73f",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/1145-divide-by-eight-clock-bugfix",
+  "task_id": "v4-1145"
+}

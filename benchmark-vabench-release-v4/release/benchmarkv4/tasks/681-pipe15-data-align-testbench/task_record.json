@@ -1,0 +1,25 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "181-pipe15-data-align",
+  "checker_task_id": "v4_181_pipe15_data_align",
+  "family_id": "181",
+  "family_spec_sha256": "6e6bc6d9344699301210155b25b80b60b5130b6f37c9645555ccea2b52cd1031",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "7a76415c22637c872020bbee270d079b2bc121e6733371f22bb0e4538ec1ed95",
+  "public_contract": "tasks/681-pipe15-data-align-testbench/public_contract.json",
+  "public_contract_sha256": "245f4bee94580685e52e491820065b9a77a01293c9f3ecc5d6677eac1236a4e0",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/681-pipe15-data-align-testbench",
+  "task_id": "v4-681"
+}

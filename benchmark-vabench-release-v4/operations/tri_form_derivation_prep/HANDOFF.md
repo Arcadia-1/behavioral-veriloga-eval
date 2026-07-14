@@ -1,28 +1,40 @@
-# Tri-Form Release Handoff
+# benchmarkv4 Release Handoff
 
 This lane derives Testbench and Bugfix task views without changing the frozen
 DUT family assets.
 
 ## Materialized State
 
-- Source release: `release/dut-base-v3-exact-five-hash-bound-v2`
+- Construction source package: `provenance/dut-base-v3-exact-five-hash-bound-v2`
 - Source denominator SHA-256:
   `52278bac89017d62349a2577944cda8717bde78c3adef975280ba2bf988c643b`
 - Families: 400
 - DUT tasks: 400
 - Testbench tasks: 400
 - Bugfix tasks: 400
-- G0-G5 prompt records: 7,200
+- G0-G5 prompt variants: 7,200, derived from `modes.json` and prompt component
+  manifest rules rather than a committed JSONL prompt-record file
 - Active mutations: exactly five per family, 2,000 total
 - Bugfix seed: one member of the same five-mutation suite
 - Materialization simulation reruns: 0
 - Structure and bundle-isolation audit: PASS
 - Release status: `materialized_gate3_audit_pending`
 
-The materialized package is `release/benchmarkv4/`. The package name is stable;
-its manifest remains pre-final until Gate 3 certification binds a frozen EVAS
-identity and the final Spectre judge. The task definitions themselves are
-generated for all 1,200 IDs.
+The tracked materialized package is `release/benchmarkv4/`. It is a single
+standalone benchmark package, not a public tree plus a separate private mirror.
+Each task carries its related assets together:
+
+- `public/`: solver-visible instruction and supplied starter/DUT files;
+- `public_contract.json`: machine-readable contract metadata for tooling;
+- `task_record.json`: task identity, candidate artifacts, hashes, and modes;
+- `evaluator/`: gold solution, checker profile, harness, score policy, and
+  local scoring fixtures.
+
+Task-local `provenance/` directories are intentionally absent from the formal
+package. Provenance is build/audit evidence, not runtime benchmark payload.
+
+Generated audit/runtime evidence and optional prompt-record snapshots remain
+outside the tracked release unless intentionally promoted to compact reports.
 
 ## Remaining Release Work
 

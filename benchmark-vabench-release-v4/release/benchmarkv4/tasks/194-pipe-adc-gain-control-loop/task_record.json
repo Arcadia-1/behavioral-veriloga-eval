@@ -1,0 +1,25 @@
+{
+  "candidate_artifacts": [
+    "pipe_adc_gain_control_loop.va"
+  ],
+  "canonical_dut_source_slug": "194-pipe-adc-gain-control-loop",
+  "checker_task_id": "v4_194_pipe_adc_gain_control_loop",
+  "family_id": "194",
+  "family_spec_sha256": "cf5e224b7936a4a374271c7ff1b89bf61a4b35d1e6f3ebdfae4a3d6cf8ab016c",
+  "form": "dut",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "ed4c4d8d78ad34cfbc68bda919b2161990536861095463a606d7a38aeffe25a4",
+  "public_contract": "tasks/194-pipe-adc-gain-control-loop/public_contract.json",
+  "public_contract_sha256": "feef8f951b5dcbb9b8e506cd3c311ab9edabaf4be0a2b2950b97fd3809379e8e",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/194-pipe-adc-gain-control-loop",
+  "task_id": "v4-194"
+}

@@ -1,0 +1,25 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "229-accum3-pulse",
+  "checker_task_id": "v4_229_accum3_pulse",
+  "family_id": "229",
+  "family_spec_sha256": "0b29b2d49c5e3d523e54e65874aa0dfc13e461d6ea3f832b40132dfdcc837718",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "0e77cfbbf53bf7c00c6069a1923fd6e482e4bee6881f5e1cc68b7e2758383b92",
+  "public_contract": "tasks/729-accum3-pulse-testbench/public_contract.json",
+  "public_contract_sha256": "da1749d0f28f32bc757b5a95ad9e7b46bfb0a2535b9650e9fe38df3e7d93399d",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/729-accum3-pulse-testbench",
+  "task_id": "v4-729"
+}

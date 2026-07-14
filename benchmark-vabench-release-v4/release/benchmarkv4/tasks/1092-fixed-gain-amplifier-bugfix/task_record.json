@@ -1,0 +1,25 @@
+{
+  "candidate_artifacts": [
+    "gain_amp_fixed.va"
+  ],
+  "canonical_dut_source_slug": "092-fixed-gain-amplifier",
+  "checker_task_id": "v4_092_fixed_gain_amplifier",
+  "family_id": "092",
+  "family_spec_sha256": "f8f6360659f35186b3e75786024e9cf17efa4138e7b918341c6e8cbfa8f10b35",
+  "form": "bugfix",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "21769b11e59e7715ace932b7ecfd3ec63cfe16d8af1bb122069ebf9bcc38c29e",
+  "public_contract": "tasks/1092-fixed-gain-amplifier-bugfix/public_contract.json",
+  "public_contract_sha256": "b3b2175f1d03788ca828735ec02ec5de80af19ea25e5ad9a40f62d10fe50efaa",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/1092-fixed-gain-amplifier-bugfix",
+  "task_id": "v4-1092"
+}

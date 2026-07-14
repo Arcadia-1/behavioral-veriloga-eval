@@ -1,0 +1,25 @@
+{
+  "candidate_artifacts": [
+    "sar_comparator_reset_high.va"
+  ],
+  "canonical_dut_source_slug": "206-sar-comparator-reset-high",
+  "checker_task_id": "v4_206_sar_comparator_reset_high",
+  "family_id": "206",
+  "family_spec_sha256": "f0538df1a4744ec408848abe765eefeb068ded58b10022d640f384943c86fdca",
+  "form": "dut",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "7a6a1aad3660756577b55056e9220084ef49cd954cb7275a29c1d8dd990a0c4c",
+  "public_contract": "tasks/206-sar-comparator-reset-high/public_contract.json",
+  "public_contract_sha256": "78db287e1ad0589417cdc3d0609dacaa178b871565f68dc2c441a25c1572d509",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/206-sar-comparator-reset-high",
+  "task_id": "v4-206"
+}

@@ -1,0 +1,25 @@
+{
+  "candidate_artifacts": [
+    "weighted_balance_summer.va"
+  ],
+  "canonical_dut_source_slug": "251-weighted-balance-summer",
+  "checker_task_id": "v4_251_weighted_balance_summer",
+  "family_id": "251",
+  "family_spec_sha256": "24ce2b007dc62d36adf6ea04b881b6e8380a64555fd7f7b3626daa152fec3109",
+  "form": "dut",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "9d345310e58740675d0228af650c8cfbdfa7fe2a7ee367aacaae7d097618edc7",
+  "public_contract": "tasks/251-weighted-balance-summer/public_contract.json",
+  "public_contract_sha256": "0a16cb5850cb055b23611b1cd0f4c12dec5afef78e14c8ced2923d370a5425d2",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/251-weighted-balance-summer",
+  "task_id": "v4-251"
+}

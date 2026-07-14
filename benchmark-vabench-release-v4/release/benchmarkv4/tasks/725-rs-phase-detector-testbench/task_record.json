@@ -1,0 +1,25 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "225-rs-phase-detector",
+  "checker_task_id": "v4_225_rs_phase_detector",
+  "family_id": "225",
+  "family_spec_sha256": "e387826c73ba69569c09d1a6bc88eb49edb65d5781041be23f64f2ee44c5858e",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "cc5fdc33f29cea5e06a2ec547ec3fb93037552043d69dfa7d1fb8dd1e08f32cc",
+  "public_contract": "tasks/725-rs-phase-detector-testbench/public_contract.json",
+  "public_contract_sha256": "113671cfc2615ac88a6c36c04163fbe970f8d4618a00c31d69bab424b31b0277",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/725-rs-phase-detector-testbench",
+  "task_id": "v4-725"
+}

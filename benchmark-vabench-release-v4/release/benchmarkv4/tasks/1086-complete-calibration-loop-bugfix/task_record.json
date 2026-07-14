@@ -1,0 +1,25 @@
+{
+  "candidate_artifacts": [
+    "complete_calibration_loop.va"
+  ],
+  "canonical_dut_source_slug": "086-complete-calibration-loop",
+  "checker_task_id": "v4_086_complete_calibration_loop",
+  "family_id": "086",
+  "family_spec_sha256": "9ccc76dae3ce35797874a141923b07ed607ac783785390a5321e0ae02888804a",
+  "form": "bugfix",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "532f3851aebdaec9daed1b6eaa82a0171ab5b004318071d1720a1adbd678db1c",
+  "public_contract": "tasks/1086-complete-calibration-loop-bugfix/public_contract.json",
+  "public_contract_sha256": "9ef4795d0a890b06d75d1a1652e3820c9d0d2f9507c4e0772ee583970d4b81a4",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/1086-complete-calibration-loop-bugfix",
+  "task_id": "v4-1086"
+}

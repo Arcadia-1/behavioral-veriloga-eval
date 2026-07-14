@@ -1,0 +1,27 @@
+{
+  "candidate_artifacts": [
+    "ctle_adaptation_loop_top.va",
+    "ctle_boost_core.va",
+    "boost_adapt_controller.va"
+  ],
+  "canonical_dut_source_slug": "329-ctle-adaptation-loop",
+  "checker_task_id": "v4_329_ctle_adaptation_loop",
+  "family_id": "329",
+  "family_spec_sha256": "dba1323267d6a4300c62cbdd99da6569100aecd8270111de945154dcc443d616",
+  "form": "bugfix",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "6b5c79ac79bc3e5122944817e4209f643379329137b5f504ceedbcf8553fe938",
+  "public_contract": "tasks/1329-ctle-adaptation-loop-bugfix/public_contract.json",
+  "public_contract_sha256": "0ffcd46b11b1c98e3a496443687455997ed2a1ed0ea48743b1e21634a14a12ed",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/1329-ctle-adaptation-loop-bugfix",
+  "task_id": "v4-1329"
+}

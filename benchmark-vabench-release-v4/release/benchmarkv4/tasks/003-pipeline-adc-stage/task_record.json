@@ -1,0 +1,25 @@
+{
+  "candidate_artifacts": [
+    "pipeline_stage.va"
+  ],
+  "canonical_dut_source_slug": "003-pipeline-adc-stage",
+  "checker_task_id": "v4_003_pipeline_adc_stage",
+  "family_id": "003",
+  "family_spec_sha256": "ff644321a125572be576d4b3c7bf42b7ac500ba5942330d0eba31f15aa2a618d",
+  "form": "dut",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "efd4814bb479869202f5ec52821031bb29c0ce1225b99ff576a007c72c1fba71",
+  "public_contract": "tasks/003-pipeline-adc-stage/public_contract.json",
+  "public_contract_sha256": "14fd2459c97ae153e8dab41b97671d5aa5e69b5991fde7c90513b7c677762a6a",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/003-pipeline-adc-stage",
+  "task_id": "v4-003"
+}

@@ -1,0 +1,25 @@
+{
+  "candidate_artifacts": [
+    "bipolar_dff_sample.va"
+  ],
+  "canonical_dut_source_slug": "248-bipolar-dff-sample",
+  "checker_task_id": "v4_248_bipolar_dff_sample",
+  "family_id": "248",
+  "family_spec_sha256": "d4f6a91ab92b996dbd17b7730c65dfebe03c5f5feaac769217c54272b4d998ab",
+  "form": "dut",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "f677761f44ecf9c8098cfac6796fc862194df01ec66c06135305be0f66c4dec7",
+  "public_contract": "tasks/248-bipolar-dff-sample/public_contract.json",
+  "public_contract_sha256": "456f6ae5098f23ebd3749a0a23d94f302dd9804e17da88c68b118306eb2aec1b",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/248-bipolar-dff-sample",
+  "task_id": "v4-248"
+}

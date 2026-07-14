@@ -1,0 +1,25 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "115-two-bit-counter-marker",
+  "checker_task_id": "v4_115_two_bit_counter_marker",
+  "family_id": "115",
+  "family_spec_sha256": "60a9e3676fce060b3aeb9093a25655e6cda6af64ba895d46df2e0b9a6650b358",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "38ffb1230847609d7f0e808a5386da7d3fd886cc585e1ce3e4ebf3610428c337",
+  "public_contract": "tasks/615-two-bit-counter-marker-testbench/public_contract.json",
+  "public_contract_sha256": "87d88eea0dcaa0bf9b356965aaf7f3fbc69585f19153c440e06a7dbbd0e93b72",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/615-two-bit-counter-marker-testbench",
+  "task_id": "v4-615"
+}
