@@ -1,0 +1,392 @@
+{
+  "components": {
+    "agentic_wrapper.md": {
+      "applicable_forms": [
+        "dut",
+        "testbench",
+        "bugfix"
+      ],
+      "bytes": 396,
+      "id": "agentic_wrapper.md",
+      "kind": "wrapper",
+      "license": {
+        "spdx": null,
+        "status": "repository_license_pending"
+      },
+      "path": "prompt_modes/wrappers/agentic_wrapper.md",
+      "provenance": {
+        "source": "V4_TRI_FORM_BENCHMARK_REQUIREMENTS.md",
+        "type": "project_authored"
+      },
+      "semantic_version": "1.0.0",
+      "sha256": "6c88222cd4f0a2fb31c6ff0381857c9b89faa57295857d13a4903aa87aa5fb86",
+      "stable_id": "component.wrapper.agentic",
+      "token_counts": {
+        "vabench_utf8_lexeme@1.0.0": 75
+      }
+    },
+    "bugfix_diagnosis.md": {
+      "applicable_forms": [
+        "bugfix"
+      ],
+      "bytes": 699,
+      "id": "bugfix_diagnosis.md",
+      "kind": "form_skill",
+      "license": {
+        "spdx": null,
+        "status": "repository_license_pending"
+      },
+      "path": "prompt_modes/form_skills/bugfix_diagnosis.md",
+      "provenance": {
+        "source": "V4_TRI_FORM_BENCHMARK_REQUIREMENTS.md",
+        "type": "project_authored"
+      },
+      "semantic_version": "1.0.0",
+      "sha256": "60b05b32ca13822e1d98633f36873a86c30dbdeeac10e2fb5aff3181a83134db",
+      "stable_id": "component.form.bugfix",
+      "token_counts": {
+        "vabench_utf8_lexeme@1.0.0": 118
+      }
+    },
+    "direct_wrapper.md": {
+      "applicable_forms": [
+        "dut",
+        "testbench",
+        "bugfix"
+      ],
+      "bytes": 355,
+      "id": "direct_wrapper.md",
+      "kind": "wrapper",
+      "license": {
+        "spdx": null,
+        "status": "repository_license_pending"
+      },
+      "path": "prompt_modes/wrappers/direct_wrapper.md",
+      "provenance": {
+        "source": "V4_TRI_FORM_BENCHMARK_REQUIREMENTS.md",
+        "type": "project_authored"
+      },
+      "semantic_version": "1.0.0",
+      "sha256": "03b2cffbc4cbabb2346aea54b65ce2c89e981fcd0a41f23c19ea6d7b6bcdd7e2",
+      "stable_id": "component.wrapper.direct_one_shot",
+      "token_counts": {
+        "vabench_utf8_lexeme@1.0.0": 78
+      }
+    },
+    "dut_modeling.md": {
+      "applicable_forms": [
+        "dut"
+      ],
+      "bytes": 784,
+      "id": "dut_modeling.md",
+      "kind": "form_skill",
+      "license": {
+        "spdx": null,
+        "status": "repository_license_pending"
+      },
+      "path": "prompt_modes/form_skills/dut_modeling.md",
+      "provenance": {
+        "source": "V4_TRI_FORM_BENCHMARK_REQUIREMENTS.md",
+        "type": "project_authored"
+      },
+      "semantic_version": "1.0.0",
+      "sha256": "6a19e3f3b072c640edda6388a7f38d2dd442233a55e92e38db4572849d2f6b59",
+      "stable_id": "component.form.dut",
+      "token_counts": {
+        "vabench_utf8_lexeme@1.0.0": 141
+      }
+    },
+    "feedback_bugfix.md": {
+      "applicable_forms": [
+        "bugfix"
+      ],
+      "bytes": 266,
+      "id": "feedback_bugfix.md",
+      "kind": "feedback_guide",
+      "license": {
+        "spdx": null,
+        "status": "repository_license_pending"
+      },
+      "path": "prompt_modes/feedback_guides/feedback_bugfix.md",
+      "provenance": {
+        "source": "V4_TRI_FORM_BENCHMARK_REQUIREMENTS.md",
+        "type": "project_authored"
+      },
+      "semantic_version": "1.0.0",
+      "sha256": "2ec5ad32bf3137880b86016d2994a63847d2e0acf83efd11a81a27b9e6c8d93e",
+      "stable_id": "component.feedback.bugfix",
+      "token_counts": {
+        "vabench_utf8_lexeme@1.0.0": 45
+      }
+    },
+    "feedback_dut.md": {
+      "applicable_forms": [
+        "dut"
+      ],
+      "bytes": 284,
+      "id": "feedback_dut.md",
+      "kind": "feedback_guide",
+      "license": {
+        "spdx": null,
+        "status": "repository_license_pending"
+      },
+      "path": "prompt_modes/feedback_guides/feedback_dut.md",
+      "provenance": {
+        "source": "V4_TRI_FORM_BENCHMARK_REQUIREMENTS.md",
+        "type": "project_authored"
+      },
+      "semantic_version": "1.0.0",
+      "sha256": "e904d9c22b70a44ea29c47e20a3ac1bf7139c20aeb1527cd423a15922ae338e9",
+      "stable_id": "component.feedback.dut",
+      "token_counts": {
+        "vabench_utf8_lexeme@1.0.0": 51
+      }
+    },
+    "feedback_testbench.md": {
+      "applicable_forms": [
+        "testbench"
+      ],
+      "bytes": 349,
+      "id": "feedback_testbench.md",
+      "kind": "feedback_guide",
+      "license": {
+        "spdx": null,
+        "status": "repository_license_pending"
+      },
+      "path": "prompt_modes/feedback_guides/feedback_testbench.md",
+      "provenance": {
+        "source": "V4_TRI_FORM_BENCHMARK_REQUIREMENTS.md",
+        "type": "project_authored"
+      },
+      "semantic_version": "1.0.0",
+      "sha256": "fa47d6bb22ee460b2c834a6b2bc5639f36f91f99aa94dc61dadc98d59486fe77",
+      "stable_id": "component.feedback.testbench",
+      "token_counts": {
+        "vabench_utf8_lexeme@1.0.0": 56
+      }
+    },
+    "testbench_verification.md": {
+      "applicable_forms": [
+        "testbench"
+      ],
+      "bytes": 885,
+      "id": "testbench_verification.md",
+      "kind": "form_skill",
+      "license": {
+        "spdx": null,
+        "status": "repository_license_pending"
+      },
+      "path": "prompt_modes/form_skills/testbench_verification.md",
+      "provenance": {
+        "source": "V4_TRI_FORM_BENCHMARK_REQUIREMENTS.md",
+        "type": "project_authored"
+      },
+      "semantic_version": "1.0.0",
+      "sha256": "ff761ab518910ffce132cd46f286b8fb596d28bf4796324b01d21305ae299b4c",
+      "stable_id": "component.form.testbench",
+      "token_counts": {
+        "vabench_utf8_lexeme@1.0.0": 169
+      }
+    }
+  },
+  "feedback_guides": {
+    "feedback_bugfix.md": {
+      "applicable_forms": [
+        "bugfix"
+      ],
+      "bytes": 266,
+      "id": "feedback_bugfix.md",
+      "kind": "feedback_guide",
+      "license": {
+        "spdx": null,
+        "status": "repository_license_pending"
+      },
+      "path": "prompt_modes/feedback_guides/feedback_bugfix.md",
+      "provenance": {
+        "source": "V4_TRI_FORM_BENCHMARK_REQUIREMENTS.md",
+        "type": "project_authored"
+      },
+      "semantic_version": "1.0.0",
+      "sha256": "2ec5ad32bf3137880b86016d2994a63847d2e0acf83efd11a81a27b9e6c8d93e",
+      "stable_id": "component.feedback.bugfix",
+      "token_counts": {
+        "vabench_utf8_lexeme@1.0.0": 45
+      }
+    },
+    "feedback_dut.md": {
+      "applicable_forms": [
+        "dut"
+      ],
+      "bytes": 284,
+      "id": "feedback_dut.md",
+      "kind": "feedback_guide",
+      "license": {
+        "spdx": null,
+        "status": "repository_license_pending"
+      },
+      "path": "prompt_modes/feedback_guides/feedback_dut.md",
+      "provenance": {
+        "source": "V4_TRI_FORM_BENCHMARK_REQUIREMENTS.md",
+        "type": "project_authored"
+      },
+      "semantic_version": "1.0.0",
+      "sha256": "e904d9c22b70a44ea29c47e20a3ac1bf7139c20aeb1527cd423a15922ae338e9",
+      "stable_id": "component.feedback.dut",
+      "token_counts": {
+        "vabench_utf8_lexeme@1.0.0": 51
+      }
+    },
+    "feedback_testbench.md": {
+      "applicable_forms": [
+        "testbench"
+      ],
+      "bytes": 349,
+      "id": "feedback_testbench.md",
+      "kind": "feedback_guide",
+      "license": {
+        "spdx": null,
+        "status": "repository_license_pending"
+      },
+      "path": "prompt_modes/feedback_guides/feedback_testbench.md",
+      "provenance": {
+        "source": "V4_TRI_FORM_BENCHMARK_REQUIREMENTS.md",
+        "type": "project_authored"
+      },
+      "semantic_version": "1.0.0",
+      "sha256": "fa47d6bb22ee460b2c834a6b2bc5639f36f91f99aa94dc61dadc98d59486fe77",
+      "stable_id": "component.feedback.testbench",
+      "token_counts": {
+        "vabench_utf8_lexeme@1.0.0": 56
+      }
+    }
+  },
+  "form_skills": {
+    "bugfix_diagnosis.md": {
+      "applicable_forms": [
+        "bugfix"
+      ],
+      "bytes": 699,
+      "id": "bugfix_diagnosis.md",
+      "kind": "form_skill",
+      "license": {
+        "spdx": null,
+        "status": "repository_license_pending"
+      },
+      "path": "prompt_modes/form_skills/bugfix_diagnosis.md",
+      "provenance": {
+        "source": "V4_TRI_FORM_BENCHMARK_REQUIREMENTS.md",
+        "type": "project_authored"
+      },
+      "semantic_version": "1.0.0",
+      "sha256": "60b05b32ca13822e1d98633f36873a86c30dbdeeac10e2fb5aff3181a83134db",
+      "stable_id": "component.form.bugfix",
+      "token_counts": {
+        "vabench_utf8_lexeme@1.0.0": 118
+      }
+    },
+    "dut_modeling.md": {
+      "applicable_forms": [
+        "dut"
+      ],
+      "bytes": 784,
+      "id": "dut_modeling.md",
+      "kind": "form_skill",
+      "license": {
+        "spdx": null,
+        "status": "repository_license_pending"
+      },
+      "path": "prompt_modes/form_skills/dut_modeling.md",
+      "provenance": {
+        "source": "V4_TRI_FORM_BENCHMARK_REQUIREMENTS.md",
+        "type": "project_authored"
+      },
+      "semantic_version": "1.0.0",
+      "sha256": "6a19e3f3b072c640edda6388a7f38d2dd442233a55e92e38db4572849d2f6b59",
+      "stable_id": "component.form.dut",
+      "token_counts": {
+        "vabench_utf8_lexeme@1.0.0": 141
+      }
+    },
+    "testbench_verification.md": {
+      "applicable_forms": [
+        "testbench"
+      ],
+      "bytes": 885,
+      "id": "testbench_verification.md",
+      "kind": "form_skill",
+      "license": {
+        "spdx": null,
+        "status": "repository_license_pending"
+      },
+      "path": "prompt_modes/form_skills/testbench_verification.md",
+      "provenance": {
+        "source": "V4_TRI_FORM_BENCHMARK_REQUIREMENTS.md",
+        "type": "project_authored"
+      },
+      "semantic_version": "1.0.0",
+      "sha256": "ff761ab518910ffce132cd46f286b8fb596d28bf4796324b01d21305ae299b4c",
+      "stable_id": "component.form.testbench",
+      "token_counts": {
+        "vabench_utf8_lexeme@1.0.0": 169
+      }
+    }
+  },
+  "reference_tokenizer": {
+    "algorithm": "Unicode word runs and individual non-whitespace punctuation marks",
+    "id": "vabench_utf8_lexeme",
+    "version": "1.0.0"
+  },
+  "schema_version": "v4-prompt-component-manifest-v1",
+  "wrappers": {
+    "agentic_wrapper.md": {
+      "applicable_forms": [
+        "dut",
+        "testbench",
+        "bugfix"
+      ],
+      "bytes": 396,
+      "id": "agentic_wrapper.md",
+      "kind": "wrapper",
+      "license": {
+        "spdx": null,
+        "status": "repository_license_pending"
+      },
+      "path": "prompt_modes/wrappers/agentic_wrapper.md",
+      "provenance": {
+        "source": "V4_TRI_FORM_BENCHMARK_REQUIREMENTS.md",
+        "type": "project_authored"
+      },
+      "semantic_version": "1.0.0",
+      "sha256": "6c88222cd4f0a2fb31c6ff0381857c9b89faa57295857d13a4903aa87aa5fb86",
+      "stable_id": "component.wrapper.agentic",
+      "token_counts": {
+        "vabench_utf8_lexeme@1.0.0": 75
+      }
+    },
+    "direct_wrapper.md": {
+      "applicable_forms": [
+        "dut",
+        "testbench",
+        "bugfix"
+      ],
+      "bytes": 355,
+      "id": "direct_wrapper.md",
+      "kind": "wrapper",
+      "license": {
+        "spdx": null,
+        "status": "repository_license_pending"
+      },
+      "path": "prompt_modes/wrappers/direct_wrapper.md",
+      "provenance": {
+        "source": "V4_TRI_FORM_BENCHMARK_REQUIREMENTS.md",
+        "type": "project_authored"
+      },
+      "semantic_version": "1.0.0",
+      "sha256": "03b2cffbc4cbabb2346aea54b65ce2c89e981fcd0a41f23c19ea6d7b6bcdd7e2",
+      "stable_id": "component.wrapper.direct_one_shot",
+      "token_counts": {
+        "vabench_utf8_lexeme@1.0.0": 78
+      }
+    }
+  }
+}

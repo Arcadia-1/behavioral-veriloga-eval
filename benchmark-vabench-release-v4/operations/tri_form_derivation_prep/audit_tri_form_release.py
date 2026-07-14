@@ -20,17 +20,26 @@ FORM_SKILLS = {
     "testbench": "testbench_verification.md",
     "bugfix": "bugfix_diagnosis.md",
 }
-FEEDBACK_ADAPTERS = {
+FEEDBACK_GUIDES = {
     "dut": "feedback_dut.md",
     "testbench": "feedback_testbench.md",
     "bugfix": "feedback_bugfix.md",
+}
+WRAPPERS_BY_PROCESS = {
+    "direct_one_shot": "direct_wrapper.md",
+    "agentic": "agentic_wrapper.md",
+}
+COMPONENT_SUBDIR_BY_NAME = {
+    **{name: "form_skills" for name in FORM_SKILLS.values()},
+    **{name: "feedback_guides" for name in FEEDBACK_GUIDES.values()},
+    **{name: "wrappers" for name in WRAPPERS_BY_PROCESS.values()},
 }
 MATERIALIZED_ARTIFACTS = (
     "TASK_INDEX.json",
     "BUGFIX_SEED_REVIEW.json",
     "prompt_modes/PROMPT_RECORDS.jsonl",
     "prompt_modes/modes.json",
-    "prompt_modes/skills/manifest.json",
+    "prompt_modes/manifest.json",
 )
 RELEASE_SEAL_ARTIFACTS = (
     "MANIFEST.json",
@@ -46,6 +55,13 @@ def read_json(path: Path) -> dict[str, Any]:
 
 def file_sha(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
+
+
+def prompt_component_path(release: Path, component_id: str) -> Path | None:
+    subdir = COMPONENT_SUBDIR_BY_NAME.get(component_id)
+    if subdir is None:
+        return None
+    return release / "prompt_modes" / subdir / component_id
 
 
 def tree_sha(path: Path) -> str:
@@ -341,21 +357,21 @@ def audit_prompt_records(release: Path, tasks: list[dict[str, Any]], problems: l
     seen: dict[str, set[str]] = defaultdict(set)
     task_forms = {str(row["task_id"]): str(row["form"]) for row in tasks}
     task_dirs = {str(row["task_id"]): release / str(row["task_dir"]) for row in tasks}
-    skill_manifest = read_json(release / "prompt_modes" / "skills" / "manifest.json")
-    skill_records = skill_manifest.get("skills") or {}
-    tokenizer = skill_manifest.get("reference_tokenizer") or {}
+    component_manifest = read_json(release / "prompt_modes" / "manifest.json")
+    component_records = component_manifest.get("components") or {}
+    tokenizer = component_manifest.get("reference_tokenizer") or {}
     tokenizer_key = f"{tokenizer.get('id')}@{tokenizer.get('version')}"
     required_assets = {
-        "neutral_wrapper.md", *FORM_SKILLS.values(), "feedback_core.md", *FEEDBACK_ADAPTERS.values()
+        *WRAPPERS_BY_PROCESS.values(), *FORM_SKILLS.values(), *FEEDBACK_GUIDES.values()
     }
-    if set(skill_records) != required_assets:
-        problems.append("skill manifest component set mismatch")
-    for name, component in skill_records.items():
+    if set(component_records) != required_assets:
+        problems.append("prompt component manifest set mismatch")
+    for name, component in component_records.items():
         for field in ("stable_id", "semantic_version", "applicable_forms", "sha256", "bytes", "license", "provenance", "token_counts"):
             if field not in component:
-                problems.append(f"skill manifest {name}: missing {field}")
+                problems.append(f"prompt component manifest {name}: missing {field}")
         if tokenizer_key not in (component.get("token_counts") or {}):
-            problems.append(f"skill manifest {name}: missing reference-tokenizer count")
+            problems.append(f"prompt component manifest {name}: missing reference-tokenizer count")
     count = 0
     for line_no, line in enumerate(path.read_text(encoding="utf-8").splitlines(), 1):
         try:
@@ -370,12 +386,15 @@ def audit_prompt_records(release: Path, tasks: list[dict[str, Any]], problems: l
         expected_cli = mode in {"G2", "G3", "G4", "G5"}
         if row.get("feedback_cli_available") is not expected_cli:
             problems.append(f"{task_id}/{mode}: feedback availability mismatch")
+        expected_process = "direct_one_shot" if mode in {"G0", "G1"} else "agentic"
+        if row.get("process") != expected_process:
+            problems.append(f"{task_id}/{mode}: process mismatch")
         form = task_forms.get(task_id, "")
         task_dir = task_dirs.get(task_id)
         if task_dir is None:
             problems.append(f"{task_id}/{mode}: prompt record has no task directory")
             continue
-        public_inputs = [task_dir / "instruction.md", task_dir / "public_contract.json"]
+        public_inputs = [task_dir / "instruction.md"]
         if form == "testbench":
             public_inputs.extend(sorted((task_dir / "supplied_dut").rglob("*.va")))
         elif form == "bugfix":
@@ -391,15 +410,23 @@ def audit_prompt_records(release: Path, tasks: list[dict[str, Any]], problems: l
         if mode in {"G1", "G3", "G5"}:
             expected_skills.append(FORM_SKILLS.get(form, ""))
         if mode in {"G4", "G5"}:
-            expected_skills.extend(["feedback_core.md", FEEDBACK_ADAPTERS.get(form, "")])
+            expected_skills.append(FEEDBACK_GUIDES.get(form, ""))
+        expected_wrapper = WRAPPERS_BY_PROCESS[expected_process]
+        expected_components = [*expected_skills, expected_wrapper]
         skills = row.get("skill_hashes") or {}
         if set(skills) != set(expected_skills):
             problems.append(f"{task_id}/{mode}: exact skill composition mismatch")
         for name in expected_skills:
-            if skills.get(name) != (skill_records.get(name) or {}).get("sha256"):
+            if skills.get(name) != (component_records.get(name) or {}).get("sha256"):
                 problems.append(f"{task_id}/{mode}: skill hash mismatch for {name}")
+        prompt_component_hashes = row.get("prompt_component_hashes") or {}
+        if set(prompt_component_hashes) != set(expected_components):
+            problems.append(f"{task_id}/{mode}: exact prompt component composition mismatch")
+        for name in expected_components:
+            if prompt_component_hashes.get(name) != (component_records.get(name) or {}).get("sha256"):
+                problems.append(f"{task_id}/{mode}: prompt component hash mismatch for {name}")
         component_order = row.get("component_order") or []
-        expected_suffix = ["neutral_wrapper.md", *expected_skills]
+        expected_suffix = [*expected_skills, expected_wrapper]
         if component_order[-len(expected_suffix):] != expected_suffix:
             problems.append(f"{task_id}/{mode}: component order mismatch")
         static_components = row.get("static_components") or []
@@ -412,8 +439,8 @@ def audit_prompt_records(release: Path, tasks: list[dict[str, Any]], problems: l
         for item in static_components:
             component_id = str(item.get("id") or "")
             actual_path = public_component_paths.get(component_id)
-            if actual_path is None and component_id in skill_records:
-                actual_path = release / "prompt_modes" / "skills" / component_id
+            if actual_path is None and component_id in component_records:
+                actual_path = prompt_component_path(release, component_id)
             if actual_path is None or not actual_path.is_file():
                 problems.append(f"{task_id}/{mode}: unresolved static component {component_id}")
             elif item.get("sha256") != file_sha(actual_path) or item.get("bytes") != actual_path.stat().st_size:

@@ -22,45 +22,53 @@ DEFAULT_SOURCE = PACKAGE_ROOT / "release" / "dut-base-v3-exact-five-hash-bound-v
 DEFAULT_OUTPUT = PACKAGE_ROOT / "release" / "tri-form-v4-1200-draft"
 PROMPT_ASSETS = PREP_ROOT / "prompt_assets"
 MODES = {
-    "G0": {"process": "direct_one_shot", "form_skill": False, "feedback_skill": False, "feedback_cli": False},
-    "G1": {"process": "direct_one_shot", "form_skill": True, "feedback_skill": False, "feedback_cli": False},
-    "G2": {"process": "agentic", "form_skill": False, "feedback_skill": False, "feedback_cli": True},
-    "G3": {"process": "agentic", "form_skill": True, "feedback_skill": False, "feedback_cli": True},
-    "G4": {"process": "agentic", "form_skill": False, "feedback_skill": True, "feedback_cli": True},
-    "G5": {"process": "agentic", "form_skill": True, "feedback_skill": True, "feedback_cli": True},
+    "G0": {"process": "direct_one_shot", "form_skill": False, "feedback_guide": False, "feedback_cli": False},
+    "G1": {"process": "direct_one_shot", "form_skill": True, "feedback_guide": False, "feedback_cli": False},
+    "G2": {"process": "agentic", "form_skill": False, "feedback_guide": False, "feedback_cli": True},
+    "G3": {"process": "agentic", "form_skill": True, "feedback_guide": False, "feedback_cli": True},
+    "G4": {"process": "agentic", "form_skill": False, "feedback_guide": True, "feedback_cli": True},
+    "G5": {"process": "agentic", "form_skill": True, "feedback_guide": True, "feedback_cli": True},
 }
 FORM_SKILLS = {
     "dut": "dut_modeling.md",
     "testbench": "testbench_verification.md",
     "bugfix": "bugfix_diagnosis.md",
 }
-FEEDBACK_ADAPTERS = {
+FEEDBACK_GUIDES = {
     "dut": "feedback_dut.md",
     "testbench": "feedback_testbench.md",
     "bugfix": "feedback_bugfix.md",
+}
+WRAPPERS_BY_PROCESS = {
+    "direct_one_shot": "direct_wrapper.md",
+    "agentic": "agentic_wrapper.md",
+}
+COMPONENT_SUBDIR_BY_KIND = {
+    "wrapper": "wrappers",
+    "form_skill": "form_skills",
+    "feedback_guide": "feedback_guides",
 }
 MATERIALIZED_ARTIFACTS = (
     "TASK_INDEX.json",
     "BUGFIX_SEED_REVIEW.json",
     "prompt_modes/PROMPT_RECORDS.jsonl",
     "prompt_modes/modes.json",
-    "prompt_modes/skills/manifest.json",
+    "prompt_modes/manifest.json",
 )
-NEUTRAL_WRAPPER = "neutral_wrapper.md"
 REFERENCE_TOKENIZER = {
     "id": "vabench_utf8_lexeme",
     "version": "1.0.0",
     "algorithm": "Unicode word runs and individual non-whitespace punctuation marks",
 }
 COMPONENT_METADATA = {
-    "neutral_wrapper.md": {"stable_id": "wrapper.neutral", "kind": "wrapper", "applicable_forms": ["dut", "testbench", "bugfix"]},
-    "dut_modeling.md": {"stable_id": "skill.form.dut", "kind": "form_skill", "applicable_forms": ["dut"]},
-    "testbench_verification.md": {"stable_id": "skill.form.testbench", "kind": "form_skill", "applicable_forms": ["testbench"]},
-    "bugfix_diagnosis.md": {"stable_id": "skill.form.bugfix", "kind": "form_skill", "applicable_forms": ["bugfix"]},
-    "feedback_core.md": {"stable_id": "skill.feedback.core", "kind": "feedback_skill", "applicable_forms": ["dut", "testbench", "bugfix"]},
-    "feedback_dut.md": {"stable_id": "skill.feedback.dut", "kind": "feedback_skill", "applicable_forms": ["dut"]},
-    "feedback_testbench.md": {"stable_id": "skill.feedback.testbench", "kind": "feedback_skill", "applicable_forms": ["testbench"]},
-    "feedback_bugfix.md": {"stable_id": "skill.feedback.bugfix", "kind": "feedback_skill", "applicable_forms": ["bugfix"]},
+    "direct_wrapper.md": {"stable_id": "component.wrapper.direct_one_shot", "kind": "wrapper", "applicable_forms": ["dut", "testbench", "bugfix"]},
+    "agentic_wrapper.md": {"stable_id": "component.wrapper.agentic", "kind": "wrapper", "applicable_forms": ["dut", "testbench", "bugfix"]},
+    "dut_modeling.md": {"stable_id": "component.form.dut", "kind": "form_skill", "applicable_forms": ["dut"]},
+    "testbench_verification.md": {"stable_id": "component.form.testbench", "kind": "form_skill", "applicable_forms": ["testbench"]},
+    "bugfix_diagnosis.md": {"stable_id": "component.form.bugfix", "kind": "form_skill", "applicable_forms": ["bugfix"]},
+    "feedback_dut.md": {"stable_id": "component.feedback.dut", "kind": "feedback_guide", "applicable_forms": ["dut"]},
+    "feedback_testbench.md": {"stable_id": "component.feedback.testbench", "kind": "feedback_guide", "applicable_forms": ["testbench"]},
+    "feedback_bugfix.md": {"stable_id": "component.feedback.bugfix", "kind": "feedback_guide", "applicable_forms": ["bugfix"]},
 }
 TRIVIAL_FAULT_CLASSES = {
     "zero_stub_output",
@@ -161,7 +169,7 @@ def render_interface(spec: dict[str, Any]) -> str:
                     f"    - position {port['position']}: `{port['name']}` "
                     f"({port['direction']}, {port['discipline']})"
                 )
-    return "\n".join(blocks) or "- Use the interface declared in `public_contract.json`."
+    return "\n".join(blocks) or "- Use the interface declared in this instruction."
 
 
 def render_parameters(spec: dict[str, Any]) -> str:
@@ -612,15 +620,16 @@ def build_bugfix_view(
 
 
 def install_prompt_assets(output: Path) -> dict[str, dict[str, Any]]:
-    target = output / "prompt_modes" / "skills"
-    target.mkdir(parents=True)
     records: dict[str, dict[str, Any]] = {}
     for source in sorted(PROMPT_ASSETS.glob("*.md")):
         if source.name not in COMPONENT_METADATA:
             raise SystemExit(f"prompt component lacks metadata: {source.name}")
+        metadata = COMPONENT_METADATA[source.name]
+        subdir = COMPONENT_SUBDIR_BY_KIND[metadata["kind"]]
+        target = output / "prompt_modes" / subdir
+        target.mkdir(parents=True, exist_ok=True)
         destination = target / source.name
         shutil.copy2(source, destination)
-        metadata = COMPONENT_METADATA[source.name]
         fingerprint = component_fingerprint(source.name, destination)
         records[source.name] = {
             "path": rel(destination, output),
@@ -632,15 +641,23 @@ def install_prompt_assets(output: Path) -> dict[str, dict[str, Any]]:
             "license": {"status": "repository_license_pending", "spdx": None},
             "provenance": {"type": "project_authored", "source": "V4_TRI_FORM_BENCHMARK_REQUIREMENTS.md"},
         }
-    write_json(output / "prompt_modes" / "skills" / "manifest.json", {
-        "schema_version": "v4-skill-manifest-v1",
+    write_json(output / "prompt_modes" / "manifest.json", {
+        "schema_version": "v4-prompt-component-manifest-v1",
         "reference_tokenizer": REFERENCE_TOKENIZER,
-        "skills": records,
+        "components": records,
+        "wrappers": {name: row for name, row in records.items() if row["kind"] == "wrapper"},
+        "form_skills": {name: row for name, row in records.items() if row["kind"] == "form_skill"},
+        "feedback_guides": {name: row for name, row in records.items() if row["kind"] == "feedback_guide"},
     })
     write_json(output / "prompt_modes" / "modes.json", {
         "schema_version": "v4-prompt-mode-registry-v1",
         "modes": MODES,
-        "composition_order": ["canonical_instruction_and_public_inputs", "neutral_wrapper", "form_skill", "feedback_core_and_form_adapter"],
+        "composition_order": [
+            "canonical_instruction_and_inline_artifacts",
+            "form_skill",
+            "feedback_guide",
+            "mode_wrapper_response_protocol",
+        ],
         "working_token_budget": "runner_supplied_same_ceiling_within_comparison_stratum",
         "wall_time_policy": "safety_limit_not_ability_budget",
     })
@@ -649,7 +666,6 @@ def install_prompt_assets(output: Path) -> dict[str, dict[str, Any]]:
 
 def iter_public_inputs(task_dir: Path, form: str) -> Iterable[Path]:
     yield task_dir / "instruction.md"
-    yield task_dir / "public_contract.json"
     if form == "testbench":
         yield from sorted((task_dir / "supplied_dut").rglob("*.va"))
     elif form == "bugfix":
@@ -664,21 +680,22 @@ def write_prompt_records(output: Path, task_rows: list[dict[str, Any]], skills: 
             instruction_sha = file_sha(task_dir / "instruction.md")
             input_hashes = {rel(item, task_dir): file_sha(item) for item in iter_public_inputs(task_dir, task["form"])}
             for mode, policy in MODES.items():
+                public_input_paths = list(iter_public_inputs(task_dir, task["form"]))
                 public_components = [
                     component_fingerprint(
                         "instruction" if item.name == "instruction.md" else f"public_input:{rel(item, task_dir)}",
                         item,
                     )
-                    for item in iter_public_inputs(task_dir, task["form"])
+                    for item in public_input_paths
                 ]
-                components = [item["id"] for item in public_components] + [NEUTRAL_WRAPPER]
-                skill_ids: list[str] = []
+                guide_ids: list[str] = []
                 if policy["form_skill"]:
-                    skill_ids.append(FORM_SKILLS[task["form"]])
-                    components.append(FORM_SKILLS[task["form"]])
-                if policy["feedback_skill"]:
-                    skill_ids.extend(["feedback_core.md", FEEDBACK_ADAPTERS[task["form"]]])
-                    components.extend(["feedback_core.md", FEEDBACK_ADAPTERS[task["form"]]])
+                    guide_ids.append(FORM_SKILLS[task["form"]])
+                if policy["feedback_guide"]:
+                    guide_ids.append(FEEDBACK_GUIDES[task["form"]])
+                wrapper = WRAPPERS_BY_PROCESS[str(policy["process"])]
+                prompt_component_ids = [*guide_ids, wrapper]
+                component_order = [item["id"] for item in public_components] + prompt_component_ids
                 static_components = public_components + [
                     {
                         "id": name,
@@ -686,7 +703,7 @@ def write_prompt_records(output: Path, task_rows: list[dict[str, Any]], skills: 
                         "bytes": skills[name]["bytes"],
                         "token_counts": skills[name]["token_counts"],
                     }
-                    for name in [NEUTRAL_WRAPPER, *skill_ids]
+                    for name in prompt_component_ids
                 ]
                 record = {
                     "schema_version": "v4-prompt-record-v1",
@@ -698,10 +715,11 @@ def write_prompt_records(output: Path, task_rows: list[dict[str, Any]], skills: 
                     "feedback_cli_available": policy["feedback_cli"],
                     "canonical_instruction_sha256": instruction_sha,
                     "public_input_hashes": input_hashes,
-                    "component_order": components,
+                    "component_order": component_order,
                     "static_components": static_components,
                     "reference_tokenizer": REFERENCE_TOKENIZER,
-                    "skill_hashes": {name: skills[name]["sha256"] for name in skill_ids},
+                    "skill_hashes": {name: skills[name]["sha256"] for name in guide_ids},
+                    "prompt_component_hashes": {name: skills[name]["sha256"] for name in prompt_component_ids},
                     "response_protocol": "v4-exact-artifact-blocks-v1" if policy["process"] == "direct_one_shot" else "v4-workspace-finalizer-v1",
                 }
                 handle.write(json.dumps(record, sort_keys=True) + "\n")

@@ -1,4 +1,4 @@
-# DUT Feedback Adapter
+# DUT Feedback Guide
 
 For DUT candidates, use public-property diagnostics and traces to compare the
 implemented response with the declared interface, event semantics, levels,

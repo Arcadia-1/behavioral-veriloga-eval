@@ -1,4 +1,4 @@
-# Testbench Feedback Adapter
+# Testbench Feedback Guide
 
 One feedback request runs the unchanged candidate testbench against the
 supplied correct DUT and five anonymous negative DUT cases. Interpret correct

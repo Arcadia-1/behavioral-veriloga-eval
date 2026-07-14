@@ -1,4 +1,4 @@
-# Bugfix Feedback Adapter
+# Bugfix Feedback Guide
 
 For repairs, the agent may run the original bundle, an intermediate edit, or
 the final candidate. Use feedback to test a hypothesis against the complete
