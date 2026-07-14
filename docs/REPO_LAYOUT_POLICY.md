@@ -21,6 +21,12 @@ artifacts. Do not add new v3 tasks there.
 `benchmark-vabench-release-v2/` is retired and should not be recreated. Its
 five candidate tasks have been absorbed into v3.
 
+The benchmarkv4 release package lives at
+`benchmark-vabench-release-v4/release/benchmarkv4/`. Use
+`docs/BENCHMARKV4_REPO_SLIMMING_PLAN.md` as the small-PR cleanup plan for
+switching the active entrypoint, updating runners, and reducing
+legacy-directory ambiguity.
+
 ## Stable Top-Level Directories
 
 Use these directories for durable public work:
