@@ -13,6 +13,27 @@ from typing import Any
 PACKAGE_ROOT = Path(__file__).resolve().parents[2]
 DEFAULT_RELEASE = PACKAGE_ROOT / "release" / "tri-form-v4-1200-draft"
 AGENTIC = {"G2", "G3", "G4", "G5"}
+FORM_SKILLS = {
+    "dut": "dut_modeling.md",
+    "testbench": "testbench_verification.md",
+    "bugfix": "bugfix_diagnosis.md",
+}
+FEEDBACK_GUIDES = {
+    "dut": "feedback_dut.md",
+    "testbench": "feedback_testbench.md",
+    "bugfix": "feedback_bugfix.md",
+}
+FEEDBACK_CORE = "feedback_core.md"
+WRAPPERS_BY_PROCESS = {
+    "direct_one_shot": "direct_wrapper.md",
+    "agentic": "agentic_wrapper.md",
+}
+COMPONENT_SUBDIR_BY_NAME = {
+    **{name: "form_skills" for name in FORM_SKILLS.values()},
+    FEEDBACK_CORE: "feedback_guides",
+    **{name: "feedback_guides" for name in FEEDBACK_GUIDES.values()},
+    **{name: "wrappers" for name in WRAPPERS_BY_PROCESS.values()},
+}
 
 
 def read_json(path: Path) -> dict[str, Any]:
@@ -81,26 +102,38 @@ def serialize_public_artifacts(task_dir: Path, form: str) -> str:
     return "\n".join(lines)
 
 
-def render_prompt(release: Path, task_dir: Path, record: dict[str, Any], mode_record: dict[str, Any], *, inline_artifacts: bool) -> str:
-    parts = [
-        (task_dir / "instruction.md").read_text(encoding="utf-8"),
-        "<<<VABENCH_PUBLIC_CONTRACT>>>",
-        (task_dir / "public_contract.json").read_text(encoding="utf-8"),
-        "<<<END_VABENCH_PUBLIC_CONTRACT>>>",
+def prompt_component_path(release: Path, component_id: str) -> Path:
+    subdir = COMPONENT_SUBDIR_BY_NAME.get(component_id)
+    if subdir is None:
+        raise SystemExit(f"unknown prompt component: {component_id}")
+    return release / "prompt_modes" / subdir / component_id
+
+
+def ordered_prompt_components(mode_record: dict[str, Any]) -> list[str]:
+    wrapper = WRAPPERS_BY_PROCESS[str(mode_record["process"])]
+    component_hashes = mode_record.get("prompt_component_hashes") or {}
+    if wrapper not in component_hashes:
+        raise SystemExit(f"prompt record is missing wrapper hash: {wrapper}")
+    components = [
+        str(component_id)
+        for component_id in mode_record.get("component_order") or []
+        if component_id in component_hashes
     ]
+    if not components or components[-1] != wrapper:
+        raise SystemExit(f"prompt record wrapper is not last: {wrapper}")
+    return components
+
+
+def render_prompt(release: Path, task_dir: Path, record: dict[str, Any], mode_record: dict[str, Any], *, inline_artifacts: bool) -> str:
+    parts = [(task_dir / "instruction.md").read_text(encoding="utf-8")]
     artifacts = serialize_public_artifacts(task_dir, str(record["form"])) if inline_artifacts else ""
     if artifacts:
         parts.append(artifacts)
-    parts.extend([
-        '<<<VABENCH_COMPONENT id="neutral_wrapper.md">>>',
-        (release / "prompt_modes" / "skills" / "neutral_wrapper.md").read_text(encoding="utf-8"),
-        "<<<END_VABENCH_COMPONENT>>>",
-    ])
-    for skill in (mode_record.get("skill_hashes") or {}):
+    for component in ordered_prompt_components(mode_record):
         parts.extend([
-            f'<<<VABENCH_SKILL id="{skill}">>>',
-            (release / "prompt_modes" / "skills" / skill).read_text(encoding="utf-8"),
-            "<<<END_VABENCH_SKILL>>>",
+            f'<<<VABENCH_COMPONENT id="{component}">>>',
+            prompt_component_path(release, component).read_text(encoding="utf-8"),
+            "<<<END_VABENCH_COMPONENT>>>",
         ])
     return "\n\n".join(parts)
 
@@ -108,8 +141,7 @@ def render_prompt(release: Path, task_dir: Path, record: dict[str, Any], mode_re
 def install_public(task_dir: Path, public_root: Path, form: str, mode: str) -> None:
     target = public_root / "task"
     target.mkdir(parents=True)
-    for name in ("instruction.md", "public_contract.json"):
-        shutil.copy2(task_dir / name, target / name)
+    shutil.copy2(task_dir / "instruction.md", target / "instruction.md")
     if form == "testbench":
         copy_tree(task_dir / "supplied_dut", target / "supplied_dut")
     elif form == "bugfix":

@@ -56,6 +56,15 @@ def main() -> int:
             problems.append("agentic mode lacks the feedback tool manifest")
         if not (run / "agent_prompt.txt").is_file():
             problems.append("agentic mode lacks the composed initial prompt")
+    for prompt_name in ("direct_prompt.txt", "agent_prompt.txt"):
+        prompt_path = run / prompt_name
+        if not prompt_path.is_file():
+            continue
+        prompt_text = prompt_path.read_text(encoding="utf-8", errors="ignore")
+        if "<<<VABENCH_PUBLIC_CONTRACT>>>" in prompt_text or "public_contract.json" in prompt_text:
+            problems.append(f"{prompt_name} exposes public contract JSON instead of instruction-derived prompt text")
+    if (run / "public" / "task" / "public_contract.json").exists():
+        problems.append("model-visible public task bundle exposes public_contract.json")
     submission = run / "public" / "submission"
     if attempt.get("initial_submission_sha256") != tree_sha(submission):
         problems.append("initial submission hash does not match the prepared workspace")

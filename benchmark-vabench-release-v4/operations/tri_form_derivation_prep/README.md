@@ -35,6 +35,18 @@ python3 operations/tri_form_derivation_prep/materialize_tri_form_release.py
 python3 operations/tri_form_derivation_prep/audit_tri_form_release.py
 ```
 
+`public_contract.json` remains hash-bound machine-readable task metadata. The
+runtime exporter uses the generated instruction as the solver-facing contract
+and does not mount or inline the JSON as a duplicate prompt component.
+
+Rebuild the complete tracked release, including three representative runtime
+exports, ingestion evidence, the audit report, and the release seal:
+
+```bash
+python3 operations/tri_form_derivation_prep/rebuild_tri_form_release.py
+git diff --exit-code
+```
+
 Export one runtime record without mounting evaluator-private files:
 
 ```bash

@@ -52,9 +52,12 @@ statistically correlated.
 2. **One structured contract.** Public interface, parameters, observable
    behavior, artifact boundaries, and trace requirements MUST originate in one
    structured `family_spec.json` record.
-3. **Generated views.** Form instructions and public contracts MUST be rendered
-   from structured records. Generators MUST NOT infer contracts by parsing
-   Markdown headings or reverse-engineering gold Verilog-A source.
+3. **Generated views.** Solver-visible form instructions and machine-readable
+   public-contract metadata MUST be rendered from structured records. Generators
+   MUST NOT infer contracts by parsing Markdown headings or reverse-engineering
+   gold Verilog-A source. The instruction is the canonical model-facing behavior
+   contract; `public_contract.json` binds evaluator and audit tooling to the same
+   source record and is not an additional prompt component.
 4. **Shared evaluator semantics.** The three forms reuse one behavior-property
    set, one task-specific checker family, one trace contract, and one harness
    specification.
@@ -205,7 +208,7 @@ benchmark-vabench-release-v4/
       FORMAL_TASK.json                 # identity and registry metadata
       family_spec.json                 # canonical structured public contract
       instruction.md                   # generated canonical DUT instruction
-      public_contract.json             # generated DUT public view
+      public_contract.json             # generated machine-readable metadata
       REFERENCE_PROVENANCE.json        # source, license, and adaptation record
       test_feedback/                   # private generated EVAS rendering
         feedback_tb.scs
@@ -313,7 +316,6 @@ run/<run-id>/
   public/
     task/
       instruction.md
-      public_contract.json
       supplied_dut/                    # testbench only, read-only correct DUT
       buggy_bundle/                    # bugfix only
     submission/                        # writable candidate output
@@ -349,13 +351,15 @@ Model-visible records MUST NOT contain repository-relative paths that lead to
 profiles, or reference-testbench assets. The Testbench view is the sole
 intentional exception for the correct DUT source: it receives a copied,
 read-only public input bundle rather than an authoring-repository path.
+The release package retains `public_contract.json` as public machine-readable
+metadata, and every prompt record binds its hash, but runtime export MUST NOT
+mount or inline that JSON as a second statement of solver instructions.
 
 ### 7.1 DUT runtime package
 
 ```text
 public/task/
   instruction.md
-  public_contract.json
 submission/
   <declared-one-or-more-DUT-files>.va
 
@@ -379,7 +383,6 @@ No official evaluator deck is mounted into the model workspace.
 ```text
 public/task/
   instruction.md
-  public_contract.json
   supplied_dut/                    # read-only correct DUT bundle
 submission/
   <declared-testbench-file>.scs       # exactly one candidate artifact
@@ -408,7 +411,6 @@ traces.
 ```text
 public/task/
   instruction.md
-  public_contract.json
   buggy_bundle/
     <declared-one-or-more-DUT-files>.va
 submission/
@@ -440,12 +442,11 @@ task inputs disappear. The runner MUST serialize the same public semantics that
 an agentic condition receives into one deterministic prompt payload:
 
 1. the canonical form instruction;
-2. canonical JSON for the public contract;
-3. any required read-only public input artifacts, such as the complete buggy
+2. any required read-only public input artifacts, such as the complete buggy
    bundle for a bugfix task or the complete correct DUT bundle for a testbench
    task;
-4. the neutral response protocol below; and
-5. the form skill only in G1.
+3. the form skill only in G1; and
+4. the direct response wrapper as the final prompt component.
 
 Public input artifacts are delimited by
 `<<<VABENCH_INPUT_ARTIFACT path="...">>>` and
@@ -453,8 +454,9 @@ Public input artifacts are delimited by
 output. No mode receives an evaluator deck; G0 and G1 additionally receive no
 feedback tool. The rendered prompt record
 MUST store the ordered component IDs, byte lengths, hashes, and token counts so
-that the direct conditions can be reproduced. Input-artifact hashes MUST equal
-the read-only files materialized for G2-G5; only tool availability and
+that the direct conditions can be reproduced. It MUST also store the associated
+`public_contract.json` hash as non-prompt metadata. Input-artifact hashes MUST
+equal the read-only files materialized for G2-G5; only tool availability and
 interaction differ between direct and agentic modes.
 
 Because a model API returns text rather than files, G0 and G1 MUST use one
@@ -801,11 +803,14 @@ text edit. A missing or invalid assignment is a hard generation error.
 
 ### 9.1 Public inputs and outputs
 
-The model receives the DUT form instruction and public contract. It writes the
-exact Verilog-A artifact bundle declared by the family: either one `.va` file
-or all files of one declared system bundle. In both cases the submission is one
-DUT answer and is evaluated atomically. No starter DUT is provided. G2-G5
-additionally receive the shared feedback CLI; G0/G1 receive no tools.
+The model receives the DUT form instruction, which renders the complete public
+behavior and artifact contract from `family_spec.json`. It writes the exact
+Verilog-A artifact bundle declared by the family: either one `.va` file or all
+files of one declared system bundle. In both cases the submission is one DUT
+answer and is evaluated atomically. No starter DUT is provided. G2-G5
+additionally receive the shared feedback CLI; G0/G1 receive no tools. The
+machine-readable `public_contract.json` remains release/evaluator metadata and
+is hash-bound to the prompt record rather than mounted into the model runtime.
 
 ### 9.2 Public feedback
 
@@ -1261,10 +1266,10 @@ Requirements:
 
 - the canonical form instruction is byte-identical across modes for one task;
 - wrappers and skills are composed by one global mode registry;
-- the neutral wrapper may describe transport, workspace, submission, tool
-  availability, working-token accounting, and safety limits, but MUST NOT add
-  circuit guidance, debugging strategy, baseline policy, or a prescribed tool
-  sequence;
+- direct and agentic conditions use separate global wrappers because their
+  transport and submission protocols differ; both wrappers MUST remain neutral
+  and MUST NOT add circuit guidance, debugging strategy, baseline policy, or a
+  prescribed tool sequence;
 - G0 and G1 receive no shell, filesystem browsing, EVAS, or feedback access;
   their canonical public inputs are serialized into the deterministic one-shot
   prompt described in Section 7.4;
@@ -1277,8 +1282,9 @@ Requirements:
   values, mutation names, checker details, or gold code;
 - mode name, wrapper version, and experiment IDs are stored in runner metadata,
   not inserted as model-visible labels unless required by an external protocol;
-- every record stores hashes of the canonical instruction, wrapper, skills,
-  public bundle, model configuration, and toolchain lock;
+- every record stores hashes of the canonical instruction, associated
+  public-contract metadata, wrapper, guides, public bundle, model configuration,
+  and toolchain lock;
 - every G2-G5 run records the actual EVAS engine/profile after dispatch, and a
   comparison may not silently mix different evaluator identities.
 
@@ -1292,18 +1298,18 @@ G2-G5.
 ### 13.1 Form skills and feedback package
 
 The benchmark has three mutually exclusive versioned form-skill documents and
-one logical feedback-skill treatment. The feedback treatment is rendered from
-one shared EVAS core plus exactly one form adapter. These are global assets, not
+one logical feedback-guide treatment. The feedback treatment is rendered from
+one shared EVAS core plus exactly one form guide. These are global assets, not
 one hand-authored skill per circuit. Task-specific numbers, interfaces,
 expected behavior, filenames, and fault symptoms remain in the canonical
-instruction and public contract.
+instruction and its hash-bound public-contract metadata.
 
 | Skill | Applies to | Required methodological content | Must exclude |
 |---|---|---|---|
 | `dut_modeling.md` | DUT only | contract-to-artifact planning; single-file versus declared system-bundle discipline; Verilog-A voltage/event/state semantics; rail-relative behavior; parameter portability; continuous observability; final interface/artifact audit | task constants, checker thresholds, feedback-loop instructions, gold patterns |
 | `testbench_verification.md` | Testbench only | property-to-stimulus/observation matrix; stable DUT binding; stimulus-relative checks; bounded transient design; required trace saving; gold acceptance plus fault sensitivity; distinction between behavioral kill and invalid run | DUT implementation advice, mutation identities, private coverage targets, evaluator internals |
 | `bugfix_diagnosis.md` | Bugfix only | inspect the complete bundle and dependency graph from the supplied source; reason from the public contract; make a minimal semantic repair; preserve files/modules/interfaces and all public behavior | runtime-baseline instructions, root-cause hints, changed lines/constants, gold diff, separate hidden writing skill |
-| `feedback/core.md` + `feedback/<form>.md` | DUT, Testbench, Bugfix agentic modes | query capabilities; choose result channels; triage artifact, AHDL-like, compile, runtime, trace, metric, and property stages; apply the form-specific baseline and evidence workflow | fixed task recipe, forced channel sequence, task values, private score requests, checker internals |
+| `feedback_core.md` + `feedback_<form>.md` | DUT, Testbench, Bugfix agentic modes | query capabilities; choose result channels; triage artifact, AHDL-like, compile, runtime, trace, metric, and property stages; apply the form-specific baseline and evidence workflow | fixed task recipe, forced channel sequence, task values, private score requests, checker internals |
 
 The DUT skill SHOULD cover at least exact artifact planning, module and port
 preservation, parameter declaration, continuous voltage contribution, event
@@ -1327,22 +1333,22 @@ rerun strategy belong only in the feedback package. Essential Verilog-A syntax
 and semantic guardrails belong inside the form skill.
 
 The feedback core SHOULD teach the agent to discover available channels and
-choose them according to its current hypothesis. The DUT adapter explains
+choose them according to its current hypothesis. The DUT guide explains
 expected/observed values, event times, metric gaps, and traces. The Bugfix
-adapter explains that the agent may establish its own baseline before editing.
-The Testbench adapter explains correct-DUT failure, survived negative DUT,
-behavioral kill, and invalid run. No adapter forces every channel on every call.
+guide explains that the agent may establish its own baseline before editing.
+The Testbench guide explains correct-DUT failure, survived negative DUT,
+behavioral kill, and invalid run. No guide forces every channel on every call.
 
 ### 13.2 Skill composition and integrity
 
-`prompt_modes/skills/manifest.json` MUST record for each component its stable
+`prompt_modes/manifest.json` MUST record for each component its stable
 ID, semantic version, applicable form, UTF-8 byte hash, license/provenance, and
 token count under every reported model tokenizer. Composition is deterministic:
 
 1. canonical instruction and public inputs;
-2. neutral transport/tool wrapper;
-3. the applicable form skill when enabled; and
-4. the shared feedback core and applicable form adapter when enabled.
+2. the applicable form skill when enabled;
+3. the shared feedback core and applicable form guide when enabled; and
+4. the mode-specific transport/submission wrapper as the final component.
 
 G1 and G3 MUST receive byte-identical copies of the applicable form skill. G4
 and G5 for the same task form MUST receive byte-identical rendered feedback
@@ -1407,9 +1413,10 @@ At minimum, telemetry records:
 
 - prompt rendering time and, for each static component, ID, order, bytes,
   SHA-256, tokenizer identity, and token count for the instruction, public
-  contract, public artifacts, neutral wrapper, form skill, and feedback
-  package; static component tokens are reported but excluded from working-token
-  consumption;
+  artifacts, mode wrapper, form skill, and feedback package; the associated
+  public-contract metadata hash is recorded separately because the JSON is not
+  model-visible; static component tokens are reported but excluded from
+  working-token consumption;
 - each model turn's request/response timestamps, latency, provider-reported
   input, cached-input, output, and reasoning tokens when available, finish
   reason, and request/response hashes;
@@ -1834,7 +1841,7 @@ pilot-controlled numerical and procedural choices have been frozen:
     structural security gate, and cannot redefine or directly drive the DUT,
     probe private hierarchy, or access evaluator and negative source;
 12. G0-G5 use exactly the applicable global form skill and/or rendered feedback
-    core-plus-form adapter declared by the mode registry, preserving the two
+    core-plus-form guide declared by the mode registry, preserving the two
     direct plus four agentic design;
 13. a sealed attempt demonstrates reference-token working-budget accounting,
     automatic latest-artifact submission at exhaustion, frozen candidate
