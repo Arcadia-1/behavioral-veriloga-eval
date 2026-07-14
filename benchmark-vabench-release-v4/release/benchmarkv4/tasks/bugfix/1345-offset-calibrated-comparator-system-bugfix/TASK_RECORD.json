@@ -1,0 +1,25 @@
+{
+  "candidate_artifacts": [
+    "calibrated_comparator_top.va",
+    "comparator_core.va",
+    "offset_dac.va",
+    "calibration_fsm.va"
+  ],
+  "canonical_dut_source": "release/dut-base-v3-exact-five-hash-bound-v2/345-offset-calibrated-comparator-system",
+  "family_id": "345",
+  "family_spec_sha256": "1e47e48013dd7fb2a4cda900e428102a4a5b8255752d9374ebdaa05a8184a234",
+  "form": "bugfix",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "5dedde69516a832513b06ccb2bc96287529cd3f548a9d64fc1fd0a66f9c45cb6",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/bugfix/1345-offset-calibrated-comparator-system-bugfix",
+  "task_id": "v4-1345"
+}

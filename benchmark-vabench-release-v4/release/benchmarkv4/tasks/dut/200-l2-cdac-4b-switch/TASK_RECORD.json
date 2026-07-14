@@ -1,0 +1,22 @@
+{
+  "candidate_artifacts": [
+    "l2_cdac_4b_switch.va"
+  ],
+  "canonical_dut_source": "release/dut-base-v3-exact-five-hash-bound-v2/200-l2-cdac-4b-switch",
+  "family_id": "200",
+  "family_spec_sha256": "edabb7f416acf7ccb448edd0b448fc706c5c933db7365cf7bae9e9f915aceefa",
+  "form": "dut",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "ce97bfb74fe58616bcb7760f445fbb46ab1bf30a5fc3e2d43b644844f36d4b42",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/dut/200-l2-cdac-4b-switch",
+  "task_id": "v4-200"
+}

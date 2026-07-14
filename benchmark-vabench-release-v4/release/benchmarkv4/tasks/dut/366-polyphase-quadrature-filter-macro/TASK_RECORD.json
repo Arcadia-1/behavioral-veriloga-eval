@@ -1,0 +1,22 @@
+{
+  "candidate_artifacts": [
+    "polyphase_quadrature_filter.va"
+  ],
+  "canonical_dut_source": "release/dut-base-v3-exact-five-hash-bound-v2/366-polyphase-quadrature-filter-macro",
+  "family_id": "366",
+  "family_spec_sha256": "ddd5f8e5d1118ad459e679f5c118ed3e0a783dc804f76186edbbd2d725174bed",
+  "form": "dut",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "0c3425f20d1d60de49fcb51864a741ef572fb9dcd4867726f69b6861dc84bcf4",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/dut/366-polyphase-quadrature-filter-macro",
+  "task_id": "v4-366"
+}

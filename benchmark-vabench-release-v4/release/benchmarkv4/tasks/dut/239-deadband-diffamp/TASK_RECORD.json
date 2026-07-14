@@ -1,0 +1,22 @@
+{
+  "candidate_artifacts": [
+    "deadband_diffamp.va"
+  ],
+  "canonical_dut_source": "release/dut-base-v3-exact-five-hash-bound-v2/239-deadband-diffamp",
+  "family_id": "239",
+  "family_spec_sha256": "c5f6f01b1af7c36ad41346f07eb246d5a3884f08550b1c2df7558dcfcad59df5",
+  "form": "dut",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "d7befa8ca3208645f66225eb8b9ed6d0bb5973aee545967100b3f6481c545dd5",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/dut/239-deadband-diffamp",
+  "task_id": "v4-239"
+}

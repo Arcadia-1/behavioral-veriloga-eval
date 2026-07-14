@@ -1,0 +1,22 @@
+{
+  "candidate_artifacts": [
+    "phase_accumulator_timer_wrap_ref.va"
+  ],
+  "canonical_dut_source": "release/dut-base-v3-exact-five-hash-bound-v2/026-digital-phase-accumulator-with-modulo-wrap",
+  "family_id": "026",
+  "family_spec_sha256": "afe111b6b06696708b2de0a1a7cc65651d6595bfff2cd825b4110e4401347556",
+  "form": "dut",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "52bd98f331b3040e9e819628a1b761b966e0a1230d89f82d348ef89c2ef8fec5",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/dut/026-digital-phase-accumulator-with-modulo-wrap",
+  "task_id": "v4-026"
+}

@@ -1,0 +1,22 @@
+{
+  "candidate_artifacts": [
+    "divide_by_two_toggle.va"
+  ],
+  "canonical_dut_source": "release/dut-base-v3-exact-five-hash-bound-v2/155-divide-by-two-toggle",
+  "family_id": "155",
+  "family_spec_sha256": "ed799899d9b98cec20202f88839083dd7d023019741ee75d6881c173be70c68d",
+  "form": "bugfix",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "90eb476a8b2a016166faaefcb32092902cf2e37d6ecc1f0a0563b3f6b05f4d1f",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/bugfix/1155-divide-by-two-toggle-bugfix",
+  "task_id": "v4-1155"
+}

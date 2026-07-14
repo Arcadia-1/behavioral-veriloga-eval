@@ -1,0 +1,22 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source": "release/dut-base-v3-exact-five-hash-bound-v2/282-enable-saturating-ready-counter",
+  "family_id": "282",
+  "family_spec_sha256": "000217e5ddf28a03d8b139e42450585a9534e02c6893897460abff3ebfd7ecfc",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "2d26e6fed326f67dc19d87c114b527568ea5859575bf353042886cce7231b603",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/testbench/782-enable-saturating-ready-counter-testbench",
+  "task_id": "v4-782"
+}

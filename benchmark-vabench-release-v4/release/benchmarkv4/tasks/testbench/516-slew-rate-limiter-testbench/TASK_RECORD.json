@@ -1,0 +1,22 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source": "release/dut-base-v3-exact-five-hash-bound-v2/016-slew-rate-limiter",
+  "family_id": "016",
+  "family_spec_sha256": "7205a7092111d215f0ca592aecee6d312ea1cd4e7b300c733e9748c685154f79",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "fe9e0d47f7d2ba9302a7eaee4b807767b8541c2f7b0f1bb0464ed0ac603552f5",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/testbench/516-slew-rate-limiter-testbench",
+  "task_id": "v4-516"
+}

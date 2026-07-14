@@ -1,0 +1,22 @@
+{
+  "candidate_artifacts": [
+    "saturation_recovery_limiter.va"
+  ],
+  "canonical_dut_source": "release/dut-base-v3-exact-five-hash-bound-v2/269-saturation-recovery-limiter",
+  "family_id": "269",
+  "family_spec_sha256": "46a32763c11e8c15f03d8dda059967ad5da9553d2cd21acda36e4eadcf003d12",
+  "form": "bugfix",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "8bc8d66e39810278d485544716f7cd659d3d3fb92faceebe0a4ab76654e44409",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/bugfix/1269-saturation-recovery-limiter-bugfix",
+  "task_id": "v4-1269"
+}

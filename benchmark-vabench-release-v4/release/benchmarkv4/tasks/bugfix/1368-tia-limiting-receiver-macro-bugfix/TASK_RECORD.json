@@ -1,0 +1,22 @@
+{
+  "candidate_artifacts": [
+    "tia_limiting_receiver.va"
+  ],
+  "canonical_dut_source": "release/dut-base-v3-exact-five-hash-bound-v2/368-tia-limiting-receiver-macro",
+  "family_id": "368",
+  "family_spec_sha256": "97c1ecf0ab03d524f7b23e532445ab25deae794dc56ee991df30577ea51f60b8",
+  "form": "bugfix",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "c0df4bcbdec83ffdb415245738ed049ec373a27bcdc83ce9899ed65f0be02d7f",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/bugfix/1368-tia-limiting-receiver-macro-bugfix",
+  "task_id": "v4-1368"
+}

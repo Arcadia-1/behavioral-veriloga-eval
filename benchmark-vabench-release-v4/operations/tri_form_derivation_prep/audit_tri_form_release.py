@@ -12,8 +12,8 @@ from typing import Any
 
 
 PACKAGE_ROOT = Path(__file__).resolve().parents[2]
-DEFAULT_RELEASE = PACKAGE_ROOT / "release" / "tri-form-v4-1200-draft"
-DEFAULT_PRIVATE_EVALUATOR = PACKAGE_ROOT / "release" / "tri-form-v4-1200-private-evaluator"
+DEFAULT_RELEASE = PACKAGE_ROOT / "release" / "benchmarkv4"
+DEFAULT_PRIVATE_SUBDIR = "private_evaluator"
 FORMS = ("dut", "testbench", "bugfix")
 MODES = ("G0", "G1", "G2", "G3", "G4", "G5")
 DIRECT_MODES = {"G0", "G1"}
@@ -180,7 +180,7 @@ def build_release_seal(
             raise SystemExit(f"cannot seal release; missing artifact: {relative}")
         artifact_hashes[relative] = file_sha(path)
     return {
-        "schema_version": "v4-tri-form-release-seal-v1",
+        "schema_version": "v4-benchmarkv4-release-seal-v1",
         "release_status": "gate3_hash_bound_certification_reused",
         "source_score_denominator_manifest_sha256": source_manifest_sha256,
         "artifact_sha256": artifact_hashes,
@@ -544,12 +544,16 @@ def audit_prompt_components(
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--release", type=Path, default=DEFAULT_RELEASE)
-    parser.add_argument("--private-evaluator", type=Path, default=DEFAULT_PRIVATE_EVALUATOR)
+    parser.add_argument("--private-evaluator", type=Path)
     parser.add_argument("--output", type=Path)
     parser.add_argument("--seal-output", type=Path)
     args = parser.parse_args()
     release = args.release.expanduser().resolve()
-    private_evaluator = args.private_evaluator.expanduser().resolve()
+    private_evaluator = (
+        args.private_evaluator.expanduser().resolve()
+        if args.private_evaluator is not None
+        else release / DEFAULT_PRIVATE_SUBDIR
+    )
     manifest = read_json(release / "MANIFEST.json")
     tasks = read_json(release / "TASK_INDEX.json").get("tasks") or []
     source = PACKAGE_ROOT / str(manifest.get("source_release") or "")
@@ -619,7 +623,7 @@ def main() -> int:
     if prompt_count != 7200:
         problems.append(f"prompt record count is {prompt_count}, expected 7200")
     report = {
-        "schema_version": "v4-tri-form-release-audit-v1",
+        "schema_version": "v4-benchmarkv4-release-audit-v1",
         "status": "pass" if not problems else "fail",
         "family_count": len(family_forms),
         "task_count": len(tasks),

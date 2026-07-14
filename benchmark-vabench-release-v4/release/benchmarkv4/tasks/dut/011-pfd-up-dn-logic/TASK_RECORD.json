@@ -1,0 +1,22 @@
+{
+  "candidate_artifacts": [
+    "pfd_updn.va"
+  ],
+  "canonical_dut_source": "release/dut-base-v3-exact-five-hash-bound-v2/011-pfd-up-dn-logic",
+  "family_id": "011",
+  "family_spec_sha256": "e8f6e89675c1ee3b70fafbac899267440606007c4b1a88a55305894ebcdb65ff",
+  "form": "dut",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "185085ababb25e43ddc953a1d319c499792db5c19d3b0aa08719c72a00a6c41e",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/dut/011-pfd-up-dn-logic",
+  "task_id": "v4-011"
+}

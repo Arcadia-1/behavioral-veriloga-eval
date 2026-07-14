@@ -1,0 +1,22 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source": "release/dut-base-v3-exact-five-hash-bound-v2/093-gain-estimator",
+  "family_id": "093",
+  "family_spec_sha256": "f4814c60da3ce742d75f49433bb59ac84eb1b7b552443025bfaa4ef42e9e4976",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "89dada66fc4ef930ed7c59e2303c46ba14d9376b6a3ebafb24f2450e4253e421",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/testbench/593-gain-estimator-testbench",
+  "task_id": "v4-593"
+}

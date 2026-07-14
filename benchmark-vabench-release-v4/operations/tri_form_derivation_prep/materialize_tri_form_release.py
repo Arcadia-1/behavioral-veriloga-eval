@@ -20,8 +20,8 @@ from typing import Any, Iterable
 PACKAGE_ROOT = Path(__file__).resolve().parents[2]
 PREP_ROOT = Path(__file__).resolve().parent
 DEFAULT_SOURCE = PACKAGE_ROOT / "release" / "dut-base-v3-exact-five-hash-bound-v2"
-DEFAULT_OUTPUT = PACKAGE_ROOT / "release" / "tri-form-v4-1200-draft"
-DEFAULT_PRIVATE_OUTPUT = PACKAGE_ROOT / "release" / "tri-form-v4-1200-private-evaluator"
+DEFAULT_OUTPUT = PACKAGE_ROOT / "release" / "benchmarkv4"
+DEFAULT_PRIVATE_SUBDIR = "private_evaluator"
 PROMPT_ASSETS = PREP_ROOT / "prompt_assets"
 MODES = {
     "G0": {"process": "direct_one_shot", "form_skill": False, "feedback_guide": False, "feedback_cli": False},
@@ -425,7 +425,7 @@ def common_task_record(
     source_task: str, candidate_artifacts: list[str], public_bundle_sha: str,
 ) -> dict[str, Any]:
     return {
-        "schema_version": "v4-tri-form-task-record-v1",
+        "schema_version": "v4-benchmarkv4-task-record-v1",
         "task_id": task_id,
         "form": form,
         "family_id": family_id,
@@ -506,7 +506,7 @@ def build_dut_view(
     )
     contract = public_semantics(spec)
     contract.update({
-        "schema_version": "v4-tri-form-public-contract-v1",
+        "schema_version": "v4-benchmarkv4-public-contract-v1",
         "task_id": f"v4-{family}",
         "form": "dut",
         "target_artifacts": [str(item["path"]) for item in spec["artifact_contract"]["files"]],
@@ -555,7 +555,7 @@ def build_testbench_view(
     artifacts = copy_solution(source_task, supplied, spec)
     contract = public_semantics(spec)
     contract.update({
-        "schema_version": "v4-tri-form-public-contract-v1",
+        "schema_version": "v4-benchmarkv4-public-contract-v1",
         "task_id": f"v4-{task_num:03d}",
         "form": "testbench",
         "target_artifacts": ["testbench.scs"],
@@ -653,7 +653,7 @@ def build_bugfix_view(
     changed = overlay_mutation(source_task, seed_review["mutation_id"], buggy, artifacts)
     contract = public_semantics(spec)
     contract.update({
-        "schema_version": "v4-tri-form-public-contract-v1",
+        "schema_version": "v4-benchmarkv4-public-contract-v1",
         "task_id": f"v4-{task_num}",
         "form": "bugfix",
         "target_artifacts": artifacts,
@@ -787,12 +787,16 @@ def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--source", type=Path, default=DEFAULT_SOURCE)
     parser.add_argument("--output", type=Path, default=DEFAULT_OUTPUT)
-    parser.add_argument("--private-output", type=Path, default=DEFAULT_PRIVATE_OUTPUT)
+    parser.add_argument("--private-output", type=Path)
     parser.add_argument("--force", action="store_true")
     args = parser.parse_args()
     source = args.source.expanduser().resolve()
     output = args.output.expanduser().resolve()
-    private_output = args.private_output.expanduser().resolve()
+    private_output = (
+        args.private_output.expanduser().resolve()
+        if args.private_output is not None
+        else output / DEFAULT_PRIVATE_SUBDIR
+    )
     for path, label in ((output, "output"), (private_output, "private output")):
         if not path.exists():
             continue
@@ -839,10 +843,10 @@ def main() -> int:
         "selection_policy": "semantic_fault_complexity_v1",
         "families": seed_rows,
     })
-    write_json(output / "TASK_INDEX.json", {"schema_version": "v4-tri-form-task-index-v1", "tasks": task_rows})
+    write_json(output / "TASK_INDEX.json", {"schema_version": "v4-benchmarkv4-task-index-v1", "tasks": task_rows})
     counts = {form: sum(item["form"] == form for item in task_rows) for form in ("dut", "testbench", "bugfix")}
     manifest = {
-        "schema_version": "v4-tri-form-release-manifest-v1",
+        "schema_version": "v4-benchmarkv4-release-manifest-v1",
         "release_status": "materialized_hash_bound_certification_reuse_audit_pending",
         "family_count": 400,
         "task_count": len(task_rows),
@@ -860,13 +864,19 @@ def main() -> int:
             "simulation_rerun_required_for_materialization": False,
         },
         "prompt_record_count": len(task_rows) * len(MODES),
-        "release_surface": "public_solver_package",
+        "release_surface": "benchmarkv4_package",
+        "public_surface": {
+            "tasks": "tasks",
+            "prompt_modes": "prompt_modes",
+            "task_index": "TASK_INDEX.json",
+        },
+        "private_evaluator": rel(private_output, output),
         "tasks_index": "TASK_INDEX.json",
         "materialized_artifact_sha256": materialized_artifact_hashes(output, PUBLIC_MATERIALIZED_ARTIFACTS),
     }
     write_json(output / "MANIFEST.json", manifest)
     private_manifest = {
-        "schema_version": "v4-tri-form-private-evaluator-manifest-v1",
+        "schema_version": "v4-benchmarkv4-private-evaluator-manifest-v1",
         "release_surface": "private_evaluator_package",
         "public_release": rel(output, PACKAGE_ROOT),
         "task_count": len(task_rows),

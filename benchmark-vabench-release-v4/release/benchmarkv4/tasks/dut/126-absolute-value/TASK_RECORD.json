@@ -1,0 +1,22 @@
+{
+  "candidate_artifacts": [
+    "absolute_value_behavior.va"
+  ],
+  "canonical_dut_source": "release/dut-base-v3-exact-five-hash-bound-v2/126-absolute-value",
+  "family_id": "126",
+  "family_spec_sha256": "642472df236718ff8407f37cc4a8208d6b2e1f736d995f985c8bc3d7b89c994d",
+  "form": "dut",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "2f0579038474c930ff1b5307e1e0185aa3fd0f8b83d2bd1dbe88e7684ec222cb",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/dut/126-absolute-value",
+  "task_id": "v4-126"
+}

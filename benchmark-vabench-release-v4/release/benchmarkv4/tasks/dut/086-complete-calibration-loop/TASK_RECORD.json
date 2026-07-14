@@ -1,0 +1,22 @@
+{
+  "candidate_artifacts": [
+    "complete_calibration_loop.va"
+  ],
+  "canonical_dut_source": "release/dut-base-v3-exact-five-hash-bound-v2/086-complete-calibration-loop",
+  "family_id": "086",
+  "family_spec_sha256": "9ccc76dae3ce35797874a141923b07ed607ac783785390a5321e0ae02888804a",
+  "form": "dut",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "a5eb3d21b416099296974c23d043f5b99e6dc42c105271a5fd3fd21a84b92284",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/dut/086-complete-calibration-loop",
+  "task_id": "v4-086"
+}

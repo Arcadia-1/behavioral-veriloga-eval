@@ -1,0 +1,22 @@
+{
+  "candidate_artifacts": [
+    "clocked_comparator_dual_output.va"
+  ],
+  "canonical_dut_source": "release/dut-base-v3-exact-five-hash-bound-v2/218-clocked-comparator-dual-output",
+  "family_id": "218",
+  "family_spec_sha256": "d10c523bd6e93e0d75df47dc7baf5c130a020023027a5a531fcb99bab206683b",
+  "form": "bugfix",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "31f8265a1460d1cdc4361a59b3c86987aee9725b5b0c4ec667f86afdba70b535",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/bugfix/1218-clocked-comparator-dual-output-bugfix",
+  "task_id": "v4-1218"
+}

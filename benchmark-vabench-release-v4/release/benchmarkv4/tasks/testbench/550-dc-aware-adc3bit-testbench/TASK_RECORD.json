@@ -1,0 +1,22 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source": "release/dut-base-v3-exact-five-hash-bound-v2/050-dc-aware-adc3bit",
+  "family_id": "050",
+  "family_spec_sha256": "2882cdfb0fa38db8d336c8e286949affcbdfc5a91dc48bb1f542cdba3f01f2a6",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "bc262897ae882c242af24a8f1b608544af1192894328faa0ccac70f0c2c26267",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/testbench/550-dc-aware-adc3bit-testbench",
+  "task_id": "v4-550"
+}

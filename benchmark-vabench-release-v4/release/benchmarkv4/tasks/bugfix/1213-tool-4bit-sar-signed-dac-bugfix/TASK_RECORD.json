@@ -1,0 +1,22 @@
+{
+  "candidate_artifacts": [
+    "tool_4bit_sar_signed_dac.va"
+  ],
+  "canonical_dut_source": "release/dut-base-v3-exact-five-hash-bound-v2/213-tool-4bit-sar-signed-dac",
+  "family_id": "213",
+  "family_spec_sha256": "5e9573ccd93d1c21c8ab2e3f055359c810d46cc1129892917c43b08ec75ac941",
+  "form": "bugfix",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "74eab6c97b5307420463ffb22ab9e23bbcd69d8bb7a7b0f19240487a7e968980",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/bugfix/1213-tool-4bit-sar-signed-dac-bugfix",
+  "task_id": "v4-1213"
+}

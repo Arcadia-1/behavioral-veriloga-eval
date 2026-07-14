@@ -1,0 +1,22 @@
+{
+  "candidate_artifacts": [
+    "calibration_quadrant_mapper.va"
+  ],
+  "canonical_dut_source": "release/dut-base-v3-exact-five-hash-bound-v2/288-calibration-quadrant-mapper",
+  "family_id": "288",
+  "family_spec_sha256": "6ba90dbd73ccaab5779427a3f715022aa350a95141fe0304e5a132db4f7bb3f5",
+  "form": "bugfix",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "2144e317182228678ebe6eee6a862cfa94388694c43fc814518f6c20d7e2b9e4",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/bugfix/1288-calibration-quadrant-mapper-bugfix",
+  "task_id": "v4-1288"
+}

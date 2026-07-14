@@ -1,0 +1,22 @@
+{
+  "candidate_artifacts": [
+    "pfd_tdomain_reset_window.va"
+  ],
+  "canonical_dut_source": "release/dut-base-v3-exact-five-hash-bound-v2/193-pfd-tdomain-reset-window",
+  "family_id": "193",
+  "family_spec_sha256": "f3e45096b05673f83790b51f9e39064c4e866da48d28e883e36ab611f793438b",
+  "form": "bugfix",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "cf5c0da0934637b1404a4f6b4ca0da686502a4c72b2341572dee1dd82f0f5979",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/bugfix/1193-pfd-tdomain-reset-window-bugfix",
+  "task_id": "v4-1193"
+}

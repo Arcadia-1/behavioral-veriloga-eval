@@ -1,0 +1,22 @@
+{
+  "candidate_artifacts": [
+    "coarse_qtz_3bit_residue.va"
+  ],
+  "canonical_dut_source": "release/dut-base-v3-exact-five-hash-bound-v2/224-coarse-qtz-3bit-residue",
+  "family_id": "224",
+  "family_spec_sha256": "d04cf078028bc9fee86321139737bc38e42e909bac75ef5652efa57b211cdfe4",
+  "form": "bugfix",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "a60ce96599ca9b15d6db0f564ce22b010d2575b5281a69654b0d3e0554b361e6",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/bugfix/1224-coarse-qtz-3bit-residue-bugfix",
+  "task_id": "v4-1224"
+}

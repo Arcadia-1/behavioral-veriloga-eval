@@ -1,0 +1,22 @@
+{
+  "candidate_artifacts": [
+    "prbs7_ref.va"
+  ],
+  "canonical_dut_source": "release/dut-base-v3-exact-five-hash-bound-v2/078-lfsr-prbs-generator",
+  "family_id": "078",
+  "family_spec_sha256": "89a9f61a1c08879a2527f15e99d61e6423285fc6f847173a7f3c888630a2532d",
+  "form": "dut",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "83c35d704136c9c524bcca122d9e034769f95f5a80c886087ba1dd709b71c831",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/dut/078-lfsr-prbs-generator",
+  "task_id": "v4-078"
+}

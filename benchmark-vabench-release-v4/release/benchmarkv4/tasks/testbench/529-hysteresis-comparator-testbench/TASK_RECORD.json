@@ -1,0 +1,22 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source": "release/dut-base-v3-exact-five-hash-bound-v2/029-hysteresis-comparator",
+  "family_id": "029",
+  "family_spec_sha256": "796ef71d3155a4a57c71dd4f2dba96d18424fabd3436132ec80b4a926d62c4a1",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "cf1032b5b2b338ade75cda60d213d453ac661cc2791a6fb348810b7ba6ab9c78",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/testbench/529-hysteresis-comparator-testbench",
+  "task_id": "v4-529"
+}

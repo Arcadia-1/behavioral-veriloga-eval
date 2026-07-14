@@ -11,8 +11,8 @@ from typing import Any
 
 
 PACKAGE_ROOT = Path(__file__).resolve().parents[2]
-DEFAULT_RELEASE = PACKAGE_ROOT / "release" / "tri-form-v4-1200-draft"
-DEFAULT_PRIVATE_EVALUATOR = PACKAGE_ROOT / "release" / "tri-form-v4-1200-private-evaluator"
+DEFAULT_RELEASE = PACKAGE_ROOT / "release" / "benchmarkv4"
+DEFAULT_PRIVATE_SUBDIR = "private_evaluator"
 AGENTIC = {"G2", "G3", "G4", "G5"}
 FORM_SKILLS = {
     "dut": "dut_modeling.md",
@@ -246,7 +246,7 @@ def install_evaluator(private_task_dir: Path, evaluator_root: Path, record: dict
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--release", type=Path, default=DEFAULT_RELEASE)
-    parser.add_argument("--private-evaluator", type=Path, default=DEFAULT_PRIVATE_EVALUATOR)
+    parser.add_argument("--private-evaluator", type=Path)
     parser.add_argument("--task", required=True)
     parser.add_argument("--mode", choices=[f"G{x}" for x in range(6)], required=True)
     parser.add_argument("--output", type=Path, required=True)
@@ -254,7 +254,11 @@ def main() -> int:
     parser.add_argument("--force", action="store_true")
     args = parser.parse_args()
     release = args.release.expanduser().resolve()
-    private_evaluator = args.private_evaluator.expanduser().resolve()
+    private_evaluator = (
+        args.private_evaluator.expanduser().resolve()
+        if args.private_evaluator is not None
+        else release / DEFAULT_PRIVATE_SUBDIR
+    )
     output = args.output.expanduser().resolve()
     if output.exists():
         if not args.force:

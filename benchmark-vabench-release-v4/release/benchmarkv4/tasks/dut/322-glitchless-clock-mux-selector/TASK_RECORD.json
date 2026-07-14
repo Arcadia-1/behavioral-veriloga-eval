@@ -1,0 +1,22 @@
+{
+  "candidate_artifacts": [
+    "glitchless_clock_mux_selector.va"
+  ],
+  "canonical_dut_source": "release/dut-base-v3-exact-five-hash-bound-v2/322-glitchless-clock-mux-selector",
+  "family_id": "322",
+  "family_spec_sha256": "bc9d8555ebfb2acec4e0e0b21694eb69894861e101571fdb2733ce50261fa688",
+  "form": "dut",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "1c90f11c397bbac4c0ab1cef9a85dd7ad8f77d344be74bcc943e9bbd5a4ab92f",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/dut/322-glitchless-clock-mux-selector",
+  "task_id": "v4-322"
+}

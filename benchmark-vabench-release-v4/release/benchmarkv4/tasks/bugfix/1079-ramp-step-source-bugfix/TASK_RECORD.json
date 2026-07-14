@@ -1,0 +1,22 @@
+{
+  "candidate_artifacts": [
+    "bound_step_period_guard_ref.va"
+  ],
+  "canonical_dut_source": "release/dut-base-v3-exact-five-hash-bound-v2/079-ramp-step-source",
+  "family_id": "079",
+  "family_spec_sha256": "0aa624a078c56cf70b272caca7061272c7d6e5de7bd3080e2456719ee11892d5",
+  "form": "bugfix",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "4e2e4af5b18f2b2a4e5188d85185f8c6c1b719c2c0a4346e3c67e8c7d43f779e",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/bugfix/1079-ramp-step-source-bugfix",
+  "task_id": "v4-1079"
+}

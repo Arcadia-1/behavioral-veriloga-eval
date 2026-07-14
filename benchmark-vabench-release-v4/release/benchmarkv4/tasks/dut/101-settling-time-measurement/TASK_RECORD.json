@@ -1,0 +1,22 @@
+{
+  "candidate_artifacts": [
+    "settling_time_measurement_tb.va"
+  ],
+  "canonical_dut_source": "release/dut-base-v3-exact-five-hash-bound-v2/101-settling-time-measurement",
+  "family_id": "101",
+  "family_spec_sha256": "eefb23fc7add6d41f3c48ce132af632df56500c06056afc2c916ccda217afab6",
+  "form": "dut",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "955d5eb4076aae2c8ac143b12c76d2fe17748c0a0ba6651363eb086aa74c1cc8",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/dut/101-settling-time-measurement",
+  "task_id": "v4-101"
+}

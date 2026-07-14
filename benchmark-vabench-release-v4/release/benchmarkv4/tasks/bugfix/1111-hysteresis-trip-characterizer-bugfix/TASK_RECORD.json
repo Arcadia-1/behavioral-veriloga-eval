@@ -1,0 +1,22 @@
+{
+  "candidate_artifacts": [
+    "hysteresis_trip_characterizer.va"
+  ],
+  "canonical_dut_source": "release/dut-base-v3-exact-five-hash-bound-v2/111-hysteresis-trip-characterizer",
+  "family_id": "111",
+  "family_spec_sha256": "61e5ac5228ed7010ee7454ef22449836d645f4b6093a0a53b9326167a43e1cae",
+  "form": "bugfix",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "9660a7c913fb7aa9595f2ea41f1ea9fe8b6616b08e2c8c2c326738c2a6e7db4e",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/bugfix/1111-hysteresis-trip-characterizer-bugfix",
+  "task_id": "v4-1111"
+}

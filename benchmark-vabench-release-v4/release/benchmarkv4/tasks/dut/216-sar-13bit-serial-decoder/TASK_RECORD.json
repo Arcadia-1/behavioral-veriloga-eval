@@ -1,0 +1,22 @@
+{
+  "candidate_artifacts": [
+    "sar_13bit_serial_decoder.va"
+  ],
+  "canonical_dut_source": "release/dut-base-v3-exact-five-hash-bound-v2/216-sar-13bit-serial-decoder",
+  "family_id": "216",
+  "family_spec_sha256": "b2cc0614235afc6b0dea7fd9169768dc2bcb5f2330677f0659d9535759f8207c",
+  "form": "dut",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "0bc0dd8aa0f9e1148330adc7e6bf02a7e4e6b89d7380a51340f762d861a097ac",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/dut/216-sar-13bit-serial-decoder",
+  "task_id": "v4-216"
+}

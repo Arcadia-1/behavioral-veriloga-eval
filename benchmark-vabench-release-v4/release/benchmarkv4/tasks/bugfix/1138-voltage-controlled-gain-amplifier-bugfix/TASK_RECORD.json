@@ -1,0 +1,22 @@
+{
+  "candidate_artifacts": [
+    "voltage_controlled_gain_amplifier.va"
+  ],
+  "canonical_dut_source": "release/dut-base-v3-exact-five-hash-bound-v2/138-voltage-controlled-gain-amplifier",
+  "family_id": "138",
+  "family_spec_sha256": "7bfc808d5d32d05fe2786844112f3b6027625c21aec7ed71c21e22f97e09faaa",
+  "form": "bugfix",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "3411c44f6ee32658261160f6e106d374d63afa33e6c2a87ea25cf790b39aa24d",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/bugfix/1138-voltage-controlled-gain-amplifier-bugfix",
+  "task_id": "v4-1138"
+}

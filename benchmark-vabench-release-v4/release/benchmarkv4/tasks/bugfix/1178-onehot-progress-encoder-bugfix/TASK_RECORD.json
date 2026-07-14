@@ -1,0 +1,22 @@
+{
+  "candidate_artifacts": [
+    "onehot_progress_encoder.va"
+  ],
+  "canonical_dut_source": "release/dut-base-v3-exact-five-hash-bound-v2/178-onehot-progress-encoder",
+  "family_id": "178",
+  "family_spec_sha256": "c57b742d9992a441851d56586747d7510dd350236300531a3664d9db215b0ac0",
+  "form": "bugfix",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "1f9afda3e906729123b334315e38baa400da75959927ba65b73fa4dea282153c",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/bugfix/1178-onehot-progress-encoder-bugfix",
+  "task_id": "v4-1178"
+}

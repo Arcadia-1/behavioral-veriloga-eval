@@ -1,0 +1,22 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source": "release/dut-base-v3-exact-five-hash-bound-v2/069-configurable-pulse-train-generator",
+  "family_id": "069",
+  "family_spec_sha256": "e329d16ec84f9acaa1839c363fcbf0f0061c35d3de69925880cff58b84df68cb",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "36b4653f5754d310a0db797816b494ffabe0795fbf2f853c7f176456086b8e2d",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/testbench/569-configurable-pulse-train-generator-testbench",
+  "task_id": "v4-569"
+}

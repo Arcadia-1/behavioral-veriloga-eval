@@ -1,0 +1,22 @@
+{
+  "candidate_artifacts": [
+    "bipolar_dac_4b_continuous.va"
+  ],
+  "canonical_dut_source": "release/dut-base-v3-exact-five-hash-bound-v2/107-bipolar-dac-4b-continuous",
+  "family_id": "107",
+  "family_spec_sha256": "743665bdb84b6ce71d50c89689ccb984db5dd53539430ff9342ad2cb274e1254",
+  "form": "bugfix",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "489dd64ee4e1e6c33d56fd3972f9827ca27bf84e33bea816a68af7b314f8baaf",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/bugfix/1107-bipolar-dac-4b-continuous-bugfix",
+  "task_id": "v4-1107"
+}

@@ -1,0 +1,22 @@
+{
+  "candidate_artifacts": [
+    "dac_mismatch_unit_weighting_model.va"
+  ],
+  "canonical_dut_source": "release/dut-base-v3-exact-five-hash-bound-v2/025-dac-mismatch-unit-weighting-model",
+  "family_id": "025",
+  "family_spec_sha256": "1acdd25464a0149d401d5d678772da49ab86763afebd8c9867bbb9767643b3d5",
+  "form": "bugfix",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "3c9ae00f3bfdc1170e996d33f0d5b700dae287a6360f7e47796bf831d551cdb3",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/bugfix/1025-dac-mismatch-unit-weighting-model-bugfix",
+  "task_id": "v4-1025"
+}

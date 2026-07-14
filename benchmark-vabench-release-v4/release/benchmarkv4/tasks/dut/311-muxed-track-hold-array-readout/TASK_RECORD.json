@@ -1,0 +1,24 @@
+{
+  "candidate_artifacts": [
+    "muxed_track_hold_array_top.va",
+    "track_hold_cell.va",
+    "readout_mux.va"
+  ],
+  "canonical_dut_source": "release/dut-base-v3-exact-five-hash-bound-v2/311-muxed-track-hold-array-readout",
+  "family_id": "311",
+  "family_spec_sha256": "6d9ff3fab0b003f24ea9315039611c6ffe238b808bb10d14450d72c3426e62ff",
+  "form": "dut",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "7b238920df065208f3859dc1fe9c9946dbde104205708fc8af44a4cbf5ba64cc",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/dut/311-muxed-track-hold-array-readout",
+  "task_id": "v4-311"
+}

@@ -24,8 +24,8 @@ HERE = Path(__file__).resolve().parent
 PACKAGE = HERE.parents[1]
 REPO = PACKAGE.parent
 RUNNERS = REPO / "runners"
-DEFAULT_RELEASE = PACKAGE / "release" / "tri-form-v4-1200-draft"
-DEFAULT_PRIVATE_EVALUATOR = PACKAGE / "release" / "tri-form-v4-1200-private-evaluator"
+DEFAULT_RELEASE = PACKAGE / "release" / "benchmarkv4"
+DEFAULT_PRIVATE_SUBDIR = "private_evaluator"
 
 for import_dir in (RUNNERS,):
     if str(import_dir) not in sys.path:
@@ -282,7 +282,7 @@ def run_one(
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--release", type=Path, default=DEFAULT_RELEASE)
-    parser.add_argument("--private-evaluator", type=Path, default=DEFAULT_PRIVATE_EVALUATOR)
+    parser.add_argument("--private-evaluator", type=Path)
     parser.add_argument("--task-id", action="append", required=True)
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--work-root", type=Path, required=True)
@@ -296,7 +296,11 @@ def main(argv: list[str] | None = None) -> int:
     args = parser.parse_args(argv)
 
     release = args.release.expanduser().resolve()
-    private_evaluator = args.private_evaluator.expanduser().resolve()
+    private_evaluator = (
+        args.private_evaluator.expanduser().resolve()
+        if args.private_evaluator is not None
+        else release / DEFAULT_PRIVATE_SUBDIR
+    )
     output_root = args.work_root.expanduser().resolve()
     output_root.mkdir(parents=True, exist_ok=True)
     backend = normalize_spectre_backend(args.spectre_backend)
@@ -331,7 +335,7 @@ def main(argv: list[str] | None = None) -> int:
 
     pass_statuses = {"PASS", "PASS_WITH_WARNINGS"}
     summary = {
-        "schema_version": "v4-tri-form-reference-spectre-audit-v1",
+        "schema_version": "v4-benchmarkv4-reference-spectre-audit-v1",
         "release": str(release),
         "started_at": started_at,
         "finished_at": now_utc(),

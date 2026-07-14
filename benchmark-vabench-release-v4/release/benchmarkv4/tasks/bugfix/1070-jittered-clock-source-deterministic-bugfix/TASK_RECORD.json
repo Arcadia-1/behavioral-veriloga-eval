@@ -1,0 +1,22 @@
+{
+  "candidate_artifacts": [
+    "deterministic_jittered_clock.va"
+  ],
+  "canonical_dut_source": "release/dut-base-v3-exact-five-hash-bound-v2/070-jittered-clock-source-deterministic",
+  "family_id": "070",
+  "family_spec_sha256": "2715ac259ec5ad41dd4af756e1a8ceae575fcf37854940011583c8774d235fc4",
+  "form": "bugfix",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "56dd2b91dc5f205e0be97b8d9c550bfa2ac1af18e8db281533ff20e485d91c29",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/bugfix/1070-jittered-clock-source-deterministic-bugfix",
+  "task_id": "v4-1070"
+}

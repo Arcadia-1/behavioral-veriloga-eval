@@ -1,0 +1,26 @@
+{
+  "candidate_artifacts": [
+    "buck_ctrl_top.va",
+    "error_comparator.va",
+    "power_good.va",
+    "pwm_modulator.va",
+    "soft_start.va"
+  ],
+  "canonical_dut_source": "release/dut-base-v3-exact-five-hash-bound-v2/372-buck-converter-controller-macro",
+  "family_id": "372",
+  "family_spec_sha256": "853e74ea47c2b30174bc619f7938c2ecbee84f6989dd0291aa8ed0d8f06f218b",
+  "form": "bugfix",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "550ce64455edc7f9001d8d7f2e883999a34f2d524dea673b83242da7e3c2b717",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/bugfix/1372-buck-converter-controller-macro-bugfix",
+  "task_id": "v4-1372"
+}

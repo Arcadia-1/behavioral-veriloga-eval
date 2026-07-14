@@ -1,0 +1,22 @@
+{
+  "candidate_artifacts": [
+    "explicit_replicated_stage_chain.va"
+  ],
+  "canonical_dut_source": "release/dut-base-v3-exact-five-hash-bound-v2/286-explicit-replicated-stage-chain",
+  "family_id": "286",
+  "family_spec_sha256": "7ba09ad201f7962dd53e846301bffeeffb50c92d81498b895914b16e537958b6",
+  "form": "bugfix",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "1c3cfe8ca03c58eea88351bd74c87cef1fad1d5ea44d91ed69ac0ad99925a632",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/bugfix/1286-explicit-replicated-stage-chain-bugfix",
+  "task_id": "v4-1286"
+}

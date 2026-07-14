@@ -1,0 +1,22 @@
+{
+  "candidate_artifacts": [
+    "vga_step_response_classifier.va"
+  ],
+  "canonical_dut_source": "release/dut-base-v3-exact-five-hash-bound-v2/337-vga-step-response-classifier",
+  "family_id": "337",
+  "family_spec_sha256": "3009aaf2393030a248021b7c02bf25a14c623843408535f576d0dcd1351af79e",
+  "form": "dut",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "e312f13b56ee838c3b450f5aa4f9b0eb2f57ee70fe989ebb7d36efc188a25dc2",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/dut/337-vga-step-response-classifier",
+  "task_id": "v4-337"
+}

@@ -1,0 +1,22 @@
+{
+  "candidate_artifacts": [
+    "edge_delay_qualified_driver.va"
+  ],
+  "canonical_dut_source": "release/dut-base-v3-exact-five-hash-bound-v2/287-edge-delay-qualified-driver",
+  "family_id": "287",
+  "family_spec_sha256": "3156ac634deab707ad6c67e7bb2195977d8242d87bcf4ee2b39eb68a2b4fc438",
+  "form": "bugfix",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "302d6fc8104d828cfe189c98a173a8a8fd1de5cc3e3675bd58e96a2d4f57d719",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/bugfix/1287-edge-delay-qualified-driver-bugfix",
+  "task_id": "v4-1287"
+}

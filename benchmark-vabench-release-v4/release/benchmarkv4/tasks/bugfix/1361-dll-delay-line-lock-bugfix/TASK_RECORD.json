@@ -1,0 +1,25 @@
+{
+  "candidate_artifacts": [
+    "dll_top.va",
+    "phase_detector.va",
+    "delay_line.va",
+    "lock_detector.va"
+  ],
+  "canonical_dut_source": "release/dut-base-v3-exact-five-hash-bound-v2/361-dll-delay-line-lock",
+  "family_id": "361",
+  "family_spec_sha256": "1971990c49c5f2e1590d0d57655a1d3269b175c6545106a3ac7557e0d9c37d27",
+  "form": "bugfix",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "35e0df18b4858f693194dcd17765666054d389c74cae12dbede12593d5029d70",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/bugfix/1361-dll-delay-line-lock-bugfix",
+  "task_id": "v4-1361"
+}

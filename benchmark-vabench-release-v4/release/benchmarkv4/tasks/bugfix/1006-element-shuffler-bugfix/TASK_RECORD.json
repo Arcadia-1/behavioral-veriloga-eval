@@ -1,0 +1,22 @@
+{
+  "candidate_artifacts": [
+    "element_shuffler.va"
+  ],
+  "canonical_dut_source": "release/dut-base-v3-exact-five-hash-bound-v2/006-element-shuffler",
+  "family_id": "006",
+  "family_spec_sha256": "adaa158a08b0036c6dbc59aedd39853c025706538de75e087fa2122b9f64a5e2",
+  "form": "bugfix",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "e089de91cb7274ae67020c0010d5cff90c81537b5fb5380a4e6e8d99332ace13",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/bugfix/1006-element-shuffler-bugfix",
+  "task_id": "v4-1006"
+}

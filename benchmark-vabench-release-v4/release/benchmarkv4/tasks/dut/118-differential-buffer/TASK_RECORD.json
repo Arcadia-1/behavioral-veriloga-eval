@@ -1,0 +1,22 @@
+{
+  "candidate_artifacts": [
+    "differential_buffer.va"
+  ],
+  "canonical_dut_source": "release/dut-base-v3-exact-five-hash-bound-v2/118-differential-buffer",
+  "family_id": "118",
+  "family_spec_sha256": "aac140e52ffe85b525a5fbf347156073cff5a37e80b7472b51fff95c2485ea5c",
+  "form": "dut",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "d82a4e59f0afc6ef853026f27a9423e7a9222878996e7b9be4844a5aca8c4056",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/dut/118-differential-buffer",
+  "task_id": "v4-118"
+}

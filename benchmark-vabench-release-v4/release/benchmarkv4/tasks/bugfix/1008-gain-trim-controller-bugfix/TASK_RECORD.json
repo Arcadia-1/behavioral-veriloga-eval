@@ -1,0 +1,22 @@
+{
+  "candidate_artifacts": [
+    "gain_trim_controller.va"
+  ],
+  "canonical_dut_source": "release/dut-base-v3-exact-five-hash-bound-v2/008-gain-trim-controller",
+  "family_id": "008",
+  "family_spec_sha256": "aea6623ab44ad6de1c689c766cf5f825777c81dead35a187355ad2025890f299",
+  "form": "bugfix",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "541dbd30462fd2c34426c37795ecd99acf7f929448c252013b8e2befc6e63524",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/bugfix/1008-gain-trim-controller-bugfix",
+  "task_id": "v4-1008"
+}

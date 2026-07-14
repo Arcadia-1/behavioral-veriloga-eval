@@ -1,0 +1,22 @@
+{
+  "candidate_artifacts": [
+    "am_modulator_source_macro.va"
+  ],
+  "canonical_dut_source": "release/dut-base-v3-exact-five-hash-bound-v2/380-am-modulator-source-macro",
+  "family_id": "380",
+  "family_spec_sha256": "d3df8ed55d2b716d17c828be1d262407b16c97360980e37f6fd55e71f9b701b0",
+  "form": "bugfix",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "640b69ff5e75a3591acf19413101f1d2d5ecb188bb7640f6d2e5d24364306274",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/bugfix/1380-am-modulator-source-macro-bugfix",
+  "task_id": "v4-1380"
+}

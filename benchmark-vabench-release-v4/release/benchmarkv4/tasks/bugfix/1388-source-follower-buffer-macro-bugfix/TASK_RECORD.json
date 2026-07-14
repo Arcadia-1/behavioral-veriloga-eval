@@ -1,0 +1,22 @@
+{
+  "candidate_artifacts": [
+    "source_follower_buffer_macro.va"
+  ],
+  "canonical_dut_source": "release/dut-base-v3-exact-five-hash-bound-v2/388-source-follower-buffer-macro",
+  "family_id": "388",
+  "family_spec_sha256": "3b7f91d0b1e9b73c0a61cbf62ce7ec855c5d69bd94710500ae1136bee5c63d28",
+  "form": "bugfix",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "e9709d888f94aba370f15d09c9d67cf7f1dec9eb95e9e81980c3672be58e588f",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/bugfix/1388-source-follower-buffer-macro-bugfix",
+  "task_id": "v4-1388"
+}

@@ -14,8 +14,8 @@ It intentionally does not modify:
 `build_sync_prep.py` is the historical pre-freeze inventory builder.
 `materialize_tri_form_release.py` is the release builder: it consumes the
 hash-bound exact-five DUT denominator and creates 400 DUT, 400 Testbench, and
-400 Bugfix public task views. It also regenerates the private evaluator
-package used by audits and runners.
+400 Bugfix public task views under one benchmark package root. It also
+regenerates the `private_evaluator/` subpackage used by audits and runners.
 
 The generated plan activates exactly five mutations per family: 2,000 active
 mutations in the formal tri-form release. The 51 source-catalog extras remain
@@ -35,15 +35,17 @@ Materialize and audit the 1,200 task views:
 ```bash
 python3 operations/tri_form_derivation_prep/materialize_tri_form_release.py
 python3 operations/tri_form_derivation_prep/audit_tri_form_release.py \
-  --output release/tri-form-v4-1200-private-evaluator/evidence/AUDIT_REPORT.json \
-  --seal-output release/tri-form-v4-1200-private-evaluator/evidence/RELEASE_SEAL.json
+  --output release/benchmarkv4/private_evaluator/evidence/AUDIT_REPORT.json \
+  --seal-output release/benchmarkv4/private_evaluator/evidence/RELEASE_SEAL.json
 ```
 
-The tracked solver-facing package is `release/tri-form-v4-1200-draft/`. The
-tracked private evaluator package is
-`release/tri-form-v4-1200-private-evaluator/`. Only local generated audit and
-runtime evidence under `evidence/` and optional prompt-record snapshots under
-`prompt_records/` are ignored by git.
+The tracked release package is `release/benchmarkv4/`. Its root contains the
+solver-facing public surface (`MANIFEST.json`, `TASK_INDEX.json`,
+`prompt_modes/`, and `tasks/`). Its `private_evaluator/` subdirectory contains
+gold references, mutation bundles, score policies, and derivation records for
+local scoring and audits. Only local generated audit/runtime evidence under
+`private_evaluator/evidence/` and optional prompt-record snapshots under
+`private_evaluator/prompt_records/` are ignored by git.
 
 Export one runtime record without mounting evaluator-private files:
 
@@ -69,5 +71,6 @@ result, a fixed-toolchain EVAS/Spectre certification, or a final score.
 
 The old `formal_derivatives/` front-20 packages are prototypes and are not the
 canonical 800 derivative tasks. The canonical public generated views live under
-`release/tri-form-v4-1200-draft/tasks/` until the final Gate 3 release name and
-toolchain identity are sealed.
+`release/benchmarkv4/tasks/`. The historical "tri-form" wording remains an
+internal construction term for DUT/Testbench/Bugfix derivation, not the public
+package name.

@@ -1,0 +1,22 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source": "release/dut-base-v3-exact-five-hash-bound-v2/046-uvlo-brownout-detector",
+  "family_id": "046",
+  "family_spec_sha256": "3e3e3a29532d178b9f80f5db1a60c972e3d053b678be4248cc8acfaee44acfb8",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "7602159e0db952fc84622879ccd857a1185287ad36c70dfc47bf54ba6adb5590",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/testbench/546-uvlo-brownout-detector-testbench",
+  "task_id": "v4-546"
+}

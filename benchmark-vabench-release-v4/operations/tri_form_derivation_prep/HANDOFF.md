@@ -20,17 +20,12 @@ DUT family assets.
 - Structure and bundle-isolation audit: PASS
 - Release status: `materialized_gate3_audit_pending`
 
-The tracked public materialized package is `release/tri-form-v4-1200-draft/`.
-The name retains `draft` because final Gate 3 certification must bind a frozen
-EVAS identity and the final Spectre judge. The task definitions themselves are
-generated for all 1,200 IDs.
-
-The private evaluator package is
-`release/tri-form-v4-1200-private-evaluator/`. It contains the gold references,
-mutation bundles, score policies, and derivation records needed to run the
-benchmark scorer. It is tracked as part of the complete benchmark package.
-Generated audit/runtime evidence and optional prompt-record snapshots remain
-ignored.
+The tracked materialized package is `release/benchmarkv4/`. Its root is the
+solver-facing public surface, and its `private_evaluator/` subdirectory
+contains the gold references, mutation bundles, score policies, and derivation
+records needed to run the benchmark scorer. The private evaluator assets are
+tracked as part of the complete benchmark package; generated audit/runtime
+evidence and optional prompt-record snapshots remain ignored.
 
 ## Remaining Release Work
 

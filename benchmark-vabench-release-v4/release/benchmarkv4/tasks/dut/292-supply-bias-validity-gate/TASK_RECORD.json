@@ -1,0 +1,22 @@
+{
+  "candidate_artifacts": [
+    "supply_bias_validity_gate.va"
+  ],
+  "canonical_dut_source": "release/dut-base-v3-exact-five-hash-bound-v2/292-supply-bias-validity-gate",
+  "family_id": "292",
+  "family_spec_sha256": "c416be62d0d998bf94d9f9cfb9778296c66d1719884fa5295d98ba93be7f9729",
+  "form": "dut",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "77a0ccc1532d3f46e169f05abf15a4c033cffc5257c963d71841d2e02fccddd9",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/dut/292-supply-bias-validity-gate",
+  "task_id": "v4-292"
+}
