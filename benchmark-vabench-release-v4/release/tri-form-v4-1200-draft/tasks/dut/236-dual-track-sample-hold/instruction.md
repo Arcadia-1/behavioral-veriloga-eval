@@ -20,7 +20,7 @@ Provide overrideable public parameters:
 During low clock phase, the input stage tracks `vin` with finite acquisition while the output stage holds. On the rising clock transition, the input stage retains its acquired value. During high clock phase, the output stage tracks that retained input-stage value with finite bandwidth. On falling clock transition, the output stage holds until the next high phase. Clamp internal stored voltages to the local rail span and drive `phase` high only during output-stage tracking.
 
 ## Modeling Constraints
-Use voltage contributions and smooth voltage-domain transitions. Do not emit a Spectre testbench, checker logic, out-of-band test hooks, current contributions, transistor-level devices, `ddt()`, `idt()`, or simulator side channels.
+Use voltage contributions and smooth voltage-domain transitions. Do not emit a testbench, checker logic, out-of-band test hooks, current contributions, transistor-level devices, `ddt()`, `idt()`, or simulator side channels.
 
 ## Output Contract
 Return exactly one source artifact named `dual_track_sample_hold.va`.

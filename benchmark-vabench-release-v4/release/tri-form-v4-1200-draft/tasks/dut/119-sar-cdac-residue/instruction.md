@@ -35,7 +35,7 @@ current residue state.
 
 Use event-driven state updates with Spectre-compatible `cross` behavior and drive `VRES` with an explicit transition time. Preserve the specified edge directions and binary residue weights; do not omit the least-significant step.
 
-Use deterministic Verilog-A behavioral modeling appropriate for the public circuit contract. The visible testbench is a public validation scenario; do not hard-code a particular stimulus table, transient stop time, or validation sample window into the DUT unless that behavior is part of the public circuit contract.
+Use deterministic Verilog-A behavioral modeling appropriate for the public circuit contract. Do not hard-code validation stimulus tables, transient stop times, or sample windows into the DUT unless that behavior is part of the public circuit contract.
 
 ## Output Contract
 

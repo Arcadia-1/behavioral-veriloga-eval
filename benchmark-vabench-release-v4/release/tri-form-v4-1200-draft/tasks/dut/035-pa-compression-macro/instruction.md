@@ -45,19 +45,19 @@ marks compression or limiting operation.
 - For low-side compression, when `drive < 0.12 V`, drive `out = 0.12 + 0.18 * (drive - 0.12)` and `metric = 0.85 V`.
 - Clamp the output to `[0.02 V, 0.88 V]`.
 
-The visible testbench is a public verification scenario for wiring and saved
+The validation scenario is a public verification scenario for wiring and saved
 observables. Do not hard-code its transient stop time, waveform breakpoints, or
 sample windows into the DUT.
 
 ## Modeling Constraints
 
-Return only `pa_compression_macro.va`. Do not emit a Spectre testbench, validation harness
+Return only `pa_compression_macro.va`. Do not emit a testbench, validation harness
 logic, validation-only hooks, or simulator-specific side channels. Use voltage
 contributions only; do not use current contributions, transistor-level devices,
 RF S-parameters, AC/noise analysis, or KCL/KVL assumptions. Use a clocked state
 update and drive output voltages through `transition(...)`.
 
-Use deterministic Verilog-A behavioral modeling appropriate for the public circuit contract. The visible testbench is a public validation scenario; do not hard-code a particular stimulus table, transient stop time, or validation sample window into the DUT unless that behavior is part of the public circuit contract.
+Use deterministic Verilog-A behavioral modeling appropriate for the public circuit contract. Do not hard-code validation stimulus tables, transient stop times, or sample windows into the DUT unless that behavior is part of the public circuit contract.
 
 ## Output Contract
 

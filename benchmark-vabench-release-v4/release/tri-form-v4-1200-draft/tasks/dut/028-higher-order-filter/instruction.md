@@ -39,17 +39,17 @@ with a `0.45 V` threshold.
   states, centered around the common-mode level, so the settling transient is
   visible without exposing validation-only sample windows.
 
-The visible testbench is a public verification scenario for wiring and saved
+The validation scenario is a public verification scenario for wiring and saved
 observables. Do not hard-code its transient stop time, waveform breakpoints, or
 sample windows into the DUT.
 
 ## Modeling Constraints
 
-Return only `higher_order_filter.va`. Do not emit a Spectre testbench, validation harness
+Return only `higher_order_filter.va`. Do not emit a testbench, validation harness
 logic, validation-only hooks, or simulator-specific side channels. Use voltage
 contributions only; do not use current contributions or `ddt()`.
 
-Use deterministic Verilog-A behavioral modeling appropriate for the public circuit contract. The visible testbench is a public validation scenario; do not hard-code a particular stimulus table, transient stop time, or validation sample window into the DUT unless that behavior is part of the public circuit contract.
+Use deterministic Verilog-A behavioral modeling appropriate for the public circuit contract. Do not hard-code validation stimulus tables, transient stop times, or sample windows into the DUT unless that behavior is part of the public circuit contract.
 
 ## Output Contract
 

@@ -87,4 +87,4 @@ Keep the implementation behavioral and public-interface compatible. Do not add S
 ## Output Contract
 
 Return exactly one source artifact named `charge_pump_pfd_state_machine.va`. Do
-not generate a Spectre testbench or the support clock for this task.
+not generate a testbench or the support clock for this task.

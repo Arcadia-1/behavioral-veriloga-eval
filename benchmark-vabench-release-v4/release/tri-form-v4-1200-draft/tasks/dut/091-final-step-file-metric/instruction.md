@@ -47,13 +47,13 @@ Required observable behavior:
 
 Use voltage-coded logic referenced to `VDD` and `VSS`. Smooth only event-updated
 metric state; do not feed a continuously varying branch expression directly
-into `transition()`. Do not generate a Spectre testbench, waveform files,
+into `transition()`. Do not generate a testbench, waveform files,
 validation artifacts, transistor-level devices, current contributions, `ddt()`, or
 `idt()`.
 
 ## Modeling Constraints
 
-Use deterministic Verilog-A behavioral modeling appropriate for the public circuit contract. The visible testbench is a public validation scenario; do not hard-code a particular stimulus table, transient stop time, or validation sample window into the DUT unless that behavior is part of the public circuit contract.
+Use deterministic Verilog-A behavioral modeling appropriate for the public circuit contract. Do not hard-code validation stimulus tables, transient stop times, or sample windows into the DUT unless that behavior is part of the public circuit contract.
 
 ## Output Contract
 

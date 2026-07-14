@@ -11,7 +11,7 @@ Implement the requested Verilog-A artifact for `Thermometer To Binary Encoder 8b
 Implement `therm_to_bin_8b.va`, the inverse utility of the 8-bit thermometer decoder. It converts a cumulative 256-line voltage-coded thermometer input into an 8-bit binary count plus a validity flag.
 
 - This is a DUT/support-component task: implement only the requested Verilog-A source artifact.
-- Do not generate a the simulator example harness or validation harness.
+- Do not generate the validation harness or validation harness.
 - Preserve the public module name, port order, port directions, and parameter names.
 - Treat any public validation harness as an observable use case, not as values to hard-code into the DUT.
 

@@ -11,7 +11,7 @@ Implement the requested Verilog-A artifact for `Settling Window Detector`.
 Implement `settling_window_detector.va`, a voltage-domain instrumentation helper that detects when an analog signal has stayed inside a target tolerance window for a required hold time.
 
 - This is a DUT/support-component task: implement only the requested Verilog-A source artifact.
-- Do not generate a the simulator example harness or validation harness.
+- Do not generate the validation harness or validation harness.
 - Preserve the public module name, port order, port directions, and parameter names.
 - Treat any public validation harness as an observable use case, not as values to hard-code into the DUT.
 

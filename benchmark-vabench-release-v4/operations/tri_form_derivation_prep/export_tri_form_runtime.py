@@ -81,19 +81,29 @@ def serialize_public_artifacts(task_dir: Path, form: str) -> str:
     return "\n".join(lines)
 
 
+def prompt_wrapper_id(mode_record: dict[str, Any]) -> str:
+    wrappers = [str(item) for item in mode_record.get("component_order") or [] if str(item).endswith("_wrapper.md")]
+    if len(wrappers) != 1:
+        raise SystemExit(f"expected exactly one mode wrapper in prompt record, found {wrappers}")
+    return wrappers[0]
+
+
 def render_prompt(release: Path, task_dir: Path, record: dict[str, Any], mode_record: dict[str, Any], *, inline_artifacts: bool) -> str:
-    parts = [
-        (task_dir / "instruction.md").read_text(encoding="utf-8"),
-        "<<<VABENCH_PUBLIC_CONTRACT>>>",
-        (task_dir / "public_contract.json").read_text(encoding="utf-8"),
-        "<<<END_VABENCH_PUBLIC_CONTRACT>>>",
-    ]
+    mode = str(mode_record["mode"])
+    wrapper = prompt_wrapper_id(mode_record)
+    parts = [(task_dir / "instruction.md").read_text(encoding="utf-8")]
+    if mode in AGENTIC:
+        parts.extend([
+            "<<<VABENCH_PUBLIC_CONTRACT>>>",
+            (task_dir / "public_contract.json").read_text(encoding="utf-8"),
+            "<<<END_VABENCH_PUBLIC_CONTRACT>>>",
+        ])
     artifacts = serialize_public_artifacts(task_dir, str(record["form"])) if inline_artifacts else ""
     if artifacts:
         parts.append(artifacts)
     parts.extend([
-        '<<<VABENCH_COMPONENT id="neutral_wrapper.md">>>',
-        (release / "prompt_modes" / "skills" / "neutral_wrapper.md").read_text(encoding="utf-8"),
+        f'<<<VABENCH_COMPONENT id="{wrapper}">>>',
+        (release / "prompt_modes" / "skills" / wrapper).read_text(encoding="utf-8"),
         "<<<END_VABENCH_COMPONENT>>>",
     ])
     for skill in (mode_record.get("skill_hashes") or {}):
@@ -108,8 +118,9 @@ def render_prompt(release: Path, task_dir: Path, record: dict[str, Any], mode_re
 def install_public(task_dir: Path, public_root: Path, form: str, mode: str) -> None:
     target = public_root / "task"
     target.mkdir(parents=True)
-    for name in ("instruction.md", "public_contract.json"):
-        shutil.copy2(task_dir / name, target / name)
+    shutil.copy2(task_dir / "instruction.md", target / "instruction.md")
+    if mode in AGENTIC:
+        shutil.copy2(task_dir / "public_contract.json", target / "public_contract.json")
     if form == "testbench":
         copy_tree(task_dir / "supplied_dut", target / "supplied_dut")
     elif form == "bugfix":

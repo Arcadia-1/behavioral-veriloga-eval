@@ -51,18 +51,18 @@ voltage-coded logic signals with a `0.45 V` threshold.
   `abs(out - target) < 0.16 V` and low while the chain is still recovering.
   Use 0.9 V for the settled level and 0.1 V for the recovering level.
 
-The visible testbench is a public verification scenario for wiring and saved
+The validation scenario is a public verification scenario for wiring and saved
 observables. Do not hard-code its transient stop time, waveform breakpoints, or
 sample windows into the DUT.
 
 ## Modeling Constraints
 
-Return only `amplifier_filter_chain.va`. Do not emit a Spectre testbench,
+Return only `amplifier_filter_chain.va`. Do not emit a testbench,
 validation logic, validation-only hooks, or simulator-specific side channels. Use
 voltage contributions only; do not use current contributions, transistor-level
 devices, AC/noise analysis, `ddt()`, or `idt()`.
 
-Use deterministic Verilog-A behavioral modeling appropriate for the public circuit contract. The visible testbench is a public validation scenario; do not hard-code a particular stimulus table, transient stop time, or validation sample window into the DUT unless that behavior is part of the public circuit contract.
+Use deterministic Verilog-A behavioral modeling appropriate for the public circuit contract. Do not hard-code validation stimulus tables, transient stop times, or sample windows into the DUT unless that behavior is part of the public circuit contract.
 
 ## Output Contract
 

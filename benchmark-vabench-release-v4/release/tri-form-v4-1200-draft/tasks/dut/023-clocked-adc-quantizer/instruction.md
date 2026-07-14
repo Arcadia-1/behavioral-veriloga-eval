@@ -41,7 +41,7 @@ stable between sampling events.
 ## Modeling Constraints
 
 Use voltage-domain behavioral Verilog-A with event-driven sampling and smoothed
-output transitions. Do not emit a Spectre testbench, validation logic, waveform
+output transitions. Do not emit a testbench, validation logic, waveform
 post-processing code, current contributions, transistor-level devices, `ddt()`,
 `idt()`, or testbench-specific timing constants inside the DUT.
 

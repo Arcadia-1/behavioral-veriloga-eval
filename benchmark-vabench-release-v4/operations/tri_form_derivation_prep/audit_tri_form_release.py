@@ -15,6 +15,16 @@ PACKAGE_ROOT = Path(__file__).resolve().parents[2]
 DEFAULT_RELEASE = PACKAGE_ROOT / "release" / "tri-form-v4-1200-draft"
 FORMS = ("dut", "testbench", "bugfix")
 MODES = ("G0", "G1", "G2", "G3", "G4", "G5")
+DIRECT_MODES = {"G0", "G1"}
+AGENTIC_MODES = {"G2", "G3", "G4", "G5"}
+WRAPPERS_BY_MODE = {
+    "G0": "direct_wrapper.md",
+    "G1": "direct_wrapper.md",
+    "G2": "agentic_wrapper.md",
+    "G3": "agentic_wrapper.md",
+    "G4": "agentic_wrapper.md",
+    "G5": "agentic_wrapper.md",
+}
 FORM_SKILLS = {
     "dut": "dut_modeling.md",
     "testbench": "testbench_verification.md",
@@ -46,6 +56,17 @@ def read_json(path: Path) -> dict[str, Any]:
 
 def file_sha(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
+
+
+def iter_prompt_public_inputs(task_dir: Path, form: str, mode: str) -> list[Path]:
+    public_inputs = [task_dir / "instruction.md"]
+    if mode not in DIRECT_MODES:
+        public_inputs.append(task_dir / "public_contract.json")
+    if form == "testbench":
+        public_inputs.extend(sorted((task_dir / "supplied_dut").rglob("*.va")))
+    elif form == "bugfix":
+        public_inputs.extend(sorted((task_dir / "buggy_bundle").rglob("*.va")))
+    return public_inputs
 
 
 def tree_sha(path: Path) -> str:
@@ -182,6 +203,8 @@ def audit_task(
     for required in ("TASK_RECORD.json", "instruction.md", "public_contract.json"):
         if not (task_dir / required).is_file():
             problems.append(f"{prefix} missing {required}")
+    if (task_dir / "direct_public_contract.json").exists():
+        problems.append(f"{prefix} direct_public_contract.json should not be present")
     if problems and not (task_dir / "TASK_RECORD.json").is_file():
         return
     record = read_json(task_dir / "TASK_RECORD.json")
@@ -192,6 +215,12 @@ def audit_task(
         problems.append(f"{prefix} task record identity mismatch")
     if contract.get("task_id") != task_id or contract.get("form") != form or str(contract.get("family_id")) != family:
         problems.append(f"{prefix} public contract identity mismatch")
+    instruction_text = (task_dir / "instruction.md").read_text(encoding="utf-8")
+    for marker in ("test_visible", "Public visible tests", "hidden evaluator", "Vela"):
+        if marker in instruction_text:
+            problems.append(f"{prefix} instruction leaks run/evaluator marker {marker!r}")
+    if form != "testbench" and "visible testbench" in instruction_text.lower():
+        problems.append(f"{prefix} non-testbench instruction leaks visible testbench wording")
     if record.get("public_bundle_sha256") != public_bundle_hash(task_dir):
         problems.append(f"{prefix} public bundle hash mismatch")
     source_task = PACKAGE_ROOT / str(record.get("canonical_dut_source") or "")
@@ -346,7 +375,7 @@ def audit_prompt_records(release: Path, tasks: list[dict[str, Any]], problems: l
     tokenizer = skill_manifest.get("reference_tokenizer") or {}
     tokenizer_key = f"{tokenizer.get('id')}@{tokenizer.get('version')}"
     required_assets = {
-        "neutral_wrapper.md", *FORM_SKILLS.values(), "feedback_core.md", *FEEDBACK_ADAPTERS.values()
+        *set(WRAPPERS_BY_MODE.values()), *FORM_SKILLS.values(), "feedback_core.md", *FEEDBACK_ADAPTERS.values()
     }
     if set(skill_records) != required_assets:
         problems.append("skill manifest component set mismatch")
@@ -375,11 +404,7 @@ def audit_prompt_records(release: Path, tasks: list[dict[str, Any]], problems: l
         if task_dir is None:
             problems.append(f"{task_id}/{mode}: prompt record has no task directory")
             continue
-        public_inputs = [task_dir / "instruction.md", task_dir / "public_contract.json"]
-        if form == "testbench":
-            public_inputs.extend(sorted((task_dir / "supplied_dut").rglob("*.va")))
-        elif form == "bugfix":
-            public_inputs.extend(sorted((task_dir / "buggy_bundle").rglob("*.va")))
+        public_inputs = iter_prompt_public_inputs(task_dir, form, mode)
         expected_input_hashes = {
             item.relative_to(task_dir).as_posix(): file_sha(item) for item in public_inputs
         }
@@ -399,7 +424,7 @@ def audit_prompt_records(release: Path, tasks: list[dict[str, Any]], problems: l
             if skills.get(name) != (skill_records.get(name) or {}).get("sha256"):
                 problems.append(f"{task_id}/{mode}: skill hash mismatch for {name}")
         component_order = row.get("component_order") or []
-        expected_suffix = ["neutral_wrapper.md", *expected_skills]
+        expected_suffix = [WRAPPERS_BY_MODE.get(mode, ""), *expected_skills]
         if component_order[-len(expected_suffix):] != expected_suffix:
             problems.append(f"{task_id}/{mode}: component order mismatch")
         static_components = row.get("static_components") or []
@@ -424,6 +449,26 @@ def audit_prompt_records(release: Path, tasks: list[dict[str, Any]], problems: l
                 problems.append(f"{task_id}/{mode}: invalid component hash")
             if tokenizer_key not in (item.get("token_counts") or {}):
                 problems.append(f"{task_id}/{mode}: missing component token count")
+        if mode in DIRECT_MODES:
+            direct_text_parts: list[str] = []
+            for component_id in component_order:
+                actual_path = public_component_paths.get(component_id)
+                if actual_path is None and component_id in skill_records:
+                    actual_path = release / "prompt_modes" / "skills" / component_id
+                if actual_path is not None and actual_path.is_file():
+                    direct_text_parts.append(actual_path.read_text(encoding="utf-8", errors="replace"))
+            direct_text = "\n".join(direct_text_parts)
+            for marker in (
+                "Feedback tools",
+                "feedback CLI",
+                "vabench feedback",
+                "private Spectre",
+                "public/submission",
+                "agentic mode",
+                "mounted public task inputs",
+            ):
+                if marker.lower() in direct_text.lower():
+                    problems.append(f"{task_id}/{mode}: direct prompt leaks {marker!r}")
     expected_ids = {str(row["task_id"]) for row in tasks}
     if set(seen) != expected_ids:
         problems.append("prompt record task coverage mismatch")

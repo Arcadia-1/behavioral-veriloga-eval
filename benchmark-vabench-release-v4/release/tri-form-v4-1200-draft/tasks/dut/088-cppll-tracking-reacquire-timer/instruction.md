@@ -54,7 +54,7 @@ applied on `ref_clk`.
 ## Required Behavior
 
 This task asks for a two-file DUT bundle: `cppll_timer_ref.va` and
-`ref_step_clk.va`, not a Spectre testbench. Both files are scored DUT source
+`ref_step_clk.va`, not a testbench. Both files are scored DUT source
 artifacts; preserve their interfaces and overrideable parameters when
 returning the bundle.
 
@@ -80,7 +80,7 @@ source artifacts.
 
 ## Modeling Constraints
 
-Use deterministic Verilog-A behavioral modeling appropriate for the public circuit contract. The visible testbench is a public validation scenario; do not hard-code a particular stimulus table, transient stop time, or validation sample window into the DUT unless that behavior is part of the public circuit contract.
+Use deterministic Verilog-A behavioral modeling appropriate for the public circuit contract. Do not hard-code validation stimulus tables, transient stop times, or sample windows into the DUT unless that behavior is part of the public circuit contract.
 
 ## Output Contract
 

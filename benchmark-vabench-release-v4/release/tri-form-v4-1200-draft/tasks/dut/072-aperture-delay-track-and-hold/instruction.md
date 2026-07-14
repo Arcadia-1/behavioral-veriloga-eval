@@ -32,7 +32,7 @@ scalar electrical voltage-domain ports. `clk` is a voltage-coded control input. 
 
 ## Modeling Constraints
 
-Return only `sample_hold_aperture_ref.va`. Do not emit a the simulator example harness,
+Return only `sample_hold_aperture_ref.va`. Do not emit the validation harness,
 validation logic, validation-only hooks, or simulator-specific side channels. Use
 voltage contributions only; do not use current contributions, `ddt()`, or
 `idt()`.

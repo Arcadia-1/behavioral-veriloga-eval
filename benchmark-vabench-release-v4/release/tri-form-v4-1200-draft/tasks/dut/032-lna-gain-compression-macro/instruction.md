@@ -46,19 +46,19 @@ whether the macro is operating in compression.
   `out = 0.14 + 0.28 * (linear - 0.14)` and drive `metric = 0.8`.
 - Clamp the final output to the public range `0.04 V <= out <= 0.86 V`.
 
-The visible testbench is a public verification scenario for wiring and saved
+The validation scenario is a public verification scenario for wiring and saved
 observables. Do not hard-code its transient stop time, waveform breakpoints, or
 sample windows into the DUT.
 
 ## Modeling Constraints
 
-Return only `lna_gain_compression_macro.va`. Do not emit a Spectre testbench,
+Return only `lna_gain_compression_macro.va`. Do not emit a testbench,
 validation logic, validation-only hooks, or simulator-specific side channels. Use
 voltage contributions only; do not use current contributions, transistor-level
 devices, AC/noise analysis, or KCL/KVL assumptions. Use a clocked state update
 and drive output voltages through `transition(...)`.
 
-Use deterministic Verilog-A behavioral modeling appropriate for the public circuit contract. The visible testbench is a public validation scenario; do not hard-code a particular stimulus table, transient stop time, or validation sample window into the DUT unless that behavior is part of the public circuit contract.
+Use deterministic Verilog-A behavioral modeling appropriate for the public circuit contract. Do not hard-code validation stimulus tables, transient stop times, or sample windows into the DUT unless that behavior is part of the public circuit contract.
 
 ## Output Contract
 

@@ -13,6 +13,7 @@ from materialize_tri_form_release import (  # noqa: E402
     COMPONENT_METADATA,
     MODES,
     REFERENCE_TOKENIZER,
+    iter_public_inputs,
     negative_assignment,
     reference_token_count,
     render_bugfix_instruction,
@@ -97,7 +98,8 @@ def test_testbench_and_bugfix_share_one_selected_negative_assignment() -> None:
 def test_prompt_components_have_pinned_reference_tokenizer_metadata() -> None:
     assert REFERENCE_TOKENIZER["id"] == "vabench_utf8_lexeme"
     assert set(COMPONENT_METADATA) == {
-        "neutral_wrapper.md",
+        "direct_wrapper.md",
+        "agentic_wrapper.md",
         "dut_modeling.md",
         "testbench_verification.md",
         "bugfix_diagnosis.md",
@@ -107,6 +109,16 @@ def test_prompt_components_have_pinned_reference_tokenizer_metadata() -> None:
         "feedback_bugfix.md",
     }
     assert reference_token_count("one two; three") == 4
+
+
+def test_direct_prompt_inputs_exclude_contract_json(tmp_path: Path) -> None:
+    task = tmp_path / "task"
+    task.mkdir()
+    for name in ("instruction.md", "public_contract.json"):
+        (task / name).write_text(f"{name}\n", encoding="utf-8")
+    assert [path.name for path in iter_public_inputs(task, "dut", "G0")] == ["instruction.md"]
+    assert [path.name for path in iter_public_inputs(task, "dut", "G1")] == ["instruction.md"]
+    assert [path.name for path in iter_public_inputs(task, "dut", "G2")] == ["instruction.md", "public_contract.json"]
 
 
 def test_agentic_bugfix_export_seeds_editable_submission(tmp_path: Path) -> None:
@@ -120,6 +132,18 @@ def test_agentic_bugfix_export_seeds_editable_submission(tmp_path: Path) -> None
     install_public(task, public, "bugfix", "G2")
     assert (public / "submission" / "a.va").read_bytes() == (task / "buggy_bundle" / "a.va").read_bytes()
     assert (public / "task" / "buggy_bundle" / "a.va").is_file()
+
+
+def test_direct_export_omits_public_contract_mount(tmp_path: Path) -> None:
+    task = tmp_path / "task"
+    task.mkdir()
+    (task / "instruction.md").write_text("Build the DUT.\n", encoding="utf-8")
+    (task / "public_contract.json").write_text('{"feedback":{}}\n', encoding="utf-8")
+    public = tmp_path / "public"
+    (public / "submission").mkdir(parents=True)
+    install_public(task, public, "dut", "G0")
+    assert (public / "task" / "instruction.md").is_file()
+    assert not (public / "task" / "public_contract.json").exists()
 
 
 def test_runtime_evidence_rejects_handwritten_pass_report(tmp_path: Path) -> None:

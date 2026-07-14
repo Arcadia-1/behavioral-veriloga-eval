@@ -46,7 +46,7 @@ Drive `serial_out` from `state_6` and expose each state bit on its matching
 
 ## Modeling Constraints
 
-Return only `prbs7_ref.va`. Do not generate a the simulator example harness or validation harness
+Return only `prbs7_ref.va`. Do not generate the validation harness or validation harness
 logic. Do not use current contributions, `ddt()`, transistor-level devices,
 AC/noise analysis, or simulator-specific side channels.
 

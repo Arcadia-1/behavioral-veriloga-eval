@@ -13,7 +13,7 @@ voltage-domain comparator characterization block: it observes a differential
 input ramp, exposes the comparator decision, captures the first positive
 decision trip point, and reports the measured input-referred offset.
 
-Return the DUT/source artifact only, not a Spectre testbench. The target module
+Return the DUT/source artifact only, not a testbench. The target module
 is a public measurement companion for a comparator offset-search flow, not a
 validation or logging side channel.
 
@@ -61,7 +61,7 @@ current contributions, use AC/noise analysis, or rely on `ddt()` or `idt()`.
 Update retained decision and measurement state at crossing events and drive
 voltage contributions outside those event blocks.
 
-Use deterministic Verilog-A behavioral modeling appropriate for the public circuit contract. The visible testbench is a public validation scenario; do not hard-code a particular stimulus table, transient stop time, or validation sample window into the DUT unless that behavior is part of the public circuit contract.
+Use deterministic Verilog-A behavioral modeling appropriate for the public circuit contract. Do not hard-code validation stimulus tables, transient stop times, or sample windows into the DUT unless that behavior is part of the public circuit contract.
 
 ## Output Contract
 

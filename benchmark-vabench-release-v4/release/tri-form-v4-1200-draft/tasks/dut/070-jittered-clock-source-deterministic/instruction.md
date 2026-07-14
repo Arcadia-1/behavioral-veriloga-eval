@@ -11,7 +11,7 @@ Implement the requested Verilog-A artifact for `Deterministic Jittered Clock Sou
 Implement `deterministic_jittered_clock.va`, a repeatable voltage-domain jittered clock stimulus source for timing-margin and aperture-stress checks, whose cycle-to-cycle timing can be deterministically modulated by an 8-bit seed.
 
 - This is a DUT/support-component task: implement only the requested Verilog-A source artifact.
-- Do not generate a the simulator example harness or validation harness.
+- Do not generate the validation harness or validation harness.
 - Preserve the public module name, port order, port directions, and parameter names.
 - Treat any public validation harness as an observable use case, not as values to hard-code into the DUT.
 

@@ -1,7 +1,7 @@
 # Programmable Divider By N
 
 ## Task Contract
-Implement `programmable_divider_by_n.va`, a single voltage-domain DUT for a programmable clock divider. This is a clock/control L1 component, not a Spectre testbench or a composed L2 flow.
+Implement `programmable_divider_by_n.va`, a single voltage-domain DUT for a programmable clock divider. This is a clock/control L1 component, not a testbench or a composed L2 flow.
 
 ## Public Verilog-A Interface
 Declare module `programmable_divider_by_n(clk, divctrl, out)` with scalar electrical ports. `clk` is a voltage-coded clock input, `divctrl` is an analog-coded divide-ratio control input, and `out` is the voltage-coded divider output.

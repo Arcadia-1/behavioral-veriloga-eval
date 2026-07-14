@@ -11,7 +11,7 @@ Implement the requested Verilog-A artifact for `Binary To Thermometer Decoder 8b
 Implement `bin_to_therm_8b.va`, a voltage-domain unary-DAC element-selection decoder used by data-converter support models to expand an 8-bit binary word into a cumulative thermometer bus.
 
 - This is a DUT/support-component task: implement only the requested Verilog-A source artifact.
-- Do not generate a the simulator example harness or validation harness.
+- Do not generate the validation harness or validation harness.
 - Preserve the public module name, port order, port directions, and parameter names.
 - Treat any public validation harness as an observable use case, not as values to hard-code into the DUT.
 

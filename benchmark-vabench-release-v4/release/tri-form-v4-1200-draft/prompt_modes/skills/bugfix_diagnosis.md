@@ -8,6 +8,6 @@ Preserve the exact file set, module graph, public interfaces, parameters, and
 all behavior that already satisfies the contract. Avoid replacing a structured
 system with an unrelated implementation or tuning only one observed stimulus.
 
-Runtime baseline strategy and feedback-loop choices are intentionally outside
-this writing skill. Do not assume a particular faulty file, line, constant, or
-root cause unless the public evidence establishes it.
+Runtime baseline strategy and iterative debugging choices are intentionally
+outside this writing skill. Do not assume a particular faulty file, line,
+constant, or root cause unless the public evidence establishes it.

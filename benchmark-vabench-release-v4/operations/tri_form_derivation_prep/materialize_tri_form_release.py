@@ -46,14 +46,18 @@ MATERIALIZED_ARTIFACTS = (
     "prompt_modes/modes.json",
     "prompt_modes/skills/manifest.json",
 )
-NEUTRAL_WRAPPER = "neutral_wrapper.md"
+WRAPPERS_BY_PROCESS = {
+    "direct_one_shot": "direct_wrapper.md",
+    "agentic": "agentic_wrapper.md",
+}
 REFERENCE_TOKENIZER = {
     "id": "vabench_utf8_lexeme",
     "version": "1.0.0",
     "algorithm": "Unicode word runs and individual non-whitespace punctuation marks",
 }
 COMPONENT_METADATA = {
-    "neutral_wrapper.md": {"stable_id": "wrapper.neutral", "kind": "wrapper", "applicable_forms": ["dut", "testbench", "bugfix"]},
+    "direct_wrapper.md": {"stable_id": "wrapper.direct_one_shot", "kind": "wrapper", "applicable_forms": ["dut", "testbench", "bugfix"]},
+    "agentic_wrapper.md": {"stable_id": "wrapper.agentic", "kind": "wrapper", "applicable_forms": ["dut", "testbench", "bugfix"]},
     "dut_modeling.md": {"stable_id": "skill.form.dut", "kind": "form_skill", "applicable_forms": ["dut"]},
     "testbench_verification.md": {"stable_id": "skill.form.testbench", "kind": "form_skill", "applicable_forms": ["testbench"]},
     "bugfix_diagnosis.md": {"stable_id": "skill.form.bugfix", "kind": "form_skill", "applicable_forms": ["bugfix"]},
@@ -204,6 +208,25 @@ def render_constraints(spec: dict[str, Any]) -> str:
     return "\n".join(lines) or "- Keep behavior deterministic and within the declared voltage-domain scope."
 
 
+def sanitize_instruction_text(text: str, form: str) -> str:
+    """Remove evaluation-surface wording from canonical prompt text."""
+    if form != "testbench":
+        text = text.replace(
+            "Use deterministic Verilog-A behavioral modeling appropriate for the public circuit contract. "
+            "The visible testbench is a public validation scenario; do not hard-code a particular stimulus table, "
+            "transient stop time, or validation sample window into the DUT unless that behavior is part of the "
+            "public circuit contract.",
+            "Use deterministic Verilog-A behavioral modeling appropriate for the public circuit contract. "
+            "Do not hard-code validation stimulus tables, transient stop times, or sample windows into the DUT "
+            "unless that behavior is part of the public circuit contract.",
+        )
+        text = text.replace("visible testbench", "validation scenario")
+        text = text.replace("Visible testbench", "Validation scenario")
+        text = text.replace("a Spectre testbench", "a testbench")
+        text = text.replace("a the simulator example harness", "the validation harness")
+    return text
+
+
 def render_testbench_instruction(spec: dict[str, Any]) -> str:
     title = task_title(spec)
     return f"""# {title} Testbench
@@ -299,6 +322,10 @@ def public_semantics(spec: dict[str, Any]) -> dict[str, Any]:
         "trace_contract": spec["trace_contract"],
         "modeling_constraints": spec.get("modeling_constraints") or [],
     }
+
+
+def write_public_contract(task_dir: Path, contract: dict[str, Any]) -> None:
+    write_json(task_dir / "public_contract.json", contract)
 
 
 def mutation_score(item: dict[str, Any], preferred: bool) -> tuple[int, str]:
@@ -421,7 +448,13 @@ def build_dut_view(
     family = str(row["canonical_dut_id"])
     task_dir = output / "tasks" / "dut" / source_task.name
     task_dir.mkdir(parents=True)
-    shutil.copy2(source_task / "public" / "task" / "instruction.md", task_dir / "instruction.md")
+    write_text(
+        task_dir / "instruction.md",
+        sanitize_instruction_text(
+            (source_task / "public" / "task" / "instruction.md").read_text(encoding="utf-8"),
+            "dut",
+        ),
+    )
     contract = public_semantics(spec)
     contract.update({
         "schema_version": "v4-tri-form-public-contract-v1",
@@ -430,7 +463,7 @@ def build_dut_view(
         "target_artifacts": [str(item["path"]) for item in spec["artifact_contract"]["files"]],
         "feedback": {"available_in_modes": ["G2", "G3", "G4", "G5"], "command": "vabench feedback run"},
     })
-    write_json(task_dir / "public_contract.json", contract)
+    write_public_contract(task_dir, contract)
     evaluator = task_dir / "evaluator"
     evaluator.mkdir()
     write_json(evaluator / "score_policy.json", {
@@ -481,7 +514,7 @@ def build_testbench_view(
             "DUT redefinition, direct output drive, private hierarchical probes, arbitrary file access, and unbounded analyses are rejected",
         ],
     })
-    write_json(task_dir / "public_contract.json", contract)
+    write_public_contract(task_dir, contract)
     evaluator = task_dir / "evaluator"
     evaluator.mkdir()
     suite = [str(item["mutation_id"]) for item in row["active_mutations"]]
@@ -564,7 +597,7 @@ def build_bugfix_view(
         "problem_statement": "the supplied system violates the public contract",
         "feedback": {"available_in_modes": ["G2", "G3", "G4", "G5"], "command": "vabench feedback run"},
     })
-    write_json(task_dir / "public_contract.json", contract)
+    write_public_contract(task_dir, contract)
     evaluator = task_dir / "evaluator"
     evaluator.mkdir()
     write_json(evaluator / "score_policy.json", {
@@ -640,16 +673,17 @@ def install_prompt_assets(output: Path) -> dict[str, dict[str, Any]]:
     write_json(output / "prompt_modes" / "modes.json", {
         "schema_version": "v4-prompt-mode-registry-v1",
         "modes": MODES,
-        "composition_order": ["canonical_instruction_and_public_inputs", "neutral_wrapper", "form_skill", "feedback_core_and_form_adapter"],
+        "composition_order": ["canonical_instruction_and_public_inputs", "mode_wrapper", "form_skill", "feedback_core_and_form_adapter"],
         "working_token_budget": "runner_supplied_same_ceiling_within_comparison_stratum",
         "wall_time_policy": "safety_limit_not_ability_budget",
     })
     return records
 
 
-def iter_public_inputs(task_dir: Path, form: str) -> Iterable[Path]:
+def iter_public_inputs(task_dir: Path, form: str, mode: str) -> Iterable[Path]:
     yield task_dir / "instruction.md"
-    yield task_dir / "public_contract.json"
+    if MODES[mode]["process"] != "direct_one_shot":
+        yield task_dir / "public_contract.json"
     if form == "testbench":
         yield from sorted((task_dir / "supplied_dut").rglob("*.va"))
     elif form == "bugfix":
@@ -662,16 +696,17 @@ def write_prompt_records(output: Path, task_rows: list[dict[str, Any]], skills: 
         for task in task_rows:
             task_dir = output / task["task_dir"]
             instruction_sha = file_sha(task_dir / "instruction.md")
-            input_hashes = {rel(item, task_dir): file_sha(item) for item in iter_public_inputs(task_dir, task["form"])}
             for mode, policy in MODES.items():
+                input_hashes = {rel(item, task_dir): file_sha(item) for item in iter_public_inputs(task_dir, task["form"], mode)}
                 public_components = [
                     component_fingerprint(
                         "instruction" if item.name == "instruction.md" else f"public_input:{rel(item, task_dir)}",
                         item,
                     )
-                    for item in iter_public_inputs(task_dir, task["form"])
+                    for item in iter_public_inputs(task_dir, task["form"], mode)
                 ]
-                components = [item["id"] for item in public_components] + [NEUTRAL_WRAPPER]
+                wrapper = WRAPPERS_BY_PROCESS[policy["process"]]
+                components = [item["id"] for item in public_components] + [wrapper]
                 skill_ids: list[str] = []
                 if policy["form_skill"]:
                     skill_ids.append(FORM_SKILLS[task["form"]])
@@ -686,7 +721,7 @@ def write_prompt_records(output: Path, task_rows: list[dict[str, Any]], skills: 
                         "bytes": skills[name]["bytes"],
                         "token_counts": skills[name]["token_counts"],
                     }
-                    for name in [NEUTRAL_WRAPPER, *skill_ids]
+                    for name in [wrapper, *skill_ids]
                 ]
                 record = {
                     "schema_version": "v4-prompt-record-v1",

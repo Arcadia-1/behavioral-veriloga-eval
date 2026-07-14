@@ -91,7 +91,7 @@ def main() -> int:
     payload = {
         "schema_version": "v4-runtime-ingestion-evidence-v1",
         "status": "pass" if rows and all(row["audit_status"] == "pass" for row in rows) else "fail",
-        "scope": "one direct DUT, one agentic Testbench, and one fully-skilled agentic Bugfix export",
+        "scope": "representative direct and agentic exports covering prompt-surface isolation",
         "runner": "operations/tri_form_derivation_prep/export_tri_form_runtime.py",
         "access_auditor": "operations/tri_form_derivation_prep/audit_runtime_export.py",
         "sample_count": len(rows),

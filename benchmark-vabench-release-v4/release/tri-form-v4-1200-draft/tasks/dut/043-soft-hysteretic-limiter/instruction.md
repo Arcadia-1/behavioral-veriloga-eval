@@ -58,7 +58,7 @@ sample windows into the DUT.
 
 ## Modeling Constraints
 
-Return only `soft_hysteretic_limiter.va`. Do not emit a the simulator example harness,
+Return only `soft_hysteretic_limiter.va`. Do not emit the validation harness,
 validation logic, validation-only hooks, or simulator-specific side channels. Use
 voltage contributions only; do not use current contributions, transistor-level
 devices, AC/noise analysis, `ddt()`, or `idt()`. Use event-updated state and

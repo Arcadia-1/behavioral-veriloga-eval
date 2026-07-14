@@ -66,4 +66,4 @@ Keep the implementation behavioral and public-interface compatible. Do not add S
 ## Output Contract
 
 Return exactly one source artifact named `sine_vco_idtmod_bound_step.va`. Do not
-generate a Spectre testbench for this task.
+generate a testbench for this task.

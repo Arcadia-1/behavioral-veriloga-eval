@@ -46,12 +46,12 @@ Model a compact sampling front end:
 
 ## Modeling Constraints
 
-Return only `sample_hold_droop_ref.va`. Do not emit a Spectre testbench,
+Return only `sample_hold_droop_ref.va`. Do not emit a testbench,
 validation logic, validation-only hooks, or simulator-specific side channels. Use
 voltage contributions only; do not use current contributions, `ddt()`, or
 `idt()`.
 
-Use deterministic Verilog-A behavioral modeling appropriate for the public circuit contract. The visible testbench is a public validation scenario; do not hard-code a particular stimulus table, transient stop time, or validation sample window into the DUT unless that behavior is part of the public circuit contract.
+Use deterministic Verilog-A behavioral modeling appropriate for the public circuit contract. Do not hard-code validation stimulus tables, transient stop times, or sample windows into the DUT unless that behavior is part of the public circuit contract.
 
 ## Output Contract
 

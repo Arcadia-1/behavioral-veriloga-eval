@@ -8,7 +8,7 @@ Implement the requested Verilog-A artifact for `Successive Approximation Calibra
 - Category: `calibration_control`
 - Target artifact(s): `successive_approximation_calibration_search_fsm.va`
 
-Implement a clocked voltage-domain successive-approximation calibration search controller. Return only the requested DUT artifact; do not generate a the simulator example harness.
+Implement a clocked voltage-domain successive-approximation calibration search controller. Return only the requested DUT artifact; do not generate the validation harness.
 
 ## Public Verilog-A Interface
 

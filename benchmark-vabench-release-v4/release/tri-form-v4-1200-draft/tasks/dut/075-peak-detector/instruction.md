@@ -47,7 +47,7 @@ Required observable behavior:
 - Hold the first peak, clear it on reset, and update to a larger later peak.
 
 Use voltage contributions only. Smooth `vout` with `transition()`. Do not
-generate a the simulator example harness, waveform files, validation artifacts,
+generate the validation harness, waveform files, validation artifacts,
 transistor-level devices, current contributions, `ddt()`, or `idt()`.
 
 ## Modeling Constraints

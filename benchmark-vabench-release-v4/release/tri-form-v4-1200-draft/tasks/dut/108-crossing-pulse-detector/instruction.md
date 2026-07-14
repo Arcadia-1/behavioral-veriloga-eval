@@ -34,7 +34,7 @@ The public parameters declared by the target artifact are part of the contract a
 ## Required Behavior
 
 This task asks for the `source_crossing_pulse_detector` behavioral DUT module,
-not a Spectre testbench. The module emits a fixed-width pulse when `sigin`
+not a testbench. The module emits a fixed-width pulse when `sigin`
 crosses the configured threshold in either direction.
 
 Support these public parameters and legal overrides:
@@ -63,7 +63,7 @@ test hooks, or simulator-specific side channels.
 
 ## Modeling Constraints
 
-Use deterministic Verilog-A behavioral modeling appropriate for the public circuit contract. The visible testbench is a public validation scenario; do not hard-code a particular stimulus table, transient stop time, or validation sample window into the DUT unless that behavior is part of the public circuit contract.
+Use deterministic Verilog-A behavioral modeling appropriate for the public circuit contract. Do not hard-code validation stimulus tables, transient stop times, or sample windows into the DUT unless that behavior is part of the public circuit contract.
 
 ## Output Contract
 

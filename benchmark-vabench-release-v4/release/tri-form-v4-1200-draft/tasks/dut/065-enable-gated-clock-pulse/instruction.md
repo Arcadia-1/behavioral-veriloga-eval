@@ -11,7 +11,7 @@ Implement the requested Verilog-A artifact for `Enable Gated Clock Pulse`.
 Implement `enable_gated_clock_pulse.va`, a voltage-coded enable-qualified clock/control pulse gate for AMS sampled-data timing.
 
 - This is a DUT/support-component task: implement only the requested Verilog-A source artifact.
-- Do not generate a the simulator example harness or validation harness.
+- Do not generate the validation harness or validation harness.
 - Preserve the public module name, port order, port directions, and parameter names.
 - Treat any public validation harness as an observable use case, not as values to hard-code into the DUT.
 

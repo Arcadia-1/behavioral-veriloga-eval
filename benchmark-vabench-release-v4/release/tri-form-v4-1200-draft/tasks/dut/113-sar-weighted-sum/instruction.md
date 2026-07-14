@@ -39,12 +39,12 @@ Provide this overrideable public parameter:
 
 ## Modeling Constraints
 
-Return only `sar_weighted_sum.va`. Do not emit a Spectre testbench, validation harness
+Return only `sar_weighted_sum.va`. Do not emit a testbench, validation harness
 logic, validation-only hooks, hard-coded validation-only sample points, or
 simulator-specific side channels. Use voltage contributions only; do not use
 current contributions, `ddt()`, or `idt()`.
 
-Use deterministic Verilog-A behavioral modeling appropriate for the public circuit contract. The visible testbench is a public validation scenario; do not hard-code a particular stimulus table, transient stop time, or validation sample window into the DUT unless that behavior is part of the public circuit contract.
+Use deterministic Verilog-A behavioral modeling appropriate for the public circuit contract. Do not hard-code validation stimulus tables, transient stop times, or sample windows into the DUT unless that behavior is part of the public circuit contract.
 
 ## Output Contract
 

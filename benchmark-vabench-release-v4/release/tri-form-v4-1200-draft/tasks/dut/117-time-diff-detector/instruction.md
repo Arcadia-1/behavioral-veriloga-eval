@@ -34,7 +34,7 @@ output to `[-vdd, vdd]`, then rearm detection for the next window.
 
 Use `cross`-style event detection and `transition(vout_value, td, tr)` or equivalent Spectre-compatible event behavior. Do not accumulate multiple edges in one clock window or fail to rearm after each clock event.
 
-Use deterministic Verilog-A behavioral modeling appropriate for the public circuit contract. The visible testbench is a public validation scenario; do not hard-code a particular stimulus table, transient stop time, or validation sample window into the DUT unless that behavior is part of the public circuit contract.
+Use deterministic Verilog-A behavioral modeling appropriate for the public circuit contract. Do not hard-code validation stimulus tables, transient stop times, or sample windows into the DUT unless that behavior is part of the public circuit contract.
 
 ## Output Contract
 

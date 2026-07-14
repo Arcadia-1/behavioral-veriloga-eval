@@ -8,7 +8,7 @@ Implement the requested Verilog-A artifact for `Calibration Deadband Controller`
 - Category: `calibration_control`
 - Target artifact(s): `calibration_deadband_controller.va`
 
-Implement a clocked voltage-domain calibration deadband controller. Return only the requested DUT artifact; do not generate a Spectre testbench.
+Implement a clocked voltage-domain calibration deadband controller. Return only the requested DUT artifact; do not generate a testbench.
 
 ## Public Verilog-A Interface
 
@@ -42,7 +42,7 @@ Provide these overrideable public parameters:
 
 Use pure voltage-domain behavioral Verilog-A. Do not use current contributions, transistor-level devices, AC/noise analysis, validation logic, validation-only hooks, simulator-specific side channels, or KCL/KVL solving assumptions.
 
-Use deterministic Verilog-A behavioral modeling appropriate for the public circuit contract. The visible testbench is a public validation scenario; do not hard-code a particular stimulus table, transient stop time, or validation sample window into the DUT unless that behavior is part of the public circuit contract.
+Use deterministic Verilog-A behavioral modeling appropriate for the public circuit contract. Do not hard-code validation stimulus tables, transient stop times, or sample windows into the DUT unless that behavior is part of the public circuit contract.
 
 ## Output Contract
 

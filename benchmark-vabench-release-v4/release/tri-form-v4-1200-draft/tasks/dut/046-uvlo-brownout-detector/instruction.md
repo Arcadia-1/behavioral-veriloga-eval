@@ -8,7 +8,7 @@ Implement the requested Verilog-A artifact for `UVLO Brownout Detector`.
 - Category: `bias_reference_power_management`
 - Target artifact(s): `uvlo_brownout_detector.va`
 
-Implement a clocked voltage-domain undervoltage-lockout and brownout detector. Return only the requested DUT artifact; do not generate a the simulator example harness.
+Implement a clocked voltage-domain undervoltage-lockout and brownout detector. Return only the requested DUT artifact; do not generate the validation harness.
 
 ## Public Verilog-A Interface
 

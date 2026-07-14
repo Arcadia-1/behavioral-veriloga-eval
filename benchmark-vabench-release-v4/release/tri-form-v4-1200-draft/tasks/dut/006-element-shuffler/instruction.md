@@ -8,7 +8,7 @@ Implement the requested Verilog-A artifact for `Element Shuffler`.
 - Category: `calibration_control`
 - Target artifact(s): `element_shuffler.va`
 
-Implement a deterministic voltage-domain one-hot element shuffler for calibration or dynamic-element-matching control. Return only the requested DUT artifact; do not generate a Spectre testbench.
+Implement a deterministic voltage-domain one-hot element shuffler for calibration or dynamic-element-matching control. Return only the requested DUT artifact; do not generate a testbench.
 
 ## Public Verilog-A Interface
 
@@ -52,7 +52,7 @@ Do not use current contributions, transistor-level devices, `ddt()`, `idt()`, AC
 
 Smooth output transitions with `transition(...)` or equivalent Verilog-A voltage contribution.
 
-Use deterministic Verilog-A behavioral modeling appropriate for the public circuit contract. The visible testbench is a public validation scenario; do not hard-code a particular stimulus table, transient stop time, or validation sample window into the DUT unless that behavior is part of the public circuit contract.
+Use deterministic Verilog-A behavioral modeling appropriate for the public circuit contract. Do not hard-code validation stimulus tables, transient stop times, or sample windows into the DUT unless that behavior is part of the public circuit contract.
 
 ## Output Contract
 

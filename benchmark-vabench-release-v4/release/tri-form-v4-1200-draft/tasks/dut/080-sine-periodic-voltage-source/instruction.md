@@ -35,7 +35,7 @@ tone frequency so the waveform is well resolved in transient simulation.
 
 ## Modeling Constraints
 
-Return only `multitone.va`. Do not generate a the simulator example harness or validation harness
+Return only `multitone.va`. Do not generate the validation harness or validation harness
 logic. Do not use current contributions, `ddt()`, transistor-level devices,
 AC/noise analysis, or simulator-specific side channels.
 Drive `OUT` relative to the declared `VSS` reference port.

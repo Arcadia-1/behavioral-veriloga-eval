@@ -35,7 +35,7 @@ and drive the output with `transition(...)`.
 
 ## Modeling Constraints
 
-Return only `clk_burst_gen.va`. Do not generate a the simulator example harness or validation harness
+Return only `clk_burst_gen.va`. Do not generate the validation harness or validation harness
 logic. Do not use current contributions, `ddt()`, `idt()`, transistor-level
 devices, AC/noise analysis, or simulator-specific side channels.
 

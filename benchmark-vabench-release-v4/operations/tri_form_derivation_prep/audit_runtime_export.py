@@ -47,8 +47,24 @@ def main() -> int:
             problems.append("direct one-shot mode has filesystem mounts")
         if not (run / "direct_prompt.txt").is_file():
             problems.append("direct one-shot prompt is missing")
+        else:
+            direct_prompt = (run / "direct_prompt.txt").read_text(encoding="utf-8", errors="ignore")
+            for marker in (
+                "VABENCH_PUBLIC_CONTRACT",
+                "Feedback tools",
+                "feedback CLI",
+                "vabench feedback",
+                "private Spectre",
+                "public/submission",
+                "agentic mode",
+                "mounted public task inputs",
+            ):
+                if marker.lower() in direct_prompt.lower():
+                    problems.append(f"direct one-shot prompt leaks {marker!r}")
         if (run / "public" / "tool_manifest.json").exists():
             problems.append("direct one-shot mode exposes a tool manifest")
+        if (run / "public" / "task" / "public_contract.json").exists():
+            problems.append("direct one-shot mode exposes a public contract file")
     else:
         if mounts != ["public/task:ro", "public/submission:rw"]:
             problems.append("agentic model mounts differ from the public contract")

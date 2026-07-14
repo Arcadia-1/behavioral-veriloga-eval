@@ -47,7 +47,7 @@ Required observable behavior:
 - Ignore later crossings after the first recorded event.
 
 Use voltage contributions only. Smooth the `done` output with `transition()`.
-Do not generate a the simulator example harness, waveform files, validation artifacts,
+Do not generate the validation harness, waveform files, validation artifacts,
 transistor-level devices, current contributions, `ddt()`, or `idt()`.
 
 ## Modeling Constraints

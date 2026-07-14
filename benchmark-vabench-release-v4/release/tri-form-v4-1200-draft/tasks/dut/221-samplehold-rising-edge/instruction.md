@@ -29,7 +29,7 @@ All ports are scalar `electrical` nodes. `control` is the voltage-coded sampling
 
 ## Modeling Constraints
 
-Use voltage contributions only. Do not emit a Spectre testbench, checker logic, out-of-band test hooks, simulator side channels, current contributions, `ddt()`, or `idt()`.
+Use voltage contributions only. Do not emit a testbench, checker logic, out-of-band test hooks, simulator side channels, current contributions, `ddt()`, or `idt()`.
 
 ## Output Contract
 

@@ -11,7 +11,7 @@ Implement the requested Verilog-A artifact for `Masked Config Update 32b`.
 Implement `masked_config_update_32b.va`, a voltage-coded masked trim/configuration-update helper for AMS calibration and mode-control flows.
 
 - This is a DUT/support-component task: implement only the requested Verilog-A source artifact.
-- Do not generate a the simulator example harness or validation harness.
+- Do not generate the validation harness or validation harness.
 - Preserve the public module name, port order, port directions, and parameter names.
 - Treat any public validation harness as an observable use case, not as values to hard-code into the DUT.
 

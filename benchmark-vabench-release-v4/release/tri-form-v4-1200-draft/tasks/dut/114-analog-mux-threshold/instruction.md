@@ -2,7 +2,7 @@
 
 ## Task Contract
 Implement the single-DUT Verilog-A artifact `analog_mux_threshold.va` for a
-voltage-controlled 2:1 analog multiplexer. The visible testbench is a public
+voltage-controlled 2:1 analog multiplexer. The validation scenario is a public
 verification scenario; additional validation may use different input waveforms,
 select timing, or stop times.
 

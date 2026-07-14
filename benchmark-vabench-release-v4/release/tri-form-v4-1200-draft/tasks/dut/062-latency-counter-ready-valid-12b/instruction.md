@@ -11,7 +11,7 @@ Implement the requested Verilog-A artifact for `Ready/Valid Latency Counter 12b`
 Implement `ready_valid_latency_counter_12b.va`, a clocked converter/readout instrumentation block that measures the number of clock cycles from a sampled valid request to a sampled ready response.
 
 - This is a DUT/support-component task: implement only the requested Verilog-A source artifact.
-- Do not generate a the simulator example harness or validation harness.
+- Do not generate the validation harness or validation harness.
 - Preserve the public module name, port order, port directions, and parameter names.
 - Treat any public validation harness as an observable use case, not as values to hard-code into the DUT.
 

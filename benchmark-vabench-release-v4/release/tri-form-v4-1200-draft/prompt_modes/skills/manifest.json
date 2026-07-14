@@ -6,11 +6,36 @@
   },
   "schema_version": "v4-skill-manifest-v1",
   "skills": {
+    "agentic_wrapper.md": {
+      "applicable_forms": [
+        "dut",
+        "testbench",
+        "bugfix"
+      ],
+      "bytes": 458,
+      "id": "agentic_wrapper.md",
+      "kind": "wrapper",
+      "license": {
+        "spdx": null,
+        "status": "repository_license_pending"
+      },
+      "path": "prompt_modes/skills/agentic_wrapper.md",
+      "provenance": {
+        "source": "V4_TRI_FORM_BENCHMARK_REQUIREMENTS.md",
+        "type": "project_authored"
+      },
+      "semantic_version": "1.0.0",
+      "sha256": "91ee279678bfbd07547df6a3589fc0136bdb6ebc06422191164f653e614bb731",
+      "stable_id": "wrapper.agentic",
+      "token_counts": {
+        "vabench_utf8_lexeme@1.0.0": 86
+      }
+    },
     "bugfix_diagnosis.md": {
       "applicable_forms": [
         "bugfix"
       ],
-      "bytes": 699,
+      "bytes": 705,
       "id": "bugfix_diagnosis.md",
       "kind": "form_skill",
       "license": {
@@ -23,10 +48,35 @@
         "type": "project_authored"
       },
       "semantic_version": "1.0.0",
-      "sha256": "60b05b32ca13822e1d98633f36873a86c30dbdeeac10e2fb5aff3181a83134db",
+      "sha256": "1724015f42ee3b3389c2f23065db34ae846957ca7f150e52f03449597b74b3a3",
       "stable_id": "skill.form.bugfix",
       "token_counts": {
-        "vabench_utf8_lexeme@1.0.0": 118
+        "vabench_utf8_lexeme@1.0.0": 117
+      }
+    },
+    "direct_wrapper.md": {
+      "applicable_forms": [
+        "dut",
+        "testbench",
+        "bugfix"
+      ],
+      "bytes": 459,
+      "id": "direct_wrapper.md",
+      "kind": "wrapper",
+      "license": {
+        "spdx": null,
+        "status": "repository_license_pending"
+      },
+      "path": "prompt_modes/skills/direct_wrapper.md",
+      "provenance": {
+        "source": "V4_TRI_FORM_BENCHMARK_REQUIREMENTS.md",
+        "type": "project_authored"
+      },
+      "semantic_version": "1.0.0",
+      "sha256": "85792bb2b73c9822b5d70cb0216340513383c299001dec24a6d001c379907a3b",
+      "stable_id": "wrapper.direct_one_shot",
+      "token_counts": {
+        "vabench_utf8_lexeme@1.0.0": 95
       }
     },
     "dut_modeling.md": {
@@ -144,31 +194,6 @@
       "stable_id": "skill.feedback.testbench",
       "token_counts": {
         "vabench_utf8_lexeme@1.0.0": 56
-      }
-    },
-    "neutral_wrapper.md": {
-      "applicable_forms": [
-        "dut",
-        "testbench",
-        "bugfix"
-      ],
-      "bytes": 593,
-      "id": "neutral_wrapper.md",
-      "kind": "wrapper",
-      "license": {
-        "spdx": null,
-        "status": "repository_license_pending"
-      },
-      "path": "prompt_modes/skills/neutral_wrapper.md",
-      "provenance": {
-        "source": "V4_TRI_FORM_BENCHMARK_REQUIREMENTS.md",
-        "type": "project_authored"
-      },
-      "semantic_version": "1.0.0",
-      "sha256": "3a2d041459fab932a33225a9e5070d4f196fb6ad1633b7e1a6b7e38f2f5c6653",
-      "stable_id": "wrapper.neutral",
-      "token_counts": {
-        "vabench_utf8_lexeme@1.0.0": 127
       }
     },
     "testbench_verification.md": {

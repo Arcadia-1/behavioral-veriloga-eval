@@ -81,6 +81,6 @@ Keep the implementation behavioral and public-interface compatible. Do not add S
 ## Output Contract
 
 Return exactly one source artifact named `fracn_pll_timer_ref.va`. Do not
-generate a Spectre testbench or the reference-step support clock for this task.
+generate a testbench or the reference-step support clock for this task.
 Companion support files are supplied by the harness and are not candidate
 artifacts.

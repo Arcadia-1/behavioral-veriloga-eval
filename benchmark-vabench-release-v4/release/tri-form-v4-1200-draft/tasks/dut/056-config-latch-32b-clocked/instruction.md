@@ -11,7 +11,7 @@ Implement the requested Verilog-A artifact for `Config Gate 32b`.
 Implement `config_latch_32b.va`, a 32-bit voltage-coded static enable-gated configuration bus helper for AMS trim/configuration flows. The public interface has no clock, so model static enable-gate behavior only; do not implement a clocked latch.
 
 - This is a DUT/support-component task: implement only the requested Verilog-A source artifact.
-- Do not generate a the simulator example harness or validation harness.
+- Do not generate the validation harness or validation harness.
 - Preserve the public module name, port order, port directions, and parameter names.
 - Treat any public validation harness as an observable use case, not as values to hard-code into the DUT.
 

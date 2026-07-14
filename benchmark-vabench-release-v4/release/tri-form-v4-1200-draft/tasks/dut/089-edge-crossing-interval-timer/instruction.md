@@ -36,7 +36,7 @@ Support legal overrides of these public parameters.
 ## Required Behavior
 
 This task asks for the `cross_interval_163p333_ref` behavioral DUT module, not
-a Spectre testbench. The module measures the interval from a rising edge on
+a testbench. The module measures the interval from a rising edge on
 `a` to the next rising edge on `b` and exposes both the measured interval and a
 completion marker.
 
@@ -58,7 +58,7 @@ analysis, waveform files, validation artifacts, or simulator side channels.
 
 ## Modeling Constraints
 
-Use deterministic Verilog-A behavioral modeling appropriate for the public circuit contract. The visible testbench is a public validation scenario; do not hard-code a particular stimulus table, transient stop time, or validation sample window into the DUT unless that behavior is part of the public circuit contract.
+Use deterministic Verilog-A behavioral modeling appropriate for the public circuit contract. Do not hard-code validation stimulus tables, transient stop times, or sample windows into the DUT unless that behavior is part of the public circuit contract.
 
 ## Output Contract
 

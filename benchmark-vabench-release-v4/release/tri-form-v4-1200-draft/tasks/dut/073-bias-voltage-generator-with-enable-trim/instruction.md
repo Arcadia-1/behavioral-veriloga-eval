@@ -9,7 +9,7 @@ Implement the requested Verilog-A artifact for `Bias Voltage Generator With Enab
 - Target artifact(s): `bias_voltage_generator_with_enable_trim.va`
 
 - Target artifact: `bias_voltage_generator_with_enable_trim.va`
-- Implement only the requested Verilog-A DUT. Do not generate a the simulator example harness, validation logic, or auxiliary test hooks.
+- Implement only the requested Verilog-A DUT. Do not generate the validation harness, validation logic, or auxiliary test hooks.
 - Preserve the public module name, port order, starter parameters, and saved waveform observable names.
 
 ## Public Verilog-A Interface

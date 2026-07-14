@@ -76,4 +76,4 @@ Keep the implementation behavioral and public-interface compatible. Do not add S
 ## Output Contract
 
 Return exactly one source artifact named `differential_vco_clip_idtmod.va`. Do
-not generate a Spectre testbench for this task.
+not generate a testbench for this task.

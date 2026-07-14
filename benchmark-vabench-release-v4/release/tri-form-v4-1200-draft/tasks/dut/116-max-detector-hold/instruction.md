@@ -28,7 +28,7 @@ Initialize the held value from the input at the start of simulation. During tran
 
 Use analog state in a Spectre-compatible Verilog-A model. Do not implement a resettable peak detector, a minimum detector, a passthrough follower, or a final-value-only detector.
 
-Use deterministic Verilog-A behavioral modeling appropriate for the public circuit contract. The visible testbench is a public validation scenario; do not hard-code a particular stimulus table, transient stop time, or validation sample window into the DUT unless that behavior is part of the public circuit contract.
+Use deterministic Verilog-A behavioral modeling appropriate for the public circuit contract. Do not hard-code validation stimulus tables, transient stop times, or sample windows into the DUT unless that behavior is part of the public circuit contract.
 
 ## Output Contract
 

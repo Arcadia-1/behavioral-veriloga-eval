@@ -8,7 +8,7 @@ Implement the requested Verilog-A artifact for `Trim Calibration Controller`.
 - Category: `calibration_control`
 - Target artifact(s): `cdac_calibration.va`
 
-Implement a clocked voltage-domain trim-voltage generator for calibration control. Return only the requested DUT artifact; do not generate a Spectre testbench.
+Implement a clocked voltage-domain trim-voltage generator for calibration control. Return only the requested DUT artifact; do not generate a testbench.
 
 ## Public Verilog-A Interface
 
@@ -34,7 +34,7 @@ Provide these overrideable public parameters:
 
 ## Modeling Constraints
 
-Use deterministic Verilog-A behavioral modeling appropriate for the public circuit contract. The visible testbench is a public validation scenario; do not hard-code a particular stimulus table, transient stop time, or validation sample window into the DUT unless that behavior is part of the public circuit contract.
+Use deterministic Verilog-A behavioral modeling appropriate for the public circuit contract. Do not hard-code validation stimulus tables, transient stop times, or sample windows into the DUT unless that behavior is part of the public circuit contract.
 
 ## Output Contract
 

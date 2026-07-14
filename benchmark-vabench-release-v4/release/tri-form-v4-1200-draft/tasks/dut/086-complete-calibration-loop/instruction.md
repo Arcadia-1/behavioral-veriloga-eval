@@ -13,7 +13,7 @@ Implement the requested Verilog-A artifact for `Complete Calibration Loop`.
 
 - Return exactly one Verilog-A source file named `complete_calibration_loop.va`.
 - Preserve the public module name, positional port order, electrical disciplines, and observable output meanings.
-- Do not generate or modify a Spectre testbench.
+- Do not generate or modify a testbench.
 
 ## Public Verilog-A Interface
 
@@ -70,7 +70,7 @@ side channels, use current contributions, transistor-level devices, `ddt()`,
 a testbench are supplied by the harness; the candidate implementation should
 contain only `complete_calibration_loop.va`.
 
-Use deterministic Verilog-A behavioral modeling appropriate for the public circuit contract. The visible testbench is a public validation scenario; do not hard-code a particular stimulus table, transient stop time, or validation sample window into the DUT unless that behavior is part of the public circuit contract.
+Use deterministic Verilog-A behavioral modeling appropriate for the public circuit contract. Do not hard-code validation stimulus tables, transient stop times, or sample windows into the DUT unless that behavior is part of the public circuit contract.
 
 ## Output Contract
 

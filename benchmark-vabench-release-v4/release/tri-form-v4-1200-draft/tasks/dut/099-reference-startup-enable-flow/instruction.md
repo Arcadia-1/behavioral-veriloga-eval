@@ -9,7 +9,7 @@ Implement the requested Verilog-A artifact for `Reference Startup Enable Flow`.
 - Target artifact(s): `reference_startup_enable_flow.va`
 
 - Target artifact: `reference_startup_enable_flow.va`
-- Implement only the requested Verilog-A flow DUT. Do not generate a Spectre testbench, validation logic, or auxiliary test hooks.
+- Implement only the requested Verilog-A flow DUT. Do not generate a testbench, validation logic, or auxiliary test hooks.
 - Preserve the public module name, port order, starter parameters, and saved waveform observable names.
 
 ## Public Verilog-A Interface
@@ -50,7 +50,7 @@ The public parameters declared by the target artifact are part of the contract a
 
 ## Modeling Constraints
 
-Use deterministic Verilog-A behavioral modeling appropriate for the public circuit contract. The visible testbench is a public validation scenario; do not hard-code a particular stimulus table, transient stop time, or validation sample window into the DUT unless that behavior is part of the public circuit contract.
+Use deterministic Verilog-A behavioral modeling appropriate for the public circuit contract. Do not hard-code validation stimulus tables, transient stop times, or sample windows into the DUT unless that behavior is part of the public circuit contract.
 
 ## Output Contract
 

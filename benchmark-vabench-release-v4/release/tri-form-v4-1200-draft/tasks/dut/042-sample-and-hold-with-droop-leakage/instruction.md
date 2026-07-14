@@ -38,7 +38,7 @@ voltage-domain ports.
 
 ## Modeling Constraints
 
-Return only `leaky_hold.va`. Do not emit a the simulator example harness, validation logic,
+Return only `leaky_hold.va`. Do not emit the validation harness, validation logic,
 validation-only hooks, or simulator-specific side channels. Use voltage
 contributions only; do not use current contributions, `ddt()`, or `idt()`.
 
