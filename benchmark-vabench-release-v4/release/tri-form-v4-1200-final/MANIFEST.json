@@ -1,11 +1,11 @@
 {
   "active_mutations_per_family": 5,
   "family_count": 400,
-  "frozen_at": "2026-07-13T22:31:25.395812+00:00",
+  "frozen_at": "2026-07-14T01:57:22.801265+00:00",
   "materialized_artifact_sha256": {
     "BUGFIX_SEED_REVIEW.json": "73774271bf799e78025a9a058041110ee7cfe482743fce46c21e9db0ca93bc9c",
     "TASK_INDEX.json": "85490ae200c5de06b4a4fc1c67be50ecfe154f556de9823f766547e469645822",
-    "prompt_modes/PROMPT_RECORDS.jsonl": "539be2aaaea6dace1e0a0e9e375f1a82bee1b9be3c57e960efd05c3d5a0b5aeb",
+    "prompt_modes/PROMPT_RECORDS.jsonl": "88d1496a8915b1446449b25581d19a33063c2e48fbb6a561d1f46b79930cdf70",
     "prompt_modes/modes.json": "5da69e01899ce5dcb261787c6c6b36bdcdaf5509f6e3fd645165114f5f01d035",
     "prompt_modes/skills/manifest.json": "a8565770ddb5d3dde266032e6ec55436005f082d649d9483c844e909e7d7a0c6"
   },
@@ -31,7 +31,7 @@
   },
   "tasks_index": "TASK_INDEX.json",
   "testbench_repair_summary": {
-    "binding_refreshed_count": 0,
+    "binding_refreshed_count": 2,
     "dut_include_normalized_count": 0,
     "output_sources_removed_count": 0,
     "reference_invalid_count": 0,

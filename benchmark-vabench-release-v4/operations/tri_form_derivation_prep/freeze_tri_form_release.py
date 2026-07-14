@@ -96,6 +96,27 @@ def port_list(module: dict[str, Any]) -> list[dict[str, Any]]:
     return sorted(module.get("ports") or [], key=lambda item: int(item.get("position", 0)))
 
 
+def scalar_port_list(module: dict[str, Any]) -> list[dict[str, Any]]:
+    scalars: list[dict[str, Any]] = []
+    for port in port_list(module):
+        name = str(port.get("name") or "")
+        match = re.fullmatch(r"(.+)\[(\d+):(\d+)\]", name)
+        if match is None:
+            scalars.append(port)
+            continue
+        base, first, last = match.groups()
+        start = int(first)
+        stop = int(last)
+        step = -1 if start > stop else 1
+        for bit in range(start, stop + step, step):
+            scalar = dict(port)
+            scalar["name"] = f"{base}[{bit}]"
+            scalar["bus_ref"] = name
+            scalar["bit_index"] = bit
+            scalars.append(scalar)
+    return scalars
+
+
 def support_source_for(task_record: dict[str, Any]) -> Path:
     source = PACKAGE / str(task_record["canonical_dut_source"])
     return source / "public" / "task" / "public_support"
@@ -188,7 +209,7 @@ def actual_dut_bindings(reference: Path, contract: dict[str, Any]) -> list[dict[
         if module is None:
             continue
         nodes = [token for token in re.split(r"[\s,]+", node_text.strip()) if token]
-        ports = port_list(module)
+        ports = scalar_port_list(module)
         connections = []
         public_outputs = []
         for index, net in enumerate(nodes):

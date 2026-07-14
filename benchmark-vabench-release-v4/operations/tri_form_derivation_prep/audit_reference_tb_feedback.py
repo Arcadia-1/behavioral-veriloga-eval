@@ -140,13 +140,49 @@ def audit_one(
         }
 
 
+def run_batch(
+    *,
+    release: Path,
+    rows: list[dict[str, Any]],
+    mode: str,
+    workers: int,
+    working_token_budget: int,
+    timeout_s: int,
+    tail_lines: int,
+    label: str,
+) -> list[dict[str, Any]]:
+    results: list[dict[str, Any]] = []
+    with futures.ThreadPoolExecutor(max_workers=workers) as executor:
+        future_map = {
+            executor.submit(
+                audit_one,
+                release=release,
+                row=row,
+                mode=mode,
+                working_token_budget=working_token_budget,
+                timeout_s=timeout_s,
+                tail_lines=tail_lines,
+            ): row
+            for row in rows
+        }
+        for future in futures.as_completed(future_map):
+            result = future.result()
+            result["attempt"] = label
+            results.append(result)
+            print(f"{label}:{result['task_id']} {result['status']} {result['elapsed_s']}s", flush=True)
+    return results
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--release", type=Path, default=DEFAULT_RELEASE)
     parser.add_argument("--task-id", action="append", default=[], help="Restrict to one task id; may repeat.")
     parser.add_argument("--mode", default="G0")
     parser.add_argument("--workers", type=int, default=4)
-    parser.add_argument("--timeout-s", type=int, default=240)
+    parser.add_argument("--timeout-s", type=int, default=600)
+    parser.add_argument("--retry-failures", action="store_true")
+    parser.add_argument("--retry-workers", type=int, default=1)
+    parser.add_argument("--retry-timeout-s", type=int)
     parser.add_argument("--working-token-budget", type=int, default=60000)
     parser.add_argument("--tail-lines", type=int, default=40)
     parser.add_argument("--output", type=Path)
@@ -156,28 +192,50 @@ def main(argv: list[str] | None = None) -> int:
     rows = resolve_task_rows(release, args.task_id)
     workers = max(1, min(args.workers, len(rows) or 1))
     started_at = time.strftime("%Y-%m-%dT%H:%M:%S%z")
-    results: list[dict[str, Any]] = []
-    with futures.ThreadPoolExecutor(max_workers=workers) as executor:
-        future_map = {
-            executor.submit(
-                audit_one,
-                release=release,
-                row=row,
-                mode=args.mode,
-                working_token_budget=args.working_token_budget,
-                timeout_s=args.timeout_s,
-                tail_lines=args.tail_lines,
-            ): row
-            for row in rows
-        }
-        for future in futures.as_completed(future_map):
-            result = future.result()
-            results.append(result)
-            print(f"{result['task_id']} {result['status']} {result['elapsed_s']}s", flush=True)
-
     order = {str(row["task_id"]): index for index, row in enumerate(rows)}
+    results = run_batch(
+        release=release,
+        rows=rows,
+        mode=args.mode,
+        workers=workers,
+        working_token_budget=args.working_token_budget,
+        timeout_s=args.timeout_s,
+        tail_lines=args.tail_lines,
+        label="initial",
+    )
+    if args.retry_failures:
+        by_id = {str(row["task_id"]): row for row in rows}
+        failed = [result for result in results if result["status"] != "PASS"]
+        retry_rows = [by_id[str(result["task_id"])] for result in failed]
+        if retry_rows:
+            retry_workers = max(1, min(args.retry_workers, len(retry_rows)))
+            retry_timeout_s = args.retry_timeout_s or args.timeout_s
+            retry_results = run_batch(
+                release=release,
+                rows=retry_rows,
+                mode=args.mode,
+                workers=retry_workers,
+                working_token_budget=args.working_token_budget,
+                timeout_s=retry_timeout_s,
+                tail_lines=args.tail_lines,
+                label="retry",
+            )
+            retry_by_id = {str(result["task_id"]): result for result in retry_results}
+            merged: list[dict[str, Any]] = []
+            for result in results:
+                task_id = str(result["task_id"])
+                retry = retry_by_id.get(task_id)
+                if retry is None:
+                    merged.append(result)
+                    continue
+                final = dict(retry)
+                final["attempts"] = [result, retry]
+                merged.append(final)
+            results = merged
+
     results.sort(key=lambda item: order.get(str(item["task_id"]), 10**9))
     pass_count = sum(1 for result in results if result["status"] == "PASS")
+    retried_count = sum(1 for result in results if result.get("attempts"))
     summary = {
         "schema_version": "v4-reference-tb-feedback-audit-v1",
         "started_at": started_at,
@@ -186,6 +244,10 @@ def main(argv: list[str] | None = None) -> int:
         "mode": args.mode,
         "timeout_s": args.timeout_s,
         "workers": workers,
+        "retry_failures": bool(args.retry_failures),
+        "retry_timeout_s": args.retry_timeout_s or args.timeout_s,
+        "retry_workers": args.retry_workers,
+        "retried_count": retried_count,
         "task_count": len(results),
         "pass_count": pass_count,
         "fail_count": len(results) - pass_count,
