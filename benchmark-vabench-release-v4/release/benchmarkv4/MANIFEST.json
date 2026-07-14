@@ -8,14 +8,16 @@
   },
   "family_count": 400,
   "materialized_artifact_sha256": {
-    "TASK_INDEX.json": "a3c4e24cf4127be0eee820c28eaf232f67ee98395993f00cd010323c5fc13ba0",
+    "TASK_INDEX.json": "26f1fd73d88f9464cdb77c837642430d4211ba269053f70d230f704b3b509166",
     "prompt_modes/manifest.json": "bf8375e0363e8d0620f3df01db5b8a48e50971cc7eaefe8a737a8e08ca2a1061",
     "prompt_modes/modes.json": "2fe6660e24f515c5dbd12ab5e84386ad1c8776d14e3615668add64fe2d1eecf2"
   },
   "private_evaluator": "private_evaluator",
   "prompt_record_count": 7200,
+  "public_contracts_tree_sha256": "f072b6daa7b7422d4f01e338272422ae3312f810973f1ad1835018cfc1fbef0b",
   "public_surface": {
     "prompt_modes": "prompt_modes",
+    "public_contracts": "public_contracts",
     "task_index": "TASK_INDEX.json",
     "tasks": "tasks"
   },

@@ -177,7 +177,7 @@ def render_interface(spec: dict[str, Any]) -> str:
                     f"    - position {port['position']}: `{port['name']}` "
                     f"({port['direction']}, {port['discipline']})"
                 )
-    return "\n".join(blocks) or "- Use the interface declared in `public_contract.json`."
+    return "\n".join(blocks) or "- Use the interface declared in the public contract metadata."
 
 
 def render_parameters(spec: dict[str, Any]) -> str:
@@ -336,8 +336,15 @@ def public_semantics(spec: dict[str, Any]) -> dict[str, Any]:
     }
 
 
-def write_public_contract(task_dir: Path, contract: dict[str, Any]) -> None:
-    write_json(task_dir / "public_contract.json", contract)
+def public_contract_relative_path(task_dir: Path) -> str:
+    form = task_dir.parent.name
+    return f"public_contracts/{form}/{task_dir.name}.json"
+
+
+def write_public_contract(output: Path, task_dir: Path, contract: dict[str, Any]) -> str:
+    relative = public_contract_relative_path(task_dir)
+    write_json(output / relative, contract)
+    return relative
 
 
 def mutation_score(item: dict[str, Any], preferred: bool) -> tuple[int, str]:
@@ -422,7 +429,7 @@ def overlay_mutation(source_task: Path, mutation_id: str, destination: Path, art
 
 def common_task_record(
     *, task_id: str, form: str, family_id: str, directory: str, spec_sha: str,
-    source_task: str, candidate_artifacts: list[str], public_bundle_sha: str,
+    source_task: str, candidate_artifacts: list[str], public_contract: str, public_bundle_sha: str,
 ) -> dict[str, Any]:
     return {
         "schema_version": "v4-benchmarkv4-task-record-v1",
@@ -430,6 +437,7 @@ def common_task_record(
         "form": form,
         "family_id": family_id,
         "task_dir": directory,
+        "public_contract": public_contract,
         "candidate_artifacts": candidate_artifacts,
         "family_spec_sha256": spec_sha,
         "canonical_dut_source": source_task,
@@ -512,7 +520,7 @@ def build_dut_view(
         "target_artifacts": [str(item["path"]) for item in spec["artifact_contract"]["files"]],
         "feedback": {"available_in_modes": ["G2", "G3", "G4", "G5"], "command": "vabench feedback run"},
     })
-    write_public_contract(task_dir, contract)
+    public_contract = write_public_contract(output, task_dir, contract)
     private_task_dir = private_output / rel(task_dir, output)
     evaluator = private_task_dir / "evaluator"
     evaluator.mkdir(parents=True)
@@ -530,9 +538,16 @@ def build_dut_view(
         task_id=f"v4-{family}", form="dut", family_id=family,
         directory=rel(task_dir, output), spec_sha=spec_sha,
         source_task=rel(source_task, PACKAGE_ROOT),
-        candidate_artifacts=contract["target_artifacts"], public_bundle_sha=bundle_sha,
+        candidate_artifacts=contract["target_artifacts"], public_contract=public_contract,
+        public_bundle_sha=bundle_sha,
     ))
-    return {"task_id": f"v4-{family}", "form": "dut", "family_id": family, "task_dir": rel(task_dir, output)}
+    return {
+        "task_id": f"v4-{family}",
+        "form": "dut",
+        "family_id": family,
+        "task_dir": rel(task_dir, output),
+        "public_contract": public_contract,
+    }
 
 
 def build_testbench_view(
@@ -571,7 +586,7 @@ def build_testbench_view(
             "DUT redefinition, direct output drive, private hierarchical probes, arbitrary file access, and unbounded analyses are rejected",
         ],
     })
-    write_public_contract(task_dir, contract)
+    public_contract = write_public_contract(output, task_dir, contract)
     private_task_dir = private_output / rel(task_dir, output)
     evaluator = private_task_dir / "evaluator"
     evaluator.mkdir(parents=True)
@@ -627,9 +642,16 @@ def build_testbench_view(
         task_id=f"v4-{task_num:03d}", form="testbench", family_id=family,
         directory=rel(task_dir, output), spec_sha=spec_sha,
         source_task=rel(source_task, PACKAGE_ROOT), candidate_artifacts=["testbench.scs"],
+        public_contract=public_contract,
         public_bundle_sha=bundle_sha,
     ))
-    return {"task_id": f"v4-{task_num:03d}", "form": "testbench", "family_id": family, "task_dir": rel(task_dir, output)}
+    return {
+        "task_id": f"v4-{task_num:03d}",
+        "form": "testbench",
+        "family_id": family,
+        "task_dir": rel(task_dir, output),
+        "public_contract": public_contract,
+    }
 
 
 def build_bugfix_view(
@@ -662,7 +684,7 @@ def build_bugfix_view(
         "problem_statement": "the supplied system violates the public contract",
         "feedback": {"available_in_modes": ["G2", "G3", "G4", "G5"], "command": "vabench feedback run"},
     })
-    write_public_contract(task_dir, contract)
+    public_contract = write_public_contract(output, task_dir, contract)
     private_task_dir = private_output / rel(task_dir, output)
     evaluator = private_task_dir / "evaluator"
     evaluator.mkdir(parents=True)
@@ -707,9 +729,16 @@ def build_bugfix_view(
         task_id=f"v4-{task_num}", form="bugfix", family_id=family,
         directory=rel(task_dir, output), spec_sha=spec_sha,
         source_task=rel(source_task, PACKAGE_ROOT), candidate_artifacts=artifacts,
+        public_contract=public_contract,
         public_bundle_sha=bundle_sha,
     ))
-    return {"task_id": f"v4-{task_num}", "form": "bugfix", "family_id": family, "task_dir": rel(task_dir, output)}
+    return {
+        "task_id": f"v4-{task_num}",
+        "form": "bugfix",
+        "family_id": family,
+        "task_dir": rel(task_dir, output),
+        "public_contract": public_contract,
+    }
 
 
 def prompt_component_subdir(component_id: str) -> str:
@@ -864,11 +893,13 @@ def main() -> int:
         "release_surface": "benchmarkv4_package",
         "public_surface": {
             "tasks": "tasks",
+            "public_contracts": "public_contracts",
             "prompt_modes": "prompt_modes",
             "task_index": "TASK_INDEX.json",
         },
         "private_evaluator": rel(private_output, output),
         "tasks_index": "TASK_INDEX.json",
+        "public_contracts_tree_sha256": tree_sha(output / "public_contracts"),
         "materialized_artifact_sha256": materialized_artifact_hashes(output, PUBLIC_MATERIALIZED_ARTIFACTS),
     }
     write_json(output / "MANIFEST.json", manifest)

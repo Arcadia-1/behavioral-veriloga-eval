@@ -278,15 +278,22 @@ def audit_task(
         return
     if (task_dir / "evaluator").exists():
         problems.append(f"{prefix} public task directory contains private evaluator/")
-    for required in ("TASK_RECORD.json", "instruction.md", "public_contract.json"):
+    for required in ("TASK_RECORD.json", "instruction.md"):
         if not (task_dir / required).is_file():
             problems.append(f"{prefix} missing {required}")
+    if (task_dir / "public_contract.json").exists():
+        problems.append(f"{prefix} public_contract.json should live under release/public_contracts, not tasks/")
     if (task_dir / "direct_public_contract.json").exists():
         problems.append(f"{prefix} direct_public_contract.json should not be present")
     if problems and not (task_dir / "TASK_RECORD.json").is_file():
         return
     record = read_json(task_dir / "TASK_RECORD.json")
-    contract = read_json(task_dir / "public_contract.json")
+    contract_relative = str(row.get("public_contract") or record.get("public_contract") or "")
+    contract_path = release / contract_relative
+    if not contract_relative or not contract_path.is_file():
+        problems.append(f"{prefix} public contract metadata missing")
+        return
+    contract = read_json(contract_path)
     if task_id != expected_task_id(form, family):
         problems.append(f"{prefix} ID does not match form/family numbering")
     if record.get("task_id") != task_id or record.get("form") != form or record.get("family_id") != family:
@@ -584,6 +591,12 @@ def main() -> int:
         problems.append("one or more materialized release artifacts are missing")
     if manifest.get("materialized_artifact_sha256") != expected_materialized_hashes:
         problems.append("materialized artifact hash binding mismatch")
+    if not (release / "public_contracts").is_dir():
+        problems.append("public_contracts directory missing")
+    elif manifest.get("public_contracts_tree_sha256") != tree_sha(release / "public_contracts"):
+        problems.append("public_contracts tree hash binding mismatch")
+    if (manifest.get("public_surface") or {}).get("public_contracts") != "public_contracts":
+        problems.append("manifest public_surface does not declare public_contracts")
     certification_reuse = audit_source_certifications(source, source_rows, problems)
     counts = Counter(str(row.get("form") or "") for row in tasks)
     if len(tasks) != 1200 or counts != Counter({form: 400 for form in FORMS}):

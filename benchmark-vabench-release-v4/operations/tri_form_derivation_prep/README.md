@@ -42,7 +42,7 @@ python3 operations/tri_form_derivation_prep/audit_tri_form_release.py \
 
 The tracked release package is `release/benchmarkv4/`. Its root contains the
 solver-facing public surface (`MANIFEST.json`, `TASK_INDEX.json`,
-`prompt_modes/`, and `tasks/`). Its `private_evaluator/` subdirectory contains
+`prompt_modes/`, `public_contracts/`, and `tasks/`). Its `private_evaluator/` subdirectory contains
 gold references, mutation bundles, score policies, and derivation records for
 local scoring and audits. Only local generated audit/runtime evidence under
 `private_evaluator/evidence/` and optional prompt-record snapshots under
@@ -50,9 +50,10 @@ local scoring and audits. Only local generated audit/runtime evidence under
 
 The construction source package is tracked separately under
 `provenance/dut-base-v3-exact-five-hash-bound-v2/` so `release/` contains only
-the final distributable package. Per-task `public_contract.json` files remain
-inside `release/benchmarkv4/tasks/` as machine-readable public metadata, but
-runtime export does not mount or inline them into model prompts.
+the final distributable package. Per-task public contracts live under
+`release/benchmarkv4/public_contracts/{form}/{task_slug}.json` as
+machine-readable public metadata. Runtime export does not mount or inline them
+into model prompts.
 
 Export one runtime record without mounting evaluator-private files:
 

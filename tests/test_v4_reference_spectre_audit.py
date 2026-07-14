@@ -37,12 +37,15 @@ def test_default_release_and_testbench_index_match_current_package(audit) -> Non
     rows = audit.resolve_task_rows(audit.DEFAULT_RELEASE, [])
 
     assert len(rows) == 400
-    assert rows[0] == {
+    assert {key: rows[0][key] for key in ("family_id", "form", "task_dir", "task_id")} == {
         "family_id": "001",
         "form": "testbench",
         "task_dir": "tasks/testbench/501-bang-bang-phase-detector-testbench",
         "task_id": "v4-501",
     }
+    assert rows[0]["public_contract"] == (
+        "public_contracts/testbench/501-bang-bang-phase-detector-testbench.json"
+    )
 
 def test_resolve_task_rows_rejects_unknown_or_non_testbench_task(audit) -> None:
     with pytest.raises(SystemExit, match="unknown testbench task id"):

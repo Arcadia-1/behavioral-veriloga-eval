@@ -16,10 +16,12 @@ from materialize_tri_form_release import (  # noqa: E402
     install_prompt_assets,
     iter_public_inputs,
     negative_assignment,
+    public_contract_relative_path,
     reference_token_count,
     render_bugfix_instruction,
     render_testbench_instruction,
     select_bugfix_seed,
+    write_public_contract,
 )
 from export_tri_form_runtime import install_public, ordered_prompt_components, render_prompt  # noqa: E402
 from record_runtime_ingestion_evidence import verified_audit  # noqa: E402
@@ -162,7 +164,6 @@ def test_render_prompt_places_guides_before_wrapper_without_public_contract_inli
         path.write_text(text, encoding="utf-8")
     task.mkdir()
     (task / "instruction.md").write_text("repair task\n", encoding="utf-8")
-    (task / "public_contract.json").write_text("{}\n", encoding="utf-8")
     mode_record = {
         "mode": "G5",
         "component_order": [
@@ -205,12 +206,22 @@ def test_prompt_inputs_exclude_contract_json_from_model_surface(tmp_path: Path) 
     assert [path.name for path in iter_public_inputs(task, "dut", "G2")] == ["instruction.md"]
 
 
+def test_public_contracts_live_in_top_level_form_directories(tmp_path: Path) -> None:
+    output = tmp_path / "release"
+    task = output / "tasks" / "dut" / "001-sample"
+    task.mkdir(parents=True)
+    assert public_contract_relative_path(task) == "public_contracts/dut/001-sample.json"
+    relative = write_public_contract(output, task, {"task_id": "v4-001", "form": "dut"})
+    assert relative == "public_contracts/dut/001-sample.json"
+    assert (output / relative).is_file()
+    assert not (task / "public_contract.json").exists()
+
+
 def test_agentic_bugfix_export_seeds_editable_submission(tmp_path: Path) -> None:
     task = tmp_path / "task"
     (task / "buggy_bundle").mkdir(parents=True)
     (task / "buggy_bundle" / "a.va").write_text("module a; endmodule\n", encoding="utf-8")
     (task / "instruction.md").write_text("Repair the bundle.\n", encoding="utf-8")
-    (task / "public_contract.json").write_text("{}\n", encoding="utf-8")
     public = tmp_path / "public"
     (public / "submission").mkdir(parents=True)
     install_public(task, public, "bugfix", "G2")
@@ -222,7 +233,6 @@ def test_export_omits_public_contract_mount(tmp_path: Path) -> None:
     task = tmp_path / "task"
     task.mkdir()
     (task / "instruction.md").write_text("Build the DUT.\n", encoding="utf-8")
-    (task / "public_contract.json").write_text('{"feedback":{}}\n', encoding="utf-8")
     for mode in ("G0", "G2"):
         public = tmp_path / f"public-{mode}"
         (public / "submission").mkdir(parents=True)
