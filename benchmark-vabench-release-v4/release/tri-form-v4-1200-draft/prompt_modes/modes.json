@@ -1,8 +1,9 @@
 {
   "composition_order": [
-    "canonical_instruction_and_public_inputs",
+    "canonical_instruction_and_inline_artifacts",
     "form_skill",
     "feedback_guide",
+    "agentic_public_contract",
     "mode_wrapper_response_protocol"
   ],
   "modes": {

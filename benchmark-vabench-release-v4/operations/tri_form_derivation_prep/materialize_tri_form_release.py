@@ -760,7 +760,13 @@ def install_prompt_assets(output: Path) -> dict[str, dict[str, Any]]:
     write_json(output / "prompt_modes" / "modes.json", {
         "schema_version": "v4-prompt-mode-registry-v1",
         "modes": MODES,
-        "composition_order": ["canonical_instruction_and_public_inputs", "form_skill", "feedback_guide", "mode_wrapper_response_protocol"],
+        "composition_order": [
+            "canonical_instruction_and_inline_artifacts",
+            "form_skill",
+            "feedback_guide",
+            "agentic_public_contract",
+            "mode_wrapper_response_protocol",
+        ],
         "working_token_budget": "runner_supplied_same_ceiling_within_comparison_stratum",
         "wall_time_policy": "safety_limit_not_ability_budget",
     })

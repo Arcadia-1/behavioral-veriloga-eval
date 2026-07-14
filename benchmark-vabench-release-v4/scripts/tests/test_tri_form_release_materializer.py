@@ -132,9 +132,9 @@ def test_runtime_prompt_components_follow_explicit_order_with_wrapper_last() -> 
     mode_record = {
         "component_order": [
             "instruction",
-            "public_input:public_contract.json",
             "bugfix_diagnosis.md",
             "feedback_bugfix.md",
+            "public_input:public_contract.json",
             "agentic_wrapper.md",
         ],
         "prompt_component_hashes": {
@@ -150,7 +150,7 @@ def test_runtime_prompt_components_follow_explicit_order_with_wrapper_last() -> 
     ]
 
 
-def test_render_prompt_places_response_wrapper_after_skills(tmp_path: Path) -> None:
+def test_render_prompt_places_public_contract_after_guides_before_wrapper(tmp_path: Path) -> None:
     release = tmp_path / "release"
     task = tmp_path / "task"
     for subdir, name, text in [
@@ -168,9 +168,9 @@ def test_render_prompt_places_response_wrapper_after_skills(tmp_path: Path) -> N
         "mode": "G5",
         "component_order": [
             "instruction",
-            "public_input:public_contract.json",
             "bugfix_diagnosis.md",
             "feedback_bugfix.md",
+            "public_input:public_contract.json",
             "agentic_wrapper.md",
         ],
         "prompt_component_hashes": {
@@ -189,6 +189,7 @@ def test_render_prompt_places_response_wrapper_after_skills(tmp_path: Path) -> N
     markers = [
         '<<<VABENCH_COMPONENT id="bugfix_diagnosis.md">>>',
         '<<<VABENCH_COMPONENT id="feedback_bugfix.md">>>',
+        '<<<VABENCH_PUBLIC_CONTRACT>>>',
         '<<<VABENCH_COMPONENT id="agentic_wrapper.md">>>',
     ]
     positions = [rendered.index(marker) for marker in markers]

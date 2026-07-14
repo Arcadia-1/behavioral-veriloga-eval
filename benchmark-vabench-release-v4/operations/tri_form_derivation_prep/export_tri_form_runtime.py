@@ -133,8 +133,6 @@ def build_mode_record(release: Path, task_dir: Path, record: dict[str, Any], mod
         **(manifest.get("feedback_guides") or {}),
     }
     public_inputs = ["instruction"]
-    if mode in AGENTIC:
-        public_inputs.append("public_input:public_contract.json")
     form = str(record["form"])
     if form == "testbench":
         public_inputs.extend(
@@ -146,16 +144,17 @@ def build_mode_record(release: Path, task_dir: Path, record: dict[str, Any], mod
             f"public_input:{path.relative_to(task_dir).as_posix()}"
             for path in sorted((task_dir / "buggy_bundle").rglob("*.va"))
         )
-    prompt_components: list[str] = []
+    guide_components: list[str] = []
     if policy.get("form_skill"):
-        prompt_components.append(FORM_SKILLS[form])
+        guide_components.append(FORM_SKILLS[form])
     if policy.get("feedback_guide"):
-        prompt_components.append(FEEDBACK_GUIDES[form])
+        guide_components.append(FEEDBACK_GUIDES[form])
     wrapper = WRAPPERS_BY_PROCESS[str(policy.get("process") or "")]
-    prompt_components.append(wrapper)
+    prompt_components = [*guide_components, wrapper]
     missing = [name for name in prompt_components if name not in component_records]
     if missing:
         raise SystemExit(f"prompt component(s) missing from manifest: {missing}")
+    public_contract = ["public_input:public_contract.json"] if mode in AGENTIC else []
     return {
         "schema_version": "v4-derived-prompt-plan-v1",
         "task_id": record["task_id"],
@@ -164,7 +163,7 @@ def build_mode_record(release: Path, task_dir: Path, record: dict[str, Any], mod
         "mode": mode,
         "process": policy["process"],
         "feedback_cli_available": bool(policy.get("feedback_cli")),
-        "component_order": [*public_inputs, *prompt_components],
+        "component_order": [*public_inputs, *guide_components, *public_contract, wrapper],
         "prompt_component_hashes": {
             name: component_records[name]["sha256"]
             for name in prompt_components
@@ -176,17 +175,17 @@ def build_mode_record(release: Path, task_dir: Path, record: dict[str, Any], mod
 def render_prompt(release: Path, task_dir: Path, record: dict[str, Any], mode_record: dict[str, Any], *, inline_artifacts: bool) -> str:
     mode = str(mode_record["mode"])
     parts = [(task_dir / "instruction.md").read_text(encoding="utf-8")]
-    if mode in AGENTIC:
-        parts.extend([
-            "<<<VABENCH_PUBLIC_CONTRACT>>>",
-            (task_dir / "public_contract.json").read_text(encoding="utf-8"),
-            "<<<END_VABENCH_PUBLIC_CONTRACT>>>",
-        ])
     artifacts = serialize_public_artifacts(task_dir, str(record["form"])) if inline_artifacts else ""
     if artifacts:
         parts.append(artifacts)
     for component in ordered_prompt_components(mode_record):
         if component.endswith("_wrapper.md"):
+            if mode in AGENTIC:
+                parts.extend([
+                    "<<<VABENCH_PUBLIC_CONTRACT>>>",
+                    (task_dir / "public_contract.json").read_text(encoding="utf-8"),
+                    "<<<END_VABENCH_PUBLIC_CONTRACT>>>",
+                ])
             parts.extend([
                 f'<<<VABENCH_COMPONENT id="{component}">>>',
                 prompt_component_path(release, component).read_text(encoding="utf-8"),
