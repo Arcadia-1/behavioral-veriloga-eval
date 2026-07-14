@@ -47,8 +47,24 @@ def main() -> int:
             problems.append("direct one-shot mode has filesystem mounts")
         if not (run / "direct_prompt.txt").is_file():
             problems.append("direct one-shot prompt is missing")
+        else:
+            direct_prompt = (run / "direct_prompt.txt").read_text(encoding="utf-8", errors="ignore")
+            for marker in (
+                "VABENCH_PUBLIC_CONTRACT",
+                "Feedback tools",
+                "feedback CLI",
+                "vabench feedback",
+                "private Spectre",
+                "public/submission",
+                "agentic mode",
+                "mounted public task inputs",
+            ):
+                if marker.lower() in direct_prompt.lower():
+                    problems.append(f"direct one-shot prompt leaks {marker!r}")
         if (run / "public" / "tool_manifest.json").exists():
             problems.append("direct one-shot mode exposes a tool manifest")
+        if (run / "public" / "task" / "public_contract.json").exists():
+            problems.append("direct one-shot mode exposes a public contract file")
     else:
         if mounts != ["public/task:ro", "public/submission:rw"]:
             problems.append("agentic model mounts differ from the public contract")
@@ -56,15 +72,12 @@ def main() -> int:
             problems.append("agentic mode lacks the feedback tool manifest")
         if not (run / "agent_prompt.txt").is_file():
             problems.append("agentic mode lacks the composed initial prompt")
-    for prompt_name in ("direct_prompt.txt", "agent_prompt.txt"):
-        prompt_path = run / prompt_name
-        if not prompt_path.is_file():
-            continue
-        prompt_text = prompt_path.read_text(encoding="utf-8", errors="ignore")
-        if "<<<VABENCH_PUBLIC_CONTRACT>>>" in prompt_text or "public_contract.json" in prompt_text:
-            problems.append(f"{prompt_name} exposes public contract JSON instead of instruction-derived prompt text")
-    if (run / "public" / "task" / "public_contract.json").exists():
-        problems.append("model-visible public task bundle exposes public_contract.json")
+        else:
+            agent_prompt = (run / "agent_prompt.txt").read_text(encoding="utf-8", errors="ignore")
+            if "VABENCH_PUBLIC_CONTRACT" in agent_prompt:
+                problems.append("agentic prompt redundantly inlines public_contract.json")
+        if (run / "public" / "task" / "public_contract.json").exists():
+            problems.append("agentic mode exposes public_contract.json in the model task mount")
     submission = run / "public" / "submission"
     if attempt.get("initial_submission_sha256") != tree_sha(submission):
         problems.append("initial submission hash does not match the prepared workspace")
@@ -76,6 +89,30 @@ def main() -> int:
             problems.append("bugfix attempt does not record its seeded editable workspace")
     if attempt.get("state") != "prepared" or attempt.get("private_score_decisions") != 0:
         problems.append("attempt lifecycle was not initialized safely")
+    evaluator = run / "evaluator"
+    if not evaluator.is_dir():
+        problems.append("private evaluator bundle is missing")
+    else:
+        for name in ("task_record.json", "family_spec.json", "checker_profile.json", "harness_spec.json", "score_policy.json"):
+            if not (evaluator / name).is_file():
+                problems.append(f"private evaluator bundle missing {name}")
+        if not (evaluator / "profiles").is_dir():
+            problems.append("private evaluator bundle missing profiles/")
+        form = str(attempt.get("form") or "")
+        if form in {"dut", "bugfix"}:
+            if not (evaluator / "solution").is_dir():
+                problems.append("private evaluator bundle missing solution/")
+            if not (evaluator / "trusted_feedback_tb.scs").is_file():
+                problems.append("private evaluator bundle missing trusted feedback deck")
+        if form == "testbench":
+            for required in ("trusted_solution", "mutation_bundles"):
+                if not (evaluator / required).is_dir():
+                    problems.append(f"private testbench evaluator bundle missing {required}/")
+            for required in ("mutation_catalog.json", "reference_tb.scs", "testbench_security_policy.json"):
+                if not (evaluator / required).is_file():
+                    problems.append(f"private testbench evaluator bundle missing {required}")
+        if attempt.get("evaluator_bundle_sha256") != tree_sha(evaluator):
+            problems.append("evaluator bundle hash does not match the prepared workspace")
     for path in (run / "public").rglob("*"):
         if path.is_symlink():
             problems.append(f"public bundle contains symlink: {path}")

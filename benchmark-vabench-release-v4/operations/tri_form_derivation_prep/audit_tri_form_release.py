@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Audit the materialized 1,200-task tri-form release."""
+"""Audit the standalone 1,200-task benchmarkv4 release package."""
 from __future__ import annotations
 
 import argparse
@@ -13,8 +13,19 @@ from typing import Any
 
 PACKAGE_ROOT = Path(__file__).resolve().parents[2]
 DEFAULT_RELEASE = PACKAGE_ROOT / "release" / "benchmarkv4"
+DEFAULT_SOURCE = PACKAGE_ROOT / "provenance" / "dut-base-v3-exact-five-hash-bound-v2"
 FORMS = ("dut", "testbench", "bugfix")
 MODES = ("G0", "G1", "G2", "G3", "G4", "G5")
+DIRECT_MODES = {"G0", "G1"}
+AGENTIC_MODES = {"G2", "G3", "G4", "G5"}
+WRAPPERS_BY_MODE = {
+    "G0": "direct_wrapper.md",
+    "G1": "direct_wrapper.md",
+    "G2": "agentic_wrapper.md",
+    "G3": "agentic_wrapper.md",
+    "G4": "agentic_wrapper.md",
+    "G5": "agentic_wrapper.md",
+}
 FORM_SKILLS = {
     "dut": "dut_modeling.md",
     "testbench": "testbench_verification.md",
@@ -25,27 +36,20 @@ FEEDBACK_GUIDES = {
     "testbench": "feedback_testbench.md",
     "bugfix": "feedback_bugfix.md",
 }
-WRAPPERS_BY_PROCESS = {
-    "direct_one_shot": "direct_wrapper.md",
-    "agentic": "agentic_wrapper.md",
-}
-COMPONENT_SUBDIR_BY_NAME = {
-    **{name: "form_skills" for name in FORM_SKILLS.values()},
-    **{name: "feedback_guides" for name in FEEDBACK_GUIDES.values()},
-    **{name: "wrappers" for name in WRAPPERS_BY_PROCESS.values()},
-}
 MATERIALIZED_ARTIFACTS = (
     "TASK_INDEX.json",
-    "BUGFIX_SEED_REVIEW.json",
-    "prompt_modes/PROMPT_RECORDS.jsonl",
     "prompt_modes/modes.json",
     "prompt_modes/manifest.json",
 )
 RELEASE_SEAL_ARTIFACTS = (
     "MANIFEST.json",
     *MATERIALIZED_ARTIFACTS,
-    "AUDIT_REPORT.json",
-    "RUNTIME_INGESTION_EVIDENCE.json",
+)
+STANDALONE_EVALUATOR_COMMON = (
+    "family_spec.json",
+    "checker_profile.json",
+    "harness_spec.json",
+    "score_tb.scs",
 )
 
 
@@ -57,11 +61,8 @@ def file_sha(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
-def prompt_component_path(release: Path, component_id: str) -> Path | None:
-    subdir = COMPONENT_SUBDIR_BY_NAME.get(component_id)
-    if subdir is None:
-        return None
-    return release / "prompt_modes" / subdir / component_id
+def rel(path: Path, root: Path) -> str:
+    return path.relative_to(root).as_posix()
 
 
 def tree_sha(path: Path) -> str:
@@ -75,16 +76,39 @@ def tree_sha(path: Path) -> str:
     return digest.hexdigest()
 
 
-def public_bundle_hash(task_dir: Path) -> str:
+def tree_sha_skipping(path: Path, *, excluded_names: set[str]) -> str:
     digest = hashlib.sha256()
-    for path in sorted(task_dir.rglob("*")):
-        if not path.is_file() or "evaluator" in path.parts or path.name == "TASK_RECORD.json":
-            continue
-        digest.update(path.relative_to(task_dir).as_posix().encode("utf-8"))
-        digest.update(b"\0")
-        digest.update(path.read_bytes())
-        digest.update(b"\0")
+    for item in sorted(path.rglob("*")):
+        if item.is_file() and item.name not in excluded_names:
+            digest.update(item.relative_to(path).as_posix().encode("utf-8"))
+            digest.update(b"\0")
+            digest.update(item.read_bytes())
+            digest.update(b"\0")
     return digest.hexdigest()
+
+
+def public_bundle_hash(task_dir: Path) -> str:
+    public = task_dir / "public"
+    digest = hashlib.sha256()
+    for path in sorted(public.rglob("*")):
+        if path.is_file():
+            digest.update(path.relative_to(public).as_posix().encode("utf-8"))
+            digest.update(b"\0")
+            digest.update(path.read_bytes())
+            digest.update(b"\0")
+    return digest.hexdigest()
+
+
+def prompt_component_path(release: Path, component_id: str) -> Path:
+    if component_id.endswith("_wrapper.md"):
+        subdir = "wrappers"
+    elif component_id in set(FORM_SKILLS.values()):
+        subdir = "form_skills"
+    elif component_id in set(FEEDBACK_GUIDES.values()):
+        subdir = "feedback_guides"
+    else:
+        raise SystemExit(f"unknown prompt component: {component_id}")
+    return release / "prompt_modes" / subdir / component_id
 
 
 def build_release_seal(
@@ -99,7 +123,7 @@ def build_release_seal(
             raise SystemExit(f"cannot seal release; missing artifact: {relative}")
         artifact_hashes[relative] = file_sha(path)
     return {
-        "schema_version": "v4-tri-form-release-seal-v1",
+        "schema_version": "v4-benchmarkv4-release-seal-v1",
         "release_status": "gate3_hash_bound_certification_reused",
         "source_score_denominator_manifest_sha256": source_manifest_sha256,
         "artifact_sha256": artifact_hashes,
@@ -113,13 +137,6 @@ def expected_task_id(form: str, family: str) -> str:
     value = offsets[form] + int(family)
     width = 3 if value < 1000 else 4
     return f"v4-{value:0{width}d}"
-
-
-def mutation_certification_hashes(active_mutations: list[dict[str, Any]]) -> dict[str, str]:
-    return {
-        str(item.get("mutation_id") or ""): str(item.get("certification_sha256") or "")
-        for item in active_mutations
-    }
 
 
 def expected_buggy_artifact_hashes(
@@ -141,8 +158,8 @@ def audit_source_certifications(
     gold_count = 0
     negative_count = 0
     for family, row in sorted(source_rows.items()):
-        task_dir = source / str(row.get("release_dir") or "")
-        task_cert_path = task_dir / "evaluator" / "certification.json"
+        source_task = source / str(row.get("release_dir") or "")
+        task_cert_path = source_task / "evaluator" / "certification.json"
         expected_task_sha = str((row.get("hashes") or {}).get("task_certification_sha256") or "")
         if not task_cert_path.is_file() or file_sha(task_cert_path) != expected_task_sha:
             problems.append(f"{family}: source gold certification hash mismatch")
@@ -157,7 +174,7 @@ def audit_source_certifications(
             gold_count += 1
         for mutation in row.get("active_mutations") or []:
             mutation_id = str(mutation.get("mutation_id") or "")
-            cert_path = task_dir / str(mutation.get("certification_path") or "")
+            cert_path = source_task / str(mutation.get("certification_path") or "")
             expected_sha = str(mutation.get("certification_sha256") or "")
             if not cert_path.is_file() or file_sha(cert_path) != expected_sha:
                 problems.append(f"{family}/{mutation_id}: source negative certification hash mismatch")
@@ -179,15 +196,77 @@ def audit_source_certifications(
     }
 
 
+def audit_standalone_evaluator(
+    task_dir: Path,
+    source_task: Path,
+    form: str,
+    prefix: str,
+    problems: list[str],
+) -> Path | None:
+    evaluator = task_dir / "evaluator"
+    source_eval = source_task / "evaluator"
+    if not evaluator.is_dir():
+        problems.append(f"{prefix} evaluator directory missing")
+        return None
+    for name in STANDALONE_EVALUATOR_COMMON:
+        local = evaluator / name
+        source = source_eval / name
+        if not local.is_file():
+            problems.append(f"{prefix} standalone evaluator missing {name}")
+        elif not source.is_file() or file_sha(local) != file_sha(source):
+            problems.append(f"{prefix} standalone evaluator {name} differs from canonical source")
+    for directory in ("profiles", "solution"):
+        local = evaluator / directory
+        source = source_eval / directory
+        if not local.is_dir():
+            problems.append(f"{prefix} standalone evaluator missing {directory}/")
+        elif tree_sha(local) != tree_sha(source):
+            problems.append(f"{prefix} standalone evaluator {directory}/ differs from canonical source")
+    if form == "testbench":
+        local_catalog = evaluator / "mutation_catalog.json"
+        source_catalog = source_eval / "mutation_catalog.json"
+        if not local_catalog.is_file():
+            problems.append(f"{prefix} standalone testbench evaluator missing mutation_catalog.json")
+        elif file_sha(local_catalog) != file_sha(source_catalog):
+            problems.append(f"{prefix} standalone testbench evaluator mutation_catalog.json differs from canonical source")
+        local_mutations = evaluator / "mutation_bundles"
+        source_mutations = source_eval / "mutation_bundles"
+        if not local_mutations.is_dir():
+            problems.append(f"{prefix} standalone testbench evaluator missing mutation_bundles/")
+        elif tree_sha(local_mutations) != tree_sha_skipping(source_mutations, excluded_names={"certification.json"}):
+            problems.append(f"{prefix} standalone testbench evaluator mutation_bundles/ scoring files differ from canonical source")
+        if list(local_mutations.rglob("certification.json")):
+            problems.append(f"{prefix} standalone testbench evaluator should not copy negative certification files")
+    score_policy = evaluator / "score_policy.json"
+    if not score_policy.is_file():
+        problems.append(f"{prefix} evaluator missing score_policy.json")
+    else:
+        score = read_json(score_policy)
+        if "source_checker_profile" in score:
+            problems.append(f"{prefix} score policy keeps external source_checker_profile reference")
+        if score.get("materialized_checker_profile") != "evaluator/checker_profile.json":
+            problems.append(f"{prefix} score policy does not point at materialized checker_profile.json")
+        if score.get("checker_profile_sha256") != file_sha(evaluator / "checker_profile.json"):
+            problems.append(f"{prefix} score policy checker_profile hash mismatch")
+    return evaluator
+
+
+def source_task_for_family(source: Path, source_rows: dict[str, dict[str, Any]], family: str) -> Path | None:
+    row = source_rows.get(family)
+    if row is None:
+        return None
+    return source / str(row.get("release_dir") or "")
+
+
 def audit_task(
     release: Path,
     source: Path,
-    source_manifest_sha: str,
     source_rows: dict[str, dict[str, Any]],
     row: dict[str, Any],
     problems: list[str],
 ) -> None:
     task_dir = release / str(row.get("task_dir") or "")
+    task_dir_parts = Path(str(row.get("task_dir") or "")).parts
     task_id = str(row.get("task_id") or "")
     form = str(row.get("form") or "")
     family = str(row.get("family_id") or "")
@@ -195,13 +274,22 @@ def audit_task(
     if not task_dir.is_dir():
         problems.append(f"{prefix} task directory missing")
         return
-    for required in ("TASK_RECORD.json", "instruction.md", "public_contract.json"):
-        if not (task_dir / required).is_file():
+    if len(task_dir_parts) != 2 or task_dir_parts[0] != "tasks":
+        problems.append(f"{prefix} task directory is not flat under tasks/")
+    for required in ("task_record.json", "public/instruction.md", "public_contract.json", "evaluator"):
+        if not (task_dir / required).exists():
             problems.append(f"{prefix} missing {required}")
-    if problems and not (task_dir / "TASK_RECORD.json").is_file():
+    if (task_dir / "provenance").exists():
+        problems.append(f"{prefix} formal task package should not contain provenance/")
+    if problems and not (task_dir / "task_record.json").is_file():
         return
-    record = read_json(task_dir / "TASK_RECORD.json")
+    record = read_json(task_dir / "task_record.json")
     contract = read_json(task_dir / "public_contract.json")
+    expected_contract = rel(task_dir / "public_contract.json", release)
+    if row.get("public_contract") != expected_contract or record.get("public_contract") != expected_contract:
+        problems.append(f"{prefix} public contract path is not task-local")
+    if record.get("canonical_dut_source"):
+        problems.append(f"{prefix} task record keeps external canonical_dut_source path")
     if task_id != expected_task_id(form, family):
         problems.append(f"{prefix} ID does not match form/family numbering")
     if record.get("task_id") != task_id or record.get("form") != form or record.get("family_id") != family:
@@ -210,113 +298,93 @@ def audit_task(
         problems.append(f"{prefix} public contract identity mismatch")
     if record.get("public_bundle_sha256") != public_bundle_hash(task_dir):
         problems.append(f"{prefix} public bundle hash mismatch")
-    source_task = PACKAGE_ROOT / str(record.get("canonical_dut_source") or "")
-    if not source_task.is_dir() or source not in source_task.parents:
-        problems.append(f"{prefix} canonical DUT source is invalid")
+    source_row = source_rows.get(family)
+    source_task = source_task_for_family(source, source_rows, family)
+    if source_row is None or source_task is None or not source_task.is_dir():
+        problems.append(f"{prefix} canonical denominator row missing")
         return
+    if record.get("canonical_dut_source_slug") != source_task.name:
+        problems.append(f"{prefix} source slug does not match denominator row")
     spec_path = source_task / "evaluator" / "family_spec.json"
     if not spec_path.is_file() or record.get("family_spec_sha256") != file_sha(spec_path):
         problems.append(f"{prefix} family spec hash mismatch")
         return
     spec = read_json(spec_path)
     artifact_paths = [str(item["path"]) for item in spec["artifact_contract"]["files"]]
-    source_row = source_rows.get(family)
-    if source_row is None:
-        problems.append(f"{prefix} canonical denominator row missing")
+    instruction_text = (task_dir / "public" / "instruction.md").read_text(encoding="utf-8")
+    for marker in ("test_visible", "Public visible tests", "hidden evaluator", "Vela"):
+        if marker in instruction_text:
+            problems.append(f"{prefix} instruction leaks run/evaluator marker {marker!r}")
+    if form != "testbench" and "visible testbench" in instruction_text.lower():
+        problems.append(f"{prefix} non-testbench instruction leaks visible testbench wording")
+    evaluator = audit_standalone_evaluator(task_dir, source_task, form, prefix, problems)
+    if evaluator is None:
         return
+    checker_profile = read_json(evaluator / "checker_profile.json")
+    if record.get("checker_task_id") != checker_profile.get("checker_task_id"):
+        problems.append(f"{prefix} task record checker_task_id does not match checker_profile.json")
     if form == "dut":
         if record.get("candidate_artifacts") != artifact_paths:
             problems.append(f"{prefix} DUT candidate artifacts differ from family spec")
+        score = read_json(evaluator / "score_policy.json")
+        if score.get("gold_solution_tree_sha256") != tree_sha(evaluator / "solution"):
+            problems.append(f"{prefix} DUT gold solution hash mismatch")
+        if score.get("gold_dut_certification_sha256") != (
+            source_row.get("hashes") or {}
+        ).get("task_certification_sha256"):
+            problems.append(f"{prefix} gold DUT certification hash mismatch")
         return
-    evaluator = task_dir / "evaluator"
-    if not evaluator.is_dir():
-        problems.append(f"{prefix} evaluator directory missing")
-        return
-    derivation = read_json(evaluator / "derivation_manifest.json")
-    assignment = derivation.get("negative_assignment") or {}
-    suite = assignment.get("testbench_suite") or []
-    if len(suite) != 5 or len(set(suite)) != 5:
-        problems.append(f"{prefix} testbench suite is not exactly five unique mutations")
+    score = read_json(evaluator / "score_policy.json")
     active_mutations = source_row.get("active_mutations") or []
     expected_suite = [str(item.get("mutation_id") or "") for item in active_mutations]
-    if suite != expected_suite:
-        problems.append(f"{prefix} testbench suite differs from the exact-five denominator")
-    if assignment.get("bugfix_seed") not in suite:
-        problems.append(f"{prefix} bugfix seed is not a member of the testbench suite")
-    base_dut = derivation.get("base_dut") or {}
-    expected_base = {
-        "canonical_task_id": f"v4-{family}",
-        "canonical_task_slug": source_task.name,
-        "family_spec_sha256": file_sha(spec_path),
-        "mutation_catalog_sha256": file_sha(source_task / "evaluator" / "mutation_catalog.json"),
-        "source_release_manifest_sha256": source_manifest_sha,
-    }
-    for field, expected in expected_base.items():
-        if base_dut.get(field) != expected:
-            problems.append(f"{prefix} derivation base hash mismatch for {field}")
-    if base_dut.get("family_spec_sha256") != file_sha(spec_path):
-        problems.append(f"{prefix} derivation family hash mismatch")
+    if form == "testbench":
+        suite = score.get("negative_suite_mutation_ids") or []
+        if len(suite) != 5 or len(set(suite)) != 5:
+            problems.append(f"{prefix} testbench suite is not exactly five unique mutations")
+        if suite != expected_suite:
+            problems.append(f"{prefix} testbench suite differs from the exact-five denominator")
+        if score.get("bugfix_seed_mutation_id") not in suite:
+            problems.append(f"{prefix} bugfix seed is not a member of the testbench suite")
+        if score.get("mutation_catalog_sha256") != file_sha(source_task / "evaluator" / "mutation_catalog.json"):
+            problems.append(f"{prefix} mutation catalog hash mismatch")
     if form == "testbench":
         if record.get("candidate_artifacts") != ["testbench.scs"] or contract.get("target_artifacts") != ["testbench.scs"]:
             problems.append(f"{prefix} testbench output is not exactly testbench.scs")
-        score = read_json(evaluator / "score_policy.json")
         if score.get("candidate_artifacts") != ["testbench.scs"] or score.get("kill_ratio_denominator") != 5:
             problems.append(f"{prefix} testbench score policy mismatch")
-        supplied = task_dir / "supplied_dut"
+        supplied = task_dir / "public" / "supplied_dut"
         if tree_sha(supplied) != tree_sha(source_task / "evaluator" / "solution"):
             problems.append(f"{prefix} supplied DUT differs from canonical gold")
-        reference = read_json(evaluator / "reference_certificate.json")
         score_tb = source_task / "evaluator" / "score_tb.scs"
         score_tb_sha = file_sha(score_tb)
         if file_sha(evaluator / "reference_tb.scs") != score_tb_sha:
             problems.append(f"{prefix} reference testbench differs from the canonical score deck")
-        expected_cert_hashes = mutation_certification_hashes(active_mutations)
-        if reference.get("reference_tb_sha256") != score_tb_sha:
-            problems.append(f"{prefix} reference testbench certificate hash mismatch")
-        if reference.get("mutation_certification_sha256") != expected_cert_hashes:
-            problems.append(f"{prefix} mutation certification hash map differs from the denominator")
-        for item in active_mutations:
-            mutation_id = str(item.get("mutation_id") or "")
-            cert_path = source_task / str(item.get("certification_path") or "")
-            expected_sha = str(item.get("certification_sha256") or "")
-            if not cert_path.is_file() or file_sha(cert_path) != expected_sha:
-                problems.append(f"{prefix} source certification hash mismatch for {mutation_id}")
-                continue
-            certification = read_json(cert_path)
-            if certification.get("outcome") != "killed_behaviorally":
-                problems.append(f"{prefix} source certification is not behaviorally killed for {mutation_id}")
-            evaluators = certification.get("evaluators") or {}
-            for evaluator_name in ("evas", "spectre"):
-                if evaluators.get(evaluator_name) != "compile_pass_behavior_fail":
-                    problems.append(
-                        f"{prefix} source certification lacks {evaluator_name} behavioral kill "
-                        f"for {mutation_id}"
-                    )
-        if reference.get("negative_suite_status") != "five_of_five_killed_behaviorally":
-            problems.append(f"{prefix} reference testbench is not five-of-five certified")
-        public_text = (task_dir / "instruction.md").read_text(encoding="utf-8") + json.dumps(contract)
+        if score.get("reference_tb_sha256") != score_tb_sha:
+            problems.append(f"{prefix} reference testbench score policy hash mismatch")
+        public_text = instruction_text + json.dumps(contract)
         if "neg_" in public_text or "mutation_id" in public_text:
             problems.append(f"{prefix} public testbench view leaks negative identity")
     elif form == "bugfix":
         if record.get("candidate_artifacts") != artifact_paths or contract.get("target_artifacts") != artifact_paths:
             problems.append(f"{prefix} bugfix artifact contract mismatch")
-        buggy = task_dir / "buggy_bundle"
+        buggy = task_dir / "public" / "buggy_bundle"
         buggy_paths = sorted(path.relative_to(buggy).as_posix() for path in buggy.rglob("*.va"))
         if buggy_paths != sorted(artifact_paths):
             problems.append(f"{prefix} buggy bundle file set mismatch")
-        seed_id = str(assignment.get("bugfix_seed") or "")
+        seed_id = str(score.get("bugfix_seed_mutation_id") or "")
+        if seed_id not in expected_suite:
+            problems.append(f"{prefix} bugfix seed is not a member of the exact-five denominator")
+        if score.get("mutation_catalog_sha256") != file_sha(source_task / "evaluator" / "mutation_catalog.json"):
+            problems.append(f"{prefix} mutation catalog hash mismatch")
         mutation_catalog = read_json(source_task / "evaluator" / "mutation_catalog.json")
-        mutation_rows = {
-            str(item.get("id") or ""): item for item in mutation_catalog.get("mutations") or []
-        }
+        mutation_rows = {str(item.get("id") or ""): item for item in mutation_catalog.get("mutations") or []}
         seed_catalog = mutation_rows.get(seed_id)
         if seed_catalog is None:
-            problems.append(f"{prefix} Bugfix seed is missing from the canonical mutation catalog")
+            problems.append(f"{prefix} bugfix seed is missing from the canonical mutation catalog")
         else:
-            changed_hashes = seed_catalog.get("artifact_hashes") or {}
             expected_hashes = expected_buggy_artifact_hashes(
                 artifact_paths,
-                changed_hashes,
+                seed_catalog.get("artifact_hashes") or {},
                 source_task / "evaluator" / "solution",
             )
             actual_hashes = {
@@ -327,150 +395,141 @@ def audit_task(
                 problems.append(f"{prefix} buggy bundle differs from the selected canonical mutation")
         if tree_sha(buggy) == tree_sha(source_task / "evaluator" / "solution"):
             problems.append(f"{prefix} buggy bundle is byte-identical to gold")
-        private_materialization = derivation.get("private_materialization") or {}
-        if private_materialization.get("buggy_bundle_sha256") != tree_sha(buggy):
+        if score.get("buggy_bundle_sha256") != tree_sha(buggy):
             problems.append(f"{prefix} buggy bundle hash mismatch")
-        gold_reference = read_json(evaluator / "gold_repair_reference.json")
-        if gold_reference.get("solution_tree_sha256") != tree_sha(source_task / "evaluator" / "solution"):
+        if score.get("gold_solution_tree_sha256") != tree_sha(evaluator / "solution"):
             problems.append(f"{prefix} gold repair solution hash mismatch")
-        if gold_reference.get("gold_dut_certification_sha256") != (
+        if score.get("gold_dut_certification_sha256") != (
             source_row.get("hashes") or {}
         ).get("task_certification_sha256"):
             problems.append(f"{prefix} gold DUT certification hash mismatch")
-        public_text = (task_dir / "instruction.md").read_text(encoding="utf-8") + json.dumps(contract)
+        public_text = instruction_text + json.dumps(contract)
         forbidden = ("neg_", "faulty file", "root cause", "changed line", "public summary")
         for marker in forbidden:
             if marker.lower() in public_text.lower():
                 problems.append(f"{prefix} public bugfix view leaks forbidden marker {marker!r}")
         if re.search(r"\bmutation\b", public_text, re.IGNORECASE):
             problems.append(f"{prefix} public bugfix view leaks forbidden marker 'mutation'")
-        selection = derivation.get("selection_evidence") or {}
-        if selection.get("selection_status") != "policy_reviewed" or selection.get("triviality_markers"):
-            problems.append(f"{prefix} Bugfix seed lacks nontrivial semantic review")
+        if score.get("bugfix_seed_selection_status") != "policy_reviewed" or score.get("bugfix_seed_triviality_markers"):
+            problems.append(f"{prefix} bugfix seed lacks nontrivial semantic review")
 
 
-def audit_prompt_records(release: Path, tasks: list[dict[str, Any]], problems: list[str]) -> int:
-    path = release / "prompt_modes" / "PROMPT_RECORDS.jsonl"
-    if not path.is_file():
-        problems.append("prompt record file missing")
-        return 0
-    seen: dict[str, set[str]] = defaultdict(set)
-    task_forms = {str(row["task_id"]): str(row["form"]) for row in tasks}
-    task_dirs = {str(row["task_id"]): release / str(row["task_dir"]) for row in tasks}
+def iter_prompt_public_inputs(task_dir: Path, form: str) -> list[Path]:
+    public = task_dir / "public"
+    inputs = [public / "instruction.md"]
+    if form == "testbench":
+        inputs.extend(sorted((public / "supplied_dut").rglob("*.va")))
+    elif form == "bugfix":
+        inputs.extend(sorted((public / "buggy_bundle").rglob("*.va")))
+    return inputs
+
+
+def audit_prompt_components(release: Path, tasks: list[dict[str, Any]], problems: list[str]) -> int:
+    if (release / "prompt_modes" / "PROMPT_RECORDS.jsonl").exists():
+        problems.append("release should not include prompt_modes/PROMPT_RECORDS.jsonl")
     component_manifest = read_json(release / "prompt_modes" / "manifest.json")
-    component_records = component_manifest.get("components") or {}
+    mode_manifest = read_json(release / "prompt_modes" / "modes.json")
+    wrapper_records = component_manifest.get("wrappers") or {}
+    form_skill_records = component_manifest.get("form_skills") or {}
+    feedback_guide_records = component_manifest.get("feedback_guides") or {}
+    component_records = component_manifest.get("components") or {
+        **wrapper_records,
+        **form_skill_records,
+        **feedback_guide_records,
+    }
     tokenizer = component_manifest.get("reference_tokenizer") or {}
     tokenizer_key = f"{tokenizer.get('id')}@{tokenizer.get('version')}"
-    required_assets = {
-        *WRAPPERS_BY_PROCESS.values(), *FORM_SKILLS.values(), *FEEDBACK_GUIDES.values()
-    }
-    if set(component_records) != required_assets:
-        problems.append("prompt component manifest set mismatch")
+    required_wrappers = set(WRAPPERS_BY_MODE.values())
+    required_form_skills = set(FORM_SKILLS.values())
+    required_feedback_guides = set(FEEDBACK_GUIDES.values())
+    if set(wrapper_records) != required_wrappers:
+        problems.append("component manifest wrapper set mismatch")
+    if set(form_skill_records) != required_form_skills:
+        problems.append("component manifest form-skill set mismatch")
+    if set(feedback_guide_records) != required_feedback_guides:
+        problems.append("component manifest feedback-guide set mismatch")
+    if set(component_records) != required_wrappers | required_form_skills | required_feedback_guides:
+        problems.append("component manifest component set mismatch")
+    if (release / "prompt_modes" / "skills").exists():
+        problems.append("legacy prompt_modes/skills/ directory should not be present")
     for name, component in component_records.items():
         for field in ("stable_id", "semantic_version", "applicable_forms", "sha256", "bytes", "license", "provenance", "token_counts"):
             if field not in component:
-                problems.append(f"prompt component manifest {name}: missing {field}")
+                problems.append(f"component manifest {name}: missing {field}")
         if tokenizer_key not in (component.get("token_counts") or {}):
-            problems.append(f"prompt component manifest {name}: missing reference-tokenizer count")
+            problems.append(f"component manifest {name}: missing reference-tokenizer count")
+        expected_path = prompt_component_path(release, name)
+        if component.get("path") != expected_path.relative_to(release).as_posix():
+            problems.append(f"component manifest {name}: path does not match component kind")
+        if expected_path.is_file() and component.get("sha256") != file_sha(expected_path):
+            problems.append(f"component manifest {name}: sha256 mismatch")
+    mode_records = mode_manifest.get("modes") or {}
+    if set(mode_records) != set(MODES):
+        problems.append("prompt mode registry does not define exactly G0-G5")
     count = 0
-    for line_no, line in enumerate(path.read_text(encoding="utf-8").splitlines(), 1):
-        try:
-            row = json.loads(line)
-        except json.JSONDecodeError as exc:
-            problems.append(f"prompt record line {line_no} is invalid JSON: {exc}")
-            continue
-        count += 1
-        task_id = str(row.get("task_id") or "")
-        mode = str(row.get("mode") or "")
-        seen[task_id].add(mode)
-        expected_cli = mode in {"G2", "G3", "G4", "G5"}
-        if row.get("feedback_cli_available") is not expected_cli:
-            problems.append(f"{task_id}/{mode}: feedback availability mismatch")
-        expected_process = "direct_one_shot" if mode in {"G0", "G1"} else "agentic"
-        if row.get("process") != expected_process:
-            problems.append(f"{task_id}/{mode}: process mismatch")
-        form = task_forms.get(task_id, "")
-        task_dir = task_dirs.get(task_id)
-        if task_dir is None:
-            problems.append(f"{task_id}/{mode}: prompt record has no task directory")
-            continue
-        public_inputs = [task_dir / "instruction.md"]
-        if form == "testbench":
-            public_inputs.extend(sorted((task_dir / "supplied_dut").rglob("*.va")))
-        elif form == "bugfix":
-            public_inputs.extend(sorted((task_dir / "buggy_bundle").rglob("*.va")))
-        expected_input_hashes = {
-            item.relative_to(task_dir).as_posix(): file_sha(item) for item in public_inputs
-        }
-        if row.get("canonical_instruction_sha256") != file_sha(task_dir / "instruction.md"):
-            problems.append(f"{task_id}/{mode}: canonical instruction hash mismatch")
-        if row.get("public_input_hashes") != expected_input_hashes:
-            problems.append(f"{task_id}/{mode}: public input hash replay mismatch")
-        expected_skills: list[str] = []
-        if mode in {"G1", "G3", "G5"}:
-            expected_skills.append(FORM_SKILLS.get(form, ""))
-        if mode in {"G4", "G5"}:
-            expected_skills.append(FEEDBACK_GUIDES.get(form, ""))
-        expected_wrapper = WRAPPERS_BY_PROCESS[expected_process]
-        expected_components = [*expected_skills, expected_wrapper]
-        skills = row.get("skill_hashes") or {}
-        if set(skills) != set(expected_skills):
-            problems.append(f"{task_id}/{mode}: exact skill composition mismatch")
-        for name in expected_skills:
-            if skills.get(name) != (component_records.get(name) or {}).get("sha256"):
-                problems.append(f"{task_id}/{mode}: skill hash mismatch for {name}")
-        prompt_component_hashes = row.get("prompt_component_hashes") or {}
-        if set(prompt_component_hashes) != set(expected_components):
-            problems.append(f"{task_id}/{mode}: exact prompt component composition mismatch")
-        for name in expected_components:
-            if prompt_component_hashes.get(name) != (component_records.get(name) or {}).get("sha256"):
-                problems.append(f"{task_id}/{mode}: prompt component hash mismatch for {name}")
-        component_order = row.get("component_order") or []
-        expected_suffix = [*expected_skills, expected_wrapper]
-        if component_order[-len(expected_suffix):] != expected_suffix:
-            problems.append(f"{task_id}/{mode}: component order mismatch")
-        static_components = row.get("static_components") or []
-        if [item.get("id") for item in static_components] != component_order:
-            problems.append(f"{task_id}/{mode}: static component fingerprint order mismatch")
-        public_component_paths = {
-            "instruction" if item.name == "instruction.md" else f"public_input:{item.relative_to(task_dir).as_posix()}": item
-            for item in public_inputs
-        }
-        for item in static_components:
-            component_id = str(item.get("id") or "")
-            actual_path = public_component_paths.get(component_id)
-            if actual_path is None and component_id in component_records:
-                actual_path = prompt_component_path(release, component_id)
-            if actual_path is None or not actual_path.is_file():
-                problems.append(f"{task_id}/{mode}: unresolved static component {component_id}")
-            elif item.get("sha256") != file_sha(actual_path) or item.get("bytes") != actual_path.stat().st_size:
-                problems.append(f"{task_id}/{mode}: static component fingerprint mismatch for {component_id}")
-            if not isinstance(item.get("bytes"), int) or item.get("bytes") < 0:
-                problems.append(f"{task_id}/{mode}: invalid component byte count")
-            if len(str(item.get("sha256") or "")) != 64:
-                problems.append(f"{task_id}/{mode}: invalid component hash")
-            if tokenizer_key not in (item.get("token_counts") or {}):
-                problems.append(f"{task_id}/{mode}: missing component token count")
-    expected_ids = {str(row["task_id"]) for row in tasks}
-    if set(seen) != expected_ids:
-        problems.append("prompt record task coverage mismatch")
-    for task_id in expected_ids:
-        if seen[task_id] != set(MODES):
-            problems.append(f"{task_id}: prompt mode coverage mismatch")
+    for task in tasks:
+        task_id = str(task.get("task_id") or "")
+        form = str(task.get("form") or "")
+        task_dir = release / str(task.get("task_dir") or "")
+        for mode in MODES:
+            count += 1
+            policy = mode_records.get(mode) or {}
+            expected_cli = mode in AGENTIC_MODES
+            if bool(policy.get("feedback_cli")) is not expected_cli:
+                problems.append(f"{task_id}/{mode}: feedback availability mismatch")
+            public_inputs = iter_prompt_public_inputs(task_dir, form)
+            for item in public_inputs:
+                if not item.is_file():
+                    problems.append(f"{task_id}/{mode}: prompt public input missing: {item.relative_to(task_dir)}")
+            expected_components: list[str] = []
+            if mode in {"G1", "G3", "G5"}:
+                expected_components.append(FORM_SKILLS.get(form, ""))
+            if mode in {"G4", "G5"}:
+                expected_components.append(FEEDBACK_GUIDES.get(form, ""))
+            expected_components.append(WRAPPERS_BY_MODE.get(mode, ""))
+            for name in expected_components:
+                component = component_records.get(name) or {}
+                if component.get("sha256") != file_sha(prompt_component_path(release, name)):
+                    problems.append(f"{task_id}/{mode}: prompt component hash mismatch for {name}")
+            if mode in DIRECT_MODES:
+                direct_text_parts = [item.read_text(encoding="utf-8", errors="replace") for item in public_inputs if item.is_file()]
+                direct_text_parts.extend(
+                    prompt_component_path(release, name).read_text(encoding="utf-8", errors="replace")
+                    for name in expected_components
+                    if name in component_records
+                )
+                direct_text = "\n".join(direct_text_parts)
+                for marker in (
+                    "Feedback tools",
+                    "feedback CLI",
+                    "public/submission",
+                    "agentic mode",
+                    "mounted public task inputs",
+                ):
+                    if marker.lower() in direct_text.lower():
+                        problems.append(f"{task_id}/{mode}: direct prompt leaks {marker!r}")
     return count
 
 
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--release", type=Path, default=DEFAULT_RELEASE)
+    parser.add_argument("--source", type=Path, default=DEFAULT_SOURCE)
     parser.add_argument("--output", type=Path)
     parser.add_argument("--seal-output", type=Path)
     args = parser.parse_args()
     release = args.release.expanduser().resolve()
+    source = args.source.expanduser().resolve()
     manifest = read_json(release / "MANIFEST.json")
     tasks = read_json(release / "TASK_INDEX.json").get("tasks") or []
-    source = PACKAGE_ROOT / str(manifest.get("source_release") or "")
     problems: list[str] = []
+    if (release / "private_evaluator").exists():
+        problems.append("top-level private_evaluator/ should not exist in standalone benchmarkv4")
+    if (release / "public_contracts").exists():
+        problems.append("top-level public_contracts/ should not exist in standalone benchmarkv4")
+    for legacy_form_dir in FORMS:
+        if (release / "tasks" / legacy_form_dir).exists():
+            problems.append(f"legacy form directory should not exist under tasks/: {legacy_form_dir}")
     source_manifest_path = source / "score_denominator_manifest.json"
     if not source_manifest_path.is_file():
         raise SystemExit(f"source denominator missing: {source_manifest_path}")
@@ -489,6 +548,12 @@ def main() -> int:
         problems.append("one or more materialized release artifacts are missing")
     if manifest.get("materialized_artifact_sha256") != expected_materialized_hashes:
         problems.append("materialized artifact hash binding mismatch")
+    if manifest.get("source_release") or manifest.get("private_evaluator"):
+        problems.append("manifest keeps legacy external source/private evaluator path")
+    if manifest.get("source_release_label") != source.name:
+        problems.append("manifest source release label mismatch")
+    if manifest.get("source_score_denominator_manifest_sha256") != source_manifest_sha:
+        problems.append("manifest source denominator hash mismatch")
     certification_reuse = audit_source_certifications(source, source_rows, problems)
     counts = Counter(str(row.get("form") or "") for row in tasks)
     if len(tasks) != 1200 or counts != Counter({form: 400 for form in FORMS}):
@@ -496,7 +561,7 @@ def main() -> int:
     family_forms: dict[str, set[str]] = defaultdict(set)
     for row in tasks:
         family_forms[str(row.get("family_id") or "")].add(str(row.get("form") or ""))
-        audit_task(release, source, source_manifest_sha, source_rows, row, problems)
+        audit_task(release, source, source_rows, row, problems)
     expected_families = {f"{value:03d}" for value in range(1, 401)}
     if set(family_forms) != expected_families:
         problems.append("family coverage is not exactly 001-400")
@@ -512,21 +577,15 @@ def main() -> int:
         bugfix_dir = task_by_family_form.get((family, "bugfix"))
         if testbench_dir is None or bugfix_dir is None:
             continue
-        testbench_seed = (
-            read_json(testbench_dir / "evaluator" / "derivation_manifest.json").get("negative_assignment") or {}
-        ).get("bugfix_seed")
-        bugfix_seed = (
-            read_json(bugfix_dir / "evaluator" / "derivation_manifest.json").get("negative_assignment") or {}
-        ).get("bugfix_seed")
+        testbench_seed = read_json(testbench_dir / "evaluator" / "score_policy.json").get("bugfix_seed_mutation_id")
+        bugfix_seed = read_json(bugfix_dir / "evaluator" / "score_policy.json").get("bugfix_seed_mutation_id")
         if testbench_seed != bugfix_seed:
-            problems.append(
-                f"{family}: cross-form Bugfix seed mismatch: testbench={testbench_seed} bugfix={bugfix_seed}"
-            )
-    prompt_count = audit_prompt_records(release, tasks, problems)
+            problems.append(f"{family}: cross-form bugfix seed mismatch: testbench={testbench_seed} bugfix={bugfix_seed}")
+    prompt_count = audit_prompt_components(release, tasks, problems)
     if prompt_count != 7200:
         problems.append(f"prompt record count is {prompt_count}, expected 7200")
     report = {
-        "schema_version": "v4-tri-form-release-audit-v1",
+        "schema_version": "v4-benchmarkv4-release-audit-v1",
         "status": "pass" if not problems else "fail",
         "family_count": len(family_forms),
         "task_count": len(tasks),
