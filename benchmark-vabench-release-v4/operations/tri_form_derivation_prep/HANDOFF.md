@@ -19,10 +19,16 @@ DUT family assets.
 - Structure and bundle-isolation audit: PASS
 - Release status: `materialized_gate3_audit_pending`
 
-The materialized package is
-`release/tri-form-v4-1200-draft/`. The name retains `draft` because final Gate
-3 certification must bind a frozen EVAS identity and the final Spectre judge.
-The task definitions themselves are generated for all 1,200 IDs.
+The tracked public materialized package is `release/tri-form-v4-1200-draft/`.
+The name retains `draft` because final Gate 3 certification must bind a frozen
+EVAS identity and the final Spectre judge. The task definitions themselves are
+generated for all 1,200 IDs.
+
+The local private evaluator mirror is
+`release/tri-form-v4-1200-private-evaluator/`. It contains prompt records,
+gold references, mutation bundles, score policies, and audit evidence, and is
+intentionally ignored by git. Regenerate it locally; do not upload it as part of
+the public release PR.
 
 ## Remaining Release Work
 

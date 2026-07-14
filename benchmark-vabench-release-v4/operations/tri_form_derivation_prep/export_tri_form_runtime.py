@@ -12,6 +12,7 @@ from typing import Any
 
 PACKAGE_ROOT = Path(__file__).resolve().parents[2]
 DEFAULT_RELEASE = PACKAGE_ROOT / "release" / "tri-form-v4-1200-draft"
+DEFAULT_PRIVATE_EVALUATOR = PACKAGE_ROOT / "release" / "tri-form-v4-1200-private-evaluator"
 AGENTIC = {"G2", "G3", "G4", "G5"}
 
 
@@ -44,8 +45,9 @@ def copy_tree(source: Path, target: Path) -> None:
         shutil.copytree(source, target, dirs_exist_ok=True)
 
 
-def prompt_record(release: Path, task_id: str, mode: str) -> dict[str, Any]:
-    for line in (release / "prompt_modes" / "PROMPT_RECORDS.jsonl").read_text(encoding="utf-8").splitlines():
+def prompt_record(private_evaluator: Path, task_id: str, mode: str) -> dict[str, Any]:
+    path = private_evaluator / "prompt_records" / "PROMPT_RECORDS.jsonl"
+    for line in path.read_text(encoding="utf-8").splitlines():
         row = json.loads(line)
         if row.get("task_id") == task_id and row.get("mode") == mode:
             return row
@@ -156,8 +158,8 @@ def install_public(task_dir: Path, public_root: Path, form: str, mode: str) -> N
         })
 
 
-def install_evaluator(task_dir: Path, evaluator_root: Path, record: dict[str, Any]) -> None:
-    task_eval = task_dir / "evaluator"
+def install_evaluator(private_task_dir: Path, evaluator_root: Path, record: dict[str, Any]) -> None:
+    task_eval = private_task_dir / "evaluator"
     form = str(record["form"])
     evaluator_root.mkdir(parents=True)
     for name in ("task_record.json", "family_spec.json", "checker_profile.json", "harness_spec.json"):
@@ -181,6 +183,7 @@ def install_evaluator(task_dir: Path, evaluator_root: Path, record: dict[str, An
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--release", type=Path, default=DEFAULT_RELEASE)
+    parser.add_argument("--private-evaluator", type=Path, default=DEFAULT_PRIVATE_EVALUATOR)
     parser.add_argument("--task", required=True)
     parser.add_argument("--mode", choices=[f"G{x}" for x in range(6)], required=True)
     parser.add_argument("--output", type=Path, required=True)
@@ -188,6 +191,7 @@ def main() -> int:
     parser.add_argument("--force", action="store_true")
     args = parser.parse_args()
     release = args.release.expanduser().resolve()
+    private_evaluator = args.private_evaluator.expanduser().resolve()
     output = args.output.expanduser().resolve()
     if output.exists():
         if not args.force:
@@ -195,11 +199,12 @@ def main() -> int:
         shutil.rmtree(output)
     output.mkdir(parents=True)
     record, task_dir = task_record(release, args.task)
-    mode_record = prompt_record(release, args.task, args.mode)
+    private_task_dir = private_evaluator / str(record["task_dir"])
+    mode_record = prompt_record(private_evaluator, args.task, args.mode)
     public_root = output / "public"
     (public_root / "submission").mkdir(parents=True)
     install_public(task_dir, public_root, str(record["form"]), args.mode)
-    install_evaluator(task_dir, output / "evaluator", record)
+    install_evaluator(private_task_dir, output / "evaluator", record)
     prompt = render_prompt(
         release,
         task_dir,

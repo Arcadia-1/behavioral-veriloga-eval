@@ -2,8 +2,9 @@
 """Materialize 400 DUT, 400 Testbench, and 400 Bugfix task views.
 
 The frozen exact-five DUT release is the only family source.  The generated
-views contain public inputs and small private reference records; canonical DUT
-evaluator assets stay in the source release and are addressed by hash.
+public release contains only solver-visible task inputs and prompt components.
+The local private evaluator mirror is generated separately and is intended for
+audit/runner use only.
 """
 from __future__ import annotations
 
@@ -20,6 +21,7 @@ PACKAGE_ROOT = Path(__file__).resolve().parents[2]
 PREP_ROOT = Path(__file__).resolve().parent
 DEFAULT_SOURCE = PACKAGE_ROOT / "release" / "dut-base-v3-exact-five-hash-bound-v2"
 DEFAULT_OUTPUT = PACKAGE_ROOT / "release" / "tri-form-v4-1200-draft"
+DEFAULT_PRIVATE_OUTPUT = PACKAGE_ROOT / "release" / "tri-form-v4-1200-private-evaluator"
 PROMPT_ASSETS = PREP_ROOT / "prompt_assets"
 MODES = {
     "G0": {"process": "direct_one_shot", "form_skill": False, "feedback_skill": False, "feedback_cli": False},
@@ -39,13 +41,14 @@ FEEDBACK_ADAPTERS = {
     "testbench": "feedback_testbench.md",
     "bugfix": "feedback_bugfix.md",
 }
-MATERIALIZED_ARTIFACTS = (
-    ".gitattributes",
+PUBLIC_MATERIALIZED_ARTIFACTS = (
     "TASK_INDEX.json",
-    "BUGFIX_SEED_REVIEW.json",
-    "prompt_modes/PROMPT_RECORDS.jsonl",
     "prompt_modes/modes.json",
     "prompt_modes/manifest.json",
+)
+PRIVATE_MATERIALIZED_ARTIFACTS = (
+    "BUGFIX_SEED_REVIEW.json",
+    "prompt_records/PROMPT_RECORDS.jsonl",
 )
 WRAPPERS_BY_PROCESS = {
     "direct_one_shot": "direct_wrapper.md",
@@ -102,13 +105,6 @@ def write_text(path: Path, value: str) -> None:
     path.write_text(value, encoding="utf-8")
 
 
-def install_release_git_attributes(output: Path) -> None:
-    write_text(
-        output / ".gitattributes",
-        "tasks/testbench/**/evaluator/mutation_bundles/**/*.va whitespace=-trailing-space\n",
-    )
-
-
 def sha_bytes(value: bytes) -> str:
     return hashlib.sha256(value).hexdigest()
 
@@ -148,8 +144,8 @@ def tree_sha(path: Path) -> str:
     return digest.hexdigest()
 
 
-def materialized_artifact_hashes(output: Path) -> dict[str, str]:
-    return {relative: file_sha(output / relative) for relative in MATERIALIZED_ARTIFACTS}
+def materialized_artifact_hashes(output: Path, artifacts: Iterable[str]) -> dict[str, str]:
+    return {relative: file_sha(output / relative) for relative in artifacts}
 
 
 def negative_assignment(row: dict[str, Any], seed_review: dict[str, Any]) -> dict[str, Any]:
@@ -489,7 +485,13 @@ def materialize_standalone_evaluator(source_task: Path, evaluator: Path, *, incl
 
 
 def build_dut_view(
-    output: Path, source: Path, source_task: Path, row: dict[str, Any], spec: dict[str, Any], spec_sha: str,
+    output: Path,
+    private_output: Path,
+    source: Path,
+    source_task: Path,
+    row: dict[str, Any],
+    spec: dict[str, Any],
+    spec_sha: str,
 ) -> dict[str, Any]:
     family = str(row["canonical_dut_id"])
     task_dir = output / "tasks" / "dut" / source_task.name
@@ -510,8 +512,9 @@ def build_dut_view(
         "feedback": {"available_in_modes": ["G2", "G3", "G4", "G5"], "command": "vabench feedback run"},
     })
     write_public_contract(task_dir, contract)
-    evaluator = task_dir / "evaluator"
-    evaluator.mkdir()
+    private_task_dir = private_output / rel(task_dir, output)
+    evaluator = private_task_dir / "evaluator"
+    evaluator.mkdir(parents=True)
     materialize_standalone_evaluator(source_task, evaluator, include_negative_suite=False)
     write_json(evaluator / "score_policy.json", {
         "schema_version": "v4-dut-score-policy-v1",
@@ -532,8 +535,14 @@ def build_dut_view(
 
 
 def build_testbench_view(
-    output: Path, source_task: Path, row: dict[str, Any], spec: dict[str, Any], spec_sha: str,
-    source_manifest_sha: str, seed_review: dict[str, Any],
+    output: Path,
+    private_output: Path,
+    source_task: Path,
+    row: dict[str, Any],
+    spec: dict[str, Any],
+    spec_sha: str,
+    source_manifest_sha: str,
+    seed_review: dict[str, Any],
 ) -> dict[str, Any]:
     family = str(row["canonical_dut_id"])
     task_num = 500 + int(family)
@@ -562,8 +571,9 @@ def build_testbench_view(
         ],
     })
     write_public_contract(task_dir, contract)
-    evaluator = task_dir / "evaluator"
-    evaluator.mkdir()
+    private_task_dir = private_output / rel(task_dir, output)
+    evaluator = private_task_dir / "evaluator"
+    evaluator.mkdir(parents=True)
     materialize_standalone_evaluator(source_task, evaluator, include_negative_suite=True)
     suite = [str(item["mutation_id"]) for item in row["active_mutations"]]
     derivation = {
@@ -622,8 +632,14 @@ def build_testbench_view(
 
 
 def build_bugfix_view(
-    output: Path, source_task: Path, row: dict[str, Any], spec: dict[str, Any], spec_sha: str,
-    source_manifest_sha: str, seed_review: dict[str, Any],
+    output: Path,
+    private_output: Path,
+    source_task: Path,
+    row: dict[str, Any],
+    spec: dict[str, Any],
+    spec_sha: str,
+    source_manifest_sha: str,
+    seed_review: dict[str, Any],
 ) -> dict[str, Any]:
     family = str(row["canonical_dut_id"])
     task_num = 1000 + int(family)
@@ -646,8 +662,9 @@ def build_bugfix_view(
         "feedback": {"available_in_modes": ["G2", "G3", "G4", "G5"], "command": "vabench feedback run"},
     })
     write_public_contract(task_dir, contract)
-    evaluator = task_dir / "evaluator"
-    evaluator.mkdir()
+    private_task_dir = private_output / rel(task_dir, output)
+    evaluator = private_task_dir / "evaluator"
+    evaluator.mkdir(parents=True)
     materialize_standalone_evaluator(source_task, evaluator, include_negative_suite=False)
     write_json(evaluator / "score_policy.json", {
         "schema_version": "v4-bugfix-score-policy-v1",
@@ -751,8 +768,14 @@ def iter_public_inputs(task_dir: Path, form: str, mode: str) -> Iterable[Path]:
         yield from sorted((task_dir / "buggy_bundle").rglob("*.va"))
 
 
-def write_prompt_records(output: Path, task_rows: list[dict[str, Any]], components_by_id: dict[str, dict[str, Any]]) -> None:
-    path = output / "prompt_modes" / "PROMPT_RECORDS.jsonl"
+def write_prompt_records(
+    output: Path,
+    private_output: Path,
+    task_rows: list[dict[str, Any]],
+    components_by_id: dict[str, dict[str, Any]],
+) -> None:
+    path = private_output / "prompt_records" / "PROMPT_RECORDS.jsonl"
+    path.parent.mkdir(parents=True, exist_ok=True)
     with path.open("w", encoding="utf-8") as handle:
         for task in task_rows:
             task_dir = output / task["task_dir"]
@@ -805,16 +828,20 @@ def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--source", type=Path, default=DEFAULT_SOURCE)
     parser.add_argument("--output", type=Path, default=DEFAULT_OUTPUT)
+    parser.add_argument("--private-output", type=Path, default=DEFAULT_PRIVATE_OUTPUT)
     parser.add_argument("--force", action="store_true")
     args = parser.parse_args()
     source = args.source.expanduser().resolve()
     output = args.output.expanduser().resolve()
-    if output.exists():
+    private_output = args.private_output.expanduser().resolve()
+    for path, label in ((output, "output"), (private_output, "private output")):
+        if not path.exists():
+            continue
         if not args.force:
-            raise SystemExit(f"output exists; pass --force to replace it: {output}")
-        shutil.rmtree(output)
+            raise SystemExit(f"{label} exists; pass --force to replace it: {path}")
+        shutil.rmtree(path)
     output.mkdir(parents=True)
-    install_release_git_attributes(output)
+    private_output.mkdir(parents=True)
 
     denominator_path = source / "score_denominator_manifest.json"
     denominator = read_json(denominator_path)
@@ -835,15 +862,15 @@ def main() -> int:
         seed_review = select_bugfix_seed(row)
         seed_rows.append({"family_id": family, **seed_review})
         task_rows.extend([
-            build_dut_view(output, source, source_task, row, spec, spec_sha),
-            build_testbench_view(output, source_task, row, spec, spec_sha, source_manifest_sha, seed_review),
-            build_bugfix_view(output, source_task, row, spec, spec_sha, source_manifest_sha, seed_review),
+            build_dut_view(output, private_output, source, source_task, row, spec, spec_sha),
+            build_testbench_view(output, private_output, source_task, row, spec, spec_sha, source_manifest_sha, seed_review),
+            build_bugfix_view(output, private_output, source_task, row, spec, spec_sha, source_manifest_sha, seed_review),
         ])
 
     task_rows.sort(key=lambda item: (item["form"], int(item["family_id"])))
     skills = install_prompt_assets(output)
-    write_prompt_records(output, task_rows, skills)
-    write_json(output / "BUGFIX_SEED_REVIEW.json", {
+    write_prompt_records(output, private_output, task_rows, skills)
+    write_json(private_output / "BUGFIX_SEED_REVIEW.json", {
         "schema_version": "v4-bugfix-seed-review-v1",
         "selection_policy": "semantic_fault_complexity_v1",
         "families": seed_rows,
@@ -869,10 +896,28 @@ def main() -> int:
             "simulation_rerun_required_for_materialization": False,
         },
         "prompt_record_count": len(task_rows) * len(MODES),
+        "release_surface": "public_solver_package",
         "tasks_index": "TASK_INDEX.json",
-        "materialized_artifact_sha256": materialized_artifact_hashes(output),
+        "materialized_artifact_sha256": materialized_artifact_hashes(output, PUBLIC_MATERIALIZED_ARTIFACTS),
     }
     write_json(output / "MANIFEST.json", manifest)
+    private_manifest = {
+        "schema_version": "v4-tri-form-private-evaluator-manifest-v1",
+        "release_surface": "local_private_evaluator",
+        "public_release": rel(output, PACKAGE_ROOT),
+        "task_count": len(task_rows),
+        "task_counts": counts,
+        "source_release": rel(source, PACKAGE_ROOT),
+        "source_score_denominator_manifest_sha256": source_manifest_sha,
+        "prompt_records": "prompt_records/PROMPT_RECORDS.jsonl",
+        "bugfix_seed_review": "BUGFIX_SEED_REVIEW.json",
+        "private_materialized_artifact_sha256": materialized_artifact_hashes(
+            private_output,
+            PRIVATE_MATERIALIZED_ARTIFACTS,
+        ),
+        "git_policy": "ignored; regenerate locally for audit and scoring",
+    }
+    write_json(private_output / "MANIFEST.json", private_manifest)
     print(json.dumps(manifest, indent=2, sort_keys=True))
     return 0
 

@@ -13,6 +13,7 @@ from typing import Any
 
 PACKAGE_ROOT = Path(__file__).resolve().parents[2]
 DEFAULT_RELEASE = PACKAGE_ROOT / "release" / "tri-form-v4-1200-draft"
+DEFAULT_PRIVATE_EVALUATOR = PACKAGE_ROOT / "release" / "tri-form-v4-1200-private-evaluator"
 FORMS = ("dut", "testbench", "bugfix")
 MODES = ("G0", "G1", "G2", "G3", "G4", "G5")
 DIRECT_MODES = {"G0", "G1"}
@@ -35,19 +36,14 @@ FEEDBACK_ADAPTERS = {
     "testbench": "feedback_testbench.md",
     "bugfix": "feedback_bugfix.md",
 }
-MATERIALIZED_ARTIFACTS = (
-    ".gitattributes",
+PUBLIC_MATERIALIZED_ARTIFACTS = (
     "TASK_INDEX.json",
-    "BUGFIX_SEED_REVIEW.json",
-    "prompt_modes/PROMPT_RECORDS.jsonl",
     "prompt_modes/modes.json",
     "prompt_modes/manifest.json",
 )
 RELEASE_SEAL_ARTIFACTS = (
     "MANIFEST.json",
-    *MATERIALIZED_ARTIFACTS,
-    "AUDIT_REPORT.json",
-    "RUNTIME_INGESTION_EVIDENCE.json",
+    *PUBLIC_MATERIALIZED_ARTIFACTS,
 )
 STANDALONE_EVALUATOR_COMMON = (
     "task_record.json",
@@ -64,6 +60,10 @@ def read_json(path: Path) -> dict[str, Any]:
 
 def file_sha(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
+
+
+def rel(path: Path, root: Path) -> str:
+    return path.relative_to(root).as_posix()
 
 
 def iter_prompt_public_inputs(task_dir: Path, form: str, mode: str) -> list[Path]:
@@ -117,13 +117,13 @@ def prompt_component_path(release: Path, component_id: str) -> Path:
 
 
 def audit_standalone_evaluator(
-    task_dir: Path,
+    evaluator_task_dir: Path,
     source_task: Path,
     form: str,
     prefix: str,
     problems: list[str],
 ) -> Path | None:
-    evaluator = task_dir / "evaluator"
+    evaluator = evaluator_task_dir / "evaluator"
     source_eval = source_task / "evaluator"
     if not evaluator.is_dir():
         problems.append(f"{prefix} evaluator directory missing")
@@ -255,6 +255,7 @@ def audit_source_certifications(
 
 def audit_task(
     release: Path,
+    private_evaluator: Path,
     source: Path,
     source_manifest_sha: str,
     source_rows: dict[str, dict[str, Any]],
@@ -262,6 +263,7 @@ def audit_task(
     problems: list[str],
 ) -> None:
     task_dir = release / str(row.get("task_dir") or "")
+    evaluator_task_dir = private_evaluator / str(row.get("task_dir") or "")
     task_id = str(row.get("task_id") or "")
     form = str(row.get("form") or "")
     family = str(row.get("family_id") or "")
@@ -269,6 +271,8 @@ def audit_task(
     if not task_dir.is_dir():
         problems.append(f"{prefix} task directory missing")
         return
+    if (task_dir / "evaluator").exists():
+        problems.append(f"{prefix} public task directory contains private evaluator/")
     for required in ("TASK_RECORD.json", "instruction.md", "public_contract.json"):
         if not (task_dir / required).is_file():
             problems.append(f"{prefix} missing {required}")
@@ -306,7 +310,7 @@ def audit_task(
     if source_row is None:
         problems.append(f"{prefix} canonical denominator row missing")
         return
-    evaluator = audit_standalone_evaluator(task_dir, source_task, form, prefix, problems)
+    evaluator = audit_standalone_evaluator(evaluator_task_dir, source_task, form, prefix, problems)
     if evaluator is None:
         return
     if form == "dut":
@@ -432,8 +436,15 @@ def audit_task(
             problems.append(f"{prefix} Bugfix seed lacks nontrivial semantic review")
 
 
-def audit_prompt_records(release: Path, tasks: list[dict[str, Any]], problems: list[str]) -> int:
-    path = release / "prompt_modes" / "PROMPT_RECORDS.jsonl"
+def audit_prompt_records(
+    release: Path,
+    private_evaluator: Path,
+    tasks: list[dict[str, Any]],
+    problems: list[str],
+) -> int:
+    if (release / "prompt_modes" / "PROMPT_RECORDS.jsonl").exists():
+        problems.append("public release should not include prompt_modes/PROMPT_RECORDS.jsonl")
+    path = private_evaluator / "prompt_records" / "PROMPT_RECORDS.jsonl"
     if not path.is_file():
         problems.append("prompt record file missing")
         return 0
@@ -562,14 +573,26 @@ def audit_prompt_records(release: Path, tasks: list[dict[str, Any]], problems: l
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--release", type=Path, default=DEFAULT_RELEASE)
+    parser.add_argument("--private-evaluator", type=Path, default=DEFAULT_PRIVATE_EVALUATOR)
     parser.add_argument("--output", type=Path)
     parser.add_argument("--seal-output", type=Path)
     args = parser.parse_args()
     release = args.release.expanduser().resolve()
+    private_evaluator = args.private_evaluator.expanduser().resolve()
     manifest = read_json(release / "MANIFEST.json")
     tasks = read_json(release / "TASK_INDEX.json").get("tasks") or []
     source = PACKAGE_ROOT / str(manifest.get("source_release") or "")
     problems: list[str] = []
+    if not private_evaluator.is_dir():
+        problems.append(f"private evaluator mirror missing: {private_evaluator}")
+    else:
+        private_manifest = private_evaluator / "MANIFEST.json"
+        if not private_manifest.is_file():
+            problems.append("private evaluator manifest missing")
+        else:
+            private_payload = read_json(private_manifest)
+            if private_payload.get("public_release") != rel(release, PACKAGE_ROOT):
+                problems.append("private evaluator manifest public_release mismatch")
     source_manifest_path = source / "score_denominator_manifest.json"
     if not source_manifest_path.is_file():
         raise SystemExit(f"source denominator missing: {source_manifest_path}")
@@ -581,10 +604,10 @@ def main() -> int:
     }
     expected_materialized_hashes = {
         relative: file_sha(release / relative)
-        for relative in MATERIALIZED_ARTIFACTS
+        for relative in PUBLIC_MATERIALIZED_ARTIFACTS
         if (release / relative).is_file()
     }
-    if set(expected_materialized_hashes) != set(MATERIALIZED_ARTIFACTS):
+    if set(expected_materialized_hashes) != set(PUBLIC_MATERIALIZED_ARTIFACTS):
         problems.append("one or more materialized release artifacts are missing")
     if manifest.get("materialized_artifact_sha256") != expected_materialized_hashes:
         problems.append("materialized artifact hash binding mismatch")
@@ -595,7 +618,7 @@ def main() -> int:
     family_forms: dict[str, set[str]] = defaultdict(set)
     for row in tasks:
         family_forms[str(row.get("family_id") or "")].add(str(row.get("form") or ""))
-        audit_task(release, source, source_manifest_sha, source_rows, row, problems)
+        audit_task(release, private_evaluator, source, source_manifest_sha, source_rows, row, problems)
     expected_families = {f"{value:03d}" for value in range(1, 401)}
     if set(family_forms) != expected_families:
         problems.append("family coverage is not exactly 001-400")
@@ -612,16 +635,16 @@ def main() -> int:
         if testbench_dir is None or bugfix_dir is None:
             continue
         testbench_seed = (
-            read_json(testbench_dir / "evaluator" / "derivation_manifest.json").get("negative_assignment") or {}
+            read_json(private_evaluator / testbench_dir.relative_to(release) / "evaluator" / "derivation_manifest.json").get("negative_assignment") or {}
         ).get("bugfix_seed")
         bugfix_seed = (
-            read_json(bugfix_dir / "evaluator" / "derivation_manifest.json").get("negative_assignment") or {}
+            read_json(private_evaluator / bugfix_dir.relative_to(release) / "evaluator" / "derivation_manifest.json").get("negative_assignment") or {}
         ).get("bugfix_seed")
         if testbench_seed != bugfix_seed:
             problems.append(
                 f"{family}: cross-form Bugfix seed mismatch: testbench={testbench_seed} bugfix={bugfix_seed}"
             )
-    prompt_count = audit_prompt_records(release, tasks, problems)
+    prompt_count = audit_prompt_records(release, private_evaluator, tasks, problems)
     if prompt_count != 7200:
         problems.append(f"prompt record count is {prompt_count}, expected 7200")
     report = {
