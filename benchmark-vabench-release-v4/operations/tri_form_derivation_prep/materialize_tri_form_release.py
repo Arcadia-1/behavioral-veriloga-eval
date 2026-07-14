@@ -3,8 +3,8 @@
 
 The frozen exact-five DUT release is the only family source.  The generated
 public release contains only solver-visible task inputs and prompt components.
-The local private evaluator mirror is generated separately and is intended for
-audit/runner use only.
+The private evaluator package contains scoring assets required by the local
+runner, but excludes generated audit/runtime evidence from version control.
 """
 from __future__ import annotations
 
@@ -24,19 +24,19 @@ DEFAULT_OUTPUT = PACKAGE_ROOT / "release" / "tri-form-v4-1200-draft"
 DEFAULT_PRIVATE_OUTPUT = PACKAGE_ROOT / "release" / "tri-form-v4-1200-private-evaluator"
 PROMPT_ASSETS = PREP_ROOT / "prompt_assets"
 MODES = {
-    "G0": {"process": "direct_one_shot", "form_skill": False, "feedback_skill": False, "feedback_cli": False},
-    "G1": {"process": "direct_one_shot", "form_skill": True, "feedback_skill": False, "feedback_cli": False},
-    "G2": {"process": "agentic", "form_skill": False, "feedback_skill": False, "feedback_cli": True},
-    "G3": {"process": "agentic", "form_skill": True, "feedback_skill": False, "feedback_cli": True},
-    "G4": {"process": "agentic", "form_skill": False, "feedback_skill": True, "feedback_cli": True},
-    "G5": {"process": "agentic", "form_skill": True, "feedback_skill": True, "feedback_cli": True},
+    "G0": {"process": "direct_one_shot", "form_skill": False, "feedback_guide": False, "feedback_cli": False},
+    "G1": {"process": "direct_one_shot", "form_skill": True, "feedback_guide": False, "feedback_cli": False},
+    "G2": {"process": "agentic", "form_skill": False, "feedback_guide": False, "feedback_cli": True},
+    "G3": {"process": "agentic", "form_skill": True, "feedback_guide": False, "feedback_cli": True},
+    "G4": {"process": "agentic", "form_skill": False, "feedback_guide": True, "feedback_cli": True},
+    "G5": {"process": "agentic", "form_skill": True, "feedback_guide": True, "feedback_cli": True},
 }
 FORM_SKILLS = {
     "dut": "dut_modeling.md",
     "testbench": "testbench_verification.md",
     "bugfix": "bugfix_diagnosis.md",
 }
-FEEDBACK_ADAPTERS = {
+FEEDBACK_GUIDES = {
     "dut": "feedback_dut.md",
     "testbench": "feedback_testbench.md",
     "bugfix": "feedback_bugfix.md",
@@ -46,10 +46,7 @@ PUBLIC_MATERIALIZED_ARTIFACTS = (
     "prompt_modes/modes.json",
     "prompt_modes/manifest.json",
 )
-PRIVATE_MATERIALIZED_ARTIFACTS = (
-    "BUGFIX_SEED_REVIEW.json",
-    "prompt_records/PROMPT_RECORDS.jsonl",
-)
+PRIVATE_MATERIALIZED_ARTIFACTS = (".gitattributes", "BUGFIX_SEED_REVIEW.json")
 WRAPPERS_BY_PROCESS = {
     "direct_one_shot": "direct_wrapper.md",
     "agentic": "agentic_wrapper.md",
@@ -60,15 +57,19 @@ REFERENCE_TOKENIZER = {
     "algorithm": "Unicode word runs and individual non-whitespace punctuation marks",
 }
 COMPONENT_METADATA = {
-    "direct_wrapper.md": {"stable_id": "wrapper.direct_one_shot", "kind": "wrapper", "applicable_forms": ["dut", "testbench", "bugfix"]},
-    "agentic_wrapper.md": {"stable_id": "wrapper.agentic", "kind": "wrapper", "applicable_forms": ["dut", "testbench", "bugfix"]},
-    "dut_modeling.md": {"stable_id": "skill.form.dut", "kind": "form_skill", "applicable_forms": ["dut"]},
-    "testbench_verification.md": {"stable_id": "skill.form.testbench", "kind": "form_skill", "applicable_forms": ["testbench"]},
-    "bugfix_diagnosis.md": {"stable_id": "skill.form.bugfix", "kind": "form_skill", "applicable_forms": ["bugfix"]},
-    "feedback_core.md": {"stable_id": "skill.feedback.core", "kind": "feedback_skill", "applicable_forms": ["dut", "testbench", "bugfix"]},
-    "feedback_dut.md": {"stable_id": "skill.feedback.dut", "kind": "feedback_skill", "applicable_forms": ["dut"]},
-    "feedback_testbench.md": {"stable_id": "skill.feedback.testbench", "kind": "feedback_skill", "applicable_forms": ["testbench"]},
-    "feedback_bugfix.md": {"stable_id": "skill.feedback.bugfix", "kind": "feedback_skill", "applicable_forms": ["bugfix"]},
+    "direct_wrapper.md": {"stable_id": "component.wrapper.direct_one_shot", "kind": "wrapper", "applicable_forms": ["dut", "testbench", "bugfix"]},
+    "agentic_wrapper.md": {"stable_id": "component.wrapper.agentic", "kind": "wrapper", "applicable_forms": ["dut", "testbench", "bugfix"]},
+    "dut_modeling.md": {"stable_id": "component.form.dut", "kind": "form_skill", "applicable_forms": ["dut"]},
+    "testbench_verification.md": {"stable_id": "component.form.testbench", "kind": "form_skill", "applicable_forms": ["testbench"]},
+    "bugfix_diagnosis.md": {"stable_id": "component.form.bugfix", "kind": "form_skill", "applicable_forms": ["bugfix"]},
+    "feedback_dut.md": {"stable_id": "component.feedback.dut", "kind": "feedback_guide", "applicable_forms": ["dut"]},
+    "feedback_testbench.md": {"stable_id": "component.feedback.testbench", "kind": "feedback_guide", "applicable_forms": ["testbench"]},
+    "feedback_bugfix.md": {"stable_id": "component.feedback.bugfix", "kind": "feedback_guide", "applicable_forms": ["bugfix"]},
+}
+COMPONENT_SUBDIR_BY_KIND = {
+    "wrapper": "wrappers",
+    "form_skill": "form_skills",
+    "feedback_guide": "feedback_guides",
 }
 STANDALONE_EVALUATOR_COMMON = (
     "task_record.json",
@@ -712,13 +713,15 @@ def build_bugfix_view(
 
 
 def prompt_component_subdir(component_id: str) -> str:
-    return "wrappers" if COMPONENT_METADATA[component_id]["kind"] == "wrapper" else "skills"
+    kind = COMPONENT_METADATA[component_id]["kind"]
+    return COMPONENT_SUBDIR_BY_KIND[kind]
 
 
 def install_prompt_assets(output: Path) -> dict[str, dict[str, Any]]:
     records: dict[str, dict[str, Any]] = {}
     wrappers: dict[str, dict[str, Any]] = {}
-    skills: dict[str, dict[str, Any]] = {}
+    form_skills: dict[str, dict[str, Any]] = {}
+    feedback_guides: dict[str, dict[str, Any]] = {}
     for source in sorted(PROMPT_ASSETS.rglob("*.md")):
         if source.name not in COMPONENT_METADATA:
             raise SystemExit(f"prompt component lacks metadata: {source.name}")
@@ -740,18 +743,24 @@ def install_prompt_assets(output: Path) -> dict[str, dict[str, Any]]:
         records[source.name] = record
         if metadata["kind"] == "wrapper":
             wrappers[source.name] = record
+        elif metadata["kind"] == "form_skill":
+            form_skills[source.name] = record
+        elif metadata["kind"] == "feedback_guide":
+            feedback_guides[source.name] = record
         else:
-            skills[source.name] = record
+            raise SystemExit(f"unknown prompt component kind: {metadata['kind']}")
     write_json(output / "prompt_modes" / "manifest.json", {
         "schema_version": "v4-prompt-component-manifest-v1",
         "reference_tokenizer": REFERENCE_TOKENIZER,
+        "components": records,
         "wrappers": wrappers,
-        "skills": skills,
+        "form_skills": form_skills,
+        "feedback_guides": feedback_guides,
     })
     write_json(output / "prompt_modes" / "modes.json", {
         "schema_version": "v4-prompt-mode-registry-v1",
         "modes": MODES,
-        "composition_order": ["canonical_instruction_and_public_inputs", "form_skill", "feedback_core_and_form_adapter", "mode_wrapper_response_protocol"],
+        "composition_order": ["canonical_instruction_and_public_inputs", "form_skill", "feedback_guide", "mode_wrapper_response_protocol"],
         "working_token_budget": "runner_supplied_same_ceiling_within_comparison_stratum",
         "wall_time_policy": "safety_limit_not_ability_budget",
     })
@@ -766,62 +775,6 @@ def iter_public_inputs(task_dir: Path, form: str, mode: str) -> Iterable[Path]:
         yield from sorted((task_dir / "supplied_dut").rglob("*.va"))
     elif form == "bugfix":
         yield from sorted((task_dir / "buggy_bundle").rglob("*.va"))
-
-
-def write_prompt_records(
-    output: Path,
-    private_output: Path,
-    task_rows: list[dict[str, Any]],
-    components_by_id: dict[str, dict[str, Any]],
-) -> None:
-    path = private_output / "prompt_records" / "PROMPT_RECORDS.jsonl"
-    path.parent.mkdir(parents=True, exist_ok=True)
-    with path.open("w", encoding="utf-8") as handle:
-        for task in task_rows:
-            task_dir = output / task["task_dir"]
-            instruction_sha = file_sha(task_dir / "instruction.md")
-            for mode, policy in MODES.items():
-                input_hashes = {rel(item, task_dir): file_sha(item) for item in iter_public_inputs(task_dir, task["form"], mode)}
-                public_components = [
-                    component_fingerprint(
-                        "instruction" if item.name == "instruction.md" else f"public_input:{rel(item, task_dir)}",
-                        item,
-                    )
-                    for item in iter_public_inputs(task_dir, task["form"], mode)
-                ]
-                wrapper = WRAPPERS_BY_PROCESS[policy["process"]]
-                skill_ids: list[str] = []
-                if policy["form_skill"]:
-                    skill_ids.append(FORM_SKILLS[task["form"]])
-                if policy["feedback_skill"]:
-                    skill_ids.extend(["feedback_core.md", FEEDBACK_ADAPTERS[task["form"]]])
-                components = [item["id"] for item in public_components] + skill_ids + [wrapper]
-                static_components = public_components + [
-                    {
-                        "id": name,
-                        "sha256": components_by_id[name]["sha256"],
-                        "bytes": components_by_id[name]["bytes"],
-                        "token_counts": components_by_id[name]["token_counts"],
-                    }
-                    for name in [*skill_ids, wrapper]
-                ]
-                record = {
-                    "schema_version": "v4-prompt-record-v1",
-                    "task_id": task["task_id"],
-                    "family_id": task["family_id"],
-                    "form": task["form"],
-                    "mode": mode,
-                    "process": policy["process"],
-                    "feedback_cli_available": policy["feedback_cli"],
-                    "canonical_instruction_sha256": instruction_sha,
-                    "public_input_hashes": input_hashes,
-                    "component_order": components,
-                    "static_components": static_components,
-                    "reference_tokenizer": REFERENCE_TOKENIZER,
-                    "skill_hashes": {name: components_by_id[name]["sha256"] for name in skill_ids},
-                    "response_protocol": "v4-exact-artifact-blocks-v1" if policy["process"] == "direct_one_shot" else "v4-workspace-finalizer-v1",
-                }
-                handle.write(json.dumps(record, sort_keys=True) + "\n")
 
 
 def main() -> int:
@@ -842,6 +795,12 @@ def main() -> int:
         shutil.rmtree(path)
     output.mkdir(parents=True)
     private_output.mkdir(parents=True)
+    write_text(
+        private_output / ".gitattributes",
+        "# Private evaluator Verilog-A fixtures are hash-bound canonical copies.\n"
+        "# Do not rewrite whitespace in these files during package hygiene checks.\n"
+        "*.va -whitespace\n",
+    )
 
     denominator_path = source / "score_denominator_manifest.json"
     denominator = read_json(denominator_path)
@@ -868,8 +827,7 @@ def main() -> int:
         ])
 
     task_rows.sort(key=lambda item: (item["form"], int(item["family_id"])))
-    skills = install_prompt_assets(output)
-    write_prompt_records(output, private_output, task_rows, skills)
+    install_prompt_assets(output)
     write_json(private_output / "BUGFIX_SEED_REVIEW.json", {
         "schema_version": "v4-bugfix-seed-review-v1",
         "selection_policy": "semantic_fault_complexity_v1",
@@ -903,19 +861,18 @@ def main() -> int:
     write_json(output / "MANIFEST.json", manifest)
     private_manifest = {
         "schema_version": "v4-tri-form-private-evaluator-manifest-v1",
-        "release_surface": "local_private_evaluator",
+        "release_surface": "private_evaluator_package",
         "public_release": rel(output, PACKAGE_ROOT),
         "task_count": len(task_rows),
         "task_counts": counts,
         "source_release": rel(source, PACKAGE_ROOT),
         "source_score_denominator_manifest_sha256": source_manifest_sha,
-        "prompt_records": "prompt_records/PROMPT_RECORDS.jsonl",
         "bugfix_seed_review": "BUGFIX_SEED_REVIEW.json",
         "private_materialized_artifact_sha256": materialized_artifact_hashes(
             private_output,
             PRIVATE_MATERIALIZED_ARTIFACTS,
         ),
-        "git_policy": "ignored; regenerate locally for audit and scoring",
+        "git_policy": "tracked scoring assets; generated evidence and prompt records are ignored",
     }
     write_json(private_output / "MANIFEST.json", private_manifest)
     print(json.dumps(manifest, indent=2, sort_keys=True))

@@ -104,7 +104,6 @@ def test_prompt_components_have_pinned_reference_tokenizer_metadata() -> None:
         "dut_modeling.md",
         "testbench_verification.md",
         "bugfix_diagnosis.md",
-        "feedback_core.md",
         "feedback_dut.md",
         "feedback_testbench.md",
         "feedback_bugfix.md",
@@ -112,17 +111,21 @@ def test_prompt_components_have_pinned_reference_tokenizer_metadata() -> None:
     assert reference_token_count("one two; three") == 4
 
 
-def test_prompt_assets_split_wrappers_from_skills(tmp_path: Path) -> None:
+def test_prompt_assets_split_wrappers_form_skills_and_feedback_guides(tmp_path: Path) -> None:
     records = install_prompt_assets(tmp_path)
     manifest = json.loads((tmp_path / "prompt_modes" / "manifest.json").read_text(encoding="utf-8"))
     assert set(manifest["wrappers"]) == {"direct_wrapper.md", "agentic_wrapper.md"}
-    assert "direct_wrapper.md" not in manifest["skills"]
+    assert set(manifest["form_skills"]) == {"dut_modeling.md", "testbench_verification.md", "bugfix_diagnosis.md"}
+    assert set(manifest["feedback_guides"]) == {"feedback_dut.md", "feedback_testbench.md", "feedback_bugfix.md"}
+    assert set(manifest["components"]) == set(manifest["wrappers"]) | set(manifest["form_skills"]) | set(manifest["feedback_guides"])
     assert (tmp_path / "prompt_modes" / "wrappers" / "direct_wrapper.md").is_file()
     assert (tmp_path / "prompt_modes" / "wrappers" / "agentic_wrapper.md").is_file()
-    assert (tmp_path / "prompt_modes" / "skills" / "dut_modeling.md").is_file()
-    assert not (tmp_path / "prompt_modes" / "skills" / "manifest.json").exists()
+    assert (tmp_path / "prompt_modes" / "form_skills" / "dut_modeling.md").is_file()
+    assert (tmp_path / "prompt_modes" / "feedback_guides" / "feedback_dut.md").is_file()
+    assert not (tmp_path / "prompt_modes" / "skills").exists()
     assert records["direct_wrapper.md"]["kind"] == "wrapper"
     assert records["dut_modeling.md"]["kind"] == "form_skill"
+    assert records["feedback_dut.md"]["kind"] == "feedback_guide"
 
 
 def test_runtime_prompt_components_follow_explicit_order_with_wrapper_last() -> None:
@@ -131,19 +134,17 @@ def test_runtime_prompt_components_follow_explicit_order_with_wrapper_last() -> 
             "instruction",
             "public_input:public_contract.json",
             "bugfix_diagnosis.md",
-            "feedback_core.md",
             "feedback_bugfix.md",
             "agentic_wrapper.md",
         ],
-        "skill_hashes": {
+        "prompt_component_hashes": {
             "bugfix_diagnosis.md": "a" * 64,
             "feedback_bugfix.md": "b" * 64,
-            "feedback_core.md": "c" * 64,
+            "agentic_wrapper.md": "d" * 64,
         },
     }
     assert ordered_prompt_components(mode_record) == [
         "bugfix_diagnosis.md",
-        "feedback_core.md",
         "feedback_bugfix.md",
         "agentic_wrapper.md",
     ]
@@ -153,9 +154,8 @@ def test_render_prompt_places_response_wrapper_after_skills(tmp_path: Path) -> N
     release = tmp_path / "release"
     task = tmp_path / "task"
     for subdir, name, text in [
-        ("skills", "bugfix_diagnosis.md", "bugfix skill\n"),
-        ("skills", "feedback_core.md", "feedback core\n"),
-        ("skills", "feedback_bugfix.md", "feedback bugfix\n"),
+        ("form_skills", "bugfix_diagnosis.md", "bugfix skill\n"),
+        ("feedback_guides", "feedback_bugfix.md", "feedback bugfix\n"),
         ("wrappers", "agentic_wrapper.md", "agentic wrapper\n"),
     ]:
         path = release / "prompt_modes" / subdir / name
@@ -170,14 +170,13 @@ def test_render_prompt_places_response_wrapper_after_skills(tmp_path: Path) -> N
             "instruction",
             "public_input:public_contract.json",
             "bugfix_diagnosis.md",
-            "feedback_core.md",
             "feedback_bugfix.md",
             "agentic_wrapper.md",
         ],
-        "skill_hashes": {
+        "prompt_component_hashes": {
             "bugfix_diagnosis.md": "a" * 64,
             "feedback_bugfix.md": "b" * 64,
-            "feedback_core.md": "c" * 64,
+            "agentic_wrapper.md": "d" * 64,
         },
     }
     rendered = render_prompt(
@@ -188,9 +187,8 @@ def test_render_prompt_places_response_wrapper_after_skills(tmp_path: Path) -> N
         inline_artifacts=False,
     )
     markers = [
-        '<<<VABENCH_SKILL id="bugfix_diagnosis.md">>>',
-        '<<<VABENCH_SKILL id="feedback_core.md">>>',
-        '<<<VABENCH_SKILL id="feedback_bugfix.md">>>',
+        '<<<VABENCH_COMPONENT id="bugfix_diagnosis.md">>>',
+        '<<<VABENCH_COMPONENT id="feedback_bugfix.md">>>',
         '<<<VABENCH_COMPONENT id="agentic_wrapper.md">>>',
     ]
     positions = [rendered.index(marker) for marker in markers]

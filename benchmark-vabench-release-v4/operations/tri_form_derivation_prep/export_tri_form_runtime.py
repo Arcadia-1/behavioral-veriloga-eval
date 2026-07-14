@@ -14,6 +14,20 @@ PACKAGE_ROOT = Path(__file__).resolve().parents[2]
 DEFAULT_RELEASE = PACKAGE_ROOT / "release" / "tri-form-v4-1200-draft"
 DEFAULT_PRIVATE_EVALUATOR = PACKAGE_ROOT / "release" / "tri-form-v4-1200-private-evaluator"
 AGENTIC = {"G2", "G3", "G4", "G5"}
+FORM_SKILLS = {
+    "dut": "dut_modeling.md",
+    "testbench": "testbench_verification.md",
+    "bugfix": "bugfix_diagnosis.md",
+}
+FEEDBACK_GUIDES = {
+    "dut": "feedback_dut.md",
+    "testbench": "feedback_testbench.md",
+    "bugfix": "feedback_bugfix.md",
+}
+WRAPPERS_BY_PROCESS = {
+    "direct_one_shot": "direct_wrapper.md",
+    "agentic": "agentic_wrapper.md",
+}
 
 
 def read_json(path: Path) -> dict[str, Any]:
@@ -43,15 +57,6 @@ def tree_sha(path: Path) -> str:
 def copy_tree(source: Path, target: Path) -> None:
     if source.is_dir():
         shutil.copytree(source, target, dirs_exist_ok=True)
-
-
-def prompt_record(private_evaluator: Path, task_id: str, mode: str) -> dict[str, Any]:
-    path = private_evaluator / "prompt_records" / "PROMPT_RECORDS.jsonl"
-    for line in path.read_text(encoding="utf-8").splitlines():
-        row = json.loads(line)
-        if row.get("task_id") == task_id and row.get("mode") == mode:
-            return row
-    raise SystemExit(f"missing prompt record for {task_id}/{mode}")
 
 
 def task_record(release: Path, task_id: str) -> tuple[dict[str, Any], Path]:
@@ -86,14 +91,14 @@ def serialize_public_artifacts(task_dir: Path, form: str) -> str:
 def ordered_prompt_components(mode_record: dict[str, Any]) -> list[str]:
     components: list[str] = []
     wrappers: list[str] = []
-    skills = set((mode_record.get("skill_hashes") or {}).keys())
+    prompt_components = set((mode_record.get("prompt_component_hashes") or {}).keys())
     for component in [str(item) for item in mode_record.get("component_order") or []]:
         if component == "instruction" or component.startswith("public_input:"):
             continue
         if component.endswith("_wrapper.md"):
             wrappers.append(component)
             components.append(component)
-        elif component in skills:
+        elif component in prompt_components:
             components.append(component)
         else:
             raise SystemExit(f"unexpected prompt component in record: {component}")
@@ -105,8 +110,67 @@ def ordered_prompt_components(mode_record: dict[str, Any]) -> list[str]:
 
 
 def prompt_component_path(release: Path, component_id: str) -> Path:
-    subdir = "wrappers" if component_id.endswith("_wrapper.md") else "skills"
+    if component_id.endswith("_wrapper.md"):
+        subdir = "wrappers"
+    elif component_id in set(FORM_SKILLS.values()):
+        subdir = "form_skills"
+    elif component_id in set(FEEDBACK_GUIDES.values()):
+        subdir = "feedback_guides"
+    else:
+        raise SystemExit(f"unknown prompt component: {component_id}")
     return release / "prompt_modes" / subdir / component_id
+
+
+def build_mode_record(release: Path, task_dir: Path, record: dict[str, Any], mode: str) -> dict[str, Any]:
+    modes = read_json(release / "prompt_modes" / "modes.json").get("modes") or {}
+    policy = modes.get(mode)
+    if not isinstance(policy, dict):
+        raise SystemExit(f"unknown prompt mode: {mode}")
+    manifest = read_json(release / "prompt_modes" / "manifest.json")
+    component_records = manifest.get("components") or {
+        **(manifest.get("wrappers") or {}),
+        **(manifest.get("form_skills") or {}),
+        **(manifest.get("feedback_guides") or {}),
+    }
+    public_inputs = ["instruction"]
+    if mode in AGENTIC:
+        public_inputs.append("public_input:public_contract.json")
+    form = str(record["form"])
+    if form == "testbench":
+        public_inputs.extend(
+            f"public_input:{path.relative_to(task_dir).as_posix()}"
+            for path in sorted((task_dir / "supplied_dut").rglob("*.va"))
+        )
+    elif form == "bugfix":
+        public_inputs.extend(
+            f"public_input:{path.relative_to(task_dir).as_posix()}"
+            for path in sorted((task_dir / "buggy_bundle").rglob("*.va"))
+        )
+    prompt_components: list[str] = []
+    if policy.get("form_skill"):
+        prompt_components.append(FORM_SKILLS[form])
+    if policy.get("feedback_guide"):
+        prompt_components.append(FEEDBACK_GUIDES[form])
+    wrapper = WRAPPERS_BY_PROCESS[str(policy.get("process") or "")]
+    prompt_components.append(wrapper)
+    missing = [name for name in prompt_components if name not in component_records]
+    if missing:
+        raise SystemExit(f"prompt component(s) missing from manifest: {missing}")
+    return {
+        "schema_version": "v4-derived-prompt-plan-v1",
+        "task_id": record["task_id"],
+        "family_id": record["family_id"],
+        "form": form,
+        "mode": mode,
+        "process": policy["process"],
+        "feedback_cli_available": bool(policy.get("feedback_cli")),
+        "component_order": [*public_inputs, *prompt_components],
+        "prompt_component_hashes": {
+            name: component_records[name]["sha256"]
+            for name in prompt_components
+        },
+        "response_protocol": "v4-exact-artifact-blocks-v1" if policy["process"] == "direct_one_shot" else "v4-workspace-finalizer-v1",
+    }
 
 
 def render_prompt(release: Path, task_dir: Path, record: dict[str, Any], mode_record: dict[str, Any], *, inline_artifacts: bool) -> str:
@@ -130,9 +194,9 @@ def render_prompt(release: Path, task_dir: Path, record: dict[str, Any], mode_re
             ])
         else:
             parts.extend([
-                f'<<<VABENCH_SKILL id="{component}">>>',
+                f'<<<VABENCH_COMPONENT id="{component}">>>',
                 prompt_component_path(release, component).read_text(encoding="utf-8"),
-                "<<<END_VABENCH_SKILL>>>",
+                "<<<END_VABENCH_COMPONENT>>>",
             ])
     return "\n\n".join(parts)
 
@@ -200,7 +264,7 @@ def main() -> int:
     output.mkdir(parents=True)
     record, task_dir = task_record(release, args.task)
     private_task_dir = private_evaluator / str(record["task_dir"])
-    mode_record = prompt_record(private_evaluator, args.task, args.mode)
+    mode_record = build_mode_record(release, task_dir, record, args.mode)
     public_root = output / "public"
     (public_root / "submission").mkdir(parents=True)
     install_public(task_dir, public_root, str(record["form"]), args.mode)

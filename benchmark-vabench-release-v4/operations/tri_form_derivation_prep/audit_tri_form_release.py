@@ -31,7 +31,7 @@ FORM_SKILLS = {
     "testbench": "testbench_verification.md",
     "bugfix": "bugfix_diagnosis.md",
 }
-FEEDBACK_ADAPTERS = {
+FEEDBACK_GUIDES = {
     "dut": "feedback_dut.md",
     "testbench": "feedback_testbench.md",
     "bugfix": "feedback_bugfix.md",
@@ -112,7 +112,14 @@ def public_bundle_hash(task_dir: Path) -> str:
 
 
 def prompt_component_path(release: Path, component_id: str) -> Path:
-    subdir = "wrappers" if component_id.endswith("_wrapper.md") else "skills"
+    if component_id.endswith("_wrapper.md"):
+        subdir = "wrappers"
+    elif component_id in set(FORM_SKILLS.values()):
+        subdir = "form_skills"
+    elif component_id in set(FEEDBACK_GUIDES.values()):
+        subdir = "feedback_guides"
+    else:
+        raise SystemExit(f"unknown prompt component: {component_id}")
     return release / "prompt_modes" / subdir / component_id
 
 
@@ -436,35 +443,40 @@ def audit_task(
             problems.append(f"{prefix} Bugfix seed lacks nontrivial semantic review")
 
 
-def audit_prompt_records(
+def audit_prompt_components(
     release: Path,
-    private_evaluator: Path,
     tasks: list[dict[str, Any]],
     problems: list[str],
 ) -> int:
     if (release / "prompt_modes" / "PROMPT_RECORDS.jsonl").exists():
         problems.append("public release should not include prompt_modes/PROMPT_RECORDS.jsonl")
-    path = private_evaluator / "prompt_records" / "PROMPT_RECORDS.jsonl"
-    if not path.is_file():
-        problems.append("prompt record file missing")
-        return 0
-    seen: dict[str, set[str]] = defaultdict(set)
-    task_forms = {str(row["task_id"]): str(row["form"]) for row in tasks}
-    task_dirs = {str(row["task_id"]): release / str(row["task_dir"]) for row in tasks}
     component_manifest = read_json(release / "prompt_modes" / "manifest.json")
+    mode_manifest = read_json(release / "prompt_modes" / "modes.json")
     wrapper_records = component_manifest.get("wrappers") or {}
-    skill_records = component_manifest.get("skills") or {}
-    component_records = {**wrapper_records, **skill_records}
+    form_skill_records = component_manifest.get("form_skills") or {}
+    feedback_guide_records = component_manifest.get("feedback_guides") or {}
+    component_records = component_manifest.get("components") or {
+        **wrapper_records,
+        **form_skill_records,
+        **feedback_guide_records,
+    }
     tokenizer = component_manifest.get("reference_tokenizer") or {}
     tokenizer_key = f"{tokenizer.get('id')}@{tokenizer.get('version')}"
     required_wrappers = set(WRAPPERS_BY_MODE.values())
-    required_skills = {*FORM_SKILLS.values(), "feedback_core.md", *FEEDBACK_ADAPTERS.values()}
+    required_form_skills = set(FORM_SKILLS.values())
+    required_feedback_guides = set(FEEDBACK_GUIDES.values())
     if set(wrapper_records) != required_wrappers:
         problems.append("component manifest wrapper set mismatch")
-    if set(skill_records) != required_skills:
-        problems.append("component manifest skill set mismatch")
+    if set(form_skill_records) != required_form_skills:
+        problems.append("component manifest form-skill set mismatch")
+    if set(feedback_guide_records) != required_feedback_guides:
+        problems.append("component manifest feedback-guide set mismatch")
+    if set(component_records) != required_wrappers | required_form_skills | required_feedback_guides:
+        problems.append("component manifest component set mismatch")
     if (release / "prompt_modes" / "skills" / "manifest.json").exists():
         problems.append("legacy prompt_modes/skills/manifest.json should not be present")
+    if (release / "prompt_modes" / "skills").exists():
+        problems.append("legacy prompt_modes/skills/ directory should not be present")
     for name, component in component_records.items():
         for field in ("stable_id", "semantic_version", "applicable_forms", "sha256", "bytes", "license", "provenance", "token_counts"):
             if field not in component:
@@ -474,99 +486,58 @@ def audit_prompt_records(
         expected_path = prompt_component_path(release, name)
         if component.get("path") != expected_path.relative_to(release).as_posix():
             problems.append(f"component manifest {name}: path does not match component kind")
+    mode_records = mode_manifest.get("modes") or {}
+    if set(mode_records) != set(MODES):
+        problems.append("prompt mode registry does not define exactly G0-G5")
     count = 0
-    for line_no, line in enumerate(path.read_text(encoding="utf-8").splitlines(), 1):
-        try:
-            row = json.loads(line)
-        except json.JSONDecodeError as exc:
-            problems.append(f"prompt record line {line_no} is invalid JSON: {exc}")
-            continue
-        count += 1
-        task_id = str(row.get("task_id") or "")
-        mode = str(row.get("mode") or "")
-        seen[task_id].add(mode)
-        expected_cli = mode in {"G2", "G3", "G4", "G5"}
-        if row.get("feedback_cli_available") is not expected_cli:
-            problems.append(f"{task_id}/{mode}: feedback availability mismatch")
-        form = task_forms.get(task_id, "")
-        task_dir = task_dirs.get(task_id)
-        if task_dir is None:
-            problems.append(f"{task_id}/{mode}: prompt record has no task directory")
-            continue
-        public_inputs = iter_prompt_public_inputs(task_dir, form, mode)
-        expected_input_hashes = {
-            item.relative_to(task_dir).as_posix(): file_sha(item) for item in public_inputs
-        }
-        if row.get("canonical_instruction_sha256") != file_sha(task_dir / "instruction.md"):
-            problems.append(f"{task_id}/{mode}: canonical instruction hash mismatch")
-        if row.get("public_input_hashes") != expected_input_hashes:
-            problems.append(f"{task_id}/{mode}: public input hash replay mismatch")
-        expected_skills: list[str] = []
-        if mode in {"G1", "G3", "G5"}:
-            expected_skills.append(FORM_SKILLS.get(form, ""))
-        if mode in {"G4", "G5"}:
-            expected_skills.extend(["feedback_core.md", FEEDBACK_ADAPTERS.get(form, "")])
-        skills = row.get("skill_hashes") or {}
-        if set(skills) != set(expected_skills):
-            problems.append(f"{task_id}/{mode}: exact skill composition mismatch")
-        for name in expected_skills:
-            if skills.get(name) != (skill_records.get(name) or {}).get("sha256"):
-                problems.append(f"{task_id}/{mode}: skill hash mismatch for {name}")
-        expected_wrapper = WRAPPERS_BY_MODE.get(mode, "")
-        if (wrapper_records.get(expected_wrapper) or {}).get("sha256") is None:
-            problems.append(f"{task_id}/{mode}: wrapper missing from component manifest")
-        component_order = row.get("component_order") or []
-        expected_suffix = [*expected_skills, WRAPPERS_BY_MODE.get(mode, "")]
-        if component_order[-len(expected_suffix):] != expected_suffix:
-            problems.append(f"{task_id}/{mode}: component order mismatch")
-        static_components = row.get("static_components") or []
-        if [item.get("id") for item in static_components] != component_order:
-            problems.append(f"{task_id}/{mode}: static component fingerprint order mismatch")
-        public_component_paths = {
-            "instruction" if item.name == "instruction.md" else f"public_input:{item.relative_to(task_dir).as_posix()}": item
-            for item in public_inputs
-        }
-        for item in static_components:
-            component_id = str(item.get("id") or "")
-            actual_path = public_component_paths.get(component_id)
-            if actual_path is None and component_id in component_records:
-                actual_path = prompt_component_path(release, component_id)
-            if actual_path is None or not actual_path.is_file():
-                problems.append(f"{task_id}/{mode}: unresolved static component {component_id}")
-            elif item.get("sha256") != file_sha(actual_path) or item.get("bytes") != actual_path.stat().st_size:
-                problems.append(f"{task_id}/{mode}: static component fingerprint mismatch for {component_id}")
-            if not isinstance(item.get("bytes"), int) or item.get("bytes") < 0:
-                problems.append(f"{task_id}/{mode}: invalid component byte count")
-            if len(str(item.get("sha256") or "")) != 64:
-                problems.append(f"{task_id}/{mode}: invalid component hash")
-            if tokenizer_key not in (item.get("token_counts") or {}):
-                problems.append(f"{task_id}/{mode}: missing component token count")
-        if mode in DIRECT_MODES:
-            direct_text_parts: list[str] = []
-            for component_id in component_order:
-                actual_path = public_component_paths.get(component_id)
-                if actual_path is None and component_id in component_records:
-                    actual_path = prompt_component_path(release, component_id)
-                if actual_path is not None and actual_path.is_file():
-                    direct_text_parts.append(actual_path.read_text(encoding="utf-8", errors="replace"))
-            direct_text = "\n".join(direct_text_parts)
-            for marker in (
-                "Feedback tools",
-                "feedback CLI",
-                "vabench feedback",
-                "private Spectre",
-                "public/submission",
-                "agentic mode",
-                "mounted public task inputs",
-            ):
-                if marker.lower() in direct_text.lower():
-                    problems.append(f"{task_id}/{mode}: direct prompt leaks {marker!r}")
-    expected_ids = {str(row["task_id"]) for row in tasks}
-    if set(seen) != expected_ids:
-        problems.append("prompt record task coverage mismatch")
-    for task_id in expected_ids:
-        if seen[task_id] != set(MODES):
-            problems.append(f"{task_id}: prompt mode coverage mismatch")
+    for task in tasks:
+        task_id = str(task.get("task_id") or "")
+        form = str(task.get("form") or "")
+        task_dir = release / str(task.get("task_dir") or "")
+        for mode in MODES:
+            count += 1
+            policy = mode_records.get(mode) or {}
+            expected_cli = mode in AGENTIC_MODES
+            if bool(policy.get("feedback_cli")) is not expected_cli:
+                problems.append(f"{task_id}/{mode}: feedback availability mismatch")
+            public_inputs = iter_prompt_public_inputs(task_dir, form, mode)
+            for item in public_inputs:
+                if not item.is_file():
+                    problems.append(f"{task_id}/{mode}: prompt public input missing: {item.relative_to(task_dir)}")
+            expected_components: list[str] = []
+            if mode in {"G1", "G3", "G5"}:
+                expected_components.append(FORM_SKILLS.get(form, ""))
+            if mode in {"G4", "G5"}:
+                expected_components.append(FEEDBACK_GUIDES.get(form, ""))
+            expected_components.append(WRAPPERS_BY_MODE.get(mode, ""))
+            for name in expected_components:
+                component = component_records.get(name) or {}
+                if component.get("sha256") != file_sha(prompt_component_path(release, name)):
+                    problems.append(f"{task_id}/{mode}: prompt component hash mismatch for {name}")
+            if mode in DIRECT_MODES:
+                public_component_paths = {
+                    "instruction" if item.name == "instruction.md" else f"public_input:{item.relative_to(task_dir).as_posix()}": item
+                    for item in public_inputs
+                }
+                direct_text_parts: list[str] = []
+                for component_id in ["instruction", *expected_components]:
+                    actual_path = public_component_paths.get(component_id)
+                    if actual_path is None and component_id in component_records:
+                        actual_path = prompt_component_path(release, component_id)
+                    if actual_path is not None and actual_path.is_file():
+                        direct_text_parts.append(actual_path.read_text(encoding="utf-8", errors="replace"))
+                direct_text = "\n".join(direct_text_parts)
+                for marker in (
+                    "Feedback tools",
+                    "feedback CLI",
+                    "vabench feedback",
+                    "private Spectre",
+                    "public/submission",
+                    "agentic mode",
+                    "mounted public task inputs",
+                ):
+                    if marker.lower() in direct_text.lower():
+                        problems.append(f"{task_id}/{mode}: direct prompt leaks {marker!r}")
     return count
 
 
@@ -644,7 +615,7 @@ def main() -> int:
             problems.append(
                 f"{family}: cross-form Bugfix seed mismatch: testbench={testbench_seed} bugfix={bugfix_seed}"
             )
-    prompt_count = audit_prompt_records(release, private_evaluator, tasks, problems)
+    prompt_count = audit_prompt_components(release, tasks, problems)
     if prompt_count != 7200:
         problems.append(f"prompt record count is {prompt_count}, expected 7200")
     report = {

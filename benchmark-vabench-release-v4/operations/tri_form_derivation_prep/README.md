@@ -14,14 +14,14 @@ It intentionally does not modify:
 `build_sync_prep.py` is the historical pre-freeze inventory builder.
 `materialize_tri_form_release.py` is the release builder: it consumes the
 hash-bound exact-five DUT denominator and creates 400 DUT, 400 Testbench, and
-400 Bugfix public task views. It also regenerates the local private evaluator
-mirror used by audits and runners.
+400 Bugfix public task views. It also regenerates the private evaluator
+package used by audits and runners.
 
 The generated plan activates exactly five mutations per family: 2,000 active
 mutations in the formal tri-form release. The 51 source-catalog extras remain
 in a provenance-only archive index and are not exported as scored cases.
 
-The local private evaluator mirror treats `evaluator/score_tb.scs` as the
+The private evaluator package treats `evaluator/score_tb.scs` as the
 canonical reference fixture. Existing score-profile gold and mutation evidence
 is reused by hash.
 Mutations certified only under a legacy feedback deck enter a cross-profile
@@ -39,10 +39,11 @@ python3 operations/tri_form_derivation_prep/audit_tri_form_release.py \
   --seal-output release/tri-form-v4-1200-private-evaluator/evidence/RELEASE_SEAL.json
 ```
 
-The tracked public package is `release/tri-form-v4-1200-draft/`. The local
-private evaluator mirror is `release/tri-form-v4-1200-private-evaluator/` and
-is intentionally ignored by git; regenerate it locally for audit, runtime
-export, and scoring.
+The tracked solver-facing package is `release/tri-form-v4-1200-draft/`. The
+tracked private evaluator package is
+`release/tri-form-v4-1200-private-evaluator/`. Only local generated audit and
+runtime evidence under `evidence/` and optional prompt-record snapshots under
+`prompt_records/` are ignored by git.
 
 Export one runtime record without mounting evaluator-private files:
 
