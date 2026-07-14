@@ -1,0 +1,27 @@
+{
+  "candidate_artifacts": [
+    "ffe_tap_adaptation_monitor_top.va",
+    "tap_update_controller.va",
+    "cursor_metric_core.va"
+  ],
+  "canonical_dut_source_slug": "330-ffe-tap-adaptation-monitor",
+  "checker_task_id": "v4_330_ffe_tap_adaptation_monitor",
+  "family_id": "330",
+  "family_spec_sha256": "f61aa1f30bda5968e5ca3d1c3e581f5c505a190fff2b31769b6b8a9498a9587e",
+  "form": "bugfix",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "17dbe7893a8b5ec2f157aaa3a5015287388febeb38e29a943216a6a804f4b36b",
+  "public_contract": "tasks/1330-ffe-tap-adaptation-monitor-bugfix/public_contract.json",
+  "public_contract_sha256": "0114882567573292692d1966ff219822956fcc97edf3c91a0ce0c0759c701bce",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/1330-ffe-tap-adaptation-monitor-bugfix",
+  "task_id": "v4-1330"
+}

@@ -1,8 +1,9 @@
-# vaBench Agentic Workspace Contract
+# vaBench Agentic Submission Contract
 
-Complete only the candidate artifacts declared by the task. Preserve exact file
-names and do not emit evaluator, score, or self-reported PASS/FAIL files.
+Inspect the mounted public task inputs and write only the final candidate
+artifacts under `public/submission/`. Preserve exact file names, module names,
+ports, parameters, and required artifact paths.
 
-Inspect the mounted public task inputs and write only the final candidate files
-under `public/submission/`. Feedback tools, when available, are diagnostic only;
-the private Spectre score is not exposed.
+Public feedback tools are diagnostic aids for the candidate under development.
+Use them only to test hypotheses against the public contract; do not emit
+evaluator, score, debug-only, or self-reported PASS/FAIL files.

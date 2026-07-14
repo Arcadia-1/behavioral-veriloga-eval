@@ -1,0 +1,25 @@
+{
+  "candidate_artifacts": [
+    "ideal_clkmux_8channel.va"
+  ],
+  "canonical_dut_source_slug": "167-ideal-clkmux-8channel",
+  "checker_task_id": "v4_167_ideal_clkmux_8channel",
+  "family_id": "167",
+  "family_spec_sha256": "b5f628f7b51beb1e56da5d3484f0ef3fd17f16ff7b6d82097201dfc5f61881bd",
+  "form": "dut",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "f65b8e935103c742fbab5eb508a5ef38ab6994c2ad6789f0f38f037d74f84ef9",
+  "public_contract": "tasks/167-ideal-clkmux-8channel/public_contract.json",
+  "public_contract_sha256": "029d3c70d609a50f7e9cde789a1fa47780f3f157f3b5263da92b015bef9561b3",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/167-ideal-clkmux-8channel",
+  "task_id": "v4-167"
+}

@@ -1,0 +1,25 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "263-settling-progress-counter",
+  "checker_task_id": "v4_263_settling_progress_counter",
+  "family_id": "263",
+  "family_spec_sha256": "d2b935612cb88bc2f0314531aff94ff77bbcc4b826a6ff6c65e028470e67aba6",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "16baf23cebfc02ff74e64f913bb40013c1d39f1d8495ae7d0f41ad4c337e5b25",
+  "public_contract": "tasks/763-settling-progress-counter-testbench/public_contract.json",
+  "public_contract_sha256": "66ff1d47b02539bdca78316b6e91ebb0d9c33758290b24ecf15ca68be1c46844",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/763-settling-progress-counter-testbench",
+  "task_id": "v4-763"
+}

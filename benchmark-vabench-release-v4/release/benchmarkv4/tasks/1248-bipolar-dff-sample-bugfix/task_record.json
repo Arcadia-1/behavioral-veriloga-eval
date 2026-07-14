@@ -1,0 +1,25 @@
+{
+  "candidate_artifacts": [
+    "bipolar_dff_sample.va"
+  ],
+  "canonical_dut_source_slug": "248-bipolar-dff-sample",
+  "checker_task_id": "v4_248_bipolar_dff_sample",
+  "family_id": "248",
+  "family_spec_sha256": "d4f6a91ab92b996dbd17b7730c65dfebe03c5f5feaac769217c54272b4d998ab",
+  "form": "bugfix",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "7e8474fd52d212b9e9a88b2240dd35820d2de8a21c78637a85d0f5ae9435742b",
+  "public_contract": "tasks/1248-bipolar-dff-sample-bugfix/public_contract.json",
+  "public_contract_sha256": "026f1f452c80c114761d3a606e7c0c5d7f262ede9502451cd75eaf49176a875e",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/1248-bipolar-dff-sample-bugfix",
+  "task_id": "v4-1248"
+}

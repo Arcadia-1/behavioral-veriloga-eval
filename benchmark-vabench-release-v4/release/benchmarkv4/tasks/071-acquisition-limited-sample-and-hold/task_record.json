@@ -1,0 +1,25 @@
+{
+  "candidate_artifacts": [
+    "acquisition_limited_sample_hold.va"
+  ],
+  "canonical_dut_source_slug": "071-acquisition-limited-sample-and-hold",
+  "checker_task_id": "v4_071_acquisition_limited_sample_and_hold",
+  "family_id": "071",
+  "family_spec_sha256": "f20158c2fa17a2f224375fe7a04b2fc65de2200330874fac447375c7d21acf52",
+  "form": "dut",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "2c0fe3f0761d0e4b4f1d14af9def512447c93e475b3f7375619310ee337feb91",
+  "public_contract": "tasks/071-acquisition-limited-sample-and-hold/public_contract.json",
+  "public_contract_sha256": "cd55105393ded767dde41b13b0446c093c3e1eabf8879e6affb7022fe35eb997",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/071-acquisition-limited-sample-and-hold",
+  "task_id": "v4-071"
+}

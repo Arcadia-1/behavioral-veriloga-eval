@@ -1,0 +1,25 @@
+{
+  "candidate_artifacts": [
+    "bias_voltage_generator_with_enable_trim.va"
+  ],
+  "canonical_dut_source_slug": "073-bias-voltage-generator-with-enable-trim",
+  "checker_task_id": "v4_073_bias_voltage_generator_with_enable_trim",
+  "family_id": "073",
+  "family_spec_sha256": "90d54d0c495e7076dff22333fa2a40d2d0e526d484c2652c4922b89f1f37239a",
+  "form": "dut",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "6707e43383aff79bdb3fa9da13e11935415e4e4214a92ee6d0c55037bb5faecb",
+  "public_contract": "tasks/073-bias-voltage-generator-with-enable-trim/public_contract.json",
+  "public_contract_sha256": "7e8c65f1a81b33e92bfbe2161273efc2112f55937c8d2a4e09e38b7e24a9091b",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/073-bias-voltage-generator-with-enable-trim",
+  "task_id": "v4-073"
+}

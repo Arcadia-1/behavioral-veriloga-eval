@@ -1,0 +1,25 @@
+{
+  "candidate_artifacts": [
+    "opamp_feedback_settling.va"
+  ],
+  "canonical_dut_source_slug": "370-opamp-feedback-settling-monitor",
+  "checker_task_id": "v4_370_opamp_feedback_settling_monitor",
+  "family_id": "370",
+  "family_spec_sha256": "9b0c92f6a8db2c74ab46a13a134452b7233b666bf243dc89153ecbc5c5d2a8bf",
+  "form": "dut",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "8f297e3c4fb403ee8acb0e11530795089b197bf731457ce8c3e1c85c1a509d97",
+  "public_contract": "tasks/370-opamp-feedback-settling-monitor/public_contract.json",
+  "public_contract_sha256": "25bd564e354814ff2712d118779126326681f1b5e756b0d9e4e0e0b94f0f8416",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/370-opamp-feedback-settling-monitor",
+  "task_id": "v4-370"
+}

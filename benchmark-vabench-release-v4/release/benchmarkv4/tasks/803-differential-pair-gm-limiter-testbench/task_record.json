@@ -1,0 +1,25 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "303-differential-pair-gm-limiter",
+  "checker_task_id": "v4_303_differential_pair_gm_limiter",
+  "family_id": "303",
+  "family_spec_sha256": "e2f379c40a3a85cc21c0a0ec169c193799a178f536acb8da23c7084fcf4eae86",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "0e2aa4c4ad11149d9dc40670e16f03759ef41b4c13d593d6b26ade02f6e988f7",
+  "public_contract": "tasks/803-differential-pair-gm-limiter-testbench/public_contract.json",
+  "public_contract_sha256": "2e5b77301275fb59a93a20764964cf7b607694c04634cc06a46a91823b521832",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/803-differential-pair-gm-limiter-testbench",
+  "task_id": "v4-803"
+}

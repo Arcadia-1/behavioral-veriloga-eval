@@ -1,0 +1,25 @@
+{
+  "candidate_artifacts": [
+    "control_word_encoder_7b.va"
+  ],
+  "canonical_dut_source_slug": "147-control-word-encoder-7b",
+  "checker_task_id": "v4_147_control_word_encoder_7b",
+  "family_id": "147",
+  "family_spec_sha256": "2677925b669b6271ecb7735c0ba67e26b08b3feb6323fde52a0ec11ba27aff5a",
+  "form": "dut",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "98c85daaa1ef346bd444a96b579d039e26a4b6449347361d800072d61790de44",
+  "public_contract": "tasks/147-control-word-encoder-7b/public_contract.json",
+  "public_contract_sha256": "ae1fc250e59ed01ce925bb35be71f782e384e14a08123b645061ae55ced75b66",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/147-control-word-encoder-7b",
+  "task_id": "v4-147"
+}

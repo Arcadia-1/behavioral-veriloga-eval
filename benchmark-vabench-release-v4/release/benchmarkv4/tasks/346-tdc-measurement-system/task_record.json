@@ -1,0 +1,29 @@
+{
+  "candidate_artifacts": [
+    "tdc_measurement_top.va",
+    "edge_detector.va",
+    "interval_counter.va",
+    "binary_encoder.va",
+    "valid_latch.va"
+  ],
+  "canonical_dut_source_slug": "346-tdc-measurement-system",
+  "checker_task_id": "v4_346_tdc_measurement_system",
+  "family_id": "346",
+  "family_spec_sha256": "3ab9da12ea64b107edcdbdf1f675c0d4b4cf07729bf37c8964e4ac0c7c5cc42b",
+  "form": "dut",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "e568b4b5daf4355fe004e460f9ed0053cd001f7e76c9888895a5f5cfa8069475",
+  "public_contract": "tasks/346-tdc-measurement-system/public_contract.json",
+  "public_contract_sha256": "705a98c3e47a0cbc33e57a02b606eb9f130cfcca4f21ba76b91534491afe42aa",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/346-tdc-measurement-system",
+  "task_id": "v4-346"
+}

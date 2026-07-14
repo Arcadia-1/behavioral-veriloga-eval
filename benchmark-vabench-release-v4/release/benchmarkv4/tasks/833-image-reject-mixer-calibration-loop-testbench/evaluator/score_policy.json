@@ -1,0 +1,28 @@
+{
+  "bugfix_seed_mutation_id": "neg_004_correction_direction_reversed",
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "checker_profile_sha256": "f8ae0d475f27c2355033a26ad45c539bfb8cd484481a4cfd9df21d822721508d",
+  "full_credit": "reference_gate and five_of_five_killed_behaviorally",
+  "kill_ratio_denominator": 5,
+  "materialized_checker_profile": "evaluator/checker_profile.json",
+  "mutation_catalog_sha256": "f444a5172f06f3ec0346664629e09ecd137451faf0b83aa9b8c73a1dfa6f86d5",
+  "negative_outcomes": [
+    "killed_behaviorally",
+    "survived",
+    "invalid_run"
+  ],
+  "negative_suite_mutation_ids": [
+    "neg_002_falling_edge_input_sampling",
+    "neg_003_i_mixer_polarity_inverted",
+    "neg_004_correction_direction_reversed",
+    "neg_005_calibrated_after_one_update",
+    "neg_001_clear_retains_mixer_outputs"
+  ],
+  "reference_gate": "all applicable public properties pass on supplied correct DUT",
+  "reference_tb_sha256": "7caaa2803d877687316d17ba0354db5f5e73c235aba9f6205b187207357ecd69",
+  "schema_version": "v4-testbench-score-policy-v1",
+  "spectre_final_judge": true,
+  "task_id": "v4-833"
+}

@@ -1,0 +1,25 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "085-comparator-offset-search",
+  "checker_task_id": "v4_085_comparator_offset_search",
+  "family_id": "085",
+  "family_spec_sha256": "ede63ae44e66dae3e0cfc02e0a037b84780383d5e31356cad74db521a7f68782",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "7d78516f6188a485fb0b450598e56afa06b5a72e4444cfeb8dec42a8e5a2ed7d",
+  "public_contract": "tasks/585-comparator-offset-search-testbench/public_contract.json",
+  "public_contract_sha256": "51c388bc07bd0c58e3f946def08cb1a352aeb52c3591758c684056f7b267e780",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/585-comparator-offset-search-testbench",
+  "task_id": "v4-585"
+}

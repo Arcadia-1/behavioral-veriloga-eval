@@ -1,0 +1,25 @@
+{
+  "candidate_artifacts": [
+    "two_bit_counter_marker.va"
+  ],
+  "canonical_dut_source_slug": "115-two-bit-counter-marker",
+  "checker_task_id": "v4_115_two_bit_counter_marker",
+  "family_id": "115",
+  "family_spec_sha256": "60a9e3676fce060b3aeb9093a25655e6cda6af64ba895d46df2e0b9a6650b358",
+  "form": "dut",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "afc6ecc1840d3b6dcc7f11a787a41728f445e4624b99dbb79b8530a0b6a2c6d5",
+  "public_contract": "tasks/115-two-bit-counter-marker/public_contract.json",
+  "public_contract_sha256": "714f8e768037e4ff9b6b6e19a357c2fbfb420c6570685303837bfd7a8ffa3e57",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/115-two-bit-counter-marker",
+  "task_id": "v4-115"
+}

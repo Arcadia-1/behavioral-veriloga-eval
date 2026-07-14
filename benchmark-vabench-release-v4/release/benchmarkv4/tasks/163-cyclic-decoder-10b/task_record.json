@@ -1,0 +1,25 @@
+{
+  "candidate_artifacts": [
+    "cyclic_decoder_10b.va"
+  ],
+  "canonical_dut_source_slug": "163-cyclic-decoder-10b",
+  "checker_task_id": "v4_163_cyclic_decoder_10b",
+  "family_id": "163",
+  "family_spec_sha256": "6cc09fd86389cec6c7bf50f82d9308a435a433ecf02284d0213f75dd795fd7c2",
+  "form": "dut",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "a1d817c704d117ef1f0ba7184f5a832a4ada88de6e27cc3a4be93f89e5a8039a",
+  "public_contract": "tasks/163-cyclic-decoder-10b/public_contract.json",
+  "public_contract_sha256": "815ded918f156188039a0ab8d2bf1acfef66f15ef8e538efcccd5cad636412d2",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/163-cyclic-decoder-10b",
+  "task_id": "v4-163"
+}

@@ -1,0 +1,25 @@
+{
+  "candidate_artifacts": [
+    "configurable_polarity_edge_detector.va"
+  ],
+  "canonical_dut_source_slug": "066-configurable-polarity-edge-detector",
+  "checker_task_id": "v4_066_configurable_polarity_edge_detector",
+  "family_id": "066",
+  "family_spec_sha256": "d75f325184c7a96cf2ad68a520284cf91fedea7402c330bb681d6dcd310d70a4",
+  "form": "dut",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "a4a4ce4700890f468916c04745e746ad72da07132819ae260401df46bd32af71",
+  "public_contract": "tasks/066-configurable-polarity-edge-detector/public_contract.json",
+  "public_contract_sha256": "73da382b9e87952784f4f5cc3cdba78919598f2f859cbe21708a196d33acb8c3",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/066-configurable-polarity-edge-detector",
+  "task_id": "v4-066"
+}

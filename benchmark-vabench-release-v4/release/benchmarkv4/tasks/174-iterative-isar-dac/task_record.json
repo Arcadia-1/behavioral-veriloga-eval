@@ -1,0 +1,25 @@
+{
+  "candidate_artifacts": [
+    "iterative_isar_dac.va"
+  ],
+  "canonical_dut_source_slug": "174-iterative-isar-dac",
+  "checker_task_id": "v4_174_iterative_isar_dac",
+  "family_id": "174",
+  "family_spec_sha256": "c822b9fcce80ebccfed937d4e0eda5a12bccac903076d1afa434ad0288482942",
+  "form": "dut",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "6cc9bdeb59e0e4542ef60e168516e37c8560e3871069b77f04545cb8fef5803a",
+  "public_contract": "tasks/174-iterative-isar-dac/public_contract.json",
+  "public_contract_sha256": "9691a446502b9f5e31f07248b79ab3cf56d70331d66bea62d96662c06615709d",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/174-iterative-isar-dac",
+  "task_id": "v4-174"
+}

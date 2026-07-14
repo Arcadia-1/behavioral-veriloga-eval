@@ -1,0 +1,25 @@
+{
+  "candidate_artifacts": [
+    "linearity_rdac_offset_sweep.va"
+  ],
+  "canonical_dut_source_slug": "190-linearity-rdac-offset-sweep",
+  "checker_task_id": "v4_190_linearity_rdac_offset_sweep",
+  "family_id": "190",
+  "family_spec_sha256": "53804768aef762e26cb45c57b668c05c897970dfac8972e049ea863d98a4c9b6",
+  "form": "dut",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "b5044e3ce1ab59185ccc2dd04d389cb7cd199943e6933655db7c8ebd389198f9",
+  "public_contract": "tasks/190-linearity-rdac-offset-sweep/public_contract.json",
+  "public_contract_sha256": "72126fb9d2cd3d7a6472977e9ce228b67362d99db3e5ff6388776c939ed59e11",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/190-linearity-rdac-offset-sweep",
+  "task_id": "v4-190"
+}

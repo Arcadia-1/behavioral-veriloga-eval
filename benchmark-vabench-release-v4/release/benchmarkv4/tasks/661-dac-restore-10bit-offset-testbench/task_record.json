@@ -1,0 +1,25 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "161-dac-restore-10bit-offset",
+  "checker_task_id": "v4_161_dac_restore_10bit_offset",
+  "family_id": "161",
+  "family_spec_sha256": "cb7b49944376084ebf9860b009c7f1c05bc778a881c63bf8193be5da20203b92",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "d48ebed621f21f28c5427df1e5f775b9f0ebb2d9f974292e75442e02bada5839",
+  "public_contract": "tasks/661-dac-restore-10bit-offset-testbench/public_contract.json",
+  "public_contract_sha256": "18540a1ae3e8b0fa7a5e72f9ac964d2deae7a6d992f555ef50a68cef26a6c2d8",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/661-dac-restore-10bit-offset-testbench",
+  "task_id": "v4-661"
+}

@@ -1,0 +1,25 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "082-agc-receiver-leveling-loop",
+  "checker_task_id": "v4_082_agc_receiver_leveling_loop",
+  "family_id": "082",
+  "family_spec_sha256": "12544d5b82d942b9bf059eb5c834b989f3d1e23c13631b83a3ba98e3f9213df1",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "7e81c5340f6f56ea9a313858b9a233e34e7f774c92d2b0fd4d3245a9422c7623",
+  "public_contract": "tasks/582-agc-receiver-leveling-loop-testbench/public_contract.json",
+  "public_contract_sha256": "c6eed65f6c400f26d14dfbafa9b3351bb5d06c2c19d422c093d942e7ae28d4e4",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/582-agc-receiver-leveling-loop-testbench",
+  "task_id": "v4-582"
+}

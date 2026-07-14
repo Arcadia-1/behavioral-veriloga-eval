@@ -1,0 +1,27 @@
+{
+  "candidate_artifacts": [
+    "polyphase_iq_balance_monitor_top.va",
+    "iq_normalizer.va",
+    "balance_metric_core.va"
+  ],
+  "canonical_dut_source_slug": "332-polyphase-iq-balance-monitor",
+  "checker_task_id": "v4_332_polyphase_iq_balance_monitor",
+  "family_id": "332",
+  "family_spec_sha256": "5c7e620dfed357e42503f8e7b916bb199d403130ae02cf22e2186759aaf08c41",
+  "form": "dut",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "1bf6d6c739ebb0a1b8c3388da8484d44c53f3c80517c505be5f5ebecbc458e68",
+  "public_contract": "tasks/332-polyphase-iq-balance-monitor/public_contract.json",
+  "public_contract_sha256": "d8964f53f9ad47b88cb414c676d75cf24032f47cbf318cb59faf75142176c987",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/332-polyphase-iq-balance-monitor",
+  "task_id": "v4-332"
+}

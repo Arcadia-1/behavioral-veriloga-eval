@@ -1,0 +1,25 @@
+{
+  "candidate_artifacts": [
+    "window_comparator_ref.va"
+  ],
+  "canonical_dut_source_slug": "047-window-comparator-detector",
+  "checker_task_id": "v4_047_window_comparator_detector",
+  "family_id": "047",
+  "family_spec_sha256": "4d9104674d180465df2340a8a887383268ad3ac63582a8d7b3d2de1ea1461af7",
+  "form": "bugfix",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "7b27f9cf03c686756cec9dd9207962a062ebd8a3a19f2334482301c34589a39b",
+  "public_contract": "tasks/1047-window-comparator-detector-bugfix/public_contract.json",
+  "public_contract_sha256": "26bd4412670aeb63bd33a1a147073b3b6c4bc6a0abc48d30a888bb4fe57f09e2",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/1047-window-comparator-detector-bugfix",
+  "task_id": "v4-1047"
+}

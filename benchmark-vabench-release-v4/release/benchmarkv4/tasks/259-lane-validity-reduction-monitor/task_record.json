@@ -1,0 +1,25 @@
+{
+  "candidate_artifacts": [
+    "lane_validity_reduction_monitor.va"
+  ],
+  "canonical_dut_source_slug": "259-lane-validity-reduction-monitor",
+  "checker_task_id": "v4_259_lane_validity_reduction_monitor",
+  "family_id": "259",
+  "family_spec_sha256": "131792e394e586dc72d1739be1de39229d8f221668f35a84ed39b54bcbb1b331",
+  "form": "dut",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "db92d97c25e6cffcd03a84d144be76fd5dad91707ce29dad29e1cdbd0caf2718",
+  "public_contract": "tasks/259-lane-validity-reduction-monitor/public_contract.json",
+  "public_contract_sha256": "cbfd6dc286d67b3ac7f27e5d0580e957b2aeec390f9233e30719527b7c9c753b",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/259-lane-validity-reduction-monitor",
+  "task_id": "v4-259"
+}

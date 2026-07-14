@@ -1,0 +1,25 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "243-subradix-dac10",
+  "checker_task_id": "v4_243_subradix_dac10",
+  "family_id": "243",
+  "family_spec_sha256": "13717f2f68c50d98885fede55f4ecb2d38ee9c00cd947be16b83ef81fe7f1e7a",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "75e459bca4762bc25cdbd697dc453bf787a4106cb210820d361369bdf3a91b95",
+  "public_contract": "tasks/743-subradix-dac10-testbench/public_contract.json",
+  "public_contract_sha256": "354fea84c97d583fc2f01fcff7b0df4c80c6a25b7806b80504a95e2bb1810045",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/743-subradix-dac10-testbench",
+  "task_id": "v4-743"
+}

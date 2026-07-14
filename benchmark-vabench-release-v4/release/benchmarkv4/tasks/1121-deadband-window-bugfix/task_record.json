@@ -1,0 +1,25 @@
+{
+  "candidate_artifacts": [
+    "deadband_window.va"
+  ],
+  "canonical_dut_source_slug": "121-deadband-window",
+  "checker_task_id": "v4_121_deadband_window",
+  "family_id": "121",
+  "family_spec_sha256": "6d10f9d14b965bb65ca6d649e6c694f2827d25f4d9cdadba77335037af070d38",
+  "form": "bugfix",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "aaf39a210a7f579ac9103accc7d8f363b52c0b5df28a8f1bc0522a62ecba4de8",
+  "public_contract": "tasks/1121-deadband-window-bugfix/public_contract.json",
+  "public_contract_sha256": "8216b8d2804ac295ddb481b2ef49b4822da324f285eb82f3c8991420107fb721",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/1121-deadband-window-bugfix",
+  "task_id": "v4-1121"
+}

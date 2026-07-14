@@ -1,0 +1,25 @@
+{
+  "candidate_artifacts": [
+    "quadrature_oscillator_phase_error_monitor.va"
+  ],
+  "canonical_dut_source_slug": "335-quadrature-oscillator-phase-error-monitor",
+  "checker_task_id": "v4_335_quadrature_oscillator_phase_error_monitor",
+  "family_id": "335",
+  "family_spec_sha256": "88cb9113b178500df3b08cda05a30e2c696f9d9ab7528684c4f2a42a1f7c59c1",
+  "form": "dut",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "165342ed6d37cb2d0341a8060685d0a90b26c2b5c31744785420bb387ed22682",
+  "public_contract": "tasks/335-quadrature-oscillator-phase-error-monitor/public_contract.json",
+  "public_contract_sha256": "dea75cf5d0c062f09aa6e6db2c9c2b2f5a017cb0b3bbba768d1bf4204278263f",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/335-quadrature-oscillator-phase-error-monitor",
+  "task_id": "v4-335"
+}

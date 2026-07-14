@@ -1,0 +1,25 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "249-pfd-active-low-reset",
+  "checker_task_id": "v4_249_pfd_active_low_reset",
+  "family_id": "249",
+  "family_spec_sha256": "1129f0892cbdf88b24b306744e3acf71918b65eb613ada62c3e0d41baa185af7",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "2cc66967af5fc10ff113f20b5943ccf9eac79704ccbf32250b4a9d78470aeb3a",
+  "public_contract": "tasks/749-pfd-active-low-reset-testbench/public_contract.json",
+  "public_contract_sha256": "bbd6919a8ebfa2c2983c1263805a1070903534ce71370a40da500971bd4b1a0b",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/749-pfd-active-low-reset-testbench",
+  "task_id": "v4-749"
+}

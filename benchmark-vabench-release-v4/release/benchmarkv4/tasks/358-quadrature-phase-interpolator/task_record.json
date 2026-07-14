@@ -1,0 +1,25 @@
+{
+  "candidate_artifacts": [
+    "quadrature_phase_interpolator.va"
+  ],
+  "canonical_dut_source_slug": "358-quadrature-phase-interpolator",
+  "checker_task_id": "v4_358_quadrature_phase_interpolator",
+  "family_id": "358",
+  "family_spec_sha256": "4f3348c1878040f9ec850823b712b36c254e3a03af5a9206abb609f939da422f",
+  "form": "dut",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "2a5e24d581e9ae78750b9f217ac0628ba61933f12c08780722e51c219aae9c5a",
+  "public_contract": "tasks/358-quadrature-phase-interpolator/public_contract.json",
+  "public_contract_sha256": "25be2f6b73bc92404fbe75dff18c054b25df75d70a929898fdec01d0601c662e",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/358-quadrature-phase-interpolator",
+  "task_id": "v4-358"
+}

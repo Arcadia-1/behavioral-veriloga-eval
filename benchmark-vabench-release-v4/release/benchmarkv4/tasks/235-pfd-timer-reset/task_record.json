@@ -1,0 +1,25 @@
+{
+  "candidate_artifacts": [
+    "pfd_timer_reset.va"
+  ],
+  "canonical_dut_source_slug": "235-pfd-timer-reset",
+  "checker_task_id": "v4_235_pfd_timer_reset",
+  "family_id": "235",
+  "family_spec_sha256": "344b0cd253b7b09c6f6d45eb142b25079985ec3b65aefc001494476610b6a044",
+  "form": "dut",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "ef38b02520e65b4c3f52aed8aa28c722b0eb41281cced1937ecf0fcd7291c666",
+  "public_contract": "tasks/235-pfd-timer-reset/public_contract.json",
+  "public_contract_sha256": "e064cfc5e6fa04399ffb22d3edf1cfe6ac20713e3f4abfd27555635cd11a9840",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/235-pfd-timer-reset",
+  "task_id": "v4-235"
+}

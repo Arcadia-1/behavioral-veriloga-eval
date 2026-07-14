@@ -1,0 +1,25 @@
+{
+  "candidate_artifacts": [
+    "comparator_delay_overdrive_meter.va"
+  ],
+  "canonical_dut_source_slug": "170-comparator-delay-overdrive-meter",
+  "checker_task_id": "v4_170_comparator_delay_overdrive_meter",
+  "family_id": "170",
+  "family_spec_sha256": "e460aea06dab3c90d3c899bfcf4bf6fc263eabadc5268ea7a50c62c8cc973917",
+  "form": "dut",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "76c8833024784cb005606d3ed101a52df06b68281d8d3f9e67efa86d2cac7c45",
+  "public_contract": "tasks/170-comparator-delay-overdrive-meter/public_contract.json",
+  "public_contract_sha256": "2ab0a00484272a16e1cfe1d32fbb3b55d324593c7a04f71635216d504f1550a8",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/170-comparator-delay-overdrive-meter",
+  "task_id": "v4-170"
+}

@@ -1,0 +1,28 @@
+{
+  "candidate_artifacts": [
+    "sample_mux_readout_top.va",
+    "sample_hold_bank.va",
+    "mux_controller.va",
+    "output_driver.va"
+  ],
+  "canonical_dut_source_slug": "349-multichannel-sample-readout",
+  "checker_task_id": "v4_349_multichannel_sample_readout",
+  "family_id": "349",
+  "family_spec_sha256": "6953452553b858267d8c95197d7d18a614698ea4d2ff55b207cf980a38b72132",
+  "form": "dut",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "63171bbe66bfc10714785da557b23b293daca660794a6d96232cc1958953b09c",
+  "public_contract": "tasks/349-multichannel-sample-readout/public_contract.json",
+  "public_contract_sha256": "7c2ba12fe3c42d64b885a41cd0edc0b8f5db3d164cc19399776929e3bfece38d",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/349-multichannel-sample-readout",
+  "task_id": "v4-349"
+}

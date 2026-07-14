@@ -1,0 +1,25 @@
+{
+  "candidate_artifacts": [
+    "va_dac_6b_se.va"
+  ],
+  "canonical_dut_source_slug": "204-va-dac-6b-se",
+  "checker_task_id": "v4_204_va_dac_6b_se",
+  "family_id": "204",
+  "family_spec_sha256": "343695967c1c51becb2a5286a065365d511c013c8dd3c18bdea88267eb710ac3",
+  "form": "dut",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "a2111a850b968caf59515a363811828f3d0a805ccde30eb70e07690120dcfd46",
+  "public_contract": "tasks/204-va-dac-6b-se/public_contract.json",
+  "public_contract_sha256": "5d2db74269c23afb19ac711a583076aebc54ca781f88ae4973bf5d28eec0cfe1",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/204-va-dac-6b-se",
+  "task_id": "v4-204"
+}

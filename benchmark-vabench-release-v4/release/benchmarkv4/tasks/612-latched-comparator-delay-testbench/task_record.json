@@ -1,0 +1,25 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "112-latched-comparator-delay",
+  "checker_task_id": "v4_112_latched_comparator_delay",
+  "family_id": "112",
+  "family_spec_sha256": "8142f6d70c216de0efdd3d2e9228480999d40df3f96b65efd95281c7657d2e42",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "31174bd0ffed2495c050b7c9d680ef2b827e265a463ad0bc1147f455ad0a9c2f",
+  "public_contract": "tasks/612-latched-comparator-delay-testbench/public_contract.json",
+  "public_contract_sha256": "3b120112f58d29431c1a4a1ce9c81e2f291c687d05915d8d49b0a3ee91005879",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/612-latched-comparator-delay-testbench",
+  "task_id": "v4-612"
+}

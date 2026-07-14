@@ -1,0 +1,25 @@
+{
+  "candidate_artifacts": [
+    "coarse_qtz_3bit_residue.va"
+  ],
+  "canonical_dut_source_slug": "224-coarse-qtz-3bit-residue",
+  "checker_task_id": "v4_224_coarse_qtz_3bit_residue",
+  "family_id": "224",
+  "family_spec_sha256": "d04cf078028bc9fee86321139737bc38e42e909bac75ef5652efa57b211cdfe4",
+  "form": "dut",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "e65c5c3ec7800480d83a843c20e92c2bb12c4336302199cf02eb6cd6c86d5cda",
+  "public_contract": "tasks/224-coarse-qtz-3bit-residue/public_contract.json",
+  "public_contract_sha256": "1cda2c567d2a83f567cc1577129559a3a68f18610c50f54a621a53b0dd578a96",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/224-coarse-qtz-3bit-residue",
+  "task_id": "v4-224"
+}

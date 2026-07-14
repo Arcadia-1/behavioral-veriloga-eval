@@ -1,0 +1,27 @@
+{
+  "candidate_artifacts": [
+    "switched_cap_integrator_phase_pair_top.va",
+    "sample_phase_cell.va",
+    "integrator_state_cell.va"
+  ],
+  "canonical_dut_source_slug": "307-switched-capacitor-integrator-phase-pair",
+  "checker_task_id": "v4_307_switched_capacitor_integrator_phase_pair",
+  "family_id": "307",
+  "family_spec_sha256": "4ab51f60d890c1d178f6047977d8f3b5cf9ea362c48c4b20c1b15b3c9d4d4ac0",
+  "form": "bugfix",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "4bac4b6caeeea3167d2442991f05573c19d72835571da1890c66e40227f8fcb7",
+  "public_contract": "tasks/1307-switched-capacitor-integrator-phase-pair-bugfix/public_contract.json",
+  "public_contract_sha256": "6eb7cfe75fdcb92668689bed028b493e2c3322b9fe5ed57c059c3cd53504f064",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/1307-switched-capacitor-integrator-phase-pair-bugfix",
+  "task_id": "v4-1307"
+}

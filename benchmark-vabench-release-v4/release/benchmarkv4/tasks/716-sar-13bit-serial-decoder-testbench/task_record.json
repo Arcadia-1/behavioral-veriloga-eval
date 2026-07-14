@@ -1,0 +1,25 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "216-sar-13bit-serial-decoder",
+  "checker_task_id": "v4_216_sar_13bit_serial_decoder",
+  "family_id": "216",
+  "family_spec_sha256": "b2cc0614235afc6b0dea7fd9169768dc2bcb5f2330677f0659d9535759f8207c",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "cd3132f228dfd2fc51d3dd1417a41816590ea868e77aaf48fc727c69d3f201a1",
+  "public_contract": "tasks/716-sar-13bit-serial-decoder-testbench/public_contract.json",
+  "public_contract_sha256": "345ebac3e54378f983ba616a007d91918a4064efc989f5727d4e1fabec20aa8c",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/716-sar-13bit-serial-decoder-testbench",
+  "task_id": "v4-716"
+}

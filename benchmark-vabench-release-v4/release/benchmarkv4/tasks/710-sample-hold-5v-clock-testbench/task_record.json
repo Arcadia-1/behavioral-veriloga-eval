@@ -1,0 +1,25 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "210-sample-hold-5v-clock",
+  "checker_task_id": "v4_210_sample_hold_5v_clock",
+  "family_id": "210",
+  "family_spec_sha256": "484cbcef68817e92c5b2c51c4b18af1e933cf90369068c7677084bf7e90f04df",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "63913ef4efdda274656fa6881d220c5faa067753383f7c995fad3c47ec2f57c7",
+  "public_contract": "tasks/710-sample-hold-5v-clock-testbench/public_contract.json",
+  "public_contract_sha256": "624ab0152bdf2c71cd1d7d8b723dac62b3178f911252f1bff10097aa2479ba35",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/710-sample-hold-5v-clock-testbench",
+  "task_id": "v4-710"
+}

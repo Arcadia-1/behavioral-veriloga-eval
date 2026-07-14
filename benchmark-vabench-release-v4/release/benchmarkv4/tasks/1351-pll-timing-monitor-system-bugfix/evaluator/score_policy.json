@@ -1,0 +1,30 @@
+{
+  "artifact_mode": "system_bundle",
+  "bugfix_seed_mutation_id": "neg_002_phase_step_reversed",
+  "bugfix_seed_selection_status": "policy_reviewed",
+  "bugfix_seed_triviality_markers": [],
+  "buggy_bundle_sha256": "d33522763c5abb60598f527a96b86f70d8660707032a9e4b97b57d0d8daf426c",
+  "candidate_artifacts": [
+    "pll_timing_monitor_top.va",
+    "phase_detector.va",
+    "divider.va",
+    "lock_detector.va",
+    "reacquire_timer.va"
+  ],
+  "changed_artifacts": [
+    "divider.va",
+    "lock_detector.va",
+    "phase_detector.va",
+    "pll_timing_monitor_top.va",
+    "reacquire_timer.va"
+  ],
+  "checker_profile_sha256": "2db7dc7617e544b2f76f34d1b97fa919f5093f26cd8a7e92e8c80ee402761a4a",
+  "full_contract_pass_required": true,
+  "gold_dut_certification_sha256": "ba33c606ad3efaac96e19daa9aed71859d6c0f153f2c8d8b37e852d32ead454b",
+  "gold_solution_tree_sha256": "f6f015dab85a3d7088e728070ad51763848e0da6b197ea7219143bc6cf431028",
+  "materialized_checker_profile": "evaluator/checker_profile.json",
+  "mutation_catalog_sha256": "f3380a14ee3f773775c1a5160d9ba99a4836a2129b39e544ca653525ae7666dd",
+  "schema_version": "v4-bugfix-score-policy-v1",
+  "spectre_final_judge": true,
+  "task_id": "v4-1351"
+}

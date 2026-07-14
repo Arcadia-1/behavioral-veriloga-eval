@@ -1,0 +1,25 @@
+{
+  "candidate_artifacts": [
+    "dac_restore_10bit_offset.va"
+  ],
+  "canonical_dut_source_slug": "161-dac-restore-10bit-offset",
+  "checker_task_id": "v4_161_dac_restore_10bit_offset",
+  "family_id": "161",
+  "family_spec_sha256": "cb7b49944376084ebf9860b009c7f1c05bc778a881c63bf8193be5da20203b92",
+  "form": "bugfix",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "fb318c491cf4de8293feb355bfd456fccd8379f86d69fd6d6a00781d1a66fd75",
+  "public_contract": "tasks/1161-dac-restore-10bit-offset-bugfix/public_contract.json",
+  "public_contract_sha256": "82789e6fef3d8f82e6f031894dc9d4ffe872e57c56aef8b1eaf10cc94f42ec50",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/1161-dac-restore-10bit-offset-bugfix",
+  "task_id": "v4-1161"
+}

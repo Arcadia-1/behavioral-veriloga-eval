@@ -1,0 +1,25 @@
+{
+  "candidate_artifacts": [
+    "two_period_sample_delay.va"
+  ],
+  "canonical_dut_source_slug": "143-two-period-sample-delay",
+  "checker_task_id": "v4_143_two_period_sample_delay",
+  "family_id": "143",
+  "family_spec_sha256": "2d31ef6045cdd88661274e7fc1d96be951b317ebe01b5b179246844b83ba9017",
+  "form": "bugfix",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "101b8c252b56c472dbeb083f827c61ccbbf85c283ae5272691d18e507c533a95",
+  "public_contract": "tasks/1143-two-period-sample-delay-bugfix/public_contract.json",
+  "public_contract_sha256": "3fcff2a2719d18d97144916ba91b32f60b6e79b7a4ed27df002370aba0826842",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/1143-two-period-sample-delay-bugfix",
+  "task_id": "v4-1143"
+}

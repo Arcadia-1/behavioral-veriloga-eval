@@ -1,0 +1,25 @@
+{
+  "candidate_artifacts": [
+    "bootstrapped_sampler_charge_metric.va"
+  ],
+  "canonical_dut_source_slug": "310-bootstrapped-sampler-charge-metric",
+  "checker_task_id": "v4_310_bootstrapped_sampler_charge_metric",
+  "family_id": "310",
+  "family_spec_sha256": "acb324de5f0aeb56637d48711dcf330e13583cad4d6d5cdce4f7bbd0cd0410df",
+  "form": "dut",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "3567dce1623ef7d6c51a4ce3d29962bcfb5aa0f8f91409b30933ebe73e505f59",
+  "public_contract": "tasks/310-bootstrapped-sampler-charge-metric/public_contract.json",
+  "public_contract_sha256": "207ee7b94b47b7bb2ff4ff2d987af1dcf3e89c9b031ce5836b18f44233261242",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/310-bootstrapped-sampler-charge-metric",
+  "task_id": "v4-310"
+}

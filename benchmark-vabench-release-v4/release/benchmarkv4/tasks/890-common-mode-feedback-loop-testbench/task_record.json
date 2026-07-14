@@ -1,0 +1,25 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "390-common-mode-feedback-loop",
+  "checker_task_id": "v4_390_common_mode_feedback_loop",
+  "family_id": "390",
+  "family_spec_sha256": "34075cf2d35d66197faae0c8baa4916fb64d967b31d9fdfb6bc6ad523d4d4c84",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "28aa41beba3e68e7d3f57da53e041eb3920c1ec78e85fda5ab432ee8ed0c290b",
+  "public_contract": "tasks/890-common-mode-feedback-loop-testbench/public_contract.json",
+  "public_contract_sha256": "a410f00494b7d51a5f12ef8cab7d94c3aab4976aa6803703f7787f815cdde990",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/890-common-mode-feedback-loop-testbench",
+  "task_id": "v4-890"
+}

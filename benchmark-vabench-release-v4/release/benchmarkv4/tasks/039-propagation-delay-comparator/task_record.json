@@ -1,0 +1,26 @@
+{
+  "candidate_artifacts": [
+    "cmp_delay.va",
+    "edge_interval_timer.va"
+  ],
+  "canonical_dut_source_slug": "039-propagation-delay-comparator",
+  "checker_task_id": "v4_039_propagation_delay_comparator",
+  "family_id": "039",
+  "family_spec_sha256": "0d30674a183b6c80566924acdd2d0f8050956135c9e06ded8753e5069b0d8f95",
+  "form": "dut",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "86a96969d9b6f44eadf08b5dc17209be95ba8a610c3b6efafbd2e29e9f412b6f",
+  "public_contract": "tasks/039-propagation-delay-comparator/public_contract.json",
+  "public_contract_sha256": "1f3f85bb23bdef440f70ea528f1b55a6236450c956c11c3a977eee1777d63085",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/039-propagation-delay-comparator",
+  "task_id": "v4-039"
+}

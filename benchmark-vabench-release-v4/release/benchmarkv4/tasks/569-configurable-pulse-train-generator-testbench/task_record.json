@@ -1,0 +1,25 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "069-configurable-pulse-train-generator",
+  "checker_task_id": "v4_069_configurable_pulse_train_generator",
+  "family_id": "069",
+  "family_spec_sha256": "e329d16ec84f9acaa1839c363fcbf0f0061c35d3de69925880cff58b84df68cb",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "7372532d2b5744d03f951bb12595a888862c08cebff3357cc859e417780f90d5",
+  "public_contract": "tasks/569-configurable-pulse-train-generator-testbench/public_contract.json",
+  "public_contract_sha256": "52571decc823f98a1f5b25156f9491afe52e33abfbd64b772e2e43604a823066",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/569-configurable-pulse-train-generator-testbench",
+  "task_id": "v4-569"
+}

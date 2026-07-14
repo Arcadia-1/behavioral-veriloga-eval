@@ -1,0 +1,25 @@
+{
+  "candidate_artifacts": [
+    "settling_window_detector.va"
+  ],
+  "canonical_dut_source_slug": "063-settling-window-detector",
+  "checker_task_id": "v4_063_settling_window_detector",
+  "family_id": "063",
+  "family_spec_sha256": "53f746f228722228727bd0f717df19e2c3d00e4bb08e9a1871b4fb69a14c7be8",
+  "form": "dut",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "e5d39b05d43313283c726e256cd85e865b9f4545ad2710de9c4a2bbd81ffc8aa",
+  "public_contract": "tasks/063-settling-window-detector/public_contract.json",
+  "public_contract_sha256": "258d42a952f016eb7ac1194002c204031512f05f7efb9b6cdda9d3d302d50470",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/063-settling-window-detector",
+  "task_id": "v4-063"
+}

@@ -36,12 +36,13 @@ def test_default_release_and_testbench_index_match_current_package(audit) -> Non
     rows = audit.resolve_task_rows(audit.DEFAULT_RELEASE, [])
 
     assert len(rows) == 400
-    assert rows[0] == {
+    assert {key: rows[0][key] for key in ("family_id", "form", "task_dir", "task_id")} == {
         "family_id": "001",
         "form": "testbench",
-        "task_dir": "tasks/testbench/501-bang-bang-phase-detector-testbench",
+        "task_dir": "tasks/501-bang-bang-phase-detector-testbench",
         "task_id": "v4-501",
     }
+    assert rows[0]["public_contract"] == "tasks/501-bang-bang-phase-detector-testbench/public_contract.json"
 
 def test_resolve_task_rows_rejects_unknown_or_non_testbench_task(audit) -> None:
     with pytest.raises(SystemExit, match="unknown testbench task id"):
@@ -51,7 +52,7 @@ def test_resolve_task_rows_rejects_unknown_or_non_testbench_task(audit) -> None:
 def test_checker_and_include_resolution_use_current_canonical_assets(audit) -> None:
     row = audit.resolve_task_rows(audit.DEFAULT_RELEASE, ["v4-501"])[0]
     task_dir = audit.DEFAULT_RELEASE / row["task_dir"]
-    task_record = audit.read_json(task_dir / "TASK_RECORD.json")
+    task_record = audit.read_json(task_dir / "task_record.json")
     tb_path = task_dir / "evaluator" / "reference_tb.scs"
 
     assert audit.checker_task_id(task_dir, task_record) == "v3_001_bang_bang_phase_detector"

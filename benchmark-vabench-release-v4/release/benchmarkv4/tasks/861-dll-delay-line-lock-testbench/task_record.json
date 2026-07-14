@@ -1,0 +1,25 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "361-dll-delay-line-lock",
+  "checker_task_id": "v4_361_dll_delay_line_lock",
+  "family_id": "361",
+  "family_spec_sha256": "1971990c49c5f2e1590d0d57655a1d3269b175c6545106a3ac7557e0d9c37d27",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "48a7c53a230ad25a84ab423c8c65147dea76cb9a3d095551917e80c28350e62e",
+  "public_contract": "tasks/861-dll-delay-line-lock-testbench/public_contract.json",
+  "public_contract_sha256": "7406c658ee67c892bb215e7792cae595baad4d853c3ef699565c107c9a4eab9c",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/861-dll-delay-line-lock-testbench",
+  "task_id": "v4-861"
+}

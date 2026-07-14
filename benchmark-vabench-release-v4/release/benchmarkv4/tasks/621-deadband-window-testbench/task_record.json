@@ -1,0 +1,25 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "121-deadband-window",
+  "checker_task_id": "v4_121_deadband_window",
+  "family_id": "121",
+  "family_spec_sha256": "6d10f9d14b965bb65ca6d649e6c694f2827d25f4d9cdadba77335037af070d38",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "83ffaf0bce9a9aec555f523e9129a27d665c650eaab689abc7a42bd578a1f60b",
+  "public_contract": "tasks/621-deadband-window-testbench/public_contract.json",
+  "public_contract_sha256": "16fdc5fc03838bb0669387734b8b7f6a65fe2f31499b10a4e59fb2f43dcb9a18",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/621-deadband-window-testbench",
+  "task_id": "v4-621"
+}

@@ -1,0 +1,25 @@
+{
+  "candidate_artifacts": [
+    "prbs7_ref.va"
+  ],
+  "canonical_dut_source_slug": "078-lfsr-prbs-generator",
+  "checker_task_id": "v4_078_lfsr_prbs_generator",
+  "family_id": "078",
+  "family_spec_sha256": "89a9f61a1c08879a2527f15e99d61e6423285fc6f847173a7f3c888630a2532d",
+  "form": "dut",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "0579a2a44234d018ab3bb8b1bbaec90a80dfe912b8f8016522a60b9e0eb415b7",
+  "public_contract": "tasks/078-lfsr-prbs-generator/public_contract.json",
+  "public_contract_sha256": "0a74e6044929543414d3bc6b282220d5314520e3e02eb5911b065565989ea140",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/078-lfsr-prbs-generator",
+  "task_id": "v4-078"
+}

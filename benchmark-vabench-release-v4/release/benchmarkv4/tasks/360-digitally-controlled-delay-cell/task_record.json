@@ -1,0 +1,25 @@
+{
+  "candidate_artifacts": [
+    "digitally_controlled_delay_cell.va"
+  ],
+  "canonical_dut_source_slug": "360-digitally-controlled-delay-cell",
+  "checker_task_id": "v4_360_digitally_controlled_delay_cell",
+  "family_id": "360",
+  "family_spec_sha256": "ca78744f78268e2a317e0fc7ebf3682ad76cf4e1d9ff877861291bb369d113d7",
+  "form": "dut",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "55831d4b27e59b754dbbc9f7717cd5fa322daf065087a37114d8a951afc97a04",
+  "public_contract": "tasks/360-digitally-controlled-delay-cell/public_contract.json",
+  "public_contract_sha256": "06e2bba160b31a99516f703ebd8d616f02959c00f5142f27b34be2e04b6e1020",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/360-digitally-controlled-delay-cell",
+  "task_id": "v4-360"
+}

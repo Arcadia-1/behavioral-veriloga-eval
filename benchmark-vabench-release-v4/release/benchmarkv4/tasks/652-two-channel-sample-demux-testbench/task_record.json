@@ -1,0 +1,25 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "152-two-channel-sample-demux",
+  "checker_task_id": "v4_152_two_channel_sample_demux",
+  "family_id": "152",
+  "family_spec_sha256": "6ded92d71cae912035cd715fb957eaa845a5ad60efd4a8a9a3ac17d7410d41bf",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "3c58e9b203dfa987b4e59b69451ca94362ca7a5a0884a04bfdad4444ba988bb0",
+  "public_contract": "tasks/652-two-channel-sample-demux-testbench/public_contract.json",
+  "public_contract_sha256": "97f5a8ef1e1ec9e9cba95a9db446b66b1d448b2dc6864ee7389f0e6b7e9bdf9d",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/652-two-channel-sample-demux-testbench",
+  "task_id": "v4-652"
+}

@@ -1,0 +1,27 @@
+{
+  "candidate_artifacts": [
+    "correlated_double_sampler_top.va",
+    "reset_sample_latch.va",
+    "signal_sample_latch.va"
+  ],
+  "canonical_dut_source_slug": "308-correlated-double-sampler-offset-cancel",
+  "checker_task_id": "v4_308_correlated_double_sampler_offset_cancel",
+  "family_id": "308",
+  "family_spec_sha256": "14a68835afe8051115536ea3645cb80e90b219c4e802a1d56980f89d9bfcaae1",
+  "form": "dut",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "4f2f6c46a7cfa896daf1e0836d69d8c902067c92208c8e51ac7933079d8fdcbb",
+  "public_contract": "tasks/308-correlated-double-sampler-offset-cancel/public_contract.json",
+  "public_contract_sha256": "131da9b3e06df483a1c83763740c5a485b2655ef25056ac62dec05f59c5b8978",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/308-correlated-double-sampler-offset-cancel",
+  "task_id": "v4-308"
+}

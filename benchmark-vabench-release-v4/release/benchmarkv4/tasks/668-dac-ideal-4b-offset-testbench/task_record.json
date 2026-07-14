@@ -1,0 +1,25 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "168-dac-ideal-4b-offset",
+  "checker_task_id": "v4_168_dac_ideal_4b_offset",
+  "family_id": "168",
+  "family_spec_sha256": "0d334db93fd544b1bdfaa033293c6cf638e3f2f6e5ed9a1114df36864295749f",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "9634d37188bf6e4f561e296de1f96e29c40d6a62955732c4c306927806a1c468",
+  "public_contract": "tasks/668-dac-ideal-4b-offset-testbench/public_contract.json",
+  "public_contract_sha256": "aa53212864796a07ba73dc0bd596ee9c861bfd736fe78bf3a1eba20fa4008968",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/668-dac-ideal-4b-offset-testbench",
+  "task_id": "v4-668"
+}

@@ -1,0 +1,25 @@
+{
+  "candidate_artifacts": [
+    "clocked_sar_comparator.va"
+  ],
+  "canonical_dut_source_slug": "103-clocked-sar-comparator",
+  "checker_task_id": "v4_103_clocked_sar_comparator",
+  "family_id": "103",
+  "family_spec_sha256": "be226a164ed3ef04554aa3ea70e84dc099a65a6ac10ab1104c72fcf8b35bc200",
+  "form": "bugfix",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "d713e9291b983a0ccec435a72c1c21321a3e6847236039a5b5d799bd819c712b",
+  "public_contract": "tasks/1103-clocked-sar-comparator-bugfix/public_contract.json",
+  "public_contract_sha256": "4ba5af297365b5199d95a826bcab520dacb07a4f98d9b3cfe5dd2ddc4e7cc47d",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/1103-clocked-sar-comparator-bugfix",
+  "task_id": "v4-1103"
+}

@@ -1,0 +1,25 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "058-masked-config-update-32b",
+  "checker_task_id": "v4_058_masked_config_update_32b",
+  "family_id": "058",
+  "family_spec_sha256": "c93d2f02706e18bd23e478e672c2ebc3017087129d7b79109fc7b6d3b20194e4",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "f7dc5bb23d0e2f69c533a7cc5e86cc9862901ffcb969f3a9ee7e1196679cbcf9",
+  "public_contract": "tasks/558-masked-config-update-32b-testbench/public_contract.json",
+  "public_contract_sha256": "6629c2008a53b2a7703c1e78a9a848465b0d041982e6d539f83884ccaed91808",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/558-masked-config-update-32b-testbench",
+  "task_id": "v4-558"
+}

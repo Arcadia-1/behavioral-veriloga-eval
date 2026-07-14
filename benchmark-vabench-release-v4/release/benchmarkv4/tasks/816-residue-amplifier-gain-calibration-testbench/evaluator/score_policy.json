@@ -1,0 +1,28 @@
+{
+  "bugfix_seed_mutation_id": "neg_003_reset_disable_clear_missing",
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "checker_profile_sha256": "3ead6cb439284eebf0a6250310b26b4d118766da09644bc356fce5291d32e65e",
+  "full_credit": "reference_gate and five_of_five_killed_behaviorally",
+  "kill_ratio_denominator": 5,
+  "materialized_checker_profile": "evaluator/checker_profile.json",
+  "mutation_catalog_sha256": "656137f0fa927a7dd8d6dfc61fb4b6d2465774cd698936e7f1539133bbefab1e",
+  "negative_outcomes": [
+    "killed_behaviorally",
+    "survived",
+    "invalid_run"
+  ],
+  "negative_suite_mutation_ids": [
+    "neg_001_controller_update_direction_wrong",
+    "neg_003_reset_disable_clear_missing",
+    "neg_004_lock_qualification_too_early",
+    "neg_005_error_metric_wrong",
+    "neg_002_residue_core_gain_step_wrong"
+  ],
+  "reference_gate": "all applicable public properties pass on supplied correct DUT",
+  "reference_tb_sha256": "100ddec7c23d1e3635d7df4c0b32c3a91862914f0ff150ac775a5621b476e752",
+  "schema_version": "v4-testbench-score-policy-v1",
+  "spectre_final_judge": true,
+  "task_id": "v4-816"
+}

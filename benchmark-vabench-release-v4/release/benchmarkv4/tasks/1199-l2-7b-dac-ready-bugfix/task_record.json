@@ -1,0 +1,25 @@
+{
+  "candidate_artifacts": [
+    "l2_7b_dac_ready.va"
+  ],
+  "canonical_dut_source_slug": "199-l2-7b-dac-ready",
+  "checker_task_id": "v4_199_l2_7b_dac_ready",
+  "family_id": "199",
+  "family_spec_sha256": "d647ad64c52d704603389b90e75a18150f5468347d8556e0bbb4664a2a36a7cc",
+  "form": "bugfix",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "d960aa360ce76d3ea32c93401edc9cfeee5608e9ee15ff82b2397ad72db8395b",
+  "public_contract": "tasks/1199-l2-7b-dac-ready-bugfix/public_contract.json",
+  "public_contract_sha256": "b04bcb8c68de4621ed62a0a76a25bd605d48c47dd4d6a00c899375596071008f",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/1199-l2-7b-dac-ready-bugfix",
+  "task_id": "v4-1199"
+}

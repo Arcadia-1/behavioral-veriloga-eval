@@ -1,0 +1,27 @@
+{
+  "candidate_artifacts": [
+    "code_dependent_dac_buffer_top.va",
+    "ideal_code_dac.va",
+    "settling_buffer_state.va"
+  ],
+  "canonical_dut_source_slug": "320-code-dependent-dac-buffer-settling",
+  "checker_task_id": "v4_320_code_dependent_dac_buffer_settling",
+  "family_id": "320",
+  "family_spec_sha256": "fa05e3a81f9ac287e2858a489dba34bff08af535896812f87b935bf35f8f17d0",
+  "form": "dut",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "ebeb7e6df7ed815de9e89ac18f7552d2ad8133050786c5e9d18bbb46c7579d1f",
+  "public_contract": "tasks/320-code-dependent-dac-buffer-settling/public_contract.json",
+  "public_contract_sha256": "87ec7f3ec4a4c198a94a8a2abd308e6fed367bb8681e1f68a05af9494b0578cd",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/320-code-dependent-dac-buffer-settling",
+  "task_id": "v4-320"
+}

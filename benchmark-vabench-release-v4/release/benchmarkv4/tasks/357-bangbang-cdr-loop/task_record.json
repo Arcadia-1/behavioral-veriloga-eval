@@ -1,0 +1,28 @@
+{
+  "candidate_artifacts": [
+    "cdr_top.va",
+    "bbpd.va",
+    "loop_filter_code.va",
+    "phase_rotator.va"
+  ],
+  "canonical_dut_source_slug": "357-bangbang-cdr-loop",
+  "checker_task_id": "v4_357_bangbang_cdr_loop",
+  "family_id": "357",
+  "family_spec_sha256": "52923cc7835f9815e4345afd3083b1b959f3c199e2700f1b72eeb80bb474f01d",
+  "form": "dut",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "5afb6a747874b6953e4a50c7f958197a81e21250951a5e7e0e6425260bc9f6a7",
+  "public_contract": "tasks/357-bangbang-cdr-loop/public_contract.json",
+  "public_contract_sha256": "5f7112bde4351ee6b5d6bbbfea0a7a5e7dd9426b85704946de0d633cc376a674",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/357-bangbang-cdr-loop",
+  "task_id": "v4-357"
+}

@@ -1,0 +1,25 @@
+{
+  "candidate_artifacts": [
+    "vargain_diffamp_clip.va"
+  ],
+  "canonical_dut_source_slug": "233-vargain-diffamp-clip",
+  "checker_task_id": "v4_233_vargain_diffamp_clip",
+  "family_id": "233",
+  "family_spec_sha256": "947bd0b1fdaec3993c8c8144533822ec3505089428d7d76cdac87a119915b5e5",
+  "form": "dut",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "f694ecebb725988f39240871a17074278e2cb4f8650ad7aec730c7c119e5fce3",
+  "public_contract": "tasks/233-vargain-diffamp-clip/public_contract.json",
+  "public_contract_sha256": "5371959f400678ecdc84501a5c7cd4df2f0ebcf2a46df8e050d8dcbc75350088",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/233-vargain-diffamp-clip",
+  "task_id": "v4-233"
+}

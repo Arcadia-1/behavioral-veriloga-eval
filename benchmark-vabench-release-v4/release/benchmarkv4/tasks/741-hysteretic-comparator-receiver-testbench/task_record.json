@@ -1,0 +1,25 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "241-hysteretic-comparator-receiver",
+  "checker_task_id": "v4_241_hysteretic_comparator_receiver",
+  "family_id": "241",
+  "family_spec_sha256": "f8383c53f5b4983c84583d2046410758e538c1d57f1e5e4f2baf611fe7c0b0ef",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "1eb0555f460dd96d677070d7a9f836859f3b99f39a4560e86522418229f27b0d",
+  "public_contract": "tasks/741-hysteretic-comparator-receiver-testbench/public_contract.json",
+  "public_contract_sha256": "2bc1887acf8cdea55fb658423f5d62ec4c8973da80e8be5b0a885f734d0c7cb7",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/741-hysteretic-comparator-receiver-testbench",
+  "task_id": "v4-741"
+}

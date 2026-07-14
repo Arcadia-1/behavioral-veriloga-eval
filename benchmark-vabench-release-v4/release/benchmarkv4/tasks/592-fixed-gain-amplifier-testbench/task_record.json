@@ -1,0 +1,25 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "092-fixed-gain-amplifier",
+  "checker_task_id": "v4_092_fixed_gain_amplifier",
+  "family_id": "092",
+  "family_spec_sha256": "f8f6360659f35186b3e75786024e9cf17efa4138e7b918341c6e8cbfa8f10b35",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "74e61c01acfe056fb8179453281fd754018ef8c2f52e0e26317a6277902de487",
+  "public_contract": "tasks/592-fixed-gain-amplifier-testbench/public_contract.json",
+  "public_contract_sha256": "9ff02f831fa1eb6bf17200cabf4f53229f960f88d8afc068ef6e3d4876780833",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/592-fixed-gain-amplifier-testbench",
+  "task_id": "v4-592"
+}

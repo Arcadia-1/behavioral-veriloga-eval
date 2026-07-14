@@ -1,0 +1,25 @@
+{
+  "candidate_artifacts": [
+    "ffe_tx_3tap.va"
+  ],
+  "canonical_dut_source_slug": "353-ffe-transmitter-3tap",
+  "checker_task_id": "v4_353_ffe_transmitter_3tap",
+  "family_id": "353",
+  "family_spec_sha256": "48070b562efbe38ed280971493ce0b86418d0f9ef0fe0eaabaac5bd55acb7e91",
+  "form": "dut",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "586415c2aa8963a61621cdd09ee0f9c77cda91306e8c1b6dd730b8dea36d1ec8",
+  "public_contract": "tasks/353-ffe-transmitter-3tap/public_contract.json",
+  "public_contract_sha256": "d047280ce3d72dc817e6d1b4a7f5b672a2a9e4daf4afdca97ee122bf05399394",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/353-ffe-transmitter-3tap",
+  "task_id": "v4-353"
+}

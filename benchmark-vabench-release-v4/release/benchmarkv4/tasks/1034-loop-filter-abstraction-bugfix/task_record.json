@@ -1,0 +1,25 @@
+{
+  "candidate_artifacts": [
+    "loop_filter_abstraction.va"
+  ],
+  "canonical_dut_source_slug": "034-loop-filter-abstraction",
+  "checker_task_id": "v4_034_loop_filter_abstraction",
+  "family_id": "034",
+  "family_spec_sha256": "c5771777a9f6c8e6bd7fb94d9df02fc18bb16755a1beb66f956605fc544e5c30",
+  "form": "bugfix",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "0bbe301f0d3e69cabaac11b579797d74391b8945f7855c7f094b8783148b7a89",
+  "public_contract": "tasks/1034-loop-filter-abstraction-bugfix/public_contract.json",
+  "public_contract_sha256": "65adc74f4df7169a53c07f9729642221d47e2a02e869d3bdff96ba4a75369b98",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/1034-loop-filter-abstraction-bugfix",
+  "task_id": "v4-1034"
+}

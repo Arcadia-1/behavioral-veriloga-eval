@@ -1,0 +1,25 @@
+{
+  "candidate_artifacts": [
+    "leaky_hold.va"
+  ],
+  "canonical_dut_source_slug": "042-sample-and-hold-with-droop-leakage",
+  "checker_task_id": "v4_042_sample_and_hold_with_droop_leakage",
+  "family_id": "042",
+  "family_spec_sha256": "606873e046d316a776913046cb9715d62d0f2610090fb41c8442a70e6ce8f896",
+  "form": "dut",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "9f01ce27dc20ffe3e254d66de7e03955cbd55b9d2c99d461694197f51300b4c6",
+  "public_contract": "tasks/042-sample-and-hold-with-droop-leakage/public_contract.json",
+  "public_contract_sha256": "c465abf1d0e943a0865e158a1754e64cc405e43119b82ddbf608571b106897bc",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/042-sample-and-hold-with-droop-leakage",
+  "task_id": "v4-042"
+}

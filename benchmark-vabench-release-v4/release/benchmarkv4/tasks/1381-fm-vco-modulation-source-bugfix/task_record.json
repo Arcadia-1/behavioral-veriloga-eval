@@ -1,0 +1,25 @@
+{
+  "candidate_artifacts": [
+    "fm_vco_modulation_source.va"
+  ],
+  "canonical_dut_source_slug": "381-fm-vco-modulation-source",
+  "checker_task_id": "v4_381_fm_vco_modulation_source",
+  "family_id": "381",
+  "family_spec_sha256": "f2451f43e5f762418f1748235736da9e22edfd3b6fc5a778dfb1da6eea61e2f6",
+  "form": "bugfix",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "87a6ba37f37efe5db8cec2e18064973f07e8de5a9b1a17eedf23d2c55d4e5aba",
+  "public_contract": "tasks/1381-fm-vco-modulation-source-bugfix/public_contract.json",
+  "public_contract_sha256": "bae2d98b4a04563f54235239f3f381747e0e1eb0ff0f49fb0a1da19d78605422",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/1381-fm-vco-modulation-source-bugfix",
+  "task_id": "v4-1381"
+}

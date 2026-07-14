@@ -1,0 +1,25 @@
+{
+  "candidate_artifacts": [
+    "adaptive_threshold_tracker.va"
+  ],
+  "canonical_dut_source_slug": "273-adaptive-threshold-tracker",
+  "checker_task_id": "v4_273_adaptive_threshold_tracker",
+  "family_id": "273",
+  "family_spec_sha256": "492c8881c715ab4f6b2b4e26aed9dafa10d1dd15d61e1818b31245826f68db11",
+  "form": "bugfix",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "b56f4eb02610e65b517bf1fd8fdb9d47987aa199f0e6d463e63dcea61fbd3af8",
+  "public_contract": "tasks/1273-adaptive-threshold-tracker-bugfix/public_contract.json",
+  "public_contract_sha256": "3b2928bd78973b2c0f6ab7ac0f3a4621eb6c67f0f01a92d77789dce082a09669",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/1273-adaptive-threshold-tracker-bugfix",
+  "task_id": "v4-1273"
+}

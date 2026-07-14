@@ -1,0 +1,25 @@
+{
+  "candidate_artifacts": [
+    "two_channel_sample_demux.va"
+  ],
+  "canonical_dut_source_slug": "152-two-channel-sample-demux",
+  "checker_task_id": "v4_152_two_channel_sample_demux",
+  "family_id": "152",
+  "family_spec_sha256": "6ded92d71cae912035cd715fb957eaa845a5ad60efd4a8a9a3ac17d7410d41bf",
+  "form": "bugfix",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "f4b6c021d33fc08e24178d4067b0e08df45b69a72fe249da24c9cb696e44231e",
+  "public_contract": "tasks/1152-two-channel-sample-demux-bugfix/public_contract.json",
+  "public_contract_sha256": "cdb41ba0848c5c15c7de216b0b1d1af17c4101b26aa6f54a622a4a0c8edf6e7a",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/1152-two-channel-sample-demux-bugfix",
+  "task_id": "v4-1152"
+}

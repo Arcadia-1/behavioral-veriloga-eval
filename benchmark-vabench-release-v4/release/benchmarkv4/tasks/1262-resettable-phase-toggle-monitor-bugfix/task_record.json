@@ -1,0 +1,25 @@
+{
+  "candidate_artifacts": [
+    "resettable_phase_toggle_monitor.va"
+  ],
+  "canonical_dut_source_slug": "262-resettable-phase-toggle-monitor",
+  "checker_task_id": "v4_262_resettable_phase_toggle_monitor",
+  "family_id": "262",
+  "family_spec_sha256": "58c7f5145462f2f379c8772e080c86fb79aaeeff1bc41f927309dad10fde7f4f",
+  "form": "bugfix",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "c102fd9b405ae9ff2525829b5752345b6b626c2992d74848a2aa7c0313638ea4",
+  "public_contract": "tasks/1262-resettable-phase-toggle-monitor-bugfix/public_contract.json",
+  "public_contract_sha256": "15184e1569063a251f673ed63b88785bece58be91100c2819be42bdf1a065b0b",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/1262-resettable-phase-toggle-monitor-bugfix",
+  "task_id": "v4-1262"
+}

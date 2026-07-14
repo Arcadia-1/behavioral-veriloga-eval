@@ -1,0 +1,29 @@
+{
+  "candidate_artifacts": [
+    "sigma_delta_top.va",
+    "integrator_state.va",
+    "sd_comparator.va",
+    "feedback_dac.va",
+    "decimator_lite.va"
+  ],
+  "canonical_dut_source_slug": "350-sigma-delta-mini-loop",
+  "checker_task_id": "v4_350_sigma_delta_mini_loop",
+  "family_id": "350",
+  "family_spec_sha256": "1c7d2d9bc7687db08aa7a1b0252e82719d49a279d17875adf17e4d4f5381370a",
+  "form": "bugfix",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "d160589a14a8a936468259f7393dee3949f6438572669c7285ba919fcfe81cda",
+  "public_contract": "tasks/1350-sigma-delta-mini-loop-bugfix/public_contract.json",
+  "public_contract_sha256": "7bcb3f7932a24c03366e35e560fe3ae421f28976f36970a6a3105d2698e567e6",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/1350-sigma-delta-mini-loop-bugfix",
+  "task_id": "v4-1350"
+}

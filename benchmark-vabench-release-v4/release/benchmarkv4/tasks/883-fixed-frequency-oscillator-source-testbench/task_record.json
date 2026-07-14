@@ -1,0 +1,25 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "383-fixed-frequency-oscillator-source",
+  "checker_task_id": "v4_383_fixed_frequency_oscillator_source",
+  "family_id": "383",
+  "family_spec_sha256": "1469ed97771bc37e05a88b7460ae54cb22f6885714e7c2f5b8a6a37b24896f5d",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "ff158888da7bb06a8087446d7105dfeaf3de4993d474b48de5e5541a9723f767",
+  "public_contract": "tasks/883-fixed-frequency-oscillator-source-testbench/public_contract.json",
+  "public_contract_sha256": "11c192a105a77e29f143fb4c8eb755c80ed5cb55e654ccc7468c5eaf64ef5cdb",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/883-fixed-frequency-oscillator-source-testbench",
+  "task_id": "v4-883"
+}

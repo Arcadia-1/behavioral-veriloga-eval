@@ -1,0 +1,25 @@
+{
+  "candidate_artifacts": [
+    "file_metric_writer.va"
+  ],
+  "canonical_dut_source_slug": "074-crossing-metric-writer",
+  "checker_task_id": "v4_074_crossing_metric_writer",
+  "family_id": "074",
+  "family_spec_sha256": "3531d70bad6263b95ca6795287da9001db0226db1191898ee70bfe2a1782f7b9",
+  "form": "bugfix",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "12d5053ed36923eb71176848aba4bc0f62e8f76e943821ce4e8424216bdce06d",
+  "public_contract": "tasks/1074-crossing-metric-writer-bugfix/public_contract.json",
+  "public_contract_sha256": "61d952b76ecbcaa4489ea0ad8280862585f7b91b217ec34ee58f5fd23bb56f17",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/1074-crossing-metric-writer-bugfix",
+  "task_id": "v4-1074"
+}

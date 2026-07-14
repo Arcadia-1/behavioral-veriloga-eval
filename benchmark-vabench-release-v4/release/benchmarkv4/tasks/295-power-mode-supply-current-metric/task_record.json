@@ -1,0 +1,25 @@
+{
+  "candidate_artifacts": [
+    "power_mode_supply_current_metric.va"
+  ],
+  "canonical_dut_source_slug": "295-power-mode-supply-current-metric",
+  "checker_task_id": "v4_295_power_mode_supply_current_metric",
+  "family_id": "295",
+  "family_spec_sha256": "6ee2aacfa8863ca63b0768dcbce4d33aaa5cf4d0d4a1c2a4cb591b02ebf116d4",
+  "form": "dut",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "00d88f19a06388f7de09d404d7ef20e1c07d028c6f0c633f151e04a01f30eb4e",
+  "public_contract": "tasks/295-power-mode-supply-current-metric/public_contract.json",
+  "public_contract_sha256": "301d418217171832b1171d9822d28e89d35583f0a985f8328267ddc56b22f972",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/295-power-mode-supply-current-metric",
+  "task_id": "v4-295"
+}

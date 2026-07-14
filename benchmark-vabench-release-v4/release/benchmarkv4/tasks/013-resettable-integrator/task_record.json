@@ -1,0 +1,25 @@
+{
+  "candidate_artifacts": [
+    "resettable_integrator.va"
+  ],
+  "canonical_dut_source_slug": "013-resettable-integrator",
+  "checker_task_id": "v4_013_resettable_integrator",
+  "family_id": "013",
+  "family_spec_sha256": "aa14c5bf21ca7e3ae3832755f96d422751a6244043d0f9c40247a362c76946cd",
+  "form": "dut",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "81b1c17bbb58594c107825ce337fcae9f9be1d32cd6aa04ae89122dc8071ec11",
+  "public_contract": "tasks/013-resettable-integrator/public_contract.json",
+  "public_contract_sha256": "b403eb0d30febbea11fdbd5ccff3a5643a50482d4c221d811f9e1059bdea7151",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/013-resettable-integrator",
+  "task_id": "v4-013"
+}

@@ -1,0 +1,25 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "279-explicit-sar-slice-router",
+  "checker_task_id": "v4_279_explicit_sar_slice_router",
+  "family_id": "279",
+  "family_spec_sha256": "00e321a6b3674fa04f7dad23fadba1648a153fad66b1848d85120c3de934d41b",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "6140a32321e1a5cb38a6b64ff07795a2eb617010b51d31c4e858bec61f4c7df9",
+  "public_contract": "tasks/779-explicit-sar-slice-router-testbench/public_contract.json",
+  "public_contract_sha256": "7ea16e297421039dba0041bb82fcee78542b8e3cedf5d1801a249bb7b50b0908",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/779-explicit-sar-slice-router-testbench",
+  "task_id": "v4-779"
+}

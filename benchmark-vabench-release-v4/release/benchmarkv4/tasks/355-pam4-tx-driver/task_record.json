@@ -1,0 +1,28 @@
+{
+  "candidate_artifacts": [
+    "pam4_tx_top.va",
+    "gray_mapper.va",
+    "level_dac.va",
+    "preemphasis_driver.va"
+  ],
+  "canonical_dut_source_slug": "355-pam4-tx-driver",
+  "checker_task_id": "v4_355_pam4_tx_driver",
+  "family_id": "355",
+  "family_spec_sha256": "0da82fac2756b44f8b1036107a4a06ddae152fb592cccecf812805f291f61af3",
+  "form": "dut",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "4f3c5f2635843766270f9472e2e59238548d629613135bbd1b00b6eeef19d1c0",
+  "public_contract": "tasks/355-pam4-tx-driver/public_contract.json",
+  "public_contract_sha256": "ca01dd183797e9d72b60a8c3852e283c3ca160f84c552fe08d8aa37b8707d87a",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/355-pam4-tx-driver",
+  "task_id": "v4-355"
+}

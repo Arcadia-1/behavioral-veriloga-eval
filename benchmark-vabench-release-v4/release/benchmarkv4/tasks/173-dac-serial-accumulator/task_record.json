@@ -1,0 +1,25 @@
+{
+  "candidate_artifacts": [
+    "dac_serial_accumulator.va"
+  ],
+  "canonical_dut_source_slug": "173-dac-serial-accumulator",
+  "checker_task_id": "v4_173_dac_serial_accumulator",
+  "family_id": "173",
+  "family_spec_sha256": "0441566a39e148bbb29d333c780efd726223ddd2df1f71ef66fad938df9d34b4",
+  "form": "dut",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "f6daa77c1e349ed1071fa4c8ed1829e785db33054554e73900696b08ccd672bb",
+  "public_contract": "tasks/173-dac-serial-accumulator/public_contract.json",
+  "public_contract_sha256": "9fc2411988bdfc4d9c04a867cf8fa0c0a439996534cbde2869b16f5668c14618",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/173-dac-serial-accumulator",
+  "task_id": "v4-173"
+}

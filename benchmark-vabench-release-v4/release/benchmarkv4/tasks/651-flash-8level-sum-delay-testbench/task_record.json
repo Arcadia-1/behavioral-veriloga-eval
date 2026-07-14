@@ -1,0 +1,25 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "151-flash-8level-sum-delay",
+  "checker_task_id": "v4_151_flash_8level_sum_delay",
+  "family_id": "151",
+  "family_spec_sha256": "c31d3294b89c2196daf05000f01039da0ce395b88eca4596cda1adaf1e3f6e98",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "ae6ace884c10ce26c3d6f4590724a02348cacc776d2245884b05c0da564fb057",
+  "public_contract": "tasks/651-flash-8level-sum-delay-testbench/public_contract.json",
+  "public_contract_sha256": "e2c52bc975d0948dcecc37935579f1ea09197a2e4da1a5d1068fd0fc13c51bbd",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/651-flash-8level-sum-delay-testbench",
+  "task_id": "v4-651"
+}

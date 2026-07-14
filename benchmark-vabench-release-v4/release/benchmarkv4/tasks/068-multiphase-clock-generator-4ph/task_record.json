@@ -1,0 +1,25 @@
+{
+  "candidate_artifacts": [
+    "multiphase_clock_generator_4ph.va"
+  ],
+  "canonical_dut_source_slug": "068-multiphase-clock-generator-4ph",
+  "checker_task_id": "v4_068_multiphase_clock_generator_4ph",
+  "family_id": "068",
+  "family_spec_sha256": "75b86ba63b010056ec23087ae5e251b59196aff7f4941c10b27a2a422bbc89f4",
+  "form": "dut",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "c9c73013e7d85a1a9d1a52191ffbf90b8a8bde15332717011bc6a3bcbc4d0886",
+  "public_contract": "tasks/068-multiphase-clock-generator-4ph/public_contract.json",
+  "public_contract_sha256": "a4575bae2b017af9d6176e1dcde67d7f5aafca4740177ed2aad73d42cadc49cb",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/068-multiphase-clock-generator-4ph",
+  "task_id": "v4-068"
+}

@@ -1,0 +1,25 @@
+{
+  "candidate_artifacts": [
+    "absolute_value_behavior.va"
+  ],
+  "canonical_dut_source_slug": "126-absolute-value",
+  "checker_task_id": "v4_126_absolute_value",
+  "family_id": "126",
+  "family_spec_sha256": "642472df236718ff8407f37cc4a8208d6b2e1f736d995f985c8bc3d7b89c994d",
+  "form": "dut",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "23d81cc74873a8dc3e53e1c2e1d7c1023d45e46dad3b1ed4f37a75df72d60158",
+  "public_contract": "tasks/126-absolute-value/public_contract.json",
+  "public_contract_sha256": "c0ec60050bab4028f800421a5374eb76d32237f14b88055e08b6ed9733f3cd95",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/126-absolute-value",
+  "task_id": "v4-126"
+}

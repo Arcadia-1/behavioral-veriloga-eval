@@ -1,0 +1,25 @@
+{
+  "candidate_artifacts": [
+    "fracn_pll_timer_ref.va"
+  ],
+  "canonical_dut_source_slug": "302-fractional-n-divider-accumulator-flow",
+  "checker_task_id": "v4_302_fractional_n_divider_accumulator_flow",
+  "family_id": "302",
+  "family_spec_sha256": "6c69bb15c15c8e4d18a318bd2a201bf54e4a9a85f3627b0801bfb8d1c4ec3763",
+  "form": "dut",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "afa3b44d239cb39d12957c99343d8653f6a6988e45cd84f901bdacb85e958f19",
+  "public_contract": "tasks/302-fractional-n-divider-accumulator-flow/public_contract.json",
+  "public_contract_sha256": "fdf5ac49fd841e3846db7797bd4b25d22248aee60997777425bfef2c08b7cca4",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/302-fractional-n-divider-accumulator-flow",
+  "task_id": "v4-302"
+}

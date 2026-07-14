@@ -1,0 +1,25 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "045-threshold-comparator",
+  "checker_task_id": "v4_045_threshold_comparator",
+  "family_id": "045",
+  "family_spec_sha256": "7ae5aef2511a37e9cdb8cc5d6be1a50f5bf4a574076e4eb12c42279e4a9ad591",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "207e462ea3f385533d6cc25f4a834faba5ff41ba7c52b8b19529952008113637",
+  "public_contract": "tasks/545-threshold-comparator-testbench/public_contract.json",
+  "public_contract_sha256": "7aa63f951edf0301be26676ea67d520bfad198cd08b87e61d38a9feefe9cbc32",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/545-threshold-comparator-testbench",
+  "task_id": "v4-545"
+}

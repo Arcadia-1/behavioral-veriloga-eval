@@ -1,0 +1,25 @@
+{
+  "candidate_artifacts": [
+    "first_order_lowpass.va"
+  ],
+  "canonical_dut_source_slug": "007-first-order-lowpass",
+  "checker_task_id": "v4_007_first_order_lowpass",
+  "family_id": "007",
+  "family_spec_sha256": "5518438b82d9a11eb203c8701fbe7bdf1a947af714b908a044506d6a89eee800",
+  "form": "dut",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "9ed36fa4d87d52c448a742092f13e17410fb1f38012c20f2fbe108b820345230",
+  "public_contract": "tasks/007-first-order-lowpass/public_contract.json",
+  "public_contract_sha256": "05068a21e659c9cbd8980bb0e69ce4feca9b4abcf5ad4e71af3593d004cea1e5",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/007-first-order-lowpass",
+  "task_id": "v4-007"
+}

@@ -1,0 +1,25 @@
+{
+  "candidate_artifacts": [
+    "ready_reduction_fault_monitor.va"
+  ],
+  "canonical_dut_source_slug": "280-ready-reduction-fault-monitor",
+  "checker_task_id": "v4_280_ready_reduction_fault_monitor",
+  "family_id": "280",
+  "family_spec_sha256": "261a5f79ad650f7e6e03ec4bc183a95756f25f54806949256a35cce4c336972b",
+  "form": "dut",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "d069955c95eba69a1f91d4101ac1bc02c524fe6aa9277ab02c43618d1e82ac9b",
+  "public_contract": "tasks/280-ready-reduction-fault-monitor/public_contract.json",
+  "public_contract_sha256": "8e2d2253144a7a0850faf290f39e873a00aa40675a8e06b6665592225a3b12ff",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/280-ready-reduction-fault-monitor",
+  "task_id": "v4-280"
+}

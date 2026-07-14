@@ -1,0 +1,25 @@
+{
+  "candidate_artifacts": [
+    "differential_dac_calc_6b.va"
+  ],
+  "canonical_dut_source_slug": "153-differential-dac-calc-6b",
+  "checker_task_id": "v4_153_differential_dac_calc_6b",
+  "family_id": "153",
+  "family_spec_sha256": "667cea62c6c5ee9d9a78e00c8538f1c9203261298d32d417cd15aeec9127770d",
+  "form": "dut",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "366141b05b095379ef848d71edf8af8f44587fa0d45e465c9fe57a43b5cd3bef",
+  "public_contract": "tasks/153-differential-dac-calc-6b/public_contract.json",
+  "public_contract_sha256": "19c76df933bed80bdea36fbbfd0dec2c5a98b30b06ded53a4c83528222fa1e6c",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/153-differential-dac-calc-6b",
+  "task_id": "v4-153"
+}

@@ -1,0 +1,25 @@
+{
+  "candidate_artifacts": [
+    "sar_weighted_sum.va"
+  ],
+  "canonical_dut_source_slug": "113-sar-weighted-sum",
+  "checker_task_id": "v4_113_sar_weighted_sum",
+  "family_id": "113",
+  "family_spec_sha256": "f1c4ba0d8e5f52feff316b70904fcfcead2acd57f9bcb1cadb13272b49f6f6f8",
+  "form": "dut",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "411db9b7083b454378d953910f5b8dee23486415a1558d9d1b02165d2a31f6ae",
+  "public_contract": "tasks/113-sar-weighted-sum/public_contract.json",
+  "public_contract_sha256": "68cbd833a5f67063d71a5aaa7277291a8479185f6e664e712582abfb394a9f06",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/113-sar-weighted-sum",
+  "task_id": "v4-113"
+}

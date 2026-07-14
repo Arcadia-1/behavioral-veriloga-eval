@@ -1,0 +1,25 @@
+{
+  "candidate_artifacts": [
+    "lt_read_sar7b_weighted.va"
+  ],
+  "canonical_dut_source_slug": "215-lt-read-sar7b-weighted",
+  "checker_task_id": "v4_215_lt_read_sar7b_weighted",
+  "family_id": "215",
+  "family_spec_sha256": "b494ccdbb434767c4c4ad526efbebc317f0f95b33e81131a489737f6399fa32c",
+  "form": "dut",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "da622650c827055cc168b76095967b1ffd06d449a7b29f74ab429836baf5af55",
+  "public_contract": "tasks/215-lt-read-sar7b-weighted/public_contract.json",
+  "public_contract_sha256": "4c96da91eb4522e7cba0869d45cddca480cde7168690065727b09c0612bae778",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/215-lt-read-sar7b-weighted",
+  "task_id": "v4-215"
+}

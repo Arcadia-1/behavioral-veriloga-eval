@@ -1,0 +1,25 @@
+{
+  "candidate_artifacts": [
+    "deterministic_energy_accumulator.va"
+  ],
+  "canonical_dut_source_slug": "275-deterministic-energy-accumulator",
+  "checker_task_id": "v4_275_deterministic_energy_accumulator",
+  "family_id": "275",
+  "family_spec_sha256": "94ec1f188fb6e2bfbfb72d6b7f9d44f1db9954f0a36e4393cdb411c955984923",
+  "form": "bugfix",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "d01f1cc5ac853a6f410247a4c46d255695122166747705aaeb147d3b54382c75",
+  "public_contract": "tasks/1275-deterministic-energy-accumulator-bugfix/public_contract.json",
+  "public_contract_sha256": "c92f16d23e90cd1bca0888fa510ee045a9ad94974ef159fde92365adabc10c36",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/1275-deterministic-energy-accumulator-bugfix",
+  "task_id": "v4-1275"
+}

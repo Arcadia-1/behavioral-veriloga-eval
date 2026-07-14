@@ -1,0 +1,25 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "094-iq-downconversion-chain",
+  "checker_task_id": "v4_094_iq_downconversion_chain",
+  "family_id": "094",
+  "family_spec_sha256": "841e97dcb331a20eb0b027b13bccfe0bbcf1fc41677c868946d4a30e6e9e6231",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "4167a8ef32ce8c5481ad54071e41881092c01e11a34775390364726ce4e030dc",
+  "public_contract": "tasks/594-iq-downconversion-chain-testbench/public_contract.json",
+  "public_contract_sha256": "1dc59c97c3cfcf07802d20760c7a7464ffdf455249094256aff31eab2d32f386",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/594-iq-downconversion-chain-testbench",
+  "task_id": "v4-594"
+}

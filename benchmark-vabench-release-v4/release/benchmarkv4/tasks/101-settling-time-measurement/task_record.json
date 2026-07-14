@@ -1,0 +1,25 @@
+{
+  "candidate_artifacts": [
+    "settling_time_measurement_tb.va"
+  ],
+  "canonical_dut_source_slug": "101-settling-time-measurement",
+  "checker_task_id": "v4_101_settling_time_measurement",
+  "family_id": "101",
+  "family_spec_sha256": "eefb23fc7add6d41f3c48ce132af632df56500c06056afc2c916ccda217afab6",
+  "form": "dut",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "147f075160c9356ba5e084175bf3e9b747ba9eccf5cc7d3dab09a93e4ae7569f",
+  "public_contract": "tasks/101-settling-time-measurement/public_contract.json",
+  "public_contract_sha256": "2be8881e8f7aac67022f12eba55442dae149cc04c3866f68f21f2538fb582523",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/101-settling-time-measurement",
+  "task_id": "v4-101"
+}

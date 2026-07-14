@@ -1,0 +1,25 @@
+{
+  "candidate_artifacts": [
+    "dac_5v_weighted_7b.va"
+  ],
+  "canonical_dut_source_slug": "156-dac-5v-weighted-7b",
+  "checker_task_id": "v4_156_dac_5v_weighted_7b",
+  "family_id": "156",
+  "family_spec_sha256": "8866d1638328e950febb7ae75c74b85ce3364283641dcf69815592b27161af96",
+  "form": "bugfix",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "545428dae0aa076995aa5c9c0900c34905198d60dbc5184bdf9ca91cdaa99ef7",
+  "public_contract": "tasks/1156-dac-5v-weighted-7b-bugfix/public_contract.json",
+  "public_contract_sha256": "6a98dacf69de8202b0ece97cd63f631940ebdc21a45f4ab6e10affe686ef1f53",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/1156-dac-5v-weighted-7b-bugfix",
+  "task_id": "v4-1156"
+}

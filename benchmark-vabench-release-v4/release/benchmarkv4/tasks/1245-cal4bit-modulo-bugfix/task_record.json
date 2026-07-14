@@ -1,0 +1,25 @@
+{
+  "candidate_artifacts": [
+    "cal4bit_modulo.va"
+  ],
+  "canonical_dut_source_slug": "245-cal4bit-modulo",
+  "checker_task_id": "v4_245_cal4bit_modulo",
+  "family_id": "245",
+  "family_spec_sha256": "d5f6f732b066902c4c7a4a66f6388fb84cf8698255418b65c009ae5d05c9d940",
+  "form": "bugfix",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "0ff1e41cfa1635ee965c3aae5962a9b7b314334d11510074ff113d7a6e654ddd",
+  "public_contract": "tasks/1245-cal4bit-modulo-bugfix/public_contract.json",
+  "public_contract_sha256": "180b9a99d0803305447443949f30d7a3de591c5ce4d97e88bae63058562ae5db",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/1245-cal4bit-modulo-bugfix",
+  "task_id": "v4-1245"
+}

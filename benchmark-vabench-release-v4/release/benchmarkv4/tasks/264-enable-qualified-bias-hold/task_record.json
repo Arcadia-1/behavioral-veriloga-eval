@@ -1,0 +1,25 @@
+{
+  "candidate_artifacts": [
+    "enable_qualified_bias_hold.va"
+  ],
+  "canonical_dut_source_slug": "264-enable-qualified-bias-hold",
+  "checker_task_id": "v4_264_enable_qualified_bias_hold",
+  "family_id": "264",
+  "family_spec_sha256": "a70a757765c41274a8ad7e099b3846774a6e771a1003f132b0dd67b75589683f",
+  "form": "dut",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "160b653d6c7f3aa162dd7da1fa695b4e0ae3d38d04b30b12988d0f479273ac17",
+  "public_contract": "tasks/264-enable-qualified-bias-hold/public_contract.json",
+  "public_contract_sha256": "0b33f4c31e7d441ff955850acb0952d7b6e694ba47572761cf5cc774f0876b3a",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/264-enable-qualified-bias-hold",
+  "task_id": "v4-264"
+}

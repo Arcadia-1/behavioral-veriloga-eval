@@ -1,0 +1,25 @@
+{
+  "candidate_artifacts": [
+    "decision_router_logic.va"
+  ],
+  "canonical_dut_source_slug": "231-decision-router-logic",
+  "checker_task_id": "v4_231_decision_router_logic",
+  "family_id": "231",
+  "family_spec_sha256": "875c27c0a2e52b1eac586a8d8a4111813ccf72efb157acb8c9b6f3c547c0c219",
+  "form": "dut",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "05e71c77df7a8ca009d34b6af4e5994aa6e1bae4c043a9c8b37f4fd4c57dbc05",
+  "public_contract": "tasks/231-decision-router-logic/public_contract.json",
+  "public_contract_sha256": "b83cdf6c55b0cf69422bfc1f760b480b55b43f697d2560d32ccab48dbdf1692d",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/231-decision-router-logic",
+  "task_id": "v4-231"
+}

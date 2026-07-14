@@ -1,0 +1,25 @@
+{
+  "candidate_artifacts": [
+    "limiter_rails.va"
+  ],
+  "canonical_dut_source_slug": "125-limiter-rails",
+  "checker_task_id": "v4_125_limiter_rails",
+  "family_id": "125",
+  "family_spec_sha256": "860d9c0671d3048a4b0fdad739a97b9a992582d9a51ea4bd83d88d0f887ae7a7",
+  "form": "bugfix",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "e18512dcf092a25903dce42cc1ffc1e677fb22ca9ce23658449113cd90a21dc4",
+  "public_contract": "tasks/1125-limiter-rails-bugfix/public_contract.json",
+  "public_contract_sha256": "0180e6d4b88411d0e451c071a55913913447a905d1468d44b614f437cfe373cd",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/1125-limiter-rails-bugfix",
+  "task_id": "v4-1125"
+}

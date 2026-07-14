@@ -1,0 +1,25 @@
+{
+  "candidate_artifacts": [
+    "element_shuffler.va"
+  ],
+  "canonical_dut_source_slug": "006-element-shuffler",
+  "checker_task_id": "v4_006_element_shuffler",
+  "family_id": "006",
+  "family_spec_sha256": "adaa158a08b0036c6dbc59aedd39853c025706538de75e087fa2122b9f64a5e2",
+  "form": "dut",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "faa5b177547b744a7ebe3bb8ffc4bce0fe16d0fe1a1109f0460741ace76246db",
+  "public_contract": "tasks/006-element-shuffler/public_contract.json",
+  "public_contract_sha256": "ae3443df6bfd7feffeecf2fe5a2a19b163ca0d8a3a9d90684c9e13a4dc631216",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/006-element-shuffler",
+  "task_id": "v4-006"
+}

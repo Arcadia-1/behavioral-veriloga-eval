@@ -1,0 +1,25 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "328-pam4-linearity-monitor",
+  "checker_task_id": "v4_328_pam4_linearity_monitor",
+  "family_id": "328",
+  "family_spec_sha256": "1b476a5e5d2ff87f2e8d7e0c136c145d7d0873c6825972777fd03355a7d78943",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "a5afe2245cf14a9fd802a453b8249a7ce04b13b81b79c063347bef21dd2d8ef3",
+  "public_contract": "tasks/828-pam4-linearity-monitor-testbench/public_contract.json",
+  "public_contract_sha256": "a3782c73c756286e418148597ed472a35fe76587bc632eeec32bcefb72217230",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/828-pam4-linearity-monitor-testbench",
+  "task_id": "v4-828"
+}

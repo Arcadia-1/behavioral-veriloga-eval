@@ -1,0 +1,25 @@
+{
+  "candidate_artifacts": [
+    "local_domain_buffer_translator.va"
+  ],
+  "canonical_dut_source_slug": "266-local-domain-buffer-translator",
+  "checker_task_id": "v4_266_local_domain_buffer_translator",
+  "family_id": "266",
+  "family_spec_sha256": "feec8e9a09ceb43266b7c807c6e4e14c5694016c2d4d91c127cf0ab6763f4c32",
+  "form": "dut",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "e33cde1f64665f591795a0cdc3655ad9a0670acfdffc58f24a053b727e0d2946",
+  "public_contract": "tasks/266-local-domain-buffer-translator/public_contract.json",
+  "public_contract_sha256": "e7c1559d6b1a74e277927f822dbf342c5a97939aba53e573bf0a31d46c8dd33e",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/266-local-domain-buffer-translator",
+  "task_id": "v4-266"
+}

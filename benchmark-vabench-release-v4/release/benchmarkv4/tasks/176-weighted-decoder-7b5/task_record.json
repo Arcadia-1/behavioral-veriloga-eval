@@ -1,0 +1,25 @@
+{
+  "candidate_artifacts": [
+    "weighted_decoder_7b5.va"
+  ],
+  "canonical_dut_source_slug": "176-weighted-decoder-7b5",
+  "checker_task_id": "v4_176_weighted_decoder_7b5",
+  "family_id": "176",
+  "family_spec_sha256": "9f12dffffcd5a8760bbfab45382bb15165792d0381a8f735d4fbf45bd6237d68",
+  "form": "dut",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "ff2eb2f7320b2643cf6928eec34e14b8ff372a60fbc3da75472d43345283ecf4",
+  "public_contract": "tasks/176-weighted-decoder-7b5/public_contract.json",
+  "public_contract_sha256": "590853f571276289700d8307631b68d9e03b13d22af1c19b0373be1f929281cc",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/176-weighted-decoder-7b5",
+  "task_id": "v4-176"
+}

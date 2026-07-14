@@ -1,0 +1,25 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "343-pipeline-adc-two-stage",
+  "checker_task_id": "v4_343_pipeline_adc_two_stage",
+  "family_id": "343",
+  "family_spec_sha256": "0178e9fcfb5dd6a8b4e3ed7a39972a061f2cf642a549c196371d9171bff4eb14",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "c3c5c03854cc8a50bb8f84e9ee5b1c687f782f15d2b4a9ba8e0533b032c29dcd",
+  "public_contract": "tasks/843-pipeline-adc-two-stage-testbench/public_contract.json",
+  "public_contract_sha256": "0cbf62a57e8dc2b97431f6da60149fd2bfb571297d25ed0569d8f9edc80a614f",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/843-pipeline-adc-two-stage-testbench",
+  "task_id": "v4-843"
+}

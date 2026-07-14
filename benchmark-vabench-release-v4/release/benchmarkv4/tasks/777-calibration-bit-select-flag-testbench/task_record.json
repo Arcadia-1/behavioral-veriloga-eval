@@ -1,0 +1,25 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "277-calibration-bit-select-flag",
+  "checker_task_id": "v4_277_calibration_bit_select_flag",
+  "family_id": "277",
+  "family_spec_sha256": "6b22d02693b861482bdeb99619f8658b8ff9b3cf849880fffc08712501e30517",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "3cba0ad001aace76891ab0be2a8b0c2abc455c58dff24c2317edc3001d6c9bb7",
+  "public_contract": "tasks/777-calibration-bit-select-flag-testbench/public_contract.json",
+  "public_contract_sha256": "dc31e7850501b977aa4da14e340e45be950ecd98f8ab57560f9ca26933d87ab8",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/777-calibration-bit-select-flag-testbench",
+  "task_id": "v4-777"
+}

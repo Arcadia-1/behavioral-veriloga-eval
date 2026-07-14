@@ -1,0 +1,25 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "140-rs-latch-voltage",
+  "checker_task_id": "v4_140_rs_latch_voltage",
+  "family_id": "140",
+  "family_spec_sha256": "c590a9dac1b970520868f440ed1d57dee29839130ab29415feee5a5cd5c954d9",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "ba53e262a035375cf33870b23b6f1e0a17a3746ae9245d6efb1a5faea7ebfb88",
+  "public_contract": "tasks/640-rs-latch-voltage-testbench/public_contract.json",
+  "public_contract_sha256": "21137daf92602b6b68a4ecb3218ac2b441ec8200fd4928134e1c4a141675da95",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/640-rs-latch-voltage-testbench",
+  "task_id": "v4-640"
+}

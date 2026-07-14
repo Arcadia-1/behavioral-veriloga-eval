@@ -1,0 +1,22 @@
+{
+  "artifact_mode": "single_file",
+  "bugfix_seed_mutation_id": "neg_004_reset_polarity_wrong",
+  "bugfix_seed_selection_status": "policy_reviewed",
+  "bugfix_seed_triviality_markers": [],
+  "buggy_bundle_sha256": "c25990554617aecf5183cc5486368d7ddc1a5f027d78fe8e477db5df42b86852",
+  "candidate_artifacts": [
+    "settling_time_measurement_tb.va"
+  ],
+  "changed_artifacts": [
+    "settling_time_measurement_tb.va"
+  ],
+  "checker_profile_sha256": "ba4d7a8cc00168c56945d7c6fea54c405094344b1d2a984aa475bad85e8c32dc",
+  "full_contract_pass_required": true,
+  "gold_dut_certification_sha256": "da7a14b70e3472d10e471ee00075a7cffaf6f95eba34da4120026e8e0d502b75",
+  "gold_solution_tree_sha256": "fc85dbf2b5bb2c8c658e38076226a1ea90ce75dfa3f8ad11a8b1c8c8bb5ffcf4",
+  "materialized_checker_profile": "evaluator/checker_profile.json",
+  "mutation_catalog_sha256": "370be0e7804f432038c8c35aaabeaf75c0738cb9f299199eaea5f9e0c305cfaf",
+  "schema_version": "v4-bugfix-score-policy-v1",
+  "spectre_final_judge": true,
+  "task_id": "v4-1101"
+}

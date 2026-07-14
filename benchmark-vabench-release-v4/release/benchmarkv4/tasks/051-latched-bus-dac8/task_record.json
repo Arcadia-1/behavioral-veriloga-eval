@@ -1,0 +1,25 @@
+{
+  "candidate_artifacts": [
+    "latched_bus_dac8.va"
+  ],
+  "canonical_dut_source_slug": "051-latched-bus-dac8",
+  "checker_task_id": "v4_051_latched_bus_dac8",
+  "family_id": "051",
+  "family_spec_sha256": "8fb0d2cd7b84adda9907600f92291d66852f487a2d20c232312c2531282d8d6e",
+  "form": "dut",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "c1e1a0b478f01645bc9e8c996a87825da8a5f2bc6b00625b9fbd872a400bf454",
+  "public_contract": "tasks/051-latched-bus-dac8/public_contract.json",
+  "public_contract_sha256": "a586580605d1b15dd3538d4ff92a73439641d77e0a0ddf509d85d7a25708e818",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/051-latched-bus-dac8",
+  "task_id": "v4-051"
+}

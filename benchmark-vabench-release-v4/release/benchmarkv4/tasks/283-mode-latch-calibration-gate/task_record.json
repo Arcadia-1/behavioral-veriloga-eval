@@ -1,0 +1,25 @@
+{
+  "candidate_artifacts": [
+    "mode_latch_calibration_gate.va"
+  ],
+  "canonical_dut_source_slug": "283-mode-latch-calibration-gate",
+  "checker_task_id": "v4_283_mode_latch_calibration_gate",
+  "family_id": "283",
+  "family_spec_sha256": "824669462d8050fa5eb8534205e07b1e37c9b86b885d0f19ec8562fcb58dfda0",
+  "form": "dut",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "4826372be55fce969f089cb6056cae33fe73215a5d52ea906358c829539ed539",
+  "public_contract": "tasks/283-mode-latch-calibration-gate/public_contract.json",
+  "public_contract_sha256": "b53a98b492628f4904e1f9dd150c03f6e826a403ceaee9fc3e6758dd617d348a",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/283-mode-latch-calibration-gate",
+  "task_id": "v4-283"
+}

@@ -1,0 +1,25 @@
+{
+  "candidate_artifacts": [
+    "iq_upconversion_mixer.va"
+  ],
+  "canonical_dut_source_slug": "364-iq-upconversion-mixer-chain",
+  "checker_task_id": "v4_364_iq_upconversion_mixer_chain",
+  "family_id": "364",
+  "family_spec_sha256": "d551441562506417127fc437556f348c6d60a70db3e9ac456ccdc7c8b6b4757c",
+  "form": "dut",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "a0f04a1719b9af43564fcf67b16baebf991077fce94b0d695262cd22cb35e0e0",
+  "public_contract": "tasks/364-iq-upconversion-mixer-chain/public_contract.json",
+  "public_contract_sha256": "700a17b93c74caa6ff2beb46529290f3ae3aaf13e050cb50badb924a658941a0",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/364-iq-upconversion-mixer-chain",
+  "task_id": "v4-364"
+}

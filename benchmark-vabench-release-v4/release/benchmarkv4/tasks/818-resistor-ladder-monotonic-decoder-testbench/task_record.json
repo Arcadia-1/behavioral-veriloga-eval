@@ -1,0 +1,25 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "318-resistor-ladder-monotonic-decoder",
+  "checker_task_id": "v4_318_resistor_ladder_monotonic_decoder",
+  "family_id": "318",
+  "family_spec_sha256": "abbf12010a03af2de9769b1eb2fb91069e790664bde1b5124fbe33d2b3429a61",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "0e1bf73c97018e6711a2208f97950cc76ecb9c8fec6b6c6420e4e2bf65b475ca",
+  "public_contract": "tasks/818-resistor-ladder-monotonic-decoder-testbench/public_contract.json",
+  "public_contract_sha256": "86fa5bdea39223c6db7e1532fa940b9f42c54afa3b6ee5c31bc5ab291e794de5",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/818-resistor-ladder-monotonic-decoder-testbench",
+  "task_id": "v4-818"
+}

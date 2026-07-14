@@ -1,0 +1,25 @@
+{
+  "candidate_artifacts": [
+    "periodic_sampler_aperture_metric.va"
+  ],
+  "canonical_dut_source_slug": "379-periodic-sampler-aperture-metric",
+  "checker_task_id": "v4_379_periodic_sampler_aperture_metric",
+  "family_id": "379",
+  "family_spec_sha256": "0825ff8a997b659120122472e67c77f70df8418e3053bab9e13d5efad8e4665a",
+  "form": "bugfix",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "edbe39c3ed7fe34fb5c1469b112dac034a37567c257613fb78bd5cb2863348e8",
+  "public_contract": "tasks/1379-periodic-sampler-aperture-metric-bugfix/public_contract.json",
+  "public_contract_sha256": "816fdefc9098dd256f0d41e29500e0087188e0b0ae3d4c793d52728bc3fd9499",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/1379-periodic-sampler-aperture-metric-bugfix",
+  "task_id": "v4-1379"
+}

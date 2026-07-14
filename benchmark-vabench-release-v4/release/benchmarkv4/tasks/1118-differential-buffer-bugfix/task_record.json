@@ -1,0 +1,25 @@
+{
+  "candidate_artifacts": [
+    "differential_buffer.va"
+  ],
+  "canonical_dut_source_slug": "118-differential-buffer",
+  "checker_task_id": "v4_118_differential_buffer",
+  "family_id": "118",
+  "family_spec_sha256": "aac140e52ffe85b525a5fbf347156073cff5a37e80b7472b51fff95c2485ea5c",
+  "form": "bugfix",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "30a580b128e3c91bd65a2bafbd357ca96aa2f23b355d1e4c81de31d69883cd1e",
+  "public_contract": "tasks/1118-differential-buffer-bugfix/public_contract.json",
+  "public_contract_sha256": "9b2a2741acaf01ad16726dbae89680d63234f04f2eb2ff433767feddf215fedc",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/1118-differential-buffer-bugfix",
+  "task_id": "v4-1118"
+}

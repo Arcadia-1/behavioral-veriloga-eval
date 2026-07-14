@@ -1,0 +1,25 @@
+{
+  "candidate_artifacts": [
+    "differential_gain_driver.va"
+  ],
+  "canonical_dut_source_slug": "130-differential-gain-driver",
+  "checker_task_id": "v4_130_differential_gain_driver",
+  "family_id": "130",
+  "family_spec_sha256": "331ced7489af5ae20cf6e57f7f73cab8ccf0532e09aa39382615b17e9cda3788",
+  "form": "dut",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "4bd3b6d5fb7df5e40e71b50c2511cbf53933afcda094d4f19c02be4d2c972d1e",
+  "public_contract": "tasks/130-differential-gain-driver/public_contract.json",
+  "public_contract_sha256": "42658261c6197c770b39495612d572145408d51bd4538948c7a13f4ab7cda576",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/130-differential-gain-driver",
+  "task_id": "v4-130"
+}

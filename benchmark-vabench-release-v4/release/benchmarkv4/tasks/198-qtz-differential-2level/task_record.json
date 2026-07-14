@@ -1,0 +1,25 @@
+{
+  "candidate_artifacts": [
+    "qtz_differential_2level.va"
+  ],
+  "canonical_dut_source_slug": "198-qtz-differential-2level",
+  "checker_task_id": "v4_198_qtz_differential_2level",
+  "family_id": "198",
+  "family_spec_sha256": "d291eae157a9fd2a77166727658290ec5a36a4933bf46ad0c4293d850eded32f",
+  "form": "dut",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "3dae40106c8dbf139a68970fa1998f3b3698103d871942780ae7ea832a30d96d",
+  "public_contract": "tasks/198-qtz-differential-2level/public_contract.json",
+  "public_contract_sha256": "7d05372cb6ae5e8d1d86ea57477802a231b9edc3970c93143ba344ac0a89b072",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/198-qtz-differential-2level",
+  "task_id": "v4-198"
+}

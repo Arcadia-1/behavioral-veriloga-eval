@@ -1,0 +1,25 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "028-higher-order-filter",
+  "checker_task_id": "v4_028_higher_order_filter",
+  "family_id": "028",
+  "family_spec_sha256": "b3a98b3554bcf9a5b0c706a555f1e035a441b305313755a19cd956e9fe833ffa",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "b3d25dcfc4ab3b4955c7237cee685aef5f9682ce198b01ba7de02e1d813d96ed",
+  "public_contract": "tasks/528-higher-order-filter-testbench/public_contract.json",
+  "public_contract_sha256": "11fcf1cb67ef2e89ee12d74306e1b6e101ce1b980b321d43dc1bb4aec34382d2",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/528-higher-order-filter-testbench",
+  "task_id": "v4-528"
+}

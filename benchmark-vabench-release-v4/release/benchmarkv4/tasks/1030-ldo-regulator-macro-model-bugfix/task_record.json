@@ -1,0 +1,25 @@
+{
+  "candidate_artifacts": [
+    "ldo_regulator_macro_model.va"
+  ],
+  "canonical_dut_source_slug": "030-ldo-regulator-macro-model",
+  "checker_task_id": "v4_030_ldo_regulator_macro_model",
+  "family_id": "030",
+  "family_spec_sha256": "8bda7644ea899a74d9817a7394268380e0861bc22028e5c46b5de985dd6668fc",
+  "form": "bugfix",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "ae87a31144d3027be5b366c840b9444943b9fd60199ef5f88461e79d7bdaaa1b",
+  "public_contract": "tasks/1030-ldo-regulator-macro-model-bugfix/public_contract.json",
+  "public_contract_sha256": "4f1e8165bc0d74e75d40fd7ec1504323acfaf6976950a8baadb2aa4500562edb",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/1030-ldo-regulator-macro-model-bugfix",
+  "task_id": "v4-1030"
+}

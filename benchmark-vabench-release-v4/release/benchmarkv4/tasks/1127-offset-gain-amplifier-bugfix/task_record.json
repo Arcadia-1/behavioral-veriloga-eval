@@ -1,0 +1,25 @@
+{
+  "candidate_artifacts": [
+    "offset_gain_amplifier.va"
+  ],
+  "canonical_dut_source_slug": "127-offset-gain-amplifier",
+  "checker_task_id": "v4_127_offset_gain_amplifier",
+  "family_id": "127",
+  "family_spec_sha256": "eee986a7d0b55578bb70b0bfd6d88d6300239495a1b91fa45ad599f4e2b6572c",
+  "form": "bugfix",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "b561472755885017f273e581a0ee499fcc381e5ad70206c907925ff2283a98c7",
+  "public_contract": "tasks/1127-offset-gain-amplifier-bugfix/public_contract.json",
+  "public_contract_sha256": "09bdff12442295f94d6a96c14e59c59e78fbcafee3df4c5ae2348f3917ca04d7",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/1127-offset-gain-amplifier-bugfix",
+  "task_id": "v4-1127"
+}

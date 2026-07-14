@@ -1,0 +1,25 @@
+{
+  "candidate_artifacts": [
+    "offset_bisection_driver.va"
+  ],
+  "canonical_dut_source_slug": "175-offset-bisection-driver",
+  "checker_task_id": "v4_175_offset_bisection_driver",
+  "family_id": "175",
+  "family_spec_sha256": "f19770976980278d70d8c2e7ddfca2cb196dcdbf2fb3206b76fdfd64c9121697",
+  "form": "dut",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "96b75d83be2bad657fc4196ae72497c460fc5254b3bc9a2211f013e668db3d64",
+  "public_contract": "tasks/175-offset-bisection-driver/public_contract.json",
+  "public_contract_sha256": "15ade966e8120ed7de4d86e93ae2a1b3c08da971edd16848b572435d21db49a0",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/175-offset-bisection-driver",
+  "task_id": "v4-175"
+}

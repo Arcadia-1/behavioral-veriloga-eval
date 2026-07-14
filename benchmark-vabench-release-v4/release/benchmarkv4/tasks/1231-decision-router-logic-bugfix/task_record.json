@@ -1,0 +1,25 @@
+{
+  "candidate_artifacts": [
+    "decision_router_logic.va"
+  ],
+  "canonical_dut_source_slug": "231-decision-router-logic",
+  "checker_task_id": "v4_231_decision_router_logic",
+  "family_id": "231",
+  "family_spec_sha256": "875c27c0a2e52b1eac586a8d8a4111813ccf72efb157acb8c9b6f3c547c0c219",
+  "form": "bugfix",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "ceb93caf474de94bccb48d00d2da6dd434af9f7850a74d7aeef0af0e5a0f9c3b",
+  "public_contract": "tasks/1231-decision-router-logic-bugfix/public_contract.json",
+  "public_contract_sha256": "8b197f09e91602a7dcb3260368d1e41f725adcb1b9286238708d8b594fbb1eae",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/1231-decision-router-logic-bugfix",
+  "task_id": "v4-1231"
+}

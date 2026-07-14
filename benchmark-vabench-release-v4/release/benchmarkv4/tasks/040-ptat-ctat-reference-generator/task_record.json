@@ -1,0 +1,25 @@
+{
+  "candidate_artifacts": [
+    "ptat_ctat_reference_generator.va"
+  ],
+  "canonical_dut_source_slug": "040-ptat-ctat-reference-generator",
+  "checker_task_id": "v4_040_ptat_ctat_reference_generator",
+  "family_id": "040",
+  "family_spec_sha256": "50d74d4b3ff7d95fd09f56b97b8cd354d42bb3d1872b84c78471de10e8ca91d2",
+  "form": "dut",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "e27ce26733de402444daf95d4feb7eceffcc2d1cbb7a7916334cd8cca5e049bd",
+  "public_contract": "tasks/040-ptat-ctat-reference-generator/public_contract.json",
+  "public_contract_sha256": "dd2b726e7dee5a0a9f6315446bcb3a3ef028b096eb4799871ac870f43e8167b0",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/040-ptat-ctat-reference-generator",
+  "task_id": "v4-040"
+}

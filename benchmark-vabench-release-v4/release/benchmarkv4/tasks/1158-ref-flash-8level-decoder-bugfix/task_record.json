@@ -1,0 +1,25 @@
+{
+  "candidate_artifacts": [
+    "ref_flash_8level_decoder.va"
+  ],
+  "canonical_dut_source_slug": "158-ref-flash-8level-decoder",
+  "checker_task_id": "v4_158_ref_flash_8level_decoder",
+  "family_id": "158",
+  "family_spec_sha256": "70ba1121ee3a843d31b9eaa76467eb365c1d0a5a53aa18be658d901ae42bd48b",
+  "form": "bugfix",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "d6ed916fc81ab97771ceaaceec7b8f61af455e86baac7d7ed7c9649a5eab0c85",
+  "public_contract": "tasks/1158-ref-flash-8level-decoder-bugfix/public_contract.json",
+  "public_contract_sha256": "10e03a672303a722c1af9104eab63c77f2e7329ae26681bcdf252a5126e8873f",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/1158-ref-flash-8level-decoder-bugfix",
+  "task_id": "v4-1158"
+}

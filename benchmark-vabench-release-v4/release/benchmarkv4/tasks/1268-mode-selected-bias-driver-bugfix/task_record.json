@@ -1,0 +1,25 @@
+{
+  "candidate_artifacts": [
+    "mode_selected_bias_driver.va"
+  ],
+  "canonical_dut_source_slug": "268-mode-selected-bias-driver",
+  "checker_task_id": "v4_268_mode_selected_bias_driver",
+  "family_id": "268",
+  "family_spec_sha256": "e6f0414c910eabdc107a2c05337e8b1d4aad373c35499c88ecb7b27300bf9b6d",
+  "form": "bugfix",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "4093f7268deced358169e406940ab4d2bd4e6abd644ef0df987925f6adbeb3ab",
+  "public_contract": "tasks/1268-mode-selected-bias-driver-bugfix/public_contract.json",
+  "public_contract_sha256": "5c21423885159cb62988a056fc6b2b5b3982986422a433ca07378ada3dfbf877",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/1268-mode-selected-bias-driver-bugfix",
+  "task_id": "v4-1268"
+}

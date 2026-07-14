@@ -1,0 +1,25 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "380-am-modulator-source-macro",
+  "checker_task_id": "v4_380_am_modulator_source_macro",
+  "family_id": "380",
+  "family_spec_sha256": "d3df8ed55d2b716d17c828be1d262407b16c97360980e37f6fd55e71f9b701b0",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "21d44f1ea50b71409ecf409bcd3c821da2958d7a6863e3718e3bc6016cd57692",
+  "public_contract": "tasks/880-am-modulator-source-macro-testbench/public_contract.json",
+  "public_contract_sha256": "846b362a768303a226a2bd0418d883f8e1d1878740ac20a0be369f36eadb7482",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/880-am-modulator-source-macro-testbench",
+  "task_id": "v4-880"
+}

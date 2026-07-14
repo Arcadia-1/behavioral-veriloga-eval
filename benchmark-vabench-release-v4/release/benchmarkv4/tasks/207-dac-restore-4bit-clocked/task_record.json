@@ -1,0 +1,25 @@
+{
+  "candidate_artifacts": [
+    "dac_restore_4bit_clocked.va"
+  ],
+  "canonical_dut_source_slug": "207-dac-restore-4bit-clocked",
+  "checker_task_id": "v4_207_dac_restore_4bit_clocked",
+  "family_id": "207",
+  "family_spec_sha256": "ee254d1e81a5bfe9cadb2bd66d18461ea12b098e03c7763be4bb1267aa830cf1",
+  "form": "dut",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "4722fbe234feea5941e666b5c5db06b325b44c293397de6b6f26f0624f0e9010",
+  "public_contract": "tasks/207-dac-restore-4bit-clocked/public_contract.json",
+  "public_contract_sha256": "eb26799c795b71613d855f33d1818cdacd09b0d4014707a525706275aa3fb93b",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/207-dac-restore-4bit-clocked",
+  "task_id": "v4-207"
+}

@@ -1,0 +1,25 @@
+{
+  "candidate_artifacts": [
+    "power_mode_clamped_mux.va"
+  ],
+  "canonical_dut_source_slug": "253-power-mode-clamped-mux",
+  "checker_task_id": "v4_253_power_mode_clamped_mux",
+  "family_id": "253",
+  "family_spec_sha256": "9f39e60427cabea339f974b898f49eb91d182d8f8ee6112019ea0cbff0524b45",
+  "form": "dut",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "4256ba9f21a46555bd92c4fa5c5df014743c9255678d8f2b120d44192758575d",
+  "public_contract": "tasks/253-power-mode-clamped-mux/public_contract.json",
+  "public_contract_sha256": "8149181d4981c2a6e5d7139509dd084bf5d4da4bdbc5735e235c003f19e45a8c",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/253-power-mode-clamped-mux",
+  "task_id": "v4-253"
+}

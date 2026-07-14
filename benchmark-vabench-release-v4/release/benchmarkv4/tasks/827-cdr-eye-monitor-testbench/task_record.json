@@ -1,0 +1,25 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "327-cdr-eye-monitor",
+  "checker_task_id": "v4_327_cdr_eye_monitor",
+  "family_id": "327",
+  "family_spec_sha256": "261d594911ce33b429fb970cd0e993a01125f416a9779ce67cef38eae1a3b58a",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "691ad0c008c83d4910e6b1359f9836cc82d5b6804670dd2d7f9d17cb1a09822d",
+  "public_contract": "tasks/827-cdr-eye-monitor-testbench/public_contract.json",
+  "public_contract_sha256": "ed11f3b35aee56ff449f53a248fbd53af19eaa633bac6a97c4a1bb449825101f",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/827-cdr-eye-monitor-testbench",
+  "task_id": "v4-827"
+}

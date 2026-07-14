@@ -1,0 +1,25 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "166-l2-cdac-4b-residue",
+  "checker_task_id": "v4_166_l2_cdac_4b_residue",
+  "family_id": "166",
+  "family_spec_sha256": "c29230e402be77dfddfce10aff5e0c932c2a862742c4a8e5d885eeb9f0f7cc5b",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "85ebae72fad0238fab00e1cac50de042fc9351c02ffd38ac0967a69382b958e1",
+  "public_contract": "tasks/666-l2-cdac-4b-residue-testbench/public_contract.json",
+  "public_contract_sha256": "6d1d7d3c81c821447aa442754a735d10d377237f69572a23ec5454994c8e03af",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/666-l2-cdac-4b-residue-testbench",
+  "task_id": "v4-666"
+}

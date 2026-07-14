@@ -1,0 +1,25 @@
+{
+  "candidate_artifacts": [
+    "attenuator_gain.va"
+  ],
+  "canonical_dut_source_slug": "120-attenuator-gain",
+  "checker_task_id": "v4_120_attenuator_gain",
+  "family_id": "120",
+  "family_spec_sha256": "055aff6498bd1f10bab701189a5581ac55bef3526a02c98474a3a842e7270fdf",
+  "form": "bugfix",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "d82edf6a678299d58ecb11aefa8a2f65fb8500c6ea82df8a2e1596afcb572f13",
+  "public_contract": "tasks/1120-attenuator-gain-bugfix/public_contract.json",
+  "public_contract_sha256": "ed78dcc76bc23e0d8927a8777c6f1918df6e805bfea8bdbbf21e49dd5972c8bb",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/1120-attenuator-gain-bugfix",
+  "task_id": "v4-1120"
+}

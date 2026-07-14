@@ -1,0 +1,25 @@
+{
+  "candidate_artifacts": [
+    "am_modulator_source_macro.va"
+  ],
+  "canonical_dut_source_slug": "380-am-modulator-source-macro",
+  "checker_task_id": "v4_380_am_modulator_source_macro",
+  "family_id": "380",
+  "family_spec_sha256": "d3df8ed55d2b716d17c828be1d262407b16c97360980e37f6fd55e71f9b701b0",
+  "form": "dut",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "bc3f608bcafd6933916c7acf5c88bffeee85f18d030c245855818df41e6f7ef0",
+  "public_contract": "tasks/380-am-modulator-source-macro/public_contract.json",
+  "public_contract_sha256": "15e27705317621217d59d284279474f8505f1d21d84315a18cecc1a9f68ac388",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/380-am-modulator-source-macro",
+  "task_id": "v4-380"
+}

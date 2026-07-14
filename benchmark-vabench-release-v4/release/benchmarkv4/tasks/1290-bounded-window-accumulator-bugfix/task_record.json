@@ -1,0 +1,25 @@
+{
+  "candidate_artifacts": [
+    "bounded_window_accumulator.va"
+  ],
+  "canonical_dut_source_slug": "290-bounded-window-accumulator",
+  "checker_task_id": "v4_290_bounded_window_accumulator",
+  "family_id": "290",
+  "family_spec_sha256": "8007395e30cc99d3769883607283a767640e5b743d6ec5423045aa45d74aa970",
+  "form": "bugfix",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "dd3c9aedf3c332e0d142713c33c765a3494177c5350d1bdc6be39053b2d649a7",
+  "public_contract": "tasks/1290-bounded-window-accumulator-bugfix/public_contract.json",
+  "public_contract_sha256": "132eeb61585986026d416c9a29ab30c4e3955792d69f5a0b5bc56594c7693085",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/1290-bounded-window-accumulator-bugfix",
+  "task_id": "v4-1290"
+}

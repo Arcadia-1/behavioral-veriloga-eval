@@ -1,0 +1,25 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source_slug": "108-crossing-pulse-detector",
+  "checker_task_id": "v4_108_crossing_pulse_detector",
+  "family_id": "108",
+  "family_spec_sha256": "1ce5ad15308a750941790f01950acc2a04ab9337b71a3c36d0afda006fa744de",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "9ad0a589f3825b63e7c7f1df9a28d0c6a60bde7a6512e81a75bf78baa1ee3d5c",
+  "public_contract": "tasks/608-crossing-pulse-detector-testbench/public_contract.json",
+  "public_contract_sha256": "fa1f88c800e4ec3cc3e5e95d04daa3edf08b41927616f7f9bb26f949c3111338",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/608-crossing-pulse-detector-testbench",
+  "task_id": "v4-608"
+}

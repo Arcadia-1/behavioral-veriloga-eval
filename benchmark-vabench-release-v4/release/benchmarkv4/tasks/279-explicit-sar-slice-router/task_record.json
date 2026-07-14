@@ -1,0 +1,25 @@
+{
+  "candidate_artifacts": [
+    "explicit_sar_slice_router.va"
+  ],
+  "canonical_dut_source_slug": "279-explicit-sar-slice-router",
+  "checker_task_id": "v4_279_explicit_sar_slice_router",
+  "family_id": "279",
+  "family_spec_sha256": "00e321a6b3674fa04f7dad23fadba1648a153fad66b1848d85120c3de934d41b",
+  "form": "dut",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "f443fd45b428c18952dabdb92ef7aafb107e8982e7982df728bdf5b53c3bce91",
+  "public_contract": "tasks/279-explicit-sar-slice-router/public_contract.json",
+  "public_contract_sha256": "c95bbfb3dca9f2a0345cdd784b3845b93771f618df7e44694be223aaf3fd8601",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/279-explicit-sar-slice-router",
+  "task_id": "v4-279"
+}

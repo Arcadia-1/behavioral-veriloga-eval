@@ -1,0 +1,25 @@
+{
+  "candidate_artifacts": [
+    "analog_multiplier_gain.va"
+  ],
+  "canonical_dut_source_slug": "132-analog-multiplier",
+  "checker_task_id": "v4_132_analog_multiplier",
+  "family_id": "132",
+  "family_spec_sha256": "17141b1418cfffdc0dd71a67049776fb193bcc03250823ec0439be4d1636b53a",
+  "form": "bugfix",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "ab9f29f55de7c289d01ab7186002c4bb1838a8b2ac13e061fc08192d295b9032",
+  "public_contract": "tasks/1132-analog-multiplier-bugfix/public_contract.json",
+  "public_contract_sha256": "92df6d076e5295f2b8355e101bdc368efa9e02731e2365b83f02c06bb9680cea",
+  "schema_version": "v4-benchmarkv4-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/1132-analog-multiplier-bugfix",
+  "task_id": "v4-1132"
+}
