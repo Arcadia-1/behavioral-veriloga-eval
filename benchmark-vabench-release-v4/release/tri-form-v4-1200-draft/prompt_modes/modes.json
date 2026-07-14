@@ -1,9 +1,9 @@
 {
   "composition_order": [
     "canonical_instruction_and_public_inputs",
-    "mode_wrapper",
     "form_skill",
-    "feedback_core_and_form_adapter"
+    "feedback_core_and_form_adapter",
+    "mode_wrapper_response_protocol"
   ],
   "modes": {
     "G0": {

@@ -734,7 +734,7 @@ def install_prompt_assets(output: Path) -> dict[str, dict[str, Any]]:
     write_json(output / "prompt_modes" / "modes.json", {
         "schema_version": "v4-prompt-mode-registry-v1",
         "modes": MODES,
-        "composition_order": ["canonical_instruction_and_public_inputs", "mode_wrapper", "form_skill", "feedback_core_and_form_adapter"],
+        "composition_order": ["canonical_instruction_and_public_inputs", "form_skill", "feedback_core_and_form_adapter", "mode_wrapper_response_protocol"],
         "working_token_budget": "runner_supplied_same_ceiling_within_comparison_stratum",
         "wall_time_policy": "safety_limit_not_ability_budget",
     })
@@ -767,14 +767,12 @@ def write_prompt_records(output: Path, task_rows: list[dict[str, Any]], componen
                     for item in iter_public_inputs(task_dir, task["form"], mode)
                 ]
                 wrapper = WRAPPERS_BY_PROCESS[policy["process"]]
-                components = [item["id"] for item in public_components] + [wrapper]
                 skill_ids: list[str] = []
                 if policy["form_skill"]:
                     skill_ids.append(FORM_SKILLS[task["form"]])
-                    components.append(FORM_SKILLS[task["form"]])
                 if policy["feedback_skill"]:
                     skill_ids.extend(["feedback_core.md", FEEDBACK_ADAPTERS[task["form"]]])
-                    components.extend(["feedback_core.md", FEEDBACK_ADAPTERS[task["form"]]])
+                components = [item["id"] for item in public_components] + skill_ids + [wrapper]
                 static_components = public_components + [
                     {
                         "id": name,
@@ -782,7 +780,7 @@ def write_prompt_records(output: Path, task_rows: list[dict[str, Any]], componen
                         "bytes": components_by_id[name]["bytes"],
                         "token_counts": components_by_id[name]["token_counts"],
                     }
-                    for name in [wrapper, *skill_ids]
+                    for name in [*skill_ids, wrapper]
                 ]
                 record = {
                     "schema_version": "v4-prompt-record-v1",

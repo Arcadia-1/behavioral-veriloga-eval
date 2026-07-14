@@ -81,11 +81,25 @@ def serialize_public_artifacts(task_dir: Path, form: str) -> str:
     return "\n".join(lines)
 
 
-def prompt_wrapper_id(mode_record: dict[str, Any]) -> str:
-    wrappers = [str(item) for item in mode_record.get("component_order") or [] if str(item).endswith("_wrapper.md")]
+def ordered_prompt_components(mode_record: dict[str, Any]) -> list[str]:
+    components: list[str] = []
+    wrappers: list[str] = []
+    skills = set((mode_record.get("skill_hashes") or {}).keys())
+    for component in [str(item) for item in mode_record.get("component_order") or []]:
+        if component == "instruction" or component.startswith("public_input:"):
+            continue
+        if component.endswith("_wrapper.md"):
+            wrappers.append(component)
+            components.append(component)
+        elif component in skills:
+            components.append(component)
+        else:
+            raise SystemExit(f"unexpected prompt component in record: {component}")
     if len(wrappers) != 1:
         raise SystemExit(f"expected exactly one mode wrapper in prompt record, found {wrappers}")
-    return wrappers[0]
+    if components[-1] != wrappers[0]:
+        raise SystemExit(f"mode wrapper must be the final prompt component: {components}")
+    return components
 
 
 def prompt_component_path(release: Path, component_id: str) -> Path:
@@ -95,7 +109,6 @@ def prompt_component_path(release: Path, component_id: str) -> Path:
 
 def render_prompt(release: Path, task_dir: Path, record: dict[str, Any], mode_record: dict[str, Any], *, inline_artifacts: bool) -> str:
     mode = str(mode_record["mode"])
-    wrapper = prompt_wrapper_id(mode_record)
     parts = [(task_dir / "instruction.md").read_text(encoding="utf-8")]
     if mode in AGENTIC:
         parts.extend([
@@ -106,17 +119,19 @@ def render_prompt(release: Path, task_dir: Path, record: dict[str, Any], mode_re
     artifacts = serialize_public_artifacts(task_dir, str(record["form"])) if inline_artifacts else ""
     if artifacts:
         parts.append(artifacts)
-    parts.extend([
-        f'<<<VABENCH_COMPONENT id="{wrapper}">>>',
-        prompt_component_path(release, wrapper).read_text(encoding="utf-8"),
-        "<<<END_VABENCH_COMPONENT>>>",
-    ])
-    for skill in (mode_record.get("skill_hashes") or {}):
-        parts.extend([
-            f'<<<VABENCH_SKILL id="{skill}">>>',
-            prompt_component_path(release, skill).read_text(encoding="utf-8"),
-            "<<<END_VABENCH_SKILL>>>",
-        ])
+    for component in ordered_prompt_components(mode_record):
+        if component.endswith("_wrapper.md"):
+            parts.extend([
+                f'<<<VABENCH_COMPONENT id="{component}">>>',
+                prompt_component_path(release, component).read_text(encoding="utf-8"),
+                "<<<END_VABENCH_COMPONENT>>>",
+            ])
+        else:
+            parts.extend([
+                f'<<<VABENCH_SKILL id="{component}">>>',
+                prompt_component_path(release, component).read_text(encoding="utf-8"),
+                "<<<END_VABENCH_SKILL>>>",
+            ])
     return "\n\n".join(parts)
 
 

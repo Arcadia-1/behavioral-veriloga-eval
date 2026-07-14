@@ -505,7 +505,7 @@ def audit_prompt_records(release: Path, tasks: list[dict[str, Any]], problems: l
         if (wrapper_records.get(expected_wrapper) or {}).get("sha256") is None:
             problems.append(f"{task_id}/{mode}: wrapper missing from component manifest")
         component_order = row.get("component_order") or []
-        expected_suffix = [WRAPPERS_BY_MODE.get(mode, ""), *expected_skills]
+        expected_suffix = [*expected_skills, WRAPPERS_BY_MODE.get(mode, "")]
         if component_order[-len(expected_suffix):] != expected_suffix:
             problems.append(f"{task_id}/{mode}: component order mismatch")
         static_components = row.get("static_components") or []

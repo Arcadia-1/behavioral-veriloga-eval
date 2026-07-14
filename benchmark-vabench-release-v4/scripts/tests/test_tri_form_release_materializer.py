@@ -21,7 +21,7 @@ from materialize_tri_form_release import (  # noqa: E402
     render_testbench_instruction,
     select_bugfix_seed,
 )
-from export_tri_form_runtime import install_public  # noqa: E402
+from export_tri_form_runtime import install_public, ordered_prompt_components, render_prompt  # noqa: E402
 from record_runtime_ingestion_evidence import verified_audit  # noqa: E402
 from audit_tri_form_release import (  # noqa: E402
     RELEASE_SEAL_ARTIFACTS,
@@ -123,6 +123,79 @@ def test_prompt_assets_split_wrappers_from_skills(tmp_path: Path) -> None:
     assert not (tmp_path / "prompt_modes" / "skills" / "manifest.json").exists()
     assert records["direct_wrapper.md"]["kind"] == "wrapper"
     assert records["dut_modeling.md"]["kind"] == "form_skill"
+
+
+def test_runtime_prompt_components_follow_explicit_order_with_wrapper_last() -> None:
+    mode_record = {
+        "component_order": [
+            "instruction",
+            "public_input:public_contract.json",
+            "bugfix_diagnosis.md",
+            "feedback_core.md",
+            "feedback_bugfix.md",
+            "agentic_wrapper.md",
+        ],
+        "skill_hashes": {
+            "bugfix_diagnosis.md": "a" * 64,
+            "feedback_bugfix.md": "b" * 64,
+            "feedback_core.md": "c" * 64,
+        },
+    }
+    assert ordered_prompt_components(mode_record) == [
+        "bugfix_diagnosis.md",
+        "feedback_core.md",
+        "feedback_bugfix.md",
+        "agentic_wrapper.md",
+    ]
+
+
+def test_render_prompt_places_response_wrapper_after_skills(tmp_path: Path) -> None:
+    release = tmp_path / "release"
+    task = tmp_path / "task"
+    for subdir, name, text in [
+        ("skills", "bugfix_diagnosis.md", "bugfix skill\n"),
+        ("skills", "feedback_core.md", "feedback core\n"),
+        ("skills", "feedback_bugfix.md", "feedback bugfix\n"),
+        ("wrappers", "agentic_wrapper.md", "agentic wrapper\n"),
+    ]:
+        path = release / "prompt_modes" / subdir / name
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text(text, encoding="utf-8")
+    task.mkdir()
+    (task / "instruction.md").write_text("repair task\n", encoding="utf-8")
+    (task / "public_contract.json").write_text("{}\n", encoding="utf-8")
+    mode_record = {
+        "mode": "G5",
+        "component_order": [
+            "instruction",
+            "public_input:public_contract.json",
+            "bugfix_diagnosis.md",
+            "feedback_core.md",
+            "feedback_bugfix.md",
+            "agentic_wrapper.md",
+        ],
+        "skill_hashes": {
+            "bugfix_diagnosis.md": "a" * 64,
+            "feedback_bugfix.md": "b" * 64,
+            "feedback_core.md": "c" * 64,
+        },
+    }
+    rendered = render_prompt(
+        release,
+        task,
+        {"form": "bugfix"},
+        mode_record,
+        inline_artifacts=False,
+    )
+    markers = [
+        '<<<VABENCH_SKILL id="bugfix_diagnosis.md">>>',
+        '<<<VABENCH_SKILL id="feedback_core.md">>>',
+        '<<<VABENCH_SKILL id="feedback_bugfix.md">>>',
+        '<<<VABENCH_COMPONENT id="agentic_wrapper.md">>>',
+    ]
+    positions = [rendered.index(marker) for marker in markers]
+    assert positions == sorted(positions)
+    assert rendered.strip().endswith("<<<END_VABENCH_COMPONENT>>>")
 
 
 def test_direct_prompt_inputs_exclude_contract_json(tmp_path: Path) -> None:
