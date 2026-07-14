@@ -1,14 +1,57 @@
 {
   "active_mutations_per_family": 5,
   "certification_reuse": {
-    "policy": "source_denominator_hash_bound",
-    "simulation_rerun_required_for_materialization": false,
-    "source_dut_gold_certification_count": 400,
-    "source_negative_certification_count": 2000
+    "evaluators": [
+      "evas",
+      "spectre"
+    ],
+    "policy": "source_transitive_input_hash_bound",
+    "simulation_rerun_required_for_materialization": true,
+    "source_dut_gold_certification_count": 392,
+    "source_dut_gold_certification_total": 400,
+    "source_negative_certification_count": 1985,
+    "source_negative_certification_total": 2000,
+    "stale_certification_family_ids": [
+      "017",
+      "024",
+      "027",
+      "039",
+      "058",
+      "102",
+      "147",
+      "398"
+    ],
+    "stale_gold_family_ids": [
+      "017",
+      "024",
+      "027",
+      "039",
+      "058",
+      "102",
+      "147",
+      "398"
+    ],
+    "stale_negative_case_ids": [
+      "058/neg_001_wrong_mask",
+      "058/neg_002_wrong_mask",
+      "058/neg_004_wrong_mask",
+      "058/neg_005_wrong_mask",
+      "058/neg_003_wrong_mask",
+      "147/neg_002_shifted_bits",
+      "147/neg_001_zero",
+      "147/neg_003_inverted_bits",
+      "147/neg_004_half_high_level",
+      "147/neg_005_metric_scale_low",
+      "398/neg_001_stage1_wrong",
+      "398/neg_002_no_slew_limit",
+      "398/neg_003_settled_stuck_high",
+      "398/neg_005_clamp_flag_stuck_low",
+      "398/neg_006_asynchronous_update"
+    ]
   },
   "family_count": 400,
   "materialized_artifact_sha256": {
-    "TASK_INDEX.json": "a6e6beea78f2c56ace7735ec7bb95e5a5ddac252a889433f5d7cee887d2cac1a",
+    "TASK_INDEX.json": "989b7b2d9657282ed25be71841ae824856d23b601b56da008bb34b9f6f5a7865",
     "prompt_modes/manifest.json": "f5be68a5e0fca8e09aa65542d984d18eb148b8274e63c7f65ec8092f7f1fef51",
     "prompt_modes/modes.json": "2fe6660e24f515c5dbd12ab5e84386ad1c8776d14e3615668add64fe2d1eecf2"
   },
@@ -24,13 +67,14 @@
     "task_index": "TASK_INDEX.json",
     "tasks": "tasks"
   },
-  "release_status": "materialized_hash_bound_certification_reuse_audit_pending",
+  "release_status": "materialized_certification_refresh_required",
   "release_surface": "benchmarkv4_package",
   "schema_version": "v4-benchmarkv4-release-manifest-v1",
   "simulation_rerun_count_for_materialization": 0,
+  "simulation_rerun_required_for_materialization": true,
   "source_active_mutation_count": 2000,
   "source_release_label": "dut-base-v3-exact-five-hash-bound-v2",
-  "source_score_denominator_manifest_sha256": "52278bac89017d62349a2577944cda8717bde78c3adef975280ba2bf988c643b",
+  "source_score_denominator_manifest_sha256": "609cf067658715f53ef235855f6a469e7a3a7bd56ff92b85856c0ff04d0d386b",
   "spectre_final_judge": true,
   "task_count": 1200,
   "task_counts": {

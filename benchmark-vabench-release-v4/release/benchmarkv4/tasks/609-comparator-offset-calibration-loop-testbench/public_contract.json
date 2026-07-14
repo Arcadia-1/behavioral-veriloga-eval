@@ -194,6 +194,9 @@
   "supplied_dut_artifacts": [
     "supplied_dut/comparator_offset_calibration_loop.va"
   ],
+  "supplied_support_artifacts": [
+    "supplied_dut/support/support_offset_comparator.va"
+  ],
   "target_artifacts": [
     "testbench.scs"
   ],

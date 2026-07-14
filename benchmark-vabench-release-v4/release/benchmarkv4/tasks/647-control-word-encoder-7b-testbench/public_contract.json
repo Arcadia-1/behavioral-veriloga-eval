@@ -202,43 +202,90 @@
       {
         "connections": [
           {
-            "net": "d0",
+            "net": "d0_42",
             "port_ref": "d0",
             "position": 0
           },
           {
-            "net": "d1",
+            "net": "d1_42",
             "port_ref": "d1",
             "position": 1
           },
           {
-            "net": "d2",
+            "net": "d2_42",
             "port_ref": "d2",
             "position": 2
           },
           {
-            "net": "d3",
+            "net": "d3_42",
             "port_ref": "d3",
             "position": 3
           },
           {
-            "net": "d4",
+            "net": "d4_42",
             "port_ref": "d4",
             "position": 4
           },
           {
-            "net": "d5",
+            "net": "d5_42",
             "port_ref": "d5",
             "position": 5
           },
           {
-            "net": "d6",
+            "net": "d6_42",
             "port_ref": "d6",
             "position": 6
           }
         ],
         "module_ref": "control_word_encoder_7b",
-        "name": "XDUT"
+        "name": "XCTRL42",
+        "parameter_overrides": {
+          "ctrl": 42
+        }
+      },
+      {
+        "connections": [
+          {
+            "net": "d0_85",
+            "port_ref": "d0",
+            "position": 0
+          },
+          {
+            "net": "d1_85",
+            "port_ref": "d1",
+            "position": 1
+          },
+          {
+            "net": "d2_85",
+            "port_ref": "d2",
+            "position": 2
+          },
+          {
+            "net": "d3_85",
+            "port_ref": "d3",
+            "position": 3
+          },
+          {
+            "net": "d4_85",
+            "port_ref": "d4",
+            "position": 4
+          },
+          {
+            "net": "d5_85",
+            "port_ref": "d5",
+            "position": 5
+          },
+          {
+            "net": "d6_85",
+            "port_ref": "d6",
+            "position": 6
+          }
+        ],
+        "module_ref": "control_word_encoder_7b",
+        "name": "XCTRL85",
+        "parameter_overrides": {
+          "ctrl": 85
+        }
       }
     ],
     "source_path_template": "./dut/{artifact_path}"

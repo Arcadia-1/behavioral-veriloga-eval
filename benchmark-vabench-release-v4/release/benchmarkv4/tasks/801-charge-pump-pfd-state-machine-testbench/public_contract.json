@@ -225,6 +225,9 @@
   "supplied_dut_artifacts": [
     "supplied_dut/charge_pump_pfd_state_machine.va"
   ],
+  "supplied_support_artifacts": [
+    "supplied_dut/support/ref_fb_clk.va"
+  ],
   "target_artifacts": [
     "testbench.scs"
   ],

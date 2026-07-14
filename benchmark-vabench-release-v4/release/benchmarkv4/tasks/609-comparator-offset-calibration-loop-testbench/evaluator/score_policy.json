@@ -20,8 +20,12 @@
     "neg_005_metric_scale_low",
     "neg_002_wrong_direction"
   ],
+  "read_only_support_artifacts": [
+    "support/support_offset_comparator.va"
+  ],
   "reference_gate": "all applicable public properties pass on supplied correct DUT",
-  "reference_tb_sha256": "f37f7ffc78ae50b92c13b157bc39338b4afe035bf99a7c276fcf8100f3ff02f6",
+  "reference_tb_sha256": "689ba420311344723e0047a40c64c4106a6188c556f781c14850c43965de8a49",
+  "reference_tb_source_kind": "independent_reference_tb",
   "schema_version": "v4-testbench-score-policy-v1",
   "spectre_final_judge": true,
   "task_id": "v4-609"

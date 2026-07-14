@@ -20,8 +20,12 @@
     "neg_005_metric_scale_low",
     "neg_004_wrong_polarity"
   ],
+  "read_only_support_artifacts": [
+    "support/support_overdrive_delay_comparator.va"
+  ],
   "reference_gate": "all applicable public properties pass on supplied correct DUT",
-  "reference_tb_sha256": "85cbd2b1e75f364bbd186364f773ee8dd6334963913b797d5bafdfb0e201cb6f",
+  "reference_tb_sha256": "6c51f15fd323840d7e884eea97004e5973f8d7d02716bb46dd9108d07729bf43",
+  "reference_tb_source_kind": "independent_reference_tb",
   "schema_version": "v4-testbench-score-policy-v1",
   "spectre_final_judge": true,
   "task_id": "v4-670"

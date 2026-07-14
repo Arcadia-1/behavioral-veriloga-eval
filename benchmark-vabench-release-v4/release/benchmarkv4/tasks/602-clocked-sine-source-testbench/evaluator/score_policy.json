@@ -20,8 +20,14 @@
     "neg_004_reset_stuck",
     "neg_002_static_common_mode"
   ],
+  "read_only_support_artifacts": [
+    "support/dither_adder.va",
+    "support/gain_amp_fixed.va",
+    "support/lfsr.va"
+  ],
   "reference_gate": "all applicable public properties pass on supplied correct DUT",
-  "reference_tb_sha256": "86102786828656568d5c77ea60317b2d16ef2f7db3f67f2fe4e4f4c006834173",
+  "reference_tb_sha256": "8e04066de8badc1f269c04390e797ce319b740c962a103fc2c4e3a2790c6a1ca",
+  "reference_tb_source_kind": "independent_reference_tb",
   "schema_version": "v4-testbench-score-policy-v1",
   "spectre_final_judge": true,
   "task_id": "v4-602"
