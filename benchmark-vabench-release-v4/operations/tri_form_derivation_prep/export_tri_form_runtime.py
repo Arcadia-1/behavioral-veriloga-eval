@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Consume one tri-form task record and export an isolated runtime package."""
+"""Consume one benchmarkv4 task record and export an isolated runtime package."""
 from __future__ import annotations
 
 import argparse
@@ -28,14 +28,6 @@ WRAPPERS_BY_PROCESS = {
     "direct_one_shot": "direct_wrapper.md",
     "agentic": "agentic_wrapper.md",
 }
-COMPONENT_SUBDIR_BY_NAME = {
-    **{name: "form_skills" for name in FORM_SKILLS.values()},
-    FEEDBACK_CORE: "feedback_guides",
-    **{name: "feedback_guides" for name in FEEDBACK_GUIDES.values()},
-    **{name: "wrappers" for name in WRAPPERS_BY_PROCESS.values()},
-}
-
-
 def read_json(path: Path) -> dict[str, Any]:
     return json.loads(path.read_text(encoding="utf-8"))
 
@@ -65,35 +57,36 @@ def copy_tree(source: Path, target: Path) -> None:
         shutil.copytree(source, target, dirs_exist_ok=True)
 
 
-def prompt_record(release: Path, task_id: str, mode: str) -> dict[str, Any]:
-    for line in (release / "prompt_modes" / "PROMPT_RECORDS.jsonl").read_text(encoding="utf-8").splitlines():
-        row = json.loads(line)
-        if row.get("task_id") == task_id and row.get("mode") == mode:
-            return row
-    raise SystemExit(f"missing prompt record for {task_id}/{mode}")
-
-
 def task_record(release: Path, task_id: str) -> tuple[dict[str, Any], Path]:
     index = read_json(release / "TASK_INDEX.json")
     matches = [row for row in index.get("tasks") or [] if row.get("task_id") == task_id]
     if len(matches) != 1:
         raise SystemExit(f"expected one task record for {task_id}, found {len(matches)}")
     task_dir = release / str(matches[0]["task_dir"])
-    return read_json(task_dir / "TASK_RECORD.json"), task_dir
+    record = read_json(task_dir / "task_record.json")
+    contract_sha = file_sha(task_dir / "public_contract.json")
+    if matches[0].get("public_contract_sha256") != contract_sha:
+        raise SystemExit(f"task index public contract hash mismatch: {task_id}")
+    if record.get("public_contract_sha256") != contract_sha:
+        raise SystemExit(f"task record public contract hash mismatch: {task_id}")
+    if record.get("public_bundle_sha256") != tree_sha(task_dir / "public"):
+        raise SystemExit(f"task record public bundle hash mismatch: {task_id}")
+    return record, task_dir
 
 
 def serialize_public_artifacts(task_dir: Path, form: str) -> str:
     lines: list[str] = []
+    public = task_dir / "public"
     roots = []
     if form == "testbench":
-        roots.append(task_dir / "supplied_dut")
+        roots.append(public / "supplied_dut")
     elif form == "bugfix":
-        roots.append(task_dir / "buggy_bundle")
+        roots.append(public / "buggy_bundle")
     for root in roots:
         for path in sorted(root.rglob("*")):
             if not path.is_file():
                 continue
-            relative = path.relative_to(task_dir).as_posix()
+            relative = path.relative_to(public).as_posix()
             lines.extend([
                 f'<<<VABENCH_INPUT_ARTIFACT path="{relative}">>>',
                 path.read_text(encoding="utf-8"),
@@ -102,52 +95,137 @@ def serialize_public_artifacts(task_dir: Path, form: str) -> str:
     return "\n".join(lines)
 
 
+def ordered_prompt_components(mode_record: dict[str, Any]) -> list[str]:
+    components: list[str] = []
+    wrappers: list[str] = []
+    prompt_components = set((mode_record.get("prompt_component_hashes") or {}).keys())
+    for component in [str(item) for item in mode_record.get("component_order") or []]:
+        if component == "instruction" or component.startswith("public_input:"):
+            continue
+        if component.endswith("_wrapper.md"):
+            wrappers.append(component)
+            components.append(component)
+        elif component in prompt_components:
+            components.append(component)
+        else:
+            raise SystemExit(f"unexpected prompt component in record: {component}")
+    if len(wrappers) != 1:
+        raise SystemExit(f"expected exactly one mode wrapper in prompt record, found {wrappers}")
+    if components[-1] != wrappers[0]:
+        raise SystemExit(f"mode wrapper must be the final prompt component: {components}")
+    return components
+
+
 def prompt_component_path(release: Path, component_id: str) -> Path:
-    subdir = COMPONENT_SUBDIR_BY_NAME.get(component_id)
-    if subdir is None:
+    if component_id.endswith("_wrapper.md"):
+        subdir = "wrappers"
+    elif component_id in set(FORM_SKILLS.values()):
+        subdir = "form_skills"
+    elif component_id == FEEDBACK_CORE or component_id in set(FEEDBACK_GUIDES.values()):
+        subdir = "feedback_guides"
+    else:
         raise SystemExit(f"unknown prompt component: {component_id}")
     return release / "prompt_modes" / subdir / component_id
 
 
-def ordered_prompt_components(mode_record: dict[str, Any]) -> list[str]:
-    wrapper = WRAPPERS_BY_PROCESS[str(mode_record["process"])]
-    component_hashes = mode_record.get("prompt_component_hashes") or {}
-    if wrapper not in component_hashes:
-        raise SystemExit(f"prompt record is missing wrapper hash: {wrapper}")
-    components = [
-        str(component_id)
-        for component_id in mode_record.get("component_order") or []
-        if component_id in component_hashes
-    ]
-    if not components or components[-1] != wrapper:
-        raise SystemExit(f"prompt record wrapper is not last: {wrapper}")
-    return components
+def build_mode_record(release: Path, task_dir: Path, record: dict[str, Any], mode: str) -> dict[str, Any]:
+    modes = read_json(release / "prompt_modes" / "modes.json").get("modes") or {}
+    policy = modes.get(mode)
+    if not isinstance(policy, dict):
+        raise SystemExit(f"unknown prompt mode: {mode}")
+    manifest = read_json(release / "prompt_modes" / "manifest.json")
+    component_records = manifest.get("components") or {
+        **(manifest.get("wrappers") or {}),
+        **(manifest.get("form_skills") or {}),
+        **(manifest.get("feedback_guides") or {}),
+    }
+    public_input_paths = [task_dir / "public" / "instruction.md"]
+    public_inputs = ["instruction"]
+    form = str(record["form"])
+    if form == "testbench":
+        public_input_paths.extend(sorted((task_dir / "public" / "supplied_dut").rglob("*.va")))
+    elif form == "bugfix":
+        public_input_paths.extend(sorted((task_dir / "public" / "buggy_bundle").rglob("*.va")))
+    public_inputs.extend(
+        f"public_input:{path.relative_to(task_dir / 'public').as_posix()}"
+        for path in public_input_paths[1:]
+    )
+    guide_components: list[str] = []
+    if policy.get("form_skill"):
+        guide_components.append(FORM_SKILLS[form])
+    if policy.get("feedback_guide"):
+        guide_components.extend([FEEDBACK_CORE, FEEDBACK_GUIDES[form]])
+    wrapper = WRAPPERS_BY_PROCESS[str(policy.get("process") or "")]
+    prompt_components = [*guide_components, wrapper]
+    missing = [name for name in prompt_components if name not in component_records]
+    if missing:
+        raise SystemExit(f"prompt component(s) missing from manifest: {missing}")
+    for name in prompt_components:
+        if component_records[name].get("sha256") != file_sha(prompt_component_path(release, name)):
+            raise SystemExit(f"prompt component hash mismatch: {name}")
+    public_contract_sha = file_sha(task_dir / "public_contract.json")
+    if record.get("public_contract_sha256") != public_contract_sha:
+        raise SystemExit(f"task record public contract hash mismatch: {record['task_id']}")
+    return {
+        "schema_version": "v4-derived-prompt-plan-v1",
+        "task_id": record["task_id"],
+        "family_id": record["family_id"],
+        "form": form,
+        "mode": mode,
+        "process": policy["process"],
+        "feedback_cli_available": bool(policy.get("feedback_cli")),
+        "canonical_instruction_sha256": file_sha(public_input_paths[0]),
+        "public_contract_sha256": public_contract_sha,
+        "public_input_hashes": {
+            path.relative_to(task_dir).as_posix(): file_sha(path)
+            for path in public_input_paths
+        },
+        "component_order": [*public_inputs, *guide_components, wrapper],
+        "skill_hashes": {
+            name: component_records[name]["sha256"]
+            for name in guide_components
+        },
+        "prompt_component_hashes": {
+            name: component_records[name]["sha256"]
+            for name in prompt_components
+        },
+        "response_protocol": "v4-exact-artifact-blocks-v1" if policy["process"] == "direct_one_shot" else "v4-workspace-finalizer-v1",
+    }
 
 
 def render_prompt(release: Path, task_dir: Path, record: dict[str, Any], mode_record: dict[str, Any], *, inline_artifacts: bool) -> str:
-    parts = [(task_dir / "instruction.md").read_text(encoding="utf-8")]
+    mode = str(mode_record["mode"])
+    parts = [(task_dir / "public" / "instruction.md").read_text(encoding="utf-8")]
     artifacts = serialize_public_artifacts(task_dir, str(record["form"])) if inline_artifacts else ""
     if artifacts:
         parts.append(artifacts)
     for component in ordered_prompt_components(mode_record):
-        parts.extend([
-            f'<<<VABENCH_COMPONENT id="{component}">>>',
-            prompt_component_path(release, component).read_text(encoding="utf-8"),
-            "<<<END_VABENCH_COMPONENT>>>",
-        ])
+        if component.endswith("_wrapper.md"):
+            parts.extend([
+                f'<<<VABENCH_COMPONENT id="{component}">>>',
+                prompt_component_path(release, component).read_text(encoding="utf-8"),
+                "<<<END_VABENCH_COMPONENT>>>",
+            ])
+        else:
+            parts.extend([
+                f'<<<VABENCH_COMPONENT id="{component}">>>',
+                prompt_component_path(release, component).read_text(encoding="utf-8"),
+                "<<<END_VABENCH_COMPONENT>>>",
+            ])
     return "\n\n".join(parts)
 
 
 def install_public(task_dir: Path, public_root: Path, form: str, mode: str) -> None:
+    source_public = task_dir / "public"
     target = public_root / "task"
     target.mkdir(parents=True)
-    shutil.copy2(task_dir / "instruction.md", target / "instruction.md")
+    shutil.copy2(source_public / "instruction.md", target / "instruction.md")
     if form == "testbench":
-        copy_tree(task_dir / "supplied_dut", target / "supplied_dut")
+        copy_tree(source_public / "supplied_dut", target / "supplied_dut")
     elif form == "bugfix":
-        copy_tree(task_dir / "buggy_bundle", target / "buggy_bundle")
+        copy_tree(source_public / "buggy_bundle", target / "buggy_bundle")
         if mode in AGENTIC:
-            copy_tree(task_dir / "buggy_bundle", public_root / "submission")
+            copy_tree(source_public / "buggy_bundle", public_root / "submission")
     if mode in AGENTIC:
         write_json(public_root / "tool_manifest.json", {
             "schema_version": "v4-public-tool-manifest-v1",
@@ -158,26 +236,23 @@ def install_public(task_dir: Path, public_root: Path, form: str, mode: str) -> N
 
 
 def install_evaluator(task_dir: Path, evaluator_root: Path, record: dict[str, Any]) -> None:
-    source_task = PACKAGE_ROOT / str(record["canonical_dut_source"])
-    source_eval = source_task / "evaluator"
+    task_eval = task_dir / "evaluator"
     form = str(record["form"])
     evaluator_root.mkdir(parents=True)
-    for name in ("task_record.json", "family_spec.json", "checker_profile.json", "harness_spec.json", "toolchain_lock.json"):
-        shutil.copy2(source_eval / name, evaluator_root / name)
-    copy_tree(source_eval / "profiles", evaluator_root / "profiles")
-    shutil.copy2(task_dir / "evaluator" / "score_policy.json", evaluator_root / "score_policy.json")
+    shutil.copy2(task_dir / "task_record.json", evaluator_root / "task_record.json")
+    for name in ("family_spec.json", "checker_profile.json", "harness_spec.json"):
+        shutil.copy2(task_eval / name, evaluator_root / name)
+    copy_tree(task_eval / "profiles", evaluator_root / "profiles")
+    shutil.copy2(task_eval / "score_policy.json", evaluator_root / "score_policy.json")
     if form in {"dut", "bugfix"}:
-        copy_tree(source_eval / "solution", evaluator_root / "solution")
-        shutil.copy2(source_eval / "score_tb.scs", evaluator_root / "trusted_feedback_tb.scs")
+        copy_tree(task_eval / "solution", evaluator_root / "solution")
+        shutil.copy2(task_eval / "score_tb.scs", evaluator_root / "trusted_feedback_tb.scs")
     if form == "testbench":
-        copy_tree(source_eval / "solution", evaluator_root / "trusted_solution")
-        copy_tree(source_eval / "mutation_bundles", evaluator_root / "mutation_bundles")
-        shutil.copy2(source_eval / "mutation_catalog.json", evaluator_root / "mutation_catalog.json")
-        for name in ("derivation_manifest.json", "reference_tb.scs", "reference_certificate.json", "testbench_security_policy.json"):
-            shutil.copy2(task_dir / "evaluator" / name, evaluator_root / name)
-    elif form == "bugfix":
-        for name in ("derivation_manifest.json", "gold_repair_reference.json"):
-            shutil.copy2(task_dir / "evaluator" / name, evaluator_root / name)
+        copy_tree(task_eval / "solution", evaluator_root / "trusted_solution")
+        copy_tree(task_eval / "mutation_bundles", evaluator_root / "mutation_bundles")
+        shutil.copy2(task_eval / "mutation_catalog.json", evaluator_root / "mutation_catalog.json")
+        for name in ("reference_tb.scs", "testbench_security_policy.json"):
+            shutil.copy2(task_eval / name, evaluator_root / name)
 
 
 def main() -> int:
@@ -197,7 +272,7 @@ def main() -> int:
         shutil.rmtree(output)
     output.mkdir(parents=True)
     record, task_dir = task_record(release, args.task)
-    mode_record = prompt_record(release, args.task, args.mode)
+    mode_record = build_mode_record(release, task_dir, record, args.mode)
     public_root = output / "public"
     (public_root / "submission").mkdir(parents=True)
     install_public(task_dir, public_root, str(record["form"]), args.mode)

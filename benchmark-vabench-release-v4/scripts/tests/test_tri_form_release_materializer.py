@@ -11,29 +11,24 @@ if str(PREP) not in sys.path:
 
 from materialize_tri_form_release import (  # noqa: E402
     COMPONENT_METADATA,
-    FEEDBACK_CORE,
-    FEEDBACK_GUIDES,
-    FORM_SKILLS,
     MODES,
     REFERENCE_TOKENIZER,
-    WRAPPERS_BY_PROCESS,
     install_prompt_assets,
     iter_public_inputs,
-    negative_assignment,
+    public_contract_relative_path,
     reference_token_count,
     render_bugfix_instruction,
     render_testbench_instruction,
     select_bugfix_seed,
-    write_prompt_records,
+    write_public_contract,
 )
-from export_tri_form_runtime import install_public, ordered_prompt_components, render_prompt  # noqa: E402
+from export_tri_form_runtime import build_mode_record, install_public, ordered_prompt_components, render_prompt  # noqa: E402
 from record_runtime_ingestion_evidence import verified_audit  # noqa: E402
 from audit_tri_form_release import (  # noqa: E402
     RELEASE_SEAL_ARTIFACTS,
     build_release_seal,
     expected_buggy_artifact_hashes,
     file_sha,
-    mutation_certification_hashes,
 )
 
 
@@ -86,19 +81,9 @@ def test_seed_policy_prefers_temporal_semantic_fault_over_force_zero() -> None:
     assert not selected["triviality_markers"]
 
 
-def test_testbench_and_bugfix_share_one_selected_negative_assignment() -> None:
-    row = {
-        "bugfix_seed": "neg_001_force_zero",
-        "active_mutations": [
-            {"mutation_id": "neg_001_force_zero"},
-            {"mutation_id": "neg_002_wrong_edge"},
-        ],
-    }
-    selected = {"mutation_id": "neg_002_wrong_edge"}
-    assert negative_assignment(row, selected) == {
-        "bugfix_seed": "neg_002_wrong_edge",
-        "testbench_suite": ["neg_001_force_zero", "neg_002_wrong_edge"],
-    }
+def test_release_artifact_set_omits_task_local_provenance_indexes() -> None:
+    assert "BUGFIX_SEED_REVIEW.json" not in RELEASE_SEAL_ARTIFACTS
+    assert all("provenance" not in artifact for artifact in RELEASE_SEAL_ARTIFACTS)
 
 
 def test_prompt_components_have_pinned_reference_tokenizer_metadata() -> None:
@@ -114,98 +99,169 @@ def test_prompt_components_have_pinned_reference_tokenizer_metadata() -> None:
         "feedback_testbench.md",
         "feedback_bugfix.md",
     }
-    assert {COMPONENT_METADATA[name]["kind"] for name in WRAPPERS_BY_PROCESS.values()} == {"wrapper"}
-    assert {COMPONENT_METADATA[name]["kind"] for name in FORM_SKILLS.values()} == {"form_skill"}
-    assert COMPONENT_METADATA[FEEDBACK_CORE]["kind"] == "feedback_guide"
-    assert {COMPONENT_METADATA[name]["kind"] for name in FEEDBACK_GUIDES.values()} == {"feedback_guide"}
     assert reference_token_count("one two; three") == 4
 
 
-def write_sample_prompt_records(release: Path, form: str = "bugfix") -> Path:
-    task = release / "tasks" / form / "sample"
-    task.mkdir(parents=True)
-    (task / "instruction.md").write_text("Complete the task from this instruction.\n", encoding="utf-8")
-    (task / "public_contract.json").write_text('{"evaluator_only": true}\n', encoding="utf-8")
-    if form == "testbench":
-        (task / "supplied_dut").mkdir()
-        (task / "supplied_dut" / "dut.va").write_text("module dut; endmodule\n", encoding="utf-8")
-    elif form == "bugfix":
-        (task / "buggy_bundle").mkdir()
-        (task / "buggy_bundle" / "buggy.va").write_text("module buggy; endmodule\n", encoding="utf-8")
-    components = install_prompt_assets(release)
-    write_prompt_records(
+def test_prompt_assets_split_wrappers_form_skills_and_feedback_guides(tmp_path: Path) -> None:
+    records = install_prompt_assets(tmp_path)
+    manifest = json.loads((tmp_path / "prompt_modes" / "manifest.json").read_text(encoding="utf-8"))
+    assert set(manifest["wrappers"]) == {"direct_wrapper.md", "agentic_wrapper.md"}
+    assert set(manifest["form_skills"]) == {"dut_modeling.md", "testbench_verification.md", "bugfix_diagnosis.md"}
+    assert set(manifest["feedback_guides"]) == {
+        "feedback_core.md", "feedback_dut.md", "feedback_testbench.md", "feedback_bugfix.md",
+    }
+    assert set(manifest["components"]) == set(manifest["wrappers"]) | set(manifest["form_skills"]) | set(manifest["feedback_guides"])
+    assert (tmp_path / "prompt_modes" / "wrappers" / "direct_wrapper.md").is_file()
+    assert (tmp_path / "prompt_modes" / "wrappers" / "agentic_wrapper.md").is_file()
+    assert (tmp_path / "prompt_modes" / "form_skills" / "dut_modeling.md").is_file()
+    assert (tmp_path / "prompt_modes" / "feedback_guides" / "feedback_dut.md").is_file()
+    assert (tmp_path / "prompt_modes" / "feedback_guides" / "feedback_core.md").is_file()
+    assert not (tmp_path / "prompt_modes" / "skills").exists()
+    assert records["direct_wrapper.md"]["kind"] == "wrapper"
+    assert records["dut_modeling.md"]["kind"] == "form_skill"
+    assert records["feedback_dut.md"]["kind"] == "feedback_guide"
+
+
+def test_runtime_prompt_components_follow_explicit_order_with_wrapper_last() -> None:
+    mode_record = {
+        "component_order": [
+            "instruction",
+            "bugfix_diagnosis.md",
+            "feedback_core.md",
+            "feedback_bugfix.md",
+            "agentic_wrapper.md",
+        ],
+        "prompt_component_hashes": {
+            "bugfix_diagnosis.md": "a" * 64,
+            "feedback_core.md": "b" * 64,
+            "feedback_bugfix.md": "c" * 64,
+            "agentic_wrapper.md": "d" * 64,
+        },
+    }
+    assert ordered_prompt_components(mode_record) == [
+        "bugfix_diagnosis.md",
+        "feedback_core.md",
+        "feedback_bugfix.md",
+        "agentic_wrapper.md",
+    ]
+
+
+def test_render_prompt_places_guides_before_wrapper_without_public_contract_inline(tmp_path: Path) -> None:
+    release = tmp_path / "release"
+    task = tmp_path / "task"
+    for subdir, name, text in [
+        ("form_skills", "bugfix_diagnosis.md", "bugfix skill\n"),
+        ("feedback_guides", "feedback_core.md", "feedback core\n"),
+        ("feedback_guides", "feedback_bugfix.md", "feedback bugfix\n"),
+        ("wrappers", "agentic_wrapper.md", "agentic wrapper\n"),
+    ]:
+        path = release / "prompt_modes" / subdir / name
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text(text, encoding="utf-8")
+    (task / "public").mkdir(parents=True)
+    (task / "public" / "instruction.md").write_text("repair task\n", encoding="utf-8")
+    mode_record = {
+        "mode": "G5",
+        "component_order": [
+            "instruction",
+            "bugfix_diagnosis.md",
+            "feedback_core.md",
+            "feedback_bugfix.md",
+            "agentic_wrapper.md",
+        ],
+        "prompt_component_hashes": {
+            "bugfix_diagnosis.md": "a" * 64,
+            "feedback_core.md": "b" * 64,
+            "feedback_bugfix.md": "c" * 64,
+            "agentic_wrapper.md": "d" * 64,
+        },
+    }
+    rendered = render_prompt(
         release,
-        [{"task_id": "v4-sample", "family_id": "001", "form": form, "task_dir": task.relative_to(release).as_posix()}],
-        components,
+        task,
+        {"form": "bugfix"},
+        mode_record,
+        inline_artifacts=False,
     )
-    return task
-
-
-def prompt_record_at(release: Path, mode: str) -> dict:
-    for line in (release / "prompt_modes" / "PROMPT_RECORDS.jsonl").read_text(encoding="utf-8").splitlines():
-        row = json.loads(line)
-        if row["mode"] == mode:
-            return row
-    raise AssertionError(f"missing prompt record for {mode}")
-
-
-def test_prompt_record_components_keep_wrapper_last_and_contract_out_of_prompt_surface(tmp_path: Path) -> None:
-    task = write_sample_prompt_records(tmp_path, "bugfix")
-    assert [item.name for item in iter_public_inputs(task, "bugfix")] == ["instruction.md", "buggy.va"]
-    g1 = prompt_record_at(tmp_path, "G1")
-    assert g1["component_order"] == ["instruction", "public_input:buggy_bundle/buggy.va", "bugfix_diagnosis.md", "direct_wrapper.md"]
-    assert ordered_prompt_components(g1) == ["bugfix_diagnosis.md", "direct_wrapper.md"]
-    assert "public_contract.json" not in g1["public_input_hashes"]
-    assert g1["public_contract_sha256"] == file_sha(task / "public_contract.json")
-    g5 = prompt_record_at(tmp_path, "G5")
-    assert g5["component_order"] == [
-        "instruction",
-        "public_input:buggy_bundle/buggy.va",
-        "bugfix_diagnosis.md",
-        "feedback_core.md",
-        "feedback_bugfix.md",
-        "agentic_wrapper.md",
+    markers = [
+        '<<<VABENCH_COMPONENT id="bugfix_diagnosis.md">>>',
+        '<<<VABENCH_COMPONENT id="feedback_core.md">>>',
+        '<<<VABENCH_COMPONENT id="feedback_bugfix.md">>>',
+        '<<<VABENCH_COMPONENT id="agentic_wrapper.md">>>',
     ]
-    assert ordered_prompt_components(g5) == [
-        "bugfix_diagnosis.md",
-        "feedback_core.md",
-        "feedback_bugfix.md",
-        "agentic_wrapper.md",
+    positions = [rendered.index(marker) for marker in markers]
+    assert positions == sorted(positions)
+    assert "VABENCH_PUBLIC_CONTRACT" not in rendered
+    assert rendered.strip().endswith("<<<END_VABENCH_COMPONENT>>>")
+
+
+def test_derived_prompt_plan_hash_binds_non_visible_public_contract(tmp_path: Path) -> None:
+    release = tmp_path / "release"
+    install_prompt_assets(release)
+    task = release / "tasks" / "1001-sample-bugfix"
+    (task / "public" / "buggy_bundle").mkdir(parents=True)
+    (task / "public" / "instruction.md").write_text("Repair the bundle.\n", encoding="utf-8")
+    (task / "public" / "buggy_bundle" / "dut.va").write_text("module dut; endmodule\n", encoding="utf-8")
+    (task / "public_contract.json").write_text('{"task_id":"v4-1001"}\n', encoding="utf-8")
+    record = {
+        "task_id": "v4-1001",
+        "family_id": "001",
+        "form": "bugfix",
+        "public_contract_sha256": file_sha(task / "public_contract.json"),
+    }
+    plan = build_mode_record(release, task, record, "G5")
+    assert plan["public_contract_sha256"] == file_sha(task / "public_contract.json")
+    assert plan["component_order"][-4:] == [
+        "bugfix_diagnosis.md", "feedback_core.md", "feedback_bugfix.md", "agentic_wrapper.md",
     ]
+    assert set(plan["public_input_hashes"]) == {
+        "public/instruction.md", "public/buggy_bundle/dut.va",
+    }
 
 
-def test_rendered_prompts_do_not_inline_public_contract_json_and_use_mode_wrapper(tmp_path: Path) -> None:
-    task = write_sample_prompt_records(tmp_path, "bugfix")
-    record = {"form": "bugfix"}
-    g1_text = render_prompt(tmp_path, task, record, prompt_record_at(tmp_path, "G1"), inline_artifacts=True)
-    assert "<<<VABENCH_PUBLIC_CONTRACT>>>" not in g1_text
-    assert "public_contract.json" not in g1_text
-    assert '<<<VABENCH_INPUT_ARTIFACT path="buggy_bundle/buggy.va">>>' in g1_text
-    assert g1_text.index('id="bugfix_diagnosis.md"') < g1_text.index('id="direct_wrapper.md"')
-    g5_text = render_prompt(tmp_path, task, record, prompt_record_at(tmp_path, "G5"), inline_artifacts=False)
-    assert "<<<VABENCH_PUBLIC_CONTRACT>>>" not in g5_text
-    assert "public_contract.json" not in g5_text
-    assert "VABENCH_INPUT_ARTIFACT" not in g5_text
-    assert (
-        g5_text.index('id="bugfix_diagnosis.md"')
-        < g5_text.index('id="feedback_core.md"')
-        < g5_text.index('id="feedback_bugfix.md"')
-        < g5_text.index('id="agentic_wrapper.md"')
-    )
+def test_prompt_inputs_exclude_contract_json_from_model_surface(tmp_path: Path) -> None:
+    task = tmp_path / "task"
+    (task / "public").mkdir(parents=True)
+    (task / "public" / "instruction.md").write_text("instruction.md\n", encoding="utf-8")
+    (task / "public_contract.json").write_text("public_contract.json\n", encoding="utf-8")
+    assert [path.name for path in iter_public_inputs(task, "dut", "G0")] == ["instruction.md"]
+    assert [path.name for path in iter_public_inputs(task, "dut", "G1")] == ["instruction.md"]
+    assert [path.name for path in iter_public_inputs(task, "dut", "G2")] == ["instruction.md"]
+
+
+def test_public_contracts_live_in_task_directories(tmp_path: Path) -> None:
+    output = tmp_path / "release"
+    task = output / "tasks" / "001-sample"
+    task.mkdir(parents=True)
+    assert public_contract_relative_path(task) == "tasks/001-sample/public_contract.json"
+    relative = write_public_contract(output, task, {"task_id": "v4-001", "form": "dut"})
+    assert relative == "tasks/001-sample/public_contract.json"
+    assert (output / relative).is_file()
+    assert (task / "public_contract.json").is_file()
 
 
 def test_agentic_bugfix_export_seeds_editable_submission(tmp_path: Path) -> None:
     task = tmp_path / "task"
-    (task / "buggy_bundle").mkdir(parents=True)
-    (task / "buggy_bundle" / "a.va").write_text("module a; endmodule\n", encoding="utf-8")
-    (task / "instruction.md").write_text("Repair the bundle.\n", encoding="utf-8")
-    (task / "public_contract.json").write_text("{}\n", encoding="utf-8")
+    (task / "public" / "buggy_bundle").mkdir(parents=True)
+    (task / "public" / "buggy_bundle" / "a.va").write_text("module a; endmodule\n", encoding="utf-8")
+    (task / "public" / "instruction.md").write_text("Repair the bundle.\n", encoding="utf-8")
     public = tmp_path / "public"
     (public / "submission").mkdir(parents=True)
     install_public(task, public, "bugfix", "G2")
-    assert (public / "submission" / "a.va").read_bytes() == (task / "buggy_bundle" / "a.va").read_bytes()
+    assert (public / "submission" / "a.va").read_bytes() == (task / "public" / "buggy_bundle" / "a.va").read_bytes()
     assert (public / "task" / "buggy_bundle" / "a.va").is_file()
-    assert not (public / "task" / "public_contract.json").exists()
+
+
+def test_export_omits_public_contract_mount(tmp_path: Path) -> None:
+    task = tmp_path / "task"
+    (task / "public").mkdir(parents=True)
+    (task / "public" / "instruction.md").write_text("Build the DUT.\n", encoding="utf-8")
+    for mode in ("G0", "G2"):
+        public = tmp_path / f"public-{mode}"
+        (public / "submission").mkdir(parents=True)
+        install_public(task, public, "dut", mode)
+        assert (public / "task" / "instruction.md").is_file()
+        assert not (public / "task" / "public_contract.json").exists()
 
 
 def test_runtime_evidence_rejects_handwritten_pass_report(tmp_path: Path) -> None:
@@ -221,17 +277,6 @@ def test_runtime_evidence_rejects_handwritten_pass_report(tmp_path: Path) -> Non
         assert "not a valid pass" in str(exc)
     else:
         raise AssertionError("handwritten pass report was accepted")
-
-
-def test_reference_certification_hashes_are_bound_to_exact_five_rows() -> None:
-    rows = [
-        {"mutation_id": "m1", "certification_sha256": "a" * 64},
-        {"mutation_id": "m2", "certification_sha256": "b" * 64},
-    ]
-    assert mutation_certification_hashes(rows) == {
-        "m1": "a" * 64,
-        "m2": "b" * 64,
-    }
 
 
 def test_bugfix_bundle_hashes_include_unchanged_gold_artifacts(tmp_path: Path) -> None:
