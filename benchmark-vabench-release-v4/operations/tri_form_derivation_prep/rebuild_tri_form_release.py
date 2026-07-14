@@ -11,7 +11,7 @@ from pathlib import Path
 
 PREP_ROOT = Path(__file__).resolve().parent
 PACKAGE_ROOT = PREP_ROOT.parents[1]
-RELEASE = PACKAGE_ROOT / "release" / "tri-form-v4-1200-draft"
+RELEASE = PACKAGE_ROOT / "release" / "benchmarkv4"
 
 
 def run(*args: object) -> None:

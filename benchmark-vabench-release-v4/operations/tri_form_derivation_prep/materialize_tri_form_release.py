@@ -19,7 +19,7 @@ from typing import Any, Iterable
 PACKAGE_ROOT = Path(__file__).resolve().parents[2]
 PREP_ROOT = Path(__file__).resolve().parent
 DEFAULT_SOURCE = PACKAGE_ROOT / "release" / "dut-base-v3-exact-five-hash-bound-v2"
-DEFAULT_OUTPUT = PACKAGE_ROOT / "release" / "tri-form-v4-1200-draft"
+DEFAULT_OUTPUT = PACKAGE_ROOT / "release" / "benchmarkv4"
 PROMPT_ASSETS = PREP_ROOT / "prompt_assets"
 MODES = {
     "G0": {"process": "direct_one_shot", "form_skill": False, "feedback_guide": False, "feedback_cli": False},

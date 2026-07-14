@@ -19,10 +19,10 @@ DUT family assets.
 - Structure and bundle-isolation audit: PASS
 - Release status: `materialized_gate3_audit_pending`
 
-The materialized package is
-`release/tri-form-v4-1200-draft/`. The name retains `draft` because final Gate
-3 certification must bind a frozen EVAS identity and the final Spectre judge.
-The task definitions themselves are generated for all 1,200 IDs.
+The materialized package is `release/benchmarkv4/`. The package name is stable;
+its manifest remains pre-final until Gate 3 certification binds a frozen EVAS
+identity and the final Spectre judge. The task definitions themselves are
+generated for all 1,200 IDs.
 
 ## Remaining Release Work
 
@@ -30,7 +30,7 @@ The task definitions themselves are generated for all 1,200 IDs.
 2. bind the final EVAS commit and executable identity;
 3. run or carry forward hash-compatible evidence under the release policy;
 4. execute the final private Spectre decision for frozen candidates;
-5. rename/seal the package only after the strict release audit passes.
+5. seal the package only after the strict release audit passes.
 
 Runtime ingestion evidence proves that G0/G1 receive only the direct prompt and
 that G2-G5 receive the public task bundle plus a writable submission directory.
