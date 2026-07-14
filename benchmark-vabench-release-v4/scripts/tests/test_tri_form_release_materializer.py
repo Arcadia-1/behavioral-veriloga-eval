@@ -11,6 +11,7 @@ if str(PREP) not in sys.path:
 
 from materialize_tri_form_release import (  # noqa: E402
     COMPONENT_METADATA,
+    FEEDBACK_CORE,
     FEEDBACK_GUIDES,
     FORM_SKILLS,
     MODES,
@@ -108,12 +109,14 @@ def test_prompt_components_have_pinned_reference_tokenizer_metadata() -> None:
         "dut_modeling.md",
         "testbench_verification.md",
         "bugfix_diagnosis.md",
+        "feedback_core.md",
         "feedback_dut.md",
         "feedback_testbench.md",
         "feedback_bugfix.md",
     }
     assert {COMPONENT_METADATA[name]["kind"] for name in WRAPPERS_BY_PROCESS.values()} == {"wrapper"}
     assert {COMPONENT_METADATA[name]["kind"] for name in FORM_SKILLS.values()} == {"form_skill"}
+    assert COMPONENT_METADATA[FEEDBACK_CORE]["kind"] == "feedback_guide"
     assert {COMPONENT_METADATA[name]["kind"] for name in FEEDBACK_GUIDES.values()} == {"feedback_guide"}
     assert reference_token_count("one two; three") == 4
 
@@ -153,15 +156,22 @@ def test_prompt_record_components_keep_wrapper_last_and_contract_out_of_prompt_s
     assert g1["component_order"] == ["instruction", "public_input:buggy_bundle/buggy.va", "bugfix_diagnosis.md", "direct_wrapper.md"]
     assert ordered_prompt_components(g1) == ["bugfix_diagnosis.md", "direct_wrapper.md"]
     assert "public_contract.json" not in g1["public_input_hashes"]
+    assert g1["public_contract_sha256"] == file_sha(task / "public_contract.json")
     g5 = prompt_record_at(tmp_path, "G5")
     assert g5["component_order"] == [
         "instruction",
         "public_input:buggy_bundle/buggy.va",
         "bugfix_diagnosis.md",
+        "feedback_core.md",
         "feedback_bugfix.md",
         "agentic_wrapper.md",
     ]
-    assert ordered_prompt_components(g5) == ["bugfix_diagnosis.md", "feedback_bugfix.md", "agentic_wrapper.md"]
+    assert ordered_prompt_components(g5) == [
+        "bugfix_diagnosis.md",
+        "feedback_core.md",
+        "feedback_bugfix.md",
+        "agentic_wrapper.md",
+    ]
 
 
 def test_rendered_prompts_do_not_inline_public_contract_json_and_use_mode_wrapper(tmp_path: Path) -> None:
@@ -176,7 +186,12 @@ def test_rendered_prompts_do_not_inline_public_contract_json_and_use_mode_wrappe
     assert "<<<VABENCH_PUBLIC_CONTRACT>>>" not in g5_text
     assert "public_contract.json" not in g5_text
     assert "VABENCH_INPUT_ARTIFACT" not in g5_text
-    assert g5_text.index('id="bugfix_diagnosis.md"') < g5_text.index('id="feedback_bugfix.md"') < g5_text.index('id="agentic_wrapper.md"')
+    assert (
+        g5_text.index('id="bugfix_diagnosis.md"')
+        < g5_text.index('id="feedback_core.md"')
+        < g5_text.index('id="feedback_bugfix.md"')
+        < g5_text.index('id="agentic_wrapper.md"')
+    )
 
 
 def test_agentic_bugfix_export_seeds_editable_submission(tmp_path: Path) -> None:

@@ -25,12 +25,14 @@ FEEDBACK_GUIDES = {
     "testbench": "feedback_testbench.md",
     "bugfix": "feedback_bugfix.md",
 }
+FEEDBACK_CORE = "feedback_core.md"
 WRAPPERS_BY_PROCESS = {
     "direct_one_shot": "direct_wrapper.md",
     "agentic": "agentic_wrapper.md",
 }
 COMPONENT_SUBDIR_BY_NAME = {
     **{name: "form_skills" for name in FORM_SKILLS.values()},
+    FEEDBACK_CORE: "feedback_guides",
     **{name: "feedback_guides" for name in FEEDBACK_GUIDES.values()},
     **{name: "wrappers" for name in WRAPPERS_BY_PROCESS.values()},
 }
@@ -362,7 +364,7 @@ def audit_prompt_records(release: Path, tasks: list[dict[str, Any]], problems: l
     tokenizer = component_manifest.get("reference_tokenizer") or {}
     tokenizer_key = f"{tokenizer.get('id')}@{tokenizer.get('version')}"
     required_assets = {
-        *WRAPPERS_BY_PROCESS.values(), *FORM_SKILLS.values(), *FEEDBACK_GUIDES.values()
+        *WRAPPERS_BY_PROCESS.values(), *FORM_SKILLS.values(), FEEDBACK_CORE, *FEEDBACK_GUIDES.values()
     }
     if set(component_records) != required_assets:
         problems.append("prompt component manifest set mismatch")
@@ -404,13 +406,15 @@ def audit_prompt_records(release: Path, tasks: list[dict[str, Any]], problems: l
         }
         if row.get("canonical_instruction_sha256") != file_sha(task_dir / "instruction.md"):
             problems.append(f"{task_id}/{mode}: canonical instruction hash mismatch")
+        if row.get("public_contract_sha256") != file_sha(task_dir / "public_contract.json"):
+            problems.append(f"{task_id}/{mode}: public contract metadata hash mismatch")
         if row.get("public_input_hashes") != expected_input_hashes:
             problems.append(f"{task_id}/{mode}: public input hash replay mismatch")
         expected_skills: list[str] = []
         if mode in {"G1", "G3", "G5"}:
             expected_skills.append(FORM_SKILLS.get(form, ""))
         if mode in {"G4", "G5"}:
-            expected_skills.append(FEEDBACK_GUIDES.get(form, ""))
+            expected_skills.extend([FEEDBACK_CORE, FEEDBACK_GUIDES.get(form, "")])
         expected_wrapper = WRAPPERS_BY_PROCESS[expected_process]
         expected_components = [*expected_skills, expected_wrapper]
         skills = row.get("skill_hashes") or {}

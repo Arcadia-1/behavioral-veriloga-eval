@@ -23,12 +23,14 @@ FEEDBACK_GUIDES = {
     "testbench": "feedback_testbench.md",
     "bugfix": "feedback_bugfix.md",
 }
+FEEDBACK_CORE = "feedback_core.md"
 WRAPPERS_BY_PROCESS = {
     "direct_one_shot": "direct_wrapper.md",
     "agentic": "agentic_wrapper.md",
 }
 COMPONENT_SUBDIR_BY_NAME = {
     **{name: "form_skills" for name in FORM_SKILLS.values()},
+    FEEDBACK_CORE: "feedback_guides",
     **{name: "feedback_guides" for name in FEEDBACK_GUIDES.values()},
     **{name: "wrappers" for name in WRAPPERS_BY_PROCESS.values()},
 }

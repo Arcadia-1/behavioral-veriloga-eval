@@ -39,6 +39,7 @@ FEEDBACK_GUIDES = {
     "testbench": "feedback_testbench.md",
     "bugfix": "feedback_bugfix.md",
 }
+FEEDBACK_CORE = "feedback_core.md"
 WRAPPERS_BY_PROCESS = {
     "direct_one_shot": "direct_wrapper.md",
     "agentic": "agentic_wrapper.md",
@@ -66,6 +67,7 @@ COMPONENT_METADATA = {
     "dut_modeling.md": {"stable_id": "component.form.dut", "kind": "form_skill", "applicable_forms": ["dut"]},
     "testbench_verification.md": {"stable_id": "component.form.testbench", "kind": "form_skill", "applicable_forms": ["testbench"]},
     "bugfix_diagnosis.md": {"stable_id": "component.form.bugfix", "kind": "form_skill", "applicable_forms": ["bugfix"]},
+    "feedback_core.md": {"stable_id": "component.feedback.core", "kind": "feedback_guide", "applicable_forms": ["dut", "testbench", "bugfix"]},
     "feedback_dut.md": {"stable_id": "component.feedback.dut", "kind": "feedback_guide", "applicable_forms": ["dut"]},
     "feedback_testbench.md": {"stable_id": "component.feedback.testbench", "kind": "feedback_guide", "applicable_forms": ["testbench"]},
     "feedback_bugfix.md": {"stable_id": "component.feedback.bugfix", "kind": "feedback_guide", "applicable_forms": ["bugfix"]},
@@ -692,7 +694,7 @@ def write_prompt_records(output: Path, task_rows: list[dict[str, Any]], skills: 
                 if policy["form_skill"]:
                     guide_ids.append(FORM_SKILLS[task["form"]])
                 if policy["feedback_guide"]:
-                    guide_ids.append(FEEDBACK_GUIDES[task["form"]])
+                    guide_ids.extend([FEEDBACK_CORE, FEEDBACK_GUIDES[task["form"]]])
                 wrapper = WRAPPERS_BY_PROCESS[str(policy["process"])]
                 prompt_component_ids = [*guide_ids, wrapper]
                 component_order = [item["id"] for item in public_components] + prompt_component_ids
@@ -714,6 +716,7 @@ def write_prompt_records(output: Path, task_rows: list[dict[str, Any]], skills: 
                     "process": policy["process"],
                     "feedback_cli_available": policy["feedback_cli"],
                     "canonical_instruction_sha256": instruction_sha,
+                    "public_contract_sha256": file_sha(task_dir / "public_contract.json"),
                     "public_input_hashes": input_hashes,
                     "component_order": component_order,
                     "static_components": static_components,

@@ -75,3 +75,8 @@ jobs:
 
       - name: Run v4 materializer and reference-audit tests
         run: python -m pytest -q benchmark-vabench-release-v4/scripts/tests/test_tri_form_release_materializer.py tests/test_v4_reference_spectre_audit.py
+
+      - name: Reproduce the tracked v4 release
+        run: |
+          python benchmark-vabench-release-v4/operations/tri_form_derivation_prep/rebuild_tri_form_release.py
+          git diff --exit-code
