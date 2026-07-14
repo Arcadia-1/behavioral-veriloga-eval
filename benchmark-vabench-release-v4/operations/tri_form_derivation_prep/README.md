@@ -59,5 +59,5 @@ result, a fixed-toolchain EVAS/Spectre certification, or a final score.
 
 The old `formal_derivatives/` front-20 packages are prototypes and are not the
 canonical 800 derivative tasks. The canonical generated views live under
-`release/tri-form-v4-1200-draft/tasks/` until the final Gate 3 release name and
+`release/benchmarkv4/tasks/` until the final Gate 3 release name and
 toolchain identity are sealed.

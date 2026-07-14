@@ -23,7 +23,7 @@ HERE = Path(__file__).resolve().parent
 PACKAGE = HERE.parents[1]
 REPO = PACKAGE.parent
 RUNNERS = REPO / "runners"
-DEFAULT_RELEASE = PACKAGE / "release" / "tri-form-v4-1200-draft"
+DEFAULT_RELEASE = PACKAGE / "release" / "benchmarkv4"
 
 for import_dir in (RUNNERS,):
     if str(import_dir) not in sys.path:

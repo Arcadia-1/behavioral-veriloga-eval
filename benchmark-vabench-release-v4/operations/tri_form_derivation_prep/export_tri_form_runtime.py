@@ -11,7 +11,7 @@ from typing import Any
 
 
 PACKAGE_ROOT = Path(__file__).resolve().parents[2]
-DEFAULT_RELEASE = PACKAGE_ROOT / "release" / "tri-form-v4-1200-draft"
+DEFAULT_RELEASE = PACKAGE_ROOT / "release" / "benchmarkv4"
 AGENTIC = {"G2", "G3", "G4", "G5"}
 FORM_SKILLS = {
     "dut": "dut_modeling.md",

@@ -20,7 +20,7 @@ DUT family assets.
 - Release status: `materialized_gate3_audit_pending`
 
 The materialized package is
-`release/tri-form-v4-1200-draft/`. The name retains `draft` because final Gate
+`release/benchmarkv4/`. The name retains `draft` because final Gate
 3 certification must bind a frozen EVAS identity and the final Spectre judge.
 The task definitions themselves are generated for all 1,200 IDs.
 
