@@ -13,6 +13,7 @@ from materialize_tri_form_release import (  # noqa: E402
     COMPONENT_METADATA,
     MODES,
     REFERENCE_TOKENIZER,
+    install_prompt_assets,
     iter_public_inputs,
     negative_assignment,
     reference_token_count,
@@ -109,6 +110,19 @@ def test_prompt_components_have_pinned_reference_tokenizer_metadata() -> None:
         "feedback_bugfix.md",
     }
     assert reference_token_count("one two; three") == 4
+
+
+def test_prompt_assets_split_wrappers_from_skills(tmp_path: Path) -> None:
+    records = install_prompt_assets(tmp_path)
+    manifest = json.loads((tmp_path / "prompt_modes" / "manifest.json").read_text(encoding="utf-8"))
+    assert set(manifest["wrappers"]) == {"direct_wrapper.md", "agentic_wrapper.md"}
+    assert "direct_wrapper.md" not in manifest["skills"]
+    assert (tmp_path / "prompt_modes" / "wrappers" / "direct_wrapper.md").is_file()
+    assert (tmp_path / "prompt_modes" / "wrappers" / "agentic_wrapper.md").is_file()
+    assert (tmp_path / "prompt_modes" / "skills" / "dut_modeling.md").is_file()
+    assert not (tmp_path / "prompt_modes" / "skills" / "manifest.json").exists()
+    assert records["direct_wrapper.md"]["kind"] == "wrapper"
+    assert records["dut_modeling.md"]["kind"] == "form_skill"
 
 
 def test_direct_prompt_inputs_exclude_contract_json(tmp_path: Path) -> None:

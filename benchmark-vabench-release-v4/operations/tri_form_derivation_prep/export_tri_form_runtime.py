@@ -88,6 +88,11 @@ def prompt_wrapper_id(mode_record: dict[str, Any]) -> str:
     return wrappers[0]
 
 
+def prompt_component_path(release: Path, component_id: str) -> Path:
+    subdir = "wrappers" if component_id.endswith("_wrapper.md") else "skills"
+    return release / "prompt_modes" / subdir / component_id
+
+
 def render_prompt(release: Path, task_dir: Path, record: dict[str, Any], mode_record: dict[str, Any], *, inline_artifacts: bool) -> str:
     mode = str(mode_record["mode"])
     wrapper = prompt_wrapper_id(mode_record)
@@ -103,13 +108,13 @@ def render_prompt(release: Path, task_dir: Path, record: dict[str, Any], mode_re
         parts.append(artifacts)
     parts.extend([
         f'<<<VABENCH_COMPONENT id="{wrapper}">>>',
-        (release / "prompt_modes" / "skills" / wrapper).read_text(encoding="utf-8"),
+        prompt_component_path(release, wrapper).read_text(encoding="utf-8"),
         "<<<END_VABENCH_COMPONENT>>>",
     ])
     for skill in (mode_record.get("skill_hashes") or {}):
         parts.extend([
             f'<<<VABENCH_SKILL id="{skill}">>>',
-            (release / "prompt_modes" / "skills" / skill).read_text(encoding="utf-8"),
+            prompt_component_path(release, skill).read_text(encoding="utf-8"),
             "<<<END_VABENCH_SKILL>>>",
         ])
     return "\n\n".join(parts)
@@ -137,26 +142,25 @@ def install_public(task_dir: Path, public_root: Path, form: str, mode: str) -> N
 
 
 def install_evaluator(task_dir: Path, evaluator_root: Path, record: dict[str, Any]) -> None:
-    source_task = PACKAGE_ROOT / str(record["canonical_dut_source"])
-    source_eval = source_task / "evaluator"
+    task_eval = task_dir / "evaluator"
     form = str(record["form"])
     evaluator_root.mkdir(parents=True)
-    for name in ("task_record.json", "family_spec.json", "checker_profile.json", "harness_spec.json", "toolchain_lock.json"):
-        shutil.copy2(source_eval / name, evaluator_root / name)
-    copy_tree(source_eval / "profiles", evaluator_root / "profiles")
-    shutil.copy2(task_dir / "evaluator" / "score_policy.json", evaluator_root / "score_policy.json")
+    for name in ("task_record.json", "family_spec.json", "checker_profile.json", "harness_spec.json"):
+        shutil.copy2(task_eval / name, evaluator_root / name)
+    copy_tree(task_eval / "profiles", evaluator_root / "profiles")
+    shutil.copy2(task_eval / "score_policy.json", evaluator_root / "score_policy.json")
     if form in {"dut", "bugfix"}:
-        copy_tree(source_eval / "solution", evaluator_root / "solution")
-        shutil.copy2(source_eval / "score_tb.scs", evaluator_root / "trusted_feedback_tb.scs")
+        copy_tree(task_eval / "solution", evaluator_root / "solution")
+        shutil.copy2(task_eval / "score_tb.scs", evaluator_root / "trusted_feedback_tb.scs")
     if form == "testbench":
-        copy_tree(source_eval / "solution", evaluator_root / "trusted_solution")
-        copy_tree(source_eval / "mutation_bundles", evaluator_root / "mutation_bundles")
-        shutil.copy2(source_eval / "mutation_catalog.json", evaluator_root / "mutation_catalog.json")
+        copy_tree(task_eval / "solution", evaluator_root / "trusted_solution")
+        copy_tree(task_eval / "mutation_bundles", evaluator_root / "mutation_bundles")
+        shutil.copy2(task_eval / "mutation_catalog.json", evaluator_root / "mutation_catalog.json")
         for name in ("derivation_manifest.json", "reference_tb.scs", "reference_certificate.json", "testbench_security_policy.json"):
-            shutil.copy2(task_dir / "evaluator" / name, evaluator_root / name)
+            shutil.copy2(task_eval / name, evaluator_root / name)
     elif form == "bugfix":
         for name in ("derivation_manifest.json", "gold_repair_reference.json"):
-            shutil.copy2(task_dir / "evaluator" / name, evaluator_root / name)
+            shutil.copy2(task_eval / name, evaluator_root / name)
 
 
 def main() -> int:

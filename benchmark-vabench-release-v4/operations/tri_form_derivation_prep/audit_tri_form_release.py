@@ -36,17 +36,25 @@ FEEDBACK_ADAPTERS = {
     "bugfix": "feedback_bugfix.md",
 }
 MATERIALIZED_ARTIFACTS = (
+    ".gitattributes",
     "TASK_INDEX.json",
     "BUGFIX_SEED_REVIEW.json",
     "prompt_modes/PROMPT_RECORDS.jsonl",
     "prompt_modes/modes.json",
-    "prompt_modes/skills/manifest.json",
+    "prompt_modes/manifest.json",
 )
 RELEASE_SEAL_ARTIFACTS = (
     "MANIFEST.json",
     *MATERIALIZED_ARTIFACTS,
     "AUDIT_REPORT.json",
     "RUNTIME_INGESTION_EVIDENCE.json",
+)
+STANDALONE_EVALUATOR_COMMON = (
+    "task_record.json",
+    "family_spec.json",
+    "checker_profile.json",
+    "harness_spec.json",
+    "score_tb.scs",
 )
 
 
@@ -80,6 +88,17 @@ def tree_sha(path: Path) -> str:
     return digest.hexdigest()
 
 
+def tree_sha_skipping(path: Path, *, excluded_names: set[str]) -> str:
+    digest = hashlib.sha256()
+    for item in sorted(path.rglob("*")):
+        if item.is_file() and item.name not in excluded_names:
+            digest.update(item.relative_to(path).as_posix().encode("utf-8"))
+            digest.update(b"\0")
+            digest.update(item.read_bytes())
+            digest.update(b"\0")
+    return digest.hexdigest()
+
+
 def public_bundle_hash(task_dir: Path) -> str:
     digest = hashlib.sha256()
     for path in sorted(task_dir.rglob("*")):
@@ -90,6 +109,56 @@ def public_bundle_hash(task_dir: Path) -> str:
         digest.update(path.read_bytes())
         digest.update(b"\0")
     return digest.hexdigest()
+
+
+def prompt_component_path(release: Path, component_id: str) -> Path:
+    subdir = "wrappers" if component_id.endswith("_wrapper.md") else "skills"
+    return release / "prompt_modes" / subdir / component_id
+
+
+def audit_standalone_evaluator(
+    task_dir: Path,
+    source_task: Path,
+    form: str,
+    prefix: str,
+    problems: list[str],
+) -> Path | None:
+    evaluator = task_dir / "evaluator"
+    source_eval = source_task / "evaluator"
+    if not evaluator.is_dir():
+        problems.append(f"{prefix} evaluator directory missing")
+        return None
+    for name in STANDALONE_EVALUATOR_COMMON:
+        local = evaluator / name
+        source = source_eval / name
+        if not local.is_file():
+            problems.append(f"{prefix} standalone evaluator missing {name}")
+        elif not source.is_file() or file_sha(local) != file_sha(source):
+            problems.append(f"{prefix} standalone evaluator {name} differs from canonical source")
+    for directory in ("profiles", "solution"):
+        local = evaluator / directory
+        source = source_eval / directory
+        if not local.is_dir():
+            problems.append(f"{prefix} standalone evaluator missing {directory}/")
+        elif tree_sha(local) != tree_sha(source):
+            problems.append(f"{prefix} standalone evaluator {directory}/ differs from canonical source")
+    if form == "testbench":
+        for name in ("mutation_catalog.json",):
+            local = evaluator / name
+            source = source_eval / name
+            if not local.is_file():
+                problems.append(f"{prefix} standalone testbench evaluator missing {name}")
+            elif not source.is_file() or file_sha(local) != file_sha(source):
+                problems.append(f"{prefix} standalone testbench evaluator {name} differs from canonical source")
+        local_mutations = evaluator / "mutation_bundles"
+        source_mutations = source_eval / "mutation_bundles"
+        if not local_mutations.is_dir():
+            problems.append(f"{prefix} standalone testbench evaluator missing mutation_bundles/")
+        elif tree_sha(local_mutations) != tree_sha_skipping(source_mutations, excluded_names={"certification.json"}):
+            problems.append(f"{prefix} standalone testbench evaluator mutation_bundles/ scoring files differ from canonical source")
+        if list(local_mutations.rglob("certification.json")):
+            problems.append(f"{prefix} standalone testbench evaluator should not copy negative certification files")
+    return evaluator
 
 
 def build_release_seal(
@@ -237,13 +306,12 @@ def audit_task(
     if source_row is None:
         problems.append(f"{prefix} canonical denominator row missing")
         return
+    evaluator = audit_standalone_evaluator(task_dir, source_task, form, prefix, problems)
+    if evaluator is None:
+        return
     if form == "dut":
         if record.get("candidate_artifacts") != artifact_paths:
             problems.append(f"{prefix} DUT candidate artifacts differ from family spec")
-        return
-    evaluator = task_dir / "evaluator"
-    if not evaluator.is_dir():
-        problems.append(f"{prefix} evaluator directory missing")
         return
     derivation = read_json(evaluator / "derivation_manifest.json")
     assignment = derivation.get("negative_assignment") or {}
@@ -344,7 +412,9 @@ def audit_task(
         if private_materialization.get("buggy_bundle_sha256") != tree_sha(buggy):
             problems.append(f"{prefix} buggy bundle hash mismatch")
         gold_reference = read_json(evaluator / "gold_repair_reference.json")
-        if gold_reference.get("solution_tree_sha256") != tree_sha(source_task / "evaluator" / "solution"):
+        if gold_reference.get("materialized_solution") != "evaluator/solution":
+            problems.append(f"{prefix} gold repair reference does not point to the materialized solution")
+        if gold_reference.get("solution_tree_sha256") != tree_sha(evaluator / "solution"):
             problems.append(f"{prefix} gold repair solution hash mismatch")
         if gold_reference.get("gold_dut_certification_sha256") != (
             source_row.get("hashes") or {}
@@ -370,21 +440,29 @@ def audit_prompt_records(release: Path, tasks: list[dict[str, Any]], problems: l
     seen: dict[str, set[str]] = defaultdict(set)
     task_forms = {str(row["task_id"]): str(row["form"]) for row in tasks}
     task_dirs = {str(row["task_id"]): release / str(row["task_dir"]) for row in tasks}
-    skill_manifest = read_json(release / "prompt_modes" / "skills" / "manifest.json")
-    skill_records = skill_manifest.get("skills") or {}
-    tokenizer = skill_manifest.get("reference_tokenizer") or {}
+    component_manifest = read_json(release / "prompt_modes" / "manifest.json")
+    wrapper_records = component_manifest.get("wrappers") or {}
+    skill_records = component_manifest.get("skills") or {}
+    component_records = {**wrapper_records, **skill_records}
+    tokenizer = component_manifest.get("reference_tokenizer") or {}
     tokenizer_key = f"{tokenizer.get('id')}@{tokenizer.get('version')}"
-    required_assets = {
-        *set(WRAPPERS_BY_MODE.values()), *FORM_SKILLS.values(), "feedback_core.md", *FEEDBACK_ADAPTERS.values()
-    }
-    if set(skill_records) != required_assets:
-        problems.append("skill manifest component set mismatch")
-    for name, component in skill_records.items():
+    required_wrappers = set(WRAPPERS_BY_MODE.values())
+    required_skills = {*FORM_SKILLS.values(), "feedback_core.md", *FEEDBACK_ADAPTERS.values()}
+    if set(wrapper_records) != required_wrappers:
+        problems.append("component manifest wrapper set mismatch")
+    if set(skill_records) != required_skills:
+        problems.append("component manifest skill set mismatch")
+    if (release / "prompt_modes" / "skills" / "manifest.json").exists():
+        problems.append("legacy prompt_modes/skills/manifest.json should not be present")
+    for name, component in component_records.items():
         for field in ("stable_id", "semantic_version", "applicable_forms", "sha256", "bytes", "license", "provenance", "token_counts"):
             if field not in component:
-                problems.append(f"skill manifest {name}: missing {field}")
+                problems.append(f"component manifest {name}: missing {field}")
         if tokenizer_key not in (component.get("token_counts") or {}):
-            problems.append(f"skill manifest {name}: missing reference-tokenizer count")
+            problems.append(f"component manifest {name}: missing reference-tokenizer count")
+        expected_path = prompt_component_path(release, name)
+        if component.get("path") != expected_path.relative_to(release).as_posix():
+            problems.append(f"component manifest {name}: path does not match component kind")
     count = 0
     for line_no, line in enumerate(path.read_text(encoding="utf-8").splitlines(), 1):
         try:
@@ -423,6 +501,9 @@ def audit_prompt_records(release: Path, tasks: list[dict[str, Any]], problems: l
         for name in expected_skills:
             if skills.get(name) != (skill_records.get(name) or {}).get("sha256"):
                 problems.append(f"{task_id}/{mode}: skill hash mismatch for {name}")
+        expected_wrapper = WRAPPERS_BY_MODE.get(mode, "")
+        if (wrapper_records.get(expected_wrapper) or {}).get("sha256") is None:
+            problems.append(f"{task_id}/{mode}: wrapper missing from component manifest")
         component_order = row.get("component_order") or []
         expected_suffix = [WRAPPERS_BY_MODE.get(mode, ""), *expected_skills]
         if component_order[-len(expected_suffix):] != expected_suffix:
@@ -437,8 +518,8 @@ def audit_prompt_records(release: Path, tasks: list[dict[str, Any]], problems: l
         for item in static_components:
             component_id = str(item.get("id") or "")
             actual_path = public_component_paths.get(component_id)
-            if actual_path is None and component_id in skill_records:
-                actual_path = release / "prompt_modes" / "skills" / component_id
+            if actual_path is None and component_id in component_records:
+                actual_path = prompt_component_path(release, component_id)
             if actual_path is None or not actual_path.is_file():
                 problems.append(f"{task_id}/{mode}: unresolved static component {component_id}")
             elif item.get("sha256") != file_sha(actual_path) or item.get("bytes") != actual_path.stat().st_size:
@@ -453,8 +534,8 @@ def audit_prompt_records(release: Path, tasks: list[dict[str, Any]], problems: l
             direct_text_parts: list[str] = []
             for component_id in component_order:
                 actual_path = public_component_paths.get(component_id)
-                if actual_path is None and component_id in skill_records:
-                    actual_path = release / "prompt_modes" / "skills" / component_id
+                if actual_path is None and component_id in component_records:
+                    actual_path = prompt_component_path(release, component_id)
                 if actual_path is not None and actual_path.is_file():
                     direct_text_parts.append(actual_path.read_text(encoding="utf-8", errors="replace"))
             direct_text = "\n".join(direct_text_parts)

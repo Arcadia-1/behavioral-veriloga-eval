@@ -40,11 +40,12 @@ FEEDBACK_ADAPTERS = {
     "bugfix": "feedback_bugfix.md",
 }
 MATERIALIZED_ARTIFACTS = (
+    ".gitattributes",
     "TASK_INDEX.json",
     "BUGFIX_SEED_REVIEW.json",
     "prompt_modes/PROMPT_RECORDS.jsonl",
     "prompt_modes/modes.json",
-    "prompt_modes/skills/manifest.json",
+    "prompt_modes/manifest.json",
 )
 WRAPPERS_BY_PROCESS = {
     "direct_one_shot": "direct_wrapper.md",
@@ -66,6 +67,13 @@ COMPONENT_METADATA = {
     "feedback_testbench.md": {"stable_id": "skill.feedback.testbench", "kind": "feedback_skill", "applicable_forms": ["testbench"]},
     "feedback_bugfix.md": {"stable_id": "skill.feedback.bugfix", "kind": "feedback_skill", "applicable_forms": ["bugfix"]},
 }
+STANDALONE_EVALUATOR_COMMON = (
+    "task_record.json",
+    "family_spec.json",
+    "checker_profile.json",
+    "harness_spec.json",
+    "score_tb.scs",
+)
 TRIVIAL_FAULT_CLASSES = {
     "zero_stub_output",
     "holds_clock_output_low",
@@ -92,6 +100,13 @@ def write_json(path: Path, value: Any) -> None:
 def write_text(path: Path, value: str) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(value, encoding="utf-8")
+
+
+def install_release_git_attributes(output: Path) -> None:
+    write_text(
+        output / ".gitattributes",
+        "tasks/testbench/**/evaluator/mutation_bundles/**/*.va whitespace=-trailing-space\n",
+    )
 
 
 def sha_bytes(value: bytes) -> str:
@@ -442,6 +457,37 @@ def write_task_record(task_dir: Path, record: dict[str, Any]) -> None:
     write_json(task_dir / "TASK_RECORD.json", record)
 
 
+def copy_tree(source: Path, target: Path) -> None:
+    if source.is_dir():
+        shutil.copytree(source, target, dirs_exist_ok=True)
+
+
+def copy_tree_skipping(source: Path, target: Path, *, excluded_names: set[str]) -> None:
+    for item in sorted(source.rglob("*")):
+        if not item.is_file() or item.name in excluded_names:
+            continue
+        destination = target / item.relative_to(source)
+        destination.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copy2(item, destination)
+
+
+def materialize_standalone_evaluator(source_task: Path, evaluator: Path, *, include_negative_suite: bool) -> None:
+    """Copy private scoring assets into a tri-form task evaluator directory."""
+    source_eval = source_task / "evaluator"
+    evaluator.mkdir(parents=True, exist_ok=True)
+    for name in STANDALONE_EVALUATOR_COMMON:
+        shutil.copy2(source_eval / name, evaluator / name)
+    copy_tree(source_eval / "profiles", evaluator / "profiles")
+    copy_tree(source_eval / "solution", evaluator / "solution")
+    if include_negative_suite:
+        shutil.copy2(source_eval / "mutation_catalog.json", evaluator / "mutation_catalog.json")
+        copy_tree_skipping(
+            source_eval / "mutation_bundles",
+            evaluator / "mutation_bundles",
+            excluded_names={"certification.json"},
+        )
+
+
 def build_dut_view(
     output: Path, source: Path, source_task: Path, row: dict[str, Any], spec: dict[str, Any], spec_sha: str,
 ) -> dict[str, Any]:
@@ -466,6 +512,7 @@ def build_dut_view(
     write_public_contract(task_dir, contract)
     evaluator = task_dir / "evaluator"
     evaluator.mkdir()
+    materialize_standalone_evaluator(source_task, evaluator, include_negative_suite=False)
     write_json(evaluator / "score_policy.json", {
         "schema_version": "v4-dut-score-policy-v1",
         "task_id": f"v4-{family}",
@@ -517,6 +564,7 @@ def build_testbench_view(
     write_public_contract(task_dir, contract)
     evaluator = task_dir / "evaluator"
     evaluator.mkdir()
+    materialize_standalone_evaluator(source_task, evaluator, include_negative_suite=True)
     suite = [str(item["mutation_id"]) for item in row["active_mutations"]]
     derivation = {
         "schema_version": "v4-derivation-manifest-v2",
@@ -600,6 +648,7 @@ def build_bugfix_view(
     write_public_contract(task_dir, contract)
     evaluator = task_dir / "evaluator"
     evaluator.mkdir()
+    materialize_standalone_evaluator(source_task, evaluator, include_negative_suite=False)
     write_json(evaluator / "score_policy.json", {
         "schema_version": "v4-bugfix-score-policy-v1",
         "task_id": f"v4-{task_num}",
@@ -629,8 +678,9 @@ def build_bugfix_view(
     })
     write_json(evaluator / "gold_repair_reference.json", {
         "schema_version": "v4-gold-repair-reference-v1",
+        "materialized_solution": "evaluator/solution",
         "source_solution": rel(source_task / "evaluator" / "solution", PACKAGE_ROOT),
-        "solution_tree_sha256": tree_sha(source_task / "evaluator" / "solution"),
+        "solution_tree_sha256": tree_sha(evaluator / "solution"),
         "gold_dut_certification_sha256": row["hashes"]["task_certification_sha256"],
         "simulation_rerun_required_for_materialization": False,
     })
@@ -644,18 +694,23 @@ def build_bugfix_view(
     return {"task_id": f"v4-{task_num}", "form": "bugfix", "family_id": family, "task_dir": rel(task_dir, output)}
 
 
+def prompt_component_subdir(component_id: str) -> str:
+    return "wrappers" if COMPONENT_METADATA[component_id]["kind"] == "wrapper" else "skills"
+
+
 def install_prompt_assets(output: Path) -> dict[str, dict[str, Any]]:
-    target = output / "prompt_modes" / "skills"
-    target.mkdir(parents=True)
     records: dict[str, dict[str, Any]] = {}
-    for source in sorted(PROMPT_ASSETS.glob("*.md")):
+    wrappers: dict[str, dict[str, Any]] = {}
+    skills: dict[str, dict[str, Any]] = {}
+    for source in sorted(PROMPT_ASSETS.rglob("*.md")):
         if source.name not in COMPONENT_METADATA:
             raise SystemExit(f"prompt component lacks metadata: {source.name}")
-        destination = target / source.name
+        destination = output / "prompt_modes" / prompt_component_subdir(source.name) / source.name
+        destination.parent.mkdir(parents=True, exist_ok=True)
         shutil.copy2(source, destination)
         metadata = COMPONENT_METADATA[source.name]
         fingerprint = component_fingerprint(source.name, destination)
-        records[source.name] = {
+        record = {
             "path": rel(destination, output),
             **fingerprint,
             "stable_id": metadata["stable_id"],
@@ -665,10 +720,16 @@ def install_prompt_assets(output: Path) -> dict[str, dict[str, Any]]:
             "license": {"status": "repository_license_pending", "spdx": None},
             "provenance": {"type": "project_authored", "source": "V4_TRI_FORM_BENCHMARK_REQUIREMENTS.md"},
         }
-    write_json(output / "prompt_modes" / "skills" / "manifest.json", {
-        "schema_version": "v4-skill-manifest-v1",
+        records[source.name] = record
+        if metadata["kind"] == "wrapper":
+            wrappers[source.name] = record
+        else:
+            skills[source.name] = record
+    write_json(output / "prompt_modes" / "manifest.json", {
+        "schema_version": "v4-prompt-component-manifest-v1",
         "reference_tokenizer": REFERENCE_TOKENIZER,
-        "skills": records,
+        "wrappers": wrappers,
+        "skills": skills,
     })
     write_json(output / "prompt_modes" / "modes.json", {
         "schema_version": "v4-prompt-mode-registry-v1",
@@ -690,7 +751,7 @@ def iter_public_inputs(task_dir: Path, form: str, mode: str) -> Iterable[Path]:
         yield from sorted((task_dir / "buggy_bundle").rglob("*.va"))
 
 
-def write_prompt_records(output: Path, task_rows: list[dict[str, Any]], skills: dict[str, dict[str, Any]]) -> None:
+def write_prompt_records(output: Path, task_rows: list[dict[str, Any]], components_by_id: dict[str, dict[str, Any]]) -> None:
     path = output / "prompt_modes" / "PROMPT_RECORDS.jsonl"
     with path.open("w", encoding="utf-8") as handle:
         for task in task_rows:
@@ -717,9 +778,9 @@ def write_prompt_records(output: Path, task_rows: list[dict[str, Any]], skills: 
                 static_components = public_components + [
                     {
                         "id": name,
-                        "sha256": skills[name]["sha256"],
-                        "bytes": skills[name]["bytes"],
-                        "token_counts": skills[name]["token_counts"],
+                        "sha256": components_by_id[name]["sha256"],
+                        "bytes": components_by_id[name]["bytes"],
+                        "token_counts": components_by_id[name]["token_counts"],
                     }
                     for name in [wrapper, *skill_ids]
                 ]
@@ -736,7 +797,7 @@ def write_prompt_records(output: Path, task_rows: list[dict[str, Any]], skills: 
                     "component_order": components,
                     "static_components": static_components,
                     "reference_tokenizer": REFERENCE_TOKENIZER,
-                    "skill_hashes": {name: skills[name]["sha256"] for name in skill_ids},
+                    "skill_hashes": {name: components_by_id[name]["sha256"] for name in skill_ids},
                     "response_protocol": "v4-exact-artifact-blocks-v1" if policy["process"] == "direct_one_shot" else "v4-workspace-finalizer-v1",
                 }
                 handle.write(json.dumps(record, sort_keys=True) + "\n")
@@ -755,6 +816,7 @@ def main() -> int:
             raise SystemExit(f"output exists; pass --force to replace it: {output}")
         shutil.rmtree(output)
     output.mkdir(parents=True)
+    install_release_git_attributes(output)
 
     denominator_path = source / "score_denominator_manifest.json"
     denominator = read_json(denominator_path)
