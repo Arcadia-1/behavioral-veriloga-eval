@@ -68,8 +68,6 @@ def rel(path: Path, root: Path) -> str:
 
 def iter_prompt_public_inputs(task_dir: Path, form: str, mode: str) -> list[Path]:
     public_inputs = [task_dir / "instruction.md"]
-    if mode not in DIRECT_MODES:
-        public_inputs.append(task_dir / "public_contract.json")
     if form == "testbench":
         public_inputs.extend(sorted((task_dir / "supplied_dut").rglob("*.va")))
     elif form == "bugfix":

@@ -13,9 +13,10 @@ It intentionally does not modify:
 
 `build_sync_prep.py` is the historical pre-freeze inventory builder.
 `materialize_tri_form_release.py` is the release builder: it consumes the
-hash-bound exact-five DUT denominator and creates 400 DUT, 400 Testbench, and
-400 Bugfix public task views under one benchmark package root. It also
-regenerates the `private_evaluator/` subpackage used by audits and runners.
+hash-bound exact-five DUT denominator from `provenance/` and creates 400 DUT,
+400 Testbench, and 400 Bugfix public task views under one benchmark package
+root. It also regenerates the `private_evaluator/` subpackage used by audits
+and runners.
 
 The generated plan activates exactly five mutations per family: 2,000 active
 mutations in the formal tri-form release. The 51 source-catalog extras remain
@@ -46,6 +47,12 @@ gold references, mutation bundles, score policies, and derivation records for
 local scoring and audits. Only local generated audit/runtime evidence under
 `private_evaluator/evidence/` and optional prompt-record snapshots under
 `private_evaluator/prompt_records/` are ignored by git.
+
+The construction source package is tracked separately under
+`provenance/dut-base-v3-exact-five-hash-bound-v2/` so `release/` contains only
+the final distributable package. Per-task `public_contract.json` files remain
+inside `release/benchmarkv4/tasks/` as machine-readable public metadata, but
+runtime export does not mount or inline them into model prompts.
 
 Export one runtime record without mounting evaluator-private files:
 

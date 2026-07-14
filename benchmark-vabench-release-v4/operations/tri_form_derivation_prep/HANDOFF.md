@@ -5,7 +5,7 @@ DUT family assets.
 
 ## Materialized State
 
-- Source release: `release/dut-base-v3-exact-five-hash-bound-v2`
+- Source provenance: `provenance/dut-base-v3-exact-five-hash-bound-v2`
 - Source denominator SHA-256:
   `52278bac89017d62349a2577944cda8717bde78c3adef975280ba2bf988c643b`
 - Families: 400

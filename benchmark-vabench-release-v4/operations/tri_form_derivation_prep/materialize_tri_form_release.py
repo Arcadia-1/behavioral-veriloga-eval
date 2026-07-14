@@ -19,7 +19,7 @@ from typing import Any, Iterable
 
 PACKAGE_ROOT = Path(__file__).resolve().parents[2]
 PREP_ROOT = Path(__file__).resolve().parent
-DEFAULT_SOURCE = PACKAGE_ROOT / "release" / "dut-base-v3-exact-five-hash-bound-v2"
+DEFAULT_SOURCE = PACKAGE_ROOT / "provenance" / "dut-base-v3-exact-five-hash-bound-v2"
 DEFAULT_OUTPUT = PACKAGE_ROOT / "release" / "benchmarkv4"
 DEFAULT_PRIVATE_SUBDIR = "private_evaluator"
 PROMPT_ASSETS = PREP_ROOT / "prompt_assets"
@@ -764,7 +764,6 @@ def install_prompt_assets(output: Path) -> dict[str, dict[str, Any]]:
             "canonical_instruction_and_inline_artifacts",
             "form_skill",
             "feedback_guide",
-            "agentic_public_contract",
             "mode_wrapper_response_protocol",
         ],
         "working_token_budget": "runner_supplied_same_ceiling_within_comparison_stratum",
@@ -775,8 +774,6 @@ def install_prompt_assets(output: Path) -> dict[str, dict[str, Any]]:
 
 def iter_public_inputs(task_dir: Path, form: str, mode: str) -> Iterable[Path]:
     yield task_dir / "instruction.md"
-    if MODES[mode]["process"] != "direct_one_shot":
-        yield task_dir / "public_contract.json"
     if form == "testbench":
         yield from sorted((task_dir / "supplied_dut").rglob("*.va"))
     elif form == "bugfix":

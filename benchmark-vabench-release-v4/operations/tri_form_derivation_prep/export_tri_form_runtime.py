@@ -154,7 +154,6 @@ def build_mode_record(release: Path, task_dir: Path, record: dict[str, Any], mod
     missing = [name for name in prompt_components if name not in component_records]
     if missing:
         raise SystemExit(f"prompt component(s) missing from manifest: {missing}")
-    public_contract = ["public_input:public_contract.json"] if mode in AGENTIC else []
     return {
         "schema_version": "v4-derived-prompt-plan-v1",
         "task_id": record["task_id"],
@@ -163,7 +162,7 @@ def build_mode_record(release: Path, task_dir: Path, record: dict[str, Any], mod
         "mode": mode,
         "process": policy["process"],
         "feedback_cli_available": bool(policy.get("feedback_cli")),
-        "component_order": [*public_inputs, *guide_components, *public_contract, wrapper],
+        "component_order": [*public_inputs, *guide_components, wrapper],
         "prompt_component_hashes": {
             name: component_records[name]["sha256"]
             for name in prompt_components
@@ -180,12 +179,6 @@ def render_prompt(release: Path, task_dir: Path, record: dict[str, Any], mode_re
         parts.append(artifacts)
     for component in ordered_prompt_components(mode_record):
         if component.endswith("_wrapper.md"):
-            if mode in AGENTIC:
-                parts.extend([
-                    "<<<VABENCH_PUBLIC_CONTRACT>>>",
-                    (task_dir / "public_contract.json").read_text(encoding="utf-8"),
-                    "<<<END_VABENCH_PUBLIC_CONTRACT>>>",
-                ])
             parts.extend([
                 f'<<<VABENCH_COMPONENT id="{component}">>>',
                 prompt_component_path(release, component).read_text(encoding="utf-8"),
@@ -204,8 +197,6 @@ def install_public(task_dir: Path, public_root: Path, form: str, mode: str) -> N
     target = public_root / "task"
     target.mkdir(parents=True)
     shutil.copy2(task_dir / "instruction.md", target / "instruction.md")
-    if mode in AGENTIC:
-        shutil.copy2(task_dir / "public_contract.json", target / "public_contract.json")
     if form == "testbench":
         copy_tree(task_dir / "supplied_dut", target / "supplied_dut")
     elif form == "bugfix":
