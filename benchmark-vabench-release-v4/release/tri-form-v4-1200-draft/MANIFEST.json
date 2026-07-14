@@ -1,0 +1,32 @@
+{
+  "active_mutations_per_family": 5,
+  "certification_reuse": {
+    "policy": "source_denominator_hash_bound",
+    "simulation_rerun_required_for_materialization": false,
+    "source_dut_gold_certification_count": 400,
+    "source_negative_certification_count": 2000
+  },
+  "family_count": 400,
+  "materialized_artifact_sha256": {
+    "BUGFIX_SEED_REVIEW.json": "ad9fc1f80f2efad2b15a3b32452df5d071f0a90b439bd21d5816a1e5c0e5bf7d",
+    "TASK_INDEX.json": "85490ae200c5de06b4a4fc1c67be50ecfe154f556de9823f766547e469645822",
+    "prompt_modes/PROMPT_RECORDS.jsonl": "32903ae1431ddb17a1ed0e0474a4ee705c328b170ad828837efe1b858e43ae01",
+    "prompt_modes/modes.json": "adedbb6750cc68a7633d70e093d5f5f56e2bba459673b43add194fa037d3e27b",
+    "prompt_modes/skills/manifest.json": "c35f48689022baadc39cf7e5f7e864ec41c705fbf8f75b949a3074c0a8135979"
+  },
+  "prompt_record_count": 7200,
+  "release_status": "materialized_hash_bound_certification_reuse_audit_pending",
+  "schema_version": "v4-tri-form-release-manifest-v1",
+  "simulation_rerun_count_for_materialization": 0,
+  "source_active_mutation_count": 2000,
+  "source_release": "release/dut-base-v3-exact-five-hash-bound-v2",
+  "source_score_denominator_manifest_sha256": "52278bac89017d62349a2577944cda8717bde78c3adef975280ba2bf988c643b",
+  "spectre_final_judge": true,
+  "task_count": 1200,
+  "task_counts": {
+    "bugfix": 400,
+    "dut": 400,
+    "testbench": 400
+  },
+  "tasks_index": "TASK_INDEX.json"
+}

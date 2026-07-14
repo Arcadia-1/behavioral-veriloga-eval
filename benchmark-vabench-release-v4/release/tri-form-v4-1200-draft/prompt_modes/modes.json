@@ -1,0 +1,49 @@
+{
+  "composition_order": [
+    "canonical_instruction_and_public_inputs",
+    "neutral_wrapper",
+    "form_skill",
+    "feedback_core_and_form_adapter"
+  ],
+  "modes": {
+    "G0": {
+      "feedback_cli": false,
+      "feedback_skill": false,
+      "form_skill": false,
+      "process": "direct_one_shot"
+    },
+    "G1": {
+      "feedback_cli": false,
+      "feedback_skill": false,
+      "form_skill": true,
+      "process": "direct_one_shot"
+    },
+    "G2": {
+      "feedback_cli": true,
+      "feedback_skill": false,
+      "form_skill": false,
+      "process": "agentic"
+    },
+    "G3": {
+      "feedback_cli": true,
+      "feedback_skill": false,
+      "form_skill": true,
+      "process": "agentic"
+    },
+    "G4": {
+      "feedback_cli": true,
+      "feedback_skill": true,
+      "form_skill": false,
+      "process": "agentic"
+    },
+    "G5": {
+      "feedback_cli": true,
+      "feedback_skill": true,
+      "form_skill": true,
+      "process": "agentic"
+    }
+  },
+  "schema_version": "v4-prompt-mode-registry-v1",
+  "wall_time_policy": "safety_limit_not_ability_budget",
+  "working_token_budget": "runner_supplied_same_ceiling_within_comparison_stratum"
+}
