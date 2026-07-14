@@ -1,0 +1,22 @@
+{
+  "candidate_artifacts": [
+    "testbench.scs"
+  ],
+  "canonical_dut_source": "release/dut-base-v3-exact-five-hash-bound-v2/253-power-mode-clamped-mux",
+  "family_id": "253",
+  "family_spec_sha256": "9f39e60427cabea339f974b898f49eb91d182d8f8ee6112019ea0cbff0524b45",
+  "form": "testbench",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "6c57fdbfe386c794816576ad66d07b2ceba366e5cf338db6cf17958509a16acf",
+  "schema_version": "v4-tri-form-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/testbench/753-power-mode-clamped-mux-testbench",
+  "task_id": "v4-753"
+}

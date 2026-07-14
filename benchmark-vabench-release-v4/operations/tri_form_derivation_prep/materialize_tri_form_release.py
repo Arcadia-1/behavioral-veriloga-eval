@@ -70,6 +70,7 @@ COMPONENT_METADATA = {
     "feedback_testbench.md": {"stable_id": "component.feedback.testbench", "kind": "feedback_guide", "applicable_forms": ["testbench"]},
     "feedback_bugfix.md": {"stable_id": "component.feedback.bugfix", "kind": "feedback_guide", "applicable_forms": ["bugfix"]},
 }
+TASK_RECORD_FILENAME = "task_record.json"
 TRIVIAL_FAULT_CLASSES = {
     "zero_stub_output",
     "holds_clock_output_low",
@@ -409,10 +410,11 @@ def common_task_record(
 
 
 def public_bundle_hash(task_dir: Path) -> str:
-    included = [path for path in sorted(task_dir.rglob("*")) if path.is_file() and "evaluator" not in path.parts]
+    public = task_dir / "public"
+    included = [path for path in sorted(public.rglob("*")) if path.is_file()]
     digest = hashlib.sha256()
     for path in included:
-        digest.update(path.relative_to(task_dir).as_posix().encode("utf-8"))
+        digest.update(path.relative_to(public).as_posix().encode("utf-8"))
         digest.update(b"\0")
         digest.update(path.read_bytes())
         digest.update(b"\0")
@@ -420,7 +422,12 @@ def public_bundle_hash(task_dir: Path) -> str:
 
 
 def write_task_record(task_dir: Path, record: dict[str, Any]) -> None:
-    write_json(task_dir / "TASK_RECORD.json", record)
+    write_json(task_dir / TASK_RECORD_FILENAME, record)
+
+
+def write_source_provenance(provenance: Path, source_task: Path) -> None:
+    shutil.copy2(source_task / "evaluator" / "task_record.json", provenance / "source_task_record.json")
+    shutil.copy2(source_task / "evaluator" / "derivation_manifest.json", provenance / "source_derivation_manifest.json")
 
 
 def build_dut_view(
@@ -429,7 +436,9 @@ def build_dut_view(
     family = str(row["canonical_dut_id"])
     task_dir = output / "tasks" / "dut" / source_task.name
     task_dir.mkdir(parents=True)
-    shutil.copy2(source_task / "public" / "task" / "instruction.md", task_dir / "instruction.md")
+    public = task_dir / "public"
+    public.mkdir()
+    shutil.copy2(source_task / "public" / "task" / "instruction.md", public / "instruction.md")
     contract = public_semantics(spec)
     contract.update({
         "schema_version": "v4-tri-form-public-contract-v1",
@@ -441,6 +450,9 @@ def build_dut_view(
     write_json(task_dir / "public_contract.json", contract)
     evaluator = task_dir / "evaluator"
     evaluator.mkdir()
+    provenance = task_dir / "provenance"
+    provenance.mkdir()
+    write_source_provenance(provenance, source_task)
     write_json(evaluator / "score_policy.json", {
         "schema_version": "v4-dut-score-policy-v1",
         "task_id": f"v4-{family}",
@@ -448,6 +460,13 @@ def build_dut_view(
         "full_contract_pass_required": True,
         "spectre_final_judge": True,
         "source_checker_profile": rel(source_task / "evaluator" / "checker_profile.json", PACKAGE_ROOT),
+    })
+    write_json(provenance / "gold_reference.json", {
+        "schema_version": "v4-gold-reference-v1",
+        "source_solution": rel(source_task / "evaluator" / "solution", PACKAGE_ROOT),
+        "solution_tree_sha256": tree_sha(source_task / "evaluator" / "solution"),
+        "gold_dut_certification_sha256": row["hashes"]["task_certification_sha256"],
+        "simulation_rerun_required_for_materialization": False,
     })
     bundle_sha = public_bundle_hash(task_dir)
     write_task_record(task_dir, common_task_record(
@@ -468,8 +487,10 @@ def build_testbench_view(
     slug = source_task.name.split("-", 1)[1]
     task_dir = output / "tasks" / "testbench" / f"{task_num:03d}-{slug}-testbench"
     task_dir.mkdir(parents=True)
-    write_text(task_dir / "instruction.md", render_testbench_instruction(spec))
-    supplied = task_dir / "supplied_dut"
+    public = task_dir / "public"
+    public.mkdir()
+    write_text(public / "instruction.md", render_testbench_instruction(spec))
+    supplied = public / "supplied_dut"
     artifacts = copy_solution(source_task, supplied, spec)
     contract = public_semantics(spec)
     contract.update({
@@ -492,6 +513,9 @@ def build_testbench_view(
     write_json(task_dir / "public_contract.json", contract)
     evaluator = task_dir / "evaluator"
     evaluator.mkdir()
+    provenance = task_dir / "provenance"
+    provenance.mkdir()
+    write_source_provenance(provenance, source_task)
     suite = [str(item["mutation_id"]) for item in row["active_mutations"]]
     derivation = {
         "schema_version": "v4-derivation-manifest-v2",
@@ -506,7 +530,7 @@ def build_testbench_view(
         },
         "negative_assignment": negative_assignment(row, seed_review),
     }
-    write_json(evaluator / "derivation_manifest.json", derivation)
+    write_json(provenance / "derivation_manifest.json", derivation)
     write_json(evaluator / "score_policy.json", {
         "schema_version": "v4-testbench-score-policy-v1",
         "task_id": f"v4-{task_num:03d}",
@@ -529,7 +553,7 @@ def build_testbench_view(
         "require": ["declared_dut_binding", "transient_analysis", "all_required_public_traces"],
     })
     shutil.copy2(source_task / "evaluator" / "score_tb.scs", evaluator / "reference_tb.scs")
-    write_json(evaluator / "reference_certificate.json", {
+    write_json(provenance / "reference_certificate.json", {
         "schema_version": "v4-reference-testbench-certificate-v1",
         "evidence_source": "canonical_score_profile_hash_reuse",
         "reference_tb_sha256": file_sha(evaluator / "reference_tb.scs"),
@@ -557,8 +581,10 @@ def build_bugfix_view(
     slug = source_task.name.split("-", 1)[1]
     task_dir = output / "tasks" / "bugfix" / f"{task_num:04d}-{slug}-bugfix"
     task_dir.mkdir(parents=True)
-    write_text(task_dir / "instruction.md", render_bugfix_instruction(spec))
-    buggy = task_dir / "buggy_bundle"
+    public = task_dir / "public"
+    public.mkdir()
+    write_text(public / "instruction.md", render_bugfix_instruction(spec))
+    buggy = public / "buggy_bundle"
     artifacts = copy_solution(source_task, buggy, spec)
     changed = overlay_mutation(source_task, seed_review["mutation_id"], buggy, artifacts)
     contract = public_semantics(spec)
@@ -575,6 +601,9 @@ def build_bugfix_view(
     write_json(task_dir / "public_contract.json", contract)
     evaluator = task_dir / "evaluator"
     evaluator.mkdir()
+    provenance = task_dir / "provenance"
+    provenance.mkdir()
+    write_source_provenance(provenance, source_task)
     write_json(evaluator / "score_policy.json", {
         "schema_version": "v4-bugfix-score-policy-v1",
         "task_id": f"v4-{task_num}",
@@ -585,7 +614,7 @@ def build_bugfix_view(
         "source_checker_profile": rel(source_task / "evaluator" / "checker_profile.json", PACKAGE_ROOT),
         "gold_solution_tree_sha256": tree_sha(source_task / "evaluator" / "solution"),
     })
-    write_json(evaluator / "derivation_manifest.json", {
+    write_json(provenance / "derivation_manifest.json", {
         "schema_version": "v4-derivation-manifest-v2",
         "family_id": family,
         "base_dut": {
@@ -602,7 +631,7 @@ def build_bugfix_view(
             "buggy_bundle_sha256": tree_sha(buggy),
         },
     })
-    write_json(evaluator / "gold_repair_reference.json", {
+    write_json(provenance / "gold_reference.json", {
         "schema_version": "v4-gold-repair-reference-v1",
         "source_solution": rel(source_task / "evaluator" / "solution", PACKAGE_ROOT),
         "solution_tree_sha256": tree_sha(source_task / "evaluator" / "solution"),
@@ -665,11 +694,18 @@ def install_prompt_assets(output: Path) -> dict[str, dict[str, Any]]:
 
 
 def iter_public_inputs(task_dir: Path, form: str) -> Iterable[Path]:
-    yield task_dir / "instruction.md"
+    public = task_dir / "public"
+    yield public / "instruction.md"
     if form == "testbench":
-        yield from sorted((task_dir / "supplied_dut").rglob("*.va"))
+        yield from sorted((public / "supplied_dut").rglob("*.va"))
     elif form == "bugfix":
-        yield from sorted((task_dir / "buggy_bundle").rglob("*.va"))
+        yield from sorted((public / "buggy_bundle").rglob("*.va"))
+
+
+def public_input_id(task_dir: Path, item: Path) -> str:
+    public = task_dir / "public"
+    relative = item.relative_to(public).as_posix()
+    return "instruction" if relative == "instruction.md" else f"public_input:{relative}"
 
 
 def write_prompt_records(output: Path, task_rows: list[dict[str, Any]], skills: dict[str, dict[str, Any]]) -> None:
@@ -677,13 +713,13 @@ def write_prompt_records(output: Path, task_rows: list[dict[str, Any]], skills: 
     with path.open("w", encoding="utf-8") as handle:
         for task in task_rows:
             task_dir = output / task["task_dir"]
-            instruction_sha = file_sha(task_dir / "instruction.md")
-            input_hashes = {rel(item, task_dir): file_sha(item) for item in iter_public_inputs(task_dir, task["form"])}
+            instruction_sha = file_sha(task_dir / "public" / "instruction.md")
+            input_hashes = {item.relative_to(task_dir / "public").as_posix(): file_sha(item) for item in iter_public_inputs(task_dir, task["form"])}
             for mode, policy in MODES.items():
                 public_input_paths = list(iter_public_inputs(task_dir, task["form"]))
                 public_components = [
                     component_fingerprint(
-                        "instruction" if item.name == "instruction.md" else f"public_input:{rel(item, task_dir)}",
+                        public_input_id(task_dir, item),
                         item,
                     )
                     for item in public_input_paths

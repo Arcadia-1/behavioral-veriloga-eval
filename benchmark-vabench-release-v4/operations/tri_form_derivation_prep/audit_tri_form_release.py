@@ -77,10 +77,11 @@ def tree_sha(path: Path) -> str:
 
 def public_bundle_hash(task_dir: Path) -> str:
     digest = hashlib.sha256()
-    for path in sorted(task_dir.rglob("*")):
-        if not path.is_file() or "evaluator" in path.parts or path.name == "TASK_RECORD.json":
+    public = task_dir / "public"
+    for path in sorted(public.rglob("*")):
+        if not path.is_file():
             continue
-        digest.update(path.relative_to(task_dir).as_posix().encode("utf-8"))
+        digest.update(path.relative_to(public).as_posix().encode("utf-8"))
         digest.update(b"\0")
         digest.update(path.read_bytes())
         digest.update(b"\0")
@@ -195,12 +196,12 @@ def audit_task(
     if not task_dir.is_dir():
         problems.append(f"{prefix} task directory missing")
         return
-    for required in ("TASK_RECORD.json", "instruction.md", "public_contract.json"):
+    for required in ("task_record.json", "public/instruction.md", "public_contract.json"):
         if not (task_dir / required).is_file():
             problems.append(f"{prefix} missing {required}")
-    if problems and not (task_dir / "TASK_RECORD.json").is_file():
+    if problems and not (task_dir / "task_record.json").is_file():
         return
-    record = read_json(task_dir / "TASK_RECORD.json")
+    record = read_json(task_dir / "task_record.json")
     contract = read_json(task_dir / "public_contract.json")
     if task_id != expected_task_id(form, family):
         problems.append(f"{prefix} ID does not match form/family numbering")
@@ -227,12 +228,27 @@ def audit_task(
     if form == "dut":
         if record.get("candidate_artifacts") != artifact_paths:
             problems.append(f"{prefix} DUT candidate artifacts differ from family spec")
+        provenance = task_dir / "provenance"
+        if not (provenance / "source_task_record.json").is_file():
+            problems.append(f"{prefix} missing source task provenance")
+        if not (provenance / "source_derivation_manifest.json").is_file():
+            problems.append(f"{prefix} missing source derivation provenance")
+        gold_reference = read_json(provenance / "gold_reference.json")
+        if gold_reference.get("solution_tree_sha256") != tree_sha(source_task / "evaluator" / "solution"):
+            problems.append(f"{prefix} DUT gold solution hash mismatch")
         return
     evaluator = task_dir / "evaluator"
     if not evaluator.is_dir():
         problems.append(f"{prefix} evaluator directory missing")
         return
-    derivation = read_json(evaluator / "derivation_manifest.json")
+    provenance = task_dir / "provenance"
+    if not provenance.is_dir():
+        problems.append(f"{prefix} provenance directory missing")
+        return
+    for required in ("source_task_record.json", "source_derivation_manifest.json", "derivation_manifest.json"):
+        if not (provenance / required).is_file():
+            problems.append(f"{prefix} missing provenance/{required}")
+    derivation = read_json(provenance / "derivation_manifest.json")
     assignment = derivation.get("negative_assignment") or {}
     suite = assignment.get("testbench_suite") or []
     if len(suite) != 5 or len(set(suite)) != 5:
@@ -262,10 +278,10 @@ def audit_task(
         score = read_json(evaluator / "score_policy.json")
         if score.get("candidate_artifacts") != ["testbench.scs"] or score.get("kill_ratio_denominator") != 5:
             problems.append(f"{prefix} testbench score policy mismatch")
-        supplied = task_dir / "supplied_dut"
+        supplied = task_dir / "public" / "supplied_dut"
         if tree_sha(supplied) != tree_sha(source_task / "evaluator" / "solution"):
             problems.append(f"{prefix} supplied DUT differs from canonical gold")
-        reference = read_json(evaluator / "reference_certificate.json")
+        reference = read_json(provenance / "reference_certificate.json")
         score_tb = source_task / "evaluator" / "score_tb.scs"
         score_tb_sha = file_sha(score_tb)
         if file_sha(evaluator / "reference_tb.scs") != score_tb_sha:
@@ -294,13 +310,13 @@ def audit_task(
                     )
         if reference.get("negative_suite_status") != "five_of_five_killed_behaviorally":
             problems.append(f"{prefix} reference testbench is not five-of-five certified")
-        public_text = (task_dir / "instruction.md").read_text(encoding="utf-8") + json.dumps(contract)
+        public_text = (task_dir / "public" / "instruction.md").read_text(encoding="utf-8") + json.dumps(contract)
         if "neg_" in public_text or "mutation_id" in public_text:
             problems.append(f"{prefix} public testbench view leaks negative identity")
     elif form == "bugfix":
         if record.get("candidate_artifacts") != artifact_paths or contract.get("target_artifacts") != artifact_paths:
             problems.append(f"{prefix} bugfix artifact contract mismatch")
-        buggy = task_dir / "buggy_bundle"
+        buggy = task_dir / "public" / "buggy_bundle"
         buggy_paths = sorted(path.relative_to(buggy).as_posix() for path in buggy.rglob("*.va"))
         if buggy_paths != sorted(artifact_paths):
             problems.append(f"{prefix} buggy bundle file set mismatch")
@@ -330,14 +346,14 @@ def audit_task(
         private_materialization = derivation.get("private_materialization") or {}
         if private_materialization.get("buggy_bundle_sha256") != tree_sha(buggy):
             problems.append(f"{prefix} buggy bundle hash mismatch")
-        gold_reference = read_json(evaluator / "gold_repair_reference.json")
+        gold_reference = read_json(provenance / "gold_reference.json")
         if gold_reference.get("solution_tree_sha256") != tree_sha(source_task / "evaluator" / "solution"):
             problems.append(f"{prefix} gold repair solution hash mismatch")
         if gold_reference.get("gold_dut_certification_sha256") != (
             source_row.get("hashes") or {}
         ).get("task_certification_sha256"):
             problems.append(f"{prefix} gold DUT certification hash mismatch")
-        public_text = (task_dir / "instruction.md").read_text(encoding="utf-8") + json.dumps(contract)
+        public_text = (task_dir / "public" / "instruction.md").read_text(encoding="utf-8") + json.dumps(contract)
         forbidden = ("neg_", "faulty file", "root cause", "changed line", "public summary")
         for marker in forbidden:
             if marker.lower() in public_text.lower():
@@ -394,15 +410,16 @@ def audit_prompt_records(release: Path, tasks: list[dict[str, Any]], problems: l
         if task_dir is None:
             problems.append(f"{task_id}/{mode}: prompt record has no task directory")
             continue
-        public_inputs = [task_dir / "instruction.md"]
+        public_root = task_dir / "public"
+        public_inputs = [public_root / "instruction.md"]
         if form == "testbench":
-            public_inputs.extend(sorted((task_dir / "supplied_dut").rglob("*.va")))
+            public_inputs.extend(sorted((public_root / "supplied_dut").rglob("*.va")))
         elif form == "bugfix":
-            public_inputs.extend(sorted((task_dir / "buggy_bundle").rglob("*.va")))
+            public_inputs.extend(sorted((public_root / "buggy_bundle").rglob("*.va")))
         expected_input_hashes = {
-            item.relative_to(task_dir).as_posix(): file_sha(item) for item in public_inputs
+            item.relative_to(public_root).as_posix(): file_sha(item) for item in public_inputs
         }
-        if row.get("canonical_instruction_sha256") != file_sha(task_dir / "instruction.md"):
+        if row.get("canonical_instruction_sha256") != file_sha(public_root / "instruction.md"):
             problems.append(f"{task_id}/{mode}: canonical instruction hash mismatch")
         if row.get("public_input_hashes") != expected_input_hashes:
             problems.append(f"{task_id}/{mode}: public input hash replay mismatch")
@@ -433,7 +450,7 @@ def audit_prompt_records(release: Path, tasks: list[dict[str, Any]], problems: l
         if [item.get("id") for item in static_components] != component_order:
             problems.append(f"{task_id}/{mode}: static component fingerprint order mismatch")
         public_component_paths = {
-            "instruction" if item.name == "instruction.md" else f"public_input:{item.relative_to(task_dir).as_posix()}": item
+            "instruction" if item.relative_to(public_root).as_posix() == "instruction.md" else f"public_input:{item.relative_to(public_root).as_posix()}": item
             for item in public_inputs
         }
         for item in static_components:
@@ -513,10 +530,10 @@ def main() -> int:
         if testbench_dir is None or bugfix_dir is None:
             continue
         testbench_seed = (
-            read_json(testbench_dir / "evaluator" / "derivation_manifest.json").get("negative_assignment") or {}
+            read_json(testbench_dir / "provenance" / "derivation_manifest.json").get("negative_assignment") or {}
         ).get("bugfix_seed")
         bugfix_seed = (
-            read_json(bugfix_dir / "evaluator" / "derivation_manifest.json").get("negative_assignment") or {}
+            read_json(bugfix_dir / "provenance" / "derivation_manifest.json").get("negative_assignment") or {}
         ).get("bugfix_seed")
         if testbench_seed != bugfix_seed:
             problems.append(

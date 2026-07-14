@@ -1,0 +1,22 @@
+{
+  "candidate_artifacts": [
+    "l2_7b_dac_ready.va"
+  ],
+  "canonical_dut_source": "release/dut-base-v3-exact-five-hash-bound-v2/199-l2-7b-dac-ready",
+  "family_id": "199",
+  "family_spec_sha256": "d647ad64c52d704603389b90e75a18150f5468347d8556e0bbb4664a2a36a7cc",
+  "form": "dut",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "46d9b1f2dd74855377f93510c77c74deea39e6004dfb07b1e5014fe6b1f2f375",
+  "schema_version": "v4-tri-form-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/dut/199-l2-7b-dac-ready",
+  "task_id": "v4-199"
+}

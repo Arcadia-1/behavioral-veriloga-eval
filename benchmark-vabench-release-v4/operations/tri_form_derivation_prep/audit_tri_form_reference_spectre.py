@@ -3,7 +3,7 @@
 
 This is intentionally narrower than the model/API runner: it validates sealed
 benchmark reference assets by running each selected testbench-form task's
-``evaluator/reference_tb.scs`` against its public ``supplied_dut`` artifacts,
+``evaluator/reference_tb.scs`` against its ``public/supplied_dut`` artifacts,
 then scores the resulting Spectre CSV with the canonical private checker.
 """
 from __future__ import annotations
@@ -126,8 +126,8 @@ def checker_task_id(task_dir: Path, task_record: dict[str, Any]) -> str:
 
 
 def include_paths_for_reference_tb(task_dir: Path, tb_path: Path) -> tuple[list[Path], list[str]]:
-    supplied_dut = task_dir / "supplied_dut"
-    public_support = task_dir / "public_support"
+    supplied_dut = task_dir / "public" / "supplied_dut"
+    public_support = task_dir / "public" / "public_support"
     search_dirs = [supplied_dut, public_support, tb_path.parent]
     found: list[Path] = []
     missing: list[str] = []
@@ -178,7 +178,7 @@ def run_one(
 ) -> dict[str, Any]:
     task_id = str(row["task_id"])
     task_dir = release / str(row["task_dir"])
-    task_record = read_json(task_dir / "TASK_RECORD.json")
+    task_record = read_json(task_dir / "task_record.json")
     tb_path = task_dir / "evaluator" / "reference_tb.scs"
     try:
         checker_id = checker_task_id(task_dir, task_record)

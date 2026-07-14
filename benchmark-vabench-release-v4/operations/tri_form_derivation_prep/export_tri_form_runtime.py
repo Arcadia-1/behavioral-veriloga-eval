@@ -77,21 +77,22 @@ def task_record(release: Path, task_id: str) -> tuple[dict[str, Any], Path]:
     if len(matches) != 1:
         raise SystemExit(f"expected one task record for {task_id}, found {len(matches)}")
     task_dir = release / str(matches[0]["task_dir"])
-    return read_json(task_dir / "TASK_RECORD.json"), task_dir
+    return read_json(task_dir / "task_record.json"), task_dir
 
 
 def serialize_public_artifacts(task_dir: Path, form: str) -> str:
     lines: list[str] = []
+    public = task_dir / "public"
     roots = []
     if form == "testbench":
-        roots.append(task_dir / "supplied_dut")
+        roots.append(public / "supplied_dut")
     elif form == "bugfix":
-        roots.append(task_dir / "buggy_bundle")
+        roots.append(public / "buggy_bundle")
     for root in roots:
         for path in sorted(root.rglob("*")):
             if not path.is_file():
                 continue
-            relative = path.relative_to(task_dir).as_posix()
+            relative = path.relative_to(public).as_posix()
             lines.extend([
                 f'<<<VABENCH_INPUT_ARTIFACT path="{relative}">>>',
                 path.read_text(encoding="utf-8"),
@@ -123,7 +124,7 @@ def ordered_prompt_components(mode_record: dict[str, Any]) -> list[str]:
 
 
 def render_prompt(release: Path, task_dir: Path, record: dict[str, Any], mode_record: dict[str, Any], *, inline_artifacts: bool) -> str:
-    parts = [(task_dir / "instruction.md").read_text(encoding="utf-8")]
+    parts = [(task_dir / "public" / "instruction.md").read_text(encoding="utf-8")]
     artifacts = serialize_public_artifacts(task_dir, str(record["form"])) if inline_artifacts else ""
     if artifacts:
         parts.append(artifacts)
@@ -137,15 +138,16 @@ def render_prompt(release: Path, task_dir: Path, record: dict[str, Any], mode_re
 
 
 def install_public(task_dir: Path, public_root: Path, form: str, mode: str) -> None:
+    task_public = task_dir / "public"
     target = public_root / "task"
     target.mkdir(parents=True)
-    shutil.copy2(task_dir / "instruction.md", target / "instruction.md")
+    shutil.copy2(task_public / "instruction.md", target / "instruction.md")
     if form == "testbench":
-        copy_tree(task_dir / "supplied_dut", target / "supplied_dut")
+        copy_tree(task_public / "supplied_dut", target / "supplied_dut")
     elif form == "bugfix":
-        copy_tree(task_dir / "buggy_bundle", target / "buggy_bundle")
+        copy_tree(task_public / "buggy_bundle", target / "buggy_bundle")
         if mode in AGENTIC:
-            copy_tree(task_dir / "buggy_bundle", public_root / "submission")
+            copy_tree(task_public / "buggy_bundle", public_root / "submission")
     if mode in AGENTIC:
         write_json(public_root / "tool_manifest.json", {
             "schema_version": "v4-public-tool-manifest-v1",
@@ -158,6 +160,7 @@ def install_public(task_dir: Path, public_root: Path, form: str, mode: str) -> N
 def install_evaluator(task_dir: Path, evaluator_root: Path, record: dict[str, Any]) -> None:
     source_task = PACKAGE_ROOT / str(record["canonical_dut_source"])
     source_eval = source_task / "evaluator"
+    provenance = task_dir / "provenance"
     form = str(record["form"])
     evaluator_root.mkdir(parents=True)
     for name in ("task_record.json", "family_spec.json", "checker_profile.json", "harness_spec.json", "toolchain_lock.json"):
@@ -171,11 +174,13 @@ def install_evaluator(task_dir: Path, evaluator_root: Path, record: dict[str, An
         copy_tree(source_eval / "solution", evaluator_root / "trusted_solution")
         copy_tree(source_eval / "mutation_bundles", evaluator_root / "mutation_bundles")
         shutil.copy2(source_eval / "mutation_catalog.json", evaluator_root / "mutation_catalog.json")
-        for name in ("derivation_manifest.json", "reference_tb.scs", "reference_certificate.json", "testbench_security_policy.json"):
+        for name in ("reference_tb.scs", "testbench_security_policy.json"):
             shutil.copy2(task_dir / "evaluator" / name, evaluator_root / name)
+        for name in ("derivation_manifest.json", "reference_certificate.json"):
+            shutil.copy2(provenance / name, evaluator_root / name)
     elif form == "bugfix":
-        for name in ("derivation_manifest.json", "gold_repair_reference.json"):
-            shutil.copy2(task_dir / "evaluator" / name, evaluator_root / name)
+        shutil.copy2(provenance / "derivation_manifest.json", evaluator_root / "derivation_manifest.json")
+        shutil.copy2(provenance / "gold_reference.json", evaluator_root / "gold_reference.json")
 
 
 def main() -> int:

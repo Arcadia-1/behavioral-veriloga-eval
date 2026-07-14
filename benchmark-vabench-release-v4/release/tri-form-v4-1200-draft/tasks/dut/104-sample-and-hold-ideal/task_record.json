@@ -1,0 +1,22 @@
+{
+  "candidate_artifacts": [
+    "source_sample_hold.va"
+  ],
+  "canonical_dut_source": "release/dut-base-v3-exact-five-hash-bound-v2/104-sample-and-hold-ideal",
+  "family_id": "104",
+  "family_spec_sha256": "72eea8fa03055ea9db5a2ec5b907f8d8eb94607fac62087158e299415a93acc2",
+  "form": "dut",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "a6aed12cb8d99b366829ee63c8719b5a1293770f9f870164ef933b8b47083ebc",
+  "schema_version": "v4-tri-form-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/dut/104-sample-and-hold-ideal",
+  "task_id": "v4-104"
+}

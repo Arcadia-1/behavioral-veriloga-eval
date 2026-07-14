@@ -1,0 +1,22 @@
+{
+  "candidate_artifacts": [
+    "ideal_adc_4bit_quantizer.va"
+  ],
+  "canonical_dut_source": "release/dut-base-v3-exact-five-hash-bound-v2/141-ideal-adc-4bit-quantizer",
+  "family_id": "141",
+  "family_spec_sha256": "727ba99822760baa7ffabb7bc0379b10bf7958a9024c405b11924d29fbc1b008",
+  "form": "bugfix",
+  "modes": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "public_bundle_sha256": "4887ee89622d1974171c5f7d410415b8c6ed95d4f3e3d282bb58ab392fee2d71",
+  "schema_version": "v4-tri-form-task-record-v1",
+  "scored": true,
+  "task_dir": "tasks/bugfix/1141-ideal-adc-4bit-quantizer-bugfix",
+  "task_id": "v4-1141"
+}

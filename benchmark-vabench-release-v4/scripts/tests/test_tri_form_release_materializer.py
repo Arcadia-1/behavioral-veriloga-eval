@@ -120,15 +120,16 @@ def test_prompt_components_have_pinned_reference_tokenizer_metadata() -> None:
 
 def write_sample_prompt_records(release: Path, form: str = "bugfix") -> Path:
     task = release / "tasks" / form / "sample"
-    task.mkdir(parents=True)
-    (task / "instruction.md").write_text("Complete the task from this instruction.\n", encoding="utf-8")
+    public = task / "public"
+    public.mkdir(parents=True)
+    (public / "instruction.md").write_text("Complete the task from this instruction.\n", encoding="utf-8")
     (task / "public_contract.json").write_text('{"evaluator_only": true}\n', encoding="utf-8")
     if form == "testbench":
-        (task / "supplied_dut").mkdir()
-        (task / "supplied_dut" / "dut.va").write_text("module dut; endmodule\n", encoding="utf-8")
+        (public / "supplied_dut").mkdir()
+        (public / "supplied_dut" / "dut.va").write_text("module dut; endmodule\n", encoding="utf-8")
     elif form == "bugfix":
-        (task / "buggy_bundle").mkdir()
-        (task / "buggy_bundle" / "buggy.va").write_text("module buggy; endmodule\n", encoding="utf-8")
+        (public / "buggy_bundle").mkdir()
+        (public / "buggy_bundle" / "buggy.va").write_text("module buggy; endmodule\n", encoding="utf-8")
     components = install_prompt_assets(release)
     write_prompt_records(
         release,
@@ -181,14 +182,14 @@ def test_rendered_prompts_do_not_inline_public_contract_json_and_use_mode_wrappe
 
 def test_agentic_bugfix_export_seeds_editable_submission(tmp_path: Path) -> None:
     task = tmp_path / "task"
-    (task / "buggy_bundle").mkdir(parents=True)
-    (task / "buggy_bundle" / "a.va").write_text("module a; endmodule\n", encoding="utf-8")
-    (task / "instruction.md").write_text("Repair the bundle.\n", encoding="utf-8")
+    (task / "public" / "buggy_bundle").mkdir(parents=True)
+    (task / "public" / "buggy_bundle" / "a.va").write_text("module a; endmodule\n", encoding="utf-8")
+    (task / "public" / "instruction.md").write_text("Repair the bundle.\n", encoding="utf-8")
     (task / "public_contract.json").write_text("{}\n", encoding="utf-8")
     public = tmp_path / "public"
     (public / "submission").mkdir(parents=True)
     install_public(task, public, "bugfix", "G2")
-    assert (public / "submission" / "a.va").read_bytes() == (task / "buggy_bundle" / "a.va").read_bytes()
+    assert (public / "submission" / "a.va").read_bytes() == (task / "public" / "buggy_bundle" / "a.va").read_bytes()
     assert (public / "task" / "buggy_bundle" / "a.va").is_file()
     assert not (public / "task" / "public_contract.json").exists()
 
