@@ -152,6 +152,32 @@ def test_testbench_instruction_has_one_candidate_and_five_anonymous_negatives() 
     assert "`testbench.scs`" in text
     assert "five anonymous semantic negative DUTs" in text
     assert "hidden" not in text.lower()
+    assert "- Include path: `./dut/dut.va`" in text
+    assert "- DUT instance: `XDUT (vin) dut`" in text
+    assert "- Required saved public traces: `vin`" in text
+    assert "one bounded transient analysis with a finite positive stop time" in text
+    assert "Do not redefine the DUT, drive DUT output nets" in text
+
+
+def test_testbench_instruction_renders_multi_file_instances_and_parameter_overrides() -> None:
+    spec = sample_spec()
+    spec["artifact_contract"]["files"].append({
+        "path": "helper.va",
+        "modules": [],
+    })
+    spec["testbench_binding"]["instances"].append({
+        "name": "XHELP",
+        "module_ref": "helper",
+        "connections": [
+            {"port_ref": "out", "net": "observed", "position": 1},
+            {"port_ref": "in", "net": "vin", "position": 0},
+        ],
+        "parameter_overrides": {"width": 4, "gain": 2},
+    })
+
+    text = render_testbench_instruction(spec)
+    assert "- Include paths: `./dut/dut.va`, `./dut/helper.va`" in text
+    assert "- DUT instance: `XHELP (vin observed) helper gain=2 width=4`" in text
 
 
 def test_binding_renderer_exposes_declared_instance_parameter_overrides() -> None:

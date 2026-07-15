@@ -216,19 +216,38 @@ def render_properties(spec: dict[str, Any], verb: str) -> str:
 
 def render_binding(spec: dict[str, Any]) -> str:
     binding = spec.get("testbench_binding") or {}
-    lines = [f"- DUT sources use `{binding.get('source_path_template', './dut/{artifact_path}')}`."]
+    source_template = str(binding.get("source_path_template") or "./dut/{artifact_path}")
+    include_paths = [
+        source_template.format(artifact_path=file_record["path"])
+        for file_record in (spec.get("artifact_contract") or {}).get("files") or []
+    ]
+    include_label = "Include path" if len(include_paths) == 1 else "Include paths"
+    lines = [
+        "The submitted `testbench.scs` must use the supplied DUT through this public binding:",
+        "",
+        f"- {include_label}: {', '.join(f'`{path}`' for path in include_paths)}",
+    ]
     for instance in binding.get("instances") or []:
         connections = sorted(instance.get("connections") or [], key=lambda item: int(item.get("position", 0)))
-        ports = ", ".join(f"{item['port_ref']}={item['net']}" for item in connections)
+        nets = " ".join(str(item["net"]) for item in connections)
         overrides = instance.get("parameter_overrides") or {}
-        override_clause = ""
-        if overrides:
-            rendered = ", ".join(f"{name}={overrides[name]}" for name in sorted(overrides))
-            override_clause = f" parameter overrides: `{rendered}`."
-        lines.append(
-            f"- Instantiate `{instance['module_ref']}` as `{instance['name']}` with ordered public binding: "
-            f"{ports}.{override_clause}"
-        )
+        parameters = " ".join(f"{name}={overrides[name]}" for name in sorted(overrides))
+        suffix = f" {parameters}" if parameters else ""
+        lines.append(f"- DUT instance: `{instance['name']} ({nets}) {instance['module_ref']}{suffix}`")
+    required_traces = [
+        str(signal)
+        for signal in (spec.get("trace_contract") or {}).get("required_signals") or []
+        if str(signal) != "time"
+    ]
+    lines.extend([
+        f"- Required saved public traces: {', '.join(f'`{signal}`' for signal in required_traces)}",
+        "- Use one bounded transient analysis with a finite positive stop time.",
+        "",
+        "You must design the stimulus yourself. Save traces as bare public signal names",
+        "(for example `clk`, not suffixed or hierarchical forms such as `clk:V` or",
+        "`XDUT.clk`). Do not redefine the DUT, drive DUT output nets, save",
+        "hierarchical/private nodes, or use checker/gold/internal files.",
+    ])
     return "\n".join(lines)
 
 
@@ -281,7 +300,7 @@ testbench must accept the correct DUT and expose all five behavioral faults.
 
 {render_interface(spec)}
 
-Stable evaluator binding:
+Stable public Spectre binding:
 
 {render_binding(spec)}
 
