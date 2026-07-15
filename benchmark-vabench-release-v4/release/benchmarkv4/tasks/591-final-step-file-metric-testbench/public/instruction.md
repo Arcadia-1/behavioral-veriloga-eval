@@ -16,10 +16,19 @@ testbench must accept the correct DUT and expose all five behavioral faults.
     - position 2: `ref` (input, electrical)
     - position 3: `metric_out` (output, electrical)
 
-Stable evaluator binding:
+Stable public Spectre binding:
 
-- DUT sources use `./dut/{artifact_path}`.
-- Instantiate `final_step_file_metric_ref` as `XDUT` with ordered public binding: VDD=vdd, VSS=vss, ref=ref, metric_out=metric_out.
+The submitted `testbench.scs` must use the supplied DUT through this public binding:
+
+- Include path: `./dut/final_step_file_metric_ref.va`
+- DUT instance: `XDUT (vdd vss ref metric_out) final_step_file_metric_ref`
+- Required saved public traces: `vdd`, `vss`, `ref`, `metric_out`
+- Use one bounded transient analysis with a finite positive stop time.
+
+You must design the stimulus yourself. Save traces as bare public signal names
+(for example `clk`, not suffixed or hierarchical forms such as `clk:V` or
+`XDUT.clk`). Do not redefine the DUT, drive DUT output nets, save
+hierarchical/private nodes, or use checker/gold/internal files.
 
 ## Public Parameter Contract
 

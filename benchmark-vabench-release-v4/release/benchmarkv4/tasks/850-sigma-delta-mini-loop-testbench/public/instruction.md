@@ -47,10 +47,19 @@ testbench must accept the correct DUT and expose all five behavioral faults.
     - position 5: `avg_1` (output, electrical)
     - position 6: `avg_0` (output, electrical)
 
-Stable evaluator binding:
+Stable public Spectre binding:
 
-- DUT sources use `./dut/{artifact_path}`.
-- Instantiate `sigma_delta_top` as `XDUT` with ordered public binding: vin=vin, clk=clk, rst=rst, bit_out=bit_out, avg_3=avg_3, avg_2=avg_2, avg_1=avg_1, avg_0=avg_0, state_metric=state_metric.
+The submitted `testbench.scs` must use the supplied DUT through this public binding:
+
+- Include paths: `./dut/sigma_delta_top.va`, `./dut/integrator_state.va`, `./dut/sd_comparator.va`, `./dut/feedback_dac.va`, `./dut/decimator_lite.va`
+- DUT instance: `XDUT (vin clk rst bit_out avg_3 avg_2 avg_1 avg_0 state_metric) sigma_delta_top`
+- Required saved public traces: `vin`, `clk`, `rst`, `bit_out`, `avg_3`, `avg_2`, `avg_1`, `avg_0`, `state_metric`
+- Use one bounded transient analysis with a finite positive stop time.
+
+You must design the stimulus yourself. Save traces as bare public signal names
+(for example `clk`, not suffixed or hierarchical forms such as `clk:V` or
+`XDUT.clk`). Do not redefine the DUT, drive DUT output nets, save
+hierarchical/private nodes, or use checker/gold/internal files.
 
 ## Public Parameter Contract
 

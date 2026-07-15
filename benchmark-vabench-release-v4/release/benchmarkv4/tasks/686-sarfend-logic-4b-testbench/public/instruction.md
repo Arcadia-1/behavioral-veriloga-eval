@@ -33,10 +33,19 @@ testbench must accept the correct DUT and expose all five behavioral faults.
     - position 19: `dout2` (output, electrical)
     - position 20: `dout3` (output, electrical)
 
-Stable evaluator binding:
+Stable public Spectre binding:
 
-- DUT sources use `./dut/{artifact_path}`.
-- Instantiate `sarfend_logic_4b` as `XDUT` with ordered public binding: clks=clks, dcomp=dcomp, dcompb=dcompb, test=test, dtest0=dtest0, dtest1=dtest1, dtest2=dtest2, dtest3=dtest3, clkc=clkc, dp1=dp1, dp2=dp2, dp3=dp3, dp4=dp4, dm1=dm1, dm2=dm2, dm3=dm3, dm4=dm4, dout0=dout0, dout1=dout1, dout2=dout2, dout3=dout3.
+The submitted `testbench.scs` must use the supplied DUT through this public binding:
+
+- Include path: `./dut/sarfend_logic_4b.va`
+- DUT instance: `XDUT (clks dcomp dcompb test dtest0 dtest1 dtest2 dtest3 clkc dp1 dp2 dp3 dp4 dm1 dm2 dm3 dm4 dout0 dout1 dout2 dout3) sarfend_logic_4b`
+- Required saved public traces: `clkc`, `clks`, `dcomp`, `dcompb`, `dm1`, `dm2`, `dm3`, `dm4`, `dout0`, `dout1`, `dout2`, `dout3`, `dp1`, `dp2`, `dp3`, `dp4`, `dtest0`, `dtest1`, `dtest2`, `dtest3`, `test`
+- Use one bounded transient analysis with a finite positive stop time.
+
+You must design the stimulus yourself. Save traces as bare public signal names
+(for example `clk`, not suffixed or hierarchical forms such as `clk:V` or
+`XDUT.clk`). Do not redefine the DUT, drive DUT output nets, save
+hierarchical/private nodes, or use checker/gold/internal files.
 
 ## Public Parameter Contract
 

@@ -22,10 +22,19 @@ testbench must accept the correct DUT and expose all five behavioral faults.
     - position 8: `swing_metric` (output, electrical)
     - position 9: `z_metric` (output, electrical)
 
-Stable evaluator binding:
+Stable public Spectre binding:
 
-- DUT sources use `./dut/{artifact_path}`.
-- Instantiate `sst_driver_macro` as `XDUT` with ordered public binding: data=data, enable=enable, clk=clk, rst=rst, z_2=z_2, z_1=z_1, z_0=z_0, vout=vout, swing_metric=swing_metric, z_metric=z_metric.
+The submitted `testbench.scs` must use the supplied DUT through this public binding:
+
+- Include path: `./dut/sst_driver_macro.va`
+- DUT instance: `XDUT (data enable clk rst z_2 z_1 z_0 vout swing_metric z_metric) sst_driver_macro`
+- Required saved public traces: `data`, `enable`, `clk`, `rst`, `z_2`, `z_1`, `z_0`, `vout`, `swing_metric`, `z_metric`
+- Use one bounded transient analysis with a finite positive stop time.
+
+You must design the stimulus yourself. Save traces as bare public signal names
+(for example `clk`, not suffixed or hierarchical forms such as `clk:V` or
+`XDUT.clk`). Do not redefine the DUT, drive DUT output nets, save
+hierarchical/private nodes, or use checker/gold/internal files.
 
 ## Public Parameter Contract
 

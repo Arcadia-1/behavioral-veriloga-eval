@@ -18,10 +18,19 @@ testbench must accept the correct DUT and expose all five behavioral faults.
     - position 4: `edge_valid` (output, electrical)
     - position 5: `rejected` (output, electrical)
 
-Stable evaluator binding:
+Stable public Spectre binding:
 
-- DUT sources use `./dut/{artifact_path}`.
-- Instantiate `edge_delay_line_deglitch` as `XDUT` with ordered public binding: vin=vin, rst=rst, enable=enable, vout=vout, edge_valid=edge_valid, rejected=rejected.
+The submitted `testbench.scs` must use the supplied DUT through this public binding:
+
+- Include path: `./dut/edge_delay_line_deglitch.va`
+- DUT instance: `XDUT (vin rst enable vout edge_valid rejected) edge_delay_line_deglitch`
+- Required saved public traces: `vin`, `rst`, `enable`, `vout`, `edge_valid`, `rejected`
+- Use one bounded transient analysis with a finite positive stop time.
+
+You must design the stimulus yourself. Save traces as bare public signal names
+(for example `clk`, not suffixed or hierarchical forms such as `clk:V` or
+`XDUT.clk`). Do not redefine the DUT, drive DUT output nets, save
+hierarchical/private nodes, or use checker/gold/internal files.
 
 ## Public Parameter Contract
 

@@ -23,10 +23,19 @@ testbench must accept the correct DUT and expose all five behavioral faults.
     - position 9: `pre_dbg` (output, electrical)
     - position 10: `post_dbg` (output, electrical)
 
-Stable evaluator binding:
+Stable public Spectre binding:
 
-- DUT sources use `./dut/{artifact_path}`.
-- Instantiate `ffe_tx_3tap` as `XDUT` with ordered public binding: data=data, clk=clk, rst=rst, pre_1=pre_1, pre_0=pre_0, post_1=post_1, post_0=post_0, vout=vout, main_dbg=main_dbg, pre_dbg=pre_dbg, post_dbg=post_dbg.
+The submitted `testbench.scs` must use the supplied DUT through this public binding:
+
+- Include path: `./dut/ffe_tx_3tap.va`
+- DUT instance: `XDUT (data clk rst pre_1 pre_0 post_1 post_0 vout main_dbg pre_dbg post_dbg) ffe_tx_3tap`
+- Required saved public traces: `data`, `clk`, `rst`, `pre_1`, `pre_0`, `post_1`, `post_0`, `vout`, `main_dbg`, `pre_dbg`, `post_dbg`
+- Use one bounded transient analysis with a finite positive stop time.
+
+You must design the stimulus yourself. Save traces as bare public signal names
+(for example `clk`, not suffixed or hierarchical forms such as `clk:V` or
+`XDUT.clk`). Do not redefine the DUT, drive DUT output nets, save
+hierarchical/private nodes, or use checker/gold/internal files.
 
 ## Public Parameter Contract
 

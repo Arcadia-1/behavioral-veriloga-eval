@@ -22,10 +22,19 @@ testbench must accept the correct DUT and expose all five behavioral faults.
     - position 8: `seed7` (input, electrical)
     - position 9: `clk_out` (output, electrical)
 
-Stable evaluator binding:
+Stable public Spectre binding:
 
-- DUT sources use `./dut/{artifact_path}`.
-- Instantiate `deterministic_jittered_clock` as `XDUT` with ordered public binding: jitter_en=jitter_en, seed0=seed0, seed1=seed1, seed2=seed2, seed3=seed3, seed4=seed4, seed5=seed5, seed6=seed6, seed7=seed7, clk_out=clk_out.
+The submitted `testbench.scs` must use the supplied DUT through this public binding:
+
+- Include path: `./dut/deterministic_jittered_clock.va`
+- DUT instance: `XDUT (jitter_en seed0 seed1 seed2 seed3 seed4 seed5 seed6 seed7 clk_out) deterministic_jittered_clock`
+- Required saved public traces: `jitter_en`, `seed0`, `seed1`, `seed2`, `seed3`, `seed4`, `seed5`, `seed6`, `seed7`, `clk_out`
+- Use one bounded transient analysis with a finite positive stop time.
+
+You must design the stimulus yourself. Save traces as bare public signal names
+(for example `clk`, not suffixed or hierarchical forms such as `clk:V` or
+`XDUT.clk`). Do not redefine the DUT, drive DUT output nets, save
+hierarchical/private nodes, or use checker/gold/internal files.
 
 ## Public Parameter Contract
 

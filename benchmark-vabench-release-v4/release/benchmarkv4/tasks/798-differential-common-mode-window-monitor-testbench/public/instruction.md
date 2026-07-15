@@ -21,10 +21,19 @@ testbench must accept the correct DUT and expose all five behavioral faults.
     - position 7: `diff_metric` (output, electrical)
     - position 8: `cm_metric` (output, electrical)
 
-Stable evaluator binding:
+Stable public Spectre binding:
 
-- DUT sources use `./dut/{artifact_path}`.
-- Instantiate `differential_common_mode_window_monitor` as `XDUT` with ordered public binding: vip=vip, vin=vin, vcm_ref=vcm_ref, en=en, diff_ok=diff_ok, cm_ok=cm_ok, valid=valid, diff_metric=diff_metric, cm_metric=cm_metric.
+The submitted `testbench.scs` must use the supplied DUT through this public binding:
+
+- Include path: `./dut/differential_common_mode_window_monitor.va`
+- DUT instance: `XDUT (vip vin vcm_ref en diff_ok cm_ok valid diff_metric cm_metric) differential_common_mode_window_monitor`
+- Required saved public traces: `cm_metric`, `cm_ok`, `diff_metric`, `diff_ok`, `en`, `valid`, `vcm_ref`, `vin`, `vip`
+- Use one bounded transient analysis with a finite positive stop time.
+
+You must design the stimulus yourself. Save traces as bare public signal names
+(for example `clk`, not suffixed or hierarchical forms such as `clk:V` or
+`XDUT.clk`). Do not redefine the DUT, drive DUT output nets, save
+hierarchical/private nodes, or use checker/gold/internal files.
 
 ## Public Parameter Contract
 

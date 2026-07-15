@@ -15,10 +15,19 @@ testbench must accept the correct DUT and expose all five behavioral faults.
     - position 1: `mc` (input, electrical)
     - position 2: `fout` (output, electrical)
 
-Stable evaluator binding:
+Stable public Spectre binding:
 
-- DUT sources use `./dut/{artifact_path}`.
-- Instantiate `dual_modulus_divider_16_17` as `XDUT` with ordered public binding: fin=fin, mc=mc, fout=fout.
+The submitted `testbench.scs` must use the supplied DUT through this public binding:
+
+- Include path: `./dut/dual_modulus_divider_16_17.va`
+- DUT instance: `XDUT (fin mc fout) dual_modulus_divider_16_17`
+- Required saved public traces: `fin`, `fout`, `mc`
+- Use one bounded transient analysis with a finite positive stop time.
+
+You must design the stimulus yourself. Save traces as bare public signal names
+(for example `clk`, not suffixed or hierarchical forms such as `clk:V` or
+`XDUT.clk`). Do not redefine the DUT, drive DUT output nets, save
+hierarchical/private nodes, or use checker/gold/internal files.
 
 ## Public Parameter Contract
 

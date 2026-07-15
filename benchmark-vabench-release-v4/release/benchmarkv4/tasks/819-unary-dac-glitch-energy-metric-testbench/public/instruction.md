@@ -21,10 +21,19 @@ testbench must accept the correct DUT and expose all five behavioral faults.
     - position 7: `glitch_metric` (inout, electrical)
     - position 8: `valid` (inout, electrical)
 
-Stable evaluator binding:
+Stable public Spectre binding:
 
-- DUT sources use `./dut/{artifact_path}`.
-- Instantiate `unary_dac_glitch_energy_metric` as `XDUT` with ordered public binding: clk=clk, rst=rst, enable=enable, code_2=code_2, code_1=code_1, code_0=code_0, vout=vout, glitch_metric=glitch_metric, valid=valid.
+The submitted `testbench.scs` must use the supplied DUT through this public binding:
+
+- Include path: `./dut/unary_dac_glitch_energy_metric.va`
+- DUT instance: `XDUT (clk rst enable code_2 code_1 code_0 vout glitch_metric valid) unary_dac_glitch_energy_metric`
+- Required saved public traces: `clk`, `rst`, `enable`, `code_2`, `code_1`, `code_0`, `vout`, `glitch_metric`, `valid`
+- Use one bounded transient analysis with a finite positive stop time.
+
+You must design the stimulus yourself. Save traces as bare public signal names
+(for example `clk`, not suffixed or hierarchical forms such as `clk:V` or
+`XDUT.clk`). Do not redefine the DUT, drive DUT output nets, save
+hierarchical/private nodes, or use checker/gold/internal files.
 
 ## Public Parameter Contract
 

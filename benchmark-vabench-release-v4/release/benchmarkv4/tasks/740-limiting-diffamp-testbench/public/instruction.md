@@ -15,10 +15,19 @@ testbench must accept the correct DUT and expose all five behavioral faults.
     - position 1: `sigin_n` (input, electrical)
     - position 2: `sigout` (output, electrical)
 
-Stable evaluator binding:
+Stable public Spectre binding:
 
-- DUT sources use `./dut/{artifact_path}`.
-- Instantiate `limiting_diffamp` as `XDUT` with ordered public binding: sigin_p=sigin_p, sigin_n=sigin_n, sigout=sigout.
+The submitted `testbench.scs` must use the supplied DUT through this public binding:
+
+- Include path: `./dut/limiting_diffamp.va`
+- DUT instance: `XDUT (sigin_p sigin_n sigout) limiting_diffamp`
+- Required saved public traces: `sigin_n`, `sigin_p`, `sigout`
+- Use one bounded transient analysis with a finite positive stop time.
+
+You must design the stimulus yourself. Save traces as bare public signal names
+(for example `clk`, not suffixed or hierarchical forms such as `clk:V` or
+`XDUT.clk`). Do not redefine the DUT, drive DUT output nets, save
+hierarchical/private nodes, or use checker/gold/internal files.
 
 ## Public Parameter Contract
 

@@ -19,10 +19,19 @@ testbench must accept the correct DUT and expose all five behavioral faults.
     - position 5: `dnl` (output, electrical)
     - position 6: `inl` (output, electrical)
 
-Stable evaluator binding:
+Stable public Spectre binding:
 
-- DUT sources use `./dut/{artifact_path}`.
-- Instantiate `converter_static_linearity_measurement_flow` as `XDUT` with ordered public binding: clk=clk, rst=rst, vin=vin, code=code, recon=recon, dnl=dnl, inl=inl.
+The submitted `testbench.scs` must use the supplied DUT through this public binding:
+
+- Include path: `./dut/converter_static_linearity_measurement_flow.va`
+- DUT instance: `XDUT (clk rst vin code recon dnl inl) converter_static_linearity_measurement_flow`
+- Required saved public traces: `clk`, `rst`, `vin`, `code`, `recon`, `dnl`, `inl`
+- Use one bounded transient analysis with a finite positive stop time.
+
+You must design the stimulus yourself. Save traces as bare public signal names
+(for example `clk`, not suffixed or hierarchical forms such as `clk:V` or
+`XDUT.clk`). Do not redefine the DUT, drive DUT output nets, save
+hierarchical/private nodes, or use checker/gold/internal files.
 
 ## Public Parameter Contract
 

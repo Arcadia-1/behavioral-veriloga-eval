@@ -43,10 +43,19 @@ testbench must accept the correct DUT and expose all five behavioral faults.
     - position 29: `do13` (output, electrical)
     - position 30: `do14` (output, electrical)
 
-Stable evaluator binding:
+Stable public Spectre binding:
 
-- DUT sources use `./dut/{artifact_path}`.
-- Instantiate `pipe15_data_align` as `XDUT` with ordered public binding: samp=samp, d0=d0, d1=d1, d2=d2, d3=d3, d4=d4, d5=d5, d6=d6, d7=d7, d8=d8, d9=d9, d10=d10, d11=d11, d12=d12, d13=d13, d14=d14, do0=do0, do1=do1, do2=do2, do3=do3, do4=do4, do5=do5, do6=do6, do7=do7, do8=do8, do9=do9, do10=do10, do11=do11, do12=do12, do13=do13, do14=do14.
+The submitted `testbench.scs` must use the supplied DUT through this public binding:
+
+- Include path: `./dut/pipe15_data_align.va`
+- DUT instance: `XDUT (samp d0 d1 d2 d3 d4 d5 d6 d7 d8 d9 d10 d11 d12 d13 d14 do0 do1 do2 do3 do4 do5 do6 do7 do8 do9 do10 do11 do12 do13 do14) pipe15_data_align`
+- Required saved public traces: `d0`, `d1`, `d10`, `d11`, `d12`, `d13`, `d14`, `d2`, `d3`, `d4`, `d5`, `d6`, `d7`, `d8`, `d9`, `do0`, `do1`, `do10`, `do11`, `do12`, `do13`, `do14`, `do2`, `do3`, `do4`, `do5`, `do6`, `do7`, `do8`, `do9`, `samp`
+- Use one bounded transient analysis with a finite positive stop time.
+
+You must design the stimulus yourself. Save traces as bare public signal names
+(for example `clk`, not suffixed or hierarchical forms such as `clk:V` or
+`XDUT.clk`). Do not redefine the DUT, drive DUT output nets, save
+hierarchical/private nodes, or use checker/gold/internal files.
 
 ## Public Parameter Contract
 

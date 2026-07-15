@@ -23,10 +23,19 @@ testbench must accept the correct DUT and expose all five behavioral faults.
     - position 9: `dctrl7` (input, electrical)
     - position 10: `vres` (output, electrical)
 
-Stable evaluator binding:
+Stable public Spectre binding:
 
-- DUT sources use `./dut/{artifact_path}`.
-- Instantiate `cdac_8b_monodown` as `XDUT` with ordered public binding: vin=vin, clks=clks, dctrl0=dctrl0, dctrl1=dctrl1, dctrl2=dctrl2, dctrl3=dctrl3, dctrl4=dctrl4, dctrl5=dctrl5, dctrl6=dctrl6, dctrl7=dctrl7, vres=vres.
+The submitted `testbench.scs` must use the supplied DUT through this public binding:
+
+- Include path: `./dut/cdac_8b_monodown.va`
+- DUT instance: `XDUT (vin clks dctrl0 dctrl1 dctrl2 dctrl3 dctrl4 dctrl5 dctrl6 dctrl7 vres) cdac_8b_monodown`
+- Required saved public traces: `clks`, `dctrl0`, `dctrl1`, `dctrl2`, `dctrl3`, `dctrl4`, `dctrl5`, `dctrl6`, `dctrl7`, `vin`, `vres`
+- Use one bounded transient analysis with a finite positive stop time.
+
+You must design the stimulus yourself. Save traces as bare public signal names
+(for example `clk`, not suffixed or hierarchical forms such as `clk:V` or
+`XDUT.clk`). Do not redefine the DUT, drive DUT output nets, save
+hierarchical/private nodes, or use checker/gold/internal files.
 
 ## Public Parameter Contract
 

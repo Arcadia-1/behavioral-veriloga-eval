@@ -30,10 +30,19 @@ testbench must accept the correct DUT and expose all five behavioral faults.
     - position 16: `d15` (output, electrical)
     - position 17: `sum` (output, electrical)
 
-Stable evaluator binding:
+Stable public Spectre binding:
 
-- DUT sources use `./dut/{artifact_path}`.
-- Instantiate `onehot_progress_encoder` as `XDUT` with ordered public binding: ck=ck, d0=d0, d1=d1, d2=d2, d3=d3, d4=d4, d5=d5, d6=d6, d7=d7, d8=d8, d9=d9, d10=d10, d11=d11, d12=d12, d13=d13, d14=d14, d15=d15, sum=sum.
+The submitted `testbench.scs` must use the supplied DUT through this public binding:
+
+- Include path: `./dut/onehot_progress_encoder.va`
+- DUT instance: `XDUT (ck d0 d1 d2 d3 d4 d5 d6 d7 d8 d9 d10 d11 d12 d13 d14 d15 sum) onehot_progress_encoder`
+- Required saved public traces: `ck`, `d0`, `d1`, `d2`, `d3`, `d4`, `d5`, `d6`, `d7`, `d8`, `d9`, `d10`, `d11`, `d12`, `d13`, `d14`, `d15`, `sum`
+- Use one bounded transient analysis with a finite positive stop time.
+
+You must design the stimulus yourself. Save traces as bare public signal names
+(for example `clk`, not suffixed or hierarchical forms such as `clk:V` or
+`XDUT.clk`). Do not redefine the DUT, drive DUT output nets, save
+hierarchical/private nodes, or use checker/gold/internal files.
 
 ## Public Parameter Contract
 

@@ -19,10 +19,19 @@ testbench must accept the correct DUT and expose all five behavioral faults.
     - position 5: `ramp_metric` (inout, electrical)
     - position 6: `done` (inout, electrical)
 
-Stable evaluator binding:
+Stable public Spectre binding:
 
-- DUT sources use `./dut/{artifact_path}`.
-- Instantiate `buck_soft_start_ramp_controller` as `XDUT` with ordered public binding: clk=clk, rst=rst, enable=enable, target_ref=target_ref, soft_ref=soft_ref, ramp_metric=ramp_metric, done=done.
+The submitted `testbench.scs` must use the supplied DUT through this public binding:
+
+- Include path: `./dut/buck_soft_start_ramp_controller.va`
+- DUT instance: `XDUT (clk rst enable target_ref soft_ref ramp_metric done) buck_soft_start_ramp_controller`
+- Required saved public traces: `clk`, `rst`, `enable`, `target_ref`, `soft_ref`, `ramp_metric`, `done`
+- Use one bounded transient analysis with a finite positive stop time.
+
+You must design the stimulus yourself. Save traces as bare public signal names
+(for example `clk`, not suffixed or hierarchical forms such as `clk:V` or
+`XDUT.clk`). Do not redefine the DUT, drive DUT output nets, save
+hierarchical/private nodes, or use checker/gold/internal files.
 
 ## Public Parameter Contract
 

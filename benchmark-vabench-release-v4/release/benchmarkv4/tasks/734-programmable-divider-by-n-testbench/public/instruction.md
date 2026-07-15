@@ -15,10 +15,19 @@ testbench must accept the correct DUT and expose all five behavioral faults.
     - position 1: `divctrl` (input, electrical)
     - position 2: `out` (output, electrical)
 
-Stable evaluator binding:
+Stable public Spectre binding:
 
-- DUT sources use `./dut/{artifact_path}`.
-- Instantiate `programmable_divider_by_n` as `XDUT` with ordered public binding: clk=clk, divctrl=divctrl, out=out.
+The submitted `testbench.scs` must use the supplied DUT through this public binding:
+
+- Include path: `./dut/programmable_divider_by_n.va`
+- DUT instance: `XDUT (clk divctrl out) programmable_divider_by_n`
+- Required saved public traces: `clk`, `divctrl`, `out`
+- Use one bounded transient analysis with a finite positive stop time.
+
+You must design the stimulus yourself. Save traces as bare public signal names
+(for example `clk`, not suffixed or hierarchical forms such as `clk:V` or
+`XDUT.clk`). Do not redefine the DUT, drive DUT output nets, save
+hierarchical/private nodes, or use checker/gold/internal files.
 
 ## Public Parameter Contract
 

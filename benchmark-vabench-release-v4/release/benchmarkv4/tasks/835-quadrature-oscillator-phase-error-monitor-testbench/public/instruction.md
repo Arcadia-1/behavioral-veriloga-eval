@@ -19,10 +19,19 @@ testbench must accept the correct DUT and expose all five behavioral faults.
     - position 5: `quadrature_ok` (inout, electrical)
     - position 6: `valid` (inout, electrical)
 
-Stable evaluator binding:
+Stable public Spectre binding:
 
-- DUT sources use `./dut/{artifact_path}`.
-- Instantiate `quadrature_oscillator_phase_error_monitor` as `XDUT` with ordered public binding: clk_i=clk_i, clk_q=clk_q, rst=rst, enable=enable, phase_error_metric=phase_error_metric, quadrature_ok=quadrature_ok, valid=valid.
+The submitted `testbench.scs` must use the supplied DUT through this public binding:
+
+- Include path: `./dut/quadrature_oscillator_phase_error_monitor.va`
+- DUT instance: `XDUT (clk_i clk_q rst enable phase_error_metric quadrature_ok valid) quadrature_oscillator_phase_error_monitor`
+- Required saved public traces: `clk_i`, `clk_q`, `rst`, `enable`, `phase_error_metric`, `quadrature_ok`, `valid`
+- Use one bounded transient analysis with a finite positive stop time.
+
+You must design the stimulus yourself. Save traces as bare public signal names
+(for example `clk`, not suffixed or hierarchical forms such as `clk:V` or
+`XDUT.clk`). Do not redefine the DUT, drive DUT output nets, save
+hierarchical/private nodes, or use checker/gold/internal files.
 
 ## Public Parameter Contract
 

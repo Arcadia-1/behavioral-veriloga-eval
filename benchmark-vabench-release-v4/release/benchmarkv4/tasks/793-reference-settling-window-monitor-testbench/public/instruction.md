@@ -19,10 +19,19 @@ testbench must accept the correct DUT and expose all five behavioral faults.
     - position 5: `err_metric` (output, electrical)
     - position 6: `settle_mon` (output, electrical)
 
-Stable evaluator binding:
+Stable public Spectre binding:
 
-- DUT sources use `./dut/{artifact_path}`.
-- Instantiate `reference_settling_window_monitor` as `XDUT` with ordered public binding: clk=clk, rst=rst, ref=ref, target=target, valid=valid, err_metric=err_metric, settle_mon=settle_mon.
+The submitted `testbench.scs` must use the supplied DUT through this public binding:
+
+- Include path: `./dut/reference_settling_window_monitor.va`
+- DUT instance: `XDUT (clk rst ref target valid err_metric settle_mon) reference_settling_window_monitor`
+- Required saved public traces: `clk`, `err_metric`, `ref`, `rst`, `settle_mon`, `target`, `valid`
+- Use one bounded transient analysis with a finite positive stop time.
+
+You must design the stimulus yourself. Save traces as bare public signal names
+(for example `clk`, not suffixed or hierarchical forms such as `clk:V` or
+`XDUT.clk`). Do not redefine the DUT, drive DUT output nets, save
+hierarchical/private nodes, or use checker/gold/internal files.
 
 ## Public Parameter Contract
 

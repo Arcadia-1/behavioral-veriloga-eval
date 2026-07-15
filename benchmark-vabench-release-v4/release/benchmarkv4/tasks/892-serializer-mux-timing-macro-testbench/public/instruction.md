@@ -23,10 +23,19 @@ testbench must accept the correct DUT and expose all five behavioral faults.
     - position 9: `slot_0` (inout, electrical)
     - position 10: `valid` (inout, electrical)
 
-Stable evaluator binding:
+Stable public Spectre binding:
 
-- DUT sources use `./dut/{artifact_path}`.
-- Instantiate `serializer_mux_timing_macro` as `XDUT` with ordered public binding: clk=clk, rst=rst, enable=enable, d0=d0, d1=d1, d2=d2, d3=d3, serial_out=serial_out, slot_1=slot_1, slot_0=slot_0, valid=valid.
+The submitted `testbench.scs` must use the supplied DUT through this public binding:
+
+- Include path: `./dut/serializer_mux_timing_macro.va`
+- DUT instance: `XDUT (clk rst enable d0 d1 d2 d3 serial_out slot_1 slot_0 valid) serializer_mux_timing_macro`
+- Required saved public traces: `clk`, `rst`, `enable`, `d0`, `d1`, `d2`, `d3`, `serial_out`, `slot_1`, `slot_0`, `valid`
+- Use one bounded transient analysis with a finite positive stop time.
+
+You must design the stimulus yourself. Save traces as bare public signal names
+(for example `clk`, not suffixed or hierarchical forms such as `clk:V` or
+`XDUT.clk`). Do not redefine the DUT, drive DUT output nets, save
+hierarchical/private nodes, or use checker/gold/internal files.
 
 ## Public Parameter Contract
 

@@ -29,10 +29,19 @@ testbench must accept the correct DUT and expose all five behavioral faults.
     - position 0: `a` (inout, electrical)
     - position 1: `b` (inout, electrical)
 
-Stable evaluator binding:
+Stable public Spectre binding:
 
-- DUT sources use `./dut/{artifact_path}`.
-- Instantiate `dfe_error_proxy_loop_top` as `XDUT` with ordered public binding: sample_in=sample_in, decision_clk=decision_clk, rst=rst, enable=enable, tap_1=tap_1, tap_0=tap_0, corrected_out=corrected_out, error_metric=error_metric, converged=converged.
+The submitted `testbench.scs` must use the supplied DUT through this public binding:
+
+- Include paths: `./dut/dfe_error_proxy_loop_top.va`, `./dut/decision_history.va`, `./dut/feedback_correction_core.va`
+- DUT instance: `XDUT (sample_in decision_clk rst enable tap_1 tap_0 corrected_out error_metric converged) dfe_error_proxy_loop_top`
+- Required saved public traces: `sample_in`, `decision_clk`, `rst`, `enable`, `tap_1`, `tap_0`, `corrected_out`, `error_metric`, `converged`
+- Use one bounded transient analysis with a finite positive stop time.
+
+You must design the stimulus yourself. Save traces as bare public signal names
+(for example `clk`, not suffixed or hierarchical forms such as `clk:V` or
+`XDUT.clk`). Do not redefine the DUT, drive DUT output nets, save
+hierarchical/private nodes, or use checker/gold/internal files.
 
 ## Public Parameter Contract
 

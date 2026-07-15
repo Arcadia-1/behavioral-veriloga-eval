@@ -26,11 +26,20 @@ testbench must accept the correct DUT and expose all five behavioral faults.
     - position 1: `CLK_2` (input, electrical)
     - position 2: `OUT_PS` (output, electrical)
 
-Stable evaluator binding:
+Stable public Spectre binding:
 
-- DUT sources use `./dut/{artifact_path}`.
-- Instantiate `cmp_delay` as `XCMP` with ordered public binding: CLK=clk, VINN=vinn, VINP=vinp, DCMPN=out_n, DCMPP=out_p, LP=lp_int, LM=lm_int, VSS=gnd, VDD=vdd.
-- Instantiate `edge_interval_timer` as `XTIMER` with ordered public binding: CLK_1=clk, CLK_2=out_p, OUT_PS=delay_ps.
+The submitted `testbench.scs` must use the supplied DUT through this public binding:
+
+- Include paths: `./dut/cmp_delay.va`, `./dut/edge_interval_timer.va`
+- DUT instance: `XCMP (clk vinn vinp out_n out_p lp_int lm_int gnd vdd) cmp_delay`
+- DUT instance: `XTIMER (clk out_p delay_ps) edge_interval_timer`
+- Required saved public traces: `clk`, `vinn`, `vinp`, `out_n`, `out_p`, `lp_int`, `lm_int`, `gnd`, `vdd`, `delay_ps`
+- Use one bounded transient analysis with a finite positive stop time.
+
+You must design the stimulus yourself. Save traces as bare public signal names
+(for example `clk`, not suffixed or hierarchical forms such as `clk:V` or
+`XDUT.clk`). Do not redefine the DUT, drive DUT output nets, save
+hierarchical/private nodes, or use checker/gold/internal files.
 
 ## Public Parameter Contract
 

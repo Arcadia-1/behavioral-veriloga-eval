@@ -24,10 +24,19 @@ testbench must accept the correct DUT and expose all five behavioral faults.
     - position 10: `clk_out` (output, electrical)
     - position 11: `lock` (output, electrical)
 
-Stable evaluator binding:
+Stable public Spectre binding:
 
-- DUT sources use `./dut/{artifact_path}`.
-- Instantiate `clk_divider_ref` as `XDUT` with ordered public binding: clk_in=clk_in, rst_n=rst_n, div_code_0=div_code_0, div_code_1=div_code_1, div_code_2=div_code_2, div_code_3=div_code_3, div_code_4=div_code_4, div_code_5=div_code_5, div_code_6=div_code_6, div_code_7=div_code_7, clk_out=clk_out, lock=lock.
+The submitted `testbench.scs` must use the supplied DUT through this public binding:
+
+- Include path: `./dut/clk_divider_ref.va`
+- DUT instance: `XDUT (clk_in rst_n div_code_0 div_code_1 div_code_2 div_code_3 div_code_4 div_code_5 div_code_6 div_code_7 clk_out lock) clk_divider_ref`
+- Required saved public traces: `clk_in`, `rst_n`, `div_code_0`, `div_code_1`, `div_code_2`, `div_code_3`, `div_code_4`, `div_code_5`, `div_code_6`, `div_code_7`, `clk_out`, `lock`
+- Use one bounded transient analysis with a finite positive stop time.
+
+You must design the stimulus yourself. Save traces as bare public signal names
+(for example `clk`, not suffixed or hierarchical forms such as `clk:V` or
+`XDUT.clk`). Do not redefine the DUT, drive DUT output nets, save
+hierarchical/private nodes, or use checker/gold/internal files.
 
 ## Public Parameter Contract
 

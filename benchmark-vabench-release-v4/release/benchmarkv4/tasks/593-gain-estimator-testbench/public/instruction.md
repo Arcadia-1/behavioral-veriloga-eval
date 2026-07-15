@@ -20,10 +20,19 @@ testbench must accept the correct DUT and expose all five behavioral faults.
     - position 6: `gain_out` (output, electrical)
     - position 7: `valid` (output, electrical)
 
-Stable evaluator binding:
+Stable public Spectre binding:
 
-- DUT sources use `./dut/{artifact_path}`.
-- Instantiate `gain_estimator` as `XDUT` with ordered public binding: VDD=vdd, VSS=vss, vinp=vinp, vinn=vinn, voutp=voutp, voutn=voutn, gain_out=gain_out, valid=valid.
+The submitted `testbench.scs` must use the supplied DUT through this public binding:
+
+- Include path: `./dut/gain_estimator.va`
+- DUT instance: `XDUT (vdd vss vinp vinn voutp voutn gain_out valid) gain_estimator`
+- Required saved public traces: `vdd`, `vss`, `vinp`, `vinn`, `voutp`, `voutn`, `gain_out`, `valid`
+- Use one bounded transient analysis with a finite positive stop time.
+
+You must design the stimulus yourself. Save traces as bare public signal names
+(for example `clk`, not suffixed or hierarchical forms such as `clk:V` or
+`XDUT.clk`). Do not redefine the DUT, drive DUT output nets, save
+hierarchical/private nodes, or use checker/gold/internal files.
 
 ## Public Parameter Contract
 

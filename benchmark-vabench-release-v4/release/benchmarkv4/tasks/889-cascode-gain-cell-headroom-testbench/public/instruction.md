@@ -20,10 +20,19 @@ testbench must accept the correct DUT and expose all five behavioral faults.
     - position 6: `gain_metric` (output, electrical)
     - position 7: `headroom_ok` (output, electrical)
 
-Stable evaluator binding:
+Stable public Spectre binding:
 
-- DUT sources use `./dut/{artifact_path}`.
-- Instantiate `cascode_gain_cell_headroom` as `XDUT` with ordered public binding: vin=vin, vbias=vbias, vdd_sense=vdd_sense, enable=enable, rst=rst, vout=vout, gain_metric=gain_metric, headroom_ok=headroom_ok.
+The submitted `testbench.scs` must use the supplied DUT through this public binding:
+
+- Include path: `./dut/cascode_gain_cell_headroom.va`
+- DUT instance: `XDUT (vin vbias vdd_sense enable rst vout gain_metric headroom_ok) cascode_gain_cell_headroom`
+- Required saved public traces: `vin`, `vbias`, `vdd_sense`, `enable`, `rst`, `vout`, `gain_metric`, `headroom_ok`
+- Use one bounded transient analysis with a finite positive stop time.
+
+You must design the stimulus yourself. Save traces as bare public signal names
+(for example `clk`, not suffixed or hierarchical forms such as `clk:V` or
+`XDUT.clk`). Do not redefine the DUT, drive DUT output nets, save
+hierarchical/private nodes, or use checker/gold/internal files.
 
 ## Public Parameter Contract
 

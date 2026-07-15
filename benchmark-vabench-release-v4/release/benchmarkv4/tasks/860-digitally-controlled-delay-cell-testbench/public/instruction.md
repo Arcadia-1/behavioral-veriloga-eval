@@ -24,10 +24,19 @@ testbench must accept the correct DUT and expose all five behavioral faults.
     - position 10: `delay_metric` (output, electrical)
     - position 11: `valid` (output, electrical)
 
-Stable evaluator binding:
+Stable public Spectre binding:
 
-- DUT sources use `./dut/{artifact_path}`.
-- Instantiate `digitally_controlled_delay_cell` as `XDUT` with ordered public binding: in_clk=in_clk, load=load, rst=rst, code_5=code_5, code_4=code_4, code_3=code_3, code_2=code_2, code_1=code_1, code_0=code_0, out_clk=out_clk, delay_metric=delay_metric, valid=valid.
+The submitted `testbench.scs` must use the supplied DUT through this public binding:
+
+- Include path: `./dut/digitally_controlled_delay_cell.va`
+- DUT instance: `XDUT (in_clk load rst code_5 code_4 code_3 code_2 code_1 code_0 out_clk delay_metric valid) digitally_controlled_delay_cell`
+- Required saved public traces: `in_clk`, `load`, `rst`, `code_5`, `code_4`, `code_3`, `code_2`, `code_1`, `code_0`, `out_clk`, `delay_metric`, `valid`
+- Use one bounded transient analysis with a finite positive stop time.
+
+You must design the stimulus yourself. Save traces as bare public signal names
+(for example `clk`, not suffixed or hierarchical forms such as `clk:V` or
+`XDUT.clk`). Do not redefine the DUT, drive DUT output nets, save
+hierarchical/private nodes, or use checker/gold/internal files.
 
 ## Public Parameter Contract
 

@@ -50,10 +50,19 @@ testbench must accept the correct DUT and expose all five behavioral faults.
     - position 6: `von_out` (output, electrical)
     - position 7: `cm_error` (output, electrical)
 
-Stable evaluator binding:
+Stable public Spectre binding:
 
-- DUT sources use `./dut/{artifact_path}`.
-- Instantiate `cmfb_loop_top` as `XDUT` with ordered public binding: vop_in=vop_in, von_in=von_in, clk=clk, rst=rst, enable=enable, vop_out=vop_out, von_out=von_out, trim_2=trim_2, trim_1=trim_1, trim_0=trim_0, cm_error=cm_error, locked=locked.
+The submitted `testbench.scs` must use the supplied DUT through this public binding:
+
+- Include paths: `./dut/cmfb_loop_top.va`, `./dut/cm_sensor.va`, `./dut/trim_controller.va`, `./dut/output_balancer.va`
+- DUT instance: `XDUT (vop_in von_in clk rst enable vop_out von_out trim_2 trim_1 trim_0 cm_error locked) cmfb_loop_top`
+- Required saved public traces: `vop_in`, `von_in`, `clk`, `rst`, `enable`, `vop_out`, `von_out`, `trim_2`, `trim_1`, `trim_0`, `cm_error`, `locked`
+- Use one bounded transient analysis with a finite positive stop time.
+
+You must design the stimulus yourself. Save traces as bare public signal names
+(for example `clk`, not suffixed or hierarchical forms such as `clk:V` or
+`XDUT.clk`). Do not redefine the DUT, drive DUT output nets, save
+hierarchical/private nodes, or use checker/gold/internal files.
 
 ## Public Parameter Contract
 

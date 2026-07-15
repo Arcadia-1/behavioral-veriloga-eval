@@ -19,10 +19,19 @@ testbench must accept the correct DUT and expose all five behavioral faults.
     - position 5: `threshold_mon` (output, electrical)
     - position 6: `margin_metric` (output, electrical)
 
-Stable evaluator binding:
+Stable public Spectre binding:
 
-- DUT sources use `./dut/{artifact_path}`.
-- Instantiate `adaptive_threshold_tracker` as `XDUT` with ordered public binding: clk=clk, rst=rst, vin=vin, adapt=adapt, trip=trip, threshold_mon=threshold_mon, margin_metric=margin_metric.
+The submitted `testbench.scs` must use the supplied DUT through this public binding:
+
+- Include path: `./dut/adaptive_threshold_tracker.va`
+- DUT instance: `XDUT (clk rst vin adapt trip threshold_mon margin_metric) adaptive_threshold_tracker`
+- Required saved public traces: `adapt`, `clk`, `margin_metric`, `rst`, `threshold_mon`, `trip`, `vin`
+- Use one bounded transient analysis with a finite positive stop time.
+
+You must design the stimulus yourself. Save traces as bare public signal names
+(for example `clk`, not suffixed or hierarchical forms such as `clk:V` or
+`XDUT.clk`). Do not redefine the DUT, drive DUT output nets, save
+hierarchical/private nodes, or use checker/gold/internal files.
 
 ## Public Parameter Contract
 

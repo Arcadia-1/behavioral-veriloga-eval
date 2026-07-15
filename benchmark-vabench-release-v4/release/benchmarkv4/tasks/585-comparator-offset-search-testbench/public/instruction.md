@@ -20,10 +20,19 @@ testbench must accept the correct DUT and expose all five behavioral faults.
     - position 6: `offset_est` (output, electrical)
     - position 7: `valid` (output, electrical)
 
-Stable evaluator binding:
+Stable public Spectre binding:
 
-- DUT sources use `./dut/{artifact_path}`.
-- Instantiate `comparator_offset_search_ref` as `XDUT` with ordered public binding: vdd=vdd, vss=vss, inp=inp, inn=inn, outp=outp, trip_v=trip_v, offset_est=offset_est, valid=valid.
+The submitted `testbench.scs` must use the supplied DUT through this public binding:
+
+- Include path: `./dut/comparator_offset_search_ref.va`
+- DUT instance: `XDUT (vdd vss inp inn outp trip_v offset_est valid) comparator_offset_search_ref`
+- Required saved public traces: `vdd`, `vss`, `inp`, `inn`, `outp`, `trip_v`, `offset_est`, `valid`
+- Use one bounded transient analysis with a finite positive stop time.
+
+You must design the stimulus yourself. Save traces as bare public signal names
+(for example `clk`, not suffixed or hierarchical forms such as `clk:V` or
+`XDUT.clk`). Do not redefine the DUT, drive DUT output nets, save
+hierarchical/private nodes, or use checker/gold/internal files.
 
 ## Public Parameter Contract
 

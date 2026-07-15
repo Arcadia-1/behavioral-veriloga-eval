@@ -17,10 +17,19 @@ testbench must accept the correct DUT and expose all five behavioral faults.
     - position 3: `VINP` (output, electrical)
     - position 4: `VINN` (output, electrical)
 
-Stable evaluator binding:
+Stable public Spectre binding:
 
-- DUT sources use `./dut/{artifact_path}`.
-- Instantiate `start_gated_offset_search` as `XDUT` with ordered public binding: CLK=clk, VOUT=vout, START=start, VINP=vinp, VINN=vinn.
+The submitted `testbench.scs` must use the supplied DUT through this public binding:
+
+- Include path: `./dut/start_gated_offset_search.va`
+- DUT instance: `XDUT (clk vout start vinp vinn) start_gated_offset_search`
+- Required saved public traces: `clk`, `vout`, `start`, `vinp`, `vinn`
+- Use one bounded transient analysis with a finite positive stop time.
+
+You must design the stimulus yourself. Save traces as bare public signal names
+(for example `clk`, not suffixed or hierarchical forms such as `clk:V` or
+`XDUT.clk`). Do not redefine the DUT, drive DUT output nets, save
+hierarchical/private nodes, or use checker/gold/internal files.
 
 ## Public Parameter Contract
 

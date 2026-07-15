@@ -21,10 +21,19 @@ testbench must accept the correct DUT and expose all five behavioral faults.
     - position 7: `sampled_metric` (inout, electrical)
     - position 8: `settled` (inout, electrical)
 
-Stable evaluator binding:
+Stable public Spectre binding:
 
-- DUT sources use `./dut/{artifact_path}`.
-- Instantiate `capacitive_feedback_amplifier_macro` as `XDUT` with ordered public binding: vin=vin, clk=clk, rst=rst, enable=enable, gain_1=gain_1, gain_0=gain_0, vout=vout, sampled_metric=sampled_metric, settled=settled.
+The submitted `testbench.scs` must use the supplied DUT through this public binding:
+
+- Include path: `./dut/capacitive_feedback_amplifier_macro.va`
+- DUT instance: `XDUT (vin clk rst enable gain_1 gain_0 vout sampled_metric settled) capacitive_feedback_amplifier_macro`
+- Required saved public traces: `vin`, `clk`, `rst`, `enable`, `gain_1`, `gain_0`, `vout`, `sampled_metric`, `settled`
+- Use one bounded transient analysis with a finite positive stop time.
+
+You must design the stimulus yourself. Save traces as bare public signal names
+(for example `clk`, not suffixed or hierarchical forms such as `clk:V` or
+`XDUT.clk`). Do not redefine the DUT, drive DUT output nets, save
+hierarchical/private nodes, or use checker/gold/internal files.
 
 ## Public Parameter Contract
 

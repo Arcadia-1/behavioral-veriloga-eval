@@ -26,10 +26,19 @@ testbench must accept the correct DUT and expose all five behavioral faults.
     - position 12: `clks` (input, electrical)
     - position 13: `dout` (output, electrical)
 
-Stable evaluator binding:
+Stable public Spectre binding:
 
-- DUT sources use `./dut/{artifact_path}`.
-- Instantiate `cyclic_decoder_12bit` as `XDUT` with ordered public binding: d0=d0, d1=d1, d2=d2, d3=d3, d4=d4, d5=d5, d6=d6, d7=d7, d8=d8, d9=d9, d10=d10, d11=d11, clks=clks, dout=dout.
+The submitted `testbench.scs` must use the supplied DUT through this public binding:
+
+- Include path: `./dut/cyclic_decoder_12bit.va`
+- DUT instance: `XDUT (d0 d1 d2 d3 d4 d5 d6 d7 d8 d9 d10 d11 clks dout) cyclic_decoder_12bit`
+- Required saved public traces: `clks`, `d0`, `d1`, `d10`, `d11`, `d2`, `d3`, `d4`, `d5`, `d6`, `d7`, `d8`, `d9`, `dout`
+- Use one bounded transient analysis with a finite positive stop time.
+
+You must design the stimulus yourself. Save traces as bare public signal names
+(for example `clk`, not suffixed or hierarchical forms such as `clk:V` or
+`XDUT.clk`). Do not redefine the DUT, drive DUT output nets, save
+hierarchical/private nodes, or use checker/gold/internal files.
 
 ## Public Parameter Contract
 

@@ -20,10 +20,19 @@ testbench must accept the correct DUT and expose all five behavioral faults.
     - position 6: `doutsum` (output, electrical)
     - position 7: `doutsumdelay` (output, electrical)
 
-Stable evaluator binding:
+Stable public Spectre binding:
 
-- DUT sources use `./dut/{artifact_path}`.
-- Instantiate `flash_8level_sum_delay` as `XDUT` with ordered public binding: vip=vip, vim=vim, clks=clks, reset=reset, refp=refp, refn=refn, doutsum=doutsum, doutsumdelay=doutsumdelay.
+The submitted `testbench.scs` must use the supplied DUT through this public binding:
+
+- Include path: `./dut/flash_8level_sum_delay.va`
+- DUT instance: `XDUT (vip vim clks reset refp refn doutsum doutsumdelay) flash_8level_sum_delay`
+- Required saved public traces: `clks`, `doutsum`, `doutsumdelay`, `refn`, `refp`, `reset`, `vim`, `vip`
+- Use one bounded transient analysis with a finite positive stop time.
+
+You must design the stimulus yourself. Save traces as bare public signal names
+(for example `clk`, not suffixed or hierarchical forms such as `clk:V` or
+`XDUT.clk`). Do not redefine the DUT, drive DUT output nets, save
+hierarchical/private nodes, or use checker/gold/internal files.
 
 ## Public Parameter Contract
 

@@ -25,10 +25,19 @@ testbench must accept the correct DUT and expose all five behavioral faults.
     - position 11: `residual_metric` (output, electrical)
     - position 12: `valid` (output, electrical)
 
-Stable evaluator binding:
+Stable public Spectre binding:
 
-- DUT sources use `./dut/{artifact_path}`.
-- Instantiate `baseband_offset_gain_trim_macro` as `XDUT` with ordered public binding: vin=vin, clk=clk, rst=rst, enable=enable, gain_2=gain_2, gain_1=gain_1, gain_0=gain_0, offset_2=offset_2, offset_1=offset_1, offset_0=offset_0, vout=vout, residual_metric=residual_metric, valid=valid.
+The submitted `testbench.scs` must use the supplied DUT through this public binding:
+
+- Include path: `./dut/baseband_offset_gain_trim_macro.va`
+- DUT instance: `XDUT (vin clk rst enable gain_2 gain_1 gain_0 offset_2 offset_1 offset_0 vout residual_metric valid) baseband_offset_gain_trim_macro`
+- Required saved public traces: `vin`, `clk`, `rst`, `enable`, `gain_2`, `gain_1`, `gain_0`, `offset_2`, `offset_1`, `offset_0`, `vout`, `residual_metric`, `valid`
+- Use one bounded transient analysis with a finite positive stop time.
+
+You must design the stimulus yourself. Save traces as bare public signal names
+(for example `clk`, not suffixed or hierarchical forms such as `clk:V` or
+`XDUT.clk`). Do not redefine the DUT, drive DUT output nets, save
+hierarchical/private nodes, or use checker/gold/internal files.
 
 ## Public Parameter Contract
 

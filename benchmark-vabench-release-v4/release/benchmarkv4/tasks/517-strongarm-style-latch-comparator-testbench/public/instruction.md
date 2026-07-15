@@ -21,10 +21,19 @@ testbench must accept the correct DUT and expose all five behavioral faults.
     - position 7: `VSS` (input, electrical)
     - position 8: `VDD` (input, electrical)
 
-Stable evaluator binding:
+Stable public Spectre binding:
 
-- DUT sources use `./dut/{artifact_path}`.
-- Instantiate `cmp_strongarm` as `XDUT` with ordered public binding: CLK=clk, VINN=vinn, VINP=vinp, DCMPN=out_n, DCMPP=out_p, LP=lp, LM=lm, VSS=vss, VDD=vdd.
+The submitted `testbench.scs` must use the supplied DUT through this public binding:
+
+- Include path: `./dut/cmp_strongarm.va`
+- DUT instance: `XDUT (clk vinn vinp out_n out_p lp lm vss vdd) cmp_strongarm`
+- Required saved public traces: `clk`, `vinn`, `vinp`, `out_n`, `out_p`, `lp`, `lm`, `vss`, `vdd`
+- Use one bounded transient analysis with a finite positive stop time.
+
+You must design the stimulus yourself. Save traces as bare public signal names
+(for example `clk`, not suffixed or hierarchical forms such as `clk:V` or
+`XDUT.clk`). Do not redefine the DUT, drive DUT output nets, save
+hierarchical/private nodes, or use checker/gold/internal files.
 
 ## Public Parameter Contract
 

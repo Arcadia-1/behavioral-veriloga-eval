@@ -42,10 +42,19 @@ testbench must accept the correct DUT and expose all five behavioral faults.
     - position 6: `magnitude_metric` (output, electrical)
     - position 7: `alarm` (output, electrical)
 
-Stable evaluator binding:
+Stable public Spectre binding:
 
-- DUT sources use `./dut/{artifact_path}`.
-- Instantiate `interleaved_adc_skew_monitor_top` as `XDUT` with ordered public binding: vin_a=vin_a, vin_b=vin_b, clk_a=clk_a, clk_b=clk_b, rst=rst, enable=enable, skew_metric=skew_metric, magnitude_metric=magnitude_metric, alarm=alarm.
+The submitted `testbench.scs` must use the supplied DUT through this public binding:
+
+- Include paths: `./dut/interleaved_adc_skew_monitor_top.va`, `./dut/sample_pair_latch.va`, `./dut/skew_metric_core.va`
+- DUT instance: `XDUT (vin_a vin_b clk_a clk_b rst enable skew_metric magnitude_metric alarm) interleaved_adc_skew_monitor_top`
+- Required saved public traces: `vin_a`, `vin_b`, `clk_a`, `clk_b`, `rst`, `enable`, `skew_metric`, `magnitude_metric`, `alarm`
+- Use one bounded transient analysis with a finite positive stop time.
+
+You must design the stimulus yourself. Save traces as bare public signal names
+(for example `clk`, not suffixed or hierarchical forms such as `clk:V` or
+`XDUT.clk`). Do not redefine the DUT, drive DUT output nets, save
+hierarchical/private nodes, or use checker/gold/internal files.
 
 ## Public Parameter Contract
 

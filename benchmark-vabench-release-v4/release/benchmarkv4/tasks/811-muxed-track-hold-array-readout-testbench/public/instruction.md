@@ -45,10 +45,19 @@ testbench must accept the correct DUT and expose all five behavioral faults.
     - position 10: `channel_metric` (output, electrical)
     - position 11: `valid` (output, electrical)
 
-Stable evaluator binding:
+Stable public Spectre binding:
 
-- DUT sources use `./dut/{artifact_path}`.
-- Instantiate `muxed_track_hold_array_top` as `XDUT` with ordered public binding: vin0=vin0, vin1=vin1, vin2=vin2, clk=clk, rst=rst, sel_1=sel_1, sel_0=sel_0, sample_en=sample_en, vout=vout, channel_metric=channel_metric, valid=valid.
+The submitted `testbench.scs` must use the supplied DUT through this public binding:
+
+- Include paths: `./dut/muxed_track_hold_array_top.va`, `./dut/track_hold_cell.va`, `./dut/readout_mux.va`
+- DUT instance: `XDUT (vin0 vin1 vin2 clk rst sel_1 sel_0 sample_en vout channel_metric valid) muxed_track_hold_array_top`
+- Required saved public traces: `vin0`, `vin1`, `vin2`, `clk`, `rst`, `sel_1`, `sel_0`, `sample_en`, `vout`, `channel_metric`, `valid`
+- Use one bounded transient analysis with a finite positive stop time.
+
+You must design the stimulus yourself. Save traces as bare public signal names
+(for example `clk`, not suffixed or hierarchical forms such as `clk:V` or
+`XDUT.clk`). Do not redefine the DUT, drive DUT output nets, save
+hierarchical/private nodes, or use checker/gold/internal files.
 
 ## Public Parameter Contract
 

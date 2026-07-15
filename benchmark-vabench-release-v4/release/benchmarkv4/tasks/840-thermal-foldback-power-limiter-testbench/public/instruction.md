@@ -36,10 +36,19 @@ testbench must accept the correct DUT and expose all five behavioral faults.
     - position 3: `foldback_factor` (inout, electrical)
     - position 4: `limited_cmd` (inout, electrical)
 
-Stable evaluator binding:
+Stable public Spectre binding:
 
-- DUT sources use `./dut/{artifact_path}`.
-- Instantiate `thermal_foldback_power_limiter_top` as `XDUT` with ordered public binding: power_cmd=power_cmd, temp_sense=temp_sense, clk=clk, rst=rst, enable=enable, limited_cmd=limited_cmd, foldback_metric=foldback_metric, thermal_ok=thermal_ok.
+The submitted `testbench.scs` must use the supplied DUT through this public binding:
+
+- Include paths: `./dut/thermal_foldback_power_limiter_top.va`, `./dut/foldback_controller.va`, `./dut/command_limiter.va`
+- DUT instance: `XDUT (power_cmd temp_sense clk rst enable limited_cmd foldback_metric thermal_ok) thermal_foldback_power_limiter_top`
+- Required saved public traces: `power_cmd`, `temp_sense`, `clk`, `rst`, `enable`, `limited_cmd`, `foldback_metric`, `thermal_ok`
+- Use one bounded transient analysis with a finite positive stop time.
+
+You must design the stimulus yourself. Save traces as bare public signal names
+(for example `clk`, not suffixed or hierarchical forms such as `clk:V` or
+`XDUT.clk`). Do not redefine the DUT, drive DUT output nets, save
+hierarchical/private nodes, or use checker/gold/internal files.
 
 ## Public Parameter Contract
 

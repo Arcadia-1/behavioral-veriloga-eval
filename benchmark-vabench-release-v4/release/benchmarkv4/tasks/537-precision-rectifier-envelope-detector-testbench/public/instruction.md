@@ -18,10 +18,19 @@ testbench must accept the correct DUT and expose all five behavioral faults.
     - position 4: `env` (output, electrical)
     - position 5: `metric` (output, electrical)
 
-Stable evaluator binding:
+Stable public Spectre binding:
 
-- DUT sources use `./dut/{artifact_path}`.
-- Instantiate `precision_rectifier_envelope_detector` as `XDUT` with ordered public binding: clk=clk, rst=rst, vin=vin, rect=rect, env=env, metric=metric.
+The submitted `testbench.scs` must use the supplied DUT through this public binding:
+
+- Include path: `./dut/precision_rectifier_envelope_detector.va`
+- DUT instance: `XDUT (clk rst vin rect env metric) precision_rectifier_envelope_detector`
+- Required saved public traces: `clk`, `rst`, `vin`, `rect`, `env`, `metric`
+- Use one bounded transient analysis with a finite positive stop time.
+
+You must design the stimulus yourself. Save traces as bare public signal names
+(for example `clk`, not suffixed or hierarchical forms such as `clk:V` or
+`XDUT.clk`). Do not redefine the DUT, drive DUT output nets, save
+hierarchical/private nodes, or use checker/gold/internal files.
 
 ## Public Parameter Contract
 

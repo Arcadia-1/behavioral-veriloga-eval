@@ -19,10 +19,19 @@ testbench must accept the correct DUT and expose all five behavioral faults.
     - position 5: `edge_age_metric` (output, electrical)
     - position 6: `qualified` (output, electrical)
 
-Stable evaluator binding:
+Stable public Spectre binding:
 
-- DUT sources use `./dut/{artifact_path}`.
-- Instantiate `clock_data_valid_qualifier` as `XDUT` with ordered public binding: clk=clk, data=data, rst=rst, enable=enable, valid_out=valid_out, edge_age_metric=edge_age_metric, qualified=qualified.
+The submitted `testbench.scs` must use the supplied DUT through this public binding:
+
+- Include path: `./dut/clock_data_valid_qualifier.va`
+- DUT instance: `XDUT (clk data rst enable valid_out edge_age_metric qualified) clock_data_valid_qualifier`
+- Required saved public traces: `clk`, `data`, `rst`, `enable`, `valid_out`, `edge_age_metric`, `qualified`
+- Use one bounded transient analysis with a finite positive stop time.
+
+You must design the stimulus yourself. Save traces as bare public signal names
+(for example `clk`, not suffixed or hierarchical forms such as `clk:V` or
+`XDUT.clk`). Do not redefine the DUT, drive DUT output nets, save
+hierarchical/private nodes, or use checker/gold/internal files.
 
 ## Public Parameter Contract
 

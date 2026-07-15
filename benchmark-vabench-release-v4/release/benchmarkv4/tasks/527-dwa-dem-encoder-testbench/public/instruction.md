@@ -25,11 +25,20 @@ testbench must accept the correct DUT and expose all five behavioral faults.
     - position 4: `out_1` (output, electrical)
     - position 5: `out_0` (output, electrical)
 
-Stable evaluator binding:
+Stable public Spectre binding:
 
-- DUT sources use `./dut/{artifact_path}`.
-- Instantiate `v2b_4b` as `XV2B` with ordered public binding: clk=clk_i, vin=vin_node, out_3=code_3, out_2=code_2, out_1=code_1, out_0=code_0.
-- Instantiate `dwa_ptr_gen` as `XDWA` with ordered public binding: clk_i=clk_i, rst_ni=rst_ni, code_msb_i[3]=code_3, code_msb_i[2]=code_2, code_msb_i[1]=code_1, code_msb_i[0]=code_0, cell_en_o[15]=cell_en_15, cell_en_o[14]=cell_en_14, cell_en_o[13]=cell_en_13, cell_en_o[12]=cell_en_12, cell_en_o[11]=cell_en_11, cell_en_o[10]=cell_en_10, cell_en_o[9]=cell_en_9, cell_en_o[8]=cell_en_8, cell_en_o[7]=cell_en_7, cell_en_o[6]=cell_en_6, cell_en_o[5]=cell_en_5, cell_en_o[4]=cell_en_4, cell_en_o[3]=cell_en_3, cell_en_o[2]=cell_en_2, cell_en_o[1]=cell_en_1, cell_en_o[0]=cell_en_0, ptr_o[15]=ptr_15, ptr_o[14]=ptr_14, ptr_o[13]=ptr_13, ptr_o[12]=ptr_12, ptr_o[11]=ptr_11, ptr_o[10]=ptr_10, ptr_o[9]=ptr_9, ptr_o[8]=ptr_8, ptr_o[7]=ptr_7, ptr_o[6]=ptr_6, ptr_o[5]=ptr_5, ptr_o[4]=ptr_4, ptr_o[3]=ptr_3, ptr_o[2]=ptr_2, ptr_o[1]=ptr_1, ptr_o[0]=ptr_0.
+The submitted `testbench.scs` must use the supplied DUT through this public binding:
+
+- Include paths: `./dut/dwa_ptr_gen.va`, `./dut/v2b_4b.va`
+- DUT instance: `XV2B (clk_i vin_node code_3 code_2 code_1 code_0) v2b_4b`
+- DUT instance: `XDWA (clk_i rst_ni code_3 code_2 code_1 code_0 cell_en_15 cell_en_14 cell_en_13 cell_en_12 cell_en_11 cell_en_10 cell_en_9 cell_en_8 cell_en_7 cell_en_6 cell_en_5 cell_en_4 cell_en_3 cell_en_2 cell_en_1 cell_en_0 ptr_15 ptr_14 ptr_13 ptr_12 ptr_11 ptr_10 ptr_9 ptr_8 ptr_7 ptr_6 ptr_5 ptr_4 ptr_3 ptr_2 ptr_1 ptr_0) dwa_ptr_gen`
+- Required saved public traces: `clk_i`, `rst_ni`, `vin_node`, `code_3`, `code_2`, `code_1`, `code_0`, `cell_en_15`, `cell_en_14`, `cell_en_13`, `cell_en_12`, `cell_en_11`, `cell_en_10`, `cell_en_9`, `cell_en_8`, `cell_en_7`, `cell_en_6`, `cell_en_5`, `cell_en_4`, `cell_en_3`, `cell_en_2`, `cell_en_1`, `cell_en_0`, `ptr_15`, `ptr_14`, `ptr_13`, `ptr_12`, `ptr_11`, `ptr_10`, `ptr_9`, `ptr_8`, `ptr_7`, `ptr_6`, `ptr_5`, `ptr_4`, `ptr_3`, `ptr_2`, `ptr_1`, `ptr_0`
+- Use one bounded transient analysis with a finite positive stop time.
+
+You must design the stimulus yourself. Save traces as bare public signal names
+(for example `clk`, not suffixed or hierarchical forms such as `clk:V` or
+`XDUT.clk`). Do not redefine the DUT, drive DUT output nets, save
+hierarchical/private nodes, or use checker/gold/internal files.
 
 ## Public Parameter Contract
 

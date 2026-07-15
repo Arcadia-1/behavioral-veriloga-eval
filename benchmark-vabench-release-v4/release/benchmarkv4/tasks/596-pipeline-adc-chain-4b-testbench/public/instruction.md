@@ -26,10 +26,19 @@ testbench must accept the correct DUT and expose all five behavioral faults.
     - position 12: `DOUT1` (output, electrical)
     - position 13: `DOUT0` (output, electrical)
 
-Stable evaluator binding:
+Stable public Spectre binding:
 
-- DUT sources use `./dut/{artifact_path}`.
-- Instantiate `pipeline_adc_chain_4b` as `XDUT` with ordered public binding: VDD=vdd, VSS=vss, VIN=vin, CLK=clk, RES1=res1, RES2=res2, S1B1=s1b1, S1B0=s1b0, S2B1=s2b1, S2B0=s2b0, DOUT3=dout3, DOUT2=dout2, DOUT1=dout1, DOUT0=dout0.
+The submitted `testbench.scs` must use the supplied DUT through this public binding:
+
+- Include path: `./dut/pipeline_adc_chain_4b.va`
+- DUT instance: `XDUT (vdd vss vin clk res1 res2 s1b1 s1b0 s2b1 s2b0 dout3 dout2 dout1 dout0) pipeline_adc_chain_4b`
+- Required saved public traces: `vdd`, `vss`, `vin`, `clk`, `res1`, `res2`, `s1b1`, `s1b0`, `s2b1`, `s2b0`, `dout3`, `dout2`, `dout1`, `dout0`
+- Use one bounded transient analysis with a finite positive stop time.
+
+You must design the stimulus yourself. Save traces as bare public signal names
+(for example `clk`, not suffixed or hierarchical forms such as `clk:V` or
+`XDUT.clk`). Do not redefine the DUT, drive DUT output nets, save
+hierarchical/private nodes, or use checker/gold/internal files.
 
 ## Public Parameter Contract
 

@@ -25,10 +25,19 @@ testbench must accept the correct DUT and expose all five behavioral faults.
     - position 11: `dc5` (output, electrical)
     - position 12: `dc6` (output, electrical)
 
-Stable evaluator binding:
+Stable public Spectre binding:
 
-- DUT sources use `./dut/{artifact_path}`.
-- Instantiate `linearity_rdac_offset_sweep` as `XDUT` with ordered public binding: ck=ck, d=d, vinp=vinp, vinn=vinn, vrefp=vrefp, vrefn=vrefn, dc0=dc0, dc1=dc1, dc2=dc2, dc3=dc3, dc4=dc4, dc5=dc5, dc6=dc6.
+The submitted `testbench.scs` must use the supplied DUT through this public binding:
+
+- Include path: `./dut/linearity_rdac_offset_sweep.va`
+- DUT instance: `XDUT (ck d vinp vinn vrefp vrefn dc0 dc1 dc2 dc3 dc4 dc5 dc6) linearity_rdac_offset_sweep`
+- Required saved public traces: `ck`, `d`, `dc0`, `dc1`, `dc2`, `dc3`, `dc4`, `dc5`, `dc6`, `vinn`, `vinp`, `vrefn`, `vrefp`
+- Use one bounded transient analysis with a finite positive stop time.
+
+You must design the stimulus yourself. Save traces as bare public signal names
+(for example `clk`, not suffixed or hierarchical forms such as `clk:V` or
+`XDUT.clk`). Do not redefine the DUT, drive DUT output nets, save
+hierarchical/private nodes, or use checker/gold/internal files.
 
 ## Public Parameter Contract
 

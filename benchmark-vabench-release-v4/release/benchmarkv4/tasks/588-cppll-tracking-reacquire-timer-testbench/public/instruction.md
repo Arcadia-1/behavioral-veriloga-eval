@@ -24,11 +24,20 @@ testbench must accept the correct DUT and expose all five behavioral faults.
     - position 1: `VSS` (inout, electrical)
     - position 2: `CLK` (output, electrical)
 
-Stable evaluator binding:
+Stable public Spectre binding:
 
-- DUT sources use `./dut/{artifact_path}`.
-- Instantiate `ref_step_clk` as `XREF` with ordered public binding: VDD=vdd, VSS=vss, CLK=ref_clk.
-- Instantiate `cppll_timer_ref` as `XDUT` with ordered public binding: VDD=vdd, VSS=vss, ref_clk=ref_clk, fb_clk=fb_clk, dco_clk=dco_clk, vctrl_mon=vctrl_mon, lock=lock.
+The submitted `testbench.scs` must use the supplied DUT through this public binding:
+
+- Include paths: `./dut/cppll_timer_ref.va`, `./dut/ref_step_clk.va`
+- DUT instance: `XREF (vdd vss ref_clk) ref_step_clk`
+- DUT instance: `XDUT (vdd vss ref_clk fb_clk dco_clk vctrl_mon lock) cppll_timer_ref`
+- Required saved public traces: `vdd`, `vss`, `ref_clk`, `fb_clk`, `dco_clk`, `vctrl_mon`, `lock`
+- Use one bounded transient analysis with a finite positive stop time.
+
+You must design the stimulus yourself. Save traces as bare public signal names
+(for example `clk`, not suffixed or hierarchical forms such as `clk:V` or
+`XDUT.clk`). Do not redefine the DUT, drive DUT output nets, save
+hierarchical/private nodes, or use checker/gold/internal files.
 
 ## Public Parameter Contract
 

@@ -15,10 +15,19 @@ testbench must accept the correct DUT and expose all five behavioral faults.
     - position 1: `sigref` (input, electrical)
     - position 2: `sigout` (output, electrical)
 
-Stable evaluator binding:
+Stable public Spectre binding:
 
-- DUT sources use `./dut/{artifact_path}`.
-- Instantiate `smooth_comparator_tanh` as `XDUT` with ordered public binding: sigin=sigin, sigref=sigref, sigout=sigout.
+The submitted `testbench.scs` must use the supplied DUT through this public binding:
+
+- Include path: `./dut/smooth_comparator_tanh.va`
+- DUT instance: `XDUT (sigin sigref sigout) smooth_comparator_tanh`
+- Required saved public traces: `sigin`, `sigout`, `sigref`
+- Use one bounded transient analysis with a finite positive stop time.
+
+You must design the stimulus yourself. Save traces as bare public signal names
+(for example `clk`, not suffixed or hierarchical forms such as `clk:V` or
+`XDUT.clk`). Do not redefine the DUT, drive DUT output nets, save
+hierarchical/private nodes, or use checker/gold/internal files.
 
 ## Public Parameter Contract
 

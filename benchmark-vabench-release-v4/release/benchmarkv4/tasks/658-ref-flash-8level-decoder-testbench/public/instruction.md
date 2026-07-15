@@ -24,10 +24,19 @@ testbench must accept the correct DUT and expose all five behavioral faults.
     - position 10: `dout` (output, electrical)
     - position 11: `vres` (output, electrical)
 
-Stable evaluator binding:
+Stable public Spectre binding:
 
-- DUT sources use `./dut/{artifact_path}`.
-- Instantiate `ref_flash_8level_decoder` as `XDUT` with ordered public binding: vin=vin, dt0=dt0, dt1=dt1, dt2=dt2, dt3=dt3, dt4=dt4, dt5=dt5, dt6=dt6, dt7=dt7, clks=clks, dout=dout, vres=vres.
+The submitted `testbench.scs` must use the supplied DUT through this public binding:
+
+- Include path: `./dut/ref_flash_8level_decoder.va`
+- DUT instance: `XDUT (vin dt0 dt1 dt2 dt3 dt4 dt5 dt6 dt7 clks dout vres) ref_flash_8level_decoder`
+- Required saved public traces: `clks`, `dout`, `dt0`, `dt1`, `dt2`, `dt3`, `dt4`, `dt5`, `dt6`, `dt7`, `vin`, `vres`
+- Use one bounded transient analysis with a finite positive stop time.
+
+You must design the stimulus yourself. Save traces as bare public signal names
+(for example `clk`, not suffixed or hierarchical forms such as `clk:V` or
+`XDUT.clk`). Do not redefine the DUT, drive DUT output nets, save
+hierarchical/private nodes, or use checker/gold/internal files.
 
 ## Public Parameter Contract
 

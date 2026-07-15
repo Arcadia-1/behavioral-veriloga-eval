@@ -20,10 +20,19 @@ testbench must accept the correct DUT and expose all five behavioral faults.
     - position 6: `clks` (input, electrical)
     - position 7: `dout` (output, electrical)
 
-Stable evaluator binding:
+Stable public Spectre binding:
 
-- DUT sources use `./dut/{artifact_path}`.
-- Instantiate `clocked_four_input_mux` as `XDUT` with ordered public binding: dsel0=dsel0, dsel1=dsel1, din0=din0, din1=din1, din2=din2, din3=din3, clks=clks, dout=dout.
+The submitted `testbench.scs` must use the supplied DUT through this public binding:
+
+- Include path: `./dut/clocked_four_input_mux.va`
+- DUT instance: `XDUT (dsel0 dsel1 din0 din1 din2 din3 clks dout) clocked_four_input_mux`
+- Required saved public traces: `clks`, `din0`, `din1`, `din2`, `din3`, `dout`, `dsel0`, `dsel1`
+- Use one bounded transient analysis with a finite positive stop time.
+
+You must design the stimulus yourself. Save traces as bare public signal names
+(for example `clk`, not suffixed or hierarchical forms such as `clk:V` or
+`XDUT.clk`). Do not redefine the DUT, drive DUT output nets, save
+hierarchical/private nodes, or use checker/gold/internal files.
 
 ## Public Parameter Contract
 

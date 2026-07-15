@@ -45,10 +45,19 @@ testbench must accept the correct DUT and expose all five behavioral faults.
     - position 2: `en_dig` (input, electrical)
     - position 3: `ready` (output, electrical)
 
-Stable evaluator binding:
+Stable public Spectre binding:
 
-- DUT sources use `./dut/{artifact_path}`.
-- Instantiate `power_reset_seq_top` as `XDUT` with ordered public binding: vdd_sense=vdd_sense, clk=clk, rst_n_ext=rst_n_ext, enable_req=enable_req, por_n=por_n, rst_n_core=rst_n_core, en_ana=en_ana, en_dig=en_dig, ready=ready.
+The submitted `testbench.scs` must use the supplied DUT through this public binding:
+
+- Include paths: `./dut/power_reset_seq_top.va`, `./dut/por_detector.va`, `./dut/reset_synchronizer.va`, `./dut/enable_sequencer.va`, `./dut/ready_flag.va`
+- DUT instance: `XDUT (vdd_sense clk rst_n_ext enable_req por_n rst_n_core en_ana en_dig ready) power_reset_seq_top`
+- Required saved public traces: `vdd_sense`, `clk`, `rst_n_ext`, `enable_req`, `por_n`, `rst_n_core`, `en_ana`, `en_dig`, `ready`
+- Use one bounded transient analysis with a finite positive stop time.
+
+You must design the stimulus yourself. Save traces as bare public signal names
+(for example `clk`, not suffixed or hierarchical forms such as `clk:V` or
+`XDUT.clk`). Do not redefine the DUT, drive DUT output nets, save
+hierarchical/private nodes, or use checker/gold/internal files.
 
 ## Public Parameter Contract
 

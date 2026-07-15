@@ -20,10 +20,19 @@ testbench must accept the correct DUT and expose all five behavioral faults.
     - position 6: `out` (output, electrical)
     - position 7: `resid_metric` (output, electrical)
 
-Stable evaluator binding:
+Stable public Spectre binding:
 
-- DUT sources use `./dut/{artifact_path}`.
-- Instantiate `calibration_affine_transform` as `XDUT` with ordered public binding: clk=clk, rst=rst, raw=raw, gain_ctrl=gain_ctrl, offset_ctrl=offset_ctrl, en=en, out=out, resid_metric=resid_metric.
+The submitted `testbench.scs` must use the supplied DUT through this public binding:
+
+- Include path: `./dut/calibration_affine_transform.va`
+- DUT instance: `XDUT (clk rst raw gain_ctrl offset_ctrl en out resid_metric) calibration_affine_transform`
+- Required saved public traces: `clk`, `en`, `gain_ctrl`, `offset_ctrl`, `out`, `raw`, `resid_metric`, `rst`
+- Use one bounded transient analysis with a finite positive stop time.
+
+You must design the stimulus yourself. Save traces as bare public signal names
+(for example `clk`, not suffixed or hierarchical forms such as `clk:V` or
+`XDUT.clk`). Do not redefine the DUT, drive DUT output nets, save
+hierarchical/private nodes, or use checker/gold/internal files.
 
 ## Public Parameter Contract
 

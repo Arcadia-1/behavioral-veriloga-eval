@@ -43,10 +43,19 @@ testbench must accept the correct DUT and expose all five behavioral faults.
     - position 8: `corr` (output, electrical)
     - position 9: `ready` (output, electrical)
 
-Stable evaluator binding:
+Stable public Spectre binding:
 
-- DUT sources use `./dut/{artifact_path}`.
-- Instantiate `instrumentation_amp_offset_trim_top` as `XDUT` with ordered public binding: vinp=vinp, vinn=vinn, clk=clk, rst=rst, cal_en=cal_en, trim_2=trim_2, trim_1=trim_1, trim_0=trim_0, vout=vout, offset_metric=offset_metric, ready=ready.
+The submitted `testbench.scs` must use the supplied DUT through this public binding:
+
+- Include paths: `./dut/instrumentation_amp_offset_trim_top.va`, `./dut/diff_gain_core.va`, `./dut/offset_trim_controller.va`
+- DUT instance: `XDUT (vinp vinn clk rst cal_en trim_2 trim_1 trim_0 vout offset_metric ready) instrumentation_amp_offset_trim_top`
+- Required saved public traces: `vinp`, `vinn`, `clk`, `rst`, `cal_en`, `trim_2`, `trim_1`, `trim_0`, `vout`, `offset_metric`, `ready`
+- Use one bounded transient analysis with a finite positive stop time.
+
+You must design the stimulus yourself. Save traces as bare public signal names
+(for example `clk`, not suffixed or hierarchical forms such as `clk:V` or
+`XDUT.clk`). Do not redefine the DUT, drive DUT output nets, save
+hierarchical/private nodes, or use checker/gold/internal files.
 
 ## Public Parameter Contract
 

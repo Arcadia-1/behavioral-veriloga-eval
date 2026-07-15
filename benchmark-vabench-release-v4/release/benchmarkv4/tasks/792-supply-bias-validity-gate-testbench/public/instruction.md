@@ -19,10 +19,19 @@ testbench must accept the correct DUT and expose all five behavioral faults.
     - position 5: `ok` (output, electrical)
     - position 6: `gated` (output, electrical)
 
-Stable evaluator binding:
+Stable public Spectre binding:
 
-- DUT sources use `./dut/{artifact_path}`.
-- Instantiate `supply_bias_validity_gate` as `XDUT` with ordered public binding: vdd=vdd, vss=vss, vbias=vbias, en=en, pd=pd, ok=ok, gated=gated.
+The submitted `testbench.scs` must use the supplied DUT through this public binding:
+
+- Include path: `./dut/supply_bias_validity_gate.va`
+- DUT instance: `XDUT (vdd vss vbias en pd ok gated) supply_bias_validity_gate`
+- Required saved public traces: `en`, `gated`, `ok`, `pd`, `vbias`, `vdd`, `vss`
+- Use one bounded transient analysis with a finite positive stop time.
+
+You must design the stimulus yourself. Save traces as bare public signal names
+(for example `clk`, not suffixed or hierarchical forms such as `clk:V` or
+`XDUT.clk`). Do not redefine the DUT, drive DUT output nets, save
+hierarchical/private nodes, or use checker/gold/internal files.
 
 ## Public Parameter Contract
 

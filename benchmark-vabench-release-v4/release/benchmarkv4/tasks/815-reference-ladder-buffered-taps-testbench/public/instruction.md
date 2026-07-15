@@ -21,10 +21,19 @@ testbench must accept the correct DUT and expose all five behavioral faults.
     - position 7: `tap3` (inout, electrical)
     - position 8: `monotonic_ok` (inout, electrical)
 
-Stable evaluator binding:
+Stable public Spectre binding:
 
-- DUT sources use `./dut/{artifact_path}`.
-- Instantiate `reference_ladder_buffered_taps` as `XDUT` with ordered public binding: vref_hi=vref_hi, vref_lo=vref_lo, enable=enable, rst=rst, tap0=tap0, tap1=tap1, tap2=tap2, tap3=tap3, monotonic_ok=monotonic_ok.
+The submitted `testbench.scs` must use the supplied DUT through this public binding:
+
+- Include path: `./dut/reference_ladder_buffered_taps.va`
+- DUT instance: `XDUT (vref_hi vref_lo enable rst tap0 tap1 tap2 tap3 monotonic_ok) reference_ladder_buffered_taps`
+- Required saved public traces: `vref_hi`, `vref_lo`, `enable`, `rst`, `tap0`, `tap1`, `tap2`, `tap3`, `monotonic_ok`
+- Use one bounded transient analysis with a finite positive stop time.
+
+You must design the stimulus yourself. Save traces as bare public signal names
+(for example `clk`, not suffixed or hierarchical forms such as `clk:V` or
+`XDUT.clk`). Do not redefine the DUT, drive DUT output nets, save
+hierarchical/private nodes, or use checker/gold/internal files.
 
 ## Public Parameter Contract
 

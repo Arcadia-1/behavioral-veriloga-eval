@@ -44,10 +44,19 @@ testbench must accept the correct DUT and expose all five behavioral faults.
     - position 6: `image_metric` (inout, electrical)
     - position 7: `calibrated` (inout, electrical)
 
-Stable evaluator binding:
+Stable public Spectre binding:
 
-- DUT sources use `./dut/{artifact_path}`.
-- Instantiate `image_reject_mixer_cal_loop_top` as `XDUT` with ordered public binding: rf_in=rf_in, lo_i=lo_i, lo_q=lo_q, clk=clk, rst=rst, enable=enable, i_out=i_out, q_out=q_out, image_metric=image_metric, calibrated=calibrated.
+The submitted `testbench.scs` must use the supplied DUT through this public binding:
+
+- Include paths: `./dut/image_reject_mixer_cal_loop_top.va`, `./dut/quadrature_mixer_proxy.va`, `./dut/image_cal_controller.va`
+- DUT instance: `XDUT (rf_in lo_i lo_q clk rst enable i_out q_out image_metric calibrated) image_reject_mixer_cal_loop_top`
+- Required saved public traces: `rf_in`, `lo_i`, `lo_q`, `clk`, `rst`, `enable`, `i_out`, `q_out`, `image_metric`, `calibrated`
+- Use one bounded transient analysis with a finite positive stop time.
+
+You must design the stimulus yourself. Save traces as bare public signal names
+(for example `clk`, not suffixed or hierarchical forms such as `clk:V` or
+`XDUT.clk`). Do not redefine the DUT, drive DUT output nets, save
+hierarchical/private nodes, or use checker/gold/internal files.
 
 ## Public Parameter Contract
 

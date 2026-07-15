@@ -17,10 +17,19 @@ testbench must accept the correct DUT and expose all five behavioral faults.
     - position 3: `outn` (output, electrical)
     - position 4: `outp` (output, electrical)
 
-Stable evaluator binding:
+Stable public Spectre binding:
 
-- DUT sources use `./dut/{artifact_path}`.
-- Instantiate `clocked_comparator_dual_output` as `XDUT` with ordered public binding: clk=clk, vinn=vinn, vinp=vinp, outn=outn, outp=outp.
+The submitted `testbench.scs` must use the supplied DUT through this public binding:
+
+- Include path: `./dut/clocked_comparator_dual_output.va`
+- DUT instance: `XDUT (clk vinn vinp outn outp) clocked_comparator_dual_output`
+- Required saved public traces: `clk`, `outn`, `outp`, `vinn`, `vinp`
+- Use one bounded transient analysis with a finite positive stop time.
+
+You must design the stimulus yourself. Save traces as bare public signal names
+(for example `clk`, not suffixed or hierarchical forms such as `clk:V` or
+`XDUT.clk`). Do not redefine the DUT, drive DUT output nets, save
+hierarchical/private nodes, or use checker/gold/internal files.
 
 ## Public Parameter Contract
 

@@ -51,10 +51,19 @@ testbench must accept the correct DUT and expose all five behavioral faults.
     - position 4: `avg_ratio_metric` (output, electrical)
     - position 5: `valid` (output, electrical)
 
-Stable evaluator binding:
+Stable public Spectre binding:
 
-- DUT sources use `./dut/{artifact_path}`.
-- Instantiate `fracn_synth_top` as `XDUT` with ordered public binding: ref_clk=ref_clk, dco_clk=dco_clk, rst=rst, enable=enable, frac_3=frac_3, frac_2=frac_2, frac_1=frac_1, frac_0=frac_0, div_clk=div_clk, div_sel=div_sel, avg_ratio_metric=avg_ratio_metric, valid=valid.
+The submitted `testbench.scs` must use the supplied DUT through this public binding:
+
+- Include paths: `./dut/fracn_synth_top.va`, `./dut/accumulator.va`, `./dut/multi_modulus_divider.va`, `./dut/ratio_monitor.va`
+- DUT instance: `XDUT (ref_clk dco_clk rst enable frac_3 frac_2 frac_1 frac_0 div_clk div_sel avg_ratio_metric valid) fracn_synth_top`
+- Required saved public traces: `ref_clk`, `dco_clk`, `rst`, `enable`, `frac_3`, `frac_2`, `frac_1`, `frac_0`, `div_clk`, `div_sel`, `avg_ratio_metric`, `valid`
+- Use one bounded transient analysis with a finite positive stop time.
+
+You must design the stimulus yourself. Save traces as bare public signal names
+(for example `clk`, not suffixed or hierarchical forms such as `clk:V` or
+`XDUT.clk`). Do not redefine the DUT, drive DUT output nets, save
+hierarchical/private nodes, or use checker/gold/internal files.
 
 ## Public Parameter Contract
 

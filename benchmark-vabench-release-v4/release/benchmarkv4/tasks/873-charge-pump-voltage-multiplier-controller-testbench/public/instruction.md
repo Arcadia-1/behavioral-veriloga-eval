@@ -47,10 +47,19 @@ testbench must accept the correct DUT and expose all five behavioral faults.
     - position 8: `regulation_error` (output, electrical)
     - position 9: `ready` (output, electrical)
 
-Stable evaluator binding:
+Stable public Spectre binding:
 
-- DUT sources use `./dut/{artifact_path}`.
-- Instantiate `voltage_multiplier_top` as `XDUT` with ordered public binding: clk=clk, rst=rst, enable=enable, target=target, vout=vout, phase_a=phase_a, phase_b=phase_b, pump_en=pump_en, regulation_error=regulation_error, ready=ready.
+The submitted `testbench.scs` must use the supplied DUT through this public binding:
+
+- Include paths: `./dut/phase_generator.va`, `./dut/pump_stage_model.va`, `./dut/regulation_comparator.va`, `./dut/voltage_multiplier_top.va`
+- DUT instance: `XDUT (clk rst enable target vout phase_a phase_b pump_en regulation_error ready) voltage_multiplier_top`
+- Required saved public traces: `clk`, `rst`, `enable`, `target`, `vout`, `phase_a`, `phase_b`, `pump_en`, `regulation_error`, `ready`
+- Use one bounded transient analysis with a finite positive stop time.
+
+You must design the stimulus yourself. Save traces as bare public signal names
+(for example `clk`, not suffixed or hierarchical forms such as `clk:V` or
+`XDUT.clk`). Do not redefine the DUT, drive DUT output nets, save
+hierarchical/private nodes, or use checker/gold/internal files.
 
 ## Public Parameter Contract
 

@@ -19,10 +19,19 @@ testbench must accept the correct DUT and expose all five behavioral faults.
     - position 5: `envelope_dbg` (inout, electrical)
     - position 6: `valid` (inout, electrical)
 
-Stable evaluator binding:
+Stable public Spectre binding:
 
-- DUT sources use `./dut/{artifact_path}`.
-- Instantiate `am_modulator_source_macro` as `XDUT` with ordered public binding: carrier_in=carrier_in, mod_in=mod_in, enable=enable, rst=rst, vout=vout, envelope_dbg=envelope_dbg, valid=valid.
+The submitted `testbench.scs` must use the supplied DUT through this public binding:
+
+- Include path: `./dut/am_modulator_source_macro.va`
+- DUT instance: `XDUT (carrier_in mod_in enable rst vout envelope_dbg valid) am_modulator_source_macro`
+- Required saved public traces: `carrier_in`, `mod_in`, `enable`, `rst`, `vout`, `envelope_dbg`, `valid`
+- Use one bounded transient analysis with a finite positive stop time.
+
+You must design the stimulus yourself. Save traces as bare public signal names
+(for example `clk`, not suffixed or hierarchical forms such as `clk:V` or
+`XDUT.clk`). Do not redefine the DUT, drive DUT output nets, save
+hierarchical/private nodes, or use checker/gold/internal files.
 
 ## Public Parameter Contract
 

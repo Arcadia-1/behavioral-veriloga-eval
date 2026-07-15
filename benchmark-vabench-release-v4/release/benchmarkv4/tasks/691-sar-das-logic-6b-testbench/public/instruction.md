@@ -29,10 +29,19 @@ testbench must accept the correct DUT and expose all five behavioral faults.
     - position 15: `co` (output, electrical)
     - position 16: `cob` (output, electrical)
 
-Stable evaluator binding:
+Stable public Spectre binding:
 
-- DUT sources use `./dut/{artifact_path}`.
-- Instantiate `sar_das_logic_6b` as `XDUT` with ordered public binding: clk_sampling=clk_sampling, clk_sar=clk_sar, vcomp=vcomp, d1=d1, d2=d2, d3=d3, d4=d4, d5=d5, d6=d6, db1=db1, db2=db2, db3=db3, db4=db4, db5=db5, db6=db6, co=co, cob=cob.
+The submitted `testbench.scs` must use the supplied DUT through this public binding:
+
+- Include path: `./dut/sar_das_logic_6b.va`
+- DUT instance: `XDUT (clk_sampling clk_sar vcomp d1 d2 d3 d4 d5 d6 db1 db2 db3 db4 db5 db6 co cob) sar_das_logic_6b`
+- Required saved public traces: `clk_sampling`, `clk_sar`, `co`, `cob`, `d1`, `d2`, `d3`, `d4`, `d5`, `d6`, `db1`, `db2`, `db3`, `db4`, `db5`, `db6`, `vcomp`
+- Use one bounded transient analysis with a finite positive stop time.
+
+You must design the stimulus yourself. Save traces as bare public signal names
+(for example `clk`, not suffixed or hierarchical forms such as `clk:V` or
+`XDUT.clk`). Do not redefine the DUT, drive DUT output nets, save
+hierarchical/private nodes, or use checker/gold/internal files.
 
 ## Public Parameter Contract
 

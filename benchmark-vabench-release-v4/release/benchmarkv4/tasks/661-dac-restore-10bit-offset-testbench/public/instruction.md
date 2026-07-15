@@ -25,10 +25,19 @@ testbench must accept the correct DUT and expose all five behavioral faults.
     - position 11: `clk` (input, electrical)
     - position 12: `vout` (output, electrical)
 
-Stable evaluator binding:
+Stable public Spectre binding:
 
-- DUT sources use `./dut/{artifact_path}`.
-- Instantiate `dac_restore_10bit_offset` as `XDUT` with ordered public binding: D1=d1, D2=d2, D3=d3, D4=d4, D5=d5, D6=d6, D7=d7, D8=d8, D9=d9, D10=d10, D0=d0, clk=clk, vout=vout.
+The submitted `testbench.scs` must use the supplied DUT through this public binding:
+
+- Include path: `./dut/dac_restore_10bit_offset.va`
+- DUT instance: `XDUT (d1 d2 d3 d4 d5 d6 d7 d8 d9 d10 d0 clk vout) dac_restore_10bit_offset`
+- Required saved public traces: `clk`, `D0`, `D1`, `D2`, `D3`, `D4`, `D5`, `D6`, `D7`, `D8`, `D9`, `D10`, `vout`
+- Use one bounded transient analysis with a finite positive stop time.
+
+You must design the stimulus yourself. Save traces as bare public signal names
+(for example `clk`, not suffixed or hierarchical forms such as `clk:V` or
+`XDUT.clk`). Do not redefine the DUT, drive DUT output nets, save
+hierarchical/private nodes, or use checker/gold/internal files.
 
 ## Public Parameter Contract
 

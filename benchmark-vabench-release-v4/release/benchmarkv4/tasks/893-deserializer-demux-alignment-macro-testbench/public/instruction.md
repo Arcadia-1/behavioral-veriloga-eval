@@ -23,10 +23,19 @@ testbench must accept the correct DUT and expose all five behavioral faults.
     - position 9: `phase_metric` (inout, electrical)
     - position 10: `word_valid` (inout, electrical)
 
-Stable evaluator binding:
+Stable public Spectre binding:
 
-- DUT sources use `./dut/{artifact_path}`.
-- Instantiate `deserializer_demux_alignment_macro` as `XDUT` with ordered public binding: clk=clk, rst=rst, enable=enable, serial_in=serial_in, align_pulse=align_pulse, out0=out0, out1=out1, out2=out2, out3=out3, phase_metric=phase_metric, word_valid=word_valid.
+The submitted `testbench.scs` must use the supplied DUT through this public binding:
+
+- Include path: `./dut/deserializer_demux_alignment_macro.va`
+- DUT instance: `XDUT (clk rst enable serial_in align_pulse out0 out1 out2 out3 phase_metric word_valid) deserializer_demux_alignment_macro`
+- Required saved public traces: `clk`, `rst`, `enable`, `serial_in`, `align_pulse`, `out0`, `out1`, `out2`, `out3`, `phase_metric`, `word_valid`
+- Use one bounded transient analysis with a finite positive stop time.
+
+You must design the stimulus yourself. Save traces as bare public signal names
+(for example `clk`, not suffixed or hierarchical forms such as `clk:V` or
+`XDUT.clk`). Do not redefine the DUT, drive DUT output nets, save
+hierarchical/private nodes, or use checker/gold/internal files.
 
 ## Public Parameter Contract
 

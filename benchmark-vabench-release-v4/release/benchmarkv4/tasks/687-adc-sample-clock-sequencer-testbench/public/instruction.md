@@ -18,10 +18,19 @@ testbench must accept the correct DUT and expose all five behavioral faults.
     - position 4: `nc` (output, electrical)
     - position 5: `conv` (output, electrical)
 
-Stable evaluator binding:
+Stable public Spectre binding:
 
-- DUT sources use `./dut/{artifact_path}`.
-- Instantiate `adc_sample_clock_sequencer` as `XDUT` with ordered public binding: rst=rst, s=s, ss=ss, nc_az=nc_az, nc=nc, conv=conv.
+The submitted `testbench.scs` must use the supplied DUT through this public binding:
+
+- Include path: `./dut/adc_sample_clock_sequencer.va`
+- DUT instance: `XDUT (rst s ss nc_az nc conv) adc_sample_clock_sequencer`
+- Required saved public traces: `conv`, `nc`, `nc_az`, `rst`, `s`, `ss`
+- Use one bounded transient analysis with a finite positive stop time.
+
+You must design the stimulus yourself. Save traces as bare public signal names
+(for example `clk`, not suffixed or hierarchical forms such as `clk:V` or
+`XDUT.clk`). Do not redefine the DUT, drive DUT output nets, save
+hierarchical/private nodes, or use checker/gold/internal files.
 
 ## Public Parameter Contract
 

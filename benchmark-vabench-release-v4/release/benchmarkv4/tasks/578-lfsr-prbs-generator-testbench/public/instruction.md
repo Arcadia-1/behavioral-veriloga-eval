@@ -23,10 +23,19 @@ testbench must accept the correct DUT and expose all five behavioral faults.
     - position 9: `state_5` (output, electrical)
     - position 10: `state_6` (output, electrical)
 
-Stable evaluator binding:
+Stable public Spectre binding:
 
-- DUT sources use `./dut/{artifact_path}`.
-- Instantiate `prbs7_ref` as `XDUT` with ordered public binding: clk=clk, rst_n=rst_n, en=en, serial_out=serial_out, state_0=state_0, state_1=state_1, state_2=state_2, state_3=state_3, state_4=state_4, state_5=state_5, state_6=state_6.
+The submitted `testbench.scs` must use the supplied DUT through this public binding:
+
+- Include path: `./dut/prbs7_ref.va`
+- DUT instance: `XDUT (clk rst_n en serial_out state_0 state_1 state_2 state_3 state_4 state_5 state_6) prbs7_ref`
+- Required saved public traces: `clk`, `rst_n`, `en`, `serial_out`, `state_0`, `state_1`, `state_2`, `state_3`, `state_4`, `state_5`, `state_6`
+- Use one bounded transient analysis with a finite positive stop time.
+
+You must design the stimulus yourself. Save traces as bare public signal names
+(for example `clk`, not suffixed or hierarchical forms such as `clk:V` or
+`XDUT.clk`). Do not redefine the DUT, drive DUT output nets, save
+hierarchical/private nodes, or use checker/gold/internal files.
 
 ## Public Parameter Contract
 

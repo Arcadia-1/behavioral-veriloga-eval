@@ -19,10 +19,19 @@ testbench must accept the correct DUT and expose all five behavioral faults.
     - position 5: `headroom_metric` (output, electrical)
     - position 6: `valid` (output, electrical)
 
-Stable evaluator binding:
+Stable public Spectre binding:
 
-- DUT sources use `./dut/{artifact_path}`.
-- Instantiate `source_follower_buffer_macro` as `XDUT` with ordered public binding: vin=vin, vbias=vbias, enable=enable, rst=rst, vout=vout, headroom_metric=headroom_metric, valid=valid.
+The submitted `testbench.scs` must use the supplied DUT through this public binding:
+
+- Include path: `./dut/source_follower_buffer_macro.va`
+- DUT instance: `XDUT (vin vbias enable rst vout headroom_metric valid) source_follower_buffer_macro`
+- Required saved public traces: `vin`, `vbias`, `enable`, `rst`, `vout`, `headroom_metric`, `valid`
+- Use one bounded transient analysis with a finite positive stop time.
+
+You must design the stimulus yourself. Save traces as bare public signal names
+(for example `clk`, not suffixed or hierarchical forms such as `clk:V` or
+`XDUT.clk`). Do not redefine the DUT, drive DUT output nets, save
+hierarchical/private nodes, or use checker/gold/internal files.
 
 ## Public Parameter Contract
 

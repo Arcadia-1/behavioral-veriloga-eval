@@ -23,10 +23,19 @@ testbench must accept the correct DUT and expose all five behavioral faults.
     - position 9: `clamp_flag` (inout, electrical)
     - position 10: `settled` (inout, electrical)
 
-Stable evaluator binding:
+Stable public Spectre binding:
 
-- DUT sources use `./dut/{artifact_path}`.
-- Instantiate `two_stage_opamp_slew_macromodel` as `XDUT` with ordered public binding: vinp=vinp, vinn=vinn, clk=clk, rst=rst, enable=enable, load_step=load_step, vout=vout, stage1_metric=stage1_metric, slew_metric=slew_metric, clamp_flag=clamp_flag, settled=settled.
+The submitted `testbench.scs` must use the supplied DUT through this public binding:
+
+- Include path: `./dut/two_stage_opamp_slew_macromodel.va`
+- DUT instance: `XDUT (vinp vinn clk rst enable load_step vout stage1_metric slew_metric clamp_flag settled) two_stage_opamp_slew_macromodel`
+- Required saved public traces: `vinp`, `vinn`, `clk`, `rst`, `enable`, `load_step`, `vout`, `stage1_metric`, `slew_metric`, `clamp_flag`, `settled`
+- Use one bounded transient analysis with a finite positive stop time.
+
+You must design the stimulus yourself. Save traces as bare public signal names
+(for example `clk`, not suffixed or hierarchical forms such as `clk:V` or
+`XDUT.clk`). Do not redefine the DUT, drive DUT output nets, save
+hierarchical/private nodes, or use checker/gold/internal files.
 
 ## Public Parameter Contract
 

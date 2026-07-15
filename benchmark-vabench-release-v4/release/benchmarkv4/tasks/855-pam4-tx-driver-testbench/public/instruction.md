@@ -44,10 +44,19 @@ testbench must accept the correct DUT and expose all five behavioral faults.
     - position 6: `vout` (output, electrical)
     - position 7: `delta_dbg` (output, electrical)
 
-Stable evaluator binding:
+Stable public Spectre binding:
 
-- DUT sources use `./dut/{artifact_path}`.
-- Instantiate `pam4_tx_top` as `XDUT` with ordered public binding: bit_msb=bit_msb, bit_lsb=bit_lsb, clk=clk, rst=rst, emph_en=emph_en, vout=vout, level_1=level_1, level_0=level_0, delta_dbg=delta_dbg.
+The submitted `testbench.scs` must use the supplied DUT through this public binding:
+
+- Include paths: `./dut/pam4_tx_top.va`, `./dut/gray_mapper.va`, `./dut/level_dac.va`, `./dut/preemphasis_driver.va`
+- DUT instance: `XDUT (bit_msb bit_lsb clk rst emph_en vout level_1 level_0 delta_dbg) pam4_tx_top`
+- Required saved public traces: `bit_msb`, `bit_lsb`, `clk`, `rst`, `emph_en`, `vout`, `level_1`, `level_0`, `delta_dbg`
+- Use one bounded transient analysis with a finite positive stop time.
+
+You must design the stimulus yourself. Save traces as bare public signal names
+(for example `clk`, not suffixed or hierarchical forms such as `clk:V` or
+`XDUT.clk`). Do not redefine the DUT, drive DUT output nets, save
+hierarchical/private nodes, or use checker/gold/internal files.
 
 ## Public Parameter Contract
 

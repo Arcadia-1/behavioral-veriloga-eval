@@ -17,10 +17,19 @@ testbench must accept the correct DUT and expose all five behavioral faults.
     - position 3: `dcmpn` (output, electrical)
     - position 4: `dcmpp` (output, electrical)
 
-Stable evaluator binding:
+Stable public Spectre binding:
 
-- DUT sources use `./dut/{artifact_path}`.
-- Instantiate `comparator_reset_low_1p8` as `XDUT` with ordered public binding: cmpck=cmpck, vinn=vinn, vinp=vinp, dcmpn=dcmpn, dcmpp=dcmpp.
+The submitted `testbench.scs` must use the supplied DUT through this public binding:
+
+- Include path: `./dut/comparator_reset_low_1p8.va`
+- DUT instance: `XDUT (cmpck vinn vinp dcmpn dcmpp) comparator_reset_low_1p8`
+- Required saved public traces: `cmpck`, `dcmpn`, `dcmpp`, `vinn`, `vinp`
+- Use one bounded transient analysis with a finite positive stop time.
+
+You must design the stimulus yourself. Save traces as bare public signal names
+(for example `clk`, not suffixed or hierarchical forms such as `clk:V` or
+`XDUT.clk`). Do not redefine the DUT, drive DUT output nets, save
+hierarchical/private nodes, or use checker/gold/internal files.
 
 ## Public Parameter Contract
 

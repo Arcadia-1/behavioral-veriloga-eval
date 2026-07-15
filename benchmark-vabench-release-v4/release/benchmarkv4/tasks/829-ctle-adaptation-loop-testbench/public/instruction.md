@@ -41,10 +41,19 @@ testbench must accept the correct DUT and expose all five behavioral faults.
     - position 7: `adapt_metric` (inout, electrical)
     - position 8: `locked` (inout, electrical)
 
-Stable evaluator binding:
+Stable public Spectre binding:
 
-- DUT sources use `./dut/{artifact_path}`.
-- Instantiate `ctle_adaptation_loop_top` as `XDUT` with ordered public binding: vin=vin, edge_metric_in=edge_metric_in, clk=clk, rst=rst, enable=enable, boost_2=boost_2, boost_1=boost_1, boost_0=boost_0, vout=vout, adapt_metric=adapt_metric, locked=locked.
+The submitted `testbench.scs` must use the supplied DUT through this public binding:
+
+- Include paths: `./dut/ctle_adaptation_loop_top.va`, `./dut/ctle_boost_core.va`, `./dut/boost_adapt_controller.va`
+- DUT instance: `XDUT (vin edge_metric_in clk rst enable boost_2 boost_1 boost_0 vout adapt_metric locked) ctle_adaptation_loop_top`
+- Required saved public traces: `vin`, `edge_metric_in`, `clk`, `rst`, `enable`, `boost_2`, `boost_1`, `boost_0`, `vout`, `adapt_metric`, `locked`
+- Use one bounded transient analysis with a finite positive stop time.
+
+You must design the stimulus yourself. Save traces as bare public signal names
+(for example `clk`, not suffixed or hierarchical forms such as `clk:V` or
+`XDUT.clk`). Do not redefine the DUT, drive DUT output nets, save
+hierarchical/private nodes, or use checker/gold/internal files.
 
 ## Public Parameter Contract
 

@@ -40,10 +40,19 @@ testbench must accept the correct DUT and expose all five behavioral faults.
     - position 5: `eye_metric` (output, electrical)
     - position 6: `lock_hint` (output, electrical)
 
-Stable evaluator binding:
+Stable public Spectre binding:
 
-- DUT sources use `./dut/{artifact_path}`.
-- Instantiate `cdr_eye_monitor_top` as `XDUT` with ordered public binding: data_in=data_in, sample_clk=sample_clk, rst=rst, enable=enable, early=early, late=late, eye_metric=eye_metric, lock_hint=lock_hint, valid=valid.
+The submitted `testbench.scs` must use the supplied DUT through this public binding:
+
+- Include paths: `./dut/cdr_eye_monitor_top.va`, `./dut/edge_margin_sampler.va`, `./dut/eye_metric_filter.va`
+- DUT instance: `XDUT (data_in sample_clk rst enable early late eye_metric lock_hint valid) cdr_eye_monitor_top`
+- Required saved public traces: `data_in`, `sample_clk`, `rst`, `enable`, `early`, `late`, `eye_metric`, `lock_hint`, `valid`
+- Use one bounded transient analysis with a finite positive stop time.
+
+You must design the stimulus yourself. Save traces as bare public signal names
+(for example `clk`, not suffixed or hierarchical forms such as `clk:V` or
+`XDUT.clk`). Do not redefine the DUT, drive DUT output nets, save
+hierarchical/private nodes, or use checker/gold/internal files.
 
 ## Public Parameter Contract
 

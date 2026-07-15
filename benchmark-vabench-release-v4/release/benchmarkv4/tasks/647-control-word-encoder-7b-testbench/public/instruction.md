@@ -19,11 +19,20 @@ testbench must accept the correct DUT and expose all five behavioral faults.
     - position 5: `d5` (output, electrical)
     - position 6: `d6` (output, electrical)
 
-Stable evaluator binding:
+Stable public Spectre binding:
 
-- DUT sources use `./dut/{artifact_path}`.
-- Instantiate `control_word_encoder_7b` as `XCTRL42` with ordered public binding: d0=d0_42, d1=d1_42, d2=d2_42, d3=d3_42, d4=d4_42, d5=d5_42, d6=d6_42. parameter overrides: `ctrl=42`.
-- Instantiate `control_word_encoder_7b` as `XCTRL85` with ordered public binding: d0=d0_85, d1=d1_85, d2=d2_85, d3=d3_85, d4=d4_85, d5=d5_85, d6=d6_85. parameter overrides: `ctrl=85`.
+The submitted `testbench.scs` must use the supplied DUT through this public binding:
+
+- Include path: `./dut/control_word_encoder_7b.va`
+- DUT instance: `XCTRL42 (d0_42 d1_42 d2_42 d3_42 d4_42 d5_42 d6_42) control_word_encoder_7b ctrl=42`
+- DUT instance: `XCTRL85 (d0_85 d1_85 d2_85 d3_85 d4_85 d5_85 d6_85) control_word_encoder_7b ctrl=85`
+- Required saved public traces: `d0_42`, `d0_85`, `d1_42`, `d1_85`, `d2_42`, `d2_85`, `d3_42`, `d3_85`, `d4_42`, `d4_85`, `d5_42`, `d5_85`, `d6_42`, `d6_85`
+- Use one bounded transient analysis with a finite positive stop time.
+
+You must design the stimulus yourself. Save traces as bare public signal names
+(for example `clk`, not suffixed or hierarchical forms such as `clk:V` or
+`XDUT.clk`). Do not redefine the DUT, drive DUT output nets, save
+hierarchical/private nodes, or use checker/gold/internal files.
 
 ## Public Parameter Contract
 

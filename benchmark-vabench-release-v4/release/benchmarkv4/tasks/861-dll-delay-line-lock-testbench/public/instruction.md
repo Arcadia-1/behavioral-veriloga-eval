@@ -60,10 +60,19 @@ testbench must accept the correct DUT and expose all five behavioral faults.
     - position 10: `delay_0` (output, electrical)
     - position 11: `lock` (output, electrical)
 
-Stable evaluator binding:
+Stable public Spectre binding:
 
-- DUT sources use `./dut/{artifact_path}`.
-- Instantiate `dll_top` as `XDUT` with ordered public binding: ref_clk=ref_clk, in_clk=in_clk, rst=rst, enable=enable, delayed_clk=delayed_clk, up=up, down=down, delay_4=delay_4, delay_3=delay_3, delay_2=delay_2, delay_1=delay_1, delay_0=delay_0, lock=lock.
+The submitted `testbench.scs` must use the supplied DUT through this public binding:
+
+- Include paths: `./dut/dll_top.va`, `./dut/phase_detector.va`, `./dut/delay_line.va`, `./dut/lock_detector.va`
+- DUT instance: `XDUT (ref_clk in_clk rst enable delayed_clk up down delay_4 delay_3 delay_2 delay_1 delay_0 lock) dll_top`
+- Required saved public traces: `ref_clk`, `in_clk`, `rst`, `enable`, `delayed_clk`, `up`, `down`, `delay_4`, `delay_3`, `delay_2`, `delay_1`, `delay_0`, `lock`
+- Use one bounded transient analysis with a finite positive stop time.
+
+You must design the stimulus yourself. Save traces as bare public signal names
+(for example `clk`, not suffixed or hierarchical forms such as `clk:V` or
+`XDUT.clk`). Do not redefine the DUT, drive DUT output nets, save
+hierarchical/private nodes, or use checker/gold/internal files.
 
 ## Public Parameter Contract
 

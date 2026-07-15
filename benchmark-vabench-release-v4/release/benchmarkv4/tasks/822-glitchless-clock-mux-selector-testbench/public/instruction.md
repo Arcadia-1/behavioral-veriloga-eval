@@ -20,10 +20,19 @@ testbench must accept the correct DUT and expose all five behavioral faults.
     - position 6: `switch_metric` (inout, electrical)
     - position 7: `valid` (inout, electrical)
 
-Stable evaluator binding:
+Stable public Spectre binding:
 
-- DUT sources use `./dut/{artifact_path}`.
-- Instantiate `glitchless_clock_mux_selector` as `XDUT` with ordered public binding: clk_a=clk_a, clk_b=clk_b, sel=sel, rst=rst, enable=enable, clk_out=clk_out, switch_metric=switch_metric, valid=valid.
+The submitted `testbench.scs` must use the supplied DUT through this public binding:
+
+- Include path: `./dut/glitchless_clock_mux_selector.va`
+- DUT instance: `XDUT (clk_a clk_b sel rst enable clk_out switch_metric valid) glitchless_clock_mux_selector`
+- Required saved public traces: `clk_a`, `clk_b`, `sel`, `rst`, `enable`, `clk_out`, `switch_metric`, `valid`
+- Use one bounded transient analysis with a finite positive stop time.
+
+You must design the stimulus yourself. Save traces as bare public signal names
+(for example `clk`, not suffixed or hierarchical forms such as `clk:V` or
+`XDUT.clk`). Do not redefine the DUT, drive DUT output nets, save
+hierarchical/private nodes, or use checker/gold/internal files.
 
 ## Public Parameter Contract
 

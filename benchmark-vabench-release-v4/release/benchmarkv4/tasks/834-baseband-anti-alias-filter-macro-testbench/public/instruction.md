@@ -21,10 +21,19 @@ testbench must accept the correct DUT and expose all five behavioral faults.
     - position 7: `bandwidth_metric` (inout, electrical)
     - position 8: `valid` (inout, electrical)
 
-Stable evaluator binding:
+Stable public Spectre binding:
 
-- DUT sources use `./dut/{artifact_path}`.
-- Instantiate `baseband_antialias_filter_macro` as `XDUT` with ordered public binding: vin=vin, clk=clk, rst=rst, enable=enable, bw_1=bw_1, bw_0=bw_0, vout=vout, bandwidth_metric=bandwidth_metric, valid=valid.
+The submitted `testbench.scs` must use the supplied DUT through this public binding:
+
+- Include path: `./dut/baseband_antialias_filter_macro.va`
+- DUT instance: `XDUT (vin clk rst enable bw_1 bw_0 vout bandwidth_metric valid) baseband_antialias_filter_macro`
+- Required saved public traces: `vin`, `clk`, `rst`, `enable`, `bw_1`, `bw_0`, `vout`, `bandwidth_metric`, `valid`
+- Use one bounded transient analysis with a finite positive stop time.
+
+You must design the stimulus yourself. Save traces as bare public signal names
+(for example `clk`, not suffixed or hierarchical forms such as `clk:V` or
+`XDUT.clk`). Do not redefine the DUT, drive DUT output nets, save
+hierarchical/private nodes, or use checker/gold/internal files.
 
 ## Public Parameter Contract
 

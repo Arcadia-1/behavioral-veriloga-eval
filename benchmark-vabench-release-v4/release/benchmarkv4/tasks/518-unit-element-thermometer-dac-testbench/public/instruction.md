@@ -30,10 +30,19 @@ testbench must accept the correct DUT and expose all five behavioral faults.
     - position 16: `vss` (input, electrical)
     - position 17: `aout` (output, electrical)
 
-Stable evaluator binding:
+Stable public Spectre binding:
 
-- DUT sources use `./dut/{artifact_path}`.
-- Instantiate `thermometer_dac_15seg` as `XDUT` with ordered public binding: seg0=seg0, seg1=seg1, seg2=seg2, seg3=seg3, seg4=seg4, seg5=seg5, seg6=seg6, seg7=seg7, seg8=seg8, seg9=seg9, seg10=seg10, seg11=seg11, seg12=seg12, seg13=seg13, seg14=seg14, vref=vref, vss=vss, aout=aout.
+The submitted `testbench.scs` must use the supplied DUT through this public binding:
+
+- Include path: `./dut/thermometer_dac_15seg.va`
+- DUT instance: `XDUT (seg0 seg1 seg2 seg3 seg4 seg5 seg6 seg7 seg8 seg9 seg10 seg11 seg12 seg13 seg14 vref vss aout) thermometer_dac_15seg`
+- Required saved public traces: `seg0`, `seg1`, `seg2`, `seg3`, `seg4`, `seg5`, `seg6`, `seg7`, `seg8`, `seg9`, `seg10`, `seg11`, `seg12`, `seg13`, `seg14`, `vref`, `vss`, `aout`
+- Use one bounded transient analysis with a finite positive stop time.
+
+You must design the stimulus yourself. Save traces as bare public signal names
+(for example `clk`, not suffixed or hierarchical forms such as `clk:V` or
+`XDUT.clk`). Do not redefine the DUT, drive DUT output nets, save
+hierarchical/private nodes, or use checker/gold/internal files.
 
 ## Public Parameter Contract
 

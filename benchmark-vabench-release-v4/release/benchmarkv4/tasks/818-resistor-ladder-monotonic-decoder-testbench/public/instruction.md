@@ -20,10 +20,19 @@ testbench must accept the correct DUT and expose all five behavioral faults.
     - position 6: `step_metric` (inout, electrical)
     - position 7: `monotonic_ok` (inout, electrical)
 
-Stable evaluator binding:
+Stable public Spectre binding:
 
-- DUT sources use `./dut/{artifact_path}`.
-- Instantiate `resistor_ladder_monotonic_decoder` as `XDUT` with ordered public binding: code_2=code_2, code_1=code_1, code_0=code_0, enable=enable, rst=rst, vout=vout, step_metric=step_metric, monotonic_ok=monotonic_ok.
+The submitted `testbench.scs` must use the supplied DUT through this public binding:
+
+- Include path: `./dut/resistor_ladder_monotonic_decoder.va`
+- DUT instance: `XDUT (code_2 code_1 code_0 enable rst vout step_metric monotonic_ok) resistor_ladder_monotonic_decoder`
+- Required saved public traces: `code_2`, `code_1`, `code_0`, `enable`, `rst`, `vout`, `step_metric`, `monotonic_ok`
+- Use one bounded transient analysis with a finite positive stop time.
+
+You must design the stimulus yourself. Save traces as bare public signal names
+(for example `clk`, not suffixed or hierarchical forms such as `clk:V` or
+`XDUT.clk`). Do not redefine the DUT, drive DUT output nets, save
+hierarchical/private nodes, or use checker/gold/internal files.
 
 ## Public Parameter Contract
 

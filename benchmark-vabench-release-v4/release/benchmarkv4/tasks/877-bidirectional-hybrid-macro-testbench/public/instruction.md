@@ -24,10 +24,19 @@ testbench must accept the correct DUT and expose all five behavioral faults.
     - position 10: `reverse_metric` (output, electrical)
     - position 11: `balance_ok` (output, electrical)
 
-Stable evaluator binding:
+Stable public Spectre binding:
 
-- DUT sources use `./dut/{artifact_path}`.
-- Instantiate `bidirectional_hybrid_macro` as `XDUT` with ordered public binding: port_a=port_a, port_b=port_b, clk=clk, rst=rst, trim_2=trim_2, trim_1=trim_1, trim_0=trim_0, sum_out=sum_out, diff_out=diff_out, forward_metric=forward_metric, reverse_metric=reverse_metric, balance_ok=balance_ok.
+The submitted `testbench.scs` must use the supplied DUT through this public binding:
+
+- Include path: `./dut/bidirectional_hybrid_macro.va`
+- DUT instance: `XDUT (port_a port_b clk rst trim_2 trim_1 trim_0 sum_out diff_out forward_metric reverse_metric balance_ok) bidirectional_hybrid_macro`
+- Required saved public traces: `port_a`, `port_b`, `clk`, `rst`, `trim_2`, `trim_1`, `trim_0`, `sum_out`, `diff_out`, `forward_metric`, `reverse_metric`, `balance_ok`
+- Use one bounded transient analysis with a finite positive stop time.
+
+You must design the stimulus yourself. Save traces as bare public signal names
+(for example `clk`, not suffixed or hierarchical forms such as `clk:V` or
+`XDUT.clk`). Do not redefine the DUT, drive DUT output nets, save
+hierarchical/private nodes, or use checker/gold/internal files.
 
 ## Public Parameter Contract
 

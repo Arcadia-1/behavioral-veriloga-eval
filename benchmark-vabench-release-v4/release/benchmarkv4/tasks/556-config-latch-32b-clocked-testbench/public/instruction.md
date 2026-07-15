@@ -77,10 +77,19 @@ testbench must accept the correct DUT and expose all five behavioral faults.
     - position 63: `q[1]` (output, electrical)
     - position 64: `q[0]` (output, electrical)
 
-Stable evaluator binding:
+Stable public Spectre binding:
 
-- DUT sources use `./dut/{artifact_path}`.
-- Instantiate `config_latch_32b` as `XDUT` with ordered public binding: en=en, d[31]=d31, d[30]=d30, d[29]=d29, d[28]=d28, d[27]=d27, d[26]=d26, d[25]=d25, d[24]=d24, d[23]=d23, d[22]=d22, d[21]=d21, d[20]=d20, d[19]=d19, d[18]=d18, d[17]=d17, d[16]=d16, d[15]=d15, d[14]=d14, d[13]=d13, d[12]=d12, d[11]=d11, d[10]=d10, d[9]=d9, d[8]=d8, d[7]=d7, d[6]=d6, d[5]=d5, d[4]=d4, d[3]=d3, d[2]=d2, d[1]=d1, d[0]=d0, q[31]=q31, q[30]=q30, q[29]=q29, q[28]=q28, q[27]=q27, q[26]=q26, q[25]=q25, q[24]=q24, q[23]=q23, q[22]=q22, q[21]=q21, q[20]=q20, q[19]=q19, q[18]=q18, q[17]=q17, q[16]=q16, q[15]=q15, q[14]=q14, q[13]=q13, q[12]=q12, q[11]=q11, q[10]=q10, q[9]=q9, q[8]=q8, q[7]=q7, q[6]=q6, q[5]=q5, q[4]=q4, q[3]=q3, q[2]=q2, q[1]=q1, q[0]=q0.
+The submitted `testbench.scs` must use the supplied DUT through this public binding:
+
+- Include path: `./dut/config_latch_32b.va`
+- DUT instance: `XDUT (en d31 d30 d29 d28 d27 d26 d25 d24 d23 d22 d21 d20 d19 d18 d17 d16 d15 d14 d13 d12 d11 d10 d9 d8 d7 d6 d5 d4 d3 d2 d1 d0 q31 q30 q29 q28 q27 q26 q25 q24 q23 q22 q21 q20 q19 q18 q17 q16 q15 q14 q13 q12 q11 q10 q9 q8 q7 q6 q5 q4 q3 q2 q1 q0) config_latch_32b`
+- Required saved public traces: `en`, `d0`, `d1`, `d2`, `d3`, `d4`, `d5`, `d6`, `d7`, `d8`, `d9`, `d10`, `d11`, `d12`, `d13`, `d14`, `d15`, `d16`, `d17`, `d18`, `d19`, `d20`, `d21`, `d22`, `d23`, `d24`, `d25`, `d26`, `d27`, `d28`, `d29`, `d30`, `d31`, `q0`, `q1`, `q2`, `q3`, `q4`, `q5`, `q6`, `q7`, `q8`, `q9`, `q10`, `q11`, `q12`, `q13`, `q14`, `q15`, `q16`, `q17`, `q18`, `q19`, `q20`, `q21`, `q22`, `q23`, `q24`, `q25`, `q26`, `q27`, `q28`, `q29`, `q30`, `q31`
+- Use one bounded transient analysis with a finite positive stop time.
+
+You must design the stimulus yourself. Save traces as bare public signal names
+(for example `clk`, not suffixed or hierarchical forms such as `clk:V` or
+`XDUT.clk`). Do not redefine the DUT, drive DUT output nets, save
+hierarchical/private nodes, or use checker/gold/internal files.
 
 ## Public Parameter Contract
 

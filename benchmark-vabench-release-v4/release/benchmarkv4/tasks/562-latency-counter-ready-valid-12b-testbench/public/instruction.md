@@ -28,10 +28,19 @@ testbench must accept the correct DUT and expose all five behavioral faults.
     - position 14: `lat10` (output, electrical)
     - position 15: `lat11` (output, electrical)
 
-Stable evaluator binding:
+Stable public Spectre binding:
 
-- DUT sources use `./dut/{artifact_path}`.
-- Instantiate `ready_valid_latency_counter_12b` as `XDUT` with ordered public binding: clk=clk, valid_i=valid_i, ready_i=ready_i, done=done, lat0=lat0, lat1=lat1, lat2=lat2, lat3=lat3, lat4=lat4, lat5=lat5, lat6=lat6, lat7=lat7, lat8=lat8, lat9=lat9, lat10=lat10, lat11=lat11.
+The submitted `testbench.scs` must use the supplied DUT through this public binding:
+
+- Include path: `./dut/ready_valid_latency_counter_12b.va`
+- DUT instance: `XDUT (clk valid_i ready_i done lat0 lat1 lat2 lat3 lat4 lat5 lat6 lat7 lat8 lat9 lat10 lat11) ready_valid_latency_counter_12b`
+- Required saved public traces: `clk`, `valid_i`, `ready_i`, `done`, `lat0`, `lat1`, `lat2`, `lat3`, `lat4`, `lat5`, `lat6`, `lat7`, `lat8`, `lat9`, `lat10`, `lat11`
+- Use one bounded transient analysis with a finite positive stop time.
+
+You must design the stimulus yourself. Save traces as bare public signal names
+(for example `clk`, not suffixed or hierarchical forms such as `clk:V` or
+`XDUT.clk`). Do not redefine the DUT, drive DUT output nets, save
+hierarchical/private nodes, or use checker/gold/internal files.
 
 ## Public Parameter Contract
 

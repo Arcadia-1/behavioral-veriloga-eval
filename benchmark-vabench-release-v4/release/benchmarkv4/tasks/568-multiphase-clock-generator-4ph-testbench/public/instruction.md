@@ -17,10 +17,19 @@ testbench must accept the correct DUT and expose all five behavioral faults.
     - position 3: `clk180` (output, electrical)
     - position 4: `clk270` (output, electrical)
 
-Stable evaluator binding:
+Stable public Spectre binding:
 
-- DUT sources use `./dut/{artifact_path}`.
-- Instantiate `multiphase_clock_generator_4ph` as `XDUT` with ordered public binding: vss=0, clk0=clk0, clk90=clk90, clk180=clk180, clk270=clk270.
+The submitted `testbench.scs` must use the supplied DUT through this public binding:
+
+- Include path: `./dut/multiphase_clock_generator_4ph.va`
+- DUT instance: `XDUT (0 clk0 clk90 clk180 clk270) multiphase_clock_generator_4ph`
+- Required saved public traces: `clk0`, `clk90`, `clk180`, `clk270`
+- Use one bounded transient analysis with a finite positive stop time.
+
+You must design the stimulus yourself. Save traces as bare public signal names
+(for example `clk`, not suffixed or hierarchical forms such as `clk:V` or
+`XDUT.clk`). Do not redefine the DUT, drive DUT output nets, save
+hierarchical/private nodes, or use checker/gold/internal files.
 
 ## Public Parameter Contract
 

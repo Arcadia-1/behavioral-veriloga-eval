@@ -22,10 +22,19 @@ testbench must accept the correct DUT and expose all five behavioral faults.
     - position 8: `q_mix_dbg` (output, electrical)
     - position 9: `quad_ok` (output, electrical)
 
-Stable evaluator binding:
+Stable public Spectre binding:
 
-- DUT sources use `./dut/{artifact_path}`.
-- Instantiate `iq_upconversion_mixer` as `XDUT` with ordered public binding: i_in=i_in, q_in=q_in, lo_i=lo_i, lo_q=lo_q, rst=rst, enable=enable, rf_out=rf_out, i_mix_dbg=i_mix_dbg, q_mix_dbg=q_mix_dbg, quad_ok=quad_ok.
+The submitted `testbench.scs` must use the supplied DUT through this public binding:
+
+- Include path: `./dut/iq_upconversion_mixer.va`
+- DUT instance: `XDUT (i_in q_in lo_i lo_q rst enable rf_out i_mix_dbg q_mix_dbg quad_ok) iq_upconversion_mixer`
+- Required saved public traces: `i_in`, `q_in`, `lo_i`, `lo_q`, `rst`, `enable`, `rf_out`, `i_mix_dbg`, `q_mix_dbg`, `quad_ok`
+- Use one bounded transient analysis with a finite positive stop time.
+
+You must design the stimulus yourself. Save traces as bare public signal names
+(for example `clk`, not suffixed or hierarchical forms such as `clk:V` or
+`XDUT.clk`). Do not redefine the DUT, drive DUT output nets, save
+hierarchical/private nodes, or use checker/gold/internal files.
 
 ## Public Parameter Contract
 
