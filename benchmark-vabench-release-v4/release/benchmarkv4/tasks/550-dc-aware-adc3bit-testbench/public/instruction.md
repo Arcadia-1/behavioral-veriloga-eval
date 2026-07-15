@@ -16,10 +16,19 @@ testbench must accept the correct DUT and expose all five behavioral faults.
     - position 2: `d1` (output, electrical)
     - position 3: `d0` (output, electrical)
 
-Stable evaluator binding:
+Stable public Spectre binding:
 
-- DUT sources use `./dut/{artifact_path}`.
-- Instantiate `dc_aware_adc3bit` as `XDUT` with ordered public binding: vin=vin, d2=d2, d1=d1, d0=d0.
+The submitted `testbench.scs` must use the supplied DUT through this public binding:
+
+- Include path: `./dut/dc_aware_adc3bit.va`
+- DUT instance: `XDUT (vin d2 d1 d0) dc_aware_adc3bit`
+- Required saved public traces: `vin`, `d2`, `d1`, `d0`
+- Use one bounded transient analysis with a finite positive stop time.
+
+You must design the stimulus yourself. Save traces as bare public signal names
+(for example `clk`, not suffixed or hierarchical forms such as `clk:V` or
+`XDUT.clk`). Do not redefine the DUT, drive DUT output nets, save
+hierarchical/private nodes, or use checker/gold/internal files.
 
 ## Public Parameter Contract
 

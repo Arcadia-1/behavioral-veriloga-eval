@@ -15,10 +15,19 @@ testbench must accept the correct DUT and expose all five behavioral faults.
     - position 1: `sigdenom` (input, electrical)
     - position 2: `sigout` (output, electrical)
 
-Stable evaluator binding:
+Stable public Spectre binding:
 
-- DUT sources use `./dut/{artifact_path}`.
-- Instantiate `safe_analog_divider` as `XDUT` with ordered public binding: signumer=signumer, sigdenom=sigdenom, sigout=sigout.
+The submitted `testbench.scs` must use the supplied DUT through this public binding:
+
+- Include path: `./dut/safe_analog_divider.va`
+- DUT instance: `XDUT (signumer sigdenom sigout) safe_analog_divider`
+- Required saved public traces: `sigdenom`, `signumer`, `sigout`
+- Use one bounded transient analysis with a finite positive stop time.
+
+You must design the stimulus yourself. Save traces as bare public signal names
+(for example `clk`, not suffixed or hierarchical forms such as `clk:V` or
+`XDUT.clk`). Do not redefine the DUT, drive DUT output nets, save
+hierarchical/private nodes, or use checker/gold/internal files.
 
 ## Public Parameter Contract
 

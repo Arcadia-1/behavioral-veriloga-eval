@@ -20,10 +20,19 @@ testbench must accept the correct DUT and expose all five behavioral faults.
     - position 6: `startup_ready` (output, electrical)
     - position 7: `slew_metric` (output, electrical)
 
-Stable evaluator binding:
+Stable public Spectre binding:
 
-- DUT sources use `./dut/{artifact_path}`.
-- Instantiate `rail_ramp_rate_startup_monitor` as `XDUT` with ordered public binding: clk=clk, vdd=vdd, vss=vss, en=en, rail_ok=rail_ok, ramp_ok=ramp_ok, startup_ready=startup_ready, slew_metric=slew_metric.
+The submitted `testbench.scs` must use the supplied DUT through this public binding:
+
+- Include path: `./dut/rail_ramp_rate_startup_monitor.va`
+- DUT instance: `XDUT (clk vdd vss en rail_ok ramp_ok startup_ready slew_metric) rail_ramp_rate_startup_monitor`
+- Required saved public traces: `clk`, `en`, `rail_ok`, `ramp_ok`, `slew_metric`, `startup_ready`, `vdd`, `vss`
+- Use one bounded transient analysis with a finite positive stop time.
+
+You must design the stimulus yourself. Save traces as bare public signal names
+(for example `clk`, not suffixed or hierarchical forms such as `clk:V` or
+`XDUT.clk`). Do not redefine the DUT, drive DUT output nets, save
+hierarchical/private nodes, or use checker/gold/internal files.
 
 ## Public Parameter Contract
 

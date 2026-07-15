@@ -28,10 +28,19 @@ testbench must accept the correct DUT and expose all five behavioral faults.
     - position 14: `pulse` (output, electrical)
     - position 15: `done` (output, electrical)
 
-Stable evaluator binding:
+Stable public Spectre binding:
 
-- DUT sources use `./dut/{artifact_path}`.
-- Instantiate `configurable_pulse_train` as `XDUT` with ordered public binding: clk=clk, start=start, period0=period0, period1=period1, period2=period2, period3=period3, width0=width0, width1=width1, width2=width2, width3=width3, count0=count0, count1=count1, count2=count2, count3=count3, pulse=pulse, done=done.
+The submitted `testbench.scs` must use the supplied DUT through this public binding:
+
+- Include path: `./dut/configurable_pulse_train.va`
+- DUT instance: `XDUT (clk start period0 period1 period2 period3 width0 width1 width2 width3 count0 count1 count2 count3 pulse done) configurable_pulse_train`
+- Required saved public traces: `clk`, `start`, `period0`, `period1`, `period2`, `period3`, `width0`, `width1`, `width2`, `width3`, `count0`, `count1`, `count2`, `count3`, `pulse`, `done`
+- Use one bounded transient analysis with a finite positive stop time.
+
+You must design the stimulus yourself. Save traces as bare public signal names
+(for example `clk`, not suffixed or hierarchical forms such as `clk:V` or
+`XDUT.clk`). Do not redefine the DUT, drive DUT output nets, save
+hierarchical/private nodes, or use checker/gold/internal files.
 
 ## Public Parameter Contract
 

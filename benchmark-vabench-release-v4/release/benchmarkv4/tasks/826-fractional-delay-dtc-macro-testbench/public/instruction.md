@@ -22,10 +22,19 @@ testbench must accept the correct DUT and expose all five behavioral faults.
     - position 8: `phase_metric` (inout, electrical)
     - position 9: `valid` (inout, electrical)
 
-Stable evaluator binding:
+Stable public Spectre binding:
 
-- DUT sources use `./dut/{artifact_path}`.
-- Instantiate `fractional_delay_dtc_macro` as `XDUT` with ordered public binding: clk_in=clk_in, rst=rst, enable=enable, frac_3=frac_3, frac_2=frac_2, frac_1=frac_1, frac_0=frac_0, clk_out=clk_out, phase_metric=phase_metric, valid=valid.
+The submitted `testbench.scs` must use the supplied DUT through this public binding:
+
+- Include path: `./dut/fractional_delay_dtc_macro.va`
+- DUT instance: `XDUT (clk_in rst enable frac_3 frac_2 frac_1 frac_0 clk_out phase_metric valid) fractional_delay_dtc_macro`
+- Required saved public traces: `clk_in`, `rst`, `enable`, `frac_3`, `frac_2`, `frac_1`, `frac_0`, `clk_out`, `phase_metric`, `valid`
+- Use one bounded transient analysis with a finite positive stop time.
+
+You must design the stimulus yourself. Save traces as bare public signal names
+(for example `clk`, not suffixed or hierarchical forms such as `clk:V` or
+`XDUT.clk`). Do not redefine the DUT, drive DUT output nets, save
+hierarchical/private nodes, or use checker/gold/internal files.
 
 ## Public Parameter Contract
 

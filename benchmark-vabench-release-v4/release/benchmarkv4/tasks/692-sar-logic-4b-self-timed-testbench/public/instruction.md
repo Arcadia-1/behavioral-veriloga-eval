@@ -29,10 +29,19 @@ testbench must accept the correct DUT and expose all five behavioral faults.
     - position 15: `dbotn2` (output, electrical)
     - position 16: `dbotn3` (output, electrical)
 
-Stable evaluator binding:
+Stable public Spectre binding:
 
-- DUT sources use `./dut/{artifact_path}`.
-- Instantiate `sar_logic_4b_self_timed` as `XDUT` with ordered public binding: vdd=vdd, gnd=gnd, clkc=clkc, rst=rst, dcmpp=dcmpp, dcmpn=dcmpn, cmpck=cmpck, dout1=dout1, dout2=dout2, dout3=dout3, dout4=dout4, dbotp1=dbotp1, dbotp2=dbotp2, dbotp3=dbotp3, dbotn1=dbotn1, dbotn2=dbotn2, dbotn3=dbotn3.
+The submitted `testbench.scs` must use the supplied DUT through this public binding:
+
+- Include path: `./dut/sar_logic_4b_self_timed.va`
+- DUT instance: `XDUT (vdd gnd clkc rst dcmpp dcmpn cmpck dout1 dout2 dout3 dout4 dbotp1 dbotp2 dbotp3 dbotn1 dbotn2 dbotn3) sar_logic_4b_self_timed`
+- Required saved public traces: `clkc`, `cmpck`, `dbotn1`, `dbotn2`, `dbotn3`, `dbotp1`, `dbotp2`, `dbotp3`, `dcmpn`, `dcmpp`, `dout1`, `dout2`, `dout3`, `dout4`, `rst`, `vdd`, `gnd`
+- Use one bounded transient analysis with a finite positive stop time.
+
+You must design the stimulus yourself. Save traces as bare public signal names
+(for example `clk`, not suffixed or hierarchical forms such as `clk:V` or
+`XDUT.clk`). Do not redefine the DUT, drive DUT output nets, save
+hierarchical/private nodes, or use checker/gold/internal files.
 
 ## Public Parameter Contract
 

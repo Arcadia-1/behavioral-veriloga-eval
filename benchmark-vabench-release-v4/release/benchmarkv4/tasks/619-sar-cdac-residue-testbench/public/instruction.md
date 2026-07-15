@@ -21,10 +21,19 @@ testbench must accept the correct DUT and expose all five behavioral faults.
     - position 7: `S1` (input, electrical)
     - position 8: `VRES` (output, electrical)
 
-Stable evaluator binding:
+Stable public Spectre binding:
 
-- DUT sources use `./dut/{artifact_path}`.
-- Instantiate `sar_cdac_residue` as `XDUT` with ordered public binding: VIN=vin, CLK=clk, S6=s6, S5=s5, S4=s4, S3=s3, S2=s2, S1=s1, VRES=vres.
+The submitted `testbench.scs` must use the supplied DUT through this public binding:
+
+- Include path: `./dut/sar_cdac_residue.va`
+- DUT instance: `XDUT (vin clk s6 s5 s4 s3 s2 s1 vres) sar_cdac_residue`
+- Required saved public traces: `vin`, `clk`, `s6`, `s5`, `s4`, `s3`, `s2`, `s1`, `vres`
+- Use one bounded transient analysis with a finite positive stop time.
+
+You must design the stimulus yourself. Save traces as bare public signal names
+(for example `clk`, not suffixed or hierarchical forms such as `clk:V` or
+`XDUT.clk`). Do not redefine the DUT, drive DUT output nets, save
+hierarchical/private nodes, or use checker/gold/internal files.
 
 ## Public Parameter Contract
 

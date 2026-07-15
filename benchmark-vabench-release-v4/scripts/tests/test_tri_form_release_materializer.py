@@ -184,7 +184,7 @@ def test_binding_renderer_exposes_declared_instance_parameter_overrides() -> Non
     spec = sample_spec()
     spec["testbench_binding"]["instances"][0]["parameter_overrides"] = {"ctrl": 42}
     text = render_binding(spec)
-    assert "parameter overrides: `ctrl=42`" in text
+    assert "- DUT instance: `XDUT (vin) dut ctrl=42`" in text
 
 
 def test_seed_policy_prefers_temporal_semantic_fault_over_force_zero() -> None:

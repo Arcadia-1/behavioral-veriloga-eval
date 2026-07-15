@@ -15,10 +15,19 @@ testbench must accept the correct DUT and expose all five behavioral faults.
     - position 1: `vin_rf` (input, electrical)
     - position 2: `vif` (output, electrical)
 
-Stable evaluator binding:
+Stable public Spectre binding:
 
-- DUT sources use `./dut/{artifact_path}`.
-- Instantiate `phase_detector_chopper` as `XDUT` with ordered public binding: vlocal_osc=vlocal_osc, vin_rf=vin_rf, vif=vif.
+The submitted `testbench.scs` must use the supplied DUT through this public binding:
+
+- Include path: `./dut/phase_detector_chopper.va`
+- DUT instance: `XDUT (vlocal_osc vin_rf vif) phase_detector_chopper`
+- Required saved public traces: `vif`, `vin_rf`, `vlocal_osc`
+- Use one bounded transient analysis with a finite positive stop time.
+
+You must design the stimulus yourself. Save traces as bare public signal names
+(for example `clk`, not suffixed or hierarchical forms such as `clk:V` or
+`XDUT.clk`). Do not redefine the DUT, drive DUT output nets, save
+hierarchical/private nodes, or use checker/gold/internal files.
 
 ## Public Parameter Contract
 

@@ -49,10 +49,19 @@ testbench must accept the correct DUT and expose all five behavioral faults.
     - position 3: `vref` (input, electrical)
     - position 4: `soft_ref` (output, electrical)
 
-Stable evaluator binding:
+Stable public Spectre binding:
 
-- DUT sources use `./dut/{artifact_path}`.
-- Instantiate `buck_ctrl_top` as `XDUT` with ordered public binding: vfb=vfb, vref=vref, clk=clk, rst=rst, enable=enable, pwm=pwm, duty_metric=duty_metric, soft_ref=soft_ref, pgood=pgood.
+The submitted `testbench.scs` must use the supplied DUT through this public binding:
+
+- Include paths: `./dut/buck_ctrl_top.va`, `./dut/error_comparator.va`, `./dut/power_good.va`, `./dut/pwm_modulator.va`, `./dut/soft_start.va`
+- DUT instance: `XDUT (vfb vref clk rst enable pwm duty_metric soft_ref pgood) buck_ctrl_top`
+- Required saved public traces: `vfb`, `vref`, `clk`, `rst`, `enable`, `pwm`, `duty_metric`, `soft_ref`, `pgood`
+- Use one bounded transient analysis with a finite positive stop time.
+
+You must design the stimulus yourself. Save traces as bare public signal names
+(for example `clk`, not suffixed or hierarchical forms such as `clk:V` or
+`XDUT.clk`). Do not redefine the DUT, drive DUT output nets, save
+hierarchical/private nodes, or use checker/gold/internal files.
 
 ## Public Parameter Contract
 

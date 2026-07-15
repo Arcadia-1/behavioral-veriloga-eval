@@ -16,10 +16,19 @@ testbench must accept the correct DUT and expose all five behavioral faults.
     - position 2: `clk_out` (output, electrical)
     - position 3: `phase_out` (output, electrical)
 
-Stable evaluator binding:
+Stable public Spectre binding:
 
-- DUT sources use `./dut/{artifact_path}`.
-- Instantiate `phase_accumulator_timer_wrap_ref` as `XDUT` with ordered public binding: VDD=VDD, VSS=VSS, clk_out=clk_out, phase_out=phase_out.
+The submitted `testbench.scs` must use the supplied DUT through this public binding:
+
+- Include path: `./dut/phase_accumulator_timer_wrap_ref.va`
+- DUT instance: `XDUT (VDD VSS clk_out phase_out) phase_accumulator_timer_wrap_ref`
+- Required saved public traces: `VDD`, `VSS`, `clk_out`, `phase_out`
+- Use one bounded transient analysis with a finite positive stop time.
+
+You must design the stimulus yourself. Save traces as bare public signal names
+(for example `clk`, not suffixed or hierarchical forms such as `clk:V` or
+`XDUT.clk`). Do not redefine the DUT, drive DUT output nets, save
+hierarchical/private nodes, or use checker/gold/internal files.
 
 ## Public Parameter Contract
 

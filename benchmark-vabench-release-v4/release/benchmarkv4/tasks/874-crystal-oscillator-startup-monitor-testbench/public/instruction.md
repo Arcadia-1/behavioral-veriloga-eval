@@ -19,10 +19,19 @@ testbench must accept the correct DUT and expose all five behavioral faults.
     - position 5: `valid` (inout, electrical)
     - position 6: `startup_done` (inout, electrical)
 
-Stable evaluator binding:
+Stable public Spectre binding:
 
-- DUT sources use `./dut/{artifact_path}`.
-- Instantiate `crystal_oscillator_startup_monitor` as `XDUT` with ordered public binding: enable=enable, rst=rst, clk_ref=clk_ref, osc_out=osc_out, amp_metric=amp_metric, valid=valid, startup_done=startup_done.
+The submitted `testbench.scs` must use the supplied DUT through this public binding:
+
+- Include path: `./dut/crystal_oscillator_startup_monitor.va`
+- DUT instance: `XDUT (enable rst clk_ref osc_out amp_metric valid startup_done) crystal_oscillator_startup_monitor`
+- Required saved public traces: `enable`, `rst`, `clk_ref`, `osc_out`, `amp_metric`, `valid`, `startup_done`
+- Use one bounded transient analysis with a finite positive stop time.
+
+You must design the stimulus yourself. Save traces as bare public signal names
+(for example `clk`, not suffixed or hierarchical forms such as `clk:V` or
+`XDUT.clk`). Do not redefine the DUT, drive DUT output nets, save
+hierarchical/private nodes, or use checker/gold/internal files.
 
 ## Public Parameter Contract
 

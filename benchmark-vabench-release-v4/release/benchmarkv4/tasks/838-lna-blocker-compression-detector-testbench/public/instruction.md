@@ -19,10 +19,19 @@ testbench must accept the correct DUT and expose all five behavioral faults.
     - position 5: `compression_metric` (inout, electrical)
     - position 6: `compressed` (inout, electrical)
 
-Stable evaluator binding:
+Stable public Spectre binding:
 
-- DUT sources use `./dut/{artifact_path}`.
-- Instantiate `lna_blocker_compression_detector` as `XDUT` with ordered public binding: vin=vin, blocker=blocker, enable=enable, rst=rst, vout=vout, compression_metric=compression_metric, compressed=compressed.
+The submitted `testbench.scs` must use the supplied DUT through this public binding:
+
+- Include path: `./dut/lna_blocker_compression_detector.va`
+- DUT instance: `XDUT (vin blocker enable rst vout compression_metric compressed) lna_blocker_compression_detector`
+- Required saved public traces: `vin`, `blocker`, `enable`, `rst`, `vout`, `compression_metric`, `compressed`
+- Use one bounded transient analysis with a finite positive stop time.
+
+You must design the stimulus yourself. Save traces as bare public signal names
+(for example `clk`, not suffixed or hierarchical forms such as `clk:V` or
+`XDUT.clk`). Do not redefine the DUT, drive DUT output nets, save
+hierarchical/private nodes, or use checker/gold/internal files.
 
 ## Public Parameter Contract
 

@@ -19,10 +19,19 @@ testbench must accept the correct DUT and expose all five behavioral faults.
     - position 5: `vout` (output, electrical)
     - position 6: `valid` (output, electrical)
 
-Stable evaluator binding:
+Stable public Spectre binding:
 
-- DUT sources use `./dut/{artifact_path}`.
-- Instantiate `level_shifter_enable_rail_tracking` as `XDUT` with ordered public binding: vin=vin, enable=enable, rst=rst, vddl=vddl, vddh=vddh, vout=vout, valid=valid.
+The submitted `testbench.scs` must use the supplied DUT through this public binding:
+
+- Include path: `./dut/level_shifter_enable_rail_tracking.va`
+- DUT instance: `XDUT (vin enable rst vddl vddh vout valid) level_shifter_enable_rail_tracking`
+- Required saved public traces: `vin`, `enable`, `rst`, `vddl`, `vddh`, `vout`, `valid`
+- Use one bounded transient analysis with a finite positive stop time.
+
+You must design the stimulus yourself. Save traces as bare public signal names
+(for example `clk`, not suffixed or hierarchical forms such as `clk:V` or
+`XDUT.clk`). Do not redefine the DUT, drive DUT output nets, save
+hierarchical/private nodes, or use checker/gold/internal files.
 
 ## Public Parameter Contract
 

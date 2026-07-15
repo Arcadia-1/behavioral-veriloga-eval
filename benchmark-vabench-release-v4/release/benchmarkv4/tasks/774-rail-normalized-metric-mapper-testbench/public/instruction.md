@@ -18,10 +18,19 @@ testbench must accept the correct DUT and expose all five behavioral faults.
     - position 4: `norm` (output, electrical)
     - position 5: `valid` (output, electrical)
 
-Stable evaluator binding:
+Stable public Spectre binding:
 
-- DUT sources use `./dut/{artifact_path}`.
-- Instantiate `rail_normalized_metric_mapper` as `XDUT` with ordered public binding: meas=meas, vdd=vdd, vss=vss, en=en, norm=norm, valid=valid.
+The submitted `testbench.scs` must use the supplied DUT through this public binding:
+
+- Include path: `./dut/rail_normalized_metric_mapper.va`
+- DUT instance: `XDUT (meas vdd vss en norm valid) rail_normalized_metric_mapper`
+- Required saved public traces: `en`, `meas`, `norm`, `valid`, `vdd`, `vss`
+- Use one bounded transient analysis with a finite positive stop time.
+
+You must design the stimulus yourself. Save traces as bare public signal names
+(for example `clk`, not suffixed or hierarchical forms such as `clk:V` or
+`XDUT.clk`). Do not redefine the DUT, drive DUT output nets, save
+hierarchical/private nodes, or use checker/gold/internal files.
 
 ## Public Parameter Contract
 

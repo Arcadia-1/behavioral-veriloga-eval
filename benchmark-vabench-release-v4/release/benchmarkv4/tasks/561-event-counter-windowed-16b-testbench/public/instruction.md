@@ -31,10 +31,19 @@ testbench must accept the correct DUT and expose all five behavioral faults.
     - position 17: `count14` (output, electrical)
     - position 18: `count15` (output, electrical)
 
-Stable evaluator binding:
+Stable public Spectre binding:
 
-- DUT sources use `./dut/{artifact_path}`.
-- Instantiate `event_counter_windowed_16b` as `XDUT` with ordered public binding: gate=gate, event_in=event, done=done, count0=count0, count1=count1, count2=count2, count3=count3, count4=count4, count5=count5, count6=count6, count7=count7, count8=count8, count9=count9, count10=count10, count11=count11, count12=count12, count13=count13, count14=count14, count15=count15.
+The submitted `testbench.scs` must use the supplied DUT through this public binding:
+
+- Include path: `./dut/event_counter_windowed_16b.va`
+- DUT instance: `XDUT (gate event done count0 count1 count2 count3 count4 count5 count6 count7 count8 count9 count10 count11 count12 count13 count14 count15) event_counter_windowed_16b`
+- Required saved public traces: `gate`, `event`, `done`, `count0`, `count1`, `count2`, `count3`, `count4`, `count5`, `count6`, `count7`, `count8`, `count9`, `count10`, `count11`, `count12`, `count13`, `count14`, `count15`
+- Use one bounded transient analysis with a finite positive stop time.
+
+You must design the stimulus yourself. Save traces as bare public signal names
+(for example `clk`, not suffixed or hierarchical forms such as `clk:V` or
+`XDUT.clk`). Do not redefine the DUT, drive DUT output nets, save
+hierarchical/private nodes, or use checker/gold/internal files.
 
 ## Public Parameter Contract
 

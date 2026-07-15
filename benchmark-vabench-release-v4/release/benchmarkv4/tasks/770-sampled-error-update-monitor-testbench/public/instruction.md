@@ -20,10 +20,19 @@ testbench must accept the correct DUT and expose all five behavioral faults.
     - position 6: `err_metric` (output, electrical)
     - position 7: `progress` (output, electrical)
 
-Stable evaluator binding:
+Stable public Spectre binding:
 
-- DUT sources use `./dut/{artifact_path}`.
-- Instantiate `sampled_error_update_monitor` as `XDUT` with ordered public binding: clk=clk, rst=rst, sample=sample, target=target, coef=coef, out=out, err_metric=err_metric, progress=progress.
+The submitted `testbench.scs` must use the supplied DUT through this public binding:
+
+- Include path: `./dut/sampled_error_update_monitor.va`
+- DUT instance: `XDUT (clk rst sample target coef out err_metric progress) sampled_error_update_monitor`
+- Required saved public traces: `clk`, `coef`, `err_metric`, `out`, `progress`, `rst`, `sample`, `target`
+- Use one bounded transient analysis with a finite positive stop time.
+
+You must design the stimulus yourself. Save traces as bare public signal names
+(for example `clk`, not suffixed or hierarchical forms such as `clk:V` or
+`XDUT.clk`). Do not redefine the DUT, drive DUT output nets, save
+hierarchical/private nodes, or use checker/gold/internal files.
 
 ## Public Parameter Contract
 

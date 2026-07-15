@@ -37,10 +37,19 @@ testbench must accept the correct DUT and expose all five behavioral faults.
     - position 3: `main_out` (inout, electrical)
     - position 4: `adapt_metric` (inout, electrical)
 
-Stable evaluator binding:
+Stable public Spectre binding:
 
-- DUT sources use `./dut/{artifact_path}`.
-- Instantiate `ffe_tap_adaptation_monitor_top` as `XDUT` with ordered public binding: err_in=err_in, clk=clk, rst=rst, enable=enable, tap_pre=tap_pre, tap_post=tap_post, main_out=main_out, adapt_metric=adapt_metric, done=done.
+The submitted `testbench.scs` must use the supplied DUT through this public binding:
+
+- Include paths: `./dut/ffe_tap_adaptation_monitor_top.va`, `./dut/tap_update_controller.va`, `./dut/cursor_metric_core.va`
+- DUT instance: `XDUT (err_in clk rst enable tap_pre tap_post main_out adapt_metric done) ffe_tap_adaptation_monitor_top`
+- Required saved public traces: `err_in`, `clk`, `rst`, `enable`, `tap_pre`, `tap_post`, `main_out`, `adapt_metric`, `done`
+- Use one bounded transient analysis with a finite positive stop time.
+
+You must design the stimulus yourself. Save traces as bare public signal names
+(for example `clk`, not suffixed or hierarchical forms such as `clk:V` or
+`XDUT.clk`). Do not redefine the DUT, drive DUT output nets, save
+hierarchical/private nodes, or use checker/gold/internal files.
 
 ## Public Parameter Contract
 

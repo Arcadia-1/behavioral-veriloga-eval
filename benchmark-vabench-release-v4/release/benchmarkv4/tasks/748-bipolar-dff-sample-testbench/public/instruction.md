@@ -16,10 +16,19 @@ testbench must accept the correct DUT and expose all five behavioral faults.
     - position 2: `vout_q` (output, electrical)
     - position 3: `vout_qbar` (output, electrical)
 
-Stable evaluator binding:
+Stable public Spectre binding:
 
-- DUT sources use `./dut/{artifact_path}`.
-- Instantiate `bipolar_dff_sample` as `XDUT` with ordered public binding: vin_d=vin_d, vclk=vclk, vout_q=vout_q, vout_qbar=vout_qbar.
+The submitted `testbench.scs` must use the supplied DUT through this public binding:
+
+- Include path: `./dut/bipolar_dff_sample.va`
+- DUT instance: `XDUT (vin_d vclk vout_q vout_qbar) bipolar_dff_sample`
+- Required saved public traces: `vclk`, `vin_d`, `vout_q`, `vout_qbar`
+- Use one bounded transient analysis with a finite positive stop time.
+
+You must design the stimulus yourself. Save traces as bare public signal names
+(for example `clk`, not suffixed or hierarchical forms such as `clk:V` or
+`XDUT.clk`). Do not redefine the DUT, drive DUT output nets, save
+hierarchical/private nodes, or use checker/gold/internal files.
 
 ## Public Parameter Contract
 

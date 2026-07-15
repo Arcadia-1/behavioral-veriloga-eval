@@ -16,10 +16,19 @@ testbench must accept the correct DUT and expose all five behavioral faults.
     - position 2: `clk_align` (input, electrical)
     - position 3: `dout` (output, electrical)
 
-Stable evaluator binding:
+Stable public Spectre binding:
 
-- DUT sources use `./dut/{artifact_path}`.
-- Instantiate `pipe_2lane_edge_align` as `XDUT` with ordered public binding: din1=din1, din2=din2, clk_align=clk_align, dout=dout.
+The submitted `testbench.scs` must use the supplied DUT through this public binding:
+
+- Include path: `./dut/pipe_2lane_edge_align.va`
+- DUT instance: `XDUT (din1 din2 clk_align dout) pipe_2lane_edge_align`
+- Required saved public traces: `din1`, `din2`, `clk_align`, `dout`
+- Use one bounded transient analysis with a finite positive stop time.
+
+You must design the stimulus yourself. Save traces as bare public signal names
+(for example `clk`, not suffixed or hierarchical forms such as `clk:V` or
+`XDUT.clk`). Do not redefine the DUT, drive DUT output nets, save
+hierarchical/private nodes, or use checker/gold/internal files.
 
 ## Public Parameter Contract
 

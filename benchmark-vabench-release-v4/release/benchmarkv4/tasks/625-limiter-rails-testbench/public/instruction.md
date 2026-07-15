@@ -18,10 +18,19 @@ testbench must accept the correct DUT and expose all five behavioral faults.
     - position 4: `vmin` (input, electrical)
     - position 5: `vout` (output, electrical)
 
-Stable evaluator binding:
+Stable public Spectre binding:
 
-- DUT sources use `./dut/{artifact_path}`.
-- Instantiate `limiter_rails` as `XDUT` with ordered public binding: vdd=vdd, vss=vss, vin=vin, vmax=vmax, vmin=vmin, vout=vout.
+The submitted `testbench.scs` must use the supplied DUT through this public binding:
+
+- Include path: `./dut/limiter_rails.va`
+- DUT instance: `XDUT (vdd vss vin vmax vmin vout) limiter_rails`
+- Required saved public traces: `vdd`, `vin`, `vmax`, `vmin`, `vout`, `vss`
+- Use one bounded transient analysis with a finite positive stop time.
+
+You must design the stimulus yourself. Save traces as bare public signal names
+(for example `clk`, not suffixed or hierarchical forms such as `clk:V` or
+`XDUT.clk`). Do not redefine the DUT, drive DUT output nets, save
+hierarchical/private nodes, or use checker/gold/internal files.
 
 ## Public Parameter Contract
 

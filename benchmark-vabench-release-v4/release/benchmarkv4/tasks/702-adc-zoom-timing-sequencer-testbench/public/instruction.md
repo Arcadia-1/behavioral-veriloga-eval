@@ -21,10 +21,19 @@ testbench must accept the correct DUT and expose all five behavioral faults.
     - position 7: `clk_zoom` (output, electrical)
     - position 8: `rst_zoom` (output, electrical)
 
-Stable evaluator binding:
+Stable public Spectre binding:
 
-- DUT sources use `./dut/{artifact_path}`.
-- Instantiate `adc_zoom_timing_sequencer` as `XDUT` with ordered public binding: rst=rst, s=s, sar=sar, res=res, intg=intg, clk_sar=clk_sar, zoom=zoom, clk_zoom=clk_zoom, rst_zoom=rst_zoom.
+The submitted `testbench.scs` must use the supplied DUT through this public binding:
+
+- Include path: `./dut/adc_zoom_timing_sequencer.va`
+- DUT instance: `XDUT (rst s sar res intg clk_sar zoom clk_zoom rst_zoom) adc_zoom_timing_sequencer`
+- Required saved public traces: `clk_sar`, `clk_zoom`, `intg`, `res`, `rst`, `rst_zoom`, `s`, `sar`, `zoom`
+- Use one bounded transient analysis with a finite positive stop time.
+
+You must design the stimulus yourself. Save traces as bare public signal names
+(for example `clk`, not suffixed or hierarchical forms such as `clk:V` or
+`XDUT.clk`). Do not redefine the DUT, drive DUT output nets, save
+hierarchical/private nodes, or use checker/gold/internal files.
 
 ## Public Parameter Contract
 

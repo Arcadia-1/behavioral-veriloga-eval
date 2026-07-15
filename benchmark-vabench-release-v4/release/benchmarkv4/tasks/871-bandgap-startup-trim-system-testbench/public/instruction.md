@@ -49,10 +49,19 @@ testbench must accept the correct DUT and expose all five behavioral faults.
     - position 10: `ready` (inout, electrical)
     - position 11: `error_metric` (inout, electrical)
 
-Stable evaluator binding:
+Stable public Spectre binding:
 
-- DUT sources use `./dut/{artifact_path}`.
-- Instantiate `bandgap_trim_top` as `XDUT` with ordered public binding: vdd_sense=vdd_sense, clk=clk, rst=rst, trim_req=trim_req, temp_proxy=temp_proxy, vref=vref, trim_3=trim_3, trim_2=trim_2, trim_1=trim_1, trim_0=trim_0, ready=ready, error_metric=error_metric.
+The submitted `testbench.scs` must use the supplied DUT through this public binding:
+
+- Include paths: `./dut/bandgap_trim_top.va`, `./dut/startup_detector.va`, `./dut/ptat_ctat_core.va`, `./dut/trim_controller.va`
+- DUT instance: `XDUT (vdd_sense clk rst trim_req temp_proxy vref trim_3 trim_2 trim_1 trim_0 ready error_metric) bandgap_trim_top`
+- Required saved public traces: `vdd_sense`, `clk`, `rst`, `trim_req`, `temp_proxy`, `vref`, `trim_3`, `trim_2`, `trim_1`, `trim_0`, `ready`, `error_metric`
+- Use one bounded transient analysis with a finite positive stop time.
+
+You must design the stimulus yourself. Save traces as bare public signal names
+(for example `clk`, not suffixed or hierarchical forms such as `clk:V` or
+`XDUT.clk`). Do not redefine the DUT, drive DUT output nets, save
+hierarchical/private nodes, or use checker/gold/internal files.
 
 ## Public Parameter Contract
 

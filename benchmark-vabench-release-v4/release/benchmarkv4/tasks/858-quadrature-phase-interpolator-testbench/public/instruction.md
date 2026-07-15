@@ -24,10 +24,19 @@ testbench must accept the correct DUT and expose all five behavioral faults.
     - position 10: `quadrant_0` (inout, electrical)
     - position 11: `phase_metric` (inout, electrical)
 
-Stable evaluator binding:
+Stable public Spectre binding:
 
-- DUT sources use `./dut/{artifact_path}`.
-- Instantiate `quadrature_phase_interpolator` as `XDUT` with ordered public binding: clk_i=clk_i, clk_q=clk_q, rst=rst, code_4=code_4, code_3=code_3, code_2=code_2, code_1=code_1, code_0=code_0, clk_out=clk_out, quadrant_1=quadrant_1, quadrant_0=quadrant_0, phase_metric=phase_metric.
+The submitted `testbench.scs` must use the supplied DUT through this public binding:
+
+- Include path: `./dut/quadrature_phase_interpolator.va`
+- DUT instance: `XDUT (clk_i clk_q rst code_4 code_3 code_2 code_1 code_0 clk_out quadrant_1 quadrant_0 phase_metric) quadrature_phase_interpolator`
+- Required saved public traces: `clk_i`, `clk_q`, `rst`, `code_4`, `code_0`, `clk_out`, `quadrant_1`, `quadrant_0`, `phase_metric`, `code_3`, `code_2`, `code_1`
+- Use one bounded transient analysis with a finite positive stop time.
+
+You must design the stimulus yourself. Save traces as bare public signal names
+(for example `clk`, not suffixed or hierarchical forms such as `clk:V` or
+`XDUT.clk`). Do not redefine the DUT, drive DUT output nets, save
+hierarchical/private nodes, or use checker/gold/internal files.
 
 ## Public Parameter Contract
 

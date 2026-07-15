@@ -40,10 +40,19 @@ testbench must accept the correct DUT and expose all five behavioral faults.
     - position 7: `phase_metric` (output, electrical)
     - position 8: `valid` (output, electrical)
 
-Stable evaluator binding:
+Stable public Spectre binding:
 
-- DUT sources use `./dut/{artifact_path}`.
-- Instantiate `switched_cap_integrator_phase_pair_top` as `XDUT` with ordered public binding: vin=vin, phi1=phi1, phi2=phi2, rst=rst, enable=enable, vout=vout, phase_metric=phase_metric, valid=valid.
+The submitted `testbench.scs` must use the supplied DUT through this public binding:
+
+- Include paths: `./dut/switched_cap_integrator_phase_pair_top.va`, `./dut/sample_phase_cell.va`, `./dut/integrator_state_cell.va`
+- DUT instance: `XDUT (vin phi1 phi2 rst enable vout phase_metric valid) switched_cap_integrator_phase_pair_top`
+- Required saved public traces: `vin`, `phi1`, `phi2`, `rst`, `enable`, `vout`, `phase_metric`, `valid`
+- Use one bounded transient analysis with a finite positive stop time.
+
+You must design the stimulus yourself. Save traces as bare public signal names
+(for example `clk`, not suffixed or hierarchical forms such as `clk:V` or
+`XDUT.clk`). Do not redefine the DUT, drive DUT output nets, save
+hierarchical/private nodes, or use checker/gold/internal files.
 
 ## Public Parameter Contract
 

@@ -79,10 +79,19 @@ testbench must accept the correct DUT and expose all five behavioral faults.
     - position 65: `q[1]` (output, electrical)
     - position 66: `q[0]` (output, electrical)
 
-Stable evaluator binding:
+Stable public Spectre binding:
 
-- DUT sources use `./dut/{artifact_path}`.
-- Instantiate `config_shift_reg_64b` as `XDUT` with ordered public binding: clk=clk, rst_n=rst_n, serial_in=serial_in, q[63]=q63, q[62]=q62, q[61]=q61, q[60]=q60, q[59]=q59, q[58]=q58, q[57]=q57, q[56]=q56, q[55]=q55, q[54]=q54, q[53]=q53, q[52]=q52, q[51]=q51, q[50]=q50, q[49]=q49, q[48]=q48, q[47]=q47, q[46]=q46, q[45]=q45, q[44]=q44, q[43]=q43, q[42]=q42, q[41]=q41, q[40]=q40, q[39]=q39, q[38]=q38, q[37]=q37, q[36]=q36, q[35]=q35, q[34]=q34, q[33]=q33, q[32]=q32, q[31]=q31, q[30]=q30, q[29]=q29, q[28]=q28, q[27]=q27, q[26]=q26, q[25]=q25, q[24]=q24, q[23]=q23, q[22]=q22, q[21]=q21, q[20]=q20, q[19]=q19, q[18]=q18, q[17]=q17, q[16]=q16, q[15]=q15, q[14]=q14, q[13]=q13, q[12]=q12, q[11]=q11, q[10]=q10, q[9]=q9, q[8]=q8, q[7]=q7, q[6]=q6, q[5]=q5, q[4]=q4, q[3]=q3, q[2]=q2, q[1]=q1, q[0]=q0.
+The submitted `testbench.scs` must use the supplied DUT through this public binding:
+
+- Include path: `./dut/config_shift_reg_64b.va`
+- DUT instance: `XDUT (clk rst_n serial_in q63 q62 q61 q60 q59 q58 q57 q56 q55 q54 q53 q52 q51 q50 q49 q48 q47 q46 q45 q44 q43 q42 q41 q40 q39 q38 q37 q36 q35 q34 q33 q32 q31 q30 q29 q28 q27 q26 q25 q24 q23 q22 q21 q20 q19 q18 q17 q16 q15 q14 q13 q12 q11 q10 q9 q8 q7 q6 q5 q4 q3 q2 q1 q0) config_shift_reg_64b`
+- Required saved public traces: `clk`, `rst_n`, `serial_in`, `q0`, `q1`, `q2`, `q3`, `q4`, `q5`, `q6`, `q7`, `q8`, `q9`, `q10`, `q11`, `q12`, `q13`, `q14`, `q15`, `q16`, `q17`, `q18`, `q19`, `q20`, `q21`, `q22`, `q23`, `q24`, `q25`, `q26`, `q27`, `q28`, `q29`, `q30`, `q31`, `q32`, `q33`, `q34`, `q35`, `q36`, `q37`, `q38`, `q39`, `q40`, `q41`, `q42`, `q43`, `q44`, `q45`, `q46`, `q47`, `q48`, `q49`, `q50`, `q51`, `q52`, `q53`, `q54`, `q55`, `q56`, `q57`, `q58`, `q59`, `q60`, `q61`, `q62`, `q63`
+- Use one bounded transient analysis with a finite positive stop time.
+
+You must design the stimulus yourself. Save traces as bare public signal names
+(for example `clk`, not suffixed or hierarchical forms such as `clk:V` or
+`XDUT.clk`). Do not redefine the DUT, drive DUT output nets, save
+hierarchical/private nodes, or use checker/gold/internal files.
 
 ## Public Parameter Contract
 

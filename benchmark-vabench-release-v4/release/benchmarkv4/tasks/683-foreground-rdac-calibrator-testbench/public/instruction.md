@@ -27,10 +27,19 @@ testbench must accept the correct DUT and expose all five behavioral faults.
     - position 13: `en` (output, electrical)
     - position 14: `enb` (output, electrical)
 
-Stable evaluator binding:
+Stable public Spectre binding:
 
-- DUT sources use `./dut/{artifact_path}`.
-- Instantiate `foreground_rdac_calibrator` as `XDUT` with ordered public binding: ck=ck, d=d, vrefp=vrefp, vrefn=vrefn, dc0=dc0, dc1=dc1, dc2=dc2, dc3=dc3, dc4=dc4, dc5=dc5, dc6=dc6, cvinp=cvinp, cvinn=cvinn, en=en, enb=enb.
+The submitted `testbench.scs` must use the supplied DUT through this public binding:
+
+- Include path: `./dut/foreground_rdac_calibrator.va`
+- DUT instance: `XDUT (ck d vrefp vrefn dc0 dc1 dc2 dc3 dc4 dc5 dc6 cvinp cvinn en enb) foreground_rdac_calibrator`
+- Required saved public traces: `ck`, `cvinn`, `cvinp`, `d`, `dc0`, `dc1`, `dc2`, `dc3`, `dc4`, `dc5`, `dc6`, `en`, `enb`, `vrefn`, `vrefp`
+- Use one bounded transient analysis with a finite positive stop time.
+
+You must design the stimulus yourself. Save traces as bare public signal names
+(for example `clk`, not suffixed or hierarchical forms such as `clk:V` or
+`XDUT.clk`). Do not redefine the DUT, drive DUT output nets, save
+hierarchical/private nodes, or use checker/gold/internal files.
 
 ## Public Parameter Contract
 

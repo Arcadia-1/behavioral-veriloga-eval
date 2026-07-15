@@ -15,10 +15,19 @@ testbench must accept the correct DUT and expose all five behavioral faults.
     - position 1: `en` (input, electrical)
     - position 2: `pulse` (output, electrical)
 
-Stable evaluator binding:
+Stable public Spectre binding:
 
-- DUT sources use `./dut/{artifact_path}`.
-- Instantiate `enable_gated_clock_pulse` as `XDUT` with ordered public binding: clk=clk, en=en, pulse=pulse.
+The submitted `testbench.scs` must use the supplied DUT through this public binding:
+
+- Include path: `./dut/enable_gated_clock_pulse.va`
+- DUT instance: `XDUT (clk en pulse) enable_gated_clock_pulse`
+- Required saved public traces: `clk`, `en`, `pulse`
+- Use one bounded transient analysis with a finite positive stop time.
+
+You must design the stimulus yourself. Save traces as bare public signal names
+(for example `clk`, not suffixed or hierarchical forms such as `clk:V` or
+`XDUT.clk`). Do not redefine the DUT, drive DUT output nets, save
+hierarchical/private nodes, or use checker/gold/internal files.
 
 ## Public Parameter Contract
 

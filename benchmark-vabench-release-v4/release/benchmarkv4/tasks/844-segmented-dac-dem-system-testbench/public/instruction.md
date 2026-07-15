@@ -77,10 +77,19 @@ testbench must accept the correct DUT and expose all five behavioral faults.
     - position 7: `fine_0` (input, electrical)
     - position 8: `vout` (output, electrical)
 
-Stable evaluator binding:
+Stable public Spectre binding:
 
-- DUT sources use `./dut/{artifact_path}`.
-- Instantiate `segmented_dac_dem_top` as `XDUT` with ordered public binding: clk=clk, rst=rst, code_5=code_5, code_4=code_4, code_3=code_3, code_2=code_2, code_1=code_1, code_0=code_0, vout=vout, sel_7=sel_7, sel_6=sel_6, sel_5=sel_5, sel_4=sel_4, sel_3=sel_3, sel_2=sel_2, sel_1=sel_1, sel_0=sel_0, ptr_2=ptr_2, ptr_1=ptr_1, ptr_0=ptr_0.
+The submitted `testbench.scs` must use the supplied DUT through this public binding:
+
+- Include paths: `./dut/segmented_dac_dem_top.va`, `./dut/thermometer_decoder.va`, `./dut/binary_decoder.va`, `./dut/dwa_rotator.va`, `./dut/dac_driver.va`
+- DUT instance: `XDUT (clk rst code_5 code_4 code_3 code_2 code_1 code_0 vout sel_7 sel_6 sel_5 sel_4 sel_3 sel_2 sel_1 sel_0 ptr_2 ptr_1 ptr_0) segmented_dac_dem_top`
+- Required saved public traces: `clk`, `rst`, `code_5`, `code_4`, `code_3`, `code_2`, `code_1`, `code_0`, `vout`, `sel_7`, `sel_6`, `sel_5`, `sel_4`, `sel_3`, `sel_2`, `sel_1`, `sel_0`, `ptr_2`, `ptr_1`, `ptr_0`
+- Use one bounded transient analysis with a finite positive stop time.
+
+You must design the stimulus yourself. Save traces as bare public signal names
+(for example `clk`, not suffixed or hierarchical forms such as `clk:V` or
+`XDUT.clk`). Do not redefine the DUT, drive DUT output nets, save
+hierarchical/private nodes, or use checker/gold/internal files.
 
 ## Public Parameter Contract
 

@@ -22,10 +22,19 @@ testbench must accept the correct DUT and expose all five behavioral faults.
     - position 8: `overshoot_metric` (inout, electrical)
     - position 9: `settled` (inout, electrical)
 
-Stable evaluator binding:
+Stable public Spectre binding:
 
-- DUT sources use `./dut/{artifact_path}`.
-- Instantiate `vga_step_response_classifier` as `XDUT` with ordered public binding: vin=vin, clk=clk, rst=rst, enable=enable, gain_2=gain_2, gain_1=gain_1, gain_0=gain_0, vout=vout, overshoot_metric=overshoot_metric, settled=settled.
+The submitted `testbench.scs` must use the supplied DUT through this public binding:
+
+- Include path: `./dut/vga_step_response_classifier.va`
+- DUT instance: `XDUT (vin clk rst enable gain_2 gain_1 gain_0 vout overshoot_metric settled) vga_step_response_classifier`
+- Required saved public traces: `vin`, `clk`, `rst`, `enable`, `gain_2`, `gain_1`, `gain_0`, `vout`, `overshoot_metric`, `settled`
+- Use one bounded transient analysis with a finite positive stop time.
+
+You must design the stimulus yourself. Save traces as bare public signal names
+(for example `clk`, not suffixed or hierarchical forms such as `clk:V` or
+`XDUT.clk`). Do not redefine the DUT, drive DUT output nets, save
+hierarchical/private nodes, or use checker/gold/internal files.
 
 ## Public Parameter Contract
 

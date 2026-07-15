@@ -20,10 +20,19 @@ testbench must accept the correct DUT and expose all five behavioral faults.
     - position 6: `hyst_width` (output, electrical)
     - position 7: `valid` (output, electrical)
 
-Stable evaluator binding:
+Stable public Spectre binding:
 
-- DUT sources use `./dut/{artifact_path}`.
-- Instantiate `hysteresis_trip_characterizer` as `XDUT` with ordered public binding: vdd=vdd, vss=vss, vin=vin, cmp_out=cmp_out, trip_rise=trip_rise, trip_fall=trip_fall, hyst_width=hyst_width, valid=valid.
+The submitted `testbench.scs` must use the supplied DUT through this public binding:
+
+- Include path: `./dut/hysteresis_trip_characterizer.va`
+- DUT instance: `XDUT (vdd vss vin cmp_out trip_rise trip_fall hyst_width valid) hysteresis_trip_characterizer`
+- Required saved public traces: `vdd`, `vss`, `vin`, `cmp_out`, `trip_rise`, `trip_fall`, `hyst_width`, `valid`
+- Use one bounded transient analysis with a finite positive stop time.
+
+You must design the stimulus yourself. Save traces as bare public signal names
+(for example `clk`, not suffixed or hierarchical forms such as `clk:V` or
+`XDUT.clk`). Do not redefine the DUT, drive DUT output nets, save
+hierarchical/private nodes, or use checker/gold/internal files.
 
 ## Public Parameter Contract
 

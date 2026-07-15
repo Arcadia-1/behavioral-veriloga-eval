@@ -20,10 +20,19 @@ testbench must accept the correct DUT and expose all five behavioral faults.
     - position 6: `linearity_metric` (inout, electrical)
     - position 7: `valid` (inout, electrical)
 
-Stable evaluator binding:
+Stable public Spectre binding:
 
-- DUT sources use `./dut/{artifact_path}`.
-- Instantiate `pam4_linearity_monitor` as `XDUT` with ordered public binding: symbol_1=symbol_1, symbol_0=symbol_0, clk=clk, rst=rst, enable=enable, level_out=level_out, linearity_metric=linearity_metric, valid=valid.
+The submitted `testbench.scs` must use the supplied DUT through this public binding:
+
+- Include path: `./dut/pam4_linearity_monitor.va`
+- DUT instance: `XDUT (symbol_1 symbol_0 clk rst enable level_out linearity_metric valid) pam4_linearity_monitor`
+- Required saved public traces: `symbol_1`, `symbol_0`, `clk`, `rst`, `enable`, `level_out`, `linearity_metric`, `valid`
+- Use one bounded transient analysis with a finite positive stop time.
+
+You must design the stimulus yourself. Save traces as bare public signal names
+(for example `clk`, not suffixed or hierarchical forms such as `clk:V` or
+`XDUT.clk`). Do not redefine the DUT, drive DUT output nets, save
+hierarchical/private nodes, or use checker/gold/internal files.
 
 ## Public Parameter Contract
 

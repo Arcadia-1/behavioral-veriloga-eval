@@ -19,10 +19,19 @@ testbench must accept the correct DUT and expose all five behavioral faults.
     - position 5: `limit_metric` (output, electrical)
     - position 6: `regulation_ok` (output, electrical)
 
-Stable evaluator binding:
+Stable public Spectre binding:
 
-- DUT sources use `./dut/{artifact_path}`.
-- Instantiate `current_limited_regulator_macro` as `XDUT` with ordered public binding: vin=vin, load_demand=load_demand, enable=enable, rst=rst, vout=vout, limit_metric=limit_metric, regulation_ok=regulation_ok.
+The submitted `testbench.scs` must use the supplied DUT through this public binding:
+
+- Include path: `./dut/current_limited_regulator_macro.va`
+- DUT instance: `XDUT (vin load_demand enable rst vout limit_metric regulation_ok) current_limited_regulator_macro`
+- Required saved public traces: `vin`, `load_demand`, `enable`, `rst`, `vout`, `limit_metric`, `regulation_ok`
+- Use one bounded transient analysis with a finite positive stop time.
+
+You must design the stimulus yourself. Save traces as bare public signal names
+(for example `clk`, not suffixed or hierarchical forms such as `clk:V` or
+`XDUT.clk`). Do not redefine the DUT, drive DUT output nets, save
+hierarchical/private nodes, or use checker/gold/internal files.
 
 ## Public Parameter Contract
 

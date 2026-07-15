@@ -18,10 +18,19 @@ testbench must accept the correct DUT and expose all five behavioral faults.
     - position 4: `dout3` (output, electrical)
     - position 5: `dout4` (output, electrical)
 
-Stable evaluator binding:
+Stable public Spectre binding:
 
-- DUT sources use `./dut/{artifact_path}`.
-- Instantiate `trim_ctrl_5bit` as `XDUT` with ordered public binding: ain=ain, dout0=dout0, dout1=dout1, dout2=dout2, dout3=dout3, dout4=dout4.
+The submitted `testbench.scs` must use the supplied DUT through this public binding:
+
+- Include path: `./dut/trim_ctrl_5bit.va`
+- DUT instance: `XDUT (ain dout0 dout1 dout2 dout3 dout4) trim_ctrl_5bit`
+- Required saved public traces: `ain`, `dout0`, `dout1`, `dout2`, `dout3`, `dout4`
+- Use one bounded transient analysis with a finite positive stop time.
+
+You must design the stimulus yourself. Save traces as bare public signal names
+(for example `clk`, not suffixed or hierarchical forms such as `clk:V` or
+`XDUT.clk`). Do not redefine the DUT, drive DUT output nets, save
+hierarchical/private nodes, or use checker/gold/internal files.
 
 ## Public Parameter Contract
 

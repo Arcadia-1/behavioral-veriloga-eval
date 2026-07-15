@@ -20,10 +20,19 @@ testbench must accept the correct DUT and expose all five behavioral faults.
     - position 6: `state_metric` (output, electrical)
     - position 7: `toggled` (output, electrical)
 
-Stable evaluator binding:
+Stable public Spectre binding:
 
-- DUT sources use `./dut/{artifact_path}`.
-- Instantiate `hysteretic_window_comparator` as `XDUT` with ordered public binding: vin=vin, rst=rst, enable=enable, low_trip=low_trip, high_trip=high_trip, inside_flag=inside_flag, state_metric=state_metric, toggled=toggled.
+The submitted `testbench.scs` must use the supplied DUT through this public binding:
+
+- Include path: `./dut/hysteretic_window_comparator.va`
+- DUT instance: `XDUT (vin rst enable low_trip high_trip inside_flag state_metric toggled) hysteretic_window_comparator`
+- Required saved public traces: `vin`, `rst`, `enable`, `low_trip`, `high_trip`, `inside_flag`, `state_metric`, `toggled`
+- Use one bounded transient analysis with a finite positive stop time.
+
+You must design the stimulus yourself. Save traces as bare public signal names
+(for example `clk`, not suffixed or hierarchical forms such as `clk:V` or
+`XDUT.clk`). Do not redefine the DUT, drive DUT output nets, save
+hierarchical/private nodes, or use checker/gold/internal files.
 
 ## Public Parameter Contract
 

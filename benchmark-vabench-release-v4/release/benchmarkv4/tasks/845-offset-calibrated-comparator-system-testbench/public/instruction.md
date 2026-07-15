@@ -51,10 +51,19 @@ testbench must accept the correct DUT and expose all five behavioral faults.
     - position 7: `offset_1` (output, electrical)
     - position 8: `offset_0` (output, electrical)
 
-Stable evaluator binding:
+Stable public Spectre binding:
 
-- DUT sources use `./dut/{artifact_path}`.
-- Instantiate `calibrated_comparator_top` as `XDUT` with ordered public binding: vinp=vinp, vinn=vinn, clk=clk, rst=rst, cal_en=cal_en, cal_ref=cal_ref, decision=decision, ready=ready, offset_3=offset_3, offset_2=offset_2, offset_1=offset_1, offset_0=offset_0, threshold_dbg=threshold_dbg.
+The submitted `testbench.scs` must use the supplied DUT through this public binding:
+
+- Include paths: `./dut/calibrated_comparator_top.va`, `./dut/comparator_core.va`, `./dut/offset_dac.va`, `./dut/calibration_fsm.va`
+- DUT instance: `XDUT (vinp vinn clk rst cal_en cal_ref decision ready offset_3 offset_2 offset_1 offset_0 threshold_dbg) calibrated_comparator_top`
+- Required saved public traces: `vinp`, `vinn`, `clk`, `rst`, `cal_en`, `cal_ref`, `decision`, `ready`, `offset_3`, `offset_2`, `offset_1`, `offset_0`, `threshold_dbg`
+- Use one bounded transient analysis with a finite positive stop time.
+
+You must design the stimulus yourself. Save traces as bare public signal names
+(for example `clk`, not suffixed or hierarchical forms such as `clk:V` or
+`XDUT.clk`). Do not redefine the DUT, drive DUT output nets, save
+hierarchical/private nodes, or use checker/gold/internal files.
 
 ## Public Parameter Contract
 

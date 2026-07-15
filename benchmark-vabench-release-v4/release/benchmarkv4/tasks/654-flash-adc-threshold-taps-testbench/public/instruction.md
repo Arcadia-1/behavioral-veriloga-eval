@@ -21,10 +21,19 @@ testbench must accept the correct DUT and expose all five behavioral faults.
     - position 7: `dout5` (output, electrical)
     - position 8: `dout6` (output, electrical)
 
-Stable evaluator binding:
+Stable public Spectre binding:
 
-- DUT sources use `./dut/{artifact_path}`.
-- Instantiate `flash_adc_threshold_taps` as `XDUT` with ordered public binding: vin=vin, clk=clk, dout0=dout0, dout1=dout1, dout2=dout2, dout3=dout3, dout4=dout4, dout5=dout5, dout6=dout6.
+The submitted `testbench.scs` must use the supplied DUT through this public binding:
+
+- Include path: `./dut/flash_adc_threshold_taps.va`
+- DUT instance: `XDUT (vin clk dout0 dout1 dout2 dout3 dout4 dout5 dout6) flash_adc_threshold_taps`
+- Required saved public traces: `clk`, `dout0`, `dout1`, `dout2`, `dout3`, `dout4`, `dout5`, `dout6`, `vin`
+- Use one bounded transient analysis with a finite positive stop time.
+
+You must design the stimulus yourself. Save traces as bare public signal names
+(for example `clk`, not suffixed or hierarchical forms such as `clk:V` or
+`XDUT.clk`). Do not redefine the DUT, drive DUT output nets, save
+hierarchical/private nodes, or use checker/gold/internal files.
 
 ## Public Parameter Contract
 

@@ -16,10 +16,19 @@ testbench must accept the correct DUT and expose all five behavioral faults.
     - position 2: `data` (input, electrical)
     - position 3: `out` (output, electrical)
 
-Stable evaluator binding:
+Stable public Spectre binding:
 
-- DUT sources use `./dut/{artifact_path}`.
-- Instantiate `dac_serial_accumulator` as `XDUT` with ordered public binding: clk_sample=clk_sample, clk_sarready=clk_sarready, data=data, out=out.
+The submitted `testbench.scs` must use the supplied DUT through this public binding:
+
+- Include path: `./dut/dac_serial_accumulator.va`
+- DUT instance: `XDUT (clk_sample clk_sarready data out) dac_serial_accumulator`
+- Required saved public traces: `clk_sample`, `clk_sarready`, `data`, `out`
+- Use one bounded transient analysis with a finite positive stop time.
+
+You must design the stimulus yourself. Save traces as bare public signal names
+(for example `clk`, not suffixed or hierarchical forms such as `clk:V` or
+`XDUT.clk`). Do not redefine the DUT, drive DUT output nets, save
+hierarchical/private nodes, or use checker/gold/internal files.
 
 ## Public Parameter Contract
 

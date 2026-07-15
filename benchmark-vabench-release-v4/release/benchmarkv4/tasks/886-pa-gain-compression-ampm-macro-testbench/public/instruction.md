@@ -20,10 +20,19 @@ testbench must accept the correct DUT and expose all five behavioral faults.
     - position 6: `phase_metric` (inout, electrical)
     - position 7: `compressed` (inout, electrical)
 
-Stable evaluator binding:
+Stable public Spectre binding:
 
-- DUT sources use `./dut/{artifact_path}`.
-- Instantiate `pa_gain_compression_ampm_macro` as `XDUT` with ordered public binding: vin=vin, envelope=envelope, enable=enable, rst=rst, vout=vout, gain_metric=gain_metric, phase_metric=phase_metric, compressed=compressed.
+The submitted `testbench.scs` must use the supplied DUT through this public binding:
+
+- Include path: `./dut/pa_gain_compression_ampm_macro.va`
+- DUT instance: `XDUT (vin envelope enable rst vout gain_metric phase_metric compressed) pa_gain_compression_ampm_macro`
+- Required saved public traces: `vin`, `envelope`, `enable`, `rst`, `vout`, `gain_metric`, `phase_metric`, `compressed`
+- Use one bounded transient analysis with a finite positive stop time.
+
+You must design the stimulus yourself. Save traces as bare public signal names
+(for example `clk`, not suffixed or hierarchical forms such as `clk:V` or
+`XDUT.clk`). Do not redefine the DUT, drive DUT output nets, save
+hierarchical/private nodes, or use checker/gold/internal files.
 
 ## Public Parameter Contract
 

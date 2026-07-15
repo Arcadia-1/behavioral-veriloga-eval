@@ -22,10 +22,19 @@ testbench must accept the correct DUT and expose all five behavioral faults.
     - position 8: `vout` (output, electrical)
     - position 9: `gnd` (input, electrical)
 
-Stable evaluator binding:
+Stable public Spectre binding:
 
-- DUT sources use `./dut/{artifact_path}`.
-- Instantiate `lt_read_sar7b_weighted` as `XDUT` with ordered public binding: d0=d0, d1=d1, d2=d2, d3=d3, d4=d4, d5=d5, d6=d6, d7=d7, vout=vout, gnd=gnd.
+The submitted `testbench.scs` must use the supplied DUT through this public binding:
+
+- Include path: `./dut/lt_read_sar7b_weighted.va`
+- DUT instance: `XDUT (d0 d1 d2 d3 d4 d5 d6 d7 vout gnd) lt_read_sar7b_weighted`
+- Required saved public traces: `d0`, `d1`, `d2`, `d3`, `d4`, `d5`, `d6`, `d7`, `gnd`, `vout`
+- Use one bounded transient analysis with a finite positive stop time.
+
+You must design the stimulus yourself. Save traces as bare public signal names
+(for example `clk`, not suffixed or hierarchical forms such as `clk:V` or
+`XDUT.clk`). Do not redefine the DUT, drive DUT output nets, save
+hierarchical/private nodes, or use checker/gold/internal files.
 
 ## Public Parameter Contract
 

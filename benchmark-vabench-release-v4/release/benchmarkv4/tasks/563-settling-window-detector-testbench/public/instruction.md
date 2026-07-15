@@ -24,10 +24,19 @@ testbench must accept the correct DUT and expose all five behavioral faults.
     - position 10: `t_code6` (output, electrical)
     - position 11: `t_code7` (output, electrical)
 
-Stable evaluator binding:
+Stable public Spectre binding:
 
-- DUT sources use `./dut/{artifact_path}`.
-- Instantiate `settling_window_detector` as `XDUT` with ordered public binding: vin=vin, target=target, tol=tol, settled=settled, t_code0=t_code0, t_code1=t_code1, t_code2=t_code2, t_code3=t_code3, t_code4=t_code4, t_code5=t_code5, t_code6=t_code6, t_code7=t_code7.
+The submitted `testbench.scs` must use the supplied DUT through this public binding:
+
+- Include path: `./dut/settling_window_detector.va`
+- DUT instance: `XDUT (vin target tol settled t_code0 t_code1 t_code2 t_code3 t_code4 t_code5 t_code6 t_code7) settling_window_detector`
+- Required saved public traces: `vin`, `target`, `tol`, `settled`, `t_code0`, `t_code1`, `t_code2`, `t_code3`, `t_code4`, `t_code5`, `t_code6`, `t_code7`
+- Use one bounded transient analysis with a finite positive stop time.
+
+You must design the stimulus yourself. Save traces as bare public signal names
+(for example `clk`, not suffixed or hierarchical forms such as `clk:V` or
+`XDUT.clk`). Do not redefine the DUT, drive DUT output nets, save
+hierarchical/private nodes, or use checker/gold/internal files.
 
 ## Public Parameter Contract
 

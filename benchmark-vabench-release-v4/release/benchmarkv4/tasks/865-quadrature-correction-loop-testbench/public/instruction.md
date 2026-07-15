@@ -68,10 +68,19 @@ testbench must accept the correct DUT and expose all five behavioral faults.
     - position 11: `i_out` (output, electrical)
     - position 12: `q_out` (output, electrical)
 
-Stable evaluator binding:
+Stable public Spectre binding:
 
-- DUT sources use `./dut/{artifact_path}`.
-- Instantiate `quad_corr_top` as `XDUT` with ordered public binding: i_in=i_in, q_in=q_in, clk=clk, rst=rst, cal_en=cal_en, i_out=i_out, q_out=q_out, gain_code_3=gain_code_3, gain_code_2=gain_code_2, gain_code_1=gain_code_1, gain_code_0=gain_code_0, phase_code_3=phase_code_3, phase_code_2=phase_code_2, phase_code_1=phase_code_1, phase_code_0=phase_code_0, error_metric=error_metric, locked=locked.
+The submitted `testbench.scs` must use the supplied DUT through this public binding:
+
+- Include paths: `./dut/quad_corr_top.va`, `./dut/gain_trim.va`, `./dut/skew_estimator.va`, `./dut/corrector.va`
+- DUT instance: `XDUT (i_in q_in clk rst cal_en i_out q_out gain_code_3 gain_code_2 gain_code_1 gain_code_0 phase_code_3 phase_code_2 phase_code_1 phase_code_0 error_metric locked) quad_corr_top`
+- Required saved public traces: `i_in`, `q_in`, `clk`, `rst`, `cal_en`, `i_out`, `q_out`, `gain_code_3`, `gain_code_2`, `gain_code_1`, `gain_code_0`, `phase_code_3`, `phase_code_2`, `phase_code_1`, `phase_code_0`, `error_metric`, `locked`
+- Use one bounded transient analysis with a finite positive stop time.
+
+You must design the stimulus yourself. Save traces as bare public signal names
+(for example `clk`, not suffixed or hierarchical forms such as `clk:V` or
+`XDUT.clk`). Do not redefine the DUT, drive DUT output nets, save
+hierarchical/private nodes, or use checker/gold/internal files.
 
 ## Public Parameter Contract
 

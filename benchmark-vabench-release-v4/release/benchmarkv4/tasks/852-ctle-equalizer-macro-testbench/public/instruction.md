@@ -21,10 +21,19 @@ testbench must accept the correct DUT and expose all five behavioral faults.
     - position 7: `edge_metric` (output, electrical)
     - position 8: `sat_flag` (output, electrical)
 
-Stable evaluator binding:
+Stable public Spectre binding:
 
-- DUT sources use `./dut/{artifact_path}`.
-- Instantiate `ctle_equalizer` as `XDUT` with ordered public binding: vin=vin, clk=clk, rst=rst, boost_2=boost_2, boost_1=boost_1, boost_0=boost_0, vout=vout, edge_metric=edge_metric, sat_flag=sat_flag.
+The submitted `testbench.scs` must use the supplied DUT through this public binding:
+
+- Include path: `./dut/ctle_equalizer.va`
+- DUT instance: `XDUT (vin clk rst boost_2 boost_1 boost_0 vout edge_metric sat_flag) ctle_equalizer`
+- Required saved public traces: `vin`, `clk`, `rst`, `boost_2`, `boost_1`, `boost_0`, `vout`, `edge_metric`, `sat_flag`
+- Use one bounded transient analysis with a finite positive stop time.
+
+You must design the stimulus yourself. Save traces as bare public signal names
+(for example `clk`, not suffixed or hierarchical forms such as `clk:V` or
+`XDUT.clk`). Do not redefine the DUT, drive DUT output nets, save
+hierarchical/private nodes, or use checker/gold/internal files.
 
 ## Public Parameter Contract
 

@@ -24,10 +24,19 @@ testbench must accept the correct DUT and expose all five behavioral faults.
     - position 10: `D0` (input, electrical)
     - position 11: `VOUT` (output, electrical)
 
-Stable evaluator binding:
+Stable public Spectre binding:
 
-- DUT sources use `./dut/{artifact_path}`.
-- Instantiate `sar_weighted_sum` as `XDUT` with ordered public binding: D10=d10, D9=d9, D8=d8, D7=d7, D6=d6, D5=d5, D4=d4, D3=d3, D2=d2, D1=d1, D0=d0, VOUT=vout.
+The submitted `testbench.scs` must use the supplied DUT through this public binding:
+
+- Include path: `./dut/sar_weighted_sum.va`
+- DUT instance: `XDUT (d10 d9 d8 d7 d6 d5 d4 d3 d2 d1 d0 vout) sar_weighted_sum`
+- Required saved public traces: `d10`, `d9`, `d8`, `d7`, `d6`, `d5`, `d4`, `d3`, `d2`, `d1`, `d0`, `vout`
+- Use one bounded transient analysis with a finite positive stop time.
+
+You must design the stimulus yourself. Save traces as bare public signal names
+(for example `clk`, not suffixed or hierarchical forms such as `clk:V` or
+`XDUT.clk`). Do not redefine the DUT, drive DUT output nets, save
+hierarchical/private nodes, or use checker/gold/internal files.
 
 ## Public Parameter Contract
 

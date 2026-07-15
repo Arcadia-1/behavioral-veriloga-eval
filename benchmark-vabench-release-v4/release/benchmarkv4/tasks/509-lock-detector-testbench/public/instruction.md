@@ -16,10 +16,19 @@ testbench must accept the correct DUT and expose all five behavioral faults.
     - position 2: `rst_n` (input, electrical)
     - position 3: `lock` (output, electrical)
 
-Stable evaluator binding:
+Stable public Spectre binding:
 
-- DUT sources use `./dut/{artifact_path}`.
-- Instantiate `lock_detector` as `XDUT` with ordered public binding: ref_clk=ref_clk, fb_clk=fb_clk, rst_n=rst_n, lock=lock.
+The submitted `testbench.scs` must use the supplied DUT through this public binding:
+
+- Include path: `./dut/lock_detector.va`
+- DUT instance: `XDUT (ref_clk fb_clk rst_n lock) lock_detector`
+- Required saved public traces: `ref_clk`, `fb_clk`, `rst_n`, `lock`
+- Use one bounded transient analysis with a finite positive stop time.
+
+You must design the stimulus yourself. Save traces as bare public signal names
+(for example `clk`, not suffixed or hierarchical forms such as `clk:V` or
+`XDUT.clk`). Do not redefine the DUT, drive DUT output nets, save
+hierarchical/private nodes, or use checker/gold/internal files.
 
 ## Public Parameter Contract
 

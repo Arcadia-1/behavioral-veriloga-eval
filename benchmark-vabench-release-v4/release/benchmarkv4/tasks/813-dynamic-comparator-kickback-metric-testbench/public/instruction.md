@@ -20,10 +20,19 @@ testbench must accept the correct DUT and expose all five behavioral faults.
     - position 6: `kickback_metric` (output, electrical)
     - position 7: `valid` (output, electrical)
 
-Stable evaluator binding:
+Stable public Spectre binding:
 
-- DUT sources use `./dut/{artifact_path}`.
-- Instantiate `dynamic_comparator_kickback_metric` as `XDUT` with ordered public binding: vinp=vinp, vinn=vinn, clk=clk, rst=rst, enable=enable, decision=decision, kickback_metric=kickback_metric, valid=valid.
+The submitted `testbench.scs` must use the supplied DUT through this public binding:
+
+- Include path: `./dut/dynamic_comparator_kickback_metric.va`
+- DUT instance: `XDUT (vinp vinn clk rst enable decision kickback_metric valid) dynamic_comparator_kickback_metric`
+- Required saved public traces: `vinp`, `vinn`, `clk`, `rst`, `enable`, `decision`, `kickback_metric`, `valid`
+- Use one bounded transient analysis with a finite positive stop time.
+
+You must design the stimulus yourself. Save traces as bare public signal names
+(for example `clk`, not suffixed or hierarchical forms such as `clk:V` or
+`XDUT.clk`). Do not redefine the DUT, drive DUT output nets, save
+hierarchical/private nodes, or use checker/gold/internal files.
 
 ## Public Parameter Contract
 

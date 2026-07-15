@@ -19,10 +19,19 @@ testbench must accept the correct DUT and expose all five behavioral faults.
     - position 5: `transimpedance_metric` (inout, electrical)
     - position 6: `overload` (inout, electrical)
 
-Stable evaluator binding:
+Stable public Spectre binding:
 
-- DUT sources use `./dut/{artifact_path}`.
-- Instantiate `common_gate_tia_front_end` as `XDUT` with ordered public binding: vin_proxy=vin_proxy, bias=bias, enable=enable, rst=rst, vout=vout, transimpedance_metric=transimpedance_metric, overload=overload.
+The submitted `testbench.scs` must use the supplied DUT through this public binding:
+
+- Include path: `./dut/common_gate_tia_front_end.va`
+- DUT instance: `XDUT (vin_proxy bias enable rst vout transimpedance_metric overload) common_gate_tia_front_end`
+- Required saved public traces: `vin_proxy`, `bias`, `enable`, `rst`, `vout`, `transimpedance_metric`, `overload`
+- Use one bounded transient analysis with a finite positive stop time.
+
+You must design the stimulus yourself. Save traces as bare public signal names
+(for example `clk`, not suffixed or hierarchical forms such as `clk:V` or
+`XDUT.clk`). Do not redefine the DUT, drive DUT output nets, save
+hierarchical/private nodes, or use checker/gold/internal files.
 
 ## Public Parameter Contract
 

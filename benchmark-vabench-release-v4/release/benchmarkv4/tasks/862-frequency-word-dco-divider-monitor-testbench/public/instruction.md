@@ -23,10 +23,19 @@ testbench must accept the correct DUT and expose all five behavioral faults.
     - position 9: `div_clk` (output, electrical)
     - position 10: `freq_metric` (output, electrical)
 
-Stable evaluator binding:
+Stable public Spectre binding:
 
-- DUT sources use `./dut/{artifact_path}`.
-- Instantiate `frequency_word_dco` as `XDUT` with ordered public binding: enable=enable, rst=rst, fcw_5=fcw_5, fcw_4=fcw_4, fcw_3=fcw_3, fcw_2=fcw_2, fcw_1=fcw_1, fcw_0=fcw_0, dco_clk=dco_clk, div_clk=div_clk, freq_metric=freq_metric.
+The submitted `testbench.scs` must use the supplied DUT through this public binding:
+
+- Include path: `./dut/frequency_word_dco.va`
+- DUT instance: `XDUT (enable rst fcw_5 fcw_4 fcw_3 fcw_2 fcw_1 fcw_0 dco_clk div_clk freq_metric) frequency_word_dco`
+- Required saved public traces: `enable`, `rst`, `fcw_5`, `fcw_4`, `fcw_3`, `fcw_2`, `fcw_1`, `fcw_0`, `dco_clk`, `div_clk`, `freq_metric`
+- Use one bounded transient analysis with a finite positive stop time.
+
+You must design the stimulus yourself. Save traces as bare public signal names
+(for example `clk`, not suffixed or hierarchical forms such as `clk:V` or
+`XDUT.clk`). Do not redefine the DUT, drive DUT output nets, save
+hierarchical/private nodes, or use checker/gold/internal files.
 
 ## Public Parameter Contract
 

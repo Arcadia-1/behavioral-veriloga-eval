@@ -17,10 +17,19 @@ testbench must accept the correct DUT and expose all five behavioral faults.
     - position 3: `up` (output, electrical)
     - position 4: `down` (output, electrical)
 
-Stable evaluator binding:
+Stable public Spectre binding:
 
-- DUT sources use `./dut/{artifact_path}`.
-- Instantiate `bbpd_ref` as `XDUT` with ordered public binding: data=data, clk=clk, retimed_data=retimed_data, up=up, down=down.
+The submitted `testbench.scs` must use the supplied DUT through this public binding:
+
+- Include path: `./dut/bbpd_ref.va`
+- DUT instance: `XDUT (data clk retimed_data up down) bbpd_ref`
+- Required saved public traces: `data`, `clk`, `retimed_data`, `up`, `down`
+- Use one bounded transient analysis with a finite positive stop time.
+
+You must design the stimulus yourself. Save traces as bare public signal names
+(for example `clk`, not suffixed or hierarchical forms such as `clk:V` or
+`XDUT.clk`). Do not redefine the DUT, drive DUT output nets, save
+hierarchical/private nodes, or use checker/gold/internal files.
 
 ## Public Parameter Contract
 

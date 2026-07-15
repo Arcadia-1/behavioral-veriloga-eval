@@ -23,10 +23,19 @@ testbench must accept the correct DUT and expose all five behavioral faults.
     - position 9: `code6` (output, electrical)
     - position 10: `code7` (output, electrical)
 
-Stable evaluator binding:
+Stable public Spectre binding:
 
-- DUT sources use `./dut/{artifact_path}`.
-- Instantiate `edge_interval_tdc_8b` as `XDUT` with ordered public binding: start=start, stop=stop, valid=valid, code0=code0, code1=code1, code2=code2, code3=code3, code4=code4, code5=code5, code6=code6, code7=code7.
+The submitted `testbench.scs` must use the supplied DUT through this public binding:
+
+- Include path: `./dut/edge_interval_tdc_8b.va`
+- DUT instance: `XDUT (start stop valid code0 code1 code2 code3 code4 code5 code6 code7) edge_interval_tdc_8b`
+- Required saved public traces: `start`, `stop`, `valid`, `code0`, `code1`, `code2`, `code3`, `code4`, `code5`, `code6`, `code7`
+- Use one bounded transient analysis with a finite positive stop time.
+
+You must design the stimulus yourself. Save traces as bare public signal names
+(for example `clk`, not suffixed or hierarchical forms such as `clk:V` or
+`XDUT.clk`). Do not redefine the DUT, drive DUT output nets, save
+hierarchical/private nodes, or use checker/gold/internal files.
 
 ## Public Parameter Contract
 

@@ -34,10 +34,19 @@ testbench must accept the correct DUT and expose all five behavioral faults.
     - position 2: `amp_error_metric` (inout, electrical)
     - position 3: `phase_error_metric` (inout, electrical)
 
-Stable evaluator binding:
+Stable public Spectre binding:
 
-- DUT sources use `./dut/{artifact_path}`.
-- Instantiate `polyphase_iq_balance_monitor_top` as `XDUT` with ordered public binding: i_in=i_in, q_in=q_in, clk=clk, rst=rst, enable=enable, i_out=i_out, q_out=q_out, amp_error_metric=amp_error_metric, phase_error_metric=phase_error_metric, balanced=balanced.
+The submitted `testbench.scs` must use the supplied DUT through this public binding:
+
+- Include paths: `./dut/polyphase_iq_balance_monitor_top.va`, `./dut/iq_normalizer.va`, `./dut/balance_metric_core.va`
+- DUT instance: `XDUT (i_in q_in clk rst enable i_out q_out amp_error_metric phase_error_metric balanced) polyphase_iq_balance_monitor_top`
+- Required saved public traces: `i_in`, `q_in`, `clk`, `rst`, `enable`, `i_out`, `q_out`, `amp_error_metric`, `phase_error_metric`, `balanced`
+- Use one bounded transient analysis with a finite positive stop time.
+
+You must design the stimulus yourself. Save traces as bare public signal names
+(for example `clk`, not suffixed or hierarchical forms such as `clk:V` or
+`XDUT.clk`). Do not redefine the DUT, drive DUT output nets, save
+hierarchical/private nodes, or use checker/gold/internal files.
 
 ## Public Parameter Contract
 

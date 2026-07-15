@@ -20,10 +20,19 @@ testbench must accept the correct DUT and expose all five behavioral faults.
     - position 6: `in_window` (inout, electrical)
     - position 7: `valid` (inout, electrical)
 
-Stable evaluator binding:
+Stable public Spectre binding:
 
-- DUT sources use `./dut/{artifact_path}`.
-- Instantiate `duty_cycle_window_monitor` as `XDUT` with ordered public binding: clk_in=clk_in, rst=rst, enable=enable, duty_min=duty_min, duty_max=duty_max, duty_metric=duty_metric, in_window=in_window, valid=valid.
+The submitted `testbench.scs` must use the supplied DUT through this public binding:
+
+- Include path: `./dut/duty_cycle_window_monitor.va`
+- DUT instance: `XDUT (clk_in rst enable duty_min duty_max duty_metric in_window valid) duty_cycle_window_monitor`
+- Required saved public traces: `clk_in`, `rst`, `enable`, `duty_min`, `duty_max`, `duty_metric`, `in_window`, `valid`
+- Use one bounded transient analysis with a finite positive stop time.
+
+You must design the stimulus yourself. Save traces as bare public signal names
+(for example `clk`, not suffixed or hierarchical forms such as `clk:V` or
+`XDUT.clk`). Do not redefine the DUT, drive DUT output nets, save
+hierarchical/private nodes, or use checker/gold/internal files.
 
 ## Public Parameter Contract
 

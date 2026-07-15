@@ -19,10 +19,19 @@ testbench must accept the correct DUT and expose all five behavioral faults.
     - position 5: `trim_mon` (output, electrical)
     - position 6: `residual_mon` (output, electrical)
 
-Stable evaluator binding:
+Stable public Spectre binding:
 
-- DUT sources use `./dut/{artifact_path}`.
-- Instantiate `complete_calibration_loop` as `XDUT` with ordered public binding: clk=clk, rst=rst, vin=vin, out=out, metric=metric, trim_mon=trim_mon, residual_mon=residual_mon.
+The submitted `testbench.scs` must use the supplied DUT through this public binding:
+
+- Include path: `./dut/complete_calibration_loop.va`
+- DUT instance: `XDUT (clk rst vin out metric trim_mon residual_mon) complete_calibration_loop`
+- Required saved public traces: `clk`, `rst`, `vin`, `out`, `metric`, `trim_mon`, `residual_mon`
+- Use one bounded transient analysis with a finite positive stop time.
+
+You must design the stimulus yourself. Save traces as bare public signal names
+(for example `clk`, not suffixed or hierarchical forms such as `clk:V` or
+`XDUT.clk`). Do not redefine the DUT, drive DUT output nets, save
+hierarchical/private nodes, or use checker/gold/internal files.
 
 ## Public Parameter Contract
 

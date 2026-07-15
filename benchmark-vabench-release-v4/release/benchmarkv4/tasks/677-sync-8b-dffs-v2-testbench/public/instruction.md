@@ -39,10 +39,19 @@ testbench must accept the correct DUT and expose all five behavioral faults.
     - position 25: `do7` (output, electrical)
     - position 26: `do8` (output, electrical)
 
-Stable evaluator binding:
+Stable public Spectre binding:
 
-- DUT sources use `./dut/{artifact_path}`.
-- Instantiate `sync_8b_dffs_v2` as `XDUT` with ordered public binding: ck1=ck1, ck2=ck2, ck3=ck3, ck4=ck4, ck5=ck5, ck6=ck6, ck7=ck7, ck8=ck8, ck9=ck9, dl0=dl0, dl1=dl1, dl2=dl2, dl3=dl3, dl4=dl4, dl5=dl5, dl6=dl6, dl7=dl7, dl8=dl8, do0=do0, do1=do1, do2=do2, do3=do3, do4=do4, do5=do5, do6=do6, do7=do7, do8=do8.
+The submitted `testbench.scs` must use the supplied DUT through this public binding:
+
+- Include path: `./dut/sync_8b_dffs_v2.va`
+- DUT instance: `XDUT (ck1 ck2 ck3 ck4 ck5 ck6 ck7 ck8 ck9 dl0 dl1 dl2 dl3 dl4 dl5 dl6 dl7 dl8 do0 do1 do2 do3 do4 do5 do6 do7 do8) sync_8b_dffs_v2`
+- Required saved public traces: `ck1`, `ck2`, `ck3`, `ck4`, `ck5`, `ck6`, `ck7`, `ck8`, `ck9`, `dl0`, `dl1`, `dl2`, `dl3`, `dl4`, `dl5`, `dl6`, `dl7`, `dl8`, `do0`, `do1`, `do2`, `do3`, `do4`, `do5`, `do6`, `do7`, `do8`
+- Use one bounded transient analysis with a finite positive stop time.
+
+You must design the stimulus yourself. Save traces as bare public signal names
+(for example `clk`, not suffixed or hierarchical forms such as `clk:V` or
+`XDUT.clk`). Do not redefine the DUT, drive DUT output nets, save
+hierarchical/private nodes, or use checker/gold/internal files.
 
 ## Public Parameter Contract
 

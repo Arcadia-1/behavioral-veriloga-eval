@@ -20,10 +20,19 @@ testbench must accept the correct DUT and expose all five behavioral faults.
     - position 6: `level_metric` (output, electrical)
     - position 7: `valid` (output, electrical)
 
-Stable evaluator binding:
+Stable public Spectre binding:
 
-- DUT sources use `./dut/{artifact_path}`.
-- Instantiate `pam4_slicer_gray_decoder` as `XDUT` with ordered public binding: vin=vin, clk=clk, rst=rst, enable=enable, bit_msb=bit_msb, bit_lsb=bit_lsb, level_metric=level_metric, valid=valid.
+The submitted `testbench.scs` must use the supplied DUT through this public binding:
+
+- Include path: `./dut/pam4_slicer_gray_decoder.va`
+- DUT instance: `XDUT (vin clk rst enable bit_msb bit_lsb level_metric valid) pam4_slicer_gray_decoder`
+- Required saved public traces: `vin`, `clk`, `rst`, `enable`, `bit_msb`, `bit_lsb`, `level_metric`, `valid`
+- Use one bounded transient analysis with a finite positive stop time.
+
+You must design the stimulus yourself. Save traces as bare public signal names
+(for example `clk`, not suffixed or hierarchical forms such as `clk:V` or
+`XDUT.clk`). Do not redefine the DUT, drive DUT output nets, save
+hierarchical/private nodes, or use checker/gold/internal files.
 
 ## Public Parameter Contract
 

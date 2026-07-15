@@ -17,10 +17,19 @@ testbench must accept the correct DUT and expose all five behavioral faults.
     - position 3: `vop` (output, electrical)
     - position 4: `von` (output, electrical)
 
-Stable evaluator binding:
+Stable public Spectre binding:
 
-- DUT sources use `./dut/{artifact_path}`.
-- Instantiate `ideal_dac_4bit_differential` as `XDUT` with ordered public binding: clk=clk, digital=digital, vcm=vcm, vop=vop, von=von.
+The submitted `testbench.scs` must use the supplied DUT through this public binding:
+
+- Include path: `./dut/ideal_dac_4bit_differential.va`
+- DUT instance: `XDUT (clk digital vcm vop von) ideal_dac_4bit_differential`
+- Required saved public traces: `clk`, `digital`, `vcm`, `von`, `vop`
+- Use one bounded transient analysis with a finite positive stop time.
+
+You must design the stimulus yourself. Save traces as bare public signal names
+(for example `clk`, not suffixed or hierarchical forms such as `clk:V` or
+`XDUT.clk`). Do not redefine the DUT, drive DUT output nets, save
+hierarchical/private nodes, or use checker/gold/internal files.
 
 ## Public Parameter Contract
 

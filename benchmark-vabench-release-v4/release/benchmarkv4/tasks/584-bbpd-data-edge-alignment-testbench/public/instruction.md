@@ -19,10 +19,19 @@ testbench must accept the correct DUT and expose all five behavioral faults.
     - position 5: `dn` (output, electrical)
     - position 6: `retimed_data` (output, electrical)
 
-Stable evaluator binding:
+Stable public Spectre binding:
 
-- DUT sources use `./dut/{artifact_path}`.
-- Instantiate `bbpd_data_edge_alignment_ref` as `XDUT` with ordered public binding: vdd=vdd, vss=vss, clk=clk, data=data, up=up, dn=dn, retimed_data=retimed_data.
+The submitted `testbench.scs` must use the supplied DUT through this public binding:
+
+- Include path: `./dut/bbpd_data_edge_alignment_ref.va`
+- DUT instance: `XDUT (vdd vss clk data up dn retimed_data) bbpd_data_edge_alignment_ref`
+- Required saved public traces: `vdd`, `vss`, `clk`, `data`, `up`, `dn`, `retimed_data`
+- Use one bounded transient analysis with a finite positive stop time.
+
+You must design the stimulus yourself. Save traces as bare public signal names
+(for example `clk`, not suffixed or hierarchical forms such as `clk:V` or
+`XDUT.clk`). Do not redefine the DUT, drive DUT output nets, save
+hierarchical/private nodes, or use checker/gold/internal files.
 
 ## Public Parameter Contract
 

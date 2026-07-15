@@ -20,10 +20,19 @@ testbench must accept the correct DUT and expose all five behavioral faults.
     - position 6: `imbalance_metric` (output, electrical)
     - position 7: `balanced` (output, electrical)
 
-Stable evaluator binding:
+Stable public Spectre binding:
 
-- DUT sources use `./dut/{artifact_path}`.
-- Instantiate `charge_pump_pulse_balancer` as `XDUT` with ordered public binding: up=up, dn=dn, clk=clk, rst=rst, enable=enable, vctrl=vctrl, imbalance_metric=imbalance_metric, balanced=balanced.
+The submitted `testbench.scs` must use the supplied DUT through this public binding:
+
+- Include path: `./dut/charge_pump_pulse_balancer.va`
+- DUT instance: `XDUT (up dn clk rst enable vctrl imbalance_metric balanced) charge_pump_pulse_balancer`
+- Required saved public traces: `up`, `dn`, `clk`, `rst`, `enable`, `vctrl`, `imbalance_metric`, `balanced`
+- Use one bounded transient analysis with a finite positive stop time.
+
+You must design the stimulus yourself. Save traces as bare public signal names
+(for example `clk`, not suffixed or hierarchical forms such as `clk:V` or
+`XDUT.clk`). Do not redefine the DUT, drive DUT output nets, save
+hierarchical/private nodes, or use checker/gold/internal files.
 
 ## Public Parameter Contract
 

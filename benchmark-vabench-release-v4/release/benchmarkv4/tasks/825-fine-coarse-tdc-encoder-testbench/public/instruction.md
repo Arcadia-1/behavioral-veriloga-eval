@@ -31,10 +31,19 @@ testbench must accept the correct DUT and expose all five behavioral faults.
     - position 0: `a` (inout, electrical)
     - position 1: `b` (inout, electrical)
 
-Stable evaluator binding:
+Stable public Spectre binding:
 
-- DUT sources use `./dut/{artifact_path}`.
-- Instantiate `fine_coarse_tdc_encoder_top` as `XDUT` with ordered public binding: start=start, stop=stop, ref_clk=ref_clk, rst=rst, enable=enable, coarse_3=coarse_3, coarse_2=coarse_2, coarse_1=coarse_1, coarse_0=coarse_0, fine_metric=fine_metric, valid=valid.
+The submitted `testbench.scs` must use the supplied DUT through this public binding:
+
+- Include paths: `./dut/fine_coarse_tdc_encoder_top.va`, `./dut/coarse_counter.va`, `./dut/fine_residual_metric.va`
+- DUT instance: `XDUT (start stop ref_clk rst enable coarse_3 coarse_2 coarse_1 coarse_0 fine_metric valid) fine_coarse_tdc_encoder_top`
+- Required saved public traces: `start`, `stop`, `ref_clk`, `rst`, `enable`, `coarse_3`, `coarse_2`, `coarse_1`, `coarse_0`, `fine_metric`, `valid`
+- Use one bounded transient analysis with a finite positive stop time.
+
+You must design the stimulus yourself. Save traces as bare public signal names
+(for example `clk`, not suffixed or hierarchical forms such as `clk:V` or
+`XDUT.clk`). Do not redefine the DUT, drive DUT output nets, save
+hierarchical/private nodes, or use checker/gold/internal files.
 
 ## Public Parameter Contract
 

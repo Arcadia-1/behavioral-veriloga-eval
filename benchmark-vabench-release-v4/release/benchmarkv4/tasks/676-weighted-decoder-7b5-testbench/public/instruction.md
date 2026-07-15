@@ -24,10 +24,19 @@ testbench must accept the correct DUT and expose all five behavioral faults.
     - position 10: `aout7b5` (output, electrical)
     - position 11: `aout8b` (output, electrical)
 
-Stable evaluator binding:
+Stable public Spectre binding:
 
-- DUT sources use `./dut/{artifact_path}`.
-- Instantiate `weighted_decoder_7b5` as `XDUT` with ordered public binding: d0=d0, d1=d1, d2=d2, d3=d3, d4=d4, d5=d5, d6=d6, d7=d7, d8=d8, aout7b=aout7b, aout7b5=aout7b5, aout8b=aout8b.
+The submitted `testbench.scs` must use the supplied DUT through this public binding:
+
+- Include path: `./dut/weighted_decoder_7b5.va`
+- DUT instance: `XDUT (d0 d1 d2 d3 d4 d5 d6 d7 d8 aout7b aout7b5 aout8b) weighted_decoder_7b5`
+- Required saved public traces: `d0`, `d1`, `d2`, `d3`, `d4`, `d5`, `d6`, `d7`, `d8`, `aout7b`, `aout7b5`, `aout8b`
+- Use one bounded transient analysis with a finite positive stop time.
+
+You must design the stimulus yourself. Save traces as bare public signal names
+(for example `clk`, not suffixed or hierarchical forms such as `clk:V` or
+`XDUT.clk`). Do not redefine the DUT, drive DUT output nets, save
+hierarchical/private nodes, or use checker/gold/internal files.
 
 ## Public Parameter Contract
 

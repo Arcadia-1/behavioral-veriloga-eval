@@ -14,10 +14,19 @@ testbench must accept the correct DUT and expose all five behavioral faults.
     - position 0: `CLKIN` (input, electrical)
     - position 1: `MC` (output, electrical)
 
-Stable evaluator binding:
+Stable public Spectre binding:
 
-- DUT sources use `./dut/{artifact_path}`.
-- Instantiate `two_bit_counter_marker` as `XDUT` with ordered public binding: CLKIN=clkin, MC=mc.
+The submitted `testbench.scs` must use the supplied DUT through this public binding:
+
+- Include path: `./dut/two_bit_counter_marker.va`
+- DUT instance: `XDUT (clkin mc) two_bit_counter_marker`
+- Required saved public traces: `clkin`, `mc`
+- Use one bounded transient analysis with a finite positive stop time.
+
+You must design the stimulus yourself. Save traces as bare public signal names
+(for example `clk`, not suffixed or hierarchical forms such as `clk:V` or
+`XDUT.clk`). Do not redefine the DUT, drive DUT output nets, save
+hierarchical/private nodes, or use checker/gold/internal files.
 
 ## Public Parameter Contract
 

@@ -18,10 +18,19 @@ testbench must accept the correct DUT and expose all five behavioral faults.
     - position 4: `VINN` (input, electrical)
     - position 5: `VINP` (input, electrical)
 
-Stable evaluator binding:
+Stable public Spectre binding:
 
-- DUT sources use `./dut/{artifact_path}`.
-- Instantiate `latched_comparator_delay` as `XDUT` with ordered public binding: DOUT=dout, GND=gnd, VDD=vdd, CLK=clk, VINN=vinn, VINP=vinp.
+The submitted `testbench.scs` must use the supplied DUT through this public binding:
+
+- Include path: `./dut/latched_comparator_delay.va`
+- DUT instance: `XDUT (dout gnd vdd clk vinn vinp) latched_comparator_delay`
+- Required saved public traces: `vdd`, `clk`, `vinn`, `vinp`, `dout`
+- Use one bounded transient analysis with a finite positive stop time.
+
+You must design the stimulus yourself. Save traces as bare public signal names
+(for example `clk`, not suffixed or hierarchical forms such as `clk:V` or
+`XDUT.clk`). Do not redefine the DUT, drive DUT output nets, save
+hierarchical/private nodes, or use checker/gold/internal files.
 
 ## Public Parameter Contract
 

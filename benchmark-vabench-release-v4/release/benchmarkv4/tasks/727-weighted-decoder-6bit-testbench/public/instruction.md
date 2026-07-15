@@ -19,10 +19,19 @@ testbench must accept the correct DUT and expose all five behavioral faults.
     - position 5: `vd6` (input, electrical)
     - position 6: `vout` (output, electrical)
 
-Stable evaluator binding:
+Stable public Spectre binding:
 
-- DUT sources use `./dut/{artifact_path}`.
-- Instantiate `weighted_decoder_6bit` as `XDUT` with ordered public binding: vd1=vd1, vd2=vd2, vd3=vd3, vd4=vd4, vd5=vd5, vd6=vd6, vout=vout.
+The submitted `testbench.scs` must use the supplied DUT through this public binding:
+
+- Include path: `./dut/weighted_decoder_6bit.va`
+- DUT instance: `XDUT (vd1 vd2 vd3 vd4 vd5 vd6 vout) weighted_decoder_6bit`
+- Required saved public traces: `vd1`, `vd2`, `vd3`, `vd4`, `vd5`, `vd6`, `vout`
+- Use one bounded transient analysis with a finite positive stop time.
+
+You must design the stimulus yourself. Save traces as bare public signal names
+(for example `clk`, not suffixed or hierarchical forms such as `clk:V` or
+`XDUT.clk`). Do not redefine the DUT, drive DUT output nets, save
+hierarchical/private nodes, or use checker/gold/internal files.
 
 ## Public Parameter Contract
 

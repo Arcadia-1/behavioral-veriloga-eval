@@ -35,10 +35,19 @@ testbench must accept the correct DUT and expose all five behavioral faults.
     - position 21: `dom` (output, electrical)
     - position 22: `gctrlcode` (output, electrical)
 
-Stable evaluator binding:
+Stable public Spectre binding:
 
-- DUT sources use `./dut/{artifact_path}`.
-- Instantiate `pipe_adc_gain_control_loop` as `XDUT` with ordered public binding: din20=din20, din21=din21, din22=din22, din23=din23, din24=din24, din25=din25, din26=din26, clks=clks, dout10=dout10, dout11=dout11, dout12=dout12, dout13=dout13, gainctrl0=gainctrl0, gainctrl1=gainctrl1, gainctrl2=gainctrl2, gainctrl3=gainctrl3, gainctrl4=gainctrl4, gainctrl5=gainctrl5, gainctrl6=gainctrl6, ddiff=ddiff, dop=dop, dom=dom, gctrlcode=gctrlcode.
+The submitted `testbench.scs` must use the supplied DUT through this public binding:
+
+- Include path: `./dut/pipe_adc_gain_control_loop.va`
+- DUT instance: `XDUT (din20 din21 din22 din23 din24 din25 din26 clks dout10 dout11 dout12 dout13 gainctrl0 gainctrl1 gainctrl2 gainctrl3 gainctrl4 gainctrl5 gainctrl6 ddiff dop dom gctrlcode) pipe_adc_gain_control_loop`
+- Required saved public traces: `clks`, `ddiff`, `din20`, `din21`, `din22`, `din23`, `din24`, `din25`, `din26`, `dom`, `dop`, `dout10`, `dout11`, `dout12`, `dout13`, `gainctrl0`, `gainctrl1`, `gainctrl2`, `gainctrl3`, `gainctrl4`, `gainctrl5`, `gainctrl6`, `gctrlcode`
+- Use one bounded transient analysis with a finite positive stop time.
+
+You must design the stimulus yourself. Save traces as bare public signal names
+(for example `clk`, not suffixed or hierarchical forms such as `clk:V` or
+`XDUT.clk`). Do not redefine the DUT, drive DUT output nets, save
+hierarchical/private nodes, or use checker/gold/internal files.
 
 ## Public Parameter Contract
 

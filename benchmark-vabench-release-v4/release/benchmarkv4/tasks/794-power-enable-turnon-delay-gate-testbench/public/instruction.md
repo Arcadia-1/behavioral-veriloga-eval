@@ -21,10 +21,19 @@ testbench must accept the correct DUT and expose all five behavioral faults.
     - position 7: `drive_en` (output, electrical)
     - position 8: `delay_mon` (output, electrical)
 
-Stable evaluator binding:
+Stable public Spectre binding:
 
-- DUT sources use `./dut/{artifact_path}`.
-- Instantiate `power_enable_turnon_delay_gate` as `XDUT` with ordered public binding: clk=clk, vdd=vdd, vss=vss, vbias=vbias, en=en, pd=pd, pwr_ok=pwr_ok, drive_en=drive_en, delay_mon=delay_mon.
+The submitted `testbench.scs` must use the supplied DUT through this public binding:
+
+- Include path: `./dut/power_enable_turnon_delay_gate.va`
+- DUT instance: `XDUT (clk vdd vss vbias en pd pwr_ok drive_en delay_mon) power_enable_turnon_delay_gate`
+- Required saved public traces: `clk`, `delay_mon`, `drive_en`, `en`, `pd`, `pwr_ok`, `vbias`, `vdd`, `vss`
+- Use one bounded transient analysis with a finite positive stop time.
+
+You must design the stimulus yourself. Save traces as bare public signal names
+(for example `clk`, not suffixed or hierarchical forms such as `clk:V` or
+`XDUT.clk`). Do not redefine the DUT, drive DUT output nets, save
+hierarchical/private nodes, or use checker/gold/internal files.
 
 ## Public Parameter Contract
 
