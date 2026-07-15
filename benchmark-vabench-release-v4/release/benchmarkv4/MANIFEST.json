@@ -1,53 +1,94 @@
 {
   "active_mutations_per_family": 5,
   "certification_reuse": {
+    "effective_dut_gold_certification_count": 400,
+    "effective_negative_certification_count": 2000,
     "evaluators": [
       "evas",
       "spectre"
     ],
-    "policy": "source_transitive_input_hash_bound",
-    "simulation_rerun_required_for_materialization": true,
+    "fresh_dut_gold_certification_count": 8,
+    "fresh_negative_certification_count": 15,
+    "fresh_recertification_evidence": {
+      "evaluators": [
+        "evas",
+        "spectre"
+      ],
+      "evas_behavioral_kill_count": 40,
+      "family_ids": [
+        "017",
+        "024",
+        "027",
+        "039",
+        "058",
+        "102",
+        "147",
+        "398"
+      ],
+      "negative_case_count": 40,
+      "path": "evidence/recertification/benchmarkv4-8family-correct-plus-five.json",
+      "reference_pass_count": 8,
+      "schema_version": "v4-benchmarkv4-recertification-evidence-v1",
+      "sha256": "7e018042d7e83d50e2afbb0a5a5f25a777a75342d1df0a9238b24362da92b828",
+      "spectre_behavioral_kill_count": 40,
+      "task_ids": [
+        "v4-517",
+        "v4-524",
+        "v4-527",
+        "v4-539",
+        "v4-558",
+        "v4-602",
+        "v4-647",
+        "v4-898"
+      ],
+      "untriaged_warning_count": 0,
+      "used_family_ids": [
+        "017",
+        "024",
+        "027",
+        "039",
+        "058",
+        "102",
+        "147",
+        "398"
+      ],
+      "used_stale_gold_family_ids": [
+        "017",
+        "024",
+        "027",
+        "039",
+        "058",
+        "102",
+        "147",
+        "398"
+      ],
+      "used_stale_negative_case_ids": [
+        "058/neg_001_wrong_mask",
+        "058/neg_002_wrong_mask",
+        "058/neg_003_wrong_mask",
+        "058/neg_004_wrong_mask",
+        "058/neg_005_wrong_mask",
+        "147/neg_001_zero",
+        "147/neg_002_shifted_bits",
+        "147/neg_003_inverted_bits",
+        "147/neg_004_half_high_level",
+        "147/neg_005_metric_scale_low",
+        "398/neg_001_stage1_wrong",
+        "398/neg_002_no_slew_limit",
+        "398/neg_003_settled_stuck_high",
+        "398/neg_005_clamp_flag_stuck_low",
+        "398/neg_006_asynchronous_update"
+      ]
+    },
+    "policy": "source_transitive_input_hash_bound_plus_release_recertification_evidence",
+    "simulation_rerun_required_for_materialization": false,
     "source_dut_gold_certification_count": 392,
     "source_dut_gold_certification_total": 400,
     "source_negative_certification_count": 1985,
     "source_negative_certification_total": 2000,
-    "stale_certification_family_ids": [
-      "017",
-      "024",
-      "027",
-      "039",
-      "058",
-      "102",
-      "147",
-      "398"
-    ],
-    "stale_gold_family_ids": [
-      "017",
-      "024",
-      "027",
-      "039",
-      "058",
-      "102",
-      "147",
-      "398"
-    ],
-    "stale_negative_case_ids": [
-      "058/neg_001_wrong_mask",
-      "058/neg_002_wrong_mask",
-      "058/neg_004_wrong_mask",
-      "058/neg_005_wrong_mask",
-      "058/neg_003_wrong_mask",
-      "147/neg_002_shifted_bits",
-      "147/neg_001_zero",
-      "147/neg_003_inverted_bits",
-      "147/neg_004_half_high_level",
-      "147/neg_005_metric_scale_low",
-      "398/neg_001_stage1_wrong",
-      "398/neg_002_no_slew_limit",
-      "398/neg_003_settled_stuck_high",
-      "398/neg_005_clamp_flag_stuck_low",
-      "398/neg_006_asynchronous_update"
-    ]
+    "stale_certification_family_ids": [],
+    "stale_gold_family_ids": [],
+    "stale_negative_case_ids": []
   },
   "family_count": 400,
   "materialized_artifact_sha256": {
@@ -67,11 +108,11 @@
     "task_index": "TASK_INDEX.json",
     "tasks": "tasks"
   },
-  "release_status": "materialized_certification_refresh_required",
+  "release_status": "materialized_hash_bound_certification_reuse_plus_fresh_recertification_audit_pending",
   "release_surface": "benchmarkv4_package",
   "schema_version": "v4-benchmarkv4-release-manifest-v1",
   "simulation_rerun_count_for_materialization": 0,
-  "simulation_rerun_required_for_materialization": true,
+  "simulation_rerun_required_for_materialization": false,
   "source_active_mutation_count": 2000,
   "source_release_label": "dut-base-v3-exact-five-hash-bound-v2",
   "source_score_denominator_manifest_sha256": "609cf067658715f53ef235855f6a469e7a3a7bd56ff92b85856c0ff04d0d386b",

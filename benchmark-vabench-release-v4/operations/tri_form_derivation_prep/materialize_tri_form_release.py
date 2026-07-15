@@ -24,6 +24,9 @@ PACKAGE_ROOT = Path(__file__).resolve().parents[2]
 PREP_ROOT = Path(__file__).resolve().parent
 DEFAULT_SOURCE = PACKAGE_ROOT / "provenance" / "dut-base-v3-exact-five-hash-bound-v2"
 DEFAULT_OUTPUT = PACKAGE_ROOT / "release" / "benchmarkv4"
+DEFAULT_RECERTIFICATION_EVIDENCE = (
+    PACKAGE_ROOT / "evidence" / "recertification" / "benchmarkv4-8family-correct-plus-five.json"
+)
 PROMPT_ASSETS = PREP_ROOT / "prompt_assets"
 MODES = {
     "G0": {"process": "direct_one_shot", "form_skill": False, "feedback_guide": False, "feedback_cli": False},
@@ -901,7 +904,6 @@ def main() -> int:
     if len(rows) != 400:
         raise SystemExit("source release must contain exactly 400 canonical DUT rows")
     source_rows = {str(row["canonical_dut_id"]): row for row in rows}
-    certification_reuse, _ = inspect_source_certification_reuse(source, source_rows)
     source_manifest_sha = file_sha(denominator_path)
     task_rows: list[dict[str, Any]] = []
     for row in rows:
@@ -922,14 +924,30 @@ def main() -> int:
     task_rows.sort(key=lambda item: int(str(item["task_id"]).split("-", 1)[1]))
     install_prompt_assets(output)
     write_json(output / "TASK_INDEX.json", {"schema_version": "v4-benchmarkv4-task-index-v1", "tasks": task_rows})
+    recertification_evidence = (
+        DEFAULT_RECERTIFICATION_EVIDENCE
+        if DEFAULT_RECERTIFICATION_EVIDENCE.is_file()
+        else None
+    )
+    certification_reuse, _ = inspect_source_certification_reuse(
+        source,
+        source_rows,
+        release=output,
+        recertification_evidence_path=recertification_evidence,
+    )
     counts = {form: sum(item["form"] == form for item in task_rows) for form in ("dut", "testbench", "bugfix")}
     rerun_required = bool(certification_reuse["simulation_rerun_required_for_materialization"])
+    fresh_recertified = bool(certification_reuse.get("fresh_recertification_evidence"))
     manifest = {
         "schema_version": "v4-benchmarkv4-release-manifest-v1",
         "release_status": (
             "materialized_certification_refresh_required"
             if rerun_required
-            else "materialized_hash_bound_certification_reuse_audit_pending"
+            else (
+                "materialized_hash_bound_certification_reuse_plus_fresh_recertification_audit_pending"
+                if fresh_recertified
+                else "materialized_hash_bound_certification_reuse_audit_pending"
+            )
         ),
         "family_count": 400,
         "task_count": len(task_rows),

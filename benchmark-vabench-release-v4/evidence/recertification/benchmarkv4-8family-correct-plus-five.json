@@ -1,0 +1,1850 @@
+{
+  "claim_scope": "fresh_benchmarkv4_correct_plus_five_evas_spectre_recertification",
+  "raw_reports": {
+    "evas": {
+      "pass_count": 8,
+      "schema_version": "v4-reference-evas-smoke-v1",
+      "sha256": "2181e01332763c503654d1c4be2aaeab1857f9d0588ddfeee9917f4c5b983068",
+      "task_count": 8
+    },
+    "spectre": {
+      "pass_count": 8,
+      "schema_version": "v4-benchmarkv4-reference-spectre-correct-plus-five-audit-v1",
+      "sha256": "c5195b29b2372c875aa280e9bf8179fe67f453d6a9e1e9ecaaf3f8b2fc15add7",
+      "task_count": 8,
+      "untriaged_warning_count": 0
+    }
+  },
+  "release": {
+    "git_commit": "3b35f9ca220a41b3e37373bab584f89d48467832",
+    "path": "benchmark-vabench-release-v4/release/benchmarkv4",
+    "task_index_sha256": "989b7b2d9657282ed25be71841ae824856d23b601b56da008bb34b9f6f5a7865"
+  },
+  "schema_version": "v4-benchmarkv4-recertification-evidence-v1",
+  "summary": {
+    "evas_behavioral_kill_count": 40,
+    "family_count": 8,
+    "negative_case_count": 40,
+    "reference_pass_count": 8,
+    "spectre_behavioral_kill_count": 40,
+    "status": "pass",
+    "task_count": 8,
+    "untriaged_warning_count": 0
+  },
+  "tasks": [
+    {
+      "cases": [
+        {
+          "candidate_bundle_sha256": "9ba0c0eb2d1ca695902d8e4abffa11688c3d356b208e815e32ac416aa3f26b5c",
+          "candidate_files": [
+            {
+              "path": "tasks/517-strongarm-style-latch-comparator-testbench/public/supplied_dut/cmp_strongarm.va",
+              "sha256": "b52a6b93137f0bf635e7758aa959babf0b080b83562dc4c527b0fc503bd6119a"
+            }
+          ],
+          "case_id": "correct",
+          "evas": {
+            "checker_ok": true,
+            "engine": "evas2",
+            "notes": [
+              "decision_states=PNPNZ expected=PNPNZ reset_states=ZZZZZ hold_states=PNNZ; P_INITIAL_AND_FALLING_RESET mismatch_count=0; P_POSITIVE_DECISION mismatch_count=0; P_NEGATIVE_DECISION mismatch_count=0; P_ZERO_DIFFERENTIAL mismatch_count=0; P_LATCH_HOLD mismatch_count=0"
+            ],
+            "status": "reference_pass"
+          },
+          "expected": "behavior_pass",
+          "observed": "behavior_pass",
+          "outcome": "reference_pass",
+          "role": "correct",
+          "spectre": {
+            "behavior_score": 1.0,
+            "benign_warning_count": 2,
+            "notes": [
+              "decision_states=PNPNZ expected=PNPNZ reset_states=ZZZZZ hold_states=PNNZ; P_INITIAL_AND_FALLING_RESET mismatch_count=0; P_POSITIVE_DECISION mismatch_count=0; P_NEGATIVE_DECISION mismatch_count=0; P_ZERO_DIFFERENTIAL mismatch_count=0; P_LATCH_HOLD mismatch_count=0"
+            ],
+            "outcome": "reference_pass",
+            "untriaged_warning_count": 0
+          }
+        },
+        {
+          "candidate_bundle_sha256": "a049cc623173329020a252212d88c8e73099faacba28846217f925839f57685e",
+          "candidate_files": [
+            {
+              "path": "tasks/517-strongarm-style-latch-comparator-testbench/evaluator/mutation_bundles/neg_001/cmp_strongarm.va",
+              "sha256": "bdb99032bb0eafd8150103a5de91702e8f33ed8591d1911b31d1c8d571d68d72"
+            }
+          ],
+          "case_id": "neg_001",
+          "evas": {
+            "checker_ok": false,
+            "engine": "evas2",
+            "notes": [
+              "decision_states=NNNNN expected=PNPNZ reset_states=ZZZZZ hold_states=NNNN; P_INITIAL_AND_FALLING_RESET mismatch_count=0; P_POSITIVE_DECISION mismatch_count=2; P_NEGATIVE_DECISION mismatch_count=0; P_ZERO_DIFFERENTIAL mismatch_count=1; P_LATCH_HOLD mismatch_count=2"
+            ],
+            "status": "mutation_killed"
+          },
+          "expected": "behavior_fail",
+          "observed": "behavior_fail",
+          "outcome": "killed_behaviorally",
+          "role": "negative",
+          "spectre": {
+            "behavior_score": 0.0,
+            "benign_warning_count": 2,
+            "notes": [
+              "decision_states=NNNNN expected=PNPNZ reset_states=ZZZZZ hold_states=NNNN; P_INITIAL_AND_FALLING_RESET mismatch_count=0; P_POSITIVE_DECISION mismatch_count=2; P_NEGATIVE_DECISION mismatch_count=0; P_ZERO_DIFFERENTIAL mismatch_count=1; P_LATCH_HOLD mismatch_count=2"
+            ],
+            "outcome": "killed_behaviorally",
+            "untriaged_warning_count": 0
+          }
+        },
+        {
+          "candidate_bundle_sha256": "6927aa6869b92707952c4b4edac6acef524f15394d12018fe525adbd0485ad5a",
+          "candidate_files": [
+            {
+              "path": "tasks/517-strongarm-style-latch-comparator-testbench/evaluator/mutation_bundles/neg_004/cmp_strongarm.va",
+              "sha256": "eb65b4d39a24fda0489c688a2c2493b2003027a18a1c99a4454874ff3fd3941a"
+            }
+          ],
+          "case_id": "neg_004",
+          "evas": {
+            "checker_ok": false,
+            "engine": "evas2",
+            "notes": [
+              "decision_states=PNPNZ expected=PNPNZ reset_states=ZPNPN hold_states=PNNZ; P_INITIAL_AND_FALLING_RESET mismatch_count=4; P_POSITIVE_DECISION mismatch_count=0; P_NEGATIVE_DECISION mismatch_count=0; P_ZERO_DIFFERENTIAL mismatch_count=0; P_LATCH_HOLD mismatch_count=0"
+            ],
+            "status": "mutation_killed"
+          },
+          "expected": "behavior_fail",
+          "observed": "behavior_fail",
+          "outcome": "killed_behaviorally",
+          "role": "negative",
+          "spectre": {
+            "behavior_score": 0.0,
+            "benign_warning_count": 2,
+            "notes": [
+              "decision_states=PNPNZ expected=PNPNZ reset_states=ZPNPN hold_states=PNNZ; P_INITIAL_AND_FALLING_RESET mismatch_count=4; P_POSITIVE_DECISION mismatch_count=0; P_NEGATIVE_DECISION mismatch_count=0; P_ZERO_DIFFERENTIAL mismatch_count=0; P_LATCH_HOLD mismatch_count=0"
+            ],
+            "outcome": "killed_behaviorally",
+            "untriaged_warning_count": 0
+          }
+        },
+        {
+          "candidate_bundle_sha256": "1f64811116437bdb9f9a6f8c633464b4706b2c8370ca537fe89195e173e5c1b8",
+          "candidate_files": [
+            {
+              "path": "tasks/517-strongarm-style-latch-comparator-testbench/evaluator/mutation_bundles/neg_002/cmp_strongarm.va",
+              "sha256": "d7c7e26099d2970723e83d47dc1a94149d5e3039ee234cdd90ee4217ae1fd06d"
+            }
+          ],
+          "case_id": "neg_002",
+          "evas": {
+            "checker_ok": false,
+            "engine": "evas2",
+            "notes": [
+              "decision_states=PNPNZ expected=PNPNZ reset_states=ZZZZZ hold_states=PZNZ; P_INITIAL_AND_FALLING_RESET mismatch_count=0; P_POSITIVE_DECISION mismatch_count=0; P_NEGATIVE_DECISION mismatch_count=0; P_ZERO_DIFFERENTIAL mismatch_count=0; P_LATCH_HOLD mismatch_count=1"
+            ],
+            "status": "mutation_killed"
+          },
+          "expected": "behavior_fail",
+          "observed": "behavior_fail",
+          "outcome": "killed_behaviorally",
+          "role": "negative",
+          "spectre": {
+            "behavior_score": 0.0,
+            "benign_warning_count": 2,
+            "notes": [
+              "decision_states=PNPNZ expected=PNPNZ reset_states=ZZZZZ hold_states=NPNZ; P_INITIAL_AND_FALLING_RESET mismatch_count=0; P_POSITIVE_DECISION mismatch_count=0; P_NEGATIVE_DECISION mismatch_count=0; P_ZERO_DIFFERENTIAL mismatch_count=0; P_LATCH_HOLD mismatch_count=2"
+            ],
+            "outcome": "killed_behaviorally",
+            "untriaged_warning_count": 0
+          }
+        },
+        {
+          "candidate_bundle_sha256": "e3327ff119c8ecde592073757754831d3c91e5143a1ed0b2868f9bc815e55e32",
+          "candidate_files": [
+            {
+              "path": "tasks/517-strongarm-style-latch-comparator-testbench/evaluator/mutation_bundles/neg_005/cmp_strongarm.va",
+              "sha256": "4f091a790bcd4d62f393a9ab0ff7b85158f52bd3070af65733b52833217b9b13"
+            }
+          ],
+          "case_id": "neg_005",
+          "evas": {
+            "checker_ok": false,
+            "engine": "evas2",
+            "notes": [
+              "decision_states=PNPNP expected=PNPNZ reset_states=ZZZZZ hold_states=PNNP; P_INITIAL_AND_FALLING_RESET mismatch_count=0; P_POSITIVE_DECISION mismatch_count=0; P_NEGATIVE_DECISION mismatch_count=0; P_ZERO_DIFFERENTIAL mismatch_count=1; P_LATCH_HOLD mismatch_count=1"
+            ],
+            "status": "mutation_killed"
+          },
+          "expected": "behavior_fail",
+          "observed": "behavior_fail",
+          "outcome": "killed_behaviorally",
+          "role": "negative",
+          "spectre": {
+            "behavior_score": 0.0,
+            "benign_warning_count": 2,
+            "notes": [
+              "decision_states=PNPNP expected=PNPNZ reset_states=ZZZZZ hold_states=PNNP; P_INITIAL_AND_FALLING_RESET mismatch_count=0; P_POSITIVE_DECISION mismatch_count=0; P_NEGATIVE_DECISION mismatch_count=0; P_ZERO_DIFFERENTIAL mismatch_count=1; P_LATCH_HOLD mismatch_count=1"
+            ],
+            "outcome": "killed_behaviorally",
+            "untriaged_warning_count": 0
+          }
+        },
+        {
+          "candidate_bundle_sha256": "e352c4a35da156afc646e1da74c7d5a15abcd0f6689314ad2e851abcfdf7a41e",
+          "candidate_files": [
+            {
+              "path": "tasks/517-strongarm-style-latch-comparator-testbench/evaluator/mutation_bundles/neg_003/cmp_strongarm.va",
+              "sha256": "15d0a91a09235aab4d2464a7484e57ba67ea36ff4cfd91129c84a3ede966ab75"
+            }
+          ],
+          "case_id": "neg_003",
+          "evas": {
+            "checker_ok": false,
+            "engine": "evas2",
+            "notes": [
+              "decision_states=NPNPZ expected=PNPNZ reset_states=ZZZZZ hold_states=NPPZ; P_INITIAL_AND_FALLING_RESET mismatch_count=0; P_POSITIVE_DECISION mismatch_count=2; P_NEGATIVE_DECISION mismatch_count=2; P_ZERO_DIFFERENTIAL mismatch_count=0; P_LATCH_HOLD mismatch_count=3"
+            ],
+            "status": "mutation_killed"
+          },
+          "expected": "behavior_fail",
+          "observed": "behavior_fail",
+          "outcome": "killed_behaviorally",
+          "role": "negative",
+          "spectre": {
+            "behavior_score": 0.0,
+            "benign_warning_count": 2,
+            "notes": [
+              "decision_states=NPNPZ expected=PNPNZ reset_states=ZZZZZ hold_states=NPPZ; P_INITIAL_AND_FALLING_RESET mismatch_count=0; P_POSITIVE_DECISION mismatch_count=2; P_NEGATIVE_DECISION mismatch_count=2; P_ZERO_DIFFERENTIAL mismatch_count=0; P_LATCH_HOLD mismatch_count=3"
+            ],
+            "outcome": "killed_behaviorally",
+            "untriaged_warning_count": 0
+          }
+        }
+      ],
+      "checker": {
+        "profile": {
+          "path": "tasks/517-strongarm-style-latch-comparator-testbench/evaluator/checker_profile.json",
+          "sha256": "eed3bff997f497029d8191a271c8bc3e177a6f7c6d4f23f97321963a59e74eba"
+        },
+        "task_id": "v4_017_strongarm_style_latch_comparator"
+      },
+      "family_id": "017",
+      "form": "testbench",
+      "kill_denominator": 5,
+      "killed_count": 5,
+      "reference_gate": "pass",
+      "reference_tb": {
+        "path": "tasks/517-strongarm-style-latch-comparator-testbench/evaluator/reference_tb.scs",
+        "sha256": "434bb01bf8467c816380698f3918a3855a8dad75bf9658e4d4c71896f0d0e976"
+      },
+      "status": "pass",
+      "task_dir": "tasks/517-strongarm-style-latch-comparator-testbench",
+      "task_id": "v4-517",
+      "untriaged_warning_count": 0
+    },
+    {
+      "cases": [
+        {
+          "candidate_bundle_sha256": "ee7150a8d3809a9e85c04386f3cdca1808694a494effcc392a28ed0b70a94ec4",
+          "candidate_files": [
+            {
+              "path": "tasks/524-clocked-sample-and-hold-testbench/public/supplied_dut/sample_hold.va",
+              "sha256": "d25ac78eb7d56d2e83345f985159ed8697100dfe02437ecdfbce57e383e5868c"
+            }
+          ],
+          "case_id": "correct",
+          "evas": {
+            "checker_ok": true,
+            "engine": "evas2",
+            "notes": [
+              "edges=50 hold_ok"
+            ],
+            "status": "reference_pass"
+          },
+          "expected": "behavior_pass",
+          "observed": "behavior_pass",
+          "outcome": "reference_pass",
+          "role": "correct",
+          "spectre": {
+            "behavior_score": 1.0,
+            "benign_warning_count": 2,
+            "notes": [
+              "edges=50 hold_ok"
+            ],
+            "outcome": "reference_pass",
+            "untriaged_warning_count": 0
+          }
+        },
+        {
+          "candidate_bundle_sha256": "e541bcb9fc791ca138daa8d03fe7b28da720906df936b1b75a7c121b0a6eb679",
+          "candidate_files": [
+            {
+              "path": "tasks/524-clocked-sample-and-hold-testbench/evaluator/mutation_bundles/neg_004_absolute_ground_reference/sample_hold.va",
+              "sha256": "7d512d399bae5e71d050023a9a4ba206823a5df233b1ea0cc445882c8e1b84f1"
+            }
+          ],
+          "case_id": "neg_004_absolute_ground_reference",
+          "evas": {
+            "checker_ok": false,
+            "engine": "evas2",
+            "notes": [
+              "sample_mismatch=20/20"
+            ],
+            "status": "mutation_killed"
+          },
+          "expected": "behavior_fail",
+          "observed": "behavior_fail",
+          "outcome": "killed_behaviorally",
+          "role": "negative",
+          "spectre": {
+            "behavior_score": 0.0,
+            "benign_warning_count": 2,
+            "notes": [
+              "sample_mismatch=20/20"
+            ],
+            "outcome": "killed_behaviorally",
+            "untriaged_warning_count": 0
+          }
+        },
+        {
+          "candidate_bundle_sha256": "d5bf692d497b07e65dbb5e139ebf33786570072cb87c04af87e4f0d906721807",
+          "candidate_files": [
+            {
+              "path": "tasks/524-clocked-sample-and-hold-testbench/evaluator/mutation_bundles/neg_002_high_phase_transparent/sample_hold.va",
+              "sha256": "5ec7b0e363de010f9360e092b5ae538b168278d6cf01450278cc1ccfb26a99fa"
+            }
+          ],
+          "case_id": "neg_002_high_phase_transparent",
+          "evas": {
+            "checker_ok": false,
+            "engine": "evas2",
+            "notes": [
+              "output_not_held jitter=0.6800V"
+            ],
+            "status": "mutation_killed"
+          },
+          "expected": "behavior_fail",
+          "observed": "behavior_fail",
+          "outcome": "killed_behaviorally",
+          "role": "negative",
+          "spectre": {
+            "behavior_score": 0.0,
+            "benign_warning_count": 2,
+            "notes": [
+              "output_not_held jitter=0.6800V"
+            ],
+            "outcome": "killed_behaviorally",
+            "untriaged_warning_count": 0
+          }
+        },
+        {
+          "candidate_bundle_sha256": "70ce1f12016b0c01b4fdab5dea331e9f356e7aab02a4fef03247bc25d7eb56e5",
+          "candidate_files": [
+            {
+              "path": "tasks/524-clocked-sample-and-hold-testbench/evaluator/mutation_bundles/neg_001_falling_edge_sample/sample_hold.va",
+              "sha256": "d8ba08595736b8581424a1782c18e856eb9bb7bf47bb60d7fa720e424e6cc2fc"
+            }
+          ],
+          "case_id": "neg_001_falling_edge_sample",
+          "evas": {
+            "checker_ok": false,
+            "engine": "evas2",
+            "notes": [
+              "output_not_held jitter=0.6800V"
+            ],
+            "status": "mutation_killed"
+          },
+          "expected": "behavior_fail",
+          "observed": "behavior_fail",
+          "outcome": "killed_behaviorally",
+          "role": "negative",
+          "spectre": {
+            "behavior_score": 0.0,
+            "benign_warning_count": 2,
+            "notes": [
+              "output_not_held jitter=0.7800V"
+            ],
+            "outcome": "killed_behaviorally",
+            "untriaged_warning_count": 0
+          }
+        },
+        {
+          "candidate_bundle_sha256": "9b0d7f5567bc10e4f08b6ab006c212bc7daf3ab84c155f2055eebccc0b4e63b5",
+          "candidate_files": [
+            {
+              "path": "tasks/524-clocked-sample-and-hold-testbench/evaluator/mutation_bundles/neg_003_wrong_initial_state/sample_hold.va",
+              "sha256": "c5598170794cbeedcba2c6c07d42b87602c2b5ca23025d3e55a279bffd1af53b"
+            }
+          ],
+          "case_id": "neg_003_wrong_initial_state",
+          "evas": {
+            "checker_ok": false,
+            "engine": "evas2",
+            "notes": [
+              "sample_mismatch=20/20"
+            ],
+            "status": "mutation_killed"
+          },
+          "expected": "behavior_fail",
+          "observed": "behavior_fail",
+          "outcome": "killed_behaviorally",
+          "role": "negative",
+          "spectre": {
+            "behavior_score": 0.0,
+            "benign_warning_count": 2,
+            "notes": [
+              "sample_mismatch=20/20"
+            ],
+            "outcome": "killed_behaviorally",
+            "untriaged_warning_count": 0
+          }
+        },
+        {
+          "candidate_bundle_sha256": "1f79e262301dbdfb8295b97a5627140ce2aca1f87e26548ba429b5f0ced09656",
+          "candidate_files": [
+            {
+              "path": "tasks/524-clocked-sample-and-hold-testbench/evaluator/mutation_bundles/neg_005_slow_output_transition/sample_hold.va",
+              "sha256": "efd316ad1a88cfdd4d0a575ae1df0658c27c5dd1525a90de8ed1128c90c20a23"
+            }
+          ],
+          "case_id": "neg_005_slow_output_transition",
+          "evas": {
+            "checker_ok": false,
+            "engine": "evas2",
+            "notes": [
+              "output_not_held jitter=0.3400V"
+            ],
+            "status": "mutation_killed"
+          },
+          "expected": "behavior_fail",
+          "observed": "behavior_fail",
+          "outcome": "killed_behaviorally",
+          "role": "negative",
+          "spectre": {
+            "behavior_score": 0.0,
+            "benign_warning_count": 2,
+            "notes": [
+              "output_not_held jitter=0.0340V"
+            ],
+            "outcome": "killed_behaviorally",
+            "untriaged_warning_count": 0
+          }
+        }
+      ],
+      "checker": {
+        "profile": {
+          "path": "tasks/524-clocked-sample-and-hold-testbench/evaluator/checker_profile.json",
+          "sha256": "c81d165726013d66569bfaee46a36381a961fefeb295fdda2184b0468a6a409d"
+        },
+        "task_id": "v4_024_clocked_sample_and_hold"
+      },
+      "family_id": "024",
+      "form": "testbench",
+      "kill_denominator": 5,
+      "killed_count": 5,
+      "reference_gate": "pass",
+      "reference_tb": {
+        "path": "tasks/524-clocked-sample-and-hold-testbench/evaluator/reference_tb.scs",
+        "sha256": "6b10f87440a376f68cdecbc7f634081eea4bf76e1995a7e1554308f3584a2c44"
+      },
+      "status": "pass",
+      "task_dir": "tasks/524-clocked-sample-and-hold-testbench",
+      "task_id": "v4-524",
+      "untriaged_warning_count": 0
+    },
+    {
+      "cases": [
+        {
+          "candidate_bundle_sha256": "7c4b98ed38aaf65dc3318421ac7fa67cf1ce211b5dc9769cc11e430cac09c944",
+          "candidate_files": [
+            {
+              "path": "tasks/527-dwa-dem-encoder-testbench/public/supplied_dut/dwa_ptr_gen.va",
+              "sha256": "03bf1fb4aa78bbbcef2d26d3d08c02cbc4a6be6ca977f96cfa6030577ff13d6f"
+            },
+            {
+              "path": "tasks/527-dwa-dem-encoder-testbench/public/supplied_dut/v2b_4b.va",
+              "sha256": "37dab6cd434bd76cecaea53cce86a15fb91b7af57ef2984b100cc527d11859c4"
+            }
+          ],
+          "case_id": "correct",
+          "evas": {
+            "checker_ok": true,
+            "engine": "evas2",
+            "notes": [
+              "sampled_cycles=9 bad_ptr_rows=0 bad_span_rows=0 ptr_unique=8 wrap_events=2 split_wrap_rows=2 max_active_cells=9"
+            ],
+            "status": "reference_pass"
+          },
+          "expected": "behavior_pass",
+          "observed": "behavior_pass",
+          "outcome": "reference_pass",
+          "role": "correct",
+          "spectre": {
+            "behavior_score": 1.0,
+            "benign_warning_count": 2,
+            "notes": [
+              "sampled_cycles=9 bad_ptr_rows=0 bad_span_rows=0 ptr_unique=8 wrap_events=2 split_wrap_rows=2 max_active_cells=9"
+            ],
+            "outcome": "reference_pass",
+            "untriaged_warning_count": 0
+          }
+        },
+        {
+          "candidate_bundle_sha256": "e7b20ca401c2b311328cbe3aedcc7db4b7dba75ebab41f73bbc013d408ff8262",
+          "candidate_files": [
+            {
+              "path": "tasks/527-dwa-dem-encoder-testbench/evaluator/mutation_bundles/neg_001_boundary/dwa_ptr_gen.va",
+              "sha256": "ab7f3b3514bdc37c196e1ec6aab66cb2b090c0ac903b13adca28468adc34ff5d"
+            },
+            {
+              "path": "tasks/527-dwa-dem-encoder-testbench/public/supplied_dut/v2b_4b.va",
+              "sha256": "37dab6cd434bd76cecaea53cce86a15fb91b7af57ef2984b100cc527d11859c4"
+            }
+          ],
+          "case_id": "neg_001_boundary",
+          "evas": {
+            "checker_ok": false,
+            "engine": "evas2",
+            "notes": [
+              "sampled_cycles=9 bad_ptr_rows=9 bad_span_rows=9 ptr_unique=8 wrap_events=2 split_wrap_rows=9 max_active_cells=9"
+            ],
+            "status": "mutation_killed"
+          },
+          "expected": "behavior_fail",
+          "observed": "behavior_fail",
+          "outcome": "killed_behaviorally",
+          "role": "negative",
+          "spectre": {
+            "behavior_score": 0.0,
+            "benign_warning_count": 2,
+            "notes": [
+              "sampled_cycles=9 bad_ptr_rows=9 bad_span_rows=9 ptr_unique=8 wrap_events=2 split_wrap_rows=9 max_active_cells=9"
+            ],
+            "outcome": "killed_behaviorally",
+            "untriaged_warning_count": 0
+          }
+        },
+        {
+          "candidate_bundle_sha256": "c61dfc07b1cf2d16bd52d7cd059c638f09e72ea488bef182fcdbe98c2ea52698",
+          "candidate_files": [
+            {
+              "path": "tasks/527-dwa-dem-encoder-testbench/evaluator/mutation_bundles/neg_003_polarity_direction/dwa_ptr_gen.va",
+              "sha256": "de51255281b2b79dbb666c5cb8d8000225dc4457e2a61e128b2f29d7784a6abe"
+            },
+            {
+              "path": "tasks/527-dwa-dem-encoder-testbench/public/supplied_dut/v2b_4b.va",
+              "sha256": "37dab6cd434bd76cecaea53cce86a15fb91b7af57ef2984b100cc527d11859c4"
+            }
+          ],
+          "case_id": "neg_003_polarity_direction",
+          "evas": {
+            "checker_ok": false,
+            "engine": "evas2",
+            "notes": [
+              "sampled_cycles=9 bad_ptr_rows=0 bad_span_rows=9 ptr_unique=8 wrap_events=2 split_wrap_rows=1 max_active_cells=8"
+            ],
+            "status": "mutation_killed"
+          },
+          "expected": "behavior_fail",
+          "observed": "behavior_fail",
+          "outcome": "killed_behaviorally",
+          "role": "negative",
+          "spectre": {
+            "behavior_score": 0.0,
+            "benign_warning_count": 2,
+            "notes": [
+              "sampled_cycles=9 bad_ptr_rows=0 bad_span_rows=9 ptr_unique=8 wrap_events=2 split_wrap_rows=1 max_active_cells=8"
+            ],
+            "outcome": "killed_behaviorally",
+            "untriaged_warning_count": 0
+          }
+        },
+        {
+          "candidate_bundle_sha256": "ff233718b1e1b61bdf2fd0fcdfe3997c27c21e64eb993b74fc02b9a16fa8eab4",
+          "candidate_files": [
+            {
+              "path": "tasks/527-dwa-dem-encoder-testbench/evaluator/mutation_bundles/neg_004_state_reset/dwa_ptr_gen.va",
+              "sha256": "a941ed676796055980866d7068e27967b50d3dde5788272374cce87209539527"
+            },
+            {
+              "path": "tasks/527-dwa-dem-encoder-testbench/public/supplied_dut/v2b_4b.va",
+              "sha256": "37dab6cd434bd76cecaea53cce86a15fb91b7af57ef2984b100cc527d11859c4"
+            }
+          ],
+          "case_id": "neg_004_state_reset",
+          "evas": {
+            "checker_ok": false,
+            "engine": "evas2",
+            "notes": [
+              "sampled_cycles=9 bad_ptr_rows=9 bad_span_rows=9 ptr_unique=8 wrap_events=2 split_wrap_rows=3 max_active_cells=9"
+            ],
+            "status": "mutation_killed"
+          },
+          "expected": "behavior_fail",
+          "observed": "behavior_fail",
+          "outcome": "killed_behaviorally",
+          "role": "negative",
+          "spectre": {
+            "behavior_score": 0.0,
+            "benign_warning_count": 2,
+            "notes": [
+              "sampled_cycles=9 bad_ptr_rows=9 bad_span_rows=9 ptr_unique=8 wrap_events=2 split_wrap_rows=3 max_active_cells=9"
+            ],
+            "outcome": "killed_behaviorally",
+            "untriaged_warning_count": 0
+          }
+        },
+        {
+          "candidate_bundle_sha256": "f13a063dd03a5700e422f2b080f9bd44e78ad75d449b0078cb0f7d24d329af2f",
+          "candidate_files": [
+            {
+              "path": "tasks/527-dwa-dem-encoder-testbench/evaluator/mutation_bundles/neg_005_metric_writeout/dwa_ptr_gen.va",
+              "sha256": "9d2e33a405149b316cae052ba4be6243f16c4bf52ecd5b75ee6fd6e312cfe5ed"
+            },
+            {
+              "path": "tasks/527-dwa-dem-encoder-testbench/public/supplied_dut/v2b_4b.va",
+              "sha256": "37dab6cd434bd76cecaea53cce86a15fb91b7af57ef2984b100cc527d11859c4"
+            }
+          ],
+          "case_id": "neg_005_metric_writeout",
+          "evas": {
+            "checker_ok": false,
+            "engine": "evas2",
+            "notes": [
+              "sampled_cycles=9 bad_ptr_rows=9 bad_span_rows=9 ptr_unique=8 wrap_events=2 split_wrap_rows=0 max_active_cells=0"
+            ],
+            "status": "mutation_killed"
+          },
+          "expected": "behavior_fail",
+          "observed": "behavior_fail",
+          "outcome": "killed_behaviorally",
+          "role": "negative",
+          "spectre": {
+            "behavior_score": 0.0,
+            "benign_warning_count": 2,
+            "notes": [
+              "sampled_cycles=9 bad_ptr_rows=9 bad_span_rows=9 ptr_unique=8 wrap_events=2 split_wrap_rows=0 max_active_cells=0"
+            ],
+            "outcome": "killed_behaviorally",
+            "untriaged_warning_count": 0
+          }
+        },
+        {
+          "candidate_bundle_sha256": "66f3fbb13558830295981969ecafbfa12447dcf222ff08822aaf2ef14195428d",
+          "candidate_files": [
+            {
+              "path": "tasks/527-dwa-dem-encoder-testbench/evaluator/mutation_bundles/neg_002_timing_window/dwa_ptr_gen.va",
+              "sha256": "f25563bd36dab47590f9d836992620cb085c024c08891e0329d2c39473ac5a4a"
+            },
+            {
+              "path": "tasks/527-dwa-dem-encoder-testbench/public/supplied_dut/v2b_4b.va",
+              "sha256": "37dab6cd434bd76cecaea53cce86a15fb91b7af57ef2984b100cc527d11859c4"
+            }
+          ],
+          "case_id": "neg_002_timing_window",
+          "evas": {
+            "checker_ok": false,
+            "engine": "evas2",
+            "notes": [
+              "sampled_cycles=9 bad_ptr_rows=9 bad_span_rows=9 ptr_unique=8 wrap_events=2 split_wrap_rows=4 max_active_cells=9"
+            ],
+            "status": "mutation_killed"
+          },
+          "expected": "behavior_fail",
+          "observed": "behavior_fail",
+          "outcome": "killed_behaviorally",
+          "role": "negative",
+          "spectre": {
+            "behavior_score": 0.0,
+            "benign_warning_count": 2,
+            "notes": [
+              "sampled_cycles=9 bad_ptr_rows=9 bad_span_rows=9 ptr_unique=8 wrap_events=2 split_wrap_rows=4 max_active_cells=9"
+            ],
+            "outcome": "killed_behaviorally",
+            "untriaged_warning_count": 0
+          }
+        }
+      ],
+      "checker": {
+        "profile": {
+          "path": "tasks/527-dwa-dem-encoder-testbench/evaluator/checker_profile.json",
+          "sha256": "e24c6a52cd995bf69799b169693ff3ceec7c783823bbce042ce93104d7924b5f"
+        },
+        "task_id": "v4_027_dwa_dem_encoder"
+      },
+      "family_id": "027",
+      "form": "testbench",
+      "kill_denominator": 5,
+      "killed_count": 5,
+      "reference_gate": "pass",
+      "reference_tb": {
+        "path": "tasks/527-dwa-dem-encoder-testbench/evaluator/reference_tb.scs",
+        "sha256": "c5eba06ee6c7fa3c11aa7508ad5b28ee6789502ffa88d5ce8eaddcb859b8aa72"
+      },
+      "status": "pass",
+      "task_dir": "tasks/527-dwa-dem-encoder-testbench",
+      "task_id": "v4-527",
+      "untriaged_warning_count": 0
+    },
+    {
+      "cases": [
+        {
+          "candidate_bundle_sha256": "8a093aaedcdb40ef5bdbaa7e6e63d00af6dda8b1a296de53192045ab9e14a91a",
+          "candidate_files": [
+            {
+              "path": "tasks/539-propagation-delay-comparator-testbench/public/supplied_dut/cmp_delay.va",
+              "sha256": "32180511853b553a300eaa3aab702dd3dee520848d2a03de1a2f892f01378c92"
+            },
+            {
+              "path": "tasks/539-propagation-delay-comparator-testbench/public/supplied_dut/edge_interval_timer.va",
+              "sha256": "ea42065af34088fa083b7be795c98364770c6bc08aaa1929542198a2d0ab7fc9"
+            }
+          ],
+          "case_id": "correct",
+          "evas": {
+            "checker_ok": true,
+            "engine": "evas2",
+            "notes": [
+              "delays_ns=[0.08, 0.09, 0.1, 0.11] monotonic=True total_growth_ns=0.030"
+            ],
+            "status": "reference_pass"
+          },
+          "expected": "behavior_pass",
+          "observed": "behavior_pass",
+          "outcome": "reference_pass",
+          "role": "correct",
+          "spectre": {
+            "behavior_score": 1.0,
+            "benign_warning_count": 2,
+            "notes": [
+              "delays_ns=[0.08, 0.09, 0.1, 0.11] monotonic=True total_growth_ns=0.030"
+            ],
+            "outcome": "reference_pass",
+            "untriaged_warning_count": 0
+          }
+        },
+        {
+          "candidate_bundle_sha256": "c3c808daf51ccfb06ae2e0b4c5a0cae5f62c06c53536b3fb618b253f87459b44",
+          "candidate_files": [
+            {
+              "path": "tasks/539-propagation-delay-comparator-testbench/evaluator/mutation_bundles/neg_001/cmp_delay.va",
+              "sha256": "a783ee15f91edec765deda90035cd20724887ad6f32635fd1cc4b39eb8276677"
+            },
+            {
+              "path": "tasks/539-propagation-delay-comparator-testbench/public/supplied_dut/edge_interval_timer.va",
+              "sha256": "ea42065af34088fa083b7be795c98364770c6bc08aaa1929542198a2d0ab7fc9"
+            }
+          ],
+          "case_id": "neg_001",
+          "evas": {
+            "checker_ok": false,
+            "engine": "evas2",
+            "notes": [
+              "delays_ns=[0.061, 0.061, 0.061, 0.061] monotonic=True total_growth_ns=-0.000"
+            ],
+            "status": "mutation_killed"
+          },
+          "expected": "behavior_fail",
+          "observed": "behavior_fail",
+          "outcome": "killed_behaviorally",
+          "role": "negative",
+          "spectre": {
+            "behavior_score": 0.0,
+            "benign_warning_count": 2,
+            "notes": [
+              "delays_ns=[0.061, 0.061, 0.061, 0.061] monotonic=True total_growth_ns=-0.000"
+            ],
+            "outcome": "killed_behaviorally",
+            "untriaged_warning_count": 0
+          }
+        },
+        {
+          "candidate_bundle_sha256": "a5c5b2a642954999de228b8e950a17d4ad0d074391599986529c9f0712835e71",
+          "candidate_files": [
+            {
+              "path": "tasks/539-propagation-delay-comparator-testbench/evaluator/mutation_bundles/neg_003/cmp_delay.va",
+              "sha256": "55f67147d8573ccc301dcc8542dc6c4a41d512a1f81779a40e3099c1b02fd092"
+            },
+            {
+              "path": "tasks/539-propagation-delay-comparator-testbench/public/supplied_dut/edge_interval_timer.va",
+              "sha256": "ea42065af34088fa083b7be795c98364770c6bc08aaa1929542198a2d0ab7fc9"
+            }
+          ],
+          "case_id": "neg_003",
+          "evas": {
+            "checker_ok": false,
+            "engine": "evas2",
+            "notes": [
+              "delays_ns=[0.061, 0.061, 0.061, 0.061] monotonic=True total_growth_ns=-0.000"
+            ],
+            "status": "mutation_killed"
+          },
+          "expected": "behavior_fail",
+          "observed": "behavior_fail",
+          "outcome": "killed_behaviorally",
+          "role": "negative",
+          "spectre": {
+            "behavior_score": 0.0,
+            "benign_warning_count": 2,
+            "notes": [
+              "delays_ns=[0.061, 0.061, 0.061, 0.061] monotonic=True total_growth_ns=-0.000"
+            ],
+            "outcome": "killed_behaviorally",
+            "untriaged_warning_count": 0
+          }
+        },
+        {
+          "candidate_bundle_sha256": "cdbb2d7f909c1529bb2d9e04a4876580b71e8ccac74f2896d3a1a4727d4617a9",
+          "candidate_files": [
+            {
+              "path": "tasks/539-propagation-delay-comparator-testbench/evaluator/mutation_bundles/neg_004/cmp_delay.va",
+              "sha256": "31dc0d16fbe51e2e48d6ff30b71f71bb83ec1fa74e6b43309613ce564fd4b30d"
+            },
+            {
+              "path": "tasks/539-propagation-delay-comparator-testbench/public/supplied_dut/edge_interval_timer.va",
+              "sha256": "ea42065af34088fa083b7be795c98364770c6bc08aaa1929542198a2d0ab7fc9"
+            }
+          ],
+          "case_id": "neg_004",
+          "evas": {
+            "checker_ok": false,
+            "engine": "evas2",
+            "notes": [
+              "delays_ns=[0.061, 0.061, 0.061, 0.061] monotonic=True total_growth_ns=-0.000"
+            ],
+            "status": "mutation_killed"
+          },
+          "expected": "behavior_fail",
+          "observed": "behavior_fail",
+          "outcome": "killed_behaviorally",
+          "role": "negative",
+          "spectre": {
+            "behavior_score": 0.0,
+            "benign_warning_count": 2,
+            "notes": [
+              "delays_ns=[0.061, 0.061, 0.061, 0.061] monotonic=True total_growth_ns=-0.000"
+            ],
+            "outcome": "killed_behaviorally",
+            "untriaged_warning_count": 0
+          }
+        },
+        {
+          "candidate_bundle_sha256": "a1fcded7092274a4d000566693e3afba47cdc4cb059ba8d0fb7be2dae9de45ab",
+          "candidate_files": [
+            {
+              "path": "tasks/539-propagation-delay-comparator-testbench/evaluator/mutation_bundles/neg_005/cmp_delay.va",
+              "sha256": "7bfc6a9a58d4e2a5610c50aafc17b5874582a1492a3d2d54f0b1930f00958b1a"
+            },
+            {
+              "path": "tasks/539-propagation-delay-comparator-testbench/public/supplied_dut/edge_interval_timer.va",
+              "sha256": "ea42065af34088fa083b7be795c98364770c6bc08aaa1929542198a2d0ab7fc9"
+            }
+          ],
+          "case_id": "neg_005",
+          "evas": {
+            "checker_ok": false,
+            "engine": "evas2",
+            "notes": [
+              "delays_ns=[0.061, 0.061, 0.061, 0.061] monotonic=True total_growth_ns=-0.000"
+            ],
+            "status": "mutation_killed"
+          },
+          "expected": "behavior_fail",
+          "observed": "behavior_fail",
+          "outcome": "killed_behaviorally",
+          "role": "negative",
+          "spectre": {
+            "behavior_score": 0.0,
+            "benign_warning_count": 2,
+            "notes": [
+              "delays_ns=[0.061, 0.061, 0.061, 0.061] monotonic=True total_growth_ns=-0.000"
+            ],
+            "outcome": "killed_behaviorally",
+            "untriaged_warning_count": 0
+          }
+        },
+        {
+          "candidate_bundle_sha256": "6e25162befd9d24c670f28912ea367f3981bac29e7ab9241cddded41f951df53",
+          "candidate_files": [
+            {
+              "path": "tasks/539-propagation-delay-comparator-testbench/evaluator/mutation_bundles/neg_002/cmp_delay.va",
+              "sha256": "f1f1389b0269c26cbe6709bc97ed9b372f550f194f7b1201561e4e0a3032348c"
+            },
+            {
+              "path": "tasks/539-propagation-delay-comparator-testbench/public/supplied_dut/edge_interval_timer.va",
+              "sha256": "ea42065af34088fa083b7be795c98364770c6bc08aaa1929542198a2d0ab7fc9"
+            }
+          ],
+          "case_id": "neg_002",
+          "evas": {
+            "checker_ok": false,
+            "engine": "evas2",
+            "notes": [
+              "delays_ns=[0.061, 0.061, 0.061, 0.061] monotonic=True total_growth_ns=-0.000"
+            ],
+            "status": "mutation_killed"
+          },
+          "expected": "behavior_fail",
+          "observed": "behavior_fail",
+          "outcome": "killed_behaviorally",
+          "role": "negative",
+          "spectre": {
+            "behavior_score": 0.0,
+            "benign_warning_count": 2,
+            "notes": [
+              "delays_ns=[0.061, 0.061, 0.061, 0.061] monotonic=True total_growth_ns=-0.000"
+            ],
+            "outcome": "killed_behaviorally",
+            "untriaged_warning_count": 0
+          }
+        }
+      ],
+      "checker": {
+        "profile": {
+          "path": "tasks/539-propagation-delay-comparator-testbench/evaluator/checker_profile.json",
+          "sha256": "7d81d36423cbcc0c08e96c9e3ad401f3afbdb82c7e30603a132b7a87eb6d66be"
+        },
+        "task_id": "v4_039_propagation_delay_comparator"
+      },
+      "family_id": "039",
+      "form": "testbench",
+      "kill_denominator": 5,
+      "killed_count": 5,
+      "reference_gate": "pass",
+      "reference_tb": {
+        "path": "tasks/539-propagation-delay-comparator-testbench/evaluator/reference_tb.scs",
+        "sha256": "539431bc288e25e721f202ca8b256b8b12cd3f182e3896a1af732e165ca72aa9"
+      },
+      "status": "pass",
+      "task_dir": "tasks/539-propagation-delay-comparator-testbench",
+      "task_id": "v4-539",
+      "untriaged_warning_count": 0
+    },
+    {
+      "cases": [
+        {
+          "candidate_bundle_sha256": "4d8147b48476a9dc9ebd05f570a7c80e919bfb1036c0b0c73fafa6cc3b8d85e6",
+          "candidate_files": [
+            {
+              "path": "tasks/558-masked-config-update-32b-testbench/public/supplied_dut/masked_config_update_32b.va",
+              "sha256": "f04d486d5371d1a5a399f4ce6ce560116f9895376d899e8716c2afd48229fbdf"
+            }
+          ],
+          "case_id": "correct",
+          "evas": {
+            "checker_ok": true,
+            "engine": "evas2",
+            "notes": [
+              "masked_vectors=4 mismatch_count=0 rail_errors=0 zero=True full=True mixed=True uncovered_bits=[]"
+            ],
+            "status": "reference_pass"
+          },
+          "expected": "behavior_pass",
+          "observed": "behavior_pass",
+          "outcome": "reference_pass",
+          "role": "correct",
+          "spectre": {
+            "behavior_score": 1.0,
+            "benign_warning_count": 3,
+            "notes": [
+              "masked_vectors=4 mismatch_count=0 rail_errors=0 zero=True full=True mixed=True uncovered_bits=[]"
+            ],
+            "outcome": "reference_pass",
+            "untriaged_warning_count": 0
+          }
+        },
+        {
+          "candidate_bundle_sha256": "0e761186b46a134e6c293c079e1c89654a82a03a974c2338ce1fec81ff963ed9",
+          "candidate_files": [
+            {
+              "path": "tasks/558-masked-config-update-32b-testbench/evaluator/mutation_bundles/neg_001_wrong_mask/masked_config_update_32b.va",
+              "sha256": "d12ac26947279cba8836825e4477feb695aaf6a3973a94c292438adfe7315071"
+            }
+          ],
+          "case_id": "neg_001_wrong_mask",
+          "evas": {
+            "checker_ok": false,
+            "engine": "evas2",
+            "notes": [
+              "masked_vectors=4 mismatch_count=32 rail_errors=32 zero=True full=True mixed=True uncovered_bits=[]"
+            ],
+            "status": "mutation_killed"
+          },
+          "expected": "behavior_fail",
+          "observed": "behavior_fail",
+          "outcome": "killed_behaviorally",
+          "role": "negative",
+          "spectre": {
+            "behavior_score": 0.0,
+            "benign_warning_count": 3,
+            "notes": [
+              "masked_vectors=4 mismatch_count=32 rail_errors=32 zero=True full=True mixed=True uncovered_bits=[]"
+            ],
+            "outcome": "killed_behaviorally",
+            "untriaged_warning_count": 0
+          }
+        },
+        {
+          "candidate_bundle_sha256": "7129c501fec810e21d4664ee96e65a315966bd80421375d9b9a791046647e81f",
+          "candidate_files": [
+            {
+              "path": "tasks/558-masked-config-update-32b-testbench/evaluator/mutation_bundles/neg_002_wrong_mask/masked_config_update_32b.va",
+              "sha256": "bf4c55e514e4f1bdfc0d4e3091c35f584890e87ce6d23bbcaac812c928b3ae4c"
+            }
+          ],
+          "case_id": "neg_002_wrong_mask",
+          "evas": {
+            "checker_ok": false,
+            "engine": "evas2",
+            "notes": [
+              "masked_vectors=4 mismatch_count=78 rail_errors=78 zero=True full=True mixed=True uncovered_bits=[]"
+            ],
+            "status": "mutation_killed"
+          },
+          "expected": "behavior_fail",
+          "observed": "behavior_fail",
+          "outcome": "killed_behaviorally",
+          "role": "negative",
+          "spectre": {
+            "behavior_score": 0.0,
+            "benign_warning_count": 3,
+            "notes": [
+              "masked_vectors=4 mismatch_count=78 rail_errors=78 zero=True full=True mixed=True uncovered_bits=[]"
+            ],
+            "outcome": "killed_behaviorally",
+            "untriaged_warning_count": 0
+          }
+        },
+        {
+          "candidate_bundle_sha256": "b66879eb6f3b5bc673953a356898ce1191dd3171609a46d0851bba43bfb942ce",
+          "candidate_files": [
+            {
+              "path": "tasks/558-masked-config-update-32b-testbench/evaluator/mutation_bundles/neg_004_wrong_mask/masked_config_update_32b.va",
+              "sha256": "37d4e9ed293eda204a3094eb3d1d1010e145eec38e27beb9a4e48de49fa068f2"
+            }
+          ],
+          "case_id": "neg_004_wrong_mask",
+          "evas": {
+            "checker_ok": false,
+            "engine": "evas2",
+            "notes": [
+              "masked_vectors=4 mismatch_count=39 rail_errors=39 zero=True full=True mixed=True uncovered_bits=[]"
+            ],
+            "status": "mutation_killed"
+          },
+          "expected": "behavior_fail",
+          "observed": "behavior_fail",
+          "outcome": "killed_behaviorally",
+          "role": "negative",
+          "spectre": {
+            "behavior_score": 0.0,
+            "benign_warning_count": 3,
+            "notes": [
+              "masked_vectors=4 mismatch_count=39 rail_errors=39 zero=True full=True mixed=True uncovered_bits=[]"
+            ],
+            "outcome": "killed_behaviorally",
+            "untriaged_warning_count": 0
+          }
+        },
+        {
+          "candidate_bundle_sha256": "9b6602020446d0f8c19578e220c9d77456f2a0eb102cfa7086e690c1c2d70a80",
+          "candidate_files": [
+            {
+              "path": "tasks/558-masked-config-update-32b-testbench/evaluator/mutation_bundles/neg_005_wrong_mask/masked_config_update_32b.va",
+              "sha256": "cf0a42d249ce46a811ec69300346517618a81cd2251d5236a9975245b1288908"
+            }
+          ],
+          "case_id": "neg_005_wrong_mask",
+          "evas": {
+            "checker_ok": false,
+            "engine": "evas2",
+            "notes": [
+              "masked_vectors=4 mismatch_count=45 rail_errors=45 zero=True full=True mixed=True uncovered_bits=[]"
+            ],
+            "status": "mutation_killed"
+          },
+          "expected": "behavior_fail",
+          "observed": "behavior_fail",
+          "outcome": "killed_behaviorally",
+          "role": "negative",
+          "spectre": {
+            "behavior_score": 0.0,
+            "benign_warning_count": 3,
+            "notes": [
+              "masked_vectors=4 mismatch_count=45 rail_errors=45 zero=True full=True mixed=True uncovered_bits=[]"
+            ],
+            "outcome": "killed_behaviorally",
+            "untriaged_warning_count": 0
+          }
+        },
+        {
+          "candidate_bundle_sha256": "eb7864b51d3329e45b6e51971108a9e993433b1a085e2311ace4e610533517ef",
+          "candidate_files": [
+            {
+              "path": "tasks/558-masked-config-update-32b-testbench/evaluator/mutation_bundles/neg_003_wrong_mask/masked_config_update_32b.va",
+              "sha256": "e7a4fbaa18f0718736028e0e2d875623ccb132854c2a787e71a4fad6a547cd00"
+            }
+          ],
+          "case_id": "neg_003_wrong_mask",
+          "evas": {
+            "checker_ok": false,
+            "engine": "evas2",
+            "notes": [
+              "masked_vectors=4 mismatch_count=14 rail_errors=14 zero=True full=True mixed=True uncovered_bits=[]"
+            ],
+            "status": "mutation_killed"
+          },
+          "expected": "behavior_fail",
+          "observed": "behavior_fail",
+          "outcome": "killed_behaviorally",
+          "role": "negative",
+          "spectre": {
+            "behavior_score": 0.0,
+            "benign_warning_count": 3,
+            "notes": [
+              "masked_vectors=4 mismatch_count=14 rail_errors=14 zero=True full=True mixed=True uncovered_bits=[]"
+            ],
+            "outcome": "killed_behaviorally",
+            "untriaged_warning_count": 0
+          }
+        }
+      ],
+      "checker": {
+        "profile": {
+          "path": "tasks/558-masked-config-update-32b-testbench/evaluator/checker_profile.json",
+          "sha256": "6316f5246662cf2b134dc02bdc16f687a7053aaa7b94b852891277ec06967d18"
+        },
+        "task_id": "v4_058_masked_config_update_32b"
+      },
+      "family_id": "058",
+      "form": "testbench",
+      "kill_denominator": 5,
+      "killed_count": 5,
+      "reference_gate": "pass",
+      "reference_tb": {
+        "path": "tasks/558-masked-config-update-32b-testbench/evaluator/reference_tb.scs",
+        "sha256": "1e7d4ebd7cc112e18d843386b7c05eb7e207e0619c756052fe2c8c9fe6c496a9"
+      },
+      "status": "pass",
+      "task_dir": "tasks/558-masked-config-update-32b-testbench",
+      "task_id": "v4-558",
+      "untriaged_warning_count": 0
+    },
+    {
+      "cases": [
+        {
+          "candidate_bundle_sha256": "fb0e29802231024c7476c9015edb09d16b84c2603df8bd6c7d7ba55573d3da99",
+          "candidate_files": [
+            {
+              "path": "tasks/602-clocked-sine-source-testbench/public/supplied_dut/vin_src.va",
+              "sha256": "5fe39d24996321a69dd375786255d131b993b627d9560f0186288d07ca648ec2"
+            },
+            {
+              "path": "tasks/602-clocked-sine-source-testbench/public/supplied_dut/support/lfsr.va",
+              "sha256": "36c973266e9acf0473a836ff51f0c350c990f0f85787ac5b83a1d51687d418b5"
+            },
+            {
+              "path": "tasks/602-clocked-sine-source-testbench/public/supplied_dut/support/dither_adder.va",
+              "sha256": "c37a73ae0c82d5312d3baf7415bce5e160f307ae4f0a232586d2a152343b6744"
+            },
+            {
+              "path": "tasks/602-clocked-sine-source-testbench/public/supplied_dut/support/gain_amp_fixed.va",
+              "sha256": "c69f0dbf46d0d4a7f7f4f06168b8cde05bb864fceaf21adabe1440334f57c8e9"
+            }
+          ],
+          "case_id": "correct",
+          "evas": {
+            "checker_ok": true,
+            "engine": "evas2",
+            "notes": [
+              "active_edges=88 reset_cm_err=0.00000 reference_err=0.00000 source_span=0.06306 max_hold_err=0.00000 downstream_gain=8.14"
+            ],
+            "status": "reference_pass"
+          },
+          "expected": "behavior_pass",
+          "observed": "behavior_pass",
+          "outcome": "reference_pass",
+          "role": "correct",
+          "spectre": {
+            "behavior_score": 1.0,
+            "benign_warning_count": 2,
+            "notes": [
+              "active_edges=88 reset_cm_err=0.00000 reference_err=0.00000 source_span=0.06196 max_hold_err=0.00000 downstream_gain=8.37"
+            ],
+            "outcome": "reference_pass",
+            "untriaged_warning_count": 0
+          }
+        },
+        {
+          "candidate_bundle_sha256": "5d17183f1c50c4cfb6a5d5b81fa5e5dc6b59ed835ae8690e8155f0e45debdf35",
+          "candidate_files": [
+            {
+              "path": "tasks/602-clocked-sine-source-testbench/evaluator/mutation_bundles/neg_001_zero/vin_src.va",
+              "sha256": "291e768a53aedfc29da42b5a491bba9d8a5db493b0437f8b705d16ea34b0a51b"
+            },
+            {
+              "path": "tasks/602-clocked-sine-source-testbench/public/supplied_dut/support/lfsr.va",
+              "sha256": "36c973266e9acf0473a836ff51f0c350c990f0f85787ac5b83a1d51687d418b5"
+            },
+            {
+              "path": "tasks/602-clocked-sine-source-testbench/public/supplied_dut/support/dither_adder.va",
+              "sha256": "c37a73ae0c82d5312d3baf7415bce5e160f307ae4f0a232586d2a152343b6744"
+            },
+            {
+              "path": "tasks/602-clocked-sine-source-testbench/public/supplied_dut/support/gain_amp_fixed.va",
+              "sha256": "c69f0dbf46d0d4a7f7f4f06168b8cde05bb864fceaf21adabe1440334f57c8e9"
+            }
+          ],
+          "case_id": "neg_001_zero",
+          "evas": {
+            "checker_ok": false,
+            "engine": "evas2",
+            "notes": [
+              "active_edges=88 reset_cm_err=0.45000 reference_err=0.45000 source_span=0.00000 max_hold_err=0.00000 downstream_gain=0.00"
+            ],
+            "status": "mutation_killed"
+          },
+          "expected": "behavior_fail",
+          "observed": "behavior_fail",
+          "outcome": "killed_behaviorally",
+          "role": "negative",
+          "spectre": {
+            "behavior_score": 0.0,
+            "benign_warning_count": 2,
+            "notes": [
+              "active_edges=88 reset_cm_err=0.45000 reference_err=0.45000 source_span=0.00000 max_hold_err=0.00000 downstream_gain=0.00"
+            ],
+            "outcome": "killed_behaviorally",
+            "untriaged_warning_count": 0
+          }
+        },
+        {
+          "candidate_bundle_sha256": "3d14fbcd8d35e3c94a6179c16b5708c536f3ce9475d38129b3addc2805b8d8a5",
+          "candidate_files": [
+            {
+              "path": "tasks/602-clocked-sine-source-testbench/evaluator/mutation_bundles/neg_005_metric_scale_low/vin_src.va",
+              "sha256": "abeb83b44698d5b7410d6649534a1268ef76a180be26abaa375003d26f1e329b"
+            },
+            {
+              "path": "tasks/602-clocked-sine-source-testbench/public/supplied_dut/support/lfsr.va",
+              "sha256": "36c973266e9acf0473a836ff51f0c350c990f0f85787ac5b83a1d51687d418b5"
+            },
+            {
+              "path": "tasks/602-clocked-sine-source-testbench/public/supplied_dut/support/dither_adder.va",
+              "sha256": "c37a73ae0c82d5312d3baf7415bce5e160f307ae4f0a232586d2a152343b6744"
+            },
+            {
+              "path": "tasks/602-clocked-sine-source-testbench/evaluator/mutation_bundles/neg_005_metric_scale_low/gain_amp_fixed.va",
+              "sha256": "eefd90009f6a7ad6cee7191187f9a8ddbc283bf01738d58aa6ec6c75f5b3590f"
+            }
+          ],
+          "case_id": "neg_005_metric_scale_low",
+          "evas": {
+            "checker_ok": false,
+            "engine": "evas2",
+            "notes": [
+              "active_edges=88 reset_cm_err=0.00000 reference_err=0.03454 source_span=0.06306 max_hold_err=0.00000 downstream_gain=0.00"
+            ],
+            "status": "mutation_killed"
+          },
+          "expected": "behavior_fail",
+          "observed": "behavior_fail",
+          "outcome": "killed_behaviorally",
+          "role": "negative",
+          "spectre": {
+            "behavior_score": 0.0,
+            "benign_warning_count": 2,
+            "notes": [
+              "active_edges=88 reset_cm_err=0.00000 reference_err=0.03227 source_span=0.06196 max_hold_err=0.00000 downstream_gain=0.00"
+            ],
+            "outcome": "killed_behaviorally",
+            "untriaged_warning_count": 0
+          }
+        },
+        {
+          "candidate_bundle_sha256": "0a14c5352eb7e49a94b273379ca60b30eaaf289ada8ff8f28228fe4a00bedab5",
+          "candidate_files": [
+            {
+              "path": "tasks/602-clocked-sine-source-testbench/evaluator/mutation_bundles/neg_003_common_mode_sine/vin_src.va",
+              "sha256": "fc3a50d281e1b0272df0a81f5b9afdf9c331b5b09525d27ad8752574c7788e46"
+            },
+            {
+              "path": "tasks/602-clocked-sine-source-testbench/public/supplied_dut/support/lfsr.va",
+              "sha256": "36c973266e9acf0473a836ff51f0c350c990f0f85787ac5b83a1d51687d418b5"
+            },
+            {
+              "path": "tasks/602-clocked-sine-source-testbench/public/supplied_dut/support/dither_adder.va",
+              "sha256": "c37a73ae0c82d5312d3baf7415bce5e160f307ae4f0a232586d2a152343b6744"
+            },
+            {
+              "path": "tasks/602-clocked-sine-source-testbench/public/supplied_dut/support/gain_amp_fixed.va",
+              "sha256": "c69f0dbf46d0d4a7f7f4f06168b8cde05bb864fceaf21adabe1440334f57c8e9"
+            }
+          ],
+          "case_id": "neg_003_common_mode_sine",
+          "evas": {
+            "checker_ok": false,
+            "engine": "evas2",
+            "notes": [
+              "active_edges=88 reset_cm_err=0.45000 reference_err=0.45000 source_span=0.00000 max_hold_err=0.00000 downstream_gain=0.00"
+            ],
+            "status": "mutation_killed"
+          },
+          "expected": "behavior_fail",
+          "observed": "behavior_fail",
+          "outcome": "killed_behaviorally",
+          "role": "negative",
+          "spectre": {
+            "behavior_score": 0.0,
+            "benign_warning_count": 2,
+            "notes": [
+              "active_edges=88 reset_cm_err=0.45000 reference_err=0.45000 source_span=0.00000 max_hold_err=0.00000 downstream_gain=0.00"
+            ],
+            "outcome": "killed_behaviorally",
+            "untriaged_warning_count": 0
+          }
+        },
+        {
+          "candidate_bundle_sha256": "2c0c1cd94b8964fae12a347fbbb1a6702ad512784d6b5e0f1ef3c684071ec479",
+          "candidate_files": [
+            {
+              "path": "tasks/602-clocked-sine-source-testbench/evaluator/mutation_bundles/neg_004_reset_stuck/vin_src.va",
+              "sha256": "2a41a8047811ab167c3ff83e9aac4cba3ee66953e23e2fb135a2902aa15818e4"
+            },
+            {
+              "path": "tasks/602-clocked-sine-source-testbench/public/supplied_dut/support/lfsr.va",
+              "sha256": "36c973266e9acf0473a836ff51f0c350c990f0f85787ac5b83a1d51687d418b5"
+            },
+            {
+              "path": "tasks/602-clocked-sine-source-testbench/public/supplied_dut/support/dither_adder.va",
+              "sha256": "c37a73ae0c82d5312d3baf7415bce5e160f307ae4f0a232586d2a152343b6744"
+            },
+            {
+              "path": "tasks/602-clocked-sine-source-testbench/public/supplied_dut/support/gain_amp_fixed.va",
+              "sha256": "c69f0dbf46d0d4a7f7f4f06168b8cde05bb864fceaf21adabe1440334f57c8e9"
+            }
+          ],
+          "case_id": "neg_004_reset_stuck",
+          "evas": {
+            "checker_ok": false,
+            "engine": "evas2",
+            "notes": [
+              "active_edges=88 reset_cm_err=0.45000 reference_err=0.45000 source_span=0.00000 max_hold_err=0.00000 downstream_gain=0.00"
+            ],
+            "status": "mutation_killed"
+          },
+          "expected": "behavior_fail",
+          "observed": "behavior_fail",
+          "outcome": "killed_behaviorally",
+          "role": "negative",
+          "spectre": {
+            "behavior_score": 0.0,
+            "benign_warning_count": 2,
+            "notes": [
+              "active_edges=88 reset_cm_err=0.45000 reference_err=0.45000 source_span=0.00000 max_hold_err=0.00000 downstream_gain=0.00"
+            ],
+            "outcome": "killed_behaviorally",
+            "untriaged_warning_count": 0
+          }
+        },
+        {
+          "candidate_bundle_sha256": "cb3cd4d28621eeba7fe6173b7ac78277f2b0b3492172d811203afb62867a2803",
+          "candidate_files": [
+            {
+              "path": "tasks/602-clocked-sine-source-testbench/evaluator/mutation_bundles/neg_002_static_common_mode/vin_src.va",
+              "sha256": "133d3242d441ea105c5d3b2e0c085df17f16f934ae83db68dd486efa1af1ce9b"
+            },
+            {
+              "path": "tasks/602-clocked-sine-source-testbench/public/supplied_dut/support/lfsr.va",
+              "sha256": "36c973266e9acf0473a836ff51f0c350c990f0f85787ac5b83a1d51687d418b5"
+            },
+            {
+              "path": "tasks/602-clocked-sine-source-testbench/public/supplied_dut/support/dither_adder.va",
+              "sha256": "c37a73ae0c82d5312d3baf7415bce5e160f307ae4f0a232586d2a152343b6744"
+            },
+            {
+              "path": "tasks/602-clocked-sine-source-testbench/public/supplied_dut/support/gain_amp_fixed.va",
+              "sha256": "c69f0dbf46d0d4a7f7f4f06168b8cde05bb864fceaf21adabe1440334f57c8e9"
+            }
+          ],
+          "case_id": "neg_002_static_common_mode",
+          "evas": {
+            "checker_ok": false,
+            "engine": "evas2",
+            "notes": [
+              "active_edges=88 reset_cm_err=0.00000 reference_err=0.00000 source_span=0.00000 max_hold_err=0.00000 downstream_gain=0.00"
+            ],
+            "status": "mutation_killed"
+          },
+          "expected": "behavior_fail",
+          "observed": "behavior_fail",
+          "outcome": "killed_behaviorally",
+          "role": "negative",
+          "spectre": {
+            "behavior_score": 0.0,
+            "benign_warning_count": 2,
+            "notes": [
+              "active_edges=88 reset_cm_err=0.00000 reference_err=0.00000 source_span=0.00000 max_hold_err=0.00000 downstream_gain=0.00"
+            ],
+            "outcome": "killed_behaviorally",
+            "untriaged_warning_count": 0
+          }
+        }
+      ],
+      "checker": {
+        "profile": {
+          "path": "tasks/602-clocked-sine-source-testbench/evaluator/checker_profile.json",
+          "sha256": "64d5252fcf0fac86d3093564cd74efb9312f05cf4be945567792201d029aef92"
+        },
+        "task_id": "v4_102_clocked_sine_source"
+      },
+      "family_id": "102",
+      "form": "testbench",
+      "kill_denominator": 5,
+      "killed_count": 5,
+      "reference_gate": "pass",
+      "reference_tb": {
+        "path": "tasks/602-clocked-sine-source-testbench/evaluator/reference_tb.scs",
+        "sha256": "8e04066de8badc1f269c04390e797ce319b740c962a103fc2c4e3a2790c6a1ca"
+      },
+      "status": "pass",
+      "task_dir": "tasks/602-clocked-sine-source-testbench",
+      "task_id": "v4-602",
+      "untriaged_warning_count": 0
+    },
+    {
+      "cases": [
+        {
+          "candidate_bundle_sha256": "09c8e825a96d74e4d84e22c6efae65b91f656e373129bdbcdf89aa1d13dd4ed3",
+          "candidate_files": [
+            {
+              "path": "tasks/647-control-word-encoder-7b-testbench/public/supplied_dut/control_word_encoder_7b.va",
+              "sha256": "b4cfce560a3689e976e071c7cd0b230d0fb4c3020bf66c1dc9a8e464d3944ab6"
+            }
+          ],
+          "case_id": "correct",
+          "evas": {
+            "checker_ok": true,
+            "engine": "evas2",
+            "notes": [
+              "control_words=[42, 85] mismatch_count=0 rail_errors=0 first_mismatch=[]"
+            ],
+            "status": "reference_pass"
+          },
+          "expected": "behavior_pass",
+          "observed": "behavior_pass",
+          "outcome": "reference_pass",
+          "role": "correct",
+          "spectre": {
+            "behavior_score": 1.0,
+            "benign_warning_count": 3,
+            "notes": [
+              "control_words=[42, 85] mismatch_count=0 rail_errors=0 first_mismatch=[]"
+            ],
+            "outcome": "reference_pass",
+            "untriaged_warning_count": 0
+          }
+        },
+        {
+          "candidate_bundle_sha256": "c599be81be0fc34729e55502ce3e1638f7b0511a31af6ea1f2862b89eb183035",
+          "candidate_files": [
+            {
+              "path": "tasks/647-control-word-encoder-7b-testbench/evaluator/mutation_bundles/neg_002_shifted_bits/control_word_encoder_7b.va",
+              "sha256": "e5ac59b646f3f04e1b4ab73b107fddfc3e00100e77beae239a60a81e831ae0c4"
+            }
+          ],
+          "case_id": "neg_002_shifted_bits",
+          "evas": {
+            "checker_ok": false,
+            "engine": "evas2",
+            "notes": [
+              "control_words=[42, 85] mismatch_count=12 rail_errors=0 first_mismatch=['d0_42=0.9000/0.0']"
+            ],
+            "status": "mutation_killed"
+          },
+          "expected": "behavior_fail",
+          "observed": "behavior_fail",
+          "outcome": "killed_behaviorally",
+          "role": "negative",
+          "spectre": {
+            "behavior_score": 0.0,
+            "benign_warning_count": 3,
+            "notes": [
+              "control_words=[42, 85] mismatch_count=12 rail_errors=0 first_mismatch=['d0_42=0.9000/0.0']"
+            ],
+            "outcome": "killed_behaviorally",
+            "untriaged_warning_count": 0
+          }
+        },
+        {
+          "candidate_bundle_sha256": "326278e8ec4b641ca9a9f74b9c5b509726b65fcb7974625e3fd72330215f5e02",
+          "candidate_files": [
+            {
+              "path": "tasks/647-control-word-encoder-7b-testbench/evaluator/mutation_bundles/neg_001_zero/control_word_encoder_7b.va",
+              "sha256": "047069655ef8fdf3fd2a2105cd3beaeae1b322f04cd6f1e4f50fbe6080caf037"
+            }
+          ],
+          "case_id": "neg_001_zero",
+          "evas": {
+            "checker_ok": false,
+            "engine": "evas2",
+            "notes": [
+              "control_words=[42, 85] mismatch_count=7 rail_errors=0 first_mismatch=['d1_42=0.0000/0.9']"
+            ],
+            "status": "mutation_killed"
+          },
+          "expected": "behavior_fail",
+          "observed": "behavior_fail",
+          "outcome": "killed_behaviorally",
+          "role": "negative",
+          "spectre": {
+            "behavior_score": 0.0,
+            "benign_warning_count": 3,
+            "notes": [
+              "control_words=[42, 85] mismatch_count=7 rail_errors=0 first_mismatch=['d1_42=0.0000/0.9']"
+            ],
+            "outcome": "killed_behaviorally",
+            "untriaged_warning_count": 0
+          }
+        },
+        {
+          "candidate_bundle_sha256": "f438e14aff2b87dbfb4a1ed953023b67c7d39c3fd527fd2c4af526e79cf94300",
+          "candidate_files": [
+            {
+              "path": "tasks/647-control-word-encoder-7b-testbench/evaluator/mutation_bundles/neg_003_inverted_bits/control_word_encoder_7b.va",
+              "sha256": "bbcbc16f434854502f9b0d87979691b188bb5542021a7737cf6e0ffa65059eb3"
+            }
+          ],
+          "case_id": "neg_003_inverted_bits",
+          "evas": {
+            "checker_ok": false,
+            "engine": "evas2",
+            "notes": [
+              "control_words=[42, 85] mismatch_count=14 rail_errors=0 first_mismatch=['d0_42=0.9000/0.0']"
+            ],
+            "status": "mutation_killed"
+          },
+          "expected": "behavior_fail",
+          "observed": "behavior_fail",
+          "outcome": "killed_behaviorally",
+          "role": "negative",
+          "spectre": {
+            "behavior_score": 0.0,
+            "benign_warning_count": 3,
+            "notes": [
+              "control_words=[42, 85] mismatch_count=14 rail_errors=0 first_mismatch=['d0_42=0.9000/0.0']"
+            ],
+            "outcome": "killed_behaviorally",
+            "untriaged_warning_count": 0
+          }
+        },
+        {
+          "candidate_bundle_sha256": "63e268d7c560b36e25730bc15fca799ccd0d63915444c103d2407280d6f07360",
+          "candidate_files": [
+            {
+              "path": "tasks/647-control-word-encoder-7b-testbench/evaluator/mutation_bundles/neg_004_half_high_level/control_word_encoder_7b.va",
+              "sha256": "932072b016f5ef38aeeb283ef615deef403e1a12b8ce7ac82ce2371b34873f9f"
+            }
+          ],
+          "case_id": "neg_004_half_high_level",
+          "evas": {
+            "checker_ok": false,
+            "engine": "evas2",
+            "notes": [
+              "control_words=[42, 85] mismatch_count=7 rail_errors=7 first_mismatch=['d1_42=0.4500/0.9']"
+            ],
+            "status": "mutation_killed"
+          },
+          "expected": "behavior_fail",
+          "observed": "behavior_fail",
+          "outcome": "killed_behaviorally",
+          "role": "negative",
+          "spectre": {
+            "behavior_score": 0.0,
+            "benign_warning_count": 3,
+            "notes": [
+              "control_words=[42, 85] mismatch_count=7 rail_errors=7 first_mismatch=['d1_42=0.4500/0.9']"
+            ],
+            "outcome": "killed_behaviorally",
+            "untriaged_warning_count": 0
+          }
+        },
+        {
+          "candidate_bundle_sha256": "f97d9dbb4ed14f2524bb8d53ce6436f9a9eda0220a7933075a2f64cc48d3219d",
+          "candidate_files": [
+            {
+              "path": "tasks/647-control-word-encoder-7b-testbench/evaluator/mutation_bundles/neg_005_metric_scale_low/control_word_encoder_7b.va",
+              "sha256": "1c113499d47e22bc1d2351bf15a3ac6f12e73896c4432ac4676ad768c8886a19"
+            }
+          ],
+          "case_id": "neg_005_metric_scale_low",
+          "evas": {
+            "checker_ok": false,
+            "engine": "evas2",
+            "notes": [
+              "control_words=[42, 85] mismatch_count=7 rail_errors=7 first_mismatch=['d1_42=0.3780/0.9']"
+            ],
+            "status": "mutation_killed"
+          },
+          "expected": "behavior_fail",
+          "observed": "behavior_fail",
+          "outcome": "killed_behaviorally",
+          "role": "negative",
+          "spectre": {
+            "behavior_score": 0.0,
+            "benign_warning_count": 3,
+            "notes": [
+              "control_words=[42, 85] mismatch_count=7 rail_errors=7 first_mismatch=['d1_42=0.3780/0.9']"
+            ],
+            "outcome": "killed_behaviorally",
+            "untriaged_warning_count": 0
+          }
+        }
+      ],
+      "checker": {
+        "profile": {
+          "path": "tasks/647-control-word-encoder-7b-testbench/evaluator/checker_profile.json",
+          "sha256": "dd24e4dc0cfcc0ce8bd46a86e7d3de734ba8708c8a913b187bafa5d05f655255"
+        },
+        "task_id": "v4_147_control_word_encoder_7b"
+      },
+      "family_id": "147",
+      "form": "testbench",
+      "kill_denominator": 5,
+      "killed_count": 5,
+      "reference_gate": "pass",
+      "reference_tb": {
+        "path": "tasks/647-control-word-encoder-7b-testbench/evaluator/reference_tb.scs",
+        "sha256": "b66fcbebcf8c868415a81f88e242f9253bfd6a780b0246a262e0c2d9dbb8deee"
+      },
+      "status": "pass",
+      "task_dir": "tasks/647-control-word-encoder-7b-testbench",
+      "task_id": "v4-647",
+      "untriaged_warning_count": 0
+    },
+    {
+      "cases": [
+        {
+          "candidate_bundle_sha256": "5669b60d1d9f82a76ce64acb437ef9c329ca43b3b4db781c6f8bb45fd9499fdf",
+          "candidate_files": [
+            {
+              "path": "tasks/898-two-stage-opamp-slew-macromodel-testbench/public/supplied_dut/two_stage_opamp_slew_macromodel.va",
+              "sha256": "65ecd6bde0e2de06e454577bee2a9b7167bd6a541549b074e5078bc6015c4e6a"
+            }
+          ],
+          "case_id": "correct",
+          "evas": {
+            "checker_ok": true,
+            "engine": "evas2",
+            "notes": [
+              "v4_398 checked=9 reset_clear=True disabled_clear=True slew_seen=True clamp_seen=True settled_seen=True sample_gaps=0 stage1_errors=0 vout_errors=0 slew_errors=0 clamp_errors=0 settled_errors=0 allowance=1"
+            ],
+            "status": "reference_pass"
+          },
+          "expected": "behavior_pass",
+          "observed": "behavior_pass",
+          "outcome": "reference_pass",
+          "role": "correct",
+          "spectre": {
+            "behavior_score": 1.0,
+            "benign_warning_count": 3,
+            "notes": [
+              "v4_398 checked=9 reset_clear=True disabled_clear=True slew_seen=True clamp_seen=True settled_seen=True sample_gaps=0 stage1_errors=0 vout_errors=0 slew_errors=0 clamp_errors=0 settled_errors=0 allowance=1"
+            ],
+            "outcome": "reference_pass",
+            "untriaged_warning_count": 0
+          }
+        },
+        {
+          "candidate_bundle_sha256": "af19b98547df8e52a83f426790898969ab6adcb0314ef1f4b5663c42ea7ed30e",
+          "candidate_files": [
+            {
+              "path": "tasks/898-two-stage-opamp-slew-macromodel-testbench/evaluator/mutation_bundles/neg_001_stage1_wrong/two_stage_opamp_slew_macromodel.va",
+              "sha256": "51d4ed53b966340b6bcb8830f7962e8aa2cde8517089f983faff8c0af9b42daf"
+            }
+          ],
+          "case_id": "neg_001_stage1_wrong",
+          "evas": {
+            "checker_ok": false,
+            "engine": "evas2",
+            "notes": [
+              "v4_398 checked=9 reset_clear=True disabled_clear=True slew_seen=True clamp_seen=True settled_seen=False sample_gaps=0 stage1_errors=7 vout_errors=4 slew_errors=0 clamp_errors=7 settled_errors=5 allowance=1"
+            ],
+            "status": "mutation_killed"
+          },
+          "expected": "behavior_fail",
+          "observed": "behavior_fail",
+          "outcome": "killed_behaviorally",
+          "role": "negative",
+          "spectre": {
+            "behavior_score": 0.0,
+            "benign_warning_count": 3,
+            "notes": [
+              "v4_398 checked=9 reset_clear=True disabled_clear=True slew_seen=True clamp_seen=True settled_seen=False sample_gaps=0 stage1_errors=7 vout_errors=4 slew_errors=0 clamp_errors=7 settled_errors=5 allowance=1"
+            ],
+            "outcome": "killed_behaviorally",
+            "untriaged_warning_count": 0
+          }
+        },
+        {
+          "candidate_bundle_sha256": "375b39282258bed15b008ef925c36457577af9fc7f23d42366312ba723544cf0",
+          "candidate_files": [
+            {
+              "path": "tasks/898-two-stage-opamp-slew-macromodel-testbench/evaluator/mutation_bundles/neg_002_no_slew_limit/two_stage_opamp_slew_macromodel.va",
+              "sha256": "40aa257e798c5b6a767dacc5b3779520adfb1102d4000890a107ca57612f9b0d"
+            }
+          ],
+          "case_id": "neg_002_no_slew_limit",
+          "evas": {
+            "checker_ok": false,
+            "engine": "evas2",
+            "notes": [
+              "v4_398 checked=9 reset_clear=True disabled_clear=True slew_seen=True clamp_seen=True settled_seen=True sample_gaps=0 stage1_errors=0 vout_errors=7 slew_errors=3 clamp_errors=0 settled_errors=7 allowance=1"
+            ],
+            "status": "mutation_killed"
+          },
+          "expected": "behavior_fail",
+          "observed": "behavior_fail",
+          "outcome": "killed_behaviorally",
+          "role": "negative",
+          "spectre": {
+            "behavior_score": 0.0,
+            "benign_warning_count": 3,
+            "notes": [
+              "v4_398 checked=9 reset_clear=True disabled_clear=True slew_seen=True clamp_seen=True settled_seen=True sample_gaps=0 stage1_errors=0 vout_errors=7 slew_errors=3 clamp_errors=0 settled_errors=7 allowance=1"
+            ],
+            "outcome": "killed_behaviorally",
+            "untriaged_warning_count": 0
+          }
+        },
+        {
+          "candidate_bundle_sha256": "6dd0be32403c7cc4b1f655de26f5d82a3ae21c821db8bd715545f3fbd663b30a",
+          "candidate_files": [
+            {
+              "path": "tasks/898-two-stage-opamp-slew-macromodel-testbench/evaluator/mutation_bundles/neg_003_settled_stuck_high/two_stage_opamp_slew_macromodel.va",
+              "sha256": "eadaab873293459d81a70544b342bb786a8e51fb7d1835d4bbc68d02461da3fb"
+            }
+          ],
+          "case_id": "neg_003_settled_stuck_high",
+          "evas": {
+            "checker_ok": false,
+            "engine": "evas2",
+            "notes": [
+              "v4_398 checked=9 reset_clear=True disabled_clear=True slew_seen=True clamp_seen=True settled_seen=True sample_gaps=0 stage1_errors=0 vout_errors=0 slew_errors=0 clamp_errors=0 settled_errors=8 allowance=1"
+            ],
+            "status": "mutation_killed"
+          },
+          "expected": "behavior_fail",
+          "observed": "behavior_fail",
+          "outcome": "killed_behaviorally",
+          "role": "negative",
+          "spectre": {
+            "behavior_score": 0.0,
+            "benign_warning_count": 3,
+            "notes": [
+              "v4_398 checked=9 reset_clear=True disabled_clear=True slew_seen=True clamp_seen=True settled_seen=True sample_gaps=0 stage1_errors=0 vout_errors=0 slew_errors=0 clamp_errors=0 settled_errors=8 allowance=1"
+            ],
+            "outcome": "killed_behaviorally",
+            "untriaged_warning_count": 0
+          }
+        },
+        {
+          "candidate_bundle_sha256": "bb17d6ebacb5caa7e81a2e15da999668470d58e4ba4dbb4fa854c948b27cce86",
+          "candidate_files": [
+            {
+              "path": "tasks/898-two-stage-opamp-slew-macromodel-testbench/evaluator/mutation_bundles/neg_005_clamp_flag_stuck_low/two_stage_opamp_slew_macromodel.va",
+              "sha256": "99b518059e5f99c29bf0fda5b704a1ef0d4c79ae38945c7f98a0bb7ac3bbbaf0"
+            }
+          ],
+          "case_id": "neg_005_clamp_flag_stuck_low",
+          "evas": {
+            "checker_ok": false,
+            "engine": "evas2",
+            "notes": [
+              "v4_398 checked=9 reset_clear=True disabled_clear=True slew_seen=True clamp_seen=True settled_seen=True sample_gaps=0 stage1_errors=0 vout_errors=0 slew_errors=0 clamp_errors=7 settled_errors=0 allowance=1"
+            ],
+            "status": "mutation_killed"
+          },
+          "expected": "behavior_fail",
+          "observed": "behavior_fail",
+          "outcome": "killed_behaviorally",
+          "role": "negative",
+          "spectre": {
+            "behavior_score": 0.0,
+            "benign_warning_count": 3,
+            "notes": [
+              "v4_398 checked=9 reset_clear=True disabled_clear=True slew_seen=True clamp_seen=True settled_seen=True sample_gaps=0 stage1_errors=0 vout_errors=0 slew_errors=0 clamp_errors=7 settled_errors=0 allowance=1"
+            ],
+            "outcome": "killed_behaviorally",
+            "untriaged_warning_count": 0
+          }
+        },
+        {
+          "candidate_bundle_sha256": "fdb192155d1536e78a7c9e4d755c099b957de00b299df08710cb9add252b3550",
+          "candidate_files": [
+            {
+              "path": "tasks/898-two-stage-opamp-slew-macromodel-testbench/evaluator/mutation_bundles/neg_006_asynchronous_update/two_stage_opamp_slew_macromodel.va",
+              "sha256": "04944095c268e1514db5010f8820d45f2fb4481691c2d3d6443d9cb26060760d"
+            }
+          ],
+          "case_id": "neg_006_asynchronous_update",
+          "evas": {
+            "checker_ok": false,
+            "engine": "evas2",
+            "notes": [
+              "v4_398 checked=9 reset_clear=True disabled_clear=True slew_seen=True clamp_seen=True settled_seen=True sample_gaps=0 stage1_errors=1 vout_errors=6 slew_errors=0 clamp_errors=1 settled_errors=8 allowance=1"
+            ],
+            "status": "mutation_killed"
+          },
+          "expected": "behavior_fail",
+          "observed": "behavior_fail",
+          "outcome": "killed_behaviorally",
+          "role": "negative",
+          "spectre": {
+            "behavior_score": 0.0,
+            "benign_warning_count": 3,
+            "notes": [
+              "v4_398 checked=9 reset_clear=True disabled_clear=True slew_seen=True clamp_seen=True settled_seen=True sample_gaps=0 stage1_errors=1 vout_errors=6 slew_errors=0 clamp_errors=1 settled_errors=8 allowance=1"
+            ],
+            "outcome": "killed_behaviorally",
+            "untriaged_warning_count": 0
+          }
+        }
+      ],
+      "checker": {
+        "profile": {
+          "path": "tasks/898-two-stage-opamp-slew-macromodel-testbench/evaluator/checker_profile.json",
+          "sha256": "9635079f94ca1ba079f921854eee82bfba440ecdc013f24e3a6c048f4d074f30"
+        },
+        "task_id": "v4_398_two_stage_opamp_slew_macromodel"
+      },
+      "family_id": "398",
+      "form": "testbench",
+      "kill_denominator": 5,
+      "killed_count": 5,
+      "reference_gate": "pass",
+      "reference_tb": {
+        "path": "tasks/898-two-stage-opamp-slew-macromodel-testbench/evaluator/reference_tb.scs",
+        "sha256": "ec0fe9bb0118a21001bdb6b80b24cd0b57398f04fb670d6b7b25c4eb4f3c9ff7"
+      },
+      "status": "pass",
+      "task_dir": "tasks/898-two-stage-opamp-slew-macromodel-testbench",
+      "task_id": "v4-898",
+      "untriaged_warning_count": 0
+    }
+  ],
+  "tool_fingerprints": {
+    "evas_runner": {
+      "path": "benchmark-vabench-release-v4/operations/tri_form_derivation_prep/run_v4_reference_evas_smoke.py",
+      "sha256": "be130100c9f2ca1dd546fb4700b321a85df87830a1102a0d0b9e7352c09de752"
+    },
+    "promotion": {
+      "path": "benchmark-vabench-release-v4/operations/tri_form_derivation_prep/promote_tri_form_recertification_evidence.py",
+      "sha256": "fbebb4f8c2a397554f496890a9339beb7c84e15a459dc7b9f2a3a6cb137eee92"
+    },
+    "spectre_runner": {
+      "path": "benchmark-vabench-release-v4/operations/tri_form_derivation_prep/audit_tri_form_reference_spectre.py",
+      "sha256": "f21df1aa7e5896eca8798169cad29da2e7eec694252af96c660e381bd21732a8"
+    }
+  }
+}

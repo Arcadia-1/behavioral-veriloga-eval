@@ -17,6 +17,9 @@ from source_certification_binding import inspect_source_certification_reuse
 PACKAGE_ROOT = Path(__file__).resolve().parents[2]
 DEFAULT_RELEASE = PACKAGE_ROOT / "release" / "benchmarkv4"
 DEFAULT_SOURCE = PACKAGE_ROOT / "provenance" / "dut-base-v3-exact-five-hash-bound-v2"
+DEFAULT_RECERTIFICATION_EVIDENCE = (
+    PACKAGE_ROOT / "evidence" / "recertification" / "benchmarkv4-8family-correct-plus-five.json"
+)
 FORMS = ("dut", "testbench", "bugfix")
 MODES = ("G0", "G1", "G2", "G3", "G4", "G5")
 DIRECT_MODES = {"G0", "G1"}
@@ -192,12 +195,17 @@ def build_release_seal(
     refresh_required = bool(
         certification_reuse.get("simulation_rerun_required_for_materialization")
     )
+    fresh_recertified = bool(certification_reuse.get("fresh_recertification_evidence"))
     seal = {
         "schema_version": "v4-benchmarkv4-release-seal-v1",
         "release_status": (
             "materialized_certification_refresh_required"
             if refresh_required
-            else "gate3_hash_bound_certification_reused"
+            else (
+                "gate3_hash_bound_certification_reused_and_refreshed"
+                if fresh_recertified
+                else "gate3_hash_bound_certification_reused"
+            )
         ),
         "source_score_denominator_manifest_sha256": source_manifest_sha256,
         "artifact_sha256": artifact_hashes,
@@ -205,7 +213,12 @@ def build_release_seal(
         "simulation_claim": (
             "none; one or more source certifications require EVAS/Spectre refresh"
             if refresh_required
-            else "canonical DUT gold and exact-five negative EVAS/Spectre certifications reused by hash"
+            else (
+                "canonical DUT gold and exact-five negative EVAS/Spectre certifications "
+                "covered by source hash reuse plus fresh release-root EVAS/Spectre recertification evidence"
+                if fresh_recertified
+                else "canonical DUT gold and exact-five negative EVAS/Spectre certifications reused by hash"
+            )
         ),
     }
     if refresh_required:
@@ -235,8 +248,18 @@ def expected_buggy_artifact_hashes(
 def audit_source_certifications(
     source: Path,
     source_rows: dict[str, dict[str, Any]],
+    release: Path,
 ) -> tuple[dict[str, Any], list[str]]:
-    return inspect_source_certification_reuse(source, source_rows)
+    return inspect_source_certification_reuse(
+        source,
+        source_rows,
+        release=release,
+        recertification_evidence_path=(
+            DEFAULT_RECERTIFICATION_EVIDENCE
+            if DEFAULT_RECERTIFICATION_EVIDENCE.is_file()
+            else None
+        ),
+    )
 
 
 def audit_standalone_evaluator(
@@ -606,7 +629,7 @@ def main() -> int:
     if manifest.get("source_score_denominator_manifest_sha256") != source_manifest_sha:
         problems.append("manifest source denominator hash mismatch")
     certification_reuse, certification_problems = audit_source_certifications(
-        source, source_rows
+        source, source_rows, release
     )
     if manifest.get("certification_reuse") != certification_reuse:
         problems.append("manifest certification reuse summary does not match source inputs")
@@ -658,7 +681,11 @@ def main() -> int:
         "certification_status": (
             "refresh_required"
             if certification_reuse.get("simulation_rerun_required_for_materialization")
-            else "reused"
+            else (
+                "fresh_recertified"
+                if certification_reuse.get("fresh_recertification_evidence")
+                else "reused"
+            )
         ),
         "certification_problems": certification_problems,
         "input_hashes": {

@@ -164,6 +164,108 @@ def source_fixture(tmp_path: Path) -> tuple[Path, dict[str, dict]]:
     return source, {"001": row}
 
 
+def release_recertification_fixture(tmp_path: Path) -> tuple[Path, Path]:
+    package = tmp_path / "package"
+    release = package / "release" / "benchmarkv4"
+    task_dir = release / "tasks" / "501-sample-testbench"
+    evaluator = task_dir / "evaluator"
+    supplied = task_dir / "public" / "supplied_dut"
+    mutation_ids = [f"neg_{index:03d}" for index in range(1, 6)]
+
+    (evaluator / "mutation_bundles").mkdir(parents=True)
+    supplied.mkdir(parents=True)
+    (evaluator / "reference_tb.scs").write_text("reference deck\n", encoding="utf-8")
+    write_json(evaluator / "checker_profile.json", {"checker_task_id": "v4_001_sample"})
+    write_json(
+        evaluator / "score_policy.json",
+        {
+            "kill_ratio_denominator": 5,
+            "negative_suite_mutation_ids": mutation_ids,
+        },
+    )
+    (supplied / "dut.va").write_text("module dut; // gold\nendmodule\n", encoding="utf-8")
+    for mutation_id in mutation_ids:
+        mutation_dir = evaluator / "mutation_bundles" / mutation_id
+        mutation_dir.mkdir(parents=True)
+        (mutation_dir / "dut.va").write_text(
+            f"module dut; // {mutation_id}\nendmodule\n",
+            encoding="utf-8",
+        )
+
+    task_index = {
+        "schema_version": "v4-benchmarkv4-task-index-v1",
+        "tasks": [
+            {
+                "task_id": "v4-501",
+                "family_id": "001",
+                "form": "testbench",
+                "task_dir": "tasks/501-sample-testbench",
+            }
+        ],
+    }
+    write_json(release / "TASK_INDEX.json", task_index)
+
+    def record(path: Path) -> dict[str, str]:
+        return {
+            "path": path.relative_to(release).as_posix(),
+            "sha256": file_sha(path),
+        }
+
+    cases = []
+    for case_id in ["correct", *mutation_ids]:
+        candidate = supplied / "dut.va" if case_id == "correct" else evaluator / "mutation_bundles" / case_id / "dut.va"
+        cases.append(
+            {
+                "case_id": case_id,
+                "role": "correct" if case_id == "correct" else "negative",
+                "outcome": "reference_pass" if case_id == "correct" else "killed_behaviorally",
+                "candidate_files": [record(candidate)],
+                "evas": {
+                    "status": "reference_pass" if case_id == "correct" else "mutation_killed",
+                },
+                "spectre": {
+                    "outcome": "reference_pass" if case_id == "correct" else "killed_behaviorally",
+                },
+            }
+        )
+    evidence = {
+        "schema_version": "v4-benchmarkv4-recertification-evidence-v1",
+        "release": {
+            "path": "benchmark-vabench-release-v4/release/benchmarkv4",
+            "task_index_sha256": file_sha(release / "TASK_INDEX.json"),
+        },
+        "summary": {
+            "task_count": 1,
+            "family_count": 1,
+            "reference_pass_count": 1,
+            "negative_case_count": 5,
+            "evas_behavioral_kill_count": 5,
+            "spectre_behavioral_kill_count": 5,
+            "untriaged_warning_count": 0,
+            "status": "pass",
+        },
+        "tasks": [
+            {
+                "task_id": "v4-501",
+                "family_id": "001",
+                "form": "testbench",
+                "task_dir": "tasks/501-sample-testbench",
+                "reference_tb": record(evaluator / "reference_tb.scs"),
+                "checker": {"profile": record(evaluator / "checker_profile.json")},
+                "reference_gate": "pass",
+                "kill_denominator": 5,
+                "killed_count": 5,
+                "untriaged_warning_count": 0,
+                "status": "pass",
+                "cases": cases,
+            }
+        ],
+    }
+    evidence_path = package / "evidence" / "recertification" / "benchmarkv4-8family-correct-plus-five.json"
+    write_json(evidence_path, evidence)
+    return release, evidence_path
+
+
 def test_current_source_inputs_are_reusable_when_every_hash_binding_matches(tmp_path: Path) -> None:
     source, rows = source_fixture(tmp_path)
     summary, problems = inspect_source_certification_reuse(source, rows)
@@ -234,3 +336,36 @@ def test_unshipped_hash_only_refresh_cannot_revalidate_a_negative(tmp_path: Path
     assert summary["stale_gold_family_ids"] == ["001"]
     assert summary["stale_negative_case_ids"] == ["001/neg_001"]
 
+
+def test_release_root_recertification_evidence_covers_stale_source_inputs(tmp_path: Path) -> None:
+    source, rows = source_fixture(tmp_path)
+    evaluator = source / "001-sample" / "evaluator"
+    (evaluator / "family_spec.json").write_text(
+        '{"family_id":"001","revision":"changed-after-certification"}\n',
+        encoding="utf-8",
+    )
+    (evaluator / "harness_spec.json").write_text(
+        '{"harness":"changed-after-certification"}\n',
+        encoding="utf-8",
+    )
+    release, evidence_path = release_recertification_fixture(tmp_path)
+
+    summary, problems = inspect_source_certification_reuse(
+        source,
+        rows,
+        release=release,
+        recertification_evidence_path=evidence_path,
+    )
+
+    assert problems == []
+    assert summary["policy"] == "source_transitive_input_hash_bound_plus_release_recertification_evidence"
+    assert summary["source_dut_gold_certification_count"] == 0
+    assert summary["source_negative_certification_count"] == 0
+    assert summary["fresh_dut_gold_certification_count"] == 1
+    assert summary["fresh_negative_certification_count"] == 1
+    assert summary["effective_dut_gold_certification_count"] == 1
+    assert summary["effective_negative_certification_count"] == 1
+    assert summary["simulation_rerun_required_for_materialization"] is False
+    assert summary["stale_certification_family_ids"] == []
+    assert summary["fresh_recertification_evidence"]["family_ids"] == ["001"]
+    assert summary["fresh_recertification_evidence"]["used_stale_negative_case_ids"] == ["001/neg_001"]

@@ -18,6 +18,7 @@ if str(PREP) not in sys.path:
     sys.path.insert(0, str(PREP))
 
 from promote_correct_plus_five_evidence import PromotionError, promote_report  # noqa: E402
+from promote_tri_form_recertification_evidence import promote as promote_recertification_report  # noqa: E402
 
 
 def sha(path: Path) -> str:
@@ -303,3 +304,188 @@ def test_task_filter_excludes_failed_rows_in_a_mixed_report(tmp_path: Path) -> N
     )
 
     assert [task["task_id"] for task in promoted["tasks"]] == ["v4-501"]
+
+
+def release_fixture(tmp_path: Path) -> Path:
+    release = tmp_path / "package" / "release" / "benchmarkv4"
+    task_dir = release / "tasks" / "501-sample-testbench"
+    evaluator = task_dir / "evaluator"
+    supplied = task_dir / "public" / "supplied_dut"
+    mutation_ids = [f"neg_{index:03d}" for index in range(1, 6)]
+
+    write(evaluator / "reference_tb.scs", "reference deck\n")
+    write_json(evaluator / "checker_profile.json", {"checker_task_id": "v4_001_sample"})
+    write_json(
+        evaluator / "score_policy.json",
+        {
+            "kill_ratio_denominator": 5,
+            "negative_suite_mutation_ids": mutation_ids,
+        },
+    )
+    write(supplied / "dut.va", "module dut; // gold\nendmodule\n")
+    for mutation_id in mutation_ids:
+        write(
+            evaluator / "mutation_bundles" / mutation_id / "dut.va",
+            f"module dut; // {mutation_id}\nendmodule\n",
+        )
+    write_json(
+        release / "TASK_INDEX.json",
+        {
+            "schema_version": "v4-benchmarkv4-task-index-v1",
+            "tasks": [
+                {
+                    "task_id": "v4-501",
+                    "family_id": "001",
+                    "form": "testbench",
+                    "task_dir": "tasks/501-sample-testbench",
+                }
+            ],
+        },
+    )
+    write_json(
+        task_dir / "task_record.json",
+        {
+            "task_id": "v4-501",
+            "family_id": "001",
+            "form": "testbench",
+        },
+    )
+    return release
+
+
+def recertification_reports(tmp_path: Path, release: Path) -> tuple[Path, Path]:
+    task_dir = release / "tasks" / "501-sample-testbench"
+    reference_tb = task_dir / "evaluator" / "reference_tb.scs"
+    mutation_ids = [f"neg_{index:03d}" for index in range(1, 6)]
+    evas_cases = [
+        {
+            "mutation_id": None,
+            "status": "reference_pass",
+            "reference_tb_sha256": sha(reference_tb),
+            "checker_ok": True,
+            "evas_engine": "evas-rust",
+            "checker_notes": ["/tmp/private/reference ok"],
+        }
+    ]
+    evas_cases.extend(
+        {
+            "mutation_id": mutation_id,
+            "status": "mutation_killed",
+            "reference_tb_sha256": sha(reference_tb),
+            "checker_ok": True,
+            "evas_engine": "evas-rust",
+            "checker_notes": [f"/tmp/private/{mutation_id} killed"],
+        }
+        for mutation_id in mutation_ids
+    )
+    evas = {
+        "schema_version": "v4-reference-evas-smoke-v1",
+        "task_count": 1,
+        "pass_count": 1,
+        "results": [
+            {
+                "task_id": "v4-501",
+                "status": "pass",
+                "reference_pass": True,
+                "mutation_count": 5,
+                "mutation_kill_count": 5,
+                "infrastructure_error_count": 0,
+                "mutation_survivor_count": 0,
+                "cases": evas_cases,
+            }
+        ],
+    }
+
+    def candidate(case_id: str) -> Path:
+        if case_id == "correct":
+            return task_dir / "public" / "supplied_dut" / "dut.va"
+        return task_dir / "evaluator" / "mutation_bundles" / case_id / "dut.va"
+
+    spectre_cases = []
+    for case_id in ["correct", *mutation_ids]:
+        correct = case_id == "correct"
+        spectre_cases.append(
+            {
+                "case_id": case_id,
+                "case_kind": "correct" if correct else "negative",
+                "outcome": "reference_pass" if correct else "killed_behaviorally",
+                "observed": "behavior_pass" if correct else "behavior_fail",
+                "behavior_score": 1.0 if correct else 0.0,
+                "behavior_notes": [f"/private/work/{case_id} behavior"],
+                "include_paths": [str(candidate(case_id))],
+                "spectre": {
+                    "ok": True,
+                    "csv_path": f"/remote/work/{case_id}/tran.csv",
+                    "remote_run_dir": f"/remote/work/{case_id}",
+                },
+                "benign_warning_lines": [],
+                "untriaged_warning_lines": [],
+            }
+        )
+    spectre = {
+        "schema_version": "v4-benchmarkv4-reference-spectre-correct-plus-five-audit-v1",
+        "task_count": 1,
+        "pass_count": 1,
+        "untriaged_warning_count": 0,
+        "results": [
+            {
+                "task_id": "v4-501",
+                "family_id": "001",
+                "task_dir": "tasks/501-sample-testbench",
+                "checker_task_id": "v4_001_sample",
+                "reference_tb": str(reference_tb),
+                "reference_gate": True,
+                "kill_denominator": 5,
+                "killed_count": 5,
+                "invalid_count": 0,
+                "survived_count": 0,
+                "skipped_count": 0,
+                "status": "PASS",
+                "cases": spectre_cases,
+                "untriaged_warning_lines": [],
+            }
+        ],
+    }
+    evas_path = tmp_path / "raw-evas.json"
+    spectre_path = tmp_path / "raw-spectre.json"
+    write_json(evas_path, evas)
+    write_json(spectre_path, spectre)
+    return evas_path, spectre_path
+
+
+def test_release_recertification_promotion_is_hash_bound_and_path_clean(tmp_path: Path) -> None:
+    release = release_fixture(tmp_path)
+    evas, spectre = recertification_reports(tmp_path, release)
+
+    promoted = promote_recertification_report(
+        release=release,
+        evas_report_path=evas,
+        spectre_report_path=spectre,
+        task_ids={"v4-501"},
+    )
+
+    assert promoted["schema_version"] == "v4-benchmarkv4-recertification-evidence-v1"
+    assert promoted["release"]["task_index_sha256"] == sha(release / "TASK_INDEX.json")
+    assert promoted["summary"] == {
+        "task_count": 1,
+        "family_count": 1,
+        "reference_pass_count": 1,
+        "negative_case_count": 5,
+        "evas_behavioral_kill_count": 5,
+        "spectre_behavioral_kill_count": 5,
+        "untriaged_warning_count": 0,
+        "status": "pass",
+    }
+    task = promoted["tasks"][0]
+    assert task["reference_tb"]["path"] == "tasks/501-sample-testbench/evaluator/reference_tb.scs"
+    assert [case["case_id"] for case in task["cases"]] == [
+        "correct",
+        "neg_001",
+        "neg_002",
+        "neg_003",
+        "neg_004",
+        "neg_005",
+    ]
+    serialized = json.dumps(promoted, sort_keys=True)
+    for forbidden in (str(tmp_path), "/tmp/", "/private/", "/remote/", "remote_run_dir", "csv_path", "manifest_sha256"):
+        assert forbidden not in serialized
