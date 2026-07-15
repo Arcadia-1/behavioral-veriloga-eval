@@ -17,6 +17,8 @@ import shutil
 from pathlib import Path
 from typing import Any, Iterable
 
+from source_certification_binding import inspect_source_certification_reuse
+
 
 PACKAGE_ROOT = Path(__file__).resolve().parents[2]
 PREP_ROOT = Path(__file__).resolve().parent
@@ -79,6 +81,8 @@ STANDALONE_EVALUATOR_COMMON = (
     "harness_spec.json",
     "score_tb.scs",
 )
+INDEPENDENT_REFERENCE_TB = "independent_reference_tb"
+LEGACY_SCORE_TB_FALLBACK = "legacy_score_tb_fallback"
 TASK_RECORD_FILENAME = "task_record.json"
 TRIVIAL_FAULT_CLASSES = {
     "zero_stub_output",
@@ -114,6 +118,18 @@ def sha_bytes(value: bytes) -> str:
 
 def file_sha(path: Path) -> str:
     return sha_bytes(path.read_bytes())
+
+
+def resolve_testbench_reference(source_task: Path) -> tuple[Path, str]:
+    """Resolve the canonical TB-form gold without masking legacy fallback."""
+    evaluator = source_task / "evaluator"
+    independent = evaluator / "reference_tb.scs"
+    if independent.is_file():
+        return independent, INDEPENDENT_REFERENCE_TB
+    legacy = evaluator / "score_tb.scs"
+    if legacy.is_file():
+        return legacy, LEGACY_SCORE_TB_FALLBACK
+    raise SystemExit(f"{source_task.name}: missing evaluator/reference_tb.scs and evaluator/score_tb.scs")
 
 
 def canonical_sha(value: Any) -> str:
@@ -204,8 +220,14 @@ def render_binding(spec: dict[str, Any]) -> str:
     for instance in binding.get("instances") or []:
         connections = sorted(instance.get("connections") or [], key=lambda item: int(item.get("position", 0)))
         ports = ", ".join(f"{item['port_ref']}={item['net']}" for item in connections)
+        overrides = instance.get("parameter_overrides") or {}
+        override_clause = ""
+        if overrides:
+            rendered = ", ".join(f"{name}={overrides[name]}" for name in sorted(overrides))
+            override_clause = f" parameter overrides: `{rendered}`."
         lines.append(
-            f"- Instantiate `{instance['module_ref']}` as `{instance['name']}` with ordered public binding: {ports}."
+            f"- Instantiate `{instance['module_ref']}` as `{instance['name']}` with ordered public binding: "
+            f"{ports}.{override_clause}"
         )
     return "\n".join(lines)
 
@@ -234,8 +256,18 @@ def sanitize_instruction_text(text: str, form: str) -> str:
     return text
 
 
-def render_testbench_instruction(spec: dict[str, Any]) -> str:
+def render_testbench_instruction(
+    spec: dict[str, Any],
+    *,
+    support_artifacts: list[str] | None = None,
+) -> str:
     title = task_title(spec)
+    support_clause = ""
+    if support_artifacts:
+        support_clause = (
+            "- Include the supplied read-only support files only from\n"
+            "  `./dut/support/...`; do not reference `./support/...` or undeclared paths.\n"
+        )
     return f"""# {title} Testbench
 
 ## Task Contract
@@ -269,7 +301,7 @@ The required trace names are: {', '.join(f'`{x}`' for x in (spec.get('trace_cont
 
 - Submit one self-contained top-level transient `.scs` file.
 - Use only the declared `./dut/...` source paths and public DUT interfaces.
-- Do not redefine the DUT, drive declared DUT outputs, inspect private internals,
+{support_clause}- Do not redefine the DUT, drive declared DUT outputs, inspect private internals,
   access undeclared files, or emit a self-reported result.
 - Missing traces, setup errors, and invalid runs do not count as behavioral kills.
 
@@ -398,6 +430,31 @@ def copy_solution(source_task: Path, destination: Path, spec: dict[str, Any]) ->
     return paths
 
 
+def copy_public_support(source_task: Path, destination: Path) -> list[str]:
+    """Copy public read-only support artifacts under ``support/``.
+
+    Testbench candidates see these files below the same mounted ``./dut`` root
+    as the supplied DUT, so a public support file ``foo.va`` is included as
+    ``ahdl_include "./dut/support/foo.va"``.  The support files are not target
+    artifacts and are not editable candidate outputs.
+    """
+    source_root = source_task / "public" / "task" / "public_support"
+    if not source_root.is_dir():
+        return []
+
+    copied: list[str] = []
+    for source in sorted(source_root.rglob("*")):
+        if not source.is_file():
+            continue
+        relative = source.relative_to(source_root)
+        target_rel = Path("support") / relative
+        target = destination / target_rel
+        target.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copy2(source, target)
+        copied.append(target_rel.as_posix())
+    return copied
+
+
 def overlay_mutation(source_task: Path, mutation_id: str, destination: Path, artifact_paths: list[str]) -> list[str]:
     mutation_dir = source_task / "evaluator" / "mutation_bundles" / mutation_id
     candidates = sorted(mutation_dir.rglob("*.va"))
@@ -483,6 +540,7 @@ def materialize_standalone_evaluator(source_task: Path, evaluator: Path, *, incl
         shutil.copy2(source_eval / name, evaluator / name)
     copy_tree(source_eval / "profiles", evaluator / "profiles")
     copy_tree(source_eval / "solution", evaluator / "solution")
+    copy_public_support(source_task, evaluator / "solution")
     if include_negative_suite:
         shutil.copy2(source_eval / "mutation_catalog.json", evaluator / "mutation_catalog.json")
         copy_tree_skipping(
@@ -574,9 +632,13 @@ def build_testbench_view(
     task_dir.mkdir(parents=True)
     public = task_dir / "public"
     public.mkdir()
-    write_text(public / "instruction.md", render_testbench_instruction(spec))
     supplied = public / "supplied_dut"
     artifacts = copy_solution(source_task, supplied, spec)
+    support_artifacts = copy_public_support(source_task, supplied)
+    write_text(
+        public / "instruction.md",
+        render_testbench_instruction(spec, support_artifacts=support_artifacts),
+    )
     contract = public_semantics(spec)
     contract.update({
         "schema_version": "v4-benchmarkv4-public-contract-v1",
@@ -595,12 +657,17 @@ def build_testbench_view(
             "DUT redefinition, direct output drive, private hierarchical probes, arbitrary file access, and unbounded analyses are rejected",
         ],
     })
+    if support_artifacts:
+        contract["supplied_support_artifacts"] = [
+            f"supplied_dut/{path}" for path in support_artifacts
+        ]
     public_contract = write_public_contract(output, task_dir, contract)
     public_contract_sha = file_sha(output / public_contract)
     evaluator = task_dir / "evaluator"
     materialize_standalone_evaluator(source_task, evaluator, include_negative_suite=True)
+    reference_tb, reference_tb_source_kind = resolve_testbench_reference(source_task)
     suite = [str(item["mutation_id"]) for item in row["active_mutations"]]
-    write_json(evaluator / "score_policy.json", {
+    score_policy = {
         "schema_version": "v4-testbench-score-policy-v1",
         "task_id": f"v4-{task_num:03d}",
         "candidate_artifacts": ["testbench.scs"],
@@ -611,11 +678,16 @@ def build_testbench_view(
         "spectre_final_judge": True,
         "materialized_checker_profile": "evaluator/checker_profile.json",
         "checker_profile_sha256": file_sha(evaluator / "checker_profile.json"),
-        "reference_tb_sha256": row["hashes"]["score_deck_sha256"],
+        "reference_tb_sha256": file_sha(reference_tb),
         "mutation_catalog_sha256": row["hashes"]["mutation_catalog_sha256"],
         "negative_suite_mutation_ids": suite,
         "bugfix_seed_mutation_id": seed_review["mutation_id"],
-    })
+    }
+    if support_artifacts:
+        score_policy["read_only_support_artifacts"] = support_artifacts
+    if reference_tb_source_kind == "independent_reference_tb":
+        score_policy["reference_tb_source_kind"] = reference_tb_source_kind
+    write_json(evaluator / "score_policy.json", score_policy)
     write_json(evaluator / "testbench_security_policy.json", {
         "schema_version": "v4-testbench-security-policy-v1",
         "candidate_artifacts": ["testbench.scs"],
@@ -626,7 +698,7 @@ def build_testbench_view(
         ],
         "require": ["declared_dut_binding", "transient_analysis", "all_required_public_traces"],
     })
-    shutil.copy2(source_task / "evaluator" / "score_tb.scs", evaluator / "reference_tb.scs")
+    shutil.copy2(reference_tb, evaluator / "reference_tb.scs")
     bundle_sha = public_bundle_hash(task_dir)
     write_task_record(task_dir, common_task_record(
         task_id=f"v4-{task_num:03d}", form="testbench", family_id=family,
@@ -809,6 +881,8 @@ def main() -> int:
     rows = denominator.get("tasks") or []
     if len(rows) != 400:
         raise SystemExit("source release must contain exactly 400 canonical DUT rows")
+    source_rows = {str(row["canonical_dut_id"]): row for row in rows}
+    certification_reuse, _ = inspect_source_certification_reuse(source, source_rows)
     source_manifest_sha = file_sha(denominator_path)
     task_rows: list[dict[str, Any]] = []
     for row in rows:
@@ -830,9 +904,14 @@ def main() -> int:
     install_prompt_assets(output)
     write_json(output / "TASK_INDEX.json", {"schema_version": "v4-benchmarkv4-task-index-v1", "tasks": task_rows})
     counts = {form: sum(item["form"] == form for item in task_rows) for form in ("dut", "testbench", "bugfix")}
+    rerun_required = bool(certification_reuse["simulation_rerun_required_for_materialization"])
     manifest = {
         "schema_version": "v4-benchmarkv4-release-manifest-v1",
-        "release_status": "materialized_hash_bound_certification_reuse_audit_pending",
+        "release_status": (
+            "materialized_certification_refresh_required"
+            if rerun_required
+            else "materialized_hash_bound_certification_reuse_audit_pending"
+        ),
         "family_count": 400,
         "task_count": len(task_rows),
         "task_counts": counts,
@@ -842,12 +921,8 @@ def main() -> int:
         "active_mutations_per_family": denominator.get("active_mutations_per_family"),
         "spectre_final_judge": True,
         "simulation_rerun_count_for_materialization": 0,
-        "certification_reuse": {
-            "policy": "source_denominator_hash_bound",
-            "source_dut_gold_certification_count": 400,
-            "source_negative_certification_count": 2000,
-            "simulation_rerun_required_for_materialization": False,
-        },
+        "simulation_rerun_required_for_materialization": rerun_required,
+        "certification_reuse": certification_reuse,
         "prompt_record_count": len(task_rows) * len(MODES),
         "release_surface": "benchmarkv4_package",
         "public_surface": {

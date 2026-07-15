@@ -58,6 +58,8 @@ The required trace names are: `time`, `VDD`, `VSS`, `ref_clk`, `fb_clk`, `dco_cl
 
 - Submit one self-contained top-level transient `.scs` file.
 - Use only the declared `./dut/...` source paths and public DUT interfaces.
+- Include the supplied read-only support files only from
+  `./dut/support/...`; do not reference `./support/...` or undeclared paths.
 - Do not redefine the DUT, drive declared DUT outputs, inspect private internals,
   access undeclared files, or emit a self-reported result.
 - Missing traces, setup errors, and invalid runs do not count as behavioral kills.

@@ -188,6 +188,11 @@
   "supplied_dut_artifacts": [
     "supplied_dut/vin_src.va"
   ],
+  "supplied_support_artifacts": [
+    "supplied_dut/support/dither_adder.va",
+    "supplied_dut/support/gain_amp_fixed.va",
+    "supplied_dut/support/lfsr.va"
+  ],
   "target_artifacts": [
     "testbench.scs"
   ],
@@ -208,12 +213,12 @@
             "position": 1
           },
           {
-            "net": "vout_p",
+            "net": "vinp",
             "port_ref": "VOUT_P",
             "position": 2
           },
           {
-            "net": "vout_n",
+            "net": "vinn",
             "port_ref": "VOUT_N",
             "position": 3
           }

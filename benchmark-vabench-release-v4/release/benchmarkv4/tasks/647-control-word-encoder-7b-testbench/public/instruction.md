@@ -22,7 +22,8 @@ testbench must accept the correct DUT and expose all five behavioral faults.
 Stable evaluator binding:
 
 - DUT sources use `./dut/{artifact_path}`.
-- Instantiate `control_word_encoder_7b` as `XDUT` with ordered public binding: d0=d0, d1=d1, d2=d2, d3=d3, d4=d4, d5=d5, d6=d6.
+- Instantiate `control_word_encoder_7b` as `XCTRL42` with ordered public binding: d0=d0_42, d1=d1_42, d2=d2_42, d3=d3_42, d4=d4_42, d5=d5_42, d6=d6_42. parameter overrides: `ctrl=42`.
+- Instantiate `control_word_encoder_7b` as `XCTRL85` with ordered public binding: d0=d0_85, d1=d1_85, d2=d2_85, d3=d3_85, d4=d4_85, d5=d5_85, d6=d6_85. parameter overrides: `ctrl=85`.
 
 ## Public Parameter Contract
 

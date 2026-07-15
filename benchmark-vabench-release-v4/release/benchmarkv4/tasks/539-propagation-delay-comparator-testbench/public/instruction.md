@@ -29,8 +29,8 @@ testbench must accept the correct DUT and expose all five behavioral faults.
 Stable evaluator binding:
 
 - DUT sources use `./dut/{artifact_path}`.
-- Instantiate `cmp_delay` as `XCMP` with ordered public binding: CLK=CLK, VINN=VINN, VINP=VINP, DCMPN=DCMPN, DCMPP=DCMPP, LP=LP, LM=LM, VSS=VSS, VDD=VDD.
-- Instantiate `edge_interval_timer` as `XTIMER` with ordered public binding: CLK_1=CLK, CLK_2=DCMPP, OUT_PS=delay_ps.
+- Instantiate `cmp_delay` as `XCMP` with ordered public binding: CLK=clk, VINN=vinn, VINP=vinp, DCMPN=out_n, DCMPP=out_p, LP=lp_int, LM=lm_int, VSS=gnd, VDD=vdd.
+- Instantiate `edge_interval_timer` as `XTIMER` with ordered public binding: CLK_1=clk, CLK_2=out_p, OUT_PS=delay_ps.
 
 ## Public Parameter Contract
 

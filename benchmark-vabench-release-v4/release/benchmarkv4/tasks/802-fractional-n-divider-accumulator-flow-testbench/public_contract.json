@@ -287,6 +287,9 @@
   "supplied_dut_artifacts": [
     "supplied_dut/fracn_pll_timer_ref.va"
   ],
+  "supplied_support_artifacts": [
+    "supplied_dut/support/ref_step_clk.va"
+  ],
   "target_artifacts": [
     "testbench.scs"
   ],

@@ -10,6 +10,9 @@ from collections import Counter, defaultdict
 from pathlib import Path
 from typing import Any
 
+from materialize_tri_form_release import resolve_testbench_reference
+from source_certification_binding import inspect_source_certification_reuse
+
 
 PACKAGE_ROOT = Path(__file__).resolve().parents[2]
 DEFAULT_RELEASE = PACKAGE_ROOT / "release" / "benchmarkv4"
@@ -62,6 +65,38 @@ def file_sha(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
+def audit_testbench_reference(
+    evaluator: Path,
+    source_task: Path,
+    score: dict[str, Any],
+    prefix: str,
+    problems: list[str],
+) -> str | None:
+    """Validate the TB-form gold and preserve independent-vs-legacy provenance."""
+    try:
+        canonical, source_kind = resolve_testbench_reference(source_task)
+    except SystemExit as exc:
+        problems.append(f"{prefix} {exc}")
+        return None
+    canonical_sha = file_sha(canonical)
+    local = evaluator / "reference_tb.scs"
+    if not local.is_file():
+        problems.append(f"{prefix} evaluator missing reference_tb.scs")
+    elif file_sha(local) != canonical_sha:
+        problems.append(f"{prefix} reference testbench differs from canonical {source_kind}")
+    if score.get("reference_tb_sha256") != canonical_sha:
+        problems.append(f"{prefix} reference testbench score policy hash mismatch")
+    declared_source_kind = score.get("reference_tb_source_kind")
+    if declared_source_kind is not None and declared_source_kind != source_kind:
+        problems.append(
+            f"{prefix} reference testbench source kind mismatch: "
+            f"declared={declared_source_kind!r} expected={source_kind!r}"
+        )
+    if source_kind == "independent_reference_tb" and declared_source_kind is None:
+        problems.append(f"{prefix} independent reference testbench source kind is not declared")
+    return source_kind
+
+
 def rel(path: Path, root: Path) -> str:
     return path.relative_to(root).as_posix()
 
@@ -75,6 +110,35 @@ def tree_sha(path: Path) -> str:
             digest.update(item.read_bytes())
             digest.update(b"\0")
     return digest.hexdigest()
+
+
+def tree_file_hashes(path: Path) -> dict[str, str]:
+    return {
+        item.relative_to(path).as_posix(): file_sha(item)
+        for item in sorted(path.rglob("*"))
+        if item.is_file()
+    }
+
+
+def expected_solution_file_hashes(source_task: Path) -> dict[str, str]:
+    """Return the standalone solution tree expected after public support is added.
+
+    The editable/canonical gold artifacts live in evaluator/solution. Some
+    composite testbenches also require read-only helper modules that are public
+    solver inputs under public/task/public_support. In the standalone package
+    those helpers are copied under solution/support/ and supplied_dut/support/
+    so that every include path can use the stable ./dut/... contract.
+    """
+
+    solution = source_task / "evaluator" / "solution"
+    expected = tree_file_hashes(solution)
+    public_support = source_task / "public" / "task" / "public_support"
+    if public_support.is_dir():
+        for item in sorted(public_support.rglob("*")):
+            if item.is_file():
+                relative = item.relative_to(public_support).as_posix()
+                expected[f"support/{relative}"] = file_sha(item)
+    return expected
 
 
 def tree_sha_skipping(path: Path, *, excluded_names: set[str]) -> str:
@@ -116,6 +180,7 @@ def build_release_seal(
     release: Path,
     source_manifest_sha256: str,
     certification_reuse: dict[str, Any],
+    certification_problems: list[str] | None = None,
 ) -> dict[str, Any]:
     artifact_hashes = {}
     for relative in RELEASE_SEAL_ARTIFACTS:
@@ -123,14 +188,30 @@ def build_release_seal(
         if not path.is_file():
             raise SystemExit(f"cannot seal release; missing artifact: {relative}")
         artifact_hashes[relative] = file_sha(path)
-    return {
+    certification_problems = certification_problems or []
+    refresh_required = bool(
+        certification_reuse.get("simulation_rerun_required_for_materialization")
+    )
+    seal = {
         "schema_version": "v4-benchmarkv4-release-seal-v1",
-        "release_status": "gate3_hash_bound_certification_reused",
+        "release_status": (
+            "materialized_certification_refresh_required"
+            if refresh_required
+            else "gate3_hash_bound_certification_reused"
+        ),
         "source_score_denominator_manifest_sha256": source_manifest_sha256,
         "artifact_sha256": artifact_hashes,
         "certification_reuse": certification_reuse,
-        "simulation_claim": "canonical DUT gold and exact-five negative EVAS/Spectre certifications reused by hash",
+        "simulation_claim": (
+            "none; one or more source certifications require EVAS/Spectre refresh"
+            if refresh_required
+            else "canonical DUT gold and exact-five negative EVAS/Spectre certifications reused by hash"
+        ),
     }
+    if refresh_required:
+        seal["certification_problem_count"] = len(certification_problems)
+        seal["certification_problems"] = certification_problems
+    return seal
 
 
 def expected_task_id(form: str, family: str) -> str:
@@ -154,47 +235,8 @@ def expected_buggy_artifact_hashes(
 def audit_source_certifications(
     source: Path,
     source_rows: dict[str, dict[str, Any]],
-    problems: list[str],
-) -> dict[str, Any]:
-    gold_count = 0
-    negative_count = 0
-    for family, row in sorted(source_rows.items()):
-        source_task = source / str(row.get("release_dir") or "")
-        task_cert_path = source_task / "evaluator" / "certification.json"
-        expected_task_sha = str((row.get("hashes") or {}).get("task_certification_sha256") or "")
-        if not task_cert_path.is_file() or file_sha(task_cert_path) != expected_task_sha:
-            problems.append(f"{family}: source gold certification hash mismatch")
-        else:
-            certification = read_json(task_cert_path)
-            evaluators = certification.get("evaluators") or {}
-            if certification.get("status") != "gate2_pass":
-                problems.append(f"{family}: source gold certification is not gate2_pass")
-            for evaluator_name in ("evas", "spectre"):
-                if (evaluators.get(evaluator_name) or {}).get("status") != "pass":
-                    problems.append(f"{family}: source gold lacks {evaluator_name} PASS")
-            gold_count += 1
-        for mutation in row.get("active_mutations") or []:
-            mutation_id = str(mutation.get("mutation_id") or "")
-            cert_path = source_task / str(mutation.get("certification_path") or "")
-            expected_sha = str(mutation.get("certification_sha256") or "")
-            if not cert_path.is_file() or file_sha(cert_path) != expected_sha:
-                problems.append(f"{family}/{mutation_id}: source negative certification hash mismatch")
-                continue
-            certification = read_json(cert_path)
-            evaluators = certification.get("evaluators") or {}
-            if certification.get("outcome") != "killed_behaviorally":
-                problems.append(f"{family}/{mutation_id}: source negative was not killed behaviorally")
-            for evaluator_name in ("evas", "spectre"):
-                if evaluators.get(evaluator_name) != "compile_pass_behavior_fail":
-                    problems.append(f"{family}/{mutation_id}: source negative lacks {evaluator_name} behavioral kill")
-            negative_count += 1
-    return {
-        "policy": "source_denominator_hash_bound",
-        "source_dut_gold_certification_count": gold_count,
-        "source_negative_certification_count": negative_count,
-        "evaluators": ["evas", "spectre"],
-        "simulation_rerun_required_for_materialization": False,
-    }
+) -> tuple[dict[str, Any], list[str]]:
+    return inspect_source_certification_reuse(source, source_rows)
 
 
 def audit_standalone_evaluator(
@@ -216,13 +258,18 @@ def audit_standalone_evaluator(
             problems.append(f"{prefix} standalone evaluator missing {name}")
         elif not source.is_file() or file_sha(local) != file_sha(source):
             problems.append(f"{prefix} standalone evaluator {name} differs from canonical source")
-    for directory in ("profiles", "solution"):
+    for directory in ("profiles",):
         local = evaluator / directory
         source = source_eval / directory
         if not local.is_dir():
             problems.append(f"{prefix} standalone evaluator missing {directory}/")
         elif tree_sha(local) != tree_sha(source):
             problems.append(f"{prefix} standalone evaluator {directory}/ differs from canonical source")
+    local_solution = evaluator / "solution"
+    if not local_solution.is_dir():
+        problems.append(f"{prefix} standalone evaluator missing solution/")
+    elif tree_file_hashes(local_solution) != expected_solution_file_hashes(source_task):
+        problems.append(f"{prefix} standalone evaluator solution/ differs from canonical source/support")
     if form == "testbench":
         local_catalog = evaluator / "mutation_catalog.json"
         source_catalog = source_eval / "mutation_catalog.json"
@@ -265,7 +312,7 @@ def audit_task(
     source_rows: dict[str, dict[str, Any]],
     row: dict[str, Any],
     problems: list[str],
-) -> None:
+) -> str | None:
     task_dir = release / str(row.get("task_dir") or "")
     task_dir_parts = Path(str(row.get("task_dir") or "")).parts
     task_id = str(row.get("task_id") or "")
@@ -359,17 +406,15 @@ def audit_task(
         if score.get("candidate_artifacts") != ["testbench.scs"] or score.get("kill_ratio_denominator") != 5:
             problems.append(f"{prefix} testbench score policy mismatch")
         supplied = task_dir / "public" / "supplied_dut"
-        if tree_sha(supplied) != tree_sha(source_task / "evaluator" / "solution"):
+        if tree_file_hashes(supplied) != expected_solution_file_hashes(source_task):
             problems.append(f"{prefix} supplied DUT differs from canonical gold")
-        score_tb = source_task / "evaluator" / "score_tb.scs"
-        score_tb_sha = file_sha(score_tb)
-        if file_sha(evaluator / "reference_tb.scs") != score_tb_sha:
-            problems.append(f"{prefix} reference testbench differs from the canonical score deck")
-        if score.get("reference_tb_sha256") != score_tb_sha:
-            problems.append(f"{prefix} reference testbench score policy hash mismatch")
+        reference_tb_source_kind = audit_testbench_reference(
+            evaluator, source_task, score, prefix, problems
+        )
         public_text = instruction_text + json.dumps(contract)
         if "neg_" in public_text or "mutation_id" in public_text:
             problems.append(f"{prefix} public testbench view leaks negative identity")
+        return reference_tb_source_kind
     elif form == "bugfix":
         if record.get("candidate_artifacts") != artifact_paths or contract.get("target_artifacts") != artifact_paths:
             problems.append(f"{prefix} bugfix artifact contract mismatch")
@@ -560,14 +605,25 @@ def main() -> int:
         problems.append("manifest source release label mismatch")
     if manifest.get("source_score_denominator_manifest_sha256") != source_manifest_sha:
         problems.append("manifest source denominator hash mismatch")
-    certification_reuse = audit_source_certifications(source, source_rows, problems)
+    certification_reuse, certification_problems = audit_source_certifications(
+        source, source_rows
+    )
+    if manifest.get("certification_reuse") != certification_reuse:
+        problems.append("manifest certification reuse summary does not match source inputs")
+    if manifest.get("simulation_rerun_required_for_materialization") != certification_reuse.get(
+        "simulation_rerun_required_for_materialization"
+    ):
+        problems.append("manifest simulation rerun requirement does not match source inputs")
     counts = Counter(str(row.get("form") or "") for row in tasks)
     if len(tasks) != 1200 or counts != Counter({form: 400 for form in FORMS}):
         problems.append(f"task counts mismatch: total={len(tasks)} forms={dict(counts)}")
     family_forms: dict[str, set[str]] = defaultdict(set)
+    reference_tb_source_counts: Counter[str] = Counter()
     for row in tasks:
         family_forms[str(row.get("family_id") or "")].add(str(row.get("form") or ""))
-        audit_task(release, source, source_rows, row, problems)
+        source_kind = audit_task(release, source, source_rows, row, problems)
+        if source_kind:
+            reference_tb_source_counts[source_kind] += 1
     expected_families = {f"{value:03d}" for value in range(1, 401)}
     if set(family_forms) != expected_families:
         problems.append("family coverage is not exactly 001-400")
@@ -597,7 +653,14 @@ def main() -> int:
         "task_count": len(tasks),
         "task_counts": dict(sorted(counts.items())),
         "prompt_record_count": prompt_count,
+        "testbench_reference_source_counts": dict(sorted(reference_tb_source_counts.items())),
         "certification_reuse": certification_reuse,
+        "certification_status": (
+            "refresh_required"
+            if certification_reuse.get("simulation_rerun_required_for_materialization")
+            else "reused"
+        ),
+        "certification_problems": certification_problems,
         "input_hashes": {
             "source_score_denominator_manifest_sha256": source_manifest_sha,
             "manifest_sha256": file_sha(release / "MANIFEST.json"),
@@ -613,7 +676,12 @@ def main() -> int:
             raise SystemExit("cannot seal release while audit problems remain")
         if not args.output:
             raise SystemExit("--seal-output requires --output so the audit report can be hash-bound")
-        seal = build_release_seal(release, source_manifest_sha, certification_reuse)
+        seal = build_release_seal(
+            release,
+            source_manifest_sha,
+            certification_reuse,
+            certification_problems,
+        )
         args.seal_output.parent.mkdir(parents=True, exist_ok=True)
         args.seal_output.write_text(json.dumps(seal, indent=2, sort_keys=True) + "\n", encoding="utf-8")
     print(json.dumps(report, indent=2, sort_keys=True))

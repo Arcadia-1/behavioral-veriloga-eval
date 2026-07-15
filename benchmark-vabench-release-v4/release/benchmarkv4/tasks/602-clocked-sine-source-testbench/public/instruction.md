@@ -19,7 +19,7 @@ testbench must accept the correct DUT and expose all five behavioral faults.
 Stable evaluator binding:
 
 - DUT sources use `./dut/{artifact_path}`.
-- Instantiate `vin_src` as `XDUT` with ordered public binding: CLK=clk, RST_N=rst_n, VOUT_P=vout_p, VOUT_N=vout_n.
+- Instantiate `vin_src` as `XDUT` with ordered public binding: CLK=clk, RST_N=rst_n, VOUT_P=vinp, VOUT_N=vinn.
 
 ## Public Parameter Contract
 
@@ -47,6 +47,8 @@ The required trace names are: `time`, `clk`, `rst_n`, `vinp`, `vinn`, `vamp_p`, 
 
 - Submit one self-contained top-level transient `.scs` file.
 - Use only the declared `./dut/...` source paths and public DUT interfaces.
+- Include the supplied read-only support files only from
+  `./dut/support/...`; do not reference `./support/...` or undeclared paths.
 - Do not redefine the DUT, drive declared DUT outputs, inspect private internals,
   access undeclared files, or emit a self-reported result.
 - Missing traces, setup errors, and invalid runs do not count as behavioral kills.

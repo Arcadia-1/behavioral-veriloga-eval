@@ -260,47 +260,47 @@
       {
         "connections": [
           {
-            "net": "CLK",
+            "net": "clk",
             "port_ref": "CLK",
             "position": 0
           },
           {
-            "net": "VINN",
+            "net": "vinn",
             "port_ref": "VINN",
             "position": 1
           },
           {
-            "net": "VINP",
+            "net": "vinp",
             "port_ref": "VINP",
             "position": 2
           },
           {
-            "net": "DCMPN",
+            "net": "out_n",
             "port_ref": "DCMPN",
             "position": 3
           },
           {
-            "net": "DCMPP",
+            "net": "out_p",
             "port_ref": "DCMPP",
             "position": 4
           },
           {
-            "net": "LP",
+            "net": "lp_int",
             "port_ref": "LP",
             "position": 5
           },
           {
-            "net": "LM",
+            "net": "lm_int",
             "port_ref": "LM",
             "position": 6
           },
           {
-            "net": "VSS",
+            "net": "gnd",
             "port_ref": "VSS",
             "position": 7
           },
           {
-            "net": "VDD",
+            "net": "vdd",
             "port_ref": "VDD",
             "position": 8
           }
@@ -311,12 +311,12 @@
       {
         "connections": [
           {
-            "net": "CLK",
+            "net": "clk",
             "port_ref": "CLK_1",
             "position": 0
           },
           {
-            "net": "DCMPP",
+            "net": "out_p",
             "port_ref": "CLK_2",
             "position": 1
           },

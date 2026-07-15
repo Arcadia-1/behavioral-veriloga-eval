@@ -20,8 +20,12 @@
     "neg_005_vctrl_unclamped",
     "neg_001_drive_vctrl_mid"
   ],
+  "read_only_support_artifacts": [
+    "support/ref_fb_clk.va"
+  ],
   "reference_gate": "all applicable public properties pass on supplied correct DUT",
-  "reference_tb_sha256": "e3548aadbebb00c32c88ac8776988f7891d73aa8296a3d423df96765ed616d21",
+  "reference_tb_sha256": "5d90d2e94af32852f1cd66008f2634b853f220ecce6f2a354dc6b323bdd78857",
+  "reference_tb_source_kind": "independent_reference_tb",
   "schema_version": "v4-testbench-score-policy-v1",
   "spectre_final_judge": true,
   "task_id": "v4-801"

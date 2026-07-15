@@ -20,8 +20,12 @@
     "neg_005_vctrl_out_of_range",
     "neg_001_zero"
   ],
+  "read_only_support_artifacts": [
+    "support/ref_step_clk.va"
+  ],
   "reference_gate": "all applicable public properties pass on supplied correct DUT",
-  "reference_tb_sha256": "0a826822bbc8688db46e435be9ab5f38d228023dc7d1d8c4056edb649e0c4683",
+  "reference_tb_sha256": "0d9680328bf01f91496f67351d3787a7233260fef757cc0a27ee4dec88133791",
+  "reference_tb_source_kind": "independent_reference_tb",
   "schema_version": "v4-testbench-score-policy-v1",
   "spectre_final_judge": true,
   "task_id": "v4-802"

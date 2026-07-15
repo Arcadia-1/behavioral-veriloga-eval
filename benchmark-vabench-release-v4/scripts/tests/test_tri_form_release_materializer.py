@@ -13,10 +13,13 @@ from materialize_tri_form_release import (  # noqa: E402
     COMPONENT_METADATA,
     MODES,
     REFERENCE_TOKENIZER,
+    build_testbench_view,
     install_prompt_assets,
     iter_public_inputs,
     public_contract_relative_path,
     reference_token_count,
+    resolve_testbench_reference,
+    render_binding,
     render_bugfix_instruction,
     render_testbench_instruction,
     select_bugfix_seed,
@@ -26,6 +29,7 @@ from export_tri_form_runtime import build_mode_record, install_public, ordered_p
 from record_runtime_ingestion_evidence import verified_audit  # noqa: E402
 from audit_tri_form_release import (  # noqa: E402
     RELEASE_SEAL_ARTIFACTS,
+    audit_testbench_reference,
     build_release_seal,
     expected_buggy_artifact_hashes,
     file_sha,
@@ -50,6 +54,88 @@ def sample_spec() -> dict:
     }
 
 
+def sample_source_task(tmp_path: Path, *, independent_reference: bool) -> tuple[Path, dict, dict]:
+    source_task = tmp_path / "source" / "001-sample"
+    evaluator = source_task / "evaluator"
+    (evaluator / "profiles").mkdir(parents=True)
+    (evaluator / "solution").mkdir()
+    (evaluator / "mutation_bundles").mkdir()
+    spec = sample_spec()
+    (evaluator / "family_spec.json").write_text(json.dumps(spec) + "\n", encoding="utf-8")
+    (evaluator / "checker_profile.json").write_text(
+        '{"checker_task_id":"v4_001_sample"}\n', encoding="utf-8"
+    )
+    (evaluator / "harness_spec.json").write_text("{}\n", encoding="utf-8")
+    (evaluator / "solution" / "dut.va").write_text("module dut; endmodule\n", encoding="utf-8")
+    (evaluator / "score_tb.scs").write_text("legacy score deck\n", encoding="utf-8")
+    if independent_reference:
+        (evaluator / "reference_tb.scs").write_text("independent reference deck\n", encoding="utf-8")
+    mutation_ids = [f"neg_{index}" for index in range(1, 6)]
+    (evaluator / "mutation_catalog.json").write_text(
+        json.dumps({"mutations": [{"id": mutation_id} for mutation_id in mutation_ids]}) + "\n",
+        encoding="utf-8",
+    )
+    row = {
+        "canonical_dut_id": "001",
+        "active_mutations": [{"mutation_id": mutation_id} for mutation_id in mutation_ids],
+        "hashes": {"mutation_catalog_sha256": file_sha(evaluator / "mutation_catalog.json")},
+    }
+    seed_review = {"mutation_id": mutation_ids[0]}
+    return source_task, row, seed_review
+
+
+def test_reference_tb_prefers_explicit_independent_asset(tmp_path: Path) -> None:
+    source_task, _, _ = sample_source_task(tmp_path, independent_reference=True)
+    path, source_kind = resolve_testbench_reference(source_task)
+    assert path == source_task / "evaluator" / "reference_tb.scs"
+    assert source_kind == "independent_reference_tb"
+
+
+def test_reference_tb_legacy_fallback_is_explicit(tmp_path: Path) -> None:
+    source_task, _, _ = sample_source_task(tmp_path, independent_reference=False)
+    path, source_kind = resolve_testbench_reference(source_task)
+    assert path == source_task / "evaluator" / "score_tb.scs"
+    assert source_kind == "legacy_score_tb_fallback"
+
+
+def test_testbench_builder_records_reference_hash_and_source_kind(tmp_path: Path) -> None:
+    source_task, row, seed_review = sample_source_task(tmp_path, independent_reference=True)
+    output = tmp_path / "release"
+    build_testbench_view(output, source_task, row, sample_spec(), "a" * 64, seed_review)
+    evaluator = output / "tasks" / "501-sample-testbench" / "evaluator"
+    score = json.loads((evaluator / "score_policy.json").read_text(encoding="utf-8"))
+    assert (evaluator / "reference_tb.scs").read_text(encoding="utf-8") == "independent reference deck\n"
+    assert score["reference_tb_sha256"] == file_sha(source_task / "evaluator" / "reference_tb.scs")
+    assert score["reference_tb_source_kind"] == "independent_reference_tb"
+
+
+def test_testbench_builder_marks_legacy_score_deck_fallback(tmp_path: Path) -> None:
+    source_task, row, seed_review = sample_source_task(tmp_path, independent_reference=False)
+    output = tmp_path / "release"
+    build_testbench_view(output, source_task, row, sample_spec(), "a" * 64, seed_review)
+    evaluator = output / "tasks" / "501-sample-testbench" / "evaluator"
+    score = json.loads((evaluator / "score_policy.json").read_text(encoding="utf-8"))
+    assert (evaluator / "reference_tb.scs").read_text(encoding="utf-8") == "legacy score deck\n"
+    assert score["reference_tb_sha256"] == file_sha(source_task / "evaluator" / "score_tb.scs")
+    assert "reference_tb_source_kind" not in score
+
+
+def test_audit_rejects_false_independent_reference_claim(tmp_path: Path) -> None:
+    source_task, _, _ = sample_source_task(tmp_path, independent_reference=False)
+    evaluator = tmp_path / "release-evaluator"
+    evaluator.mkdir()
+    reference = source_task / "evaluator" / "score_tb.scs"
+    (evaluator / "reference_tb.scs").write_bytes(reference.read_bytes())
+    score = {
+        "reference_tb_sha256": file_sha(reference),
+        "reference_tb_source_kind": "independent_reference_tb",
+    }
+    problems: list[str] = []
+    source_kind = audit_testbench_reference(evaluator, source_task, score, "v4-501:", problems)
+    assert source_kind == "legacy_score_tb_fallback"
+    assert any("source kind mismatch" in problem for problem in problems)
+
+
 def test_mode_matrix_is_two_direct_plus_four_agentic() -> None:
     assert [name for name, row in MODES.items() if row["process"] == "direct_one_shot"] == ["G0", "G1"]
     assert [name for name, row in MODES.items() if row["feedback_cli"]] == ["G2", "G3", "G4", "G5"]
@@ -66,6 +152,13 @@ def test_testbench_instruction_has_one_candidate_and_five_anonymous_negatives() 
     assert "`testbench.scs`" in text
     assert "five anonymous semantic negative DUTs" in text
     assert "hidden" not in text.lower()
+
+
+def test_binding_renderer_exposes_declared_instance_parameter_overrides() -> None:
+    spec = sample_spec()
+    spec["testbench_binding"]["instances"][0]["parameter_overrides"] = {"ctrl": 42}
+    text = render_binding(spec)
+    assert "parameter overrides: `ctrl=42`" in text
 
 
 def test_seed_policy_prefers_temporal_semantic_fault_over_force_zero() -> None:
@@ -324,3 +417,31 @@ def test_release_seal_binds_transitive_release_and_reused_certifications(tmp_pat
     assert seal["release_status"] == "gate3_hash_bound_certification_reused"
     assert seal["certification_reuse"] == reuse
     assert set(seal["artifact_sha256"]) == set(RELEASE_SEAL_ARTIFACTS)
+
+
+def test_release_seal_refuses_to_claim_stale_certifications(tmp_path: Path) -> None:
+    for relative in RELEASE_SEAL_ARTIFACTS:
+        path = tmp_path / relative
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text(json.dumps({"artifact": relative}) + "\n", encoding="utf-8")
+    reuse = {
+        "policy": "source_transitive_input_hash_bound",
+        "source_dut_gold_certification_count": 399,
+        "source_negative_certification_count": 1995,
+        "evaluators": ["evas", "spectre"],
+        "simulation_rerun_required_for_materialization": True,
+        "stale_certification_family_ids": ["398"],
+    }
+    certification_problems = ["398: source negative certification is stale"]
+
+    seal = build_release_seal(
+        tmp_path,
+        "a" * 64,
+        reuse,
+        certification_problems,
+    )
+
+    assert seal["release_status"] == "materialized_certification_refresh_required"
+    assert seal["simulation_claim"].startswith("none;")
+    assert seal["certification_problem_count"] == 1
+    assert seal["certification_problems"] == certification_problems
