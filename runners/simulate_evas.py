@@ -25,6 +25,7 @@ import warnings
 from pathlib import Path
 from typing import Callable, Iterable
 
+from checkers.v4.registry import load_checker as load_v4_checker
 from main120_stable_checks import (
     check_background_calibration_accumulator as check_vbm1_background_calibration_accumulator,
     check_barrel_pointer_window as check_vbm1_barrel_pointer_window,
@@ -439,7 +440,14 @@ def _candidate_evas_source_roots() -> list[Path]:
     explicit = os.environ.get("VAEVAS_EVAS_REPO", "").strip()
     if explicit:
         roots.append(Path(explicit).expanduser())
-    roots.extend([REPO_ROOT.parent / "EVAS", REPO_ROOT / "EVAS"])
+    roots.extend(
+        [
+            REPO_ROOT.parent / "EVAS",
+            REPO_ROOT / "EVAS",
+            REPO_ROOT.parent.parent / "EVAS",
+            REPO_ROOT.parent.parent / ".runtime" / "evas-v0.8.1",
+        ]
+    )
     return roots
 
 
@@ -3487,7 +3495,7 @@ def _auto_row_checker_trace_contract(task_id: str) -> frozenset[str]:
     cached = _CHECKER_TRACE_CONTRACT_CACHE.get(task_id)
     if cached is not None:
         return cached
-    checker = CHECKS.get(task_id)
+    checker = resolve_row_behavior_checker(task_id)
     if checker is None:
         inferred = frozenset()
     else:
@@ -26917,8 +26925,12 @@ for _v11_topic_id, _v11_checker in VABENCH300_V11_CHECK_ALIASES.items():
         CHECKS.setdefault(f"{_v11_topic_id}:{_v11_form}", _v11_checker)
 
 
+def resolve_row_behavior_checker(task_id: str):
+    return CHECKS.get(task_id) or load_v4_checker(task_id)
+
+
 def has_behavior_check(task_id: str) -> bool:
-    return task_id in CHECKS
+    return resolve_row_behavior_checker(task_id) is not None
 
 
 def release_checker_task_id(meta: dict, form: str | None = None) -> str | None:
@@ -26955,7 +26967,8 @@ def evaluate_behavior(
     csv_path: Path,
     checks_config: dict[str, object] | None = None,
 ) -> tuple[float, list[str]]:
-    if task_id not in CHECKS:
+    checker = resolve_row_behavior_checker(task_id)
+    if checker is None:
         return 0.0, [f"no behavior check implemented for {task_id}"]
     if task_id in {"noise_gen", "noise_gen_smoke"}:
         return evaluate_noise_gen_csv(csv_path)
@@ -26968,7 +26981,7 @@ def evaluate_behavior(
         ok, note = check_v2_configured_first_order_lowpass(rows, checker_parameters)
         note = f"{note} checker_config_parameters=first_order_lowpass"
     else:
-        ok, note = CHECKS[task_id](rows)
+        ok, note = checker(rows)
     return (1.0 if ok else 0.0), [note]
 
 

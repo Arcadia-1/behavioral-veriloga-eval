@@ -1,0 +1,94 @@
+"""Task-specific checker for canonical v4 DUT 187."""
+from __future__ import annotations
+
+from ..api import Checker
+def sample_signal_at(rows: list[dict[str, float]], signal: str, time_s: float) -> float | None:
+    if not rows or "time" not in rows[0] or signal not in rows[0]:
+        return None
+    first_time = rows[0]["time"]
+    last_time = rows[-1].get("time")
+    if last_time is None or time_s < first_time or time_s > last_time:
+        return None
+    if time_s == first_time:
+        return rows[0].get(signal)
+    for idx in range(1, len(rows)):
+        prev = rows[idx - 1]
+        cur = rows[idx]
+        t0 = prev.get("time")
+        t1 = cur.get("time")
+        if t0 is None or t1 is None:
+            continue
+        if t0 <= time_s <= t1:
+            v0 = prev.get(signal)
+            v1 = cur.get(signal)
+            if v0 is None or v1 is None:
+                return None
+            if t1 == t0:
+                return v1
+            alpha = (time_s - t0) / (t1 - t0)
+            return v0 + alpha * (v1 - v0)
+    return None
+
+def _sample_many(
+    rows: list[dict[str, float]],
+    samples: dict[str, list[tuple[float, float]]],
+    *,
+    tol: float,
+) -> tuple[bool, str]:
+    details: list[str] = []
+    for signal, expected_samples in samples.items():
+        observed: list[float] = []
+        for time_ns, expected in expected_samples:
+            value = sample_signal_at(rows, signal, time_ns * 1e-9)
+            if value is None:
+                return False, f"missing_{signal}_sample_at={time_ns:g}ns"
+            observed.append(value)
+            if abs(value - expected) > tol:
+                return False, (
+                    f"{signal}@{time_ns:g}ns={value:.4f} expected={expected:.4f} "
+                    f"tol={tol:.4f}"
+                )
+        details.append(f"{signal}=" + ",".join(f"{value:.3f}" for value in observed))
+    return True, " ".join(details)
+
+def _sample_many_within_trace(
+    rows: list[dict[str, float]],
+    samples: dict[str, list[tuple[float, float]]],
+    *,
+    tol: float,
+) -> tuple[bool, str]:
+    if not rows:
+        return _sample_many(rows, samples, tol=tol)
+    end_time = rows[-1].get("time")
+    if end_time is None:
+        return _sample_many(rows, samples, tol=tol)
+    end_ns = end_time * 1e9
+    filtered: dict[str, list[tuple[float, float]]] = {}
+    for signal, expected_samples in samples.items():
+        visible_samples = [
+            (time_ns, expected)
+            for time_ns, expected in expected_samples
+            if time_ns <= end_ns + 1e-3
+        ]
+        filtered[signal] = visible_samples or expected_samples
+    return _sample_many(rows, filtered, tol=tol)
+
+def check_v3_adc_sample_clock_sequencer(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "rst", "s", "ss", "nc_az", "nc", "conv"}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing adc sample clock sequencer outputs"
+    return _sample_many_within_trace(
+        rows,
+        {
+            "rst": [(0.1, 0.9), (0.7, 0.0), (18.1, 0.9), (20.6, 0.0)],
+            "s": [(0.7, 0.9), (1.45, 0.0), (6.7, 0.9), (7.45, 0.0), (12.7, 0.9)],
+            "ss": [(0.7, 0.9), (1.45, 0.0), (6.7, 0.9), (7.45, 0.0), (12.7, 0.9)],
+            "nc_az": [(1.45, 0.9), (1.8, 0.0), (7.45, 0.9), (7.85, 0.0), (13.45, 0.9)],
+            "nc": [(1.8, 0.9), (2.6, 0.0), (7.85, 0.9), (8.6, 0.0), (13.85, 0.9)],
+            "conv": [(2.6, 0.9), (5.0, 0.9), (6.7, 0.0), (8.6, 0.9), (14.6, 0.9), (18.1, 0.0)],
+        },
+        tol=0.08,
+    )
+
+CHECKER_ID = "v4_187_adc_sample_clock_sequencer"
+CHECKER: Checker = check_v3_adc_sample_clock_sequencer

@@ -1,0 +1,166 @@
+"""Task-specific checker for canonical v4 DUT 227."""
+from __future__ import annotations
+
+from ..api import Checker
+def _threshold_crossings(
+    values: list[float],
+    times: list[float],
+    *,
+    threshold: float = 0.0,
+    direction: str,
+) -> list[float]:
+    edges: list[float] = []
+    for idx in range(1, len(values)):
+        v0 = values[idx - 1]
+        v1 = values[idx]
+        if direction == "rising":
+            hit = v0 <= threshold < v1
+        elif direction == "falling":
+            hit = v0 >= threshold > v1
+        else:
+            raise ValueError(f"unsupported direction={direction!r}")
+        if not hit:
+            continue
+        t0 = times[idx - 1]
+        t1 = times[idx]
+        if v1 == v0:
+            edges.append(t1)
+        else:
+            alpha = (threshold - v0) / (v1 - v0)
+            edges.append(t0 + alpha * (t1 - t0))
+    return edges
+
+def _signal_threshold_edges(
+    rows: list[dict[str, float]],
+    signal: str,
+    *,
+    threshold: float = 0.45,
+    directions: tuple[str, ...] = ("rising", "falling"),
+) -> list[float]:
+    times = [row["time"] for row in rows]
+    values = [row[signal] for row in rows]
+    edges: list[float] = []
+    for direction in directions:
+        edges.extend(_threshold_crossings(values, times, threshold=threshold, direction=direction))
+    return sorted(edges)
+
+def _v3_formula_check(
+    rows: list[dict[str, float]],
+    *,
+    required: set[str],
+    output: str,
+    expected_fn,
+    tol: float,
+    min_checked: int,
+    max_rows: int = 240,
+    stable_fn=None,
+) -> tuple[bool, str]:
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing " + "/".join(sorted(required))
+    stride = max(1, len(rows) // max_rows)
+    checked = 0
+    max_err = 0.0
+    for row in rows[::stride]:
+        if stable_fn is not None and not stable_fn(row):
+            continue
+        expected = expected_fn(row)
+        if expected is None:
+            continue
+        observed = row.get(output)
+        if observed is None:
+            return False, f"missing_{output}_sample"
+        max_err = max(max_err, abs(observed - expected))
+        checked += 1
+    if checked < min_checked:
+        return False, f"too_few_formula_samples={checked}"
+    return max_err <= tol, f"checked={checked} max_error={max_err:.5f}"
+
+def _max_signal_value(
+    rows: list[dict[str, float]],
+    signals: list[str],
+    *,
+    default: float,
+) -> float:
+    values: list[float] = []
+    for row in rows:
+        for signal in signals:
+            value = row.get(signal)
+            if value is not None:
+                values.append(value)
+    return max(values) if values else default
+
+def _v3_away_from_edges(row_time: float, edge_times: list[float], margin_s: float = 80e-12) -> bool:
+    return all(abs(row_time - edge_time) > margin_s for edge_time in edge_times)
+
+def _v3_logic_value(row: dict[str, float], signal: str, threshold: float) -> int:
+    return 1 if row[signal] > threshold else 0
+
+def _v3_stable_formula_check(
+    rows: list[dict[str, float]],
+    *,
+    required: set[str],
+    output: str,
+    logic_signals: list[str],
+    threshold: float,
+    expected_fn,
+    tol: float,
+    min_checked: int,
+    margin_s: float = 80e-12,
+) -> tuple[bool, str]:
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing " + "/".join(sorted(required))
+    edge_times: list[float] = []
+    for signal in logic_signals:
+        edge_times.extend(
+            _signal_threshold_edges(
+                rows,
+                signal,
+                threshold=threshold,
+                directions=("rising", "falling"),
+            )
+        )
+
+    def stable(row: dict[str, float]) -> bool:
+        row_time = row.get("time")
+        if row_time is None or row_time < 50e-12:
+            return False
+        if not _v3_away_from_edges(row_time, edge_times, margin_s=margin_s):
+            return False
+        return all(abs(row[signal] - threshold) > 0.05 for signal in logic_signals)
+
+    return _v3_formula_check(
+        rows,
+        required=required,
+        output=output,
+        expected_fn=expected_fn,
+        tol=tol,
+        min_checked=min_checked,
+        stable_fn=stable,
+    )
+
+def check_v3_weighted_decoder_6bit(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "vd1", "vd2", "vd3", "vd4", "vd5", "vd6", "vout"}
+    if not rows or not required.issubset(rows[0]):
+        return False, "missing weighted decoder 6bit signals"
+    logic_signals = ["vd1", "vd2", "vd3", "vd4", "vd5", "vd6"]
+    threshold = 0.5 * _max_signal_value(rows, logic_signals, default=0.9)
+
+    def expected(row: dict[str, float]) -> float:
+        code = 0
+        for weight, signal in zip([32, 16, 8, 4, 2, 1], logic_signals):
+            code += weight * _v3_logic_value(row, signal, threshold)
+        return code / 63.0
+
+    return _v3_stable_formula_check(
+        rows,
+        required=required,
+        output="vout",
+        logic_signals=logic_signals,
+        threshold=threshold,
+        expected_fn=expected,
+        tol=0.025,
+        min_checked=20,
+    )
+
+CHECKER_ID = "v4_227_weighted_decoder_6bit"
+CHECKER: Checker = check_v3_weighted_decoder_6bit
