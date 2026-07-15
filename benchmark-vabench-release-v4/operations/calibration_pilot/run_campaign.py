@@ -60,6 +60,23 @@ FILENAME_TOKEN_RE = re.compile(
 )
 AGENTIC = {"G2", "G3", "G4", "G5"}
 SKILL_LOOKUP_MODES = {"G1", "G3", "G5"}
+DIRECT_SKILL_LOOKUP_MAX_TOOL_ROUNDS = 4
+DIRECT_SKILL_LOOKUP_FINAL_PROMPT = (
+    "Read-only skill lookup is now closed for this direct mode attempt. "
+    "Produce exactly one final answer using only the required VABENCH_ARTIFACT block protocol:\n"
+    '<<<VABENCH_ARTIFACT path="declared/relative/path.ext">>>\n'
+    "complete file contents\n"
+    "<<<END_VABENCH_ARTIFACT>>>\n"
+    "Replace the path with the exact declared artifact path for this task. "
+    "Do not request more tools, do not include analysis prose, do not use Markdown fences, "
+    "and do not submit more than once."
+)
+DIRECT_FINAL_ARTIFACT_RETRY_MAX = 1
+DIRECT_TEXTUAL_TOOL_RETRY_PROMPT = (
+    "No tools are available now. Your previous message was a textual tool request, "
+    "not a valid benchmark submission. Output only the required VABENCH_ARTIFACT "
+    "block(s) now. Do not write tool_calls, DSML, markdown fences, explanations, or prose."
+)
 SKILL_LOOKUP_CACHE_PREFIX = "skill/"
 SKILL_LOOKUP_EXCLUDED_PARTS = {".git", "__pycache__", ".pytest_cache", ".mypy_cache", "node_modules", ".venv"}
 SKILL_LOOKUP_TEXT_SUFFIXES = {
@@ -97,6 +114,10 @@ class ProviderContextWindowExceeded(RuntimeError):
 
 class ProviderAPIError(RuntimeError):
     """Provider returned a structured API error that is not transport failure."""
+
+
+class ProviderTransportError(RuntimeError):
+    """Provider transport failed before a valid API response was received."""
 
 
 def now() -> str:
@@ -380,7 +401,7 @@ class OpenAICompatible:
                 break
         assert completed is not None
         if completed.returncode != 0:
-            raise RuntimeError(
+            raise ProviderTransportError(
                 f"provider transport failed after 3 attempts rc={completed.returncode}: "
                 f"{self._redact(completed.stderr[-2000:])}"
             )
@@ -438,7 +459,7 @@ class OpenAICompatible:
                 break
         assert completed is not None
         if completed.returncode != 0:
-            raise RuntimeError(
+            raise ProviderTransportError(
                 f"provider streaming transport failed after 3 attempts rc={completed.returncode}: "
                 f"{self._redact(completed.stderr[-2000:])}"
             )
@@ -1156,6 +1177,14 @@ def extract_direct_submission(text: str, runtime: Path) -> dict[str, Any]:
     }
 
 
+def looks_like_textual_tool_request(text: str) -> bool:
+    normalized = text.lower()
+    return any(
+        marker in normalized
+        for marker in ("tool_calls", "dsml", "invoke name=", "read_skill", "list_skills")
+    )
+
+
 def gate_agentic_submission(runtime: Path, result: dict[str, Any]) -> bool:
     gate = submission_artifact_gate(runtime)
     result["artifact_gate"] = gate
@@ -1205,6 +1234,11 @@ def run_cell(cell: dict[str, Any], args: argparse.Namespace, client: OpenAICompa
         "tool_policy": {
             "tool_names": sorted(allowed_tool_names),
             "skill_lookup_available": bool(args.skill_root and cell["mode"] in SKILL_LOOKUP_MODES),
+            "direct_skill_lookup_max_tool_rounds": (
+                DIRECT_SKILL_LOOKUP_MAX_TOOL_ROUNDS
+                if cell["mode"] not in AGENTIC and args.skill_root and cell["mode"] in SKILL_LOOKUP_MODES
+                else None
+            ),
         },
     }
     if args.dry_run:
@@ -1221,12 +1255,18 @@ def run_cell(cell: dict[str, Any], args: argparse.Namespace, client: OpenAICompa
         output_tokens = int(checkpoint.get("output_tokens", checkpoint.get("working_tokens", 0)))
         events = list(checkpoint["events"])
         finalized = bool(checkpoint.get("finalized"))
+        direct_skill_lookup_rounds = int(checkpoint.get("direct_skill_lookup_rounds") or 0)
+        direct_skill_lookup_closed = bool(checkpoint.get("direct_skill_lookup_closed"))
+        direct_final_retry_count = int(checkpoint.get("direct_final_retry_count") or 0)
         resumed_agent_elapsed_s = float(checkpoint.get("agent_elapsed_s") or 0.0)
     else:
         messages = [{"role": "user", "content": prompt}]
         output_tokens = 0
         events = []
         finalized = False
+        direct_skill_lookup_rounds = 0
+        direct_skill_lookup_closed = False
+        direct_final_retry_count = 0
 
     per_turn_max_tokens = cell_per_turn_max_tokens(cell)
     agent_deadline = agent_started_monotonic + max(0.0, args.agent_timeout_s - resumed_agent_elapsed_s)
@@ -1247,6 +1287,9 @@ def run_cell(cell: dict[str, Any], args: argparse.Namespace, client: OpenAICompa
             "started_at": result["started_at"],
             "output_tokens": output_tokens, "working_tokens": output_tokens, "events": events,
             "finalized": finalized,
+            "direct_skill_lookup_rounds": direct_skill_lookup_rounds,
+            "direct_skill_lookup_closed": direct_skill_lookup_closed,
+            "direct_final_retry_count": direct_final_retry_count,
             "termination_policy": "wall_time",
             "agent_timeout_s": args.agent_timeout_s,
             "agent_elapsed_s": current_agent_elapsed_s(),
@@ -1302,6 +1345,29 @@ def run_cell(cell: dict[str, Any], args: argparse.Namespace, client: OpenAICompa
             finalized = finalized or done
             save_conversation()
 
+    def close_direct_skill_lookup() -> None:
+        nonlocal direct_skill_lookup_closed
+        if cell["mode"] in AGENTIC or direct_skill_lookup_closed:
+            return
+        direct_skill_lookup_closed = True
+        messages.append({"role": "user", "content": DIRECT_SKILL_LOOKUP_FINAL_PROMPT})
+        save_conversation()
+
+    def retry_direct_after_textual_tool_request(content: str, *, hit_limit: bool) -> bool:
+        nonlocal direct_final_retry_count
+        if (
+            cell["mode"] in AGENTIC
+            or not direct_skill_lookup_closed
+            or hit_limit
+            or direct_final_retry_count >= DIRECT_FINAL_ARTIFACT_RETRY_MAX
+            or not looks_like_textual_tool_request(content)
+        ):
+            return False
+        direct_final_retry_count += 1
+        messages.append({"role": "user", "content": DIRECT_TEXTUAL_TOOL_RETRY_PROMPT})
+        save_conversation()
+        return True
+
     def model_limit_reason() -> str | None:
         return "model_output_limit" if current_turn_hit_limit() else None
 
@@ -1324,6 +1390,11 @@ def run_cell(cell: dict[str, Any], args: argparse.Namespace, client: OpenAICompa
         content = str(messages[-1].get("content") or "")
         direct_submission = extract_direct_submission(content, runtime)
         complete = bool(direct_submission["submission_protocol_compliant"])
+        if not complete and retry_direct_after_textual_tool_request(
+            content,
+            hit_limit=current_turn_hit_limit(),
+        ):
+            return False
         set_terminal_submission_status(complete, default_reason="completed")
         result.update({
             "finished_at": now(),
@@ -1355,11 +1426,13 @@ def run_cell(cell: dict[str, Any], args: argparse.Namespace, client: OpenAICompa
             set_terminal_submission_status(complete, default_reason="completed")
     while not agent_time_expired() and not finalized and result.get("status") == "prepared":
         started = time.monotonic()
+        active_tools = None if (cell["mode"] not in AGENTIC and direct_skill_lookup_closed) else tools
+        active_tool_names = tool_names(active_tools)
         try:
             response = client.complete(
                 messages,
                 per_turn_max_tokens,
-                tools,
+                active_tools,
                 timeout_s=max(0.1, min(float(args.request_timeout_s), remaining_agent_s())),
             )
         except ProviderContextWindowExceeded as exc:
@@ -1370,6 +1443,18 @@ def run_cell(cell: dict[str, Any], args: argparse.Namespace, client: OpenAICompa
             })
             break
         except subprocess.TimeoutExpired as exc:
+            if agent_time_expired():
+                complete = gate_agentic_submission(runtime, result) if cell["mode"] in AGENTIC else False
+                set_terminal_submission_status(
+                    complete,
+                    default_reason="agent_timeout",
+                    incomplete_status="agent_timeout",
+                    force_reason="agent_timeout",
+                )
+                result["provider_error"] = str(exc)[:4000]
+                break
+            raise
+        except ProviderTransportError as exc:
             if agent_time_expired():
                 complete = gate_agentic_submission(runtime, result) if cell["mode"] in AGENTIC else False
                 set_terminal_submission_status(
@@ -1420,16 +1505,22 @@ def run_cell(cell: dict[str, Any], args: argparse.Namespace, client: OpenAICompa
         messages.append(choice)
         save_conversation()
         calls = choice.get("tool_calls") or []
-        if calls and allowed_tool_names:
+        if calls and active_tool_names:
+            if cell["mode"] not in AGENTIC:
+                direct_skill_lookup_rounds += 1
             process_tool_calls(calls)
             if finalized:
                 complete = gate_agentic_submission(runtime, result)
                 set_terminal_submission_status(complete, default_reason="completed")
+            elif cell["mode"] not in AGENTIC and direct_skill_lookup_rounds >= DIRECT_SKILL_LOOKUP_MAX_TOOL_ROUNDS:
+                close_direct_skill_lookup()
             continue
         if cell["mode"] not in AGENTIC:
             direct_submission = extract_direct_submission(content, runtime)
             complete = bool(direct_submission["submission_protocol_compliant"])
             hit_limit = model_event_hit_limit(model_event)
+            if not complete and retry_direct_after_textual_tool_request(content, hit_limit=hit_limit):
+                continue
             result.update({
                 "status": "submitted" if complete else "invalid_submission",
                 "termination_reason": "model_output_limit" if hit_limit else "completed",

@@ -6,6 +6,7 @@ import json
 from pathlib import Path
 import subprocess
 import sys
+import time
 from types import SimpleNamespace
 
 
@@ -197,6 +198,15 @@ class SequencedClient:
 class UnexpectedClientCall:
     def complete(self, *_args, **_kwargs):
         raise AssertionError("resume should finish checkpointed tool calls before another model call")
+
+
+class SlowProviderTransportFailureClient:
+    def __init__(self, error_type: type[RuntimeError]) -> None:
+        self.error_type = error_type
+
+    def complete(self, *_args, **_kwargs):
+        time.sleep(0.1)
+        raise self.error_type("provider transport failed after 3 attempts rc=28: timeout")
 
 
 def test_build_campaign_samples_complete_benchmarkv4_families_without_prompt_records() -> None:
@@ -471,6 +481,117 @@ def test_direct_g1_can_read_skill_then_make_one_final_submission(tmp_path: Path)
     assert saved.read_text(encoding="utf-8") == body
 
 
+def test_direct_g1_closes_skill_lookup_after_bounded_tool_rounds(tmp_path: Path) -> None:
+    runner = load_run_campaign()
+    cell = campaign_cell("G1")
+    task = RELEASE / "tasks" / "001-bang-bang-phase-detector"
+    body = (task / "evaluator" / "solution" / "bbpd_ref.va").read_text(encoding="utf-8")
+    skill_root = tmp_path / "skills"
+    (skill_root / "veriloga").mkdir(parents=True)
+    (skill_root / "veriloga" / "SKILL.md").write_text(
+        "# Verilog-A skill\nUse module-level declarations.\n",
+        encoding="utf-8",
+    )
+    args = run_args(tmp_path / "run")
+    args.skill_root = skill_root
+    response = (
+        '<<<VABENCH_ARTIFACT path="bbpd_ref.va">>>\n'
+        f"{body}\n"
+        "<<<END_VABENCH_ARTIFACT>>>"
+    )
+    lookup_call = {
+        "role": "assistant",
+        "content": "",
+        "tool_calls": [
+            {
+                "id": "read-skill",
+                "type": "function",
+                "function": {
+                    "name": "read_skill",
+                    "arguments": json.dumps({"path": "veriloga/SKILL.md"}),
+                },
+            }
+        ],
+    }
+    client = SequencedClient(
+        [lookup_call] * runner.DIRECT_SKILL_LOOKUP_MAX_TOOL_ROUNDS
+        + [{"role": "assistant", "content": response}],
+        finish_reasons=["tool_calls"] * runner.DIRECT_SKILL_LOOKUP_MAX_TOOL_ROUNDS + ["stop"],
+    )
+
+    result = runner.run_cell(cell, args, client)
+
+    assert result["status"] == "submitted"
+    assert result["submission_protocol_compliant"] is True
+    assert len(client.calls) == runner.DIRECT_SKILL_LOOKUP_MAX_TOOL_ROUNDS + 1
+    assert runner.tool_names(client.calls[0]["tools"]) == {"list_skills", "read_skill"}
+    assert client.calls[-1]["tools"] is None
+    assert "Read-only skill lookup is now closed" in client.calls[-1]["messages"][-1]["content"]
+    assert len([event for event in result["events"] if event["type"] == "tool"]) == (
+        runner.DIRECT_SKILL_LOOKUP_MAX_TOOL_ROUNDS
+    )
+
+
+def test_direct_g1_retries_textual_tool_request_after_lookup_closure(tmp_path: Path) -> None:
+    runner = load_run_campaign()
+    cell = campaign_cell("G1")
+    task = RELEASE / "tasks" / "001-bang-bang-phase-detector"
+    body = (task / "evaluator" / "solution" / "bbpd_ref.va").read_text(encoding="utf-8")
+    skill_root = tmp_path / "skills"
+    (skill_root / "veriloga").mkdir(parents=True)
+    (skill_root / "veriloga" / "SKILL.md").write_text(
+        "# Verilog-A skill\nUse module-level declarations.\n",
+        encoding="utf-8",
+    )
+    args = run_args(tmp_path / "run")
+    args.skill_root = skill_root
+    response = (
+        '<<<VABENCH_ARTIFACT path="bbpd_ref.va">>>\n'
+        f"{body}\n"
+        "<<<END_VABENCH_ARTIFACT>>>"
+    )
+    lookup_call = {
+        "role": "assistant",
+        "content": "",
+        "tool_calls": [
+            {
+                "id": "read-skill",
+                "type": "function",
+                "function": {
+                    "name": "read_skill",
+                    "arguments": json.dumps({"path": "veriloga/SKILL.md"}),
+                },
+            }
+        ],
+    }
+    textual_tool_request = {
+        "role": "assistant",
+        "content": (
+            "<｜｜DSML｜｜tool_calls>\n"
+            '<｜｜DSML｜｜invoke name="read_skill">\n'
+            '<｜｜DSML｜｜parameter name="path" string="true">evas-sim/SKILL.md'
+            "</｜｜DSML｜｜parameter>\n"
+            "</｜｜DSML｜｜invoke>\n"
+            "</｜｜DSML｜｜tool_calls>"
+        ),
+    }
+    client = SequencedClient(
+        [lookup_call] * runner.DIRECT_SKILL_LOOKUP_MAX_TOOL_ROUNDS
+        + [textual_tool_request, {"role": "assistant", "content": response}],
+        finish_reasons=["tool_calls"] * runner.DIRECT_SKILL_LOOKUP_MAX_TOOL_ROUNDS
+        + ["stop", "stop"],
+    )
+
+    result = runner.run_cell(cell, args, client)
+
+    assert result["status"] == "submitted"
+    assert result["submission_protocol_compliant"] is True
+    assert len(client.calls) == runner.DIRECT_SKILL_LOOKUP_MAX_TOOL_ROUNDS + 2
+    assert client.calls[-2]["tools"] is None
+    assert client.calls[-1]["tools"] is None
+    assert "No tools are available now" in client.calls[-1]["messages"][-1]["content"]
+
+
 def test_direct_run_cell_records_model_output_limit_without_budget_status(
     tmp_path: Path,
 ) -> None:
@@ -511,6 +632,25 @@ def test_provider_context_window_is_a_cell_status_not_runner_error(
     assert result["status"] == "context_window_exceeded"
     assert result["termination_reason"] == "provider_context_window_exceeded"
     assert "context length exceeded" in result["provider_error"]
+
+
+def test_provider_transport_at_deadline_is_agent_timeout_not_runner_error(
+    tmp_path: Path,
+) -> None:
+    runner = load_run_campaign()
+    cell = campaign_cell("G2")
+    args = run_args(tmp_path / "run")
+    args.agent_timeout_s = 0.05
+
+    result = runner.run_cell(
+        cell,
+        args,
+        SlowProviderTransportFailureClient(runner.ProviderTransportError),
+    )
+
+    assert result["status"] == "agent_timeout"
+    assert result["termination_reason"] == "agent_timeout"
+    assert "provider transport failed" in result["provider_error"]
 
 
 def test_agentic_run_cell_rejects_an_undeclared_file_at_finalize(tmp_path: Path) -> None:
