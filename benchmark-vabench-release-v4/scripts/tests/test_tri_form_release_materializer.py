@@ -122,6 +122,19 @@ def test_prompt_assets_split_wrappers_form_skills_and_feedback_guides(tmp_path: 
     assert records["feedback_dut.md"]["kind"] == "feedback_guide"
 
 
+def test_direct_wrapper_defines_unambiguous_artifact_protocol(tmp_path: Path) -> None:
+    install_prompt_assets(tmp_path)
+    wrapper = (tmp_path / "prompt_modes" / "wrappers" / "direct_wrapper.md").read_text(encoding="utf-8")
+
+    assert '`<<<VABENCH_ARTIFACT path="`' in wrapper
+    assert "exact declared relative artifact" in wrapper
+    assert "exactly three `>` characters" in wrapper
+    assert "`<<<END_VABENCH_ARTIFACT>>>`" in wrapper
+    assert "Only `VABENCH_ARTIFACT` is a valid submission marker" in wrapper
+    assert "Do not wrap the artifact body in Markdown code fences" in wrapper
+    assert "Do not include explanatory prose" in wrapper
+
+
 def test_runtime_prompt_components_follow_explicit_order_with_wrapper_last() -> None:
     mode_record = {
         "component_order": [
