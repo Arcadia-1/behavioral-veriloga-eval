@@ -59,6 +59,22 @@ FILENAME_TOKEN_RE = re.compile(
     re.IGNORECASE,
 )
 AGENTIC = {"G2", "G3", "G4", "G5"}
+SKILL_LOOKUP_MODES = {"G1", "G3", "G5"}
+SKILL_LOOKUP_CACHE_PREFIX = "skill/"
+SKILL_LOOKUP_EXCLUDED_PARTS = {".git", "__pycache__", ".pytest_cache", ".mypy_cache", "node_modules", ".venv"}
+SKILL_LOOKUP_TEXT_SUFFIXES = {
+    "",
+    ".md",
+    ".txt",
+    ".json",
+    ".toml",
+    ".yaml",
+    ".yml",
+    ".manifest",
+    ".va",
+    ".scs",
+    ".py",
+}
 FEEDBACK_SIGNAL_PREFIXES = (
     "FEEDBACK_",
     "reference:",
@@ -519,13 +535,41 @@ def parse_openai_sse_response(stdout: str, stderr: str = "") -> dict[str, Any]:
     return response
 
 
-TOOLS = [
+WORKSPACE_TOOLS = [
     {"type": "function", "function": {"name": "list_files", "description": "List readable task files and writable submission files.", "parameters": {"type": "object", "properties": {}}}},
     {"type": "function", "function": {"name": "read_file", "description": "Read a public task or submission text file.", "parameters": {"type": "object", "properties": {"path": {"type": "string"}}, "required": ["path"]}}},
     {"type": "function", "function": {"name": "write_file", "description": "Create or replace a submission file.", "parameters": {"type": "object", "properties": {"path": {"type": "string"}, "content": {"type": "string"}}, "required": ["path", "content"]}}},
     {"type": "function", "function": {"name": "feedback", "description": "Run the shared public feedback service on the current submission.", "parameters": {"type": "object", "properties": {"channels": {"type": "array", "items": {"type": "string"}}}}}},
     {"type": "function", "function": {"name": "finalize", "description": "Finalize the current submission.", "parameters": {"type": "object", "properties": {}}}},
 ]
+SKILL_LOOKUP_TOOLS = [
+    {"type": "function", "function": {"name": "list_skills", "description": "List read-only skill/reference files available for this benchmark attempt.", "parameters": {"type": "object", "properties": {}}}},
+    {"type": "function", "function": {"name": "read_skill", "description": "Read one read-only skill/reference text file by relative path.", "parameters": {"type": "object", "properties": {"path": {"type": "string"}}, "required": ["path"]}}},
+]
+
+
+def tool_specs_for_cell(cell: dict[str, Any], skill_root: Path | None) -> list[dict[str, Any]] | None:
+    """Return the exact tools exposed to the provider for one cell.
+
+    Agentic modes get the mutable workspace/feedback/finalize tools.  Skill
+    lookup is deliberately orthogonal: G1 may inspect read-only skills while
+    still making exactly one final artifact-envelope submission.
+    """
+    tools: list[dict[str, Any]] = []
+    mode = str(cell.get("mode") or "")
+    if mode in AGENTIC:
+        tools.extend(WORKSPACE_TOOLS)
+    if mode in SKILL_LOOKUP_MODES and skill_root is not None:
+        tools.extend(SKILL_LOOKUP_TOOLS)
+    return tools or None
+
+
+def tool_names(tool_specs: list[dict[str, Any]] | None) -> set[str]:
+    return {
+        str(tool["function"]["name"])
+        for tool in (tool_specs or [])
+        if isinstance(tool.get("function"), dict)
+    }
 
 
 def command_result(command: str, runtime: Path, timeout_s: float) -> dict[str, Any]:
@@ -605,6 +649,54 @@ def compact_feedback_result(result: dict[str, Any]) -> dict[str, Any]:
     return compact
 
 
+def skill_lookup_root(root: Path | None) -> Path:
+    if root is None:
+        raise ValueError("skill lookup is unavailable for this mode/run")
+    resolved = root.expanduser().resolve()
+    if not resolved.is_dir():
+        raise FileNotFoundError(f"skill root is not a directory: {resolved}")
+    return resolved
+
+
+def skill_lookup_file_allowed(path: Path, root: Path) -> bool:
+    try:
+        relative = path.relative_to(root)
+    except ValueError:
+        return False
+    if any(part in SKILL_LOOKUP_EXCLUDED_PARTS for part in relative.parts):
+        return False
+    if not path.is_file():
+        return False
+    return path.suffix.lower() in SKILL_LOOKUP_TEXT_SUFFIXES
+
+
+def list_skill_lookup_files(root: Path | None) -> list[dict[str, Any]]:
+    resolved = skill_lookup_root(root)
+    rows: list[dict[str, Any]] = []
+    for path in sorted(resolved.rglob("*")):
+        if not skill_lookup_file_allowed(path, resolved):
+            continue
+        relative = path.relative_to(resolved).as_posix()
+        data = path.read_bytes()
+        rows.append({
+            "path": relative,
+            "bytes": len(data),
+            "sha256": hashlib.sha256(data).hexdigest(),
+        })
+    return rows
+
+
+def read_skill_lookup_file(root: Path | None, raw: str) -> tuple[str, str, dict[str, Any]]:
+    resolved = skill_lookup_root(root)
+    relative = safe_relative(raw)
+    path = (resolved / relative).resolve()
+    path.relative_to(resolved)
+    if not skill_lookup_file_allowed(path, resolved):
+        raise FileNotFoundError(f"skill file is not readable through skill lookup: {relative.as_posix()}")
+    text = path.read_text(encoding="utf-8")
+    return relative.as_posix(), text, file_digest_summary(path)
+
+
 def execute_tool(
     name: str,
     arguments: dict[str, Any],
@@ -612,9 +704,33 @@ def execute_tool(
     feedback_command: str | None,
     timeout_s: float,
     feedback_output_mode: str,
+    *,
+    skill_root: Path | None,
+    allowed_tool_names: set[str],
 ) -> tuple[str, bool]:
+    if name not in allowed_tool_names:
+        raise ValueError(f"tool is not available in this mode: {name}")
     public = runtime / "public"
     submission = public / "submission"
+    if name == "list_skills":
+        return json.dumps({
+            "schema_version": "v4-readonly-skill-index-v1",
+            "files": list_skill_lookup_files(skill_root),
+        }), False
+    if name == "read_skill":
+        relative_key, text, summary = read_skill_lookup_file(skill_root, str(arguments["path"]))
+        delivered_key = f"{SKILL_LOOKUP_CACHE_PREFIX}{relative_key}"
+        delivered = read_tool_delivery_cache(runtime)
+        if delivered_key in delivered:
+            return json.dumps({
+                "status": "already_provided_in_this_episode",
+                "path": relative_key,
+                "note": "This read-only skill file was already returned earlier in the conversation.",
+                **summary,
+            }), False
+        delivered.add(delivered_key)
+        write_tool_delivery_cache(runtime, delivered)
+        return text, False
     if name == "list_files":
         rows = []
         for root, label in ((public / "task", "task"), (submission, "submission")):
@@ -1075,6 +1191,8 @@ def run_cell(cell: dict[str, Any], args: argparse.Namespace, client: OpenAICompa
         export_runtime(cell, args.release, runtime, timeout_s=args.setup_timeout_s)
     prompt_path = runtime / ("agent_prompt.txt" if cell["mode"] in AGENTIC else "direct_prompt.txt")
     prompt = prompt_path.read_text(encoding="utf-8")
+    tools = tool_specs_for_cell(cell, args.skill_root)
+    allowed_tool_names = tool_names(tools)
     agent_started_monotonic = time.monotonic()
     resumed_agent_elapsed_s = 0.0
     result: dict[str, Any] = {
@@ -1084,6 +1202,10 @@ def run_cell(cell: dict[str, Any], args: argparse.Namespace, client: OpenAICompa
         "status": "prepared",
         "termination_policy": "wall_time",
         "agent_timeout_s": args.agent_timeout_s,
+        "tool_policy": {
+            "tool_names": sorted(allowed_tool_names),
+            "skill_lookup_available": bool(args.skill_root and cell["mode"] in SKILL_LOOKUP_MODES),
+        },
     }
     if args.dry_run:
         result["finished_at"] = now()
@@ -1155,6 +1277,8 @@ def run_cell(cell: dict[str, Any], args: argparse.Namespace, client: OpenAICompa
                     args.feedback_command,
                     max(0.1, min(float(args.tool_timeout_s), remaining)),
                     args.feedback_output_mode,
+                    skill_root=args.skill_root,
+                    allowed_tool_names=allowed_tool_names,
                 )
             except Exception as exc:  # Model tool mistakes are episode evidence, not runner failures.
                 text = json.dumps({
@@ -1192,7 +1316,11 @@ def run_cell(cell: dict[str, Any], args: argparse.Namespace, client: OpenAICompa
         result["status"] = "submitted" if complete else incomplete_status
         result["termination_reason"] = reason if (complete or reason != "completed") else "completed"
 
-    if cell["mode"] not in AGENTIC and len(messages) > 1:
+    def finish_direct_from_last_assistant(*, recovered_from_checkpoint: bool = False) -> bool:
+        if cell["mode"] in AGENTIC:
+            return False
+        if not messages or messages[-1].get("role") != "assistant" or messages[-1].get("tool_calls"):
+            return False
         content = str(messages[-1].get("content") or "")
         direct_submission = extract_direct_submission(content, runtime)
         complete = bool(direct_submission["submission_protocol_compliant"])
@@ -1205,16 +1333,21 @@ def run_cell(cell: dict[str, Any], args: argparse.Namespace, client: OpenAICompa
             "per_turn_max_tokens": per_turn_max_tokens,
             "agent_elapsed_s": current_agent_elapsed_s(),
             "events": events,
-            "recovered_from_checkpoint": True,
             **direct_submission,
         })
+        if recovered_from_checkpoint:
+            result["recovered_from_checkpoint"] = True
         write_json(runtime / "evidence" / "campaign_result.json", result)
-        return result
-    if cell["mode"] in AGENTIC and args.resume:
+        return True
+
+    if args.resume:
         pending = pending_tool_calls(messages)
         if pending:
             process_tool_calls(pending)
-        elif messages and messages[-1].get("role") == "assistant":
+        if finish_direct_from_last_assistant(recovered_from_checkpoint=True):
+            return result
+    if cell["mode"] in AGENTIC and args.resume:
+        if messages and messages[-1].get("role") == "assistant" and not messages[-1].get("tool_calls"):
             complete = gate_agentic_submission(runtime, result)
             set_terminal_submission_status(complete, default_reason="completed")
         if finalized:
@@ -1226,7 +1359,7 @@ def run_cell(cell: dict[str, Any], args: argparse.Namespace, client: OpenAICompa
             response = client.complete(
                 messages,
                 per_turn_max_tokens,
-                TOOLS if cell["mode"] in AGENTIC else None,
+                tools,
                 timeout_s=max(0.1, min(float(args.request_timeout_s), remaining_agent_s())),
             )
         except ProviderContextWindowExceeded as exc:
@@ -1286,6 +1419,13 @@ def run_cell(cell: dict[str, Any], args: argparse.Namespace, client: OpenAICompa
         })
         messages.append(choice)
         save_conversation()
+        calls = choice.get("tool_calls") or []
+        if calls and allowed_tool_names:
+            process_tool_calls(calls)
+            if finalized:
+                complete = gate_agentic_submission(runtime, result)
+                set_terminal_submission_status(complete, default_reason="completed")
+            continue
         if cell["mode"] not in AGENTIC:
             direct_submission = extract_direct_submission(content, runtime)
             complete = bool(direct_submission["submission_protocol_compliant"])
@@ -1296,17 +1436,12 @@ def run_cell(cell: dict[str, Any], args: argparse.Namespace, client: OpenAICompa
                 **direct_submission,
             })
             break
-        calls = choice.get("tool_calls") or []
         if not calls:
             hit_limit = model_event_hit_limit(model_event)
             complete = gate_agentic_submission(runtime, result)
             result["status"] = "submitted" if complete else "invalid_submission"
             result["termination_reason"] = "model_output_limit" if hit_limit else "completed"
             break
-        process_tool_calls(calls)
-        if finalized:
-            complete = gate_agentic_submission(runtime, result)
-            set_terminal_submission_status(complete, default_reason="completed")
     if result.get("status") == "prepared":
         complete = gate_agentic_submission(runtime, result) if cell["mode"] in AGENTIC else False
         set_terminal_submission_status(
@@ -1383,6 +1518,11 @@ def main() -> int:
     parser.add_argument("--judge-timeout-s", type=int, default=DEFAULT_JUDGE_TIMEOUT_S)
     parser.add_argument("--feedback-command")
     parser.add_argument(
+        "--skill-root",
+        type=Path,
+        help="Optional read-only skill/reference tree exposed through list_skills/read_skill for skill-enabled modes.",
+    )
+    parser.add_argument(
         "--feedback-output-mode",
         choices=("compact", "raw"),
         default="compact",
@@ -1397,6 +1537,10 @@ def main() -> int:
     args.campaign = args.campaign.resolve()
     args.release = args.release.resolve()
     args.output = args.output.resolve()
+    if args.skill_root is not None:
+        args.skill_root = args.skill_root.expanduser().resolve()
+        if not args.skill_root.is_dir():
+            raise SystemExit(f"--skill-root is not a directory: {args.skill_root}")
     campaign = read_json(args.campaign)
     expected_release_hash = str(campaign.get("release_manifest_sha256") or "")
     observed_release_hash = hashlib.sha256((args.release / "MANIFEST.json").read_bytes()).hexdigest()

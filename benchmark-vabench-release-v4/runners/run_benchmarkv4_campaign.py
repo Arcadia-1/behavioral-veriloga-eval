@@ -5,9 +5,12 @@ This is the operator-facing entry point for API experiments.  It builds a
 campaign from ``release/benchmarkv4`` and delegates execution to the v4
 calibration runner:
 
-* G0/G1 use direct one-shot artifact extraction.
+* G0 uses direct one-shot artifact extraction.
+* G1 uses direct single-submission artifact extraction and may optionally
+  inspect a read-only skill tree.
 * G2-G5 use real OpenAI-compatible tool calling over the exported runtime:
   list/read/write submission files, optional public feedback, then finalize.
+  G3/G5 may also inspect the same read-only skill tree.
 
 The result is still an experiment runner, not the final Spectre scorer.
 """
@@ -54,6 +57,7 @@ def command_for_metadata(command: list[str]) -> list[str]:
         "--api-key-file": "<redacted-credential-file>",
         "--feedback-command": "<redacted-operator-command>",
         "--final-judge-command": "<redacted-operator-command>",
+        "--skill-root": "<redacted-skill-root>",
     }
     sanitized: list[str] = []
     redact_next: str | None = None
@@ -69,6 +73,24 @@ def command_for_metadata(command: list[str]) -> list[str]:
 
 def text_sha256(value: str) -> str:
     return hashlib.sha256(value.encode("utf-8")).hexdigest()
+
+
+def skill_tree_sha256(root: Path) -> str:
+    digest = hashlib.sha256()
+    excluded_parts = {".git", "__pycache__", ".pytest_cache", ".mypy_cache", "node_modules", ".venv"}
+    text_suffixes = {"", ".md", ".txt", ".json", ".toml", ".yaml", ".yml", ".manifest", ".va", ".scs", ".py"}
+    for path in sorted(root.rglob("*")):
+        relative = path.relative_to(root)
+        if any(part in excluded_parts for part in relative.parts):
+            continue
+        if not path.is_file() or path.suffix.lower() not in text_suffixes:
+            continue
+        data = path.read_bytes()
+        digest.update(relative.as_posix().encode("utf-8"))
+        digest.update(b"\0")
+        digest.update(hashlib.sha256(data).hexdigest().encode("ascii"))
+        digest.update(b"\n")
+    return digest.hexdigest()
 
 
 def filter_campaign(campaign: dict[str, Any], args: argparse.Namespace) -> dict[str, Any]:
@@ -146,6 +168,11 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--tool-timeout-s", type=int, default=DEFAULT_TOOL_TIMEOUT_S)
     parser.add_argument("--judge-timeout-s", type=int, default=DEFAULT_JUDGE_TIMEOUT_S)
     parser.add_argument("--feedback-command", default=DEFAULT_FEEDBACK)
+    parser.add_argument(
+        "--skill-root",
+        type=Path,
+        help="Optional read-only skill/reference tree exposed to G1/G3/G5 through list_skills/read_skill.",
+    )
     parser.add_argument("--feedback-output-mode", choices=("compact", "raw"), default="compact")
     parser.add_argument("--final-judge-command")
     parser.add_argument("--workers", type=int, default=1)
@@ -172,6 +199,9 @@ def main() -> int:
     ) <= 0:
         raise SystemExit("all timeout values must be positive")
     release = args.release.expanduser().resolve()
+    skill_root = args.skill_root.expanduser().resolve() if args.skill_root else None
+    if skill_root is not None and not skill_root.is_dir():
+        raise SystemExit(f"--skill-root is not a directory: {skill_root}")
     output_root = args.output_root.expanduser().resolve()
     output_root.mkdir(parents=True, exist_ok=True)
     explicit_family_ids = None
@@ -204,6 +234,8 @@ def main() -> int:
         "stream": args.stream,
         "feedback_output_mode": args.feedback_output_mode,
         "feedback_command_sha256": text_sha256(args.feedback_command or ""),
+        "skill_lookup_available": skill_root is not None,
+        "skill_root_tree_sha256": skill_tree_sha256(skill_root) if skill_root is not None else None,
     }
     campaign_path = output_root / "campaign.json"
     write_json(campaign_path, campaign)
@@ -241,6 +273,8 @@ def main() -> int:
     ]
     if args.api_key_file:
         command.extend(["--api-key-file", args.api_key_file])
+    if skill_root is not None:
+        command.extend(["--skill-root", str(skill_root)])
     if args.final_judge_command:
         command.extend(["--final-judge-command", args.final_judge_command])
     if args.stream:

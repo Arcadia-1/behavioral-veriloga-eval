@@ -139,6 +139,7 @@ def run_args(output: Path) -> SimpleNamespace:
         dry_run=False,
         feedback_command=None,
         feedback_output_mode="compact",
+        skill_root=None,
         final_judge_command=None,
         agent_timeout_s=5400,
         setup_timeout_s=1800,
@@ -159,6 +160,35 @@ class FakeClient:
             "model": "test-model",
             "choices": [
                 {"message": self.message, "finish_reason": self.finish_reason}
+            ],
+            "usage": {"completion_tokens": 32},
+        }
+
+
+class SequencedClient:
+    def __init__(self, messages: list[dict], *, finish_reasons: list[str] | None = None) -> None:
+        self.messages = messages
+        self.finish_reasons = finish_reasons or ["stop"] * len(messages)
+        self.calls: list[dict] = []
+
+    def complete(self, messages, max_tokens, tools, **kwargs):
+        index = len(self.calls)
+        if index >= len(self.messages):
+            raise AssertionError("unexpected extra model call")
+        self.calls.append({
+            "messages": json.loads(json.dumps(messages)),
+            "max_tokens": max_tokens,
+            "tools": json.loads(json.dumps(tools)) if tools is not None else None,
+            "kwargs": kwargs,
+        })
+        return {
+            "id": f"fake-response-{index}",
+            "model": "test-model",
+            "choices": [
+                {
+                    "message": self.messages[index],
+                    "finish_reason": self.finish_reasons[index],
+                }
             ],
             "usage": {"completion_tokens": 32},
         }
@@ -364,6 +394,79 @@ def test_direct_run_cell_submits_only_an_exact_artifact_response(tmp_path: Path)
     assert result["status"] == "submitted"
     assert result["submission_protocol_compliant"] is True
     assert result["artifact_gate"]["passed"] is True
+    saved = tmp_path / "run" / cell["cell_id"] / "public" / "submission" / "bbpd_ref.va"
+    assert saved.read_text(encoding="utf-8") == body
+
+
+def test_g1_exposes_only_readonly_skill_lookup_tools(tmp_path: Path) -> None:
+    runner = load_run_campaign()
+    skill_root = tmp_path / "skills"
+    skill_root.mkdir()
+
+    g0_tools = runner.tool_specs_for_cell(campaign_cell("G0"), skill_root)
+    g1_tools = runner.tool_specs_for_cell(campaign_cell("G1"), skill_root)
+    g3_tools = runner.tool_specs_for_cell(campaign_cell("G3"), skill_root)
+
+    assert g0_tools is None
+    assert runner.tool_names(g1_tools) == {"list_skills", "read_skill"}
+    assert "write_file" not in runner.tool_names(g1_tools)
+    assert "feedback" not in runner.tool_names(g1_tools)
+    assert "finalize" not in runner.tool_names(g1_tools)
+    assert {"list_skills", "read_skill", "write_file", "feedback", "finalize"}.issubset(
+        runner.tool_names(g3_tools)
+    )
+
+
+def test_direct_g1_can_read_skill_then_make_one_final_submission(tmp_path: Path) -> None:
+    runner = load_run_campaign()
+    cell = campaign_cell("G1")
+    task = RELEASE / "tasks" / "001-bang-bang-phase-detector"
+    body = (task / "evaluator" / "solution" / "bbpd_ref.va").read_text(encoding="utf-8")
+    skill_root = tmp_path / "skills"
+    (skill_root / "veriloga").mkdir(parents=True)
+    (skill_root / "veriloga" / "SKILL.md").write_text(
+        "# Verilog-A skill\nUse module-level declarations.\n",
+        encoding="utf-8",
+    )
+    args = run_args(tmp_path / "run")
+    args.skill_root = skill_root
+    response = (
+        '<<<VABENCH_ARTIFACT path="bbpd_ref.va">>>\n'
+        f"{body}\n"
+        "<<<END_VABENCH_ARTIFACT>>>"
+    )
+    client = SequencedClient(
+        [
+            {
+                "role": "assistant",
+                "content": "",
+                "tool_calls": [
+                    {
+                        "id": "read-skill",
+                        "type": "function",
+                        "function": {
+                            "name": "read_skill",
+                            "arguments": json.dumps({"path": "veriloga/SKILL.md"}),
+                        },
+                    }
+                ],
+            },
+            {"role": "assistant", "content": response},
+        ],
+        finish_reasons=["tool_calls", "stop"],
+    )
+
+    result = runner.run_cell(cell, args, client)
+
+    assert result["status"] == "submitted"
+    assert result["submission_protocol_compliant"] is True
+    assert result["tool_policy"]["tool_names"] == ["list_skills", "read_skill"]
+    assert len(client.calls) == 2
+    assert runner.tool_names(client.calls[0]["tools"]) == {"list_skills", "read_skill"}
+    assert "Use module-level declarations." in client.calls[1]["messages"][-1]["content"]
+    assert [event["name"] for event in result["events"] if event["type"] == "tool"] == [
+        "read_skill"
+    ]
     saved = tmp_path / "run" / cell["cell_id"] / "public" / "submission" / "bbpd_ref.va"
     assert saved.read_text(encoding="utf-8") == body
 
@@ -624,6 +727,9 @@ def test_campaign_wrapper_redacts_credential_and_operator_command_paths(
     output = tmp_path / "campaign-redacted"
     secret_path = tmp_path / "private" / "provider.key"
     feedback_command = f"python3 {tmp_path / 'private' / 'feedback.py'}"
+    skill_root = tmp_path / "private" / "skills"
+    skill_root.mkdir(parents=True)
+    (skill_root / "SKILL.md").write_text("# private skill\n", encoding="utf-8")
     completed = subprocess.run(
         [
             sys.executable,
@@ -642,6 +748,8 @@ def test_campaign_wrapper_redacts_credential_and_operator_command_paths(
             str(secret_path),
             "--feedback-command",
             feedback_command,
+            "--skill-root",
+            str(skill_root),
             "--dry-run",
         ],
         text=True,
@@ -656,8 +764,10 @@ def test_campaign_wrapper_redacts_credential_and_operator_command_paths(
     persisted_text = summary_text + campaign_text
     assert str(secret_path) not in persisted_text
     assert feedback_command not in persisted_text
+    assert str(skill_root) not in persisted_text
     assert "<redacted-credential-file>" in summary_text
     assert "<redacted-operator-command>" in summary_text
+    assert "<redacted-skill-root>" in summary_text
 
 
 def test_budget_reuse_requires_identical_execution_configuration() -> None:

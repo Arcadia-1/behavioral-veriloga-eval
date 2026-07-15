@@ -95,9 +95,13 @@ python3 benchmark-vabench-release-v4/operations/calibration_pilot/run_campaign.p
 ```
 
 Each runtime exposes only `public/task` and `public/submission` to an agentic
-model. Evaluator assets remain outside the model mount. G0/G1 parse exact
-artifact blocks into the submission directory. G2-G5 expose bounded file
-tools, the injected feedback adapter, and `finalize`.
+model. Evaluator assets remain outside the model mount. G0 parses exact
+artifact blocks into the submission directory without tools. G1 still makes
+one final artifact-envelope submission, but may inspect an optional read-only
+skill tree through `list_skills` and `read_skill` when `--skill-root` is set.
+It cannot write files, call feedback, or finalize through tools. G2-G5 expose
+bounded file tools, the injected feedback adapter, and `finalize`; G3/G5 may
+also inspect the same read-only skill tree when configured.
 
 Direct responses must use the exact artifact envelope contract. The live runner
 rejects filename-only markers, input-artifact markers, Markdown fences,
@@ -132,6 +136,12 @@ python3 benchmark-vabench-release-v4/runners/run_benchmarkv4_campaign.py \
 The provider adapter uses the OpenAI-compatible chat-completions protocol.
 Changing providers requires only `--base-url`, the campaign model ID, and
 `--api-key-env` or `--api-key-file`.
+
+`--skill-root` is optional and should point to a pinned, repository-external
+skill/reference tree for skill-enabled modes. The model sees only relative
+read-only skill paths and file contents requested through the skill tools. The
+wrapper records a tree hash for reproducibility and redacts the local path from
+metadata.
 
 ## Evaluator Adapters
 
