@@ -7,8 +7,8 @@ historical pilot. `CALIBRATION_FAMILIES.json` is retained only as historical
 selection evidence.
 
 The pilot is used only to freeze generic form skills, the generic feedback
-skill, the episode output-token cap, safety limits, runner behavior, repetition count,
-and telemetry. Skill text must remain task-agnostic. Form-writing skills are
+skill, the agent wall-time cap, provider per-turn output cap, safety limits,
+runner behavior, repetition count, and telemetry. Skill text must remain task-agnostic. Form-writing skills are
 derived from installed Cadence/Spectre help; feedback skills describe the
 project-authored vaBench facility. Neither may contain a selected family ID,
 title, equation, threshold, stimulus constant, checker rule, or mutation hint.
@@ -25,29 +25,28 @@ file by SHA-256 and record the frozen parameters produced by the pilot.
 
 ## Build The Campaign
 
-The calibrated cap is 65,536 provider output tokens per episode. Provider
-`completion_tokens` includes hidden reasoning and visible completion. G0-G5
-share the same cumulative cap; tool output is recorded separately and does not
-consume the model-generation budget. Episodes stop early on normal completion,
-so 65,536 is a ceiling rather than a target consumption.
+The calibrated primary episode limit is wall-clock time: by default each agent
+episode gets 5,400 seconds, while setup, model requests, tool calls, and judges
+use 1,800-second infrastructure ceilings. The provider token value is
+`per_turn_max_tokens`: a per-model-call safety cap passed as `max_tokens`, not a
+cumulative G0-G5 stopping budget. Provider completion, hidden reasoning, visible
+completion, and feedback-delivered text are recorded as telemetry and must be
+reported separately from functional score.
 
-Local DeepSeek smoke tests showed that the 65,536-token ceiling can still be a
-binding infrastructure limit for long agentic modes. In a five-testbench,
-G0-G5 transport/evaluator smoke, all 30 cells submitted and no runner errors
-occurred, but five cells reached the output budget; the strongest provisional
-EVAS feedback was in G2-G4, while G5 showed diminishing returns. Treat
-`submitted_at_budget` as a separate runner/setting signal when comparing modes,
-and report hidden reasoning tokens separately from visible candidate text.
-Future prompt or feedback changes should prefer compact diagnostics,
-budget-aware stopping, and mode-specific round limits before increasing the
-global cap.
+If a model/provider rejects the next turn because the conversation exceeds its
+native context window, the runner records `context_window_exceeded` separately.
+If a single call stops at the provider output cap, the runner records
+`termination_reason=model_output_limit`; it does not treat accumulated tokens as
+the experimental ability budget. If wall time expires, the latest valid
+workspace artifact is still eligible for judging, and otherwise the cell is
+reported as `agent_timeout`.
 
 ```bash
 python3 benchmark-vabench-release-v4/operations/calibration_pilot/build_campaign.py \
   --sample-families 10 \
   --seed 20260715 \
   --model qwen3.5-flash \
-  --max-output-tokens 65536 \
+  --per-turn-max-tokens 65536 \
   --repetitions 1 \
   --output /tmp/v4-api-pilot-campaign.json
 ```
@@ -55,16 +54,16 @@ python3 benchmark-vabench-release-v4/operations/calibration_pilot/build_campaign
 This produces 180 cells: ten families, three forms, and six modes. Use
 `--repetitions` only after the single-episode smoke is sound.
 
-Each model event records the requested maximum, provider-reported completion,
-reasoning and visible tokens, and `finish_reason`. Hosted-model aliases and
-provider timestamps must also be retained in external run metadata.
+Each model event records the requested per-turn maximum, provider-reported
+completion, reasoning and visible tokens, and `finish_reason`. Hosted-model
+aliases and provider timestamps must also be retained in external run metadata.
 
-## Reuse An Uncensored Pilot
+## Reuse A Completed Pilot
 
-Increasing a stopping cap does not invalidate an episode that completed
-naturally before the old cap, provided the model, prompt hash, release hash,
-selection hash, tools, and candidate files are unchanged. Prepare a derived
-runtime containing only mechanically eligible episodes:
+Completed episodes may be mechanically reused only when the model, prompt hash,
+release hash, selection hash, endpoint hash, decoding settings, wall-time
+policy, per-turn token cap, tools, and candidate files are unchanged. Prepare a
+derived runtime containing only mechanically eligible episodes:
 
 ```bash
 python3 benchmark-vabench-release-v4/operations/calibration_pilot/prepare_budget_reuse.py \
@@ -77,9 +76,9 @@ python3 benchmark-vabench-release-v4/operations/calibration_pilot/prepare_budget
 `REUSE_MANIFEST.json` records every accepted or rejected cell, source-result
 hashes, candidate hashes, and rejection reasons. Reuse requires the same
 provider, model, endpoint hash, temperature, streaming mode, prompt, feedback
-adapter hash, and release; only the output-token ceiling may increase. A
-submitted file is not by itself reusable: any episode whose model turn hit the
-old output limit must be rerun because an agent may have written an intermediate
+adapter hash, wall-time policy, per-turn token cap, and release. A submitted
+file is not by itself reusable: any episode whose model turn hit the provider
+output limit must be rerun because an agent may have written an intermediate
 file before truncation.
 Run the full target campaign with `--resume`; reused cells are skipped and all
 rejected cells start fresh.
@@ -153,7 +152,7 @@ test API transport and direct artifact parsing.
 By default, the runner returns a compact feedback payload to the model: oracle
 summary lines, validation diagnostics, and concrete errors are retained, while
 verbose simulator counters are omitted from the conversation to preserve the
-working-token budget. Use `--feedback-output-mode raw` only when intentionally
+provider context window. Use `--feedback-output-mode raw` only when intentionally
 reproducing older runner behavior or debugging the feedback adapter itself.
 
 The repository-native EVAS adapter is:
@@ -213,7 +212,7 @@ submitted.
 Long agentic episodes checkpoint the public conversation, cumulative provider
 output tokens, tool events, and current submission after every model and tool action.
 `--resume` continues the same episode after an infrastructure interruption;
-it does not reset the token budget, create another sample, or grant another
+it does not reset the wall-time episode budget, create another sample, or grant another
 pass@k opportunity.
 
 Independent cells may run concurrently with `--workers N`. Each worker writes

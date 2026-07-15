@@ -130,9 +130,14 @@ def build_campaign(
     seed: int = 0,
     model_provider: str,
     model: str,
-    max_working_tokens: int,
-    repetitions: int,
+    per_turn_max_tokens: int | None = None,
+    max_working_tokens: int | None = None,
+    repetitions: int = 1,
 ) -> dict[str, Any]:
+    if per_turn_max_tokens is None:
+        per_turn_max_tokens = max_working_tokens
+    if not isinstance(per_turn_max_tokens, int) or per_turn_max_tokens <= 0:
+        raise ValueError(f"per_turn_max_tokens must be positive, got {per_turn_max_tokens!r}")
     task_index = read_json(release / "TASK_INDEX.json")["tasks"]
     family_ids, selection_record = selected_family_ids(
         task_index,
@@ -162,8 +167,9 @@ def build_campaign(
                     "process": str(prompt["process"]),
                     "repetition": repetition,
                     "seed": repetition,
-                    "max_output_tokens": max_working_tokens,
-                    "max_working_tokens": max_working_tokens,
+                    "per_turn_max_tokens": per_turn_max_tokens,
+                    "max_output_tokens": per_turn_max_tokens,
+                    "max_working_tokens": per_turn_max_tokens,
                     "prompt_record_sha256": hashlib.sha256(
                         json.dumps(prompt, sort_keys=True, separators=(",", ":")).encode("utf-8")
                     ).hexdigest(),
@@ -171,16 +177,19 @@ def build_campaign(
                     "response_protocol": str(prompt["response_protocol"]),
                 })
     return {
-        "schema_version": "v4-calibration-campaign-v2",
+        "schema_version": "v4-calibration-campaign-v3",
         "status": "planned",
         "release": str(release),
         "release_manifest_sha256": sha256(release / "MANIFEST.json"),
         **selection_record,
         "model_provider": model_provider,
         "model": model,
-        "budget_metric": "provider_completion_tokens_including_reasoning",
-        "max_output_tokens": max_working_tokens,
-        "max_working_tokens": max_working_tokens,
+        "termination_policy": "wall_time",
+        "budget_metric": "agent_wall_time_seconds",
+        "token_accounting": "telemetry_only",
+        "per_turn_max_tokens": per_turn_max_tokens,
+        "max_output_tokens": per_turn_max_tokens,
+        "max_working_tokens": per_turn_max_tokens,
         "repetitions": repetitions,
         "family_count": len(family_set),
         "task_count": len(tasks),
@@ -200,13 +209,17 @@ def main() -> int:
     parser.add_argument("--model-provider", default="openai-compatible")
     parser.add_argument("--model", required=True)
     parser.add_argument(
-        "--max-output-tokens", "--max-working-tokens",
-        dest="max_working_tokens", type=int, required=True,
+        "--per-turn-max-tokens",
+        "--max-output-tokens",
+        "--max-working-tokens",
+        dest="per_turn_max_tokens",
+        type=int,
+        required=True,
     )
     parser.add_argument("--repetitions", type=int, default=1)
     args = parser.parse_args()
-    if args.max_working_tokens <= 0 or args.repetitions <= 0:
-        parser.error("token budget and repetitions must be positive")
+    if args.per_turn_max_tokens <= 0 or args.repetitions <= 0:
+        parser.error("per-turn token cap and repetitions must be positive")
     campaign = build_campaign(
         args.release.resolve(),
         selection_path=args.selection.resolve() if args.selection else None,
@@ -214,7 +227,7 @@ def main() -> int:
         seed=args.seed,
         model_provider=args.model_provider,
         model=args.model,
-        max_working_tokens=args.max_working_tokens,
+        per_turn_max_tokens=args.per_turn_max_tokens,
         repetitions=args.repetitions,
     )
     args.output.parent.mkdir(parents=True, exist_ok=True)
