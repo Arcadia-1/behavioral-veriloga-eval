@@ -6,7 +6,7 @@
         "testbench",
         "bugfix"
       ],
-      "bytes": 458,
+      "bytes": 688,
       "id": "agentic_wrapper.md",
       "kind": "wrapper",
       "license": {
@@ -19,33 +19,10 @@
         "type": "project_authored"
       },
       "semantic_version": "1.0.0",
-      "sha256": "91ee279678bfbd07547df6a3589fc0136bdb6ebc06422191164f653e614bb731",
+      "sha256": "5ddd0d16abad6e6606f67e89a89e38694e9fc7e75ec4e8c9bf8b71657bc3bcb9",
       "stable_id": "component.wrapper.agentic",
       "token_counts": {
-        "vabench_utf8_lexeme@1.0.0": 86
-      }
-    },
-    "bugfix_diagnosis.md": {
-      "applicable_forms": [
-        "bugfix"
-      ],
-      "bytes": 705,
-      "id": "bugfix_diagnosis.md",
-      "kind": "form_skill",
-      "license": {
-        "spdx": null,
-        "status": "repository_license_pending"
-      },
-      "path": "prompt_modes/form_skills/bugfix_diagnosis.md",
-      "provenance": {
-        "source": "V4_TRI_FORM_BENCHMARK_REQUIREMENTS.md",
-        "type": "project_authored"
-      },
-      "semantic_version": "1.0.0",
-      "sha256": "1724015f42ee3b3389c2f23065db34ae846957ca7f150e52f03449597b74b3a3",
-      "stable_id": "component.form.bugfix",
-      "token_counts": {
-        "vabench_utf8_lexeme@1.0.0": 117
+        "vabench_utf8_lexeme@1.0.0": 131
       }
     },
     "direct_wrapper.md": {
@@ -54,7 +31,7 @@
         "testbench",
         "bugfix"
       ],
-      "bytes": 1196,
+      "bytes": 1426,
       "id": "direct_wrapper.md",
       "kind": "wrapper",
       "license": {
@@ -67,33 +44,10 @@
         "type": "project_authored"
       },
       "semantic_version": "1.0.0",
-      "sha256": "9505a046d75402aa57cba0a781f413d6155fb72cfafbc146b30ab93bae006bf2",
+      "sha256": "7d2e4826651a1c71d9a82e975bededb03bc3ca05060e05bcdf88d5d7455b2c0a",
       "stable_id": "component.wrapper.direct_one_shot",
       "token_counts": {
-        "vabench_utf8_lexeme@1.0.0": 272
-      }
-    },
-    "dut_modeling.md": {
-      "applicable_forms": [
-        "dut"
-      ],
-      "bytes": 784,
-      "id": "dut_modeling.md",
-      "kind": "form_skill",
-      "license": {
-        "spdx": null,
-        "status": "repository_license_pending"
-      },
-      "path": "prompt_modes/form_skills/dut_modeling.md",
-      "provenance": {
-        "source": "V4_TRI_FORM_BENCHMARK_REQUIREMENTS.md",
-        "type": "project_authored"
-      },
-      "semantic_version": "1.0.0",
-      "sha256": "6a19e3f3b072c640edda6388a7f38d2dd442233a55e92e38db4572849d2f6b59",
-      "stable_id": "component.form.dut",
-      "token_counts": {
-        "vabench_utf8_lexeme@1.0.0": 141
+        "vabench_utf8_lexeme@1.0.0": 315
       }
     },
     "feedback_bugfix.md": {
@@ -188,29 +142,6 @@
       "stable_id": "component.feedback.testbench",
       "token_counts": {
         "vabench_utf8_lexeme@1.0.0": 163
-      }
-    },
-    "testbench_verification.md": {
-      "applicable_forms": [
-        "testbench"
-      ],
-      "bytes": 885,
-      "id": "testbench_verification.md",
-      "kind": "form_skill",
-      "license": {
-        "spdx": null,
-        "status": "repository_license_pending"
-      },
-      "path": "prompt_modes/form_skills/testbench_verification.md",
-      "provenance": {
-        "source": "V4_TRI_FORM_BENCHMARK_REQUIREMENTS.md",
-        "type": "project_authored"
-      },
-      "semantic_version": "1.0.0",
-      "sha256": "ff761ab518910ffce132cd46f286b8fb596d28bf4796324b01d21305ae299b4c",
-      "stable_id": "component.form.testbench",
-      "token_counts": {
-        "vabench_utf8_lexeme@1.0.0": 169
       }
     }
   },
@@ -310,83 +241,76 @@
       }
     }
   },
-  "form_skills": {
-    "bugfix_diagnosis.md": {
-      "applicable_forms": [
-        "bugfix"
-      ],
-      "bytes": 705,
-      "id": "bugfix_diagnosis.md",
-      "kind": "form_skill",
-      "license": {
-        "spdx": null,
-        "status": "repository_license_pending"
-      },
-      "path": "prompt_modes/form_skills/bugfix_diagnosis.md",
-      "provenance": {
-        "source": "V4_TRI_FORM_BENCHMARK_REQUIREMENTS.md",
-        "type": "project_authored"
-      },
-      "semantic_version": "1.0.0",
-      "sha256": "1724015f42ee3b3389c2f23065db34ae846957ca7f150e52f03449597b74b3a3",
-      "stable_id": "component.form.bugfix",
-      "token_counts": {
-        "vabench_utf8_lexeme@1.0.0": 117
-      }
-    },
-    "dut_modeling.md": {
-      "applicable_forms": [
-        "dut"
-      ],
-      "bytes": 784,
-      "id": "dut_modeling.md",
-      "kind": "form_skill",
-      "license": {
-        "spdx": null,
-        "status": "repository_license_pending"
-      },
-      "path": "prompt_modes/form_skills/dut_modeling.md",
-      "provenance": {
-        "source": "V4_TRI_FORM_BENCHMARK_REQUIREMENTS.md",
-        "type": "project_authored"
-      },
-      "semantic_version": "1.0.0",
-      "sha256": "6a19e3f3b072c640edda6388a7f38d2dd442233a55e92e38db4572849d2f6b59",
-      "stable_id": "component.form.dut",
-      "token_counts": {
-        "vabench_utf8_lexeme@1.0.0": 141
-      }
-    },
-    "testbench_verification.md": {
-      "applicable_forms": [
-        "testbench"
-      ],
-      "bytes": 885,
-      "id": "testbench_verification.md",
-      "kind": "form_skill",
-      "license": {
-        "spdx": null,
-        "status": "repository_license_pending"
-      },
-      "path": "prompt_modes/form_skills/testbench_verification.md",
-      "provenance": {
-        "source": "V4_TRI_FORM_BENCHMARK_REQUIREMENTS.md",
-        "type": "project_authored"
-      },
-      "semantic_version": "1.0.0",
-      "sha256": "ff761ab518910ffce132cd46f286b8fb596d28bf4796324b01d21305ae299b4c",
-      "stable_id": "component.form.testbench",
-      "token_counts": {
-        "vabench_utf8_lexeme@1.0.0": 169
-      }
-    }
-  },
   "reference_tokenizer": {
     "algorithm": "Unicode word runs and individual non-whitespace punctuation marks",
     "id": "vabench_utf8_lexeme",
     "version": "1.0.0"
   },
   "schema_version": "v4-prompt-component-manifest-v1",
+  "skill_lookup": {
+    "available_modes": [
+      "G1",
+      "G3",
+      "G5"
+    ],
+    "id": "veriloga-skills",
+    "path": "skill_lookup/veriloga-skills",
+    "schema_version": "v4-readonly-skill-lookup-record-v1",
+    "snapshot": {
+      "bytes_without_manifest": 155500,
+      "content_policy": {
+        "allowed_content": [
+          "general Verilog-A authoring rules",
+          "Spectre testbench ordering and source syntax",
+          "PWL waveform syntax",
+          "escaped bus syntax",
+          "save syntax",
+          "EVAS/Spectre portability pitfalls"
+        ],
+        "forbidden_content": [
+          "vaBench task ids",
+          "vaBench checker thresholds",
+          "vaBench hidden evaluator mechanics",
+          "vaBench gold solutions",
+          "task-specific mutation hints"
+        ]
+      },
+      "file_count_without_manifest": 26,
+      "schema_version": "vabench-skill-lookup-snapshot-v1",
+      "scope": {
+        "excluded_roots": [
+          ".github/",
+          "openvaf/",
+          "tests/",
+          "veriloga/assets/examples-archive/",
+          "evas-sim/examples/"
+        ],
+        "included_roots": [
+          "README.md",
+          "requirements.md",
+          "veriloga/SKILL.md",
+          "veriloga/references/",
+          "veriloga/assets/template.va",
+          "evas-sim/SKILL.md"
+        ],
+        "policy": "Curated read-only lookup subset for vaBench G1/G3/G5 skill-enabled modes."
+      },
+      "snapshot_id": "arcadia-veriloga-skills-b9619ef-vabench-subset",
+      "source": {
+        "commit": "b9619ef53608ac51cf6a7fd71db287cdc9ecd277",
+        "fetched_at": "2026-07-15",
+        "ref": "upstream/main",
+        "repository": "https://github.com/Arcadia-1/veriloga-skills.git"
+      },
+      "tree_sha256": "fc552399614158dbcc4da395ee88abe4969b71d0d4f50336758348475e7a8a24"
+    },
+    "snapshot_manifest_sha256": "0b783cb093bd6fd171dd6d20eb8b30ba977a9ffcf3d24a3118323ce59767ed40",
+    "tool_names": [
+      "list_skills",
+      "read_skill"
+    ],
+    "tree_sha256": "ee31ca9f300f59d459a2a986cc88fc947cdc1cc3ce03dcc52fc90e5249fdc57c"
+  },
   "wrappers": {
     "agentic_wrapper.md": {
       "applicable_forms": [
@@ -394,7 +318,7 @@
         "testbench",
         "bugfix"
       ],
-      "bytes": 458,
+      "bytes": 688,
       "id": "agentic_wrapper.md",
       "kind": "wrapper",
       "license": {
@@ -407,10 +331,10 @@
         "type": "project_authored"
       },
       "semantic_version": "1.0.0",
-      "sha256": "91ee279678bfbd07547df6a3589fc0136bdb6ebc06422191164f653e614bb731",
+      "sha256": "5ddd0d16abad6e6606f67e89a89e38694e9fc7e75ec4e8c9bf8b71657bc3bcb9",
       "stable_id": "component.wrapper.agentic",
       "token_counts": {
-        "vabench_utf8_lexeme@1.0.0": 86
+        "vabench_utf8_lexeme@1.0.0": 131
       }
     },
     "direct_wrapper.md": {
@@ -419,7 +343,7 @@
         "testbench",
         "bugfix"
       ],
-      "bytes": 1196,
+      "bytes": 1426,
       "id": "direct_wrapper.md",
       "kind": "wrapper",
       "license": {
@@ -432,10 +356,10 @@
         "type": "project_authored"
       },
       "semantic_version": "1.0.0",
-      "sha256": "9505a046d75402aa57cba0a781f413d6155fb72cfafbc146b30ab93bae006bf2",
+      "sha256": "7d2e4826651a1c71d9a82e975bededb03bc3ca05060e05bcdf88d5d7455b2c0a",
       "stable_id": "component.wrapper.direct_one_shot",
       "token_counts": {
-        "vabench_utf8_lexeme@1.0.0": 272
+        "vabench_utf8_lexeme@1.0.0": 315
       }
     }
   }

@@ -3,6 +3,10 @@
 Return only the candidate artifacts declared by the task. Preserve exact file
 names, module names, ports, parameters, and required artifact paths.
 
+If read-only skill lookup tools are available in this mode, you may inspect
+those general Verilog-A/Spectre references before producing your final answer.
+They are reference-only and do not permit multiple candidate submissions.
+
 For each candidate file, emit the complete file contents exactly once inside
 the vaBench artifact markers. The start marker must begin with the literal text
 `<<<VABENCH_ARTIFACT path="`, must contain the exact declared relative artifact

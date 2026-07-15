@@ -6,11 +6,11 @@ campaign from ``release/benchmarkv4`` and delegates execution to the v4
 calibration runner:
 
 * G0 uses direct one-shot artifact extraction.
-* G1 uses direct single-submission artifact extraction and may optionally
-  inspect a read-only skill tree.
+* G1 uses direct single-submission artifact extraction and inspects the
+  release-pinned read-only skill tree unless explicitly disabled.
 * G2-G5 use real OpenAI-compatible tool calling over the exported runtime:
   list/read/write submission files, optional public feedback, then finalize.
-  G3/G5 may also inspect the same read-only skill tree.
+  G3/G5 also inspect the same read-only skill tree unless explicitly disabled.
 
 The result is still an experiment runner, not the final Spectre scorer.
 """
@@ -29,6 +29,7 @@ PACKAGE = Path(__file__).resolve().parents[1]
 REPO = PACKAGE.parent
 CALIBRATION = PACKAGE / "operations" / "calibration_pilot"
 DEFAULT_RELEASE = PACKAGE / "release" / "benchmarkv4"
+DEFAULT_SKILL_ROOT_RELATIVE = Path("skill_lookup") / "veriloga-skills"
 DEFAULT_FEEDBACK = f"{sys.executable} {CALIBRATION / 'feedback_adapter.py'}"
 DEFAULT_AGENT_TIMEOUT_S = 5400
 DEFAULT_SETUP_TIMEOUT_S = 1800
@@ -85,11 +86,10 @@ def skill_tree_sha256(root: Path) -> str:
             continue
         if not path.is_file() or path.suffix.lower() not in text_suffixes:
             continue
-        data = path.read_bytes()
         digest.update(relative.as_posix().encode("utf-8"))
         digest.update(b"\0")
-        digest.update(hashlib.sha256(data).hexdigest().encode("ascii"))
-        digest.update(b"\n")
+        digest.update(path.read_bytes())
+        digest.update(b"\0")
     return digest.hexdigest()
 
 
@@ -171,7 +171,12 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument(
         "--skill-root",
         type=Path,
-        help="Optional read-only skill/reference tree exposed to G1/G3/G5 through list_skills/read_skill.",
+        help="Read-only skill/reference tree exposed to G1/G3/G5 through list_skills/read_skill. Defaults to the release-pinned skill_lookup/veriloga-skills snapshot when present.",
+    )
+    parser.add_argument(
+        "--no-skill-root",
+        action="store_true",
+        help="Disable the release-pinned read-only skill lookup, for explicit no-skill ablations only.",
     )
     parser.add_argument("--feedback-output-mode", choices=("compact", "raw"), default="compact")
     parser.add_argument("--final-judge-command")
@@ -199,7 +204,14 @@ def main() -> int:
     ) <= 0:
         raise SystemExit("all timeout values must be positive")
     release = args.release.expanduser().resolve()
-    skill_root = args.skill_root.expanduser().resolve() if args.skill_root else None
+    if args.skill_root and args.no_skill_root:
+        raise SystemExit("use at most one of --skill-root or --no-skill-root")
+    default_skill_root = release / DEFAULT_SKILL_ROOT_RELATIVE
+    skill_root = (
+        args.skill_root.expanduser().resolve()
+        if args.skill_root
+        else (None if args.no_skill_root or not default_skill_root.is_dir() else default_skill_root.resolve())
+    )
     if skill_root is not None and not skill_root.is_dir():
         raise SystemExit(f"--skill-root is not a directory: {skill_root}")
     output_root = args.output_root.expanduser().resolve()

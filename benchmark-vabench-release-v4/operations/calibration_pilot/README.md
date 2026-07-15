@@ -137,11 +137,13 @@ The provider adapter uses the OpenAI-compatible chat-completions protocol.
 Changing providers requires only `--base-url`, the campaign model ID, and
 `--api-key-env` or `--api-key-file`.
 
-`--skill-root` is optional and should point to a pinned, repository-external
-skill/reference tree for skill-enabled modes. The model sees only relative
-read-only skill paths and file contents requested through the skill tools. The
-wrapper records a tree hash for reproducibility and redacts the local path from
-metadata.
+`run_benchmarkv4_campaign.py` uses the release-pinned
+`skill_lookup/veriloga-skills` snapshot by default for skill-enabled modes
+(G1/G3/G5). Pass `--no-skill-root` only for an explicit no-skill ablation, or
+`--skill-root <path>` to test another pinned candidate. The model sees only
+relative read-only skill paths and file contents requested through the skill
+tools. The wrapper records a tree hash for reproducibility and redacts the
+local path from metadata.
 
 ## Evaluator Adapters
 

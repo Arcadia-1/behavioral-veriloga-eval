@@ -210,9 +210,6 @@ def test_prompt_components_have_pinned_reference_tokenizer_metadata() -> None:
     assert set(COMPONENT_METADATA) == {
         "direct_wrapper.md",
         "agentic_wrapper.md",
-        "dut_modeling.md",
-        "testbench_verification.md",
-        "bugfix_diagnosis.md",
         "feedback_core.md",
         "feedback_dut.md",
         "feedback_testbench.md",
@@ -221,23 +218,27 @@ def test_prompt_components_have_pinned_reference_tokenizer_metadata() -> None:
     assert reference_token_count("one two; three") == 4
 
 
-def test_prompt_assets_split_wrappers_form_skills_and_feedback_guides(tmp_path: Path) -> None:
+def test_prompt_assets_split_wrappers_feedback_guides_and_skill_lookup(tmp_path: Path) -> None:
     records = install_prompt_assets(tmp_path)
     manifest = json.loads((tmp_path / "prompt_modes" / "manifest.json").read_text(encoding="utf-8"))
     assert set(manifest["wrappers"]) == {"direct_wrapper.md", "agentic_wrapper.md"}
-    assert set(manifest["form_skills"]) == {"dut_modeling.md", "testbench_verification.md", "bugfix_diagnosis.md"}
     assert set(manifest["feedback_guides"]) == {
         "feedback_core.md", "feedback_dut.md", "feedback_testbench.md", "feedback_bugfix.md",
     }
-    assert set(manifest["components"]) == set(manifest["wrappers"]) | set(manifest["form_skills"]) | set(manifest["feedback_guides"])
+    assert "form_skills" not in manifest
+    assert set(manifest["components"]) == set(manifest["wrappers"]) | set(manifest["feedback_guides"])
+    assert manifest["skill_lookup"]["id"] == "veriloga-skills"
+    assert manifest["skill_lookup"]["available_modes"] == ["G1", "G3", "G5"]
+    assert manifest["skill_lookup"]["tool_names"] == ["list_skills", "read_skill"]
     assert (tmp_path / "prompt_modes" / "wrappers" / "direct_wrapper.md").is_file()
     assert (tmp_path / "prompt_modes" / "wrappers" / "agentic_wrapper.md").is_file()
-    assert (tmp_path / "prompt_modes" / "form_skills" / "dut_modeling.md").is_file()
     assert (tmp_path / "prompt_modes" / "feedback_guides" / "feedback_dut.md").is_file()
     assert (tmp_path / "prompt_modes" / "feedback_guides" / "feedback_core.md").is_file()
+    assert (tmp_path / "skill_lookup" / "veriloga-skills" / "veriloga" / "SKILL.md").is_file()
+    assert (tmp_path / "skill_lookup" / "veriloga-skills" / "evas-sim" / "SKILL.md").is_file()
+    assert not (tmp_path / "prompt_modes" / "form_skills").exists()
     assert not (tmp_path / "prompt_modes" / "skills").exists()
     assert records["direct_wrapper.md"]["kind"] == "wrapper"
-    assert records["dut_modeling.md"]["kind"] == "form_skill"
     assert records["feedback_dut.md"]["kind"] == "feedback_guide"
 
 
@@ -258,20 +259,18 @@ def test_runtime_prompt_components_follow_explicit_order_with_wrapper_last() -> 
     mode_record = {
         "component_order": [
             "instruction",
-            "bugfix_diagnosis.md",
+            "skill_lookup:veriloga-skills",
             "feedback_core.md",
             "feedback_bugfix.md",
             "agentic_wrapper.md",
         ],
         "prompt_component_hashes": {
-            "bugfix_diagnosis.md": "a" * 64,
             "feedback_core.md": "b" * 64,
             "feedback_bugfix.md": "c" * 64,
             "agentic_wrapper.md": "d" * 64,
         },
     }
     assert ordered_prompt_components(mode_record) == [
-        "bugfix_diagnosis.md",
         "feedback_core.md",
         "feedback_bugfix.md",
         "agentic_wrapper.md",
@@ -282,7 +281,6 @@ def test_render_prompt_places_guides_before_wrapper_without_public_contract_inli
     release = tmp_path / "release"
     task = tmp_path / "task"
     for subdir, name, text in [
-        ("form_skills", "bugfix_diagnosis.md", "bugfix skill\n"),
         ("feedback_guides", "feedback_core.md", "feedback core\n"),
         ("feedback_guides", "feedback_bugfix.md", "feedback bugfix\n"),
         ("wrappers", "agentic_wrapper.md", "agentic wrapper\n"),
@@ -296,13 +294,12 @@ def test_render_prompt_places_guides_before_wrapper_without_public_contract_inli
         "mode": "G5",
         "component_order": [
             "instruction",
-            "bugfix_diagnosis.md",
+            "skill_lookup:veriloga-skills",
             "feedback_core.md",
             "feedback_bugfix.md",
             "agentic_wrapper.md",
         ],
         "prompt_component_hashes": {
-            "bugfix_diagnosis.md": "a" * 64,
             "feedback_core.md": "b" * 64,
             "feedback_bugfix.md": "c" * 64,
             "agentic_wrapper.md": "d" * 64,
@@ -316,7 +313,6 @@ def test_render_prompt_places_guides_before_wrapper_without_public_contract_inli
         inline_artifacts=False,
     )
     markers = [
-        '<<<VABENCH_COMPONENT id="bugfix_diagnosis.md">>>',
         '<<<VABENCH_COMPONENT id="feedback_core.md">>>',
         '<<<VABENCH_COMPONENT id="feedback_bugfix.md">>>',
         '<<<VABENCH_COMPONENT id="agentic_wrapper.md">>>',
@@ -344,8 +340,9 @@ def test_derived_prompt_plan_hash_binds_non_visible_public_contract(tmp_path: Pa
     plan = build_mode_record(release, task, record, "G5")
     assert plan["public_contract_sha256"] == file_sha(task / "public_contract.json")
     assert plan["component_order"][-4:] == [
-        "bugfix_diagnosis.md", "feedback_core.md", "feedback_bugfix.md", "agentic_wrapper.md",
+        "skill_lookup:veriloga-skills", "feedback_core.md", "feedback_bugfix.md", "agentic_wrapper.md",
     ]
+    assert plan["skill_lookup"]["id"] == "veriloga-skills"
     assert set(plan["public_input_hashes"]) == {
         "public/instruction.md", "public/buggy_bundle/dut.va",
     }

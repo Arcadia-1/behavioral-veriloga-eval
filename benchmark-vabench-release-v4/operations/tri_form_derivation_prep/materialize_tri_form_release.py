@@ -25,18 +25,14 @@ PREP_ROOT = Path(__file__).resolve().parent
 DEFAULT_SOURCE = PACKAGE_ROOT / "provenance" / "dut-base-v3-exact-five-hash-bound-v2"
 DEFAULT_OUTPUT = PACKAGE_ROOT / "release" / "benchmarkv4"
 PROMPT_ASSETS = PREP_ROOT / "prompt_assets"
+SKILL_LOOKUP_ASSETS = PREP_ROOT / "skill_lookup_assets" / "veriloga-skills"
 MODES = {
-    "G0": {"process": "direct_one_shot", "form_skill": False, "feedback_guide": False, "feedback_cli": False},
-    "G1": {"process": "direct_one_shot", "form_skill": True, "feedback_guide": False, "feedback_cli": False},
-    "G2": {"process": "agentic", "form_skill": False, "feedback_guide": False, "feedback_cli": True},
-    "G3": {"process": "agentic", "form_skill": True, "feedback_guide": False, "feedback_cli": True},
-    "G4": {"process": "agentic", "form_skill": False, "feedback_guide": True, "feedback_cli": True},
-    "G5": {"process": "agentic", "form_skill": True, "feedback_guide": True, "feedback_cli": True},
-}
-FORM_SKILLS = {
-    "dut": "dut_modeling.md",
-    "testbench": "testbench_verification.md",
-    "bugfix": "bugfix_diagnosis.md",
+    "G0": {"process": "direct_one_shot", "skill_lookup": False, "feedback_guide": False, "feedback_cli": False},
+    "G1": {"process": "direct_one_shot", "skill_lookup": True, "feedback_guide": False, "feedback_cli": False},
+    "G2": {"process": "agentic", "skill_lookup": False, "feedback_guide": False, "feedback_cli": True},
+    "G3": {"process": "agentic", "skill_lookup": True, "feedback_guide": False, "feedback_cli": True},
+    "G4": {"process": "agentic", "skill_lookup": False, "feedback_guide": True, "feedback_cli": True},
+    "G5": {"process": "agentic", "skill_lookup": True, "feedback_guide": True, "feedback_cli": True},
 }
 FEEDBACK_GUIDES = {
     "dut": "feedback_dut.md",
@@ -48,6 +44,7 @@ MATERIALIZED_ARTIFACTS = (
     "TASK_INDEX.json",
     "prompt_modes/modes.json",
     "prompt_modes/manifest.json",
+    "skill_lookup/veriloga-skills/SNAPSHOT_MANIFEST.json",
 )
 PUBLIC_MATERIALIZED_ARTIFACTS = MATERIALIZED_ARTIFACTS
 WRAPPERS_BY_PROCESS = {
@@ -62,9 +59,6 @@ REFERENCE_TOKENIZER = {
 COMPONENT_METADATA = {
     "direct_wrapper.md": {"stable_id": "component.wrapper.direct_one_shot", "kind": "wrapper", "applicable_forms": ["dut", "testbench", "bugfix"]},
     "agentic_wrapper.md": {"stable_id": "component.wrapper.agentic", "kind": "wrapper", "applicable_forms": ["dut", "testbench", "bugfix"]},
-    "dut_modeling.md": {"stable_id": "component.form.dut", "kind": "form_skill", "applicable_forms": ["dut"]},
-    "testbench_verification.md": {"stable_id": "component.form.testbench", "kind": "form_skill", "applicable_forms": ["testbench"]},
-    "bugfix_diagnosis.md": {"stable_id": "component.form.bugfix", "kind": "form_skill", "applicable_forms": ["bugfix"]},
     "feedback_core.md": {"stable_id": "component.feedback.core", "kind": "feedback_guide", "applicable_forms": ["dut", "testbench", "bugfix"]},
     "feedback_dut.md": {"stable_id": "component.feedback.dut", "kind": "feedback_guide", "applicable_forms": ["dut"]},
     "feedback_testbench.md": {"stable_id": "component.feedback.testbench", "kind": "feedback_guide", "applicable_forms": ["testbench"]},
@@ -72,7 +66,6 @@ COMPONENT_METADATA = {
 }
 COMPONENT_SUBDIR_BY_KIND = {
     "wrapper": "wrappers",
-    "form_skill": "form_skills",
     "feedback_guide": "feedback_guides",
 }
 STANDALONE_EVALUATOR_COMMON = (
@@ -820,7 +813,6 @@ def prompt_component_subdir(component_id: str) -> str:
 def install_prompt_assets(output: Path) -> dict[str, dict[str, Any]]:
     records: dict[str, dict[str, Any]] = {}
     wrappers: dict[str, dict[str, Any]] = {}
-    form_skills: dict[str, dict[str, Any]] = {}
     feedback_guides: dict[str, dict[str, Any]] = {}
     for source in sorted(PROMPT_ASSETS.rglob("*.md")):
         if source.name not in COMPONENT_METADATA:
@@ -843,26 +835,39 @@ def install_prompt_assets(output: Path) -> dict[str, dict[str, Any]]:
         records[source.name] = record
         if metadata["kind"] == "wrapper":
             wrappers[source.name] = record
-        elif metadata["kind"] == "form_skill":
-            form_skills[source.name] = record
         elif metadata["kind"] == "feedback_guide":
             feedback_guides[source.name] = record
         else:
             raise SystemExit(f"unknown prompt component kind: {metadata['kind']}")
+    skill_lookup_root = output / "skill_lookup" / "veriloga-skills"
+    if not SKILL_LOOKUP_ASSETS.is_dir():
+        raise SystemExit(f"skill lookup assets missing: {SKILL_LOOKUP_ASSETS}")
+    copy_tree(SKILL_LOOKUP_ASSETS, skill_lookup_root)
+    skill_snapshot_manifest = read_json(skill_lookup_root / "SNAPSHOT_MANIFEST.json")
+    skill_lookup_record = {
+        "schema_version": "v4-readonly-skill-lookup-record-v1",
+        "id": "veriloga-skills",
+        "path": rel(skill_lookup_root, output),
+        "tool_names": ["list_skills", "read_skill"],
+        "available_modes": ["G1", "G3", "G5"],
+        "tree_sha256": tree_sha(skill_lookup_root),
+        "snapshot_manifest_sha256": file_sha(skill_lookup_root / "SNAPSHOT_MANIFEST.json"),
+        "snapshot": skill_snapshot_manifest,
+    }
     write_json(output / "prompt_modes" / "manifest.json", {
         "schema_version": "v4-prompt-component-manifest-v1",
         "reference_tokenizer": REFERENCE_TOKENIZER,
         "components": records,
         "wrappers": wrappers,
-        "form_skills": form_skills,
         "feedback_guides": feedback_guides,
+        "skill_lookup": skill_lookup_record,
     })
     write_json(output / "prompt_modes" / "modes.json", {
         "schema_version": "v4-prompt-mode-registry-v1",
         "modes": MODES,
         "composition_order": [
             "canonical_instruction_and_inline_artifacts",
-            "form_skill",
+            "skill_lookup_tool",
             "feedback_guide",
             "mode_wrapper_response_protocol",
         ],
@@ -922,6 +927,7 @@ def main() -> int:
     task_rows.sort(key=lambda item: int(str(item["task_id"]).split("-", 1)[1]))
     install_prompt_assets(output)
     write_json(output / "TASK_INDEX.json", {"schema_version": "v4-benchmarkv4-task-index-v1", "tasks": task_rows})
+    prompt_manifest = read_json(output / "prompt_modes" / "manifest.json")
     counts = {form: sum(item["form"] == form for item in task_rows) for form in ("dut", "testbench", "bugfix")}
     rerun_required = bool(certification_reuse["simulation_rerun_required_for_materialization"])
     manifest = {
@@ -948,7 +954,9 @@ def main() -> int:
             "tasks": "tasks",
             "prompt_modes": "prompt_modes",
             "task_index": "TASK_INDEX.json",
+            "skill_lookup": "skill_lookup",
         },
+        "skill_lookup": prompt_manifest.get("skill_lookup"),
         "package_layout": {
             "task_public_inputs": "tasks/<task>/public",
             "task_evaluator_assets": "tasks/<task>/evaluator",

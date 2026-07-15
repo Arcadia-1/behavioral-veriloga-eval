@@ -13,11 +13,7 @@ from typing import Any
 PACKAGE_ROOT = Path(__file__).resolve().parents[2]
 DEFAULT_RELEASE = PACKAGE_ROOT / "release" / "benchmarkv4"
 AGENTIC = {"G2", "G3", "G4", "G5"}
-FORM_SKILLS = {
-    "dut": "dut_modeling.md",
-    "testbench": "testbench_verification.md",
-    "bugfix": "bugfix_diagnosis.md",
-}
+SKILL_LOOKUP_RESOURCE = "skill_lookup:veriloga-skills"
 FEEDBACK_GUIDES = {
     "dut": "feedback_dut.md",
     "testbench": "feedback_testbench.md",
@@ -100,7 +96,11 @@ def ordered_prompt_components(mode_record: dict[str, Any]) -> list[str]:
     wrappers: list[str] = []
     prompt_components = set((mode_record.get("prompt_component_hashes") or {}).keys())
     for component in [str(item) for item in mode_record.get("component_order") or []]:
-        if component == "instruction" or component.startswith("public_input:"):
+        if (
+            component == "instruction"
+            or component.startswith("public_input:")
+            or component.startswith("skill_lookup:")
+        ):
             continue
         if component.endswith("_wrapper.md"):
             wrappers.append(component)
@@ -119,8 +119,6 @@ def ordered_prompt_components(mode_record: dict[str, Any]) -> list[str]:
 def prompt_component_path(release: Path, component_id: str) -> Path:
     if component_id.endswith("_wrapper.md"):
         subdir = "wrappers"
-    elif component_id in set(FORM_SKILLS.values()):
-        subdir = "form_skills"
     elif component_id == FEEDBACK_CORE or component_id in set(FEEDBACK_GUIDES.values()):
         subdir = "feedback_guides"
     else:
@@ -136,7 +134,6 @@ def build_mode_record(release: Path, task_dir: Path, record: dict[str, Any], mod
     manifest = read_json(release / "prompt_modes" / "manifest.json")
     component_records = manifest.get("components") or {
         **(manifest.get("wrappers") or {}),
-        **(manifest.get("form_skills") or {}),
         **(manifest.get("feedback_guides") or {}),
     }
     public_input_paths = [task_dir / "public" / "instruction.md"]
@@ -151,10 +148,21 @@ def build_mode_record(release: Path, task_dir: Path, record: dict[str, Any], mod
         for path in public_input_paths[1:]
     )
     guide_components: list[str] = []
-    if policy.get("form_skill"):
-        guide_components.append(FORM_SKILLS[form])
     if policy.get("feedback_guide"):
         guide_components.extend([FEEDBACK_CORE, FEEDBACK_GUIDES[form]])
+    skill_lookup_record = None
+    if policy.get("skill_lookup"):
+        skill_lookup_record = manifest.get("skill_lookup") or {}
+        if skill_lookup_record.get("id") != "veriloga-skills":
+            raise SystemExit("prompt manifest is missing the veriloga-skills skill lookup record")
+        skill_root = release / str(skill_lookup_record.get("path") or "")
+        snapshot = skill_root / "SNAPSHOT_MANIFEST.json"
+        if not snapshot.is_file():
+            raise SystemExit(f"skill lookup snapshot manifest missing: {snapshot}")
+        if skill_lookup_record.get("snapshot_manifest_sha256") != file_sha(snapshot):
+            raise SystemExit("skill lookup snapshot manifest hash mismatch")
+        if skill_lookup_record.get("tree_sha256") != tree_sha(skill_root):
+            raise SystemExit("skill lookup tree hash mismatch")
     wrapper = WRAPPERS_BY_PROCESS[str(policy.get("process") or "")]
     prompt_components = [*guide_components, wrapper]
     missing = [name for name in prompt_components if name not in component_records]
@@ -180,11 +188,17 @@ def build_mode_record(release: Path, task_dir: Path, record: dict[str, Any], mod
             path.relative_to(task_dir).as_posix(): file_sha(path)
             for path in public_input_paths
         },
-        "component_order": [*public_inputs, *guide_components, wrapper],
+        "component_order": [
+            *public_inputs,
+            *([SKILL_LOOKUP_RESOURCE] if skill_lookup_record else []),
+            *guide_components,
+            wrapper,
+        ],
         "skill_hashes": {
             name: component_records[name]["sha256"]
             for name in guide_components
         },
+        "skill_lookup": skill_lookup_record,
         "prompt_component_hashes": {
             name: component_records[name]["sha256"]
             for name in prompt_components
@@ -294,12 +308,18 @@ def main() -> int:
     prompt_name = "agent_prompt.txt" if args.mode in AGENTIC else "direct_prompt.txt"
     (output / prompt_name).write_text(prompt, encoding="utf-8")
     model_mounts = [] if args.mode not in AGENTIC else ["public/task:ro", "public/submission:rw"]
+    skill_lookup_record = mode_record.get("skill_lookup") or None
     write_json(output / "MODEL_ACCESS_POLICY.json", {
         "schema_version": "v4-model-access-policy-v1",
         "mode": args.mode,
         "mounts": model_mounts,
         "network": False,
         "evaluator_mounted": False,
+        "skill_lookup": {
+            "available": bool(skill_lookup_record),
+            "path": (skill_lookup_record or {}).get("path"),
+            "tool_names": (skill_lookup_record or {}).get("tool_names") or [],
+        },
     })
     write_json(output / "evidence" / "attempt_record.json", {
         "schema_version": "v4-attempt-record-v1",

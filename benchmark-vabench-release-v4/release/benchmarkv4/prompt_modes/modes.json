@@ -1,7 +1,7 @@
 {
   "composition_order": [
     "canonical_instruction_and_inline_artifacts",
-    "form_skill",
+    "skill_lookup_tool",
     "feedback_guide",
     "mode_wrapper_response_protocol"
   ],
@@ -9,38 +9,38 @@
     "G0": {
       "feedback_cli": false,
       "feedback_guide": false,
-      "form_skill": false,
-      "process": "direct_one_shot"
+      "process": "direct_one_shot",
+      "skill_lookup": false
     },
     "G1": {
       "feedback_cli": false,
       "feedback_guide": false,
-      "form_skill": true,
-      "process": "direct_one_shot"
+      "process": "direct_one_shot",
+      "skill_lookup": true
     },
     "G2": {
       "feedback_cli": true,
       "feedback_guide": false,
-      "form_skill": false,
-      "process": "agentic"
+      "process": "agentic",
+      "skill_lookup": false
     },
     "G3": {
       "feedback_cli": true,
       "feedback_guide": false,
-      "form_skill": true,
-      "process": "agentic"
+      "process": "agentic",
+      "skill_lookup": true
     },
     "G4": {
       "feedback_cli": true,
       "feedback_guide": true,
-      "form_skill": false,
-      "process": "agentic"
+      "process": "agentic",
+      "skill_lookup": false
     },
     "G5": {
       "feedback_cli": true,
       "feedback_guide": true,
-      "form_skill": true,
-      "process": "agentic"
+      "process": "agentic",
+      "skill_lookup": true
     }
   },
   "schema_version": "v4-prompt-mode-registry-v1",

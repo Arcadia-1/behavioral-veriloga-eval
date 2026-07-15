@@ -1,0 +1,48 @@
+{
+  "schema_version": "vabench-skill-lookup-snapshot-v1",
+  "snapshot_id": "arcadia-veriloga-skills-b9619ef-vabench-subset",
+  "source": {
+    "repository": "https://github.com/Arcadia-1/veriloga-skills.git",
+    "commit": "b9619ef53608ac51cf6a7fd71db287cdc9ecd277",
+    "ref": "upstream/main",
+    "fetched_at": "2026-07-15"
+  },
+  "scope": {
+    "policy": "Curated read-only lookup subset for vaBench G1/G3/G5 skill-enabled modes.",
+    "included_roots": [
+      "README.md",
+      "requirements.md",
+      "veriloga/SKILL.md",
+      "veriloga/references/",
+      "veriloga/assets/template.va",
+      "evas-sim/SKILL.md"
+    ],
+    "excluded_roots": [
+      ".github/",
+      "openvaf/",
+      "tests/",
+      "veriloga/assets/examples-archive/",
+      "evas-sim/examples/"
+    ]
+  },
+  "content_policy": {
+    "allowed_content": [
+      "general Verilog-A authoring rules",
+      "Spectre testbench ordering and source syntax",
+      "PWL waveform syntax",
+      "escaped bus syntax",
+      "save syntax",
+      "EVAS/Spectre portability pitfalls"
+    ],
+    "forbidden_content": [
+      "vaBench task ids",
+      "vaBench checker thresholds",
+      "vaBench hidden evaluator mechanics",
+      "vaBench gold solutions",
+      "task-specific mutation hints"
+    ]
+  },
+  "tree_sha256": "fc552399614158dbcc4da395ee88abe4969b71d0d4f50336758348475e7a8a24",
+  "file_count_without_manifest": 26,
+  "bytes_without_manifest": 155500
+}

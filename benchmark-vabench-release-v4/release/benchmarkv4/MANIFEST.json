@@ -52,8 +52,9 @@
   "family_count": 400,
   "materialized_artifact_sha256": {
     "TASK_INDEX.json": "989b7b2d9657282ed25be71841ae824856d23b601b56da008bb34b9f6f5a7865",
-    "prompt_modes/manifest.json": "f5be68a5e0fca8e09aa65542d984d18eb148b8274e63c7f65ec8092f7f1fef51",
-    "prompt_modes/modes.json": "2fe6660e24f515c5dbd12ab5e84386ad1c8776d14e3615668add64fe2d1eecf2"
+    "prompt_modes/manifest.json": "1ffdd41dc19c7251e93206baefb132fdc9af2da0a18f688e4cf8341b4d62583c",
+    "prompt_modes/modes.json": "78162fdde5a5c5a0e9749e7be57a26d8f31ee3ca281d6f0e71beb27882c35d94",
+    "skill_lookup/veriloga-skills/SNAPSHOT_MANIFEST.json": "0b783cb093bd6fd171dd6d20eb8b30ba977a9ffcf3d24a3118323ce59767ed40"
   },
   "package_layout": {
     "task_contract": "tasks/<task>/public_contract.json",
@@ -64,6 +65,7 @@
   "prompt_record_count": 7200,
   "public_surface": {
     "prompt_modes": "prompt_modes",
+    "skill_lookup": "skill_lookup",
     "task_index": "TASK_INDEX.json",
     "tasks": "tasks"
   },
@@ -72,6 +74,70 @@
   "schema_version": "v4-benchmarkv4-release-manifest-v1",
   "simulation_rerun_count_for_materialization": 0,
   "simulation_rerun_required_for_materialization": true,
+  "skill_lookup": {
+    "available_modes": [
+      "G1",
+      "G3",
+      "G5"
+    ],
+    "id": "veriloga-skills",
+    "path": "skill_lookup/veriloga-skills",
+    "schema_version": "v4-readonly-skill-lookup-record-v1",
+    "snapshot": {
+      "bytes_without_manifest": 155500,
+      "content_policy": {
+        "allowed_content": [
+          "general Verilog-A authoring rules",
+          "Spectre testbench ordering and source syntax",
+          "PWL waveform syntax",
+          "escaped bus syntax",
+          "save syntax",
+          "EVAS/Spectre portability pitfalls"
+        ],
+        "forbidden_content": [
+          "vaBench task ids",
+          "vaBench checker thresholds",
+          "vaBench hidden evaluator mechanics",
+          "vaBench gold solutions",
+          "task-specific mutation hints"
+        ]
+      },
+      "file_count_without_manifest": 26,
+      "schema_version": "vabench-skill-lookup-snapshot-v1",
+      "scope": {
+        "excluded_roots": [
+          ".github/",
+          "openvaf/",
+          "tests/",
+          "veriloga/assets/examples-archive/",
+          "evas-sim/examples/"
+        ],
+        "included_roots": [
+          "README.md",
+          "requirements.md",
+          "veriloga/SKILL.md",
+          "veriloga/references/",
+          "veriloga/assets/template.va",
+          "evas-sim/SKILL.md"
+        ],
+        "policy": "Curated read-only lookup subset for vaBench G1/G3/G5 skill-enabled modes."
+      },
+      "snapshot_id": "arcadia-veriloga-skills-b9619ef-vabench-subset",
+      "source": {
+        "commit": "b9619ef53608ac51cf6a7fd71db287cdc9ecd277",
+        "fetched_at": "2026-07-15",
+        "ref": "upstream/main",
+        "repository": "https://github.com/Arcadia-1/veriloga-skills.git"
+      },
+      "tree_sha256": "fc552399614158dbcc4da395ee88abe4969b71d0d4f50336758348475e7a8a24"
+    },
+    "snapshot_manifest_sha256": "0b783cb093bd6fd171dd6d20eb8b30ba977a9ffcf3d24a3118323ce59767ed40",
+    "tool_names": [
+      "list_skills",
+      "read_skill"
+    ],
+    "tree_sha256": "ee31ca9f300f59d459a2a986cc88fc947cdc1cc3ce03dcc52fc90e5249fdc57c"
+  },
   "source_active_mutation_count": 2000,
   "source_release_label": "dut-base-v3-exact-five-hash-bound-v2",
   "source_score_denominator_manifest_sha256": "609cf067658715f53ef235855f6a469e7a3a7bd56ff92b85856c0ff04d0d386b",

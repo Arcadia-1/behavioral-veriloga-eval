@@ -21,6 +21,7 @@ FORMS = ("dut", "testbench", "bugfix")
 MODES = ("G0", "G1", "G2", "G3", "G4", "G5")
 DIRECT_MODES = {"G0", "G1"}
 AGENTIC_MODES = {"G2", "G3", "G4", "G5"}
+SKILL_LOOKUP_MODES = {"G1", "G3", "G5"}
 WRAPPERS_BY_MODE = {
     "G0": "direct_wrapper.md",
     "G1": "direct_wrapper.md",
@@ -28,11 +29,6 @@ WRAPPERS_BY_MODE = {
     "G3": "agentic_wrapper.md",
     "G4": "agentic_wrapper.md",
     "G5": "agentic_wrapper.md",
-}
-FORM_SKILLS = {
-    "dut": "dut_modeling.md",
-    "testbench": "testbench_verification.md",
-    "bugfix": "bugfix_diagnosis.md",
 }
 FEEDBACK_GUIDES = {
     "dut": "feedback_dut.md",
@@ -44,6 +40,7 @@ MATERIALIZED_ARTIFACTS = (
     "TASK_INDEX.json",
     "prompt_modes/modes.json",
     "prompt_modes/manifest.json",
+    "skill_lookup/veriloga-skills/SNAPSHOT_MANIFEST.json",
 )
 RELEASE_SEAL_ARTIFACTS = (
     "MANIFEST.json",
@@ -167,8 +164,6 @@ def public_bundle_hash(task_dir: Path) -> str:
 def prompt_component_path(release: Path, component_id: str) -> Path:
     if component_id.endswith("_wrapper.md"):
         subdir = "wrappers"
-    elif component_id in set(FORM_SKILLS.values()):
-        subdir = "form_skills"
     elif component_id == FEEDBACK_CORE or component_id in set(FEEDBACK_GUIDES.values()):
         subdir = "feedback_guides"
     else:
@@ -481,28 +476,48 @@ def audit_prompt_components(release: Path, tasks: list[dict[str, Any]], problems
     component_manifest = read_json(release / "prompt_modes" / "manifest.json")
     mode_manifest = read_json(release / "prompt_modes" / "modes.json")
     wrapper_records = component_manifest.get("wrappers") or {}
-    form_skill_records = component_manifest.get("form_skills") or {}
     feedback_guide_records = component_manifest.get("feedback_guides") or {}
+    skill_lookup_record = component_manifest.get("skill_lookup") or {}
     component_records = component_manifest.get("components") or {
         **wrapper_records,
-        **form_skill_records,
         **feedback_guide_records,
     }
     tokenizer = component_manifest.get("reference_tokenizer") or {}
     tokenizer_key = f"{tokenizer.get('id')}@{tokenizer.get('version')}"
     required_wrappers = set(WRAPPERS_BY_MODE.values())
-    required_form_skills = set(FORM_SKILLS.values())
     required_feedback_guides = {FEEDBACK_CORE, *FEEDBACK_GUIDES.values()}
     if set(wrapper_records) != required_wrappers:
         problems.append("component manifest wrapper set mismatch")
-    if set(form_skill_records) != required_form_skills:
-        problems.append("component manifest form-skill set mismatch")
     if set(feedback_guide_records) != required_feedback_guides:
         problems.append("component manifest feedback-guide set mismatch")
-    if set(component_records) != required_wrappers | required_form_skills | required_feedback_guides:
+    if component_manifest.get("form_skills"):
+        problems.append("component manifest should not include legacy form_skills")
+    if set(component_records) != required_wrappers | required_feedback_guides:
         problems.append("component manifest component set mismatch")
+    if (release / "prompt_modes" / "form_skills").exists():
+        problems.append("legacy prompt_modes/form_skills/ directory should not be present")
     if (release / "prompt_modes" / "skills").exists():
         problems.append("legacy prompt_modes/skills/ directory should not be present")
+    skill_root = release / str(skill_lookup_record.get("path") or "")
+    skill_manifest = skill_root / "SNAPSHOT_MANIFEST.json"
+    if skill_lookup_record.get("id") != "veriloga-skills":
+        problems.append("skill lookup record id mismatch")
+    if skill_lookup_record.get("available_modes") != sorted(SKILL_LOOKUP_MODES):
+        problems.append("skill lookup available modes mismatch")
+    if skill_lookup_record.get("tool_names") != ["list_skills", "read_skill"]:
+        problems.append("skill lookup tool names mismatch")
+    if not skill_manifest.is_file():
+        problems.append("skill lookup snapshot manifest missing")
+    else:
+        if skill_lookup_record.get("snapshot_manifest_sha256") != file_sha(skill_manifest):
+            problems.append("skill lookup snapshot manifest hash mismatch")
+        if skill_lookup_record.get("tree_sha256") != tree_sha(skill_root):
+            problems.append("skill lookup tree hash mismatch")
+        snapshot = read_json(skill_manifest)
+        forbidden = " ".join(json.dumps(snapshot.get("content_policy") or {}).lower().split())
+        for marker in ("vabench hidden", "gold solution", "mutation hint"):
+            if marker in forbidden and "forbidden_content" not in snapshot.get("content_policy", {}):
+                problems.append(f"skill lookup content policy malformed near {marker!r}")
     for name, component in component_records.items():
         for field in ("stable_id", "semantic_version", "applicable_forms", "sha256", "bytes", "license", "provenance", "token_counts"):
             if field not in component:
@@ -528,13 +543,13 @@ def audit_prompt_components(release: Path, tasks: list[dict[str, Any]], problems
             expected_cli = mode in AGENTIC_MODES
             if bool(policy.get("feedback_cli")) is not expected_cli:
                 problems.append(f"{task_id}/{mode}: feedback availability mismatch")
+            if bool(policy.get("skill_lookup")) is not (mode in SKILL_LOOKUP_MODES):
+                problems.append(f"{task_id}/{mode}: skill lookup availability mismatch")
             public_inputs = iter_prompt_public_inputs(task_dir, form)
             for item in public_inputs:
                 if not item.is_file():
                     problems.append(f"{task_id}/{mode}: prompt public input missing: {item.relative_to(task_dir)}")
             expected_components: list[str] = []
-            if mode in {"G1", "G3", "G5"}:
-                expected_components.append(FORM_SKILLS.get(form, ""))
             if mode in {"G4", "G5"}:
                 expected_components.extend([FEEDBACK_CORE, FEEDBACK_GUIDES.get(form, "")])
             expected_components.append(WRAPPERS_BY_MODE.get(mode, ""))
