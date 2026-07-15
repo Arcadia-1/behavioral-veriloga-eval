@@ -180,6 +180,7 @@ def build_release_seal(
     release: Path,
     source_manifest_sha256: str,
     certification_reuse: dict[str, Any],
+    certification_problems: list[str] | None = None,
 ) -> dict[str, Any]:
     artifact_hashes = {}
     for relative in RELEASE_SEAL_ARTIFACTS:
@@ -187,14 +188,30 @@ def build_release_seal(
         if not path.is_file():
             raise SystemExit(f"cannot seal release; missing artifact: {relative}")
         artifact_hashes[relative] = file_sha(path)
-    return {
+    certification_problems = certification_problems or []
+    refresh_required = bool(
+        certification_reuse.get("simulation_rerun_required_for_materialization")
+    )
+    seal = {
         "schema_version": "v4-benchmarkv4-release-seal-v1",
-        "release_status": "gate3_hash_bound_certification_reused",
+        "release_status": (
+            "materialized_certification_refresh_required"
+            if refresh_required
+            else "gate3_hash_bound_certification_reused"
+        ),
         "source_score_denominator_manifest_sha256": source_manifest_sha256,
         "artifact_sha256": artifact_hashes,
         "certification_reuse": certification_reuse,
-        "simulation_claim": "canonical DUT gold and exact-five negative EVAS/Spectre certifications reused by hash",
+        "simulation_claim": (
+            "none; one or more source certifications require EVAS/Spectre refresh"
+            if refresh_required
+            else "canonical DUT gold and exact-five negative EVAS/Spectre certifications reused by hash"
+        ),
     }
+    if refresh_required:
+        seal["certification_problem_count"] = len(certification_problems)
+        seal["certification_problems"] = certification_problems
+    return seal
 
 
 def expected_task_id(form: str, family: str) -> str:
@@ -218,11 +235,8 @@ def expected_buggy_artifact_hashes(
 def audit_source_certifications(
     source: Path,
     source_rows: dict[str, dict[str, Any]],
-    problems: list[str],
-) -> dict[str, Any]:
-    summary, binding_problems = inspect_source_certification_reuse(source, source_rows)
-    problems.extend(binding_problems)
-    return summary
+) -> tuple[dict[str, Any], list[str]]:
+    return inspect_source_certification_reuse(source, source_rows)
 
 
 def audit_standalone_evaluator(
@@ -591,7 +605,9 @@ def main() -> int:
         problems.append("manifest source release label mismatch")
     if manifest.get("source_score_denominator_manifest_sha256") != source_manifest_sha:
         problems.append("manifest source denominator hash mismatch")
-    certification_reuse = audit_source_certifications(source, source_rows, problems)
+    certification_reuse, certification_problems = audit_source_certifications(
+        source, source_rows
+    )
     if manifest.get("certification_reuse") != certification_reuse:
         problems.append("manifest certification reuse summary does not match source inputs")
     if manifest.get("simulation_rerun_required_for_materialization") != certification_reuse.get(
@@ -639,6 +655,12 @@ def main() -> int:
         "prompt_record_count": prompt_count,
         "testbench_reference_source_counts": dict(sorted(reference_tb_source_counts.items())),
         "certification_reuse": certification_reuse,
+        "certification_status": (
+            "refresh_required"
+            if certification_reuse.get("simulation_rerun_required_for_materialization")
+            else "reused"
+        ),
+        "certification_problems": certification_problems,
         "input_hashes": {
             "source_score_denominator_manifest_sha256": source_manifest_sha,
             "manifest_sha256": file_sha(release / "MANIFEST.json"),
@@ -654,7 +676,12 @@ def main() -> int:
             raise SystemExit("cannot seal release while audit problems remain")
         if not args.output:
             raise SystemExit("--seal-output requires --output so the audit report can be hash-bound")
-        seal = build_release_seal(release, source_manifest_sha, certification_reuse)
+        seal = build_release_seal(
+            release,
+            source_manifest_sha,
+            certification_reuse,
+            certification_problems,
+        )
         args.seal_output.parent.mkdir(parents=True, exist_ok=True)
         args.seal_output.write_text(json.dumps(seal, indent=2, sort_keys=True) + "\n", encoding="utf-8")
     print(json.dumps(report, indent=2, sort_keys=True))

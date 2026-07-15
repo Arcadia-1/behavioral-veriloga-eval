@@ -28,8 +28,8 @@ testbench must accept the correct DUT and expose all five behavioral faults.
 Stable evaluator binding:
 
 - DUT sources use `./dut/{artifact_path}`.
-- Instantiate `v2b_4b` as `XV2B` with ordered public binding: clk=clk, vin=vin, out_3=code_bus[3], out_2=code_bus[2], out_1=code_bus[1], out_0=code_bus[0].
-- Instantiate `dwa_ptr_gen` as `XDWA` with ordered public binding: clk_i=clk, rst_ni=rst_n, code_msb_i[3:0]=code_bus[3:0], cell_en_o[15:0]=cell_en[15:0], ptr_o[15:0]=ptr[15:0].
+- Instantiate `v2b_4b` as `XV2B` with ordered public binding: clk=clk_i, vin=vin_node, out_3=code_3, out_2=code_2, out_1=code_1, out_0=code_0.
+- Instantiate `dwa_ptr_gen` as `XDWA` with ordered public binding: clk_i=clk_i, rst_ni=rst_ni, code_msb_i[3]=code_3, code_msb_i[2]=code_2, code_msb_i[1]=code_1, code_msb_i[0]=code_0, cell_en_o[15]=cell_en_15, cell_en_o[14]=cell_en_14, cell_en_o[13]=cell_en_13, cell_en_o[12]=cell_en_12, cell_en_o[11]=cell_en_11, cell_en_o[10]=cell_en_10, cell_en_o[9]=cell_en_9, cell_en_o[8]=cell_en_8, cell_en_o[7]=cell_en_7, cell_en_o[6]=cell_en_6, cell_en_o[5]=cell_en_5, cell_en_o[4]=cell_en_4, cell_en_o[3]=cell_en_3, cell_en_o[2]=cell_en_2, cell_en_o[1]=cell_en_1, cell_en_o[0]=cell_en_0, ptr_o[15]=ptr_15, ptr_o[14]=ptr_14, ptr_o[13]=ptr_13, ptr_o[12]=ptr_12, ptr_o[11]=ptr_11, ptr_o[10]=ptr_10, ptr_o[9]=ptr_9, ptr_o[8]=ptr_8, ptr_o[7]=ptr_7, ptr_o[6]=ptr_6, ptr_o[5]=ptr_5, ptr_o[4]=ptr_4, ptr_o[3]=ptr_3, ptr_o[2]=ptr_2, ptr_o[1]=ptr_1, ptr_o[0]=ptr_0.
 
 ## Public Parameter Contract
 

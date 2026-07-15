@@ -20,7 +20,7 @@ testbench must accept the correct DUT and expose all five behavioral faults.
 Stable evaluator binding:
 
 - DUT sources use `./dut/{artifact_path}`.
-- Instantiate `sample_hold` as `XDUT` with ordered public binding: VDD=vdd, VSS=vss, IN=vin, CLK=clk, OUT=vout.
+- Instantiate `sample_hold` as `XDUT` with ordered public binding: VDD=vdd, VSS=vss, IN=in, CLK=clk, OUT=out.
 
 ## Public Parameter Contract
 

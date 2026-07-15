@@ -417,3 +417,31 @@ def test_release_seal_binds_transitive_release_and_reused_certifications(tmp_pat
     assert seal["release_status"] == "gate3_hash_bound_certification_reused"
     assert seal["certification_reuse"] == reuse
     assert set(seal["artifact_sha256"]) == set(RELEASE_SEAL_ARTIFACTS)
+
+
+def test_release_seal_refuses_to_claim_stale_certifications(tmp_path: Path) -> None:
+    for relative in RELEASE_SEAL_ARTIFACTS:
+        path = tmp_path / relative
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text(json.dumps({"artifact": relative}) + "\n", encoding="utf-8")
+    reuse = {
+        "policy": "source_transitive_input_hash_bound",
+        "source_dut_gold_certification_count": 399,
+        "source_negative_certification_count": 1995,
+        "evaluators": ["evas", "spectre"],
+        "simulation_rerun_required_for_materialization": True,
+        "stale_certification_family_ids": ["398"],
+    }
+    certification_problems = ["398: source negative certification is stale"]
+
+    seal = build_release_seal(
+        tmp_path,
+        "a" * 64,
+        reuse,
+        certification_problems,
+    )
+
+    assert seal["release_status"] == "materialized_certification_refresh_required"
+    assert seal["simulation_claim"].startswith("none;")
+    assert seal["certification_problem_count"] == 1
+    assert seal["certification_problems"] == certification_problems
