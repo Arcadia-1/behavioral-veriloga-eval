@@ -165,7 +165,7 @@ def campaign_cell(mode: str, release: Path = RELEASE) -> dict:
         family_ids=["001"],
         model_provider="test",
         model="test-model",
-        max_working_tokens=4096,
+        per_turn_max_tokens=4096,
         repetitions=1,
     )
     return next(
@@ -182,6 +182,9 @@ def run_args(output: Path, release: Path = RELEASE) -> SimpleNamespace:
         resume=False,
         dry_run=False,
         final_judge_command=None,
+        agent_timeout_s=5400,
+        setup_timeout_s=1800,
+        request_timeout_s=1800,
         tool_timeout_s=30,
         judge_timeout_s=30,
         evas_command="evas",
@@ -189,15 +192,16 @@ def run_args(output: Path, release: Path = RELEASE) -> SimpleNamespace:
 
 
 class FakeClient:
-    def __init__(self, message: dict) -> None:
+    def __init__(self, message: dict, *, finish_reason: str = "stop") -> None:
         self.message = message
+        self.finish_reason = finish_reason
 
-    def complete(self, _messages, _max_tokens, _tools):
+    def complete(self, _messages, _max_tokens, _tools, **_kwargs):
         return {
             "id": "fake-response",
             "model": "test-model",
             "choices": [
-                {"message": self.message, "finish_reason": "stop"}
+                {"message": self.message, "finish_reason": self.finish_reason}
             ],
             "usage": {"completion_tokens": 32},
         }
@@ -360,11 +364,15 @@ def test_build_campaign_samples_complete_benchmarkv4_families_without_prompt_rec
         seed=20260715,
         model_provider="openai-compatible",
         model="deepseek-v4-flash",
-        max_working_tokens=65536,
+        per_turn_max_tokens=65536,
         repetitions=1,
     )
 
-    assert campaign["schema_version"] == "v4-calibration-campaign-v2"
+    assert campaign["schema_version"] == "v4-calibration-campaign-v3"
+    assert campaign["termination_policy"] == "wall_time"
+    assert campaign["budget_metric"] == "agent_wall_time_seconds"
+    assert campaign["token_accounting"] == "telemetry_only"
+    assert campaign["per_turn_max_tokens"] == 65536
     assert campaign["release"].endswith("release/benchmarkv4")
     assert campaign["family_count"] == 2
     assert campaign["task_count"] == 6
@@ -639,6 +647,50 @@ def test_direct_run_cell_submits_only_an_exact_artifact_response(
     assert saved.read_text(encoding="utf-8") == body
 
 
+def test_direct_run_cell_records_model_output_limit_without_budget_status(
+    tmp_path: Path, r45_release: Path
+) -> None:
+    runner = load_run_campaign()
+    cell = campaign_cell("G0", r45_release)
+    task = r45_release / "tasks" / "001-bang-bang-phase-detector"
+    body = (task / "evaluator" / "solution" / "bbpd_ref.va").read_text(encoding="utf-8")
+    response = (
+        '<<<VABENCH_ARTIFACT path="bbpd_ref.va">>>\n'
+        f"{body}\n"
+        "<<<END_VABENCH_ARTIFACT>>>"
+    )
+
+    result = runner.run_cell(
+        cell,
+        run_args(tmp_path / "run", r45_release),
+        FakeClient({"role": "assistant", "content": response}, finish_reason="length"),
+    )
+
+    assert result["status"] == "submitted"
+    assert result["termination_reason"] == "model_output_limit"
+    assert result["output_token_budget"] is None
+    assert result["per_turn_max_tokens"] == 4096
+
+
+def test_provider_context_window_is_a_cell_status_not_runner_error(
+    tmp_path: Path, r45_release: Path
+) -> None:
+    runner = load_run_campaign()
+    cell = campaign_cell("G2", r45_release)
+
+    class ContextWindowClient:
+        def complete(self, *_args, **_kwargs):
+            raise runner.ProviderContextWindowExceeded("context length exceeded")
+
+    result = runner.run_cell(
+        cell, run_args(tmp_path / "run", r45_release), ContextWindowClient()
+    )
+
+    assert result["status"] == "context_window_exceeded"
+    assert result["termination_reason"] == "provider_context_window_exceeded"
+    assert "context length exceeded" in result["provider_error"]
+
+
 def test_agentic_run_cell_rejects_an_undeclared_file_at_finalize(
     tmp_path: Path, r45_release: Path
 ) -> None:
@@ -693,7 +745,7 @@ def test_agentic_resume_finishes_pending_checkpointed_tool_calls(
     args = run_args(tmp_path / "run", r45_release)
     args.resume = True
     runtime = args.output / cell["cell_id"]
-    runner.export_runtime(cell, r45_release, runtime)
+    runner.export_runtime(cell, r45_release, runtime, timeout_s=1800)
     prompt = (runtime / "agent_prompt.txt").read_text(encoding="utf-8")
     assistant = {
         "role": "assistant",
@@ -742,6 +794,45 @@ def test_agentic_resume_finishes_pending_checkpointed_tool_calls(
     assert result["status"] == "submitted"
     assert result["artifact_gate"]["passed"] is True
     assert (runtime / "public" / "submission" / "bbpd_ref.va").is_file()
+
+
+def test_agentic_resume_does_not_reset_elapsed_wall_time(
+    tmp_path: Path, r45_release: Path
+) -> None:
+    runner = load_run_campaign()
+    cell = campaign_cell("G2", r45_release)
+    args = run_args(tmp_path / "run", r45_release)
+    args.resume = True
+    runtime = args.output / cell["cell_id"]
+    runner.export_runtime(cell, r45_release, runtime, timeout_s=1800)
+    prompt = (runtime / "agent_prompt.txt").read_text(encoding="utf-8")
+    (runtime / "public" / "submission" / "bbpd_ref.va").write_text(
+        "module bbpd_ref; endmodule\n",
+        encoding="utf-8",
+    )
+    (runtime / "evidence" / "conversation_checkpoint.json").write_text(
+        json.dumps(
+            {
+                "schema_version": "v4-calibration-conversation-checkpoint-v1",
+                "cell_id": cell["cell_id"],
+                "messages": [{"role": "user", "content": prompt}],
+                "output_tokens": 0,
+                "events": [],
+                "finalized": False,
+                "termination_policy": "wall_time",
+                "agent_timeout_s": 5400,
+                "agent_elapsed_s": 5400.0,
+            }
+        ),
+        encoding="utf-8",
+    )
+
+    result = runner.run_cell(cell, args, UnexpectedClientCall())
+
+    assert result["status"] == "submitted"
+    assert result["termination_reason"] == "agent_timeout"
+    assert result["agent_elapsed_s"] >= 5400.0
+    assert result["artifact_gate"]["passed"] is True
 
 
 def test_campaign_wrapper_dry_run_exports_agentic_cells(
@@ -867,6 +958,7 @@ def test_budget_reuse_requires_identical_execution_configuration() -> None:
         "model": "test-model",
         "release_manifest_sha256": "a" * 64,
         "selection_manifest_sha256": "b" * 64,
+        "per_turn_max_tokens": 4096,
         "max_output_tokens": 4096,
         "execution_config": {
             "temperature": 0.0,
@@ -876,9 +968,18 @@ def test_budget_reuse_requires_identical_execution_configuration() -> None:
         },
     }
     target = json.loads(json.dumps(base))
-    target["max_output_tokens"] = 65536
     reuse.check_campaign_compatibility(base, target)
 
+    target["per_turn_max_tokens"] = 65536
+    target["max_output_tokens"] = 65536
+    try:
+        reuse.check_campaign_compatibility(base, target)
+    except ValueError as exc:
+        assert "per-turn token cap mismatch" in str(exc)
+    else:
+        raise AssertionError("reuse accepted a different per-turn token cap")
+
+    target = json.loads(json.dumps(base))
     target["execution_config"]["temperature"] = 0.2
     try:
         reuse.check_campaign_compatibility(base, target)

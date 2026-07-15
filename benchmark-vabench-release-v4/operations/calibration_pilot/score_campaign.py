@@ -101,7 +101,7 @@ def event_telemetry(events: list[dict[str, Any]]) -> dict[str, Any]:
     output_tokens = 0
     reasoning_tokens = 0
     visible_tokens = 0
-    budget_hits = 0
+    output_limit_hits = 0
     for event in events:
         if event.get("type") != "model":
             continue
@@ -118,7 +118,7 @@ def event_telemetry(events: list[dict[str, Any]]) -> dict[str, Any]:
         output_tokens += output
         reasoning_tokens += reasoning
         visible_tokens += visible
-        budget_hits += RUNNER.model_event_hit_limit(event)
+        output_limit_hits += RUNNER.model_event_hit_limit(event)
     return {
         "model_calls": sum(event.get("type") == "model" for event in events),
         "model_elapsed_s": sum(
@@ -131,11 +131,15 @@ def event_telemetry(events: list[dict[str, Any]]) -> dict[str, Any]:
         "provider_output_tokens_total": output_tokens,
         "provider_reasoning_tokens_total": reasoning_tokens,
         "provider_visible_tokens_total": visible_tokens,
-        "budget_hit_model_calls": budget_hits,
+        "output_limit_model_calls": output_limit_hits,
+        "budget_hit_model_calls": output_limit_hits,
     }
 
 
 def elapsed_seconds(result: dict[str, Any]) -> float | None:
+    agent_elapsed = result.get("agent_elapsed_s")
+    if isinstance(agent_elapsed, (int, float)):
+        return max(0.0, float(agent_elapsed))
     try:
         started = datetime.fromisoformat(str(result["started_at"]))
         finished = datetime.fromisoformat(str(result["finished_at"]))

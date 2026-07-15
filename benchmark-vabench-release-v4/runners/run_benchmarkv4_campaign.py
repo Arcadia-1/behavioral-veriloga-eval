@@ -27,6 +27,11 @@ PACKAGE = Path(__file__).resolve().parents[1]
 REPO = PACKAGE.parent
 CALIBRATION = PACKAGE / "operations" / "calibration_pilot"
 DEFAULT_RELEASE = PACKAGE / "release" / "benchmarkv4-r45"
+DEFAULT_AGENT_TIMEOUT_S = 5400
+DEFAULT_SETUP_TIMEOUT_S = 1800
+DEFAULT_REQUEST_TIMEOUT_S = 1800
+DEFAULT_TOOL_TIMEOUT_S = 1800
+DEFAULT_JUDGE_TIMEOUT_S = 1800
 MODES = tuple(f"G{i}" for i in range(6))
 
 if str(CALIBRATION) not in sys.path:
@@ -123,12 +128,22 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--base-url", default="https://api.deepseek.com/v1")
     parser.add_argument("--api-key-file")
     parser.add_argument("--api-key-env", default="DEEPSEEK_API_KEY")
-    parser.add_argument("--max-output-tokens", "--max-working-tokens", dest="max_working_tokens", type=int, default=65536)
+    parser.add_argument(
+        "--per-turn-max-tokens",
+        "--max-output-tokens",
+        "--max-working-tokens",
+        dest="per_turn_max_tokens",
+        type=int,
+        default=65536,
+        help="Provider per-call max_tokens cap. This is not a cumulative episode budget.",
+    )
     parser.add_argument("--repetitions", type=int, default=1)
     parser.add_argument("--temperature", type=float, default=0.0)
-    parser.add_argument("--request-timeout-s", type=int, default=600)
-    parser.add_argument("--tool-timeout-s", type=int, default=120)
-    parser.add_argument("--judge-timeout-s", type=int, default=600)
+    parser.add_argument("--agent-timeout-s", type=int, default=DEFAULT_AGENT_TIMEOUT_S)
+    parser.add_argument("--setup-timeout-s", type=int, default=DEFAULT_SETUP_TIMEOUT_S)
+    parser.add_argument("--request-timeout-s", type=int, default=DEFAULT_REQUEST_TIMEOUT_S)
+    parser.add_argument("--tool-timeout-s", type=int, default=DEFAULT_TOOL_TIMEOUT_S)
+    parser.add_argument("--judge-timeout-s", type=int, default=DEFAULT_JUDGE_TIMEOUT_S)
     parser.add_argument("--final-judge-command")
     parser.add_argument("--evas-command", default="evas")
     parser.add_argument("--workers", type=int, default=1)
@@ -140,12 +155,20 @@ def build_parser() -> argparse.ArgumentParser:
 
 def main() -> int:
     args = build_parser().parse_args()
-    if args.max_working_tokens <= 0:
-        raise SystemExit("--max-working-tokens must be positive")
+    if args.per_turn_max_tokens <= 0:
+        raise SystemExit("--per-turn-max-tokens must be positive")
     if args.repetitions <= 0:
         raise SystemExit("--repetitions must be positive")
     if args.workers <= 0:
         raise SystemExit("--workers must be positive")
+    if min(
+        args.agent_timeout_s,
+        args.setup_timeout_s,
+        args.request_timeout_s,
+        args.tool_timeout_s,
+        args.judge_timeout_s,
+    ) <= 0:
+        raise SystemExit("all timeout values must be positive")
     release = args.release.expanduser().resolve()
     output_root = args.output_root.expanduser().resolve()
     output_root.mkdir(parents=True, exist_ok=True)
@@ -160,12 +183,20 @@ def main() -> int:
         seed=args.seed,
         model_provider=args.model_provider,
         model=args.model,
-        max_working_tokens=args.max_working_tokens,
+        per_turn_max_tokens=args.per_turn_max_tokens,
         repetitions=args.repetitions,
     )
     campaign = filter_campaign(campaign, args)
     campaign["execution_config"] = {
         "schema_version": "v4-campaign-execution-config-v1",
+        "termination_policy": "wall_time",
+        "agent_timeout_s": args.agent_timeout_s,
+        "setup_timeout_s": args.setup_timeout_s,
+        "request_timeout_s": args.request_timeout_s,
+        "tool_timeout_s": args.tool_timeout_s,
+        "judge_timeout_s": args.judge_timeout_s,
+        "per_turn_max_tokens": args.per_turn_max_tokens,
+        "token_accounting": "telemetry_only",
         "base_url_sha256": text_sha256(args.base_url.rstrip("/")),
         "temperature": args.temperature,
         "stream": args.stream,
@@ -188,6 +219,10 @@ def main() -> int:
         args.api_key_env,
         "--temperature",
         str(args.temperature),
+        "--agent-timeout-s",
+        str(args.agent_timeout_s),
+        "--setup-timeout-s",
+        str(args.setup_timeout_s),
         "--request-timeout-s",
         str(args.request_timeout_s),
         "--tool-timeout-s",

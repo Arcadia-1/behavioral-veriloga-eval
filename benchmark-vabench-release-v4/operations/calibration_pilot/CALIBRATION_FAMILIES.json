@@ -1,7 +1,7 @@
 {
   "schema_version": "v4-calibration-families-v1",
   "status": "preregistered_before_model_execution",
-  "purpose": "Freeze generic G0-G5 skills, working-token budget, safety limits, runner policy, and telemetry before the primary campaign.",
+  "purpose": "Freeze generic G0-G5 skills, agent wall-time limit, provider per-turn output cap, safety limits, runner policy, and telemetry before the primary campaign.",
   "selection_policy": {
     "family_count": 10,
     "forms_per_family": ["dut", "testbench", "bugfix"],

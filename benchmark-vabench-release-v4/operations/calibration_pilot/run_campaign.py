@@ -31,6 +31,11 @@ EXPORTER = PACKAGE / "operations" / "tri_form_derivation_prep" / "export_tri_for
 DEFAULT_RELEASE = PACKAGE / "release" / "benchmarkv4-r45"
 DEFAULT_BASE_URL = "https://www.cun.ai/v1"
 DEFAULT_API_KEY_ENV = "VAEVAS_API_KEY"
+DEFAULT_AGENT_TIMEOUT_S = 5400
+DEFAULT_SETUP_TIMEOUT_S = 1800
+DEFAULT_REQUEST_TIMEOUT_S = 1800
+DEFAULT_TOOL_TIMEOUT_S = 1800
+DEFAULT_JUDGE_TIMEOUT_S = 1800
 DIRECT_PARSER_VERSION = "v4-exact-artifact-envelope-parser-v1"
 DIRECT_DUT_RUNTIME_SCHEMAS = {
     "r45-direct-evas-runtime-v1",
@@ -98,6 +103,14 @@ PUBLIC_ESCAPE_RE = re.compile(
 
 class AgentTimeoutError(TimeoutError):
     """The model endpoint exhausted the per-request wall-clock allowance."""
+
+
+class ProviderContextWindowExceeded(RuntimeError):
+    """Provider rejected the turn because the conversation exceeded context."""
+
+
+class ProviderAPIError(RuntimeError):
+    """Provider returned a structured API error that is not transport failure."""
 
 
 def now() -> str:
@@ -195,6 +208,23 @@ def model_event_hit_limit(event: dict[str, Any]) -> bool:
     )
 
 
+def provider_error_is_context_window(error: Any) -> bool:
+    text = json.dumps(error, sort_keys=True) if isinstance(error, dict) else str(error)
+    lowered = text.lower()
+    markers = (
+        "contextwindowexceeded",
+        "context window",
+        "context length",
+        "maximum context",
+        "max context",
+        "too many tokens",
+        "tokens exceed",
+        "input is too long",
+        "prompt is too long",
+    )
+    return any(marker in lowered for marker in markers)
+
+
 def pending_tool_calls(messages: list[dict[str, Any]]) -> list[dict[str, Any]]:
     """Return uncheckpointed calls from the most recent assistant tool turn."""
     assistant_index = next(
@@ -216,11 +246,16 @@ def pending_tool_calls(messages: list[dict[str, Any]]) -> list[dict[str, Any]]:
     return [call for call in calls if str(call.get("id")) not in handled]
 
 
-def cell_output_budget(cell: dict[str, Any]) -> int:
-    value = cell.get("max_output_tokens", cell.get("max_working_tokens"))
+def cell_per_turn_max_tokens(cell: dict[str, Any]) -> int:
+    value = cell.get("per_turn_max_tokens", cell.get("max_output_tokens", cell.get("max_working_tokens")))
     if not isinstance(value, int) or value <= 0:
-        raise ValueError(f"invalid output-token budget for {cell.get('cell_id')}: {value!r}")
+        raise ValueError(f"invalid per-turn output-token cap for {cell.get('cell_id')}: {value!r}")
     return value
+
+
+def cell_output_budget(cell: dict[str, Any]) -> int:
+    """Backward-compatible alias for historical budget-reuse tooling."""
+    return cell_per_turn_max_tokens(cell)
 
 
 def validate_campaign_cells(cells: list[dict[str, Any]], release: Path) -> None:
@@ -251,7 +286,7 @@ def validate_campaign_cells(cells: list[dict[str, Any]], release: Path) -> None:
             raise ValueError(f"campaign family mismatch for {cell_id}")
         if str(cell.get("form")) != str(task["form"]):
             raise ValueError(f"campaign form mismatch for {cell_id}")
-        cell_output_budget(cell)
+        cell_per_turn_max_tokens(cell)
 
 
 def safe_relative(raw: str) -> Path:
@@ -307,7 +342,15 @@ class OpenAICompatible:
     def _redact(self, text: str) -> str:
         return text.replace(self.api_key, "<redacted-provider-credential>") if self.api_key else text
 
-    def complete(self, messages: list[dict[str, Any]], max_tokens: int, tools: list[dict[str, Any]] | None) -> dict[str, Any]:
+    def complete(
+        self,
+        messages: list[dict[str, Any]],
+        max_tokens: int,
+        tools: list[dict[str, Any]] | None,
+        *,
+        timeout_s: float | None = None,
+    ) -> dict[str, Any]:
+        effective_timeout_s = max(0.1, float(timeout_s or self.timeout_s))
         payload: dict[str, Any] = {
             "model": self.model,
             "messages": messages,
@@ -319,9 +362,11 @@ class OpenAICompatible:
             payload["tool_choice"] = "auto"
         if self.stream:
             payload["stream"] = True
-            return self._complete_stream(payload)
+            return self._complete_stream(payload, timeout_s=effective_timeout_s)
         completed = None
+        deadline = time.monotonic() + effective_timeout_s
         for attempt in range(1, 4):
+            attempt_timeout_s = max(0.1, deadline - time.monotonic())
             with tempfile.TemporaryDirectory(prefix="v4_provider_") as td:
                 root = Path(td)
                 payload_path = root / "payload.json"
@@ -332,24 +377,21 @@ class OpenAICompatible:
                     encoding="utf-8",
                 )
                 header_path.chmod(0o600)
-                try:
-                    completed = subprocess.run(
-                        [
-                            "curl", "-sS", "--max-time", str(self.timeout_s),
-                            self.endpoint, "-H", f"@{header_path}",
-                            "--data-binary", f"@{payload_path}",
-                        ],
-                        text=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
-                        timeout=self.timeout_s + 5, check=False,
-                    )
-                except subprocess.TimeoutExpired as exc:
-                    raise AgentTimeoutError(
-                        f"provider request exceeded {self.timeout_s}s"
-                    ) from exc
+                completed = subprocess.run(
+                    [
+                        "curl", "-sS", "--max-time", f"{attempt_timeout_s:.3f}",
+                        self.endpoint, "-H", f"@{header_path}",
+                        "--data-binary", f"@{payload_path}",
+                    ],
+                    text=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+                    timeout=attempt_timeout_s + 0.5, check=False,
+                )
             if completed.returncode == 0:
                 break
-            if attempt < 3:
-                time.sleep(2 * attempt)
+            if attempt < 3 and time.monotonic() < deadline:
+                time.sleep(min(2 * attempt, max(0.0, deadline - time.monotonic())))
+            if time.monotonic() >= deadline:
+                break
         assert completed is not None
         if completed.returncode == 28:
             raise AgentTimeoutError(
@@ -371,11 +413,15 @@ class OpenAICompatible:
                 f"stderr_tail={self._redact(completed.stderr[-2000:])!r}"
             ) from exc
         if response.get("error"):
+            if provider_error_is_context_window(response["error"]):
+                raise ProviderContextWindowExceeded(
+                    f"provider context window exceeded: {self._redact(json.dumps(response['error'])[:2000])}"
+                )
             error = self._redact(json.dumps(response["error"])[:2000])
-            raise RuntimeError(f"provider error: {error}")
+            raise ProviderAPIError(f"provider error: {error}")
         return response
 
-    def _curl_payload(self, payload: dict[str, Any]) -> subprocess.CompletedProcess[str]:
+    def _curl_payload(self, payload: dict[str, Any], *, timeout_s: float) -> subprocess.CompletedProcess[str]:
         with tempfile.TemporaryDirectory(prefix="v4_provider_") as td:
             root = Path(td)
             payload_path = root / "payload.json"
@@ -386,29 +432,28 @@ class OpenAICompatible:
                 encoding="utf-8",
             )
             header_path.chmod(0o600)
-            try:
-                return subprocess.run(
-                    [
-                        "curl", "-sS", "--no-buffer", "--max-time", str(self.timeout_s),
-                        self.endpoint, "-H", f"@{header_path}",
-                        "--data-binary", f"@{payload_path}",
-                    ],
-                    text=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
-                    timeout=self.timeout_s + 5, check=False,
-                )
-            except subprocess.TimeoutExpired as exc:
-                raise AgentTimeoutError(
-                    f"provider streaming request exceeded {self.timeout_s}s"
-                ) from exc
+            return subprocess.run(
+                [
+                    "curl", "-sS", "--no-buffer", "--max-time", f"{timeout_s:.3f}",
+                    self.endpoint, "-H", f"@{header_path}",
+                    "--data-binary", f"@{payload_path}",
+                ],
+                text=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+                timeout=timeout_s + 0.5, check=False,
+            )
 
-    def _complete_stream(self, payload: dict[str, Any]) -> dict[str, Any]:
+    def _complete_stream(self, payload: dict[str, Any], *, timeout_s: float) -> dict[str, Any]:
         completed = None
+        deadline = time.monotonic() + timeout_s
         for attempt in range(1, 4):
-            completed = self._curl_payload(payload)
+            attempt_timeout_s = max(0.1, deadline - time.monotonic())
+            completed = self._curl_payload(payload, timeout_s=attempt_timeout_s)
             if completed.returncode == 0:
                 break
-            if attempt < 3:
-                time.sleep(2 * attempt)
+            if attempt < 3 and time.monotonic() < deadline:
+                time.sleep(min(2 * attempt, max(0.0, deadline - time.monotonic())))
+            if time.monotonic() >= deadline:
+                break
         assert completed is not None
         if completed.returncode == 28:
             raise AgentTimeoutError(
@@ -451,6 +496,12 @@ def parse_openai_sse_response(stdout: str, stderr: str = "") -> dict[str, Any]:
                 f"line_tail={line[-1000:]!r} stderr_tail={stderr[-2000:]!r}"
             ) from exc
         chunk_count += 1
+        if chunk.get("error"):
+            if provider_error_is_context_window(chunk["error"]):
+                raise ProviderContextWindowExceeded(
+                    f"provider context window exceeded: {json.dumps(chunk['error'])[:2000]}"
+                )
+            raise ProviderAPIError(f"provider streaming error: {json.dumps(chunk['error'])[:2000]}")
         for key in ("id", "model", "created", "system_fingerprint"):
             if chunk.get(key) is not None:
                 metadata[key] = chunk.get(key)
@@ -518,7 +569,7 @@ TOOLS = [
 def command_result(
     command: str,
     runtime: Path,
-    timeout_s: int,
+    timeout_s: float,
     submission_dir: Path | None = None,
 ) -> dict[str, Any]:
     effective_submission = submission_dir or runtime / "public" / "submission"
@@ -820,7 +871,7 @@ def compact_text_lines(text: str, *, limit: int = 24) -> list[str]:
 
     Feedback stdout can include thousands of low-level simulator timing and
     instrumentation lines.  Returning all of that to the model repeatedly burns
-    the working-token budget without materially improving repairs.  Keep the
+    provider context and token telemetry without materially improving repairs.  Keep the
     public oracle summaries, validation diagnostics, and concrete errors.
     """
     semantic: list[str] = []
@@ -1357,12 +1408,12 @@ def gate_agentic_submission(runtime: Path, result: dict[str, Any]) -> bool:
     return bool(gate["passed"])
 
 
-def export_runtime(cell: dict[str, Any], release: Path, output: Path) -> None:
+def export_runtime(cell: dict[str, Any], release: Path, output: Path, *, timeout_s: int) -> None:
     subprocess.run([
         sys.executable, str(EXPORTER), "--release", str(release), "--task", cell["task_id"],
-        "--mode", cell["mode"], "--output", str(output), "--working-token-budget",
-        str(cell_output_budget(cell)), "--force",
-    ], cwd=REPO, check=True, stdout=subprocess.DEVNULL)
+        "--mode", cell["mode"], "--output", str(output), "--per-turn-max-tokens",
+        str(cell_per_turn_max_tokens(cell)), "--force",
+    ], cwd=REPO, check=True, stdout=subprocess.DEVNULL, timeout=timeout_s)
 
 
 def run_cell(cell: dict[str, Any], args: argparse.Namespace, client: OpenAICompatible | None) -> dict[str, Any]:
@@ -1371,7 +1422,12 @@ def run_cell(cell: dict[str, Any], args: argparse.Namespace, client: OpenAICompa
     if args.resume and result_path.is_file():
         previous = read_json(result_path)
         if previous.get("status") in {
-            "submitted", "submitted_at_budget", "invalid_submission", "budget_exhausted"
+            "submitted",
+            "submitted_at_budget",
+            "invalid_submission",
+            "budget_exhausted",
+            "agent_timeout",
+            "context_window_exceeded",
         }:
             if "experiment_result" not in previous:
                 checkpoint_path = runtime / "evidence" / "conversation_checkpoint.json"
@@ -1383,10 +1439,19 @@ def run_cell(cell: dict[str, Any], args: argparse.Namespace, client: OpenAICompa
             return previous
     conversation_path = runtime / "evidence" / "conversation_checkpoint.json"
     if not (args.resume and conversation_path.is_file()):
-        export_runtime(cell, args.release, runtime)
+        export_runtime(cell, args.release, runtime, timeout_s=args.setup_timeout_s)
     prompt_path = runtime / ("agent_prompt.txt" if cell["mode"] in AGENTIC else "direct_prompt.txt")
     prompt = prompt_path.read_text(encoding="utf-8")
-    result: dict[str, Any] = {"cell": cell, "started_at": now(), "runtime": str(runtime), "status": "prepared"}
+    agent_started_monotonic = time.monotonic()
+    resumed_agent_elapsed_s = 0.0
+    result: dict[str, Any] = {
+        "cell": cell,
+        "started_at": now(),
+        "runtime": str(runtime),
+        "status": "prepared",
+        "termination_policy": "wall_time",
+        "agent_timeout_s": args.agent_timeout_s,
+    }
     if args.dry_run:
         result["finished_at"] = now()
         write_json(runtime / "evidence" / "campaign_result.json", result)
@@ -1401,13 +1466,24 @@ def run_cell(cell: dict[str, Any], args: argparse.Namespace, client: OpenAICompa
         output_tokens = int(checkpoint.get("output_tokens", checkpoint.get("working_tokens", 0)))
         events = list(checkpoint["events"])
         finalized = bool(checkpoint.get("finalized"))
+        resumed_agent_elapsed_s = float(checkpoint.get("agent_elapsed_s") or 0.0)
     else:
         messages = [{"role": "user", "content": prompt}]
         output_tokens = 0
         events = []
         finalized = False
 
-    output_budget = cell_output_budget(cell)
+    per_turn_max_tokens = cell_per_turn_max_tokens(cell)
+    agent_deadline = agent_started_monotonic + max(0.0, args.agent_timeout_s - resumed_agent_elapsed_s)
+
+    def current_agent_elapsed_s() -> float:
+        return resumed_agent_elapsed_s + max(0.0, time.monotonic() - agent_started_monotonic)
+
+    def remaining_agent_s() -> float:
+        return max(0.0, agent_deadline - time.monotonic())
+
+    def agent_time_expired() -> bool:
+        return time.monotonic() >= agent_deadline
 
     def save_conversation() -> None:
         write_json(conversation_path, {
@@ -1415,7 +1491,12 @@ def run_cell(cell: dict[str, Any], args: argparse.Namespace, client: OpenAICompa
             "cell_id": cell["cell_id"], "messages": messages,
             "started_at": result["started_at"],
             "output_tokens": output_tokens, "working_tokens": output_tokens, "events": events,
-            "finalized": finalized, "updated_at": now(),
+            "finalized": finalized,
+            "termination_policy": "wall_time",
+            "agent_timeout_s": args.agent_timeout_s,
+            "agent_elapsed_s": current_agent_elapsed_s(),
+            "per_turn_max_tokens": per_turn_max_tokens,
+            "updated_at": now(),
         })
 
     def current_turn_hit_limit() -> bool:
@@ -1423,11 +1504,14 @@ def run_cell(cell: dict[str, Any], args: argparse.Namespace, client: OpenAICompa
             (event for event in reversed(events) if event.get("type") == "model"),
             {},
         )
-        return model_event_hit_limit(last_model) or output_tokens >= output_budget
+        return model_event_hit_limit(last_model)
 
     def process_tool_calls(calls: list[dict[str, Any]]) -> None:
         nonlocal finalized
         for call in calls:
+            remaining = remaining_agent_s()
+            if remaining <= 0:
+                return
             function = call["function"]
             try:
                 arguments = json.loads(function.get("arguments") or "{}")
@@ -1435,7 +1519,7 @@ def run_cell(cell: dict[str, Any], args: argparse.Namespace, client: OpenAICompa
                     function["name"],
                     arguments,
                     runtime,
-                    args.tool_timeout_s,
+                    max(0.1, min(float(args.tool_timeout_s), remaining)),
                     args.evas_command,
                 )
             except Exception as exc:  # Model tool mistakes are episode evidence, not runner failures.
@@ -1451,26 +1535,41 @@ def run_cell(cell: dict[str, Any], args: argparse.Namespace, client: OpenAICompa
             write_json(runtime / "evidence" / "campaign_checkpoint.json", {
                 "cell_id": cell["cell_id"], "output_tokens": output_tokens,
                 "working_tokens": output_tokens,
+                "termination_policy": "wall_time",
+                "per_turn_max_tokens": per_turn_max_tokens,
+                "agent_elapsed_s": current_agent_elapsed_s(),
                 "event_count": len(events), "events": events, "updated_at": now(),
             })
             messages.append({"role": "tool", "tool_call_id": call["id"], "content": text})
             finalized = finalized or done
             save_conversation()
 
+    def model_limit_reason() -> str | None:
+        return "model_output_limit" if current_turn_hit_limit() else None
+
+    def set_terminal_submission_status(
+        complete: bool,
+        *,
+        default_reason: str,
+        incomplete_status: str = "invalid_submission",
+        force_reason: str | None = None,
+    ) -> None:
+        reason = force_reason or model_limit_reason() or default_reason
+        result["status"] = "submitted" if complete else incomplete_status
+        result["termination_reason"] = reason if (complete or reason != "completed") else "completed"
+
     if cell["mode"] not in AGENTIC and len(messages) > 1:
         content = str(messages[-1].get("content") or "")
         direct_submission = extract_direct_submission(content, runtime)
         complete = bool(direct_submission["submission_protocol_compliant"])
+        set_terminal_submission_status(complete, default_reason="completed")
         result.update({
-            "status": (
-                "submitted_at_budget" if complete and current_turn_hit_limit()
-                else "submitted" if complete
-                else "budget_exhausted" if current_turn_hit_limit()
-                else "invalid_submission"
-            ),
             "finished_at": now(),
             "output_tokens": output_tokens,
             "working_tokens": output_tokens,
+            "output_token_budget": None,
+            "per_turn_max_tokens": per_turn_max_tokens,
+            "agent_elapsed_s": current_agent_elapsed_s(),
             "events": events,
             "recovered_from_checkpoint": True,
             **direct_submission,
@@ -1484,23 +1583,38 @@ def run_cell(cell: dict[str, Any], args: argparse.Namespace, client: OpenAICompa
             process_tool_calls(pending)
         elif messages and messages[-1].get("role") == "assistant":
             complete = gate_agentic_submission(runtime, result)
-            result["status"] = (
-                "submitted_at_budget" if complete and current_turn_hit_limit()
-                else "submitted" if complete
-                else "budget_exhausted" if current_turn_hit_limit()
-                else "invalid_submission"
-            )
+            set_terminal_submission_status(complete, default_reason="completed")
         if finalized:
             complete = gate_agentic_submission(runtime, result)
-            result["status"] = (
-                "submitted_at_budget" if complete and current_turn_hit_limit()
-                else "submitted" if complete
-                else "invalid_submission"
-            )
-    while output_tokens < output_budget and not finalized and result.get("status") == "prepared":
-        remaining = output_budget - output_tokens
+            set_terminal_submission_status(complete, default_reason="completed")
+    while not agent_time_expired() and not finalized and result.get("status") == "prepared":
         started = time.monotonic()
-        response = client.complete(messages, remaining, TOOLS if cell["mode"] in AGENTIC else None)
+        try:
+            response = client.complete(
+                messages,
+                per_turn_max_tokens,
+                TOOLS if cell["mode"] in AGENTIC else None,
+                timeout_s=max(0.1, min(float(args.request_timeout_s), remaining_agent_s())),
+            )
+        except ProviderContextWindowExceeded as exc:
+            result.update({
+                "status": "context_window_exceeded",
+                "termination_reason": "provider_context_window_exceeded",
+                "provider_error": str(exc)[:4000],
+            })
+            break
+        except subprocess.TimeoutExpired as exc:
+            if agent_time_expired():
+                complete = gate_agentic_submission(runtime, result) if cell["mode"] in AGENTIC else False
+                set_terminal_submission_status(
+                    complete,
+                    default_reason="agent_timeout",
+                    incomplete_status="agent_timeout",
+                    force_reason="agent_timeout",
+                )
+                result["provider_error"] = str(exc)[:4000]
+                break
+            raise
         response_choice = response["choices"][0]
         choice = response_choice["message"]
         elapsed = time.monotonic() - started
@@ -1518,7 +1632,7 @@ def run_cell(cell: dict[str, Any], args: argparse.Namespace, client: OpenAICompa
         model_event = {
             "type": "model",
             "elapsed_s": elapsed,
-            "requested_max_tokens": remaining,
+            "requested_max_tokens": per_turn_max_tokens,
             "finish_reason": response_choice.get("finish_reason"),
             "provider_output_tokens": usage["output_tokens"],
             "provider_reasoning_tokens": usage["reasoning_tokens"],
@@ -1532,6 +1646,9 @@ def run_cell(cell: dict[str, Any], args: argparse.Namespace, client: OpenAICompa
         write_json(runtime / "evidence" / "campaign_checkpoint.json", {
             "cell_id": cell["cell_id"], "output_tokens": output_tokens,
             "working_tokens": output_tokens,
+            "termination_policy": "wall_time",
+            "per_turn_max_tokens": per_turn_max_tokens,
+            "agent_elapsed_s": current_agent_elapsed_s(),
             "event_count": len(events), "events": events, "updated_at": now(),
         })
         messages.append(choice)
@@ -1539,44 +1656,39 @@ def run_cell(cell: dict[str, Any], args: argparse.Namespace, client: OpenAICompa
         if cell["mode"] not in AGENTIC:
             direct_submission = extract_direct_submission(content, runtime)
             complete = bool(direct_submission["submission_protocol_compliant"])
-            hit_limit = model_event_hit_limit(model_event) or output_tokens >= output_budget
+            hit_limit = model_event_hit_limit(model_event)
             result.update({
-                "status": (
-                    "submitted_at_budget" if complete and hit_limit
-                    else "submitted" if complete
-                    else "budget_exhausted" if hit_limit
-                    else "invalid_submission"
-                ),
+                "status": "submitted" if complete else "invalid_submission",
+                "termination_reason": "model_output_limit" if hit_limit else "completed",
                 **direct_submission,
             })
             break
         calls = choice.get("tool_calls") or []
         if not calls:
-            hit_limit = model_event_hit_limit(model_event) or output_tokens >= output_budget
+            hit_limit = model_event_hit_limit(model_event)
             complete = gate_agentic_submission(runtime, result)
-            result["status"] = (
-                "submitted_at_budget" if complete and hit_limit
-                else "submitted" if complete
-                else "budget_exhausted" if hit_limit
-                else "invalid_submission"
-            )
+            result["status"] = "submitted" if complete else "invalid_submission"
+            result["termination_reason"] = "model_output_limit" if hit_limit else "completed"
             break
         process_tool_calls(calls)
         if finalized:
             complete = gate_agentic_submission(runtime, result)
-            result["status"] = (
-                "submitted_at_budget" if complete and current_turn_hit_limit()
-                else "submitted" if complete
-                else "invalid_submission"
-            )
+            set_terminal_submission_status(complete, default_reason="completed")
     if result.get("status") == "prepared":
         complete = gate_agentic_submission(runtime, result) if cell["mode"] in AGENTIC else False
-        result["status"] = "submitted_at_budget" if complete else "budget_exhausted"
+        set_terminal_submission_status(
+            complete,
+            default_reason="agent_timeout",
+            incomplete_status="agent_timeout",
+            force_reason="agent_timeout",
+        )
     result.update({
         "finished_at": now(),
         "output_tokens": output_tokens,
         "working_tokens": output_tokens,
-        "output_token_budget": output_budget,
+        "output_token_budget": None,
+        "per_turn_max_tokens": per_turn_max_tokens,
+        "agent_elapsed_s": current_agent_elapsed_s(),
         "events": events,
     })
     attach_experiment_result(result, runtime, messages, args, "completed")
@@ -1638,9 +1750,11 @@ def main() -> int:
     parser.add_argument("--cell")
     parser.add_argument("--limit", type=int)
     parser.add_argument("--temperature", type=float, default=0.0)
-    parser.add_argument("--request-timeout-s", type=int, default=600)
-    parser.add_argument("--tool-timeout-s", type=int, default=120)
-    parser.add_argument("--judge-timeout-s", type=int, default=600)
+    parser.add_argument("--agent-timeout-s", type=int, default=DEFAULT_AGENT_TIMEOUT_S)
+    parser.add_argument("--setup-timeout-s", type=int, default=DEFAULT_SETUP_TIMEOUT_S)
+    parser.add_argument("--request-timeout-s", type=int, default=DEFAULT_REQUEST_TIMEOUT_S)
+    parser.add_argument("--tool-timeout-s", type=int, default=DEFAULT_TOOL_TIMEOUT_S)
+    parser.add_argument("--judge-timeout-s", type=int, default=DEFAULT_JUDGE_TIMEOUT_S)
     parser.add_argument("--final-judge-command")
     parser.add_argument(
         "--evas-command",
@@ -1673,8 +1787,14 @@ def main() -> int:
         raise SystemExit("no matching campaign cells")
     if args.workers < 1:
         raise SystemExit("--workers must be at least 1")
-    if min(args.request_timeout_s, args.tool_timeout_s, args.judge_timeout_s) < 1:
-        raise SystemExit("request, tool, and judge timeouts must be positive")
+    if min(
+        args.agent_timeout_s,
+        args.setup_timeout_s,
+        args.request_timeout_s,
+        args.tool_timeout_s,
+        args.judge_timeout_s,
+    ) < 1:
+        raise SystemExit("agent, setup, request, tool, and judge timeouts must be positive")
     key = "" if args.dry_run else load_key(args.api_key_file, args.api_key_env)
     if not args.dry_run:
         os.environ.pop(args.api_key_env, None)

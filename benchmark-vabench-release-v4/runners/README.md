@@ -31,10 +31,17 @@ python3 benchmark-vabench-release-v4/runners/run_benchmarkv4_campaign.py \
   --model deepseek-v4-flash \
   --base-url https://api.deepseek.com/v1 \
   --api-key-file /path/to/key.txt \
-  --max-working-tokens 65536 \
+  --agent-timeout-s 5400 \
+  --per-turn-max-tokens 65536 \
   --workers 12 \
   --output-root /tmp/benchmarkv4-deepseek-campaign
 ```
+
+The runner uses wall-clock time as the primary episode stopping rule. The
+`--per-turn-max-tokens` value is passed to the provider as a per-call
+`max_tokens` cap and is reported as telemetry; accumulated token usage does not
+terminate an episode. Provider context-window failures and single-call output
+limit stops are recorded as separate termination reasons.
 
 Dry-run preflight without API credentials:
 
