@@ -41,9 +41,9 @@ from run_gold_dual_suite import (  # noqa: E402
     run_spectre_case,
 )
 from simulate_evas import (  # noqa: E402
-    CHECKS,
     behavior_side_output_names,
     evaluate_behavior_with_timeout,
+    has_behavior_check,
     validate_behavior_side_outputs,
 )
 
@@ -119,25 +119,56 @@ def checker_task_id(task_dir: Path, task_record: dict[str, Any]) -> str:
         source_name,
     ]
     for checker_id in candidates:
-        if checker_id in CHECKS:
+        if has_behavior_check(checker_id):
             return checker_id
     attempted = ", ".join(repr(item) for item in candidates if item)
     raise RuntimeError(f"{task_dir.name}: checker not registered; tried {attempted}")
 
 
-def include_paths_for_reference_tb(task_dir: Path, tb_path: Path) -> tuple[list[Path], list[str]]:
-    supplied_dut = task_dir / "public" / "supplied_dut"
+def include_paths_for_reference_tb(
+    task_dir: Path,
+    tb_path: Path,
+    *,
+    dut_root: Path | None = None,
+) -> tuple[list[Path], list[str]]:
+    public_dut = task_dir / "public" / "supplied_dut"
+    supplied_dut = dut_root or public_dut
     public_support = task_dir / "public" / "public_support"
     search_dirs = [supplied_dut, public_support, tb_path.parent]
+    public_dut_names = (
+        {path.name for path in public_dut.rglob("*") if path.is_file()}
+        if dut_root is not None and public_dut.is_dir()
+        else set()
+    )
     found: list[Path] = []
     missing: list[str] = []
     for include in ahdl_includes(tb_path):
         include_path = Path(include.replace("\\", "/"))
         candidates: list[Path] = []
-        if not include_path.is_absolute() and ".." not in include_path.parts:
-            candidates.append(task_dir / include_path)
-            candidates.extend(root / include_path.name for root in search_dirs)
-        candidates.append((tb_path.parent / include_path).resolve())
+        is_staged_dut_include = bool(include_path.parts) and include_path.parts[0] == "dut"
+        is_dut_artifact = dut_root is not None and include_path.name in public_dut_names
+        if dut_root is None and is_staged_dut_include:
+            relative_to_dut = Path(*include_path.parts[1:])
+            candidates.append(public_dut / relative_to_dut)
+            candidates.append(supplied_dut / relative_to_dut)
+        if is_dut_artifact:
+            relative_to_dut = (
+                Path(*include_path.parts[1:]) if is_staged_dut_include else Path(include_path.name)
+            )
+            candidates.append(dut_root / relative_to_dut)
+            candidates.extend(
+                path for path in dut_root.rglob(include_path.name) if path.is_file()
+            )
+            if is_staged_dut_include:
+                candidates.append(public_dut / relative_to_dut)
+                candidates.extend(
+                    path for path in public_dut.rglob(include_path.name) if path.is_file()
+                )
+        else:
+            if not include_path.is_absolute() and ".." not in include_path.parts:
+                candidates.append(task_dir / include_path)
+                candidates.extend(root / include_path.name for root in search_dirs)
+            candidates.append((tb_path.parent / include_path).resolve())
         match = next((path for path in candidates if path.exists() and path.is_file()), None)
         if match is None:
             missing.append(include)
@@ -161,6 +192,376 @@ def compact_spectre_result(spectre: dict[str, Any]) -> dict[str, Any]:
         "remote_run_dir": spectre.get("remote_run_dir") or "",
         "csv_path": spectre.get("csv_path") or "",
     }
+
+
+def _invalid_case(
+    *,
+    case_id: str,
+    case_kind: str,
+    mutation_id: str,
+    expected: str,
+    observed: str,
+    notes: list[str],
+    include_paths: list[Path] | None = None,
+    missing_includes: list[str] | None = None,
+) -> dict[str, Any]:
+    return {
+        "case_id": case_id,
+        "case_kind": case_kind,
+        "mutation_id": mutation_id,
+        "expected": expected,
+        "observed": observed,
+        "outcome": "invalid_run",
+        "include_paths": [str(path) for path in include_paths or []],
+        "missing_includes": list(missing_includes or []),
+        "spectre": {},
+        "behavior_score": 0.0,
+        "behavior_notes": notes,
+        "side_output_ok": None,
+        "side_output_note": "",
+        "warning_lines": [],
+        "benign_warning_lines": [],
+        "untriaged_warning_lines": [],
+        "wall_time_s": 0.0,
+        "case_dir": "",
+    }
+
+
+def _behavior_evaluation_is_valid(notes: list[str]) -> bool:
+    invalid_prefixes = (
+        "behavior_eval_timeout>",
+        "behavior_eval_no_result",
+        "behavior_eval_error=",
+        "missing_columns=",
+        "empty_trace",
+        "empty trace",
+    )
+    for note in notes:
+        normalized = str(note).strip().lower()
+        if normalized.startswith(invalid_prefixes):
+            return False
+        if re.match(r"^insufficient(?:_|\s).*coverage(?:$|[ =])", normalized):
+            return False
+    return True
+
+
+def _run_correct_plus_five_case(
+    *,
+    task_id: str,
+    case_id: str,
+    case_kind: str,
+    mutation_id: str,
+    expected: str,
+    checker_id: str,
+    tb_path: Path,
+    include_paths: list[Path],
+    case_dir: Path,
+    spectre_backend: str,
+    spectre_mode: str,
+    timeout_s: int,
+    sui_host: str | None,
+    sui_work_root: str | None,
+    cadence_cshrc: str | None,
+    keep_case_dirs: bool,
+) -> dict[str, Any]:
+    if case_dir.exists():
+        shutil.rmtree(case_dir)
+    started = time.perf_counter()
+    spectre = run_spectre_case(
+        task_id=f"{task_id}:{case_id}",
+        tb_path=tb_path,
+        include_paths=include_paths,
+        output_dir=case_dir,
+        bridge_repo=default_bridge_repo(),
+        cadence_cshrc=cadence_cshrc,
+        timeout_s=timeout_s,
+        side_output_files=behavior_side_output_names(checker_id),
+        spectre_backend=spectre_backend,
+        sui_host=sui_host,
+        sui_work_root=sui_work_root,
+        spectre_mode=spectre_mode,
+    )
+    wall_time_s = round(time.perf_counter() - started, 3)
+    csv_path = case_dir / "tran_spectre.csv"
+    behavior_score = 0.0
+    behavior_notes: list[str] = []
+    side_output_ok: bool | None = None
+    side_output_note = ""
+    if not spectre.get("ok"):
+        observed = "spectre_failed"
+        behavior_notes = ["spectre did not complete successfully"]
+    elif not csv_path.exists():
+        observed = "trace_missing"
+        behavior_notes = ["tran_spectre.csv missing after Spectre run"]
+    else:
+        behavior_score, behavior_notes = evaluate_behavior_with_timeout(
+            checker_id,
+            csv_path,
+            timeout_s=timeout_s,
+        )
+        if not _behavior_evaluation_is_valid(behavior_notes):
+            observed = "checker_invalid"
+        else:
+            side_validation = validate_behavior_side_outputs(checker_id, case_dir, csv_path)
+            if side_validation is not None:
+                side_output_ok, side_output_note = side_validation
+            if side_output_ok is False:
+                observed = "side_output_failed"
+            elif behavior_score >= 1.0:
+                observed = "behavior_pass"
+            else:
+                observed = "behavior_fail"
+
+    if case_kind == "correct":
+        if observed == "behavior_pass":
+            outcome = "reference_pass"
+        elif observed in {"behavior_fail", "side_output_failed"}:
+            outcome = "reference_fail"
+        else:
+            outcome = "invalid_run"
+    elif observed == "behavior_fail":
+        outcome = "killed_behaviorally"
+    elif observed == "behavior_pass":
+        outcome = "survived"
+    else:
+        outcome = "invalid_run"
+
+    warning_lines = extract_warning_lines(case_dir, spectre)
+    benign_warnings = [line for line in warning_lines if is_benign_warning(line)]
+    untriaged_warnings = [line for line in warning_lines if not is_benign_warning(line)]
+    result = {
+        "case_id": case_id,
+        "case_kind": case_kind,
+        "mutation_id": mutation_id,
+        "expected": expected,
+        "observed": observed,
+        "outcome": outcome,
+        "include_paths": [str(path) for path in include_paths],
+        "missing_includes": [],
+        "spectre": compact_spectre_result(spectre),
+        "behavior_score": behavior_score,
+        "behavior_notes": behavior_notes,
+        "side_output_ok": side_output_ok,
+        "side_output_note": side_output_note,
+        "warning_lines": warning_lines,
+        "benign_warning_lines": benign_warnings,
+        "untriaged_warning_lines": untriaged_warnings,
+        "wall_time_s": wall_time_s,
+        "case_dir": str(case_dir) if keep_case_dirs else "",
+    }
+    return result
+
+
+def run_correct_plus_mutations(
+    *,
+    release: Path,
+    row: dict[str, Any],
+    output_root: Path,
+    spectre_backend: str,
+    spectre_mode: str,
+    timeout_s: int,
+    sui_host: str | None,
+    sui_work_root: str | None,
+    cadence_cshrc: str | None,
+    keep_case_dirs: bool,
+) -> dict[str, Any]:
+    task_id = str(row["task_id"])
+    task_dir = release / str(row["task_dir"])
+    task_eval = task_dir / "evaluator"
+    task_record = read_json(task_dir / "task_record.json")
+    tb_path = task_eval / "reference_tb.scs"
+    base: dict[str, Any] = {
+        "task_id": task_id,
+        "task_dir": str(row["task_dir"]),
+        "family_id": task_record.get("family_id"),
+        "reference_tb": str(tb_path),
+        "reference_gate": False,
+        "killed_count": 0,
+        "kill_denominator": 5,
+        "survived_count": 0,
+        "invalid_count": 0,
+        "skipped_count": 0,
+        "cases": [],
+        "warning_lines": [],
+        "benign_warning_lines": [],
+        "untriaged_warning_lines": [],
+    }
+    try:
+        checker_id = checker_task_id(task_dir, task_record)
+    except RuntimeError as exc:
+        return {**base, "status": "FAIL_CHECKER", "notes": [str(exc)]}
+    base["checker_task_id"] = checker_id
+
+    if not tb_path.is_file():
+        return {
+            **base,
+            "status": "FAIL_MUTATION_SETUP",
+            "notes": [f"reference testbench missing: {tb_path}"],
+        }
+
+    try:
+        score_policy = read_json(task_eval / "score_policy.json")
+    except (OSError, ValueError) as exc:
+        return {
+            **base,
+            "status": "FAIL_MUTATION_SETUP",
+            "notes": [f"score policy unavailable: {exc}"],
+        }
+    negative_ids = list(score_policy.get("negative_suite_mutation_ids") or [])
+    valid_ids = all(isinstance(item, str) and item for item in negative_ids)
+    if (
+        len(negative_ids) != 5
+        or not valid_ids
+        or len(set(negative_ids)) != 5
+        or score_policy.get("kill_ratio_denominator") != 5
+    ):
+        return {
+            **base,
+            "status": "FAIL_MUTATION_SETUP",
+            "notes": [
+                "score policy must declare exactly five unique negative IDs and a kill denominator of five"
+            ],
+        }
+
+    task_output_dir = output_root / task_id
+    if task_output_dir.exists():
+        shutil.rmtree(task_output_dir)
+    cases: list[dict[str, Any]] = []
+
+    correct_paths, correct_missing = include_paths_for_reference_tb(task_dir, tb_path)
+    if correct_missing:
+        correct_case = _invalid_case(
+            case_id="correct",
+            case_kind="correct",
+            mutation_id="",
+            expected="behavior_pass",
+            observed="setup_invalid",
+            notes=[f"missing include: {item}" for item in correct_missing],
+            include_paths=correct_paths,
+            missing_includes=correct_missing,
+        )
+    else:
+        correct_case = _run_correct_plus_five_case(
+            task_id=task_id,
+            case_id="correct",
+            case_kind="correct",
+            mutation_id="",
+            expected="behavior_pass",
+            checker_id=checker_id,
+            tb_path=tb_path,
+            include_paths=correct_paths,
+            case_dir=task_output_dir / "correct",
+            spectre_backend=spectre_backend,
+            spectre_mode=spectre_mode,
+            timeout_s=timeout_s,
+            sui_host=sui_host,
+            sui_work_root=sui_work_root,
+            cadence_cshrc=cadence_cshrc,
+            keep_case_dirs=keep_case_dirs,
+        )
+    cases.append(correct_case)
+    if correct_case["outcome"] != "reference_pass":
+        warning_lines = list(correct_case["warning_lines"])
+        return {
+            **base,
+            "status": "FAIL_REFERENCE",
+            "reference_gate": False,
+            "skipped_count": len(negative_ids),
+            "cases": cases,
+            "warning_lines": warning_lines,
+            "benign_warning_lines": [line for line in warning_lines if is_benign_warning(line)],
+            "untriaged_warning_lines": [
+                line for line in warning_lines if not is_benign_warning(line)
+            ],
+            "wall_time_s": round(float(correct_case["wall_time_s"]), 3),
+            "notes": ["negative cases skipped because the reference gate did not pass"],
+        }
+
+    mutation_root = task_eval / "mutation_bundles"
+    for mutation_id in negative_ids:
+        bundle_dir = mutation_root / mutation_id
+        if not bundle_dir.is_dir():
+            case = _invalid_case(
+                case_id=mutation_id,
+                case_kind="negative",
+                mutation_id=mutation_id,
+                expected="behavior_fail",
+                observed="setup_invalid",
+                notes=[f"mutation bundle missing: {bundle_dir}"],
+            )
+            cases.append(case)
+            continue
+        include_paths, missing = include_paths_for_reference_tb(
+            task_dir,
+            tb_path,
+            dut_root=bundle_dir,
+        )
+        if missing:
+            case = _invalid_case(
+                case_id=mutation_id,
+                case_kind="negative",
+                mutation_id=mutation_id,
+                expected="behavior_fail",
+                observed="setup_invalid",
+                notes=[f"missing include: {item}" for item in missing],
+                include_paths=include_paths,
+                missing_includes=missing,
+            )
+        else:
+            case = _run_correct_plus_five_case(
+                task_id=task_id,
+                case_id=mutation_id,
+                case_kind="negative",
+                mutation_id=mutation_id,
+                expected="behavior_fail",
+                checker_id=checker_id,
+                tb_path=tb_path,
+                include_paths=include_paths,
+                case_dir=task_output_dir / mutation_id,
+                spectre_backend=spectre_backend,
+                spectre_mode=spectre_mode,
+                timeout_s=timeout_s,
+                sui_host=sui_host,
+                sui_work_root=sui_work_root,
+                cadence_cshrc=cadence_cshrc,
+                keep_case_dirs=keep_case_dirs,
+            )
+        cases.append(case)
+
+    reference_gate = correct_case["outcome"] == "reference_pass"
+    negative_cases = cases[1:]
+    killed_count = sum(case["outcome"] == "killed_behaviorally" for case in negative_cases)
+    survived_count = sum(case["outcome"] == "survived" for case in negative_cases)
+    invalid_count = sum(case["outcome"] == "invalid_run" for case in negative_cases)
+    warning_lines = list(dict.fromkeys(line for case in cases for line in case["warning_lines"]))
+    benign_warnings = [line for line in warning_lines if is_benign_warning(line)]
+    untriaged_warnings = [line for line in warning_lines if not is_benign_warning(line)]
+    if not reference_gate:
+        status = "FAIL_REFERENCE"
+    elif killed_count != 5:
+        status = "FAIL_MUTATIONS"
+    elif untriaged_warnings:
+        status = "PASS_WITH_WARNINGS"
+    else:
+        status = "PASS"
+    result = {
+        **base,
+        "status": status,
+        "reference_gate": reference_gate,
+        "killed_count": killed_count,
+        "survived_count": survived_count,
+        "invalid_count": invalid_count,
+        "skipped_count": 0,
+        "cases": cases,
+        "warning_lines": warning_lines,
+        "benign_warning_lines": benign_warnings,
+        "untriaged_warning_lines": untriaged_warnings,
+        "wall_time_s": round(sum(float(case["wall_time_s"]) for case in cases), 3),
+        "notes": [],
+    }
+    if not keep_case_dirs and status == "PASS" and task_output_dir.exists():
+        shutil.rmtree(task_output_dir)
+    return result
 
 
 def run_one(
@@ -288,6 +689,11 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--sui-work-root", default=default_remote_work_root("sui-direct"))
     parser.add_argument("--cadence-cshrc", default=default_remote_cadence_cshrc("sui-direct"))
     parser.add_argument("--keep-case-dirs", action="store_true")
+    parser.add_argument(
+        "--include-mutations",
+        action="store_true",
+        help="run the supplied correct DUT plus the five score-policy negative mutation bundles",
+    )
     args = parser.parse_args(argv)
 
     release = args.release.expanduser().resolve()
@@ -300,7 +706,8 @@ def main(argv: list[str] | None = None) -> int:
     results: list[dict[str, Any]] = []
     started_at = now_utc()
     for row in rows:
-        result = run_one(
+        runner = run_correct_plus_mutations if args.include_mutations else run_one
+        result = runner(
             release=release,
             row=row,
             output_root=output_root,
@@ -313,18 +720,32 @@ def main(argv: list[str] | None = None) -> int:
             keep_case_dirs=args.keep_case_dirs,
         )
         results.append(result)
-        print(
+        progress = [
             result["task_id"],
             result["status"],
             f"{result.get('wall_time_s', 0.0):.2f}s",
-            f"score={result.get('behavior_score', 0.0)}",
-            f"untriaged_warnings={len(result.get('untriaged_warning_lines') or [])}",
-            flush=True,
+        ]
+        if args.include_mutations:
+            progress.extend(
+                [
+                    f"reference_gate={result.get('reference_gate', False)}",
+                    f"killed={result.get('killed_count', 0)}/5",
+                ]
+            )
+        else:
+            progress.append(f"score={result.get('behavior_score', 0.0)}")
+        progress.append(
+            f"untriaged_warnings={len(result.get('untriaged_warning_lines') or [])}"
         )
+        print(*progress, flush=True)
 
     pass_statuses = {"PASS", "PASS_WITH_WARNINGS"}
     summary = {
-        "schema_version": "v4-benchmarkv4-reference-spectre-audit-v1",
+        "schema_version": (
+            "v4-benchmarkv4-reference-spectre-correct-plus-five-audit-v1"
+            if args.include_mutations
+            else "v4-benchmarkv4-reference-spectre-audit-v1"
+        ),
         "release": str(release),
         "started_at": started_at,
         "finished_at": now_utc(),
@@ -340,6 +761,13 @@ def main(argv: list[str] | None = None) -> int:
         "untriaged_warning_count": sum(len(result.get("untriaged_warning_lines") or []) for result in results),
         "results": results,
     }
+    if args.include_mutations:
+        summary["include_mutations"] = True
+        summary["reference_gate_pass_count"] = sum(
+            bool(result.get("reference_gate")) for result in results
+        )
+        summary["killed_count"] = sum(int(result.get("killed_count") or 0) for result in results)
+        summary["kill_denominator"] = 5 * len(results)
     write_json(args.output.expanduser().resolve(), summary)
     print(
         json.dumps(
