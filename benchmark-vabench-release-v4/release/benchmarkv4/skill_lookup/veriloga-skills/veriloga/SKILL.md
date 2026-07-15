@@ -28,12 +28,16 @@ real-world .va files plus a 171-module reference library (14,311 LOC).
 
 **Reference policy:**
 
-- Start with the curated core DUT examples only
-- Open `assets/examples-archive/` only if the core set does not cover the module
-- Treat `signal-source/` and `measurement-helpers/` as supplemental, not default references
+- In this vaBench lookup snapshot, start with `assets/template.va` and the local
+  `references/categories/*.md` notes.
+- Do not attempt to open missing upstream example trees; they are intentionally
+  excluded from this release-pinned subset.
+- Treat `signal-source` and `measurement-helpers` patterns as supplemental, not
+  default references.
 
 **Need guidance? Search these resources in this order:**
 
+- **Spectre testbench submissions** → `references/spectre-testbench-submission-checklist.md`
 - **Category-specific patterns** → `references/categories/adc-sar.md`, `comparator.md`, etc.
 - **Project overrides** (naming, supply voltage, headers) → `references/customize.md`
 - **Domain classification help** → `references/domain-routing.md`
@@ -41,7 +45,9 @@ real-world .va files plus a 171-module reference library (14,311 LOC).
 - **EVAS simulator support check** → `references/evas-capabilities.manifest`
 - **ADC behavioral verification** → `references/adc-testbench-guide.md` (runnable examples live under `../behavioral-va-eval/examples/`)
 - **Advanced syntax** (string parsing, current-domain functions, conditional compilation) → `references/verilog-a-advanced.md`
-- **Working examples** → core DUT examples first; `assets/examples-archive/` only as fallback
+- **Working examples** → in the full upstream skill, use core DUT examples first; in the vaBench
+  vendored subset, example trees are intentionally absent, so use `assets/template.va` and
+  the local reference notes instead
 
 ---
 
@@ -79,16 +85,20 @@ has already produced the primary ADC metrics.
 | "Is my module voltage-domain or current-domain?" | `references/domain-routing.md` | Classification guide + mixed-domain splitting strategies |
 | "Can EVAS simulate my voltage-domain module?" | `references/evas-capabilities.manifest` | Check EVAS supported constructs |
 | "How do I verify my ADC behavioral model?" | `references/adc-testbench-guide.md` | ADC verification guidance; runnable voltage-domain flows belong to `behavioral-va-eval` |
-| "Show me working examples" | Core DUT examples below | Default to the curated DUT set; use the broader archive only when needed |
+| "How do I write a Spectre `.scs` submission?" | `references/spectre-testbench-submission-checklist.md` | Public binding, PWL, save syntax, bus escaping, and portability checklist |
+| "Show me working examples" | `assets/template.va` plus category references | In this vaBench subset, example trees are intentionally absent |
 | "What's this advanced syntax for?" | `references/verilog-a-advanced.md` | String parsing, `$vt`, `branch`, `@(timer)`, conditional compilation, etc. |
 
 ---
 
 ## Scope: This Skill Writes DUT Modules Only
 
-**This skill only writes the DUT (Device Under Test) — the Verilog-A behavioral module.**
+**This skill primarily writes the DUT (Device Under Test) — the Verilog-A behavioral module.**
 
 To simulate, you need a testbench. That is a separate concern handled by the `evas-sim` skill.
+For benchmark tasks that ask you to submit a `.scs` testbench, first read
+`references/spectre-testbench-submission-checklist.md`; the task's public binding remains
+authoritative over any generic template.
 
 | Step | What | File | Skill |
 |---|---|---|---|
@@ -103,14 +113,15 @@ To simulate, you need a testbench. That is a separate concern handled by the `ev
 
 ## Example Selection Policy
 
-Do not browse the full `assets/examples/` tree by default.
+Do not browse the full `assets/examples/` tree by default. In the vaBench vendored lookup
+snapshot, that tree is not included.
 
-- Default reference set: the curated core DUT examples below
-- Fallback reference set: `assets/examples-archive/`
+- Default reference set: `assets/template.va` and `references/categories/*.md`
+- Fallback reference set in the full upstream skill only: `assets/examples-archive/`
 - Supplemental only: `signal-source/`, `measurement-helpers/`, and helper-heavy calibration patterns
 
 If the request matches a common DUT category, stay within the core set unless it is clearly insufficient.
-When you must consult `assets/examples-archive/`, treat it as legacy reference material and run
+When you must consult `assets/examples-archive/` outside this vendored subset, treat it as legacy reference material and run
 `references/check_spectre_portability.py` before copying any electrical-bus read pattern into a
 Spectre-target design.
 
@@ -410,6 +421,7 @@ contributions are unconditional and outside runtime `integer` loops.
 | Signal Source | `references/categories/signal-source.md` | voltage (supplemental) |
 | Passive & Model | `references/categories/passive-model.md` | current |
 | Measurement Helpers | `references/categories/measurement-helpers.md` | voltage (supplemental / verification-leaning) |
+| Spectre testbench submission checklist | `references/spectre-testbench-submission-checklist.md` | N/A |
 | Testbench (`.scs`) | `references/categories/testbench-spectre.md` | N/A |
 | Power & Switch | `references/categories/power-switch.md` | either |
 | Calibration | `references/categories/calibration.md` | voltage |
@@ -418,41 +430,12 @@ contributions are unconditional and outside runtime `integer` loops.
 
 ## Module Template
 
-Start from `assets/template.va`. Reference the core DUT examples below before browsing `assets/examples-archive/`.
-
-## Core DUT Examples
-
-Use these first. They are the primary authoring references for this skill:
-
-- `assets/examples/adc-sar/sar_logic_4b_sync.va`
-- `assets/examples/adc-sar/sar_logic_4b_async.va`
-- `assets/examples/adc-sar/sar_4b_behavioral.va`
-- `assets/examples/comparator/comp_fire_reset.va`
-- `assets/examples/comparator/comp_latching.va`
-- `assets/examples/dac/dac_4b_binary_weighted.va`
-- `assets/examples/digital-logic/and2_gate.va`
-- `assets/examples/digital-logic/dff_set_reset.va`
-- `assets/examples/sample-hold/single_edge_sampler.va`
-- `assets/examples/pll-clock/pfd_with_reset.va`
-- `assets/examples/amplifier-filter/lpf_1st_order.va`
-- `assets/examples/power-switch/conductance_switch.va`
-- `assets/examples/passive-model/rlc_network.va`
-
-## Supplemental Examples
-
-The files under `assets/examples-archive/` are secondary references. They are
-useful for edge cases, variants, helpers, or legacy patterns, but they should
-not be the first examples surfaced by this skill.
-
-In particular:
-
-- `signal-source/` is supplemental and often serves as stimulus support
-- `measurement-helpers/` is supplemental and verification-leaning
-- helper-style ADC files such as ideal comparators or small conversion blocks
-  should not outrank the core SAR/DAC examples above
-
-Runnable verification flows, `.scs` testbenches, and example simulations belong
-to `../behavioral-va-eval/examples/`, not this DUT example archive.
+Start from `assets/template.va`, then use the category references above.
+The vaBench vendored subset intentionally omits upstream example archives and
+runnable verification flows to keep the lookup surface small and reproducible.
+If a task asks for a `.scs` testbench, use
+`references/spectre-testbench-submission-checklist.md` instead of searching for
+example decks.
 
 ---
 
@@ -732,7 +715,7 @@ EVAS capabilities: fetch manifest per § Domain Classification above.
 Local cache: `references/evas-capabilities.manifest`.
 
 - **Voltage-domain** → ready for EVAS as-is
-- **Current-domain** → delegate to `openvaf` skill
+- **Current-domain** → outside this vaBench subset, delegate to a separately pinned `openvaf` skill
 - **Mixed** → do NOT simulate; guide user to split (see domain-routing.md § Mixed)
 
 ---
@@ -740,7 +723,9 @@ Local cache: `references/evas-capabilities.manifest`.
 ## Smoke Test
 
 ### Current-domain
-Delegate to `openvaf` skill: compile check → load check → tran sanity.
+Outside this vaBench subset, delegate to a separately pinned `openvaf` skill:
+compile check → load check → tran sanity. Do not fetch `openvaf` during a
+vaBench skill lookup run.
 
 ### Voltage-domain
 Use EVAS for local simulation when the CLI is installed/configured.

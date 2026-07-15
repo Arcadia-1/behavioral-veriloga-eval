@@ -2,9 +2,31 @@
 
 Instructs an Agent to write Verilog-A behavioral models that conform to Cadence Virtuoso conventions and can be used directly inside Virtuoso.
 
+## vaBench vendored snapshot
+
+This copy is a **read-only, release-pinned subset** used by vaBench skill lookup
+modes. Do not clone GitHub or install a different copy during an experiment.
+Use only the files present in this directory so the run can be reproduced from
+the benchmark manifest and snapshot hash.
+
+Included in this vaBench subset:
+
+- `veriloga/SKILL.md`
+- `veriloga/references/`
+- `veriloga/assets/template.va`
+- `evas-sim/SKILL.md`
+
+Not included in this subset: `openvaf/`, runnable example trees, tests, and
+GitHub workflow files. If a referenced example path is absent, use the local
+template and reference notes instead of attempting remote retrieval.
+
 > **If you are a human**: the skill overview and structure below will help you understand what this package contains. After installation, ask the Agent to write Verilog-A for you.
 
-> **If you are an AI Agent**: skip the overview and go straight to the [Installation](#installation) section. `veriloga/SKILL.md` is the complete coding instruction set (8 mandatory rules + 12 circuit-category references); the code template is at `assets/template.va`; the DUT references are organized as a curated core set under `assets/examples/` plus an archive under `assets/examples-archive/`; the self-contained benchmark / runnable verification dataset is in `behavioral-va-eval/examples/`.
+> **If you are an AI Agent in vaBench skill lookup mode**: do not install
+> anything. Read local files only. Start with `veriloga/SKILL.md` for DUT
+> authoring rules. For a `.scs` testbench submission, read
+> `veriloga/references/spectre-testbench-submission-checklist.md` and the
+> public task binding before writing the final answer.
 
 ---
 
@@ -12,9 +34,9 @@ Instructs an Agent to write Verilog-A behavioral models that conform to Cadence 
 
 | Skill | Role | Function |
 |-------|------|----------|
-| **veriloga** | Core — code writing | 8 mandatory rules + 12 circuit-category references + curated core DUT examples; produces Verilog-A ready to drop into a Virtuoso cellview |
-| **evas-sim** | Optional — voltage-domain verification | Drives the EVAS simulator to verify voltage-domain modules (SAR logic, DFF, counter, etc.) |
-| **openvaf** | Optional — current-domain verification | OpenVAF compile → ngspice/OSDI load → simulation verification |
+| **veriloga** | Core — code writing | Mandatory Verilog-A rules, circuit-category references, and Spectre testbench notes; produces Verilog-A ready to drop into a Virtuoso cellview |
+| **evas-sim** | Optional — voltage-domain verification reference | Describes EVAS-compatible Spectre netlists and portability pitfalls |
+| **openvaf** | Not included in this vaBench subset | Use only if installed outside this release for a separate current-domain flow |
 
 `veriloga` is the core skill and handles all code writing on its own. `evas-sim` and `openvaf` are optional companion skills for local verification of voltage-domain and current-domain modules respectively.
 
@@ -24,7 +46,8 @@ Instructs an Agent to write Verilog-A behavioral models that conform to Cadence 
 
 Rules and patterns distilled from 1,809 real `.va` designs, covering 12 circuit categories for analog/mixed-signal IC design. Generated code conforms to Cadence Virtuoso / Spectre conventions and can be placed directly into a cellview.
 
-Contains 8 mandatory rules, 12 circuit-category references, and a curated core DUT example set with a broader supplemental archive. See [`veriloga/SKILL.md`](./veriloga/SKILL.md).
+Contains mandatory Verilog-A rules, circuit-category references, and a compact
+Spectre testbench submission checklist. See [`veriloga/SKILL.md`](./veriloga/SKILL.md).
 
 ---
 
@@ -67,13 +90,19 @@ Handles compilation and simulation for current-domain modules:
 .va file → OpenVAF compile → .osdi file → ngspice load → simulation verification
 ```
 
-Covers: OpenVAF installation and configuration, compile commands, ngspice OSDI loading, list of supported features, troubleshooting guide. See [`openvaf/SKILL.md`](./openvaf/SKILL.md).
+Covers: OpenVAF installation and configuration, compile commands, ngspice OSDI loading, list of supported features, troubleshooting guide.
+
+This vaBench snapshot does not include `openvaf/`; do not rely on it during a
+benchmark skill lookup run unless the experiment explicitly mounts that skill
+as a separate, version-pinned resource.
 
 ---
 
 ## Installation
 
-> If you are an AI Agent, run the commands below directly — no manual action required from the user.
+> For normal use outside vaBench, install from GitHub as described below. For
+> vaBench experiments, skip installation and use the vendored files already
+> present in the release.
 
 **Step 1 — Choose installation scope**
 
@@ -82,7 +111,7 @@ Covers: OpenVAF installation and configuration, compile commands, ngspice OSDI l
 | Current project only (default, recommended) | Project-level install → `.agent/skills/` |
 | All projects | Global install → `~/.agent/skills/` |
 
-> Use project-level installation by default. Replace `.agent/skills/` with your agent's skill directory if it uses a different path.
+> Outside vaBench, use project-level installation by default. Replace `.agent/skills/` with your agent's skill directory if it uses a different path. Inside vaBench, do not run these installation commands during an experiment.
 
 **Step 2 — Run the install command** (bash; works on macOS / Linux / Windows)
 
@@ -106,7 +135,7 @@ git clone --depth 1 https://github.com/Arcadia-1/veriloga-skills /tmp/veriloga-s
 
 Run `/skills` in the Agent; confirm `veriloga`, `evas-sim`, and `openvaf` appear in the output list ✅
 
-> **If you are an AI Agent**: execute the project-level installation by default. Use the global path only if the user explicitly wants a home-directory install. After installation, read `veriloga/SKILL.md` and start working.
+> **If you are an AI Agent outside vaBench**: execute the project-level installation by default. Use the global path only if the user explicitly wants a home-directory install. After installation, read `veriloga/SKILL.md` and start working. In vaBench skill lookup mode, the local snapshot is already mounted; read it directly.
 
 ### Project Customization
 

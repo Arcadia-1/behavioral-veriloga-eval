@@ -2,6 +2,12 @@
 
 This repository has one core writing skill and two optional local-verification paths.
 
+## vaBench skill lookup constraint
+
+In vaBench experiments this directory is mounted as a read-only reference
+snapshot. Do not install packages, clone repositories, or fetch missing skills
+from inside a campaign. Use the installed runner/evaluator environment only.
+
 ## Required
 
 ### `veriloga`
@@ -75,6 +81,10 @@ See:
 
 - `openvaf/references/install.md`
 - `openvaf/SKILL.md`
+
+These `openvaf` files are not included in the vaBench subset. Treat them as
+upstream references for non-vaBench use only unless a separate pinned `openvaf`
+snapshot is explicitly mounted.
 
 ## Notes
 

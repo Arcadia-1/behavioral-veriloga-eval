@@ -3,6 +3,11 @@
 How to write proper `.scs` testbench files for simulating Verilog-A behavioral modules.
 This is the **correct place** for testbenches, stimulus, and measurement commands.
 
+For benchmark-style submissions with an exact public DUT binding, read
+`../spectre-testbench-submission-checklist.md` first. The public task prompt
+is authoritative for include path, instance line, port order, required saved
+traces, and output restrictions.
+
 ---
 
 ## Key Concepts

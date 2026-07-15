@@ -209,6 +209,12 @@ Split every simulation project into exactly **two files**:
 
 ### Testbench (`tb_<name>.scs`) - writing guidelines
 
+For benchmark-style submissions where the prompt gives a public DUT binding,
+the prompt is authoritative. Copy the declared `ahdl_include` path, DUT
+instance text, module name, public net order, and required save list exactly.
+For a compact pre-submit checklist, see
+`../veriloga/references/spectre-testbench-submission-checklist.md`.
+
 #### 1. File header
 Always start with identifying comments so the file is self-documenting:
 ```spectre
