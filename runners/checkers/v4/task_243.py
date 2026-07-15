@@ -1,7 +1,7 @@
 """Task-specific checker for canonical v4 DUT 243."""
 from __future__ import annotations
 
-from checkers.api import Checker
+from ..api import Checker
 def check_v3_subradix_dac10(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "vd9", "vd8", "vd7", "vd6", "vd5", "vd4", "vd3", "vd2", "vd1", "vd0", "vout"}
     if not rows or not required.issubset(rows[0]):

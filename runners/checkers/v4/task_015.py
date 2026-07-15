@@ -1,7 +1,7 @@
 """Task-specific checker for canonical v4 DUT 015."""
 from __future__ import annotations
 
-from checkers.api import Checker
+from ..api import Checker
 _RELEASE_SIMPLE_BINARY_DAC_CODES = (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15)
 _RELEASE_SIMPLE_BINARY_DAC_SAMPLE_TIMES_NS = (5.0,
  15.0,

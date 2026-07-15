@@ -1,7 +1,7 @@
 """Task-specific checker for canonical v4 DUT 088."""
 from __future__ import annotations
 
-from checkers.api import Checker
+from ..api import Checker
 import csv
 
 def _csv_fields(csv_path: Path) -> set[str]:

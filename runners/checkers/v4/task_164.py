@@ -1,7 +1,7 @@
 """Task-specific checker for canonical v4 DUT 164."""
 from __future__ import annotations
 
-from checkers.api import Checker
+from ..api import Checker
 def sample_signal_at(rows: list[dict[str, float]], signal: str, time_s: float) -> float | None:
     if not rows or "time" not in rows[0] or signal not in rows[0]:
         return None

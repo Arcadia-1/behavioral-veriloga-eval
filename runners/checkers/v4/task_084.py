@@ -1,7 +1,7 @@
 """Task-specific checker for canonical v4 DUT 084."""
 from __future__ import annotations
 
-from checkers.api import Checker
+from ..api import Checker
 import math
 
 def rising_edges(values: list[float], times: list[float], threshold: float = 0.45) -> list[float]:

@@ -1,7 +1,7 @@
 """Task-specific checker for canonical v4 DUT 344."""
 from __future__ import annotations
 
-from checkers.api import Checker
+from ..api import Checker
 from _bisect import bisect_left
 
 SETTLE = 6.5e-10

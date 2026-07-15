@@ -1,7 +1,7 @@
 """Task-specific checker for canonical v4 DUT 078."""
 from __future__ import annotations
 
-from checkers.api import Checker
+from ..api import Checker
 def check_prbs7(rows: list[dict[str, float]]) -> tuple[bool, str]:
     """PRBS-7: require the exposed state bus to follow the public tap relation."""
     if not rows:

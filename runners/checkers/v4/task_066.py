@@ -1,7 +1,7 @@
 """Task-specific checker for canonical v4 DUT 066."""
 from __future__ import annotations
 
-from checkers.api import Checker
+from ..api import Checker
 def check_configurable_polarity_edge_detector(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "sig", "rise_en", "pulse"}
     if not rows or not required.issubset(rows[0]):

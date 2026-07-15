@@ -1,7 +1,7 @@
 """Task-specific checker for canonical v4 DUT 126."""
 from __future__ import annotations
 
-from checkers.api import Checker
+from ..api import Checker
 def check_v3_absolute_value(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "sigin", "sigout"}
     if not rows or not required.issubset(rows[0]):

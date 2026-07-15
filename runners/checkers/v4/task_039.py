@@ -1,7 +1,7 @@
 """Task-specific checker for canonical v4 DUT 039."""
 from __future__ import annotations
 
-from checkers.api import Checker
+from ..api import Checker
 def _sample_vector_at(times: list[float], values: list[float], time_s: float) -> float | None:
     if not times or not values or len(times) != len(values):
         return None

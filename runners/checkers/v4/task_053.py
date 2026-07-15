@@ -1,7 +1,7 @@
 """Task-specific checker for canonical v4 DUT 053."""
 from __future__ import annotations
 
-from checkers.api import Checker
+from ..api import Checker
 def check_v3_495_slew_rate_dac4(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "d3", "d2", "d1", "d0", "vout"}
     if not rows or not required.issubset(rows[0]):

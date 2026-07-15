@@ -1,7 +1,7 @@
 """Task-specific checker for canonical v4 DUT 326."""
 from __future__ import annotations
 
-from checkers.api import Checker
+from ..api import Checker
 def _v4_topup_logic_high(row: dict[str, float], name: str, threshold: float = 0.45) -> bool:
     return float(row.get(name, 0.0)) > threshold
 

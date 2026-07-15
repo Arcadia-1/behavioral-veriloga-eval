@@ -1,7 +1,7 @@
 """Task-specific checker for canonical v4 DUT 061."""
 from __future__ import annotations
 
-from checkers.api import Checker
+from ..api import Checker
 def _logic_bits_to_int(row: dict[str, float], prefix: str, width: int, vth: float = 0.45) -> int:
     return sum((1 << bit) for bit in range(width) if row[f"{prefix}{bit}"] > vth)
 

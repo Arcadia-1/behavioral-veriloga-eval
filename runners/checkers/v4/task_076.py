@@ -1,7 +1,7 @@
 """Task-specific checker for canonical v4 DUT 076."""
 from __future__ import annotations
 
-from checkers.api import Checker
+from ..api import Checker
 def check_clk_burst_gen(rows: list[dict[str, float]]) -> tuple[bool, str]:
     if not rows or not {"CLK", "RST_N", "CLK_OUT"}.issubset(rows[0]):
         return False, "missing CLK/RST_N/CLK_OUT"

@@ -1,7 +1,7 @@
 """Task-specific checker for canonical v4 DUT 140."""
 from __future__ import annotations
 
-from checkers.api import Checker
+from ..api import Checker
 def _v3_edge_times(
     rows: list[dict[str, float]],
     signal: str,

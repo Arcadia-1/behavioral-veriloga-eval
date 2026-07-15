@@ -1,8 +1,8 @@
 from __future__ import annotations
 
-from checkers.api import Checker
-from checkers.common.issue109_factory import CheckResult, Row, check_continuous_factory
-from checkers.v4.factory_property_diagnostics import append_continuous_property_diagnostics
+from ..api import Checker
+from ..common.issue109_factory import CheckResult, Row, check_continuous_factory
+from .factory_property_diagnostics import append_continuous_property_diagnostics
 
 
 TASK_LABEL = 'v4_250_rail_referenced_gain_buffer'

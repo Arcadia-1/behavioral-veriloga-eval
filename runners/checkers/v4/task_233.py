@@ -1,7 +1,7 @@
 """Task-specific checker for canonical v4 DUT 233."""
 from __future__ import annotations
 
-from checkers.api import Checker
+from ..api import Checker
 def _v3_away_from_edges(row_time: float, edge_times: list[float], margin_s: float = 80e-12) -> bool:
     return all(abs(row_time - edge_time) > margin_s for edge_time in edge_times)
 

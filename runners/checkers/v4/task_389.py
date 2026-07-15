@@ -1,7 +1,7 @@
 """Task-specific checker for canonical v4 DUT 389."""
 from __future__ import annotations
 
-from checkers.api import Checker
+from ..api import Checker
 def _sample_after(rows: list[dict[str, float]], t: float, delay: float = 5e-9) -> dict[str, float]:
     target = t + delay
     return min(rows, key=lambda row: abs(row["time"] - target))

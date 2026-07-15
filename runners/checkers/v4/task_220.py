@@ -1,7 +1,7 @@
 """Task-specific checker for canonical v4 DUT 220."""
 from __future__ import annotations
 
-from checkers.api import Checker
+from ..api import Checker
 def _threshold_crossings(
     values: list[float],
     times: list[float],

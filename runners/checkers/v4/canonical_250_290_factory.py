@@ -1,41 +1,41 @@
 """Explicit task registry for canonical factory checkers 250-290."""
 from __future__ import annotations
 
-from checkers.api import Checker
-from checkers.v4.task_250 import CHECKER as CHECKER_250, CHECKER_ID as CHECKER_ID_250
-from checkers.v4.task_251 import CHECKER as CHECKER_251, CHECKER_ID as CHECKER_ID_251
-from checkers.v4.task_252 import CHECKER as CHECKER_252, CHECKER_ID as CHECKER_ID_252
-from checkers.v4.task_253 import CHECKER as CHECKER_253, CHECKER_ID as CHECKER_ID_253
-from checkers.v4.task_254 import CHECKER as CHECKER_254, CHECKER_ID as CHECKER_ID_254
-from checkers.v4.task_255 import CHECKER as CHECKER_255, CHECKER_ID as CHECKER_ID_255
-from checkers.v4.task_256 import CHECKER as CHECKER_256, CHECKER_ID as CHECKER_ID_256
-from checkers.v4.task_257 import CHECKER as CHECKER_257, CHECKER_ID as CHECKER_ID_257
-from checkers.v4.task_258 import CHECKER as CHECKER_258, CHECKER_ID as CHECKER_ID_258
-from checkers.v4.task_259 import CHECKER as CHECKER_259, CHECKER_ID as CHECKER_ID_259
-from checkers.v4.task_260 import CHECKER as CHECKER_260, CHECKER_ID as CHECKER_ID_260
-from checkers.v4.task_261 import CHECKER as CHECKER_261, CHECKER_ID as CHECKER_ID_261
-from checkers.v4.task_262 import CHECKER as CHECKER_262, CHECKER_ID as CHECKER_ID_262
-from checkers.v4.task_263 import CHECKER as CHECKER_263, CHECKER_ID as CHECKER_ID_263
-from checkers.v4.task_264 import CHECKER as CHECKER_264, CHECKER_ID as CHECKER_ID_264
-from checkers.v4.task_265 import CHECKER as CHECKER_265, CHECKER_ID as CHECKER_ID_265
-from checkers.v4.task_266 import CHECKER as CHECKER_266, CHECKER_ID as CHECKER_ID_266
-from checkers.v4.task_267 import CHECKER as CHECKER_267, CHECKER_ID as CHECKER_ID_267
-from checkers.v4.task_268 import CHECKER as CHECKER_268, CHECKER_ID as CHECKER_ID_268
-from checkers.v4.task_275 import CHECKER as CHECKER_275, CHECKER_ID as CHECKER_ID_275
-from checkers.v4.task_276 import CHECKER as CHECKER_276, CHECKER_ID as CHECKER_ID_276
-from checkers.v4.task_277 import CHECKER as CHECKER_277, CHECKER_ID as CHECKER_ID_277
-from checkers.v4.task_278 import CHECKER as CHECKER_278, CHECKER_ID as CHECKER_ID_278
-from checkers.v4.task_279 import CHECKER as CHECKER_279, CHECKER_ID as CHECKER_ID_279
-from checkers.v4.task_280 import CHECKER as CHECKER_280, CHECKER_ID as CHECKER_ID_280
-from checkers.v4.task_281 import CHECKER as CHECKER_281, CHECKER_ID as CHECKER_ID_281
-from checkers.v4.task_282 import CHECKER as CHECKER_282, CHECKER_ID as CHECKER_ID_282
-from checkers.v4.task_283 import CHECKER as CHECKER_283, CHECKER_ID as CHECKER_ID_283
-from checkers.v4.task_285 import CHECKER as CHECKER_285, CHECKER_ID as CHECKER_ID_285
-from checkers.v4.task_286 import CHECKER as CHECKER_286, CHECKER_ID as CHECKER_ID_286
-from checkers.v4.task_287 import CHECKER as CHECKER_287, CHECKER_ID as CHECKER_ID_287
-from checkers.v4.task_288 import CHECKER as CHECKER_288, CHECKER_ID as CHECKER_ID_288
-from checkers.v4.task_289 import CHECKER as CHECKER_289, CHECKER_ID as CHECKER_ID_289
-from checkers.v4.task_290 import CHECKER as CHECKER_290, CHECKER_ID as CHECKER_ID_290
+from ..api import Checker
+from .task_250 import CHECKER as CHECKER_250, CHECKER_ID as CHECKER_ID_250
+from .task_251 import CHECKER as CHECKER_251, CHECKER_ID as CHECKER_ID_251
+from .task_252 import CHECKER as CHECKER_252, CHECKER_ID as CHECKER_ID_252
+from .task_253 import CHECKER as CHECKER_253, CHECKER_ID as CHECKER_ID_253
+from .task_254 import CHECKER as CHECKER_254, CHECKER_ID as CHECKER_ID_254
+from .task_255 import CHECKER as CHECKER_255, CHECKER_ID as CHECKER_ID_255
+from .task_256 import CHECKER as CHECKER_256, CHECKER_ID as CHECKER_ID_256
+from .task_257 import CHECKER as CHECKER_257, CHECKER_ID as CHECKER_ID_257
+from .task_258 import CHECKER as CHECKER_258, CHECKER_ID as CHECKER_ID_258
+from .task_259 import CHECKER as CHECKER_259, CHECKER_ID as CHECKER_ID_259
+from .task_260 import CHECKER as CHECKER_260, CHECKER_ID as CHECKER_ID_260
+from .task_261 import CHECKER as CHECKER_261, CHECKER_ID as CHECKER_ID_261
+from .task_262 import CHECKER as CHECKER_262, CHECKER_ID as CHECKER_ID_262
+from .task_263 import CHECKER as CHECKER_263, CHECKER_ID as CHECKER_ID_263
+from .task_264 import CHECKER as CHECKER_264, CHECKER_ID as CHECKER_ID_264
+from .task_265 import CHECKER as CHECKER_265, CHECKER_ID as CHECKER_ID_265
+from .task_266 import CHECKER as CHECKER_266, CHECKER_ID as CHECKER_ID_266
+from .task_267 import CHECKER as CHECKER_267, CHECKER_ID as CHECKER_ID_267
+from .task_268 import CHECKER as CHECKER_268, CHECKER_ID as CHECKER_ID_268
+from .task_275 import CHECKER as CHECKER_275, CHECKER_ID as CHECKER_ID_275
+from .task_276 import CHECKER as CHECKER_276, CHECKER_ID as CHECKER_ID_276
+from .task_277 import CHECKER as CHECKER_277, CHECKER_ID as CHECKER_ID_277
+from .task_278 import CHECKER as CHECKER_278, CHECKER_ID as CHECKER_ID_278
+from .task_279 import CHECKER as CHECKER_279, CHECKER_ID as CHECKER_ID_279
+from .task_280 import CHECKER as CHECKER_280, CHECKER_ID as CHECKER_ID_280
+from .task_281 import CHECKER as CHECKER_281, CHECKER_ID as CHECKER_ID_281
+from .task_282 import CHECKER as CHECKER_282, CHECKER_ID as CHECKER_ID_282
+from .task_283 import CHECKER as CHECKER_283, CHECKER_ID as CHECKER_ID_283
+from .task_285 import CHECKER as CHECKER_285, CHECKER_ID as CHECKER_ID_285
+from .task_286 import CHECKER as CHECKER_286, CHECKER_ID as CHECKER_ID_286
+from .task_287 import CHECKER as CHECKER_287, CHECKER_ID as CHECKER_ID_287
+from .task_288 import CHECKER as CHECKER_288, CHECKER_ID as CHECKER_ID_288
+from .task_289 import CHECKER as CHECKER_289, CHECKER_ID as CHECKER_ID_289
+from .task_290 import CHECKER as CHECKER_290, CHECKER_ID as CHECKER_ID_290
 
 CHECKERS: dict[str, Checker] = {
     CHECKER_ID_250: CHECKER_250,

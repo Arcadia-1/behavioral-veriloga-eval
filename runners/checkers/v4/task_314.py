@@ -1,7 +1,7 @@
 """Task-specific checker for canonical v4 DUT 314."""
 from __future__ import annotations
 
-from checkers.api import Checker
+from ..api import Checker
 def check_v4_314_hysteretic_window_comparator(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {
         "time", "vin", "rst", "enable", "low_trip", "high_trip",

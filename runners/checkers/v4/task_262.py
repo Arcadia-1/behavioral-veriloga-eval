@@ -1,7 +1,7 @@
 from __future__ import annotations
 
-from checkers.api import Checker
-from checkers.common.issue109_factory import CheckResult, Row, check_clocked_factory
+from ..api import Checker
+from ..common.issue109_factory import CheckResult, Row, check_clocked_factory
 
 
 TASK_LABEL = 'v4_262_resettable_phase_toggle_monitor'

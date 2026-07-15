@@ -1,7 +1,7 @@
 """Task-specific checker for canonical v4 DUT 359."""
 from __future__ import annotations
 
-from checkers.api import Checker
+from ..api import Checker
 from dataclasses import dataclass
 
 VTH = 0.45

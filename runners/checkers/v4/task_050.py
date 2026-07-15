@@ -1,7 +1,7 @@
 """Task-specific checker for canonical v4 DUT 050."""
 from __future__ import annotations
 
-from checkers.api import Checker
+from ..api import Checker
 import math
 
 def sample_signal_at(rows: list[dict[str, float]], signal: str, time_s: float) -> float | None:

@@ -1,7 +1,7 @@
 """Task-specific checker for canonical v4 DUT 146."""
 from __future__ import annotations
 
-from checkers.api import Checker
+from ..api import Checker
 def _v3_missing_columns(rows: list[dict[str, float]], required: set[str]) -> str | None:
     if not rows:
         return "empty_waveform"

@@ -1,7 +1,7 @@
 """Task-specific checker for canonical v4 DUT 386."""
 from __future__ import annotations
 
-from checkers.api import Checker
+from ..api import Checker
 def _v4_topup_clip01(value: float, low: float = 0.0, high: float = 0.9) -> float:
     return max(low, min(high, value))
 

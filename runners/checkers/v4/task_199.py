@@ -1,7 +1,7 @@
 """Task-specific checker for canonical v4 DUT 199."""
 from __future__ import annotations
 
-from checkers.api import Checker
+from ..api import Checker
 def _stable_bits_tuple(row: dict[str, float], bit_names: list[str]) -> tuple[int, ...] | None:
     bits = [_stable_voltage_bit(row, signal) for signal in bit_names]
     if any(bit is None for bit in bits):

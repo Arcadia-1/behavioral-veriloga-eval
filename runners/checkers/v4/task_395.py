@@ -1,7 +1,7 @@
 """Task-specific checker for canonical v4 DUT 395."""
 from __future__ import annotations
 
-from checkers.api import Checker
+from ..api import Checker
 VTH = 0.45
 
 def _high(row: dict[str, float], signal: str, threshold: float = VTH) -> bool:

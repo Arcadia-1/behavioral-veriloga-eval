@@ -1,7 +1,7 @@
 """Task-specific checker for canonical v4 DUT 077."""
 from __future__ import annotations
 
-from checkers.api import Checker
+from ..api import Checker
 def check_noise_gen(rows: list[dict[str, float]]) -> tuple[bool, str]:
     if not rows or not {"vin_i", "vout_o"}.issubset(rows[0]):
         return False, "missing vin_i/vout_o"

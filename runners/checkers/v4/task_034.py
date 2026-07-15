@@ -1,7 +1,7 @@
 """Task-specific checker for canonical v4 DUT 034."""
 from __future__ import annotations
 
-from checkers.api import Checker
+from ..api import Checker
 DEFAULT_EDGE_SETTLE_DELAY_S = 1.2e-10
 
 def mean_in_window(rows: list[dict[str, float]], key: str, start: float, stop: float) -> float | None:

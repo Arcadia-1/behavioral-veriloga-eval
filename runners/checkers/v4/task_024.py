@@ -1,7 +1,7 @@
 """Task-specific checker for canonical v4 DUT 024."""
 from __future__ import annotations
 
-from checkers.api import Checker
+from ..api import Checker
 def check_sample_hold(rows: list[dict[str, float]]) -> tuple[bool, str]:
     """S&H: output steps at clock edges, held between them."""
     if not rows or not {"in", "clk", "out"}.issubset(rows[0]):

@@ -1,7 +1,7 @@
 from __future__ import annotations
 
-from checkers.api import Checker
-from checkers.common.issue109_split import check_clocked
+from ..api import Checker
+from ..common.issue109_split import check_clocked
 
 
 TASK_LABEL = "v4_283_mode_latch_calibration_gate"

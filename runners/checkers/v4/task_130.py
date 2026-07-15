@@ -1,7 +1,7 @@
 """Task-specific checker for canonical v4 DUT 130."""
 from __future__ import annotations
 
-from checkers.api import Checker
+from ..api import Checker
 def check_v3_differential_gain_driver(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "sigin_p", "sigin_n", "sigout_p", "sigout_n", "sigref"}
     if not rows or not required.issubset(rows[0]):

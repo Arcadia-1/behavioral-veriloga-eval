@@ -1,7 +1,7 @@
 """Task-specific checker for canonical v4 DUT 049."""
 from __future__ import annotations
 
-from checkers.api import Checker
+from ..api import Checker
 def _sample_rows_every_10ns(rows: list[dict[str, float]]) -> list[dict[str, float]]:
     # Formal utility testbenches hold each vector for a 10 ns window. Sample
     # mid-window to avoid transition edges and PWL update times.

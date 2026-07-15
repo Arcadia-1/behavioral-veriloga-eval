@@ -1,7 +1,7 @@
 """Task-specific checker for canonical v4 DUT 090."""
 from __future__ import annotations
 
-from checkers.api import Checker
+from ..api import Checker
 def check_v3_dither_adder(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"vres_p", "vres_n", "dpn", "vout_p", "vout_n"}
     if not rows or not required.issubset(rows[0]):

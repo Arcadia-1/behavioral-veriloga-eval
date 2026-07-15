@@ -1,7 +1,7 @@
 from __future__ import annotations
 
-from checkers.api import Checker
-from checkers.common.issue109_split import check_continuous
+from ..api import Checker
+from ..common.issue109_split import check_continuous
 
 
 TASK_LABEL = "v4_278_lane_mask_replication_driver"

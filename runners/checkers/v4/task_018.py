@@ -1,7 +1,7 @@
 """Task-specific checker for canonical v4 DUT 018."""
 from __future__ import annotations
 
-from checkers.api import Checker
+from ..api import Checker
 def check_vbm1_thermometer_dac_15seg(rows: list[dict[str, float]]) -> tuple[bool, str]:
     if not rows:
         return False, "empty"

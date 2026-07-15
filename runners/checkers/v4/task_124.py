@@ -1,7 +1,7 @@
 """Task-specific checker for canonical v4 DUT 124."""
 from __future__ import annotations
 
-from checkers.api import Checker
+from ..api import Checker
 import math
 
 def check_v3_smooth_comparator_tanh(rows: list[dict[str, float]]) -> tuple[bool, str]:

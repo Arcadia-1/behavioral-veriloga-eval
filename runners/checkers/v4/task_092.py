@@ -1,7 +1,7 @@
 """Task-specific checker for canonical v4 DUT 092."""
 from __future__ import annotations
 
-from checkers.api import Checker
+from ..api import Checker
 def check_v3_fixed_gain_amplifier(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"vin_p", "vin_n", "vout_p", "vout_n"}
     if not rows or not required.issubset(rows[0]):

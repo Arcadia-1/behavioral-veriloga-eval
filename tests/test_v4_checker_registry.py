@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import os
 import subprocess
 import sys
 from pathlib import Path
@@ -217,6 +218,29 @@ def test_checker_package_imports_from_a_clean_repository_root() -> None:
         capture_output=True,
         text=True,
         check=False,
+    )
+    assert probe.returncode == 0, probe.stderr
+
+
+def test_all_checker_modules_import_from_a_clean_repository_root() -> None:
+    probe = subprocess.run(
+        [
+            sys.executable,
+            "-c",
+            (
+                "from runners.checkers.v4.registry import "
+                "load_checker, published_checker_ids; "
+                "ids = published_checker_ids(); "
+                "assert len(ids) == 400, len(ids); "
+                "missing = [checker_id for checker_id in ids if load_checker(checker_id) is None]; "
+                "assert not missing, missing"
+            ),
+        ],
+        cwd=ROOT,
+        capture_output=True,
+        text=True,
+        check=False,
+        env={key: value for key, value in os.environ.items() if key != "PYTHONPATH"},
     )
     assert probe.returncode == 0, probe.stderr
 

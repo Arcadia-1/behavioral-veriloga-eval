@@ -1,7 +1,7 @@
 from __future__ import annotations
 
-from checkers.api import Checker
-from checkers.common.issue109_factory import CheckResult, Row, check_continuous_factory
+from ..api import Checker
+from ..common.issue109_factory import CheckResult, Row, check_continuous_factory
 
 
 TASK_LABEL = 'v4_268_mode_selected_bias_driver'

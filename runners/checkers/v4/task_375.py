@@ -1,7 +1,7 @@
 """Task-specific checker for canonical v4 DUT 375."""
 from __future__ import annotations
 
-from checkers.api import Checker
+from ..api import Checker
 def _rising_times(rows: list[dict[str, float]], col: str, vth: float = 0.45) -> list[float]:
     times: list[float] = []
     last = rows[0][col] > vth

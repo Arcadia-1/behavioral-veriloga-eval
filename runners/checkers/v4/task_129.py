@@ -1,7 +1,7 @@
 """Task-specific checker for canonical v4 DUT 129."""
 from __future__ import annotations
 
-from checkers.api import Checker
+from ..api import Checker
 def check_v3_polynomial_differential_vcvs(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "inp", "inn", "outp", "outn"}
     if not rows or not required.issubset(rows[0]):

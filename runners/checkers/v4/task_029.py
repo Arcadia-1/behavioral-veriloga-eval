@@ -1,7 +1,7 @@
 """Task-specific checker for canonical v4 DUT 029."""
 from __future__ import annotations
 
-from checkers.api import Checker
+from ..api import Checker
 def check_cmp_hysteresis(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "out_p", "out_n"}
     if not rows or not required.issubset(rows[0]):

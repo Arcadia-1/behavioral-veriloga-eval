@@ -1,7 +1,7 @@
 """Task-specific checker for canonical v4 DUT 041."""
 from __future__ import annotations
 
-from checkers.api import Checker
+from ..api import Checker
 def mean_in_window(rows: list[dict[str, float]], key: str, start: float, stop: float) -> float | None:
     values = [r[key] for r in rows if start <= r["time"] <= stop and key in r]
     if not values:

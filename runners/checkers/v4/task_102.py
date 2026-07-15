@@ -1,7 +1,7 @@
 """Task-specific checker for canonical v4 DUT 102."""
 from __future__ import annotations
 
-from checkers.api import Checker
+from ..api import Checker
 def check_v3_clocked_sine_source(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "clk", "rst_n", "vinp", "vinn", "vamp_p", "vamp_n"}
     if not rows or not required.issubset(rows[0]):

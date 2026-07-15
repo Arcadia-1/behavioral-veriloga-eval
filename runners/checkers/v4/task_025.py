@@ -1,7 +1,7 @@
 """Task-specific checker for canonical v4 DUT 025."""
 from __future__ import annotations
 
-from checkers.api import Checker
+from ..api import Checker
 def check_release_dac_mismatch_unit_weighting(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "b0", "b1", "b2", "b3", "out"}
     if not rows or not required.issubset(rows[0]):

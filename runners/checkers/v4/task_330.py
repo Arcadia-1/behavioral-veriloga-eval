@@ -1,7 +1,7 @@
 """Task-specific checker for canonical v4 DUT 330."""
 from __future__ import annotations
 
-from checkers.api import Checker
+from ..api import Checker
 VCM = 0.45
 VTH = 0.45
 

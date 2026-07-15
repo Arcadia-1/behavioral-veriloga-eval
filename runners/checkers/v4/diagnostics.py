@@ -5,7 +5,7 @@ import re
 from collections.abc import Mapping, Sequence
 from typing import Union
 
-from checkers.api import Checker
+from ..api import Checker
 
 
 _FIELD_RE = re.compile(r"\b([A-Za-z_][A-Za-z0-9_]*)=([^\s;]+)")

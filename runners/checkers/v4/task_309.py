@@ -1,9 +1,9 @@
 """Task-specific checker for canonical v4 DUT 309."""
 from __future__ import annotations
 
-from checkers.api import Checker
-from checkers.v4.diagnostics import excess_count
-from checkers.common.v4_topup import (
+from ..api import Checker
+from .diagnostics import excess_count
+from ..common.v4_topup import (
     _v4_topup_logic_high,
     _v4_topup_near,
     _v4_topup_span,

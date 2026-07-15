@@ -1,7 +1,7 @@
 """Task-specific checker for canonical v4 DUT 023."""
 from __future__ import annotations
 
-from checkers.api import Checker
+from ..api import Checker
 def check_flash_adc_3b(rows: list[dict[str, float]]) -> tuple[bool, str]:
     """3-bit flash ADC: all 8 codes present, monotonic with ramp input."""
     if not rows or not {"vin", "clk", "dout2", "dout1", "dout0"}.issubset(rows[0]):

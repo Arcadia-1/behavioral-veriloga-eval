@@ -1,7 +1,7 @@
 """Task-specific checker for canonical v4 DUT 139."""
 from __future__ import annotations
 
-from checkers.api import Checker
+from ..api import Checker
 def check_v3_ideal_differential_opamp(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "vinp", "vinn", "voutp", "voutn"}
     if not rows or not required.issubset(rows[0]):

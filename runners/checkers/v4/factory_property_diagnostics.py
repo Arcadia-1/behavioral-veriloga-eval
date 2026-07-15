@@ -1,7 +1,7 @@
 """Observable property diagnostics for continuous factory checkers."""
 from __future__ import annotations
 
-from checkers.common.issue109_factory import (
+from ..common.issue109_factory import (
     CONT_REQUIRED,
     _cont_expected,
     _normalized_inputs,
