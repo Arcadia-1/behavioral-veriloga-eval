@@ -1,8 +1,6 @@
 from __future__ import annotations
 
 import csv
-import json
-import os
 import re
 import shutil
 import subprocess
@@ -62,38 +60,11 @@ class TestbenchResult:
         )
 
 
-def _read_json(path: Path) -> dict[str, Any]:
-    return json.loads(path.read_text(encoding="utf-8"))
-
-
-def _candidate_tb_dir(env_name: str) -> Path:
-    override = os.environ.get(env_name)
-    if not override:
-        raise SystemExit(f"missing candidate testbench directory; set {env_name}=<candidate-dir>")
-    return Path(override).expanduser().resolve()
-
-
-def _find_package_root(path: Path) -> Path:
-    for parent in [path, *path.parents]:
-        if (parent / "formal_tasks").is_dir() and (parent / "runners").is_dir():
-            return parent
-    raise SystemExit("cannot find benchmark-vabench-release-v4 package root")
-
-
 def _find_repo_root(package_root: Path) -> Path:
     for parent in [package_root, *package_root.parents]:
         if (parent / "runners" / "simulate_evas.py").exists():
             return parent
     raise SystemExit("cannot find behavioral-veriloga-eval repo root")
-
-
-def _copy_single_tb(candidate_dir: Path, run_dir: Path, expected_name: str) -> Path:
-    source = candidate_dir / expected_name
-    if not source.exists():
-        raise SystemExit(f"candidate testbench directory is missing target artifact: {expected_name}")
-    target = run_dir / expected_name
-    shutil.copy2(source, target)
-    return target
 
 
 def _module_names(source: Path) -> list[str]:
@@ -344,125 +315,3 @@ def _run_case(
             behavior_pass=score >= 1.0,
             notes=[f"{label}: " + note for note in notes],
         )
-
-
-def _run_testbench_oracle(
-    script_file: str | Path,
-    *,
-    source_env: str,
-    result_prefix: str,
-    public_subset_only: bool,
-) -> int:
-    script_path = Path(script_file).resolve()
-    task_dir = script_path.parents[1]
-    package_root = _find_package_root(task_dir)
-    record = _read_json(task_dir / "TASK_RECORD.json")
-    policy = _read_json(task_dir / "evaluator" / "score_policy.json")
-    contract = _read_json(task_dir / "public_contract.json")
-    source_formal = package_root / str(record["source_formal_dir"])
-    target_artifacts = [str(item) for item in policy.get("target_artifacts") or record.get("source_target_artifacts") or []]
-    if not target_artifacts:
-        raise SystemExit("missing source target artifacts in score policy")
-    checker_profile = _read_json(package_root / str(policy["source_checker_profile"]))
-    checker_task_id = str(policy["source_checker_task_id"])
-    required_signals = set(str(item) for item in contract.get("required_trace_signals") or [])
-    trace_contract = checker_profile.get("trace_contract") or {}
-    required_signals.update(str(item) for item in trace_contract.get("extra_trace_signals") or [])
-    repo_root = _find_repo_root(package_root)
-    runners_dir = str(repo_root / "runners")
-    if runners_dir not in sys.path:
-        sys.path.insert(0, runners_dir)
-    from simulate_evas import required_trace_signals_for_checker
-
-    required_signals.update(required_trace_signals_for_checker(checker_task_id))
-
-    candidate_dir = _candidate_tb_dir(source_env)
-    with tempfile.TemporaryDirectory(prefix="v4_tb_feedback_candidate_") as td:
-        candidate_copy_dir = Path(td)
-        candidate_tb = _copy_single_tb(candidate_dir, candidate_copy_dir, str(record["target"][0]))
-
-        security_path = task_dir / "evaluator" / "testbench_security_policy.json"
-        if security_path.is_file():
-            from testbench_security import validate_testbench
-
-            security = validate_testbench(candidate_tb, contract, _read_json(security_path))
-            if not security.valid:
-                for note in security.diagnostics:
-                    print(f"security: {note}")
-                print(f"{result_prefix}_TB_INVALID_RUN")
-                return 1
-
-        gold = _run_case(
-            package_root=package_root,
-            tb_source=candidate_tb,
-            source_formal=source_formal,
-            target_artifacts=target_artifacts,
-            negative_bundle=None,
-            checker_task_id=checker_task_id,
-            required_signals=required_signals,
-            label="gold",
-            public_contract=contract,
-        )
-        for note in gold.notes:
-            print(note)
-        if gold.outcome is not CaseOutcome.REFERENCE_PASS:
-            print(f"{result_prefix}_TB_REFERENCE_{gold.outcome.value.upper()}")
-            return 1
-
-        negative_manifest_path = package_root / str(policy["negative_manifest"])
-        negative_manifest = _read_json(negative_manifest_path)
-        negative_cases = [
-            case for case in negative_manifest.get("cases", []) or negative_manifest.get("negatives", [])
-        ]
-        if len(negative_cases) != 5:
-            print(f"{result_prefix}_TB_NEGATIVE_SUITE_INVALID count={len(negative_cases)} expected=5")
-            return 1
-        negative_results: list[CaseResult] = []
-        for case in negative_cases:
-            negative_ref = str(case.get("source") or case.get("artifact") or "")
-            negative_bundle = source_formal / negative_ref
-            if not negative_bundle.exists():
-                negative_bundle = negative_manifest_path.parent / negative_ref
-            result = _run_case(
-                package_root=package_root,
-                tb_source=candidate_tb,
-                source_formal=source_formal,
-                target_artifacts=target_artifacts,
-                negative_bundle=negative_bundle,
-                checker_task_id=checker_task_id,
-                required_signals=required_signals,
-                label=str(case["id"]),
-                public_contract=contract,
-            )
-            negative_results.append(result)
-            for note in result.notes:
-                print(note)
-        aggregate = TestbenchResult(gold, tuple(negative_results))
-        if not aggregate.passed:
-            print(
-                f"{result_prefix}_TB_NEGATIVE_COVERAGE_FAIL "
-                f"killed={aggregate.killed_count}/5 survived={aggregate.survived_count} "
-                f"invalid={aggregate.invalid_count}"
-            )
-            return 1
-
-    print(f"{result_prefix}_TB_PASS killed={aggregate.killed_count}/5")
-    return 0
-
-
-def run_testbench_feedback(script_file: str | Path) -> int:
-    return _run_testbench_oracle(
-        script_file,
-        source_env="VABENCH_FEEDBACK_TB_DIR",
-        result_prefix="FEEDBACK",
-        public_subset_only=True,
-    )
-
-
-def run_testbench_score(script_file: str | Path) -> int:
-    return _run_testbench_oracle(
-        script_file,
-        source_env="VABENCH_SCORE_TB_DIR",
-        result_prefix="SCORE",
-        public_subset_only=False,
-    )

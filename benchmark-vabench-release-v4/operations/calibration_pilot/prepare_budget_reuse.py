@@ -78,12 +78,15 @@ def assess_reuse(
     source_cell = result.get("cell") or {}
     if result.get("status") not in SUBMITTED:
         reasons.append("source_not_submitted")
+    if result.get("submission_protocol_compliant") is False:
+        reasons.append("source_submission_protocol_noncompliant")
     if source_cell.get("cell_id") != target_cell.get("cell_id"):
         reasons.append("cell_id_mismatch")
     if source_cell.get("prompt_record_sha256") != target_cell.get("prompt_record_sha256"):
         reasons.append("prompt_record_mismatch")
     files = candidate_files(source_runtime)
-    if not files or any(not path.is_file() for path in files):
+    artifact_gate = RUNNER.submission_artifact_gate(source_runtime)
+    if not files or not artifact_gate["passed"]:
         reasons.append("incomplete_candidate_artifacts")
     if model_turn_hit_limit(result):
         reasons.append("model_turn_hit_output_limit")
@@ -92,18 +95,29 @@ def assess_reuse(
         "reasons": reasons,
         "candidate_artifacts": [
             {
-                "path": path.relative_to(source_runtime / "public" / "submission").as_posix(),
-                "sha256": sha256(path),
+                "path": relative,
+                "sha256": digest,
             }
-            for path in files if path.is_file()
+            for relative, digest in artifact_gate["artifact_sha256"].items()
         ],
     }
 
 
 def check_campaign_compatibility(source: dict[str, Any], target: dict[str, Any]) -> None:
-    for key in ("model", "release_manifest_sha256", "selection_manifest_sha256"):
+    for key in (
+        "model_provider",
+        "model",
+        "release_manifest_sha256",
+        "selection_manifest_sha256",
+    ):
         if source.get(key) != target.get(key):
             raise ValueError(f"campaign mismatch for {key}: {source.get(key)!r} != {target.get(key)!r}")
+    if source.get("selection") != target.get("selection"):
+        raise ValueError("campaign selection mismatch")
+    if not source.get("execution_config") or not target.get("execution_config"):
+        raise ValueError("budget reuse requires execution_config in both campaigns")
+    if source["execution_config"] != target["execution_config"]:
+        raise ValueError("campaign execution_config mismatch")
     if RUNNER.cell_output_budget(target) < RUNNER.cell_output_budget(source):
         raise ValueError("target output-token budget must not be smaller than source")
 

@@ -148,6 +148,7 @@ def evaluate_cell(result_path: Path, command: str | None, timeout_s: int) -> dic
     cell = result["cell"]
     runtime = result_path.parents[1].resolve()
     telemetry = event_telemetry(result.get("events") or [])
+    artifact_gate = RUNNER.submission_artifact_gate(runtime)
     output_tokens = result.get("output_tokens")
     if not isinstance(output_tokens, int):
         provider_total = telemetry["provider_output_tokens_total"]
@@ -159,14 +160,24 @@ def evaluate_cell(result_path: Path, command: str | None, timeout_s: int) -> dic
         "form": cell["form"],
         "mode": cell["mode"],
         "submission_status": result["status"],
+        "submission_protocol_compliant": result.get("submission_protocol_compliant"),
+        "artifact_gate": artifact_gate,
         "output_tokens": output_tokens,
         "working_tokens": result.get("working_tokens", result.get("output_tokens", 0)),
         "provider_usage": provider_usage(result.get("events") or []),
         "telemetry": telemetry,
         "episode_elapsed_s": elapsed_seconds(result),
     }
-    if result["status"] not in SUBMITTED:
+    if (
+        result["status"] not in SUBMITTED
+        or result.get("submission_protocol_compliant") is False
+        or not artifact_gate["passed"]
+    ):
         row["judge_status"] = "not_submitted"
+        if result.get("submission_protocol_compliant") is False:
+            row["judge_status_reason"] = "submission_protocol_noncompliant"
+        elif not artifact_gate["passed"]:
+            row["judge_status_reason"] = "artifact_gate_failed"
     elif not command:
         row["judge_status"] = "not_run"
     else:

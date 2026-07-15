@@ -14,6 +14,7 @@ The result is still an experiment runner, not the final Spectre scorer.
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import subprocess
 import sys
@@ -40,6 +41,29 @@ def read_json(path: Path) -> dict[str, Any]:
 def write_json(path: Path, value: Any) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(json.dumps(value, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+
+
+def command_for_metadata(command: list[str]) -> list[str]:
+    """Keep reproducible structure without persisting credential-adjacent paths."""
+    redacted_values = {
+        "--api-key-file": "<redacted-credential-file>",
+        "--feedback-command": "<redacted-operator-command>",
+        "--final-judge-command": "<redacted-operator-command>",
+    }
+    sanitized: list[str] = []
+    redact_next: str | None = None
+    for token in command:
+        if redact_next is not None:
+            sanitized.append(redact_next)
+            redact_next = None
+            continue
+        sanitized.append(token)
+        redact_next = redacted_values.get(token)
+    return sanitized
+
+
+def text_sha256(value: str) -> str:
+    return hashlib.sha256(value.encode("utf-8")).hexdigest()
 
 
 def filter_campaign(campaign: dict[str, Any], args: argparse.Namespace) -> dict[str, Any]:
@@ -142,6 +166,14 @@ def main() -> int:
         repetitions=args.repetitions,
     )
     campaign = filter_campaign(campaign, args)
+    campaign["execution_config"] = {
+        "schema_version": "v4-campaign-execution-config-v1",
+        "base_url_sha256": text_sha256(args.base_url.rstrip("/")),
+        "temperature": args.temperature,
+        "stream": args.stream,
+        "feedback_output_mode": args.feedback_output_mode,
+        "feedback_command_sha256": text_sha256(args.feedback_command or ""),
+    }
     campaign_path = output_root / "campaign.json"
     write_json(campaign_path, campaign)
     command = [
@@ -191,7 +223,7 @@ def main() -> int:
         "base_url": args.base_url,
         "workers": args.workers,
         "dry_run": args.dry_run,
-        "command": command,
+        "command": command_for_metadata(command),
     }
     write_json(output_root / "wrapper_summary.json", metadata)
     completed = subprocess.run(command, cwd=REPO, check=False)

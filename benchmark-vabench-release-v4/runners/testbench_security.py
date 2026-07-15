@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import re
+from collections import Counter
 from dataclasses import dataclass
 from pathlib import Path, PurePosixPath
 from typing import Any
@@ -9,7 +10,8 @@ from typing import Any
 _INCLUDE_RE = re.compile(r"\b(?:ahdl_include|include)\s+[\"']([^\"']+)[\"']", re.IGNORECASE)
 _MODULE_RE = re.compile(r"\bmodule\s+[A-Za-z_][A-Za-z0-9_$]*", re.IGNORECASE)
 _INSTANCE_RE = re.compile(
-    r"^\s*([A-Za-z_][A-Za-z0-9_$]*)\s*\(([^)]*)\)\s*([A-Za-z_][A-Za-z0-9_$]*)\b",
+    r"^\s*([A-Za-z_][A-Za-z0-9_$]*)\s*\(([^)]*)\)\s*"
+    r"([A-Za-z_][A-Za-z0-9_$]*)\b(.*)$",
     re.IGNORECASE,
 )
 _TRAN_RE = re.compile(r"^\s*([A-Za-z_][A-Za-z0-9_$]*)\s+tran\b(.*)$", re.IGNORECASE)
@@ -165,7 +167,9 @@ def _public_output_nets(contract: dict[str, Any]) -> set[str]:
     return outputs
 
 
-def _binding_signature(binding: dict[str, Any]) -> tuple[str, str, tuple[str, ...]]:
+def _binding_signature(
+    binding: dict[str, Any]
+) -> tuple[str, str, tuple[str, ...], tuple[tuple[str, str], ...]]:
     ordered_nets = binding.get("ordered_nets")
     if ordered_nets is None:
         connections = sorted(binding.get("connections") or [], key=lambda item: int(item.get("position", 0)))
@@ -174,6 +178,23 @@ def _binding_signature(binding: dict[str, Any]) -> tuple[str, str, tuple[str, ..
         str(binding.get("name") or ""),
         str(binding.get("module_ref") or "").lower(),
         tuple(str(item) for item in ordered_nets),
+        tuple(
+            sorted(
+                (str(name), str(value))
+                for name, value in (binding.get("parameter_overrides") or {}).items()
+            )
+        ),
+    )
+
+
+def _instance_parameters(text: str) -> tuple[tuple[str, str], ...]:
+    return tuple(
+        sorted(
+            (match.group(1), match.group(2))
+            for match in re.finditer(
+                r"\b([A-Za-z_][A-Za-z0-9_$]*)\s*=\s*([^\s]+)", text
+            )
+        )
     )
 
 
@@ -236,6 +257,8 @@ def validate_testbench(
     missing_includes = sorted(allowed - set(includes))
     if missing_includes:
         findings.append(SecurityFinding("declared_dut_binding", "missing declared DUT include(s)"))
+    if len(includes) != len(set(includes)):
+        findings.append(SecurityFinding("declared_dut_binding", "duplicate DUT include is forbidden"))
 
     cleaned = _strip_comments(text)
     if _MODULE_RE.search(cleaned) or re.search(r"simulator\s+lang\s*=\s*(?:veriloga|ahdl)", cleaned, re.IGNORECASE):
@@ -245,16 +268,16 @@ def validate_testbench(
             findings.append(SecurityFinding(rule, "forbidden simulator escape token"))
 
     logical = _logical_lines(text)
-    instances: list[tuple[str, str, tuple[str, ...]]] = []
+    instances: list[tuple[str, str, tuple[str, ...], tuple[tuple[str, str], ...]]] = []
     output_nets = _public_output_nets(contract)
     tran_lines: list[str] = []
     saved: set[str] = set()
     for line in logical:
         match = _INSTANCE_RE.match(line)
         if match:
-            name, node_text, kind = match.groups()
+            name, node_text, kind, trailing = match.groups()
             nodes = tuple(token for token in re.split(r"[\s,]+", node_text.strip()) if token)
-            instances.append((name, kind.lower(), nodes))
+            instances.append((name, kind.lower(), nodes, _instance_parameters(trailing)))
             if (
                 kind.lower() in _SOURCE_KINDS
                 and output_nets.intersection(node.lower() for node in nodes)
@@ -273,10 +296,10 @@ def validate_testbench(
                     findings.append(SecurityFinding("private_hierarchical_probe", "hierarchical save target is forbidden"))
                 saved.update(_expand_signal(token))
 
-    expected_bindings = {_binding_signature(item) for item in _declared_bindings(contract)}
+    expected_bindings = [_binding_signature(item) for item in _declared_bindings(contract)]
     entry_modules = {name.lower() for name in _entry_modules(contract)}
-    actual_bindings = {(name, kind, nodes) for name, kind, nodes in instances if kind in entry_modules}
-    if actual_bindings != expected_bindings:
+    actual_bindings = [item for item in instances if item[1] in entry_modules]
+    if Counter(actual_bindings) != Counter(expected_bindings):
         findings.append(SecurityFinding("declared_dut_binding", "DUT instance name, module, or ordered terminals differ"))
 
     if not tran_lines:

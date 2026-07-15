@@ -11,7 +11,7 @@ from typing import Any
 
 try:
     from jsonschema import Draft202012Validator
-except ModuleNotFoundError:  # Runtime oracle environments intentionally stay minimal.
+except (ImportError, ModuleNotFoundError):  # Runtime oracle environments may be minimal or old.
     Draft202012Validator = None
 
 

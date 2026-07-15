@@ -16,8 +16,8 @@ DEFAULT_RELEASE = PACKAGE / "release" / "benchmarkv4"
 MODES = tuple(f"G{i}" for i in range(6))
 FORM_ORDER = {"dut": 0, "testbench": 1, "bugfix": 2}
 MODE_RESPONSE_PROTOCOL = {
-    "direct_one_shot": "v4-exact-artifact-blocks-with-semantic-blind-normalization-v2",
-    "agentic": "v4-workspace-finalizer-with-prefix-normalization-v2",
+    "direct_one_shot": "v4-exact-artifact-blocks-v1",
+    "agentic": "v4-strict-workspace-finalizer-v1",
 }
 
 

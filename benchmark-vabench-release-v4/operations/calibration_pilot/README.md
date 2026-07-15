@@ -75,9 +75,12 @@ python3 benchmark-vabench-release-v4/operations/calibration_pilot/prepare_budget
 ```
 
 `REUSE_MANIFEST.json` records every accepted or rejected cell, source-result
-hashes, candidate hashes, and rejection reasons. A submitted file is not by
-itself reusable: any episode whose model turn hit the old output limit must be
-rerun because an agent may have written an intermediate file before truncation.
+hashes, candidate hashes, and rejection reasons. Reuse requires the same
+provider, model, endpoint hash, temperature, streaming mode, prompt, feedback
+adapter hash, and release; only the output-token ceiling may increase. A
+submitted file is not by itself reusable: any episode whose model turn hit the
+old output limit must be rerun because an agent may have written an intermediate
+file before truncation.
 Run the full target campaign with `--resume`; reused cells are skipped and all
 rejected cells start fresh.
 
@@ -97,24 +100,24 @@ model. Evaluator assets remain outside the model mount. G0/G1 parse exact
 artifact blocks into the submission directory. G2-G5 expose bounded file
 tools, the injected feedback adapter, and `finalize`.
 
-Direct responses use exact artifact envelopes as the primary protocol. For a
-task with exactly one target artifact, the runner also accepts recoverable
-single-file containers: exactly one fenced code block, a filename-only marker
-such as `<<<model.va>>>`, or an input-artifact marker whose path is the single
-declared candidate path. These recoveries are recorded as non-strict
-normalization protocols, not as exact-envelope compliance. For multi-file
-tasks, a deterministic normalizer accepts only explicit, unique filename
-labels attached to fenced blocks or sections. When labeled drafts precede
-another bundle, it selects only the last complete bundle containing every
-required filename once; it never mixes versions, maps by unlabeled block order,
-repairs code, or inspects Verilog-A semantics. Exact-envelope compliance is
-reported separately from functional score so transport formatting does not
-masquerade as Verilog-A capability.
+Direct responses must use the exact artifact envelope contract. The live runner
+rejects filename-only markers, input-artifact markers, Markdown fences,
+duplicate or out-of-order blocks, undeclared paths, and non-whitespace text
+outside the blocks. It preserves the extracted body bytes and records the raw
+response hash, parser version, diagnostics, and artifact hashes. A format
+failure remains `invalid_submission` and is not passed to a judge.
+
+`audit_direct_protocol.py` can classify deterministic recoverability in stored
+historical responses. `reparse_direct.py` may materialize those recovered files
+under `evidence/recovered_direct_submission` for diagnosis, but it does not
+change the episode status or make the result score-eligible. Recovery therefore
+stays separate from the benchmark execution path.
 
 ## Provider Credentials
 
 Credentials are loaded from an environment variable or a repository-external
-file and are never included in prompts, result JSON, or command arguments:
+file and are never included in prompts or result JSON. Credential-file paths
+and injected operator commands are redacted from wrapper metadata:
 
 ```bash
 export DEEPSEEK_API_KEY='...'
@@ -204,7 +207,8 @@ python3 benchmark-vabench-release-v4/operations/calibration_pilot/repair_submiss
 The repair is path-only, preserves artifact hashes, and records the stripped
 prefix and each promotion. It rejects partial bundles, symlinks, and ambiguous
 or competing prefixes. Recovered candidates remain
-`submission_protocol_compliant=false`.
+`submission_protocol_compliant=false`, and the formal scorer treats them as not
+submitted.
 
 Long agentic episodes checkpoint the public conversation, cumulative provider
 output tokens, tool events, and current submission after every model and tool action.

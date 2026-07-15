@@ -22,16 +22,15 @@ from typing import Any
 HERE = Path(__file__).resolve().parent
 PACKAGE = HERE.parents[1]
 REPO = PACKAGE.parent
-if str(HERE) not in sys.path:
-    sys.path.insert(0, str(HERE))
-from submission_normalization import normalize_submission_layout  # noqa: E402
-
 EXPORTER = PACKAGE / "operations" / "tri_form_derivation_prep" / "export_tri_form_runtime.py"
 DEFAULT_RELEASE = PACKAGE / "release" / "benchmarkv4"
 DEFAULT_BASE_URL = "https://www.cun.ai/v1"
 DEFAULT_API_KEY_ENV = "VAEVAS_API_KEY"
+DIRECT_PARSER_VERSION = "v4-exact-artifact-envelope-parser-v1"
 ARTIFACT_RE = re.compile(
-    r'<<<VABENCH_ARTIFACT\s+path="([^"]+)">>>\s*(.*?)\s*<<<END_VABENCH_ARTIFACT>>>',
+    r'(?m)^<<<VABENCH_ARTIFACT path="([^"\r\n]+)">>>\r?\n'
+    r'(.*?)'
+    r'\r?\n<<<END_VABENCH_ARTIFACT>>>(?=\r?$)',
     re.DOTALL,
 )
 RELAXED_ARTIFACT_RE = re.compile(
@@ -114,7 +113,13 @@ def reference_tokens(text: str) -> int:
     return len(re.findall(r"[\w]+|[^\s\w]", text, flags=re.UNICODE))
 
 
-def provider_output_usage(usage: dict[str, Any] | None, visible_text: str) -> dict[str, Any]:
+def provider_output_usage(
+    usage: dict[str, Any] | None,
+    visible_text: str,
+    *,
+    reasoning_text: str = "",
+    tool_text: str = "",
+) -> dict[str, Any]:
     usage = usage or {}
     completion = usage.get("completion_tokens")
     details = usage.get("completion_tokens_details") or {}
@@ -127,11 +132,12 @@ def provider_output_usage(usage: dict[str, Any] | None, visible_text: str) -> di
             "visible_tokens": max(0, completion - reasoning_tokens),
             "source": "provider_usage",
         }
-    estimated = reference_tokens(visible_text)
+    visible_estimate = reference_tokens(visible_text + tool_text)
+    reasoning_estimate = reference_tokens(reasoning_text)
     return {
-        "output_tokens": estimated,
-        "reasoning_tokens": 0,
-        "visible_tokens": estimated,
+        "output_tokens": visible_estimate + reasoning_estimate,
+        "reasoning_tokens": reasoning_estimate,
+        "visible_tokens": visible_estimate,
         "source": "reference_estimate",
     }
 
@@ -159,11 +165,63 @@ def model_event_hit_limit(event: dict[str, Any]) -> bool:
     )
 
 
+def pending_tool_calls(messages: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    """Return uncheckpointed calls from the most recent assistant tool turn."""
+    assistant_index = next(
+        (
+            index
+            for index in range(len(messages) - 1, -1, -1)
+            if messages[index].get("role") == "assistant"
+        ),
+        None,
+    )
+    if assistant_index is None:
+        return []
+    calls = list(messages[assistant_index].get("tool_calls") or [])
+    handled = {
+        str(message.get("tool_call_id"))
+        for message in messages[assistant_index + 1:]
+        if message.get("role") == "tool"
+    }
+    return [call for call in calls if str(call.get("id")) not in handled]
+
+
 def cell_output_budget(cell: dict[str, Any]) -> int:
     value = cell.get("max_output_tokens", cell.get("max_working_tokens"))
     if not isinstance(value, int) or value <= 0:
         raise ValueError(f"invalid output-token budget for {cell.get('cell_id')}: {value!r}")
     return value
+
+
+def validate_campaign_cells(cells: list[dict[str, Any]], release: Path) -> None:
+    mode_specs = read_json(release / "prompt_modes" / "modes.json")["modes"]
+    task_rows = read_json(release / "TASK_INDEX.json")["tasks"]
+    tasks = {str(row["task_id"]): row for row in task_rows}
+    seen: set[str] = set()
+    for cell in cells:
+        cell_id = str(cell.get("cell_id") or "")
+        if not re.fullmatch(r"v4-[0-9]{3,4}-G[0-5]-r[0-9]{2,}", cell_id):
+            raise ValueError(f"invalid campaign cell_id: {cell_id!r}")
+        if cell_id in seen:
+            raise ValueError(f"duplicate campaign cell_id: {cell_id}")
+        seen.add(cell_id)
+
+        mode = str(cell.get("mode") or "")
+        if mode not in mode_specs:
+            raise ValueError(f"unknown campaign mode for {cell_id}: {mode!r}")
+        expected_process = str(mode_specs[mode]["process"])
+        if cell.get("process") != expected_process:
+            raise ValueError(f"campaign process mismatch for {cell_id}")
+
+        task_id = str(cell.get("task_id") or "")
+        task = tasks.get(task_id)
+        if task is None:
+            raise ValueError(f"unknown campaign task for {cell_id}: {task_id!r}")
+        if str(cell.get("family_id")) != str(task["family_id"]):
+            raise ValueError(f"campaign family mismatch for {cell_id}")
+        if str(cell.get("form")) != str(task["form"]):
+            raise ValueError(f"campaign form mismatch for {cell_id}")
+        cell_output_budget(cell)
 
 
 def safe_relative(raw: str) -> Path:
@@ -216,6 +274,9 @@ class OpenAICompatible:
         self.temperature = temperature
         self.stream = stream
 
+    def _redact(self, text: str) -> str:
+        return text.replace(self.api_key, "<redacted-provider-credential>") if self.api_key else text
+
     def complete(self, messages: list[dict[str, Any]], max_tokens: int, tools: list[dict[str, Any]] | None) -> dict[str, Any]:
         payload: dict[str, Any] = {
             "model": self.model,
@@ -258,7 +319,7 @@ class OpenAICompatible:
         if completed.returncode != 0:
             raise RuntimeError(
                 f"provider transport failed after 3 attempts rc={completed.returncode}: "
-                f"{completed.stderr[-2000:]}"
+                f"{self._redact(completed.stderr[-2000:])}"
             )
         try:
             response = json.loads(completed.stdout)
@@ -267,11 +328,12 @@ class OpenAICompatible:
                 "provider returned non-JSON response "
                 f"status=transport_ok stdout_len={len(completed.stdout)} "
                 f"stderr_len={len(completed.stderr)} "
-                f"stdout_tail={completed.stdout[-2000:]!r} "
-                f"stderr_tail={completed.stderr[-2000:]!r}"
+                f"stdout_tail={self._redact(completed.stdout[-2000:])!r} "
+                f"stderr_tail={self._redact(completed.stderr[-2000:])!r}"
             ) from exc
         if response.get("error"):
-            raise RuntimeError(f"provider error: {json.dumps(response['error'])[:2000]}")
+            error = self._redact(json.dumps(response["error"])[:2000])
+            raise RuntimeError(f"provider error: {error}")
         return response
 
     def _curl_payload(self, payload: dict[str, Any]) -> subprocess.CompletedProcess[str]:
@@ -307,9 +369,12 @@ class OpenAICompatible:
         if completed.returncode != 0:
             raise RuntimeError(
                 f"provider streaming transport failed after 3 attempts rc={completed.returncode}: "
-                f"{completed.stderr[-2000:]}"
+                f"{self._redact(completed.stderr[-2000:])}"
             )
-        return parse_openai_sse_response(completed.stdout, completed.stderr)
+        try:
+            return parse_openai_sse_response(completed.stdout, completed.stderr)
+        except RuntimeError as exc:
+            raise RuntimeError(self._redact(str(exc))) from None
 
 
 def parse_openai_sse_response(stdout: str, stderr: str = "") -> dict[str, Any]:
@@ -605,15 +670,52 @@ def last_complete_artifact_bundle(
     return complete, saw_restart
 
 
-def exact_envelope_mapping(text: str, expected: list[str]) -> dict[str, str] | None:
+def exact_envelope_mapping(
+    text: str, expected: list[str]
+) -> tuple[dict[str, str] | None, list[str]]:
+    diagnostics: list[str] = []
     matches = list(ARTIFACT_RE.finditer(text))
-    mapping = validated_artifact_mapping(
-        [(match.group(1), match.group(2)) for match in matches], expected
-    )
-    if mapping is None:
-        return None
-    outside = ARTIFACT_RE.sub("", text)
-    return mapping if not outside.strip() else None
+    if not matches:
+        return None, ["no_exact_artifact_blocks"]
+
+    outside_parts: list[str] = []
+    cursor = 0
+    for match in matches:
+        outside_parts.append(text[cursor:match.start()])
+        cursor = match.end()
+    outside_parts.append(text[cursor:])
+    if any(part.strip() for part in outside_parts):
+        diagnostics.append("non_whitespace_outside_artifact_blocks")
+
+    observed: list[str] = []
+    mapping: dict[str, str] = {}
+    expected_set = set(expected)
+    for match in matches:
+        raw, content = match.group(1), match.group(2)
+        try:
+            relative = safe_relative(raw).as_posix()
+        except ValueError:
+            diagnostics.append(f"unsafe_artifact_path:{raw}")
+            continue
+        observed.append(relative)
+        if raw != relative:
+            diagnostics.append(f"noncanonical_artifact_path:{raw}")
+        elif relative not in expected_set:
+            diagnostics.append(f"undeclared_artifact_path:{relative}")
+        elif relative in mapping:
+            diagnostics.append(f"duplicate_artifact_path:{relative}")
+        else:
+            mapping[relative] = content
+        if "<<<VABENCH_ARTIFACT" in content or "<<<END_VABENCH_ARTIFACT" in content:
+            diagnostics.append(f"ambiguous_artifact_marker:{relative}")
+
+    missing = [relative for relative in expected if relative not in mapping]
+    diagnostics.extend(f"missing_artifact_path:{relative}" for relative in missing)
+    if observed != expected:
+        diagnostics.append("artifact_blocks_not_in_canonical_order")
+    if diagnostics:
+        return None, diagnostics
+    return mapping, []
 
 
 def artifact_label(line: str, expected: list[str]) -> str | None:
@@ -711,18 +813,38 @@ def write_artifact_mapping(mapping: dict[str, str], runtime: Path) -> list[str]:
         path = submission / relative
         path.resolve().relative_to(submission.resolve())
         path.parent.mkdir(parents=True, exist_ok=True)
-        path.write_text(mapping[relative].rstrip() + "\n", encoding="utf-8")
+        path.write_text(mapping[relative], encoding="utf-8")
         saved.append(relative)
     return saved
 
 
+def parse_direct_artifacts_detailed(
+    text: str, runtime: Path
+) -> tuple[dict[str, str] | None, str, list[str]]:
+    expected = expected_candidate_artifacts(runtime)
+    if not expected:
+        return None, "invalid_exact_artifact_envelope", ["missing_candidate_artifact_contract"]
+
+    mapping, diagnostics = exact_envelope_mapping(text, expected)
+    if mapping is None:
+        return None, "invalid_exact_artifact_envelope", diagnostics
+    return mapping, "exact_artifact_envelope", []
+
+
 def parse_direct_artifacts(text: str, runtime: Path) -> tuple[dict[str, str] | None, str]:
+    mapping, protocol, _diagnostics = parse_direct_artifacts_detailed(text, runtime)
+    return mapping, protocol
+
+
+def parse_recoverable_direct_artifacts(
+    text: str, runtime: Path
+) -> tuple[dict[str, str] | None, str]:
+    """Classify deterministic historical recoveries without changing live scoring."""
     expected = expected_candidate_artifacts(runtime)
     if not expected:
         return None, "missing_candidate_artifact_contract"
 
-    mapping = exact_envelope_mapping(text, expected)
-    protocol = "exact_artifact_envelope"
+    mapping, protocol = parse_direct_artifacts(text, runtime)
     if mapping is None:
         exact_pairs = ARTIFACT_RE.findall(text)
         mapping, restarted = last_complete_artifact_bundle(exact_pairs, expected)
@@ -759,7 +881,16 @@ def parse_direct_artifacts(text: str, runtime: Path) -> tuple[dict[str, str] | N
 
 
 def extract_direct_with_protocol(text: str, runtime: Path) -> tuple[list[str], str]:
-    mapping, protocol = parse_direct_artifacts(text, runtime)
+    mapping, protocol, _diagnostics = parse_direct_artifacts_detailed(text, runtime)
+    if mapping is None:
+        return [], protocol
+    return write_artifact_mapping(mapping, runtime), protocol
+
+
+def extract_recoverable_direct_with_protocol(
+    text: str, runtime: Path
+) -> tuple[list[str], str]:
+    mapping, protocol = parse_recoverable_direct_artifacts(text, runtime)
     if mapping is None:
         return [], protocol
     return write_artifact_mapping(mapping, runtime), protocol
@@ -773,24 +904,87 @@ def extract_direct(text: str, runtime: Path) -> list[str]:
     return extract_direct_with_protocol(text, runtime)[0]
 
 
-def submission_complete(runtime: Path) -> bool:
-    expected = [Path(item) for item in expected_candidate_artifacts(runtime)]
-    submission = runtime / "public" / "submission"
-    return bool(expected) and all((submission / path).is_file() for path in expected)
-
-
-def normalize_agentic_submission(runtime: Path, result: dict[str, Any]) -> bool:
+def submission_artifact_gate(runtime: Path) -> dict[str, Any]:
     expected = expected_candidate_artifacts(runtime)
-    normalization = normalize_submission_layout(
-        runtime / "public" / "submission", expected
+    expected_set = set(expected)
+    submission = runtime / "public" / "submission"
+    diagnostics: list[str] = []
+    actual: set[str] = set()
+    allowed_directories: set[str] = set()
+    for raw in expected:
+        parent = Path(raw).parent
+        while parent != Path("."):
+            allowed_directories.add(parent.as_posix())
+            parent = parent.parent
+
+    if not expected:
+        diagnostics.append("missing_candidate_artifact_contract")
+    if len(expected_set) != len(expected):
+        diagnostics.append("duplicate_candidate_artifact_contract")
+    if not submission.is_dir():
+        diagnostics.append("missing_submission_directory")
+    else:
+        for path in sorted(submission.rglob("*")):
+            relative = path.relative_to(submission).as_posix()
+            if path.is_symlink():
+                diagnostics.append(f"symlink_not_allowed:{relative}")
+            elif path.is_file():
+                actual.add(relative)
+            elif path.is_dir():
+                if relative not in allowed_directories:
+                    diagnostics.append(f"undeclared_directory:{relative}")
+            else:
+                diagnostics.append(f"non_regular_artifact:{relative}")
+
+    diagnostics.extend(
+        f"missing_artifact_path:{relative}" for relative in sorted(expected_set - actual)
     )
-    if normalization is not None:
-        result["submission_layout_normalization"] = normalization
-        result["submission_protocol_compliant"] = False
-    complete = submission_complete(runtime)
-    if complete and normalization is None:
-        result["submission_protocol_compliant"] = True
-    return complete
+    diagnostics.extend(
+        f"undeclared_artifact_path:{relative}" for relative in sorted(actual - expected_set)
+    )
+    passed = not diagnostics
+    artifacts = {
+        relative: hashlib.sha256((submission / relative).read_bytes()).hexdigest()
+        for relative in expected
+        if passed
+    }
+    return {
+        "schema_version": "v4-submission-artifact-gate-v1",
+        "passed": passed,
+        "expected_artifacts": expected,
+        "observed_artifacts": sorted(actual),
+        "artifact_sha256": artifacts,
+        "diagnostics": diagnostics,
+    }
+
+
+def submission_complete(runtime: Path) -> bool:
+    return bool(submission_artifact_gate(runtime)["passed"])
+
+
+def extract_direct_submission(text: str, runtime: Path) -> dict[str, Any]:
+    mapping, protocol, diagnostics = parse_direct_artifacts_detailed(text, runtime)
+    saved = write_artifact_mapping(mapping, runtime) if mapping is not None else []
+    gate = submission_artifact_gate(runtime) if mapping is not None else None
+    compliant = bool(mapping is not None and gate and gate["passed"])
+    return {
+        "saved_files": saved,
+        "extraction_protocol": protocol,
+        "submission_protocol_compliant": compliant,
+        "response_sha256": hashlib.sha256(text.encode("utf-8")).hexdigest(),
+        "response_parser_version": DIRECT_PARSER_VERSION,
+        "parse_diagnostics": diagnostics,
+        "artifact_gate": gate,
+        "artifact_sha256": dict((gate or {}).get("artifact_sha256") or {}),
+    }
+
+
+def gate_agentic_submission(runtime: Path, result: dict[str, Any]) -> bool:
+    gate = submission_artifact_gate(runtime)
+    result["artifact_gate"] = gate
+    result["artifact_sha256"] = gate["artifact_sha256"]
+    result["submission_protocol_compliant"] = bool(gate["passed"])
+    return bool(gate["passed"])
 
 
 def export_runtime(cell: dict[str, Any], release: Path, output: Path) -> None:
@@ -823,6 +1017,9 @@ def run_cell(cell: dict[str, Any], args: argparse.Namespace, client: OpenAICompa
     assert client is not None
     if args.resume and conversation_path.is_file():
         checkpoint = read_json(conversation_path)
+        if checkpoint.get("cell_id") != cell["cell_id"]:
+            raise ValueError("conversation checkpoint cell_id does not match the campaign cell")
+        result["started_at"] = str(checkpoint.get("started_at") or result["started_at"])
         messages = list(checkpoint["messages"])
         output_tokens = int(checkpoint.get("output_tokens", checkpoint.get("working_tokens", 0)))
         events = list(checkpoint["events"])
@@ -839,83 +1036,20 @@ def run_cell(cell: dict[str, Any], args: argparse.Namespace, client: OpenAICompa
         write_json(conversation_path, {
             "schema_version": "v4-calibration-conversation-checkpoint-v1",
             "cell_id": cell["cell_id"], "messages": messages,
+            "started_at": result["started_at"],
             "output_tokens": output_tokens, "working_tokens": output_tokens, "events": events,
             "finalized": finalized, "updated_at": now(),
         })
 
-    if cell["mode"] not in AGENTIC and len(messages) > 1:
-        content = str(messages[-1].get("content") or "")
-        saved, extraction_protocol = extract_direct_with_protocol(content, runtime)
-        result.update({
-            "status": "submitted" if saved and submission_complete(runtime) else "invalid_submission",
-            "saved_files": saved,
-            "extraction_protocol": extraction_protocol,
-            "submission_protocol_compliant": direct_protocol_compliant(extraction_protocol),
-            "finished_at": now(),
-            "output_tokens": output_tokens,
-            "working_tokens": output_tokens,
-            "events": events,
-            "recovered_from_checkpoint": True,
-        })
-        write_json(runtime / "evidence" / "campaign_result.json", result)
-        return result
-    while output_tokens < output_budget and not finalized:
-        remaining = output_budget - output_tokens
-        started = time.monotonic()
-        response = client.complete(messages, remaining, TOOLS if cell["mode"] in AGENTIC else None)
-        response_choice = response["choices"][0]
-        choice = response_choice["message"]
-        elapsed = time.monotonic() - started
-        content = str(choice.get("content") or "")
-        usage = provider_output_usage(response.get("usage"), content)
-        output_tokens += int(usage["output_tokens"])
-        model_event = {
-            "type": "model",
-            "elapsed_s": elapsed,
-            "requested_max_tokens": remaining,
-            "finish_reason": response_choice.get("finish_reason"),
-            "provider_output_tokens": usage["output_tokens"],
-            "provider_reasoning_tokens": usage["reasoning_tokens"],
-            "provider_visible_tokens": usage["visible_tokens"],
-            "provider_token_source": usage["source"],
-            "reference_tokens": reference_tokens(content),
-            "provider_usage": response.get("usage"),
-            "provider_response": provider_response_metadata(response),
-        }
-        events.append(model_event)
-        write_json(runtime / "evidence" / "campaign_checkpoint.json", {
-            "cell_id": cell["cell_id"], "output_tokens": output_tokens,
-            "working_tokens": output_tokens,
-            "event_count": len(events), "events": events, "updated_at": now(),
-        })
-        messages.append(choice)
-        save_conversation()
-        if cell["mode"] not in AGENTIC:
-            saved, extraction_protocol = extract_direct_with_protocol(content, runtime)
-            hit_limit = model_event_hit_limit(model_event) or output_tokens >= output_budget
-            result.update({
-                "status": (
-                    "submitted_at_budget" if saved and submission_complete(runtime) and hit_limit
-                    else "submitted" if saved and submission_complete(runtime)
-                    else "budget_exhausted" if hit_limit
-                    else "invalid_submission"
-                ),
-                "saved_files": saved,
-                "extraction_protocol": extraction_protocol,
-                "submission_protocol_compliant": direct_protocol_compliant(extraction_protocol),
-            })
-            break
-        calls = choice.get("tool_calls") or []
-        if not calls:
-            hit_limit = model_event_hit_limit(model_event) or output_tokens >= output_budget
-            complete = normalize_agentic_submission(runtime, result)
-            result["status"] = (
-                "submitted_at_budget" if complete and hit_limit
-                else "submitted" if complete
-                else "budget_exhausted" if hit_limit
-                else "invalid_submission"
-            )
-            break
+    def current_turn_hit_limit() -> bool:
+        last_model = next(
+            (event for event in reversed(events) if event.get("type") == "model"),
+            {},
+        )
+        return model_event_hit_limit(last_model) or output_tokens >= output_budget
+
+    def process_tool_calls(calls: list[dict[str, Any]]) -> None:
+        nonlocal finalized
         for call in calls:
             function = call["function"]
             try:
@@ -946,10 +1080,120 @@ def run_cell(cell: dict[str, Any], args: argparse.Namespace, client: OpenAICompa
             messages.append({"role": "tool", "tool_call_id": call["id"], "content": text})
             finalized = finalized or done
             save_conversation()
+
+    if cell["mode"] not in AGENTIC and len(messages) > 1:
+        content = str(messages[-1].get("content") or "")
+        direct_submission = extract_direct_submission(content, runtime)
+        complete = bool(direct_submission["submission_protocol_compliant"])
+        result.update({
+            "status": (
+                "submitted_at_budget" if complete and current_turn_hit_limit()
+                else "submitted" if complete
+                else "budget_exhausted" if current_turn_hit_limit()
+                else "invalid_submission"
+            ),
+            "finished_at": now(),
+            "output_tokens": output_tokens,
+            "working_tokens": output_tokens,
+            "events": events,
+            "recovered_from_checkpoint": True,
+            **direct_submission,
+        })
+        write_json(runtime / "evidence" / "campaign_result.json", result)
+        return result
+    if cell["mode"] in AGENTIC and args.resume:
+        pending = pending_tool_calls(messages)
+        if pending:
+            process_tool_calls(pending)
+        elif messages and messages[-1].get("role") == "assistant":
+            complete = gate_agentic_submission(runtime, result)
+            result["status"] = (
+                "submitted_at_budget" if complete and current_turn_hit_limit()
+                else "submitted" if complete
+                else "budget_exhausted" if current_turn_hit_limit()
+                else "invalid_submission"
+            )
         if finalized:
-            result["status"] = "submitted" if normalize_agentic_submission(runtime, result) else "invalid_submission"
+            complete = gate_agentic_submission(runtime, result)
+            result["status"] = (
+                "submitted_at_budget" if complete and current_turn_hit_limit()
+                else "submitted" if complete
+                else "invalid_submission"
+            )
+    while output_tokens < output_budget and not finalized and result.get("status") == "prepared":
+        remaining = output_budget - output_tokens
+        started = time.monotonic()
+        response = client.complete(messages, remaining, TOOLS if cell["mode"] in AGENTIC else None)
+        response_choice = response["choices"][0]
+        choice = response_choice["message"]
+        elapsed = time.monotonic() - started
+        content = str(choice.get("content") or "")
+        reasoning_content = str(choice.get("reasoning_content") or "")
+        response_tool_calls = choice.get("tool_calls") or []
+        tool_text = json.dumps(response_tool_calls, sort_keys=True) if response_tool_calls else ""
+        usage = provider_output_usage(
+            response.get("usage"),
+            content,
+            reasoning_text=reasoning_content,
+            tool_text=tool_text,
+        )
+        output_tokens += int(usage["output_tokens"])
+        model_event = {
+            "type": "model",
+            "elapsed_s": elapsed,
+            "requested_max_tokens": remaining,
+            "finish_reason": response_choice.get("finish_reason"),
+            "provider_output_tokens": usage["output_tokens"],
+            "provider_reasoning_tokens": usage["reasoning_tokens"],
+            "provider_visible_tokens": usage["visible_tokens"],
+            "provider_token_source": usage["source"],
+            "reference_tokens": reference_tokens(content),
+            "provider_usage": response.get("usage"),
+            "provider_response": provider_response_metadata(response),
+        }
+        events.append(model_event)
+        write_json(runtime / "evidence" / "campaign_checkpoint.json", {
+            "cell_id": cell["cell_id"], "output_tokens": output_tokens,
+            "working_tokens": output_tokens,
+            "event_count": len(events), "events": events, "updated_at": now(),
+        })
+        messages.append(choice)
+        save_conversation()
+        if cell["mode"] not in AGENTIC:
+            direct_submission = extract_direct_submission(content, runtime)
+            complete = bool(direct_submission["submission_protocol_compliant"])
+            hit_limit = model_event_hit_limit(model_event) or output_tokens >= output_budget
+            result.update({
+                "status": (
+                    "submitted_at_budget" if complete and hit_limit
+                    else "submitted" if complete
+                    else "budget_exhausted" if hit_limit
+                    else "invalid_submission"
+                ),
+                **direct_submission,
+            })
+            break
+        calls = choice.get("tool_calls") or []
+        if not calls:
+            hit_limit = model_event_hit_limit(model_event) or output_tokens >= output_budget
+            complete = gate_agentic_submission(runtime, result)
+            result["status"] = (
+                "submitted_at_budget" if complete and hit_limit
+                else "submitted" if complete
+                else "budget_exhausted" if hit_limit
+                else "invalid_submission"
+            )
+            break
+        process_tool_calls(calls)
+        if finalized:
+            complete = gate_agentic_submission(runtime, result)
+            result["status"] = (
+                "submitted_at_budget" if complete and current_turn_hit_limit()
+                else "submitted" if complete
+                else "invalid_submission"
+            )
     if result.get("status") == "prepared":
-        complete = normalize_agentic_submission(runtime, result) if cell["mode"] in AGENTIC else submission_complete(runtime)
+        complete = gate_agentic_submission(runtime, result) if cell["mode"] in AGENTIC else False
         result["status"] = "submitted_at_budget" if complete else "budget_exhausted"
     result.update({
         "finished_at": now(),
@@ -958,7 +1202,11 @@ def run_cell(cell: dict[str, Any], args: argparse.Namespace, client: OpenAICompa
         "output_token_budget": output_budget,
         "events": events,
     })
-    if args.final_judge_command:
+    if (
+        args.final_judge_command
+        and result.get("status") in {"submitted", "submitted_at_budget"}
+        and result.get("submission_protocol_compliant") is not False
+    ):
         result["final_judge"] = command_result(args.final_judge_command, runtime, args.judge_timeout_s)
     write_json(runtime / "evidence" / "campaign_result.json", result)
     return result
@@ -971,12 +1219,17 @@ def run_cell_preserving_failure(
         return run_cell(cell, args, client)
     except Exception as exc:  # Preserve failed paid episodes for audit and resume diagnosis.
         runtime = args.output / cell["cell_id"]
+        error = str(exc)[:4000]
+        trace = traceback.format_exc()[-12000:]
+        if client is not None:
+            error = client._redact(error)
+            trace = client._redact(trace)
         failure = {
             "cell": cell,
             "status": "runner_error",
             "error_type": type(exc).__name__,
-            "error": str(exc)[:4000],
-            "traceback": traceback.format_exc()[-12000:],
+            "error": error,
+            "traceback": trace,
             "finished_at": now(),
         }
         write_json(runtime / "evidence" / "campaign_result.json", failure)
@@ -1021,7 +1274,15 @@ def main() -> int:
     args.release = args.release.resolve()
     args.output = args.output.resolve()
     campaign = read_json(args.campaign)
+    expected_release_hash = str(campaign.get("release_manifest_sha256") or "")
+    observed_release_hash = hashlib.sha256((args.release / "MANIFEST.json").read_bytes()).hexdigest()
+    if expected_release_hash != observed_release_hash:
+        raise SystemExit(
+            "campaign release manifest does not match --release: "
+            f"expected={expected_release_hash or '<missing>'} observed={observed_release_hash}"
+        )
     cells = list(campaign["cells"])
+    validate_campaign_cells(cells, args.release)
     if args.cell:
         cells = [row for row in cells if row["cell_id"] == args.cell]
     if args.limit is not None:
@@ -1030,7 +1291,11 @@ def main() -> int:
         raise SystemExit("no matching campaign cells")
     if args.workers < 1:
         raise SystemExit("--workers must be at least 1")
+    if min(args.request_timeout_s, args.tool_timeout_s, args.judge_timeout_s) < 1:
+        raise SystemExit("request, tool, and judge timeouts must be positive")
     key = "" if args.dry_run else load_key(args.api_key_file, args.api_key_env)
+    if not args.dry_run:
+        os.environ.pop(args.api_key_env, None)
     client = None if args.dry_run else OpenAICompatible(
         base_url=args.base_url, model=campaign["model"], api_key=key,
         timeout_s=args.request_timeout_s, temperature=args.temperature, stream=args.stream,
@@ -1048,7 +1313,7 @@ def main() -> int:
         summary["statuses"][status] = summary["statuses"].get(status, 0) + 1
     write_json(args.output / "SUMMARY.json", summary)
     print(json.dumps(summary, indent=2))
-    return 0
+    return 1 if summary["statuses"].get("runner_error") else 0
 
 
 if __name__ == "__main__":

@@ -1,5 +1,10 @@
 # DeepSeek V4 Flash Calibration Pilot
 
+This is a historical exploratory calibration report, not a benchmark result.
+Its materialization counts used an earlier recovery policy. Under the current
+strict V4 runner, noncompliant direct envelopes and normalized agentic layouts
+remain `invalid_submission` and are not score-eligible.
+
 ## Scope
 
 This calibration run covers ten preregistered circuit families, all three task
@@ -16,7 +21,7 @@ final judge for paper-facing benchmark scores.
 
 | Metric | 4,096 diagnostic | 65,536 calibrated | Change |
 |---|---:|---:|---:|
-| Complete submissions | 95/180 | 178/180 | +83 |
+| Materialized candidates under historical recovery policy | 95/180 | 178/180 | +83 |
 | No complete submission | 85/180 | 2/180 | -83 |
 | EVAS feedback pass | 50/180 | 92/180 | +42 |
 | Overall pass rate | 27.8% | 51.1% | +23.3 pp |
@@ -70,33 +75,30 @@ file-less `budget_exhausted` result.
 
 ## Direct Output Protocol Audit
 
-Only 13/60 direct responses followed the exact artifact envelope. The original
-provider-neutral parser extracted 59/60 without inspecting or editing code
-semantics: 23 single-artifact fenced blocks, 16 uniquely labeled multi-block
-responses, one uniquely labeled multi-file block, six malformed but
-unambiguous envelopes, and 13 exact envelopes. A post-pilot preregistered rule
-now classifies `v4-342-G1` as mechanically recoverable: its last complete,
-uniquely labeled five-file bundle is selected without inspecting code
-semantics. This correction requires no additional provider call.
+Only 13/60 direct responses followed the exact artifact envelope. An offline
+diagnostic normalizer could mechanically materialize 59/60 without inspecting
+or editing code semantics: 23 single-artifact fenced blocks, 16 uniquely
+labeled multi-block responses, one uniquely labeled multi-file block, six
+malformed but unambiguous envelopes, and 13 exact envelopes. That recovery is
+useful for transport diagnosis only. The 47 non-exact responses remain invalid
+under the current V4 protocol and cannot enter formal scoring.
 
-The new parser recovered nine previously invalid direct submissions. Three
-passed EVAS behavior checks and six then failed compilation or behavior checks.
-Protocol compliance is retained as a diagnostic metric, not folded into the
-Verilog-A functional score.
+Of nine historically recovered candidates, three passed EVAS behavior checks
+and six failed compilation or behavior checks. Those behavior results may be
+reported separately as exploratory analysis, not as benchmark outcomes.
 
 ## Original Cells Without Complete Submission
 
 - G0: none
-- G1: `v4-342` (now recoverable by the last-complete-labeled-bundle rule)
+- G1: `v4-342` (diagnostically recoverable, not score-eligible)
 - G2: none
-- G3: `v4-307` (now recoverable by unique-common-prefix path normalization)
+- G3: `v4-307` (diagnostically recoverable, not score-eligible)
 - G4: none
 - G5: none
 
-The aggregate tables above preserve the originally published pilot accounting
-until the stored campaign is reparsed and rescored. Both corrected cells remain
-transport-protocol noncompliant; their Verilog-A behavior must be reported
-separately after local rescoring.
+The aggregate tables above preserve the historical pilot accounting. Both
+cells remain transport-protocol noncompliant; their Verilog-A behavior can be
+inspected separately but must not alter the formal denominator or score.
 
 ## Decision
 
@@ -122,10 +124,11 @@ within one controlled campaign window.
 Five agentic Testbench episodes wrote the requested artifact under the literal
 prompt path `public/submission/testbench.scs`. The original file tool treated
 that public path as relative to the submission root and therefore nested it a
-second time. A hash-preserving repair promoted those five files and recorded an
-audit entry without invoking the model again. All five then failed EVAS
-feedback: three on deck syntax and two on insufficient stimulus or observation
-windows. This changed submission accounting but did not change the pass count.
+second time. A hash-preserving diagnostic repair promoted those five files and
+recorded an audit entry without invoking the model again. All five then failed
+EVAS feedback: three on deck syntax and two on insufficient stimulus or
+observation windows. The repairs are not score-eligible under the current
+strict runner.
 
 - Layout-repair report: `db86dbf38e9dd9166e3810547ba258166d724dd16c6ba3b067de76d9b3501606`
 - Direct-protocol audit: `4e1ff93ac1d94b32838bd34dd0f82bb5e5790c0cb14b4cdb8db6beee2089ba67`

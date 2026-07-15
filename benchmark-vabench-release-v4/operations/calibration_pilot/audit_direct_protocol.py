@@ -40,14 +40,18 @@ def main() -> int:
         runtime = result_path.parents[1]
         checkpoint = read_json(runtime / "evidence" / "conversation_checkpoint.json")
         content = str(checkpoint["messages"][-1].get("content") or "")
-        mapping, protocol = RUNNER.parse_direct_artifacts(content, runtime)
+        strict_mapping, strict_protocol = RUNNER.parse_direct_artifacts(content, runtime)
+        mapping, protocol = RUNNER.parse_recoverable_direct_artifacts(content, runtime)
         rows.append({
             "cell_id": cell["cell_id"],
             "task_id": cell["task_id"],
             "form": cell["form"],
             "mode": cell["mode"],
             "response_sha256": hashlib.sha256(content.encode("utf-8")).hexdigest(),
-            "raw_protocol_compliant": RUNNER.direct_protocol_compliant(protocol),
+            "raw_protocol_compliant": (
+                strict_mapping is not None
+                and RUNNER.direct_protocol_compliant(strict_protocol)
+            ),
             "deterministically_extractable": mapping is not None,
             "extraction_protocol": protocol,
             "declared_artifacts": RUNNER.expected_candidate_artifacts(runtime),

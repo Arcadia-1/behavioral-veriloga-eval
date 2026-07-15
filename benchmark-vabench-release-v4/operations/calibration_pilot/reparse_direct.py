@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Apply the frozen generic direct-response normalizer to stored pilot outputs."""
+"""Materialize diagnostic recoveries without changing benchmark outcomes."""
 from __future__ import annotations
 
 import argparse
@@ -38,7 +38,7 @@ def refresh_summary(root: Path) -> None:
     summary["result_count"] = len(results)
     summary["statuses"] = dict(sorted(Counter(row["status"] for row in results).items()))
     summary["deterministic_direct_normalization_count"] = sum(
-        bool(row.get("normalization_record")) for row in results
+        bool(row.get("direct_recovery")) for row in results
     )
     write_json(summary_path, summary)
 
@@ -55,32 +55,33 @@ def main() -> int:
         runtime = result_path.parents[1]
         checkpoint = read_json(runtime / "evidence" / "conversation_checkpoint.json")
         content = str(checkpoint["messages"][-1].get("content") or "")
-        saved, protocol = RUNNER.extract_direct_with_protocol(content, runtime)
-        if not saved or not RUNNER.submission_complete(runtime):
+        mapping, protocol = RUNNER.parse_recoverable_direct_artifacts(content, runtime)
+        if mapping is None:
             continue
+        recovery_root = runtime / "evidence" / "recovered_direct_submission"
+        artifact_sha256 = {}
+        for relative, artifact_content in sorted(mapping.items()):
+            path = recovery_root / relative
+            path.parent.mkdir(parents=True, exist_ok=True)
+            path.write_text(artifact_content, encoding="utf-8")
+            artifact_sha256[relative] = hashlib.sha256(path.read_bytes()).hexdigest()
         result.update({
-            "status": "submitted",
-            "saved_files": saved,
-            "extraction_protocol": protocol,
-            "submission_protocol_compliant": RUNNER.direct_protocol_compliant(protocol),
-            "normalized_from_status": "invalid_submission",
-            "normalized_at": datetime.now(timezone.utc).isoformat(),
-            "normalization_record": {
-                "kind": "deterministic_direct_response_extraction",
+            "direct_recovery": {
+                "schema_version": "v4-direct-response-diagnostic-recovery-v1",
+                "kind": "diagnostic_only_deterministic_direct_response_extraction",
+                "protocol": protocol,
                 "model_invoked": False,
+                "score_eligible": False,
+                "recovered_at": datetime.now(timezone.utc).isoformat(),
                 "response_sha256": hashlib.sha256(content.encode("utf-8")).hexdigest(),
-                "artifact_sha256": {
-                    relative: hashlib.sha256(
-                        (runtime / "public" / "submission" / relative).read_bytes()
-                    ).hexdigest()
-                    for relative in saved
-                },
+                "artifact_sha256": artifact_sha256,
+                "output_directory": str(recovery_root),
             },
         })
         write_json(result_path, result)
         changed.append(result["cell"]["cell_id"])
     refresh_summary(args.campaign_output)
-    print(json.dumps({"normalized_count": len(changed), "cell_ids": changed}, indent=2))
+    print(json.dumps({"recovered_count": len(changed), "cell_ids": changed}, indent=2))
     return 0
 
 

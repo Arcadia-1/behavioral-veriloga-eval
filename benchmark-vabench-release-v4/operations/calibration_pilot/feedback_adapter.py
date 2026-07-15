@@ -23,12 +23,15 @@ def read_json(path: Path) -> dict[str, Any]:
 
 def runtime_task(runtime: Path) -> tuple[dict[str, Any], Path]:
     attempt = read_json(runtime / "evidence" / "attempt_record.json")
+    record = read_json(runtime / "evaluator" / "task_record.json")
+    if record.get("task_id") != attempt.get("task_id"):
+        raise SystemExit("runtime task record does not match the attempt record")
     index = read_json(RELEASE / "TASK_INDEX.json")["tasks"]
     matches = [row for row in index if row["task_id"] == attempt["task_id"]]
     if len(matches) != 1:
         raise SystemExit(f"cannot resolve runtime task {attempt['task_id']}")
     task_dir = RELEASE / matches[0]["task_dir"]
-    return read_json(task_dir / "TASK_RECORD.json"), task_dir
+    return record, task_dir
 
 
 def runtime_or_release(runtime: Path, task_dir: Path, relative: str) -> Path:
@@ -90,6 +93,11 @@ def mutation_bundle(source_eval: Path, mutation_id: str, target_artifacts: list[
     return directory
 
 
+def testbench_negative_suite(source_eval: Path) -> list[str]:
+    policy = read_json(source_eval / "score_policy.json")
+    return [str(item) for item in policy.get("negative_suite_mutation_ids") or []]
+
+
 def run_testbench_feedback(runtime: Path, record: dict[str, Any], task_dir: Path) -> int:
     runners = PACKAGE / "runners"
     if str(runners) not in sys.path:
@@ -101,12 +109,7 @@ def run_testbench_feedback(runtime: Path, record: dict[str, Any], task_dir: Path
     contract = read_json(runtime_or_release(runtime, task_dir, "evaluator/public_contract.json"))
     family_spec = read_json(runtime_or_release(runtime, task_dir, "evaluator/family_spec.json"))
     checker = read_json(source_eval / "checker_profile.json")
-    derivation_path = runtime / "evaluator" / "derivation_manifest.json"
-    if derivation_path.exists():
-        suite = list((read_json(derivation_path).get("negative_assignment") or {}).get("testbench_suite") or [])
-    else:
-        mutation_manifest = read_json(runtime_or_release(runtime, task_dir, "evaluator/mutation_bundles/manifest.json"))
-        suite = [str(item["id"]) for item in mutation_manifest.get("mutations", [])[:5]]
+    suite = testbench_negative_suite(source_eval)
     target_artifacts = [
         str(item["path"])
         for item in (family_spec.get("artifact_contract") or {}).get("files") or []
