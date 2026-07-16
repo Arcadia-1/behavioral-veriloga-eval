@@ -109,6 +109,25 @@ def test_testbench_builder_records_reference_hash_and_source_kind(tmp_path: Path
     assert score["reference_tb_source_kind"] == "independent_reference_tb"
 
 
+def test_testbench_builder_mounts_reference_support_below_dut(tmp_path: Path) -> None:
+    source_task, row, seed_review = sample_source_task(tmp_path, independent_reference=True)
+    support = source_task / "public" / "task" / "public_support"
+    support.mkdir(parents=True)
+    (support / "helper.va").write_text("module helper; endmodule\n", encoding="utf-8")
+    reference = source_task / "evaluator" / "reference_tb.scs"
+    reference.write_text('ahdl_include "./support/helper.va"\n', encoding="utf-8")
+
+    output = tmp_path / "release"
+    build_testbench_view(output, source_task, row, sample_spec(), "a" * 64, seed_review)
+    task = output / "tasks" / "501-sample-testbench"
+    materialized = task / "evaluator" / "reference_tb.scs"
+    score = json.loads((task / "evaluator" / "score_policy.json").read_text(encoding="utf-8"))
+
+    assert materialized.read_text(encoding="utf-8") == 'ahdl_include "./dut/support/helper.va"\n'
+    assert (task / "public" / "supplied_dut" / "support" / "helper.va").is_file()
+    assert score["reference_tb_sha256"] == file_sha(materialized)
+
+
 def test_testbench_builder_marks_legacy_score_deck_fallback(tmp_path: Path) -> None:
     source_task, row, seed_review = sample_source_task(tmp_path, independent_reference=False)
     output = tmp_path / "release"

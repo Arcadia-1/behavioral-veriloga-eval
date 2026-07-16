@@ -97,9 +97,18 @@ def update_task_record(task: Path) -> None:
     record_path = evaluator / "task_record.json"
     record = read_json(record_path)
     evaluator_hashes = record.setdefault("evaluator_hashes", {})
+    for relative in tuple(evaluator_hashes):
+        path = evaluator / relative
+        if path.is_file():
+            evaluator_hashes[relative] = file_sha(path)
     for relative in ("harness_spec.json", "profiles/feedback.json", "profiles/score.json", "score_tb.scs"):
         evaluator_hashes[relative] = file_sha(evaluator / relative)
-    record.setdefault("public_hashes", {})["feedback_tb.scs"] = file_sha(public / "feedback_tb.scs")
+    public_hashes = record.setdefault("public_hashes", {})
+    for relative in tuple(public_hashes):
+        path = public / relative
+        if path.is_file():
+            public_hashes[relative] = file_sha(path)
+    public_hashes["feedback_tb.scs"] = file_sha(public / "feedback_tb.scs")
     write_json(record_path, record)
 
 

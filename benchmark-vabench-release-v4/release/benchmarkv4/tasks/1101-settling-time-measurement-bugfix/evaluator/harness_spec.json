@@ -9,7 +9,10 @@
     "analyses": [
       "tran tran stop=160n maxstep=500p"
     ],
-    "body_lines": [],
+    "body_lines": [
+      "Vstep (step 0) vsource type=pwl wave=[0 0 20n 0 21n 0.8 160n 0.8]",
+      "XDUT (step vout done) settling_time_measurement_tb"
+    ],
     "header": [
       "simulator lang=spectre",
       "global 0"
@@ -35,44 +38,17 @@
     "legacy_score_deck_sha256": "3a8f7120e94a3939cc7b57f68ce09e4312a193fbbaecaf0c6469d01327e49498",
     "notes": [
       "legacy feedback deck was used only to seed the canonical harness spec",
-      "legacy score deck seeded private profile-specific overrides"
+      "legacy score deck seeded private profile-specific overrides",
+      "feedback deck is the canonical stimulus; score is generated with identical semantics"
     ]
   },
   "profile_defaults": {
     "feedback": {
-      "deck_overrides": {
-        "body_lines": [
-          "Vstep (step 0) vsource type=pwl wave=[0 0 20n 0 21n 0.8 160n 0.8]",
-          "",
-          "XDUT (step vout done) settling_time_measurement_tb",
-          ""
-        ]
-      },
-      "parameters": {
-        "maxstep": "200p",
-        "stop_time": "100n"
-      },
       "simulatorOptions": {
         "evas_profile": "balanced"
       }
     },
-    "score": {
-      "deck_overrides": {
-        "analyses": [
-          "tran tran stop=170n maxstep=500p"
-        ],
-        "body_lines": [
-          "Vstep (step 0) vsource type=pwl wave=[0 0 15n 0 16n 0.85 170n 0.85]",
-          "",
-          "XDUT (step vout done) settling_time_measurement_tb",
-          ""
-        ]
-      },
-      "parameters": {
-        "maxstep": "100p",
-        "stop_time": "100n"
-      }
-    }
+    "score": {}
   },
   "property_ids": [
     "P_INITIAL_ZERO_STATE",
