@@ -1,89 +1,69 @@
-"""Task-specific checker for canonical v4 DUT 163."""
+"""Stimulus-relative checker for canonical v4 DUT 163."""
 from __future__ import annotations
 
-from ..api import Checker
-def rising_edges(values: list[float], times: list[float], threshold: float = 0.45) -> list[float]:
-    edges: list[float] = []
-    for i in range(1, len(values)):
-        if values[i - 1] < threshold <= values[i]:
-            edges.append(times[i])
-    return edges
+from ..api import Checker, Row
+from .batch17_stimulus_relative import (
+    bind_properties,
+    crossings,
+    diagnostic,
+    event_label,
+    logic_at,
+    logic_threshold,
+    pass_note,
+    require_signals,
+    sample,
+)
 
-def sample_signal_at(rows: list[dict[str, float]], signal: str, time_s: float) -> float | None:
-    if not rows or "time" not in rows[0] or signal not in rows[0]:
-        return None
-    first_time = rows[0]["time"]
-    last_time = rows[-1].get("time")
-    if last_time is None or time_s < first_time or time_s > last_time:
-        return None
-    if time_s == first_time:
-        return rows[0].get(signal)
-    for idx in range(1, len(rows)):
-        prev = rows[idx - 1]
-        cur = rows[idx]
-        t0 = prev.get("time")
-        t1 = cur.get("time")
-        if t0 is None or t1 is None:
-            continue
-        if t0 <= time_s <= t1:
-            v0 = prev.get(signal)
-            v1 = cur.get(signal)
-            if v0 is None or v1 is None:
-                return None
-            if t1 == t0:
-                return v1
-            alpha = (time_s - t0) / (t1 - t0)
-            return v0 + alpha * (v1 - v0)
-    return None
 
-def _v3_missing_columns(rows: list[dict[str, float]], required: set[str]) -> str | None:
-    if not rows:
-        return "empty_waveform"
-    missing = sorted(required - set(rows[0]))
-    if missing:
-        return "missing_columns=" + ",".join(missing)
-    return None
+PROPERTY_IDS = (
+    "P_READY_SERIAL_CAPTURE",
+    "P_TERNARY_WEIGHTING",
+    "P_NORMALIZED_MIDSCALE_OUTPUT",
+    "P_CLOCKED_PUBLICATION_HOLD",
+)
+SIGNALS = {"time", "dp", "dn", "ready", "clks", "dout"}
 
-def _v3_edge_sample_times(
-    rows: list[dict[str, float]],
-    signal: str,
-    *,
-    threshold: float = 0.45,
-    delay_s: float = 1.8e-9,
-) -> list[tuple[float, float]]:
-    times = [row["time"] for row in rows]
-    edges = rising_edges([row[signal] for row in rows], times, threshold=threshold)
-    last_time = times[-1]
-    return [(edge_t, edge_t + delay_s) for edge_t in edges if edge_t + delay_s <= last_time]
 
-def _v3_logic_at(rows: list[dict[str, float]], signal: str, time_s: float, threshold: float = 0.45) -> int | None:
-    value = sample_signal_at(rows, signal, time_s)
-    if value is None:
-        return None
-    return 1 if value > threshold else 0
-
-def check_v3_cyclic_decoder_10b(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    required = {"time", "dp", "dn", "ready", "clks", "dout"}
-    missing = _v3_missing_columns(rows, required)
+def check_v3_cyclic_decoder_10b(rows: list[Row]) -> tuple[bool, str]:
+    missing = require_signals(rows, SIGNALS, "P_READY_SERIAL_CAPTURE")
     if missing:
         return False, missing
 
-    clk_edges = _v3_edge_sample_times(rows, "clks", threshold=0.55)
-    ready_edges = [edge_t for edge_t, _ in _v3_edge_sample_times(rows, "ready", threshold=0.55, delay_s=0.0)]
-    events = [(edge_t, "clk") for edge_t, _ in clk_edges] + [(edge_t, "ready") for edge_t in ready_edges]
+    ready_threshold = logic_threshold(rows, ("ready",), default_high=1.1)
+    clks_threshold = logic_threshold(rows, ("clks",), default_high=1.1)
+    decision_threshold = logic_threshold(rows, ("dp", "dn"), default_high=1.1)
+    ready_edges = crossings(rows, "ready", threshold=ready_threshold, direction="rising")
+    clk_edges = crossings(rows, "clks", threshold=clks_threshold, direction="rising")
+    events = [(edge_t, "clk") for edge_t in clk_edges]
+    events.extend((edge_t, "ready") for edge_t in ready_edges)
     events.sort()
+
+    if len(clk_edges) < 2 or len(ready_edges) < 4:
+        return False, diagnostic(
+            "P_READY_SERIAL_CAPTURE",
+            "coverage",
+            expected="at_least_2_clks_and_4_ready_edges",
+            observed=f"clks={len(clk_edges)} ready={len(ready_edges)}",
+            event="full_trace",
+        )
 
     nbit = 10
     counter = nbit - 1
     total = 0.0
-    expected_samples: list[tuple[float, float]] = []
+    expected_samples: list[tuple[float, float, str]] = []
     half_weight_seen = False
-    for event_t, event_kind in events:
+    for event_index, (event_t, event_kind) in enumerate(events):
         if event_kind == "ready":
-            dp = _v3_logic_at(rows, "dp", event_t, threshold=0.55)
-            dn = _v3_logic_at(rows, "dn", event_t, threshold=0.55)
+            dp = logic_at(rows, "dp", event_t, threshold=decision_threshold)
+            dn = logic_at(rows, "dn", event_t, threshold=decision_threshold)
             if dp is None or dn is None:
-                return False, f"missing_cyclic_decision_at={event_t * 1e9:.3f}ns"
+                return False, diagnostic(
+                    "P_READY_SERIAL_CAPTURE",
+                    "invalid_trace",
+                    expected="sampled_dp_dn",
+                    observed="missing_sample",
+                    event=event_label("ready", event_index, event_t),
+                )
             if counter >= 0:
                 if dp:
                     total += 2.0 ** counter
@@ -92,22 +72,58 @@ def check_v3_cyclic_decoder_10b(rows: list[dict[str, float]]) -> tuple[bool, str
                     half_weight_seen = True
             counter -= 1
             continue
+
         sample_t = event_t + 1.8e-9
         if sample_t <= rows[-1]["time"]:
-            expected_samples.append((sample_t, total / (2.0 ** nbit - 1.0) - 0.5))
+            expected = total / (2.0 ** nbit - 1.0) - 0.5
+            expected_samples.append((sample_t, expected, event_label("clks", event_index, event_t)))
         counter = nbit - 1
         total = 0.0
 
     if len(expected_samples) < 2:
-        return False, f"too_few_cyclic_publication_samples={len(expected_samples)}"
+        return False, diagnostic(
+            "P_CLOCKED_PUBLICATION_HOLD",
+            "coverage",
+            expected="at_least_2_publication_samples",
+            observed=f"samples={len(expected_samples)}",
+            event="full_trace",
+        )
+
     max_error = 0.0
-    for sample_t, expected in expected_samples:
-        observed = sample_signal_at(rows, "dout", sample_t)
+    for sample_t, expected, label in expected_samples:
+        observed = sample(rows, "dout", sample_t)
         if observed is None:
-            return False, f"missing_cyclic_dout_sample={sample_t * 1e9:.3f}ns"
-        max_error = max(max_error, abs(observed - expected))
-    ok = max_error <= 0.025 and half_weight_seen
-    return ok, f"published={len(expected_samples)} half_weight_seen={half_weight_seen} max_error={max_error:.5f}"
+            return False, diagnostic(
+                "P_CLOCKED_PUBLICATION_HOLD",
+                "invalid_trace",
+                expected="dout_sample",
+                observed="missing_sample",
+                event=label,
+            )
+        error = abs(observed - expected)
+        max_error = max(max_error, error)
+        if error > 0.025:
+            return False, diagnostic(
+                "P_NORMALIZED_MIDSCALE_OUTPUT",
+                "value_mismatch",
+                expected=f"dout={expected:.5f}",
+                observed=f"dout={observed:.5f}",
+                event=label,
+            )
+
+    if not half_weight_seen:
+        return False, diagnostic(
+            "P_TERNARY_WEIGHTING",
+            "coverage",
+            expected="dn_half_weight_decision_seen",
+            observed="half_weight_seen=false",
+            event="full_trace",
+        )
+    return True, pass_note(
+        PROPERTY_IDS,
+        f"published={len(expected_samples)} half_weight_seen={half_weight_seen} max_error={max_error:.5f}",
+    )
+
 
 CHECKER_ID = "v4_163_cyclic_decoder_10b"
-CHECKER: Checker = check_v3_cyclic_decoder_10b
+CHECKER: Checker = bind_properties(check_v3_cyclic_decoder_10b, PROPERTY_IDS)

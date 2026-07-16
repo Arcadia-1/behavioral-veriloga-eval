@@ -1,87 +1,117 @@
-"""Task-specific checker for canonical v4 DUT 166."""
+"""Stimulus-relative checker for canonical v4 DUT 166."""
 from __future__ import annotations
 
-from ..api import Checker
-def sample_signal_at(rows: list[dict[str, float]], signal: str, time_s: float) -> float | None:
-    if not rows or "time" not in rows[0] or signal not in rows[0]:
-        return None
-    first_time = rows[0]["time"]
-    last_time = rows[-1].get("time")
-    if last_time is None or time_s < first_time or time_s > last_time:
-        return None
-    if time_s == first_time:
-        return rows[0].get(signal)
-    for idx in range(1, len(rows)):
-        prev = rows[idx - 1]
-        cur = rows[idx]
-        t0 = prev.get("time")
-        t1 = cur.get("time")
-        if t0 is None or t1 is None:
-            continue
-        if t0 <= time_s <= t1:
-            v0 = prev.get(signal)
-            v1 = cur.get(signal)
-            if v0 is None or v1 is None:
-                return None
-            if t1 == t0:
-                return v1
-            alpha = (time_s - t0) / (t1 - t0)
-            return v0 + alpha * (v1 - v0)
-    return None
+from ..api import Checker, Row
+from .batch17_stimulus_relative import (
+    bind_properties,
+    crossings,
+    diagnostic,
+    event_label,
+    logic_threshold,
+    pass_note,
+    probe_time,
+    require_signals,
+    sample,
+)
 
-def _sample_many(
-    rows: list[dict[str, float]],
-    samples: dict[str, list[tuple[float, float]]],
-    *,
-    tol: float,
-) -> tuple[bool, str]:
-    details: list[str] = []
-    for signal, expected_samples in samples.items():
-        observed: list[float] = []
-        for time_ns, expected in expected_samples:
-            value = sample_signal_at(rows, signal, time_ns * 1e-9)
-            if value is None:
-                return False, f"missing_{signal}_sample_at={time_ns:g}ns"
-            observed.append(value)
-            if abs(value - expected) > tol:
-                return False, (
-                    f"{signal}@{time_ns:g}ns={value:.4f} expected={expected:.4f} "
-                    f"tol={tol:.4f}"
+
+PROPERTY_IDS = (
+    "P_FALLING_CLOCK_SAMPLE",
+    "P_CONTROL_STEP_WEIGHTS",
+    "P_RETAINED_RESIDUE_OUTPUT",
+)
+SIGNALS = {"time", "vin", "clks", "dctrl1", "dctrl2", "dctrl3", "vres"}
+CONTROL_STEPS = {"dctrl3": 0.5, "dctrl2": 0.25, "dctrl1": 0.125}
+
+
+def check_v3_l2_cdac_4b_residue(rows: list[Row]) -> tuple[bool, str]:
+    missing = require_signals(rows, SIGNALS, "P_FALLING_CLOCK_SAMPLE")
+    if missing:
+        return False, missing
+
+    threshold = logic_threshold(rows, ("clks", "dctrl1", "dctrl2", "dctrl3"), default_high=1.0)
+    events: list[tuple[float, str]] = [
+        (edge_t, "clks_fall")
+        for edge_t in crossings(rows, "clks", threshold=threshold, direction="falling")
+    ]
+    for signal in CONTROL_STEPS:
+        events.extend(
+            (edge_t, signal)
+            for edge_t in crossings(rows, signal, threshold=threshold, direction="rising")
+        )
+    events.sort()
+    if len(events) < 4:
+        return False, diagnostic(
+            "P_CONTROL_STEP_WEIGHTS",
+            "coverage",
+            expected="falling_clock_plus_3_control_events",
+            observed=f"events={len(events)}",
+            event="full_trace",
+        )
+
+    state = sample(rows, "vin", rows[0]["time"])
+    if state is None:
+        return False, diagnostic(
+            "P_FALLING_CLOCK_SAMPLE",
+            "invalid_trace",
+            expected="initial_vin_sample",
+            observed="missing_sample",
+            event="initial_step",
+        )
+
+    checked = 0
+    max_error = 0.0
+    for index, (event_t, kind) in enumerate(events):
+        next_event = events[index + 1][0] if index + 1 < len(events) else None
+        if kind == "clks_fall":
+            sampled_vin = sample(rows, "vin", event_t)
+            if sampled_vin is None:
+                return False, diagnostic(
+                    "P_FALLING_CLOCK_SAMPLE",
+                    "invalid_trace",
+                    expected="vin_at_falling_clock",
+                    observed="missing_sample",
+                    event=event_label(kind, index, event_t),
                 )
-        details.append(f"{signal}=" + ",".join(f"{value:.3f}" for value in observed))
-    return True, " ".join(details)
+            state = sampled_vin
+        else:
+            state += CONTROL_STEPS[kind]
 
-def _sample_many_within_trace(
-    rows: list[dict[str, float]],
-    samples: dict[str, list[tuple[float, float]]],
-    *,
-    tol: float,
-) -> tuple[bool, str]:
-    if not rows:
-        return _sample_many(rows, samples, tol=tol)
-    end_time = rows[-1].get("time")
-    if end_time is None:
-        return _sample_many(rows, samples, tol=tol)
-    end_ns = end_time * 1e9
-    filtered: dict[str, list[tuple[float, float]]] = {}
-    for signal, expected_samples in samples.items():
-        visible_samples = [
-            (time_ns, expected)
-            for time_ns, expected in expected_samples
-            if time_ns <= end_ns + 1e-3
-        ]
-        filtered[signal] = visible_samples or expected_samples
-    return _sample_many(rows, filtered, tol=tol)
+        probe_t = probe_time(rows, event_t, next_event, fraction=0.25)
+        if probe_t is None:
+            continue
+        observed = sample(rows, "vres", probe_t)
+        label = event_label(kind, index, event_t)
+        if observed is None:
+            return False, diagnostic(
+                "P_RETAINED_RESIDUE_OUTPUT",
+                "invalid_trace",
+                expected="vres_sample",
+                observed="missing_sample",
+                event=label,
+            )
+        error = abs(observed - state)
+        max_error = max(max_error, error)
+        checked += 1
+        if error > 0.03:
+            return False, diagnostic(
+                "P_RETAINED_RESIDUE_OUTPUT",
+                "value_mismatch",
+                expected=f"vres={state:.5f}",
+                observed=f"vres={observed:.5f}",
+                event=label,
+            )
 
-def check_v3_l2_cdac_4b_residue(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    required = {"time", "vin", "clks", "dctrl1", "dctrl2", "dctrl3", "vres"}
-    if not rows or not required.issubset(rows[0]):
-        return False, "missing l2 cdac residue signals"
-    return _sample_many_within_trace(
-        rows,
-        {"vres": [(2.0, 0.1), (4.0, 0.6), (6.0, 0.85), (8.0, 0.975), (14.0, -0.2), (16.0, 0.05)]},
-        tol=0.03,
-    )
+    if checked < 4:
+        return False, diagnostic(
+            "P_CONTROL_STEP_WEIGHTS",
+            "coverage",
+            expected="at_least_4_checked_events",
+            observed=f"checked={checked}",
+            event="full_trace",
+        )
+    return True, pass_note(PROPERTY_IDS, f"checked={checked} max_error={max_error:.5f}")
+
 
 CHECKER_ID = "v4_166_l2_cdac_4b_residue"
-CHECKER: Checker = check_v3_l2_cdac_4b_residue
+CHECKER: Checker = bind_properties(check_v3_l2_cdac_4b_residue, PROPERTY_IDS)

@@ -1,90 +1,103 @@
-"""Task-specific checker for canonical v4 DUT 167."""
+"""Stimulus-relative checker for canonical v4 DUT 167."""
 from __future__ import annotations
 
-from ..api import Checker
-def sample_signal_at(rows: list[dict[str, float]], signal: str, time_s: float) -> float | None:
-    if not rows or "time" not in rows[0] or signal not in rows[0]:
-        return None
-    first_time = rows[0]["time"]
-    last_time = rows[-1].get("time")
-    if last_time is None or time_s < first_time or time_s > last_time:
-        return None
-    if time_s == first_time:
-        return rows[0].get(signal)
-    for idx in range(1, len(rows)):
-        prev = rows[idx - 1]
-        cur = rows[idx]
-        t0 = prev.get("time")
-        t1 = cur.get("time")
-        if t0 is None or t1 is None:
+from ..api import Checker, Row
+from .batch17_stimulus_relative import (
+    bind_properties,
+    crossings,
+    diagnostic,
+    event_label,
+    logic_threshold,
+    pass_note,
+    probe_time,
+    require_signals,
+    sample,
+)
+
+
+PROPERTY_IDS = (
+    "P_MODULO8_COUNTER",
+    "P_INCREMENT_BEFORE_SELECTION",
+    "P_ANALOG_CHANNEL_MUX",
+    "P_COUNTER_MONITOR_LEVEL",
+)
+INPUTS = tuple(f"in{index}" for index in range(8))
+SIGNALS = {"time", "clk", "out", "count_x"} | set(INPUTS)
+
+
+def check_v3_ideal_clkmux_8channel(rows: list[Row]) -> tuple[bool, str]:
+    missing = require_signals(rows, SIGNALS, "P_MODULO8_COUNTER")
+    if missing:
+        return False, missing
+
+    threshold = logic_threshold(rows, ("clk",), default_high=1.0)
+    clk_edges = crossings(rows, "clk", threshold=threshold, direction="rising")
+    if len(clk_edges) < 6:
+        return False, diagnostic(
+            "P_INCREMENT_BEFORE_SELECTION",
+            "coverage",
+            expected="at_least_6_clk_rises",
+            observed=f"clk_rises={len(clk_edges)}",
+            event="full_trace",
+        )
+
+    count = 0
+    checked = 0
+    max_out_error = 0.0
+    max_count_error = 0.0
+    for index, edge_t in enumerate(clk_edges):
+        count = (count + 1) % 8
+        next_edge = clk_edges[index + 1] if index + 1 < len(clk_edges) else None
+        probe_t = probe_time(rows, edge_t, next_edge, fraction=0.25)
+        if probe_t is None:
             continue
-        if t0 <= time_s <= t1:
-            v0 = prev.get(signal)
-            v1 = cur.get(signal)
-            if v0 is None or v1 is None:
-                return None
-            if t1 == t0:
-                return v1
-            alpha = (time_s - t0) / (t1 - t0)
-            return v0 + alpha * (v1 - v0)
-    return None
+        expected_out = sample(rows, f"in{count}", edge_t)
+        observed_out = sample(rows, "out", probe_t)
+        observed_count = sample(rows, "count_x", probe_t)
+        label = event_label("clk_rise", index, edge_t)
+        if expected_out is None or observed_out is None or observed_count is None:
+            return False, diagnostic(
+                "P_ANALOG_CHANNEL_MUX",
+                "invalid_trace",
+                expected="selected_input_out_count",
+                observed="missing_sample",
+                event=label,
+            )
+        out_error = abs(observed_out - expected_out)
+        count_error = abs(observed_count - float(count))
+        max_out_error = max(max_out_error, out_error)
+        max_count_error = max(max_count_error, count_error)
+        checked += 1
+        if out_error > 0.08:
+            return False, diagnostic(
+                "P_ANALOG_CHANNEL_MUX",
+                "value_mismatch",
+                expected=f"out={expected_out:.5f}",
+                observed=f"out={observed_out:.5f}",
+                event=label,
+            )
+        if count_error > 0.08:
+            return False, diagnostic(
+                "P_COUNTER_MONITOR_LEVEL",
+                "value_mismatch",
+                expected=f"count_x={count}",
+                observed=f"count_x={observed_count:.5f}",
+                event=label,
+            )
 
-def _sample_many(
-    rows: list[dict[str, float]],
-    samples: dict[str, list[tuple[float, float]]],
-    *,
-    tol: float,
-) -> tuple[bool, str]:
-    details: list[str] = []
-    for signal, expected_samples in samples.items():
-        observed: list[float] = []
-        for time_ns, expected in expected_samples:
-            value = sample_signal_at(rows, signal, time_ns * 1e-9)
-            if value is None:
-                return False, f"missing_{signal}_sample_at={time_ns:g}ns"
-            observed.append(value)
-            if abs(value - expected) > tol:
-                return False, (
-                    f"{signal}@{time_ns:g}ns={value:.4f} expected={expected:.4f} "
-                    f"tol={tol:.4f}"
-                )
-        details.append(f"{signal}=" + ",".join(f"{value:.3f}" for value in observed))
-    return True, " ".join(details)
-
-def _sample_many_within_trace(
-    rows: list[dict[str, float]],
-    samples: dict[str, list[tuple[float, float]]],
-    *,
-    tol: float,
-) -> tuple[bool, str]:
-    if not rows:
-        return _sample_many(rows, samples, tol=tol)
-    end_time = rows[-1].get("time")
-    if end_time is None:
-        return _sample_many(rows, samples, tol=tol)
-    end_ns = end_time * 1e9
-    filtered: dict[str, list[tuple[float, float]]] = {}
-    for signal, expected_samples in samples.items():
-        visible_samples = [
-            (time_ns, expected)
-            for time_ns, expected in expected_samples
-            if time_ns <= end_ns + 1e-3
-        ]
-        filtered[signal] = visible_samples or expected_samples
-    return _sample_many(rows, filtered, tol=tol)
-
-def check_v3_ideal_clkmux_8channel(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    required = {"time", "clk", "out", "count_x"}
-    if not rows or not required.issubset(rows[0]):
-        return False, "missing ideal clkmux signals"
-    return _sample_many_within_trace(
-        rows,
-        {
-            "out": [(2.0, 0.2), (4.0, 0.3), (6.0, 0.4), (8.0, 0.5), (10.0, 0.6), (12.0, 0.7), (14.0, 0.8), (16.0, 0.1)],
-            "count_x": [(2.0, 1.0), (4.0, 2.0), (6.0, 3.0), (8.0, 4.0), (10.0, 5.0), (12.0, 6.0), (14.0, 7.0), (16.0, 0.0)],
-        },
-        tol=0.08,
+    if checked < 6:
+        return False, diagnostic(
+            "P_INCREMENT_BEFORE_SELECTION",
+            "coverage",
+            expected="at_least_6_checked_clk_rises",
+            observed=f"checked={checked}",
+            event="full_trace",
+        )
+    return True, pass_note(
+        PROPERTY_IDS,
+        f"checked={checked} max_out_error={max_out_error:.5f} max_count_error={max_count_error:.5f}",
     )
 
+
 CHECKER_ID = "v4_167_ideal_clkmux_8channel"
-CHECKER: Checker = check_v3_ideal_clkmux_8channel
+CHECKER: Checker = bind_properties(check_v3_ideal_clkmux_8channel, PROPERTY_IDS)

@@ -15,9 +15,7 @@ VD8 (D8 0) vsource type=pwl wave=[0 0 7.95n 0 8n 0.9 17.95n 0.9 18n 0 27.95n 0 2
 VD9 (D9 0) vsource type=pwl wave=[0 0 17.95n 0 18n 0.9]
 VD10 (D10 0) vsource type=pwl wave=[0 0 7.95n 0 8n 0.9]
 VD0 (D0 0) vsource type=pwl wave=[0 0 7.95n 0 8n 0.9 17.95n 0.9 18n 0 27.95n 0 28n 0.9]
-
 XDUT (D1 D2 D3 D4 D5 D6 D7 D8 D9 D10 D0 clk vout) dac_restore_10bit_offset
-
 
 simulatorOptions options evas_profile=balanced
 

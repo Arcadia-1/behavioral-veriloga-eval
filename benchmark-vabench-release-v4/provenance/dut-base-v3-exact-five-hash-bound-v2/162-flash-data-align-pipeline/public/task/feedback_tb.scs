@@ -12,9 +12,7 @@ Vdin4 (din4 0) vsource type=pwl wave=[0 0 5.95n 0 6n 0.9 17.95n 0.9 18n 0 23.95n
 Vdin5 (din5 0) vsource type=pwl wave=[0 0 11.95n 0 12n 0.9 17.95n 0.9 18n 0 23.95n 0 24n 0.9 29.95n 0.9 30n 0 35.95n 0 36n 0.9 41.95n 0.9 42n 0]
 Vdin6 (din6 0) vsource type=pwl wave=[0 0 11.95n 0 12n 0.9 17.95n 0.9 18n 0 35.95n 0 36n 0.9 41.95n 0.9 42n 0]
 Vdin7 (din7 0) vsource type=pwl wave=[0 0 11.95n 0 12n 0.9 17.95n 0.9 18n 0]
-
 XDUT (clk din0 din1 din2 din3 din4 din5 din6 din7 dout0 dout1 dout2 dout3) flash_data_align_pipeline
-
 
 simulatorOptions options evas_profile=balanced
 

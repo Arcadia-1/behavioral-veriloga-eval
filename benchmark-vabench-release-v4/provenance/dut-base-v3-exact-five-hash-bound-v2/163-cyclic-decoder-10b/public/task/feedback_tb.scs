@@ -7,9 +7,7 @@ Vready (ready 0) vsource type=pwl wave=[0 0 1n 0 1.05n 1.1 1.35n 1.1 1.40n 0 2n 
 Vdp (dp 0) vsource type=pwl wave=[0 0 0.70n 0 0.75n 1.1 1.70n 1.1 1.75n 0 3.70n 0 3.75n 1.1 4.70n 1.1 4.75n 0 14.70n 0 14.75n 1.1]
 Vdn (dn 0) vsource type=pwl wave=[0 0 1.70n 0 1.75n 1.1 2.70n 1.1 2.75n 0 4.70n 0 4.75n 1.1 12.70n 1.1 12.75n 0 13.70n 0 13.75n 1.1 14.70n 1.1 14.75n 0]
 Vclks (clks 0) vsource type=pwl wave=[0 0 10n 0 10.05n 1.1 10.50n 1.1 10.55n 0 24n 0 24.05n 1.1 24.50n 1.1 24.55n 0]
-
 XDUT (dp dn ready clks dout) cyclic_decoder_10b
-
 
 simulatorOptions options evas_profile=balanced
 
