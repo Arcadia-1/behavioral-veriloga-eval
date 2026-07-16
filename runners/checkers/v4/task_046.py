@@ -2,7 +2,7 @@
 from __future__ import annotations
 
 from ..api import Checker
-from .stimulus_relative import diagnostic, mean, pass_note, require_signals
+from .stimulus_relative import diagnostic, pass_note, require_signals
 
 
 PROPERTY_IDS = (
@@ -12,6 +12,10 @@ PROPERTY_IDS = (
     "P_BROWNOUT_CLEAR",
     "P_STATUS_DISTINCTION",
 )
+
+
+def _mean(values: list[float]) -> float | None:
+    return sum(values) / len(values) if values else None
 
 def check_uvlo_brownout_detector(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "clk", "rst", "vin", "out", "metric"}
@@ -60,12 +64,12 @@ def check_uvlo_brownout_detector(rows: list[dict[str, float]]) -> tuple[bool, st
             if vin >= 0.66:
                 recovered_values.append(row["out"])
 
-    initial_low = mean(initial_values)
-    power_good = mean(power_good_values)
-    hysteresis_hold = mean(hysteresis_values)
-    brownout_low = mean(brownout_values)
-    lower_threshold_hold = mean(lower_hold_values)
-    recovered = mean(recovered_values)
+    initial_low = _mean(initial_values)
+    power_good = _mean(power_good_values)
+    hysteresis_hold = _mean(hysteresis_values)
+    brownout_low = _mean(brownout_values)
+    lower_threshold_hold = _mean(lower_hold_values)
+    recovered = _mean(recovered_values)
     if None in (initial_low, power_good, hysteresis_hold, brownout_low, lower_threshold_hold, recovered):
         return False, diagnostic(
             "P_STATUS_DISTINCTION",

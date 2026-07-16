@@ -2,7 +2,7 @@
 from __future__ import annotations
 
 from ..api import Checker
-from .stimulus_relative import diagnostic, mean, pass_note, percentile, require_signals
+from .stimulus_relative import diagnostic, pass_note, percentile, require_signals
 
 
 PROPERTY_IDS = (
@@ -12,6 +12,10 @@ PROPERTY_IDS = (
     "P_OUTPUT_LIMITS",
     "P_STATE_METRIC",
 )
+
+
+def _mean(values: list[float]) -> float | None:
+    return sum(values) / len(values) if values else None
 
 def check_release_soft_hysteretic_limiter(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "clk", "rst", "vin", "out", "metric"}
@@ -48,14 +52,14 @@ def check_release_soft_hysteretic_limiter(rows: list[dict[str, float]]) -> tuple
             low_memory_out.append(row["out"])
             low_memory_metric_values.append(row["metric"])
 
-    high_limited = mean(high_out)
-    low_limited = mean(low_out)
-    high_memory = mean(high_memory_out)
-    low_memory = mean(low_memory_out)
-    high_metric = mean(high_metric_values)
-    low_metric = mean(low_metric_values)
-    high_memory_metric = mean(high_memory_metric_values)
-    low_memory_metric = mean(low_memory_metric_values)
+    high_limited = _mean(high_out)
+    low_limited = _mean(low_out)
+    high_memory = _mean(high_memory_out)
+    low_memory = _mean(low_memory_out)
+    high_metric = _mean(high_metric_values)
+    low_metric = _mean(low_metric_values)
+    high_memory_metric = _mean(high_memory_metric_values)
+    low_memory_metric = _mean(low_memory_metric_values)
     if None in (
         high_limited,
         low_limited,

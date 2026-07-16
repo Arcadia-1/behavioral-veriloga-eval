@@ -2,7 +2,7 @@
 from __future__ import annotations
 
 from ..api import Checker
-from .stimulus_relative import diagnostic, mean_where, pass_note, require_signals
+from .stimulus_relative import diagnostic, pass_note, require_signals
 
 
 PROPERTY_IDS = (
@@ -12,6 +12,13 @@ PROPERTY_IDS = (
     "P_ACTIVE_METRIC",
     "P_OUTPUT_CLAMP",
 )
+
+
+def _mean_where(
+    rows: list[dict[str, float]], key: str, predicate
+) -> float | None:
+    values = [row[key] for row in rows if predicate(row)]
+    return sum(values) / len(values) if values else None
 
 
 def _interp(a: dict[str, float], b: dict[str, float], time_s: float, field: str) -> float:
@@ -69,7 +76,7 @@ def check_rf_mixer_downconverter_macro(rows: list[dict[str, float]]) -> tuple[bo
     pos_lo = _mean_selected(rows, "out", clk_high=False, vin_high=True)
     neg_hi = _mean_selected(rows, "out", clk_high=True, vin_high=False)
     neg_lo = _mean_selected(rows, "out", clk_high=False, vin_high=False)
-    active_metric = mean_where(rows, "metric", lambda row: row["rst"] <= 0.45)
+    active_metric = _mean_where(rows, "metric", lambda row: row["rst"] <= 0.45)
     if None in (pos_hi, pos_lo, neg_hi, neg_lo, active_metric):
         return False, diagnostic(
             "P_DOWNCONVERSION_TRANSFER",
