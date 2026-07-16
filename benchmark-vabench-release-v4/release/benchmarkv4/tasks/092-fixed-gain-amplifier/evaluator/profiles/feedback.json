@@ -1,26 +1,13 @@
 {
   "corners": [],
-  "deck_overrides": {
-    "body_lines": [
-      "parameters vdd=0.9 gain=4.75",
-      "",
-      "Vinp (vin_p 0) vsource type=pwl wave=[0 0.47 12n 0.47 12.1n 0.53 30n 0.53 30.1n 0.41 55n 0.41]",
-      "Vinn (vin_n 0) vsource type=pwl wave=[0 0.43 12n 0.43 12.1n 0.37 30n 0.37 30.1n 0.49 55n 0.49]",
-      "",
-      "XDUT (vin_p vin_n vout_p vout_n) gain_amp_fixed vdd=vdd ACTUAL_GAIN=gain",
-      ""
-    ]
-  },
+  "deck_overrides": {},
   "deterministic_seed": 0,
   "generated_from": {
     "script": "render_v4_harness.py",
     "version": "v4-harness-renderer-v1"
   },
-  "harness_spec_sha256": "8c6577d0c8ab881d4b6ad8795784067160ab3865aad70aefaf5be664679a1473",
-  "parameters": {
-    "maxstep": "200p",
-    "stop_time": "100n"
-  },
+  "harness_spec_sha256": "802a2651f60e4b51cb191e62e18c62d7bdf23b8332fd4d6eb00d2bb9118b152a",
+  "parameters": {},
   "profile_name": "feedback",
   "property_ids": [
     "P_DIFFERENTIAL_GAIN",

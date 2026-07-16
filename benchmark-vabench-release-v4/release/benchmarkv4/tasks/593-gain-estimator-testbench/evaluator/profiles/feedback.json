@@ -1,29 +1,13 @@
 {
   "corners": [],
-  "deck_overrides": {
-    "body_lines": [
-      "Vinp  (vinp  0) vsource type=sine sinedc=0.45 ampl=0.03 freq=20Meg",
-      "Vinn  (vinn  0) vsource type=dc dc=0.45",
-      "Voutp (voutp 0) vsource type=sine sinedc=0.45 ampl=0.18 freq=20Meg",
-      "Voutn (voutn 0) vsource type=dc dc=0.45",
-      "",
-      "XGAIN (vdd vss vinp vinn voutp voutn gain_out valid) gain_estimator \\",
-      "    sample_period=1n start_time=20n gain_scale=10 min_input_span=0.02 tedge=200p",
-      "",
-      "simulatorOptions options reltol=1e-4 vabstol=1e-6 iabstol=1e-12 temp=27 tnom=27 gmin=1e-12",
-      ""
-    ]
-  },
+  "deck_overrides": {},
   "deterministic_seed": 0,
   "generated_from": {
     "script": "render_v4_harness.py",
     "version": "v4-harness-renderer-v1"
   },
-  "harness_spec_sha256": "00532fe7db14bb2e59fe8290cc965738e0b98aa86596adf51bcaa1c36f63bf06",
-  "parameters": {
-    "maxstep": "200p",
-    "stop_time": "100n"
-  },
+  "harness_spec_sha256": "ffc610b52e18fac035fe70bb54ff8ffd35772085d7538185054d1fac5e216ad1",
+  "parameters": {},
   "profile_name": "feedback",
   "property_ids": [
     "P_START_TIME_GATING",

@@ -11,7 +11,9 @@
     ],
     "body_lines": [
       "Vclk (clk 0) vsource type=pulse val0=0 val1=0.9 period=2n width=1n rise=50p fall=50p",
-      "Vrst (rst 0) vsource type=pwl wave=[0 0.9 2n 0.9 2.1n 0 80n 0]"
+      "Vrst (rst 0) vsource type=pwl wave=[0 0.9 2n 0.9 2.1n 0 80n 0]",
+      "Vvin (vin 0) vsource type=pwl wave=[0 0.10 15.9n 0.10 16n 0.85 41.9n 0.85 42n 0.20 61.9n 0.20 62n 0.75 80n 0.75]",
+      "XDUT (clk rst vin out metric load_mon ctrl_mon) ldo_load_step_recovery_flow"
     ],
     "header": [
       "simulator lang=spectre",
@@ -42,41 +44,17 @@
     "legacy_score_deck_sha256": "984fa32d1e198bad6b9627fe00441bd05978034913f5abfd6c12ea540ce1434f",
     "notes": [
       "legacy feedback deck was used only to seed the canonical harness spec",
-      "legacy score deck seeded private profile-specific overrides"
+      "legacy score deck seeded private profile-specific overrides",
+      "feedback deck is the canonical stimulus; score is generated with identical semantics"
     ]
   },
   "profile_defaults": {
     "feedback": {
-      "deck_overrides": {
-        "body_lines": [
-          "Vvin (vin 0) vsource type=pwl wave=[0 0.10 15.9n 0.10 16n 0.85 41.9n 0.85 42n 0.20 61.9n 0.20 62n 0.75 80n 0.75]",
-          "",
-          "XDUT (clk rst vin out metric load_mon ctrl_mon) ldo_load_step_recovery_flow",
-          ""
-        ]
-      },
-      "parameters": {
-        "maxstep": "200p",
-        "stop_time": "100n"
-      },
       "simulatorOptions": {
         "evas_profile": "balanced"
       }
     },
-    "score": {
-      "deck_overrides": {
-        "body_lines": [
-          "Vvin (vin 0) vsource type=pwl wave=[0 0.12 15.9n 0.12 16n 0.86 41.9n 0.86 42n 0.18 61.9n 0.18 62n 0.76 80n 0.76]",
-          "",
-          "XDUT (clk rst vin out metric load_mon ctrl_mon) ldo_load_step_recovery_flow",
-          ""
-        ]
-      },
-      "parameters": {
-        "maxstep": "100p",
-        "stop_time": "100n"
-      }
-    }
+    "score": {}
   },
   "property_ids": [
     "P_RESET_REGULATION_STATE",
