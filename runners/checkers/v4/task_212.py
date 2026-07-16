@@ -92,6 +92,12 @@ def _v3_stable_formula_check(
 ) -> tuple[bool, str]:
     if not rows or not required.issubset(rows[0]):
         return False, "missing " + "/".join(sorted(required))
+    logic_states = {
+        tuple(row[signal] > threshold for signal in logic_signals)
+        for row in rows
+    }
+    if len(logic_states) < 2:
+        return False, f"insufficient_logic_excitation={len(logic_states)}"
     edge_times: list[float] = []
     for signal in logic_signals:
         edge_times.extend(

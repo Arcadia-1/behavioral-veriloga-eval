@@ -55,6 +55,12 @@ def check_v3_bin2ther_2b(rows: list[dict[str, float]]) -> tuple[bool, str]:
     threshold = 0.5 * (
         max(row["vdd"] for row in rows) + min(row["gnd"] for row in rows)
     )
+    input_states = {
+        (row["b1"] > threshold, row["b0"] > threshold)
+        for row in rows
+    }
+    if len(input_states) < 2:
+        return False, f"insufficient_logic_excitation={len(input_states)}"
     edge_times: list[float] = []
     for signal in logic_signals:
         edge_times.extend(_signal_threshold_edges(rows, signal, threshold=threshold, directions=("rising", "falling")))
