@@ -19,6 +19,10 @@ sys.path.insert(0, str(RELEASE_ROOT / "operations" / "tri_form_derivation_prep")
 
 import render_v4_harness  # noqa: E402
 from run_v4_metamorphic_smoke import transform_deck  # noqa: E402
+from run_v4_reference_evas_smoke import (  # noqa: E402
+    engine_evidence_from_log,
+    require_evas2_environment,
+)
 
 
 FAMILIES = range(361, 371)
@@ -104,3 +108,29 @@ def test_feedback_and_score_render_the_same_canonical_deck() -> None:
     assert _without_simulator_options(feedback) == _without_simulator_options(score)
     assert "tran tran stop=190n maxstep=50p" in feedback
     assert "tran tran stop=190n maxstep=50p" in score
+
+
+def test_evas2_evidence_requires_explicit_engine_and_rust_log(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+) -> None:
+    monkeypatch.setenv("EVAS_ENGINE", "evas2")
+    monkeypatch.setenv("VAEVAS_DEFAULT_EVAS_ENGINE", "evas2")
+    require_evas2_environment()
+    log = tmp_path / "evas.log"
+    log.write_text(
+        "Version 0.8.2 -- Jul 2026\n    evas_engine = evas-rust\n",
+        encoding="utf-8",
+    )
+    evidence = engine_evidence_from_log(log, "")
+    assert evidence["evas_engine"] == "evas2"
+    assert evidence["evas_engine_used"] == "evas2"
+    assert evidence["valid"] is True
+
+
+def test_evas2_evidence_rejects_python_engine(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    monkeypatch.setenv("EVAS_ENGINE", "python")
+    monkeypatch.setenv("VAEVAS_DEFAULT_EVAS_ENGINE", "python")
+    with pytest.raises(SystemExit, match="EVAS_ENGINE=evas2"):
+        require_evas2_environment()

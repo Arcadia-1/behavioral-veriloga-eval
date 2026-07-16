@@ -22,6 +22,10 @@ sys.path.insert(0, str(REPO_ROOT))
 sys.path.insert(0, str(REPO_ROOT / "runners"))
 
 from run_v4_reference_evas_smoke import (  # noqa: E402
+    REQUIRED_EVAS_ENGINE,
+    REQUIRED_EVAS_VERSION,
+    RUST_EVAS_LOG_ENGINE,
+    require_evas2_environment,
     run_one_case,
     task_dir_for_id,
 )
@@ -147,11 +151,20 @@ def run_task(
                 "checker_notes": row.get("checker_notes") or [],
                 "simulator_ok": row.get("simulator_ok", False),
                 "checker_ok": row.get("checker_ok", False),
+                "evas_engine": row.get("evas_engine", ""),
+                "evas_engine_used": row.get("evas_engine_used", ""),
+                "evas_version": row.get("evas_version", ""),
+                "evas_backend_used": row.get("evas_backend_used", ""),
+                "evas_engine_validation": row.get("evas_engine_validation") or {},
             }
         )
     return {
         "task_id": task_id,
         "task_dir": source_task.name,
+        "evas_engine": REQUIRED_EVAS_ENGINE,
+        "evas_engine_used": REQUIRED_EVAS_ENGINE,
+        "evas_version": REQUIRED_EVAS_VERSION,
+        "evas_backend_required": RUST_EVAS_LOG_ENGINE,
         "case_count": len(case_rows),
         "pass_count": sum(row["status"] == "pass" for row in case_rows),
         "status": "pass" if all(row["status"] == "pass" for row in case_rows) else "fail",
@@ -170,6 +183,8 @@ def main() -> int:
     parser.add_argument("--timeout-s", type=int, default=120)
     parser.add_argument("--force", action="store_true")
     args = parser.parse_args()
+
+    require_evas2_environment()
 
     if args.scale <= 0:
         raise SystemExit("--scale must be positive")
@@ -194,6 +209,10 @@ def main() -> int:
     report = {
         "schema_version": "v4-metamorphic-evas-smoke-v1",
         "release": str(release),
+        "evas_engine": REQUIRED_EVAS_ENGINE,
+        "evas_engine_used": REQUIRED_EVAS_ENGINE,
+        "evas_version": REQUIRED_EVAS_VERSION,
+        "evas_backend_required": RUST_EVAS_LOG_ENGINE,
         "transform": {"scale": args.scale, "shift_ns": args.shift_ns},
         "task_count": len(rows),
         "case_count": sum(row["case_count"] for row in rows),
