@@ -2,6 +2,9 @@
 from __future__ import annotations
 
 from ..api import Checker
+from .stimulus_relative import normalize_affine_time
+
+
 def sample_signal_at(rows: list[dict[str, float]], signal: str, time_s: float) -> float | None:
     if not rows or "time" not in rows[0] or signal not in rows[0]:
         return None
@@ -77,6 +80,12 @@ def check_v3_divide_by_two_toggle(rows: list[dict[str, float]]) -> tuple[bool, s
     required = {"time", "clkin", "clkout"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing time/clkin/clkout"
+    rows = normalize_affine_time(rows, [
+        ("clkin", 0.45, "rising", 1.025, 0),
+        ("clkin", 0.45, "rising", 4.025, 1),
+    ])
+    if rows is None:
+        return False, "missing_clock_stimulus_edges"
     return _sample_many_within_trace(
         rows,
         {"clkout": [(2.0, 0.9), (5.0, 0.0), (8.0, 0.9), (11.0, 0.0), (14.0, 0.9), (17.0, 0.0), (20.0, 0.9), (23.0, 0.0)]},

@@ -2,6 +2,9 @@
 from __future__ import annotations
 
 from ..api import Checker
+from .stimulus_relative import normalize_affine_time
+
+
 def sample_signal_at(rows: list[dict[str, float]], signal: str, time_s: float) -> float | None:
     if not rows or "time" not in rows[0] or signal not in rows[0]:
         return None
@@ -77,6 +80,12 @@ def check_v3_ref_flash_15level_decoder(rows: list[dict[str, float]]) -> tuple[bo
     required = {"time", "clks", "dout"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing ref flash 15level signals"
+    rows = normalize_affine_time(rows, [
+        ("clks", 0.45, "rising", 1.025, 0),
+        ("clks", 0.45, "rising", 11.025, 1),
+    ])
+    if rows is None:
+        return False, "missing_clock_stimulus_edges"
     return _sample_many_within_trace(
         rows,
         {"dout": [(4.0, 0.0), (14.0, 1.0 / 3.0), (24.0, 2.0 / 3.0), (34.0, 1.0)]},
