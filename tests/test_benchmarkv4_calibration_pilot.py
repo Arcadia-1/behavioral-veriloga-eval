@@ -417,6 +417,31 @@ def test_feedback_compaction_keeps_invalid_run_root_cause() -> None:
     )
 
 
+def test_feedback_compaction_keeps_rust_lowering_rejection() -> None:
+    runner = load_run_campaign()
+    stdout = "\n".join(
+        [
+            "required_trace_missing_node_count = 0",
+            "Traceback (most recent call last):",
+            (
+                "RuntimeError: evas-rust full-model path was required but no supported "
+                "whole-segment Rust runtime matched this design. RustSimProgram rejection: "
+                "model:0:debounce_latch_Model:event_due_not_lowered"
+            ),
+            "FEEDBACK_EVAS_FAIL",
+        ]
+    )
+
+    lines = runner.compact_text_lines(stdout)
+
+    assert any(line.startswith("RuntimeError:") for line in lines)
+    assert any("event_due_not_lowered" in line for line in lines)
+    assert all("missing_node_count = 0" not in line for line in lines)
+    assert lines.index(next(line for line in lines if line.startswith("RuntimeError:"))) < lines.index(
+        "FEEDBACK_EVAS_FAIL"
+    )
+
+
 def test_direct_run_cell_submits_only_an_exact_artifact_response(tmp_path: Path) -> None:
     runner = load_run_campaign()
     cell = campaign_cell("G0")
