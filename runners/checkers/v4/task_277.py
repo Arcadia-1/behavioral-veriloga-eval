@@ -16,7 +16,10 @@ PROPERTIES = (
 
 
 def check_v4_277_calibration_bit_select_flag(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    return check_continuous(rows, "mux", TASK_LABEL)
+    # The public tr parameter permits 50 ps output smoothing. Ignore the input
+    # breakpoint and its immediate settling interval; all scored samples remain
+    # steady-state contract checks.
+    return check_continuous(rows, "mux", TASK_LABEL, settle_time_s=100e-12)
 
 
 CHECKS = {

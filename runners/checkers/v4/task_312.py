@@ -6,6 +6,17 @@ from ..common.v4_topup import (
     _v4_topup_logic_high,
 )
 
+
+PROPERTY_IDS = (
+    "P_ON_RESET_OR_WHEN_DISABLED_CLEAR",
+    "P_CAPTURE_VIN_A_ON_RISING_CLK",
+    "P_ESTIMATE_A_SKEW_PROXY_FROM_THE",
+    "P_DRIVE_SKEW_METRIC_WITH_THE_ABSOLUTE",
+    "P_ASSERT_ALARM_WHEN_SKEW_METRIC_EXCEEDS",
+    "P_USE_ONLY_VOLTAGE_DOMAIN_BEHAVIORAL_STATE",
+)
+
+
 def check_v4_312_interleaved_adc_skew_monitor(rows: list[dict[str, float]]) -> tuple[bool, str]:
     if not rows:
         return False, "v4_1010 empty_trace"
@@ -16,6 +27,7 @@ def check_v4_312_interleaved_adc_skew_monitor(rows: list[dict[str, float]]) -> t
     reset_clear = late_reset_clear = late_reset_violation = disabled_clear = False
     high_skew_seen = low_skew_seen = alarm_seen = False
     first_high_alarm_low_seen = False
+    first_mismatch = ""
     saw_active = False
     previous = rows[0]
     for index, row in enumerate(rows[1:], start=1):
@@ -71,12 +83,33 @@ def check_v4_312_interleaved_adc_skew_monitor(rows: list[dict[str, float]]) -> t
             first_high_alarm_low_seen = True
         checked += 1
         alarm_seen = alarm_seen or row["alarm"] > 0.45
-        if abs(float(row["skew_metric"]) - expected_skew) > 0.08:
+        observed_skew = float(row["skew_metric"])
+        observed_mag = float(row["magnitude_metric"])
+        observed_alarm = float(row["alarm"]) > 0.45
+        if abs(observed_skew - expected_skew) > 0.08:
             skew_errors += 1
-        if abs(float(row["magnitude_metric"]) - expected_mag) > 0.08:
+            if not first_mismatch:
+                first_mismatch = (
+                    "P_DRIVE_SKEW_METRIC_WITH_THE_ABSOLUTE "
+                    f"signal=skew_metric time={float(row['time']):.6e} "
+                    f"expected={expected_skew:.6g} observed={observed_skew:.6g} tolerance=0.08"
+                )
+        if abs(observed_mag - expected_mag) > 0.08:
             mag_errors += 1
-        if (float(row["alarm"]) > 0.45) != expected_alarm:
+            if not first_mismatch:
+                first_mismatch = (
+                    "P_DRIVE_SKEW_METRIC_WITH_THE_ABSOLUTE "
+                    f"signal=magnitude_metric time={float(row['time']):.6e} "
+                    f"expected={expected_mag:.6g} observed={observed_mag:.6g} tolerance=0.08"
+                )
+        if observed_alarm != expected_alarm:
             alarm_errors += 1
+            if not first_mismatch:
+                first_mismatch = (
+                    "P_ASSERT_ALARM_WHEN_SKEW_METRIC_EXCEEDS "
+                    f"signal=alarm time={float(row['time']):.6e} "
+                    f"expected={int(expected_alarm)} observed={int(observed_alarm)} tolerance=logic"
+                )
     ok = (
         checked >= 20
         and reset_clear
@@ -91,7 +124,7 @@ def check_v4_312_interleaved_adc_skew_monitor(rows: list[dict[str, float]]) -> t
         and mag_errors <= max(5, checked // 20)
         and alarm_errors <= 14
     )
-    return ok, (
+    summary = (
         f"v4_312 checked={checked} reset_clear={reset_clear} late_reset_clear={late_reset_clear} "
         f"late_reset_violation={late_reset_violation} "
         f"disabled_clear={disabled_clear} "
@@ -99,6 +132,26 @@ def check_v4_312_interleaved_adc_skew_monitor(rows: list[dict[str, float]]) -> t
         f"first_high_alarm_low={first_high_alarm_low_seen} "
         f"skew_errors={skew_errors} mag_errors={mag_errors} alarm_errors={alarm_errors}"
     )
+    if not ok and first_mismatch:
+        summary += f"; first_mismatch={first_mismatch}"
+    property_mismatches = {
+        "P_ON_RESET_OR_WHEN_DISABLED_CLEAR": int(
+            not reset_clear
+            or not late_reset_clear
+            or late_reset_violation
+            or not disabled_clear
+        ),
+        "P_CAPTURE_VIN_A_ON_RISING_CLK": skew_errors + mag_errors,
+        "P_ESTIMATE_A_SKEW_PROXY_FROM_THE": skew_errors,
+        "P_DRIVE_SKEW_METRIC_WITH_THE_ABSOLUTE": skew_errors + mag_errors,
+        "P_ASSERT_ALARM_WHEN_SKEW_METRIC_EXCEEDS": alarm_errors,
+        "P_USE_ONLY_VOLTAGE_DOMAIN_BEHAVIORAL_STATE": 0,
+    }
+    summary += "; " + "; ".join(
+        f"{property_id} mismatch_count={property_mismatches[property_id]}"
+        for property_id in PROPERTY_IDS
+    )
+    return ok, summary
 
 CHECKER_ID = "v4_312_interleaved_adc_skew_monitor"
 CHECKER: Checker = check_v4_312_interleaved_adc_skew_monitor

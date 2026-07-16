@@ -496,27 +496,58 @@ def compact_text_lines(text: str, *, limit: int = 24) -> list[str]:
     the working-token budget without materially improving repairs.  Keep the
     public oracle summaries, validation diagnostics, and concrete errors.
     """
-    selected: list[str] = []
+    semantic: list[str] = []
+    errors: list[str] = []
+    markers: list[str] = []
     seen: set[str] = set()
     for raw in text.splitlines():
         line = raw.strip()
-        if not line:
+        if not line or line in seen:
             continue
-        if not (
-            line.startswith(FEEDBACK_SIGNAL_PREFIXES)
-            or "simulation failed" in line
-            or "Failed to parse" in line
-            or "Invalid source" in line
-            or "missing required" in line
-            or "timed out" in line.lower()
-        ):
-            continue
-        if line in seen:
-            continue
-        selected.append(line[:1000])
         seen.add(line)
-        if len(selected) >= limit:
-            break
+        lowered = line.lower()
+        clipped = line[:1000]
+        if (
+            re.search(r"\bP_[A-Z0-9_]+\b", line)
+            or any(
+                token in lowered
+                for token in (
+                    "mismatch",
+                    "expected=",
+                    "observed=",
+                    "failure_detail=",
+                    "failures=",
+                    "missing_",
+                    "metric_gap=",
+                    "tolerance=",
+                    "checked=",
+                    "coverage=",
+                )
+            )
+            or line.startswith("reference:")
+            or re.match(r"negative_[0-9]+:", line)
+        ):
+            semantic.append(clipped)
+        elif (
+            "simulation failed" in lowered
+            or "failed to compile" in lowered
+            or "failed to parse" in lowered
+            or "parse error" in lowered
+            or "invalid source" in lowered
+            or "missing required" in lowered
+            or "timed out" in lowered
+        ):
+            errors.append(clipped)
+        elif line.startswith(FEEDBACK_SIGNAL_PREFIXES):
+            markers.append(clipped)
+
+    selected: list[str] = []
+    for group in (semantic, errors, markers):
+        for line in group:
+            if line not in selected:
+                selected.append(line)
+            if len(selected) >= limit:
+                return selected
     if selected:
         return selected
     tail = [line.strip() for line in text.splitlines() if line.strip()]
