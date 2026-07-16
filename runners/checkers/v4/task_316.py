@@ -7,6 +7,7 @@ from ..common.v4_topup import (
     _v4_topup_logic_high,
     _v4_rising,
 )
+from .diagnostics import with_property_diagnostics
 
 def check_v4_316_residue_amplifier_gain_calibration(rows: list[dict[str, float]]) -> tuple[bool, str]:
     if not rows:
@@ -119,4 +120,20 @@ def check_v4_316_residue_amplifier_gain_calibration(rows: list[dict[str, float]]
     )
 
 CHECKER_ID = "v4_316_residue_amplifier_gain_calibration"
-CHECKER: Checker = check_v4_316_residue_amplifier_gain_calibration
+CHECKER: Checker = with_property_diagnostics(
+    check_v4_316_residue_amplifier_gain_calibration,
+    {
+        "P_ON_RESET_CLEAR_GAIN_CODE_OUTPUT": (
+            "clear_errors", "!reset_clear", "!disabled_clear",
+        ),
+        "P_WHILE_CAL_EN_IS_HIGH_COMPARE": "metric_errors",
+        "P_INCREMENT_OR_DECREMENT_THE_GAIN_CODE": (
+            "!high_code_seen", "!error_reduced",
+        ),
+        "P_DRIVE_VOUT_AS_A_CLAMPED_RESIDUE": "vout_errors",
+        "P_ASSERT_LOCKED_AFTER_THREE_CONSECUTIVE_UPDATES": (
+            "lock_errors", "!locked_seen",
+        ),
+        "P_USE_ONLY_VOLTAGE_DOMAIN_BEHAVIORAL_STATE": (),
+    },
+)
