@@ -121,6 +121,9 @@ def test_bandgap_checker_reports_first_hold_mismatch(monkeypatch) -> None:
             expected_metric = 0.9 if expected > 0.48 else 0.2
         early_time = edge + 0.36 * (next_edge - edge)
         late_time = edge + 0.76 * (next_edge - edge)
+        for sample_time in (early_time, late_time):
+            samples[("rst", sample_time)] = rst
+            samples[("vin", sample_time)] = vin
         samples[("out", early_time)] = expected
         samples[("metric", early_time)] = expected_metric
         samples[("out", late_time)] = expected + (0.1 if index == 10 else 0.0)
@@ -144,6 +147,60 @@ def test_bandgap_checker_reports_first_hold_mismatch(monkeypatch) -> None:
     assert "observed=" in detail
     assert "time=" in detail
     assert "tolerance=0.025" in detail
+
+
+def test_bandgap_checker_does_not_treat_midcycle_brownout_as_hold_failure(
+    monkeypatch,
+) -> None:
+    from checkers.v4 import task_020
+
+    edges = [float(index) for index in range(1, 25)]
+    samples: dict[tuple[str, float], float] = {}
+    expected = 0.0
+    for index, edge in enumerate(edges):
+        next_edge = edges[index + 1] if index + 1 < len(edges) else 25.0
+        if index == 0:
+            rst, vin = 0.9, 0.8
+        elif index == 1:
+            rst, vin = 0.0, 0.5
+        else:
+            rst, vin = 0.0, 0.8
+        samples[("rst", edge)] = rst
+        samples[("vin", edge)] = vin
+        if rst > 0.45 or vin < 0.58:
+            expected = 0.0
+            expected_metric = 0.0
+        else:
+            target = 0.55 + 0.020 * (vin - 0.75)
+            expected += 0.35 * (target - expected)
+            expected_metric = 0.9 if expected > 0.48 else 0.2
+        early_time = edge + 0.36 * (next_edge - edge)
+        late_time = edge + 0.76 * (next_edge - edge)
+        early_vin = vin
+        late_vin = 0.5 if index == 10 else vin
+        samples[("rst", early_time)] = rst
+        samples[("rst", late_time)] = rst
+        samples[("vin", early_time)] = early_vin
+        samples[("vin", late_time)] = late_vin
+        samples[("out", early_time)] = expected
+        samples[("metric", early_time)] = expected_metric
+        samples[("out", late_time)] = 0.0 if index == 10 else expected
+
+    monkeypatch.setattr(task_020, "threshold_crossings", lambda *_args, **_kwargs: edges)
+    monkeypatch.setattr(
+        task_020,
+        "sample_signal",
+        lambda _rows, signal, time_s: samples.get((signal, time_s)),
+    )
+    rows = [
+        {"time": 0.0, "clk": 0.0, "rst": 0.0, "vin": 0.0, "out": 0.0, "metric": 0.0},
+        {"time": 25.0, "clk": 0.0, "rst": 0.0, "vin": 0.0, "out": 0.0, "metric": 0.0},
+    ]
+
+    passed, detail = task_020.check_bandgap_reference_macro_model(rows)
+
+    assert passed, detail
+    assert "P_CLOCKED_HOLD mismatch_count=0" in detail
 
 
 def test_all_current_benchmarkv4_tasks_resolve_migrated_checker_candidates() -> None:

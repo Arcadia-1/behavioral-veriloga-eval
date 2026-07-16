@@ -45,14 +45,23 @@ def check_bandgap_reference_macro_model(rows: list[Row]) -> tuple[bool, str]:
         observed = sample_signal(rows, "out", early_time)
         metric = sample_signal(rows, "metric", early_time)
         late = sample_signal(rows, "out", late_time)
-        if observed is None or metric is None or late is None:
+        early_rst = sample_signal(rows, "rst", early_time)
+        early_vin = sample_signal(rows, "vin", early_time)
+        late_rst = sample_signal(rows, "rst", late_time)
+        late_vin = sample_signal(rows, "vin", late_time)
+        if any(
+            value is None
+            for value in (observed, metric, late, early_rst, early_vin, late_rst, late_vin)
+        ):
             continue
         checked += 1
         settling_failed = abs(observed - expected) > 0.055
         metric_failed = abs(metric - expected_metric) > 0.10
         clamp_ceiling = min(0.935, max(0.0, vin - 0.015))
         clamp_failed = observed < -0.035 or observed > clamp_ceiling
-        hold_failed = abs(late - observed) > 0.025
+        early_forced_low = early_rst > 0.45 or early_vin < 0.58
+        late_forced_low = late_rst > 0.45 or late_vin < 0.58
+        hold_failed = early_forced_low == late_forced_low and abs(late - observed) > 0.025
         settling_errors += settling_failed
         metric_errors += metric_failed
         clamp_errors += clamp_failed
