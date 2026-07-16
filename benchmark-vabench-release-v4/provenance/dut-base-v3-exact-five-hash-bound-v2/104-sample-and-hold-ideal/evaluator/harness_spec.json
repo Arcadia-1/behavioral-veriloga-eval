@@ -12,9 +12,7 @@
     "body_lines": [
       "Vclk (vclk 0) vsource type=pulse val0=0 val1=0.9 delay=5n period=10n width=4n rise=100p fall=100p",
       "Vvin (vin 0) vsource type=pwl wave=[0 0.10 4n 0.20 14n 0.55 24n 0.30 34n 0.78 50n 0.40]",
-      "",
-      "XDUT (vin vout vclk) source_sample_hold",
-      ""
+      "XDUT (vin vout vclk) source_sample_hold"
     ],
     "header": [
       "simulator lang=spectre",
@@ -41,30 +39,17 @@
     "legacy_score_deck_sha256": "fd5ad3fb18a19c9ee51e63210a03753371728c7b5bc83abd66a2e1042fb8d6cb",
     "notes": [
       "legacy feedback deck was used only to seed the canonical harness spec",
-      "legacy score deck seeded private profile-specific overrides"
+      "legacy score deck seeded private profile-specific overrides",
+      "feedback deck is the canonical stimulus; score is generated with identical semantics"
     ]
   },
   "profile_defaults": {
     "feedback": {
-      "parameters": {
-        "maxstep": "200p",
-        "stop_time": "100n"
-      },
       "simulatorOptions": {
         "evas_profile": "balanced"
       }
     },
-    "score": {
-      "deck_overrides": {
-        "analyses": [
-          "tran tran stop=45n maxstep=50p"
-        ]
-      },
-      "parameters": {
-        "maxstep": "100p",
-        "stop_time": "100n"
-      }
-    }
+    "score": {}
   },
   "property_ids": [
     "P_RISING_EDGE_CAPTURE",

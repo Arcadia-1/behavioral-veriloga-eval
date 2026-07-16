@@ -2,6 +2,9 @@
 from __future__ import annotations
 
 from ..api import Checker
+from .stimulus_relative import structured_result
+
+
 def _threshold_crossings(
     values: list[float],
     times: list[float],
@@ -125,4 +128,11 @@ def _edge_times_for_signal(
     return _threshold_crossings(values, times, threshold=threshold, direction=direction)
 
 CHECKER_ID = "v4_104_sample_and_hold_ideal"
-CHECKER: Checker = check_v3_sample_hold
+PROPERTY_IDS = (
+    "P_RISING_EDGE_CAPTURE",
+    "P_INTEREDGE_HOLD",
+    "P_NO_FALLING_EDGE_CAPTURE",
+    "P_UNITY_SAMPLE_GAIN",
+    "P_PARAMETERIZED_THRESHOLD",
+)
+CHECKER: Checker = structured_result(check_v3_sample_hold, PROPERTY_IDS)

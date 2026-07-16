@@ -10,7 +10,7 @@ from collections import Counter, defaultdict
 from pathlib import Path
 from typing import Any
 
-from materialize_tri_form_release import resolve_testbench_reference
+from materialize_tri_form_release import materialized_testbench_reference, resolve_testbench_reference
 from source_certification_binding import inspect_source_certification_reuse
 
 
@@ -78,11 +78,12 @@ def audit_testbench_reference(
     except SystemExit as exc:
         problems.append(f"{prefix} {exc}")
         return None
-    canonical_sha = file_sha(canonical)
+    expected = materialized_testbench_reference(source_task, canonical)
+    canonical_sha = hashlib.sha256(expected.encode("utf-8")).hexdigest()
     local = evaluator / "reference_tb.scs"
     if not local.is_file():
         problems.append(f"{prefix} evaluator missing reference_tb.scs")
-    elif file_sha(local) != canonical_sha:
+    elif local.read_text(encoding="utf-8") != expected:
         problems.append(f"{prefix} reference testbench differs from canonical {source_kind}")
     if score.get("reference_tb_sha256") != canonical_sha:
         problems.append(f"{prefix} reference testbench score policy hash mismatch")

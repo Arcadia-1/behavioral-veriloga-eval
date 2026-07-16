@@ -1,24 +1,13 @@
 {
   "corners": [],
-  "deck_overrides": {
-    "body_lines": [
-      "Vinp (vinp 0) vsource type=pwl wave=[0 0.70 18n 0.70 19n 0.25 60n 0.25]",
-      "Vinn (vinn 0) vsource dc=0.45",
-      "",
-      "XDUT (cmpck vinn vinp dcmpn dcmpp) clocked_sar_comparator",
-      ""
-    ]
-  },
+  "deck_overrides": {},
   "deterministic_seed": 0,
   "generated_from": {
     "script": "render_v4_harness.py",
     "version": "v4-harness-renderer-v1"
   },
-  "harness_spec_sha256": "3c1345d9a2b32651909ee507e34dd4b00c0b76cc5eb0da6e4940db7c19901d88",
-  "parameters": {
-    "maxstep": "200p",
-    "stop_time": "100n"
-  },
+  "harness_spec_sha256": "847ec16623d0562b0ed923b456d79e16a7d468b10f6b4fd622550b9853474e89",
+  "parameters": {},
   "profile_name": "feedback",
   "property_ids": [
     "P_INITIAL_PRECHARGE",

@@ -1,23 +1,13 @@
 {
   "corners": [],
-  "deck_overrides": {
-    "body_lines": [
-      "Vstep (step 0) vsource type=pwl wave=[0 0 20n 0 21n 0.8 160n 0.8]",
-      "",
-      "XDUT (step vout done) settling_time_measurement_tb",
-      ""
-    ]
-  },
+  "deck_overrides": {},
   "deterministic_seed": 0,
   "generated_from": {
     "script": "render_v4_harness.py",
     "version": "v4-harness-renderer-v1"
   },
-  "harness_spec_sha256": "6244a60e1d5f227e353b6d1bfa9f678dae6ad304d4db05fa52dbd691ca063400",
-  "parameters": {
-    "maxstep": "200p",
-    "stop_time": "100n"
-  },
+  "harness_spec_sha256": "8a73e0e38c8eaa5ca0d2d82675e8157a3d0888f9fc795fff52f30744bce954cd",
+  "parameters": {},
   "profile_name": "feedback",
   "property_ids": [
     "P_INITIAL_ZERO_STATE",

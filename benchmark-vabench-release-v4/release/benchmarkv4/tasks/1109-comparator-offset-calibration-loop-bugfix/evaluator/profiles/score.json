@@ -1,29 +1,13 @@
 {
   "corners": [],
-  "deck_overrides": {
-    "analyses": [
-      "tran tran stop=65n maxstep=20p"
-    ],
-    "body_lines": [
-      "Vvos (vos_ref 0) vsource dc=-0.017",
-      "Vclk (clk 0) vsource type=pulse val0=0 val1=0.9 delay=1.5n period=7n width=3.5n rise=80p fall=80p",
-      "",
-      "// The public support comparator is mounted read-only from the declared support contract.",
-      "XLOOP (vdd vss clk dcmpp vinp vinn offset_est valid) comparator_offset_calibration_loop",
-      "XCMP (vdd vss vinp vinn vos_ref dcmpp) support_offset_comparator td=60p tr=15p",
-      ""
-    ]
-  },
+  "deck_overrides": {},
   "deterministic_seed": 0,
   "generated_from": {
     "script": "render_v4_harness.py",
     "version": "v4-harness-renderer-v1"
   },
-  "harness_spec_sha256": "70c10b599f1afadc76cdb59590c4cbc4e1607325aca940e3867c72bdb89430ba",
-  "parameters": {
-    "maxstep": "100p",
-    "stop_time": "100n"
-  },
+  "harness_spec_sha256": "9310798bc0cad43d77a3f65f8facc512c94973af6f8cf025c755027897f9bdab",
+  "parameters": {},
   "profile_name": "score",
   "property_ids": [
     "P_ZERO_INITIAL_ESTIMATE",

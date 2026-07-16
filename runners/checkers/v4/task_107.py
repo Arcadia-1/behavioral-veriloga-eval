@@ -2,6 +2,9 @@
 from __future__ import annotations
 
 from ..api import Checker
+from .stimulus_relative import structured_result
+
+
 def _threshold_crossings(
     values: list[float],
     times: list[float],
@@ -143,4 +146,12 @@ def check_v3_bipolar_dac_4b_continuous(rows: list[dict[str, float]]) -> tuple[bo
     return True, f"codes={sorted(code_to_output)} max_err={max_err:.4f} monotonic=True"
 
 CHECKER_ID = "v4_107_bipolar_dac_4b_continuous"
-CHECKER: Checker = check_v3_bipolar_dac_4b_continuous
+PROPERTY_IDS = (
+    "P_UNSIGNED_BIT_DECODE",
+    "P_NEGATIVE_FULL_SCALE",
+    "P_POSITIVE_FULL_SCALE",
+    "P_UNIFORM_CODE_STEP",
+    "P_MONOTONIC_TRANSFER",
+    "P_CONTINUOUS_REEVALUATION",
+)
+CHECKER: Checker = structured_result(check_v3_bipolar_dac_4b_continuous, PROPERTY_IDS)

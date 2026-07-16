@@ -11,9 +11,7 @@
     ],
     "body_lines": [
       "Vin (sigin 0) vsource type=pwl wave=[0 0.1 4n 0.1 5n 0.8 14n 0.8 15n 0.1 24n 0.1 25n 0.8 34n 0.8 35n 0.1 45n 0.1]",
-      "",
-      "XDUT (sigin sigout) source_crossing_pulse_detector",
-      ""
+      "XDUT (sigin sigout) source_crossing_pulse_detector"
     ],
     "header": [
       "simulator lang=spectre",
@@ -39,30 +37,17 @@
     "legacy_score_deck_sha256": "26c26215e50330de1a0f1f84b6c9e74d6530bccbf7c3cbc6bff24367301d4c2b",
     "notes": [
       "legacy feedback deck was used only to seed the canonical harness spec",
-      "legacy score deck seeded private profile-specific overrides"
+      "legacy score deck seeded private profile-specific overrides",
+      "feedback deck is the canonical stimulus; score is generated with identical semantics"
     ]
   },
   "profile_defaults": {
     "feedback": {
-      "parameters": {
-        "maxstep": "200p",
-        "stop_time": "100n"
-      },
       "simulatorOptions": {
         "evas_profile": "balanced"
       }
     },
-    "score": {
-      "deck_overrides": {
-        "analyses": [
-          "tran tran stop=45n maxstep=50p"
-        ]
-      },
-      "parameters": {
-        "maxstep": "100p",
-        "stop_time": "100n"
-      }
-    }
+    "score": {}
   },
   "property_ids": [
     "P_RISING_CROSS_PULSE",

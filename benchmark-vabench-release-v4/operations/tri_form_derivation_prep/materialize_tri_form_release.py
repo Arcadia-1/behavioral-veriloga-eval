@@ -132,6 +132,18 @@ def resolve_testbench_reference(source_task: Path) -> tuple[Path, str]:
     raise SystemExit(f"{source_task.name}: missing evaluator/reference_tb.scs and evaluator/score_tb.scs")
 
 
+def materialized_testbench_reference(source_task: Path, reference: Path) -> str:
+    """Render the reference deck against the public supplied-DUT mount."""
+
+    text = reference.read_text(encoding="utf-8")
+    if (source_task / "public" / "task" / "public_support").is_dir():
+        text = text.replace(
+            'ahdl_include "./support/',
+            'ahdl_include "./dut/support/',
+        )
+    return text
+
+
 def canonical_sha(value: Any) -> str:
     payload = json.dumps(value, sort_keys=True, separators=(",", ":"), ensure_ascii=True)
     return sha_bytes(payload.encode("utf-8"))
@@ -685,6 +697,8 @@ def build_testbench_view(
     evaluator = task_dir / "evaluator"
     materialize_standalone_evaluator(source_task, evaluator, include_negative_suite=True)
     reference_tb, reference_tb_source_kind = resolve_testbench_reference(source_task)
+    reference_target = evaluator / "reference_tb.scs"
+    write_text(reference_target, materialized_testbench_reference(source_task, reference_tb))
     suite = [str(item["mutation_id"]) for item in row["active_mutations"]]
     score_policy = {
         "schema_version": "v4-testbench-score-policy-v1",
@@ -697,7 +711,7 @@ def build_testbench_view(
         "spectre_final_judge": True,
         "materialized_checker_profile": "evaluator/checker_profile.json",
         "checker_profile_sha256": file_sha(evaluator / "checker_profile.json"),
-        "reference_tb_sha256": file_sha(reference_tb),
+        "reference_tb_sha256": file_sha(reference_target),
         "mutation_catalog_sha256": row["hashes"]["mutation_catalog_sha256"],
         "negative_suite_mutation_ids": suite,
         "bugfix_seed_mutation_id": seed_review["mutation_id"],
@@ -717,7 +731,6 @@ def build_testbench_view(
         ],
         "require": ["declared_dut_binding", "transient_analysis", "all_required_public_traces"],
     })
-    shutil.copy2(reference_tb, evaluator / "reference_tb.scs")
     bundle_sha = public_bundle_hash(task_dir)
     write_task_record(task_dir, common_task_record(
         task_id=f"v4-{task_num:03d}", form="testbench", family_id=family,

@@ -2,6 +2,9 @@
 from __future__ import annotations
 
 from ..api import Checker
+from .stimulus_relative import structured_result
+
+
 def sample_signal(rows: list[dict[str, float]], signal: str, time_s: float) -> float | None:
     if not rows or signal not in rows[0] or "time" not in rows[0]:
         return None
@@ -113,4 +116,11 @@ def check_settling_time_measurement_tb(rows: list[dict[str, float]]) -> tuple[bo
     )
 
 CHECKER_ID = "v4_101_settling_time_measurement"
-CHECKER: Checker = check_settling_time_measurement_tb
+PROPERTY_IDS = (
+    "P_INITIAL_ZERO_STATE",
+    "P_FIRST_ORDER_UPDATE",
+    "P_RESPONSE_CONVERGENCE",
+    "P_DONE_TIME_GATE",
+    "P_DONE_SETTLED_GATE",
+)
+CHECKER: Checker = structured_result(check_settling_time_measurement_tb, PROPERTY_IDS)

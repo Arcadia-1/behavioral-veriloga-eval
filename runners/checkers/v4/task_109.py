@@ -2,6 +2,9 @@
 from __future__ import annotations
 
 from ..api import Checker
+from .stimulus_relative import structured_result
+
+
 def _threshold_crossings(
     values: list[float],
     times: list[float],
@@ -127,4 +130,12 @@ def _max_signal_value(
     return max(values) if values else default
 
 CHECKER_ID = "v4_109_comparator_offset_calibration_loop"
-CHECKER: Checker = check_v3_comparator_offset_calibration_loop
+PROPERTY_IDS = (
+    "P_ZERO_INITIAL_ESTIMATE",
+    "P_FALLING_EDGE_UPDATE",
+    "P_DECISION_DIRECTION",
+    "P_SUCCESSIVE_STEP_HALVING",
+    "P_SYMMETRIC_DIFFERENTIAL_STIMULUS",
+    "P_VALID_COMPLETION",
+)
+CHECKER: Checker = structured_result(check_v3_comparator_offset_calibration_loop, PROPERTY_IDS)

@@ -2,6 +2,9 @@
 from __future__ import annotations
 
 from ..api import Checker
+from .stimulus_relative import structured_result
+
+
 def _threshold_crossings(
     values: list[float],
     times: list[float],
@@ -169,4 +172,12 @@ def _edge_times_for_signal(
     return _threshold_crossings(values, times, threshold=threshold, direction=direction)
 
 CHECKER_ID = "v4_105_single_shot_pulse"
-CHECKER: Checker = check_v3_single_shot
+PROPERTY_IDS = (
+    "P_RISING_CROSS_TRIGGER",
+    "P_NO_FALLING_TRIGGER",
+    "P_PULSE_WIDTH",
+    "P_OUTPUT_LEVELS",
+    "P_REPEATABLE_ONE_SHOTS",
+    "P_TRANSITION_TIMING",
+)
+CHECKER: Checker = structured_result(check_v3_single_shot, PROPERTY_IDS)
