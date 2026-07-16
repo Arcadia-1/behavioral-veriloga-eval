@@ -1,0 +1,525 @@
+{
+  "allowed_profile_differences": [
+    "simulatorOptions"
+  ],
+  "checked_families": [
+    "001",
+    "002",
+    "003",
+    "004",
+    "005",
+    "006",
+    "007",
+    "008",
+    "009",
+    "010"
+  ],
+  "failure_count": 10,
+  "failures": [
+    {
+      "differences": {
+        "analyses": {
+          "feedback": [
+            "tran tran stop=70n maxstep=20p"
+          ],
+          "score": [
+            "tran tran stop=90n maxstep=20p"
+          ]
+        },
+        "body_lines": {
+          "feedback": [
+            "Vdata (data 0) vsource type=pwl wave=[ \\",
+            "0 0 \\",
+            "9.9n 0 10.0n 0.9 \\",
+            "19.9n 0.9 20.0n 0 \\",
+            "29.9n 0 30.0n 0.9 \\",
+            "39.9n 0.9 40.0n 0 \\",
+            "49.9n 0 50.0n 0.9 \\",
+            "59.9n 0.9 60.0n 0 \\",
+            "70n 0 \\",
+            "]",
+            "Vclk (clk 0) vsource type=pwl wave=[ \\",
+            "0 0.9 \\",
+            "12.0n 0.9 12.1n 0 \\",
+            "28.0n 0 28.1n 0.9 \\",
+            "42.0n 0.9 42.1n 0 \\",
+            "52.0n 0 52.1n 0.9 \\",
+            "58.0n 0.9 58.1n 0 \\",
+            "70n 0 \\",
+            "]",
+            "Vretimed_data (retimed_data 0) vsource type=pwl wave=[ \\",
+            "0 0 \\",
+            "18.0n 0 18.1n 0.9 \\",
+            "34.0n 0.9 34.1n 0 \\",
+            "48.0n 0 48.1n 0.9 \\",
+            "56.0n 0.9 56.1n 0 \\",
+            "70n 0 \\",
+            "]",
+            "XDUT (data clk retimed_data up down) bbpd_ref"
+          ],
+          "score": [
+            "Vdata (data 0) vsource type=pwl wave=[0 0 9.9n 0 10n 0.9 15n 0.9 19.9n 0.9 20n 0 25n 0 29.9n 0 30n 0.9 35n 0.9 39.9n 0.9 40n 0 45n 0 49.9n 0 50n 0.9 55n 0.9 59.9n 0.9 60n 0 65n 0 69.9n 0 70n 0.9 75n 0.9 79.9n 0.9 80n 0 85n 0 90n 0]",
+            "Vclk (clk 0) vsource type=pwl wave=[0 0 9n 0.9 12.8n 0.9 13n 0 15n 0 19n 0 22.8n 0 23n 0.9 25n 0.9 29n 0.9 32.8n 0.9 33n 0 35n 0 39n 0 42.8n 0 43n 0.9 45n 0.9 49n 0 52.8n 0 53n 0.9 55n 0.9 59n 0.9 62.8n 0.9 63n 0 65n 0 69n 0.9 72.8n 0.9 73n 0 75n 0 79n 0 82.8n 0 83n 0.9 85n 0.9 90n 0.9]",
+            "Vretimed_data (retimed_data 0) vsource type=pwl wave=[0 0 9n 0 15n 0 19n 0.9 25n 0.9 29n 0 35n 0 39n 0.9 45n 0.9 49n 0 55n 0 59n 0.9 65n 0.9 69n 0 75n 0 79n 0.9 85n 0.9 90n 0.9]",
+            "XDUT (data clk retimed_data up down) bbpd_ref"
+          ]
+        },
+        "parameters": {
+          "feedback": {
+            "maxstep": "200p",
+            "stop_time": "100n"
+          },
+          "score": {
+            "maxstep": "100p",
+            "stop_time": "100n"
+          }
+        }
+      },
+      "family_id": "001"
+    },
+    {
+      "differences": {
+        "analyses": {
+          "feedback": [
+            "tran tran stop=40n maxstep=20p"
+          ],
+          "score": [
+            "tran tran stop=68n maxstep=20p"
+          ]
+        },
+        "body_lines": {
+          "feedback": [
+            "Vvdd (VDD 0) vsource dc=0.9",
+            "Vvss (VSS 0) vsource dc=0",
+            "Vclk (CLK 0) vsource type=pulse val0=0 val1=0.9 delay=1n rise=20p fall=20p width=1n period=4n",
+            "Vd9 (D9 0) vsource type=pwl wave=[0 0 2.9n 0 3n 0.9 6.9n 0.9 7n 0.9 10.9n 0.9 11n 0 14.9n 0 15n 0.9 18.9n 0.9 19n 0 22.9n 0 23n 0 26.9n 0 27n 0.9 30.9n 0.9 31n 0 34.9n 0 35n 0.9 40n 0.9]",
+            "Vd8 (D8 0) vsource type=pwl wave=[0 0 2.9n 0 3n 0.9 6.9n 0.9 7n 0 10.9n 0 11n 0.9 14.9n 0.9 15n 0.9 18.9n 0.9 19n 0.9 22.9n 0.9 23n 0 26.9n 0 27n 0.9 30.9n 0.9 31n 0.9 34.9n 0.9 35n 0 40n 0]",
+            "Vd7 (D7 0) vsource type=pwl wave=[0 0 2.9n 0 3n 0.9 6.9n 0.9 7n 0 10.9n 0 11n 0 14.9n 0 15n 0 18.9n 0 19n 0.9 22.9n 0.9 23n 0 26.9n 0 27n 0.9 30.9n 0.9 31n 0.9 34.9n 0.9 35n 0 40n 0]",
+            "Vd6 (D6 0) vsource type=pwl wave=[0 0 2.9n 0 3n 0.9 6.9n 0.9 7n 0 10.9n 0 11n 0 14.9n 0 15n 0 18.9n 0 19n 0.9 22.9n 0.9 23n 0 26.9n 0 27n 0 30.9n 0 31n 0.9 34.9n 0.9 35n 0 40n 0]",
+            "Vd5 (D5 0) vsource type=pwl wave=[0 0 2.9n 0 3n 0.9 6.9n 0.9 7n 0 10.9n 0 11n 0 14.9n 0 15n 0 18.9n 0 19n 0.9 22.9n 0.9 23n 0 26.9n 0 27n 0 30.9n 0 31n 0 34.9n 0 35n 0.9 40n 0.9]",
+            "Vd4 (D4 0) vsource type=pwl wave=[0 0 2.9n 0 3n 0.9 6.9n 0.9 7n 0 10.9n 0 11n 0 14.9n 0 15n 0 18.9n 0 19n 0.9 22.9n 0.9 23n 0 26.9n 0 27n 0 30.9n 0 31n 0 34.9n 0 35n 0.9 40n 0.9]",
+            "Vd3 (D3 0) vsource type=pwl wave=[0 0 2.9n 0 3n 0.9 6.9n 0.9 7n 0 10.9n 0 11n 0 14.9n 0 15n 0 18.9n 0 19n 0.9 22.9n 0.9 23n 0 26.9n 0 27n 0 30.9n 0 31n 0 34.9n 0 35n 0.9 40n 0.9]",
+            "Vd2 (D2 0) vsource type=pwl wave=[0 0 2.9n 0 3n 0.9 6.9n 0.9 7n 0 10.9n 0 11n 0 14.9n 0 15n 0 18.9n 0 19n 0.9 22.9n 0.9 23n 0 26.9n 0 27n 0.9 30.9n 0.9 31n 0 34.9n 0 35n 0.9 40n 0.9]",
+            "Vd1 (D1 0) vsource type=pwl wave=[0 0 2.9n 0 3n 0.9 6.9n 0.9 7n 0 10.9n 0 11n 0 14.9n 0 15n 0 18.9n 0 19n 0.9 22.9n 0.9 23n 0 26.9n 0 27n 0 30.9n 0 31n 0.9 34.9n 0.9 35n 0 40n 0]",
+            "Vd0 (D0 0) vsource type=pwl wave=[0 0 2.9n 0 3n 0.9 6.9n 0.9 7n 0 10.9n 0 11n 0 14.9n 0 15n 0 18.9n 0 19n 0.9 22.9n 0.9 23n 0.9 26.9n 0.9 27n 0 30.9n 0 31n 0 34.9n 0 35n 0.9 40n 0.9]",
+            "Vcal0 (CAL0 0) vsource type=pwl wave=[0 0 2.9n 0 3n 0.9 6.9n 0.9 7n 0 10.9n 0 11n 0.9 14.9n 0.9 15n 0 18.9n 0 19n 0.9 22.9n 0.9 23n 0.9 26.9n 0.9 27n 0 30.9n 0 31n 0 34.9n 0 35n 0.9 40n 0.9]",
+            "Vcal1 (CAL1 0) vsource type=pwl wave=[0 0 2.9n 0 3n 0 6.9n 0 7n 0.9 10.9n 0.9 11n 0.9 14.9n 0.9 15n 0 18.9n 0 19n 0.9 22.9n 0.9 23n 0 26.9n 0 27n 0.9 30.9n 0.9 31n 0 34.9n 0 35n 0.9 40n 0.9]",
+            "XDUT (VDD VSS CLK D9 D8 D7 D6 D5 D4 D3 D2 D1 D0 CAL0 CAL1 VDAC_P VDAC_N) cdac_cal"
+          ],
+          "score": [
+            "Vvdd (VDD 0) vsource dc=0.9",
+            "Vvss (VSS 0) vsource dc=0",
+            "Vclk (CLK 0) vsource type=pulse val0=0 val1=0.9 delay=1n rise=20p fall=20p width=1n period=4n",
+            "Vd0 (D0 0) vsource type=pwl wave=[0n 0 2n 0 5.9n 0 6n 0.9 9.9n 0.9 10n 0 13.9n 0 14n 0.9 17.9n 0.9 18n 0.9 21.9n 0.9 22n 0.9 25.9n 0.9 26n 0 29.9n 0 30n 0 33.9n 0 34n 0 37.9n 0 38n 0 41.9n 0 42n 0 45.9n 0 46n 0 49.9n 0 50n 0.9 53.9n 0.9 54n 0.9 57.9n 0.9 58n 0.9 61.9n 0.9 62n 0.9 68n 0.9]",
+            "Vd1 (D1 0) vsource type=pwl wave=[0n 0 2n 0 5.9n 0 6n 0 9.9n 0 10n 0.9 13.9n 0.9 14n 0.9 17.9n 0.9 18n 0.9 21.9n 0.9 22n 0.9 25.9n 0.9 26n 0 29.9n 0 30n 0 33.9n 0 34n 0 37.9n 0 38n 0 41.9n 0 42n 0 45.9n 0 46n 0 49.9n 0 50n 0.9 53.9n 0.9 54n 0.9 57.9n 0.9 58n 0.9 61.9n 0.9 62n 0.9 68n 0.9]",
+            "Vd2 (D2 0) vsource type=pwl wave=[0n 0 2n 0 5.9n 0 6n 0 9.9n 0 10n 0 13.9n 0 14n 0 17.9n 0 18n 0.9 21.9n 0.9 22n 0.9 25.9n 0.9 26n 0 29.9n 0 30n 0 33.9n 0 34n 0 37.9n 0 38n 0 41.9n 0 42n 0 45.9n 0 46n 0 49.9n 0 50n 0.9 53.9n 0.9 54n 0.9 57.9n 0.9 58n 0.9 61.9n 0.9 62n 0.9 68n 0.9]",
+            "Vd3 (D3 0) vsource type=pwl wave=[0n 0 2n 0 5.9n 0 6n 0 9.9n 0 10n 0 13.9n 0 14n 0 17.9n 0 18n 0 21.9n 0 22n 0.9 25.9n 0.9 26n 0 29.9n 0 30n 0 33.9n 0 34n 0 37.9n 0 38n 0 41.9n 0 42n 0 45.9n 0 46n 0 49.9n 0 50n 0.9 53.9n 0.9 54n 0.9 57.9n 0.9 58n 0.9 61.9n 0.9 62n 0.9 68n 0.9]",
+            "Vd4 (D4 0) vsource type=pwl wave=[0n 0 2n 0 5.9n 0 6n 0 9.9n 0 10n 0 13.9n 0 14n 0 17.9n 0 18n 0 21.9n 0 22n 0 25.9n 0 26n 0.9 29.9n 0.9 30n 0 33.9n 0 34n 0 37.9n 0 38n 0 41.9n 0 42n 0 45.9n 0 46n 0 49.9n 0 50n 0.9 53.9n 0.9 54n 0.9 57.9n 0.9 58n 0.9 61.9n 0.9 62n 0.9 68n 0.9]",
+            "Vd5 (D5 0) vsource type=pwl wave=[0n 0 2n 0 5.9n 0 6n 0 9.9n 0 10n 0 13.9n 0 14n 0 17.9n 0 18n 0 21.9n 0 22n 0 25.9n 0 26n 0 29.9n 0 30n 0.9 33.9n 0.9 34n 0 37.9n 0 38n 0 41.9n 0 42n 0 45.9n 0 46n 0 49.9n 0 50n 0.9 53.9n 0.9 54n 0.9 57.9n 0.9 58n 0.9 61.9n 0.9 62n 0.9 68n 0.9]",
+            "Vd6 (D6 0) vsource type=pwl wave=[0n 0 2n 0 5.9n 0 6n 0 9.9n 0 10n 0 13.9n 0 14n 0 17.9n 0 18n 0 21.9n 0 22n 0 25.9n 0 26n 0 29.9n 0 30n 0 33.9n 0 34n 0.9 37.9n 0.9 38n 0 41.9n 0 42n 0 45.9n 0 46n 0 49.9n 0 50n 0.9 53.9n 0.9 54n 0.9 57.9n 0.9 58n 0.9 61.9n 0.9 62n 0.9 68n 0.9]",
+            "Vd7 (D7 0) vsource type=pwl wave=[0n 0 2n 0 5.9n 0 6n 0 9.9n 0 10n 0 13.9n 0 14n 0 17.9n 0 18n 0 21.9n 0 22n 0 25.9n 0 26n 0 29.9n 0 30n 0 33.9n 0 34n 0 37.9n 0 38n 0.9 41.9n 0.9 42n 0 45.9n 0 46n 0 49.9n 0 50n 0.9 53.9n 0.9 54n 0.9 57.9n 0.9 58n 0.9 61.9n 0.9 62n 0.9 68n 0.9]",
+            "Vd8 (D8 0) vsource type=pwl wave=[0n 0 2n 0 5.9n 0 6n 0 9.9n 0 10n 0 13.9n 0 14n 0 17.9n 0 18n 0 21.9n 0 22n 0 25.9n 0 26n 0 29.9n 0 30n 0 33.9n 0 34n 0 37.9n 0 38n 0 41.9n 0 42n 0.9 45.9n 0.9 46n 0 49.9n 0 50n 0 53.9n 0 54n 0.9 57.9n 0.9 58n 0 61.9n 0 62n 0.9 68n 0.9]",
+            "Vd9 (D9 0) vsource type=pwl wave=[0n 0 2n 0 5.9n 0 6n 0 9.9n 0 10n 0 13.9n 0 14n 0 17.9n 0 18n 0 21.9n 0 22n 0 25.9n 0 26n 0 29.9n 0 30n 0 33.9n 0 34n 0 37.9n 0 38n 0 41.9n 0 42n 0 45.9n 0 46n 0.9 49.9n 0.9 50n 0 53.9n 0 54n 0 57.9n 0 58n 0.9 61.9n 0.9 62n 0.9 68n 0.9]",
+            "Vcal0 (CAL0 0) vsource type=pwl wave=[0n 0 2n 0 5.9n 0 6n 0.9 9.9n 0.9 10n 0 13.9n 0 14n 0.9 17.9n 0.9 18n 0 21.9n 0 22n 0.9 25.9n 0.9 26n 0 29.9n 0 30n 0.9 33.9n 0.9 34n 0 37.9n 0 38n 0.9 41.9n 0.9 42n 0 45.9n 0 46n 0.9 49.9n 0.9 50n 0 53.9n 0 54n 0.9 57.9n 0.9 58n 0 61.9n 0 62n 0.9 68n 0.9]",
+            "Vcal1 (CAL1 0) vsource type=pwl wave=[0n 0 2n 0 5.9n 0 6n 0 9.9n 0 10n 0.9 13.9n 0.9 14n 0.9 17.9n 0.9 18n 0 21.9n 0 22n 0 25.9n 0 26n 0.9 29.9n 0.9 30n 0.9 33.9n 0.9 34n 0 37.9n 0 38n 0 41.9n 0 42n 0.9 45.9n 0.9 46n 0.9 49.9n 0.9 50n 0 53.9n 0 54n 0 57.9n 0 58n 0.9 61.9n 0.9 62n 0.9 68n 0.9]",
+            "XDUT (VDD VSS CLK D9 D8 D7 D6 D5 D4 D3 D2 D1 D0 CAL0 CAL1 VDAC_P VDAC_N) cdac_cal"
+          ]
+        },
+        "parameters": {
+          "feedback": {
+            "maxstep": "200p",
+            "stop_time": "100n"
+          },
+          "score": {
+            "maxstep": "100p",
+            "stop_time": "100n"
+          }
+        }
+      },
+      "family_id": "002"
+    },
+    {
+      "differences": {
+        "analyses": {
+          "feedback": [
+            "tran tran stop=120n maxstep=500p"
+          ],
+          "score": [
+            "tran tran stop=300n maxstep=500p"
+          ]
+        },
+        "body_lines": {
+          "feedback": [
+            "Vvdd  (vdd  0) vsource dc=0.9",
+            "Vvss  (vss  0) vsource dc=0.0",
+            "Vvref (vref 0) vsource dc=0.9",
+            "Vphi1 (phi1 0) vsource type=pulse val0=0 val1=0.9 period=30n width=10n rise=200p fall=200p delay=3n",
+            "Vphi2 (phi2 0) vsource type=pulse val0=0 val1=0.9 period=30n width=10n rise=200p fall=200p delay=15n",
+            "Vvin  (vin  0) vsource type=pwl wave=[0 0.45 9n 0.45 9.1n 0.72 39n 0.72 39.1n 0.18 69n 0.18 69.1n 1.05 99n 1.05 99.1n 0.45 120n 0.45]",
+            "XDUT (vdd vss phi1 phi2 vin vref vres d1 d0) pipeline_stage vth=0.45 vdd=0.9 tedge=200p"
+          ],
+          "score": [
+            "Vvdd  (vdd  0) vsource dc=0.9",
+            "Vvss  (vss  0) vsource dc=0.0",
+            "Vvref (vref 0) vsource dc=0.9",
+            "Vphi1 (phi1 0) vsource type=pulse val0=0 val1=0.9 period=30n width=10n rise=200p fall=200p delay=3n",
+            "Vphi2 (phi2 0) vsource type=pulse val0=0 val1=0.9 period=30n width=10n rise=200p fall=200p delay=15n",
+            "Vvin  (vin  0) vsource type=pwl wave=[0 0.45 9n 0.45 9.1n 0.72 39n 0.72 39.1n 0.18 69n 0.18 69.1n 0.90 99n 0.90 99.1n 0.00 129n 0.00 129.1n 0.676 159n 0.676 159.1n 0.674 189n 0.674 189.1n 0.226 219n 0.226 219.1n -0.15 249n -0.15 249.1n 1.05 279n 1.05 279.1n 0.45 300n 0.45]",
+            "XDUT (vdd vss phi1 phi2 vin vref vres d1 d0) pipeline_stage vth=0.45 vdd=0.9 tedge=200p"
+          ]
+        },
+        "parameters": {
+          "feedback": {
+            "maxstep": "200p",
+            "stop_time": "100n"
+          },
+          "score": {
+            "maxstep": "100p",
+            "stop_time": "100n"
+          }
+        }
+      },
+      "family_id": "003"
+    },
+    {
+      "differences": {
+        "analyses": {
+          "feedback": [
+            "tran tran stop=220n maxstep=200p"
+          ],
+          "score": [
+            "tran tran stop=220n maxstep=500p"
+          ]
+        },
+        "body_lines": {
+          "feedback": [
+            "Vclk (clk 0) vsource type=pulse val0=0 val1=0.9 delay=5n rise=100p fall=100p width=2n period=8n",
+            "Vrst (rst 0) vsource type=pwl wave=[0 0.9 14n 0.9 14.2n 0 220n 0]",
+            "Verr (err 0) vsource type=pwl wave=[0 0.9 86n 0.9 86.2n 0 202n 0 202.2n 0.9 220n 0.9]",
+            "XDUT (clk rst err trim) cdac_calibration"
+          ],
+          "score": [
+            "Vclk (clk 0) vsource type=pulse val0=0 val1=0.9 delay=6n rise=100p fall=100p width=2n period=8n",
+            "Vrst (rst 0) vsource type=pwl wave=[0 0.9 15n 0.9 15.2n 0 220n 0]",
+            "Verr (err 0) vsource type=pwl wave=[0 0.9 87n 0.9 87.2n 0 203n 0 203.2n 0.9 220n 0.9]",
+            "XDUT (clk rst err trim) cdac_calibration"
+          ]
+        },
+        "parameters": {
+          "feedback": {
+            "maxstep": "200p",
+            "stop_time": "100n"
+          },
+          "score": {
+            "maxstep": "100p",
+            "stop_time": "100n"
+          }
+        }
+      },
+      "family_id": "004"
+    },
+    {
+      "differences": {
+        "body_lines": {
+          "feedback": [
+            "Vsig (sig 0) vsource type=pwl wave=[0 0 5n 0 5.05n 0.9 24n 0.9 24.05n 0 31n 0 31.05n 0.9 36n 0.9 36.05n 0 71n 0 71.05n 0.9 132n 0.9 132.05n 0 140n 0]",
+            "Vrst (rst_n 0) vsource type=pwl wave=[0 0 16n 0 16.05n 0.9 140n 0.9]",
+            "XDUT (sig rst_n out) debounce_latch"
+          ],
+          "score": [
+            "Vsig (sig 0) vsource type=pwl wave=[0 0 5n 0 5.05n 0.9 24n 0.9 24.05n 0 31n 0 31.05n 0.9 36n 0.9 36.05n 0 54n 0 54.05n 0.9 68n 0.9 68.05n 0 71n 0 71.05n 0.9 132n 0.9 132.05n 0 140n 0]",
+            "Vrst (rst_n 0) vsource type=pwl wave=[0 0 16n 0 16.05n 0.9 55n 0.9 55.05n 0 65n 0 65.05n 0.9 140n 0.9]",
+            "XDUT (sig rst_n out) debounce_latch"
+          ]
+        },
+        "parameters": {
+          "feedback": {
+            "maxstep": "200p",
+            "stop_time": "100n"
+          },
+          "score": {
+            "maxstep": "100p",
+            "stop_time": "100n"
+          }
+        }
+      },
+      "family_id": "005"
+    },
+    {
+      "differences": {
+        "analyses": {
+          "feedback": [
+            "tran tran stop=225n maxstep=200p"
+          ],
+          "score": [
+            "tran tran stop=230n maxstep=500p"
+          ]
+        },
+        "body_lines": {
+          "feedback": [
+            "Vclk (clk 0) vsource type=pulse val0=0 val1=0.9 delay=10n rise=200p fall=200p width=5n period=20n",
+            "Vrst (rst_n 0) vsource type=pwl wave=[0 0 8n 0 9n 0.9 134n 0.9 135n 0 144n 0 145n 0.9 225n 0.9]",
+            "XDUT (clk rst_n out0 out1 out2 out3) element_shuffler"
+          ],
+          "score": [
+            "Vclk (clk 0) vsource type=pulse val0=0 val1=0.9 delay=10n rise=200p fall=200p width=5n period=20n",
+            "Vrst (rst_n 0) vsource type=pwl wave=[0 0 8n 0 9n 0.9 132n 0.9 133n 0 143n 0 144n 0.9 230n 0.9]",
+            "XDUT (clk rst_n out0 out1 out2 out3) element_shuffler"
+          ]
+        },
+        "parameters": {
+          "feedback": {
+            "maxstep": "200p",
+            "stop_time": "100n"
+          },
+          "score": {
+            "maxstep": "100p",
+            "stop_time": "100n"
+          }
+        }
+      },
+      "family_id": "006"
+    },
+    {
+      "differences": {
+        "body_lines": {
+          "feedback": [
+            "Vin (vin 0) vsource type=pwl wave=[0 0 18n 0 18.4n 0.8 160n 0.8]",
+            "XDUT (vin vout) first_order_lowpass"
+          ],
+          "score": [
+            "Vin (vin 0) vsource type=pwl wave=[0 0 20n 0 20.5n 0.8 160n 0.8]",
+            "XDUT (vin vout) first_order_lowpass"
+          ]
+        },
+        "parameters": {
+          "feedback": {
+            "maxstep": "200p",
+            "stop_time": "100n"
+          },
+          "score": {
+            "maxstep": "100p",
+            "stop_time": "100n"
+          }
+        }
+      },
+      "family_id": "007"
+    },
+    {
+      "differences": {
+        "analyses": {
+          "feedback": [
+            "tran tran stop=660n maxstep=200p"
+          ],
+          "score": [
+            "tran tran stop=660n maxstep=500p"
+          ]
+        },
+        "body_lines": {
+          "feedback": [
+            "Vclk (clk 0) vsource type=pulse val0=0 val1=0.9 delay=7n rise=100p fall=100p width=6n period=20n",
+            "Vrst (rst 0) vsource type=pwl wave=[0 0.9 22n 0.9 22.2n 0 660n 0]",
+            "Vmeas (meas 0) vsource type=pwl wave=[0 0.2 252n 0.2 252.2n 0.45 302n 0.45 302.2n 0.7 660n 0.7]",
+            "Vtarget (target 0) vsource dc=0.45",
+            "XDUT (clk rst meas target gain_ctrl) gain_trim_controller"
+          ],
+          "score": [
+            "Vclk (clk 0) vsource type=pulse val0=0 val1=0.9 delay=10n rise=200p fall=200p width=5n period=20n",
+            "Vrst (rst 0) vsource type=pwl wave=[0 0.9 15n 0.9 16n 0 660n 0]",
+            "Vmeas (meas 0) vsource type=pwl wave=[0 0.2 260n 0.2 261n 0.46 300n 0.46 301n 0.7 660n 0.7]",
+            "Vtarget (target 0) vsource dc=0.45",
+            "XDUT (clk rst meas target gain_ctrl) gain_trim_controller"
+          ]
+        },
+        "parameters": {
+          "feedback": {
+            "maxstep": "200p",
+            "stop_time": "100n"
+          },
+          "score": {
+            "maxstep": "100p",
+            "stop_time": "100n"
+          }
+        }
+      },
+      "family_id": "008"
+    },
+    {
+      "differences": {
+        "analyses": {
+          "feedback": [
+            "tran tran stop=115n maxstep=100p"
+          ],
+          "score": [
+            "tran tran stop=210n maxstep=100p"
+          ]
+        },
+        "body_lines": {
+          "feedback": [
+            "Vrst (rst_n 0) vsource type=pwl wave=[ \\",
+            "0 0 \\",
+            "5n 0 \\",
+            "5.2n 0.9 \\",
+            "55n 0.9 \\",
+            "55.2n 0 \\",
+            "62n 0 \\",
+            "62.2n 0.9 \\",
+            "93n 0.9 \\",
+            "93.2n 0 \\",
+            "115n 0 \\",
+            "]",
+            "Vref (ref_clk 0) vsource type=pwl wave=[ \\",
+            "0 0 \\",
+            "11.9n 0 12.0n 0.9 13.0n 0.9 13.1n 0 \\",
+            "21.9n 0 22.0n 0.9 23.0n 0.9 23.1n 0 \\",
+            "31.9n 0 32.0n 0.9 33.0n 0.9 33.1n 0 \\",
+            "41.9n 0 42.0n 0.9 43.0n 0.9 43.1n 0 \\",
+            "51.9n 0 52.0n 0.9 53.0n 0.9 53.1n 0 \\",
+            "67.9n 0 68.0n 0.9 69.0n 0.9 69.1n 0 \\",
+            "77.9n 0 78.0n 0.9 79.0n 0.9 79.1n 0 \\",
+            "87.9n 0 88.0n 0.9 89.0n 0.9 89.1n 0 \\",
+            "107.9n 0 108.0n 0.9 109.0n 0.9 109.1n 0 \\",
+            "115n 0 \\",
+            "]",
+            "Vfb (fb_clk 0) vsource type=pwl wave=[ \\",
+            "0 0 \\",
+            "6.0n 0 6.1n 0.9 6.3n 0.9 6.4n 0 \\",
+            "8.0n 0 8.1n 0.9 8.3n 0.9 8.4n 0 \\",
+            "10.0n 0 10.1n 0.9 10.3n 0.9 10.4n 0 \\",
+            "10.9n 0 11.0n 0.9 12.0n 0.9 12.1n 0 \\",
+            "20.9n 0 21.0n 0.9 22.0n 0.9 22.1n 0 \\",
+            "30.9n 0 31.0n 0.9 32.0n 0.9 32.1n 0 \\",
+            "40.9n 0 41.0n 0.9 42.0n 0.9 42.1n 0 \\",
+            "46.9n 0 47.0n 0.9 48.0n 0.9 48.1n 0 \\",
+            "66.9n 0 67.0n 0.9 68.0n 0.9 68.1n 0 \\",
+            "76.9n 0 77.0n 0.9 78.0n 0.9 78.1n 0 \\",
+            "86.9n 0 87.0n 0.9 88.0n 0.9 88.1n 0 \\",
+            "106.9n 0 107.0n 0.9 108.0n 0.9 108.1n 0 \\",
+            "115n 0 \\",
+            "]",
+            "XDUT (ref_clk fb_clk rst_n lock) lock_detector"
+          ],
+          "score": [
+            "Vrst (rst_n 0) vsource type=pwl wave=[ \\",
+            "0 0 \\",
+            "8n 0 \\",
+            "8.2n 0.9 \\",
+            "93.0n 0.9 \\",
+            "93.2n 0 \\",
+            "103.0n 0 \\",
+            "103.2n 0.9 \\",
+            "210n 0.9 \\",
+            "]",
+            "Vref (ref_clk 0) vsource type=pwl wave=[ \\",
+            "0 0 \\",
+            "19.9n 0 20.0n 0.9 23.0n 0.9 23.2n 0 \\",
+            "39.9n 0 40.0n 0.9 43.0n 0.9 43.2n 0 \\",
+            "59.9n 0 60.0n 0.9 63.0n 0.9 63.2n 0 \\",
+            "79.9n 0 80.0n 0.9 83.0n 0.9 83.2n 0 \\",
+            "109.9n 0 110.0n 0.9 113.0n 0.9 113.2n 0 \\",
+            "129.9n 0 130.0n 0.9 133.0n 0.9 133.2n 0 \\",
+            "149.9n 0 150.0n 0.9 153.0n 0.9 153.2n 0 \\",
+            "169.9n 0 170.0n 0.9 173.0n 0.9 173.2n 0 \\",
+            "189.9n 0 190.0n 0.9 193.0n 0.9 193.2n 0 \\",
+            "210n 0 \\",
+            "]",
+            "Vfb (fb_clk 0) vsource type=pwl wave=[ \\",
+            "0 0 \\",
+            "19.0n 0 19.1n 0.9 22.0n 0.9 22.2n 0 \\",
+            "39.0n 0 39.1n 0.9 42.0n 0.9 42.2n 0 \\",
+            "59.0n 0 59.1n 0.9 62.0n 0.9 62.2n 0 \\",
+            "79.0n 0 79.1n 0.9 82.0n 0.9 82.2n 0 \\",
+            "109.0n 0 109.1n 0.9 112.0n 0.9 112.2n 0 \\",
+            "129.0n 0 129.1n 0.9 132.0n 0.9 132.2n 0 \\",
+            "149.0n 0 149.1n 0.9 152.0n 0.9 152.2n 0 \\",
+            "164.0n 0 164.1n 0.9 167.0n 0.9 167.2n 0 \\",
+            "189.0n 0 189.1n 0.9 192.0n 0.9 192.2n 0 \\",
+            "210n 0 \\",
+            "]",
+            "XDUT (ref_clk fb_clk rst_n lock) lock_detector"
+          ]
+        },
+        "parameters": {
+          "feedback": {
+            "maxstep": "200p",
+            "stop_time": "100n"
+          },
+          "score": {
+            "maxstep": "100p",
+            "stop_time": "100n"
+          }
+        }
+      },
+      "family_id": "009"
+    },
+    {
+      "differences": {
+        "body_lines": {
+          "feedback": [
+            "Vvdd (VDD 0) vsource dc=0.9",
+            "Vvss (VSS 0) vsource dc=0.1",
+            "Vclk (CLK 0) vsource type=pulse val0=0.1 val1=0.54 delay=1n rise=20p fall=20p width=1n period=4n",
+            "Vinp (VINP 0) vsource type=pwl wave=[ \\",
+            "0      0.538 \\",
+            "4.1n   0.538 \\",
+            "4.3n   0.549 \\",
+            "8.1n   0.549 \\",
+            "8.3n   0.554 \\",
+            "12.2n  0.554 \\",
+            "12.4n  0.558 \\",
+            "16.1n  0.558 \\",
+            "16.3n  0.566 \\",
+            "20.2n  0.566 \\",
+            "20.4n  0.549 \\",
+            "24.2n  0.549 \\",
+            "24.4n  0.537 \\",
+            "28.0n  0.537 \\",
+            "]",
+            "Vinn (VINN 0) vsource dc=0.550",
+            "XDUT (VDD VSS CLK VINP VINN OUT_P) cmp_offset_ref"
+          ],
+          "score": [
+            "Vvdd (VDD 0) vsource dc=0.9",
+            "Vvss (VSS 0) vsource dc=0.1",
+            "Vclk (CLK 0) vsource type=pulse val0=0.1 val1=0.54 delay=1n rise=20p fall=20p width=1n period=4n",
+            "// Hidden seven-edge staircase:",
+            "// 1n -10mV low, 5n 0mV low, 9n +3mV low,",
+            "// 13n +7mV high, 17n +20mV high, 21n 0mV low, 25n -10mV low.",
+            "// Steps at 12.2n, 20.2n, and 24.2n verify that the DUT is edge-sampled,",
+            "// not an asynchronous comparator.",
+            "Vinp (VINP 0) vsource type=pwl wave=[ \\",
+            "0      0.540 \\",
+            "4.0n   0.540 \\",
+            "4.2n   0.550 \\",
+            "8.0n   0.550 \\",
+            "8.2n   0.553 \\",
+            "12.0n  0.553 \\",
+            "12.2n  0.557 \\",
+            "16.0n  0.557 \\",
+            "16.2n  0.570 \\",
+            "20.0n  0.570 \\",
+            "20.2n  0.550 \\",
+            "24.0n  0.550 \\",
+            "24.2n  0.540 \\",
+            "28.0n  0.540 \\",
+            "]",
+            "Vinn (VINN 0) vsource dc=0.550",
+            "XDUT (VDD VSS CLK VINP VINN OUT_P) cmp_offset_ref"
+          ]
+        },
+        "parameters": {
+          "feedback": {
+            "maxstep": "200p",
+            "stop_time": "100n"
+          },
+          "score": {
+            "maxstep": "100p",
+            "stop_time": "100n"
+          }
+        }
+      },
+      "family_id": "010"
+    }
+  ],
+  "status": "FAIL"
+}

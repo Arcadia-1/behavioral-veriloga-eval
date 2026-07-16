@@ -1,0 +1,313 @@
+{
+  "checked_families": [
+    "001",
+    "002",
+    "003",
+    "004",
+    "005",
+    "006",
+    "007",
+    "008",
+    "009",
+    "010"
+  ],
+  "evas": {
+    "runs": [
+      {
+        "checker_task_id": "v4_001_bang_bang_phase_detector",
+        "evas_engine_used": "evas2",
+        "family_id": "001",
+        "notes": [
+          "returncode=0",
+          "evas_engine=evas2",
+          "trace_contract=row_required_set",
+          "data_edges=6 up_edges=2 down_edges=2 overlap_frac=0.0000 direction_up=2/2 direction_down=2/2 none=2/2 wrong_direction=0 missing_direction=0 false_pulse=0 strict_pulses=4 rail_failures=0 clear_failures=0"
+        ],
+        "scores": {
+          "dut_compile": 1.0,
+          "sim_correct": 1.0,
+          "tb_compile": 1.0,
+          "weighted_total": 1.0
+        },
+        "status": "PASS",
+        "task": "001-bang-bang-phase-detector",
+        "task_id": "v4-001",
+        "timing": {
+          "accepted_tran_steps": 3539.0,
+          "csv_write_s": 0.207386,
+          "derive_bus_signals_s": 0.000199,
+          "total_elapsed_s": 0.6,
+          "tran_elapsed_s": 0.0864
+        },
+        "wall_s": 24.607187
+      },
+      {
+        "checker_task_id": "v4_002_capacitive_weighted_sar_feedback_dac",
+        "evas_engine_used": "evas2",
+        "family_id": "002",
+        "notes": [
+          "returncode=0",
+          "evas_engine=evas2",
+          "trace_contract=row_required_set",
+          "samples=10 main_codes=10 cal_codes=[0, 1, 2, 3] mismatches=0 monotonic_errors=0 diff_span=0.6188 max_diff_error=0.0000 max_cm_error=0.0000 hold_intervals=9 hold_violations=0 max_hold_span=0.0000"
+        ],
+        "scores": {
+          "dut_compile": 1.0,
+          "sim_correct": 1.0,
+          "tb_compile": 1.0,
+          "weighted_total": 1.0
+        },
+        "status": "PASS",
+        "task": "002-capacitive-sar-feedback-dac",
+        "task_id": "v4-002",
+        "timing": {
+          "accepted_tran_steps": 2066.0,
+          "csv_write_s": 0.057347,
+          "derive_bus_signals_s": 2.8e-05,
+          "total_elapsed_s": 0.7,
+          "tran_elapsed_s": 0.5013
+        },
+        "wall_s": 11.986313
+      },
+      {
+        "checker_task_id": "v4_003_pipeline_adc_stage",
+        "evas_engine_used": "evas2",
+        "family_id": "003",
+        "notes": [
+          "returncode=0",
+          "evas_engine=evas2",
+          "trace_contract=row_required_set",
+          "paired_samples=4 sampled_vs_live_cases=4 clamp_cases=1 regions=upper:2,middle:1,lower:1 mismatches=0 max_residue_error=0.0000"
+        ],
+        "scores": {
+          "dut_compile": 1.0,
+          "sim_correct": 1.0,
+          "tb_compile": 1.0,
+          "weighted_total": 1.0
+        },
+        "status": "PASS",
+        "task": "003-pipeline-adc-stage",
+        "task_id": "v4-003",
+        "timing": {
+          "accepted_tran_steps": 301.0,
+          "csv_write_s": 0.004115,
+          "derive_bus_signals_s": 2.1e-05,
+          "total_elapsed_s": 0.1,
+          "tran_elapsed_s": 0.054200000000000005
+        },
+        "wall_s": 0.613337
+      },
+      {
+        "checker_task_id": "v4_004_trim_calibration_controller",
+        "evas_engine_used": "evas2",
+        "family_id": "004",
+        "notes": [
+          "returncode=0",
+          "evas_engine=evas2",
+          "trace_contract=row_required_set",
+          "clock_edges=27 initial=0.45 edge_mismatches=0 hold_intervals=26 hold_violations=0 async_hold_failures=0 range=(0.050,0.850) coverage={'reset': 2, 'increment': 11, 'decrement': 14, 'upper_clamp': 3, 'lower_clamp': 1}"
+        ],
+        "scores": {
+          "dut_compile": 1.0,
+          "sim_correct": 1.0,
+          "tb_compile": 1.0,
+          "weighted_total": 1.0
+        },
+        "status": "PASS",
+        "task": "004-trim-calibration-controller",
+        "task_id": "v4-004",
+        "timing": {
+          "accepted_tran_steps": 1323.0,
+          "csv_write_s": 0.008383,
+          "derive_bus_signals_s": 1.6e-05,
+          "total_elapsed_s": 0.0,
+          "tran_elapsed_s": 0.016800000000000002
+        },
+        "wall_s": 3.130632
+      },
+      {
+        "checker_task_id": "v4_005_debounce_latch",
+        "evas_engine_used": "evas2",
+        "family_id": "005",
+        "notes": [
+          "returncode=0",
+          "evas_engine=evas2",
+          "trace_contract=row_required_set",
+          "reset_arm_rejected_20ns:0.000 short_glitch_low_34ns:0.000 short_glitch_low_40ns:0.000 reset_cancel_low_67ns:0.000 post_cancel_low_72ns:0.000 pre_qualify_low_82ns:0.000 qualified_high_100ns:0.900 qualified_high_130ns:0.900 expected_rises=1 observed_rises=1 observed_falls=1 unmatched_expected=0 unauthorized_rises=0 unauthorized_falls=0 required_falls=1 unmatched_required_falls=0 rail_failures=0"
+        ],
+        "scores": {
+          "dut_compile": 1.0,
+          "sim_correct": 1.0,
+          "tb_compile": 1.0,
+          "weighted_total": 1.0
+        },
+        "status": "PASS",
+        "task": "005-debounce-latch",
+        "task_id": "v4-005",
+        "timing": {
+          "accepted_tran_steps": 302.0,
+          "csv_write_s": 0.003031,
+          "derive_bus_signals_s": 2.1e-05,
+          "total_elapsed_s": 0.0,
+          "tran_elapsed_s": 0.0079
+        },
+        "wall_s": 0.392958
+      },
+      {
+        "checker_task_id": "v4_006_element_shuffler",
+        "evas_engine_used": "evas2",
+        "family_id": "006",
+        "notes": [
+          "returncode=0",
+          "evas_engine=evas2",
+          "trace_contract=row_required_set",
+          "active_sequence=2,0,3,1,2,0,2,0,3,1 expected=2,0,3,1,2,0,2,0,3,1 reset_low_at=138ns strict_rail_samples=10 rail_failures=0"
+        ],
+        "scores": {
+          "dut_compile": 1.0,
+          "sim_correct": 1.0,
+          "tb_compile": 1.0,
+          "weighted_total": 1.0
+        },
+        "status": "PASS",
+        "task": "006-element-shuffler",
+        "task_id": "v4-006",
+        "timing": {
+          "accepted_tran_steps": 1201.0,
+          "csv_write_s": 0.007652,
+          "derive_bus_signals_s": 2.5e-05,
+          "total_elapsed_s": 0.2,
+          "tran_elapsed_s": 0.1158
+        },
+        "wall_s": 2.278232
+      },
+      {
+        "checker_task_id": "v4_007_first_order_lowpass",
+        "evas_engine_used": "evas2",
+        "family_id": "007",
+        "notes": [
+          "returncode=0",
+          "evas_engine=evas2",
+          "trace_contract=row_required_set",
+          "lowpass_samples=0.353,0.638,0.779,0.799 input_step=True monotonic=True response_fast_enough=True not_instant=True bounded=True initial_samples=[0.0, 0.0] initial_ok=True schedule_checks=32 schedule_failures=0 max_schedule_error=0.0000"
+        ],
+        "scores": {
+          "dut_compile": 1.0,
+          "sim_correct": 1.0,
+          "tb_compile": 1.0,
+          "weighted_total": 1.0
+        },
+        "status": "PASS",
+        "task": "007-first-order-lowpass",
+        "task_id": "v4-007",
+        "timing": {
+          "accepted_tran_steps": 1453.0,
+          "csv_write_s": 0.007737,
+          "derive_bus_signals_s": 1.4e-05,
+          "total_elapsed_s": 0.0,
+          "tran_elapsed_s": 0.0121
+        },
+        "wall_s": 3.263993
+      },
+      {
+        "checker_task_id": "v4_008_gain_trim_controller",
+        "evas_engine_used": "evas2",
+        "family_id": "008",
+        "notes": [
+          "returncode=0",
+          "evas_engine=evas2",
+          "trace_contract=row_required_set",
+          "clock_edges=33 initial=0.3 edge_mismatches=0 hold_intervals=32 hold_violations=0 range=(0.050,0.850) coverage={'reset': 1, 'increase': 12, 'decrease': 18, 'deadband': 2, 'upper_clamp': 2, 'lower_clamp': 3}"
+        ],
+        "scores": {
+          "dut_compile": 1.0,
+          "sim_correct": 1.0,
+          "tb_compile": 1.0,
+          "weighted_total": 1.0
+        },
+        "status": "PASS",
+        "task": "008-gain-trim-controller",
+        "task_id": "v4-008",
+        "timing": {
+          "accepted_tran_steps": 3567.0,
+          "csv_write_s": 0.066187,
+          "derive_bus_signals_s": 2.9e-05,
+          "total_elapsed_s": 0.4,
+          "tran_elapsed_s": 0.26639999999999997
+        },
+        "wall_s": 9.937009
+      },
+      {
+        "checker_task_id": "v4_009_lock_detector",
+        "evas_engine_used": "evas2",
+        "family_id": "009",
+        "notes": [
+          "returncode=0",
+          "evas_engine=evas2",
+          "trace_contract=row_required_set",
+          "events=8 aligned=7 mismatch=1 good_lock_after_three=3 early_locks=0 mismatch_clears=1 mismatch_failures=0 reset_low=True final_lock_low=True"
+        ],
+        "scores": {
+          "dut_compile": 1.0,
+          "sim_correct": 1.0,
+          "tb_compile": 1.0,
+          "weighted_total": 1.0
+        },
+        "status": "PASS",
+        "task": "009-lock-detector",
+        "task_id": "v4-009",
+        "timing": {
+          "accepted_tran_steps": 1185.0,
+          "csv_write_s": 0.009425,
+          "derive_bus_signals_s": 2e-05,
+          "total_elapsed_s": 0.1,
+          "tran_elapsed_s": 0.0181
+        },
+        "wall_s": 2.478702
+      },
+      {
+        "checker_task_id": "v4_010_offset_comparator",
+        "evas_engine_used": "evas2",
+        "family_id": "010",
+        "notes": [
+          "returncode=0",
+          "evas_engine=evas2",
+          "trace_contract=row_required_set",
+          "offset_decisions=LLLHHLL expected=LLLHHLL diffs_mv=[-12.0,-1.0,4.0,8.0,16.0,-1.0,-13.0] mismatches=0 below_offset_positive=True above_offset_positive=True strict_samples=LLLLHHHLLL"
+        ],
+        "scores": {
+          "dut_compile": 1.0,
+          "sim_correct": 1.0,
+          "tb_compile": 1.0,
+          "weighted_total": 1.0
+        },
+        "status": "PASS",
+        "task": "010-offset-comparator",
+        "task_id": "v4-010",
+        "timing": {
+          "accepted_tran_steps": 1429.0,
+          "csv_write_s": 0.024845,
+          "derive_bus_signals_s": 2.3e-05,
+          "total_elapsed_s": 0.1,
+          "tran_elapsed_s": 0.0175
+        },
+        "wall_s": 5.320712
+      }
+    ],
+    "status": "PASS"
+  },
+  "evas_backend_source": {
+    "git_commit": "985bba40929da8066dc9f1e4a08d27c010424c5f",
+    "git_describe": "v0.8.1-9-g985bba4",
+    "source_root": "/Users/bucketsran/Documents/TsingProject/vaEvas/EVAS"
+  },
+  "evas_engine_used": "evas2",
+  "python_fallback_evidence": "not-claimed",
+  "schema_version": "v4-issue-278-targeted-validation-v1",
+  "source": "benchmark-vabench-release-v4/provenance/dut-base-v3-exact-five-hash-bound-v2",
+  "spectre": {
+    "reason": "local spectre executable was not found on PATH",
+    "status": "Not-tested"
+  },
+  "status": "PASS"
+}
