@@ -31,10 +31,10 @@ Preserve this exact artifact and module interface:
 
 The repaired bundle must satisfy every public property:
 
-- `P_RECORD_REFERENCE_CLOCK_RISING_EDGE_TIME`: restore: Record reference clock rising-edge time and evaluate feedback clock rising edges against it. Required traces: `time`, `fb_clk`, `lock`, `phase_metric`, `ref_clk`, `rst`, `state_mon`.
-- `P_REQUIRE_CONSECUTIVE_IN_WINDOW_FEEDBACK_EDGE`: restore: Require consecutive in-window feedback edge errors before lock asserts. Required traces: `time`, `fb_clk`, `lock`, `phase_metric`, `ref_clk`, `rst`, `state_mon`.
-- `P_CLEAR_LOCK_STATE_AND_PROGRESS_WHEN`: restore: Clear lock state and progress when reset rises or is sampled high. Required traces: `time`, `fb_clk`, `lock`, `phase_metric`, `ref_clk`, `rst`, `state_mon`.
-- `P_EXPOSE_PHASE_METRIC_AND_STATE_MON`: restore: Expose phase_metric and state_mon as bounded voltage-coded observables. Required traces: `time`, `fb_clk`, `lock`, `phase_metric`, `ref_clk`, `rst`, `state_mon`.
+- `P_RECORD_REFERENCE_CLOCK_RISING_EDGE_TIME`: restore: Rising `ref_clk` records `$abstime`; a reset-low rising `fb_clk` uses the absolute elapsed time since that reference, or `metric_fullscale` before any reference edge. Required traces: `time`, `fb_clk`, `lock`, `phase_metric`, `ref_clk`, `rst`, `state_mon`.
+- `P_REQUIRE_CONSECUTIVE_IN_WINDOW_FEEDBACK_EDGE`: restore: A feedback edge with `phase_error <= lock_window` increments the good count capped at `lock_count`; another feedback edge clears it. `lock = vhi` exactly when the count reaches `lock_count`. Required traces: `time`, `fb_clk`, `lock`, `phase_metric`, `ref_clk`, `rst`, `state_mon`.
+- `P_CLEAR_LOCK_STATE_AND_PROGRESS_WHEN`: restore: Reset rising or sampled high on a feedback edge clears the good count and all three outputs. Required traces: `time`, `fb_clk`, `lock`, `phase_metric`, `ref_clk`, `rst`, `state_mon`.
+- `P_EXPOSE_PHASE_METRIC_AND_STATE_MON`: restore: After each reset-low feedback edge, `phase_metric = vhi * clip01(phase_error / metric_fullscale)` and `state_mon = vhi * clip01(good_count / lock_count)`. Required traces: `time`, `fb_clk`, `lock`, `phase_metric`, `ref_clk`, `rst`, `state_mon`.
 - `P_USE_EVENT_BODY_STATE_UPDATES_PLUS`: restore: Use event-body state updates plus local analog helper functions rather than user task/endtask syntax. Required traces: `time`, `fb_clk`, `lock`, `phase_metric`, `ref_clk`, `rst`, `state_mon`.
 
 ## Modeling Constraints
