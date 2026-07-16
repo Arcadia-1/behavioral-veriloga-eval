@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 from ..api import Checker
+from .stimulus_relative import normalize_affine_time
 def sample_signal_at(rows: list[dict[str, float]], signal: str, time_s: float) -> float | None:
     if not rows or "time" not in rows[0] or signal not in rows[0]:
         return None
@@ -74,9 +75,15 @@ def _sample_many_within_trace(
     return _sample_many(rows, filtered, tol=tol)
 
 def check_v3_offset_rdac_search_flow(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    required = {"time", "vinp", "vinn", "vrefp", "vrefn", "dc0", "dc1", "dc2", "dc3", "dc4", "dc5", "dc6"}
+    required = {"time", "ck", "vinp", "vinn", "vrefp", "vrefn", "dc0", "dc1", "dc2", "dc3", "dc4", "dc5", "dc6"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing offset rdac search outputs"
+    rows = normalize_affine_time(rows, [
+        ("ck", 0.5, "rising", 1.01, 0),
+        ("ck", 0.5, "rising", 17.01, 16),
+    ])
+    if rows is None:
+        return False, "missing_ck_stimulus_edges"
     return _sample_many(
         rows,
         {

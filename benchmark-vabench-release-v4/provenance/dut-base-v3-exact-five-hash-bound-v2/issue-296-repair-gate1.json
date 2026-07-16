@@ -19,10 +19,10 @@
     "task_record_hashes",
     "score_denominator_manifest_hashes"
   ],
-  "evas_engine_used": "evas2",
+  "evidence_kind": "static_repair_gate",
   "failure_count": 0,
   "failures": [],
-  "python_fallback_claimed": false,
+  "runtime_evidence_claimed": false,
   "schema_version": "v4-repair-gate-validation-v1",
   "source": "benchmark-vabench-release-v4/provenance/dut-base-v3-exact-five-hash-bound-v2",
   "status": "PASS"

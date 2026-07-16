@@ -252,6 +252,36 @@ def crossings(
     return edges
 
 
+def normalize_affine_time(
+    rows: list[Row],
+    anchors: Iterable[tuple[str, float, str, float, int]],
+) -> list[Row] | None:
+    """Map an affinely transformed trace back to its canonical time axis.
+
+    Anchors are ``(signal, threshold, direction, canonical_ns, occurrence)``
+    tuples and must describe public input-stimulus edges only.
+    """
+
+    pairs: list[tuple[float, float]] = []
+    for signal, threshold, direction, canonical_ns, occurrence in anchors:
+        if not rows or signal not in rows[0]:
+            return None
+        observed = crossings(rows, signal, threshold=threshold, direction=direction)
+        if occurrence >= len(observed):
+            return None
+        pairs.append((canonical_ns * 1e-9, observed[occurrence]))
+    if len(pairs) < 2:
+        return None
+    canonical_first, observed_first = pairs[0]
+    canonical_last, observed_last = pairs[-1]
+    canonical_span = canonical_last - canonical_first
+    if canonical_span <= 0 or observed_last <= observed_first:
+        return None
+    scale = (observed_last - observed_first) / canonical_span
+    shift = observed_first - scale * canonical_first
+    return [{**row, "time": (row["time"] - shift) / scale} for row in rows]
+
+
 def probe_time(
     rows: list[Row],
     event_time: float,

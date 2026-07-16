@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 from ..api import Checker
+from .stimulus_relative import normalize_affine_time
 def sample_signal_at(rows: list[dict[str, float]], signal: str, time_s: float) -> float | None:
     if not rows or "time" not in rows[0] or signal not in rows[0]:
         return None
@@ -77,6 +78,12 @@ def check_v3_trim_ctrl_4bit(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "ain", "dout0", "dout1", "dout2", "dout3"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing trim ctrl 4bit signals"
+    rows = normalize_affine_time(rows, [
+        ("ain", 1.5, "rising", 1.025, 0),
+        ("ain", 12.5, "rising", 4.025, 0),
+    ])
+    if rows is None:
+        return False, "missing_ain_stimulus_steps"
     return _sample_many(
         rows,
         {

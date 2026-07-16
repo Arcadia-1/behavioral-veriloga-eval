@@ -7,9 +7,20 @@
   },
   "deck": {
     "analyses": [
-      "tran tran stop=6n maxstep=10p"
+      "tran tran stop=6.5n maxstep=10p"
     ],
-    "body_lines": [],
+    "body_lines": [
+      "Vvin (vin 0) vsource dc=0.30",
+      "Vclks (clks 0) vsource type=pwl wave=[0 1 0.8n 1 0.85n 0 8n 0]",
+      "Vd7 (dctrl7 0) vsource type=pwl wave=[0 1 1.8n 1 1.85n 0 8n 0]",
+      "Vd6 (dctrl6 0) vsource type=pwl wave=[0 0 2.8n 0 2.85n 1 8n 1]",
+      "Vd5 (dctrl5 0) vsource type=pwl wave=[0 0 3.8n 0 3.85n 1 8n 1]",
+      "Vd4 (dctrl4 0) vsource type=pwl wave=[0 0 4.8n 0 4.85n 1 8n 1]",
+      "Vd3 (dctrl3 0) vsource dc=0",
+      "Vd2 (dctrl2 0) vsource dc=0",
+      "Vd1 (dctrl1 0) vsource dc=0",
+      "XDUT (vin clks dctrl1 dctrl2 dctrl3 dctrl4 dctrl5 dctrl6 dctrl7 vres) cdac_bidirect_residue"
+    ],
     "header": [
       "simulator lang=spectre",
       "global 0"
@@ -42,56 +53,18 @@
     "legacy_score_deck_sha256": "e4964d1df36255afb1fcae9382163c0e2f55786355ccd0c7040eff50ade0abe6",
     "notes": [
       "legacy feedback deck was used only to seed the canonical harness spec",
-      "legacy score deck seeded private profile-specific overrides"
+      "legacy score deck seeded private profile-specific overrides",
+      "feedback deck is the canonical stimulus; score is generated with identical semantics",
+      "legacy score analysis window promoted to canonical stimulus to avoid insufficient-excitation blind spots"
     ]
   },
   "profile_defaults": {
     "feedback": {
-      "deck_overrides": {
-        "body_lines": [
-          "Vvin (vin 0) vsource dc=0.30",
-          "Vclks (clks 0) vsource type=pwl wave=[0 1 0.8n 1 0.85n 0 8n 0]",
-          "Vd7 (dctrl7 0) vsource type=pwl wave=[0 1 1.8n 1 1.85n 0 8n 0]",
-          "Vd6 (dctrl6 0) vsource type=pwl wave=[0 0 2.8n 0 2.85n 1 8n 1]",
-          "Vd5 (dctrl5 0) vsource type=pwl wave=[0 0 3.8n 0 3.85n 1 8n 1]",
-          "Vd4 (dctrl4 0) vsource type=pwl wave=[0 0 4.8n 0 4.85n 1 8n 1]",
-          "Vd3 (dctrl3 0) vsource dc=0",
-          "Vd2 (dctrl2 0) vsource dc=0",
-          "Vd1 (dctrl1 0) vsource dc=0",
-          "XDUT (vin clks dctrl1 dctrl2 dctrl3 dctrl4 dctrl5 dctrl6 dctrl7 vres) cdac_bidirect_residue"
-        ]
-      },
-      "parameters": {
-        "maxstep": "200p",
-        "stop_time": "100n"
-      },
       "simulatorOptions": {
         "evas_profile": "balanced"
       }
     },
-    "score": {
-      "deck_overrides": {
-        "analyses": [
-          "tran tran stop=6.5n maxstep=10p"
-        ],
-        "body_lines": [
-          "Vvin (vin 0) vsource type=pwl wave=[0 0.42 0.6n 0.42 0.7n 0.36 8n 0.36]",
-          "Vclks (clks 0) vsource type=pwl wave=[0 1 0.65n 1 0.70n 0 8n 0]",
-          "Vd7 (dctrl7 0) vsource type=pwl wave=[0 1 1.35n 1 1.40n 0 8n 0]",
-          "Vd6 (dctrl6 0) vsource type=pwl wave=[0 0 2.15n 0 2.20n 1 8n 1]",
-          "Vd5 (dctrl5 0) vsource dc=0",
-          "Vd4 (dctrl4 0) vsource type=pwl wave=[0 0 3.15n 0 3.20n 1 8n 1]",
-          "Vd3 (dctrl3 0) vsource type=pwl wave=[0 0 4.15n 0 4.20n 1 8n 1]",
-          "Vd2 (dctrl2 0) vsource dc=0",
-          "Vd1 (dctrl1 0) vsource type=pwl wave=[0 0 5.15n 0 5.20n 1 8n 1]",
-          "XDUT (vin clks dctrl1 dctrl2 dctrl3 dctrl4 dctrl5 dctrl6 dctrl7 vres) cdac_bidirect_residue"
-        ]
-      },
-      "parameters": {
-        "maxstep": "100p",
-        "stop_time": "100n"
-      }
-    }
+    "score": {}
   },
   "property_ids": [
     "P_SAMPLE_RESIDUE_ON_CLKS_FALL",
