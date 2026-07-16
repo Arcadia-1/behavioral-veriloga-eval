@@ -2,6 +2,18 @@
 from __future__ import annotations
 
 from ..api import Checker
+from .stimulus_relative import diagnostic, pass_note, require_signals
+
+
+PROPERTY_IDS = (
+    "P_RESET",
+    "P_ACQUISITION_ENABLE",
+    "P_FINITE_ACQUISITION",
+    "P_ACQUISITION_CONVERGENCE",
+    "P_HOLD",
+)
+
+
 def _threshold_crossings(
     values: list[float],
     times: list[float],
@@ -65,22 +77,41 @@ def mean_in_window(rows: list[dict[str, float]], key: str, start: float, stop: f
 
 def check_acquisition_limited_sample_hold(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "sample", "rst", "vin", "vout", "metric"}
-    if not rows or not required.issubset(rows[0]):
-        return False, "missing time/sample/rst/vin/vout/metric"
+    missing = require_signals(rows, required, "P_ACQUISITION_ENABLE")
+    if missing is not None:
+        return False, missing
 
     times = [r["time"] for r in rows]
     sample_vals = [r["sample"] for r in rows]
     rising = _threshold_crossings(sample_vals, times, threshold=0.45, direction="rising")
     falling = _threshold_crossings(sample_vals, times, threshold=0.45, direction="falling")
     if len(rising) < 3 or len(falling) < 3:
-        return False, f"too_few_sample_windows rise={len(rising)} fall={len(falling)}"
+        return False, diagnostic(
+            "P_ACQUISITION_ENABLE",
+            "missing_event",
+            expected="sample_windows>=3",
+            observed=f"rise:{len(rising)},fall:{len(falling)}",
+            event="full_trace",
+        )
 
     reset_rows = [r for r in rows if r["rst"] > 0.45]
     if not reset_rows:
-        return False, "missing_reset_window"
+        return False, diagnostic(
+            "P_RESET",
+            "missing_event",
+            expected="rst_high_rows>0",
+            observed="rst_high_rows:0",
+            event="full_trace",
+        )
     reset_mean = sum(r["vout"] for r in reset_rows) / len(reset_rows)
     if abs(reset_mean - 0.45) > 0.08:
-        return False, f"acq_hold_reset_out={reset_mean:.3f}"
+        return False, diagnostic(
+            "P_RESET",
+            "value_mismatch",
+            expected="vout_reset:0.45",
+            observed=f"vout_reset:{reset_mean:.3f}",
+            event="rst_high",
+        )
 
     finite_windows = 0
     settling_windows = 0
@@ -106,7 +137,13 @@ def check_acquisition_limited_sample_hold(rows: list[dict[str, float]]) -> tuple
         late_vout = sample_signal_at(rows, "vout", late_t)
         track_metric = mean_in_window(rows, "metric", early_t, late_t)
         if None in (early_vin, early_vout, late_vin, late_vout, track_metric):
-            return False, f"acq_hold_missing_window_at={rise_t:.3e}"
+            return False, diagnostic(
+                "P_ACQUISITION_ENABLE",
+                "invalid_trace",
+                expected="track_and_hold_probes",
+                observed="missing_probe",
+                event=f"sample_window[{idx}]",
+            )
         assert early_vin is not None and early_vout is not None
         assert late_vin is not None and late_vout is not None and track_metric is not None
         early_error = abs(early_vout - early_vin)
@@ -141,13 +178,25 @@ def check_acquisition_limited_sample_hold(rows: list[dict[str, float]]) -> tuple
         and metric_hold_hits >= 2
         and max_late_error <= 0.14
     )
-    return ok, (
+    note = (
         "acquisition_limited_sample_hold "
         f"finite_windows={finite_windows} settling_windows={settling_windows} "
         f"hold_windows={hold_windows} hold_failures={hold_failures} "
         f"metric={metric_track_hits}/{metric_hold_hits} "
         f"max_late_error={max_late_error:.3f}"
     )
+    if not ok:
+        return False, diagnostic(
+            "P_ACQUISITION_CONVERGENCE",
+            "value_mismatch",
+            expected="finite>=1,settling>=2,hold>=2,hold_failures=0,metric_track>=2,metric_hold>=2",
+            observed=(
+                f"finite:{finite_windows},settling:{settling_windows},hold:{hold_windows},"
+                f"hold_failures:{hold_failures},metric:{metric_track_hits}/{metric_hold_hits}"
+            ),
+            event="sample_windows",
+        )
+    return True, pass_note(PROPERTY_IDS, note)
 
 CHECKER_ID = "v4_071_acquisition_limited_sample_and_hold"
 CHECKER: Checker = check_acquisition_limited_sample_hold

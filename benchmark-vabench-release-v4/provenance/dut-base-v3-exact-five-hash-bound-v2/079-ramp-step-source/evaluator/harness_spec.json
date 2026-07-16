@@ -12,8 +12,8 @@
     "body_lines": [
       "Vvdd (VDD 0) vsource dc=0.9 type=dc",
       "Vvss (VSS 0) vsource dc=0.0 type=dc",
-      "",
-      "IDUT (VDD VSS guard_out phase_out) bound_step_period_guard_ref \\"
+      "IDUT (VDD VSS guard_out phase_out) bound_step_period_guard_ref \\",
+      "period=8n pulse_w=1.5n points_per_period=16 tedge=40p"
     ],
     "header": [
       "simulator lang=spectre",
@@ -41,44 +41,17 @@
     "legacy_score_deck_sha256": "87f58bc20064ee9b30a6b2273350e375c6e385e2568d0b1c81dbd40c2efa6be7",
     "notes": [
       "legacy feedback deck was used only to seed the canonical harness spec",
-      "legacy score deck seeded private profile-specific overrides"
+      "legacy score deck seeded private profile-specific overrides",
+      "feedback deck is the canonical stimulus; score is generated with identical semantics"
     ]
   },
   "profile_defaults": {
     "feedback": {
-      "deck_overrides": {
-        "body_lines": [
-          "    period=8n pulse_w=1.5n points_per_period=16 tedge=40p",
-          "",
-          "simulatorOptions options reltol=1e-4 vabstol=1e-6 iabstol=1e-12 temp=27 tnom=27 gmin=1e-12",
-          ""
-        ]
-      },
-      "parameters": {
-        "maxstep": "200p",
-        "stop_time": "100n"
-      },
       "simulatorOptions": {
         "evas_profile": "balanced"
       }
     },
-    "score": {
-      "deck_overrides": {
-        "analyses": [
-          "tran tran stop=55n maxstep=25n errpreset=conservative"
-        ],
-        "body_lines": [
-          "    period=10n pulse_w=2n points_per_period=20 tedge=60p",
-          "",
-          "simulatorOptions options reltol=1e-4 vabstol=1e-6 iabstol=1e-12 temp=27 tnom=27 gmin=1e-12",
-          ""
-        ]
-      },
-      "parameters": {
-        "maxstep": "100p",
-        "stop_time": "100n"
-      }
-    }
+    "score": {}
   },
   "property_ids": [
     "P_PHASE_RAMP",

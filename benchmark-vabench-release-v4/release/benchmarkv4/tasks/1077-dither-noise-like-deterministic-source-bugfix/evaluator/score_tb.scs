@@ -1,13 +1,13 @@
-// noise_gen private coverage testbench
-// Uses a shifted DC input and a different sampled-noise scale.
 simulator lang=spectre
 global 0
 
-ahdl_include "noise_gen_ref.va"
+ahdl_include "./dut/noise_gen_ref.va"
 
-Vvin (vin_i 0) vsource type=dc dc=0.75
+// noise_gen gold smoke testbench
+// DC input at 1.0V; noise_gen adds deterministic sampled dither (sigma=0.1V, dt=0.5ns).
+// Runs 500ns. Check: std(noise) > 0.01V, max|noise| > 0.05V.
+Vvin (vin_i 0) vsource type=dc dc=1.0
+IDUT (vin_i vout_o) noise_gen sigma=0.1 dt=0.5n
 
-IDUT (vin_i vout_o) noise_gen sigma=0.08 dt=0.4n
-
-tran tran stop=420n maxstep=0.8n
+tran tran stop=500n maxstep=1n
 save vin_i vout_o

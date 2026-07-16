@@ -1,24 +1,13 @@
 {
   "corners": [],
-  "deck_overrides": {
-    "body_lines": [
-      "Vrst_n (rst_n 0)  vsource type=pulse val0=0 val1=0.9 period=300n delay=2n rise=20p fall=20p width=298n",
-      "Ven    (en 0)     vsource dc=0.9",
-      "",
-      "XDUT (clk rst_n en serial_out state_0 state_1 state_2 state_3 state_4 state_5 state_6) prbs7_ref",
-      ""
-    ]
-  },
+  "deck_overrides": {},
   "deterministic_seed": 0,
   "generated_from": {
     "script": "render_v4_harness.py",
     "version": "v4-harness-renderer-v1"
   },
-  "harness_spec_sha256": "a718617d3e5bebae6a47d3ae23804267c2c50cca65b7d9fcf6620e8aebb32185",
-  "parameters": {
-    "maxstep": "200p",
-    "stop_time": "100n"
-  },
+  "harness_spec_sha256": "694905fec5db82b250f50c923f2c51a1bf00527a66afd7a8daefdbf375f4c3d7",
+  "parameters": {},
   "profile_name": "feedback",
   "property_ids": [
     "P_RESET_SEED",

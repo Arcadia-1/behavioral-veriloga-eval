@@ -2,97 +2,83 @@
 from __future__ import annotations
 
 from ..api import Checker
-def sample_signal(rows: list[dict[str, float]], signal: str, time_s: float) -> float | None:
-    if not rows or signal not in rows[0] or "time" not in rows[0]:
-        return None
-    first_time = rows[0]["time"]
-    last_time = rows[-1].get("time")
-    if last_time is None or time_s < first_time or time_s > last_time:
-        return None
-    if time_s == first_time:
-        return rows[0].get(signal)
-    for idx in range(1, len(rows)):
-        prev = rows[idx - 1]
-        cur = rows[idx]
-        t0 = prev.get("time")
-        t1 = cur.get("time")
-        if t0 is None or t1 is None:
-            continue
-        if t0 <= time_s <= t1:
-            v0 = prev.get(signal)
-            v1 = cur.get(signal)
-            if v0 is None or v1 is None:
-                return None
-            if t1 == t0:
-                return v1
-            alpha = (time_s - t0) / (t1 - t0)
-            return v0 + alpha * (v1 - v0)
-    return rows[-1].get(signal)
+from .stimulus_relative import crossings, diagnostic, pass_note, probe_time, require_signals, sample
 
-def _crossing_times(
-    rows: list[dict[str, float]],
-    signal: str,
-    *,
-    threshold: float = 0.45,
-    direction: str = "rising",
-) -> list[float]:
-    if not rows or "time" not in rows[0] or signal not in rows[0]:
-        return []
-    crossings: list[float] = []
-    for idx in range(1, len(rows)):
-        prev = rows[idx - 1]
-        cur = rows[idx]
-        t0 = prev.get("time")
-        t1 = cur.get("time")
-        v0 = prev.get(signal)
-        v1 = cur.get(signal)
-        if t0 is None or t1 is None or v0 is None or v1 is None:
-            continue
-        if direction == "rising":
-            hit = v0 <= threshold < v1
-        elif direction == "falling":
-            hit = v0 >= threshold > v1
-        else:
-            raise ValueError(f"unsupported direction={direction!r}")
-        if not hit:
-            continue
-        if v1 == v0:
-            crossings.append(t1)
-        else:
-            alpha = (threshold - v0) / (v1 - v0)
-            crossings.append(t0 + alpha * (t1 - t0))
-    return crossings
+
+PROPERTY_IDS = (
+    "P_FILE_OPEN",
+    "P_FIRST_RISING_CROSSING",
+    "P_RECORDED_TIME",
+    "P_DONE_LATCH",
+    "P_SINGLE_RECORD",
+)
 
 def check_file_metric_writer(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "vin", "done"}
-    if not rows or not required.issubset(rows[0]):
-        return False, "missing time/vin/done"
+    missing = require_signals(rows, required, "P_FIRST_RISING_CROSSING")
+    if missing is not None:
+        return False, missing
 
-    crossings = _crossing_times(rows, "vin")
-    if not crossings:
-        return False, "no_vin_rising_crossing"
+    rising = crossings(rows, "vin", threshold=0.45, direction="rising")
+    if not rising:
+        return False, diagnostic(
+            "P_FIRST_RISING_CROSSING",
+            "missing_event",
+            expected="vin_rising>=1",
+            observed="vin_rising:0",
+            event="full_trace",
+        )
 
-    cross_t = crossings[0]
-    before = sample_signal(rows, "done", max(0.0, cross_t - 10e-9))
-    after = sample_signal(rows, "done", cross_t + 10e-9)
+    cross_t = rising[0]
+    before_t = rows[0]["time"] + 0.5 * max(0.0, cross_t - rows[0]["time"])
+    after_t = probe_time(rows, cross_t, rising[1] if len(rising) > 1 else None, fraction=0.25)
+    before = sample(rows, "done", before_t)
+    after = sample(rows, "done", after_t) if after_t is not None else None
     final = rows[-1].get("done")
     if before is None or after is None or final is None:
-        return False, "missing_done_sample"
+        return False, diagnostic(
+            "P_DONE_LATCH",
+            "invalid_trace",
+            expected="done_probes",
+            observed="missing_probe",
+            event="vin_rise[0]",
+        )
 
     done_low_before = before < 0.1
     done_high_after = after > 0.8 and final > 0.8
     extra_ok = True
-    for extra_t in crossings[1:]:
-        extra_done = sample_signal(rows, "done", extra_t + 5.0e-9)
+    for idx, extra_t in enumerate(rising[1:], start=1):
+        next_t = rising[idx + 1] if idx + 1 < len(rising) else None
+        probe_t = probe_time(rows, extra_t, next_t, fraction=0.25)
+        extra_done = sample(rows, "done", probe_t) if probe_t is not None else None
         if extra_done is None or extra_done < 0.8:
             extra_ok = False
             break
-    ok = done_low_before and done_high_after and extra_ok
-    return ok, (
-        f"crossings={len(crossings)} first_cross_t={cross_t:.3e} "
-        f"done_before={before:.3f} done_after={after:.3f} "
-        f"done_final={final:.3f} extra_done_high={extra_ok}"
-    )
+    if not done_low_before:
+        return False, diagnostic(
+            "P_FIRST_RISING_CROSSING",
+            "value_mismatch",
+            expected="done_before<=0.1",
+            observed=f"done_before:{before:.3f}",
+            event="pre_vin_rise[0]",
+        )
+    if not done_high_after:
+        return False, diagnostic(
+            "P_DONE_LATCH",
+            "value_mismatch",
+            expected="done_after>=0.8",
+            observed=f"done_after:{after:.3f},done_final:{final:.3f}",
+            event="post_vin_rise[0]",
+        )
+    if not extra_ok:
+        return False, diagnostic(
+            "P_SINGLE_RECORD",
+            "value_mismatch",
+            expected="done_latched_after_extra_crossings",
+            observed="done_low_after_extra_crossing",
+            event="vin_rises[1:]",
+        )
+    return True, pass_note(PROPERTY_IDS, f"crossing_metric_writer crossings={len(rising)}")
 
 CHECKER_ID = "v4_074_crossing_metric_writer"
 CHECKER: Checker = check_file_metric_writer
