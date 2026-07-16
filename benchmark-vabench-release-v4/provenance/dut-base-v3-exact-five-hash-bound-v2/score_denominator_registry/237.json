@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_wrong_smoothing/certification.json",
-        "certification_sha256": "e9bd718b73607f692848ce7d637266e94e0eb2affc230d1663050cb5e5128eea",
+        "certification_sha256": "1429089b21cdd31271e540d90d2cc1b264bd0c19a1a658611527607c114e1b79",
         "fault_class": "omission_or_incomplete_behavior",
-        "mutation_bundle_sha256": "9e667dd93f7a7ff48e786a509e3181d942a12503355c847c720422ddfc761127",
+        "mutation_bundle_sha256": "bbdcced0fa53ae6329b36ae6aa0833858db94be5d7adb93c6a8d5a872a84024d",
         "mutation_id": "neg_004_wrong_smoothing",
         "source_catalog_certification_path": "negative_variants/neg_004_wrong_smoothing/certification.json",
         "trigger_condition": "Uses the wrong nonlinear smoothing formula and therefore produces the wrong magnitude transfer.",
@@ -18,9 +18,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_sharp_abs/certification.json",
-        "certification_sha256": "235db6449c4f61db00628620a19ba6be602cbf61868151ee8a5e26faa27b858e",
+        "certification_sha256": "54c97874e07133a42933eddd1a57c7f178c90fdf5747b92c7513ed7194cd6977",
         "fault_class": "zero_stub_output",
-        "mutation_bundle_sha256": "36f8146745b93e88a2193f028c752f18f65b9d45c455a18e8a2c002cd7ab0d0f",
+        "mutation_bundle_sha256": "d8c64740996c31b9ed218a1bd8317d465896d78daad38ae1d931a3f256a0d48e",
         "mutation_id": "neg_002_sharp_abs",
         "source_catalog_certification_path": "negative_variants/neg_002_sharp_abs/certification.json",
         "trigger_condition": "Implements a sharp ideal absolute value and misses the required smooth zero-crossing behavior.",
@@ -30,9 +30,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_half_scale/certification.json",
-        "certification_sha256": "9c218e402cdf0791eecbc28eca2109aac5f1cf81c01fdf0ef955f6b42a8cc483",
+        "certification_sha256": "8d9b322349a50b7c8eed5a527f8198f92217cdd66d6a48d60787b6324dfc8d46",
         "fault_class": "metric_or_observable_fault",
-        "mutation_bundle_sha256": "a608af6bb6c3968ac82f55054b6a962ecf6c6d8f019fd6974797e9cd842eaf17",
+        "mutation_bundle_sha256": "9602a91a920fa0dfe6627a72789399fc8fd92e2e52efd0a2f687c88aac2813f3",
         "mutation_id": "neg_003_half_scale",
         "source_catalog_certification_path": "negative_variants/neg_003_half_scale/certification.json",
         "trigger_condition": "Computes the absolute value with the wrong gain.",
@@ -42,9 +42,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_metric_scale_low/certification.json",
-        "certification_sha256": "cc4c9ce499d37ef1005546f44a2b9795f06c319612b89548caa4f6a8fc5ca90f",
+        "certification_sha256": "8716c6024b00e05f37438363d72cb7205a223aa24b5d35e9aa982c1f3e47c1a5",
         "fault_class": "metric_or_observable_fault",
-        "mutation_bundle_sha256": "352c2ba291e239770a67e7c750cb4a1a0a9928618859caf100c6d1d10cf6b90c",
+        "mutation_bundle_sha256": "789170d5c469fd28ef122bf943dde461503a2e2833d3c7ae6577b7397b43840d",
         "mutation_id": "neg_005_metric_scale_low",
         "source_catalog_certification_path": "negative_variants/neg_005_metric_scale_low/certification.json",
         "trigger_condition": "Scales the smooth absolute-value transfer by the wrong output gain.",
@@ -54,9 +54,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_zero/certification.json",
-        "certification_sha256": "a4ebb21785ccf03709508c1d1a7d636832e61dc75119fea65ff2d522278f6447",
+        "certification_sha256": "c95689faec86ba29eeab143a27e0768c7c886d10fc2ad99d07e614e4410d8d6b",
         "fault_class": "zero_stub_output",
-        "mutation_bundle_sha256": "e9f2f4c0000a5dd4f7a9018c936afe2bf0369d44b124cac57efb52bac5d328a1",
+        "mutation_bundle_sha256": "cf333f8e0412633f8bcaffdde774d80c0f8f7419592604af8a33945c459c9f5e",
         "mutation_id": "neg_001_zero",
         "source_catalog_certification_path": "negative_variants/neg_001_zero/certification.json",
         "trigger_condition": "Keeps the output at its trivial zero behavior and therefore fails the stable waveform contract.",
@@ -70,8 +70,8 @@
     "hashes": {
       "mutation_catalog_sha256": "d0d1465752585569bf30088893dee2f424bdc5d3a65c2b11ae47add79a68813b",
       "score_deck_sha256": "41d000804d0bbf9fff01fb73b3b6d718cb9c1b623543a8dbf541ec2b255602e1",
-      "task_certification_sha256": "cc93ebff74eee6a974e61e64b395bc037c7c019ca41c2ad9ab5f9aceac28b3b7",
-      "task_record_sha256": "04214142822e4660972725952ba533c37a512c7419e2dfc3740bc7d85243cb92"
+      "task_certification_sha256": "0600d5e7f6960d7a4996ca92f5ebf3c26bac2da0b168a4f1e1be42ad3acf14c1",
+      "task_record_sha256": "3ea7c89e83619e35159ca28e02fa08a85ab0f9bd89db4b3a703ce269c0b8ca50"
     },
     "release_dir": "237-absolute-value"
   }
