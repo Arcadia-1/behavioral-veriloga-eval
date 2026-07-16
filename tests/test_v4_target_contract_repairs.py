@@ -324,6 +324,30 @@ def test_reacquire_lock_exposes_count_and_metric_encoding() -> None:
         ]
 
 
+def test_generated_monitor_families_replace_task_specific_placeholders() -> None:
+    expected = {
+        "285-configurable-startup-policy": "abs(x0 - 0.48) / 0.48",
+        "286-explicit-replicated-stage-chain": "0.36*x0 + 0.28*x1",
+        "287-edge-delay-qualified-driver": "x0 > x1",
+    }
+    for family, formula in expected.items():
+        family_id, slug = family.split("-", 1)
+        for task_name in (
+            family,
+            f"{int(family_id) + 500}-{slug}-testbench",
+            f"{int(family_id) + 1000}-{slug}-bugfix",
+        ):
+            task = _task(task_name)
+            instruction = (task / "public" / "instruction.md").read_text()
+            contracts = " ".join(
+                item["observable_contract"]
+                for item in _public_contract(task_name)["properties"]
+            )
+            assert "task-specific" not in instruction
+            assert "task-specific" not in contracts
+            assert formula.replace(" ", "") in instruction.replace(" ", "")
+
+
 def test_repaired_testbench_bindings_match_reference_trace_names() -> None:
     expected = {
         "517-strongarm-style-latch-comparator-testbench": {
