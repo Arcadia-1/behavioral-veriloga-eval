@@ -6,11 +6,8 @@
     "script": "render_v4_harness.py",
     "version": "v4-harness-renderer-v1"
   },
-  "harness_spec_sha256": "d790744e3124548b6571da38cfb398f4b610dd938ead4a15fc50638490cafb9c",
-  "parameters": {
-    "maxstep": "100p",
-    "stop_time": "100n"
-  },
+  "harness_spec_sha256": "608787219f439beb157f37f529e59c866e871e0fd37d4266334d73493523b910",
+  "parameters": {},
   "profile_name": "score",
   "property_ids": [
     "P_SAMPLE_VIN_ON_EACH_RISING_CONTROL",
@@ -20,7 +17,5 @@
   ],
   "public_visible": false,
   "schema_version": "v4-harness-profile-v1",
-  "simulatorOptions": {
-    "evas_profile": "balanced"
-  }
+  "simulatorOptions": {}
 }

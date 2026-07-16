@@ -6,11 +6,8 @@
     "script": "render_v4_harness.py",
     "version": "v4-harness-renderer-v1"
   },
-  "harness_spec_sha256": "117d417928af312cb2e7a755bf7243e04fa0f12c8d80fba7a122e569890c06dd",
-  "parameters": {
-    "maxstep": "100p",
-    "stop_time": "100n"
-  },
+  "harness_spec_sha256": "031f80c73bd98848528d16174ae550db64d43aab56fd37ac21a4be82e4cfbe61",
+  "parameters": {},
   "profile_name": "score",
   "property_ids": [
     "P_TREAT_EACH_INPUT_AS_LOGIC_1",
@@ -21,7 +18,5 @@
   ],
   "public_visible": false,
   "schema_version": "v4-harness-profile-v1",
-  "simulatorOptions": {
-    "evas_profile": "balanced"
-  }
+  "simulatorOptions": {}
 }

@@ -62,6 +62,7 @@ def check_v3_trim_ctrl_5bit(rows: list[dict[str, float]]) -> tuple[bool, str]:
     checked = 0
     saw_clamp_low = False
     saw_clamp_high = False
+    observed_codes: set[int] = set()
     max_err = 0.0
     failures: list[str] = []
     stride = max(1, len(rows) // 120)
@@ -75,6 +76,7 @@ def check_v3_trim_ctrl_5bit(rows: list[dict[str, float]]) -> tuple[bool, str]:
         if code > 31:
             code = 31
             saw_clamp_high = True
+        observed_codes.add(code)
         checked += 1
         for bit in range(5):
             signal = f"dout{bit}"
@@ -85,6 +87,13 @@ def check_v3_trim_ctrl_5bit(rows: list[dict[str, float]]) -> tuple[bool, str]:
                 failures.append(f"{signal}@{row['time'] * 1e9:.3f}ns={row[signal]:.3f} expected={expected:.3f}")
     if checked < 20:
         return False, f"insufficient_trim_checks={checked}"
+    if not saw_clamp_low or not saw_clamp_high or len(observed_codes) < 3:
+        return (
+            False,
+            "insufficient_excitation trim_ctrl_5bit "
+            f"clamp_low={saw_clamp_low} clamp_high={saw_clamp_high} "
+            f"observed_codes={len(observed_codes)}",
+        )
     if failures:
         return False, " ".join(failures[:6])
     return True, f"checked={checked} clamp_low={saw_clamp_low} clamp_high={saw_clamp_high} max_err={max_err:.3f}"

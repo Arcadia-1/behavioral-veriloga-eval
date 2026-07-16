@@ -48,28 +48,17 @@
     "notes": [
       "legacy feedback deck was used only to seed the canonical harness spec",
       "legacy score deck seeded private profile-specific overrides",
-      "issue-300 repair promoted private score stimulus/analysis into the canonical deck and removed feedback/score semantic deck overrides"
+      "issue-300 repair promoted private score stimulus/analysis into the canonical deck and removed feedback/score semantic deck overrides",
+      "feedback deck is the canonical stimulus; score is generated with identical semantics"
     ]
   },
   "profile_defaults": {
     "feedback": {
-      "parameters": {
-        "maxstep": "100p",
-        "stop_time": "100n"
-      },
       "simulatorOptions": {
         "evas_profile": "balanced"
       }
     },
-    "score": {
-      "parameters": {
-        "maxstep": "100p",
-        "stop_time": "100n"
-      },
-      "simulatorOptions": {
-        "evas_profile": "balanced"
-      }
-    }
+    "score": {}
   },
   "property_ids": [
     "P_TREAT_EACH_INPUT_AS_LOGIC_1",
