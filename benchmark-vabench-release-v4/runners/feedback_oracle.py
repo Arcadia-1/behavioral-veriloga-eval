@@ -13,6 +13,9 @@ from pathlib import Path
 from typing import Any
 
 
+REQUIRED_EVAS_VERSION = "0.8.2"
+
+
 def find_repo_root(path: Path) -> Path:
     for parent in [path, *path.parents]:
         if (parent / "runners" / "simulate_evas.py").exists():
@@ -52,6 +55,34 @@ def _oracle_timeout(default_timeout_s: int) -> int:
 def _task_wrapper_may_select_python(force_python_engine: bool) -> bool:
     """Use the compatibility default only when the caller did not select an engine."""
     return force_python_engine and not os.environ.get("EVAS_ENGINE")
+
+
+def _evas2_evidence_required() -> bool:
+    return os.environ.get("VAEVAS_REQUIRE_EVAS2_EVIDENCE", "").strip().lower() in {
+        "1",
+        "true",
+        "yes",
+        "on",
+        "enabled",
+    }
+
+
+def _require_evas2_environment() -> None:
+    requested = os.environ.get("EVAS_ENGINE", "").strip().lower()
+    default = os.environ.get("VAEVAS_DEFAULT_EVAS_ENGINE", "").strip().lower()
+    if requested != "evas2" or default != "evas2":
+        raise SystemExit(
+            "Rust EVAS2 evidence requires explicit EVAS_ENGINE=evas2 and "
+            "VAEVAS_DEFAULT_EVAS_ENGINE=evas2"
+        )
+
+
+def _observed_evas_engine(combined: str) -> str:
+    if re.search(r"(?m)^\s*evas_engine\s*=\s*evas-rust\s*$", combined):
+        return "evas2"
+    if re.search(r"(?m)^\s*evas_engine\s*=\s*python\s*$", combined):
+        return "python"
+    return "unknown"
 
 
 def _standalone_rust_frontend() -> tuple[Path, str] | None:
@@ -394,6 +425,8 @@ def _run_oracle(
     force_python_engine: bool = False,
 ) -> int:
     timeout_s = _oracle_timeout(timeout_s)
+    if _evas2_evidence_required():
+        _require_evas2_environment()
     script_path = Path(script_file).resolve()
     task_dir = script_path.parents[1] if script_path.parent.name == "test_feedback" else script_path.parents[1]
     contract = _read_json(task_dir / "public_contract.json")
@@ -504,6 +537,17 @@ def _run_oracle(
             if "Transient Analysis" not in combined:
                 print(f"{result_prefix}_NO_TRAN_MARKER")
                 print(combined[-4000:])
+                return 1
+
+        if _evas2_evidence_required():
+            observed_engine = _observed_evas_engine(combined)
+            print(
+                "FEEDBACK_EVAS_ENGINE "
+                f"evas_version={REQUIRED_EVAS_VERSION} "
+                f"evas_engine=evas2 evas_engine_used={observed_engine}"
+            )
+            if observed_engine != "evas2":
+                print("FEEDBACK_EVAS_ENGINE_FAIL")
                 return 1
 
         if effective_checker_task_id:
