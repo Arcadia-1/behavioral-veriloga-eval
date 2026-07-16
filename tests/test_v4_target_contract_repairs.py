@@ -589,6 +589,43 @@ def test_residue_gain_calibration_emits_property_diagnostics() -> None:
     assert "diagnostic_schema=v4-checker-diagnostic-v1" in note
 
 
+def test_image_reject_mixer_exposes_exact_calibration_contract() -> None:
+    snippets = (
+        "drivei_outandq_outtotheneutralmixerlevelvcm",
+        "g=0.8*(gain_trim-vcm)",
+        "p=0.6*(phase_trim-vcm)",
+        "i=x*si*(1-g)",
+        "q=-x*sq*(1+g)-p*x*si",
+        "raw_image_metric=clamp(0.5*abs(i+q),vss,vdd)",
+        "gain_trim=clamp(gain_trim+d*18e-3",
+        "phase_trim=clamp(phase_trim-d*9e-3",
+        "d=-d",
+    )
+    family = (
+        ROOT
+        / "benchmark-vabench-release-v4"
+        / "provenance"
+        / "dut-base-v3-exact-five-hash-bound-v2"
+        / "333-image-reject-mixer-calibration-loop"
+    )
+    compact = (
+        (family / "public" / "task" / "instruction.md")
+        .read_text()
+        .lower()
+        .replace(" ", "")
+        .replace("\n", "")
+        .replace("`", "")
+    )
+    for snippet in snippets:
+        assert snippet in compact
+
+    spec = json.loads((family / "evaluator" / "family_spec.json").read_text())
+    contracts = " ".join(item["observable_contract"] for item in spec["properties"])
+    assert "q=-x*sq*(1+g)-p*x*si" in contracts
+    assert "phase trim by `-d*9e-3`" in contracts
+    assert "drive `i_out` and `q_out` to `vcm`" in contracts
+
+
 def test_repaired_testbench_bindings_match_reference_trace_names() -> None:
     expected = {
         "517-strongarm-style-latch-comparator-testbench": {
