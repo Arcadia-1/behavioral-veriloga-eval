@@ -33,7 +33,7 @@
     }
   },
   "diagnostics": {
-    "expected": "trigger=stimulus exercises neg_002_too_wide_phase_window; violated_properties=P_REQUIRE_CONSECUTIVE_IN_WINDOW_FEEDBACK_EDGE",
+    "expected": "trigger=stimulus exercises redacted_fault_case; violated_properties=P_REQUIRE_CONSECUTIVE_IN_WINDOW_FEEDBACK_EDGE",
     "observed": "EVAS: event_reacquire_lock_error=0.9000; Spectre: event_reacquire_lock_error=0.9000",
     "violated_property_ids": [
       "P_REQUIRE_CONSECUTIVE_IN_WINDOW_FEEDBACK_EDGE"

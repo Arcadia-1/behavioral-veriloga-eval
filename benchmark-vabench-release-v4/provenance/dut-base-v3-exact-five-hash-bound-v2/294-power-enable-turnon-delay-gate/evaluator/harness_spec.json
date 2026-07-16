@@ -9,7 +9,15 @@
     "analyses": [
       "tran tran stop=16n maxstep=10p"
     ],
-    "body_lines": [],
+    "body_lines": [
+      "Vclk (clk 0) vsource type=pulse val0=0 val1=0.9 delay=100p period=1n width=400p rise=20p fall=20p",
+      "Vvdd (vdd 0) vsource type=pwl wave=[0 0.90 5n 0.90 5.05n 0.62 7n 0.62 7.05n 0.90 16n 0.90]",
+      "Vvss (vss 0) vsource dc=0",
+      "Vbias (vbias 0) vsource type=pwl wave=[0 0.45 9n 0.45 9.05n 0.90 10.5n 0.90 10.55n 0.45 16n 0.45]",
+      "Ven (en 0) vsource type=pwl wave=[0 0.9 12n 0.9 12.05n 0.0 13n 0.0 13.05n 0.9]",
+      "Vpd (pd 0) vsource type=pwl wave=[0 0 14n 0 14.05n 0.9 15n 0.9 15.05n 0]",
+      "XDUT (clk vdd vss vbias en pd pwr_ok drive_en delay_mon) power_enable_turnon_delay_gate"
+    ],
     "header": [
       "simulator lang=spectre",
       "global 0"
@@ -41,54 +49,17 @@
     "legacy_score_deck_sha256": "f897dd4b04bef04ecca2c8a6e0c34d07143279a56c4a65fce8098445686abe2b",
     "notes": [
       "legacy feedback deck was used only to seed the canonical harness spec",
-      "legacy score deck seeded private profile-specific overrides"
+      "legacy score deck seeded private profile-specific overrides",
+      "feedback deck is the canonical stimulus; score is generated with identical semantics"
     ]
   },
   "profile_defaults": {
     "feedback": {
-      "deck_overrides": {
-        "body_lines": [
-          "Vclk (clk 0) vsource type=pulse val0=0 val1=0.9 delay=100p period=1n width=400p rise=20p fall=20p",
-          "Vvdd (vdd 0) vsource type=pwl wave=[0 0.90 5n 0.90 5.05n 0.62 7n 0.62 7.05n 0.90 16n 0.90]",
-          "Vvss (vss 0) vsource dc=0",
-          "Vbias (vbias 0) vsource type=pwl wave=[0 0.45 9n 0.45 9.05n 0.90 10.5n 0.90 10.55n 0.45 16n 0.45]",
-          "Ven (en 0) vsource type=pwl wave=[0 0.9 12n 0.9 12.05n 0.0 13n 0.0 13.05n 0.9]",
-          "Vpd (pd 0) vsource type=pwl wave=[0 0 14n 0 14.05n 0.9 15n 0.9 15.05n 0]",
-          "",
-          "XDUT (clk vdd vss vbias en pd pwr_ok drive_en delay_mon) power_enable_turnon_delay_gate",
-          ""
-        ]
-      },
-      "parameters": {
-        "maxstep": "200p",
-        "stop_time": "100n"
-      },
       "simulatorOptions": {
         "evas_profile": "balanced"
       }
     },
-    "score": {
-      "deck_overrides": {
-        "analyses": [
-          "tran tran stop=18n maxstep=10p"
-        ],
-        "body_lines": [
-          "Vclk (clk 0) vsource type=pulse val0=0 val1=0.9 delay=150p period=1n width=420p rise=20p fall=20p",
-          "Vvss (vss 0) vsource type=pwl wave=[0 0.04 7n 0.04 7.05n 0.0 18n 0.0]",
-          "Vvdd (vdd 0) vsource type=pwl wave=[0 0.94 4n 0.94 4.05n 1.18 5.8n 1.18 5.85n 0.94 18n 0.94]",
-          "Vbias (vbias 0) vsource type=pwl wave=[0 0.50 7n 0.50 7.05n 0.18 8.8n 0.18 8.85n 0.45 18n 0.45]",
-          "Ven (en 0) vsource type=pwl wave=[0 0.9 10n 0.9 10.05n 0.0 11.5n 0.0 11.55n 0.9]",
-          "Vpd (pd 0) vsource type=pwl wave=[0 0 13n 0 13.05n 0.9 14.4n 0.9 14.45n 0]",
-          "",
-          "XDUT (clk vdd vss vbias en pd pwr_ok drive_en delay_mon) power_enable_turnon_delay_gate",
-          ""
-        ]
-      },
-      "parameters": {
-        "maxstep": "100p",
-        "stop_time": "100n"
-      }
-    }
+    "score": {}
   },
   "property_ids": [
     "P_ON_EACH_RISING_CROSSING_OF_CLK",

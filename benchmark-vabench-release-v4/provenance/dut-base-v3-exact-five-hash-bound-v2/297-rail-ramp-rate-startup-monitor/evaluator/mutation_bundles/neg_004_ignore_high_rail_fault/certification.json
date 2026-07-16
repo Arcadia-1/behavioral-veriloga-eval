@@ -33,7 +33,7 @@
     }
   },
   "diagnostics": {
-    "expected": "trigger=stimulus exercises neg_004_ignore_high_rail_fault; violated_properties=P_RAIL_OK_ENFORCES_ENABLE_AND_SUPPLY_WINDOW,P_VHI_0_9_V_HIGH_LEVEL",
+    "expected": "trigger=stimulus exercises redacted_fault_case; violated_properties=P_RAIL_OK_ENFORCES_ENABLE_AND_SUPPLY_WINDOW,P_VHI_0_9_V_HIGH_LEVEL",
     "observed": "EVAS: rail_startup_error=0.9000; Spectre: rail_startup_error=0.9000",
     "violated_property_ids": [
       "P_RAIL_OK_ENFORCES_ENABLE_AND_SUPPLY_WINDOW",

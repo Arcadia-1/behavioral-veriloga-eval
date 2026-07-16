@@ -33,7 +33,7 @@
     }
   },
   "diagnostics": {
-    "expected": "trigger=stimulus exercises neg_004_ignore_mode; violated_properties=P_DRIVE_ISUP_METRIC_AS_A_VOLTAGE,P_VNOM_0_9_V_NOMINAL_SUPPLY",
+    "expected": "trigger=stimulus exercises redacted_fault_case; violated_properties=P_DRIVE_ISUP_METRIC_AS_A_VOLTAGE,P_VNOM_0_9_V_NOMINAL_SUPPLY",
     "observed": "EVAS: supply_metric_error=0.0800; Spectre: supply_metric_error=0.0800",
     "violated_property_ids": [
       "P_DRIVE_ISUP_METRIC_AS_A_VOLTAGE",

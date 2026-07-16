@@ -33,7 +33,7 @@
     }
   },
   "diagnostics": {
-    "expected": "trigger=stimulus exercises neg_002_absolute_input_threshold; violated_properties=P_MODEL_A_DYNAMIC_SUPPLY_ELECTRICAL_LEVEL,P_VSUP_MIN_0_55_V_MINIMUM",
+    "expected": "trigger=stimulus exercises redacted_fault_case; violated_properties=P_MODEL_A_DYNAMIC_SUPPLY_ELECTRICAL_LEVEL,P_VSUP_MIN_0_55_V_MINIMUM",
     "observed": "EVAS: dynamic_supply_driver_error=0.6000; Spectre: dynamic_supply_driver_error=0.6000",
     "violated_property_ids": [
       "P_MODEL_A_DYNAMIC_SUPPLY_ELECTRICAL_LEVEL",

@@ -1,0 +1,321 @@
+{
+  "checked_families": [
+    "291",
+    "292",
+    "293",
+    "294",
+    "295",
+    "296",
+    "297",
+    "298",
+    "299",
+    "300"
+  ],
+  "evas_engine_used": "evas2",
+  "evas_source": {
+    "commit": "985bba40929da8066dc9f1e4a08d27c010424c5f",
+    "describe": "v0.8.1-9-g985bba4",
+    "path": "/Users/bucketsran/Documents/TsingProject/vaEvas/EVAS"
+  },
+  "evidence_policy": {
+    "backend": "EVAS2 via EVAS_ENGINE=evas2 and VAEVAS_DEFAULT_EVAS_ENGINE=evas2",
+    "checker_selection": "explicit checker_task_id from each evaluator/task_record.json",
+    "deck_selection": "evaluator/score_tb.scs against evaluator/solution target artifact",
+    "not_claimed": [
+      "Python EVAS fallback",
+      "full release materialization",
+      "full release audit",
+      "Spectre/reference audit"
+    ],
+    "scope": "issue-307 families 291-300 only"
+  },
+  "failure_count": 0,
+  "finished_at_local": "2026-07-16T16:36:10+0800",
+  "output_root": "/tmp/v4_issue_307_evas2_gold_smoke",
+  "python_fallback_evidence_claimed": false,
+  "results": [
+    {
+      "backend_used": "evas",
+      "checker_task_id": "v4_291_event_reacquire_lock_detector",
+      "evas_engine_used": "evas2",
+      "family_id": "291",
+      "notes": [
+        "returncode=0",
+        "evas_engine=evas2",
+        "trace_contract=row_required_set",
+        "samples=10 max_err=0.0000; P_RECORD_REFERENCE_CLOCK_RISING_EDGE_TIME mismatch_count=0; P_REQUIRE_CONSECUTIVE_IN_WINDOW_FEEDBACK_EDGE mismatch_count=0; P_CLEAR_LOCK_STATE_AND_PROGRESS_WHEN mismatch_count=0; P_EXPOSE_PHASE_METRIC_AND_STATE_MON mismatch_count=0"
+      ],
+      "returncode": 0,
+      "scores": {
+        "dut_compile": 1.0,
+        "sim_correct": 1.0,
+        "tb_compile": 1.0,
+        "weighted_total": 1.0
+      },
+      "status": "PASS",
+      "task": "291-event-reacquire-lock-detector",
+      "timing": {
+        "accepted_tran_steps": 2154.0,
+        "csv_write_s": 0.270301,
+        "derive_bus_signals_s": 0.000206,
+        "total_elapsed_s": 0.7,
+        "tran_elapsed_s": 0.0952
+      }
+    },
+    {
+      "backend_used": "evas",
+      "checker_task_id": "v4_292_supply_bias_validity_gate",
+      "evas_engine_used": "evas2",
+      "family_id": "292",
+      "notes": [
+        "returncode=0",
+        "evas_engine=evas2",
+        "trace_contract=row_required_set",
+        "samples=16 max_err=0.0000"
+      ],
+      "returncode": 0,
+      "scores": {
+        "dut_compile": 1.0,
+        "sim_correct": 1.0,
+        "tb_compile": 1.0,
+        "weighted_total": 1.0
+      },
+      "status": "PASS",
+      "task": "292-supply-bias-validity-gate",
+      "timing": {
+        "accepted_tran_steps": 1600.0,
+        "csv_write_s": 0.025818,
+        "derive_bus_signals_s": 0.000207,
+        "total_elapsed_s": 0.6,
+        "tran_elapsed_s": 0.031100000000000003
+      }
+    },
+    {
+      "backend_used": "evas",
+      "checker_task_id": "v4_293_reference_settling_window_monitor",
+      "evas_engine_used": "evas2",
+      "family_id": "293",
+      "notes": [
+        "returncode=0",
+        "evas_engine=evas2",
+        "trace_contract=row_required_set",
+        "samples=18 max_err=0.0000"
+      ],
+      "returncode": 0,
+      "scores": {
+        "dut_compile": 1.0,
+        "sim_correct": 1.0,
+        "tb_compile": 1.0,
+        "weighted_total": 1.0
+      },
+      "status": "PASS",
+      "task": "293-reference-settling-window-monitor",
+      "timing": {
+        "accepted_tran_steps": 1840.0,
+        "csv_write_s": 1.541855,
+        "derive_bus_signals_s": 0.000475,
+        "total_elapsed_s": 2.0,
+        "tran_elapsed_s": 0.0627
+      }
+    },
+    {
+      "backend_used": "evas",
+      "checker_task_id": "v4_294_power_enable_turnon_delay_gate",
+      "evas_engine_used": "evas2",
+      "family_id": "294",
+      "notes": [
+        "returncode=0",
+        "evas_engine=evas2",
+        "trace_contract=row_required_set",
+        "samples=16 max_err=0.0000"
+      ],
+      "returncode": 0,
+      "scores": {
+        "dut_compile": 1.0,
+        "sim_correct": 1.0,
+        "tb_compile": 1.0,
+        "weighted_total": 1.0
+      },
+      "status": "PASS",
+      "task": "294-power-enable-turnon-delay-gate",
+      "timing": {
+        "accepted_tran_steps": 1646.0,
+        "csv_write_s": 0.032151,
+        "derive_bus_signals_s": 0.000203,
+        "total_elapsed_s": 0.7,
+        "tran_elapsed_s": 0.068
+      }
+    },
+    {
+      "backend_used": "evas",
+      "checker_task_id": "v4_295_power_mode_supply_current_metric",
+      "evas_engine_used": "evas2",
+      "family_id": "295",
+      "notes": [
+        "returncode=0",
+        "evas_engine=evas2",
+        "trace_contract=row_required_set",
+        "samples=18 max_err=0.0000"
+      ],
+      "returncode": 0,
+      "scores": {
+        "dut_compile": 1.0,
+        "sim_correct": 1.0,
+        "tb_compile": 1.0,
+        "weighted_total": 1.0
+      },
+      "status": "PASS",
+      "task": "295-power-mode-supply-current-metric",
+      "timing": {
+        "accepted_tran_steps": 1800.0,
+        "csv_write_s": 0.057685,
+        "derive_bus_signals_s": 0.000275,
+        "total_elapsed_s": 0.2,
+        "tran_elapsed_s": 0.0824
+      }
+    },
+    {
+      "backend_used": "evas",
+      "checker_task_id": "v4_296_dynamic_supply_level_driver",
+      "evas_engine_used": "evas2",
+      "family_id": "296",
+      "notes": [
+        "returncode=0",
+        "evas_engine=evas2",
+        "trace_contract=row_required_set",
+        "samples=12 max_err=0.0000"
+      ],
+      "returncode": 0,
+      "scores": {
+        "dut_compile": 1.0,
+        "sim_correct": 1.0,
+        "tb_compile": 1.0,
+        "weighted_total": 1.0
+      },
+      "status": "PASS",
+      "task": "296-dynamic-supply-level-driver",
+      "timing": {
+        "accepted_tran_steps": 1225.0,
+        "csv_write_s": 0.380164,
+        "derive_bus_signals_s": 0.0002,
+        "total_elapsed_s": 0.5,
+        "tran_elapsed_s": 0.0172
+      }
+    },
+    {
+      "backend_used": "evas",
+      "checker_task_id": "v4_297_rail_ramp_rate_startup_monitor",
+      "evas_engine_used": "evas2",
+      "family_id": "297",
+      "notes": [
+        "returncode=0",
+        "evas_engine=evas2",
+        "trace_contract=row_required_set",
+        "samples=18 max_err=0.0000; P_RAIL_OK_ENFORCES_ENABLE_AND_SUPPLY_WINDOW mismatch_count=0; P_RAMP_OK_QUALIFIES_STARTUP_AND_SETTLING_SLEW mismatch_count=0; P_STARTUP_READY_REQUIRES_CONSECUTIVE_SETTLED_SAMPLES mismatch_count=0; P_SLEW_METRIC_REPORTS_BOUNDED_DELTA mismatch_count=0"
+      ],
+      "returncode": 0,
+      "scores": {
+        "dut_compile": 1.0,
+        "sim_correct": 1.0,
+        "tb_compile": 1.0,
+        "weighted_total": 1.0
+      },
+      "status": "PASS",
+      "task": "297-rail-ramp-rate-startup-monitor",
+      "timing": {
+        "accepted_tran_steps": 1857.0,
+        "csv_write_s": 0.039288,
+        "derive_bus_signals_s": 0.000234,
+        "total_elapsed_s": 0.9,
+        "tran_elapsed_s": 0.3355
+      }
+    },
+    {
+      "backend_used": "evas",
+      "checker_task_id": "v4_298_differential_common_mode_window_monitor",
+      "evas_engine_used": "evas2",
+      "family_id": "298",
+      "notes": [
+        "returncode=0",
+        "evas_engine=evas2",
+        "trace_contract=row_required_set",
+        "samples=16 max_err=0.0000"
+      ],
+      "returncode": 0,
+      "scores": {
+        "dut_compile": 1.0,
+        "sim_correct": 1.0,
+        "tb_compile": 1.0,
+        "weighted_total": 1.0
+      },
+      "status": "PASS",
+      "task": "298-differential-common-mode-window-monitor",
+      "timing": {
+        "accepted_tran_steps": 1600.0,
+        "csv_write_s": 0.049373,
+        "derive_bus_signals_s": 0.00023,
+        "total_elapsed_s": 0.5,
+        "tran_elapsed_s": 0.18780000000000002
+      }
+    },
+    {
+      "backend_used": "evas",
+      "checker_task_id": "v4_299_sine_vco_idtmod_bound_step",
+      "evas_engine_used": "evas2",
+      "family_id": "299",
+      "notes": [
+        "returncode=0",
+        "evas_engine=evas2",
+        "trace_contract=row_required_set",
+        "out_samples=168 out_span=1.7998 max_out_err=0.0000 max_metric_err=0.0000"
+      ],
+      "returncode": 0,
+      "scores": {
+        "dut_compile": 1.0,
+        "sim_correct": 1.0,
+        "tb_compile": 1.0,
+        "weighted_total": 1.0
+      },
+      "status": "PASS",
+      "task": "299-sine-vco-idtmod-bound-step",
+      "timing": {
+        "accepted_tran_steps": 1688.0,
+        "csv_write_s": 0.019938,
+        "derive_bus_signals_s": 0.000593,
+        "total_elapsed_s": 1.8,
+        "tran_elapsed_s": 1.3062
+      }
+    },
+    {
+      "backend_used": "evas",
+      "checker_task_id": "v4_300_differential_vco_clip_idtmod",
+      "evas_engine_used": "evas2",
+      "family_id": "300",
+      "notes": [
+        "returncode=0",
+        "evas_engine=evas2",
+        "trace_contract=row_required_set",
+        "samples=299 outp_span=0.7984 max_err=0.0000"
+      ],
+      "returncode": 0,
+      "scores": {
+        "dut_compile": 1.0,
+        "sim_correct": 1.0,
+        "tb_compile": 1.0,
+        "weighted_total": 1.0
+      },
+      "status": "PASS",
+      "task": "300-differential-vco-clip-idtmod",
+      "timing": {
+        "accepted_tran_steps": 300.0,
+        "csv_write_s": 0.006253,
+        "derive_bus_signals_s": 0.000293,
+        "total_elapsed_s": 0.1,
+        "tran_elapsed_s": 0.0128
+      }
+    }
+  ],
+  "schema_version": "v4-issue-307-evas2-gold-smoke-v1",
+  "started_at_local": "2026-07-16T16:29:47+0800",
+  "status": "PASS"
+}

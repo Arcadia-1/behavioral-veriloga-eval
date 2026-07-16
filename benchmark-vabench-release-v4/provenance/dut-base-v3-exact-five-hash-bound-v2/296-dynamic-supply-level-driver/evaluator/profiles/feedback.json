@@ -1,25 +1,13 @@
 {
   "corners": [],
-  "deck_overrides": {
-    "body_lines": [
-      "Vvdd (vdd 0) vsource type=pwl wave=[0 0.9 4n 0.9 4.05n 0.50 6n 0.50 6.05n 0.70 10n 0.70 10.05n 1.05]",
-      "Vvss (vss 0) vsource type=pwl wave=[0 0 6n 0 6.05n 0.10 10n 0.10 10.05n 0]",
-      "Vdin (din 0) vsource type=pwl wave=[0 0.10 2n 0.10 2.05n 0.85 5n 0.85 5.05n 0.20 7n 0.20 7.05n 0.42 9n 0.42 9.05n 0.25 11n 0.25 11.05n 0.80]",
-      "",
-      "XDUT (din vdd vss out) dynamic_supply_level_driver",
-      ""
-    ]
-  },
+  "deck_overrides": {},
   "deterministic_seed": 0,
   "generated_from": {
     "script": "render_v4_harness.py",
     "version": "v4-harness-renderer-v1"
   },
-  "harness_spec_sha256": "bba8379557ee9483b6c63c0f113c23b0661a9800076cdb2573933a446ba55b24",
-  "parameters": {
-    "maxstep": "200p",
-    "stop_time": "100n"
-  },
+  "harness_spec_sha256": "907eee94a8d947f4e273b9e6be987390b8ef5a4b52a7e1da09c029acd3192a1c",
+  "parameters": {},
   "profile_name": "feedback",
   "property_ids": [
     "P_MODEL_A_DYNAMIC_SUPPLY_ELECTRICAL_LEVEL",

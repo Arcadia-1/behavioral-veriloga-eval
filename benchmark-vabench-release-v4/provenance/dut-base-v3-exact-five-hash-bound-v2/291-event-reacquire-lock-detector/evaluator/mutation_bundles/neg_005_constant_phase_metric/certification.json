@@ -33,7 +33,7 @@
     }
   },
   "diagnostics": {
-    "expected": "trigger=stimulus exercises neg_005_constant_phase_metric; violated_properties=P_USE_EVENT_BODY_STATE_UPDATES_PLUS",
+    "expected": "trigger=stimulus exercises redacted_fault_case; violated_properties=P_USE_EVENT_BODY_STATE_UPDATES_PLUS",
     "observed": "EVAS: event_reacquire_lock_error=0.9000; Spectre: event_reacquire_lock_error=0.9000",
     "violated_property_ids": [
       "P_USE_EVENT_BODY_STATE_UPDATES_PLUS"

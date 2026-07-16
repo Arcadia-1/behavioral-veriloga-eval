@@ -33,7 +33,7 @@
     }
   },
   "diagnostics": {
-    "expected": "trigger=stimulus exercises neg_001_threshold_only_ready; violated_properties=P_STARTUP_READY_REQUIRES_CONSECUTIVE_SETTLED_SAMPLES,P_ON_EACH_RISING_CROSSING_OF_CLK,P_VREADY_0_86_V_SAMPLED_RAIL",
+    "expected": "trigger=stimulus exercises redacted_fault_case; violated_properties=P_STARTUP_READY_REQUIRES_CONSECUTIVE_SETTLED_SAMPLES,P_ON_EACH_RISING_CROSSING_OF_CLK,P_VREADY_0_86_V_SAMPLED_RAIL",
     "observed": "EVAS: rail_startup_error=0.9000; Spectre: rail_startup_error=0.9000",
     "violated_property_ids": [
       "P_ON_EACH_RISING_CROSSING_OF_CLK",

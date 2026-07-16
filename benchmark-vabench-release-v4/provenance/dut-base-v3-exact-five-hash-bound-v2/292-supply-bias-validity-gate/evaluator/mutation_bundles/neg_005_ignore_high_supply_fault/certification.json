@@ -33,7 +33,7 @@
     }
   },
   "diagnostics": {
-    "expected": "trigger=stimulus exercises neg_005_ignore_high_supply_fault; violated_properties=P_MODEL_A_REUSABLE_SUPPLY_BIAS_VALIDITY,P_VSS_MAX_0_08_V_MAXIMUM",
+    "expected": "trigger=stimulus exercises redacted_fault_case; violated_properties=P_MODEL_A_REUSABLE_SUPPLY_BIAS_VALIDITY,P_VSS_MAX_0_08_V_MAXIMUM",
     "observed": "EVAS: validity_gate_error=0.9000; Spectre: validity_gate_error=0.9000",
     "violated_property_ids": [
       "P_MODEL_A_REUSABLE_SUPPLY_BIAS_VALIDITY",

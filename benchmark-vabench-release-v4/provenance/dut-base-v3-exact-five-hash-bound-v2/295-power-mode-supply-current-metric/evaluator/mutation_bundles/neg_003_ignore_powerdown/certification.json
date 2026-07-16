@@ -33,7 +33,7 @@
     }
   },
   "diagnostics": {
-    "expected": "trigger=stimulus exercises neg_003_ignore_powerdown; violated_properties=P_DRIVE_ISUP_METRIC_AS_A_VOLTAGE,P_VHI_0_9_V_FULL_SCALE",
+    "expected": "trigger=stimulus exercises redacted_fault_case; violated_properties=P_DRIVE_ISUP_METRIC_AS_A_VOLTAGE,P_VHI_0_9_V_FULL_SCALE",
     "observed": "EVAS: supply_metric_error=0.3153; Spectre: supply_metric_error=0.3153",
     "violated_property_ids": [
       "P_DRIVE_ISUP_METRIC_AS_A_VOLTAGE",
