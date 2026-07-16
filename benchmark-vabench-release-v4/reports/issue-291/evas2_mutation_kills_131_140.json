@@ -1,0 +1,1351 @@
+{
+  "checked_families": [
+    "131",
+    "132",
+    "133",
+    "134",
+    "135",
+    "136",
+    "137",
+    "138",
+    "139",
+    "140"
+  ],
+  "evas_engine_used": "evas2",
+  "expected_mutations_per_family": 5,
+  "failure_count": 0,
+  "mutation_count": 50,
+  "python_fallback_evidence_claimed": false,
+  "runs": [
+    {
+      "checker_task_id": "v4_131_limiting_differential_amplifier",
+      "evas_engine_used": "evas2",
+      "family_id": "131",
+      "fault_class": "zero_stub_output",
+      "killed_behaviorally": true,
+      "mutation_id": "neg_001_zero",
+      "notes": [
+        "returncode=0",
+        "evas_engine=evas2",
+        "checked=267 max_error=0.80000"
+      ],
+      "returncode": 0,
+      "scores": {
+        "dut_compile": 1.0,
+        "sim_correct": 0.0,
+        "tb_compile": 1.0,
+        "weighted_total": 0.6667
+      },
+      "status": "FAIL_SIM_CORRECTNESS",
+      "stderr_tail": "",
+      "task": "131-limiting-differential-amplifier",
+      "violated_property_ids": [
+        "P_OFFSET_CORRECTED_DIFFERENTIAL_GAIN"
+      ]
+    },
+    {
+      "checker_task_id": "v4_131_limiting_differential_amplifier",
+      "evas_engine_used": "evas2",
+      "family_id": "131",
+      "fault_class": "threshold_or_boundary_fault",
+      "killed_behaviorally": true,
+      "mutation_id": "neg_002_missing_input_offset",
+      "notes": [
+        "returncode=0",
+        "evas_engine=evas2",
+        "checked=267 max_error=0.15000"
+      ],
+      "returncode": 0,
+      "scores": {
+        "dut_compile": 1.0,
+        "sim_correct": 0.0,
+        "tb_compile": 1.0,
+        "weighted_total": 0.6667
+      },
+      "status": "FAIL_SIM_CORRECTNESS",
+      "stderr_tail": "",
+      "task": "131-limiting-differential-amplifier",
+      "violated_property_ids": [
+        "P_OFFSET_CORRECTED_DIFFERENTIAL_GAIN"
+      ]
+    },
+    {
+      "checker_task_id": "v4_131_limiting_differential_amplifier",
+      "evas_engine_used": "evas2",
+      "family_id": "131",
+      "fault_class": "omission_or_incomplete_behavior",
+      "killed_behaviorally": true,
+      "mutation_id": "neg_003_no_clamp",
+      "notes": [
+        "returncode=0",
+        "evas_engine=evas2",
+        "checked=267 max_error=0.45000"
+      ],
+      "returncode": 0,
+      "scores": {
+        "dut_compile": 1.0,
+        "sim_correct": 0.0,
+        "tb_compile": 1.0,
+        "weighted_total": 0.6667
+      },
+      "status": "FAIL_SIM_CORRECTNESS",
+      "stderr_tail": "",
+      "task": "131-limiting-differential-amplifier",
+      "violated_property_ids": [
+        "P_OUTPUT_RAIL_CLAMP"
+      ]
+    },
+    {
+      "checker_task_id": "v4_131_limiting_differential_amplifier",
+      "evas_engine_used": "evas2",
+      "family_id": "131",
+      "fault_class": "zero_stub_output",
+      "killed_behaviorally": true,
+      "mutation_id": "neg_004_wrong_reference",
+      "notes": [
+        "returncode=0",
+        "evas_engine=evas2",
+        "checked=267 max_error=0.20000"
+      ],
+      "returncode": 0,
+      "scores": {
+        "dut_compile": 1.0,
+        "sim_correct": 0.0,
+        "tb_compile": 1.0,
+        "weighted_total": 0.6667
+      },
+      "status": "FAIL_SIM_CORRECTNESS",
+      "stderr_tail": "",
+      "task": "131-limiting-differential-amplifier",
+      "violated_property_ids": [
+        "P_OUTPUT_MIDPOINT_REFERENCE"
+      ]
+    },
+    {
+      "checker_task_id": "v4_131_limiting_differential_amplifier",
+      "evas_engine_used": "evas2",
+      "family_id": "131",
+      "fault_class": "metric_or_observable_fault",
+      "killed_behaviorally": true,
+      "mutation_id": "neg_005_metric_scale_low",
+      "notes": [
+        "returncode=0",
+        "evas_engine=evas2",
+        "checked=267 max_error=0.46400"
+      ],
+      "returncode": 0,
+      "scores": {
+        "dut_compile": 1.0,
+        "sim_correct": 0.0,
+        "tb_compile": 1.0,
+        "weighted_total": 0.6667
+      },
+      "status": "FAIL_SIM_CORRECTNESS",
+      "stderr_tail": "",
+      "task": "131-limiting-differential-amplifier",
+      "violated_property_ids": [
+        "P_OFFSET_CORRECTED_DIFFERENTIAL_GAIN"
+      ]
+    },
+    {
+      "checker_task_id": "v4_132_analog_multiplier",
+      "evas_engine_used": "evas2",
+      "family_id": "132",
+      "fault_class": "zero_stub_output",
+      "killed_behaviorally": true,
+      "mutation_id": "neg_001_zero",
+      "notes": [
+        "returncode=0",
+        "evas_engine=evas2",
+        "trace_contract=row_required_set",
+        "checked=241 max_error=0.48000"
+      ],
+      "returncode": 0,
+      "scores": {
+        "dut_compile": 1.0,
+        "sim_correct": 0.0,
+        "tb_compile": 1.0,
+        "weighted_total": 0.6667
+      },
+      "status": "FAIL_SIM_CORRECTNESS",
+      "stderr_tail": "",
+      "task": "132-analog-multiplier",
+      "violated_property_ids": [
+        "P_ANALOG_PRODUCT"
+      ]
+    },
+    {
+      "checker_task_id": "v4_132_analog_multiplier",
+      "evas_engine_used": "evas2",
+      "family_id": "132",
+      "fault_class": "adds_inputs",
+      "killed_behaviorally": true,
+      "mutation_id": "neg_002_adds_inputs",
+      "notes": [
+        "returncode=0",
+        "evas_engine=evas2",
+        "trace_contract=row_required_set",
+        "checked=241 max_error=1.72000"
+      ],
+      "returncode": 0,
+      "scores": {
+        "dut_compile": 1.0,
+        "sim_correct": 0.0,
+        "tb_compile": 1.0,
+        "weighted_total": 0.6667
+      },
+      "status": "FAIL_SIM_CORRECTNESS",
+      "stderr_tail": "",
+      "task": "132-analog-multiplier",
+      "violated_property_ids": [
+        "P_MULTIPLICATIVE_NOT_ADDITIVE"
+      ]
+    },
+    {
+      "checker_task_id": "v4_132_analog_multiplier",
+      "evas_engine_used": "evas2",
+      "family_id": "132",
+      "fault_class": "metric_or_observable_fault",
+      "killed_behaviorally": true,
+      "mutation_id": "neg_003_missing_gain",
+      "notes": [
+        "returncode=0",
+        "evas_engine=evas2",
+        "trace_contract=row_required_set",
+        "checked=241 max_error=0.24000"
+      ],
+      "returncode": 0,
+      "scores": {
+        "dut_compile": 1.0,
+        "sim_correct": 0.0,
+        "tb_compile": 1.0,
+        "weighted_total": 0.6667
+      },
+      "status": "FAIL_SIM_CORRECTNESS",
+      "stderr_tail": "",
+      "task": "132-analog-multiplier",
+      "violated_property_ids": [
+        "P_GAIN_PARAMETER_APPLIED"
+      ]
+    },
+    {
+      "checker_task_id": "v4_132_analog_multiplier",
+      "evas_engine_used": "evas2",
+      "family_id": "132",
+      "fault_class": "square_first_input",
+      "killed_behaviorally": true,
+      "mutation_id": "neg_004_square_first_input",
+      "notes": [
+        "returncode=0",
+        "evas_engine=evas2",
+        "trace_contract=row_required_set",
+        "checked=241 max_error=0.80000"
+      ],
+      "returncode": 0,
+      "scores": {
+        "dut_compile": 1.0,
+        "sim_correct": 0.0,
+        "tb_compile": 1.0,
+        "weighted_total": 0.6667
+      },
+      "status": "FAIL_SIM_CORRECTNESS",
+      "stderr_tail": "",
+      "task": "132-analog-multiplier",
+      "violated_property_ids": [
+        "P_MULTIPLICATIVE_NOT_ADDITIVE"
+      ]
+    },
+    {
+      "checker_task_id": "v4_132_analog_multiplier",
+      "evas_engine_used": "evas2",
+      "family_id": "132",
+      "fault_class": "metric_or_observable_fault",
+      "killed_behaviorally": true,
+      "mutation_id": "neg_005_metric_scale_low",
+      "notes": [
+        "returncode=0",
+        "evas_engine=evas2",
+        "trace_contract=row_required_set",
+        "checked=241 max_error=0.27840"
+      ],
+      "returncode": 0,
+      "scores": {
+        "dut_compile": 1.0,
+        "sim_correct": 0.0,
+        "tb_compile": 1.0,
+        "weighted_total": 0.6667
+      },
+      "status": "FAIL_SIM_CORRECTNESS",
+      "stderr_tail": "",
+      "task": "132-analog-multiplier",
+      "violated_property_ids": [
+        "P_ANALOG_PRODUCT"
+      ]
+    },
+    {
+      "checker_task_id": "v4_133_three_way_threshold_mux",
+      "evas_engine_used": "evas2",
+      "family_id": "133",
+      "fault_class": "zero_stub_output",
+      "killed_behaviorally": true,
+      "mutation_id": "neg_001_zero",
+      "notes": [
+        "returncode=0",
+        "evas_engine=evas2",
+        "trace_contract=row_required_set",
+        "checked=241 max_error=0.90000"
+      ],
+      "returncode": 0,
+      "scores": {
+        "dut_compile": 1.0,
+        "sim_correct": 0.0,
+        "tb_compile": 1.0,
+        "weighted_total": 0.6667
+      },
+      "status": "FAIL_SIM_CORRECTNESS",
+      "stderr_tail": "",
+      "task": "133-three-way-threshold-mux",
+      "violated_property_ids": [
+        "P_MIDDLE_REGION_SELECTS_SIGIN2"
+      ]
+    },
+    {
+      "checker_task_id": "v4_133_three_way_threshold_mux",
+      "evas_engine_used": "evas2",
+      "family_id": "133",
+      "fault_class": "polarity_or_direction_error",
+      "killed_behaviorally": true,
+      "mutation_id": "neg_002_swapped_low_high_outputs",
+      "notes": [
+        "returncode=0",
+        "evas_engine=evas2",
+        "trace_contract=row_required_set",
+        "checked=241 max_error=0.80000"
+      ],
+      "returncode": 0,
+      "scores": {
+        "dut_compile": 1.0,
+        "sim_correct": 0.0,
+        "tb_compile": 1.0,
+        "weighted_total": 0.6667
+      },
+      "status": "FAIL_SIM_CORRECTNESS",
+      "stderr_tail": "",
+      "task": "133-three-way-threshold-mux",
+      "violated_property_ids": [
+        "P_HIGH_REGION_SELECTS_SIGIN3",
+        "P_LOW_REGION_SELECTS_SIGIN1"
+      ]
+    },
+    {
+      "checker_task_id": "v4_133_three_way_threshold_mux",
+      "evas_engine_used": "evas2",
+      "family_id": "133",
+      "fault_class": "uses_single_ended_control",
+      "killed_behaviorally": true,
+      "mutation_id": "neg_003_uses_single_ended_control",
+      "notes": [
+        "returncode=0",
+        "evas_engine=evas2",
+        "trace_contract=row_required_set",
+        "checked=241 max_error=0.40000"
+      ],
+      "returncode": 0,
+      "scores": {
+        "dut_compile": 1.0,
+        "sim_correct": 0.0,
+        "tb_compile": 1.0,
+        "weighted_total": 0.6667
+      },
+      "status": "FAIL_SIM_CORRECTNESS",
+      "stderr_tail": "",
+      "task": "133-three-way-threshold-mux",
+      "violated_property_ids": [
+        "P_DIFFERENTIAL_CONTROL"
+      ]
+    },
+    {
+      "checker_task_id": "v4_133_three_way_threshold_mux",
+      "evas_engine_used": "evas2",
+      "family_id": "133",
+      "fault_class": "omission_or_incomplete_behavior",
+      "killed_behaviorally": true,
+      "mutation_id": "neg_004_missing_middle_selection",
+      "notes": [
+        "returncode=0",
+        "evas_engine=evas2",
+        "trace_contract=row_required_set",
+        "checked=241 max_error=0.40000"
+      ],
+      "returncode": 0,
+      "scores": {
+        "dut_compile": 1.0,
+        "sim_correct": 0.0,
+        "tb_compile": 1.0,
+        "weighted_total": 0.6667
+      },
+      "status": "FAIL_SIM_CORRECTNESS",
+      "stderr_tail": "",
+      "task": "133-three-way-threshold-mux",
+      "violated_property_ids": [
+        "P_MIDDLE_REGION_SELECTS_SIGIN2"
+      ]
+    },
+    {
+      "checker_task_id": "v4_133_three_way_threshold_mux",
+      "evas_engine_used": "evas2",
+      "family_id": "133",
+      "fault_class": "threshold_or_boundary_fault",
+      "killed_behaviorally": true,
+      "mutation_id": "neg_005_metric_scale_low",
+      "notes": [
+        "returncode=0",
+        "evas_engine=evas2",
+        "trace_contract=row_required_set",
+        "checked=241 max_error=0.52200"
+      ],
+      "returncode": 0,
+      "scores": {
+        "dut_compile": 1.0,
+        "sim_correct": 0.0,
+        "tb_compile": 1.0,
+        "weighted_total": 0.6667
+      },
+      "status": "FAIL_SIM_CORRECTNESS",
+      "stderr_tail": "",
+      "task": "133-three-way-threshold-mux",
+      "violated_property_ids": [
+        "P_HIGH_REGION_SELECTS_SIGIN3",
+        "P_LOW_REGION_SELECTS_SIGIN1"
+      ]
+    },
+    {
+      "checker_task_id": "v4_134_differential_amplifier_core",
+      "evas_engine_used": "evas2",
+      "family_id": "134",
+      "fault_class": "zero_stub_output",
+      "killed_behaviorally": true,
+      "mutation_id": "neg_001_zero",
+      "notes": [
+        "returncode=0",
+        "evas_engine=evas2",
+        "differential_amplifier_core_error@10.000ns observed=0.0000 expected=-0.5000 max_err=0.5000"
+      ],
+      "returncode": 0,
+      "scores": {
+        "dut_compile": 1.0,
+        "sim_correct": 0.0,
+        "tb_compile": 1.0,
+        "weighted_total": 0.6667
+      },
+      "status": "FAIL_SIM_CORRECTNESS",
+      "stderr_tail": "",
+      "task": "134-differential-amplifier-core",
+      "violated_property_ids": [
+        "P_GAIN_TWO_OUTPUT"
+      ]
+    },
+    {
+      "checker_task_id": "v4_134_differential_amplifier_core",
+      "evas_engine_used": "evas2",
+      "family_id": "134",
+      "fault_class": "single_ended_input",
+      "killed_behaviorally": true,
+      "mutation_id": "neg_002_single_ended_input",
+      "notes": [
+        "returncode=0",
+        "evas_engine=evas2",
+        "differential_amplifier_core_error@20.050ns observed=1.0000 expected=0.1000 max_err=0.9000"
+      ],
+      "returncode": 0,
+      "scores": {
+        "dut_compile": 1.0,
+        "sim_correct": 0.0,
+        "tb_compile": 1.0,
+        "weighted_total": 0.6667
+      },
+      "status": "FAIL_SIM_CORRECTNESS",
+      "stderr_tail": "",
+      "task": "134-differential-amplifier-core",
+      "violated_property_ids": [
+        "P_DIFFERENTIAL_INPUT"
+      ]
+    },
+    {
+      "checker_task_id": "v4_134_differential_amplifier_core",
+      "evas_engine_used": "evas2",
+      "family_id": "134",
+      "fault_class": "threshold_or_boundary_fault",
+      "killed_behaviorally": true,
+      "mutation_id": "neg_003_missing_offset",
+      "notes": [
+        "returncode=0",
+        "evas_engine=evas2",
+        "differential_amplifier_core_error@40.000ns observed=0.2000 expected=0.1000 max_err=0.1000"
+      ],
+      "returncode": 0,
+      "scores": {
+        "dut_compile": 1.0,
+        "sim_correct": 0.0,
+        "tb_compile": 1.0,
+        "weighted_total": 0.6667
+      },
+      "status": "FAIL_SIM_CORRECTNESS",
+      "stderr_tail": "",
+      "task": "134-differential-amplifier-core",
+      "violated_property_ids": [
+        "P_INPUT_OFFSET"
+      ]
+    },
+    {
+      "checker_task_id": "v4_134_differential_amplifier_core",
+      "evas_engine_used": "evas2",
+      "family_id": "134",
+      "fault_class": "metric_or_observable_fault",
+      "killed_behaviorally": true,
+      "mutation_id": "neg_004_wrong_gain",
+      "notes": [
+        "returncode=0",
+        "evas_engine=evas2",
+        "differential_amplifier_core_error@10.000ns observed=-0.2500 expected=-0.5000 max_err=0.2500"
+      ],
+      "returncode": 0,
+      "scores": {
+        "dut_compile": 1.0,
+        "sim_correct": 0.0,
+        "tb_compile": 1.0,
+        "weighted_total": 0.6667
+      },
+      "status": "FAIL_SIM_CORRECTNESS",
+      "stderr_tail": "",
+      "task": "134-differential-amplifier-core",
+      "violated_property_ids": [
+        "P_GAIN_TWO_OUTPUT"
+      ]
+    },
+    {
+      "checker_task_id": "v4_134_differential_amplifier_core",
+      "evas_engine_used": "evas2",
+      "family_id": "134",
+      "fault_class": "metric_or_observable_fault",
+      "killed_behaviorally": true,
+      "mutation_id": "neg_005_metric_scale_low",
+      "notes": [
+        "returncode=0",
+        "evas_engine=evas2",
+        "differential_amplifier_core_error@10.000ns observed=-0.2100 expected=-0.5000 max_err=0.2900"
+      ],
+      "returncode": 0,
+      "scores": {
+        "dut_compile": 1.0,
+        "sim_correct": 0.0,
+        "tb_compile": 1.0,
+        "weighted_total": 0.6667
+      },
+      "status": "FAIL_SIM_CORRECTNESS",
+      "stderr_tail": "",
+      "task": "134-differential-amplifier-core",
+      "violated_property_ids": [
+        "P_GAIN_TWO_OUTPUT"
+      ]
+    },
+    {
+      "checker_task_id": "v4_135_logarithmic_amplifier",
+      "evas_engine_used": "evas2",
+      "family_id": "135",
+      "fault_class": "zero_stub_output",
+      "killed_behaviorally": true,
+      "mutation_id": "neg_001_zero",
+      "notes": [
+        "returncode=0",
+        "evas_engine=evas2",
+        "checked=267 max_error=2.30259"
+      ],
+      "returncode": 0,
+      "scores": {
+        "dut_compile": 1.0,
+        "sim_correct": 0.0,
+        "tb_compile": 1.0,
+        "weighted_total": 0.6667
+      },
+      "status": "FAIL_SIM_CORRECTNESS",
+      "stderr_tail": "",
+      "task": "135-logarithmic-amplifier",
+      "violated_property_ids": [
+        "P_NATURAL_LOG_OUTPUT"
+      ]
+    },
+    {
+      "checker_task_id": "v4_135_logarithmic_amplifier",
+      "evas_engine_used": "evas2",
+      "family_id": "135",
+      "fault_class": "omission_or_incomplete_behavior",
+      "killed_behaviorally": true,
+      "mutation_id": "neg_002_no_abs",
+      "notes": [
+        "returncode=0",
+        "evas_engine=evas2",
+        "checked=267 max_error=1.60944"
+      ],
+      "returncode": 0,
+      "scores": {
+        "dut_compile": 1.0,
+        "sim_correct": 0.0,
+        "tb_compile": 1.0,
+        "weighted_total": 0.6667
+      },
+      "status": "FAIL_SIM_CORRECTNESS",
+      "stderr_tail": "",
+      "task": "135-logarithmic-amplifier",
+      "violated_property_ids": [
+        "P_ABSOLUTE_MAGNITUDE"
+      ]
+    },
+    {
+      "checker_task_id": "v4_135_logarithmic_amplifier",
+      "evas_engine_used": "evas2",
+      "family_id": "135",
+      "fault_class": "omission_or_incomplete_behavior",
+      "killed_behaviorally": true,
+      "mutation_id": "neg_003_missing_floor",
+      "notes": [
+        "returncode=0",
+        "evas_engine=evas2",
+        "checked=267 max_error=4.60517"
+      ],
+      "returncode": 0,
+      "scores": {
+        "dut_compile": 1.0,
+        "sim_correct": 0.0,
+        "tb_compile": 1.0,
+        "weighted_total": 0.6667
+      },
+      "status": "FAIL_SIM_CORRECTNESS",
+      "stderr_tail": "",
+      "task": "135-logarithmic-amplifier",
+      "violated_property_ids": [
+        "P_MAGNITUDE_FLOOR"
+      ]
+    },
+    {
+      "checker_task_id": "v4_135_logarithmic_amplifier",
+      "evas_engine_used": "evas2",
+      "family_id": "135",
+      "fault_class": "zero_stub_output",
+      "killed_behaviorally": true,
+      "mutation_id": "neg_004_wrong_offset",
+      "notes": [
+        "returncode=0",
+        "evas_engine=evas2",
+        "checked=267 max_error=0.69315"
+      ],
+      "returncode": 0,
+      "scores": {
+        "dut_compile": 1.0,
+        "sim_correct": 0.0,
+        "tb_compile": 1.0,
+        "weighted_total": 0.6667
+      },
+      "status": "FAIL_SIM_CORRECTNESS",
+      "stderr_tail": "",
+      "task": "135-logarithmic-amplifier",
+      "violated_property_ids": [
+        "P_INPUT_OFFSET_SUBTRACTION"
+      ]
+    },
+    {
+      "checker_task_id": "v4_135_logarithmic_amplifier",
+      "evas_engine_used": "evas2",
+      "family_id": "135",
+      "fault_class": "metric_or_observable_fault",
+      "killed_behaviorally": true,
+      "mutation_id": "neg_005_metric_scale_low",
+      "notes": [
+        "returncode=0",
+        "evas_engine=evas2",
+        "checked=267 max_error=1.33550"
+      ],
+      "returncode": 0,
+      "scores": {
+        "dut_compile": 1.0,
+        "sim_correct": 0.0,
+        "tb_compile": 1.0,
+        "weighted_total": 0.6667
+      },
+      "status": "FAIL_SIM_CORRECTNESS",
+      "stderr_tail": "",
+      "task": "135-logarithmic-amplifier",
+      "violated_property_ids": [
+        "P_NATURAL_LOG_OUTPUT"
+      ]
+    },
+    {
+      "checker_task_id": "v4_136_soft_voltage_clamp",
+      "evas_engine_used": "evas2",
+      "family_id": "136",
+      "fault_class": "zero_stub_output",
+      "killed_behaviorally": true,
+      "mutation_id": "neg_001_zero",
+      "notes": [
+        "returncode=0",
+        "evas_engine=evas2",
+        "checked=267 max_error=0.57293"
+      ],
+      "returncode": 0,
+      "scores": {
+        "dut_compile": 1.0,
+        "sim_correct": 0.0,
+        "tb_compile": 1.0,
+        "weighted_total": 0.6667
+      },
+      "status": "FAIL_SIM_CORRECTNESS",
+      "stderr_tail": "",
+      "task": "136-soft-voltage-clamp",
+      "violated_property_ids": [
+        "P_LINEAR_MIDDLE_REGION",
+        "P_REFERENCED_INPUT_OUTPUT"
+      ]
+    },
+    {
+      "checker_task_id": "v4_136_soft_voltage_clamp",
+      "evas_engine_used": "evas2",
+      "family_id": "136",
+      "fault_class": "hard_clamp",
+      "killed_behaviorally": true,
+      "mutation_id": "neg_002_hard_clamp",
+      "notes": [
+        "returncode=0",
+        "evas_engine=evas2",
+        "checked=267 max_error=0.02707"
+      ],
+      "returncode": 0,
+      "scores": {
+        "dut_compile": 1.0,
+        "sim_correct": 0.0,
+        "tb_compile": 1.0,
+        "weighted_total": 0.6667
+      },
+      "status": "FAIL_SIM_CORRECTNESS",
+      "stderr_tail": "",
+      "task": "136-soft-voltage-clamp",
+      "violated_property_ids": [
+        "P_SOFT_LOWER_LIMIT",
+        "P_SOFT_UPPER_LIMIT"
+      ]
+    },
+    {
+      "checker_task_id": "v4_136_soft_voltage_clamp",
+      "evas_engine_used": "evas2",
+      "family_id": "136",
+      "fault_class": "omission_or_incomplete_behavior",
+      "killed_behaviorally": true,
+      "mutation_id": "neg_003_wrong_knee_points",
+      "notes": [
+        "returncode=0",
+        "evas_engine=evas2",
+        "checked=267 max_error=0.15349"
+      ],
+      "returncode": 0,
+      "scores": {
+        "dut_compile": 1.0,
+        "sim_correct": 0.0,
+        "tb_compile": 1.0,
+        "weighted_total": 0.6667
+      },
+      "status": "FAIL_SIM_CORRECTNESS",
+      "stderr_tail": "",
+      "task": "136-soft-voltage-clamp",
+      "violated_property_ids": [
+        "P_LINEAR_MIDDLE_REGION"
+      ]
+    },
+    {
+      "checker_task_id": "v4_136_soft_voltage_clamp",
+      "evas_engine_used": "evas2",
+      "family_id": "136",
+      "fault_class": "omission_or_incomplete_behavior",
+      "killed_behaviorally": true,
+      "mutation_id": "neg_004_half_soft_fraction",
+      "notes": [
+        "returncode=0",
+        "evas_engine=evas2",
+        "checked=267 max_error=0.08647"
+      ],
+      "returncode": 0,
+      "scores": {
+        "dut_compile": 1.0,
+        "sim_correct": 0.0,
+        "tb_compile": 1.0,
+        "weighted_total": 0.6667
+      },
+      "status": "FAIL_SIM_CORRECTNESS",
+      "stderr_tail": "",
+      "task": "136-soft-voltage-clamp",
+      "violated_property_ids": [
+        "P_SOFT_LOWER_LIMIT",
+        "P_SOFT_UPPER_LIMIT"
+      ]
+    },
+    {
+      "checker_task_id": "v4_136_soft_voltage_clamp",
+      "evas_engine_used": "evas2",
+      "family_id": "136",
+      "fault_class": "metric_or_observable_fault",
+      "killed_behaviorally": true,
+      "mutation_id": "neg_005_metric_scale_low",
+      "notes": [
+        "returncode=0",
+        "evas_engine=evas2",
+        "checked=267 max_error=0.33230"
+      ],
+      "returncode": 0,
+      "scores": {
+        "dut_compile": 1.0,
+        "sim_correct": 0.0,
+        "tb_compile": 1.0,
+        "weighted_total": 0.6667
+      },
+      "status": "FAIL_SIM_CORRECTNESS",
+      "stderr_tail": "",
+      "task": "136-soft-voltage-clamp",
+      "violated_property_ids": [
+        "P_SOFT_LOWER_LIMIT",
+        "P_SOFT_UPPER_LIMIT"
+      ]
+    },
+    {
+      "checker_task_id": "v4_137_variable_gain_differential_amplifier",
+      "evas_engine_used": "evas2",
+      "family_id": "137",
+      "fault_class": "zero_stub_output",
+      "killed_behaviorally": true,
+      "mutation_id": "neg_001_zero",
+      "notes": [
+        "returncode=0",
+        "evas_engine=evas2",
+        "checked=267 max_error=0.80000"
+      ],
+      "returncode": 0,
+      "scores": {
+        "dut_compile": 1.0,
+        "sim_correct": 0.0,
+        "tb_compile": 1.0,
+        "weighted_total": 0.6667
+      },
+      "status": "FAIL_SIM_CORRECTNESS",
+      "stderr_tail": "",
+      "task": "137-variable-gain-differential-amplifier",
+      "violated_property_ids": [
+        "P_VARIABLE_GAIN_MIDPOINT"
+      ]
+    },
+    {
+      "checker_task_id": "v4_137_variable_gain_differential_amplifier",
+      "evas_engine_used": "evas2",
+      "family_id": "137",
+      "fault_class": "omission_or_incomplete_behavior",
+      "killed_behaviorally": true,
+      "mutation_id": "neg_002_missing_midpoint",
+      "notes": [
+        "returncode=0",
+        "evas_engine=evas2",
+        "checked=267 max_error=0.20000"
+      ],
+      "returncode": 0,
+      "scores": {
+        "dut_compile": 1.0,
+        "sim_correct": 0.0,
+        "tb_compile": 1.0,
+        "weighted_total": 0.6667
+      },
+      "status": "FAIL_SIM_CORRECTNESS",
+      "stderr_tail": "",
+      "task": "137-variable-gain-differential-amplifier",
+      "violated_property_ids": [
+        "P_VARIABLE_GAIN_MIDPOINT"
+      ]
+    },
+    {
+      "checker_task_id": "v4_137_variable_gain_differential_amplifier",
+      "evas_engine_used": "evas2",
+      "family_id": "137",
+      "fault_class": "single_ended_control",
+      "killed_behaviorally": true,
+      "mutation_id": "neg_003_single_ended_control",
+      "notes": [
+        "returncode=0",
+        "evas_engine=evas2",
+        "checked=267 max_error=0.18000"
+      ],
+      "returncode": 0,
+      "scores": {
+        "dut_compile": 1.0,
+        "sim_correct": 0.0,
+        "tb_compile": 1.0,
+        "weighted_total": 0.6667
+      },
+      "status": "FAIL_SIM_CORRECTNESS",
+      "stderr_tail": "",
+      "task": "137-variable-gain-differential-amplifier",
+      "violated_property_ids": [
+        "P_DIFFERENTIAL_SIGNAL_AND_CONTROL"
+      ]
+    },
+    {
+      "checker_task_id": "v4_137_variable_gain_differential_amplifier",
+      "evas_engine_used": "evas2",
+      "family_id": "137",
+      "fault_class": "metric_or_observable_fault",
+      "killed_behaviorally": true,
+      "mutation_id": "neg_004_no_clamp",
+      "notes": [
+        "returncode=0",
+        "evas_engine=evas2",
+        "checked=267 max_error=0.12000"
+      ],
+      "returncode": 0,
+      "scores": {
+        "dut_compile": 1.0,
+        "sim_correct": 0.0,
+        "tb_compile": 1.0,
+        "weighted_total": 0.6667
+      },
+      "status": "FAIL_SIM_CORRECTNESS",
+      "stderr_tail": "",
+      "task": "137-variable-gain-differential-amplifier",
+      "violated_property_ids": [
+        "P_OUTPUT_CLAMP"
+      ]
+    },
+    {
+      "checker_task_id": "v4_137_variable_gain_differential_amplifier",
+      "evas_engine_used": "evas2",
+      "family_id": "137",
+      "fault_class": "metric_or_observable_fault",
+      "killed_behaviorally": true,
+      "mutation_id": "neg_005_metric_scale_low",
+      "notes": [
+        "returncode=0",
+        "evas_engine=evas2",
+        "checked=267 max_error=0.46400"
+      ],
+      "returncode": 0,
+      "scores": {
+        "dut_compile": 1.0,
+        "sim_correct": 0.0,
+        "tb_compile": 1.0,
+        "weighted_total": 0.6667
+      },
+      "status": "FAIL_SIM_CORRECTNESS",
+      "stderr_tail": "",
+      "task": "137-variable-gain-differential-amplifier",
+      "violated_property_ids": [
+        "P_VARIABLE_GAIN_MIDPOINT"
+      ]
+    },
+    {
+      "checker_task_id": "v4_138_voltage_controlled_gain_amplifier",
+      "evas_engine_used": "evas2",
+      "family_id": "138",
+      "fault_class": "zero_stub_output",
+      "killed_behaviorally": true,
+      "mutation_id": "neg_001_zero",
+      "notes": [
+        "returncode=0",
+        "evas_engine=evas2",
+        "checked=267 max_error=0.90000"
+      ],
+      "returncode": 0,
+      "scores": {
+        "dut_compile": 1.0,
+        "sim_correct": 0.0,
+        "tb_compile": 1.0,
+        "weighted_total": 0.6667
+      },
+      "status": "FAIL_SIM_CORRECTNESS",
+      "stderr_tail": "",
+      "task": "138-voltage-controlled-gain-amplifier",
+      "violated_property_ids": [
+        "P_INPUT_OFFSET_AND_GAIN"
+      ]
+    },
+    {
+      "checker_task_id": "v4_138_voltage_controlled_gain_amplifier",
+      "evas_engine_used": "evas2",
+      "family_id": "138",
+      "fault_class": "threshold_or_boundary_fault",
+      "killed_behaviorally": true,
+      "mutation_id": "neg_002_missing_input_offset",
+      "notes": [
+        "returncode=0",
+        "evas_engine=evas2",
+        "checked=267 max_error=0.07500"
+      ],
+      "returncode": 0,
+      "scores": {
+        "dut_compile": 1.0,
+        "sim_correct": 0.0,
+        "tb_compile": 1.0,
+        "weighted_total": 0.6667
+      },
+      "status": "FAIL_SIM_CORRECTNESS",
+      "stderr_tail": "",
+      "task": "138-voltage-controlled-gain-amplifier",
+      "violated_property_ids": [
+        "P_INPUT_OFFSET_AND_GAIN"
+      ]
+    },
+    {
+      "checker_task_id": "v4_138_voltage_controlled_gain_amplifier",
+      "evas_engine_used": "evas2",
+      "family_id": "138",
+      "fault_class": "single_ended_control",
+      "killed_behaviorally": true,
+      "mutation_id": "neg_003_single_ended_control",
+      "notes": [
+        "returncode=0",
+        "evas_engine=evas2",
+        "checked=267 max_error=0.16875"
+      ],
+      "returncode": 0,
+      "scores": {
+        "dut_compile": 1.0,
+        "sim_correct": 0.0,
+        "tb_compile": 1.0,
+        "weighted_total": 0.6667
+      },
+      "status": "FAIL_SIM_CORRECTNESS",
+      "stderr_tail": "",
+      "task": "138-voltage-controlled-gain-amplifier",
+      "violated_property_ids": [
+        "P_DIFFERENTIAL_CONTROL"
+      ]
+    },
+    {
+      "checker_task_id": "v4_138_voltage_controlled_gain_amplifier",
+      "evas_engine_used": "evas2",
+      "family_id": "138",
+      "fault_class": "omission_or_incomplete_behavior",
+      "killed_behaviorally": true,
+      "mutation_id": "neg_004_no_clamp",
+      "notes": [
+        "returncode=0",
+        "evas_engine=evas2",
+        "checked=267 max_error=0.95000"
+      ],
+      "returncode": 0,
+      "scores": {
+        "dut_compile": 1.0,
+        "sim_correct": 0.0,
+        "tb_compile": 1.0,
+        "weighted_total": 0.6667
+      },
+      "status": "FAIL_SIM_CORRECTNESS",
+      "stderr_tail": "",
+      "task": "138-voltage-controlled-gain-amplifier",
+      "violated_property_ids": [
+        "P_UNIPOLAR_OUTPUT_CLAMP"
+      ]
+    },
+    {
+      "checker_task_id": "v4_138_voltage_controlled_gain_amplifier",
+      "evas_engine_used": "evas2",
+      "family_id": "138",
+      "fault_class": "metric_or_observable_fault",
+      "killed_behaviorally": true,
+      "mutation_id": "neg_005_metric_scale_low",
+      "notes": [
+        "returncode=0",
+        "evas_engine=evas2",
+        "checked=267 max_error=0.52200"
+      ],
+      "returncode": 0,
+      "scores": {
+        "dut_compile": 1.0,
+        "sim_correct": 0.0,
+        "tb_compile": 1.0,
+        "weighted_total": 0.6667
+      },
+      "status": "FAIL_SIM_CORRECTNESS",
+      "stderr_tail": "",
+      "task": "138-voltage-controlled-gain-amplifier",
+      "violated_property_ids": [
+        "P_INPUT_OFFSET_AND_GAIN"
+      ]
+    },
+    {
+      "checker_task_id": "v4_139_ideal_differential_opamp",
+      "evas_engine_used": "evas2",
+      "family_id": "139",
+      "fault_class": "zero_stub_output",
+      "killed_behaviorally": true,
+      "mutation_id": "neg_001_zero",
+      "notes": [
+        "returncode=0",
+        "evas_engine=evas2",
+        "trace_contract=row_required_set",
+        "checked=267 max_error=0.90000 max_cm_error=0.50000"
+      ],
+      "returncode": 0,
+      "scores": {
+        "dut_compile": 1.0,
+        "sim_correct": 0.0,
+        "tb_compile": 1.0,
+        "weighted_total": 0.6667
+      },
+      "status": "FAIL_SIM_CORRECTNESS",
+      "stderr_tail": "",
+      "task": "139-ideal-differential-opamp",
+      "violated_property_ids": [
+        "P_DIFFERENTIAL_GAIN_FOUR",
+        "P_FIXED_COMMON_MODE"
+      ]
+    },
+    {
+      "checker_task_id": "v4_139_ideal_differential_opamp",
+      "evas_engine_used": "evas2",
+      "family_id": "139",
+      "fault_class": "metric_or_observable_fault",
+      "killed_behaviorally": true,
+      "mutation_id": "neg_002_half_gain",
+      "notes": [
+        "returncode=0",
+        "evas_engine=evas2",
+        "trace_contract=row_required_set",
+        "checked=267 max_error=0.20000 max_cm_error=0.00000"
+      ],
+      "returncode": 0,
+      "scores": {
+        "dut_compile": 1.0,
+        "sim_correct": 0.0,
+        "tb_compile": 1.0,
+        "weighted_total": 0.6667
+      },
+      "status": "FAIL_SIM_CORRECTNESS",
+      "stderr_tail": "",
+      "task": "139-ideal-differential-opamp",
+      "violated_property_ids": [
+        "P_DIFFERENTIAL_GAIN_FOUR"
+      ]
+    },
+    {
+      "checker_task_id": "v4_139_ideal_differential_opamp",
+      "evas_engine_used": "evas2",
+      "family_id": "139",
+      "fault_class": "polarity_or_direction_error",
+      "killed_behaviorally": true,
+      "mutation_id": "neg_003_inverted_polarity",
+      "notes": [
+        "returncode=0",
+        "evas_engine=evas2",
+        "trace_contract=row_required_set",
+        "checked=267 max_error=0.80000 max_cm_error=0.00000"
+      ],
+      "returncode": 0,
+      "scores": {
+        "dut_compile": 1.0,
+        "sim_correct": 0.0,
+        "tb_compile": 1.0,
+        "weighted_total": 0.6667
+      },
+      "status": "FAIL_SIM_CORRECTNESS",
+      "stderr_tail": "",
+      "task": "139-ideal-differential-opamp",
+      "violated_property_ids": [
+        "P_OUTPUT_POLARITY"
+      ]
+    },
+    {
+      "checker_task_id": "v4_139_ideal_differential_opamp",
+      "evas_engine_used": "evas2",
+      "family_id": "139",
+      "fault_class": "zero_stub_output",
+      "killed_behaviorally": true,
+      "mutation_id": "neg_004_wrong_common_mode",
+      "notes": [
+        "returncode=0",
+        "evas_engine=evas2",
+        "trace_contract=row_required_set",
+        "checked=267 max_error=0.50000 max_cm_error=0.50000"
+      ],
+      "returncode": 0,
+      "scores": {
+        "dut_compile": 1.0,
+        "sim_correct": 0.0,
+        "tb_compile": 1.0,
+        "weighted_total": 0.6667
+      },
+      "status": "FAIL_SIM_CORRECTNESS",
+      "stderr_tail": "",
+      "task": "139-ideal-differential-opamp",
+      "violated_property_ids": [
+        "P_FIXED_COMMON_MODE"
+      ]
+    },
+    {
+      "checker_task_id": "v4_139_ideal_differential_opamp",
+      "evas_engine_used": "evas2",
+      "family_id": "139",
+      "fault_class": "metric_or_observable_fault",
+      "killed_behaviorally": true,
+      "mutation_id": "neg_005_metric_scale_low",
+      "notes": [
+        "returncode=0",
+        "evas_engine=evas2",
+        "trace_contract=row_required_set",
+        "checked=267 max_error=0.52200 max_cm_error=0.29000"
+      ],
+      "returncode": 0,
+      "scores": {
+        "dut_compile": 1.0,
+        "sim_correct": 0.0,
+        "tb_compile": 1.0,
+        "weighted_total": 0.6667
+      },
+      "status": "FAIL_SIM_CORRECTNESS",
+      "stderr_tail": "",
+      "task": "139-ideal-differential-opamp",
+      "violated_property_ids": [
+        "P_DIFFERENTIAL_GAIN_FOUR"
+      ]
+    },
+    {
+      "checker_task_id": "v4_140_rs_latch_voltage",
+      "evas_engine_used": "evas2",
+      "family_id": "140",
+      "fault_class": "zero_stub_output",
+      "killed_behaviorally": true,
+      "mutation_id": "neg_001_zero",
+      "notes": [
+        "returncode=0",
+        "evas_engine=evas2",
+        "trace_contract=row_required_set",
+        "checked=271 max_error=0.90000 modes=['hold_high', 'hold_low', 'reset', 'set']; P_LOGIC_THRESHOLDS_OUTPUT_AMPLITUDE mismatch_count=271; P_SET_RESET_PRIORITY mismatch_count=55; P_HOLD_STATE mismatch_count=216; P_QBAR_COMPLEMENT mismatch_count=271"
+      ],
+      "returncode": 0,
+      "scores": {
+        "dut_compile": 1.0,
+        "sim_correct": 0.0,
+        "tb_compile": 1.0,
+        "weighted_total": 0.6667
+      },
+      "status": "FAIL_SIM_CORRECTNESS",
+      "stderr_tail": "",
+      "task": "140-rs-latch-voltage",
+      "violated_property_ids": [
+        "P_SET_RESET_PRIORITY"
+      ]
+    },
+    {
+      "checker_task_id": "v4_140_rs_latch_voltage",
+      "evas_engine_used": "evas2",
+      "family_id": "140",
+      "fault_class": "omission_or_incomplete_behavior",
+      "killed_behaviorally": true,
+      "mutation_id": "neg_002_no_hold",
+      "notes": [
+        "returncode=0",
+        "evas_engine=evas2",
+        "trace_contract=row_required_set",
+        "checked=271 max_error=0.90000 modes=['hold_high', 'hold_low', 'reset', 'set']; P_LOGIC_THRESHOLDS_OUTPUT_AMPLITUDE mismatch_count=121; P_SET_RESET_PRIORITY mismatch_count=0; P_HOLD_STATE mismatch_count=121; P_QBAR_COMPLEMENT mismatch_count=0"
+      ],
+      "returncode": 0,
+      "scores": {
+        "dut_compile": 1.0,
+        "sim_correct": 0.0,
+        "tb_compile": 1.0,
+        "weighted_total": 0.6667
+      },
+      "status": "FAIL_SIM_CORRECTNESS",
+      "stderr_tail": "",
+      "task": "140-rs-latch-voltage",
+      "violated_property_ids": [
+        "P_HOLD_STATE"
+      ]
+    },
+    {
+      "checker_task_id": "v4_140_rs_latch_voltage",
+      "evas_engine_used": "evas2",
+      "family_id": "140",
+      "fault_class": "polarity_or_direction_error",
+      "killed_behaviorally": true,
+      "mutation_id": "neg_003_swapped_set_reset",
+      "notes": [
+        "returncode=0",
+        "evas_engine=evas2",
+        "trace_contract=row_required_set",
+        "checked=271 max_error=0.90000 modes=['hold_high', 'hold_low', 'reset', 'set']; P_LOGIC_THRESHOLDS_OUTPUT_AMPLITUDE mismatch_count=234; P_SET_RESET_PRIORITY mismatch_count=55; P_HOLD_STATE mismatch_count=179; P_QBAR_COMPLEMENT mismatch_count=0"
+      ],
+      "returncode": 0,
+      "scores": {
+        "dut_compile": 1.0,
+        "sim_correct": 0.0,
+        "tb_compile": 1.0,
+        "weighted_total": 0.6667
+      },
+      "status": "FAIL_SIM_CORRECTNESS",
+      "stderr_tail": "",
+      "task": "140-rs-latch-voltage",
+      "violated_property_ids": [
+        "P_SET_RESET_PRIORITY"
+      ]
+    },
+    {
+      "checker_task_id": "v4_140_rs_latch_voltage",
+      "evas_engine_used": "evas2",
+      "family_id": "140",
+      "fault_class": "qbar_not_complement",
+      "killed_behaviorally": true,
+      "mutation_id": "neg_004_qbar_not_complement",
+      "notes": [
+        "returncode=0",
+        "evas_engine=evas2",
+        "trace_contract=row_required_set",
+        "checked=271 max_error=0.90000 modes=['hold_high', 'hold_low', 'reset', 'set']; P_LOGIC_THRESHOLDS_OUTPUT_AMPLITUDE mismatch_count=271; P_SET_RESET_PRIORITY mismatch_count=55; P_HOLD_STATE mismatch_count=216; P_QBAR_COMPLEMENT mismatch_count=271"
+      ],
+      "returncode": 0,
+      "scores": {
+        "dut_compile": 1.0,
+        "sim_correct": 0.0,
+        "tb_compile": 1.0,
+        "weighted_total": 0.6667
+      },
+      "status": "FAIL_SIM_CORRECTNESS",
+      "stderr_tail": "",
+      "task": "140-rs-latch-voltage",
+      "violated_property_ids": [
+        "P_QBAR_COMPLEMENT"
+      ]
+    },
+    {
+      "checker_task_id": "v4_140_rs_latch_voltage",
+      "evas_engine_used": "evas2",
+      "family_id": "140",
+      "fault_class": "metric_or_observable_fault",
+      "killed_behaviorally": true,
+      "mutation_id": "neg_005_metric_scale_low",
+      "notes": [
+        "returncode=0",
+        "evas_engine=evas2",
+        "trace_contract=row_required_set",
+        "checked=271 max_error=0.52200 modes=['hold_high', 'hold_low', 'reset', 'set']; P_LOGIC_THRESHOLDS_OUTPUT_AMPLITUDE mismatch_count=271; P_SET_RESET_PRIORITY mismatch_count=55; P_HOLD_STATE mismatch_count=216; P_QBAR_COMPLEMENT mismatch_count=271"
+      ],
+      "returncode": 0,
+      "scores": {
+        "dut_compile": 1.0,
+        "sim_correct": 0.0,
+        "tb_compile": 1.0,
+        "weighted_total": 0.6667
+      },
+      "status": "FAIL_SIM_CORRECTNESS",
+      "stderr_tail": "",
+      "task": "140-rs-latch-voltage",
+      "violated_property_ids": [
+        "P_LOGIC_THRESHOLDS_OUTPUT_AMPLITUDE"
+      ]
+    }
+  ],
+  "schema_version": "v4-issue-291-evas2-mutation-kill-smoke-v1",
+  "source": "benchmark-vabench-release-v4/provenance/dut-base-v3-exact-five-hash-bound-v2",
+  "status": "PASS"
+}

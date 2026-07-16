@@ -1,0 +1,236 @@
+{
+  "checked_families": [
+    "131",
+    "132",
+    "133",
+    "134",
+    "135",
+    "136",
+    "137",
+    "138",
+    "139",
+    "140"
+  ],
+  "evas_engine_used": "evas2",
+  "failure_count": 0,
+  "python_fallback_evidence_claimed": false,
+  "runs": [
+    {
+      "checker_task_id": "v4_131_limiting_differential_amplifier",
+      "evas_engine_used": "evas2",
+      "family_id": "131",
+      "notes": [
+        "returncode=0",
+        "evas_engine=evas2",
+        "checked=267 max_error=0.00000 regions=['high', 'linear', 'low']"
+      ],
+      "returncode": 0,
+      "scores": {
+        "dut_compile": 1.0,
+        "sim_correct": 1.0,
+        "tb_compile": 1.0,
+        "weighted_total": 1.0
+      },
+      "status": "PASS",
+      "stderr_tail": "",
+      "task": "131-limiting-differential-amplifier",
+      "task_id": "v4-131"
+    },
+    {
+      "checker_task_id": "v4_132_analog_multiplier",
+      "evas_engine_used": "evas2",
+      "family_id": "132",
+      "notes": [
+        "returncode=0",
+        "evas_engine=evas2",
+        "trace_contract=row_required_set",
+        "checked=241 max_error=0.00000"
+      ],
+      "returncode": 0,
+      "scores": {
+        "dut_compile": 1.0,
+        "sim_correct": 1.0,
+        "tb_compile": 1.0,
+        "weighted_total": 1.0
+      },
+      "status": "PASS",
+      "stderr_tail": "",
+      "task": "132-analog-multiplier",
+      "task_id": "v4-132"
+    },
+    {
+      "checker_task_id": "v4_133_three_way_threshold_mux",
+      "evas_engine_used": "evas2",
+      "family_id": "133",
+      "notes": [
+        "returncode=0",
+        "evas_engine=evas2",
+        "trace_contract=row_required_set",
+        "checked=241 max_error=0.00000 regions=low,mid,high"
+      ],
+      "returncode": 0,
+      "scores": {
+        "dut_compile": 1.0,
+        "sim_correct": 1.0,
+        "tb_compile": 1.0,
+        "weighted_total": 1.0
+      },
+      "status": "PASS",
+      "stderr_tail": "",
+      "task": "133-three-way-threshold-mux",
+      "task_id": "v4-133"
+    },
+    {
+      "checker_task_id": "v4_134_differential_amplifier_core",
+      "evas_engine_used": "evas2",
+      "family_id": "134",
+      "notes": [
+        "returncode=0",
+        "evas_engine=evas2",
+        "checked=1597 range=-0.200:0.200 rise=True fall=True max_err=0.0000"
+      ],
+      "returncode": 0,
+      "scores": {
+        "dut_compile": 1.0,
+        "sim_correct": 1.0,
+        "tb_compile": 1.0,
+        "weighted_total": 1.0
+      },
+      "status": "PASS",
+      "stderr_tail": "",
+      "task": "134-differential-amplifier-core",
+      "task_id": "v4-134"
+    },
+    {
+      "checker_task_id": "v4_135_logarithmic_amplifier",
+      "evas_engine_used": "evas2",
+      "family_id": "135",
+      "notes": [
+        "returncode=0",
+        "evas_engine=evas2",
+        "checked=267 max_error=0.00000 regions=['floored', 'negative', 'positive']"
+      ],
+      "returncode": 0,
+      "scores": {
+        "dut_compile": 1.0,
+        "sim_correct": 1.0,
+        "tb_compile": 1.0,
+        "weighted_total": 1.0
+      },
+      "status": "PASS",
+      "stderr_tail": "",
+      "task": "135-logarithmic-amplifier",
+      "task_id": "v4-135"
+    },
+    {
+      "checker_task_id": "v4_136_soft_voltage_clamp",
+      "evas_engine_used": "evas2",
+      "family_id": "136",
+      "notes": [
+        "returncode=0",
+        "evas_engine=evas2",
+        "checked=267 max_error=0.00000 regions=['high', 'linear', 'low']"
+      ],
+      "returncode": 0,
+      "scores": {
+        "dut_compile": 1.0,
+        "sim_correct": 1.0,
+        "tb_compile": 1.0,
+        "weighted_total": 1.0
+      },
+      "status": "PASS",
+      "stderr_tail": "",
+      "task": "136-soft-voltage-clamp",
+      "task_id": "v4-136"
+    },
+    {
+      "checker_task_id": "v4_137_variable_gain_differential_amplifier",
+      "evas_engine_used": "evas2",
+      "family_id": "137",
+      "notes": [
+        "returncode=0",
+        "evas_engine=evas2",
+        "checked=267 max_error=0.00000 regions=['high', 'linear', 'low']"
+      ],
+      "returncode": 0,
+      "scores": {
+        "dut_compile": 1.0,
+        "sim_correct": 1.0,
+        "tb_compile": 1.0,
+        "weighted_total": 1.0
+      },
+      "status": "PASS",
+      "stderr_tail": "",
+      "task": "137-variable-gain-differential-amplifier",
+      "task_id": "v4-137"
+    },
+    {
+      "checker_task_id": "v4_138_voltage_controlled_gain_amplifier",
+      "evas_engine_used": "evas2",
+      "family_id": "138",
+      "notes": [
+        "returncode=0",
+        "evas_engine=evas2",
+        "checked=267 max_error=0.00000 regions=['high', 'linear', 'low']"
+      ],
+      "returncode": 0,
+      "scores": {
+        "dut_compile": 1.0,
+        "sim_correct": 1.0,
+        "tb_compile": 1.0,
+        "weighted_total": 1.0
+      },
+      "status": "PASS",
+      "stderr_tail": "",
+      "task": "138-voltage-controlled-gain-amplifier",
+      "task_id": "v4-138"
+    },
+    {
+      "checker_task_id": "v4_139_ideal_differential_opamp",
+      "evas_engine_used": "evas2",
+      "family_id": "139",
+      "notes": [
+        "returncode=0",
+        "evas_engine=evas2",
+        "trace_contract=row_required_set",
+        "checked=267 max_error=0.00000 max_cm_error=0.00000"
+      ],
+      "returncode": 0,
+      "scores": {
+        "dut_compile": 1.0,
+        "sim_correct": 1.0,
+        "tb_compile": 1.0,
+        "weighted_total": 1.0
+      },
+      "status": "PASS",
+      "stderr_tail": "",
+      "task": "139-ideal-differential-opamp",
+      "task_id": "v4-139"
+    },
+    {
+      "checker_task_id": "v4_140_rs_latch_voltage",
+      "evas_engine_used": "evas2",
+      "family_id": "140",
+      "notes": [
+        "returncode=0",
+        "evas_engine=evas2",
+        "trace_contract=row_required_set",
+        "checked=271 max_error=0.00000 modes=['hold_high', 'hold_low', 'reset', 'set']; P_LOGIC_THRESHOLDS_OUTPUT_AMPLITUDE mismatch_count=0; P_SET_RESET_PRIORITY mismatch_count=0; P_HOLD_STATE mismatch_count=0; P_QBAR_COMPLEMENT mismatch_count=0"
+      ],
+      "returncode": 0,
+      "scores": {
+        "dut_compile": 1.0,
+        "sim_correct": 1.0,
+        "tb_compile": 1.0,
+        "weighted_total": 1.0
+      },
+      "status": "PASS",
+      "stderr_tail": "",
+      "task": "140-rs-latch-voltage",
+      "task_id": "v4-140"
+    }
+  ],
+  "schema_version": "v4-issue-291-evas2-score-gold-smoke-v1",
+  "source": "benchmark-vabench-release-v4/provenance/dut-base-v3-exact-five-hash-bound-v2",
+  "status": "PASS"
+}
