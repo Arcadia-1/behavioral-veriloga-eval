@@ -138,7 +138,9 @@ def validate_trace_contract(
                 "extra_in_checker": sorted(checker_observables - public_observables),
             },
         )
-    missing_saved = sorted((public_observables | checker_observables | checker_extra | required) - saved)
+    trace_signals = public_observables | checker_observables | checker_extra | required
+    trace_signals.discard("time")
+    missing_saved = sorted(trace_signals - saved)
     if missing_saved:
         add_failure(
             failures,

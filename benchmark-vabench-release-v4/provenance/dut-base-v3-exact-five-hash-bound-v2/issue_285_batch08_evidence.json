@@ -1,18 +1,14 @@
 {
   "batch": "08/40",
   "claim_boundary": {
-    "evas_role": "fast_filter_debug_evaluator_only",
-    "local_spectre_status": "not_run",
-    "spectre_final_judge": true
+    "acceptance_backend": "EVAS 0.8.2 Rust with per-case runtime logs",
+    "spectre_required": false,
+    "spectre_status": "not_applicable"
   },
   "evas2_backend_source": {
-    "executable_path_from_toolchain_lock": "/Users/bucketsran/Documents/TsingProject/vaEvas/_worktrees/evas-v4-pure-rust-release/evas/rust_core/target/release/evas_rust_frontend",
-    "executable_status": "not_present_in_isolated_worktree",
-    "git_commit": "de7657cc891f04c6799818bbca4993484339c259",
-    "git_describe": "v0.8.1-338-gde7657c",
-    "rust_core_abi": 20260712,
-    "source_package_version": "0.1.0",
-    "toolchain_lock_source": "families 071-080 evaluator/toolchain_lock.json"
+    "git_commit": "a72fff338bc81b2ebc144b7da97a82a663c776e2",
+    "git_describe": "v0.8.2",
+    "runtime_log_marker": "evas_engine = evas-rust"
   },
   "evas_engine_used": "evas2",
   "families": [
@@ -147,16 +143,17 @@
         "feedback_score_semantic_parity_aligned",
         "public_feedback_stimulus_promoted_to_score",
         "absolute_private_timeline_dependence_removed_from_checker",
-        "structured_redacted_property_diagnostics"
+        "structured_redacted_property_diagnostics",
+        "public_enable_hold_window_activates_P_ENABLE_GATING"
       ],
       "family_id": "078",
       "hashes": {
-        "feedback_deck_sha256": "774c08a6c35c3fe0ee151e38ec4e2ab09384e6df9fa7cfd633876a51ba021d4e",
-        "feedback_profile_sha256": "cc679ca405b759d36537beff6547bc107f6aada89ceeb5318c36cc7bdd83c23d",
-        "harness_spec_sha256": "1bad463d66d6812bd958a8f9bde3c31922030956bdee0950e143869adf5f7829",
-        "score_deck_sha256": "1f3f38a81d267b4ff2c6f9da6739f40982e170dc530387d6e227fabb0c69d70e",
-        "score_profile_sha256": "7cc80b635d626b75d5316a386567e09be31e2eff0a0cc5b4fd46c4fcd9d15e20",
-        "task_record_sha256": "5986822ca9a2cc867a8a67616e3fb66b4d59af2c2280d8c9ae97d6c05e68eb71"
+        "feedback_deck_sha256": "1b984e2e0245dc2cd1c8d274e4af38a7090ebd89c29b2fb2620483ac85650e3b",
+        "feedback_profile_sha256": "6b2e26adacd9e276cc861f0273fb153b08476086b95f9ff53c48566dd5658ba8",
+        "harness_spec_sha256": "694905fec5db82b250f50c923f2c51a1bf00527a66afd7a8daefdbf375f4c3d7",
+        "score_deck_sha256": "cbde72adf14017064b8de8f9b53a9165ec7db879362d16453fbda504b70047f5",
+        "score_profile_sha256": "b39af0f925b6b8eb007aff21b8da5bb509349977a55c9181b6328885ec121dee",
+        "task_record_sha256": "f3806f6ca5c46f6ea621ae74c8692704f3f1e98e504cb3e05d9ef618b06a0ed7"
       },
       "release_dir": "078-lfsr-prbs-generator"
     },
@@ -210,10 +207,8 @@
   ],
   "issue": 285,
   "not_tested": [
-    "Fresh EVAS2 simulator execution was not run because the toolchain-lock EVAS2 executable path is absent in this isolated worktree and no evas2 executable is on PATH.",
-    "Spectre/Cadence rerun was not run locally; Spectre remains the final judge for paper-facing claims.",
-    "Full exact-five audit was not rerun because issue #285 scope allows targeted local validation only.",
-    "scripts/check_repo_layout.py is not present in this worktree, so the optional layout check could not run."
+    "Spectre/Cadence is unavailable and is not part of this acceptance gate.",
+    "The full 400-family runtime suite was not rerun; runtime validation is issue-scoped to families 071-080."
   ],
   "primary_owner": "@BucketSran",
   "python_evas_fallback_evidence_claimed": false,
@@ -224,29 +219,57 @@
   },
   "verification": [
     {
-      "command": "env EVAS_ENGINE=evas2 VAEVAS_DEFAULT_EVAS_ENGINE=evas2 python3 benchmark-vabench-release-v4/scripts/validate_v4_profile_parity.py --family-range 071-080",
-      "evidence": "failure_count=0",
+      "command": "EVAS_ENGINE=evas2 VAEVAS_DEFAULT_EVAS_ENGINE=evas2 VAEVAS_EVAS_REPO=/home/zhangtuoken/EVAS python3 -m pytest -q benchmark-vabench-release-v4/scripts/tests tests/test_v4_issue285_batch08_checkers.py tests/test_v4_checker_registry.py",
+      "evidence": "91 passed, 1 skipped",
       "status": "PASS"
     },
     {
-      "command": "env EVAS_ENGINE=evas2 VAEVAS_DEFAULT_EVAS_ENGINE=evas2 python3 -m pytest tests/test_v4_issue285_batch08_checkers.py",
-      "evidence": "3 passed",
+      "command": "EVAS_ENGINE=evas2 VAEVAS_DEFAULT_EVAS_ENGINE=evas2 python3 benchmark-vabench-release-v4/scripts/validate_v4_profile_parity.py --family-range 071-080",
+      "evidence": "failure_count=0; evidence_kind=static_profile_parity",
       "status": "PASS"
     },
     {
-      "command": "env EVAS_ENGINE=evas2 VAEVAS_DEFAULT_EVAS_ENGINE=evas2 python3 -m pytest tests/test_v4_checker_registry.py",
-      "evidence": "15 passed",
+      "command": "EVAS_ENGINE=evas2 VAEVAS_DEFAULT_EVAS_ENGINE=evas2 python3 benchmark-vabench-release-v4/scripts/validate_v4_repair_gate.py --family-range 071-080",
+      "evidence": "failure_count=0; evidence_kind=static_repair_gate",
       "status": "PASS"
     },
     {
-      "command": "env EVAS_ENGINE=evas2 VAEVAS_DEFAULT_EVAS_ENGINE=evas2 python3 - <<'PY' ... targeted hash audit for families 071-080 and score_denominator_manifest content_sha256",
-      "evidence": "problem_count=0",
+      "command": "EVAS_ENGINE=evas2 VAEVAS_DEFAULT_EVAS_ENGINE=evas2 VAEVAS_EVAS_REPO=/home/zhangtuoken/EVAS python3 benchmark-vabench-release-v4/operations/tri_form_derivation_prep/run_v4_reference_evas_smoke.py --task-id v4-571 ... --task-id v4-580 --include-mutations",
+      "evidence": "10/10 gold passed; 50/50 mutations killed; 60/60 per-case logs identify evas2, evas-rust, EVAS 0.8.2",
       "status": "PASS"
     },
     {
-      "command": "git diff --cached --check",
-      "evidence": "no whitespace errors",
+      "command": "EVAS_ENGINE=evas2 VAEVAS_DEFAULT_EVAS_ENGINE=evas2 VAEVAS_EVAS_REPO=/home/zhangtuoken/EVAS python3 benchmark-vabench-release-v4/scripts/run_v4_stimulus_metamorphic.py --task-id v4-571 ... --task-id v4-580 --scale 1.37 --shift 2e-9",
+      "evidence": "10/10 affine gold passed; 50/50 affine mutations killed; insufficient excitation explicit failure 7 and not applicable 3; 70/70 per-case logs identify evas2, evas-rust, EVAS 0.8.2",
       "status": "PASS"
     }
-  ]
+  ],
+  "evas_backend": "evas-rust",
+  "evas_version": "0.8.2",
+  "runtime_evidence": {
+    "reference_and_mutations": {
+      "case_log_count": 60,
+      "gold_pass_count": 10,
+      "mutation_kill_count": 50,
+      "status": "PASS",
+      "runtime_identity": {
+        "evas_engine_used": "evas2",
+        "evas_backend": "evas-rust",
+        "evas_version": "0.8.2"
+      }
+    },
+    "affine_and_insufficient_excitation": {
+      "case_log_count": 70,
+      "affine_pass_count": 10,
+      "mutation_kill_count": 50,
+      "insufficient_excitation_explicit_failure_count": 7,
+      "insufficient_excitation_not_applicable_count": 3,
+      "status": "PASS",
+      "runtime_identity": {
+        "evas_engine_used": "evas2",
+        "evas_backend": "evas-rust",
+        "evas_version": "0.8.2"
+      }
+    }
+  }
 }

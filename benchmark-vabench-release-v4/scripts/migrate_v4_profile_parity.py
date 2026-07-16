@@ -134,9 +134,10 @@ def migrate_family(source: Path, family: str) -> dict[str, Any]:
         "feedback": {"simulatorOptions": {"evas_profile": "balanced"}},
         "score": {},
     }
-    spec.setdefault("migration", {}).setdefault("notes", []).append(
-        "feedback deck is the canonical stimulus; score is generated with identical semantics"
-    )
+    note = "feedback deck is the canonical stimulus; score is generated with identical semantics"
+    notes = spec.setdefault("migration", {}).setdefault("notes", [])
+    if note not in notes:
+        notes.append(note)
     write_json(spec_path, spec)
     spec_sha = file_sha(spec_path)
     rendered: dict[str, str] = {}
