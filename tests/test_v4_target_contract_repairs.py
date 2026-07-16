@@ -298,6 +298,32 @@ def test_affine_calibration_exposes_sampled_update_and_exact_formula() -> None:
         ]
 
 
+def test_reacquire_lock_exposes_count_and_metric_encoding() -> None:
+    task_names = (
+        "291-event-reacquire-lock-detector",
+        "791-event-reacquire-lock-detector-testbench",
+        "1291-event-reacquire-lock-detector-bugfix",
+    )
+    for task_name in task_names:
+        task = _task(task_name)
+        instruction = (task / "public" / "instruction.md").read_text()
+        assert "phase_error" in instruction
+        assert "metric_fullscale" in instruction
+        assert "phase_error / metric_fullscale" in instruction
+        assert "good_count / lock_count" in instruction
+
+        properties = {
+            item["id"]: item["observable_contract"]
+            for item in _public_contract(task_name)["properties"]
+        }
+        assert "phase_error <= lock_window" in properties[
+            "P_REQUIRE_CONSECUTIVE_IN_WINDOW_FEEDBACK_EDGE"
+        ]
+        assert "good_count / lock_count" in properties[
+            "P_EXPOSE_PHASE_METRIC_AND_STATE_MON"
+        ]
+
+
 def test_repaired_testbench_bindings_match_reference_trace_names() -> None:
     expected = {
         "517-strongarm-style-latch-comparator-testbench": {
