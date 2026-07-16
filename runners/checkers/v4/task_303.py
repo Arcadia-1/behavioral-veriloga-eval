@@ -6,6 +6,7 @@ from ..common.v4_topup import (
     _v4_topup_logic_high,
     _v4_topup_near,
 )
+from ..common.relative_events import active_start, first_disable
 
 def check_v4_303_differential_pair_gm_limiter(rows: list[dict[str, float]]) -> tuple[bool, str]:
     if not rows:
@@ -14,13 +15,15 @@ def check_v4_303_differential_pair_gm_limiter(rows: list[dict[str, float]]) -> t
     pos_seen = neg_seen = compressed_seen = disabled_clear = False
     gm_gain = 4.0
     diff_limit = 120e-3
+    activation = active_start(rows, enable="enable")
+    disable = first_disable(rows, "enable", activation)
     for row in rows:
         t = float(row["time"])
-        if t < 7e-9:
+        if t < activation:
             continue
         enabled = _v4_topup_logic_high(row, "enable")
         if not enabled:
-            if t > 52e-9 and _v4_topup_near(row["voutp"], 0.45, 0.08) and _v4_topup_near(row["voutn"], 0.45, 0.08) and row["gm_metric"] < 0.12 and row["limit_flag"] < 0.12:
+            if (disable is None or t >= disable) and _v4_topup_near(row["voutp"], 0.45, 0.08) and _v4_topup_near(row["voutn"], 0.45, 0.08) and row["gm_metric"] < 0.12 and row["limit_flag"] < 0.12:
                 disabled_clear = True
             continue
         diff = float(row["vinp"]) - float(row["vinn"])
@@ -54,10 +57,19 @@ def check_v4_303_differential_pair_gm_limiter(rows: list[dict[str, float]]) -> t
         and metric_errors <= max(16, checked // 20)
         and flag_errors <= max(24, checked // 12)
     )
+    diagnostics = {
+        "P_WHEN_DISABLED_DRIVE_BOTH_OUTPUTS_TO": int(not disabled_clear),
+        "P_WHEN_ENABLED_CONVERT_THE_SAMPLED_DIFFERENTIAL": int(checked < 20 or polarity_errors > max(14, checked // 30)),
+        "P_SCALE_SMALL_SIGNAL_OUTPUT_SEPARATION_BY": int(gain_errors > max(12, checked // 25)),
+        "P_DRIVE_GM_METRIC_AS_A_VOLTAGE": int(metric_errors > max(16, checked // 20)),
+        "P_ASSERT_LIMIT_FLAG_ONLY_WHEN_COMPRESSION": int(flag_errors > max(24, checked // 12)),
+        "P_USE_ONLY_VOLTAGE_DOMAIN_BEHAVIORAL_STATE": 0,
+    }
     return ok, (
         f"v4_303 checked={checked} pos={pos_seen} neg={neg_seen} compressed={compressed_seen} "
         f"disabled_clear={disabled_clear} polarity_errors={polarity_errors} gain_errors={gain_errors} "
-        f"metric_errors={metric_errors} flag_errors={flag_errors}"
+        f"metric_errors={metric_errors} flag_errors={flag_errors}; "
+        + "; ".join(f"{key} mismatch_count={value}" for key, value in diagnostics.items())
     )
 
 CHECKER_ID = "v4_303_differential_pair_gm_limiter"

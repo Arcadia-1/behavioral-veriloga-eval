@@ -7,13 +7,16 @@ from ..common.v4_topup import (
     _v4_topup_near,
     _v4_topup_span,
 )
+from ..common.relative_events import active_start, first_disable
 
 def check_v4_310_bootstrapped_sampler_charge_metric(rows: list[dict[str, float]]) -> tuple[bool, str]:
     if not rows:
         return False, "v4_1008 empty_trace"
-    active_rows = [row for row in rows if row["time"] > 8e-9 and _v4_topup_logic_high(row, "enable") and not _v4_topup_logic_high(row, "rst")]
+    activation = active_start(rows, enable="enable", reset="rst")
+    disable = first_disable(rows, "enable", activation)
+    active_rows = [row for row in rows if row["time"] >= activation and _v4_topup_logic_high(row, "enable") and not _v4_topup_logic_high(row, "rst")]
     disabled_clear = any(
-        row["time"] > 58e-9
+        disable is not None and row["time"] >= disable
         and not _v4_topup_logic_high(row, "enable")
         and _v4_topup_near(row["vhold"], 0.45, 0.08)
         and row["boot_metric"] < 0.15
@@ -41,11 +44,20 @@ def check_v4_310_bootstrapped_sampler_charge_metric(rows: list[dict[str, float]]
         and droop_seen
         and range_ok
     )
+    diagnostics = {
+        "P_ON_RESET_OR_WHEN_DISABLED_CLEAR": int(not disabled_clear),
+        "P_ON_EACH_RISING_CLK_EDGE_WHILE": int(not (high_input_hold_seen and low_input_hold_seen)),
+        "P_EXPOSE_A_BOOT_METRIC_THAT_INCREASES": int(not rail_metric_seen or not cm_metric_low_seen),
+        "P_BETWEEN_SAMPLES_HOLD_VHOLD_AND_APPLY": int(not (high_hold_seen and low_hold_seen)),
+        "P_ASSERT_DROOP_FLAG_WHEN_ACCUMULATED_HOLD": int(not droop_seen),
+        "P_USE_ONLY_VOLTAGE_DOMAIN_BEHAVIORAL_STATE": 0,
+    }
     return ok, (
         f"v4_310 active_rows={len(active_rows)} disabled_clear={disabled_clear} high_hold={high_hold_seen} "
         f"low_hold={low_hold_seen} high_input_hold={high_input_hold_seen} low_input_hold={low_input_hold_seen} "
         f"rail_metric={rail_metric_seen} cm_metric_low={cm_metric_low_seen} "
-        f"droop={droop_seen} range_ok={range_ok}"
+        f"droop={droop_seen} range_ok={range_ok}; "
+        + "; ".join(f"{key} mismatch_count={value}" for key, value in diagnostics.items())
     )
 
 CHECKER_ID = "v4_310_bootstrapped_sampler_charge_metric"

@@ -8,33 +8,30 @@ from ..common.v4_topup import (
     _v4_topup_near,
     _v4_topup_span,
 )
+from ..common.relative_events import active_start, latest_assertion, sample_after_event
 
 def check_v4_306_instrumentation_amplifier_offset_trim(rows: list[dict[str, float]]) -> tuple[bool, str]:
     if not rows:
         return False, "v4_1004 empty_trace"
-    def first_after(target_time: float) -> dict[str, float] | None:
-        for candidate in rows:
-            if float(candidate["time"]) >= target_time:
-                return candidate
-        return None
-
     checked = vout_errors = metric_errors = premature_ready = 0
     ready_seen = reset_clear = late_reset_clear = metric_dynamic = trim_response_seen = False
     trim_adapt = 0.0
     active_corr = 0.0
     update_count = 0
+    activation = active_start(rows, reset="rst", auxiliary="cal_en")
+    late_reset = latest_assertion(rows, "rst")
     previous = rows[0]
     for row in rows:
         if _v4_topup_logic_high(row, "rst"):
             if _v4_topup_near(row["vout"], 0.45, 0.08) and row["offset_metric"] < 0.15 and row["ready"] < 0.15:
                 reset_clear = True
-                late_reset_clear = late_reset_clear or row["time"] > 48e-9
+                late_reset_clear = late_reset_clear or (late_reset is not None and row["time"] >= late_reset)
     for row in rows[1:]:
         clk_rise = (not _v4_topup_logic_high(previous, "clk")) and _v4_topup_logic_high(row, "clk")
         previous = row
         if not clk_rise:
             continue
-        sample = first_after(float(row["time"]) + 1.0e-9)
+        sample = sample_after_event(rows, float(row["time"]), clock_signal="clk")
         if sample is None:
             continue
         if _v4_topup_logic_high(row, "rst"):
@@ -42,7 +39,7 @@ def check_v4_306_instrumentation_amplifier_offset_trim(rows: list[dict[str, floa
             active_corr = 0.0
             update_count = 0
             continue
-        if row["time"] < 7e-9:
+        if row["time"] < activation:
             if sample["ready"] > 0.45:
                 premature_ready += 1
             continue
@@ -85,10 +82,19 @@ def check_v4_306_instrumentation_amplifier_offset_trim(rows: list[dict[str, floa
         and vout_errors == 0
         and metric_errors == 0
     )
+    diagnostics = {
+        "P_ON_RESET_CLEAR_THE_TRIM_STATE": int(not reset_clear or not late_reset_clear),
+        "P_DECODE_TRIM_2_TRIM_0_AS": int(not trim_response_seen),
+        "P_WHILE_CAL_EN_IS_HIGH_UPDATE": int(checked < 8),
+        "P_DRIVE_VOUT_FROM_THE_CORRECTED_DIFFERENTIAL": int(vout_errors),
+        "P_EXPOSE_THE_ACTIVE_CORRECTION_ON_OFFSET": int(metric_errors or not metric_dynamic),
+        "P_USE_ONLY_VOLTAGE_DOMAIN_BEHAVIORAL_STATE": 0,
+    }
     return ok, (
         f"v4_306 checked={checked} reset_clear={reset_clear} late_reset_clear={late_reset_clear} ready_seen={ready_seen} "
         f"metric_dynamic={metric_dynamic} trim_response={trim_response_seen} "
-        f"premature_ready={premature_ready} vout_errors={vout_errors} metric_errors={metric_errors}"
+        f"premature_ready={premature_ready} vout_errors={vout_errors} metric_errors={metric_errors}; "
+        + "; ".join(f"{key} mismatch_count={value}" for key, value in diagnostics.items())
     )
 
 CHECKER_ID = "v4_306_instrumentation_amplifier_offset_trim"

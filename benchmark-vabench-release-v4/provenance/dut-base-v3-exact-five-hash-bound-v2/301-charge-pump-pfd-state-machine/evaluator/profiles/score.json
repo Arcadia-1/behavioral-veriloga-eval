@@ -1,28 +1,12 @@
 {
   "corners": [],
-  "deck_overrides": {
-    "analyses": [
-      "tran tran stop=1.0u maxstep=1n"
-    ],
-    "body_lines": [
-      "// Hidden testbench for charge_pump_pfd_state_machine.",
-      "// ref_fb_clk drives ref leading fb by 20 ns (both 5 MHz squares => period=200n):",
-      "// the detector state goes positive and vctrl ramps up.",
-      "",
-      "VDD (VDD 0) vsource dc=0.9 type=dc",
-      "VSS (VSS 0) vsource dc=0.0 type=dc",
-      "",
-      "XREF (VDD VSS ref fb) ref_fb_clk period=200n phase_lead=20n tedge=100p",
-      "XDUT (ref fb vctrl metric) charge_pump_pfd_state_machine",
-      ""
-    ]
-  },
+  "deck_overrides": {},
   "deterministic_seed": 0,
   "generated_from": {
     "script": "render_v4_harness.py",
-    "version": "v4-harness-renderer-v1"
+    "version": "v4-harness-renderer-v2"
   },
-  "harness_spec_sha256": "dc75f0b9849d5efde4e8f2136a933ff6f4ee31248a3e754f52ece74858e6d695",
+  "harness_spec_sha256": "d15cdaea8e997c65bc42c632841ddd5154d9940aad791457fd24334d760553a0",
   "parameters": {
     "maxstep": "100p",
     "stop_time": "100n"

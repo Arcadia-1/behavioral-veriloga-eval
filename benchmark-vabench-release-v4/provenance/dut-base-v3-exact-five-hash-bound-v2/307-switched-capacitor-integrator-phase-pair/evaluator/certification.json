@@ -2,16 +2,16 @@
   "checks": {
     "certified_negatives": {
       "count": 5,
-      "status": "pass"
+      "status": "pending_recertification"
     },
     "gold_bundle": {
       "artifact_gate": "pass",
-      "feedback_profile": "pass",
-      "score_profile": "pass"
+      "feedback_profile": "pending_recertification",
+      "score_profile": "pending_recertification"
     },
     "parity": {
       "evas_pass_spectre_fail_count": 0,
-      "status": "pass"
+      "status": "pending_recertification"
     },
     "public_properties": {
       "property_ids": [
@@ -27,8 +27,9 @@
   },
   "claim_boundary": {
     "completed_gate": "dut_base_gate2",
-    "next_gate": "canonical_suite_unification_pending",
+    "next_gate": "batch31_checker_profile_evas_spectre_recertification",
     "release_kind": "canonical_dut_base",
+    "repair_issue": "#308 (parent #277)",
     "tri_form_gate2_complete": false,
     "tri_form_gate3_complete": false
   },
@@ -138,12 +139,12 @@
     "task_inputs": {
       "checker_profile_sha256": "696602af322b94f3c42f373f24f75e76aa2e87ef29213eb2ad16b58b6fe155bd",
       "family_spec_sha256": "4ab51f60d890c1d178f6047977d8f3b5cf9ea362c48c4b20c1b15b3c9d4d4ac0",
-      "feedback_deck_sha256": "ebdf39685f2b47cd420369b816ddc0ca4321def01537db757c7b88a69d8340ae",
-      "feedback_profile_sha256": "c646340ce98e657308ef40d8ceee0516a9ba0ef4e394b78c8f3a28fd0622cb10",
+      "feedback_deck_sha256": "0d4e52482441176c5eb7179867dcbfb2eb0ff2569390eeb7ee4bad60ff66d8c1",
+      "feedback_profile_sha256": "caf98d348411f47495fd3269bb22e5c1917a4df3649183f981836d9d82eb158e",
       "gold_bundle_sha256": "92a069a817201d33d5a6975c9671633b2defd49a4989c8f38c931e0e3630d84e",
-      "harness_spec_sha256": "d1300ed475bdd01ce47491091e6601c13b6212d27a8abba84ba2edf0e85f537a",
+      "harness_spec_sha256": "db7e2ad485b81a90d63a1e513806d7eeda42568a44f093530498aa686ea3df53",
       "score_deck_sha256": "b7a4044b24d8a38522ccce9aadb527c0f77660f5c3d19b8623639b9e33940dc5",
-      "score_profile_sha256": "686c9cd21762ec6f2c422330bb0f7b35626848d6ebe90bc89cd38380388b760b"
+      "score_profile_sha256": "941bb085dc23e79a295f9de54ef418836cefdb9e3ca484a3164f86d6eae2a643"
     }
   },
   "evaluators": {
@@ -159,11 +160,11 @@
       "implementation_track": "standalone-rust",
       "profile": "balanced",
       "rust_core_abi": 20260712,
-      "status": "pass"
+      "status": "pending_recertification"
     },
     "spectre": {
       "bridge_identity": "sui-direct:ssh:thu-wei:proxyjump=thu-jin",
-      "status": "pass",
+      "status": "pending_recertification",
       "version": "sub-version  21.1.0.509.isr12"
     }
   },
@@ -185,13 +186,31 @@
   "input_hashes": {
     "checker_profile": "696602af322b94f3c42f373f24f75e76aa2e87ef29213eb2ad16b58b6fe155bd",
     "family_spec": "4ab51f60d890c1d178f6047977d8f3b5cf9ea362c48c4b20c1b15b3c9d4d4ac0",
-    "feedback_profile": "c646340ce98e657308ef40d8ceee0516a9ba0ef4e394b78c8f3a28fd0622cb10",
+    "feedback_profile": "caf98d348411f47495fd3269bb22e5c1917a4df3649183f981836d9d82eb158e",
     "gold_bundle": "92a069a817201d33d5a6975c9671633b2defd49a4989c8f38c931e0e3630d84e",
-    "harness_spec": "d1300ed475bdd01ce47491091e6601c13b6212d27a8abba84ba2edf0e85f537a",
-    "score_profile": "686c9cd21762ec6f2c422330bb0f7b35626848d6ebe90bc89cd38380388b760b"
+    "harness_spec": "db7e2ad485b81a90d63a1e513806d7eeda42568a44f093530498aa686ea3df53",
+    "score_profile": "941bb085dc23e79a295f9de54ef418836cefdb9e3ca484a3164f86d6eae2a643"
   },
   "release_snapshot_sha256": "97f05b4212cf53c691a3b9296d9993d0dea1c0cf5a2b1bdf4fca9eab6246461c",
+  "repair_evidence": {
+    "canonical_profile_parity": "pass",
+    "claim_boundary": "not_ready_until_both_evas_and_spectre_refresh",
+    "evas_reference_and_five_mutations": "pass",
+    "evas_smoke": {
+      "mutation_count": 5,
+      "mutation_kill_count": 5,
+      "reference_count": 1,
+      "report_sha256": "f37598c5d47014dee985c7e9ef221739b96749433fe8860f11e4c4a419aef7ac",
+      "status": "pass",
+      "task_count": 1
+    },
+    "issue": "#308",
+    "parent_issue": "#277",
+    "shift_scale_metamorphic": "pass",
+    "spectre_final_judge": "pending_recertification",
+    "stimulus_relative_checker": "pass"
+  },
   "schema_version": "v4-task-certification-v3",
-  "status": "gate2_pass",
+  "status": "repair_pending_recertification",
   "toolchain_lock_sha256": "97f05b4212cf53c691a3b9296d9993d0dea1c0cf5a2b1bdf4fca9eab6246461c"
 }

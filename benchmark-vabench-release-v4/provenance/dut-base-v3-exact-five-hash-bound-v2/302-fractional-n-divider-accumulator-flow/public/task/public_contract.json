@@ -11,6 +11,17 @@
   "difficulty": "D3",
   "feedback_oracle": {
     "command": "vabench-feedback --task . --submission ../submission",
+    "diagnostic_contract": {
+      "format": "<property_id> mismatch_count=<nonnegative integer>",
+      "property_ids": [
+        "P_USE_REF_CLK_AS_THE_REFERENCE",
+        "P_GENERATE_A_BEHAVIORAL_DCO_CLOCK_ON",
+        "P_GENERATE_FB_CLK_BY_TOGGLING_IT",
+        "P_UPDATE_A_BOUNDED_CONTROL_VOLTAGE_MONITOR",
+        "P_DRIVE_LOCK_HIGH_AFTER_STABLE_TRACKING"
+      ],
+      "scope": "each feedback result exposes every declared property"
+    },
     "feedback_channels": [
       "ahdl_like_preflight",
       "evas_simulation",
@@ -23,7 +34,7 @@
     "raw_scs_exposed": true
   },
   "form": "dut",
-  "gate2_status": "gate2_ready",
+  "gate2_status": "repair_pending_recertification",
   "language": "verilog-a",
   "level": "L2",
   "oracle_policy": {
@@ -62,7 +73,7 @@
     "queryable_by_agentic_modes": false,
     "raw_scs_exposed": false
   },
-  "status": "gate2_ready",
+  "status": "repair_pending_recertification",
   "target_artifacts": [
     "fracn_pll_timer_ref.va"
   ],
@@ -71,11 +82,11 @@
   "title": "Fractional-N Divider Accumulator Flow",
   "track": "ams_function_dut",
   "validation_status": {
-    "evas_feedback_score_gold": "pass",
+    "evas_feedback_score_gold": "pending_recertification",
     "gate2": "dut_base_sealed",
-    "next_gate": "canonical_suite_unification_pending",
-    "semantic_negative_certification": "pass",
-    "spectre_score_gold": "clean_pass",
+    "next_gate": "batch31_checker_profile_evas_spectre_recertification",
+    "semantic_negative_certification": "pending_recertification",
+    "spectre_score_gold": "pending_recertification",
     "tri_form_gate2": "pending",
     "tri_form_gate3": "pending",
     "untriaged_warning_count": 0

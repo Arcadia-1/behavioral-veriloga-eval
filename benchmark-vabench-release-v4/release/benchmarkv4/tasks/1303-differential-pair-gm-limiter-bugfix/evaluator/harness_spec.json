@@ -7,9 +7,17 @@
   },
   "deck": {
     "analyses": [
-      "tran tran stop=84n maxstep=80p"
+      "tran tran stop=76n maxstep=80p"
     ],
-    "body_lines": [],
+    "body_lines": [
+      "Vvinp (vinp 0) vsource type=pwl wave=[0 0.30 8n 0.30 16n 0.70 28n 0.70 38n 0.20 48n 0.20 62n 0.62 76n 0.62]",
+      "Vvinn (vinn 0) vsource type=pwl wave=[0 0.52 8n 0.52 16n 0.40 28n 0.40 38n 0.58 48n 0.58 62n 0.50 76n 0.50]",
+      "Vbias (bias 0) vsource dc=0.45",
+      "Venable (enable 0) vsource type=pwl wave=[0 0 4n 0 4.1n 0.9 50n 0.9 50.1n 0 57n 0 57.1n 0.9 76n 0.9]",
+      "",
+      "XDUT (vinp vinn bias enable voutp voutn gm_metric limit_flag) differential_pair_gm_limiter",
+      ""
+    ],
     "header": [
       "simulator lang=spectre",
       "global 0"
@@ -45,19 +53,9 @@
   },
   "profile_defaults": {
     "feedback": {
-      "deck_overrides": {
-        "body_lines": [
-          "Vvinp (vinp 0) vsource type=pwl wave=[0 0.30 8n 0.30 16n 0.70 28n 0.70 38n 0.20 48n 0.20 62n 0.62 84n 0.62]",
-          "Vvinn (vinn 0) vsource type=pwl wave=[0 0.52 8n 0.52 16n 0.40 28n 0.40 38n 0.58 48n 0.58 62n 0.50 84n 0.50]",
-          "Vbias (bias 0) vsource dc=0.45",
-          "Venable (enable 0) vsource type=pwl wave=[0 0 4n 0 4.1n 0.9 57n 0.9 57.1n 0 64n 0 64.1n 0.9 84n 0.9]",
-          "",
-          "XDUT (vinp vinn bias enable voutp voutn gm_metric limit_flag) differential_pair_gm_limiter",
-          ""
-        ]
-      },
+      "deck_overrides": {},
       "parameters": {
-        "maxstep": "200p",
+        "maxstep": "100p",
         "stop_time": "100n"
       },
       "simulatorOptions": {
@@ -65,20 +63,7 @@
       }
     },
     "score": {
-      "deck_overrides": {
-        "analyses": [
-          "tran tran stop=76n maxstep=80p"
-        ],
-        "body_lines": [
-          "Vvinp (vinp 0) vsource type=pwl wave=[0 0.30 8n 0.30 16n 0.70 28n 0.70 38n 0.20 48n 0.20 62n 0.62 76n 0.62]",
-          "Vvinn (vinn 0) vsource type=pwl wave=[0 0.52 8n 0.52 16n 0.40 28n 0.40 38n 0.58 48n 0.58 62n 0.50 76n 0.50]",
-          "Vbias (bias 0) vsource dc=0.45",
-          "Venable (enable 0) vsource type=pwl wave=[0 0 4n 0 4.1n 0.9 50n 0.9 50.1n 0 57n 0 57.1n 0.9 76n 0.9]",
-          "",
-          "XDUT (vinp vinn bias enable voutp voutn gm_metric limit_flag) differential_pair_gm_limiter",
-          ""
-        ]
-      },
+      "deck_overrides": {},
       "parameters": {
         "maxstep": "100p",
         "stop_time": "100n"
