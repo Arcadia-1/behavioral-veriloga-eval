@@ -364,6 +364,32 @@ def test_sampled_error_monitor_exposes_update_equations() -> None:
         assert "enabled rising clock edge" not in instruction
 
 
+def test_tia_and_track_hold_expose_numeric_metric_contracts() -> None:
+    for task_name in (
+        "304-common-gate-tia-front-end",
+        "804-common-gate-tia-front-end-testbench",
+        "1304-common-gate-tia-front-end-bugfix",
+    ):
+        compact = (_task(task_name) / "public" / "instruction.md").read_text().replace(
+            " ", ""
+        )
+        assert "(V(bias)-bias_min)/(vcm-bias_min)" in compact
+        assert "vdd*effective_gain/rz_gain" in compact
+        assert "raw_target" in compact
+
+    for task_name in (
+        "311-muxed-track-hold-array-readout",
+        "811-muxed-track-hold-array-readout-testbench",
+        "1311-muxed-track-hold-array-readout-bugfix",
+    ):
+        compact = (_task(task_name) / "public" / "instruction.md").read_text().replace(
+            " ", ""
+        )
+        assert "vcm+0.15*code" in compact
+        assert "held-valid" in compact
+        assert "vout" in compact and "vcm" in compact
+
+
 def test_repaired_testbench_bindings_match_reference_trace_names() -> None:
     expected = {
         "517-strongarm-style-latch-comparator-testbench": {

@@ -68,10 +68,10 @@ Preserve this exact artifact and module interface:
 
 The repaired bundle must satisfy every public property:
 
-- `P_ON_RESET_CLEAR_ALL_HELD_CHANNEL`: restore: On reset, clear all held channel states, output, channel metric, and `valid`. Required traces: `time`, `vin0`, `vin1`, `vin2`, `clk`, `rst`, `sel_1`, `sel_0`, `sample_en`, `vout`, `channel_metric`, `valid`.
+- `P_ON_RESET_CLEAR_ALL_HELD_CHANNEL`: restore: On reset, initialize all held channels and `vout` to `vcm`, and clear `channel_metric` and `valid` to `vss`. Required traces: `time`, `vin0`, `vin1`, `vin2`, `clk`, `rst`, `sel_1`, `sel_0`, `sample_en`, `vout`, `channel_metric`, `valid`.
 - `P_ON_EACH_ENABLED_SAMPLING_CLOCK_EDGE`: restore: On each enabled sampling clock edge, capture all three input channels into separate hold states. Required traces: `time`, `vin0`, `vin1`, `vin2`, `clk`, `rst`, `sel_1`, `sel_0`, `sample_en`, `vout`, `channel_metric`, `valid`.
-- `P_DECODE_SEL_1_SEL_0_AND`: restore: Decode `sel_1..sel_0` and route the selected held channel to `vout`; invalid code 3 must hold the previous output and clear `valid`. Required traces: `time`, `vin0`, `vin1`, `vin2`, `clk`, `rst`, `sel_1`, `sel_0`, `sample_en`, `vout`, `channel_metric`, `valid`.
-- `P_EXPOSE_THE_SELECTED_CHANNEL_INDEX_ON`: restore: Expose the selected channel index on `channel_metric` as a voltage-coded metric. Required traces: `time`, `vin0`, `vin1`, `vin2`, `clk`, `rst`, `sel_1`, `sel_0`, `sample_en`, `vout`, `channel_metric`, `valid`.
+- `P_DECODE_SEL_1_SEL_0_AND`: restore: Decode `code=(sel_0>vth?1:0)+2*(sel_1>vth?1:0)`, route held channel 0..2, and propagate its held-valid state. Code 3 holds `vout` and `channel_metric` and clears `valid`. Required traces: `time`, `vin0`, `vin1`, `vin2`, `clk`, `rst`, `sel_1`, `sel_0`, `sample_en`, `vout`, `channel_metric`, `valid`.
+- `P_EXPOSE_THE_SELECTED_CHANNEL_INDEX_ON`: restore: For codes 0..2, drive `channel_metric=clamp(vcm+0.15*code,vss,vdd)`. Required traces: `time`, `vin0`, `vin1`, `vin2`, `clk`, `rst`, `sel_1`, `sel_0`, `sample_en`, `vout`, `channel_metric`, `valid`.
 - `P_HOLD_ALL_CHANNEL_SAMPLES_BETWEEN_SAMPLING`: restore: Hold all channel samples between sampling events. Required traces: `time`, `vin0`, `vin1`, `vin2`, `clk`, `rst`, `sel_1`, `sel_0`, `sample_en`, `vout`, `channel_metric`, `valid`.
 - `P_USE_ONLY_VOLTAGE_DOMAIN_BEHAVIORAL_STATE`: restore: Use only voltage-domain behavioral state and voltage contributions on public electrical outputs. Required traces: `time`, `vin0`, `vin1`, `vin2`, `clk`, `rst`, `sel_1`, `sel_0`, `sample_en`, `vout`, `channel_metric`, `valid`.
 

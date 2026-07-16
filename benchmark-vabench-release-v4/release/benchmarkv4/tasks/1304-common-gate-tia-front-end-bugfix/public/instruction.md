@@ -36,9 +36,9 @@ The repaired bundle must satisfy every public property:
 
 - `P_ON_RESET_OR_WHEN_DISABLED_DRIVE`: restore: On reset or when disabled, drive `vout` to `vcm` and clear the metrics. Required traces: `time`, `vin_proxy`, `bias`, `enable`, `rst`, `vout`, `transimpedance_metric`, `overload`.
 - `P_TREAT_VIN_PROXY_AS_A_VOLTAGE`: restore: Treat `vin_proxy` as a voltage-domain proxy for input current magnitude. Required traces: `time`, `vin_proxy`, `bias`, `enable`, `rst`, `vout`, `transimpedance_metric`, `overload`.
-- `P_GENERATE_AN_OUTPUT_DEVIATION_AROUND_VCM`: restore: Generate an output deviation around `vcm` proportional to the proxy input and `rz_gain`. Required traces: `time`, `vin_proxy`, `bias`, `enable`, `rst`, `vout`, `transimpedance_metric`, `overload`.
-- `P_REDUCE_EFFECTIVE_GAIN_WHEN_BIAS_FALLS`: restore: Reduce effective gain when `bias` falls below `bias_min` and expose the effective gain on `transimpedance_metric`. Required traces: `time`, `vin_proxy`, `bias`, `enable`, `rst`, `vout`, `transimpedance_metric`, `overload`.
-- `P_ASSERT_OVERLOAD_WHEN_THE_UNCLAMPED_OUTPUT`: restore: Assert `overload` when the unclamped output target would exceed the rails. Required traces: `time`, `vin_proxy`, `bias`, `enable`, `rst`, `vout`, `transimpedance_metric`, `overload`.
+- `P_GENERATE_AN_OUTPUT_DEVIATION_AROUND_VCM`: restore: Let `raw_target=vcm+effective_gain*(V(vin_proxy)-vcm)` and `vout=clamp(raw_target,vss,vdd)`. Required traces: `time`, `vin_proxy`, `bias`, `enable`, `rst`, `vout`, `transimpedance_metric`, `overload`.
+- `P_REDUCE_EFFECTIVE_GAIN_WHEN_BIAS_FALLS`: restore: Let `gain_scale=clamp((V(bias)-bias_min)/(vcm-bias_min),vss,vdd)` floored at `0.35`, `effective_gain=rz_gain*gain_scale`, and `transimpedance_metric=clamp(vdd*effective_gain/rz_gain,vss,vdd)`. Required traces: `time`, `vin_proxy`, `bias`, `enable`, `rst`, `vout`, `transimpedance_metric`, `overload`.
+- `P_ASSERT_OVERLOAD_WHEN_THE_UNCLAMPED_OUTPUT`: restore: Assert `overload=vdd` exactly when `raw_target` lies outside `[vss,vdd]`. Required traces: `time`, `vin_proxy`, `bias`, `enable`, `rst`, `vout`, `transimpedance_metric`, `overload`.
 - `P_USE_ONLY_VOLTAGE_DOMAIN_BEHAVIORAL_STATE`: restore: Use only voltage-domain behavioral state and voltage contributions on public electrical outputs. Required traces: `time`, `vin_proxy`, `bias`, `enable`, `rst`, `vout`, `transimpedance_metric`, `overload`.
 
 ## Modeling Constraints
