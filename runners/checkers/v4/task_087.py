@@ -2,6 +2,19 @@
 from __future__ import annotations
 
 from ..api import Checker
+from .stimulus_relative import diagnostic, event_label, pass_note, require_signals
+
+
+PROPERTY_IDS = [
+    "P_RESET_STATE",
+    "P_FOUR_BIT_QUANTIZATION",
+    "P_PUBLIC_RECONSTRUCTION_TABLE",
+    "P_INL_METRIC",
+    "P_DNL_INCREASING_STEP",
+    "P_DNL_NO_STEP_BASELINE",
+]
+
+
 def sample_rows_at_or_after_times(
     rows: list[dict[str, float]],
     target_times: list[float],
@@ -32,8 +45,9 @@ def sample_rows_at_or_after_times(
 
 def check_converter_static_linearity_measurement_flow(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "clk", "rst", "vin", "code", "recon", "dnl", "inl"}
-    if not rows or not required.issubset(rows[0]):
-        return False, "missing time/clk/rst/vin/code/recon/dnl/inl"
+    missing = require_signals(rows, required, "P_RESET_STATE")
+    if missing:
+        return False, missing
 
     vth = 0.45
     edge_idx = [
@@ -42,7 +56,13 @@ def check_converter_static_linearity_measurement_flow(rows: list[dict[str, float
         if rows[idx - 1]["clk"] <= vth < rows[idx]["clk"] and rows[idx]["rst"] <= vth
     ]
     if len(edge_idx) < 12:
-        return False, f"too_few_converter_samples={len(edge_idx)}"
+        return False, diagnostic(
+            "P_FOUR_BIT_QUANTIZATION",
+            "invalid_trace",
+            expected="at_least_12_post_reset_clock_edges",
+            observed=f"edges={len(edge_idx)}",
+            event="clk_edges",
+        )
 
     # Sample after the output transition has settled.  EVAS writes denser rows
     # than Spectre around transition breakpoints, so row-index offsets can land
@@ -50,14 +70,32 @@ def check_converter_static_linearity_measurement_flow(rows: list[dict[str, float
     sample_times = [rows[idx]["time"] + 0.7e-9 for idx in edge_idx]
     samples = sample_rows_at_or_after_times(rows, sample_times)
     if len(samples) < 12:
-        return False, f"too_few_settled_converter_samples={len(samples)}"
+        return False, diagnostic(
+            "P_FOUR_BIT_QUANTIZATION",
+            "invalid_trace",
+            expected="at_least_12_settled_clock_edge_samples",
+            observed=f"samples={len(samples)}",
+            event="clk_edges",
+        )
     codes = [max(0, min(15, round(r["code"] / 0.06))) for r in samples]
     distinct_codes = sorted(set(codes))
     if len(distinct_codes) < 13 or distinct_codes[0] > 1 or distinct_codes[-1] < 14:
-        return False, f"converter_code_coverage={distinct_codes}"
+        return False, diagnostic(
+            "P_FOUR_BIT_QUANTIZATION",
+            "behavior_mismatch",
+            expected="codes_cover_at_least_13_levels_from_near_zero_to_near_full_scale",
+            observed=f"codes={distinct_codes}",
+            event=event_label("clk_edge", 0, rows[edge_idx[0]]["time"]),
+        )
     code_drops = sum(1 for prev, cur in zip(codes, codes[1:]) if cur < prev)
     if code_drops:
-        return False, f"converter_code_not_monotonic drops={code_drops}"
+        return False, diagnostic(
+            "P_FOUR_BIT_QUANTIZATION",
+            "behavior_mismatch",
+            expected="monotonic_codes",
+            observed=f"drops={code_drops}",
+            event=event_label("clk_edge", 0, rows[edge_idx[0]]["time"]),
+        )
 
     by_code: dict[int, list[dict[str, float]]] = {}
     for code, row in zip(codes, samples):
@@ -73,20 +111,45 @@ def check_converter_static_linearity_measurement_flow(rows: list[dict[str, float
         return False, f"converter_reconstruction_not_monotonic drops={recon_drops}"
     steps = [cur - prev for prev, cur in zip(recon_vals, recon_vals[1:])]
     if len(steps) < 8 or min(steps) < 0.025:
-        return False, f"converter_reconstruction_steps_invalid={steps}"
+        return False, diagnostic(
+            "P_PUBLIC_RECONSTRUCTION_TABLE",
+            "behavior_mismatch",
+            expected="at_least_8_positive_reconstruction_steps",
+            observed=f"steps={steps}",
+            event=event_label("clk_edge", 0, rows[edge_idx[0]]["time"]),
+        )
     step_spread = max(steps) - min(steps)
     if step_spread < 0.010:
-        return False, f"converter_dnl_not_visible step_spread={step_spread:.4f}"
+        return False, diagnostic(
+            "P_DNL_INCREASING_STEP",
+            "behavior_mismatch",
+            expected="step_spread>=0.010",
+            observed=f"step_spread={step_spread:.4f}",
+            event=event_label("clk_edge", 0, rows[edge_idx[0]]["time"]),
+        )
 
-    post = [r for r in rows if r["rst"] <= vth and r["time"] > 3e-9]
+    first_edge_time = rows[edge_idx[0]]["time"]
+    post = [r for r in rows if r["rst"] <= vth and r["time"] >= first_edge_time]
     dnl_vals = [r["dnl"] for r in post]
     inl_vals = [r["inl"] for r in post]
     if not dnl_vals or not inl_vals:
-        return False, "converter_missing_metric_rows"
+        return False, diagnostic(
+            "P_INL_METRIC",
+            "invalid_trace",
+            expected="post_reset_metric_rows",
+            observed="missing_metric_rows",
+            event=event_label("clk_edge", 0, first_edge_time),
+        )
     dnl_span = max(dnl_vals) - min(dnl_vals)
     inl_span = max(inl_vals) - min(inl_vals)
     if dnl_span < 0.035 or inl_span < 0.050:
-        return False, f"converter_linearity_metrics_flat dnl={dnl_span:.3f} inl={inl_span:.3f}"
+        return False, diagnostic(
+            "P_INL_METRIC",
+            "behavior_mismatch",
+            expected="dnl_span>=0.035_and_inl_span>=0.050",
+            observed=f"dnl={dnl_span:.3f},inl={inl_span:.3f}",
+            event=event_label("clk_edge", 0, first_edge_time),
+        )
 
     metric_tol = 0.065
     max_inl_err = 0.0
@@ -114,13 +177,32 @@ def check_converter_static_linearity_measurement_flow(rows: list[dict[str, float
         prev_recon = recon
 
     if max_inl_err > metric_tol:
-        return False, f"converter_inl_metric_inconsistent err={max_inl_err:.3f}"
+        return False, diagnostic(
+            "P_INL_METRIC",
+            "behavior_mismatch",
+            expected=f"max_inl_error<={metric_tol:.3f}",
+            observed=f"err={max_inl_err:.3f}",
+            event=event_label("clk_edge", 0, first_edge_time),
+        )
     if dnl_checks < 8:
-        return False, f"converter_too_few_dnl_step_checks={dnl_checks}"
+        return False, diagnostic(
+            "P_DNL_INCREASING_STEP",
+            "invalid_trace",
+            expected="at_least_8_dnl_step_checks",
+            observed=f"checks={dnl_checks}",
+            event=event_label("clk_edge", 0, first_edge_time),
+        )
     if max_dnl_err > metric_tol:
-        return False, f"converter_dnl_metric_inconsistent err={max_dnl_err:.3f}"
+        return False, diagnostic(
+            "P_DNL_INCREASING_STEP",
+            "behavior_mismatch",
+            expected=f"max_dnl_error<={metric_tol:.3f}",
+            observed=f"err={max_dnl_err:.3f}",
+            event=event_label("clk_edge", 0, first_edge_time),
+        )
 
-    return True, (
+    return True, pass_note(
+        PROPERTY_IDS,
         "converter_static_linearity_measurement_flow "
         f"codes={len(distinct_codes)} step_spread={step_spread:.4f} "
         f"dnl_span={dnl_span:.3f} inl_span={inl_span:.3f} "
