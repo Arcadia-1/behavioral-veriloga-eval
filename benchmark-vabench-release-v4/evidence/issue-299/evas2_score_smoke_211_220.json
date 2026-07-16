@@ -1,0 +1,216 @@
+{
+  "schema_version": "v4-issue-299-evas2-score-smoke-v1",
+  "status": "PASS",
+  "started_at": "2026-07-16T16:24:57",
+  "finished_at": "2026-07-16T16:25:13",
+  "family_range": "211-220",
+  "families_total": 10,
+  "pass_count": 10,
+  "failure_count": 0,
+  "evas_engine_used": "evas2",
+  "default_evas_engine_used": "evas2",
+  "python_fallback_evidence_claimed": false,
+  "staging_note": "Temporary execution shim stages score_tb.scs with ./dut/<artifact>.va to preserve the V4 score deck include contract; shim files are not committed.",
+  "results": [
+    {
+      "family_id": "211",
+      "release_dir": "211-sum5-signed-sar-weight",
+      "checker_task_id": "v4_211_sum5_signed_sar_weight",
+      "status": "PASS",
+      "evas_engine_used": "evas2",
+      "scores": {
+        "dut_compile": 1.0,
+        "tb_compile": 1.0,
+        "sim_correct": 1.0,
+        "weighted_total": 1.0
+      },
+      "notes": [
+        "returncode=0",
+        "evas_engine=evas2",
+        "trace_contract=row_required_set",
+        "checked=218 max_error=0.00000"
+      ],
+      "wall_time_s": 4.684462
+    },
+    {
+      "family_id": "212",
+      "release_dir": "212-lt-readout-sar4",
+      "checker_task_id": "v4_212_lt_readout_sar4",
+      "status": "PASS",
+      "evas_engine_used": "evas2",
+      "scores": {
+        "dut_compile": 1.0,
+        "tb_compile": 1.0,
+        "sim_correct": 1.0,
+        "weighted_total": 1.0
+      },
+      "notes": [
+        "returncode=0",
+        "evas_engine=evas2",
+        "trace_contract=row_required_set",
+        "checked=218 max_error=0.00000"
+      ],
+      "wall_time_s": 0.395519
+    },
+    {
+      "family_id": "213",
+      "release_dir": "213-tool-4bit-sar-signed-dac",
+      "checker_task_id": "v4_213_tool_4bit_sar_signed_dac",
+      "status": "PASS",
+      "evas_engine_used": "evas2",
+      "scores": {
+        "dut_compile": 1.0,
+        "tb_compile": 1.0,
+        "sim_correct": 1.0,
+        "weighted_total": 1.0
+      },
+      "notes": [
+        "returncode=0",
+        "evas_engine=evas2",
+        "trace_contract=row_required_set",
+        "signed_dac_samples=4 max_err=0.0000"
+      ],
+      "wall_time_s": 0.562744
+    },
+    {
+      "family_id": "214",
+      "release_dir": "214-comparator-reset-low-1p8",
+      "checker_task_id": "v4_214_comparator_reset_low_1p8",
+      "status": "PASS",
+      "evas_engine_used": "evas2",
+      "scores": {
+        "dut_compile": 1.0,
+        "tb_compile": 1.0,
+        "sim_correct": 1.0,
+        "weighted_total": 1.0
+      },
+      "notes": [
+        "returncode=0",
+        "evas_engine=evas2",
+        "trace_contract=row_required_set",
+        "decisions=3 resets=3 positive=True negative=True equal=False"
+      ],
+      "wall_time_s": 0.507726
+    },
+    {
+      "family_id": "215",
+      "release_dir": "215-lt-read-sar7b-weighted",
+      "checker_task_id": "v4_215_lt_read_sar7b_weighted",
+      "status": "PASS",
+      "evas_engine_used": "evas2",
+      "scores": {
+        "dut_compile": 1.0,
+        "tb_compile": 1.0,
+        "sim_correct": 1.0,
+        "weighted_total": 1.0
+      },
+      "notes": [
+        "returncode=0",
+        "evas_engine=evas2",
+        "trace_contract=row_required_set",
+        "checked=218 max_error=0.00000"
+      ],
+      "wall_time_s": 1.380298
+    },
+    {
+      "family_id": "216",
+      "release_dir": "216-sar-13bit-serial-decoder",
+      "checker_task_id": "v4_216_sar_13bit_serial_decoder",
+      "status": "PASS",
+      "evas_engine_used": "evas2",
+      "scores": {
+        "dut_compile": 1.0,
+        "tb_compile": 1.0,
+        "sim_correct": 1.0,
+        "weighted_total": 1.0
+      },
+      "notes": [
+        "returncode=0",
+        "evas_engine=evas2",
+        "trace_contract=row_required_set",
+        "ready_checks=14 publish_checks=2"
+      ],
+      "wall_time_s": 1.530088
+    },
+    {
+      "family_id": "217",
+      "release_dir": "217-single-shot-timer-pulse",
+      "checker_task_id": "v4_217_single_shot_timer_pulse",
+      "status": "PASS",
+      "evas_engine_used": "evas2",
+      "scores": {
+        "dut_compile": 1.0,
+        "tb_compile": 1.0,
+        "sim_correct": 1.0,
+        "weighted_total": 1.0
+      },
+      "notes": [
+        "returncode=0",
+        "evas_engine=evas2",
+        "trace_contract=row_required_set",
+        "pulse_samples_match trigger_edges=2 output_rises=2 output_falls=2 high_checks=82 low_checks=26 max_err=0.000 coverage_errors=0; P_DETECT_RISING_VIN_CROSSINGS_AT_VTRANS mismatch_count=0; P_ON_EACH_QUALIFYING_RISING_EDGE_DRIVE mismatch_count=0; P_USE_A_TIMER_TO_SCHEDULE_THE mismatch_count=0; P_GENERATE_ONE_OUTPUT_PULSE_PER_INPUT mismatch_count=0; P_HOLD_THE_LOW_OUTPUT_LEVEL_BETWEEN mismatch_count=0"
+      ],
+      "wall_time_s": 1.575086
+    },
+    {
+      "family_id": "218",
+      "release_dir": "218-clocked-comparator-dual-output",
+      "checker_task_id": "v4_218_clocked_comparator_dual_output",
+      "status": "PASS",
+      "evas_engine_used": "evas2",
+      "scores": {
+        "dut_compile": 1.0,
+        "tb_compile": 1.0,
+        "sim_correct": 1.0,
+        "weighted_total": 1.0
+      },
+      "notes": [
+        "returncode=0",
+        "evas_engine=evas2",
+        "trace_contract=row_required_set",
+        "decisions=2 resets=2 positive=True negative=True equal=False"
+      ],
+      "wall_time_s": 0.428149
+    },
+    {
+      "family_id": "219",
+      "release_dir": "219-bin2ther-2b",
+      "checker_task_id": "v4_219_bin2ther_2b",
+      "status": "PASS",
+      "evas_engine_used": "evas2",
+      "scores": {
+        "dut_compile": 1.0,
+        "tb_compile": 1.0,
+        "sim_correct": 1.0,
+        "weighted_total": 1.0
+      },
+      "notes": [
+        "returncode=0",
+        "evas_engine=evas2",
+        "trace_contract=row_required_set",
+        "checked=107 max_err=0.000"
+      ],
+      "wall_time_s": 0.817671
+    },
+    {
+      "family_id": "220",
+      "release_dir": "220-pfd-up-down-state",
+      "checker_task_id": "v4_220_pfd_up_down_state",
+      "status": "PASS",
+      "evas_engine_used": "evas2",
+      "scores": {
+        "dut_compile": 1.0,
+        "tb_compile": 1.0,
+        "sim_correct": 1.0,
+        "weighted_total": 1.0
+      },
+      "notes": [
+        "returncode=0",
+        "evas_engine=evas2",
+        "trace_contract=row_required_set",
+        "state_outputs_match checked=269 up=True down=True zero=True up_errors=0 down_errors=0 zero_errors=0 max_err=0.000 coverage_errors=0; P_DETECT_RISING_REF_AND_FB_CROSSINGS mismatch_count=0; P_MAINTAIN_AN_INTEGER_DETECTOR_STATE_BOUNDED mismatch_count=0; P_A_RISING_REF_EDGE_INCREMENTS_THE mismatch_count=0; P_A_RISING_FB_EDGE_DECREMENTS_THE mismatch_count=0; P_DRIVE_UP_HIGH_WHEN_THE_STATE mismatch_count=0; P_DRIVE_DOWN_HIGH_WHEN_THE_STATE mismatch_count=0"
+      ],
+      "wall_time_s": 3.517742
+    }
+  ]
+}
