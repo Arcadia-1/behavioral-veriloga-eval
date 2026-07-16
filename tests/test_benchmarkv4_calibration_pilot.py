@@ -396,6 +396,27 @@ def test_feedback_compaction_keeps_reference_failure_detail() -> None:
     ]
 
 
+def test_feedback_compaction_keeps_invalid_run_root_cause() -> None:
+    runner = load_run_campaign()
+    stdout = "\n".join(
+        [
+            "reference: evas_engine=evas2",
+            "reference: simulation failed",
+            "FEEDBACK_TB_INVALID_RUN",
+        ]
+    )
+    stderr = "Error: tb_candidate.scs:17: unknown instance parameter 'period'"
+
+    compact = runner.compact_feedback_result(
+        {"returncode": 1, "stdout": stdout, "stderr": stderr, "elapsed_s": 0.2}
+    )
+
+    assert stderr in compact["diagnostics"]
+    assert compact["diagnostics"].index(stderr) < compact["diagnostics"].index(
+        "FEEDBACK_TB_INVALID_RUN"
+    )
+
+
 def test_direct_run_cell_submits_only_an_exact_artifact_response(tmp_path: Path) -> None:
     runner = load_run_campaign()
     cell = campaign_cell("G0")
