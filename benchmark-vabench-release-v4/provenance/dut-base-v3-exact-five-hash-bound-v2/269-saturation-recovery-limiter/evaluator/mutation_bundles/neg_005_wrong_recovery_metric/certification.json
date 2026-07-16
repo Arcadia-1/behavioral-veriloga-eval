@@ -33,7 +33,7 @@
     }
   },
   "diagnostics": {
-    "expected": "trigger=stimulus exercises neg_005_wrong_recovery_metric; violated_properties=P_DRIVE_SAT_VHI_WHEN_ENABLED_AND,P_DRIVE_THE_RECOVERY_METRIC_AS",
+    "expected": "public stimulus exercises a certified alternate behavior; violated_properties=P_DRIVE_SAT_VHI_WHEN_ENABLED_AND,P_DRIVE_THE_RECOVERY_METRIC_AS",
     "observed": "EVAS: saturation_limiter_error=0.5727; Spectre: saturation_limiter_error=0.5727",
     "violated_property_ids": [
       "P_DRIVE_SAT_VHI_WHEN_ENABLED_AND",

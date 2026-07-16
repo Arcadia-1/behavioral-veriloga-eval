@@ -33,7 +33,7 @@
     }
   },
   "diagnostics": {
-    "expected": "trigger=stimulus exercises neg_001_passthrough_no_limit; violated_properties=P_CLAMP_THE_ENABLED_INPUT_BETWEEN_THE",
+    "expected": "public stimulus exercises a certified alternate behavior; violated_properties=P_CLAMP_THE_ENABLED_INPUT_BETWEEN_THE",
     "observed": "EVAS: saturation_limiter_error=0.9000; Spectre: saturation_limiter_error=0.9000",
     "violated_property_ids": [
       "P_CLAMP_THE_ENABLED_INPUT_BETWEEN_THE"

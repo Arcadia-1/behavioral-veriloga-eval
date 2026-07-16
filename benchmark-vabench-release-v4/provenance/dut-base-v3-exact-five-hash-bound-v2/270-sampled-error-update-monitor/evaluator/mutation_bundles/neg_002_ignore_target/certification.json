@@ -33,7 +33,7 @@
     }
   },
   "diagnostics": {
-    "expected": "trigger=stimulus exercises neg_002_ignore_target; violated_properties=P_CORRECTED_OUTPUT_USES_SAMPLE_TARGET_AND_COEF,P_ERROR_METRIC_REPORTS_ABSOLUTE_ERROR",
+    "expected": "public stimulus exercises a certified alternate behavior; violated_properties=P_CORRECTED_OUTPUT_USES_SAMPLE_TARGET_AND_COEF,P_ERROR_METRIC_REPORTS_ABSOLUTE_ERROR",
     "observed": "EVAS: sampled_error_update_error=0.9000; Spectre: sampled_error_update_error=0.9000",
     "violated_property_ids": [
       "P_CORRECTED_OUTPUT_USES_SAMPLE_TARGET_AND_COEF",

@@ -33,7 +33,7 @@
     }
   },
   "diagnostics": {
-    "expected": "trigger=stimulus exercises neg_003_ignore_enable; violated_properties=P_CLEAR_OUTPUT_FLAG_AND_RECOVERY_METRIC",
+    "expected": "public stimulus exercises a certified alternate behavior; violated_properties=P_CLEAR_OUTPUT_FLAG_AND_RECOVERY_METRIC",
     "observed": "EVAS: saturation_limiter_error=0.9000; Spectre: saturation_limiter_error=0.9000",
     "violated_property_ids": [
       "P_CLEAR_OUTPUT_FLAG_AND_RECOVERY_METRIC"

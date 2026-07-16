@@ -33,7 +33,7 @@
     }
   },
   "diagnostics": {
-    "expected": "trigger=stimulus exercises neg_004_ignore_control_or_reset; violated_properties=P_TRANSLATE_THE_LOCAL_INPUT_WITH_CORE",
+    "expected": "public stimulus exercises a certified alternate behavior; violated_properties=P_TRANSLATE_THE_LOCAL_INPUT_WITH_CORE",
     "observed": "EVAS: issue109_remaining_error=0.4048; Spectre: issue109_remaining_error=0.4048",
     "violated_property_ids": [
       "P_TRANSLATE_THE_LOCAL_INPUT_WITH_CORE"

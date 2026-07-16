@@ -33,7 +33,7 @@
     }
   },
   "diagnostics": {
-    "expected": "trigger=stimulus exercises neg_003_wrong_scale; violated_properties=P_MEASURE_ANALOG_INPUTS_RELATIVE_TO_THE",
+    "expected": "public stimulus exercises a certified alternate behavior; violated_properties=P_MEASURE_ANALOG_INPUTS_RELATIVE_TO_THE",
     "observed": "EVAS: issue109_remaining_error=0.3719; Spectre: issue109_remaining_error=0.3719",
     "violated_property_ids": [
       "P_MEASURE_ANALOG_INPUTS_RELATIVE_TO_THE"
