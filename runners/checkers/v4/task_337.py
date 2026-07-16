@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 from ..api import Checker
+from .diagnostics import with_diagnostic_contract
 def _v4_topup_clip01(value: float, low: float = 0.0, high: float = 0.9) -> float:
     return max(low, min(high, value))
 
@@ -26,6 +27,8 @@ def check_v4_1035_vga_step_response_classifier(rows: list[dict[str, float]]) -> 
     update_time = -1.0
     checked = vout_errors = metric_errors = settled_errors = clear_errors = 0
     reset_clear = disabled_clear = high_gain_seen = overshoot_seen = settled_seen = False
+    ever_enabled = False
+    disable_time: float | None = None
     codes_seen: set[int] = set()
     for row in rows:
         t = float(row["time"])
@@ -39,14 +42,24 @@ def check_v4_1035_vga_step_response_classifier(rows: list[dict[str, float]]) -> 
             expected_metric = 0.0
             expected_settled = False
             clear = abs(float(row["vout"]) - 0.45) < 0.08 and abs(float(row["overshoot_metric"])) < 0.08 and not _v4_topup_logic_high(row, "settled")
-            if rst and t < 5e-9 and clear:
+            if rst and clear:
                 reset_clear = True
-            if t > 82e-9 and not _v4_topup_logic_high(row, "enable") and clear:
+            disabled = ever_enabled and not _v4_topup_logic_high(row, "enable")
+            if disabled and disable_time is None:
+                disable_time = t
+            disabled_ready = (
+                disabled
+                and disable_time is not None
+                and t >= disable_time + 0.7e-9
+            )
+            if disabled_ready and clear:
                 disabled_clear = True
-            if ((rst and t < 5e-9) or t > 82e-9) and not clear:
+            if (rst or disabled_ready) and not clear:
                 clear_errors += 1
             prev_clk = clk
             continue
+        ever_enabled = True
+        disable_time = None
         if _v4_rising(prev_clk, clk):
             code = _v4_code_from_bits(row, ["gain_0", "gain_1", "gain_2"])
             codes_seen.add(code)
@@ -103,4 +116,4 @@ def check_v4_1035_vga_step_response_classifier(rows: list[dict[str, float]]) -> 
     )
 
 CHECKER_ID = "v4_337_vga_step_response_classifier"
-CHECKER: Checker = check_v4_1035_vga_step_response_classifier
+CHECKER: Checker = with_diagnostic_contract(check_v4_1035_vga_step_response_classifier)

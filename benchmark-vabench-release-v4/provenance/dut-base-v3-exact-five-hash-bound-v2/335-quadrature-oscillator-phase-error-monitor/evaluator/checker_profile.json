@@ -7,6 +7,25 @@
     "source_task_id": null,
     "task_id": "v4_335_quadrature_oscillator_phase_error_monitor"
   },
+  "diagnostic_contract": {
+    "event_context": "stimulus_relative",
+    "redaction": "public_observables_only",
+    "required_fields": [
+      "property_diagnostics",
+      "mismatch_count",
+      "expected",
+      "observed",
+      "event_context"
+    ],
+    "schema_version": "v4-checker-diagnostic-v1"
+  },
+  "property_ids": [
+    "P_ON_RESET_OR_WHEN_DISABLED_CLEAR",
+    "P_TRACK_RISING_THRESHOLD_CROSSINGS_OF_CLK",
+    "P_ESTIMATE_A_VOLTAGE_DOMAIN_PHASE_ERROR",
+    "P_ASSERT_QUADRATURE_OK_WHEN_THE_MEASURED",
+    "P_ASSERT_VALID_AFTER_BOTH_I_AND"
+  ],
   "schema_version": "v4-checker-profile-v1",
   "score_and_feedback_share_checker": true,
   "shared_by": [

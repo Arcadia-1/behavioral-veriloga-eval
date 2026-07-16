@@ -20,6 +20,7 @@ SPEC_SCHEMA = ROOT / "schemas" / "harness_spec.schema.json"
 PROFILE_SCHEMA = ROOT / "schemas" / "harness_profile.schema.json"
 GENERATOR_VERSION = "v4-harness-renderer-v1"
 MAX_SAVE_LINE_LENGTH = 1000
+BACKEND_ONLY_SIMULATOR_OPTIONS = {"evas_profile"}
 
 
 def read_json(path: Path) -> dict[str, Any]:
@@ -124,7 +125,7 @@ SEMANTIC_PROFILE_FIELDS = ("body_lines", "analyses", "save_signals", "parameters
 SEMANTIC_DECK_OVERRIDE_FIELDS = {"body_lines", "analyses", "save_signals"}
 
 
-def _effective_profile_semantics(spec: dict[str, Any], profile_name: str) -> dict[str, Any]:
+def _canonical_profile_semantics(spec: dict[str, Any], profile_name: str) -> dict[str, Any]:
     """Return the deck semantics that a profile is allowed to select.
 
     Feedback and score may differ in simulator identity, but they must share
@@ -152,8 +153,8 @@ def _effective_profile_semantics(spec: dict[str, Any], profile_name: str) -> dic
 
 def validate_profile_semantics(spec: dict[str, Any]) -> None:
     """Reject profile pairs whose observable evaluation surface diverges."""
-    feedback = _effective_profile_semantics(spec, "feedback")
-    score = _effective_profile_semantics(spec, "score")
+    feedback = _canonical_profile_semantics(spec, "feedback")
+    score = _canonical_profile_semantics(spec, "score")
     differences = [
         field for field in SEMANTIC_PROFILE_FIELDS if feedback[field] != score[field]
     ]
@@ -216,6 +217,60 @@ def build_profile(spec: dict[str, Any], profile_name: str, spec_hash: str) -> di
     }
     validate_schema(profile, PROFILE_SCHEMA)
     return profile
+
+
+def _effective_profile_semantics(
+    spec: dict[str, Any], profile_name: str
+) -> dict[str, Any]:
+    """Return the fields that must be identical across evaluator backends.
+
+    ``evas_profile`` and visibility are backend/publication controls.  They
+    are intentionally excluded here; stimulus, analysis, traces, properties,
+    solver parameters, corners, and seeds are scoring semantics.
+    """
+    defaults = dict((spec.get("profile_defaults") or {}).get(profile_name) or {})
+    overrides = dict(defaults.get("deck_overrides") or {})
+    return {
+        "body_lines": list(spec["deck"].get("body_lines") or [])
+        + list(overrides.get("body_lines") or []),
+        "analyses": list(overrides.get("analyses") or spec["deck"].get("analyses") or []),
+        "save_signals": list(
+            overrides.get("save_signals") or spec["deck"].get("save_signals") or []
+        ),
+        "parameters": dict(defaults.get("parameters") or {}),
+        "corners": list(defaults.get("corners") or []),
+        "deterministic_seed": int(defaults.get("deterministic_seed") or 0),
+        "property_ids": list(spec.get("property_ids") or []),
+        "simulator_options": {
+            key: value
+            for key, value in dict(defaults.get("simulatorOptions") or {}).items()
+            if key not in BACKEND_ONLY_SIMULATOR_OPTIONS
+        },
+    }
+
+
+def profile_semantic_diffs(spec: dict[str, Any]) -> dict[str, tuple[Any, Any]]:
+    """Compare feedback and score semantics from one canonical spec."""
+    feedback = _effective_profile_semantics(spec, "feedback")
+    score = _effective_profile_semantics(spec, "score")
+    return {
+        key: (feedback[key], score[key])
+        for key in feedback
+        if feedback[key] != score[key]
+    }
+
+
+def validate_profile_semantic_parity(spec: dict[str, Any]) -> None:
+    """Reject feedback/score drift that could change the measured behavior."""
+    diffs = profile_semantic_diffs(spec)
+    if not diffs:
+        return
+    details = "; ".join(
+        f"{key}: feedback={feedback!r} score={score!r}"
+        for key, (feedback, score) in sorted(diffs.items())
+    )
+    task_id = spec.get("task_id") or spec.get("family_id") or "unknown"
+    raise ValueError(f"{task_id}: feedback/score semantic parity violation: {details}")
 
 
 def render_scs(spec: dict[str, Any], profile: dict[str, Any]) -> str:

@@ -7,6 +7,25 @@
     "source_task_id": null,
     "task_id": "v4_332_polyphase_iq_balance_monitor"
   },
+  "diagnostic_contract": {
+    "event_context": "stimulus_relative",
+    "redaction": "public_observables_only",
+    "required_fields": [
+      "property_diagnostics",
+      "mismatch_count",
+      "expected",
+      "observed",
+      "event_context"
+    ],
+    "schema_version": "v4-checker-diagnostic-v1"
+  },
+  "property_ids": [
+    "P_ON_RESET_OR_WHEN_DISABLED_DRIVE",
+    "P_ON_EACH_ENABLED_RISING_CLK_EDGE",
+    "P_DRIVE_CORRECTED_I_Q_OUTPUTS_WITH",
+    "P_EXPOSE_AMPLITUDE_AND_PHASE_ERROR_PROXIES",
+    "P_ASSERT_BALANCED_ONLY_WHEN_BOTH_METRICS"
+  ],
   "schema_version": "v4-checker-profile-v1",
   "score_and_feedback_share_checker": true,
   "shared_by": [

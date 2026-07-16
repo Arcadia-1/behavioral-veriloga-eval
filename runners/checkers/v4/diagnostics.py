@@ -10,6 +10,7 @@ from ..api import Checker
 
 _FIELD_RE = re.compile(r"\b([A-Za-z_][A-Za-z0-9_]*)=([^\s;]+)")
 MetricSpec = Union[str, Sequence[str]]
+DIAGNOSTIC_SCHEMA = "v4-checker-diagnostic-v1"
 
 
 def excess_count(observed: int, allowed: int = 0) -> int:
@@ -51,7 +52,30 @@ def with_property_diagnostics(
             specs = (raw_specs,) if isinstance(raw_specs, str) else tuple(raw_specs)
             mismatch_count = sum(_metric_count(fields, spec) for spec in specs)
             diagnostics.append(f"{property_id} mismatch_count={mismatch_count}")
-        return ok, note + "; " + "; ".join(diagnostics)
+        note = note + "; " + "; ".join(diagnostics)
+        return ok, _append_contract(note, ok)
+
+    wrapped.__name__ = checker.__name__
+    wrapped.__doc__ = checker.__doc__
+    wrapped.__module__ = checker.__module__
+    return wrapped
+
+
+def _append_contract(note: str, ok: bool) -> str:
+    """Expose a redacted, machine-readable result envelope for feedback."""
+    status = "pass" if ok else "fail"
+    return (
+        f"{note}; diagnostic_schema={DIAGNOSTIC_SCHEMA} status={status} "
+        "event_context=stimulus_relative expected=public_contract observed=trace"
+    )
+
+
+def with_diagnostic_contract(checker: Checker) -> Checker:
+    """Add the common diagnostic envelope without changing checker semantics."""
+
+    def wrapped(rows: list[dict[str, float]]) -> tuple[bool, str]:
+        ok, note = checker(rows)
+        return ok, _append_contract(note, ok)
 
     wrapped.__name__ = checker.__name__
     wrapped.__doc__ = checker.__doc__

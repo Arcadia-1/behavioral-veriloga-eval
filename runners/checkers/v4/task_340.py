@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 from ..api import Checker
+from .diagnostics import with_property_diagnostics
 VTH = 0.45
 
 def _high(row: dict[str, float], name: str, thr: float = VTH) -> bool:
@@ -26,6 +27,8 @@ def check_v4_340_thermal_foldback_power_limiter(rows: list[dict[str, float]]) ->
     prev_clk = float(rows[0]["clk"])
     checked = pass_errors = fold_errors = thermal_errors = metric_errors = clear_errors = 0
     reset_clear = disabled_clear = ever_enabled = False
+    disable_time: float | None = None
+    active_edges = 0
     trip = 0.65
     for row in rows:
         t = float(row["time"])
@@ -40,18 +43,29 @@ def check_v4_340_thermal_foldback_power_limiter(rows: list[dict[str, float]]) ->
             )
             if rst and clear:
                 reset_clear = True
-            if ever_enabled and (not _high(row, "enable")) and clear:
+            disabled = ever_enabled and not _high(row, "enable")
+            if disabled and disable_time is None:
+                disable_time = t
+            disabled_ready = (
+                disabled
+                and disable_time is not None
+                and t >= disable_time + 0.7e-9
+            )
+            if disabled_ready and clear:
                 disabled_clear = True
-            if (rst or (ever_enabled and not _high(row, "enable") and disabled_clear)) and not clear:
+            if (rst or disabled_ready) and not clear:
                 clear_errors += 1
+            active_edges = 0
             prev_clk = clk
             continue
         ever_enabled = True
+        disable_time = None
         if not _rising(prev_clk, clk):
             prev_clk = clk
             continue
         prev_clk = clk
-        if t < 8e-9:
+        active_edges += 1
+        if active_edges == 1:
             continue
         checked += 1
         cmd = float(row["power_cmd"])
@@ -93,4 +107,13 @@ def check_v4_340_thermal_foldback_power_limiter(rows: list[dict[str, float]]) ->
     )
 
 CHECKER_ID = "v4_340_thermal_foldback_power_limiter"
-CHECKER: Checker = check_v4_340_thermal_foldback_power_limiter
+CHECKER: Checker = with_property_diagnostics(
+    check_v4_340_thermal_foldback_power_limiter,
+    {
+        "P_ON_RESET_OR_WHEN_DISABLED_CLEAR": ("clear_errors", "!reset_clear", "!disabled_clear"),
+        "P_ON_EACH_ENABLED_RISING_CLK_EDGE": ("pass_errors", "fold_errors", "metric_errors"),
+        "P_PASS_POWER_CMD_THROUGH_WHILE_TEMPERATURE": "pass_errors",
+        "P_REDUCE_LIMITED_CMD_AS_TEMPERATURE_RISES": "fold_errors",
+        "P_ASSERT_THERMAL_OK_ONLY_WHEN_NO": "thermal_errors",
+    },
+)

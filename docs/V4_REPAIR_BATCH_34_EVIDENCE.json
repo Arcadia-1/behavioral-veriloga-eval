@@ -1,0 +1,118 @@
+{
+  "schema_version": "v4-repair-batch-evas2-evidence-v2",
+  "issue": 311,
+  "parent_issue": 277,
+  "branch_scope": "codex/v4-repair-batch-34",
+  "evas_policy": {
+    "evas_engine": "evas2",
+    "evas_engine_used": "evas2",
+    "evas_version": "0.8.2",
+    "evas_backend": "rust",
+    "required_environment": {
+      "EVAS_ENGINE": "evas2",
+      "VAEVAS_DEFAULT_EVAS_ENGINE": "evas2",
+      "VAEVAS_EVAS_PERSISTENT_WORKER": "0"
+    },
+    "non_evas2_evidence_usable": false
+  },
+  "superseded_evidence": {
+    "discarded_non_evas2_runs": true,
+    "reason": "All pre-existing EVAS evidence was rerun under the EVAS 0.8.2 Rust EVAS2 gate; no prior non-EVAS2 result is used below."
+  },
+  "families": {
+    "range": [331, 340],
+    "count": 10,
+    "forms": ["dut", "testbench", "bugfix"],
+    "task_record_count": 30,
+    "classification": "B+C",
+    "classification_detail": "B for canonical profile migration; C for stimulus-relative checker repair"
+  },
+  "profile_parity": {
+    "canonical_source": "benchmark-vabench-release-v4/provenance/dut-base-v3-exact-five-hash-bound-v2",
+    "semantic_fields": [
+      "body_lines",
+      "analyses",
+      "save_signals",
+      "parameters",
+      "corners",
+      "deterministic_seed",
+      "property_ids",
+      "simulator_options_except_evas_profile"
+    ],
+    "assigned_specs": 10,
+    "assigned_specs_pass": 10,
+    "deterministic_regeneration_assigned_file_diffs": 0,
+    "evas_engine": "evas2",
+    "evas_engine_used": "evas2",
+    "profile_smoke_report_sha256": "f0c9f6794c300d72160ac3384795c384f4243c42ee3100fb7a9cd5603df674c5"
+  },
+  "evas": {
+    "evas_engine": "evas2",
+    "evas_engine_used": "evas2",
+    "evas_version": "0.8.2",
+    "evas_backend": "rust",
+    "dut_gold_pass": 10,
+    "bugfix_gold_pass": 10,
+    "testbench_gold_pass": 10,
+    "testbench_mutation_count": 50,
+    "testbench_mutation_killed": 50,
+    "tri_form_task_count": 30,
+    "tri_form_gold_pass": 30,
+    "tri_form_result_sha256": "6bbbacb607700481df04941579af2d909fa8bc5fd9d7ce62eba38b92a47b4385",
+    "runtime_engine_validation": "all 80 EVAS cases reported EVAS 0.8.2, evas-rust, evas_rust_required=true"
+  },
+  "metamorphic": {
+    "formula": "t'=1.37*t+2ns",
+    "evas_engine": "evas2",
+    "evas_engine_used": "evas2",
+    "evas_version": "0.8.2",
+    "evas_backend": "rust",
+    "testbench_gold_pass": 10,
+    "testbench_mutation_count": 50,
+    "testbench_mutation_killed": 50,
+    "result_sha256": "35a15179b7f3222b310d35c92bcd6550b07c8b03d24c193b1fbc3d983e0199a6"
+  },
+  "diagnostics": {
+    "schema_version": "v4-checker-diagnostic-v1",
+    "event_context": "stimulus_relative",
+    "assigned_checker_profiles": 10,
+    "assigned_checker_profiles_pass": 10,
+    "evas_engine": "evas2",
+    "evas_engine_used": "evas2"
+  },
+  "regression": {
+    "evas_engine": "evas2",
+    "evas_engine_used": "evas2",
+    "focused_pytest_pass": 48,
+    "focused_pytest_fail": 0,
+    "compileall_pass": true,
+    "diff_check_pass": true,
+    "broad_preexisting_test_pass": 4,
+    "broad_preexisting_test_fail": 1,
+    "broad_preexisting_failure": "missing benchmark-vabench-release-v1/conformance/evas-spectre/cross_event_post_side_read/meta.json"
+  },
+  "release_audit": {
+    "audit_status": "pass",
+    "certification_status": "refresh_required",
+    "evas_engine": "evas2",
+    "evas_engine_used": "evas2",
+    "manifest_sha256": "f7facde1f44504696016398d955d406a43c05ac2ebaf462dce0e8ee02e9bbc8b",
+    "audit_report_sha256": "2bcbda30c50f89885c43cec433196fd66b084e793720f5626e84880df97d396d",
+    "release_seal_sha256": "8458aa14ce51bfd586b74b4e430faffdc7fc275460f4eeb6d6adcceeae9aec4a"
+  },
+  "spectre": {
+    "status": "not_applicable",
+    "reason": "The repository owner confirmed that this project does not have or require Spectre for this repair campaign.",
+    "policy": "Do not claim or substitute Spectre evidence; acceptance uses Rust EVAS2."
+  },
+  "known_infrastructure_gaps": [
+    "scripts/check_repo_layout.py is referenced by AGENTS.md but is absent from this repository",
+    "an unrelated pre-existing conformance test references missing benchmark-vabench-release-v1/conformance/evas-spectre/cross_event_post_side_read/meta.json"
+  ],
+  "commands": {
+    "profile_regeneration": "python3 benchmark-vabench-release-v4/scripts/render_v4_harness.py",
+    "release_materialization": "python3 benchmark-vabench-release-v4/operations/tri_form_derivation_prep/materialize_tri_form_release.py",
+    "release_audit": "python3 benchmark-vabench-release-v4/operations/tri_form_derivation_prep/audit_tri_form_release.py",
+    "metamorphic_runner": "python3 benchmark-vabench-release-v4/scripts/run_batch34_metamorphic.py"
+  }
+}
