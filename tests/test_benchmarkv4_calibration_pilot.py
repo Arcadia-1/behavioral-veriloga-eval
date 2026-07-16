@@ -889,3 +889,20 @@ def test_testbench_oracle_stages_modern_dut_and_support_paths(tmp_path: Path) ->
 
     assert (run_dir / "dut" / "dut.va").is_file()
     assert (run_dir / "dut" / "support" / "helper.va").is_file()
+
+
+def test_testbench_oracle_failure_excerpt_keeps_error_before_counters() -> None:
+    oracle = load_derived_testbench_oracle()
+    combined = "\n".join(
+        [
+            "Reading netlist tb_candidate.scs",
+            "Error: tb_candidate.scs:4: ahdl source loaded with include",
+            *(f"solver_counter_{index} = 0" for index in range(500)),
+            "evas completes with 1 errors, 0 warnings.",
+        ]
+    )
+
+    excerpt = oracle._simulation_failure_excerpt(combined)
+
+    assert "Error: tb_candidate.scs:4" in excerpt
+    assert "solver_counter_250" not in excerpt
