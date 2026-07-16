@@ -2,10 +2,24 @@
 from __future__ import annotations
 
 from ..api import Checker
+from .stimulus_relative import diagnostic, pass_note, require_signals
+
+
+PROPERTY_IDS = (
+    "P_INITIAL_ZERO",
+    "P_SAMPLED_MEASUREMENT",
+    "P_MAX_RETENTION",
+    "P_MONOTONIC_HOLD",
+    "P_RESET_CLEAR",
+    "P_OUTPUT_SMOOTHING",
+)
+
+
 def check_peak_detector(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "vin", "rst", "vout"}
-    if not rows or not required.issubset(rows[0]):
-        return False, "missing time/vin/rst/vout"
+    missing = require_signals(rows, required, "P_SAMPLED_MEASUREMENT")
+    if missing is not None:
+        return False, missing
 
     vth = 0.45
     times = [row["time"] for row in rows]
@@ -54,16 +68,28 @@ def check_peak_detector(rows: list[dict[str, float]]) -> tuple[bool, str]:
             peak_ok += 1
 
     if clear_checks < 1 or clear_ok < clear_checks:
-        return False, f"reset_clear={clear_ok}/{clear_checks}"
+        return False, diagnostic(
+            "P_RESET_CLEAR",
+            "value_mismatch",
+            expected=f"reset_clear:{clear_checks}/{clear_checks}",
+            observed=f"reset_clear:{clear_ok}/{clear_checks}",
+            event="rst_high_segments",
+        )
     if peak_checks < 2 or peak_ok < peak_checks:
-        return False, f"peak_hold={peak_ok}/{peak_checks} values={peak_notes}"
+        return False, diagnostic(
+            "P_MAX_RETENTION",
+            "value_mismatch",
+            expected=f"peak_hold:{peak_checks}/{peak_checks}",
+            observed=f"peak_hold:{peak_ok}/{peak_checks}",
+            event="non_reset_segments",
+        )
     return True, f"reset_clear={clear_ok}/{clear_checks} peak_hold={peak_ok}/{peak_checks} values={peak_notes}"
 
 def check_v4_peak_detector(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "vin", "rst", "vout"}
-    if not rows or not required.issubset(rows[0]):
-        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
-        return False, "missing_columns=" + ",".join(missing[:12])
+    missing = require_signals(rows, required, "P_SAMPLED_MEASUREMENT")
+    if missing is not None:
+        return False, missing
     base_ok, base_note = check_vbm1_peak_detector(rows)
     if not base_ok:
         return False, base_note
@@ -78,10 +104,22 @@ def check_v4_peak_detector(rows: list[dict[str, float]]) -> tuple[bool, str]:
         else:
             reset_start = None
     if not reset_rows:
-        return False, "peak_reset_not_observable observed=reset_rows:0 expected=>0 window=full_trace"
+        return False, diagnostic(
+            "P_RESET_CLEAR",
+            "missing_event",
+            expected="reset_rows>0",
+            observed="reset_rows:0",
+            event="full_trace",
+        )
     reset_peak = max(row["vout"] for row in reset_rows)
     if reset_peak > 0.12:
-        return False, f"peak_reset_clear observed=vout_peak:{reset_peak:.3f} expected<=0.12 window=rst_high"
+        return False, diagnostic(
+            "P_RESET_CLEAR",
+            "value_mismatch",
+            expected="vout_peak<=0.12",
+            observed=f"vout_peak:{reset_peak:.3f}",
+            event="rst_high",
+        )
     segments: list[list[dict[str, float]]] = []
     current: list[dict[str, float]] = []
     for row in rows:
@@ -104,8 +142,13 @@ def check_v4_peak_detector(rows: list[dict[str, float]]) -> tuple[bool, str]:
         for row in segment[1:]:
             if row["vout"] + 0.04 < prev_vout:
                 failures.append(
-                    f"monotonic_hold observed=vout:{prev_vout:.3f}->{row['vout']:.3f} "
-                    f"expected=nondecreasing window={row['time'] * 1e9:.3f}ns"
+                    diagnostic(
+                        "P_MONOTONIC_HOLD",
+                        "value_mismatch",
+                        expected="nondecreasing_vout",
+                        observed=f"vout:{prev_vout:.3f}->{row['vout']:.3f}",
+                        event="non_reset_segment",
+                    )
                 )
                 break
             prev_vout = row["vout"]
@@ -116,13 +159,26 @@ def check_v4_peak_detector(rows: list[dict[str, float]]) -> tuple[bool, str]:
             max_err = max(max_err, err)
             if err > 0.08:
                 failures.append(
-                    f"peak_above_observed_input observed=vout:{row['vout']:.3f} "
-                    f"expected<=peak_so_far:{expected_peak:.3f} window={row['time'] * 1e9:.3f}ns"
+                    diagnostic(
+                        "P_SAMPLED_MEASUREMENT",
+                        "value_mismatch",
+                        expected=f"vout<=peak_so_far:{expected_peak:.3f}",
+                        observed=f"vout:{row['vout']:.3f}",
+                        event="non_reset_segment",
+                    )
                 )
             prev_vout = row["vout"]
             checks += 1
     if checks < 12:
-        failures.append(f"insufficient_peak_checks observed={checks} expected>=12 window=non_reset_segments")
+        failures.append(
+            diagnostic(
+                "P_MAX_RETENTION",
+                "missing_event",
+                expected="peak_checks>=12",
+                observed=f"peak_checks:{checks}",
+                event="non_reset_segments",
+            )
+        )
     if failures:
         return False, " ".join(failures[:5])
     non_reset_steps = [
@@ -134,10 +190,18 @@ def check_v4_peak_detector(rows: list[dict[str, float]]) -> tuple[bool, str]:
         step_time, max_step = max(non_reset_steps, key=lambda item: item[1])
         if max_step > 0.40:
             return False, (
-                f"output_smoothing observed=max_step:{max_step:.3f} expected<=0.40 "
-                f"window={step_time * 1e9:.3f}ns"
+                diagnostic(
+                    "P_OUTPUT_SMOOTHING",
+                    "value_mismatch",
+                    expected="max_step<=0.40",
+                    observed=f"max_step:{max_step:.3f}",
+                    event="non_reset_step",
+                )
             )
-    return True, f"{base_note} reset_peak={reset_peak:.3f} monotonic_checks={checks} max_err={max_err:.4f}"
+    return True, pass_note(
+        PROPERTY_IDS,
+        f"{base_note} reset_peak={reset_peak:.3f} monotonic_checks={checks} max_err={max_err:.4f}",
+    )
 
 check_vbm1_peak_detector = check_peak_detector
 

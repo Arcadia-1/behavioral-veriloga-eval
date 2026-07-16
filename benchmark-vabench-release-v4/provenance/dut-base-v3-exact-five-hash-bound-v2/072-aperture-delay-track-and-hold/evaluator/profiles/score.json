@@ -1,20 +1,13 @@
 {
   "corners": [],
-  "deck_overrides": {
-    "analyses": [
-      "tran tran stop=140n maxstep=50p"
-    ]
-  },
+  "deck_overrides": {},
   "deterministic_seed": 0,
   "generated_from": {
     "script": "render_v4_harness.py",
     "version": "v4-harness-renderer-v1"
   },
-  "harness_spec_sha256": "f7b0080cefb219b22fa51a3c85b2edf4a017de63d3a34b2fa92f22d4af3a00f8",
-  "parameters": {
-    "maxstep": "100p",
-    "stop_time": "100n"
-  },
+  "harness_spec_sha256": "ca3f6929f0323cf83164707f33b5470dc24cde828868b579a2a0e5c29911c6ed",
+  "parameters": {},
   "profile_name": "score",
   "property_ids": [
     "P_INITIAL_VALUE",

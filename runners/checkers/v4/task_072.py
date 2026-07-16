@@ -2,6 +2,19 @@
 from __future__ import annotations
 
 from ..api import Checker
+from .stimulus_relative import diagnostic, pass_note, require_signals
+
+
+PROPERTY_IDS = (
+    "P_INITIAL_VALUE",
+    "P_APERTURE_ARM",
+    "P_DELAYED_CAPTURE",
+    "P_HOLD",
+    "P_RAIL_OBSERVABILITY",
+    "P_OUTPUT_SMOOTHING",
+)
+
+
 def sample_signal(rows: list[dict[str, float]], signal: str, time_s: float) -> float | None:
     if not rows or signal not in rows[0] or "time" not in rows[0]:
         return None
@@ -65,12 +78,19 @@ def _crossing_times(
 
 def check_track_hold_aperture(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "clk", "vin", "vout"}
-    if not rows or not required.issubset(rows[0]):
-        return False, "missing time/clk/vin/vout"
+    missing = require_signals(rows, required, "P_APERTURE_ARM")
+    if missing is not None:
+        return False, missing
 
     edge_times = _crossing_times(rows, "clk", direction="rising")
     if len(edge_times) < 5:
-        return False, f"too_few_clk_edges={len(edge_times)}"
+        return False, diagnostic(
+            "P_APERTURE_ARM",
+            "missing_event",
+            expected="clk_rises>=5",
+            observed=f"clk_rises:{len(edge_times)}",
+            event="full_trace",
+        )
 
     observations: list[float] = []
     expected: list[float] = []
@@ -86,12 +106,27 @@ def check_track_hold_aperture(rows: list[dict[str, float]]) -> tuple[bool, str]:
             mismatches += 1
 
     if len(observations) < 5:
-        return False, f"insufficient_aperture_samples={len(observations)}"
+        return False, diagnostic(
+            "P_DELAYED_CAPTURE",
+            "missing_event",
+            expected="aperture_samples>=5",
+            observed=f"aperture_samples:{len(observations)}",
+            event="clk_rises",
+        )
     span = max(observations) - min(observations)
     ok = mismatches == 0 and span > 0.40
     obs_text = ",".join(f"{value:.3f}" for value in observations)
     exp_text = ",".join(f"{value:.3f}" for value in expected)
-    return ok, f"aperture_samples={obs_text} expected={exp_text} mismatches={mismatches} span={span:.3f}"
+    note = f"aperture_samples={obs_text} expected={exp_text} mismatches={mismatches} span={span:.3f}"
+    if not ok:
+        return False, diagnostic(
+            "P_DELAYED_CAPTURE",
+            "value_mismatch",
+            expected="mismatches:0,span>0.40",
+            observed=f"mismatches:{mismatches},span:{span:.3f}",
+            event="clk_rises",
+        )
+    return True, note
 
 def sample_signal_at(rows: list[dict[str, float]], signal: str, time_s: float) -> float | None:
     if not rows or "time" not in rows[0] or signal not in rows[0]:
@@ -132,16 +167,22 @@ def _rising_times(rows: list[dict[str, float]], col: str, vth: float = 0.45) -> 
 
 def check_v4_aperture_delay_track_and_hold(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "VDD", "VSS", "clk", "vin", "vout"}
-    if not rows or not required.issubset(rows[0]):
-        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
-        return False, "missing_columns=" + ",".join(missing[:12])
+    missing = require_signals(rows, required, "P_APERTURE_ARM")
+    if missing is not None:
+        return False, missing
     base_ok, base_note = check_vbm1_track_hold_aperture(rows)
     if not base_ok:
         return False, base_note
 
     edges = _rising_times(rows, "clk")
     if len(edges) < 3:
-        return False, f"aperture_delay too_few_clk_edges observed={len(edges)} expected>=3 window=full_trace"
+        return False, diagnostic(
+            "P_APERTURE_ARM",
+            "missing_event",
+            expected="clk_rises>=3",
+            observed=f"clk_rises:{len(edges)}",
+            event="full_trace",
+        )
     delayed_checks = 0
     hold_checks = 0
     rail_observation_checks = 0
@@ -161,8 +202,13 @@ def check_v4_aperture_delay_track_and_hold(rows: list[dict[str, float]]) -> tupl
         max_delayed_err = max(max_delayed_err, delayed_err)
         if delayed_err > 0.06:
             failures.append(
-                f"delayed_capture observed=vout:{vout:.3f} expected=vin_at_aperture:{vin_capture:.3f} "
-                f"window={edge_t * 1e9:.3f}ns"
+                diagnostic(
+                    "P_DELAYED_CAPTURE",
+                    "value_mismatch",
+                    expected=f"vin_at_aperture:{vin_capture:.3f}",
+                    observed=f"vout:{vout:.3f}",
+                    event=f"clk_rise[{idx}]",
+                )
             )
         if abs(vin_capture - vin_edge) > 0.15 and abs(vout - vin_capture) + 0.04 >= abs(vout - vin_edge):
             rail_observation_checks += 1
@@ -174,8 +220,13 @@ def check_v4_aperture_delay_track_and_hold(rows: list[dict[str, float]]) -> tupl
                     hold_checks += 1
                     if abs(held - vout) > 0.04:
                         failures.append(
-                            f"hold observed=vout:{held:.3f} expected=held:{vout:.3f} "
-                            f"window={settle_t * 1e9:.3f}-{hold_t * 1e9:.3f}ns"
+                            diagnostic(
+                                "P_HOLD",
+                                "value_mismatch",
+                                expected=f"held:{vout:.3f}",
+                                observed=f"vout:{held:.3f}",
+                                event=f"clk_rise[{idx}]",
+                            )
                         )
     vdd_span = max(row["VDD"] for row in rows) - min(row["VDD"] for row in rows)
     vss_span = max(row["VSS"] for row in rows) - min(row["VSS"] for row in rows)
@@ -186,19 +237,32 @@ def check_v4_aperture_delay_track_and_hold(rows: list[dict[str, float]]) -> tupl
         vin_max = max(row["vin"] for row in rows)
         if out_min < vin_min - 0.08 or out_max > vin_max + 0.08:
             failures.append(
-                f"rail_observability observed=vout_range:{out_min:.3f}-{out_max:.3f} "
-                f"expected=unclamped_vin_range:{vin_min:.3f}-{vin_max:.3f} window=full_trace"
+                diagnostic(
+                    "P_RAIL_OBSERVABILITY",
+                    "value_mismatch",
+                    expected=f"unclamped_vin_range:{vin_min:.3f}-{vin_max:.3f}",
+                    observed=f"vout_range:{out_min:.3f}-{out_max:.3f}",
+                    event="full_trace",
+                )
             )
     if delayed_checks < 3 or hold_checks < 2:
         failures.append(
-            f"insufficient_aperture_checks observed=delayed:{delayed_checks},hold:{hold_checks} "
-            "expected=delayed>=3,hold>=2 window=clk_edges"
+            diagnostic(
+                "P_DELAYED_CAPTURE",
+                "missing_event",
+                expected="delayed>=3,hold>=2",
+                observed=f"delayed:{delayed_checks},hold:{hold_checks}",
+                event="clk_edges",
+            )
         )
     if failures:
         return False, " ".join(failures[:5])
-    return True, (
-        f"{base_note} delayed_checks={delayed_checks} hold_checks={hold_checks} "
-        f"max_delayed_err={max_delayed_err:.4f} rail_sensitive_edges={rail_observation_checks}"
+    return True, pass_note(
+        PROPERTY_IDS,
+        (
+            f"{base_note} delayed_checks={delayed_checks} hold_checks={hold_checks} "
+            f"max_delayed_err={max_delayed_err:.4f} rail_sensitive_edges={rail_observation_checks}"
+        ),
     )
 
 check_vbm1_track_hold_aperture = check_track_hold_aperture

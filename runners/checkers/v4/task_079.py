@@ -2,6 +2,19 @@
 from __future__ import annotations
 
 from ..api import Checker
+from .stimulus_relative import diagnostic, pass_note, require_signals
+
+
+PROPERTY_IDS = (
+    "P_PHASE_RAMP",
+    "P_PHASE_WRAP",
+    "P_GUARD_WINDOW",
+    "P_GUARD_LOW",
+    "P_RAIL_TRACKING",
+    "P_PERIODICITY",
+)
+
+
 def rising_edges(values: list[float], times: list[float], threshold: float = 0.45) -> list[float]:
     edges: list[float] = []
     for i in range(1, len(values)):
@@ -28,15 +41,22 @@ def weighted_logic_high_fraction(rows: list[dict[str, float]], signal: str, thre
 
 def check_bound_step_period_guard(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "guard_out", "phase_out"}
-    if not rows or not required.issubset(rows[0]):
-        return False, "missing time/guard_out/phase_out"
+    missing = require_signals(rows, required, "P_PHASE_RAMP")
+    if missing is not None:
+        return False, missing
     g = [r["guard_out"] for r in rows]
     p = [r["phase_out"] for r in rows]
     t = [r["time"] for r in rows]
     gth = 0.5 * (max(g) + min(g))
     guard_hi_frac = weighted_logic_high_fraction(rows, "guard_out", gth)
     if not (0.08 <= guard_hi_frac <= 0.30):
-        return False, f"guard_hi_frac_out_of_range={guard_hi_frac:.3f}"
+        return False, diagnostic(
+            "P_GUARD_WINDOW",
+            "value_mismatch",
+            expected="guard_hi_fraction:0.08..0.30",
+            observed=f"guard_hi_fraction:{guard_hi_frac:.3f}",
+            event="full_trace",
+        )
     wraps = sum(1 for i in range(1, len(p)) if p[i] < p[i - 1] - 0.2)
     phase_span = max(p) - min(p)
     guard_rises = len(rising_edges(g, t, threshold=gth))
@@ -60,15 +80,21 @@ def check_bound_step_period_guard(rows: list[dict[str, float]]) -> tuple[bool, s
             period = guard_periods[len(guard_periods) // 2]
             t0 = guard_edges[0]
         else:
-            period = 8.0e-9
-            t0 = rows[0]["time"]
+            return False, diagnostic(
+                "P_PERIODICITY",
+                "missing_event",
+                expected="phase_wraps>=2_or_guard_rises>=2",
+                observed=f"phase_wraps:{len(wrap_times)},guard_rises:{len(guard_edges)}",
+                event="full_trace",
+            )
+        edge_guard = 0.02 * period
         # Check recorded solver points directly. Interpolating a sawtooth across
         # the two samples that bracket a wrap invents a falling ramp which the
         # behavioral source never produced; the same applies to smoothed guard
         # edges. The recorded points already provide ample phase/rail coverage.
         for row in rows:
             sample_t = row["time"]
-            if sample_t < t0 + 0.10e-9:
+            if sample_t < t0 + edge_guard:
                 continue
             vdd = float(row["VDD"])
             vss = float(row["VSS"])
@@ -88,25 +114,42 @@ def check_bound_step_period_guard(rows: list[dict[str, float]]) -> tuple[bool, s
             rail_checks += 1
             phase_time = (sample_t - t0) % period
             edge_margin = min(phase_time, period - phase_time)
-            if edge_margin > 0.15e-9:
+            if edge_margin > edge_guard:
                 max_phase_err = max(max_phase_err, phase_err)
-            if edge_margin > 0.15e-9 and (phase_err > 0.055 or guard_err > 0.055):
-                rail_failure = (
-                    f"rail_tracking observed=phase:{float(row['phase_out']):.3f},guard:{guard_observed:.3f} "
-                    f"expected=phase:{expected_phase:.3f},guard:{expected_guard:.3f} "
-                    f"window={sample_t * 1e9:.3f}ns"
+            if edge_margin > edge_guard and (phase_err > 0.055 or guard_err > 0.055):
+                rail_failure = diagnostic(
+                    "P_RAIL_TRACKING",
+                    "value_mismatch",
+                    expected=f"phase:{expected_phase:.3f},guard:{expected_guard:.3f}",
+                    observed=f"phase:{float(row['phase_out']):.3f},guard:{guard_observed:.3f}",
+                    event="periodic_sample",
                 )
                 break
         if rail_checks < 20:
-            rail_failure = f"insufficient_rail_tracking_samples observed={rail_checks} expected>=20 window=full_trace"
+            rail_failure = diagnostic(
+                "P_RAIL_TRACKING",
+                "missing_event",
+                expected="rail_tracking_samples>=20",
+                observed=f"rail_tracking_samples:{rail_checks}",
+                event="full_trace",
+            )
     if rail_failure:
         return False, rail_failure
     ok = wraps >= 3 and phase_span > 0.5 and guard_rises >= 3
-    return ok, (
+    note = (
         f"guard_rises={guard_rises} wraps={wraps} phase_span={phase_span:.3f} "
         f"guard_hi_frac={guard_hi_frac:.3f} rail_checks={rail_checks} "
         f"max_phase_err={max_phase_err:.3f} max_guard_err={max_guard_err:.3f}"
     )
+    if not ok:
+        return False, diagnostic(
+            "P_PHASE_WRAP",
+            "missing_event",
+            expected="wraps>=3,guard_rises>=3,phase_span>0.5",
+            observed=f"wraps:{wraps},guard_rises:{guard_rises},phase_span:{phase_span:.3f}",
+            event="full_trace",
+        )
+    return True, pass_note(PROPERTY_IDS, note)
 
 CHECKER_ID = "v4_079_ramp_step_source"
 CHECKER: Checker = check_bound_step_period_guard
