@@ -10,7 +10,16 @@
       "tran tran stop=15n maxstep=20p"
     ],
     "body_lines": [
-      "Vclk (vclk 0) vsource type=pulse val0=0 val1=0.9 delay=0.25n period=3n width=0.8n rise=20p fall=20p"
+      "Vclk (vclk 0) vsource type=pulse val0=0 val1=0.9 delay=0.25n period=3n width=0.8n rise=20p fall=20p",
+      "Vb7 (b7 0) vsource type=pwl wave=[0n 0 4.3n 0 4.32n 0.9 7.5n 0.9 7.52n 0 10.2n 0 10.22n 0.9]",
+      "Vb6 (b6 0) vsource type=pwl wave=[0n 0 1n 0 1.02n 0.9 7.5n 0.9 7.52n 0]",
+      "Vb5 (b5 0) vsource type=pwl wave=[0n 0 7.5n 0 7.52n 0.9]",
+      "Vb4 (b4 0) vsource type=pwl wave=[0n 0 1n 0 1.02n 0.9 4.3n 0.9 4.32n 0 7.5n 0 7.52n 0.9 10.2n 0.9 10.22n 0]",
+      "Vb3 (b3 0) vsource type=pwl wave=[0n 0 1n 0 1.02n 0.9 4.3n 0.9 4.32n 0 7.5n 0 7.52n 0.9 10.2n 0.9 10.22n 0]",
+      "Vb2 (b2 0) vsource type=pwl wave=[0n 0 7.5n 0 7.52n 0.9]",
+      "Vb1 (b1 0) vsource type=pwl wave=[0n 0 1n 0 1.02n 0.9 7.5n 0.9 7.52n 0 10.2n 0 10.22n 0.9]",
+      "Vb0 (b0 0) vsource type=pwl wave=[0n 0 4.3n 0 4.32n 0.9 7.5n 0.9 7.52n 0 10.2n 0 10.22n 0.9]",
+      "XDUT (vclk b7 b6 b5 b4 b3 b2 b1 b0 vout) latched_bus_dac8"
     ],
     "header": [
       "simulator lang=spectre",
@@ -44,55 +53,17 @@
     "legacy_score_deck_sha256": "4971f46c329977fa79d0d358316df962811e2a24c09f159ee0b0ffa2bdb761df",
     "notes": [
       "legacy feedback deck was used only to seed the canonical harness spec",
-      "legacy score deck seeded private profile-specific overrides"
+      "legacy score deck seeded private profile-specific overrides",
+      "feedback deck is the canonical stimulus; score is generated with identical semantics"
     ]
   },
   "profile_defaults": {
     "feedback": {
-      "deck_overrides": {
-        "body_lines": [
-          "Vb7 (b7 0) vsource type=pwl wave=[0n 0 4.3n 0 4.32n 0.9 7.5n 0.9 7.52n 0 10.2n 0 10.22n 0.9]",
-          "Vb6 (b6 0) vsource type=pwl wave=[0n 0 1n 0 1.02n 0.9 7.5n 0.9 7.52n 0]",
-          "Vb5 (b5 0) vsource type=pwl wave=[0n 0 7.5n 0 7.52n 0.9]",
-          "Vb4 (b4 0) vsource type=pwl wave=[0n 0 1n 0 1.02n 0.9 4.3n 0.9 4.32n 0 7.5n 0 7.52n 0.9 10.2n 0.9 10.22n 0]",
-          "Vb3 (b3 0) vsource type=pwl wave=[0n 0 1n 0 1.02n 0.9 4.3n 0.9 4.32n 0 7.5n 0 7.52n 0.9 10.2n 0.9 10.22n 0]",
-          "Vb2 (b2 0) vsource type=pwl wave=[0n 0 7.5n 0 7.52n 0.9]",
-          "Vb1 (b1 0) vsource type=pwl wave=[0n 0 1n 0 1.02n 0.9 7.5n 0.9 7.52n 0 10.2n 0 10.22n 0.9]",
-          "Vb0 (b0 0) vsource type=pwl wave=[0n 0 4.3n 0 4.32n 0.9 7.5n 0.9 7.52n 0 10.2n 0 10.22n 0.9]",
-          "",
-          "XDUT (vclk b7 b6 b5 b4 b3 b2 b1 b0 vout) latched_bus_dac8",
-          ""
-        ]
-      },
-      "parameters": {
-        "maxstep": "200p",
-        "stop_time": "100n"
-      },
       "simulatorOptions": {
         "evas_profile": "balanced"
       }
     },
-    "score": {
-      "deck_overrides": {
-        "body_lines": [
-          "Vb7 (b7 0) vsource type=pwl wave=[0n 0 4.1n 0 4.12n 0.9 7.2n 0.9 7.22n 0 10.4n 0 10.42n 0.9]",
-          "Vb6 (b6 0) vsource type=pwl wave=[0n 0 1.1n 0 1.12n 0.9 4.1n 0.9 4.12n 0 10.4n 0 10.42n 0.9]",
-          "Vb5 (b5 0) vsource type=pwl wave=[0n 0 1.1n 0 1.12n 0.9 4.1n 0.9 4.12n 0 7.2n 0 7.22n 0.9]",
-          "Vb4 (b4 0) vsource type=pwl wave=[0n 0.9 4.1n 0.9 4.12n 0 10.4n 0 10.42n 0.9]",
-          "Vb3 (b3 0) vsource type=pwl wave=[0n 0 1.1n 0 1.12n 0.9 4.1n 0.9 4.12n 0 7.2n 0 7.22n 0.9 10.4n 0.9 10.42n 0]",
-          "Vb2 (b2 0) vsource type=pwl wave=[0n 0 1.1n 0 1.12n 0.9 4.1n 0.9 4.12n 0 7.2n 0 7.22n 0.9 10.4n 0.9 10.42n 0]",
-          "Vb1 (b1 0) vsource type=pwl wave=[0n 0 1.1n 0 1.12n 0.9 4.1n 0.9 4.12n 0]",
-          "Vb0 (b0 0) vsource type=pwl wave=[0n 0.9 1.1n 0.9 1.12n 0 7.2n 0 7.22n 0.9 10.4n 0.9 10.42n 0]",
-          "",
-          "XDUT (vclk b7 b6 b5 b4 b3 b2 b1 b0 vout) latched_bus_dac8",
-          ""
-        ]
-      },
-      "parameters": {
-        "maxstep": "100p",
-        "stop_time": "100n"
-      }
-    }
+    "score": {}
   },
   "property_ids": [
     "P_RISING_EDGE_CAPTURE",

@@ -9,7 +9,10 @@
     "analyses": [
       "tran tran stop=150n maxstep=100p"
     ],
-    "body_lines": [],
+    "body_lines": [
+      "Vclk_in (clk_in 0) vsource type=pwl wave=[0 0 10n 0 10.1n 0.9 16n 0 30n 0 30.1n 0.9 40n 0 55n 0 55.1n 0.9 72n 0 90n 0 90.1n 0.9 100n 0 120n 0 120.1n 0.9 126n 0 150n 0]",
+      "XDUT (clk_in valid duty0 duty1 duty2 duty3 duty4 duty5 duty6 duty7) duty_cycle_meter_8b"
+    ],
     "header": [
       "simulator lang=spectre",
       "global 0"
@@ -42,37 +45,17 @@
     "legacy_score_deck_sha256": "8b44df7824d462324b1f322b2dfe38d52520d6401ee846e1735c6a3175f49614",
     "notes": [
       "legacy feedback deck was used only to seed the canonical harness spec",
-      "legacy score deck seeded private profile-specific overrides"
+      "legacy score deck seeded private profile-specific overrides",
+      "feedback deck is the canonical stimulus; score is generated with identical semantics"
     ]
   },
   "profile_defaults": {
     "feedback": {
-      "deck_overrides": {
-        "body_lines": [
-          "Vclk_in (clk_in 0) vsource type=pwl wave=[0 0 10n 0 10.1n 0.9 16n 0 30n 0 30.1n 0.9 40n 0 55n 0 55.1n 0.9 72n 0 90n 0 90.1n 0.9 100n 0 120n 0 120.1n 0.9 126n 0 150n 0]",
-          "XDUT (clk_in valid duty0 duty1 duty2 duty3 duty4 duty5 duty6 duty7) duty_cycle_meter_8b"
-        ]
-      },
-      "parameters": {
-        "maxstep": "200p",
-        "stop_time": "100n"
-      },
       "simulatorOptions": {
         "evas_profile": "balanced"
       }
     },
-    "score": {
-      "deck_overrides": {
-        "body_lines": [
-          "Vclk_in (clk_in 0) vsource type=pwl wave=[0 0 10n 0 10.1n 0.9 16n 0 30n 0 30.1n 0.9 39n 0 55n 0 55.1n 0.9 72n 0 90n 0 90.1n 0.9 100n 0 120n 0 120.1n 0.9 126n 0 150n 0]",
-          "XDUT (clk_in valid duty0 duty1 duty2 duty3 duty4 duty5 duty6 duty7) duty_cycle_meter_8b"
-        ]
-      },
-      "parameters": {
-        "maxstep": "100p",
-        "stop_time": "100n"
-      }
-    }
+    "score": {}
   },
   "property_ids": [
     "P_COMPLETE_CYCLE_MEASUREMENT",

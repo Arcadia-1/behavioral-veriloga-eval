@@ -167,6 +167,27 @@ def test_thermometer_checker_ignores_single_row_vin_ramp_transients() -> None:
     assert checker(rows)[0]
 
 
+def test_slew_rate_dac_checker_rejects_unexcited_trace() -> None:
+    from checkers.v4.registry import load_checker
+
+    checker = load_checker("v4_053_slew_rate_dac4")
+    assert checker is not None
+    rows = [
+        {
+            "time": index * 0.1e-9,
+            "d3": 0.0,
+            "d2": 0.0,
+            "d1": 0.0,
+            "d0": 0.0,
+            "vout": 0.0,
+        }
+        for index in range(80)
+    ]
+    passed, detail = checker(rows)
+    assert not passed
+    assert "insufficient_code_excitation" in detail
+
+
 def _config_latch_row(
     time_s: float,
     *,

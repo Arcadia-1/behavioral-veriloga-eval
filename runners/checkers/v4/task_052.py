@@ -96,7 +96,7 @@ def check_v3_497_thermometer_bus_encoder(rows: list[dict[str, float]]) -> tuple[
                 "wrong_segment_count",
                 expected=f"active_count={code}",
                 observed=f"active_count={sum(bits)}",
-                event=event_label("vin_code_segment", sample_index),
+                event=event_label("vin_code_segment", sample_index, row["time"]),
             )
         if any(bits[bit] < bits[bit + 1] for bit in range(WIDTH - 1)):
             return False, diagnostic(
@@ -104,7 +104,7 @@ def check_v3_497_thermometer_bus_encoder(rows: list[dict[str, float]]) -> tuple[
                 "non_prefix_order",
                 expected="contiguous_prefix",
                 observed="higher_segment_without_lower_segment",
-                event=event_label("vin_code_segment", sample_index),
+                event=event_label("vin_code_segment", sample_index, row["time"]),
             )
         if previous_code is not None and row["vin"] >= samples[sample_index - 1][1]["vin"] and code < previous_code:
             return False, diagnostic(
@@ -112,7 +112,7 @@ def check_v3_497_thermometer_bus_encoder(rows: list[dict[str, float]]) -> tuple[
                 "non_monotonic_count",
                 expected="active_count_non_decreasing",
                 observed=f"previous={previous_code},current={code}",
-                event=event_label("vin_code_segment", sample_index),
+                event=event_label("vin_code_segment", sample_index, row["time"]),
             )
         for bit, expected_bit in enumerate(expected):
             value = row[f"t{bit}"]
