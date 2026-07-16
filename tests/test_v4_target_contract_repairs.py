@@ -488,6 +488,53 @@ def test_long_running_families_expose_exact_numeric_contracts() -> None:
                 assert snippet in compact
 
 
+def test_dfe_family_exposes_exact_state_transition_contract() -> None:
+    snippets = (
+        "tap_1andtap_0aredut-driven",
+        "r0=x-w1*h1-w0*h0",
+        "w1=clamp(w1+0.04*r0*h1,-0.18,0.18)",
+        "w0=clamp(w0+0.025*r0*h0,-0.12,0.12)",
+        "h0=h1;h1=d",
+        "tap_1=vcm+w1",
+        "corrected_out=clamp(vcm+r,vss,vdd)",
+    )
+    family = (
+        ROOT
+        / "benchmark-vabench-release-v4"
+        / "provenance"
+        / "dut-base-v3-exact-five-hash-bound-v2"
+        / "331-dfe-error-proxy-loop"
+    )
+    compact = (
+        (family / "public" / "task" / "instruction.md")
+        .read_text()
+        .lower()
+        .replace(" ", "")
+        .replace("\n", "")
+        .replace("`", "")
+    )
+    for snippet in snippets:
+        assert snippet in compact
+
+    spec = json.loads((family / "evaluator" / "family_spec.json").read_text())
+    modules = {
+        module["name"]: module
+        for file_record in spec["artifact_contract"]["files"]
+        for module in file_record["modules"]
+    }
+    top_parameter_names = [
+        parameter["name"]
+        for parameter in modules["dfe_error_proxy_loop_top"]["parameters"]
+    ]
+    assert top_parameter_names[-1] == "residual_tol"
+    assert [port["name"] for port in modules["decision_history"]["ports"]] == [
+        "sample_in", "decision_clk", "rst", "enable", "hist_1", "hist_0"
+    ]
+    assert [port["name"] for port in modules["feedback_correction_core"]["ports"]][-5:] == [
+        "tap_1", "tap_0", "corrected_out", "error_metric", "converged"
+    ]
+
+
 def test_repaired_testbench_bindings_match_reference_trace_names() -> None:
     expected = {
         "517-strongarm-style-latch-comparator-testbench": {
