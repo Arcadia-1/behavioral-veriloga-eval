@@ -211,7 +211,12 @@
           }
         ],
         "module_ref": "time_diff_detector",
-        "name": "XDUT"
+        "name": "XDUT",
+        "parameter_overrides": {
+          "scale": "1e9",
+          "tr": "1p",
+          "vdd": "0.9"
+        }
       }
     ],
     "source_path_template": "./dut/{artifact_path}"

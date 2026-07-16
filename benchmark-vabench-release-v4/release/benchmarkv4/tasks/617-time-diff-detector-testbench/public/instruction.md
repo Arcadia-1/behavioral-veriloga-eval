@@ -21,7 +21,7 @@ Stable public Spectre binding:
 The submitted `testbench.scs` must use the supplied DUT through this public binding:
 
 - Include path: `./dut/time_diff_detector.va`
-- DUT instance: `XDUT (clk vinp vinn vout) time_diff_detector`
+- DUT instance: `XDUT (clk vinp vinn vout) time_diff_detector scale=1e9 tr=1p vdd=0.9`
 - Required saved public traces: `clk`, `vinp`, `vinn`, `vout`
 - Use one bounded transient analysis with a finite positive stop time.
 

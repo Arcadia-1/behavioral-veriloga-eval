@@ -97,6 +97,7 @@ def _negative_bundle_sources(negative_bundle: Path, target_artifacts: list[str])
     for artifact in target_artifacts:
         by_basename.setdefault(Path(artifact).name, []).append(artifact)
     mapped: dict[str, Path] = {}
+    deferred: list[Path] = []
     for source in candidates:
         relative = source.relative_to(negative_bundle).as_posix()
         if relative in target_artifacts:
@@ -105,13 +106,18 @@ def _negative_bundle_sources(negative_bundle: Path, target_artifacts: list[str])
             matches = by_basename.get(source.name) or []
             if len(matches) == 1:
                 target = matches[0]
-            elif len(target_artifacts) == 1 and len(candidates) == 1:
-                target = target_artifacts[0]
             else:
-                raise ValueError(f"cannot map negative artifact {relative} into declared DUT bundle")
+                deferred.append(source)
+                continue
         if target in mapped:
             raise ValueError(f"negative bundle maps multiple files to {target}")
         mapped[target] = source
+    for source in deferred:
+        target = _target_name_for_negative(source, target_artifacts)
+        if target not in mapped:
+            mapped[target] = source
+    if not mapped:
+        raise ValueError("negative bundle does not map to a declared DUT artifact")
     return mapped
 
 
@@ -164,6 +170,16 @@ def _prepare_dut_sources(
         if not source.is_file():
             raise SystemExit(f"missing public support artifact: {source}")
         target = include_target(str(item.get("testbench_include_path") or ""))
+        target.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copy2(source, target)
+    for public_path in (public_contract or {}).get("supplied_support_artifacts") or []:
+        relative = str(public_path).removeprefix("supplied_dut/")
+        source = source_formal / "solution" / relative
+        if not source.is_file():
+            source = source_formal / "trusted_solution" / relative
+        if not source.is_file():
+            raise SystemExit(f"missing public support artifact: {source}")
+        target = run_dir / "dut" / relative
         target.parent.mkdir(parents=True, exist_ok=True)
         shutil.copy2(source, target)
 

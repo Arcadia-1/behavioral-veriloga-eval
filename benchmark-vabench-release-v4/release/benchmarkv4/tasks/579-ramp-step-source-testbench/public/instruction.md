@@ -21,7 +21,7 @@ Stable public Spectre binding:
 The submitted `testbench.scs` must use the supplied DUT through this public binding:
 
 - Include path: `./dut/bound_step_period_guard_ref.va`
-- DUT instance: `XDUT (VDD VSS guard_out phase_out) bound_step_period_guard_ref`
+- DUT instance: `IDUT (VDD VSS guard_out phase_out) bound_step_period_guard_ref period=8n points_per_period=16 pulse_w=1.5n tedge=40p`
 - Required saved public traces: `VDD`, `VSS`, `guard_out`, `phase_out`
 - Use one bounded transient analysis with a finite positive stop time.
 

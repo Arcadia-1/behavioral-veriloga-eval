@@ -137,7 +137,10 @@
           }
         ],
         "module_ref": "file_metric_writer",
-        "name": "XDUT"
+        "name": "XDUT",
+        "parameter_overrides": {
+          "filename": "\"metric.out\""
+        }
       }
     ],
     "source_path_template": "./dut/{artifact_path}"

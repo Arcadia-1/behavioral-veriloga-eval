@@ -21,7 +21,7 @@ Stable public Spectre binding:
 The submitted `testbench.scs` must use the supplied DUT through this public binding:
 
 - Include path: `./dut/vin_src.va`
-- DUT instance: `XDUT (clk rst_n vinp vinn) vin_src`
+- DUT instance: `IVIN (clk rst_n vinp vinn) vin_src SEED=0 ampl=0.02 freq=fin sigma=VIN_NOISE vdd=vdd vth=0.45`
 - Required saved public traces: `clk`, `rst_n`, `vinp`, `vinn`, `vamp_p`, `vamp_n`
 - Use one bounded transient analysis with a finite positive stop time.
 

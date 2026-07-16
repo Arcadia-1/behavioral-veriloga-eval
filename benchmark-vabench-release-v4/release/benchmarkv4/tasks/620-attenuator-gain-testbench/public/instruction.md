@@ -19,7 +19,7 @@ Stable public Spectre binding:
 The submitted `testbench.scs` must use the supplied DUT through this public binding:
 
 - Include path: `./dut/attenuator_gain.va`
-- DUT instance: `XDUT (vin vout) attenuator_gain`
+- DUT instance: `XDUT (vin vout) attenuator_gain attenuation=6.020599913279624`
 - Required saved public traces: `vin`, `vout`
 - Use one bounded transient analysis with a finite positive stop time.
 

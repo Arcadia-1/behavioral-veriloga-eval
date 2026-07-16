@@ -142,7 +142,10 @@
           }
         ],
         "module_ref": "attenuator_gain",
-        "name": "XDUT"
+        "name": "XDUT",
+        "parameter_overrides": {
+          "attenuation": "6.020599913279624"
+        }
       }
     ],
     "source_path_template": "./dut/{artifact_path}"

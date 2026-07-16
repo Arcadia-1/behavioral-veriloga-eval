@@ -192,7 +192,11 @@
           }
         ],
         "module_ref": "cmp_hysteresis",
-        "name": "XDUT"
+        "name": "XFB_DUT",
+        "parameter_overrides": {
+          "tedge": "50p",
+          "vhys": "10m"
+        }
       }
     ],
     "source_path_template": "./dut/{artifact_path}"

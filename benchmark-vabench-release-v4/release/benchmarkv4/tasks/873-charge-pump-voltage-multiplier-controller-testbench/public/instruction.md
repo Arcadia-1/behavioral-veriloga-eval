@@ -52,7 +52,7 @@ Stable public Spectre binding:
 The submitted `testbench.scs` must use the supplied DUT through this public binding:
 
 - Include paths: `./dut/phase_generator.va`, `./dut/pump_stage_model.va`, `./dut/regulation_comparator.va`, `./dut/voltage_multiplier_top.va`
-- DUT instance: `XDUT (clk rst enable target vout phase_a phase_b pump_en regulation_error ready) voltage_multiplier_top`
+- DUT instance: `XDUT (clk rst enable target vout phase_a phase_b pump_en regulation_error ready) voltage_multiplier_top leak_step=0.005 pump_step=0.04 ready_tol=0.025`
 - Required saved public traces: `clk`, `rst`, `enable`, `target`, `vout`, `phase_a`, `phase_b`, `pump_en`, `regulation_error`, `ready`
 - Use one bounded transient analysis with a finite positive stop time.
 

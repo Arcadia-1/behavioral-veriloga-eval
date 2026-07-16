@@ -23,7 +23,7 @@ Stable public Spectre binding:
 The submitted `testbench.scs` must use the supplied DUT through this public binding:
 
 - Include path: `./dut/three_way_threshold_mux.va`
-- DUT instance: `XDUT (sigin1 sigin2 sigin3 cntrlp cntrlm sigout) three_way_threshold_mux`
+- DUT instance: `XDUT (sigin1 sigin2 sigin3 cntrlp cntrlm sigout) three_way_threshold_mux sigth_high=0.2 sigth_low=-0.2`
 - Required saved public traces: `cntrlm`, `cntrlp`, `sigin1`, `sigin2`, `sigin3`, `sigout`
 - Use one bounded transient analysis with a finite positive stop time.
 

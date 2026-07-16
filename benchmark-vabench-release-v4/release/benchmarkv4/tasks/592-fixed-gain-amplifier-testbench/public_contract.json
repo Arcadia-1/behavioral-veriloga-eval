@@ -182,7 +182,11 @@
           }
         ],
         "module_ref": "gain_amp_fixed",
-        "name": "XDUT"
+        "name": "XDUT",
+        "parameter_overrides": {
+          "ACTUAL_GAIN": "gain",
+          "vdd": "vdd"
+        }
       }
     ],
     "source_path_template": "./dut/{artifact_path}"

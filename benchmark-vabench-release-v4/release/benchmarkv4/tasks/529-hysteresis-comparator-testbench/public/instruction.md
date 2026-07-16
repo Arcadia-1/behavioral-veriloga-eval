@@ -23,7 +23,7 @@ Stable public Spectre binding:
 The submitted `testbench.scs` must use the supplied DUT through this public binding:
 
 - Include path: `./dut/cmp_hysteresis.va`
-- DUT instance: `XDUT (vinn vinp out_n out_p vss vdd) cmp_hysteresis`
+- DUT instance: `XFB_DUT (vinn vinp out_n out_p vss vdd) cmp_hysteresis tedge=50p vhys=10m`
 - Required saved public traces: `vinn`, `vinp`, `out_n`, `out_p`, `vss`, `vdd`
 - Use one bounded transient analysis with a finite positive stop time.
 

@@ -23,7 +23,7 @@ Stable public Spectre binding:
 The submitted `testbench.scs` must use the supplied DUT through this public binding:
 
 - Include path: `./dut/charge_pump_abstraction.va`
-- DUT instance: `XDUT (clk rst up dn vctrl metric) charge_pump_abstraction`
+- DUT instance: `XFB_DUT (clk rst up dn vctrl metric) charge_pump_abstraction`
 - Required saved public traces: `clk`, `rst`, `up`, `dn`, `vctrl`, `metric`
 - Use one bounded transient analysis with a finite positive stop time.
 

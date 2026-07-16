@@ -32,6 +32,9 @@ RUN_CAMPAIGN = (
     / "run_campaign.py"
 )
 TESTBENCH_SECURITY = ROOT / "benchmark-vabench-release-v4" / "runners" / "testbench_security.py"
+DERIVED_TESTBENCH_ORACLE = (
+    ROOT / "benchmark-vabench-release-v4" / "runners" / "derived_testbench_oracle.py"
+)
 RENDER_HARNESS = ROOT / "benchmark-vabench-release-v4" / "scripts" / "render_v4_harness.py"
 FEEDBACK_ADAPTER = (
     ROOT
@@ -71,6 +74,18 @@ def load_run_campaign():
 
 def load_testbench_security():
     spec = importlib.util.spec_from_file_location("testbench_security", TESTBENCH_SECURITY)
+    assert spec is not None
+    module = importlib.util.module_from_spec(spec)
+    assert spec.loader is not None
+    sys.modules[spec.name] = module
+    spec.loader.exec_module(module)
+    return module
+
+
+def load_derived_testbench_oracle():
+    spec = importlib.util.spec_from_file_location(
+        "derived_testbench_oracle", DERIVED_TESTBENCH_ORACLE
+    )
     assert spec is not None
     module = importlib.util.module_from_spec(spec)
     assert spec.loader is not None
@@ -797,3 +812,59 @@ def test_benchmarkv4_testbench_security_enforces_instance_parameters_and_uniquen
     )
     valid = security.validate_testbench(candidate, contract, policy)
     assert valid.valid, valid.diagnostics
+
+
+def test_testbench_security_allows_declared_read_only_support() -> None:
+    security = load_testbench_security()
+    contract = {
+        "artifact_contract": {"files": [{"path": "dut.va"}]},
+        "supplied_support_artifacts": ["supplied_dut/support/helper.va"],
+        "testbench_binding": {"source_path_template": "./dut/{artifact_path}"},
+    }
+
+    assert security._allowed_includes(contract) == {
+        "./dut/dut.va",
+        "./dut/support/helper.va",
+    }
+
+
+def test_negative_bundle_prefers_declared_artifact_over_legacy_alias(tmp_path: Path) -> None:
+    oracle = load_derived_testbench_oracle()
+    bundle = tmp_path / "negative"
+    bundle.mkdir()
+    declared = bundle / "cmp_offset_ref.va"
+    alias = bundle / "neg_001.va"
+    declared.write_text("module cmp_offset_ref; endmodule\n", encoding="utf-8")
+    alias.write_text("module legacy_alias; endmodule\n", encoding="utf-8")
+
+    mapped = oracle._negative_bundle_sources(bundle, ["cmp_offset_ref.va"])
+
+    assert mapped == {"cmp_offset_ref.va": declared}
+
+
+def test_testbench_oracle_stages_modern_dut_and_support_paths(tmp_path: Path) -> None:
+    oracle = load_derived_testbench_oracle()
+    evaluator = tmp_path / "evaluator"
+    (evaluator / "solution" / "support").mkdir(parents=True)
+    (evaluator / "solution" / "dut.va").write_text(
+        "module dut; endmodule\n", encoding="utf-8"
+    )
+    (evaluator / "solution" / "support" / "helper.va").write_text(
+        "module helper; endmodule\n", encoding="utf-8"
+    )
+    run_dir = tmp_path / "run"
+    run_dir.mkdir()
+
+    oracle._prepare_dut_sources(
+        package_root=ROOT,
+        source_formal=evaluator,
+        run_dir=run_dir,
+        target_artifacts=["dut.va"],
+        dut_subdir="dut",
+        public_contract={
+            "supplied_support_artifacts": ["supplied_dut/support/helper.va"]
+        },
+    )
+
+    assert (run_dir / "dut" / "dut.va").is_file()
+    assert (run_dir / "dut" / "support" / "helper.va").is_file()

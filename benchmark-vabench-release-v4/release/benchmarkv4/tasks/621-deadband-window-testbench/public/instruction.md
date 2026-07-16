@@ -19,7 +19,7 @@ Stable public Spectre binding:
 The submitted `testbench.scs` must use the supplied DUT through this public binding:
 
 - Include path: `./dut/deadband_window.va`
-- DUT instance: `XDUT (sigin sigout) deadband_window`
+- DUT instance: `XDUT (sigin sigout) deadband_window dead_high=0.2 dead_low=-0.2`
 - Required saved public traces: `sigin`, `sigout`
 - Use one bounded transient analysis with a finite positive stop time.
 

@@ -88,7 +88,7 @@ def mutation_bundle(source_eval: Path, mutation_id: str, target_artifacts: list[
         raise SystemExit(f"cannot resolve mutation bundle for {mutation_id}")
     present = {path.relative_to(directory).as_posix() for path in directory.rglob("*.va")}
     expected = set(target_artifacts)
-    if not present or not present.issubset(expected):
+    if not present.intersection(expected):
         raise SystemExit(f"mutation bundle {mutation_id} does not map to the declared DUT artifacts")
     return directory
 
@@ -139,6 +139,7 @@ def run_testbench_feedback(runtime: Path, record: dict[str, Any], task_dir: Path
         checker_task_id=checker_task_id,
         required_signals=required_signals,
         label="reference",
+        dut_subdir="dut",
         public_contract=contract,
     )
     for note in gold.notes:
@@ -161,6 +162,7 @@ def run_testbench_feedback(runtime: Path, record: dict[str, Any], task_dir: Path
             checker_task_id=checker_task_id,
             required_signals=required_signals,
             label=f"negative_{index}",
+            dut_subdir="dut",
             public_contract=contract,
         )
         negative_results.append(result)

@@ -253,7 +253,14 @@
           }
         ],
         "module_ref": "bbpd_data_edge_alignment_ref",
-        "name": "XDUT"
+        "name": "XDUT",
+        "parameter_overrides": {
+          "clk_delay": "10n",
+          "clk_period": "20n",
+          "deadzone": "0.8n",
+          "poll_dt": "50p",
+          "pulse_w": "1n"
+        }
       }
     ],
     "source_path_template": "./dut/{artifact_path}"

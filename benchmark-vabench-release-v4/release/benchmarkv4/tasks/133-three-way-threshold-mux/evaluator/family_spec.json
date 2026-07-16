@@ -170,7 +170,11 @@
           }
         ],
         "module_ref": "three_way_threshold_mux",
-        "name": "XDUT"
+        "name": "XDUT",
+        "parameter_overrides": {
+          "sigth_high": "0.2",
+          "sigth_low": "-0.2"
+        }
       }
     ],
     "source_path_template": "./dut/{artifact_path}"

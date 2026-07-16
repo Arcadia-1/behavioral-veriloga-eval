@@ -21,7 +21,7 @@ Stable public Spectre binding:
 The submitted `testbench.scs` must use the supplied DUT through this public binding:
 
 - Include path: `./dut/phase_accumulator_timer_wrap_ref.va`
-- DUT instance: `XDUT (VDD VSS clk_out phase_out) phase_accumulator_timer_wrap_ref`
+- DUT instance: `XFB_DUT (VDD VSS clk_out phase_out) phase_accumulator_timer_wrap_ref dt=4n phase_step=0.2 tedge=160p`
 - Required saved public traces: `VDD`, `VSS`, `clk_out`, `phase_out`
 - Use one bounded transient analysis with a finite positive stop time.
 

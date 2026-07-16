@@ -24,7 +24,7 @@ Stable public Spectre binding:
 The submitted `testbench.scs` must use the supplied DUT through this public binding:
 
 - Include path: `./dut/current_limited_regulator_macro.va`
-- DUT instance: `XDUT (vin load_demand enable rst vout limit_metric regulation_ok) current_limited_regulator_macro`
+- DUT instance: `XDUT (vin load_demand enable rst vout limit_metric regulation_ok) current_limited_regulator_macro demand_limit=0.65 dropout=0.08 vref=0.75`
 - Required saved public traces: `vin`, `load_demand`, `enable`, `rst`, `vout`, `limit_metric`, `regulation_ok`
 - Use one bounded transient analysis with a finite positive stop time.
 

@@ -22,7 +22,7 @@ Stable public Spectre binding:
 The submitted `testbench.scs` must use the supplied DUT through this public binding:
 
 - Include path: `./dut/bandgap_reference_macro_model.va`
-- DUT instance: `XDUT (clk rst vin out metric) bandgap_reference_macro_model`
+- DUT instance: `XFB_DUT (clk rst vin out metric) bandgap_reference_macro_model`
 - Required saved public traces: `clk`, `rst`, `vin`, `out`, `metric`
 - Use one bounded transient analysis with a finite positive stop time.
 

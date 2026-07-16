@@ -628,7 +628,11 @@
           }
         ],
         "module_ref": "buck_ctrl_top",
-        "name": "XDUT"
+        "name": "XDUT",
+        "parameter_overrides": {
+          "pgood_tol": "0.025",
+          "soft_step": "0.025"
+        }
       }
     ],
     "source_path_template": "./dut/{artifact_path}"

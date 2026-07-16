@@ -20,7 +20,7 @@ Stable public Spectre binding:
 The submitted `testbench.scs` must use the supplied DUT through this public binding:
 
 - Include path: `./dut/clk_burst_gen.va`
-- DUT instance: `XDUT (CLK RST_N CLK_OUT) clk_burst_gen`
+- DUT instance: `IDUT (CLK RST_N CLK_OUT) clk_burst_gen div=8 vdd=0.9 vth=0.45`
 - Required saved public traces: `CLK`, `RST_N`, `CLK_OUT`
 - Use one bounded transient analysis with a finite positive stop time.
 

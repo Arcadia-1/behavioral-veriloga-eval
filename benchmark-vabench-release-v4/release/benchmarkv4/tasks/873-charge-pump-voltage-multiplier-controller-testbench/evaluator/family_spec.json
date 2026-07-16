@@ -574,7 +574,12 @@
           }
         ],
         "module_ref": "voltage_multiplier_top",
-        "name": "XDUT"
+        "name": "XDUT",
+        "parameter_overrides": {
+          "leak_step": "0.005",
+          "pump_step": "0.04",
+          "ready_tol": "0.025"
+        }
       }
     ],
     "source_path_template": "./dut/{artifact_path}"

@@ -30,7 +30,7 @@ Stable public Spectre binding:
 The submitted `testbench.scs` must use the supplied DUT through this public binding:
 
 - Include path: `./dut/dac_restore_10bit_offset.va`
-- DUT instance: `XDUT (d1 d2 d3 d4 d5 d6 d7 d8 d9 d10 d0 clk vout) dac_restore_10bit_offset`
+- DUT instance: `XDUT (D1 D2 D3 D4 D5 D6 D7 D8 D9 D10 D0 clk vout) dac_restore_10bit_offset`
 - Required saved public traces: `clk`, `D0`, `D1`, `D2`, `D3`, `D4`, `D5`, `D6`, `D7`, `D8`, `D9`, `D10`, `vout`
 - Use one bounded transient analysis with a finite positive stop time.
 

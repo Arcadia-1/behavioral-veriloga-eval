@@ -22,7 +22,7 @@ Stable public Spectre binding:
 The submitted `testbench.scs` must use the supplied DUT through this public binding:
 
 - Include path: `./dut/calibration_deadband_controller.va`
-- DUT instance: `XDUT (clk rst vin out metric) calibration_deadband_controller`
+- DUT instance: `XFB_DUT (clk rst vin out metric) calibration_deadband_controller`
 - Required saved public traces: `clk`, `rst`, `vin`, `out`, `metric`
 - Use one bounded transient analysis with a finite positive stop time.
 

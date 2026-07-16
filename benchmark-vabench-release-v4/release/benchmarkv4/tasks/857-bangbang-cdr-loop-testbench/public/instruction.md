@@ -65,7 +65,7 @@ Stable public Spectre binding:
 The submitted `testbench.scs` must use the supplied DUT through this public binding:
 
 - Include paths: `./dut/cdr_top.va`, `./dut/bbpd.va`, `./dut/loop_filter_code.va`, `./dut/phase_rotator.va`
-- DUT instance: `XDUT (data_edge ref_clk rst enable recovered_clk early late phase_4 phase_3 phase_2 phase_1 phase_0 lock) cdr_top`
+- DUT instance: `XDUT (data_edge ref_clk rst enable recovered_clk early late phase_4 phase_3 phase_2 phase_1 phase_0 lock) cdr_top unit_phase_delay=40p`
 - Required saved public traces: `data_edge`, `ref_clk`, `rst`, `enable`, `recovered_clk`, `early`, `late`, `phase_4`, `phase_3`, `phase_2`, `phase_1`, `phase_0`, `lock`
 - Use one bounded transient analysis with a finite positive stop time.
 

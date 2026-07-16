@@ -332,7 +332,13 @@
           }
         ],
         "module_ref": "pipeline_adc_chain_4b",
-        "name": "XDUT"
+        "name": "IDUT",
+        "parameter_overrides": {
+          "tedge": "100p",
+          "vrefn": "0.0",
+          "vrefp": "0.9",
+          "vth": "0.45"
+        }
       }
     ],
     "source_path_template": "./dut/{artifact_path}"

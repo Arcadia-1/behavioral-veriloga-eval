@@ -600,7 +600,10 @@
           }
         ],
         "module_ref": "dcc_top",
-        "name": "XDUT"
+        "name": "XDUT",
+        "parameter_overrides": {
+          "tr": "20p"
+        }
       }
     ],
     "source_path_template": "./dut/{artifact_path}"

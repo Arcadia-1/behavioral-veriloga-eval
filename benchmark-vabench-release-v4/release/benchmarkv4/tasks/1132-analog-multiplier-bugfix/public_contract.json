@@ -130,7 +130,10 @@
           }
         ],
         "module_ref": "analog_multiplier_gain",
-        "name": "XDUT"
+        "name": "XDUT",
+        "parameter_overrides": {
+          "gain": "2"
+        }
       }
     ],
     "source_path_template": "./dut/{artifact_path}"

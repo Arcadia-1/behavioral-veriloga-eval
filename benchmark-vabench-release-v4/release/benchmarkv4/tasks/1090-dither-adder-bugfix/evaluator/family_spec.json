@@ -184,7 +184,12 @@
           }
         ],
         "module_ref": "dither_adder",
-        "name": "XDUT"
+        "name": "XDUT",
+        "parameter_overrides": {
+          "DITHER_AMP": "dither",
+          "vdd": "vdd",
+          "vth": "0.45"
+        }
       }
     ],
     "source_path_template": "./dut/{artifact_path}"

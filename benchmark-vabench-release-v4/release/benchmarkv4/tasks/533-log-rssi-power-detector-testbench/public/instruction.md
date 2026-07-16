@@ -22,7 +22,7 @@ Stable public Spectre binding:
 The submitted `testbench.scs` must use the supplied DUT through this public binding:
 
 - Include path: `./dut/log_rssi_power_detector.va`
-- DUT instance: `XDUT (clk rst vin out metric) log_rssi_power_detector`
+- DUT instance: `XFB_DUT (clk rst vin out metric) log_rssi_power_detector`
 - Required saved public traces: `clk`, `rst`, `vin`, `out`, `metric`
 - Use one bounded transient analysis with a finite positive stop time.
 

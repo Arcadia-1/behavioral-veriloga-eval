@@ -28,7 +28,7 @@ Stable public Spectre binding:
 The submitted `testbench.scs` must use the supplied DUT through this public binding:
 
 - Include path: `./dut/comparator_delay_overdrive_meter.va`
-- DUT instance: `XDUT (vdd vss clk vinp vinn outp outn delay_ps overdrive_mv polarity valid) comparator_delay_overdrive_meter`
+- DUT instance: `XMEAS (vdd vss clk vinp vinn outp outn delay_ps overdrive_mv polarity valid) comparator_delay_overdrive_meter`
 - Required saved public traces: `clk`, `vinp`, `vinn`, `outp`, `outn`, `delay_ps`, `overdrive_mv`, `polarity`, `valid`
 - Use one bounded transient analysis with a finite positive stop time.
 

@@ -190,7 +190,7 @@
             "position": 0
           },
           {
-            "net": "gnd",
+            "net": "0",
             "port_ref": "GND",
             "position": 1
           },
@@ -216,7 +216,12 @@
           }
         ],
         "module_ref": "latched_comparator_delay",
-        "name": "XDUT"
+        "name": "XDUT",
+        "parameter_overrides": {
+          "td": "500p",
+          "tr": "100p",
+          "vn": "0"
+        }
       }
     ],
     "source_path_template": "./dut/{artifact_path}"

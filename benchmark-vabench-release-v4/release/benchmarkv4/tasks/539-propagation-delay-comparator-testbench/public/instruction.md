@@ -31,8 +31,8 @@ Stable public Spectre binding:
 The submitted `testbench.scs` must use the supplied DUT through this public binding:
 
 - Include paths: `./dut/cmp_delay.va`, `./dut/edge_interval_timer.va`
-- DUT instance: `XCMP (clk vinn vinp out_n out_p lp_int lm_int gnd vdd) cmp_delay`
-- DUT instance: `XTIMER (clk out_p delay_ps) edge_interval_timer`
+- DUT instance: `IDUT (clk vinn vinp out_n out_p lp_int lm_int gnd vdd) cmp_delay`
+- DUT instance: `IEIT (clk out_p delay_ps) edge_interval_timer VTH=0.45`
 - Required saved public traces: `clk`, `vinn`, `vinp`, `out_n`, `out_p`, `lp_int`, `lm_int`, `gnd`, `vdd`, `delay_ps`
 - Use one bounded transient analysis with a finite positive stop time.
 

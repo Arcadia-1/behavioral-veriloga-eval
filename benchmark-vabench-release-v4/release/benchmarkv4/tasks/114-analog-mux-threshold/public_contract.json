@@ -162,7 +162,10 @@
           }
         ],
         "module_ref": "analog_mux_threshold",
-        "name": "XDUT"
+        "name": "XDUT",
+        "parameter_overrides": {
+          "vth": "0.45"
+        }
       }
     ],
     "source_path_template": "./dut/{artifact_path}"

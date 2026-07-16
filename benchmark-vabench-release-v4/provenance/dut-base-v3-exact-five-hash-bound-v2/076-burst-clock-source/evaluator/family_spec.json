@@ -161,7 +161,12 @@
           }
         ],
         "module_ref": "clk_burst_gen",
-        "name": "XDUT"
+        "name": "IDUT",
+        "parameter_overrides": {
+          "div": "8",
+          "vdd": "0.9",
+          "vth": "0.45"
+        }
       }
     ],
     "source_path_template": "./dut/{artifact_path}"

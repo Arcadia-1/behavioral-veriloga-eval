@@ -26,7 +26,7 @@ Stable public Spectre binding:
 The submitted `testbench.scs` must use the supplied DUT through this public binding:
 
 - Include path: `./dut/pipeline_stage.va`
-- DUT instance: `XDUT (VDD VSS PHI1 PHI2 VIN VREF VRES D1 D0) pipeline_stage`
+- DUT instance: `XDUT (vdd vss phi1 phi2 vin vref vres d1 d0) pipeline_stage tedge=200p vdd=0.9 vth=0.45`
 - Required saved public traces: `VDD`, `VSS`, `PHI1`, `PHI2`, `VIN`, `VREF`, `VRES`, `D1`, `D0`
 - Use one bounded transient analysis with a finite positive stop time.
 

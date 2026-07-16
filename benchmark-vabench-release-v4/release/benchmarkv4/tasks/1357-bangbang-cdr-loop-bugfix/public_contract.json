@@ -693,7 +693,10 @@
           }
         ],
         "module_ref": "cdr_top",
-        "name": "XDUT"
+        "name": "XDUT",
+        "parameter_overrides": {
+          "unit_phase_delay": "40p"
+        }
       }
     ],
     "source_path_template": "./dut/{artifact_path}"

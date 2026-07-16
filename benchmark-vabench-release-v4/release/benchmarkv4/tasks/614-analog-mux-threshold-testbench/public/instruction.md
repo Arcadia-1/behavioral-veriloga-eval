@@ -21,7 +21,7 @@ Stable public Spectre binding:
 The submitted `testbench.scs` must use the supplied DUT through this public binding:
 
 - Include path: `./dut/analog_mux_threshold.va`
-- DUT instance: `XDUT (vin1 vin2 vsel vout) analog_mux_threshold`
+- DUT instance: `XDUT (vin1 vin2 vsel vout) analog_mux_threshold vth=0.45`
 - Required saved public traces: `vin1`, `vin2`, `vsel`, `vout`
 - Use one bounded transient analysis with a finite positive stop time.
 

@@ -21,7 +21,7 @@ Stable public Spectre binding:
 The submitted `testbench.scs` must use the supplied DUT through this public binding:
 
 - Include path: `./dut/polynomial_differential_vcvs.va`
-- DUT instance: `XDUT (inp inn outp outn) polynomial_differential_vcvs`
+- DUT instance: `XDUT (inp inn outp outn) polynomial_differential_vcvs a1=2 a2=0 a3=1 a5=0 a7=0 vcmo=0.5 vsat=0.3`
 - Required saved public traces: `inn`, `inp`, `outn`, `outp`
 - Use one bounded transient analysis with a finite positive stop time.
 

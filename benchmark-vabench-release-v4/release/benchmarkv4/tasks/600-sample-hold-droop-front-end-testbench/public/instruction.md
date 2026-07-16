@@ -24,7 +24,7 @@ Stable public Spectre binding:
 The submitted `testbench.scs` must use the supplied DUT through this public binding:
 
 - Include path: `./dut/sample_hold_droop_ref.va`
-- DUT instance: `XDUT (vdd vss clk vin vout valid coarse) sample_hold_droop_ref`
+- DUT instance: `XDUT (vdd vss clk vin vout valid coarse) sample_hold_droop_ref dt=0.5n taperture=200p tau=90n trf=40p valid_width=2n vth=0.45`
 - Required saved public traces: `vdd`, `vss`, `clk`, `vin`, `vout`, `valid`, `coarse`
 - Use one bounded transient analysis with a finite positive stop time.
 
