@@ -12,13 +12,11 @@
     ],
     "body_lines": [
       "// Gold smoke testbench for CPPLL relock after a reference-frequency step.",
+      "",
       "vdd_SRC (vdd 0) vsource type=dc dc=0.9",
       "vss_SRC (vss 0) vsource type=dc dc=0",
-      "XREF (vdd vss ref_clk) ref_step_clk \\",
-      "period_pre=20.4n period_post=19.8n t_switch=2u tedge=100p",
-      "XDUT (vdd vss ref_clk fb_clk dco_clk vctrl_mon lock) cppll_timer_ref \\",
-      "div_ratio=8 f_center=784.313725e6 kvco_hz_per_v=220e6 f_min=500e6 f_max=1.2e9 \\",
-      "kp=2.5e6 ki=8.0e4 vctrl_init=0.45 tedge=1n lock_tol=1.2n lock_count_target=4"
+      "",
+      "XREF (vdd vss ref_clk) ref_step_clk \\"
     ],
     "header": [
       "simulator lang=spectre",
@@ -49,17 +47,45 @@
     "legacy_score_deck_sha256": "bd002043b280b3ee88d55bf3ac2e7d6169a48572b432d1b688077db601d4981d",
     "notes": [
       "legacy feedback deck was used only to seed the canonical harness spec",
-      "legacy score deck seeded private profile-specific overrides",
-      "feedback deck is the canonical stimulus; score is generated with identical semantics"
+      "legacy score deck seeded private profile-specific overrides"
     ]
   },
   "profile_defaults": {
     "feedback": {
+      "deck_overrides": {
+        "body_lines": [
+          "    period_pre=20.4n period_post=19.8n t_switch=2u tedge=100p",
+          "",
+          "XDUT (vdd vss ref_clk fb_clk dco_clk vctrl_mon lock) cppll_timer_ref \\",
+          "    div_ratio=8 f_center=784.313725e6 kvco_hz_per_v=220e6 f_min=500e6 f_max=1.2e9 \\",
+          "    kp=2.5e6 ki=8.0e4 vctrl_init=0.45 tedge=1n lock_tol=1.2n lock_count_target=4",
+          ""
+        ]
+      },
+      "parameters": {
+        "maxstep": "200p",
+        "stop_time": "100n"
+      },
       "simulatorOptions": {
         "evas_profile": "balanced"
       }
     },
-    "score": {}
+    "score": {
+      "deck_overrides": {
+        "body_lines": [
+          "    period_pre=20n period_post=19.5n t_switch=2u tedge=100p",
+          "",
+          "XDUT (vdd vss ref_clk fb_clk dco_clk vctrl_mon lock) cppll_timer_ref \\",
+          "    div_ratio=8 f_center=800e6 kvco_hz_per_v=220e6 f_min=500e6 f_max=1.2e9 \\",
+          "    kp=2.5e6 ki=8.0e4 vctrl_init=0.45 tedge=1n lock_tol=1.2n lock_count_target=4",
+          ""
+        ]
+      },
+      "parameters": {
+        "maxstep": "100p",
+        "stop_time": "100n"
+      }
+    }
   },
   "property_ids": [
     "P_REFERENCE_PERIOD_STEP",
