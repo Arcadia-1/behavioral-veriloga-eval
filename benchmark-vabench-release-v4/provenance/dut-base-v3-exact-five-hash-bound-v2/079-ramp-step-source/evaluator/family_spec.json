@@ -182,7 +182,13 @@
           }
         ],
         "module_ref": "bound_step_period_guard_ref",
-        "name": "XDUT"
+        "name": "IDUT",
+        "parameter_overrides": {
+          "period": "8n",
+          "points_per_period": "16",
+          "pulse_w": "1.5n",
+          "tedge": "40p"
+        }
       }
     ],
     "source_path_template": "./dut/{artifact_path}"

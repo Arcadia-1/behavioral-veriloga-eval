@@ -395,7 +395,10 @@
           }
         ],
         "module_ref": "v2b_4b",
-        "name": "XV2B"
+        "name": "IV2B",
+        "parameter_overrides": {
+          "vdd": "0.9"
+        }
       },
       {
         "connections": [
@@ -591,7 +594,12 @@
           }
         ],
         "module_ref": "dwa_ptr_gen",
-        "name": "XDWA"
+        "name": "IDUT",
+        "parameter_overrides": {
+          "ptr_init": "0",
+          "vdd": "0.9",
+          "vth": "0.45"
+        }
       }
     ],
     "source_path_template": "./dut/{artifact_path}"

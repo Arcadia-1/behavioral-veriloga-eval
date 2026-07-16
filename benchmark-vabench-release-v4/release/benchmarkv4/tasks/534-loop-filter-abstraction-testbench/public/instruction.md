@@ -22,7 +22,7 @@ Stable public Spectre binding:
 The submitted `testbench.scs` must use the supplied DUT through this public binding:
 
 - Include path: `./dut/loop_filter_abstraction.va`
-- DUT instance: `XDUT (clk rst vin out metric) loop_filter_abstraction`
+- DUT instance: `XFB_DUT (clk rst vin out metric) loop_filter_abstraction`
 - Required saved public traces: `clk`, `rst`, `vin`, `out`, `metric`
 - Use one bounded transient analysis with a finite positive stop time.
 

@@ -23,7 +23,7 @@ Stable public Spectre binding:
 The submitted `testbench.scs` must use the supplied DUT through this public binding:
 
 - Include path: `./dut/cross_interval_163p333_ref.va`
-- DUT instance: `XDUT (vdd vss a b delay_out seen_out) cross_interval_163p333_ref`
+- DUT instance: `IDUT (vdd vss a b delay_out seen_out) cross_interval_163p333_ref`
 - Required saved public traces: `vdd`, `vss`, `a`, `b`, `delay_out`, `seen_out`
 - Use one bounded transient analysis with a finite positive stop time.
 

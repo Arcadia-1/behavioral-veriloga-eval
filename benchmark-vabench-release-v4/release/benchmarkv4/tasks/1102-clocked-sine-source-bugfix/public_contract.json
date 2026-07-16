@@ -212,7 +212,15 @@
           }
         ],
         "module_ref": "vin_src",
-        "name": "XDUT"
+        "name": "IVIN",
+        "parameter_overrides": {
+          "SEED": "0",
+          "ampl": "0.02",
+          "freq": "fin",
+          "sigma": "VIN_NOISE",
+          "vdd": "vdd",
+          "vth": "0.45"
+        }
       }
     ],
     "source_path_template": "./dut/{artifact_path}"

@@ -22,7 +22,7 @@ Stable public Spectre binding:
 The submitted `testbench.scs` must use the supplied DUT through this public binding:
 
 - Include path: `./dut/pa_compression_macro.va`
-- DUT instance: `XDUT (clk rst vin out metric) pa_compression_macro`
+- DUT instance: `XFB_DUT (clk rst vin out metric) pa_compression_macro`
 - Required saved public traces: `clk`, `rst`, `vin`, `out`, `metric`
 - Use one bounded transient analysis with a finite positive stop time.
 

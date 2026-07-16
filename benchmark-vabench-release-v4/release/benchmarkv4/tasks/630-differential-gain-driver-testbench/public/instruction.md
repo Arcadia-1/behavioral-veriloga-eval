@@ -22,7 +22,7 @@ Stable public Spectre binding:
 The submitted `testbench.scs` must use the supplied DUT through this public binding:
 
 - Include path: `./dut/differential_gain_driver.va`
-- DUT instance: `XDUT (sigin_p sigin_n sigout_p sigout_n sigref) differential_gain_driver`
+- DUT instance: `XDUT (sigin_p sigin_n sigout_p sigout_n sigref) differential_gain_driver gain=2`
 - Required saved public traces: `sigin_n`, `sigin_p`, `sigout_n`, `sigout_p`, `sigref`
 - Use one bounded transient analysis with a finite positive stop time.
 

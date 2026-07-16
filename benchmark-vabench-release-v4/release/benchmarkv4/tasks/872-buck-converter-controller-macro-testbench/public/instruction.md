@@ -54,7 +54,7 @@ Stable public Spectre binding:
 The submitted `testbench.scs` must use the supplied DUT through this public binding:
 
 - Include paths: `./dut/buck_ctrl_top.va`, `./dut/error_comparator.va`, `./dut/power_good.va`, `./dut/pwm_modulator.va`, `./dut/soft_start.va`
-- DUT instance: `XDUT (vfb vref clk rst enable pwm duty_metric soft_ref pgood) buck_ctrl_top`
+- DUT instance: `XDUT (vfb vref clk rst enable pwm duty_metric soft_ref pgood) buck_ctrl_top pgood_tol=0.025 soft_step=0.025`
 - Required saved public traces: `vfb`, `vref`, `clk`, `rst`, `enable`, `pwm`, `duty_metric`, `soft_ref`, `pgood`
 - Use one bounded transient analysis with a finite positive stop time.
 

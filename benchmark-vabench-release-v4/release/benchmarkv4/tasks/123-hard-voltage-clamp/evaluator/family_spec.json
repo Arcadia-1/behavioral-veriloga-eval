@@ -124,13 +124,17 @@
             "position": 1
           },
           {
-            "net": "vgnd",
+            "net": "0",
             "port_ref": "vgnd",
             "position": 2
           }
         ],
         "module_ref": "hard_voltage_clamp_behavior",
-        "name": "XDUT"
+        "name": "XDUT",
+        "parameter_overrides": {
+          "vclamp_lower": "-0.2",
+          "vclamp_upper": "0.6"
+        }
       }
     ],
     "source_path_template": "./dut/{artifact_path}"

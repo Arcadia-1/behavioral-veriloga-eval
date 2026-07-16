@@ -187,7 +187,12 @@
           }
         ],
         "module_ref": "phase_accumulator_timer_wrap_ref",
-        "name": "XDUT"
+        "name": "XFB_DUT",
+        "parameter_overrides": {
+          "dt": "4n",
+          "phase_step": "0.2",
+          "tedge": "160p"
+        }
       }
     ],
     "source_path_template": "./dut/{artifact_path}"

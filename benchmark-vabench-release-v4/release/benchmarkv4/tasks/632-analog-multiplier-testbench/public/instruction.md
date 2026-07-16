@@ -20,7 +20,7 @@ Stable public Spectre binding:
 The submitted `testbench.scs` must use the supplied DUT through this public binding:
 
 - Include path: `./dut/analog_multiplier_gain.va`
-- DUT instance: `XDUT (sigin1 sigin2 sigout) analog_multiplier_gain`
+- DUT instance: `XDUT (sigin1 sigin2 sigout) analog_multiplier_gain gain=2`
 - Required saved public traces: `sigin1`, `sigin2`, `sigout`
 - Use one bounded transient analysis with a finite positive stop time.
 

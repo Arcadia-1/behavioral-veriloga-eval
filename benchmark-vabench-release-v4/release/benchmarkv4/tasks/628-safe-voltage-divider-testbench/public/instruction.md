@@ -20,7 +20,7 @@ Stable public Spectre binding:
 The submitted `testbench.scs` must use the supplied DUT through this public binding:
 
 - Include path: `./dut/safe_voltage_divider.va`
-- DUT instance: `XDUT (signumer sigdenom sigout) safe_voltage_divider`
+- DUT instance: `XDUT (signumer sigdenom sigout) safe_voltage_divider gain=2 min_sigdenom=0.25`
 - Required saved public traces: `sigdenom`, `signumer`, `sigout`
 - Use one bounded transient analysis with a finite positive stop time.
 

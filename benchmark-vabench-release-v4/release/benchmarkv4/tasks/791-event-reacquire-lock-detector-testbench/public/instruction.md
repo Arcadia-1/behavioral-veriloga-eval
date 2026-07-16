@@ -23,7 +23,7 @@ Stable public Spectre binding:
 The submitted `testbench.scs` must use the supplied DUT through this public binding:
 
 - Include path: `./dut/event_reacquire_lock_detector.va`
-- DUT instance: `XDUT (ref_clk fb_clk rst lock phase_metric state_mon) event_reacquire_lock_detector`
+- DUT instance: `XDUT (ref_clk fb_clk rst lock phase_metric state_mon) event_reacquire_lock_detector lock_window=180p`
 - Required saved public traces: `fb_clk`, `lock`, `phase_metric`, `ref_clk`, `rst`, `state_mon`
 - Use one bounded transient analysis with a finite positive stop time.
 

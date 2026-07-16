@@ -25,7 +25,7 @@ Stable public Spectre binding:
 The submitted `testbench.scs` must use the supplied DUT through this public binding:
 
 - Include path: `./dut/gain_estimator.va`
-- DUT instance: `XDUT (vdd vss vinp vinn voutp voutn gain_out valid) gain_estimator`
+- DUT instance: `XGAIN (vdd vss vinp vinn voutp voutn gain_out valid) gain_estimator gain_scale=10 min_input_span=0.02 sample_period=1n start_time=20n tedge=200p`
 - Required saved public traces: `vdd`, `vss`, `vinp`, `vinn`, `voutp`, `voutn`, `gain_out`, `valid`
 - Use one bounded transient analysis with a finite positive stop time.
 

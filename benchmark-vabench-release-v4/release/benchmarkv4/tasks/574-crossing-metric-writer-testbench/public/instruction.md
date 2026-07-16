@@ -19,7 +19,7 @@ Stable public Spectre binding:
 The submitted `testbench.scs` must use the supplied DUT through this public binding:
 
 - Include path: `./dut/file_metric_writer.va`
-- DUT instance: `XDUT (vin done) file_metric_writer`
+- DUT instance: `XDUT (vin done) file_metric_writer filename="metric.out"`
 - Required saved public traces: `vin`, `done`
 - Use one bounded transient analysis with a finite positive stop time.
 

@@ -149,7 +149,13 @@
           }
         ],
         "module_ref": "limiting_differential_amplifier",
-        "name": "XDUT"
+        "name": "XDUT",
+        "parameter_overrides": {
+          "gain": "3",
+          "sigin_offset": "0.05",
+          "sigout_high": "0.8",
+          "sigout_low": "-0.4"
+        }
       }
     ],
     "source_path_template": "./dut/{artifact_path}"

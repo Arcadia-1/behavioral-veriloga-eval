@@ -208,7 +208,16 @@
           }
         ],
         "module_ref": "polynomial_differential_vcvs",
-        "name": "XDUT"
+        "name": "XDUT",
+        "parameter_overrides": {
+          "a1": "2",
+          "a2": "0",
+          "a3": "1",
+          "a5": "0",
+          "a7": "0",
+          "vcmo": "0.5",
+          "vsat": "0.3"
+        }
       }
     ],
     "source_path_template": "./dut/{artifact_path}"

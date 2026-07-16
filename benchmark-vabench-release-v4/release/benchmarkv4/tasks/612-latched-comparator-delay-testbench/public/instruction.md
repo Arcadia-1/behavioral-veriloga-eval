@@ -23,7 +23,7 @@ Stable public Spectre binding:
 The submitted `testbench.scs` must use the supplied DUT through this public binding:
 
 - Include path: `./dut/latched_comparator_delay.va`
-- DUT instance: `XDUT (dout gnd vdd clk vinn vinp) latched_comparator_delay`
+- DUT instance: `XDUT (dout 0 vdd clk vinn vinp) latched_comparator_delay td=500p tr=100p vn=0`
 - Required saved public traces: `vdd`, `clk`, `vinn`, `vinp`, `dout`
 - Use one bounded transient analysis with a finite positive stop time.
 

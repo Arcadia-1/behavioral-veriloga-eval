@@ -20,7 +20,7 @@ Stable public Spectre binding:
 The submitted `testbench.scs` must use the supplied DUT through this public binding:
 
 - Include path: `./dut/ref_step_clk.va`
-- DUT instance: `XDUT (vdd vss clk) ref_step_clk`
+- DUT instance: `XREF (VDD VSS CLK) ref_step_clk period_post=19.5n period_pre=20n t_switch=2u tedge=100p`
 - Required saved public traces: `VDD`, `VSS`, `CLK`
 - Use one bounded transient analysis with a finite positive stop time.
 

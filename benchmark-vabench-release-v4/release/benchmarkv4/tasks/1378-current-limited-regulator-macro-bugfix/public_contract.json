@@ -257,7 +257,12 @@
           }
         ],
         "module_ref": "current_limited_regulator_macro",
-        "name": "XDUT"
+        "name": "XDUT",
+        "parameter_overrides": {
+          "demand_limit": "0.65",
+          "dropout": "0.08",
+          "vref": "0.75"
+        }
       }
     ],
     "source_path_template": "./dut/{artifact_path}"

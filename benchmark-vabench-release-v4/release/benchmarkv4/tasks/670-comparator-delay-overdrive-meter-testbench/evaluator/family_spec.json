@@ -153,6 +153,20 @@
     }
   ],
   "schema_version": "v4-family-spec-v1",
+  "support_contract": {
+    "files": [
+      {
+        "modules": [
+          "support_overdrive_delay_comparator"
+        ],
+        "path": "support_overdrive_delay_comparator.va",
+        "sha256": "8248b3a926f0b351041b3c63b74d4ec4822aafcf6d9f45c224f37e21626bcbf5"
+      }
+    ],
+    "mount_root": "support",
+    "source_root": "public_support",
+    "visibility": "public_readonly"
+  },
   "task_ids": {
     "bugfix": "v4-1170",
     "dut": "v4-170",
@@ -220,24 +234,10 @@
           }
         ],
         "module_ref": "comparator_delay_overdrive_meter",
-        "name": "XDUT"
+        "name": "XMEAS"
       }
     ],
     "source_path_template": "./dut/{artifact_path}"
-  },
-  "support_contract": {
-    "files": [
-      {
-        "modules": [
-          "support_overdrive_delay_comparator"
-        ],
-        "path": "support_overdrive_delay_comparator.va",
-        "sha256": "8248b3a926f0b351041b3c63b74d4ec4822aafcf6d9f45c224f37e21626bcbf5"
-      }
-    ],
-    "mount_root": "support",
-    "source_root": "public_support",
-    "visibility": "public_readonly"
   },
   "trace_contract": {
     "required_signals": [

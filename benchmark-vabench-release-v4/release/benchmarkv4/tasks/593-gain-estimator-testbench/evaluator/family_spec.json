@@ -244,7 +244,14 @@
           }
         ],
         "module_ref": "gain_estimator",
-        "name": "XDUT"
+        "name": "XGAIN",
+        "parameter_overrides": {
+          "gain_scale": "10",
+          "min_input_span": "0.02",
+          "sample_period": "1n",
+          "start_time": "20n",
+          "tedge": "200p"
+        }
       }
     ],
     "source_path_template": "./dut/{artifact_path}"

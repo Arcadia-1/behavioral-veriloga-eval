@@ -55,7 +55,7 @@ Stable public Spectre binding:
 The submitted `testbench.scs` must use the supplied DUT through this public binding:
 
 - Include paths: `./dut/dcc_top.va`, `./dut/duty_meter.va`, `./dut/trim_controller.va`, `./dut/delay_pair.va`
-- DUT instance: `XDUT (clk_in rst enable clk_out trim_3 trim_2 trim_1 trim_0 duty_metric locked) dcc_top`
+- DUT instance: `XDUT (clk_in rst enable clk_out trim_3 trim_2 trim_1 trim_0 duty_metric locked) dcc_top tr=20p`
 - Required saved public traces: `clk_in`, `rst`, `enable`, `clk_out`, `trim_3`, `trim_2`, `trim_1`, `trim_0`, `duty_metric`, `locked`
 - Use one bounded transient analysis with a finite positive stop time.
 

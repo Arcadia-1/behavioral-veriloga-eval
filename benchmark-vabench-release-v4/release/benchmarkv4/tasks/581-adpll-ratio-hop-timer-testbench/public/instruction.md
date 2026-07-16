@@ -25,7 +25,7 @@ Stable public Spectre binding:
 The submitted `testbench.scs` must use the supplied DUT through this public binding:
 
 - Include path: `./dut/adpll_ratio_hop_ref.va`
-- DUT instance: `XDUT (vdd vss ref_clk ratio_ctrl fb_clk vout vctrl_mon lock) adpll_ratio_hop_ref`
+- DUT instance: `IDUT (vdd vss ref_clk ratio_ctrl fb_clk vout vctrl_mon lock) adpll_ratio_hop_ref code_center=32 code_init=24 code_max=63 code_min=0 f_center=240e6 f_max=420e6 f_min=120e6 freq_step_hz=5e6 lock_count_target=5 lock_tol=2n ratio_max=16 ratio_min=2 tedge=200p`
 - Required saved public traces: `vdd`, `vss`, `ref_clk`, `ratio_ctrl`, `fb_clk`, `vout`, `vctrl_mon`, `lock`
 - Use one bounded transient analysis with a finite positive stop time.
 

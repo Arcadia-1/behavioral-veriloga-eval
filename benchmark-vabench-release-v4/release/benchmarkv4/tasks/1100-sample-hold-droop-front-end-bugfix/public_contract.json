@@ -245,7 +245,15 @@
           }
         ],
         "module_ref": "sample_hold_droop_ref",
-        "name": "XDUT"
+        "name": "XDUT",
+        "parameter_overrides": {
+          "dt": "0.5n",
+          "taperture": "200p",
+          "tau": "90n",
+          "trf": "40p",
+          "valid_width": "2n",
+          "vth": "0.45"
+        }
       }
     ],
     "source_path_template": "./dut/{artifact_path}"

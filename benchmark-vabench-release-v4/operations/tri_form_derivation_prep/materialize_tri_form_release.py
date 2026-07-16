@@ -245,7 +245,12 @@ def render_binding(spec: dict[str, Any]) -> str:
     ]
     for instance in binding.get("instances") or []:
         connections = sorted(instance.get("connections") or [], key=lambda item: int(item.get("position", 0)))
-        nets = " ".join(str(item["net"]) for item in connections)
+        ordered_nets = instance.get("ordered_nets")
+        nets = (
+            " ".join(str(item) for item in ordered_nets)
+            if ordered_nets
+            else " ".join(str(item["net"]) for item in connections)
+        )
         overrides = instance.get("parameter_overrides") or {}
         parameters = " ".join(f"{name}={overrides[name]}" for name in sorted(overrides))
         suffix = f" {parameters}" if parameters else ""

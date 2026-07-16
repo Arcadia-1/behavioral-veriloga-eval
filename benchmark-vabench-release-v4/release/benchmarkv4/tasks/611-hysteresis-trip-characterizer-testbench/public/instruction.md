@@ -25,7 +25,7 @@ Stable public Spectre binding:
 The submitted `testbench.scs` must use the supplied DUT through this public binding:
 
 - Include path: `./dut/hysteresis_trip_characterizer.va`
-- DUT instance: `XDUT (vdd vss vin cmp_out trip_rise trip_fall hyst_width valid) hysteresis_trip_characterizer`
+- DUT instance: `XMEAS (vdd vss vin cmp_out trip_rise trip_fall hyst_width valid) hysteresis_trip_characterizer`
 - Required saved public traces: `vdd`, `vss`, `vin`, `cmp_out`, `trip_rise`, `trip_fall`, `hyst_width`, `valid`
 - Use one bounded transient analysis with a finite positive stop time.
 

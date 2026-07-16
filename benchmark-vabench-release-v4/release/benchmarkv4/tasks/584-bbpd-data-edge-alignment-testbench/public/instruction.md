@@ -24,7 +24,7 @@ Stable public Spectre binding:
 The submitted `testbench.scs` must use the supplied DUT through this public binding:
 
 - Include path: `./dut/bbpd_data_edge_alignment_ref.va`
-- DUT instance: `XDUT (vdd vss clk data up dn retimed_data) bbpd_data_edge_alignment_ref`
+- DUT instance: `XDUT (vdd vss clk data up dn retimed_data) bbpd_data_edge_alignment_ref clk_delay=10n clk_period=20n deadzone=0.8n poll_dt=50p pulse_w=1n`
 - Required saved public traces: `vdd`, `vss`, `clk`, `data`, `up`, `dn`, `retimed_data`
 - Use one bounded transient analysis with a finite positive stop time.
 

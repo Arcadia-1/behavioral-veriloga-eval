@@ -184,53 +184,58 @@
       {
         "connections": [
           {
-            "net": "VDD",
+            "net": "vdd",
             "port_ref": "VDD",
             "position": 0
           },
           {
-            "net": "VSS",
+            "net": "vss",
             "port_ref": "VSS",
             "position": 1
           },
           {
-            "net": "PHI1",
+            "net": "phi1",
             "port_ref": "PHI1",
             "position": 2
           },
           {
-            "net": "PHI2",
+            "net": "phi2",
             "port_ref": "PHI2",
             "position": 3
           },
           {
-            "net": "VIN",
+            "net": "vin",
             "port_ref": "VIN",
             "position": 4
           },
           {
-            "net": "VREF",
+            "net": "vref",
             "port_ref": "VREF",
             "position": 5
           },
           {
-            "net": "VRES",
+            "net": "vres",
             "port_ref": "VRES",
             "position": 6
           },
           {
-            "net": "D1",
+            "net": "d1",
             "port_ref": "D1",
             "position": 7
           },
           {
-            "net": "D0",
+            "net": "d0",
             "port_ref": "D0",
             "position": 8
           }
         ],
         "module_ref": "pipeline_stage",
-        "name": "XDUT"
+        "name": "XDUT",
+        "parameter_overrides": {
+          "tedge": "200p",
+          "vdd": "0.9",
+          "vth": "0.45"
+        }
       }
     ],
     "source_path_template": "./dut/{artifact_path}"

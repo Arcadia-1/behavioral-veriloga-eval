@@ -25,7 +25,7 @@ Stable public Spectre binding:
 The submitted `testbench.scs` must use the supplied DUT through this public binding:
 
 - Include path: `./dut/comparator_offset_calibration_loop.va`
-- DUT instance: `XDUT (vdd vss clk dcmpp vinp vinn offset_est valid) comparator_offset_calibration_loop`
+- DUT instance: `XLOOP (vdd vss clk dcmpp vinp vinn offset_est valid) comparator_offset_calibration_loop`
 - Required saved public traces: `vdd`, `vss`, `clk`, `dcmpp`, `vinp`, `vinn`, `offset_est`, `valid`, `vos_ref`
 - Use one bounded transient analysis with a finite positive stop time.
 

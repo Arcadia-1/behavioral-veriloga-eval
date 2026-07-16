@@ -321,7 +321,22 @@
           }
         ],
         "module_ref": "fracn_pll_timer_ref",
-        "name": "XDUT"
+        "name": "XDUT",
+        "parameter_overrides": {
+          "acc_modulus": "8",
+          "div_int": "8",
+          "f_center": "800e6",
+          "f_max": "1.2e9",
+          "f_min": "500e6",
+          "frac_word": "3",
+          "ki": "8.0e4",
+          "kp": "2.5e6",
+          "kvco_hz_per_v": "220e6",
+          "lock_count_target": "3",
+          "lock_tol": "3n",
+          "tedge": "1n",
+          "vctrl_init": "0.45"
+        }
       }
     ],
     "source_path_template": "./dut/{artifact_path}"

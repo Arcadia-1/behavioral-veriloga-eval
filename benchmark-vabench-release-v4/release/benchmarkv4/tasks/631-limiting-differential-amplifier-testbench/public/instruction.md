@@ -20,7 +20,7 @@ Stable public Spectre binding:
 The submitted `testbench.scs` must use the supplied DUT through this public binding:
 
 - Include path: `./dut/limiting_differential_amplifier.va`
-- DUT instance: `XDUT (sigin_p sigin_n sigout) limiting_differential_amplifier`
+- DUT instance: `XDUT (sigin_p sigin_n sigout) limiting_differential_amplifier gain=3 sigin_offset=0.05 sigout_high=0.8 sigout_low=-0.4`
 - Required saved public traces: `sigin_n`, `sigin_p`, `sigout`
 - Use one bounded transient analysis with a finite positive stop time.
 

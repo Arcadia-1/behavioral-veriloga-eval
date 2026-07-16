@@ -130,6 +130,9 @@ def _allowed_includes(contract: dict[str, Any]) -> set[str]:
         artifact_path = file_record.get("path")
         if artifact_path:
             result.add(template.format(artifact_path=str(artifact_path)))
+    for public_path in contract.get("supplied_support_artifacts") or []:
+        relative = str(public_path).removeprefix("supplied_dut/")
+        result.add(template.format(artifact_path=relative))
     return result
 
 

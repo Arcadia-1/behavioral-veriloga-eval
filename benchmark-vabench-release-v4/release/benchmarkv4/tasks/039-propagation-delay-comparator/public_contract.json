@@ -306,7 +306,7 @@
           }
         ],
         "module_ref": "cmp_delay",
-        "name": "XCMP"
+        "name": "IDUT"
       },
       {
         "connections": [
@@ -327,7 +327,10 @@
           }
         ],
         "module_ref": "edge_interval_timer",
-        "name": "XTIMER"
+        "name": "IEIT",
+        "parameter_overrides": {
+          "VTH": "0.45"
+        }
       }
     ],
     "source_path_template": "./dut/{artifact_path}"

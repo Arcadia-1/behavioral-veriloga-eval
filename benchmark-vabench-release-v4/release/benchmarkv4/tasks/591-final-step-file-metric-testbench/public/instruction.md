@@ -21,7 +21,7 @@ Stable public Spectre binding:
 The submitted `testbench.scs` must use the supplied DUT through this public binding:
 
 - Include path: `./dut/final_step_file_metric_ref.va`
-- DUT instance: `XDUT (vdd vss ref metric_out) final_step_file_metric_ref`
+- DUT instance: `IDUT (vdd vss ref metric_out) final_step_file_metric_ref`
 - Required saved public traces: `vdd`, `vss`, `ref`, `metric_out`
 - Use one bounded transient analysis with a finite positive stop time.
 

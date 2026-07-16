@@ -119,7 +119,11 @@
           }
         ],
         "module_ref": "deadband_window",
-        "name": "XDUT"
+        "name": "XDUT",
+        "parameter_overrides": {
+          "dead_high": "0.2",
+          "dead_low": "-0.2"
+        }
       }
     ],
     "source_path_template": "./dut/{artifact_path}"

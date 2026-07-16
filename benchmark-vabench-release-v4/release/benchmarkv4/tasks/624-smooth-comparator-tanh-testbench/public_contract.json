@@ -161,7 +161,13 @@
           }
         ],
         "module_ref": "smooth_comparator_tanh",
-        "name": "XDUT"
+        "name": "XDUT",
+        "parameter_overrides": {
+          "comp_slope": "20",
+          "high": "0.9",
+          "low": "0",
+          "offset": "0"
+        }
       }
     ],
     "source_path_template": "./dut/{artifact_path}"

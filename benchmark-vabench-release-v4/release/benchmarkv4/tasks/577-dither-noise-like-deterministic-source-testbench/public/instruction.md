@@ -19,7 +19,7 @@ Stable public Spectre binding:
 The submitted `testbench.scs` must use the supplied DUT through this public binding:
 
 - Include path: `./dut/noise_gen_ref.va`
-- DUT instance: `XDUT (vin_i vout_o) noise_gen`
+- DUT instance: `IDUT (vin_i vout_o) noise_gen dt=0.5n sigma=0.1`
 - Required saved public traces: `vin_i`, `vout_o`
 - Use one bounded transient analysis with a finite positive stop time.
 

@@ -22,7 +22,7 @@ Stable public Spectre binding:
 The submitted `testbench.scs` must use the supplied DUT through this public binding:
 
 - Include path: `./dut/dither_adder.va`
-- DUT instance: `XDUT (vres_p vres_n dpn vout_p vout_n) dither_adder`
+- DUT instance: `XDUT (vres_p vres_n dpn vout_p vout_n) dither_adder DITHER_AMP=dither vdd=vdd vth=0.45`
 - Required saved public traces: `vres_p`, `vres_n`, `dpn`, `vout_p`, `vout_n`
 - Use one bounded transient analysis with a finite positive stop time.
 

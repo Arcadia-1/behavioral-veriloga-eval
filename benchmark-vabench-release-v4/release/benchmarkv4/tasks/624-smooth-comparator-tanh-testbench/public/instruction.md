@@ -20,7 +20,7 @@ Stable public Spectre binding:
 The submitted `testbench.scs` must use the supplied DUT through this public binding:
 
 - Include path: `./dut/smooth_comparator_tanh.va`
-- DUT instance: `XDUT (sigin sigref sigout) smooth_comparator_tanh`
+- DUT instance: `XDUT (sigin sigref sigout) smooth_comparator_tanh comp_slope=20 high=0.9 low=0 offset=0`
 - Required saved public traces: `sigin`, `sigout`, `sigref`
 - Use one bounded transient analysis with a finite positive stop time.
 

@@ -300,7 +300,22 @@
           }
         ],
         "module_ref": "adpll_ratio_hop_ref",
-        "name": "XDUT"
+        "name": "IDUT",
+        "parameter_overrides": {
+          "code_center": "32",
+          "code_init": "24",
+          "code_max": "63",
+          "code_min": "0",
+          "f_center": "240e6",
+          "f_max": "420e6",
+          "f_min": "120e6",
+          "freq_step_hz": "5e6",
+          "lock_count_target": "5",
+          "lock_tol": "2n",
+          "ratio_max": "16",
+          "ratio_min": "2",
+          "tedge": "200p"
+        }
       }
     ],
     "source_path_template": "./dut/{artifact_path}"

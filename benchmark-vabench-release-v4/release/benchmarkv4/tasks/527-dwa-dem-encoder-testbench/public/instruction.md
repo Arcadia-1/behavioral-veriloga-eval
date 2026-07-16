@@ -30,8 +30,8 @@ Stable public Spectre binding:
 The submitted `testbench.scs` must use the supplied DUT through this public binding:
 
 - Include paths: `./dut/dwa_ptr_gen.va`, `./dut/v2b_4b.va`
-- DUT instance: `XV2B (clk_i vin_node code_3 code_2 code_1 code_0) v2b_4b`
-- DUT instance: `XDWA (clk_i rst_ni code_3 code_2 code_1 code_0 cell_en_15 cell_en_14 cell_en_13 cell_en_12 cell_en_11 cell_en_10 cell_en_9 cell_en_8 cell_en_7 cell_en_6 cell_en_5 cell_en_4 cell_en_3 cell_en_2 cell_en_1 cell_en_0 ptr_15 ptr_14 ptr_13 ptr_12 ptr_11 ptr_10 ptr_9 ptr_8 ptr_7 ptr_6 ptr_5 ptr_4 ptr_3 ptr_2 ptr_1 ptr_0) dwa_ptr_gen`
+- DUT instance: `IV2B (clk_i vin_node code_3 code_2 code_1 code_0) v2b_4b vdd=0.9`
+- DUT instance: `IDUT (clk_i rst_ni code_3 code_2 code_1 code_0 cell_en_15 cell_en_14 cell_en_13 cell_en_12 cell_en_11 cell_en_10 cell_en_9 cell_en_8 cell_en_7 cell_en_6 cell_en_5 cell_en_4 cell_en_3 cell_en_2 cell_en_1 cell_en_0 ptr_15 ptr_14 ptr_13 ptr_12 ptr_11 ptr_10 ptr_9 ptr_8 ptr_7 ptr_6 ptr_5 ptr_4 ptr_3 ptr_2 ptr_1 ptr_0) dwa_ptr_gen ptr_init=0 vdd=0.9 vth=0.45`
 - Required saved public traces: `clk_i`, `rst_ni`, `vin_node`, `code_3`, `code_2`, `code_1`, `code_0`, `cell_en_15`, `cell_en_14`, `cell_en_13`, `cell_en_12`, `cell_en_11`, `cell_en_10`, `cell_en_9`, `cell_en_8`, `cell_en_7`, `cell_en_6`, `cell_en_5`, `cell_en_4`, `cell_en_3`, `cell_en_2`, `cell_en_1`, `cell_en_0`, `ptr_15`, `ptr_14`, `ptr_13`, `ptr_12`, `ptr_11`, `ptr_10`, `ptr_9`, `ptr_8`, `ptr_7`, `ptr_6`, `ptr_5`, `ptr_4`, `ptr_3`, `ptr_2`, `ptr_1`, `ptr_0`
 - Use one bounded transient analysis with a finite positive stop time.
 

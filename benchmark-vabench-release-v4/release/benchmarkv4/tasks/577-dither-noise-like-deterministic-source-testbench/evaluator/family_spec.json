@@ -129,7 +129,11 @@
           }
         ],
         "module_ref": "noise_gen",
-        "name": "XDUT"
+        "name": "IDUT",
+        "parameter_overrides": {
+          "dt": "0.5n",
+          "sigma": "0.1"
+        }
       }
     ],
     "source_path_template": "./dut/{artifact_path}"

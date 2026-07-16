@@ -20,7 +20,7 @@ Stable public Spectre binding:
 The submitted `testbench.scs` must use the supplied DUT through this public binding:
 
 - Include path: `./dut/hard_voltage_clamp_behavior.va`
-- DUT instance: `XDUT (vin vout vgnd) hard_voltage_clamp_behavior`
+- DUT instance: `XDUT (vin vout 0) hard_voltage_clamp_behavior vclamp_lower=-0.2 vclamp_upper=0.6`
 - Required saved public traces: `vin`, `vout`
 - Use one bounded transient analysis with a finite positive stop time.
 

@@ -24,7 +24,7 @@ Stable public Spectre binding:
 The submitted `testbench.scs` must use the supplied DUT through this public binding:
 
 - Include path: `./dut/fracn_pll_timer_ref.va`
-- DUT instance: `XDUT (VDD VSS ref_clk fb_clk dco_clk vctrl_mon lock) fracn_pll_timer_ref`
+- DUT instance: `XDUT (VDD VSS ref_clk fb_clk dco_clk vctrl_mon lock) fracn_pll_timer_ref acc_modulus=8 div_int=8 f_center=800e6 f_max=1.2e9 f_min=500e6 frac_word=3 ki=8.0e4 kp=2.5e6 kvco_hz_per_v=220e6 lock_count_target=3 lock_tol=3n tedge=1n vctrl_init=0.45`
 - Required saved public traces: `VDD`, `VSS`, `ref_clk`, `fb_clk`, `dco_clk`, `vctrl_mon`, `lock`
 - Use one bounded transient analysis with a finite positive stop time.
 
