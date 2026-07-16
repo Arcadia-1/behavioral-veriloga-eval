@@ -9,9 +9,7 @@ Vraw (raw 0) vsource type=pwl wave=[0 0.35 2n 0.35 2.05n 0.72 4n 0.72 4.05n 0.18
 Vgain (gain_ctrl 0) vsource type=pwl wave=[0 0.18 4n 0.18 4.05n 0.72 8n 0.72 8.05n 0.45 13n 0.45]
 Voffset (offset_ctrl 0) vsource type=pwl wave=[0 0.45 2n 0.45 2.05n 0.56 4n 0.56 4.05n 0.0 6n 0.0 6.05n 0.75 8n 0.75 8.05n 0.3 10n 0.3 10.05n 0.48 13n 0.48]
 Ven (en 0) vsource type=pwl wave=[0 0.9 7.8n 0.9 7.85n 0 9n 0 9.05n 0.9 13n 0.9]
-
 XDUT (clk rst raw gain_ctrl offset_ctrl en out resid_metric) calibration_affine_transform
-
 
 simulatorOptions options evas_profile=balanced
 

@@ -33,7 +33,7 @@
     }
   },
   "diagnostics": {
-    "expected": "trigger=stimulus exercises neg_001_ignore_gain_ctrl; violated_properties=P_ON_EACH_RISING_CLOCK_CROSSING_COMPUTE",
+    "expected": "trigger=stimulus exercises mutation-case-001_ignore_gain_ctrl; violated_properties=P_ON_EACH_RISING_CLOCK_CROSSING_COMPUTE",
     "observed": "EVAS: calibration_affine_error=0.3600; Spectre: calibration_affine_error=0.3600",
     "violated_property_ids": [
       "P_ON_EACH_RISING_CLOCK_CROSSING_COMPUTE"

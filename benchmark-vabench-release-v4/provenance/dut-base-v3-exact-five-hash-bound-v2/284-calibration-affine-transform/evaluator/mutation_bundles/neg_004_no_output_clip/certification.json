@@ -33,7 +33,7 @@
     }
   },
   "diagnostics": {
-    "expected": "trigger=stimulus exercises neg_004_no_output_clip; violated_properties=P_EXPOSE_A_BOUNDED_RESIDUAL_METRIC_FOR",
+    "expected": "trigger=stimulus exercises mutation-case-004_no_output_clip; violated_properties=P_EXPOSE_A_BOUNDED_RESIDUAL_METRIC_FOR",
     "observed": "EVAS: calibration_affine_error=0.3830; Spectre: calibration_affine_error=0.3830",
     "violated_property_ids": [
       "P_EXPOSE_A_BOUNDED_RESIDUAL_METRIC_FOR"

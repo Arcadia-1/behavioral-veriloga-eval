@@ -33,7 +33,7 @@
     }
   },
   "diagnostics": {
-    "expected": "trigger=stimulus exercises neg_003_ignore_enable; violated_properties=P_CLEAR_OUTPUT_AND_METRIC_WHILE_RESET",
+    "expected": "trigger=stimulus exercises mutation-case-003_ignore_enable; violated_properties=P_CLEAR_OUTPUT_AND_METRIC_WHILE_RESET",
     "observed": "EVAS: calibration_affine_error=0.9000; Spectre: calibration_affine_error=0.9000",
     "violated_property_ids": [
       "P_CLEAR_OUTPUT_AND_METRIC_WHILE_RESET"

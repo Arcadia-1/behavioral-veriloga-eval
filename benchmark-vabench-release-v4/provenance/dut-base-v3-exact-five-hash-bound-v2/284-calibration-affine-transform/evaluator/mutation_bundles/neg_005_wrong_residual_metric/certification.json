@@ -33,7 +33,7 @@
     }
   },
   "diagnostics": {
-    "expected": "trigger=stimulus exercises neg_005_wrong_residual_metric; violated_properties=P_USE_LOCAL_ANALOG_HELPER_FUNCTIONS_RATHER",
+    "expected": "trigger=stimulus exercises mutation-case-005_wrong_residual_metric; violated_properties=P_USE_LOCAL_ANALOG_HELPER_FUNCTIONS_RATHER",
     "observed": "EVAS: calibration_affine_error=0.8760; Spectre: calibration_affine_error=0.8760",
     "violated_property_ids": [
       "P_USE_LOCAL_ANALOG_HELPER_FUNCTIONS_RATHER"
