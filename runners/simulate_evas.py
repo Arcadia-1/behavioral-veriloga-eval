@@ -4198,10 +4198,19 @@ _TASK_ALIAS_CANDIDATES: dict[str, dict[str, tuple[str, ...]]] = {
     },
 }
 
+_RAW_WIDE_BUS_CHECKER_TASKS = frozenset(
+    {
+        "v4_048_bin_to_thermometer_decoder_8b",
+        "v4_049_thermometer_to_binary_encoder_8b",
+    }
+)
+
 
 def normalize_rows_for_task(task_id: str, rows: list[dict[str, float]]) -> list[dict[str, float]]:
     if not rows:
         return rows
+    if task_id in _RAW_WIDE_BUS_CHECKER_TASKS:
+        return [dict(row) for row in rows]
     normalized = [_expanded_row_aliases(row) for row in rows]
     alias_rules = _TASK_ALIAS_CANDIDATES.get(task_id, {})
     if not alias_rules:

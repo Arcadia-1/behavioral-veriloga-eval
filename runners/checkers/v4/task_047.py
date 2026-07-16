@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 from ..api import Checker
+from .stimulus_relative import diagnostic, pass_note, require_signals
 import csv
 import re
 
@@ -193,6 +194,13 @@ _SCALAR_ALIAS_TARGETS = ('vin',
  'out',
  'vin_i',
  'vout_o')
+PROPERTY_IDS = (
+    "P_INITIAL_WINDOW_STATE",
+    "P_INSIDE_WINDOW_HIGH",
+    "P_BOUNDARY_EXCLUSION",
+    "P_BIDIRECTIONAL_CROSSINGS",
+    "P_RAIL_SMOOTHING",
+)
 
 def _float_at(row: list[str], index: int, default: float = 0.0) -> float:
     try:
@@ -425,7 +433,13 @@ def _check_true_window_comparator_resampled(eval_rows: list[dict[str, float]]) -
     hi = max(out_vals)
     span = hi - lo
     if span < 0.3:
-        return False, f"out_span_too_small={span:.3f}"
+        return False, diagnostic(
+            "P_RAIL_SMOOTHING",
+            "behavior_mismatch",
+            expected="out_span>=0.30",
+            observed=f"out_span={span:.3f}",
+            event="full_trace_resampled",
+        )
 
     vth = lo + 0.5 * span
     t0 = eval_rows[0]["time"]
@@ -445,8 +459,16 @@ def _check_true_window_comparator_resampled(eval_rows: list[dict[str, float]]) -
     if min(len(below), len(above), len(inside_rise), len(inside_fall)) < 3:
         return (
             False,
-            "insufficient_window_samples "
-            f"below={len(below)} above={len(above)} rise={len(inside_rise)} fall={len(inside_fall)}",
+            diagnostic(
+                "P_BIDIRECTIONAL_CROSSINGS",
+                "insufficient_excitation",
+                expected="below,above,inside_rise,inside_fall samples>=3",
+                observed=(
+                    f"below={len(below)},above={len(above)},"
+                    f"rise={len(inside_rise)},fall={len(inside_fall)}"
+                ),
+                event="vin_regions_resampled",
+            ),
         )
 
     below_hi = frac_high(below)
@@ -454,11 +476,27 @@ def _check_true_window_comparator_resampled(eval_rows: list[dict[str, float]]) -
     rise_hi = frac_high(inside_rise)
     fall_hi = frac_high(inside_fall)
     ok = below_hi < 0.10 and above_hi < 0.10 and rise_hi > 0.80 and fall_hi > 0.80
-    return (
-        ok,
+    note = (
         f"below_hi={below_hi:.3f} above_hi={above_hi:.3f} "
-        f"inside_rise_hi={rise_hi:.3f} inside_fall_hi={fall_hi:.3f} span={span:.3f}",
+        f"inside_rise_hi={rise_hi:.3f} inside_fall_hi={fall_hi:.3f} span={span:.3f}"
     )
+    if below_hi >= 0.10 or above_hi >= 0.10:
+        return False, diagnostic(
+            "P_BOUNDARY_EXCLUSION",
+            "behavior_mismatch",
+            expected="below_hi<0.10,above_hi<0.10",
+            observed=f"below_hi={below_hi:.3f},above_hi={above_hi:.3f}",
+            event="outside_window_regions",
+        )
+    if rise_hi <= 0.80 or fall_hi <= 0.80:
+        return False, diagnostic(
+            "P_INSIDE_WINDOW_HIGH",
+            "behavior_mismatch",
+            expected="inside_rise_hi>0.80,inside_fall_hi>0.80",
+            observed=f"inside_rise_hi={rise_hi:.3f},inside_fall_hi={fall_hi:.3f}",
+            event="inside_window_regions",
+        )
+    return ok, pass_note(PROPERTY_IDS, note)
 
 def _resample_rows_from_vectors(
     times: list[float],
@@ -486,8 +524,9 @@ def _resample_rows_from_vectors(
 
 def check_true_window_comparator(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "vin", "out"}
-    if not rows or not required.issubset(rows[0]):
-        return False, "missing time/vin/out"
+    missing = require_signals(rows, required, "P_INSIDE_WINDOW_HIGH")
+    if missing:
+        return False, missing
 
     ordered = sorted(rows, key=lambda row: row["time"])
     times = [row["time"] for row in ordered]
@@ -500,7 +539,13 @@ def check_true_window_comparator(rows: list[dict[str, float]]) -> tuple[bool, st
         sample_count=361,
     )
     if error is not None:
-        return False, error
+        return False, diagnostic(
+            "P_BIDIRECTIONAL_CROSSINGS",
+            "invalid_trace",
+            expected="resampleable_time_series",
+            observed=error,
+            event="full_trace",
+        )
     # Spectre may save only adaptive breakpoints even when EVAS writes a dense
     # tran.csv. Judge the window function on a common time grid instead of
     # counting raw output samples.

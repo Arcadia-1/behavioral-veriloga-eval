@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from ..api import Checker, Row
+from .stimulus_relative import diagnostic, pass_note
 
 
 VTH = 0.45
@@ -11,6 +12,13 @@ STEP_INIT = 0.18
 VMIN = 0.05
 VMAX = 0.85
 SETTLE_S = 0.2e-9
+PROPERTY_IDS = (
+    "P_RESET_SEARCH_STATE",
+    "P_SIGNED_TRIAL_UPDATE",
+    "P_SUCCESSIVE_STEP_HALVING",
+    "P_FOUR_STEP_DONE",
+    "P_TRIM_CLAMP",
+)
 
 
 def _rising_edge_indexes(rows: list[Row], signal: str) -> list[int]:
@@ -44,7 +52,13 @@ def check_successive_approximation_calibration_search_fsm(
     required = {"time", "clk", "rst", "vin", "out", "metric"}
     missing = sorted(required - (set(rows[0]) if rows else set()))
     if missing:
-        return False, "missing_columns=" + ",".join(missing)
+        return False, diagnostic(
+            "P_SIGNED_TRIAL_UPDATE",
+            "invalid_trace",
+            expected="signals:" + ",".join(sorted(required)),
+            observed="missing:" + ",".join(missing),
+            event="full_trace",
+        )
 
     reset_observed = any(
         float(row["rst"]) > VTH
@@ -108,12 +122,45 @@ def check_successive_approximation_calibration_search_fsm(
         and post_done_holds > 0
     )
     ok = coverage_ok and update_errors == 0 and metric_errors == 0 and clamp_errors == 0
-    return ok, (
+    note = (
         f"reset={reset_observed} updates={update_checks} positive={positive_updates} "
         f"negative={negative_updates} post_done_holds={post_done_holds} "
         f"update_errors={update_errors} metric_errors={metric_errors} "
         f"clamp_errors={clamp_errors}"
     )
+    if not coverage_ok:
+        return False, diagnostic(
+            "P_SIGNED_TRIAL_UPDATE",
+            "insufficient_excitation",
+            expected="reset,4_updates,positive,negative,post_done_hold",
+            observed=note.replace(" ", ","),
+            event="clk.rising",
+        )
+    if clamp_errors:
+        return False, diagnostic(
+            "P_TRIM_CLAMP",
+            "behavior_mismatch",
+            expected="out_within_clamp",
+            observed=f"clamp_errors={clamp_errors}",
+            event="full_trace",
+        )
+    if update_errors:
+        return False, diagnostic(
+            "P_SIGNED_TRIAL_UPDATE",
+            "behavior_mismatch",
+            expected="out_tracks_successive_signed_updates",
+            observed=f"update_errors={update_errors}",
+            event="clk.rising",
+        )
+    if metric_errors:
+        return False, diagnostic(
+            "P_FOUR_STEP_DONE",
+            "behavior_mismatch",
+            expected="metric_high_after_four_updates",
+            observed=f"metric_errors={metric_errors}",
+            event="clk.rising",
+        )
+    return ok, pass_note(PROPERTY_IDS, note)
 
 
 CHECKER_ID = "v4_044_successive_approximation_calibration_search_fsm"
