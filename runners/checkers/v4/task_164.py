@@ -1,87 +1,98 @@
-"""Task-specific checker for canonical v4 DUT 164."""
+"""Stimulus-relative checker for canonical v4 DUT 164."""
 from __future__ import annotations
 
-from ..api import Checker
-def sample_signal_at(rows: list[dict[str, float]], signal: str, time_s: float) -> float | None:
-    if not rows or "time" not in rows[0] or signal not in rows[0]:
-        return None
-    first_time = rows[0]["time"]
-    last_time = rows[-1].get("time")
-    if last_time is None or time_s < first_time or time_s > last_time:
-        return None
-    if time_s == first_time:
-        return rows[0].get(signal)
-    for idx in range(1, len(rows)):
-        prev = rows[idx - 1]
-        cur = rows[idx]
-        t0 = prev.get("time")
-        t1 = cur.get("time")
-        if t0 is None or t1 is None:
-            continue
-        if t0 <= time_s <= t1:
-            v0 = prev.get(signal)
-            v1 = cur.get(signal)
-            if v0 is None or v1 is None:
-                return None
-            if t1 == t0:
-                return v1
-            alpha = (time_s - t0) / (t1 - t0)
-            return v0 + alpha * (v1 - v0)
-    return None
+from ..api import Checker, Row
+from .batch17_stimulus_relative import (
+    bind_properties,
+    diagnostic,
+    logic_at,
+    logic_threshold,
+    pass_note,
+    require_signals,
+    sample,
+    stable_probe_times,
+)
 
-def _sample_many(
-    rows: list[dict[str, float]],
-    samples: dict[str, list[tuple[float, float]]],
-    *,
-    tol: float,
-) -> tuple[bool, str]:
-    details: list[str] = []
-    for signal, expected_samples in samples.items():
-        observed: list[float] = []
-        for time_ns, expected in expected_samples:
-            value = sample_signal_at(rows, signal, time_ns * 1e-9)
-            if value is None:
-                return False, f"missing_{signal}_sample_at={time_ns:g}ns"
-            observed.append(value)
-            if abs(value - expected) > tol:
-                return False, (
-                    f"{signal}@{time_ns:g}ns={value:.4f} expected={expected:.4f} "
-                    f"tol={tol:.4f}"
-                )
-        details.append(f"{signal}=" + ",".join(f"{value:.3f}" for value in observed))
-    return True, " ".join(details)
 
-def _sample_many_within_trace(
-    rows: list[dict[str, float]],
-    samples: dict[str, list[tuple[float, float]]],
-    *,
-    tol: float,
-) -> tuple[bool, str]:
-    if not rows:
-        return _sample_many(rows, samples, tol=tol)
-    end_time = rows[-1].get("time")
-    if end_time is None:
-        return _sample_many(rows, samples, tol=tol)
-    end_ns = end_time * 1e9
-    filtered: dict[str, list[tuple[float, float]]] = {}
-    for signal, expected_samples in samples.items():
-        visible_samples = [
-            (time_ns, expected)
-            for time_ns, expected in expected_samples
-            if time_ns <= end_ns + 1e-3
-        ]
-        filtered[signal] = visible_samples or expected_samples
-    return _sample_many(rows, filtered, tol=tol)
+PROPERTY_IDS = (
+    "P_THRESHOLD_CODE_DETECTION",
+    "P_WEIGHTED_GROUP_SUM",
+    "P_SCALED_SCALAR_OUTPUT",
+)
+DIN = tuple(f"din{bit}" for bit in range(7))
+SIGNALS = {"time", "dout"} | set(DIN)
+WEIGHTS = {
+    "din6": 16.0 / 32.0,
+    "din5": 8.0 / 32.0,
+    "din4": 4.0 / 32.0,
+    "din3": 2.0 / 32.0,
+    "din2": 1.0 / 32.0,
+    "din1": 0.5 / 32.0,
+    "din0": 0.25 / 32.0,
+}
 
-def check_v3_ideal_adc_out_7bits(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    required = {"time", "din0", "din1", "din2", "din3", "din4", "din5", "din6", "dout"}
-    if not rows or not required.issubset(rows[0]):
-        return False, "missing ideal adc out 7-bit signals"
-    return _sample_many_within_trace(
-        rows,
-        {"dout": [(5.0, 0.0), (15.0, 0.6640625), (25.0, 0.328125), (35.0, 0.9921875)]},
-        tol=0.02,
-    )
+
+def _expected(rows: list[Row], time_s: float, threshold: float) -> float | None:
+    total = 0.0
+    for signal, weight in WEIGHTS.items():
+        bit = logic_at(rows, signal, time_s, threshold=threshold)
+        if bit is None:
+            return None
+        total += weight * bit
+    return total
+
+
+def check_v3_ideal_adc_out_7bits(rows: list[Row]) -> tuple[bool, str]:
+    missing = require_signals(rows, SIGNALS, "P_THRESHOLD_CODE_DETECTION")
+    if missing:
+        return False, missing
+
+    threshold = logic_threshold(rows, DIN, default_high=0.9)
+    probes = stable_probe_times(rows, DIN, threshold=threshold)
+    if len(probes) < 3:
+        return False, diagnostic(
+            "P_THRESHOLD_CODE_DETECTION",
+            "coverage",
+            expected="at_least_3_stable_input_windows",
+            observed=f"windows={len(probes)}",
+            event="full_trace",
+        )
+
+    max_error = 0.0
+    expected_values: list[float] = []
+    for index, probe_t in enumerate(probes):
+        expected = _expected(rows, probe_t, threshold)
+        observed = sample(rows, "dout", probe_t)
+        event = f"stable_window[{index}]@{probe_t:.6e}s"
+        if expected is None or observed is None:
+            return False, diagnostic(
+                "P_SCALED_SCALAR_OUTPUT",
+                "invalid_trace",
+                expected="sampled_inputs_and_dout",
+                observed="missing_sample",
+                event=event,
+            )
+        expected_values.append(round(expected, 6))
+        error = abs(observed - expected)
+        max_error = max(max_error, error)
+        if error > 0.02:
+            return False, diagnostic(
+                "P_SCALED_SCALAR_OUTPUT",
+                "value_mismatch",
+                expected=f"dout={expected:.5f}",
+                observed=f"dout={observed:.5f}",
+                event=event,
+            )
+    if len(set(expected_values)) < 3:
+        return False, diagnostic(
+            "P_WEIGHTED_GROUP_SUM",
+            "coverage",
+            expected="at_least_3_distinct_codes",
+            observed=f"codes={expected_values}",
+            event="full_trace",
+        )
+    return True, pass_note(PROPERTY_IDS, f"checked={len(probes)} max_error={max_error:.5f}")
+
 
 CHECKER_ID = "v4_164_ideal_adc_out_7bits"
-CHECKER: Checker = check_v3_ideal_adc_out_7bits
+CHECKER: Checker = bind_properties(check_v3_ideal_adc_out_7bits, PROPERTY_IDS)

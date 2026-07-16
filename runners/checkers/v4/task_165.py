@@ -1,87 +1,105 @@
-"""Task-specific checker for canonical v4 DUT 165."""
+"""Stimulus-relative checker for canonical v4 DUT 165."""
 from __future__ import annotations
 
-from ..api import Checker
-def sample_signal_at(rows: list[dict[str, float]], signal: str, time_s: float) -> float | None:
-    if not rows or "time" not in rows[0] or signal not in rows[0]:
-        return None
-    first_time = rows[0]["time"]
-    last_time = rows[-1].get("time")
-    if last_time is None or time_s < first_time or time_s > last_time:
-        return None
-    if time_s == first_time:
-        return rows[0].get(signal)
-    for idx in range(1, len(rows)):
-        prev = rows[idx - 1]
-        cur = rows[idx]
-        t0 = prev.get("time")
-        t1 = cur.get("time")
-        if t0 is None or t1 is None:
+from ..api import Checker, Row
+from .batch17_stimulus_relative import (
+    bind_properties,
+    crossings,
+    diagnostic,
+    event_label,
+    logic_at,
+    logic_threshold,
+    max_signal_value,
+    pass_note,
+    probe_time,
+    require_signals,
+    sample,
+)
+
+
+PROPERTY_IDS = (
+    "P_READY_CLOCKED_SAMPLING",
+    "P_BINARY_BIT_ORDER",
+    "P_VDD_SCALED_DAC_OUTPUT",
+)
+DIN = ("din1", "din2", "din3", "din4")
+SIGNALS = {"time", "rdy", "aout"} | set(DIN)
+WEIGHTS = {
+    "din4": 0.5,
+    "din3": 0.25,
+    "din2": 0.125,
+    "din1": 0.0625,
+}
+
+
+def _expected(rows: list[Row], event_t: float, threshold: float, vdd: float) -> float | None:
+    code = 0.0
+    for signal, weight in WEIGHTS.items():
+        bit = logic_at(rows, signal, event_t, threshold=threshold)
+        if bit is None:
+            return None
+        code += weight * bit
+    return vdd * code
+
+
+def check_v3_va_lx_dac_ideal_4b(rows: list[Row]) -> tuple[bool, str]:
+    missing = require_signals(rows, SIGNALS, "P_READY_CLOCKED_SAMPLING")
+    if missing:
+        return False, missing
+
+    rdy_threshold = logic_threshold(rows, ("rdy",), default_high=1.8)
+    din_threshold = logic_threshold(rows, DIN, default_high=1.8)
+    vdd = max_signal_value(rows, DIN, default=1.8)
+    rdy_edges = crossings(rows, "rdy", threshold=rdy_threshold, direction="rising")
+    if len(rdy_edges) < 3:
+        return False, diagnostic(
+            "P_READY_CLOCKED_SAMPLING",
+            "coverage",
+            expected="at_least_3_rdy_rises",
+            observed=f"rdy_rises={len(rdy_edges)}",
+            event="full_trace",
+        )
+
+    checked = 0
+    max_error = 0.0
+    for index, edge_t in enumerate(rdy_edges):
+        next_edge = rdy_edges[index + 1] if index + 1 < len(rdy_edges) else None
+        probe_t = probe_time(rows, edge_t, next_edge, fraction=0.25)
+        if probe_t is None:
             continue
-        if t0 <= time_s <= t1:
-            v0 = prev.get(signal)
-            v1 = cur.get(signal)
-            if v0 is None or v1 is None:
-                return None
-            if t1 == t0:
-                return v1
-            alpha = (time_s - t0) / (t1 - t0)
-            return v0 + alpha * (v1 - v0)
-    return None
+        expected = _expected(rows, edge_t, din_threshold, vdd)
+        observed = sample(rows, "aout", probe_t)
+        label = event_label("rdy_rise", index, edge_t)
+        if expected is None or observed is None:
+            return False, diagnostic(
+                "P_VDD_SCALED_DAC_OUTPUT",
+                "invalid_trace",
+                expected="sampled_inputs_and_aout",
+                observed="missing_sample",
+                event=label,
+            )
+        error = abs(observed - expected)
+        max_error = max(max_error, error)
+        checked += 1
+        if error > 0.03:
+            return False, diagnostic(
+                "P_VDD_SCALED_DAC_OUTPUT",
+                "value_mismatch",
+                expected=f"aout={expected:.5f}",
+                observed=f"aout={observed:.5f}",
+                event=label,
+            )
 
-def _sample_many(
-    rows: list[dict[str, float]],
-    samples: dict[str, list[tuple[float, float]]],
-    *,
-    tol: float,
-) -> tuple[bool, str]:
-    details: list[str] = []
-    for signal, expected_samples in samples.items():
-        observed: list[float] = []
-        for time_ns, expected in expected_samples:
-            value = sample_signal_at(rows, signal, time_ns * 1e-9)
-            if value is None:
-                return False, f"missing_{signal}_sample_at={time_ns:g}ns"
-            observed.append(value)
-            if abs(value - expected) > tol:
-                return False, (
-                    f"{signal}@{time_ns:g}ns={value:.4f} expected={expected:.4f} "
-                    f"tol={tol:.4f}"
-                )
-        details.append(f"{signal}=" + ",".join(f"{value:.3f}" for value in observed))
-    return True, " ".join(details)
+    if checked < 3:
+        return False, diagnostic(
+            "P_READY_CLOCKED_SAMPLING",
+            "coverage",
+            expected="at_least_3_checked_rdy_rises",
+            observed=f"checked={checked}",
+            event="full_trace",
+        )
+    return True, pass_note(PROPERTY_IDS, f"checked={checked} max_error={max_error:.5f}")
 
-def _sample_many_within_trace(
-    rows: list[dict[str, float]],
-    samples: dict[str, list[tuple[float, float]]],
-    *,
-    tol: float,
-) -> tuple[bool, str]:
-    if not rows:
-        return _sample_many(rows, samples, tol=tol)
-    end_time = rows[-1].get("time")
-    if end_time is None:
-        return _sample_many(rows, samples, tol=tol)
-    end_ns = end_time * 1e9
-    filtered: dict[str, list[tuple[float, float]]] = {}
-    for signal, expected_samples in samples.items():
-        visible_samples = [
-            (time_ns, expected)
-            for time_ns, expected in expected_samples
-            if time_ns <= end_ns + 1e-3
-        ]
-        filtered[signal] = visible_samples or expected_samples
-    return _sample_many(rows, filtered, tol=tol)
-
-def check_v3_va_lx_dac_ideal_4b(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    required = {"time", "rdy", "aout"}
-    if not rows or not required.issubset(rows[0]):
-        return False, "missing va_lx dac signals"
-    return _sample_many_within_trace(
-        rows,
-        {"aout": [(5.0, 0.0), (15.0, 0.5625), (25.0, 1.575), (35.0, 1.6875)]},
-        tol=0.03,
-    )
 
 CHECKER_ID = "v4_165_va_lx_dac_ideal_4b"
-CHECKER: Checker = check_v3_va_lx_dac_ideal_4b
+CHECKER: Checker = bind_properties(check_v3_va_lx_dac_ideal_4b, PROPERTY_IDS)
