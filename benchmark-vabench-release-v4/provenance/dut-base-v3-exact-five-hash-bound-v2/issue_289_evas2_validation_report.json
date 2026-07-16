@@ -1,0 +1,844 @@
+{
+  "backend_metadata": {
+    "EVAS_ENGINE": "evas2",
+    "VAEVAS_DEFAULT_EVAS_ENGINE": "evas2",
+    "VAEVAS_EVAS_PERSISTENT_WORKER": "0",
+    "VAEVAS_EVAS_REPO": "",
+    "evas_cli": "/Users/bucketsran/bin/evas",
+    "evas_cli_version": {
+      "error": "TimeoutExpired: Command '['/Users/bucketsran/bin/evas', '--version']' timed out after 10 seconds"
+    },
+    "evas_cli_wrapper": "/Users/bucketsran/bin/evas",
+    "evas_cli_wrapper_contents": "PYTHONPATH=/Users/bucketsran/Documents/TsingProject/vaEvas/EVAS exec python3 -c \"from evas.cli import main; main()\" \"$@\"",
+    "evas_engine_used": "evas2",
+    "evas_source_git_commit": "985bba40929da8066dc9f1e4a08d27c010424c5f",
+    "evas_source_git_describe": "v0.8.1-9-g985bba4",
+    "evas_source_root": "/Users/bucketsran/Documents/TsingProject/vaEvas/EVAS",
+    "python_module_version": {
+      "returncode": 1,
+      "stderr": "/Applications/Xcode-26.4.1.app/Contents/Developer/usr/bin/python3: No module named evas",
+      "stdout": ""
+    }
+  },
+  "backend_policy": {
+    "python_fallback_claimed": false,
+    "required_env": {
+      "EVAS_ENGINE": "evas2",
+      "VAEVAS_DEFAULT_EVAS_ENGINE": "evas2"
+    },
+    "spectre_cadence": "not_tested"
+  },
+  "batch": "12/40",
+  "evas_engine_used": "evas2",
+  "families": [
+    "111",
+    "112",
+    "113",
+    "114",
+    "115",
+    "116",
+    "117",
+    "118",
+    "119",
+    "120"
+  ],
+  "issue": 289,
+  "schema_version": "issue-289-evas2-validation-v1",
+  "source_root": "/Users/bucketsran/Documents/TsingProject/vaEvas/_worktrees/behavioral-v4-repair-batch289/benchmark-vabench-release-v4/provenance/dut-base-v3-exact-five-hash-bound-v2",
+  "status": "PASS",
+  "summary": {
+    "failed_task_count": 0,
+    "profile_case_count": 20,
+    "profile_pass_count": 20,
+    "task_count": 10,
+    "wall_time_s": 429.844909
+  },
+  "tasks": [
+    {
+      "family_id": "111",
+      "profiles": [
+        {
+          "checker_notes": [
+            "rise_err=0.00000 fall_err=0.00000 width_err=0.00000 valid=True width_positive=True rise_events=2 fall_events=2; P_RISING_TRIP_CAPTURE mismatch_count=0; P_FALLING_TRIP_CAPTURE mismatch_count=0; P_HYSTERESIS_WIDTH_SIGN mismatch_count=0; P_VALID_AFTER_BOTH_DIRECTIONS mismatch_count=0"
+          ],
+          "checker_score": 1.0,
+          "checker_task_id": "v4_111_hysteresis_trip_characterizer",
+          "compiled_marker": true,
+          "evas_engine_used": "evas2",
+          "performance_counters": {
+            "rust_full_model_fastpath_enabled": 1,
+            "rust_full_model_fastpath_fallbacks_total": 0,
+            "rust_full_model_required_failures": 0,
+            "rust_sim_program_available": 1,
+            "rust_sim_program_enabled": 1,
+            "steps_total": 2247,
+            "trace.required_trace_missing_node_count": 0,
+            "trace.required_trace_signal_count": 6
+          },
+          "profile": "feedback",
+          "rendered_tb_sha256": "74dd2e95b811fa5f962d97686e3a4288ee1d1c364a8581700122b3f94f92b914",
+          "required_trace_signal_count": 6,
+          "returncode": 0,
+          "status": "pass",
+          "stdout_tail": "mer_array_sidecar_scans = 0\n        timer_array_sidecar_updates = 0\n        timer_batch_due_calls = 0\n        timer_batch_due_events = 0\n        timer_batch_due_fallbacks = 0\n        timer_batch_due_fires = 0\n        timer_breakpoint_cache_hits = 0\n        timer_breakpoint_hits = 0\n        timer_breakpoint_scans = 0\n        timer_periodic_checks = 0\n        timer_periodic_fires = 0\n        timer_periodic_skips = 0\n        timer_reschedules = 0\n        timer_state_owned_checks = 0\n        timer_state_owned_fallbacks = 0\n        timer_state_owned_fast_skips = 0\n        timer_state_owned_fires = 0\n        timer_state_owned_target_reads = 0\n        timer_state_updates = 0\n        transition_breakpoint_active_scans = 0\n        transition_breakpoint_inactive_skips = 0\n        transition_breakpoint_scans = 0\n        transition_calls = 0\n        transition_evaluate_calls = 0\n        transition_output_fastpath_calls = 0\n        transition_set_target_calls = 0\n        transition_unchanged_target_fastpath = 0\n\nMaximum value achieved for any signal of each quantity:\n    V: V(cmp_out) = 900 mV\n\nTran analysis time: CPU = 603.9 ms, elapsed = 603.9 ms.\nRunner timing counters:\n    derive_bus_signals_s = 0.000624 s\n    csv_write_s = 0.189635 s\nTrace counters:\n    required_trace_csv_signal_count = 8\n\nWriting CSV: /var/folders/y2/l5_3_fm108z7rq5gjtlpy_lw0000gn/T/issue289_111-hysteresis-trip-characterizer_feedback_87dlsbbr/out/tran.csv (signals: vdd, vss, vin, cmp_out, trip_rise, trip_fall, hyst_width, valid)\n\nevas completes with 0 errors, 0 warnings.\nTotal time: CPU = 1.0 s, elapsed = 1.0 s.\n\n",
+          "timing": {
+            "accepted_tran_steps": 2247.0,
+            "csv_write_s": 0.189635,
+            "derive_bus_signals_s": 0.000624,
+            "total_elapsed_s": 1.0,
+            "tran_elapsed_s": 0.6039
+          },
+          "tran_csv": true,
+          "tran_marker": true,
+          "wall_time_s": 4.271482
+        },
+        {
+          "checker_notes": [
+            "rise_err=0.00000 fall_err=0.00000 width_err=0.00000 valid=True width_positive=True rise_events=2 fall_events=2; P_RISING_TRIP_CAPTURE mismatch_count=0; P_FALLING_TRIP_CAPTURE mismatch_count=0; P_HYSTERESIS_WIDTH_SIGN mismatch_count=0; P_VALID_AFTER_BOTH_DIRECTIONS mismatch_count=0"
+          ],
+          "checker_score": 1.0,
+          "checker_task_id": "v4_111_hysteresis_trip_characterizer",
+          "compiled_marker": true,
+          "evas_engine_used": "evas2",
+          "performance_counters": {
+            "rust_full_model_fastpath_enabled": 1,
+            "rust_full_model_fastpath_fallbacks_total": 0,
+            "rust_full_model_required_failures": 0,
+            "rust_sim_program_available": 1,
+            "rust_sim_program_enabled": 1,
+            "steps_total": 2247,
+            "trace.required_trace_missing_node_count": 0,
+            "trace.required_trace_signal_count": 6
+          },
+          "profile": "score",
+          "rendered_tb_sha256": "7d9ab99a5b0fbb2eae137a8607f59f15403b5c1b28a06382af419a1e67a1ae80",
+          "required_trace_signal_count": 6,
+          "returncode": 0,
+          "status": "pass",
+          "stdout_tail": " timer_array_sidecar_scans = 0\n        timer_array_sidecar_updates = 0\n        timer_batch_due_calls = 0\n        timer_batch_due_events = 0\n        timer_batch_due_fallbacks = 0\n        timer_batch_due_fires = 0\n        timer_breakpoint_cache_hits = 0\n        timer_breakpoint_hits = 0\n        timer_breakpoint_scans = 0\n        timer_periodic_checks = 0\n        timer_periodic_fires = 0\n        timer_periodic_skips = 0\n        timer_reschedules = 0\n        timer_state_owned_checks = 0\n        timer_state_owned_fallbacks = 0\n        timer_state_owned_fast_skips = 0\n        timer_state_owned_fires = 0\n        timer_state_owned_target_reads = 0\n        timer_state_updates = 0\n        transition_breakpoint_active_scans = 0\n        transition_breakpoint_inactive_skips = 0\n        transition_breakpoint_scans = 0\n        transition_calls = 0\n        transition_evaluate_calls = 0\n        transition_output_fastpath_calls = 0\n        transition_set_target_calls = 0\n        transition_unchanged_target_fastpath = 0\n\nMaximum value achieved for any signal of each quantity:\n    V: V(cmp_out) = 900 mV\n\nTran analysis time: CPU = 248.8 ms, elapsed = 248.8 ms.\nRunner timing counters:\n    derive_bus_signals_s = 0.000204 s\n    csv_write_s = 0.253760 s\nTrace counters:\n    required_trace_csv_signal_count = 8\n\nWriting CSV: /var/folders/y2/l5_3_fm108z7rq5gjtlpy_lw0000gn/T/issue289_111-hysteresis-trip-characterizer_score_rvdik5vk/out/tran.csv (signals: vdd, vss, vin, cmp_out, trip_rise, trip_fall, hyst_width, valid)\n\nevas completes with 0 errors, 0 warnings.\nTotal time: CPU = 1.1 s, elapsed = 1.1 s.\n\n",
+          "timing": {
+            "accepted_tran_steps": 2247.0,
+            "csv_write_s": 0.25376,
+            "derive_bus_signals_s": 0.000204,
+            "total_elapsed_s": 1.1,
+            "tran_elapsed_s": 0.24880000000000002
+          },
+          "tran_csv": true,
+          "tran_marker": true,
+          "wall_time_s": 6.506738
+        }
+      ],
+      "score_tb_sha256": "7d9ab99a5b0fbb2eae137a8607f59f15403b5c1b28a06382af419a1e67a1ae80",
+      "status": "pass",
+      "task_dir": "111-hysteresis-trip-characterizer",
+      "task_record_sha256": "29c01286dc5b394723afa611fecc4fbe77af44f190ea86757fc6f8e3b23e008b"
+    },
+    {
+      "family_id": "112",
+      "profiles": [
+        {
+          "checker_notes": [
+            "checked=4 max_err=0.00000 decisions=0,1; P_RISING_EDGE_LATCH mismatch_count=0; P_OFFSET_DECISION mismatch_count=0; P_INTEREDGE_HOLD mismatch_count=0; P_DELAY_AND_SMOOTHING mismatch_count=0"
+          ],
+          "checker_score": 1.0,
+          "checker_task_id": "v4_112_latched_comparator_delay",
+          "compiled_marker": true,
+          "evas_engine_used": "evas2",
+          "performance_counters": {
+            "rust_full_model_fastpath_enabled": 1,
+            "rust_full_model_fastpath_fallbacks_total": 0,
+            "rust_full_model_required_failures": 0,
+            "rust_sim_program_available": 1,
+            "rust_sim_program_enabled": 1,
+            "steps_total": 1815,
+            "trace.required_trace_missing_node_count": 0,
+            "trace.required_trace_signal_count": 4
+          },
+          "profile": "feedback",
+          "rendered_tb_sha256": "7e5e958a42eaa5e026dcc095585cbd36d9620c2895f3658695baacf70df041b8",
+          "required_trace_signal_count": 4,
+          "returncode": 0,
+          "status": "pass",
+          "stdout_tail": "   timer_array_sidecar_rebuilds = 0\n        timer_array_sidecar_scans = 0\n        timer_array_sidecar_updates = 0\n        timer_batch_due_calls = 0\n        timer_batch_due_events = 0\n        timer_batch_due_fallbacks = 0\n        timer_batch_due_fires = 0\n        timer_breakpoint_cache_hits = 0\n        timer_breakpoint_hits = 0\n        timer_breakpoint_scans = 0\n        timer_periodic_checks = 0\n        timer_periodic_fires = 0\n        timer_periodic_skips = 0\n        timer_reschedules = 0\n        timer_state_owned_checks = 0\n        timer_state_owned_fallbacks = 0\n        timer_state_owned_fast_skips = 0\n        timer_state_owned_fires = 0\n        timer_state_owned_target_reads = 0\n        timer_state_updates = 0\n        transition_breakpoint_active_scans = 0\n        transition_breakpoint_inactive_skips = 0\n        transition_breakpoint_scans = 0\n        transition_calls = 0\n        transition_evaluate_calls = 0\n        transition_output_fastpath_calls = 0\n        transition_set_target_calls = 0\n        transition_unchanged_target_fastpath = 0\n\nMaximum value achieved for any signal of each quantity:\n    V: V(clk) = 900 mV\n\nTran analysis time: CPU = 200.6 ms, elapsed = 200.6 ms.\nRunner timing counters:\n    derive_bus_signals_s = 0.006591 s\n    csv_write_s = 0.114802 s\nTrace counters:\n    required_trace_csv_signal_count = 5\n\nWriting CSV: /var/folders/y2/l5_3_fm108z7rq5gjtlpy_lw0000gn/T/issue289_112-latched-comparator-delay_feedback_hc758olc/out/tran.csv (signals: vdd, clk, vinn, vinp, dout)\n\nevas completes with 0 errors, 0 warnings.\nTotal time: CPU = 0.5 s, elapsed = 0.5 s.\n\n",
+          "timing": {
+            "accepted_tran_steps": 1815.0,
+            "csv_write_s": 0.114802,
+            "derive_bus_signals_s": 0.006591,
+            "total_elapsed_s": 0.5,
+            "tran_elapsed_s": 0.2006
+          },
+          "tran_csv": true,
+          "tran_marker": true,
+          "wall_time_s": 3.530261
+        },
+        {
+          "checker_notes": [
+            "checked=4 max_err=0.00000 decisions=0,1; P_RISING_EDGE_LATCH mismatch_count=0; P_OFFSET_DECISION mismatch_count=0; P_INTEREDGE_HOLD mismatch_count=0; P_DELAY_AND_SMOOTHING mismatch_count=0"
+          ],
+          "checker_score": 1.0,
+          "checker_task_id": "v4_112_latched_comparator_delay",
+          "compiled_marker": true,
+          "evas_engine_used": "evas2",
+          "performance_counters": {
+            "rust_full_model_fastpath_enabled": 1,
+            "rust_full_model_fastpath_fallbacks_total": 0,
+            "rust_full_model_required_failures": 0,
+            "rust_sim_program_available": 1,
+            "rust_sim_program_enabled": 1,
+            "steps_total": 1815,
+            "trace.required_trace_missing_node_count": 0,
+            "trace.required_trace_signal_count": 4
+          },
+          "profile": "score",
+          "rendered_tb_sha256": "8ab1eadfe3361b64258ca3a40b7300a0f0fce94c46fee5b26afc0a6e81cee0de",
+          "required_trace_signal_count": 4,
+          "returncode": 0,
+          "status": "pass",
+          "stdout_tail": "        timer_array_sidecar_rebuilds = 0\n        timer_array_sidecar_scans = 0\n        timer_array_sidecar_updates = 0\n        timer_batch_due_calls = 0\n        timer_batch_due_events = 0\n        timer_batch_due_fallbacks = 0\n        timer_batch_due_fires = 0\n        timer_breakpoint_cache_hits = 0\n        timer_breakpoint_hits = 0\n        timer_breakpoint_scans = 0\n        timer_periodic_checks = 0\n        timer_periodic_fires = 0\n        timer_periodic_skips = 0\n        timer_reschedules = 0\n        timer_state_owned_checks = 0\n        timer_state_owned_fallbacks = 0\n        timer_state_owned_fast_skips = 0\n        timer_state_owned_fires = 0\n        timer_state_owned_target_reads = 0\n        timer_state_updates = 0\n        transition_breakpoint_active_scans = 0\n        transition_breakpoint_inactive_skips = 0\n        transition_breakpoint_scans = 0\n        transition_calls = 0\n        transition_evaluate_calls = 0\n        transition_output_fastpath_calls = 0\n        transition_set_target_calls = 0\n        transition_unchanged_target_fastpath = 0\n\nMaximum value achieved for any signal of each quantity:\n    V: V(clk) = 900 mV\n\nTran analysis time: CPU = 43.3 ms, elapsed = 43.3 ms.\nRunner timing counters:\n    derive_bus_signals_s = 0.000197 s\n    csv_write_s = 0.018436 s\nTrace counters:\n    required_trace_csv_signal_count = 5\n\nWriting CSV: /var/folders/y2/l5_3_fm108z7rq5gjtlpy_lw0000gn/T/issue289_112-latched-comparator-delay_score_188do5ga/out/tran.csv (signals: vdd, clk, vinn, vinp, dout)\n\nevas completes with 0 errors, 0 warnings.\nTotal time: CPU = 0.1 s, elapsed = 0.1 s.\n\n",
+          "timing": {
+            "accepted_tran_steps": 1815.0,
+            "csv_write_s": 0.018436,
+            "derive_bus_signals_s": 0.000197,
+            "total_elapsed_s": 0.1,
+            "tran_elapsed_s": 0.0433
+          },
+          "tran_csv": true,
+          "tran_marker": true,
+          "wall_time_s": 3.586237
+        }
+      ],
+      "score_tb_sha256": "8ab1eadfe3361b64258ca3a40b7300a0f0fce94c46fee5b26afc0a6e81cee0de",
+      "status": "pass",
+      "task_dir": "112-latched-comparator-delay",
+      "task_record_sha256": "38804fbd848b2cb25e665cdd8e47c1bc382392bd06c403d36f1ab9f3d3afc0d0"
+    },
+    {
+      "family_id": "113",
+      "profiles": [
+        {
+          "checker_notes": [
+            "checked=4 distinct_codes=4 max_err=0.00000; P_THRESHOLD_DECODE mismatch_count=0; P_WEIGHT_ORDER mismatch_count=0; P_BIPOLAR_ENDPOINTS mismatch_count=0; P_MONOTONIC_CODE_WEIGHT mismatch_count=0; P_CONTINUOUS_DECODE mismatch_count=0"
+          ],
+          "checker_score": 1.0,
+          "checker_task_id": "v4_113_sar_weighted_sum",
+          "compiled_marker": true,
+          "evas_engine_used": "evas2",
+          "performance_counters": {
+            "rust_full_model_fastpath_enabled": 1,
+            "rust_full_model_fastpath_fallbacks_total": 0,
+            "rust_full_model_required_failures": 0,
+            "rust_sim_program_available": 1,
+            "rust_sim_program_enabled": 1,
+            "steps_total": 1400,
+            "trace.required_trace_missing_node_count": 0,
+            "trace.required_trace_signal_count": 12
+          },
+          "profile": "feedback",
+          "rendered_tb_sha256": "f1c5d89a1d44fe96fd0a5a5124361c90ed12f6ae7b3f584ac9f9a79af62ef2d4",
+          "required_trace_signal_count": 12,
+          "returncode": 0,
+          "status": "pass",
+          "stdout_tail": "_sidecar_rebuilds = 0\n        timer_array_sidecar_scans = 0\n        timer_array_sidecar_updates = 0\n        timer_batch_due_calls = 0\n        timer_batch_due_events = 0\n        timer_batch_due_fallbacks = 0\n        timer_batch_due_fires = 0\n        timer_breakpoint_cache_hits = 0\n        timer_breakpoint_hits = 0\n        timer_breakpoint_scans = 0\n        timer_periodic_checks = 0\n        timer_periodic_fires = 0\n        timer_periodic_skips = 0\n        timer_reschedules = 0\n        timer_state_owned_checks = 0\n        timer_state_owned_fallbacks = 0\n        timer_state_owned_fast_skips = 0\n        timer_state_owned_fires = 0\n        timer_state_owned_target_reads = 0\n        timer_state_updates = 0\n        transition_breakpoint_active_scans = 0\n        transition_breakpoint_inactive_skips = 0\n        transition_breakpoint_scans = 0\n        transition_calls = 0\n        transition_evaluate_calls = 0\n        transition_output_fastpath_calls = 0\n        transition_set_target_calls = 0\n        transition_unchanged_target_fastpath = 0\n\nMaximum value achieved for any signal of each quantity:\n    V: V(vout) = 1 V\n\nTran analysis time: CPU = 225.0 ms, elapsed = 225.0 ms.\nRunner timing counters:\n    derive_bus_signals_s = 0.003906 s\n    csv_write_s = 0.081743 s\nTrace counters:\n    required_trace_csv_signal_count = 12\n\nWriting CSV: /var/folders/y2/l5_3_fm108z7rq5gjtlpy_lw0000gn/T/issue289_113-sar-weighted-sum_feedback_3qv3d4va/out/tran.csv (signals: d10, d9, d8, d7, d6, d5, d4, d3, d2, d1, d0, vout)\n\nevas completes with 0 errors, 0 warnings.\nTotal time: CPU = 0.6 s, elapsed = 0.6 s.\n\n",
+          "timing": {
+            "accepted_tran_steps": 1400.0,
+            "csv_write_s": 0.081743,
+            "derive_bus_signals_s": 0.003906,
+            "total_elapsed_s": 0.6,
+            "tran_elapsed_s": 0.225
+          },
+          "tran_csv": true,
+          "tran_marker": true,
+          "wall_time_s": 5.901604
+        },
+        {
+          "checker_notes": [
+            "checked=4 distinct_codes=4 max_err=0.00000; P_THRESHOLD_DECODE mismatch_count=0; P_WEIGHT_ORDER mismatch_count=0; P_BIPOLAR_ENDPOINTS mismatch_count=0; P_MONOTONIC_CODE_WEIGHT mismatch_count=0; P_CONTINUOUS_DECODE mismatch_count=0"
+          ],
+          "checker_score": 1.0,
+          "checker_task_id": "v4_113_sar_weighted_sum",
+          "compiled_marker": true,
+          "evas_engine_used": "evas2",
+          "performance_counters": {
+            "rust_full_model_fastpath_enabled": 1,
+            "rust_full_model_fastpath_fallbacks_total": 0,
+            "rust_full_model_required_failures": 0,
+            "rust_sim_program_available": 1,
+            "rust_sim_program_enabled": 1,
+            "steps_total": 1400,
+            "trace.required_trace_missing_node_count": 0,
+            "trace.required_trace_signal_count": 12
+          },
+          "profile": "score",
+          "rendered_tb_sha256": "a1ed12a1958fdb9ff93bc3b2cbc73f49bb197424fd8bbb3e34845f658ca1cee9",
+          "required_trace_signal_count": 12,
+          "returncode": 0,
+          "status": "pass",
+          "stdout_tail": "ray_sidecar_rebuilds = 0\n        timer_array_sidecar_scans = 0\n        timer_array_sidecar_updates = 0\n        timer_batch_due_calls = 0\n        timer_batch_due_events = 0\n        timer_batch_due_fallbacks = 0\n        timer_batch_due_fires = 0\n        timer_breakpoint_cache_hits = 0\n        timer_breakpoint_hits = 0\n        timer_breakpoint_scans = 0\n        timer_periodic_checks = 0\n        timer_periodic_fires = 0\n        timer_periodic_skips = 0\n        timer_reschedules = 0\n        timer_state_owned_checks = 0\n        timer_state_owned_fallbacks = 0\n        timer_state_owned_fast_skips = 0\n        timer_state_owned_fires = 0\n        timer_state_owned_target_reads = 0\n        timer_state_updates = 0\n        transition_breakpoint_active_scans = 0\n        transition_breakpoint_inactive_skips = 0\n        transition_breakpoint_scans = 0\n        transition_calls = 0\n        transition_evaluate_calls = 0\n        transition_output_fastpath_calls = 0\n        transition_set_target_calls = 0\n        transition_unchanged_target_fastpath = 0\n\nMaximum value achieved for any signal of each quantity:\n    V: V(vout) = 1 V\n\nTran analysis time: CPU = 438.1 ms, elapsed = 438.1 ms.\nRunner timing counters:\n    derive_bus_signals_s = 0.000215 s\n    csv_write_s = 0.051123 s\nTrace counters:\n    required_trace_csv_signal_count = 12\n\nWriting CSV: /var/folders/y2/l5_3_fm108z7rq5gjtlpy_lw0000gn/T/issue289_113-sar-weighted-sum_score_cgqbfm2y/out/tran.csv (signals: d10, d9, d8, d7, d6, d5, d4, d3, d2, d1, d0, vout)\n\nevas completes with 0 errors, 0 warnings.\nTotal time: CPU = 0.7 s, elapsed = 0.7 s.\n\n",
+          "timing": {
+            "accepted_tran_steps": 1400.0,
+            "csv_write_s": 0.051123,
+            "derive_bus_signals_s": 0.000215,
+            "total_elapsed_s": 0.7,
+            "tran_elapsed_s": 0.43810000000000004
+          },
+          "tran_csv": true,
+          "tran_marker": true,
+          "wall_time_s": 4.71394
+        }
+      ],
+      "score_tb_sha256": "a1ed12a1958fdb9ff93bc3b2cbc73f49bb197424fd8bbb3e34845f658ca1cee9",
+      "status": "pass",
+      "task_dir": "113-sar-weighted-sum",
+      "task_record_sha256": "8c22d191489a5de9c481920d7ce78086fce4f53ccb5a67761df73739e152696e"
+    },
+    {
+      "family_id": "114",
+      "profiles": [
+        {
+          "checker_notes": [
+            "checked=258 max_error=0.00000 modes=0,1; P_HIGH_SELECTS_VIN1 mismatch_count=0; P_LOW_SELECTS_VIN2 mismatch_count=0; P_BIDIRECTIONAL_SELECTION mismatch_count=0; P_NO_MIXING mismatch_count=0"
+          ],
+          "checker_score": 1.0,
+          "checker_task_id": "v4_114_analog_mux_threshold",
+          "compiled_marker": true,
+          "evas_engine_used": "evas2",
+          "performance_counters": {
+            "rust_full_model_fastpath_enabled": 1,
+            "rust_full_model_fastpath_fallbacks_total": 0,
+            "rust_full_model_required_failures": 0,
+            "rust_sim_program_available": 1,
+            "rust_sim_program_enabled": 1,
+            "steps_total": 1800,
+            "trace.required_trace_missing_node_count": 0,
+            "trace.required_trace_signal_count": 4
+          },
+          "profile": "feedback",
+          "rendered_tb_sha256": "befaecd9a8ef04f1fe8277c5f4499d32e2748c73388685179babf9a747408367",
+          "required_trace_signal_count": 4,
+          "returncode": 0,
+          "status": "pass",
+          "stdout_tail": "0\n        timer_array_sidecar_rebuilds = 0\n        timer_array_sidecar_scans = 0\n        timer_array_sidecar_updates = 0\n        timer_batch_due_calls = 0\n        timer_batch_due_events = 0\n        timer_batch_due_fallbacks = 0\n        timer_batch_due_fires = 0\n        timer_breakpoint_cache_hits = 0\n        timer_breakpoint_hits = 0\n        timer_breakpoint_scans = 0\n        timer_periodic_checks = 0\n        timer_periodic_fires = 0\n        timer_periodic_skips = 0\n        timer_reschedules = 0\n        timer_state_owned_checks = 0\n        timer_state_owned_fallbacks = 0\n        timer_state_owned_fast_skips = 0\n        timer_state_owned_fires = 0\n        timer_state_owned_target_reads = 0\n        timer_state_updates = 0\n        transition_breakpoint_active_scans = 0\n        transition_breakpoint_inactive_skips = 0\n        transition_breakpoint_scans = 0\n        transition_calls = 0\n        transition_evaluate_calls = 0\n        transition_output_fastpath_calls = 0\n        transition_set_target_calls = 0\n        transition_unchanged_target_fastpath = 0\n\nMaximum value achieved for any signal of each quantity:\n    V: V(vsel) = 900 mV\n\nTran analysis time: CPU = 502.2 ms, elapsed = 502.2 ms.\nRunner timing counters:\n    derive_bus_signals_s = 0.000199 s\n    csv_write_s = 0.066930 s\nTrace counters:\n    required_trace_csv_signal_count = 4\n\nWriting CSV: /var/folders/y2/l5_3_fm108z7rq5gjtlpy_lw0000gn/T/issue289_114-analog-mux-threshold_feedback_3402f0gq/out/tran.csv (signals: vin1, vin2, vsel, vout)\n\nevas completes with 0 errors, 0 warnings.\nTotal time: CPU = 0.6 s, elapsed = 0.6 s.\n\n",
+          "timing": {
+            "accepted_tran_steps": 1800.0,
+            "csv_write_s": 0.06693,
+            "derive_bus_signals_s": 0.000199,
+            "total_elapsed_s": 0.6,
+            "tran_elapsed_s": 0.5022
+          },
+          "tran_csv": true,
+          "tran_marker": true,
+          "wall_time_s": 4.748839
+        },
+        {
+          "checker_notes": [
+            "checked=258 max_error=0.00000 modes=0,1; P_HIGH_SELECTS_VIN1 mismatch_count=0; P_LOW_SELECTS_VIN2 mismatch_count=0; P_BIDIRECTIONAL_SELECTION mismatch_count=0; P_NO_MIXING mismatch_count=0"
+          ],
+          "checker_score": 1.0,
+          "checker_task_id": "v4_114_analog_mux_threshold",
+          "compiled_marker": true,
+          "evas_engine_used": "evas2",
+          "performance_counters": {
+            "rust_full_model_fastpath_enabled": 1,
+            "rust_full_model_fastpath_fallbacks_total": 0,
+            "rust_full_model_required_failures": 0,
+            "rust_sim_program_available": 1,
+            "rust_sim_program_enabled": 1,
+            "steps_total": 1800,
+            "trace.required_trace_missing_node_count": 0,
+            "trace.required_trace_signal_count": 4
+          },
+          "profile": "score",
+          "rendered_tb_sha256": "608e4f8c442c72503667f20ab2045ac804cc3d05eef3fb85076095388027df1b",
+          "required_trace_signal_count": 4,
+          "returncode": 0,
+          "status": "pass",
+          "stdout_tail": " = 0\n        timer_array_sidecar_rebuilds = 0\n        timer_array_sidecar_scans = 0\n        timer_array_sidecar_updates = 0\n        timer_batch_due_calls = 0\n        timer_batch_due_events = 0\n        timer_batch_due_fallbacks = 0\n        timer_batch_due_fires = 0\n        timer_breakpoint_cache_hits = 0\n        timer_breakpoint_hits = 0\n        timer_breakpoint_scans = 0\n        timer_periodic_checks = 0\n        timer_periodic_fires = 0\n        timer_periodic_skips = 0\n        timer_reschedules = 0\n        timer_state_owned_checks = 0\n        timer_state_owned_fallbacks = 0\n        timer_state_owned_fast_skips = 0\n        timer_state_owned_fires = 0\n        timer_state_owned_target_reads = 0\n        timer_state_updates = 0\n        transition_breakpoint_active_scans = 0\n        transition_breakpoint_inactive_skips = 0\n        transition_breakpoint_scans = 0\n        transition_calls = 0\n        transition_evaluate_calls = 0\n        transition_output_fastpath_calls = 0\n        transition_set_target_calls = 0\n        transition_unchanged_target_fastpath = 0\n\nMaximum value achieved for any signal of each quantity:\n    V: V(vsel) = 900 mV\n\nTran analysis time: CPU = 270.5 ms, elapsed = 270.5 ms.\nRunner timing counters:\n    derive_bus_signals_s = 0.000264 s\n    csv_write_s = 0.019572 s\nTrace counters:\n    required_trace_csv_signal_count = 4\n\nWriting CSV: /var/folders/y2/l5_3_fm108z7rq5gjtlpy_lw0000gn/T/issue289_114-analog-mux-threshold_score_nxx_c29j/out/tran.csv (signals: vin1, vin2, vsel, vout)\n\nevas completes with 0 errors, 0 warnings.\nTotal time: CPU = 0.3 s, elapsed = 0.3 s.\n\n",
+          "timing": {
+            "accepted_tran_steps": 1800.0,
+            "csv_write_s": 0.019572,
+            "derive_bus_signals_s": 0.000264,
+            "total_elapsed_s": 0.3,
+            "tran_elapsed_s": 0.2705
+          },
+          "tran_csv": true,
+          "tran_marker": true,
+          "wall_time_s": 5.084231
+        }
+      ],
+      "score_tb_sha256": "608e4f8c442c72503667f20ab2045ac804cc3d05eef3fb85076095388027df1b",
+      "status": "pass",
+      "task_dir": "114-analog-mux-threshold",
+      "task_record_sha256": "0ca55d7e6448ec862dc37d95081548dc632bd42107e4a44600753f42557051e0"
+    },
+    {
+      "family_id": "115",
+      "profiles": [
+        {
+          "checker_notes": [
+            "edges=4 checked=4 max_err=0.0000 marker_return_low=False; P_INITIAL_LOW mismatch_count=0; P_RISING_EDGE_COUNT mismatch_count=0; P_WRAP_MARKER mismatch_count=0; P_NONWRAP_LOW mismatch_count=0; P_PERIOD_FOUR mismatch_count=0"
+          ],
+          "checker_score": 1.0,
+          "checker_task_id": "v4_115_two_bit_counter_marker",
+          "compiled_marker": true,
+          "evas_engine_used": "evas2",
+          "performance_counters": {
+            "rust_full_model_fastpath_enabled": 1,
+            "rust_full_model_fastpath_fallbacks_total": 0,
+            "rust_full_model_required_failures": 0,
+            "rust_sim_program_available": 1,
+            "rust_sim_program_enabled": 1,
+            "steps_total": 1685,
+            "trace.required_trace_missing_node_count": 0,
+            "trace.required_trace_signal_count": 2
+          },
+          "profile": "feedback",
+          "rendered_tb_sha256": "63827bbdead947da299503190e46fe6ecd80c7909894ba5ae672df3bf5fe7a5c",
+          "required_trace_signal_count": 2,
+          "returncode": 0,
+          "status": "pass",
+          "stdout_tail": "solute_fires = 0\n        timer_array_sidecar_rebuilds = 0\n        timer_array_sidecar_scans = 0\n        timer_array_sidecar_updates = 0\n        timer_batch_due_calls = 0\n        timer_batch_due_events = 0\n        timer_batch_due_fallbacks = 0\n        timer_batch_due_fires = 0\n        timer_breakpoint_cache_hits = 0\n        timer_breakpoint_hits = 0\n        timer_breakpoint_scans = 0\n        timer_periodic_checks = 0\n        timer_periodic_fires = 0\n        timer_periodic_skips = 0\n        timer_reschedules = 0\n        timer_state_owned_checks = 0\n        timer_state_owned_fallbacks = 0\n        timer_state_owned_fast_skips = 0\n        timer_state_owned_fires = 0\n        timer_state_owned_target_reads = 0\n        timer_state_updates = 0\n        transition_breakpoint_active_scans = 0\n        transition_breakpoint_inactive_skips = 0\n        transition_breakpoint_scans = 0\n        transition_calls = 0\n        transition_evaluate_calls = 0\n        transition_output_fastpath_calls = 0\n        transition_set_target_calls = 0\n        transition_unchanged_target_fastpath = 0\n\nMaximum value achieved for any signal of each quantity:\n    V: V(clkin) = 1 V\n\nTran analysis time: CPU = 20.7 ms, elapsed = 20.7 ms.\nRunner timing counters:\n    derive_bus_signals_s = 0.000231 s\n    csv_write_s = 0.138657 s\nTrace counters:\n    required_trace_csv_signal_count = 2\n\nWriting CSV: /var/folders/y2/l5_3_fm108z7rq5gjtlpy_lw0000gn/T/issue289_115-two-bit-counter-marker_feedback_n5axj3nf/out/tran.csv (signals: clkin, mc)\n\nevas completes with 0 errors, 0 warnings.\nTotal time: CPU = 0.2 s, elapsed = 0.2 s.\n\n",
+          "timing": {
+            "accepted_tran_steps": 1685.0,
+            "csv_write_s": 0.138657,
+            "derive_bus_signals_s": 0.000231,
+            "total_elapsed_s": 0.2,
+            "tran_elapsed_s": 0.0207
+          },
+          "tran_csv": true,
+          "tran_marker": true,
+          "wall_time_s": 6.558188
+        },
+        {
+          "checker_notes": [
+            "edges=4 checked=4 max_err=0.0000 marker_return_low=False; P_INITIAL_LOW mismatch_count=0; P_RISING_EDGE_COUNT mismatch_count=0; P_WRAP_MARKER mismatch_count=0; P_NONWRAP_LOW mismatch_count=0; P_PERIOD_FOUR mismatch_count=0"
+          ],
+          "checker_score": 1.0,
+          "checker_task_id": "v4_115_two_bit_counter_marker",
+          "compiled_marker": true,
+          "evas_engine_used": "evas2",
+          "performance_counters": {
+            "rust_full_model_fastpath_enabled": 1,
+            "rust_full_model_fastpath_fallbacks_total": 0,
+            "rust_full_model_required_failures": 0,
+            "rust_sim_program_available": 1,
+            "rust_sim_program_enabled": 1,
+            "steps_total": 1685,
+            "trace.required_trace_missing_node_count": 0,
+            "trace.required_trace_signal_count": 2
+          },
+          "profile": "score",
+          "rendered_tb_sha256": "dab95162e9a98e5589b7db15a0c010ee12b50500903ec02cc869914287c9843f",
+          "required_trace_signal_count": 2,
+          "returncode": 0,
+          "status": "pass",
+          "stdout_tail": "_absolute_fires = 0\n        timer_array_sidecar_rebuilds = 0\n        timer_array_sidecar_scans = 0\n        timer_array_sidecar_updates = 0\n        timer_batch_due_calls = 0\n        timer_batch_due_events = 0\n        timer_batch_due_fallbacks = 0\n        timer_batch_due_fires = 0\n        timer_breakpoint_cache_hits = 0\n        timer_breakpoint_hits = 0\n        timer_breakpoint_scans = 0\n        timer_periodic_checks = 0\n        timer_periodic_fires = 0\n        timer_periodic_skips = 0\n        timer_reschedules = 0\n        timer_state_owned_checks = 0\n        timer_state_owned_fallbacks = 0\n        timer_state_owned_fast_skips = 0\n        timer_state_owned_fires = 0\n        timer_state_owned_target_reads = 0\n        timer_state_updates = 0\n        transition_breakpoint_active_scans = 0\n        transition_breakpoint_inactive_skips = 0\n        transition_breakpoint_scans = 0\n        transition_calls = 0\n        transition_evaluate_calls = 0\n        transition_output_fastpath_calls = 0\n        transition_set_target_calls = 0\n        transition_unchanged_target_fastpath = 0\n\nMaximum value achieved for any signal of each quantity:\n    V: V(clkin) = 1 V\n\nTran analysis time: CPU = 29.2 ms, elapsed = 29.2 ms.\nRunner timing counters:\n    derive_bus_signals_s = 0.000355 s\n    csv_write_s = 0.097436 s\nTrace counters:\n    required_trace_csv_signal_count = 2\n\nWriting CSV: /var/folders/y2/l5_3_fm108z7rq5gjtlpy_lw0000gn/T/issue289_115-two-bit-counter-marker_score_qj3g9krl/out/tran.csv (signals: clkin, mc)\n\nevas completes with 0 errors, 0 warnings.\nTotal time: CPU = 0.2 s, elapsed = 0.2 s.\n\n",
+          "timing": {
+            "accepted_tran_steps": 1685.0,
+            "csv_write_s": 0.097436,
+            "derive_bus_signals_s": 0.000355,
+            "total_elapsed_s": 0.2,
+            "tran_elapsed_s": 0.0292
+          },
+          "tran_csv": true,
+          "tran_marker": true,
+          "wall_time_s": 6.92326
+        }
+      ],
+      "score_tb_sha256": "dab95162e9a98e5589b7db15a0c010ee12b50500903ec02cc869914287c9843f",
+      "status": "pass",
+      "task_dir": "115-two-bit-counter-marker",
+      "task_record_sha256": "99d23b810ffbd0b970f9967680da93ff0c27b5ca3c52839d883ae8eeceb136a6"
+    },
+    {
+      "family_id": "116",
+      "profiles": [
+        {
+          "checker_notes": [
+            "checked=267 max_error=0.00000 monotonic_hold=True; P_INITIAL_INPUT mismatch_count=0; P_CAPTURE_NEW_MAX mismatch_count=0; P_HOLD_ON_FALL mismatch_count=0; P_MONOTONE_OUTPUT mismatch_count=0; P_RUNNING_MAX mismatch_count=0"
+          ],
+          "checker_score": 1.0,
+          "checker_task_id": "v4_116_max_detector_hold",
+          "compiled_marker": true,
+          "evas_engine_used": "evas2",
+          "performance_counters": {
+            "rust_full_model_fastpath_enabled": 1,
+            "rust_full_model_fastpath_fallbacks_total": 0,
+            "rust_full_model_required_failures": 0,
+            "rust_sim_program_available": 1,
+            "rust_sim_program_enabled": 1,
+            "steps_total": 1600,
+            "trace.required_trace_missing_node_count": 0,
+            "trace.required_trace_signal_count": 2
+          },
+          "profile": "feedback",
+          "rendered_tb_sha256": "6fbdc4645ab998dd7d07e2a8e05aef550d0711bdda22662162b5a32f0a7dfc0e",
+          "required_trace_signal_count": 2,
+          "returncode": 0,
+          "status": "pass",
+          "stdout_tail": "absolute_fires = 0\n        timer_array_sidecar_rebuilds = 0\n        timer_array_sidecar_scans = 0\n        timer_array_sidecar_updates = 0\n        timer_batch_due_calls = 0\n        timer_batch_due_events = 0\n        timer_batch_due_fallbacks = 0\n        timer_batch_due_fires = 0\n        timer_breakpoint_cache_hits = 0\n        timer_breakpoint_hits = 0\n        timer_breakpoint_scans = 0\n        timer_periodic_checks = 0\n        timer_periodic_fires = 0\n        timer_periodic_skips = 0\n        timer_reschedules = 0\n        timer_state_owned_checks = 0\n        timer_state_owned_fallbacks = 0\n        timer_state_owned_fast_skips = 0\n        timer_state_owned_fires = 0\n        timer_state_owned_target_reads = 0\n        timer_state_updates = 0\n        transition_breakpoint_active_scans = 0\n        transition_breakpoint_inactive_skips = 0\n        transition_breakpoint_scans = 0\n        transition_calls = 0\n        transition_evaluate_calls = 0\n        transition_output_fastpath_calls = 0\n        transition_set_target_calls = 0\n        transition_unchanged_target_fastpath = 0\n\nMaximum value achieved for any signal of each quantity:\n    V: V(vin) = 850 mV\n\nTran analysis time: CPU = 242.1 ms, elapsed = 242.1 ms.\nRunner timing counters:\n    derive_bus_signals_s = 0.000245 s\n    csv_write_s = 0.042695 s\nTrace counters:\n    required_trace_csv_signal_count = 2\n\nWriting CSV: /var/folders/y2/l5_3_fm108z7rq5gjtlpy_lw0000gn/T/issue289_116-max-detector-hold_feedback_7murqg_6/out/tran.csv (signals: vin, vout)\n\nevas completes with 0 errors, 0 warnings.\nTotal time: CPU = 0.4 s, elapsed = 0.4 s.\n\n",
+          "timing": {
+            "accepted_tran_steps": 1600.0,
+            "csv_write_s": 0.042695,
+            "derive_bus_signals_s": 0.000245,
+            "total_elapsed_s": 0.4,
+            "tran_elapsed_s": 0.24209999999999998
+          },
+          "tran_csv": true,
+          "tran_marker": true,
+          "wall_time_s": 10.58349
+        },
+        {
+          "checker_notes": [
+            "checked=267 max_error=0.00000 monotonic_hold=True; P_INITIAL_INPUT mismatch_count=0; P_CAPTURE_NEW_MAX mismatch_count=0; P_HOLD_ON_FALL mismatch_count=0; P_MONOTONE_OUTPUT mismatch_count=0; P_RUNNING_MAX mismatch_count=0"
+          ],
+          "checker_score": 1.0,
+          "checker_task_id": "v4_116_max_detector_hold",
+          "compiled_marker": true,
+          "evas_engine_used": "evas2",
+          "performance_counters": {
+            "rust_full_model_fastpath_enabled": 1,
+            "rust_full_model_fastpath_fallbacks_total": 0,
+            "rust_full_model_required_failures": 0,
+            "rust_sim_program_available": 1,
+            "rust_sim_program_enabled": 1,
+            "steps_total": 1600,
+            "trace.required_trace_missing_node_count": 0,
+            "trace.required_trace_signal_count": 2
+          },
+          "profile": "score",
+          "rendered_tb_sha256": "650ad94d1b7b6d0eb9d0c4e1fae2152824ce6b4a7632e235ffebe63834920ccc",
+          "required_trace_signal_count": 2,
+          "returncode": 0,
+          "status": "pass",
+          "stdout_tail": "imer_absolute_fires = 0\n        timer_array_sidecar_rebuilds = 0\n        timer_array_sidecar_scans = 0\n        timer_array_sidecar_updates = 0\n        timer_batch_due_calls = 0\n        timer_batch_due_events = 0\n        timer_batch_due_fallbacks = 0\n        timer_batch_due_fires = 0\n        timer_breakpoint_cache_hits = 0\n        timer_breakpoint_hits = 0\n        timer_breakpoint_scans = 0\n        timer_periodic_checks = 0\n        timer_periodic_fires = 0\n        timer_periodic_skips = 0\n        timer_reschedules = 0\n        timer_state_owned_checks = 0\n        timer_state_owned_fallbacks = 0\n        timer_state_owned_fast_skips = 0\n        timer_state_owned_fires = 0\n        timer_state_owned_target_reads = 0\n        timer_state_updates = 0\n        transition_breakpoint_active_scans = 0\n        transition_breakpoint_inactive_skips = 0\n        transition_breakpoint_scans = 0\n        transition_calls = 0\n        transition_evaluate_calls = 0\n        transition_output_fastpath_calls = 0\n        transition_set_target_calls = 0\n        transition_unchanged_target_fastpath = 0\n\nMaximum value achieved for any signal of each quantity:\n    V: V(vin) = 850 mV\n\nTran analysis time: CPU = 17.6 ms, elapsed = 17.6 ms.\nRunner timing counters:\n    derive_bus_signals_s = 0.002118 s\n    csv_write_s = 0.024101 s\nTrace counters:\n    required_trace_csv_signal_count = 2\n\nWriting CSV: /var/folders/y2/l5_3_fm108z7rq5gjtlpy_lw0000gn/T/issue289_116-max-detector-hold_score_8eas3cyr/out/tran.csv (signals: vin, vout)\n\nevas completes with 0 errors, 0 warnings.\nTotal time: CPU = 0.1 s, elapsed = 0.1 s.\n\n",
+          "timing": {
+            "accepted_tran_steps": 1600.0,
+            "csv_write_s": 0.024101,
+            "derive_bus_signals_s": 0.002118,
+            "total_elapsed_s": 0.1,
+            "tran_elapsed_s": 0.0176
+          },
+          "tran_csv": true,
+          "tran_marker": true,
+          "wall_time_s": 10.141823
+        }
+      ],
+      "score_tb_sha256": "650ad94d1b7b6d0eb9d0c4e1fae2152824ce6b4a7632e235ffebe63834920ccc",
+      "status": "pass",
+      "task_dir": "116-max-detector-hold",
+      "task_record_sha256": "747bf9d5cba085a5b5cf3ec6eee027d19f8944cabb5561426804cbc4bf2e6620"
+    },
+    {
+      "family_id": "117",
+      "profiles": [
+        {
+          "checker_notes": [
+            "checked=3 max_error=0.00000; P_FIRST_EDGE_CAPTURE mismatch_count=0; P_PREVIOUS_WINDOW_REPORT mismatch_count=0; P_SIGNED_DIFFERENCE mismatch_count=0; P_OUTPUT_CLIP mismatch_count=0; P_WINDOW_REARM mismatch_count=0; P_OUTPUT_TRANSITION mismatch_count=0"
+          ],
+          "checker_score": 1.0,
+          "checker_task_id": "v4_117_time_diff_detector",
+          "compiled_marker": true,
+          "evas_engine_used": "evas2",
+          "performance_counters": {
+            "rust_full_model_fastpath_enabled": 1,
+            "rust_full_model_fastpath_fallbacks_total": 0,
+            "rust_full_model_required_failures": 0,
+            "rust_sim_program_available": 1,
+            "rust_sim_program_enabled": 1,
+            "steps_total": 2003,
+            "trace.required_trace_missing_node_count": 0,
+            "trace.required_trace_signal_count": 4
+          },
+          "profile": "feedback",
+          "rendered_tb_sha256": "991d7cc944c93562b946a1583ca7c9e25cde07b01a782c7d28198453aa15ebda",
+          "required_trace_signal_count": 4,
+          "returncode": 0,
+          "status": "pass",
+          "stdout_tail": "s = 0\n        timer_array_sidecar_rebuilds = 0\n        timer_array_sidecar_scans = 0\n        timer_array_sidecar_updates = 0\n        timer_batch_due_calls = 0\n        timer_batch_due_events = 0\n        timer_batch_due_fallbacks = 0\n        timer_batch_due_fires = 0\n        timer_breakpoint_cache_hits = 0\n        timer_breakpoint_hits = 0\n        timer_breakpoint_scans = 0\n        timer_periodic_checks = 0\n        timer_periodic_fires = 0\n        timer_periodic_skips = 0\n        timer_reschedules = 0\n        timer_state_owned_checks = 0\n        timer_state_owned_fallbacks = 0\n        timer_state_owned_fast_skips = 0\n        timer_state_owned_fires = 0\n        timer_state_owned_target_reads = 0\n        timer_state_updates = 0\n        transition_breakpoint_active_scans = 0\n        transition_breakpoint_inactive_skips = 0\n        transition_breakpoint_scans = 0\n        transition_calls = 0\n        transition_evaluate_calls = 0\n        transition_output_fastpath_calls = 0\n        transition_set_target_calls = 0\n        transition_unchanged_target_fastpath = 0\n\nMaximum value achieved for any signal of each quantity:\n    V: V(clk) = 900 mV\n\nTran analysis time: CPU = 312.5 ms, elapsed = 312.5 ms.\nRunner timing counters:\n    derive_bus_signals_s = 0.066611 s\n    csv_write_s = 0.044287 s\nTrace counters:\n    required_trace_csv_signal_count = 4\n\nWriting CSV: /var/folders/y2/l5_3_fm108z7rq5gjtlpy_lw0000gn/T/issue289_117-time-diff-detector_feedback_mftzewzb/out/tran.csv (signals: clk, vinp, vinn, vout)\n\nevas completes with 0 errors, 0 warnings.\nTotal time: CPU = 1.3 s, elapsed = 1.3 s.\n\n",
+          "timing": {
+            "accepted_tran_steps": 2003.0,
+            "csv_write_s": 0.044287,
+            "derive_bus_signals_s": 0.066611,
+            "total_elapsed_s": 1.3,
+            "tran_elapsed_s": 0.3125
+          },
+          "tran_csv": true,
+          "tran_marker": true,
+          "wall_time_s": 27.609984
+        },
+        {
+          "checker_notes": [
+            "checked=3 max_error=0.00000; P_FIRST_EDGE_CAPTURE mismatch_count=0; P_PREVIOUS_WINDOW_REPORT mismatch_count=0; P_SIGNED_DIFFERENCE mismatch_count=0; P_OUTPUT_CLIP mismatch_count=0; P_WINDOW_REARM mismatch_count=0; P_OUTPUT_TRANSITION mismatch_count=0"
+          ],
+          "checker_score": 1.0,
+          "checker_task_id": "v4_117_time_diff_detector",
+          "compiled_marker": true,
+          "evas_engine_used": "evas2",
+          "performance_counters": {
+            "rust_full_model_fastpath_enabled": 1,
+            "rust_full_model_fastpath_fallbacks_total": 0,
+            "rust_full_model_required_failures": 0,
+            "rust_sim_program_available": 1,
+            "rust_sim_program_enabled": 1,
+            "steps_total": 2003,
+            "trace.required_trace_missing_node_count": 0,
+            "trace.required_trace_signal_count": 4
+          },
+          "profile": "score",
+          "rendered_tb_sha256": "4fbf74b28b78ddfd224cdb75f94c55943ca4e22f5dfb5a8ff3486298f42270e7",
+          "required_trace_signal_count": 4,
+          "returncode": 0,
+          "status": "pass",
+          "stdout_tail": "ires = 0\n        timer_array_sidecar_rebuilds = 0\n        timer_array_sidecar_scans = 0\n        timer_array_sidecar_updates = 0\n        timer_batch_due_calls = 0\n        timer_batch_due_events = 0\n        timer_batch_due_fallbacks = 0\n        timer_batch_due_fires = 0\n        timer_breakpoint_cache_hits = 0\n        timer_breakpoint_hits = 0\n        timer_breakpoint_scans = 0\n        timer_periodic_checks = 0\n        timer_periodic_fires = 0\n        timer_periodic_skips = 0\n        timer_reschedules = 0\n        timer_state_owned_checks = 0\n        timer_state_owned_fallbacks = 0\n        timer_state_owned_fast_skips = 0\n        timer_state_owned_fires = 0\n        timer_state_owned_target_reads = 0\n        timer_state_updates = 0\n        transition_breakpoint_active_scans = 0\n        transition_breakpoint_inactive_skips = 0\n        transition_breakpoint_scans = 0\n        transition_calls = 0\n        transition_evaluate_calls = 0\n        transition_output_fastpath_calls = 0\n        transition_set_target_calls = 0\n        transition_unchanged_target_fastpath = 0\n\nMaximum value achieved for any signal of each quantity:\n    V: V(clk) = 900 mV\n\nTran analysis time: CPU = 522.2 ms, elapsed = 522.2 ms.\nRunner timing counters:\n    derive_bus_signals_s = 0.000385 s\n    csv_write_s = 0.033926 s\nTrace counters:\n    required_trace_csv_signal_count = 4\n\nWriting CSV: /var/folders/y2/l5_3_fm108z7rq5gjtlpy_lw0000gn/T/issue289_117-time-diff-detector_score_22pocbz5/out/tran.csv (signals: clk, vinp, vinn, vout)\n\nevas completes with 0 errors, 0 warnings.\nTotal time: CPU = 2.0 s, elapsed = 2.0 s.\n\n",
+          "timing": {
+            "accepted_tran_steps": 2003.0,
+            "csv_write_s": 0.033926,
+            "derive_bus_signals_s": 0.000385,
+            "total_elapsed_s": 2.0,
+            "tran_elapsed_s": 0.5222
+          },
+          "tran_csv": true,
+          "tran_marker": true,
+          "wall_time_s": 6.355404
+        }
+      ],
+      "score_tb_sha256": "4fbf74b28b78ddfd224cdb75f94c55943ca4e22f5dfb5a8ff3486298f42270e7",
+      "status": "pass",
+      "task_dir": "117-time-diff-detector",
+      "task_record_sha256": "2cf0b7d4bdbdaadde7beb9e7c0534d7cf4ad752f31c506e3bd19b445295ed1fc"
+    },
+    {
+      "family_id": "118",
+      "profiles": [
+        {
+          "checker_notes": [
+            "checked=2 diff_signs=-1,1 max_pair_error=0.0000; P_POSITIVE_UNITY mismatch_count=0; P_NEGATIVE_UNITY mismatch_count=0; P_CHANNEL_INDEPENDENCE mismatch_count=0; P_DIFFERENTIAL_PRESERVATION mismatch_count=0; P_COMMON_MODE_PRESERVATION mismatch_count=0"
+          ],
+          "checker_score": 1.0,
+          "checker_task_id": "v4_118_differential_buffer",
+          "compiled_marker": true,
+          "evas_engine_used": "evas2",
+          "performance_counters": {
+            "rust_full_model_fastpath_enabled": 1,
+            "rust_full_model_fastpath_fallbacks_total": 0,
+            "rust_full_model_required_failures": 0,
+            "rust_sim_program_available": 1,
+            "rust_sim_program_enabled": 1,
+            "steps_total": 880,
+            "trace.required_trace_missing_node_count": 0,
+            "trace.required_trace_signal_count": 4
+          },
+          "profile": "feedback",
+          "rendered_tb_sha256": "1f2848893fad7e3a59398a38cc749c8f900f51d8129205b467704560ac351b05",
+          "required_trace_signal_count": 4,
+          "returncode": 0,
+          "status": "pass",
+          "stdout_tail": " 0\n        timer_array_sidecar_rebuilds = 0\n        timer_array_sidecar_scans = 0\n        timer_array_sidecar_updates = 0\n        timer_batch_due_calls = 0\n        timer_batch_due_events = 0\n        timer_batch_due_fallbacks = 0\n        timer_batch_due_fires = 0\n        timer_breakpoint_cache_hits = 0\n        timer_breakpoint_hits = 0\n        timer_breakpoint_scans = 0\n        timer_periodic_checks = 0\n        timer_periodic_fires = 0\n        timer_periodic_skips = 0\n        timer_reschedules = 0\n        timer_state_owned_checks = 0\n        timer_state_owned_fallbacks = 0\n        timer_state_owned_fast_skips = 0\n        timer_state_owned_fires = 0\n        timer_state_owned_target_reads = 0\n        timer_state_updates = 0\n        transition_breakpoint_active_scans = 0\n        transition_breakpoint_inactive_skips = 0\n        transition_breakpoint_scans = 0\n        transition_calls = 0\n        transition_evaluate_calls = 0\n        transition_output_fastpath_calls = 0\n        transition_set_target_calls = 0\n        transition_unchanged_target_fastpath = 0\n\nMaximum value achieved for any signal of each quantity:\n    V: V(vinp) = 650 mV\n\nTran analysis time: CPU = 10.0 ms, elapsed = 10.0 ms.\nRunner timing counters:\n    derive_bus_signals_s = 0.000188 s\n    csv_write_s = 0.007449 s\nTrace counters:\n    required_trace_csv_signal_count = 4\n\nWriting CSV: /var/folders/y2/l5_3_fm108z7rq5gjtlpy_lw0000gn/T/issue289_118-differential-buffer_feedback_jyezgepf/out/tran.csv (signals: vinp, vinn, voutp, voutn)\n\nevas completes with 0 errors, 0 warnings.\nTotal time: CPU = 0.0 s, elapsed = 0.0 s.\n\n",
+          "timing": {
+            "accepted_tran_steps": 880.0,
+            "csv_write_s": 0.007449,
+            "derive_bus_signals_s": 0.000188,
+            "total_elapsed_s": 0.0,
+            "tran_elapsed_s": 0.01
+          },
+          "tran_csv": true,
+          "tran_marker": true,
+          "wall_time_s": 2.881093
+        },
+        {
+          "checker_notes": [
+            "checked=2 diff_signs=-1,1 max_pair_error=0.0000; P_POSITIVE_UNITY mismatch_count=0; P_NEGATIVE_UNITY mismatch_count=0; P_CHANNEL_INDEPENDENCE mismatch_count=0; P_DIFFERENTIAL_PRESERVATION mismatch_count=0; P_COMMON_MODE_PRESERVATION mismatch_count=0"
+          ],
+          "checker_score": 1.0,
+          "checker_task_id": "v4_118_differential_buffer",
+          "compiled_marker": true,
+          "evas_engine_used": "evas2",
+          "performance_counters": {
+            "rust_full_model_fastpath_enabled": 1,
+            "rust_full_model_fastpath_fallbacks_total": 0,
+            "rust_full_model_required_failures": 0,
+            "rust_sim_program_available": 1,
+            "rust_sim_program_enabled": 1,
+            "steps_total": 880,
+            "trace.required_trace_missing_node_count": 0,
+            "trace.required_trace_signal_count": 4
+          },
+          "profile": "score",
+          "rendered_tb_sha256": "4287ac933332b93b91e2eaae770091df5eec601a545d01da56cb4efceae86e66",
+          "required_trace_signal_count": 4,
+          "returncode": 0,
+          "status": "pass",
+          "stdout_tail": "s = 0\n        timer_array_sidecar_rebuilds = 0\n        timer_array_sidecar_scans = 0\n        timer_array_sidecar_updates = 0\n        timer_batch_due_calls = 0\n        timer_batch_due_events = 0\n        timer_batch_due_fallbacks = 0\n        timer_batch_due_fires = 0\n        timer_breakpoint_cache_hits = 0\n        timer_breakpoint_hits = 0\n        timer_breakpoint_scans = 0\n        timer_periodic_checks = 0\n        timer_periodic_fires = 0\n        timer_periodic_skips = 0\n        timer_reschedules = 0\n        timer_state_owned_checks = 0\n        timer_state_owned_fallbacks = 0\n        timer_state_owned_fast_skips = 0\n        timer_state_owned_fires = 0\n        timer_state_owned_target_reads = 0\n        timer_state_updates = 0\n        transition_breakpoint_active_scans = 0\n        transition_breakpoint_inactive_skips = 0\n        transition_breakpoint_scans = 0\n        transition_calls = 0\n        transition_evaluate_calls = 0\n        transition_output_fastpath_calls = 0\n        transition_set_target_calls = 0\n        transition_unchanged_target_fastpath = 0\n\nMaximum value achieved for any signal of each quantity:\n    V: V(vinp) = 650 mV\n\nTran analysis time: CPU = 10.8 ms, elapsed = 10.8 ms.\nRunner timing counters:\n    derive_bus_signals_s = 0.000160 s\n    csv_write_s = 0.006386 s\nTrace counters:\n    required_trace_csv_signal_count = 4\n\nWriting CSV: /var/folders/y2/l5_3_fm108z7rq5gjtlpy_lw0000gn/T/issue289_118-differential-buffer_score_gskrlap5/out/tran.csv (signals: vinp, vinn, voutp, voutn)\n\nevas completes with 0 errors, 0 warnings.\nTotal time: CPU = 0.0 s, elapsed = 0.0 s.\n\n",
+          "timing": {
+            "accepted_tran_steps": 880.0,
+            "csv_write_s": 0.006386,
+            "derive_bus_signals_s": 0.00016,
+            "total_elapsed_s": 0.0,
+            "tran_elapsed_s": 0.0108
+          },
+          "tran_csv": true,
+          "tran_marker": true,
+          "wall_time_s": 1.629656
+        }
+      ],
+      "score_tb_sha256": "4287ac933332b93b91e2eaae770091df5eec601a545d01da56cb4efceae86e66",
+      "status": "pass",
+      "task_dir": "118-differential-buffer",
+      "task_record_sha256": "7ea7864efee64b75838645b013a88b56d88f5d890ebadef4defcd93c6cbe157f"
+    },
+    {
+      "family_id": "119",
+      "profiles": [
+        {
+          "checker_notes": [
+            "checked=8 max_error=0.00000; P_INPUT_SAMPLE mismatch_count=0; P_S6_HALF_ADD mismatch_count=0; P_BINARY_SUBTRACTIONS mismatch_count=0; P_EDGE_POLARITY mismatch_count=0; P_ACCUMULATED_STATE mismatch_count=0; P_OUTPUT_TRANSITION mismatch_count=0"
+          ],
+          "checker_score": 1.0,
+          "checker_task_id": "v4_119_sar_cdac_residue",
+          "compiled_marker": true,
+          "evas_engine_used": "evas2",
+          "performance_counters": {
+            "rust_full_model_fastpath_enabled": 1,
+            "rust_full_model_fastpath_fallbacks_total": 0,
+            "rust_full_model_required_failures": 0,
+            "rust_sim_program_available": 1,
+            "rust_sim_program_enabled": 1,
+            "steps_total": 1608,
+            "trace.required_trace_missing_node_count": 0,
+            "trace.required_trace_signal_count": 9
+          },
+          "profile": "feedback",
+          "rendered_tb_sha256": "4ffe7a378f33a413d05b2d679b00eb960cb8fb2fff73aa64de0bc80ebad73b4a",
+          "required_trace_signal_count": 9,
+          "returncode": 0,
+          "status": "pass",
+          "stdout_tail": " timer_array_sidecar_rebuilds = 0\n        timer_array_sidecar_scans = 0\n        timer_array_sidecar_updates = 0\n        timer_batch_due_calls = 0\n        timer_batch_due_events = 0\n        timer_batch_due_fallbacks = 0\n        timer_batch_due_fires = 0\n        timer_breakpoint_cache_hits = 0\n        timer_breakpoint_hits = 0\n        timer_breakpoint_scans = 0\n        timer_periodic_checks = 0\n        timer_periodic_fires = 0\n        timer_periodic_skips = 0\n        timer_reschedules = 0\n        timer_state_owned_checks = 0\n        timer_state_owned_fallbacks = 0\n        timer_state_owned_fast_skips = 0\n        timer_state_owned_fires = 0\n        timer_state_owned_target_reads = 0\n        timer_state_updates = 0\n        transition_breakpoint_active_scans = 0\n        transition_breakpoint_inactive_skips = 0\n        transition_breakpoint_scans = 0\n        transition_calls = 0\n        transition_evaluate_calls = 0\n        transition_output_fastpath_calls = 0\n        transition_set_target_calls = 0\n        transition_unchanged_target_fastpath = 0\n\nMaximum value achieved for any signal of each quantity:\n    V: V(clk) = 900 mV\n\nTran analysis time: CPU = 82.0 ms, elapsed = 82.0 ms.\nRunner timing counters:\n    derive_bus_signals_s = 0.000194 s\n    csv_write_s = 0.168752 s\nTrace counters:\n    required_trace_csv_signal_count = 9\n\nWriting CSV: /var/folders/y2/l5_3_fm108z7rq5gjtlpy_lw0000gn/T/issue289_119-sar-cdac-residue_feedback_jr3iz3m4/out/tran.csv (signals: vin, clk, s6, s5, s4, s3, s2, s1, vres)\n\nevas completes with 0 errors, 0 warnings.\nTotal time: CPU = 0.5 s, elapsed = 0.5 s.\n\n",
+          "timing": {
+            "accepted_tran_steps": 1608.0,
+            "csv_write_s": 0.168752,
+            "derive_bus_signals_s": 0.000194,
+            "total_elapsed_s": 0.5,
+            "tran_elapsed_s": 0.082
+          },
+          "tran_csv": true,
+          "tran_marker": true,
+          "wall_time_s": 2.800734
+        },
+        {
+          "checker_notes": [
+            "checked=8 max_error=0.00000; P_INPUT_SAMPLE mismatch_count=0; P_S6_HALF_ADD mismatch_count=0; P_BINARY_SUBTRACTIONS mismatch_count=0; P_EDGE_POLARITY mismatch_count=0; P_ACCUMULATED_STATE mismatch_count=0; P_OUTPUT_TRANSITION mismatch_count=0"
+          ],
+          "checker_score": 1.0,
+          "checker_task_id": "v4_119_sar_cdac_residue",
+          "compiled_marker": true,
+          "evas_engine_used": "evas2",
+          "performance_counters": {
+            "rust_full_model_fastpath_enabled": 1,
+            "rust_full_model_fastpath_fallbacks_total": 0,
+            "rust_full_model_required_failures": 0,
+            "rust_sim_program_available": 1,
+            "rust_sim_program_enabled": 1,
+            "steps_total": 1608,
+            "trace.required_trace_missing_node_count": 0,
+            "trace.required_trace_signal_count": 9
+          },
+          "profile": "score",
+          "rendered_tb_sha256": "bbcd8088dac16a0e9f98e32a124654154bb4f8dfa0e50a4eae77db5a6eda7559",
+          "required_trace_signal_count": 9,
+          "returncode": 0,
+          "status": "pass",
+          "stdout_tail": "  timer_array_sidecar_rebuilds = 0\n        timer_array_sidecar_scans = 0\n        timer_array_sidecar_updates = 0\n        timer_batch_due_calls = 0\n        timer_batch_due_events = 0\n        timer_batch_due_fallbacks = 0\n        timer_batch_due_fires = 0\n        timer_breakpoint_cache_hits = 0\n        timer_breakpoint_hits = 0\n        timer_breakpoint_scans = 0\n        timer_periodic_checks = 0\n        timer_periodic_fires = 0\n        timer_periodic_skips = 0\n        timer_reschedules = 0\n        timer_state_owned_checks = 0\n        timer_state_owned_fallbacks = 0\n        timer_state_owned_fast_skips = 0\n        timer_state_owned_fires = 0\n        timer_state_owned_target_reads = 0\n        timer_state_updates = 0\n        transition_breakpoint_active_scans = 0\n        transition_breakpoint_inactive_skips = 0\n        transition_breakpoint_scans = 0\n        transition_calls = 0\n        transition_evaluate_calls = 0\n        transition_output_fastpath_calls = 0\n        transition_set_target_calls = 0\n        transition_unchanged_target_fastpath = 0\n\nMaximum value achieved for any signal of each quantity:\n    V: V(clk) = 900 mV\n\nTran analysis time: CPU = 480.3 ms, elapsed = 480.3 ms.\nRunner timing counters:\n    derive_bus_signals_s = 0.000566 s\n    csv_write_s = 0.453932 s\nTrace counters:\n    required_trace_csv_signal_count = 9\n\nWriting CSV: /var/folders/y2/l5_3_fm108z7rq5gjtlpy_lw0000gn/T/issue289_119-sar-cdac-residue_score_k86he3tx/out/tran.csv (signals: vin, clk, s6, s5, s4, s3, s2, s1, vres)\n\nevas completes with 0 errors, 0 warnings.\nTotal time: CPU = 1.0 s, elapsed = 1.0 s.\n\n",
+          "timing": {
+            "accepted_tran_steps": 1608.0,
+            "csv_write_s": 0.453932,
+            "derive_bus_signals_s": 0.000566,
+            "total_elapsed_s": 1.0,
+            "tran_elapsed_s": 0.4803
+          },
+          "tran_csv": true,
+          "tran_marker": true,
+          "wall_time_s": 4.69838
+        }
+      ],
+      "score_tb_sha256": "bbcd8088dac16a0e9f98e32a124654154bb4f8dfa0e50a4eae77db5a6eda7559",
+      "status": "pass",
+      "task_dir": "119-sar-cdac-residue",
+      "task_record_sha256": "a84e4a3af53cbf664442a1913cf004eace95c230e7a07382c081e6cbd0055e7e"
+    },
+    {
+      "family_id": "120",
+      "profiles": [
+        {
+          "checker_notes": [
+            "checked=1401 range=0.200:0.800 rise=True fall=True max_err=0.0000; P_DB_AMPLITUDE_RATIO mismatch_count=0; P_POLARITY_PRESERVATION mismatch_count=0; P_MONOTONIC_ATTENUATION mismatch_count=0; P_CONTINUOUS_RESPONSE mismatch_count=0"
+          ],
+          "checker_score": 1.0,
+          "checker_task_id": "v4_120_attenuator_gain",
+          "compiled_marker": true,
+          "evas_engine_used": "evas2",
+          "performance_counters": {
+            "rust_full_model_fastpath_enabled": 1,
+            "rust_full_model_fastpath_fallbacks_total": 0,
+            "rust_full_model_required_failures": 0,
+            "rust_sim_program_available": 1,
+            "rust_sim_program_enabled": 1,
+            "steps_total": 1400
+          },
+          "profile": "feedback",
+          "rendered_tb_sha256": "6f0676fb89e449933b74a7a8d4a95331f6325b9f63c4348b74bd31dcdc932f95",
+          "required_trace_signal_count": 0,
+          "returncode": 0,
+          "status": "pass",
+          "stdout_tail": " = 0\n        timer_absolute_expirations = 0\n        timer_absolute_fires = 0\n        timer_array_sidecar_rebuilds = 0\n        timer_array_sidecar_scans = 0\n        timer_array_sidecar_updates = 0\n        timer_batch_due_calls = 0\n        timer_batch_due_events = 0\n        timer_batch_due_fallbacks = 0\n        timer_batch_due_fires = 0\n        timer_breakpoint_cache_hits = 0\n        timer_breakpoint_hits = 0\n        timer_breakpoint_scans = 0\n        timer_periodic_checks = 0\n        timer_periodic_fires = 0\n        timer_periodic_skips = 0\n        timer_reschedules = 0\n        timer_state_owned_checks = 0\n        timer_state_owned_fallbacks = 0\n        timer_state_owned_fast_skips = 0\n        timer_state_owned_fires = 0\n        timer_state_owned_target_reads = 0\n        timer_state_updates = 0\n        transition_breakpoint_active_scans = 0\n        transition_breakpoint_inactive_skips = 0\n        transition_breakpoint_scans = 0\n        transition_calls = 0\n        transition_evaluate_calls = 0\n        transition_output_fastpath_calls = 0\n        transition_set_target_calls = 0\n        transition_unchanged_target_fastpath = 0\n\nMaximum value achieved for any signal of each quantity:\n    V: V(vin) = 800 mV\n\nTran analysis time: CPU = 949.8 ms, elapsed = 949.8 ms.\nRunner timing counters:\n    derive_bus_signals_s = 0.003907 s\n    csv_write_s = 0.725443 s\n\nWriting CSV: /var/folders/y2/l5_3_fm108z7rq5gjtlpy_lw0000gn/T/issue289_120-attenuator-gain_feedback_wsa0ga1h/out/tran.csv (signals: vin, vout)\n\nevas completes with 0 errors, 0 warnings.\nTotal time: CPU = 3.0 s, elapsed = 3.0 s.\n\n",
+          "timing": {
+            "accepted_tran_steps": 1400.0,
+            "csv_write_s": 0.725443,
+            "derive_bus_signals_s": 0.003907,
+            "total_elapsed_s": 3.0,
+            "tran_elapsed_s": 0.9498
+          },
+          "tran_csv": true,
+          "tran_marker": true,
+          "wall_time_s": 29.582625
+        },
+        {
+          "checker_notes": [
+            "checked=1401 range=0.200:0.800 rise=True fall=True max_err=0.0000; P_DB_AMPLITUDE_RATIO mismatch_count=0; P_POLARITY_PRESERVATION mismatch_count=0; P_MONOTONIC_ATTENUATION mismatch_count=0; P_CONTINUOUS_RESPONSE mismatch_count=0"
+          ],
+          "checker_score": 1.0,
+          "checker_task_id": "v4_120_attenuator_gain",
+          "compiled_marker": true,
+          "evas_engine_used": "evas2",
+          "performance_counters": {
+            "rust_full_model_fastpath_enabled": 1,
+            "rust_full_model_fastpath_fallbacks_total": 0,
+            "rust_full_model_required_failures": 0,
+            "rust_sim_program_available": 1,
+            "rust_sim_program_enabled": 1,
+            "steps_total": 1400
+          },
+          "profile": "score",
+          "rendered_tb_sha256": "18a7daf22cd3ef46a6683b286b7f97d47ec16d6b8c5734233c420cc5c7012f36",
+          "required_trace_signal_count": 0,
+          "returncode": 0,
+          "status": "pass",
+          "stdout_tail": "s = 0\n        timer_absolute_expirations = 0\n        timer_absolute_fires = 0\n        timer_array_sidecar_rebuilds = 0\n        timer_array_sidecar_scans = 0\n        timer_array_sidecar_updates = 0\n        timer_batch_due_calls = 0\n        timer_batch_due_events = 0\n        timer_batch_due_fallbacks = 0\n        timer_batch_due_fires = 0\n        timer_breakpoint_cache_hits = 0\n        timer_breakpoint_hits = 0\n        timer_breakpoint_scans = 0\n        timer_periodic_checks = 0\n        timer_periodic_fires = 0\n        timer_periodic_skips = 0\n        timer_reschedules = 0\n        timer_state_owned_checks = 0\n        timer_state_owned_fallbacks = 0\n        timer_state_owned_fast_skips = 0\n        timer_state_owned_fires = 0\n        timer_state_owned_target_reads = 0\n        timer_state_updates = 0\n        transition_breakpoint_active_scans = 0\n        transition_breakpoint_inactive_skips = 0\n        transition_breakpoint_scans = 0\n        transition_calls = 0\n        transition_evaluate_calls = 0\n        transition_output_fastpath_calls = 0\n        transition_set_target_calls = 0\n        transition_unchanged_target_fastpath = 0\n\nMaximum value achieved for any signal of each quantity:\n    V: V(vin) = 800 mV\n\nTran analysis time: CPU = 1225.2 ms, elapsed = 1225.2 ms.\nRunner timing counters:\n    derive_bus_signals_s = 0.000343 s\n    csv_write_s = 0.855646 s\n\nWriting CSV: /var/folders/y2/l5_3_fm108z7rq5gjtlpy_lw0000gn/T/issue289_120-attenuator-gain_score_v1s84izl/out/tran.csv (signals: vin, vout)\n\nevas completes with 0 errors, 0 warnings.\nTotal time: CPU = 3.2 s, elapsed = 3.2 s.\n\n",
+          "timing": {
+            "accepted_tran_steps": 1400.0,
+            "csv_write_s": 0.855646,
+            "derive_bus_signals_s": 0.000343,
+            "total_elapsed_s": 3.2,
+            "tran_elapsed_s": 1.2252
+          },
+          "tran_csv": true,
+          "tran_marker": true,
+          "wall_time_s": 18.915481
+        }
+      ],
+      "score_tb_sha256": "18a7daf22cd3ef46a6683b286b7f97d47ec16d6b8c5734233c420cc5c7012f36",
+      "status": "pass",
+      "task_dir": "120-attenuator-gain",
+      "task_record_sha256": "f67f8a56d28b02208f9aac860420c394f70ddedcf2d40467f404fa38409d861c"
+    }
+  ]
+}

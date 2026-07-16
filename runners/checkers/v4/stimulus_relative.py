@@ -179,6 +179,11 @@ def close(observed: float, expected: float, tolerance: float) -> bool:
     return abs(observed - expected) <= tolerance
 
 
+def max_signal_value(rows: list[Row], signals: Iterable[str], *, default: float) -> float:
+    values = [row[signal] for row in rows for signal in signals if signal in row]
+    return max(values, default=default)
+
+
 def percentile(values: list[float], fraction: float) -> float:
     if not values:
         raise ValueError("percentile requires at least one value")

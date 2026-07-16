@@ -11,9 +11,7 @@ Vs4 (s4 0) vsource type=pwl wave=[0 0 19.9n 0 20n 0.9 60n 0.9]
 Vs3 (s3 0) vsource type=pwl wave=[0 0 24.9n 0 25n 0.9 60n 0.9]
 Vs2 (s2 0) vsource type=pwl wave=[0 0 29.9n 0 30n 0.9 60n 0.9]
 Vs1 (s1 0) vsource type=pwl wave=[0 0 34.9n 0 35n 0.9 60n 0.9]
-
 XDUT (vin clk s6 s5 s4 s3 s2 s1 vres) sar_cdac_residue
-
 
 simulatorOptions options evas_profile=balanced
 

@@ -2,64 +2,85 @@
 from __future__ import annotations
 
 from ..api import Checker
-def sample_signal_at(rows: list[dict[str, float]], signal: str, time_s: float) -> float | None:
-    if not rows or "time" not in rows[0] or signal not in rows[0]:
-        return None
-    first_time = rows[0]["time"]
-    last_time = rows[-1].get("time")
-    if last_time is None or time_s < first_time or time_s > last_time:
-        return None
-    if time_s == first_time:
-        return rows[0].get(signal)
-    for idx in range(1, len(rows)):
-        prev = rows[idx - 1]
-        cur = rows[idx]
-        t0 = prev.get("time")
-        t1 = cur.get("time")
-        if t0 is None or t1 is None:
-            continue
-        if t0 <= time_s <= t1:
-            v0 = prev.get(signal)
-            v1 = cur.get(signal)
-            if v0 is None or v1 is None:
-                return None
-            if t1 == t0:
-                return v1
-            alpha = (time_s - t0) / (t1 - t0)
-            return v0 + alpha * (v1 - v0)
-    return None
+from .stimulus_relative import crossings, diagnostic, max_signal_value, pass_note, probe_time, require_signals, sample
 
-def _sample_many(
-    rows: list[dict[str, float]],
-    samples: dict[str, list[tuple[float, float]]],
-    *,
-    tol: float,
-) -> tuple[bool, str]:
-    details: list[str] = []
-    for signal, expected_samples in samples.items():
-        observed: list[float] = []
-        for time_ns, expected in expected_samples:
-            value = sample_signal_at(rows, signal, time_ns * 1e-9)
-            if value is None:
-                return False, f"missing_{signal}_sample_at={time_ns:g}ns"
-            observed.append(value)
-            if abs(value - expected) > tol:
-                return False, (
-                    f"{signal}@{time_ns:g}ns={value:.4f} expected={expected:.4f} "
-                    f"tol={tol:.4f}"
-                )
-        details.append(f"{signal}=" + ",".join(f"{value:.3f}" for value in observed))
-    return True, " ".join(details)
+
+PROPERTY_IDS = (
+    "P_RISING_EDGE_LATCH",
+    "P_OFFSET_DECISION",
+    "P_INTEREDGE_HOLD",
+    "P_DELAY_AND_SMOOTHING",
+)
+
 
 def check_v3_latched_comparator_delay(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "clk", "vinp", "vinn", "dout"}
-    if not rows or not required.issubset(rows[0]):
-        return False, "missing time/clk/vinp/vinn/dout"
-    return _sample_many(
-        rows,
-        {"dout": [(6.0, 0.9), (16.0, 0.0), (26.0, 0.9), (36.0, 0.0)]},
-        tol=0.08,
-    )
+    missing = require_signals(rows, required, "P_RISING_EDGE_LATCH")
+    if missing:
+        return False, missing
+
+    vdd = max_signal_value(rows, ["clk", "dout"], default=0.9)
+    clk_edges = crossings(rows, "clk", threshold=0.5 * vdd, direction="rising")
+    if len(clk_edges) < 4:
+        return False, diagnostic(
+            "P_RISING_EDGE_LATCH",
+            "insufficient_events",
+            expected="clk_rising_count>=4",
+            observed=f"clk_rising_count={len(clk_edges)}",
+            event="clk_rising_set",
+        )
+
+    checked = 0
+    max_err = 0.0
+    decisions: list[int] = []
+    for index, edge in enumerate(clk_edges):
+        next_edge = clk_edges[index + 1] if index + 1 < len(clk_edges) else None
+        probe = probe_time(rows, edge, next_edge, fraction=0.25)
+        if probe is None:
+            continue
+        vinp = sample(rows, "vinp", edge)
+        vinn = sample(rows, "vinn", edge)
+        dout = sample(rows, "dout", probe)
+        if vinp is None or vinn is None or dout is None:
+            return False, diagnostic(
+                "P_OFFSET_DECISION",
+                "missing_sample",
+                expected="vinp,vinn,dout",
+                observed="unavailable",
+                event=f"clk_rising[{index}]",
+            )
+        expected = vdd if vinp > vinn else 0.0
+        decision = 1 if expected > 0.5 * vdd else 0
+        decisions.append(decision)
+        err = abs(dout - expected)
+        max_err = max(max_err, err)
+        checked += 1
+        if err > 0.08:
+            return False, diagnostic(
+                "P_DELAY_AND_SMOOTHING",
+                "latched_decision_mismatch",
+                expected=f"dout={expected:.4f}",
+                observed=f"dout={dout:.4f},err={err:.4f}",
+                event=f"clk_rising[{index}]",
+            )
+
+    if checked < 4:
+        return False, diagnostic(
+            "P_INTEREDGE_HOLD",
+            "insufficient_checks",
+            expected="checked>=4",
+            observed=f"checked={checked}",
+            event="clk_rising_set",
+        )
+    if set(decisions) != {0, 1}:
+        return False, diagnostic(
+            "P_OFFSET_DECISION",
+            "insufficient_decision_coverage",
+            expected="decisions=0,1",
+            observed="decisions=" + ",".join(str(value) for value in sorted(set(decisions))),
+            event="clk_rising_set",
+        )
+    return True, pass_note(PROPERTY_IDS, f"checked={checked} max_err={max_err:.5f} decisions=0,1")
 
 CHECKER_ID = "v4_112_latched_comparator_delay"
 CHECKER: Checker = check_v3_latched_comparator_delay

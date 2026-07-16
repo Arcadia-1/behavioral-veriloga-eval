@@ -2,10 +2,24 @@
 from __future__ import annotations
 
 from ..api import Checker
+from .stimulus_relative import diagnostic, pass_note, require_signals
+
+
+PROPERTY_IDS = (
+    "P_INITIAL_INPUT",
+    "P_CAPTURE_NEW_MAX",
+    "P_HOLD_ON_FALL",
+    "P_MONOTONE_OUTPUT",
+    "P_RUNNING_MAX",
+)
+
+
 def check_v3_max_detector_hold(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "vin", "vout"}
-    if not rows or not required.issubset(rows[0]):
-        return False, "missing time/vin/vout"
+    missing = require_signals(rows, required, "P_RUNNING_MAX")
+    if missing:
+        return False, missing
+
     running_max = rows[0]["vin"]
     stride = max(1, len(rows) // 240)
     checked = 0
@@ -24,12 +38,39 @@ def check_v3_max_detector_hold(rows: list[dict[str, float]]) -> tuple[bool, str]
             max_err = max(max_err, abs(row["vout"] - running_max))
             checked += 1
     if checked < 20:
-        return False, f"too_few_max_hold_samples={checked}"
+        return False, diagnostic(
+            "P_RUNNING_MAX",
+            "insufficient_checks",
+            expected="checked>=20",
+            observed=f"checked={checked}",
+            event="trace_observation_set",
+        )
     if not monotone_ok:
-        return False, "max_detector_output_not_monotonic"
+        return False, diagnostic(
+            "P_MONOTONE_OUTPUT",
+            "monotonicity_mismatch",
+            expected="vout_monotone_non_decreasing",
+            observed="vout_drop_detected",
+            event="trace_observation_set",
+        )
     if not input_dropped_after_peak:
-        return False, "max_detector_missing_hold_after_input_drop"
-    return max_err <= 0.03, f"checked={checked} max_error={max_err:.5f} monotonic_hold=True"
+        return False, diagnostic(
+            "P_HOLD_ON_FALL",
+            "insufficient_stimulus_coverage",
+            expected="vin_falls_below_previous_max",
+            observed="hold_window_missing",
+            event="trace_observation_set",
+        )
+    detail = f"checked={checked} max_error={max_err:.5f} monotonic_hold=True"
+    if max_err > 0.03:
+        return False, diagnostic(
+            "P_RUNNING_MAX",
+            "running_max_mismatch",
+            expected="max_error<=0.03000",
+            observed=detail,
+            event="trace_observation_set",
+        )
+    return True, pass_note(PROPERTY_IDS, detail)
 
 CHECKER_ID = "v4_116_max_detector_hold"
 CHECKER: Checker = check_v3_max_detector_hold
