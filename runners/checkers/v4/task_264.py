@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from ..api import Checker
+from .family_261_270_diagnostics import bind_properties
 from ..common.issue109_factory import CheckResult, Row, check_clocked_factory
 
 
@@ -21,4 +22,7 @@ CHECKS = {
 }
 
 CHECKER_ID = TASK_LABEL
-CHECKER: Checker = check_v4_264_enable_qualified_bias_hold
+CHECKER: Checker = bind_properties(check_v4_264_enable_qualified_bias_hold, (
+    "P_MEASURE_ANALOG_INPUTS_RELATIVE_TO_THE",
+    "P_INITIALIZE_THE_HELD_BIAS_OUTPUT_FLAG",
+))

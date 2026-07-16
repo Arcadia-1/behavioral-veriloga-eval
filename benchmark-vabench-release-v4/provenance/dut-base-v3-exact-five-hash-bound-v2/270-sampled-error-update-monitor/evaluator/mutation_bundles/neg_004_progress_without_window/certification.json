@@ -33,7 +33,7 @@
     }
   },
   "diagnostics": {
-    "expected": "trigger=stimulus exercises neg_004_progress_without_window; violated_properties=P_PROGRESS_COUNTS_CONSECUTIVE_IN_WINDOW_SAMPLES",
+    "expected": "public stimulus exercises a certified alternate behavior; violated_properties=P_PROGRESS_COUNTS_CONSECUTIVE_IN_WINDOW_SAMPLES",
     "observed": "EVAS: sampled_error_update_error=0.9000; Spectre: sampled_error_update_error=0.9000",
     "violated_property_ids": [
       "P_PROGRESS_COUNTS_CONSECUTIVE_IN_WINDOW_SAMPLES"

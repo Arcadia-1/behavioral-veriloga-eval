@@ -2,6 +2,9 @@
 from __future__ import annotations
 
 from ..api import Checker
+from .family_261_270_diagnostics import bind_properties
+
+
 def sample_signal_at(rows: list[dict[str, float]], signal: str, time_s: float) -> float | None:
     if not rows or "time" not in rows[0] or signal not in rows[0]:
         return None
@@ -113,4 +116,11 @@ def check_v3_373_saturation_recovery_limiter(rows: list[dict[str, float]]) -> tu
     )
 
 CHECKER_ID = "v4_269_saturation_recovery_limiter"
-CHECKER: Checker = check_v3_373_saturation_recovery_limiter
+CHECKER: Checker = bind_properties(check_v3_373_saturation_recovery_limiter, (
+    "P_CLAMP_THE_ENABLED_INPUT_BETWEEN_THE",
+    "P_DRIVE_A_SATURATION_FLAG_WHEN_EITHER",
+    "P_CLEAR_OUTPUT_FLAG_AND_RECOVERY_METRIC",
+    "P_COMPUTE_LIMITED_CLAMP_V_VIN_VLO",
+    "P_DRIVE_SAT_VHI_WHEN_ENABLED_AND",
+    "P_DRIVE_THE_RECOVERY_METRIC_AS",
+))

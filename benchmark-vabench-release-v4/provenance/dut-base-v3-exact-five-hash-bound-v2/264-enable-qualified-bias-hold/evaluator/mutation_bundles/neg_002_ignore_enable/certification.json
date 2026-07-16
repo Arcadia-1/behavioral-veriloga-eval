@@ -33,7 +33,7 @@
     }
   },
   "diagnostics": {
-    "expected": "trigger=stimulus exercises neg_002_ignore_enable; violated_properties=P_INITIALIZE_THE_HELD_BIAS_OUTPUT_FLAG",
+    "expected": "public stimulus exercises a certified alternate behavior; violated_properties=P_INITIALIZE_THE_HELD_BIAS_OUTPUT_FLAG",
     "observed": "EVAS: issue109_remaining_clock_error=0.4428; Spectre: issue109_remaining_clock_error=0.4428",
     "violated_property_ids": [
       "P_INITIALIZE_THE_HELD_BIAS_OUTPUT_FLAG"

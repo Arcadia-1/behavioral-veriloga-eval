@@ -33,7 +33,7 @@
     }
   },
   "diagnostics": {
-    "expected": "trigger=stimulus exercises neg_004_ignore_control_or_reset; violated_properties=P_USE_THE_TWO_CONTROL_LEVELS_AS",
+    "expected": "public stimulus exercises a certified alternate behavior; violated_properties=P_USE_THE_TWO_CONTROL_LEVELS_AS",
     "observed": "EVAS: issue109_remaining_error=0.6065; Spectre: issue109_remaining_error=0.6065",
     "violated_property_ids": [
       "P_USE_THE_TWO_CONTROL_LEVELS_AS"

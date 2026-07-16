@@ -33,7 +33,7 @@
     }
   },
   "diagnostics": {
-    "expected": "trigger=stimulus exercises neg_004_ignore_control_or_reset; violated_properties=P_INITIALIZE_A_SAMPLED_PROGRESS_COUNT_TO",
+    "expected": "public stimulus exercises a certified alternate behavior; violated_properties=P_INITIALIZE_A_SAMPLED_PROGRESS_COUNT_TO",
     "observed": "EVAS: issue109_remaining_clock_error=0.4776; Spectre: issue109_remaining_clock_error=0.4776",
     "violated_property_ids": [
       "P_INITIALIZE_A_SAMPLED_PROGRESS_COUNT_TO"

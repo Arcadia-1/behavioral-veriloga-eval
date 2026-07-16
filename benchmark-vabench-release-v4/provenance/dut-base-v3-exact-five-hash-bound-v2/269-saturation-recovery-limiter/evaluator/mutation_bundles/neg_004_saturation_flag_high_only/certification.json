@@ -33,7 +33,7 @@
     }
   },
   "diagnostics": {
-    "expected": "trigger=stimulus exercises neg_004_saturation_flag_high_only; violated_properties=P_COMPUTE_LIMITED_CLAMP_V_VIN_VLO",
+    "expected": "public stimulus exercises a certified alternate behavior; violated_properties=P_COMPUTE_LIMITED_CLAMP_V_VIN_VLO",
     "observed": "EVAS: saturation_limiter_error=0.9000; Spectre: saturation_limiter_error=0.9000",
     "violated_property_ids": [
       "P_COMPUTE_LIMITED_CLAMP_V_VIN_VLO"
