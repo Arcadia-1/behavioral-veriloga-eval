@@ -49,8 +49,7 @@ def check_v4_311_muxed_track_hold_array_readout(rows: list[dict[str, float]]) ->
             continue
         code = code_at(row)
         if (
-            row["time"] > 7e-9
-            and not _v4_topup_logic_high(row, "rst")
+            not _v4_topup_logic_high(row, "rst")
             and not sample_en
             and code != 3
             and any(held_valid)
@@ -60,7 +59,7 @@ def check_v4_311_muxed_track_hold_array_readout(rows: list[dict[str, float]]) ->
 
         previous = row
 
-        if index % 8 != 0 or row["time"] < 7e-9:
+        if index % 8 != 0:
             continue
         if _v4_topup_logic_high(row, "rst"):
             if _v4_topup_near(row["vout"], 0.45, 0.08) and row["valid"] < 0.2 and row["channel_metric"] < 0.2:

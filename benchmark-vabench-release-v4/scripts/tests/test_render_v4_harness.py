@@ -5,6 +5,7 @@ from __future__ import annotations
 import copy
 import hashlib
 import json
+import subprocess
 import sys
 from pathlib import Path
 
@@ -26,6 +27,7 @@ from run_v4_reference_evas_smoke import (  # noqa: E402
 
 
 FAMILIES = range(361, 371)
+BATCH_32_FAMILIES = range(311, 321)
 
 
 def load_family_spec(family: int) -> dict:
@@ -53,6 +55,31 @@ def _without_simulator_options(deck: str) -> str:
 def test_assigned_specs_have_profile_parity() -> None:
     for family in FAMILIES:
         render_v4_harness.validate_profile_semantics(load_family_spec(family))
+
+
+def test_batch_32_specs_have_profile_parity() -> None:
+    for family in BATCH_32_FAMILIES:
+        render_v4_harness.validate_profile_semantic_parity(load_family_spec(family))
+
+
+def test_cli_check_parity_accepts_batch_32_spec() -> None:
+    spec = next(SOURCE_ROOT.glob("311-*/evaluator/harness_spec.json"))
+    completed = subprocess.run(
+        [
+            sys.executable,
+            str(SCRIPTS / "render_v4_harness.py"),
+            "--spec",
+            str(spec),
+            "--profile",
+            "feedback",
+            "--check-parity",
+        ],
+        cwd=RELEASE_ROOT,
+        check=True,
+        text=True,
+        capture_output=True,
+    )
+    assert "simulatorOptions" in completed.stdout
 
 
 def test_assigned_checker_contracts_preserve_diagnostics_and_mutation_scope() -> None:

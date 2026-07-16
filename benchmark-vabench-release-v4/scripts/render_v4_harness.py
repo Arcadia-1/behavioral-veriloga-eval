@@ -299,7 +299,7 @@ def effective_profile_semantics(spec: dict[str, Any], profile_name: str) -> dict
 
 
 def validate_profile_semantic_parity(spec: dict[str, Any]) -> None:
-    """Reject feedback/score drift that could change the measured behavior."""
+    """Reject feedback/score drift, including fields outside deck rendering."""
     diffs = profile_semantic_diffs(spec)
     if not diffs:
         return
@@ -309,6 +309,14 @@ def validate_profile_semantic_parity(spec: dict[str, Any]) -> None:
     )
     task_id = spec.get("task_id") or spec.get("family_id") or "unknown"
     raise ValueError(f"{task_id}: feedback/score semantic parity violation: {details}")
+
+
+def profile_semantic_diff(spec: dict[str, Any]) -> dict[str, dict[str, Any]]:
+    """Return parity differences in a JSON-friendly shape for batch audits."""
+    return {
+        key: {"feedback": values[0], "score": values[1]}
+        for key, values in profile_semantic_diffs(spec).items()
+    }
 
 
 def render_scs(spec: dict[str, Any], profile: dict[str, Any]) -> str:

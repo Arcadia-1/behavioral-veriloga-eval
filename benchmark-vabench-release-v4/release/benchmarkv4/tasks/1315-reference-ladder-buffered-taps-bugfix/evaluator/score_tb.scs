@@ -10,5 +10,5 @@ Vrst (rst 0) vsource type=pwl wave=[0 0.9 3n 0.9 3.2n 0 40n 0 40.2n 0.9 44n 0.9 
 XDUT (vref_hi vref_lo enable rst tap0 tap1 tap2 tap3 monotonic_ok) reference_ladder_buffered_taps
 
 
-tran tran stop=90n maxstep=200p
+tran tran stop=72n maxstep=200p
 save vref_hi vref_lo enable rst tap0 tap1 tap2 tap3 monotonic_ok

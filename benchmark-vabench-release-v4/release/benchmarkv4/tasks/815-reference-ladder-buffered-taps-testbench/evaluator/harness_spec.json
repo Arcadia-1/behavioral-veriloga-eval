@@ -53,6 +53,8 @@
   },
   "profile_defaults": {
     "feedback": {
+      "corners": [],
+      "deterministic_seed": 0,
       "parameters": {
         "maxstep": "200p",
         "stop_time": "100n"
@@ -62,15 +64,13 @@
       }
     },
     "score": {
-      "deck_overrides": {
-        "analyses": [
-          "tran tran stop=90n maxstep=200p"
-        ]
-      },
+      "corners": [],
+      "deterministic_seed": 0,
       "parameters": {
-        "maxstep": "100p",
+        "maxstep": "200p",
         "stop_time": "100n"
-      }
+      },
+      "simulatorOptions": {}
     }
   },
   "property_ids": [

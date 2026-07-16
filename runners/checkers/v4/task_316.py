@@ -5,20 +5,58 @@ from ..api import Checker
 from ..common.v4_topup import (
     _v4_topup_clip01,
     _v4_topup_logic_high,
+    _v4_rising,
 )
 
 def check_v4_316_residue_amplifier_gain_calibration(rows: list[dict[str, float]]) -> tuple[bool, str]:
     if not rows:
         return False, "v4_1014 empty_trace"
+
+    def settled(index: int) -> bool:
+        """Avoid fixed time windows; wait for the current clock result to settle."""
+        if index < 2:
+            return False
+        names = (
+            "rst", "cal_en", "gain_0", "gain_1", "gain_2",
+            "vout", "error_metric", "locked",
+        )
+        for current in range(index - 1, index + 1):
+            previous = rows[current - 1]
+            row = rows[current]
+            if any(abs(float(row[name]) - float(previous[name])) > 1e-4 for name in names):
+                return False
+        return True
+
+    def clock_period() -> float:
+        rises: list[float] = []
+        previous = float(rows[0].get("clk", 0.0))
+        for row in rows[1:]:
+            now = float(row["clk"])
+            if now > 0.45 and previous <= 0.45:
+                rises.append(float(row["time"]))
+            previous = now
+        periods = [right - left for left, right in zip(rises, rises[1:]) if right > left]
+        return sorted(periods)[len(periods) // 2] if periods else 1.0
+
+    period = clock_period()
     checked = vout_errors = metric_errors = clear_errors = lock_errors = 0
     codes_seen: set[int] = set()
     reset_clear = disabled_clear = high_code_seen = locked_seen = error_reduced = False
     first_active_error = None
     last_active_error = None
-    for row in rows:
+    saw_active = False
+    active_rises = 0
+    previous_clk = float(rows[0].get("clk", 0.0))
+    last_rise = None
+    for index, row in enumerate(rows):
         t = float(row["time"])
         rst = _v4_topup_logic_high(row, "rst")
         enabled = _v4_topup_logic_high(row, "cal_en") and not rst
+        clk = float(row.get("clk", 0.0))
+        if _v4_topup_logic_high(row, "cal_en") and not rst and _v4_rising(previous_clk, clk):
+            active_rises += 1
+            last_rise = t
+        previous_clk = clk
         code = (
             (1 if _v4_topup_logic_high(row, "gain_0") else 0)
             + (2 if _v4_topup_logic_high(row, "gain_1") else 0)
@@ -29,14 +67,16 @@ def check_v4_316_residue_amplifier_gain_calibration(rows: list[dict[str, float]]
         locked = _v4_topup_logic_high(row, "locked")
         if not enabled:
             clear = code == 0 and abs(vout - 0.45) < 0.08 and metric < 0.08 and not locked
-            if rst and t < 5e-9 and clear:
+            stable = settled(index)
+            if rst and stable and clear:
                 reset_clear = True
-            if t > 82e-9 and not _v4_topup_logic_high(row, "cal_en") and clear:
+            if saw_active and not rst and not _v4_topup_logic_high(row, "cal_en") and stable and clear:
                 disabled_clear = True
-            if ((rst and t < 5e-9) or t > 82e-9) and not clear:
+            if stable and ((rst) or (saw_active and not _v4_topup_logic_high(row, "cal_en"))) and not clear:
                 clear_errors += 1
             continue
-        if t < 12e-9 or any(edge <= t <= edge + 1.2e-9 for edge in [5e-9, 10e-9, 15e-9, 20e-9, 25e-9, 30e-9, 35e-9, 40e-9, 45e-9, 50e-9, 55e-9, 60e-9, 65e-9, 70e-9]):
+        saw_active = True
+        if last_rise is None or t - last_rise < 0.24 * period or not settled(index):
             continue
         expected = _v4_topup_clip01(0.45 + (2.0 + 0.25 * code) * (float(row["vin"]) - 0.45))
         err = abs(float(row["residue_ref"]) - vout)
@@ -51,7 +91,7 @@ def check_v4_316_residue_amplifier_gain_calibration(rows: list[dict[str, float]]
         last_active_error = err
         if code >= 4:
             high_code_seen = True
-        if locked and t < 35e-9:
+        if locked and active_rises < 3:
             lock_errors += 1
         if locked:
             locked_seen = True

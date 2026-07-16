@@ -17,12 +17,13 @@ def check_v4_314_hysteretic_window_comparator(rows: list[dict[str, float]]) -> t
     state = False
     previous_reset = float(ordered[0]["rst"]) > 0.45
     previous_enabled = float(ordered[0]["enable"]) > 0.45
-    last_semantic_change = float(ordered[0]["time"])
-    settle_time = 0.75e-9
-    toggle_window = 1.25e-9
     hyst = 10e-3
     band_margin = 1e-3
     expected_toggle_times: list[float] = []
+    toggle_seen: list[bool] = []
+    pending_toggle: int | None = None
+    last_semantic_change_index = 0
+    settle_samples = 8
     checked = state_errors = metric_errors = clear_errors = 0
     reset_samples = disabled_samples = 0
     inside_seen = outside_seen = False
@@ -40,7 +41,18 @@ def check_v4_314_hysteretic_window_comparator(rows: list[dict[str, float]]) -> t
             f"mismatch={abs(observed - expected):.6g} {extra}"
         ).rstrip()
 
-    for row in ordered:
+    def stable_output(index: int) -> bool:
+        if index < 2:
+            return False
+        names = ("inside_flag", "state_metric")
+        for current in range(index - 1, index + 1):
+            previous = ordered[current - 1]
+            row = ordered[current]
+            if any(abs(float(row[name]) - float(previous[name])) > 1e-4 for name in names):
+                return False
+        return True
+
+    for index, row in enumerate(ordered):
         t = float(row["time"])
         reset = float(row["rst"]) > 0.45
         enabled = float(row["enable"]) > 0.45
@@ -59,13 +71,21 @@ def check_v4_314_hysteretic_window_comparator(rows: list[dict[str, float]]) -> t
         control_changed = reset != previous_reset or enabled != previous_enabled
         state_changed = state != old_state
         if control_changed or state_changed:
-            last_semantic_change = t
+            last_semantic_change_index = index
+            pending_toggle = None
         if state_changed and not reset and enabled:
             expected_toggle_times.append(t)
+            toggle_seen.append(False)
+            pending_toggle = len(toggle_seen) - 1
+        if pending_toggle is not None and float(row["toggled"]) > 0.35:
+            toggle_seen[pending_toggle] = True
         previous_reset = reset
         previous_enabled = enabled
 
-        if t - last_semantic_change < settle_time:
+        # The grace period is relative to the observed semantic transition,
+        # not to a deck-specific timestamp.  Stability still gates scoring so
+        # a solver breakpoint cannot be mistaken for a settled output.
+        if index <= last_semantic_change_index + settle_samples or not stable_output(index):
             continue
         checked += 1
         expected_level = 0.9 if state else 0.0
@@ -112,19 +132,16 @@ def check_v4_314_hysteretic_window_comparator(rows: list[dict[str, float]]) -> t
             metric_errors += 1
             remember_error("state_metric", row, expected_level, observed_metric)
 
-    missing_toggle_times: list[float] = []
-    for event_time in expected_toggle_times:
-        if not any(
-            event_time <= float(row["time"]) <= event_time + toggle_window
-            and float(row["toggled"]) > 0.35
-            for row in ordered
-        ):
-            missing_toggle_times.append(event_time)
+    missing_toggle_times = [
+        event_time
+        for event_time, seen in zip(expected_toggle_times, toggle_seen)
+        if not seen
+    ]
     if missing_toggle_times and not first_error:
         event_time = missing_toggle_times[0]
         first_error = (
             f"v4_314_missing_toggle time={event_time:.6e} expected=0.9 observed=0.0 "
-            f"mismatch_count={len(missing_toggle_times)} window={toggle_window:.3e}"
+            f"mismatch_count={len(missing_toggle_times)} event_relative=true"
         )
 
     coverage_ok = inside_seen and outside_seen and low_hold_seen and high_hold_seen

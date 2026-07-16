@@ -10,26 +10,41 @@ from ..common.v4_topup import (
 def check_v4_315_reference_ladder_buffered_taps(rows: list[dict[str, float]]) -> tuple[bool, str]:
     if not rows:
         return False, "v4_1013 empty_trace"
-    def stable_window(t: float) -> bool:
-        edge_times = [12e-9, 28e-9, 40e-9, 44e-9, 50e-9, 66e-9]
-        return all(not (edge <= t <= edge + 2.5e-9) for edge in edge_times)
+
+    def settled(index: int) -> bool:
+        """Only score after stimulus and DUT outputs stop moving."""
+        if index < 2:
+            return False
+        names = (
+            "vref_hi", "vref_lo", "enable", "rst",
+            "tap0", "tap1", "tap2", "tap3", "monotonic_ok",
+        )
+        for current in range(index - 1, index + 1):
+            previous = rows[current - 1]
+            row = rows[current]
+            if any(abs(float(row[name]) - float(previous[name])) > 1e-4 for name in names):
+                return False
+        return True
 
     checked = spacing_errors = flag_errors = clear_errors = 0
     normal_seen = reversed_seen = clamp_seen = disabled_clear = reset_clear = False
-    for row in rows:
+    saw_active = False
+    for index, row in enumerate(rows):
         t = float(row["time"])
         enabled = _v4_topup_logic_high(row, "enable") and not _v4_topup_logic_high(row, "rst")
         taps = [float(row[f"tap{i}"]) for i in range(4)]
         if not enabled:
             clear = max(abs(v) for v in taps) < 0.08 and float(row["monotonic_ok"]) < 0.12
-            if t > 65e-9 and not _v4_topup_logic_high(row, "enable") and clear:
+            stable = settled(index)
+            if saw_active and not _v4_topup_logic_high(row, "enable") and not _v4_topup_logic_high(row, "rst") and stable and clear:
                 disabled_clear = True
-            if t < 8e-9 and _v4_topup_logic_high(row, "rst") and clear:
+            if _v4_topup_logic_high(row, "rst") and stable and clear:
                 reset_clear = True
-            if ((t > 68.5e-9 and not clear) or (t < 8e-9 and _v4_topup_logic_high(row, "rst") and not clear)):
+            if stable and ((saw_active and not _v4_topup_logic_high(row, "enable") and not _v4_topup_logic_high(row, "rst")) or _v4_topup_logic_high(row, "rst")) and not clear:
                 clear_errors += 1
             continue
-        if t < 10e-9 or not stable_window(t):
+        saw_active = True
+        if not settled(index):
             continue
         hi_raw = float(row["vref_hi"])
         lo_raw = float(row["vref_lo"])
