@@ -533,9 +533,22 @@ def compact_text_lines(text: str, *, limit: int = 24) -> list[str]:
             or "failed to compile" in lowered
             or "failed to parse" in lowered
             or "parse error" in lowered
+            or "syntax error" in lowered
             or "invalid source" in lowered
             or "missing required" in lowered
             or "timed out" in lowered
+            or re.search(r"(^|\s)(error|fatal|panic|exception)(\s|:|\[)", lowered)
+            or any(
+                token in lowered
+                for token in (
+                    "unexpected token",
+                    "unknown parameter",
+                    "unknown instance",
+                    "unsupported construct",
+                    "unresolved reference",
+                    "no such file",
+                )
+            )
         ):
             errors.append(clipped)
         elif line.startswith(FEEDBACK_SIGNAL_PREFIXES):
@@ -557,7 +570,7 @@ def compact_text_lines(text: str, *, limit: int = 24) -> list[str]:
 def compact_feedback_result(result: dict[str, Any]) -> dict[str, Any]:
     stdout = str(result.get("stdout") or "")
     stderr = str(result.get("stderr") or "")
-    lines = compact_text_lines(stdout)
+    lines = compact_text_lines("\n".join(part for part in (stdout, stderr) if part))
     markers = [line for line in lines if line.startswith("FEEDBACK_")]
     compact: dict[str, Any] = {
         "schema_version": "v4-feedback-tool-result-compact-v1",
