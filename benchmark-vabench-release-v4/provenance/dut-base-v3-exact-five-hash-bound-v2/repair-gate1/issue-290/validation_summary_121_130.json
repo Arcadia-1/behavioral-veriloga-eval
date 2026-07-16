@@ -1,0 +1,170 @@
+{
+  "case_count": 120,
+  "engine_environment": {
+    "EVAS_ENGINE": "evas2",
+    "VAEVAS_DEFAULT_EVAS_ENGINE": "evas2"
+  },
+  "evas_backend_source": {
+    "git_commit": "985bba40929da8066dc9f1e4a08d27c010424c5f",
+    "repo": "vaEvas/EVAS",
+    "tracked_dirty": false
+  },
+  "evas_engine_used": "evas2",
+  "evidence_files": {
+    "evas2_gold_mutation_smoke": "evas2_gold_mutation_smoke_121_130.json",
+    "profile_parity": "profile_parity_121_130.json",
+    "render_schema_check": "render_schema_check_121_130.json",
+    "targeted_manifest_hash_audit": "targeted_manifest_hash_audit_121_130.json"
+  },
+  "evidence_sha256": {
+    "evas2_gold_mutation_smoke_121_130.json": "c3be274a8752b6c4ac138a512e44879e76cda170df7ef7cdedf2df535f056ba6",
+    "profile_parity_121_130.json": "c6adc566e329c693d85a28a95f76a9c8a345aafe8f903b749cf5d191db17914e",
+    "render_schema_check_121_130.json": "b44b00c29f81b95a021c5dd21130ac820e27046ca4b28ee7ebb0d23ad3e8281a",
+    "targeted_manifest_hash_audit_121_130.json": "ea544b972a64022a11fd7533d88b7cced92ec23d065fa51f3f98ed2f5b8723d9"
+  },
+  "failed_cases": [],
+  "families": [
+    {
+      "classification": "B mechanical migration",
+      "family_id": "121",
+      "gold_profiles_passed": [
+        "feedback",
+        "score"
+      ],
+      "mutation_case_count": 10,
+      "mutation_cases_failed_as_expected": 10,
+      "profile_case_count": 12,
+      "status": "PASS",
+      "task": "121-deadband-window"
+    },
+    {
+      "classification": "B mechanical migration",
+      "family_id": "122",
+      "gold_profiles_passed": [
+        "feedback",
+        "score"
+      ],
+      "mutation_case_count": 10,
+      "mutation_cases_failed_as_expected": 10,
+      "profile_case_count": 12,
+      "status": "PASS",
+      "task": "122-differential-deadband"
+    },
+    {
+      "classification": "B mechanical migration",
+      "family_id": "123",
+      "gold_profiles_passed": [
+        "feedback",
+        "score"
+      ],
+      "mutation_case_count": 10,
+      "mutation_cases_failed_as_expected": 10,
+      "profile_case_count": 12,
+      "status": "PASS",
+      "task": "123-hard-voltage-clamp"
+    },
+    {
+      "classification": "B mechanical migration",
+      "family_id": "124",
+      "gold_profiles_passed": [
+        "feedback",
+        "score"
+      ],
+      "mutation_case_count": 10,
+      "mutation_cases_failed_as_expected": 10,
+      "profile_case_count": 12,
+      "status": "PASS",
+      "task": "124-smooth-comparator-tanh"
+    },
+    {
+      "classification": "B mechanical migration",
+      "family_id": "125",
+      "gold_profiles_passed": [
+        "feedback",
+        "score"
+      ],
+      "mutation_case_count": 10,
+      "mutation_cases_failed_as_expected": 10,
+      "profile_case_count": 12,
+      "status": "PASS",
+      "task": "125-limiter-rails"
+    },
+    {
+      "classification": "B mechanical migration",
+      "family_id": "126",
+      "gold_profiles_passed": [
+        "feedback",
+        "score"
+      ],
+      "mutation_case_count": 10,
+      "mutation_cases_failed_as_expected": 10,
+      "profile_case_count": 12,
+      "status": "PASS",
+      "task": "126-absolute-value"
+    },
+    {
+      "classification": "B mechanical migration",
+      "family_id": "127",
+      "gold_profiles_passed": [
+        "feedback",
+        "score"
+      ],
+      "mutation_case_count": 10,
+      "mutation_cases_failed_as_expected": 10,
+      "profile_case_count": 12,
+      "status": "PASS",
+      "task": "127-offset-gain-amplifier"
+    },
+    {
+      "classification": "B mechanical migration",
+      "family_id": "128",
+      "gold_profiles_passed": [
+        "feedback",
+        "score"
+      ],
+      "mutation_case_count": 10,
+      "mutation_cases_failed_as_expected": 10,
+      "profile_case_count": 12,
+      "status": "PASS",
+      "task": "128-safe-voltage-divider"
+    },
+    {
+      "classification": "B mechanical migration",
+      "family_id": "129",
+      "gold_profiles_passed": [
+        "feedback",
+        "score"
+      ],
+      "mutation_case_count": 10,
+      "mutation_cases_failed_as_expected": 10,
+      "profile_case_count": 12,
+      "status": "PASS",
+      "task": "129-polynomial-differential-vcvs"
+    },
+    {
+      "classification": "B mechanical migration",
+      "family_id": "130",
+      "gold_profiles_passed": [
+        "feedback",
+        "score"
+      ],
+      "mutation_case_count": 10,
+      "mutation_cases_failed_as_expected": 10,
+      "profile_case_count": 12,
+      "status": "PASS",
+      "task": "130-differential-gain-driver"
+    }
+  ],
+  "gold_case_count": 20,
+  "issue": 290,
+  "mutation_case_count": 100,
+  "passed_case_count": 120,
+  "python_fallback_claimed": false,
+  "schema_version": "issue-290-validation-summary-v1",
+  "scope": "V4 repair batch 13/40 families 121-130",
+  "spectre": {
+    "reason": "Cadence/Spectre unavailable in local targeted validation",
+    "status": "Not-tested"
+  },
+  "status": "PASS"
+}

@@ -1,0 +1,3551 @@
+{
+  "case_count": 120,
+  "cases": [
+    {
+      "behavior_score": 1.0,
+      "case_id": "gold",
+      "case_kind": "gold",
+      "diagnostic_category": "contract_satisfied",
+      "diagnostics": [
+        "checked=267 max_error=0.00000 regions=['above', 'below', 'inside']"
+      ],
+      "dut_source_sha256": "b353a35861729cfe31db46322e8e520b6137d099f8459dadd1c80bdc8bdf9dfd",
+      "evas_engine_used": "evas2",
+      "expected": "pass",
+      "family_id": "121",
+      "observed": "pass",
+      "ok": true,
+      "profile": "feedback",
+      "returncode": 0,
+      "simulator_ok": true,
+      "task": "121-deadband-window",
+      "tb_sha256": "552f7c88094db36b205efcb989b6ac1c82437ab373adcd78621a2069532762db",
+      "timing": {
+        "accepted_tran_steps": 1600.0,
+        "csv_write_s": 0.010743,
+        "derive_bus_signals_s": 0.000183,
+        "total_elapsed_s": 0.1,
+        "tran_elapsed_s": 0.023100000000000002
+      },
+      "wall_time_s": 10.687066
+    },
+    {
+      "behavior_score": 0.0,
+      "case_id": "neg_001_zero",
+      "case_kind": "mutation",
+      "diagnostic_category": "behavior_mismatch",
+      "diagnostics": [
+        "checked=267 max_error=0.30000"
+      ],
+      "dut_source_sha256": "b353a35861729cfe31db46322e8e520b6137d099f8459dadd1c80bdc8bdf9dfd",
+      "evas_engine_used": "evas2",
+      "expected": "fail",
+      "family_id": "121",
+      "observed": "behavior_fail",
+      "ok": true,
+      "profile": "feedback",
+      "returncode": 0,
+      "simulator_ok": true,
+      "task": "121-deadband-window",
+      "tb_sha256": "552f7c88094db36b205efcb989b6ac1c82437ab373adcd78621a2069532762db",
+      "timing": {
+        "accepted_tran_steps": 1600.0,
+        "csv_write_s": 0.009321,
+        "derive_bus_signals_s": 1.5e-05,
+        "total_elapsed_s": 0.0,
+        "tran_elapsed_s": 0.011300000000000001
+      },
+      "wall_time_s": 0.039647
+    },
+    {
+      "behavior_score": 0.0,
+      "case_id": "neg_002_passes_inside_deadband",
+      "case_kind": "mutation",
+      "diagnostic_category": "behavior_mismatch",
+      "diagnostics": [
+        "checked=267 max_error=0.30000"
+      ],
+      "dut_source_sha256": "b353a35861729cfe31db46322e8e520b6137d099f8459dadd1c80bdc8bdf9dfd",
+      "evas_engine_used": "evas2",
+      "expected": "fail",
+      "family_id": "121",
+      "observed": "behavior_fail",
+      "ok": true,
+      "profile": "feedback",
+      "returncode": 0,
+      "simulator_ok": true,
+      "task": "121-deadband-window",
+      "tb_sha256": "552f7c88094db36b205efcb989b6ac1c82437ab373adcd78621a2069532762db",
+      "timing": {
+        "accepted_tran_steps": 1600.0,
+        "csv_write_s": 0.008709,
+        "derive_bus_signals_s": 1.6e-05,
+        "total_elapsed_s": 0.0,
+        "tran_elapsed_s": 0.01
+      },
+      "wall_time_s": 0.03444
+    },
+    {
+      "behavior_score": 0.0,
+      "case_id": "neg_003_wrong_offsets",
+      "case_kind": "mutation",
+      "diagnostic_category": "behavior_mismatch",
+      "diagnostics": [
+        "checked=267 max_error=0.40000"
+      ],
+      "dut_source_sha256": "b353a35861729cfe31db46322e8e520b6137d099f8459dadd1c80bdc8bdf9dfd",
+      "evas_engine_used": "evas2",
+      "expected": "fail",
+      "family_id": "121",
+      "observed": "behavior_fail",
+      "ok": true,
+      "profile": "feedback",
+      "returncode": 0,
+      "simulator_ok": true,
+      "task": "121-deadband-window",
+      "tb_sha256": "552f7c88094db36b205efcb989b6ac1c82437ab373adcd78621a2069532762db",
+      "timing": {
+        "accepted_tran_steps": 1600.0,
+        "csv_write_s": 0.004784,
+        "derive_bus_signals_s": 1.4e-05,
+        "total_elapsed_s": 0.0,
+        "tran_elapsed_s": 0.0087
+      },
+      "wall_time_s": 0.028639
+    },
+    {
+      "behavior_score": 0.0,
+      "case_id": "neg_004_clips_outside_deadband",
+      "case_kind": "mutation",
+      "diagnostic_category": "behavior_mismatch",
+      "diagnostics": [
+        "checked=267 max_error=0.15000"
+      ],
+      "dut_source_sha256": "b353a35861729cfe31db46322e8e520b6137d099f8459dadd1c80bdc8bdf9dfd",
+      "evas_engine_used": "evas2",
+      "expected": "fail",
+      "family_id": "121",
+      "observed": "behavior_fail",
+      "ok": true,
+      "profile": "feedback",
+      "returncode": 0,
+      "simulator_ok": true,
+      "task": "121-deadband-window",
+      "tb_sha256": "552f7c88094db36b205efcb989b6ac1c82437ab373adcd78621a2069532762db",
+      "timing": {
+        "accepted_tran_steps": 1600.0,
+        "csv_write_s": 0.007038,
+        "derive_bus_signals_s": 1.3e-05,
+        "total_elapsed_s": 0.0,
+        "tran_elapsed_s": 0.0088
+      },
+      "wall_time_s": 0.039619
+    },
+    {
+      "behavior_score": 0.0,
+      "case_id": "neg_005_metric_scale_low",
+      "case_kind": "mutation",
+      "diagnostic_category": "behavior_mismatch",
+      "diagnostics": [
+        "checked=267 max_error=0.17400"
+      ],
+      "dut_source_sha256": "b353a35861729cfe31db46322e8e520b6137d099f8459dadd1c80bdc8bdf9dfd",
+      "evas_engine_used": "evas2",
+      "expected": "fail",
+      "family_id": "121",
+      "observed": "behavior_fail",
+      "ok": true,
+      "profile": "feedback",
+      "returncode": 0,
+      "simulator_ok": true,
+      "task": "121-deadband-window",
+      "tb_sha256": "552f7c88094db36b205efcb989b6ac1c82437ab373adcd78621a2069532762db",
+      "timing": {
+        "accepted_tran_steps": 1600.0,
+        "csv_write_s": 0.006047,
+        "derive_bus_signals_s": 1.7e-05,
+        "total_elapsed_s": 0.0,
+        "tran_elapsed_s": 0.0095
+      },
+      "wall_time_s": 0.15856
+    },
+    {
+      "behavior_score": 1.0,
+      "case_id": "gold",
+      "case_kind": "gold",
+      "diagnostic_category": "contract_satisfied",
+      "diagnostics": [
+        "checked=267 max_error=0.00000 regions=['above', 'below', 'inside']"
+      ],
+      "dut_source_sha256": "b353a35861729cfe31db46322e8e520b6137d099f8459dadd1c80bdc8bdf9dfd",
+      "evas_engine_used": "evas2",
+      "expected": "pass",
+      "family_id": "121",
+      "observed": "pass",
+      "ok": true,
+      "profile": "score",
+      "returncode": 0,
+      "simulator_ok": true,
+      "task": "121-deadband-window",
+      "tb_sha256": "fb8be8b998f74cb124fbc9bc25f18ab8da79043f482fb803f660251212d4e17e",
+      "timing": {
+        "accepted_tran_steps": 1600.0,
+        "csv_write_s": 0.006308,
+        "derive_bus_signals_s": 1.7e-05,
+        "total_elapsed_s": 0.1,
+        "tran_elapsed_s": 0.07809999999999999
+      },
+      "wall_time_s": 0.167365
+    },
+    {
+      "behavior_score": 0.0,
+      "case_id": "neg_001_zero",
+      "case_kind": "mutation",
+      "diagnostic_category": "behavior_mismatch",
+      "diagnostics": [
+        "checked=267 max_error=0.30000"
+      ],
+      "dut_source_sha256": "b353a35861729cfe31db46322e8e520b6137d099f8459dadd1c80bdc8bdf9dfd",
+      "evas_engine_used": "evas2",
+      "expected": "fail",
+      "family_id": "121",
+      "observed": "behavior_fail",
+      "ok": true,
+      "profile": "score",
+      "returncode": 0,
+      "simulator_ok": true,
+      "task": "121-deadband-window",
+      "tb_sha256": "fb8be8b998f74cb124fbc9bc25f18ab8da79043f482fb803f660251212d4e17e",
+      "timing": {
+        "accepted_tran_steps": 1600.0,
+        "csv_write_s": 0.028043,
+        "derive_bus_signals_s": 1.9e-05,
+        "total_elapsed_s": 0.1,
+        "tran_elapsed_s": 0.011800000000000001
+      },
+      "wall_time_s": 0.070945
+    },
+    {
+      "behavior_score": 0.0,
+      "case_id": "neg_002_passes_inside_deadband",
+      "case_kind": "mutation",
+      "diagnostic_category": "behavior_mismatch",
+      "diagnostics": [
+        "checked=267 max_error=0.30000"
+      ],
+      "dut_source_sha256": "b353a35861729cfe31db46322e8e520b6137d099f8459dadd1c80bdc8bdf9dfd",
+      "evas_engine_used": "evas2",
+      "expected": "fail",
+      "family_id": "121",
+      "observed": "behavior_fail",
+      "ok": true,
+      "profile": "score",
+      "returncode": 0,
+      "simulator_ok": true,
+      "task": "121-deadband-window",
+      "tb_sha256": "fb8be8b998f74cb124fbc9bc25f18ab8da79043f482fb803f660251212d4e17e",
+      "timing": {
+        "accepted_tran_steps": 1600.0,
+        "csv_write_s": 0.008334,
+        "derive_bus_signals_s": 2.1e-05,
+        "total_elapsed_s": 0.0,
+        "tran_elapsed_s": 0.0123
+      },
+      "wall_time_s": 0.038617
+    },
+    {
+      "behavior_score": 0.0,
+      "case_id": "neg_003_wrong_offsets",
+      "case_kind": "mutation",
+      "diagnostic_category": "behavior_mismatch",
+      "diagnostics": [
+        "checked=267 max_error=0.40000"
+      ],
+      "dut_source_sha256": "b353a35861729cfe31db46322e8e520b6137d099f8459dadd1c80bdc8bdf9dfd",
+      "evas_engine_used": "evas2",
+      "expected": "fail",
+      "family_id": "121",
+      "observed": "behavior_fail",
+      "ok": true,
+      "profile": "score",
+      "returncode": 0,
+      "simulator_ok": true,
+      "task": "121-deadband-window",
+      "tb_sha256": "fb8be8b998f74cb124fbc9bc25f18ab8da79043f482fb803f660251212d4e17e",
+      "timing": {
+        "accepted_tran_steps": 1600.0,
+        "csv_write_s": 0.006577,
+        "derive_bus_signals_s": 1.3e-05,
+        "total_elapsed_s": 0.0,
+        "tran_elapsed_s": 0.0174
+      },
+      "wall_time_s": 0.052768
+    },
+    {
+      "behavior_score": 0.0,
+      "case_id": "neg_004_clips_outside_deadband",
+      "case_kind": "mutation",
+      "diagnostic_category": "behavior_mismatch",
+      "diagnostics": [
+        "checked=267 max_error=0.15000"
+      ],
+      "dut_source_sha256": "b353a35861729cfe31db46322e8e520b6137d099f8459dadd1c80bdc8bdf9dfd",
+      "evas_engine_used": "evas2",
+      "expected": "fail",
+      "family_id": "121",
+      "observed": "behavior_fail",
+      "ok": true,
+      "profile": "score",
+      "returncode": 0,
+      "simulator_ok": true,
+      "task": "121-deadband-window",
+      "tb_sha256": "fb8be8b998f74cb124fbc9bc25f18ab8da79043f482fb803f660251212d4e17e",
+      "timing": {
+        "accepted_tran_steps": 1600.0,
+        "csv_write_s": 0.009256,
+        "derive_bus_signals_s": 2.1e-05,
+        "total_elapsed_s": 0.0,
+        "tran_elapsed_s": 0.0104
+      },
+      "wall_time_s": 0.037992
+    },
+    {
+      "behavior_score": 0.0,
+      "case_id": "neg_005_metric_scale_low",
+      "case_kind": "mutation",
+      "diagnostic_category": "behavior_mismatch",
+      "diagnostics": [
+        "checked=267 max_error=0.17400"
+      ],
+      "dut_source_sha256": "b353a35861729cfe31db46322e8e520b6137d099f8459dadd1c80bdc8bdf9dfd",
+      "evas_engine_used": "evas2",
+      "expected": "fail",
+      "family_id": "121",
+      "observed": "behavior_fail",
+      "ok": true,
+      "profile": "score",
+      "returncode": 0,
+      "simulator_ok": true,
+      "task": "121-deadband-window",
+      "tb_sha256": "fb8be8b998f74cb124fbc9bc25f18ab8da79043f482fb803f660251212d4e17e",
+      "timing": {
+        "accepted_tran_steps": 1600.0,
+        "csv_write_s": 0.006328,
+        "derive_bus_signals_s": 1.5e-05,
+        "total_elapsed_s": 0.0,
+        "tran_elapsed_s": 0.0088
+      },
+      "wall_time_s": 0.030712
+    },
+    {
+      "behavior_score": 1.0,
+      "case_id": "gold",
+      "case_kind": "gold",
+      "diagnostic_category": "contract_satisfied",
+      "diagnostics": [
+        "checked=267 max_error=0.00000 regions=['above', 'below', 'inside']"
+      ],
+      "dut_source_sha256": "d5e26ebfd52501c51100533210cbb228feb2445a61f4dbd8d6656d2323dab064",
+      "evas_engine_used": "evas2",
+      "expected": "pass",
+      "family_id": "122",
+      "observed": "pass",
+      "ok": true,
+      "profile": "feedback",
+      "returncode": 0,
+      "simulator_ok": true,
+      "task": "122-differential-deadband",
+      "tb_sha256": "e746455a646e0e53c03f118894593aa4e96ee6c3c120d13a8e52bad724facd4a",
+      "timing": {
+        "accepted_tran_steps": 1600.0,
+        "csv_write_s": 0.007955,
+        "derive_bus_signals_s": 1.5e-05,
+        "total_elapsed_s": 0.0,
+        "tran_elapsed_s": 0.011699999999999999
+      },
+      "wall_time_s": 0.050875
+    },
+    {
+      "behavior_score": 0.0,
+      "case_id": "neg_001_zero",
+      "case_kind": "mutation",
+      "diagnostic_category": "behavior_mismatch",
+      "diagnostics": [
+        "checked=267 max_error=0.35000"
+      ],
+      "dut_source_sha256": "d5e26ebfd52501c51100533210cbb228feb2445a61f4dbd8d6656d2323dab064",
+      "evas_engine_used": "evas2",
+      "expected": "fail",
+      "family_id": "122",
+      "observed": "behavior_fail",
+      "ok": true,
+      "profile": "feedback",
+      "returncode": 0,
+      "simulator_ok": true,
+      "task": "122-differential-deadband",
+      "tb_sha256": "e746455a646e0e53c03f118894593aa4e96ee6c3c120d13a8e52bad724facd4a",
+      "timing": {
+        "accepted_tran_steps": 1600.0,
+        "csv_write_s": 0.008608,
+        "derive_bus_signals_s": 2.1e-05,
+        "total_elapsed_s": 0.1,
+        "tran_elapsed_s": 0.0878
+      },
+      "wall_time_s": 0.150236
+    },
+    {
+      "behavior_score": 0.0,
+      "case_id": "neg_002_no_leak_inside_deadband",
+      "case_kind": "mutation",
+      "diagnostic_category": "behavior_mismatch",
+      "diagnostics": [
+        "checked=267 max_error=0.05000"
+      ],
+      "dut_source_sha256": "d5e26ebfd52501c51100533210cbb228feb2445a61f4dbd8d6656d2323dab064",
+      "evas_engine_used": "evas2",
+      "expected": "fail",
+      "family_id": "122",
+      "observed": "behavior_fail",
+      "ok": true,
+      "profile": "feedback",
+      "returncode": 0,
+      "simulator_ok": true,
+      "task": "122-differential-deadband",
+      "tb_sha256": "e746455a646e0e53c03f118894593aa4e96ee6c3c120d13a8e52bad724facd4a",
+      "timing": {
+        "accepted_tran_steps": 1600.0,
+        "csv_write_s": 0.006868,
+        "derive_bus_signals_s": 1.7e-05,
+        "total_elapsed_s": 0.0,
+        "tran_elapsed_s": 0.010199999999999999
+      },
+      "wall_time_s": 0.030936
+    },
+    {
+      "behavior_score": 0.0,
+      "case_id": "neg_003_wrong_offsets",
+      "case_kind": "mutation",
+      "diagnostic_category": "behavior_mismatch",
+      "diagnostics": [
+        "checked=267 max_error=0.40000"
+      ],
+      "dut_source_sha256": "d5e26ebfd52501c51100533210cbb228feb2445a61f4dbd8d6656d2323dab064",
+      "evas_engine_used": "evas2",
+      "expected": "fail",
+      "family_id": "122",
+      "observed": "behavior_fail",
+      "ok": true,
+      "profile": "feedback",
+      "returncode": 0,
+      "simulator_ok": true,
+      "task": "122-differential-deadband",
+      "tb_sha256": "e746455a646e0e53c03f118894593aa4e96ee6c3c120d13a8e52bad724facd4a",
+      "timing": {
+        "accepted_tran_steps": 1600.0,
+        "csv_write_s": 0.013193,
+        "derive_bus_signals_s": 2.1e-05,
+        "total_elapsed_s": 0.1,
+        "tran_elapsed_s": 0.0541
+      },
+      "wall_time_s": 0.117964
+    },
+    {
+      "behavior_score": 0.0,
+      "case_id": "neg_004_single_ended_input",
+      "case_kind": "mutation",
+      "diagnostic_category": "behavior_mismatch",
+      "diagnostics": [
+        "checked=267 max_error=0.33000"
+      ],
+      "dut_source_sha256": "d5e26ebfd52501c51100533210cbb228feb2445a61f4dbd8d6656d2323dab064",
+      "evas_engine_used": "evas2",
+      "expected": "fail",
+      "family_id": "122",
+      "observed": "behavior_fail",
+      "ok": true,
+      "profile": "feedback",
+      "returncode": 0,
+      "simulator_ok": true,
+      "task": "122-differential-deadband",
+      "tb_sha256": "e746455a646e0e53c03f118894593aa4e96ee6c3c120d13a8e52bad724facd4a",
+      "timing": {
+        "accepted_tran_steps": 1600.0,
+        "csv_write_s": 0.011147,
+        "derive_bus_signals_s": 3e-05,
+        "total_elapsed_s": 0.1,
+        "tran_elapsed_s": 0.0238
+      },
+      "wall_time_s": 0.114358
+    },
+    {
+      "behavior_score": 0.0,
+      "case_id": "neg_005_metric_scale_low",
+      "case_kind": "mutation",
+      "diagnostic_category": "behavior_mismatch",
+      "diagnostics": [
+        "checked=267 max_error=0.14500"
+      ],
+      "dut_source_sha256": "d5e26ebfd52501c51100533210cbb228feb2445a61f4dbd8d6656d2323dab064",
+      "evas_engine_used": "evas2",
+      "expected": "fail",
+      "family_id": "122",
+      "observed": "behavior_fail",
+      "ok": true,
+      "profile": "feedback",
+      "returncode": 0,
+      "simulator_ok": true,
+      "task": "122-differential-deadband",
+      "tb_sha256": "e746455a646e0e53c03f118894593aa4e96ee6c3c120d13a8e52bad724facd4a",
+      "timing": {
+        "accepted_tran_steps": 1600.0,
+        "csv_write_s": 0.007317,
+        "derive_bus_signals_s": 1.4e-05,
+        "total_elapsed_s": 0.0,
+        "tran_elapsed_s": 0.012199999999999999
+      },
+      "wall_time_s": 0.047274
+    },
+    {
+      "behavior_score": 1.0,
+      "case_id": "gold",
+      "case_kind": "gold",
+      "diagnostic_category": "contract_satisfied",
+      "diagnostics": [
+        "checked=267 max_error=0.00000 regions=['above', 'below', 'inside']"
+      ],
+      "dut_source_sha256": "d5e26ebfd52501c51100533210cbb228feb2445a61f4dbd8d6656d2323dab064",
+      "evas_engine_used": "evas2",
+      "expected": "pass",
+      "family_id": "122",
+      "observed": "pass",
+      "ok": true,
+      "profile": "score",
+      "returncode": 0,
+      "simulator_ok": true,
+      "task": "122-differential-deadband",
+      "tb_sha256": "0d9af50bf46bf8e5887302e7d12fe8a23d72aa3608ca6ae81dac26280d2f47be",
+      "timing": {
+        "accepted_tran_steps": 1600.0,
+        "csv_write_s": 0.009673,
+        "derive_bus_signals_s": 4e-05,
+        "total_elapsed_s": 0.0,
+        "tran_elapsed_s": 0.0145
+      },
+      "wall_time_s": 0.049881
+    },
+    {
+      "behavior_score": 0.0,
+      "case_id": "neg_001_zero",
+      "case_kind": "mutation",
+      "diagnostic_category": "behavior_mismatch",
+      "diagnostics": [
+        "checked=267 max_error=0.35000"
+      ],
+      "dut_source_sha256": "d5e26ebfd52501c51100533210cbb228feb2445a61f4dbd8d6656d2323dab064",
+      "evas_engine_used": "evas2",
+      "expected": "fail",
+      "family_id": "122",
+      "observed": "behavior_fail",
+      "ok": true,
+      "profile": "score",
+      "returncode": 0,
+      "simulator_ok": true,
+      "task": "122-differential-deadband",
+      "tb_sha256": "0d9af50bf46bf8e5887302e7d12fe8a23d72aa3608ca6ae81dac26280d2f47be",
+      "timing": {
+        "accepted_tran_steps": 1600.0,
+        "csv_write_s": 0.008134,
+        "derive_bus_signals_s": 2.6e-05,
+        "total_elapsed_s": 0.0,
+        "tran_elapsed_s": 0.011
+      },
+      "wall_time_s": 0.042608
+    },
+    {
+      "behavior_score": 0.0,
+      "case_id": "neg_002_no_leak_inside_deadband",
+      "case_kind": "mutation",
+      "diagnostic_category": "behavior_mismatch",
+      "diagnostics": [
+        "checked=267 max_error=0.05000"
+      ],
+      "dut_source_sha256": "d5e26ebfd52501c51100533210cbb228feb2445a61f4dbd8d6656d2323dab064",
+      "evas_engine_used": "evas2",
+      "expected": "fail",
+      "family_id": "122",
+      "observed": "behavior_fail",
+      "ok": true,
+      "profile": "score",
+      "returncode": 0,
+      "simulator_ok": true,
+      "task": "122-differential-deadband",
+      "tb_sha256": "0d9af50bf46bf8e5887302e7d12fe8a23d72aa3608ca6ae81dac26280d2f47be",
+      "timing": {
+        "accepted_tran_steps": 1600.0,
+        "csv_write_s": 0.014083,
+        "derive_bus_signals_s": 1.8e-05,
+        "total_elapsed_s": 0.0,
+        "tran_elapsed_s": 0.012
+      },
+      "wall_time_s": 0.044931
+    },
+    {
+      "behavior_score": 0.0,
+      "case_id": "neg_003_wrong_offsets",
+      "case_kind": "mutation",
+      "diagnostic_category": "behavior_mismatch",
+      "diagnostics": [
+        "checked=267 max_error=0.40000"
+      ],
+      "dut_source_sha256": "d5e26ebfd52501c51100533210cbb228feb2445a61f4dbd8d6656d2323dab064",
+      "evas_engine_used": "evas2",
+      "expected": "fail",
+      "family_id": "122",
+      "observed": "behavior_fail",
+      "ok": true,
+      "profile": "score",
+      "returncode": 0,
+      "simulator_ok": true,
+      "task": "122-differential-deadband",
+      "tb_sha256": "0d9af50bf46bf8e5887302e7d12fe8a23d72aa3608ca6ae81dac26280d2f47be",
+      "timing": {
+        "accepted_tran_steps": 1600.0,
+        "csv_write_s": 0.018237,
+        "derive_bus_signals_s": 2.2e-05,
+        "total_elapsed_s": 0.1,
+        "tran_elapsed_s": 0.023399999999999997
+      },
+      "wall_time_s": 0.08903
+    },
+    {
+      "behavior_score": 0.0,
+      "case_id": "neg_004_single_ended_input",
+      "case_kind": "mutation",
+      "diagnostic_category": "behavior_mismatch",
+      "diagnostics": [
+        "checked=267 max_error=0.33000"
+      ],
+      "dut_source_sha256": "d5e26ebfd52501c51100533210cbb228feb2445a61f4dbd8d6656d2323dab064",
+      "evas_engine_used": "evas2",
+      "expected": "fail",
+      "family_id": "122",
+      "observed": "behavior_fail",
+      "ok": true,
+      "profile": "score",
+      "returncode": 0,
+      "simulator_ok": true,
+      "task": "122-differential-deadband",
+      "tb_sha256": "0d9af50bf46bf8e5887302e7d12fe8a23d72aa3608ca6ae81dac26280d2f47be",
+      "timing": {
+        "accepted_tran_steps": 1600.0,
+        "csv_write_s": 0.009603,
+        "derive_bus_signals_s": 1.7e-05,
+        "total_elapsed_s": 0.0,
+        "tran_elapsed_s": 0.0123
+      },
+      "wall_time_s": 0.045584
+    },
+    {
+      "behavior_score": 0.0,
+      "case_id": "neg_005_metric_scale_low",
+      "case_kind": "mutation",
+      "diagnostic_category": "behavior_mismatch",
+      "diagnostics": [
+        "checked=267 max_error=0.14500"
+      ],
+      "dut_source_sha256": "d5e26ebfd52501c51100533210cbb228feb2445a61f4dbd8d6656d2323dab064",
+      "evas_engine_used": "evas2",
+      "expected": "fail",
+      "family_id": "122",
+      "observed": "behavior_fail",
+      "ok": true,
+      "profile": "score",
+      "returncode": 0,
+      "simulator_ok": true,
+      "task": "122-differential-deadband",
+      "tb_sha256": "0d9af50bf46bf8e5887302e7d12fe8a23d72aa3608ca6ae81dac26280d2f47be",
+      "timing": {
+        "accepted_tran_steps": 1600.0,
+        "csv_write_s": 0.031185,
+        "derive_bus_signals_s": 1.8e-05,
+        "total_elapsed_s": 0.4,
+        "tran_elapsed_s": 0.1367
+      },
+      "wall_time_s": 0.379807
+    },
+    {
+      "behavior_score": 1.0,
+      "case_id": "gold",
+      "case_kind": "gold",
+      "diagnostic_category": "contract_satisfied",
+      "diagnostics": [
+        "checked=267 max_error=0.00000 regions=['above', 'below', 'inside']"
+      ],
+      "dut_source_sha256": "2c41ae241d78b1eca4270b2b3968c95b7f753e2fed337fe211453f0882daf515",
+      "evas_engine_used": "evas2",
+      "expected": "pass",
+      "family_id": "123",
+      "observed": "pass",
+      "ok": true,
+      "profile": "feedback",
+      "returncode": 0,
+      "simulator_ok": true,
+      "task": "123-hard-voltage-clamp",
+      "tb_sha256": "5f0596b63c19a716416ee940887387afe60d17243798ac11fadc3076575c56c0",
+      "timing": {
+        "accepted_tran_steps": 1600.0,
+        "csv_write_s": 0.007173,
+        "derive_bus_signals_s": 1.3e-05,
+        "total_elapsed_s": 0.0,
+        "tran_elapsed_s": 0.020300000000000002
+      },
+      "wall_time_s": 0.080093
+    },
+    {
+      "behavior_score": 0.0,
+      "case_id": "neg_001_zero",
+      "case_kind": "mutation",
+      "diagnostic_category": "behavior_mismatch",
+      "diagnostics": [
+        "checked=267 max_error=0.60000"
+      ],
+      "dut_source_sha256": "2c41ae241d78b1eca4270b2b3968c95b7f753e2fed337fe211453f0882daf515",
+      "evas_engine_used": "evas2",
+      "expected": "fail",
+      "family_id": "123",
+      "observed": "behavior_fail",
+      "ok": true,
+      "profile": "feedback",
+      "returncode": 0,
+      "simulator_ok": true,
+      "task": "123-hard-voltage-clamp",
+      "tb_sha256": "5f0596b63c19a716416ee940887387afe60d17243798ac11fadc3076575c56c0",
+      "timing": {
+        "accepted_tran_steps": 1600.0,
+        "csv_write_s": 0.039055,
+        "derive_bus_signals_s": 1.8e-05,
+        "total_elapsed_s": 0.1,
+        "tran_elapsed_s": 0.024300000000000002
+      },
+      "wall_time_s": 0.165825
+    },
+    {
+      "behavior_score": 0.0,
+      "case_id": "neg_002_no_lower_clamp",
+      "case_kind": "mutation",
+      "diagnostic_category": "behavior_mismatch",
+      "diagnostics": [
+        "checked=267 max_error=0.30000"
+      ],
+      "dut_source_sha256": "2c41ae241d78b1eca4270b2b3968c95b7f753e2fed337fe211453f0882daf515",
+      "evas_engine_used": "evas2",
+      "expected": "fail",
+      "family_id": "123",
+      "observed": "behavior_fail",
+      "ok": true,
+      "profile": "feedback",
+      "returncode": 0,
+      "simulator_ok": true,
+      "task": "123-hard-voltage-clamp",
+      "tb_sha256": "5f0596b63c19a716416ee940887387afe60d17243798ac11fadc3076575c56c0",
+      "timing": {
+        "accepted_tran_steps": 1600.0,
+        "csv_write_s": 0.01223,
+        "derive_bus_signals_s": 1.9e-05,
+        "total_elapsed_s": 0.1,
+        "tran_elapsed_s": 0.040799999999999996
+      },
+      "wall_time_s": 0.097765
+    },
+    {
+      "behavior_score": 0.0,
+      "case_id": "neg_003_no_upper_clamp",
+      "case_kind": "mutation",
+      "diagnostic_category": "behavior_mismatch",
+      "diagnostics": [
+        "checked=267 max_error=0.30000"
+      ],
+      "dut_source_sha256": "2c41ae241d78b1eca4270b2b3968c95b7f753e2fed337fe211453f0882daf515",
+      "evas_engine_used": "evas2",
+      "expected": "fail",
+      "family_id": "123",
+      "observed": "behavior_fail",
+      "ok": true,
+      "profile": "feedback",
+      "returncode": 0,
+      "simulator_ok": true,
+      "task": "123-hard-voltage-clamp",
+      "tb_sha256": "5f0596b63c19a716416ee940887387afe60d17243798ac11fadc3076575c56c0",
+      "timing": {
+        "accepted_tran_steps": 1600.0,
+        "csv_write_s": 0.006576,
+        "derive_bus_signals_s": 1.5e-05,
+        "total_elapsed_s": 0.0,
+        "tran_elapsed_s": 0.009800000000000001
+      },
+      "wall_time_s": 0.028839
+    },
+    {
+      "behavior_score": 0.0,
+      "case_id": "neg_004_swapped_clamp_rails",
+      "case_kind": "mutation",
+      "diagnostic_category": "behavior_mismatch",
+      "diagnostics": [
+        "checked=267 max_error=0.80000"
+      ],
+      "dut_source_sha256": "2c41ae241d78b1eca4270b2b3968c95b7f753e2fed337fe211453f0882daf515",
+      "evas_engine_used": "evas2",
+      "expected": "fail",
+      "family_id": "123",
+      "observed": "behavior_fail",
+      "ok": true,
+      "profile": "feedback",
+      "returncode": 0,
+      "simulator_ok": true,
+      "task": "123-hard-voltage-clamp",
+      "tb_sha256": "5f0596b63c19a716416ee940887387afe60d17243798ac11fadc3076575c56c0",
+      "timing": {
+        "accepted_tran_steps": 1600.0,
+        "csv_write_s": 0.007561,
+        "derive_bus_signals_s": 1.7e-05,
+        "total_elapsed_s": 0.1,
+        "tran_elapsed_s": 0.0696
+      },
+      "wall_time_s": 0.095619
+    },
+    {
+      "behavior_score": 0.0,
+      "case_id": "neg_005_metric_scale_low",
+      "case_kind": "mutation",
+      "diagnostic_category": "behavior_mismatch",
+      "diagnostics": [
+        "checked=267 max_error=0.34800"
+      ],
+      "dut_source_sha256": "2c41ae241d78b1eca4270b2b3968c95b7f753e2fed337fe211453f0882daf515",
+      "evas_engine_used": "evas2",
+      "expected": "fail",
+      "family_id": "123",
+      "observed": "behavior_fail",
+      "ok": true,
+      "profile": "feedback",
+      "returncode": 0,
+      "simulator_ok": true,
+      "task": "123-hard-voltage-clamp",
+      "tb_sha256": "5f0596b63c19a716416ee940887387afe60d17243798ac11fadc3076575c56c0",
+      "timing": {
+        "accepted_tran_steps": 1600.0,
+        "csv_write_s": 0.006997,
+        "derive_bus_signals_s": 1.6e-05,
+        "total_elapsed_s": 0.0,
+        "tran_elapsed_s": 0.009300000000000001
+      },
+      "wall_time_s": 0.082585
+    },
+    {
+      "behavior_score": 1.0,
+      "case_id": "gold",
+      "case_kind": "gold",
+      "diagnostic_category": "contract_satisfied",
+      "diagnostics": [
+        "checked=267 max_error=0.00000 regions=['above', 'below', 'inside']"
+      ],
+      "dut_source_sha256": "2c41ae241d78b1eca4270b2b3968c95b7f753e2fed337fe211453f0882daf515",
+      "evas_engine_used": "evas2",
+      "expected": "pass",
+      "family_id": "123",
+      "observed": "pass",
+      "ok": true,
+      "profile": "score",
+      "returncode": 0,
+      "simulator_ok": true,
+      "task": "123-hard-voltage-clamp",
+      "tb_sha256": "90f4f27a8842db82831237c70eafff7eff97baae7b217d8f61cbe92217800a48",
+      "timing": {
+        "accepted_tran_steps": 1600.0,
+        "csv_write_s": 0.006558,
+        "derive_bus_signals_s": 1.2e-05,
+        "total_elapsed_s": 0.0,
+        "tran_elapsed_s": 0.0145
+      },
+      "wall_time_s": 0.05089
+    },
+    {
+      "behavior_score": 0.0,
+      "case_id": "neg_001_zero",
+      "case_kind": "mutation",
+      "diagnostic_category": "behavior_mismatch",
+      "diagnostics": [
+        "checked=267 max_error=0.60000"
+      ],
+      "dut_source_sha256": "2c41ae241d78b1eca4270b2b3968c95b7f753e2fed337fe211453f0882daf515",
+      "evas_engine_used": "evas2",
+      "expected": "fail",
+      "family_id": "123",
+      "observed": "behavior_fail",
+      "ok": true,
+      "profile": "score",
+      "returncode": 0,
+      "simulator_ok": true,
+      "task": "123-hard-voltage-clamp",
+      "tb_sha256": "90f4f27a8842db82831237c70eafff7eff97baae7b217d8f61cbe92217800a48",
+      "timing": {
+        "accepted_tran_steps": 1600.0,
+        "csv_write_s": 0.137286,
+        "derive_bus_signals_s": 0.003257,
+        "total_elapsed_s": 0.4,
+        "tran_elapsed_s": 0.056100000000000004
+      },
+      "wall_time_s": 0.435583
+    },
+    {
+      "behavior_score": 0.0,
+      "case_id": "neg_002_no_lower_clamp",
+      "case_kind": "mutation",
+      "diagnostic_category": "behavior_mismatch",
+      "diagnostics": [
+        "checked=267 max_error=0.30000"
+      ],
+      "dut_source_sha256": "2c41ae241d78b1eca4270b2b3968c95b7f753e2fed337fe211453f0882daf515",
+      "evas_engine_used": "evas2",
+      "expected": "fail",
+      "family_id": "123",
+      "observed": "behavior_fail",
+      "ok": true,
+      "profile": "score",
+      "returncode": 0,
+      "simulator_ok": true,
+      "task": "123-hard-voltage-clamp",
+      "tb_sha256": "90f4f27a8842db82831237c70eafff7eff97baae7b217d8f61cbe92217800a48",
+      "timing": {
+        "accepted_tran_steps": 1600.0,
+        "csv_write_s": 0.007309,
+        "derive_bus_signals_s": 1.6e-05,
+        "total_elapsed_s": 0.0,
+        "tran_elapsed_s": 0.0103
+      },
+      "wall_time_s": 0.063325
+    },
+    {
+      "behavior_score": 0.0,
+      "case_id": "neg_003_no_upper_clamp",
+      "case_kind": "mutation",
+      "diagnostic_category": "behavior_mismatch",
+      "diagnostics": [
+        "checked=267 max_error=0.30000"
+      ],
+      "dut_source_sha256": "2c41ae241d78b1eca4270b2b3968c95b7f753e2fed337fe211453f0882daf515",
+      "evas_engine_used": "evas2",
+      "expected": "fail",
+      "family_id": "123",
+      "observed": "behavior_fail",
+      "ok": true,
+      "profile": "score",
+      "returncode": 0,
+      "simulator_ok": true,
+      "task": "123-hard-voltage-clamp",
+      "tb_sha256": "90f4f27a8842db82831237c70eafff7eff97baae7b217d8f61cbe92217800a48",
+      "timing": {
+        "accepted_tran_steps": 1600.0,
+        "csv_write_s": 0.009307,
+        "derive_bus_signals_s": 1.2e-05,
+        "total_elapsed_s": 0.0,
+        "tran_elapsed_s": 0.0092
+      },
+      "wall_time_s": 0.032841
+    },
+    {
+      "behavior_score": 0.0,
+      "case_id": "neg_004_swapped_clamp_rails",
+      "case_kind": "mutation",
+      "diagnostic_category": "behavior_mismatch",
+      "diagnostics": [
+        "checked=267 max_error=0.80000"
+      ],
+      "dut_source_sha256": "2c41ae241d78b1eca4270b2b3968c95b7f753e2fed337fe211453f0882daf515",
+      "evas_engine_used": "evas2",
+      "expected": "fail",
+      "family_id": "123",
+      "observed": "behavior_fail",
+      "ok": true,
+      "profile": "score",
+      "returncode": 0,
+      "simulator_ok": true,
+      "task": "123-hard-voltage-clamp",
+      "tb_sha256": "90f4f27a8842db82831237c70eafff7eff97baae7b217d8f61cbe92217800a48",
+      "timing": {
+        "accepted_tran_steps": 1600.0,
+        "csv_write_s": 0.22726,
+        "derive_bus_signals_s": 2.6e-05,
+        "total_elapsed_s": 0.4,
+        "tran_elapsed_s": 0.0128
+      },
+      "wall_time_s": 0.454103
+    },
+    {
+      "behavior_score": 0.0,
+      "case_id": "neg_005_metric_scale_low",
+      "case_kind": "mutation",
+      "diagnostic_category": "behavior_mismatch",
+      "diagnostics": [
+        "checked=267 max_error=0.34800"
+      ],
+      "dut_source_sha256": "2c41ae241d78b1eca4270b2b3968c95b7f753e2fed337fe211453f0882daf515",
+      "evas_engine_used": "evas2",
+      "expected": "fail",
+      "family_id": "123",
+      "observed": "behavior_fail",
+      "ok": true,
+      "profile": "score",
+      "returncode": 0,
+      "simulator_ok": true,
+      "task": "123-hard-voltage-clamp",
+      "tb_sha256": "90f4f27a8842db82831237c70eafff7eff97baae7b217d8f61cbe92217800a48",
+      "timing": {
+        "accepted_tran_steps": 1600.0,
+        "csv_write_s": 0.015097,
+        "derive_bus_signals_s": 1.9e-05,
+        "total_elapsed_s": 0.4,
+        "tran_elapsed_s": 0.3855
+      },
+      "wall_time_s": 0.47272
+    },
+    {
+      "behavior_score": 1.0,
+      "case_id": "gold",
+      "case_kind": "gold",
+      "diagnostic_category": "contract_satisfied",
+      "diagnostics": [
+        "checked=1599 max_tanh_error=0.00000"
+      ],
+      "dut_source_sha256": "0cb0a0383febae3f1c6ab6017ed6b5489f29fd10365f212ca4597855eecef452",
+      "evas_engine_used": "evas2",
+      "expected": "pass",
+      "family_id": "124",
+      "observed": "pass",
+      "ok": true,
+      "profile": "feedback",
+      "returncode": 0,
+      "simulator_ok": true,
+      "task": "124-smooth-comparator-tanh",
+      "tb_sha256": "325c28a57690a3dbce21767df46a60976b57ae8e223697b62e8d26fb911e9f85",
+      "timing": {
+        "accepted_tran_steps": 1600.0,
+        "csv_write_s": 0.012254,
+        "derive_bus_signals_s": 1.8e-05,
+        "total_elapsed_s": 0.0,
+        "tran_elapsed_s": 0.0091
+      },
+      "wall_time_s": 0.045786
+    },
+    {
+      "behavior_score": 0.0,
+      "case_id": "neg_001_zero",
+      "case_kind": "mutation",
+      "diagnostic_category": "behavior_mismatch",
+      "diagnostics": [
+        "checked=1599 max_tanh_error=0.89996"
+      ],
+      "dut_source_sha256": "0cb0a0383febae3f1c6ab6017ed6b5489f29fd10365f212ca4597855eecef452",
+      "evas_engine_used": "evas2",
+      "expected": "fail",
+      "family_id": "124",
+      "observed": "behavior_fail",
+      "ok": true,
+      "profile": "feedback",
+      "returncode": 0,
+      "simulator_ok": true,
+      "task": "124-smooth-comparator-tanh",
+      "tb_sha256": "325c28a57690a3dbce21767df46a60976b57ae8e223697b62e8d26fb911e9f85",
+      "timing": {
+        "accepted_tran_steps": 1600.0,
+        "csv_write_s": 0.007819,
+        "derive_bus_signals_s": 1.8e-05,
+        "total_elapsed_s": 0.0,
+        "tran_elapsed_s": 0.010199999999999999
+      },
+      "wall_time_s": 0.044218
+    },
+    {
+      "behavior_score": 0.0,
+      "case_id": "neg_002_inverted_difference",
+      "case_kind": "mutation",
+      "diagnostic_category": "behavior_mismatch",
+      "diagnostics": [
+        "checked=1599 max_tanh_error=0.89992"
+      ],
+      "dut_source_sha256": "0cb0a0383febae3f1c6ab6017ed6b5489f29fd10365f212ca4597855eecef452",
+      "evas_engine_used": "evas2",
+      "expected": "fail",
+      "family_id": "124",
+      "observed": "behavior_fail",
+      "ok": true,
+      "profile": "feedback",
+      "returncode": 0,
+      "simulator_ok": true,
+      "task": "124-smooth-comparator-tanh",
+      "tb_sha256": "325c28a57690a3dbce21767df46a60976b57ae8e223697b62e8d26fb911e9f85",
+      "timing": {
+        "accepted_tran_steps": 1600.0,
+        "csv_write_s": 0.007772,
+        "derive_bus_signals_s": 1.6e-05,
+        "total_elapsed_s": 0.0,
+        "tran_elapsed_s": 0.013900000000000001
+      },
+      "wall_time_s": 0.039278
+    },
+    {
+      "behavior_score": 0.0,
+      "case_id": "neg_003_half_slope",
+      "case_kind": "mutation",
+      "diagnostic_category": "behavior_mismatch",
+      "diagnostics": [
+        "checked=1599 max_tanh_error=0.13216"
+      ],
+      "dut_source_sha256": "0cb0a0383febae3f1c6ab6017ed6b5489f29fd10365f212ca4597855eecef452",
+      "evas_engine_used": "evas2",
+      "expected": "fail",
+      "family_id": "124",
+      "observed": "behavior_fail",
+      "ok": true,
+      "profile": "feedback",
+      "returncode": 0,
+      "simulator_ok": true,
+      "task": "124-smooth-comparator-tanh",
+      "tb_sha256": "325c28a57690a3dbce21767df46a60976b57ae8e223697b62e8d26fb911e9f85",
+      "timing": {
+        "accepted_tran_steps": 1600.0,
+        "csv_write_s": 0.010037,
+        "derive_bus_signals_s": 1.3e-05,
+        "total_elapsed_s": 0.0,
+        "tran_elapsed_s": 0.01
+      },
+      "wall_time_s": 0.034747
+    },
+    {
+      "behavior_score": 0.0,
+      "case_id": "neg_004_half_output_span",
+      "case_kind": "mutation",
+      "diagnostic_category": "behavior_mismatch",
+      "diagnostics": [
+        "checked=1599 max_tanh_error=0.22498"
+      ],
+      "dut_source_sha256": "0cb0a0383febae3f1c6ab6017ed6b5489f29fd10365f212ca4597855eecef452",
+      "evas_engine_used": "evas2",
+      "expected": "fail",
+      "family_id": "124",
+      "observed": "behavior_fail",
+      "ok": true,
+      "profile": "feedback",
+      "returncode": 0,
+      "simulator_ok": true,
+      "task": "124-smooth-comparator-tanh",
+      "tb_sha256": "325c28a57690a3dbce21767df46a60976b57ae8e223697b62e8d26fb911e9f85",
+      "timing": {
+        "accepted_tran_steps": 1600.0,
+        "csv_write_s": 0.097424,
+        "derive_bus_signals_s": 1.8e-05,
+        "total_elapsed_s": 0.1,
+        "tran_elapsed_s": 0.0124
+      },
+      "wall_time_s": 0.167505
+    },
+    {
+      "behavior_score": 0.0,
+      "case_id": "neg_005_metric_scale_low",
+      "case_kind": "mutation",
+      "diagnostic_category": "behavior_mismatch",
+      "diagnostics": [
+        "checked=1599 max_tanh_error=0.52198"
+      ],
+      "dut_source_sha256": "0cb0a0383febae3f1c6ab6017ed6b5489f29fd10365f212ca4597855eecef452",
+      "evas_engine_used": "evas2",
+      "expected": "fail",
+      "family_id": "124",
+      "observed": "behavior_fail",
+      "ok": true,
+      "profile": "feedback",
+      "returncode": 0,
+      "simulator_ok": true,
+      "task": "124-smooth-comparator-tanh",
+      "tb_sha256": "325c28a57690a3dbce21767df46a60976b57ae8e223697b62e8d26fb911e9f85",
+      "timing": {
+        "accepted_tran_steps": 1600.0,
+        "csv_write_s": 0.065873,
+        "derive_bus_signals_s": 6.1e-05,
+        "total_elapsed_s": 0.2,
+        "tran_elapsed_s": 0.072
+      },
+      "wall_time_s": 0.303499
+    },
+    {
+      "behavior_score": 1.0,
+      "case_id": "gold",
+      "case_kind": "gold",
+      "diagnostic_category": "contract_satisfied",
+      "diagnostics": [
+        "checked=1599 max_tanh_error=0.00000"
+      ],
+      "dut_source_sha256": "0cb0a0383febae3f1c6ab6017ed6b5489f29fd10365f212ca4597855eecef452",
+      "evas_engine_used": "evas2",
+      "expected": "pass",
+      "family_id": "124",
+      "observed": "pass",
+      "ok": true,
+      "profile": "score",
+      "returncode": 0,
+      "simulator_ok": true,
+      "task": "124-smooth-comparator-tanh",
+      "tb_sha256": "ad2cda9566424b24cb03068ab3a8df4544aef2b474e30cf85daf27fe598be71e",
+      "timing": {
+        "accepted_tran_steps": 1600.0,
+        "csv_write_s": 0.038991,
+        "derive_bus_signals_s": 2e-05,
+        "total_elapsed_s": 0.1,
+        "tran_elapsed_s": 0.0136
+      },
+      "wall_time_s": 0.11043
+    },
+    {
+      "behavior_score": 0.0,
+      "case_id": "neg_001_zero",
+      "case_kind": "mutation",
+      "diagnostic_category": "behavior_mismatch",
+      "diagnostics": [
+        "checked=1599 max_tanh_error=0.89996"
+      ],
+      "dut_source_sha256": "0cb0a0383febae3f1c6ab6017ed6b5489f29fd10365f212ca4597855eecef452",
+      "evas_engine_used": "evas2",
+      "expected": "fail",
+      "family_id": "124",
+      "observed": "behavior_fail",
+      "ok": true,
+      "profile": "score",
+      "returncode": 0,
+      "simulator_ok": true,
+      "task": "124-smooth-comparator-tanh",
+      "tb_sha256": "ad2cda9566424b24cb03068ab3a8df4544aef2b474e30cf85daf27fe598be71e",
+      "timing": {
+        "accepted_tran_steps": 1600.0,
+        "csv_write_s": 0.047403,
+        "derive_bus_signals_s": 4.3e-05,
+        "total_elapsed_s": 0.2,
+        "tran_elapsed_s": 0.0824
+      },
+      "wall_time_s": 0.422046
+    },
+    {
+      "behavior_score": 0.0,
+      "case_id": "neg_002_inverted_difference",
+      "case_kind": "mutation",
+      "diagnostic_category": "behavior_mismatch",
+      "diagnostics": [
+        "checked=1599 max_tanh_error=0.89992"
+      ],
+      "dut_source_sha256": "0cb0a0383febae3f1c6ab6017ed6b5489f29fd10365f212ca4597855eecef452",
+      "evas_engine_used": "evas2",
+      "expected": "fail",
+      "family_id": "124",
+      "observed": "behavior_fail",
+      "ok": true,
+      "profile": "score",
+      "returncode": 0,
+      "simulator_ok": true,
+      "task": "124-smooth-comparator-tanh",
+      "tb_sha256": "ad2cda9566424b24cb03068ab3a8df4544aef2b474e30cf85daf27fe598be71e",
+      "timing": {
+        "accepted_tran_steps": 1600.0,
+        "csv_write_s": 0.04097,
+        "derive_bus_signals_s": 0.013471,
+        "total_elapsed_s": 0.1,
+        "tran_elapsed_s": 0.018699999999999998
+      },
+      "wall_time_s": 0.143612
+    },
+    {
+      "behavior_score": 0.0,
+      "case_id": "neg_003_half_slope",
+      "case_kind": "mutation",
+      "diagnostic_category": "behavior_mismatch",
+      "diagnostics": [
+        "checked=1599 max_tanh_error=0.13216"
+      ],
+      "dut_source_sha256": "0cb0a0383febae3f1c6ab6017ed6b5489f29fd10365f212ca4597855eecef452",
+      "evas_engine_used": "evas2",
+      "expected": "fail",
+      "family_id": "124",
+      "observed": "behavior_fail",
+      "ok": true,
+      "profile": "score",
+      "returncode": 0,
+      "simulator_ok": true,
+      "task": "124-smooth-comparator-tanh",
+      "tb_sha256": "ad2cda9566424b24cb03068ab3a8df4544aef2b474e30cf85daf27fe598be71e",
+      "timing": {
+        "accepted_tran_steps": 1600.0,
+        "csv_write_s": 0.010035,
+        "derive_bus_signals_s": 2.9e-05,
+        "total_elapsed_s": 0.3,
+        "tran_elapsed_s": 0.0947
+      },
+      "wall_time_s": 0.29285
+    },
+    {
+      "behavior_score": 0.0,
+      "case_id": "neg_004_half_output_span",
+      "case_kind": "mutation",
+      "diagnostic_category": "behavior_mismatch",
+      "diagnostics": [
+        "checked=1599 max_tanh_error=0.22498"
+      ],
+      "dut_source_sha256": "0cb0a0383febae3f1c6ab6017ed6b5489f29fd10365f212ca4597855eecef452",
+      "evas_engine_used": "evas2",
+      "expected": "fail",
+      "family_id": "124",
+      "observed": "behavior_fail",
+      "ok": true,
+      "profile": "score",
+      "returncode": 0,
+      "simulator_ok": true,
+      "task": "124-smooth-comparator-tanh",
+      "tb_sha256": "ad2cda9566424b24cb03068ab3a8df4544aef2b474e30cf85daf27fe598be71e",
+      "timing": {
+        "accepted_tran_steps": 1600.0,
+        "csv_write_s": 0.03805,
+        "derive_bus_signals_s": 1.6e-05,
+        "total_elapsed_s": 0.2,
+        "tran_elapsed_s": 0.076
+      },
+      "wall_time_s": 0.70237
+    },
+    {
+      "behavior_score": 0.0,
+      "case_id": "neg_005_metric_scale_low",
+      "case_kind": "mutation",
+      "diagnostic_category": "behavior_mismatch",
+      "diagnostics": [
+        "checked=1599 max_tanh_error=0.52198"
+      ],
+      "dut_source_sha256": "0cb0a0383febae3f1c6ab6017ed6b5489f29fd10365f212ca4597855eecef452",
+      "evas_engine_used": "evas2",
+      "expected": "fail",
+      "family_id": "124",
+      "observed": "behavior_fail",
+      "ok": true,
+      "profile": "score",
+      "returncode": 0,
+      "simulator_ok": true,
+      "task": "124-smooth-comparator-tanh",
+      "tb_sha256": "ad2cda9566424b24cb03068ab3a8df4544aef2b474e30cf85daf27fe598be71e",
+      "timing": {
+        "accepted_tran_steps": 1600.0,
+        "csv_write_s": 0.102996,
+        "derive_bus_signals_s": 1.9e-05,
+        "total_elapsed_s": 0.9,
+        "tran_elapsed_s": 0.599
+      },
+      "wall_time_s": 1.143064
+    },
+    {
+      "behavior_score": 1.0,
+      "case_id": "gold",
+      "case_kind": "gold",
+      "diagnostic_category": "contract_satisfied",
+      "diagnostics": [
+        "checked=267 max_error=0.00000 regions=['above', 'below', 'inside']"
+      ],
+      "dut_source_sha256": "af2c5ec218d0e234f732d94cdd90f2b12fcde6ef40bcf8494e8b4df91924ff67",
+      "evas_engine_used": "evas2",
+      "expected": "pass",
+      "family_id": "125",
+      "observed": "pass",
+      "ok": true,
+      "profile": "feedback",
+      "returncode": 0,
+      "simulator_ok": true,
+      "task": "125-limiter-rails",
+      "tb_sha256": "a49e60972b95628432c448ed3d33379ba4652d75405912eb1b9728ba1a8d7b11",
+      "timing": {
+        "accepted_tran_steps": 1600.0,
+        "csv_write_s": 0.186832,
+        "derive_bus_signals_s": 3.4e-05,
+        "total_elapsed_s": 0.5,
+        "tran_elapsed_s": 0.1032
+      },
+      "wall_time_s": 0.656764
+    },
+    {
+      "behavior_score": 0.0,
+      "case_id": "neg_001_zero",
+      "case_kind": "mutation",
+      "diagnostic_category": "behavior_mismatch",
+      "diagnostics": [
+        "checked=267 max_error=0.70000"
+      ],
+      "dut_source_sha256": "af2c5ec218d0e234f732d94cdd90f2b12fcde6ef40bcf8494e8b4df91924ff67",
+      "evas_engine_used": "evas2",
+      "expected": "fail",
+      "family_id": "125",
+      "observed": "behavior_fail",
+      "ok": true,
+      "profile": "feedback",
+      "returncode": 0,
+      "simulator_ok": true,
+      "task": "125-limiter-rails",
+      "tb_sha256": "a49e60972b95628432c448ed3d33379ba4652d75405912eb1b9728ba1a8d7b11",
+      "timing": {
+        "accepted_tran_steps": 1600.0,
+        "csv_write_s": 0.217986,
+        "derive_bus_signals_s": 0.001495,
+        "total_elapsed_s": 0.5,
+        "tran_elapsed_s": 0.26239999999999997
+      },
+      "wall_time_s": 0.575449
+    },
+    {
+      "behavior_score": 0.0,
+      "case_id": "neg_002_ignores_rail_offsets",
+      "case_kind": "mutation",
+      "diagnostic_category": "behavior_mismatch",
+      "diagnostics": [
+        "checked=267 max_error=0.20000"
+      ],
+      "dut_source_sha256": "af2c5ec218d0e234f732d94cdd90f2b12fcde6ef40bcf8494e8b4df91924ff67",
+      "evas_engine_used": "evas2",
+      "expected": "fail",
+      "family_id": "125",
+      "observed": "behavior_fail",
+      "ok": true,
+      "profile": "feedback",
+      "returncode": 0,
+      "simulator_ok": true,
+      "task": "125-limiter-rails",
+      "tb_sha256": "a49e60972b95628432c448ed3d33379ba4652d75405912eb1b9728ba1a8d7b11",
+      "timing": {
+        "accepted_tran_steps": 1600.0,
+        "csv_write_s": 0.026579,
+        "derive_bus_signals_s": 2.2e-05,
+        "total_elapsed_s": 0.1,
+        "tran_elapsed_s": 0.0519
+      },
+      "wall_time_s": 0.315066
+    },
+    {
+      "behavior_score": 0.0,
+      "case_id": "neg_003_swapped_offsets",
+      "case_kind": "mutation",
+      "diagnostic_category": "behavior_mismatch",
+      "diagnostics": [
+        "checked=267 max_error=0.10000"
+      ],
+      "dut_source_sha256": "af2c5ec218d0e234f732d94cdd90f2b12fcde6ef40bcf8494e8b4df91924ff67",
+      "evas_engine_used": "evas2",
+      "expected": "fail",
+      "family_id": "125",
+      "observed": "behavior_fail",
+      "ok": true,
+      "profile": "feedback",
+      "returncode": 0,
+      "simulator_ok": true,
+      "task": "125-limiter-rails",
+      "tb_sha256": "a49e60972b95628432c448ed3d33379ba4652d75405912eb1b9728ba1a8d7b11",
+      "timing": {
+        "accepted_tran_steps": 1600.0,
+        "csv_write_s": 0.14499,
+        "derive_bus_signals_s": 2.4e-05,
+        "total_elapsed_s": 0.4,
+        "tran_elapsed_s": 0.2092
+      },
+      "wall_time_s": 0.465197
+    },
+    {
+      "behavior_score": 0.0,
+      "case_id": "neg_004_no_lower_limit",
+      "case_kind": "mutation",
+      "diagnostic_category": "behavior_mismatch",
+      "diagnostics": [
+        "checked=267 max_error=0.30000"
+      ],
+      "dut_source_sha256": "af2c5ec218d0e234f732d94cdd90f2b12fcde6ef40bcf8494e8b4df91924ff67",
+      "evas_engine_used": "evas2",
+      "expected": "fail",
+      "family_id": "125",
+      "observed": "behavior_fail",
+      "ok": true,
+      "profile": "feedback",
+      "returncode": 0,
+      "simulator_ok": true,
+      "task": "125-limiter-rails",
+      "tb_sha256": "a49e60972b95628432c448ed3d33379ba4652d75405912eb1b9728ba1a8d7b11",
+      "timing": {
+        "accepted_tran_steps": 1600.0,
+        "csv_write_s": 0.060071,
+        "derive_bus_signals_s": 2.6e-05,
+        "total_elapsed_s": 0.4,
+        "tran_elapsed_s": 0.17959999999999998
+      },
+      "wall_time_s": 0.450226
+    },
+    {
+      "behavior_score": 0.0,
+      "case_id": "neg_005_metric_scale_low",
+      "case_kind": "mutation",
+      "diagnostic_category": "behavior_mismatch",
+      "diagnostics": [
+        "checked=267 max_error=0.40600"
+      ],
+      "dut_source_sha256": "af2c5ec218d0e234f732d94cdd90f2b12fcde6ef40bcf8494e8b4df91924ff67",
+      "evas_engine_used": "evas2",
+      "expected": "fail",
+      "family_id": "125",
+      "observed": "behavior_fail",
+      "ok": true,
+      "profile": "feedback",
+      "returncode": 0,
+      "simulator_ok": true,
+      "task": "125-limiter-rails",
+      "tb_sha256": "a49e60972b95628432c448ed3d33379ba4652d75405912eb1b9728ba1a8d7b11",
+      "timing": {
+        "accepted_tran_steps": 1600.0,
+        "csv_write_s": 0.286399,
+        "derive_bus_signals_s": 3.6e-05,
+        "total_elapsed_s": 0.8,
+        "tran_elapsed_s": 0.3318
+      },
+      "wall_time_s": 0.802005
+    },
+    {
+      "behavior_score": 1.0,
+      "case_id": "gold",
+      "case_kind": "gold",
+      "diagnostic_category": "contract_satisfied",
+      "diagnostics": [
+        "checked=267 max_error=0.00000 regions=['above', 'below', 'inside']"
+      ],
+      "dut_source_sha256": "af2c5ec218d0e234f732d94cdd90f2b12fcde6ef40bcf8494e8b4df91924ff67",
+      "evas_engine_used": "evas2",
+      "expected": "pass",
+      "family_id": "125",
+      "observed": "pass",
+      "ok": true,
+      "profile": "score",
+      "returncode": 0,
+      "simulator_ok": true,
+      "task": "125-limiter-rails",
+      "tb_sha256": "7ff8d9d2e17dee7929c4901e598bc6ce9b717c3ac0d9bc3af3a3eb5cb801c59e",
+      "timing": {
+        "accepted_tran_steps": 1600.0,
+        "csv_write_s": 0.115035,
+        "derive_bus_signals_s": 7.8e-05,
+        "total_elapsed_s": 0.3,
+        "tran_elapsed_s": 0.0344
+      },
+      "wall_time_s": 0.339831
+    },
+    {
+      "behavior_score": 0.0,
+      "case_id": "neg_001_zero",
+      "case_kind": "mutation",
+      "diagnostic_category": "behavior_mismatch",
+      "diagnostics": [
+        "checked=267 max_error=0.70000"
+      ],
+      "dut_source_sha256": "af2c5ec218d0e234f732d94cdd90f2b12fcde6ef40bcf8494e8b4df91924ff67",
+      "evas_engine_used": "evas2",
+      "expected": "fail",
+      "family_id": "125",
+      "observed": "behavior_fail",
+      "ok": true,
+      "profile": "score",
+      "returncode": 0,
+      "simulator_ok": true,
+      "task": "125-limiter-rails",
+      "tb_sha256": "7ff8d9d2e17dee7929c4901e598bc6ce9b717c3ac0d9bc3af3a3eb5cb801c59e",
+      "timing": {
+        "accepted_tran_steps": 1600.0,
+        "csv_write_s": 0.014279,
+        "derive_bus_signals_s": 3.9e-05,
+        "total_elapsed_s": 0.2,
+        "tran_elapsed_s": 0.089
+      },
+      "wall_time_s": 0.18142
+    },
+    {
+      "behavior_score": 0.0,
+      "case_id": "neg_002_ignores_rail_offsets",
+      "case_kind": "mutation",
+      "diagnostic_category": "behavior_mismatch",
+      "diagnostics": [
+        "checked=267 max_error=0.20000"
+      ],
+      "dut_source_sha256": "af2c5ec218d0e234f732d94cdd90f2b12fcde6ef40bcf8494e8b4df91924ff67",
+      "evas_engine_used": "evas2",
+      "expected": "fail",
+      "family_id": "125",
+      "observed": "behavior_fail",
+      "ok": true,
+      "profile": "score",
+      "returncode": 0,
+      "simulator_ok": true,
+      "task": "125-limiter-rails",
+      "tb_sha256": "7ff8d9d2e17dee7929c4901e598bc6ce9b717c3ac0d9bc3af3a3eb5cb801c59e",
+      "timing": {
+        "accepted_tran_steps": 1600.0,
+        "csv_write_s": 0.054416,
+        "derive_bus_signals_s": 2e-05,
+        "total_elapsed_s": 0.2,
+        "tran_elapsed_s": 0.0366
+      },
+      "wall_time_s": 0.205684
+    },
+    {
+      "behavior_score": 0.0,
+      "case_id": "neg_003_swapped_offsets",
+      "case_kind": "mutation",
+      "diagnostic_category": "behavior_mismatch",
+      "diagnostics": [
+        "checked=267 max_error=0.10000"
+      ],
+      "dut_source_sha256": "af2c5ec218d0e234f732d94cdd90f2b12fcde6ef40bcf8494e8b4df91924ff67",
+      "evas_engine_used": "evas2",
+      "expected": "fail",
+      "family_id": "125",
+      "observed": "behavior_fail",
+      "ok": true,
+      "profile": "score",
+      "returncode": 0,
+      "simulator_ok": true,
+      "task": "125-limiter-rails",
+      "tb_sha256": "7ff8d9d2e17dee7929c4901e598bc6ce9b717c3ac0d9bc3af3a3eb5cb801c59e",
+      "timing": {
+        "accepted_tran_steps": 1600.0,
+        "csv_write_s": 0.067187,
+        "derive_bus_signals_s": 2.6e-05,
+        "total_elapsed_s": 0.5,
+        "tran_elapsed_s": 0.1382
+      },
+      "wall_time_s": 0.645054
+    },
+    {
+      "behavior_score": 0.0,
+      "case_id": "neg_004_no_lower_limit",
+      "case_kind": "mutation",
+      "diagnostic_category": "behavior_mismatch",
+      "diagnostics": [
+        "checked=267 max_error=0.30000"
+      ],
+      "dut_source_sha256": "af2c5ec218d0e234f732d94cdd90f2b12fcde6ef40bcf8494e8b4df91924ff67",
+      "evas_engine_used": "evas2",
+      "expected": "fail",
+      "family_id": "125",
+      "observed": "behavior_fail",
+      "ok": true,
+      "profile": "score",
+      "returncode": 0,
+      "simulator_ok": true,
+      "task": "125-limiter-rails",
+      "tb_sha256": "7ff8d9d2e17dee7929c4901e598bc6ce9b717c3ac0d9bc3af3a3eb5cb801c59e",
+      "timing": {
+        "accepted_tran_steps": 1600.0,
+        "csv_write_s": 0.033339,
+        "derive_bus_signals_s": 2.6e-05,
+        "total_elapsed_s": 0.4,
+        "tran_elapsed_s": 0.0503
+      },
+      "wall_time_s": 0.403028
+    },
+    {
+      "behavior_score": 0.0,
+      "case_id": "neg_005_metric_scale_low",
+      "case_kind": "mutation",
+      "diagnostic_category": "behavior_mismatch",
+      "diagnostics": [
+        "checked=267 max_error=0.40600"
+      ],
+      "dut_source_sha256": "af2c5ec218d0e234f732d94cdd90f2b12fcde6ef40bcf8494e8b4df91924ff67",
+      "evas_engine_used": "evas2",
+      "expected": "fail",
+      "family_id": "125",
+      "observed": "behavior_fail",
+      "ok": true,
+      "profile": "score",
+      "returncode": 0,
+      "simulator_ok": true,
+      "task": "125-limiter-rails",
+      "tb_sha256": "7ff8d9d2e17dee7929c4901e598bc6ce9b717c3ac0d9bc3af3a3eb5cb801c59e",
+      "timing": {
+        "accepted_tran_steps": 1600.0,
+        "csv_write_s": 0.041633,
+        "derive_bus_signals_s": 2.5e-05,
+        "total_elapsed_s": 0.1,
+        "tran_elapsed_s": 0.036899999999999995
+      },
+      "wall_time_s": 0.123074
+    },
+    {
+      "behavior_score": 1.0,
+      "case_id": "gold",
+      "case_kind": "gold",
+      "diagnostic_category": "contract_satisfied",
+      "diagnostics": [
+        "checked=1193 max_abs_error=0.00000"
+      ],
+      "dut_source_sha256": "59618c85e5a114090196f33fed996dfa3398e66613d31114e28d640065e0744d",
+      "evas_engine_used": "evas2",
+      "expected": "pass",
+      "family_id": "126",
+      "observed": "pass",
+      "ok": true,
+      "profile": "feedback",
+      "returncode": 0,
+      "simulator_ok": true,
+      "task": "126-absolute-value",
+      "tb_sha256": "1804195e5c90d593858180ef9fe6070b0b24566986c852bbd1a00783ffd305b3",
+      "timing": {
+        "accepted_tran_steps": 1200.0,
+        "csv_write_s": 0.011185,
+        "derive_bus_signals_s": 1.7e-05,
+        "total_elapsed_s": 0.1,
+        "tran_elapsed_s": 0.0121
+      },
+      "wall_time_s": 0.207781
+    },
+    {
+      "behavior_score": 0.0,
+      "case_id": "neg_001_zero",
+      "case_kind": "mutation",
+      "diagnostic_category": "behavior_mismatch",
+      "diagnostics": [
+        "checked=1193 max_abs_error=0.40000"
+      ],
+      "dut_source_sha256": "59618c85e5a114090196f33fed996dfa3398e66613d31114e28d640065e0744d",
+      "evas_engine_used": "evas2",
+      "expected": "fail",
+      "family_id": "126",
+      "observed": "behavior_fail",
+      "ok": true,
+      "profile": "feedback",
+      "returncode": 0,
+      "simulator_ok": true,
+      "task": "126-absolute-value",
+      "tb_sha256": "1804195e5c90d593858180ef9fe6070b0b24566986c852bbd1a00783ffd305b3",
+      "timing": {
+        "accepted_tran_steps": 1200.0,
+        "csv_write_s": 0.019942,
+        "derive_bus_signals_s": 1.5e-05,
+        "total_elapsed_s": 0.1,
+        "tran_elapsed_s": 0.0124
+      },
+      "wall_time_s": 0.148826
+    },
+    {
+      "behavior_score": 0.0,
+      "case_id": "neg_002_identity",
+      "case_kind": "mutation",
+      "diagnostic_category": "behavior_mismatch",
+      "diagnostics": [
+        "checked=1193 max_abs_error=0.80000"
+      ],
+      "dut_source_sha256": "59618c85e5a114090196f33fed996dfa3398e66613d31114e28d640065e0744d",
+      "evas_engine_used": "evas2",
+      "expected": "fail",
+      "family_id": "126",
+      "observed": "behavior_fail",
+      "ok": true,
+      "profile": "feedback",
+      "returncode": 0,
+      "simulator_ok": true,
+      "task": "126-absolute-value",
+      "tb_sha256": "1804195e5c90d593858180ef9fe6070b0b24566986c852bbd1a00783ffd305b3",
+      "timing": {
+        "accepted_tran_steps": 1200.0,
+        "csv_write_s": 0.016009,
+        "derive_bus_signals_s": 1.5e-05,
+        "total_elapsed_s": 0.0,
+        "tran_elapsed_s": 0.0115
+      },
+      "wall_time_s": 0.056284
+    },
+    {
+      "behavior_score": 0.0,
+      "case_id": "neg_003_negative_abs",
+      "case_kind": "mutation",
+      "diagnostic_category": "behavior_mismatch",
+      "diagnostics": [
+        "checked=1193 max_abs_error=0.80000"
+      ],
+      "dut_source_sha256": "59618c85e5a114090196f33fed996dfa3398e66613d31114e28d640065e0744d",
+      "evas_engine_used": "evas2",
+      "expected": "fail",
+      "family_id": "126",
+      "observed": "behavior_fail",
+      "ok": true,
+      "profile": "feedback",
+      "returncode": 0,
+      "simulator_ok": true,
+      "task": "126-absolute-value",
+      "tb_sha256": "1804195e5c90d593858180ef9fe6070b0b24566986c852bbd1a00783ffd305b3",
+      "timing": {
+        "accepted_tran_steps": 1200.0,
+        "csv_write_s": 0.005487,
+        "derive_bus_signals_s": 1.6e-05,
+        "total_elapsed_s": 0.0,
+        "tran_elapsed_s": 0.0065
+      },
+      "wall_time_s": 0.023775
+    },
+    {
+      "behavior_score": 0.0,
+      "case_id": "neg_004_half_abs",
+      "case_kind": "mutation",
+      "diagnostic_category": "behavior_mismatch",
+      "diagnostics": [
+        "checked=1193 max_abs_error=0.20000"
+      ],
+      "dut_source_sha256": "59618c85e5a114090196f33fed996dfa3398e66613d31114e28d640065e0744d",
+      "evas_engine_used": "evas2",
+      "expected": "fail",
+      "family_id": "126",
+      "observed": "behavior_fail",
+      "ok": true,
+      "profile": "feedback",
+      "returncode": 0,
+      "simulator_ok": true,
+      "task": "126-absolute-value",
+      "tb_sha256": "1804195e5c90d593858180ef9fe6070b0b24566986c852bbd1a00783ffd305b3",
+      "timing": {
+        "accepted_tran_steps": 1200.0,
+        "csv_write_s": 0.00702,
+        "derive_bus_signals_s": 5.1e-05,
+        "total_elapsed_s": 0.0,
+        "tran_elapsed_s": 0.0088
+      },
+      "wall_time_s": 0.035015
+    },
+    {
+      "behavior_score": 0.0,
+      "case_id": "neg_005_metric_scale_low",
+      "case_kind": "mutation",
+      "diagnostic_category": "behavior_mismatch",
+      "diagnostics": [
+        "checked=1193 max_abs_error=0.23200"
+      ],
+      "dut_source_sha256": "59618c85e5a114090196f33fed996dfa3398e66613d31114e28d640065e0744d",
+      "evas_engine_used": "evas2",
+      "expected": "fail",
+      "family_id": "126",
+      "observed": "behavior_fail",
+      "ok": true,
+      "profile": "feedback",
+      "returncode": 0,
+      "simulator_ok": true,
+      "task": "126-absolute-value",
+      "tb_sha256": "1804195e5c90d593858180ef9fe6070b0b24566986c852bbd1a00783ffd305b3",
+      "timing": {
+        "accepted_tran_steps": 1200.0,
+        "csv_write_s": 0.006545,
+        "derive_bus_signals_s": 1.5e-05,
+        "total_elapsed_s": 0.0,
+        "tran_elapsed_s": 0.0096
+      },
+      "wall_time_s": 0.032156
+    },
+    {
+      "behavior_score": 1.0,
+      "case_id": "gold",
+      "case_kind": "gold",
+      "diagnostic_category": "contract_satisfied",
+      "diagnostics": [
+        "checked=1193 max_abs_error=0.00000"
+      ],
+      "dut_source_sha256": "59618c85e5a114090196f33fed996dfa3398e66613d31114e28d640065e0744d",
+      "evas_engine_used": "evas2",
+      "expected": "pass",
+      "family_id": "126",
+      "observed": "pass",
+      "ok": true,
+      "profile": "score",
+      "returncode": 0,
+      "simulator_ok": true,
+      "task": "126-absolute-value",
+      "tb_sha256": "80bf7ff46a3fc73167ce248e4a90765404bfef57393343e532e87aea0a4e3091",
+      "timing": {
+        "accepted_tran_steps": 1200.0,
+        "csv_write_s": 0.004765,
+        "derive_bus_signals_s": 1.1e-05,
+        "total_elapsed_s": 0.0,
+        "tran_elapsed_s": 0.0065
+      },
+      "wall_time_s": 0.020603
+    },
+    {
+      "behavior_score": 0.0,
+      "case_id": "neg_001_zero",
+      "case_kind": "mutation",
+      "diagnostic_category": "behavior_mismatch",
+      "diagnostics": [
+        "checked=1193 max_abs_error=0.40000"
+      ],
+      "dut_source_sha256": "59618c85e5a114090196f33fed996dfa3398e66613d31114e28d640065e0744d",
+      "evas_engine_used": "evas2",
+      "expected": "fail",
+      "family_id": "126",
+      "observed": "behavior_fail",
+      "ok": true,
+      "profile": "score",
+      "returncode": 0,
+      "simulator_ok": true,
+      "task": "126-absolute-value",
+      "tb_sha256": "80bf7ff46a3fc73167ce248e4a90765404bfef57393343e532e87aea0a4e3091",
+      "timing": {
+        "accepted_tran_steps": 1200.0,
+        "csv_write_s": 0.009899,
+        "derive_bus_signals_s": 1.2e-05,
+        "total_elapsed_s": 0.0,
+        "tran_elapsed_s": 0.010199999999999999
+      },
+      "wall_time_s": 0.03112
+    },
+    {
+      "behavior_score": 0.0,
+      "case_id": "neg_002_identity",
+      "case_kind": "mutation",
+      "diagnostic_category": "behavior_mismatch",
+      "diagnostics": [
+        "checked=1193 max_abs_error=0.80000"
+      ],
+      "dut_source_sha256": "59618c85e5a114090196f33fed996dfa3398e66613d31114e28d640065e0744d",
+      "evas_engine_used": "evas2",
+      "expected": "fail",
+      "family_id": "126",
+      "observed": "behavior_fail",
+      "ok": true,
+      "profile": "score",
+      "returncode": 0,
+      "simulator_ok": true,
+      "task": "126-absolute-value",
+      "tb_sha256": "80bf7ff46a3fc73167ce248e4a90765404bfef57393343e532e87aea0a4e3091",
+      "timing": {
+        "accepted_tran_steps": 1200.0,
+        "csv_write_s": 0.005153,
+        "derive_bus_signals_s": 1.3e-05,
+        "total_elapsed_s": 0.0,
+        "tran_elapsed_s": 0.0066
+      },
+      "wall_time_s": 0.027033
+    },
+    {
+      "behavior_score": 0.0,
+      "case_id": "neg_003_negative_abs",
+      "case_kind": "mutation",
+      "diagnostic_category": "behavior_mismatch",
+      "diagnostics": [
+        "checked=1193 max_abs_error=0.80000"
+      ],
+      "dut_source_sha256": "59618c85e5a114090196f33fed996dfa3398e66613d31114e28d640065e0744d",
+      "evas_engine_used": "evas2",
+      "expected": "fail",
+      "family_id": "126",
+      "observed": "behavior_fail",
+      "ok": true,
+      "profile": "score",
+      "returncode": 0,
+      "simulator_ok": true,
+      "task": "126-absolute-value",
+      "tb_sha256": "80bf7ff46a3fc73167ce248e4a90765404bfef57393343e532e87aea0a4e3091",
+      "timing": {
+        "accepted_tran_steps": 1200.0,
+        "csv_write_s": 0.007372,
+        "derive_bus_signals_s": 1.3e-05,
+        "total_elapsed_s": 0.0,
+        "tran_elapsed_s": 0.0070999999999999995
+      },
+      "wall_time_s": 0.029265
+    },
+    {
+      "behavior_score": 0.0,
+      "case_id": "neg_004_half_abs",
+      "case_kind": "mutation",
+      "diagnostic_category": "behavior_mismatch",
+      "diagnostics": [
+        "checked=1193 max_abs_error=0.20000"
+      ],
+      "dut_source_sha256": "59618c85e5a114090196f33fed996dfa3398e66613d31114e28d640065e0744d",
+      "evas_engine_used": "evas2",
+      "expected": "fail",
+      "family_id": "126",
+      "observed": "behavior_fail",
+      "ok": true,
+      "profile": "score",
+      "returncode": 0,
+      "simulator_ok": true,
+      "task": "126-absolute-value",
+      "tb_sha256": "80bf7ff46a3fc73167ce248e4a90765404bfef57393343e532e87aea0a4e3091",
+      "timing": {
+        "accepted_tran_steps": 1200.0,
+        "csv_write_s": 0.046258,
+        "derive_bus_signals_s": 0.000102,
+        "total_elapsed_s": 1.4,
+        "tran_elapsed_s": 0.45580000000000004
+      },
+      "wall_time_s": 1.689901
+    },
+    {
+      "behavior_score": 0.0,
+      "case_id": "neg_005_metric_scale_low",
+      "case_kind": "mutation",
+      "diagnostic_category": "behavior_mismatch",
+      "diagnostics": [
+        "checked=1193 max_abs_error=0.23200"
+      ],
+      "dut_source_sha256": "59618c85e5a114090196f33fed996dfa3398e66613d31114e28d640065e0744d",
+      "evas_engine_used": "evas2",
+      "expected": "fail",
+      "family_id": "126",
+      "observed": "behavior_fail",
+      "ok": true,
+      "profile": "score",
+      "returncode": 0,
+      "simulator_ok": true,
+      "task": "126-absolute-value",
+      "tb_sha256": "80bf7ff46a3fc73167ce248e4a90765404bfef57393343e532e87aea0a4e3091",
+      "timing": {
+        "accepted_tran_steps": 1200.0,
+        "csv_write_s": 0.012946,
+        "derive_bus_signals_s": 1.7e-05,
+        "total_elapsed_s": 0.1,
+        "tran_elapsed_s": 0.011800000000000001
+      },
+      "wall_time_s": 0.073071
+    },
+    {
+      "behavior_score": 1.0,
+      "case_id": "gold",
+      "case_kind": "gold",
+      "diagnostic_category": "contract_satisfied",
+      "diagnostics": [
+        "checked=1197 range=-0.100:0.500 rise=True fall=True max_err=0.0000"
+      ],
+      "dut_source_sha256": "7c1a659efab2164c80077283dabc91e7df6cac3ba27ac6881e0cf120999dc8ab",
+      "evas_engine_used": "evas2",
+      "expected": "pass",
+      "family_id": "127",
+      "observed": "pass",
+      "ok": true,
+      "profile": "feedback",
+      "returncode": 0,
+      "simulator_ok": true,
+      "task": "127-offset-gain-amplifier",
+      "tb_sha256": "45a77d781f807397e6e7bb969b3bdd0dc204be5be099f3ef740812f1dc50dfa4",
+      "timing": {
+        "accepted_tran_steps": 1200.0,
+        "csv_write_s": 0.005084,
+        "derive_bus_signals_s": 2.8e-05,
+        "total_elapsed_s": 0.0,
+        "tran_elapsed_s": 0.013900000000000001
+      },
+      "wall_time_s": 0.047348
+    },
+    {
+      "behavior_score": 0.0,
+      "case_id": "neg_001_zero",
+      "case_kind": "mutation",
+      "diagnostic_category": "behavior_mismatch",
+      "diagnostics": [
+        "offset_gain_amplifier_error@30.000ns observed=0.0000 expected=-0.9000 max_err=0.9000"
+      ],
+      "dut_source_sha256": "7c1a659efab2164c80077283dabc91e7df6cac3ba27ac6881e0cf120999dc8ab",
+      "evas_engine_used": "evas2",
+      "expected": "fail",
+      "family_id": "127",
+      "observed": "behavior_fail",
+      "ok": true,
+      "profile": "feedback",
+      "returncode": 0,
+      "simulator_ok": true,
+      "task": "127-offset-gain-amplifier",
+      "tb_sha256": "45a77d781f807397e6e7bb969b3bdd0dc204be5be099f3ef740812f1dc50dfa4",
+      "timing": {
+        "accepted_tran_steps": 1200.0,
+        "csv_write_s": 0.004686,
+        "derive_bus_signals_s": 1.7e-05,
+        "total_elapsed_s": 0.0,
+        "tran_elapsed_s": 0.009699999999999999
+      },
+      "wall_time_s": 0.080932
+    },
+    {
+      "behavior_score": 0.0,
+      "case_id": "neg_002_missing_offset",
+      "case_kind": "mutation",
+      "diagnostic_category": "behavior_mismatch",
+      "diagnostics": [
+        "offset_gain_amplifier_error@30.000ns observed=-0.3000 expected=-0.9000 max_err=0.6000"
+      ],
+      "dut_source_sha256": "7c1a659efab2164c80077283dabc91e7df6cac3ba27ac6881e0cf120999dc8ab",
+      "evas_engine_used": "evas2",
+      "expected": "fail",
+      "family_id": "127",
+      "observed": "behavior_fail",
+      "ok": true,
+      "profile": "feedback",
+      "returncode": 0,
+      "simulator_ok": true,
+      "task": "127-offset-gain-amplifier",
+      "tb_sha256": "45a77d781f807397e6e7bb969b3bdd0dc204be5be099f3ef740812f1dc50dfa4",
+      "timing": {
+        "accepted_tran_steps": 1200.0,
+        "csv_write_s": 0.004432,
+        "derive_bus_signals_s": 1.5e-05,
+        "total_elapsed_s": 0.0,
+        "tran_elapsed_s": 0.0060999999999999995
+      },
+      "wall_time_s": 0.02337
+    },
+    {
+      "behavior_score": 0.0,
+      "case_id": "neg_003_wrong_gain",
+      "case_kind": "mutation",
+      "diagnostic_category": "behavior_mismatch",
+      "diagnostics": [
+        "offset_gain_amplifier_error@30.000ns observed=-0.6000 expected=-0.9000 max_err=0.3000"
+      ],
+      "dut_source_sha256": "7c1a659efab2164c80077283dabc91e7df6cac3ba27ac6881e0cf120999dc8ab",
+      "evas_engine_used": "evas2",
+      "expected": "fail",
+      "family_id": "127",
+      "observed": "behavior_fail",
+      "ok": true,
+      "profile": "feedback",
+      "returncode": 0,
+      "simulator_ok": true,
+      "task": "127-offset-gain-amplifier",
+      "tb_sha256": "45a77d781f807397e6e7bb969b3bdd0dc204be5be099f3ef740812f1dc50dfa4",
+      "timing": {
+        "accepted_tran_steps": 1200.0,
+        "csv_write_s": 0.005195,
+        "derive_bus_signals_s": 1.5e-05,
+        "total_elapsed_s": 0.0,
+        "tran_elapsed_s": 0.008
+      },
+      "wall_time_s": 0.026789
+    },
+    {
+      "behavior_score": 0.0,
+      "case_id": "neg_004_adds_offset",
+      "case_kind": "mutation",
+      "diagnostic_category": "behavior_mismatch",
+      "diagnostics": [
+        "offset_gain_amplifier_error@30.000ns observed=0.3000 expected=-0.9000 max_err=1.2000"
+      ],
+      "dut_source_sha256": "7c1a659efab2164c80077283dabc91e7df6cac3ba27ac6881e0cf120999dc8ab",
+      "evas_engine_used": "evas2",
+      "expected": "fail",
+      "family_id": "127",
+      "observed": "behavior_fail",
+      "ok": true,
+      "profile": "feedback",
+      "returncode": 0,
+      "simulator_ok": true,
+      "task": "127-offset-gain-amplifier",
+      "tb_sha256": "45a77d781f807397e6e7bb969b3bdd0dc204be5be099f3ef740812f1dc50dfa4",
+      "timing": {
+        "accepted_tran_steps": 1200.0,
+        "csv_write_s": 0.012182,
+        "derive_bus_signals_s": 1.6e-05,
+        "total_elapsed_s": 0.0,
+        "tran_elapsed_s": 0.0132
+      },
+      "wall_time_s": 0.06126
+    },
+    {
+      "behavior_score": 0.0,
+      "case_id": "neg_005_metric_scale_low",
+      "case_kind": "mutation",
+      "diagnostic_category": "behavior_mismatch",
+      "diagnostics": [
+        "offset_gain_amplifier_error@30.000ns observed=-0.3780 expected=-0.9000 max_err=0.5220"
+      ],
+      "dut_source_sha256": "7c1a659efab2164c80077283dabc91e7df6cac3ba27ac6881e0cf120999dc8ab",
+      "evas_engine_used": "evas2",
+      "expected": "fail",
+      "family_id": "127",
+      "observed": "behavior_fail",
+      "ok": true,
+      "profile": "feedback",
+      "returncode": 0,
+      "simulator_ok": true,
+      "task": "127-offset-gain-amplifier",
+      "tb_sha256": "45a77d781f807397e6e7bb969b3bdd0dc204be5be099f3ef740812f1dc50dfa4",
+      "timing": {
+        "accepted_tran_steps": 1200.0,
+        "csv_write_s": 0.004306,
+        "derive_bus_signals_s": 1.8e-05,
+        "total_elapsed_s": 0.0,
+        "tran_elapsed_s": 0.007
+      },
+      "wall_time_s": 0.024231
+    },
+    {
+      "behavior_score": 1.0,
+      "case_id": "gold",
+      "case_kind": "gold",
+      "diagnostic_category": "contract_satisfied",
+      "diagnostics": [
+        "checked=1197 range=-0.100:0.500 rise=True fall=True max_err=0.0000"
+      ],
+      "dut_source_sha256": "7c1a659efab2164c80077283dabc91e7df6cac3ba27ac6881e0cf120999dc8ab",
+      "evas_engine_used": "evas2",
+      "expected": "pass",
+      "family_id": "127",
+      "observed": "pass",
+      "ok": true,
+      "profile": "score",
+      "returncode": 0,
+      "simulator_ok": true,
+      "task": "127-offset-gain-amplifier",
+      "tb_sha256": "7e6586eeb3b917d0c94f0a71f24b7cc594241072fab755637fe2f12f7d55e741",
+      "timing": {
+        "accepted_tran_steps": 1200.0,
+        "csv_write_s": 0.059413,
+        "derive_bus_signals_s": 1.7e-05,
+        "total_elapsed_s": 0.1,
+        "tran_elapsed_s": 0.011699999999999999
+      },
+      "wall_time_s": 0.14376
+    },
+    {
+      "behavior_score": 0.0,
+      "case_id": "neg_001_zero",
+      "case_kind": "mutation",
+      "diagnostic_category": "behavior_mismatch",
+      "diagnostics": [
+        "offset_gain_amplifier_error@30.000ns observed=0.0000 expected=-0.9000 max_err=0.9000"
+      ],
+      "dut_source_sha256": "7c1a659efab2164c80077283dabc91e7df6cac3ba27ac6881e0cf120999dc8ab",
+      "evas_engine_used": "evas2",
+      "expected": "fail",
+      "family_id": "127",
+      "observed": "behavior_fail",
+      "ok": true,
+      "profile": "score",
+      "returncode": 0,
+      "simulator_ok": true,
+      "task": "127-offset-gain-amplifier",
+      "tb_sha256": "7e6586eeb3b917d0c94f0a71f24b7cc594241072fab755637fe2f12f7d55e741",
+      "timing": {
+        "accepted_tran_steps": 1200.0,
+        "csv_write_s": 0.044085,
+        "derive_bus_signals_s": 0.000141,
+        "total_elapsed_s": 0.2,
+        "tran_elapsed_s": 0.052399999999999995
+      },
+      "wall_time_s": 0.212153
+    },
+    {
+      "behavior_score": 0.0,
+      "case_id": "neg_002_missing_offset",
+      "case_kind": "mutation",
+      "diagnostic_category": "behavior_mismatch",
+      "diagnostics": [
+        "offset_gain_amplifier_error@30.000ns observed=-0.3000 expected=-0.9000 max_err=0.6000"
+      ],
+      "dut_source_sha256": "7c1a659efab2164c80077283dabc91e7df6cac3ba27ac6881e0cf120999dc8ab",
+      "evas_engine_used": "evas2",
+      "expected": "fail",
+      "family_id": "127",
+      "observed": "behavior_fail",
+      "ok": true,
+      "profile": "score",
+      "returncode": 0,
+      "simulator_ok": true,
+      "task": "127-offset-gain-amplifier",
+      "tb_sha256": "7e6586eeb3b917d0c94f0a71f24b7cc594241072fab755637fe2f12f7d55e741",
+      "timing": {
+        "accepted_tran_steps": 1200.0,
+        "csv_write_s": 0.003959,
+        "derive_bus_signals_s": 1.4e-05,
+        "total_elapsed_s": 0.0,
+        "tran_elapsed_s": 0.006900000000000001
+      },
+      "wall_time_s": 0.021577
+    },
+    {
+      "behavior_score": 0.0,
+      "case_id": "neg_003_wrong_gain",
+      "case_kind": "mutation",
+      "diagnostic_category": "behavior_mismatch",
+      "diagnostics": [
+        "offset_gain_amplifier_error@30.000ns observed=-0.6000 expected=-0.9000 max_err=0.3000"
+      ],
+      "dut_source_sha256": "7c1a659efab2164c80077283dabc91e7df6cac3ba27ac6881e0cf120999dc8ab",
+      "evas_engine_used": "evas2",
+      "expected": "fail",
+      "family_id": "127",
+      "observed": "behavior_fail",
+      "ok": true,
+      "profile": "score",
+      "returncode": 0,
+      "simulator_ok": true,
+      "task": "127-offset-gain-amplifier",
+      "tb_sha256": "7e6586eeb3b917d0c94f0a71f24b7cc594241072fab755637fe2f12f7d55e741",
+      "timing": {
+        "accepted_tran_steps": 1200.0,
+        "csv_write_s": 0.008503,
+        "derive_bus_signals_s": 2.4e-05,
+        "total_elapsed_s": 0.0,
+        "tran_elapsed_s": 0.01
+      },
+      "wall_time_s": 0.088747
+    },
+    {
+      "behavior_score": 0.0,
+      "case_id": "neg_004_adds_offset",
+      "case_kind": "mutation",
+      "diagnostic_category": "behavior_mismatch",
+      "diagnostics": [
+        "offset_gain_amplifier_error@30.000ns observed=0.3000 expected=-0.9000 max_err=1.2000"
+      ],
+      "dut_source_sha256": "7c1a659efab2164c80077283dabc91e7df6cac3ba27ac6881e0cf120999dc8ab",
+      "evas_engine_used": "evas2",
+      "expected": "fail",
+      "family_id": "127",
+      "observed": "behavior_fail",
+      "ok": true,
+      "profile": "score",
+      "returncode": 0,
+      "simulator_ok": true,
+      "task": "127-offset-gain-amplifier",
+      "tb_sha256": "7e6586eeb3b917d0c94f0a71f24b7cc594241072fab755637fe2f12f7d55e741",
+      "timing": {
+        "accepted_tran_steps": 1200.0,
+        "csv_write_s": 0.010062,
+        "derive_bus_signals_s": 1.7e-05,
+        "total_elapsed_s": 0.2,
+        "tran_elapsed_s": 0.1687
+      },
+      "wall_time_s": 0.218184
+    },
+    {
+      "behavior_score": 0.0,
+      "case_id": "neg_005_metric_scale_low",
+      "case_kind": "mutation",
+      "diagnostic_category": "behavior_mismatch",
+      "diagnostics": [
+        "offset_gain_amplifier_error@30.000ns observed=-0.3780 expected=-0.9000 max_err=0.5220"
+      ],
+      "dut_source_sha256": "7c1a659efab2164c80077283dabc91e7df6cac3ba27ac6881e0cf120999dc8ab",
+      "evas_engine_used": "evas2",
+      "expected": "fail",
+      "family_id": "127",
+      "observed": "behavior_fail",
+      "ok": true,
+      "profile": "score",
+      "returncode": 0,
+      "simulator_ok": true,
+      "task": "127-offset-gain-amplifier",
+      "tb_sha256": "7e6586eeb3b917d0c94f0a71f24b7cc594241072fab755637fe2f12f7d55e741",
+      "timing": {
+        "accepted_tran_steps": 1200.0,
+        "csv_write_s": 0.010105,
+        "derive_bus_signals_s": 4e-05,
+        "total_elapsed_s": 0.1,
+        "tran_elapsed_s": 0.0616
+      },
+      "wall_time_s": 0.145949
+    },
+    {
+      "behavior_score": 1.0,
+      "case_id": "gold",
+      "case_kind": "gold",
+      "diagnostic_category": "contract_satisfied",
+      "diagnostics": [
+        "checked=241 max_error=0.00000 guarded=160 negative_guarded=80"
+      ],
+      "dut_source_sha256": "250afdd395470b1c0933f5a18bfe1c3661ef153f1360f11b2dcf969f43b7cebf",
+      "evas_engine_used": "evas2",
+      "expected": "pass",
+      "family_id": "128",
+      "observed": "pass",
+      "ok": true,
+      "profile": "feedback",
+      "returncode": 0,
+      "simulator_ok": true,
+      "task": "128-safe-voltage-divider",
+      "tb_sha256": "3657bce32786c4144015ed8fb6f4165054740b1be7c386d22eceaaeb31eb2225",
+      "timing": {
+        "accepted_tran_steps": 1200.0,
+        "csv_write_s": 0.008626,
+        "derive_bus_signals_s": 1.5e-05,
+        "total_elapsed_s": 0.0,
+        "tran_elapsed_s": 0.0162
+      },
+      "wall_time_s": 0.074068
+    },
+    {
+      "behavior_score": 0.0,
+      "case_id": "neg_001_zero",
+      "case_kind": "mutation",
+      "diagnostic_category": "behavior_mismatch",
+      "diagnostics": [
+        "checked=241 max_error=2.40000"
+      ],
+      "dut_source_sha256": "250afdd395470b1c0933f5a18bfe1c3661ef153f1360f11b2dcf969f43b7cebf",
+      "evas_engine_used": "evas2",
+      "expected": "fail",
+      "family_id": "128",
+      "observed": "behavior_fail",
+      "ok": true,
+      "profile": "feedback",
+      "returncode": 0,
+      "simulator_ok": true,
+      "task": "128-safe-voltage-divider",
+      "tb_sha256": "3657bce32786c4144015ed8fb6f4165054740b1be7c386d22eceaaeb31eb2225",
+      "timing": {
+        "accepted_tran_steps": 1200.0,
+        "csv_write_s": 0.050356,
+        "derive_bus_signals_s": 2e-05,
+        "total_elapsed_s": 0.1,
+        "tran_elapsed_s": 0.0115
+      },
+      "wall_time_s": 0.106463
+    },
+    {
+      "behavior_score": 0.0,
+      "case_id": "neg_002_no_safe_floor",
+      "case_kind": "mutation",
+      "diagnostic_category": "behavior_mismatch",
+      "diagnostics": [
+        "checked=241 max_error=3.60000"
+      ],
+      "dut_source_sha256": "250afdd395470b1c0933f5a18bfe1c3661ef153f1360f11b2dcf969f43b7cebf",
+      "evas_engine_used": "evas2",
+      "expected": "fail",
+      "family_id": "128",
+      "observed": "behavior_fail",
+      "ok": true,
+      "profile": "feedback",
+      "returncode": 0,
+      "simulator_ok": true,
+      "task": "128-safe-voltage-divider",
+      "tb_sha256": "3657bce32786c4144015ed8fb6f4165054740b1be7c386d22eceaaeb31eb2225",
+      "timing": {
+        "accepted_tran_steps": 1200.0,
+        "csv_write_s": 0.006437,
+        "derive_bus_signals_s": 1.9e-05,
+        "total_elapsed_s": 0.0,
+        "tran_elapsed_s": 0.0087
+      },
+      "wall_time_s": 0.029799
+    },
+    {
+      "behavior_score": 0.0,
+      "case_id": "neg_003_loses_denominator_sign",
+      "case_kind": "mutation",
+      "diagnostic_category": "behavior_mismatch",
+      "diagnostics": [
+        "checked=241 max_error=3.20000"
+      ],
+      "dut_source_sha256": "250afdd395470b1c0933f5a18bfe1c3661ef153f1360f11b2dcf969f43b7cebf",
+      "evas_engine_used": "evas2",
+      "expected": "fail",
+      "family_id": "128",
+      "observed": "behavior_fail",
+      "ok": true,
+      "profile": "feedback",
+      "returncode": 0,
+      "simulator_ok": true,
+      "task": "128-safe-voltage-divider",
+      "tb_sha256": "3657bce32786c4144015ed8fb6f4165054740b1be7c386d22eceaaeb31eb2225",
+      "timing": {
+        "accepted_tran_steps": 1200.0,
+        "csv_write_s": 0.011365,
+        "derive_bus_signals_s": 1.8e-05,
+        "total_elapsed_s": 0.1,
+        "tran_elapsed_s": 0.018600000000000002
+      },
+      "wall_time_s": 0.066583
+    },
+    {
+      "behavior_score": 0.0,
+      "case_id": "neg_004_missing_gain",
+      "case_kind": "mutation",
+      "diagnostic_category": "behavior_mismatch",
+      "diagnostics": [
+        "checked=241 max_error=1.20000"
+      ],
+      "dut_source_sha256": "250afdd395470b1c0933f5a18bfe1c3661ef153f1360f11b2dcf969f43b7cebf",
+      "evas_engine_used": "evas2",
+      "expected": "fail",
+      "family_id": "128",
+      "observed": "behavior_fail",
+      "ok": true,
+      "profile": "feedback",
+      "returncode": 0,
+      "simulator_ok": true,
+      "task": "128-safe-voltage-divider",
+      "tb_sha256": "3657bce32786c4144015ed8fb6f4165054740b1be7c386d22eceaaeb31eb2225",
+      "timing": {
+        "accepted_tran_steps": 1200.0,
+        "csv_write_s": 0.024801,
+        "derive_bus_signals_s": 2.6e-05,
+        "total_elapsed_s": 0.1,
+        "tran_elapsed_s": 0.0206
+      },
+      "wall_time_s": 0.093944
+    },
+    {
+      "behavior_score": 0.0,
+      "case_id": "neg_005_metric_scale_low",
+      "case_kind": "mutation",
+      "diagnostic_category": "behavior_mismatch",
+      "diagnostics": [
+        "checked=241 max_error=1.39200"
+      ],
+      "dut_source_sha256": "250afdd395470b1c0933f5a18bfe1c3661ef153f1360f11b2dcf969f43b7cebf",
+      "evas_engine_used": "evas2",
+      "expected": "fail",
+      "family_id": "128",
+      "observed": "behavior_fail",
+      "ok": true,
+      "profile": "feedback",
+      "returncode": 0,
+      "simulator_ok": true,
+      "task": "128-safe-voltage-divider",
+      "tb_sha256": "3657bce32786c4144015ed8fb6f4165054740b1be7c386d22eceaaeb31eb2225",
+      "timing": {
+        "accepted_tran_steps": 1200.0,
+        "csv_write_s": 0.011813,
+        "derive_bus_signals_s": 0.000115,
+        "total_elapsed_s": 0.0,
+        "tran_elapsed_s": 0.0158
+      },
+      "wall_time_s": 0.062666
+    },
+    {
+      "behavior_score": 1.0,
+      "case_id": "gold",
+      "case_kind": "gold",
+      "diagnostic_category": "contract_satisfied",
+      "diagnostics": [
+        "checked=241 max_error=0.00000 guarded=160 negative_guarded=80"
+      ],
+      "dut_source_sha256": "250afdd395470b1c0933f5a18bfe1c3661ef153f1360f11b2dcf969f43b7cebf",
+      "evas_engine_used": "evas2",
+      "expected": "pass",
+      "family_id": "128",
+      "observed": "pass",
+      "ok": true,
+      "profile": "score",
+      "returncode": 0,
+      "simulator_ok": true,
+      "task": "128-safe-voltage-divider",
+      "tb_sha256": "b4e9bc576ce5f36beedf176aaf9cf75741b09e6b05c229150d796a4bac8269ee",
+      "timing": {
+        "accepted_tran_steps": 1200.0,
+        "csv_write_s": 0.007482,
+        "derive_bus_signals_s": 1.7e-05,
+        "total_elapsed_s": 0.0,
+        "tran_elapsed_s": 0.0111
+      },
+      "wall_time_s": 0.042014
+    },
+    {
+      "behavior_score": 0.0,
+      "case_id": "neg_001_zero",
+      "case_kind": "mutation",
+      "diagnostic_category": "behavior_mismatch",
+      "diagnostics": [
+        "checked=241 max_error=2.40000"
+      ],
+      "dut_source_sha256": "250afdd395470b1c0933f5a18bfe1c3661ef153f1360f11b2dcf969f43b7cebf",
+      "evas_engine_used": "evas2",
+      "expected": "fail",
+      "family_id": "128",
+      "observed": "behavior_fail",
+      "ok": true,
+      "profile": "score",
+      "returncode": 0,
+      "simulator_ok": true,
+      "task": "128-safe-voltage-divider",
+      "tb_sha256": "b4e9bc576ce5f36beedf176aaf9cf75741b09e6b05c229150d796a4bac8269ee",
+      "timing": {
+        "accepted_tran_steps": 1200.0,
+        "csv_write_s": 0.014373,
+        "derive_bus_signals_s": 2.2e-05,
+        "total_elapsed_s": 0.0,
+        "tran_elapsed_s": 0.0109
+      },
+      "wall_time_s": 0.076403
+    },
+    {
+      "behavior_score": 0.0,
+      "case_id": "neg_002_no_safe_floor",
+      "case_kind": "mutation",
+      "diagnostic_category": "behavior_mismatch",
+      "diagnostics": [
+        "checked=241 max_error=3.60000"
+      ],
+      "dut_source_sha256": "250afdd395470b1c0933f5a18bfe1c3661ef153f1360f11b2dcf969f43b7cebf",
+      "evas_engine_used": "evas2",
+      "expected": "fail",
+      "family_id": "128",
+      "observed": "behavior_fail",
+      "ok": true,
+      "profile": "score",
+      "returncode": 0,
+      "simulator_ok": true,
+      "task": "128-safe-voltage-divider",
+      "tb_sha256": "b4e9bc576ce5f36beedf176aaf9cf75741b09e6b05c229150d796a4bac8269ee",
+      "timing": {
+        "accepted_tran_steps": 1200.0,
+        "csv_write_s": 0.192803,
+        "derive_bus_signals_s": 1.9e-05,
+        "total_elapsed_s": 0.2,
+        "tran_elapsed_s": 0.0114
+      },
+      "wall_time_s": 0.244177
+    },
+    {
+      "behavior_score": 0.0,
+      "case_id": "neg_003_loses_denominator_sign",
+      "case_kind": "mutation",
+      "diagnostic_category": "behavior_mismatch",
+      "diagnostics": [
+        "checked=241 max_error=3.20000"
+      ],
+      "dut_source_sha256": "250afdd395470b1c0933f5a18bfe1c3661ef153f1360f11b2dcf969f43b7cebf",
+      "evas_engine_used": "evas2",
+      "expected": "fail",
+      "family_id": "128",
+      "observed": "behavior_fail",
+      "ok": true,
+      "profile": "score",
+      "returncode": 0,
+      "simulator_ok": true,
+      "task": "128-safe-voltage-divider",
+      "tb_sha256": "b4e9bc576ce5f36beedf176aaf9cf75741b09e6b05c229150d796a4bac8269ee",
+      "timing": {
+        "accepted_tran_steps": 1200.0,
+        "csv_write_s": 0.008356,
+        "derive_bus_signals_s": 1.6e-05,
+        "total_elapsed_s": 0.0,
+        "tran_elapsed_s": 0.011800000000000001
+      },
+      "wall_time_s": 0.042524
+    },
+    {
+      "behavior_score": 0.0,
+      "case_id": "neg_004_missing_gain",
+      "case_kind": "mutation",
+      "diagnostic_category": "behavior_mismatch",
+      "diagnostics": [
+        "checked=241 max_error=1.20000"
+      ],
+      "dut_source_sha256": "250afdd395470b1c0933f5a18bfe1c3661ef153f1360f11b2dcf969f43b7cebf",
+      "evas_engine_used": "evas2",
+      "expected": "fail",
+      "family_id": "128",
+      "observed": "behavior_fail",
+      "ok": true,
+      "profile": "score",
+      "returncode": 0,
+      "simulator_ok": true,
+      "task": "128-safe-voltage-divider",
+      "tb_sha256": "b4e9bc576ce5f36beedf176aaf9cf75741b09e6b05c229150d796a4bac8269ee",
+      "timing": {
+        "accepted_tran_steps": 1200.0,
+        "csv_write_s": 0.045481,
+        "derive_bus_signals_s": 2e-05,
+        "total_elapsed_s": 0.1,
+        "tran_elapsed_s": 0.0193
+      },
+      "wall_time_s": 0.164158
+    },
+    {
+      "behavior_score": 0.0,
+      "case_id": "neg_005_metric_scale_low",
+      "case_kind": "mutation",
+      "diagnostic_category": "behavior_mismatch",
+      "diagnostics": [
+        "checked=241 max_error=1.39200"
+      ],
+      "dut_source_sha256": "250afdd395470b1c0933f5a18bfe1c3661ef153f1360f11b2dcf969f43b7cebf",
+      "evas_engine_used": "evas2",
+      "expected": "fail",
+      "family_id": "128",
+      "observed": "behavior_fail",
+      "ok": true,
+      "profile": "score",
+      "returncode": 0,
+      "simulator_ok": true,
+      "task": "128-safe-voltage-divider",
+      "tb_sha256": "b4e9bc576ce5f36beedf176aaf9cf75741b09e6b05c229150d796a4bac8269ee",
+      "timing": {
+        "accepted_tran_steps": 1200.0,
+        "csv_write_s": 0.103558,
+        "derive_bus_signals_s": 0.00555,
+        "total_elapsed_s": 0.2,
+        "tran_elapsed_s": 0.0182
+      },
+      "wall_time_s": 0.176588
+    },
+    {
+      "behavior_score": 1.0,
+      "case_id": "gold",
+      "case_kind": "gold",
+      "diagnostic_category": "contract_satisfied",
+      "diagnostics": [
+        "checked=267 max_error=0.00000 max_cm_error=0.00000"
+      ],
+      "dut_source_sha256": "714cb3270254bcea415876ae1c62b76f9e5c49eb8976bea9db9cf5f43b3a30f8",
+      "evas_engine_used": "evas2",
+      "expected": "pass",
+      "family_id": "129",
+      "observed": "pass",
+      "ok": true,
+      "profile": "feedback",
+      "returncode": 0,
+      "simulator_ok": true,
+      "task": "129-polynomial-differential-vcvs",
+      "tb_sha256": "401f3aa274b9ade463bb672c66e74003ae9465c0f23c5f1e3567b1db0383f051",
+      "timing": {
+        "accepted_tran_steps": 1600.0,
+        "csv_write_s": 0.012096,
+        "derive_bus_signals_s": 1.8e-05,
+        "total_elapsed_s": 0.1,
+        "tran_elapsed_s": 0.0158
+      },
+      "wall_time_s": 0.131413
+    },
+    {
+      "behavior_score": 0.0,
+      "case_id": "neg_001_zero",
+      "case_kind": "mutation",
+      "diagnostic_category": "behavior_mismatch",
+      "diagnostics": [
+        "checked=267 max_error=0.75781 max_cm_error=0.50000"
+      ],
+      "dut_source_sha256": "714cb3270254bcea415876ae1c62b76f9e5c49eb8976bea9db9cf5f43b3a30f8",
+      "evas_engine_used": "evas2",
+      "expected": "fail",
+      "family_id": "129",
+      "observed": "behavior_fail",
+      "ok": true,
+      "profile": "feedback",
+      "returncode": 0,
+      "simulator_ok": true,
+      "task": "129-polynomial-differential-vcvs",
+      "tb_sha256": "401f3aa274b9ade463bb672c66e74003ae9465c0f23c5f1e3567b1db0383f051",
+      "timing": {
+        "accepted_tran_steps": 1600.0,
+        "csv_write_s": 0.0082,
+        "derive_bus_signals_s": 1.9e-05,
+        "total_elapsed_s": 0.0,
+        "tran_elapsed_s": 0.0106
+      },
+      "wall_time_s": 0.031233
+    },
+    {
+      "behavior_score": 0.0,
+      "case_id": "neg_002_missing_half_factor",
+      "case_kind": "mutation",
+      "diagnostic_category": "behavior_mismatch",
+      "diagnostics": [
+        "checked=267 max_error=0.10050 max_cm_error=0.00000"
+      ],
+      "dut_source_sha256": "714cb3270254bcea415876ae1c62b76f9e5c49eb8976bea9db9cf5f43b3a30f8",
+      "evas_engine_used": "evas2",
+      "expected": "fail",
+      "family_id": "129",
+      "observed": "behavior_fail",
+      "ok": true,
+      "profile": "feedback",
+      "returncode": 0,
+      "simulator_ok": true,
+      "task": "129-polynomial-differential-vcvs",
+      "tb_sha256": "401f3aa274b9ade463bb672c66e74003ae9465c0f23c5f1e3567b1db0383f051",
+      "timing": {
+        "accepted_tran_steps": 1600.0,
+        "csv_write_s": 0.017322,
+        "derive_bus_signals_s": 1.6e-05,
+        "total_elapsed_s": 0.2,
+        "tran_elapsed_s": 0.124
+      },
+      "wall_time_s": 0.176815
+    },
+    {
+      "behavior_score": 0.0,
+      "case_id": "neg_003_inverted_output_polarity",
+      "case_kind": "mutation",
+      "diagnostic_category": "behavior_mismatch",
+      "diagnostics": [
+        "checked=267 max_error=0.51562 max_cm_error=0.00000"
+      ],
+      "dut_source_sha256": "714cb3270254bcea415876ae1c62b76f9e5c49eb8976bea9db9cf5f43b3a30f8",
+      "evas_engine_used": "evas2",
+      "expected": "fail",
+      "family_id": "129",
+      "observed": "behavior_fail",
+      "ok": true,
+      "profile": "feedback",
+      "returncode": 0,
+      "simulator_ok": true,
+      "task": "129-polynomial-differential-vcvs",
+      "tb_sha256": "401f3aa274b9ade463bb672c66e74003ae9465c0f23c5f1e3567b1db0383f051",
+      "timing": {
+        "accepted_tran_steps": 1600.0,
+        "csv_write_s": 0.097865,
+        "derive_bus_signals_s": 5.2e-05,
+        "total_elapsed_s": 0.2,
+        "tran_elapsed_s": 0.0475
+      },
+      "wall_time_s": 0.26351
+    },
+    {
+      "behavior_score": 0.0,
+      "case_id": "neg_004_common_mode_zero",
+      "case_kind": "mutation",
+      "diagnostic_category": "behavior_mismatch",
+      "diagnostics": [
+        "checked=267 max_error=0.50000 max_cm_error=0.50000"
+      ],
+      "dut_source_sha256": "714cb3270254bcea415876ae1c62b76f9e5c49eb8976bea9db9cf5f43b3a30f8",
+      "evas_engine_used": "evas2",
+      "expected": "fail",
+      "family_id": "129",
+      "observed": "behavior_fail",
+      "ok": true,
+      "profile": "feedback",
+      "returncode": 0,
+      "simulator_ok": true,
+      "task": "129-polynomial-differential-vcvs",
+      "tb_sha256": "401f3aa274b9ade463bb672c66e74003ae9465c0f23c5f1e3567b1db0383f051",
+      "timing": {
+        "accepted_tran_steps": 1600.0,
+        "csv_write_s": 0.008702,
+        "derive_bus_signals_s": 1.7e-05,
+        "total_elapsed_s": 0.0,
+        "tran_elapsed_s": 0.0159
+      },
+      "wall_time_s": 0.048587
+    },
+    {
+      "behavior_score": 0.0,
+      "case_id": "neg_005_metric_scale_low",
+      "case_kind": "mutation",
+      "diagnostic_category": "behavior_mismatch",
+      "diagnostics": [
+        "checked=267 max_error=0.43953 max_cm_error=0.29000"
+      ],
+      "dut_source_sha256": "714cb3270254bcea415876ae1c62b76f9e5c49eb8976bea9db9cf5f43b3a30f8",
+      "evas_engine_used": "evas2",
+      "expected": "fail",
+      "family_id": "129",
+      "observed": "behavior_fail",
+      "ok": true,
+      "profile": "feedback",
+      "returncode": 0,
+      "simulator_ok": true,
+      "task": "129-polynomial-differential-vcvs",
+      "tb_sha256": "401f3aa274b9ade463bb672c66e74003ae9465c0f23c5f1e3567b1db0383f051",
+      "timing": {
+        "accepted_tran_steps": 1600.0,
+        "csv_write_s": 0.007767,
+        "derive_bus_signals_s": 1.7e-05,
+        "total_elapsed_s": 0.0,
+        "tran_elapsed_s": 0.0177
+      },
+      "wall_time_s": 0.053532
+    },
+    {
+      "behavior_score": 1.0,
+      "case_id": "gold",
+      "case_kind": "gold",
+      "diagnostic_category": "contract_satisfied",
+      "diagnostics": [
+        "checked=267 max_error=0.00000 max_cm_error=0.00000"
+      ],
+      "dut_source_sha256": "714cb3270254bcea415876ae1c62b76f9e5c49eb8976bea9db9cf5f43b3a30f8",
+      "evas_engine_used": "evas2",
+      "expected": "pass",
+      "family_id": "129",
+      "observed": "pass",
+      "ok": true,
+      "profile": "score",
+      "returncode": 0,
+      "simulator_ok": true,
+      "task": "129-polynomial-differential-vcvs",
+      "tb_sha256": "1258974348c6df6ea806a9f6d5156ea4153a1174ad4d39448e7792b7b05a9ddf",
+      "timing": {
+        "accepted_tran_steps": 1600.0,
+        "csv_write_s": 0.010207,
+        "derive_bus_signals_s": 2e-05,
+        "total_elapsed_s": 0.1,
+        "tran_elapsed_s": 0.0177
+      },
+      "wall_time_s": 0.056505
+    },
+    {
+      "behavior_score": 0.0,
+      "case_id": "neg_001_zero",
+      "case_kind": "mutation",
+      "diagnostic_category": "behavior_mismatch",
+      "diagnostics": [
+        "checked=267 max_error=0.75781 max_cm_error=0.50000"
+      ],
+      "dut_source_sha256": "714cb3270254bcea415876ae1c62b76f9e5c49eb8976bea9db9cf5f43b3a30f8",
+      "evas_engine_used": "evas2",
+      "expected": "fail",
+      "family_id": "129",
+      "observed": "behavior_fail",
+      "ok": true,
+      "profile": "score",
+      "returncode": 0,
+      "simulator_ok": true,
+      "task": "129-polynomial-differential-vcvs",
+      "tb_sha256": "1258974348c6df6ea806a9f6d5156ea4153a1174ad4d39448e7792b7b05a9ddf",
+      "timing": {
+        "accepted_tran_steps": 1600.0,
+        "csv_write_s": 0.008446,
+        "derive_bus_signals_s": 1.4e-05,
+        "total_elapsed_s": 0.0,
+        "tran_elapsed_s": 0.0103
+      },
+      "wall_time_s": 0.030398
+    },
+    {
+      "behavior_score": 0.0,
+      "case_id": "neg_002_missing_half_factor",
+      "case_kind": "mutation",
+      "diagnostic_category": "behavior_mismatch",
+      "diagnostics": [
+        "checked=267 max_error=0.10050 max_cm_error=0.00000"
+      ],
+      "dut_source_sha256": "714cb3270254bcea415876ae1c62b76f9e5c49eb8976bea9db9cf5f43b3a30f8",
+      "evas_engine_used": "evas2",
+      "expected": "fail",
+      "family_id": "129",
+      "observed": "behavior_fail",
+      "ok": true,
+      "profile": "score",
+      "returncode": 0,
+      "simulator_ok": true,
+      "task": "129-polynomial-differential-vcvs",
+      "tb_sha256": "1258974348c6df6ea806a9f6d5156ea4153a1174ad4d39448e7792b7b05a9ddf",
+      "timing": {
+        "accepted_tran_steps": 1600.0,
+        "csv_write_s": 0.008471,
+        "derive_bus_signals_s": 1.5e-05,
+        "total_elapsed_s": 0.3,
+        "tran_elapsed_s": 0.2662
+      },
+      "wall_time_s": 0.333553
+    },
+    {
+      "behavior_score": 0.0,
+      "case_id": "neg_003_inverted_output_polarity",
+      "case_kind": "mutation",
+      "diagnostic_category": "behavior_mismatch",
+      "diagnostics": [
+        "checked=267 max_error=0.51562 max_cm_error=0.00000"
+      ],
+      "dut_source_sha256": "714cb3270254bcea415876ae1c62b76f9e5c49eb8976bea9db9cf5f43b3a30f8",
+      "evas_engine_used": "evas2",
+      "expected": "fail",
+      "family_id": "129",
+      "observed": "behavior_fail",
+      "ok": true,
+      "profile": "score",
+      "returncode": 0,
+      "simulator_ok": true,
+      "task": "129-polynomial-differential-vcvs",
+      "tb_sha256": "1258974348c6df6ea806a9f6d5156ea4153a1174ad4d39448e7792b7b05a9ddf",
+      "timing": {
+        "accepted_tran_steps": 1600.0,
+        "csv_write_s": 0.013638,
+        "derive_bus_signals_s": 1.9e-05,
+        "total_elapsed_s": 0.0,
+        "tran_elapsed_s": 0.015300000000000001
+      },
+      "wall_time_s": 0.053775
+    },
+    {
+      "behavior_score": 0.0,
+      "case_id": "neg_004_common_mode_zero",
+      "case_kind": "mutation",
+      "diagnostic_category": "behavior_mismatch",
+      "diagnostics": [
+        "checked=267 max_error=0.50000 max_cm_error=0.50000"
+      ],
+      "dut_source_sha256": "714cb3270254bcea415876ae1c62b76f9e5c49eb8976bea9db9cf5f43b3a30f8",
+      "evas_engine_used": "evas2",
+      "expected": "fail",
+      "family_id": "129",
+      "observed": "behavior_fail",
+      "ok": true,
+      "profile": "score",
+      "returncode": 0,
+      "simulator_ok": true,
+      "task": "129-polynomial-differential-vcvs",
+      "tb_sha256": "1258974348c6df6ea806a9f6d5156ea4153a1174ad4d39448e7792b7b05a9ddf",
+      "timing": {
+        "accepted_tran_steps": 1600.0,
+        "csv_write_s": 0.033919,
+        "derive_bus_signals_s": 1.6e-05,
+        "total_elapsed_s": 0.1,
+        "tran_elapsed_s": 0.0579
+      },
+      "wall_time_s": 0.139282
+    },
+    {
+      "behavior_score": 0.0,
+      "case_id": "neg_005_metric_scale_low",
+      "case_kind": "mutation",
+      "diagnostic_category": "behavior_mismatch",
+      "diagnostics": [
+        "checked=267 max_error=0.43953 max_cm_error=0.29000"
+      ],
+      "dut_source_sha256": "714cb3270254bcea415876ae1c62b76f9e5c49eb8976bea9db9cf5f43b3a30f8",
+      "evas_engine_used": "evas2",
+      "expected": "fail",
+      "family_id": "129",
+      "observed": "behavior_fail",
+      "ok": true,
+      "profile": "score",
+      "returncode": 0,
+      "simulator_ok": true,
+      "task": "129-polynomial-differential-vcvs",
+      "tb_sha256": "1258974348c6df6ea806a9f6d5156ea4153a1174ad4d39448e7792b7b05a9ddf",
+      "timing": {
+        "accepted_tran_steps": 1600.0,
+        "csv_write_s": 0.010043,
+        "derive_bus_signals_s": 1.9e-05,
+        "total_elapsed_s": 0.0,
+        "tran_elapsed_s": 0.0155
+      },
+      "wall_time_s": 0.05125
+    },
+    {
+      "behavior_score": 1.0,
+      "case_id": "gold",
+      "case_kind": "gold",
+      "diagnostic_category": "contract_satisfied",
+      "diagnostics": [
+        "checked=241 max_error=0.00000 regions=['negative', 'positive', 'zero']"
+      ],
+      "dut_source_sha256": "aaba2b3cd1777b6b8859a23069eae6ad1489f6035676e03232603dad8abaf43c",
+      "evas_engine_used": "evas2",
+      "expected": "pass",
+      "family_id": "130",
+      "observed": "pass",
+      "ok": true,
+      "profile": "feedback",
+      "returncode": 0,
+      "simulator_ok": true,
+      "task": "130-differential-gain-driver",
+      "tb_sha256": "24f86bd5f6800c6c34b49a7ff51568301c93bc2b9256a860a7f795b8ddc35724",
+      "timing": {
+        "accepted_tran_steps": 1200.0,
+        "csv_write_s": 0.010435,
+        "derive_bus_signals_s": 2.3e-05,
+        "total_elapsed_s": 0.1,
+        "tran_elapsed_s": 0.0242
+      },
+      "wall_time_s": 0.092031
+    },
+    {
+      "behavior_score": 0.0,
+      "case_id": "neg_001_zero",
+      "case_kind": "mutation",
+      "diagnostic_category": "behavior_mismatch",
+      "diagnostics": [
+        "checked=241 max_error=0.60000"
+      ],
+      "dut_source_sha256": "aaba2b3cd1777b6b8859a23069eae6ad1489f6035676e03232603dad8abaf43c",
+      "evas_engine_used": "evas2",
+      "expected": "fail",
+      "family_id": "130",
+      "observed": "behavior_fail",
+      "ok": true,
+      "profile": "feedback",
+      "returncode": 0,
+      "simulator_ok": true,
+      "task": "130-differential-gain-driver",
+      "tb_sha256": "24f86bd5f6800c6c34b49a7ff51568301c93bc2b9256a860a7f795b8ddc35724",
+      "timing": {
+        "accepted_tran_steps": 1200.0,
+        "csv_write_s": 0.007504,
+        "derive_bus_signals_s": 2.2e-05,
+        "total_elapsed_s": 0.0,
+        "tran_elapsed_s": 0.0103
+      },
+      "wall_time_s": 0.037023
+    },
+    {
+      "behavior_score": 0.0,
+      "case_id": "neg_002_single_ended_gain",
+      "case_kind": "mutation",
+      "diagnostic_category": "behavior_mismatch",
+      "diagnostics": [
+        "checked=241 max_error=0.15000"
+      ],
+      "dut_source_sha256": "aaba2b3cd1777b6b8859a23069eae6ad1489f6035676e03232603dad8abaf43c",
+      "evas_engine_used": "evas2",
+      "expected": "fail",
+      "family_id": "130",
+      "observed": "behavior_fail",
+      "ok": true,
+      "profile": "feedback",
+      "returncode": 0,
+      "simulator_ok": true,
+      "task": "130-differential-gain-driver",
+      "tb_sha256": "24f86bd5f6800c6c34b49a7ff51568301c93bc2b9256a860a7f795b8ddc35724",
+      "timing": {
+        "accepted_tran_steps": 1200.0,
+        "csv_write_s": 0.010491,
+        "derive_bus_signals_s": 2.3e-05,
+        "total_elapsed_s": 0.1,
+        "tran_elapsed_s": 0.0778
+      },
+      "wall_time_s": 0.217545
+    },
+    {
+      "behavior_score": 0.0,
+      "case_id": "neg_003_missing_half_split",
+      "case_kind": "mutation",
+      "diagnostic_category": "behavior_mismatch",
+      "diagnostics": [
+        "checked=241 max_error=0.15000"
+      ],
+      "dut_source_sha256": "aaba2b3cd1777b6b8859a23069eae6ad1489f6035676e03232603dad8abaf43c",
+      "evas_engine_used": "evas2",
+      "expected": "fail",
+      "family_id": "130",
+      "observed": "behavior_fail",
+      "ok": true,
+      "profile": "feedback",
+      "returncode": 0,
+      "simulator_ok": true,
+      "task": "130-differential-gain-driver",
+      "tb_sha256": "24f86bd5f6800c6c34b49a7ff51568301c93bc2b9256a860a7f795b8ddc35724",
+      "timing": {
+        "accepted_tran_steps": 1200.0,
+        "csv_write_s": 0.013541,
+        "derive_bus_signals_s": 2.5e-05,
+        "total_elapsed_s": 0.1,
+        "tran_elapsed_s": 0.0223
+      },
+      "wall_time_s": 0.084033
+    },
+    {
+      "behavior_score": 0.0,
+      "case_id": "neg_004_inverted_polarity",
+      "case_kind": "mutation",
+      "diagnostic_category": "behavior_mismatch",
+      "diagnostics": [
+        "checked=241 max_error=0.30000"
+      ],
+      "dut_source_sha256": "aaba2b3cd1777b6b8859a23069eae6ad1489f6035676e03232603dad8abaf43c",
+      "evas_engine_used": "evas2",
+      "expected": "fail",
+      "family_id": "130",
+      "observed": "behavior_fail",
+      "ok": true,
+      "profile": "feedback",
+      "returncode": 0,
+      "simulator_ok": true,
+      "task": "130-differential-gain-driver",
+      "tb_sha256": "24f86bd5f6800c6c34b49a7ff51568301c93bc2b9256a860a7f795b8ddc35724",
+      "timing": {
+        "accepted_tran_steps": 1200.0,
+        "csv_write_s": 0.026691,
+        "derive_bus_signals_s": 2.9e-05,
+        "total_elapsed_s": 0.4,
+        "tran_elapsed_s": 0.21180000000000002
+      },
+      "wall_time_s": 0.585149
+    },
+    {
+      "behavior_score": 0.0,
+      "case_id": "neg_005_metric_scale_low",
+      "case_kind": "mutation",
+      "diagnostic_category": "behavior_mismatch",
+      "diagnostics": [
+        "checked=241 max_error=0.08700"
+      ],
+      "dut_source_sha256": "aaba2b3cd1777b6b8859a23069eae6ad1489f6035676e03232603dad8abaf43c",
+      "evas_engine_used": "evas2",
+      "expected": "fail",
+      "family_id": "130",
+      "observed": "behavior_fail",
+      "ok": true,
+      "profile": "feedback",
+      "returncode": 0,
+      "simulator_ok": true,
+      "task": "130-differential-gain-driver",
+      "tb_sha256": "24f86bd5f6800c6c34b49a7ff51568301c93bc2b9256a860a7f795b8ddc35724",
+      "timing": {
+        "accepted_tran_steps": 1200.0,
+        "csv_write_s": 0.016474,
+        "derive_bus_signals_s": 1.8e-05,
+        "total_elapsed_s": 0.0,
+        "tran_elapsed_s": 0.012
+      },
+      "wall_time_s": 0.046793
+    },
+    {
+      "behavior_score": 1.0,
+      "case_id": "gold",
+      "case_kind": "gold",
+      "diagnostic_category": "contract_satisfied",
+      "diagnostics": [
+        "checked=241 max_error=0.00000 regions=['negative', 'positive', 'zero']"
+      ],
+      "dut_source_sha256": "aaba2b3cd1777b6b8859a23069eae6ad1489f6035676e03232603dad8abaf43c",
+      "evas_engine_used": "evas2",
+      "expected": "pass",
+      "family_id": "130",
+      "observed": "pass",
+      "ok": true,
+      "profile": "score",
+      "returncode": 0,
+      "simulator_ok": true,
+      "task": "130-differential-gain-driver",
+      "tb_sha256": "d5a50ca73eec689494c9f99a218639bc86568aa183e55ed4a6e250e8dfbfc99f",
+      "timing": {
+        "accepted_tran_steps": 1200.0,
+        "csv_write_s": 0.012423,
+        "derive_bus_signals_s": 1.6e-05,
+        "total_elapsed_s": 0.0,
+        "tran_elapsed_s": 0.0128
+      },
+      "wall_time_s": 0.045564
+    },
+    {
+      "behavior_score": 0.0,
+      "case_id": "neg_001_zero",
+      "case_kind": "mutation",
+      "diagnostic_category": "behavior_mismatch",
+      "diagnostics": [
+        "checked=241 max_error=0.60000"
+      ],
+      "dut_source_sha256": "aaba2b3cd1777b6b8859a23069eae6ad1489f6035676e03232603dad8abaf43c",
+      "evas_engine_used": "evas2",
+      "expected": "fail",
+      "family_id": "130",
+      "observed": "behavior_fail",
+      "ok": true,
+      "profile": "score",
+      "returncode": 0,
+      "simulator_ok": true,
+      "task": "130-differential-gain-driver",
+      "tb_sha256": "d5a50ca73eec689494c9f99a218639bc86568aa183e55ed4a6e250e8dfbfc99f",
+      "timing": {
+        "accepted_tran_steps": 1200.0,
+        "csv_write_s": 0.007837,
+        "derive_bus_signals_s": 3.3e-05,
+        "total_elapsed_s": 0.0,
+        "tran_elapsed_s": 0.0216
+      },
+      "wall_time_s": 0.047947
+    },
+    {
+      "behavior_score": 0.0,
+      "case_id": "neg_002_single_ended_gain",
+      "case_kind": "mutation",
+      "diagnostic_category": "behavior_mismatch",
+      "diagnostics": [
+        "checked=241 max_error=0.15000"
+      ],
+      "dut_source_sha256": "aaba2b3cd1777b6b8859a23069eae6ad1489f6035676e03232603dad8abaf43c",
+      "evas_engine_used": "evas2",
+      "expected": "fail",
+      "family_id": "130",
+      "observed": "behavior_fail",
+      "ok": true,
+      "profile": "score",
+      "returncode": 0,
+      "simulator_ok": true,
+      "task": "130-differential-gain-driver",
+      "tb_sha256": "d5a50ca73eec689494c9f99a218639bc86568aa183e55ed4a6e250e8dfbfc99f",
+      "timing": {
+        "accepted_tran_steps": 1200.0,
+        "csv_write_s": 0.135112,
+        "derive_bus_signals_s": 2.2e-05,
+        "total_elapsed_s": 0.2,
+        "tran_elapsed_s": 0.0218
+      },
+      "wall_time_s": 0.20209
+    },
+    {
+      "behavior_score": 0.0,
+      "case_id": "neg_003_missing_half_split",
+      "case_kind": "mutation",
+      "diagnostic_category": "behavior_mismatch",
+      "diagnostics": [
+        "checked=241 max_error=0.15000"
+      ],
+      "dut_source_sha256": "aaba2b3cd1777b6b8859a23069eae6ad1489f6035676e03232603dad8abaf43c",
+      "evas_engine_used": "evas2",
+      "expected": "fail",
+      "family_id": "130",
+      "observed": "behavior_fail",
+      "ok": true,
+      "profile": "score",
+      "returncode": 0,
+      "simulator_ok": true,
+      "task": "130-differential-gain-driver",
+      "tb_sha256": "d5a50ca73eec689494c9f99a218639bc86568aa183e55ed4a6e250e8dfbfc99f",
+      "timing": {
+        "accepted_tran_steps": 1200.0,
+        "csv_write_s": 0.00817,
+        "derive_bus_signals_s": 1.7e-05,
+        "total_elapsed_s": 0.0,
+        "tran_elapsed_s": 0.009800000000000001
+      },
+      "wall_time_s": 0.06323
+    },
+    {
+      "behavior_score": 0.0,
+      "case_id": "neg_004_inverted_polarity",
+      "case_kind": "mutation",
+      "diagnostic_category": "behavior_mismatch",
+      "diagnostics": [
+        "checked=241 max_error=0.30000"
+      ],
+      "dut_source_sha256": "aaba2b3cd1777b6b8859a23069eae6ad1489f6035676e03232603dad8abaf43c",
+      "evas_engine_used": "evas2",
+      "expected": "fail",
+      "family_id": "130",
+      "observed": "behavior_fail",
+      "ok": true,
+      "profile": "score",
+      "returncode": 0,
+      "simulator_ok": true,
+      "task": "130-differential-gain-driver",
+      "tb_sha256": "d5a50ca73eec689494c9f99a218639bc86568aa183e55ed4a6e250e8dfbfc99f",
+      "timing": {
+        "accepted_tran_steps": 1200.0,
+        "csv_write_s": 0.014857,
+        "derive_bus_signals_s": 3.1e-05,
+        "total_elapsed_s": 0.1,
+        "tran_elapsed_s": 0.0268
+      },
+      "wall_time_s": 0.17107
+    },
+    {
+      "behavior_score": 0.0,
+      "case_id": "neg_005_metric_scale_low",
+      "case_kind": "mutation",
+      "diagnostic_category": "behavior_mismatch",
+      "diagnostics": [
+        "checked=241 max_error=0.08700"
+      ],
+      "dut_source_sha256": "aaba2b3cd1777b6b8859a23069eae6ad1489f6035676e03232603dad8abaf43c",
+      "evas_engine_used": "evas2",
+      "expected": "fail",
+      "family_id": "130",
+      "observed": "behavior_fail",
+      "ok": true,
+      "profile": "score",
+      "returncode": 0,
+      "simulator_ok": true,
+      "task": "130-differential-gain-driver",
+      "tb_sha256": "d5a50ca73eec689494c9f99a218639bc86568aa183e55ed4a6e250e8dfbfc99f",
+      "timing": {
+        "accepted_tran_steps": 1200.0,
+        "csv_write_s": 0.022629,
+        "derive_bus_signals_s": 1.6e-05,
+        "total_elapsed_s": 0.0,
+        "tran_elapsed_s": 0.0114
+      },
+      "wall_time_s": 0.05386
+    }
+  ],
+  "evas_engine_used": "evas2",
+  "failed_cases": [],
+  "families": [
+    {
+      "case_count": 12,
+      "checker_task_id": "v4_121_deadband_window",
+      "classification": "B",
+      "classification_reason": "mechanical canonical-profile migration; shared checker already declared and trace contract is observable",
+      "family_id": "121",
+      "mutation_ids": [
+        "neg_001_zero",
+        "neg_002_passes_inside_deadband",
+        "neg_003_wrong_offsets",
+        "neg_004_clips_outside_deadband",
+        "neg_005_metric_scale_low"
+      ],
+      "passed_case_count": 12,
+      "status": "PASS",
+      "task": "121-deadband-window"
+    },
+    {
+      "case_count": 12,
+      "checker_task_id": "v4_122_differential_deadband",
+      "classification": "B",
+      "classification_reason": "mechanical canonical-profile migration; shared checker already declared and trace contract is observable",
+      "family_id": "122",
+      "mutation_ids": [
+        "neg_001_zero",
+        "neg_002_no_leak_inside_deadband",
+        "neg_003_wrong_offsets",
+        "neg_004_single_ended_input",
+        "neg_005_metric_scale_low"
+      ],
+      "passed_case_count": 12,
+      "status": "PASS",
+      "task": "122-differential-deadband"
+    },
+    {
+      "case_count": 12,
+      "checker_task_id": "v4_123_hard_voltage_clamp",
+      "classification": "B",
+      "classification_reason": "mechanical canonical-profile migration; shared checker already declared and trace contract is observable",
+      "family_id": "123",
+      "mutation_ids": [
+        "neg_001_zero",
+        "neg_002_no_lower_clamp",
+        "neg_003_no_upper_clamp",
+        "neg_004_swapped_clamp_rails",
+        "neg_005_metric_scale_low"
+      ],
+      "passed_case_count": 12,
+      "status": "PASS",
+      "task": "123-hard-voltage-clamp"
+    },
+    {
+      "case_count": 12,
+      "checker_task_id": "v4_124_smooth_comparator_tanh",
+      "classification": "B",
+      "classification_reason": "mechanical canonical-profile migration; shared checker already declared and trace contract is observable",
+      "family_id": "124",
+      "mutation_ids": [
+        "neg_001_zero",
+        "neg_002_inverted_difference",
+        "neg_003_half_slope",
+        "neg_004_half_output_span",
+        "neg_005_metric_scale_low"
+      ],
+      "passed_case_count": 12,
+      "status": "PASS",
+      "task": "124-smooth-comparator-tanh"
+    },
+    {
+      "case_count": 12,
+      "checker_task_id": "v4_125_limiter_rails",
+      "classification": "B",
+      "classification_reason": "mechanical canonical-profile migration; shared checker already declared and trace contract is observable",
+      "family_id": "125",
+      "mutation_ids": [
+        "neg_001_zero",
+        "neg_002_ignores_rail_offsets",
+        "neg_003_swapped_offsets",
+        "neg_004_no_lower_limit",
+        "neg_005_metric_scale_low"
+      ],
+      "passed_case_count": 12,
+      "status": "PASS",
+      "task": "125-limiter-rails"
+    },
+    {
+      "case_count": 12,
+      "checker_task_id": "v4_126_absolute_value",
+      "classification": "B",
+      "classification_reason": "mechanical canonical-profile migration; shared checker already declared and trace contract is observable",
+      "family_id": "126",
+      "mutation_ids": [
+        "neg_001_zero",
+        "neg_002_identity",
+        "neg_003_negative_abs",
+        "neg_004_half_abs",
+        "neg_005_metric_scale_low"
+      ],
+      "passed_case_count": 12,
+      "status": "PASS",
+      "task": "126-absolute-value"
+    },
+    {
+      "case_count": 12,
+      "checker_task_id": "v4_127_offset_gain_amplifier",
+      "classification": "B",
+      "classification_reason": "mechanical canonical-profile migration; shared checker already declared and trace contract is observable",
+      "family_id": "127",
+      "mutation_ids": [
+        "neg_001_zero",
+        "neg_002_missing_offset",
+        "neg_003_wrong_gain",
+        "neg_004_adds_offset",
+        "neg_005_metric_scale_low"
+      ],
+      "passed_case_count": 12,
+      "status": "PASS",
+      "task": "127-offset-gain-amplifier"
+    },
+    {
+      "case_count": 12,
+      "checker_task_id": "v4_128_safe_voltage_divider",
+      "classification": "B",
+      "classification_reason": "mechanical canonical-profile migration; shared checker already declared and trace contract is observable",
+      "family_id": "128",
+      "mutation_ids": [
+        "neg_001_zero",
+        "neg_002_no_safe_floor",
+        "neg_003_loses_denominator_sign",
+        "neg_004_missing_gain",
+        "neg_005_metric_scale_low"
+      ],
+      "passed_case_count": 12,
+      "status": "PASS",
+      "task": "128-safe-voltage-divider"
+    },
+    {
+      "case_count": 12,
+      "checker_task_id": "v4_129_polynomial_differential_vcvs",
+      "classification": "B",
+      "classification_reason": "mechanical canonical-profile migration; shared checker already declared and trace contract is observable",
+      "family_id": "129",
+      "mutation_ids": [
+        "neg_001_zero",
+        "neg_002_missing_half_factor",
+        "neg_003_inverted_output_polarity",
+        "neg_004_common_mode_zero",
+        "neg_005_metric_scale_low"
+      ],
+      "passed_case_count": 12,
+      "status": "PASS",
+      "task": "129-polynomial-differential-vcvs"
+    },
+    {
+      "case_count": 12,
+      "checker_task_id": "v4_130_differential_gain_driver",
+      "classification": "B",
+      "classification_reason": "mechanical canonical-profile migration; shared checker already declared and trace contract is observable",
+      "family_id": "130",
+      "mutation_ids": [
+        "neg_001_zero",
+        "neg_002_single_ended_gain",
+        "neg_003_missing_half_split",
+        "neg_004_inverted_polarity",
+        "neg_005_metric_scale_low"
+      ],
+      "passed_case_count": 12,
+      "status": "PASS",
+      "task": "130-differential-gain-driver"
+    }
+  ],
+  "family_range": "121-130",
+  "generated_at": "2026-07-16T07:46:43+00:00",
+  "issue": 290,
+  "passed_case_count": 120,
+  "profiles": [
+    "feedback",
+    "score"
+  ],
+  "schema_version": "issue-290-evas2-smoke-v1",
+  "source_root": "benchmark-vabench-release-v4/provenance/dut-base-v3-exact-five-hash-bound-v2",
+  "status": "PASS",
+  "timeout_s": 90
+}
