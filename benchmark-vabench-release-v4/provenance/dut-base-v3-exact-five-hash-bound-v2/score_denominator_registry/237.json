@@ -1,0 +1,78 @@
+{
+  "family_id": "237",
+  "schema_version": "v4-score-denominator-family-registry-v1",
+  "task": {
+    "active_mutation_count": 5,
+    "active_mutations": [
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_004_wrong_smoothing/certification.json",
+        "certification_sha256": "e9bd718b73607f692848ce7d637266e94e0eb2affc230d1663050cb5e5128eea",
+        "fault_class": "omission_or_incomplete_behavior",
+        "mutation_bundle_sha256": "9e667dd93f7a7ff48e786a509e3181d942a12503355c847c720422ddfc761127",
+        "mutation_id": "neg_004_wrong_smoothing",
+        "source_catalog_certification_path": "negative_variants/neg_004_wrong_smoothing/certification.json",
+        "trigger_condition": "Uses the wrong nonlinear smoothing formula and therefore produces the wrong magnitude transfer.",
+        "violated_property_ids": [
+          "P_SMOOTH_ABSOLUTE_TRANSFER"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_002_sharp_abs/certification.json",
+        "certification_sha256": "235db6449c4f61db00628620a19ba6be602cbf61868151ee8a5e26faa27b858e",
+        "fault_class": "zero_stub_output",
+        "mutation_bundle_sha256": "36f8146745b93e88a2193f028c752f18f65b9d45c455a18e8a2c002cd7ab0d0f",
+        "mutation_id": "neg_002_sharp_abs",
+        "source_catalog_certification_path": "negative_variants/neg_002_sharp_abs/certification.json",
+        "trigger_condition": "Implements a sharp ideal absolute value and misses the required smooth zero-crossing behavior.",
+        "violated_property_ids": [
+          "P_SMOOTH_ABSOLUTE_TRANSFER"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_003_half_scale/certification.json",
+        "certification_sha256": "9c218e402cdf0791eecbc28eca2109aac5f1cf81c01fdf0ef955f6b42a8cc483",
+        "fault_class": "metric_or_observable_fault",
+        "mutation_bundle_sha256": "a608af6bb6c3968ac82f55054b6a962ecf6c6d8f019fd6974797e9cd842eaf17",
+        "mutation_id": "neg_003_half_scale",
+        "source_catalog_certification_path": "negative_variants/neg_003_half_scale/certification.json",
+        "trigger_condition": "Computes the absolute value with the wrong gain.",
+        "violated_property_ids": [
+          "P_SMOOTH_ABSOLUTE_TRANSFER"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_005_metric_scale_low/certification.json",
+        "certification_sha256": "cc4c9ce499d37ef1005546f44a2b9795f06c319612b89548caa4f6a8fc5ca90f",
+        "fault_class": "metric_or_observable_fault",
+        "mutation_bundle_sha256": "352c2ba291e239770a67e7c750cb4a1a0a9928618859caf100c6d1d10cf6b90c",
+        "mutation_id": "neg_005_metric_scale_low",
+        "source_catalog_certification_path": "negative_variants/neg_005_metric_scale_low/certification.json",
+        "trigger_condition": "Scales the smooth absolute-value transfer by the wrong output gain.",
+        "violated_property_ids": [
+          "P_SMOOTH_ABSOLUTE_TRANSFER"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_001_zero/certification.json",
+        "certification_sha256": "a4ebb21785ccf03709508c1d1a7d636832e61dc75119fea65ff2d522278f6447",
+        "fault_class": "zero_stub_output",
+        "mutation_bundle_sha256": "e9f2f4c0000a5dd4f7a9018c936afe2bf0369d44b124cac57efb52bac5d328a1",
+        "mutation_id": "neg_001_zero",
+        "source_catalog_certification_path": "negative_variants/neg_001_zero/certification.json",
+        "trigger_condition": "Keeps the output at its trivial zero behavior and therefore fails the stable waveform contract.",
+        "violated_property_ids": [
+          "P_SMOOTH_ABSOLUTE_TRANSFER"
+        ]
+      }
+    ],
+    "bugfix_seed": "neg_004_wrong_smoothing",
+    "canonical_dut_id": "237",
+    "hashes": {
+      "mutation_catalog_sha256": "d0d1465752585569bf30088893dee2f424bdc5d3a65c2b11ae47add79a68813b",
+      "score_deck_sha256": "41d000804d0bbf9fff01fb73b3b6d718cb9c1b623543a8dbf541ec2b255602e1",
+      "task_certification_sha256": "cc93ebff74eee6a974e61e64b395bc037c7c019ca41c2ad9ab5f9aceac28b3b7",
+      "task_record_sha256": "f4fad108c66cce8e453371a24fdd051a9ea16fb6d8b3d70b7076359672fd29fc"
+    },
+    "release_dir": "237-absolute-value"
+  }
+}

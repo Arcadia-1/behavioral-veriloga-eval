@@ -1,0 +1,78 @@
+{
+  "family_id": "004",
+  "schema_version": "v4-score-denominator-family-registry-v1",
+  "task": {
+    "active_mutation_count": 5,
+    "active_mutations": [
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_002_inverted_error_direction/certification.json",
+        "certification_sha256": "f102f53ce75f4de72f577e0fb550f28da0ce2c5d0225c48776bca77bb3bca774",
+        "fault_class": "step_direction_inversion",
+        "mutation_bundle_sha256": "ca71d08c1dfd2ab59feb8a4d384d18f5458aa5eba014d07ad320d88caa1c6bbe",
+        "mutation_id": "neg_002_inverted_error_direction",
+        "source_catalog_certification_path": "negative_variants/neg_002_inverted_error_direction/certification.json",
+        "trigger_condition": "a nonzero error is clocked",
+        "violated_property_ids": [
+          "P_CLOCKED_STEP"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_005_missing_lower_clamp/certification.json",
+        "certification_sha256": "8030548832a79663103f94ab9b301c90ebc697cf89fc67668881cbcec21ccc62",
+        "fault_class": "missing_lower_clamp",
+        "mutation_bundle_sha256": "6b604abe6e898fcd664dc4783f85eb42403ad1a72a3c6f92703d1f8a5f3458a3",
+        "mutation_id": "neg_005_missing_lower_clamp",
+        "source_catalog_certification_path": "negative_variants/neg_005_missing_lower_clamp/certification.json",
+        "trigger_condition": "repeated negative steps reach the lower rail",
+        "violated_property_ids": [
+          "P_TRIM_CLAMP"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_004_wrong_reset_level/certification.json",
+        "certification_sha256": "bab69528ffadf1df5322349349ff37f519534ec253cf8faa6ed78fc15e1cf953",
+        "fault_class": "reset_level_error",
+        "mutation_bundle_sha256": "887a945f42576f7634f0dc5177cf16d996ef24e0ae3e5b9dfb75c09414d0b561",
+        "mutation_id": "neg_004_wrong_reset_level",
+        "source_catalog_certification_path": "negative_variants/neg_004_wrong_reset_level/certification.json",
+        "trigger_condition": "reset is asserted",
+        "violated_property_ids": [
+          "P_INITIAL_AND_RESET"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_006_asynchronous_error_update/certification.json",
+        "certification_sha256": "5f51b9cc2fe723fb9a99bc53deb25d7d0a334998ae5b137afc84baff006a7020",
+        "fault_class": "asynchronous_update",
+        "mutation_bundle_sha256": "bcf7ffa3615fad73281faacd9080ad12a682f9a499126d24054d9aca622527f5",
+        "mutation_id": "neg_006_asynchronous_error_update",
+        "source_catalog_certification_path": "negative_variants/neg_006_asynchronous_error_update/certification.json",
+        "trigger_condition": "error changes between rising clock edges",
+        "violated_property_ids": [
+          "P_CLOCKED_HOLD"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_001_stuck_midscale/certification.json",
+        "certification_sha256": "9400bb3385be9402007bead29fbb900bd99fb9ceda4363143603a92cf3282c25",
+        "fault_class": "stuck_control",
+        "mutation_bundle_sha256": "b7ddde3ba47ab4e403a2c399e01d4da33ad449a75bec9c0f49921980eb370776",
+        "mutation_id": "neg_001_stuck_midscale",
+        "source_catalog_certification_path": "negative_variants/neg_001_stuck_midscale/certification.json",
+        "trigger_condition": "a nonzero error is clocked",
+        "violated_property_ids": [
+          "P_CLOCKED_STEP"
+        ]
+      }
+    ],
+    "bugfix_seed": "neg_002_inverted_error_direction",
+    "canonical_dut_id": "004",
+    "hashes": {
+      "mutation_catalog_sha256": "2cdfc559faf971b969a2f8f2f3be5282a8b316d95fd942061948b61aa26328d0",
+      "score_deck_sha256": "ffd73e7f2b50059a5e1648be9f75d05c9cefa69e026c3973af127c5d78230217",
+      "task_certification_sha256": "3a9e144eedb06d21ac351df982f3c22317d17a7dec0d4ca5a8d37d758cea83a0",
+      "task_record_sha256": "7d5463bb5c5ad3db09f9b201361947934edea1788a20d594b48b677ccdfe09d0"
+    },
+    "release_dir": "004-trim-calibration-controller"
+  }
+}

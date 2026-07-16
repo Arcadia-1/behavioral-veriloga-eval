@@ -1,0 +1,82 @@
+{
+  "family_id": "252",
+  "schema_version": "v4-score-denominator-family-registry-v1",
+  "task": {
+    "active_mutation_count": 5,
+    "active_mutations": [
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_005_wrong_flag_metric/certification.json",
+        "certification_sha256": "727c9f04e16f1509be2582a318bbd9da17153b5ad426f71ad0646fba805797f0",
+        "fault_class": "metric_or_observable_fault",
+        "mutation_bundle_sha256": "fe47be22bc1533c18ecbec0f52a40324d8f658cac50313b646b3434974b61f09",
+        "mutation_id": "neg_005_wrong_flag_metric",
+        "source_catalog_certification_path": "negative_variants/neg_005_wrong_flag_metric/certification.json",
+        "trigger_condition": "stimulus exercises neg_005_wrong_flag_metric",
+        "violated_property_ids": [
+          "P_MEASURE_ANALOG_INPUTS_RELATIVE_TO_THE"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_002_ignore_enable/certification.json",
+        "certification_sha256": "f23fc8be35e20772b8be8020b99740bd28af9af9946a3d9a027aadfad3109edd",
+        "fault_class": "state_reset_or_enable_error",
+        "mutation_bundle_sha256": "af5eed4f3bca0a568380bb5c7ac1b064f532de22e758544f3c11cd336bcd4e80",
+        "mutation_id": "neg_002_ignore_enable",
+        "source_catalog_certification_path": "negative_variants/neg_002_ignore_enable/certification.json",
+        "trigger_condition": "stimulus exercises neg_002_ignore_enable",
+        "violated_property_ids": [
+          "P_VTH_0_45_V_LOGIC_THRESHOLD",
+          "P_WHEN_VALID_DRIVE_OUT_VHI_CLIP01"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_001_zero_outputs/certification.json",
+        "certification_sha256": "505d47cf493edc4979c66016988217578428c8d6112728e9c4ec4799dc2f14c7",
+        "fault_class": "zero_stub_output",
+        "mutation_bundle_sha256": "02c76653c8517be3cb8608028290b4cc029a4a79da2b86dc47e5cf58d70f4f11",
+        "mutation_id": "neg_001_zero_outputs",
+        "source_catalog_certification_path": "negative_variants/neg_001_zero_outputs/certification.json",
+        "trigger_condition": "stimulus exercises neg_001_zero_outputs",
+        "violated_property_ids": [
+          "P_BUILD_A_VOLTAGE_DOMAIN_ANALOG_MIXED",
+          "P_MEASURE_ANALOG_INPUTS_RELATIVE_TO_THE"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_004_ignore_control_or_reset/certification.json",
+        "certification_sha256": "ee24c03c0044f965d3e414b34c55b12b788ab00baa1c9a308d99ae5a6ec0d2c5",
+        "fault_class": "state_reset_or_enable_error",
+        "mutation_bundle_sha256": "0c68a71060dcbe54cb4d9801cf12980df88abe8f86b3c31857f5679ede926128",
+        "mutation_id": "neg_004_ignore_control_or_reset",
+        "source_catalog_certification_path": "negative_variants/neg_004_ignore_control_or_reset/certification.json",
+        "trigger_condition": "stimulus exercises neg_004_ignore_control_or_reset",
+        "violated_property_ids": [
+          "P_SPAN_MIN_0_62_V_SPAN",
+          "P_WHEN_VALID_DRIVE_OUT_VHI_CLIP01"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_003_wrong_scale/certification.json",
+        "certification_sha256": "8f8100259afc4e331203abb41f46322b72060c44cc4f271fcdced1e74ac4844f",
+        "fault_class": "metric_or_observable_fault",
+        "mutation_bundle_sha256": "a4564c5e0837fa8f66832937b39733891c4ce7542622341373d87789deb4ab2f",
+        "mutation_id": "neg_003_wrong_scale",
+        "source_catalog_certification_path": "negative_variants/neg_003_wrong_scale/certification.json",
+        "trigger_condition": "stimulus exercises neg_003_wrong_scale",
+        "violated_property_ids": [
+          "P_MEASURE_ANALOG_INPUTS_RELATIVE_TO_THE",
+          "P_VHI_0_9_V_HIGH_LEVEL"
+        ]
+      }
+    ],
+    "bugfix_seed": "neg_005_wrong_flag_metric",
+    "canonical_dut_id": "252",
+    "hashes": {
+      "mutation_catalog_sha256": "00a5f6326fdf8e0493e52eb1a887a68e5b788b63ff104f6d1b160fb5c2b59b31",
+      "score_deck_sha256": "64f627cb700c2a14bbb5e509c04541ba4ce7283962a47f01bc5f6dcd71c46395",
+      "task_certification_sha256": "240062d4a7f638d024eada9de2c7b6dbe0f06d32567a4aabbd90b6222539eb63",
+      "task_record_sha256": "7ca424a4b4aa4827d34b63cb288eedb07a38cb6d45d17486a3c4e83876faf820"
+    },
+    "release_dir": "252-supply-qualified-window-flag"
+  }
+}

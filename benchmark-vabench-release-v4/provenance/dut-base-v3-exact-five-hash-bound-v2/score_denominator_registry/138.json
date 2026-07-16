@@ -1,0 +1,78 @@
+{
+  "family_id": "138",
+  "schema_version": "v4-score-denominator-family-registry-v1",
+  "task": {
+    "active_mutation_count": 5,
+    "active_mutations": [
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_002_missing_input_offset/certification.json",
+        "certification_sha256": "abc4f75ba44bca2c9b70cc8b344221673526f18dfd342a7339cde3da9cc218a2",
+        "fault_class": "threshold_or_boundary_fault",
+        "mutation_bundle_sha256": "ad935ad9ba85049fe355cc19f46608613663f5c91b8a115e581f68325e308af2",
+        "mutation_id": "neg_002_missing_input_offset",
+        "source_catalog_certification_path": "negative_variants/neg_002_missing_input_offset/certification.json",
+        "trigger_condition": "Omits the 0.05 input offset.",
+        "violated_property_ids": [
+          "P_INPUT_OFFSET_AND_GAIN"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_003_single_ended_control/certification.json",
+        "certification_sha256": "b1047ea5e2f9147f0c6ac2282fee54721568252729f1da7a3ded09ec91093c36",
+        "fault_class": "single_ended_control",
+        "mutation_bundle_sha256": "c8236af345573d5ee08ff1ea51747f7180c5d2d40d6b4d925c18e2182feac93f",
+        "mutation_id": "neg_003_single_ended_control",
+        "source_catalog_certification_path": "negative_variants/neg_003_single_ended_control/certification.json",
+        "trigger_condition": "Uses single-ended control voltage instead of differential control.",
+        "violated_property_ids": [
+          "P_DIFFERENTIAL_CONTROL"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_004_no_clamp/certification.json",
+        "certification_sha256": "144df35879f2648c783d1104a0cf601ed3562ac2b547a93645d7606667ee84a3",
+        "fault_class": "omission_or_incomplete_behavior",
+        "mutation_bundle_sha256": "e419609a170db17247ac5dfa30324717a9fba82b4aa123b29497db66eec796d9",
+        "mutation_id": "neg_004_no_clamp",
+        "source_catalog_certification_path": "negative_variants/neg_004_no_clamp/certification.json",
+        "trigger_condition": "Does not clamp output to [0.1,0.9].",
+        "violated_property_ids": [
+          "P_UNIPOLAR_OUTPUT_CLAMP"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_005_metric_scale_low/certification.json",
+        "certification_sha256": "566dd170c8adb8a46a7eed45ea776e370ad67e3f1fbdd648570ed40c6ba07a0e",
+        "fault_class": "metric_or_observable_fault",
+        "mutation_bundle_sha256": "1d7f728da33c646443452eb25645d5c99ba8d25ae3cda92c810e6b68d2da60a7",
+        "mutation_id": "neg_005_metric_scale_low",
+        "source_catalog_certification_path": "negative_variants/neg_005_metric_scale_low/certification.json",
+        "trigger_condition": "Scales the limited voltage-controlled output too low while preserving the module/interface shape.",
+        "violated_property_ids": [
+          "P_INPUT_OFFSET_AND_GAIN"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_001_zero/certification.json",
+        "certification_sha256": "f73a3d5585a3c84af7b8b737e884168ec9a5dea0878155bebaabf873f3cd6686",
+        "fault_class": "zero_stub_output",
+        "mutation_bundle_sha256": "eb763c9af7880f60ba307a5ce821bb99084a1233ea44b26f765906c067f32711",
+        "mutation_id": "neg_001_zero",
+        "source_catalog_certification_path": "negative_variants/neg_001_zero/certification.json",
+        "trigger_condition": "Drives zero output and therefore fails the stable waveform contract.",
+        "violated_property_ids": [
+          "P_INPUT_OFFSET_AND_GAIN"
+        ]
+      }
+    ],
+    "bugfix_seed": "neg_002_missing_input_offset",
+    "canonical_dut_id": "138",
+    "hashes": {
+      "mutation_catalog_sha256": "ab4d12e22890fd1faf06860063128bf41f1519f7accf436388995c63b2aa66d4",
+      "score_deck_sha256": "02e48d17d4ceefd71c32cde935ac842ff3105233a117e4b68c7712ccdaee8e1a",
+      "task_certification_sha256": "1f55f7800b6203b8d164b5882e48d839734e214cd85ba1dbbcb0a3b9313f2871",
+      "task_record_sha256": "0433517747a36f624e7a458a63c15246b9037c68c82d79137af8690a7e6c2822"
+    },
+    "release_dir": "138-voltage-controlled-gain-amplifier"
+  }
+}

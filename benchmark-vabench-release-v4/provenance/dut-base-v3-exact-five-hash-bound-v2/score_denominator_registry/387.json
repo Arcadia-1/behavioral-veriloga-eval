@@ -1,0 +1,79 @@
+{
+  "family_id": "387",
+  "schema_version": "v4-score-denominator-family-registry-v1",
+  "task": {
+    "active_mutation_count": 5,
+    "active_mutations": [
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_002_gain_metric_wrong/certification.json",
+        "certification_sha256": "75e6a4bde90a158ec4a434fff4a69178c46ed197bca0f06ff230dfc9e28cae88",
+        "fault_class": "gain_metric_wrong",
+        "mutation_bundle_sha256": "b9540b4c73672131be3966bde1e1aaf72861c37d0a122e27ea219a4c96932459",
+        "mutation_id": "neg_002_gain_metric_wrong",
+        "source_catalog_certification_path": "negative_variants/neg_002_gain_metric_wrong/certification.json",
+        "trigger_condition": "gain_metric_wrong",
+        "violated_property_ids": [
+          "P_EXPOSE_ACTIVE_GAIN_ON_GAIN_METRIC"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_001_no_compression/certification.json",
+        "certification_sha256": "7c80bb5f6ceb30a1e0e058e91f50effefaeb11b0f2ec590a05defce42411e279",
+        "fault_class": "no_compression",
+        "mutation_bundle_sha256": "6aae5d61f1efae8226a1420aa3d41cfca9e8853017e785031330143640add648",
+        "mutation_id": "neg_001_no_compression",
+        "source_catalog_certification_path": "negative_variants/neg_001_no_compression/certification.json",
+        "trigger_condition": "no_compression",
+        "violated_property_ids": [
+          "P_EXPOSE_ACTIVE_GAIN_ON_GAIN_METRIC",
+          "P_REDUCE_EFFECTIVE_GAIN_MONOTONICALLY_WHEN_THE"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_004_missing_clear/certification.json",
+        "certification_sha256": "41be4c4e734d5773dce0d06044e3762f0865aef963e74d1fdf8ead7739d973e1",
+        "fault_class": "missing_clear",
+        "mutation_bundle_sha256": "f7a6f9f31ad3cb45ea8e908d56d46fd6602bc5c1520a33c36487bb5ce5658695",
+        "mutation_id": "neg_004_missing_clear",
+        "source_catalog_certification_path": "negative_variants/neg_004_missing_clear/certification.json",
+        "trigger_condition": "missing_clear",
+        "violated_property_ids": [
+          "P_ON_RESET_OR_WHEN_DISABLED_DRIVE"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_005_gain_polarity_wrong/certification.json",
+        "certification_sha256": "1ecaa3f257fb9d5582ea83f20f55c66f56bb9762319088940d887767ec310749",
+        "fault_class": "gain_polarity_wrong",
+        "mutation_bundle_sha256": "ad299c074ecfa865af82855bc13c9463f451a4df3e7a610c4be834dd3276e84c",
+        "mutation_id": "neg_005_gain_polarity_wrong",
+        "source_catalog_certification_path": "negative_variants/neg_005_gain_polarity_wrong/certification.json",
+        "trigger_condition": "gain_polarity_wrong",
+        "violated_property_ids": [
+          "P_WHEN_ENABLED_PROVIDE_HIGH_GAIN_FOR"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_003_flag_stuck_low/certification.json",
+        "certification_sha256": "add6d3c12f6bd4be700e6a999adc5ae162eec85c19bdaf313955122d4f465060",
+        "fault_class": "flag_stuck_low",
+        "mutation_bundle_sha256": "c0ee318035df4dbd69bccbbbb8b39a79c4030e2592df01617c84466190b96b8e",
+        "mutation_id": "neg_003_flag_stuck_low",
+        "source_catalog_certification_path": "negative_variants/neg_003_flag_stuck_low/certification.json",
+        "trigger_condition": "flag_stuck_low",
+        "violated_property_ids": [
+          "P_EXPOSE_ACTIVE_GAIN_ON_GAIN_METRIC"
+        ]
+      }
+    ],
+    "bugfix_seed": "neg_002_gain_metric_wrong",
+    "canonical_dut_id": "387",
+    "hashes": {
+      "mutation_catalog_sha256": "ae17d3ff3eb58ba65379af399cb0ec1a356a4de3319af6bd386278ad7370666a",
+      "score_deck_sha256": "59b99a2940ca5d471bf9fd91f9b2ef53e41c24097a44627fd2505c4d0eb0e2c6",
+      "task_certification_sha256": "c6e7bf17b663b693a1c3f577fd6d198bb3ac872b99089943604eef728c138d92",
+      "task_record_sha256": "e70676b72f55e71bdfc8ae2c5d90cfa535bcdcc55a0760dd57130ff5d7ddf2fb"
+    },
+    "release_dir": "387-lna-gain-compression-macro"
+  }
+}

@@ -1,0 +1,79 @@
+{
+  "family_id": "240",
+  "schema_version": "v4-score-denominator-family-registry-v1",
+  "task": {
+    "active_mutation_count": 5,
+    "active_mutations": [
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_003_wrong_gain/certification.json",
+        "certification_sha256": "3d19c4b1a5f6499de6e040773c67513e766e777faa4fb1a5a91f99da84482c31",
+        "fault_class": "metric_or_observable_fault",
+        "mutation_bundle_sha256": "4afaeb38320b531f768ce981207ad7f357af2639693890ce8cde4f64b4a20e31",
+        "mutation_id": "neg_003_wrong_gain",
+        "source_catalog_certification_path": "negative_variants/neg_003_wrong_gain/certification.json",
+        "trigger_condition": "Uses an incorrect small-signal gain.",
+        "violated_property_ids": [
+          "P_SMALL_SIGNAL_GAIN"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_001_zero/certification.json",
+        "certification_sha256": "22c0dad1c5775d91f634403f2b2109496ed78e217aebb7dab33a4eebf6152b4a",
+        "fault_class": "zero_stub_output",
+        "mutation_bundle_sha256": "8ef6c8f26fb245cfad57d0bcc87ec473919fa65e36899918f9977321f0dab704",
+        "mutation_id": "neg_001_zero",
+        "source_catalog_certification_path": "negative_variants/neg_001_zero/certification.json",
+        "trigger_condition": "Keeps the output at its trivial zero behavior and therefore fails the stable waveform contract.",
+        "violated_property_ids": [
+          "P_SMALL_SIGNAL_GAIN",
+          "P_SMOOTH_SYMMETRIC_LIMITING"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_004_inverted_polarity/certification.json",
+        "certification_sha256": "112311986db311596fe8e97233f85116466913a93a3bcbcc0cf877c24fda8de0",
+        "fault_class": "polarity_or_direction_error",
+        "mutation_bundle_sha256": "b3198760662d6f07c5ffde13a5f160983d755d2f92d2f603fb257810b5b4a57e",
+        "mutation_id": "neg_004_inverted_polarity",
+        "source_catalog_certification_path": "negative_variants/neg_004_inverted_polarity/certification.json",
+        "trigger_condition": "Uses reversed input polarity.",
+        "violated_property_ids": [
+          "P_ODD_DIFFERENTIAL_POLARITY"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_002_hard_clamp/certification.json",
+        "certification_sha256": "8f677afdb0dbfd11da31b9e81560b7d22f70e9ff95b5a8b5ec8fcd6309f3cb08",
+        "fault_class": "hard_clamp",
+        "mutation_bundle_sha256": "5608f262bd52692d5bf7824a3f8df40886df00a8876518196e08901fe03b6b84",
+        "mutation_id": "neg_002_hard_clamp",
+        "source_catalog_certification_path": "negative_variants/neg_002_hard_clamp/certification.json",
+        "trigger_condition": "Uses a hard clamp instead of the required smooth tanh limiting.",
+        "violated_property_ids": [
+          "P_SMOOTH_SYMMETRIC_LIMITING"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_005_metric_scale_low/certification.json",
+        "certification_sha256": "55217d54ab70baf8d17ddd4113210c945e0e770db836d0ad90171b85775660a8",
+        "fault_class": "metric_or_observable_fault",
+        "mutation_bundle_sha256": "f04fc046b5cb31075cdf2c5854bd99e69cf0f83c6df820942ddd68f10252c2e6",
+        "mutation_id": "neg_005_metric_scale_low",
+        "source_catalog_certification_path": "negative_variants/neg_005_metric_scale_low/certification.json",
+        "trigger_condition": "Scales the smooth limiting amplifier transfer by the wrong output gain.",
+        "violated_property_ids": [
+          "P_SMALL_SIGNAL_GAIN"
+        ]
+      }
+    ],
+    "bugfix_seed": "neg_003_wrong_gain",
+    "canonical_dut_id": "240",
+    "hashes": {
+      "mutation_catalog_sha256": "34895be27443a505cf7115563192c237181235a28653f924790a9302a253967e",
+      "score_deck_sha256": "8befe4f5ab9fafa01febf3cc328c87a443378f409817cc6a4e1337e363f40923",
+      "task_certification_sha256": "898b430f2b90802ce058fac189b0cd0168d9ab94b657d88c7e251ad5c964ecc0",
+      "task_record_sha256": "601ec0d6282e29a0082c59b4d414c46c3c826267b0dc84a3cdf0dc27766f576c"
+    },
+    "release_dir": "240-limiting-diffamp"
+  }
+}

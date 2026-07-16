@@ -1,0 +1,79 @@
+{
+  "family_id": "357",
+  "schema_version": "v4-score-denominator-family-registry-v1",
+  "task": {
+    "active_mutation_count": 5,
+    "active_mutations": [
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_001_early_late_swapped/certification.json",
+        "certification_sha256": "6caf35fc67396b2b9f45382bb1b6a6d87639ee9419ca88b3780bd9ef9f36a44e",
+        "fault_class": "wrong_polarity",
+        "mutation_bundle_sha256": "5a10d55a7741fbd3749a30241a863a34358a68914c75106c08d703a0c6d41889",
+        "mutation_id": "neg_001_early_late_swapped",
+        "source_catalog_certification_path": "negative_variants/neg_001_early_late_swapped/certification.json",
+        "trigger_condition": "data and recovered edges are separated",
+        "violated_property_ids": [
+          "P_BANGBANG_DECISION",
+          "P_PHASE_CODE_UPDATE"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_003_phase_code_resets_zero/certification.json",
+        "certification_sha256": "4ecae8cc95a17b9b54bd92b0b8b87bb2f4408c96237ec61b98426598f020ec11",
+        "fault_class": "missing_reset",
+        "mutation_bundle_sha256": "74477362b0cbef6e63d542d1db361221580721df80ca27bce5032a5eec0a897d",
+        "mutation_id": "neg_003_phase_code_resets_zero",
+        "source_catalog_certification_path": "negative_variants/neg_003_phase_code_resets_zero/certification.json",
+        "trigger_condition": "reset or disable is asserted",
+        "violated_property_ids": [
+          "P_RESET_DISABLE_CLEAR"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_004_rotator_has_no_delay/certification.json",
+        "certification_sha256": "421b62ba5587d59f6251ffd49b273f1476b831992dd992b159628cba83a3b3e7",
+        "fault_class": "timing_error",
+        "mutation_bundle_sha256": "b99baf89cbb0b834c9873bb414e5c60c97a657df896b3295143ec766adf9aef1",
+        "mutation_id": "neg_004_rotator_has_no_delay",
+        "source_catalog_certification_path": "negative_variants/neg_004_rotator_has_no_delay/certification.json",
+        "trigger_condition": "a reference-clock edge occurs",
+        "violated_property_ids": [
+          "P_PHASE_ROTATION"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_005_lock_asserts_early/certification.json",
+        "certification_sha256": "b14b27ae7b4d8c8942f90c47f7b9df210dd08b50f1275b75b772f0d32f2d6b6d",
+        "fault_class": "wrong_qualification",
+        "mutation_bundle_sha256": "72867b15928582d8d5f4b5f6ddf94b24e3ef62a5cd0b274c80943b4aca8470eb",
+        "mutation_id": "neg_005_lock_asserts_early",
+        "source_catalog_certification_path": "negative_variants/neg_005_lock_asserts_early/certification.json",
+        "trigger_condition": "one in-window decision occurs",
+        "violated_property_ids": [
+          "P_LOCK_QUALIFICATION"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_002_loop_direction_reversed/certification.json",
+        "certification_sha256": "fbf7bba97dff8e558d59402b1df0feca7d03a18b82b485ae6928458ad6fcb221",
+        "fault_class": "wrong_polarity",
+        "mutation_bundle_sha256": "6d9d24de34023d3b43c479a4581bba64c59a743305076bb1b90bb626dffff516",
+        "mutation_id": "neg_002_loop_direction_reversed",
+        "source_catalog_certification_path": "negative_variants/neg_002_loop_direction_reversed/certification.json",
+        "trigger_condition": "an early or late decision occurs",
+        "violated_property_ids": [
+          "P_PHASE_CODE_UPDATE"
+        ]
+      }
+    ],
+    "bugfix_seed": "neg_001_early_late_swapped",
+    "canonical_dut_id": "357",
+    "hashes": {
+      "mutation_catalog_sha256": "25ebfa33e8c7e6e251ae41d5e72785e740b9fd5038561bbbf47164aef639852d",
+      "score_deck_sha256": "642107256b331368c0fe3f288b02fa49879232edd6f288fd7c662109e7fbf0f3",
+      "task_certification_sha256": "32c50c8136761ceaa7f9d1ce768f2a3086082b528f511c9dd904a8775aa8f62b",
+      "task_record_sha256": "1fbaf0f8ef04ec327996a2470882746259d9382518b9f8d22526af3c6d803bc3"
+    },
+    "release_dir": "357-bangbang-cdr-loop"
+  }
+}

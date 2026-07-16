@@ -1,0 +1,78 @@
+{
+  "family_id": "147",
+  "schema_version": "v4-score-denominator-family-registry-v1",
+  "task": {
+    "active_mutation_count": 5,
+    "active_mutations": [
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_002_shifted_bits/certification.json",
+        "certification_sha256": "15c51ffbaf27549771ae8d8db7b6a087e9f252eade53e914309ea9a8130cd6ef",
+        "fault_class": "shifted_bits",
+        "mutation_bundle_sha256": "dc4b6bdaabb96d92f27a8b0f91e18042796c2fca15456706683aec5cb69f2852",
+        "mutation_id": "neg_002_shifted_bits",
+        "source_catalog_certification_path": "negative_variants/neg_002_shifted_bits/certification.json",
+        "trigger_condition": "Shifts every decoded bit by one position.",
+        "violated_property_ids": [
+          "P_SEVEN_BIT_DECODE"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_001_zero/certification.json",
+        "certification_sha256": "00874ab0e92358ab75b8d3aa4035eb2752e876e82edb5b78683742451b9b9ea2",
+        "fault_class": "zero_stub_output",
+        "mutation_bundle_sha256": "ac2a044d07906b680d6a12bb6848bf429755e0ddc3cd89d8f4f0b46e8be1874e",
+        "mutation_id": "neg_001_zero",
+        "source_catalog_certification_path": "negative_variants/neg_001_zero/certification.json",
+        "trigger_condition": "Drives zero output and therefore fails the stable waveform contract.",
+        "violated_property_ids": [
+          "P_OUTPUT_RAIL_LEVELS"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_003_inverted_bits/certification.json",
+        "certification_sha256": "e7c0146f7c6ebcc8a441e5fdfdd9d117f45e5697343220fcaf006408b1c3b690",
+        "fault_class": "polarity_or_direction_error",
+        "mutation_bundle_sha256": "4a16978f316d5adc07bc257ac66bfb644f8db422bc84a70fb36bdea5549688dc",
+        "mutation_id": "neg_003_inverted_bits",
+        "source_catalog_certification_path": "negative_variants/neg_003_inverted_bits/certification.json",
+        "trigger_condition": "Inverts every output bit.",
+        "violated_property_ids": [
+          "P_BIT_POLARITY"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_004_half_high_level/certification.json",
+        "certification_sha256": "841f0a2bb8d53ba2e754b5adee9ad51528ec0559c6a872e94691b880bb1156dd",
+        "fault_class": "omission_or_incomplete_behavior",
+        "mutation_bundle_sha256": "2440ff25c60cf88e846042c20f3f48b69c2c9ec12278c0da824eaacc382ddfd6",
+        "mutation_id": "neg_004_half_high_level",
+        "source_catalog_certification_path": "negative_variants/neg_004_half_high_level/certification.json",
+        "trigger_condition": "Uses half high level for logic one.",
+        "violated_property_ids": [
+          "P_OUTPUT_RAIL_LEVELS"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_005_metric_scale_low/certification.json",
+        "certification_sha256": "6b10968e8e0d0adc711d91896aa60d9860a7f820b821798ae0891df217e46c83",
+        "fault_class": "metric_or_observable_fault",
+        "mutation_bundle_sha256": "0e7ac460aaca06ccf35284ea780ed40161063bd350d35ace6e835953f594c112",
+        "mutation_id": "neg_005_metric_scale_low",
+        "source_catalog_certification_path": "negative_variants/neg_005_metric_scale_low/certification.json",
+        "trigger_condition": "Control Word Encoder 7b: scales the metric output, preserving the main path while failing measurement checks.",
+        "violated_property_ids": [
+          "P_OUTPUT_RAIL_LEVELS"
+        ]
+      }
+    ],
+    "bugfix_seed": "neg_002_shifted_bits",
+    "canonical_dut_id": "147",
+    "hashes": {
+      "mutation_catalog_sha256": "99385aa6457ec09493510caf359e52fbc2de215437b53eddaa9fb5a71c3dbf89",
+      "score_deck_sha256": "e60e480576d86045600f3432d3b84a39c60ed791d8380ec2911d12203ee16fea",
+      "task_certification_sha256": "4cceb21a0431c22f50d824ea67662be3dc7ad5fbbdc2acebe6470892437a6806",
+      "task_record_sha256": "b04be97013d53a4be3d5b60bdba5dbbdd22b8dba0d0d824fdebbb580a8e64bb6"
+    },
+    "release_dir": "147-control-word-encoder-7b"
+  }
+}

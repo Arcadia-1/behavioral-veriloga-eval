@@ -12,6 +12,10 @@ from typing import Any
 
 from materialize_tri_form_release import materialized_testbench_reference, resolve_testbench_reference
 from source_certification_binding import inspect_source_certification_reuse
+from score_denominator_registry import (
+    load_score_denominator_registry,
+    score_denominator_manifest_sha256,
+)
 
 
 PACKAGE_ROOT = Path(__file__).resolve().parents[2]
@@ -582,11 +586,8 @@ def main() -> int:
     for legacy_form_dir in FORMS:
         if (release / "tasks" / legacy_form_dir).exists():
             problems.append(f"legacy form directory should not exist under tasks/: {legacy_form_dir}")
-    source_manifest_path = source / "score_denominator_manifest.json"
-    if not source_manifest_path.is_file():
-        raise SystemExit(f"source denominator missing: {source_manifest_path}")
-    source_manifest = read_json(source_manifest_path)
-    source_manifest_sha = file_sha(source_manifest_path)
+    source_manifest = load_score_denominator_registry(source)
+    source_manifest_sha = score_denominator_manifest_sha256(source)
     source_rows = {
         str(item.get("canonical_dut_id") or ""): item
         for item in source_manifest.get("tasks") or []

@@ -5,8 +5,16 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import sys
 from pathlib import Path
 from typing import Any
+
+
+PREP = Path(__file__).resolve().parents[1] / "operations" / "tri_form_derivation_prep"
+if str(PREP) not in sys.path:
+    sys.path.insert(0, str(PREP))
+
+from score_denominator_registry import load_score_denominator_registry  # noqa: E402
 
 
 def read_json(path: Path) -> dict[str, Any]:
@@ -50,7 +58,7 @@ def main() -> int:
     parser.add_argument("--output", type=Path)
     args = parser.parse_args()
     release = args.release.resolve()
-    denominator = read_json(release / "score_denominator_manifest.json")
+    denominator = load_score_denominator_registry(release)
     archive = read_json(release / "provenance_only_mutation_archive.json")
     review = read_json(release / "semantic_selection_review.json")
     problems: list[str] = []

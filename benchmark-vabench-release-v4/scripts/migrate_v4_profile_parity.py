@@ -23,6 +23,12 @@ from render_v4_harness import build_profile, render_scs  # noqa: E402
 
 
 ROOT = SCRIPT_DIR.parent
+PREP_DIR = ROOT / "operations" / "tri_form_derivation_prep"
+if str(PREP_DIR) not in sys.path:
+    sys.path.insert(0, str(PREP_DIR))
+
+from score_denominator_registry import load_family_row, write_family_row  # noqa: E402
+
 DEFAULT_SOURCE = ROOT / "provenance" / "dut-base-v3-exact-five-hash-bound-v2"
 
 
@@ -37,13 +43,6 @@ def write_json(path: Path, payload: dict[str, Any]) -> None:
 
 def file_sha(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
-
-
-def canonical_sha(payload: dict[str, Any]) -> str:
-    value = dict(payload)
-    value.pop("content_sha256", None)
-    encoded = json.dumps(value, sort_keys=True, separators=(",", ":"), ensure_ascii=True)
-    return hashlib.sha256(encoded.encode("utf-8")).hexdigest()
 
 
 def family_dir(source: Path, family: str) -> Path:
@@ -113,19 +112,13 @@ def update_task_record(task: Path) -> None:
 
 
 def update_denominator(source: Path, families: set[str]) -> None:
-    path = source / "score_denominator_manifest.json"
-    manifest = read_json(path)
-    rows = manifest.get("tasks") or []
-    for row in rows:
-        family = str(row.get("canonical_dut_id") or "")
-        if family not in families:
-            continue
+    for family in sorted(families):
+        row = load_family_row(source, family)
         task = source / str(row["release_dir"])
         evaluator = task / "evaluator"
         row.setdefault("hashes", {})["task_record_sha256"] = file_sha(evaluator / "task_record.json")
         row["hashes"]["score_deck_sha256"] = file_sha(evaluator / "score_tb.scs")
-    manifest["content_sha256"] = canonical_sha(manifest)
-    write_json(path, manifest)
+        write_family_row(source, family, row)
 
 
 def migrate_family(source: Path, family: str) -> dict[str, Any]:

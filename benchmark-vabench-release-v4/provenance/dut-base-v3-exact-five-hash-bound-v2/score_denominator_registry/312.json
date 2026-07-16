@@ -1,0 +1,79 @@
+{
+  "family_id": "312",
+  "schema_version": "v4-score-denominator-family-registry-v1",
+  "task": {
+    "active_mutation_count": 5,
+    "active_mutations": [
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_002_skew_metric_uses_average/certification.json",
+        "certification_sha256": "fe0c781291c1c96efbe3df9b6b303d4a303628d46fbbb0b85f6078868e2c1231",
+        "fault_class": "skew_metric_uses_average",
+        "mutation_bundle_sha256": "736e019e1c91a10694393c69007423644fdf8028f146702afea56252036e43af",
+        "mutation_id": "neg_002_skew_metric_uses_average",
+        "source_catalog_certification_path": "negative_variants/neg_002_skew_metric_uses_average/certification.json",
+        "trigger_condition": "skew_metric_uses_average",
+        "violated_property_ids": [
+          "P_CAPTURE_VIN_A_ON_RISING_CLK",
+          "P_USE_ONLY_VOLTAGE_DOMAIN_BEHAVIORAL_STATE"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_003_alarm_after_one_violation/certification.json",
+        "certification_sha256": "c74f126baabd7d2c92628a91469efdad9daf5d944e99ea41a2f624c1e1a88f01",
+        "fault_class": "alarm_after_one_violation",
+        "mutation_bundle_sha256": "2a9870e90aea37926f330ffa3551431afc762735e2b718c0e317d72962054fd3",
+        "mutation_id": "neg_003_alarm_after_one_violation",
+        "source_catalog_certification_path": "negative_variants/neg_003_alarm_after_one_violation/certification.json",
+        "trigger_condition": "alarm_after_one_violation",
+        "violated_property_ids": [
+          "P_ESTIMATE_A_SKEW_PROXY_FROM_THE"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_004_magnitude_metric_uses_difference/certification.json",
+        "certification_sha256": "d2855e6cbc84fa1dc71a801221b676d085edfdf948038adb4766dc155e7aa9a3",
+        "fault_class": "magnitude_metric_uses_difference",
+        "mutation_bundle_sha256": "882009a010f14627bf94f2aef30de9992028167d164239d2b86c8c6962bcd6a0",
+        "mutation_id": "neg_004_magnitude_metric_uses_difference",
+        "source_catalog_certification_path": "negative_variants/neg_004_magnitude_metric_uses_difference/certification.json",
+        "trigger_condition": "magnitude_metric_uses_difference",
+        "violated_property_ids": [
+          "P_DRIVE_SKEW_METRIC_WITH_THE_ABSOLUTE"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_005_reset_does_not_clear/certification.json",
+        "certification_sha256": "c24ecde7584fe7a21cdc609c9def179a35cef2d67accafb65666759f6413d003",
+        "fault_class": "reset_does_not_clear",
+        "mutation_bundle_sha256": "fe007ec2a0221c75330edc7c6e39829289fc6d0d3e664aae0cf924aa0f544330",
+        "mutation_id": "neg_005_reset_does_not_clear",
+        "source_catalog_certification_path": "negative_variants/neg_005_reset_does_not_clear/certification.json",
+        "trigger_condition": "reset_does_not_clear",
+        "violated_property_ids": [
+          "P_ASSERT_ALARM_WHEN_SKEW_METRIC_EXCEEDS"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_001_samples_same_clock_only/certification.json",
+        "certification_sha256": "fc545c957f4b3da748fdde5b1bf0d720479421856078ae8980422dc4ddff78b1",
+        "fault_class": "samples_same_clock_only",
+        "mutation_bundle_sha256": "940b8c62e06ff1525c6f16b4c0a3cf6c2ecbeeeca964fcf94d60cf6b9e8c5b2c",
+        "mutation_id": "neg_001_samples_same_clock_only",
+        "source_catalog_certification_path": "negative_variants/neg_001_samples_same_clock_only/certification.json",
+        "trigger_condition": "samples_same_clock_only",
+        "violated_property_ids": [
+          "P_ON_RESET_OR_WHEN_DISABLED_CLEAR"
+        ]
+      }
+    ],
+    "bugfix_seed": "neg_002_skew_metric_uses_average",
+    "canonical_dut_id": "312",
+    "hashes": {
+      "mutation_catalog_sha256": "ffa122ebcc59fe57ad1b948cb28d9b090c43383e8a178f0f8cbc9c0657d629a1",
+      "score_deck_sha256": "ba53df0a8b73a20f63aad4b54e7446e9c3bedb7af97bf4e5f182d4ba72dc9526",
+      "task_certification_sha256": "68b13c2fbc48674b43a083e873abd41b3226765dba438d8ea89cc2d85bb51c4b",
+      "task_record_sha256": "2378ffd92094fc97efc859e097ed4c5d3c4615a34e40e8dd9b0c021247059e03"
+    },
+    "release_dir": "312-interleaved-adc-skew-monitor"
+  }
+}

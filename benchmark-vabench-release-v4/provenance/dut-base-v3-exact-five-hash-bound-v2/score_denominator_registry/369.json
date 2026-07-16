@@ -1,0 +1,78 @@
+{
+  "family_id": "369",
+  "schema_version": "v4-score-denominator-family-registry-v1",
+  "task": {
+    "active_mutation_count": 5,
+    "active_mutations": [
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_001_trim_direction_reversed/certification.json",
+        "certification_sha256": "a989dd33ace2e944aa45c5e9faf9ea297c70611e9139a0bb357aa9322ab2556c",
+        "fault_class": "trim_direction_reversed",
+        "mutation_bundle_sha256": "6b3a5402a9646fde9e0f6b56f70cad409d9492687e21a3c894fff5288bcc12e3",
+        "mutation_id": "neg_001_trim_direction_reversed",
+        "source_catalog_certification_path": "negative_variants/neg_001_trim_direction_reversed/certification.json",
+        "trigger_condition": "positive and negative sampled offsets require opposite trim updates",
+        "violated_property_ids": [
+          "P_TRIM_SEARCH_DIRECTION"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_003_corrected_output_uncorrected/certification.json",
+        "certification_sha256": "0b9f3fd456663d610ec7fdc9e7faf153ff47281a71ff59cb4b8f17ec8753586c",
+        "fault_class": "correction_omitted",
+        "mutation_bundle_sha256": "6b963c397a811abb291d383f2beb676cddb6d04089349352e0c7feed5137709b",
+        "mutation_id": "neg_003_corrected_output_uncorrected",
+        "source_catalog_certification_path": "negative_variants/neg_003_corrected_output_uncorrected/certification.json",
+        "trigger_condition": "nonzero trim code should alter corrected_out relative to raw differential input",
+        "violated_property_ids": [
+          "P_CORRECTED_RESIDUAL"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_004_reset_does_not_clear_outputs/certification.json",
+        "certification_sha256": "ab986d608bef0c79d8709ceabde20367b813241c4089110353b377227a60f93e",
+        "fault_class": "reset_state_not_cleared",
+        "mutation_bundle_sha256": "24c4e1444af8c6f6fd2080ab6c44a27c2c95f63d0411fe8f1fa25744c5fe8208",
+        "mutation_id": "neg_004_reset_does_not_clear_outputs",
+        "source_catalog_certification_path": "negative_variants/neg_004_reset_does_not_clear_outputs/certification.json",
+        "trigger_condition": "reset asserted after nonzero trim or done state",
+        "violated_property_ids": [
+          "P_RESET_DISABLE_CLEAR"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_005_error_metric_inverted/certification.json",
+        "certification_sha256": "63d0316e4ce991b50e53f3127bb8191de04e76c1c7351015098bb42fd5051897",
+        "fault_class": "error_metric_inverted",
+        "mutation_bundle_sha256": "d5dbe23b10754468f70171816e619aaad174b9fd2593d83733a72c17ef4103bd",
+        "mutation_id": "neg_005_error_metric_inverted",
+        "source_catalog_certification_path": "negative_variants/neg_005_error_metric_inverted/certification.json",
+        "trigger_condition": "nonzero residual error after an enabled trim update",
+        "violated_property_ids": [
+          "P_ERROR_METRIC"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_002_done_asserts_too_early/certification.json",
+        "certification_sha256": "2e6750c7a1e1ab4ccc3dfb2b39ff1ec293dfb6036a2a8710c37fa5f9f37e7c26",
+        "fault_class": "premature_done",
+        "mutation_bundle_sha256": "37fe5fb786752bd8216fd4282a626aca8415af40dc01eff4cc6f835f84eaf34d",
+        "mutation_id": "neg_002_done_asserts_too_early",
+        "source_catalog_certification_path": "negative_variants/neg_002_done_asserts_too_early/certification.json",
+        "trigger_condition": "single in-tolerance update occurs before four stable calibration updates",
+        "violated_property_ids": [
+          "P_DONE_QUALIFICATION"
+        ]
+      }
+    ],
+    "bugfix_seed": "neg_001_trim_direction_reversed",
+    "canonical_dut_id": "369",
+    "hashes": {
+      "mutation_catalog_sha256": "eaa83aaab6d48ece71149f2b0171f90549cfa9a06a5c3abccb1fd1b57274380e",
+      "score_deck_sha256": "198832e21a4639207b836de9b2e85078443c76650b145ddc6e29dd7f9e5f72d5",
+      "task_certification_sha256": "75e117da3ace984be593156958987cde5ea405599b30044fe1e7054c8f076609",
+      "task_record_sha256": "91cc86217eadeda56ce24810b6bebc7713d19723274fcf7617ba01e10aa53336"
+    },
+    "release_dir": "369-offset-cancellation-servo"
+  }
+}

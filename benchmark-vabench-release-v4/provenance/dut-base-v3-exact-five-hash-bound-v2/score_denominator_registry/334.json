@@ -1,0 +1,78 @@
+{
+  "family_id": "334",
+  "schema_version": "v4-score-denominator-family-registry-v1",
+  "task": {
+    "active_mutation_count": 5,
+    "active_mutations": [
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_003_bandwidth_metric_wrong/certification.json",
+        "certification_sha256": "aca603325bced47b7b61e20caa7c4d56e5355e70a49ab6b1ceffc28ff48da967",
+        "fault_class": "bandwidth_metric_wrong",
+        "mutation_bundle_sha256": "51c037df5a4cce3aded485d4d303c5859a9c7984a3e0adc3b292534ad2f2ee4b",
+        "mutation_id": "neg_003_bandwidth_metric_wrong",
+        "source_catalog_certification_path": "negative_variants/neg_003_bandwidth_metric_wrong/certification.json",
+        "trigger_condition": "bandwidth_metric_wrong",
+        "violated_property_ids": [
+          "P_UPDATE_VOUT_AS_A_FIRST_ORDER"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_002_bandwidth_code_effect_missing/certification.json",
+        "certification_sha256": "ba6ae1d6f029f4ca249d0db2aa8975bfd546833e6a88ef05373f8375485ffcad",
+        "fault_class": "bandwidth_code_effect_missing",
+        "mutation_bundle_sha256": "f71e2a81ceac14c03219dd9890dff96aff6463c5f2c405fff0b87527d9d446f7",
+        "mutation_id": "neg_002_bandwidth_code_effect_missing",
+        "source_catalog_certification_path": "negative_variants/neg_002_bandwidth_code_effect_missing/certification.json",
+        "trigger_condition": "bandwidth_code_effect_missing",
+        "violated_property_ids": [
+          "P_ON_EACH_ENABLED_RISING_CLK_EDGE"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_004_reset_disable_clear_missing/certification.json",
+        "certification_sha256": "c089d4a3bb03ae569e1c7b66b88d8d326575ec7f387a02143c5b312794cd2cbb",
+        "fault_class": "reset_disable_clear_missing",
+        "mutation_bundle_sha256": "e88655194f1a975983b43e669909d1e4f083ccecbc290bce3c9bf6f651724fe5",
+        "mutation_id": "neg_004_reset_disable_clear_missing",
+        "source_catalog_certification_path": "negative_variants/neg_004_reset_disable_clear_missing/certification.json",
+        "trigger_condition": "reset_disable_clear_missing",
+        "violated_property_ids": [
+          "P_ON_RESET_OR_WHEN_DISABLED_DRIVE"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_005_valid_flag_missing/certification.json",
+        "certification_sha256": "ca0ade42219ff6248f8093c4d67120ab5a7ebfcf92fcbf3ff327eaa114575552",
+        "fault_class": "valid_flag_missing",
+        "mutation_bundle_sha256": "e81727025a9d668dfb4f03f7b779f8be85a00bad5ae20d345e566a1632dc1fa5",
+        "mutation_id": "neg_005_valid_flag_missing",
+        "source_catalog_certification_path": "negative_variants/neg_005_valid_flag_missing/certification.json",
+        "trigger_condition": "valid_flag_missing",
+        "violated_property_ids": [
+          "P_EXPOSE_THE_ACTIVE_BANDWIDTH_CODE_ON"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_001_bandwidth_order_reversed/certification.json",
+        "certification_sha256": "04b626950b4e466da477803ae4cf7b703a93ee8c0ea0b51e0d03d3ebaf3cee74",
+        "fault_class": "bandwidth_order_reversed",
+        "mutation_bundle_sha256": "21850e38f34c2f4fbffca2f8e955590c28f216e7c9088a7e2049009138b6f095",
+        "mutation_id": "neg_001_bandwidth_order_reversed",
+        "source_catalog_certification_path": "negative_variants/neg_001_bandwidth_order_reversed/certification.json",
+        "trigger_condition": "bandwidth_order_reversed",
+        "violated_property_ids": [
+          "P_ON_RESET_OR_WHEN_DISABLED_DRIVE"
+        ]
+      }
+    ],
+    "bugfix_seed": "neg_003_bandwidth_metric_wrong",
+    "canonical_dut_id": "334",
+    "hashes": {
+      "mutation_catalog_sha256": "3d313fff82dfb6f4e0d4f63704d19a72abbc360d49940d47b7a40ac7d3e129b3",
+      "score_deck_sha256": "d24a07721828a18932064725e3c742bf4fdb9388a4b41a9cd2ac82f820c4eef3",
+      "task_certification_sha256": "049d6fd920f2a13709038e2b6d07f8e46a9c28c4198cae7364db62ebebfd87bb",
+      "task_record_sha256": "b3eb5a51b06f8890429275dc6405f654760221c93b3e253c2d0ce7411135c525"
+    },
+    "release_dir": "334-baseband-anti-alias-filter-macro"
+  }
+}

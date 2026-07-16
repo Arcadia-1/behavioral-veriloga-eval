@@ -1,0 +1,78 @@
+{
+  "family_id": "322",
+  "schema_version": "v4-score-denominator-family-registry-v1",
+  "task": {
+    "active_mutation_count": 5,
+    "active_mutations": [
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_002_selected_source_mapping_wrong/certification.json",
+        "certification_sha256": "70248dd603550f8e873873d4ef2a3bc2c4d60a6fd8a7d5dc6d7f1434d515bc9d",
+        "fault_class": "selected_source_mapping_wrong",
+        "mutation_bundle_sha256": "cb7e0d81ecaefd336af5c4a8095b8fef3b97784ddb5cd72dcbb8a9da89cb51bb",
+        "mutation_id": "neg_002_selected_source_mapping_wrong",
+        "source_catalog_certification_path": "negative_variants/neg_002_selected_source_mapping_wrong/certification.json",
+        "trigger_condition": "selected_source_mapping_wrong",
+        "violated_property_ids": [
+          "P_ROUTE_CLK_A_WHEN_SEL_IS"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_003_reset_disable_clear_missing/certification.json",
+        "certification_sha256": "0e014d1f8aec84fab4e3932061b0fe4c1c8c906df58ddc6f0be614d1aaf54b99",
+        "fault_class": "reset_disable_clear_missing",
+        "mutation_bundle_sha256": "26f31078872817600fb0eb9a87be819a7384e55a8d86f068b1535aeb604424bc",
+        "mutation_id": "neg_003_reset_disable_clear_missing",
+        "source_catalog_certification_path": "negative_variants/neg_003_reset_disable_clear_missing/certification.json",
+        "trigger_condition": "reset_disable_clear_missing",
+        "violated_property_ids": [
+          "P_ON_RESET_OR_WHEN_DISABLED_DRIVE"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_004_switch_metric_missing/certification.json",
+        "certification_sha256": "796d6ddfce6af1a71bfb9ee59ea841e82d056d67a9f2545e84123d851baa6916",
+        "fault_class": "switch_metric_missing",
+        "mutation_bundle_sha256": "7dcdbe09131a5e4d8e8910f1912182ccf173bcb09d703fc880d7690509e7f70c",
+        "mutation_id": "neg_004_switch_metric_missing",
+        "source_catalog_certification_path": "negative_variants/neg_004_switch_metric_missing/certification.json",
+        "trigger_condition": "switch_metric_missing",
+        "violated_property_ids": [
+          "P_EXPOSE_A_SWITCH_EVENT_ON_SWITCH"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_005_valid_flag_missing/certification.json",
+        "certification_sha256": "5f821ad55e3f1ff24a0c86bd78a18f6f94ea4f7c454757c7f8620ae3a322a02c",
+        "fault_class": "valid_flag_missing",
+        "mutation_bundle_sha256": "d4b567b8870baf591c659fd871ca89f3c33251ce5df434030d47b81bb83e62bd",
+        "mutation_id": "neg_005_valid_flag_missing",
+        "source_catalog_certification_path": "negative_variants/neg_005_valid_flag_missing/certification.json",
+        "trigger_condition": "valid_flag_missing",
+        "violated_property_ids": [
+          "P_ASSERT_VALID_AFTER_THE_SELECTED_SOURCE"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_001_glitchless_wait_missing/certification.json",
+        "certification_sha256": "89e4db8045fd5f503138fa633e42f9dc5fec2626a898ad2f4a3f0f9f28c593cb",
+        "fault_class": "glitchless_wait_missing",
+        "mutation_bundle_sha256": "fac4bf245b0b5ed5587381877fc612a33f0a51fee02d47b6d0734d74ed77ad5e",
+        "mutation_id": "neg_001_glitchless_wait_missing",
+        "source_catalog_certification_path": "negative_variants/neg_001_glitchless_wait_missing/certification.json",
+        "trigger_condition": "glitchless_wait_missing",
+        "violated_property_ids": [
+          "P_ON_RESET_OR_WHEN_DISABLED_DRIVE"
+        ]
+      }
+    ],
+    "bugfix_seed": "neg_002_selected_source_mapping_wrong",
+    "canonical_dut_id": "322",
+    "hashes": {
+      "mutation_catalog_sha256": "e492aa9ccf08403f377d9a89ebd53b1743736ba7c2001437938c52365201c8e2",
+      "score_deck_sha256": "2381142b6879f80121ef64379da945dcfccf50055457c892aa524987077f016d",
+      "task_certification_sha256": "873bce45c4d916b908e6504bbc4eaca597cc561315e74e146bde3fd5c5a7216a",
+      "task_record_sha256": "0a5cdc3c25ec9cbba7e82add910547f74c99926b7d72a1b53b05a150d0588bba"
+    },
+    "release_dir": "322-glitchless-clock-mux-selector"
+  }
+}

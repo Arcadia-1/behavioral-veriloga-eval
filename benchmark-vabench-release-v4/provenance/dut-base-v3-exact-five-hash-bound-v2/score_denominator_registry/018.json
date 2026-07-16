@@ -1,0 +1,84 @@
+{
+  "family_id": "018",
+  "schema_version": "v4-score-denominator-family-registry-v1",
+  "task": {
+    "active_mutation_count": 5,
+    "active_mutations": [
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_001_boundary/certification.json",
+        "certification_sha256": "7dea76c5ac66271866cc98ae3196f4fcc22ff91b4d12b8c8fa54ad34b850f555",
+        "fault_class": "boundary_semantic_error",
+        "mutation_bundle_sha256": "d8fb2952c5b5bb0a14101c40adbdd23bcbafc8f37359306f2470d30c6c42f102",
+        "mutation_id": "neg_001_boundary",
+        "source_catalog_certification_path": "negative_variants/neg_001_boundary/certification.json",
+        "trigger_condition": "a public endpoint, threshold, saturation, or settling boundary is exercised",
+        "violated_property_ids": [
+          "P_FULL_SCALE",
+          "P_UNIT_ELEMENT_WEIGHT"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_003_polarity_direction/certification.json",
+        "certification_sha256": "1f2d577d4714c3fa130b4c4bafc78b580f457561d0e7c5294052c5666ec930a0",
+        "fault_class": "polarity_or_direction_error",
+        "mutation_bundle_sha256": "4cd446a20f84c8012cfdbc9caf0352d9b618846849404e96b3fd011335769183",
+        "mutation_id": "neg_003_polarity_direction",
+        "source_catalog_certification_path": "negative_variants/neg_003_polarity_direction/certification.json",
+        "trigger_condition": "positive/negative path, feedback direction, I/Q polarity, or trim direction is exercised",
+        "violated_property_ids": [
+          "P_COUNT_MONOTONICITY",
+          "P_FULL_SCALE",
+          "P_ZERO_SCALE"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_004_state_reset/certification.json",
+        "certification_sha256": "621da36d0e85bc8f2a7f19c114a486a5f3977b9d8fc23a044dfe91c06af798b7",
+        "fault_class": "state_reset_or_enable_error",
+        "mutation_bundle_sha256": "1ea389d5100c7886afaa9bc8ac7dbf9cb42f6fedd350e65f77f855793747c5e9",
+        "mutation_id": "neg_004_state_reset",
+        "source_catalog_certification_path": "negative_variants/neg_004_state_reset/certification.json",
+        "trigger_condition": "reset, enable, initial-condition, done, or ready behavior is exercised",
+        "violated_property_ids": [
+          "P_FULL_SCALE",
+          "P_PERMUTATION_INVARIANCE",
+          "P_UNIT_ELEMENT_WEIGHT"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_005_metric_writeout/certification.json",
+        "certification_sha256": "e7876b2475d2d1f142afb88c6e79b7e2693547679c4404f64de9aa47d9e69e31",
+        "fault_class": "metric_or_measurement_error",
+        "mutation_bundle_sha256": "88d4266f9fa1293a785711af0d1534a9e98eacd749d78d65e8b00f4f2581c9c6",
+        "mutation_id": "neg_005_metric_writeout",
+        "source_catalog_certification_path": "negative_variants/neg_005_metric_writeout/certification.json",
+        "trigger_condition": "a public metric, latency, count, or measurement output is observed",
+        "violated_property_ids": [
+          "P_FULL_SCALE",
+          "P_UNIT_ELEMENT_WEIGHT"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_002_timing_window/certification.json",
+        "certification_sha256": "63e5183ca280a9b53baf03043b6b5390e034a83d5270f44b6671dfd0f6f30b18",
+        "fault_class": "timing_window_error",
+        "mutation_bundle_sha256": "5688e1261773d0d48acb57b384e0b5adae0d74c43d30d51733f14e12c164e5cc",
+        "mutation_id": "neg_002_timing_window",
+        "source_catalog_certification_path": "negative_variants/neg_002_timing_window/certification.json",
+        "trigger_condition": "a public edge, timer, sample, lock, or reacquire window is exercised",
+        "violated_property_ids": [
+          "P_UNIT_ELEMENT_WEIGHT"
+        ]
+      }
+    ],
+    "bugfix_seed": "neg_001_boundary",
+    "canonical_dut_id": "018",
+    "hashes": {
+      "mutation_catalog_sha256": "ec187fbf9ca644fef9f740e5ca920d4f01e2d8945e913a8aab0ded66014399da",
+      "score_deck_sha256": "624a5c132bfee6b453380d74360a602fef5a56311935191b5bc7bf057e8a1270",
+      "task_certification_sha256": "619a6dc638e89bdf27870256476f070c7a83ea11f32dbcb767b24c89b62439b0",
+      "task_record_sha256": "c4666d1328a87c292556fd8dfa0af2436ee20ee41f8840a8a2a92d527760dcd6"
+    },
+    "release_dir": "018-unit-element-thermometer-dac"
+  }
+}

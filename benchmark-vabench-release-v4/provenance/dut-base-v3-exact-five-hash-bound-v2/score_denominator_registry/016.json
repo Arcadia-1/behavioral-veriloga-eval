@@ -1,0 +1,80 @@
+{
+  "family_id": "016",
+  "schema_version": "v4-score-denominator-family-registry-v1",
+  "task": {
+    "active_mutation_count": 5,
+    "active_mutations": [
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_002_passthrough_update/certification.json",
+        "certification_sha256": "3706f7afbb937739d94b98a7aec692f681215a2b2d2723694962d34d30f47f00",
+        "fault_class": "step_limit_bypass",
+        "mutation_bundle_sha256": "1db6a51f8e0530f733017e91e49e6a930cfaf92015f391661f89a414d671e958",
+        "mutation_id": "neg_002_passthrough_update",
+        "source_catalog_certification_path": "negative_variants/neg_002_passthrough_update/certification.json",
+        "trigger_condition": "vin steps by more than step between two timer updates",
+        "violated_property_ids": [
+          "P_BIDIRECTIONAL_STEP_LIMIT"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_001_stuck_zero/certification.json",
+        "certification_sha256": "4a9376136635bac96a76f6f1907be0864f3183986fc354bdea68500a8558ec52",
+        "fault_class": "stuck_output",
+        "mutation_bundle_sha256": "617c3b67822e9d9db303b838517727aff42150d95f5c6560a67ab2a2e421deff",
+        "mutation_id": "neg_001_stuck_zero",
+        "source_catalog_certification_path": "negative_variants/neg_001_stuck_zero/certification.json",
+        "trigger_condition": "vin remains above the initial output across periodic updates",
+        "violated_property_ids": [
+          "P_EVENTUAL_TRACKING",
+          "P_NEAR_TARGET_SETTLE"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_006_wrong_initial_state/certification.json",
+        "certification_sha256": "b43de7af46de165464e46bd0d39e9cbbcaa6f2b595c68e09566ad75e14fb450b",
+        "fault_class": "initial_state_error",
+        "mutation_bundle_sha256": "abd1c075d01c152a97739ee25dcb3497c196ddd73e5009d1d13baae704a9d485",
+        "mutation_id": "neg_006_wrong_initial_state",
+        "source_catalog_certification_path": "negative_variants/neg_006_wrong_initial_state/certification.json",
+        "trigger_condition": "the simulation begins before the first 1 ns timer update",
+        "violated_property_ids": [
+          "P_INITIAL_ZERO"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_007_wrong_update_period/certification.json",
+        "certification_sha256": "14ce2f47aa8b90e186e20ee9ababc44b53e187058b92be8a6882fbfefed726cb",
+        "fault_class": "update_period_error",
+        "mutation_bundle_sha256": "059e89b9911c4babde480fe9c0d520051918cc91abc65f099f79fb61897f0680",
+        "mutation_id": "neg_007_wrong_update_period",
+        "source_catalog_certification_path": "negative_variants/neg_007_wrong_update_period/certification.json",
+        "trigger_condition": "the 1 ns public update schedule advances the output state",
+        "violated_property_ids": [
+          "P_PERIODIC_UPDATE"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_003_inverted_slew_direction/certification.json",
+        "certification_sha256": "d62d4ad83f916383496297abca05eb264d96407fc1c40fa4bb2ae1e745f9aeb7",
+        "fault_class": "response_direction_inversion",
+        "mutation_bundle_sha256": "2e935e4f9cfabc196c6d0373c9bc72a142e3ec412a05a4f15d3eb124573932ad",
+        "mutation_id": "neg_003_inverted_slew_direction",
+        "source_catalog_certification_path": "negative_variants/neg_003_inverted_slew_direction/certification.json",
+        "trigger_condition": "vin is separated from the current output by more than step",
+        "violated_property_ids": [
+          "P_BIDIRECTIONAL_STEP_LIMIT",
+          "P_EVENTUAL_TRACKING"
+        ]
+      }
+    ],
+    "bugfix_seed": "neg_002_passthrough_update",
+    "canonical_dut_id": "016",
+    "hashes": {
+      "mutation_catalog_sha256": "b08f7439620c2fafdb6c1d46f6516cafaf6c77081059975050d90e86a246cf19",
+      "score_deck_sha256": "e1d4bd80b69d350dd44c6717fa0bc2242118daf4f18ddfe66111cfcf3e76d078",
+      "task_certification_sha256": "983580123ddf774d3620cbfbc4ffba2579ad94e74fba482a171080006a183b2a",
+      "task_record_sha256": "ad7a6a70db4a2b4c34931c2626d1ce0eba493118096f7262756dfb049bf71232"
+    },
+    "release_dir": "016-slew-rate-limiter"
+  }
+}

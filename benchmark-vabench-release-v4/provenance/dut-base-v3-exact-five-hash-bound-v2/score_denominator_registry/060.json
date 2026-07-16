@@ -1,0 +1,78 @@
+{
+  "family_id": "060",
+  "schema_version": "v4-score-denominator-family-registry-v1",
+  "task": {
+    "active_mutation_count": 5,
+    "active_mutations": [
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_001_zero/certification.json",
+        "certification_sha256": "b662f8bb4be1ac0b2e5e6736cdd6691ee42ce3e351b90089f65d5e6ba1bce87e",
+        "fault_class": "zero",
+        "mutation_bundle_sha256": "909e63a9c0c9cdc7139097444b8d543fcc4a53166e51ad2bb5ffacf3b5701b8f",
+        "mutation_id": "neg_001_zero",
+        "source_catalog_certification_path": "negative_variants/neg_001_zero/certification.json",
+        "trigger_condition": "never reports duty",
+        "violated_property_ids": [
+          "P_COMPLETE_CYCLE_MEASUREMENT"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_002_period_code/certification.json",
+        "certification_sha256": "4726e45edfd7e529aa0bb61afd8567d445d271bbe06b74fceb23d63479e17dc1",
+        "fault_class": "period_code",
+        "mutation_bundle_sha256": "ad43b140f06c4635d40c83bcd428ce400b34a9defbc936c3295c2d61bb31411a",
+        "mutation_id": "neg_002_period_code",
+        "source_catalog_certification_path": "negative_variants/neg_002_period_code/certification.json",
+        "trigger_condition": "reports period instead of duty",
+        "violated_property_ids": [
+          "P_HIGH_FRACTION_CODE"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_004_no_valid/certification.json",
+        "certification_sha256": "f345d27cb0e51d0d57ffcff2153a0c3cdee2589d0a34fd096a28441c0193b907",
+        "fault_class": "no_valid",
+        "mutation_bundle_sha256": "e7c902f5f112baa1a99eafa72a302d92c988d4673b9d481e078d99365898c7e5",
+        "mutation_id": "neg_004_no_valid",
+        "source_catalog_certification_path": "negative_variants/neg_004_no_valid/certification.json",
+        "trigger_condition": "does not assert valid",
+        "violated_property_ids": [
+          "P_VALID_HOLD"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_005_constant_half/certification.json",
+        "certification_sha256": "ab720d15447c08bd7667ad042cc096eb26eb2f1d22f5835ce35dcfe8600ac5de",
+        "fault_class": "constant_half",
+        "mutation_bundle_sha256": "73e381e633ef7a49aae44882608f9f70d776b685b729aaa7362614c867590d9b",
+        "mutation_id": "neg_005_constant_half",
+        "source_catalog_certification_path": "negative_variants/neg_005_constant_half/certification.json",
+        "trigger_condition": "always reports half duty",
+        "violated_property_ids": [
+          "P_BIT_ORDER_AND_LEVELS"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_003_inverted/certification.json",
+        "certification_sha256": "58c3ce68f3ea88bb81aed2fc2944f91b8f00492267404489eaaf0410cb00bd23",
+        "fault_class": "inverted",
+        "mutation_bundle_sha256": "2d931d6fb0c575f5b5f77505696a88ba1f7c66598f6e5fbb52c01b5d6f9e3281",
+        "mutation_id": "neg_003_inverted",
+        "source_catalog_certification_path": "negative_variants/neg_003_inverted/certification.json",
+        "trigger_condition": "reports low-time ratio",
+        "violated_property_ids": [
+          "P_CODE_SATURATION"
+        ]
+      }
+    ],
+    "bugfix_seed": "neg_001_zero",
+    "canonical_dut_id": "060",
+    "hashes": {
+      "mutation_catalog_sha256": "fda5bb961033e4daae7089565658e4bfb2f8f4629d2c3de2e10eee0b1985365e",
+      "score_deck_sha256": "89638420e8b1d299ef8830315e7bef569f52a0e05db95d51e1facc006cb3e72c",
+      "task_certification_sha256": "badee157c4f18bc199d310ec927260b20661f8b876ff5dc22ce99081c6cea9a2",
+      "task_record_sha256": "a4166dff958da38d67a237b55616d00247b0034aaf060b532bfe72c155ac660d"
+    },
+    "release_dir": "060-duty-cycle-meter-8b"
+  }
+}

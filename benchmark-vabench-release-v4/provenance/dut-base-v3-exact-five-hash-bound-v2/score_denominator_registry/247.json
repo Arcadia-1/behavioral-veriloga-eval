@@ -1,0 +1,83 @@
+{
+  "family_id": "247",
+  "schema_version": "v4-score-denominator-family-registry-v1",
+  "task": {
+    "active_mutation_count": 5,
+    "active_mutations": [
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_005_metric_scale_low/certification.json",
+        "certification_sha256": "34098535e471d517b665f281370d8e76b60f8aa2d53a62525f7326eb204a0c6a",
+        "fault_class": "metric_or_observable_fault",
+        "mutation_bundle_sha256": "ca8503e1a1e126245a5e0aaab544e304cc1100c39341b5d6afe4642dfc421554",
+        "mutation_id": "neg_005_metric_scale_low",
+        "source_catalog_certification_path": "negative_variants/neg_005_metric_scale_low/certification.json",
+        "trigger_condition": "Scales the rail-coded match output by the wrong output gain.",
+        "violated_property_ids": [
+          "P_COMPARE_THE_ANALOG_VOLTAGE_DIFFERENCE_DIRECTLY",
+          "P_USE_DETERMINISTIC_VOLTAGE_DOMAIN_VERILOG_A"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_003_signed_comparator/certification.json",
+        "certification_sha256": "a7ff54ad5d09c8696e853c275bd7d5057012bb7cabac2de67add40eb2143c989",
+        "fault_class": "timing_or_state_update_fault",
+        "mutation_bundle_sha256": "70871190f166571dddfef19c0822fab5516cbc3555ba22c8a5a9bcd82e6db1a3",
+        "mutation_id": "neg_003_signed_comparator",
+        "source_catalog_certification_path": "negative_variants/neg_003_signed_comparator/certification.json",
+        "trigger_condition": "Uses a signed greater-than comparator instead of an absolute voltage-difference window.",
+        "violated_property_ids": [
+          "P_COMPARE_THE_ANALOG_VOLTAGE_DIFFERENCE_DIRECTLY",
+          "P_TR_20_PS_FROM_0_INF"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_001_zero/certification.json",
+        "certification_sha256": "98efcab8f176c21fec6988ba9cc323e5ce05f3922460674017dc9c74a06ab091",
+        "fault_class": "zero_stub_output",
+        "mutation_bundle_sha256": "8314850e7da8e131125c072429c3ef795e943bebbe5548ca86324bd61802c446",
+        "mutation_id": "neg_001_zero",
+        "source_catalog_certification_path": "negative_variants/neg_001_zero/certification.json",
+        "trigger_condition": "Keeps the output at its trivial zero behavior and therefore fails the stable waveform contract.",
+        "violated_property_ids": [
+          "P_COMPARE_THE_ANALOG_VOLTAGE_DIFFERENCE_DIRECTLY",
+          "P_MATCH_TOL_0_05_V_FROM"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_002_threshold_xnor/certification.json",
+        "certification_sha256": "7439880dee52470f05c2dc429bc274915c3dfe9f68d22ef18c73f99ff0946734",
+        "fault_class": "threshold_or_boundary_fault",
+        "mutation_bundle_sha256": "e7d428940fcd39b538892d093673de9d58fa24894e6b223bf50cb18027438688",
+        "mutation_id": "neg_002_threshold_xnor",
+        "source_catalog_certification_path": "negative_variants/neg_002_threshold_xnor/certification.json",
+        "trigger_condition": "Uses an overly tight analog match_tol so near-match inputs fail while still passing digital-threshold cases.",
+        "violated_property_ids": [
+          "P_COMPARE_THE_ANALOG_VOLTAGE_DIFFERENCE_DIRECTLY",
+          "P_VH_0_9_V_MATCH_OUTPUT"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_004_wrong_tolerance/certification.json",
+        "certification_sha256": "02cf95cd509edd2ba86b585f6a35b625127f63e45bbbef0987a89d2a6edd35c5",
+        "fault_class": "timing_or_state_update_fault",
+        "mutation_bundle_sha256": "dc372b7b4c2df95c34578b31de7e057fcae0d53987c62a6f7aa67483e6c20063",
+        "mutation_id": "neg_004_wrong_tolerance",
+        "source_catalog_certification_path": "negative_variants/neg_004_wrong_tolerance/certification.json",
+        "trigger_condition": "Uses a much wider match window than the public tolerance contract.",
+        "violated_property_ids": [
+          "P_COMPARE_THE_ANALOG_VOLTAGE_DIFFERENCE_DIRECTLY",
+          "P_MATCH_TOL_0_05_V_FROM_2"
+        ]
+      }
+    ],
+    "bugfix_seed": "neg_005_metric_scale_low",
+    "canonical_dut_id": "247",
+    "hashes": {
+      "mutation_catalog_sha256": "b72fc829810591eecef043c2ced43b9fb7c30ea100fbaaab2c112d415b0c5d83",
+      "score_deck_sha256": "ea40081c52e870a989b868e7c61abc4d4b5bc4a929498a3cce0f46a5d78cf580",
+      "task_certification_sha256": "f246edab83a94dd3309ff34f6c8d2b7e392891d78b2cd6387bf43f253f8b8922",
+      "task_record_sha256": "9747b1a154d6117bced24dcaf9b5e22e5273ee5b4eadd45a6d48b5dd87120146"
+    },
+    "release_dir": "247-voltage-match-window"
+  }
+}

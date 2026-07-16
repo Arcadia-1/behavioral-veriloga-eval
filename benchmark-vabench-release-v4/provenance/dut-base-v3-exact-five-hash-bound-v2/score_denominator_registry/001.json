@@ -1,0 +1,78 @@
+{
+  "family_id": "001",
+  "schema_version": "v4-score-denominator-family-registry-v1",
+  "task": {
+    "active_mutation_count": 5,
+    "active_mutations": [
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_001_swap_outputs/certification.json",
+        "certification_sha256": "218b4633647f2eec690af2a9dd6bbffadb161d49439051859f16447ef69518a7",
+        "fault_class": "direction_swap",
+        "mutation_bundle_sha256": "c58a202b4a7b2acefba1ac600df1e041d439f212cab6606b2ac34f9d10b908d8",
+        "mutation_id": "neg_001_swap_outputs",
+        "source_catalog_certification_path": "negative_variants/neg_001_swap_outputs/certification.json",
+        "trigger_condition": "data leads or lags clk",
+        "violated_property_ids": [
+          "P_DIRECTION"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_003_never_clears_on_clock/certification.json",
+        "certification_sha256": "a213b670d14adee2d7d43b2c9273ed86053f022dcd8216b35554a3d746fadca9",
+        "fault_class": "missing_clock_clear",
+        "mutation_bundle_sha256": "1031a9f0b2d88e93e3d14e9b04048ef182f6e282e209747425b09b3552e1ba8f",
+        "mutation_id": "neg_003_never_clears_on_clock",
+        "source_catalog_certification_path": "negative_variants/neg_003_never_clears_on_clock/certification.json",
+        "trigger_condition": "clk rising edge follows an asserted decision pulse",
+        "violated_property_ids": [
+          "P_PULSE_CLEAR"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_004_both_outputs_on_direction/certification.json",
+        "certification_sha256": "fe8f9a59944275c054bbf19b6c2a042b2cfab6a303d6c663f77ad59f35c7e124",
+        "fault_class": "nonexclusive_outputs",
+        "mutation_bundle_sha256": "016c8a00d180ad667ec4cdee11e7a71e565fdedc630e716ccc0707415f154063",
+        "mutation_id": "neg_004_both_outputs_on_direction",
+        "source_catalog_certification_path": "negative_variants/neg_004_both_outputs_on_direction/certification.json",
+        "trigger_condition": "a directional phase event occurs",
+        "violated_property_ids": [
+          "P_MUTUAL_EXCLUSION"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_006_weak_high_level/certification.json",
+        "certification_sha256": "3b4fa72a5ef00f0295c61f2cf82aaa30844443ca45677cf081c27006aa001353",
+        "fault_class": "weak_logic_high",
+        "mutation_bundle_sha256": "02f50ecc1790a0885e6b1687c458d176a379c4affffb89e9fc327b352e51986c",
+        "mutation_id": "neg_006_weak_high_level",
+        "source_catalog_certification_path": "negative_variants/neg_006_weak_high_level/certification.json",
+        "trigger_condition": "either direction output is asserted",
+        "violated_property_ids": [
+          "P_RAIL_LEVELS"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_005_retimed_ignored/certification.json",
+        "certification_sha256": "88b77fa551b343ed9b0f1fad65eeba6aaf17a45d2663440dbeb9415a0afe055e",
+        "fault_class": "missing_retimed_direction",
+        "mutation_bundle_sha256": "03fcc22580523b2d7172d68db4baaa48fa3799f2b5b4241867cd65705cc60f09",
+        "mutation_id": "neg_005_retimed_ignored",
+        "source_catalog_certification_path": "negative_variants/neg_005_retimed_ignored/certification.json",
+        "trigger_condition": "retimed data changes phase ordering",
+        "violated_property_ids": [
+          "P_DIRECTION"
+        ]
+      }
+    ],
+    "bugfix_seed": "neg_001_swap_outputs",
+    "canonical_dut_id": "001",
+    "hashes": {
+      "mutation_catalog_sha256": "1fa563bf0aee87b0bb982ef90bb9e36309a8564f1c411c2f4a46edbe73a42478",
+      "score_deck_sha256": "10051f3b2ff95ad882a799090da345bfd6d8c1567870e3b1e5aca8d21e826cc8",
+      "task_certification_sha256": "60654c175bf3fb8b3924bb0ac3ecd4a951b782ebf23a2a2d538f9667531d189c",
+      "task_record_sha256": "2c164b2d05e0761b75c156f6f53f3259f0d9f82d8b015fe3f2b5b28cd2065fd6"
+    },
+    "release_dir": "001-bang-bang-phase-detector"
+  }
+}

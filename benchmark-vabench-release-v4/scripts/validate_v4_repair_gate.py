@@ -6,11 +6,18 @@ import argparse
 import hashlib
 import json
 import re
+import sys
 from pathlib import Path
 from typing import Any
 
 
 ROOT = Path(__file__).resolve().parents[1]
+PREP = ROOT / "operations" / "tri_form_derivation_prep"
+if str(PREP) not in sys.path:
+    sys.path.insert(0, str(PREP))
+
+from score_denominator_registry import load_score_denominator_registry  # noqa: E402
+
 DEFAULT_SOURCE = ROOT / "provenance" / "dut-base-v3-exact-five-hash-bound-v2"
 FORBIDDEN_DIAGNOSTIC_MARKERS = (
     "/private/",
@@ -29,13 +36,6 @@ def read_json(path: Path) -> dict[str, Any]:
 
 def file_sha(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
-
-
-def canonical_sha(payload: dict[str, Any]) -> str:
-    value = dict(payload)
-    value.pop("content_sha256", None)
-    encoded = json.dumps(value, sort_keys=True, separators=(",", ":"), ensure_ascii=True)
-    return hashlib.sha256(encoded.encode("utf-8")).hexdigest()
 
 
 def display_path(path: Path) -> str:
@@ -317,8 +317,8 @@ def validate_hashes(
         add_failure(
             failures,
             family,
-            "score_denominator_manifest",
-            "expected one denominator row for family",
+            "score_denominator_registry",
+            "expected one registry row for family",
             {"row_count": len(rows)},
         )
         return
@@ -337,8 +337,8 @@ def validate_hashes(
         add_failure(
             failures,
             family,
-            "score_denominator_manifest",
-            "denominator row hashes are stale",
+            "score_denominator_registry",
+            "registry row hashes are stale",
             stale,
         )
 
@@ -364,17 +364,7 @@ def validate_family(
 
 def audit(source: Path, families: list[str]) -> dict[str, Any]:
     failures: list[dict[str, Any]] = []
-    manifest = read_json(source / "score_denominator_manifest.json")
-    manifest_sha = canonical_sha(manifest)
-    if manifest.get("content_sha256") != manifest_sha:
-        failures.append(
-            {
-                "family_id": "*",
-                "check": "score_denominator_manifest",
-                "message": "manifest content_sha256 is stale",
-                "details": {"recorded": manifest.get("content_sha256"), "actual": manifest_sha},
-            }
-        )
+    manifest = load_score_denominator_registry(source)
     for family in families:
         validate_family(failures, source, family, manifest)
     return {
@@ -392,7 +382,7 @@ def audit(source: Path, families: list[str]) -> dict[str, Any]:
             "trace_coverage",
             "structured_redacted_diagnostics",
             "task_record_hashes",
-            "score_denominator_manifest_hashes",
+            "score_denominator_registry_hashes",
         ],
     }
 

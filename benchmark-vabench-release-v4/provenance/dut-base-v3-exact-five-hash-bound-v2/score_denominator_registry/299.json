@@ -1,0 +1,78 @@
+{
+  "family_id": "299",
+  "schema_version": "v4-score-denominator-family-registry-v1",
+  "task": {
+    "active_mutation_count": 5,
+    "active_mutations": [
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_002_drive_metric_zero/certification.json",
+        "certification_sha256": "94e134fb6d7700933816d95c7a8318e2480f2abb95bf2933ab3ab5f4af8a7df0",
+        "fault_class": "zero_stub_output",
+        "mutation_bundle_sha256": "c5a8f269efef0109354f121c6d06217dc575468a49db9b447dd40c510635e86d",
+        "mutation_id": "neg_002_drive_metric_zero",
+        "source_catalog_certification_path": "negative_variants/neg_002_drive_metric_zero/certification.json",
+        "trigger_condition": "Sine VCO With Idtmod And Bound Step: keeps a plausible sine on out but drives the wrapped-phase metric to zero so the metric trace fails the phase check.",
+        "violated_property_ids": [
+          "P_PHASE_Q_IDTMOD_FREQ_Q_0"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_003_output_phase_shifted/certification.json",
+        "certification_sha256": "aef47d22d1c26b1fe90ef2a0e913dc49749954f416deecc44be76aadfaf36f01",
+        "fault_class": "output_phase_shifted",
+        "mutation_bundle_sha256": "92f134479593939b3944b535dc13e6249232c60c5536575f9509853942def06e",
+        "mutation_id": "neg_003_output_phase_shifted",
+        "source_catalog_certification_path": "negative_variants/neg_003_output_phase_shifted/certification.json",
+        "trigger_condition": "Sine VCO With Idtmod And Bound Step: adds a quarter-cycle phase shift to the output so the reintegrated-phase check fails at every sampled point.",
+        "violated_property_ids": [
+          "P_OUT_VCO_AMP_SIN_M_TWO"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_004_gain_sign_flipped/certification.json",
+        "certification_sha256": "fbbcf1bd7a3d1ab64813ac27069731e1b8705c081aa5fbd6e6727d1a94313ae9",
+        "fault_class": "timing_or_state_update_fault",
+        "mutation_bundle_sha256": "1a8cbda0b0e0fcf0b2e468e334cdbd6bd3975c940a573e27ee1ee0ed581f582b",
+        "mutation_id": "neg_004_gain_sign_flipped",
+        "source_catalog_certification_path": "negative_variants/neg_004_gain_sign_flipped/certification.json",
+        "trigger_condition": "Sine VCO With Idtmod And Bound Step: flips the vco_gain sign so the output frequency moves the wrong way with vin and the reintegrated phase diverges.",
+        "violated_property_ids": [
+          "P_METRIC_VCO_AMP_PHASE_Q_VOLTAGE"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_005_output_scale_low/certification.json",
+        "certification_sha256": "7c0f363439f1fe09d37094c203f61d195f95bda7364f9b5325625945967a44a0",
+        "fault_class": "metric_or_observable_fault",
+        "mutation_bundle_sha256": "82af7f4c4a5e29e3f27ea6c94c11e3b1efeead824a2a225b15c3aa99a02accfd",
+        "mutation_id": "neg_005_output_scale_low",
+        "source_catalog_certification_path": "negative_variants/neg_005_output_scale_low/certification.json",
+        "trigger_condition": "Sine VCO With Idtmod And Bound Step: halves the output amplitude leaving the sine shape plausible while calibrated amplitude checks fail.",
+        "violated_property_ids": [
+          "P_CALL_BOUND_STEP_1_0_VCO"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_001_drive_out_zero/certification.json",
+        "certification_sha256": "3369ebd1a6d912e49ff39f6a4784f8e2433ad9e4e5141984981211cea1c872b4",
+        "fault_class": "zero_stub_output",
+        "mutation_bundle_sha256": "254ef61c7c8c35a2e4669a6867f15169f3aeb93288f261c5f54961c8896dbcb4",
+        "mutation_id": "neg_001_drive_out_zero",
+        "source_catalog_certification_path": "negative_variants/neg_001_drive_out_zero/certification.json",
+        "trigger_condition": "Sine VCO With Idtmod And Bound Step: keeps the sin() term but multiplies it by zero so the out trace is flat and fails the reintegrated-phase check.",
+        "violated_property_ids": [
+          "P_FREQ_Q_CENTER_FREQ_VCO_GAIN"
+        ]
+      }
+    ],
+    "bugfix_seed": "neg_002_drive_metric_zero",
+    "canonical_dut_id": "299",
+    "hashes": {
+      "mutation_catalog_sha256": "84283947c8f51f4029bd1f93857e2a34dcc34753e83b560f55e37b9b28491f5d",
+      "score_deck_sha256": "6cf7c53faf2d8b8e9907843c494fe205815d8543175ffc9b4165f56ad5295535",
+      "task_certification_sha256": "245420738c79f6cd957ed4cb8e92f4ac50562e39ca33495ef52b1ab095ad3bb3",
+      "task_record_sha256": "40e67a7e9ffb07061bc2757a3b244a4c3cdbd7f0eb116804096899bd71f86240"
+    },
+    "release_dir": "299-sine-vco-idtmod-bound-step"
+  }
+}

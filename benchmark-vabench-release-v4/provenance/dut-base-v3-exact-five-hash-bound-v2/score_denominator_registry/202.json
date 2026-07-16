@@ -1,0 +1,78 @@
+{
+  "family_id": "202",
+  "schema_version": "v4-score-denominator-family-registry-v1",
+  "task": {
+    "active_mutation_count": 5,
+    "active_mutations": [
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_002_half_clk_sar/certification.json",
+        "certification_sha256": "d36eaa5848802f7ad2a6cbeab6c400fe0802f63f0ddf26586c1b0adf9606d65e",
+        "fault_class": "timing_or_state_update_fault",
+        "mutation_bundle_sha256": "61f70581d9c301e6412aeb71e16aed76fbda47cf976047af5dd5e87b3f339340",
+        "mutation_id": "neg_002_half_clk_sar",
+        "source_catalog_certification_path": "negative_variants/neg_002_half_clk_sar/certification.json",
+        "trigger_condition": "Drives SAR clock pulses at half amplitude.",
+        "violated_property_ids": [
+          "P_GENERATE_A_REPEATING_32_NS_COMPACT"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_003_swap_sar_res/certification.json",
+        "certification_sha256": "30bd468133dcafa0a695b5eba43dfb8b877c146d5c5bc82df56857a2e9ac5186",
+        "fault_class": "polarity_or_direction_error",
+        "mutation_bundle_sha256": "8fb844c6969b7587d18adb807d2ae91bab89021123855f56adcbde602ea16efd",
+        "mutation_id": "neg_003_swap_sar_res",
+        "source_catalog_certification_path": "negative_variants/neg_003_swap_sar_res/certification.json",
+        "trigger_condition": "Swaps SAR and residue-phase output routing.",
+        "violated_property_ids": [
+          "P_GENERATE_A_REPEATING_32_NS_COMPACT"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_001_zero/certification.json",
+        "certification_sha256": "3836be1f2f5ebf12f70b958cf0161c80027809d659aba2dbe0cb679d4315c304",
+        "fault_class": "zero_stub_output",
+        "mutation_bundle_sha256": "36edac5cbe24b38a006673a8e860db5f8376dbcc565cf75342169b58a2effd87",
+        "mutation_id": "neg_001_zero",
+        "source_catalog_certification_path": "negative_variants/neg_001_zero/certification.json",
+        "trigger_condition": "Drives zero output and therefore fails the stable waveform contract.",
+        "violated_property_ids": [
+          "P_GENERATE_A_REPEATING_32_NS_COMPACT"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_004_missing_zoom_clock/certification.json",
+        "certification_sha256": "adae94631fec45a4536431990d553803bdf658db2b0e35e1ec3b4c58ab157b7f",
+        "fault_class": "timing_or_state_update_fault",
+        "mutation_bundle_sha256": "4490106aca84247ca05f3b71d1c16ab4a3713add3457abb5df97e9f8877c9926",
+        "mutation_id": "neg_004_missing_zoom_clock",
+        "source_catalog_certification_path": "negative_variants/neg_004_missing_zoom_clock/certification.json",
+        "trigger_condition": "Suppresses the zoom clock output.",
+        "violated_property_ids": [
+          "P_GENERATE_A_REPEATING_32_NS_COMPACT"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_005_metric_scale_low/certification.json",
+        "certification_sha256": "6de57d3d83b814c7ffea21a77570f9500695898c35e4bfb177a1e0ee40103ec3",
+        "fault_class": "timing_or_state_update_fault",
+        "mutation_bundle_sha256": "a81996dd3fe3a271999fd49cd07042d94e585eee3db623e31c704a9de9966cf8",
+        "mutation_id": "neg_005_metric_scale_low",
+        "source_catalog_certification_path": "negative_variants/neg_005_metric_scale_low/certification.json",
+        "trigger_condition": "ADC Zoom Timing Sequencer: scales the metric output, preserving the main path while failing measurement checks.",
+        "violated_property_ids": [
+          "P_GENERATE_A_REPEATING_32_NS_COMPACT"
+        ]
+      }
+    ],
+    "bugfix_seed": "neg_002_half_clk_sar",
+    "canonical_dut_id": "202",
+    "hashes": {
+      "mutation_catalog_sha256": "4193a5bf63ed754d7131c3fcc83a6ddd2fe133d511c5dc488ff8903606469670",
+      "score_deck_sha256": "6814af9104b66624588b6dbb50cacfc19a467382c45dbf6a35094a6381e6bcc0",
+      "task_certification_sha256": "710d3901588c68396b4d026468645cacada80bde0d8296cd5fc138b297bcb816",
+      "task_record_sha256": "21a4499ce3ae743b31a7d551b2612748d7ff37e055dc790370b8e61ba61088ef"
+    },
+    "release_dir": "202-adc-zoom-timing-sequencer"
+  }
+}

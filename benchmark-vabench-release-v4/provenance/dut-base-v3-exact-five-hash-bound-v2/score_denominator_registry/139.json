@@ -1,0 +1,79 @@
+{
+  "family_id": "139",
+  "schema_version": "v4-score-denominator-family-registry-v1",
+  "task": {
+    "active_mutation_count": 5,
+    "active_mutations": [
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_004_wrong_common_mode/certification.json",
+        "certification_sha256": "8ee6738cc050f720d7cdb44e8760311c9475f8af947bb5d484f98e10761751f3",
+        "fault_class": "zero_stub_output",
+        "mutation_bundle_sha256": "c6f28771786982da2fc207259c59661fba400b54330752d761eff06d3ec3288b",
+        "mutation_id": "neg_004_wrong_common_mode",
+        "source_catalog_certification_path": "negative_variants/neg_004_wrong_common_mode/certification.json",
+        "trigger_condition": "Drives outputs around zero common mode.",
+        "violated_property_ids": [
+          "P_FIXED_COMMON_MODE"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_002_half_gain/certification.json",
+        "certification_sha256": "5b567216f35a120ff56b63e12f2d06fe03dc1742d225ba3a789ba4a4ab5317c5",
+        "fault_class": "metric_or_observable_fault",
+        "mutation_bundle_sha256": "92f21b70bd115cf2d39ff6708bdb900f0f9c6e1a202e42e9f0b26a006b53807e",
+        "mutation_id": "neg_002_half_gain",
+        "source_catalog_certification_path": "negative_variants/neg_002_half_gain/certification.json",
+        "trigger_condition": "Uses half the required differential gain.",
+        "violated_property_ids": [
+          "P_DIFFERENTIAL_GAIN_FOUR"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_003_inverted_polarity/certification.json",
+        "certification_sha256": "287326866efe0c02cff3a62bb2d97d2245f82de3d43e17b7622516ed3f1f94a3",
+        "fault_class": "polarity_or_direction_error",
+        "mutation_bundle_sha256": "0d7931783b58ed564ef2da43aed1d03694c49d61feb7ebb5e5b08b717933cb92",
+        "mutation_id": "neg_003_inverted_polarity",
+        "source_catalog_certification_path": "negative_variants/neg_003_inverted_polarity/certification.json",
+        "trigger_condition": "Inverts the differential output polarity.",
+        "violated_property_ids": [
+          "P_OUTPUT_POLARITY"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_001_zero/certification.json",
+        "certification_sha256": "8377ea51f8b539d98cece1647fa11b8f9f726eb3bb25884592f18718499fa998",
+        "fault_class": "zero_stub_output",
+        "mutation_bundle_sha256": "a47b87f426802f91510984a0cc302065065eb68160bb54cc841e0cf1c6044309",
+        "mutation_id": "neg_001_zero",
+        "source_catalog_certification_path": "negative_variants/neg_001_zero/certification.json",
+        "trigger_condition": "Drives zero output and therefore fails the stable waveform contract.",
+        "violated_property_ids": [
+          "P_DIFFERENTIAL_GAIN_FOUR",
+          "P_FIXED_COMMON_MODE"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_005_metric_scale_low/certification.json",
+        "certification_sha256": "ae7a12bfa702c67a05091cf51aea606cb47dc757ddaab6dbd9ec13a5679c6fca",
+        "fault_class": "metric_or_observable_fault",
+        "mutation_bundle_sha256": "cda91db16d03c627b5418c9a36062fbbf4a75b176d03c846b5709bfb88f7d49e",
+        "mutation_id": "neg_005_metric_scale_low",
+        "source_catalog_certification_path": "negative_variants/neg_005_metric_scale_low/certification.json",
+        "trigger_condition": "Ideal Differential Opamp: scales the metric output, preserving the main path while failing measurement checks.",
+        "violated_property_ids": [
+          "P_DIFFERENTIAL_GAIN_FOUR"
+        ]
+      }
+    ],
+    "bugfix_seed": "neg_004_wrong_common_mode",
+    "canonical_dut_id": "139",
+    "hashes": {
+      "mutation_catalog_sha256": "e4d5077ec9c58540b7325250a0ad32a2cfeabd8512487b878ba83e661ba1d916",
+      "score_deck_sha256": "60502352b657427857d87fdaa134bdd3b6b199d1a0a31bb2afaeb6f9a26d4831",
+      "task_certification_sha256": "a0e2e2540aadbd86d3497d0aa5b5419c02500daedc5704378ca14944ad66d0c4",
+      "task_record_sha256": "aff01d3e7214d13bc50ea9ac09411a9ac37cd26d12157ca6927d45ce2dd9e641"
+    },
+    "release_dir": "139-ideal-differential-opamp"
+  }
+}

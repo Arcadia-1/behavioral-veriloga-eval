@@ -1,0 +1,84 @@
+{
+  "family_id": "228",
+  "schema_version": "v4-score-denominator-family-registry-v1",
+  "task": {
+    "active_mutation_count": 5,
+    "active_mutations": [
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_002_stuck_low_on_clock/certification.json",
+        "certification_sha256": "03648721a1ffeaefdb1098efb5dda1f0524aa1ec548336ca198e39cb691499ff",
+        "fault_class": "timing_or_state_update_fault",
+        "mutation_bundle_sha256": "3429802a47a5f1dd45eb1da63db70f7cadf390a6f30f2581ead091021cc4ccd8",
+        "mutation_id": "neg_002_stuck_low_on_clock",
+        "source_catalog_certification_path": "negative_variants/neg_002_stuck_low_on_clock/certification.json",
+        "trigger_condition": "Forces the divider state low on each clock instead of toggling.",
+        "violated_property_ids": [
+          "P_THE_FIRST_VALID_RISING_EDGE_DRIVES",
+          "P_TOGGLE_THE_STATE_ON_EVERY_RISING"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_003_starts_high/certification.json",
+        "certification_sha256": "fd1a34355b86cfa416b5391a9f6d1312bcab32047ced150a8f4ec48df4d76ea2",
+        "fault_class": "starts_high",
+        "mutation_bundle_sha256": "e0cacf23aa5f628a5b3d23ee5ce44ac7e9bdbb88e384910fe68fe81e68879691",
+        "mutation_id": "neg_003_starts_high",
+        "source_catalog_certification_path": "negative_variants/neg_003_starts_high/certification.json",
+        "trigger_condition": "Starts the divide-by-two state high rather than low.",
+        "violated_property_ids": [
+          "P_DRIVE_OUT_LOW_WHEN_THE_STATE",
+          "P_INITIALIZE_THE_INTERNAL_DIVIDER_STATE_LOW",
+          "P_THE_FIRST_VALID_RISING_EDGE_DRIVES"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_005_metric_scale_low/certification.json",
+        "certification_sha256": "b39dfb3b8bb4f3b9886e0ab59efbbf22d46888ec4622f32e89dd545906dd97d4",
+        "fault_class": "metric_or_observable_fault",
+        "mutation_bundle_sha256": "9525227425b5b0bacea23d00a9a670f6b07427ef15a8d82d73e610dfa60b572f",
+        "mutation_id": "neg_005_metric_scale_low",
+        "source_catalog_certification_path": "negative_variants/neg_005_metric_scale_low/certification.json",
+        "trigger_condition": "Divide By Two Toggle: scales the metric output, preserving the main path while failing measurement checks.",
+        "violated_property_ids": [
+          "P_DRIVE_OUT_LOW_WHEN_THE_STATE"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_001_zero/certification.json",
+        "certification_sha256": "58113d163754c186a907113c3c89c136e18ab7f3145bfe7b03556078388aa3b3",
+        "fault_class": "zero_stub_output",
+        "mutation_bundle_sha256": "4e79fc079cce251c5a3f8f79a14115743e4507c78c30c468e7450ef7eea13eca",
+        "mutation_id": "neg_001_zero",
+        "source_catalog_certification_path": "negative_variants/neg_001_zero/certification.json",
+        "trigger_condition": "Keeps the output at its trivial zero behavior and therefore fails the stable waveform contract.",
+        "violated_property_ids": [
+          "P_DRIVE_OUT_LOW_WHEN_THE_STATE",
+          "P_THE_FIRST_VALID_RISING_EDGE_DRIVES",
+          "P_TOGGLE_THE_STATE_ON_EVERY_RISING"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_004_no_toggle/certification.json",
+        "certification_sha256": "40972de5e0249f9f536443246caf67f232184dc50026b2ecd6b7a263d72de786",
+        "fault_class": "timing_or_state_update_fault",
+        "mutation_bundle_sha256": "103f2f3ada3b72c6b46f53af63e2d7c6aa9d08cc587da5528367f9dd3d3a69d9",
+        "mutation_id": "neg_004_no_toggle",
+        "source_catalog_certification_path": "negative_variants/neg_004_no_toggle/certification.json",
+        "trigger_condition": "Forces the state high on each clock instead of toggling.",
+        "violated_property_ids": [
+          "P_DRIVE_OUT_LOW_WHEN_THE_STATE",
+          "P_TOGGLE_THE_STATE_ON_EVERY_RISING"
+        ]
+      }
+    ],
+    "bugfix_seed": "neg_002_stuck_low_on_clock",
+    "canonical_dut_id": "228",
+    "hashes": {
+      "mutation_catalog_sha256": "5b7e2e719e30f98bd0ba92699f09e8f95a98b3f9e13b788dce35f1c3fb9c6b99",
+      "score_deck_sha256": "7f5b134ee83340278923f5b2b5caef4ff1c8d78e169152562a0b6ab59e3c8638",
+      "task_certification_sha256": "f9d7e0a3b29644c41a374cc7dbba994849b4da3b53339b9d026663f1d414ec79",
+      "task_record_sha256": "d0c3e52262d3d77c5bdebeabc87ce81017636326f2f027a2713c9fadff5b0ace"
+    },
+    "release_dir": "228-divide-by-two-toggle"
+  }
+}

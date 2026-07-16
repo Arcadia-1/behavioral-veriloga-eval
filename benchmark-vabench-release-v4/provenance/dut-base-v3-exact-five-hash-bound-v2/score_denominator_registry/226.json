@@ -1,0 +1,81 @@
+{
+  "family_id": "226",
+  "schema_version": "v4-score-denominator-family-registry-v1",
+  "task": {
+    "active_mutation_count": 5,
+    "active_mutations": [
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_002_wrong_offset/certification.json",
+        "certification_sha256": "fa5aba4fcf5a7d2bc1e7a46e413dbb92826e422e9d69cb2f5bc6e5a2c23e23af",
+        "fault_class": "offset_magnitude_error",
+        "mutation_bundle_sha256": "f8fc3bf3fcddeeac79a0d9da95beb7f7eae54685b092dcf288e84db430cba769",
+        "mutation_id": "neg_002_wrong_offset",
+        "source_catalog_certification_path": "negative_variants/neg_002_wrong_offset/certification.json",
+        "trigger_condition": "Adds 200 mV instead of the required 350 mV offset.",
+        "violated_property_ids": [
+          "P_DRIVE_SIGOUT_TO_V_SIGIN_PLUS_SIGSHIFT"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_004_gain_plus_offset/certification.json",
+        "certification_sha256": "8096da38254adb691890240a2fd80130d10722e312b9d267be5ad2c168a6276b",
+        "fault_class": "input_gain_error",
+        "mutation_bundle_sha256": "e66ed9011d9fe8932410d15c88c60b633532aa01ce28d857a85eca768a84d5cc",
+        "mutation_id": "neg_004_gain_plus_offset",
+        "source_catalog_certification_path": "negative_variants/neg_004_gain_plus_offset/certification.json",
+        "trigger_condition": "Adds an erroneous gain of 2 before the offset.",
+        "violated_property_ids": [
+          "P_DRIVE_SIGOUT_TO_V_SIGIN_PLUS_SIGSHIFT",
+          "P_PRESERVE_UNITY_GAIN_WHILE_ADDING_OFFSET"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_003_subtract_offset/certification.json",
+        "certification_sha256": "6da41dc1b43957804aa3807b5f108d46b0c379b49a8dc40da46bcc730fee95ab",
+        "fault_class": "offset_polarity_error",
+        "mutation_bundle_sha256": "21acb16979498fc243985aca1735f80645b43e14b063cd7883f2ceb0fe6cd9fd",
+        "mutation_id": "neg_003_subtract_offset",
+        "source_catalog_certification_path": "negative_variants/neg_003_subtract_offset/certification.json",
+        "trigger_condition": "Subtracts the level shift instead of adding it.",
+        "violated_property_ids": [
+          "P_DRIVE_SIGOUT_TO_V_SIGIN_PLUS_SIGSHIFT"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_005_metric_scale_low/certification.json",
+        "certification_sha256": "88d7914693866dd4fe70b890005d59c8a6645003c3080c18c8672e4b50b50594",
+        "fault_class": "output_scale_error",
+        "mutation_bundle_sha256": "38ce7cd2a4cb07b4f2fa1244d7699fd77fa52c7894a45007446a0a634daf9b0b",
+        "mutation_id": "neg_005_metric_scale_low",
+        "source_catalog_certification_path": "negative_variants/neg_005_metric_scale_low/certification.json",
+        "trigger_condition": "Level Shifter Offset: scales the metric output, preserving the main path while failing measurement checks.",
+        "violated_property_ids": [
+          "P_DRIVE_SIGOUT_TO_V_SIGIN_PLUS_SIGSHIFT",
+          "P_PRESERVE_UNITY_GAIN_WHILE_ADDING_OFFSET"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_001_zero/certification.json",
+        "certification_sha256": "7a7fdfd5ce3746cf1b82cb73350366c6b98a6b83927a5b0f184ee4d4f71ed098",
+        "fault_class": "zero_stub_output",
+        "mutation_bundle_sha256": "bd889447d407ce6273272b4bbf071ee164591fc3df36b92bcf452ae59c4aabb7",
+        "mutation_id": "neg_001_zero",
+        "source_catalog_certification_path": "negative_variants/neg_001_zero/certification.json",
+        "trigger_condition": "Keeps the output at its trivial zero behavior and therefore fails the stable waveform contract.",
+        "violated_property_ids": [
+          "P_DRIVE_SIGOUT_TO_V_SIGIN_PLUS_SIGSHIFT",
+          "P_PRESERVE_UNITY_GAIN_WHILE_ADDING_OFFSET"
+        ]
+      }
+    ],
+    "bugfix_seed": "neg_002_wrong_offset",
+    "canonical_dut_id": "226",
+    "hashes": {
+      "mutation_catalog_sha256": "63c839202af614d7cc1bcd75ff52aeb8c536ed124dbc19a9a87d44ed068e6bfc",
+      "score_deck_sha256": "cc41c7c760cd1560383f642a624a4e1a7c6de5d4aa9c47eafda4ab692942a430",
+      "task_certification_sha256": "a6e46feb76d6577ae7d7c0350688c1bd540fb092ca69ffef8241d3035b537097",
+      "task_record_sha256": "ea642c4afbde6dd233c0b4df03c7f556e587aef901d36dd534ea7fea89a067a0"
+    },
+    "release_dir": "226-level-shifter-offset"
+  }
+}

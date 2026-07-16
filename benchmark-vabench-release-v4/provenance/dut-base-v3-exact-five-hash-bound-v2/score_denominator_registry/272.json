@@ -1,0 +1,78 @@
+{
+  "family_id": "272",
+  "schema_version": "v4-score-denominator-family-registry-v1",
+  "task": {
+    "active_mutation_count": 5,
+    "active_mutations": [
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_005_wrong_progress_scale/certification.json",
+        "certification_sha256": "d8167c41b309386d5e76f10056bd1c402801393a2090e560df95fe298763ab30",
+        "fault_class": "metric_or_observable_fault",
+        "mutation_bundle_sha256": "4504591d190fad2fc69a4c86d1de61e038c839a39edeecf0a236aa29e9cc02ce",
+        "mutation_id": "neg_005_wrong_progress_scale",
+        "source_catalog_certification_path": "negative_variants/neg_005_wrong_progress_scale/certification.json",
+        "trigger_condition": "stimulus exercises neg_005_wrong_progress_scale",
+        "violated_property_ids": [
+          "P_INITIALIZE_THE_INTERNAL_STAGE_COUNT_AND"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_002_ignore_bias_ok/certification.json",
+        "certification_sha256": "e227fc41e5b77740788f91ca5c82d82c79f785e4b23c8b5df7d9f8fcf95600bf",
+        "fault_class": "omission_or_incomplete_behavior",
+        "mutation_bundle_sha256": "82158eb7bf2905b3afe5c88b8253f987674489ff56c0cb0217a3c74a41c70ee5",
+        "mutation_id": "neg_002_ignore_bias_ok",
+        "source_catalog_certification_path": "negative_variants/neg_002_ignore_bias_ok/certification.json",
+        "trigger_condition": "stimulus exercises neg_002_ignore_bias_ok",
+        "violated_property_ids": [
+          "P_AFTER_UPDATING_THE_STAGE_COUNT_DRIVE"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_004_no_reset_clear/certification.json",
+        "certification_sha256": "c78153c61395ce15f5068921a90201c4ca05a0e066c689b6bc4eade80b5f60a3",
+        "fault_class": "state_reset_or_enable_error",
+        "mutation_bundle_sha256": "e3d9bb701d0b4016f18e2e96bbc0d79a634910f49de00368b1c4e606f7fc394b",
+        "mutation_id": "neg_004_no_reset_clear",
+        "source_catalog_certification_path": "negative_variants/neg_004_no_reset_clear/certification.json",
+        "trigger_condition": "stimulus exercises neg_004_no_reset_clear",
+        "violated_property_ids": [
+          "P_AFTER_UPDATING_THE_STAGE_COUNT_DRIVE"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_001_ready_immediate/certification.json",
+        "certification_sha256": "e80ee833af185c30820971048c28ae65477a4461d3498ae77c11ddec0e392701",
+        "fault_class": "ready_immediate",
+        "mutation_bundle_sha256": "586a05da769703d528fe08c9ebaf3e3b06394b5ceeacb9a15bbecd9587d955c3",
+        "mutation_id": "neg_001_ready_immediate",
+        "source_catalog_certification_path": "negative_variants/neg_001_ready_immediate/certification.json",
+        "trigger_condition": "stimulus exercises neg_001_ready_immediate",
+        "violated_property_ids": [
+          "P_INITIALIZE_THE_INTERNAL_STAGE_COUNT_AND"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_003_ignore_supply_ok/certification.json",
+        "certification_sha256": "97e4692b1eecb511c2696564592aa2898224c3c094b0e2ed51f504f869e27f70",
+        "fault_class": "omission_or_incomplete_behavior",
+        "mutation_bundle_sha256": "c81e4bf96c6f926ce3b1bc2c51cc4fab42d53eb5c621dc36e190157d4e7bb2b8",
+        "mutation_id": "neg_003_ignore_supply_ok",
+        "source_catalog_certification_path": "negative_variants/neg_003_ignore_supply_ok/certification.json",
+        "trigger_condition": "stimulus exercises neg_003_ignore_supply_ok",
+        "violated_property_ids": [
+          "P_INITIALIZE_THE_INTERNAL_STAGE_COUNT_AND"
+        ]
+      }
+    ],
+    "bugfix_seed": "neg_005_wrong_progress_scale",
+    "canonical_dut_id": "272",
+    "hashes": {
+      "mutation_catalog_sha256": "d8410ff386c64728494e5082b8e7e164599088a3410d6919d89c00d9dc18cb18",
+      "score_deck_sha256": "596c0b83bc1fabb8ebb395c836f39c1f0466bf0ea9ebba723cc8649c9553edfe",
+      "task_certification_sha256": "7c61b8664b7ce51cae366eac5cfd3289b123d67d222433ef2d7f639d8c1a871b",
+      "task_record_sha256": "10b26351363a56c303c4402c6af787aa5334680cd43f78d184235befe0909be5"
+    },
+    "release_dir": "272-reset-release-sequencer"
+  }
+}

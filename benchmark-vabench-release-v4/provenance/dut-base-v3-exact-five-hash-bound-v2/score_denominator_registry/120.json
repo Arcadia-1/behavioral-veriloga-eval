@@ -1,0 +1,78 @@
+{
+  "family_id": "120",
+  "schema_version": "v4-score-denominator-family-registry-v1",
+  "task": {
+    "active_mutation_count": 5,
+    "active_mutations": [
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_001_zero/certification.json",
+        "certification_sha256": "4dcd0429ad31a9e3f66bbbb137482d9f17558ce528741a64c54169246776c00f",
+        "fault_class": "fault_001_zero",
+        "mutation_bundle_sha256": "f20b303e29264526a369a63c7521c8975172f80a18ddd4080adfa6c93c391864",
+        "mutation_id": "neg_001_zero",
+        "source_catalog_certification_path": "negative_variants/neg_001_zero/certification.json",
+        "trigger_condition": "Drives zero output and therefore fails the stable waveform contract.",
+        "violated_property_ids": [
+          "P_ZERO_DB_UNITY"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_003_amplifies_by_db_factor/certification.json",
+        "certification_sha256": "e3aafd1387aa166447279948280ef2b8a535821a9122c23f1f21c63c377bddc2",
+        "fault_class": "fault_003_amplifies_by_db_factor",
+        "mutation_bundle_sha256": "f0b1bfe5cc76d13a2913bd5b34c8d94e18a712a987ec3d119a3efa23c856a516",
+        "mutation_id": "neg_003_amplifies_by_db_factor",
+        "source_catalog_certification_path": "negative_variants/neg_003_amplifies_by_db_factor/certification.json",
+        "trigger_condition": "Multiplies by dB gain factor instead of dividing.",
+        "violated_property_ids": [
+          "P_POLARITY_PRESERVATION"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_004_double_attenuation/certification.json",
+        "certification_sha256": "8f29c3f09c7dc7648e1e60a1491c6f0a62b0f38ce4e6d412c903c88d48453c90",
+        "fault_class": "fault_004_double_attenuation",
+        "mutation_bundle_sha256": "43fd643c98cfa01dfe6c40573f683db864010ed6ef8f2c1eef4db8d6e4f65c96",
+        "mutation_id": "neg_004_double_attenuation",
+        "source_catalog_certification_path": "negative_variants/neg_004_double_attenuation/certification.json",
+        "trigger_condition": "Applies attenuation twice.",
+        "violated_property_ids": [
+          "P_MONOTONIC_ATTENUATION"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_005_metric_scale_low/certification.json",
+        "certification_sha256": "367b4ce5f1598fdb56e4c2ca2435efdd4f0e44770ff8e50c9e2c75f2fc0c9029",
+        "fault_class": "fault_005_metric_scale_low",
+        "mutation_bundle_sha256": "551f59154dcbc8d2aeed9b8874e6f713abe43424e137e7d28b991e706f8eaa4f",
+        "mutation_id": "neg_005_metric_scale_low",
+        "source_catalog_certification_path": "negative_variants/neg_005_metric_scale_low/certification.json",
+        "trigger_condition": "Scales the attenuated output too low while preserving the module/interface shape.",
+        "violated_property_ids": [
+          "P_CONTINUOUS_RESPONSE"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_002_no_attenuation/certification.json",
+        "certification_sha256": "a1edc1844610694f0706ffb51977202ca692f446495f057f3bc17da3074cb333",
+        "fault_class": "fault_002_no_attenuation",
+        "mutation_bundle_sha256": "1ea3ffa95ba58aab7b06cfe66dfdfdeaaa7e2fb3a22cb759974600986e999f83",
+        "mutation_id": "neg_002_no_attenuation",
+        "source_catalog_certification_path": "negative_variants/neg_002_no_attenuation/certification.json",
+        "trigger_condition": "Passes input without attenuation.",
+        "violated_property_ids": [
+          "P_DB_AMPLITUDE_RATIO"
+        ]
+      }
+    ],
+    "bugfix_seed": "neg_001_zero",
+    "canonical_dut_id": "120",
+    "hashes": {
+      "mutation_catalog_sha256": "425883de5ef59255b2765a71a7fcf28d51ea7c41994fc6e4321e8870e14feb01",
+      "score_deck_sha256": "18a7daf22cd3ef46a6683b286b7f97d47ec16d6b8c5734233c420cc5c7012f36",
+      "task_certification_sha256": "869e4d04dca2ff94df3ecf65468462067acb5bfd08a0af531999661f65f078c7",
+      "task_record_sha256": "f67f8a56d28b02208f9aac860420c394f70ddedcf2d40467f404fa38409d861c"
+    },
+    "release_dir": "120-attenuator-gain"
+  }
+}

@@ -1,0 +1,78 @@
+{
+  "family_id": "380",
+  "schema_version": "v4-score-denominator-family-registry-v1",
+  "task": {
+    "active_mutation_count": 5,
+    "active_mutations": [
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_002_envelope_dbg_stuck/certification.json",
+        "certification_sha256": "f2dfc565339b27d5aa1b06ca6864ff9eb49eca00e4170d164679f36c6be3311e",
+        "fault_class": "envelope_dbg_stuck",
+        "mutation_bundle_sha256": "06748893978c8c8796d32426edc35515800fdb094dc7d9587a20ef6989f5b0f8",
+        "mutation_id": "neg_002_envelope_dbg_stuck",
+        "source_catalog_certification_path": "negative_variants/neg_002_envelope_dbg_stuck/certification.json",
+        "trigger_condition": "envelope_dbg_stuck",
+        "violated_property_ids": [
+          "P_ENVELOPE_DBG_MUST_EXPOSE_THE_ACTIVE"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_001_no_modulation/certification.json",
+        "certification_sha256": "4f25ba0244ffd0868f82183917481afdb184c23101943f2ce2ae3ff3f9f01639",
+        "fault_class": "no_modulation",
+        "mutation_bundle_sha256": "66e64880f7a16e33f8253b992cc9ea96167b1031f1b86f8cc889f08b7935b171",
+        "mutation_id": "neg_001_no_modulation",
+        "source_catalog_certification_path": "negative_variants/neg_001_no_modulation/certification.json",
+        "trigger_condition": "no_modulation",
+        "violated_property_ids": [
+          "P_DRIVE_AN_AMPLITUDE_MODULATED_OUTPUT_WHOSE"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_005_carrier_inverted/certification.json",
+        "certification_sha256": "3c4e8946f1695d14595e15a8f9eb0f5e94bc5f39510d79f96ba800da96535e1a",
+        "fault_class": "carrier_inverted",
+        "mutation_bundle_sha256": "cdefae88e754bb8af10fe73935f34ee917e8e5de127206cee20ded881360876d",
+        "mutation_id": "neg_005_carrier_inverted",
+        "source_catalog_certification_path": "negative_variants/neg_005_carrier_inverted/certification.json",
+        "trigger_condition": "carrier_inverted",
+        "violated_property_ids": [
+          "P_WHEN_ENABLED_TREAT_CARRIER_IN_AND"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_004_missing_clear/certification.json",
+        "certification_sha256": "26c792d5f76d7dfea58d1a2a84602210454bf46ec7e2d629a0b42b2808269457",
+        "fault_class": "missing_clear",
+        "mutation_bundle_sha256": "acb4eca3eb0247712c5a2e768f02668e6c56d6451f878d0649a92497e9f8fbe6",
+        "mutation_id": "neg_004_missing_clear",
+        "source_catalog_certification_path": "negative_variants/neg_004_missing_clear/certification.json",
+        "trigger_condition": "missing_clear",
+        "violated_property_ids": [
+          "P_ON_RESET_OR_WHEN_DISABLED_DRIVE"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_006_output_not_clamped/certification.json",
+        "certification_sha256": "0e4db878551588cf542f08344935423d7ad878c7905d09cecef6c93166c2555a",
+        "fault_class": "output_clamp_removed",
+        "mutation_bundle_sha256": "32a8cfe0670ad93d364d961c061b9c4ec9737f34dbef8c4bdc8d856a27c0067e",
+        "mutation_id": "neg_006_output_not_clamped",
+        "source_catalog_certification_path": "negative_variants/neg_006_output_not_clamped/certification.json",
+        "trigger_condition": "carrier and modulation demand an output beyond a supply rail",
+        "violated_property_ids": [
+          "P_CLAMP_THE_ENVELOPE_MULTIPLIER_SO_THE"
+        ]
+      }
+    ],
+    "bugfix_seed": "neg_002_envelope_dbg_stuck",
+    "canonical_dut_id": "380",
+    "hashes": {
+      "mutation_catalog_sha256": "812424970eab0c34f518008d3d2599651651c4e845d6f4c950630c2ae7017cbb",
+      "score_deck_sha256": "7bb617d43191bc0ddaa5a8683b05d72f80443f06580ef12284879242a84aeeff",
+      "task_certification_sha256": "3390e340c7d3d6189c76d94e8e9e8e8207142f22342383a4c682c4900dd8d13d",
+      "task_record_sha256": "432f0e3f700c67b0ce5449d982f44b8025df933a41a0cabe09666196bbff6aa8"
+    },
+    "release_dir": "380-am-modulator-source-macro"
+  }
+}

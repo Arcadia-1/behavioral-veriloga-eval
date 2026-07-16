@@ -1,0 +1,78 @@
+{
+  "family_id": "032",
+  "schema_version": "v4-score-denominator-family-registry-v1",
+  "task": {
+    "active_mutation_count": 5,
+    "active_mutations": [
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_001_reduced_small_signal_gain/certification.json",
+        "certification_sha256": "524a2b45493b3c22f591aaecb64a83c6fa6bd8e88c4036eba9a21409424e06d3",
+        "fault_class": "small_signal_gain_magnitude_error",
+        "mutation_bundle_sha256": "36eb7c91ea52195548aa8fcd2e71bdb43e4d111d48d5966fd66924fd214d4427",
+        "mutation_id": "neg_001_reduced_small_signal_gain",
+        "source_catalog_certification_path": "negative_variants/neg_001_reduced_small_signal_gain/certification.json",
+        "trigger_condition": "a rising clock samples vin within the linear transfer region while reset is inactive",
+        "violated_property_ids": [
+          "P_SMALL_SIGNAL_GAIN"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_002_positive_compression_bypass/certification.json",
+        "certification_sha256": "2160c2bcc61e3a2baa93812650d04d6d7b708c2c699c82469a694fc6adbbb4f7",
+        "fault_class": "positive_compression_bypass",
+        "mutation_bundle_sha256": "806ad25e5be36c1b048731f6cbf3f06b2737d7775bb3eb9cd3a97c001635ba6a",
+        "mutation_id": "neg_002_positive_compression_bypass",
+        "source_catalog_certification_path": "negative_variants/neg_002_positive_compression_bypass/certification.json",
+        "trigger_condition": "a rising clock samples vin such that the linear prediction is above 0.76 V but below the final 0.86 V clamp",
+        "violated_property_ids": [
+          "P_POSITIVE_COMPRESSION"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_003_negative_compression_bypass/certification.json",
+        "certification_sha256": "2f53836f4510b08beac65c4300490ae8bc223e514f197decf90f9387d42c10ee",
+        "fault_class": "negative_compression_bypass",
+        "mutation_bundle_sha256": "94e18a3020ce9e70bb990f7873d2a67edcd583476bb7fc85629c06c2a0223456",
+        "mutation_id": "neg_003_negative_compression_bypass",
+        "source_catalog_certification_path": "negative_variants/neg_003_negative_compression_bypass/certification.json",
+        "trigger_condition": "a rising clock samples vin such that the linear prediction is below 0.14 V but above the final 0.04 V clamp",
+        "violated_property_ids": [
+          "P_NEGATIVE_COMPRESSION"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_005_output_clamp_bypass/certification.json",
+        "certification_sha256": "e90233d505dac1d8449a075f92a91fde007456d0f91cc104ef473d0d14028bc5",
+        "fault_class": "output_clamp_omission",
+        "mutation_bundle_sha256": "c81b52a224bbb842ff4cfc1a3d6fd87bbf358533441c732618834b22b4dbfcb7",
+        "mutation_id": "neg_005_output_clamp_bypass",
+        "source_catalog_certification_path": "negative_variants/neg_005_output_clamp_bypass/certification.json",
+        "trigger_condition": "a sampled input produces a compressed output above 0.86 V or below 0.04 V before final clamping",
+        "violated_property_ids": [
+          "P_FINAL_OUTPUT_CLAMP"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_007_reset_ignored/certification.json",
+        "certification_sha256": "6b0132d291cc955c77972c829f23cc8e531b53cfbdf03157dc4f6d8697dac590",
+        "fault_class": "active_high_reset_ignored",
+        "mutation_bundle_sha256": "d31d5cee1df84bd78864bcd20505ef2739839ea22aa98fcc399521c8627e59b0",
+        "mutation_id": "neg_007_reset_ignored",
+        "source_catalog_certification_path": "negative_variants/neg_007_reset_ignored/certification.json",
+        "trigger_condition": "reset is asserted after a non-common-mode output has been sampled",
+        "violated_property_ids": [
+          "P_INITIAL_AND_RESET_COMMON_MODE"
+        ]
+      }
+    ],
+    "bugfix_seed": "neg_001_reduced_small_signal_gain",
+    "canonical_dut_id": "032",
+    "hashes": {
+      "mutation_catalog_sha256": "94763f368a051d1604c1755dd889adf7d78a1255533560bade3ad3389124d78f",
+      "score_deck_sha256": "c92de4ec865ec6ee54a0719d3799b0468a93669852350785bd5bf397fa85f05e",
+      "task_certification_sha256": "54cada7c7c64d415119d3a073b1ced4b1f8a7c9631e1361b59b7e38104ff8e52",
+      "task_record_sha256": "82f1f8b8c24ac5b680d4204ad96ff94ce61f14ac94791a892a970656f1367093"
+    },
+    "release_dir": "032-lna-gain-compression-macro"
+  }
+}

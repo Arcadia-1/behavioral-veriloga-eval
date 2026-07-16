@@ -1,0 +1,80 @@
+{
+  "family_id": "079",
+  "schema_version": "v4-score-denominator-family-registry-v1",
+  "task": {
+    "active_mutation_count": 5,
+    "active_mutations": [
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_001_zero/certification.json",
+        "certification_sha256": "aa6b77535a1360ab0008eb729e6c4ce3a7653cc00394c65f74fbde54443e780d",
+        "fault_class": "zero_output_stub",
+        "mutation_bundle_sha256": "9f8a968bf1634ef611dc84295ce594c127c95e4bb8e26093536cc46819b8cdd3",
+        "mutation_id": "neg_001_zero",
+        "source_catalog_certification_path": "negative_variants/neg_001_zero/certification.json",
+        "trigger_condition": "stimulus exercises Zero output stub. against the public observable contract",
+        "violated_property_ids": [
+          "P_PHASE_RAMP"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_004_wrong_guard_width/certification.json",
+        "certification_sha256": "e8d9205bd8c669f1b985fec22aea2b9d9536d525bf4751675d47f36f57c4a7ca",
+        "fault_class": "guard_pulse_width_too_wide_for_public_pulse_window",
+        "mutation_bundle_sha256": "a70c8419a951f222bcacd42f519a2a2d5ae68070502ec48f5acaefa324b708e0",
+        "mutation_id": "neg_004_wrong_guard_width",
+        "source_catalog_certification_path": "negative_variants/neg_004_wrong_guard_width/certification.json",
+        "trigger_condition": "Uses a half-period guard pulse instead of the declared pulse_w window.",
+        "violated_property_ids": [
+          "P_GUARD_LOW",
+          "P_GUARD_WINDOW"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_002_no_wrap/certification.json",
+        "certification_sha256": "9c64122a8e99e70c03bd9840a3b5ebdcf19d6f9afddb4ea0e986b87a84e4ebb9",
+        "fault_class": "one_shot_phase_ramp_and_guard_without_periodic_wrap",
+        "mutation_bundle_sha256": "4955d0636df5ab49918e9daa197b59e264526569c2cda064a1e674a31f6220c6",
+        "mutation_id": "neg_002_no_wrap",
+        "source_catalog_certification_path": "negative_variants/neg_002_no_wrap/certification.json",
+        "trigger_condition": "Generates only the first ramp/guard interval and then clamps instead of wrapping every period.",
+        "violated_property_ids": [
+          "P_PERIODICITY",
+          "P_PHASE_WRAP"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_005_metric_scale_low/certification.json",
+        "certification_sha256": "1fdaee58098fc360b8bd31a8d9073d10d433e3f6908d431a4cb398dc33396a70",
+        "fault_class": "mirrored_phase_ramp_with_periodic_guard_preserved",
+        "mutation_bundle_sha256": "b775d26bac36f5cd66f2b143f4a588a932e7a780ad1a54387b9db882465167b4",
+        "mutation_id": "neg_005_metric_scale_low",
+        "source_catalog_certification_path": "negative_variants/neg_005_metric_scale_low/certification.json",
+        "trigger_condition": "Preserves periodic guard pulses but reports a descending phase ramp, breaking rail-relative phase tracking.",
+        "violated_property_ids": [
+          "P_RAIL_TRACKING"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_003_guard_always_low/certification.json",
+        "certification_sha256": "46b9edb717e5334bb06327a4b9e5555b2c87f65c07ebcab8c08678c3c222df99",
+        "fault_class": "keeps_the_phase_ramp_but_never_asserts_the_guard_pulse",
+        "mutation_bundle_sha256": "bc442087b3ee7b5521545059cc7d37d8d83b4cb393ee1429064ef652a779b97f",
+        "mutation_id": "neg_003_guard_always_low",
+        "source_catalog_certification_path": "negative_variants/neg_003_guard_always_low/certification.json",
+        "trigger_condition": "stimulus exercises Keeps the phase ramp but never asserts the guard pulse. against the public observable contract",
+        "violated_property_ids": [
+          "P_GUARD_WINDOW"
+        ]
+      }
+    ],
+    "bugfix_seed": "neg_001_zero",
+    "canonical_dut_id": "079",
+    "hashes": {
+      "mutation_catalog_sha256": "24db5590b3897d7c24ae978be2333a5bc137e12e628a262b767c7855b8ccaad7",
+      "score_deck_sha256": "1794d4707975e35673c234c8cbe45e284113f7a9a0c2f52e0090064aa14feb7f",
+      "task_certification_sha256": "d5380731865f0a3a95a0b3c6d9b3ef47cad78ea38385705d3f0403c348c258e0",
+      "task_record_sha256": "14bbaabdcd9ad6d78945dbcc512345af969951c9fd4d65ec9c28ca28e17f6be1"
+    },
+    "release_dir": "079-ramp-step-source"
+  }
+}

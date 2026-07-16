@@ -1,0 +1,78 @@
+{
+  "family_id": "346",
+  "schema_version": "v4-score-denominator-family-registry-v1",
+  "task": {
+    "active_mutation_count": 5,
+    "active_mutations": [
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_001_count_by_two/certification.json",
+        "certification_sha256": "413acefe51b9514fee8497afe6062b0e5ad6004a76711436caf01b34de358952",
+        "fault_class": "counter_step_error",
+        "mutation_bundle_sha256": "17dece709d666bc08f0b1d031637332ded439019f393405abcc71504c12a6667",
+        "mutation_id": "neg_001_count_by_two",
+        "source_catalog_certification_path": "negative_variants/neg_001_count_by_two/certification.json",
+        "trigger_condition": "an armed interval spans clock edges",
+        "violated_property_ids": [
+          "P_TDC_INTERVAL_COUNT"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_003_valid_stuck_low/certification.json",
+        "certification_sha256": "82ff45010b350913ccde8b9ce1bfffefffb2548025f98cafac2fcf8ba9a14690",
+        "fault_class": "valid_latch_missing_completion",
+        "mutation_bundle_sha256": "28bb3b53cce1249f8bd1f9596e465ceac7e4c1ddb95e91b42f1a7948318e015a",
+        "mutation_id": "neg_003_valid_stuck_low",
+        "source_catalog_certification_path": "negative_variants/neg_003_valid_stuck_low/certification.json",
+        "trigger_condition": "a completed interval or overflow should latch valid high",
+        "violated_property_ids": [
+          "P_TDC_VALID_LATCH"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_004_early_overflow/certification.json",
+        "certification_sha256": "292056fddfb4a4255cc61ab5b829a9429f5b501dfdc18ff8f4f69c1788ca3f0d",
+        "fault_class": "overflow_threshold_error",
+        "mutation_bundle_sha256": "ece9ad09a2c3b4f1455ada6b8d2f47e4364e9d324f949777591738422ac48ef1",
+        "mutation_id": "neg_004_early_overflow",
+        "source_catalog_certification_path": "negative_variants/neg_004_early_overflow/certification.json",
+        "trigger_condition": "an interval exceeds 127 clocks",
+        "violated_property_ids": [
+          "P_TDC_OVERFLOW"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_006_reset_clear_ignored/certification.json",
+        "certification_sha256": "297dac0375d1dd02ff371bbbbda5d698776d83ea4fcbb25a9c7cc4a3d2b5807b",
+        "fault_class": "reset_clear_ignored",
+        "mutation_bundle_sha256": "aaa7000a40fd0259a02780417cdfae7876c3628d2aa156493d2750e3c1bb9818",
+        "mutation_id": "neg_006_reset_clear_ignored",
+        "source_catalog_certification_path": "negative_variants/neg_006_reset_clear_ignored/certification.json",
+        "trigger_condition": "reset is asserted after a completed interval",
+        "violated_property_ids": [
+          "P_TDC_RESET_CLEAR"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_007_restart_clear_ignored/certification.json",
+        "certification_sha256": "5f073a8f43a1629013540bff9d1da34268a8bbb08f8a7802b45d1b3833dd5c31",
+        "fault_class": "restart_clear_ignored",
+        "mutation_bundle_sha256": "b04348253b15796dcdd433fca40a061518e7884de4b19c86564a46727561f9bf",
+        "mutation_id": "neg_007_restart_clear_ignored",
+        "source_catalog_certification_path": "negative_variants/neg_007_restart_clear_ignored/certification.json",
+        "trigger_condition": "a new start event follows a completed interval",
+        "violated_property_ids": [
+          "P_TDC_RESTART_CLEAR"
+        ]
+      }
+    ],
+    "bugfix_seed": "neg_001_count_by_two",
+    "canonical_dut_id": "346",
+    "hashes": {
+      "mutation_catalog_sha256": "c70b29c78048b9cac038b3d8d2c1c9e20a5a3c7761c461de90fa6ff9a1a20832",
+      "score_deck_sha256": "54abc285c2bd4df38919129af9fe7d55371185c7207c1bca93726d79e88f12e6",
+      "task_certification_sha256": "44b4517ff4774d1ec2a22e97b36400023496bd8d719669bb7f12e1bcd5c40283",
+      "task_record_sha256": "083028f3c8e886ef222a7fd25b769984dc95c6f12b0c13bcc2b623db2d218020"
+    },
+    "release_dir": "346-tdc-measurement-system"
+  }
+}

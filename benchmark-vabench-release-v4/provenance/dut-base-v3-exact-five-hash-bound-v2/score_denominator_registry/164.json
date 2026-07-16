@@ -1,0 +1,80 @@
+{
+  "family_id": "164",
+  "schema_version": "v4-score-denominator-family-registry-v1",
+  "task": {
+    "active_mutation_count": 5,
+    "active_mutations": [
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_002_omit_msb/certification.json",
+        "certification_sha256": "635fdd1f7aabb104c87f96abb375dfd341425073176cfa31ba35061b00d5473a",
+        "fault_class": "omission_or_incomplete_behavior",
+        "mutation_bundle_sha256": "b5c8443bfc7d72983a50e33e06060df5732c74538ad6baf1c5b9afbdd9fe4569",
+        "mutation_id": "neg_002_omit_msb",
+        "source_catalog_certification_path": "negative_variants/neg_002_omit_msb/certification.json",
+        "trigger_condition": "Drops the din6 MSB contribution from the weighted scalar output.",
+        "violated_property_ids": [
+          "P_WEIGHTED_GROUP_SUM"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_003_reverse_lsb_msb/certification.json",
+        "certification_sha256": "9135aaaf03bfc4c0a0aa602eccb60b99d74432650d7868d10277249cbc4caf99",
+        "fault_class": "threshold_or_boundary_fault",
+        "mutation_bundle_sha256": "9206b0c0da49a25bc0b32c1d7677d0e92ccec62bcda101b101eef46934e1639f",
+        "mutation_id": "neg_003_reverse_lsb_msb",
+        "source_catalog_certification_path": "negative_variants/neg_003_reverse_lsb_msb/certification.json",
+        "trigger_condition": "Adds a fixed offset to every decoded scalar output code.",
+        "violated_property_ids": [
+          "P_SCALED_SCALAR_OUTPUT",
+          "P_THRESHOLD_CODE_DETECTION",
+          "P_WEIGHTED_GROUP_SUM"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_004_half_scale/certification.json",
+        "certification_sha256": "fe78e725615c3fbbeb2aa84ea3a300c9a6f9e4025195ed4a51af7cca08ff0633",
+        "fault_class": "zero_stub_output",
+        "mutation_bundle_sha256": "8a893cf18c1bda2c05dbd0b110c67ca661f4b8c1e56e0366b89428c3a72dc64d",
+        "mutation_id": "neg_004_half_scale",
+        "source_catalog_certification_path": "negative_variants/neg_004_half_scale/certification.json",
+        "trigger_condition": "Uses a denominator twice as large, halving every nonzero output code.",
+        "violated_property_ids": [
+          "P_SCALED_SCALAR_OUTPUT"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_005_metric_scale_low/certification.json",
+        "certification_sha256": "8ed9d101fac333238f71413c89ab27394ea6db4600a8456a38c1c01e6203c827",
+        "fault_class": "metric_or_observable_fault",
+        "mutation_bundle_sha256": "8d20499193bade093e800839ab3d8ddf9ce14c628e7e353324c629f92a76f85b",
+        "mutation_id": "neg_005_metric_scale_low",
+        "source_catalog_certification_path": "negative_variants/neg_005_metric_scale_low/certification.json",
+        "trigger_condition": "Ideal ADC Out 7bits: scales the metric output, preserving the main path while failing measurement checks.",
+        "violated_property_ids": [
+          "P_SCALED_SCALAR_OUTPUT"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_001_zero/certification.json",
+        "certification_sha256": "cf5c34550c461b8770d654f3a1a465b346965acc1d8763b8679bf41d3704bcdc",
+        "fault_class": "zero_stub_output",
+        "mutation_bundle_sha256": "73e8adf258bfd25e362885202c2d9a6fc11449ea6890c52563b8940ea19c5229",
+        "mutation_id": "neg_001_zero",
+        "source_catalog_certification_path": "negative_variants/neg_001_zero/certification.json",
+        "trigger_condition": "Drives zero output and therefore fails the stable waveform contract.",
+        "violated_property_ids": [
+          "P_SCALED_SCALAR_OUTPUT"
+        ]
+      }
+    ],
+    "bugfix_seed": "neg_002_omit_msb",
+    "canonical_dut_id": "164",
+    "hashes": {
+      "mutation_catalog_sha256": "9b128d1b377460256119ecf9821f7fce5811d63897ad2ab5cc83084a6839ae19",
+      "score_deck_sha256": "e81ea6d4d2c2a42c770835e2daaa7b3b975685dd106195a13dd1d62f3cc29e2e",
+      "task_certification_sha256": "e67d92523b5312cc82ec163dc30da63da2f21fe84b22936be27938fbe90995aa",
+      "task_record_sha256": "9ab4fc772b647aa9d82eea19e9e29d61a9e8db9845b7bc9faa28c6f0c53ab475"
+    },
+    "release_dir": "164-ideal-adc-out-7bits"
+  }
+}

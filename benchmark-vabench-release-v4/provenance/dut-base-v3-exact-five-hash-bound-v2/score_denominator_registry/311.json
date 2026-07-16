@@ -1,0 +1,79 @@
+{
+  "family_id": "311",
+  "schema_version": "v4-score-denominator-family-registry-v1",
+  "task": {
+    "active_mutation_count": 5,
+    "active_mutations": [
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_002_invalid_code_updates_output/certification.json",
+        "certification_sha256": "c7de0f80c82092e9d987db097ddaefa97b9c9328cac15699e070a17e6a0627d6",
+        "fault_class": "invalid_code_updates_output",
+        "mutation_bundle_sha256": "670d0760a4691d6eced0cb82b9e5fb3decb38cf23ed8d3af92187d687efd74b3",
+        "mutation_id": "neg_002_invalid_code_updates_output",
+        "source_catalog_certification_path": "negative_variants/neg_002_invalid_code_updates_output/certification.json",
+        "trigger_condition": "invalid_code_updates_output",
+        "violated_property_ids": [
+          "P_ON_EACH_ENABLED_SAMPLING_CLOCK_EDGE",
+          "P_USE_ONLY_VOLTAGE_DOMAIN_BEHAVIORAL_STATE"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_003_sample_enable_ignored/certification.json",
+        "certification_sha256": "9338aa34147e8aa49fe4ea13b04f06c5b9c38258391f3ed277c66d0d5fd75c2a",
+        "fault_class": "sample_enable_ignored",
+        "mutation_bundle_sha256": "458f93c3b07229c2f8d363d9f04a077eda247fdd911ca31a1cac76a27fb0c091",
+        "mutation_id": "neg_003_sample_enable_ignored",
+        "source_catalog_certification_path": "negative_variants/neg_003_sample_enable_ignored/certification.json",
+        "trigger_condition": "sample_enable_ignored",
+        "violated_property_ids": [
+          "P_DECODE_SEL_1_SEL_0_AND"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_004_reset_does_not_clear/certification.json",
+        "certification_sha256": "62bde00fdfb91de69671a9d5608e510a46fb85ae5466b4d35b955847091641af",
+        "fault_class": "reset_does_not_clear",
+        "mutation_bundle_sha256": "ff380762203f5c8f9cd682acb1fcf13538854acb6b8d4d47bc3724531236b298",
+        "mutation_id": "neg_004_reset_does_not_clear",
+        "source_catalog_certification_path": "negative_variants/neg_004_reset_does_not_clear/certification.json",
+        "trigger_condition": "reset_does_not_clear",
+        "violated_property_ids": [
+          "P_EXPOSE_THE_SELECTED_CHANNEL_INDEX_ON"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_005_channel_metric_reversed/certification.json",
+        "certification_sha256": "a4bec850d99454d712dfdac8759e8cf0e546ea421fd6ac7a1260bbe5d1934a92",
+        "fault_class": "channel_metric_reversed",
+        "mutation_bundle_sha256": "a922c67833921ed498721326726e342f23fae8813437312b208fdb0282eaabe8",
+        "mutation_id": "neg_005_channel_metric_reversed",
+        "source_catalog_certification_path": "negative_variants/neg_005_channel_metric_reversed/certification.json",
+        "trigger_condition": "channel_metric_reversed",
+        "violated_property_ids": [
+          "P_HOLD_ALL_CHANNEL_SAMPLES_BETWEEN_SAMPLING"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_001_select_code_reversed/certification.json",
+        "certification_sha256": "85867559ebcf4859641b47a3fd2912738c7de6a6ce3aea3f273d9a6c235ee7ff",
+        "fault_class": "select_code_reversed",
+        "mutation_bundle_sha256": "92945724c5f2d9b37cb4fedd8acba82c7964a81217e4580861065a41800479ac",
+        "mutation_id": "neg_001_select_code_reversed",
+        "source_catalog_certification_path": "negative_variants/neg_001_select_code_reversed/certification.json",
+        "trigger_condition": "select_code_reversed",
+        "violated_property_ids": [
+          "P_ON_RESET_CLEAR_ALL_HELD_CHANNEL"
+        ]
+      }
+    ],
+    "bugfix_seed": "neg_002_invalid_code_updates_output",
+    "canonical_dut_id": "311",
+    "hashes": {
+      "mutation_catalog_sha256": "c254061bd4a1c28fef3fbb9e64a70a9dc276d034ee2b9d7bf06f14356b9d634e",
+      "score_deck_sha256": "e25626c8799599f9c02a0a8eb6dcb6e08910dadc3e5b78b243f07469b9129cf4",
+      "task_certification_sha256": "3bcdfbb077746c08c6567c97bcf430ca1d705b4e6a9c2911feefa449951219ce",
+      "task_record_sha256": "3b8e5570376254f54508f73b7b5b054a59b601bd3016a30997b03ea3ceceb45f"
+    },
+    "release_dir": "311-muxed-track-hold-array-readout"
+  }
+}

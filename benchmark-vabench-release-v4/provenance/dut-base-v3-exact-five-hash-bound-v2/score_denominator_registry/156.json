@@ -1,0 +1,78 @@
+{
+  "family_id": "156",
+  "schema_version": "v4-score-denominator-family-registry-v1",
+  "task": {
+    "active_mutation_count": 5,
+    "active_mutations": [
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_004_wrong_refn/certification.json",
+        "certification_sha256": "171c39b847c944a76fffad63bf45dfa49b0923e75f6e4def9dbd796b592fa6a9",
+        "fault_class": "zero_stub_output",
+        "mutation_bundle_sha256": "c58b32316eb782fa3e116ba42338abcded9c857ee3eb25ec8be265827d0ca72d",
+        "mutation_id": "neg_004_wrong_refn",
+        "source_catalog_certification_path": "negative_variants/neg_004_wrong_refn/certification.json",
+        "trigger_condition": "Uses zero as the low reference.",
+        "violated_property_ids": [
+          "P_REFERENCE_ENDPOINTS_AND_SCALE"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_003_missing_msb_contribution/certification.json",
+        "certification_sha256": "fe290c3bf6b87df9b1b474977f9e6893d8d01722ba145b10bc0096c1f6a914f2",
+        "fault_class": "omission_or_incomplete_behavior",
+        "mutation_bundle_sha256": "23bb8f02c2e876cf7c3170c1e0a7e1122094115509afd1f3be4ae536a6df48c5",
+        "mutation_id": "neg_003_missing_msb_contribution",
+        "source_catalog_certification_path": "negative_variants/neg_003_missing_msb_contribution/certification.json",
+        "trigger_condition": "Omits the din0 MSB contribution.",
+        "violated_property_ids": [
+          "P_MSB_AND_TERMINATION_CONTRIBUTIONS"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_002_half_output_scale/certification.json",
+        "certification_sha256": "46af7656b18ed6d1761cfeb2e8b8d50098ab6f300abd657f3be12f0b037555e5",
+        "fault_class": "metric_or_observable_fault",
+        "mutation_bundle_sha256": "bb0bf703354ee487d2e8a45ad547e2a3e7aaf1671e5e55871c5c004cd8ee08a8",
+        "mutation_id": "neg_002_half_output_scale",
+        "source_catalog_certification_path": "negative_variants/neg_002_half_output_scale/certification.json",
+        "trigger_condition": "Scales the final DAC output by half.",
+        "violated_property_ids": [
+          "P_REFERENCE_ENDPOINTS_AND_SCALE"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_001_zero/certification.json",
+        "certification_sha256": "b572b3667f67acf631676d7b271c3b13889e4a8d1fc85e60c8baea51767a8bb7",
+        "fault_class": "zero_stub_output",
+        "mutation_bundle_sha256": "b892e7565a39373853de7220ac98d7ee81fd99f99db667ff68fc9c16a4118aa8",
+        "mutation_id": "neg_001_zero",
+        "source_catalog_certification_path": "negative_variants/neg_001_zero/certification.json",
+        "trigger_condition": "Drives zero output and therefore fails the stable waveform contract.",
+        "violated_property_ids": [
+          "P_CLOCKED_SEVEN_BIT_WEIGHTED_SUM"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_005_metric_scale_low/certification.json",
+        "certification_sha256": "b6d3952411ae0bdf1e133322c6df5741a72a5337c879f8709cc12921192f4ce1",
+        "fault_class": "metric_or_observable_fault",
+        "mutation_bundle_sha256": "da45e0727b54db0ee4c533ee04a051809173099265db8a019ad8e6a54aa2ad76",
+        "mutation_id": "neg_005_metric_scale_low",
+        "source_catalog_certification_path": "negative_variants/neg_005_metric_scale_low/certification.json",
+        "trigger_condition": "DAC 5V Weighted 7b: scales the metric output, preserving the main path while failing measurement checks.",
+        "violated_property_ids": [
+          "P_REFERENCE_ENDPOINTS_AND_SCALE"
+        ]
+      }
+    ],
+    "bugfix_seed": "neg_004_wrong_refn",
+    "canonical_dut_id": "156",
+    "hashes": {
+      "mutation_catalog_sha256": "76afe93af22ba41c31d2af5399118627c95f1aa993c8c5d7610e28fde77b0e18",
+      "score_deck_sha256": "94677176573d9d0037cb5d93711ae83c90715e4e1cc04371303666a73d80c1d0",
+      "task_certification_sha256": "d8d687daa99705c2fded41a35c943753bae102878eb11c51d8c237909803197e",
+      "task_record_sha256": "785589cc6caf159ed805448f0eb0799f0be1e9cb11a9ec134baba32d25b29ca3"
+    },
+    "release_dir": "156-dac-5v-weighted-7b"
+  }
+}

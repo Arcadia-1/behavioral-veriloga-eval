@@ -1,0 +1,80 @@
+{
+  "family_id": "349",
+  "schema_version": "v4-score-denominator-family-registry-v1",
+  "task": {
+    "active_mutation_count": 5,
+    "active_mutations": [
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_001_only_channel0_captured/certification.json",
+        "certification_sha256": "f1acac638b82ab1dc1d6f05897daafd95ab8d9a3c352d4586eb928ab5a7c0e86",
+        "fault_class": "sample_bank_failure",
+        "mutation_bundle_sha256": "4637caca2a03c3b923029b240714e4d179f415eaa75c21c0c4817582edef0a9f",
+        "mutation_id": "neg_001_only_channel0_captured",
+        "source_catalog_certification_path": "negative_variants/neg_001_only_channel0_captured/certification.json",
+        "trigger_condition": "a sample captures distinct channel values",
+        "violated_property_ids": [
+          "P_READOUT_HELD_VALUE",
+          "P_READOUT_SIMULTANEOUS_SAMPLE"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_003_valid_stuck_low/certification.json",
+        "certification_sha256": "b270adeb3eb24b98c92577d920c828ae369c7f2eee247f6d48fb019b562f87ba",
+        "fault_class": "valid_flag_stuck",
+        "mutation_bundle_sha256": "fd1241e42652ff36606c82c396409dcb1e914186c83d6cdb322534a4f593c56a",
+        "mutation_id": "neg_003_valid_stuck_low",
+        "source_catalog_certification_path": "negative_variants/neg_003_valid_stuck_low/certification.json",
+        "trigger_condition": "a read cycle occurs",
+        "violated_property_ids": [
+          "P_READOUT_VALID_TIMING"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_005_reset_does_not_clear_out/certification.json",
+        "certification_sha256": "3ccadcb859137a1ae136f3302022be0d19560f823d25ff9d3b99775515726a9c",
+        "fault_class": "missing_reset",
+        "mutation_bundle_sha256": "42236054e2cb5d8234981c5ba407c43f8b0644dae9d01dce1e6fabf08287f29d",
+        "mutation_id": "neg_005_reset_does_not_clear_out",
+        "source_catalog_certification_path": "negative_variants/neg_005_reset_does_not_clear_out/certification.json",
+        "trigger_condition": "reset is asserted after a nonzero read",
+        "violated_property_ids": [
+          "P_READOUT_RESET_CLEAR"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_002_pointer_skips_channels/certification.json",
+        "certification_sha256": "862cde1a6c7e73ff95a495b3605647a7c8f60f52d1c63b86e020626df65719ed",
+        "fault_class": "pointer_step_error",
+        "mutation_bundle_sha256": "bea987e8fa4951fc6d12b83f9738ed681289575f8db83bc8ec5bacd978dff7b0",
+        "mutation_id": "neg_002_pointer_skips_channels",
+        "source_catalog_certification_path": "negative_variants/neg_002_pointer_skips_channels/certification.json",
+        "trigger_condition": "consecutive read cycles occur",
+        "violated_property_ids": [
+          "P_READOUT_CHANNEL_ORDER",
+          "P_READOUT_HELD_VALUE"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_004_selector1_reads_hold2/certification.json",
+        "certification_sha256": "a820e168b95ce1d2c68961479c5794c7ee38110849dec701787f41c4d76369d8",
+        "fault_class": "mux_mapping_error",
+        "mutation_bundle_sha256": "be45cfc1cf655b97973172a6c7f4df4a3d70a49445e6253ba40c18ce61d93fc8",
+        "mutation_id": "neg_004_selector1_reads_hold2",
+        "source_catalog_certification_path": "negative_variants/neg_004_selector1_reads_hold2/certification.json",
+        "trigger_condition": "channel one is selected",
+        "violated_property_ids": [
+          "P_READOUT_HELD_VALUE"
+        ]
+      }
+    ],
+    "bugfix_seed": "neg_001_only_channel0_captured",
+    "canonical_dut_id": "349",
+    "hashes": {
+      "mutation_catalog_sha256": "04b9918c4779b362a680270198264988d1faa005ee1043a22da7b49243729128",
+      "score_deck_sha256": "6a9bf4bb8d249de70a6959d1f335319a47e66b572ac5749fca912aafcae03955",
+      "task_certification_sha256": "32a962c8b100fb159e6a57ec697022438cf11ce05999a2ac591eabe8cbf517b2",
+      "task_record_sha256": "9ec1b0b2c034af11fc896a16bee6323a8b4017fcfb3978bb3b4acc1f267a86fd"
+    },
+    "release_dir": "349-multichannel-sample-readout"
+  }
+}

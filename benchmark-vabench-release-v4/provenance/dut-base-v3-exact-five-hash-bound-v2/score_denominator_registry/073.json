@@ -1,0 +1,79 @@
+{
+  "family_id": "073",
+  "schema_version": "v4-score-denominator-family-registry-v1",
+  "task": {
+    "active_mutation_count": 5,
+    "active_mutations": [
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_001_zero/certification.json",
+        "certification_sha256": "c5226b41603bef37b5c86a69b394b2a169f9962d57b8cff125b5e10aaaa15487",
+        "fault_class": "zero_stub_output_implementation_copied_from_starter_must_not_satisfy_hidden_beha",
+        "mutation_bundle_sha256": "e8e2ea45b68cf969dca6afcc693186b895e2fb0e7917e6acc07f2e56629a2780",
+        "mutation_id": "neg_001_zero",
+        "source_catalog_certification_path": "negative_variants/neg_001_zero/certification.json",
+        "trigger_condition": "stimulus exercises zero/stub output implementation copied from starter must not satisfy hidden behavior checker against the public observable contract",
+        "violated_property_ids": [
+          "P_CLOCKED_UPDATE"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_003_event_edge_wrong/certification.json",
+        "certification_sha256": "a2c4b4d0a2ec56ef1f127933d9184d2c1e6b1944ce8818b7cd87aac329de299f",
+        "fault_class": "trim_update_gain_too_low_under_settles_bias",
+        "mutation_bundle_sha256": "df5f996e762235f4b25dbf5fdbeb89fd9a576295eeb7e44598fad0ddba2d97b6",
+        "mutation_id": "neg_003_event_edge_wrong",
+        "source_catalog_certification_path": "negative_variants/neg_003_event_edge_wrong/certification.json",
+        "trigger_condition": "Uses the correct clock/reset contract but an under-relaxed trim update coefficient, so the bias does not reach the low-trim target window.",
+        "violated_property_ids": [
+          "P_SETTLING",
+          "P_TRIM_TARGET"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_004_reset_polarity_wrong/certification.json",
+        "certification_sha256": "a1413699bd0292cb4d0dc7938ef4fd9f7636577f0eff4c687f779a3345a3fbd3",
+        "fault_class": "reset_polarity_inverted_holds_bias_disabled_when_active",
+        "mutation_bundle_sha256": "c42e98f2bfca232a5fa602f89df449bb84a3c5c9b38089e785339bf5a426ecd2",
+        "mutation_id": "neg_004_reset_polarity_wrong",
+        "source_catalog_certification_path": "negative_variants/neg_004_reset_polarity_wrong/certification.json",
+        "trigger_condition": "Treats reset polarity as active-low, keeping the bias disabled during the valid trim window.",
+        "violated_property_ids": [
+          "P_DISABLE_RESET"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_005_metric_scale_low/certification.json",
+        "certification_sha256": "9599640903f3455ac362d9bf9c92a29811e780d04cf66d5c11ad91ebb4e7cae3",
+        "fault_class": "metric_output_scaled_low_while_bias_path_is_correct",
+        "mutation_bundle_sha256": "cf056adfd38c85d52973deab81ae186ee3d82326cd8d52644f5566f7c5ebec4f",
+        "mutation_id": "neg_005_metric_scale_low",
+        "source_catalog_certification_path": "negative_variants/neg_005_metric_scale_low/certification.json",
+        "trigger_condition": "Scales only the metric output low while preserving the bias voltage path.",
+        "violated_property_ids": [
+          "P_ENABLE_METRIC"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_006_nonmonotonic_upper_trim/certification.json",
+        "certification_sha256": "5de286de6c991ce2d4a85669fb699de6da5d960990f7ad8d3a513908e590dc83",
+        "fault_class": "upper_trim_target_falls_below_lower_trim_target",
+        "mutation_bundle_sha256": "ea707622928330788c1a782a21205723a12e58cb19d735dc2cb5b9c090516126",
+        "mutation_id": "neg_006_nonmonotonic_upper_trim",
+        "source_catalog_certification_path": "negative_variants/neg_006_nonmonotonic_upper_trim/certification.json",
+        "trigger_condition": "increasing the enabled trim control must increase the settled bias target",
+        "violated_property_ids": [
+          "P_MONOTONIC_TRIM"
+        ]
+      }
+    ],
+    "bugfix_seed": "neg_001_zero",
+    "canonical_dut_id": "073",
+    "hashes": {
+      "mutation_catalog_sha256": "35c338707656f1f8f4f4fe27767e30fa8b0535a06c585c3fcaa81c81ac22103a",
+      "score_deck_sha256": "e26be8e98fe137c4726cec898901a8e2878df107183ae9d22c388c8e292904b7",
+      "task_certification_sha256": "6998ed6c4d8a1bb32f3974c6c118ff059f58f4f2fd9fbef5b324fede6ac56e2a",
+      "task_record_sha256": "288058b6e7acf94742560bf22d0d10d8d42c8210eed3ab18ce90120935eda66f"
+    },
+    "release_dir": "073-bias-voltage-generator-with-enable-trim"
+  }
+}

@@ -1,0 +1,80 @@
+{
+  "family_id": "172",
+  "schema_version": "v4-score-denominator-family-registry-v1",
+  "task": {
+    "active_mutation_count": 5,
+    "active_mutations": [
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_002_swap_edges/certification.json",
+        "certification_sha256": "755337a5364c22c9eaef2e605c739e3dc0f192490290dddeff40fe7643aa8deb",
+        "fault_class": "edge_lane_selection_swapped",
+        "mutation_bundle_sha256": "73296ddbbec650a94a30f39c6162be2bfdbc2be846bb3a5948533cc82ab07eea",
+        "mutation_id": "neg_002_swap_edges",
+        "source_catalog_certification_path": "negative_variants/neg_002_swap_edges/certification.json",
+        "trigger_condition": "Routes din2 on rising edges and din1 on falling edges.",
+        "violated_property_ids": [
+          "P_FALLING_EDGE_LANE2",
+          "P_RISING_EDGE_LANE1"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_001_zero/certification.json",
+        "certification_sha256": "c3c9942723845da0743d1f57cca902d372e4d3b46f3e447d7c052670388cb3ad",
+        "fault_class": "zero_stub_output",
+        "mutation_bundle_sha256": "6d43ccb83f77f263332d9fef5281772e89f95c3dd72c783ae301e898edbd6e76",
+        "mutation_id": "neg_001_zero",
+        "source_catalog_certification_path": "negative_variants/neg_001_zero/certification.json",
+        "trigger_condition": "Drives zero output and therefore fails the stable waveform contract.",
+        "violated_property_ids": [
+          "P_INITIAL_LANE1_STATE",
+          "P_SELECTED_LEVEL_HOLD"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_003_always_first_lane/certification.json",
+        "certification_sha256": "3a6e714b49ebbbeb6d83b1e0469f2c311195b5e260fef4ebce163d5b2ecead6e",
+        "fault_class": "lane_selection_stuck",
+        "mutation_bundle_sha256": "0a6929fb398e48a3466fb25dd4c7e5b1c123110da64bfbfe6bce15fc5cb54cde",
+        "mutation_id": "neg_003_always_first_lane",
+        "source_catalog_certification_path": "negative_variants/neg_003_always_first_lane/certification.json",
+        "trigger_condition": "Never selects din2 on the falling alignment edge.",
+        "violated_property_ids": [
+          "P_FALLING_EDGE_LANE2"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_004_half_output_level/certification.json",
+        "certification_sha256": "1258273fa1873e3a9dce46c102ebccd00ca3519c48e81c8274aea8ade7c4e799",
+        "fault_class": "output_rail_amplitude_error",
+        "mutation_bundle_sha256": "2f601a73aa5c971ac273d6a58384a11f73b517c9afc8214415c3376f08a4cf94",
+        "mutation_id": "neg_004_half_output_level",
+        "source_catalog_certification_path": "negative_variants/neg_004_half_output_level/certification.json",
+        "trigger_condition": "Preserves edge selection but drives the selected lane at half amplitude.",
+        "violated_property_ids": [
+          "P_SELECTED_LEVEL_HOLD"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_005_metric_scale_low/certification.json",
+        "certification_sha256": "0028dd80ada0826bde625a029967bf6287d79180c8c1233be27ecd9eec134474",
+        "fault_class": "observable_scale_error",
+        "mutation_bundle_sha256": "6f497cfc4e0a0e3d529454de28fef98870ef6e732bb1ff4aa51f283f3210e07f",
+        "mutation_id": "neg_005_metric_scale_low",
+        "source_catalog_certification_path": "negative_variants/neg_005_metric_scale_low/certification.json",
+        "trigger_condition": "Pipe 2lane Edge Align: scales the metric output, preserving the main path while failing measurement checks.",
+        "violated_property_ids": [
+          "P_SELECTED_LEVEL_HOLD"
+        ]
+      }
+    ],
+    "bugfix_seed": "neg_002_swap_edges",
+    "canonical_dut_id": "172",
+    "hashes": {
+      "mutation_catalog_sha256": "f569fabeb92f5565c14385e654d330cbabeeb412e24e2750796b2a2ba5b423f3",
+      "score_deck_sha256": "6fcc54832b9b60baed76a42b7cb95d895b2e147acf2d8284d9236e5baf23222e",
+      "task_certification_sha256": "90748e98312c02475aef106ebc390534f12d786d2a97831f085bd3738e40dd07",
+      "task_record_sha256": "b16012b1239a03a55d4f2062110d61ba691e8a717bc8193cc66bac8dbff6462c"
+    },
+    "release_dir": "172-pipe-2lane-edge-align"
+  }
+}

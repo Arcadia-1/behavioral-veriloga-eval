@@ -1,0 +1,78 @@
+{
+  "family_id": "385",
+  "schema_version": "v4-score-denominator-family-registry-v1",
+  "task": {
+    "active_mutation_count": 5,
+    "active_mutations": [
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_001_overlapping_phases/certification.json",
+        "certification_sha256": "8102bebd4a3ab695ff18453c906697ba468312aa738055969a39a07f0d34e1b0",
+        "fault_class": "phase_overlap",
+        "mutation_bundle_sha256": "fab8f80cd00dd1604fa4d1a9098c30769e808eaa8ec4be8ee68900ffd14abf87",
+        "mutation_id": "neg_001_overlapping_phases",
+        "source_catalog_certification_path": "negative_variants/neg_001_overlapping_phases/certification.json",
+        "trigger_condition": "the generator selects phase zero",
+        "violated_property_ids": [
+          "P_ONE_HOT_SEQUENCE"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_003_swapped_sample_hold/certification.json",
+        "certification_sha256": "b0a6ddc43bff6bf4aea1701972d38ac3c30592448d6890972f78f47730cd71ab",
+        "fault_class": "wrong_command_mapping",
+        "mutation_bundle_sha256": "95477b217659e3d207754dd436ca15112ab61c29374b48cca167d303fc8c7c7e",
+        "mutation_id": "neg_003_swapped_sample_hold",
+        "source_catalog_certification_path": "negative_variants/neg_003_swapped_sample_hold/certification.json",
+        "trigger_condition": "a sample phase is active",
+        "violated_property_ids": [
+          "P_COMMAND_MAPPING"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_004_phase_code_lsb_stuck/certification.json",
+        "certification_sha256": "ef83625adb3974575607cb7a71145d0d61fd88eb35a7a79a11206bd3280e93c5",
+        "fault_class": "stuck_output",
+        "mutation_bundle_sha256": "46fc3f8b0bb221190b3941c9409f8a694b6365d559614296977174205016186d",
+        "mutation_id": "neg_004_phase_code_lsb_stuck",
+        "source_catalog_certification_path": "negative_variants/neg_004_phase_code_lsb_stuck/certification.json",
+        "trigger_condition": "phase one or phase three is active",
+        "violated_property_ids": [
+          "P_PHASE_CODE"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_005_valid_asserts_early/certification.json",
+        "certification_sha256": "d9ab4494a503ad8ea714e097e9d3e9d72613fa29b64fc247866f5bec82101634",
+        "fault_class": "qualification_count_error",
+        "mutation_bundle_sha256": "ea6184cd88dab22824aa7b8fd1c5056d5317f8341364f4e93eefa40d65ba4daa",
+        "mutation_id": "neg_005_valid_asserts_early",
+        "source_catalog_certification_path": "negative_variants/neg_005_valid_asserts_early/certification.json",
+        "trigger_condition": "phase one is observed before a complete sequence",
+        "violated_property_ids": [
+          "P_VALID_AFTER_SEQUENCE"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_002_reset_not_cleared/certification.json",
+        "certification_sha256": "2d82f3d5e844c126132147d8ee03a6faef78e2a0813fa5b99f091be8b9d24794",
+        "fault_class": "missing_reset",
+        "mutation_bundle_sha256": "8cb2b2266abef4e30cc192b8d4541d9cb6e85225a15a54c938db8e6a1a636671",
+        "mutation_id": "neg_002_reset_not_cleared",
+        "source_catalog_certification_path": "negative_variants/neg_002_reset_not_cleared/certification.json",
+        "trigger_condition": "rst is asserted while enable remains high",
+        "violated_property_ids": [
+          "P_RESET_DISABLE_CLEAR"
+        ]
+      }
+    ],
+    "bugfix_seed": "neg_001_overlapping_phases",
+    "canonical_dut_id": "385",
+    "hashes": {
+      "mutation_catalog_sha256": "5cbc7a73c8f2845cbdfc1528f5f89fe527bf3e15078d9215257eb27fca8a4f23",
+      "score_deck_sha256": "dbe103bc15d1c54ce74a9a2b7791c66b0b6b0226ed59aba7af9e9706ffea57ac",
+      "task_certification_sha256": "938d82cca551d35a1f07b942d364b18af3b4626c9fa859bac032b5861566c0d0",
+      "task_record_sha256": "c15e7b4216f6acb61408be4c21aa3fe8972f597da626aedba1dc1e319cbf865b"
+    },
+    "release_dir": "385-switched-cap-phase-sequencer"
+  }
+}

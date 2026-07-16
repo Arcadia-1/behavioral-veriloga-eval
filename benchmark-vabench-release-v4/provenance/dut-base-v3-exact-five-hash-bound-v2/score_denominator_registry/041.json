@@ -1,0 +1,78 @@
+{
+  "family_id": "041",
+  "schema_version": "v4-score-denominator-family-registry-v1",
+  "task": {
+    "active_mutation_count": 5,
+    "active_mutations": [
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_001/certification.json",
+        "certification_sha256": "2ef814cd64d530b297a5e310cc6515ed8fe837d1c43aad93d751a25e1d84b482",
+        "fault_class": "passes_nominal_smoke_cases_but_fails_an_endpoint",
+        "mutation_bundle_sha256": "07d5bf3408e3147e59ef97c15a445df3d1993b9f7ab3216ca6ebe92dc5301afb",
+        "mutation_id": "neg_001",
+        "source_catalog_certification_path": "negative_variants/neg_001/certification.json",
+        "trigger_condition": "Passes nominal/smoke cases but fails an endpoint, threshold, saturation, or settling boundary.",
+        "violated_property_ids": [
+          "P_RESET_COMMON_MODE"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_003/certification.json",
+        "certification_sha256": "a43f5895ab5e51b6e9485305f61b9a3250ad2e95ad7f812af54606d5f6b3a163",
+        "fault_class": "passes_positive_or_nominal_path_but_fails_sign_f",
+        "mutation_bundle_sha256": "6729a448eea61e6cc2a15f346a18c7fd84d046eee480e5202009da55521a957f",
+        "mutation_id": "neg_003",
+        "source_catalog_certification_path": "negative_variants/neg_003/certification.json",
+        "trigger_condition": "Passes positive or nominal path but fails sign, feedback direction, I/Q polarity, or trim direction.",
+        "violated_property_ids": [
+          "P_DOWNCONVERSION_TRANSFER"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_004/certification.json",
+        "certification_sha256": "c97bd6ebaa53c9f9f4366389abd90cf35d1674d6528ee6fa5ed31a5ecfff9f67",
+        "fault_class": "passes_steady_state_behavior_but_fails_reset_ena",
+        "mutation_bundle_sha256": "45d4e4e6f82640c52743cc9055c3cfe24716899b1b3c69517baf0b44582e3e48",
+        "mutation_id": "neg_004",
+        "source_catalog_certification_path": "negative_variants/neg_004/certification.json",
+        "trigger_condition": "Passes steady-state behavior but fails reset, enable, initial condition, or done/ready assertion.",
+        "violated_property_ids": [
+          "P_ACTIVE_METRIC"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_005/certification.json",
+        "certification_sha256": "2eaf368c5ae9c988bd7257a3b879d61c779707e03d25510d97d702c7d3252697",
+        "fault_class": "produces_plausible_behavior_but_fails_a_metric_w",
+        "mutation_bundle_sha256": "c1e2810fa102f3a9347ecfaee5f7c832a59299c3e990312d9f6e43e78a6f19dd",
+        "mutation_id": "neg_005",
+        "source_catalog_certification_path": "negative_variants/neg_005/certification.json",
+        "trigger_condition": "Produces plausible behavior but fails a metric writer, latency, count, or measurement output.",
+        "violated_property_ids": [
+          "P_OUTPUT_CLAMP"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_002/certification.json",
+        "certification_sha256": "37ac2d91c8872b5eec343ddcba43c6368c26d7480e08db0cfcfd04b4b8647801",
+        "fault_class": "passes_interface_and_broad_waveform_checks_but_f",
+        "mutation_bundle_sha256": "33f4ceb2b1f2467093538be61b9c8d3e04df0a96addf26c87804877a23bd1a03",
+        "mutation_id": "neg_002",
+        "source_catalog_certification_path": "negative_variants/neg_002/certification.json",
+        "trigger_condition": "Passes interface and broad waveform checks but fails one edge, timer, sample, lock, or reacquire window.",
+        "violated_property_ids": [
+          "P_LO_POLARITY"
+        ]
+      }
+    ],
+    "bugfix_seed": "neg_001",
+    "canonical_dut_id": "041",
+    "hashes": {
+      "mutation_catalog_sha256": "7dc8b67a03c3ce10b07943af2a92fe683662ebb4d185b60d6cda91d05decf399",
+      "score_deck_sha256": "a7d1151e0db301eee9bf17ab93864c7711c77d38007c7487b00d75cf52b8dc1d",
+      "task_certification_sha256": "a82560151fd2c6d83b7f60cba937842b473b1e51bd945cde472966e4f54d0ecc",
+      "task_record_sha256": "c5033fe591dcf01a66ddbe9c443c2d1cb593dfc513bcff4750a5f912f058050e"
+    },
+    "release_dir": "041-rf-mixer-downconverter-macro"
+  }
+}

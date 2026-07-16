@@ -1,0 +1,79 @@
+{
+  "family_id": "308",
+  "schema_version": "v4-score-denominator-family-registry-v1",
+  "task": {
+    "active_mutation_count": 5,
+    "active_mutations": [
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_003_offset_debug_tracks_signal_sample/certification.json",
+        "certification_sha256": "5295c265d792ce66c2eda3f104f8b5c21161d3f516fdea77de982d83752142be",
+        "fault_class": "offset_debug_tracks_signal_sample",
+        "mutation_bundle_sha256": "5bcf7bf5f09209073a95f99ffaf2742f88a8d56e4c3f8f1082212f813a614e92",
+        "mutation_id": "neg_003_offset_debug_tracks_signal_sample",
+        "source_catalog_certification_path": "negative_variants/neg_003_offset_debug_tracks_signal_sample/certification.json",
+        "trigger_condition": "offset_debug_tracks_signal_sample",
+        "violated_property_ids": [
+          "P_ON_A_LATER_RISING_CLK_EDGE"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_005_output_tracks_input_directly/certification.json",
+        "certification_sha256": "16b27239c1007a913d4bf318e42c5f3895f971d5e9452faf5b485ff5c63d95ad",
+        "fault_class": "output_tracks_input_directly",
+        "mutation_bundle_sha256": "b6d35d29209952bace9f3d19c46837271e35199905c7fb6c62238a9cdaa39c07",
+        "mutation_id": "neg_005_output_tracks_input_directly",
+        "source_catalog_certification_path": "negative_variants/neg_005_output_tracks_input_directly/certification.json",
+        "trigger_condition": "output_tracks_input_directly",
+        "violated_property_ids": [
+          "P_EXPOSE_THE_RESET_SAMPLE_ON_OFFSET",
+          "P_USE_ONLY_VOLTAGE_DOMAIN_BEHAVIORAL_STATE"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_002_valid_before_complete_pair/certification.json",
+        "certification_sha256": "9bad90a22cce1ec4e7b2c07ce9d7524022be54c67cd7fd70061879c1ea05ef72",
+        "fault_class": "valid_before_complete_pair",
+        "mutation_bundle_sha256": "fdbc930c4859c20675a56f84304ec94ae5226cd08a8e95666f6cc7c69cee8075",
+        "mutation_id": "neg_002_valid_before_complete_pair",
+        "source_catalog_certification_path": "negative_variants/neg_002_valid_before_complete_pair/certification.json",
+        "trigger_condition": "valid_before_complete_pair",
+        "violated_property_ids": [
+          "P_ON_A_RISING_CLK_EDGE_WITH"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_004_reset_does_not_clear/certification.json",
+        "certification_sha256": "6ea53457791ee103e01455f3124848a1f4eddbd277be3b3e4f8674d568f754fe",
+        "fault_class": "reset_does_not_clear",
+        "mutation_bundle_sha256": "064d9e0f31d27be78f873aa103caa33b84c06d55d6ef369aa58e0dd60306ae42",
+        "mutation_id": "neg_004_reset_does_not_clear",
+        "source_catalog_certification_path": "negative_variants/neg_004_reset_does_not_clear/certification.json",
+        "trigger_condition": "reset_does_not_clear",
+        "violated_property_ids": [
+          "P_DRIVE_VOUT_AS_VCM_PLUS_THE"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_001_difference_polarity_inverted/certification.json",
+        "certification_sha256": "1a1df054a5751a2b7f1e4e088d8a2d25213e3c7a993dd93a589f9dc0dc83cbbc",
+        "fault_class": "difference_polarity_inverted",
+        "mutation_bundle_sha256": "afac393a5cf7a396af3a7f508f48c0265d5db14eb4398026011bb0b96ec0a847",
+        "mutation_id": "neg_001_difference_polarity_inverted",
+        "source_catalog_certification_path": "negative_variants/neg_001_difference_polarity_inverted/certification.json",
+        "trigger_condition": "difference_polarity_inverted",
+        "violated_property_ids": [
+          "P_ON_RESET_CLEAR_RESET_SAMPLE_SIGNAL"
+        ]
+      }
+    ],
+    "bugfix_seed": "neg_003_offset_debug_tracks_signal_sample",
+    "canonical_dut_id": "308",
+    "hashes": {
+      "mutation_catalog_sha256": "db2072f9044436d118d272de8007a9a259959f74f457a365d786de69aac8dc67",
+      "score_deck_sha256": "48fb62baf42277dcc7ab78133166d08171c7d5788191d9a421eebf90a50854af",
+      "task_certification_sha256": "e4f8e8cae9c880137b2600955731bfd84278910c87ab241876fd270314dc3e10",
+      "task_record_sha256": "0d353a95ece1bb645a115bed203a9d4a0c7f7115a20d4b389db06d639725ead4"
+    },
+    "release_dir": "308-correlated-double-sampler-offset-cancel"
+  }
+}

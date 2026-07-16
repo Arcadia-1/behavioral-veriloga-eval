@@ -1,0 +1,78 @@
+{
+  "family_id": "376",
+  "schema_version": "v4-score-denominator-family-registry-v1",
+  "task": {
+    "active_mutation_count": 5,
+    "active_mutations": [
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_004_threshold_shifted/certification.json",
+        "certification_sha256": "7300e2a2a3105b5f9660f4483339ba0bdca2d02dadcbb39b1687df69ca117591",
+        "fault_class": "threshold_or_boundary_fault",
+        "mutation_bundle_sha256": "1646c780ce6004653232c8c129f043603031cd66d229095b4d5e3ea7e80ee53b",
+        "mutation_id": "neg_004_threshold_shifted",
+        "source_catalog_certification_path": "negative_variants/neg_004_threshold_shifted/certification.json",
+        "trigger_condition": "semantic threshold mutation from gold",
+        "violated_property_ids": [
+          "P_PWM_OUT_IS_HIGH_WHEN_VCTRL"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_001_zero/certification.json",
+        "certification_sha256": "e7c4804be5e9366571c221ed5364cc1b7b492d9cc847a922534749ef02290ab5",
+        "fault_class": "zero_stub_output",
+        "mutation_bundle_sha256": "469ed4492b7d48b7d66e23a1407cca5d50cb92e1666ec7829a280ab40133c192",
+        "mutation_id": "neg_001_zero",
+        "source_catalog_certification_path": "negative_variants/neg_001_zero/certification.json",
+        "trigger_condition": "semantic zero mutation from gold",
+        "violated_property_ids": [
+          "P_RESET_OR_A_LOW_ENABLE_CLEARS"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_002_half_scale/certification.json",
+        "certification_sha256": "09087b568fe7c6f35be1ab8adebf1c2956a4c7ee681489da4c3708f0c418ecbc",
+        "fault_class": "metric_or_observable_fault",
+        "mutation_bundle_sha256": "2daa3c244bdfd13877f5853ca1e07676b9bb49492a7321e7974ff3976a7759c6",
+        "mutation_id": "neg_002_half_scale",
+        "source_catalog_certification_path": "negative_variants/neg_002_half_scale/certification.json",
+        "trigger_condition": "semantic scale mutation from gold",
+        "violated_property_ids": [
+          "P_ON_EACH_ENABLED_RISING_CLK_EDGE"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_005_event_edge_wrong/certification.json",
+        "certification_sha256": "967c2594ae2a76e37b8d8f2d7c18eaba1b9f413642104d7f3da2e1d7562f3f6d",
+        "fault_class": "polarity_or_direction_error",
+        "mutation_bundle_sha256": "facf66e9cdb7aaf6c88f4501f2a4a323f5c28be4e2903a50643144ba26e00cf4",
+        "mutation_id": "neg_005_event_edge_wrong",
+        "source_catalog_certification_path": "negative_variants/neg_005_event_edge_wrong/certification.json",
+        "trigger_condition": "semantic delay_edge mutation from gold",
+        "violated_property_ids": [
+          "P_DUTY_METRIC_TRACKS_THE_CLIPPED_DUTY"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_003_inverted_transfer/certification.json",
+        "certification_sha256": "82796be3a5e77362424049253cff5083fe224cb5bfd3a41084e8d0661c8eb486",
+        "fault_class": "polarity_or_direction_error",
+        "mutation_bundle_sha256": "0449fd9f387a13dc698ee643a2d50b35a2c1bd1026e811c04d2821f146bdaf7d",
+        "mutation_id": "neg_003_inverted_transfer",
+        "source_catalog_certification_path": "negative_variants/neg_003_inverted_transfer/certification.json",
+        "trigger_condition": "semantic invert mutation from gold",
+        "violated_property_ids": [
+          "P_CYCLE_START_PULSES_HIGH_FOR_THE"
+        ]
+      }
+    ],
+    "bugfix_seed": "neg_004_threshold_shifted",
+    "canonical_dut_id": "376",
+    "hashes": {
+      "mutation_catalog_sha256": "9b9907666bbdaaa78f20800c5a920f24d933e46453def8b73ddd0b5b31036a89",
+      "score_deck_sha256": "38fc0b38e96515e315e11aa0e31e43c8680c46762747e54d762ded6bc98bf42f",
+      "task_certification_sha256": "90524f93534f6ce603219e8eaec93b1767ce4380a832302840d56aaf084d2dcd",
+      "task_record_sha256": "e55b7a7f426e5e5a9a2f125643e8f93976cb21a8a78f1f24b79a13fed6ee3459"
+    },
+    "release_dir": "376-pwm-ramp-modulator-front-end"
+  }
+}

@@ -1,0 +1,78 @@
+{
+  "family_id": "146",
+  "schema_version": "v4-score-denominator-family-registry-v1",
+  "task": {
+    "active_mutation_count": 5,
+    "active_mutations": [
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_003_wrong_gain/certification.json",
+        "certification_sha256": "fbea1980f2242067131de356271b0d876702fd72726a037deb315884d8a03743",
+        "fault_class": "metric_or_observable_fault",
+        "mutation_bundle_sha256": "f4c5c7848de893355935a3ddcf821de624cb29f5c546d990c46bba2083d9ab1e",
+        "mutation_id": "neg_003_wrong_gain",
+        "source_catalog_certification_path": "negative_variants/neg_003_wrong_gain/certification.json",
+        "trigger_condition": "Uses the wrong output gain.",
+        "violated_property_ids": [
+          "P_OUTPUT_GAIN"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_002_uncentered_sum/certification.json",
+        "certification_sha256": "e51ce9bdc4825a8ab657634dcb9bba94dd91a2f992f873bc1a49b3cb3a57cb98",
+        "fault_class": "threshold_or_boundary_fault",
+        "mutation_bundle_sha256": "e8a018a5a414361b21c00d44f85567168b83b648f620ab06524e4fb30f180e9b",
+        "mutation_id": "neg_002_uncentered_sum",
+        "source_catalog_certification_path": "negative_variants/neg_002_uncentered_sum/certification.json",
+        "trigger_condition": "Adds a fixed DC offset to the centered thermometer sum.",
+        "violated_property_ids": [
+          "P_CENTERED_SUM"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_004_ignores_upper_bits/certification.json",
+        "certification_sha256": "3d71c8208f9aaee33f98b5049a2155784fc51c120eda9df90379239ce8b14615",
+        "fault_class": "omission_or_incomplete_behavior",
+        "mutation_bundle_sha256": "08c801fb8b9d72112c689313fb8b233fd60fcdce7fd3aaef49de623806c8f3da",
+        "mutation_id": "neg_004_ignores_upper_bits",
+        "source_catalog_certification_path": "negative_variants/neg_004_ignores_upper_bits/certification.json",
+        "trigger_condition": "Counts only the lower four thermometer inputs.",
+        "violated_property_ids": [
+          "P_THERMOMETER_THRESHOLD_COUNT"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_001_zero/certification.json",
+        "certification_sha256": "b37b5657ec3d56619aaf143c8c258812be75d4a1e8fb2fcd23f4885b7ee54020",
+        "fault_class": "zero_stub_output",
+        "mutation_bundle_sha256": "5fd96a76a54ee65fc472b8c5a91af3e5e4e1ae014a925e460bc3c32f4815f935",
+        "mutation_id": "neg_001_zero",
+        "source_catalog_certification_path": "negative_variants/neg_001_zero/certification.json",
+        "trigger_condition": "Drives zero output and therefore fails the stable waveform contract.",
+        "violated_property_ids": [
+          "P_OUTPUT_GAIN"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_005_metric_scale_low/certification.json",
+        "certification_sha256": "16a3d2ed65b1e39693fd268378269acffe255a4e26c1ea8d4bae69fb297186be",
+        "fault_class": "metric_or_observable_fault",
+        "mutation_bundle_sha256": "ae7c250c77481ec90ffe439bc8b910f6e4f07254c2f25470c7eea807b5ff059c",
+        "mutation_id": "neg_005_metric_scale_low",
+        "source_catalog_certification_path": "negative_variants/neg_005_metric_scale_low/certification.json",
+        "trigger_condition": "Flash Thermometer Centered Sum: scales the metric output, preserving the main path while failing measurement checks.",
+        "violated_property_ids": [
+          "P_OUTPUT_GAIN"
+        ]
+      }
+    ],
+    "bugfix_seed": "neg_003_wrong_gain",
+    "canonical_dut_id": "146",
+    "hashes": {
+      "mutation_catalog_sha256": "2f72278cb9a5dbb0c56427d095d25fa9754ce2de4a0a30a1bb5a049a0fe1d9f6",
+      "score_deck_sha256": "4b71dd41e18ac931e2430636c840f28bff3f82a0babb289bb78fc3601c285e87",
+      "task_certification_sha256": "356ac8f4f4baebe81a24f785643229c546335e75db27dd608fd544b6185a3571",
+      "task_record_sha256": "6a4cccdbcdf80cfb1ea53649eb98fe2b0b9249306096c1194d1c403322652da7"
+    },
+    "release_dir": "146-flash-thermometer-centered-sum"
+  }
+}

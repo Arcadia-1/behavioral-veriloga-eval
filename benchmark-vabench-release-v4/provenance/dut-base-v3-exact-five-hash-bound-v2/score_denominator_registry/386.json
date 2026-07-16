@@ -1,0 +1,79 @@
+{
+  "family_id": "386",
+  "schema_version": "v4-score-denominator-family-registry-v1",
+  "task": {
+    "active_mutation_count": 5,
+    "active_mutations": [
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_002_gain_metric_wrong/certification.json",
+        "certification_sha256": "c72e53cdcc4af34e53b2b6a5d34ae48455529ae31a23340ca54d7659ea75eafa",
+        "fault_class": "gain_metric_wrong",
+        "mutation_bundle_sha256": "9a2638409f7165e059d4fe02ebd727760f2bda76fad7eab51a15906e2f4b709f",
+        "mutation_id": "neg_002_gain_metric_wrong",
+        "source_catalog_certification_path": "negative_variants/neg_002_gain_metric_wrong/certification.json",
+        "trigger_condition": "gain_metric_wrong",
+        "violated_property_ids": [
+          "P_EXPOSE_THE_ACTIVE_GAIN_ON_GAIN"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_001_no_compression/certification.json",
+        "certification_sha256": "81f666fb4d0ee77ceda9626527868bcd7585430ae9daec0abae6fda91c0fa1e5",
+        "fault_class": "no_compression",
+        "mutation_bundle_sha256": "2e698d84e3864335b33319b1842d837f3ce3d550a122bae460781dff30c9286e",
+        "mutation_id": "neg_001_no_compression",
+        "source_catalog_certification_path": "negative_variants/neg_001_no_compression/certification.json",
+        "trigger_condition": "no_compression",
+        "violated_property_ids": [
+          "P_AS_ENVELOPE_EXCEEDS_THE_COMPRESSION_THRESHOLD",
+          "P_WHEN_ENABLED_AMPLIFY_VIN_VCM_WITH"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_003_phase_metric_stuck/certification.json",
+        "certification_sha256": "1a72dd6bb7b98de8d74a04cba44390789b326dfead886db5fb7978e25e983134",
+        "fault_class": "phase_metric_stuck",
+        "mutation_bundle_sha256": "afe800e75a090f72c15d35a3f587e769562407462a1233bf400b57e602531b0d",
+        "mutation_id": "neg_003_phase_metric_stuck",
+        "source_catalog_certification_path": "negative_variants/neg_003_phase_metric_stuck/certification.json",
+        "trigger_condition": "phase_metric_stuck",
+        "violated_property_ids": [
+          "P_AS_ENVELOPE_EXCEEDS_THE_COMPRESSION_THRESHOLD"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_004_flag_stuck_low/certification.json",
+        "certification_sha256": "ee2981e9f063e10426a7cb38552d5e5f95232644cf51e1d6c52591bf4e3bc718",
+        "fault_class": "flag_stuck_low",
+        "mutation_bundle_sha256": "1b916736eb6838abed9579fe4fc187752e422f3b08baf51893b13b777fe72121",
+        "mutation_id": "neg_004_flag_stuck_low",
+        "source_catalog_certification_path": "negative_variants/neg_004_flag_stuck_low/certification.json",
+        "trigger_condition": "flag_stuck_low",
+        "violated_property_ids": [
+          "P_ASSERT_COMPRESSED_WHEN_THE_EFFECTIVE_GAIN"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_006_output_not_clamped/certification.json",
+        "certification_sha256": "b19e4938e9c17969da654ad51bfb1e0d795ead5b5a6b784d42be5303179b3dad",
+        "fault_class": "output_clamp_removed",
+        "mutation_bundle_sha256": "44f7951f739a938240ec1cb8250d96d73bfdc994b8742e35c9e3c74c2f8741d2",
+        "mutation_id": "neg_006_output_not_clamped",
+        "source_catalog_certification_path": "negative_variants/neg_006_output_not_clamped/certification.json",
+        "trigger_condition": "input and gain demand an output beyond a supply rail",
+        "violated_property_ids": [
+          "P_CLAMP_VOUT_INSIDE_VSS_VDD"
+        ]
+      }
+    ],
+    "bugfix_seed": "neg_002_gain_metric_wrong",
+    "canonical_dut_id": "386",
+    "hashes": {
+      "mutation_catalog_sha256": "2fc091775337aa67385e7be17ad21556e08678bda30184e20bac8157f663c08a",
+      "score_deck_sha256": "ee226a6152e118bd62fb1c11b3c8f6b596f3149cd038e1781a821c33b9faf648",
+      "task_certification_sha256": "1eabf421e6cefbd22d3e4ad54c59c05899ef1088406df696cf90a915865ebc9e",
+      "task_record_sha256": "85e58728312722fd2e0e80037137fdd425ca2fd353014cd85c8c390804f9c528"
+    },
+    "release_dir": "386-pa-gain-compression-ampm-macro"
+  }
+}

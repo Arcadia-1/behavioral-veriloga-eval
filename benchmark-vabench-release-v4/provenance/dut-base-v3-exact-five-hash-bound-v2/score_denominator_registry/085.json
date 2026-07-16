@@ -1,0 +1,85 @@
+{
+  "family_id": "085",
+  "schema_version": "v4-score-denominator-family-registry-v1",
+  "task": {
+    "active_mutation_count": 5,
+    "active_mutations": [
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_002_threshold_shifted/certification.json",
+        "certification_sha256": "37fb8c6195fb0c3388c8ac2aa8b52cb9f4e33f55a6b2e974f6b08ee60338a65e",
+        "fault_class": "threshold_boundary_error",
+        "mutation_bundle_sha256": "3a568982fb9f31bb32b652aba45c19005471b2bcfefaf53bfaa9d3473b7ed3b2",
+        "mutation_id": "neg_002_threshold_shifted",
+        "source_catalog_certification_path": "negative_variants/neg_002_threshold_shifted/certification.json",
+        "trigger_condition": "boundary stimulus crosses the public threshold conditions for Comparator Offset Search",
+        "violated_property_ids": [
+          "P_DECISION_THRESHOLD",
+          "P_FIRST_POSITIVE_CAPTURE",
+          "P_INITIAL_MEASUREMENT_STATE"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_005_metric_scale_low/certification.json",
+        "certification_sha256": "83e77067b3a8e5383cf2f1975d1a60f4907dc5b9d58573f50426b9de60b2fdb9",
+        "fault_class": "metric_scaling_error",
+        "mutation_bundle_sha256": "5f3df4f7b39594b99b8becc29cfff273bc32dd0c37926adc31964dadce822474",
+        "mutation_id": "neg_005_metric_scale_low",
+        "source_catalog_certification_path": "negative_variants/neg_005_metric_scale_low/certification.json",
+        "trigger_condition": "score stimulus observes the public metric/output scaling for Comparator Offset Search",
+        "violated_property_ids": [
+          "P_DECISION_THRESHOLD",
+          "P_INITIAL_MEASUREMENT_STATE",
+          "P_RAIL_REFERENCED_LOGIC"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_003_event_edge_wrong/certification.json",
+        "certification_sha256": "47e86182cc7100295d65ec07c0080414d328ea2c82086a43c9a30f68648a9c58",
+        "fault_class": "event_edge_polarity_error",
+        "mutation_bundle_sha256": "b8d888f7e3a8fde1b03e4eef80971c0296a41cfa023ee7448b0b38f37e934c1c",
+        "mutation_id": "neg_003_event_edge_wrong",
+        "source_catalog_certification_path": "negative_variants/neg_003_event_edge_wrong/certification.json",
+        "trigger_condition": "event-timing stimulus distinguishes the required active edge for Comparator Offset Search",
+        "violated_property_ids": [
+          "P_CAPTURE_HOLD",
+          "P_FIRST_POSITIVE_CAPTURE"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_001_zero/certification.json",
+        "certification_sha256": "ca245f707c72c5fe755b783cbb18b9a3b24dd223223ce8af9f8b4ee30f029676",
+        "fault_class": "zero_stub_output",
+        "mutation_bundle_sha256": "30b40ad551586ae7e0b616ff194129ec2b58956cec60bc26404951153dcd28a7",
+        "mutation_id": "neg_001_zero",
+        "source_catalog_certification_path": "negative_variants/neg_001_zero/certification.json",
+        "trigger_condition": "nonzero behavioral stimulus requires observable Comparator Offset Search outputs",
+        "violated_property_ids": [
+          "P_DECISION_THRESHOLD",
+          "P_INITIAL_MEASUREMENT_STATE"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_004_valid_not_latched/certification.json",
+        "certification_sha256": "31e15679091d2598424ab1d31653f7008d8df87db6f2aaee917d90cf3b56641c",
+        "fault_class": "behavioral_contract_near_miss",
+        "mutation_bundle_sha256": "1f5dbf89deebbf3e6521d7975e570584f9456673047a007f419b110e746f0216",
+        "mutation_id": "neg_004_valid_not_latched",
+        "source_catalog_certification_path": "negative_variants/neg_004_valid_not_latched/certification.json",
+        "trigger_condition": "targeted stimulus exercises the violated observable contract for Comparator Offset Search",
+        "violated_property_ids": [
+          "P_DECISION_THRESHOLD",
+          "P_INITIAL_MEASUREMENT_STATE"
+        ]
+      }
+    ],
+    "bugfix_seed": "neg_002_threshold_shifted",
+    "canonical_dut_id": "085",
+    "hashes": {
+      "mutation_catalog_sha256": "043c855c84b02345d12a5f30c8a9f3c0067c2e4e84794d1a43e00e0d22c72034",
+      "score_deck_sha256": "4de2a89f307681f54ec096c73beb21d83d84f282a6b7476033bd0d44c31da6ab",
+      "task_certification_sha256": "1b6bc0be4b33a6e89bfbe5f082986dca873abaac19b0eabcd59b7bca7af3c17f",
+      "task_record_sha256": "e65bf52592813d0c2e4559321c7b888c6d3670a3910650b7d2fce8892697a23c"
+    },
+    "release_dir": "085-comparator-offset-search"
+  }
+}

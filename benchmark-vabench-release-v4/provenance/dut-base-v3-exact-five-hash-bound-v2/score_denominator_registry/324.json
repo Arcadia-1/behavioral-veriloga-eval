@@ -1,0 +1,78 @@
+{
+  "family_id": "324",
+  "schema_version": "v4-score-denominator-family-registry-v1",
+  "task": {
+    "active_mutation_count": 5,
+    "active_mutations": [
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_001_duty_metric_wrong_quantity/certification.json",
+        "certification_sha256": "287a44d8c4a108927e18800bd88961cee5199126c9ec0f50f23cb3f39ce4e130",
+        "fault_class": "duty_metric_wrong_quantity",
+        "mutation_bundle_sha256": "6f84619fe893526711638f4b6a323e3bacd834b7e0bf8ce829b4154a37f84381",
+        "mutation_id": "neg_001_duty_metric_wrong_quantity",
+        "source_catalog_certification_path": "negative_variants/neg_001_duty_metric_wrong_quantity/certification.json",
+        "trigger_condition": "duty_metric_wrong_quantity",
+        "violated_property_ids": [
+          "P_ON_RESET_OR_WHEN_DISABLED_CLEAR"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_004_valid_flag_missing/certification.json",
+        "certification_sha256": "bf4db41a7f1e42f1cced5d2841af7ac0a3f4339f8230c599c18e0fe4950f6d49",
+        "fault_class": "valid_flag_missing",
+        "mutation_bundle_sha256": "6e03c8133509d64ff2672cff443f3b16cf694158ac5660e5e4d52000b429f90f",
+        "mutation_id": "neg_004_valid_flag_missing",
+        "source_catalog_certification_path": "negative_variants/neg_004_valid_flag_missing/certification.json",
+        "trigger_condition": "valid_flag_missing",
+        "violated_property_ids": [
+          "P_ASSERT_IN_WINDOW_ONLY_WHEN_THE"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_002_window_flag_inverted/certification.json",
+        "certification_sha256": "6864d34511b3c9f5033ae9c85e10fc168238e2cc27a3b82e093e2b2d0fedb8b2",
+        "fault_class": "window_flag_inverted",
+        "mutation_bundle_sha256": "c0abfe8a3705aee024b51899c3698e55d2a7036475e900297047d3d49b4b7c53",
+        "mutation_id": "neg_002_window_flag_inverted",
+        "source_catalog_certification_path": "negative_variants/neg_002_window_flag_inverted/certification.json",
+        "trigger_condition": "window_flag_inverted",
+        "violated_property_ids": [
+          "P_MEASURE_HIGH_AND_LOW_INTERVALS_OVER"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_003_reset_disable_clear_missing/certification.json",
+        "certification_sha256": "9894fdead4ecb41b5d38c33440a1dc5f6d40353921385cb00fd451ef77032cb0",
+        "fault_class": "reset_disable_clear_missing",
+        "mutation_bundle_sha256": "b7499fe9ebf81d522f4d82c6fbd0911f0fc4ceb84ba38e8bed8cadb7aa15d134",
+        "mutation_id": "neg_003_reset_disable_clear_missing",
+        "source_catalog_certification_path": "negative_variants/neg_003_reset_disable_clear_missing/certification.json",
+        "trigger_condition": "reset_disable_clear_missing",
+        "violated_property_ids": [
+          "P_ON_RESET_OR_WHEN_DISABLED_CLEAR"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_005_window_flag_missing/certification.json",
+        "certification_sha256": "377c6f0b6248e7cee71d6aeeffb056550cc519d8cc93656fca656035cbf6d2e6",
+        "fault_class": "window_flag_missing",
+        "mutation_bundle_sha256": "2229368347fe3e64ea2478c2d907f6d0f8274b2bf965f04319bd76e32e56c9e4",
+        "mutation_id": "neg_005_window_flag_missing",
+        "source_catalog_certification_path": "negative_variants/neg_005_window_flag_missing/certification.json",
+        "trigger_condition": "window_flag_missing",
+        "violated_property_ids": [
+          "P_ASSERT_IN_WINDOW_ONLY_WHEN_THE"
+        ]
+      }
+    ],
+    "bugfix_seed": "neg_001_duty_metric_wrong_quantity",
+    "canonical_dut_id": "324",
+    "hashes": {
+      "mutation_catalog_sha256": "8b4abe62a5314914fe7fc9c9b3c5c7f9d11d622108e4eecdea560ff35dbd1608",
+      "score_deck_sha256": "afca2470aed1a63f0bd45ab8b8ab0a314ffe3a4d9eab6665d29e8412dc5ef8bf",
+      "task_certification_sha256": "5ac0d86aac447b669c1175676ee5879fa707f97f10647805f25b1ab888ef3379",
+      "task_record_sha256": "f26a49fcad9c7a33cc2a9acbf7fcbbe2f841a25bdcdd43d51e712817d30043d1"
+    },
+    "release_dir": "324-duty-cycle-window-monitor"
+  }
+}

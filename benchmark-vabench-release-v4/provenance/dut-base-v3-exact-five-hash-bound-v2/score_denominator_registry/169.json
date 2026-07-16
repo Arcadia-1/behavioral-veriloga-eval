@@ -1,0 +1,79 @@
+{
+  "family_id": "169",
+  "schema_version": "v4-score-denominator-family-registry-v1",
+  "task": {
+    "active_mutation_count": 5,
+    "active_mutations": [
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_002_inverted_sign/certification.json",
+        "certification_sha256": "521cb6b92b0d7401578fc0f05a3b0acdf10103455124c0c22186ff145a8e05b6",
+        "fault_class": "polarity_or_direction_error",
+        "mutation_bundle_sha256": "0480db5c9c566a3c712b768280697083dece5762e6e3e3acdecb64e14e61cf0b",
+        "mutation_id": "neg_002_inverted_sign",
+        "source_catalog_certification_path": "negative_variants/neg_002_inverted_sign/certification.json",
+        "trigger_condition": "Computes the gain with in2-in1 polarity.",
+        "violated_property_ids": [
+          "P_DIFFERENTIAL_INPUT_POLARITY"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_001_zero/certification.json",
+        "certification_sha256": "664ab904d5ab3840926efdd259c94b54a7acfed9800419c99fe7aec1a5758b11",
+        "fault_class": "zero_stub_output",
+        "mutation_bundle_sha256": "6290475c6fc6f9fd56cd8f0d00172838cd40627f71affc88602602bb5b10765a",
+        "mutation_id": "neg_001_zero",
+        "source_catalog_certification_path": "negative_variants/neg_001_zero/certification.json",
+        "trigger_condition": "Drives zero output and therefore fails the stable waveform contract.",
+        "violated_property_ids": [
+          "P_CONTINUOUS_ANALOG_TRACKING",
+          "P_KPHI_GAIN_SCALE"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_003_unit_gain/certification.json",
+        "certification_sha256": "50def5b841d07dc011321230fd2ceeb1a3b3ca431a02182e100d7973fb73f3c4",
+        "fault_class": "metric_or_observable_fault",
+        "mutation_bundle_sha256": "02f6ae77328823501215314d8731ca2d010af0fb83d44bb1222d62175a6848be",
+        "mutation_id": "neg_003_unit_gain",
+        "source_catalog_certification_path": "negative_variants/neg_003_unit_gain/certification.json",
+        "trigger_condition": "Drops the required kphi scaling and emits only the raw input difference.",
+        "violated_property_ids": [
+          "P_KPHI_GAIN_SCALE"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_004_single_ended/certification.json",
+        "certification_sha256": "ada0ac8f2b0d45cddfbbedf81be04386ca9e072f16b38a3368c20b8479a162f0",
+        "fault_class": "metric_or_observable_fault",
+        "mutation_bundle_sha256": "ade26d0818861e31b683d64ac1f6913a1f478066524dace5b57f86af404c660c",
+        "mutation_id": "neg_004_single_ended",
+        "source_catalog_certification_path": "negative_variants/neg_004_single_ended/certification.json",
+        "trigger_condition": "Ignores in2 and turns the PFD into a single-ended gain block.",
+        "violated_property_ids": [
+          "P_DIFFERENTIAL_INPUT_POLARITY"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_005_metric_scale_low/certification.json",
+        "certification_sha256": "a70640b91f6c805608e783faf7d1c12aab5be0b649fbb53709da14681324f5f2",
+        "fault_class": "metric_or_observable_fault",
+        "mutation_bundle_sha256": "b11453f6f0e45863e911ab0d6e8628893993b49674415699fddb893e9798fa33",
+        "mutation_id": "neg_005_metric_scale_low",
+        "source_catalog_certification_path": "negative_variants/neg_005_metric_scale_low/certification.json",
+        "trigger_condition": "Linear PFD Gain: scales the metric output, preserving the main path while failing measurement checks.",
+        "violated_property_ids": [
+          "P_KPHI_GAIN_SCALE"
+        ]
+      }
+    ],
+    "bugfix_seed": "neg_002_inverted_sign",
+    "canonical_dut_id": "169",
+    "hashes": {
+      "mutation_catalog_sha256": "69faeafb85f6bb9e75c321de62bb9569ebd682a47d5762d2668b788bfa25b549",
+      "score_deck_sha256": "c3469b57362c2e2f4bf8aa06260248684136efdfe4cb15f5a8f67bb9e0e6976c",
+      "task_certification_sha256": "c3a2934296065548c212ad9ac820a09b059e3620f36e8c61a3f7d8c3b4791d76",
+      "task_record_sha256": "d7c00aabbbd89e28260884ceb1176e0803bdcc9d103c97573208390f5d51f63e"
+    },
+    "release_dir": "169-linear-pfd-gain"
+  }
+}

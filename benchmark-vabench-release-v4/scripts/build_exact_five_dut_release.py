@@ -6,12 +6,17 @@ import argparse
 import hashlib
 import json
 import shutil
+import sys
 from pathlib import Path
 from typing import Any
 
 
 ROOT = Path(__file__).resolve().parents[1]
 PREP = ROOT / "operations" / "tri_form_derivation_prep"
+if str(PREP) not in sys.path:
+    sys.path.insert(0, str(PREP))
+
+from score_denominator_registry import write_family_row  # noqa: E402
 DEFAULT_BASE = ROOT / "release" / "dut-base-v3-catalog-certified"
 DEFAULT_OUTPUT = ROOT / "release" / "dut-base-v3-exact-five-hash-bound-v2"
 
@@ -241,7 +246,15 @@ def main() -> int:
         "supplemental_exact_five_reviews": decisions.get("supplemental_exact_five_reviews") or [],
     }
     semantic_manifest["content_sha256"] = canonical_sha(semantic_manifest)
-    write_json(output / "score_denominator_manifest.json", denominator)
+    registry_meta = dict(denominator)
+    registry_rows = registry_meta.pop("tasks")
+    registry_meta.pop("content_sha256")
+    write_json(output / "score_denominator_registry" / "_meta.json", registry_meta)
+    for row in registry_rows:
+        write_family_row(output, str(row["canonical_dut_id"]), row)
+    legacy_output = output / "score_denominator_manifest.json"
+    if legacy_output.exists():
+        legacy_output.unlink()
     write_json(output / "provenance_only_mutation_archive.json", archive_manifest)
     write_json(output / "semantic_selection_review.json", semantic_manifest)
     print(json.dumps({

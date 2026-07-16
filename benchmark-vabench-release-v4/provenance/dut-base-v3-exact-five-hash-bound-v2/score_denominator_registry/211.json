@@ -1,0 +1,78 @@
+{
+  "family_id": "211",
+  "schema_version": "v4-score-denominator-family-registry-v1",
+  "task": {
+    "active_mutation_count": 5,
+    "active_mutations": [
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_002_wrong_msb_sign/certification.json",
+        "certification_sha256": "2f376c669a715ca6f74f43c026f728e75cf8acb184ad509c59d148614f83ef7c",
+        "fault_class": "zero_stub_output",
+        "mutation_bundle_sha256": "ab3f2a3f15bc7eaa687afcdf8964a622ddbe0186fedfeef66ddc75e227eb6c56",
+        "mutation_id": "neg_002_wrong_msb_sign",
+        "source_catalog_certification_path": "negative_variants/neg_002_wrong_msb_sign/certification.json",
+        "trigger_condition": "Treats d5 low as zero instead of -1 for the signed MSB contribution.",
+        "violated_property_ids": [
+          "P_TEXT_OUT_1_1_2_SIGNED"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_003_wrong_output_mapping/certification.json",
+        "certification_sha256": "f0951be2663dfe4d4cc412b7d69156287edb89d705060d7bba6a1c90d54f60b7",
+        "fault_class": "omission_or_incomplete_behavior",
+        "mutation_bundle_sha256": "76804204ef72061789e5b24e1d7cb386fcf36a14ec638c3df20a67108f65f70f",
+        "mutation_id": "neg_003_wrong_output_mapping",
+        "source_catalog_certification_path": "negative_variants/neg_003_wrong_output_mapping/certification.json",
+        "trigger_condition": "Omits the signed output remapping vout*2-1.",
+        "violated_property_ids": [
+          "P_THE_BEHAVIOR_IS_CONTINUOUS_WITH_RESPECT"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_004_half_output/certification.json",
+        "certification_sha256": "9f58afb9b56072e0b91b3f9f80c78c5f9c92f5f4f5359f41a67dc42efd3a79e5",
+        "fault_class": "metric_or_observable_fault",
+        "mutation_bundle_sha256": "9e61dae9c28952c20eed1ad0a55e83ce4bc77938b46fbd967a733e029d29ac20",
+        "mutation_id": "neg_004_half_output",
+        "source_catalog_certification_path": "negative_variants/neg_004_half_output/certification.json",
+        "trigger_condition": "Drives the signed weighted output at half amplitude.",
+        "violated_property_ids": [
+          "P_TREAT_EACH_DECISION_INPUT_AS_1"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_005_metric_scale_low/certification.json",
+        "certification_sha256": "9cdad17774101c9507571a22e87c845a413dc7e2babfabe62e27eaa0b15396b1",
+        "fault_class": "metric_or_observable_fault",
+        "mutation_bundle_sha256": "e06818462ae8a078f648525aaa2735b6d9ed93c3848c513f412599df649abcf8",
+        "mutation_id": "neg_005_metric_scale_low",
+        "source_catalog_certification_path": "negative_variants/neg_005_metric_scale_low/certification.json",
+        "trigger_condition": "SUM5 Signed SAR Weight: scales the metric output, preserving the main path while failing measurement checks.",
+        "violated_property_ids": [
+          "P_TEXT_OUT_1_1_2_SIGNED"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_001_zero/certification.json",
+        "certification_sha256": "cdcdfa17a8fc7cf8cb3268838bbdabcbe26ce251da7ed5dfc0e10653ee648344",
+        "fault_class": "zero_stub_output",
+        "mutation_bundle_sha256": "490fc470171aade00a7725feb7a6631f84f05ec2196add476a4ccd683c4788d2",
+        "mutation_id": "neg_001_zero",
+        "source_catalog_certification_path": "negative_variants/neg_001_zero/certification.json",
+        "trigger_condition": "Drives zero output and therefore fails the stable waveform contract.",
+        "violated_property_ids": [
+          "P_TREAT_EACH_DECISION_INPUT_AS_1"
+        ]
+      }
+    ],
+    "bugfix_seed": "neg_002_wrong_msb_sign",
+    "canonical_dut_id": "211",
+    "hashes": {
+      "mutation_catalog_sha256": "0bc4d9f0062c293036f255d2c81c6b120e0491e36c4360edb9cf7f4093db08f0",
+      "score_deck_sha256": "aea22d301501469b360197342fd51ecebd62f2365b491e3debbedd2df997f0d6",
+      "task_certification_sha256": "c7e513694208e329272b9ace918a4e63196501267fa6b5c0fad5d871d08ea327",
+      "task_record_sha256": "31eeec3cdd6c1eb0c5868cae5ed100edf70940eb20cfc69827d1efc6c2ad79f2"
+    },
+    "release_dir": "211-sum5-signed-sar-weight"
+  }
+}

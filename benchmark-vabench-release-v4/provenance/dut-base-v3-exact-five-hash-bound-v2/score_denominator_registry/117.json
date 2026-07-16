@@ -1,0 +1,79 @@
+{
+  "family_id": "117",
+  "schema_version": "v4-score-denominator-family-registry-v1",
+  "task": {
+    "active_mutation_count": 5,
+    "active_mutations": [
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_001_zero/certification.json",
+        "certification_sha256": "0c9f9b2aaff1597c897d8a057132bb7b144d92b60df99a4600af7ad3ee4878d3",
+        "fault_class": "fault_001_zero",
+        "mutation_bundle_sha256": "a5a232c1efcc628ba6aa19b37b38ce1acf684f3842bf1c5f7edbcedc85ec796f",
+        "mutation_id": "neg_001_zero",
+        "source_catalog_certification_path": "negative_variants/neg_001_zero/certification.json",
+        "trigger_condition": "Drives zero outputs and therefore fails the stable-sample semantic contract.",
+        "violated_property_ids": [
+          "P_FIRST_EDGE_CAPTURE"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_003_half_scale/certification.json",
+        "certification_sha256": "9bd40b67038882e63cbf977edb0f761e99f25029f51c97e439a57c8e8bf4d3bc",
+        "fault_class": "fault_003_half_scale",
+        "mutation_bundle_sha256": "a022a92d07302c60cdcce5833f34e538a248736b62f0166479fa80ebe65e8cde",
+        "mutation_id": "neg_003_half_scale",
+        "source_catalog_certification_path": "negative_variants/neg_003_half_scale/certification.json",
+        "trigger_condition": "Uses one quarter of the requested time-to-voltage scale, avoiding the intended rail clipping.",
+        "violated_property_ids": [
+          "P_OUTPUT_TRANSITION",
+          "P_SIGNED_DIFFERENCE"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_004_no_rearm_after_cycle/certification.json",
+        "certification_sha256": "3c330db84242064b31e2d50d086b53bcae26f9e4fe2d7d17739355b1b1531e7b",
+        "fault_class": "fault_004_no_rearm_after_cycle",
+        "mutation_bundle_sha256": "2cea7e93452eb5ab3467974179de999dfce0b4b27c3d37a2abe3fee3fa4b8e05",
+        "mutation_id": "neg_004_no_rearm_after_cycle",
+        "source_catalog_certification_path": "negative_variants/neg_004_no_rearm_after_cycle/certification.json",
+        "trigger_condition": "Fails to re-arm edge detection after each clock cycle.",
+        "violated_property_ids": [
+          "P_OUTPUT_CLIP"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_005_metric_scale_low/certification.json",
+        "certification_sha256": "a8d7871c6707ea64e7135e26e9f84a41c956d49c68679d9c9bc921a6b6c64945",
+        "fault_class": "fault_005_metric_scale_low",
+        "mutation_bundle_sha256": "8c43dfb944b98db320b595ea5916c27ec373e5bd2d3697b05cae0ac14efd4859",
+        "mutation_id": "neg_005_metric_scale_low",
+        "source_catalog_certification_path": "negative_variants/neg_005_metric_scale_low/certification.json",
+        "trigger_condition": "Time Diff Detector: scales the metric output, preserving the main path while failing measurement checks.",
+        "violated_property_ids": [
+          "P_WINDOW_REARM"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_002_inverted_time_difference/certification.json",
+        "certification_sha256": "1fc4e7ca2f706cefa222781304140f8c66938d2bd0d598738ad0ebb477f24e95",
+        "fault_class": "fault_002_inverted_time_difference",
+        "mutation_bundle_sha256": "4401741a26b3567200cdca4448d42c63d4405e157dbc35d574a189ab517923d2",
+        "mutation_id": "neg_002_inverted_time_difference",
+        "source_catalog_certification_path": "negative_variants/neg_002_inverted_time_difference/certification.json",
+        "trigger_condition": "Computes vinn time minus vinp time.",
+        "violated_property_ids": [
+          "P_PREVIOUS_WINDOW_REPORT"
+        ]
+      }
+    ],
+    "bugfix_seed": "neg_001_zero",
+    "canonical_dut_id": "117",
+    "hashes": {
+      "mutation_catalog_sha256": "7defd18a08b6bc88f099bd53bb3bc369309adb285ecf8e5ee4b6c6f41064e2c9",
+      "score_deck_sha256": "4fbf74b28b78ddfd224cdb75f94c55943ca4e22f5dfb5a8ff3486298f42270e7",
+      "task_certification_sha256": "916bd7249100cc0ff63d6fa0a2123b38ce4e2dd078b8c104c8b7bd87869d8a2c",
+      "task_record_sha256": "2cf0b7d4bdbdaadde7beb9e7c0534d7cf4ad752f31c506e3bd19b445295ed1fc"
+    },
+    "release_dir": "117-time-diff-detector"
+  }
+}

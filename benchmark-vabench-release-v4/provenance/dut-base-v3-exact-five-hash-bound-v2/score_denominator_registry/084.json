@@ -1,0 +1,88 @@
+{
+  "family_id": "084",
+  "schema_version": "v4-score-denominator-family-registry-v1",
+  "task": {
+    "active_mutation_count": 5,
+    "active_mutations": [
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_002_threshold_shifted/certification.json",
+        "certification_sha256": "16c04a6a24b4531f995cae037811350fa704cd885db2446af1e3551173876482",
+        "fault_class": "threshold_boundary_error",
+        "mutation_bundle_sha256": "7d205cad6cad2fa394063f873153882098d7deaf72def41e4c59e91180eeb752",
+        "mutation_id": "neg_002_threshold_shifted",
+        "source_catalog_certification_path": "negative_variants/neg_002_threshold_shifted/certification.json",
+        "trigger_condition": "boundary stimulus crosses the public threshold conditions for BBPD Data Edge Alignment",
+        "violated_property_ids": [
+          "P_CLOCKED_RETIMING",
+          "P_DEADZONE_SUPPRESSION",
+          "P_EARLY_TRANSITION_UP"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_005_metric_scale_low/certification.json",
+        "certification_sha256": "4f878df59edbec0b00717d886d25aa7a7ddffe26554b497a246eded4bde66ef8",
+        "fault_class": "event_edge_polarity_error",
+        "mutation_bundle_sha256": "d547c892da775324e25efd80e5e598361f3715a3ce6761fa00a4a9fb240f2074",
+        "mutation_id": "neg_005_metric_scale_low",
+        "source_catalog_certification_path": "negative_variants/neg_005_metric_scale_low/certification.json",
+        "trigger_condition": "event-timing stimulus distinguishes the required active edge for BBPD Data Edge Alignment",
+        "violated_property_ids": [
+          "P_CLOCKED_RETIMING",
+          "P_EARLY_TRANSITION_UP",
+          "P_LATE_TRANSITION_DN",
+          "P_MUTUAL_EXCLUSION"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_001_zero/certification.json",
+        "certification_sha256": "bffb7370c7f950f87669adcfe22a0b4eac365f9527b3fa97c8b3c77fbac21d5a",
+        "fault_class": "zero_stub_output",
+        "mutation_bundle_sha256": "93c3b4bd88c70d4f5843531c051a5dce22ddb999a461b1b7db33b33833547fde",
+        "mutation_id": "neg_001_zero",
+        "source_catalog_certification_path": "negative_variants/neg_001_zero/certification.json",
+        "trigger_condition": "nonzero behavioral stimulus requires observable BBPD Data Edge Alignment outputs",
+        "violated_property_ids": [
+          "P_CLOCKED_RETIMING",
+          "P_EARLY_TRANSITION_UP"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_003_event_edge_wrong/certification.json",
+        "certification_sha256": "779b519533b319418b739db45c48cfed3a71a77e4b01123c119852795bc83d97",
+        "fault_class": "event_edge_polarity_error",
+        "mutation_bundle_sha256": "500705c1258eafd29486c160b57ada9ca0e9c187d23a4ee3118e2d5a10ca5aca",
+        "mutation_id": "neg_003_event_edge_wrong",
+        "source_catalog_certification_path": "negative_variants/neg_003_event_edge_wrong/certification.json",
+        "trigger_condition": "event-timing stimulus distinguishes the required active edge for BBPD Data Edge Alignment",
+        "violated_property_ids": [
+          "P_BOTH_DATA_POLARITIES",
+          "P_CLOCKED_RETIMING",
+          "P_EARLY_TRANSITION_UP",
+          "P_LATE_TRANSITION_DN"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_004_reset_polarity_wrong/certification.json",
+        "certification_sha256": "99ab010dd37c849a0107ecd8c02b81909a37371cda175ed406288607dd2ab01c",
+        "fault_class": "event_edge_polarity_error",
+        "mutation_bundle_sha256": "d0133c9aba8b0c91f6d872432ff13639c22a657d331d5e34f0b8ee41d3316e40",
+        "mutation_id": "neg_004_reset_polarity_wrong",
+        "source_catalog_certification_path": "negative_variants/neg_004_reset_polarity_wrong/certification.json",
+        "trigger_condition": "reset/recovery stimulus exercises BBPD Data Edge Alignment state override behavior",
+        "violated_property_ids": [
+          "P_CLOCKED_RETIMING",
+          "P_EARLY_TRANSITION_UP"
+        ]
+      }
+    ],
+    "bugfix_seed": "neg_002_threshold_shifted",
+    "canonical_dut_id": "084",
+    "hashes": {
+      "mutation_catalog_sha256": "a002a8fd210ab6af56d54d1389668b38d852cc6cec72b3c762965c739a0045d5",
+      "score_deck_sha256": "adabff72c22759c938d90e30fd174122eebcee8b652b46fbc007b8adb1021db9",
+      "task_certification_sha256": "ff5d373564ea3b21e529777224a30f49bc0bb4ca31478205ab8bfa4a0a9c070e",
+      "task_record_sha256": "f280e48e7d8be6bb9a3fecb77f249ea13a7d6a437393a0b6f8a5d3a5eb18ee51"
+    },
+    "release_dir": "084-bbpd-data-edge-alignment"
+  }
+}

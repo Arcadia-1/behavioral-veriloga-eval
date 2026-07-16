@@ -1,0 +1,78 @@
+{
+  "family_id": "268",
+  "schema_version": "v4-score-denominator-family-registry-v1",
+  "task": {
+    "active_mutation_count": 5,
+    "active_mutations": [
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_003_wrong_scale/certification.json",
+        "certification_sha256": "768b03e5eed865f692912f3b8b975b8911a481c663d0c92c09e629de04fcb7b8",
+        "fault_class": "metric_or_observable_fault",
+        "mutation_bundle_sha256": "18f2190e90a538d3cd1f4732379285e08ef25bf3f6d44ac7f31a7531aeff9244",
+        "mutation_id": "neg_003_wrong_scale",
+        "source_catalog_certification_path": "negative_variants/neg_003_wrong_scale/certification.json",
+        "trigger_condition": "stimulus exercises neg_003_wrong_scale",
+        "violated_property_ids": [
+          "P_MEASURE_ANALOG_INPUTS_RELATIVE_TO_THE"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_002_ignore_enable/certification.json",
+        "certification_sha256": "b55e0e8dfd2b9094ebe3cef5f207f65322672081eeab5854d4495d69b940f09a",
+        "fault_class": "state_reset_or_enable_error",
+        "mutation_bundle_sha256": "a1dd858df8b8d130d6fa6aa757e3a0ed9c5c1cf1258b52565a454bb6645f0215",
+        "mutation_id": "neg_002_ignore_enable",
+        "source_catalog_certification_path": "negative_variants/neg_002_ignore_enable/certification.json",
+        "trigger_condition": "stimulus exercises neg_002_ignore_enable",
+        "violated_property_ids": [
+          "P_USE_THE_TWO_CONTROL_LEVELS_AS"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_001_zero_outputs/certification.json",
+        "certification_sha256": "c136b956b9a81a873a87ff8a866ba44c32ed4d102d0f8d59742e8c7595313ba0",
+        "fault_class": "zero_stub_output",
+        "mutation_bundle_sha256": "54e15426afe6409b5d75e401a2a6cc1fbb58bc76aa566685da8fe6a9182943c2",
+        "mutation_id": "neg_001_zero_outputs",
+        "source_catalog_certification_path": "negative_variants/neg_001_zero_outputs/certification.json",
+        "trigger_condition": "stimulus exercises neg_001_zero_outputs",
+        "violated_property_ids": [
+          "P_MEASURE_ANALOG_INPUTS_RELATIVE_TO_THE"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_004_ignore_control_or_reset/certification.json",
+        "certification_sha256": "8b519ba3177fa8de816964330e7e1dd369f8ede273eed69f5967e72d202fb92e",
+        "fault_class": "state_reset_or_enable_error",
+        "mutation_bundle_sha256": "de6a39d7559b2e89ccd02c921b937c30577469588e8e3471d372c2d41ad4c73b",
+        "mutation_id": "neg_004_ignore_control_or_reset",
+        "source_catalog_certification_path": "negative_variants/neg_004_ignore_control_or_reset/certification.json",
+        "trigger_condition": "stimulus exercises neg_004_ignore_control_or_reset",
+        "violated_property_ids": [
+          "P_USE_THE_TWO_CONTROL_LEVELS_AS"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_005_wrong_flag_metric/certification.json",
+        "certification_sha256": "2eec9646733443884c02203e51d3a8bc2015d211c40af5a74339012ecba9d859",
+        "fault_class": "metric_or_observable_fault",
+        "mutation_bundle_sha256": "f6b486ba0aa11f3facbed3938fd447ccd409c12807864992b34676754d361303",
+        "mutation_id": "neg_005_wrong_flag_metric",
+        "source_catalog_certification_path": "negative_variants/neg_005_wrong_flag_metric/certification.json",
+        "trigger_condition": "stimulus exercises neg_005_wrong_flag_metric",
+        "violated_property_ids": [
+          "P_MEASURE_ANALOG_INPUTS_RELATIVE_TO_THE"
+        ]
+      }
+    ],
+    "bugfix_seed": "neg_003_wrong_scale",
+    "canonical_dut_id": "268",
+    "hashes": {
+      "mutation_catalog_sha256": "fffb51c77f1de4340b21cb4e8e9c4002581abdc7ce1aaf6914929b7fab4648fb",
+      "score_deck_sha256": "1f7fdd178f9733bb46b87021f1467fe794088112b14a3fa2b9aae5f5d9baba83",
+      "task_certification_sha256": "bbfd0685c0182338e7a54abfa10a5d46a4faa2bfcad8be8b58664cd07443cbe9",
+      "task_record_sha256": "d4946790de3413929f61e984df22f2e455b233dbfc6adba07a8bed8d6c054f54"
+    },
+    "release_dir": "268-mode-selected-bias-driver"
+  }
+}

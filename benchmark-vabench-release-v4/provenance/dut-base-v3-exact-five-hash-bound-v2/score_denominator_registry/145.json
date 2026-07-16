@@ -1,0 +1,78 @@
+{
+  "family_id": "145",
+  "schema_version": "v4-score-denominator-family-registry-v1",
+  "task": {
+    "active_mutation_count": 5,
+    "active_mutations": [
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_003_wrong_duty/certification.json",
+        "certification_sha256": "4df94df99a7e7194bef70f608824dd491dbc288025b67bd7a9d4d834a11cdc13",
+        "fault_class": "state_reset_or_enable_error",
+        "mutation_bundle_sha256": "db07a0a3c38beb5735e227a55556282de30bcacfddd6c4dff4b68a1fd73e3096",
+        "mutation_id": "neg_003_wrong_duty",
+        "source_catalog_certification_path": "negative_variants/neg_003_wrong_duty/certification.json",
+        "trigger_condition": "Uses the correct reset and enable behavior but the wrong high/low duty split.",
+        "violated_property_ids": [
+          "P_OUTPUT_DUTY_AND_LEVEL"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_004_ignore_enable/certification.json",
+        "certification_sha256": "f21d6b327db760f061f0b57d14bdfc586204bbdaf5a49b4fa97d4514f6c59d06",
+        "fault_class": "polarity_or_direction_error",
+        "mutation_bundle_sha256": "d3c0e470024c44cef89fa6936afee160326acf4251f3494ad38390f177ffdbc3",
+        "mutation_id": "neg_004_ignore_enable",
+        "source_catalog_certification_path": "negative_variants/neg_004_ignore_enable/certification.json",
+        "trigger_condition": "Ignores the enable input and advances on disabled input-clock edges.",
+        "violated_property_ids": [
+          "P_ENABLE_QUALIFIED_DIVIDE_BY_EIGHT"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_001_zero/certification.json",
+        "certification_sha256": "6a83a7f5e33b7e456eb94bcba8c97dc1f26a05737302f6649e6a7fd64908c434",
+        "fault_class": "zero_stub_output",
+        "mutation_bundle_sha256": "fdcae26bb2ea365cf0fe99c3506fc91228bf4bdb05ffebcdb425bda2015c4607",
+        "mutation_id": "neg_001_zero",
+        "source_catalog_certification_path": "negative_variants/neg_001_zero/certification.json",
+        "trigger_condition": "Drives zero output and therefore fails the stable waveform contract.",
+        "violated_property_ids": [
+          "P_OUTPUT_DUTY_AND_LEVEL"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_005_ignore_reset/certification.json",
+        "certification_sha256": "acca6f41cfecdca4af3a5481658d5dd5616f8841cecb3c1582f8ff7544ee9c85",
+        "fault_class": "state_reset_or_enable_error",
+        "mutation_bundle_sha256": "5249ef435c8852b5f6b572d33826dde14c19acfecd064b865e19a0938e988434",
+        "mutation_id": "neg_005_ignore_reset",
+        "source_catalog_certification_path": "negative_variants/neg_005_ignore_reset/certification.json",
+        "trigger_condition": "Ignores the active-high reset after startup and does not reload the high phase.",
+        "violated_property_ids": [
+          "P_RESET_FORCES_INITIAL_HIGH"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_002_divide_by_four/certification.json",
+        "certification_sha256": "a54257e4ddac3bbc1d9c2bf34451c6a8cc19d0bf5d5bd704882c06805e881ab2",
+        "fault_class": "state_reset_or_enable_error",
+        "mutation_bundle_sha256": "b212b66af6dcdbef2e5f17c58bee5667bdb51952f4f1dd52c3361c1385a14192",
+        "mutation_id": "neg_002_divide_by_four",
+        "source_catalog_certification_path": "negative_variants/neg_002_divide_by_four/certification.json",
+        "trigger_condition": "Uses divide-by-four timing while still exposing reset and enable ports.",
+        "violated_property_ids": [
+          "P_ENABLE_QUALIFIED_DIVIDE_BY_EIGHT"
+        ]
+      }
+    ],
+    "bugfix_seed": "neg_003_wrong_duty",
+    "canonical_dut_id": "145",
+    "hashes": {
+      "mutation_catalog_sha256": "e5a2fcd2e0540434a29058aa0c503482881af484dc4e06b1ef366c4db12361b2",
+      "score_deck_sha256": "49d3c139ae5a1ebbbd96df19b6822f5e9c215391662b69a7cc5e006642415d06",
+      "task_certification_sha256": "1c2ca6d912d42defb6930e0c6f2e5be5e2eae6f72d718e02b9f1bfac4caa7a30",
+      "task_record_sha256": "f03837a23e06a706d354775c33f65a9efa0002d35e142e3499428d853118d8ef"
+    },
+    "release_dir": "145-divide-by-eight-clock"
+  }
+}

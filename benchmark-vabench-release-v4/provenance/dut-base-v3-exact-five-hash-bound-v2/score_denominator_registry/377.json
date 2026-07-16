@@ -1,0 +1,78 @@
+{
+  "family_id": "377",
+  "schema_version": "v4-score-denominator-family-registry-v1",
+  "task": {
+    "active_mutation_count": 5,
+    "active_mutations": [
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_001_sum_uses_difference/certification.json",
+        "certification_sha256": "a418e4b819cc55f115cbb6dd37dfb567a4ede04eaeffe74370972da8d824b995",
+        "fault_class": "wrong_polarity",
+        "mutation_bundle_sha256": "9ef010cf7493375f51d2e9fb7297e7670ed1ec7a245b3b7cde037f0ae1936f5a",
+        "mutation_id": "neg_001_sum_uses_difference",
+        "source_catalog_certification_path": "negative_variants/neg_001_sum_uses_difference/certification.json",
+        "trigger_condition": "port_a and port_b have unequal same-direction deviations",
+        "violated_property_ids": [
+          "P_SUM_DIFF_MAPPING"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_003_trim_ignored/certification.json",
+        "certification_sha256": "41379d085eb13fe567d5124bf834ad31d8a2167a2a2cb0b344f4a0fecd6ac97f",
+        "fault_class": "missing_calibration",
+        "mutation_bundle_sha256": "cd91121971215159f11d3372b7fcbb5aeb12852a066d325f4b51270b6a79c137",
+        "mutation_id": "neg_003_trim_ignored",
+        "source_catalog_certification_path": "negative_variants/neg_003_trim_ignored/certification.json",
+        "trigger_condition": "trim code changes away from mid-code",
+        "violated_property_ids": [
+          "P_TRIM_RESPONSE"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_004_swapped_directional_metrics/certification.json",
+        "certification_sha256": "4bc7f6a18125ec5ae26b8ee8efffd7d43672c59f21a63afe3a35be145ad1e9fe",
+        "fault_class": "output_swap",
+        "mutation_bundle_sha256": "5c4605a8ce3866aef9ef339dead87c0b70bd1d8730eda71fab0b903db77ce4a6",
+        "mutation_id": "neg_004_swapped_directional_metrics",
+        "source_catalog_certification_path": "negative_variants/neg_004_swapped_directional_metrics/certification.json",
+        "trigger_condition": "forward and reverse directional components differ",
+        "violated_property_ids": [
+          "P_DIRECTIONAL_METRICS"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_005_balance_asserts_early/certification.json",
+        "certification_sha256": "c7238cc59cb68373d8ef4c05bb94d062ea321cd2ba0d6353aa6b24158c1f69f9",
+        "fault_class": "qualification_count_error",
+        "mutation_bundle_sha256": "43f3622182f896c4075fa36d73e39db941fbe027c86c196444137480c7da8106",
+        "mutation_id": "neg_005_balance_asserts_early",
+        "source_catalog_certification_path": "negative_variants/neg_005_balance_asserts_early/certification.json",
+        "trigger_condition": "the first balanced metric update occurs",
+        "violated_property_ids": [
+          "P_BALANCE_QUALIFICATION"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_002_reset_not_cleared/certification.json",
+        "certification_sha256": "c1c7a4c883701f0926a98f16093fa071fb324980bc5532b8a39279f8bebe6421",
+        "fault_class": "missing_reset",
+        "mutation_bundle_sha256": "c638714a2784125a38c6048ef7cfd501d37649ecea98301a125875379fd0b5d7",
+        "mutation_id": "neg_002_reset_not_cleared",
+        "source_catalog_certification_path": "negative_variants/neg_002_reset_not_cleared/certification.json",
+        "trigger_condition": "rst is asserted while the input ports are away from common mode",
+        "violated_property_ids": [
+          "P_RESET_CLEAR"
+        ]
+      }
+    ],
+    "bugfix_seed": "neg_001_sum_uses_difference",
+    "canonical_dut_id": "377",
+    "hashes": {
+      "mutation_catalog_sha256": "202c2b8d40404627d443678a260a9df352703a621a0f21615cdfee66ecd66a1a",
+      "score_deck_sha256": "317c5abd18809a59787113bfc4dc73b8da3e5dc5b33b9760793d0687fcfdd900",
+      "task_certification_sha256": "070640391a7d7304e5e90dac1b0257a23d1ecb94308b0187c85df90dc1a8709f",
+      "task_record_sha256": "0347bfb5583936eece7b5e6cd14dd5126c87cd94ca0cb16083dd13f427827692"
+    },
+    "release_dir": "377-bidirectional-hybrid-macro"
+  }
+}

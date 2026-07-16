@@ -1,0 +1,83 @@
+{
+  "family_id": "298",
+  "schema_version": "v4-score-denominator-family-registry-v1",
+  "task": {
+    "active_mutation_count": 5,
+    "active_mutations": [
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_005_wrong_metric_scaling/certification.json",
+        "certification_sha256": "da26263d33e66dabe5569514b82fa14163188b0f5619b355e687e5d1761de763",
+        "fault_class": "metric_or_observable_fault",
+        "mutation_bundle_sha256": "ed2067b2992c7fc6a9f396d0268bbe6fc38fc5eabde7b39a3f82bde62345676f",
+        "mutation_id": "neg_005_wrong_metric_scaling",
+        "source_catalog_certification_path": "negative_variants/neg_005_wrong_metric_scaling/certification.json",
+        "trigger_condition": "stimulus exercises neg_005_wrong_metric_scaling",
+        "violated_property_ids": [
+          "P_CONTINUOUSLY_COMPUTE_VDIFF_V_VIP_V",
+          "P_DIFF_FULLSCALE_0_45_V_FULL"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_002_common_mode_only_valid/certification.json",
+        "certification_sha256": "189d2c94a128cbe44bb47008a70aef50ad5026449e2fc5f61779cbb6f7222903",
+        "fault_class": "common_mode_only_valid",
+        "mutation_bundle_sha256": "c305d7319601eb358425f90c05ddf47f48f994e22759da8fa448898882ae7d16",
+        "mutation_id": "neg_002_common_mode_only_valid",
+        "source_catalog_certification_path": "negative_variants/neg_002_common_mode_only_valid/certification.json",
+        "trigger_condition": "stimulus exercises neg_002_common_mode_only_valid",
+        "violated_property_ids": [
+          "P_CONTINUOUSLY_COMPUTE_VDIFF_V_VIP_V",
+          "P_VTH_0_45_V_LOGIC_THRESHOLD"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_003_absolute_input_window/certification.json",
+        "certification_sha256": "917fc3230f2db7262fe8766bd3d09da4654733760eb4ece63e3a78cd0e2f08e4",
+        "fault_class": "timing_or_state_update_fault",
+        "mutation_bundle_sha256": "c8d9a7daa1c3e4311e8108d16694f742b854359bc30fe34f6a1af584cae3f560",
+        "mutation_id": "neg_003_absolute_input_window",
+        "source_catalog_certification_path": "negative_variants/neg_003_absolute_input_window/certification.json",
+        "trigger_condition": "stimulus exercises neg_003_absolute_input_window",
+        "violated_property_ids": [
+          "P_CONTINUOUSLY_COMPUTE_VDIFF_V_VIP_V",
+          "P_VHI_0_9_V_HIGH_LEVEL"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_004_ignore_enable/certification.json",
+        "certification_sha256": "7661def57b317efa3060caeaefe113eeb65069bcae43f5557cd2ea0474499e70",
+        "fault_class": "state_reset_or_enable_error",
+        "mutation_bundle_sha256": "3be2d615ad1f6c55414b5e6837ac14ce161cbd4de76ca16c146861e74a9125c9",
+        "mutation_id": "neg_004_ignore_enable",
+        "source_catalog_certification_path": "negative_variants/neg_004_ignore_enable/certification.json",
+        "trigger_condition": "stimulus exercises neg_004_ignore_enable",
+        "violated_property_ids": [
+          "P_CONTINUOUSLY_COMPUTE_VDIFF_V_VIP_V",
+          "P_DIFF_MAX_0_30_V_MAXIMUM"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_001_diff_only_valid/certification.json",
+        "certification_sha256": "d3aac082534efb255b0dddd36aefd888dfef9582b9af9b60cf6c389ef146d4e2",
+        "fault_class": "diff_only_valid",
+        "mutation_bundle_sha256": "90b5a11d321569283ad5a59cf1893c12a9275569f30e9a2e5837bd95675e8df3",
+        "mutation_id": "neg_001_diff_only_valid",
+        "source_catalog_certification_path": "negative_variants/neg_001_diff_only_valid/certification.json",
+        "trigger_condition": "stimulus exercises neg_001_diff_only_valid",
+        "violated_property_ids": [
+          "P_BUILD_A_VOLTAGE_DOMAIN_INPUT_VALIDITY",
+          "P_CONTINUOUSLY_COMPUTE_VDIFF_V_VIP_V"
+        ]
+      }
+    ],
+    "bugfix_seed": "neg_005_wrong_metric_scaling",
+    "canonical_dut_id": "298",
+    "hashes": {
+      "mutation_catalog_sha256": "c0fd5f2ccd8fb5321ffe4e8e5f457c9c4640a6796b71ed75b6fe65c91419974b",
+      "score_deck_sha256": "54733e60ec2c0fa93c4be781edba6255bbb366d75f800e3640afe71b0b5f8e47",
+      "task_certification_sha256": "14b703f7669c07705bdbfa542f7ba9377cd618f0bbb4a3f1b3a07184106af738",
+      "task_record_sha256": "7b7ead2a4e980e965bc33ba9c2c5a013574db4b30061fe03cb9d1b02f35b0fd5"
+    },
+    "release_dir": "298-differential-common-mode-window-monitor"
+  }
+}

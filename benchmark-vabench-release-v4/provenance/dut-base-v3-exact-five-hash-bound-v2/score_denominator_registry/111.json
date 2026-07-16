@@ -1,0 +1,79 @@
+{
+  "family_id": "111",
+  "schema_version": "v4-score-denominator-family-registry-v1",
+  "task": {
+    "active_mutation_count": 5,
+    "active_mutations": [
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_001_zero/certification.json",
+        "certification_sha256": "8bbeaede3e980122e9f36ccd6ccad6e43033a96049c3fefd7f3c74cecde03368",
+        "fault_class": "fault_001_zero",
+        "mutation_bundle_sha256": "fa77f031763bc22e4a56e6d88fdf60d732bb9e2b851789533bca3ad0141d2200",
+        "mutation_id": "neg_001_zero",
+        "source_catalog_certification_path": "negative_variants/neg_001_zero/certification.json",
+        "trigger_condition": "Leaves all measurement outputs at zero.",
+        "violated_property_ids": [
+          "P_SUPPLY_MIDPOINT_THRESHOLD"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_005_no_valid/certification.json",
+        "certification_sha256": "8fea6f1a6547cac6e87032dfe82076cd82afb3e0f1859b2f8050ab20f9b23f9a",
+        "fault_class": "fault_005_no_valid",
+        "mutation_bundle_sha256": "628e560f49d8c41db53fef16a9bd6b24960ebf8d7bdd9a49022ec97d6f4a252f",
+        "mutation_id": "neg_005_no_valid",
+        "source_catalog_certification_path": "negative_variants/neg_005_no_valid/certification.json",
+        "trigger_condition": "Captures trip voltages but never asserts valid.",
+        "violated_property_ids": [
+          "P_HYSTERESIS_WIDTH_SIGN",
+          "P_VALID_AFTER_BOTH_DIRECTIONS"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_003_wrong_width_sign/certification.json",
+        "certification_sha256": "876945bb32c978a561f3ee2387a6eaa4db9036ab00e6647a68322df485324dc5",
+        "fault_class": "fault_003_wrong_width_sign",
+        "mutation_bundle_sha256": "7ce89412487ea525e1c04e951e9926d7798c012427c8399df2ea35ce209c2290",
+        "mutation_id": "neg_003_wrong_width_sign",
+        "source_catalog_certification_path": "negative_variants/neg_003_wrong_width_sign/certification.json",
+        "trigger_condition": "Computes hysteresis width with the wrong sign.",
+        "violated_property_ids": [
+          "P_FALLING_TRIP_CAPTURE"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_004_capture_output/certification.json",
+        "certification_sha256": "5065985cb9b6c1fc08769dcad8c85bb6b1aa0f8bba962a2fd4ca4f629d4324ac",
+        "fault_class": "fault_004_capture_output",
+        "mutation_bundle_sha256": "3235bcea83c629dde3d7a527d88df3107f54c9b6e87607a54d35b78086133366",
+        "mutation_id": "neg_004_capture_output",
+        "source_catalog_certification_path": "negative_variants/neg_004_capture_output/certification.json",
+        "trigger_condition": "Captures comparator output rail levels instead of the input voltage at each trip event.",
+        "violated_property_ids": [
+          "P_LATEST_EDGE_REFRESH"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_002_swap_edges/certification.json",
+        "certification_sha256": "ab1546ec99a7f1ca1c36a955d97fd1b91d8188728674b61d66e745c5d62367d2",
+        "fault_class": "fault_002_swap_edges",
+        "mutation_bundle_sha256": "23652bbc0129fdd2dfaca876217316689daf7c9f97aa99383bd27825ed493ffd",
+        "mutation_id": "neg_002_swap_edges",
+        "source_catalog_certification_path": "negative_variants/neg_002_swap_edges/certification.json",
+        "trigger_condition": "Swaps the rising and falling trip captures.",
+        "violated_property_ids": [
+          "P_RISING_TRIP_CAPTURE"
+        ]
+      }
+    ],
+    "bugfix_seed": "neg_001_zero",
+    "canonical_dut_id": "111",
+    "hashes": {
+      "mutation_catalog_sha256": "aa6e53958e471bc569741accc3cca13ffb9aef95d5d9a30b4b630cab458bc96c",
+      "score_deck_sha256": "7d9ab99a5b0fbb2eae137a8607f59f15403b5c1b28a06382af419a1e67a1ae80",
+      "task_certification_sha256": "c48781e5c5c58dffc048efcd7125cce743617605d9ccacb20d5596fbdc3d1cee",
+      "task_record_sha256": "29c01286dc5b394723afa611fecc4fbe77af44f190ea86757fc6f8e3b23e008b"
+    },
+    "release_dir": "111-hysteresis-trip-characterizer"
+  }
+}

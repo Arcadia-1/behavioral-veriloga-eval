@@ -15,6 +15,8 @@ import re
 from pathlib import Path
 from typing import Any, Iterable
 
+from score_denominator_registry import load_score_denominator_registry
+
 
 SCHEMA_VERSION = "v4-compact-correct-plus-five-evidence-v1"
 DECK_PATHS = {
@@ -98,7 +100,7 @@ def _detect_evaluator(report: dict[str, Any]) -> str:
 
 
 def _load_rows(source_root: Path) -> dict[str, dict[str, Any]]:
-    manifest = read_json(source_root / "score_denominator_manifest.json")
+    manifest = load_score_denominator_registry(source_root)
     rows: dict[str, dict[str, Any]] = {}
     for row in manifest.get("tasks") or []:
         family = str(row.get("canonical_dut_id") or "")
