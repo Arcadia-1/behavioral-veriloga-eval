@@ -128,3 +128,37 @@ def test_batch_063_checker_rejects_settled_high_outside_tolerance_window() -> No
     assert not passed
     assert "property_id=P_WINDOW_DEFINITION" in detail
     assert "settled=low_outside_tolerance_window" in detail
+
+
+def test_batch_069_checker_labels_aggregate_count_across_commands(monkeypatch) -> None:
+    from checkers.v4 import task_069
+
+    edges = [float(index) for index in range(1, 6)]
+    rows: list[dict[str, float]] = []
+    for edge_index, edge in enumerate(edges, start=1):
+        for time_s in (edge, edge + 0.25):
+            first_command = edge_index == 1
+            minimum_command = edge_index == 4
+            row = {
+                "time": time_s,
+                "clk": 0.9,
+                "start": 0.9 if first_command or minimum_command else 0.0,
+                "pulse": 0.9 if edge_index <= 4 else 0.0,
+                "done": 0.9 if edge_index >= 3 else 0.0,
+            }
+            row.update({f"period{bit}": 0.9 if first_command and bit == 0 else 0.0 for bit in range(4)})
+            row.update({f"width{bit}": 0.9 if first_command and bit == 0 else 0.0 for bit in range(4)})
+            row.update({f"count{bit}": 0.9 if first_command and bit < 2 else 0.0 for bit in range(4)})
+            rows.append(row)
+
+    monkeypatch.setattr(
+        task_069,
+        "crossings",
+        lambda _rows, signal, **_kwargs: edges if signal == "clk" else [1.25, 2.25, 3.25],
+    )
+
+    passed, detail = task_069.check_configurable_pulse_train(rows)
+
+    assert not passed
+    assert "expected=aggregate_pulse_count=4,command_totals=[3, 1]" in detail
+    assert "observed=aggregate_pulse_count=3" in detail
