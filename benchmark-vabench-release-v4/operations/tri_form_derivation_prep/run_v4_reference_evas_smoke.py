@@ -13,7 +13,10 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import os
+import re
 import shutil
+import subprocess
 import sys
 import time
 from pathlib import Path
@@ -27,6 +30,8 @@ sys.path.insert(0, str(REPO_ROOT / "runners"))
 from runners.simulate_evas import (  # noqa: E402
     effective_evas_engine,
     evaluate_behavior_with_timeout,
+    evas_module_python,
+    evas_source_env,
     parse_evas_performance_counters,
     parse_evas_timing,
     required_trace_signals_for_checker,
@@ -36,6 +41,10 @@ from runners.simulate_evas import (  # noqa: E402
 
 PACKAGE_ROOT = Path(__file__).resolve().parents[2]
 DEFAULT_RELEASE = PACKAGE_ROOT / "release" / "benchmarkv4"
+REQUIRED_EVAS_ENGINE = "evas2"
+REQUIRED_EVAS_VERSION = "0.8.2"
+EVAS_VERSION_RE = re.compile(r"^Version\s+(\S+)", re.MULTILINE)
+EVAS_BACKEND_RE = re.compile(r"^\s*evas_engine\s*=\s*(\S+)\s*$", re.MULTILINE)
 
 
 def read_json(path: Path) -> dict[str, Any]:
@@ -44,6 +53,96 @@ def read_json(path: Path) -> dict[str, Any]:
 
 def file_sha(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
+
+
+def probe_evas2_runtime() -> dict[str, str]:
+    """Require the pinned EVAS2/Rust runtime before producing evidence."""
+    explicit_engine = os.environ.get("EVAS_ENGINE", "").strip().lower()
+    explicit_default = os.environ.get("VAEVAS_DEFAULT_EVAS_ENGINE", "").strip().lower()
+    if explicit_engine != REQUIRED_EVAS_ENGINE or explicit_default != REQUIRED_EVAS_ENGINE:
+        raise SystemExit(
+            "EVAS2 evidence requires explicit "
+            f"EVAS_ENGINE={REQUIRED_EVAS_ENGINE} and "
+            f"VAEVAS_DEFAULT_EVAS_ENGINE={REQUIRED_EVAS_ENGINE}"
+        )
+    engine = effective_evas_engine()
+    if engine != REQUIRED_EVAS_ENGINE:
+        raise SystemExit(
+            f"EVAS2 evidence requires EVAS_ENGINE={REQUIRED_EVAS_ENGINE!r}; "
+            f"effective engine is {engine!r}"
+        )
+    env = evas_source_env()
+    if env is None:
+        raise SystemExit("EVAS2 evidence requires the EVAS source checkout")
+    probe = subprocess.run(
+        [
+            evas_module_python(),
+            "-c",
+            (
+                "import json, evas; "
+                "from evas.simulator.rust_backend import load_optional_rust_backend; "
+                "backend = load_optional_rust_backend(); "
+                "print(json.dumps({'version': evas.__version__, "
+                "'rust_backend_loaded': backend is not None}))"
+            ),
+        ],
+        check=False,
+        capture_output=True,
+        text=True,
+        env=env,
+    )
+    if probe.returncode != 0:
+        raise SystemExit(f"EVAS2 runtime probe failed: {probe.stderr.strip()}")
+    try:
+        metadata = json.loads(probe.stdout.strip())
+    except json.JSONDecodeError as exc:
+        raise SystemExit(f"EVAS2 runtime probe returned invalid JSON: {exc}") from exc
+    version = str(metadata.get("version") or "")
+    if version != REQUIRED_EVAS_VERSION:
+        raise SystemExit(
+            f"EVAS2 evidence requires evas-sim {REQUIRED_EVAS_VERSION}; got {version!r}"
+        )
+    if metadata.get("rust_backend_loaded") is not True:
+        raise SystemExit("EVAS2 Rust backend is unavailable; refusing Python fallback")
+    return {
+        "evas_engine": REQUIRED_EVAS_ENGINE,
+        "evas_engine_used": REQUIRED_EVAS_ENGINE,
+        "evas_version": version,
+        "evas_backend": "evas-rust",
+    }
+
+
+def case_evas2_runtime(output_dir: Path) -> dict[str, Any]:
+    """Read the runtime identity emitted by this simulation, without trusting config."""
+    log_path = output_dir / "evas.log"
+    if not log_path.is_file():
+        return {
+            "evas_engine": "unknown",
+            "evas_engine_used": "unknown",
+            "evas_version": "unknown",
+            "evas_backend": "unknown",
+            "evas_runtime_valid": False,
+            "evas_runtime_notes": ["missing evas.log"],
+        }
+    text = log_path.read_text(encoding="utf-8", errors="replace")
+    version_match = EVAS_VERSION_RE.search(text)
+    backend_match = EVAS_BACKEND_RE.search(text)
+    version = version_match.group(1) if version_match else "unknown"
+    backend = backend_match.group(1) if backend_match else "unknown"
+    valid = version == REQUIRED_EVAS_VERSION and backend == "evas-rust"
+    notes: list[str] = []
+    if version != REQUIRED_EVAS_VERSION:
+        notes.append(f"expected EVAS {REQUIRED_EVAS_VERSION}, got {version}")
+    if backend != "evas-rust":
+        notes.append(f"expected evas-rust backend, got {backend}")
+    return {
+        "evas_engine": REQUIRED_EVAS_ENGINE if valid else "invalid",
+        "evas_engine_used": REQUIRED_EVAS_ENGINE if valid else "invalid",
+        "evas_version": version,
+        "evas_backend": backend,
+        "evas_runtime_valid": valid,
+        "evas_runtime_notes": notes,
+    }
 
 
 def copy_tree(source: Path, target: Path) -> None:
@@ -130,7 +229,12 @@ def run_one_case(
     wall_time_s = time.perf_counter() - started
     combined = (proc.stdout or "") + "\n" + (proc.stderr or "")
     csv_path = case_output / "tran.csv"
-    simulator_ok = proc.returncode == 0 and csv_path.is_file()
+    case_runtime = case_evas2_runtime(case_output)
+    simulator_ok = (
+        proc.returncode == 0
+        and csv_path.is_file()
+        and case_runtime["evas_runtime_valid"] is True
+    )
     checker_ok = False
     checker_notes: list[str] = []
     if simulator_ok:
@@ -141,7 +245,10 @@ def run_one_case(
         )
         checker_ok = bool(checker_score)
     if mutation_id is None:
-        status = "reference_pass" if simulator_ok and checker_ok else "reference_fail"
+        if not simulator_ok:
+            status = "infrastructure_error"
+        else:
+            status = "reference_pass" if checker_ok else "reference_fail"
     else:
         status = "mutation_survived" if simulator_ok and checker_ok else (
             "mutation_killed" if simulator_ok else "infrastructure_error"
@@ -157,7 +264,7 @@ def run_one_case(
         "reference_tb_sha256": file_sha(tb_path),
         "required_trace_signal_count": len(required_signals - {"time"}) if required_signals else 0,
         "checker_notes": checker_notes,
-        "evas_engine": effective_evas_engine(),
+        **case_runtime,
         "timing": parse_evas_timing(combined),
         "performance_counters": parse_evas_performance_counters(combined),
         "wall_time_s": wall_time_s,
@@ -172,6 +279,7 @@ def run_task(
     output_root: Path,
     timeout_s: int,
     include_mutations: bool,
+    runtime: dict[str, str],
 ) -> dict[str, Any]:
     task_dir = task_dir_for_id(release, task_id)
     record = read_json(task_dir / "task_record.json")
@@ -207,9 +315,8 @@ def run_task(
     mutations_killed = [
         case for case in cases[1:] if case["status"] == "mutation_killed"
     ]
-    infrastructure_errors = [
-        case for case in cases if case["status"] in {"reference_fail", "infrastructure_error"}
-    ]
+    infrastructure_errors = [case for case in cases if case["status"] == "infrastructure_error"]
+    reference_failures = [case for case in cases if case["status"] == "reference_fail"]
     mutation_survivors = [
         case for case in cases[1:] if case["status"] == "mutation_survived"
     ]
@@ -219,11 +326,13 @@ def run_task(
         "task_dir": task_dir.name,
         "family_id": record.get("family_id"),
         "checker_task_id": checker_task_id,
+        **runtime,
         "include_mutations": include_mutations,
         "reference_pass": reference_pass,
         "mutation_kill_count": len(mutations_killed),
         "mutation_count": expected_mutation_count,
         "infrastructure_error_count": len(infrastructure_errors),
+        "reference_failure_count": len(reference_failures),
         "mutation_survivor_count": len(mutation_survivors),
         "status": "pass"
         if reference_pass
@@ -255,6 +364,7 @@ def main() -> int:
             raise SystemExit(f"work root exists: {work_root}")
         shutil.rmtree(work_root)
     work_root.mkdir(parents=True)
+    runtime = probe_evas2_runtime()
     results = [
         run_task(
             release=release,
@@ -262,16 +372,22 @@ def main() -> int:
             output_root=work_root,
             timeout_s=args.timeout_s,
             include_mutations=args.include_mutations,
+            runtime=runtime,
         )
         for task_id in args.task_id
     ]
     report = {
-        "schema_version": "v4-reference-evas-smoke-v1",
+        "schema_version": "v4-reference-evas-smoke-v2",
         "release": str(release),
+        **runtime,
         "include_mutations": args.include_mutations,
         "task_count": len(results),
         "pass_count": sum(1 for row in results if row["status"] == "pass"),
         "fail_count": sum(1 for row in results if row["status"] != "pass"),
+        "reference_failure_count": sum(row["reference_failure_count"] for row in results),
+        "infrastructure_error_count": sum(row["infrastructure_error_count"] for row in results),
+        "mutation_kill_count": sum(row["mutation_kill_count"] for row in results),
+        "mutation_survivor_count": sum(row["mutation_survivor_count"] for row in results),
         "status": "pass" if all(row["status"] == "pass" for row in results) else "fail",
         "results": results,
     }
@@ -284,19 +400,32 @@ def main() -> int:
             json.dumps(
                 {
                     "schema_version": report["schema_version"],
+                    "evas_engine": report["evas_engine"],
+                    "evas_engine_used": report["evas_engine_used"],
+                    "evas_version": report["evas_version"],
+                    "evas_backend": report["evas_backend"],
                     "status": report["status"],
                     "task_count": report["task_count"],
                     "pass_count": report["pass_count"],
                     "fail_count": report["fail_count"],
+                    "reference_failure_count": report["reference_failure_count"],
+                    "infrastructure_error_count": report["infrastructure_error_count"],
+                    "mutation_kill_count": report["mutation_kill_count"],
+                    "mutation_survivor_count": report["mutation_survivor_count"],
                     "output": str(output),
                     "tasks": [
                         {
                             "task_id": row["task_id"],
+                            "evas_engine": row["evas_engine"],
+                            "evas_engine_used": row["evas_engine_used"],
+                            "evas_version": row["evas_version"],
+                            "evas_backend": row["evas_backend"],
                             "status": row["status"],
                             "reference_pass": row["reference_pass"],
                             "mutation_kill_count": row["mutation_kill_count"],
                             "mutation_count": row["mutation_count"],
                             "infrastructure_error_count": row["infrastructure_error_count"],
+                            "reference_failure_count": row["reference_failure_count"],
                             "mutation_survivor_count": row["mutation_survivor_count"],
                         }
                         for row in results
