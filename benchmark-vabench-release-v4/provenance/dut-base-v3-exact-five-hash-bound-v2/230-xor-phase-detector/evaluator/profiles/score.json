@@ -1,18 +1,12 @@
 {
   "corners": [],
-  "deck_overrides": {
-    "body_lines": [
-      "Vref (ref 0) vsource type=pwl wave=[0 1.2 0.7n 1.2 0.75n 0 1.4n 0 1.45n 0 2.1n 0 2.15n 1.2 3.2n 1.2]",
-      "Vfb (fb 0) vsource type=pwl wave=[0 0 0.7n 0 0.75n 0 1.4n 0 1.45n 1.2 2.1n 1.2 2.15n 1.2 3.2n 1.2]",
-      "XDUT (ref fb up down) xor_phase_detector"
-    ]
-  },
+  "deck_overrides": {},
   "deterministic_seed": 0,
   "generated_from": {
     "script": "render_v4_harness.py",
     "version": "v4-harness-renderer-v1"
   },
-  "harness_spec_sha256": "cdd12b156db1862217e72acc18c4a661c028383954c1210ccfff6b566e36bec3",
+  "harness_spec_sha256": "94bca3c500b7e58d13d3f6ed791d5a221791e7c8bb81b365761ff9da30a97410",
   "parameters": {
     "maxstep": "100p",
     "stop_time": "100n"
@@ -26,5 +20,7 @@
   ],
   "public_visible": false,
   "schema_version": "v4-harness-profile-v1",
-  "simulatorOptions": {}
+  "simulatorOptions": {
+    "evas_profile": "balanced"
+  }
 }

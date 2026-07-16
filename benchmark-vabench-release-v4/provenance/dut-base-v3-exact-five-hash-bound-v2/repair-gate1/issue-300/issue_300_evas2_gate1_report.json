@@ -1,0 +1,3007 @@
+{
+  "claim_boundary": {
+    "python_evas_fallback_allowed": false,
+    "python_fallback_evidence_claimed": false,
+    "spectre_or_cadence_evidence_claimed": false,
+    "spectre_or_cadence_status": "not_run_in_sparse_issue_300_repair_worktree"
+  },
+  "commands": [
+    "EVAS_ENGINE=evas2 VAEVAS_DEFAULT_EVAS_ENGINE=evas2 VAEVAS_EVAS_PERSISTENT_WORKER=0 PATH=/Users/bucketsran/bin:$PATH python3 <issue_300_evas2_gate1_report_generator>"
+  ],
+  "compaction": {
+    "raw_timing_and_performance_counters_removed": true,
+    "reason": "keep issue-scoped evidence reviewable while preserving EVAS2 outcome diagnostics",
+    "redacted_checker_notes_retained": true
+  },
+  "environment": {
+    "EVAS_ENGINE": "evas2",
+    "VAEVAS_DEFAULT_EVAS_ENGINE": "evas2",
+    "VAEVAS_EVAS_PERSISTENT_WORKER": "0"
+  },
+  "evas_engine_used": "evas2",
+  "evas_source": {
+    "commit": "985bba40929da8066dc9f1e4a08d27c010424c5f",
+    "git_describe": "v0.8.1-9-g985bba4",
+    "path": "/Users/bucketsran/Documents/TsingProject/vaEvas/EVAS",
+    "pyproject_version": "0.8.1"
+  },
+  "generated_at_utc": "2026-07-16T08:34:48+00:00",
+  "issue": 300,
+  "not_tested": [
+    "Spectre/Cadence parity was not run in this sparse repair worktree.",
+    "Full release materialization, full release audit, and benchmark-vabench-release-v4/release/benchmarkv4 were intentionally not used for issue #300 scope."
+  ],
+  "post_checks": [
+    {
+      "command": "python3 <scoped task_record/score_denominator hash binding check>",
+      "name": "scoped_hash_binding_check_221_230",
+      "status": "PASS"
+    },
+    {
+      "command": "python3 <issue_300 report evas_engine_used/profile parity check>",
+      "name": "issue_300_report_evas2_field_check",
+      "status": "PASS"
+    },
+    {
+      "command": "EVAS_ENGINE=evas2 VAEVAS_DEFAULT_EVAS_ENGINE=evas2 python3 <load_checker smoke for 221-230>",
+      "name": "scoped_checker_load_221_230",
+      "status": "PASS"
+    },
+    {
+      "command": "EVAS_ENGINE=evas2 VAEVAS_DEFAULT_EVAS_ENGINE=evas2 python3 -m pytest -q tests/test_v4_source_certification_binding.py",
+      "name": "source_certification_binding_unit",
+      "output": "3 passed in 0.24s",
+      "status": "PASS"
+    },
+    {
+      "command": "EVAS_ENGINE=evas2 VAEVAS_DEFAULT_EVAS_ENGINE=evas2 python3 -m pytest -q tests/test_v4_source_certification_binding.py tests/test_v4_checker_registry.py",
+      "name": "checker_registry_full_sparse_checkout",
+      "output": "15 passed, 3 failed; failures require full benchmark-vabench-release-v4/release/benchmarkv4 tree or checker modules outside sparse batch scope.",
+      "status": "NOT_PASSING_IN_SPARSE_WORKTREE"
+    }
+  ],
+  "problem_count": 0,
+  "problems": [],
+  "profile_parity": [
+    {
+      "family": "221-samplehold-rising-edge",
+      "feedback_deck_sha256": "fa9418880a08c22e4da741d19c6e6ced84e4597a85fcfa19ef5cf9762b5c91b8",
+      "feedback_profile_sha256": "e58ad6c744a2dd030557525e22d9ec9b60dbbaf70e45492b1125ae5c566a06d9",
+      "feedback_score_decks_byte_equal": true,
+      "harness_spec_sha256": "d790744e3124548b6571da38cfb398f4b610dd938ead4a15fc50638490cafb9c",
+      "profiles_equal_except_identity_visibility": true,
+      "score_deck_sha256": "fa9418880a08c22e4da741d19c6e6ced84e4597a85fcfa19ef5cf9762b5c91b8",
+      "score_profile_sha256": "2d6dd88aa15a4b861bcdb83bb65e489963b1b5bc8cec6d94d20f91b8ccc1d235"
+    },
+    {
+      "family": "222-trim-ctrl-5bit",
+      "feedback_deck_sha256": "b969ceae00313b6935fe0a7981e567d910e480a9d920a1cf2e30bc9edf716b7b",
+      "feedback_profile_sha256": "e34f2d2952b247886d6f555786c03243702f134d5e0c1739b2ceb2e0dbe73862",
+      "feedback_score_decks_byte_equal": true,
+      "harness_spec_sha256": "99edb751442265aeae14a28a2f6efe3435c411d73393ad6cc1cbb5cb99040abc",
+      "profiles_equal_except_identity_visibility": true,
+      "score_deck_sha256": "b969ceae00313b6935fe0a7981e567d910e480a9d920a1cf2e30bc9edf716b7b",
+      "score_profile_sha256": "c8a6bd2173591d841f28abfc2e6becc260e47d0ff5dbf2ce68dd131c0b7bf040"
+    },
+    {
+      "family": "223-therm8-to-bin4-count",
+      "feedback_deck_sha256": "ccaaad99ed1d5cb1ff4ebec3e6fdcd0bef136dd387a1e1a0386894f1cfc118c7",
+      "feedback_profile_sha256": "26eb87a755656f53e90cd8a46ef8094f4b16fde1d8039cf172687556514a8833",
+      "feedback_score_decks_byte_equal": true,
+      "harness_spec_sha256": "797895d105e79ceae4bb3d7a3f170843f095c7a138b810397e5e5fbf36ecad0f",
+      "profiles_equal_except_identity_visibility": true,
+      "score_deck_sha256": "ccaaad99ed1d5cb1ff4ebec3e6fdcd0bef136dd387a1e1a0386894f1cfc118c7",
+      "score_profile_sha256": "b742401395bd9f331b8a437df59392e61206ca18077fcfb4effd958af97b5fe2"
+    },
+    {
+      "family": "224-coarse-qtz-3bit-residue",
+      "feedback_deck_sha256": "678eb168857aa537ef08be383ca62838c28d11e73747dcea9ba2949f6d85abc3",
+      "feedback_profile_sha256": "37755194e359634c12334dad2bb6b3629e2d5fc0e56f8f6a61e6e633be714db2",
+      "feedback_score_decks_byte_equal": true,
+      "harness_spec_sha256": "ab2367bef5e31e10b950031c464d1c318b3bc78d66c216dec6136b285162395f",
+      "profiles_equal_except_identity_visibility": true,
+      "score_deck_sha256": "678eb168857aa537ef08be383ca62838c28d11e73747dcea9ba2949f6d85abc3",
+      "score_profile_sha256": "edb5deb8ee93c3fe9ba73249189ed467a10fd8a14b07591a7e4f035bcbf9047a"
+    },
+    {
+      "family": "225-rs-phase-detector",
+      "feedback_deck_sha256": "4990499fc39b2ce33213d2317867e3c424e454acfdbe1967d8e1f4d5d0d48c6f",
+      "feedback_profile_sha256": "911611162cd74f1bc2cbcd7ef3f15833cf3e47c53cb443e5227ea35226f9218c",
+      "feedback_score_decks_byte_equal": true,
+      "harness_spec_sha256": "a8d2ea7f28f6476623a5c13365b0866a21a368eb63af23646dbcf96b470be119",
+      "profiles_equal_except_identity_visibility": true,
+      "score_deck_sha256": "4990499fc39b2ce33213d2317867e3c424e454acfdbe1967d8e1f4d5d0d48c6f",
+      "score_profile_sha256": "b04c6ef833ca4c6a9e91bf5bff60168028fb0260ae6b3c7f3f59afa56f351645"
+    },
+    {
+      "family": "226-level-shifter-offset",
+      "feedback_deck_sha256": "ca7b3ad8d677fcb67639d76e90a9384624a999eb1afc1fc2fb336f1c9065255d",
+      "feedback_profile_sha256": "220b034c74e538ddf982a1b4a60c8ed190220a55e4d2046c58d2a88982539fc8",
+      "feedback_score_decks_byte_equal": true,
+      "harness_spec_sha256": "3b9c12bc96351d7f6ba84afe5a36aa938f25f4dcd6c8e2b786bc9c79c9651cee",
+      "profiles_equal_except_identity_visibility": true,
+      "score_deck_sha256": "ca7b3ad8d677fcb67639d76e90a9384624a999eb1afc1fc2fb336f1c9065255d",
+      "score_profile_sha256": "7bd55eab354a03dbdcf1774133faef26062aaa54a429aaf49bc456b13280508a"
+    },
+    {
+      "family": "227-weighted-decoder-6bit",
+      "feedback_deck_sha256": "d681f8c1d8924dead9b5ab9d926102c5a44491c7cd6e1946bffff67580513067",
+      "feedback_profile_sha256": "b24bd60ca8d27fe1f61d5756b04cce6f89a648f4aa789f6973495dec6507f4f5",
+      "feedback_score_decks_byte_equal": true,
+      "harness_spec_sha256": "117d417928af312cb2e7a755bf7243e04fa0f12c8d80fba7a122e569890c06dd",
+      "profiles_equal_except_identity_visibility": true,
+      "score_deck_sha256": "d681f8c1d8924dead9b5ab9d926102c5a44491c7cd6e1946bffff67580513067",
+      "score_profile_sha256": "de871b3c12907daf500099cd2f510871a4003351d54f9fa06fe6e7d584fe265d"
+    },
+    {
+      "family": "228-divide-by-two-toggle",
+      "feedback_deck_sha256": "0463d346eff441e7368f3a25322483e53198ee4efab3dcd236bd77e611a22cf3",
+      "feedback_profile_sha256": "0dafd8ff7f510f20de1edaf3395aa5a4914062cc13e41be90d8d1514b91dc5b5",
+      "feedback_score_decks_byte_equal": true,
+      "harness_spec_sha256": "8467d0ad19c99c037029aeb384bf2c06dd1c1317eec62dcdbbb1c1af40ccfd69",
+      "profiles_equal_except_identity_visibility": true,
+      "score_deck_sha256": "0463d346eff441e7368f3a25322483e53198ee4efab3dcd236bd77e611a22cf3",
+      "score_profile_sha256": "4df987a5e43b87a37739b79d870600d87126e873da3dea106c6d632042497c60"
+    },
+    {
+      "family": "229-accum3-pulse",
+      "feedback_deck_sha256": "ecde0c6e2a754e2e878fff1530767eea3e2035fe4b65c70c641ae1d4dff2e150",
+      "feedback_profile_sha256": "732a524c03e2109882ff968a82f5e87a5ee1c858092885781f0323f34cdec4de",
+      "feedback_score_decks_byte_equal": true,
+      "harness_spec_sha256": "e31a10903de4aedd300155679d2842990d9dc44b0f179537e6844593818e15e8",
+      "profiles_equal_except_identity_visibility": true,
+      "score_deck_sha256": "ecde0c6e2a754e2e878fff1530767eea3e2035fe4b65c70c641ae1d4dff2e150",
+      "score_profile_sha256": "7c38951515208e51c7e9fc0d40a3bd527431ca451225818955400bcda4053424"
+    },
+    {
+      "family": "230-xor-phase-detector",
+      "feedback_deck_sha256": "3f57130a6a6e7518c76f68036f3870e6ea88c8f28b9a0d4e2c8819ea7157bf95",
+      "feedback_profile_sha256": "28cbe7f347496d17d3d99ca56904f0852d85dbc3bdb6c15e9744215531807e9c",
+      "feedback_score_decks_byte_equal": true,
+      "harness_spec_sha256": "94bca3c500b7e58d13d3f6ed791d5a221791e7c8bb81b365761ff9da30a97410",
+      "profiles_equal_except_identity_visibility": true,
+      "score_deck_sha256": "3f57130a6a6e7518c76f68036f3870e6ea88c8f28b9a0d4e2c8819ea7157bf95",
+      "score_profile_sha256": "57a30d23e37be98cff2c47115bf400fa3adef8dba5dd212108ef1ec02b24523d"
+    }
+  ],
+  "schema_version": "v4-repair-gate1-issue300-evas2-report-v1",
+  "scope": {
+    "canonical_ids": [
+      "221",
+      "222",
+      "223",
+      "224",
+      "225",
+      "226",
+      "227",
+      "228",
+      "229",
+      "230"
+    ],
+    "families": [
+      "221-samplehold-rising-edge",
+      "222-trim-ctrl-5bit",
+      "223-therm8-to-bin4-count",
+      "224-coarse-qtz-3bit-residue",
+      "225-rs-phase-detector",
+      "226-level-shifter-offset",
+      "227-weighted-decoder-6bit",
+      "228-divide-by-two-toggle",
+      "229-accum3-pulse",
+      "230-xor-phase-detector"
+    ],
+    "paths": [
+      "benchmark-vabench-release-v4/provenance/dut-base-v3-exact-five-hash-bound-v2/{221..230}-*"
+    ]
+  },
+  "status": "PASS",
+  "validation_summary": {
+    "active_mutation_expected_status": "FAIL_SIM_CORRECTNESS",
+    "active_mutation_score_runs": 50,
+    "all_recorded_evas_engine_used": "evas2",
+    "gold_expected_status": "PASS",
+    "gold_feedback_score_runs": 20
+  },
+  "validations": [
+    {
+      "canonical_dut_id": "221",
+      "checker_task_id": "v4_221_samplehold_rising_edge",
+      "evas_engine_used": "evas2",
+      "family": "221-samplehold-rising-edge",
+      "gold": {
+        "feedback": {
+          "backend_used": "evas",
+          "checker_policy": {
+            "checker_id": "v4_221_samplehold_rising_edge",
+            "extra_trace_signal_count": 0,
+            "implementation": "no_checker",
+            "streaming_disabled": false,
+            "streaming_forced": false,
+            "streaming_registered": false,
+            "streaming_used": false,
+            "streaming_validated": false,
+            "trace_contract_kind": "row_required_set",
+            "trace_contract_signal_count": 3
+          },
+          "checker_task_id": "v4_221_samplehold_rising_edge",
+          "evas_engine_used": "evas2",
+          "notes": [
+            "returncode=0",
+            "evas_engine=evas2",
+            "trace_contract=row_required_set",
+            "edges=3 max_sample_err=0.000 hold_windows=2 hold_failures=0 nontransparent_windows=2"
+          ],
+          "scores": {
+            "dut_compile": 1.0,
+            "sim_correct": 1.0,
+            "tb_compile": 1.0,
+            "weighted_total": 1.0
+          },
+          "status": "PASS"
+        },
+        "score": {
+          "backend_used": "evas",
+          "checker_policy": {
+            "checker_id": "v4_221_samplehold_rising_edge",
+            "extra_trace_signal_count": 0,
+            "implementation": "no_checker",
+            "streaming_disabled": false,
+            "streaming_forced": false,
+            "streaming_registered": false,
+            "streaming_used": false,
+            "streaming_validated": false,
+            "trace_contract_kind": "row_required_set",
+            "trace_contract_signal_count": 3
+          },
+          "checker_task_id": "v4_221_samplehold_rising_edge",
+          "evas_engine_used": "evas2",
+          "notes": [
+            "returncode=0",
+            "evas_engine=evas2",
+            "trace_contract=row_required_set",
+            "edges=3 max_sample_err=0.000 hold_windows=2 hold_failures=0 nontransparent_windows=2"
+          ],
+          "scores": {
+            "dut_compile": 1.0,
+            "sim_correct": 1.0,
+            "tb_compile": 1.0,
+            "weighted_total": 1.0
+          },
+          "status": "PASS"
+        }
+      },
+      "mutations": [
+        {
+          "expected_status": "FAIL_SIM_CORRECTNESS",
+          "fault_class": "threshold_or_boundary_fault",
+          "mutation_id": "neg_004_wrong_threshold",
+          "result": {
+            "backend_used": "evas",
+            "checker_policy": {
+              "checker_id": "v4_221_samplehold_rising_edge",
+              "extra_trace_signal_count": 0,
+              "implementation": "no_checker",
+              "streaming_disabled": false,
+              "streaming_forced": false,
+              "streaming_registered": false,
+              "streaming_used": false,
+              "streaming_validated": false,
+              "trace_contract_kind": "row_required_set",
+              "trace_contract_signal_count": 3
+            },
+            "checker_task_id": "v4_221_samplehold_rising_edge",
+            "evas_engine_used": "evas2",
+            "notes": [
+              "returncode=0",
+              "evas_engine=evas2",
+              "trace_contract=row_required_set",
+              "edges=3 max_sample_err=4.400 hold_windows=2 hold_failures=0 nontransparent_windows=2"
+            ],
+            "scores": {
+              "dut_compile": 1.0,
+              "sim_correct": 0.0,
+              "tb_compile": 1.0,
+              "weighted_total": 0.6667
+            },
+            "status": "FAIL_SIM_CORRECTNESS"
+          },
+          "trigger_condition": "Uses a threshold above the control high level and never captures after initialization.",
+          "violated_property_ids": [
+            "P_HOLD_THE_SAMPLED_VOLTAGE_ON_VOUT",
+            "P_SAMPLE_VIN_ON_EACH_RISING_CONTROL"
+          ]
+        },
+        {
+          "expected_status": "FAIL_SIM_CORRECTNESS",
+          "fault_class": "track_input",
+          "mutation_id": "neg_003_track_input",
+          "result": {
+            "backend_used": "evas",
+            "checker_policy": {
+              "checker_id": "v4_221_samplehold_rising_edge",
+              "extra_trace_signal_count": 0,
+              "implementation": "no_checker",
+              "streaming_disabled": false,
+              "streaming_forced": false,
+              "streaming_registered": false,
+              "streaming_used": false,
+              "streaming_validated": false,
+              "trace_contract_kind": "row_required_set",
+              "trace_contract_signal_count": 3
+            },
+            "checker_task_id": "v4_221_samplehold_rising_edge",
+            "evas_engine_used": "evas2",
+            "notes": [
+              "returncode=0",
+              "evas_engine=evas2",
+              "trace_contract=row_required_set",
+              "edges=3 max_sample_err=0.000 hold_windows=2 hold_failures=2 nontransparent_windows=0"
+            ],
+            "scores": {
+              "dut_compile": 1.0,
+              "sim_correct": 0.0,
+              "tb_compile": 1.0,
+              "weighted_total": 0.6667
+            },
+            "status": "FAIL_SIM_CORRECTNESS"
+          },
+          "trigger_condition": "Tracks VIN continuously instead of holding sampled values.",
+          "violated_property_ids": [
+            "P_DO_NOT_CONTINUOUSLY_TRACK_VIN_BETWEEN",
+            "P_HOLD_THE_SAMPLED_VOLTAGE_ON_VOUT"
+          ]
+        },
+        {
+          "expected_status": "FAIL_SIM_CORRECTNESS",
+          "fault_class": "polarity_or_direction_error",
+          "mutation_id": "neg_005_metric_scale_low",
+          "result": {
+            "backend_used": "evas",
+            "checker_policy": {
+              "checker_id": "v4_221_samplehold_rising_edge",
+              "extra_trace_signal_count": 0,
+              "implementation": "no_checker",
+              "streaming_disabled": false,
+              "streaming_forced": false,
+              "streaming_registered": false,
+              "streaming_used": false,
+              "streaming_validated": false,
+              "trace_contract_kind": "row_required_set",
+              "trace_contract_signal_count": 3
+            },
+            "checker_task_id": "v4_221_samplehold_rising_edge",
+            "evas_engine_used": "evas2",
+            "notes": [
+              "returncode=0",
+              "evas_engine=evas2",
+              "trace_contract=row_required_set",
+              "edges=3 max_sample_err=2.552 hold_windows=2 hold_failures=0 nontransparent_windows=2"
+            ],
+            "scores": {
+              "dut_compile": 1.0,
+              "sim_correct": 0.0,
+              "tb_compile": 1.0,
+              "weighted_total": 0.6667
+            },
+            "status": "FAIL_SIM_CORRECTNESS"
+          },
+          "trigger_condition": "Samplehold Rising Edge: scales the metric output, preserving the main path while failing measurement checks.",
+          "violated_property_ids": [
+            "P_DRIVE_VOUT_WITH_SMOOTH_VOLTAGE_DOMAIN",
+            "P_HOLD_THE_SAMPLED_VOLTAGE_ON_VOUT"
+          ]
+        },
+        {
+          "expected_status": "FAIL_SIM_CORRECTNESS",
+          "fault_class": "zero_stub_output",
+          "mutation_id": "neg_001_zero",
+          "result": {
+            "backend_used": "evas",
+            "checker_policy": {
+              "checker_id": "v4_221_samplehold_rising_edge",
+              "extra_trace_signal_count": 0,
+              "implementation": "no_checker",
+              "streaming_disabled": false,
+              "streaming_forced": false,
+              "streaming_registered": false,
+              "streaming_used": false,
+              "streaming_validated": false,
+              "trace_contract_kind": "row_required_set",
+              "trace_contract_signal_count": 3
+            },
+            "checker_task_id": "v4_221_samplehold_rising_edge",
+            "evas_engine_used": "evas2",
+            "notes": [
+              "returncode=0",
+              "evas_engine=evas2",
+              "trace_contract=row_required_set",
+              "edges=3 max_sample_err=4.400 hold_windows=2 hold_failures=0 nontransparent_windows=2"
+            ],
+            "scores": {
+              "dut_compile": 1.0,
+              "sim_correct": 0.0,
+              "tb_compile": 1.0,
+              "weighted_total": 0.6667
+            },
+            "status": "FAIL_SIM_CORRECTNESS"
+          },
+          "trigger_condition": "Drives zero output and therefore fails the stable waveform contract.",
+          "violated_property_ids": [
+            "P_DRIVE_VOUT_WITH_SMOOTH_VOLTAGE_DOMAIN",
+            "P_HOLD_THE_SAMPLED_VOLTAGE_ON_VOUT",
+            "P_SAMPLE_VIN_ON_EACH_RISING_CONTROL"
+          ]
+        },
+        {
+          "expected_status": "FAIL_SIM_CORRECTNESS",
+          "fault_class": "polarity_or_direction_error",
+          "mutation_id": "neg_002_half_scale_capture",
+          "result": {
+            "backend_used": "evas",
+            "checker_policy": {
+              "checker_id": "v4_221_samplehold_rising_edge",
+              "extra_trace_signal_count": 0,
+              "implementation": "no_checker",
+              "streaming_disabled": false,
+              "streaming_forced": false,
+              "streaming_registered": false,
+              "streaming_used": false,
+              "streaming_validated": false,
+              "trace_contract_kind": "row_required_set",
+              "trace_contract_signal_count": 3
+            },
+            "checker_task_id": "v4_221_samplehold_rising_edge",
+            "evas_engine_used": "evas2",
+            "notes": [
+              "returncode=0",
+              "evas_engine=evas2",
+              "trace_contract=row_required_set",
+              "edges=3 max_sample_err=2.200 hold_windows=2 hold_failures=0 nontransparent_windows=2"
+            ],
+            "scores": {
+              "dut_compile": 1.0,
+              "sim_correct": 0.0,
+              "tb_compile": 1.0,
+              "weighted_total": 0.6667
+            },
+            "status": "FAIL_SIM_CORRECTNESS"
+          },
+          "trigger_condition": "Captures half of VIN on rising control edges instead of the full held voltage.",
+          "violated_property_ids": [
+            "P_HOLD_THE_SAMPLED_VOLTAGE_ON_VOUT",
+            "P_SAMPLE_VIN_ON_EACH_RISING_CONTROL"
+          ]
+        }
+      ],
+      "profile_parity": {
+        "feedback_deck_sha256": "fa9418880a08c22e4da741d19c6e6ced84e4597a85fcfa19ef5cf9762b5c91b8",
+        "feedback_profile_sha256": "e58ad6c744a2dd030557525e22d9ec9b60dbbaf70e45492b1125ae5c566a06d9",
+        "feedback_score_decks_byte_equal": true,
+        "harness_spec_sha256": "d790744e3124548b6571da38cfb398f4b610dd938ead4a15fc50638490cafb9c",
+        "profiles_equal_except_identity_visibility": true,
+        "score_deck_sha256": "fa9418880a08c22e4da741d19c6e6ced84e4597a85fcfa19ef5cf9762b5c91b8",
+        "score_profile_sha256": "2d6dd88aa15a4b861bcdb83bb65e489963b1b5bc8cec6d94d20f91b8ccc1d235"
+      }
+    },
+    {
+      "canonical_dut_id": "222",
+      "checker_task_id": "v4_222_trim_ctrl_5bit",
+      "evas_engine_used": "evas2",
+      "family": "222-trim-ctrl-5bit",
+      "gold": {
+        "feedback": {
+          "backend_used": "evas",
+          "checker_policy": {
+            "checker_id": "v4_222_trim_ctrl_5bit",
+            "extra_trace_signal_count": 0,
+            "implementation": "no_checker",
+            "streaming_disabled": false,
+            "streaming_forced": false,
+            "streaming_registered": false,
+            "streaming_used": false,
+            "streaming_validated": false,
+            "trace_contract_kind": "row_required_set",
+            "trace_contract_signal_count": 6
+          },
+          "checker_task_id": "v4_222_trim_ctrl_5bit",
+          "evas_engine_used": "evas2",
+          "notes": [
+            "returncode=0",
+            "evas_engine=evas2",
+            "trace_contract=row_required_set",
+            "checked=88 clamp_low=True clamp_high=True max_err=0.000"
+          ],
+          "scores": {
+            "dut_compile": 1.0,
+            "sim_correct": 1.0,
+            "tb_compile": 1.0,
+            "weighted_total": 1.0
+          },
+          "status": "PASS"
+        },
+        "score": {
+          "backend_used": "evas",
+          "checker_policy": {
+            "checker_id": "v4_222_trim_ctrl_5bit",
+            "extra_trace_signal_count": 0,
+            "implementation": "no_checker",
+            "streaming_disabled": false,
+            "streaming_forced": false,
+            "streaming_registered": false,
+            "streaming_used": false,
+            "streaming_validated": false,
+            "trace_contract_kind": "row_required_set",
+            "trace_contract_signal_count": 6
+          },
+          "checker_task_id": "v4_222_trim_ctrl_5bit",
+          "evas_engine_used": "evas2",
+          "notes": [
+            "returncode=0",
+            "evas_engine=evas2",
+            "trace_contract=row_required_set",
+            "checked=88 clamp_low=True clamp_high=True max_err=0.000"
+          ],
+          "scores": {
+            "dut_compile": 1.0,
+            "sim_correct": 1.0,
+            "tb_compile": 1.0,
+            "weighted_total": 1.0
+          },
+          "status": "PASS"
+        }
+      },
+      "mutations": [
+        {
+          "expected_status": "FAIL_SIM_CORRECTNESS",
+          "fault_class": "threshold_or_boundary_fault",
+          "mutation_id": "neg_002_code_offset_plus_one",
+          "result": {
+            "backend_used": "evas",
+            "checker_policy": {
+              "checker_id": "v4_222_trim_ctrl_5bit",
+              "extra_trace_signal_count": 0,
+              "implementation": "no_checker",
+              "streaming_disabled": false,
+              "streaming_forced": false,
+              "streaming_registered": false,
+              "streaming_used": false,
+              "streaming_validated": false,
+              "trace_contract_kind": "row_required_set",
+              "trace_contract_signal_count": 6
+            },
+            "checker_task_id": "v4_222_trim_ctrl_5bit",
+            "evas_engine_used": "evas2",
+            "notes": [
+              "returncode=0",
+              "evas_engine=evas2",
+              "trace_contract=row_required_set",
+              "dout0@0.900ns=0.000 expected=0.900 dout1@0.900ns=0.900 expected=0.000 dout0@0.930ns=0.000 expected=0.900 dout1@0.930ns=0.900 expected=0.000 dout0@0.960ns=0.000 expected=0.900 dout1@0.960ns=0.900 expected=0.000"
+            ],
+            "scores": {
+              "dut_compile": 1.0,
+              "sim_correct": 0.0,
+              "tb_compile": 1.0,
+              "weighted_total": 0.6667
+            },
+            "status": "FAIL_SIM_CORRECTNESS"
+          },
+          "trigger_condition": "Adds an erroneous +1 offset after rounding the trim code.",
+          "violated_property_ids": [
+            "P_CLAMP_THE_CODE_TO_THE_VALID",
+            "P_CONVERT_V_AIN_TO_THE_NEAREST",
+            "P_DRIVE_DOUT0_DOUT4_FROM_THE_CLAMPED",
+            "P_UPDATE_DETERMINISTICALLY_AS_THE_ANALOG_INPUT"
+          ]
+        },
+        {
+          "expected_status": "FAIL_SIM_CORRECTNESS",
+          "fault_class": "metric_or_observable_fault",
+          "mutation_id": "neg_005_metric_scale_low",
+          "result": {
+            "backend_used": "evas",
+            "checker_policy": {
+              "checker_id": "v4_222_trim_ctrl_5bit",
+              "extra_trace_signal_count": 0,
+              "implementation": "no_checker",
+              "streaming_disabled": false,
+              "streaming_forced": false,
+              "streaming_registered": false,
+              "streaming_used": false,
+              "streaming_validated": false,
+              "trace_contract_kind": "row_required_set",
+              "trace_contract_signal_count": 6
+            },
+            "checker_task_id": "v4_222_trim_ctrl_5bit",
+            "evas_engine_used": "evas2",
+            "notes": [
+              "returncode=0",
+              "evas_engine=evas2",
+              "trace_contract=row_required_set",
+              "dout0@0.900ns=0.378 expected=0.900 dout2@0.900ns=0.378 expected=0.900 dout0@0.930ns=0.378 expected=0.900 dout2@0.930ns=0.378 expected=0.900 dout0@0.960ns=0.378 expected=0.900 dout2@0.960ns=0.378 expected=0.900"
+            ],
+            "scores": {
+              "dut_compile": 1.0,
+              "sim_correct": 0.0,
+              "tb_compile": 1.0,
+              "weighted_total": 0.6667
+            },
+            "status": "FAIL_SIM_CORRECTNESS"
+          },
+          "trigger_condition": "Trim Ctrl 5bit: scales the metric output, preserving the main path while failing measurement checks.",
+          "violated_property_ids": [
+            "P_DRIVE_HIGH_BITS_NEAR_VH_AND"
+          ]
+        },
+        {
+          "expected_status": "FAIL_SIM_CORRECTNESS",
+          "fault_class": "clamp_to_15",
+          "mutation_id": "neg_003_clamp_to_15",
+          "result": {
+            "backend_used": "evas",
+            "checker_policy": {
+              "checker_id": "v4_222_trim_ctrl_5bit",
+              "extra_trace_signal_count": 0,
+              "implementation": "no_checker",
+              "streaming_disabled": false,
+              "streaming_forced": false,
+              "streaming_registered": false,
+              "streaming_used": false,
+              "streaming_validated": false,
+              "trace_contract_kind": "row_required_set",
+              "trace_contract_signal_count": 6
+            },
+            "checker_task_id": "v4_222_trim_ctrl_5bit",
+            "evas_engine_used": "evas2",
+            "notes": [
+              "returncode=0",
+              "evas_engine=evas2",
+              "trace_contract=row_required_set",
+              "dout0@1.710ns=0.900 expected=0.000 dout1@1.710ns=0.900 expected=0.000 dout2@1.710ns=0.900 expected=0.000 dout3@1.710ns=0.900 expected=0.000 dout4@1.710ns=0.000 expected=0.900 dout0@1.740ns=0.900 expected=0.000"
+            ],
+            "scores": {
+              "dut_compile": 1.0,
+              "sim_correct": 0.0,
+              "tb_compile": 1.0,
+              "weighted_total": 0.6667
+            },
+            "status": "FAIL_SIM_CORRECTNESS"
+          },
+          "trigger_condition": "Incorrectly clamps the maximum trim code to 15 rather than 31.",
+          "violated_property_ids": [
+            "P_CLAMP_THE_CODE_TO_THE_VALID",
+            "P_DRIVE_DOUT0_DOUT4_FROM_THE_CLAMPED"
+          ]
+        },
+        {
+          "expected_status": "FAIL_SIM_CORRECTNESS",
+          "fault_class": "reversed_bit_order",
+          "mutation_id": "neg_004_reversed_bit_order",
+          "result": {
+            "backend_used": "evas",
+            "checker_policy": {
+              "checker_id": "v4_222_trim_ctrl_5bit",
+              "extra_trace_signal_count": 0,
+              "implementation": "no_checker",
+              "streaming_disabled": false,
+              "streaming_forced": false,
+              "streaming_registered": false,
+              "streaming_used": false,
+              "streaming_validated": false,
+              "trace_contract_kind": "row_required_set",
+              "trace_contract_signal_count": 6
+            },
+            "checker_task_id": "v4_222_trim_ctrl_5bit",
+            "evas_engine_used": "evas2",
+            "notes": [
+              "returncode=0",
+              "evas_engine=evas2",
+              "trace_contract=row_required_set",
+              "dout0@0.900ns=0.000 expected=0.900 dout4@0.900ns=0.900 expected=0.000 dout0@0.930ns=0.000 expected=0.900 dout4@0.930ns=0.900 expected=0.000 dout0@0.960ns=0.000 expected=0.900 dout4@0.960ns=0.900 expected=0.000"
+            ],
+            "scores": {
+              "dut_compile": 1.0,
+              "sim_correct": 0.0,
+              "tb_compile": 1.0,
+              "weighted_total": 0.6667
+            },
+            "status": "FAIL_SIM_CORRECTNESS"
+          },
+          "trigger_condition": "Drives DOUT0..DOUT4 in reversed bit order.",
+          "violated_property_ids": [
+            "P_DRIVE_DOUT0_DOUT4_FROM_THE_CLAMPED"
+          ]
+        },
+        {
+          "expected_status": "FAIL_SIM_CORRECTNESS",
+          "fault_class": "zero_stub_output",
+          "mutation_id": "neg_001_zero",
+          "result": {
+            "backend_used": "evas",
+            "checker_policy": {
+              "checker_id": "v4_222_trim_ctrl_5bit",
+              "extra_trace_signal_count": 0,
+              "implementation": "no_checker",
+              "streaming_disabled": false,
+              "streaming_forced": false,
+              "streaming_registered": false,
+              "streaming_used": false,
+              "streaming_validated": false,
+              "trace_contract_kind": "row_required_set",
+              "trace_contract_signal_count": 6
+            },
+            "checker_task_id": "v4_222_trim_ctrl_5bit",
+            "evas_engine_used": "evas2",
+            "notes": [
+              "returncode=0",
+              "evas_engine=evas2",
+              "trace_contract=row_required_set",
+              "dout0@0.900ns=0.000 expected=0.900 dout2@0.900ns=0.000 expected=0.900 dout0@0.930ns=0.000 expected=0.900 dout2@0.930ns=0.000 expected=0.900 dout0@0.960ns=0.000 expected=0.900 dout2@0.960ns=0.000 expected=0.900"
+            ],
+            "scores": {
+              "dut_compile": 1.0,
+              "sim_correct": 0.0,
+              "tb_compile": 1.0,
+              "weighted_total": 0.6667
+            },
+            "status": "FAIL_SIM_CORRECTNESS"
+          },
+          "trigger_condition": "Drives zero output and therefore fails the stable waveform contract.",
+          "violated_property_ids": [
+            "P_CONVERT_V_AIN_TO_THE_NEAREST",
+            "P_DRIVE_DOUT0_DOUT4_FROM_THE_CLAMPED",
+            "P_DRIVE_HIGH_BITS_NEAR_VH_AND",
+            "P_UPDATE_DETERMINISTICALLY_AS_THE_ANALOG_INPUT"
+          ]
+        }
+      ],
+      "profile_parity": {
+        "feedback_deck_sha256": "b969ceae00313b6935fe0a7981e567d910e480a9d920a1cf2e30bc9edf716b7b",
+        "feedback_profile_sha256": "e34f2d2952b247886d6f555786c03243702f134d5e0c1739b2ceb2e0dbe73862",
+        "feedback_score_decks_byte_equal": true,
+        "harness_spec_sha256": "99edb751442265aeae14a28a2f6efe3435c411d73393ad6cc1cbb5cb99040abc",
+        "profiles_equal_except_identity_visibility": true,
+        "score_deck_sha256": "b969ceae00313b6935fe0a7981e567d910e480a9d920a1cf2e30bc9edf716b7b",
+        "score_profile_sha256": "c8a6bd2173591d841f28abfc2e6becc260e47d0ff5dbf2ce68dd131c0b7bf040"
+      }
+    },
+    {
+      "canonical_dut_id": "223",
+      "checker_task_id": "v4_223_therm8_to_bin4_count",
+      "evas_engine_used": "evas2",
+      "family": "223-therm8-to-bin4-count",
+      "gold": {
+        "feedback": {
+          "backend_used": "evas",
+          "checker_policy": {
+            "checker_id": "v4_223_therm8_to_bin4_count",
+            "extra_trace_signal_count": 0,
+            "implementation": "no_checker",
+            "streaming_disabled": false,
+            "streaming_forced": false,
+            "streaming_registered": false,
+            "streaming_used": false,
+            "streaming_validated": false,
+            "trace_contract_kind": "row_required_set",
+            "trace_contract_signal_count": 4
+          },
+          "checker_task_id": "v4_223_therm8_to_bin4_count",
+          "evas_engine_used": "evas2",
+          "notes": [
+            "returncode=0",
+            "evas_engine=evas2",
+            "trace_contract=row_required_set",
+            "popcount_outputs_match checked=113 counts=[1, 4, 8] max_err=0.000 coverage_errors=0; P_COUNT_HOW_MANY_OF_TH0_TH7 mismatch_count=0; P_ENCODE_THE_COUNT_AS_A_4 mismatch_count=0; P_DRIVE_B0_B3_AS_VOLTAGE_CODED mismatch_count=0; P_SUPPORT_ANY_INPUT_PATTERN_BY_COUNTING mismatch_count=0"
+          ],
+          "scores": {
+            "dut_compile": 1.0,
+            "sim_correct": 1.0,
+            "tb_compile": 1.0,
+            "weighted_total": 1.0
+          },
+          "status": "PASS"
+        },
+        "score": {
+          "backend_used": "evas",
+          "checker_policy": {
+            "checker_id": "v4_223_therm8_to_bin4_count",
+            "extra_trace_signal_count": 0,
+            "implementation": "no_checker",
+            "streaming_disabled": false,
+            "streaming_forced": false,
+            "streaming_registered": false,
+            "streaming_used": false,
+            "streaming_validated": false,
+            "trace_contract_kind": "row_required_set",
+            "trace_contract_signal_count": 4
+          },
+          "checker_task_id": "v4_223_therm8_to_bin4_count",
+          "evas_engine_used": "evas2",
+          "notes": [
+            "returncode=0",
+            "evas_engine=evas2",
+            "trace_contract=row_required_set",
+            "popcount_outputs_match checked=113 counts=[1, 4, 8] max_err=0.000 coverage_errors=0; P_COUNT_HOW_MANY_OF_TH0_TH7 mismatch_count=0; P_ENCODE_THE_COUNT_AS_A_4 mismatch_count=0; P_DRIVE_B0_B3_AS_VOLTAGE_CODED mismatch_count=0; P_SUPPORT_ANY_INPUT_PATTERN_BY_COUNTING mismatch_count=0"
+          ],
+          "scores": {
+            "dut_compile": 1.0,
+            "sim_correct": 1.0,
+            "tb_compile": 1.0,
+            "weighted_total": 1.0
+          },
+          "status": "PASS"
+        }
+      },
+      "mutations": [
+        {
+          "expected_status": "FAIL_SIM_CORRECTNESS",
+          "fault_class": "threshold_or_boundary_fault",
+          "mutation_id": "neg_003_threshold_too_high",
+          "result": {
+            "backend_used": "evas",
+            "checker_policy": {
+              "checker_id": "v4_223_therm8_to_bin4_count",
+              "extra_trace_signal_count": 0,
+              "implementation": "no_checker",
+              "streaming_disabled": false,
+              "streaming_forced": false,
+              "streaming_registered": false,
+              "streaming_used": false,
+              "streaming_validated": false,
+              "trace_contract_kind": "row_required_set",
+              "trace_contract_signal_count": 4
+            },
+            "checker_task_id": "v4_223_therm8_to_bin4_count",
+            "evas_engine_used": "evas2",
+            "notes": [
+              "returncode=0",
+              "evas_engine=evas2",
+              "trace_contract=row_required_set",
+              "b0@0.050ns=0.000 expected=0.900 b0@0.075ns=0.000 expected=0.900 b0@0.100ns=0.000 expected=0.900 b0@0.125ns=0.000 expected=0.900 b0@0.150ns=0.000 expected=0.900 b0@0.175ns=0.000 expected=0.900 checked=113 counts=[1, 4, 8] max_err=0.900 coverage_errors=0; P_COUNT_HOW_MANY_OF_TH0_TH7 mismatch_count=113; P_ENCODE_THE_COUNT_AS_A_4 mismatch_count=113; P_DRIVE_B0_B3_AS_VOLTAGE_CODED mismatch_count=113; P_SUPPORT_ANY_INPUT_PATTERN_BY_COUNTING mismatch_count=25"
+            ],
+            "scores": {
+              "dut_compile": 1.0,
+              "sim_correct": 0.0,
+              "tb_compile": 1.0,
+              "weighted_total": 0.6667
+            },
+            "status": "FAIL_SIM_CORRECTNESS"
+          },
+          "trigger_condition": "Uses a threshold above the stimulus high level, so asserted thermometer inputs are missed.",
+          "violated_property_ids": [
+            "P_COUNT_HOW_MANY_OF_TH0_TH7",
+            "P_ENCODE_THE_COUNT_AS_A_4"
+          ]
+        },
+        {
+          "expected_status": "FAIL_SIM_CORRECTNESS",
+          "fault_class": "omission_or_incomplete_behavior",
+          "mutation_id": "neg_002_count_lower_half_only",
+          "result": {
+            "backend_used": "evas",
+            "checker_policy": {
+              "checker_id": "v4_223_therm8_to_bin4_count",
+              "extra_trace_signal_count": 0,
+              "implementation": "no_checker",
+              "streaming_disabled": false,
+              "streaming_forced": false,
+              "streaming_registered": false,
+              "streaming_used": false,
+              "streaming_validated": false,
+              "trace_contract_kind": "row_required_set",
+              "trace_contract_signal_count": 4
+            },
+            "checker_task_id": "v4_223_therm8_to_bin4_count",
+            "evas_engine_used": "evas2",
+            "notes": [
+              "returncode=0",
+              "evas_engine=evas2",
+              "trace_contract=row_required_set",
+              "b1@0.925ns=0.900 expected=0.000 b2@0.925ns=0.000 expected=0.900 b1@0.950ns=0.900 expected=0.000 b2@0.950ns=0.000 expected=0.900 b1@0.975ns=0.900 expected=0.000 b2@0.975ns=0.000 expected=0.900 checked=113 counts=[1, 4, 8] max_err=0.900 coverage_errors=0; P_COUNT_HOW_MANY_OF_TH0_TH7 mismatch_count=85; P_ENCODE_THE_COUNT_AS_A_4 mismatch_count=85; P_DRIVE_B0_B3_AS_VOLTAGE_CODED mismatch_count=170; P_SUPPORT_ANY_INPUT_PATTERN_BY_COUNTING mismatch_count=25"
+            ],
+            "scores": {
+              "dut_compile": 1.0,
+              "sim_correct": 0.0,
+              "tb_compile": 1.0,
+              "weighted_total": 0.6667
+            },
+            "status": "FAIL_SIM_CORRECTNESS"
+          },
+          "trigger_condition": "Counts only TH0..TH3 and ignores the upper thermometer inputs.",
+          "violated_property_ids": [
+            "P_COUNT_HOW_MANY_OF_TH0_TH7",
+            "P_ENCODE_THE_COUNT_AS_A_4",
+            "P_SUPPORT_ANY_INPUT_PATTERN_BY_COUNTING"
+          ]
+        },
+        {
+          "expected_status": "FAIL_SIM_CORRECTNESS",
+          "fault_class": "reversed_bit_order",
+          "mutation_id": "neg_004_reversed_bit_order",
+          "result": {
+            "backend_used": "evas",
+            "checker_policy": {
+              "checker_id": "v4_223_therm8_to_bin4_count",
+              "extra_trace_signal_count": 0,
+              "implementation": "no_checker",
+              "streaming_disabled": false,
+              "streaming_forced": false,
+              "streaming_registered": false,
+              "streaming_used": false,
+              "streaming_validated": false,
+              "trace_contract_kind": "row_required_set",
+              "trace_contract_signal_count": 4
+            },
+            "checker_task_id": "v4_223_therm8_to_bin4_count",
+            "evas_engine_used": "evas2",
+            "notes": [
+              "returncode=0",
+              "evas_engine=evas2",
+              "trace_contract=row_required_set",
+              "b0@0.050ns=0.000 expected=0.900 b3@0.050ns=0.900 expected=0.000 b0@0.075ns=0.000 expected=0.900 b3@0.075ns=0.900 expected=0.000 b0@0.100ns=0.000 expected=0.900 b3@0.100ns=0.900 expected=0.000 checked=113 counts=[1, 4, 8] max_err=0.900 coverage_errors=0; P_COUNT_HOW_MANY_OF_TH0_TH7 mismatch_count=88; P_ENCODE_THE_COUNT_AS_A_4 mismatch_count=88; P_DRIVE_B0_B3_AS_VOLTAGE_CODED mismatch_count=176; P_SUPPORT_ANY_INPUT_PATTERN_BY_COUNTING mismatch_count=0"
+            ],
+            "scores": {
+              "dut_compile": 1.0,
+              "sim_correct": 0.0,
+              "tb_compile": 1.0,
+              "weighted_total": 0.6667
+            },
+            "status": "FAIL_SIM_CORRECTNESS"
+          },
+          "trigger_condition": "Outputs the popcount bits in reversed order.",
+          "violated_property_ids": [
+            "P_DRIVE_B0_B3_AS_VOLTAGE_CODED",
+            "P_ENCODE_THE_COUNT_AS_A_4"
+          ]
+        },
+        {
+          "expected_status": "FAIL_SIM_CORRECTNESS",
+          "fault_class": "metric_or_observable_fault",
+          "mutation_id": "neg_005_metric_scale_low",
+          "result": {
+            "backend_used": "evas",
+            "checker_policy": {
+              "checker_id": "v4_223_therm8_to_bin4_count",
+              "extra_trace_signal_count": 0,
+              "implementation": "no_checker",
+              "streaming_disabled": false,
+              "streaming_forced": false,
+              "streaming_registered": false,
+              "streaming_used": false,
+              "streaming_validated": false,
+              "trace_contract_kind": "row_required_set",
+              "trace_contract_signal_count": 4
+            },
+            "checker_task_id": "v4_223_therm8_to_bin4_count",
+            "evas_engine_used": "evas2",
+            "notes": [
+              "returncode=0",
+              "evas_engine=evas2",
+              "trace_contract=row_required_set",
+              "b0@0.050ns=0.378 expected=0.900 b0@0.075ns=0.378 expected=0.900 b0@0.100ns=0.378 expected=0.900 b0@0.125ns=0.378 expected=0.900 b0@0.150ns=0.378 expected=0.900 b0@0.175ns=0.378 expected=0.900 checked=113 counts=[1, 4, 8] max_err=0.522 coverage_errors=0; P_COUNT_HOW_MANY_OF_TH0_TH7 mismatch_count=113; P_ENCODE_THE_COUNT_AS_A_4 mismatch_count=113; P_DRIVE_B0_B3_AS_VOLTAGE_CODED mismatch_count=113; P_SUPPORT_ANY_INPUT_PATTERN_BY_COUNTING mismatch_count=25"
+            ],
+            "scores": {
+              "dut_compile": 1.0,
+              "sim_correct": 0.0,
+              "tb_compile": 1.0,
+              "weighted_total": 0.6667
+            },
+            "status": "FAIL_SIM_CORRECTNESS"
+          },
+          "trigger_condition": "Therm8 To Bin4 Count: scales the metric output, preserving the main path while failing measurement checks.",
+          "violated_property_ids": [
+            "P_DRIVE_B0_B3_AS_VOLTAGE_CODED"
+          ]
+        },
+        {
+          "expected_status": "FAIL_SIM_CORRECTNESS",
+          "fault_class": "zero_stub_output",
+          "mutation_id": "neg_001_zero",
+          "result": {
+            "backend_used": "evas",
+            "checker_policy": {
+              "checker_id": "v4_223_therm8_to_bin4_count",
+              "extra_trace_signal_count": 0,
+              "implementation": "no_checker",
+              "streaming_disabled": false,
+              "streaming_forced": false,
+              "streaming_registered": false,
+              "streaming_used": false,
+              "streaming_validated": false,
+              "trace_contract_kind": "row_required_set",
+              "trace_contract_signal_count": 4
+            },
+            "checker_task_id": "v4_223_therm8_to_bin4_count",
+            "evas_engine_used": "evas2",
+            "notes": [
+              "returncode=0",
+              "evas_engine=evas2",
+              "trace_contract=row_required_set",
+              "b0@0.050ns=0.000 expected=0.900 b0@0.075ns=0.000 expected=0.900 b0@0.100ns=0.000 expected=0.900 b0@0.125ns=0.000 expected=0.900 b0@0.150ns=0.000 expected=0.900 b0@0.175ns=0.000 expected=0.900 checked=113 counts=[1, 4, 8] max_err=0.900 coverage_errors=0; P_COUNT_HOW_MANY_OF_TH0_TH7 mismatch_count=113; P_ENCODE_THE_COUNT_AS_A_4 mismatch_count=113; P_DRIVE_B0_B3_AS_VOLTAGE_CODED mismatch_count=113; P_SUPPORT_ANY_INPUT_PATTERN_BY_COUNTING mismatch_count=25"
+            ],
+            "scores": {
+              "dut_compile": 1.0,
+              "sim_correct": 0.0,
+              "tb_compile": 1.0,
+              "weighted_total": 0.6667
+            },
+            "status": "FAIL_SIM_CORRECTNESS"
+          },
+          "trigger_condition": "Drives zero output and therefore fails the stable waveform contract.",
+          "violated_property_ids": [
+            "P_COUNT_HOW_MANY_OF_TH0_TH7",
+            "P_DRIVE_B0_B3_AS_VOLTAGE_CODED",
+            "P_ENCODE_THE_COUNT_AS_A_4"
+          ]
+        }
+      ],
+      "profile_parity": {
+        "feedback_deck_sha256": "ccaaad99ed1d5cb1ff4ebec3e6fdcd0bef136dd387a1e1a0386894f1cfc118c7",
+        "feedback_profile_sha256": "26eb87a755656f53e90cd8a46ef8094f4b16fde1d8039cf172687556514a8833",
+        "feedback_score_decks_byte_equal": true,
+        "harness_spec_sha256": "797895d105e79ceae4bb3d7a3f170843f095c7a138b810397e5e5fbf36ecad0f",
+        "profiles_equal_except_identity_visibility": true,
+        "score_deck_sha256": "ccaaad99ed1d5cb1ff4ebec3e6fdcd0bef136dd387a1e1a0386894f1cfc118c7",
+        "score_profile_sha256": "b742401395bd9f331b8a437df59392e61206ca18077fcfb4effd958af97b5fe2"
+      }
+    },
+    {
+      "canonical_dut_id": "224",
+      "checker_task_id": "v4_224_coarse_qtz_3bit_residue",
+      "evas_engine_used": "evas2",
+      "family": "224-coarse-qtz-3bit-residue",
+      "gold": {
+        "feedback": {
+          "backend_used": "evas",
+          "checker_policy": {
+            "checker_id": "v4_224_coarse_qtz_3bit_residue",
+            "extra_trace_signal_count": 0,
+            "implementation": "no_checker",
+            "streaming_disabled": false,
+            "streaming_forced": false,
+            "streaming_registered": false,
+            "streaming_used": false,
+            "streaming_validated": false,
+            "trace_contract_kind": "row_required_set",
+            "trace_contract_signal_count": 5
+          },
+          "checker_task_id": "v4_224_coarse_qtz_3bit_residue",
+          "evas_engine_used": "evas2",
+          "notes": [
+            "returncode=0",
+            "evas_engine=evas2",
+            "trace_contract=row_required_set",
+            "checked=78 low_clip=True high_clip=True internal=True max_bit_error=0.00000 max_res_error=0.00000"
+          ],
+          "scores": {
+            "dut_compile": 1.0,
+            "sim_correct": 1.0,
+            "tb_compile": 1.0,
+            "weighted_total": 1.0
+          },
+          "status": "PASS"
+        },
+        "score": {
+          "backend_used": "evas",
+          "checker_policy": {
+            "checker_id": "v4_224_coarse_qtz_3bit_residue",
+            "extra_trace_signal_count": 0,
+            "implementation": "no_checker",
+            "streaming_disabled": false,
+            "streaming_forced": false,
+            "streaming_registered": false,
+            "streaming_used": false,
+            "streaming_validated": false,
+            "trace_contract_kind": "row_required_set",
+            "trace_contract_signal_count": 5
+          },
+          "checker_task_id": "v4_224_coarse_qtz_3bit_residue",
+          "evas_engine_used": "evas2",
+          "notes": [
+            "returncode=0",
+            "evas_engine=evas2",
+            "trace_contract=row_required_set",
+            "checked=78 low_clip=True high_clip=True internal=True max_bit_error=0.00000 max_res_error=0.00000"
+          ],
+          "scores": {
+            "dut_compile": 1.0,
+            "sim_correct": 1.0,
+            "tb_compile": 1.0,
+            "weighted_total": 1.0
+          },
+          "status": "PASS"
+        }
+      },
+      "mutations": [
+        {
+          "expected_status": "FAIL_SIM_CORRECTNESS",
+          "fault_class": "floor_quantizer",
+          "mutation_id": "neg_002_floor_quantizer",
+          "result": {
+            "backend_used": "evas",
+            "checker_policy": {
+              "checker_id": "v4_224_coarse_qtz_3bit_residue",
+              "extra_trace_signal_count": 0,
+              "implementation": "no_checker",
+              "streaming_disabled": false,
+              "streaming_forced": false,
+              "streaming_registered": false,
+              "streaming_used": false,
+              "streaming_validated": false,
+              "trace_contract_kind": "row_required_set",
+              "trace_contract_signal_count": 5
+            },
+            "checker_task_id": "v4_224_coarse_qtz_3bit_residue",
+            "evas_engine_used": "evas2",
+            "notes": [
+              "returncode=0",
+              "evas_engine=evas2",
+              "trace_contract=row_required_set",
+              "checked=78 low_clip=True high_clip=True internal=True max_bit_error=1.00000 max_res_error=0.25000"
+            ],
+            "scores": {
+              "dut_compile": 1.0,
+              "sim_correct": 0.0,
+              "tb_compile": 1.0,
+              "weighted_total": 0.6667
+            },
+            "status": "FAIL_SIM_CORRECTNESS"
+          },
+          "trigger_condition": "Uses floor quantization instead of rounding to nearest.",
+          "violated_property_ids": [
+            "P_DRIVE_D0_D1_AND_D2_AS",
+            "P_DRIVE_VRES_AS_THE_CLIPPED_INPUT",
+            "P_QUANTIZE_THE_CLIPPED_VALUE_INTO_EIGHT",
+            "P_USE_UNIFORMLY_SPACED_QUANTIZATION_LEVELS_START"
+          ]
+        },
+        {
+          "expected_status": "FAIL_SIM_CORRECTNESS",
+          "fault_class": "threshold_or_boundary_fault",
+          "mutation_id": "neg_003_no_input_clip",
+          "result": {
+            "backend_used": "evas",
+            "checker_policy": {
+              "checker_id": "v4_224_coarse_qtz_3bit_residue",
+              "extra_trace_signal_count": 0,
+              "implementation": "no_checker",
+              "streaming_disabled": false,
+              "streaming_forced": false,
+              "streaming_registered": false,
+              "streaming_used": false,
+              "streaming_validated": false,
+              "trace_contract_kind": "row_required_set",
+              "trace_contract_signal_count": 5
+            },
+            "checker_task_id": "v4_224_coarse_qtz_3bit_residue",
+            "evas_engine_used": "evas2",
+            "notes": [
+              "returncode=0",
+              "evas_engine=evas2",
+              "trace_contract=row_required_set",
+              "checked=78 low_clip=True high_clip=True internal=True max_bit_error=0.00000 max_res_error=0.50000"
+            ],
+            "scores": {
+              "dut_compile": 1.0,
+              "sim_correct": 0.0,
+              "tb_compile": 1.0,
+              "weighted_total": 0.6667
+            },
+            "status": "FAIL_SIM_CORRECTNESS"
+          },
+          "trigger_condition": "Does not clip VIN before quantization and residue computation.",
+          "violated_property_ids": [
+            "P_CLIP_VIN_TO_THE_RANGE_FROM",
+            "P_DRIVE_VRES_AS_THE_CLIPPED_INPUT",
+            "P_SATURATE_THE_CODE_AT_THE_ENDPOINTS"
+          ]
+        },
+        {
+          "expected_status": "FAIL_SIM_CORRECTNESS",
+          "fault_class": "zero_stub_output",
+          "mutation_id": "neg_001_zero",
+          "result": {
+            "backend_used": "evas",
+            "checker_policy": {
+              "checker_id": "v4_224_coarse_qtz_3bit_residue",
+              "extra_trace_signal_count": 0,
+              "implementation": "no_checker",
+              "streaming_disabled": false,
+              "streaming_forced": false,
+              "streaming_registered": false,
+              "streaming_used": false,
+              "streaming_validated": false,
+              "trace_contract_kind": "row_required_set",
+              "trace_contract_signal_count": 5
+            },
+            "checker_task_id": "v4_224_coarse_qtz_3bit_residue",
+            "evas_engine_used": "evas2",
+            "notes": [
+              "returncode=0",
+              "evas_engine=evas2",
+              "trace_contract=row_required_set",
+              "checked=78 low_clip=True high_clip=True internal=True max_bit_error=1.00000 max_res_error=0.25000"
+            ],
+            "scores": {
+              "dut_compile": 1.0,
+              "sim_correct": 0.0,
+              "tb_compile": 1.0,
+              "weighted_total": 0.6667
+            },
+            "status": "FAIL_SIM_CORRECTNESS"
+          },
+          "trigger_condition": "Drives zero output and therefore fails the stable waveform contract.",
+          "violated_property_ids": [
+            "P_DRIVE_D0_D1_AND_D2_AS",
+            "P_DRIVE_VRES_AS_THE_CLIPPED_INPUT",
+            "P_QUANTIZE_THE_CLIPPED_VALUE_INTO_EIGHT"
+          ]
+        },
+        {
+          "expected_status": "FAIL_SIM_CORRECTNESS",
+          "fault_class": "polarity_or_direction_error",
+          "mutation_id": "neg_004_residue_sign_inverted",
+          "result": {
+            "backend_used": "evas",
+            "checker_policy": {
+              "checker_id": "v4_224_coarse_qtz_3bit_residue",
+              "extra_trace_signal_count": 0,
+              "implementation": "no_checker",
+              "streaming_disabled": false,
+              "streaming_forced": false,
+              "streaming_registered": false,
+              "streaming_used": false,
+              "streaming_validated": false,
+              "trace_contract_kind": "row_required_set",
+              "trace_contract_signal_count": 5
+            },
+            "checker_task_id": "v4_224_coarse_qtz_3bit_residue",
+            "evas_engine_used": "evas2",
+            "notes": [
+              "returncode=0",
+              "evas_engine=evas2",
+              "trace_contract=row_required_set",
+              "checked=78 low_clip=True high_clip=True internal=True max_bit_error=0.00000 max_res_error=0.50000"
+            ],
+            "scores": {
+              "dut_compile": 1.0,
+              "sim_correct": 0.0,
+              "tb_compile": 1.0,
+              "weighted_total": 0.6667
+            },
+            "status": "FAIL_SIM_CORRECTNESS"
+          },
+          "trigger_condition": "Reports quantized-minus-input residue instead of input-minus-quantized residue.",
+          "violated_property_ids": [
+            "P_DRIVE_VRES_AS_THE_CLIPPED_INPUT"
+          ]
+        },
+        {
+          "expected_status": "FAIL_SIM_CORRECTNESS",
+          "fault_class": "metric_or_observable_fault",
+          "mutation_id": "neg_005_metric_scale_low",
+          "result": {
+            "backend_used": "evas",
+            "checker_policy": {
+              "checker_id": "v4_224_coarse_qtz_3bit_residue",
+              "extra_trace_signal_count": 0,
+              "implementation": "no_checker",
+              "streaming_disabled": false,
+              "streaming_forced": false,
+              "streaming_registered": false,
+              "streaming_used": false,
+              "streaming_validated": false,
+              "trace_contract_kind": "row_required_set",
+              "trace_contract_signal_count": 5
+            },
+            "checker_task_id": "v4_224_coarse_qtz_3bit_residue",
+            "evas_engine_used": "evas2",
+            "notes": [
+              "returncode=0",
+              "evas_engine=evas2",
+              "trace_contract=row_required_set",
+              "checked=78 low_clip=True high_clip=True internal=True max_bit_error=0.58000 max_res_error=0.00000"
+            ],
+            "scores": {
+              "dut_compile": 1.0,
+              "sim_correct": 0.0,
+              "tb_compile": 1.0,
+              "weighted_total": 0.6667
+            },
+            "status": "FAIL_SIM_CORRECTNESS"
+          },
+          "trigger_condition": "Coarse QTZ 3bit Residue: scales the metric output, preserving the main path while failing measurement checks.",
+          "violated_property_ids": [
+            "P_DRIVE_D0_D1_AND_D2_AS"
+          ]
+        }
+      ],
+      "profile_parity": {
+        "feedback_deck_sha256": "678eb168857aa537ef08be383ca62838c28d11e73747dcea9ba2949f6d85abc3",
+        "feedback_profile_sha256": "37755194e359634c12334dad2bb6b3629e2d5fc0e56f8f6a61e6e633be714db2",
+        "feedback_score_decks_byte_equal": true,
+        "harness_spec_sha256": "ab2367bef5e31e10b950031c464d1c318b3bc78d66c216dec6136b285162395f",
+        "profiles_equal_except_identity_visibility": true,
+        "score_deck_sha256": "678eb168857aa537ef08be383ca62838c28d11e73747dcea9ba2949f6d85abc3",
+        "score_profile_sha256": "edb5deb8ee93c3fe9ba73249189ed467a10fd8a14b07591a7e4f035bcbf9047a"
+      }
+    },
+    {
+      "canonical_dut_id": "225",
+      "checker_task_id": "v4_225_rs_phase_detector",
+      "evas_engine_used": "evas2",
+      "family": "225-rs-phase-detector",
+      "gold": {
+        "feedback": {
+          "backend_used": "evas",
+          "checker_policy": {
+            "checker_id": "v4_225_rs_phase_detector",
+            "extra_trace_signal_count": 0,
+            "implementation": "no_checker",
+            "streaming_disabled": false,
+            "streaming_forced": false,
+            "streaming_registered": false,
+            "streaming_used": false,
+            "streaming_validated": false,
+            "trace_contract_kind": "row_required_set",
+            "trace_contract_signal_count": 4
+          },
+          "checker_task_id": "v4_225_rs_phase_detector",
+          "evas_engine_used": "evas2",
+          "notes": [
+            "returncode=0",
+            "evas_engine=evas2",
+            "trace_contract=row_required_set",
+            "checked=351 set=True reset=True max_err=0.000"
+          ],
+          "scores": {
+            "dut_compile": 1.0,
+            "sim_correct": 1.0,
+            "tb_compile": 1.0,
+            "weighted_total": 1.0
+          },
+          "status": "PASS"
+        },
+        "score": {
+          "backend_used": "evas",
+          "checker_policy": {
+            "checker_id": "v4_225_rs_phase_detector",
+            "extra_trace_signal_count": 0,
+            "implementation": "no_checker",
+            "streaming_disabled": false,
+            "streaming_forced": false,
+            "streaming_registered": false,
+            "streaming_used": false,
+            "streaming_validated": false,
+            "trace_contract_kind": "row_required_set",
+            "trace_contract_signal_count": 4
+          },
+          "checker_task_id": "v4_225_rs_phase_detector",
+          "evas_engine_used": "evas2",
+          "notes": [
+            "returncode=0",
+            "evas_engine=evas2",
+            "trace_contract=row_required_set",
+            "checked=351 set=True reset=True max_err=0.000"
+          ],
+          "scores": {
+            "dut_compile": 1.0,
+            "sim_correct": 1.0,
+            "tb_compile": 1.0,
+            "weighted_total": 1.0
+          },
+          "status": "PASS"
+        }
+      },
+      "mutations": [
+        {
+          "expected_status": "FAIL_SIM_CORRECTNESS",
+          "fault_class": "polarity_or_direction_error",
+          "mutation_id": "neg_002_swapped_edges",
+          "result": {
+            "backend_used": "evas",
+            "checker_policy": {
+              "checker_id": "v4_225_rs_phase_detector",
+              "extra_trace_signal_count": 0,
+              "implementation": "no_checker",
+              "streaming_disabled": false,
+              "streaming_forced": false,
+              "streaming_registered": false,
+              "streaming_used": false,
+              "streaming_validated": false,
+              "trace_contract_kind": "row_required_set",
+              "trace_contract_signal_count": 4
+            },
+            "checker_task_id": "v4_225_rs_phase_detector",
+            "evas_engine_used": "evas2",
+            "notes": [
+              "returncode=0",
+              "evas_engine=evas2",
+              "trace_contract=row_required_set",
+              "t=0.455ns up/down=1.200/0.000 expected=0.000/1.200 t=0.460ns up/down=1.200/0.000 expected=0.000/1.200 t=0.465ns up/down=1.200/0.000 expected=0.000/1.200 t=0.470ns up/down=1.200/0.000 expected=0.000/1.200 t=0.475ns up/down=1.200/0.000 expected=0.000/1.200 t=0.480ns up/down=1.200/0.000 expected=0.000/1.200"
+            ],
+            "scores": {
+              "dut_compile": 1.0,
+              "sim_correct": 0.0,
+              "tb_compile": 1.0,
+              "weighted_total": 0.6667
+            },
+            "status": "FAIL_SIM_CORRECTNESS"
+          },
+          "trigger_condition": "Swaps REF/FB effects, so REF clears and FB sets the latch.",
+          "violated_property_ids": [
+            "P_A_RISING_FB_EDGE_RESETS_THE",
+            "P_A_RISING_REF_EDGE_SETS_THE",
+            "P_HOLD_THE_MOST_RECENT_LATCH_STATE"
+          ]
+        },
+        {
+          "expected_status": "FAIL_SIM_CORRECTNESS",
+          "fault_class": "zero_stub_output",
+          "mutation_id": "neg_001_zero",
+          "result": {
+            "backend_used": "evas",
+            "checker_policy": {
+              "checker_id": "v4_225_rs_phase_detector",
+              "extra_trace_signal_count": 0,
+              "implementation": "no_checker",
+              "streaming_disabled": false,
+              "streaming_forced": false,
+              "streaming_registered": false,
+              "streaming_used": false,
+              "streaming_validated": false,
+              "trace_contract_kind": "row_required_set",
+              "trace_contract_signal_count": 4
+            },
+            "checker_task_id": "v4_225_rs_phase_detector",
+            "evas_engine_used": "evas2",
+            "notes": [
+              "returncode=0",
+              "evas_engine=evas2",
+              "trace_contract=row_required_set",
+              "t=0.050ns up/down=0.000/0.000 expected=0.000/1.200 t=0.055ns up/down=0.000/0.000 expected=0.000/1.200 t=0.060ns up/down=0.000/0.000 expected=0.000/1.200 t=0.065ns up/down=0.000/0.000 expected=0.000/1.200 t=0.070ns up/down=0.000/0.000 expected=0.000/1.200 t=0.075ns up/down=0.000/0.000 expected=0.000/1.200"
+            ],
+            "scores": {
+              "dut_compile": 1.0,
+              "sim_correct": 0.0,
+              "tb_compile": 1.0,
+              "weighted_total": 0.6667
+            },
+            "status": "FAIL_SIM_CORRECTNESS"
+          },
+          "trigger_condition": "Drives zero output and therefore fails the stable waveform contract.",
+          "violated_property_ids": [
+            "P_A_RISING_REF_EDGE_SETS_THE",
+            "P_DETECT_RISING_REF_AND_FB_CROSSINGS",
+            "P_INITIALIZE_TO_THE_RESET_STATE_WITH"
+          ]
+        },
+        {
+          "expected_status": "FAIL_SIM_CORRECTNESS",
+          "fault_class": "down_not_complement",
+          "mutation_id": "neg_003_down_not_complement",
+          "result": {
+            "backend_used": "evas",
+            "checker_policy": {
+              "checker_id": "v4_225_rs_phase_detector",
+              "extra_trace_signal_count": 0,
+              "implementation": "no_checker",
+              "streaming_disabled": false,
+              "streaming_forced": false,
+              "streaming_registered": false,
+              "streaming_used": false,
+              "streaming_validated": false,
+              "trace_contract_kind": "row_required_set",
+              "trace_contract_signal_count": 4
+            },
+            "checker_task_id": "v4_225_rs_phase_detector",
+            "evas_engine_used": "evas2",
+            "notes": [
+              "returncode=0",
+              "evas_engine=evas2",
+              "trace_contract=row_required_set",
+              "t=0.050ns up/down=0.000/0.000 expected=0.000/1.200 t=0.055ns up/down=0.000/0.000 expected=0.000/1.200 t=0.060ns up/down=0.000/0.000 expected=0.000/1.200 t=0.065ns up/down=0.000/0.000 expected=0.000/1.200 t=0.070ns up/down=0.000/0.000 expected=0.000/1.200 t=0.075ns up/down=0.000/0.000 expected=0.000/1.200"
+            ],
+            "scores": {
+              "dut_compile": 1.0,
+              "sim_correct": 0.0,
+              "tb_compile": 1.0,
+              "weighted_total": 0.6667
+            },
+            "status": "FAIL_SIM_CORRECTNESS"
+          },
+          "trigger_condition": "Drives DOWN equal to UP instead of the complementary latch state.",
+          "violated_property_ids": [
+            "P_A_RISING_FB_EDGE_RESETS_THE",
+            "P_A_RISING_REF_EDGE_SETS_THE",
+            "P_INITIALIZE_TO_THE_RESET_STATE_WITH"
+          ]
+        },
+        {
+          "expected_status": "FAIL_SIM_CORRECTNESS",
+          "fault_class": "metric_or_observable_fault",
+          "mutation_id": "neg_005_metric_scale_low",
+          "result": {
+            "backend_used": "evas",
+            "checker_policy": {
+              "checker_id": "v4_225_rs_phase_detector",
+              "extra_trace_signal_count": 0,
+              "implementation": "no_checker",
+              "streaming_disabled": false,
+              "streaming_forced": false,
+              "streaming_registered": false,
+              "streaming_used": false,
+              "streaming_validated": false,
+              "trace_contract_kind": "row_required_set",
+              "trace_contract_signal_count": 4
+            },
+            "checker_task_id": "v4_225_rs_phase_detector",
+            "evas_engine_used": "evas2",
+            "notes": [
+              "returncode=0",
+              "evas_engine=evas2",
+              "trace_contract=row_required_set",
+              "t=0.050ns up/down=0.000/0.504 expected=0.000/1.200 t=0.055ns up/down=0.000/0.504 expected=0.000/1.200 t=0.060ns up/down=0.000/0.504 expected=0.000/1.200 t=0.065ns up/down=0.000/0.504 expected=0.000/1.200 t=0.070ns up/down=0.000/0.504 expected=0.000/1.200 t=0.075ns up/down=0.000/0.504 expected=0.000/1.200"
+            ],
+            "scores": {
+              "dut_compile": 1.0,
+              "sim_correct": 0.0,
+              "tb_compile": 1.0,
+              "weighted_total": 0.6667
+            },
+            "status": "FAIL_SIM_CORRECTNESS"
+          },
+          "trigger_condition": "RS Phase Detector: scales the metric output, preserving the main path while failing measurement checks.",
+          "violated_property_ids": [
+            "P_A_RISING_REF_EDGE_SETS_THE"
+          ]
+        },
+        {
+          "expected_status": "FAIL_SIM_CORRECTNESS",
+          "fault_class": "polarity_or_direction_error",
+          "mutation_id": "neg_004_ignore_fb_reset",
+          "result": {
+            "backend_used": "evas",
+            "checker_policy": {
+              "checker_id": "v4_225_rs_phase_detector",
+              "extra_trace_signal_count": 0,
+              "implementation": "no_checker",
+              "streaming_disabled": false,
+              "streaming_forced": false,
+              "streaming_registered": false,
+              "streaming_used": false,
+              "streaming_validated": false,
+              "trace_contract_kind": "row_required_set",
+              "trace_contract_signal_count": 4
+            },
+            "checker_task_id": "v4_225_rs_phase_detector",
+            "evas_engine_used": "evas2",
+            "notes": [
+              "returncode=0",
+              "evas_engine=evas2",
+              "trace_contract=row_required_set",
+              "t=2.355ns up/down=1.200/0.000 expected=0.000/1.200 t=2.360ns up/down=1.200/0.000 expected=0.000/1.200 t=2.365ns up/down=1.200/0.000 expected=0.000/1.200 t=2.370ns up/down=1.200/0.000 expected=0.000/1.200 t=2.375ns up/down=1.200/0.000 expected=0.000/1.200 t=2.380ns up/down=1.200/0.000 expected=0.000/1.200"
+            ],
+            "scores": {
+              "dut_compile": 1.0,
+              "sim_correct": 0.0,
+              "tb_compile": 1.0,
+              "weighted_total": 0.6667
+            },
+            "status": "FAIL_SIM_CORRECTNESS"
+          },
+          "trigger_condition": "Ignores FB rising edges, so UP stays asserted after REF.",
+          "violated_property_ids": [
+            "P_A_RISING_FB_EDGE_RESETS_THE",
+            "P_DETECT_RISING_REF_AND_FB_CROSSINGS",
+            "P_HOLD_THE_MOST_RECENT_LATCH_STATE"
+          ]
+        }
+      ],
+      "profile_parity": {
+        "feedback_deck_sha256": "4990499fc39b2ce33213d2317867e3c424e454acfdbe1967d8e1f4d5d0d48c6f",
+        "feedback_profile_sha256": "911611162cd74f1bc2cbcd7ef3f15833cf3e47c53cb443e5227ea35226f9218c",
+        "feedback_score_decks_byte_equal": true,
+        "harness_spec_sha256": "a8d2ea7f28f6476623a5c13365b0866a21a368eb63af23646dbcf96b470be119",
+        "profiles_equal_except_identity_visibility": true,
+        "score_deck_sha256": "4990499fc39b2ce33213d2317867e3c424e454acfdbe1967d8e1f4d5d0d48c6f",
+        "score_profile_sha256": "b04c6ef833ca4c6a9e91bf5bff60168028fb0260ae6b3c7f3f59afa56f351645"
+      }
+    },
+    {
+      "canonical_dut_id": "226",
+      "checker_task_id": "v4_226_level_shifter_offset",
+      "evas_engine_used": "evas2",
+      "family": "226-level-shifter-offset",
+      "gold": {
+        "feedback": {
+          "backend_used": "evas",
+          "checker_policy": {
+            "checker_id": "v4_226_level_shifter_offset",
+            "extra_trace_signal_count": 0,
+            "implementation": "no_checker",
+            "streaming_disabled": false,
+            "streaming_forced": false,
+            "streaming_registered": false,
+            "streaming_used": false,
+            "streaming_validated": false,
+            "trace_contract_kind": "row_required_set",
+            "trace_contract_signal_count": 2
+          },
+          "checker_task_id": "v4_226_level_shifter_offset",
+          "evas_engine_used": "evas2",
+          "notes": [
+            "returncode=0",
+            "evas_engine=evas2",
+            "trace_contract=row_required_set",
+            "checked=581 input_range=-0.300:0.900 rise=True fall=True max_err=0.0000"
+          ],
+          "scores": {
+            "dut_compile": 1.0,
+            "sim_correct": 1.0,
+            "tb_compile": 1.0,
+            "weighted_total": 1.0
+          },
+          "status": "PASS"
+        },
+        "score": {
+          "backend_used": "evas",
+          "checker_policy": {
+            "checker_id": "v4_226_level_shifter_offset",
+            "extra_trace_signal_count": 0,
+            "implementation": "no_checker",
+            "streaming_disabled": false,
+            "streaming_forced": false,
+            "streaming_registered": false,
+            "streaming_used": false,
+            "streaming_validated": false,
+            "trace_contract_kind": "row_required_set",
+            "trace_contract_signal_count": 2
+          },
+          "checker_task_id": "v4_226_level_shifter_offset",
+          "evas_engine_used": "evas2",
+          "notes": [
+            "returncode=0",
+            "evas_engine=evas2",
+            "trace_contract=row_required_set",
+            "checked=581 input_range=-0.300:0.900 rise=True fall=True max_err=0.0000"
+          ],
+          "scores": {
+            "dut_compile": 1.0,
+            "sim_correct": 1.0,
+            "tb_compile": 1.0,
+            "weighted_total": 1.0
+          },
+          "status": "PASS"
+        }
+      },
+      "mutations": [
+        {
+          "expected_status": "FAIL_SIM_CORRECTNESS",
+          "fault_class": "offset_magnitude_error",
+          "mutation_id": "neg_002_wrong_offset",
+          "result": {
+            "backend_used": "evas",
+            "checker_policy": {
+              "checker_id": "v4_226_level_shifter_offset",
+              "extra_trace_signal_count": 0,
+              "implementation": "no_checker",
+              "streaming_disabled": false,
+              "streaming_forced": false,
+              "streaming_registered": false,
+              "streaming_used": false,
+              "streaming_validated": false,
+              "trace_contract_kind": "row_required_set",
+              "trace_contract_signal_count": 2
+            },
+            "checker_task_id": "v4_226_level_shifter_offset",
+            "evas_engine_used": "evas2",
+            "notes": [
+              "returncode=0",
+              "evas_engine=evas2",
+              "trace_contract=row_required_set",
+              "level_shift_error@2.310ns observed=0.9000 expected=1.0500 max_err=0.1500"
+            ],
+            "scores": {
+              "dut_compile": 1.0,
+              "sim_correct": 0.0,
+              "tb_compile": 1.0,
+              "weighted_total": 0.6667
+            },
+            "status": "FAIL_SIM_CORRECTNESS"
+          },
+          "trigger_condition": "Adds 200 mV instead of the required 350 mV offset.",
+          "violated_property_ids": [
+            "P_DRIVE_SIGOUT_TO_V_SIGIN_PLUS_SIGSHIFT"
+          ]
+        },
+        {
+          "expected_status": "FAIL_SIM_CORRECTNESS",
+          "fault_class": "input_gain_error",
+          "mutation_id": "neg_004_gain_plus_offset",
+          "result": {
+            "backend_used": "evas",
+            "checker_policy": {
+              "checker_id": "v4_226_level_shifter_offset",
+              "extra_trace_signal_count": 0,
+              "implementation": "no_checker",
+              "streaming_disabled": false,
+              "streaming_forced": false,
+              "streaming_registered": false,
+              "streaming_used": false,
+              "streaming_validated": false,
+              "trace_contract_kind": "row_required_set",
+              "trace_contract_signal_count": 2
+            },
+            "checker_task_id": "v4_226_level_shifter_offset",
+            "evas_engine_used": "evas2",
+            "notes": [
+              "returncode=0",
+              "evas_engine=evas2",
+              "trace_contract=row_required_set",
+              "level_shift_error@2.300ns observed=2.1500 expected=1.2500 max_err=0.9000"
+            ],
+            "scores": {
+              "dut_compile": 1.0,
+              "sim_correct": 0.0,
+              "tb_compile": 1.0,
+              "weighted_total": 0.6667
+            },
+            "status": "FAIL_SIM_CORRECTNESS"
+          },
+          "trigger_condition": "Adds an erroneous gain of 2 before the offset.",
+          "violated_property_ids": [
+            "P_DRIVE_SIGOUT_TO_V_SIGIN_PLUS_SIGSHIFT",
+            "P_PRESERVE_UNITY_GAIN_WHILE_ADDING_OFFSET"
+          ]
+        },
+        {
+          "expected_status": "FAIL_SIM_CORRECTNESS",
+          "fault_class": "offset_polarity_error",
+          "mutation_id": "neg_003_subtract_offset",
+          "result": {
+            "backend_used": "evas",
+            "checker_policy": {
+              "checker_id": "v4_226_level_shifter_offset",
+              "extra_trace_signal_count": 0,
+              "implementation": "no_checker",
+              "streaming_disabled": false,
+              "streaming_forced": false,
+              "streaming_registered": false,
+              "streaming_used": false,
+              "streaming_validated": false,
+              "trace_contract_kind": "row_required_set",
+              "trace_contract_signal_count": 2
+            },
+            "checker_task_id": "v4_226_level_shifter_offset",
+            "evas_engine_used": "evas2",
+            "notes": [
+              "returncode=0",
+              "evas_engine=evas2",
+              "trace_contract=row_required_set",
+              "level_shift_error@2.310ns observed=0.3500 expected=1.0500 max_err=0.7000"
+            ],
+            "scores": {
+              "dut_compile": 1.0,
+              "sim_correct": 0.0,
+              "tb_compile": 1.0,
+              "weighted_total": 0.6667
+            },
+            "status": "FAIL_SIM_CORRECTNESS"
+          },
+          "trigger_condition": "Subtracts the level shift instead of adding it.",
+          "violated_property_ids": [
+            "P_DRIVE_SIGOUT_TO_V_SIGIN_PLUS_SIGSHIFT"
+          ]
+        },
+        {
+          "expected_status": "FAIL_SIM_CORRECTNESS",
+          "fault_class": "output_scale_error",
+          "mutation_id": "neg_005_metric_scale_low",
+          "result": {
+            "backend_used": "evas",
+            "checker_policy": {
+              "checker_id": "v4_226_level_shifter_offset",
+              "extra_trace_signal_count": 0,
+              "implementation": "no_checker",
+              "streaming_disabled": false,
+              "streaming_forced": false,
+              "streaming_registered": false,
+              "streaming_used": false,
+              "streaming_validated": false,
+              "trace_contract_kind": "row_required_set",
+              "trace_contract_signal_count": 2
+            },
+            "checker_task_id": "v4_226_level_shifter_offset",
+            "evas_engine_used": "evas2",
+            "notes": [
+              "returncode=0",
+              "evas_engine=evas2",
+              "trace_contract=row_required_set",
+              "level_shift_error@2.300ns observed=0.5250 expected=1.2500 max_err=0.7250"
+            ],
+            "scores": {
+              "dut_compile": 1.0,
+              "sim_correct": 0.0,
+              "tb_compile": 1.0,
+              "weighted_total": 0.6667
+            },
+            "status": "FAIL_SIM_CORRECTNESS"
+          },
+          "trigger_condition": "Level Shifter Offset: scales the metric output, preserving the main path while failing measurement checks.",
+          "violated_property_ids": [
+            "P_DRIVE_SIGOUT_TO_V_SIGIN_PLUS_SIGSHIFT",
+            "P_PRESERVE_UNITY_GAIN_WHILE_ADDING_OFFSET"
+          ]
+        },
+        {
+          "expected_status": "FAIL_SIM_CORRECTNESS",
+          "fault_class": "zero_stub_output",
+          "mutation_id": "neg_001_zero",
+          "result": {
+            "backend_used": "evas",
+            "checker_policy": {
+              "checker_id": "v4_226_level_shifter_offset",
+              "extra_trace_signal_count": 0,
+              "implementation": "no_checker",
+              "streaming_disabled": false,
+              "streaming_forced": false,
+              "streaming_registered": false,
+              "streaming_used": false,
+              "streaming_validated": false,
+              "trace_contract_kind": "row_required_set",
+              "trace_contract_signal_count": 2
+            },
+            "checker_task_id": "v4_226_level_shifter_offset",
+            "evas_engine_used": "evas2",
+            "notes": [
+              "returncode=0",
+              "evas_engine=evas2",
+              "trace_contract=row_required_set",
+              "level_shift_error@2.310ns observed=0.7000 expected=1.0500 max_err=0.3500"
+            ],
+            "scores": {
+              "dut_compile": 1.0,
+              "sim_correct": 0.0,
+              "tb_compile": 1.0,
+              "weighted_total": 0.6667
+            },
+            "status": "FAIL_SIM_CORRECTNESS"
+          },
+          "trigger_condition": "Keeps the output at its trivial zero behavior and therefore fails the stable waveform contract.",
+          "violated_property_ids": [
+            "P_DRIVE_SIGOUT_TO_V_SIGIN_PLUS_SIGSHIFT",
+            "P_PRESERVE_UNITY_GAIN_WHILE_ADDING_OFFSET"
+          ]
+        }
+      ],
+      "profile_parity": {
+        "feedback_deck_sha256": "ca7b3ad8d677fcb67639d76e90a9384624a999eb1afc1fc2fb336f1c9065255d",
+        "feedback_profile_sha256": "220b034c74e538ddf982a1b4a60c8ed190220a55e4d2046c58d2a88982539fc8",
+        "feedback_score_decks_byte_equal": true,
+        "harness_spec_sha256": "3b9c12bc96351d7f6ba84afe5a36aa938f25f4dcd6c8e2b786bc9c79c9651cee",
+        "profiles_equal_except_identity_visibility": true,
+        "score_deck_sha256": "ca7b3ad8d677fcb67639d76e90a9384624a999eb1afc1fc2fb336f1c9065255d",
+        "score_profile_sha256": "7bd55eab354a03dbdcf1774133faef26062aaa54a429aaf49bc456b13280508a"
+      }
+    },
+    {
+      "canonical_dut_id": "227",
+      "checker_task_id": "v4_227_weighted_decoder_6bit",
+      "evas_engine_used": "evas2",
+      "family": "227-weighted-decoder-6bit",
+      "gold": {
+        "feedback": {
+          "backend_used": "evas",
+          "checker_policy": {
+            "checker_id": "v4_227_weighted_decoder_6bit",
+            "extra_trace_signal_count": 0,
+            "implementation": "no_checker",
+            "streaming_disabled": false,
+            "streaming_forced": false,
+            "streaming_registered": false,
+            "streaming_used": false,
+            "streaming_validated": false,
+            "trace_contract_kind": "row_required_set",
+            "trace_contract_signal_count": 7
+          },
+          "checker_task_id": "v4_227_weighted_decoder_6bit",
+          "evas_engine_used": "evas2",
+          "notes": [
+            "returncode=0",
+            "evas_engine=evas2",
+            "trace_contract=row_required_set",
+            "checked=272 max_error=0.00000"
+          ],
+          "scores": {
+            "dut_compile": 1.0,
+            "sim_correct": 1.0,
+            "tb_compile": 1.0,
+            "weighted_total": 1.0
+          },
+          "status": "PASS"
+        },
+        "score": {
+          "backend_used": "evas",
+          "checker_policy": {
+            "checker_id": "v4_227_weighted_decoder_6bit",
+            "extra_trace_signal_count": 0,
+            "implementation": "no_checker",
+            "streaming_disabled": false,
+            "streaming_forced": false,
+            "streaming_registered": false,
+            "streaming_used": false,
+            "streaming_validated": false,
+            "trace_contract_kind": "row_required_set",
+            "trace_contract_signal_count": 7
+          },
+          "checker_task_id": "v4_227_weighted_decoder_6bit",
+          "evas_engine_used": "evas2",
+          "notes": [
+            "returncode=0",
+            "evas_engine=evas2",
+            "trace_contract=row_required_set",
+            "checked=272 max_error=0.00000"
+          ],
+          "scores": {
+            "dut_compile": 1.0,
+            "sim_correct": 1.0,
+            "tb_compile": 1.0,
+            "weighted_total": 1.0
+          },
+          "status": "PASS"
+        }
+      },
+      "mutations": [
+        {
+          "expected_status": "FAIL_SIM_CORRECTNESS",
+          "fault_class": "metric_or_observable_fault",
+          "mutation_id": "neg_002_wrong_denominator",
+          "result": {
+            "backend_used": "evas",
+            "checker_policy": {
+              "checker_id": "v4_227_weighted_decoder_6bit",
+              "extra_trace_signal_count": 0,
+              "implementation": "no_checker",
+              "streaming_disabled": false,
+              "streaming_forced": false,
+              "streaming_registered": false,
+              "streaming_used": false,
+              "streaming_validated": false,
+              "trace_contract_kind": "row_required_set",
+              "trace_contract_signal_count": 7
+            },
+            "checker_task_id": "v4_227_weighted_decoder_6bit",
+            "evas_engine_used": "evas2",
+            "notes": [
+              "returncode=0",
+              "evas_engine=evas2",
+              "trace_contract=row_required_set",
+              "checked=272 max_error=0.81498"
+            ],
+            "scores": {
+              "dut_compile": 1.0,
+              "sim_correct": 0.0,
+              "tb_compile": 1.0,
+              "weighted_total": 0.6667
+            },
+            "status": "FAIL_SIM_CORRECTNESS"
+          },
+          "trigger_condition": "Uses the old MSB-normalized scale instead of the all-ones full-scale code.",
+          "violated_property_ids": [
+            "P_MAP_ALL_ONES_INPUT_TO_VREF",
+            "P_SCALE_THE_DECODED_CODE_BY_VREF"
+          ]
+        },
+        {
+          "expected_status": "FAIL_SIM_CORRECTNESS",
+          "fault_class": "threshold_or_boundary_fault",
+          "mutation_id": "neg_004_threshold_too_high",
+          "result": {
+            "backend_used": "evas",
+            "checker_policy": {
+              "checker_id": "v4_227_weighted_decoder_6bit",
+              "extra_trace_signal_count": 0,
+              "implementation": "no_checker",
+              "streaming_disabled": false,
+              "streaming_forced": false,
+              "streaming_registered": false,
+              "streaming_used": false,
+              "streaming_validated": false,
+              "trace_contract_kind": "row_required_set",
+              "trace_contract_signal_count": 7
+            },
+            "checker_task_id": "v4_227_weighted_decoder_6bit",
+            "evas_engine_used": "evas2",
+            "notes": [
+              "returncode=0",
+              "evas_engine=evas2",
+              "trace_contract=row_required_set",
+              "checked=272 max_error=0.84127"
+            ],
+            "scores": {
+              "dut_compile": 1.0,
+              "sim_correct": 0.0,
+              "tb_compile": 1.0,
+              "weighted_total": 0.6667
+            },
+            "status": "FAIL_SIM_CORRECTNESS"
+          },
+          "trigger_condition": "Uses a threshold above the input high level.",
+          "violated_property_ids": [
+            "P_INTERPRET_VD1_VD6_AS_AN_UNSIGNED",
+            "P_TREAT_EACH_INPUT_AS_LOGIC_1"
+          ]
+        },
+        {
+          "expected_status": "FAIL_SIM_CORRECTNESS",
+          "fault_class": "zero_stub_output",
+          "mutation_id": "neg_001_zero",
+          "result": {
+            "backend_used": "evas",
+            "checker_policy": {
+              "checker_id": "v4_227_weighted_decoder_6bit",
+              "extra_trace_signal_count": 0,
+              "implementation": "no_checker",
+              "streaming_disabled": false,
+              "streaming_forced": false,
+              "streaming_registered": false,
+              "streaming_used": false,
+              "streaming_validated": false,
+              "trace_contract_kind": "row_required_set",
+              "trace_contract_signal_count": 7
+            },
+            "checker_task_id": "v4_227_weighted_decoder_6bit",
+            "evas_engine_used": "evas2",
+            "notes": [
+              "returncode=0",
+              "evas_engine=evas2",
+              "trace_contract=row_required_set",
+              "checked=272 max_error=0.84127"
+            ],
+            "scores": {
+              "dut_compile": 1.0,
+              "sim_correct": 0.0,
+              "tb_compile": 1.0,
+              "weighted_total": 0.6667
+            },
+            "status": "FAIL_SIM_CORRECTNESS"
+          },
+          "trigger_condition": "Keeps the output at its trivial zero behavior and therefore fails the stable waveform contract.",
+          "violated_property_ids": [
+            "P_INTERPRET_VD1_VD6_AS_AN_UNSIGNED",
+            "P_MAP_ALL_ONES_INPUT_TO_VREF",
+            "P_MAP_ALL_ZERO_INPUT_TO_0",
+            "P_SCALE_THE_DECODED_CODE_BY_VREF"
+          ]
+        },
+        {
+          "expected_status": "FAIL_SIM_CORRECTNESS",
+          "fault_class": "metric_or_observable_fault",
+          "mutation_id": "neg_003_half_scale",
+          "result": {
+            "backend_used": "evas",
+            "checker_policy": {
+              "checker_id": "v4_227_weighted_decoder_6bit",
+              "extra_trace_signal_count": 0,
+              "implementation": "no_checker",
+              "streaming_disabled": false,
+              "streaming_forced": false,
+              "streaming_registered": false,
+              "streaming_used": false,
+              "streaming_validated": false,
+              "trace_contract_kind": "row_required_set",
+              "trace_contract_signal_count": 7
+            },
+            "checker_task_id": "v4_227_weighted_decoder_6bit",
+            "evas_engine_used": "evas2",
+            "notes": [
+              "returncode=0",
+              "evas_engine=evas2",
+              "trace_contract=row_required_set",
+              "checked=272 max_error=0.42063"
+            ],
+            "scores": {
+              "dut_compile": 1.0,
+              "sim_correct": 0.0,
+              "tb_compile": 1.0,
+              "weighted_total": 0.6667
+            },
+            "status": "FAIL_SIM_CORRECTNESS"
+          },
+          "trigger_condition": "Scales the decoded weighted output to half of the full-scale response.",
+          "violated_property_ids": [
+            "P_MAP_ALL_ONES_INPUT_TO_VREF",
+            "P_SCALE_THE_DECODED_CODE_BY_VREF"
+          ]
+        },
+        {
+          "expected_status": "FAIL_SIM_CORRECTNESS",
+          "fault_class": "metric_or_observable_fault",
+          "mutation_id": "neg_005_metric_scale_low",
+          "result": {
+            "backend_used": "evas",
+            "checker_policy": {
+              "checker_id": "v4_227_weighted_decoder_6bit",
+              "extra_trace_signal_count": 0,
+              "implementation": "no_checker",
+              "streaming_disabled": false,
+              "streaming_forced": false,
+              "streaming_registered": false,
+              "streaming_used": false,
+              "streaming_validated": false,
+              "trace_contract_kind": "row_required_set",
+              "trace_contract_signal_count": 7
+            },
+            "checker_task_id": "v4_227_weighted_decoder_6bit",
+            "evas_engine_used": "evas2",
+            "notes": [
+              "returncode=0",
+              "evas_engine=evas2",
+              "trace_contract=row_required_set",
+              "checked=272 max_error=0.48794"
+            ],
+            "scores": {
+              "dut_compile": 1.0,
+              "sim_correct": 0.0,
+              "tb_compile": 1.0,
+              "weighted_total": 0.6667
+            },
+            "status": "FAIL_SIM_CORRECTNESS"
+          },
+          "trigger_condition": "Weighted Decoder 6bit: scales the metric output, preserving the main path while failing measurement checks.",
+          "violated_property_ids": [
+            "P_SCALE_THE_DECODED_CODE_BY_VREF"
+          ]
+        }
+      ],
+      "profile_parity": {
+        "feedback_deck_sha256": "d681f8c1d8924dead9b5ab9d926102c5a44491c7cd6e1946bffff67580513067",
+        "feedback_profile_sha256": "b24bd60ca8d27fe1f61d5756b04cce6f89a648f4aa789f6973495dec6507f4f5",
+        "feedback_score_decks_byte_equal": true,
+        "harness_spec_sha256": "117d417928af312cb2e7a755bf7243e04fa0f12c8d80fba7a122e569890c06dd",
+        "profiles_equal_except_identity_visibility": true,
+        "score_deck_sha256": "d681f8c1d8924dead9b5ab9d926102c5a44491c7cd6e1946bffff67580513067",
+        "score_profile_sha256": "de871b3c12907daf500099cd2f510871a4003351d54f9fa06fe6e7d584fe265d"
+      }
+    },
+    {
+      "canonical_dut_id": "228",
+      "checker_task_id": "v4_228_divide_by_two_toggle",
+      "evas_engine_used": "evas2",
+      "family": "228-divide-by-two-toggle",
+      "gold": {
+        "feedback": {
+          "backend_used": "evas",
+          "checker_policy": {
+            "checker_id": "v4_228_divide_by_two_toggle",
+            "extra_trace_signal_count": 0,
+            "implementation": "no_checker",
+            "streaming_disabled": false,
+            "streaming_forced": false,
+            "streaming_registered": false,
+            "streaming_used": false,
+            "streaming_validated": false,
+            "trace_contract_kind": "row_required_set",
+            "trace_contract_signal_count": 2
+          },
+          "checker_task_id": "v4_228_divide_by_two_toggle",
+          "evas_engine_used": "evas2",
+          "notes": [
+            "returncode=0",
+            "evas_engine=evas2",
+            "trace_contract=row_required_set",
+            "checked=538 toggles=6 max_err=0.000"
+          ],
+          "scores": {
+            "dut_compile": 1.0,
+            "sim_correct": 1.0,
+            "tb_compile": 1.0,
+            "weighted_total": 1.0
+          },
+          "status": "PASS"
+        },
+        "score": {
+          "backend_used": "evas",
+          "checker_policy": {
+            "checker_id": "v4_228_divide_by_two_toggle",
+            "extra_trace_signal_count": 0,
+            "implementation": "no_checker",
+            "streaming_disabled": false,
+            "streaming_forced": false,
+            "streaming_registered": false,
+            "streaming_used": false,
+            "streaming_validated": false,
+            "trace_contract_kind": "row_required_set",
+            "trace_contract_signal_count": 2
+          },
+          "checker_task_id": "v4_228_divide_by_two_toggle",
+          "evas_engine_used": "evas2",
+          "notes": [
+            "returncode=0",
+            "evas_engine=evas2",
+            "trace_contract=row_required_set",
+            "checked=538 toggles=6 max_err=0.000"
+          ],
+          "scores": {
+            "dut_compile": 1.0,
+            "sim_correct": 1.0,
+            "tb_compile": 1.0,
+            "weighted_total": 1.0
+          },
+          "status": "PASS"
+        }
+      },
+      "mutations": [
+        {
+          "expected_status": "FAIL_SIM_CORRECTNESS",
+          "fault_class": "timing_or_state_update_fault",
+          "mutation_id": "neg_002_stuck_low_on_clock",
+          "result": {
+            "backend_used": "evas",
+            "checker_policy": {
+              "checker_id": "v4_228_divide_by_two_toggle",
+              "extra_trace_signal_count": 0,
+              "implementation": "no_checker",
+              "streaming_disabled": false,
+              "streaming_forced": false,
+              "streaming_registered": false,
+              "streaming_used": false,
+              "streaming_validated": false,
+              "trace_contract_kind": "row_required_set",
+              "trace_contract_signal_count": 2
+            },
+            "checker_task_id": "v4_228_divide_by_two_toggle",
+            "evas_engine_used": "evas2",
+            "notes": [
+              "returncode=0",
+              "evas_engine=evas2",
+              "trace_contract=row_required_set",
+              "t=0.325ns out=0.000 expected=0.900 t=0.330ns out=0.000 expected=0.900 t=0.335ns out=0.000 expected=0.900 t=0.340ns out=0.000 expected=0.900 t=0.345ns out=0.000 expected=0.900 t=0.350ns out=0.000 expected=0.900"
+            ],
+            "scores": {
+              "dut_compile": 1.0,
+              "sim_correct": 0.0,
+              "tb_compile": 1.0,
+              "weighted_total": 0.6667
+            },
+            "status": "FAIL_SIM_CORRECTNESS"
+          },
+          "trigger_condition": "Forces the divider state low on each clock instead of toggling.",
+          "violated_property_ids": [
+            "P_THE_FIRST_VALID_RISING_EDGE_DRIVES",
+            "P_TOGGLE_THE_STATE_ON_EVERY_RISING"
+          ]
+        },
+        {
+          "expected_status": "FAIL_SIM_CORRECTNESS",
+          "fault_class": "starts_high",
+          "mutation_id": "neg_003_starts_high",
+          "result": {
+            "backend_used": "evas",
+            "checker_policy": {
+              "checker_id": "v4_228_divide_by_two_toggle",
+              "extra_trace_signal_count": 0,
+              "implementation": "no_checker",
+              "streaming_disabled": false,
+              "streaming_forced": false,
+              "streaming_registered": false,
+              "streaming_used": false,
+              "streaming_validated": false,
+              "trace_contract_kind": "row_required_set",
+              "trace_contract_signal_count": 2
+            },
+            "checker_task_id": "v4_228_divide_by_two_toggle",
+            "evas_engine_used": "evas2",
+            "notes": [
+              "returncode=0",
+              "evas_engine=evas2",
+              "trace_contract=row_required_set",
+              "t=0.050ns out=0.900 expected=0.000 t=0.055ns out=0.900 expected=0.000 t=0.060ns out=0.900 expected=0.000 t=0.065ns out=0.900 expected=0.000 t=0.070ns out=0.900 expected=0.000 t=0.075ns out=0.900 expected=0.000"
+            ],
+            "scores": {
+              "dut_compile": 1.0,
+              "sim_correct": 0.0,
+              "tb_compile": 1.0,
+              "weighted_total": 0.6667
+            },
+            "status": "FAIL_SIM_CORRECTNESS"
+          },
+          "trigger_condition": "Starts the divide-by-two state high rather than low.",
+          "violated_property_ids": [
+            "P_DRIVE_OUT_LOW_WHEN_THE_STATE",
+            "P_INITIALIZE_THE_INTERNAL_DIVIDER_STATE_LOW",
+            "P_THE_FIRST_VALID_RISING_EDGE_DRIVES"
+          ]
+        },
+        {
+          "expected_status": "FAIL_SIM_CORRECTNESS",
+          "fault_class": "metric_or_observable_fault",
+          "mutation_id": "neg_005_metric_scale_low",
+          "result": {
+            "backend_used": "evas",
+            "checker_policy": {
+              "checker_id": "v4_228_divide_by_two_toggle",
+              "extra_trace_signal_count": 0,
+              "implementation": "no_checker",
+              "streaming_disabled": false,
+              "streaming_forced": false,
+              "streaming_registered": false,
+              "streaming_used": false,
+              "streaming_validated": false,
+              "trace_contract_kind": "row_required_set",
+              "trace_contract_signal_count": 2
+            },
+            "checker_task_id": "v4_228_divide_by_two_toggle",
+            "evas_engine_used": "evas2",
+            "notes": [
+              "returncode=0",
+              "evas_engine=evas2",
+              "trace_contract=row_required_set",
+              "t=0.325ns out=0.378 expected=0.900 t=0.330ns out=0.378 expected=0.900 t=0.335ns out=0.378 expected=0.900 t=0.340ns out=0.378 expected=0.900 t=0.345ns out=0.378 expected=0.900 t=0.350ns out=0.378 expected=0.900"
+            ],
+            "scores": {
+              "dut_compile": 1.0,
+              "sim_correct": 0.0,
+              "tb_compile": 1.0,
+              "weighted_total": 0.6667
+            },
+            "status": "FAIL_SIM_CORRECTNESS"
+          },
+          "trigger_condition": "Divide By Two Toggle: scales the metric output, preserving the main path while failing measurement checks.",
+          "violated_property_ids": [
+            "P_DRIVE_OUT_LOW_WHEN_THE_STATE"
+          ]
+        },
+        {
+          "expected_status": "FAIL_SIM_CORRECTNESS",
+          "fault_class": "zero_stub_output",
+          "mutation_id": "neg_001_zero",
+          "result": {
+            "backend_used": "evas",
+            "checker_policy": {
+              "checker_id": "v4_228_divide_by_two_toggle",
+              "extra_trace_signal_count": 0,
+              "implementation": "no_checker",
+              "streaming_disabled": false,
+              "streaming_forced": false,
+              "streaming_registered": false,
+              "streaming_used": false,
+              "streaming_validated": false,
+              "trace_contract_kind": "row_required_set",
+              "trace_contract_signal_count": 2
+            },
+            "checker_task_id": "v4_228_divide_by_two_toggle",
+            "evas_engine_used": "evas2",
+            "notes": [
+              "returncode=0",
+              "evas_engine=evas2",
+              "trace_contract=row_required_set",
+              "t=0.325ns out=0.000 expected=0.900 t=0.330ns out=0.000 expected=0.900 t=0.335ns out=0.000 expected=0.900 t=0.340ns out=0.000 expected=0.900 t=0.345ns out=0.000 expected=0.900 t=0.350ns out=0.000 expected=0.900"
+            ],
+            "scores": {
+              "dut_compile": 1.0,
+              "sim_correct": 0.0,
+              "tb_compile": 1.0,
+              "weighted_total": 0.6667
+            },
+            "status": "FAIL_SIM_CORRECTNESS"
+          },
+          "trigger_condition": "Keeps the output at its trivial zero behavior and therefore fails the stable waveform contract.",
+          "violated_property_ids": [
+            "P_DRIVE_OUT_LOW_WHEN_THE_STATE",
+            "P_THE_FIRST_VALID_RISING_EDGE_DRIVES",
+            "P_TOGGLE_THE_STATE_ON_EVERY_RISING"
+          ]
+        },
+        {
+          "expected_status": "FAIL_SIM_CORRECTNESS",
+          "fault_class": "timing_or_state_update_fault",
+          "mutation_id": "neg_004_no_toggle",
+          "result": {
+            "backend_used": "evas",
+            "checker_policy": {
+              "checker_id": "v4_228_divide_by_two_toggle",
+              "extra_trace_signal_count": 0,
+              "implementation": "no_checker",
+              "streaming_disabled": false,
+              "streaming_forced": false,
+              "streaming_registered": false,
+              "streaming_used": false,
+              "streaming_validated": false,
+              "trace_contract_kind": "row_required_set",
+              "trace_contract_signal_count": 2
+            },
+            "checker_task_id": "v4_228_divide_by_two_toggle",
+            "evas_engine_used": "evas2",
+            "notes": [
+              "returncode=0",
+              "evas_engine=evas2",
+              "trace_contract=row_required_set",
+              "t=1.055ns out=0.900 expected=0.000 t=1.060ns out=0.900 expected=0.000 t=1.065ns out=0.900 expected=0.000 t=1.070ns out=0.900 expected=0.000 t=1.075ns out=0.900 expected=0.000 t=1.080ns out=0.900 expected=0.000"
+            ],
+            "scores": {
+              "dut_compile": 1.0,
+              "sim_correct": 0.0,
+              "tb_compile": 1.0,
+              "weighted_total": 0.6667
+            },
+            "status": "FAIL_SIM_CORRECTNESS"
+          },
+          "trigger_condition": "Forces the state high on each clock instead of toggling.",
+          "violated_property_ids": [
+            "P_DRIVE_OUT_LOW_WHEN_THE_STATE",
+            "P_TOGGLE_THE_STATE_ON_EVERY_RISING"
+          ]
+        }
+      ],
+      "profile_parity": {
+        "feedback_deck_sha256": "0463d346eff441e7368f3a25322483e53198ee4efab3dcd236bd77e611a22cf3",
+        "feedback_profile_sha256": "0dafd8ff7f510f20de1edaf3395aa5a4914062cc13e41be90d8d1514b91dc5b5",
+        "feedback_score_decks_byte_equal": true,
+        "harness_spec_sha256": "8467d0ad19c99c037029aeb384bf2c06dd1c1317eec62dcdbbb1c1af40ccfd69",
+        "profiles_equal_except_identity_visibility": true,
+        "score_deck_sha256": "0463d346eff441e7368f3a25322483e53198ee4efab3dcd236bd77e611a22cf3",
+        "score_profile_sha256": "4df987a5e43b87a37739b79d870600d87126e873da3dea106c6d632042497c60"
+      }
+    },
+    {
+      "canonical_dut_id": "229",
+      "checker_task_id": "v4_229_accum3_pulse",
+      "evas_engine_used": "evas2",
+      "family": "229-accum3-pulse",
+      "gold": {
+        "feedback": {
+          "backend_used": "evas",
+          "checker_policy": {
+            "checker_id": "v4_229_accum3_pulse",
+            "extra_trace_signal_count": 0,
+            "implementation": "no_checker",
+            "streaming_disabled": false,
+            "streaming_forced": false,
+            "streaming_registered": false,
+            "streaming_used": false,
+            "streaming_validated": false,
+            "trace_contract_kind": "row_required_set",
+            "trace_contract_signal_count": 2
+          },
+          "checker_task_id": "v4_229_accum3_pulse",
+          "evas_engine_used": "evas2",
+          "notes": [
+            "returncode=0",
+            "evas_engine=evas2",
+            "trace_contract=row_required_set",
+            "edges=10 pulse_rows=136 low_rows=513 max_err=0.000"
+          ],
+          "scores": {
+            "dut_compile": 1.0,
+            "sim_correct": 1.0,
+            "tb_compile": 1.0,
+            "weighted_total": 1.0
+          },
+          "status": "PASS"
+        },
+        "score": {
+          "backend_used": "evas",
+          "checker_policy": {
+            "checker_id": "v4_229_accum3_pulse",
+            "extra_trace_signal_count": 0,
+            "implementation": "no_checker",
+            "streaming_disabled": false,
+            "streaming_forced": false,
+            "streaming_registered": false,
+            "streaming_used": false,
+            "streaming_validated": false,
+            "trace_contract_kind": "row_required_set",
+            "trace_contract_signal_count": 2
+          },
+          "checker_task_id": "v4_229_accum3_pulse",
+          "evas_engine_used": "evas2",
+          "notes": [
+            "returncode=0",
+            "evas_engine=evas2",
+            "trace_contract=row_required_set",
+            "edges=10 pulse_rows=136 low_rows=513 max_err=0.000"
+          ],
+          "scores": {
+            "dut_compile": 1.0,
+            "sim_correct": 1.0,
+            "tb_compile": 1.0,
+            "weighted_total": 1.0
+          },
+          "status": "PASS"
+        }
+      },
+      "mutations": [
+        {
+          "expected_status": "FAIL_SIM_CORRECTNESS",
+          "fault_class": "zero_stub_output",
+          "mutation_id": "neg_002_wrong_initial_count",
+          "result": {
+            "backend_used": "evas",
+            "checker_policy": {
+              "checker_id": "v4_229_accum3_pulse",
+              "extra_trace_signal_count": 0,
+              "implementation": "no_checker",
+              "streaming_disabled": false,
+              "streaming_forced": false,
+              "streaming_registered": false,
+              "streaming_used": false,
+              "streaming_validated": false,
+              "trace_contract_kind": "row_required_set",
+              "trace_contract_signal_count": 2
+            },
+            "checker_task_id": "v4_229_accum3_pulse",
+            "evas_engine_used": "evas2",
+            "notes": [
+              "returncode=0",
+              "evas_engine=evas2",
+              "trace_contract=row_required_set",
+              "t=0.050ns out=0.900 expected=0.000 t=0.055ns out=0.900 expected=0.000 t=0.060ns out=0.900 expected=0.000 t=0.065ns out=0.900 expected=0.000 t=0.070ns out=0.900 expected=0.000 t=0.075ns out=0.900 expected=0.000"
+            ],
+            "scores": {
+              "dut_compile": 1.0,
+              "sim_correct": 0.0,
+              "tb_compile": 1.0,
+              "weighted_total": 0.6667
+            },
+            "status": "FAIL_SIM_CORRECTNESS"
+          },
+          "trigger_condition": "Starts the modulo accumulator at zero instead of seven.",
+          "violated_property_ids": [
+            "P_DRIVE_OUT_HIGH_ONLY_WHEN_THE",
+            "P_INCREMENT_THE_COUNT_MODULO_8_ON",
+            "P_INITIALIZE_THE_INTERNAL_3_BIT_COUNT"
+          ]
+        },
+        {
+          "expected_status": "FAIL_SIM_CORRECTNESS",
+          "fault_class": "omission_or_incomplete_behavior",
+          "mutation_id": "neg_003_wrong_pulse_count",
+          "result": {
+            "backend_used": "evas",
+            "checker_policy": {
+              "checker_id": "v4_229_accum3_pulse",
+              "extra_trace_signal_count": 0,
+              "implementation": "no_checker",
+              "streaming_disabled": false,
+              "streaming_forced": false,
+              "streaming_registered": false,
+              "streaming_used": false,
+              "streaming_validated": false,
+              "trace_contract_kind": "row_required_set",
+              "trace_contract_signal_count": 2
+            },
+            "checker_task_id": "v4_229_accum3_pulse",
+            "evas_engine_used": "evas2",
+            "notes": [
+              "returncode=0",
+              "evas_engine=evas2",
+              "trace_contract=row_required_set",
+              "t=0.355ns out=0.000 expected=0.900 t=0.360ns out=0.000 expected=0.900 t=0.365ns out=0.000 expected=0.900 t=0.370ns out=0.000 expected=0.900 t=0.555ns out=0.000 expected=0.900 t=0.560ns out=0.000 expected=0.900"
+            ],
+            "scores": {
+              "dut_compile": 1.0,
+              "sim_correct": 0.0,
+              "tb_compile": 1.0,
+              "weighted_total": 0.6667
+            },
+            "status": "FAIL_SIM_CORRECTNESS"
+          },
+          "trigger_condition": "Asserts OUT at count 1 instead of count 0.",
+          "violated_property_ids": [
+            "P_DRIVE_OUT_HIGH_ONLY_WHEN_THE",
+            "P_DRIVE_OUT_LOW_FOR_ALL_OTHER"
+          ]
+        },
+        {
+          "expected_status": "FAIL_SIM_CORRECTNESS",
+          "fault_class": "metric_or_observable_fault",
+          "mutation_id": "neg_005_metric_scale_low",
+          "result": {
+            "backend_used": "evas",
+            "checker_policy": {
+              "checker_id": "v4_229_accum3_pulse",
+              "extra_trace_signal_count": 0,
+              "implementation": "no_checker",
+              "streaming_disabled": false,
+              "streaming_forced": false,
+              "streaming_registered": false,
+              "streaming_used": false,
+              "streaming_validated": false,
+              "trace_contract_kind": "row_required_set",
+              "trace_contract_signal_count": 2
+            },
+            "checker_task_id": "v4_229_accum3_pulse",
+            "evas_engine_used": "evas2",
+            "notes": [
+              "returncode=0",
+              "evas_engine=evas2",
+              "trace_contract=row_required_set",
+              "t=0.355ns out=0.378 expected=0.900 t=0.360ns out=0.378 expected=0.900 t=0.365ns out=0.378 expected=0.900 t=0.370ns out=0.378 expected=0.900 t=0.555ns out=0.378 expected=0.900 t=0.560ns out=0.378 expected=0.900"
+            ],
+            "scores": {
+              "dut_compile": 1.0,
+              "sim_correct": 0.0,
+              "tb_compile": 1.0,
+              "weighted_total": 0.6667
+            },
+            "status": "FAIL_SIM_CORRECTNESS"
+          },
+          "trigger_condition": "Accum3 Pulse: scales the metric output, preserving the main path while failing measurement checks.",
+          "violated_property_ids": [
+            "P_DRIVE_OUT_HIGH_ONLY_WHEN_THE"
+          ]
+        },
+        {
+          "expected_status": "FAIL_SIM_CORRECTNESS",
+          "fault_class": "zero_stub_output",
+          "mutation_id": "neg_004_active_high_window",
+          "result": {
+            "backend_used": "evas",
+            "checker_policy": {
+              "checker_id": "v4_229_accum3_pulse",
+              "extra_trace_signal_count": 0,
+              "implementation": "no_checker",
+              "streaming_disabled": false,
+              "streaming_forced": false,
+              "streaming_registered": false,
+              "streaming_used": false,
+              "streaming_validated": false,
+              "trace_contract_kind": "row_required_set",
+              "trace_contract_signal_count": 2
+            },
+            "checker_task_id": "v4_229_accum3_pulse",
+            "evas_engine_used": "evas2",
+            "notes": [
+              "returncode=0",
+              "evas_engine=evas2",
+              "trace_contract=row_required_set",
+              "t=1.055ns out=0.900 expected=0.000 t=1.060ns out=0.900 expected=0.000 t=1.065ns out=0.900 expected=0.000 t=1.250ns out=0.900 expected=0.000 t=1.255ns out=0.900 expected=0.000 t=1.260ns out=0.900 expected=0.000"
+            ],
+            "scores": {
+              "dut_compile": 1.0,
+              "sim_correct": 0.0,
+              "tb_compile": 1.0,
+              "weighted_total": 0.6667
+            },
+            "status": "FAIL_SIM_CORRECTNESS"
+          },
+          "trigger_condition": "Drives OUT high for counts below 2 instead of only count zero.",
+          "violated_property_ids": [
+            "P_DRIVE_OUT_HIGH_ONLY_WHEN_THE",
+            "P_DRIVE_OUT_LOW_FOR_ALL_OTHER"
+          ]
+        },
+        {
+          "expected_status": "FAIL_SIM_CORRECTNESS",
+          "fault_class": "zero_stub_output",
+          "mutation_id": "neg_001_zero",
+          "result": {
+            "backend_used": "evas",
+            "checker_policy": {
+              "checker_id": "v4_229_accum3_pulse",
+              "extra_trace_signal_count": 0,
+              "implementation": "no_checker",
+              "streaming_disabled": false,
+              "streaming_forced": false,
+              "streaming_registered": false,
+              "streaming_used": false,
+              "streaming_validated": false,
+              "trace_contract_kind": "row_required_set",
+              "trace_contract_signal_count": 2
+            },
+            "checker_task_id": "v4_229_accum3_pulse",
+            "evas_engine_used": "evas2",
+            "notes": [
+              "returncode=0",
+              "evas_engine=evas2",
+              "trace_contract=row_required_set",
+              "t=0.355ns out=0.000 expected=0.900 t=0.360ns out=0.000 expected=0.900 t=0.365ns out=0.000 expected=0.900 t=0.370ns out=0.000 expected=0.900 t=0.555ns out=0.000 expected=0.900 t=0.560ns out=0.000 expected=0.900"
+            ],
+            "scores": {
+              "dut_compile": 1.0,
+              "sim_correct": 0.0,
+              "tb_compile": 1.0,
+              "weighted_total": 0.6667
+            },
+            "status": "FAIL_SIM_CORRECTNESS"
+          },
+          "trigger_condition": "Keeps the output at its trivial zero behavior and therefore fails the stable waveform contract.",
+          "violated_property_ids": [
+            "P_DRIVE_OUT_HIGH_ONLY_WHEN_THE",
+            "P_INCREMENT_THE_COUNT_MODULO_8_ON",
+            "P_INITIALIZE_THE_INTERNAL_3_BIT_COUNT"
+          ]
+        }
+      ],
+      "profile_parity": {
+        "feedback_deck_sha256": "ecde0c6e2a754e2e878fff1530767eea3e2035fe4b65c70c641ae1d4dff2e150",
+        "feedback_profile_sha256": "732a524c03e2109882ff968a82f5e87a5ee1c858092885781f0323f34cdec4de",
+        "feedback_score_decks_byte_equal": true,
+        "harness_spec_sha256": "e31a10903de4aedd300155679d2842990d9dc44b0f179537e6844593818e15e8",
+        "profiles_equal_except_identity_visibility": true,
+        "score_deck_sha256": "ecde0c6e2a754e2e878fff1530767eea3e2035fe4b65c70c641ae1d4dff2e150",
+        "score_profile_sha256": "7c38951515208e51c7e9fc0d40a3bd527431ca451225818955400bcda4053424"
+      }
+    },
+    {
+      "canonical_dut_id": "230",
+      "checker_task_id": "v4_230_xor_phase_detector",
+      "evas_engine_used": "evas2",
+      "family": "230-xor-phase-detector",
+      "gold": {
+        "feedback": {
+          "backend_used": "evas",
+          "checker_policy": {
+            "checker_id": "v4_230_xor_phase_detector",
+            "extra_trace_signal_count": 0,
+            "implementation": "no_checker",
+            "streaming_disabled": false,
+            "streaming_forced": false,
+            "streaming_registered": false,
+            "streaming_used": false,
+            "streaming_validated": false,
+            "trace_contract_kind": "row_required_set",
+            "trace_contract_signal_count": 4
+          },
+          "checker_task_id": "v4_230_xor_phase_detector",
+          "evas_engine_used": "evas2",
+          "notes": [
+            "returncode=0",
+            "evas_engine=evas2",
+            "trace_contract=row_required_set",
+            "checked=97 equal=True diff=True max_err=0.000"
+          ],
+          "scores": {
+            "dut_compile": 1.0,
+            "sim_correct": 1.0,
+            "tb_compile": 1.0,
+            "weighted_total": 1.0
+          },
+          "status": "PASS"
+        },
+        "score": {
+          "backend_used": "evas",
+          "checker_policy": {
+            "checker_id": "v4_230_xor_phase_detector",
+            "extra_trace_signal_count": 0,
+            "implementation": "no_checker",
+            "streaming_disabled": false,
+            "streaming_forced": false,
+            "streaming_registered": false,
+            "streaming_used": false,
+            "streaming_validated": false,
+            "trace_contract_kind": "row_required_set",
+            "trace_contract_signal_count": 4
+          },
+          "checker_task_id": "v4_230_xor_phase_detector",
+          "evas_engine_used": "evas2",
+          "notes": [
+            "returncode=0",
+            "evas_engine=evas2",
+            "trace_contract=row_required_set",
+            "checked=97 equal=True diff=True max_err=0.000"
+          ],
+          "scores": {
+            "dut_compile": 1.0,
+            "sim_correct": 1.0,
+            "tb_compile": 1.0,
+            "weighted_total": 1.0
+          },
+          "status": "PASS"
+        }
+      },
+      "mutations": [
+        {
+          "expected_status": "FAIL_SIM_CORRECTNESS",
+          "fault_class": "xnor_up",
+          "mutation_id": "neg_002_xnor_up",
+          "result": {
+            "backend_used": "evas",
+            "checker_policy": {
+              "checker_id": "v4_230_xor_phase_detector",
+              "extra_trace_signal_count": 0,
+              "implementation": "no_checker",
+              "streaming_disabled": false,
+              "streaming_forced": false,
+              "streaming_registered": false,
+              "streaming_used": false,
+              "streaming_validated": false,
+              "trace_contract_kind": "row_required_set",
+              "trace_contract_signal_count": 4
+            },
+            "checker_task_id": "v4_230_xor_phase_detector",
+            "evas_engine_used": "evas2",
+            "notes": [
+              "returncode=0",
+              "evas_engine=evas2",
+              "trace_contract=row_required_set",
+              "t=0.050ns up/down=0.000/1.200 t=0.075ns up/down=0.000/1.200 t=0.100ns up/down=0.000/1.200 t=0.125ns up/down=0.000/1.200 t=0.150ns up/down=0.000/1.200 t=0.175ns up/down=0.000/1.200"
+            ],
+            "scores": {
+              "dut_compile": 1.0,
+              "sim_correct": 0.0,
+              "tb_compile": 1.0,
+              "weighted_total": 0.6667
+            },
+            "status": "FAIL_SIM_CORRECTNESS"
+          },
+          "trigger_condition": "Drives UP on matches instead of mismatches.",
+          "violated_property_ids": [
+            "P_DRIVE_UP_HIGH_WHEN_THE_INTERPRETED",
+            "P_UPDATE_OUTPUTS_COMBINATIONALLY_FROM_THE_CURREN"
+          ]
+        },
+        {
+          "expected_status": "FAIL_SIM_CORRECTNESS",
+          "fault_class": "zero_stub_output",
+          "mutation_id": "neg_004_ignore_fb",
+          "result": {
+            "backend_used": "evas",
+            "checker_policy": {
+              "checker_id": "v4_230_xor_phase_detector",
+              "extra_trace_signal_count": 0,
+              "implementation": "no_checker",
+              "streaming_disabled": false,
+              "streaming_forced": false,
+              "streaming_registered": false,
+              "streaming_used": false,
+              "streaming_validated": false,
+              "trace_contract_kind": "row_required_set",
+              "trace_contract_signal_count": 4
+            },
+            "checker_task_id": "v4_230_xor_phase_detector",
+            "evas_engine_used": "evas2",
+            "notes": [
+              "returncode=0",
+              "evas_engine=evas2",
+              "trace_contract=row_required_set",
+              "t=1.525ns up/down=0.000/1.200 t=1.550ns up/down=0.000/1.200 t=1.575ns up/down=0.000/1.200 t=1.600ns up/down=0.000/1.200 t=1.625ns up/down=0.000/1.200 t=1.650ns up/down=0.000/1.200"
+            ],
+            "scores": {
+              "dut_compile": 1.0,
+              "sim_correct": 0.0,
+              "tb_compile": 1.0,
+              "weighted_total": 0.6667
+            },
+            "status": "FAIL_SIM_CORRECTNESS"
+          },
+          "trigger_condition": "Ignores FB and compares REF against constant zero.",
+          "violated_property_ids": [
+            "P_DRIVE_DOWN_HIGH_WHEN_THE_INTERPRETED",
+            "P_DRIVE_UP_HIGH_WHEN_THE_INTERPRETED",
+            "P_INTERPRET_REF_AND_FB_LOGIC_LEVELS",
+            "P_UPDATE_OUTPUTS_COMBINATIONALLY_FROM_THE_CURREN"
+          ]
+        },
+        {
+          "expected_status": "FAIL_SIM_CORRECTNESS",
+          "fault_class": "down_not_complement",
+          "mutation_id": "neg_003_down_not_complement",
+          "result": {
+            "backend_used": "evas",
+            "checker_policy": {
+              "checker_id": "v4_230_xor_phase_detector",
+              "extra_trace_signal_count": 0,
+              "implementation": "no_checker",
+              "streaming_disabled": false,
+              "streaming_forced": false,
+              "streaming_registered": false,
+              "streaming_used": false,
+              "streaming_validated": false,
+              "trace_contract_kind": "row_required_set",
+              "trace_contract_signal_count": 4
+            },
+            "checker_task_id": "v4_230_xor_phase_detector",
+            "evas_engine_used": "evas2",
+            "notes": [
+              "returncode=0",
+              "evas_engine=evas2",
+              "trace_contract=row_required_set",
+              "t=0.050ns up/down=1.200/1.200 t=0.075ns up/down=1.200/1.200 t=0.100ns up/down=1.200/1.200 t=0.125ns up/down=1.200/1.200 t=0.150ns up/down=1.200/1.200 t=0.175ns up/down=1.200/1.200"
+            ],
+            "scores": {
+              "dut_compile": 1.0,
+              "sim_correct": 0.0,
+              "tb_compile": 1.0,
+              "weighted_total": 0.6667
+            },
+            "status": "FAIL_SIM_CORRECTNESS"
+          },
+          "trigger_condition": "Drives DOWN equal to UP instead of complement.",
+          "violated_property_ids": [
+            "P_DRIVE_DOWN_HIGH_WHEN_THE_INTERPRETED"
+          ]
+        },
+        {
+          "expected_status": "FAIL_SIM_CORRECTNESS",
+          "fault_class": "metric_or_observable_fault",
+          "mutation_id": "neg_005_metric_scale_low",
+          "result": {
+            "backend_used": "evas",
+            "checker_policy": {
+              "checker_id": "v4_230_xor_phase_detector",
+              "extra_trace_signal_count": 0,
+              "implementation": "no_checker",
+              "streaming_disabled": false,
+              "streaming_forced": false,
+              "streaming_registered": false,
+              "streaming_used": false,
+              "streaming_validated": false,
+              "trace_contract_kind": "row_required_set",
+              "trace_contract_signal_count": 4
+            },
+            "checker_task_id": "v4_230_xor_phase_detector",
+            "evas_engine_used": "evas2",
+            "notes": [
+              "returncode=0",
+              "evas_engine=evas2",
+              "trace_contract=row_required_set",
+              "t=0.050ns up/down=0.504/0.000 t=0.075ns up/down=0.504/0.000 t=0.100ns up/down=0.504/0.000 t=0.125ns up/down=0.504/0.000 t=0.150ns up/down=0.504/0.000 t=0.175ns up/down=0.504/0.000"
+            ],
+            "scores": {
+              "dut_compile": 1.0,
+              "sim_correct": 0.0,
+              "tb_compile": 1.0,
+              "weighted_total": 0.6667
+            },
+            "status": "FAIL_SIM_CORRECTNESS"
+          },
+          "trigger_condition": "XOR Phase Detector: scales the metric output, preserving the main path while failing measurement checks.",
+          "violated_property_ids": [
+            "P_DRIVE_UP_HIGH_WHEN_THE_INTERPRETED"
+          ]
+        },
+        {
+          "expected_status": "FAIL_SIM_CORRECTNESS",
+          "fault_class": "zero_stub_output",
+          "mutation_id": "neg_001_zero",
+          "result": {
+            "backend_used": "evas",
+            "checker_policy": {
+              "checker_id": "v4_230_xor_phase_detector",
+              "extra_trace_signal_count": 0,
+              "implementation": "no_checker",
+              "streaming_disabled": false,
+              "streaming_forced": false,
+              "streaming_registered": false,
+              "streaming_used": false,
+              "streaming_validated": false,
+              "trace_contract_kind": "row_required_set",
+              "trace_contract_signal_count": 4
+            },
+            "checker_task_id": "v4_230_xor_phase_detector",
+            "evas_engine_used": "evas2",
+            "notes": [
+              "returncode=0",
+              "evas_engine=evas2",
+              "trace_contract=row_required_set",
+              "t=0.050ns up/down=0.000/0.000 t=0.075ns up/down=0.000/0.000 t=0.100ns up/down=0.000/0.000 t=0.125ns up/down=0.000/0.000 t=0.150ns up/down=0.000/0.000 t=0.175ns up/down=0.000/0.000"
+            ],
+            "scores": {
+              "dut_compile": 1.0,
+              "sim_correct": 0.0,
+              "tb_compile": 1.0,
+              "weighted_total": 0.6667
+            },
+            "status": "FAIL_SIM_CORRECTNESS"
+          },
+          "trigger_condition": "Keeps the output at its trivial zero behavior and therefore fails the stable waveform contract.",
+          "violated_property_ids": [
+            "P_DRIVE_DOWN_HIGH_WHEN_THE_INTERPRETED",
+            "P_DRIVE_UP_HIGH_WHEN_THE_INTERPRETED"
+          ]
+        }
+      ],
+      "profile_parity": {
+        "feedback_deck_sha256": "3f57130a6a6e7518c76f68036f3870e6ea88c8f28b9a0d4e2c8819ea7157bf95",
+        "feedback_profile_sha256": "28cbe7f347496d17d3d99ca56904f0852d85dbc3bdb6c15e9744215531807e9c",
+        "feedback_score_decks_byte_equal": true,
+        "harness_spec_sha256": "94bca3c500b7e58d13d3f6ed791d5a221791e7c8bb81b365761ff9da30a97410",
+        "profiles_equal_except_identity_visibility": true,
+        "score_deck_sha256": "3f57130a6a6e7518c76f68036f3870e6ea88c8f28b9a0d4e2c8819ea7157bf95",
+        "score_profile_sha256": "57a30d23e37be98cff2c47115bf400fa3adef8dba5dd212108ef1ec02b24523d"
+      }
+    }
+  ]
+}

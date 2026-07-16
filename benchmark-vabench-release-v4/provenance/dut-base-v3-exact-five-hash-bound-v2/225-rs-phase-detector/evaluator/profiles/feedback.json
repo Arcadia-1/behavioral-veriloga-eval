@@ -1,20 +1,14 @@
 {
   "corners": [],
-  "deck_overrides": {
-    "body_lines": [
-      "Vref (ref 0) vsource type=pwl wave=[0 0 0.45n 0 0.47n 1.2 0.65n 1.2 0.67n 0 1.95n 0 1.97n 1.2 2.15n 1.2 2.17n 0 3.0n 0]",
-      "Vfb (fb 0) vsource type=pwl wave=[0 0 1.05n 0 1.07n 1.2 1.25n 1.2 1.27n 0 2.45n 0 2.47n 1.2 2.65n 1.2 2.67n 0 3.0n 0]",
-      "XDUT (ref fb up down) rs_phase_detector"
-    ]
-  },
+  "deck_overrides": {},
   "deterministic_seed": 0,
   "generated_from": {
     "script": "render_v4_harness.py",
     "version": "v4-harness-renderer-v1"
   },
-  "harness_spec_sha256": "6723847b41dd3e9d5d3700966dc44f90c122127ceb26b1ca5f3bf1ce1cc7638b",
+  "harness_spec_sha256": "a8d2ea7f28f6476623a5c13365b0866a21a368eb63af23646dbcf96b470be119",
   "parameters": {
-    "maxstep": "200p",
+    "maxstep": "100p",
     "stop_time": "100n"
   },
   "profile_name": "feedback",

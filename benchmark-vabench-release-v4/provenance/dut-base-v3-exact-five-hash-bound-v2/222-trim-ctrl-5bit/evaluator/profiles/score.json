@@ -1,20 +1,12 @@
 {
   "corners": [],
-  "deck_overrides": {
-    "analyses": [
-      "tran tran stop=3.6n maxstep=5p"
-    ],
-    "body_lines": [
-      "Vain (ain 0) vsource type=pwl wave=[0 -2 0.75n -2 0.80n 4.6 1.55n 4.6 1.60n 15.5 2.35n 15.5 2.40n 31.2 3.15n 31.2 3.20n 40 3.8n 40]",
-      "XDUT (ain dout0 dout1 dout2 dout3 dout4) trim_ctrl_5bit"
-    ]
-  },
+  "deck_overrides": {},
   "deterministic_seed": 0,
   "generated_from": {
     "script": "render_v4_harness.py",
     "version": "v4-harness-renderer-v1"
   },
-  "harness_spec_sha256": "db2a631b46eb43b83e185f178700705255c0388ec278f798084058dfeae3960a",
+  "harness_spec_sha256": "99edb751442265aeae14a28a2f6efe3435c411d73393ad6cc1cbb5cb99040abc",
   "parameters": {
     "maxstep": "100p",
     "stop_time": "100n"
@@ -29,5 +21,7 @@
   ],
   "public_visible": false,
   "schema_version": "v4-harness-profile-v1",
-  "simulatorOptions": {}
+  "simulatorOptions": {
+    "evas_profile": "balanced"
+  }
 }

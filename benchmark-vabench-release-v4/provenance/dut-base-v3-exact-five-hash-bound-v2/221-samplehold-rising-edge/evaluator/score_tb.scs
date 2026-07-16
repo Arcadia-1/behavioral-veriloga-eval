@@ -31,5 +31,7 @@ Vin (vin 0) vsource type=pwl wave=[ \
 XDUT (control vin vout) samplehold_rising_edge
 
 
+simulatorOptions options evas_profile=balanced
+
 tran tran stop=3.8n maxstep=5p
 save control vin vout

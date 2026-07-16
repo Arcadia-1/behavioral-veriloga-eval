@@ -7,9 +7,37 @@
   },
   "deck": {
     "analyses": [
-      "tran tran stop=3.2n maxstep=5p"
+      "tran tran stop=3.8n maxstep=5p"
     ],
-    "body_lines": [],
+    "body_lines": [
+      "Vcontrol (control 0) vsource type=pwl wave=[ \\",
+      "  0 0 \\",
+      "  0.42n 0 \\",
+      "  0.44n 5 \\",
+      "  0.74n 5 \\",
+      "  0.76n 0 \\",
+      "  1.80n 0 \\",
+      "  1.82n 5 \\",
+      "  2.12n 5 \\",
+      "  2.14n 0 \\",
+      "  2.95n 0 \\",
+      "  2.97n 5 \\",
+      "  3.25n 5 \\",
+      "  3.27n 0 \\",
+      "  3.8n 0 \\",
+      "]",
+      "Vin (vin 0) vsource type=pwl wave=[ \\",
+      "  0 0.8 \\",
+      "  1.05n 0.8 \\",
+      "  1.10n 2.6 \\",
+      "  2.45n 2.6 \\",
+      "  2.50n 4.4 \\",
+      "  3.8n 4.4 \\",
+      "]",
+      "",
+      "XDUT (control vin vout) samplehold_rising_edge",
+      ""
+    ],
     "header": [
       "simulator lang=spectre",
       "global 0"
@@ -35,20 +63,14 @@
     "legacy_score_deck_sha256": "47119fb26eb79342d2b1e68a37136e30c7411d258b6148b6ea28eddffaadbfe3",
     "notes": [
       "legacy feedback deck was used only to seed the canonical harness spec",
-      "legacy score deck seeded private profile-specific overrides"
+      "legacy score deck seeded private profile-specific overrides",
+      "issue-300 repair promoted private score stimulus/analysis into the canonical deck and removed feedback/score semantic deck overrides"
     ]
   },
   "profile_defaults": {
     "feedback": {
-      "deck_overrides": {
-        "body_lines": [
-          "Vcontrol (control 0) vsource type=pwl wave=[0 0 0.45n 0 0.47n 5 0.75n 5 0.77n 0 1.95n 0 1.97n 5 2.25n 5 2.27n 0 3.5n 0]",
-          "Vin (vin 0) vsource type=pwl wave=[0 1.0 1.2n 1.0 1.25n 3.0 2.7n 3.0 2.75n 4.2 3.5n 4.2]",
-          "XDUT (control vin vout) samplehold_rising_edge"
-        ]
-      },
       "parameters": {
-        "maxstep": "200p",
+        "maxstep": "100p",
         "stop_time": "100n"
       },
       "simulatorOptions": {
@@ -56,43 +78,12 @@
       }
     },
     "score": {
-      "deck_overrides": {
-        "analyses": [
-          "tran tran stop=3.8n maxstep=5p"
-        ],
-        "body_lines": [
-          "Vcontrol (control 0) vsource type=pwl wave=[ \\",
-          "  0 0 \\",
-          "  0.42n 0 \\",
-          "  0.44n 5 \\",
-          "  0.74n 5 \\",
-          "  0.76n 0 \\",
-          "  1.80n 0 \\",
-          "  1.82n 5 \\",
-          "  2.12n 5 \\",
-          "  2.14n 0 \\",
-          "  2.95n 0 \\",
-          "  2.97n 5 \\",
-          "  3.25n 5 \\",
-          "  3.27n 0 \\",
-          "  3.8n 0 \\",
-          "]",
-          "Vin (vin 0) vsource type=pwl wave=[ \\",
-          "  0 0.8 \\",
-          "  1.05n 0.8 \\",
-          "  1.10n 2.6 \\",
-          "  2.45n 2.6 \\",
-          "  2.50n 4.4 \\",
-          "  3.8n 4.4 \\",
-          "]",
-          "",
-          "XDUT (control vin vout) samplehold_rising_edge",
-          ""
-        ]
-      },
       "parameters": {
         "maxstep": "100p",
         "stop_time": "100n"
+      },
+      "simulatorOptions": {
+        "evas_profile": "balanced"
       }
     }
   },

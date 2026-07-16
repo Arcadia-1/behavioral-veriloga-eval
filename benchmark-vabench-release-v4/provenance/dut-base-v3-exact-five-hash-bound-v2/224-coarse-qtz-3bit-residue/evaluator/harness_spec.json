@@ -7,9 +7,12 @@
   },
   "deck": {
     "analyses": [
-      "tran tran stop=3.5n maxstep=5p"
+      "tran tran stop=4.1n maxstep=5p"
     ],
-    "body_lines": [],
+    "body_lines": [
+      "Vin (vin 0) vsource type=pwl wave=[0 -1.5 0.8n -1.5 0.85n -0.875 1.6n -0.875 1.65n -0.125 2.4n -0.125 2.45n 0.375 3.2n 0.375 3.25n 1.25 4.3n 1.25]",
+      "XDUT (vin d0 d1 d2 vres) coarse_qtz_3bit_residue"
+    ],
     "header": [
       "simulator lang=spectre",
       "global 0"
@@ -37,19 +40,14 @@
     "legacy_score_deck_sha256": "7aa51095db1893c5462b65e04e974a2fb855369da252baf3d1ed6c166392251e",
     "notes": [
       "legacy feedback deck was used only to seed the canonical harness spec",
-      "legacy score deck seeded private profile-specific overrides"
+      "legacy score deck seeded private profile-specific overrides",
+      "issue-300 repair promoted private score stimulus/analysis into the canonical deck and removed feedback/score semantic deck overrides"
     ]
   },
   "profile_defaults": {
     "feedback": {
-      "deck_overrides": {
-        "body_lines": [
-          "Vin (vin 0) vsource type=pwl wave=[0 -1.2 0.9n -1.2 0.95n -0.6 1.8n -0.6 1.85n 0.1 2.7n 0.1 2.75n 0.9 3.8n 0.9]",
-          "XDUT (vin d0 d1 d2 vres) coarse_qtz_3bit_residue"
-        ]
-      },
       "parameters": {
-        "maxstep": "200p",
+        "maxstep": "100p",
         "stop_time": "100n"
       },
       "simulatorOptions": {
@@ -57,18 +55,12 @@
       }
     },
     "score": {
-      "deck_overrides": {
-        "analyses": [
-          "tran tran stop=4.1n maxstep=5p"
-        ],
-        "body_lines": [
-          "Vin (vin 0) vsource type=pwl wave=[0 -1.5 0.8n -1.5 0.85n -0.875 1.6n -0.875 1.65n -0.125 2.4n -0.125 2.45n 0.375 3.2n 0.375 3.25n 1.25 4.3n 1.25]",
-          "XDUT (vin d0 d1 d2 vres) coarse_qtz_3bit_residue"
-        ]
-      },
       "parameters": {
         "maxstep": "100p",
         "stop_time": "100n"
+      },
+      "simulatorOptions": {
+        "evas_profile": "balanced"
       }
     }
   },

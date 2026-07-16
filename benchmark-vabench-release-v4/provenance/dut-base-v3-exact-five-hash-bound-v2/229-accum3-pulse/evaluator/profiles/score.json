@@ -1,20 +1,12 @@
 {
   "corners": [],
-  "deck_overrides": {
-    "analyses": [
-      "tran tran stop=6.7n maxstep=5p"
-    ],
-    "body_lines": [
-      "Vclk (clk 0) vsource type=pulse val0=0 val1=0.9 delay=0.25n rise=20p fall=20p width=0.18n period=0.70n",
-      "XDUT (clk out) accum3_pulse"
-    ]
-  },
+  "deck_overrides": {},
   "deterministic_seed": 0,
   "generated_from": {
     "script": "render_v4_harness.py",
     "version": "v4-harness-renderer-v1"
   },
-  "harness_spec_sha256": "3336ec457ddccd6907c715ce0d2ac6e6e54d8ad1e9e0ef4fadac6752144b7274",
+  "harness_spec_sha256": "e31a10903de4aedd300155679d2842990d9dc44b0f179537e6844593818e15e8",
   "parameters": {
     "maxstep": "100p",
     "stop_time": "100n"
@@ -28,5 +20,7 @@
   ],
   "public_visible": false,
   "schema_version": "v4-harness-profile-v1",
-  "simulatorOptions": {}
+  "simulatorOptions": {
+    "evas_profile": "balanced"
+  }
 }
