@@ -1,0 +1,90 @@
+{
+  "schema_version": "v4-repair-batch-evas2-evidence-v2",
+  "issue": 287,
+  "parent_issue": 277,
+  "branch_scope": "codex/v4-repair-batch-287",
+  "evas_policy": {
+    "evas_engine": "evas2",
+    "evas_engine_used": "evas2",
+    "evas_version": "0.8.2",
+    "evas_backend": "rust",
+    "required_environment": {
+      "EVAS_ENGINE": "evas2",
+      "VAEVAS_DEFAULT_EVAS_ENGINE": "evas2"
+    },
+    "non_evas2_evidence_usable": false
+  },
+  "superseded_evidence": {
+    "removed_author_machine_reports": true,
+    "reason": "The original reports contained an author-specific absolute path and were not bound to EVAS 0.8.2 Rust per-case logs. They are not used for acceptance."
+  },
+  "families": {
+    "range": [91, 100],
+    "count": 10,
+    "forms": ["dut", "testbench", "bugfix"],
+    "task_record_count": 30
+  },
+  "review_repairs": [
+    {
+      "scope": "shared_checker_helpers",
+      "repair": "Preserve the strict helper implementation on main and add only the non-conflicting interval and event-sampling primitives required by this batch."
+    },
+    {
+      "task_id": "v4-597",
+      "repair": "Sample immediately around observed mode crossings so affine trace resampling does not create a false discontinuity."
+    },
+    {
+      "task_id": "v4-598",
+      "repair": "Require the persistent post-period transition after 80-120 pre-switch cycles; the prior early/late averages allowed the late-switch mutation to survive."
+    }
+  ],
+  "profile_parity": {
+    "evidence_kind": "static_profile_parity",
+    "assigned_specs": 10,
+    "assigned_specs_pass": 10,
+    "result_sha256": "c44d31fd4bec535ffe345ecd2a9f3cb68a2d66ac2412bc43314a52ccc3af87b1"
+  },
+  "reference_and_mutations": {
+    "task_ids": "v4-591..v4-600",
+    "reference_pass": 10,
+    "mutation_count": 50,
+    "mutation_killed": 50,
+    "infrastructure_error_count": 0,
+    "runtime_log_count": 60,
+    "runtime_log_identity_failures": 0,
+    "runtime_identity": "every case log contains Version 0.8.2 and evas_engine = evas-rust",
+    "result_sha256": "19e100ea4fa19b67a8348ace3face9f75df5ac822755d18030650c9735b40051"
+  },
+  "metamorphic": {
+    "formula": "t'=1.37*t+2ns",
+    "reference_pass": 10,
+    "mutation_count": 50,
+    "mutation_killed": 50,
+    "insufficient_excitation_explicit_failure": 8,
+    "insufficient_excitation_not_applicable": ["v4-593", "v4-598"],
+    "not_applicable_reason": "The two decks have no suppressible PWL or PULSE input source.",
+    "runtime_log_count": 68,
+    "runtime_log_identity_failures": 0,
+    "runtime_identity": "every executed case log contains Version 0.8.2 and evas_engine = evas-rust",
+    "result_sha256": "9f0a5fc260801a59e0550f4ae2a02c2c0b9239f3454e7d5c0affea378d9f795f"
+  },
+  "release_audit": {
+    "audit_status": "pass",
+    "certification_status": "refresh_required",
+    "manifest_sha256": "b1b75c2ddf5d848808c500256a2c47e178de6ee4caca04ef5f5c1f4c905c5baa",
+    "audit_report_sha256": "c80d78a3387c45c4fec01505813278f9236c3f7eed8280110c72d1a104c74939",
+    "release_seal_sha256": "10967276af88795c116b34e4b2f7f0af23ea1bdec328bcb6dc722713ef2b0385"
+  },
+  "regression": {
+    "pytest_pass": 89,
+    "pytest_skip": 1,
+    "pytest_fail": 0,
+    "deterministic_regeneration": true,
+    "diff_check_pass": true
+  },
+  "spectre": {
+    "status": "not_applicable",
+    "reason": "The repository owner confirmed that this project does not have or require Spectre for this repair campaign.",
+    "policy": "Do not claim or substitute Spectre evidence; acceptance uses Rust EVAS2."
+  }
+}

@@ -45,12 +45,37 @@ def check_v3_reference_step_clock(rows: list[dict[str, float]]) -> tuple[bool, s
         abs(early - expected_pre) <= period_tol and abs(late - expected_post) <= period_tol
         for expected_pre, expected_post in ((20.0e-9, 19.5e-9), (18.0e-9, 22.0e-9))
     )
+    expected_pair = min(
+        ((20.0e-9, 19.5e-9), (18.0e-9, 22.0e-9)),
+        key=lambda pair: abs(early - pair[0]) + abs(late - pair[1]),
+    )
+    all_periods = [b - a for a, b in zip(rises, rises[1:])]
+    post_like = [
+        abs(period - expected_pair[1]) < abs(period - expected_pair[0])
+        for period in all_periods
+    ]
+    switch_index = next(
+        (
+            index
+            for index in range(len(post_like) - 2)
+            if all(post_like[index:index + 3])
+        ),
+        None,
+    )
+    switch_fraction = (
+        (rises[switch_index] - t0) / span if switch_index is not None else None
+    )
+    # Count cycles rather than using an absolute timestamp or a fraction of
+    # the analysis stop time. The former breaks affine timing transforms and
+    # the latter lets a late switch hide inside the broad late-period window.
+    switch_timing_ok = switch_index is not None and 80 <= switch_index <= 120
     duty_ok = 0.43 <= high_frac_early <= 0.57 and 0.43 <= high_frac_late <= 0.57
-    ok = period_pair_ok and duty_ok
+    ok = period_pair_ok and switch_timing_ok and duty_ok
     return ok, (
         f"period_pre={early:.3e} period_post={late:.3e} "
         f"duty_pre={high_frac_early:.3f} duty_post={high_frac_late:.3f} "
-        f"period_pair_ok={period_pair_ok}"
+        f"period_pair_ok={period_pair_ok} switch_fraction={switch_fraction} "
+        f"switch_cycle={switch_index} switch_timing_ok={switch_timing_ok}"
     )
 
 def weighted_logic_high_fraction(rows: list[dict[str, float]], signal: str, threshold: float) -> float:

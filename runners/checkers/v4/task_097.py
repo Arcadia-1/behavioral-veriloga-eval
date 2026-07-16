@@ -544,8 +544,12 @@ def check_programmable_stimulus_sequencer(rows: list[dict[str, float]]) -> tuple
             observed=f"to_sine:{len(mode_to_sine)},to_burst:{len(mode_to_burst)}",
             event="mode_crossings",
         )
-    switch_1_pre, switch_1_post = sample_around_event(rows, "out", mode_to_sine[0])
-    switch_2_pre, switch_2_post = sample_around_event(rows, "out", mode_to_burst[0])
+    switch_1_pre, switch_1_post = sample_around_event(
+        rows, "out", mode_to_sine[0], step_multiplier=1.0
+    )
+    switch_2_pre, switch_2_post = sample_around_event(
+        rows, "out", mode_to_burst[0], step_multiplier=1.0
+    )
     if None in (switch_1_pre, switch_1_post, switch_2_pre, switch_2_post):
         return False, diagnostic(
             "P_CONTROL_DRIVEN_SELECTION",

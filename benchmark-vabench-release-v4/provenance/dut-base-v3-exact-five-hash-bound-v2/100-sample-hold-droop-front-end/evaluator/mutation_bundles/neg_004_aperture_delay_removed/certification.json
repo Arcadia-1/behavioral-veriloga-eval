@@ -34,7 +34,7 @@
   },
   "diagnostics": {
     "expected": "Removing aperture delay must violate P_APERTURE_CAPTURE under the score stimulus.",
-    "observed": "EVAS and Spectre: edges=9 max_sample_err=0.265 coarse_mismatches=2 aperture_sensitive=0; both task-specific checker runs rejected the mutation.",
+    "observed": "EVAS: edges=9 max_sample_err=0.265 coarse_mismatches=2 aperture_sensitive=0; the task-specific checker rejected the mutation.",
     "violated_property_ids": [
       "P_APERTURE_CAPTURE"
     ]

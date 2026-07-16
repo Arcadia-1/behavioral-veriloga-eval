@@ -11,7 +11,10 @@
     ],
     "body_lines": [
       "Vclk (clk 0) vsource type=pulse val0=0 val1=0.9 period=2n width=1n rise=50p fall=50p",
-      "Vrst (rst 0) vsource type=pwl wave=[0 0.9 2n 0.9 2.1n 0 80n 0]"
+      "Vrst (rst 0) vsource type=pwl wave=[0 0.9 2n 0.9 2.1n 0 80n 0]",
+      "Vvdd_in (vdd_in 0) vsource type=pwl wave=[0 0.15 9.9n 0.15 10n 0.70 53.9n 0.70 54n 0.20 62.9n 0.20 63n 0.70 80n 0.70]",
+      "Ven (en 0) vsource type=pwl wave=[0 0 23.9n 0 24n 0.9 80n 0.9]",
+      "XDUT (clk rst vdd_in en out metric supply_ok enable_mon state_mon startup_mon) reference_startup_enable_flow"
     ],
     "header": [
       "simulator lang=spectre",
@@ -45,43 +48,17 @@
     "legacy_score_deck_sha256": "f672842e8dd79c97474ff3abd26285606c7342480cf36dcd7f391bf6897f5d39",
     "notes": [
       "legacy feedback deck was used only to seed the canonical harness spec",
-      "legacy score deck seeded private profile-specific overrides"
+      "legacy score deck seeded private profile-specific overrides",
+      "feedback deck is the canonical stimulus; score is generated with identical semantics"
     ]
   },
   "profile_defaults": {
     "feedback": {
-      "deck_overrides": {
-        "body_lines": [
-          "Vvdd_in (vdd_in 0) vsource type=pwl wave=[0 0.15 9.9n 0.15 10n 0.70 53.9n 0.70 54n 0.20 62.9n 0.20 63n 0.70 80n 0.70]",
-          "Ven (en 0) vsource type=pwl wave=[0 0 23.9n 0 24n 0.9 80n 0.9]",
-          "",
-          "XDUT (clk rst vdd_in en out metric supply_ok enable_mon state_mon startup_mon) reference_startup_enable_flow",
-          ""
-        ]
-      },
-      "parameters": {
-        "maxstep": "200p",
-        "stop_time": "100n"
-      },
       "simulatorOptions": {
         "evas_profile": "balanced"
       }
     },
-    "score": {
-      "deck_overrides": {
-        "body_lines": [
-          "Vvdd_in (vdd_in 0) vsource type=pwl wave=[0 0.18 9.9n 0.18 10n 0.68 54.9n 0.68 55n 0.22 63.9n 0.22 64n 0.72 80n 0.72]",
-          "Ven (en 0) vsource type=pwl wave=[0 0 25.9n 0 26n 0.9 80n 0.9]",
-          "",
-          "XDUT (clk rst vdd_in en out metric supply_ok enable_mon state_mon startup_mon) reference_startup_enable_flow",
-          ""
-        ]
-      },
-      "parameters": {
-        "maxstep": "100p",
-        "stop_time": "100n"
-      }
-    }
+    "score": {}
   },
   "property_ids": [
     "P_SUPPLY_AND_ENABLE_MONITORS",
