@@ -224,6 +224,28 @@ def test_release_reference_decks_do_not_drive_declared_outputs() -> None:
     assert direct_drives == []
 
 
+def test_sarfend_public_contract_exposes_trial_and_bit_mapping_semantics() -> None:
+    task_names = (
+        "186-sarfend-logic-4b",
+        "686-sarfend-logic-4b-testbench",
+        "1186-sarfend-logic-4b-bugfix",
+    )
+    for task_name in task_names:
+        task = _task(task_name)
+        instruction = (task / "public" / "instruction.md").read_text()
+        assert "dp4=dm4=0" in instruction
+        assert "dp3=dm3=dp2=dm2=dp1=dm1=1" in instruction
+        assert "dout3=dp4" in instruction
+        assert "`dtest3`, `dtest2`, `dtest1`, then `dtest0`" in instruction
+
+        properties = {
+            item["id"]: item["observable_contract"]
+            for item in _public_contract(task_name)["properties"]
+        }
+        assert "dp4=dm4=0" in properties["P_CONVERSION_RESET_AND_PREVIOUS_WORD"]
+        assert "MSB-to-LSB" in properties["P_SAMPLE_AND_COMPARATOR_DECISIONS"]
+
+
 def test_repaired_testbench_bindings_match_reference_trace_names() -> None:
     expected = {
         "517-strongarm-style-latch-comparator-testbench": {
