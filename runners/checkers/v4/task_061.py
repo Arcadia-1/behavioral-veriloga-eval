@@ -2,85 +2,120 @@
 from __future__ import annotations
 
 from ..api import Checker
-def _logic_bits_to_int(row: dict[str, float], prefix: str, width: int, vth: float = 0.45) -> int:
-    return sum((1 << bit) for bit in range(width) if row[f"{prefix}{bit}"] > vth)
+from .stimulus_relative import (
+    crossings,
+    diagnostic,
+    event_label,
+    logic_bits_to_int,
+    nearest_row,
+    pass_note,
+    probe_time,
+    require_signals,
+)
 
-def _rising_times(rows: list[dict[str, float]], col: str, vth: float = 0.45) -> list[float]:
-    times: list[float] = []
-    last = rows[0][col] > vth
-    for row in rows[1:]:
-        cur = row[col] > vth
-        if not last and cur:
-            times.append(row["time"])
-        last = cur
-    return times
 
-def _falling_times(rows: list[dict[str, float]], col: str, vth: float = 0.45) -> list[float]:
-    times: list[float] = []
-    last = rows[0][col] > vth
-    for row in rows[1:]:
-        cur = row[col] > vth
-        if last and not cur:
-            times.append(row["time"])
-        last = cur
-    return times
+PROPERTIES = (
+    "P_WINDOW_OPEN",
+    "P_IN_WINDOW_COUNT",
+    "P_OUT_OF_WINDOW_IGNORE",
+    "P_WINDOW_CLOSE_HOLD",
+    "P_BIT_ORDER_AND_LEVELS",
+)
 
-def _sample_after(rows: list[dict[str, float]], t: float, delay: float = 5e-9) -> dict[str, float]:
-    target = t + delay
-    return min(rows, key=lambda row: abs(row["time"] - target))
 
 def check_event_counter_windowed_16b(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "gate", "event", "done", *{f"count{i}" for i in range(16)}}
-    if not rows or not required.issubset(rows[0]):
-        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
-        return False, "missing_columns=" + ",".join(missing[:12])
-    gate_rises = _rising_times(rows, "gate")
-    gate_falls = _falling_times(rows, "gate")
-    event_rises = _rising_times(rows, "event")
+    invalid = require_signals(rows, required, "P_WINDOW_OPEN")
+    if invalid:
+        return False, invalid
+    gate_rises = crossings(rows, "gate", threshold=0.45, direction="rising")
+    gate_falls = crossings(rows, "gate", threshold=0.45, direction="falling")
+    event_rises = crossings(rows, "event", threshold=0.45, direction="rising")
     errors = 0
     checked: list[int] = []
     outside_events_checked = 0
     reset_checks = 0
     hold_checks = 0
     failures: list[str] = []
-    for start_t, stop_t in zip(gate_rises, gate_falls):
+    for window_index, (start_t, stop_t) in enumerate(zip(gate_rises, gate_falls), start=1):
         next_event = next((event_t for event_t in event_rises if event_t > start_t), stop_t)
-        open_delay = min(0.10e-9, max(0.04e-9, 0.40 * (next_event - start_t)))
-        open_row = _sample_after(rows, start_t, open_delay)
-        open_count = _logic_bits_to_int(open_row, "count", 16)
+        open_t = probe_time(rows, start_t, min(next_event, stop_t), fraction=0.35)
+        open_row = nearest_row(rows, open_t) if open_t is not None else None
+        if open_row is None:
+            failures.append(
+                diagnostic(
+                    "P_WINDOW_OPEN",
+                    "missing_probe",
+                    expected="observable_open_window_probe",
+                    observed="none",
+                    event=event_label("gate_rise", window_index, start_t),
+                )
+            )
+            continue
+        open_count = logic_bits_to_int(open_row, "count", 16)
         if open_row["done"] > 0.45 or open_count != 0:
             failures.append(
-                f"window_open observed=count:{open_count},done:{open_row['done']:.3f} "
-                f"expected=count:0,done:0 window={start_t * 1e9:.3f}ns"
+                diagnostic(
+                    "P_WINDOW_OPEN",
+                    "semantic_mismatch",
+                    expected="count=0,done=low",
+                    observed=f"count={open_count},done={open_row['done']:.3f}",
+                    event=event_label("gate_rise", window_index, start_t),
+                )
             )
         else:
             reset_checks += 1
         expected = sum(1 for t in event_rises if start_t < t < stop_t)
-        row = _sample_after(rows, stop_t, 0.20e-9)
-        actual = _logic_bits_to_int(row, "count", 16)
+        next_start = next((rise for rise in gate_rises if rise > stop_t), None)
+        close_t = probe_time(rows, stop_t, next_start, fraction=0.25)
+        row = nearest_row(rows, close_t) if close_t is not None else None
+        if row is None:
+            failures.append(
+                diagnostic(
+                    "P_WINDOW_CLOSE_HOLD",
+                    "missing_probe",
+                    expected="observable_close_window_probe",
+                    observed="none",
+                    event=event_label("gate_fall", window_index, stop_t),
+                )
+            )
+            continue
+        actual = logic_bits_to_int(row, "count", 16)
         if row["done"] <= 0.45 or actual != expected:
             errors += 1
             failures.append(
-                f"window_close observed=count:{actual},done:{row['done']:.3f} "
-                f"expected=count:{expected},done:>0.45 window={start_t * 1e9:.3f}-{stop_t * 1e9:.3f}ns"
+                diagnostic(
+                    "P_IN_WINDOW_COUNT",
+                    "semantic_mismatch",
+                    expected=f"count={expected},done=high",
+                    observed=f"count={actual},done={row['done']:.3f}",
+                    event=event_label("gate_fall", window_index, stop_t),
+                )
             )
         checked.append(expected)
-        next_start = next((rise for rise in gate_rises if rise > stop_t), rows[-1]["time"] + 1e-9)
+        hold_stop = next_start if next_start is not None else rows[-1]["time"]
         for event_t in event_rises:
-            if not (stop_t < event_t < next_start):
+            if not (stop_t < event_t < hold_stop):
                 continue
-            probe_t = min(rows[-1]["time"], event_t + 0.05e-9)
-            if probe_t <= event_t:
+            hold_t = probe_time(rows, event_t, hold_stop, fraction=0.25)
+            if hold_t is None:
                 continue
-            hold_row = _sample_after(rows, event_t, 0.05e-9)
-            held = _logic_bits_to_int(hold_row, "count", 16)
+            hold_row = nearest_row(rows, hold_t)
+            if hold_row is None:
+                continue
+            held = logic_bits_to_int(hold_row, "count", 16)
             outside_events_checked += 1
             hold_checks += 1
             if held != expected or hold_row["done"] <= 0.45:
                 errors += 1
                 failures.append(
-                    f"out_of_window_event observed=count:{held},done:{hold_row['done']:.3f} "
-                    f"expected=count:{expected},done:>0.45 window={event_t * 1e9:.3f}ns"
+                    diagnostic(
+                        "P_OUT_OF_WINDOW_IGNORE",
+                        "semantic_mismatch",
+                        expected=f"count={expected},done=high",
+                        observed=f"count={held},done={hold_row['done']:.3f}",
+                        event=event_label("event_rise", outside_events_checked, event_t),
+                    )
                 )
                 break
     if failures:
@@ -93,10 +128,19 @@ def check_event_counter_windowed_16b(rows: list[dict[str, float]]) -> tuple[bool
         and reset_checks >= 1
         and hold_checks >= 1
     )
-    return ok, (
+    summary = (
         f"checked={checked} errors={errors} reset_checks={reset_checks} "
         f"outside_events_checked={outside_events_checked} hold_checks={hold_checks}"
     )
+    if not ok:
+        return False, diagnostic(
+            "P_WINDOW_CLOSE_HOLD",
+            "insufficient_coverage",
+            expected="two_windows,nonzero_count,outside_event,reset,hold",
+            observed=summary.replace(" ", "_"),
+            event="full_trace",
+        )
+    return True, pass_note(PROPERTIES, summary)
 
 CHECKER_ID = "v4_061_event_counter_windowed_16b"
 CHECKER: Checker = check_event_counter_windowed_16b

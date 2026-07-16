@@ -2,45 +2,33 @@
 from __future__ import annotations
 
 from ..api import Checker
-def sample_signal_at(rows: list[dict[str, float]], signal: str, time_s: float) -> float | None:
-    if not rows or "time" not in rows[0] or signal not in rows[0]:
-        return None
-    first_time = rows[0]["time"]
-    last_time = rows[-1].get("time")
-    if last_time is None or time_s < first_time or time_s > last_time:
-        return None
-    if time_s == first_time:
-        return rows[0].get(signal)
-    for idx in range(1, len(rows)):
-        prev = rows[idx - 1]
-        cur = rows[idx]
-        t0 = prev.get("time")
-        t1 = cur.get("time")
-        if t0 is None or t1 is None:
-            continue
-        if t0 <= time_s <= t1:
-            v0 = prev.get(signal)
-            v1 = cur.get(signal)
-            if v0 is None or v1 is None:
-                return None
-            if t1 == t0:
-                return v1
-            alpha = (time_s - t0) / (t1 - t0)
-            return v0 + alpha * (v1 - v0)
-    return None
+from .stimulus_relative import diagnostic, pass_note, require_signals, sample
+
+
+PROPERTIES = (
+    "P_NOMINAL_CLOCK",
+    "P_SEED_DECODE",
+    "P_EDGE_MODULATION",
+    "P_REPEATABILITY",
+    "P_TIMING_BOUNDS",
+    "P_OUTPUT_LEVELS",
+)
 
 def check_deterministic_jittered_clock(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "jitter_en", "clk_out", *{f"seed{i}" for i in range(8)}}
-    if not rows or not required.issubset(rows[0]):
-        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
-        return False, "missing_columns=" + ",".join(missing[:12])
+    invalid = require_signals(rows, required, "P_NOMINAL_CLOCK")
+    if invalid:
+        return False, invalid
     out_min = min(row["clk_out"] for row in rows)
     out_max = max(row["clk_out"] for row in rows)
     swing = out_max - out_min
     if swing < 0.10:
-        return False, (
-            f"jitter_clock_edges observed=0 expected>=16 window=full_trace "
-            f"output_range={out_min:.3f}..{out_max:.3f}"
+        return False, diagnostic(
+            "P_OUTPUT_LEVELS",
+            "semantic_mismatch",
+            expected="clk_out_swing>=0.10",
+            observed=f"clk_out_range={out_min:.3f}..{out_max:.3f}",
+            event="full_trace",
         )
 
     edge_threshold = out_min + 0.5 * swing
@@ -52,11 +40,20 @@ def check_deterministic_jittered_clock(rows: list[dict[str, float]]) -> tuple[bo
             transitions.append(row["time"])
         last_high = high
     if len(transitions) < 16:
-        return False, f"jitter_clock_edges observed={len(transitions)} expected>=16 window=full_trace"
+        return False, diagnostic(
+            "P_NOMINAL_CLOCK",
+            "insufficient_coverage",
+            expected="transitions>=16",
+            observed=f"transitions={len(transitions)}",
+            event="full_trace",
+        )
     if out_min < -0.05 or out_min > 0.15 or out_max < 0.72 or out_max > 1.02:
-        return False, (
-            f"jitter_clock_level observed=low:{out_min:.3f},high:{out_max:.3f} "
-            "expected=low:0.0,high:0.9 window=full_trace"
+        return False, diagnostic(
+            "P_OUTPUT_LEVELS",
+            "semantic_mismatch",
+            expected="low=0.0,high=0.9",
+            observed=f"low={out_min:.3f},high={out_max:.3f}",
+            event="full_trace",
         )
 
     half_periods = [(b - a) / 1e-9 for a, b in zip(transitions, transitions[1:])]
@@ -64,7 +61,7 @@ def check_deterministic_jittered_clock(rows: list[dict[str, float]]) -> tuple[bo
     disabled_periods: list[tuple[int, float]] = []
     formula_failures: list[str] = []
     for index, (edge_t, half_period_ns) in enumerate(zip(transitions, half_periods), start=1):
-        enabled = sample_signal_at(rows, "jitter_en", edge_t)
+        enabled = sample(rows, "jitter_en", edge_t)
         if enabled is None:
             continue
         if enabled <= 0.45:
@@ -73,14 +70,19 @@ def check_deterministic_jittered_clock(rows: list[dict[str, float]]) -> tuple[bo
         enabled_periods.append((index, half_period_ns))
         seed = 0
         for bit in range(8):
-            value = sample_signal_at(rows, f"seed{bit}", edge_t)
+            value = sample(rows, f"seed{bit}", edge_t)
             if value is not None and value > 0.45:
                 seed |= 1 << bit
         expected_ns = 10.0 + (((seed + 3 * index) % 5) - 2) * 0.8
         if abs(half_period_ns - expected_ns) > 0.18:
             formula_failures.append(
-                f"jitter_clock_formula observed={half_period_ns:.3f}ns expected={expected_ns:.3f}ns "
-                f"window=edge{index} seed={seed}"
+                diagnostic(
+                    "P_EDGE_MODULATION",
+                    "semantic_mismatch",
+                    expected=f"half_period_ns={expected_ns:.3f}",
+                    observed=f"half_period_ns={half_period_ns:.3f},seed={seed}",
+                    event=f"edge{index}",
+                )
             )
 
     bounds_failures = [
@@ -88,24 +90,33 @@ def check_deterministic_jittered_clock(rows: list[dict[str, float]]) -> tuple[bo
     ]
     if bounds_failures:
         index, period = bounds_failures[0]
-        return False, (
-            f"jitter_clock_bounds observed={period:.3f}ns expected=8.4..11.6ns "
-            f"window=edge{index} mismatch_count={len(bounds_failures)}"
+        return False, diagnostic(
+            "P_TIMING_BOUNDS",
+            "semantic_mismatch",
+            expected="half_period_ns=8.4..11.6",
+            observed=f"half_period_ns={period:.3f},mismatch_count={len(bounds_failures)}",
+            event=f"edge{index}",
         )
     nominal_failures = [
         (index, period) for index, period in disabled_periods if abs(period - 10.0) > 0.18
     ]
     if nominal_failures:
         index, period = nominal_failures[0]
-        return False, (
-            f"jitter_clock_nominal observed={period:.3f}ns expected=10.000ns "
-            f"window=edge{index} mismatch_count={len(nominal_failures)}"
+        return False, diagnostic(
+            "P_NOMINAL_CLOCK",
+            "semantic_mismatch",
+            expected="half_period_ns=10.000",
+            observed=f"half_period_ns={period:.3f},mismatch_count={len(nominal_failures)}",
+            event=f"edge{index}",
         )
     unique_enabled = {round(period, 1) for _, period in enabled_periods}
     if len(enabled_periods) >= 5 and len(unique_enabled) < 3:
-        return False, (
-            f"jitter_clock_modulation observed=unique_half_periods:{sorted(unique_enabled)} "
-            "expected>=3 window=jitter_en_high"
+        return False, diagnostic(
+            "P_EDGE_MODULATION",
+            "semantic_mismatch",
+            expected="unique_enabled_half_periods>=3",
+            observed=f"unique_enabled_half_periods={sorted(unique_enabled)}",
+            event="jitter_en_high",
         )
 
     repeat_failures: list[tuple[int, float, float]] = []
@@ -116,16 +127,19 @@ def check_deterministic_jittered_clock(rows: list[dict[str, float]]) -> tuple[bo
             repeat_failures.append((index, period, repeated))
     if repeat_failures:
         index, first, repeated = repeat_failures[0]
-        return False, (
-            f"jitter_clock_repeatability observed=edge{index}:{first:.3f}ns,edge{index + 5}:{repeated:.3f}ns "
-            f"expected=equal window=constant_seed mismatch_count={len(repeat_failures)}"
+        return False, diagnostic(
+            "P_REPEATABILITY",
+            "semantic_mismatch",
+            expected="edge_i_equals_edge_i_plus_5",
+            observed=f"edge{index}={first:.3f}ns,edge{index + 5}={repeated:.3f}ns,mismatch_count={len(repeat_failures)}",
+            event="constant_seed",
         )
     if formula_failures:
         return False, " ".join(formula_failures[:5])
-    return True, (
+    return True, pass_note(PROPERTIES, (
         f"jitter_clock_contract_pass transitions={len(transitions)} enabled_intervals={len(enabled_periods)} "
         f"disabled_intervals={len(disabled_periods)} output_range={out_min:.3f}..{out_max:.3f}"
-    )
+    ))
 
 CHECKER_ID = "v4_070_jittered_clock_source_deterministic"
 CHECKER: Checker = check_deterministic_jittered_clock

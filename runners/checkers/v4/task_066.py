@@ -2,33 +2,78 @@
 from __future__ import annotations
 
 from ..api import Checker
+from .stimulus_relative import crossings, diagnostic, event_label, pass_note, require_signals, sample
+
+
+PROPERTIES = (
+    "P_RISING_SELECTION",
+    "P_FALLING_SELECTION",
+    "P_OPPOSITE_EDGE_REJECTION",
+    "P_BOUNDED_PULSE",
+    "P_OUTPUT_LEVELS",
+)
+
+
 def check_configurable_polarity_edge_detector(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "sig", "rise_en", "pulse"}
-    if not rows or not required.issubset(rows[0]):
-        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
-        return False, "missing_columns=" + ",".join(missing[:12])
+    invalid = require_signals(rows, required, "P_RISING_SELECTION")
+    if invalid:
+        return False, invalid
     edge_times: list[float] = []
-    last_sig = rows[0]["sig"] > 0.45
-    for row in rows[1:]:
-        sig = row["sig"] > 0.45
-        rise_mode = row["rise_en"] > 0.45
-        edge = (not last_sig and sig) if rise_mode else (last_sig and not sig)
-        if edge:
-            edge_times.append(row["time"])
-        last_sig = sig
+    signal_edges = sorted(
+        (edge_t, "rising") for edge_t in crossings(rows, "sig", threshold=0.45, direction="rising")
+    ) + sorted(
+        (edge_t, "falling") for edge_t in crossings(rows, "sig", threshold=0.45, direction="falling")
+    )
+    for edge_t, direction in sorted(signal_edges):
+        rise_en = sample(rows, "rise_en", edge_t)
+        if rise_en is None:
+            continue
+        if (direction == "rising" and rise_en > 0.45) or (direction == "falling" and rise_en <= 0.45):
+            edge_times.append(edge_t)
     missed = 0
-    for edge_t in edge_times:
+    failures: list[str] = []
+    for edge_index, edge_t in enumerate(edge_times, start=1):
         if not any(edge_t <= row["time"] <= edge_t + 3e-9 and row["pulse"] > 0.45 for row in rows):
             missed += 1
+            failures.append(
+                diagnostic(
+                    "P_BOUNDED_PULSE",
+                    "semantic_mismatch",
+                    expected="pulse_after_selected_edge",
+                    observed="pulse_missing",
+                    event=event_label("selected_sig_edge", edge_index, edge_t),
+                )
+            )
     false_pulses = 0
     for row in rows:
         if row["pulse"] <= 0.45:
             continue
         if not any(edge_t <= row["time"] <= edge_t + 4e-9 for edge_t in edge_times):
             false_pulses += 1
-    return len(edge_times) >= 3 and missed == 0 and false_pulses == 0, (
-        f"events={len(edge_times)} missed={missed} false_pulses={false_pulses}"
-    )
+    if false_pulses:
+        failures.append(
+            diagnostic(
+                "P_OPPOSITE_EDGE_REJECTION",
+                "semantic_mismatch",
+                expected="no_pulse_without_selected_edge",
+                observed=f"false_pulses={false_pulses}",
+                event="full_trace",
+            )
+        )
+    if failures:
+        return False, " ".join(failures[:5])
+    summary = f"events={len(edge_times)} missed={missed} false_pulses={false_pulses}"
+    ok = len(edge_times) >= 3 and missed == 0 and false_pulses == 0
+    if not ok:
+        return False, diagnostic(
+            "P_RISING_SELECTION",
+            "insufficient_coverage",
+            expected="selected_edges>=3,no_misses,no_false_pulses",
+            observed=summary.replace(" ", "_"),
+            event="full_trace",
+        )
+    return True, pass_note(PROPERTIES, summary)
 
 CHECKER_ID = "v4_066_configurable_polarity_edge_detector"
 CHECKER: Checker = check_configurable_polarity_edge_detector
