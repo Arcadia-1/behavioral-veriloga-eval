@@ -23,7 +23,7 @@
       ],
       "fault_class": "zero_stub_output",
       "id": "neg_001_zero_outputs",
-      "trigger_condition": "stimulus exercises neg_001_zero_outputs",
+      "trigger_condition": "Public stimulus observes zero-output behavior across the rail-referenced buffer metrics.",
       "violated_property_ids": [
         "P_BUILD_A_VOLTAGE_DOMAIN_ANALOG_MIXED",
         "P_MEASURE_ANALOG_INPUTS_RELATIVE_TO_THE"
@@ -50,7 +50,7 @@
       ],
       "fault_class": "state_reset_or_enable_error",
       "id": "neg_002_ignore_enable",
-      "trigger_condition": "stimulus exercises neg_002_ignore_enable",
+      "trigger_condition": "Public stimulus toggles enable so disabled and enabled buffer behavior must differ.",
       "violated_property_ids": [
         "P_COMPUTE_THE_RAIL_REFERENCED_BUFFER_VALUE",
         "P_VTH_0_45_V_LOGIC_THRESHOLD"
@@ -77,7 +77,7 @@
       ],
       "fault_class": "metric_or_observable_fault",
       "id": "neg_003_wrong_scale",
-      "trigger_condition": "stimulus exercises neg_003_wrong_scale",
+      "trigger_condition": "Public stimulus spans rail values that expose output scale and high-level metric errors.",
       "violated_property_ids": [
         "P_MEASURE_ANALOG_INPUTS_RELATIVE_TO_THE",
         "P_VHI_0_9_V_HIGH_LEVEL"
@@ -104,7 +104,7 @@
       ],
       "fault_class": "state_reset_or_enable_error",
       "id": "neg_004_ignore_control_or_reset",
-      "trigger_condition": "stimulus exercises neg_004_ignore_control_or_reset",
+      "trigger_condition": "Public stimulus changes control selection and rail span so the selected buffer path must update.",
       "violated_property_ids": [
         "P_COMPUTE_THE_RAIL_REFERENCED_BUFFER_VALUE",
         "P_SPAN_MIN_0_62_V_SPAN"
@@ -130,7 +130,7 @@
       ],
       "fault_class": "metric_or_observable_fault",
       "id": "neg_005_wrong_flag_metric",
-      "trigger_condition": "stimulus exercises neg_005_wrong_flag_metric",
+      "trigger_condition": "Public stimulus observes flag and metric consistency relative to the selected rail-referenced output.",
       "violated_property_ids": [
         "P_MEASURE_ANALOG_INPUTS_RELATIVE_TO_THE"
       ]

@@ -1,22 +1,13 @@
 {
   "corners": [],
-  "deck_overrides": {
-    "body_lines": [
-      "Vinp (inp 0) vsource type=pwl wave=[0 0.425 1.0n 0.425 1.2n 0.480 2.0n 0.480 2.2n 0.445 3.0n 0.445 3.2n 0.420 4.0n 0.420 4.2n 0.482 5.0n 0.482 5.2n 0.445 6.0n 0.445 6.2n 0.418 7.0n 0.418]",
-      "Vinm (inm 0) vsource dc=0.45",
-      "XDUT (inp inm out) hysteretic_comparator_receiver"
-    ]
-  },
+  "deck_overrides": {},
   "deterministic_seed": 0,
   "generated_from": {
     "script": "render_v4_harness.py",
     "version": "v4-harness-renderer-v1"
   },
-  "harness_spec_sha256": "8e467f4ede77d08816c268a4f4678c77f886481ce85f228882362f126d2f13bf",
-  "parameters": {
-    "maxstep": "200p",
-    "stop_time": "100n"
-  },
+  "harness_spec_sha256": "b0f3f483ab11c69191fd1bbc174f2aafde3671c9b4d00b8a5dd7c7285c8b6696",
+  "parameters": {},
   "profile_name": "feedback",
   "property_ids": [
     "P_DEFINE_UPPER_TH_OFFSET_VHYS_2",
