@@ -9,7 +9,11 @@
     "analyses": [
       "tran tran stop=3.0n maxstep=5p"
     ],
-    "body_lines": [],
+    "body_lines": [
+      "Vref (ref 0) vsource type=pwl wave=[0 1.2 0.7n 1.2 0.75n 0 1.4n 0 1.45n 0 2.1n 0 2.15n 1.2 3.2n 1.2]",
+      "Vfb (fb 0) vsource type=pwl wave=[0 0 0.7n 0 0.75n 0 1.4n 0 1.45n 1.2 2.1n 1.2 2.15n 1.2 3.2n 1.2]",
+      "XDUT (ref fb up down) xor_phase_detector"
+    ],
     "header": [
       "simulator lang=spectre",
       "global 0"
@@ -36,39 +40,18 @@
     "legacy_score_deck_sha256": "9cab5f7a954bd5c4781f7f6ef95812a6a0341b364566f4b30b0e130cfcce398d",
     "notes": [
       "legacy feedback deck was used only to seed the canonical harness spec",
-      "legacy score deck seeded private profile-specific overrides"
+      "legacy score deck seeded private profile-specific overrides",
+      "issue-300 repair promoted private score stimulus/analysis into the canonical deck and removed feedback/score semantic deck overrides",
+      "feedback deck is the canonical stimulus; score is generated with identical semantics"
     ]
   },
   "profile_defaults": {
     "feedback": {
-      "deck_overrides": {
-        "body_lines": [
-          "Vref (ref 0) vsource type=pwl wave=[0 0 0.8n 0 0.85n 1.2 1.6n 1.2 1.65n 1.2 2.4n 1.2 2.45n 0 3.2n 0]",
-          "Vfb (fb 0) vsource type=pwl wave=[0 0 0.8n 0 0.85n 0 1.6n 0 1.65n 1.2 2.4n 1.2 2.45n 1.2 3.2n 1.2]",
-          "XDUT (ref fb up down) xor_phase_detector"
-        ]
-      },
-      "parameters": {
-        "maxstep": "200p",
-        "stop_time": "100n"
-      },
       "simulatorOptions": {
         "evas_profile": "balanced"
       }
     },
-    "score": {
-      "deck_overrides": {
-        "body_lines": [
-          "Vref (ref 0) vsource type=pwl wave=[0 1.2 0.7n 1.2 0.75n 0 1.4n 0 1.45n 0 2.1n 0 2.15n 1.2 3.2n 1.2]",
-          "Vfb (fb 0) vsource type=pwl wave=[0 0 0.7n 0 0.75n 0 1.4n 0 1.45n 1.2 2.1n 1.2 2.15n 1.2 3.2n 1.2]",
-          "XDUT (ref fb up down) xor_phase_detector"
-        ]
-      },
-      "parameters": {
-        "maxstep": "100p",
-        "stop_time": "100n"
-      }
-    }
+    "score": {}
   },
   "property_ids": [
     "P_INTERPRET_REF_AND_FB_LOGIC_LEVELS",

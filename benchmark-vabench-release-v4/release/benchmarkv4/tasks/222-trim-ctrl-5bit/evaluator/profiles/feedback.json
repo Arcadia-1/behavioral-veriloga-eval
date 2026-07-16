@@ -1,21 +1,13 @@
 {
   "corners": [],
-  "deck_overrides": {
-    "body_lines": [
-      "Vain (ain 0) vsource type=pwl wave=[0 0 0.9n 0 0.95n 3 1.8n 3 1.85n 18 2.7n 18 2.75n 27 3.8n 27]",
-      "XDUT (ain dout0 dout1 dout2 dout3 dout4) trim_ctrl_5bit"
-    ]
-  },
+  "deck_overrides": {},
   "deterministic_seed": 0,
   "generated_from": {
     "script": "render_v4_harness.py",
     "version": "v4-harness-renderer-v1"
   },
-  "harness_spec_sha256": "db2a631b46eb43b83e185f178700705255c0388ec278f798084058dfeae3960a",
-  "parameters": {
-    "maxstep": "200p",
-    "stop_time": "100n"
-  },
+  "harness_spec_sha256": "fc6292761fce736b86e167d22a633b5f06b08e74f2683f1d7523e7950cf57cbf",
+  "parameters": {},
   "profile_name": "feedback",
   "property_ids": [
     "P_CONVERT_V_AIN_TO_THE_NEAREST",

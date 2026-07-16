@@ -9,7 +9,10 @@
     "analyses": [
       "tran tran stop=3.0n maxstep=5p"
     ],
-    "body_lines": [],
+    "body_lines": [
+      "Vin (sigin 0) vsource type=pwl wave=[0 -0.9 0.6n -0.9 0.65n -0.25 1.2n -0.25 1.25n 0.0 1.8n 0.0 1.85n 0.25 2.4n 0.25 2.45n 0.6 3.2n 0.6]",
+      "XDUT (sigin sigout) deadband_voltage"
+    ],
     "header": [
       "simulator lang=spectre",
       "global 0"
@@ -34,37 +37,18 @@
     "legacy_score_deck_sha256": "0dc61f6306ef81e347c2b41e98f40c83b76781b0a04cf3ee107c084c86eca4b2",
     "notes": [
       "legacy feedback deck was used only to seed the canonical harness spec",
-      "legacy score deck seeded private profile-specific overrides"
+      "legacy score deck seeded private profile-specific overrides",
+      "issue-301: feedback profile aligned to score stimulus semantics",
+      "feedback deck is the canonical stimulus; score is generated with identical semantics"
     ]
   },
   "profile_defaults": {
     "feedback": {
-      "deck_overrides": {
-        "body_lines": [
-          "Vin (sigin 0) vsource type=pwl wave=[0 -0.7 0.8n -0.7 0.85n -0.1 1.6n -0.1 1.65n 0.15 2.4n 0.15 2.45n 0.8 3.2n 0.8]",
-          "XDUT (sigin sigout) deadband_voltage"
-        ]
-      },
-      "parameters": {
-        "maxstep": "200p",
-        "stop_time": "100n"
-      },
       "simulatorOptions": {
         "evas_profile": "balanced"
       }
     },
-    "score": {
-      "deck_overrides": {
-        "body_lines": [
-          "Vin (sigin 0) vsource type=pwl wave=[0 -0.9 0.6n -0.9 0.65n -0.25 1.2n -0.25 1.25n 0.0 1.8n 0.0 1.85n 0.25 2.4n 0.25 2.45n 0.6 3.2n 0.6]",
-          "XDUT (sigin sigout) deadband_voltage"
-        ]
-      },
-      "parameters": {
-        "maxstep": "100p",
-        "stop_time": "100n"
-      }
-    }
+    "score": {}
   },
   "property_ids": [
     "P_DEADBAND_ZERO_REGION",

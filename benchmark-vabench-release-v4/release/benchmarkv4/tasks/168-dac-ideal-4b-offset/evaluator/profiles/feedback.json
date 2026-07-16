@@ -1,25 +1,13 @@
 {
   "corners": [],
-  "deck_overrides": {
-    "body_lines": [
-      "Vdin1 (din1 0) vsource type=pwl wave=[0 0 17.95n 0 18n 1.0]",
-      "Vdin2 (din2 0) vsource type=pwl wave=[0 0 7.95n 0 8n 1.0 17.95n 1.0 18n 0 27.95n 0 28n 1.0]",
-      "Vdin3 (din3 0) vsource type=pwl wave=[0 0 17.95n 0 18n 1.0]",
-      "",
-      "XDUT (din0 din1 din2 din3 dout) dac_ideal_4b_offset",
-      ""
-    ]
-  },
+  "deck_overrides": {},
   "deterministic_seed": 0,
   "generated_from": {
     "script": "render_v4_harness.py",
     "version": "v4-harness-renderer-v1"
   },
-  "harness_spec_sha256": "31e6f1a9554fb6e327ad4e1688640a69dfba9d0cf7aae091607e1e4eee4ecb11",
-  "parameters": {
-    "maxstep": "200p",
-    "stop_time": "100n"
-  },
+  "harness_spec_sha256": "24bbbd41696d0f6183fc8bc8734ac644d4deaf8c25f311dd5a0b6eb14e9e3a66",
+  "parameters": {},
   "profile_name": "feedback",
   "property_ids": [
     "P_THRESHOLDED_4BIT_CODE",

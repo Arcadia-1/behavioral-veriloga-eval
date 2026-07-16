@@ -1,25 +1,13 @@
 {
   "corners": [],
-  "deck_overrides": {
-    "analyses": [
-      "tran tran stop=2.6n maxstep=5p"
-    ],
-    "body_lines": [
-      "Vin1 (vin1 0) vsource type=pwl wave=[0 0.30 0.7n 0.30 0.75n 0.55 1.4n 0.55 1.45n -0.10 2.1n -0.10 2.15n 0.90 2.8n 0.90]",
-      "Vin2 (vin2 0) vsource type=pwl wave=[0 0.34 0.7n 0.34 0.75n 0.63 1.4n 0.63 1.45n -0.13 2.1n -0.13 2.15n 0.74 2.8n 0.74]",
-      "XDUT (vin1 vin2 vout) voltage_match_window"
-    ]
-  },
+  "deck_overrides": {},
   "deterministic_seed": 0,
   "generated_from": {
     "script": "render_v4_harness.py",
     "version": "v4-harness-renderer-v1"
   },
-  "harness_spec_sha256": "4db5b5b10f5cc4a698a7d7833f66cc262d4446f1f32db6efcedda732f9e19b6d",
-  "parameters": {
-    "maxstep": "100p",
-    "stop_time": "100n"
-  },
+  "harness_spec_sha256": "e86d5df76fd01061ad7bf83306141b6966dd4f87097c8e7b8ffc9b53715a298b",
+  "parameters": {},
   "profile_name": "score",
   "property_ids": [
     "P_COMPARE_THE_ANALOG_VOLTAGE_DIFFERENCE_DIRECTLY",

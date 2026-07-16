@@ -5,15 +5,13 @@ ahdl_include "./dut/comparator_offset_search_ref.va"
 
 Vvdd (vdd 0) vsource dc=0.9
 Vvss (vss 0) vsource dc=0.0
-Vinn (inn 0) vsource dc=0.47
+Vinn (inn 0) vsource dc=0.5
 Vinp (inp 0) vsource type=pwl wave=[ \
-    0    0.462 \
-    110n 0.490 \
-    130n 0.490 \
+0    0.490 \
+80n 0.520 \
+100n 0.520 \
 ]
-
 XDUT (vdd vss inp inn outp trip_v offset_est valid) comparator_offset_search_ref
 
-
-tran tran stop=130n maxstep=50p errpreset=conservative
+tran tran stop=100n maxstep=50p errpreset=conservative
 save vdd vss inp inn outp trip_v offset_est valid

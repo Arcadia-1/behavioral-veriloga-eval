@@ -9,7 +9,12 @@
     "analyses": [
       "tran tran stop=12n maxstep=10p"
     ],
-    "body_lines": [],
+    "body_lines": [
+      "Vvdd (vdd 0) vsource type=pwl wave=[0 0.9 4n 0.9 4.05n 0.50 6n 0.50 6.05n 0.70 10n 0.70 10.05n 1.05]",
+      "Vvss (vss 0) vsource type=pwl wave=[0 0 6n 0 6.05n 0.10 10n 0.10 10.05n 0]",
+      "Vdin (din 0) vsource type=pwl wave=[0 0.10 2n 0.10 2.05n 0.85 5n 0.85 5.05n 0.20 7n 0.20 7.05n 0.42 9n 0.42 9.05n 0.25 11n 0.25 11.05n 0.80]",
+      "XDUT (din vdd vss out) dynamic_supply_level_driver"
+    ],
     "header": [
       "simulator lang=spectre",
       "global 0"
@@ -36,45 +41,17 @@
     "legacy_score_deck_sha256": "1750d39d6fe552dbd5ab7f430d025f4811b2b45d827bdde07cc15838615eba03",
     "notes": [
       "legacy feedback deck was used only to seed the canonical harness spec",
-      "legacy score deck seeded private profile-specific overrides"
+      "legacy score deck seeded private profile-specific overrides",
+      "feedback deck is the canonical stimulus; score is generated with identical semantics"
     ]
   },
   "profile_defaults": {
     "feedback": {
-      "deck_overrides": {
-        "body_lines": [
-          "Vvdd (vdd 0) vsource type=pwl wave=[0 0.9 4n 0.9 4.05n 0.50 6n 0.50 6.05n 0.70 10n 0.70 10.05n 1.05]",
-          "Vvss (vss 0) vsource type=pwl wave=[0 0 6n 0 6.05n 0.10 10n 0.10 10.05n 0]",
-          "Vdin (din 0) vsource type=pwl wave=[0 0.10 2n 0.10 2.05n 0.85 5n 0.85 5.05n 0.20 7n 0.20 7.05n 0.42 9n 0.42 9.05n 0.25 11n 0.25 11.05n 0.80]",
-          "",
-          "XDUT (din vdd vss out) dynamic_supply_level_driver",
-          ""
-        ]
-      },
-      "parameters": {
-        "maxstep": "200p",
-        "stop_time": "100n"
-      },
       "simulatorOptions": {
         "evas_profile": "balanced"
       }
     },
-    "score": {
-      "deck_overrides": {
-        "body_lines": [
-          "Vvdd (vdd 0) vsource type=pwl wave=[0 1.0 3n 1.0 3.05n 0.48 5n 0.48 5.05n 0.85 9n 0.85 9.05n 0.62]",
-          "Vvss (vss 0) vsource type=pwl wave=[0 0.05 5n 0.05 5.05n 0.18 9n 0.18 9.05n -0.03]",
-          "Vdin (din 0) vsource type=pwl wave=[0 0.35 1n 0.35 1.05n 0.74 4n 0.74 4.05n 0.20 6n 0.20 6.05n 0.70 8n 0.70 8.05n 0.45 10n 0.45 10.05n 0.34]",
-          "",
-          "XDUT (din vdd vss out) dynamic_supply_level_driver",
-          ""
-        ]
-      },
-      "parameters": {
-        "maxstep": "100p",
-        "stop_time": "100n"
-      }
-    }
+    "score": {}
   },
   "property_ids": [
     "P_MODEL_A_DYNAMIC_SUPPLY_ELECTRICAL_LEVEL",

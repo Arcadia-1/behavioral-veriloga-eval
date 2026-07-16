@@ -7,9 +7,12 @@
   },
   "deck": {
     "analyses": [
-      "tran tran stop=3.0n maxstep=5p"
+      "tran tran stop=3.4n maxstep=5p"
     ],
-    "body_lines": [],
+    "body_lines": [
+      "Vin (sigin 0) vsource type=pwl wave=[0 0.55 0.6n 0.55 0.65n -0.95 1.2n -0.95 1.25n -0.04 1.8n -0.04 1.85n 0.25 2.4n 0.25 2.45n 0.02 3.0n 0.02 3.05n -0.55 3.6n -0.55]",
+      "XDUT (sigin sigout) absolute_value"
+    ],
     "header": [
       "simulator lang=spectre",
       "global 0"
@@ -34,40 +37,18 @@
     "legacy_score_deck_sha256": "d3e2d6b885ac83bb6d6e74e46570aabe11db7b8c30598e58cc3b7388da151a0d",
     "notes": [
       "legacy feedback deck was used only to seed the canonical harness spec",
-      "legacy score deck seeded private profile-specific overrides"
+      "legacy score deck seeded private profile-specific overrides",
+      "issue-301: feedback profile aligned to score stimulus semantics",
+      "feedback deck is the canonical stimulus; score is generated with identical semantics"
     ]
   },
   "profile_defaults": {
     "feedback": {
-      "deck_overrides": {
-        "body_lines": [
-          "Vin (sigin 0) vsource type=pwl wave=[0 -0.8 0.8n -0.8 0.85n -0.2 1.6n -0.2 1.65n 0.03 2.4n 0.03 2.45n 0.7 3.2n 0.7]",
-          "XDUT (sigin sigout) absolute_value"
-        ]
-      },
-      "parameters": {
-        "maxstep": "200p",
-        "stop_time": "100n"
-      },
       "simulatorOptions": {
         "evas_profile": "balanced"
       }
     },
-    "score": {
-      "deck_overrides": {
-        "analyses": [
-          "tran tran stop=3.4n maxstep=5p"
-        ],
-        "body_lines": [
-          "Vin (sigin 0) vsource type=pwl wave=[0 0.55 0.6n 0.55 0.65n -0.95 1.2n -0.95 1.25n -0.04 1.8n -0.04 1.85n 0.25 2.4n 0.25 2.45n 0.02 3.0n 0.02 3.05n -0.55 3.6n -0.55]",
-          "XDUT (sigin sigout) absolute_value"
-        ]
-      },
-      "parameters": {
-        "maxstep": "100p",
-        "stop_time": "100n"
-      }
-    }
+    "score": {}
   },
   "property_ids": [
     "P_SMOOTH_ABSOLUTE_TRANSFER"

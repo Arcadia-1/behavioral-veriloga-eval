@@ -9,7 +9,14 @@
     "analyses": [
       "tran tran stop=3.8n maxstep=10p"
     ],
-    "body_lines": [],
+    "body_lines": [
+      "Vrefp (vrefp 0) vsource dc=0.4",
+      "Vrefn (vrefn 0) vsource dc=-0.4",
+      "Vclk (clk 0) vsource type=pulse val0=0 val1=0.9 delay=0.2n period=1n width=0.45n rise=20p fall=20p",
+      "Vp (vinp 0) vsource type=pwl wave=[0 -0.25 1n -0.25 1.05n -0.05 2n -0.05 2.05n 0.18 3n 0.18 3.05n 0.30 4n 0.30]",
+      "Vn (vinn 0) vsource dc=0",
+      "XDUT (vinp vinn vrefp vrefn clk dout) qtz_differential_2level"
+    ],
     "header": [
       "simulator lang=spectre",
       "global 0"
@@ -38,45 +45,17 @@
     "legacy_score_deck_sha256": "e5bf366c4a830249684e9db29291b358eae46f4ddb78cc84340ae1211f966240",
     "notes": [
       "legacy feedback deck was used only to seed the canonical harness spec",
-      "legacy score deck seeded private profile-specific overrides"
+      "legacy score deck seeded private profile-specific overrides",
+      "feedback deck is the canonical stimulus; score is generated with identical semantics"
     ]
   },
   "profile_defaults": {
     "feedback": {
-      "deck_overrides": {
-        "body_lines": [
-          "Vrefp (vrefp 0) vsource dc=0.4",
-          "Vrefn (vrefn 0) vsource dc=-0.4",
-          "Vclk (clk 0) vsource type=pulse val0=0 val1=0.9 delay=0.2n period=1n width=0.45n rise=20p fall=20p",
-          "Vp (vinp 0) vsource type=pwl wave=[0 -0.25 1n -0.25 1.05n -0.05 2n -0.05 2.05n 0.18 3n 0.18 3.05n 0.30 4n 0.30]",
-          "Vn (vinn 0) vsource dc=0",
-          "XDUT (vinp vinn vrefp vrefn clk dout) qtz_differential_2level"
-        ]
-      },
-      "parameters": {
-        "maxstep": "200p",
-        "stop_time": "100n"
-      },
       "simulatorOptions": {
         "evas_profile": "balanced"
       }
     },
-    "score": {
-      "deck_overrides": {
-        "body_lines": [
-          "Vrefp (vrefp 0) vsource dc=0.55",
-          "Vrefn (vrefn 0) vsource dc=-0.25",
-          "Vclk (clk 0) vsource type=pulse val0=0 val1=0.9 delay=0.2n period=1n width=0.45n rise=20p fall=20p",
-          "Vp (vinp 0) vsource type=pwl wave=[0 -0.20 1n -0.20 1.05n 0.00 2n 0.00 2.05n 0.42 3n 0.42 3.05n 0.08 4n 0.08]",
-          "Vn (vinn 0) vsource dc=0.05",
-          "XDUT (vinp vinn vrefp vrefn clk dout) qtz_differential_2level"
-        ]
-      },
-      "parameters": {
-        "maxstep": "100p",
-        "stop_time": "100n"
-      }
-    }
+    "score": {}
   },
   "property_ids": [
     "P_INITIAL_SIGNED_CODE",

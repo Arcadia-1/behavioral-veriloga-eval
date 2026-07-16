@@ -9,7 +9,12 @@
     "analyses": [
       "tran tran stop=3.8n maxstep=5p"
     ],
-    "body_lines": [],
+    "body_lines": [
+      "Vvin1 (vin1 0) vsource type=pwl wave=[0 0 2.35n 0 2.40n 0.9 4.0n 0.9]",
+      "Vvin2 (vin2 0) vsource type=pwl wave=[0 0 1.55n 0 1.60n 0.9 3.15n 0.9 3.20n 0 4.0n 0]",
+      "Vvalid (valid 0) vsource type=pwl wave=[0 0 0.75n 0 0.80n 0.9 4.0n 0.9]",
+      "XDUT (vin1 vin2 valid x y z dm dl) decision_router_logic"
+    ],
     "header": [
       "simulator lang=spectre",
       "global 0"
@@ -40,41 +45,18 @@
     "legacy_score_deck_sha256": "4862ae1b88108b2db1a748ef8838d684af71400049080a50ab1cdace24006a29",
     "notes": [
       "legacy feedback deck was used only to seed the canonical harness spec",
-      "legacy score deck seeded private profile-specific overrides"
+      "legacy score deck seeded private profile-specific overrides",
+      "issue-301: feedback profile aligned to score stimulus semantics",
+      "feedback deck is the canonical stimulus; score is generated with identical semantics"
     ]
   },
   "profile_defaults": {
     "feedback": {
-      "deck_overrides": {
-        "body_lines": [
-          "Vvin1 (vin1 0) vsource type=pwl wave=[0 0 0.8n 0 0.85n 0 1.6n 0 1.65n 0 2.4n 0 2.45n 0.9 3.2n 0.9 3.25n 0.9 4.0n 0.9]",
-          "Vvin2 (vin2 0) vsource type=pwl wave=[0 0 0.8n 0 0.85n 0 1.6n 0 1.65n 0.9 2.4n 0.9 2.45n 0.9 3.2n 0.9 3.25n 0 4.0n 0]",
-          "Vvalid (valid 0) vsource type=pwl wave=[0 0 0.8n 0 0.85n 0.9 1.6n 0.9 1.65n 0.9 2.4n 0.9 2.45n 0.9 3.2n 0.9 3.25n 0.9 4.0n 0.9]",
-          "XDUT (vin1 vin2 valid x y z dm dl) decision_router_logic"
-        ]
-      },
-      "parameters": {
-        "maxstep": "200p",
-        "stop_time": "100n"
-      },
       "simulatorOptions": {
         "evas_profile": "balanced"
       }
     },
-    "score": {
-      "deck_overrides": {
-        "body_lines": [
-          "Vvin1 (vin1 0) vsource type=pwl wave=[0 0 2.35n 0 2.40n 0.9 4.0n 0.9]",
-          "Vvin2 (vin2 0) vsource type=pwl wave=[0 0 1.55n 0 1.60n 0.9 3.15n 0.9 3.20n 0 4.0n 0]",
-          "Vvalid (valid 0) vsource type=pwl wave=[0 0 0.75n 0 0.80n 0.9 4.0n 0.9]",
-          "XDUT (vin1 vin2 valid x y z dm dl) decision_router_logic"
-        ]
-      },
-      "parameters": {
-        "maxstep": "100p",
-        "stop_time": "100n"
-      }
-    }
+    "score": {}
   },
   "property_ids": [
     "P_INTERPRET_VIN1_VIN2_AND_VALID_RELATIVE",

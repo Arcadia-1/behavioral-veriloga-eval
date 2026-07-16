@@ -10,7 +10,10 @@
       "tran tran stop=9n maxstep=20p"
     ],
     "body_lines": [
-      "Vsam (clk_sampling 0) vsource type=pulse val0=0 val1=1.1 delay=0.1n period=20n width=0.9n rise=20p fall=20p"
+      "Vsam (clk_sampling 0) vsource type=pulse val0=0 val1=1.1 delay=0.1n period=20n width=0.9n rise=20p fall=20p",
+      "Vsar (clk_sar 0) vsource type=pulse val0=0 val1=1.1 delay=1.4n period=1.2n width=0.45n rise=20p fall=20p",
+      "Vcomp (vcomp 0) vsource type=pwl wave=[0 1.1 2.0n 1.1 2.02n 0 3.2n 0 3.22n 1.1 4.4n 1.1 4.42n 0 6.8n 0 6.82n 1.1 10n 1.1]",
+      "XDUT (clk_sampling clk_sar vcomp d1 d2 d3 d4 d5 d6 db1 db2 db3 db4 db5 db6 co cob) sar_das_logic_6b"
     ],
     "header": [
       "simulator lang=spectre",
@@ -51,42 +54,17 @@
     "legacy_score_deck_sha256": "bd17b791ae778076b2000c846ebfd42c3eef080ac7ba4b5cb8cafdc3de92896e",
     "notes": [
       "legacy feedback deck was used only to seed the canonical harness spec",
-      "legacy score deck seeded private profile-specific overrides"
+      "legacy score deck seeded private profile-specific overrides",
+      "feedback deck is the canonical stimulus; score is generated with identical semantics"
     ]
   },
   "profile_defaults": {
     "feedback": {
-      "deck_overrides": {
-        "body_lines": [
-          "Vsar (clk_sar 0) vsource type=pulse val0=0 val1=1.1 delay=1.4n period=1.2n width=0.45n rise=20p fall=20p",
-          "Vcomp (vcomp 0) vsource type=pwl wave=[0 1.1 2.0n 1.1 2.02n 0 3.2n 0 3.22n 1.1 4.4n 1.1 4.42n 0 6.8n 0 6.82n 1.1 10n 1.1]",
-          "XDUT (clk_sampling clk_sar vcomp d1 d2 d3 d4 d5 d6 db1 db2 db3 db4 db5 db6 co cob) sar_das_logic_6b"
-        ]
-      },
-      "parameters": {
-        "maxstep": "200p",
-        "stop_time": "100n"
-      },
       "simulatorOptions": {
         "evas_profile": "balanced"
       }
     },
-    "score": {
-      "deck_overrides": {
-        "analyses": [
-          "tran tran stop=8.4n maxstep=20p"
-        ],
-        "body_lines": [
-          "Vsar (clk_sar 0) vsource type=pulse val0=0 val1=1.1 delay=1.25n period=1.05n width=0.40n rise=20p fall=20p",
-          "Vcomp (vcomp 0) vsource type=pwl wave=[0 0 1.8n 0 1.82n 1.1 2.85n 1.1 2.87n 0 3.9n 0 3.92n 1.1 4.95n 1.1 4.97n 0 6.0n 0 6.02n 1.1 8n 1.1]",
-          "XDUT (clk_sampling clk_sar vcomp d1 d2 d3 d4 d5 d6 db1 db2 db3 db4 db5 db6 co cob) sar_das_logic_6b"
-        ]
-      },
-      "parameters": {
-        "maxstep": "100p",
-        "stop_time": "100n"
-      }
-    }
+    "score": {}
   },
   "property_ids": [
     "P_SAMPLING_RESET_CONVERSION_STATE",

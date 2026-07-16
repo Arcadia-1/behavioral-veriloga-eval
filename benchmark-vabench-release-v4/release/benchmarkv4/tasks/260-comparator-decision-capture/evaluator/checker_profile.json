@@ -2,10 +2,10 @@
   "access": "private_checker_backend",
   "checker_source_public": false,
   "checker_strength_audit": {
-    "blocker": true,
-    "candidate_need": "Replace the generated issue109_remaining checker with a task-specific checker that independently verifies every declared observable property, including rail/en gating, task-specific formula, flag, metric, output dynamics, and reset/clock behavior where applicable.",
-    "registered_checker_kind": "generated_issue109_remaining_factory",
-    "status": "blocker_generic_checker"
+    "blocker": false,
+    "candidate_need": "Resolved for issue #303: checker remains stimulus-relative and observable-only, and emits property-addressed redacted mismatch counts for rail/en normalization plus the task function or clear-state property.",
+    "registered_checker_kind": "issue303_property_addressable_factory_checker",
+    "status": "repaired_property_diagnostic_checker"
   },
   "checker_task_id": "v4_260_comparator_decision_capture",
   "contract": {

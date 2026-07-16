@@ -1,21 +1,13 @@
 {
   "corners": [],
-  "deck_overrides": {
-    "body_lines": [
-      "Vin (vin 0) vsource type=pwl wave=[0 0 0.6n 0 0.62n 0.9 1.2n 0.9 1.22n 0 3.6n 0 3.62n 0.9 4.0n 0.9 4.02n 0 6n 0]",
-      "XDUT (vin vout) single_shot_timer_pulse"
-    ]
-  },
+  "deck_overrides": {},
   "deterministic_seed": 0,
   "generated_from": {
     "script": "render_v4_harness.py",
     "version": "v4-harness-renderer-v1"
   },
-  "harness_spec_sha256": "561a00c60bcb7d7230d320e842f424b481ca075c10b5a3604f8bd08eadb7f135",
-  "parameters": {
-    "maxstep": "200p",
-    "stop_time": "100n"
-  },
+  "harness_spec_sha256": "5381f344622bc18b3a6cf4bad925bb3dfd7796558acd06e5ff331796b670ef5e",
+  "parameters": {},
   "profile_name": "feedback",
   "property_ids": [
     "P_DETECT_RISING_VIN_CROSSINGS_AT_VTRANS",

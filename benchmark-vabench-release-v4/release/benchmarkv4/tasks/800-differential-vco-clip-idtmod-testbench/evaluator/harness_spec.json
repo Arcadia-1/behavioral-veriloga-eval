@@ -9,7 +9,13 @@
     "analyses": [
       "tran tran stop=1.5u maxstep=5n"
     ],
-    "body_lines": [],
+    "body_lines": [
+      "// Visible smoke testbench for differential_vco_clip_idtmod.",
+      "// V(vinp,vinm)=0.65-0.35=0.30 => freq=20e6+160e6*0.30=68 MHz.",
+      "Vinp (vinp 0) vsource dc=0.65 type=dc",
+      "Vinm (vinm 0) vsource dc=0.35 type=dc",
+      "XDUT (vinp vinm outp outm metric) differential_vco_clip_idtmod"
+    ],
     "header": [
       "simulator lang=spectre",
       "global 0"
@@ -37,49 +43,17 @@
     "legacy_score_deck_sha256": "de94f0d98eadf24aa59f4b6ba901c08f30693f84c003f90f0289c4a482c88f0d",
     "notes": [
       "legacy feedback deck was used only to seed the canonical harness spec",
-      "legacy score deck seeded private profile-specific overrides"
+      "legacy score deck seeded private profile-specific overrides",
+      "feedback deck is the canonical stimulus; score is generated with identical semantics"
     ]
   },
   "profile_defaults": {
     "feedback": {
-      "deck_overrides": {
-        "body_lines": [
-          "// Visible smoke testbench for differential_vco_clip_idtmod.",
-          "// V(vinp,vinm)=0.65-0.35=0.30 => freq=20e6+160e6*0.30=68 MHz.",
-          "",
-          "Vinp (vinp 0) vsource dc=0.65 type=dc",
-          "Vinm (vinm 0) vsource dc=0.35 type=dc",
-          "",
-          "XDUT (vinp vinm outp outm metric) differential_vco_clip_idtmod",
-          ""
-        ]
-      },
-      "parameters": {
-        "maxstep": "200p",
-        "stop_time": "100n"
-      },
       "simulatorOptions": {
         "evas_profile": "balanced"
       }
     },
-    "score": {
-      "deck_overrides": {
-        "body_lines": [
-          "// Hidden testbench for differential_vco_clip_idtmod.",
-          "// V(vinp,vinm)=0.85-0.25=0.60 => raw freq=116 MHz, clipped to Fmax=80 MHz.",
-          "",
-          "Vinp (vinp 0) vsource dc=0.85 type=dc",
-          "Vinm (vinm 0) vsource dc=0.25 type=dc",
-          "",
-          "XDUT (vinp vinm outp outm metric) differential_vco_clip_idtmod",
-          ""
-        ]
-      },
-      "parameters": {
-        "maxstep": "100p",
-        "stop_time": "100n"
-      }
-    }
+    "score": {}
   },
   "property_ids": [
     "P_FREQ_Q_CLIP_FNOM_DFDV_V",

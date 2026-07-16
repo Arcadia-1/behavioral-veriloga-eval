@@ -1,24 +1,13 @@
 {
   "corners": [],
-  "deck_overrides": {
-    "body_lines": [
-      "Vrst (rst 0) vsource type=pwl wave=[0 0.9 1.6n 0.9 1.7n 0 60n 0]",
-      "Vvin (vin 0) vsource type=pwl wave=[0 0.45 7.5n 0.535 22n 0.535 22.1n 0.77 36n 0.77 36.1n 0.54 60n 0.54]",
-      "",
-      "XDUT (clk rst vin out metric gain_mon rssi_mon) agc_receiver_leveling_loop",
-      ""
-    ]
-  },
+  "deck_overrides": {},
   "deterministic_seed": 0,
   "generated_from": {
     "script": "render_v4_harness.py",
     "version": "v4-harness-renderer-v1"
   },
-  "harness_spec_sha256": "654f4d14560f564b966402ecca35f868dd19e9fd7f4af08b9730ed08c059bf62",
-  "parameters": {
-    "maxstep": "200p",
-    "stop_time": "100n"
-  },
+  "harness_spec_sha256": "2b2e053f04368bc4b8e3a6cd1be2f9e1964fe1bca24dc5f03bf2417166520e93",
+  "parameters": {},
   "profile_name": "feedback",
   "property_ids": [
     "P_RESET_STATE",

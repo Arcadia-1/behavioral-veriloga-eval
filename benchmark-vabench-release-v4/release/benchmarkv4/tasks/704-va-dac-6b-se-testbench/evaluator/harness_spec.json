@@ -7,7 +7,7 @@
   },
   "deck": {
     "analyses": [
-      "tran tran stop=2.8n maxstep=10p"
+      "tran tran stop=3.8n maxstep=10p"
     ],
     "body_lines": [
       "Vrdy (rdy 0) vsource type=pulse val0=0 val1=1 delay=0.2n period=1n width=0.35n rise=20p fall=20p",
@@ -49,30 +49,17 @@
     "legacy_score_deck_sha256": "72ff02e491b9ad203d714befd3eb5b027bd56be00b505491ab4af7af581f06ec",
     "notes": [
       "legacy feedback deck was used only to seed the canonical harness spec",
-      "legacy score deck seeded private profile-specific overrides"
+      "legacy score deck seeded private profile-specific overrides",
+      "feedback deck is the canonical stimulus; score is generated with identical semantics"
     ]
   },
   "profile_defaults": {
     "feedback": {
-      "parameters": {
-        "maxstep": "200p",
-        "stop_time": "100n"
-      },
       "simulatorOptions": {
         "evas_profile": "balanced"
       }
     },
-    "score": {
-      "deck_overrides": {
-        "analyses": [
-          "tran tran stop=3.8n maxstep=10p"
-        ]
-      },
-      "parameters": {
-        "maxstep": "100p",
-        "stop_time": "100n"
-      }
-    }
+    "score": {}
   },
   "property_ids": [
     "P_ON_EACH_RISING_RDY_CROSSING_SAMPLE",
