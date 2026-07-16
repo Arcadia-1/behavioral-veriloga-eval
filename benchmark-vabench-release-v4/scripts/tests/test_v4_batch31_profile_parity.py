@@ -58,7 +58,7 @@ def test_profile_semantics_reject_stimulus_drift() -> None:
     payload["profile_defaults"]["score"]["deck_overrides"] = {
         "body_lines": ["Vstim (in 0) vsource dc=0.55"]
     }
-    with pytest.raises(ValueError, match="stimulus semantics drift"):
+    with pytest.raises(ValueError, match="semantic parity violation"):
         renderer.validate_profile_semantic_parity(payload)
 
 
