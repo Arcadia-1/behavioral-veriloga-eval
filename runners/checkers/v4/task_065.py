@@ -2,35 +2,30 @@
 from __future__ import annotations
 
 from ..api import Checker
-def _rising_times(rows: list[dict[str, float]], col: str, vth: float = 0.45) -> list[float]:
-    times: list[float] = []
-    last = rows[0][col] > vth
-    for row in rows[1:]:
-        cur = row[col] > vth
-        if not last and cur:
-            times.append(row["time"])
-        last = cur
-    return times
+from .stimulus_relative import crossings, diagnostic, pass_note, require_signals
 
-def _falling_times(rows: list[dict[str, float]], col: str, vth: float = 0.45) -> list[float]:
-    times: list[float] = []
-    last = rows[0][col] > vth
-    for row in rows[1:]:
-        cur = row[col] > vth
-        if last and not cur:
-            times.append(row["time"])
-        last = cur
-    return times
+
+PROPERTIES = (
+    "P_ENABLED_HIGH",
+    "P_DISABLED_LOW",
+    "P_ENABLE_GATING",
+    "P_OUTPUT_LEVELS",
+)
 
 def check_enable_gated_clock_pulse(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "clk", "en", "pulse"}
-    if not rows or not required.issubset(rows[0]):
-        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
-        return False, "missing_columns=" + ",".join(missing[:12])
+    invalid = require_signals(rows, required, "P_ENABLE_GATING")
+    if invalid:
+        return False, invalid
     errors = 0
     saw_high = False
     saw_blocked = False
-    edge_times = _rising_times(rows, "clk") + _falling_times(rows, "clk") + _rising_times(rows, "en") + _falling_times(rows, "en")
+    edge_times = (
+        crossings(rows, "clk", threshold=0.45, direction="rising")
+        + crossings(rows, "clk", threshold=0.45, direction="falling")
+        + crossings(rows, "en", threshold=0.45, direction="rising")
+        + crossings(rows, "en", threshold=0.45, direction="falling")
+    )
     for row in rows[:: max(1, len(rows) // 400)]:
         if any(abs(row["time"] - t) < 0.3e-9 for t in edge_times):
             continue
@@ -42,7 +37,17 @@ def check_enable_gated_clock_pulse(rows: list[dict[str, float]]) -> tuple[bool, 
             errors += 1
         saw_high = saw_high or actual
         saw_blocked = saw_blocked or (row["clk"] > 0.45 and row["en"] <= 0.45 and not actual)
-    return errors == 0 and saw_high and saw_blocked, f"errors={errors} saw_high={saw_high} saw_blocked={saw_blocked}"
+    summary = f"errors={errors} saw_high={saw_high} saw_blocked={saw_blocked}"
+    ok = errors == 0 and saw_high and saw_blocked
+    if not ok:
+        return False, diagnostic(
+            "P_ENABLE_GATING",
+            "semantic_mismatch",
+            expected="pulse_equals_clk_and_enable,with_blocked_case",
+            observed=summary.replace(" ", "_"),
+            event="observable_stable_points",
+        )
+    return True, pass_note(PROPERTIES, summary)
 
 CHECKER_ID = "v4_065_enable_gated_clock_pulse"
 CHECKER: Checker = check_enable_gated_clock_pulse

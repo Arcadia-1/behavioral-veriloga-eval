@@ -157,7 +157,24 @@ def transform_stimulus(text: str, *, scale: float = 1.37, shift: float = 2e-9) -
 
 def suppress_stimulus(text: str) -> str:
     """Keep a legal deck while removing all source excitation."""
-    suppressed = re.sub(r"vsource\s+type=(?:pwl|pulse)\s+wave=\[[^\]]*\]", "vsource dc=0", text)
+    def suppress_dynamic_pwl(match: re.Match[str]) -> str:
+        tokens = [token for token in match.group("tokens").split() if token != "\\"]
+        if len(tokens) % 2:
+            return match.group(0)
+        values = tokens[1::2]
+        try:
+            numeric_values = [float(value) for value in values]
+        except ValueError:
+            return match.group(0)
+        if not numeric_values or max(numeric_values) == min(numeric_values):
+            return match.group(0)
+        return "vsource dc=0"
+
+    suppressed = re.sub(
+        r"vsource\s+type=pwl\s+wave=\[(?P<tokens>[^\]]*)\]",
+        suppress_dynamic_pwl,
+        text,
+    )
     suppressed = re.sub(r"vsource\s+type=pulse\s+[^\n]*", "vsource dc=0", suppressed)
     return suppressed
 
@@ -271,20 +288,45 @@ def run_task(
                 timeout_s=timeout_s,
             )
         )
-    insufficient = run_case(
-        task_dir=task_dir,
-        checker_task_id=checker_task_id,
-        deck_text=suppress_stimulus(base_text),
-        case_id="insufficient_excitation",
-        mutation_id=None,
-        output_root=task_root,
-        timeout_s=timeout_s,
-    )
+    suppressed = suppress_stimulus(base_text)
+    insufficient = None
+    if suppressed != base_text:
+        insufficient = run_case(
+            task_dir=task_dir,
+            checker_task_id=checker_task_id,
+            deck_text=suppressed,
+            case_id="insufficient_excitation",
+            mutation_id=None,
+            output_root=task_root,
+            timeout_s=timeout_s,
+        )
     kills = sum(case["status"] == "mutation_killed" for case in cases[1:])
     infra = sum(case["status"] == "infrastructure_error" for case in cases)
     survivors = sum(case["status"] == "mutation_survived" for case in cases[1:])
     affine_pass = cases[0]["status"] == "reference_pass" and kills == len(cases) - 1 and infra == 0 and survivors == 0
-    insufficient_explicit = insufficient["status"] == "reference_fail" and insufficient["simulator_ok"]
+    insufficient_explicit = (
+        insufficient is not None
+        and insufficient["status"] == "reference_fail"
+        and insufficient["simulator_ok"]
+    )
+    insufficient_valid = insufficient is None or insufficient_explicit
+    insufficient_report = (
+        {
+            "status": "not_applicable",
+            "reason": "deck_has_no_suppressible_pwl_or_pulse_input_source",
+            "simulator_ok": None,
+            "checker_ok": None,
+            "case": None,
+        }
+        if insufficient is None
+        else {
+            "status": "explicit_failure" if insufficient_explicit else "invalid",
+            "simulator_ok": insufficient["simulator_ok"],
+            "checker_ok": insufficient["checker_ok"],
+            "checker_notes": insufficient["checker_notes"],
+            "case": insufficient,
+        }
+    )
     return {
         "task_id": task_id,
         "family_id": record.get("family_id"),
@@ -300,14 +342,8 @@ def run_task(
             "mutation_survivor_count": survivors,
             "cases": cases,
         },
-        "insufficient_excitation": {
-            "status": "explicit_failure" if insufficient_explicit else "invalid",
-            "simulator_ok": insufficient["simulator_ok"],
-            "checker_ok": insufficient["checker_ok"],
-            "checker_notes": insufficient["checker_notes"],
-            "case": insufficient,
-        },
-        "status": "pass" if affine_pass and insufficient_explicit else "fail",
+        "insufficient_excitation": insufficient_report,
+        "status": "pass" if affine_pass and insufficient_valid else "fail",
     }
 
 

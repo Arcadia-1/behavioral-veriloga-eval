@@ -2,14 +2,31 @@
 from __future__ import annotations
 
 from ..api import Checker
-def _logic_bits_to_int(row: dict[str, float], prefix: str, width: int, vth: float = 0.45) -> int:
-    return sum((1 << bit) for bit in range(width) if row[f"{prefix}{bit}"] > vth)
+from .stimulus_relative import (
+    diagnostic,
+    event_label,
+    logic_bits_to_int,
+    nearest_row,
+    pass_note,
+    probe_time,
+    require_signals,
+)
+
+
+PROPERTIES = (
+    "P_WINDOW_DEFINITION",
+    "P_ENTRY_AND_HOLD",
+    "P_EXIT_RESETS_QUALIFICATION",
+    "P_ENTRY_TIME_CODE",
+    "P_BIT_ORDER_AND_LEVELS",
+)
+
 
 def check_settling_window_detector(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "vin", "target", "tol", "settled", *{f"t_code{i}" for i in range(8)}}
-    if not rows or not required.issubset(rows[0]):
-        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
-        return False, "missing_columns=" + ",".join(missing[:12])
+    invalid = require_signals(rows, required, "P_WINDOW_DEFINITION")
+    if invalid:
+        return False, invalid
     hold = 20e-9
     flags = [abs(row["vin"] - row["target"]) <= row["tol"] + 1e-12 for row in rows]
     intervals: list[tuple[float, float]] = []
@@ -25,41 +42,137 @@ def check_settling_window_detector(rows: list[dict[str, float]]) -> tuple[bool, 
 
     long_intervals = [(a, b) for a, b in intervals if b - a >= hold + 2e-9]
     if not long_intervals:
-        return False, f"no_long_settling_interval intervals={intervals}"
+        return False, diagnostic(
+            "P_ENTRY_AND_HOLD",
+            "insufficient_coverage",
+            expected="settling_interval_longer_than_hold",
+            observed=f"interval_count={len(intervals)}",
+            event="full_trace",
+        )
 
     errors = 0
     settled_seen = False
     early_seen = False
-    reset_seen = len(intervals) >= 2
-    samples: list[tuple[float, dict[str, float]]] = []
-    t = 2.5e-9
-    while t <= rows[-1]["time"] + 1e-15:
-        samples.append((t, min(rows, key=lambda row: abs(row["time"] - t))))
-        t += 2.5e-9
+    reset_seen = False
+    failures: list[str] = []
 
-    for sample_t, row in samples:
-        actual_settled = row["settled"] > 0.45
-        in_allowed_settled_region = any((entry + hold + 1e-9) <= sample_t <= (exit_t - 1e-9) for entry, exit_t in long_intervals)
-        in_early_region = any((entry + 1e-9) <= sample_t < (entry + hold - 1e-9) for entry, exit_t in long_intervals)
-        if actual_settled and in_early_region:
-            early_seen = True
-            errors += 1
-        if actual_settled and not any((entry + hold - 1e-9) <= sample_t <= (exit_t + 1e-9) for entry, exit_t in long_intervals):
-            errors += 1
-        if in_allowed_settled_region:
+    unexpected_settled = next(
+        (
+            row
+            for row, expected_in_window in zip(rows, flags)
+            if not expected_in_window and row["settled"] > 0.45
+        ),
+        None,
+    )
+    if unexpected_settled is not None:
+        errors += 1
+        failures.append(
+            diagnostic(
+                "P_WINDOW_DEFINITION",
+                "semantic_mismatch",
+                expected="settled=low_outside_tolerance_window",
+                observed=f"settled={unexpected_settled['settled']:.3f}",
+                event=event_label("outside_window", 1, unexpected_settled["time"]),
+            )
+        )
+
+    for interval_index, (entry, exit_t) in enumerate(long_intervals, start=1):
+        early_t = entry + 0.5 * hold
+        settled_t = probe_time(rows, entry + hold, exit_t, fraction=0.25)
+        interval_samples: list[tuple[str, float, dict[str, float] | None]] = [
+            ("early", early_t, nearest_row(rows, early_t)),
+            ("settled", settled_t, nearest_row(rows, settled_t) if settled_t is not None else None),
+        ]
+        for phase, sample_t, row in interval_samples:
+            if row is None:
+                failures.append(
+                    diagnostic(
+                        "P_ENTRY_AND_HOLD",
+                        "missing_probe",
+                        expected=f"{phase}_probe",
+                        observed="none",
+                        event=event_label("settling_entry", interval_index, entry),
+                    )
+                )
+                continue
+            actual_settled = row["settled"] > 0.45
+            if phase == "early" and actual_settled:
+                early_seen = True
+                errors += 1
+                failures.append(
+                    diagnostic(
+                        "P_ENTRY_AND_HOLD",
+                        "semantic_mismatch",
+                        expected="settled=low_before_hold_time",
+                        observed=f"settled={row['settled']:.3f}",
+                        event=event_label("settling_entry", interval_index, entry),
+                    )
+                )
+            if phase != "settled":
+                continue
             if not actual_settled:
                 errors += 1
-            else:
-                settled_seen = True
-                entry = next(entry for entry, exit_t in long_intervals if (entry + hold + 1e-9) <= sample_t <= (exit_t - 1e-9))
-                expected_code = max(0, min(255, int(round(entry / 1e-9))))
-                actual_code = _logic_bits_to_int(row, "t_code", 8)
-                if abs(actual_code - expected_code) > 1:
-                    errors += 1
-    return errors == 0 and settled_seen and reset_seen and not early_seen, (
+                failures.append(
+                    diagnostic(
+                        "P_ENTRY_AND_HOLD",
+                        "semantic_mismatch",
+                        expected="settled=high_after_hold_time",
+                        observed=f"settled={row['settled']:.3f}",
+                        event=event_label("settling_entry", interval_index, entry),
+                    )
+                )
+                continue
+            settled_seen = True
+            expected_code = max(0, min(255, int(round(entry / 1e-9))))
+            actual_code = logic_bits_to_int(row, "t_code", 8)
+            if abs(actual_code - expected_code) > 1:
+                errors += 1
+                failures.append(
+                    diagnostic(
+                        "P_ENTRY_TIME_CODE",
+                        "semantic_mismatch",
+                        expected=f"entry_code={expected_code}",
+                        observed=f"entry_code={actual_code}",
+                        event=event_label("settling_entry", interval_index, entry),
+                    )
+                )
+
+    for interval_index, (_, exit_t) in enumerate(intervals, start=1):
+        next_entry = next((entry for entry, _ in intervals if entry > exit_t), None)
+        reset_t = probe_time(rows, exit_t, next_entry, fraction=0.25)
+        row = nearest_row(rows, reset_t) if reset_t is not None else None
+        if row is None:
+            continue
+        actual_settled = row["settled"] > 0.45
+        if actual_settled:
+            errors += 1
+            failures.append(
+                diagnostic(
+                    "P_EXIT_RESETS_QUALIFICATION",
+                    "semantic_mismatch",
+                    expected="settled=low_after_exit",
+                    observed=f"settled={row['settled']:.3f}",
+                    event=event_label("settling_exit", interval_index, exit_t),
+                )
+            )
+        else:
+            reset_seen = True
+    if failures:
+        return False, " ".join(failures[:5])
+    ok = errors == 0 and settled_seen and reset_seen and not early_seen
+    summary = (
         f"errors={errors} intervals={[(round(a/1e-9,1), round(b/1e-9,1)) for a,b in long_intervals]} "
         f"settled_seen={settled_seen} reset_seen={reset_seen} early_seen={early_seen}"
     )
+    if not ok:
+        return False, diagnostic(
+            "P_WINDOW_DEFINITION",
+            "insufficient_coverage",
+            expected="settled_region,exit_reset,no_early_settle",
+            observed=summary.replace(" ", "_"),
+            event="full_trace",
+        )
+    return True, pass_note(PROPERTIES, summary)
 
 CHECKER_ID = "v4_063_settling_window_detector"
 CHECKER: Checker = check_settling_window_detector

@@ -68,6 +68,16 @@ def sample(rows: list[Row], signal: str, time_s: float) -> float | None:
     return None
 
 
+def nearest_row(rows: list[Row], time_s: float) -> Row | None:
+    if not rows:
+        return None
+    return min(rows, key=lambda row: abs(row["time"] - time_s))
+
+
+def logic_bits_to_int(row: Row, prefix: str, width: int, threshold: float = 0.45) -> int:
+    return sum((1 << bit) for bit in range(width) if row[f"{prefix}{bit}"] > threshold)
+
+
 def crossings(
     rows: list[Row],
     signal: str,

@@ -8,9 +8,7 @@ Vin (vin 0) vsource type=pwl wave=[0n 0.04 1n 0.04 1.02n 0.18 3n 0.18 3.02n 0.44
 Vd2 (d2 0) vsource type=pwl wave=[0n 0 5n 0 5.02n 0.9]
 Vd1 (d1 0) vsource type=pwl wave=[0n 0 3n 0 3.02n 0.9 5n 0.9 5.02n 0 9n 0 9.02n 0.9]
 Vd0 (d0 0) vsource type=pwl wave=[0n 0 1n 0 1.02n 0.9 3n 0.9 3.02n 0 9n 0 9.02n 0.9]
-
 XDUT (vsample vin d2 d1 d0 maxerr) adc_static_linearity_monitor
-
 
 simulatorOptions options evas_profile=balanced
 
