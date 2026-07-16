@@ -43,24 +43,22 @@
       "corners": [],
       "deck_overrides": {
         "analyses": [
-          "tran tran stop=160n maxstep=100p"
+          "tran tran stop=200n maxstep=100p"
         ],
         "body_lines": [
           "Vclk (clk 0) vsource type=pulse val0=0 val1=0.9 period=10n width=4n delay=5n rise=100p fall=100p",
-          "Vvdd_sense (vdd_sense 0) vsource type=pwl wave=[0 0 7n 0 7.1n 0.9 72n 0.9 72.1n 0.4 87n 0.4 87.1n 0.9 160n 0.9]",
-          "Vrst_n_ext (rst_n_ext 0) vsource type=pwl wave=[0 0 2n 0 2.1n 0.9 160n 0.9]",
-          "Venable_req (enable_req 0) vsource type=pwl wave=[0 0 8n 0 8.1n 0.9 160n 0.9]",
+          "Vvdd_sense (vdd_sense 0) vsource type=pwl wave=[0 0 12n 0 12.1n 0.9 92n 0.9 92.1n 0.3 108n 0.3 108.1n 0.9 200n 0.9]",
+          "Vrst_n_ext (rst_n_ext 0) vsource type=pwl wave=[0 0 3n 0 3.1n 0.9 155n 0.9 155.1n 0 166n 0 166.1n 0.9 200n 0.9]",
+          "Venable_req (enable_req 0) vsource type=pwl wave=[0 0 20n 0 20.1n 0.9 135n 0.9 135.1n 0 142n 0 142.1n 0.9 200n 0.9]",
           "XDUT (vdd_sense clk rst_n_ext enable_req por_n rst_n_core en_ana en_dig ready) power_reset_seq_top"
         ]
       },
       "deterministic_seed": 0,
       "parameters": {
         "maxstep": "100p",
-        "stop_time": "160n"
+        "stop_time": "200n"
       },
-      "simulatorOptions": {
-        "evas_profile": "balanced"
-      }
+      "simulatorOptions": {}
     },
     "score": {
       "corners": [],
