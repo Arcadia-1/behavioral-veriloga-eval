@@ -1,0 +1,88 @@
+{
+  "schema_version": "v4-repair-batch-evas2-evidence-v2",
+  "issue": 283,
+  "parent_issue": 277,
+  "branch_scope": "codex/v4-repair-batch-283",
+  "evas_policy": {
+    "evas_engine": "evas2",
+    "evas_engine_used": "evas2",
+    "evas_version": "0.8.2",
+    "evas_backend": "rust",
+    "required_environment": {
+      "EVAS_ENGINE": "evas2",
+      "VAEVAS_DEFAULT_EVAS_ENGINE": "evas2"
+    },
+    "non_evas2_evidence_usable": false
+  },
+  "superseded_evidence": {
+    "removed_author_machine_reports": true,
+    "reason": "The original reports contained an author-specific absolute path and were not bound to EVAS 0.8.2 Rust per-case logs. They are not used for acceptance."
+  },
+  "families": {
+    "range": [51, 60],
+    "count": 10,
+    "forms": ["dut", "testbench", "bugfix"],
+    "task_record_count": 30
+  },
+  "review_repairs": [
+    {
+      "task_id": "v4-552",
+      "repair": "Pass the observed row time to the strict shared event_label API so failure diagnostics cannot raise TypeError."
+    },
+    {
+      "task_id": "v4-557",
+      "repair": "Add a reset pulse spanning a clock edge; the prior stimulus never asserted rst_n and allowed the ignore-reset mutation to survive."
+    },
+    {
+      "task_id": "v4-553",
+      "repair": "Require four distinct codes, endpoint coverage, and three code transitions so a complete but unexcited trace fails explicitly."
+    }
+  ],
+  "profile_parity": {
+    "evidence_kind": "static_profile_parity",
+    "assigned_specs": 10,
+    "assigned_specs_pass": 10,
+    "result_sha256": "2948f57540792f45ebe5a23d8cd88403fe18e70d27459183993b06968bb112fb"
+  },
+  "reference_and_mutations": {
+    "task_ids": "v4-551..v4-560",
+    "reference_pass": 10,
+    "mutation_count": 50,
+    "mutation_killed": 50,
+    "infrastructure_error_count": 0,
+    "runtime_log_count": 60,
+    "runtime_log_identity_failures": 0,
+    "runtime_identity": "every case log contains Version 0.8.2 and evas_engine = evas-rust",
+    "result_sha256": "1be75de1b7754df8864adb41ea6350bb159a52c987b711fcb70d55a1c0b5af42"
+  },
+  "metamorphic": {
+    "formula": "t'=1.37*t+2ns",
+    "reference_pass": 10,
+    "mutation_count": 50,
+    "mutation_killed": 50,
+    "insufficient_excitation_explicit_failure": 10,
+    "runtime_log_count": 70,
+    "runtime_log_identity_failures": 0,
+    "runtime_identity": "every case log contains Version 0.8.2 and evas_engine = evas-rust",
+    "result_sha256": "d23b5e2f88062a57203362256a9636ad38945a5727d2e7a479b55bc69a027fd1"
+  },
+  "release_audit": {
+    "audit_status": "pass",
+    "certification_status": "refresh_required",
+    "manifest_sha256": "e14a04294bc38624f572e1c12b0a5d0d18862bd6c959cd9176a36c3793fa0478",
+    "audit_report_sha256": "4f6c122380a1cc7aa5a9a0edf47c7f7248358d869694fcccbd26d17766397778",
+    "release_seal_sha256": "59c6b226b0a1655db82a1a56384fb0525f9e382eed0023ff08f70ae3b5c8cd70"
+  },
+  "regression": {
+    "pytest_pass": 91,
+    "pytest_skip": 1,
+    "pytest_fail": 0,
+    "deterministic_regeneration": true,
+    "diff_check_pass": true
+  },
+  "spectre": {
+    "status": "not_applicable",
+    "reason": "The repository owner confirmed that this project does not have or require Spectre for this repair campaign.",
+    "policy": "Do not claim or substitute Spectre evidence; acceptance uses Rust EVAS2."
+  }
+}

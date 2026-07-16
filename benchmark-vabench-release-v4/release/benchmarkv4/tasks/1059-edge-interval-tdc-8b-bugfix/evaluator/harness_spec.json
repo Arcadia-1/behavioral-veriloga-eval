@@ -10,7 +10,9 @@
       "tran tran stop=160n maxstep=100p"
     ],
     "body_lines": [
-      "Vstart (start 0) vsource type=pwl wave=[0 0 10n 0 10.1n 0.9 11n 0 50n 0 50.1n 0.9 51n 0 100n 0 100.1n 0.9 101n 0 160n 0]"
+      "Vstart (start 0) vsource type=pwl wave=[0 0 10n 0 10.1n 0.9 11n 0 50n 0 50.1n 0.9 51n 0 100n 0 100.1n 0.9 101n 0 160n 0]",
+      "Vstop (stop 0) vsource type=pwl wave=[0 0 18n 0 18.1n 0.9 19n 0 73n 0 73.1n 0.9 74n 0 139n 0 139.1n 0.9 140n 0 160n 0]",
+      "XDUT (start stop valid code0 code1 code2 code3 code4 code5 code6 code7) edge_interval_tdc_8b"
     ],
     "header": [
       "simulator lang=spectre",
@@ -45,37 +47,17 @@
     "legacy_score_deck_sha256": "c76028b74d0e971e5115cc96ba40deca1b4a9c8683d6984c4b7339bc6ab15de7",
     "notes": [
       "legacy feedback deck was used only to seed the canonical harness spec",
-      "legacy score deck seeded private profile-specific overrides"
+      "legacy score deck seeded private profile-specific overrides",
+      "feedback deck is the canonical stimulus; score is generated with identical semantics"
     ]
   },
   "profile_defaults": {
     "feedback": {
-      "deck_overrides": {
-        "body_lines": [
-          "Vstop (stop 0) vsource type=pwl wave=[0 0 18n 0 18.1n 0.9 19n 0 73n 0 73.1n 0.9 74n 0 139n 0 139.1n 0.9 140n 0 160n 0]",
-          "XDUT (start stop valid code0 code1 code2 code3 code4 code5 code6 code7) edge_interval_tdc_8b"
-        ]
-      },
-      "parameters": {
-        "maxstep": "200p",
-        "stop_time": "100n"
-      },
       "simulatorOptions": {
         "evas_profile": "balanced"
       }
     },
-    "score": {
-      "deck_overrides": {
-        "body_lines": [
-          "Vstop (stop 0) vsource type=pwl wave=[0 0 18.2n 0 18.3n 0.9 19n 0 73.2n 0 73.3n 0.9 74n 0 139.2n 0 139.3n 0.9 140n 0 160n 0]",
-          "XDUT (start stop valid code0 code1 code2 code3 code4 code5 code6 code7) edge_interval_tdc_8b"
-        ]
-      },
-      "parameters": {
-        "maxstep": "100p",
-        "stop_time": "100n"
-      }
-    }
+    "score": {}
   },
   "property_ids": [
     "P_START_ARMS",

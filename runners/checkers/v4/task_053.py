@@ -12,12 +12,19 @@ def check_v3_495_slew_rate_dac4(rows: list[dict[str, float]]) -> tuple[bool, str
     max_endpoint_err = 0.0
     checked = 0
     endpoint_checks = 0
+    seen_codes: set[int] = set()
+    code_transitions = 0
+    previous_code: int | None = None
     for row in rows[1:]:
         code = 0
         code += 8 if row["d3"] > 0.45 else 0
         code += 4 if row["d2"] > 0.45 else 0
         code += 2 if row["d1"] > 0.45 else 0
         code += 1 if row["d0"] > 0.45 else 0
+        seen_codes.add(code)
+        if previous_code is not None and code != previous_code:
+            code_transitions += 1
+        previous_code = code
         target = code / 15.0
         dt = max(0.0, row["time"] - last_t)
         step = 1e8 * dt
@@ -37,6 +44,12 @@ def check_v3_495_slew_rate_dac4(rows: list[dict[str, float]]) -> tuple[bool, str
             endpoint_checks += 1
     if checked < 40:
         return False, f"insufficient_slew_samples={checked}"
+    if len(seen_codes) < 4 or code_transitions < 3 or not {0, 15}.issubset(seen_codes):
+        return False, (
+            "insufficient_code_excitation="
+            f"codes={sorted(seen_codes)},transitions={code_transitions},"
+            "required=code0_code15_four_distinct_three_transitions"
+        )
     if endpoint_checks < 8:
         return False, f"insufficient_settled_endpoint_checks={endpoint_checks}"
     if max_err > 0.075:

@@ -9,7 +9,13 @@
     "analyses": [
       "tran tran stop=34n maxstep=50p"
     ],
-    "body_lines": [],
+    "body_lines": [
+      "Vd3 (d3 0) vsource type=pwl wave=[0 0 2n 0 2.02n 0.9 14n 0.9 14.02n 0 24n 0 24.02n 0.9]",
+      "Vd2 (d2 0) vsource type=pwl wave=[0 0 2n 0 2.02n 0.9 14n 0.9 14.02n 0 24n 0 24.02n 0.9]",
+      "Vd1 (d1 0) vsource type=pwl wave=[0 0 2n 0 2.02n 0.9 14n 0.9 14.02n 0.9 24n 0.9 24.02n 0]",
+      "Vd0 (d0 0) vsource type=pwl wave=[0 0 2n 0 2.02n 0.9 14n 0.9 14.02n 0.9 24n 0.9 24.02n 0]",
+      "XDUT (d3 d2 d1 d0 vout) slew_rate_dac4"
+    ],
     "header": [
       "simulator lang=spectre",
       "global 0"
@@ -37,50 +43,17 @@
     "legacy_score_deck_sha256": "6390693ddaf9088901747fbbf7021ca5d90c142bcee28fdb960f687f3738c73e",
     "notes": [
       "legacy feedback deck was used only to seed the canonical harness spec",
-      "legacy score deck seeded private profile-specific overrides"
+      "legacy score deck seeded private profile-specific overrides",
+      "feedback deck is the canonical stimulus; score is generated with identical semantics"
     ]
   },
   "profile_defaults": {
     "feedback": {
-      "deck_overrides": {
-        "body_lines": [
-          "Vd3 (d3 0) vsource type=pwl wave=[0 0 2n 0 2.02n 0.9 14n 0.9 14.02n 0 24n 0 24.02n 0.9]",
-          "Vd2 (d2 0) vsource type=pwl wave=[0 0 2n 0 2.02n 0.9 14n 0.9 14.02n 0 24n 0 24.02n 0.9]",
-          "Vd1 (d1 0) vsource type=pwl wave=[0 0 2n 0 2.02n 0.9 14n 0.9 14.02n 0.9 24n 0.9 24.02n 0]",
-          "Vd0 (d0 0) vsource type=pwl wave=[0 0 2n 0 2.02n 0.9 14n 0.9 14.02n 0.9 24n 0.9 24.02n 0]",
-          "",
-          "XDUT (d3 d2 d1 d0 vout) slew_rate_dac4",
-          ""
-        ]
-      },
-      "parameters": {
-        "maxstep": "200p",
-        "stop_time": "100n"
-      },
       "simulatorOptions": {
         "evas_profile": "balanced"
       }
     },
-    "score": {
-      "deck_overrides": {
-        "analyses": [
-          "tran tran stop=36n maxstep=50p"
-        ],
-        "body_lines": [
-          "Vd3 (d3 0) vsource type=pwl wave=[0 0 1.5n 0 1.52n 0.9 13n 0.9 13.02n 0 22n 0 22.02n 0.9 31n 0.9]",
-          "Vd2 (d2 0) vsource type=pwl wave=[0 0 1.5n 0 1.52n 0 13n 0 13.02n 0.9 22n 0.9 22.02n 0 31n 0]",
-          "Vd1 (d1 0) vsource type=pwl wave=[0 0 1.5n 0 1.52n 0.9 13n 0.9 13.02n 0.9 22n 0.9 22.02n 0 31n 0]",
-          "Vd0 (d0 0) vsource type=pwl wave=[0 0 1.5n 0 1.52n 0.9 13n 0.9 13.02n 0 22n 0 22.02n 0.9 31n 0.9]",
-          "",
-          "XDUT (d3 d2 d1 d0 vout) slew_rate_dac4",
-          ""
-        ]
-      },
-      "parameters": {
-        "maxstep": "100p",
-        "stop_time": "100n"
-      }
-    }
+    "score": {}
   },
   "property_ids": [
     "P_BINARY_MAPPING",
