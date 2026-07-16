@@ -9,16 +9,29 @@ from ..common.v4_topup import (
 def check_v4_318_resistor_ladder_monotonic_decoder(rows: list[dict[str, float]]) -> tuple[bool, str]:
     if not rows:
         return False, "v4_1016 empty_trace"
-    def stable_window(t: float) -> bool:
-        edge_times = [4.2e-9, 10e-9, 20e-9, 30e-9, 40e-9, 50e-9, 60e-9, 70e-9, 78e-9, 82e-9, 86e-9]
-        return all(not (edge <= t <= edge + 2.5e-9) for edge in edge_times)
+
+    def settled(index: int) -> bool:
+        """Score stable code/output plateaus, independent of event timestamps."""
+        if index < 2:
+            return False
+        names = (
+            "enable", "rst", "code_0", "code_1", "code_2",
+            "vout", "step_metric", "monotonic_ok",
+        )
+        for current in range(index - 1, index + 1):
+            previous = rows[current - 1]
+            row = rows[current]
+            if any(abs(float(row[name]) - float(previous[name])) > 1e-4 for name in names):
+                return False
+        return True
 
     checked = code_errors = metric_errors = flag_errors = clear_errors = 0
     codes_seen: set[int] = set()
     disabled_clear = reset_clear = monotonic_sequence = False
     last_code = None
     last_vout = None
-    for row in rows:
+    saw_active = False
+    for index, row in enumerate(rows):
         t = float(row["time"])
         enabled = _v4_topup_logic_high(row, "enable") and not _v4_topup_logic_high(row, "rst")
         vout = float(row["vout"])
@@ -26,14 +39,16 @@ def check_v4_318_resistor_ladder_monotonic_decoder(rows: list[dict[str, float]])
         flag = float(row["monotonic_ok"]) > 0.45
         if not enabled:
             clear = abs(vout) < 0.08 and step_metric < 0.08 and not flag
-            if t > 80.5e-9 and not _v4_topup_logic_high(row, "enable") and clear:
+            stable = settled(index)
+            if saw_active and not _v4_topup_logic_high(row, "enable") and not _v4_topup_logic_high(row, "rst") and stable and clear:
                 disabled_clear = True
-            if t < 8e-9 and _v4_topup_logic_high(row, "rst") and clear:
+            if _v4_topup_logic_high(row, "rst") and stable and clear:
                 reset_clear = True
-            if (t > 80.5e-9 and not clear) or (t < 8e-9 and _v4_topup_logic_high(row, "rst") and not clear):
+            if stable and ((saw_active and not _v4_topup_logic_high(row, "enable") and not _v4_topup_logic_high(row, "rst")) or _v4_topup_logic_high(row, "rst")) and not clear:
                 clear_errors += 1
             continue
-        if t < 6.8e-9 or not stable_window(t):
+        saw_active = True
+        if not settled(index):
             continue
         code = (
             (1 if _v4_topup_logic_high(row, "code_0") else 0)

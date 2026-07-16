@@ -6,59 +6,68 @@ from .diagnostics import excess_count
 from ..common.v4_topup import (
     _v4_topup_clip01,
     _v4_topup_logic_high,
+    _v4_rising,
 )
 
 def check_v4_313_dynamic_comparator_kickback_metric(rows: list[dict[str, float]]) -> tuple[bool, str]:
     if not rows:
         return False, "v4_1011 empty_trace"
+    def clock_period() -> float:
+        rises: list[float] = []
+        previous_clk = float(rows[0].get("clk", 0.0))
+        for candidate in rows[1:]:
+            now = float(candidate.get("clk", 0.0))
+            if _v4_rising(previous_clk, now):
+                rises.append(float(candidate["time"]))
+            previous_clk = now
+        periods = [right - left for left, right in zip(rises, rises[1:]) if right > left]
+        return sorted(periods)[len(periods) // 2] if periods else 1.0
+
     def first_after(target_time: float) -> dict[str, float] | None:
         for candidate in rows:
             if float(candidate["time"]) >= target_time:
                 return candidate
         return None
 
-    reset_clear = any(
-        _v4_topup_logic_high(row, "rst")
-        and row["decision"] < 0.15
-        and row["kickback_metric"] < 0.15
-        and row["valid"] < 0.15
-        for row in rows
-    )
-    late_reset_clear = any(
-        row["time"] > 48e-9
-        and _v4_topup_logic_high(row, "rst")
-        and row["decision"] < 0.15
-        and row["kickback_metric"] < 0.15
-        and row["valid"] < 0.15
-        for row in rows
-    )
-    disabled_clear = any(
-        row["time"] > 40e-9
-        and not _v4_topup_logic_high(row, "enable")
-        and row["decision"] < 0.15
-        and row["kickback_metric"] < 0.15
-        and row["valid"] < 0.15
-        for row in rows
-    )
+    period = clock_period()
+    reset_clear = late_reset_clear = late_reset_violation = disabled_clear = False
     checked = decision_errors = metric_errors = valid_errors = 0
     premature_valid = False
     high_seen = low_seen = small_overdrive_seen = large_overdrive_seen = False
     metric_small: list[float] = []
     metric_large: list[float] = []
     decision_seen_since_clear = False
+    saw_active = False
     previous = rows[0]
     for row in rows[1:]:
         clk_rise = (not _v4_topup_logic_high(previous, "clk")) and _v4_topup_logic_high(row, "clk")
-        if _v4_topup_logic_high(row, "rst") or not _v4_topup_logic_high(row, "enable"):
+        rst = _v4_topup_logic_high(row, "rst")
+        enabled = _v4_topup_logic_high(row, "enable")
+        clear = (
+            row["decision"] < 0.15
+            and row["kickback_metric"] < 0.15
+            and row["valid"] < 0.15
+        )
+        if rst:
+            if saw_active:
+                late_reset_clear = late_reset_clear or clear
+                late_reset_violation = late_reset_violation or not clear
+            else:
+                reset_clear = reset_clear or clear
+            decision_seen_since_clear = False
+        elif not enabled:
+            if saw_active:
+                disabled_clear = disabled_clear or clear
             decision_seen_since_clear = False
         elif clk_rise:
+            saw_active = True
             decision_seen_since_clear = True
         elif float(row["valid"]) > 0.45 and not decision_seen_since_clear:
             premature_valid = True
         previous = row
-        if not clk_rise or row["time"] < 7e-9:
+        if not clk_rise or rst or not enabled:
             continue
-        sample = first_after(float(row["time"]) + 1.0e-9)
+        sample = first_after(float(row["time"]) + 0.15 * period)
         if sample is None:
             continue
         if _v4_topup_logic_high(row, "rst") or not _v4_topup_logic_high(row, "enable"):
@@ -88,6 +97,7 @@ def check_v4_313_dynamic_comparator_kickback_metric(rows: list[dict[str, float]]
         checked >= 6
         and reset_clear
         and late_reset_clear
+        and not late_reset_violation
         and disabled_clear
         and high_seen
         and low_seen
@@ -102,6 +112,7 @@ def check_v4_313_dynamic_comparator_kickback_metric(rows: list[dict[str, float]]
     clear_mismatches = (
         int(not reset_clear)
         + int(not late_reset_clear)
+        + int(late_reset_violation)
         + int(not disabled_clear)
     )
     decision_mismatches = decision_errors
@@ -110,6 +121,7 @@ def check_v4_313_dynamic_comparator_kickback_metric(rows: list[dict[str, float]]
     valid_mismatches = valid_errors + int(premature_valid)
     return ok, (
         f"v4_313 checked={checked} reset_clear={reset_clear} late_reset_clear={late_reset_clear} "
+        f"late_reset_violation={late_reset_violation} "
         f"disabled_clear={disabled_clear} "
         f"high={high_seen} low={low_seen} small={small_overdrive_seen} large={large_overdrive_seen} "
         f"monotonic_metric={monotonic_metric} decision_errors={decision_errors} "

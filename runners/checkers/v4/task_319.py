@@ -11,6 +11,34 @@ from ..common.v4_topup import (
 def check_v4_319_unary_dac_glitch_energy_metric(rows: list[dict[str, float]]) -> tuple[bool, str]:
     if not rows:
         return False, "v4_1017 empty_trace"
+
+    def settled(index: int) -> bool:
+        """Wait for a local plateau rather than a fixed post-edge duration."""
+        if index < 2:
+            return False
+        names = (
+            "rst", "enable", "code_0", "code_1", "code_2",
+            "vout", "glitch_metric", "valid",
+        )
+        for current in range(index - 1, index + 1):
+            previous = rows[current - 1]
+            row = rows[current]
+            if any(abs(float(row[name]) - float(previous[name])) > 1e-4 for name in names):
+                return False
+        return True
+
+    def clock_period() -> float:
+        rises: list[float] = []
+        previous = float(rows[0].get("clk", 0.0))
+        for row in rows[1:]:
+            now = float(row["clk"])
+            if _v4_rising(previous, now):
+                rises.append(float(row["time"]))
+            previous = now
+        periods = [right - left for left, right in zip(rises, rises[1:]) if right > left]
+        return sorted(periods)[len(periods) // 2] if periods else 1.0
+
+    period = clock_period()
     prev_clk = float(rows[0].get("clk", 0.0))
     prev_code = 0
     expected_vout = expected_glitch = 0.0
@@ -19,7 +47,8 @@ def check_v4_319_unary_dac_glitch_energy_metric(rows: list[dict[str, float]]) ->
     checked = vout_errors = metric_errors = valid_errors = clear_errors = 0
     reset_clear = disabled_clear = glitch_seen = False
     codes_seen: set[int] = set()
-    for row in rows:
+    saw_active = False
+    for index, row in enumerate(rows):
         t = float(row["time"])
         clk = float(row["clk"])
         rst = _v4_topup_logic_high(row, "rst")
@@ -29,14 +58,16 @@ def check_v4_319_unary_dac_glitch_energy_metric(rows: list[dict[str, float]]) ->
             expected_valid = False
             prev_code = 0
             clear = abs(float(row["vout"])) < 0.08 and abs(float(row["glitch_metric"])) < 0.08 and not _v4_topup_logic_high(row, "valid")
-            if rst and t < 5e-9 and clear:
+            stable = settled(index)
+            if rst and stable and clear:
                 reset_clear = True
-            if t > 82e-9 and not _v4_topup_logic_high(row, "enable") and clear:
+            if saw_active and not rst and not _v4_topup_logic_high(row, "enable") and stable and clear:
                 disabled_clear = True
-            if ((rst and t < 5e-9) or t > 82e-9) and not clear:
+            if stable and (rst or (saw_active and not _v4_topup_logic_high(row, "enable"))) and not clear:
                 clear_errors += 1
             prev_clk = clk
             continue
+        saw_active = True
         if _v4_rising(prev_clk, clk):
             code = _v4_code_from_bits(row, ["code_0", "code_1", "code_2"])
             codes_seen.add(code)
@@ -48,7 +79,7 @@ def check_v4_319_unary_dac_glitch_energy_metric(rows: list[dict[str, float]]) ->
             prev_code = code
             update_time = t
         prev_clk = clk
-        if update_time < 0 or t < update_time + 0.7e-9:
+        if update_time < 0 or t < update_time + 0.07 * period or not settled(index):
             continue
         checked += 1
         if abs(float(row["vout"]) - expected_vout) > 0.08:
