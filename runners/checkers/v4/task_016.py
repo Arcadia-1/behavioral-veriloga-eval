@@ -1,67 +1,82 @@
-"""Task-specific checker for canonical v4 DUT 016."""
+"""Stimulus-relative checker for canonical v4 DUT 016."""
+
 from __future__ import annotations
 
-from ..api import Checker
-def sample_signal(rows: list[dict[str, float]], signal: str, time_s: float) -> float | None:
-    if not rows or signal not in rows[0] or "time" not in rows[0]:
-        return None
-    first_time = rows[0]["time"]
-    last_time = rows[-1].get("time")
-    if last_time is None or time_s < first_time or time_s > last_time:
-        return None
-    if time_s == first_time:
-        return rows[0].get(signal)
-    for idx in range(1, len(rows)):
-        prev = rows[idx - 1]
-        cur = rows[idx]
-        t0 = prev.get("time")
-        t1 = cur.get("time")
-        if t0 is None or t1 is None:
-            continue
-        if t0 <= time_s <= t1:
-            v0 = prev.get(signal)
-            v1 = cur.get(signal)
-            if v0 is None or v1 is None:
-                return None
-            if t1 == t0:
-                return v1
-            alpha = (time_s - t0) / (t1 - t0)
-            return v0 + alpha * (v1 - v0)
-    return rows[-1].get(signal)
+from ..api import Checker, Row
+from .trace_utils import property_diagnostics, sample_signal, threshold_crossings
 
-def check_slew_rate_limiter(rows: list[dict[str, float]]) -> tuple[bool, str]:
+
+def _slope(rows: list[Row]) -> float | None:
+    if len(rows) < 4:
+        return None
+    origin = rows[0]["time"]
+    xs = [row["time"] - origin for row in rows]
+    ys = [row["vout"] for row in rows]
+    xbar = sum(xs) / len(xs)
+    ybar = sum(ys) / len(ys)
+    denominator = sum((x - xbar) ** 2 for x in xs)
+    return None if denominator <= 0 else sum((x - xbar) * (y - ybar) for x, y in zip(xs, ys)) / denominator
+
+
+def check_slew_rate_limiter(rows: list[Row]) -> tuple[bool, str]:
     required = {"time", "vin", "vout"}
-    if not rows or not required.issubset(rows[0]):
-        return False, "missing time/vin/vout"
+    missing = sorted(required - (set(rows[0]) if rows else set()))
+    if missing:
+        return False, "missing_columns=" + ",".join(missing)
 
-    vin_pre = sample_signal(rows, "vin", 10.0e-9)
-    vin_high = sample_signal(rows, "vin", 80.0e-9)
-    vin_low = sample_signal(rows, "vin", 150.0e-9)
-    if vin_pre is None or vin_high is None or vin_low is None:
-        return False, "missing_vin_step_samples"
-    input_sequence = vin_pre < 0.10 and vin_high > 0.72 and 0.05 <= vin_low <= 0.18
+    vin_min = min(row["vin"] for row in rows)
+    vin_max = max(row["vin"] for row in rows)
+    threshold = 0.5 * (vin_min + vin_max)
+    rises = threshold_crossings(rows, "vin", threshold=threshold, direction=1)
+    falls = threshold_crossings(rows, "vin", threshold=threshold, direction=-1)
+    coverage_missing = int(not rises) + int(not falls)
+    if not rises or not falls:
+        counts = {property_id: coverage_missing for property_id in (
+            "P_INITIAL_ZERO", "P_PERIODIC_UPDATE", "P_BIDIRECTIONAL_STEP_LIMIT",
+            "P_NEAR_TARGET_SETTLE", "P_EVENTUAL_TRACKING",
+        )}
+        return False, f"insufficient_excitation={coverage_missing}; {property_diagnostics(counts)}"
 
-    sample_times_ns = [40.0, 80.0, 100.0, 120.0, 150.0]
-    samples: list[float] = []
-    for t_ns in sample_times_ns:
-        value = sample_signal(rows, "vout", t_ns * 1e-9)
-        if value is None:
-            return False, f"missing_sample_at={t_ns:g}ns"
-        samples.append(value)
+    rise_time = rises[0]
+    fall_time = next((time_s for time_s in falls if time_s > rise_time), falls[-1])
+    rising_fit = [row for row in rows if rise_time < row["time"] < fall_time and 0.10 <= row["vout"] <= 0.68]
+    falling_fit = [row for row in rows if row["time"] > fall_time and 0.20 <= row["vout"] <= 0.70]
+    rising_slope = _slope(rising_fit)
+    falling_slope = _slope(falling_fit)
+    target_rate = 0.015 / 1e-9
+    rate_errors = int(rising_slope is None) + int(falling_slope is None)
+    if rising_slope is not None:
+        rate_errors += abs(rising_slope - target_rate) > 0.23 * target_rate
+    if falling_slope is not None:
+        rate_errors += abs(falling_slope + target_rate) > 0.23 * target_rate
 
-    rising_limited = 0.20 <= samples[0] <= 0.40
-    high_reached = samples[1] > 0.74
-    falling_limited = samples[2] > samples[3] > samples[4] and samples[2] > 0.65 and 0.34 <= samples[3] <= 0.58
-    low_reached = abs(samples[4] - 0.10) <= 0.05
-    not_passthrough = samples[0] < vin_high - 0.30 and samples[2] > vin_low + 0.45
-    ok = input_sequence and rising_limited and high_reached and falling_limited and low_reached and not_passthrough
-    values = ",".join(f"{value:.3f}" for value in samples)
-    return ok, (
-        f"slew_samples={values} input_sequence={input_sequence} "
-        f"rising_limited={rising_limited} high_reached={high_reached} "
-        f"falling_limited={falling_limited} low_reached={low_reached} "
-        f"not_passthrough={not_passthrough}"
+    initial = sample_signal(rows, "vout", rows[0]["time"])
+    high_sample = sample_signal(rows, "vout", rise_time + 0.82 * (fall_time - rise_time))
+    final_sample = sample_signal(rows, "vout", rows[-1]["time"])
+    early_sample = sample_signal(rows, "vout", rise_time + 0.12 * (fall_time - rise_time))
+    high_input = sample_signal(rows, "vin", rise_time + 0.5 * (fall_time - rise_time))
+    final_input = rows[-1]["vin"]
+    initial_error = int(initial is None or abs(initial) > 0.05)
+    settle_errors = int(high_sample is None or high_input is None or abs(high_sample - high_input) > 0.08)
+    settle_errors += int(final_sample is None or abs(final_sample - final_input) > 0.06)
+    passthrough_errors = int(
+        early_sample is None or high_input is None or early_sample >= high_input - 0.25
     )
+    coverage_missing += int(len(rising_fit) < 4) + int(len(falling_fit) < 4)
+    counts = {
+        "P_INITIAL_ZERO": initial_error,
+        "P_PERIODIC_UPDATE": rate_errors + coverage_missing,
+        "P_BIDIRECTIONAL_STEP_LIMIT": rate_errors + passthrough_errors,
+        "P_NEAR_TARGET_SETTLE": settle_errors,
+        "P_EVENTUAL_TRACKING": settle_errors,
+    }
+    ok = coverage_missing == 0 and all(count == 0 for count in counts.values())
+    coverage = "" if coverage_missing == 0 else f" insufficient_excitation={coverage_missing}"
+    return ok, (
+        f"rise={rise_time:.3e} fall={fall_time:.3e} slopes={rising_slope}/{falling_slope} "
+        f"high={high_sample} final={final_sample}{coverage}; {property_diagnostics(counts)}"
+    )
+
 
 CHECKER_ID = "v4_016_slew_rate_limiter"
 CHECKER: Checker = check_slew_rate_limiter

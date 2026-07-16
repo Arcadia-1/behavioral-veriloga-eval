@@ -4,14 +4,12 @@ global 0
 ahdl_include "./dut/slew_rate_limiter.va"
 
 Vin (vin 0) vsource type=pwl wave=[ \
-    0 0 \
-    24.8n 0 25.2n 0.8 \
-    92.8n 0.8 93.2n 0.1 \
-    160n 0.1 \
+0 0 \
+24.8n 0 25.2n 0.8 \
+92.8n 0.8 93.2n 0.1 \
+160n 0.1 \
 ]
-
 XDUT (vin vout) slew_rate_limiter
-
 
 simulatorOptions options evas_profile=balanced
 
