@@ -2,15 +2,19 @@
 from __future__ import annotations
 
 from ..api import Checker
-from .stimulus_relative import normalize_affine_time
+
+
 def sample_signal_at(rows: list[dict[str, float]], signal: str, time_s: float) -> float | None:
     if not rows or "time" not in rows[0] or signal not in rows[0]:
         return None
     first_time = rows[0]["time"]
     last_time = rows[-1].get("time")
-    if last_time is None or time_s < first_time or time_s > last_time:
+    if last_time is None or time_s > last_time:
         return None
-    if time_s == first_time:
+    if time_s <= first_time:
+        # Affine normalization can move a valid candidate's pre-roll start
+        # past a canonical baseline probe. The first row is the stable
+        # pre-event state; event and post-event probes still interpolate.
         return rows[0].get(signal)
     for idx in range(1, len(rows)):
         prev = rows[idx - 1]
@@ -30,49 +34,45 @@ def sample_signal_at(rows: list[dict[str, float]], signal: str, time_s: float) -
             return v0 + alpha * (v1 - v0)
     return None
 
-def _sample_many(
+def _crossings(
     rows: list[dict[str, float]],
-    samples: dict[str, list[tuple[float, float]]],
-    *,
-    tol: float,
-) -> tuple[bool, str]:
-    details: list[str] = []
-    for signal, expected_samples in samples.items():
-        observed: list[float] = []
-        for time_ns, expected in expected_samples:
-            value = sample_signal_at(rows, signal, time_ns * 1e-9)
-            if value is None:
-                return False, f"missing_{signal}_sample_at={time_ns:g}ns"
-            observed.append(value)
-            if abs(value - expected) > tol:
-                return False, (
-                    f"{signal}@{time_ns:g}ns={value:.4f} expected={expected:.4f} "
-                    f"tol={tol:.4f}"
-                )
-        details.append(f"{signal}=" + ",".join(f"{value:.3f}" for value in observed))
-    return True, " ".join(details)
+    signals: tuple[str, ...],
+    direction: int,
+    threshold: float = 0.5,
+) -> list[float]:
+    events: list[float] = []
+    previous = sum(float(rows[0][signal]) for signal in signals)
+    previous_time = float(rows[0]["time"])
+    for row in rows[1:]:
+        now = sum(float(row[signal]) for signal in signals)
+        now_time = float(row["time"])
+        crossed = previous <= threshold < now if direction > 0 else previous >= threshold > now
+        if crossed and now_time > previous_time and now != previous:
+            fraction = (threshold - previous) / (now - previous)
+            events.append(previous_time + fraction * (now_time - previous_time))
+        previous = now
+        previous_time = now_time
+    return events
 
-def _sample_many_within_trace(
+
+def _logic(rows: list[dict[str, float]], signal: str, time_s: float) -> int:
+    value = sample_signal_at(rows, signal, time_s)
+    return int(value is not None and value > 0.5)
+
+
+def _mismatches(
     rows: list[dict[str, float]],
-    samples: dict[str, list[tuple[float, float]]],
+    time_s: float,
+    expected: dict[str, int],
     *,
-    tol: float,
-) -> tuple[bool, str]:
-    if not rows:
-        return _sample_many(rows, samples, tol=tol)
-    end_time = rows[-1].get("time")
-    if end_time is None:
-        return _sample_many(rows, samples, tol=tol)
-    end_ns = end_time * 1e9
-    filtered: dict[str, list[tuple[float, float]]] = {}
-    for signal, expected_samples in samples.items():
-        visible_samples = [
-            (time_ns, expected)
-            for time_ns, expected in expected_samples
-            if time_ns <= end_ns + 1e-3
-        ]
-        filtered[signal] = visible_samples or expected_samples
-    return _sample_many(rows, filtered, tol=tol)
+    tolerance: float = 0.15,
+) -> int:
+    count = 0
+    for signal, bit in expected.items():
+        value = sample_signal_at(rows, signal, time_s)
+        if value is None or abs(value - float(bit)) > tolerance:
+            count += 1
+    return count
 
 def check_v3_sarfend_logic_4b(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {
@@ -91,31 +91,132 @@ def check_v3_sarfend_logic_4b(rows: list[dict[str, float]]) -> tuple[bool, str]:
         "dout1",
         "dout2",
         "dout3",
+        "dcomp",
+        "dcompb",
+        "test",
+        "dtest0",
+        "dtest1",
+        "dtest2",
+        "dtest3",
     }
     if not rows or not required.issubset(rows[0]):
         return False, "missing sarfend logic outputs"
-    rows = normalize_affine_time(rows, [
-        ("clks", 0.5, "rising", 1.025, 0),
-        ("clks", 0.5, "rising", 8.025, 1),
-    ])
-    if rows is None:
-        return False, "missing_clks_stimulus_edges"
-    return _sample_many(
-        rows,
-        {
-            "clkc": [(0.3, 0.0), (1.8, 1.0), (2.4, 0.0), (3.0, 1.0), (4.2, 0.0)],
-            "dp4": [(0.3, 0.0), (2.4, 1.0), (7.0, 1.0)],
-            "dm4": [(0.3, 0.0), (2.4, 0.0), (7.0, 0.0)],
-            "dp3": [(0.3, 1.0), (4.2, 0.0), (7.0, 0.0)],
-            "dm3": [(0.3, 1.0), (4.2, 1.0), (7.0, 1.0)],
-            "dp2": [(0.3, 1.0), (6.0, 1.0), (7.0, 1.0)],
-            "dm2": [(0.3, 1.0), (6.0, 1.0), (7.0, 0.0)],
-            "dout3": [(0.3, 0.0), (1.2, 0.0), (7.0, 0.0)],
-            "dout2": [(0.3, 0.0), (1.2, 1.0), (7.0, 1.0)],
-            "dout1": [(0.3, 0.0), (1.2, 1.0), (7.0, 1.0)],
-            "dout0": [(0.3, 0.0), (1.2, 1.0), (7.0, 1.0)],
-        },
-        tol=0.08,
+
+    clks_rises = _crossings(rows, ("clks",), +1)
+    clks_falls = _crossings(rows, ("clks",), -1)
+    comparator_rises = _crossings(rows, ("dcomp", "dcompb"), +1)
+    comparator_falls = _crossings(rows, ("dcomp", "dcompb"), -1)
+    if len(clks_rises) < 2:
+        return False, "insufficient_excitation clks_rises<2"
+
+    p = [0, 1, 1, 1]
+    m = [0, 1, 1, 1]
+    pointer = 0
+    captured_dtest = [0, 0, 0, 0]
+    reset_errors = decision_errors = dout_errors = clock_errors = 0
+    rise_clock_errors = fall_clock_errors = comparator_clock_errors = 0
+    normal_decisions = test_decisions = published_words = 0
+    events = (
+        [(time_s, "clks_rise") for time_s in clks_rises]
+        + [(time_s, "clks_fall") for time_s in clks_falls]
+        + [(time_s, "comp_rise") for time_s in comparator_rises]
+        + [(time_s, "comp_fall") for time_s in comparator_falls]
+    )
+    event_priority = {"clks_rise": 0, "clks_fall": 1, "comp_fall": 2, "comp_rise": 3}
+    ordered_events = sorted(events, key=lambda item: (item[0], event_priority[item[1]]))
+    for event_index, (time_s, event) in enumerate(ordered_events):
+        next_time = (
+            ordered_events[event_index + 1][0]
+            if event_index + 1 < len(ordered_events)
+            else float(rows[-1]["time"])
+        )
+        settle_delay = max(80e-12, min(5e-9, 0.25 * max(0.0, next_time - time_s)))
+        probe_time = time_s + settle_delay
+        if event == "clks_rise":
+            dout_expected = {
+                "dout3": p[0],
+                "dout2": p[1],
+                "dout1": p[2],
+                "dout0": p[3],
+            }
+            dout_errors += _mismatches(rows, probe_time, dout_expected)
+            published_words += 1
+            p = [0, 1, 1, 1]
+            m = [0, 1, 1, 1]
+            pointer = 0
+            captured_dtest = [
+                _logic(rows, "dtest3", time_s),
+                _logic(rows, "dtest2", time_s),
+                _logic(rows, "dtest1", time_s),
+                _logic(rows, "dtest0", time_s),
+            ]
+            reset_errors += _mismatches(
+                rows,
+                probe_time,
+                {
+                    "dp4": 0,
+                    "dm4": 0,
+                    "dp3": 1,
+                    "dm3": 1,
+                    "dp2": 1,
+                    "dm2": 1,
+                    "dp1": 1,
+                    "dm1": 1,
+                },
+            )
+            error_count = _mismatches(rows, probe_time, {"clkc": 0})
+            rise_clock_errors += error_count
+            clock_errors += error_count
+        elif event == "clks_fall":
+            error_count = _mismatches(rows, probe_time, {"clkc": 1})
+            fall_clock_errors += error_count
+            clock_errors += error_count
+        elif event == "comp_fall":
+            if _logic(rows, "clks", time_s) == 0:
+                error_count = _mismatches(rows, probe_time, {"clkc": 1})
+                comparator_clock_errors += error_count
+                clock_errors += error_count
+        elif _logic(rows, "clks", time_s) == 0 and pointer < 4:
+            test_mode = _logic(rows, "test", time_s) == 1
+            if test_mode:
+                decision = captured_dtest[pointer]
+                test_decisions += 1
+            else:
+                decision = int(
+                    (sample_signal_at(rows, "dcomp", time_s) or 0.0)
+                    > (sample_signal_at(rows, "dcompb", time_s) or 0.0)
+                )
+                normal_decisions += 1
+            p[pointer] = decision
+            m[pointer] = 1 - decision
+            output_index = 4 - pointer
+            decision_errors += _mismatches(
+                rows,
+                probe_time,
+                {f"dp{output_index}": decision, f"dm{output_index}": 1 - decision},
+            )
+            if pointer < 3:
+                error_count = _mismatches(rows, probe_time, {"clkc": 0})
+                comparator_clock_errors += error_count
+                clock_errors += error_count
+            pointer += 1
+
+    sufficient = published_words >= 2 and normal_decisions >= 3
+    ok = sufficient and not (reset_errors or decision_errors or dout_errors or clock_errors)
+    diagnostics = {
+        "P_CONVERSION_RESET_AND_PREVIOUS_WORD": reset_errors,
+        "P_SAMPLE_AND_COMPARATOR_DECISIONS": decision_errors,
+        "P_TEST_OVERRIDE_BEHAVIOR": 0 if test_decisions == 0 else decision_errors,
+        "P_DOUT_BIT_MAPPING": dout_errors,
+        "P_LOGIC_OUTPUT_LEVELS": clock_errors,
+    }
+    return ok, (
+        f"v4_186 clks_rises={len(clks_rises)} published_words={published_words} "
+        f"normal_decisions={normal_decisions} test_decisions={test_decisions} "
+        f"reset_errors={reset_errors} decision_errors={decision_errors} "
+        f"dout_errors={dout_errors} clock_errors={clock_errors} "
+        f"clock_breakdown={rise_clock_errors}/{fall_clock_errors}/{comparator_clock_errors}; "
+        + "; ".join(f"{key} mismatch_count={value}" for key, value in diagnostics.items())
     )
 
 CHECKER_ID = "v4_186_sarfend_logic_4b"

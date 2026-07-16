@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import json
 import re
+import sys
 from pathlib import Path
 
 
@@ -244,6 +245,80 @@ def test_sarfend_public_contract_exposes_trial_and_bit_mapping_semantics() -> No
         }
         assert "dp4=dm4=0" in properties["P_CONVERSION_RESET_AND_PREVIOUS_WORD"]
         assert "MSB-to-LSB" in properties["P_SAMPLE_AND_COMPARATOR_DECISIONS"]
+
+
+def test_sarfend_checker_clamps_pre_roll_baseline_after_affine_normalization() -> None:
+    sys.path.insert(0, str(ROOT))
+    from runners.checkers.v4.task_186 import sample_signal_at
+
+    rows = [
+        {"time": 0.8325e-9, "clkc": 0.0},
+        {"time": 1.025e-9, "clkc": 1.0},
+    ]
+    assert sample_signal_at(rows, "clkc", 0.3e-9) == 0.0
+    assert sample_signal_at(rows, "clkc", 0.9e-9) > 0.0
+    assert sample_signal_at(rows, "clkc", 2.0e-9) is None
+
+
+def test_sarfend_checker_accepts_event_relative_noncanonical_timing() -> None:
+    from runners.checkers.v4.task_186 import CHECKER
+
+    rows: list[dict[str, float]] = []
+    for time_ns in range(121):
+        if time_ns < 30 or time_ns >= 100:
+            p = [0, 1, 1, 1]
+        elif time_ns < 50:
+            p = [1, 1, 1, 1]
+        elif time_ns < 70:
+            p = [1, 0, 1, 1]
+        else:
+            p = [1, 0, 1, 1]
+        if time_ns < 70 or time_ns >= 100:
+            m = [0, 1, 1, 1]
+        else:
+            m = [0, 1, 0, 1]
+        if time_ns < 10:
+            dout = [0, 0, 0, 0]
+        elif time_ns < 100:
+            dout = [1, 1, 1, 0]
+        else:
+            dout = [1, 1, 0, 1]
+        clkc = int(
+            15 <= time_ns < 30
+            or 35 <= time_ns < 50
+            or 55 <= time_ns < 70
+            or 75 <= time_ns < 100
+            or time_ns >= 105
+        )
+        rows.append(
+            {
+                "time": (time_ns + 3000) * 1e-9,
+                "clks": float(10 <= time_ns < 15 or 100 <= time_ns < 105),
+                "dcomp": float(30 <= time_ns < 35 or 70 <= time_ns < 75),
+                "dcompb": float(50 <= time_ns < 55),
+                "test": 0.0,
+                "dtest0": 0.0,
+                "dtest1": 1.0,
+                "dtest2": 0.0,
+                "dtest3": 1.0,
+                "clkc": float(clkc),
+                "dp4": float(p[0]),
+                "dp3": float(p[1]),
+                "dp2": float(p[2]),
+                "dp1": float(p[3]),
+                "dm4": float(m[0]),
+                "dm3": float(m[1]),
+                "dm2": float(m[2]),
+                "dm1": float(m[3]),
+                "dout0": float(dout[0]),
+                "dout1": float(dout[1]),
+                "dout2": float(dout[2]),
+                "dout3": float(dout[3]),
+            }
+        )
+
+    passed, note = CHECKER(rows)
+    assert passed, note
 
 
 def test_rail_normalized_mapper_exposes_formula_and_distinct_valid_gate() -> None:
