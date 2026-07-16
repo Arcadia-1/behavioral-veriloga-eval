@@ -10,5 +10,5 @@ XDUT (cmpck vinn vinp dcmpn dcmpp) sar_comparator_reset_high
 
 simulatorOptions options evas_profile=balanced
 
-tran tran stop=2.2n maxstep=5p
+tran tran stop=3.0n maxstep=5p
 save cmpck vinn vinp dcmpn dcmpp

@@ -15,5 +15,5 @@ XDUT (vin clks dctrl0 dctrl1 dctrl2 dctrl3 dctrl4 dctrl5 vres) cdac_6b_stage1_up
 
 simulatorOptions options evas_profile=balanced
 
-tran tran stop=3.4n maxstep=10p
+tran tran stop=3.8n maxstep=10p
 save vin clks dctrl0 dctrl1 dctrl2 dctrl3 dctrl4 dctrl5 vres

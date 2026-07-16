@@ -12,5 +12,5 @@ XDUT (d3 d2 d1 d0 clk vout) dac_restore_4bit_clocked
 
 simulatorOptions options evas_profile=balanced
 
-tran tran stop=2.8n maxstep=5p
+tran tran stop=3.8n maxstep=5p
 save clk d3 d2 d1 d0 vout

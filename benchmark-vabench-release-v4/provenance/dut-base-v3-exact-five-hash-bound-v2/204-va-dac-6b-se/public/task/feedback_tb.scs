@@ -14,5 +14,5 @@ XDUT (din0 din1 din2 din3 din4 din5 rdy aout) va_dac_6b_se
 
 simulatorOptions options evas_profile=balanced
 
-tran tran stop=2.8n maxstep=10p
+tran tran stop=3.8n maxstep=10p
 save rdy din0 din1 din2 din3 din4 din5 aout
