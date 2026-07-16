@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import os
 import re
 import subprocess
 import sys
@@ -30,6 +31,11 @@ def test_batch_33_profiles_have_zero_semantic_drift() -> None:
         [sys.executable, str(PARITY), "--family-range", "321-330"],
         cwd=ROOT,
         capture_output=True,
+        env={
+            **os.environ,
+            "EVAS_ENGINE": "evas2",
+            "VAEVAS_DEFAULT_EVAS_ENGINE": "evas2",
+        },
         text=True,
         check=False,
     )
