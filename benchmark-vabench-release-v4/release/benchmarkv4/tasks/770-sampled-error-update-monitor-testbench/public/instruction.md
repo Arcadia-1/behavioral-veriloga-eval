@@ -47,10 +47,10 @@ hierarchical/private nodes, or use checker/gold/internal files.
 
 Create stimulus and save traces sufficient for the fixed evaluator oracle to check:
 
-- `P_RESET_CLEARS_STATE_AND_OBSERVABLES`: exercise and make observable: While rst is high at a rising clock edge, clear the stable count, out, err_metric, and progress. Required traces: `clk`, `coef`, `err_metric`, `out`, `progress`, `rst`, `sample`, `target`, `time`.
-- `P_CORRECTED_OUTPUT_USES_SAMPLE_TARGET_AND_COEF`: exercise and make observable: At each enabled rising clock edge, compute the clipped coefficient and drive the clamped corrected sample from sample, target, and coef. Required traces: `clk`, `coef`, `err_metric`, `out`, `progress`, `rst`, `sample`, `target`, `time`.
-- `P_ERROR_METRIC_REPORTS_ABSOLUTE_ERROR`: exercise and make observable: Drive err_metric from the bounded absolute target-minus-sample error. Required traces: `clk`, `coef`, `err_metric`, `out`, `progress`, `rst`, `sample`, `target`, `time`.
-- `P_PROGRESS_COUNTS_CONSECUTIVE_IN_WINDOW_SAMPLES`: exercise and make observable: Increment progress only for consecutive in-window sampled errors, clear it on an out-of-window sample, and saturate at ready_count. Required traces: `clk`, `coef`, `err_metric`, `out`, `progress`, `rst`, `sample`, `target`, `time`.
+- `P_RESET_CLEARS_STATE_AND_OBSERVABLES`: exercise and make observable: At a rising `clk` edge with reset high, clear the stable count and all outputs. Required traces: `clk`, `coef`, `err_metric`, `out`, `progress`, `rst`, `sample`, `target`, `time`.
+- `P_CORRECTED_OUTPUT_USES_SAMPLE_TARGET_AND_COEF`: exercise and make observable: At a reset-low rising edge, let `coeff=clip01(V(coef)/vhi)` and `error=V(target)-V(sample)`, then store `out=clamp(V(sample)+coeff*error,0,vhi)`. Required traces: `clk`, `coef`, `err_metric`, `out`, `progress`, `rst`, `sample`, `target`, `time`.
+- `P_ERROR_METRIC_REPORTS_ABSOLUTE_ERROR`: exercise and make observable: Store `err_metric=vhi*clip01(abs(error)/err_fullscale)`. Required traces: `clk`, `coef`, `err_metric`, `out`, `progress`, `rst`, `sample`, `target`, `time`.
+- `P_PROGRESS_COUNTS_CONSECUTIVE_IN_WINDOW_SAMPLES`: exercise and make observable: Increment the stable count capped at `ready_count` exactly when `abs(error)<=err_window`, otherwise clear it; store `progress=vhi*clip01(stable_count/ready_count)`. Required traces: `clk`, `coef`, `err_metric`, `out`, `progress`, `rst`, `sample`, `target`, `time`.
 
 The required trace names are: `time`, `clk`, `coef`, `err_metric`, `out`, `progress`, `rst`, `sample`, `target`.
 

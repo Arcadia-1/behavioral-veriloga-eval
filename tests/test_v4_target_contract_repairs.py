@@ -348,6 +348,22 @@ def test_generated_monitor_families_replace_task_specific_placeholders() -> None
             assert formula.replace(" ", "") in instruction.replace(" ", "")
 
 
+def test_sampled_error_monitor_exposes_update_equations() -> None:
+    for task_name in (
+        "270-sampled-error-update-monitor",
+        "770-sampled-error-update-monitor-testbench",
+        "1270-sampled-error-update-monitor-bugfix",
+    ):
+        task = _task(task_name)
+        instruction = (task / "public" / "instruction.md").read_text()
+        compact = instruction.replace(" ", "")
+        assert "V(target)-V(sample)" in compact
+        assert "V(sample)+coeff*error" in compact
+        assert "abs(error)/err_fullscale" in compact
+        assert "stable_count/ready_count" in compact
+        assert "enabled rising clock edge" not in instruction
+
+
 def test_repaired_testbench_bindings_match_reference_trace_names() -> None:
     expected = {
         "517-strongarm-style-latch-comparator-testbench": {
