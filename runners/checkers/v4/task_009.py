@@ -21,14 +21,18 @@ def check_v3_009_lock_detector(rows: list[dict[str, float]]) -> tuple[bool, str]
     if len(ref_edges) < 8 or len(fb_edges) < 8:
         return False, f"too_few_edges ref={len(ref_edges)} fb={len(fb_edges)}"
 
+    ref_periods = [right - left for left, right in zip(ref_edges, ref_edges[1:])]
+    nominal_period = sorted(ref_periods)[len(ref_periods) // 2]
+    alignment_tolerance = 0.20 * nominal_period
+    observation_delay = 0.08 * nominal_period
     events: list[tuple[float, bool, bool]] = []
     for ref_t in ref_edges:
         rst = sample_signal_at(rows, "rst_n", ref_t)
         if rst is None or rst <= 0.45:
             continue
         nearest_fb = min((abs(fb_t - ref_t) for fb_t in fb_edges), default=1.0)
-        aligned = nearest_fb <= 2.0e-9
-        lock_after = sample_signal_at(rows, "lock", ref_t + 0.8e-9)
+        aligned = nearest_fb <= alignment_tolerance
+        lock_after = sample_signal_at(rows, "lock", ref_t + observation_delay)
         events.append((ref_t, aligned, bool(lock_after is not None and lock_after > 0.45)))
 
     streak = 0
@@ -50,11 +54,21 @@ def check_v3_009_lock_detector(rows: list[dict[str, float]]) -> tuple[bool, str]
                 mismatch_clears += 1
             streak = 0
 
-    reset_sample_times = (1e-9, 58e-9, 59e-9, 95e-9, 99e-9, 102e-9)
-    reset_samples = [sample_signal_at(rows, "lock", t) for t in reset_sample_times]
-    reset_low = all(value is not None and value < 0.45 for value in reset_samples)
+    reset_falls = [
+        current["time"]
+        for previous, current in zip(rows, rows[1:])
+        if previous["rst_n"] > 0.45 >= current["rst_n"]
+    ]
+    reset_probe_times = [time_s + observation_delay for time_s in reset_falls]
+    if rows[0]["rst_n"] < 0.45:
+        reset_probe_times.insert(0, rows[0]["time"] + observation_delay)
+    reset_samples = [sample_signal_at(rows, "lock", time_s) for time_s in reset_probe_times]
+    reset_low = len(reset_samples) >= 2 and all(
+        value is not None and value < 0.45 for value in reset_samples
+    )
     final_lock = sample_signal_at(rows, "lock", max(times) - 1e-9)
-    final_lock_low = final_lock is not None and final_lock < 0.45
+    final_reset = sample_signal_at(rows, "rst_n", max(times) - observation_delay)
+    final_lock_low = final_reset is not None and final_reset < 0.45 and final_lock is not None and final_lock < 0.45
 
     ok = (
         reset_low

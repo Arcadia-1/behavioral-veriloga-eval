@@ -69,27 +69,64 @@ def check_v3_element_shuffler(rows: list[dict[str, float]]) -> tuple[bool, str]:
     return True, f"active_sequence={observed_text} expected={expected_text} reset_low_at={reset_low_probe_ns:g}ns"
 
 def check_v4_element_shuffler(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    base_ok, base_note = check_v3_element_shuffler(rows)
-    required = {"time", "rst_n", "out0", "out1", "out2", "out3"}
+    required = {"time", "clk", "rst_n", "out0", "out1", "out2", "out3"}
     if not rows or not required.issubset(rows[0]):
-        return False, base_note
-    sample_times_ns = [20.0, 40.0, 60.0, 80.0, 100.0, 120.0, 160.0, 180.0, 200.0, 220.0]
-    expected_indices = [2, 0, 3, 1, 2, 0, 2, 0, 3, 1]
-    rail_failures: list[str] = []
-    for time_ns, expected_index in zip(sample_times_ns, expected_indices):
-        values = [sample_signal_at(rows, f"out{index}", time_ns * 1e-9) for index in range(4)]
+        missing = sorted(required - set(rows[0])) if rows else sorted(required)
+        return False, "missing_columns=" + ",".join(missing)
+
+    clock_rises: list[float] = []
+    reset_falls: list[float] = []
+    for previous, current in zip(rows, rows[1:]):
+        if previous["clk"] < 0.45 <= current["clk"]:
+            clock_rises.append(current["time"])
+        if previous["rst_n"] > 0.45 >= current["rst_n"]:
+            reset_falls.append(current["time"])
+
+    output_for_state = (1, 2, 0, 3)
+    state = 0
+    active_clock_count = 0
+    reset_sample_count = 0
+    failures: list[str] = []
+    observations: list[str] = []
+    events = [(time_s, "reset") for time_s in reset_falls]
+    events.extend((time_s, "clock") for time_s in clock_rises)
+    for event_time, kind in sorted(events):
+        if kind == "reset":
+            state = 0
+            reset_sample_count += 1
+        else:
+            rst_n = sample_signal_at(rows, "rst_n", event_time)
+            if rst_n is None:
+                failures.append(f"clock@{event_time * 1e9:.3f}ns_rst=missing")
+                continue
+            if rst_n <= 0.45:
+                continue
+            state = (state + 1) % 4
+            active_clock_count += 1
+
+        expected_index = output_for_state[state]
+        values = [sample_signal_at(rows, f"out{index}", event_time + 2.0e-9) for index in range(4)]
         if any(value is None for value in values):
-            rail_failures.append(f"{time_ns:g}ns=missing")
+            failures.append(f"{kind}@{event_time * 1e9:.3f}ns=missing")
             continue
         assert all(value is not None for value in values)
+        active = [index for index, value in enumerate(values) if value > 0.45]
+        observations.append(str(active[0]) if len(active) == 1 else "-")
         for index, value in enumerate(values):
             if index == expected_index and value < 0.81:
-                rail_failures.append(f"{time_ns:g}ns_out{index}_high={value:.3f}<0.810")
+                failures.append(
+                    f"{kind}@{event_time * 1e9:.3f}ns_out{index}_high={value:.3f}<0.810"
+                )
             elif index != expected_index and value > 0.09:
-                rail_failures.append(f"{time_ns:g}ns_out{index}_low={value:.3f}>0.090")
-    return base_ok and not rail_failures, (
-        f"{base_note} strict_rail_samples={len(sample_times_ns)} rail_failures={len(rail_failures)}"
-        + (" rail_detail=" + ";".join(rail_failures[:6]) if rail_failures else "")
+                failures.append(
+                    f"{kind}@{event_time * 1e9:.3f}ns_out{index}_low={value:.3f}>0.090"
+                )
+
+    coverage_ok = active_clock_count >= 8 and reset_sample_count >= 1
+    return coverage_ok and not failures, (
+        f"active_clocks={active_clock_count} reset_samples={reset_sample_count} "
+        f"active_sequence={','.join(observations)} failures={len(failures)}"
+        + (" failure_detail=" + ";".join(failures[:6]) if failures else "")
     )
 
 CHECKER_ID = "v4_006_element_shuffler"

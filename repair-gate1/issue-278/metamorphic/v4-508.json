@@ -1,0 +1,37 @@
+{
+  "schema_version": "v4-stimulus-metamorphic-summary-v1",
+  "status": "pass",
+  "evas_backend": "evas-rust",
+  "evas_engine": "evas2",
+  "evas_engine_used": "evas2",
+  "evas_version": "0.8.2",
+  "transform": {
+    "scale": 1.37,
+    "shift_s": 2e-09
+  },
+  "task_count": 1,
+  "pass_count": 1,
+  "fail_count": 0,
+  "results": [
+    {
+      "task_id": "v4-508",
+      "status": "pass",
+      "affine": {
+        "status": "pass",
+        "reference_pass": true,
+        "reference_failure_count": null,
+        "mutation_count": 5,
+        "mutation_kill_count": 5,
+        "mutation_survivor_count": 0,
+        "infrastructure_error_count": 0,
+        "runtime_case_count": 6,
+        "runtime_cases_valid": true
+      },
+      "insufficient_excitation": {
+        "status": "explicit_failure",
+        "reason": null,
+        "runtime_valid": true
+      }
+    }
+  ]
+}

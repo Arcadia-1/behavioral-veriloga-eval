@@ -6,7 +6,7 @@
     "400"
   ],
   "catalog_certified_mutation_count": 2051,
-  "content_sha256": "576a30f7315aab4c2e84860753d5cfc9dcdcd5fcbae75123728a237cee11ec4d",
+  "content_sha256": "fe001f5cd9030f516ac5d7e8326a1f765b8ecca3f6ef5bf6ff80ca35674dcdd5",
   "counted_task_count": 400,
   "evidence_policy": "hash_reuse_from_catalog_certified_dut_base",
   "input_hashes": {
@@ -89,9 +89,9 @@
       "canonical_dut_id": "001",
       "hashes": {
         "mutation_catalog_sha256": "1fa563bf0aee87b0bb982ef90bb9e36309a8564f1c411c2f4a46edbe73a42478",
-        "score_deck_sha256": "0bf841861b33e3176a257caf1f41949ba9c4cda722d6caf51054fdc4bf837542",
+        "score_deck_sha256": "10051f3b2ff95ad882a799090da345bfd6d8c1567870e3b1e5aca8d21e826cc8",
         "task_certification_sha256": "60654c175bf3fb8b3924bb0ac3ecd4a951b782ebf23a2a2d538f9667531d189c",
-        "task_record_sha256": "8e624e2bcbf4b8e31a26d4777fdbf902b29c465d7b3f9ba5017a40133e37b4c7"
+        "task_record_sha256": "2c164b2d05e0761b75c156f6f53f3259f0d9f82d8b015fe3f2b5b28cd2065fd6"
       },
       "release_dir": "001-bang-bang-phase-detector"
     },
@@ -163,9 +163,9 @@
       "canonical_dut_id": "002",
       "hashes": {
         "mutation_catalog_sha256": "7f96ed0d9916bbf219e8e8d6d5e1aadee4944e2a8f066e45011ba866d7ba6a69",
-        "score_deck_sha256": "92028446b3e169cad5fe9379c8062a22d0848cb06e8cd4a9d361114e6ad17301",
+        "score_deck_sha256": "a9e5927498e36d431389ccc696354e93e1e2043820e4b5dfbf6bc375b2ce2e7d",
         "task_certification_sha256": "b2e13351ff79b47870a3b5b83c6f6126b37ab9e3e5814ea4543891b846e19850",
-        "task_record_sha256": "17e4a8634908175281bf4c4654863717a03cefd5c5c7da31010a9f5d33915e9f"
+        "task_record_sha256": "264a7cdd62c40d477f06c53d6b6d940aeb1538be6f6d19d231cbb68332a6d3fd"
       },
       "release_dir": "002-capacitive-sar-feedback-dac"
     },
@@ -238,9 +238,9 @@
       "canonical_dut_id": "003",
       "hashes": {
         "mutation_catalog_sha256": "18d61dd01d2ebdb162e64009f8f5850a7a1f7517d4c0dd5632315acaf0ab59d4",
-        "score_deck_sha256": "471c026df355ed0dd25c4d9fce7e31b659be8ffe3743840979330577869d1c51",
+        "score_deck_sha256": "867ab654a840a85d28d4ea360e3c1df2e96161439fbd0c442d587660031d376c",
         "task_certification_sha256": "a8c4766e1e5c35444a1358def11087891ac471669c66de273a979361c76b131a",
-        "task_record_sha256": "fece3579f7d71c969ad147b634b6204f9cd4b5b21750f6bed42b8b539363b1c8"
+        "task_record_sha256": "0a4942e20181683009d17eb61c8cada69d562a0f7f5ef0c5eb26f41a557e2b70"
       },
       "release_dir": "003-pipeline-adc-stage"
     },
@@ -312,9 +312,9 @@
       "canonical_dut_id": "004",
       "hashes": {
         "mutation_catalog_sha256": "2cdfc559faf971b969a2f8f2f3be5282a8b316d95fd942061948b61aa26328d0",
-        "score_deck_sha256": "327da26cc7ff7d1ca7129db0196389ff734e1ff3c2683bc5e9e40ef6e8cbcc0a",
+        "score_deck_sha256": "ffd73e7f2b50059a5e1648be9f75d05c9cefa69e026c3973af127c5d78230217",
         "task_certification_sha256": "3a9e144eedb06d21ac351df982f3c22317d17a7dec0d4ca5a8d37d758cea83a0",
-        "task_record_sha256": "65337524c2274bb39bad079baa3da4f1f87a5d9be184dc6fd7bc3653cbd1795c"
+        "task_record_sha256": "7d5463bb5c5ad3db09f9b201361947934edea1788a20d594b48b677ccdfe09d0"
       },
       "release_dir": "004-trim-calibration-controller"
     },
@@ -388,9 +388,9 @@
       "canonical_dut_id": "005",
       "hashes": {
         "mutation_catalog_sha256": "3bde243bf1bbe3a5b21e975b72a62266a0c28f8f2dd2f7264ccfc94191c543c7",
-        "score_deck_sha256": "1d441ad46dd5d5f567385b856a7cf8156d01e703e737c2d7b2682739f3e1a382",
+        "score_deck_sha256": "5c5a64e3ac585062b98c526f1d6376b1cb8e3f907ed38555d17a630165a30eee",
         "task_certification_sha256": "21deb29eb4eb1bfaf5a60ecaf96ab3c806dcee26d52c0ca566d04e44ffd58218",
-        "task_record_sha256": "45ac7a8ea57fabbcb36f2f5b2bea1d061f040fb69b4bd3255f65fd0aac44a0b1"
+        "task_record_sha256": "35a08825a2961f6c612ceca74bbcf4c848031fc09efdacb776744f226598fcc1"
       },
       "release_dir": "005-debounce-latch"
     },
@@ -463,9 +463,9 @@
       "canonical_dut_id": "006",
       "hashes": {
         "mutation_catalog_sha256": "12cf24d09a30c3e3d7c639dbe7e2fc4f6bfc0f70f5b62c71dff43dca5e9e93f6",
-        "score_deck_sha256": "80b1b20e3dea42bd95abbb03e7f3bf2dff4380194cb92969fb62dec2b5ac9b23",
+        "score_deck_sha256": "c031b3b826188e0ddd5533a953ba58c30ff4dd41ec1ff593317e37a826f77f93",
         "task_certification_sha256": "9f3860a3c325f361ea4613f7b8f055897a087cc6cf858c14d3e8c4c94e17f318",
-        "task_record_sha256": "2cba23447fb719baa567c33f87dbbbb78adfb266322622796cfdfced8a037d21"
+        "task_record_sha256": "5fbdc0d4d13dfe75a371ee41c37a289186f8661a1702c292b9892df7ad605e7b"
       },
       "release_dir": "006-element-shuffler"
     },
@@ -538,9 +538,9 @@
       "canonical_dut_id": "007",
       "hashes": {
         "mutation_catalog_sha256": "e35bb5f02c4e5a4fbbf811d9a756b23f08e8389669321ccaa127d24b1c68a445",
-        "score_deck_sha256": "e2554a90e67dfcc90209f84d2545182c9812f7d185f5487d50dff8d54652512c",
+        "score_deck_sha256": "30023dbf05329480ddd5171045f7bcb4318d8cb0533507bed282c4e7511f2337",
         "task_certification_sha256": "479b9aeb396bddc820e3ab43f461657a9188262d3b4618bc0ebb33976cc7236f",
-        "task_record_sha256": "157ac3c57349e3e6d0a4a68b06950f85daa6d4a195d7376f1eca9064e966a4e5"
+        "task_record_sha256": "f10114ac802778d184fc0f5397b8081bbd9b340d88c92ade55a29980eeb958fd"
       },
       "release_dir": "007-first-order-lowpass"
     },
@@ -612,9 +612,9 @@
       "canonical_dut_id": "008",
       "hashes": {
         "mutation_catalog_sha256": "f9ab54cde0cd533124dbc2fe459e8421644ae6d49920a200c63c7f7706a58795",
-        "score_deck_sha256": "f899b205db86d9b095f92b9416a68d5a33c6622217f792388fe18483e36b8136",
+        "score_deck_sha256": "78f970d070def0da8e425f32aee5c8d7cc9960bf4a9f71e05e044a1793044d66",
         "task_certification_sha256": "509de1ffc26df47e71e6542bf03fe1563c6488ab44398f9faabf11acd926fd3a",
-        "task_record_sha256": "e7b431a257c637de99a8d5dd19900fb692c0e3c420f2f56f90f5b67d12d23d2e"
+        "task_record_sha256": "5813049cb8d3c3a6d93f587f7d8c2d20a10e885f3cc1a7db1b49414800e41181"
       },
       "release_dir": "008-gain-trim-controller"
     },
@@ -689,9 +689,9 @@
       "canonical_dut_id": "009",
       "hashes": {
         "mutation_catalog_sha256": "4bffd79b517596033bb0ece74d551dd58977cd3ff1830099397a96ad0078d70b",
-        "score_deck_sha256": "5ab6fac1d9748a9d1035d6b6c7e74b4313bd8985edfddca7a5c7a980bb8400b4",
+        "score_deck_sha256": "368dcfc27599dedf380d88a54edff7b8beef5a1f41c26e87864955f9757ff0e1",
         "task_certification_sha256": "4fee7f60ab24a4b8b546ed4c5ef8def73cceea26c3c0774acea899913c921547",
-        "task_record_sha256": "c889d37ac368d9394050a3a8495ef5f78f22b0b6b44b26c7538303d413a23b1f"
+        "task_record_sha256": "c6a9f2cdb7457a3375d426eb2b50bd4a87b65126adef2190607adb1072d1279f"
       },
       "release_dir": "009-lock-detector"
     },
@@ -765,9 +765,9 @@
       "canonical_dut_id": "010",
       "hashes": {
         "mutation_catalog_sha256": "607c89e938fa32d961562b21d63c6cfb63e0ac0095df33e62d36bb6c523817b0",
-        "score_deck_sha256": "663958b032bffc2b682ecd03ac48823b7a08e30102f6c7c3ed1a12528a238f66",
+        "score_deck_sha256": "97e3390ea4969c90e721c3821963606bae733c80095dece1a981c40c1791ce52",
         "task_certification_sha256": "0f481abda2cb19d6f7b66cde6e259f5f076defe5274d4a2a8338465ded013c2b",
-        "task_record_sha256": "6cb345d190af5c01a51d88c4e938d0be69576d460afd5b8c12e3c8da9e6f9708"
+        "task_record_sha256": "c4f891ae0df637646887fa96e37f211cf5d2d9f647fda99177459d9a6720416f"
       },
       "release_dir": "010-offset-comparator"
     },

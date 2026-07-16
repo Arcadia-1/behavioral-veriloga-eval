@@ -206,6 +206,27 @@ def test_sar_calibration_checker_uses_clock_and_reset_events_not_absolute_window
     assert checker(rows)[0]
 
 
+def test_debounce_checker_uses_observed_edges_after_a_time_shift() -> None:
+    from checkers.v4.registry import load_checker
+
+    checker = load_checker("v4_005_debounce_latch")
+    assert checker is not None
+    rows = [
+        {"time": 100.0e-9, "sig": 0.0, "rst_n": 0.0, "out": 0.0},
+        {"time": 101.0e-9, "sig": 0.0, "rst_n": 0.9, "out": 0.0},
+        {"time": 110.0e-9, "sig": 0.0, "rst_n": 0.9, "out": 0.0},
+        {"time": 110.1e-9, "sig": 0.9, "rst_n": 0.9, "out": 0.0},
+        {"time": 122.1e-9, "sig": 0.9, "rst_n": 0.9, "out": 0.0},
+        {"time": 122.4e-9, "sig": 0.9, "rst_n": 0.9, "out": 0.9},
+        {"time": 124.1e-9, "sig": 0.9, "rst_n": 0.9, "out": 0.9},
+        {"time": 140.0e-9, "sig": 0.9, "rst_n": 0.9, "out": 0.9},
+        {"time": 140.1e-9, "sig": 0.0, "rst_n": 0.9, "out": 0.9},
+        {"time": 140.4e-9, "sig": 0.0, "rst_n": 0.9, "out": 0.0},
+        {"time": 142.1e-9, "sig": 0.0, "rst_n": 0.9, "out": 0.0},
+    ]
+    assert checker(rows)[0]
+
+
 def test_simulate_evas_resolves_the_modular_v4_registry() -> None:
     import simulate_evas
 

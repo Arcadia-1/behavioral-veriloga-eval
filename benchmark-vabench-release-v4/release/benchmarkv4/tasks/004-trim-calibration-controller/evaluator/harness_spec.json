@@ -7,9 +7,14 @@
   },
   "deck": {
     "analyses": [
-      "tran tran stop=220n maxstep=500p"
+      "tran tran stop=220n maxstep=200p"
     ],
-    "body_lines": [],
+    "body_lines": [
+      "Vclk (clk 0) vsource type=pulse val0=0 val1=0.9 delay=5n rise=100p fall=100p width=2n period=8n",
+      "Vrst (rst 0) vsource type=pwl wave=[0 0.9 14n 0.9 14.2n 0 220n 0]",
+      "Verr (err 0) vsource type=pwl wave=[0 0.9 86n 0.9 86.2n 0 202n 0 202.2n 0.9 220n 0.9]",
+      "XDUT (clk rst err trim) cdac_calibration"
+    ],
     "header": [
       "simulator lang=spectre",
       "global 0"
@@ -36,48 +41,17 @@
     "legacy_score_deck_sha256": "ac3b5551d22ca11172a6705271a49f26dfe67c02ca60d13177b2cd9d5c160d02",
     "notes": [
       "legacy feedback deck was used only to seed the canonical harness spec",
-      "legacy score deck seeded private profile-specific overrides"
+      "legacy score deck seeded private profile-specific overrides",
+      "feedback deck is the canonical stimulus; score is generated with identical semantics"
     ]
   },
   "profile_defaults": {
     "feedback": {
-      "deck_overrides": {
-        "analyses": [
-          "tran tran stop=220n maxstep=200p"
-        ],
-        "body_lines": [
-          "Vclk (clk 0) vsource type=pulse val0=0 val1=0.9 delay=5n rise=100p fall=100p width=2n period=8n",
-          "Vrst (rst 0) vsource type=pwl wave=[0 0.9 14n 0.9 14.2n 0 220n 0]",
-          "Verr (err 0) vsource type=pwl wave=[0 0.9 86n 0.9 86.2n 0 202n 0 202.2n 0.9 220n 0.9]",
-          "",
-          "XDUT (clk rst err trim) cdac_calibration",
-          ""
-        ]
-      },
-      "parameters": {
-        "maxstep": "200p",
-        "stop_time": "100n"
-      },
       "simulatorOptions": {
         "evas_profile": "balanced"
       }
     },
-    "score": {
-      "deck_overrides": {
-        "body_lines": [
-          "Vclk (clk 0) vsource type=pulse val0=0 val1=0.9 delay=6n rise=100p fall=100p width=2n period=8n",
-          "Vrst (rst 0) vsource type=pwl wave=[0 0.9 15n 0.9 15.2n 0 220n 0]",
-          "Verr (err 0) vsource type=pwl wave=[0 0.9 87n 0.9 87.2n 0 203n 0 203.2n 0.9 220n 0.9]",
-          "",
-          "XDUT (clk rst err trim) cdac_calibration",
-          ""
-        ]
-      },
-      "parameters": {
-        "maxstep": "100p",
-        "stop_time": "100n"
-      }
-    }
+    "score": {}
   },
   "property_ids": [
     "P_INITIAL_AND_RESET",

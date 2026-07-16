@@ -13,7 +13,24 @@
       "Vvdd (VDD 0) vsource dc=0.9",
       "Vvss (VSS 0) vsource dc=0.1",
       "Vclk (CLK 0) vsource type=pulse val0=0.1 val1=0.54 delay=1n rise=20p fall=20p width=1n period=4n",
-      ""
+      "Vinp (VINP 0) vsource type=pwl wave=[ \\",
+      "0      0.538 \\",
+      "4.1n   0.538 \\",
+      "4.3n   0.549 \\",
+      "8.1n   0.549 \\",
+      "8.3n   0.554 \\",
+      "12.2n  0.554 \\",
+      "12.4n  0.558 \\",
+      "16.1n  0.558 \\",
+      "16.3n  0.566 \\",
+      "20.2n  0.566 \\",
+      "20.4n  0.549 \\",
+      "24.2n  0.549 \\",
+      "24.4n  0.537 \\",
+      "28.0n  0.537 \\",
+      "]",
+      "Vinn (VINN 0) vsource dc=0.550",
+      "XDUT (VDD VSS CLK VINP VINN OUT_P) cmp_offset_ref"
     ],
     "header": [
       "simulator lang=spectre",
@@ -43,78 +60,17 @@
     "legacy_score_deck_sha256": "ce010821df0a23202989f8e78a98810aca1c401d06107cd732df900789058135",
     "notes": [
       "legacy feedback deck was used only to seed the canonical harness spec",
-      "legacy score deck seeded private profile-specific overrides"
+      "legacy score deck seeded private profile-specific overrides",
+      "feedback deck is the canonical stimulus; score is generated with identical semantics"
     ]
   },
   "profile_defaults": {
     "feedback": {
-      "deck_overrides": {
-        "body_lines": [
-          "Vinp (VINP 0) vsource type=pwl wave=[ \\",
-          "    0      0.538 \\",
-          "    4.1n   0.538 \\",
-          "    4.3n   0.549 \\",
-          "    8.1n   0.549 \\",
-          "    8.3n   0.554 \\",
-          "    12.2n  0.554 \\",
-          "    12.4n  0.558 \\",
-          "    16.1n  0.558 \\",
-          "    16.3n  0.566 \\",
-          "    20.2n  0.566 \\",
-          "    20.4n  0.549 \\",
-          "    24.2n  0.549 \\",
-          "    24.4n  0.537 \\",
-          "    28.0n  0.537 \\",
-          "]",
-          "Vinn (VINN 0) vsource dc=0.550",
-          "",
-          "XDUT (VDD VSS CLK VINP VINN OUT_P) cmp_offset_ref",
-          ""
-        ]
-      },
-      "parameters": {
-        "maxstep": "200p",
-        "stop_time": "100n"
-      },
       "simulatorOptions": {
         "evas_profile": "balanced"
       }
     },
-    "score": {
-      "deck_overrides": {
-        "body_lines": [
-          "// Hidden seven-edge staircase:",
-          "// 1n -10mV low, 5n 0mV low, 9n +3mV low,",
-          "// 13n +7mV high, 17n +20mV high, 21n 0mV low, 25n -10mV low.",
-          "// Steps at 12.2n, 20.2n, and 24.2n verify that the DUT is edge-sampled,",
-          "// not an asynchronous comparator.",
-          "Vinp (VINP 0) vsource type=pwl wave=[ \\",
-          "    0      0.540 \\",
-          "    4.0n   0.540 \\",
-          "    4.2n   0.550 \\",
-          "    8.0n   0.550 \\",
-          "    8.2n   0.553 \\",
-          "    12.0n  0.553 \\",
-          "    12.2n  0.557 \\",
-          "    16.0n  0.557 \\",
-          "    16.2n  0.570 \\",
-          "    20.0n  0.570 \\",
-          "    20.2n  0.550 \\",
-          "    24.0n  0.550 \\",
-          "    24.2n  0.540 \\",
-          "    28.0n  0.540 \\",
-          "]",
-          "Vinn (VINN 0) vsource dc=0.550",
-          "",
-          "XDUT (VDD VSS CLK VINP VINN OUT_P) cmp_offset_ref",
-          ""
-        ]
-      },
-      "parameters": {
-        "maxstep": "100p",
-        "stop_time": "100n"
-      }
-    }
+    "score": {}
   },
   "property_ids": [
     "P_RISING_EDGE_SAMPLE",

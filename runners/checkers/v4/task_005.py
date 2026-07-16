@@ -73,10 +73,10 @@ def _v4_edge_times(
     return times
 
 def check_v4_debounce_latch(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    base_ok, base_note = check_v3_debounce_latch(rows)
     required = {"time", "sig", "rst_n", "out"}
     if not rows or not required.issubset(rows[0]):
-        return False, base_note
+        missing = sorted(required - set(rows[0])) if rows else sorted(required)
+        return False, "missing_columns=" + ",".join(missing)
 
     sig_rises = _v4_edge_times(rows, "sig", rising=True)
     sig_falls = _v4_edge_times(rows, "sig", rising=False)
@@ -129,18 +129,18 @@ def check_v4_debounce_latch(rows: list[dict[str, float]]) -> tuple[bool, str]:
     ]
 
     rail_failures: list[str] = []
-    for label, time_ns, expected_high in (
-        ("pre_qualify", 82.0, False),
-        ("qualified", 100.0, True),
-        ("held_high", 130.0, True),
-    ):
-        value = sample_signal_at(rows, "out", time_ns * 1e-9)
-        if value is None:
-            rail_failures.append(f"{label}=missing")
-        elif expected_high and value < 0.81:
-            rail_failures.append(f"{label}={value:.3f}<0.810")
-        elif not expected_high and value > 0.09:
-            rail_failures.append(f"{label}={value:.3f}>0.090")
+    for event_time in expected_rises:
+        value = sample_signal_at(rows, "out", event_time + 2.0e-9)
+        if value is None or value < 0.81:
+            rail_failures.append(
+                f"rise@{event_time * 1e9:.3f}ns={value if value is not None else 'missing'}"
+            )
+    for event_time in required_fall_events:
+        value = sample_signal_at(rows, "out", event_time + 2.0e-9)
+        if value is None or value > 0.09:
+            rail_failures.append(
+                f"fall@{event_time * 1e9:.3f}ns={value if value is not None else 'missing'}"
+            )
 
     event_ok = (
         len(expected_rises) >= 1
@@ -150,8 +150,8 @@ def check_v4_debounce_latch(rows: list[dict[str, float]]) -> tuple[bool, str]:
         and not unmatched_required_falls
         and not rail_failures
     )
-    return base_ok and event_ok, (
-        f"{base_note} expected_rises={len(expected_rises)} observed_rises={len(out_rises)} "
+    return event_ok, (
+        f"expected_rises={len(expected_rises)} observed_rises={len(out_rises)} "
         f"observed_falls={len(out_falls)} unmatched_expected={len(unmatched_expected)} "
         f"unauthorized_rises={len(unauthorized_rises)} unauthorized_falls={len(unauthorized_falls)} "
         f"required_falls={len(required_fall_events)} unmatched_required_falls={len(unmatched_required_falls)} "

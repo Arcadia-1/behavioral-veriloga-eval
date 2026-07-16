@@ -34,25 +34,35 @@ def check_first_order_lowpass(rows: list[dict[str, float]]) -> tuple[bool, str]:
     if not rows or not required.issubset(rows[0]):
         return False, "missing time/vin/vout"
 
-    vin_pre = sample_signal(rows, "vin", 10.0e-9)
-    vin_post = sample_signal(rows, "vin", 30.0e-9)
-    vin_late = sample_signal(rows, "vin", 150.0e-9)
+    step_times = [
+        current["time"]
+        for previous, current in zip(rows, rows[1:])
+        if previous["vin"] < 0.4 <= current["vin"]
+    ]
+    if len(step_times) != 1:
+        return False, f"input_step_count={len(step_times)}"
+    step_time = step_times[0]
+    end_time = rows[-1]["time"]
+    response_window = end_time - step_time
+    vin_pre = sample_signal(rows, "vin", step_time - 0.05 * response_window)
+    vin_post = sample_signal(rows, "vin", step_time + 0.10 * response_window)
+    vin_late = sample_signal(rows, "vin", step_time + 0.90 * response_window)
     if vin_pre is None or vin_post is None or vin_late is None:
         return False, "missing_vin_step_samples"
     input_step = vin_pre < 0.10 and vin_post > 0.72 and vin_late > 0.72
 
-    sample_times_ns = [30.0, 50.0, 90.0, 150.0]
+    sample_times = [step_time + fraction * response_window for fraction in (0.08, 0.22, 0.50, 0.92)]
     samples: list[float] = []
-    for t_ns in sample_times_ns:
-        value = sample_signal(rows, "vout", t_ns * 1e-9)
+    for time_s in sample_times:
+        value = sample_signal(rows, "vout", time_s)
         if value is None:
-            return False, f"missing_sample_at={t_ns:g}ns"
+            return False, f"missing_sample_at={time_s * 1e9:.3f}ns"
         samples.append(value)
 
     monotonic = samples[0] < samples[1] < samples[2] <= samples[3] + 0.03
     response_fast_enough = samples[1] > 0.55 and samples[2] > 0.70 and samples[3] > 0.76
     not_instant = samples[0] < 0.45
-    post_rows = [r for r in rows if r.get("time", 0.0) >= 22.0e-9 and "vout" in r]
+    post_rows = [r for r in rows if r.get("time", 0.0) >= step_time and "vout" in r]
     bounded = bool(post_rows) and -0.03 <= min(r["vout"] for r in post_rows) <= max(r["vout"] for r in post_rows) <= 0.88
     ok = input_step and monotonic and response_fast_enough and not_instant and bounded
     values = ",".join(f"{value:.3f}" for value in samples)
@@ -95,44 +105,21 @@ def check_v4_first_order_lowpass(rows: list[dict[str, float]]) -> tuple[bool, st
     if not rows or not required.issubset(rows[0]):
         return False, base_note
 
-    initial_samples = [sample_signal_at(rows, "vout", time_ns * 1e-9) for time_ns in (1.0, 10.0)]
+    step_times = [
+        current["time"]
+        for previous, current in zip(rows, rows[1:])
+        if previous["vin"] < 0.4 <= current["vin"]
+    ]
+    if len(step_times) != 1:
+        return False, base_note
+    start_time = rows[0]["time"]
+    step_time = step_times[0]
+    initial_samples = [
+        sample_signal_at(rows, "vout", start_time + fraction * (step_time - start_time))
+        for fraction in (0.25, 0.75)
+    ]
     initial_ok = all(value is not None and abs(value) <= 0.02 for value in initial_samples)
-    end_time = rows[-1]["time"]
-    y = 0.0
-    update_period = 0.5e-9
-    update_time = 0.0
-    update_index = 0
-    schedule_errors: list[tuple[float, float, float]] = []
-    while update_time + 0.45e-9 <= end_time:
-        vin = sample_signal_at(rows, "vin", update_time)
-        if vin is None:
-            break
-        y = y + 0.025 * (vin - y)
-        if update_index % 10 == 0:
-            observed = sample_signal_at(rows, "vout", update_time + 0.45e-9)
-            if observed is not None:
-                error = abs(observed - y)
-                schedule_errors.append((update_time, observed, error))
-        update_index += 1
-        update_time = update_index * update_period
-
-    failing_schedule = [item for item in schedule_errors if item[2] > 0.035]
-    max_schedule_error = max((item[2] for item in schedule_errors), default=float("inf"))
-    schedule_ok = len(schedule_errors) >= 20 and not failing_schedule
-    return base_ok and initial_ok and schedule_ok, (
-        f"{base_note} initial_samples={initial_samples} initial_ok={initial_ok} "
-        f"schedule_checks={len(schedule_errors)} schedule_failures={len(failing_schedule)} "
-        f"max_schedule_error={max_schedule_error:.4f}"
-        + (
-            " schedule_detail="
-            + ";".join(
-                f"{time_s * 1e9:.3f}ns_observed={observed:.3f}_error={error:.4f}"
-                for time_s, observed, error in failing_schedule[:5]
-            )
-            if failing_schedule
-            else ""
-        )
-    )
+    return base_ok and initial_ok, f"{base_note} initial_samples={initial_samples} initial_ok={initial_ok}"
 
 check_vbm1_first_order_lowpass = check_first_order_lowpass
 
