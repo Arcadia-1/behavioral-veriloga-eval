@@ -10,9 +10,7 @@ Vd0 (din0 0) vsource dc=0.15
 Vd1 (din1 0) vsource dc=0.35
 Vd2 (din2 0) vsource dc=0.65
 Vd3 (din3 0) vsource dc=0.85
-
 XDUT (dsel0 dsel1 din0 din1 din2 din3 clks dout) clocked_four_input_mux
-
 
 simulatorOptions options evas_profile=balanced
 
