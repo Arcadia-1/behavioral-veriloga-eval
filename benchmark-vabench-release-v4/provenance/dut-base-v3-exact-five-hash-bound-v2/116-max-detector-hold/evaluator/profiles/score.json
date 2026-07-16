@@ -1,26 +1,13 @@
 {
   "corners": [],
-  "deck_overrides": {
-    "analyses": [
-      "tran tran stop=45n maxstep=25p"
-    ],
-    "body_lines": [
-      "Vin (vin 0) vsource type=pwl wave=[0 0.10 8n 0.10 8.1n 0.60 18n 0.60 18.1n 0.35 28n 0.35 28.1n 0.95 38n 0.95 38.1n 0.50 50n 0.50]",
-      "",
-      "XDUT (vin vout) max_detector_hold",
-      ""
-    ]
-  },
+  "deck_overrides": {},
   "deterministic_seed": 0,
   "generated_from": {
     "script": "render_v4_harness.py",
     "version": "v4-harness-renderer-v1"
   },
-  "harness_spec_sha256": "adaaf64d2a4644fb1bfee5a03bc536f9aae572598200613b127aa3160a7acf24",
-  "parameters": {
-    "maxstep": "100p",
-    "stop_time": "100n"
-  },
+  "harness_spec_sha256": "4d7bad319ecaa16d383f276e2468f50fa2cbcebb78059511503fe424a9a86050",
+  "parameters": {},
   "profile_name": "score",
   "property_ids": [
     "P_INITIAL_INPUT",

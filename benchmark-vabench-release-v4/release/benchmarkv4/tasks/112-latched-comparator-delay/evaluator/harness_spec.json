@@ -12,7 +12,9 @@
     "body_lines": [
       "Vdd (vdd 0) vsource dc=0.9",
       "Vclk (clk 0) vsource type=pulse val0=0 val1=0.9 delay=5n period=10n width=4n rise=100p fall=100p",
-      "Vinn (vinn 0) vsource dc=0.45"
+      "Vinn (vinn 0) vsource dc=0.45",
+      "Vinp (vinp 0) vsource type=pwl wave=[0 0.65 11n 0.65 11.1n 0.25 21n 0.25 21.1n 0.65 31n 0.65 31.1n 0.25 60n 0.25]",
+      "XDUT (dout 0 vdd clk vinn vinp) latched_comparator_delay td=500p tr=100p vn=0"
     ],
     "header": [
       "simulator lang=spectre",
@@ -41,41 +43,17 @@
     "legacy_score_deck_sha256": "e7d4e308dff8ea0b8c6e323a302d54bced76cd276d00f3c61c9f7b757fea53ae",
     "notes": [
       "legacy feedback deck was used only to seed the canonical harness spec",
-      "legacy score deck seeded private profile-specific overrides"
+      "legacy score deck seeded private profile-specific overrides",
+      "feedback deck is the canonical stimulus; score is generated with identical semantics"
     ]
   },
   "profile_defaults": {
     "feedback": {
-      "deck_overrides": {
-        "body_lines": [
-          "Vinp (vinp 0) vsource type=pwl wave=[0 0.65 11n 0.65 11.1n 0.25 21n 0.25 21.1n 0.65 31n 0.65 31.1n 0.25 60n 0.25]",
-          "",
-          "XDUT (dout 0 vdd clk vinn vinp) latched_comparator_delay td=500p tr=100p vn=0",
-          ""
-        ]
-      },
-      "parameters": {
-        "maxstep": "200p",
-        "stop_time": "100n"
-      },
       "simulatorOptions": {
         "evas_profile": "balanced"
       }
     },
-    "score": {
-      "deck_overrides": {
-        "body_lines": [
-          "Vinp (vinp 0) vsource type=pwl wave=[0 0.56 11n 0.56 11.1n 0.48 21n 0.48 21.1n 0.55 31n 0.55 31.1n 0.42 60n 0.42]",
-          "",
-          "XDUT (dout 0 vdd clk vinn vinp) latched_comparator_delay td=700p tr=150p vos=50m vn=0 seed_init=17",
-          ""
-        ]
-      },
-      "parameters": {
-        "maxstep": "100p",
-        "stop_time": "100n"
-      }
-    }
+    "score": {}
   },
   "property_ids": [
     "P_SUPPLY_REFERENCED_THRESHOLD",

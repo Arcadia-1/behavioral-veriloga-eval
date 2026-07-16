@@ -2,59 +2,18 @@
 from __future__ import annotations
 
 from ..api import Checker
-def sample_signal_at(rows: list[dict[str, float]], signal: str, time_s: float) -> float | None:
-    if not rows or "time" not in rows[0] or signal not in rows[0]:
-        return None
-    first_time = rows[0]["time"]
-    last_time = rows[-1].get("time")
-    if last_time is None or time_s < first_time or time_s > last_time:
-        return None
-    if time_s == first_time:
-        return rows[0].get(signal)
-    for idx in range(1, len(rows)):
-        prev = rows[idx - 1]
-        cur = rows[idx]
-        t0 = prev.get("time")
-        t1 = cur.get("time")
-        if t0 is None or t1 is None:
-            continue
-        if t0 <= time_s <= t1:
-            v0 = prev.get(signal)
-            v1 = cur.get(signal)
-            if v0 is None or v1 is None:
-                return None
-            if t1 == t0:
-                return v1
-            alpha = (time_s - t0) / (t1 - t0)
-            return v0 + alpha * (v1 - v0)
-    return None
+from .stimulus_relative import crossings, diagnostic, pass_note, probe_time, require_signals, sample
 
-def _v3_edge_times(
-    rows: list[dict[str, float]],
-    signal: str,
-    *,
-    threshold: float,
-    direction: int,
-) -> list[float]:
-    edges: list[float] = []
-    for idx in range(1, len(rows)):
-        prev = rows[idx - 1]
-        cur = rows[idx]
-        v0 = prev.get(signal)
-        v1 = cur.get(signal)
-        t0 = prev.get("time")
-        t1 = cur.get("time")
-        if v0 is None or v1 is None or t0 is None or t1 is None:
-            continue
-        crossed = (v0 < threshold <= v1) if direction > 0 else (v0 > threshold >= v1)
-        if not crossed:
-            continue
-        if v1 == v0:
-            edges.append(t1)
-        else:
-            frac = (threshold - v0) / (v1 - v0)
-            edges.append(t0 + frac * (t1 - t0))
-    return edges
+
+PROPERTY_IDS = (
+    "P_FIRST_EDGE_CAPTURE",
+    "P_PREVIOUS_WINDOW_REPORT",
+    "P_SIGNED_DIFFERENCE",
+    "P_OUTPUT_CLIP",
+    "P_WINDOW_REARM",
+    "P_OUTPUT_TRANSITION",
+)
+
 
 def _v3_first_edge_between(edges: list[float], start_s: float, stop_s: float) -> float | None:
     for edge in edges:
@@ -64,19 +23,28 @@ def _v3_first_edge_between(edges: list[float], start_s: float, stop_s: float) ->
 
 def check_v3_time_diff_detector(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "clk", "vinp", "vinn", "vout"}
-    if not rows or not required.issubset(rows[0]):
-        return False, "missing time/clk/vinp/vinn/vout"
-    clk_edges = _v3_edge_times(rows, "clk", threshold=0.45, direction=1)
-    p_edges = _v3_edge_times(rows, "vinp", threshold=0.45, direction=1)
-    n_edges = _v3_edge_times(rows, "vinn", threshold=0.45, direction=1)
+    missing = require_signals(rows, required, "P_PREVIOUS_WINDOW_REPORT")
+    if missing:
+        return False, missing
+
+    clk_edges = crossings(rows, "clk", threshold=0.45, direction="rising")
+    p_edges = crossings(rows, "vinp", threshold=0.45, direction="rising")
+    n_edges = crossings(rows, "vinn", threshold=0.45, direction="rising")
     if len(clk_edges) < 3:
-        return False, f"too_few_clk_edges={len(clk_edges)}"
+        return False, diagnostic(
+            "P_WINDOW_REARM",
+            "insufficient_events",
+            expected="clk_rising_count>=3",
+            observed=f"clk_rising_count={len(clk_edges)}",
+            event="clk_rising_set",
+        )
+
     max_err = 0.0
     checked = 0
-    details: list[str] = []
     for idx, edge in enumerate(clk_edges):
-        sample_t = edge + 1.0e-9
-        if sample_t > rows[-1]["time"]:
+        next_edge = clk_edges[idx + 1] if idx + 1 < len(clk_edges) else None
+        sample_t = probe_time(rows, edge, next_edge, fraction=0.25)
+        if sample_t is None:
             continue
         if idx == 0:
             expected = 0.0
@@ -84,18 +52,46 @@ def check_v3_time_diff_detector(rows: list[dict[str, float]]) -> tuple[bool, str
             start = clk_edges[idx - 1]
             p_edge = _v3_first_edge_between(p_edges, start, edge)
             n_edge = _v3_first_edge_between(n_edges, start, edge)
-            p_time = p_edge if p_edge is not None else 0.0
-            n_time = n_edge if n_edge is not None else 0.0
+            if p_edge is None or n_edge is None:
+                return False, diagnostic(
+                    "P_FIRST_EDGE_CAPTURE",
+                    "missing_window_edge",
+                    expected="vinp_rising and vinn_rising in previous clock window",
+                    observed=f"vinp_present={p_edge is not None},vinn_present={n_edge is not None}",
+                    event=f"clk_window[{idx - 1}]",
+                )
+            p_time = p_edge
+            n_time = n_edge
             expected = max(-0.9, min(0.9, (p_time - n_time) * 1.0e9))
-        observed = sample_signal_at(rows, "vout", sample_t)
+        observed = sample(rows, "vout", sample_t)
         if observed is None:
-            return False, f"missing_tdiff_sample_at={sample_t * 1e9:.3f}ns"
-        max_err = max(max_err, abs(observed - expected))
-        details.append(f"{sample_t * 1e9:.1f}ns:{observed:.3f}/{expected:.3f}")
+            return False, diagnostic(
+                "P_OUTPUT_TRANSITION",
+                "missing_sample",
+                expected="vout",
+                observed="unavailable",
+                event=f"clk_rising[{idx}]",
+            )
+        err = abs(observed - expected)
+        max_err = max(max_err, err)
         checked += 1
+        if err > 0.10:
+            return False, diagnostic(
+                "P_SIGNED_DIFFERENCE",
+                "time_difference_mismatch",
+                expected=f"vout={expected:.4f}",
+                observed=f"vout={observed:.4f},err={err:.4f}",
+                event=f"clk_rising[{idx}]",
+            )
     if checked < 3:
-        return False, f"too_few_tdiff_output_checks={checked}"
-    return max_err <= 0.10, f"checked={checked} max_error={max_err:.5f} samples=" + ",".join(details[:5])
+        return False, diagnostic(
+            "P_PREVIOUS_WINDOW_REPORT",
+            "insufficient_checks",
+            expected="checked>=3",
+            observed=f"checked={checked}",
+            event="clk_rising_set",
+        )
+    return True, pass_note(PROPERTY_IDS, f"checked={checked} max_error={max_err:.5f}")
 
 CHECKER_ID = "v4_117_time_diff_detector"
 CHECKER: Checker = check_v3_time_diff_detector

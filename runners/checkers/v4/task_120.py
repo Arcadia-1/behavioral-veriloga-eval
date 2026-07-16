@@ -1,7 +1,20 @@
 """Task-specific checker for canonical v4 DUT 120."""
 from __future__ import annotations
 
+from collections.abc import Callable
+
 from ..api import Checker
+from .stimulus_relative import diagnostic, pass_note, require_signals
+
+
+PROPERTY_IDS = (
+    "P_DB_AMPLITUDE_RATIO",
+    "P_POLARITY_PRESERVATION",
+    "P_MONOTONIC_ATTENUATION",
+    "P_CONTINUOUS_RESPONSE",
+)
+
+
 def _check_affine_transfer_coverage(
     rows: list[dict[str, float]],
     *,
@@ -13,9 +26,10 @@ def _check_affine_transfer_coverage(
     tolerance: float,
     min_span: float,
 ) -> tuple[bool, str]:
-    if not rows or not required.issubset(rows[0]):
-        missing = sorted(required - set(rows[0])) if rows else sorted(required)
-        return False, f"missing_{label}_columns=" + ",".join(missing)
+    missing = require_signals(rows, required, "P_DB_AMPLITUDE_RATIO")
+    if missing:
+        return False, missing
+
     checked = 0
     max_err = 0.0
     worst: tuple[float, float, float] | None = None
@@ -23,9 +37,6 @@ def _check_affine_transfer_coverage(
     drive_min = drive_max = previous_drive = first_drive
     saw_rise = saw_fall = False
     for row in rows:
-        if row["time"] < 0.10e-9:
-            previous_drive = drive_fn(row)
-            continue
         drive = drive_fn(row)
         expected = expected_fn(row)
         error = abs(row[output] - expected)
@@ -39,23 +50,33 @@ def _check_affine_transfer_coverage(
         previous_drive = drive
         checked += 1
     if checked < 20:
-        return False, f"insufficient_{label}_samples={checked}"
+        return False, diagnostic(
+            "P_CONTINUOUS_RESPONSE",
+            "insufficient_checks",
+            expected="checked>=20",
+            observed=f"checked={checked}",
+            event=f"{label}_trace",
+        )
     if drive_max - drive_min < min_span or not (saw_rise and saw_fall):
-        return False, (
-            f"insufficient_{label}_coverage range={drive_min:.3f}:{drive_max:.3f} "
-            f"rise={saw_rise} fall={saw_fall}"
+        return False, diagnostic(
+            "P_MONOTONIC_ATTENUATION",
+            "insufficient_drive_coverage",
+            expected=f"span>={min_span:.3f},rise=True,fall=True",
+            observed=f"span={drive_max - drive_min:.3f},rise={saw_rise},fall={saw_fall}",
+            event=f"{label}_trace",
         )
     if max_err > tolerance:
         assert worst is not None
-        time_s, observed, expected = worst
-        return False, (
-            f"{label}_error@{time_s * 1e9:.3f}ns observed={observed:.4f} "
-            f"expected={expected:.4f} max_err={max_err:.4f}"
+        _time_s, observed, expected = worst
+        return False, diagnostic(
+            "P_DB_AMPLITUDE_RATIO",
+            "attenuation_mismatch",
+            expected=f"{output}={expected:.4f}",
+            observed=f"{output}={observed:.4f},max_err={max_err:.4f}",
+            event=f"{label}_worst_observed_sample",
         )
-    return True, (
-        f"checked={checked} range={drive_min:.3f}:{drive_max:.3f} "
-        f"rise={saw_rise} fall={saw_fall} max_err={max_err:.4f}"
-    )
+    detail = f"checked={checked} range={drive_min:.3f}:{drive_max:.3f} rise={saw_rise} fall={saw_fall} max_err={max_err:.4f}"
+    return True, pass_note(PROPERTY_IDS, detail)
 
 def check_v3_attenuator_gain(rows: list[dict[str, float]]) -> tuple[bool, str]:
     return _check_affine_transfer_coverage(

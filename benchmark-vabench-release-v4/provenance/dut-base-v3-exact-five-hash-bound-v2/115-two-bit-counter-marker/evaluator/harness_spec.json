@@ -11,9 +11,7 @@
     ],
     "body_lines": [
       "Vclk (clkin 0) vsource type=pulse val0=0 val1=1 delay=5n period=10n width=4n rise=100p fall=100p",
-      "",
-      "XDUT (clkin mc) two_bit_counter_marker",
-      ""
+      "XDUT (clkin mc) two_bit_counter_marker"
     ],
     "header": [
       "simulator lang=spectre",
@@ -39,30 +37,17 @@
     "legacy_score_deck_sha256": "4e30ec41d351ccddcb937971494096f3d2fd60cc1cbc5151b952f3124dc1082b",
     "notes": [
       "legacy feedback deck was used only to seed the canonical harness spec",
-      "legacy score deck seeded private profile-specific overrides"
+      "legacy score deck seeded private profile-specific overrides",
+      "feedback deck is the canonical stimulus; score is generated with identical semantics"
     ]
   },
   "profile_defaults": {
     "feedback": {
-      "parameters": {
-        "maxstep": "200p",
-        "stop_time": "100n"
-      },
       "simulatorOptions": {
         "evas_profile": "balanced"
       }
     },
-    "score": {
-      "deck_overrides": {
-        "analyses": [
-          "tran tran stop=55n maxstep=25p"
-        ]
-      },
-      "parameters": {
-        "maxstep": "100p",
-        "stop_time": "100n"
-      }
-    }
+    "score": {}
   },
   "property_ids": [
     "P_INITIAL_LOW",
