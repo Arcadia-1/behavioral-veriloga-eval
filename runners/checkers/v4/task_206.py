@@ -2,6 +2,9 @@
 from __future__ import annotations
 
 from ..api import Checker
+from .stimulus_relative import normalize_affine_time
+
+
 def sample_signal_at(rows: list[dict[str, float]], signal: str, time_s: float) -> float | None:
     if not rows or "time" not in rows[0] or signal not in rows[0]:
         return None
@@ -77,8 +80,17 @@ def check_v3_sar_comparator_reset_high(rows: list[dict[str, float]]) -> tuple[bo
     required = {"time", "cmpck", "vinn", "vinp", "dcmpn", "dcmpp"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing sar comparator reset high signals"
-    return _sample_many_within_trace(
+    normalized = normalize_affine_time(
         rows,
+        (
+            ("cmpck", 0.45, "rising", 0.36, 0),
+            ("cmpck", 0.45, "rising", 2.36, 2),
+        ),
+    )
+    if normalized is None:
+        return False, "missing_cmpck_stimulus_edges"
+    return _sample_many_within_trace(
+        normalized,
         {
             "dcmpp": [(0.2, 0.9), (0.5, 0.9), (0.95, 0.9), (1.5, 0.0), (1.95, 0.9), (2.5, 0.9)],
             "dcmpn": [(0.2, 0.9), (0.5, 0.0), (0.95, 0.9), (1.5, 0.9), (1.95, 0.9), (2.5, 0.0)],

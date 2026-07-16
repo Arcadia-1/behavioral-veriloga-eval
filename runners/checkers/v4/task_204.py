@@ -2,6 +2,9 @@
 from __future__ import annotations
 
 from ..api import Checker
+from .stimulus_relative import normalize_affine_time
+
+
 def sample_signal_at(rows: list[dict[str, float]], signal: str, time_s: float) -> float | None:
     if not rows or "time" not in rows[0] or signal not in rows[0]:
         return None
@@ -77,14 +80,23 @@ def check_v3_va_dac_6b_se(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "rdy", "aout", *{f"din{i}" for i in range(6)}}
     if not rows or not required.issubset(rows[0]):
         return False, "missing va dac 6b se signals"
+    normalized = normalize_affine_time(
+        rows,
+        (
+            ("rdy", 0.5, "rising", 0.21, 0),
+            ("rdy", 0.5, "rising", 3.21, 3),
+        ),
+    )
+    if normalized is None:
+        return False, "missing_rdy_stimulus_edges"
     samples = [(0.5, -1.0), (1.5, -0.1368421), (2.5, 0.0526316), (3.5, 0.3263158)]
-    end_ns = float(rows[-1]["time"]) * 1e9
+    end_ns = float(normalized[-1]["time"]) * 1e9
     visible = [(time_ns, expected) for time_ns, expected in samples if time_ns <= end_ns + 1e-3]
     if not visible:
         visible = samples
     mismatches: list[tuple[float, float, float]] = []
     for time_ns, expected in visible:
-        observed = sample_signal_at(rows, "aout", time_ns * 1e-9)
+        observed = sample_signal_at(normalized, "aout", time_ns * 1e-9)
         if observed is None:
             return False, f"missing_aout_sample_at={time_ns:g}ns"
         if abs(observed - expected) > 0.02:

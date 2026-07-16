@@ -2,6 +2,9 @@
 from __future__ import annotations
 
 from ..api import Checker
+from .stimulus_relative import normalize_affine_time
+
+
 def sample_signal_at(rows: list[dict[str, float]], signal: str, time_s: float) -> float | None:
     if not rows or "time" not in rows[0] or signal not in rows[0]:
         return None
@@ -77,8 +80,17 @@ def check_v3_cdac_6b_stage1_up(rows: list[dict[str, float]]) -> tuple[bool, str]
     required = {"time", "vin", "clks", "dctrl2", "dctrl3", "dctrl4", "dctrl5", "vres"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing cdac 6b stage1 up signals"
-    return _sample_many_within_trace(
+    normalized = normalize_affine_time(
         rows,
+        (
+            ("dctrl5", 0.5, "rising", 1.21, 0),
+            ("dctrl2", 0.5, "rising", 3.01, 0),
+        ),
+    )
+    if normalized is None:
+        return False, "missing_cdac_control_stimulus_edges"
+    return _sample_many_within_trace(
+        normalized,
         {
             "vres": [(0.5, 0.2), (1.0, 0.2), (1.5, 0.7), (2.1, 0.95), (2.7, 1.075), (3.3, 1.1375)],
             "dctrl5": [(1.5, 1.0)],
