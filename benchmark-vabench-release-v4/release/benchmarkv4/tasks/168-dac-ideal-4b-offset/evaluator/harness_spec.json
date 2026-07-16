@@ -10,7 +10,11 @@
       "tran tran stop=40n maxstep=20p"
     ],
     "body_lines": [
-      "Vdin0 (din0 0) vsource type=pwl wave=[0 0 7.95n 0 8n 1.0 17.95n 1.0 18n 0 27.95n 0 28n 1.0]"
+      "Vdin0 (din0 0) vsource type=pwl wave=[0 0 7.95n 0 8n 1.0 17.95n 1.0 18n 0 27.95n 0 28n 1.0]",
+      "Vdin1 (din1 0) vsource type=pwl wave=[0 0 17.95n 0 18n 1.0]",
+      "Vdin2 (din2 0) vsource type=pwl wave=[0 0 7.95n 0 8n 1.0 17.95n 1.0 18n 0 27.95n 0 28n 1.0]",
+      "Vdin3 (din3 0) vsource type=pwl wave=[0 0 17.95n 0 18n 1.0]",
+      "XDUT (din0 din1 din2 din3 dout) dac_ideal_4b_offset"
     ],
     "header": [
       "simulator lang=spectre",
@@ -39,45 +43,18 @@
     "legacy_score_deck_sha256": "58ca43c6d21e942636724acc24afba9711748cdc6fedbca8591a77912ab517b5",
     "notes": [
       "legacy feedback deck was used only to seed the canonical harness spec",
-      "legacy score deck seeded private profile-specific overrides"
+      "legacy score deck seeded private profile-specific overrides",
+      "feedback deck is the canonical stimulus; score profile inherits identical stimulus semantics",
+      "feedback deck is the canonical stimulus; score is generated with identical semantics"
     ]
   },
   "profile_defaults": {
     "feedback": {
-      "deck_overrides": {
-        "body_lines": [
-          "Vdin1 (din1 0) vsource type=pwl wave=[0 0 17.95n 0 18n 1.0]",
-          "Vdin2 (din2 0) vsource type=pwl wave=[0 0 7.95n 0 8n 1.0 17.95n 1.0 18n 0 27.95n 0 28n 1.0]",
-          "Vdin3 (din3 0) vsource type=pwl wave=[0 0 17.95n 0 18n 1.0]",
-          "",
-          "XDUT (din0 din1 din2 din3 dout) dac_ideal_4b_offset",
-          ""
-        ]
-      },
-      "parameters": {
-        "maxstep": "200p",
-        "stop_time": "100n"
-      },
       "simulatorOptions": {
         "evas_profile": "balanced"
       }
     },
-    "score": {
-      "deck_overrides": {
-        "body_lines": [
-          "Vdin1 (din1 0) vsource type=pwl wave=[0 1.0 17.95n 1.0 18n 0 27.95n 0 28n 1.0]",
-          "Vdin2 (din2 0) vsource type=pwl wave=[0 0 7.95n 0 8n 1.0 27.95n 1.0 28n 1.0]",
-          "Vdin3 (din3 0) vsource type=pwl wave=[0 0 17.95n 0 18n 1.0 27.95n 1.0 28n 1.0]",
-          "",
-          "XDUT (din0 din1 din2 din3 dout) dac_ideal_4b_offset",
-          ""
-        ]
-      },
-      "parameters": {
-        "maxstep": "100p",
-        "stop_time": "100n"
-      }
-    }
+    "score": {}
   },
   "property_ids": [
     "P_THRESHOLDED_4BIT_CODE",

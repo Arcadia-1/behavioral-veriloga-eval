@@ -7,9 +7,12 @@
   },
   "deck": {
     "analyses": [
-      "tran tran stop=3.5n maxstep=5p"
+      "tran tran stop=3.6n maxstep=5p"
     ],
-    "body_lines": [],
+    "body_lines": [
+      "Vain (ain 0) vsource type=pwl wave=[0 -2 0.75n -2 0.80n 4.6 1.55n 4.6 1.60n 15.5 2.35n 15.5 2.40n 31.2 3.15n 31.2 3.20n 40 3.8n 40]",
+      "XDUT (ain dout0 dout1 dout2 dout3 dout4) trim_ctrl_5bit"
+    ],
     "header": [
       "simulator lang=spectre",
       "global 0"
@@ -38,40 +41,18 @@
     "legacy_score_deck_sha256": "184c4710cc864223020687404e7c8d48dd774b1a5ba3b80f24ccad2ba850d829",
     "notes": [
       "legacy feedback deck was used only to seed the canonical harness spec",
-      "legacy score deck seeded private profile-specific overrides"
+      "legacy score deck seeded private profile-specific overrides",
+      "issue-300 repair promoted private score stimulus/analysis into the canonical deck and removed feedback/score semantic deck overrides",
+      "feedback deck is the canonical stimulus; score is generated with identical semantics"
     ]
   },
   "profile_defaults": {
     "feedback": {
-      "deck_overrides": {
-        "body_lines": [
-          "Vain (ain 0) vsource type=pwl wave=[0 0 0.9n 0 0.95n 3 1.8n 3 1.85n 18 2.7n 18 2.75n 27 3.8n 27]",
-          "XDUT (ain dout0 dout1 dout2 dout3 dout4) trim_ctrl_5bit"
-        ]
-      },
-      "parameters": {
-        "maxstep": "200p",
-        "stop_time": "100n"
-      },
       "simulatorOptions": {
         "evas_profile": "balanced"
       }
     },
-    "score": {
-      "deck_overrides": {
-        "analyses": [
-          "tran tran stop=3.6n maxstep=5p"
-        ],
-        "body_lines": [
-          "Vain (ain 0) vsource type=pwl wave=[0 -2 0.75n -2 0.80n 4.6 1.55n 4.6 1.60n 15.5 2.35n 15.5 2.40n 31.2 3.15n 31.2 3.20n 40 3.8n 40]",
-          "XDUT (ain dout0 dout1 dout2 dout3 dout4) trim_ctrl_5bit"
-        ]
-      },
-      "parameters": {
-        "maxstep": "100p",
-        "stop_time": "100n"
-      }
-    }
+    "score": {}
   },
   "property_ids": [
     "P_CONVERT_V_AIN_TO_THE_NEAREST",

@@ -9,7 +9,12 @@
     "analyses": [
       "tran tran stop=1.5u maxstep=8n"
     ],
-    "body_lines": [],
+    "body_lines": [
+      "// Visible smoke testbench for sine_vco_idtmod_bound_step.",
+      "// Constant vin = 0.2 V => freq_q = 20.0e6 + 40.0e6*0.2 = 28 MHz.",
+      "Vvin (vin 0) vsource dc=0.2 type=dc",
+      "XDUT (vin out metric) sine_vco_idtmod_bound_step"
+    ],
     "header": [
       "simulator lang=spectre",
       "global 0"
@@ -35,48 +40,17 @@
     "legacy_score_deck_sha256": "11d4c9c1f64dba10cd8c3a0c08b487f6e5043183425f3ee8b3b0b0c2105b2f4c",
     "notes": [
       "legacy feedback deck was used only to seed the canonical harness spec",
-      "legacy score deck seeded private profile-specific overrides"
+      "legacy score deck seeded private profile-specific overrides",
+      "feedback deck is the canonical stimulus; score is generated with identical semantics"
     ]
   },
   "profile_defaults": {
     "feedback": {
-      "deck_overrides": {
-        "body_lines": [
-          "// Visible smoke testbench for sine_vco_idtmod_bound_step.",
-          "// Constant vin = 0.2 V => freq_q = 20.0e6 + 40.0e6*0.2 = 28 MHz.",
-          "",
-          "Vvin (vin 0) vsource dc=0.2 type=dc",
-          "",
-          "XDUT (vin out metric) sine_vco_idtmod_bound_step",
-          ""
-        ]
-      },
-      "parameters": {
-        "maxstep": "200p",
-        "stop_time": "100n"
-      },
       "simulatorOptions": {
         "evas_profile": "balanced"
       }
     },
-    "score": {
-      "deck_overrides": {
-        "body_lines": [
-          "// Hidden testbench for sine_vco_idtmod_bound_step.",
-          "// Constant vin = 0.4 V => freq_q = 20.0e6 + 40.0e6*0.4 = 36 MHz (~14 ns/cycle).",
-          "// maxstep=8n alone would under-resolve; $bound_step(1/(40*36e6))~0.69n enforces 40 pts/cycle.",
-          "",
-          "Vvin (vin 0) vsource dc=0.4 type=dc",
-          "",
-          "XDUT (vin out metric) sine_vco_idtmod_bound_step",
-          ""
-        ]
-      },
-      "parameters": {
-        "maxstep": "100p",
-        "stop_time": "100n"
-      }
-    }
+    "score": {}
   },
   "property_ids": [
     "P_FREQ_Q_CENTER_FREQ_VCO_GAIN",

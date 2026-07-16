@@ -9,7 +9,13 @@
     "analyses": [
       "tran tran stop=40n maxstep=20p"
     ],
-    "body_lines": [],
+    "body_lines": [
+      "Vvd4 (vd4 0) vsource type=pwl wave=[0 0 17.95n 0 18n 0.9]",
+      "Vvd3 (vd3 0) vsource type=pwl wave=[0 0 7.95n 0 8n 0.9 17.95n 0.9 18n 0 27.95n 0 28n 0.9]",
+      "Vvd2 (vd2 0) vsource type=pwl wave=[0 0 7.95n 0 8n 0.9 17.95n 0.9 18n 0 27.95n 0 28n 0.9]",
+      "Vvd1 (vd1 0) vsource type=pwl wave=[0 0 7.95n 0 8n 0.9 17.95n 0.9 18n 0 27.95n 0 28n 0.9]",
+      "XDUT (vd4 vd3 vd2 vd1 vout) folded_flash_dac_4b"
+    ],
     "header": [
       "simulator lang=spectre",
       "global 0"
@@ -37,50 +43,17 @@
     "legacy_score_deck_sha256": "047e0181b4c725edf1333f7e44dd5b551574bded82eade08400aecfaf02201e4",
     "notes": [
       "legacy feedback deck was used only to seed the canonical harness spec",
-      "legacy score deck seeded private profile-specific overrides"
+      "legacy score deck seeded private profile-specific overrides",
+      "feedback deck is the canonical stimulus; score is generated with identical semantics"
     ]
   },
   "profile_defaults": {
     "feedback": {
-      "deck_overrides": {
-        "body_lines": [
-          "Vvd4 (vd4 0) vsource type=pwl wave=[0 0 17.95n 0 18n 0.9]",
-          "Vvd3 (vd3 0) vsource type=pwl wave=[0 0 7.95n 0 8n 0.9 17.95n 0.9 18n 0 27.95n 0 28n 0.9]",
-          "Vvd2 (vd2 0) vsource type=pwl wave=[0 0 7.95n 0 8n 0.9 17.95n 0.9 18n 0 27.95n 0 28n 0.9]",
-          "Vvd1 (vd1 0) vsource type=pwl wave=[0 0 7.95n 0 8n 0.9 17.95n 0.9 18n 0 27.95n 0 28n 0.9]",
-          "",
-          "XDUT (vd4 vd3 vd2 vd1 vout) folded_flash_dac_4b",
-          ""
-        ]
-      },
-      "parameters": {
-        "maxstep": "200p",
-        "stop_time": "100n"
-      },
       "simulatorOptions": {
         "evas_profile": "balanced"
       }
     },
-    "score": {
-      "deck_overrides": {
-        "analyses": [
-          "tran tran stop=34n maxstep=20p"
-        ],
-        "body_lines": [
-          "Vvd4 (vd4 0) vsource type=pwl wave=[0 0 18n 0 18.05n 0.9 36n 0.9]",
-          "Vvd3 (vd3 0) vsource type=pwl wave=[0 0 8n 0 8.05n 0.9 18n 0.9 18.05n 0 28n 0 28.05n 0.9 36n 0.9]",
-          "Vvd2 (vd2 0) vsource type=pwl wave=[0 0 18n 0 18.05n 0.9 28n 0.9 28.05n 0 36n 0]",
-          "Vvd1 (vd1 0) vsource type=pwl wave=[0 0.9 8n 0.9 8.05n 0 18n 0 18.05n 0.9 36n 0.9]",
-          "",
-          "XDUT (vd4 vd3 vd2 vd1 vout) folded_flash_dac_4b",
-          ""
-        ]
-      },
-      "parameters": {
-        "maxstep": "100p",
-        "stop_time": "100n"
-      }
-    }
+    "score": {}
   },
   "property_ids": [
     "P_VOLTAGE_CODED_SUBCODE_DECODE",

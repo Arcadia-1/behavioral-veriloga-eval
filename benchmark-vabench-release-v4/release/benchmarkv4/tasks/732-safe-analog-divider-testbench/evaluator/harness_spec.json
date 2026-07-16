@@ -7,9 +7,13 @@
   },
   "deck": {
     "analyses": [
-      "tran tran stop=3.0n maxstep=5p"
+      "tran tran stop=3.8n maxstep=5p"
     ],
-    "body_lines": [],
+    "body_lines": [
+      "Vnum (signumer 0) vsource type=pwl wave=[0 -0.4 0.75n -0.4 0.80n 0.8 1.55n 0.8 1.60n 0.8 2.35n 0.8 2.40n -0.6 3.15n -0.6 3.20n 0.5 4.0n 0.5]",
+      "Vden (sigdenom 0) vsource type=pwl wave=[0 1.5 0.75n 1.5 0.80n 0 1.55n 0 1.60n 0.08 2.35n 0.08 2.40n -0.08 3.15n -0.08 3.20n -1.2 4.0n -1.2]",
+      "XDUT (signumer sigdenom sigout) safe_analog_divider"
+    ],
     "header": [
       "simulator lang=spectre",
       "global 0"
@@ -35,42 +39,18 @@
     "legacy_score_deck_sha256": "613f17feb653f66c72396c35c024969e20f3fe37b4a98a7f47dc05ff6e675c03",
     "notes": [
       "legacy feedback deck was used only to seed the canonical harness spec",
-      "legacy score deck seeded private profile-specific overrides"
+      "legacy score deck seeded private profile-specific overrides",
+      "issue-301: feedback profile aligned to score stimulus semantics",
+      "feedback deck is the canonical stimulus; score is generated with identical semantics"
     ]
   },
   "profile_defaults": {
     "feedback": {
-      "deck_overrides": {
-        "body_lines": [
-          "Vnum (signumer 0) vsource type=pwl wave=[0 0.6 3.8n 0.6]",
-          "Vden (sigdenom 0) vsource type=pwl wave=[0 2.0 0.8n 2.0 0.85n 0.05 1.6n 0.05 1.65n -0.05 2.4n -0.05 2.45n -1.0 3.2n -1.0]",
-          "XDUT (signumer sigdenom sigout) safe_analog_divider"
-        ]
-      },
-      "parameters": {
-        "maxstep": "200p",
-        "stop_time": "100n"
-      },
       "simulatorOptions": {
         "evas_profile": "balanced"
       }
     },
-    "score": {
-      "deck_overrides": {
-        "analyses": [
-          "tran tran stop=3.8n maxstep=5p"
-        ],
-        "body_lines": [
-          "Vnum (signumer 0) vsource type=pwl wave=[0 -0.4 0.75n -0.4 0.80n 0.8 1.55n 0.8 1.60n 0.8 2.35n 0.8 2.40n -0.6 3.15n -0.6 3.20n 0.5 4.0n 0.5]",
-          "Vden (sigdenom 0) vsource type=pwl wave=[0 1.5 0.75n 1.5 0.80n 0 1.55n 0 1.60n 0.08 2.35n 0.08 2.40n -0.08 3.15n -0.08 3.20n -1.2 4.0n -1.2]",
-          "XDUT (signumer sigdenom sigout) safe_analog_divider"
-        ]
-      },
-      "parameters": {
-        "maxstep": "100p",
-        "stop_time": "100n"
-      }
-    }
+    "score": {}
   },
   "property_ids": [
     "P_USE_V_SIGDENOM_DIRECTLY_WHEN_ITS",

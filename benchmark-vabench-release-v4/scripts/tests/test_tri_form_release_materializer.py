@@ -415,6 +415,28 @@ def test_export_omits_public_contract_mount(tmp_path: Path) -> None:
         assert not (public / "task" / "public_contract.json").exists()
 
 
+def test_export_mounts_declared_public_readonly_support(tmp_path: Path) -> None:
+    task = tmp_path / "task"
+    support = task / "evaluator" / "solution" / "support"
+    support.mkdir(parents=True)
+    helper = support / "helper.va"
+    helper.write_text("module helper; endmodule\n", encoding="utf-8")
+    (task / "evaluator" / "family_spec.json").write_text(json.dumps({
+        "support_contract": {
+            "visibility": "public_readonly",
+            "source_root": "public_support",
+            "mount_root": "support",
+            "files": [{"path": "helper.va", "sha256": file_sha(helper), "modules": ["helper"]}],
+        }
+    }) + "\n", encoding="utf-8")
+    (task / "public").mkdir(parents=True)
+    (task / "public" / "instruction.md").write_text("Build the DUT.\n", encoding="utf-8")
+    public = tmp_path / "runtime-public"
+    (public / "submission").mkdir(parents=True)
+    install_public(task, public, "dut", "G2")
+    assert (public / "task" / "public_support" / "helper.va").read_bytes() == helper.read_bytes()
+
+
 def test_runtime_evidence_rejects_handwritten_pass_report(tmp_path: Path) -> None:
     evidence = tmp_path / "evidence"
     evidence.mkdir()

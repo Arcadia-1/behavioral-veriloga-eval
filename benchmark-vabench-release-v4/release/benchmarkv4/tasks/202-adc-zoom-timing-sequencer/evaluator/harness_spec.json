@@ -7,7 +7,7 @@
   },
   "deck": {
     "analyses": [
-      "tran tran stop=11.5n maxstep=20p"
+      "tran tran stop=13n maxstep=20p"
     ],
     "body_lines": [
       "XDUT (rst s sar res intg clk_sar zoom clk_zoom rst_zoom) adc_zoom_timing_sequencer",
@@ -44,30 +44,17 @@
     "legacy_score_deck_sha256": "18d174d6b575a1bf1db8cb7b9bc656c0da61fc4ee0ac669a2df61aa557924132",
     "notes": [
       "legacy feedback deck was used only to seed the canonical harness spec",
-      "legacy score deck seeded private profile-specific overrides"
+      "legacy score deck seeded private profile-specific overrides",
+      "feedback deck is the canonical stimulus; score is generated with identical semantics"
     ]
   },
   "profile_defaults": {
     "feedback": {
-      "parameters": {
-        "maxstep": "200p",
-        "stop_time": "100n"
-      },
       "simulatorOptions": {
         "evas_profile": "balanced"
       }
     },
-    "score": {
-      "deck_overrides": {
-        "analyses": [
-          "tran tran stop=13n maxstep=20p"
-        ]
-      },
-      "parameters": {
-        "maxstep": "100p",
-        "stop_time": "100n"
-      }
-    }
+    "score": {}
   },
   "property_ids": [
     "P_GENERATE_A_REPEATING_32_NS_COMPACT"

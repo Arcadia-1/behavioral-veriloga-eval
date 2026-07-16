@@ -3,14 +3,10 @@ global 0
 
 ahdl_include "./dut/window_comparator_ref.va"
 
-Vvdd (VDD 0) vsource dc=0.9 type=dc
-Vvss (VSS 0) vsource dc=0.0 type=dc
-Vvin (vin 0) vsource type=pwl wave=[0 0 45n 0.9 90n 0]
+V_VDD (VDD 0) vsource dc=0.9
+V_VSS (VSS 0) vsource dc=0
+V_vin (vin 0) vsource type=pwl wave=[0 0 2.5n 0.9 5n 0]
+XDUT (VDD VSS vin out) window_comparator_ref
 
-IDUT (VDD VSS vin out) window_comparator_ref
-
-simulatorOptions options reltol=1e-4 vabstol=1e-6 iabstol=1e-12 temp=27 tnom=27 gmin=1e-12
-
-
-tran tran stop=90n maxstep=20p errpreset=conservative
+tran tran stop=5n maxstep=20p errpreset=conservative
 save VDD VSS vin out

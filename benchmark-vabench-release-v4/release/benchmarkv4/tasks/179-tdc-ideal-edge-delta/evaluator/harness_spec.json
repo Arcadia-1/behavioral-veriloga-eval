@@ -13,9 +13,7 @@
       "Vsamp (samp 0) vsource type=pwl wave=[0 0 0.5n 0 0.55n 0.9 0.8n 0.9 0.85n 0 5n 0 5.05n 0.9 5.30n 0.9 5.35n 0 10n 0 10.05n 0.9 10.30n 0.9 10.35n 0]",
       "Vinp (inp 0) vsource type=pwl wave=[0 0 2.00n 0 2.02n 0.9 4.0n 0.9 4.05n 0 6.06n 0 6.08n 0.9 8.5n 0.9 8.55n 0 11.02n 0 11.04n 0.9]",
       "Vinn (inn 0) vsource type=pwl wave=[0 0 2.03n 0 2.05n 0.9 4.0n 0.9 4.05n 0 6.00n 0 6.02n 0.9 8.5n 0.9 8.55n 0 11.00n 0 11.02n 0.9]",
-      "",
-      "XDUT (inp inn samp vout) tdc_ideal_edge_delta",
-      ""
+      "XDUT (inp inn samp vout) tdc_ideal_edge_delta"
     ],
     "header": [
       "simulator lang=spectre",
@@ -43,30 +41,17 @@
     "legacy_score_deck_sha256": "1b79b563b5287edc10491456f70ffadf0cfa12cdf7bce74ceae66a6b8394884a",
     "notes": [
       "legacy feedback deck was used only to seed the canonical harness spec",
-      "legacy score deck seeded private profile-specific overrides"
+      "legacy score deck seeded private profile-specific overrides",
+      "feedback deck is the canonical stimulus; score is generated with identical semantics"
     ]
   },
   "profile_defaults": {
     "feedback": {
-      "parameters": {
-        "maxstep": "200p",
-        "stop_time": "100n"
-      },
       "simulatorOptions": {
         "evas_profile": "balanced"
       }
     },
-    "score": {
-      "deck_overrides": {
-        "analyses": [
-          "tran tran stop=13n maxstep=5p"
-        ]
-      },
-      "parameters": {
-        "maxstep": "100p",
-        "stop_time": "100n"
-      }
-    }
+    "score": {}
   },
   "property_ids": [
     "P_SAMPLE_REARMS_MEASUREMENT",

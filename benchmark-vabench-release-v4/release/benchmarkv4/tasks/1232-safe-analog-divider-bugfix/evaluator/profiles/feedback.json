@@ -1,22 +1,13 @@
 {
   "corners": [],
-  "deck_overrides": {
-    "body_lines": [
-      "Vnum (signumer 0) vsource type=pwl wave=[0 0.6 3.8n 0.6]",
-      "Vden (sigdenom 0) vsource type=pwl wave=[0 2.0 0.8n 2.0 0.85n 0.05 1.6n 0.05 1.65n -0.05 2.4n -0.05 2.45n -1.0 3.2n -1.0]",
-      "XDUT (signumer sigdenom sigout) safe_analog_divider"
-    ]
-  },
+  "deck_overrides": {},
   "deterministic_seed": 0,
   "generated_from": {
     "script": "render_v4_harness.py",
     "version": "v4-harness-renderer-v1"
   },
-  "harness_spec_sha256": "df075a94951a7d6f70d0730cbbede7e7b3309336f39eb848fc0c54a708ef4307",
-  "parameters": {
-    "maxstep": "200p",
-    "stop_time": "100n"
-  },
+  "harness_spec_sha256": "0d058661a7cffe287e0a94131a4524878b6390b5bfc49e875bf3e40547d49a56",
+  "parameters": {},
   "profile_name": "feedback",
   "property_ids": [
     "P_USE_V_SIGDENOM_DIRECTLY_WHEN_ITS",

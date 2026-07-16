@@ -1,27 +1,13 @@
 {
   "corners": [],
-  "deck_overrides": {
-    "body_lines": [
-      "Vvdd (vdd 0) vsource type=pwl wave=[0 0.9 2n 0.9 2.05n 0.68 4n 0.68 4.05n 0.9 8n 0.9 8.05n 1.12 10n 1.12 10.05n 0.9]",
-      "Vvss (vss 0) vsource type=pwl wave=[0 0 10.5n 0 10.55n 0.12 11.5n 0.12 11.55n 0.06 13.5n 0.06 13.55n 0]",
-      "Vbias (vbias 0) vsource type=pwl wave=[0 0.45 6n 0.45 6.05n 0.15 8n 0.15 8.05n 0.45 11.5n 0.45 11.55n 0.78 13.5n 0.78 13.55n 0.45]",
-      "Ven (en 0) vsource type=pwl wave=[0 0.9]",
-      "Vpd (pd 0) vsource type=pwl wave=[0 0 14n 0 14.05n 0.9]",
-      "",
-      "XDUT (vdd vss vbias en pd ok gated) supply_bias_validity_gate",
-      ""
-    ]
-  },
+  "deck_overrides": {},
   "deterministic_seed": 0,
   "generated_from": {
     "script": "render_v4_harness.py",
     "version": "v4-harness-renderer-v1"
   },
-  "harness_spec_sha256": "3406a87bac740624c4772c11f211dd78fc73b32e1f3c936d33405d4be8e58e08",
-  "parameters": {
-    "maxstep": "200p",
-    "stop_time": "100n"
-  },
+  "harness_spec_sha256": "6fea377b3ff9b9d4fe5c33573e89bdb3c79a9a507d1df7b0ed7518bb0f6e305f",
+  "parameters": {},
   "profile_name": "feedback",
   "property_ids": [
     "P_MODEL_A_REUSABLE_SUPPLY_BIAS_VALIDITY",

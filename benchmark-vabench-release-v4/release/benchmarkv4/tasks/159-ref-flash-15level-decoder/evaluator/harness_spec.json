@@ -7,7 +7,7 @@
   },
   "deck": {
     "analyses": [
-      "tran tran stop=25n maxstep=20p"
+      "tran tran stop=40n maxstep=20p"
     ],
     "body_lines": [
       "Vclks (clks 0) vsource type=pwl wave=[0 0 1n 0 1.05n 0.9 1.50n 0.9 1.55n 0 11n 0 11.05n 0.9 11.50n 0.9 11.55n 0 21n 0 21.05n 0.9 21.50n 0.9 21.55n 0 31n 0 31.05n 0.9 31.50n 0.9 31.55n 0]",
@@ -26,9 +26,7 @@
       "Vdt12 (dt12 0) vsource type=pwl wave=[0 0 27.95n 0 28n 0.9]",
       "Vdt13 (dt13 0) vsource type=pwl wave=[0 0 27.95n 0 28n 0.9]",
       "Vdt14 (dt14 0) vsource type=pwl wave=[0 0 27.95n 0 28n 0.9]",
-      "",
-      "XDUT (dt0 dt1 dt2 dt3 dt4 dt5 dt6 dt7 dt8 dt9 dt10 dt11 dt12 dt13 dt14 clks dout) ref_flash_15level_decoder",
-      ""
+      "XDUT (dt0 dt1 dt2 dt3 dt4 dt5 dt6 dt7 dt8 dt9 dt10 dt11 dt12 dt13 dt14 clks dout) ref_flash_15level_decoder"
     ],
     "header": [
       "simulator lang=spectre",
@@ -69,30 +67,17 @@
     "legacy_score_deck_sha256": "ea1c0995c63df49fc7acd3e6cab148efc1855f966d7ba2bab7e05c3db5e2beb5",
     "notes": [
       "legacy feedback deck was used only to seed the canonical harness spec",
-      "legacy score deck seeded private profile-specific overrides"
+      "legacy score deck seeded private profile-specific overrides",
+      "feedback deck is the canonical stimulus; score is generated with identical semantics"
     ]
   },
   "profile_defaults": {
     "feedback": {
-      "parameters": {
-        "maxstep": "200p",
-        "stop_time": "100n"
-      },
       "simulatorOptions": {
         "evas_profile": "balanced"
       }
     },
-    "score": {
-      "deck_overrides": {
-        "analyses": [
-          "tran tran stop=40n maxstep=20p"
-        ]
-      },
-      "parameters": {
-        "maxstep": "100p",
-        "stop_time": "100n"
-      }
-    }
+    "score": {}
   },
   "property_ids": [
     "P_CLOCKED_FIFTEEN_TAP_COUNT",

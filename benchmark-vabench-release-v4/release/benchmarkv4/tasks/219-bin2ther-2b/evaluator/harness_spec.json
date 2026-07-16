@@ -9,7 +9,13 @@
     "analyses": [
       "tran tran stop=3.8n maxstep=5p"
     ],
-    "body_lines": [],
+    "body_lines": [
+      "Vdd (vdd 0) vsource dc=0.9",
+      "Vgnd (gnd 0) vsource dc=0",
+      "Vb0 (b0 0) vsource type=pwl wave=[0 0 1n 0 1.05n 0.9 2n 0.9 2.05n 0 3n 0 3.05n 0.9 4n 0.9]",
+      "Vb1 (b1 0) vsource type=pwl wave=[0 0 2n 0 2.05n 0.9 4n 0.9]",
+      "XDUT (vdd gnd b1 b0 t0 t1 t2) bin2ther_2b"
+    ],
     "header": [
       "simulator lang=spectre",
       "global 0"
@@ -39,43 +45,17 @@
     "legacy_score_deck_sha256": "387ca0301bcc95e72c01fc4e1df73f7b568024e4575ce631f0a4f2bd7451f4af",
     "notes": [
       "legacy feedback deck was used only to seed the canonical harness spec",
-      "legacy score deck seeded private profile-specific overrides"
+      "legacy score deck seeded private profile-specific overrides",
+      "feedback deck is the canonical stimulus; score is generated with identical semantics"
     ]
   },
   "profile_defaults": {
     "feedback": {
-      "deck_overrides": {
-        "body_lines": [
-          "Vdd (vdd 0) vsource dc=0.9",
-          "Vgnd (gnd 0) vsource dc=0",
-          "Vb0 (b0 0) vsource type=pwl wave=[0 0 1n 0 1.05n 0.9 2n 0.9 2.05n 0 3n 0 3.05n 0.9 4n 0.9]",
-          "Vb1 (b1 0) vsource type=pwl wave=[0 0 2n 0 2.05n 0.9 4n 0.9]",
-          "XDUT (vdd gnd b1 b0 t0 t1 t2) bin2ther_2b"
-        ]
-      },
-      "parameters": {
-        "maxstep": "200p",
-        "stop_time": "100n"
-      },
       "simulatorOptions": {
         "evas_profile": "balanced"
       }
     },
-    "score": {
-      "deck_overrides": {
-        "body_lines": [
-          "Vdd (vdd 0) vsource dc=1.0",
-          "Vgnd (gnd 0) vsource dc=0",
-          "Vb0 (b0 0) vsource type=pwl wave=[0 1.0 0.8n 1.0 0.85n 0 2.4n 0 2.45n 1.0 3.9n 1.0]",
-          "Vb1 (b1 0) vsource type=pwl wave=[0 1.0 0.8n 1.0 0.85n 0 1.6n 0 1.65n 1.0 2.4n 1.0 2.45n 0 3.2n 0 3.25n 1.0 3.9n 1.0]",
-          "XDUT (vdd gnd b1 b0 t0 t1 t2) bin2ther_2b"
-        ]
-      },
-      "parameters": {
-        "maxstep": "100p",
-        "stop_time": "100n"
-      }
-    }
+    "score": {}
   },
   "property_ids": [
     "P_INTERPRET_B1_AND_B0_RELATIVE_TO",

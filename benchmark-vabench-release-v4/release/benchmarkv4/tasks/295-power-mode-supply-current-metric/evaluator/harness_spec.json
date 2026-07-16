@@ -9,7 +9,15 @@
     "analyses": [
       "tran tran stop=18n maxstep=10p"
     ],
-    "body_lines": [],
+    "body_lines": [
+      "Vvdd (vdd 0) vsource type=pwl wave=[0 0.9 4n 0.9 4.05n 0.72 8n 0.72 8.05n 1.08 12n 1.08 12.05n 0.9]",
+      "Vvss (vss 0) vsource type=pwl wave=[0 0]",
+      "Ven (en 0) vsource type=pwl wave=[0 0.9 14n 0.9 14.05n 0]",
+      "Vpd (pd 0) vsource type=pwl wave=[0 0 16n 0 16.05n 0.9]",
+      "Vmode (mode 0) vsource type=pwl wave=[0 0 6n 0 6.05n 0.9 10n 0.9 10.05n 0]",
+      "Vload (load 0) vsource type=pwl wave=[0 0.10 2n 0.10 2.05n 0.70 9n 0.70 9.05n 0.20 13n 0.20 13.05n 0.85]",
+      "XDUT (vdd vss en pd mode load isup_metric) power_mode_supply_current_metric"
+    ],
     "header": [
       "simulator lang=spectre",
       "global 0"
@@ -39,54 +47,17 @@
     "legacy_score_deck_sha256": "9cf10dbbb9098f33642423351767e60af00769e403f71b4eeee12361cac49451",
     "notes": [
       "legacy feedback deck was used only to seed the canonical harness spec",
-      "legacy score deck seeded private profile-specific overrides"
+      "legacy score deck seeded private profile-specific overrides",
+      "feedback deck is the canonical stimulus; score is generated with identical semantics"
     ]
   },
   "profile_defaults": {
     "feedback": {
-      "deck_overrides": {
-        "body_lines": [
-          "Vvdd (vdd 0) vsource type=pwl wave=[0 0.9 4n 0.9 4.05n 0.72 8n 0.72 8.05n 1.08 12n 1.08 12.05n 0.9]",
-          "Vvss (vss 0) vsource type=pwl wave=[0 0]",
-          "Ven (en 0) vsource type=pwl wave=[0 0.9 14n 0.9 14.05n 0]",
-          "Vpd (pd 0) vsource type=pwl wave=[0 0 16n 0 16.05n 0.9]",
-          "Vmode (mode 0) vsource type=pwl wave=[0 0 6n 0 6.05n 0.9 10n 0.9 10.05n 0]",
-          "Vload (load 0) vsource type=pwl wave=[0 0.10 2n 0.10 2.05n 0.70 9n 0.70 9.05n 0.20 13n 0.20 13.05n 0.85]",
-          "",
-          "XDUT (vdd vss en pd mode load isup_metric) power_mode_supply_current_metric",
-          ""
-        ]
-      },
-      "parameters": {
-        "maxstep": "200p",
-        "stop_time": "100n"
-      },
       "simulatorOptions": {
         "evas_profile": "balanced"
       }
     },
-    "score": {
-      "deck_overrides": {
-        "analyses": [
-          "tran tran stop=17n maxstep=10p"
-        ],
-        "body_lines": [
-          "Vvdd (vdd 0) vsource type=pwl wave=[0 1.0 3n 1.0 3.05n 0.63 6n 0.63 6.05n 1.20 11n 1.20 11.05n 0.86]",
-          "Vvss (vss 0) vsource type=pwl wave=[0 0.05 8n 0.05 8.05n 0.0]",
-          "Ven (en 0) vsource type=pwl wave=[0 0.9 12n 0.9 12.05n 0 14n 0 14.05n 0.9]",
-          "Vpd (pd 0) vsource type=pwl wave=[0 0 15n 0 15.05n 0.9]",
-          "Vmode (mode 0) vsource type=pwl wave=[0 0.9 5n 0.9 5.05n 0 10n 0 10.05n 0.9]",
-          "Vload (load 0) vsource type=pwl wave=[0 0.80 4n 0.80 4.05n 0.05 7n 0.05 7.05n 0.90 13n 0.90 13.05n 0.35]",
-          "",
-          "XDUT (vdd vss en pd mode load isup_metric) power_mode_supply_current_metric",
-          ""
-        ]
-      },
-      "parameters": {
-        "maxstep": "100p",
-        "stop_time": "100n"
-      }
-    }
+    "score": {}
   },
   "property_ids": [
     "P_DRIVE_ISUP_METRIC_AS_A_VOLTAGE",

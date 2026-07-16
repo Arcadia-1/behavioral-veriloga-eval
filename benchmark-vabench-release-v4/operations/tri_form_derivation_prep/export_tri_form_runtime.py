@@ -57,6 +57,37 @@ def copy_tree(source: Path, target: Path) -> None:
         shutil.copytree(source, target, dirs_exist_ok=True)
 
 
+def public_support_files(task_dir: Path) -> list[tuple[Path, Path]]:
+    """Resolve evaluator-supplied helpers that the contract marks public/read-only."""
+    family_spec_path = task_dir / "evaluator" / "family_spec.json"
+    if not family_spec_path.is_file():
+        return []
+    family_spec = read_json(family_spec_path)
+    contract = family_spec.get("support_contract") or {}
+    records = list(contract.get("files") or [])
+    if not records:
+        return []
+    if (
+        contract.get("visibility") != "public_readonly"
+        or contract.get("source_root") != "public_support"
+        or contract.get("mount_root") != "support"
+    ):
+        raise SystemExit("invalid public support contract")
+    source_root = task_dir / "evaluator" / "solution" / "support"
+    resolved = []
+    for record in records:
+        relative = Path(str(record.get("path") or ""))
+        if not relative.parts or relative.is_absolute() or ".." in relative.parts:
+            raise SystemExit(f"unsafe public support path: {relative}")
+        source = source_root / relative
+        if not source.is_file() or source.is_symlink():
+            raise SystemExit(f"missing declared public support artifact: {relative}")
+        if file_sha(source) != record.get("sha256"):
+            raise SystemExit(f"public support hash mismatch: {relative}")
+        resolved.append((relative, source))
+    return resolved
+
+
 def task_record(release: Path, task_id: str) -> tuple[dict[str, Any], Path]:
     index = read_json(release / "TASK_INDEX.json")
     matches = [row for row in index.get("tasks") or [] if row.get("task_id") == task_id]
@@ -92,6 +123,12 @@ def serialize_public_artifacts(task_dir: Path, form: str) -> str:
                 path.read_text(encoding="utf-8"),
                 "<<<END_VABENCH_INPUT_ARTIFACT>>>",
             ])
+    for relative, path in public_support_files(task_dir):
+        lines.extend([
+            f'<<<VABENCH_INPUT_ARTIFACT path="public_support/{relative.as_posix()}">>>',
+            path.read_text(encoding="utf-8"),
+            "<<<END_VABENCH_INPUT_ARTIFACT>>>",
+        ])
     return "\n".join(lines)
 
 
@@ -146,10 +183,14 @@ def build_mode_record(release: Path, task_dir: Path, record: dict[str, Any], mod
         public_input_paths.extend(sorted((task_dir / "public" / "supplied_dut").rglob("*.va")))
     elif form == "bugfix":
         public_input_paths.extend(sorted((task_dir / "public" / "buggy_bundle").rglob("*.va")))
-    public_inputs.extend(
-        f"public_input:{path.relative_to(task_dir / 'public').as_posix()}"
-        for path in public_input_paths[1:]
-    )
+    support_paths = [path for _, path in public_support_files(task_dir)]
+    public_input_paths.extend(support_paths)
+    for path in public_input_paths[1:]:
+        if path.is_relative_to(task_dir / "public"):
+            relative = path.relative_to(task_dir / "public").as_posix()
+        else:
+            relative = f"public_support/{path.relative_to(task_dir / 'evaluator' / 'solution' / 'support').as_posix()}"
+        public_inputs.append(f"public_input:{relative}")
     guide_components: list[str] = []
     if policy.get("form_skill"):
         guide_components.append(FORM_SKILLS[form])
@@ -177,7 +218,11 @@ def build_mode_record(release: Path, task_dir: Path, record: dict[str, Any], mod
         "canonical_instruction_sha256": file_sha(public_input_paths[0]),
         "public_contract_sha256": public_contract_sha,
         "public_input_hashes": {
-            path.relative_to(task_dir).as_posix(): file_sha(path)
+            (
+                path.relative_to(task_dir).as_posix()
+                if path.is_relative_to(task_dir)
+                else path.as_posix()
+            ): file_sha(path)
             for path in public_input_paths
         },
         "component_order": [*public_inputs, *guide_components, wrapper],
@@ -226,6 +271,10 @@ def install_public(task_dir: Path, public_root: Path, form: str, mode: str) -> N
         copy_tree(source_public / "buggy_bundle", target / "buggy_bundle")
         if mode in AGENTIC:
             copy_tree(source_public / "buggy_bundle", public_root / "submission")
+    for relative, source in public_support_files(task_dir):
+        destination = target / "public_support" / relative
+        destination.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copy2(source, destination)
     if mode in AGENTIC:
         write_json(public_root / "tool_manifest.json", {
             "schema_version": "v4-public-tool-manifest-v1",
