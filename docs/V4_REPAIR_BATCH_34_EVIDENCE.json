@@ -1,8 +1,24 @@
 {
-  "schema_version": "v4-repair-batch-evidence-v1",
+  "schema_version": "v4-repair-batch-evas2-evidence-v2",
   "issue": 311,
   "parent_issue": 277,
   "branch_scope": "codex/v4-repair-batch-34",
+  "evas_policy": {
+    "evas_engine": "evas2",
+    "evas_engine_used": "evas2",
+    "evas_version": "0.8.2",
+    "evas_backend": "rust",
+    "required_environment": {
+      "EVAS_ENGINE": "evas2",
+      "VAEVAS_DEFAULT_EVAS_ENGINE": "evas2",
+      "VAEVAS_EVAS_PERSISTENT_WORKER": "0"
+    },
+    "non_evas2_evidence_usable": false
+  },
+  "superseded_evidence": {
+    "discarded_non_evas2_runs": true,
+    "reason": "All pre-existing EVAS evidence was rerun under the EVAS 0.8.2 Rust EVAS2 gate; no prior non-EVAS2 result is used below."
+  },
   "families": {
     "range": [331, 340],
     "count": 10,
@@ -25,32 +41,61 @@
     ],
     "assigned_specs": 10,
     "assigned_specs_pass": 10,
-    "deterministic_regeneration_assigned_file_diffs": 0
+    "deterministic_regeneration_assigned_file_diffs": 0,
+    "evas_engine": "evas2",
+    "evas_engine_used": "evas2",
+    "profile_smoke_report_sha256": "f0c9f6794c300d72160ac3384795c384f4243c42ee3100fb7a9cd5603df674c5"
   },
   "evas": {
+    "evas_engine": "evas2",
+    "evas_engine_used": "evas2",
+    "evas_version": "0.8.2",
+    "evas_backend": "rust",
     "dut_gold_pass": 10,
     "bugfix_gold_pass": 10,
     "testbench_gold_pass": 10,
     "testbench_mutation_count": 50,
     "testbench_mutation_killed": 50,
-    "testbench_result_sha256": "52ef932383121732122f24c5fb41e2983f7c29b609fd96db99278c586140a4ad"
+    "tri_form_task_count": 30,
+    "tri_form_gold_pass": 30,
+    "tri_form_result_sha256": "1f528ae82e739f2d3ad8dc5d56df23cbf7eb0288f1bc01ff1e325703ec6249c4",
+    "runtime_engine_validation": "all 80 EVAS cases reported EVAS 0.8.2, evas-rust, evas_rust_required=true"
   },
   "metamorphic": {
     "formula": "t'=1.37*t+2ns",
+    "evas_engine": "evas2",
+    "evas_engine_used": "evas2",
+    "evas_version": "0.8.2",
+    "evas_backend": "rust",
     "testbench_gold_pass": 10,
     "testbench_mutation_count": 50,
     "testbench_mutation_killed": 50,
-    "result_sha256": "715ccf14e92852c901fc95c85311721abd277eec69fb72914ccc2ac14db49fa7"
+    "result_sha256": "35a15179b7f3222b310d35c92bcd6550b07c8b03d24c193b1fbc3d983e0199a6"
   },
   "diagnostics": {
     "schema_version": "v4-checker-diagnostic-v1",
     "event_context": "stimulus_relative",
     "assigned_checker_profiles": 10,
-    "assigned_checker_profiles_pass": 10
+    "assigned_checker_profiles_pass": 10,
+    "evas_engine": "evas2",
+    "evas_engine_used": "evas2"
+  },
+  "regression": {
+    "evas_engine": "evas2",
+    "evas_engine_used": "evas2",
+    "focused_pytest_pass": 48,
+    "focused_pytest_fail": 0,
+    "compileall_pass": true,
+    "diff_check_pass": true,
+    "broad_preexisting_test_pass": 4,
+    "broad_preexisting_test_fail": 1,
+    "broad_preexisting_failure": "missing benchmark-vabench-release-v1/conformance/evas-spectre/cross_event_post_side_read/meta.json"
   },
   "release_audit": {
     "audit_status": "pass",
     "certification_status": "refresh_required",
+    "evas_engine": "evas2",
+    "evas_engine_used": "evas2",
     "manifest_sha256": "924a745b7cec84bfa6775de6661af3568d6f7082a39f86804a6e4dba01d27a5f",
     "audit_report_sha256": "da3cea735963c635895fa7d1415b77fe3c852aca9a2dc3cb62b42a41159296c1",
     "release_seal_sha256": "0c4210afdb77b1d5ec0555ee8b11203a2ac4553281ffafe7ed3c54d9bd9c29df"

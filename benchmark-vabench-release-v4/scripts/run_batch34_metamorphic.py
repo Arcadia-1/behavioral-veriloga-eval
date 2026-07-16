@@ -11,6 +11,7 @@ import argparse
 import concurrent.futures
 import hashlib
 import json
+import os
 import re
 import sys
 import tempfile
@@ -28,6 +29,38 @@ KV_RE = re.compile(
     r"(?P<value>[+-]?(?:\d+(?:\.\d*)?|\.\d+)(?:[munpf])?)"
 )
 UNIT_SCALE = {"m": 1e-3, "u": 1e-6, "n": 1e-9, "p": 1e-12, "f": 1e-15}
+EVAS2_VERSION = "0.8.2"
+
+
+def require_evas2_installation() -> dict[str, Any]:
+    """Fail closed unless the caller selected the EVAS 0.8.2 Rust backend."""
+    if os.environ.get("EVAS_ENGINE", "").strip().lower() != "evas2":
+        raise SystemExit("EVAS_ENGINE must be explicitly set to evas2")
+    if os.environ.get("VAEVAS_DEFAULT_EVAS_ENGINE", "").strip().lower() != "evas2":
+        raise SystemExit("VAEVAS_DEFAULT_EVAS_ENGINE must be explicitly set to evas2")
+    raw_repo = os.environ.get("VAEVAS_EVAS_REPO", "").strip()
+    if not raw_repo:
+        raise SystemExit("VAEVAS_EVAS_REPO must point to the EVAS checkout")
+    repo = Path(raw_repo).expanduser().resolve()
+    sys.path.insert(0, str(repo))
+    import evas
+    from evas.simulator.rust_backend import (
+        EXPECTED_RUST_CORE_ABI_VERSION,
+        load_optional_rust_backend,
+    )
+
+    version = str(getattr(evas, "__version__", ""))
+    if version != EVAS2_VERSION:
+        raise SystemExit(f"expected EVAS {EVAS2_VERSION}, observed {version!r}")
+    if load_optional_rust_backend() is None:
+        raise SystemExit("EVAS Rust backend failed to load")
+    return {
+        "evas_engine": "evas2",
+        "evas_engine_used": "evas2",
+        "evas_version": version,
+        "evas_backend": "rust",
+        "evas_rust_abi_version": EXPECTED_RUST_CORE_ABI_VERSION,
+    }
 
 
 def _parse_time(token: str) -> float | None:
@@ -106,19 +139,27 @@ def _run_family(root: Path, family: int) -> dict[str, Any]:
         "dut_subdir": "dut",
     }
     try:
-        reference = _run_case(**common, negative_bundle=None, label=f"v4-{500 + family}-meta-gold")
+        reference = _run_case(
+            **common,
+            negative_bundle=None,
+            label=f"v4-{500 + family}-meta-gold",
+            required_evas_engine="evas2",
+        )
         negatives = []
         for bundle in sorted((task / "evaluator" / "mutation_bundles").glob("neg_*")):
             result = _run_case(
                 **common,
                 negative_bundle=bundle,
                 label=f"v4-{500 + family}-meta-{bundle.name}",
+                required_evas_engine="evas2",
             )
             negatives.append({"id": bundle.name, "outcome": result.outcome.value})
         return {
             "family": family,
             "reference": reference.outcome.value,
+            "reference_evas_engine": "evas2",
             "negative_outcomes": negatives,
+            "negative_evas_engine": "evas2",
             "transformed_deck_sha256": hashlib.sha256(transformed.encode()).hexdigest(),
         }
     finally:
@@ -131,12 +172,14 @@ def main() -> int:
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--max-workers", type=int, default=4)
     args = parser.parse_args()
+    installation = require_evas2_installation()
     families = range(331, 341)
     with concurrent.futures.ThreadPoolExecutor(max_workers=args.max_workers) as pool:
         results = list(pool.map(lambda family: _run_family(args.release.resolve(), family), families))
     results.sort(key=lambda item: int(item["family"]))
     payload = {
-        "schema_version": "v4-batch34-metamorphic-evas-v1",
+        "schema_version": "v4-batch34-metamorphic-evas2-v2",
+        **installation,
         "transform": {"scale": A, "offset_seconds": B, "formula": "t'=1.37*t+2ns"},
         "family_count": len(results),
         "reference_pass_count": sum(item["reference"] == "reference_pass" for item in results),
@@ -148,10 +191,16 @@ def main() -> int:
         "negative_count": sum(len(item["negative_outcomes"]) for item in results),
         "families": results,
     }
+    payload["status"] = (
+        "pass"
+        if payload["reference_pass_count"] == 10
+        and payload["negative_kill_count"] == payload["negative_count"] == 50
+        else "fail"
+    )
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n", encoding="utf-8")
     print(json.dumps({key: payload[key] for key in ("family_count", "reference_pass_count", "negative_kill_count", "negative_count")}, sort_keys=True))
-    return 0 if payload["reference_pass_count"] == 10 and payload["negative_kill_count"] == payload["negative_count"] == 50 else 1
+    return 0 if payload["status"] == "pass" else 1
 
 
 if __name__ == "__main__":

@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import csv
+import os
 import re
 import shutil
 import subprocess
@@ -212,6 +213,64 @@ def _case_result(
     return CaseResult(label, role, outcome, tuple(notes))
 
 
+def _evas_engine_value(text: str, key: str) -> str | None:
+    match = re.search(
+        rf"^\s*{re.escape(key)}\s*=\s*([^\s]+)",
+        text,
+        flags=re.MULTILINE,
+    )
+    return match.group(1).strip() if match else None
+
+
+def _validate_required_evas_engine(
+    combined: str,
+    required_engine: str | None,
+) -> tuple[bool, str]:
+    """Validate the requested engine and simulator's reported backend."""
+    requested = os.environ.get("EVAS_ENGINE", "").strip().lower()
+    default = os.environ.get("VAEVAS_DEFAULT_EVAS_ENGINE", "").strip().lower()
+    effective = requested or default
+    if required_engine is None:
+        return True, f"evas_engine={effective or 'unspecified'}"
+    required = required_engine.strip().lower()
+    if requested != required or default != required or effective != required:
+        return (
+            False,
+            "engine_policy_violation="
+            f"required={required} EVAS_ENGINE={requested or '<unset>'} "
+            f"VAEVAS_DEFAULT_EVAS_ENGINE={default or '<unset>'}",
+        )
+    if required != "evas2":
+        return True, f"evas_engine={effective} evas_engine_used={effective}"
+
+    version_match = re.search(r"^Version\s+([^\s]+)", combined, flags=re.MULTILINE)
+    observed_version = version_match.group(1) if version_match else None
+    reported_engine = _evas_engine_value(combined, "evas_engine")
+    rust_required = _evas_engine_value(combined, "evas_rust_required")
+    rust_full_model_required = _evas_engine_value(
+        combined, "evas_rust_full_model_required"
+    )
+    failures = _evas_engine_value(combined, "rust_full_model_required_failures")
+    if observed_version != "0.8.2":
+        return False, f"engine_validation_failed=version observed={observed_version!r}"
+    if reported_engine != "evas-rust":
+        return False, f"engine_validation_failed=backend observed={reported_engine!r}"
+    if rust_required != "true" or rust_full_model_required != "true":
+        return (
+            False,
+            "engine_validation_failed=rust_required "
+            f"evas_rust_required={rust_required!r} "
+            f"evas_rust_full_model_required={rust_full_model_required!r}",
+        )
+    if failures not in {None, "0", "0.0"}:
+        return False, f"engine_validation_failed=rust_required_failures observed={failures}"
+    return (
+        True,
+        "evas_engine=evas2 evas_engine_used=evas2 evas_version=0.8.2 "
+        "evas_backend=rust evas_reported_engine=evas-rust",
+    )
+
+
 def _run_case(
     *,
     package_root: Path,
@@ -224,6 +283,7 @@ def _run_case(
     label: str,
     dut_subdir: str | None = None,
     public_contract: dict[str, Any] | None = None,
+    required_evas_engine: str | None = None,
 ) -> CaseResult:
     repo_root = _find_repo_root(package_root)
     runners_dir = str(repo_root / "runners")
@@ -272,13 +332,24 @@ def _run_case(
                 notes=[f"{label}: simulation invocation failed: {type(exc).__name__}"],
             )
         combined = (result.stdout or "") + "\n" + (result.stderr or "")
+        engine_ok, engine_note = _validate_required_evas_engine(
+            combined, required_evas_engine
+        )
+        if not engine_ok:
+            return _case_result(
+                label=label,
+                role=role,
+                valid=False,
+                behavior_pass=None,
+                notes=[f"{label}: {engine_note}"],
+            )
         if result.returncode != 0:
             return _case_result(
                 label=label,
                 role=role,
                 valid=False,
                 behavior_pass=None,
-                notes=[f"{label}: simulation failed", combined[-2000:]],
+                notes=[f"{label}: {engine_note}", f"{label}: simulation failed", combined[-2000:]],
             )
         csv_path = output_dir / "tran.csv"
         if not csv_path.exists():
@@ -287,7 +358,7 @@ def _run_case(
                 role=role,
                 valid=False,
                 behavior_pass=None,
-                notes=[f"{label}: no transient trace produced"],
+                notes=[f"{label}: {engine_note}", f"{label}: no transient trace produced"],
             )
         trace_valid, trace_notes = _trace_is_valid(csv_path, required_signals)
         if not trace_valid:
@@ -296,7 +367,7 @@ def _run_case(
                 role=role,
                 valid=False,
                 behavior_pass=None,
-                notes=[f"{label}: {note}" for note in trace_notes],
+                notes=[f"{label}: {engine_note}"] + [f"{label}: {note}" for note in trace_notes],
             )
         try:
             score, notes = evaluate_behavior(checker_task_id, csv_path)
@@ -306,12 +377,12 @@ def _run_case(
                 role=role,
                 valid=False,
                 behavior_pass=None,
-                notes=[f"{label}: checker failed: {type(exc).__name__}: {str(exc)[:300]}"],
+                notes=[f"{label}: {engine_note}", f"{label}: checker failed: {type(exc).__name__}: {str(exc)[:300]}"],
             )
         return _case_result(
             label=label,
             role=role,
             valid=True,
             behavior_pass=score >= 1.0,
-            notes=[f"{label}: " + note for note in notes],
+            notes=[f"{label}: {engine_note}"] + [f"{label}: " + note for note in notes],
         )
