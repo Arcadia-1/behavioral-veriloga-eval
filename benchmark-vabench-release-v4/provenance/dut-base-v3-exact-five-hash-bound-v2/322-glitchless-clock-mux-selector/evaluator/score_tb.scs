@@ -10,6 +10,5 @@ Vrst (rst 0) vsource type=pwl wave=[0 0.9 3n 0.9 3.2n 0 92n 0]
 Venable (enable 0) vsource type=pwl wave=[0 0 5n 0 5.2n 0.9 80n 0.9 80.2n 0 92n 0]
 XDUT (clk_a clk_b sel rst enable clk_out switch_metric valid) glitchless_clock_mux_selector
 
-
 tran tran stop=92n maxstep=200p
 save clk_a clk_b sel rst enable clk_out switch_metric valid

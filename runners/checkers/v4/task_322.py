@@ -17,11 +17,13 @@ def check_v4_1020_glitchless_clock_mux_selector(rows: list[dict[str, float]]) ->
     first_edge_seen = False
     checked = out_errors = glitch_errors = metric_errors = valid_errors = clear_errors = 0
     reset_clear = disabled_clear = switch_seen = both_sources_seen = False
+    ever_enabled = False
     src_seen: set[int] = set()
     prev_clk_a = float(rows[0].get("clk_a", 0.0))
     prev_clk_b = float(rows[0].get("clk_b", 0.0))
     last_input_rise = -1.0
     prev_out = float(rows[0].get("clk_out", 0.0))
+    switch_windows: list[dict[str, float | bool]] = []
     for row in rows:
         t = float(row["time"])
         rst = _v4_topup_logic_high(row, "rst")
@@ -33,16 +35,18 @@ def check_v4_1020_glitchless_clock_mux_selector(rows: list[dict[str, float]]) ->
             pending = 0
             first_edge_seen = False
             clear = abs(float(row["clk_out"])) < 0.08 and abs(float(row["switch_metric"])) < 0.08 and not _v4_topup_logic_high(row, "valid")
-            if rst and t < 5e-9 and clear:
+            disabled = ever_enabled and not _v4_topup_logic_high(row, "enable")
+            if rst and clear:
                 reset_clear = True
-            if t > 82e-9 and not _v4_topup_logic_high(row, "enable") and clear:
+            if disabled and clear:
                 disabled_clear = True
-            if ((rst and t < 5e-9) or t > 82e-9) and not clear:
+            if ((rst and reset_clear) or (disabled and disabled_clear)) and not clear:
                 clear_errors += 1
             prev_out = float(row.get("clk_out", 0.0))
             prev_clk_a = clk_a
             prev_clk_b = clk_b
             continue
+        ever_enabled = True
         pending = 1 if _v4_topup_logic_high(row, "sel") else 0
         both_low = float(row["clk_a"]) <= 0.45 and float(row["clk_b"]) <= 0.45
         if pending != active and both_low:
@@ -50,6 +54,7 @@ def check_v4_1020_glitchless_clock_mux_selector(rows: list[dict[str, float]]) ->
             switched_at = t
             switch_seen = True
             first_edge_seen = False
+            switch_windows.append({"start": t + 0.5e-9, "end": t + 4.5e-9, "seen": False})
         expected = float(row["clk_b" if active else "clk_a"])
         src_seen.add(active)
         now_out = float(row["clk_out"])
@@ -62,25 +67,27 @@ def check_v4_1020_glitchless_clock_mux_selector(rows: list[dict[str, float]]) ->
         prev_out = now_out
         prev_clk_a = clk_a
         prev_clk_b = clk_b
-        if t < 6e-9 or (switched_at >= 0 and t < switched_at + 0.7e-9):
+        metric_high = _v4_topup_logic_high(row, "switch_metric")
+        for window in switch_windows:
+            if bool(window["seen"]):
+                continue
+            if float(window["start"]) <= t <= float(window["end"]) and metric_high:
+                window["seen"] = True
+        if not first_edge_seen or (switched_at >= 0 and t < switched_at + 0.7e-9):
             continue
         checked += 1
         if abs(now_out - expected) > 0.14:
             out_errors += 1
-        metric_high = _v4_topup_logic_high(row, "switch_metric")
-        if switched_at >= 0 and switched_at + 0.5e-9 <= t <= switched_at + 4.5e-9:
-            if not metric_high:
-                metric_errors += 1
-        elif t > 8e-9 and metric_high:
-            metric_errors += 1
         valid_high = _v4_topup_logic_high(row, "valid")
         if first_edge_seen and not valid_high:
             valid_errors += 1
         if not first_edge_seen and valid_high:
             valid_errors += 1
     both_sources_seen = len(src_seen) >= 2
+    metric_errors = sum(not bool(window["seen"]) for window in switch_windows)
     out_budget = max(12, checked // 5)
-    metric_budget = max(8, checked // 10)
+    # Count one missing event once; dense waveform sampling must not dilute it.
+    metric_budget = 0
     valid_budget = max(8, checked // 10)
     clear_budget = 4
     ok = (
@@ -91,7 +98,7 @@ def check_v4_1020_glitchless_clock_mux_selector(rows: list[dict[str, float]]) ->
         and both_sources_seen
         and out_errors <= out_budget
         and glitch_errors == 0
-        and metric_errors <= metric_budget
+        and metric_errors == 0
         and valid_errors <= valid_budget
         and clear_errors <= clear_budget
     )

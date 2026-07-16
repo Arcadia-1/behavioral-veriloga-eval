@@ -12,7 +12,6 @@ Vfrac_2 (frac_2 0) vsource type=pwl wave=[0 0 8n 0 8.2n 0 18n 0 18.2n 0 28n 0 28
 Vfrac_3 (frac_3 0) vsource type=pwl wave=[0 0 8n 0 8.2n 0 18n 0 18.2n 0 28n 0 28.2n 0 38n 0 38.2n 0.9 48n 0.9 48.2n 0.9 58n 0.9 58.2n 0.9 68n 0.9 68.2n 0 78n 0 78.2n 0.9 92n 0.9]
 XDUT (clk_in rst enable frac_3 frac_2 frac_1 frac_0 clk_out phase_metric valid) fractional_delay_dtc_macro
 
-
 simulatorOptions options evas_profile=balanced
 
 tran tran stop=92n maxstep=200p

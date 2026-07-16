@@ -63,7 +63,7 @@ def check_v4_329_ctle_adaptation_loop(rows: list[dict[str, float]]) -> tuple[boo
             continue
         ever_enabled = True
         if _rising(prev_clk, clk):
-            sample_pending = t >= 8e-9
+            sample_pending = True
             pending_edge = float(row["edge_metric_in"])
         elif sample_pending and prev_clk > VTH and clk <= VTH:
             sample_pending = False
@@ -106,7 +106,12 @@ def check_v4_329_ctle_adaptation_loop(rows: list[dict[str, float]]) -> tuple[boo
         f"v4_329 checked={checked} boost_codes={sorted(boost_codes)} "
         f"reset_clear={reset_clear} disabled_clear={disabled_clear} "
         f"adapt_errors={adapt_errors} vout_errors={vout_errors} "
-        f"lock_errors={lock_errors} clear_errors={clear_errors}"
+        f"lock_errors={lock_errors} clear_errors={clear_errors}; "
+        f"P_ON_RESET_OR_WHEN_DISABLED_CLEAR mismatch_count={int(not reset_clear) + int(not disabled_clear)}; "
+        f"P_ON_EACH_ENABLED_RISING_CLK_EDGE mismatch_count={max(0, 8 - checked)}; "
+        f"P_INCREASE_BOOST_CODE_WHEN_EDGE_METRIC mismatch_count={adapt_errors}; "
+        f"P_DRIVE_VOUT_AS_A_BOOSTED_VERSION mismatch_count={vout_errors}; "
+        f"P_ASSERT_LOCKED_AFTER_THREE_CONSECUTIVE_UPDATES mismatch_count={lock_errors}"
     )
 
 CHECKER_ID = "v4_329_ctle_adaptation_loop"
