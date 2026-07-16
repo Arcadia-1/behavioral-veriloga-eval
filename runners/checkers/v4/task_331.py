@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 from ..api import Checker
+from .diagnostics import with_property_diagnostics
 VCM = 0.45
 VDD = 0.9
 VTH = 0.45
@@ -28,6 +29,8 @@ def check_v4_331_dfe_error_proxy_loop(rows: list[dict[str, float]]) -> tuple[boo
     prev_clk = float(rows[0]["decision_clk"])
     checked = corr_errors = decision_errors = conv_errors = clear_errors = 0
     reset_clear = disabled_clear = ever_enabled = False
+    disable_time: float | None = None
+    active_edges = 0
     decisions = 0
     error_max = 0.0
     streak = 0
@@ -46,20 +49,31 @@ def check_v4_331_dfe_error_proxy_loop(rows: list[dict[str, float]]) -> tuple[boo
             )
             if rst and clear:
                 reset_clear = True
-            if ever_enabled and (not _high(row, "enable")) and clear:
+            disabled = ever_enabled and not _high(row, "enable")
+            if disabled and disable_time is None:
+                disable_time = t
+            disabled_ready = (
+                disabled
+                and disable_time is not None
+                and t >= disable_time + 0.7e-9
+            )
+            if disabled_ready and clear:
                 disabled_clear = True
-            if (rst or (ever_enabled and not _high(row, "enable") and disabled_clear)) and not clear:
+            if (rst or disabled_ready) and not clear:
                 clear_errors += 1
             streak = 0
             history_1 = history_0 = 0
             expected_tap_1 = expected_tap_0 = 0.0
+            active_edges = 0
             prev_clk = clk
             continue
         ever_enabled = True
+        disable_time = None
         if not _rising(prev_clk, clk):
             prev_clk = clk
             continue
         prev_clk = clk
+        active_edges += 1
         sample = next((item for item in rows if float(item["time"]) >= t + 0.7e-9), rows[-1])
         sample_delta = float(row["sample_in"]) - VCM
         expected_residual = (
@@ -83,7 +97,10 @@ def check_v4_331_dfe_error_proxy_loop(rows: list[dict[str, float]]) -> tuple[boo
         expected_corrected = max(0.0, min(VDD, VCM + expected_residual))
         decision = 1 if float(row["sample_in"]) >= VCM else -1
         history_0, history_1 = history_1, decision
-        if t < 8e-9:
+        # Ignore the first edge after each observed enable transition while
+        # the stateful proxy settles; this is relative to the submitted
+        # stimulus, not a hidden absolute timestamp.
+        if active_edges == 1:
             continue
         checked += 1
         decisions += 1
@@ -116,7 +133,7 @@ def check_v4_331_dfe_error_proxy_loop(rows: list[dict[str, float]]) -> tuple[boo
         and disabled_clear
         and corr_errors <= max(2, checked // 3)
         and decision_errors == 0
-        and conv_errors <= 3
+        and conv_errors == 0
         and clear_errors <= 6
     )
     return ok, (
@@ -126,4 +143,13 @@ def check_v4_331_dfe_error_proxy_loop(rows: list[dict[str, float]]) -> tuple[boo
     )
 
 CHECKER_ID = "v4_331_dfe_error_proxy_loop"
-CHECKER: Checker = check_v4_331_dfe_error_proxy_loop
+CHECKER: Checker = with_property_diagnostics(
+    check_v4_331_dfe_error_proxy_loop,
+    {
+        "P_ON_RESET_OR_WHEN_DISABLED_CLEAR": ("clear_errors", "!reset_clear", "!disabled_clear"),
+        "P_ON_EACH_ENABLED_DECISION_CLOCK_LATCH": "decision_errors",
+        "P_USE_THE_PREVIOUS_DECISION_HISTORY_TO": "decision_errors",
+        "P_EXPOSE_THE_ABSOLUTE_RESIDUAL_ON_ERROR": "corr_errors",
+        "P_ASSERT_CONVERGED_WHEN_THE_RESIDUAL_REMAINS": "conv_errors",
+    },
+)

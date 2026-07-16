@@ -2,30 +2,41 @@
 from __future__ import annotations
 
 from ..api import Checker
+from .diagnostics import with_diagnostic_contract
 def _v4_topup_logic_high(row: dict[str, float], name: str, threshold: float = 0.45) -> bool:
     return float(row.get(name, 0.0)) > threshold
 
-def _v4_edges(rows: list[dict[str, float]], name: str, *, start: float = 0.0, stop: float | None = None, vth: float = 0.45) -> list[float]:
+def _v4_edges(rows: list[dict[str, float]], name: str, *, vth: float = 0.45) -> list[float]:
     if not rows:
         return []
     prev = float(rows[0].get(name, 0.0))
+    was_active = (
+        _v4_topup_logic_high(rows[0], "enable")
+        and not _v4_topup_logic_high(rows[0], "rst")
+    )
     edges: list[float] = []
     for row in rows[1:]:
         t = float(row["time"])
-        if t < start or (stop is not None and t > stop):
+        active = (
+            _v4_topup_logic_high(row, "enable")
+            and not _v4_topup_logic_high(row, "rst")
+        )
+        if not active:
             prev = float(row.get(name, 0.0))
+            was_active = False
             continue
         now = float(row.get(name, 0.0))
-        if prev <= vth and now > vth:
+        if was_active and prev <= vth and now > vth:
             edges.append(t)
         prev = now
+        was_active = True
     return edges
 
 def check_v4_1033_quadrature_oscillator_phase_error_monitor(rows: list[dict[str, float]]) -> tuple[bool, str]:
     if not rows:
         return False, "v4_1033 empty_trace"
-    i_edges = _v4_edges(rows, "clk_i", start=5e-9, stop=82e-9)
-    q_edges = _v4_edges(rows, "clk_q", start=5e-9, stop=82e-9)
+    i_edges = _v4_edges(rows, "clk_i")
+    q_edges = _v4_edges(rows, "clk_q")
     expected_by_time: list[tuple[float, float, bool]] = []
     for idx in range(1, len(i_edges)):
         prev_i = i_edges[idx - 1]
@@ -40,6 +51,8 @@ def check_v4_1033_quadrature_oscillator_phase_error_monitor(rows: list[dict[str,
         expected_by_time.append((q, min(0.9, 3.6 * err), err <= (60e-3 / 0.9)))
     checked = metric_errors = ok_errors = valid_errors = clear_errors = 0
     reset_clear = disabled_clear = valid_seen = ok_seen = bad_phase_seen = False
+    ever_enabled = False
+    disable_time: float | None = None
     expected_metric = 0.0
     expected_ok = False
     stable_ok = 0
@@ -54,13 +67,23 @@ def check_v4_1033_quadrature_oscillator_phase_error_monitor(rows: list[dict[str,
             expected_ok = False
             stable_ok = 0
             clear = abs(float(row["phase_error_metric"])) < 0.08 and not _v4_topup_logic_high(row, "quadrature_ok") and not _v4_topup_logic_high(row, "valid")
-            if rst and t < 5e-9 and clear:
+            if rst and clear:
                 reset_clear = True
-            if t > 82e-9 and not _v4_topup_logic_high(row, "enable") and clear:
+            disabled = ever_enabled and not _v4_topup_logic_high(row, "enable")
+            if disabled and disable_time is None:
+                disable_time = t
+            disabled_ready = (
+                disabled
+                and disable_time is not None
+                and t >= disable_time + 0.7e-9
+            )
+            if disabled_ready and clear:
                 disabled_clear = True
-            if ((rst and t < 5e-9) or t > 82e-9) and not clear:
+            if (rst or disabled_ready) and not clear:
                 clear_errors += 1
             continue
+        ever_enabled = True
+        disable_time = None
         while exp_idx < len(expected_by_time) and t >= expected_by_time[exp_idx][0]:
             _, expected_metric, raw_ok = expected_by_time[exp_idx]
             stable_ok = stable_ok + 1 if raw_ok else 0
@@ -113,4 +136,4 @@ def check_v4_1033_quadrature_oscillator_phase_error_monitor(rows: list[dict[str,
     )
 
 CHECKER_ID = "v4_335_quadrature_oscillator_phase_error_monitor"
-CHECKER: Checker = check_v4_1033_quadrature_oscillator_phase_error_monitor
+CHECKER: Checker = with_diagnostic_contract(check_v4_1033_quadrature_oscillator_phase_error_monitor)

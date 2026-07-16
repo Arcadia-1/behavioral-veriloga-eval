@@ -7,6 +7,25 @@
     "source_task_id": null,
     "task_id": "v4_337_vga_step_response_classifier"
   },
+  "diagnostic_contract": {
+    "event_context": "stimulus_relative",
+    "redaction": "public_observables_only",
+    "required_fields": [
+      "property_diagnostics",
+      "mismatch_count",
+      "expected",
+      "observed",
+      "event_context"
+    ],
+    "schema_version": "v4-checker-diagnostic-v1"
+  },
+  "property_ids": [
+    "P_ON_RESET_OR_WHEN_DISABLED_DRIVE",
+    "P_ON_EACH_ENABLED_RISING_CLK_EDGE",
+    "P_APPLY_BOUNDED_SETTLING_WITH_A_CODE",
+    "P_EXPOSE_OVERSHOOT_MAGNITUDE_ON_OVERSHOOT_METRIC",
+    "P_ASSERT_SETTLED_AFTER_TWO_CONSECUTIVE_UPDATES"
+  ],
   "schema_version": "v4-checker-profile-v1",
   "score_and_feedback_share_checker": true,
   "shared_by": [

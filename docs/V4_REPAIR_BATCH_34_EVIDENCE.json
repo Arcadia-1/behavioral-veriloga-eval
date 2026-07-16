@@ -1,0 +1,73 @@
+{
+  "schema_version": "v4-repair-batch-evidence-v1",
+  "issue": 311,
+  "parent_issue": 277,
+  "branch_scope": "codex/v4-repair-batch-34",
+  "families": {
+    "range": [331, 340],
+    "count": 10,
+    "forms": ["dut", "testbench", "bugfix"],
+    "task_record_count": 30,
+    "classification": "B+C",
+    "classification_detail": "B for canonical profile migration; C for stimulus-relative checker repair"
+  },
+  "profile_parity": {
+    "canonical_source": "benchmark-vabench-release-v4/provenance/dut-base-v3-exact-five-hash-bound-v2",
+    "semantic_fields": [
+      "body_lines",
+      "analyses",
+      "save_signals",
+      "parameters",
+      "corners",
+      "deterministic_seed",
+      "property_ids",
+      "simulator_options_except_evas_profile"
+    ],
+    "assigned_specs": 10,
+    "assigned_specs_pass": 10,
+    "deterministic_regeneration_assigned_file_diffs": 0
+  },
+  "evas": {
+    "dut_gold_pass": 10,
+    "bugfix_gold_pass": 10,
+    "testbench_gold_pass": 10,
+    "testbench_mutation_count": 50,
+    "testbench_mutation_killed": 50,
+    "testbench_result_sha256": "52ef932383121732122f24c5fb41e2983f7c29b609fd96db99278c586140a4ad"
+  },
+  "metamorphic": {
+    "formula": "t'=1.37*t+2ns",
+    "testbench_gold_pass": 10,
+    "testbench_mutation_count": 50,
+    "testbench_mutation_killed": 50,
+    "result_sha256": "715ccf14e92852c901fc95c85311721abd277eec69fb72914ccc2ac14db49fa7"
+  },
+  "diagnostics": {
+    "schema_version": "v4-checker-diagnostic-v1",
+    "event_context": "stimulus_relative",
+    "assigned_checker_profiles": 10,
+    "assigned_checker_profiles_pass": 10
+  },
+  "release_audit": {
+    "audit_status": "pass",
+    "certification_status": "refresh_required",
+    "manifest_sha256": "924a745b7cec84bfa6775de6661af3568d6f7082a39f86804a6e4dba01d27a5f",
+    "audit_report_sha256": "da3cea735963c635895fa7d1415b77fe3c852aca9a2dc3cb62b42a41159296c1",
+    "release_seal_sha256": "0c4210afdb77b1d5ec0555ee8b11203a2ac4553281ffafe7ed3c54d9bd9c29df"
+  },
+  "spectre": {
+    "status": "not_applicable",
+    "reason": "The repository owner confirmed that this project does not have or require Spectre for this repair campaign.",
+    "policy": "Do not claim or substitute Spectre evidence; acceptance uses Rust EVAS2."
+  },
+  "known_infrastructure_gaps": [
+    "scripts/check_repo_layout.py is referenced by AGENTS.md but is absent from this repository",
+    "an unrelated pre-existing conformance test references missing benchmark-vabench-release-v1/conformance/evas-spectre/cross_event_post_side_read/meta.json"
+  ],
+  "commands": {
+    "profile_regeneration": "python3 benchmark-vabench-release-v4/scripts/render_v4_harness.py",
+    "release_materialization": "python3 benchmark-vabench-release-v4/operations/tri_form_derivation_prep/materialize_tri_form_release.py",
+    "release_audit": "python3 benchmark-vabench-release-v4/operations/tri_form_derivation_prep/audit_tri_form_release.py",
+    "metamorphic_runner": "python3 benchmark-vabench-release-v4/scripts/run_batch34_metamorphic.py"
+  }
+}

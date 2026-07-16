@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 from ..api import Checker
+from .diagnostics import with_property_diagnostics
 VCM = 0.45
 VDD = 0.9
 VTH = 0.45
@@ -28,6 +29,8 @@ def check_v4_332_polyphase_iq_balance_monitor(rows: list[dict[str, float]]) -> t
     prev_clk = float(rows[0]["clk"])
     checked = norm_errors = bal_errors = clear_errors = 0
     reset_clear = disabled_clear = ever_enabled = False
+    disable_time: float | None = None
+    active_edges = 0
     amp_max = phase_max = 0.0
     streak = 0
     for row in rows:
@@ -45,19 +48,31 @@ def check_v4_332_polyphase_iq_balance_monitor(rows: list[dict[str, float]]) -> t
             )
             if rst and clear:
                 reset_clear = True
-            if ever_enabled and (not _high(row, "enable")) and clear:
+            disabled = ever_enabled and not _high(row, "enable")
+            if disabled and disable_time is None:
+                disable_time = t
+            disabled_ready = (
+                disabled
+                and disable_time is not None
+                and t >= disable_time + 0.7e-9
+            )
+            if disabled_ready and clear:
                 disabled_clear = True
-            if (rst or (ever_enabled and not _high(row, "enable") and disabled_clear)) and not clear:
+            if (rst or disabled_ready) and not clear:
                 clear_errors += 1
             streak = 0
+            active_edges = 0
             prev_clk = clk
             continue
         ever_enabled = True
+        disable_time = None
         if not _rising(prev_clk, clk):
             prev_clk = clk
             continue
         prev_clk = clk
-        if t < 8e-9:
+        active_edges += 1
+        # Let the first edge in each observed enable window establish state.
+        if active_edges == 1:
             continue
         checked += 1
         i_out = float(row["i_out"])
@@ -97,4 +112,13 @@ def check_v4_332_polyphase_iq_balance_monitor(rows: list[dict[str, float]]) -> t
     )
 
 CHECKER_ID = "v4_332_polyphase_iq_balance_monitor"
-CHECKER: Checker = check_v4_332_polyphase_iq_balance_monitor
+CHECKER: Checker = with_property_diagnostics(
+    check_v4_332_polyphase_iq_balance_monitor,
+    {
+        "P_ON_RESET_OR_WHEN_DISABLED_DRIVE": ("clear_errors", "!reset_clear", "!disabled_clear"),
+        "P_ON_EACH_ENABLED_RISING_CLK_EDGE": "norm_errors",
+        "P_DRIVE_CORRECTED_I_Q_OUTPUTS_WITH": "norm_errors",
+        "P_EXPOSE_AMPLITUDE_AND_PHASE_ERROR_PROXIES": "norm_errors",
+        "P_ASSERT_BALANCED_ONLY_WHEN_BOTH_METRICS": "bal_errors",
+    },
+)

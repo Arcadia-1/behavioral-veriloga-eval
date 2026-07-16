@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 from ..api import Checker
+from .diagnostics import with_property_diagnostics
 def _v4_topup_clip01(value: float, low: float = 0.0, high: float = 0.9) -> float:
     return max(low, min(high, value))
 
@@ -24,6 +25,8 @@ def check_v4_1037_pa_ampm_memory_tap_macro(rows: list[dict[str, float]]) -> tupl
     prev_amp = 0.0
     checked = vout_errors = am_errors = pm_errors = valid_errors = clear_errors = 0
     reset_clear = disabled_clear = compression_seen = memory_seen = False
+    ever_enabled = False
+    disable_time: float | None = None
     for row in rows:
         t = float(row["time"])
         rst = _v4_topup_logic_high(row, "rst")
@@ -31,12 +34,22 @@ def check_v4_1037_pa_ampm_memory_tap_macro(rows: list[dict[str, float]]) -> tupl
         if not enabled:
             prev_amp = 0.0
             clear = abs(row["vout"] - 0.45) < 0.08 and row["am_metric"] < 0.10 and row["pm_metric"] < 0.10 and row["valid"] < 0.10
-            reset_clear = reset_clear or (rst and t < 5e-9 and clear)
-            disabled_clear = disabled_clear or (t > 82e-9 and clear)
-            if ((rst and t < 5e-9) or t > 82e-9) and not clear:
+            reset_clear = reset_clear or (rst and clear)
+            disabled = ever_enabled and not _v4_topup_logic_high(row, "enable")
+            if disabled and disable_time is None:
+                disable_time = t
+            disabled_ready = (
+                disabled
+                and disable_time is not None
+                and t >= disable_time + 0.7e-9
+            )
+            disabled_clear = disabled_clear or (disabled_ready and clear)
+            if (rst or disabled_ready) and not clear:
                 clear_errors += 1
             prev_clk = float(row["clk"])
             continue
+        ever_enabled = True
+        disable_time = None
         if _v4_rising(prev_clk, float(row["clk"])):
             amp = float(row["vin"]) - 0.45
             excess = max(0.0, float(row["drive"]) - 0.55)
@@ -63,4 +76,13 @@ def check_v4_1037_pa_ampm_memory_tap_macro(rows: list[dict[str, float]]) -> tupl
     return ok, f"v4_1037 checked={checked} reset_clear={reset_clear} disabled_clear={disabled_clear} compression_seen={compression_seen} memory_seen={memory_seen} vout_errors={vout_errors} am_errors={am_errors} pm_errors={pm_errors} valid_errors={valid_errors} clear_errors={clear_errors}"
 
 CHECKER_ID = "v4_339_pa_ampm_memory_tap_macro"
-CHECKER: Checker = check_v4_1037_pa_ampm_memory_tap_macro
+CHECKER: Checker = with_property_diagnostics(
+    check_v4_1037_pa_ampm_memory_tap_macro,
+    {
+        "P_ON_RESET_OR_WHEN_DISABLED_DRIVE": ("clear_errors", "!reset_clear", "!disabled_clear"),
+        "P_ON_EACH_ENABLED_RISING_CLK_EDGE": "vout_errors",
+        "P_APPLY_AN_AM_GAIN_COMPRESSION_PROXY": "am_errors",
+        "P_APPLY_A_ONE_SAMPLE_MEMORY_TERM": "pm_errors",
+        "P_EXPOSE_AM_AND_PM_PROXIES_SEPARATELY": ("am_errors", "pm_errors"),
+    },
+)

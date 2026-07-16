@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 from ..api import Checker
+from .diagnostics import with_property_diagnostics
 VCM = 0.45
 VTH = 0.45
 
@@ -27,6 +28,8 @@ def check_v4_333_image_reject_mixer_calibration_loop(rows: list[dict[str, float]
     prev_clk = float(rows[0]["clk"])
     checked = mixer_errors = cal_errors = clear_errors = 0
     reset_clear = disabled_clear = ever_enabled = False
+    disable_time: float | None = None
+    active_edges = 0
     image_min = 1e9
     streak = 0
     for row in rows:
@@ -43,19 +46,30 @@ def check_v4_333_image_reject_mixer_calibration_loop(rows: list[dict[str, float]
             )
             if rst and clear:
                 reset_clear = True
-            if ever_enabled and (not _high(row, "enable")) and clear:
+            disabled = ever_enabled and not _high(row, "enable")
+            if disabled and disable_time is None:
+                disable_time = t
+            disabled_ready = (
+                disabled
+                and disable_time is not None
+                and t >= disable_time + 0.7e-9
+            )
+            if disabled_ready and clear:
                 disabled_clear = True
-            if (rst or (ever_enabled and not _high(row, "enable") and disabled_clear)) and not clear:
+            if (rst or disabled_ready) and not clear:
                 clear_errors += 1
             streak = 0
+            active_edges = 0
             prev_clk = clk
             continue
         ever_enabled = True
+        disable_time = None
         if not _rising(prev_clk, clk):
             prev_clk = clk
             continue
         prev_clk = clk
-        if t < 8e-9:
+        active_edges += 1
+        if active_edges == 1:
             continue
         checked += 1
         rf = float(row["rf_in"])
@@ -98,4 +112,13 @@ def check_v4_333_image_reject_mixer_calibration_loop(rows: list[dict[str, float]
     )
 
 CHECKER_ID = "v4_333_image_reject_mixer_calibration_loop"
-CHECKER: Checker = check_v4_333_image_reject_mixer_calibration_loop
+CHECKER: Checker = with_property_diagnostics(
+    check_v4_333_image_reject_mixer_calibration_loop,
+    {
+        "P_ON_RESET_OR_WHEN_DISABLED_CLEAR": ("clear_errors", "!reset_clear", "!disabled_clear"),
+        "P_ON_EACH_ENABLED_RISING_CLK_EDGE": "mixer_errors",
+        "P_GENERATE_I_AND_Q_OUTPUTS_USING": "mixer_errors",
+        "P_UPDATE_A_SIMPLE_GAIN_PHASE_CORRECTION": "mixer_errors",
+        "P_ASSERT_CALIBRATED_AFTER_THREE_CONSECUTIVE_UPDA": "cal_errors",
+    },
+)

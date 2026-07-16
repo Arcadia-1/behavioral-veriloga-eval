@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 from ..api import Checker
+from .diagnostics import with_diagnostic_contract
 def _v4_topup_logic_high(row: dict[str, float], name: str, threshold: float = 0.45) -> bool:
     return float(row.get(name, 0.0)) > threshold
 
@@ -21,6 +22,8 @@ def check_v4_1034_rf_envelope_detector_attack_release(rows: list[dict[str, float
     prev_clk = float(rows[0].get("clk", 0.0))
     checked = env_errors = attack_errors = valid_errors = clear_errors = 0
     reset_clear = disabled_clear = attack_seen = release_seen = False
+    ever_enabled = False
+    disable_time: float | None = None
     for row in rows:
         t = float(row["time"])
         rst = _v4_topup_logic_high(row, "rst")
@@ -28,12 +31,22 @@ def check_v4_1034_rf_envelope_detector_attack_release(rows: list[dict[str, float
         if not enabled:
             env = 0.0
             clear = row["envelope"] < 0.10 and row["attack_metric"] < 0.10 and row["valid"] < 0.10
-            reset_clear = reset_clear or (rst and t < 5e-9 and clear)
-            disabled_clear = disabled_clear or (t > 86e-9 and clear)
-            if ((rst and t < 5e-9) or t > 86e-9) and not clear:
+            reset_clear = reset_clear or (rst and clear)
+            disabled = ever_enabled and not _v4_topup_logic_high(row, "enable")
+            if disabled and disable_time is None:
+                disable_time = t
+            disabled_ready = (
+                disabled
+                and disable_time is not None
+                and t >= disable_time + 0.7e-9
+            )
+            disabled_clear = disabled_clear or (disabled_ready and clear)
+            if (rst or disabled_ready) and not clear:
                 clear_errors += 1
             prev_clk = float(row["clk"])
             continue
+        ever_enabled = True
+        disable_time = None
         if _v4_rising(prev_clk, float(row["clk"])):
             mag = min(0.9, abs(float(row["vin"]) - 0.45) * 2.0)
             attacking = mag > env
@@ -63,4 +76,4 @@ def check_v4_1034_rf_envelope_detector_attack_release(rows: list[dict[str, float
     )
 
 CHECKER_ID = "v4_336_rf_envelope_detector_attack_release"
-CHECKER: Checker = check_v4_1034_rf_envelope_detector_attack_release
+CHECKER: Checker = with_diagnostic_contract(check_v4_1034_rf_envelope_detector_attack_release)

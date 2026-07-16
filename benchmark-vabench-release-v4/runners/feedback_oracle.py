@@ -140,7 +140,11 @@ def _load_tb_text(task_dir: Path, profile_name: str) -> tuple[str, bool]:
         scripts_dir = package_root / "scripts"
         if str(scripts_dir) not in sys.path:
             sys.path.insert(0, str(scripts_dir))
-        from render_v4_harness import build_profile, load_spec, render_scs
+        from render_v4_harness import (
+            build_profile,
+            load_spec,
+            render_scs,
+        )
 
         spec, spec_hash = load_spec(harness_spec)
         profile = build_profile(spec, profile_name, spec_hash)
