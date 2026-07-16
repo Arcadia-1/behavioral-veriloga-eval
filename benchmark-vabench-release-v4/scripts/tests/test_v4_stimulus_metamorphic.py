@@ -1,7 +1,6 @@
 import importlib.util
 from pathlib import Path
 
-
 MODULE_PATH = Path(__file__).parents[1] / "run_v4_stimulus_metamorphic.py"
 SPEC = importlib.util.spec_from_file_location("run_v4_stimulus_metamorphic", MODULE_PATH)
 assert SPEC and SPEC.loader
@@ -53,3 +52,32 @@ def test_evas2_evidence_rejects_python_marker() -> None:
         assert "Rust backend marker" in str(exc)
     else:
         raise AssertionError("Python EVAS evidence was accepted")
+
+
+def test_run_case_rejects_missing_per_case_runtime_log(tmp_path, monkeypatch) -> None:
+    task_dir = tmp_path / "task"
+    task_dir.mkdir()
+    tb_path = task_dir / "reference_tb.scs"
+    tb_path.write_text("tran tran stop=1n\n", encoding="utf-8")
+
+    monkeypatch.setattr(runner, "stage_case", lambda **kwargs: (tb_path, []))
+    monkeypatch.setattr(runner, "required_trace_signals_for_checker", lambda task_id: {"time"})
+    monkeypatch.setattr(
+        runner,
+        "run_evas",
+        lambda *args, **kwargs: type("Result", (), {"returncode": 0, "stdout": "", "stderr": ""})(),
+    )
+
+    result = runner.run_case(
+        task_dir=task_dir,
+        checker_task_id="v4-001",
+        deck_text="tran tran stop=1n\n",
+        case_id="correct",
+        mutation_id=None,
+        output_root=tmp_path / "runs",
+        timeout_s=1,
+    )
+
+    assert result["status"] == "infrastructure_error"
+    assert result["evas_runtime_valid"] is False
+    assert result["evas_runtime_notes"] == ["missing evas.log"]

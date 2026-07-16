@@ -27,7 +27,9 @@ sys.path.insert(0, str(ROOT / "runners"))
 sys.path.insert(0, str(OPS))
 
 from run_v4_reference_evas_smoke import (  # noqa: E402
+    case_evas2_runtime,
     overlay_mutation,
+    require_evas2_environment,
     stage_case,
     task_dir_for_id,
 )
@@ -185,9 +187,13 @@ def run_case(
         required_trace_signals=required_signals,
     )
     combined = (proc.stdout or "") + "\n" + (proc.stderr or "")
-    engine_evidence = require_rust_evas2(combined)
+    case_runtime = case_evas2_runtime(case_output)
     csv_path = case_output / "tran.csv"
-    simulator_ok = proc.returncode == 0 and csv_path.is_file()
+    simulator_ok = (
+        proc.returncode == 0
+        and csv_path.is_file()
+        and case_runtime["evas_runtime_valid"] is True
+    )
     checker_score = 0.0
     checker_notes: list[str] = []
     if simulator_ok:
@@ -213,7 +219,7 @@ def run_case(
         "changed_artifacts": changed,
         "returncode": proc.returncode,
         "required_trace_signal_count": len(required_signals - {"time"}) if required_signals else 0,
-        **engine_evidence,
+        **case_runtime,
         "timing": parse_evas_timing(combined),
         "performance_counters": parse_evas_performance_counters(combined),
         "wall_time_s": time.perf_counter() - started,
@@ -313,6 +319,7 @@ def main() -> int:
     parser.add_argument("--shift", type=float, default=2e-9)
     parser.add_argument("--timeout-s", type=int, default=120)
     args = parser.parse_args()
+    require_evas2_environment()
     if args.work_root.exists():
         shutil.rmtree(args.work_root)
     args.work_root.mkdir(parents=True)
