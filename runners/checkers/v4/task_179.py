@@ -2,6 +2,8 @@
 from __future__ import annotations
 
 from ..api import Checker
+from .batch18_diagnostics import bind_properties
+from .stimulus_relative import normalize_affine_time
 def sample_signal_at(rows: list[dict[str, float]], signal: str, time_s: float) -> float | None:
     if not rows or "time" not in rows[0] or signal not in rows[0]:
         return None
@@ -77,6 +79,12 @@ def check_v3_tdc_ideal_edge_delta(rows: list[dict[str, float]]) -> tuple[bool, s
     required = {"time", "inp", "inn", "samp", "vout"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing tdc ideal edge delta signals"
+    rows = normalize_affine_time(rows, [
+        ("samp", 0.45, "rising", 0.525, 0),
+        ("samp", 0.45, "rising", 5.025, 1),
+    ])
+    if rows is None:
+        return False, "missing_sample_stimulus_edges"
     return _sample_many_within_trace(
         rows,
         {"vout": [(1.0, 0.0), (3.0, -0.3), (7.0, 0.6), (12.0, 0.2)]},
@@ -84,4 +92,7 @@ def check_v3_tdc_ideal_edge_delta(rows: list[dict[str, float]]) -> tuple[bool, s
     )
 
 CHECKER_ID = "v4_179_tdc_ideal_edge_delta"
-CHECKER: Checker = check_v3_tdc_ideal_edge_delta
+CHECKER: Checker = bind_properties(check_v3_tdc_ideal_edge_delta, (
+    "P_SAMPLE_REARMS_MEASUREMENT", "P_INPUT_EDGE_PAIR_CAPTURE",
+    "P_SIGNED_DELTA_POLARITY", "P_FULL_RANGE_SCALE",
+))

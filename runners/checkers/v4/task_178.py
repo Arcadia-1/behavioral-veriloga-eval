@@ -2,6 +2,8 @@
 from __future__ import annotations
 
 from ..api import Checker
+from .batch18_diagnostics import bind_properties
+from .stimulus_relative import normalize_affine_time
 def sample_signal_at(rows: list[dict[str, float]], signal: str, time_s: float) -> float | None:
     if not rows or "time" not in rows[0] or signal not in rows[0]:
         return None
@@ -74,9 +76,15 @@ def _sample_many_within_trace(
     return _sample_many(rows, filtered, tol=tol)
 
 def check_v3_onehot_progress_encoder(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    required = {"time", "d0", "d1", "d2", "d3", "d4", "d15", "sum"}
+    required = {"time", "ck", "d0", "d1", "d2", "d3", "d4", "d15", "sum"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing onehot progress encoder signals"
+    rows = normalize_affine_time(rows, [
+        ("ck", 0.5, "rising", 1.01, 0),
+        ("ck", 0.5, "rising", 16.01, 15),
+    ])
+    if rows is None:
+        return False, "missing_progress_clock_stimulus_edges"
     return _sample_many_within_trace(
         rows,
         {
@@ -90,4 +98,7 @@ def check_v3_onehot_progress_encoder(rows: list[dict[str, float]]) -> tuple[bool
     )
 
 CHECKER_ID = "v4_178_onehot_progress_encoder"
-CHECKER: Checker = check_v3_onehot_progress_encoder
+CHECKER: Checker = bind_properties(check_v3_onehot_progress_encoder, (
+    "P_PROGRESS_INITIAL_STATE", "P_SEQUENTIAL_ONEHOT_ASSERTION",
+    "P_ACCUMULATING_PROGRESS_BITS", "P_SUM_COUNT_OUTPUT",
+))

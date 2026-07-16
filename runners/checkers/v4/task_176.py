@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 from ..api import Checker
+from .batch18_diagnostics import bind_properties
 def _stable_bits_tuple(row: dict[str, float], bit_names: list[str]) -> tuple[int, ...] | None:
     bits = [_stable_voltage_bit(row, signal) for signal in bit_names]
     if any(bit is None for bit in bits):
@@ -18,6 +19,7 @@ def check_v3_weighted_decoder_7b5(rows: list[dict[str, float]]) -> tuple[bool, s
     last_bits: tuple[int, ...] | None = None
     settle_until = 0.0
     checked = 0
+    observed_codes: set[tuple[int, ...]] = set()
     max_err = 0.0
     worst_code = ""
     for row in rows:
@@ -27,6 +29,7 @@ def check_v3_weighted_decoder_7b5(rows: list[dict[str, float]]) -> tuple[bool, s
         bits = _stable_bits_tuple(row, bit_names)
         if bits is None:
             continue
+        observed_codes.add(bits)
         if last_bits is None or bits != last_bits:
             last_bits = bits
             settle_until = t + 0.08e-9
@@ -45,8 +48,11 @@ def check_v3_weighted_decoder_7b5(rows: list[dict[str, float]]) -> tuple[bool, s
             max_err = err
             worst_code = "".join(str(bit) for bit in bits)
         checked += 1
-    if checked < 20:
-        return False, f"insufficient_weighted_decoder_rows={checked}"
+    if checked < 20 or len(observed_codes) < 2:
+        return False, (
+            f"insufficient_weighted_decoder_excitation rows={checked} "
+            f"codes={len(observed_codes)}"
+        )
     return max_err <= 0.025, f"checked={checked} max_weighted7b5_error={max_err:.5f} worst_code={worst_code}"
 
 def _stable_voltage_bit(row: dict[str, float], signal: str) -> int | None:
@@ -60,4 +66,7 @@ def _stable_voltage_bit(row: dict[str, float], signal: str) -> int | None:
     return None
 
 CHECKER_ID = "v4_176_weighted_decoder_7b5"
-CHECKER: Checker = check_v3_weighted_decoder_7b5
+CHECKER: Checker = bind_properties(check_v3_weighted_decoder_7b5, (
+    "P_SHARED_272_DENOMINATOR", "P_SEVEN_BIT_OUTPUT",
+    "P_SEVEN_HALF_BIT_OUTPUT", "P_EIGHT_BIT_OUTPUT",
+))

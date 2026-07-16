@@ -9,7 +9,18 @@
     "analyses": [
       "tran tran stop=40n maxstep=20p"
     ],
-    "body_lines": [],
+    "body_lines": [
+      "Vd0 (d0 0) vsource type=pwl wave=[0 0 9.95n 0 10n 0.9 19.95n 0.9 20n 0 29.95n 0 30n 0.9]",
+      "Vd1 (d1 0) vsource type=pwl wave=[0 0 9.95n 0 10n 0.9]",
+      "Vd2 (d2 0) vsource type=pwl wave=[0 0 19.95n 0 20n 0.9]",
+      "Vd3 (d3 0) vsource type=pwl wave=[0 0 9.95n 0 10n 0.9 19.95n 0.9 20n 0 29.95n 0 30n 0.9]",
+      "Vd4 (d4 0) vsource type=pwl wave=[0 0 19.95n 0 20n 0.9]",
+      "Vd5 (d5 0) vsource type=pwl wave=[0 0 9.95n 0 10n 0.9 19.95n 0.9 20n 0 29.95n 0 30n 0.9]",
+      "Vd6 (d6 0) vsource type=pwl wave=[0 0 19.95n 0 20n 0.9]",
+      "Vd7 (d7 0) vsource type=pwl wave=[0 0 9.95n 0 10n 0.9 19.95n 0.9 20n 0 29.95n 0 30n 0.9]",
+      "Vd8 (d8 0) vsource type=pwl wave=[0 0 19.95n 0 20n 0.9 29.95n 0.9 30n 0.9]",
+      "XDUT (d0 d1 d2 d3 d4 d5 d6 d7 d8 aout7b aout7b5 aout8b) weighted_decoder_7b5"
+    ],
     "header": [
       "simulator lang=spectre",
       "global 0"
@@ -44,57 +55,17 @@
     "legacy_score_deck_sha256": "11aa51b5b82180c09046f0bb7c149887306b440a4d9f72baa68e601f11f0b101",
     "notes": [
       "legacy feedback deck was used only to seed the canonical harness spec",
-      "legacy score deck seeded private profile-specific overrides"
+      "legacy score deck seeded private profile-specific overrides",
+      "feedback deck is the canonical stimulus; score is generated with identical semantics"
     ]
   },
   "profile_defaults": {
     "feedback": {
-      "deck_overrides": {
-        "body_lines": [
-          "Vd0 (d0 0) vsource type=pwl wave=[0 0 9.95n 0 10n 0.9 19.95n 0.9 20n 0 29.95n 0 30n 0.9]",
-          "Vd1 (d1 0) vsource type=pwl wave=[0 0 9.95n 0 10n 0.9]",
-          "Vd2 (d2 0) vsource type=pwl wave=[0 0 19.95n 0 20n 0.9]",
-          "Vd3 (d3 0) vsource type=pwl wave=[0 0 9.95n 0 10n 0.9 19.95n 0.9 20n 0 29.95n 0 30n 0.9]",
-          "Vd4 (d4 0) vsource type=pwl wave=[0 0 19.95n 0 20n 0.9]",
-          "Vd5 (d5 0) vsource type=pwl wave=[0 0 9.95n 0 10n 0.9 19.95n 0.9 20n 0 29.95n 0 30n 0.9]",
-          "Vd6 (d6 0) vsource type=pwl wave=[0 0 19.95n 0 20n 0.9]",
-          "Vd7 (d7 0) vsource type=pwl wave=[0 0 9.95n 0 10n 0.9 19.95n 0.9 20n 0 29.95n 0 30n 0.9]",
-          "Vd8 (d8 0) vsource type=pwl wave=[0 0 19.95n 0 20n 0.9 29.95n 0.9 30n 0.9]",
-          "",
-          "XDUT (d0 d1 d2 d3 d4 d5 d6 d7 d8 aout7b aout7b5 aout8b) weighted_decoder_7b5",
-          ""
-        ]
-      },
-      "parameters": {
-        "maxstep": "200p",
-        "stop_time": "100n"
-      },
       "simulatorOptions": {
         "evas_profile": "balanced"
       }
     },
-    "score": {
-      "deck_overrides": {
-        "body_lines": [
-          "Vd0 (d0 0) vsource type=pwl wave=[0 0 7.95n 0 8n 0.9 15.95n 0.9 16n 0 23.95n 0 24n 0.9 31.95n 0.9 32n 0 40n 0]",
-          "Vd1 (d1 0) vsource type=pwl wave=[0 0 15.95n 0 16n 0.9 31.95n 0.9 32n 0 40n 0]",
-          "Vd2 (d2 0) vsource type=pwl wave=[0 0 7.95n 0 8n 0.9 15.95n 0.9 16n 0 23.95n 0 24n 0.9 40n 0.9]",
-          "Vd3 (d3 0) vsource type=pwl wave=[0 0 15.95n 0 16n 0.9 40n 0.9]",
-          "Vd4 (d4 0) vsource type=pwl wave=[0 0 7.95n 0 8n 0.9 15.95n 0.9 16n 0 31.95n 0 32n 0.9 40n 0.9]",
-          "Vd5 (d5 0) vsource type=pwl wave=[0 0 15.95n 0 16n 0.9 23.95n 0.9 24n 0 31.95n 0 32n 0.9 40n 0.9]",
-          "Vd6 (d6 0) vsource type=pwl wave=[0 0 7.95n 0 8n 0.9 15.95n 0.9 16n 0 31.95n 0 32n 0.9 40n 0.9]",
-          "Vd7 (d7 0) vsource type=pwl wave=[0 0 15.95n 0 16n 0.9 23.95n 0.9 24n 0 31.95n 0 32n 0.9 40n 0.9]",
-          "Vd8 (d8 0) vsource type=pwl wave=[0 0 7.95n 0 8n 0.9 15.95n 0.9 16n 0 23.95n 0 24n 0.9 31.95n 0.9 32n 0 40n 0]",
-          "",
-          "XDUT (d0 d1 d2 d3 d4 d5 d6 d7 d8 aout7b aout7b5 aout8b) weighted_decoder_7b5",
-          ""
-        ]
-      },
-      "parameters": {
-        "maxstep": "100p",
-        "stop_time": "100n"
-      }
-    }
+    "score": {}
   },
   "property_ids": [
     "P_SHARED_272_DENOMINATOR",

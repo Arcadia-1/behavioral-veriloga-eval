@@ -2,6 +2,8 @@
 from __future__ import annotations
 
 from ..api import Checker
+from .batch18_diagnostics import bind_properties
+from .stimulus_relative import normalize_affine_time
 def sample_signal_at(rows: list[dict[str, float]], signal: str, time_s: float) -> float | None:
     if not rows or "time" not in rows[0] or signal not in rows[0]:
         return None
@@ -74,9 +76,15 @@ def _sample_many_within_trace(
     return _sample_many(rows, filtered, tol=tol)
 
 def check_v3_sync_8b_dffs_v2(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    required = {"time", "do0", "do1", "do2", "do3", "do4", "do5", "do6", "do7", "do8"}
+    required = {"time", "ck1", "ck9", "do0", "do1", "do2", "do3", "do4", "do5", "do6", "do7", "do8"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing sync 8b dffs outputs"
+    rows = normalize_affine_time(rows, [
+        ("ck9", 0.45, "rising", 1.025, 0),
+        ("ck1", 0.45, "rising", 9.025, 0),
+    ])
+    if rows is None:
+        return False, "missing_phased_clock_stimulus_edges"
     return _sample_many_within_trace(
         rows,
         {
@@ -94,4 +102,7 @@ def check_v3_sync_8b_dffs_v2(rows: list[dict[str, float]]) -> tuple[bool, str]:
     )
 
 CHECKER_ID = "v4_177_sync_8b_dffs_v2"
-CHECKER: Checker = check_v3_sync_8b_dffs_v2
+CHECKER: Checker = bind_properties(check_v3_sync_8b_dffs_v2, (
+    "P_PHASED_CAPTURE_ORDER", "P_INTERMEDIATE_OUTPUT_CAPTURE",
+    "P_FINAL_OUTPUT_CAPTURE", "P_FULL_LEVEL_OUTPUTS",
+))

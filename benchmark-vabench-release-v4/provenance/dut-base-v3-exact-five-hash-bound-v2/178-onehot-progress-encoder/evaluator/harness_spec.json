@@ -11,9 +11,7 @@
     ],
     "body_lines": [
       "Vck (ck 0) vsource type=pulse val0=0 val1=1 delay=1n period=1n width=0.4n rise=20p fall=20p",
-      "",
-      "XDUT (ck d0 d1 d2 d3 d4 d5 d6 d7 d8 d9 d10 d11 d12 d13 d14 d15 sum) onehot_progress_encoder",
-      ""
+      "XDUT (ck d0 d1 d2 d3 d4 d5 d6 d7 d8 d9 d10 d11 d12 d13 d14 d15 sum) onehot_progress_encoder"
     ],
     "header": [
       "simulator lang=spectre",
@@ -55,30 +53,17 @@
     "legacy_score_deck_sha256": "f69a0005a9c35636366f1e292d861c29ae73584984c5cc43de5a2178d763ddfb",
     "notes": [
       "legacy feedback deck was used only to seed the canonical harness spec",
-      "legacy score deck seeded private profile-specific overrides"
+      "legacy score deck seeded private profile-specific overrides",
+      "feedback deck is the canonical stimulus; score is generated with identical semantics"
     ]
   },
   "profile_defaults": {
     "feedback": {
-      "parameters": {
-        "maxstep": "200p",
-        "stop_time": "100n"
-      },
       "simulatorOptions": {
         "evas_profile": "balanced"
       }
     },
-    "score": {
-      "deck_overrides": {
-        "analyses": [
-          "tran tran stop=18n maxstep=20p"
-        ]
-      },
-      "parameters": {
-        "maxstep": "100p",
-        "stop_time": "100n"
-      }
-    }
+    "score": {}
   },
   "property_ids": [
     "P_PROGRESS_INITIAL_STATE",

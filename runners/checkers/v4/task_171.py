@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 from ..api import Checker
+from .batch18_diagnostics import bind_properties
 def _threshold_crossings(
     values: list[float],
     times: list[float],
@@ -196,4 +197,7 @@ def _event_probe_time(
     return fallback if fallback > event_time_s else None
 
 CHECKER_ID = "v4_171_comparator_offset_driver"
-CHECKER: Checker = check_v3_comparator_offset_driver
+CHECKER: Checker = bind_properties(check_v3_comparator_offset_driver, (
+    "P_FALLING_CLOCK_DECISION_SAMPLE", "P_DECISION_POLARITY_UPDATE",
+    "P_HALVING_SEARCH_STEP", "P_COMMON_MODE_HALF_SCALE_DRIVE",
+))
