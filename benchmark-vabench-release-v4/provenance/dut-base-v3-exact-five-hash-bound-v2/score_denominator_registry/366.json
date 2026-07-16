@@ -1,0 +1,79 @@
+{
+  "family_id": "366",
+  "schema_version": "v4-score-denominator-family-registry-v1",
+  "task": {
+    "active_mutation_count": 5,
+    "active_mutations": [
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_004_threshold_shifted/certification.json",
+        "certification_sha256": "e29697f2d43b1e8fee4a201b1f348427e848748845d6e332fa2e387a83178c30",
+        "fault_class": "threshold_or_boundary_fault",
+        "mutation_bundle_sha256": "9b2347b5df71a9de466a3f9b299d476dce12f2ac59e09d539a9dee9450bc1383",
+        "mutation_id": "neg_004_threshold_shifted",
+        "source_catalog_certification_path": "negative_variants/neg_004_threshold_shifted/certification.json",
+        "trigger_condition": "semantic threshold mutation from gold",
+        "violated_property_ids": [
+          "P_DRIVE_I_OUT_AND_Q_OUT"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_002_half_scale/certification.json",
+        "certification_sha256": "149e6236c95867a8343dfea96fa7a10a7f0be95c2392d43c3ed076b4413c0b05",
+        "fault_class": "metric_or_observable_fault",
+        "mutation_bundle_sha256": "3387a7e10225a7ea3725f852883a9b045a9eabf9a1074c5fd053271d1190aedd",
+        "mutation_id": "neg_002_half_scale",
+        "source_catalog_certification_path": "negative_variants/neg_002_half_scale/certification.json",
+        "trigger_condition": "semantic scale mutation from gold",
+        "violated_property_ids": [
+          "P_ASSERT_VALID_AFTER_AT_LEAST_FOUR",
+          "P_ON_EACH_RISING_CLK_EDGE_WHILE"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_001_zero/certification.json",
+        "certification_sha256": "c1de7ba3df0851a8c17b5d1d7e9e5c67993bbaa5794c0497882c72f2f2778c83",
+        "fault_class": "zero_stub_output",
+        "mutation_bundle_sha256": "b7a77b6254327e2541716d617e76e5c69cebd97387b95b44e4b958b5e7822457",
+        "mutation_id": "neg_001_zero",
+        "source_catalog_certification_path": "negative_variants/neg_001_zero/certification.json",
+        "trigger_condition": "semantic zero mutation from gold",
+        "violated_property_ids": [
+          "P_ON_RESET_OR_WHEN_ENABLE_IS"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_005_event_edge_wrong/certification.json",
+        "certification_sha256": "b7e156779eac80306a5240edc7f0b5d85a1a2b0fb378107e0be18eba5b0756ce",
+        "fault_class": "phase_order_metric_inverted",
+        "mutation_bundle_sha256": "273c1709d86110aa7da666a69fea31daeca307217ab3f5b5a6e4de71e8147f35",
+        "mutation_id": "neg_005_event_edge_wrong",
+        "source_catalog_certification_path": "negative_variants/neg_005_event_edge_wrong/certification.json",
+        "trigger_condition": "phase metric reports the opposite I/Q ordering",
+        "violated_property_ids": [
+          "P_REPORT_A_BOUNDED_PHASE_ORDER_METRIC"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_003_inverted_transfer/certification.json",
+        "certification_sha256": "79ea259c728cab358ff39fdbb94804e7ad99394f98bfd39f5e6cbd924a0f0353",
+        "fault_class": "polarity_or_direction_error",
+        "mutation_bundle_sha256": "0e8d5ec8a2102177db4ca6c7f558c2525bd8b27de9668a090eef7f4cf8add7d1",
+        "mutation_id": "neg_003_inverted_transfer",
+        "source_catalog_certification_path": "negative_variants/neg_003_inverted_transfer/certification.json",
+        "trigger_condition": "semantic invert mutation from gold",
+        "violated_property_ids": [
+          "P_UPDATE_A_QUADRATURE_SAMPLED_STATE_USING"
+        ]
+      }
+    ],
+    "bugfix_seed": "neg_004_threshold_shifted",
+    "canonical_dut_id": "366",
+    "hashes": {
+      "mutation_catalog_sha256": "733f6da8535a9af199aec532b706152a02c5cac7335bd145f3713e38bd0f696f",
+      "score_deck_sha256": "cd0480dcccfd3ff05a30c9778857ba2c76fb8ccb7bfc3a8485aab92d29755c4f",
+      "task_certification_sha256": "4170d45303d4af37d3b4f2d1ebb8840b2aab14c856840bad6d4266f06e76e9f1",
+      "task_record_sha256": "403bbb9ac472f20515a2cd26acb8ce4a9e67cc2ca15f3da5ae84bf5804283f11"
+    },
+    "release_dir": "366-polyphase-quadrature-filter-macro"
+  }
+}

@@ -1,0 +1,79 @@
+{
+  "family_id": "039",
+  "schema_version": "v4-score-denominator-family-registry-v1",
+  "task": {
+    "active_mutation_count": 5,
+    "active_mutations": [
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_001/certification.json",
+        "certification_sha256": "10c4cabb26c2dab5cd6e6eceff01a20d442f8781a1f99aed809e30af2a0cc55b",
+        "fault_class": "removes_the_differential_dependent_delay_variation",
+        "mutation_bundle_sha256": "2fb5aa6b87dee10bed1143398ec2944bdcb677321b6aa1b564837c32b047b74b",
+        "mutation_id": "neg_001",
+        "source_catalog_certification_path": "negative_variants/neg_001/certification.json",
+        "trigger_condition": "Removes the differential-dependent delay variation.",
+        "violated_property_ids": [
+          "P_BUNDLE_BINDING",
+          "P_CLOCKED_DECISION"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_003/certification.json",
+        "certification_sha256": "b4ca5daf9cec660da31458a269b4b5ff559832a75329a5718b8cf2547aa7c6dc",
+        "fault_class": "inverts_the_differential_decision_polarity_while_keeping_the_interface_valid",
+        "mutation_bundle_sha256": "aa8263ac6ce0283e895107cc54dab243a2408fd3f387db0ad1407f7d32cc1ec1",
+        "mutation_id": "neg_003",
+        "source_catalog_certification_path": "negative_variants/neg_003/certification.json",
+        "trigger_condition": "Inverts the differential decision polarity while keeping the interface valid.",
+        "violated_property_ids": [
+          "P_DELAY_MAGNITUDE_TREND"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_004/certification.json",
+        "certification_sha256": "9068497ffec5021820d3cfd97108a28d6b8337604ced09d335b2c554f0bedea9",
+        "fault_class": "breaks_falling_clock_reset_behavior_between_delayed_decisions",
+        "mutation_bundle_sha256": "f5db1f612e2195ac66d97cecf14812833f161982954db211d662deda4aabbd6d",
+        "mutation_id": "neg_004",
+        "source_catalog_certification_path": "negative_variants/neg_004/certification.json",
+        "trigger_condition": "Breaks falling-clock reset behavior between delayed decisions.",
+        "violated_property_ids": [
+          "P_DELAY_CLAMP"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_005/certification.json",
+        "certification_sha256": "27072160c599771c4a33f5e851f8fa03cff7bc029efcb88857d780e5a4afd70c",
+        "fault_class": "fails_the_public_output_transition_or_stuck_output_behavior_checks",
+        "mutation_bundle_sha256": "6e0addea052a27a75fe835f2209fd4acf59f3d56d1315004fff2477bdb45f951",
+        "mutation_id": "neg_005",
+        "source_catalog_certification_path": "negative_variants/neg_005/certification.json",
+        "trigger_condition": "Fails the public output transition or stuck-output behavior checks.",
+        "violated_property_ids": [
+          "P_EDGE_INTERVAL_MEASUREMENT"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_002/certification.json",
+        "certification_sha256": "dc9628dc20ea87d523e3d9c30e4c17fbd21ff85ae3be4f764f40a146c78b1b8e",
+        "fault_class": "uses_an_incorrect_delay_window_for_one_comparator_decision_phase",
+        "mutation_bundle_sha256": "9a36f33a96ad80a4e047c327688c25ebdb9ae37217b635740bff7c66d9103cc0",
+        "mutation_id": "neg_002",
+        "source_catalog_certification_path": "negative_variants/neg_002/certification.json",
+        "trigger_condition": "Uses an incorrect delay window for one comparator decision phase.",
+        "violated_property_ids": [
+          "P_FALLING_RESET"
+        ]
+      }
+    ],
+    "bugfix_seed": "neg_001",
+    "canonical_dut_id": "039",
+    "hashes": {
+      "mutation_catalog_sha256": "51bc16255526cf6e2da9d900e78e79577f38d2c086f479d10dc8c9dc73e0cb80",
+      "score_deck_sha256": "539431bc288e25e721f202ca8b256b8b12cd3f182e3896a1af732e165ca72aa9",
+      "task_certification_sha256": "3f8ced441fc62167fd623416010e9e8f53ff6afaafe1b18588a82f81c4d5335d",
+      "task_record_sha256": "98b2d9e608a04b2992f831e249d4e8b3436fdef4a01f547d9a4cb73230fd790f"
+    },
+    "release_dir": "039-propagation-delay-comparator"
+  }
+}

@@ -1,0 +1,80 @@
+{
+  "family_id": "010",
+  "schema_version": "v4-score-denominator-family-registry-v1",
+  "task": {
+    "active_mutation_count": 5,
+    "active_mutations": [
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_001_zero_offset/certification.json",
+        "certification_sha256": "e3b1e635709dc58224187a5794ef7cb6f4a165f39ae3ad54f82c90b85ff319a7",
+        "fault_class": "offset_threshold_zero",
+        "mutation_bundle_sha256": "9dea1b2400fef7bb5c01804b991d366f82ae9d725565c05fd0f0adbef0ada31d",
+        "mutation_id": "neg_001_zero_offset",
+        "source_catalog_certification_path": "negative_variants/neg_001_zero_offset/certification.json",
+        "trigger_condition": "a sampled differential input is positive but below vos",
+        "violated_property_ids": [
+          "P_OFFSET_DECISION"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_006_fixed_clock_midpoint/certification.json",
+        "certification_sha256": "5a5bc54c6bd7ce9ac3277736934dc6eb6020c59824255dff59ac92569253cfcf",
+        "fault_class": "fixed_clock_midpoint",
+        "mutation_bundle_sha256": "b30cc1bb5be4d342ceee58eeb5d14314196939ac9d97674a6529b2372284a271",
+        "mutation_id": "neg_006_fixed_clock_midpoint",
+        "source_catalog_certification_path": "negative_variants/neg_006_fixed_clock_midpoint/certification.json",
+        "trigger_condition": "CLK is sampled with a non-nominal local VDD/VSS midpoint",
+        "violated_property_ids": [
+          "P_RAIL_REFERENCE",
+          "P_RISING_EDGE_SAMPLE"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_003_falling_edge/certification.json",
+        "certification_sha256": "d4d55c80a26b6e8af42e4edb1325ea3acf73efb27876a6d34e2618d9e5a40788",
+        "fault_class": "falling_edge_sampling",
+        "mutation_bundle_sha256": "41b790a9c04fcad089a563e7e0490f7d2d139b7261b305fc677aa05b92a229dd",
+        "mutation_id": "neg_003_falling_edge",
+        "source_catalog_certification_path": "negative_variants/neg_003_falling_edge/certification.json",
+        "trigger_condition": "CLK has a rising sampling edge followed by an input transition before its falling edge",
+        "violated_property_ids": [
+          "P_LATCH_HOLD",
+          "P_RISING_EDGE_SAMPLE"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_002_large_offset/certification.json",
+        "certification_sha256": "d7610ad0a4829b8679c253fa8487a66fd9c3a29ff7e2d84aaa2d55c3e1c5b440",
+        "fault_class": "offset_threshold_excessive",
+        "mutation_bundle_sha256": "ba1b06c039af7c6245325af5b04aa27b8d96d32dce7e73de7dd0bff24e193b8d",
+        "mutation_id": "neg_002_large_offset",
+        "source_catalog_certification_path": "negative_variants/neg_002_large_offset/certification.json",
+        "trigger_condition": "a sampled differential input exceeds vos but not the erroneous 15 mV threshold",
+        "violated_property_ids": [
+          "P_OFFSET_DECISION"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_004_async_response/certification.json",
+        "certification_sha256": "d807b8eea9d1e3440fd970658887ce1c33b16bfcea2bdd7fea607a1cae87d5e1",
+        "fault_class": "asynchronous_decision",
+        "mutation_bundle_sha256": "19dd45c931176d47c9029c30ef7c7b465d6d9cad44205e29f79c51f7325f6636",
+        "mutation_id": "neg_004_async_response",
+        "source_catalog_certification_path": "negative_variants/neg_004_async_response/certification.json",
+        "trigger_condition": "VINP changes between rising CLK edges",
+        "violated_property_ids": [
+          "P_LATCH_HOLD"
+        ]
+      }
+    ],
+    "bugfix_seed": "neg_001_zero_offset",
+    "canonical_dut_id": "010",
+    "hashes": {
+      "mutation_catalog_sha256": "607c89e938fa32d961562b21d63c6cfb63e0ac0095df33e62d36bb6c523817b0",
+      "score_deck_sha256": "97e3390ea4969c90e721c3821963606bae733c80095dece1a981c40c1791ce52",
+      "task_certification_sha256": "0f481abda2cb19d6f7b66cde6e259f5f076defe5274d4a2a8338465ded013c2b",
+      "task_record_sha256": "c4f891ae0df637646887fa96e37f211cf5d2d9f647fda99177459d9a6720416f"
+    },
+    "release_dir": "010-offset-comparator"
+  }
+}

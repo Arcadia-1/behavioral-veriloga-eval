@@ -1,0 +1,78 @@
+{
+  "family_id": "206",
+  "schema_version": "v4-score-denominator-family-registry-v1",
+  "task": {
+    "active_mutation_count": 5,
+    "active_mutations": [
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_002_swap_decision_outputs/certification.json",
+        "certification_sha256": "eb0c070395cc699f8fa20b2603bb7a7553126a0c24e9a3b2b06aa382d9955636",
+        "fault_class": "polarity_or_direction_error",
+        "mutation_bundle_sha256": "68eb5425697e97cb634dafa022df7d51e9f81a7d96540a149f6953d20d0f43ac",
+        "mutation_id": "neg_002_swap_decision_outputs",
+        "source_catalog_certification_path": "negative_variants/neg_002_swap_decision_outputs/certification.json",
+        "trigger_condition": "Swaps comparator decision polarity.",
+        "violated_property_ids": [
+          "P_INITIALIZE_BOTH_DECISION_OUTPUTS_HIGH_WHENEVER"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_003_no_reset_high/certification.json",
+        "certification_sha256": "41e4d5f46881e34b1d58ec5ee17abc2ff11e38a7bf4a06f5a432d245a69a9001",
+        "fault_class": "state_reset_or_enable_error",
+        "mutation_bundle_sha256": "8364a29d3ff55449249c91098414534e5b5ab2ab6b865d2b60df7800924392e1",
+        "mutation_id": "neg_003_no_reset_high",
+        "source_catalog_certification_path": "negative_variants/neg_003_no_reset_high/certification.json",
+        "trigger_condition": "Does not reset comparator outputs high on falling cmpck.",
+        "violated_property_ids": [
+          "P_INITIALIZE_BOTH_DECISION_OUTPUTS_HIGH_WHENEVER"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_004_half_output/certification.json",
+        "certification_sha256": "0ef479ff57639bf6f88afc3789703826af3e163515646197bcc72c62a70ecec0",
+        "fault_class": "omission_or_incomplete_behavior",
+        "mutation_bundle_sha256": "0a90fc7760c506a8226eb401fdfe14f09ef91967c72c571a9e11513badeaf43c",
+        "mutation_id": "neg_004_half_output",
+        "source_catalog_certification_path": "negative_variants/neg_004_half_output/certification.json",
+        "trigger_condition": "Drives comparator logic highs at half vdd.",
+        "violated_property_ids": [
+          "P_INITIALIZE_BOTH_DECISION_OUTPUTS_HIGH_WHENEVER"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_001_zero/certification.json",
+        "certification_sha256": "bc210a73edf26623ff3513040d654970297dd59c02eb3d298fdfed49233a206a",
+        "fault_class": "zero_stub_output",
+        "mutation_bundle_sha256": "0efd7a30b09b6f7e72a40562d3c282a47b956d89c7e37d590e50102d7b3eda00",
+        "mutation_id": "neg_001_zero",
+        "source_catalog_certification_path": "negative_variants/neg_001_zero/certification.json",
+        "trigger_condition": "Drives zero output and therefore fails the stable waveform contract.",
+        "violated_property_ids": [
+          "P_INITIALIZE_BOTH_DECISION_OUTPUTS_HIGH_WHENEVER"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_005_metric_scale_low/certification.json",
+        "certification_sha256": "fe52f3623dd1a3f5929794d333e220978f3f6d4c43dfba4deff6a1c9b9094e7c",
+        "fault_class": "state_reset_or_enable_error",
+        "mutation_bundle_sha256": "6206ab1224b23c2eb44cd31cffa2b85d35860d9a2ea1bbdc3cc876c8f5cce4c6",
+        "mutation_id": "neg_005_metric_scale_low",
+        "source_catalog_certification_path": "negative_variants/neg_005_metric_scale_low/certification.json",
+        "trigger_condition": "SAR Comparator Reset High: scales the metric output, preserving the main path while failing measurement checks.",
+        "violated_property_ids": [
+          "P_INITIALIZE_BOTH_DECISION_OUTPUTS_HIGH_WHENEVER"
+        ]
+      }
+    ],
+    "bugfix_seed": "neg_002_swap_decision_outputs",
+    "canonical_dut_id": "206",
+    "hashes": {
+      "mutation_catalog_sha256": "25f4220b1aa035e643479fbabdf9a0b5e55e798d514c42e9623bd66b2804711f",
+      "score_deck_sha256": "49598738a8eba52727e5256d77f22670dc360e6a2c3c16dbec48f0061e6532ed",
+      "task_certification_sha256": "ab8b7b1080d9ea51f4c8226c4ec8bfed6c4eeb5de384cd4847d025c444c1465f",
+      "task_record_sha256": "c2aad15e7fcb3b1f8b80cc01c63d04b4c3fda3f2605090e07fff878948ee215c"
+    },
+    "release_dir": "206-sar-comparator-reset-high"
+  }
+}

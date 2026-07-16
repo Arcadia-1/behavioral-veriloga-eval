@@ -1,0 +1,78 @@
+{
+  "family_id": "062",
+  "schema_version": "v4-score-denominator-family-registry-v1",
+  "task": {
+    "active_mutation_count": 5,
+    "active_mutations": [
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_001_zero/certification.json",
+        "certification_sha256": "a5c465bd99252de82b431f8952d05fa4a20702f84917038ed74b882e8cba5935",
+        "fault_class": "never_reports_latency",
+        "mutation_bundle_sha256": "8ed6f287800bc1d71a71f2cc606efe2a61c0959f77483cab9569de0ce94e33bf",
+        "mutation_id": "neg_001_zero",
+        "source_catalog_certification_path": "negative_variants/neg_001_zero/certification.json",
+        "trigger_condition": "stimulus exercises never reports latency against the public observable contract",
+        "violated_property_ids": [
+          "P_REQUEST_START"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_003_count_ready_cycle/certification.json",
+        "certification_sha256": "076b72d4afb1339e9959959febd2197d96766db19fa1f2140db8bf75f9c15801",
+        "fault_class": "counts_ready_cycle_too",
+        "mutation_bundle_sha256": "04c13203d249065a4e581053baee752e5ac07826bfb206a816a0e28ebe8b3fdc",
+        "mutation_id": "neg_003_count_ready_cycle",
+        "source_catalog_certification_path": "negative_variants/neg_003_count_ready_cycle/certification.json",
+        "trigger_condition": "stimulus exercises counts ready cycle too against the public observable contract",
+        "violated_property_ids": [
+          "P_READY_COMPLETION"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_004_no_done/certification.json",
+        "certification_sha256": "e6dd86b3f2898874fe7bdb3f2a0607e98901eadf166246ab0fc5a9ff2820c318",
+        "fault_class": "does_not_assert_done",
+        "mutation_bundle_sha256": "a406db7281c8c60b5e419aa9590b17104149e05f74c1360fb31651dbb0acaa7f",
+        "mutation_id": "neg_004_no_done",
+        "source_catalog_certification_path": "negative_variants/neg_004_no_done/certification.json",
+        "trigger_condition": "stimulus exercises does not assert done against the public observable contract",
+        "violated_property_ids": [
+          "P_ZERO_LATENCY"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_005_ignore_valid/certification.json",
+        "certification_sha256": "632adf753fa458040428d330ec4b82b516974261824cca7465dc5a23fab4fb9f",
+        "fault_class": "starts_immediately",
+        "mutation_bundle_sha256": "c2b4d95ca25eb6025a79612acf9e5861c1c7ebef8980d4817f675e8eb347a5de",
+        "mutation_id": "neg_005_ignore_valid",
+        "source_catalog_certification_path": "negative_variants/neg_005_ignore_valid/certification.json",
+        "trigger_condition": "stimulus exercises starts immediately against the public observable contract",
+        "violated_property_ids": [
+          "P_RESULT_HOLD_AND_ORDER"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_002_off_by_one/certification.json",
+        "certification_sha256": "0b907a1dba5904610f61d0c03a615e62fcdc1a7aedb7528e07c6af5da4bd88cd",
+        "fault_class": "starts_at_one",
+        "mutation_bundle_sha256": "0deee4f0fa83f7ee43879e88cb303d9ee46f8e8974464e9b59cfd7d7074beb34",
+        "mutation_id": "neg_002_off_by_one",
+        "source_catalog_certification_path": "negative_variants/neg_002_off_by_one/certification.json",
+        "trigger_condition": "stimulus exercises starts at one against the public observable contract",
+        "violated_property_ids": [
+          "P_WAIT_CYCLE_COUNT"
+        ]
+      }
+    ],
+    "bugfix_seed": "neg_001_zero",
+    "canonical_dut_id": "062",
+    "hashes": {
+      "mutation_catalog_sha256": "6d29c188bc31469723201abcbf390c8dfe935059fac7368bab58bf5d74b84f30",
+      "score_deck_sha256": "925eb292f29edc2feb61339f616920d08aa3b7db777550836bf3c2f2265fa598",
+      "task_certification_sha256": "94926a077fbdb7a26a1647766f5fe1f8b61ea180ee25fb2320b48998c24b69af",
+      "task_record_sha256": "c1ccfd012c0411e4dce737d235ade903cacef8bff6cae65e81b75fbf7397be9b"
+    },
+    "release_dir": "062-latency-counter-ready-valid-12b"
+  }
+}

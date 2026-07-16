@@ -1,0 +1,79 @@
+{
+  "family_id": "197",
+  "schema_version": "v4-score-denominator-family-registry-v1",
+  "task": {
+    "active_mutation_count": 5,
+    "active_mutations": [
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_004_fixed_offset/certification.json",
+        "certification_sha256": "b726100d870bf9185fd8a77e5088fe1db89b512d3d266043e59c1c0accc9c720",
+        "fault_class": "threshold_or_boundary_fault",
+        "mutation_bundle_sha256": "9e54999f28bb9c80fad2f26816bdfc2f23f62fa3f39c9a44be9b215490d34f4a",
+        "mutation_id": "neg_004_fixed_offset",
+        "source_catalog_certification_path": "negative_variants/neg_004_fixed_offset/certification.json",
+        "trigger_condition": "Adds a fixed output offset to all decoded codes.",
+        "violated_property_ids": [
+          "P_INPUT_THRESHOLDING",
+          "P_NORMALIZED_SINGLE_ENDED_OUTPUT"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_002_omit_msb/certification.json",
+        "certification_sha256": "6c0c64ebe3c147c8de286ddd452d0dee36aca5ebb85676d183d846cc541f0a0e",
+        "fault_class": "omission_or_incomplete_behavior",
+        "mutation_bundle_sha256": "6c7eed93be32eb7ad676247bc53624a05a43c00781c4b2d34ac8e2e0a818e725",
+        "mutation_id": "neg_002_omit_msb",
+        "source_catalog_certification_path": "negative_variants/neg_002_omit_msb/certification.json",
+        "trigger_condition": "Drops the din6 MSB contribution.",
+        "violated_property_ids": [
+          "P_WEIGHTED_CODE_SUM"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_005_metric_scale_low/certification.json",
+        "certification_sha256": "d0d5280f9a581adf5035d730061542f60b332330528c3ec75d6612034723770f",
+        "fault_class": "metric_or_observable_fault",
+        "mutation_bundle_sha256": "74092a196fab7f58f35d2a33a137e350c0ce330f8e038b2075bd969bc34a02ca",
+        "mutation_id": "neg_005_metric_scale_low",
+        "source_catalog_certification_path": "negative_variants/neg_005_metric_scale_low/certification.json",
+        "trigger_condition": "Single ADC 7b Weighted: scales the metric output, preserving the main path while failing measurement checks.",
+        "violated_property_ids": [
+          "P_MONOTONIC_CODE_RESPONSE"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_001_zero/certification.json",
+        "certification_sha256": "45728d6c5712ef03ff938dab20570fa883b438d69b97b4c053a76ba8fe4fbe90",
+        "fault_class": "zero_stub_output",
+        "mutation_bundle_sha256": "0f9b8571e62f4568dc16fe1b32400a4ebad97b83d0e7b190549816e237f22658",
+        "mutation_id": "neg_001_zero",
+        "source_catalog_certification_path": "negative_variants/neg_001_zero/certification.json",
+        "trigger_condition": "Drives zero output and therefore fails the stable waveform contract.",
+        "violated_property_ids": [
+          "P_NORMALIZED_SINGLE_ENDED_OUTPUT"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_003_half_scale/certification.json",
+        "certification_sha256": "d4a8869f9ff52589cdd549c082ae91dfb9b4b27f4ee87354d0615bd3cb10dc1d",
+        "fault_class": "metric_or_observable_fault",
+        "mutation_bundle_sha256": "840eb06d4e01a5264661c8b8c64e03b6d97d14a8935d8783422fbb68ce872303",
+        "mutation_id": "neg_003_half_scale",
+        "source_catalog_certification_path": "negative_variants/neg_003_half_scale/certification.json",
+        "trigger_condition": "Uses half-scale denominator for all weighted terms.",
+        "violated_property_ids": [
+          "P_NORMALIZED_SINGLE_ENDED_OUTPUT"
+        ]
+      }
+    ],
+    "bugfix_seed": "neg_004_fixed_offset",
+    "canonical_dut_id": "197",
+    "hashes": {
+      "mutation_catalog_sha256": "d41338ae60058876292eba42c474075f28998919f3649227713b703cd1c71ac7",
+      "score_deck_sha256": "a8a16253d664d84197cd8c593105729b663d83c9732b894da51986c6606bf59c",
+      "task_certification_sha256": "e7c176febae7bc9ae8e08c7ea337ca59292a0187346588e2a86ecdd64a3bf6a7",
+      "task_record_sha256": "1ac0a3380a4972b3aa98c6d23d1b7365c8b66c35b5edb23fd93993059f9ba33b"
+    },
+    "release_dir": "197-single-adc-7b-weighted"
+  }
+}

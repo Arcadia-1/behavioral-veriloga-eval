@@ -1,0 +1,90 @@
+{
+  "family_id": "392",
+  "schema_version": "v4-score-denominator-family-registry-v1",
+  "task": {
+    "active_mutation_count": 5,
+    "active_mutations": [
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_004_threshold_shifted/certification.json",
+        "certification_sha256": "6dc024dd04b5c6666b49ecadcb4e9ae53976ffcb5e19afdaf9f517665d594555",
+        "fault_class": "threshold_or_boundary_fault",
+        "mutation_bundle_sha256": "7b4db71ca9b58b1d94d6b992fc38e00011de899bf13d5cdea25ad744e0a5684c",
+        "mutation_id": "neg_004_threshold_shifted",
+        "source_catalog_certification_path": "negative_variants/neg_004_threshold_shifted/certification.json",
+        "trigger_condition": "semantic threshold mutation from gold",
+        "violated_property_ids": [
+          "P_ASSERT_VALID_AFTER_THE_FIRST_COMPLETE",
+          "P_DRIVE_SERIAL_OUT_AS_THE_VOLTAGE",
+          "P_SLOT_1_SLOT_0_MUST_EXPOSE",
+          "P_WHEN_ENABLED_STEP_THROUGH_INPUTS_D0"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_001_zero/certification.json",
+        "certification_sha256": "3f19e28c81479c6e64a57793d3b9b04fb50dca73665e5001dae44888a2c84d05",
+        "fault_class": "zero_stub_output",
+        "mutation_bundle_sha256": "c5a537ff485ea395cded669e3de4ea31d6c50d8801de8120f435d274ff292ae3",
+        "mutation_id": "neg_001_zero",
+        "source_catalog_certification_path": "negative_variants/neg_001_zero/certification.json",
+        "trigger_condition": "semantic zero mutation from gold",
+        "violated_property_ids": [
+          "P_ASSERT_VALID_AFTER_THE_FIRST_COMPLETE",
+          "P_DRIVE_SERIAL_OUT_AS_THE_VOLTAGE",
+          "P_SLOT_1_SLOT_0_MUST_EXPOSE",
+          "P_WHEN_ENABLED_STEP_THROUGH_INPUTS_D0"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_002_half_scale/certification.json",
+        "certification_sha256": "25fb478561b6c4e3b54a3dd82b0d2397dec5ef2caf4186b9df320e70ab03d0cd",
+        "fault_class": "metric_or_observable_fault",
+        "mutation_bundle_sha256": "d8fd2e5a219ae4ea47ece7f2379c23af3449c561c27ee0a6a366814392be143a",
+        "mutation_id": "neg_002_half_scale",
+        "source_catalog_certification_path": "negative_variants/neg_002_half_scale/certification.json",
+        "trigger_condition": "semantic scale mutation from gold",
+        "violated_property_ids": [
+          "P_ASSERT_VALID_AFTER_THE_FIRST_COMPLETE",
+          "P_DRIVE_SERIAL_OUT_AS_THE_VOLTAGE",
+          "P_SLOT_1_SLOT_0_MUST_EXPOSE",
+          "P_WHEN_ENABLED_STEP_THROUGH_INPUTS_D0"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_005_event_edge_wrong/certification.json",
+        "certification_sha256": "fce63d4db465603c1d745a9c5bb399dbb682bdbd31cdbf0bf6dde54e2325edab",
+        "fault_class": "valid_asserts_before_complete_frame",
+        "mutation_bundle_sha256": "6837a4f3fc7635290dc504f815a2d8633f1619753c28f373618d380304ae0cb9",
+        "mutation_id": "neg_005_event_edge_wrong",
+        "source_catalog_certification_path": "negative_variants/neg_005_event_edge_wrong/certification.json",
+        "trigger_condition": "valid asserts before all four serializer slots complete",
+        "violated_property_ids": [
+          "P_ASSERT_VALID_AFTER_THE_FIRST_COMPLETE"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_003_inverted_transfer/certification.json",
+        "certification_sha256": "81e9f74e7d00693f0c42b48177ad75c7721f0b66f2496c1664d74f42158224da",
+        "fault_class": "polarity_or_direction_error",
+        "mutation_bundle_sha256": "c598406761093e7378598cac2bcdfd72bfbe333218101ebb28a98eb12f2b70df",
+        "mutation_id": "neg_003_inverted_transfer",
+        "source_catalog_certification_path": "negative_variants/neg_003_inverted_transfer/certification.json",
+        "trigger_condition": "semantic invert mutation from gold",
+        "violated_property_ids": [
+          "P_ASSERT_VALID_AFTER_THE_FIRST_COMPLETE",
+          "P_DRIVE_SERIAL_OUT_AS_THE_VOLTAGE",
+          "P_SLOT_1_SLOT_0_MUST_EXPOSE",
+          "P_WHEN_ENABLED_STEP_THROUGH_INPUTS_D0"
+        ]
+      }
+    ],
+    "bugfix_seed": "neg_004_threshold_shifted",
+    "canonical_dut_id": "392",
+    "hashes": {
+      "mutation_catalog_sha256": "3bcdb048b79e570211e7c8f6e44a2ffcfe170c439bdd0208b2fbc7da9849d9b8",
+      "score_deck_sha256": "09048b6f2a1ff0be0bef9c24817bef984550994a7b1b81e51d8e4419e8a0bbbd",
+      "task_certification_sha256": "6686cdb9b7d70aebda97336488d80c18015db2ae2fdb40f0a3b1e146e3f9c7dd",
+      "task_record_sha256": "1fe3bf631622a157025a7aabeedde62ef2b73c85062eb7cc9413330a62abfd32"
+    },
+    "release_dir": "392-serializer-mux-timing-macro"
+  }
+}

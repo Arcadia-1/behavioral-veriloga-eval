@@ -1,0 +1,79 @@
+{
+  "family_id": "017",
+  "schema_version": "v4-score-denominator-family-registry-v1",
+  "task": {
+    "active_mutation_count": 5,
+    "active_mutations": [
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_001/certification.json",
+        "certification_sha256": "9cd3775762986a60aabbc82a1579be9fc754942f8b9611ed171579e95d79c4ba",
+        "fault_class": "applies_a_nonzero_comparator_offset_that_changes_the_near_threshold_latch_decision",
+        "mutation_bundle_sha256": "f814078db5f5f588f76f8dcd7571118f6e46c1e4bd8255fb3f11ff4c4626fe23",
+        "mutation_id": "neg_001",
+        "source_catalog_certification_path": "negative_variants/neg_001/certification.json",
+        "trigger_condition": "Applies a nonzero comparator offset that changes the near-threshold latch decision.",
+        "violated_property_ids": [
+          "P_NEGATIVE_DECISION",
+          "P_POSITIVE_DECISION"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_004/certification.json",
+        "certification_sha256": "f36800f947c6021e285e0fee80ce73a2e4afeaf3898df499b30138efffad0458",
+        "fault_class": "breaks_reset_hold_behavior_after_comparator_clock_transitions",
+        "mutation_bundle_sha256": "9c8881946c35d49dcee97f27f13cfda634b27b9b6294df7a5e0d8499390a0aca",
+        "mutation_id": "neg_004",
+        "source_catalog_certification_path": "negative_variants/neg_004/certification.json",
+        "trigger_condition": "Breaks reset/hold behavior after comparator clock transitions.",
+        "violated_property_ids": [
+          "P_INITIAL_AND_FALLING_RESET"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_002/certification.json",
+        "certification_sha256": "472b69981d0382c4e9768648a42e862f2365eb14e117f61834accbfbd42cb2db",
+        "fault_class": "breaks_edge_latched_timing_behavior_while_preserving_the_public_module_interface",
+        "mutation_bundle_sha256": "cd3b02a9ca91e01074c05dc7eb98795041be16fce6acc5b9579fb33ffdc7439c",
+        "mutation_id": "neg_002",
+        "source_catalog_certification_path": "negative_variants/neg_002/certification.json",
+        "trigger_condition": "Breaks edge-latched timing behavior while preserving the public module interface.",
+        "violated_property_ids": [
+          "P_LATCH_HOLD"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_005/certification.json",
+        "certification_sha256": "fa371d22cd6c65ad0bcd6d255deb6f9e5704a7cb8f2c677ebd5c4181d62eddfa",
+        "fault_class": "fails_complementary_latch_state_behavior_on_the_public_decision_outputs",
+        "mutation_bundle_sha256": "a66883ba133af915ba261936fc6efbd31b0561a1891b9de6aab6964123525973",
+        "mutation_id": "neg_005",
+        "source_catalog_certification_path": "negative_variants/neg_005/certification.json",
+        "trigger_condition": "Fails complementary latch-state behavior on the public decision outputs.",
+        "violated_property_ids": [
+          "P_ZERO_DIFFERENTIAL"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_003/certification.json",
+        "certification_sha256": "d9156e2ffa93c167bfbc40fe9440798a6986aac3e3c34124a6f4f61b2ce9f463",
+        "fault_class": "inverts_or_misroutes_the_positive_negative_differential_decision_polarity",
+        "mutation_bundle_sha256": "e1af1d2dce3fd9363517a49ca53c5ce8b7d1cff08532ea8650419fbb8d064b5d",
+        "mutation_id": "neg_003",
+        "source_catalog_certification_path": "negative_variants/neg_003/certification.json",
+        "trigger_condition": "Inverts or misroutes the positive/negative differential decision polarity.",
+        "violated_property_ids": [
+          "P_NEGATIVE_DECISION"
+        ]
+      }
+    ],
+    "bugfix_seed": "neg_001",
+    "canonical_dut_id": "017",
+    "hashes": {
+      "mutation_catalog_sha256": "3e1375b254fb64a837402aeb54252b2e8390a9001b6107a61e253dda2ec5ce48",
+      "score_deck_sha256": "18dc58917bc552597487a78c3ea8b65bc3da56686ac925974a14be363ebee4ff",
+      "task_certification_sha256": "4d4e869f9786e2f0237000232c351a28daf262e5d0702c3be64d0bee6b254144",
+      "task_record_sha256": "4d657d732e77c5f5f96e374371ebb000eb6d154a44c2f5f2edca1f1b9a500af3"
+    },
+    "release_dir": "017-strongarm-style-latch-comparator"
+  }
+}

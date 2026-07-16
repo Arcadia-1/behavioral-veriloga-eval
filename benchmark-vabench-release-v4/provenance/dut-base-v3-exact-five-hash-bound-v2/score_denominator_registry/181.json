@@ -1,0 +1,79 @@
+{
+  "family_id": "181",
+  "schema_version": "v4-score-denominator-family-registry-v1",
+  "task": {
+    "active_mutation_count": 5,
+    "active_mutations": [
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_002_top_group_three_delay/certification.json",
+        "certification_sha256": "6da01cb62e9c3154900df19775a9bd350e72b3ed8bdbfee4bfc645600d73ce2b",
+        "fault_class": "timing_or_state_update_fault",
+        "mutation_bundle_sha256": "c852e95e7aca5c1c259ad5f6ccf513cc3282031f3e9e774935e129c00fe98eff",
+        "mutation_id": "neg_002_top_group_three_delay",
+        "source_catalog_certification_path": "negative_variants/neg_002_top_group_three_delay/certification.json",
+        "trigger_condition": "Uses the third delay stage for bits 11-14 instead of the fourth.",
+        "violated_property_ids": [
+          "P_STAGGERED_DELAY_OUTPUT_GROUPS"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_005_metric_scale_low/certification.json",
+        "certification_sha256": "d9886b2043a831c59a34f90263afbbee38814aefba6842a2cfbe159d4ec0d946",
+        "fault_class": "metric_or_observable_fault",
+        "mutation_bundle_sha256": "088e9389afbfc72c822be6ca3abbe53eb30b0b3e58c25c30761462d9e30969e5",
+        "mutation_id": "neg_005_metric_scale_low",
+        "source_catalog_certification_path": "negative_variants/neg_005_metric_scale_low/certification.json",
+        "trigger_condition": "Pipe15 Data Align: scales the metric output, preserving the main path while failing measurement checks.",
+        "violated_property_ids": [
+          "P_SAMPLE_ON_RISING_SAMP",
+          "P_VOLTAGE_CODED_OUTPUT_LEVELS"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_004_swap_low_outputs/certification.json",
+        "certification_sha256": "26da5bb287c351e5ef86d0e8f523c9df802c19f2a3d2f8b9abd221cddaf0f2f8",
+        "fault_class": "polarity_or_direction_error",
+        "mutation_bundle_sha256": "ce28aed2879e4c44c632ccfabdd2c21478ae94db24a4523bab97990ebac31023",
+        "mutation_id": "neg_004_swap_low_outputs",
+        "source_catalog_certification_path": "negative_variants/neg_004_swap_low_outputs/certification.json",
+        "trigger_condition": "Forces traced aligned output do14 low.",
+        "violated_property_ids": [
+          "P_ZERO_DELAY_OUTPUT_GROUP"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_001_zero/certification.json",
+        "certification_sha256": "2419e12a3b9fd5bcc9665beeb44dc71ea73073e559aa45bb5a579b7b3df272eb",
+        "fault_class": "zero_stub_output",
+        "mutation_bundle_sha256": "d8623455761f2dc6a356a66f97fbea7237834a03f457b202e664743c2c0cc396",
+        "mutation_id": "neg_001_zero",
+        "source_catalog_certification_path": "negative_variants/neg_001_zero/certification.json",
+        "trigger_condition": "Drives zero output and therefore fails the stable waveform contract.",
+        "violated_property_ids": [
+          "P_VOLTAGE_CODED_OUTPUT_LEVELS"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_003_middle_group_one_delay/certification.json",
+        "certification_sha256": "00089c40f4c53db4ce94e441df809e86c079a4b179d1409bd6369720e2927815",
+        "fault_class": "timing_or_state_update_fault",
+        "mutation_bundle_sha256": "73b2a2c40ea6cccaefb7cddc2432758528a2fda3f4aaa00076c02251a9ee7152",
+        "mutation_id": "neg_003_middle_group_one_delay",
+        "source_catalog_certification_path": "negative_variants/neg_003_middle_group_one_delay/certification.json",
+        "trigger_condition": "Uses only one delay stage for bits 7-10 instead of three.",
+        "violated_property_ids": [
+          "P_STAGGERED_DELAY_OUTPUT_GROUPS"
+        ]
+      }
+    ],
+    "bugfix_seed": "neg_002_top_group_three_delay",
+    "canonical_dut_id": "181",
+    "hashes": {
+      "mutation_catalog_sha256": "47fe24dc234e650738110f2d3f0670abc1f992a7c1d66cb0cc0783c79ac30b08",
+      "score_deck_sha256": "215b5ffcaddae6fa072e3e1dbf067bb8644d4887ec2a97698be6297a9a5721c0",
+      "task_certification_sha256": "dbd37a43d7a71ed75ebc63215c741c68306edd4cf07589c138d21c52f92a83cc",
+      "task_record_sha256": "0833e9eececad3c1dcea537c899e1461e08d1541cb8ab38db14d9be7ae89c539"
+    },
+    "release_dir": "181-pipe15-data-align"
+  }
+}

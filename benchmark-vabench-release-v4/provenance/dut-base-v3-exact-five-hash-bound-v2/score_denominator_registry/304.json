@@ -1,0 +1,79 @@
+{
+  "family_id": "304",
+  "schema_version": "v4-score-denominator-family-registry-v1",
+  "task": {
+    "active_mutation_count": 5,
+    "active_mutations": [
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_002_transimpedance_gain_wrong/certification.json",
+        "certification_sha256": "dbf7c9995e545b5bce9ccc82f23eb293198f0c2a14355ab7365946a3a7ef202a",
+        "fault_class": "transimpedance_gain_wrong",
+        "mutation_bundle_sha256": "fef8ed948947272bc8f48a6058d98adfbed1e89504398487b9adaec987afd570",
+        "mutation_id": "neg_002_transimpedance_gain_wrong",
+        "source_catalog_certification_path": "negative_variants/neg_002_transimpedance_gain_wrong/certification.json",
+        "trigger_condition": "transimpedance_gain_wrong",
+        "violated_property_ids": [
+          "P_TREAT_VIN_PROXY_AS_A_VOLTAGE"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_003_bias_dependence_missing/certification.json",
+        "certification_sha256": "cda6905f52fa5492a9f3be6f75524ac2dc96c937fb654eb2ee5adc252a9ed1e5",
+        "fault_class": "bias_dependence_missing",
+        "mutation_bundle_sha256": "9dca7b8182853d7f598717b31a2fa1887c67fb2c9c2d88a0e516db0daea62fc9",
+        "mutation_id": "neg_003_bias_dependence_missing",
+        "source_catalog_certification_path": "negative_variants/neg_003_bias_dependence_missing/certification.json",
+        "trigger_condition": "bias_dependence_missing",
+        "violated_property_ids": [
+          "P_GENERATE_AN_OUTPUT_DEVIATION_AROUND_VCM",
+          "P_USE_ONLY_VOLTAGE_DOMAIN_BEHAVIORAL_STATE"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_004_overload_flag_missing/certification.json",
+        "certification_sha256": "a48ef98947adf35e6c031fb07ce81549cb80ac77ad103b2b68554652e57897d7",
+        "fault_class": "overload_flag_missing",
+        "mutation_bundle_sha256": "8ecd37d2e52c099c3ecfea0a6cd8277922935e44a4320278be81b79c22aaa0f4",
+        "mutation_id": "neg_004_overload_flag_missing",
+        "source_catalog_certification_path": "negative_variants/neg_004_overload_flag_missing/certification.json",
+        "trigger_condition": "overload_flag_missing",
+        "violated_property_ids": [
+          "P_REDUCE_EFFECTIVE_GAIN_WHEN_BIAS_FALLS"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_005_reset_enable_clear_ignored/certification.json",
+        "certification_sha256": "060c1f98a0e0b328eba724bc4727a275e2965cae40644965107e4e70d4653fba",
+        "fault_class": "reset_enable_clear_ignored",
+        "mutation_bundle_sha256": "d5a34884d47a88c3410a38527843364adfad539b7883815b2f8acfd70d256af0",
+        "mutation_id": "neg_005_reset_enable_clear_ignored",
+        "source_catalog_certification_path": "negative_variants/neg_005_reset_enable_clear_ignored/certification.json",
+        "trigger_condition": "reset_enable_clear_ignored",
+        "violated_property_ids": [
+          "P_ASSERT_OVERLOAD_WHEN_THE_UNCLAMPED_OUTPUT"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_001_transimpedance_polarity_inverted/certification.json",
+        "certification_sha256": "c64f6ab20c0b50610f0ec2aa8a17db72cc9de240418c7dc1f8d1321d3c79a09a",
+        "fault_class": "transimpedance_polarity_inverted",
+        "mutation_bundle_sha256": "d23933661c44fb9a2cf99ae18480fd9445cc1ec851e6518507c151f7e6665dd4",
+        "mutation_id": "neg_001_transimpedance_polarity_inverted",
+        "source_catalog_certification_path": "negative_variants/neg_001_transimpedance_polarity_inverted/certification.json",
+        "trigger_condition": "transimpedance_polarity_inverted",
+        "violated_property_ids": [
+          "P_ON_RESET_OR_WHEN_DISABLED_DRIVE"
+        ]
+      }
+    ],
+    "bugfix_seed": "neg_002_transimpedance_gain_wrong",
+    "canonical_dut_id": "304",
+    "hashes": {
+      "mutation_catalog_sha256": "1f5393c8519418021666bfde55c3d4eea306c47245b9fa26e5739073ff2fb7fa",
+      "score_deck_sha256": "3f0041173974a67606580f5ed9ac714898e28cdaceb84d68737917d16bb7da5f",
+      "task_certification_sha256": "3fefa87fd71137d041ffa55f9eacb73973128e014a3b9356d8bb4aa5aac8c5c4",
+      "task_record_sha256": "e030a8fa2b173058f91769d965afcca4cb970b116e819d99e15114b8ef991206"
+    },
+    "release_dir": "304-common-gate-tia-front-end"
+  }
+}

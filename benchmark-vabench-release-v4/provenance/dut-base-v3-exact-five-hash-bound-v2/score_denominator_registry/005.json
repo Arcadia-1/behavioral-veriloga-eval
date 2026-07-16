@@ -1,0 +1,80 @@
+{
+  "family_id": "005",
+  "schema_version": "v4-score-denominator-family-registry-v1",
+  "task": {
+    "active_mutation_count": 5,
+    "active_mutations": [
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_002_immediate_set_on_rise/certification.json",
+        "certification_sha256": "be46c6162aaf80654539aa833fdd512a0b8a88248982e209e8a1fdd1f8b1eb91",
+        "fault_class": "qualification_delay_bypass",
+        "mutation_bundle_sha256": "5b971b7ce258cdde195188ebadb382c8cf0edf4babcbc3a305b256917135a087",
+        "mutation_id": "neg_002_immediate_set_on_rise",
+        "source_catalog_certification_path": "negative_variants/neg_002_immediate_set_on_rise/certification.json",
+        "trigger_condition": "sig rises while reset is released",
+        "violated_property_ids": [
+          "P_RISE_QUALIFICATION"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_004_reset_does_not_cancel_timer/certification.json",
+        "certification_sha256": "7986912c6f6372e2c166ffd77ebf2f4f8e0f280120ee0390d51f03d9b85b3bae",
+        "fault_class": "reset_timer_cancel_omission",
+        "mutation_bundle_sha256": "ae4efc50babc85634cc413ce7e7dd59c38904235c2af6ef5b6be7603cc70b397",
+        "mutation_id": "neg_004_reset_does_not_cancel_timer",
+        "source_catalog_certification_path": "negative_variants/neg_004_reset_does_not_cancel_timer/certification.json",
+        "trigger_condition": "reset interrupts an armed qualification interval",
+        "violated_property_ids": [
+          "P_ACTIVE_LOW_RESET",
+          "P_EVENT_HOLD"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_007_missing_fall_clear/certification.json",
+        "certification_sha256": "486f0b693aa168d81b1b7a40157f0a7086e643d711a6b6a40cc477d325fd93d1",
+        "fault_class": "fall_clear_omission",
+        "mutation_bundle_sha256": "1cc8ef957a283b2d10f2cf3a692f2ee5bd7a8c29d624fa331dbe9c516e38189b",
+        "mutation_id": "neg_007_missing_fall_clear",
+        "source_catalog_certification_path": "negative_variants/neg_007_missing_fall_clear/certification.json",
+        "trigger_condition": "sig falls after out has qualified high",
+        "violated_property_ids": [
+          "P_FALL_CLEAR"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_001_no_final_sig_recheck/certification.json",
+        "certification_sha256": "76cf49d9514307795e00a377b9e79d6bd76c4f527dcaaeca6da167052937088d",
+        "fault_class": "qualification_recheck_omission",
+        "mutation_bundle_sha256": "f138d5c824c5812c3c3f919863f8f169bc38f497817997afa0b24e965fe9c79a",
+        "mutation_id": "neg_001_no_final_sig_recheck",
+        "source_catalog_certification_path": "negative_variants/neg_001_no_final_sig_recheck/certification.json",
+        "trigger_condition": "sig falls before qualification expiry",
+        "violated_property_ids": [
+          "P_EVENT_HOLD",
+          "P_RISE_QUALIFICATION"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_005_never_qualifies_high/certification.json",
+        "certification_sha256": "3f3510037188de36264a9a2b3152461172b2b2c54db02849659bc11e23ec343f",
+        "fault_class": "missing_qualification_commit",
+        "mutation_bundle_sha256": "de3715d304b4cc9954b748c9f9852e3b9f9d93ef44302f52dbbc3680db1e5fa6",
+        "mutation_id": "neg_005_never_qualifies_high",
+        "source_catalog_certification_path": "negative_variants/neg_005_never_qualifies_high/certification.json",
+        "trigger_condition": "sig remains high beyond the qualification interval",
+        "violated_property_ids": [
+          "P_RISE_QUALIFICATION"
+        ]
+      }
+    ],
+    "bugfix_seed": "neg_002_immediate_set_on_rise",
+    "canonical_dut_id": "005",
+    "hashes": {
+      "mutation_catalog_sha256": "3bde243bf1bbe3a5b21e975b72a62266a0c28f8f2dd2f7264ccfc94191c543c7",
+      "score_deck_sha256": "5c5a64e3ac585062b98c526f1d6376b1cb8e3f907ed38555d17a630165a30eee",
+      "task_certification_sha256": "21deb29eb4eb1bfaf5a60ecaf96ab3c806dcee26d52c0ca566d04e44ffd58218",
+      "task_record_sha256": "35a08825a2961f6c612ceca74bbcf4c848031fc09efdacb776744f226598fcc1"
+    },
+    "release_dir": "005-debounce-latch"
+  }
+}

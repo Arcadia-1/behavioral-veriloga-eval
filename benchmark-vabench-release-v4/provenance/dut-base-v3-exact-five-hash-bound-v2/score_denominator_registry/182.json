@@ -1,0 +1,78 @@
+{
+  "family_id": "182",
+  "schema_version": "v4-score-denominator-family-registry-v1",
+  "task": {
+    "active_mutation_count": 5,
+    "active_mutations": [
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_002_rising_edge_sample/certification.json",
+        "certification_sha256": "c4d233dfa5eff1b6e8b107144015c2f68f0a6115f5d082839112cd332fa3bfd0",
+        "fault_class": "polarity_or_direction_error",
+        "mutation_bundle_sha256": "4764545b5ac0fb1b8b6bb453c07ece12e0fbef1ca8b9e45d6e8abc2ca35fd5f9",
+        "mutation_id": "neg_002_rising_edge_sample",
+        "source_catalog_certification_path": "negative_variants/neg_002_rising_edge_sample/certification.json",
+        "trigger_condition": "Samples on rising clks instead of falling clks.",
+        "violated_property_ids": [
+          "P_FALLING_CLOCK_UPDATE_SAMPLE"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_003_ignore_update/certification.json",
+        "certification_sha256": "32a6ef1380648d42dedf63e3cf53e5e50a08fdc6f797128bd1f0630b81b5e7f6",
+        "fault_class": "timing_or_state_update_fault",
+        "mutation_bundle_sha256": "81b438806fee1cd365079c6f7e73fd1a03047b89f61f3e0647ce8689ec372e14",
+        "mutation_id": "neg_003_ignore_update",
+        "source_catalog_certification_path": "negative_variants/neg_003_ignore_update/certification.json",
+        "trigger_condition": "Ignores the update qualifier and applies select changes on every falling clock.",
+        "violated_property_ids": [
+          "P_UPDATE_LOW_HOLDS_STATE"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_004_ignore_reset/certification.json",
+        "certification_sha256": "71c4e4087e4341f21c63096fe5ecf4697061241edcc98737fed19a2852e9f938",
+        "fault_class": "state_reset_or_enable_error",
+        "mutation_bundle_sha256": "5f601c55f8198f66b149596e7e7c8daba9c9d140ff9f27566630a9adddee4064",
+        "mutation_id": "neg_004_ignore_reset",
+        "source_catalog_certification_path": "negative_variants/neg_004_ignore_reset/certification.json",
+        "trigger_condition": "Ignores the active-high reset default to din0.",
+        "violated_property_ids": [
+          "P_RESET_SELECTS_DIN0"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_001_zero/certification.json",
+        "certification_sha256": "cdab2db7a8dd35ce4bd3b75053315d4f9fb19148a73ef26bbd253d521278b212",
+        "fault_class": "zero_stub_output",
+        "mutation_bundle_sha256": "e66e79a89a9e9ff0a35f4ba291e41d0db3bc669e185d243ea5f53a58a1eb250a",
+        "mutation_id": "neg_001_zero",
+        "source_catalog_certification_path": "negative_variants/neg_001_zero/certification.json",
+        "trigger_condition": "Drives zero output and therefore fails the stable waveform contract.",
+        "violated_property_ids": [
+          "P_SELECT_DECODE_AND_OUTPUT_TIMING"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_005_swap_select_lsb/certification.json",
+        "certification_sha256": "4f7bd494a5eaa578831220d73aca9c799ed57225a1522e993600492b797c934c",
+        "fault_class": "polarity_or_direction_error",
+        "mutation_bundle_sha256": "5811191a4717b1fd530a77755957a91bcb3d91a7d1a02d1fca102e1bb975351e",
+        "mutation_id": "neg_005_swap_select_lsb",
+        "source_catalog_certification_path": "negative_variants/neg_005_swap_select_lsb/certification.json",
+        "trigger_condition": "Swaps the least-significant select-bit mapping for din1/din2.",
+        "violated_property_ids": [
+          "P_SELECT_DECODE_AND_OUTPUT_TIMING"
+        ]
+      }
+    ],
+    "bugfix_seed": "neg_002_rising_edge_sample",
+    "canonical_dut_id": "182",
+    "hashes": {
+      "mutation_catalog_sha256": "a6a3299d3e6d3c4474da3ce416cc4c07325b21beafe3823b05566ec57cd84b34",
+      "score_deck_sha256": "b3828fbc9df6b544796198e0bbbb1bb6a03eec17ebdc925a30a820cf7fce5285",
+      "task_certification_sha256": "f67a16e7690ce843477fb1dab32ff06cb1b193cdabf803492fb013f00ce6c69d",
+      "task_record_sha256": "55c9791719e7472f248eeb38c2c5432f82695adbe1362e4cfafea649819b38e5"
+    },
+    "release_dir": "182-clocked-mux4-sampler"
+  }
+}

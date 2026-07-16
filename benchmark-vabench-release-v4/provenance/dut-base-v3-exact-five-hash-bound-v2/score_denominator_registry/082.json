@@ -1,0 +1,85 @@
+{
+  "family_id": "082",
+  "schema_version": "v4-score-denominator-family-registry-v1",
+  "task": {
+    "active_mutation_count": 5,
+    "active_mutations": [
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_002_threshold_shifted/certification.json",
+        "certification_sha256": "b64e6b573b891c9b6178ac6f5daa973cfe1ae2d61c9a8a24156b541739bbd22a",
+        "fault_class": "threshold_boundary_error",
+        "mutation_bundle_sha256": "f570442c33fb8b094a17fd30a0b48703c7d97e57b991e5d0306df69e49a27787",
+        "mutation_id": "neg_002_threshold_shifted",
+        "source_catalog_certification_path": "negative_variants/neg_002_threshold_shifted/certification.json",
+        "trigger_condition": "boundary stimulus crosses the public threshold conditions for AGC Receiver Leveling Loop",
+        "violated_property_ids": [
+          "P_CLOCKED_GAIN_LOOP",
+          "P_DEADBAND_HOLD",
+          "P_GAIN_DIRECTION_AND_BOUNDS"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_005_metric_scale_low/certification.json",
+        "certification_sha256": "0deda6ceff66947150495c7d47288ec6ab4f71a0723c59a8d1484f3a35b4e002",
+        "fault_class": "metric_scaling_error",
+        "mutation_bundle_sha256": "253f9ab5effb6340696b6a71deb58b819e5b0786cceb2916cc125abbcce312f3",
+        "mutation_id": "neg_005_metric_scale_low",
+        "source_catalog_certification_path": "negative_variants/neg_005_metric_scale_low/certification.json",
+        "trigger_condition": "score stimulus observes the public metric/output scaling for AGC Receiver Leveling Loop",
+        "violated_property_ids": [
+          "P_CLOCKED_GAIN_LOOP",
+          "P_OUTPUT_ENVELOPE",
+          "P_RESET_STATE",
+          "P_SETTLING_METRIC"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_001_zero/certification.json",
+        "certification_sha256": "8b5f4175902ae9303d94c5c2399d47412c03a098af25712b061025d2b00bef4b",
+        "fault_class": "zero_stub_output",
+        "mutation_bundle_sha256": "6a0b96d3557e3a531bd162421f3cbb3764dd119367989ffaac3892c388c098ca",
+        "mutation_id": "neg_001_zero",
+        "source_catalog_certification_path": "negative_variants/neg_001_zero/certification.json",
+        "trigger_condition": "nonzero behavioral stimulus requires observable AGC Receiver Leveling Loop outputs",
+        "violated_property_ids": [
+          "P_CLOCKED_GAIN_LOOP",
+          "P_RESET_STATE"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_004_reset_polarity_wrong/certification.json",
+        "certification_sha256": "1b8ce2cb55801c4639e2626df6e616403496c98852c85e0d769ce929600e7f9c",
+        "fault_class": "reset_semantics_error",
+        "mutation_bundle_sha256": "5483815d5fa97f926771ee965675bf4efb8524e3cc391c61403708b503660c23",
+        "mutation_id": "neg_004_reset_polarity_wrong",
+        "source_catalog_certification_path": "negative_variants/neg_004_reset_polarity_wrong/certification.json",
+        "trigger_condition": "reset/recovery stimulus exercises AGC Receiver Leveling Loop state override behavior",
+        "violated_property_ids": [
+          "P_CLOCKED_GAIN_LOOP",
+          "P_RESET_STATE"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_003_event_edge_wrong/certification.json",
+        "certification_sha256": "29f0f105baa38f619221850e03bd5a6b57c57a70219de66620cc930a207a65fb",
+        "fault_class": "event_edge_polarity_error",
+        "mutation_bundle_sha256": "b6db33d20d8eb9882a43bc45a4357e6cbd41566a5a1ffdbfa72dd03a003dffc0",
+        "mutation_id": "neg_003_event_edge_wrong",
+        "source_catalog_certification_path": "negative_variants/neg_003_event_edge_wrong/certification.json",
+        "trigger_condition": "event-timing stimulus distinguishes the required active edge for AGC Receiver Leveling Loop",
+        "violated_property_ids": [
+          "P_CLOCKED_GAIN_LOOP"
+        ]
+      }
+    ],
+    "bugfix_seed": "neg_002_threshold_shifted",
+    "canonical_dut_id": "082",
+    "hashes": {
+      "mutation_catalog_sha256": "e23770d7e1860004cd4de4d60263219e2064ed933ac1da2936ba060634303936",
+      "score_deck_sha256": "9f0fd7c4f9e820931eb2bd738540376a797e4d9ce2324b5e298f1ff15219c9e1",
+      "task_certification_sha256": "f2166f6d1d9d601bb241195c2860c8e260b80c1955f3fe0c1afc0e46d99d63e8",
+      "task_record_sha256": "04b1f7eb5f692e8f866dcd870a71a2a06b57daa8a6810a2da0261201eeb513e6"
+    },
+    "release_dir": "082-agc-receiver-leveling-loop"
+  }
+}

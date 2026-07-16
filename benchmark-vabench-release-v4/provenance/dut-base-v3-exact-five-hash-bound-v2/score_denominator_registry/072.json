@@ -1,0 +1,79 @@
+{
+  "family_id": "072",
+  "schema_version": "v4-score-denominator-family-registry-v1",
+  "task": {
+    "active_mutation_count": 5,
+    "active_mutations": [
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_001_zero/certification.json",
+        "certification_sha256": "4fc73990ad6535f8e1e9a45a343b438e7684853e2eee6e23cdbe1a5ac9c4f1bc",
+        "fault_class": "zero_stub_output_implementation_copied_from_starter_must_not_satisfy_hidden_beha",
+        "mutation_bundle_sha256": "1aa3791c0493334309e0329ee672e7ee3bd8d38377632809b1ede2dc99e3ea0a",
+        "mutation_id": "neg_001_zero",
+        "source_catalog_certification_path": "negative_variants/neg_001_zero/certification.json",
+        "trigger_condition": "stimulus exercises zero/stub output implementation copied from starter must not satisfy hidden behavior checker against the public observable contract",
+        "violated_property_ids": [
+          "P_INITIAL_VALUE"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_004_inverted_sample/certification.json",
+        "certification_sha256": "1f97dfb5face1553521df4f8178bfe89a4e1fbcbdbbb315cd47aebfdf00a2953",
+        "fault_class": "delayed_sampling_with_inverted_rail_relative_value_must_not_satisfy_held_value_c",
+        "mutation_bundle_sha256": "45d36d8c39ab3f2116ada9235c3c576e7d9df9daf194e78a742b5a6595b4d8f4",
+        "mutation_id": "neg_004_inverted_sample",
+        "source_catalog_certification_path": "negative_variants/neg_004_inverted_sample/certification.json",
+        "trigger_condition": "stimulus exercises delayed sampling with inverted rail-relative value must not satisfy held-value checks against the public observable contract",
+        "violated_property_ids": [
+          "P_HOLD",
+          "P_RAIL_OBSERVABILITY"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_003_half_gain_sample/certification.json",
+        "certification_sha256": "15584ccd6fc353bf8d0df68b7e71bcd86e22aa8c70920036f1e6e22d04891a2c",
+        "fault_class": "delayed_sampling_with_the_wrong_analog_gain_must_not_satisfy_held_value_checks",
+        "mutation_bundle_sha256": "4bbf450f5373d5ff0d496392746036f5dcb193abe20ebbc4627f71ad3d9a36eb",
+        "mutation_id": "neg_003_half_gain_sample",
+        "source_catalog_certification_path": "negative_variants/neg_003_half_gain_sample/certification.json",
+        "trigger_condition": "stimulus exercises delayed sampling with the wrong analog gain must not satisfy held-value checks against the public observable contract",
+        "violated_property_ids": [
+          "P_DELAYED_CAPTURE"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_005_metric_scale_low/certification.json",
+        "certification_sha256": "130dcfe78a975faf237ebe4e43c024d59c8993e06efe58f65376c40a5d0e8c3b",
+        "fault_class": "output_smoothing_time_constant_too_slow",
+        "mutation_bundle_sha256": "ecb7588da17f17391739a2a7864d3271e0f55b45816dc0e785dd9230563dd710",
+        "mutation_id": "neg_005_metric_scale_low",
+        "source_catalog_certification_path": "negative_variants/neg_005_metric_scale_low/certification.json",
+        "trigger_condition": "Captured value uses a 5 ns transition instead of the declared tedge, so post-aperture checks observe unsettled held values.",
+        "violated_property_ids": [
+          "P_OUTPUT_SMOOTHING"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_002_edge_sample_delayed_output/certification.json",
+        "certification_sha256": "31ddb37944bc911623e7080719469726fee9b618f43d0d3858d831ee7549e6b0",
+        "fault_class": "capturing_vin_at_the_clock_edge_instead_of_at_the_delayed_aperture_instant_must_",
+        "mutation_bundle_sha256": "04d5023cbac7ee2dc5ec75e80ddb62475bbf1d979fbe31c3080eaf891be6860e",
+        "mutation_id": "neg_002_edge_sample_delayed_output",
+        "source_catalog_certification_path": "negative_variants/neg_002_edge_sample_delayed_output/certification.json",
+        "trigger_condition": "stimulus exercises capturing vin at the clock edge instead of at the delayed aperture instant must not satisfy the hidden aperture-sensitive stimulus against the public observable contract",
+        "violated_property_ids": [
+          "P_APERTURE_ARM"
+        ]
+      }
+    ],
+    "bugfix_seed": "neg_001_zero",
+    "canonical_dut_id": "072",
+    "hashes": {
+      "mutation_catalog_sha256": "e49594dc583e2d208a4462a6d845864b1492259da509441a327694da8c87fc38",
+      "score_deck_sha256": "f72afdf0365b36f039d3641eb4a2cffc8953fb3c5a446748b1032676e9ec6b0c",
+      "task_certification_sha256": "08ed05bdae64c82a91ccc21e30f7a7ed4cd485db466752b8db10ef2bc83b1dce",
+      "task_record_sha256": "c8353be2fa3f1f086402cd87d75ff8f3fb308cc3fcd7348b413d29b29fbb35c3"
+    },
+    "release_dir": "072-aperture-delay-track-and-hold"
+  }
+}

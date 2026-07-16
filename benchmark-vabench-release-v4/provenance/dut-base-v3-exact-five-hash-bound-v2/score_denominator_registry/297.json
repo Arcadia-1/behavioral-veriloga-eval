@@ -1,0 +1,85 @@
+{
+  "family_id": "297",
+  "schema_version": "v4-score-denominator-family-registry-v1",
+  "task": {
+    "active_mutation_count": 5,
+    "active_mutations": [
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_001_threshold_only_ready/certification.json",
+        "certification_sha256": "89e90e904df41bdc9227b1eb234495519992e8484c3316df5089edd8813f0388",
+        "fault_class": "threshold_or_boundary_fault",
+        "mutation_bundle_sha256": "351edd55dddee3cced1318407b93b1d7ff661b332c2dc96c02b6efdfda35be51",
+        "mutation_id": "neg_001_threshold_only_ready",
+        "source_catalog_certification_path": "negative_variants/neg_001_threshold_only_ready/certification.json",
+        "trigger_condition": "stimulus exercises neg_001_threshold_only_ready",
+        "violated_property_ids": [
+          "P_ON_EACH_RISING_CROSSING_OF_CLK",
+          "P_STARTUP_READY_REQUIRES_CONSECUTIVE_SETTLED_SAMPLES",
+          "P_VREADY_0_86_V_SAMPLED_RAIL"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_003_ignore_enable/certification.json",
+        "certification_sha256": "e9c4b2a10d60094ae197cb888281561852dc8708f6d66bd912d40428dc124ba9",
+        "fault_class": "state_reset_or_enable_error",
+        "mutation_bundle_sha256": "566a176880ed3c772c06f3bae66881927ab039bdbc9d9209d473ea8aa3c35a7e",
+        "mutation_id": "neg_003_ignore_enable",
+        "source_catalog_certification_path": "negative_variants/neg_003_ignore_enable/certification.json",
+        "trigger_condition": "stimulus exercises neg_003_ignore_enable",
+        "violated_property_ids": [
+          "P_RAIL_OK_ENFORCES_ENABLE_AND_SUPPLY_WINDOW",
+          "P_VTH_0_45_V_LOGIC_THRESHOLD"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_005_wrong_slew_metric/certification.json",
+        "certification_sha256": "e7e2c361114b5142a7f68fc55a76aae77acd9df6c97de02b28eb6bbc3f9f9ca7",
+        "fault_class": "metric_or_observable_fault",
+        "mutation_bundle_sha256": "ea5c279065573a7c6ca0b3f19b501a5a316f5e119ab7a51d347cdb1ff5365dfa",
+        "mutation_id": "neg_005_wrong_slew_metric",
+        "source_catalog_certification_path": "negative_variants/neg_005_wrong_slew_metric/certification.json",
+        "trigger_condition": "stimulus exercises neg_005_wrong_slew_metric",
+        "violated_property_ids": [
+          "P_SLEW_METRIC_REPORTS_BOUNDED_DELTA",
+          "P_VDD_MIN_0_72_V_VDD"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_002_no_settle_requirement/certification.json",
+        "certification_sha256": "42ff6f27048e8fd7f5b58f2ef5f5f7ac07199194cb6ba9289dacf47be6528c86",
+        "fault_class": "omission_or_incomplete_behavior",
+        "mutation_bundle_sha256": "b248f1711e9bc0eef64a030311e5ecde4e7dfbc40607759c025df2a36f460e97",
+        "mutation_id": "neg_002_no_settle_requirement",
+        "source_catalog_certification_path": "negative_variants/neg_002_no_settle_requirement/certification.json",
+        "trigger_condition": "stimulus exercises neg_002_no_settle_requirement",
+        "violated_property_ids": [
+          "P_BUILD_A_VOLTAGE_DOMAIN_STARTUP_MONITOR",
+          "P_RAMP_OK_QUALIFIES_STARTUP_AND_SETTLING_SLEW",
+          "P_STARTUP_READY_REQUIRES_CONSECUTIVE_SETTLED_SAMPLES"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_004_ignore_high_rail_fault/certification.json",
+        "certification_sha256": "e900e192b06c75c9b5b26f01e13b4fb59ea0ec7c60e72956e724e1fdd7500465",
+        "fault_class": "omission_or_incomplete_behavior",
+        "mutation_bundle_sha256": "fb5e0cff1cf2de7971c7297a843edf0ae14c31779b39292bc48691ee771e11b4",
+        "mutation_id": "neg_004_ignore_high_rail_fault",
+        "source_catalog_certification_path": "negative_variants/neg_004_ignore_high_rail_fault/certification.json",
+        "trigger_condition": "stimulus exercises neg_004_ignore_high_rail_fault",
+        "violated_property_ids": [
+          "P_RAIL_OK_ENFORCES_ENABLE_AND_SUPPLY_WINDOW",
+          "P_VHI_0_9_V_HIGH_LEVEL"
+        ]
+      }
+    ],
+    "bugfix_seed": "neg_001_threshold_only_ready",
+    "canonical_dut_id": "297",
+    "hashes": {
+      "mutation_catalog_sha256": "e5ddaf3d53c394ed6a8989cc61e7fb7ac3470a9ec44d36445706aabbf4c04c38",
+      "score_deck_sha256": "96afe4e67519ad9eb3211405c8285eee02cc3168b850e21802c88384066a3ac2",
+      "task_certification_sha256": "fb66f5a2b043d8ab62828118cf7ecfe5d7f34aa54fc4abc6abd9668ef8520c39",
+      "task_record_sha256": "3c0133873e784272757ea15d28952640c6ae06921598134293c9474c530092be"
+    },
+    "release_dir": "297-rail-ramp-rate-startup-monitor"
+  }
+}

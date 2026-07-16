@@ -1,0 +1,79 @@
+{
+  "family_id": "166",
+  "schema_version": "v4-score-denominator-family-registry-v1",
+  "task": {
+    "active_mutation_count": 5,
+    "active_mutations": [
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_002_wrong_msb_step/certification.json",
+        "certification_sha256": "a936ebcf3cdf4f9e6511f6c89534467d64e976c7284b0c5e06df6c6267e5b084",
+        "fault_class": "omission_or_incomplete_behavior",
+        "mutation_bundle_sha256": "11a84a56292d7fb0d5fc48a446e39fea3da8567a68b5259478df4d02b57d4541",
+        "mutation_id": "neg_002_wrong_msb_step",
+        "source_catalog_certification_path": "negative_variants/neg_002_wrong_msb_step/certification.json",
+        "trigger_condition": "Applies a quarter-reference dctrl3 step instead of the required half-reference step.",
+        "violated_property_ids": [
+          "P_CONTROL_STEP_WEIGHTS"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_004_sample_on_rising_clock/certification.json",
+        "certification_sha256": "6507a389e42ebb7523c956787a9828fa61c73bb3b7a6f1211a97a653feaafb01",
+        "fault_class": "timing_or_state_update_fault",
+        "mutation_bundle_sha256": "3ab5820d58ccb3e71540223c0f6c089fda6979ac752e2d59dc1cbd57ab938332",
+        "mutation_id": "neg_004_sample_on_rising_clock",
+        "source_catalog_certification_path": "negative_variants/neg_004_sample_on_rising_clock/certification.json",
+        "trigger_condition": "Omits the dctrl1 one-eighth residue increment.",
+        "violated_property_ids": [
+          "P_CONTROL_STEP_WEIGHTS",
+          "P_FALLING_CLOCK_SAMPLE"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_005_metric_scale_low/certification.json",
+        "certification_sha256": "1731691316cdf942ee25af18a371294ad5cbcb58680da81883136ea67df58ddb",
+        "fault_class": "metric_or_observable_fault",
+        "mutation_bundle_sha256": "42ff84239c2693d77954e49599edd4ebaa8f07010dadbe8a749d7297292ebcb6",
+        "mutation_id": "neg_005_metric_scale_low",
+        "source_catalog_certification_path": "negative_variants/neg_005_metric_scale_low/certification.json",
+        "trigger_condition": "L2 CDAC 4b Residue: scales the metric output, preserving the main path while failing measurement checks.",
+        "violated_property_ids": [
+          "P_RETAINED_RESIDUE_OUTPUT"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_003_subtract_control_steps/certification.json",
+        "certification_sha256": "57455985f0eacdf98398ae11707f56e1d895ba8eccd3db2f0957b6bac7f60e24",
+        "fault_class": "subtract_control_steps",
+        "mutation_bundle_sha256": "4b7dd216fce794a8595e228028847286bb6d0634967f699ab8494ea302e31ea0",
+        "mutation_id": "neg_003_subtract_control_steps",
+        "source_catalog_certification_path": "negative_variants/neg_003_subtract_control_steps/certification.json",
+        "trigger_condition": "Subtracts the dctrl2 control step instead of adding it to the residue.",
+        "violated_property_ids": [
+          "P_CONTROL_STEP_WEIGHTS"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_001_zero/certification.json",
+        "certification_sha256": "cf8ebd532bd512ea6426ea008358ee88225b80cf01ee6eb6dfa1ae36eede9328",
+        "fault_class": "zero_stub_output",
+        "mutation_bundle_sha256": "bfdda9e8b137324cb4cee5426e53475aedb1306067e2a9a866724ef7b42cc6c0",
+        "mutation_id": "neg_001_zero",
+        "source_catalog_certification_path": "negative_variants/neg_001_zero/certification.json",
+        "trigger_condition": "Drives zero output and therefore fails the stable waveform contract.",
+        "violated_property_ids": [
+          "P_RETAINED_RESIDUE_OUTPUT"
+        ]
+      }
+    ],
+    "bugfix_seed": "neg_002_wrong_msb_step",
+    "canonical_dut_id": "166",
+    "hashes": {
+      "mutation_catalog_sha256": "28490aa9d837dfbac7f92280f308316b9da35dd13a3ebc515d188cb079c831b7",
+      "score_deck_sha256": "869e68d5ed4994adef1777c2cff40bd257182b1afc8ece2732bc588788b85560",
+      "task_certification_sha256": "32fa7b70f893cf65292cc389263bfb8b11f900bdfe1cdd84a5701af242fae341",
+      "task_record_sha256": "0339bfb0dac303f42f3700cf7ee326c6974ccfca9c47e2f74e947d09728afe02"
+    },
+    "release_dir": "166-l2-cdac-4b-residue"
+  }
+}

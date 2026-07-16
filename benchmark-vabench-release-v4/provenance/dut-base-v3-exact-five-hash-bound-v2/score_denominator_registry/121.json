@@ -1,0 +1,82 @@
+{
+  "family_id": "121",
+  "schema_version": "v4-score-denominator-family-registry-v1",
+  "task": {
+    "active_mutation_count": 5,
+    "active_mutations": [
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_002_passes_inside_deadband/certification.json",
+        "certification_sha256": "9d9af8a7cad9354dd5c2ffa030972c9b47994d11dddb6ddc5e6c409173593ed4",
+        "fault_class": "deadband_omission",
+        "mutation_bundle_sha256": "9545ab769d8404395349b66034a8998b48211b9d4f5e380a9184653e18480111",
+        "mutation_id": "neg_002_passes_inside_deadband",
+        "source_catalog_certification_path": "negative_variants/neg_002_passes_inside_deadband/certification.json",
+        "trigger_condition": "Passes input inside the deadband instead of zeroing it.",
+        "violated_property_ids": [
+          "P_ZERO_INSIDE_DEADBAND"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_001_zero/certification.json",
+        "certification_sha256": "43ad0fc96069c4261ffbe568511a64e41c9201320f9e314351fdb9ea19b79f14",
+        "fault_class": "zero_stub_output",
+        "mutation_bundle_sha256": "02e05292a329346918eba9481f0757cd4d02889a4396581aac141da41862799a",
+        "mutation_id": "neg_001_zero",
+        "source_catalog_certification_path": "negative_variants/neg_001_zero/certification.json",
+        "trigger_condition": "Drives zero output and therefore fails the stable waveform contract.",
+        "violated_property_ids": [
+          "P_LOWER_RESIDUE",
+          "P_UPPER_RESIDUE"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_003_wrong_offsets/certification.json",
+        "certification_sha256": "7b634125519e65bddcd2a90227c8997007d3447dba9dfb4aaadd7b9c60974d17",
+        "fault_class": "deadband_boundary_offset_error",
+        "mutation_bundle_sha256": "4d298809d5b64930c1b42b5fdab47750654342427226d175a0a080aef30bdc91",
+        "mutation_id": "neg_003_wrong_offsets",
+        "source_catalog_certification_path": "negative_variants/neg_003_wrong_offsets/certification.json",
+        "trigger_condition": "Uses the wrong deadband edge offset outside the window.",
+        "violated_property_ids": [
+          "P_LOWER_RESIDUE",
+          "P_UPPER_RESIDUE"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_005_metric_scale_low/certification.json",
+        "certification_sha256": "910c3342ef9bcd1c475139b145c6f2f9eaa38ce16068a5d5c7064b0598c55189",
+        "fault_class": "output_scale_error",
+        "mutation_bundle_sha256": "4c7feba4a06462974a11d77efd937e3b6946773c55275477a6d2afffb249a758",
+        "mutation_id": "neg_005_metric_scale_low",
+        "source_catalog_certification_path": "negative_variants/neg_005_metric_scale_low/certification.json",
+        "trigger_condition": "Deadband Window: scales the metric output, preserving the main path while failing measurement checks.",
+        "violated_property_ids": [
+          "P_LOWER_RESIDUE",
+          "P_UPPER_RESIDUE"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_004_clips_outside_deadband/certification.json",
+        "certification_sha256": "15fbfab83c5a1c5cf790854f0ad05c48532a7edd5a201dfa9446c60ddab196ef",
+        "fault_class": "residue_transfer_clipped",
+        "mutation_bundle_sha256": "584782af1b255e75650763c2549033b184f3df5f3ef33fa3e066840549c4b904",
+        "mutation_id": "neg_004_clips_outside_deadband",
+        "source_catalog_certification_path": "negative_variants/neg_004_clips_outside_deadband/certification.json",
+        "trigger_condition": "Clips outside the window instead of subtracting the edge.",
+        "violated_property_ids": [
+          "P_LOWER_RESIDUE",
+          "P_UPPER_RESIDUE"
+        ]
+      }
+    ],
+    "bugfix_seed": "neg_002_passes_inside_deadband",
+    "canonical_dut_id": "121",
+    "hashes": {
+      "mutation_catalog_sha256": "0fca32d60e521b8173c9d9f269c9f1b7eca4605fde274240828f0cd79f1bc0f2",
+      "score_deck_sha256": "fb8be8b998f74cb124fbc9bc25f18ab8da79043f482fb803f660251212d4e17e",
+      "task_certification_sha256": "314ffb79b8be12c7fe816996e23cd3d820cf294a30817e9a767e58dff53676ff",
+      "task_record_sha256": "ce4213912ffc8ff43c283de03d8be5effd15e3e93124cb17fad4a76d4e56b5d4"
+    },
+    "release_dir": "121-deadband-window"
+  }
+}

@@ -1,0 +1,79 @@
+{
+  "family_id": "313",
+  "schema_version": "v4-score-denominator-family-registry-v1",
+  "task": {
+    "active_mutation_count": 5,
+    "active_mutations": [
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_002_kickback_increases_with_overdrive/certification.json",
+        "certification_sha256": "393266dd54a679c38695ab84f595fd01231e4a95af78c3b7129a24176f954106",
+        "fault_class": "kickback_increases_with_overdrive",
+        "mutation_bundle_sha256": "792cd5440944203f546fc083409a45d7e859522d6cb7f72af1d1132480dcf2ad",
+        "mutation_id": "neg_002_kickback_increases_with_overdrive",
+        "source_catalog_certification_path": "negative_variants/neg_002_kickback_increases_with_overdrive/certification.json",
+        "trigger_condition": "kickback_increases_with_overdrive",
+        "violated_property_ids": [
+          "P_ON_EACH_ENABLED_RISING_CLK_EDGE"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_001_decision_polarity_inverted/certification.json",
+        "certification_sha256": "6e1fa65f5a22581bdb84cc3c04bea29d1444be564e1f754af2ed458b1bbe1ad9",
+        "fault_class": "decision_polarity_inverted",
+        "mutation_bundle_sha256": "7d9b31766dd67628fcb8658428edf34216fc5c2f1f052ea016bce42846afec6d",
+        "mutation_id": "neg_001_decision_polarity_inverted",
+        "source_catalog_certification_path": "negative_variants/neg_001_decision_polarity_inverted/certification.json",
+        "trigger_condition": "decision_polarity_inverted",
+        "violated_property_ids": [
+          "P_ON_RESET_OR_WHEN_DISABLED_CLEAR",
+          "P_USE_ONLY_VOLTAGE_DOMAIN_BEHAVIORAL_STATE"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_003_valid_asserts_without_clock/certification.json",
+        "certification_sha256": "6be18724ed175b71d77943d83fc1ed1c1b54a37db6f74aef997a3905688ac75c",
+        "fault_class": "valid_asserts_without_clock",
+        "mutation_bundle_sha256": "882b122e00714e30124b5864b5db6e29b47410478d0b7e7befeec49192ae8af8",
+        "mutation_id": "neg_003_valid_asserts_without_clock",
+        "source_catalog_certification_path": "negative_variants/neg_003_valid_asserts_without_clock/certification.json",
+        "trigger_condition": "valid_asserts_without_clock",
+        "violated_property_ids": [
+          "P_DRIVE_KICKBACK_METRIC_AS_A_VOLTAGE"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_004_reset_does_not_clear/certification.json",
+        "certification_sha256": "7a028a04f77da22a90d15c6b5164c011db4f92af38599b273226693aac7f6d1c",
+        "fault_class": "reset_does_not_clear",
+        "mutation_bundle_sha256": "31bfa9a21b75a4394680716a68fd802c4db6a3fdff4ebfd229e7f2007065f033",
+        "mutation_id": "neg_004_reset_does_not_clear",
+        "source_catalog_certification_path": "negative_variants/neg_004_reset_does_not_clear/certification.json",
+        "trigger_condition": "reset_does_not_clear",
+        "violated_property_ids": [
+          "P_SMALL_OVERDRIVE_MUST_PRODUCE_A_LARGER"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_005_enable_ignored/certification.json",
+        "certification_sha256": "00b37dce1b38b43522296342fda2ab0dfc978c5c7709f085c83b7ad25d2a976c",
+        "fault_class": "enable_ignored",
+        "mutation_bundle_sha256": "d2a99c522d565fa7d554dfeb7c519dbf5d05cd1aef4db52df18b9c3b2afe6fed",
+        "mutation_id": "neg_005_enable_ignored",
+        "source_catalog_certification_path": "negative_variants/neg_005_enable_ignored/certification.json",
+        "trigger_condition": "enable_ignored",
+        "violated_property_ids": [
+          "P_ASSERT_VALID_AFTER_EACH_COMPLETED_DECISION"
+        ]
+      }
+    ],
+    "bugfix_seed": "neg_002_kickback_increases_with_overdrive",
+    "canonical_dut_id": "313",
+    "hashes": {
+      "mutation_catalog_sha256": "e7c7e68c412b9632baa95165e53b12c846d64eb3e4ec36659b549dd8e5105c27",
+      "score_deck_sha256": "645729eab26b60e11212ec1d1457dcb541392fcadbc7a01003eff012306967ba",
+      "task_certification_sha256": "9d500c87f294d018f49dd331d84e4c8bedea3e5af08a765bc92d475320569960",
+      "task_record_sha256": "93022f243282b5074eb056e452fd3f63efa95d0b88b3e6b2d5d586df6bc792bc"
+    },
+    "release_dir": "313-dynamic-comparator-kickback-metric"
+  }
+}

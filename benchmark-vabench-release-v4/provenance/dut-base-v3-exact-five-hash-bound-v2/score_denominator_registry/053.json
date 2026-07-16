@@ -1,0 +1,78 @@
+{
+  "family_id": "053",
+  "schema_version": "v4-score-denominator-family-registry-v1",
+  "task": {
+    "active_mutation_count": 5,
+    "active_mutations": [
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_001_force_zero/certification.json",
+        "certification_sha256": "65bab5e39974ba0012bdc60715e634c29a6b33d147fc3736a92fd45ec1b09787",
+        "fault_class": "force_zero",
+        "mutation_bundle_sha256": "59d0e2153c2e662b27d23a462576e28d7b0410b3fd58666932b8d48fdd69eac5",
+        "mutation_id": "neg_001_force_zero",
+        "source_catalog_certification_path": "negative_variants/neg_001_force_zero/certification.json",
+        "trigger_condition": "Slew Rate DAC4: forces the output to zero, so it compiles and idles plausibly but fails every nonzero code check.",
+        "violated_property_ids": [
+          "P_BINARY_MAPPING"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_002_direct_transition/certification.json",
+        "certification_sha256": "246239e33e0e5383991d795384eb5b42877070b039a400672232ccff99c8b108",
+        "fault_class": "direct_transition",
+        "mutation_bundle_sha256": "b6c360bf8c03b7cdee7cdeb47d0a2e318ac62c2d7b66fa4a07d98d91d3beab76",
+        "mutation_id": "neg_002_direct_transition",
+        "source_catalog_certification_path": "negative_variants/neg_002_direct_transition/certification.json",
+        "trigger_condition": "Slew Rate DAC4: decodes the binary input correctly but jumps directly to the target instead of enforcing the slew-rate limit.",
+        "violated_property_ids": [
+          "P_ENDPOINTS"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_004_reversed_bit_order/certification.json",
+        "certification_sha256": "46d2d82ffd62398ca86fc151cf84e89b9a0dfe9f935a7973cc2b2ddfc4ee7f40",
+        "fault_class": "reversed_bit_order",
+        "mutation_bundle_sha256": "1a55e339861cbf099c11bde85f2d7f446d06d743b8587f6b9fcb3ef5ee050daa",
+        "mutation_id": "neg_004_reversed_bit_order",
+        "source_catalog_certification_path": "negative_variants/neg_004_reversed_bit_order/certification.json",
+        "trigger_condition": "Slew Rate DAC4: treats d0 as the MSB and d3 as the LSB, so symmetric code smoke tests can pass but bit-order coverage fails.",
+        "violated_property_ids": [
+          "P_SLEW_LIMIT"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_005_half_slew_rate/certification.json",
+        "certification_sha256": "74f07012b3dbaf7c89df2173d25a30f37c1cee81d2d932077d7dc1d7f20799ed",
+        "fault_class": "half_slew_rate",
+        "mutation_bundle_sha256": "de213736438a0777a7ba9f541a5620a8850f0d1ec56dad8ab8ab25dfa6f26031",
+        "mutation_id": "neg_005_half_slew_rate",
+        "source_catalog_certification_path": "negative_variants/neg_005_half_slew_rate/certification.json",
+        "trigger_condition": "Slew Rate DAC4: reaches the right endpoints eventually but slews at half the required rate, failing ramp-shape timing checks.",
+        "violated_property_ids": [
+          "P_SETTLED_TARGET"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_003_wrong_denominator/certification.json",
+        "certification_sha256": "cbcce2bd85bcd34c79572a45c0e81d0f0087c9582313c48457d7e22bd6c0747b",
+        "fault_class": "wrong_denominator",
+        "mutation_bundle_sha256": "3a07d694265c057cdad4d8314ac22f41d66728798a1869ee6b282423d1077abd",
+        "mutation_id": "neg_003_wrong_denominator",
+        "source_catalog_certification_path": "negative_variants/neg_003_wrong_denominator/certification.json",
+        "trigger_condition": "Slew Rate DAC4: uses code divided by 16, passing monotonic smoke checks while missing the full-scale endpoint calibration.",
+        "violated_property_ids": [
+          "P_CODE_MONOTONICITY"
+        ]
+      }
+    ],
+    "bugfix_seed": "neg_001_force_zero",
+    "canonical_dut_id": "053",
+    "hashes": {
+      "mutation_catalog_sha256": "0882b1c7f9eeb4841c926398f66215ffba56d8450fb5a4c0511fd5b704b65097",
+      "score_deck_sha256": "7806423d2ffc3e2d15e86412bf3f2be1d5676f3d9c05bfea54f9c46ca14a8a30",
+      "task_certification_sha256": "74b3405b3e6c52f0bfd567fdd0cf3d79d757af44b20b55109241b80d77abce3b",
+      "task_record_sha256": "120a9b082dcbb34e8b041f99f63a451b01b7b7c01459ab6ea0a7c1be571f0ef0"
+    },
+    "release_dir": "053-slew-rate-dac4"
+  }
+}

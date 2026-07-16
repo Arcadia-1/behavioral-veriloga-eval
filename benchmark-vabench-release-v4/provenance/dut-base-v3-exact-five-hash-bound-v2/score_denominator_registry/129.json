@@ -1,0 +1,79 @@
+{
+  "family_id": "129",
+  "schema_version": "v4-score-denominator-family-registry-v1",
+  "task": {
+    "active_mutation_count": 5,
+    "active_mutations": [
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_002_missing_half_factor/certification.json",
+        "certification_sha256": "0d4906dba9d8e531a4d1e95c6c9e697e416c66012a8675fd8d60a5f0f0d14a85",
+        "fault_class": "omission_or_incomplete_behavior",
+        "mutation_bundle_sha256": "27d745b3c0faacd05331aad899a68f529f59e93354b918052e9e0fa674184887",
+        "mutation_id": "neg_002_missing_half_factor",
+        "source_catalog_certification_path": "negative_variants/neg_002_missing_half_factor/certification.json",
+        "trigger_condition": "Uses the full polynomial as vod instead of half.",
+        "violated_property_ids": [
+          "P_HALF_SWING_SPLIT"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_005_metric_scale_low/certification.json",
+        "certification_sha256": "fd7cb4b41fef200cb4725d6a376afebc974692f2a0c871a372aa63722404fe11",
+        "fault_class": "metric_or_observable_fault",
+        "mutation_bundle_sha256": "19efcba51ba8b9aafd09d02614eb108162aa739c5cdc897904e5a6b8318708e7",
+        "mutation_id": "neg_005_metric_scale_low",
+        "source_catalog_certification_path": "negative_variants/neg_005_metric_scale_low/certification.json",
+        "trigger_condition": "Polynomial Differential VCVS: scales the metric output, preserving the main path while failing measurement checks.",
+        "violated_property_ids": [
+          "P_POLYNOMIAL_DIFFERENTIAL_INPUT",
+          "P_SYMMETRIC_SATURATION"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_004_common_mode_zero/certification.json",
+        "certification_sha256": "cb183a927e370fab209dc7ecd49c7712f78dbc00e1fd3e4e1e61133ef9464b39",
+        "fault_class": "zero_stub_output",
+        "mutation_bundle_sha256": "537982e6842decad749ac87eaf9c96909bdf6d26a3fd0ed5a4f83f64f15e2508",
+        "mutation_id": "neg_004_common_mode_zero",
+        "source_catalog_certification_path": "negative_variants/neg_004_common_mode_zero/certification.json",
+        "trigger_condition": "Drives outputs around zero common mode instead of vcmo.",
+        "violated_property_ids": [
+          "P_OUTPUT_COMMON_MODE"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_003_inverted_output_polarity/certification.json",
+        "certification_sha256": "176e47b4cd642622d582feea266a78fe9484b2707a8b4b2bc35c0b0a4f998280",
+        "fault_class": "polarity_or_direction_error",
+        "mutation_bundle_sha256": "b339d1c77bdf2e781cc27a969d6f1c51af97dc75369d774508899f840cbf7d35",
+        "mutation_id": "neg_003_inverted_output_polarity",
+        "source_catalog_certification_path": "negative_variants/neg_003_inverted_output_polarity/certification.json",
+        "trigger_condition": "Inverts the differential output polarity.",
+        "violated_property_ids": [
+          "P_HALF_SWING_SPLIT"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_001_zero/certification.json",
+        "certification_sha256": "69b32cc02ef6cafba84e299225a51495fd5b8dcf73e23e4f3862789ea95544f8",
+        "fault_class": "zero_stub_output",
+        "mutation_bundle_sha256": "02cfdc1b3978303a1c427c3f8dd45e02efe2150eee37effc1332e2eab1dff22e",
+        "mutation_id": "neg_001_zero",
+        "source_catalog_certification_path": "negative_variants/neg_001_zero/certification.json",
+        "trigger_condition": "Drives zero output and therefore fails the stable waveform contract.",
+        "violated_property_ids": [
+          "P_POLYNOMIAL_DIFFERENTIAL_INPUT"
+        ]
+      }
+    ],
+    "bugfix_seed": "neg_002_missing_half_factor",
+    "canonical_dut_id": "129",
+    "hashes": {
+      "mutation_catalog_sha256": "de660fcd9a9bc9078a93da3fa914e4801285c23fdfadc84ba66b4f712a1c42a1",
+      "score_deck_sha256": "1258974348c6df6ea806a9f6d5156ea4153a1174ad4d39448e7792b7b05a9ddf",
+      "task_certification_sha256": "56bf0fbf17512f51d6d6886e6c1ad27787473071bddd76e0f0fdae6ad71204ee",
+      "task_record_sha256": "8d33ca3114e5162b2904803a257273fcaad14b123427e315e06e82afe245ceb2"
+    },
+    "release_dir": "129-polynomial-differential-vcvs"
+  }
+}

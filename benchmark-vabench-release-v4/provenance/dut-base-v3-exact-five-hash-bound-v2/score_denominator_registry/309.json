@@ -1,0 +1,79 @@
+{
+  "family_id": "309",
+  "schema_version": "v4-score-denominator-family-registry-v1",
+  "task": {
+    "active_mutation_count": 5,
+    "active_mutations": [
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_001_offset_subtraction_missing/certification.json",
+        "certification_sha256": "bb5a580091632582ca3a67100c1c4f05e9d6971eb70469b101fe569947da9e96",
+        "fault_class": "offset_subtraction_missing",
+        "mutation_bundle_sha256": "9f9c1aaac4f4230f9bf8688475ae69681266e1ea57845c546937dcb369420575",
+        "mutation_id": "neg_001_offset_subtraction_missing",
+        "source_catalog_certification_path": "negative_variants/neg_001_offset_subtraction_missing/certification.json",
+        "trigger_condition": "offset_subtraction_missing",
+        "violated_property_ids": [
+          "P_ON_RESET_CLEAR_STORED_OFFSET_DECISION",
+          "P_USE_ONLY_VOLTAGE_DOMAIN_BEHAVIORAL_STATE"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_003_ready_without_autozero/certification.json",
+        "certification_sha256": "7c3091926cffe9eae3f09271a14a1830a52970353353dfe8baaf5cd239592c21",
+        "fault_class": "ready_without_autozero",
+        "mutation_bundle_sha256": "6f0c73bf53f3231c28ab2d748f53c9c47631362d0b3086a52424c737bbb69d13",
+        "mutation_id": "neg_003_ready_without_autozero",
+        "source_catalog_certification_path": "negative_variants/neg_003_ready_without_autozero/certification.json",
+        "trigger_condition": "ready_without_autozero",
+        "violated_property_ids": [
+          "P_DURING_AN_EVALUATION_CLOCK_UPDATE_WITH"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_004_reset_does_not_clear_state/certification.json",
+        "certification_sha256": "13cb7807b2dec5da4350586e3e163686b658e1992aeb6fdb61f505ecec58c984",
+        "fault_class": "reset_does_not_clear_state",
+        "mutation_bundle_sha256": "35088556b82570a494656a254c418519e3bd5181066981ea020c417d73c05607",
+        "mutation_id": "neg_004_reset_does_not_clear_state",
+        "source_catalog_certification_path": "negative_variants/neg_004_reset_does_not_clear_state/certification.json",
+        "trigger_condition": "reset_does_not_clear_state",
+        "violated_property_ids": [
+          "P_DRIVE_DECISION_HIGH_FOR_CORRECTED_NONNEGATIVE"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_005_offset_store_stuck_common_mode/certification.json",
+        "certification_sha256": "a8e50b683d940c988e2f45fbefc3120f232c4b1f64adbf5b8eb245d71bd63e97",
+        "fault_class": "offset_store_stuck_common_mode",
+        "mutation_bundle_sha256": "fb12abc41af62929b9f362c8ec08f28c027660398cdf79fa0e7e8047e14c9365",
+        "mutation_id": "neg_005_offset_store_stuck_common_mode",
+        "source_catalog_certification_path": "negative_variants/neg_005_offset_store_stuck_common_mode/certification.json",
+        "trigger_condition": "offset_store_stuck_common_mode",
+        "violated_property_ids": [
+          "P_EXPOSE_STORED_OFFSET_ON_OFFSET_STORE"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_002_decision_polarity_inverted/certification.json",
+        "certification_sha256": "53053032c36e56b0353b144f489e9dbf6e2e8720c47c8b3a16dc0b4c87440d42",
+        "fault_class": "decision_polarity_inverted",
+        "mutation_bundle_sha256": "26641c3117bb206945401ad2b062c9dd6117dde00a318383f3bbcda11c72ad93",
+        "mutation_id": "neg_002_decision_polarity_inverted",
+        "source_catalog_certification_path": "negative_variants/neg_002_decision_polarity_inverted/certification.json",
+        "trigger_condition": "decision_polarity_inverted",
+        "violated_property_ids": [
+          "P_DURING_AN_AUTO_ZERO_CLOCK_UPDATE"
+        ]
+      }
+    ],
+    "bugfix_seed": "neg_001_offset_subtraction_missing",
+    "canonical_dut_id": "309",
+    "hashes": {
+      "mutation_catalog_sha256": "b180d22b9dacbd4132b7e90847b5a00314eeb62d295b6f9729a558a72ebc08d4",
+      "score_deck_sha256": "998fe29f72ad5334cef811cabc38bbca30e3027c65b6219612c6da1bd16c9327",
+      "task_certification_sha256": "b1d79db48877047468fdcd86075489a10e4507eb04c96e8bc0362dd7efe4363a",
+      "task_record_sha256": "d3fa5e5c308c4dc339a5fba82bc2311af29a61d7b134d580d451149196941fae"
+    },
+    "release_dir": "309-autozero-comparator-preamplifier"
+  }
+}

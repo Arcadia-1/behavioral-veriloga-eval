@@ -1,0 +1,88 @@
+{
+  "family_id": "231",
+  "schema_version": "v4-score-denominator-family-registry-v1",
+  "task": {
+    "active_mutation_count": 5,
+    "active_mutations": [
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_002_ignore_valid_for_x/certification.json",
+        "certification_sha256": "7450a04af57ad7e164204cffa32548d2d2721253ef2dc375d58cf6a84fe3fd79",
+        "fault_class": "omission_or_incomplete_behavior",
+        "mutation_bundle_sha256": "2a8b81b1d1bd79a15de5d8ac4d11ef65ba8f94ab06970d342f74eb1a9ae768c3",
+        "mutation_id": "neg_002_ignore_valid_for_x",
+        "source_catalog_certification_path": "negative_variants/neg_002_ignore_valid_for_x/certification.json",
+        "trigger_condition": "Asserts X for input 00 even when VALID is low.",
+        "violated_property_ids": [
+          "P_DRIVE_X_HIGH_WHEN_VALID_IS"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_001_zero/certification.json",
+        "certification_sha256": "8e74dec1b5734689377b101611c3a1ab6446498eb98e1158c87cce37c06fc9d2",
+        "fault_class": "zero_stub_output",
+        "mutation_bundle_sha256": "f97ece34796cb605034291f2eeb6790690be466c955a82725411965056164161",
+        "mutation_id": "neg_001_zero",
+        "source_catalog_certification_path": "negative_variants/neg_001_zero/certification.json",
+        "trigger_condition": "Keeps the output at its trivial zero behavior and therefore fails the stable waveform contract.",
+        "violated_property_ids": [
+          "P_DRIVE_DL_HIGH_WHEN_VIN1_IS",
+          "P_DRIVE_DM_HIGH_WHEN_VIN1_IS",
+          "P_DRIVE_X_HIGH_WHEN_VALID_IS",
+          "P_DRIVE_Y_HIGH_WHEN_VALID_IS",
+          "P_DRIVE_Z_HIGH_WHEN_VALID_IS",
+          "P_INTERPRET_VIN1_VIN2_AND_VALID_RELATIVE"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_003_swap_dm_dl/certification.json",
+        "certification_sha256": "d286f78b0ae803fba93da78769c2a1b6de75adb2ac84b6a5faa45a9d3819ea28",
+        "fault_class": "polarity_or_direction_error",
+        "mutation_bundle_sha256": "be04d6cc2f2d3c2d0aee164fcbf61d07d9d62e56f17679fc730a8c569737931c",
+        "mutation_id": "neg_003_swap_dm_dl",
+        "source_catalog_certification_path": "negative_variants/neg_003_swap_dm_dl/certification.json",
+        "trigger_condition": "Swaps the DM and DL output equations.",
+        "violated_property_ids": [
+          "P_DRIVE_DL_HIGH_WHEN_VIN1_IS",
+          "P_DRIVE_DM_HIGH_WHEN_VIN1_IS"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_004_y_for_a_only/certification.json",
+        "certification_sha256": "6e6c303adbec6b86f18737fa6337c0e487e7c184a801f6b8794d5135223e3023",
+        "fault_class": "y_for_a_only",
+        "mutation_bundle_sha256": "ce9c50310bf4d0e7aa4d7d656c011c01d0bfa78382d6bc8703b8f706e3019658",
+        "mutation_id": "neg_004_y_for_a_only",
+        "source_catalog_certification_path": "negative_variants/neg_004_y_for_a_only/certification.json",
+        "trigger_condition": "Asserts Y for A regardless of B instead of only A&B&VALID.",
+        "violated_property_ids": [
+          "P_DRIVE_Y_HIGH_WHEN_VALID_IS"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_005_metric_scale_low/certification.json",
+        "certification_sha256": "05f344e50b69df20e6f81cff179ae095a3ada83e8aa9f0a7411dde0c65429b5e",
+        "fault_class": "metric_or_observable_fault",
+        "mutation_bundle_sha256": "8472a6f6029df62cd11c5d4c92eaaaceca1465aa9ca9dfc2b5ab8fc45eae9c6f",
+        "mutation_id": "neg_005_metric_scale_low",
+        "source_catalog_certification_path": "negative_variants/neg_005_metric_scale_low/certification.json",
+        "trigger_condition": "Decision Router Logic: scales the metric output, preserving the main path while failing measurement checks.",
+        "violated_property_ids": [
+          "P_DRIVE_DL_HIGH_WHEN_VIN1_IS",
+          "P_DRIVE_DM_HIGH_WHEN_VIN1_IS",
+          "P_DRIVE_X_HIGH_WHEN_VALID_IS",
+          "P_DRIVE_Y_HIGH_WHEN_VALID_IS",
+          "P_DRIVE_Z_HIGH_WHEN_VALID_IS"
+        ]
+      }
+    ],
+    "bugfix_seed": "neg_002_ignore_valid_for_x",
+    "canonical_dut_id": "231",
+    "hashes": {
+      "mutation_catalog_sha256": "854bfec666ceb62b3c2bb989c08a8f03076ec85093331fe562d13d6136456ad0",
+      "score_deck_sha256": "05563860279a9e78a860e6acce6419aeb35a633d2c590ca70776650c8481481a",
+      "task_certification_sha256": "f2c51f917e160c2351a6be43e6fbb1ced20f75584bcd958998784fb77bf8dc7d",
+      "task_record_sha256": "2340d2a351203af813bbeac23832e300ce12eb99859c2295a85f691716f22503"
+    },
+    "release_dir": "231-decision-router-logic"
+  }
+}

@@ -1,0 +1,78 @@
+{
+  "family_id": "193",
+  "schema_version": "v4-score-denominator-family-registry-v1",
+  "task": {
+    "active_mutation_count": 5,
+    "active_mutations": [
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_002_short_reset_window/certification.json",
+        "certification_sha256": "c00200e51cb6adc861eeb90b18d9cd6137a17eb3ab77b5a1cb265a96b09b5475",
+        "fault_class": "state_reset_or_enable_error",
+        "mutation_bundle_sha256": "acf91a23378ceff855869a78f40342441483b11bcc5ba74f48f6956a7658b72e",
+        "mutation_id": "neg_002_short_reset_window",
+        "source_catalog_certification_path": "negative_variants/neg_002_short_reset_window/certification.json",
+        "trigger_condition": "Clears hide_state on timer expiry but leaves directional state latched, so overlap reset does not fully clear outputs.",
+        "violated_property_ids": [
+          "P_RESET_OVERLAP_WINDOW"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_001_zero/certification.json",
+        "certification_sha256": "e451cfe6aff41db0693ffe6906503a8a44ada17ae02945525c360821f47270ee",
+        "fault_class": "zero_stub_output",
+        "mutation_bundle_sha256": "99f4341c5f689c2c4f3e5c0c77a462c68f2b3d1f539ebf5899ae2a8f4b028db2",
+        "mutation_id": "neg_001_zero",
+        "source_catalog_certification_path": "negative_variants/neg_001_zero/certification.json",
+        "trigger_condition": "Drives zero output and therefore fails the stable waveform contract.",
+        "violated_property_ids": [
+          "P_PFD_OUTPUT_LEVELS"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_004_invert_up_down_outputs/certification.json",
+        "certification_sha256": "1a4112001e77e94d899ddf99be692caaa1bb715ea3cd747fb3d3d7de6fe7a0f6",
+        "fault_class": "polarity_or_direction_error",
+        "mutation_bundle_sha256": "40098da93fae33b268ce03c1f3c9f064d989a2e36a1157ded3447ddb22674136",
+        "mutation_id": "neg_004_invert_up_down_outputs",
+        "source_catalog_certification_path": "negative_variants/neg_004_invert_up_down_outputs/certification.json",
+        "trigger_condition": "Swaps up and dn output state meanings.",
+        "violated_property_ids": [
+          "P_LEADING_EDGE_DIRECTION"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_003_no_hide_state/certification.json",
+        "certification_sha256": "c7b7dd58a94bf6ad18e0162d49cfd21c4220fbba1dc59a2318bcfa37ac150b96",
+        "fault_class": "state_reset_or_enable_error",
+        "mutation_bundle_sha256": "9ef5c95d995c01550f098904b94f5fd4a11a3a237f763ab665403db93736f7aa",
+        "mutation_id": "neg_003_no_hide_state",
+        "source_catalog_certification_path": "negative_variants/neg_003_no_hide_state/certification.json",
+        "trigger_condition": "Does not assert both outputs during the reset/hide window.",
+        "violated_property_ids": [
+          "P_CLEAR_AFTER_RESET_WINDOW"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_005_metric_scale_low/certification.json",
+        "certification_sha256": "ba292f104b821cd3951b23cf36b659b0bf1e10d759acf8487bd182819532060e",
+        "fault_class": "state_reset_or_enable_error",
+        "mutation_bundle_sha256": "8b28820ada08b7bb06fc4f4c1a1ef37e12059784c74c13151f9353f5b28db325",
+        "mutation_id": "neg_005_metric_scale_low",
+        "source_catalog_certification_path": "negative_variants/neg_005_metric_scale_low/certification.json",
+        "trigger_condition": "PFD Tdomain Reset Window: scales the metric output, preserving the main path while failing measurement checks.",
+        "violated_property_ids": [
+          "P_RESET_OVERLAP_WINDOW"
+        ]
+      }
+    ],
+    "bugfix_seed": "neg_002_short_reset_window",
+    "canonical_dut_id": "193",
+    "hashes": {
+      "mutation_catalog_sha256": "a3de000e0488d8e18cf3a5e7be19ae1aa176dd6cb06b50d13dcd0e0b314e6748",
+      "score_deck_sha256": "57a11d3263a9961b022e4da1132cd532deb4c7e915aca11dd8fcef6256b309dc",
+      "task_certification_sha256": "4b8b97bde4143c5289f5b38d51b32f986838cf88a8ae801fcf1545bd3c5efced",
+      "task_record_sha256": "7409a7117385ec15e79aac4efa40899abfeb379b27ee26b662790ce6d0800c58"
+    },
+    "release_dir": "193-pfd-tdomain-reset-window"
+  }
+}

@@ -1,0 +1,84 @@
+{
+  "family_id": "227",
+  "schema_version": "v4-score-denominator-family-registry-v1",
+  "task": {
+    "active_mutation_count": 5,
+    "active_mutations": [
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_002_wrong_denominator/certification.json",
+        "certification_sha256": "99ff608463c39fdb885178c47bc604d4c7681b7438f2b86b0addae69a4fd1d25",
+        "fault_class": "metric_or_observable_fault",
+        "mutation_bundle_sha256": "59e0f0b969ff9fe300891ab2b326ec081c272a83764b6f701f05b1b2015da229",
+        "mutation_id": "neg_002_wrong_denominator",
+        "source_catalog_certification_path": "negative_variants/neg_002_wrong_denominator/certification.json",
+        "trigger_condition": "Uses the old MSB-normalized scale instead of the all-ones full-scale code.",
+        "violated_property_ids": [
+          "P_MAP_ALL_ONES_INPUT_TO_VREF",
+          "P_SCALE_THE_DECODED_CODE_BY_VREF"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_004_threshold_too_high/certification.json",
+        "certification_sha256": "8723beef2b42a395e325cdb6b45a6d368a98aa3aedc489ebd88c363e12650ef4",
+        "fault_class": "threshold_or_boundary_fault",
+        "mutation_bundle_sha256": "98cf6d7bbf7b324023aeb76489b8bc68d905956812f45e19410421ce29bce248",
+        "mutation_id": "neg_004_threshold_too_high",
+        "source_catalog_certification_path": "negative_variants/neg_004_threshold_too_high/certification.json",
+        "trigger_condition": "Uses a threshold above the input high level.",
+        "violated_property_ids": [
+          "P_INTERPRET_VD1_VD6_AS_AN_UNSIGNED",
+          "P_TREAT_EACH_INPUT_AS_LOGIC_1"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_001_zero/certification.json",
+        "certification_sha256": "a30e2318c719552fac15cfecfc6cf9c5dbfc03fee0afc3df8c4c999928460db2",
+        "fault_class": "zero_stub_output",
+        "mutation_bundle_sha256": "d3b79e1ac610f1abbee39832fd5787bf0353503a2bd07478e59c9570797db504",
+        "mutation_id": "neg_001_zero",
+        "source_catalog_certification_path": "negative_variants/neg_001_zero/certification.json",
+        "trigger_condition": "Keeps the output at its trivial zero behavior and therefore fails the stable waveform contract.",
+        "violated_property_ids": [
+          "P_INTERPRET_VD1_VD6_AS_AN_UNSIGNED",
+          "P_MAP_ALL_ONES_INPUT_TO_VREF",
+          "P_MAP_ALL_ZERO_INPUT_TO_0",
+          "P_SCALE_THE_DECODED_CODE_BY_VREF"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_003_half_scale/certification.json",
+        "certification_sha256": "8c35857cca048f77034e25321555263927a7ec87d5d9554c1e5d18e9d6713098",
+        "fault_class": "metric_or_observable_fault",
+        "mutation_bundle_sha256": "1f7232634d63fb9a678975f5add324526f9888d4da7b0f3d2ff53473663dd88a",
+        "mutation_id": "neg_003_half_scale",
+        "source_catalog_certification_path": "negative_variants/neg_003_half_scale/certification.json",
+        "trigger_condition": "Scales the decoded weighted output to half of the full-scale response.",
+        "violated_property_ids": [
+          "P_MAP_ALL_ONES_INPUT_TO_VREF",
+          "P_SCALE_THE_DECODED_CODE_BY_VREF"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_005_metric_scale_low/certification.json",
+        "certification_sha256": "1783e1a6960fffce78acd4a612730a458991f842493fa986bc9912011667e625",
+        "fault_class": "metric_or_observable_fault",
+        "mutation_bundle_sha256": "04322bcbba1ba56a67f581893de287aaa1eb95e98fa130c6b904e19c998fe2e1",
+        "mutation_id": "neg_005_metric_scale_low",
+        "source_catalog_certification_path": "negative_variants/neg_005_metric_scale_low/certification.json",
+        "trigger_condition": "Weighted Decoder 6bit: scales the metric output, preserving the main path while failing measurement checks.",
+        "violated_property_ids": [
+          "P_SCALE_THE_DECODED_CODE_BY_VREF"
+        ]
+      }
+    ],
+    "bugfix_seed": "neg_002_wrong_denominator",
+    "canonical_dut_id": "227",
+    "hashes": {
+      "mutation_catalog_sha256": "c9c56e3d83cc856f988b2b1e832082031e4c320af1749c807b9dc57461f6d336",
+      "score_deck_sha256": "88e37623ec6d588a767f534ae2c9ae00fcc3550923919fde8a65119381a38612",
+      "task_certification_sha256": "7fbe6f7cd651a91fc0c0684a1046f73bc2cae793179fcc2adb434240537bf982",
+      "task_record_sha256": "231f09b1706a9a97fe5a80b9d486c135a1b52c018c461f579a62c44cd583d355"
+    },
+    "release_dir": "227-weighted-decoder-6bit"
+  }
+}

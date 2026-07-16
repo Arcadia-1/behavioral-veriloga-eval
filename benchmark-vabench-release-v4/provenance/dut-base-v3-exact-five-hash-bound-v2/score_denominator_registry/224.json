@@ -1,0 +1,85 @@
+{
+  "family_id": "224",
+  "schema_version": "v4-score-denominator-family-registry-v1",
+  "task": {
+    "active_mutation_count": 5,
+    "active_mutations": [
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_002_floor_quantizer/certification.json",
+        "certification_sha256": "9977bedd3209266149d8e74a22bd2ec619a719dc2cde8b6261fecb601d685b44",
+        "fault_class": "floor_quantizer",
+        "mutation_bundle_sha256": "518945af71132e702eccf3ff0813baac80347a364a14389373bee1dbcfe3a876",
+        "mutation_id": "neg_002_floor_quantizer",
+        "source_catalog_certification_path": "negative_variants/neg_002_floor_quantizer/certification.json",
+        "trigger_condition": "Uses floor quantization instead of rounding to nearest.",
+        "violated_property_ids": [
+          "P_DRIVE_D0_D1_AND_D2_AS",
+          "P_DRIVE_VRES_AS_THE_CLIPPED_INPUT",
+          "P_QUANTIZE_THE_CLIPPED_VALUE_INTO_EIGHT",
+          "P_USE_UNIFORMLY_SPACED_QUANTIZATION_LEVELS_START"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_003_no_input_clip/certification.json",
+        "certification_sha256": "2def859adcf7c9825a2b9e19c13990900a164064870863b48eddaf818e14c47f",
+        "fault_class": "threshold_or_boundary_fault",
+        "mutation_bundle_sha256": "658629de1501ad9663795dc7dbfb568408545fe63f39d0a1a2429528a0896686",
+        "mutation_id": "neg_003_no_input_clip",
+        "source_catalog_certification_path": "negative_variants/neg_003_no_input_clip/certification.json",
+        "trigger_condition": "Does not clip VIN before quantization and residue computation.",
+        "violated_property_ids": [
+          "P_CLIP_VIN_TO_THE_RANGE_FROM",
+          "P_DRIVE_VRES_AS_THE_CLIPPED_INPUT",
+          "P_SATURATE_THE_CODE_AT_THE_ENDPOINTS"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_001_zero/certification.json",
+        "certification_sha256": "fb312af02fe879da7afe4f73d93c9ddd2dbc3a18cdac3ce531bad34745db518c",
+        "fault_class": "zero_stub_output",
+        "mutation_bundle_sha256": "01772c3ff3296ce5bed3b3ebf8bd426224cde3d4e0a6859e2f27e2f8fe97835f",
+        "mutation_id": "neg_001_zero",
+        "source_catalog_certification_path": "negative_variants/neg_001_zero/certification.json",
+        "trigger_condition": "Drives zero output and therefore fails the stable waveform contract.",
+        "violated_property_ids": [
+          "P_DRIVE_D0_D1_AND_D2_AS",
+          "P_DRIVE_VRES_AS_THE_CLIPPED_INPUT",
+          "P_QUANTIZE_THE_CLIPPED_VALUE_INTO_EIGHT"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_004_residue_sign_inverted/certification.json",
+        "certification_sha256": "f71b9e75094c267b37a5b60f5b78afbf9b6e03c65766253b868a70fc8f530da9",
+        "fault_class": "polarity_or_direction_error",
+        "mutation_bundle_sha256": "d24d8f6b6cd7d3ff145d581f3d2965dafd5e4fab797d2f05f9bc487d750f1318",
+        "mutation_id": "neg_004_residue_sign_inverted",
+        "source_catalog_certification_path": "negative_variants/neg_004_residue_sign_inverted/certification.json",
+        "trigger_condition": "Reports quantized-minus-input residue instead of input-minus-quantized residue.",
+        "violated_property_ids": [
+          "P_DRIVE_VRES_AS_THE_CLIPPED_INPUT"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_005_metric_scale_low/certification.json",
+        "certification_sha256": "180841c3e1e7790cfb84104b81affb0453129c5265dc4363cb7f12c77a407ceb",
+        "fault_class": "metric_or_observable_fault",
+        "mutation_bundle_sha256": "647783740b6d78a87c9966bef1da1835430de8c53b28b6f6521b6b6857ec03e2",
+        "mutation_id": "neg_005_metric_scale_low",
+        "source_catalog_certification_path": "negative_variants/neg_005_metric_scale_low/certification.json",
+        "trigger_condition": "Coarse QTZ 3bit Residue: scales the metric output, preserving the main path while failing measurement checks.",
+        "violated_property_ids": [
+          "P_DRIVE_D0_D1_AND_D2_AS"
+        ]
+      }
+    ],
+    "bugfix_seed": "neg_002_floor_quantizer",
+    "canonical_dut_id": "224",
+    "hashes": {
+      "mutation_catalog_sha256": "8465824433175feed1dfed6456534c1e7606cb8d9e62332a8de9084dfe30ff39",
+      "score_deck_sha256": "0b8a2fb2ae0cb711b2e249b6f4b37eebdef99d717d89601722f41c256d1276f4",
+      "task_certification_sha256": "92eab337df429ca3039a9b2aec8ff83b8f9c09dd0829bb8653f430f1fee062ee",
+      "task_record_sha256": "d24840594e612f8d9d63483ce6e1d9f23f7b2852e4241971126a79df487c8c92"
+    },
+    "release_dir": "224-coarse-qtz-3bit-residue"
+  }
+}

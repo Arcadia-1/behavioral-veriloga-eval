@@ -1,0 +1,79 @@
+{
+  "family_id": "220",
+  "schema_version": "v4-score-denominator-family-registry-v1",
+  "task": {
+    "active_mutation_count": 5,
+    "active_mutations": [
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_002_swapped_ref_fb/certification.json",
+        "certification_sha256": "ca6a0ed3ca1daebaab0674d13c7137ce4795c376f9ab0ea4008d91d869c2cf35",
+        "fault_class": "polarity_or_direction_error",
+        "mutation_bundle_sha256": "ecd4885a72733c796a2b47e633ffd1c2d17d155259aa204689602adb8db61a62",
+        "mutation_id": "neg_002_swapped_ref_fb",
+        "source_catalog_certification_path": "negative_variants/neg_002_swapped_ref_fb/certification.json",
+        "trigger_condition": "Swaps REF and FB state effects, reversing UP/DOWN behavior.",
+        "violated_property_ids": [
+          "P_MAINTAIN_AN_INTEGER_DETECTOR_STATE_BOUNDED"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_004_up_stuck_for_zero_state/certification.json",
+        "certification_sha256": "5ddbf27f7eeafe81c06ebfdbdc247c5c0bbfda755b7a5e0c01319c999477b304",
+        "fault_class": "zero_stub_output",
+        "mutation_bundle_sha256": "6b6048ebf311d3f04676358e42fabe1d5aceb28759bf9f921c6d2e8248f35fb8",
+        "mutation_id": "neg_004_up_stuck_for_zero_state",
+        "source_catalog_certification_path": "negative_variants/neg_004_up_stuck_for_zero_state/certification.json",
+        "trigger_condition": "Asserts UP whenever the state is nonnegative, including the neutral zero state.",
+        "violated_property_ids": [
+          "P_A_RISING_FB_EDGE_DECREMENTS_THE"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_005_metric_scale_low/certification.json",
+        "certification_sha256": "db7a827023d5358f344b4af33e74a6c775e48c7e8d7efa9a3a1520fee91cf060",
+        "fault_class": "metric_or_observable_fault",
+        "mutation_bundle_sha256": "af407c9f0e351301fcdd89667477364bda3d255395fb3cbe5e0a1697ae65b6dd",
+        "mutation_id": "neg_005_metric_scale_low",
+        "source_catalog_certification_path": "negative_variants/neg_005_metric_scale_low/certification.json",
+        "trigger_condition": "PFD Up Down State: scales the metric output, preserving the main path while failing measurement checks.",
+        "violated_property_ids": [
+          "P_DRIVE_UP_HIGH_WHEN_THE_STATE"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_003_no_fb_decrement/certification.json",
+        "certification_sha256": "ae3ff50f7376d703665c4c3b365c43a7f6c390ae893f3715633ca2c70c0e7acd",
+        "fault_class": "polarity_or_direction_error",
+        "mutation_bundle_sha256": "3816f12f1ed710aae4173cf6e856cf83d1a3069d4dab3f683523d495e8639553",
+        "mutation_id": "neg_003_no_fb_decrement",
+        "source_catalog_certification_path": "negative_variants/neg_003_no_fb_decrement/certification.json",
+        "trigger_condition": "Ignores FB rising edges, so DOWN never asserts.",
+        "violated_property_ids": [
+          "P_A_RISING_REF_EDGE_INCREMENTS_THE",
+          "P_DRIVE_DOWN_HIGH_WHEN_THE_STATE"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_001_zero/certification.json",
+        "certification_sha256": "3e8ca720ee487c94b8c71f83e90588dbf3b9cf293ed0bb67e3b3dbb70e529791",
+        "fault_class": "zero_stub_output",
+        "mutation_bundle_sha256": "43b0e4a3d952a62a83fef1e943e78bae74a5ee7e09ed84c836182dd3203b58a6",
+        "mutation_id": "neg_001_zero",
+        "source_catalog_certification_path": "negative_variants/neg_001_zero/certification.json",
+        "trigger_condition": "Drives zero output and therefore fails the stable waveform contract.",
+        "violated_property_ids": [
+          "P_DETECT_RISING_REF_AND_FB_CROSSINGS"
+        ]
+      }
+    ],
+    "bugfix_seed": "neg_002_swapped_ref_fb",
+    "canonical_dut_id": "220",
+    "hashes": {
+      "mutation_catalog_sha256": "0422e851e129dbde5a6ac9c48386667b63fabb7475acef638736157af57e90bd",
+      "score_deck_sha256": "2534160271218d8e674123cf67662805b8151a58460fd94676341a425bfaab3d",
+      "task_certification_sha256": "5ff3a6a36fa725f69b212d5477e7f6a367e71e97fa9350e349ff52161aec561c",
+      "task_record_sha256": "d419510a45991c87a299200f52dd822b01a6997387dbda2908c0313f1b5fcb5a"
+    },
+    "release_dir": "220-pfd-up-down-state"
+  }
+}

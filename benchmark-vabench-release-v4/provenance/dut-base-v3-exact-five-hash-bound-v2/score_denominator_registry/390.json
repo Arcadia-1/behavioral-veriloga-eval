@@ -1,0 +1,78 @@
+{
+  "family_id": "390",
+  "schema_version": "v4-score-denominator-family-registry-v1",
+  "task": {
+    "active_mutation_count": 5,
+    "active_mutations": [
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_001_reversed_trim_direction/certification.json",
+        "certification_sha256": "8528813e26cf953a1ec2289d34baef7d7f0bc1aeb094b9dca16f70a52f96210b",
+        "fault_class": "wrong_control_polarity",
+        "mutation_bundle_sha256": "202cb86860790e27cf6f43ac2f29ad8a8b204953cdc207af7ca6d2c816a4e5e0",
+        "mutation_id": "neg_001_reversed_trim_direction",
+        "source_catalog_certification_path": "negative_variants/neg_001_reversed_trim_direction/certification.json",
+        "trigger_condition": "positive common-mode error is applied",
+        "violated_property_ids": [
+          "P_TRIM_DIRECTION"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_003_lock_after_one_update/certification.json",
+        "certification_sha256": "26500323d42ca15b60e7a11313a2494a226c067023c1ae9de93a9b8229fbbbc9",
+        "fault_class": "early_lock",
+        "mutation_bundle_sha256": "000659a993437b53cebe9a3793a965a1da57a466ddd2c0293885a9e67c58e087",
+        "mutation_id": "neg_003_lock_after_one_update",
+        "source_catalog_certification_path": "negative_variants/neg_003_lock_after_one_update/certification.json",
+        "trigger_condition": "the residual first enters lock tolerance",
+        "violated_property_ids": [
+          "P_LOCK_QUALIFICATION"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_004_cm_error_reports_input/certification.json",
+        "certification_sha256": "1da000b9f08263343a2f1f0c3a9b3695ef9f41981f7384d243a3a78935693490",
+        "fault_class": "wrong_common_mode_metric",
+        "mutation_bundle_sha256": "a7d5d6408453314811ce1dbaf66b4a81401d49d1d64414f543f3267105f3c664",
+        "mutation_id": "neg_004_cm_error_reports_input",
+        "source_catalog_certification_path": "negative_variants/neg_004_cm_error_reports_input/certification.json",
+        "trigger_condition": "trim correction reduces output common-mode error",
+        "violated_property_ids": [
+          "P_COMMON_MODE_ERROR"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_005_disable_keeps_trim/certification.json",
+        "certification_sha256": "4bfe05a91a8d092cb9c760adc8de5924d2aa64a3cc885032eac58d34007f858d",
+        "fault_class": "missing_disable_clear",
+        "mutation_bundle_sha256": "ab18526bfea2edc0be77908ac65e40a4aa2d07659054cceea307f5f45e422cb6",
+        "mutation_id": "neg_005_disable_keeps_trim",
+        "source_catalog_certification_path": "negative_variants/neg_005_disable_keeps_trim/certification.json",
+        "trigger_condition": "enable is deasserted after trim activity",
+        "violated_property_ids": [
+          "P_RESET_DISABLE_CLEAR"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_002_same_sign_output_correction/certification.json",
+        "certification_sha256": "f0762721ee5b6123218d9228a13f00909ccb8e1aa2ecd3a12c983df0e363da5c",
+        "fault_class": "wrong_output_polarity",
+        "mutation_bundle_sha256": "014c7b3151c14c7dbb777c6899846f4af8ca63b25cee66684af554db08ceccc6",
+        "mutation_id": "neg_002_same_sign_output_correction",
+        "source_catalog_certification_path": "negative_variants/neg_002_same_sign_output_correction/certification.json",
+        "trigger_condition": "nonzero trim correction is active",
+        "violated_property_ids": [
+          "P_DIFFERENTIAL_PRESERVATION"
+        ]
+      }
+    ],
+    "bugfix_seed": "neg_001_reversed_trim_direction",
+    "canonical_dut_id": "390",
+    "hashes": {
+      "mutation_catalog_sha256": "be3d0221117f218e8ae4530207e3544f03e33d3eda9d4c5bbb47a999cb6bd68a",
+      "score_deck_sha256": "134dfe2a45cbb96cc923bf8a76b18896b1e26890db6515b790520adc0e3c6478",
+      "task_certification_sha256": "76df318217c240f4d5a8d548823b4af7597eb23ddb6857d1e825d162fd5785a5",
+      "task_record_sha256": "811f7963e4c92d4e19d599750e98853475a2c823a673347e92383941a1b24744"
+    },
+    "release_dir": "390-common-mode-feedback-loop"
+  }
+}

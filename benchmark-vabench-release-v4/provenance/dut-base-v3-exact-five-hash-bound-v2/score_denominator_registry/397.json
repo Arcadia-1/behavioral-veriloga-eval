@@ -1,0 +1,79 @@
+{
+  "family_id": "397",
+  "schema_version": "v4-score-denominator-family-registry-v1",
+  "task": {
+    "active_mutation_count": 5,
+    "active_mutations": [
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_004_threshold_shifted/certification.json",
+        "certification_sha256": "0f8ca5aa718c7676ed14cdce4874e51fad858c95bf06b9808fb75cab03eff353",
+        "fault_class": "threshold_or_boundary_fault",
+        "mutation_bundle_sha256": "145b247fcc7c1727ec3a538c272d81f1be2d5891e9df9f4eaee29c414a0d8bca",
+        "mutation_id": "neg_004_threshold_shifted",
+        "source_catalog_certification_path": "negative_variants/neg_004_threshold_shifted/certification.json",
+        "trigger_condition": "semantic threshold mutation from gold",
+        "violated_property_ids": [
+          "P_USE_SIGNED_OFFSET_OFFSET_CODE_3"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_002_half_scale/certification.json",
+        "certification_sha256": "66db0a4321812c558e4f473008d41cbe391caaf17db27dd79c19adca6d3b5cf1",
+        "fault_class": "metric_or_observable_fault",
+        "mutation_bundle_sha256": "4e3dc72371e9a76a4a24172794c249f4d04d141a1729975241e498d7f7ce6413",
+        "mutation_id": "neg_002_half_scale",
+        "source_catalog_certification_path": "negative_variants/neg_002_half_scale/certification.json",
+        "trigger_condition": "semantic scale mutation from gold",
+        "violated_property_ids": [
+          "P_ON_EACH_ENABLED_RISING_CLK_SAMPLE",
+          "P_RESIDUAL_METRIC_REPORTS_THE_ABSOLUTE_OUTPUT"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_001_zero/certification.json",
+        "certification_sha256": "8352a83eda8c392cbfb08d5b3420f9aeaf8b336cadb09479e45ff65c8cd13dbf",
+        "fault_class": "zero_stub_output",
+        "mutation_bundle_sha256": "d7ab7560cf09f0bdeaf9c946c6af13caf30fa09f49a5d0246d1023415d331d07",
+        "mutation_id": "neg_001_zero",
+        "source_catalog_certification_path": "negative_variants/neg_001_zero/certification.json",
+        "trigger_condition": "semantic zero mutation from gold",
+        "violated_property_ids": [
+          "P_RESET_OR_LOW_ENABLE_DRIVES_VOUT"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_005_event_edge_wrong/certification.json",
+        "certification_sha256": "e6b23a58c25c434b8765f1a67ca96f036c18c540715e6a372a2a09b5d26309e6",
+        "fault_class": "polarity_or_direction_error",
+        "mutation_bundle_sha256": "3f94885f25b1a9584639852270ac8a17de17e0ae2bd232c371588245dbfa2597",
+        "mutation_id": "neg_005_event_edge_wrong",
+        "source_catalog_certification_path": "negative_variants/neg_005_event_edge_wrong/certification.json",
+        "trigger_condition": "semantic delay_edge mutation from gold",
+        "violated_property_ids": [
+          "P_DRIVE_VOUT_AS_THE_CLIPPED_GAIN"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_003_inverted_transfer/certification.json",
+        "certification_sha256": "c9c0c1b83494148965d7748e4bf91419c7f37a971064dd522812f9a81d11d0bf",
+        "fault_class": "polarity_or_direction_error",
+        "mutation_bundle_sha256": "37473a2eac461c08fbb33ed97bed5b12bb59cc2e685be2719eb2485110377cf6",
+        "mutation_id": "neg_003_inverted_transfer",
+        "source_catalog_certification_path": "negative_variants/neg_003_inverted_transfer/certification.json",
+        "trigger_condition": "semantic invert mutation from gold",
+        "violated_property_ids": [
+          "P_USE_GAIN_GAIN_BASE_GAIN_STEP"
+        ]
+      }
+    ],
+    "bugfix_seed": "neg_004_threshold_shifted",
+    "canonical_dut_id": "397",
+    "hashes": {
+      "mutation_catalog_sha256": "152aa3b4c6f1372f2b65b4a52c149291a874e29e2806439c42d97d77367dc514",
+      "score_deck_sha256": "818c5a58b5580c3ec1f2ec580c4d6cd1b77db9263742ce0ec0e3596ce50eb0fe",
+      "task_certification_sha256": "e1f58c8da25258363b7d6a2fe3a290e69c8f835f72d9569a27b735e3a1273b54",
+      "task_record_sha256": "4b83f3fc1c78152abc9012ae565a7b1926c63d9213c7bd9e9efa689c1ad87106"
+    },
+    "release_dir": "397-baseband-offset-gain-trim-macro"
+  }
+}

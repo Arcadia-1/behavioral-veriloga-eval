@@ -1,0 +1,78 @@
+{
+  "family_id": "263",
+  "schema_version": "v4-score-denominator-family-registry-v1",
+  "task": {
+    "active_mutation_count": 5,
+    "active_mutations": [
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_003_wrong_scale/certification.json",
+        "certification_sha256": "17fdd53eaa2c7d41ea8b678b784fa8e35673eb84c2c0163fafc28a1824e08670",
+        "fault_class": "metric_or_observable_fault",
+        "mutation_bundle_sha256": "111163920f91c8d4003691b153248c4d486ca45529bc6931bb67324f23e12089",
+        "mutation_id": "neg_003_wrong_scale",
+        "source_catalog_certification_path": "negative_variants/neg_003_wrong_scale/certification.json",
+        "trigger_condition": "stimulus exercises neg_003_wrong_scale",
+        "violated_property_ids": [
+          "P_MEASURE_ANALOG_INPUTS_RELATIVE_TO_THE"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_002_ignore_enable/certification.json",
+        "certification_sha256": "36ca33561f9255bead53ec481defe95c93aaa5fe94bf2fb810fe0a0d5e91c9db",
+        "fault_class": "state_reset_or_enable_error",
+        "mutation_bundle_sha256": "6fc43a01c659de2a3d09ecea746d65391b8588fd7885d56a71d1cfd7d06a3242",
+        "mutation_id": "neg_002_ignore_enable",
+        "source_catalog_certification_path": "negative_variants/neg_002_ignore_enable/certification.json",
+        "trigger_condition": "stimulus exercises neg_002_ignore_enable",
+        "violated_property_ids": [
+          "P_INITIALIZE_A_SAMPLED_PROGRESS_COUNT_TO"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_001_zero_outputs/certification.json",
+        "certification_sha256": "5b20044f66bb3b687d8935ecd16cfbb464da3dfae4e03a3f13694abd28d2a122",
+        "fault_class": "zero_stub_output",
+        "mutation_bundle_sha256": "055a8968de4cd705af910f9f045e1437c37d1f6cf9ea1d643f50374cea727078",
+        "mutation_id": "neg_001_zero_outputs",
+        "source_catalog_certification_path": "negative_variants/neg_001_zero_outputs/certification.json",
+        "trigger_condition": "stimulus exercises neg_001_zero_outputs",
+        "violated_property_ids": [
+          "P_MEASURE_ANALOG_INPUTS_RELATIVE_TO_THE"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_004_ignore_control_or_reset/certification.json",
+        "certification_sha256": "7338ded0492bdf60578041f4a52c38d597e1f206c002f76dcec4d4ddd20a827e",
+        "fault_class": "state_reset_or_enable_error",
+        "mutation_bundle_sha256": "61522202ed268b9ddf20b1a635545098fdbd755ce9ffd5f8e7a9571520ab2817",
+        "mutation_id": "neg_004_ignore_control_or_reset",
+        "source_catalog_certification_path": "negative_variants/neg_004_ignore_control_or_reset/certification.json",
+        "trigger_condition": "stimulus exercises neg_004_ignore_control_or_reset",
+        "violated_property_ids": [
+          "P_INITIALIZE_A_SAMPLED_PROGRESS_COUNT_TO"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_005_wrong_flag_metric/certification.json",
+        "certification_sha256": "f01f9463a7a8d1fa8f0d976af60ab87571ad633cb0d8fc3966728647b41fbd51",
+        "fault_class": "metric_or_observable_fault",
+        "mutation_bundle_sha256": "01d2a221547e948fff15c105dc14692171cd849858af78d772b4f65e1b4183f2",
+        "mutation_id": "neg_005_wrong_flag_metric",
+        "source_catalog_certification_path": "negative_variants/neg_005_wrong_flag_metric/certification.json",
+        "trigger_condition": "stimulus exercises neg_005_wrong_flag_metric",
+        "violated_property_ids": [
+          "P_MEASURE_ANALOG_INPUTS_RELATIVE_TO_THE"
+        ]
+      }
+    ],
+    "bugfix_seed": "neg_003_wrong_scale",
+    "canonical_dut_id": "263",
+    "hashes": {
+      "mutation_catalog_sha256": "69ca8e48f9f38b1c0447cdb4228323150e9cae925fc2665d44d8b1c404984bea",
+      "score_deck_sha256": "35f9f106af91c0f810621524c77a9dd194d958eb55a66a1397b937946332fa94",
+      "task_certification_sha256": "eb78774ed95bdc94c5aacc37c3b64c7b59bea76e31bc8874688ad672b7beedd3",
+      "task_record_sha256": "94bdd8af04e74a2d27ccf932d7b8e53d5f6aaec0c2d3e4e433fa0e270c7a83e2"
+    },
+    "release_dir": "263-settling-progress-counter"
+  }
+}

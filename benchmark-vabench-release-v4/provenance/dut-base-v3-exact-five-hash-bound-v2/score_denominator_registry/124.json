@@ -1,0 +1,78 @@
+{
+  "family_id": "124",
+  "schema_version": "v4-score-denominator-family-registry-v1",
+  "task": {
+    "active_mutation_count": 5,
+    "active_mutations": [
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_002_inverted_difference/certification.json",
+        "certification_sha256": "0cf9f96d40fba62dd77c1766aed8d9593ebb4bb60e7cc755aff9daeb9c47f642",
+        "fault_class": "polarity_or_direction_error",
+        "mutation_bundle_sha256": "df40170b7b0f8c0022e9c805e6ae2a814ea8a5f5020218b711ecffe8cd0b9ca9",
+        "mutation_id": "neg_002_inverted_difference",
+        "source_catalog_certification_path": "negative_variants/neg_002_inverted_difference/certification.json",
+        "trigger_condition": "Uses sigref minus sigin in the tanh comparator.",
+        "violated_property_ids": [
+          "P_INPUT_POLARITY"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_003_half_slope/certification.json",
+        "certification_sha256": "804ed4eec0d0022f52de52577f360165505fc8e6a5b36d359a5195c418d8efb9",
+        "fault_class": "omission_or_incomplete_behavior",
+        "mutation_bundle_sha256": "317bc7676e5ad2fc234505a0e43c7847da4e42980b3fc62987caddde83a382a5",
+        "mutation_id": "neg_003_half_slope",
+        "source_catalog_certification_path": "negative_variants/neg_003_half_slope/certification.json",
+        "trigger_condition": "Uses half of the requested tanh comparator slope.",
+        "violated_property_ids": [
+          "P_SMOOTH_TRANSITION"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_005_metric_scale_low/certification.json",
+        "certification_sha256": "0b046a803938910c55d5345ef54113cebc1089dbeaed4ab1393510285c4ce730",
+        "fault_class": "metric_or_observable_fault",
+        "mutation_bundle_sha256": "d37f95847d0d0b9cbfc5f0a7d0a01868fd0b8f9ab705fffe7181af09809b598f",
+        "mutation_id": "neg_005_metric_scale_low",
+        "source_catalog_certification_path": "negative_variants/neg_005_metric_scale_low/certification.json",
+        "trigger_condition": "Scales the tanh output and therefore violates the public smooth-transfer contract.",
+        "violated_property_ids": [
+          "P_TANH_TRANSFER"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_001_zero/certification.json",
+        "certification_sha256": "60c1d33687b5c8b56c7a32f70e3dbf0adc24d64ff50dc99e42310526075e29ee",
+        "fault_class": "zero_stub_output",
+        "mutation_bundle_sha256": "3531ee3fff3d104b41fd077e67e18e5f198b57edf93c31c9d9b2dd822e94b12e",
+        "mutation_id": "neg_001_zero",
+        "source_catalog_certification_path": "negative_variants/neg_001_zero/certification.json",
+        "trigger_condition": "Drives zero output and therefore fails the stable waveform contract.",
+        "violated_property_ids": [
+          "P_TANH_TRANSFER"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_004_half_output_span/certification.json",
+        "certification_sha256": "22c6ea07e0e112ec8a539e1d215c45c8a8a648626ccc2e39756bef723ef6d3f9",
+        "fault_class": "omission_or_incomplete_behavior",
+        "mutation_bundle_sha256": "539cb39cd86718a88e8ac84452ce8be9b11575e5b81c638b2d7369a46c9b2bf6",
+        "mutation_id": "neg_004_half_output_span",
+        "source_catalog_certification_path": "negative_variants/neg_004_half_output_span/certification.json",
+        "trigger_condition": "Uses half of the requested output span.",
+        "violated_property_ids": [
+          "P_TANH_TRANSFER"
+        ]
+      }
+    ],
+    "bugfix_seed": "neg_002_inverted_difference",
+    "canonical_dut_id": "124",
+    "hashes": {
+      "mutation_catalog_sha256": "a2fe74c4bd3668b8ff5c215a0a104da411375663e36d30ed54ec20b6e8784d4e",
+      "score_deck_sha256": "ad2cda9566424b24cb03068ab3a8df4544aef2b474e30cf85daf27fe598be71e",
+      "task_certification_sha256": "d6fe5771fe74afd14d132091a0baa99bfea8a8dcc6ddd861ecb0c853ff65f967",
+      "task_record_sha256": "b760dbf05c5a172edbdfa590c022c2d54f63dd03c220fdfdc8cfa8a343ca085a"
+    },
+    "release_dir": "124-smooth-comparator-tanh"
+  }
+}

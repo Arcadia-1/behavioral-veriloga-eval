@@ -1,0 +1,78 @@
+{
+  "family_id": "190",
+  "schema_version": "v4-score-denominator-family-registry-v1",
+  "task": {
+    "active_mutation_count": 5,
+    "active_mutations": [
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_002_no_step_halving/certification.json",
+        "certification_sha256": "19cbd1b16fb960a0a4391c3ec4b618fd2558ae3bb87c49414c7d52eba0c8451a",
+        "fault_class": "omission_or_incomplete_behavior",
+        "mutation_bundle_sha256": "9a61409c63f80b2d0e26a830128eca5f7dc747b72ce1c5607d9fe2975ee7938a",
+        "mutation_id": "neg_002_no_step_halving",
+        "source_catalog_certification_path": "negative_variants/neg_002_no_step_halving/certification.json",
+        "trigger_condition": "Collapses the differential reference outputs to common mode.",
+        "violated_property_ids": [
+          "P_ITERATIVE_SEARCH_UPDATES"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_004_full_diff_scale/certification.json",
+        "certification_sha256": "ac18912fa147245484926b3f395c4ea920e3ea06aa7ee310bd7b476c7ea03ed2",
+        "fault_class": "metric_or_observable_fault",
+        "mutation_bundle_sha256": "370b70ca30a583bde4c5bb68a25f8678d9186fb8ad507daddc3306d1c484b05c",
+        "mutation_id": "neg_004_full_diff_scale",
+        "source_catalog_certification_path": "negative_variants/neg_004_full_diff_scale/certification.json",
+        "trigger_condition": "Uses full differential amplitude for vin outputs instead of half-scale.",
+        "violated_property_ids": [
+          "P_CLOCKED_SWEEP_DIRECTION"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_005_metric_scale_low/certification.json",
+        "certification_sha256": "be5f7b509079c1ed65d06ca95019830b054ad00a9f918775f58a09ca3bba4285",
+        "fault_class": "threshold_or_boundary_fault",
+        "mutation_bundle_sha256": "c7fbf5aec3b2c9d9307d0b41d9aa566e72c47cb9a6c9ae49270850bf9e519ff7",
+        "mutation_id": "neg_005_metric_scale_low",
+        "source_catalog_certification_path": "negative_variants/neg_005_metric_scale_low/certification.json",
+        "trigger_condition": "Linearity RDAC Offset Sweep: scales the metric output, preserving the main path while failing measurement checks.",
+        "violated_property_ids": [
+          "P_SWEEP_INITIAL_STATE"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_001_zero/certification.json",
+        "certification_sha256": "cce3e4c2bfb665f0065ede28f7cdb7c189cdf0529f8bfd73924ce8f11028473a",
+        "fault_class": "zero_stub_output",
+        "mutation_bundle_sha256": "4259000f7198dc6d3bd7e0b3b9a9a37b22d9ff18028278a2f349c19fedc28089",
+        "mutation_id": "neg_001_zero",
+        "source_catalog_certification_path": "negative_variants/neg_001_zero/certification.json",
+        "trigger_condition": "Drives zero output and therefore fails the stable waveform contract.",
+        "violated_property_ids": [
+          "P_SWEEP_INITIAL_STATE"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_003_no_ddex_decrement/certification.json",
+        "certification_sha256": "39dc4f54d1ea736714134bd04ab242ca3281fc875714de24f66679777d101cc0",
+        "fault_class": "omission_or_incomplete_behavior",
+        "mutation_bundle_sha256": "79b8cac17b1b7a9091740fc1471b112843bed383c1b65792c0fef8ae46cbf4c7",
+        "mutation_id": "neg_003_no_ddex_decrement",
+        "source_catalog_certification_path": "negative_variants/neg_003_no_ddex_decrement/certification.json",
+        "trigger_condition": "Does not sweep the RDAC code downward after calibration.",
+        "violated_property_ids": [
+          "P_CODE_UPDATE_AND_RECENTER"
+        ]
+      }
+    ],
+    "bugfix_seed": "neg_002_no_step_halving",
+    "canonical_dut_id": "190",
+    "hashes": {
+      "mutation_catalog_sha256": "98433d73486b30834b7b28068cd638e0ef5ea9c568f876aadf9a4abe4e7b486b",
+      "score_deck_sha256": "f543cf45598e8484c2fa9bc75298d9e0a0b3858abec4fd214b2d1baeb31555cb",
+      "task_certification_sha256": "e0ba0a8ee5a33e568a3e2f06fd8881c1d7a43886ead8dd2a5632db426c911eed",
+      "task_record_sha256": "d92d43d1c259898133e72d4c459339859afc258620437940b0a89833387910be"
+    },
+    "release_dir": "190-linearity-rdac-offset-sweep"
+  }
+}

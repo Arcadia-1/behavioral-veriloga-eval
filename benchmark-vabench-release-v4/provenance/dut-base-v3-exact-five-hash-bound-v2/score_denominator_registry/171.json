@@ -1,0 +1,79 @@
+{
+  "family_id": "171",
+  "schema_version": "v4-score-denominator-family-registry-v1",
+  "task": {
+    "active_mutation_count": 5,
+    "active_mutations": [
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_002_no_step_halving/certification.json",
+        "certification_sha256": "e9d0053c55da31dcb25aed54a33951ef2a7d65633a6e431296caadd483453f32",
+        "fault_class": "threshold_or_boundary_fault",
+        "mutation_bundle_sha256": "d2b398c10d57759c7957c301d60839c2d1923629e34f2f2777fa1c3c0e5c3721",
+        "mutation_id": "neg_002_no_step_halving",
+        "source_catalog_certification_path": "negative_variants/neg_002_no_step_halving/certification.json",
+        "trigger_condition": "Keeps the same offset-search step size after every clock edge.",
+        "violated_property_ids": [
+          "P_FALLING_CLOCK_DECISION_SAMPLE",
+          "P_HALVING_SEARCH_STEP"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_001_zero/certification.json",
+        "certification_sha256": "fb53acc8a8b3cf2217a4f49071f4521219b6b0db5dde7df759a51c976f8ff4fd",
+        "fault_class": "zero_stub_output",
+        "mutation_bundle_sha256": "a0a50010ebfcbc27bf925e4d38a0444a878a59d107c72f9ae3fd1578c9c4ab2a",
+        "mutation_id": "neg_001_zero",
+        "source_catalog_certification_path": "negative_variants/neg_001_zero/certification.json",
+        "trigger_condition": "Drives zero output and therefore fails the stable waveform contract.",
+        "violated_property_ids": [
+          "P_COMMON_MODE_HALF_SCALE_DRIVE"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_003_inverted_update/certification.json",
+        "certification_sha256": "d042d3a9fa5e41dc693a7e618cbbb30e54a061ad8f27aba292c9248a9db61445",
+        "fault_class": "polarity_or_direction_error",
+        "mutation_bundle_sha256": "811d1cb6cad8ab5f16e40f4bd28ad05e296fb0d2d69edbab252df5da9c9f3dbc",
+        "mutation_id": "neg_003_inverted_update",
+        "source_catalog_certification_path": "negative_variants/neg_003_inverted_update/certification.json",
+        "trigger_condition": "Moves vin in the opposite direction for each comparator decision.",
+        "violated_property_ids": [
+          "P_DECISION_POLARITY_UPDATE"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_004_full_diff_scale/certification.json",
+        "certification_sha256": "5cc0fe50a328e6ef182620547f29830d98c7d883ffda734fff4ed742e67f3f48",
+        "fault_class": "metric_or_observable_fault",
+        "mutation_bundle_sha256": "98b4360f1cee07194e2ff6e4ca68abe57848511a526f46edd1e83890fa83de94",
+        "mutation_id": "neg_004_full_diff_scale",
+        "source_catalog_certification_path": "negative_variants/neg_004_full_diff_scale/certification.json",
+        "trigger_condition": "Uses full vin on each differential output instead of half-scale around common mode.",
+        "violated_property_ids": [
+          "P_COMMON_MODE_HALF_SCALE_DRIVE"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_005_metric_scale_low/certification.json",
+        "certification_sha256": "97ff30401d2fd417faa53489c9e2af88a434f84247d2e60e1d35492809490470",
+        "fault_class": "threshold_or_boundary_fault",
+        "mutation_bundle_sha256": "367a758af857a1e6e9cc5e8ca9da7a7c7babd39ec89170148b2e63e28d015e36",
+        "mutation_id": "neg_005_metric_scale_low",
+        "source_catalog_certification_path": "negative_variants/neg_005_metric_scale_low/certification.json",
+        "trigger_condition": "Comparator Offset Driver: scales the metric output, preserving the main path while failing measurement checks.",
+        "violated_property_ids": [
+          "P_COMMON_MODE_HALF_SCALE_DRIVE"
+        ]
+      }
+    ],
+    "bugfix_seed": "neg_002_no_step_halving",
+    "canonical_dut_id": "171",
+    "hashes": {
+      "mutation_catalog_sha256": "24440c844932c79b9c19bcc2f10623bc0c5cd196e9d82174a7fc27face361bb9",
+      "score_deck_sha256": "51fb1901cfff09f2ee239b305ffd494fd55ad115870cbd05092ebf845d91b67b",
+      "task_certification_sha256": "c84d3786ec83ebf960c5c7fe16dda6a0469d743ad3f67e941bcc9f89451eced8",
+      "task_record_sha256": "c70998b8fc29dc75ab1c674ac7e0680ac9cc41e0ec6631e14010d553ca300e03"
+    },
+    "release_dir": "171-comparator-offset-driver"
+  }
+}

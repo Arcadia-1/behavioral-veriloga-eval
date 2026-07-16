@@ -18,6 +18,7 @@ if str(PREP) not in sys.path:
     sys.path.insert(0, str(PREP))
 
 from promote_correct_plus_five_evidence import PromotionError, promote_report  # noqa: E402
+from score_denominator_registry import write_family_row  # noqa: E402
 
 
 def sha(path: Path) -> str:
@@ -57,7 +58,11 @@ def source_fixture(tmp_path: Path) -> tuple[Path, Path, dict[str, str]]:
         "active_mutation_count": 5,
         "active_mutations": [{"mutation_id": item} for item in mutation_ids],
     }
-    write_json(source / "score_denominator_manifest.json", {"tasks": [row]})
+    write_json(
+        source / "score_denominator_registry" / "_meta.json",
+        {"canonical_range": ["001", "001"], "counted_task_count": 1},
+    )
+    write_family_row(source, "001", row)
 
     write(run_dir / "public" / "submission" / "testbench.scs", "reference deck\n")
     write(run_dir / "evaluator" / "trusted_solution" / "dut.va", "module dut; // gold\nendmodule\n")

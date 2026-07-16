@@ -1,0 +1,83 @@
+{
+  "family_id": "230",
+  "schema_version": "v4-score-denominator-family-registry-v1",
+  "task": {
+    "active_mutation_count": 5,
+    "active_mutations": [
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_002_xnor_up/certification.json",
+        "certification_sha256": "4f232e186151e94419109f9012e740a0b273e62abeb9a16b2bc62c6443777816",
+        "fault_class": "xnor_up",
+        "mutation_bundle_sha256": "adefca67eca692c40643a006aaf377f4fcb4d72b782ae916fc47bf24450304c6",
+        "mutation_id": "neg_002_xnor_up",
+        "source_catalog_certification_path": "negative_variants/neg_002_xnor_up/certification.json",
+        "trigger_condition": "Drives UP on matches instead of mismatches.",
+        "violated_property_ids": [
+          "P_DRIVE_UP_HIGH_WHEN_THE_INTERPRETED",
+          "P_UPDATE_OUTPUTS_COMBINATIONALLY_FROM_THE_CURREN"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_004_ignore_fb/certification.json",
+        "certification_sha256": "c6cf19fc0bb64526628cc941e2cfaf17e3c52e54f65d57b5f1c88614e465e641",
+        "fault_class": "zero_stub_output",
+        "mutation_bundle_sha256": "a718062d2c4c8ae55cc92eb220a6b1e697c7d56bc67e3a6c132f14f8aad148d9",
+        "mutation_id": "neg_004_ignore_fb",
+        "source_catalog_certification_path": "negative_variants/neg_004_ignore_fb/certification.json",
+        "trigger_condition": "Ignores FB and compares REF against constant zero.",
+        "violated_property_ids": [
+          "P_DRIVE_DOWN_HIGH_WHEN_THE_INTERPRETED",
+          "P_DRIVE_UP_HIGH_WHEN_THE_INTERPRETED",
+          "P_INTERPRET_REF_AND_FB_LOGIC_LEVELS",
+          "P_UPDATE_OUTPUTS_COMBINATIONALLY_FROM_THE_CURREN"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_003_down_not_complement/certification.json",
+        "certification_sha256": "da3d2fe80b9dd5a37a4a9cd928390df8bc0dd8ccc10e5341dc19ed65bc0df723",
+        "fault_class": "down_not_complement",
+        "mutation_bundle_sha256": "c9e6faea344d8c3a13ea35505f9064a3d71a2942f16ff615aabeb7ce62c5de0e",
+        "mutation_id": "neg_003_down_not_complement",
+        "source_catalog_certification_path": "negative_variants/neg_003_down_not_complement/certification.json",
+        "trigger_condition": "Drives DOWN equal to UP instead of complement.",
+        "violated_property_ids": [
+          "P_DRIVE_DOWN_HIGH_WHEN_THE_INTERPRETED"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_005_metric_scale_low/certification.json",
+        "certification_sha256": "08cf313a3a04b07da674f02f52374efed4cb2ca87ad8348c30b4658ffb779ff6",
+        "fault_class": "metric_or_observable_fault",
+        "mutation_bundle_sha256": "910707a92d08edc9544fab378319741e8641626133ba3c39d1247c3e76cf2942",
+        "mutation_id": "neg_005_metric_scale_low",
+        "source_catalog_certification_path": "negative_variants/neg_005_metric_scale_low/certification.json",
+        "trigger_condition": "XOR Phase Detector: scales the metric output, preserving the main path while failing measurement checks.",
+        "violated_property_ids": [
+          "P_DRIVE_UP_HIGH_WHEN_THE_INTERPRETED"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_001_zero/certification.json",
+        "certification_sha256": "41d56583ab9f7c8a403056b6234a6eb74a1af5e90572949ef992870f01f77acb",
+        "fault_class": "zero_stub_output",
+        "mutation_bundle_sha256": "5eb6da4ed01ed1016c6ce9c1a61db5b6100a5c6f1ba78fd06fd3c0c9d24fa352",
+        "mutation_id": "neg_001_zero",
+        "source_catalog_certification_path": "negative_variants/neg_001_zero/certification.json",
+        "trigger_condition": "Keeps the output at its trivial zero behavior and therefore fails the stable waveform contract.",
+        "violated_property_ids": [
+          "P_DRIVE_DOWN_HIGH_WHEN_THE_INTERPRETED",
+          "P_DRIVE_UP_HIGH_WHEN_THE_INTERPRETED"
+        ]
+      }
+    ],
+    "bugfix_seed": "neg_002_xnor_up",
+    "canonical_dut_id": "230",
+    "hashes": {
+      "mutation_catalog_sha256": "d1610897478b4bfef883bd7b1716075055fd0bcc8b890a6cb6ca0c4994302f29",
+      "score_deck_sha256": "af7c999b614b4d5fa13249cb4c3c4bc932e0d3bd00a1ef9204a7d8f47c8a9265",
+      "task_certification_sha256": "ab4731f87525ab68774d4a83f68d6df5f630baf81125fb44a0bd778ce0b02fe6",
+      "task_record_sha256": "0d2a0d1391f6ca3fc1a3368fb0d59d883a3526a2e455b92609dc239b818d3814"
+    },
+    "release_dir": "230-xor-phase-detector"
+  }
+}

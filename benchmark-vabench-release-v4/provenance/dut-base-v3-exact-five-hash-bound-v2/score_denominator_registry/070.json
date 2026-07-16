@@ -1,0 +1,78 @@
+{
+  "family_id": "070",
+  "schema_version": "v4-score-denominator-family-registry-v1",
+  "task": {
+    "active_mutation_count": 5,
+    "active_mutations": [
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_001_zero/certification.json",
+        "certification_sha256": "96a26a13e4e5818edd787b954fb9f3872f5f8c585bc5066917933b70c4b6bd0f",
+        "fault_class": "holds_clock_output_low",
+        "mutation_bundle_sha256": "cb79f4e861d5a6afd11a37d59d747edd35c84ddde7b92a81ad50ba784648ced0",
+        "mutation_id": "neg_001_zero",
+        "source_catalog_certification_path": "negative_variants/neg_001_zero/certification.json",
+        "trigger_condition": "the source must generate clk_out edges instead of holding the output low",
+        "violated_property_ids": [
+          "P_NOMINAL_CLOCK"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_002_no_jitter/certification.json",
+        "certification_sha256": "cb96d776d027d3eaa0d3bb10f713450c797d336899400dea3de64453576b1e5f",
+        "fault_class": "ignores_jitter_enable",
+        "mutation_bundle_sha256": "51ce93db6ef6ac56d1370178fe516889c8f184c551a6d7b841fa627a47176267",
+        "mutation_id": "neg_002_no_jitter",
+        "source_catalog_certification_path": "negative_variants/neg_002_no_jitter/certification.json",
+        "trigger_condition": "jitter_en high must enable seed-dependent edge modulation instead of a constant period",
+        "violated_property_ids": [
+          "P_EDGE_MODULATION"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_004_unbounded/certification.json",
+        "certification_sha256": "5b22f415200c5692251c97ba6358d868fcc4e43683393704a8c10c8cfcd7cf03",
+        "fault_class": "unbounded_jitter_modulation",
+        "mutation_bundle_sha256": "7f3cc58aae19600485b1b344671b12e283619c15965ed2ff451d6fb8676bddd3",
+        "mutation_id": "neg_004_unbounded",
+        "source_catalog_certification_path": "negative_variants/neg_004_unbounded/certification.json",
+        "trigger_condition": "jitter-enabled half-periods must stay within the public modulation range",
+        "violated_property_ids": [
+          "P_TIMING_BOUNDS"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_005_ignore_seed/certification.json",
+        "certification_sha256": "5fb6e124ca0d0879b042cadba2c384b78a25ecd8a90a03ed322b2503dcde8907",
+        "fault_class": "ignores_seed_inputs",
+        "mutation_bundle_sha256": "2fa5d413df048e92d55295978b167d0226d1291e22c22b1a7ddd398c5957942d",
+        "mutation_id": "neg_005_ignore_seed",
+        "source_catalog_certification_path": "negative_variants/neg_005_ignore_seed/certification.json",
+        "trigger_condition": "seed7:seed0 must be decoded through vth and affect the next computed half-period",
+        "violated_property_ids": [
+          "P_SEED_DECODE"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_006_nonrepeating_sequence/certification.json",
+        "certification_sha256": "0fe40b740bfc2bc2faa4a3798b28f5fa9f7a9ecf2c302e5b43c2638ab93c077a",
+        "fault_class": "phase_sequence_does_not_repeat",
+        "mutation_bundle_sha256": "5e667ffa46538c9fd0a204c7d96339e4dfa6d79ac89ef100c6209ad65a63e102",
+        "mutation_id": "neg_006_nonrepeating_sequence",
+        "source_catalog_certification_path": "negative_variants/neg_006_nonrepeating_sequence/certification.json",
+        "trigger_condition": "with constant seed and enable history, the five-edge modulation sequence must repeat without a phase shift",
+        "violated_property_ids": [
+          "P_REPEATABILITY"
+        ]
+      }
+    ],
+    "bugfix_seed": "neg_001_zero",
+    "canonical_dut_id": "070",
+    "hashes": {
+      "mutation_catalog_sha256": "4b74e3e27463e53b049fcc5505aaf59a8677b32165dbbe5ae92e6bc846e7cb63",
+      "score_deck_sha256": "fb3dc5609985c56d4b0bdab4eb16600848f4049d2ab1921abc4d3b6324d7a2f2",
+      "task_certification_sha256": "33451d46535a4f4b1addcb35d6e7f0515f5be7ea8b8ff5596bd3ea74dc33e5b9",
+      "task_record_sha256": "7a68fc3a74e5b19ec5009e77dea637b0bc7be033da6fc1bc1cc652475a519e21"
+    },
+    "release_dir": "070-jittered-clock-source-deterministic"
+  }
+}

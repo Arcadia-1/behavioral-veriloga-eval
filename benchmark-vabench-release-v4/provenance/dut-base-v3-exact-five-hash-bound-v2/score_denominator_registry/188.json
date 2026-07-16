@@ -1,0 +1,78 @@
+{
+  "family_id": "188",
+  "schema_version": "v4-score-denominator-family-registry-v1",
+  "task": {
+    "active_mutation_count": 5,
+    "active_mutations": [
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_002_wrong_msb_sign/certification.json",
+        "certification_sha256": "26544a97c9615b12ac5ce60a920ac4c843264ec4ff03549ea45031fd20256178",
+        "fault_class": "msb_residue_sign_error",
+        "mutation_bundle_sha256": "66f39bed7b8413d2a1bd76a52534e0b000cb121e61b9debd0150e5ad9817d434",
+        "mutation_id": "neg_002_wrong_msb_sign",
+        "source_catalog_certification_path": "negative_variants/neg_002_wrong_msb_sign/certification.json",
+        "trigger_condition": "Subtracts the dctrl7 half-scale residue step instead of adding it.",
+        "violated_property_ids": [
+          "P_MSB_RESIDUE_STEP_SIGN"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_003_wrong_dctrl6_weight/certification.json",
+        "certification_sha256": "df759161346a9234778f2b562eb7ccacb9a4191f540cb5f3469f785fcf44cb17",
+        "fault_class": "cdac_weight_error",
+        "mutation_bundle_sha256": "df8c0a8203bdcd1f30ee5632b547e1c2eee85b92ec95a058c2b8f361cf20d2b2",
+        "mutation_id": "neg_003_wrong_dctrl6_weight",
+        "source_catalog_certification_path": "negative_variants/neg_003_wrong_dctrl6_weight/certification.json",
+        "trigger_condition": "Uses a half-scale dctrl6 subtraction instead of quarter-scale.",
+        "violated_property_ids": [
+          "P_LOWER_BIT_RESIDUE_WEIGHTS"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_004_half_output/certification.json",
+        "certification_sha256": "92efd679b5ccce0b83a15d1e1e25adc7e82c07611ae04a776f5bce65744fbda6",
+        "fault_class": "residue_gain_error",
+        "mutation_bundle_sha256": "3df31e6caa4f22695a02a4787ea40b28910fb9fc729e204ac646a2893137aa5c",
+        "mutation_id": "neg_004_half_output",
+        "source_catalog_certification_path": "negative_variants/neg_004_half_output/certification.json",
+        "trigger_condition": "Drives the CDAC residue output at half amplitude.",
+        "violated_property_ids": [
+          "P_RESIDUE_OUTPUT_GAIN"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_005_metric_scale_low/certification.json",
+        "certification_sha256": "9656905163a61d8cd2866d3483fb579b5c132b30ce5a651d43982dbaaa7a6982",
+        "fault_class": "observable_scale_error",
+        "mutation_bundle_sha256": "d5bec94dcb76617a1acf41c8fc917349a74604614b19009dfe3605d3509a31c2",
+        "mutation_id": "neg_005_metric_scale_low",
+        "source_catalog_certification_path": "negative_variants/neg_005_metric_scale_low/certification.json",
+        "trigger_condition": "CDAC Bidirect Residue: scales the metric output, preserving the main path while failing measurement checks.",
+        "violated_property_ids": [
+          "P_SAMPLE_RESIDUE_ON_CLKS_FALL"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_001_zero/certification.json",
+        "certification_sha256": "092f3463a6f55f5a39b5cba839e618b6200533cbf7b22520f2d1b802b168efd2",
+        "fault_class": "zero_stub_output",
+        "mutation_bundle_sha256": "963d30ac9da8b45a7c242ff8a407b4e2878cd3dbf30753d3cef0ce893b56c05a",
+        "mutation_id": "neg_001_zero",
+        "source_catalog_certification_path": "negative_variants/neg_001_zero/certification.json",
+        "trigger_condition": "Drives zero output and therefore fails the stable waveform contract.",
+        "violated_property_ids": [
+          "P_RESIDUE_OUTPUT_GAIN"
+        ]
+      }
+    ],
+    "bugfix_seed": "neg_002_wrong_msb_sign",
+    "canonical_dut_id": "188",
+    "hashes": {
+      "mutation_catalog_sha256": "5ba4267c3dca98b2c00403934db12df980e7a46e963b81cc3784477800f1c59f",
+      "score_deck_sha256": "ff6257f441101615be5f9f9551e5737d2dc8ae26c93f7776bf2dacd222443dab",
+      "task_certification_sha256": "306e4f477d2620d6eec51f17b8d6cf3d93fe4c64fb6994dd6df45c5672a3d831",
+      "task_record_sha256": "96889590e141b57480a152dfffed01c9ec1b8eaa89ebc47ac2df086df8efc02e"
+    },
+    "release_dir": "188-cdac-bidirect-residue"
+  }
+}

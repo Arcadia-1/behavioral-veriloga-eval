@@ -1,0 +1,79 @@
+{
+  "family_id": "394",
+  "schema_version": "v4-score-denominator-family-registry-v1",
+  "task": {
+    "active_mutation_count": 5,
+    "active_mutations": [
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_001_middle_threshold_shift/certification.json",
+        "certification_sha256": "3958371eb02af145e1806605aa9279f1a97cb4944a4dba0626ee1832680318bf",
+        "fault_class": "wrong_threshold",
+        "mutation_bundle_sha256": "31c8beb1456ce0b2fe2581636b1277d003dcd70e6bebaf5ddd166b0164ac0446",
+        "mutation_id": "neg_001_middle_threshold_shift",
+        "source_catalog_certification_path": "negative_variants/neg_001_middle_threshold_shift/certification.json",
+        "trigger_condition": "vin lies between nominal and shifted middle thresholds",
+        "violated_property_ids": [
+          "P_GRAY_MAPPING",
+          "P_PAM4_THRESHOLDS"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_003_falling_edge_sampling/certification.json",
+        "certification_sha256": "2f3414a573f03b29c0b40bcceb511bae82f2beb3313c67ee6ce3ce56d8b23ae5",
+        "fault_class": "wrong_clock_edge",
+        "mutation_bundle_sha256": "43c1fda499c45d5ff33e54aa2b3bdad619507468b31f016e8027c871c9eb0a37",
+        "mutation_id": "neg_003_falling_edge_sampling",
+        "source_catalog_certification_path": "negative_variants/neg_003_falling_edge_sampling/certification.json",
+        "trigger_condition": "vin differs at rising and falling edges",
+        "violated_property_ids": [
+          "P_RISING_EDGE_SAMPLE_HOLD"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_004_level_metric_divide_four/certification.json",
+        "certification_sha256": "38fa916802a63e6986a03e0ceb2a55b842f34628a1bbd36b1f5c6f683e5af9bf",
+        "fault_class": "metric_scaling_error",
+        "mutation_bundle_sha256": "2e031ad85b50b3b9877608ccc3034b31f2d20767449d25fb87ac1d20fdffc63c",
+        "mutation_id": "neg_004_level_metric_divide_four",
+        "source_catalog_certification_path": "negative_variants/neg_004_level_metric_divide_four/certification.json",
+        "trigger_condition": "a nonzero PAM4 level is sampled",
+        "violated_property_ids": [
+          "P_LEVEL_METRIC"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_005_enable_disable_not_cleared/certification.json",
+        "certification_sha256": "3831904f59690b916f1d9c30e049c1fd954ecce1c0437c51d00f64033838dcd1",
+        "fault_class": "missing_disable_clear",
+        "mutation_bundle_sha256": "5504d6950f76c78d587990c7d2a69c4348eb8d1aa396227744197ad9ff0f944c",
+        "mutation_id": "neg_005_enable_disable_not_cleared",
+        "source_catalog_certification_path": "negative_variants/neg_005_enable_disable_not_cleared/certification.json",
+        "trigger_condition": "enable is deasserted after a valid sample",
+        "violated_property_ids": [
+          "P_RESET_DISABLE_CLEAR"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_002_level2_binary_code/certification.json",
+        "certification_sha256": "734c18ce3af266a58dd777afd5144fa47a1085e76ffeeb1bda0c598c75e50d5a",
+        "fault_class": "wrong_gray_code",
+        "mutation_bundle_sha256": "88836db3d545ce9cc0a2423b3d3b13b0f228a866ac0bbaf94a074796b82cc77c",
+        "mutation_id": "neg_002_level2_binary_code",
+        "source_catalog_certification_path": "negative_variants/neg_002_level2_binary_code/certification.json",
+        "trigger_condition": "level two is sampled",
+        "violated_property_ids": [
+          "P_GRAY_MAPPING"
+        ]
+      }
+    ],
+    "bugfix_seed": "neg_001_middle_threshold_shift",
+    "canonical_dut_id": "394",
+    "hashes": {
+      "mutation_catalog_sha256": "e6512d9b0bf502d7afe5ee25da88eddf1ef79afb72001255379be941364a7b8c",
+      "score_deck_sha256": "d1c123bed546a5f68ce32870754a7e866e25c296fe546e3bd744b542bad9859d",
+      "task_certification_sha256": "69dceee226489dc88dbe56ad29ad372b7642e381f5238a28532337a526089291",
+      "task_record_sha256": "93872b0a829c324d67cc54a71c66279eaef427f0e66a5c1f65b945566dadc195"
+    },
+    "release_dir": "394-pam4-slicer-gray-decoder"
+  }
+}

@@ -1,0 +1,78 @@
+{
+  "family_id": "132",
+  "schema_version": "v4-score-denominator-family-registry-v1",
+  "task": {
+    "active_mutation_count": 5,
+    "active_mutations": [
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_002_adds_inputs/certification.json",
+        "certification_sha256": "a9d28d31ad8a37ef25f488b9b4369b56f435b8370330ea87d09568a2eb27e736",
+        "fault_class": "adds_inputs",
+        "mutation_bundle_sha256": "20d429c9662e9d24999cdb26d3342de7296bc89ab00c6399940a02c768c54171",
+        "mutation_id": "neg_002_adds_inputs",
+        "source_catalog_certification_path": "negative_variants/neg_002_adds_inputs/certification.json",
+        "trigger_condition": "Adds the inputs instead of multiplying them.",
+        "violated_property_ids": [
+          "P_MULTIPLICATIVE_NOT_ADDITIVE"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_003_missing_gain/certification.json",
+        "certification_sha256": "0ae8d1bd378e846ddcbc672dd678ec4492f5fe189cee46c707a0e6f30112ac59",
+        "fault_class": "metric_or_observable_fault",
+        "mutation_bundle_sha256": "a733ab70e9cdb3b5f152e0bbdd8aa64fd3563166784aa8da764983979e816d3c",
+        "mutation_id": "neg_003_missing_gain",
+        "source_catalog_certification_path": "negative_variants/neg_003_missing_gain/certification.json",
+        "trigger_condition": "Omits the multiplier gain parameter.",
+        "violated_property_ids": [
+          "P_GAIN_PARAMETER_APPLIED"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_001_zero/certification.json",
+        "certification_sha256": "9a2c18cd730acc97dcf39876c274e04eb9c2c6d26774a51ea1b17fe8970ca4e6",
+        "fault_class": "zero_stub_output",
+        "mutation_bundle_sha256": "7bcc5d481e6be76dfa0ef9b437eea783695d6e3916f5fe872425bfaaefc71e1c",
+        "mutation_id": "neg_001_zero",
+        "source_catalog_certification_path": "negative_variants/neg_001_zero/certification.json",
+        "trigger_condition": "Drives zero output and therefore fails the stable waveform contract.",
+        "violated_property_ids": [
+          "P_ANALOG_PRODUCT"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_004_square_first_input/certification.json",
+        "certification_sha256": "3c151cda869f2127cde2999565db15aa2e6a92b5fa959e9abd47b9f1588bff2f",
+        "fault_class": "square_first_input",
+        "mutation_bundle_sha256": "e74117a6193e701ded329acbf106ba00ebfeab5db5ea2891775fedd2a049da9c",
+        "mutation_id": "neg_004_square_first_input",
+        "source_catalog_certification_path": "negative_variants/neg_004_square_first_input/certification.json",
+        "trigger_condition": "Squares the first input instead of multiplying both inputs.",
+        "violated_property_ids": [
+          "P_MULTIPLICATIVE_NOT_ADDITIVE"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_005_metric_scale_low/certification.json",
+        "certification_sha256": "d7a6da155eef46dcc81585f48c3ec205b798eb392fea29f4c90fc0bd04844d49",
+        "fault_class": "metric_or_observable_fault",
+        "mutation_bundle_sha256": "e5e0c617ec518c44e7588a712e69ea3944dd40af0e7bb5798e5db87a09fb0733",
+        "mutation_id": "neg_005_metric_scale_low",
+        "source_catalog_certification_path": "negative_variants/neg_005_metric_scale_low/certification.json",
+        "trigger_condition": "Analog Multiplier: scales the metric output, preserving the main path while failing measurement checks.",
+        "violated_property_ids": [
+          "P_ANALOG_PRODUCT"
+        ]
+      }
+    ],
+    "bugfix_seed": "neg_002_adds_inputs",
+    "canonical_dut_id": "132",
+    "hashes": {
+      "mutation_catalog_sha256": "0be2fa6543f91accc7726cd9e59ceac04b48a80036453beb124ec11c2024d311",
+      "score_deck_sha256": "b9adac6ab09a3eea2365f4bdf1e1eae16f4e6032605caae647f2a92e614a85f0",
+      "task_certification_sha256": "d81e5ea31e9928a9404e28a4b706927408109fc0448a102e4f8bd4671e29ae85",
+      "task_record_sha256": "d942a194a003b9ddaf318d0e0dff1d73a0d0908c2fbce1f640592f58e15df694"
+    },
+    "release_dir": "132-analog-multiplier"
+  }
+}

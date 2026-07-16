@@ -1,0 +1,79 @@
+{
+  "family_id": "112",
+  "schema_version": "v4-score-denominator-family-registry-v1",
+  "task": {
+    "active_mutation_count": 5,
+    "active_mutations": [
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_001_zero/certification.json",
+        "certification_sha256": "2969021b0060af308b412ef3eea5d68ddad338c68988e600413097b0046a5a4d",
+        "fault_class": "fault_001_zero",
+        "mutation_bundle_sha256": "5f94d11c00e902fc299fda979f3fac22f5dee4c75edf2051335ede5900b80af9",
+        "mutation_id": "neg_001_zero",
+        "source_catalog_certification_path": "negative_variants/neg_001_zero/certification.json",
+        "trigger_condition": "Drives zero outputs and therefore fails the stable-sample semantic contract.",
+        "violated_property_ids": [
+          "P_SUPPLY_REFERENCED_THRESHOLD"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_003_no_output_delay/certification.json",
+        "certification_sha256": "570a974cdc6b0c2f9bba4ae15c4cd7621fff0cbea885ce0da0331865d28f8f00",
+        "fault_class": "fault_003_no_output_delay",
+        "mutation_bundle_sha256": "07a5f916680d45478924808c41f2be0f69f0bc61c011dcdc68df2da3d40d7475",
+        "mutation_id": "neg_003_no_output_delay",
+        "source_catalog_certification_path": "negative_variants/neg_003_no_output_delay/certification.json",
+        "trigger_condition": "Forces a half-amplitude output high level instead of rail-to-rail logic.",
+        "violated_property_ids": [
+          "P_DELAY_AND_SMOOTHING",
+          "P_OFFSET_DECISION"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_004_falling_edge_latch/certification.json",
+        "certification_sha256": "265f3df14eb66a13be9654f19d37a8de53f7d3e4e548400d97e1fd58205a42fc",
+        "fault_class": "fault_004_falling_edge_latch",
+        "mutation_bundle_sha256": "f827c1a4e3bc30acc794e9ce3ddb7ddf61664440d4f86aeceb2c1fd4be9c37be",
+        "mutation_id": "neg_004_falling_edge_latch",
+        "source_catalog_certification_path": "negative_variants/neg_004_falling_edge_latch/certification.json",
+        "trigger_condition": "Latches on falling clock edges.",
+        "violated_property_ids": [
+          "P_SEEDED_RANDOM_TERM"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_005_metric_scale_low/certification.json",
+        "certification_sha256": "f585961831c806b20b0c75ad4afd1705c5dfedc2eb865a7793cf1e6b3e9c46c9",
+        "fault_class": "fault_005_metric_scale_low",
+        "mutation_bundle_sha256": "1a03a4856d003cb83c9d8b685b018ccca2726db673ca590d072a155dd76d5791",
+        "mutation_id": "neg_005_metric_scale_low",
+        "source_catalog_certification_path": "negative_variants/neg_005_metric_scale_low/certification.json",
+        "trigger_condition": "Latched Comparator Delay: scales the metric output, preserving the main path while failing measurement checks.",
+        "violated_property_ids": [
+          "P_INTEREDGE_HOLD"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_002_inverted_decision/certification.json",
+        "certification_sha256": "2a7e745cc81496b12ce414fb8e22e20cedc6508f963867f0b2d6ac1785ca11ed",
+        "fault_class": "fault_002_inverted_decision",
+        "mutation_bundle_sha256": "dbc1dd7afa79479f6dadab3178138be12cd45779fe5ac10d11a1e4b2a47c21b8",
+        "mutation_id": "neg_002_inverted_decision",
+        "source_catalog_certification_path": "negative_variants/neg_002_inverted_decision/certification.json",
+        "trigger_condition": "Inverts the latched comparator decision.",
+        "violated_property_ids": [
+          "P_RISING_EDGE_LATCH"
+        ]
+      }
+    ],
+    "bugfix_seed": "neg_001_zero",
+    "canonical_dut_id": "112",
+    "hashes": {
+      "mutation_catalog_sha256": "b057074ae9a54b06e0eb9dad4af2a350b948ae57af47cfd3439ef83c63157c38",
+      "score_deck_sha256": "8ab1eadfe3361b64258ca3a40b7300a0f0fce94c46fee5b26afc0a6e81cee0de",
+      "task_certification_sha256": "e9a7205ddf0c4b0be429954b441bd96ffc43126a9e73aa0db52736e2127353e7",
+      "task_record_sha256": "38804fbd848b2cb25e665cdd8e47c1bc382392bd06c403d36f1ab9f3d3afc0d0"
+    },
+    "release_dir": "112-latched-comparator-delay"
+  }
+}

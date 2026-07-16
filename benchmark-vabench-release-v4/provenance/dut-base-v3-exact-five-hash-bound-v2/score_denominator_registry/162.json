@@ -1,0 +1,79 @@
+{
+  "family_id": "162",
+  "schema_version": "v4-score-denominator-family-registry-v1",
+  "task": {
+    "active_mutation_count": 5,
+    "active_mutations": [
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_002_three_cycle_delay/certification.json",
+        "certification_sha256": "b8d09534c82f39a5582b0e97f4c20d510b74a1ee3c97df020dbd09fd2755b440",
+        "fault_class": "timing_or_state_update_fault",
+        "mutation_bundle_sha256": "02ae4bdecefdf36f29a4371a25d5d6b8abfccdf724424d7c1907969e223f0eaa",
+        "mutation_id": "neg_002_three_cycle_delay",
+        "source_catalog_certification_path": "negative_variants/neg_002_three_cycle_delay/certification.json",
+        "trigger_condition": "Publishes the third pipeline stage instead of the required fourth-cycle aligned count.",
+        "violated_property_ids": [
+          "P_FOUR_STAGE_ALIGNMENT"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_001_zero/certification.json",
+        "certification_sha256": "8e69077347eae67dfa5d68f903bc038f82dcc93f569379d710d03f7494d07e65",
+        "fault_class": "zero_stub_output",
+        "mutation_bundle_sha256": "4980e8190f42a9b8fed8fa34faf4fb00d9ed243276f9d8acfb0bdd21c6a66101",
+        "mutation_id": "neg_001_zero",
+        "source_catalog_certification_path": "negative_variants/neg_001_zero/certification.json",
+        "trigger_condition": "Drives zero output and therefore fails the stable waveform contract.",
+        "violated_property_ids": [
+          "P_BINARY_OUTPUT_ORDER",
+          "P_EVENT_HELD_OUTPUTS"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_003_ignore_upper_inputs/certification.json",
+        "certification_sha256": "ec107136e3cace21edc1cbcab8388c5d5fd6f09631c2b51105b8a2821c79d074",
+        "fault_class": "omission_or_incomplete_behavior",
+        "mutation_bundle_sha256": "340929997bec05ff219dd2e2a9804aee2c00fccfa59c8a06232883687ef89b9c",
+        "mutation_id": "neg_003_ignore_upper_inputs",
+        "source_catalog_certification_path": "negative_variants/neg_003_ignore_upper_inputs/certification.json",
+        "trigger_condition": "Counts only the lower four thermometer inputs, missing din4 through din7.",
+        "violated_property_ids": [
+          "P_THERMOMETER_COUNT"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_004_swap_output_bits/certification.json",
+        "certification_sha256": "8d3b035c891d4c3171940d7a687223b8b2bec2d72a6005e468d6b13465ffab00",
+        "fault_class": "polarity_or_direction_error",
+        "mutation_bundle_sha256": "bb6f87b072aad46685441e62ed0261821893a71ea628bac4843870d4bd1868c3",
+        "mutation_id": "neg_004_swap_output_bits",
+        "source_catalog_certification_path": "negative_variants/neg_004_swap_output_bits/certification.json",
+        "trigger_condition": "Swaps the two least significant output bits while keeping timing intact.",
+        "violated_property_ids": [
+          "P_BINARY_OUTPUT_ORDER"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_005_metric_scale_low/certification.json",
+        "certification_sha256": "e181d87853699324159e06361ca16900f9bcc9f77d8b7ff6c931a05571d34fa8",
+        "fault_class": "metric_or_observable_fault",
+        "mutation_bundle_sha256": "6ed9ee580c1412df40fb88344a09d044775c8f3610f7c1a61aa92dccae438534",
+        "mutation_id": "neg_005_metric_scale_low",
+        "source_catalog_certification_path": "negative_variants/neg_005_metric_scale_low/certification.json",
+        "trigger_condition": "Flash Data Align Pipeline: scales the metric output, preserving the main path while failing measurement checks.",
+        "violated_property_ids": [
+          "P_BINARY_OUTPUT_ORDER"
+        ]
+      }
+    ],
+    "bugfix_seed": "neg_002_three_cycle_delay",
+    "canonical_dut_id": "162",
+    "hashes": {
+      "mutation_catalog_sha256": "4feb412a77c2c983f1b3383430d4dc1794cfe950901a8c7bd7e2728bcb60d1be",
+      "score_deck_sha256": "4c56eb79da1032470df312e76394bc103d70ec6c75e8282fef4ae723ce70ad74",
+      "task_certification_sha256": "9d8b10779a175397624fa22793ff53b84758d119e7143a5a23657e47a3ae2fed",
+      "task_record_sha256": "9e1da21a27f096eb4dc0028cc105d72a7f12bcf7c1b9905eb1603e083b41e175"
+    },
+    "release_dir": "162-flash-data-align-pipeline"
+  }
+}

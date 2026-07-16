@@ -1,0 +1,82 @@
+{
+  "family_id": "282",
+  "schema_version": "v4-score-denominator-family-registry-v1",
+  "task": {
+    "active_mutation_count": 5,
+    "active_mutations": [
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_003_wrong_scale/certification.json",
+        "certification_sha256": "c000cb3f7d6f849b6ef08961fcbf4216fbfccc91460d275e4fc98d51d83a3f95",
+        "fault_class": "metric_or_observable_fault",
+        "mutation_bundle_sha256": "1f9b061b9c5e56e08e32eb7c908af1f68b04fc9caedf07dbba094a2870130b89",
+        "mutation_id": "neg_003_wrong_scale",
+        "source_catalog_certification_path": "negative_variants/neg_003_wrong_scale/certification.json",
+        "trigger_condition": "stimulus exercises neg_003_wrong_scale",
+        "violated_property_ids": [
+          "P_MEASURE_ANALOG_INPUTS_RELATIVE_TO_THE",
+          "P_VHI_0_9_V_HIGH_LEVEL"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_002_ignore_enable/certification.json",
+        "certification_sha256": "7289bec89145c5c636cd1f328210ceb895748607a676f070f066a541232e098b",
+        "fault_class": "state_reset_or_enable_error",
+        "mutation_bundle_sha256": "ad637ce3389aedbf72edf8c2175cbeeeb3fd686eda58a47eb011f93c498cd2dc",
+        "mutation_id": "neg_002_ignore_enable",
+        "source_catalog_certification_path": "negative_variants/neg_002_ignore_enable/certification.json",
+        "trigger_condition": "stimulus exercises neg_002_ignore_enable",
+        "violated_property_ids": [
+          "P_INITIALIZE_A_SAMPLED_READY_COUNT_TO",
+          "P_VTH_0_45_V_LOGIC_THRESHOLD"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_001_zero_outputs/certification.json",
+        "certification_sha256": "4617242c7f97f3334e523d73dd1d3083fbb21db020370d7e54201df6115aeda9",
+        "fault_class": "zero_stub_output",
+        "mutation_bundle_sha256": "548207b5afe578bd1cfb64263cc63e4ffc16a78d8c2ce375dfd999d311b09287",
+        "mutation_id": "neg_001_zero_outputs",
+        "source_catalog_certification_path": "negative_variants/neg_001_zero_outputs/certification.json",
+        "trigger_condition": "stimulus exercises neg_001_zero_outputs",
+        "violated_property_ids": [
+          "P_BUILD_A_VOLTAGE_DOMAIN_ANALOG_MIXED",
+          "P_MEASURE_ANALOG_INPUTS_RELATIVE_TO_THE"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_004_ignore_control_or_reset/certification.json",
+        "certification_sha256": "8304f0290318986f95369a7f36d0702921bdaaa7a3719b7149d0b14a286f4076",
+        "fault_class": "state_reset_or_enable_error",
+        "mutation_bundle_sha256": "322c088c13112a5b8f900e75967f97c707fe0015de452a9dabbec5b7f3dc59d5",
+        "mutation_id": "neg_004_ignore_control_or_reset",
+        "source_catalog_certification_path": "negative_variants/neg_004_ignore_control_or_reset/certification.json",
+        "trigger_condition": "stimulus exercises neg_004_ignore_control_or_reset",
+        "violated_property_ids": [
+          "P_INITIALIZE_A_SAMPLED_READY_COUNT_TO",
+          "P_SPAN_MIN_0_62_V_SPAN"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_005_wrong_flag_metric/certification.json",
+        "certification_sha256": "ff6ba498443466f16c774155389be32d9e38baf8ac0615a8e561cca29b50b530",
+        "fault_class": "metric_or_observable_fault",
+        "mutation_bundle_sha256": "5afec17b1f0f67fdc1b9d91481ceb7c16e8a7698a6bd806b60624268cdda2aae",
+        "mutation_id": "neg_005_wrong_flag_metric",
+        "source_catalog_certification_path": "negative_variants/neg_005_wrong_flag_metric/certification.json",
+        "trigger_condition": "stimulus exercises neg_005_wrong_flag_metric",
+        "violated_property_ids": [
+          "P_MEASURE_ANALOG_INPUTS_RELATIVE_TO_THE"
+        ]
+      }
+    ],
+    "bugfix_seed": "neg_003_wrong_scale",
+    "canonical_dut_id": "282",
+    "hashes": {
+      "mutation_catalog_sha256": "e641516802e303ad02279bdadfbe4e9d7d1a4a8ec8ee668beaf2e0728abc925f",
+      "score_deck_sha256": "c2a86c896872f9ad6f66cea87c4a8bc4f8eabc2bf466f9c35f91447e46f55a48",
+      "task_certification_sha256": "255cbd8c3dca1faf431143a01cbc079eecf1d0395b27935075c32b73fe9b5bd2",
+      "task_record_sha256": "ee323e12e0c4880624a030743a9eaf4b458e7f094d93d1f83cea5d8d1af28400"
+    },
+    "release_dir": "282-enable-saturating-ready-counter"
+  }
+}

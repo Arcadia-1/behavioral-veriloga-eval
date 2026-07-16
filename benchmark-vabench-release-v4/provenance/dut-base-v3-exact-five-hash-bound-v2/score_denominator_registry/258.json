@@ -1,0 +1,82 @@
+{
+  "family_id": "258",
+  "schema_version": "v4-score-denominator-family-registry-v1",
+  "task": {
+    "active_mutation_count": 5,
+    "active_mutations": [
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_005_wrong_flag_metric/certification.json",
+        "certification_sha256": "c5c65bcbdad2f0e53349eedcc84d9c6c48c8940f029b08439cdae497b696ceb7",
+        "fault_class": "metric_or_observable_fault",
+        "mutation_bundle_sha256": "9538987432749f058189124203f6b0dcb77018d4183773d975e8fbaa97b0e756",
+        "mutation_id": "neg_005_wrong_flag_metric",
+        "source_catalog_certification_path": "negative_variants/neg_005_wrong_flag_metric/certification.json",
+        "trigger_condition": "stimulus exercises neg_005_wrong_flag_metric",
+        "violated_property_ids": [
+          "P_MEASURE_ANALOG_INPUTS_RELATIVE_TO_THE"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_002_ignore_enable/certification.json",
+        "certification_sha256": "ed9b3f3cdc10f3a556b1e85faa8f4a01e11bed01f385208fcfb97bf6d2a33f7f",
+        "fault_class": "state_reset_or_enable_error",
+        "mutation_bundle_sha256": "d60784556c96dd34406cb79b42dff50eb1e724955356df9b8b70711f1ec9be13",
+        "mutation_id": "neg_002_ignore_enable",
+        "source_catalog_certification_path": "negative_variants/neg_002_ignore_enable/certification.json",
+        "trigger_condition": "stimulus exercises neg_002_ignore_enable",
+        "violated_property_ids": [
+          "P_ENCODE_THE_HIGHEST_PRIORITY_FAULT_CODE",
+          "P_VTH_0_45_V_LOGIC_THRESHOLD"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_001_zero_outputs/certification.json",
+        "certification_sha256": "8b1b77d372731e47aeca3c33f44477ddc3fa68debf52eb93f0d83a956b18a536",
+        "fault_class": "zero_stub_output",
+        "mutation_bundle_sha256": "945e4422ff33a10dcff7f657de3a822973441a475b489f0d23854541d6bee1a5",
+        "mutation_id": "neg_001_zero_outputs",
+        "source_catalog_certification_path": "negative_variants/neg_001_zero_outputs/certification.json",
+        "trigger_condition": "stimulus exercises neg_001_zero_outputs",
+        "violated_property_ids": [
+          "P_BUILD_A_VOLTAGE_DOMAIN_ANALOG_MIXED",
+          "P_MEASURE_ANALOG_INPUTS_RELATIVE_TO_THE"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_004_ignore_control_or_reset/certification.json",
+        "certification_sha256": "e6335900fe9cd483077a605c4b9f8000406aa33be9d2295eef762a49f73d1c29",
+        "fault_class": "state_reset_or_enable_error",
+        "mutation_bundle_sha256": "c9865c1f1ff4cf986dd1feb62b154d524188c8828c0d839079be02f9c870de09",
+        "mutation_id": "neg_004_ignore_control_or_reset",
+        "source_catalog_certification_path": "negative_variants/neg_004_ignore_control_or_reset/certification.json",
+        "trigger_condition": "stimulus exercises neg_004_ignore_control_or_reset",
+        "violated_property_ids": [
+          "P_ENCODE_THE_HIGHEST_PRIORITY_FAULT_CODE",
+          "P_SPAN_MIN_0_62_V_SPAN"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_003_wrong_scale/certification.json",
+        "certification_sha256": "52993046a9f84c83caf9a791b23e8c1cbaca5b9a6e30faa9252156338c56569a",
+        "fault_class": "metric_or_observable_fault",
+        "mutation_bundle_sha256": "838870a77ef8bd862c93fab15aa902d8e5f2e333877513acc2f30562c72d2b14",
+        "mutation_id": "neg_003_wrong_scale",
+        "source_catalog_certification_path": "negative_variants/neg_003_wrong_scale/certification.json",
+        "trigger_condition": "stimulus exercises neg_003_wrong_scale",
+        "violated_property_ids": [
+          "P_MEASURE_ANALOG_INPUTS_RELATIVE_TO_THE",
+          "P_VHI_0_9_V_HIGH_LEVEL"
+        ]
+      }
+    ],
+    "bugfix_seed": "neg_005_wrong_flag_metric",
+    "canonical_dut_id": "258",
+    "hashes": {
+      "mutation_catalog_sha256": "20df89c9c175e26202c1ee7d6775f71a34c123cd41278a55e77b224b438a6555",
+      "score_deck_sha256": "8ac632c236a44d7cdf3d70fce0e752a7f57c946ffc7ac80acf5f2766566fa123",
+      "task_certification_sha256": "dca49a81307023d7aa82336e58206284b72a5ee4b548700bff99faca7918a85b",
+      "task_record_sha256": "cde2c0005b3a0748d918d00a37bd20dab633125847212d943056b76e5488e78a"
+    },
+    "release_dir": "258-priority-fault-code-driver"
+  }
+}

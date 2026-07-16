@@ -1,0 +1,78 @@
+{
+  "family_id": "108",
+  "schema_version": "v4-score-denominator-family-registry-v1",
+  "task": {
+    "active_mutation_count": 5,
+    "active_mutations": [
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_001_zero/certification.json",
+        "certification_sha256": "98b994ba487324ba90d0fbb5641555443aec88720ee6137125ae58e5f0fe866d",
+        "fault_class": "fault_001_zero",
+        "mutation_bundle_sha256": "c378fe15db14e5a2d93a0146b40229bc8369b6c41a409cefd7499e65ecdfebb2",
+        "mutation_id": "neg_001_zero",
+        "source_catalog_certification_path": "negative_variants/neg_001_zero/certification.json",
+        "trigger_condition": "Existing concrete negative.",
+        "violated_property_ids": [
+          "P_RISING_CROSS_PULSE"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_002_rising_only/certification.json",
+        "certification_sha256": "f078f47428f4880d391dddd5194f72c114fee618ca4d1918505df8cd61c15f3f",
+        "fault_class": "fault_002_rising_only",
+        "mutation_bundle_sha256": "3d895f892223c7b66378363d616f71e83234e86bc2ddb798e738f31f7b99a536",
+        "mutation_id": "neg_002_rising_only",
+        "source_catalog_certification_path": "negative_variants/neg_002_rising_only/certification.json",
+        "trigger_condition": "Triggers only on rising crossings, missing falling crossings.",
+        "violated_property_ids": [
+          "P_FALLING_CROSS_PULSE"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_003_short_pulse/certification.json",
+        "certification_sha256": "ef02b76527183abc84ab766f93821ba0155b67fc2eff7a567b6af74f439b5a8b",
+        "fault_class": "fault_003_short_pulse",
+        "mutation_bundle_sha256": "9525a5cf89a92196d6b2ce5b2cd6f4d99066ac60909ddf7077e3f9e47872e663",
+        "mutation_id": "neg_003_short_pulse",
+        "source_catalog_certification_path": "negative_variants/neg_003_short_pulse/certification.json",
+        "trigger_condition": "Uses a pulse width that is too short.",
+        "violated_property_ids": [
+          "P_PULSE_WIDTH"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_004_no_delay/certification.json",
+        "certification_sha256": "73b9c3197f324e87d825da723ae02e87eaf9ece63410c8f7df9fc8322e6d61a0",
+        "fault_class": "fault_004_no_delay",
+        "mutation_bundle_sha256": "5e01a528204b3a5870cc219c1c610eb0307fb66156719d57652cf843bca9b76f",
+        "mutation_id": "neg_004_no_delay",
+        "source_catalog_certification_path": "negative_variants/neg_004_no_delay/certification.json",
+        "trigger_condition": "Latches high after the first crossing instead of producing bounded pulses.",
+        "violated_property_ids": [
+          "P_LOW_BETWEEN_EVENTS"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_006_no_output_delay/certification.json",
+        "certification_sha256": "1a7078f9dde9890f62634dd47b22f88327a124eb6eed06a8b72c1d134b05fcf0",
+        "fault_class": "missing_output_delay",
+        "mutation_bundle_sha256": "7e7b1e473d44b3b60ea559bbd6164f12482f1ee82275b87b7672ccc358a571b2",
+        "mutation_id": "neg_006_no_output_delay",
+        "source_catalog_certification_path": "negative_variants/neg_006_no_output_delay/certification.json",
+        "trigger_condition": "An input threshold crossing exposes an immediate output edge instead of the declared delayed transition.",
+        "violated_property_ids": [
+          "P_TRANSITION_TIMING"
+        ]
+      }
+    ],
+    "bugfix_seed": "neg_001_zero",
+    "canonical_dut_id": "108",
+    "hashes": {
+      "mutation_catalog_sha256": "f92ced667b1bfb31e7216e64a38f3d0fd963e0d360686984cba0a3c0ddbf1749",
+      "score_deck_sha256": "26e367466a5b1228709d5d8c2147e2d264ad61c522b47e140e9b52eef62c9e5a",
+      "task_certification_sha256": "c8d4bb00833e1efa1d222afc134a27fc2a77994e160d527e0099fa2461c3148b",
+      "task_record_sha256": "880ba5d9126860da0671af419e0504409776f59b5fad7401787dcfba11cd94c2"
+    },
+    "release_dir": "108-crossing-pulse-detector"
+  }
+}

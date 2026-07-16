@@ -1,0 +1,78 @@
+{
+  "family_id": "219",
+  "schema_version": "v4-score-denominator-family-registry-v1",
+  "task": {
+    "active_mutation_count": 5,
+    "active_mutations": [
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_004_threshold_too_high/certification.json",
+        "certification_sha256": "f2b0747ce310c1db5e9bb330cc90da68a01dd238a1411ae8db7f08690f3a6e65",
+        "fault_class": "threshold_or_boundary_fault",
+        "mutation_bundle_sha256": "b87d1d800d2af379b39ffdf72f8bd14ac366a8d2fcc631b4d1184c8e363fea40",
+        "mutation_id": "neg_004_threshold_too_high",
+        "source_catalog_certification_path": "negative_variants/neg_004_threshold_too_high/certification.json",
+        "trigger_condition": "Uses a threshold above the VDD high level, so asserted input bits are ignored.",
+        "violated_property_ids": [
+          "P_DRIVE_EACH_LOW_OUTPUT_TO_THE"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_002_standard_thermometer/certification.json",
+        "certification_sha256": "6bafab0001ec857b5833f9616ddbcf00474b7d0d4ce07ff0bf2ed6a5ca36cb3d",
+        "fault_class": "standard_thermometer",
+        "mutation_bundle_sha256": "ef00574ef54787fa74b2d51f5f4935a11ee1ad931cc25b27e314da109333e4c5",
+        "mutation_id": "neg_002_standard_thermometer",
+        "source_catalog_certification_path": "negative_variants/neg_002_standard_thermometer/certification.json",
+        "trigger_condition": "Implements a conventional count thermometer instead of the source-specific MSB/MSB/LSB mapping.",
+        "violated_property_ids": [
+          "P_DRIVE_T0_AND_T1_HIGH_TOGETHER"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_003_lsb_drives_all/certification.json",
+        "certification_sha256": "fe45396258105c2da924ac163df078ecb047f601e7419c4a49ccbee4fc2465e3",
+        "fault_class": "lsb_drives_all",
+        "mutation_bundle_sha256": "1fb543e0fb656f818840fa640d1b74e14ebcd753f6a267830d073e2239b87bce",
+        "mutation_id": "neg_003_lsb_drives_all",
+        "source_catalog_certification_path": "negative_variants/neg_003_lsb_drives_all/certification.json",
+        "trigger_condition": "Incorrectly drives all thermometer outputs from the LSB.",
+        "violated_property_ids": [
+          "P_DRIVE_T2_HIGH_WHEN_B0_IS"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_005_metric_scale_low/certification.json",
+        "certification_sha256": "2e001e98b86a75635c027e75a3dcf15b9f2031b3effb547fe9d23b30c7c4ec9f",
+        "fault_class": "metric_or_observable_fault",
+        "mutation_bundle_sha256": "aa415bb3fd6baebd7392b6130dbef635e3110afb189b7183229945a1eff2d493",
+        "mutation_id": "neg_005_metric_scale_low",
+        "source_catalog_certification_path": "negative_variants/neg_005_metric_scale_low/certification.json",
+        "trigger_condition": "Bin2ther 2b: scales the metric output, preserving the main path while failing measurement checks.",
+        "violated_property_ids": [
+          "P_INTERPRET_B1_AND_B0_RELATIVE_TO"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_001_zero/certification.json",
+        "certification_sha256": "e7837b1ba3f893b89f21f8ab61d633035fb0a4258534d0911bd2bd4f6cd184c8",
+        "fault_class": "zero_stub_output",
+        "mutation_bundle_sha256": "dfd6c3d56caa6a452c3531b8ebb17c00a0c83a12ce44c25c6391fc18024c49d8",
+        "mutation_id": "neg_001_zero",
+        "source_catalog_certification_path": "negative_variants/neg_001_zero/certification.json",
+        "trigger_condition": "Drives zero output and therefore fails the stable waveform contract.",
+        "violated_property_ids": [
+          "P_INTERPRET_B1_AND_B0_RELATIVE_TO"
+        ]
+      }
+    ],
+    "bugfix_seed": "neg_004_threshold_too_high",
+    "canonical_dut_id": "219",
+    "hashes": {
+      "mutation_catalog_sha256": "f252e559258e1b4a377286402e580b4af0db04449c562993dc2467583f21491e",
+      "score_deck_sha256": "1a4baa0e94d64d6468dea3fbdada41d2fb7ef34905c4f7a6351361bb787593ed",
+      "task_certification_sha256": "8338627035a240f2092f19d6a23837bf43cf722aa6515c4014e43519cf3c3f58",
+      "task_record_sha256": "29b80354b957538497ca157bed79439ab73ecc97be295522c27a62fab8d2ca60"
+    },
+    "release_dir": "219-bin2ther-2b"
+  }
+}

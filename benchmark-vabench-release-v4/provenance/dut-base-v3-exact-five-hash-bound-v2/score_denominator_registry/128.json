@@ -1,0 +1,78 @@
+{
+  "family_id": "128",
+  "schema_version": "v4-score-denominator-family-registry-v1",
+  "task": {
+    "active_mutation_count": 5,
+    "active_mutations": [
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_002_no_safe_floor/certification.json",
+        "certification_sha256": "8ae1248429e175fec2bce072fa03b3f5ddb1c030a632ae3225c9f926989fa697",
+        "fault_class": "omission_or_incomplete_behavior",
+        "mutation_bundle_sha256": "05b880232373826f15fb0d5e75215b81bbcb43f4565e90d281ec3c80747bff81",
+        "mutation_id": "neg_002_no_safe_floor",
+        "source_catalog_certification_path": "negative_variants/neg_002_no_safe_floor/certification.json",
+        "trigger_condition": "Divides by the raw denominator without applying the safety floor.",
+        "violated_property_ids": [
+          "P_DENOMINATOR_MAGNITUDE_FLOOR"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_003_loses_denominator_sign/certification.json",
+        "certification_sha256": "0bf0d938085ef6e7d791b8adf98936c442738e49fdca6294eea16a9b83cd1d44",
+        "fault_class": "loses_denominator_sign",
+        "mutation_bundle_sha256": "a8c0a83913ebefdce066f25695f7ba34b8267bbc34cac9458b4d49da1dc93706",
+        "mutation_id": "neg_003_loses_denominator_sign",
+        "source_catalog_certification_path": "negative_variants/neg_003_loses_denominator_sign/certification.json",
+        "trigger_condition": "Uses a positive floor for both small positive and small negative denominators.",
+        "violated_property_ids": [
+          "P_DENOMINATOR_SIGN_PRESERVED"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_004_missing_gain/certification.json",
+        "certification_sha256": "15638ddea88a7054044c74cfbed211a0ddf666c9563d8b529b8dfb2a39b6fcac",
+        "fault_class": "metric_or_observable_fault",
+        "mutation_bundle_sha256": "fdb894394d7fb88486d8a25e27b19ea60bc957a693e641ed5a969587dd9c6c7c",
+        "mutation_id": "neg_004_missing_gain",
+        "source_catalog_certification_path": "negative_variants/neg_004_missing_gain/certification.json",
+        "trigger_condition": "Omits the gain factor.",
+        "violated_property_ids": [
+          "P_GAINED_DIVISION"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_001_zero/certification.json",
+        "certification_sha256": "eb68edb522ca8c5dbc26685acc939a384c5d8329d4c7c79423b87ee2a3c2e6a8",
+        "fault_class": "zero_stub_output",
+        "mutation_bundle_sha256": "1e485d7ba6321139f0c3c44d1e3334ed6f766feab9aae189fab06ef50476a862",
+        "mutation_id": "neg_001_zero",
+        "source_catalog_certification_path": "negative_variants/neg_001_zero/certification.json",
+        "trigger_condition": "Drives zero output and therefore fails the stable waveform contract.",
+        "violated_property_ids": [
+          "P_GAINED_DIVISION"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_005_metric_scale_low/certification.json",
+        "certification_sha256": "0af0acad619fe597feabae7d9583b9042539bbe1c82a2b77a2ef5bcd715db5da",
+        "fault_class": "metric_or_observable_fault",
+        "mutation_bundle_sha256": "ea0aed65a9da113a388979af3644c33f59e455e371e153f6db19ab3313dd7598",
+        "mutation_id": "neg_005_metric_scale_low",
+        "source_catalog_certification_path": "negative_variants/neg_005_metric_scale_low/certification.json",
+        "trigger_condition": "Safe Voltage Divider: scales the metric output, preserving the main path while failing measurement checks.",
+        "violated_property_ids": [
+          "P_GAINED_DIVISION"
+        ]
+      }
+    ],
+    "bugfix_seed": "neg_002_no_safe_floor",
+    "canonical_dut_id": "128",
+    "hashes": {
+      "mutation_catalog_sha256": "eebe31de2d50ed3f5e5db7f2fdc13dae764abefb08922664bc9d6823465c4a68",
+      "score_deck_sha256": "b4e9bc576ce5f36beedf176aaf9cf75741b09e6b05c229150d796a4bac8269ee",
+      "task_certification_sha256": "78086620b776b19abd55bea51303f6ef1512a3db9f03747b42e8d850057ab47d",
+      "task_record_sha256": "ab2fc68f6826b672523ffc20c1f0ce4b6fdf1faacf9afe69cfeb402f3b40d129"
+    },
+    "release_dir": "128-safe-voltage-divider"
+  }
+}

@@ -1,0 +1,82 @@
+{
+  "family_id": "248",
+  "schema_version": "v4-score-denominator-family-registry-v1",
+  "task": {
+    "active_mutation_count": 5,
+    "active_mutations": [
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_005_metric_scale_low/certification.json",
+        "certification_sha256": "6eb0f1633130e18e9622720b2eef1f2c042fe8fbbfdfc1202244b36bee66968d",
+        "fault_class": "metric_or_observable_fault",
+        "mutation_bundle_sha256": "a8e07a2fa50a58c16be6b2db42f0f315ccf12177cf3c508eb4d1de6ca8120349",
+        "mutation_id": "neg_005_metric_scale_low",
+        "source_catalog_certification_path": "negative_variants/neg_005_metric_scale_low/certification.json",
+        "trigger_condition": "Bipolar DFF Sample: scales the metric output, preserving the main path while failing measurement checks.",
+        "violated_property_ids": [
+          "P_ON_EACH_RISING_CROSSING_OF_VCLK"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_001_zero/certification.json",
+        "certification_sha256": "f21e82816d909894f88d8ab8e3bcbf1407372359eb92143aeb0a8f821a29b744",
+        "fault_class": "zero_stub_output",
+        "mutation_bundle_sha256": "0d1da901e237053312f3b09ae1ed91bd77c51bf5e38a51a358fb9871c892b346",
+        "mutation_id": "neg_001_zero",
+        "source_catalog_certification_path": "negative_variants/neg_001_zero/certification.json",
+        "trigger_condition": "Keeps the output at its trivial zero behavior and therefore fails the stable waveform contract.",
+        "violated_property_ids": [
+          "P_ON_EACH_RISING_CROSSING_OF_VCLK",
+          "P_VTH_0_0_V_DATA_THRESHOLD"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_003_transparent_latch/certification.json",
+        "certification_sha256": "095d41706a894bb7da2d4b195b2e446cc79864ae095db9195f695c5492f6ec9f",
+        "fault_class": "polarity_or_direction_error",
+        "mutation_bundle_sha256": "ac77d3fe3b6bdec44811e642346d6a48c52f67de40965140555f5ddb97b963ab",
+        "mutation_id": "neg_003_transparent_latch",
+        "source_catalog_certification_path": "negative_variants/neg_003_transparent_latch/certification.json",
+        "trigger_condition": "Tracks D continuously instead of sampling only on rising clock edges.",
+        "violated_property_ids": [
+          "P_ON_EACH_RISING_CROSSING_OF_VCLK",
+          "P_VTH_0_0_V_DATA_THRESHOLD_2"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_002_qbar_same_as_q/certification.json",
+        "certification_sha256": "f2a991421c7583ffc83e537602a29d3ff1921876a347d2c6fd085f8e9352ad6f",
+        "fault_class": "polarity_or_direction_error",
+        "mutation_bundle_sha256": "87509f7bb60274f72ee484350df093176be03412efae37187934899ff0ed1a4b",
+        "mutation_id": "neg_002_qbar_same_as_q",
+        "source_catalog_certification_path": "negative_variants/neg_002_qbar_same_as_q/certification.json",
+        "trigger_condition": "Drives QBAR with the same polarity as Q.",
+        "violated_property_ids": [
+          "P_ON_EACH_RISING_CROSSING_OF_VCLK",
+          "P_VCLK_TH_0_45_V_RISING"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_004_falling_edge_sample/certification.json",
+        "certification_sha256": "bb01118e978063adfdbdd086616e016eba958c2f7c417cde96ebfc102e9ffe27",
+        "fault_class": "polarity_or_direction_error",
+        "mutation_bundle_sha256": "719d7926291a6b5dfe86b739c9b47553de17e17796a7377cf943ff9569494307",
+        "mutation_id": "neg_004_falling_edge_sample",
+        "source_catalog_certification_path": "negative_variants/neg_004_falling_edge_sample/certification.json",
+        "trigger_condition": "Samples on falling clock edges.",
+        "violated_property_ids": [
+          "P_ON_EACH_RISING_CROSSING_OF_VCLK",
+          "P_USE_DETERMINISTIC_VOLTAGE_DOMAIN_VERILOG_A"
+        ]
+      }
+    ],
+    "bugfix_seed": "neg_005_metric_scale_low",
+    "canonical_dut_id": "248",
+    "hashes": {
+      "mutation_catalog_sha256": "c8ab16945b74f47a4a06021f4181fe36fd096948db863eedbe4a8e87953e5a1e",
+      "score_deck_sha256": "883e5fbf107a09e35f2954367d8343975093173ca9ef253e4acdb0357d6241da",
+      "task_certification_sha256": "1fca665a56cacf756ec61449dd567b7d2f6bc416dc487d57720165ee3ca9edf5",
+      "task_record_sha256": "26def8a3413b6b0fa832aec3c783374d95582ebe3911facd7ed42fde02bf8a5e"
+    },
+    "release_dir": "248-bipolar-dff-sample"
+  }
+}

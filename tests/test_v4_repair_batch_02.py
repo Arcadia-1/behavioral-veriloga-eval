@@ -14,6 +14,11 @@ SOURCE = ROOT / "benchmark-vabench-release-v4" / "provenance" / "dut-base-v3-exa
 RENDERER = ROOT / "benchmark-vabench-release-v4" / "scripts" / "render_v4_harness.py"
 PARITY = ROOT / "benchmark-vabench-release-v4" / "scripts" / "validate_v4_profile_parity.py"
 FAMILIES = tuple(f"{value:03d}" for value in range(11, 21))
+PREP = ROOT / "benchmark-vabench-release-v4" / "operations" / "tri_form_derivation_prep"
+if str(PREP) not in sys.path:
+    sys.path.insert(0, str(PREP))
+
+from score_denominator_registry import load_score_denominator_registry  # noqa: E402
 
 
 def _family(family: str) -> Path:
@@ -104,7 +109,7 @@ def test_batch_02_trace_contracts_match_public_observables() -> None:
 
 
 def test_batch_02_source_rows_bind_exact_five_and_current_hashes() -> None:
-    manifest = json.loads((SOURCE / "score_denominator_manifest.json").read_text())
+    manifest = load_score_denominator_registry(SOURCE)
     rows = {str(row["canonical_dut_id"]): row for row in manifest["tasks"]}
     for family in FAMILIES:
         task = _family(family)

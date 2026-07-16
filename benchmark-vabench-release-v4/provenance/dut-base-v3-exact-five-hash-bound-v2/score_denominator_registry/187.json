@@ -1,0 +1,79 @@
+{
+  "family_id": "187",
+  "schema_version": "v4-score-denominator-family-registry-v1",
+  "task": {
+    "active_mutation_count": 5,
+    "active_mutations": [
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_002_shift_conv_early/certification.json",
+        "certification_sha256": "3698f04e1e3be87552dd1ed2fb7de9fbc189401d865bc1af12a6214a6f06a88d",
+        "fault_class": "metric_or_observable_fault",
+        "mutation_bundle_sha256": "e7f1dbce1e62105f1d08aeaf31d498f4bc2312c0066fd7bcefe18d0f7b8aa9fb",
+        "mutation_id": "neg_002_shift_conv_early",
+        "source_catalog_certification_path": "negative_variants/neg_002_shift_conv_early/certification.json",
+        "trigger_condition": "Drives conv pulses at half amplitude.",
+        "violated_property_ids": [
+          "P_CONVERSION_WINDOW_TIMING"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_005_metric_scale_low/certification.json",
+        "certification_sha256": "b3f0af6dc3784c73435c3b07b49a62831b6f2db3255dc7cd5232dff692590ccf",
+        "fault_class": "timing_or_state_update_fault",
+        "mutation_bundle_sha256": "9c2d9079315cc51bc68685e03d12dbd0abb20e3dc75ca461393f68b12be127ef",
+        "mutation_id": "neg_005_metric_scale_low",
+        "source_catalog_certification_path": "negative_variants/neg_005_metric_scale_low/certification.json",
+        "trigger_condition": "ADC Sample Clock Sequencer: scales the metric output, preserving the main path while failing measurement checks.",
+        "violated_property_ids": [
+          "P_PERIODIC_18NS_FRAME",
+          "P_TIMING_OUTPUT_LEVELS"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_004_swap_nc_outputs/certification.json",
+        "certification_sha256": "cf51e21d90c186dd83a37e9ab98999a9f4d286091f013ac140b67b945577b343",
+        "fault_class": "polarity_or_direction_error",
+        "mutation_bundle_sha256": "32959587bab71e505ef838507a65ce3af33ad1532e30e4d186b28f85b734d1be",
+        "mutation_id": "neg_004_swap_nc_outputs",
+        "source_catalog_certification_path": "negative_variants/neg_004_swap_nc_outputs/certification.json",
+        "trigger_condition": "Swaps nc and nc_az output routing.",
+        "violated_property_ids": [
+          "P_NONOVERLAP_AND_AUTOZERO_WINDOWS"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_001_zero/certification.json",
+        "certification_sha256": "0fb720d99ffca735346f4c560aec153513314f1f6040245504159a96a6dd0863",
+        "fault_class": "zero_stub_output",
+        "mutation_bundle_sha256": "0b8f906bebb15e3fee0924709f70c7ee1ec954ab79c84df4fd68feb6bc2427db",
+        "mutation_id": "neg_001_zero",
+        "source_catalog_certification_path": "negative_variants/neg_001_zero/certification.json",
+        "trigger_condition": "Drives zero output and therefore fails the stable waveform contract.",
+        "violated_property_ids": [
+          "P_TIMING_OUTPUT_LEVELS"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_003_short_sample_pulse/certification.json",
+        "certification_sha256": "08508cd6f244d7f2a9657b618342589c67d0e46d633596999cc7c1348f990c56",
+        "fault_class": "metric_or_observable_fault",
+        "mutation_bundle_sha256": "a24b5df042230908f8dc9fc43203935aff3e5e3632f36ed576240679e8d7a0a7",
+        "mutation_id": "neg_003_short_sample_pulse",
+        "source_catalog_certification_path": "negative_variants/neg_003_short_sample_pulse/certification.json",
+        "trigger_condition": "Drives sample pulses at half amplitude.",
+        "violated_property_ids": [
+          "P_RESET_SAMPLE_AND_SS_WINDOWS"
+        ]
+      }
+    ],
+    "bugfix_seed": "neg_002_shift_conv_early",
+    "canonical_dut_id": "187",
+    "hashes": {
+      "mutation_catalog_sha256": "00ebdec86f6ccfabceb62617cfe6bf23f423d34dc6d88c21354ae116e002451b",
+      "score_deck_sha256": "a19e107e4106636166534e4c2e9478a528ca5bba8035700ba28c27389b938529",
+      "task_certification_sha256": "79317bb68233707319d9868c1a3d28081d02ae55f6d5e2f44c6063b26d466aea",
+      "task_record_sha256": "d4669e00db4f2f0c86ccb4d94db899f1766a0a50a139e9107f326bf7e6b799cb"
+    },
+    "release_dir": "187-adc-sample-clock-sequencer"
+  }
+}

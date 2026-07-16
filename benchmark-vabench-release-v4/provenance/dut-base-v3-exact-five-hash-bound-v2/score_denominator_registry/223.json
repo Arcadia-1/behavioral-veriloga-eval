@@ -1,0 +1,84 @@
+{
+  "family_id": "223",
+  "schema_version": "v4-score-denominator-family-registry-v1",
+  "task": {
+    "active_mutation_count": 5,
+    "active_mutations": [
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_003_threshold_too_high/certification.json",
+        "certification_sha256": "d855b06ac1d5bd29bc0a56f4def364bd2944d9b0c8582525b8a5e6af3026ac5e",
+        "fault_class": "threshold_or_boundary_fault",
+        "mutation_bundle_sha256": "9a011caf5a8d76bcda0e201fc32e2799c23ffcf15c3e8c7ba615b6b24ea5e3a3",
+        "mutation_id": "neg_003_threshold_too_high",
+        "source_catalog_certification_path": "negative_variants/neg_003_threshold_too_high/certification.json",
+        "trigger_condition": "Uses a threshold above the stimulus high level, so asserted thermometer inputs are missed.",
+        "violated_property_ids": [
+          "P_COUNT_HOW_MANY_OF_TH0_TH7",
+          "P_ENCODE_THE_COUNT_AS_A_4"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_002_count_lower_half_only/certification.json",
+        "certification_sha256": "cb227011f051b9729d218e4685bf04347d404422128735f56c028b4e7266101a",
+        "fault_class": "omission_or_incomplete_behavior",
+        "mutation_bundle_sha256": "f893a84d446bfb1bb6de0049c4dce1c8475560bf226a372354e2bc8fbcfbcc9f",
+        "mutation_id": "neg_002_count_lower_half_only",
+        "source_catalog_certification_path": "negative_variants/neg_002_count_lower_half_only/certification.json",
+        "trigger_condition": "Counts only TH0..TH3 and ignores the upper thermometer inputs.",
+        "violated_property_ids": [
+          "P_COUNT_HOW_MANY_OF_TH0_TH7",
+          "P_ENCODE_THE_COUNT_AS_A_4",
+          "P_SUPPORT_ANY_INPUT_PATTERN_BY_COUNTING"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_004_reversed_bit_order/certification.json",
+        "certification_sha256": "62afdd6ce5ed9e4052e623eeb552729c7e0c4227c71b2609d3ee27f3335cef68",
+        "fault_class": "reversed_bit_order",
+        "mutation_bundle_sha256": "a210f2c50d9eaaa1adc46cb8bcff4781957439db912656632ff915dcac93568b",
+        "mutation_id": "neg_004_reversed_bit_order",
+        "source_catalog_certification_path": "negative_variants/neg_004_reversed_bit_order/certification.json",
+        "trigger_condition": "Outputs the popcount bits in reversed order.",
+        "violated_property_ids": [
+          "P_DRIVE_B0_B3_AS_VOLTAGE_CODED",
+          "P_ENCODE_THE_COUNT_AS_A_4"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_005_metric_scale_low/certification.json",
+        "certification_sha256": "55ec692702f94beac939358157402e273ea575db29c4cd3d1023e1171c1e3eff",
+        "fault_class": "metric_or_observable_fault",
+        "mutation_bundle_sha256": "8d1cd6f009e277db76e5f666cbf434fc8086ce92066628384f5591e73b89f5cf",
+        "mutation_id": "neg_005_metric_scale_low",
+        "source_catalog_certification_path": "negative_variants/neg_005_metric_scale_low/certification.json",
+        "trigger_condition": "Therm8 To Bin4 Count: scales the metric output, preserving the main path while failing measurement checks.",
+        "violated_property_ids": [
+          "P_DRIVE_B0_B3_AS_VOLTAGE_CODED"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_001_zero/certification.json",
+        "certification_sha256": "642f6c32635e691ab24ffcdf98f5f68983d103e770fd6c1cae5110159dc14191",
+        "fault_class": "zero_stub_output",
+        "mutation_bundle_sha256": "b05d9ba11ea33c5d822665f3a07b7c03c4104794598c105fb04af69800bc5a6e",
+        "mutation_id": "neg_001_zero",
+        "source_catalog_certification_path": "negative_variants/neg_001_zero/certification.json",
+        "trigger_condition": "Drives zero output and therefore fails the stable waveform contract.",
+        "violated_property_ids": [
+          "P_COUNT_HOW_MANY_OF_TH0_TH7",
+          "P_DRIVE_B0_B3_AS_VOLTAGE_CODED",
+          "P_ENCODE_THE_COUNT_AS_A_4"
+        ]
+      }
+    ],
+    "bugfix_seed": "neg_003_threshold_too_high",
+    "canonical_dut_id": "223",
+    "hashes": {
+      "mutation_catalog_sha256": "73213badf9a31ee84263c0b075ee5dc2c73925fe1165ac9a59ae2ea57a088298",
+      "score_deck_sha256": "2685f1135d9ab670a56d6994e1c4f94606494bf4facaf49a9a64cda506b0d5d1",
+      "task_certification_sha256": "3731d5e0ad80962f2874ee1d93c6a769e75f54cfd269d135345f0a0cca39b3c5",
+      "task_record_sha256": "d2e34632e618951f4d589d4b0873d43c4ed6fac5e1e5d1a415990dea539bbbc6"
+    },
+    "release_dir": "223-therm8-to-bin4-count"
+  }
+}

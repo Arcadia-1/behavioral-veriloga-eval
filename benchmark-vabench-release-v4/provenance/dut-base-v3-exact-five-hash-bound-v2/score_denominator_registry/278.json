@@ -1,0 +1,78 @@
+{
+  "family_id": "278",
+  "schema_version": "v4-score-denominator-family-registry-v1",
+  "task": {
+    "active_mutation_count": 5,
+    "active_mutations": [
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_003_wrong_scale/certification.json",
+        "certification_sha256": "57133e0a38daf4165f02442319b3c9dc90a06159064fddf19808efb5e402c0fa",
+        "fault_class": "metric_or_observable_fault",
+        "mutation_bundle_sha256": "9afdafffb0dc0480b2dfe3295f12a8e4917a8c232b74aa2e5ff3770fe8508dce",
+        "mutation_id": "neg_003_wrong_scale",
+        "source_catalog_certification_path": "negative_variants/neg_003_wrong_scale/certification.json",
+        "trigger_condition": "stimulus exercises neg_003_wrong_scale",
+        "violated_property_ids": [
+          "P_MEASURE_ANALOG_INPUTS_RELATIVE_TO_THE"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_002_ignore_enable/certification.json",
+        "certification_sha256": "73c069728ae80c82e13dca8445474f135f975b649f1813a8cc6cb6a3aafa0f36",
+        "fault_class": "state_reset_or_enable_error",
+        "mutation_bundle_sha256": "824553b79ac873b876ced66b513775c534fe6c943620cf54ceaf0ceffa45dfe5",
+        "mutation_id": "neg_002_ignore_enable",
+        "source_catalog_certification_path": "negative_variants/neg_002_ignore_enable/certification.json",
+        "trigger_condition": "stimulus exercises neg_002_ignore_enable",
+        "violated_property_ids": [
+          "P_COUNT_THE_NUMBER_OF_NORMALIZED_INPUTS"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_001_zero_outputs/certification.json",
+        "certification_sha256": "509e7dd9d5f8d3f362f2f7f4fb2d87966b76ec1a8661c79384a06de25fe5aa35",
+        "fault_class": "zero_stub_output",
+        "mutation_bundle_sha256": "68b6b2f6a5b484e9d55788d22c74b30c49c8324ecef477ffbd14adf397b3c0cd",
+        "mutation_id": "neg_001_zero_outputs",
+        "source_catalog_certification_path": "negative_variants/neg_001_zero_outputs/certification.json",
+        "trigger_condition": "stimulus exercises neg_001_zero_outputs",
+        "violated_property_ids": [
+          "P_MEASURE_ANALOG_INPUTS_RELATIVE_TO_THE"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_004_ignore_control_or_reset/certification.json",
+        "certification_sha256": "5f85ce862d54811976ba9290af027afb1dd3b9ec07c5cf2d3a70e60a2627f56e",
+        "fault_class": "state_reset_or_enable_error",
+        "mutation_bundle_sha256": "b3f1ae3d18d013e44e02241fed3e5e684eede56b26bbe1e13662118b9db0c202",
+        "mutation_id": "neg_004_ignore_control_or_reset",
+        "source_catalog_certification_path": "negative_variants/neg_004_ignore_control_or_reset/certification.json",
+        "trigger_condition": "stimulus exercises neg_004_ignore_control_or_reset",
+        "violated_property_ids": [
+          "P_COUNT_THE_NUMBER_OF_NORMALIZED_INPUTS"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_005_wrong_flag_metric/certification.json",
+        "certification_sha256": "eef8093e901d4fdcbb530356c80c7a98971febf69fa13954b11ecdf0ed99428d",
+        "fault_class": "metric_or_observable_fault",
+        "mutation_bundle_sha256": "7d8c379de9a366df01d000801926ffc955117fc1f09d643717b4cfcba548ad5b",
+        "mutation_id": "neg_005_wrong_flag_metric",
+        "source_catalog_certification_path": "negative_variants/neg_005_wrong_flag_metric/certification.json",
+        "trigger_condition": "stimulus exercises neg_005_wrong_flag_metric",
+        "violated_property_ids": [
+          "P_MEASURE_ANALOG_INPUTS_RELATIVE_TO_THE"
+        ]
+      }
+    ],
+    "bugfix_seed": "neg_003_wrong_scale",
+    "canonical_dut_id": "278",
+    "hashes": {
+      "mutation_catalog_sha256": "a3657d642e9ff9dbd12584239f939ca1ef5dfcae63aea2996b692f9de9f8019f",
+      "score_deck_sha256": "14518a5e82e6e4c4036be30b4dbba7fa43b27e6eb40ee65037cb49d5153c1001",
+      "task_certification_sha256": "8a5c87d9c46c70cb8305a1951d6154ca86c353c2441bdb8f53c7a16a146a06fd",
+      "task_record_sha256": "9494add635b42632092798d99151362b9414e04b583a1e30091ae076af692af9"
+    },
+    "release_dir": "278-lane-mask-replication-driver"
+  }
+}

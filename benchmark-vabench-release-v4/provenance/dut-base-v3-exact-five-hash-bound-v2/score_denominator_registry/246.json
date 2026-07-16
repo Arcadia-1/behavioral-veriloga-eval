@@ -1,0 +1,80 @@
+{
+  "family_id": "246",
+  "schema_version": "v4-score-denominator-family-registry-v1",
+  "task": {
+    "active_mutation_count": 5,
+    "active_mutations": [
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_005_metric_scale_low/certification.json",
+        "certification_sha256": "52c88358bf685849094d8a3a01ddb7375f4cee2f318860320062a89ed5a98584",
+        "fault_class": "metric_or_observable_fault",
+        "mutation_bundle_sha256": "b87ca53c6c420cab8d71248e387a3860f0b3dadb50ee986fd905999e12e4794f",
+        "mutation_id": "neg_005_metric_scale_low",
+        "source_catalog_certification_path": "negative_variants/neg_005_metric_scale_low/certification.json",
+        "trigger_condition": "Mux4 Priority: scales the metric output, preserving the main path while failing measurement checks.",
+        "violated_property_ids": [
+          "P_DECODE_THE_SELECT_CODE_AS_SEL0"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_002_swapped_select_bits/certification.json",
+        "certification_sha256": "01ea94481f917c8eac9752f3c1218399e11f4e21922902bc77482d668729d571",
+        "fault_class": "polarity_or_direction_error",
+        "mutation_bundle_sha256": "2814f6ad7e9269a1f6a64dc613e20dc4da201e91cdb2a170452c613ccf90584f",
+        "mutation_id": "neg_002_swapped_select_bits",
+        "source_catalog_certification_path": "negative_variants/neg_002_swapped_select_bits/certification.json",
+        "trigger_condition": "Swaps sel0 and sel1 when decoding the mux select.",
+        "violated_property_ids": [
+          "P_DECODE_THE_SELECT_CODE_AS_SEL0",
+          "P_USE_DETERMINISTIC_VOLTAGE_DOMAIN_VERILOG_A"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_001_zero/certification.json",
+        "certification_sha256": "83f3ac753350634d56aa67ad7412e6cf22f652c3fcbcabd185db56ea85e74141",
+        "fault_class": "zero_stub_output",
+        "mutation_bundle_sha256": "320ba90032878284e646f69956d7da0273d594e73f7f06d97acf1b9878bd50dc",
+        "mutation_id": "neg_001_zero",
+        "source_catalog_certification_path": "negative_variants/neg_001_zero/certification.json",
+        "trigger_condition": "Keeps the output at its trivial zero behavior and therefore fails the stable waveform contract.",
+        "violated_property_ids": [
+          "P_DECODE_THE_SELECT_CODE_AS_SEL0",
+          "P_PROVIDE_OVERRIDEABLE_PUBLIC_PARAMETER_VTH_0"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_004_always_in0/certification.json",
+        "certification_sha256": "cea7129c01ebd868cf836ef1536f5b5f7d2143e03c9c546a0ac248c38ff1bdd4",
+        "fault_class": "omission_or_incomplete_behavior",
+        "mutation_bundle_sha256": "4c79ddc3456a639e0743181b6ea054be91ad71fcf69b08c0f463fbf99f0b5f28",
+        "mutation_id": "neg_004_always_in0",
+        "source_catalog_certification_path": "negative_variants/neg_004_always_in0/certification.json",
+        "trigger_condition": "Ignores select and always routes input 0.",
+        "violated_property_ids": [
+          "P_DECODE_THE_SELECT_CODE_AS_SEL0"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_003_inverted_select_threshold/certification.json",
+        "certification_sha256": "7833fbc200bc44e97be53979a630f1d9e2c5802f49926112a327e9ac5181191b",
+        "fault_class": "threshold_or_boundary_fault",
+        "mutation_bundle_sha256": "4032643a762013986875ec0cf1c33a460e4631ff18365552bd4fcb713ef6b802",
+        "mutation_id": "neg_003_inverted_select_threshold",
+        "source_catalog_certification_path": "negative_variants/neg_003_inverted_select_threshold/certification.json",
+        "trigger_condition": "Inverts the select-bit decisions.",
+        "violated_property_ids": [
+          "P_DECODE_THE_SELECT_CODE_AS_SEL0"
+        ]
+      }
+    ],
+    "bugfix_seed": "neg_005_metric_scale_low",
+    "canonical_dut_id": "246",
+    "hashes": {
+      "mutation_catalog_sha256": "808b670281d96a37ab1584409aaaf342c38bec7a4c4bccdf20fe17cde961c3d7",
+      "score_deck_sha256": "4bf5e658e111c1052676baaba99865f013734d186c0b2f33dc2c68b000d07329",
+      "task_certification_sha256": "ea238ad72d445cda632719a66890746c28c8479f976f9ea4a6d2b8644f97ba54",
+      "task_record_sha256": "6ea2655f98fe8001a7bace1d9a56767a12ba37fe0adce57beadda0cf42cab83e"
+    },
+    "release_dir": "246-mux4-priority"
+  }
+}

@@ -19,7 +19,7 @@ from audit_exact_five_dut_release import is_dual_behavioral_kill  # noqa: E402
 
 
 def test_exact_five_release_passes_strict_audit() -> None:
-    if not (RELEASE / "score_denominator_manifest.json").is_file():
+    if not (RELEASE / "score_denominator_registry" / "_meta.json").is_file():
         pytest.skip("exact-five integration release is supplied by the asset PRs")
     completed = subprocess.run(
         [sys.executable, str(AUDITOR), "--release", str(RELEASE)],

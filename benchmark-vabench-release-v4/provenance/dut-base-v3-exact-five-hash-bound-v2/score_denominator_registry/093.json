@@ -1,0 +1,87 @@
+{
+  "family_id": "093",
+  "schema_version": "v4-score-denominator-family-registry-v1",
+  "task": {
+    "active_mutation_count": 5,
+    "active_mutations": [
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_002_threshold_shifted/certification.json",
+        "certification_sha256": "8510912ef1841feb0c40306a6d104dcee04327dcb5758b18e5e88982f4557246",
+        "fault_class": "threshold_boundary_error",
+        "mutation_bundle_sha256": "8384a37d029e02ecd4a7214a333a0a91271b5fc473099c2a8440ec404d69f495",
+        "mutation_id": "neg_002_threshold_shifted",
+        "source_catalog_certification_path": "negative_variants/neg_002_threshold_shifted/certification.json",
+        "trigger_condition": "boundary stimulus crosses the public threshold conditions for Gain Estimator",
+        "violated_property_ids": [
+          "P_SPAN_RATIO",
+          "P_START_TIME_GATING",
+          "P_VALIDITY_THRESHOLD"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_005_metric_scale_low/certification.json",
+        "certification_sha256": "d27328734cf6f42418d944cb141410224db6b501e3fd24aacf6f12277abe5674",
+        "fault_class": "metric_scaling_error",
+        "mutation_bundle_sha256": "32e89b238de3b0c5954d955a1802a58c45ad6c714fa71c266f6b3b43a845284c",
+        "mutation_id": "neg_005_metric_scale_low",
+        "source_catalog_certification_path": "negative_variants/neg_005_metric_scale_low/certification.json",
+        "trigger_condition": "score stimulus observes the public metric/output scaling for Gain Estimator",
+        "violated_property_ids": [
+          "P_NORMALIZED_GAIN_OUTPUT",
+          "P_PERIODIC_EXTREMA",
+          "P_SPAN_RATIO",
+          "P_START_TIME_GATING"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_003_event_edge_wrong/certification.json",
+        "certification_sha256": "da85140d8eeb082c3ec077a0bca30a49ec3c1a3105175d4ffbd42f9acb68de47",
+        "fault_class": "event_edge_polarity_error",
+        "mutation_bundle_sha256": "01954ddb6d1fcc0dd10359566327feaf5dfb427f96eb751d3d09522f72846880",
+        "mutation_id": "neg_003_event_edge_wrong",
+        "source_catalog_certification_path": "negative_variants/neg_003_event_edge_wrong/certification.json",
+        "trigger_condition": "event-timing stimulus distinguishes the required active edge for Gain Estimator",
+        "violated_property_ids": [
+          "P_EVENT_UPDATED_TARGETS",
+          "P_PERIODIC_EXTREMA",
+          "P_START_TIME_GATING"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_001_zero/certification.json",
+        "certification_sha256": "c07b4157859487cd4759d655e4e92fc34a088222fd9ff0b2f3764b40e5295a71",
+        "fault_class": "zero_stub_output",
+        "mutation_bundle_sha256": "eacb0c86fd8a4d6f34f50c1a818ecc8325afa21700ae83067e5e12492f77efd5",
+        "mutation_id": "neg_001_zero",
+        "source_catalog_certification_path": "negative_variants/neg_001_zero/certification.json",
+        "trigger_condition": "nonzero behavioral stimulus requires observable Gain Estimator outputs",
+        "violated_property_ids": [
+          "P_PERIODIC_EXTREMA",
+          "P_START_TIME_GATING"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_004_reset_polarity_wrong/certification.json",
+        "certification_sha256": "e1bfab72070b31f1686f31086e7bd3c3d9ddee59afeff657094a9060ebe63aa8",
+        "fault_class": "reset_semantics_error",
+        "mutation_bundle_sha256": "763a5b7aaf3f720ed3e1b8672a9314ede8b96038f1fe5471674e3972a6fa8ec0",
+        "mutation_id": "neg_004_reset_polarity_wrong",
+        "source_catalog_certification_path": "negative_variants/neg_004_reset_polarity_wrong/certification.json",
+        "trigger_condition": "reset/recovery stimulus exercises Gain Estimator state override behavior",
+        "violated_property_ids": [
+          "P_PERIODIC_EXTREMA",
+          "P_START_TIME_GATING"
+        ]
+      }
+    ],
+    "bugfix_seed": "neg_002_threshold_shifted",
+    "canonical_dut_id": "093",
+    "hashes": {
+      "mutation_catalog_sha256": "0ccdc9326eaf066c5cc124beae652172045d24399c2c538ea5adcf590e788993",
+      "score_deck_sha256": "14939050be63a3a73219c1df6671b63792ebe054a53657147c86dfeb1c7f460b",
+      "task_certification_sha256": "48b47e7e35aa618db1b900d81d9d563de4eb4203e741f47bb1a300b0a12d42c1",
+      "task_record_sha256": "6f225822d71813208033450c3609a29678f5b6c227338a7d3d12866d1c9f8116"
+    },
+    "release_dir": "093-gain-estimator"
+  }
+}

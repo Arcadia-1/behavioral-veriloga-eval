@@ -1,0 +1,78 @@
+{
+  "family_id": "152",
+  "schema_version": "v4-score-denominator-family-registry-v1",
+  "task": {
+    "active_mutation_count": 5,
+    "active_mutations": [
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_002_swap_channels/certification.json",
+        "certification_sha256": "2ae60e234b78ad24aee62eff4621adde5b0cb58a90c8e69b086765bd9a5e031c",
+        "fault_class": "polarity_or_direction_error",
+        "mutation_bundle_sha256": "1fc5ceb464b6fc4b88d5af6882eaefd3033e3bc0b0f1231c604f13be46a0cfd7",
+        "mutation_id": "neg_002_swap_channels",
+        "source_catalog_certification_path": "negative_variants/neg_002_swap_channels/certification.json",
+        "trigger_condition": "Swaps clks1/clks2 sample assignments.",
+        "violated_property_ids": [
+          "P_CLOCKED_CHANNEL_SELECTION"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_003_ignore_second_channel/certification.json",
+        "certification_sha256": "04aad2c60e819ebfd0378e29e6c78d8cb7db71cdb893f8cbc5f2298edecce917",
+        "fault_class": "omission_or_incomplete_behavior",
+        "mutation_bundle_sha256": "2394eeb86be5adc1f626b04cace760dde81f0bf8f71a7c32fa65366785bde2f1",
+        "mutation_id": "neg_003_ignore_second_channel",
+        "source_catalog_certification_path": "negative_variants/neg_003_ignore_second_channel/certification.json",
+        "trigger_condition": "Ignores clks2 and always forwards samp1.",
+        "violated_property_ids": [
+          "P_BOTH_CHANNELS_REACHABLE"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_004_half_output_gain/certification.json",
+        "certification_sha256": "7e11037ba068a13866ae9f7abf162b9199dd7fbdb1b0d0495257dbc7137537ab",
+        "fault_class": "metric_or_observable_fault",
+        "mutation_bundle_sha256": "6383aa2a0dc251fb8af01f6b9dd329f08eaf7e59a68edf2d88060353ea4ba573",
+        "mutation_id": "neg_004_half_output_gain",
+        "source_catalog_certification_path": "negative_variants/neg_004_half_output_gain/certification.json",
+        "trigger_condition": "Outputs half of the selected sample.",
+        "violated_property_ids": [
+          "P_OUTPUT_GAIN_AND_HOLD"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_001_zero/certification.json",
+        "certification_sha256": "57f58d7886085d76328640dd2106c0e3c4cec1efdc6edb3d11e818941a367bad",
+        "fault_class": "zero_stub_output",
+        "mutation_bundle_sha256": "c3216bdfe78329ca8d32b356e9761509020e78f10b5edf9e7ce3da4a6497246d",
+        "mutation_id": "neg_001_zero",
+        "source_catalog_certification_path": "negative_variants/neg_001_zero/certification.json",
+        "trigger_condition": "Drives zero output and therefore fails the stable waveform contract.",
+        "violated_property_ids": [
+          "P_OUTPUT_GAIN_AND_HOLD"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_005_metric_scale_low/certification.json",
+        "certification_sha256": "210d1e6e0b98dc07d269d28f56aca4cd9c3a8fc3b6d6d7f5158f92425018f4c3",
+        "fault_class": "metric_or_observable_fault",
+        "mutation_bundle_sha256": "db8a581611e2a22421b5b5a56c5d31b76227cb8febce4152cf5f0595a05e5da5",
+        "mutation_id": "neg_005_metric_scale_low",
+        "source_catalog_certification_path": "negative_variants/neg_005_metric_scale_low/certification.json",
+        "trigger_condition": "Two Channel Sample Demux: scales the metric output, preserving the main path while failing measurement checks.",
+        "violated_property_ids": [
+          "P_OUTPUT_GAIN_AND_HOLD"
+        ]
+      }
+    ],
+    "bugfix_seed": "neg_002_swap_channels",
+    "canonical_dut_id": "152",
+    "hashes": {
+      "mutation_catalog_sha256": "7859de103d32425efc76422f3775f9541bc609682a485223fb971723097ece0d",
+      "score_deck_sha256": "0a14234d8c48453d8f83405f17a283a17aeae4348b5834e9fe015604f4a02e10",
+      "task_certification_sha256": "83dafe98a5569347e959187193ca68697d779247f01866f771b84e6c80884d80",
+      "task_record_sha256": "2a80495c1fcc683796f6c2ba5625f3bfecf3370e7ade8eeba99abefed5fe56dd"
+    },
+    "release_dir": "152-two-channel-sample-demux"
+  }
+}

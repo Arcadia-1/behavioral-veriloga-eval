@@ -1,0 +1,79 @@
+{
+  "family_id": "168",
+  "schema_version": "v4-score-denominator-family-registry-v1",
+  "task": {
+    "active_mutation_count": 5,
+    "active_mutations": [
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_002_missing_offset/certification.json",
+        "certification_sha256": "9df6533eea33b79e0f70c04cda5123c559d9231f4d9119f8aee28b08a0183c73",
+        "fault_class": "zero_stub_output",
+        "mutation_bundle_sha256": "4d6720d22a54f09d43ebfa5f8292c3412efac087af5dad4e7c87c7c24a282b0b",
+        "mutation_id": "neg_002_missing_offset",
+        "source_catalog_certification_path": "negative_variants/neg_002_missing_offset/certification.json",
+        "trigger_condition": "Starts from zero instead of the required fixed 0.239 offset.",
+        "violated_property_ids": [
+          "P_OFFSET_PLUS_SCALED_TRIM"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_004_swap_msb_lsb/certification.json",
+        "certification_sha256": "219d7f07e4bcfb4616fb937ea5bb5afe89afeb49d888ca31808db1db13433375",
+        "fault_class": "polarity_or_direction_error",
+        "mutation_bundle_sha256": "1b0bd178b82e1d8d086f589943bcc4428da31d4bce011e16b0a90aca27839ebf",
+        "mutation_id": "neg_004_swap_msb_lsb",
+        "source_catalog_certification_path": "negative_variants/neg_004_swap_msb_lsb/certification.json",
+        "trigger_condition": "Swaps the din3 MSB and din0 LSB code weights.",
+        "violated_property_ids": [
+          "P_THRESHOLDED_4BIT_CODE"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_003_wrong_scaling/certification.json",
+        "certification_sha256": "b0083b91875953b2163f4ac2e86754840f7b9c9024e49d41f008692b6857e503",
+        "fault_class": "omission_or_incomplete_behavior",
+        "mutation_bundle_sha256": "82c836ad908a192dd4a497073c83ff87f3ad348b69743bab3e2dcc1309f6c0f2",
+        "mutation_id": "neg_003_wrong_scaling",
+        "source_catalog_certification_path": "negative_variants/neg_003_wrong_scaling/certification.json",
+        "trigger_condition": "Uses a denominator of 32 instead of the specified 32*10/9 scaling.",
+        "violated_property_ids": [
+          "P_OFFSET_PLUS_SCALED_TRIM"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_005_metric_scale_low/certification.json",
+        "certification_sha256": "62dd90ab9f7a881318d2de3883a41684a5fe412d21aa34d4c6dd0c893053cc01",
+        "fault_class": "threshold_or_boundary_fault",
+        "mutation_bundle_sha256": "b0008939437b30cc2925b9a1e0d57e7a3f8b05e377be9c579d934a0646926b08",
+        "mutation_id": "neg_005_metric_scale_low",
+        "source_catalog_certification_path": "negative_variants/neg_005_metric_scale_low/certification.json",
+        "trigger_condition": "DAC Ideal 4b Offset: scales the metric output, preserving the main path while failing measurement checks.",
+        "violated_property_ids": [
+          "P_OFFSET_PLUS_SCALED_TRIM"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_001_zero/certification.json",
+        "certification_sha256": "52b67c1979a321bfc6e67927f9cfb7059d08e6f025477e7a2cf051487fe976bb",
+        "fault_class": "zero_stub_output",
+        "mutation_bundle_sha256": "a4c4c34614411a0a1f5749f7a6cbe34433380287ee6d5fd5e210ef7e19c153a1",
+        "mutation_id": "neg_001_zero",
+        "source_catalog_certification_path": "negative_variants/neg_001_zero/certification.json",
+        "trigger_condition": "Drives zero output and therefore fails the stable waveform contract.",
+        "violated_property_ids": [
+          "P_EVENT_UPDATED_OUTPUT",
+          "P_OFFSET_PLUS_SCALED_TRIM"
+        ]
+      }
+    ],
+    "bugfix_seed": "neg_002_missing_offset",
+    "canonical_dut_id": "168",
+    "hashes": {
+      "mutation_catalog_sha256": "845f4c043e1c2452e4bd2be043b5ea976a167e3f38fba4f24fcca0b86dda7bff",
+      "score_deck_sha256": "0104b0dea2776aba395840516e3dd63d25803af8607ebb41f177547a850d8ece",
+      "task_certification_sha256": "7d38ef3fb5384cddfcc49a989e467c0967eecc60a3d32ef6651cddae3ca8d2fb",
+      "task_record_sha256": "e2612e9e924374c9b432004261c572aec1b4c4bdde18417f72cfe239d2ecc02d"
+    },
+    "release_dir": "168-dac-ideal-4b-offset"
+  }
+}

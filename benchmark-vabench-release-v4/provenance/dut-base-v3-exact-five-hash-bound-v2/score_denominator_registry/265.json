@@ -1,0 +1,78 @@
+{
+  "family_id": "265",
+  "schema_version": "v4-score-denominator-family-registry-v1",
+  "task": {
+    "active_mutation_count": 5,
+    "active_mutations": [
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_003_wrong_scale/certification.json",
+        "certification_sha256": "abb70fcee5daafa5d65af94762b3b6adcd7b0cc418f5bb24ae4aa946b8f4e5ea",
+        "fault_class": "metric_or_observable_fault",
+        "mutation_bundle_sha256": "54df1ce0e2b54f1a3f16ecca1f5c0da46a2389e91be768817acc049669df7a2b",
+        "mutation_id": "neg_003_wrong_scale",
+        "source_catalog_certification_path": "negative_variants/neg_003_wrong_scale/certification.json",
+        "trigger_condition": "stimulus exercises neg_003_wrong_scale",
+        "violated_property_ids": [
+          "P_MEASURE_ANALOG_INPUTS_RELATIVE_TO_THE"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_002_ignore_enable/certification.json",
+        "certification_sha256": "58177f58687df44df160ffd9b1136ed5531ac439168e42ead3467efe9281636a",
+        "fault_class": "state_reset_or_enable_error",
+        "mutation_bundle_sha256": "8389ba91aba30534cf3081a1f52ac9e272dea6dc48314085c4e830a38bcef90b",
+        "mutation_id": "neg_002_ignore_enable",
+        "source_catalog_certification_path": "negative_variants/neg_002_ignore_enable/certification.json",
+        "trigger_condition": "stimulus exercises neg_002_ignore_enable",
+        "violated_property_ids": [
+          "P_COMPUTE_CORE_0_76_X0_0"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_001_zero_outputs/certification.json",
+        "certification_sha256": "9bad8330022d0b21522f7626c40b6145785ac7e3750bb46f1c53a073def740e0",
+        "fault_class": "zero_stub_output",
+        "mutation_bundle_sha256": "9760ff34adbca8e69555e990634f243e48b217300dd633a980013ade4b8e4965",
+        "mutation_id": "neg_001_zero_outputs",
+        "source_catalog_certification_path": "negative_variants/neg_001_zero_outputs/certification.json",
+        "trigger_condition": "stimulus exercises neg_001_zero_outputs",
+        "violated_property_ids": [
+          "P_MEASURE_ANALOG_INPUTS_RELATIVE_TO_THE"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_004_ignore_control_or_reset/certification.json",
+        "certification_sha256": "2a27d09f4428a84b16e1ddbab8e0bc9a3f57e67f1051a1e49ce8cc9114eb4aca",
+        "fault_class": "state_reset_or_enable_error",
+        "mutation_bundle_sha256": "50e42b69c5b6e9c73742213de1d479fefe142176bb0a6a2255abbc95f3ad5ba4",
+        "mutation_id": "neg_004_ignore_control_or_reset",
+        "source_catalog_certification_path": "negative_variants/neg_004_ignore_control_or_reset/certification.json",
+        "trigger_condition": "stimulus exercises neg_004_ignore_control_or_reset",
+        "violated_property_ids": [
+          "P_COMPUTE_CORE_0_76_X0_0"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_005_wrong_flag_metric/certification.json",
+        "certification_sha256": "8a6a07cc44648e2a7a93586ee5d19a2707889f6f76958d36cad673810e0f1b96",
+        "fault_class": "metric_or_observable_fault",
+        "mutation_bundle_sha256": "e0195182f90201899952959338c699ba53e71a248c9c5529ed987fa734c5cd1c",
+        "mutation_id": "neg_005_wrong_flag_metric",
+        "source_catalog_certification_path": "negative_variants/neg_005_wrong_flag_metric/certification.json",
+        "trigger_condition": "stimulus exercises neg_005_wrong_flag_metric",
+        "violated_property_ids": [
+          "P_MEASURE_ANALOG_INPUTS_RELATIVE_TO_THE"
+        ]
+      }
+    ],
+    "bugfix_seed": "neg_003_wrong_scale",
+    "canonical_dut_id": "265",
+    "hashes": {
+      "mutation_catalog_sha256": "c6086746411ad673f29dcac8554cf25bebaf29e4d5e8f7ef4b27d66b9405a80b",
+      "score_deck_sha256": "595f66bdb8c27a17930a9dca5c0d0ec60002f5037f93695763b51818736be388",
+      "task_certification_sha256": "72ead201ec2ed0bb1f397a9590e5b3ebf9c0ef9a2e881165da4e2b2cab499cb1",
+      "task_record_sha256": "77fcd0980705b88b27c120f1573aaee2c45a7fd5f6c21a68f3ed3c03aae4eaa9"
+    },
+    "release_dir": "265-dynamic-supply-enable-driver"
+  }
+}

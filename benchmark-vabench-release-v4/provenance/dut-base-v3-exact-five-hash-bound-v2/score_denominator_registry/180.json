@@ -1,0 +1,80 @@
+{
+  "family_id": "180",
+  "schema_version": "v4-score-denominator-family-registry-v1",
+  "task": {
+    "active_mutation_count": 5,
+    "active_mutations": [
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_002_droop_error/certification.json",
+        "certification_sha256": "b93871e739ee7020e2e362c765b15f3ae9b221d22af8b47b6cfca12ba26e087e",
+        "fault_class": "droop_error",
+        "mutation_bundle_sha256": "47b502cb0017f8d08e07dc1c7d9b6ab3c6b486cf1e78abaec22af36d006cb286",
+        "mutation_id": "neg_002_droop_error",
+        "source_catalog_certification_path": "negative_variants/neg_002_droop_error/certification.json",
+        "trigger_condition": "droop_error",
+        "violated_property_ids": [
+          "P_HOLD_MODE_DROOP"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_004_valid_state_error/certification.json",
+        "certification_sha256": "0521eb4ba600dd19b0ea81b462c3c77fd6e177aca65c3e5243c871e1c8530aae",
+        "fault_class": "valid_state_error",
+        "mutation_bundle_sha256": "a338e1ec76cd73f4a7e5a9f2f6a7a5837606f50079290d7851ce8ca86f7ca630",
+        "mutation_id": "neg_004_valid_state_error",
+        "source_catalog_certification_path": "negative_variants/neg_004_valid_state_error/certification.json",
+        "trigger_condition": "valid_state_error",
+        "violated_property_ids": [
+          "P_FALLING_TRACK_SAMPLE_APERTURE",
+          "P_TRACK_MODE_FOLLOWS_INPUT"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_005_reset_or_enable_error/certification.json",
+        "certification_sha256": "e4e4469ccdbc137e879b47038924ddbaa4258fdc2a911fcc29a3706394635cb9",
+        "fault_class": "reset_or_enable_error",
+        "mutation_bundle_sha256": "2583531b7a190d396a62536955f061f4a14e2a84e23ee0298a7c7ab5bf6c918e",
+        "mutation_id": "neg_005_reset_or_enable_error",
+        "source_catalog_certification_path": "negative_variants/neg_005_reset_or_enable_error/certification.json",
+        "trigger_condition": "reset_or_enable_error",
+        "violated_property_ids": [
+          "P_DROOP_METRIC_ACCUMULATION",
+          "P_RESET_DISABLE_CLEAR"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_003_aperture_metric_error/certification.json",
+        "certification_sha256": "f56f124192214d8c5515b7db3d489e0c3f575176f39a32895584d9a28a6b8857",
+        "fault_class": "aperture_metric_error",
+        "mutation_bundle_sha256": "4e31ad2653695da12291ca5106875506a9c51e689d93934dc4e9a42408ce48dd",
+        "mutation_id": "neg_003_aperture_metric_error",
+        "source_catalog_certification_path": "negative_variants/neg_003_aperture_metric_error/certification.json",
+        "trigger_condition": "aperture_metric_error",
+        "violated_property_ids": [
+          "P_FALLING_TRACK_SAMPLE_APERTURE"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_001_sample_edge_error/certification.json",
+        "certification_sha256": "7bae9e27fe09792753ab1e69db60608bcccb1404be7b8e5858364f683f86ddb8",
+        "fault_class": "sample_edge_error",
+        "mutation_bundle_sha256": "e21ea3a1abb734717f2485c4b19a8f46c2bbc5fb6a6008f6658184f9e1d77dde",
+        "mutation_id": "neg_001_sample_edge_error",
+        "source_catalog_certification_path": "negative_variants/neg_001_sample_edge_error/certification.json",
+        "trigger_condition": "sample_edge_error",
+        "violated_property_ids": [
+          "P_FALLING_TRACK_SAMPLE_APERTURE"
+        ]
+      }
+    ],
+    "bugfix_seed": "neg_002_droop_error",
+    "canonical_dut_id": "180",
+    "hashes": {
+      "mutation_catalog_sha256": "d85c2f01be24ec5ccb2a508ea7a98ab22fe82b4bd7e015d5ddc9e7ad37115ede",
+      "score_deck_sha256": "b8a710c264868d441768fd708bf3dfc75ef4d62bf1589d5c812850e8173d668f",
+      "task_certification_sha256": "b8101b523d255da0fb79fbe0463056840951aef923e532c9ed960b63e0cd1930",
+      "task_record_sha256": "efd74afcbca00012fdc6d18395a82b185ac6f4076b3afaa2fb444f8374e2031a"
+    },
+    "release_dir": "180-track-hold-with-droop-and-aperture"
+  }
+}

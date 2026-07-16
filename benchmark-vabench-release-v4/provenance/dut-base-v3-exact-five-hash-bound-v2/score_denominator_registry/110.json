@@ -1,0 +1,79 @@
+{
+  "family_id": "110",
+  "schema_version": "v4-score-denominator-family-registry-v1",
+  "task": {
+    "active_mutation_count": 5,
+    "active_mutations": [
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_001_zero/certification.json",
+        "certification_sha256": "09f58edd3471f364c3f90384742fdb2e6c24ffb48febc4054299e3257c0e76ac",
+        "fault_class": "fault_001_zero",
+        "mutation_bundle_sha256": "80aa37c7bb6406316fdbf8bcea1a48ef04121d7cd0f4d7dfadef45af4a872d1f",
+        "mutation_id": "neg_001_zero",
+        "source_catalog_certification_path": "negative_variants/neg_001_zero/certification.json",
+        "trigger_condition": "Drives zero outputs and therefore fails the stable-sample semantic contract.",
+        "violated_property_ids": [
+          "P_DISABLED_COMMON_MODE"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_004_wrong_common_mode/certification.json",
+        "certification_sha256": "b67a30c448a403f3dab6f745eb577329b706035fd8ad01b13cef49a345595c06",
+        "fault_class": "fault_004_wrong_common_mode",
+        "mutation_bundle_sha256": "79857758d5c3a0a3f5c82104e4609f4c585b8372afe5675bc8c5686b14979c27",
+        "mutation_id": "neg_004_wrong_common_mode",
+        "source_catalog_certification_path": "negative_variants/neg_004_wrong_common_mode/certification.json",
+        "trigger_condition": "Uses the wrong output common-mode voltage.",
+        "violated_property_ids": [
+          "P_COMMON_MODE_AND_DIFFERENTIAL",
+          "P_DECISION_DIRECTED_STEP"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_003_no_step_halving/certification.json",
+        "certification_sha256": "cb68b46b30a1dc9574d6a0ac49de97ee0ec70568baf24b369b06a1ecd71bac39",
+        "fault_class": "fault_003_no_step_halving",
+        "mutation_bundle_sha256": "b6c5f578661cb5b07139681076409d1640095ee34a4d6d9e5f9c28924efc4597",
+        "mutation_id": "neg_003_no_step_halving",
+        "source_catalog_certification_path": "negative_variants/neg_003_no_step_halving/certification.json",
+        "trigger_condition": "Never halves the search step on sign changes.",
+        "violated_property_ids": [
+          "P_FALLING_CLOCK_UPDATES"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_005_metric_scale_low/certification.json",
+        "certification_sha256": "08fe02315638ec275c4718d5d81c41c556bcd157a48ff751c8a2f8e09f61aa45",
+        "fault_class": "fault_005_metric_scale_low",
+        "mutation_bundle_sha256": "f035e558c644713b2f21ed11ed154d999a48568198b0616c25ad8d201899648f",
+        "mutation_id": "neg_005_metric_scale_low",
+        "source_catalog_certification_path": "negative_variants/neg_005_metric_scale_low/certification.json",
+        "trigger_condition": "Start Gated Offset Search: scales the metric output, preserving the main path while failing measurement checks.",
+        "violated_property_ids": [
+          "P_REVERSAL_STEP_HALVING"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_002_ignores_start_gate/certification.json",
+        "certification_sha256": "6baefd886f71f658dd369b071b71e77287e3b925d1e37239d6ed3cb204f96b9b",
+        "fault_class": "fault_002_ignores_start_gate",
+        "mutation_bundle_sha256": "b5477b298dd056202f4c1f1d6ddfe7a061984db22c270b35c628805ca37d55f0",
+        "mutation_id": "neg_002_ignores_start_gate",
+        "source_catalog_certification_path": "negative_variants/neg_002_ignores_start_gate/certification.json",
+        "trigger_condition": "Uses an unreachable START threshold, so the gated search never starts.",
+        "violated_property_ids": [
+          "P_START_REINITIALIZATION"
+        ]
+      }
+    ],
+    "bugfix_seed": "neg_001_zero",
+    "canonical_dut_id": "110",
+    "hashes": {
+      "mutation_catalog_sha256": "ea2ef5949e1937237c530e97ddcddfa62f98ed23b9d7bf29726ab1a1ce6c9270",
+      "score_deck_sha256": "30d5c639794454895ccadaa683416f377aff96f5885c5c9defd27c3cbb1cbf10",
+      "task_certification_sha256": "fe582b1737eb22657ab85dd2efdd102cc8f0f9160a6017ea8e5d8917e500fe54",
+      "task_record_sha256": "4fd3d4f35ca5ea2f4d353ffaf038192c366a3e9c127ea1a675021ec1aaa7d6ac"
+    },
+    "release_dir": "110-start-gated-offset-search"
+  }
+}

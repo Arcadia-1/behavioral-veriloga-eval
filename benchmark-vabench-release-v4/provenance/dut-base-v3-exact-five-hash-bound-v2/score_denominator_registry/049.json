@@ -1,0 +1,78 @@
+{
+  "family_id": "049",
+  "schema_version": "v4-score-denominator-family-registry-v1",
+  "task": {
+    "active_mutation_count": 5,
+    "active_mutations": [
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_001_count_plus_one/certification.json",
+        "certification_sha256": "be54ee732e3d6653555d5582fdfde8b7c5891b1976dd79ecefea6cf05dff71cf",
+        "fault_class": "count_plus_one",
+        "mutation_bundle_sha256": "47f767cb9c758e00a8ba82adede6f5083049aa496a3325090873e6b4b8b39c25",
+        "mutation_id": "neg_001_count_plus_one",
+        "source_catalog_certification_path": "negative_variants/neg_001_count_plus_one/certification.json",
+        "trigger_condition": "count plus one",
+        "violated_property_ids": [
+          "P_VALID_CUMULATIVE_WORD"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_002_valid_always_high/certification.json",
+        "certification_sha256": "c3219fa972ab09d95f4dd881c1f99020ae18e9eb014aa5108a052689768a60b2",
+        "fault_class": "valid_always_high",
+        "mutation_bundle_sha256": "1bd13565caf6dbe471dac2bc627e5e21b3d955daf4b5ac082ea33bd67b82721a",
+        "mutation_id": "neg_002_valid_always_high",
+        "source_catalog_certification_path": "negative_variants/neg_002_valid_always_high/certification.json",
+        "trigger_condition": "valid always high",
+        "violated_property_ids": [
+          "P_UNSIGNED_COUNT"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_004_valid_always_low/certification.json",
+        "certification_sha256": "d16ec9eef59ecb20358192cc8b92cf1503debd67c178e2e746330cff957d2729",
+        "fault_class": "valid_always_low",
+        "mutation_bundle_sha256": "6b012a37dab1039bc2e5a7e9e8043ac8e35aea02e5a0a7faaaaee85a22f337f6",
+        "mutation_id": "neg_004_valid_always_low",
+        "source_catalog_certification_path": "negative_variants/neg_004_valid_always_low/certification.json",
+        "trigger_condition": "valid always low",
+        "violated_property_ids": [
+          "P_ENDPOINT_CODES"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_005_bit_order_reversed/certification.json",
+        "certification_sha256": "55798ef414b5212a7fe0d8c0ba537cdf7be28f4f54ac6def6fc94f1bfed0ba91",
+        "fault_class": "bit_order_reversed",
+        "mutation_bundle_sha256": "a1442daa64eba9f44ae3321031a11b1dfdeb5eef0522d0394cc306edfa15f8a1",
+        "mutation_id": "neg_005_bit_order_reversed",
+        "source_catalog_certification_path": "negative_variants/neg_005_bit_order_reversed/certification.json",
+        "trigger_condition": "binary output bit order reversed",
+        "violated_property_ids": [
+          "P_OUTPUT_LEVELS"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_003_reversed_direction/certification.json",
+        "certification_sha256": "187d56e90e63ebf6eb6a38be16e2892d8049e92588476b91f7eafb9c106fc88f",
+        "fault_class": "reversed_direction",
+        "mutation_bundle_sha256": "93bff9b8679e08b8eb5bd893838b1c9a7a1e07b2f45824ab2ff013336c74a653",
+        "mutation_id": "neg_003_reversed_direction",
+        "source_catalog_certification_path": "negative_variants/neg_003_reversed_direction/certification.json",
+        "trigger_condition": "expects high side cumulative",
+        "violated_property_ids": [
+          "P_INVALID_ZERO_CODE"
+        ]
+      }
+    ],
+    "bugfix_seed": "neg_001_count_plus_one",
+    "canonical_dut_id": "049",
+    "hashes": {
+      "mutation_catalog_sha256": "3f4478ab1a6ba7e93d251bba9eefd83b5a278ad7fca4abb1306f56608c9fd9f4",
+      "score_deck_sha256": "d24a9a62b6e248bf779b80ed76c8e6858d889f49b6e566c4a654b0fa5dda64ff",
+      "task_certification_sha256": "29e03839dbfe7eb9b7030728cd92862d56895f2e6f984ae3a664aad57b0e8344",
+      "task_record_sha256": "3601e8527b36e30e2be1ffb035f12cb3af27e6fe7ebafd4999205ae28f589c0e"
+    },
+    "release_dir": "049-thermometer-to-binary-encoder-8b"
+  }
+}

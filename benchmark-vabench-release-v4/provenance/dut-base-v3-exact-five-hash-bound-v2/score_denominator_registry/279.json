@@ -1,0 +1,78 @@
+{
+  "family_id": "279",
+  "schema_version": "v4-score-denominator-family-registry-v1",
+  "task": {
+    "active_mutation_count": 5,
+    "active_mutations": [
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_003_wrong_scale/certification.json",
+        "certification_sha256": "4bbbc9c3ad99bcaadc1dee6c05f76102174d5035277dd40c5aaf92ecb27660e7",
+        "fault_class": "metric_or_observable_fault",
+        "mutation_bundle_sha256": "a69673e76ff8d52862eb016769ba7ea4821f2893e03557a7e85b9ba4c8051701",
+        "mutation_id": "neg_003_wrong_scale",
+        "source_catalog_certification_path": "negative_variants/neg_003_wrong_scale/certification.json",
+        "trigger_condition": "stimulus exercises neg_003_wrong_scale",
+        "violated_property_ids": [
+          "P_MEASURE_ANALOG_INPUTS_RELATIVE_TO_THE"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_002_ignore_enable/certification.json",
+        "certification_sha256": "c884a9211e286b2156622309a7918484a97f49ed22ede5e8741121cf697c5d86",
+        "fault_class": "state_reset_or_enable_error",
+        "mutation_bundle_sha256": "df13ae30aca109551538ab491a909c1eb3090372c0ef4f09eb6478a4d8beafa3",
+        "mutation_id": "neg_002_ignore_enable",
+        "source_catalog_certification_path": "negative_variants/neg_002_ignore_enable/certification.json",
+        "trigger_condition": "stimulus exercises neg_002_ignore_enable",
+        "violated_property_ids": [
+          "P_USE_THE_TWO_CONTROL_LEVELS_AS"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_001_zero_outputs/certification.json",
+        "certification_sha256": "86c31d44f1d61088219d73bb5ae507608669ee95886c64fa033c573e8f165d98",
+        "fault_class": "zero_stub_output",
+        "mutation_bundle_sha256": "557e72813ea9bd84a4d10eedb1a9639a5c2648cccdcaab02647586c1dbf1a172",
+        "mutation_id": "neg_001_zero_outputs",
+        "source_catalog_certification_path": "negative_variants/neg_001_zero_outputs/certification.json",
+        "trigger_condition": "stimulus exercises neg_001_zero_outputs",
+        "violated_property_ids": [
+          "P_MEASURE_ANALOG_INPUTS_RELATIVE_TO_THE"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_004_ignore_control_or_reset/certification.json",
+        "certification_sha256": "4c1be7b4d22fa5955dbe8a10f98d79e76fa71ce7eddee9011d317f7a05c4ee1d",
+        "fault_class": "state_reset_or_enable_error",
+        "mutation_bundle_sha256": "db6f4a32ab1b11d36b1961225aaf145d3771fb747773b710ed1ad51a0c358d11",
+        "mutation_id": "neg_004_ignore_control_or_reset",
+        "source_catalog_certification_path": "negative_variants/neg_004_ignore_control_or_reset/certification.json",
+        "trigger_condition": "stimulus exercises neg_004_ignore_control_or_reset",
+        "violated_property_ids": [
+          "P_USE_THE_TWO_CONTROL_LEVELS_AS"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_005_wrong_flag_metric/certification.json",
+        "certification_sha256": "7ba85487f29e9b999453176bddc2d91bff2977c8252fb58f39fca994ad35eecb",
+        "fault_class": "metric_or_observable_fault",
+        "mutation_bundle_sha256": "ab97319da217d9ffa7661b4e5d11cc7119b4553b714395ab880eb8388efe490f",
+        "mutation_id": "neg_005_wrong_flag_metric",
+        "source_catalog_certification_path": "negative_variants/neg_005_wrong_flag_metric/certification.json",
+        "trigger_condition": "stimulus exercises neg_005_wrong_flag_metric",
+        "violated_property_ids": [
+          "P_MEASURE_ANALOG_INPUTS_RELATIVE_TO_THE"
+        ]
+      }
+    ],
+    "bugfix_seed": "neg_003_wrong_scale",
+    "canonical_dut_id": "279",
+    "hashes": {
+      "mutation_catalog_sha256": "fe69345e8cb50820253ec068d07ab1069f130901fcd6fbe3219919ae0677c2f3",
+      "score_deck_sha256": "65337d5368619373c72267c56abfe3190d709e222973a8b69ced402b8df7e446",
+      "task_certification_sha256": "69e96860b77d1951ffd72cb4e54cf78ca6982d3b68b25fc08df730afb8895a37",
+      "task_record_sha256": "ccb645eca391f015edc1c4c064e8fefcfa03d4b6397146d5f80cdd91e3ad2ef9"
+    },
+    "release_dir": "279-explicit-sar-slice-router"
+  }
+}

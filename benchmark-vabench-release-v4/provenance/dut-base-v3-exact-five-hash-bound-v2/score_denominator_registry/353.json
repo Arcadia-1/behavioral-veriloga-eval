@@ -1,0 +1,78 @@
+{
+  "family_id": "353",
+  "schema_version": "v4-score-denominator-family-registry-v1",
+  "task": {
+    "active_mutation_count": 5,
+    "active_mutations": [
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_004_threshold_shifted/certification.json",
+        "certification_sha256": "638ec6ba45c5d2e36a5c5a4290e3ad55a5bd292794f5fe4fac5ab356b94d77a7",
+        "fault_class": "threshold_or_boundary_fault",
+        "mutation_bundle_sha256": "8302189391bffe07dd7c37a43848eb7b84f6f4392945838a3af6917bc5550e6b",
+        "mutation_id": "neg_004_threshold_shifted",
+        "source_catalog_certification_path": "negative_variants/neg_004_threshold_shifted/certification.json",
+        "trigger_condition": "semantic threshold mutation from gold",
+        "violated_property_ids": [
+          "P_VOUT_IS_THE_CLIPPED_SUM_OF"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_001_zero/certification.json",
+        "certification_sha256": "b89ddc367e88e73f3624b2521388b85f2f50976d093c54ed405be4317710dad9",
+        "fault_class": "zero_stub_output",
+        "mutation_bundle_sha256": "9a0402410c542ab3e5b6d771cba475e06ea16a281233274665117001d49aa9bc",
+        "mutation_id": "neg_001_zero",
+        "source_catalog_certification_path": "negative_variants/neg_001_zero/certification.json",
+        "trigger_condition": "semantic zero mutation from gold",
+        "violated_property_ids": [
+          "P_RESET_CLEARS_SYMBOL_HISTORY_AND_DRIVES"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_002_half_scale/certification.json",
+        "certification_sha256": "a1806a2c843ff6ed603615602044acda8872fc3a3997930850dc50a4ed6045e3",
+        "fault_class": "metric_or_observable_fault",
+        "mutation_bundle_sha256": "342883c5269087797e6177fab6b7dfdd326b4e2811f2e75ba9b0b53994cab51f",
+        "mutation_id": "neg_002_half_scale",
+        "source_catalog_certification_path": "negative_variants/neg_002_half_scale/certification.json",
+        "trigger_condition": "semantic scale mutation from gold",
+        "violated_property_ids": [
+          "P_ON_EACH_RISING_CLK_SAMPLE_DATA"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_005_event_edge_wrong/certification.json",
+        "certification_sha256": "fe26f1c72215e9d7f4bff13a9e6a79eeeee28e8b9a457235e4a6565bf7a9e73b",
+        "fault_class": "polarity_or_direction_error",
+        "mutation_bundle_sha256": "6c5d6a0832f117a29a27865ed924e9b51a9457fc178f294bdd6a726827e34fd2",
+        "mutation_id": "neg_005_event_edge_wrong",
+        "source_catalog_certification_path": "negative_variants/neg_005_event_edge_wrong/certification.json",
+        "trigger_condition": "semantic delay_edge mutation from gold",
+        "violated_property_ids": [
+          "P_HIGHER_TAP_CONTROL_CODES_MUST_INCREASE"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_003_inverted_transfer/certification.json",
+        "certification_sha256": "1f22092e38f961c20ffe4f81b02397d04d2800792726bc115d4f82ed74eec6a4",
+        "fault_class": "polarity_or_direction_error",
+        "mutation_bundle_sha256": "c585ada2f00fbf837a08cd19ecd7ee3388a62a323d3e28b639f1ae26dcff5eca",
+        "mutation_id": "neg_003_inverted_transfer",
+        "source_catalog_certification_path": "negative_variants/neg_003_inverted_transfer/certification.json",
+        "trigger_condition": "semantic invert mutation from gold",
+        "violated_property_ids": [
+          "P_DRIVE_MAIN_DBG_PRE_DBG_AND"
+        ]
+      }
+    ],
+    "bugfix_seed": "neg_004_threshold_shifted",
+    "canonical_dut_id": "353",
+    "hashes": {
+      "mutation_catalog_sha256": "f03cc8681c90e4bec8ef5492f58a3338a1daf693e2f5f42333997f8b2b2080d5",
+      "score_deck_sha256": "295686307d269cc31170ae7fd0b903d84487cb948823c6d59b0df75e0caaf69d",
+      "task_certification_sha256": "f67075ddfe779416783475beb17bacc40c7ae8b81ba2094330b54b1f0fec1494",
+      "task_record_sha256": "f574e0a377069bfc16637da636a4b3e9bd858f3a9606330be87f7f4944b132ec"
+    },
+    "release_dir": "353-ffe-transmitter-3tap"
+  }
+}

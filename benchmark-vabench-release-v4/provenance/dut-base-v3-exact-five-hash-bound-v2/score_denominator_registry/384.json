@@ -1,0 +1,82 @@
+{
+  "family_id": "384",
+  "schema_version": "v4-score-denominator-family-registry-v1",
+  "task": {
+    "active_mutation_count": 5,
+    "active_mutations": [
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_004_threshold_shifted/certification.json",
+        "certification_sha256": "3c5adcff06ecd075db05379254b2eb306a4c3200728945886d9777aa2371f6a9",
+        "fault_class": "threshold_or_boundary_fault",
+        "mutation_bundle_sha256": "30d887145b844ce9dce7eac6a4afce902ab9b461ea14218b8b20930cbe53d9e7",
+        "mutation_id": "neg_004_threshold_shifted",
+        "source_catalog_certification_path": "negative_variants/neg_004_threshold_shifted/certification.json",
+        "trigger_condition": "semantic threshold mutation from gold",
+        "violated_property_ids": [
+          "P_DRIVE_VOUT_TO_VDDH_FOR_A",
+          "P_WHEN_ENABLED_COMPARE_VIN_AGAINST_HALF"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_001_zero/certification.json",
+        "certification_sha256": "2051482500ed476664f670491dc15bbd1c4c3ffce5a2f1f1e037406de5ab517f",
+        "fault_class": "zero_stub_output",
+        "mutation_bundle_sha256": "ab2a3e72646a802b5a035b87d97ece60d42647f30e3c462d0010ed689c251f7d",
+        "mutation_id": "neg_001_zero",
+        "source_catalog_certification_path": "negative_variants/neg_001_zero/certification.json",
+        "trigger_condition": "semantic zero mutation from gold",
+        "violated_property_ids": [
+          "P_DRIVE_VOUT_TO_VDDH_FOR_A",
+          "P_VALID_IS_HIGH_ONLY_WHEN_ENABLED"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_002_half_scale/certification.json",
+        "certification_sha256": "ec91e3753370aa0dc382dbc1172f7bbf0bfcd4c9730a498e1895ee0297cce23a",
+        "fault_class": "metric_or_observable_fault",
+        "mutation_bundle_sha256": "82e9932152afa5a45ff8a7e454df33345a31cfc0fcb4d0f62ebd6c8876c43f94",
+        "mutation_id": "neg_002_half_scale",
+        "source_catalog_certification_path": "negative_variants/neg_002_half_scale/certification.json",
+        "trigger_condition": "semantic scale mutation from gold",
+        "violated_property_ids": [
+          "P_DRIVE_VOUT_TO_VDDH_FOR_A",
+          "P_THE_OUTPUT_HIGH_LEVEL_MUST_TRACK"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_005_event_edge_wrong/certification.json",
+        "certification_sha256": "ed08efb6a64269b11aee33182edcd12024eb1a22c2987932c5b90b87080244df",
+        "fault_class": "high_level_hardcoded",
+        "mutation_bundle_sha256": "bf45c65da669af3fd835b14644dab6da827b31058e9ce16ad992184e845bb297",
+        "mutation_id": "neg_005_event_edge_wrong",
+        "source_catalog_certification_path": "negative_variants/neg_005_event_edge_wrong/certification.json",
+        "trigger_condition": "vout high level is fixed at 0.9 V instead of tracking vddh",
+        "violated_property_ids": [
+          "P_THE_OUTPUT_HIGH_LEVEL_MUST_TRACK"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_003_inverted_transfer/certification.json",
+        "certification_sha256": "bee07c8fad1a0a0533d5b2694352b6194762656dd1701aec3c4481b44f09ea90",
+        "fault_class": "polarity_or_direction_error",
+        "mutation_bundle_sha256": "b055ab33c16e271b27f4c846aa8b938d53d8c03bb0893d7e912754ff544111b8",
+        "mutation_id": "neg_003_inverted_transfer",
+        "source_catalog_certification_path": "negative_variants/neg_003_inverted_transfer/certification.json",
+        "trigger_condition": "semantic invert mutation from gold",
+        "violated_property_ids": [
+          "P_DRIVE_VOUT_TO_VDDH_FOR_A",
+          "P_VALID_IS_HIGH_ONLY_WHEN_ENABLED"
+        ]
+      }
+    ],
+    "bugfix_seed": "neg_004_threshold_shifted",
+    "canonical_dut_id": "384",
+    "hashes": {
+      "mutation_catalog_sha256": "56a0dd27777717df74be4c3953231c21a5c77aa356fe367448996eebb1f454dd",
+      "score_deck_sha256": "8c7581a435837a4e8b1a2e63f1c1333722bafc9d29eb032c4464119bdc8a9c9b",
+      "task_certification_sha256": "dd0668131e78e51362bd49329d65cd2eec2e64c2e65b17f761edfedf854a7ba4",
+      "task_record_sha256": "80332264ebc88eccae383eb453b8ce64189268fc7e1f90ab67dcbb05c4d1475b"
+    },
+    "release_dir": "384-level-shifter-enable-rail-tracking"
+  }
+}

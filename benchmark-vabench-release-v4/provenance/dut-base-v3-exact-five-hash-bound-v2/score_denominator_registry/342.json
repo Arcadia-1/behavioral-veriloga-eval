@@ -1,0 +1,79 @@
+{
+  "family_id": "342",
+  "schema_version": "v4-score-denominator-family-registry-v1",
+  "task": {
+    "active_mutation_count": 5,
+    "active_mutations": [
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_001_sample_stuck_zero/certification.json",
+        "certification_sha256": "36c3dd16cc254237d897748cc65c07a7ad66f909a1b912bfbdc5c3359d574f69",
+        "fault_class": "sample_hold_failure",
+        "mutation_bundle_sha256": "3c8600a1a143f5bc9b43f7233a63105ba392e11189fefc8ae1c5fdf7656eaff6",
+        "mutation_id": "neg_001_sample_stuck_zero",
+        "source_catalog_certification_path": "negative_variants/neg_001_sample_stuck_zero/certification.json",
+        "trigger_condition": "sample request captures a nonzero vin",
+        "violated_property_ids": [
+          "P_SAR_SAMPLE_HOLD"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_004_wrong_first_trial/certification.json",
+        "certification_sha256": "5eabd2f99503b78caf89107d4e01dbc2879b3c3bdf3e1145f55aaa25f7470112",
+        "fault_class": "bit_trial_order",
+        "mutation_bundle_sha256": "1dac722b9d5f969a1a5c7b1f60f24126f473189bb0dab37face867762eff0c7d",
+        "mutation_id": "neg_004_wrong_first_trial",
+        "source_catalog_certification_path": "negative_variants/neg_004_wrong_first_trial/certification.json",
+        "trigger_condition": "a conversion starts",
+        "violated_property_ids": [
+          "P_SAR_DAC_TRIAL",
+          "P_SAR_FINAL_CODE"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_005_done_stuck_low/certification.json",
+        "certification_sha256": "1c59a0b4465bcdc868e7dc0f158e800fb56ae19c82a59775c9253d4028fafb11",
+        "fault_class": "reset_clear_failure",
+        "mutation_bundle_sha256": "16f02354d7d41d66689fcd69689b41dccdc58becfcb47fe5d6a768a3337438ee",
+        "mutation_id": "neg_005_done_stuck_low",
+        "source_catalog_certification_path": "negative_variants/neg_005_done_stuck_low/certification.json",
+        "trigger_condition": "rst is asserted at startup",
+        "violated_property_ids": [
+          "P_SAR_RESET_CLEAR"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_003_comparator_polarity/certification.json",
+        "certification_sha256": "40796555a2f6b7df08706b8d6d7ca446d463fae95674534280f4342106980b2a",
+        "fault_class": "comparator_polarity",
+        "mutation_bundle_sha256": "5434e1606f5adb2919c5595bc6e1fdacdbd8ca9d62549eb02f790685d775a085",
+        "mutation_id": "neg_003_comparator_polarity",
+        "source_catalog_certification_path": "negative_variants/neg_003_comparator_polarity/certification.json",
+        "trigger_condition": "held sample and DAC trial differ",
+        "violated_property_ids": [
+          "P_SAR_FINAL_CODE"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_002_cdac_divisor_15/certification.json",
+        "certification_sha256": "9655ba2e17b5bebae57ddd39d8039e1f0b8829b5a821252c94c9b03417ab0211",
+        "fault_class": "dac_weight_error",
+        "mutation_bundle_sha256": "f83c699ee52fe922a0355c56052628e74ceb8703e9f9a1e73e5eb6e6bab3e993",
+        "mutation_id": "neg_002_cdac_divisor_15",
+        "source_catalog_certification_path": "negative_variants/neg_002_cdac_divisor_15/certification.json",
+        "trigger_condition": "a nonzero trial code is active",
+        "violated_property_ids": [
+          "P_SAR_DAC_TRIAL"
+        ]
+      }
+    ],
+    "bugfix_seed": "neg_001_sample_stuck_zero",
+    "canonical_dut_id": "342",
+    "hashes": {
+      "mutation_catalog_sha256": "dd56d20e72bf33ff28f8d5c75de332d47b4c60fe5478f55744c43c23c7a0c13a",
+      "score_deck_sha256": "f2398ab3db0fd95e439c524a7f0d8ba528ad4a1d220de03551a79a453795835d",
+      "task_certification_sha256": "f1847d7200325f6123f70bdd2686cc3b8a18c324547d18c0bbd856e3aadc8d2d",
+      "task_record_sha256": "c9baf1af7876a1273cd56e87f80c52b6fb7ffb9794315aece47bf536fb444d5e"
+    },
+    "release_dir": "342-sar-adc-system-4b"
+  }
+}

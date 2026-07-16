@@ -1,0 +1,86 @@
+{
+  "family_id": "393",
+  "schema_version": "v4-score-denominator-family-registry-v1",
+  "task": {
+    "active_mutation_count": 5,
+    "active_mutations": [
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_004_threshold_shifted/certification.json",
+        "certification_sha256": "9102edabb6726a2288bd22f52417e0751044bf403dc94cc70db17c012e828093",
+        "fault_class": "threshold_or_boundary_fault",
+        "mutation_bundle_sha256": "41c8e357b4a2abd121fee1d925da1cfc3359b0b3c5ee3cd18bd1cc9046c2c501",
+        "mutation_id": "neg_004_threshold_shifted",
+        "source_catalog_certification_path": "negative_variants/neg_004_threshold_shifted/certification.json",
+        "trigger_condition": "semantic threshold mutation from gold",
+        "violated_property_ids": [
+          "P_ASSERT_WORD_VALID_AFTER_ALL_FOUR",
+          "P_ON_EACH_RISING_CLK_EDGE_WHILE",
+          "P_PHASE_METRIC_MUST_EXPOSE_THE_ACTIVE"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_001_zero/certification.json",
+        "certification_sha256": "bbe28db39970ab29bae5496fa76e983dc28d06356b31f18be5ca282a796ea827",
+        "fault_class": "zero_stub_output",
+        "mutation_bundle_sha256": "d15b7f9fc1c65f79ef9612fc2a27ba9be1fc320a589fc136d515f8b18b1f80ea",
+        "mutation_id": "neg_001_zero",
+        "source_catalog_certification_path": "negative_variants/neg_001_zero/certification.json",
+        "trigger_condition": "semantic zero mutation from gold",
+        "violated_property_ids": [
+          "P_ASSERT_WORD_VALID_AFTER_ALL_FOUR",
+          "P_ON_EACH_RISING_CLK_EDGE_WHILE",
+          "P_PHASE_METRIC_MUST_EXPOSE_THE_ACTIVE"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_002_half_scale/certification.json",
+        "certification_sha256": "dd8da8d018b9f2b719eeef02c15b4e37004a6b1a5624498849f04a6b4af5c2a1",
+        "fault_class": "metric_or_observable_fault",
+        "mutation_bundle_sha256": "ba88dad990f01c131275e6d4279a61c97306593c9cb27f78ea943e2b0873f13e",
+        "mutation_id": "neg_002_half_scale",
+        "source_catalog_certification_path": "negative_variants/neg_002_half_scale/certification.json",
+        "trigger_condition": "semantic scale mutation from gold",
+        "violated_property_ids": [
+          "P_ASSERT_WORD_VALID_AFTER_ALL_FOUR",
+          "P_ON_EACH_RISING_CLK_EDGE_WHILE",
+          "P_PHASE_METRIC_MUST_EXPOSE_THE_ACTIVE"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_005_event_edge_wrong/certification.json",
+        "certification_sha256": "c41599dba4326f86bbd0a7d2a20c95eeebe4177f61714caa7fef0099bb869ab4",
+        "fault_class": "phase_metric_one_slot_ahead",
+        "mutation_bundle_sha256": "6e0ed8d173b2f9a730f1cc9de2cc58cc4836e63ce72bbd1f40203328745e6a25",
+        "mutation_id": "neg_005_event_edge_wrong",
+        "source_catalog_certification_path": "negative_variants/neg_005_event_edge_wrong/certification.json",
+        "trigger_condition": "phase metric reports the next slot instead of the active slot",
+        "violated_property_ids": [
+          "P_PHASE_METRIC_MUST_EXPOSE_THE_ACTIVE"
+        ]
+      },
+      {
+        "certification_path": "evaluator/mutation_bundles/neg_003_inverted_transfer/certification.json",
+        "certification_sha256": "79196775a6ffe4c9f7b4db50ff2008e5c792c441751dc73cb2b090b7dd0679c3",
+        "fault_class": "polarity_or_direction_error",
+        "mutation_bundle_sha256": "7bd8bce28d652760cae5dcf395d83ea9678dd539e23bca25ac0c361d36c69049",
+        "mutation_id": "neg_003_inverted_transfer",
+        "source_catalog_certification_path": "negative_variants/neg_003_inverted_transfer/certification.json",
+        "trigger_condition": "semantic invert mutation from gold",
+        "violated_property_ids": [
+          "P_ASSERT_WORD_VALID_AFTER_ALL_FOUR",
+          "P_ON_EACH_RISING_CLK_EDGE_WHILE",
+          "P_PHASE_METRIC_MUST_EXPOSE_THE_ACTIVE"
+        ]
+      }
+    ],
+    "bugfix_seed": "neg_004_threshold_shifted",
+    "canonical_dut_id": "393",
+    "hashes": {
+      "mutation_catalog_sha256": "7e02263113423216d71ed598ed953a57c86d9bfc3a4fd2dd4a42b521e3439d4b",
+      "score_deck_sha256": "1b9f8416255b5dad4c309da762900597ecea9478f6587e9f0b363e21f3ed2694",
+      "task_certification_sha256": "abf22de4b42a93dd827a13b7c8b72eee0c513b5be42b723aba9814c6cc67ffe4",
+      "task_record_sha256": "9ffb383e7f8ca3cda3cdb4855cc2da655203d35d5fca7478f0ee54ea64e68a81"
+    },
+    "release_dir": "393-deserializer-demux-alignment-macro"
+  }
+}
