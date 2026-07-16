@@ -31,4 +31,4 @@
 
 The repaired checker path is stimulus-relative or observable-event-relative for families `011-020`, feedback and score profiles have zero semantic drift except allowed `simulatorOptions`, checker trace contracts match public observables, and task/denominator hashes were refreshed for the selected range only.
 
-Not-tested: local Spectre/Cadence validation. `command -v spectre` returned no executable in this worktree environment, so Spectre remains an explicit validation gap and the final judge.
+Spectre/Cadence is not available and is not part of this repository's acceptance protocol. Executable validation uses the pinned Rust EVAS2 runtime and records per-case runtime identity.

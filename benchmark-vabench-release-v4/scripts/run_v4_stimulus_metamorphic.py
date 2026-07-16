@@ -116,7 +116,9 @@ def affine_time(value: str, scale: float, shift: float, *, absolute: bool) -> st
 
 
 def _transform_wave(match: re.Match[str], scale: float, shift: float) -> str:
-    tokens = match.group("tokens").split()
+    # Spectre decks commonly use a bare backslash for PWL line continuation.
+    # It is syntax, not a time/value token; emit an equivalent single-line wave.
+    tokens = [token for token in match.group("tokens").split() if token != "\\"]
     if len(tokens) % 2:
         raise ValueError(f"PWL wave has an odd token count: {match.group(0)!r}")
     for index in range(0, len(tokens), 2):

@@ -28,6 +28,18 @@ def test_affine_transform_scales_pwl_and_shifts_absolute_times() -> None:
     assert "maxstep=200p" in transformed
 
 
+def test_affine_transform_accepts_multiline_pwl_continuations() -> None:
+    deck = (
+        "Vx (x 0) vsource type=pwl wave=[ \\\n"
+        "0 0 \\\n"
+        "10n 0.9 \\\n"
+        "]\ntran tran stop=10n\n"
+    )
+    transformed = runner.transform_stimulus(deck, scale=2.0, shift=1e-9)
+    assert "wave=[1n 0 21n 0.9]" in transformed
+    assert "\\" not in transformed
+
+
 def test_insufficient_stimulus_keeps_legal_source_declarations() -> None:
     deck = "Vx (x 0) vsource type=pwl wave=[0 0 5n 0.9]\nVclk (c 0) vsource type=pulse period=5n width=2n\n"
     suppressed = runner.suppress_stimulus(deck)

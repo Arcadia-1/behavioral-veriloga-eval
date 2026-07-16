@@ -1,24 +1,13 @@
 {
   "corners": [],
-  "deck_overrides": {
-    "body_lines": [
-      "Vrst (rst 0) vsource type=pwl wave=[0 0.9 25n 0.9 26n 0 220n 0 221n 0.9 250n 0.9 251n 0 320n 0]",
-      "Vin (vin 0) vsource dc=0.002",
-      "",
-      "XDUT (vin rst vout) resettable_integrator",
-      ""
-    ]
-  },
+  "deck_overrides": {},
   "deterministic_seed": 0,
   "generated_from": {
     "script": "render_v4_harness.py",
     "version": "v4-harness-renderer-v1"
   },
-  "harness_spec_sha256": "f7415d7b65a75022c1e3cd20c4a206a12128b379bb5fe8a8bbac918c465022c4",
-  "parameters": {
-    "maxstep": "100p",
-    "stop_time": "100n"
-  },
+  "harness_spec_sha256": "9420c07b7dd33d30fd930092874ed997607941f08351d1d78dd47dee868b7672",
+  "parameters": {},
   "profile_name": "score",
   "property_ids": [
     "P_INITIAL_ZERO",
