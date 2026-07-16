@@ -21,6 +21,8 @@ PROFILE_SCHEMA = ROOT / "schemas" / "harness_profile.schema.json"
 GENERATOR_VERSION = "v4-harness-renderer-v1"
 MAX_SAVE_LINE_LENGTH = 1000
 BACKEND_ONLY_SIMULATOR_OPTIONS = {"evas_profile"}
+CANONICAL_SEMANTICS_MODE = "single_deck_v1"
+SEMANTIC_DECK_OVERRIDE_KEYS = frozenset({"body_lines", "analyses", "save_signals"})
 
 
 def read_json(path: Path) -> dict[str, Any]:
@@ -113,6 +115,35 @@ def validate_schema(payload: dict[str, Any], schema_path: Path) -> None:
             raise ValueError("score harness must not be public_visible")
         return
     raise ValueError(f"unsupported schema path: {schema_path}")
+
+
+def validate_canonical_semantics(spec: dict[str, Any]) -> None:
+    """Reject profile-owned stimulus edits for opted-in canonical specs.
+
+    Legacy V4 specs remain loadable while they are migrated batch by batch.  A
+    spec that declares ``single_deck_v1`` must keep all stimulus, analysis,
+    stop-time, and saved-signal semantics in ``deck``; profiles are limited to
+    backend-facing options and metadata.
+    """
+
+    semantics = spec.get("canonical_semantics") or {}
+    if semantics.get("mode") != CANONICAL_SEMANTICS_MODE:
+        return
+    defaults = spec.get("profile_defaults") or {}
+    offending: dict[str, list[str]] = {}
+    for profile_name in ("feedback", "score"):
+        profile = defaults.get(profile_name) or {}
+        overrides = profile.get("deck_overrides") or {}
+        keys = sorted(SEMANTIC_DECK_OVERRIDE_KEYS.intersection(overrides))
+        if keys:
+            offending[profile_name] = keys
+    if offending:
+        details = "; ".join(
+            f"{name}: {', '.join(keys)}" for name, keys in sorted(offending.items())
+        )
+        raise ValueError(
+            "single_deck_v1 forbids semantic profile deck overrides (" + details + ")"
+        )
 
 
 def format_value(value: Any) -> str:
@@ -319,6 +350,7 @@ def render_scs(spec: dict[str, Any], profile: dict[str, Any]) -> str:
 def load_spec(path: Path) -> tuple[dict[str, Any], str]:
     spec = read_json(path)
     validate_schema(spec, SPEC_SCHEMA)
+    validate_canonical_semantics(spec)
     return spec, file_sha256(path)
 
 

@@ -7,14 +7,14 @@ ahdl_include "./dut/power_good.va"
 ahdl_include "./dut/pwm_modulator.va"
 ahdl_include "./dut/soft_start.va"
 
-Vclk (clk 0) vsource type=pulse val0=0 val1=0.9 period=10n width=4n rise=100p fall=100p delay=2n
-Vrst (rst 0) vsource type=pwl wave=[0 0.9 4n 0.9 4.2n 0 180n 0 180.2n 0.9 190n 0.9 190.2n 0]
-Ven (enable 0) vsource type=pwl wave=[0 0 5n 0 5.2n 0.9 150n 0.9 150.2n 0 165n 0 165.2n 0.9 220n 0.9]
-Vrefsrc (vref 0) vsource dc=0.6
-Vfb (vfb 0) vsource type=pwl wave=[0 0.10 65n 0.10 65.2n 0.60 115n 0.60 115.2n 0.78 145n 0.78 145.2n 0.60 220n 0.60]
-XDUT (vfb vref clk rst enable pwm duty_metric soft_ref pgood) buck_ctrl_top
+Vclk (clk 0) vsource type=pulse val0=0 val1=0.9 period=8n width=3n rise=100p fall=100p delay=1n
+Vrst (rst 0) vsource type=pwl wave=[0 0.9 3n 0.9 3.2n 0 250n 0 250.2n 0.9 262n 0.9 262.2n 0]
+Ven (enable 0) vsource type=pwl wave=[0 0 4n 0 4.2n 0.9 205n 0.9 205.2n 0 222n 0 222.2n 0.9 320n 0.9]
+Vrefsrc (vref 0) vsource dc=0.62
+Vfb (vfb 0) vsource type=pwl wave=[0 0.18 72n 0.18 72.2n 0.62 128n 0.62 128.2n 0.76 176n 0.76 176.2n 0.57 240n 0.57 240.2n 0.62 320n 0.62]
+XDUT (vfb vref clk rst enable pwm duty_metric soft_ref pgood) buck_ctrl_top soft_step=0.025 pgood_tol=0.025
 
 simulatorOptions options evas_profile=balanced
 
-tran tran stop=220n maxstep=200p
+tran tran stop=320n maxstep=100p
 save vfb vref clk rst enable pwm duty_metric soft_ref pgood

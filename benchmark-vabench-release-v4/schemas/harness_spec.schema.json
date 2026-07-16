@@ -127,6 +127,14 @@
         "notes": {"type": "array", "items": {"type": "string", "minLength": 1}}
       },
       "additionalProperties": false
+    },
+    "canonical_semantics": {
+      "type": "object",
+      "required": ["mode"],
+      "properties": {
+        "mode": {"const": "single_deck_v1"}
+      },
+      "additionalProperties": false
     }
   },
   "$defs": {
