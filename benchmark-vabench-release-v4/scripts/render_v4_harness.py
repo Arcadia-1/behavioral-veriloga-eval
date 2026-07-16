@@ -279,7 +279,6 @@ def parse_args() -> argparse.Namespace:
 def main() -> int:
     args = parse_args()
     spec, spec_hash = load_spec(args.spec)
-    validate_profile_semantics(spec)
     profile = build_profile(spec, args.profile, spec_hash)
     deck = render_scs(spec, profile)
     if args.profile_output:

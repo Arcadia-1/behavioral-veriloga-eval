@@ -1,8 +1,7 @@
 #!/usr/bin/env python3
 """Run benchmarkv4 testbench references through Rust EVAS as a smoke gate.
 
-This is a local, fast triage runner.  Spectre remains the final judge, but this
-script stages benchmarkv4 tasks exactly as the release contract expects:
+This runner stages benchmarkv4 tasks exactly as the release contract expects:
 ``reference_tb.scs`` sees the supplied DUT under ``./dut/...`` including any
 public support files.  Optional mutation runs overlay each score mutation on
 top of the same supplied DUT tree and verify that the private checker rejects

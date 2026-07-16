@@ -3,8 +3,7 @@
 
 The transformed deck keeps the source waveform amplitudes and event ordering,
 while applying a small affine timing change to stay within normal task
-constraints.  This is a smoke/regression check; Spectre remains the final
-score authority.
+constraints. This is a Rust EVAS2 smoke/regression check.
 """
 from __future__ import annotations
 
