@@ -163,6 +163,7 @@ def case_evas2_runtime(output_dir: Path) -> dict[str, Any]:
 
 def engine_evidence_from_log(log_path: Path, combined_output: str) -> dict[str, Any]:
     """Compatibility API for the metamorphic/profile evidence runners."""
+    configured_engine = effective_evas_engine()
     text = combined_output
     if log_path.is_file():
         text += "\n" + log_path.read_text(encoding="utf-8", errors="replace")
@@ -171,20 +172,20 @@ def engine_evidence_from_log(log_path: Path, combined_output: str) -> dict[str, 
     version = version_match.group(1) if version_match else "unknown"
     backend = backend_match.group(1) if backend_match else "unknown"
     valid = (
-        effective_evas_engine() == REQUIRED_EVAS_ENGINE
+        configured_engine == REQUIRED_EVAS_ENGINE
         and version == REQUIRED_EVAS_VERSION
         and backend == RUST_EVAS_LOG_ENGINE
     )
     notes: list[str] = []
-    if effective_evas_engine() != REQUIRED_EVAS_ENGINE:
-        notes.append(f"configured_evas_engine={effective_evas_engine()}")
+    if configured_engine != REQUIRED_EVAS_ENGINE:
+        notes.append(f"configured_evas_engine={configured_engine}")
     if version != REQUIRED_EVAS_VERSION:
         notes.append(f"evas_version={version}")
     if backend != RUST_EVAS_LOG_ENGINE:
         notes.append(f"evas_backend={backend}")
     return {
-        "evas_engine": REQUIRED_EVAS_ENGINE if valid else "invalid",
-        "evas_engine_used": REQUIRED_EVAS_ENGINE if valid else "invalid",
+        "evas_engine": configured_engine,
+        "evas_engine_used": configured_engine,
         "evas_version": version,
         "evas_backend": backend,
         "evas_backend_used": backend,

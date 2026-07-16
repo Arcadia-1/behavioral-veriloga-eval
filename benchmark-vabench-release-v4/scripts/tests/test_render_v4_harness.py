@@ -129,8 +129,18 @@ def test_evas2_evidence_requires_explicit_engine_and_rust_log(
 
 def test_evas2_evidence_rejects_python_engine(
     monkeypatch: pytest.MonkeyPatch,
+    tmp_path: Path,
 ) -> None:
     monkeypatch.setenv("EVAS_ENGINE", "python")
     monkeypatch.setenv("VAEVAS_DEFAULT_EVAS_ENGINE", "python")
     with pytest.raises(SystemExit, match="EVAS_ENGINE=evas2"):
         require_evas2_environment()
+    log = tmp_path / "evas.log"
+    log.write_text(
+        "Version 0.8.2 -- Jul 2026\n    evas_engine = python\n",
+        encoding="utf-8",
+    )
+    evidence = engine_evidence_from_log(log, "")
+    assert evidence["evas_engine"] == "python"
+    assert evidence["evas_engine_used"] == "python"
+    assert evidence["valid"] is False
