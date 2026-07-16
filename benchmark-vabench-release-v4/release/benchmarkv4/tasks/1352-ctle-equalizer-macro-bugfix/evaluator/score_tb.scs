@@ -12,6 +12,5 @@ Vvin (vin 0) vsource type=pwl wave=[0 0.45 7n 0.45 7.1n 0.20 16n 0.20 16.1n 0.70
 
 XDUT (vin clk rst boost_2 boost_1 boost_0 vout edge_metric sat_flag) ctle_equalizer
 
-
 tran tran stop=76n maxstep=90p
 save vin clk rst boost_2 boost_1 boost_0 vout edge_metric sat_flag
