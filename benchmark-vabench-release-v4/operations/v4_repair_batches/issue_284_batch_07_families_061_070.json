@@ -73,8 +73,8 @@
     }
   ],
   "issue": 284,
-  "not_tested": [
-    "Spectre/Cadence final judge was not run in this local validation pass."
+  "not_applicable": [
+    "Spectre/Cadence is not part of the repository acceptance protocol; executable validation uses pinned Rust EVAS2."
   ],
   "owner": "@BucketSran",
   "scope": "families 061-070",

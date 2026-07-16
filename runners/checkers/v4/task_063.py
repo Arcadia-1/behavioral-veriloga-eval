@@ -56,6 +56,26 @@ def check_settling_window_detector(rows: list[dict[str, float]]) -> tuple[bool, 
     reset_seen = False
     failures: list[str] = []
 
+    unexpected_settled = next(
+        (
+            row
+            for row, expected_in_window in zip(rows, flags)
+            if not expected_in_window and row["settled"] > 0.45
+        ),
+        None,
+    )
+    if unexpected_settled is not None:
+        errors += 1
+        failures.append(
+            diagnostic(
+                "P_WINDOW_DEFINITION",
+                "semantic_mismatch",
+                expected="settled=low_outside_tolerance_window",
+                observed=f"settled={unexpected_settled['settled']:.3f}",
+                event=event_label("outside_window", 1, unexpected_settled["time"]),
+            )
+        )
+
     for interval_index, (entry, exit_t) in enumerate(long_intervals, start=1):
         early_t = entry + 0.5 * hold
         settled_t = probe_time(rows, entry + hold, exit_t, fraction=0.25)

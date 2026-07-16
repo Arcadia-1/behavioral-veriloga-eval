@@ -48,6 +48,16 @@ def test_insufficient_stimulus_keeps_legal_source_declarations() -> None:
     assert suppressed.count("vsource dc=0") == 2
 
 
+def test_insufficient_stimulus_leaves_autonomous_dc_only_deck_unchanged() -> None:
+    deck = "Vdd (vdd 0) vsource dc=0.9\ntran tran stop=10n\n"
+    assert runner.suppress_stimulus(deck) == deck
+
+
+def test_insufficient_stimulus_leaves_constant_configuration_pwl_unchanged() -> None:
+    deck = "Vseed (seed 0) vsource type=pwl wave=[0 0.9 10n 0.9]\n"
+    assert runner.suppress_stimulus(deck) == deck
+
+
 def test_evas2_evidence_requires_version_and_rust_backend_markers() -> None:
     evidence = runner.require_rust_evas2(
         "Version 0.8.2\n    evas_engine = evas-rust\n"

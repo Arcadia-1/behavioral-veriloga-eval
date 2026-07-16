@@ -99,3 +99,32 @@ def test_batch_064_checker_uses_observed_disable_event_not_absolute_window() -> 
     assert checker is not None
     passed, detail = checker(_batch_064_shifted_trace())
     assert passed, detail
+
+
+def test_batch_063_checker_rejects_settled_high_outside_tolerance_window() -> None:
+    from checkers.v4.registry import load_checker
+
+    rows: list[dict[str, float]] = []
+    for time_ns in range(101):
+        in_valid_window = 40 <= time_ns < 75
+        in_wide_only_window = time_ns < 30
+        settled = 0.9 if (20 <= time_ns < 30 or 60 <= time_ns < 75) else 0.0
+        entry_code = 40 if in_valid_window else 0
+        row = {
+            "time": time_ns * 1e-9,
+            "vin": 0.51 if in_valid_window else (0.58 if in_wide_only_window else 0.7),
+            "target": 0.5,
+            "tol": 0.05,
+            "settled": settled,
+        }
+        row.update(
+            {f"t_code{bit}": 0.9 if entry_code & (1 << bit) else 0.0 for bit in range(8)}
+        )
+        rows.append(row)
+
+    checker = load_checker("v4_063_settling_window_detector")
+    assert checker is not None
+    passed, detail = checker(rows)
+    assert not passed
+    assert "property_id=P_WINDOW_DEFINITION" in detail
+    assert "settled=low_outside_tolerance_window" in detail
