@@ -30,10 +30,10 @@ Preserve this exact artifact and module interface:
 
 The repaired bundle must satisfy every public property:
 
-- `P_NORMALIZE_MEAS_RELATIVE_TO_THE_LOCAL`: restore: Normalize meas relative to the local V(vdd,vss) span and vss rail. Required traces: `time`, `en`, `meas`, `norm`, `valid`, `vdd`, `vss`.
-- `P_CLIP_THE_NORMALIZED_METRIC_TO_THE`: restore: Clip the normalized metric to the public voltage-coded range. Required traces: `time`, `en`, `meas`, `norm`, `valid`, `vdd`, `vss`.
-- `P_ASSERT_VALID_ONLY_WHEN_ENABLE_IS`: restore: Assert valid only when enable is high, supply span is valid, and the measurement lies inside the local rail window. Required traces: `time`, `en`, `meas`, `norm`, `valid`, `vdd`, `vss`.
-- `P_CLEAR_NORM_AND_VALID_WHILE_DISABLED`: restore: Clear norm and valid while disabled or under the minimum supply span. Required traces: `time`, `en`, `meas`, `norm`, `valid`, `vdd`, `vss`.
+- `P_NORMALIZE_MEAS_RELATIVE_TO_THE_LOCAL`: restore: Let `span = V(vdd, vss)` and `local_meas = V(meas) - V(vss)`. When `V(en) > vth` and `span >= span_min`, `norm = vhi * clip01(local_meas / span)`. Required traces: `time`, `en`, `meas`, `norm`, `valid`, `vdd`, `vss`.
+- `P_CLIP_THE_NORMALIZED_METRIC_TO_THE`: restore: `clip01(x)` limits `x` to `[0, 1]`, so enabled `norm` is clipped to `[0 V, vhi]` even when `meas` lies outside the local rails. Required traces: `time`, `en`, `meas`, `norm`, `valid`, `vdd`, `vss`.
+- `P_ASSERT_VALID_ONLY_WHEN_ENABLE_IS`: restore: `valid = vhi` exactly when `V(en) > vth`, `span_min <= span <= span_max`, and `0 <= local_meas <= span`; otherwise `valid = 0 V`. Required traces: `time`, `en`, `meas`, `norm`, `valid`, `vdd`, `vss`.
+- `P_CLEAR_NORM_AND_VALID_WHILE_DISABLED`: restore: Disabled or `span < span_min` clears both outputs. A span above `span_max` clears `valid` but does not by itself clear clipped `norm`. Required traces: `time`, `en`, `meas`, `norm`, `valid`, `vdd`, `vss`.
 - `P_USE_LOCAL_ANALOG_HELPER_FUNCTIONS_RATHER`: restore: Use local analog helper functions rather than user task/endtask syntax. Required traces: `time`, `en`, `meas`, `norm`, `valid`, `vdd`, `vss`.
 
 ## Modeling Constraints

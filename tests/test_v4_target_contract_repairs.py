@@ -246,6 +246,32 @@ def test_sarfend_public_contract_exposes_trial_and_bit_mapping_semantics() -> No
         assert "MSB-to-LSB" in properties["P_SAMPLE_AND_COMPARATOR_DECISIONS"]
 
 
+def test_rail_normalized_mapper_exposes_formula_and_distinct_valid_gate() -> None:
+    task_names = (
+        "274-rail-normalized-metric-mapper",
+        "774-rail-normalized-metric-mapper-testbench",
+        "1274-rail-normalized-metric-mapper-bugfix",
+    )
+    for task_name in task_names:
+        task = _task(task_name)
+        instruction = (task / "public" / "instruction.md").read_text()
+        assert "local_meas = V(meas) - V(vss)" in instruction
+        assert "norm = vhi * clip01(local_meas / span)" in instruction
+        assert "span_min <= span <= span_max" in instruction
+        assert "above `span_max`" in instruction
+
+        properties = {
+            item["id"]: item["observable_contract"]
+            for item in _public_contract(task_name)["properties"]
+        }
+        assert "local_meas / span" in properties[
+            "P_NORMALIZE_MEAS_RELATIVE_TO_THE_LOCAL"
+        ]
+        assert "does not by itself clear clipped norm" in properties[
+            "P_CLEAR_NORM_AND_VALID_WHILE_DISABLED"
+        ]
+
+
 def test_repaired_testbench_bindings_match_reference_trace_names() -> None:
     expected = {
         "517-strongarm-style-latch-comparator-testbench": {
