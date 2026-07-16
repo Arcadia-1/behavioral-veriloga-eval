@@ -507,6 +507,8 @@ def compact_text_lines(text: str, *, limit: int = 24) -> list[str]:
         seen.add(line)
         lowered = line.lower()
         clipped = line[:1000]
+        if re.fullmatch(r"required_trace_missing_node_count\s*=\s*0", lowered):
+            continue
         if (
             re.search(r"\bP_[A-Z0-9_]+\b", line)
             or any(
@@ -537,6 +539,9 @@ def compact_text_lines(text: str, *, limit: int = 24) -> list[str]:
             or "invalid source" in lowered
             or "missing required" in lowered
             or "timed out" in lowered
+            or "rustsimprogram rejection:" in lowered
+            or "not_lowered" in lowered
+            or re.search(r"\b[A-Za-z_][A-Za-z0-9_]*(?:Error|Exception):", line)
             or re.search(r"(^|\s)(error|fatal|panic|exception)(\s|:|\[)", lowered)
             or any(
                 token in lowered
