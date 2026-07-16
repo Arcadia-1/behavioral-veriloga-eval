@@ -9,9 +9,7 @@ Ven (en 0) vsource type=pwl wave=[0 0.9 14n 0.9 14.05n 0]
 Vpd (pd 0) vsource type=pwl wave=[0 0 16n 0 16.05n 0.9]
 Vmode (mode 0) vsource type=pwl wave=[0 0 6n 0 6.05n 0.9 10n 0.9 10.05n 0]
 Vload (load 0) vsource type=pwl wave=[0 0.10 2n 0.10 2.05n 0.70 9n 0.70 9.05n 0.20 13n 0.20 13.05n 0.85]
-
 XDUT (vdd vss en pd mode load isup_metric) power_mode_supply_current_metric
-
 
 simulatorOptions options evas_profile=balanced
 

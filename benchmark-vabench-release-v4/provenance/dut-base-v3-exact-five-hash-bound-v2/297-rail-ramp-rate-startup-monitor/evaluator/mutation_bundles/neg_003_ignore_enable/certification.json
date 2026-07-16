@@ -33,7 +33,7 @@
     }
   },
   "diagnostics": {
-    "expected": "trigger=stimulus exercises neg_003_ignore_enable; violated_properties=P_RAIL_OK_ENFORCES_ENABLE_AND_SUPPLY_WINDOW,P_VTH_0_45_V_LOGIC_THRESHOLD",
+    "expected": "trigger=stimulus exercises redacted_fault_case; violated_properties=P_RAIL_OK_ENFORCES_ENABLE_AND_SUPPLY_WINDOW,P_VTH_0_45_V_LOGIC_THRESHOLD",
     "observed": "EVAS: rail_startup_error=0.9000; Spectre: rail_startup_error=0.9000",
     "violated_property_ids": [
       "P_RAIL_OK_ENFORCES_ENABLE_AND_SUPPLY_WINDOW",

@@ -33,7 +33,7 @@
     }
   },
   "diagnostics": {
-    "expected": "trigger=stimulus exercises neg_003_fixed_target; violated_properties=P_ON_EACH_RISING_CROSSING_OF_CLK,P_VHI_0_9_V_HIGH_LEVEL",
+    "expected": "trigger=stimulus exercises redacted_fault_case; violated_properties=P_ON_EACH_RISING_CROSSING_OF_CLK,P_VHI_0_9_V_HIGH_LEVEL",
     "observed": "EVAS: reference_settling_error=0.9000; Spectre: reference_settling_error=0.9000",
     "violated_property_ids": [
       "P_ON_EACH_RISING_CROSSING_OF_CLK",

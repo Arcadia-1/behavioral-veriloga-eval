@@ -33,7 +33,7 @@
     }
   },
   "diagnostics": {
-    "expected": "trigger=stimulus exercises neg_002_common_mode_only_valid; violated_properties=P_CONTINUOUSLY_COMPUTE_VDIFF_V_VIP_V,P_VTH_0_45_V_LOGIC_THRESHOLD",
+    "expected": "trigger=stimulus exercises redacted_fault_case; violated_properties=P_CONTINUOUSLY_COMPUTE_VDIFF_V_VIP_V,P_VTH_0_45_V_LOGIC_THRESHOLD",
     "observed": "EVAS: diff_cm_monitor_error=0.9000; Spectre: diff_cm_monitor_error=0.9000",
     "violated_property_ids": [
       "P_CONTINUOUSLY_COMPUTE_VDIFF_V_VIP_V",

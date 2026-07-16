@@ -33,7 +33,7 @@
     }
   },
   "diagnostics": {
-    "expected": "trigger=stimulus exercises neg_002_no_settle_requirement; violated_properties=P_RAMP_OK_QUALIFIES_STARTUP_AND_SETTLING_SLEW,P_STARTUP_READY_REQUIRES_CONSECUTIVE_SETTLED_SAMPLES,P_BUILD_A_VOLTAGE_DOMAIN_STARTUP_MONITOR",
+    "expected": "trigger=stimulus exercises redacted_fault_case; violated_properties=P_RAMP_OK_QUALIFIES_STARTUP_AND_SETTLING_SLEW,P_STARTUP_READY_REQUIRES_CONSECUTIVE_SETTLED_SAMPLES,P_BUILD_A_VOLTAGE_DOMAIN_STARTUP_MONITOR",
     "observed": "EVAS: rail_startup_error=0.9000; Spectre: rail_startup_error=0.9000",
     "violated_property_ids": [
       "P_BUILD_A_VOLTAGE_DOMAIN_STARTUP_MONITOR",

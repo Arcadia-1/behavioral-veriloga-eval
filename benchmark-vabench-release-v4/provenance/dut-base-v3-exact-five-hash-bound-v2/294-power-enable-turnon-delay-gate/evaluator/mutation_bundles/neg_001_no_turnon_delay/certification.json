@@ -33,7 +33,7 @@
     }
   },
   "diagnostics": {
-    "expected": "trigger=stimulus exercises neg_001_no_turnon_delay; violated_properties=P_ON_EACH_RISING_CROSSING_OF_CLK,P_BUILD_A_VOLTAGE_DOMAIN_POWER_SEQUENCING",
+    "expected": "trigger=stimulus exercises redacted_fault_case; violated_properties=P_ON_EACH_RISING_CROSSING_OF_CLK,P_BUILD_A_VOLTAGE_DOMAIN_POWER_SEQUENCING",
     "observed": "EVAS: turnon_delay_gate_error=0.9000; Spectre: turnon_delay_gate_error=0.9000",
     "violated_property_ids": [
       "P_BUILD_A_VOLTAGE_DOMAIN_POWER_SEQUENCING",

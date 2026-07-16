@@ -33,7 +33,7 @@
     }
   },
   "diagnostics": {
-    "expected": "trigger=stimulus exercises neg_005_short_delay; violated_properties=P_ON_EACH_RISING_CROSSING_OF_CLK,P_VBIAS_MIN_0_25_V_VBIAS",
+    "expected": "trigger=stimulus exercises redacted_fault_case; violated_properties=P_ON_EACH_RISING_CROSSING_OF_CLK,P_VBIAS_MIN_0_25_V_VBIAS",
     "observed": "EVAS: turnon_delay_gate_error=0.9000; Spectre: turnon_delay_gate_error=0.9000",
     "violated_property_ids": [
       "P_ON_EACH_RISING_CROSSING_OF_CLK",

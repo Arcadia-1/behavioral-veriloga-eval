@@ -33,7 +33,7 @@
     }
   },
   "diagnostics": {
-    "expected": "trigger=stimulus exercises neg_002_ignore_supply_scaling; violated_properties=P_DRIVE_ISUP_METRIC_AS_A_VOLTAGE,P_VTH_0_45_V_LOGIC_THRESHOLD",
+    "expected": "trigger=stimulus exercises redacted_fault_case; violated_properties=P_DRIVE_ISUP_METRIC_AS_A_VOLTAGE,P_VTH_0_45_V_LOGIC_THRESHOLD",
     "observed": "EVAS: supply_metric_error=0.0591; Spectre: supply_metric_error=0.0591",
     "violated_property_ids": [
       "P_DRIVE_ISUP_METRIC_AS_A_VOLTAGE",

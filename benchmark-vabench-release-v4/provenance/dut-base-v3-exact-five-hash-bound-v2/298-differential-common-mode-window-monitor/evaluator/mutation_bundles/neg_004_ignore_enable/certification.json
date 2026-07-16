@@ -33,7 +33,7 @@
     }
   },
   "diagnostics": {
-    "expected": "trigger=stimulus exercises neg_004_ignore_enable; violated_properties=P_CONTINUOUSLY_COMPUTE_VDIFF_V_VIP_V,P_DIFF_MAX_0_30_V_MAXIMUM",
+    "expected": "trigger=stimulus exercises redacted_fault_case; violated_properties=P_CONTINUOUSLY_COMPUTE_VDIFF_V_VIP_V,P_DIFF_MAX_0_30_V_MAXIMUM",
     "observed": "EVAS: diff_cm_monitor_error=0.9000; Spectre: diff_cm_monitor_error=0.9000",
     "violated_property_ids": [
       "P_CONTINUOUSLY_COMPUTE_VDIFF_V_VIP_V",

@@ -33,7 +33,7 @@
     }
   },
   "diagnostics": {
-    "expected": "trigger=stimulus exercises neg_003_no_reset_clear; violated_properties=P_CLEAR_LOCK_STATE_AND_PROGRESS_WHEN",
+    "expected": "trigger=stimulus exercises redacted_fault_case; violated_properties=P_CLEAR_LOCK_STATE_AND_PROGRESS_WHEN",
     "observed": "EVAS: event_reacquire_lock_error=0.9000; Spectre: event_reacquire_lock_error=0.9000",
     "violated_property_ids": [
       "P_CLEAR_LOCK_STATE_AND_PROGRESS_WHEN"

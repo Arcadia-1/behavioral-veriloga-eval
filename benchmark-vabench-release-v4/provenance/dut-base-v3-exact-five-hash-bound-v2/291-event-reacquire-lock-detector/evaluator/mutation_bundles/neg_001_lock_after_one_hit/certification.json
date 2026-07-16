@@ -33,7 +33,7 @@
     }
   },
   "diagnostics": {
-    "expected": "trigger=stimulus exercises neg_001_lock_after_one_hit; violated_properties=P_RECORD_REFERENCE_CLOCK_RISING_EDGE_TIME",
+    "expected": "trigger=stimulus exercises redacted_fault_case; violated_properties=P_RECORD_REFERENCE_CLOCK_RISING_EDGE_TIME",
     "observed": "EVAS: event_reacquire_lock_error=0.9000; Spectre: event_reacquire_lock_error=0.9000",
     "violated_property_ids": [
       "P_RECORD_REFERENCE_CLOCK_RISING_EDGE_TIME"

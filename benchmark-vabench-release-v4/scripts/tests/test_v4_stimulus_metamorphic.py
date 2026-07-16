@@ -31,7 +31,7 @@ def test_affine_transform_scales_pwl_and_shifts_absolute_times() -> None:
 def test_affine_transform_scales_explicit_dut_timing_parameters() -> None:
     deck = (
         "XDUT (clk data up dn) bbpd clk_period=20n clk_delay=10n "
-        "deadzone=800p pulse_w=1n poll_dt=50p\n"
+        "deadzone=800p pulse_w=1n poll_dt=50p lock_window=180p\n"
     )
     transformed = runner.transform_stimulus(deck, scale=2.0, shift=1e-9)
     assert "clk_period=40n" in transformed
@@ -39,6 +39,7 @@ def test_affine_transform_scales_explicit_dut_timing_parameters() -> None:
     assert "deadzone=1.6n" in transformed
     assert "pulse_w=2n" in transformed
     assert "poll_dt=100p" in transformed
+    assert "lock_window=360p" in transformed
 
 
 def test_affine_transform_accepts_multiline_pwl_continuations() -> None:

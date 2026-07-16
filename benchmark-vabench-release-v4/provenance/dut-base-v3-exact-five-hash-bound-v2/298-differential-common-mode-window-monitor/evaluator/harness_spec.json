@@ -9,7 +9,13 @@
     "analyses": [
       "tran tran stop=16n maxstep=10p"
     ],
-    "body_lines": [],
+    "body_lines": [
+      "Vref (vcm_ref 0) vsource type=pwl wave=[0 0.45 8n 0.45 8.05n 0.52 16n 0.52]",
+      "Ven (en 0) vsource type=pwl wave=[0 0.9 12n 0.9 12.05n 0.0 14n 0.0 14.05n 0.9 16n 0.9]",
+      "Vvip (vip 0) vsource type=pwl wave=[0 0.50 2n 0.50 2.05n 0.65 4n 0.65 4.05n 0.62 6n 0.62 6.05n 0.42 8n 0.42 8.05n 0.56 10n 0.56 10.05n 0.70 12n 0.70 12.05n 0.55 14n 0.55 14.05n 0.44 16n 0.44]",
+      "Vvin (vin 0) vsource type=pwl wave=[0 0.40 2n 0.40 2.05n 0.25 4n 0.25 4.05n 0.52 6n 0.52 6.05n 0.22 8n 0.22 8.05n 0.48 10n 0.48 10.05n 0.36 12n 0.36 12.05n 0.45 14n 0.45 14.05n 0.60 16n 0.60]",
+      "XDUT (vip vin vcm_ref en diff_ok cm_ok valid diff_metric cm_metric) differential_common_mode_window_monitor"
+    ],
     "header": [
       "simulator lang=spectre",
       "global 0"
@@ -41,50 +47,17 @@
     "legacy_score_deck_sha256": "205e2c6a2f945fa9c447edb1fa69ca47e5d12ffb346ab486fba8cc16e9670e27",
     "notes": [
       "legacy feedback deck was used only to seed the canonical harness spec",
-      "legacy score deck seeded private profile-specific overrides"
+      "legacy score deck seeded private profile-specific overrides",
+      "feedback deck is the canonical stimulus; score is generated with identical semantics"
     ]
   },
   "profile_defaults": {
     "feedback": {
-      "deck_overrides": {
-        "body_lines": [
-          "Vref (vcm_ref 0) vsource type=pwl wave=[0 0.45 8n 0.45 8.05n 0.52 16n 0.52]",
-          "Ven (en 0) vsource type=pwl wave=[0 0.9 12n 0.9 12.05n 0.0 14n 0.0 14.05n 0.9 16n 0.9]",
-          "Vvip (vip 0) vsource type=pwl wave=[0 0.50 2n 0.50 2.05n 0.65 4n 0.65 4.05n 0.62 6n 0.62 6.05n 0.42 8n 0.42 8.05n 0.56 10n 0.56 10.05n 0.70 12n 0.70 12.05n 0.55 14n 0.55 14.05n 0.44 16n 0.44]",
-          "Vvin (vin 0) vsource type=pwl wave=[0 0.40 2n 0.40 2.05n 0.25 4n 0.25 4.05n 0.52 6n 0.52 6.05n 0.22 8n 0.22 8.05n 0.48 10n 0.48 10.05n 0.36 12n 0.36 12.05n 0.45 14n 0.45 14.05n 0.60 16n 0.60]",
-          "",
-          "XDUT (vip vin vcm_ref en diff_ok cm_ok valid diff_metric cm_metric) differential_common_mode_window_monitor",
-          ""
-        ]
-      },
-      "parameters": {
-        "maxstep": "200p",
-        "stop_time": "100n"
-      },
       "simulatorOptions": {
         "evas_profile": "balanced"
       }
     },
-    "score": {
-      "deck_overrides": {
-        "analyses": [
-          "tran tran stop=17n maxstep=10p"
-        ],
-        "body_lines": [
-          "Vref (vcm_ref 0) vsource type=pwl wave=[0 0.50 7n 0.50 7.04n 0.42 17n 0.42]",
-          "Ven (en 0) vsource type=pwl wave=[0 0.9 10.5n 0.9 10.55n 0.0 12.5n 0.0 12.55n 0.9 17n 0.9]",
-          "Vvip (vip 0) vsource type=pwl wave=[0 0.42 2.2n 0.42 2.25n 0.70 4.6n 0.70 4.65n 0.57 6.9n 0.57 6.95n 0.54 9.3n 0.54 9.35n 0.64 11.7n 0.64 11.75n 0.40 14.1n 0.40 14.15n 0.31 17n 0.31]",
-          "Vvin (vin 0) vsource type=pwl wave=[0 0.58 2.2n 0.58 2.25n 0.28 4.6n 0.28 4.65n 0.47 6.9n 0.47 6.95n 0.34 9.3n 0.34 9.35n 0.48 11.7n 0.48 11.75n 0.52 14.1n 0.52 14.15n 0.53 17n 0.53]",
-          "",
-          "XDUT (vip vin vcm_ref en diff_ok cm_ok valid diff_metric cm_metric) differential_common_mode_window_monitor",
-          ""
-        ]
-      },
-      "parameters": {
-        "maxstep": "100p",
-        "stop_time": "100n"
-      }
-    }
+    "score": {}
   },
   "property_ids": [
     "P_CONTINUOUSLY_COMPUTE_VDIFF_V_VIP_V",

@@ -33,7 +33,7 @@
     }
   },
   "diagnostics": {
-    "expected": "trigger=stimulus exercises neg_005_inverted_logic; violated_properties=P_MODEL_A_DYNAMIC_SUPPLY_ELECTRICAL_LEVEL,P_TR_40P_OUTPUT_TRANSITION_SMOOTHING_TIME",
+    "expected": "trigger=stimulus exercises redacted_fault_case; violated_properties=P_MODEL_A_DYNAMIC_SUPPLY_ELECTRICAL_LEVEL,P_TR_40P_OUTPUT_TRANSITION_SMOOTHING_TIME",
     "observed": "EVAS: dynamic_supply_driver_error=1.0500; Spectre: dynamic_supply_driver_error=1.0500",
     "violated_property_ids": [
       "P_MODEL_A_DYNAMIC_SUPPLY_ELECTRICAL_LEVEL",

@@ -33,7 +33,7 @@
     }
   },
   "diagnostics": {
-    "expected": "trigger=stimulus exercises neg_005_wrong_slew_metric; violated_properties=P_SLEW_METRIC_REPORTS_BOUNDED_DELTA,P_VDD_MIN_0_72_V_VDD",
+    "expected": "trigger=stimulus exercises redacted_fault_case; violated_properties=P_SLEW_METRIC_REPORTS_BOUNDED_DELTA,P_VDD_MIN_0_72_V_VDD",
     "observed": "EVAS: rail_startup_error=0.9000; Spectre: rail_startup_error=0.9000",
     "violated_property_ids": [
       "P_SLEW_METRIC_REPORTS_BOUNDED_DELTA",
