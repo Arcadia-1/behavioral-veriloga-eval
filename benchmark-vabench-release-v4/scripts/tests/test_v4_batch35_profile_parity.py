@@ -154,3 +154,35 @@ def test_batch35_evas_evidence_requires_explicit_rust_engine(monkeypatch: pytest
     monkeypatch.setenv("VAEVAS_DEFAULT_EVAS_ENGINE", "python")
     with pytest.raises(SystemExit, match="explicit EVAS_ENGINE=evas2"):
         runner.probe_evas2_runtime()
+
+
+@pytest.mark.parametrize(
+    ("log_text", "valid", "version", "backend"),
+    [
+        ("Version 0.8.2 -- Jul 2026\n    evas_engine = evas-rust\n", True, "0.8.2", "evas-rust"),
+        ("Version 0.8.2 -- Jul 2026\n    evas_engine = python\n", False, "0.8.2", "python"),
+        ("Version 0.8.1 -- Jun 2026\n    evas_engine = evas-rust\n", False, "0.8.1", "evas-rust"),
+    ],
+)
+def test_batch35_case_evidence_reads_actual_runtime(
+    tmp_path: Path,
+    log_text: str,
+    valid: bool,
+    version: str,
+    backend: str,
+) -> None:
+    runner = _load_evas_smoke_runner()
+    (tmp_path / "evas.log").write_text(log_text, encoding="utf-8")
+    evidence = runner.case_evas2_runtime(tmp_path)
+    assert evidence["evas_runtime_valid"] is valid
+    assert evidence["evas_version"] == version
+    assert evidence["evas_backend"] == backend
+    assert evidence["evas_engine_used"] == ("evas2" if valid else "invalid")
+
+
+def test_batch35_case_evidence_rejects_missing_log(tmp_path: Path) -> None:
+    runner = _load_evas_smoke_runner()
+    evidence = runner.case_evas2_runtime(tmp_path)
+    assert evidence["evas_runtime_valid"] is False
+    assert evidence["evas_backend"] == "unknown"
+    assert evidence["evas_runtime_notes"] == ["missing evas.log"]

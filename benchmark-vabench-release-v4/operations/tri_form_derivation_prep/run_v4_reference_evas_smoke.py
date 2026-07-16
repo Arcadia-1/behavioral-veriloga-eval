@@ -14,6 +14,7 @@ import argparse
 import hashlib
 import json
 import os
+import re
 import shutil
 import subprocess
 import sys
@@ -42,6 +43,8 @@ PACKAGE_ROOT = Path(__file__).resolve().parents[2]
 DEFAULT_RELEASE = PACKAGE_ROOT / "release" / "benchmarkv4"
 REQUIRED_EVAS_ENGINE = "evas2"
 REQUIRED_EVAS_VERSION = "0.8.2"
+EVAS_VERSION_RE = re.compile(r"^Version\s+(\S+)", re.MULTILINE)
+EVAS_BACKEND_RE = re.compile(r"^\s*evas_engine\s*=\s*(\S+)\s*$", re.MULTILINE)
 
 
 def read_json(path: Path) -> dict[str, Any]:
@@ -106,6 +109,39 @@ def probe_evas2_runtime() -> dict[str, str]:
         "evas_engine_used": REQUIRED_EVAS_ENGINE,
         "evas_version": version,
         "evas_backend": "evas-rust",
+    }
+
+
+def case_evas2_runtime(output_dir: Path) -> dict[str, Any]:
+    """Read the runtime identity emitted by this simulation, without trusting config."""
+    log_path = output_dir / "evas.log"
+    if not log_path.is_file():
+        return {
+            "evas_engine": "unknown",
+            "evas_engine_used": "unknown",
+            "evas_version": "unknown",
+            "evas_backend": "unknown",
+            "evas_runtime_valid": False,
+            "evas_runtime_notes": ["missing evas.log"],
+        }
+    text = log_path.read_text(encoding="utf-8", errors="replace")
+    version_match = EVAS_VERSION_RE.search(text)
+    backend_match = EVAS_BACKEND_RE.search(text)
+    version = version_match.group(1) if version_match else "unknown"
+    backend = backend_match.group(1) if backend_match else "unknown"
+    valid = version == REQUIRED_EVAS_VERSION and backend == "evas-rust"
+    notes: list[str] = []
+    if version != REQUIRED_EVAS_VERSION:
+        notes.append(f"expected EVAS {REQUIRED_EVAS_VERSION}, got {version}")
+    if backend != "evas-rust":
+        notes.append(f"expected evas-rust backend, got {backend}")
+    return {
+        "evas_engine": REQUIRED_EVAS_ENGINE if valid else "invalid",
+        "evas_engine_used": REQUIRED_EVAS_ENGINE if valid else "invalid",
+        "evas_version": version,
+        "evas_backend": backend,
+        "evas_runtime_valid": valid,
+        "evas_runtime_notes": notes,
     }
 
 
@@ -174,7 +210,6 @@ def run_one_case(
     mutation_id: str | None,
     output_root: Path,
     timeout_s: int,
-    runtime: dict[str, str],
 ) -> dict[str, Any]:
     case_dir = output_root / case_id
     if case_dir.exists():
@@ -194,7 +229,12 @@ def run_one_case(
     wall_time_s = time.perf_counter() - started
     combined = (proc.stdout or "") + "\n" + (proc.stderr or "")
     csv_path = case_output / "tran.csv"
-    simulator_ok = proc.returncode == 0 and csv_path.is_file()
+    case_runtime = case_evas2_runtime(case_output)
+    simulator_ok = (
+        proc.returncode == 0
+        and csv_path.is_file()
+        and case_runtime["evas_runtime_valid"] is True
+    )
     checker_ok = False
     checker_notes: list[str] = []
     if simulator_ok:
@@ -224,7 +264,7 @@ def run_one_case(
         "reference_tb_sha256": file_sha(tb_path),
         "required_trace_signal_count": len(required_signals - {"time"}) if required_signals else 0,
         "checker_notes": checker_notes,
-        **runtime,
+        **case_runtime,
         "timing": parse_evas_timing(combined),
         "performance_counters": parse_evas_performance_counters(combined),
         "wall_time_s": wall_time_s,
@@ -257,7 +297,6 @@ def run_task(
             mutation_id=None,
             output_root=task_output,
             timeout_s=timeout_s,
-            runtime=runtime,
         )
     ]
     if include_mutations:
@@ -270,7 +309,6 @@ def run_task(
                     mutation_id=str(mutation_id),
                     output_root=task_output,
                     timeout_s=timeout_s,
-                    runtime=runtime,
                 )
             )
     reference_pass = cases[0]["status"] == "reference_pass"
