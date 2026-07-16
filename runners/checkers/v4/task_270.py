@@ -2,6 +2,9 @@
 from __future__ import annotations
 
 from ..api import Checker
+from .family_261_270_diagnostics import bind_properties
+
+
 def _threshold_crossings(
     values: list[float],
     times: list[float],
@@ -144,4 +147,9 @@ def check_v3_374_sampled_error_update_monitor(rows: list[dict[str, float]]) -> t
     )
 
 CHECKER_ID = "v4_270_sampled_error_update_monitor"
-CHECKER: Checker = check_v3_374_sampled_error_update_monitor
+CHECKER: Checker = bind_properties(check_v3_374_sampled_error_update_monitor, (
+    "P_RESET_CLEARS_STATE_AND_OBSERVABLES",
+    "P_CORRECTED_OUTPUT_USES_SAMPLE_TARGET_AND_COEF",
+    "P_ERROR_METRIC_REPORTS_ABSOLUTE_ERROR",
+    "P_PROGRESS_COUNTS_CONSECUTIVE_IN_WINDOW_SAMPLES",
+))

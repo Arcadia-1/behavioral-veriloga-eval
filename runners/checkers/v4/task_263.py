@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from ..api import Checker
+from .family_261_270_diagnostics import bind_properties
 from ..common.issue109_factory import CheckResult, Row, check_clocked_factory
 
 
@@ -21,4 +22,7 @@ CHECKS = {
 }
 
 CHECKER_ID = TASK_LABEL
-CHECKER: Checker = check_v4_263_settling_progress_counter
+CHECKER: Checker = bind_properties(check_v4_263_settling_progress_counter, (
+    "P_MEASURE_ANALOG_INPUTS_RELATIVE_TO_THE",
+    "P_INITIALIZE_A_SAMPLED_PROGRESS_COUNT_TO",
+))
