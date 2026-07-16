@@ -1,105 +1,109 @@
-"""Task-specific checker for canonical v4 DUT 034."""
+"""Stimulus-relative checker for canonical V4 DUT 034."""
 from __future__ import annotations
 
 from ..api import Checker
-DEFAULT_EDGE_SETTLE_DELAY_S = 1.2e-10
+from .stimulus_relative import close, crossings, diagnostic, event_label, pass_note, probe_time, require_signals, sample
 
-def mean_in_window(rows: list[dict[str, float]], key: str, start: float, stop: float) -> float | None:
-    values = [r[key] for r in rows if start <= r["time"] <= stop and key in r]
-    if not values:
-        return None
-    return sum(values) / len(values)
 
-def settled_row_index_after_delay(
-    rows: list[dict[str, float]],
-    start_idx: int,
-    settle_delay_s: float = DEFAULT_EDGE_SETTLE_DELAY_S,
-) -> int:
-    settle_time = rows[start_idx]["time"] + settle_delay_s
-    settle = start_idx
-    while settle + 1 < len(rows) and rows[settle]["time"] < settle_time:
-        settle += 1
-    return settle
+PROPERTY_IDS = (
+    "P_RESET_STATE",
+    "P_SIGNED_UPDATE",
+    "P_STEP_HALVING",
+    "P_DEADBAND_HOLD",
+    "P_PROPORTIONAL_CLAMP",
+    "P_LOCK_COUNT_METRIC",
+)
+
 
 def check_release_loop_filter(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    required = {"time", "clk", "rst", "vin", "out", "metric"}
-    if not rows or not required.issubset(rows[0]):
-        return False, "missing time/clk/rst/vin/out/metric"
-
-    out_vals = [r["out"] for r in rows if "out" in r]
-    if not out_vals:
-        return False, "loop_filter_missing_out_values"
-    out_min = min(out_vals)
-    out_max = max(out_vals)
-    if not (0.0 <= out_min <= out_max <= 0.95):
-        return False, f"loop_filter_out_range=({out_min:.3f},{out_max:.3f})"
-
-    edge_samples: list[tuple[dict[str, float], float, float]] = []
-    for idx in range(1, len(rows)):
-        if rows[idx - 1]["clk"] <= 0.45 < rows[idx]["clk"] and rows[idx]["rst"] <= 0.45:
-            settle = settled_row_index_after_delay(rows, idx)
-            edge_samples.append((rows[idx], rows[settle]["out"], rows[settle]["metric"]))
-    if len(edge_samples) < 12:
-        return False, f"loop_filter_too_few_edge_samples={len(edge_samples)}"
-
-    deltas: list[tuple[dict[str, float], float, float, float]] = []
-    previous_out: float | None = None
-    for edge_row, out, metric in edge_samples:
-        if previous_out is not None:
-            deltas.append((edge_row, out - previous_out, out, metric))
-        previous_out = out
-
-    positive_deltas = [
-        delta
-        for edge_row, delta, out, _metric in deltas
-        if edge_row["time"] < 40e-9 and edge_row["vin"] > 0.55 and 0.08 < out < 0.93
-    ]
-    if len(positive_deltas) < 4:
-        return False, f"loop_filter_missing_positive_pi_steps={len(positive_deltas)}"
-    first_pos = positive_deltas[0]
-    later_pos = positive_deltas[-1]
-    proportional_decay = first_pos > 0.08 and 0.0 < later_pos < first_pos * 0.65
-    if not proportional_decay:
-        return False, f"loop_filter_no_proportional_decay first={first_pos:.3f} later={later_pos:.3f}"
-
-    negative_deltas = [
-        delta
-        for edge_row, delta, out, _metric in deltas
-        if 32e-9 <= edge_row["time"] <= 50e-9 and edge_row["vin"] < 0.40 and 0.08 < out < 0.93
-    ]
-    negative_ok = len(negative_deltas) >= 3 and sum(1 for delta in negative_deltas if delta < -0.003) >= 3
-    if not negative_ok:
-        return False, f"loop_filter_missing_negative_response={len(negative_deltas)}"
-
-    near_deadband_hold = mean_in_window(rows, "out", 48e-9, 54e-9)
-    if near_deadband_hold is None or near_deadband_hold < 0.80:
-        value = "missing" if near_deadband_hold is None else f"{near_deadband_hold:.3f}"
-        return False, f"loop_filter_missing_integral_residual={value}"
-
-    early_metric = mean_in_window(rows, "metric", 8e-9, 18e-9)
-    late_metric = mean_in_window(rows, "metric", 24e-9, 50e-9)
-    reset_metric = mean_in_window(rows, "metric", 64.5e-9, 70e-9)
-    if early_metric is None or late_metric is None or reset_metric is None:
-        return False, "loop_filter_missing_metric_windows"
-    metric_timing = early_metric < 0.15 and late_metric > 0.65 and reset_metric < 0.15
-    if not metric_timing:
-        return False, (
-            f"loop_filter_metric_timing early={early_metric:.3f} "
-            f"late={late_metric:.3f} reset={reset_metric:.3f}"
+    error = require_signals(rows, {"time", "clk", "rst", "vin", "out", "metric"}, "P_SIGNED_UPDATE")
+    if error:
+        return False, error
+    edges = crossings(rows, "clk", threshold=0.45, direction="rising")
+    if len(edges) < 8:
+        return False, diagnostic(
+            "P_SIGNED_UPDATE", "insufficient_excitation", expected="clk_rise_count>=8",
+            observed=f"clk_rise_count={len(edges)}", event="full_trace",
         )
 
-    late_reset = mean_in_window(rows, "out", 64.5e-9, 66e-9)
-    after_reset = mean_in_window(rows, "out", 67e-9, 70e-9)
-    if late_reset is None or after_reset is None:
-        return False, "loop_filter_missing_late_reset_window"
-    if abs(late_reset - 0.45) > 0.02 or abs(after_reset - 0.45) > 0.02:
-        return False, f"loop_filter_reset_not_cleared late={late_reset:.3f} after={after_reset:.3f}"
-    return True, (
-        f"loop_filter_pi first_pos_delta={first_pos:.3f} later_pos_delta={later_pos:.3f} "
-        f"negative_steps={sum(1 for delta in negative_deltas if delta < -0.003)}/{len(negative_deltas)} "
-        f"integral_residual={near_deadband_hold:.3f} metric={early_metric:.3f}/{late_metric:.3f}/{reset_metric:.3f} "
-        f"reset={late_reset:.3f}/{after_reset:.3f}"
-    )
+    state, step, integral, accepted = 0.45, 0.20, 0.0, 0
+    reset_seen = False
+    deadband_seen = False
+    positive_seen = False
+    negative_seen = False
+    max_accepted = 0
+    checked = 0
+    for index, edge in enumerate(edges):
+        next_edge = edges[index + 1] if index + 1 < len(edges) else None
+        rst, vin = sample(rows, "rst", edge), sample(rows, "vin", edge)
+        probe = probe_time(rows, edge, next_edge)
+        if None in (rst, vin) or probe is None:
+            continue
+        assert rst is not None and vin is not None
+        err = vin - 0.45
+        label = event_label("clk_rise", index, edge)
+        if rst > 0.45:
+            state, step, integral, accepted = 0.45, 0.20, 0.0, 0
+            expected_metric = 0.0
+            property_id = "P_RESET_STATE"
+            reset_seen = True
+        elif abs(err) > 0.05:
+            state += step if err > 0.0 else -step
+            state = min(0.85, max(0.05, state))
+            integral += 0.04 * err
+            step *= 0.5
+            accepted += 1
+            max_accepted = max(max_accepted, accepted)
+            expected_metric = 0.9 if accepted >= 4 else 0.0
+            positive_seen |= err > 0.0
+            negative_seen |= err < 0.0
+            property_id = "P_SIGNED_UPDATE" if accepted <= 1 else "P_STEP_HALVING"
+        else:
+            expected_metric = 0.9 if accepted >= 4 else 0.0
+            property_id = "P_DEADBAND_HOLD"
+            deadband_seen = True
+        expected_out = state + integral
+        out, metric = sample(rows, "out", probe), sample(rows, "metric", probe)
+        if None in (out, metric):
+            continue
+        assert out is not None and metric is not None
+        checked += 1
+        if not close(out, expected_out, 0.045):
+            return False, diagnostic(
+                property_id, "behavior_mismatch", expected=f"out:{expected_out:.4f}",
+                observed=f"out:{out:.4f},vin:{vin:.4f},accepted:{accepted}", event=label,
+            )
+        if not close(metric, expected_metric, 0.10):
+            return False, diagnostic(
+                "P_LOCK_COUNT_METRIC", "behavior_mismatch", expected=f"metric:{expected_metric:.3f}",
+                observed=f"metric:{metric:.3f},accepted:{accepted}", event=label,
+            )
+
+    out_min, out_max = min(row["out"] for row in rows), max(row["out"] for row in rows)
+    if out_min < -0.02 or out_max > 0.98:
+        return False, diagnostic(
+            "P_PROPORTIONAL_CLAMP", "behavior_mismatch", expected="bounded_proportional_state",
+            observed=f"out_range:{out_min:.4f}..{out_max:.4f}", event="full_trace",
+        )
+    missing = []
+    if not reset_seen:
+        missing.append("reset")
+    if not deadband_seen:
+        missing.append("deadband")
+    if not positive_seen:
+        missing.append("positive_update")
+    if not negative_seen:
+        missing.append("negative_update")
+    if max_accepted < 4:
+        missing.append("four_accepted_updates")
+    if missing:
+        return False, diagnostic(
+            "P_SIGNED_UPDATE", "insufficient_excitation",
+            expected="reset,deadband,positive,negative,four_updates",
+            observed="missing:" + ",".join(missing), event="full_trace",
+        )
+    return True, pass_note(PROPERTY_IDS, f"loop_filter edge_checks={checked} max_accepted={max_accepted}")
+
 
 CHECKER_ID = "v4_034_loop_filter_abstraction"
 CHECKER: Checker = check_release_loop_filter

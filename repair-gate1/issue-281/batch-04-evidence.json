@@ -1,0 +1,105 @@
+{
+  "batch": "04/40",
+  "families": [
+    {
+      "family_id": "031",
+      "original_class": "C",
+      "repair_status": "complete",
+      "repair_summary": "Unified feedback and score stimulus semantics; checker now derives samples from observed clock/reset events and emits structured redacted diagnostics."
+    },
+    {
+      "family_id": "032",
+      "original_class": "C",
+      "repair_status": "complete",
+      "repair_summary": "Unified feedback and score stimulus semantics; checker now derives samples from observed clock/reset events and emits structured redacted diagnostics."
+    },
+    {
+      "family_id": "033",
+      "original_class": "D",
+      "repair_status": "complete",
+      "repair_summary": "Checker public observables now include the scored output and metric signals used by the runtime checker."
+    },
+    {
+      "family_id": "034",
+      "original_class": "D",
+      "repair_status": "complete",
+      "repair_summary": "Checker public observables now include the scored output and metric signals used by the runtime checker."
+    },
+    {
+      "family_id": "035",
+      "original_class": "C",
+      "repair_status": "complete",
+      "repair_summary": "Unified feedback and score stimulus semantics; checker now derives samples from observed clock/reset events and emits structured redacted diagnostics."
+    },
+    {
+      "family_id": "036",
+      "original_class": "D",
+      "repair_status": "complete",
+      "repair_summary": "Checker public observables now include the scored output and metric signals used by the runtime checker."
+    },
+    {
+      "family_id": "037",
+      "original_class": "D",
+      "repair_status": "complete",
+      "repair_summary": "Checker public observables now include the rectified, envelope, and metric signals used by the runtime checker."
+    },
+    {
+      "family_id": "038",
+      "original_class": "C",
+      "repair_status": "complete",
+      "repair_summary": "Unified feedback and score stimulus semantics; checker now derives samples from observed clock/gain events and emits structured redacted diagnostics."
+    },
+    {
+      "family_id": "039",
+      "original_class": "D",
+      "repair_status": "complete",
+      "repair_summary": "Checker public observables now match the comparator/timer bundle signals used by the runtime checker, and canonical hashes were refreshed."
+    },
+    {
+      "family_id": "040",
+      "original_class": "D",
+      "repair_status": "complete",
+      "repair_summary": "Checker public observables now include the scored output and metric signals used by the runtime checker."
+    }
+  ],
+  "issue": 281,
+  "not_tested": [
+    {
+      "gap": "Cadence/Spectre transient parity",
+      "reason": "`command -v spectre` returned no executable in this local environment; Spectre remains the final judge."
+    },
+    {
+      "gap": "Repository layout script",
+      "reason": "`scripts/check_repo_layout.py` is not present in this worktree, so the layout checker could not be run."
+    }
+  ],
+  "owner": "@BucketSran",
+  "scope": "families 031-040 plus directly necessary V4 checker/helper/hash/evidence files",
+  "verification": [
+    {
+      "command": "python3 benchmark-vabench-release-v4/scripts/validate_v4_profile_parity.py --family-range 031-040",
+      "result": "PASS",
+      "evidence": "failure_count=0; allowed_profile_differences=[simulatorOptions]"
+    },
+    {
+      "command": "inline synthetic public-trace checker smoke for runners.checkers.v4.task_031 through task_040",
+      "result": "PASS",
+      "evidence": "checked_families=031-040; failure_count=0"
+    },
+    {
+      "command": "python3 -m compileall -q runners/checkers/v4",
+      "result": "PASS",
+      "evidence": "Python checker/helper syntax compiled without errors."
+    },
+    {
+      "command": "custom canonical hash check for families 031-040 task_record.json plus score_denominator_manifest.json",
+      "result": "PASS",
+      "evidence": "checked_file_hashes=130; failure_count=0"
+    },
+    {
+      "command": "git diff --check",
+      "result": "PASS",
+      "evidence": "No whitespace errors reported."
+    }
+  ]
+}

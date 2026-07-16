@@ -1,85 +1,121 @@
-"""Task-specific checker for canonical v4 DUT 037."""
+"""Stimulus-relative checker for canonical V4 DUT 037."""
 from __future__ import annotations
 
 from ..api import Checker
-def mean_in_window(rows: list[dict[str, float]], key: str, start: float, stop: float) -> float | None:
-    values = [r[key] for r in rows if start <= r["time"] <= stop and key in r]
-    if not values:
-        return None
-    return sum(values) / len(values)
+from .stimulus_relative import close, crossings, diagnostic, event_label, pass_note, percentile, probe_time, require_signals, sample
+
+
+PROPERTY_IDS = (
+    "P_FULL_WAVE_RECTIFICATION",
+    "P_RESET_ENVELOPE",
+    "P_PEAK_ATTACK",
+    "P_BOUNDED_DECAY",
+    "P_ENVELOPE_LAG_METRIC",
+)
+
+
+def _rect(vin: float) -> float:
+    return min(0.9, 0.45 + abs(vin - 0.45))
+
 
 def check_precision_rectifier_envelope_detector(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    required = {"time", "clk", "rst", "vin", "rect", "env", "metric"}
-    if not rows or not required.issubset(rows[0]):
-        return False, "missing time/clk/rst/vin/rect/env/metric"
-
-    reset_rect = mean_in_window(rows, "rect", 0.5e-9, 2.0e-9)
-    reset_env = mean_in_window(rows, "env", 0.5e-9, 2.0e-9)
-    pos_rect = mean_in_window(rows, "rect", 7.0e-9, 10.0e-9)
-    center_rect = mean_in_window(rows, "rect", 15.0e-9, 17.0e-9)
-    neg_rect = mean_in_window(rows, "rect", 22.0e-9, 26.0e-9)
-    peak_env = mean_in_window(rows, "env", 43.0e-9, 48.0e-9)
-    hold_env = mean_in_window(rows, "env", 56.0e-9, 64.0e-9)
-    hold_rect = mean_in_window(rows, "rect", 56.0e-9, 64.0e-9)
-    hold_metric = mean_in_window(rows, "metric", 56.0e-9, 64.0e-9)
-    required_windows = (
-        reset_rect,
-        reset_env,
-        pos_rect,
-        center_rect,
-        neg_rect,
-        peak_env,
-        hold_env,
-        hold_rect,
-        hold_metric,
+    error = require_signals(
+        rows, {"time", "clk", "rst", "vin", "rect", "env", "metric"}, "P_FULL_WAVE_RECTIFICATION"
     )
-    if None in required_windows:
-        return False, "rectifier_missing_sample_windows"
-    assert reset_rect is not None
-    assert reset_env is not None
-    assert pos_rect is not None
-    assert center_rect is not None
-    assert neg_rect is not None
-    assert peak_env is not None
-    assert hold_env is not None
-    assert hold_rect is not None
-    assert hold_metric is not None
+    if error:
+        return False, error
 
-    if abs(reset_rect - 0.45) > 0.10 or abs(reset_env - 0.45) > 0.10:
-        return False, f"rectifier_reset_common_mode rect={reset_rect:.3f} env={reset_env:.3f}"
-    if pos_rect < 0.62:
-        return False, f"rectifier_positive_half_not_rectified={pos_rect:.3f}"
-    if neg_rect < 0.62:
-        return False, f"rectifier_negative_half_not_rectified={neg_rect:.3f}"
-    if abs(center_rect - 0.45) > 0.08:
-        return False, f"rectifier_center_not_common_mode={center_rect:.3f}"
-    if peak_env < 0.74:
-        return False, f"rectifier_envelope_peak_too_low={peak_env:.3f}"
-    if hold_env < hold_rect + 0.10 or hold_metric < 0.35:
-        return False, (
-            "rectifier_envelope_hold_missing "
-            f"env={hold_env:.3f} rect={hold_rect:.3f} metric={hold_metric:.3f}"
+    edges = crossings(rows, "clk", threshold=0.45, direction="rising")
+    if len(edges) < 6:
+        return False, diagnostic(
+            "P_PEAK_ATTACK", "insufficient_excitation", expected="clk_rise_count>=6",
+            observed=f"clk_rise_count={len(edges)}", event="full_trace",
         )
 
-    post = [r for r in rows if r["rst"] <= 0.45 and r["time"] > 3e-9]
-    if not post:
-        return False, "rectifier_no_post_reset_rows"
-    below_rect = sum(1 for r in post if r["env"] + 0.06 < r["rect"])
-    if below_rect > max(2, len(post) // 20):
-        return False, f"rectifier_envelope_below_rect_count={below_rect}"
+    rect_errors = [abs(row["rect"] - _rect(row["vin"])) for row in rows]
+    rect_p90 = percentile(rect_errors, 0.90)
+    if rect_p90 > 0.055:
+        return False, diagnostic(
+            "P_FULL_WAVE_RECTIFICATION", "behavior_mismatch", expected="rect=0.45+abs(vin-0.45),clipped",
+            observed=f"rect_error_p90:{rect_p90:.4f}", event="full_trace",
+        )
 
-    selected = [r for r in post if 5e-9 <= r["time"] <= 30e-9 or 40e-9 <= r["time"] <= 68e-9]
-    errors = [abs(r["rect"] - min(0.9, 0.45 + abs(r["vin"] - 0.45))) for r in selected]
-    if errors:
-        p90 = sorted(errors)[int(0.90 * (len(errors) - 1))]
-        if p90 > 0.09:
-            return False, f"rectifier_rect_abs_tracking_p90={p90:.3f}"
-
-    return True, (
-        "precision_rectifier_envelope_detector "
-        f"pos/neg={pos_rect:.3f}/{neg_rect:.3f} env_peak={peak_env:.3f} "
-        f"hold={hold_env:.3f}/{hold_rect:.3f}"
+    env_state = 0.45
+    reset_seen = False
+    attack_count = 0
+    decay_count = 0
+    lag_high_seen = False
+    checked = 0
+    for index, edge in enumerate(edges):
+        next_edge = edges[index + 1] if index + 1 < len(edges) else None
+        probe = probe_time(rows, edge, next_edge)
+        if probe is None:
+            continue
+        rst, vin_at_edge = sample(rows, "rst", edge), sample(rows, "vin", edge)
+        if rst is None or vin_at_edge is None:
+            continue
+        rect_at_edge = _rect(vin_at_edge)
+        previous_env = env_state
+        if rst > 0.45:
+            env_state = 0.45
+            property_id = "P_RESET_ENVELOPE"
+            reset_seen = True
+        elif rect_at_edge > env_state:
+            env_state = rect_at_edge
+            property_id = "P_PEAK_ATTACK"
+            attack_count += 1
+        else:
+            env_state = max(0.45, rect_at_edge, env_state - 0.018)
+            property_id = "P_BOUNDED_DECAY"
+            if env_state < previous_env - 0.005:
+                decay_count += 1
+        vin_probe = sample(rows, "vin", probe)
+        env, metric = sample(rows, "env", probe), sample(rows, "metric", probe)
+        if None in (vin_probe, env, metric):
+            continue
+        assert vin_probe is not None and env is not None and metric is not None
+        rect_probe = _rect(vin_probe)
+        expected_metric = 0.9 if env_state - rect_probe > 0.030 else 0.0
+        lag_high_seen |= expected_metric > 0.5
+        checked += 1
+        label = event_label("clk_rise", index, edge)
+        if not close(env, env_state, 0.055):
+            return False, diagnostic(
+                property_id, "behavior_mismatch", expected=f"env:{env_state:.4f}",
+                observed=f"env:{env:.4f},rect_edge:{rect_at_edge:.4f}", event=label,
+            )
+        if not close(metric, expected_metric, 0.12):
+            return False, diagnostic(
+                "P_ENVELOPE_LAG_METRIC", "behavior_mismatch", expected=f"metric:{expected_metric:.1f}",
+                observed=f"metric:{metric:.3f},env:{env:.3f},rect:{rect_probe:.3f}", event=label,
+            )
+    polarities = {
+        "positive" if row["vin"] > 0.47 else "negative"
+        for row in rows
+        if row["vin"] > 0.47 or row["vin"] < 0.43
+    }
+    missing = []
+    if not reset_seen:
+        missing.append("reset")
+    if attack_count == 0:
+        missing.append("peak_attack")
+    if decay_count == 0:
+        missing.append("bounded_decay")
+    if not lag_high_seen:
+        missing.append("lag_metric_high")
+    if polarities != {"positive", "negative"}:
+        missing.append("both_rectifier_polarities")
+    if missing:
+        return False, diagnostic(
+            "P_FULL_WAVE_RECTIFICATION", "insufficient_excitation",
+            expected="reset,both_polarities,attack,decay,lag", observed="missing:" + ",".join(missing),
+            event="full_trace",
+        )
+    return True, pass_note(
+        PROPERTY_IDS,
+        f"rectifier edge_checks={checked} attack={attack_count} decay={decay_count} rect_p90={rect_p90:.4f}",
     )
+
 
 CHECKER_ID = "v4_037_precision_rectifier_envelope_detector"
 CHECKER: Checker = check_precision_rectifier_envelope_detector

@@ -1,0 +1,2341 @@
+{
+  "families": [
+    {
+      "class": "C",
+      "family_id": "031",
+      "reasons": [
+        "dut: feedback/score body differs",
+        "dut: feedback/score analysis differs",
+        "dut: feedback/score parameters differ",
+        "testbench: feedback/score body differs",
+        "testbench: feedback/score analysis differs",
+        "testbench: feedback/score parameters differ",
+        "testbench: testbench checker has absolute-time/window patterns",
+        "bugfix: feedback/score body differs",
+        "bugfix: feedback/score analysis differs",
+        "bugfix: feedback/score parameters differ"
+      ],
+      "tasks": [
+        {
+          "checker": {
+            "absolute_time_patterns": [],
+            "checker_profile_missing": false,
+            "checker_public_observables": [
+              "clk",
+              "metric",
+              "out",
+              "rst",
+              "vin"
+            ],
+            "checker_public_observables_normalized": [
+              "clk",
+              "metric",
+              "out",
+              "rst",
+              "time",
+              "vin"
+            ],
+            "checker_source": "runners/checkers/v4/task_031.py",
+            "checker_source_missing": false,
+            "checker_task_id": "v4_031_limiting_amplifier",
+            "public_required_signals": [
+              "clk",
+              "metric",
+              "out",
+              "rst",
+              "time",
+              "vin"
+            ],
+            "public_required_signals_normalized": [
+              "clk",
+              "metric",
+              "out",
+              "rst",
+              "time",
+              "vin"
+            ],
+            "testbench_absolute_time_suspect": false,
+            "trace_contract_same": true
+          },
+          "class": "B",
+          "form": "dut",
+          "profile": {
+            "feedback_analyses": [
+              "tran tran stop=70n maxstep=0.35n"
+            ],
+            "feedback_body_lines": 4,
+            "feedback_parameters": {
+              "maxstep": "200p",
+              "stop_time": "100n"
+            },
+            "profile_analysis_same": false,
+            "profile_body_same": false,
+            "profile_missing": false,
+            "profile_parameters_same": false,
+            "profile_property_ids_same": true,
+            "score_analyses": [
+              "tran tran stop=80n maxstep=0.5n"
+            ],
+            "score_body_lines": 4,
+            "score_parameters": {
+              "maxstep": "100p",
+              "stop_time": "100n"
+            }
+          },
+          "reasons": [
+            "feedback/score body differs",
+            "feedback/score analysis differs",
+            "feedback/score parameters differ"
+          ],
+          "task_dir": "tasks/031-limiting-amplifier-frontend",
+          "task_id": "v4-031"
+        },
+        {
+          "checker": {
+            "absolute_time_patterns": [
+              "\\bmean_in_window\\s*\\(",
+              "\\bwindow\\b",
+              "\\b\\d+(?:\\.\\d+)?e-0?9\\b"
+            ],
+            "checker_profile_missing": false,
+            "checker_public_observables": [
+              "clk",
+              "metric",
+              "out",
+              "rst",
+              "vin"
+            ],
+            "checker_public_observables_normalized": [
+              "clk",
+              "metric",
+              "out",
+              "rst",
+              "time",
+              "vin"
+            ],
+            "checker_source": "runners/checkers/v4/task_031.py",
+            "checker_source_missing": false,
+            "checker_task_id": "v4_031_limiting_amplifier",
+            "public_required_signals": [
+              "clk",
+              "metric",
+              "out",
+              "rst",
+              "time",
+              "vin"
+            ],
+            "public_required_signals_normalized": [
+              "clk",
+              "metric",
+              "out",
+              "rst",
+              "time",
+              "vin"
+            ],
+            "testbench_absolute_time_suspect": true,
+            "trace_contract_same": true
+          },
+          "class": "C",
+          "form": "testbench",
+          "profile": {
+            "feedback_analyses": [
+              "tran tran stop=70n maxstep=0.35n"
+            ],
+            "feedback_body_lines": 4,
+            "feedback_parameters": {
+              "maxstep": "200p",
+              "stop_time": "100n"
+            },
+            "profile_analysis_same": false,
+            "profile_body_same": false,
+            "profile_missing": false,
+            "profile_parameters_same": false,
+            "profile_property_ids_same": true,
+            "score_analyses": [
+              "tran tran stop=80n maxstep=0.5n"
+            ],
+            "score_body_lines": 4,
+            "score_parameters": {
+              "maxstep": "100p",
+              "stop_time": "100n"
+            }
+          },
+          "reasons": [
+            "feedback/score body differs",
+            "feedback/score analysis differs",
+            "feedback/score parameters differ",
+            "testbench checker has absolute-time/window patterns"
+          ],
+          "task_dir": "tasks/531-limiting-amplifier-frontend-testbench",
+          "task_id": "v4-531"
+        },
+        {
+          "checker": {
+            "absolute_time_patterns": [],
+            "checker_profile_missing": false,
+            "checker_public_observables": [
+              "clk",
+              "metric",
+              "out",
+              "rst",
+              "vin"
+            ],
+            "checker_public_observables_normalized": [
+              "clk",
+              "metric",
+              "out",
+              "rst",
+              "time",
+              "vin"
+            ],
+            "checker_source": "runners/checkers/v4/task_031.py",
+            "checker_source_missing": false,
+            "checker_task_id": "v4_031_limiting_amplifier",
+            "public_required_signals": [
+              "clk",
+              "metric",
+              "out",
+              "rst",
+              "time",
+              "vin"
+            ],
+            "public_required_signals_normalized": [
+              "clk",
+              "metric",
+              "out",
+              "rst",
+              "time",
+              "vin"
+            ],
+            "testbench_absolute_time_suspect": false,
+            "trace_contract_same": true
+          },
+          "class": "B",
+          "form": "bugfix",
+          "profile": {
+            "feedback_analyses": [
+              "tran tran stop=70n maxstep=0.35n"
+            ],
+            "feedback_body_lines": 4,
+            "feedback_parameters": {
+              "maxstep": "200p",
+              "stop_time": "100n"
+            },
+            "profile_analysis_same": false,
+            "profile_body_same": false,
+            "profile_missing": false,
+            "profile_parameters_same": false,
+            "profile_property_ids_same": true,
+            "score_analyses": [
+              "tran tran stop=80n maxstep=0.5n"
+            ],
+            "score_body_lines": 4,
+            "score_parameters": {
+              "maxstep": "100p",
+              "stop_time": "100n"
+            }
+          },
+          "reasons": [
+            "feedback/score body differs",
+            "feedback/score analysis differs",
+            "feedback/score parameters differ"
+          ],
+          "task_dir": "tasks/1031-limiting-amplifier-frontend-bugfix",
+          "task_id": "v4-1031"
+        }
+      ]
+    },
+    {
+      "class": "C",
+      "family_id": "032",
+      "reasons": [
+        "dut: feedback/score body differs",
+        "dut: feedback/score analysis differs",
+        "dut: feedback/score parameters differ",
+        "testbench: feedback/score body differs",
+        "testbench: feedback/score analysis differs",
+        "testbench: feedback/score parameters differ",
+        "testbench: testbench checker has absolute-time/window patterns",
+        "bugfix: feedback/score body differs",
+        "bugfix: feedback/score analysis differs",
+        "bugfix: feedback/score parameters differ"
+      ],
+      "tasks": [
+        {
+          "checker": {
+            "absolute_time_patterns": [],
+            "checker_profile_missing": false,
+            "checker_public_observables": [
+              "clk",
+              "metric",
+              "out",
+              "rst",
+              "vin"
+            ],
+            "checker_public_observables_normalized": [
+              "clk",
+              "metric",
+              "out",
+              "rst",
+              "time",
+              "vin"
+            ],
+            "checker_source": "runners/checkers/v4/task_032.py",
+            "checker_source_missing": false,
+            "checker_task_id": "v4_032_lna_gain_compression_macro",
+            "public_required_signals": [
+              "clk",
+              "metric",
+              "out",
+              "rst",
+              "time",
+              "vin"
+            ],
+            "public_required_signals_normalized": [
+              "clk",
+              "metric",
+              "out",
+              "rst",
+              "time",
+              "vin"
+            ],
+            "testbench_absolute_time_suspect": false,
+            "trace_contract_same": true
+          },
+          "class": "B",
+          "form": "dut",
+          "profile": {
+            "feedback_analyses": [
+              "tran tran stop=70n maxstep=0.35n"
+            ],
+            "feedback_body_lines": 4,
+            "feedback_parameters": {
+              "maxstep": "200p",
+              "stop_time": "100n"
+            },
+            "profile_analysis_same": false,
+            "profile_body_same": false,
+            "profile_missing": false,
+            "profile_parameters_same": false,
+            "profile_property_ids_same": true,
+            "score_analyses": [
+              "tran tran stop=80n maxstep=0.5n"
+            ],
+            "score_body_lines": 4,
+            "score_parameters": {
+              "maxstep": "100p",
+              "stop_time": "100n"
+            }
+          },
+          "reasons": [
+            "feedback/score body differs",
+            "feedback/score analysis differs",
+            "feedback/score parameters differ"
+          ],
+          "task_dir": "tasks/032-lna-gain-compression-macro",
+          "task_id": "v4-032"
+        },
+        {
+          "checker": {
+            "absolute_time_patterns": [
+              "\\bmean_in_window\\s*\\(",
+              "\\bwindow\\b",
+              "\\b\\d+(?:\\.\\d+)?e-0?9\\b"
+            ],
+            "checker_profile_missing": false,
+            "checker_public_observables": [
+              "clk",
+              "metric",
+              "out",
+              "rst",
+              "vin"
+            ],
+            "checker_public_observables_normalized": [
+              "clk",
+              "metric",
+              "out",
+              "rst",
+              "time",
+              "vin"
+            ],
+            "checker_source": "runners/checkers/v4/task_032.py",
+            "checker_source_missing": false,
+            "checker_task_id": "v4_032_lna_gain_compression_macro",
+            "public_required_signals": [
+              "clk",
+              "metric",
+              "out",
+              "rst",
+              "time",
+              "vin"
+            ],
+            "public_required_signals_normalized": [
+              "clk",
+              "metric",
+              "out",
+              "rst",
+              "time",
+              "vin"
+            ],
+            "testbench_absolute_time_suspect": true,
+            "trace_contract_same": true
+          },
+          "class": "C",
+          "form": "testbench",
+          "profile": {
+            "feedback_analyses": [
+              "tran tran stop=70n maxstep=0.35n"
+            ],
+            "feedback_body_lines": 4,
+            "feedback_parameters": {
+              "maxstep": "200p",
+              "stop_time": "100n"
+            },
+            "profile_analysis_same": false,
+            "profile_body_same": false,
+            "profile_missing": false,
+            "profile_parameters_same": false,
+            "profile_property_ids_same": true,
+            "score_analyses": [
+              "tran tran stop=80n maxstep=0.5n"
+            ],
+            "score_body_lines": 4,
+            "score_parameters": {
+              "maxstep": "100p",
+              "stop_time": "100n"
+            }
+          },
+          "reasons": [
+            "feedback/score body differs",
+            "feedback/score analysis differs",
+            "feedback/score parameters differ",
+            "testbench checker has absolute-time/window patterns"
+          ],
+          "task_dir": "tasks/532-lna-gain-compression-macro-testbench",
+          "task_id": "v4-532"
+        },
+        {
+          "checker": {
+            "absolute_time_patterns": [],
+            "checker_profile_missing": false,
+            "checker_public_observables": [
+              "clk",
+              "metric",
+              "out",
+              "rst",
+              "vin"
+            ],
+            "checker_public_observables_normalized": [
+              "clk",
+              "metric",
+              "out",
+              "rst",
+              "time",
+              "vin"
+            ],
+            "checker_source": "runners/checkers/v4/task_032.py",
+            "checker_source_missing": false,
+            "checker_task_id": "v4_032_lna_gain_compression_macro",
+            "public_required_signals": [
+              "clk",
+              "metric",
+              "out",
+              "rst",
+              "time",
+              "vin"
+            ],
+            "public_required_signals_normalized": [
+              "clk",
+              "metric",
+              "out",
+              "rst",
+              "time",
+              "vin"
+            ],
+            "testbench_absolute_time_suspect": false,
+            "trace_contract_same": true
+          },
+          "class": "B",
+          "form": "bugfix",
+          "profile": {
+            "feedback_analyses": [
+              "tran tran stop=70n maxstep=0.35n"
+            ],
+            "feedback_body_lines": 4,
+            "feedback_parameters": {
+              "maxstep": "200p",
+              "stop_time": "100n"
+            },
+            "profile_analysis_same": false,
+            "profile_body_same": false,
+            "profile_missing": false,
+            "profile_parameters_same": false,
+            "profile_property_ids_same": true,
+            "score_analyses": [
+              "tran tran stop=80n maxstep=0.5n"
+            ],
+            "score_body_lines": 4,
+            "score_parameters": {
+              "maxstep": "100p",
+              "stop_time": "100n"
+            }
+          },
+          "reasons": [
+            "feedback/score body differs",
+            "feedback/score analysis differs",
+            "feedback/score parameters differ"
+          ],
+          "task_dir": "tasks/1032-lna-gain-compression-macro-bugfix",
+          "task_id": "v4-1032"
+        }
+      ]
+    },
+    {
+      "class": "D",
+      "family_id": "033",
+      "reasons": [
+        "dut: public trace contract differs from checker observables",
+        "testbench: public trace contract differs from checker observables",
+        "bugfix: public trace contract differs from checker observables"
+      ],
+      "tasks": [
+        {
+          "checker": {
+            "absolute_time_patterns": [],
+            "checker_profile_missing": false,
+            "checker_public_observables": [
+              "clk",
+              "rst",
+              "vin"
+            ],
+            "checker_public_observables_normalized": [
+              "clk",
+              "rst",
+              "time",
+              "vin"
+            ],
+            "checker_source": "runners/checkers/v4/task_033.py",
+            "checker_source_missing": false,
+            "checker_task_id": "v4_033_log_rssi_power_detector",
+            "public_required_signals": [
+              "clk",
+              "metric",
+              "out",
+              "rst",
+              "time",
+              "vin"
+            ],
+            "public_required_signals_normalized": [
+              "clk",
+              "metric",
+              "out",
+              "rst",
+              "time",
+              "vin"
+            ],
+            "testbench_absolute_time_suspect": false,
+            "trace_contract_same": false
+          },
+          "class": "D",
+          "form": "dut",
+          "profile": {
+            "feedback_analyses": [
+              "tran tran stop=68n maxstep=0.35n"
+            ],
+            "feedback_body_lines": 4,
+            "feedback_parameters": {
+              "maxstep": "200p",
+              "stop_time": "100n"
+            },
+            "profile_analysis_same": false,
+            "profile_body_same": false,
+            "profile_missing": false,
+            "profile_parameters_same": false,
+            "profile_property_ids_same": true,
+            "score_analyses": [
+              "tran tran stop=80n maxstep=0.5n"
+            ],
+            "score_body_lines": 4,
+            "score_parameters": {
+              "maxstep": "100p",
+              "stop_time": "100n"
+            }
+          },
+          "reasons": [
+            "public trace contract differs from checker observables"
+          ],
+          "task_dir": "tasks/033-log-rssi-power-detector",
+          "task_id": "v4-033"
+        },
+        {
+          "checker": {
+            "absolute_time_patterns": [
+              "\\bmean_in_window\\s*\\(",
+              "\\b\\d+(?:\\.\\d+)?e-0?9\\b"
+            ],
+            "checker_profile_missing": false,
+            "checker_public_observables": [
+              "clk",
+              "rst",
+              "vin"
+            ],
+            "checker_public_observables_normalized": [
+              "clk",
+              "rst",
+              "time",
+              "vin"
+            ],
+            "checker_source": "runners/checkers/v4/task_033.py",
+            "checker_source_missing": false,
+            "checker_task_id": "v4_033_log_rssi_power_detector",
+            "public_required_signals": [
+              "clk",
+              "metric",
+              "out",
+              "rst",
+              "time",
+              "vin"
+            ],
+            "public_required_signals_normalized": [
+              "clk",
+              "metric",
+              "out",
+              "rst",
+              "time",
+              "vin"
+            ],
+            "testbench_absolute_time_suspect": true,
+            "trace_contract_same": false
+          },
+          "class": "D",
+          "form": "testbench",
+          "profile": {
+            "feedback_analyses": [
+              "tran tran stop=68n maxstep=0.35n"
+            ],
+            "feedback_body_lines": 4,
+            "feedback_parameters": {
+              "maxstep": "200p",
+              "stop_time": "100n"
+            },
+            "profile_analysis_same": false,
+            "profile_body_same": false,
+            "profile_missing": false,
+            "profile_parameters_same": false,
+            "profile_property_ids_same": true,
+            "score_analyses": [
+              "tran tran stop=80n maxstep=0.5n"
+            ],
+            "score_body_lines": 4,
+            "score_parameters": {
+              "maxstep": "100p",
+              "stop_time": "100n"
+            }
+          },
+          "reasons": [
+            "public trace contract differs from checker observables"
+          ],
+          "task_dir": "tasks/533-log-rssi-power-detector-testbench",
+          "task_id": "v4-533"
+        },
+        {
+          "checker": {
+            "absolute_time_patterns": [],
+            "checker_profile_missing": false,
+            "checker_public_observables": [
+              "clk",
+              "rst",
+              "vin"
+            ],
+            "checker_public_observables_normalized": [
+              "clk",
+              "rst",
+              "time",
+              "vin"
+            ],
+            "checker_source": "runners/checkers/v4/task_033.py",
+            "checker_source_missing": false,
+            "checker_task_id": "v4_033_log_rssi_power_detector",
+            "public_required_signals": [
+              "clk",
+              "metric",
+              "out",
+              "rst",
+              "time",
+              "vin"
+            ],
+            "public_required_signals_normalized": [
+              "clk",
+              "metric",
+              "out",
+              "rst",
+              "time",
+              "vin"
+            ],
+            "testbench_absolute_time_suspect": false,
+            "trace_contract_same": false
+          },
+          "class": "D",
+          "form": "bugfix",
+          "profile": {
+            "feedback_analyses": [
+              "tran tran stop=68n maxstep=0.35n"
+            ],
+            "feedback_body_lines": 4,
+            "feedback_parameters": {
+              "maxstep": "200p",
+              "stop_time": "100n"
+            },
+            "profile_analysis_same": false,
+            "profile_body_same": false,
+            "profile_missing": false,
+            "profile_parameters_same": false,
+            "profile_property_ids_same": true,
+            "score_analyses": [
+              "tran tran stop=80n maxstep=0.5n"
+            ],
+            "score_body_lines": 4,
+            "score_parameters": {
+              "maxstep": "100p",
+              "stop_time": "100n"
+            }
+          },
+          "reasons": [
+            "public trace contract differs from checker observables"
+          ],
+          "task_dir": "tasks/1033-log-rssi-power-detector-bugfix",
+          "task_id": "v4-1033"
+        }
+      ]
+    },
+    {
+      "class": "D",
+      "family_id": "034",
+      "reasons": [
+        "dut: public trace contract differs from checker observables",
+        "testbench: public trace contract differs from checker observables",
+        "bugfix: public trace contract differs from checker observables"
+      ],
+      "tasks": [
+        {
+          "checker": {
+            "absolute_time_patterns": [],
+            "checker_profile_missing": false,
+            "checker_public_observables": [
+              "clk",
+              "rst",
+              "vin"
+            ],
+            "checker_public_observables_normalized": [
+              "clk",
+              "rst",
+              "time",
+              "vin"
+            ],
+            "checker_source": "runners/checkers/v4/task_034.py",
+            "checker_source_missing": false,
+            "checker_task_id": "v4_034_loop_filter_abstraction",
+            "public_required_signals": [
+              "clk",
+              "metric",
+              "out",
+              "rst",
+              "time",
+              "vin"
+            ],
+            "public_required_signals_normalized": [
+              "clk",
+              "metric",
+              "out",
+              "rst",
+              "time",
+              "vin"
+            ],
+            "testbench_absolute_time_suspect": false,
+            "trace_contract_same": false
+          },
+          "class": "D",
+          "form": "dut",
+          "profile": {
+            "feedback_analyses": [
+              "tran tran stop=72n maxstep=0.3n"
+            ],
+            "feedback_body_lines": 4,
+            "feedback_parameters": {
+              "maxstep": "200p",
+              "stop_time": "100n"
+            },
+            "profile_analysis_same": false,
+            "profile_body_same": false,
+            "profile_missing": false,
+            "profile_parameters_same": false,
+            "profile_property_ids_same": true,
+            "score_analyses": [
+              "tran tran stop=80n maxstep=0.5n"
+            ],
+            "score_body_lines": 4,
+            "score_parameters": {
+              "maxstep": "100p",
+              "stop_time": "100n"
+            }
+          },
+          "reasons": [
+            "public trace contract differs from checker observables"
+          ],
+          "task_dir": "tasks/034-loop-filter-abstraction",
+          "task_id": "v4-034"
+        },
+        {
+          "checker": {
+            "absolute_time_patterns": [
+              "\\bmean_in_window\\s*\\(",
+              "\\b\\d+(?:\\.\\d+)?e-0?9\\b"
+            ],
+            "checker_profile_missing": false,
+            "checker_public_observables": [
+              "clk",
+              "rst",
+              "vin"
+            ],
+            "checker_public_observables_normalized": [
+              "clk",
+              "rst",
+              "time",
+              "vin"
+            ],
+            "checker_source": "runners/checkers/v4/task_034.py",
+            "checker_source_missing": false,
+            "checker_task_id": "v4_034_loop_filter_abstraction",
+            "public_required_signals": [
+              "clk",
+              "metric",
+              "out",
+              "rst",
+              "time",
+              "vin"
+            ],
+            "public_required_signals_normalized": [
+              "clk",
+              "metric",
+              "out",
+              "rst",
+              "time",
+              "vin"
+            ],
+            "testbench_absolute_time_suspect": true,
+            "trace_contract_same": false
+          },
+          "class": "D",
+          "form": "testbench",
+          "profile": {
+            "feedback_analyses": [
+              "tran tran stop=72n maxstep=0.3n"
+            ],
+            "feedback_body_lines": 4,
+            "feedback_parameters": {
+              "maxstep": "200p",
+              "stop_time": "100n"
+            },
+            "profile_analysis_same": false,
+            "profile_body_same": false,
+            "profile_missing": false,
+            "profile_parameters_same": false,
+            "profile_property_ids_same": true,
+            "score_analyses": [
+              "tran tran stop=80n maxstep=0.5n"
+            ],
+            "score_body_lines": 4,
+            "score_parameters": {
+              "maxstep": "100p",
+              "stop_time": "100n"
+            }
+          },
+          "reasons": [
+            "public trace contract differs from checker observables"
+          ],
+          "task_dir": "tasks/534-loop-filter-abstraction-testbench",
+          "task_id": "v4-534"
+        },
+        {
+          "checker": {
+            "absolute_time_patterns": [],
+            "checker_profile_missing": false,
+            "checker_public_observables": [
+              "clk",
+              "rst",
+              "vin"
+            ],
+            "checker_public_observables_normalized": [
+              "clk",
+              "rst",
+              "time",
+              "vin"
+            ],
+            "checker_source": "runners/checkers/v4/task_034.py",
+            "checker_source_missing": false,
+            "checker_task_id": "v4_034_loop_filter_abstraction",
+            "public_required_signals": [
+              "clk",
+              "metric",
+              "out",
+              "rst",
+              "time",
+              "vin"
+            ],
+            "public_required_signals_normalized": [
+              "clk",
+              "metric",
+              "out",
+              "rst",
+              "time",
+              "vin"
+            ],
+            "testbench_absolute_time_suspect": false,
+            "trace_contract_same": false
+          },
+          "class": "D",
+          "form": "bugfix",
+          "profile": {
+            "feedback_analyses": [
+              "tran tran stop=72n maxstep=0.3n"
+            ],
+            "feedback_body_lines": 4,
+            "feedback_parameters": {
+              "maxstep": "200p",
+              "stop_time": "100n"
+            },
+            "profile_analysis_same": false,
+            "profile_body_same": false,
+            "profile_missing": false,
+            "profile_parameters_same": false,
+            "profile_property_ids_same": true,
+            "score_analyses": [
+              "tran tran stop=80n maxstep=0.5n"
+            ],
+            "score_body_lines": 4,
+            "score_parameters": {
+              "maxstep": "100p",
+              "stop_time": "100n"
+            }
+          },
+          "reasons": [
+            "public trace contract differs from checker observables"
+          ],
+          "task_dir": "tasks/1034-loop-filter-abstraction-bugfix",
+          "task_id": "v4-1034"
+        }
+      ]
+    },
+    {
+      "class": "C",
+      "family_id": "035",
+      "reasons": [
+        "dut: feedback/score body differs",
+        "dut: feedback/score analysis differs",
+        "dut: feedback/score parameters differ",
+        "testbench: feedback/score body differs",
+        "testbench: feedback/score analysis differs",
+        "testbench: feedback/score parameters differ",
+        "testbench: testbench checker has absolute-time/window patterns",
+        "bugfix: feedback/score body differs",
+        "bugfix: feedback/score analysis differs",
+        "bugfix: feedback/score parameters differ"
+      ],
+      "tasks": [
+        {
+          "checker": {
+            "absolute_time_patterns": [],
+            "checker_profile_missing": false,
+            "checker_public_observables": [
+              "clk",
+              "metric",
+              "out",
+              "rst",
+              "vin"
+            ],
+            "checker_public_observables_normalized": [
+              "clk",
+              "metric",
+              "out",
+              "rst",
+              "time",
+              "vin"
+            ],
+            "checker_source": "runners/checkers/v4/task_035.py",
+            "checker_source_missing": false,
+            "checker_task_id": "v4_035_pa_compression",
+            "public_required_signals": [
+              "clk",
+              "metric",
+              "out",
+              "rst",
+              "time",
+              "vin"
+            ],
+            "public_required_signals_normalized": [
+              "clk",
+              "metric",
+              "out",
+              "rst",
+              "time",
+              "vin"
+            ],
+            "testbench_absolute_time_suspect": false,
+            "trace_contract_same": true
+          },
+          "class": "B",
+          "form": "dut",
+          "profile": {
+            "feedback_analyses": [
+              "tran tran stop=70n maxstep=0.35n"
+            ],
+            "feedback_body_lines": 4,
+            "feedback_parameters": {
+              "maxstep": "200p",
+              "stop_time": "100n"
+            },
+            "profile_analysis_same": false,
+            "profile_body_same": false,
+            "profile_missing": false,
+            "profile_parameters_same": false,
+            "profile_property_ids_same": true,
+            "score_analyses": [
+              "tran tran stop=80n maxstep=0.5n"
+            ],
+            "score_body_lines": 4,
+            "score_parameters": {
+              "maxstep": "100p",
+              "stop_time": "100n"
+            }
+          },
+          "reasons": [
+            "feedback/score body differs",
+            "feedback/score analysis differs",
+            "feedback/score parameters differ"
+          ],
+          "task_dir": "tasks/035-pa-compression-macro",
+          "task_id": "v4-035"
+        },
+        {
+          "checker": {
+            "absolute_time_patterns": [
+              "\\bmean_in_window\\s*\\(",
+              "\\b\\d+(?:\\.\\d+)?e-0?9\\b"
+            ],
+            "checker_profile_missing": false,
+            "checker_public_observables": [
+              "clk",
+              "metric",
+              "out",
+              "rst",
+              "vin"
+            ],
+            "checker_public_observables_normalized": [
+              "clk",
+              "metric",
+              "out",
+              "rst",
+              "time",
+              "vin"
+            ],
+            "checker_source": "runners/checkers/v4/task_035.py",
+            "checker_source_missing": false,
+            "checker_task_id": "v4_035_pa_compression",
+            "public_required_signals": [
+              "clk",
+              "metric",
+              "out",
+              "rst",
+              "time",
+              "vin"
+            ],
+            "public_required_signals_normalized": [
+              "clk",
+              "metric",
+              "out",
+              "rst",
+              "time",
+              "vin"
+            ],
+            "testbench_absolute_time_suspect": true,
+            "trace_contract_same": true
+          },
+          "class": "C",
+          "form": "testbench",
+          "profile": {
+            "feedback_analyses": [
+              "tran tran stop=70n maxstep=0.35n"
+            ],
+            "feedback_body_lines": 4,
+            "feedback_parameters": {
+              "maxstep": "200p",
+              "stop_time": "100n"
+            },
+            "profile_analysis_same": false,
+            "profile_body_same": false,
+            "profile_missing": false,
+            "profile_parameters_same": false,
+            "profile_property_ids_same": true,
+            "score_analyses": [
+              "tran tran stop=80n maxstep=0.5n"
+            ],
+            "score_body_lines": 4,
+            "score_parameters": {
+              "maxstep": "100p",
+              "stop_time": "100n"
+            }
+          },
+          "reasons": [
+            "feedback/score body differs",
+            "feedback/score analysis differs",
+            "feedback/score parameters differ",
+            "testbench checker has absolute-time/window patterns"
+          ],
+          "task_dir": "tasks/535-pa-compression-macro-testbench",
+          "task_id": "v4-535"
+        },
+        {
+          "checker": {
+            "absolute_time_patterns": [],
+            "checker_profile_missing": false,
+            "checker_public_observables": [
+              "clk",
+              "metric",
+              "out",
+              "rst",
+              "vin"
+            ],
+            "checker_public_observables_normalized": [
+              "clk",
+              "metric",
+              "out",
+              "rst",
+              "time",
+              "vin"
+            ],
+            "checker_source": "runners/checkers/v4/task_035.py",
+            "checker_source_missing": false,
+            "checker_task_id": "v4_035_pa_compression",
+            "public_required_signals": [
+              "clk",
+              "metric",
+              "out",
+              "rst",
+              "time",
+              "vin"
+            ],
+            "public_required_signals_normalized": [
+              "clk",
+              "metric",
+              "out",
+              "rst",
+              "time",
+              "vin"
+            ],
+            "testbench_absolute_time_suspect": false,
+            "trace_contract_same": true
+          },
+          "class": "B",
+          "form": "bugfix",
+          "profile": {
+            "feedback_analyses": [
+              "tran tran stop=70n maxstep=0.35n"
+            ],
+            "feedback_body_lines": 4,
+            "feedback_parameters": {
+              "maxstep": "200p",
+              "stop_time": "100n"
+            },
+            "profile_analysis_same": false,
+            "profile_body_same": false,
+            "profile_missing": false,
+            "profile_parameters_same": false,
+            "profile_property_ids_same": true,
+            "score_analyses": [
+              "tran tran stop=80n maxstep=0.5n"
+            ],
+            "score_body_lines": 4,
+            "score_parameters": {
+              "maxstep": "100p",
+              "stop_time": "100n"
+            }
+          },
+          "reasons": [
+            "feedback/score body differs",
+            "feedback/score analysis differs",
+            "feedback/score parameters differ"
+          ],
+          "task_dir": "tasks/1035-pa-compression-macro-bugfix",
+          "task_id": "v4-1035"
+        }
+      ]
+    },
+    {
+      "class": "D",
+      "family_id": "036",
+      "reasons": [
+        "dut: public trace contract differs from checker observables",
+        "testbench: public trace contract differs from checker observables",
+        "bugfix: public trace contract differs from checker observables"
+      ],
+      "tasks": [
+        {
+          "checker": {
+            "absolute_time_patterns": [],
+            "checker_profile_missing": false,
+            "checker_public_observables": [
+              "clk",
+              "rst",
+              "vin"
+            ],
+            "checker_public_observables_normalized": [
+              "clk",
+              "rst",
+              "time",
+              "vin"
+            ],
+            "checker_source": "runners/checkers/v4/task_036.py",
+            "checker_source_missing": false,
+            "checker_task_id": "v4_036_power_on_reset_detector",
+            "public_required_signals": [
+              "clk",
+              "metric",
+              "out",
+              "rst",
+              "time",
+              "vin"
+            ],
+            "public_required_signals_normalized": [
+              "clk",
+              "metric",
+              "out",
+              "rst",
+              "time",
+              "vin"
+            ],
+            "testbench_absolute_time_suspect": false,
+            "trace_contract_same": false
+          },
+          "class": "D",
+          "form": "dut",
+          "profile": {
+            "feedback_analyses": [],
+            "feedback_body_lines": 0,
+            "feedback_parameters": {
+              "maxstep": "200p",
+              "stop_time": "100n"
+            },
+            "profile_analysis_same": true,
+            "profile_body_same": true,
+            "profile_missing": false,
+            "profile_parameters_same": false,
+            "profile_property_ids_same": true,
+            "score_analyses": [],
+            "score_body_lines": 0,
+            "score_parameters": {
+              "maxstep": "100p",
+              "stop_time": "100n"
+            }
+          },
+          "reasons": [
+            "public trace contract differs from checker observables"
+          ],
+          "task_dir": "tasks/036-power-on-reset-detector",
+          "task_id": "v4-036"
+        },
+        {
+          "checker": {
+            "absolute_time_patterns": [
+              "\\bmean_in_window\\s*\\(",
+              "\\b\\d+(?:\\.\\d+)?e-0?9\\b"
+            ],
+            "checker_profile_missing": false,
+            "checker_public_observables": [
+              "clk",
+              "rst",
+              "vin"
+            ],
+            "checker_public_observables_normalized": [
+              "clk",
+              "rst",
+              "time",
+              "vin"
+            ],
+            "checker_source": "runners/checkers/v4/task_036.py",
+            "checker_source_missing": false,
+            "checker_task_id": "v4_036_power_on_reset_detector",
+            "public_required_signals": [
+              "clk",
+              "metric",
+              "out",
+              "rst",
+              "time",
+              "vin"
+            ],
+            "public_required_signals_normalized": [
+              "clk",
+              "metric",
+              "out",
+              "rst",
+              "time",
+              "vin"
+            ],
+            "testbench_absolute_time_suspect": true,
+            "trace_contract_same": false
+          },
+          "class": "D",
+          "form": "testbench",
+          "profile": {
+            "feedback_analyses": [],
+            "feedback_body_lines": 0,
+            "feedback_parameters": {
+              "maxstep": "200p",
+              "stop_time": "100n"
+            },
+            "profile_analysis_same": true,
+            "profile_body_same": true,
+            "profile_missing": false,
+            "profile_parameters_same": false,
+            "profile_property_ids_same": true,
+            "score_analyses": [],
+            "score_body_lines": 0,
+            "score_parameters": {
+              "maxstep": "100p",
+              "stop_time": "100n"
+            }
+          },
+          "reasons": [
+            "public trace contract differs from checker observables"
+          ],
+          "task_dir": "tasks/536-power-on-reset-detector-testbench",
+          "task_id": "v4-536"
+        },
+        {
+          "checker": {
+            "absolute_time_patterns": [],
+            "checker_profile_missing": false,
+            "checker_public_observables": [
+              "clk",
+              "rst",
+              "vin"
+            ],
+            "checker_public_observables_normalized": [
+              "clk",
+              "rst",
+              "time",
+              "vin"
+            ],
+            "checker_source": "runners/checkers/v4/task_036.py",
+            "checker_source_missing": false,
+            "checker_task_id": "v4_036_power_on_reset_detector",
+            "public_required_signals": [
+              "clk",
+              "metric",
+              "out",
+              "rst",
+              "time",
+              "vin"
+            ],
+            "public_required_signals_normalized": [
+              "clk",
+              "metric",
+              "out",
+              "rst",
+              "time",
+              "vin"
+            ],
+            "testbench_absolute_time_suspect": false,
+            "trace_contract_same": false
+          },
+          "class": "D",
+          "form": "bugfix",
+          "profile": {
+            "feedback_analyses": [],
+            "feedback_body_lines": 0,
+            "feedback_parameters": {
+              "maxstep": "200p",
+              "stop_time": "100n"
+            },
+            "profile_analysis_same": true,
+            "profile_body_same": true,
+            "profile_missing": false,
+            "profile_parameters_same": false,
+            "profile_property_ids_same": true,
+            "score_analyses": [],
+            "score_body_lines": 0,
+            "score_parameters": {
+              "maxstep": "100p",
+              "stop_time": "100n"
+            }
+          },
+          "reasons": [
+            "public trace contract differs from checker observables"
+          ],
+          "task_dir": "tasks/1036-power-on-reset-detector-bugfix",
+          "task_id": "v4-1036"
+        }
+      ]
+    },
+    {
+      "class": "D",
+      "family_id": "037",
+      "reasons": [
+        "dut: public trace contract differs from checker observables",
+        "testbench: public trace contract differs from checker observables",
+        "bugfix: public trace contract differs from checker observables"
+      ],
+      "tasks": [
+        {
+          "checker": {
+            "absolute_time_patterns": [],
+            "checker_profile_missing": false,
+            "checker_public_observables": [
+              "clk",
+              "rst",
+              "vin"
+            ],
+            "checker_public_observables_normalized": [
+              "clk",
+              "rst",
+              "time",
+              "vin"
+            ],
+            "checker_source": "runners/checkers/v4/task_037.py",
+            "checker_source_missing": false,
+            "checker_task_id": "v4_037_precision_rectifier_envelope_detector",
+            "public_required_signals": [
+              "clk",
+              "env",
+              "metric",
+              "rect",
+              "rst",
+              "time",
+              "vin"
+            ],
+            "public_required_signals_normalized": [
+              "clk",
+              "env",
+              "metric",
+              "rect",
+              "rst",
+              "time",
+              "vin"
+            ],
+            "testbench_absolute_time_suspect": false,
+            "trace_contract_same": false
+          },
+          "class": "D",
+          "form": "dut",
+          "profile": {
+            "feedback_analyses": [],
+            "feedback_body_lines": 0,
+            "feedback_parameters": {
+              "maxstep": "200p",
+              "stop_time": "100n"
+            },
+            "profile_analysis_same": true,
+            "profile_body_same": true,
+            "profile_missing": false,
+            "profile_parameters_same": false,
+            "profile_property_ids_same": true,
+            "score_analyses": [],
+            "score_body_lines": 0,
+            "score_parameters": {
+              "maxstep": "100p",
+              "stop_time": "100n"
+            }
+          },
+          "reasons": [
+            "public trace contract differs from checker observables"
+          ],
+          "task_dir": "tasks/037-precision-rectifier-envelope-detector",
+          "task_id": "v4-037"
+        },
+        {
+          "checker": {
+            "absolute_time_patterns": [
+              "\\bmean_in_window\\s*\\(",
+              "\\b\\d+(?:\\.\\d+)?e-0?9\\b"
+            ],
+            "checker_profile_missing": false,
+            "checker_public_observables": [
+              "clk",
+              "rst",
+              "vin"
+            ],
+            "checker_public_observables_normalized": [
+              "clk",
+              "rst",
+              "time",
+              "vin"
+            ],
+            "checker_source": "runners/checkers/v4/task_037.py",
+            "checker_source_missing": false,
+            "checker_task_id": "v4_037_precision_rectifier_envelope_detector",
+            "public_required_signals": [
+              "clk",
+              "env",
+              "metric",
+              "rect",
+              "rst",
+              "time",
+              "vin"
+            ],
+            "public_required_signals_normalized": [
+              "clk",
+              "env",
+              "metric",
+              "rect",
+              "rst",
+              "time",
+              "vin"
+            ],
+            "testbench_absolute_time_suspect": true,
+            "trace_contract_same": false
+          },
+          "class": "D",
+          "form": "testbench",
+          "profile": {
+            "feedback_analyses": [],
+            "feedback_body_lines": 0,
+            "feedback_parameters": {
+              "maxstep": "200p",
+              "stop_time": "100n"
+            },
+            "profile_analysis_same": true,
+            "profile_body_same": true,
+            "profile_missing": false,
+            "profile_parameters_same": false,
+            "profile_property_ids_same": true,
+            "score_analyses": [],
+            "score_body_lines": 0,
+            "score_parameters": {
+              "maxstep": "100p",
+              "stop_time": "100n"
+            }
+          },
+          "reasons": [
+            "public trace contract differs from checker observables"
+          ],
+          "task_dir": "tasks/537-precision-rectifier-envelope-detector-testbench",
+          "task_id": "v4-537"
+        },
+        {
+          "checker": {
+            "absolute_time_patterns": [],
+            "checker_profile_missing": false,
+            "checker_public_observables": [
+              "clk",
+              "rst",
+              "vin"
+            ],
+            "checker_public_observables_normalized": [
+              "clk",
+              "rst",
+              "time",
+              "vin"
+            ],
+            "checker_source": "runners/checkers/v4/task_037.py",
+            "checker_source_missing": false,
+            "checker_task_id": "v4_037_precision_rectifier_envelope_detector",
+            "public_required_signals": [
+              "clk",
+              "env",
+              "metric",
+              "rect",
+              "rst",
+              "time",
+              "vin"
+            ],
+            "public_required_signals_normalized": [
+              "clk",
+              "env",
+              "metric",
+              "rect",
+              "rst",
+              "time",
+              "vin"
+            ],
+            "testbench_absolute_time_suspect": false,
+            "trace_contract_same": false
+          },
+          "class": "D",
+          "form": "bugfix",
+          "profile": {
+            "feedback_analyses": [],
+            "feedback_body_lines": 0,
+            "feedback_parameters": {
+              "maxstep": "200p",
+              "stop_time": "100n"
+            },
+            "profile_analysis_same": true,
+            "profile_body_same": true,
+            "profile_missing": false,
+            "profile_parameters_same": false,
+            "profile_property_ids_same": true,
+            "score_analyses": [],
+            "score_body_lines": 0,
+            "score_parameters": {
+              "maxstep": "100p",
+              "stop_time": "100n"
+            }
+          },
+          "reasons": [
+            "public trace contract differs from checker observables"
+          ],
+          "task_dir": "tasks/1037-precision-rectifier-envelope-detector-bugfix",
+          "task_id": "v4-1037"
+        }
+      ]
+    },
+    {
+      "class": "C",
+      "family_id": "038",
+      "reasons": [
+        "dut: feedback/score body differs",
+        "dut: feedback/score analysis differs",
+        "dut: feedback/score parameters differ",
+        "testbench: feedback/score body differs",
+        "testbench: feedback/score analysis differs",
+        "testbench: feedback/score parameters differ",
+        "testbench: testbench checker has absolute-time/window patterns",
+        "bugfix: feedback/score body differs",
+        "bugfix: feedback/score analysis differs",
+        "bugfix: feedback/score parameters differ"
+      ],
+      "tasks": [
+        {
+          "checker": {
+            "absolute_time_patterns": [],
+            "checker_profile_missing": false,
+            "checker_public_observables": [
+              "clk",
+              "gain_sel",
+              "metric",
+              "out",
+              "rst",
+              "vin"
+            ],
+            "checker_public_observables_normalized": [
+              "clk",
+              "gain_sel",
+              "metric",
+              "out",
+              "rst",
+              "time",
+              "vin"
+            ],
+            "checker_source": "runners/checkers/v4/task_038.py",
+            "checker_source_missing": false,
+            "checker_task_id": "v4_038_programmable_gain_amplifier",
+            "public_required_signals": [
+              "clk",
+              "gain_sel",
+              "metric",
+              "out",
+              "rst",
+              "time",
+              "vin"
+            ],
+            "public_required_signals_normalized": [
+              "clk",
+              "gain_sel",
+              "metric",
+              "out",
+              "rst",
+              "time",
+              "vin"
+            ],
+            "testbench_absolute_time_suspect": false,
+            "trace_contract_same": true
+          },
+          "class": "B",
+          "form": "dut",
+          "profile": {
+            "feedback_analyses": [],
+            "feedback_body_lines": 22,
+            "feedback_parameters": {
+              "maxstep": "200p",
+              "stop_time": "100n"
+            },
+            "profile_analysis_same": false,
+            "profile_body_same": false,
+            "profile_missing": false,
+            "profile_parameters_same": false,
+            "profile_property_ids_same": true,
+            "score_analyses": [
+              "tran tran stop=90n maxstep=250p"
+            ],
+            "score_body_lines": 4,
+            "score_parameters": {
+              "maxstep": "100p",
+              "stop_time": "100n"
+            }
+          },
+          "reasons": [
+            "feedback/score body differs",
+            "feedback/score analysis differs",
+            "feedback/score parameters differ"
+          ],
+          "task_dir": "tasks/038-programmable-gain-amplifier",
+          "task_id": "v4-038"
+        },
+        {
+          "checker": {
+            "absolute_time_patterns": [
+              "\\bmean_in_window\\s*\\(",
+              "\\b\\d+(?:\\.\\d+)?e-0?9\\b"
+            ],
+            "checker_profile_missing": false,
+            "checker_public_observables": [
+              "clk",
+              "gain_sel",
+              "metric",
+              "out",
+              "rst",
+              "vin"
+            ],
+            "checker_public_observables_normalized": [
+              "clk",
+              "gain_sel",
+              "metric",
+              "out",
+              "rst",
+              "time",
+              "vin"
+            ],
+            "checker_source": "runners/checkers/v4/task_038.py",
+            "checker_source_missing": false,
+            "checker_task_id": "v4_038_programmable_gain_amplifier",
+            "public_required_signals": [
+              "clk",
+              "gain_sel",
+              "metric",
+              "out",
+              "rst",
+              "time",
+              "vin"
+            ],
+            "public_required_signals_normalized": [
+              "clk",
+              "gain_sel",
+              "metric",
+              "out",
+              "rst",
+              "time",
+              "vin"
+            ],
+            "testbench_absolute_time_suspect": true,
+            "trace_contract_same": true
+          },
+          "class": "C",
+          "form": "testbench",
+          "profile": {
+            "feedback_analyses": [],
+            "feedback_body_lines": 22,
+            "feedback_parameters": {
+              "maxstep": "200p",
+              "stop_time": "100n"
+            },
+            "profile_analysis_same": false,
+            "profile_body_same": false,
+            "profile_missing": false,
+            "profile_parameters_same": false,
+            "profile_property_ids_same": true,
+            "score_analyses": [
+              "tran tran stop=90n maxstep=250p"
+            ],
+            "score_body_lines": 4,
+            "score_parameters": {
+              "maxstep": "100p",
+              "stop_time": "100n"
+            }
+          },
+          "reasons": [
+            "feedback/score body differs",
+            "feedback/score analysis differs",
+            "feedback/score parameters differ",
+            "testbench checker has absolute-time/window patterns"
+          ],
+          "task_dir": "tasks/538-programmable-gain-amplifier-testbench",
+          "task_id": "v4-538"
+        },
+        {
+          "checker": {
+            "absolute_time_patterns": [],
+            "checker_profile_missing": false,
+            "checker_public_observables": [
+              "clk",
+              "gain_sel",
+              "metric",
+              "out",
+              "rst",
+              "vin"
+            ],
+            "checker_public_observables_normalized": [
+              "clk",
+              "gain_sel",
+              "metric",
+              "out",
+              "rst",
+              "time",
+              "vin"
+            ],
+            "checker_source": "runners/checkers/v4/task_038.py",
+            "checker_source_missing": false,
+            "checker_task_id": "v4_038_programmable_gain_amplifier",
+            "public_required_signals": [
+              "clk",
+              "gain_sel",
+              "metric",
+              "out",
+              "rst",
+              "time",
+              "vin"
+            ],
+            "public_required_signals_normalized": [
+              "clk",
+              "gain_sel",
+              "metric",
+              "out",
+              "rst",
+              "time",
+              "vin"
+            ],
+            "testbench_absolute_time_suspect": false,
+            "trace_contract_same": true
+          },
+          "class": "B",
+          "form": "bugfix",
+          "profile": {
+            "feedback_analyses": [],
+            "feedback_body_lines": 22,
+            "feedback_parameters": {
+              "maxstep": "200p",
+              "stop_time": "100n"
+            },
+            "profile_analysis_same": false,
+            "profile_body_same": false,
+            "profile_missing": false,
+            "profile_parameters_same": false,
+            "profile_property_ids_same": true,
+            "score_analyses": [
+              "tran tran stop=90n maxstep=250p"
+            ],
+            "score_body_lines": 4,
+            "score_parameters": {
+              "maxstep": "100p",
+              "stop_time": "100n"
+            }
+          },
+          "reasons": [
+            "feedback/score body differs",
+            "feedback/score analysis differs",
+            "feedback/score parameters differ"
+          ],
+          "task_dir": "tasks/1038-programmable-gain-amplifier-bugfix",
+          "task_id": "v4-1038"
+        }
+      ]
+    },
+    {
+      "class": "D",
+      "family_id": "039",
+      "reasons": [
+        "dut: public trace contract differs from checker observables",
+        "testbench: public trace contract differs from checker observables",
+        "bugfix: public trace contract differs from checker observables"
+      ],
+      "tasks": [
+        {
+          "checker": {
+            "absolute_time_patterns": [],
+            "checker_profile_missing": false,
+            "checker_public_observables": [
+              "CLK",
+              "VDD",
+              "VINN",
+              "VINP",
+              "VSS"
+            ],
+            "checker_public_observables_normalized": [
+              "clk",
+              "time",
+              "vdd",
+              "vinn",
+              "vinp",
+              "vss"
+            ],
+            "checker_source": "runners/checkers/v4/task_039.py",
+            "checker_source_missing": false,
+            "checker_task_id": "v4_039_propagation_delay_comparator",
+            "public_required_signals": [
+              "clk",
+              "delay_ps",
+              "gnd",
+              "lm_int",
+              "lp_int",
+              "out_n",
+              "out_p",
+              "time",
+              "vdd",
+              "vinn",
+              "vinp"
+            ],
+            "public_required_signals_normalized": [
+              "clk",
+              "delay_ps",
+              "gnd",
+              "lm_int",
+              "lp_int",
+              "out_n",
+              "out_p",
+              "time",
+              "vdd",
+              "vinn",
+              "vinp"
+            ],
+            "testbench_absolute_time_suspect": false,
+            "trace_contract_same": false
+          },
+          "class": "D",
+          "form": "dut",
+          "profile": {
+            "feedback_analyses": [],
+            "feedback_body_lines": 8,
+            "feedback_parameters": {
+              "maxstep": "200p",
+              "stop_time": "100n"
+            },
+            "profile_analysis_same": true,
+            "profile_body_same": false,
+            "profile_missing": false,
+            "profile_parameters_same": false,
+            "profile_property_ids_same": true,
+            "score_analyses": [],
+            "score_body_lines": 21,
+            "score_parameters": {
+              "maxstep": "100p",
+              "stop_time": "100n"
+            }
+          },
+          "reasons": [
+            "public trace contract differs from checker observables"
+          ],
+          "task_dir": "tasks/039-propagation-delay-comparator",
+          "task_id": "v4-039"
+        },
+        {
+          "checker": {
+            "absolute_time_patterns": [
+              "\\b\\d+(?:\\.\\d+)?e-0?9\\b"
+            ],
+            "checker_profile_missing": false,
+            "checker_public_observables": [
+              "CLK",
+              "VDD",
+              "VINN",
+              "VINP",
+              "VSS"
+            ],
+            "checker_public_observables_normalized": [
+              "clk",
+              "time",
+              "vdd",
+              "vinn",
+              "vinp",
+              "vss"
+            ],
+            "checker_source": "runners/checkers/v4/task_039.py",
+            "checker_source_missing": false,
+            "checker_task_id": "v4_039_propagation_delay_comparator",
+            "public_required_signals": [
+              "clk",
+              "delay_ps",
+              "gnd",
+              "lm_int",
+              "lp_int",
+              "out_n",
+              "out_p",
+              "time",
+              "vdd",
+              "vinn",
+              "vinp"
+            ],
+            "public_required_signals_normalized": [
+              "clk",
+              "delay_ps",
+              "gnd",
+              "lm_int",
+              "lp_int",
+              "out_n",
+              "out_p",
+              "time",
+              "vdd",
+              "vinn",
+              "vinp"
+            ],
+            "testbench_absolute_time_suspect": true,
+            "trace_contract_same": false
+          },
+          "class": "D",
+          "form": "testbench",
+          "profile": {
+            "feedback_analyses": [],
+            "feedback_body_lines": 8,
+            "feedback_parameters": {
+              "maxstep": "200p",
+              "stop_time": "100n"
+            },
+            "profile_analysis_same": true,
+            "profile_body_same": false,
+            "profile_missing": false,
+            "profile_parameters_same": false,
+            "profile_property_ids_same": true,
+            "score_analyses": [],
+            "score_body_lines": 21,
+            "score_parameters": {
+              "maxstep": "100p",
+              "stop_time": "100n"
+            }
+          },
+          "reasons": [
+            "public trace contract differs from checker observables"
+          ],
+          "task_dir": "tasks/539-propagation-delay-comparator-testbench",
+          "task_id": "v4-539"
+        },
+        {
+          "checker": {
+            "absolute_time_patterns": [],
+            "checker_profile_missing": false,
+            "checker_public_observables": [
+              "CLK",
+              "VDD",
+              "VINN",
+              "VINP",
+              "VSS"
+            ],
+            "checker_public_observables_normalized": [
+              "clk",
+              "time",
+              "vdd",
+              "vinn",
+              "vinp",
+              "vss"
+            ],
+            "checker_source": "runners/checkers/v4/task_039.py",
+            "checker_source_missing": false,
+            "checker_task_id": "v4_039_propagation_delay_comparator",
+            "public_required_signals": [
+              "clk",
+              "delay_ps",
+              "gnd",
+              "lm_int",
+              "lp_int",
+              "out_n",
+              "out_p",
+              "time",
+              "vdd",
+              "vinn",
+              "vinp"
+            ],
+            "public_required_signals_normalized": [
+              "clk",
+              "delay_ps",
+              "gnd",
+              "lm_int",
+              "lp_int",
+              "out_n",
+              "out_p",
+              "time",
+              "vdd",
+              "vinn",
+              "vinp"
+            ],
+            "testbench_absolute_time_suspect": false,
+            "trace_contract_same": false
+          },
+          "class": "D",
+          "form": "bugfix",
+          "profile": {
+            "feedback_analyses": [],
+            "feedback_body_lines": 8,
+            "feedback_parameters": {
+              "maxstep": "200p",
+              "stop_time": "100n"
+            },
+            "profile_analysis_same": true,
+            "profile_body_same": false,
+            "profile_missing": false,
+            "profile_parameters_same": false,
+            "profile_property_ids_same": true,
+            "score_analyses": [],
+            "score_body_lines": 21,
+            "score_parameters": {
+              "maxstep": "100p",
+              "stop_time": "100n"
+            }
+          },
+          "reasons": [
+            "public trace contract differs from checker observables"
+          ],
+          "task_dir": "tasks/1039-propagation-delay-comparator-bugfix",
+          "task_id": "v4-1039"
+        }
+      ]
+    },
+    {
+      "class": "D",
+      "family_id": "040",
+      "reasons": [
+        "dut: public trace contract differs from checker observables",
+        "testbench: public trace contract differs from checker observables",
+        "bugfix: public trace contract differs from checker observables"
+      ],
+      "tasks": [
+        {
+          "checker": {
+            "absolute_time_patterns": [],
+            "checker_profile_missing": false,
+            "checker_public_observables": [
+              "clk",
+              "rst",
+              "vin"
+            ],
+            "checker_public_observables_normalized": [
+              "clk",
+              "rst",
+              "time",
+              "vin"
+            ],
+            "checker_source": "runners/checkers/v4/task_040.py",
+            "checker_source_missing": false,
+            "checker_task_id": "v4_040_ptat_ctat_reference_generator",
+            "public_required_signals": [
+              "clk",
+              "metric",
+              "out",
+              "rst",
+              "time",
+              "vin"
+            ],
+            "public_required_signals_normalized": [
+              "clk",
+              "metric",
+              "out",
+              "rst",
+              "time",
+              "vin"
+            ],
+            "testbench_absolute_time_suspect": false,
+            "trace_contract_same": false
+          },
+          "class": "D",
+          "form": "dut",
+          "profile": {
+            "feedback_analyses": [
+              "tran tran stop={stop_time} maxstep={maxstep}"
+            ],
+            "feedback_body_lines": 5,
+            "feedback_parameters": {
+              "maxstep": "125p",
+              "stop_time": "76n"
+            },
+            "profile_analysis_same": false,
+            "profile_body_same": false,
+            "profile_missing": false,
+            "profile_parameters_same": false,
+            "profile_property_ids_same": true,
+            "score_analyses": [
+              "tran tran stop=80n maxstep=0.5n"
+            ],
+            "score_body_lines": 4,
+            "score_parameters": {
+              "maxstep": "100p",
+              "stop_time": "100n"
+            }
+          },
+          "reasons": [
+            "public trace contract differs from checker observables"
+          ],
+          "task_dir": "tasks/040-ptat-ctat-reference-generator",
+          "task_id": "v4-040"
+        },
+        {
+          "checker": {
+            "absolute_time_patterns": [
+              "\\bmean_in_window\\s*\\(",
+              "\\b\\d+(?:\\.\\d+)?e-0?9\\b"
+            ],
+            "checker_profile_missing": false,
+            "checker_public_observables": [
+              "clk",
+              "rst",
+              "vin"
+            ],
+            "checker_public_observables_normalized": [
+              "clk",
+              "rst",
+              "time",
+              "vin"
+            ],
+            "checker_source": "runners/checkers/v4/task_040.py",
+            "checker_source_missing": false,
+            "checker_task_id": "v4_040_ptat_ctat_reference_generator",
+            "public_required_signals": [
+              "clk",
+              "metric",
+              "out",
+              "rst",
+              "time",
+              "vin"
+            ],
+            "public_required_signals_normalized": [
+              "clk",
+              "metric",
+              "out",
+              "rst",
+              "time",
+              "vin"
+            ],
+            "testbench_absolute_time_suspect": true,
+            "trace_contract_same": false
+          },
+          "class": "D",
+          "form": "testbench",
+          "profile": {
+            "feedback_analyses": [
+              "tran tran stop={stop_time} maxstep={maxstep}"
+            ],
+            "feedback_body_lines": 5,
+            "feedback_parameters": {
+              "maxstep": "125p",
+              "stop_time": "76n"
+            },
+            "profile_analysis_same": false,
+            "profile_body_same": false,
+            "profile_missing": false,
+            "profile_parameters_same": false,
+            "profile_property_ids_same": true,
+            "score_analyses": [
+              "tran tran stop=80n maxstep=0.5n"
+            ],
+            "score_body_lines": 4,
+            "score_parameters": {
+              "maxstep": "100p",
+              "stop_time": "100n"
+            }
+          },
+          "reasons": [
+            "public trace contract differs from checker observables"
+          ],
+          "task_dir": "tasks/540-ptat-ctat-reference-generator-testbench",
+          "task_id": "v4-540"
+        },
+        {
+          "checker": {
+            "absolute_time_patterns": [],
+            "checker_profile_missing": false,
+            "checker_public_observables": [
+              "clk",
+              "rst",
+              "vin"
+            ],
+            "checker_public_observables_normalized": [
+              "clk",
+              "rst",
+              "time",
+              "vin"
+            ],
+            "checker_source": "runners/checkers/v4/task_040.py",
+            "checker_source_missing": false,
+            "checker_task_id": "v4_040_ptat_ctat_reference_generator",
+            "public_required_signals": [
+              "clk",
+              "metric",
+              "out",
+              "rst",
+              "time",
+              "vin"
+            ],
+            "public_required_signals_normalized": [
+              "clk",
+              "metric",
+              "out",
+              "rst",
+              "time",
+              "vin"
+            ],
+            "testbench_absolute_time_suspect": false,
+            "trace_contract_same": false
+          },
+          "class": "D",
+          "form": "bugfix",
+          "profile": {
+            "feedback_analyses": [
+              "tran tran stop={stop_time} maxstep={maxstep}"
+            ],
+            "feedback_body_lines": 5,
+            "feedback_parameters": {
+              "maxstep": "125p",
+              "stop_time": "76n"
+            },
+            "profile_analysis_same": false,
+            "profile_body_same": false,
+            "profile_missing": false,
+            "profile_parameters_same": false,
+            "profile_property_ids_same": true,
+            "score_analyses": [
+              "tran tran stop=80n maxstep=0.5n"
+            ],
+            "score_body_lines": 4,
+            "score_parameters": {
+              "maxstep": "100p",
+              "stop_time": "100n"
+            }
+          },
+          "reasons": [
+            "public trace contract differs from checker observables"
+          ],
+          "task_dir": "tasks/1040-ptat-ctat-reference-generator-bugfix",
+          "task_id": "v4-1040"
+        }
+      ]
+    }
+  ],
+  "repair": {
+    "batch": "04/40",
+    "evidence": "repair-gate1/issue-281/batch-04-evidence.json",
+    "families": [
+      "031",
+      "032",
+      "033",
+      "034",
+      "035",
+      "036",
+      "037",
+      "038",
+      "039",
+      "040"
+    ],
+    "not_tested": [
+      "Cadence/Spectre transient parity unavailable locally; command -v spectre returned no executable."
+    ],
+    "status": "complete"
+  },
+  "schema_version": "v4-repair-gate1-ledger-v1",
+  "source": {
+    "release": "benchmark-vabench-release-v4/release/benchmarkv4",
+    "repo": "/Users/bucketsran/Documents/TsingProject/vaEvas/_worktrees/behavioral-v4-repair-batch281"
+  },
+  "summary": {
+    "class_counts": {
+      "A": 0,
+      "B": 0,
+      "C": 4,
+      "D": 6
+    },
+    "family_count": 10
+  }
+}

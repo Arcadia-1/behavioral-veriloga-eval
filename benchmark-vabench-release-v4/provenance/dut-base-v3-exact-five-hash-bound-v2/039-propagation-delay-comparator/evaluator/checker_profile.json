@@ -16,11 +16,16 @@
   "trace_contract": {
     "extra_trace_signals": [],
     "public_observables": [
-      "CLK",
-      "VDD",
-      "VINN",
-      "VINP",
-      "VSS"
+      "clk",
+      "vinn",
+      "vinp",
+      "out_n",
+      "out_p",
+      "lp_int",
+      "lm_int",
+      "gnd",
+      "vdd",
+      "delay_ps"
     ]
   }
 }
