@@ -33,7 +33,7 @@
     }
   },
   "diagnostics": {
-    "expected": "trigger=stimulus exercises neg_003_wrong_scale; violated_properties=P_TEXT_X0_CLIP01_V_IN0_V",
+    "expected": "trigger=stimulus exercises a certified counterexample; violated_properties=P_TEXT_X0_CLIP01_V_IN0_V",
     "observed": "EVAS: issue109_remaining_clock_error=0.3117; Spectre: issue109_remaining_clock_error=0.3117",
     "violated_property_ids": [
       "P_TEXT_X0_CLIP01_V_IN0_V"

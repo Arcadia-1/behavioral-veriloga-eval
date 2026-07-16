@@ -33,7 +33,7 @@
     }
   },
   "diagnostics": {
-    "expected": "trigger=stimulus exercises neg_002_ignore_gate; violated_properties=P_FOR_THE_SAME_GATED_SAMPLE_WINDOW",
+    "expected": "trigger=stimulus exercises a certified counterexample; violated_properties=P_FOR_THE_SAME_GATED_SAMPLE_WINDOW",
     "observed": "EVAS: event_rate_monitor_error=0.5400; Spectre: event_rate_monitor_error=0.5400",
     "violated_property_ids": [
       "P_FOR_THE_SAME_GATED_SAMPLE_WINDOW"

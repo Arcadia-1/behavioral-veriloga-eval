@@ -33,7 +33,7 @@
     }
   },
   "diagnostics": {
-    "expected": "trigger=stimulus exercises neg_004_no_reset_clear; violated_properties=P_AFTER_UPDATING_THE_STAGE_COUNT_DRIVE",
+    "expected": "trigger=stimulus exercises a certified counterexample; violated_properties=P_AFTER_UPDATING_THE_STAGE_COUNT_DRIVE",
     "observed": "EVAS: reset_release_error=0.9000; Spectre: reset_release_error=0.9000",
     "violated_property_ids": [
       "P_AFTER_UPDATING_THE_STAGE_COUNT_DRIVE"

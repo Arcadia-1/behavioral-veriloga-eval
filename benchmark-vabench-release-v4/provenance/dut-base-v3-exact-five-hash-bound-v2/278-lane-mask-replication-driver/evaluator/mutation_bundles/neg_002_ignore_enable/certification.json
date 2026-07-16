@@ -33,7 +33,7 @@
     }
   },
   "diagnostics": {
-    "expected": "trigger=stimulus exercises neg_002_ignore_enable; violated_properties=P_COUNT_THE_NUMBER_OF_NORMALIZED_INPUTS",
+    "expected": "trigger=stimulus exercises a certified counterexample; violated_properties=P_COUNT_THE_NUMBER_OF_NORMALIZED_INPUTS",
     "observed": "EVAS: issue109_remaining_error=0.9000; Spectre: issue109_remaining_error=0.9000",
     "violated_property_ids": [
       "P_COUNT_THE_NUMBER_OF_NORMALIZED_INPUTS"

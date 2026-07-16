@@ -33,7 +33,7 @@
     }
   },
   "diagnostics": {
-    "expected": "trigger=stimulus exercises neg_003_ignore_enable; violated_properties=P_ASSERT_VALID_ONLY_WHEN_ENABLE_IS",
+    "expected": "trigger=stimulus exercises a certified counterexample; violated_properties=P_ASSERT_VALID_ONLY_WHEN_ENABLE_IS",
     "observed": "EVAS: rail_normalized_metric_error=0.3098; Spectre: rail_normalized_metric_error=0.3098",
     "violated_property_ids": [
       "P_ASSERT_VALID_ONLY_WHEN_ENABLE_IS"
