@@ -7,10 +7,12 @@
   },
   "deck": {
     "analyses": [
-      "tran tran stop=130n maxstep=500p"
+      "tran tran stop=225n maxstep=200p"
     ],
     "body_lines": [
-      "Vclk (clk 0) vsource type=pulse val0=0 val1=0.9 delay=10n rise=200p fall=200p width=5n period=20n"
+      "Vclk (clk 0) vsource type=pulse val0=0 val1=0.9 delay=10n rise=200p fall=200p width=5n period=20n",
+      "Vrst (rst_n 0) vsource type=pwl wave=[0 0 8n 0 9n 0.9 134n 0.9 135n 0 144n 0 145n 0.9 225n 0.9]",
+      "XDUT (clk rst_n out0 out1 out2 out3) element_shuffler"
     ],
     "header": [
       "simulator lang=spectre",
@@ -40,47 +42,17 @@
     "legacy_score_deck_sha256": "35c4a78c42a27de01f0d70784503735571951d3b182735a6a822a45e7a08e64e",
     "notes": [
       "legacy feedback deck was used only to seed the canonical harness spec",
-      "legacy score deck seeded private profile-specific overrides"
+      "legacy score deck seeded private profile-specific overrides",
+      "feedback deck is the canonical stimulus; score is generated with identical semantics"
     ]
   },
   "profile_defaults": {
     "feedback": {
-      "deck_overrides": {
-        "analyses": [
-          "tran tran stop=225n maxstep=200p"
-        ],
-        "body_lines": [
-          "Vrst (rst_n 0) vsource type=pwl wave=[0 0 8n 0 9n 0.9 134n 0.9 135n 0 144n 0 145n 0.9 225n 0.9]",
-          "",
-          "XDUT (clk rst_n out0 out1 out2 out3) element_shuffler",
-          ""
-        ]
-      },
-      "parameters": {
-        "maxstep": "200p",
-        "stop_time": "100n"
-      },
       "simulatorOptions": {
         "evas_profile": "balanced"
       }
     },
-    "score": {
-      "deck_overrides": {
-        "analyses": [
-          "tran tran stop=230n maxstep=500p"
-        ],
-        "body_lines": [
-          "Vrst (rst_n 0) vsource type=pwl wave=[0 0 8n 0 9n 0.9 132n 0.9 133n 0 143n 0 144n 0.9 230n 0.9]",
-          "",
-          "XDUT (clk rst_n out0 out1 out2 out3) element_shuffler",
-          ""
-        ]
-      },
-      "parameters": {
-        "maxstep": "100p",
-        "stop_time": "100n"
-      }
-    }
+    "score": {}
   },
   "property_ids": [
     "P_RESET_START",

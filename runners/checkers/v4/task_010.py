@@ -80,18 +80,25 @@ def check_v3_offset_comparator(rows: list[dict[str, float]]) -> tuple[bool, str]
         missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
         return False, "missing_columns=" + ",".join(missing)
 
-    sample_plan = [
-        (1.35e-9, "L", "edge_neg_10mv"),
-        (5.35e-9, "L", "edge_zero_mv"),
-        (9.35e-9, "L", "edge_pos_3mv"),
-        (12.60e-9, "L", "async_hold_before_pos_7mv_edge"),
-        (13.35e-9, "H", "edge_pos_7mv"),
-        (17.35e-9, "H", "edge_pos_20mv"),
-        (20.60e-9, "H", "async_hold_before_zero_edge"),
-        (21.35e-9, "L", "edge_zero_again"),
-        (24.60e-9, "L", "async_hold_before_neg_10mv_edge"),
-        (25.35e-9, "L", "edge_neg_10mv_again"),
-    ]
+    times = [row["time"] for row in rows]
+    edge_times = rising_edges([row["clk"] for row in rows], times)
+    periods = [right - left for left, right in zip(edge_times, edge_times[1:])]
+    if len(edge_times) < 7 or not periods:
+        return False, "too_few_clock_edges"
+    nominal_period = sorted(periods)[len(periods) // 2]
+    sample_delay = 0.125 * nominal_period
+    sample_plan: list[tuple[float, str, str]] = []
+    previous_expected = "L"
+    for index, edge_time in enumerate(edge_times[:7]):
+        vinp = sample_signal_at(rows, "vinp", edge_time)
+        vinn = sample_signal_at(rows, "vinn", edge_time)
+        if vinp is None or vinn is None:
+            return False, f"missing_inputs_at_edge={index}"
+        expected = "H" if vinp - vinn > 5e-3 else "L"
+        sample_plan.append((edge_time + sample_delay, expected, f"edge_{index}"))
+        if index > 0:
+            sample_plan.append((edge_time - sample_delay, previous_expected, f"hold_before_edge_{index}"))
+        previous_expected = expected
     failures: list[str] = []
     observed: list[str] = []
     for time_s, expected, label in sample_plan:

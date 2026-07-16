@@ -1,0 +1,2483 @@
+{
+  "families": [
+    {
+      "class": "C",
+      "family_id": "001",
+      "reasons": [
+        "dut: feedback/score body differs",
+        "dut: feedback/score analysis differs",
+        "dut: feedback/score parameters differ",
+        "testbench: feedback/score body differs",
+        "testbench: feedback/score analysis differs",
+        "testbench: feedback/score parameters differ",
+        "testbench: testbench checker has absolute-time/window patterns",
+        "bugfix: feedback/score body differs",
+        "bugfix: feedback/score analysis differs",
+        "bugfix: feedback/score parameters differ"
+      ],
+      "tasks": [
+        {
+          "checker": {
+            "absolute_time_patterns": [],
+            "checker_profile_missing": false,
+            "checker_public_observables": [
+              "clk",
+              "data",
+              "down",
+              "retimed_data",
+              "up"
+            ],
+            "checker_public_observables_normalized": [
+              "clk",
+              "data",
+              "down",
+              "retimed_data",
+              "time",
+              "up"
+            ],
+            "checker_source": "runners/checkers/v4/task_001.py",
+            "checker_source_missing": false,
+            "checker_task_id": "v4_001_bang_bang_phase_detector",
+            "public_required_signals": [
+              "clk",
+              "data",
+              "down",
+              "retimed_data",
+              "time",
+              "up"
+            ],
+            "public_required_signals_normalized": [
+              "clk",
+              "data",
+              "down",
+              "retimed_data",
+              "time",
+              "up"
+            ],
+            "testbench_absolute_time_suspect": false,
+            "trace_contract_same": true
+          },
+          "class": "B",
+          "form": "dut",
+          "profile": {
+            "feedback_analyses": [],
+            "feedback_body_lines": 28,
+            "feedback_parameters": {
+              "maxstep": "200p",
+              "stop_time": "100n"
+            },
+            "profile_analysis_same": false,
+            "profile_body_same": false,
+            "profile_missing": false,
+            "profile_parameters_same": false,
+            "profile_property_ids_same": true,
+            "score_analyses": [
+              "tran tran stop=90n maxstep=20p"
+            ],
+            "score_body_lines": 4,
+            "score_parameters": {
+              "maxstep": "100p",
+              "stop_time": "100n"
+            }
+          },
+          "reasons": [
+            "feedback/score body differs",
+            "feedback/score analysis differs",
+            "feedback/score parameters differ"
+          ],
+          "task_dir": "tasks/001-bang-bang-phase-detector",
+          "task_id": "v4-001"
+        },
+        {
+          "checker": {
+            "absolute_time_patterns": [
+              "\\bwindow\\b",
+              "\\b\\d+(?:\\.\\d+)?e-0?9\\b"
+            ],
+            "checker_profile_missing": false,
+            "checker_public_observables": [
+              "clk",
+              "data",
+              "down",
+              "retimed_data",
+              "up"
+            ],
+            "checker_public_observables_normalized": [
+              "clk",
+              "data",
+              "down",
+              "retimed_data",
+              "time",
+              "up"
+            ],
+            "checker_source": "runners/checkers/v4/task_001.py",
+            "checker_source_missing": false,
+            "checker_task_id": "v4_001_bang_bang_phase_detector",
+            "public_required_signals": [
+              "clk",
+              "data",
+              "down",
+              "retimed_data",
+              "time",
+              "up"
+            ],
+            "public_required_signals_normalized": [
+              "clk",
+              "data",
+              "down",
+              "retimed_data",
+              "time",
+              "up"
+            ],
+            "testbench_absolute_time_suspect": true,
+            "trace_contract_same": true
+          },
+          "class": "C",
+          "form": "testbench",
+          "profile": {
+            "feedback_analyses": [],
+            "feedback_body_lines": 28,
+            "feedback_parameters": {
+              "maxstep": "200p",
+              "stop_time": "100n"
+            },
+            "profile_analysis_same": false,
+            "profile_body_same": false,
+            "profile_missing": false,
+            "profile_parameters_same": false,
+            "profile_property_ids_same": true,
+            "score_analyses": [
+              "tran tran stop=90n maxstep=20p"
+            ],
+            "score_body_lines": 4,
+            "score_parameters": {
+              "maxstep": "100p",
+              "stop_time": "100n"
+            }
+          },
+          "reasons": [
+            "feedback/score body differs",
+            "feedback/score analysis differs",
+            "feedback/score parameters differ",
+            "testbench checker has absolute-time/window patterns"
+          ],
+          "task_dir": "tasks/501-bang-bang-phase-detector-testbench",
+          "task_id": "v4-501"
+        },
+        {
+          "checker": {
+            "absolute_time_patterns": [],
+            "checker_profile_missing": false,
+            "checker_public_observables": [
+              "clk",
+              "data",
+              "down",
+              "retimed_data",
+              "up"
+            ],
+            "checker_public_observables_normalized": [
+              "clk",
+              "data",
+              "down",
+              "retimed_data",
+              "time",
+              "up"
+            ],
+            "checker_source": "runners/checkers/v4/task_001.py",
+            "checker_source_missing": false,
+            "checker_task_id": "v4_001_bang_bang_phase_detector",
+            "public_required_signals": [
+              "clk",
+              "data",
+              "down",
+              "retimed_data",
+              "time",
+              "up"
+            ],
+            "public_required_signals_normalized": [
+              "clk",
+              "data",
+              "down",
+              "retimed_data",
+              "time",
+              "up"
+            ],
+            "testbench_absolute_time_suspect": false,
+            "trace_contract_same": true
+          },
+          "class": "B",
+          "form": "bugfix",
+          "profile": {
+            "feedback_analyses": [],
+            "feedback_body_lines": 28,
+            "feedback_parameters": {
+              "maxstep": "200p",
+              "stop_time": "100n"
+            },
+            "profile_analysis_same": false,
+            "profile_body_same": false,
+            "profile_missing": false,
+            "profile_parameters_same": false,
+            "profile_property_ids_same": true,
+            "score_analyses": [
+              "tran tran stop=90n maxstep=20p"
+            ],
+            "score_body_lines": 4,
+            "score_parameters": {
+              "maxstep": "100p",
+              "stop_time": "100n"
+            }
+          },
+          "reasons": [
+            "feedback/score body differs",
+            "feedback/score analysis differs",
+            "feedback/score parameters differ"
+          ],
+          "task_dir": "tasks/1001-bang-bang-phase-detector-bugfix",
+          "task_id": "v4-1001"
+        }
+      ]
+    },
+    {
+      "class": "D",
+      "family_id": "002",
+      "reasons": [
+        "dut: public trace contract differs from checker observables",
+        "testbench: public trace contract differs from checker observables",
+        "bugfix: public trace contract differs from checker observables"
+      ],
+      "tasks": [
+        {
+          "checker": {
+            "absolute_time_patterns": [],
+            "checker_profile_missing": false,
+            "checker_public_observables": [
+              "CAL0",
+              "CAL1",
+              "CLK",
+              "D0",
+              "D1",
+              "D2",
+              "D3",
+              "D4",
+              "D5",
+              "D6",
+              "D7",
+              "D8",
+              "D9",
+              "VDAC_N",
+              "VDAC_P"
+            ],
+            "checker_public_observables_normalized": [
+              "cal0",
+              "cal1",
+              "clk",
+              "d0",
+              "d1",
+              "d2",
+              "d3",
+              "d4",
+              "d5",
+              "d6",
+              "d7",
+              "d8",
+              "d9",
+              "time",
+              "vdac_n",
+              "vdac_p"
+            ],
+            "checker_source": "runners/checkers/v4/task_002.py",
+            "checker_source_missing": false,
+            "checker_task_id": "v4_002_capacitive_weighted_sar_feedback_dac",
+            "public_required_signals": [
+              "CAL0",
+              "CAL1",
+              "CLK",
+              "D0",
+              "D1",
+              "D2",
+              "D3",
+              "D4",
+              "D5",
+              "D6",
+              "D7",
+              "D8",
+              "D9",
+              "VDAC_N",
+              "VDAC_P",
+              "VDD",
+              "VSS",
+              "time"
+            ],
+            "public_required_signals_normalized": [
+              "cal0",
+              "cal1",
+              "clk",
+              "d0",
+              "d1",
+              "d2",
+              "d3",
+              "d4",
+              "d5",
+              "d6",
+              "d7",
+              "d8",
+              "d9",
+              "time",
+              "vdac_n",
+              "vdac_p",
+              "vdd",
+              "vss"
+            ],
+            "testbench_absolute_time_suspect": false,
+            "trace_contract_same": false
+          },
+          "class": "D",
+          "form": "dut",
+          "profile": {
+            "feedback_analyses": [
+              "tran tran stop=40n maxstep=20p"
+            ],
+            "feedback_body_lines": 13,
+            "feedback_parameters": {
+              "maxstep": "200p",
+              "stop_time": "100n"
+            },
+            "profile_analysis_same": false,
+            "profile_body_same": false,
+            "profile_missing": false,
+            "profile_parameters_same": false,
+            "profile_property_ids_same": true,
+            "score_analyses": [
+              "tran tran stop=68n maxstep=20p"
+            ],
+            "score_body_lines": 13,
+            "score_parameters": {
+              "maxstep": "100p",
+              "stop_time": "100n"
+            }
+          },
+          "reasons": [
+            "public trace contract differs from checker observables"
+          ],
+          "task_dir": "tasks/002-capacitive-sar-feedback-dac",
+          "task_id": "v4-002"
+        },
+        {
+          "checker": {
+            "absolute_time_patterns": [
+              "\\b\\d+(?:\\.\\d+)?e-0?9\\b"
+            ],
+            "checker_profile_missing": false,
+            "checker_public_observables": [
+              "CAL0",
+              "CAL1",
+              "CLK",
+              "D0",
+              "D1",
+              "D2",
+              "D3",
+              "D4",
+              "D5",
+              "D6",
+              "D7",
+              "D8",
+              "D9",
+              "VDAC_N",
+              "VDAC_P"
+            ],
+            "checker_public_observables_normalized": [
+              "cal0",
+              "cal1",
+              "clk",
+              "d0",
+              "d1",
+              "d2",
+              "d3",
+              "d4",
+              "d5",
+              "d6",
+              "d7",
+              "d8",
+              "d9",
+              "time",
+              "vdac_n",
+              "vdac_p"
+            ],
+            "checker_source": "runners/checkers/v4/task_002.py",
+            "checker_source_missing": false,
+            "checker_task_id": "v4_002_capacitive_weighted_sar_feedback_dac",
+            "public_required_signals": [
+              "CAL0",
+              "CAL1",
+              "CLK",
+              "D0",
+              "D1",
+              "D2",
+              "D3",
+              "D4",
+              "D5",
+              "D6",
+              "D7",
+              "D8",
+              "D9",
+              "VDAC_N",
+              "VDAC_P",
+              "VDD",
+              "VSS",
+              "time"
+            ],
+            "public_required_signals_normalized": [
+              "cal0",
+              "cal1",
+              "clk",
+              "d0",
+              "d1",
+              "d2",
+              "d3",
+              "d4",
+              "d5",
+              "d6",
+              "d7",
+              "d8",
+              "d9",
+              "time",
+              "vdac_n",
+              "vdac_p",
+              "vdd",
+              "vss"
+            ],
+            "testbench_absolute_time_suspect": true,
+            "trace_contract_same": false
+          },
+          "class": "D",
+          "form": "testbench",
+          "profile": {
+            "feedback_analyses": [
+              "tran tran stop=40n maxstep=20p"
+            ],
+            "feedback_body_lines": 13,
+            "feedback_parameters": {
+              "maxstep": "200p",
+              "stop_time": "100n"
+            },
+            "profile_analysis_same": false,
+            "profile_body_same": false,
+            "profile_missing": false,
+            "profile_parameters_same": false,
+            "profile_property_ids_same": true,
+            "score_analyses": [
+              "tran tran stop=68n maxstep=20p"
+            ],
+            "score_body_lines": 13,
+            "score_parameters": {
+              "maxstep": "100p",
+              "stop_time": "100n"
+            }
+          },
+          "reasons": [
+            "public trace contract differs from checker observables"
+          ],
+          "task_dir": "tasks/502-capacitive-sar-feedback-dac-testbench",
+          "task_id": "v4-502"
+        },
+        {
+          "checker": {
+            "absolute_time_patterns": [],
+            "checker_profile_missing": false,
+            "checker_public_observables": [
+              "CAL0",
+              "CAL1",
+              "CLK",
+              "D0",
+              "D1",
+              "D2",
+              "D3",
+              "D4",
+              "D5",
+              "D6",
+              "D7",
+              "D8",
+              "D9",
+              "VDAC_N",
+              "VDAC_P"
+            ],
+            "checker_public_observables_normalized": [
+              "cal0",
+              "cal1",
+              "clk",
+              "d0",
+              "d1",
+              "d2",
+              "d3",
+              "d4",
+              "d5",
+              "d6",
+              "d7",
+              "d8",
+              "d9",
+              "time",
+              "vdac_n",
+              "vdac_p"
+            ],
+            "checker_source": "runners/checkers/v4/task_002.py",
+            "checker_source_missing": false,
+            "checker_task_id": "v4_002_capacitive_weighted_sar_feedback_dac",
+            "public_required_signals": [
+              "CAL0",
+              "CAL1",
+              "CLK",
+              "D0",
+              "D1",
+              "D2",
+              "D3",
+              "D4",
+              "D5",
+              "D6",
+              "D7",
+              "D8",
+              "D9",
+              "VDAC_N",
+              "VDAC_P",
+              "VDD",
+              "VSS",
+              "time"
+            ],
+            "public_required_signals_normalized": [
+              "cal0",
+              "cal1",
+              "clk",
+              "d0",
+              "d1",
+              "d2",
+              "d3",
+              "d4",
+              "d5",
+              "d6",
+              "d7",
+              "d8",
+              "d9",
+              "time",
+              "vdac_n",
+              "vdac_p",
+              "vdd",
+              "vss"
+            ],
+            "testbench_absolute_time_suspect": false,
+            "trace_contract_same": false
+          },
+          "class": "D",
+          "form": "bugfix",
+          "profile": {
+            "feedback_analyses": [
+              "tran tran stop=40n maxstep=20p"
+            ],
+            "feedback_body_lines": 13,
+            "feedback_parameters": {
+              "maxstep": "200p",
+              "stop_time": "100n"
+            },
+            "profile_analysis_same": false,
+            "profile_body_same": false,
+            "profile_missing": false,
+            "profile_parameters_same": false,
+            "profile_property_ids_same": true,
+            "score_analyses": [
+              "tran tran stop=68n maxstep=20p"
+            ],
+            "score_body_lines": 13,
+            "score_parameters": {
+              "maxstep": "100p",
+              "stop_time": "100n"
+            }
+          },
+          "reasons": [
+            "public trace contract differs from checker observables"
+          ],
+          "task_dir": "tasks/1002-capacitive-sar-feedback-dac-bugfix",
+          "task_id": "v4-1002"
+        }
+      ]
+    },
+    {
+      "class": "C",
+      "family_id": "003",
+      "reasons": [
+        "dut: feedback/score body differs",
+        "dut: feedback/score analysis differs",
+        "dut: feedback/score parameters differ",
+        "testbench: feedback/score body differs",
+        "testbench: feedback/score analysis differs",
+        "testbench: feedback/score parameters differ",
+        "testbench: testbench checker has absolute-time/window patterns",
+        "bugfix: feedback/score body differs",
+        "bugfix: feedback/score analysis differs",
+        "bugfix: feedback/score parameters differ"
+      ],
+      "tasks": [
+        {
+          "checker": {
+            "absolute_time_patterns": [],
+            "checker_profile_missing": false,
+            "checker_public_observables": [
+              "d0",
+              "d1",
+              "phi1",
+              "phi2",
+              "vdd",
+              "vin",
+              "vref",
+              "vres",
+              "vss"
+            ],
+            "checker_public_observables_normalized": [
+              "d0",
+              "d1",
+              "phi1",
+              "phi2",
+              "time",
+              "vdd",
+              "vin",
+              "vref",
+              "vres",
+              "vss"
+            ],
+            "checker_source": "runners/checkers/v4/task_003.py",
+            "checker_source_missing": false,
+            "checker_task_id": "v4_003_pipeline_adc_stage",
+            "public_required_signals": [
+              "D0",
+              "D1",
+              "PHI1",
+              "PHI2",
+              "VDD",
+              "VIN",
+              "VREF",
+              "VRES",
+              "VSS",
+              "time"
+            ],
+            "public_required_signals_normalized": [
+              "d0",
+              "d1",
+              "phi1",
+              "phi2",
+              "time",
+              "vdd",
+              "vin",
+              "vref",
+              "vres",
+              "vss"
+            ],
+            "testbench_absolute_time_suspect": false,
+            "trace_contract_same": true
+          },
+          "class": "B",
+          "form": "dut",
+          "profile": {
+            "feedback_analyses": [],
+            "feedback_body_lines": 2,
+            "feedback_parameters": {
+              "maxstep": "200p",
+              "stop_time": "100n"
+            },
+            "profile_analysis_same": false,
+            "profile_body_same": false,
+            "profile_missing": false,
+            "profile_parameters_same": false,
+            "profile_property_ids_same": true,
+            "score_analyses": [
+              "tran tran stop=300n maxstep=500p"
+            ],
+            "score_body_lines": 2,
+            "score_parameters": {
+              "maxstep": "100p",
+              "stop_time": "100n"
+            }
+          },
+          "reasons": [
+            "feedback/score body differs",
+            "feedback/score analysis differs",
+            "feedback/score parameters differ"
+          ],
+          "task_dir": "tasks/003-pipeline-adc-stage",
+          "task_id": "v4-003"
+        },
+        {
+          "checker": {
+            "absolute_time_patterns": [
+              "\\b\\d+(?:\\.\\d+)?e-0?9\\b"
+            ],
+            "checker_profile_missing": false,
+            "checker_public_observables": [
+              "d0",
+              "d1",
+              "phi1",
+              "phi2",
+              "vdd",
+              "vin",
+              "vref",
+              "vres",
+              "vss"
+            ],
+            "checker_public_observables_normalized": [
+              "d0",
+              "d1",
+              "phi1",
+              "phi2",
+              "time",
+              "vdd",
+              "vin",
+              "vref",
+              "vres",
+              "vss"
+            ],
+            "checker_source": "runners/checkers/v4/task_003.py",
+            "checker_source_missing": false,
+            "checker_task_id": "v4_003_pipeline_adc_stage",
+            "public_required_signals": [
+              "D0",
+              "D1",
+              "PHI1",
+              "PHI2",
+              "VDD",
+              "VIN",
+              "VREF",
+              "VRES",
+              "VSS",
+              "time"
+            ],
+            "public_required_signals_normalized": [
+              "d0",
+              "d1",
+              "phi1",
+              "phi2",
+              "time",
+              "vdd",
+              "vin",
+              "vref",
+              "vres",
+              "vss"
+            ],
+            "testbench_absolute_time_suspect": true,
+            "trace_contract_same": true
+          },
+          "class": "C",
+          "form": "testbench",
+          "profile": {
+            "feedback_analyses": [],
+            "feedback_body_lines": 2,
+            "feedback_parameters": {
+              "maxstep": "200p",
+              "stop_time": "100n"
+            },
+            "profile_analysis_same": false,
+            "profile_body_same": false,
+            "profile_missing": false,
+            "profile_parameters_same": false,
+            "profile_property_ids_same": true,
+            "score_analyses": [
+              "tran tran stop=300n maxstep=500p"
+            ],
+            "score_body_lines": 2,
+            "score_parameters": {
+              "maxstep": "100p",
+              "stop_time": "100n"
+            }
+          },
+          "reasons": [
+            "feedback/score body differs",
+            "feedback/score analysis differs",
+            "feedback/score parameters differ",
+            "testbench checker has absolute-time/window patterns"
+          ],
+          "task_dir": "tasks/503-pipeline-adc-stage-testbench",
+          "task_id": "v4-503"
+        },
+        {
+          "checker": {
+            "absolute_time_patterns": [],
+            "checker_profile_missing": false,
+            "checker_public_observables": [
+              "d0",
+              "d1",
+              "phi1",
+              "phi2",
+              "vdd",
+              "vin",
+              "vref",
+              "vres",
+              "vss"
+            ],
+            "checker_public_observables_normalized": [
+              "d0",
+              "d1",
+              "phi1",
+              "phi2",
+              "time",
+              "vdd",
+              "vin",
+              "vref",
+              "vres",
+              "vss"
+            ],
+            "checker_source": "runners/checkers/v4/task_003.py",
+            "checker_source_missing": false,
+            "checker_task_id": "v4_003_pipeline_adc_stage",
+            "public_required_signals": [
+              "D0",
+              "D1",
+              "PHI1",
+              "PHI2",
+              "VDD",
+              "VIN",
+              "VREF",
+              "VRES",
+              "VSS",
+              "time"
+            ],
+            "public_required_signals_normalized": [
+              "d0",
+              "d1",
+              "phi1",
+              "phi2",
+              "time",
+              "vdd",
+              "vin",
+              "vref",
+              "vres",
+              "vss"
+            ],
+            "testbench_absolute_time_suspect": false,
+            "trace_contract_same": true
+          },
+          "class": "B",
+          "form": "bugfix",
+          "profile": {
+            "feedback_analyses": [],
+            "feedback_body_lines": 2,
+            "feedback_parameters": {
+              "maxstep": "200p",
+              "stop_time": "100n"
+            },
+            "profile_analysis_same": false,
+            "profile_body_same": false,
+            "profile_missing": false,
+            "profile_parameters_same": false,
+            "profile_property_ids_same": true,
+            "score_analyses": [
+              "tran tran stop=300n maxstep=500p"
+            ],
+            "score_body_lines": 2,
+            "score_parameters": {
+              "maxstep": "100p",
+              "stop_time": "100n"
+            }
+          },
+          "reasons": [
+            "feedback/score body differs",
+            "feedback/score analysis differs",
+            "feedback/score parameters differ"
+          ],
+          "task_dir": "tasks/1003-pipeline-adc-stage-bugfix",
+          "task_id": "v4-1003"
+        }
+      ]
+    },
+    {
+      "class": "C",
+      "family_id": "004",
+      "reasons": [
+        "dut: feedback/score body differs",
+        "dut: feedback/score analysis differs",
+        "dut: feedback/score parameters differ",
+        "testbench: feedback/score body differs",
+        "testbench: feedback/score analysis differs",
+        "testbench: feedback/score parameters differ",
+        "testbench: testbench checker has absolute-time/window patterns",
+        "bugfix: feedback/score body differs",
+        "bugfix: feedback/score analysis differs",
+        "bugfix: feedback/score parameters differ"
+      ],
+      "tasks": [
+        {
+          "checker": {
+            "absolute_time_patterns": [],
+            "checker_profile_missing": false,
+            "checker_public_observables": [
+              "clk",
+              "err",
+              "rst",
+              "trim"
+            ],
+            "checker_public_observables_normalized": [
+              "clk",
+              "err",
+              "rst",
+              "time",
+              "trim"
+            ],
+            "checker_source": "runners/checkers/v4/task_004.py",
+            "checker_source_missing": false,
+            "checker_task_id": "v4_004_trim_calibration_controller",
+            "public_required_signals": [
+              "clk",
+              "err",
+              "rst",
+              "time",
+              "trim"
+            ],
+            "public_required_signals_normalized": [
+              "clk",
+              "err",
+              "rst",
+              "time",
+              "trim"
+            ],
+            "testbench_absolute_time_suspect": false,
+            "trace_contract_same": true
+          },
+          "class": "B",
+          "form": "dut",
+          "profile": {
+            "feedback_analyses": [
+              "tran tran stop=220n maxstep=200p"
+            ],
+            "feedback_body_lines": 4,
+            "feedback_parameters": {
+              "maxstep": "200p",
+              "stop_time": "100n"
+            },
+            "profile_analysis_same": false,
+            "profile_body_same": false,
+            "profile_missing": false,
+            "profile_parameters_same": false,
+            "profile_property_ids_same": true,
+            "score_analyses": [],
+            "score_body_lines": 4,
+            "score_parameters": {
+              "maxstep": "100p",
+              "stop_time": "100n"
+            }
+          },
+          "reasons": [
+            "feedback/score body differs",
+            "feedback/score analysis differs",
+            "feedback/score parameters differ"
+          ],
+          "task_dir": "tasks/004-trim-calibration-controller",
+          "task_id": "v4-004"
+        },
+        {
+          "checker": {
+            "absolute_time_patterns": [
+              "\\b\\d+(?:\\.\\d+)?e-0?9\\b"
+            ],
+            "checker_profile_missing": false,
+            "checker_public_observables": [
+              "clk",
+              "err",
+              "rst",
+              "trim"
+            ],
+            "checker_public_observables_normalized": [
+              "clk",
+              "err",
+              "rst",
+              "time",
+              "trim"
+            ],
+            "checker_source": "runners/checkers/v4/task_004.py",
+            "checker_source_missing": false,
+            "checker_task_id": "v4_004_trim_calibration_controller",
+            "public_required_signals": [
+              "clk",
+              "err",
+              "rst",
+              "time",
+              "trim"
+            ],
+            "public_required_signals_normalized": [
+              "clk",
+              "err",
+              "rst",
+              "time",
+              "trim"
+            ],
+            "testbench_absolute_time_suspect": true,
+            "trace_contract_same": true
+          },
+          "class": "C",
+          "form": "testbench",
+          "profile": {
+            "feedback_analyses": [
+              "tran tran stop=220n maxstep=200p"
+            ],
+            "feedback_body_lines": 4,
+            "feedback_parameters": {
+              "maxstep": "200p",
+              "stop_time": "100n"
+            },
+            "profile_analysis_same": false,
+            "profile_body_same": false,
+            "profile_missing": false,
+            "profile_parameters_same": false,
+            "profile_property_ids_same": true,
+            "score_analyses": [],
+            "score_body_lines": 4,
+            "score_parameters": {
+              "maxstep": "100p",
+              "stop_time": "100n"
+            }
+          },
+          "reasons": [
+            "feedback/score body differs",
+            "feedback/score analysis differs",
+            "feedback/score parameters differ",
+            "testbench checker has absolute-time/window patterns"
+          ],
+          "task_dir": "tasks/504-trim-calibration-controller-testbench",
+          "task_id": "v4-504"
+        },
+        {
+          "checker": {
+            "absolute_time_patterns": [],
+            "checker_profile_missing": false,
+            "checker_public_observables": [
+              "clk",
+              "err",
+              "rst",
+              "trim"
+            ],
+            "checker_public_observables_normalized": [
+              "clk",
+              "err",
+              "rst",
+              "time",
+              "trim"
+            ],
+            "checker_source": "runners/checkers/v4/task_004.py",
+            "checker_source_missing": false,
+            "checker_task_id": "v4_004_trim_calibration_controller",
+            "public_required_signals": [
+              "clk",
+              "err",
+              "rst",
+              "time",
+              "trim"
+            ],
+            "public_required_signals_normalized": [
+              "clk",
+              "err",
+              "rst",
+              "time",
+              "trim"
+            ],
+            "testbench_absolute_time_suspect": false,
+            "trace_contract_same": true
+          },
+          "class": "B",
+          "form": "bugfix",
+          "profile": {
+            "feedback_analyses": [
+              "tran tran stop=220n maxstep=200p"
+            ],
+            "feedback_body_lines": 4,
+            "feedback_parameters": {
+              "maxstep": "200p",
+              "stop_time": "100n"
+            },
+            "profile_analysis_same": false,
+            "profile_body_same": false,
+            "profile_missing": false,
+            "profile_parameters_same": false,
+            "profile_property_ids_same": true,
+            "score_analyses": [],
+            "score_body_lines": 4,
+            "score_parameters": {
+              "maxstep": "100p",
+              "stop_time": "100n"
+            }
+          },
+          "reasons": [
+            "feedback/score body differs",
+            "feedback/score analysis differs",
+            "feedback/score parameters differ"
+          ],
+          "task_dir": "tasks/1004-trim-calibration-controller-bugfix",
+          "task_id": "v4-1004"
+        }
+      ]
+    },
+    {
+      "class": "C",
+      "family_id": "005",
+      "reasons": [
+        "dut: feedback/score body differs",
+        "dut: feedback/score parameters differ",
+        "testbench: feedback/score body differs",
+        "testbench: feedback/score parameters differ",
+        "testbench: testbench checker has absolute-time/window patterns",
+        "bugfix: feedback/score body differs",
+        "bugfix: feedback/score parameters differ"
+      ],
+      "tasks": [
+        {
+          "checker": {
+            "absolute_time_patterns": [],
+            "checker_profile_missing": false,
+            "checker_public_observables": [
+              "out",
+              "rst_n",
+              "sig"
+            ],
+            "checker_public_observables_normalized": [
+              "out",
+              "rst_n",
+              "sig",
+              "time"
+            ],
+            "checker_source": "runners/checkers/v4/task_005.py",
+            "checker_source_missing": false,
+            "checker_task_id": "v4_005_debounce_latch",
+            "public_required_signals": [
+              "out",
+              "rst_n",
+              "sig",
+              "time"
+            ],
+            "public_required_signals_normalized": [
+              "out",
+              "rst_n",
+              "sig",
+              "time"
+            ],
+            "testbench_absolute_time_suspect": false,
+            "trace_contract_same": true
+          },
+          "class": "B",
+          "form": "dut",
+          "profile": {
+            "feedback_analyses": [],
+            "feedback_body_lines": 3,
+            "feedback_parameters": {
+              "maxstep": "200p",
+              "stop_time": "100n"
+            },
+            "profile_analysis_same": true,
+            "profile_body_same": false,
+            "profile_missing": false,
+            "profile_parameters_same": false,
+            "profile_property_ids_same": true,
+            "score_analyses": [],
+            "score_body_lines": 3,
+            "score_parameters": {
+              "maxstep": "100p",
+              "stop_time": "100n"
+            }
+          },
+          "reasons": [
+            "feedback/score body differs",
+            "feedback/score parameters differ"
+          ],
+          "task_dir": "tasks/005-debounce-latch",
+          "task_id": "v4-005"
+        },
+        {
+          "checker": {
+            "absolute_time_patterns": [
+              "\\b\\d+(?:\\.\\d+)?e-0?9\\b"
+            ],
+            "checker_profile_missing": false,
+            "checker_public_observables": [
+              "out",
+              "rst_n",
+              "sig"
+            ],
+            "checker_public_observables_normalized": [
+              "out",
+              "rst_n",
+              "sig",
+              "time"
+            ],
+            "checker_source": "runners/checkers/v4/task_005.py",
+            "checker_source_missing": false,
+            "checker_task_id": "v4_005_debounce_latch",
+            "public_required_signals": [
+              "out",
+              "rst_n",
+              "sig",
+              "time"
+            ],
+            "public_required_signals_normalized": [
+              "out",
+              "rst_n",
+              "sig",
+              "time"
+            ],
+            "testbench_absolute_time_suspect": true,
+            "trace_contract_same": true
+          },
+          "class": "C",
+          "form": "testbench",
+          "profile": {
+            "feedback_analyses": [],
+            "feedback_body_lines": 3,
+            "feedback_parameters": {
+              "maxstep": "200p",
+              "stop_time": "100n"
+            },
+            "profile_analysis_same": true,
+            "profile_body_same": false,
+            "profile_missing": false,
+            "profile_parameters_same": false,
+            "profile_property_ids_same": true,
+            "score_analyses": [],
+            "score_body_lines": 3,
+            "score_parameters": {
+              "maxstep": "100p",
+              "stop_time": "100n"
+            }
+          },
+          "reasons": [
+            "feedback/score body differs",
+            "feedback/score parameters differ",
+            "testbench checker has absolute-time/window patterns"
+          ],
+          "task_dir": "tasks/505-debounce-latch-testbench",
+          "task_id": "v4-505"
+        },
+        {
+          "checker": {
+            "absolute_time_patterns": [],
+            "checker_profile_missing": false,
+            "checker_public_observables": [
+              "out",
+              "rst_n",
+              "sig"
+            ],
+            "checker_public_observables_normalized": [
+              "out",
+              "rst_n",
+              "sig",
+              "time"
+            ],
+            "checker_source": "runners/checkers/v4/task_005.py",
+            "checker_source_missing": false,
+            "checker_task_id": "v4_005_debounce_latch",
+            "public_required_signals": [
+              "out",
+              "rst_n",
+              "sig",
+              "time"
+            ],
+            "public_required_signals_normalized": [
+              "out",
+              "rst_n",
+              "sig",
+              "time"
+            ],
+            "testbench_absolute_time_suspect": false,
+            "trace_contract_same": true
+          },
+          "class": "B",
+          "form": "bugfix",
+          "profile": {
+            "feedback_analyses": [],
+            "feedback_body_lines": 3,
+            "feedback_parameters": {
+              "maxstep": "200p",
+              "stop_time": "100n"
+            },
+            "profile_analysis_same": true,
+            "profile_body_same": false,
+            "profile_missing": false,
+            "profile_parameters_same": false,
+            "profile_property_ids_same": true,
+            "score_analyses": [],
+            "score_body_lines": 3,
+            "score_parameters": {
+              "maxstep": "100p",
+              "stop_time": "100n"
+            }
+          },
+          "reasons": [
+            "feedback/score body differs",
+            "feedback/score parameters differ"
+          ],
+          "task_dir": "tasks/1005-debounce-latch-bugfix",
+          "task_id": "v4-1005"
+        }
+      ]
+    },
+    {
+      "class": "C",
+      "family_id": "006",
+      "reasons": [
+        "dut: feedback/score body differs",
+        "dut: feedback/score analysis differs",
+        "dut: feedback/score parameters differ",
+        "testbench: feedback/score body differs",
+        "testbench: feedback/score analysis differs",
+        "testbench: feedback/score parameters differ",
+        "testbench: testbench checker has absolute-time/window patterns",
+        "bugfix: feedback/score body differs",
+        "bugfix: feedback/score analysis differs",
+        "bugfix: feedback/score parameters differ"
+      ],
+      "tasks": [
+        {
+          "checker": {
+            "absolute_time_patterns": [],
+            "checker_profile_missing": false,
+            "checker_public_observables": [
+              "clk",
+              "out0",
+              "out1",
+              "out2",
+              "out3",
+              "rst_n"
+            ],
+            "checker_public_observables_normalized": [
+              "clk",
+              "out0",
+              "out1",
+              "out2",
+              "out3",
+              "rst_n",
+              "time"
+            ],
+            "checker_source": "runners/checkers/v4/task_006.py",
+            "checker_source_missing": false,
+            "checker_task_id": "v4_006_element_shuffler",
+            "public_required_signals": [
+              "clk",
+              "out0",
+              "out1",
+              "out2",
+              "out3",
+              "rst_n",
+              "time"
+            ],
+            "public_required_signals_normalized": [
+              "clk",
+              "out0",
+              "out1",
+              "out2",
+              "out3",
+              "rst_n",
+              "time"
+            ],
+            "testbench_absolute_time_suspect": false,
+            "trace_contract_same": true
+          },
+          "class": "B",
+          "form": "dut",
+          "profile": {
+            "feedback_analyses": [
+              "tran tran stop=225n maxstep=200p"
+            ],
+            "feedback_body_lines": 2,
+            "feedback_parameters": {
+              "maxstep": "200p",
+              "stop_time": "100n"
+            },
+            "profile_analysis_same": false,
+            "profile_body_same": false,
+            "profile_missing": false,
+            "profile_parameters_same": false,
+            "profile_property_ids_same": true,
+            "score_analyses": [
+              "tran tran stop=230n maxstep=500p"
+            ],
+            "score_body_lines": 2,
+            "score_parameters": {
+              "maxstep": "100p",
+              "stop_time": "100n"
+            }
+          },
+          "reasons": [
+            "feedback/score body differs",
+            "feedback/score analysis differs",
+            "feedback/score parameters differ"
+          ],
+          "task_dir": "tasks/006-element-shuffler",
+          "task_id": "v4-006"
+        },
+        {
+          "checker": {
+            "absolute_time_patterns": [
+              "\\b\\d+(?:\\.\\d+)?e-0?9\\b"
+            ],
+            "checker_profile_missing": false,
+            "checker_public_observables": [
+              "clk",
+              "out0",
+              "out1",
+              "out2",
+              "out3",
+              "rst_n"
+            ],
+            "checker_public_observables_normalized": [
+              "clk",
+              "out0",
+              "out1",
+              "out2",
+              "out3",
+              "rst_n",
+              "time"
+            ],
+            "checker_source": "runners/checkers/v4/task_006.py",
+            "checker_source_missing": false,
+            "checker_task_id": "v4_006_element_shuffler",
+            "public_required_signals": [
+              "clk",
+              "out0",
+              "out1",
+              "out2",
+              "out3",
+              "rst_n",
+              "time"
+            ],
+            "public_required_signals_normalized": [
+              "clk",
+              "out0",
+              "out1",
+              "out2",
+              "out3",
+              "rst_n",
+              "time"
+            ],
+            "testbench_absolute_time_suspect": true,
+            "trace_contract_same": true
+          },
+          "class": "C",
+          "form": "testbench",
+          "profile": {
+            "feedback_analyses": [
+              "tran tran stop=225n maxstep=200p"
+            ],
+            "feedback_body_lines": 2,
+            "feedback_parameters": {
+              "maxstep": "200p",
+              "stop_time": "100n"
+            },
+            "profile_analysis_same": false,
+            "profile_body_same": false,
+            "profile_missing": false,
+            "profile_parameters_same": false,
+            "profile_property_ids_same": true,
+            "score_analyses": [
+              "tran tran stop=230n maxstep=500p"
+            ],
+            "score_body_lines": 2,
+            "score_parameters": {
+              "maxstep": "100p",
+              "stop_time": "100n"
+            }
+          },
+          "reasons": [
+            "feedback/score body differs",
+            "feedback/score analysis differs",
+            "feedback/score parameters differ",
+            "testbench checker has absolute-time/window patterns"
+          ],
+          "task_dir": "tasks/506-element-shuffler-testbench",
+          "task_id": "v4-506"
+        },
+        {
+          "checker": {
+            "absolute_time_patterns": [],
+            "checker_profile_missing": false,
+            "checker_public_observables": [
+              "clk",
+              "out0",
+              "out1",
+              "out2",
+              "out3",
+              "rst_n"
+            ],
+            "checker_public_observables_normalized": [
+              "clk",
+              "out0",
+              "out1",
+              "out2",
+              "out3",
+              "rst_n",
+              "time"
+            ],
+            "checker_source": "runners/checkers/v4/task_006.py",
+            "checker_source_missing": false,
+            "checker_task_id": "v4_006_element_shuffler",
+            "public_required_signals": [
+              "clk",
+              "out0",
+              "out1",
+              "out2",
+              "out3",
+              "rst_n",
+              "time"
+            ],
+            "public_required_signals_normalized": [
+              "clk",
+              "out0",
+              "out1",
+              "out2",
+              "out3",
+              "rst_n",
+              "time"
+            ],
+            "testbench_absolute_time_suspect": false,
+            "trace_contract_same": true
+          },
+          "class": "B",
+          "form": "bugfix",
+          "profile": {
+            "feedback_analyses": [
+              "tran tran stop=225n maxstep=200p"
+            ],
+            "feedback_body_lines": 2,
+            "feedback_parameters": {
+              "maxstep": "200p",
+              "stop_time": "100n"
+            },
+            "profile_analysis_same": false,
+            "profile_body_same": false,
+            "profile_missing": false,
+            "profile_parameters_same": false,
+            "profile_property_ids_same": true,
+            "score_analyses": [
+              "tran tran stop=230n maxstep=500p"
+            ],
+            "score_body_lines": 2,
+            "score_parameters": {
+              "maxstep": "100p",
+              "stop_time": "100n"
+            }
+          },
+          "reasons": [
+            "feedback/score body differs",
+            "feedback/score analysis differs",
+            "feedback/score parameters differ"
+          ],
+          "task_dir": "tasks/1006-element-shuffler-bugfix",
+          "task_id": "v4-1006"
+        }
+      ]
+    },
+    {
+      "class": "C",
+      "family_id": "007",
+      "reasons": [
+        "dut: feedback/score body differs",
+        "dut: feedback/score parameters differ",
+        "testbench: feedback/score body differs",
+        "testbench: feedback/score parameters differ",
+        "testbench: testbench checker has absolute-time/window patterns",
+        "bugfix: feedback/score body differs",
+        "bugfix: feedback/score parameters differ"
+      ],
+      "tasks": [
+        {
+          "checker": {
+            "absolute_time_patterns": [],
+            "checker_profile_missing": false,
+            "checker_public_observables": [
+              "vin",
+              "vout"
+            ],
+            "checker_public_observables_normalized": [
+              "time",
+              "vin",
+              "vout"
+            ],
+            "checker_source": "runners/checkers/v4/task_007.py",
+            "checker_source_missing": false,
+            "checker_task_id": "v4_007_first_order_lowpass",
+            "public_required_signals": [
+              "time",
+              "vin",
+              "vout"
+            ],
+            "public_required_signals_normalized": [
+              "time",
+              "vin",
+              "vout"
+            ],
+            "testbench_absolute_time_suspect": false,
+            "trace_contract_same": true
+          },
+          "class": "B",
+          "form": "dut",
+          "profile": {
+            "feedback_analyses": [],
+            "feedback_body_lines": 2,
+            "feedback_parameters": {
+              "maxstep": "200p",
+              "stop_time": "100n"
+            },
+            "profile_analysis_same": true,
+            "profile_body_same": false,
+            "profile_missing": false,
+            "profile_parameters_same": false,
+            "profile_property_ids_same": true,
+            "score_analyses": [],
+            "score_body_lines": 2,
+            "score_parameters": {
+              "maxstep": "100p",
+              "stop_time": "100n"
+            }
+          },
+          "reasons": [
+            "feedback/score body differs",
+            "feedback/score parameters differ"
+          ],
+          "task_dir": "tasks/007-first-order-lowpass",
+          "task_id": "v4-007"
+        },
+        {
+          "checker": {
+            "absolute_time_patterns": [
+              "\\b\\d+(?:\\.\\d+)?e-0?9\\b"
+            ],
+            "checker_profile_missing": false,
+            "checker_public_observables": [
+              "vin",
+              "vout"
+            ],
+            "checker_public_observables_normalized": [
+              "time",
+              "vin",
+              "vout"
+            ],
+            "checker_source": "runners/checkers/v4/task_007.py",
+            "checker_source_missing": false,
+            "checker_task_id": "v4_007_first_order_lowpass",
+            "public_required_signals": [
+              "time",
+              "vin",
+              "vout"
+            ],
+            "public_required_signals_normalized": [
+              "time",
+              "vin",
+              "vout"
+            ],
+            "testbench_absolute_time_suspect": true,
+            "trace_contract_same": true
+          },
+          "class": "C",
+          "form": "testbench",
+          "profile": {
+            "feedback_analyses": [],
+            "feedback_body_lines": 2,
+            "feedback_parameters": {
+              "maxstep": "200p",
+              "stop_time": "100n"
+            },
+            "profile_analysis_same": true,
+            "profile_body_same": false,
+            "profile_missing": false,
+            "profile_parameters_same": false,
+            "profile_property_ids_same": true,
+            "score_analyses": [],
+            "score_body_lines": 2,
+            "score_parameters": {
+              "maxstep": "100p",
+              "stop_time": "100n"
+            }
+          },
+          "reasons": [
+            "feedback/score body differs",
+            "feedback/score parameters differ",
+            "testbench checker has absolute-time/window patterns"
+          ],
+          "task_dir": "tasks/507-first-order-lowpass-testbench",
+          "task_id": "v4-507"
+        },
+        {
+          "checker": {
+            "absolute_time_patterns": [],
+            "checker_profile_missing": false,
+            "checker_public_observables": [
+              "vin",
+              "vout"
+            ],
+            "checker_public_observables_normalized": [
+              "time",
+              "vin",
+              "vout"
+            ],
+            "checker_source": "runners/checkers/v4/task_007.py",
+            "checker_source_missing": false,
+            "checker_task_id": "v4_007_first_order_lowpass",
+            "public_required_signals": [
+              "time",
+              "vin",
+              "vout"
+            ],
+            "public_required_signals_normalized": [
+              "time",
+              "vin",
+              "vout"
+            ],
+            "testbench_absolute_time_suspect": false,
+            "trace_contract_same": true
+          },
+          "class": "B",
+          "form": "bugfix",
+          "profile": {
+            "feedback_analyses": [],
+            "feedback_body_lines": 2,
+            "feedback_parameters": {
+              "maxstep": "200p",
+              "stop_time": "100n"
+            },
+            "profile_analysis_same": true,
+            "profile_body_same": false,
+            "profile_missing": false,
+            "profile_parameters_same": false,
+            "profile_property_ids_same": true,
+            "score_analyses": [],
+            "score_body_lines": 2,
+            "score_parameters": {
+              "maxstep": "100p",
+              "stop_time": "100n"
+            }
+          },
+          "reasons": [
+            "feedback/score body differs",
+            "feedback/score parameters differ"
+          ],
+          "task_dir": "tasks/1007-first-order-lowpass-bugfix",
+          "task_id": "v4-1007"
+        }
+      ]
+    },
+    {
+      "class": "C",
+      "family_id": "008",
+      "reasons": [
+        "dut: feedback/score body differs",
+        "dut: feedback/score analysis differs",
+        "dut: feedback/score parameters differ",
+        "testbench: feedback/score body differs",
+        "testbench: feedback/score analysis differs",
+        "testbench: feedback/score parameters differ",
+        "testbench: testbench checker has absolute-time/window patterns",
+        "bugfix: feedback/score body differs",
+        "bugfix: feedback/score analysis differs",
+        "bugfix: feedback/score parameters differ"
+      ],
+      "tasks": [
+        {
+          "checker": {
+            "absolute_time_patterns": [],
+            "checker_profile_missing": false,
+            "checker_public_observables": [
+              "clk",
+              "gain_ctrl",
+              "meas",
+              "rst",
+              "target"
+            ],
+            "checker_public_observables_normalized": [
+              "clk",
+              "gain_ctrl",
+              "meas",
+              "rst",
+              "target",
+              "time"
+            ],
+            "checker_source": "runners/checkers/v4/task_008.py",
+            "checker_source_missing": false,
+            "checker_task_id": "v4_008_gain_trim_controller",
+            "public_required_signals": [
+              "clk",
+              "gain_ctrl",
+              "meas",
+              "rst",
+              "target",
+              "time"
+            ],
+            "public_required_signals_normalized": [
+              "clk",
+              "gain_ctrl",
+              "meas",
+              "rst",
+              "target",
+              "time"
+            ],
+            "testbench_absolute_time_suspect": false,
+            "trace_contract_same": true
+          },
+          "class": "B",
+          "form": "dut",
+          "profile": {
+            "feedback_analyses": [
+              "tran tran stop=660n maxstep=200p"
+            ],
+            "feedback_body_lines": 5,
+            "feedback_parameters": {
+              "maxstep": "200p",
+              "stop_time": "100n"
+            },
+            "profile_analysis_same": false,
+            "profile_body_same": false,
+            "profile_missing": false,
+            "profile_parameters_same": false,
+            "profile_property_ids_same": true,
+            "score_analyses": [
+              "tran tran stop=660n maxstep=500p"
+            ],
+            "score_body_lines": 5,
+            "score_parameters": {
+              "maxstep": "100p",
+              "stop_time": "100n"
+            }
+          },
+          "reasons": [
+            "feedback/score body differs",
+            "feedback/score analysis differs",
+            "feedback/score parameters differ"
+          ],
+          "task_dir": "tasks/008-gain-trim-controller",
+          "task_id": "v4-008"
+        },
+        {
+          "checker": {
+            "absolute_time_patterns": [
+              "\\b\\d+(?:\\.\\d+)?e-0?9\\b"
+            ],
+            "checker_profile_missing": false,
+            "checker_public_observables": [
+              "clk",
+              "gain_ctrl",
+              "meas",
+              "rst",
+              "target"
+            ],
+            "checker_public_observables_normalized": [
+              "clk",
+              "gain_ctrl",
+              "meas",
+              "rst",
+              "target",
+              "time"
+            ],
+            "checker_source": "runners/checkers/v4/task_008.py",
+            "checker_source_missing": false,
+            "checker_task_id": "v4_008_gain_trim_controller",
+            "public_required_signals": [
+              "clk",
+              "gain_ctrl",
+              "meas",
+              "rst",
+              "target",
+              "time"
+            ],
+            "public_required_signals_normalized": [
+              "clk",
+              "gain_ctrl",
+              "meas",
+              "rst",
+              "target",
+              "time"
+            ],
+            "testbench_absolute_time_suspect": true,
+            "trace_contract_same": true
+          },
+          "class": "C",
+          "form": "testbench",
+          "profile": {
+            "feedback_analyses": [
+              "tran tran stop=660n maxstep=200p"
+            ],
+            "feedback_body_lines": 5,
+            "feedback_parameters": {
+              "maxstep": "200p",
+              "stop_time": "100n"
+            },
+            "profile_analysis_same": false,
+            "profile_body_same": false,
+            "profile_missing": false,
+            "profile_parameters_same": false,
+            "profile_property_ids_same": true,
+            "score_analyses": [
+              "tran tran stop=660n maxstep=500p"
+            ],
+            "score_body_lines": 5,
+            "score_parameters": {
+              "maxstep": "100p",
+              "stop_time": "100n"
+            }
+          },
+          "reasons": [
+            "feedback/score body differs",
+            "feedback/score analysis differs",
+            "feedback/score parameters differ",
+            "testbench checker has absolute-time/window patterns"
+          ],
+          "task_dir": "tasks/508-gain-trim-controller-testbench",
+          "task_id": "v4-508"
+        },
+        {
+          "checker": {
+            "absolute_time_patterns": [],
+            "checker_profile_missing": false,
+            "checker_public_observables": [
+              "clk",
+              "gain_ctrl",
+              "meas",
+              "rst",
+              "target"
+            ],
+            "checker_public_observables_normalized": [
+              "clk",
+              "gain_ctrl",
+              "meas",
+              "rst",
+              "target",
+              "time"
+            ],
+            "checker_source": "runners/checkers/v4/task_008.py",
+            "checker_source_missing": false,
+            "checker_task_id": "v4_008_gain_trim_controller",
+            "public_required_signals": [
+              "clk",
+              "gain_ctrl",
+              "meas",
+              "rst",
+              "target",
+              "time"
+            ],
+            "public_required_signals_normalized": [
+              "clk",
+              "gain_ctrl",
+              "meas",
+              "rst",
+              "target",
+              "time"
+            ],
+            "testbench_absolute_time_suspect": false,
+            "trace_contract_same": true
+          },
+          "class": "B",
+          "form": "bugfix",
+          "profile": {
+            "feedback_analyses": [
+              "tran tran stop=660n maxstep=200p"
+            ],
+            "feedback_body_lines": 5,
+            "feedback_parameters": {
+              "maxstep": "200p",
+              "stop_time": "100n"
+            },
+            "profile_analysis_same": false,
+            "profile_body_same": false,
+            "profile_missing": false,
+            "profile_parameters_same": false,
+            "profile_property_ids_same": true,
+            "score_analyses": [
+              "tran tran stop=660n maxstep=500p"
+            ],
+            "score_body_lines": 5,
+            "score_parameters": {
+              "maxstep": "100p",
+              "stop_time": "100n"
+            }
+          },
+          "reasons": [
+            "feedback/score body differs",
+            "feedback/score analysis differs",
+            "feedback/score parameters differ"
+          ],
+          "task_dir": "tasks/1008-gain-trim-controller-bugfix",
+          "task_id": "v4-1008"
+        }
+      ]
+    },
+    {
+      "class": "C",
+      "family_id": "009",
+      "reasons": [
+        "dut: feedback/score body differs",
+        "dut: feedback/score analysis differs",
+        "dut: feedback/score parameters differ",
+        "testbench: feedback/score body differs",
+        "testbench: feedback/score analysis differs",
+        "testbench: feedback/score parameters differ",
+        "testbench: testbench checker has absolute-time/window patterns",
+        "bugfix: feedback/score body differs",
+        "bugfix: feedback/score analysis differs",
+        "bugfix: feedback/score parameters differ"
+      ],
+      "tasks": [
+        {
+          "checker": {
+            "absolute_time_patterns": [],
+            "checker_profile_missing": false,
+            "checker_public_observables": [
+              "fb_clk",
+              "lock",
+              "ref_clk",
+              "rst_n"
+            ],
+            "checker_public_observables_normalized": [
+              "fb_clk",
+              "lock",
+              "ref_clk",
+              "rst_n",
+              "time"
+            ],
+            "checker_source": "runners/checkers/v4/task_009.py",
+            "checker_source_missing": false,
+            "checker_task_id": "v4_009_lock_detector",
+            "public_required_signals": [
+              "fb_clk",
+              "lock",
+              "ref_clk",
+              "rst_n",
+              "time"
+            ],
+            "public_required_signals_normalized": [
+              "fb_clk",
+              "lock",
+              "ref_clk",
+              "rst_n",
+              "time"
+            ],
+            "testbench_absolute_time_suspect": false,
+            "trace_contract_same": true
+          },
+          "class": "B",
+          "form": "dut",
+          "profile": {
+            "feedback_analyses": [
+              "tran tran stop=115n maxstep=100p"
+            ],
+            "feedback_body_lines": 40,
+            "feedback_parameters": {
+              "maxstep": "200p",
+              "stop_time": "100n"
+            },
+            "profile_analysis_same": false,
+            "profile_body_same": false,
+            "profile_missing": false,
+            "profile_parameters_same": false,
+            "profile_property_ids_same": true,
+            "score_analyses": [
+              "tran tran stop=210n maxstep=100p"
+            ],
+            "score_body_lines": 35,
+            "score_parameters": {
+              "maxstep": "100p",
+              "stop_time": "100n"
+            }
+          },
+          "reasons": [
+            "feedback/score body differs",
+            "feedback/score analysis differs",
+            "feedback/score parameters differ"
+          ],
+          "task_dir": "tasks/009-lock-detector",
+          "task_id": "v4-009"
+        },
+        {
+          "checker": {
+            "absolute_time_patterns": [
+              "\\b\\d+(?:\\.\\d+)?e-0?9\\b"
+            ],
+            "checker_profile_missing": false,
+            "checker_public_observables": [
+              "fb_clk",
+              "lock",
+              "ref_clk",
+              "rst_n"
+            ],
+            "checker_public_observables_normalized": [
+              "fb_clk",
+              "lock",
+              "ref_clk",
+              "rst_n",
+              "time"
+            ],
+            "checker_source": "runners/checkers/v4/task_009.py",
+            "checker_source_missing": false,
+            "checker_task_id": "v4_009_lock_detector",
+            "public_required_signals": [
+              "fb_clk",
+              "lock",
+              "ref_clk",
+              "rst_n",
+              "time"
+            ],
+            "public_required_signals_normalized": [
+              "fb_clk",
+              "lock",
+              "ref_clk",
+              "rst_n",
+              "time"
+            ],
+            "testbench_absolute_time_suspect": true,
+            "trace_contract_same": true
+          },
+          "class": "C",
+          "form": "testbench",
+          "profile": {
+            "feedback_analyses": [
+              "tran tran stop=115n maxstep=100p"
+            ],
+            "feedback_body_lines": 40,
+            "feedback_parameters": {
+              "maxstep": "200p",
+              "stop_time": "100n"
+            },
+            "profile_analysis_same": false,
+            "profile_body_same": false,
+            "profile_missing": false,
+            "profile_parameters_same": false,
+            "profile_property_ids_same": true,
+            "score_analyses": [
+              "tran tran stop=210n maxstep=100p"
+            ],
+            "score_body_lines": 35,
+            "score_parameters": {
+              "maxstep": "100p",
+              "stop_time": "100n"
+            }
+          },
+          "reasons": [
+            "feedback/score body differs",
+            "feedback/score analysis differs",
+            "feedback/score parameters differ",
+            "testbench checker has absolute-time/window patterns"
+          ],
+          "task_dir": "tasks/509-lock-detector-testbench",
+          "task_id": "v4-509"
+        },
+        {
+          "checker": {
+            "absolute_time_patterns": [],
+            "checker_profile_missing": false,
+            "checker_public_observables": [
+              "fb_clk",
+              "lock",
+              "ref_clk",
+              "rst_n"
+            ],
+            "checker_public_observables_normalized": [
+              "fb_clk",
+              "lock",
+              "ref_clk",
+              "rst_n",
+              "time"
+            ],
+            "checker_source": "runners/checkers/v4/task_009.py",
+            "checker_source_missing": false,
+            "checker_task_id": "v4_009_lock_detector",
+            "public_required_signals": [
+              "fb_clk",
+              "lock",
+              "ref_clk",
+              "rst_n",
+              "time"
+            ],
+            "public_required_signals_normalized": [
+              "fb_clk",
+              "lock",
+              "ref_clk",
+              "rst_n",
+              "time"
+            ],
+            "testbench_absolute_time_suspect": false,
+            "trace_contract_same": true
+          },
+          "class": "B",
+          "form": "bugfix",
+          "profile": {
+            "feedback_analyses": [
+              "tran tran stop=115n maxstep=100p"
+            ],
+            "feedback_body_lines": 40,
+            "feedback_parameters": {
+              "maxstep": "200p",
+              "stop_time": "100n"
+            },
+            "profile_analysis_same": false,
+            "profile_body_same": false,
+            "profile_missing": false,
+            "profile_parameters_same": false,
+            "profile_property_ids_same": true,
+            "score_analyses": [
+              "tran tran stop=210n maxstep=100p"
+            ],
+            "score_body_lines": 35,
+            "score_parameters": {
+              "maxstep": "100p",
+              "stop_time": "100n"
+            }
+          },
+          "reasons": [
+            "feedback/score body differs",
+            "feedback/score analysis differs",
+            "feedback/score parameters differ"
+          ],
+          "task_dir": "tasks/1009-lock-detector-bugfix",
+          "task_id": "v4-1009"
+        }
+      ]
+    },
+    {
+      "class": "C",
+      "family_id": "010",
+      "reasons": [
+        "dut: feedback/score body differs",
+        "dut: feedback/score parameters differ",
+        "testbench: feedback/score body differs",
+        "testbench: feedback/score parameters differ",
+        "testbench: testbench checker has absolute-time/window patterns",
+        "bugfix: feedback/score body differs",
+        "bugfix: feedback/score parameters differ"
+      ],
+      "tasks": [
+        {
+          "checker": {
+            "absolute_time_patterns": [],
+            "checker_profile_missing": false,
+            "checker_public_observables": [
+              "CLK",
+              "OUT_P",
+              "VDD",
+              "VINN",
+              "VINP",
+              "VSS"
+            ],
+            "checker_public_observables_normalized": [
+              "clk",
+              "out_p",
+              "time",
+              "vdd",
+              "vinn",
+              "vinp",
+              "vss"
+            ],
+            "checker_source": "runners/checkers/v4/task_010.py",
+            "checker_source_missing": false,
+            "checker_task_id": "v4_010_offset_comparator",
+            "public_required_signals": [
+              "CLK",
+              "OUT_P",
+              "VDD",
+              "VINN",
+              "VINP",
+              "VSS",
+              "time"
+            ],
+            "public_required_signals_normalized": [
+              "clk",
+              "out_p",
+              "time",
+              "vdd",
+              "vinn",
+              "vinp",
+              "vss"
+            ],
+            "testbench_absolute_time_suspect": false,
+            "trace_contract_same": true
+          },
+          "class": "B",
+          "form": "dut",
+          "profile": {
+            "feedback_analyses": [],
+            "feedback_body_lines": 18,
+            "feedback_parameters": {
+              "maxstep": "200p",
+              "stop_time": "100n"
+            },
+            "profile_analysis_same": true,
+            "profile_body_same": false,
+            "profile_missing": false,
+            "profile_parameters_same": false,
+            "profile_property_ids_same": true,
+            "score_analyses": [],
+            "score_body_lines": 23,
+            "score_parameters": {
+              "maxstep": "100p",
+              "stop_time": "100n"
+            }
+          },
+          "reasons": [
+            "feedback/score body differs",
+            "feedback/score parameters differ"
+          ],
+          "task_dir": "tasks/010-offset-comparator",
+          "task_id": "v4-010"
+        },
+        {
+          "checker": {
+            "absolute_time_patterns": [
+              "\\b\\d+(?:\\.\\d+)?e-0?9\\b"
+            ],
+            "checker_profile_missing": false,
+            "checker_public_observables": [
+              "CLK",
+              "OUT_P",
+              "VDD",
+              "VINN",
+              "VINP",
+              "VSS"
+            ],
+            "checker_public_observables_normalized": [
+              "clk",
+              "out_p",
+              "time",
+              "vdd",
+              "vinn",
+              "vinp",
+              "vss"
+            ],
+            "checker_source": "runners/checkers/v4/task_010.py",
+            "checker_source_missing": false,
+            "checker_task_id": "v4_010_offset_comparator",
+            "public_required_signals": [
+              "CLK",
+              "OUT_P",
+              "VDD",
+              "VINN",
+              "VINP",
+              "VSS",
+              "time"
+            ],
+            "public_required_signals_normalized": [
+              "clk",
+              "out_p",
+              "time",
+              "vdd",
+              "vinn",
+              "vinp",
+              "vss"
+            ],
+            "testbench_absolute_time_suspect": true,
+            "trace_contract_same": true
+          },
+          "class": "C",
+          "form": "testbench",
+          "profile": {
+            "feedback_analyses": [],
+            "feedback_body_lines": 18,
+            "feedback_parameters": {
+              "maxstep": "200p",
+              "stop_time": "100n"
+            },
+            "profile_analysis_same": true,
+            "profile_body_same": false,
+            "profile_missing": false,
+            "profile_parameters_same": false,
+            "profile_property_ids_same": true,
+            "score_analyses": [],
+            "score_body_lines": 23,
+            "score_parameters": {
+              "maxstep": "100p",
+              "stop_time": "100n"
+            }
+          },
+          "reasons": [
+            "feedback/score body differs",
+            "feedback/score parameters differ",
+            "testbench checker has absolute-time/window patterns"
+          ],
+          "task_dir": "tasks/510-offset-comparator-testbench",
+          "task_id": "v4-510"
+        },
+        {
+          "checker": {
+            "absolute_time_patterns": [],
+            "checker_profile_missing": false,
+            "checker_public_observables": [
+              "CLK",
+              "OUT_P",
+              "VDD",
+              "VINN",
+              "VINP",
+              "VSS"
+            ],
+            "checker_public_observables_normalized": [
+              "clk",
+              "out_p",
+              "time",
+              "vdd",
+              "vinn",
+              "vinp",
+              "vss"
+            ],
+            "checker_source": "runners/checkers/v4/task_010.py",
+            "checker_source_missing": false,
+            "checker_task_id": "v4_010_offset_comparator",
+            "public_required_signals": [
+              "CLK",
+              "OUT_P",
+              "VDD",
+              "VINN",
+              "VINP",
+              "VSS",
+              "time"
+            ],
+            "public_required_signals_normalized": [
+              "clk",
+              "out_p",
+              "time",
+              "vdd",
+              "vinn",
+              "vinp",
+              "vss"
+            ],
+            "testbench_absolute_time_suspect": false,
+            "trace_contract_same": true
+          },
+          "class": "B",
+          "form": "bugfix",
+          "profile": {
+            "feedback_analyses": [],
+            "feedback_body_lines": 18,
+            "feedback_parameters": {
+              "maxstep": "200p",
+              "stop_time": "100n"
+            },
+            "profile_analysis_same": true,
+            "profile_body_same": false,
+            "profile_missing": false,
+            "profile_parameters_same": false,
+            "profile_property_ids_same": true,
+            "score_analyses": [],
+            "score_body_lines": 23,
+            "score_parameters": {
+              "maxstep": "100p",
+              "stop_time": "100n"
+            }
+          },
+          "reasons": [
+            "feedback/score body differs",
+            "feedback/score parameters differ"
+          ],
+          "task_dir": "tasks/1010-offset-comparator-bugfix",
+          "task_id": "v4-1010"
+        }
+      ]
+    }
+  ],
+  "schema_version": "v4-repair-gate1-ledger-v1",
+  "source": {
+    "release": "benchmark-vabench-release-v4/release/benchmarkv4",
+    "repo": "."
+  },
+  "summary": {
+    "class_counts": {
+      "A": 0,
+      "B": 0,
+      "C": 9,
+      "D": 1
+    },
+    "family_count": 10
+  }
+}

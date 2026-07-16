@@ -1,24 +1,13 @@
 {
   "corners": [],
-  "deck_overrides": {
-    "body_lines": [
-      "Vsig (sig 0) vsource type=pwl wave=[0 0 5n 0 5.05n 0.9 24n 0.9 24.05n 0 31n 0 31.05n 0.9 36n 0.9 36.05n 0 54n 0 54.05n 0.9 68n 0.9 68.05n 0 71n 0 71.05n 0.9 132n 0.9 132.05n 0 140n 0]",
-      "Vrst (rst_n 0) vsource type=pwl wave=[0 0 16n 0 16.05n 0.9 55n 0.9 55.05n 0 65n 0 65.05n 0.9 140n 0.9]",
-      "",
-      "XDUT (sig rst_n out) debounce_latch",
-      ""
-    ]
-  },
+  "deck_overrides": {},
   "deterministic_seed": 0,
   "generated_from": {
     "script": "render_v4_harness.py",
     "version": "v4-harness-renderer-v1"
   },
-  "harness_spec_sha256": "c1567d2468b7a912bc0f76bbab34a3090328d5ae37d54c22e1070fb6e4ccf456",
-  "parameters": {
-    "maxstep": "100p",
-    "stop_time": "100n"
-  },
+  "harness_spec_sha256": "e8a08abf0061f076c2356ef68017125e8f02c24c718f15d8906a9b210de240ee",
+  "parameters": {},
   "profile_name": "score",
   "property_ids": [
     "P_ACTIVE_LOW_RESET",

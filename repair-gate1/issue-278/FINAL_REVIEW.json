@@ -1,0 +1,31 @@
+{
+  "affine": {
+    "mutation_kill_count": 50,
+    "reference_pass_count": 10,
+    "status": "pass"
+  },
+  "backend": {
+    "engine": "evas2",
+    "implementation": "evas-rust",
+    "source_commit": "a72fff4f340a67243ee8cd28b5233edc152b4504",
+    "version": "0.8.2"
+  },
+  "family_range": "001-010",
+  "insufficient_excitation": {
+    "explicit_failure_count": 10,
+    "status": "pass"
+  },
+  "reference": {
+    "infrastructure_error_count": 0,
+    "mutation_kill_count": 50,
+    "mutation_survivor_count": 0,
+    "reference_pass_count": 10,
+    "status": "pass"
+  },
+  "schema_version": "v4-batch-final-review-v1",
+  "spectre": {
+    "reason": "Spectre is unavailable and is not an acceptance gate for this repository",
+    "status": "not_applicable"
+  },
+  "status": "pass"
+}
