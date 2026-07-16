@@ -71,6 +71,13 @@ def _validated_checker(module: ModuleType, checker_id: str) -> Checker | None:
     return checker if callable(checker) else None
 
 
+def _validated_streaming_checker(module: ModuleType, checker_id: str) -> Checker | None:
+    if getattr(module, "CHECKER_ID", None) != checker_id:
+        return None
+    checker = getattr(module, "STREAMING_CHECKER", None)
+    return checker if callable(checker) else None
+
+
 @lru_cache(maxsize=None)
 def load_checker(checker_id: str) -> Checker | None:
     module_suffix = checker_modules().get(checker_id)
@@ -81,3 +88,15 @@ def load_checker(checker_id: str) -> Checker | None:
     except (ImportError, AttributeError):
         return None
     return _validated_checker(module, checker_id)
+
+
+@lru_cache(maxsize=None)
+def load_streaming_checker(checker_id: str) -> Checker | None:
+    module_suffix = checker_modules().get(checker_id)
+    if module_suffix is None:
+        return None
+    try:
+        module = import_module(f"{__package__}.{module_suffix}")
+    except (ImportError, AttributeError):
+        return None
+    return _validated_streaming_checker(module, checker_id)

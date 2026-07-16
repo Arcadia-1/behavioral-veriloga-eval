@@ -26,6 +26,7 @@ from pathlib import Path
 from typing import Callable, Iterable
 
 from checkers.v4.registry import load_checker as load_v4_checker
+from checkers.v4.registry import load_streaming_checker as load_v4_streaming_checker
 from main120_stable_checks import (
     check_background_calibration_accumulator as check_vbm1_background_calibration_accumulator,
     check_barrel_pointer_window as check_vbm1_barrel_pointer_window,
@@ -3152,6 +3153,13 @@ _STREAMING_TRACE_REQUIREMENTS_BY_FUNC = {
 
 _CHECKER_TRACE_CONTRACT_CACHE: dict[str, frozenset[str]] = {}
 
+
+def _streaming_behavior_checker(task_id: str) -> Callable[[Path], tuple[float, list[str]]] | None:
+    checker = STREAMING_BEHAVIOR_CHECKS.get(task_id)
+    if checker is not None:
+        return checker
+    return load_v4_streaming_checker(task_id)
+
 _TASKS_WITH_UNRELIABLE_SPARSE_TRACE = {
     # EVAS can write these scalar vector-bit saves from the SCS deck, but the
     # sparse EVAS_REQUIRED_TRACE_SIGNALS path drops some zero-valued packed-bus
@@ -3509,7 +3517,7 @@ def required_trace_contract_kind_for_checker(task_id: str) -> str:
         return "disabled"
     if task_id in _TASKS_WITH_UNRELIABLE_SPARSE_TRACE:
         return "harness_save"
-    checker = STREAMING_BEHAVIOR_CHECKS.get(task_id)
+    checker = _streaming_behavior_checker(task_id)
     if checker is not None and _STREAMING_TRACE_REQUIREMENTS_BY_FUNC.get(checker):
         return "streaming"
     if _auto_row_checker_trace_contracts_enabled() and _auto_row_checker_trace_contract(task_id):
@@ -3695,7 +3703,7 @@ def required_trace_signals_for_checker(task_id: str) -> frozenset[str]:
             | _extra_trace_signals_for_checker(task_id)
         )
     signals: frozenset[str] = frozenset()
-    checker = STREAMING_BEHAVIOR_CHECKS.get(task_id)
+    checker = _streaming_behavior_checker(task_id)
     if checker is not None:
         signals = _STREAMING_TRACE_REQUIREMENTS_BY_FUNC.get(checker, frozenset())
         if signals:
@@ -3721,14 +3729,14 @@ def _streaming_notes_require_row_fallback(notes: list[str]) -> bool:
 
 
 def evaluate_streaming_behavior(task_id: str, csv_path: Path) -> tuple[float, list[str]] | None:
+    checker = _streaming_behavior_checker(task_id)
     force_streaming = _env_enabled("VAEVAS_ENABLE_EXPERIMENTAL_STREAMING_CHECKERS")
     if not force_streaming:
         if _env_enabled("VAEVAS_DISABLE_VALIDATED_FAST_CHECKERS"):
             return None
-        if task_id not in VALIDATED_FAST_CHECKER_TASKS:
+        if task_id not in VALIDATED_FAST_CHECKER_TASKS and checker is None:
             return None
 
-    checker = STREAMING_BEHAVIOR_CHECKS.get(task_id)
     if checker is None:
         return None
     score, notes = checker(csv_path)
@@ -3740,15 +3748,17 @@ def evaluate_streaming_behavior(task_id: str, csv_path: Path) -> tuple[float, li
 def behavior_checker_policy(task_id: str, notes: list[str] | None = None) -> dict[str, object]:
     """Describe the checker implementation used for artifact-level timing claims."""
     notes = notes or []
-    streaming_registered = task_id in STREAMING_BEHAVIOR_CHECKS
-    streaming_validated = task_id in VALIDATED_FAST_CHECKER_TASKS
+    checker = resolve_row_behavior_checker(task_id)
+    streaming_checker = _streaming_behavior_checker(task_id)
+    streaming_registered = streaming_checker is not None
+    streaming_validated = task_id in VALIDATED_FAST_CHECKER_TASKS or streaming_checker is not None
     streaming_used = any(note.startswith("streaming_checker:") for note in notes)
     trace_contract_kind = required_trace_contract_kind_for_checker(task_id)
     trace_contract_signals = required_trace_signals_for_checker(task_id)
     extra_trace_signals = _extra_trace_signals_for_checker(task_id) if trace_contract_signals else frozenset()
     forced = _env_enabled("VAEVAS_ENABLE_EXPERIMENTAL_STREAMING_CHECKERS")
     disabled = _env_enabled("VAEVAS_DISABLE_VALIDATED_FAST_CHECKERS")
-    if task_id not in CHECKS:
+    if checker is None:
         implementation = "no_checker"
     elif streaming_used:
         implementation = "streaming_validated" if streaming_validated else "streaming_experimental"
