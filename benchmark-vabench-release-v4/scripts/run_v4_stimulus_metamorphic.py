@@ -11,6 +11,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import re
 import shutil
 import sys
@@ -38,6 +39,11 @@ from runners.simulate_evas import (  # noqa: E402
     required_trace_signals_for_checker,
     run_evas,
 )
+
+
+REQUIRED_EVAS_ENGINE = "evas2"
+REQUIRED_EVAS_VERSION = "0.8.2"
+REQUIRED_EVAS_BACKEND = "evas-rust"
 
 
 _QUANTITY = re.compile(r"^(?P<number>[+-]?(?:\d+(?:\.\d*)?|\.\d+)(?:[eE][+-]?\d+)?)(?P<unit>[a-zA-Z]*)$")
@@ -73,6 +79,33 @@ def format_time(seconds: float) -> str:
     if magnitude >= 1e-12:
         return f"{seconds / 1e-12:.12g}p"
     return f"{seconds / 1e-15:.12g}f"
+
+
+def require_rust_evas2(combined: str) -> dict[str, str]:
+    """Reject metamorphic evidence unless EVAS 0.8.2 Rust actually ran."""
+    configured = effective_evas_engine()
+    explicit_engine = os.environ.get("EVAS_ENGINE", "").strip().lower()
+    default_engine = os.environ.get("VAEVAS_DEFAULT_EVAS_ENGINE", "").strip().lower()
+    if (
+        configured != REQUIRED_EVAS_ENGINE
+        or explicit_engine != REQUIRED_EVAS_ENGINE
+        or default_engine != REQUIRED_EVAS_ENGINE
+    ):
+        raise RuntimeError(
+            "EVAS2 evidence requires EVAS_ENGINE=evas2 and "
+            "VAEVAS_DEFAULT_EVAS_ENGINE=evas2; "
+            f"configured={configured!r} explicit={explicit_engine!r} default={default_engine!r}"
+        )
+    if f"Version {REQUIRED_EVAS_VERSION}" not in combined:
+        raise RuntimeError("EVAS2 evidence missing EVAS 0.8.2 version marker")
+    if f"evas_engine = {REQUIRED_EVAS_BACKEND}" not in combined:
+        raise RuntimeError("EVAS2 evidence missing Rust backend marker")
+    return {
+        "evas_engine": REQUIRED_EVAS_ENGINE,
+        "evas_engine_used": REQUIRED_EVAS_ENGINE,
+        "evas_version": REQUIRED_EVAS_VERSION,
+        "evas_backend": REQUIRED_EVAS_BACKEND,
+    }
 
 
 def affine_time(value: str, scale: float, shift: float, *, absolute: bool) -> str:
@@ -152,6 +185,7 @@ def run_case(
         required_trace_signals=required_signals,
     )
     combined = (proc.stdout or "") + "\n" + (proc.stderr or "")
+    engine_evidence = require_rust_evas2(combined)
     csv_path = case_output / "tran.csv"
     simulator_ok = proc.returncode == 0 and csv_path.is_file()
     checker_score = 0.0
@@ -179,7 +213,7 @@ def run_case(
         "changed_artifacts": changed,
         "returncode": proc.returncode,
         "required_trace_signal_count": len(required_signals - {"time"}) if required_signals else 0,
-        "evas_engine": effective_evas_engine(),
+        **engine_evidence,
         "timing": parse_evas_timing(combined),
         "performance_counters": parse_evas_performance_counters(combined),
         "wall_time_s": time.perf_counter() - started,
@@ -295,6 +329,10 @@ def main() -> int:
     ]
     report = {
         "schema_version": "v4-stimulus-metamorphic-evidence-v1",
+        "evas_engine": REQUIRED_EVAS_ENGINE,
+        "evas_engine_used": REQUIRED_EVAS_ENGINE,
+        "evas_version": REQUIRED_EVAS_VERSION,
+        "evas_backend": REQUIRED_EVAS_BACKEND,
         "release": str(args.release.resolve()),
         "transform": {"scale": args.scale, "shift_s": args.shift},
         "task_count": len(results),

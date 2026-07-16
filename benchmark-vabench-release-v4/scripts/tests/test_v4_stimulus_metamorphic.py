@@ -35,3 +35,21 @@ def test_insufficient_stimulus_keeps_legal_source_declarations() -> None:
     assert "type=pwl" not in suppressed
     assert "type=pulse" not in suppressed
     assert suppressed.count("vsource dc=0") == 2
+
+
+def test_evas2_evidence_requires_version_and_rust_backend_markers() -> None:
+    evidence = runner.require_rust_evas2(
+        "Version 0.8.2\n    evas_engine = evas-rust\n"
+    )
+    assert evidence["evas_engine"] == "evas2"
+    assert evidence["evas_engine_used"] == "evas2"
+    assert evidence["evas_version"] == "0.8.2"
+
+
+def test_evas2_evidence_rejects_python_marker() -> None:
+    try:
+        runner.require_rust_evas2("Version 0.8.2\n    evas_engine = python\n")
+    except RuntimeError as exc:
+        assert "Rust backend marker" in str(exc)
+    else:
+        raise AssertionError("Python EVAS evidence was accepted")
