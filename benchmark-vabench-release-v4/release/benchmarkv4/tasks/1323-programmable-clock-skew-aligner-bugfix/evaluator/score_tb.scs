@@ -11,6 +11,5 @@ Vskew_1 (skew_1 0) vsource type=pwl wave=[0 0 8n 0 8.2n 0 18n 0 18.2n 0.9 28n 0.
 Vskew_2 (skew_2 0) vsource type=pwl wave=[0 0 8n 0 8.2n 0 18n 0 18.2n 0 28n 0 28.2n 0.9 38n 0.9 38.2n 0 48n 0 48.2n 0.9 58n 0.9 58.2n 0 68n 0 68.2n 0.9 92n 0.9]
 XDUT (clk_in rst enable skew_2 skew_1 skew_0 clk_out delay_metric valid) programmable_clock_skew_aligner
 
-
 tran tran stop=92n maxstep=200p
 save clk_in rst enable skew_2 skew_1 skew_0 clk_out delay_metric valid
