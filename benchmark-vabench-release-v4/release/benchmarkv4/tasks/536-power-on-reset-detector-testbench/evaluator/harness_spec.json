@@ -13,9 +13,7 @@
       "Vclk (clk 0) vsource type=pulse val0=0 val1=0.9 period=2n width=1n rise=50p fall=50p",
       "Vrst (rst 0) vsource type=pwl wave=[0 0.9 2n 0.9 2.1n 0 80n 0]",
       "Vvin (vin 0) vsource type=pwl wave=[0 0.20 7.9n 0.20 8n 0.75 44.7n 0.75 44.8n 0.50 53.9n 0.50 54n 0.75 80n 0.75]",
-      "",
-      "XDUT (clk rst vin out metric) power_on_reset_detector",
-      ""
+      "XDUT (clk rst vin out metric) power_on_reset_detector"
     ],
     "header": [
       "simulator lang=spectre",
@@ -44,25 +42,17 @@
     "legacy_score_deck_sha256": "f110559f223f67e4eb9aae37eeb57349f3948466522bf67a599d1147df8ae7a0",
     "notes": [
       "legacy feedback deck was used only to seed the canonical harness spec",
-      "legacy score deck seeded private profile-specific overrides"
+      "legacy score deck seeded private profile-specific overrides",
+      "feedback deck supplies the unified feedback/score stimulus semantics"
     ]
   },
   "profile_defaults": {
     "feedback": {
-      "parameters": {
-        "maxstep": "200p",
-        "stop_time": "100n"
-      },
       "simulatorOptions": {
         "evas_profile": "balanced"
       }
     },
-    "score": {
-      "parameters": {
-        "maxstep": "100p",
-        "stop_time": "100n"
-      }
-    }
+    "score": {}
   },
   "property_ids": [
     "P_RESET_ASSERTED_UNSAFE",

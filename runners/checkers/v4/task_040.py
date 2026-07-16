@@ -1,42 +1,92 @@
-"""Task-specific checker for canonical v4 DUT 040."""
+"""Stimulus-relative checker for canonical V4 DUT 040."""
 from __future__ import annotations
 
 from ..api import Checker
-def mean_in_window(rows: list[dict[str, float]], key: str, start: float, stop: float) -> float | None:
-    values = [r[key] for r in rows if start <= r["time"] <= stop and key in r]
-    if not values:
-        return None
-    return sum(values) / len(values)
+from .stimulus_relative import close, crossings, diagnostic, event_label, pass_note, probe_time, require_signals, sample
+
+
+PROPERTY_IDS = (
+    "P_RESET_REFERENCE",
+    "P_INPUT_CLAMP",
+    "P_PTAT_TREND",
+    "P_CTAT_PTAT_AVERAGE",
+    "P_REFERENCE_BOUNDS",
+)
+
 
 def check_ptat_ctat_reference_generator(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    required = {"time", "clk", "rst", "vin", "out", "metric"}
-    if not rows or not required.issubset(rows[0]):
-        return False, "missing time/clk/rst/vin/out/metric"
+    error = require_signals(rows, {"time", "clk", "rst", "vin", "out", "metric"}, "P_INPUT_CLAMP")
+    if error:
+        return False, error
+    edges = crossings(rows, "clk", threshold=0.45, direction="rising")
+    if len(edges) < 5:
+        return False, diagnostic(
+            "P_PTAT_TREND", "insufficient_excitation", expected="clk_rise_count>=5",
+            observed=f"clk_rise_count={len(edges)}", event="full_trace",
+        )
+    covered: set[str] = set()
+    metrics: list[tuple[float, float]] = []
+    checked = 0
+    for index, edge in enumerate(edges):
+        next_edge = edges[index + 1] if index + 1 < len(edges) else None
+        probe = probe_time(rows, edge, next_edge)
+        if probe is None:
+            continue
+        rst, vin = sample(rows, "rst", edge), sample(rows, "vin", edge)
+        out, metric = sample(rows, "out", probe), sample(rows, "metric", probe)
+        if None in (rst, vin, out, metric):
+            continue
+        assert rst is not None and vin is not None and out is not None and metric is not None
+        label = event_label("clk_rise", index, edge)
+        if rst > 0.45:
+            expected_out, expected_metric = 0.45, 0.0
+            property_id = "P_RESET_REFERENCE"
+            covered.add("reset")
+        else:
+            clamped_vin = min(0.9, max(0.0, vin))
+            expected_out = 0.48
+            expected_metric = 0.18 + 0.34 * clamped_vin
+            property_id = "P_CTAT_PTAT_AVERAGE"
+            metrics.append((clamped_vin, metric))
+            if vin < 0.0:
+                covered.add("below_range")
+            elif vin > 0.9:
+                covered.add("above_range")
+            else:
+                covered.add("nominal")
+        checked += 1
+        if not close(out, expected_out, 0.035):
+            return False, diagnostic(
+                property_id, "behavior_mismatch", expected=f"out:{expected_out:.3f}",
+                observed=f"out:{out:.3f},vin:{vin:.3f}", event=label,
+            )
+        if not close(metric, expected_metric, 0.055):
+            return False, diagnostic(
+                "P_PTAT_TREND", "behavior_mismatch", expected=f"metric:{expected_metric:.3f}",
+                observed=f"metric:{metric:.3f},vin:{vin:.3f}", event=label,
+            )
+    out_min, out_max = min(row["out"] for row in rows), max(row["out"] for row in rows)
+    if out_min < -0.02 or out_max > 0.92:
+        return False, diagnostic(
+            "P_REFERENCE_BOUNDS", "behavior_mismatch", expected="out_in_[0,0.9]",
+            observed=f"out_range:{out_min:.3f}..{out_max:.3f}", event="full_trace",
+        )
+    if metrics:
+        ordered = sorted(metrics)
+        if ordered[-1][1] <= ordered[0][1] + 0.20:
+            return False, diagnostic(
+                "P_PTAT_TREND", "behavior_mismatch", expected="metric_increases_with_clamped_vin",
+                observed=f"metric:{ordered[0][1]:.3f}->{ordered[-1][1]:.3f}", event="full_trace",
+            )
+    missing = sorted({"reset", "below_range", "nominal", "above_range"} - covered)
+    if missing:
+        return False, diagnostic(
+            "P_INPUT_CLAMP", "insufficient_excitation",
+            expected="reset,below_range,nominal,above_range",
+            observed="missing:" + ",".join(missing), event="full_trace",
+        )
+    return True, pass_note(PROPERTY_IDS, f"ptat_ctat edge_checks={checked}")
 
-    cold_ref = mean_in_window(rows, "out", 8.0e-9, 16.0e-9)
-    mid_ref = mean_in_window(rows, "out", 26.0e-9, 38.0e-9)
-    hot_ref = mean_in_window(rows, "out", 52.0e-9, 72.0e-9)
-    cold_ptat = mean_in_window(rows, "metric", 8.0e-9, 16.0e-9)
-    hot_ptat = mean_in_window(rows, "metric", 52.0e-9, 72.0e-9)
-    if None in (cold_ref, mid_ref, hot_ref, cold_ptat, hot_ptat):
-        return False, "ptat_ctat_missing_sample_windows"
-    assert cold_ref is not None
-    assert mid_ref is not None
-    assert hot_ref is not None
-    assert cold_ptat is not None
-    assert hot_ptat is not None
-
-    ref_span = max(cold_ref, mid_ref, hot_ref) - min(cold_ref, mid_ref, hot_ref)
-    if not (0.42 <= cold_ref <= 0.55 and 0.42 <= mid_ref <= 0.55 and 0.42 <= hot_ref <= 0.55):
-        return False, f"ptat_ctat_reference_range={cold_ref:.3f}/{mid_ref:.3f}/{hot_ref:.3f}"
-    if ref_span > 0.075:
-        return False, f"ptat_ctat_reference_not_compensated span={ref_span:.3f}"
-    if hot_ptat <= cold_ptat + 0.12:
-        return False, f"ptat_metric_not_monotonic cold={cold_ptat:.3f} hot={hot_ptat:.3f}"
-    return True, (
-        "ptat_ctat_reference_generator "
-        f"ref_span={ref_span:.3f} ptat={cold_ptat:.3f}->{hot_ptat:.3f}"
-    )
 
 CHECKER_ID = "v4_040_ptat_ctat_reference_generator"
 CHECKER: Checker = check_ptat_ctat_reference_generator
