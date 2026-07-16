@@ -143,12 +143,12 @@ def transform_stimulus(text: str, *, scale: float = 1.37, shift: float = 2e-9) -
         return f"{match.group('key')}={affine_time(match.group('value'), scale, shift, absolute=True)}"
 
     transformed = re.sub(
-        r"\b(?P<key>period|width|rise|fall|maxstep|unit_phase_delay|tr)=(?P<value>[+-]?(?:\d+(?:\.\d*)?|\.\d+)(?:[eE][+-]?\d+)?[a-zA-Z]*)",
+        r"\b(?P<key>period|width|rise|fall|maxstep|unit_phase_delay|tr|clk_period|deadzone|pulse_w|poll_dt)=(?P<value>[+-]?(?:\d+(?:\.\d*)?|\.\d+)(?:[eE][+-]?\d+)?[a-zA-Z]*)",
         replace_duration,
         transformed,
     )
     transformed = re.sub(
-        r"\b(?P<key>delay|stop)=(?P<value>[+-]?(?:\d+(?:\.\d*)?|\.\d+)(?:[eE][+-]?\d+)?[a-zA-Z]*)",
+        r"\b(?P<key>delay|stop|clk_delay)=(?P<value>[+-]?(?:\d+(?:\.\d*)?|\.\d+)(?:[eE][+-]?\d+)?[a-zA-Z]*)",
         replace_absolute,
         transformed,
     )
