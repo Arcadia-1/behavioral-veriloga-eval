@@ -1,51 +1,64 @@
-"""Task-specific checker for canonical v4 DUT 014."""
+"""Stimulus-relative checker for canonical v4 DUT 014."""
+
 from __future__ import annotations
 
-from ..api import Checker
-def sample_signal(rows: list[dict[str, float]], signal: str, time_s: float) -> float | None:
-    if not rows or signal not in rows[0] or "time" not in rows[0]:
-        return None
-    first_time = rows[0]["time"]
-    last_time = rows[-1].get("time")
-    if last_time is None or time_s < first_time or time_s > last_time:
-        return None
-    if time_s == first_time:
-        return rows[0].get(signal)
-    for idx in range(1, len(rows)):
-        prev = rows[idx - 1]
-        cur = rows[idx]
-        t0 = prev.get("time")
-        t1 = cur.get("time")
-        if t0 is None or t1 is None:
-            continue
-        if t0 <= time_s <= t1:
-            v0 = prev.get(signal)
-            v1 = cur.get(signal)
-            if v0 is None or v1 is None:
-                return None
-            if t1 == t0:
-                return v1
-            alpha = (time_s - t0) / (t1 - t0)
-            return v0 + alpha * (v1 - v0)
-    return rows[-1].get(signal)
+from ..api import Checker, Row
+from .trace_utils import plateau_sample_index, property_diagnostics, stable_logic_plateaus
 
-def check_segmented_dac(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    if not rows or "time" not in rows[0] or "aout" not in rows[0]:
-        return False, "missing time/aout"
-    sample_times_ns = [15.0, 45.0, 75.0, 105.0, 135.0]
-    expected = [0.0, 0.06, 0.12, 0.42, 0.72]
-    observed: list[float] = []
-    for t_ns in sample_times_ns:
-        value = sample_signal(rows, "aout", t_ns * 1e-9)
-        if value is None:
-            return False, f"missing_sample_at={t_ns:g}ns"
-        observed.append(value)
-    level_ok = all(abs(got - want) <= 0.02 for got, want in zip(observed, expected))
-    monotonic = all(b >= a - 1e-3 for a, b in zip(observed, observed[1:]))
-    ok = level_ok and monotonic
-    obs_text = ",".join(f"{value:.3f}" for value in observed)
-    exp_text = ",".join(f"{value:.3f}" for value in expected)
-    return ok, f"dac_levels={obs_text} expected={exp_text} monotonic={monotonic}"
+
+BITS = ["b0", "b1", "t0", "t1", "t2"]
+PROPERTIES = (
+    "P_SEGMENT_WEIGHTS",
+    "P_CODE_MONOTONICITY",
+    "P_ENDPOINTS",
+    "P_RAIL_RELATIVE_MAPPING",
+)
+
+
+def check_segmented_dac(rows: list[Row]) -> tuple[bool, str]:
+    required = {"time", "aout", "vref", "vss", *BITS}
+    missing = sorted(required - (set(rows[0]) if rows else set()))
+    if missing:
+        return False, "missing_columns=" + ",".join(missing)
+
+    plateaus = stable_logic_plateaus(rows, BITS, minimum_duration_s=1e-9)
+    observations: list[tuple[int, float, float, float]] = []
+    for start, end, vector in plateaus:
+        index = plateau_sample_index(rows, start, end)
+        row = rows[index]
+        code = vector[0] + 2 * vector[1] + 4 * sum(vector[2:])
+        expected = row["vss"] + (row["vref"] - row["vss"]) * code / 15.0
+        observations.append((code, row["aout"], expected, row["time"]))
+
+    unique_codes = {code for code, *_ in observations}
+    coverage_missing = max(0, 5 - len(unique_codes)) + int(0 not in unique_codes) + int(15 not in unique_codes)
+    level_errors = sum(abs(observed - expected) > 0.025 for _, observed, expected, _ in observations)
+    endpoint_errors = sum(
+        abs(observed - expected) > 0.025
+        for code, observed, expected, _ in observations
+        if code in {0, 15}
+    ) + int(0 not in unique_codes) + int(15 not in unique_codes)
+    ordered = sorted({code: observed for code, observed, _, _ in observations}.items())
+    monotonic_errors = sum(right + 0.003 < left for (_, left), (_, right) in zip(ordered, ordered[1:]))
+    # The expected-value comparison already exercises the observed local rails;
+    # keep a separate range diagnostic for clearer feedback.
+    rail_errors = sum(
+        observed < min(rows[plateau_sample_index(rows, start, end)]["vss"], rows[plateau_sample_index(rows, start, end)]["vref"]) - 0.025
+        or observed > max(rows[plateau_sample_index(rows, start, end)]["vss"], rows[plateau_sample_index(rows, start, end)]["vref"]) + 0.025
+        for (start, end, _), (_, observed, _, _) in zip(plateaus, observations)
+    )
+
+    counts = {
+        "P_SEGMENT_WEIGHTS": level_errors + coverage_missing,
+        "P_CODE_MONOTONICITY": monotonic_errors + int(len(unique_codes) < 3),
+        "P_ENDPOINTS": endpoint_errors,
+        "P_RAIL_RELATIVE_MAPPING": level_errors + rail_errors,
+    }
+    ok = bool(observations) and all(count == 0 for count in counts.values())
+    coverage = "" if coverage_missing == 0 else f" insufficient_excitation={coverage_missing}"
+    levels = ",".join(f"{code}:{observed:.3f}/{expected:.3f}" for code, observed, expected, _ in observations)
+    return ok, f"levels={levels} unique_codes={sorted(unique_codes)}{coverage}; {property_diagnostics(counts)}"
+
 
 CHECKER_ID = "v4_014_segmented_dac"
 CHECKER: Checker = check_segmented_dac

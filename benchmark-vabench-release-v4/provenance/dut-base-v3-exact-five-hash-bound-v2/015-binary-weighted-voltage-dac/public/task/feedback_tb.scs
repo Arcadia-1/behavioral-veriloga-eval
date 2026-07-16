@@ -9,9 +9,7 @@ V_code_2 (code_2 0) vsource type=pwl wave=[0 0 37.8n 0 38n 0.9 77.8n 0.9 78n 0 1
 V_code_3 (code_3 0) vsource type=pwl wave=[0 0 77.8n 0 78n 0.9 160n 0.9]
 V_vref (vref 0) vsource dc=0.9
 V_vss (vss 0) vsource dc=0
-
 XDUT (code_0 code_1 code_2 code_3 vref vss aout) simple_binary_voltage_dac_4b
-
 
 simulatorOptions options evas_profile=balanced
 

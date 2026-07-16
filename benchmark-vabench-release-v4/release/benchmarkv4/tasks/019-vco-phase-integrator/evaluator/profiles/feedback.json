@@ -1,23 +1,13 @@
 {
   "corners": [],
-  "deck_overrides": {
-    "body_lines": [
-      "V_vctrl (vctrl 0) vsource type=pwl wave=[0 0.2 60n 0.2 61n 0.7 170n 0.7]",
-      "",
-      "XDUT (vctrl phase clk) vco_phase_integrator",
-      ""
-    ]
-  },
+  "deck_overrides": {},
   "deterministic_seed": 0,
   "generated_from": {
     "script": "render_v4_harness.py",
     "version": "v4-harness-renderer-v1"
   },
-  "harness_spec_sha256": "53bcb5c783efe9fa9cc8133bbae552218484ca7581f22d767cfe784dc4c4cc43",
-  "parameters": {
-    "maxstep": "200p",
-    "stop_time": "100n"
-  },
+  "harness_spec_sha256": "4a91dd13aeb725d260b572644a8de05fbf7adba3b76359da6f36e383ae670435",
+  "parameters": {},
   "profile_name": "feedback",
   "property_ids": [
     "P_PERIODIC_PHASE_UPDATE",

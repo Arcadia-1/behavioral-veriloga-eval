@@ -1,66 +1,88 @@
-"""Task-specific checker for canonical v4 DUT 013."""
+"""Stimulus-relative checker for canonical v4 DUT 013."""
+
 from __future__ import annotations
 
-from ..api import Checker
-def sample_signal(rows: list[dict[str, float]], signal: str, time_s: float) -> float | None:
-    if not rows or signal not in rows[0] or "time" not in rows[0]:
-        return None
-    first_time = rows[0]["time"]
-    last_time = rows[-1].get("time")
-    if last_time is None or time_s < first_time or time_s > last_time:
-        return None
-    if time_s == first_time:
-        return rows[0].get(signal)
-    for idx in range(1, len(rows)):
-        prev = rows[idx - 1]
-        cur = rows[idx]
-        t0 = prev.get("time")
-        t1 = cur.get("time")
-        if t0 is None or t1 is None:
-            continue
-        if t0 <= time_s <= t1:
-            v0 = prev.get(signal)
-            v1 = cur.get(signal)
-            if v0 is None or v1 is None:
-                return None
-            if t1 == t0:
-                return v1
-            alpha = (time_s - t0) / (t1 - t0)
-            return v0 + alpha * (v1 - v0)
-    return rows[-1].get(signal)
+from statistics import median
 
-def check_resettable_integrator(rows: list[dict[str, float]]) -> tuple[bool, str]:
+from ..api import Checker, Row
+from .trace_utils import property_diagnostics, stable_logic_plateaus
+
+
+def _slope(rows: list[Row], signal: str) -> float | None:
+    if len(rows) < 4:
+        return None
+    origin = rows[0]["time"]
+    xs = [row["time"] - origin for row in rows]
+    ys = [row[signal] for row in rows]
+    xbar = sum(xs) / len(xs)
+    ybar = sum(ys) / len(ys)
+    denominator = sum((x - xbar) ** 2 for x in xs)
+    if denominator <= 0.0:
+        return None
+    return sum((x - xbar) * (y - ybar) for x, y in zip(xs, ys)) / denominator
+
+
+def check_resettable_integrator(rows: list[Row]) -> tuple[bool, str]:
     required = {"time", "vin", "rst", "vout"}
-    if not rows or not required.issubset(rows[0]):
-        return False, "missing time/vin/rst/vout"
+    missing = sorted(required - (set(rows[0]) if rows else set()))
+    if missing:
+        return False, "missing_columns=" + ",".join(missing)
 
-    vin_drive = [sample_signal(rows, "vin", t_ns * 1e-9) for t_ns in (80.0, 200.0, 280.0)]
-    rst_levels = [sample_signal(rows, "rst", t_ns * 1e-9) for t_ns in (10.0, 80.0, 230.0, 280.0)]
-    if any(value is None for value in vin_drive) or any(value is None for value in rst_levels):
-        return False, "missing_vin_or_rst_samples"
-    assert all(value is not None for value in vin_drive)
-    assert all(value is not None for value in rst_levels)
-    input_drive = all(value > 0.001 for value in vin_drive)
-    reset_sequence = rst_levels[0] > 0.80 and rst_levels[1] < 0.10 and rst_levels[2] > 0.80 and rst_levels[3] < 0.10
+    plateaus = stable_logic_plateaus(rows, ["rst"], minimum_duration_s=2e-9)
+    reset_segments = [(start, end) for start, end, state in plateaus if state == (1,)]
+    active_segments = [(start, end) for start, end, state in plateaus if state == (0,)]
+    reset_errors = 0
+    for start, end in reset_segments:
+        settled = start + max(1, 2 * (end - start) // 3)
+        reset_errors += sum(abs(row["vout"]) > 0.05 for row in rows[settled : end + 1])
 
-    sample_times_ns = [80.0, 200.0, 230.0, 245.0, 300.0]
-    samples: list[float] = []
-    for t_ns in sample_times_ns:
-        value = sample_signal(rows, "vout", t_ns * 1e-9)
-        if value is None:
-            return False, f"missing_sample_at={t_ns:g}ns"
-        samples.append(value)
+    slopes: list[float] = []
+    slope_errors = 0
+    monotonic_errors = 0
+    restart_seen = False
+    for segment_index, (start, end) in enumerate(active_segments):
+        segment = rows[start : end + 1]
+        fit = [row for row in segment if 0.06 <= row["vout"] <= 0.72]
+        measured = _slope(fit, "vout")
+        if measured is not None:
+            slopes.append(measured)
+            expected = 1.0e9 * median(row["vin"] for row in fit)
+            slope_errors += abs(measured - expected) > max(0.22 * abs(expected), 2.5e5)
+        else:
+            slope_errors += 1
+        monotonic_errors += sum(
+            right["vout"] + 0.012 < left["vout"]
+            for left, right in zip(segment, segment[1:])
+        )
+        if segment_index > 0 and max(row["vout"] for row in segment) > 0.08:
+            restart_seen = True
 
-    pre_reset_integrated = 0.06 <= samples[0] < samples[1] and samples[1] > 0.30
-    reset_clear = samples[2] < 0.05 and samples[3] < 0.05
-    post_reset_restarts = 0.06 <= samples[4] <= 0.18
-    ok = input_drive and reset_sequence and pre_reset_integrated and reset_clear and post_reset_restarts
-    values = ",".join(f"{value:.3f}" for value in samples)
-    return ok, (
-        f"integrator_samples={values} input_drive={input_drive} "
-        f"reset_sequence={reset_sequence} pre_reset_integrated={pre_reset_integrated} "
-        f"reset_clear={reset_clear} post_reset_restarts={post_reset_restarts}"
+    initial_error = int(abs(rows[0]["vout"]) > 0.05)
+    maximum = max(row["vout"] for row in rows)
+    minimum = min(row["vout"] for row in rows)
+    clamp_errors = int(maximum < 0.80) + int(maximum > 0.90) + int(minimum < -0.04)
+    coverage_missing = (
+        int(len(reset_segments) < 2)
+        + int(len(active_segments) < 2)
+        + int(len(slopes) < 2)
+        + int(not restart_seen)
+        + int(maximum < 0.80)
     )
+    counts = {
+        "P_INITIAL_ZERO": initial_error,
+        "P_TIMER_INTEGRATION": slope_errors + int(len(slopes) < 2),
+        "P_ACTIVE_HIGH_RESET": reset_errors + int(len(reset_segments) < 2) + int(not restart_seen),
+        "P_ACCUMULATOR_CLAMP": clamp_errors,
+        "P_EVENT_HOLD": monotonic_errors,
+    }
+    ok = coverage_missing == 0 and all(count == 0 for count in counts.values())
+    coverage = "" if coverage_missing == 0 else f" insufficient_excitation={coverage_missing}"
+    return ok, (
+        f"reset_segments={len(reset_segments)} active_segments={len(active_segments)} "
+        f"slopes={[round(value, 1) for value in slopes]} range={minimum:.3f}/{maximum:.3f} "
+        f"restart_seen={restart_seen}{coverage}; {property_diagnostics(counts)}"
+    )
+
 
 CHECKER_ID = "v4_013_resettable_integrator"
 CHECKER: Checker = check_resettable_integrator

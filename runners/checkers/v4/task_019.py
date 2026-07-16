@@ -1,91 +1,85 @@
-"""Task-specific checker for canonical v4 DUT 019."""
+"""Stimulus-relative checker for canonical v4 DUT 019."""
+
 from __future__ import annotations
 
-from ..api import Checker
-def sample_signal(rows: list[dict[str, float]], signal: str, time_s: float) -> float | None:
-    if not rows or signal not in rows[0] or "time" not in rows[0]:
-        return None
-    first_time = rows[0]["time"]
-    last_time = rows[-1].get("time")
-    if last_time is None or time_s < first_time or time_s > last_time:
-        return None
-    if time_s == first_time:
-        return rows[0].get(signal)
-    for idx in range(1, len(rows)):
-        prev = rows[idx - 1]
-        cur = rows[idx]
-        t0 = prev.get("time")
-        t1 = cur.get("time")
-        if t0 is None or t1 is None:
-            continue
-        if t0 <= time_s <= t1:
-            v0 = prev.get(signal)
-            v1 = cur.get(signal)
-            if v0 is None or v1 is None:
-                return None
-            if t1 == t0:
-                return v1
-            alpha = (time_s - t0) / (t1 - t0)
-            return v0 + alpha * (v1 - v0)
-    return rows[-1].get(signal)
+from statistics import median
 
-def _crossing_times(
-    rows: list[dict[str, float]],
-    signal: str,
-    *,
-    threshold: float = 0.45,
-    direction: str = "rising",
-) -> list[float]:
-    if not rows or "time" not in rows[0] or signal not in rows[0]:
-        return []
-    crossings: list[float] = []
-    for idx in range(1, len(rows)):
-        prev = rows[idx - 1]
-        cur = rows[idx]
-        t0 = prev.get("time")
-        t1 = cur.get("time")
-        v0 = prev.get(signal)
-        v1 = cur.get(signal)
-        if t0 is None or t1 is None or v0 is None or v1 is None:
-            continue
-        if direction == "rising":
-            hit = v0 <= threshold < v1
-        elif direction == "falling":
-            hit = v0 >= threshold > v1
-        else:
-            raise ValueError(f"unsupported direction={direction!r}")
-        if not hit:
-            continue
-        if v1 == v0:
-            crossings.append(t1)
-        else:
-            alpha = (threshold - v0) / (v1 - v0)
-            crossings.append(t0 + alpha * (t1 - t0))
-    return crossings
+from ..api import Checker, Row
+from .trace_utils import property_diagnostics, threshold_crossings
 
-def check_vco_phase_integrator(rows: list[dict[str, float]]) -> tuple[bool, str]:
+
+def _slope(points: list[tuple[float, float]]) -> float | None:
+    if len(points) < 8:
+        return None
+    origin = points[0][0]
+    xs = [time_s - origin for time_s, _ in points]
+    ys = [value for _, value in points]
+    xbar = sum(xs) / len(xs)
+    ybar = sum(ys) / len(ys)
+    denominator = sum((x - xbar) ** 2 for x in xs)
+    return None if denominator <= 0 else sum((x - xbar) * (y - ybar) for x, y in zip(xs, ys)) / denominator
+
+
+def check_vco_phase_integrator(rows: list[Row]) -> tuple[bool, str]:
     required = {"time", "vctrl", "phase", "clk"}
-    if not rows or not required.issubset(rows[0]):
-        return False, "missing time/vctrl/phase/clk"
+    missing = sorted(required - (set(rows[0]) if rows else set()))
+    if missing:
+        return False, "missing_columns=" + ",".join(missing)
 
-    phase_values = [row["phase"] for row in rows]
-    phase_span = max(phase_values) - min(phase_values)
-    clk_edges = _crossing_times(rows, "clk")
-    early_edges = [time for time in clk_edges if 10e-9 <= time <= 80e-9]
-    late_edges = [time for time in clk_edges if 90e-9 <= time <= rows[-1]["time"]]
-    phase_1ns = sample_signal(rows, "phase", 1e-9)
-    phase_10ns = sample_signal(rows, "phase", 10e-9)
-    startup_ok = phase_1ns is not None and 0.025 <= phase_1ns <= 0.06
-    phase_progress = phase_10ns is not None and phase_10ns > 0.25
-    span_ok = phase_span > 0.85
-    edge_rate_ok = len(clk_edges) >= 5 and len(late_edges) >= len(early_edges)
-    ok = startup_ok and phase_progress and span_ok and edge_rate_ok
+    unwrapped: list[tuple[float, float, float]] = []
+    wraps = 0
+    previous = rows[0]["phase"]
+    for row in rows:
+        phase = row["phase"]
+        # A smoothed wrap can be represented by several small downward trace
+        # steps, so detect the observable midscale crossing rather than one
+        # large adjacent-row jump.
+        if previous >= 0.5 and phase < 0.5:
+            wraps += 1
+        unwrapped.append((row["time"], phase + wraps, row["vctrl"]))
+        previous = phase
+
+    control_min = min(row["vctrl"] for row in rows)
+    control_max = max(row["vctrl"] for row in rows)
+    threshold = 0.5 * (control_min + control_max)
+    control_steps = threshold_crossings(rows, "vctrl", threshold=threshold, direction=1)
+    split = control_steps[0] if control_steps else rows[-1]["time"]
+    guard = max(2e-9, 0.02 * (rows[-1]["time"] - rows[0]["time"]))
+    low_points = [(time_s, value) for time_s, value, control in unwrapped if rows[0]["time"] + guard <= time_s <= split - guard and control < threshold]
+    high_points = [(time_s, value) for time_s, value, control in unwrapped if split + guard <= time_s <= rows[-1]["time"] - guard and control > threshold]
+    low_slope = _slope(low_points)
+    high_slope = _slope(high_points)
+    low_control = median(control for _, _, control in unwrapped if control < threshold) if any(control < threshold for _, _, control in unwrapped) else 0.0
+    high_control = median(control for _, _, control in unwrapped if control > threshold) if any(control > threshold for _, _, control in unwrapped) else 0.0
+    expected_low = (0.03 + 0.09 * low_control) / 1e-9
+    expected_high = (0.03 + 0.09 * high_control) / 1e-9
+    slope_errors = int(low_slope is None) + int(high_slope is None)
+    if low_slope is not None:
+        slope_errors += abs(low_slope - expected_low) > 0.18 * expected_low
+    if high_slope is not None:
+        slope_errors += abs(high_slope - expected_high) > 0.18 * expected_high
+
+    clock_toggles = len(threshold_crossings(rows, "clk", direction=0))
+    toggle_errors = abs(clock_toggles - wraps)
+    phase_min = min(row["phase"] for row in rows)
+    phase_max = max(row["phase"] for row in rows)
+    range_errors = int(phase_min < -0.04) + int(phase_max >= 1.04) + int(phase_max < 0.75)
+    rate_errors = int(low_slope is None or high_slope is None or high_slope <= 1.45 * low_slope)
+    coverage_missing = int(not control_steps) + int(len(low_points) < 8) + int(len(high_points) < 8) + int(wraps < 3)
+    counts = {
+        "P_PERIODIC_PHASE_UPDATE": slope_errors + coverage_missing,
+        "P_WRAPPED_PHASE_RANGE": range_errors,
+        "P_WRAP_TOGGLES_CLOCK": toggle_errors + int(wraps < 3),
+        "P_CONTROLLED_EDGE_RATE": rate_errors + int(not control_steps),
+    }
+    ok = coverage_missing == 0 and all(count == 0 for count in counts.values())
+    coverage = "" if coverage_missing == 0 else f" insufficient_excitation={coverage_missing}"
     return ok, (
-        f"phase_1ns={(phase_1ns if phase_1ns is not None else float('nan')):.3f} "
-        f"phase_10ns={(phase_10ns if phase_10ns is not None else float('nan')):.3f} "
-        f"phase_span={phase_span:.3f} clk_edges={len(clk_edges)} "
-        f"early_edges={len(early_edges)} late_edges={len(late_edges)}"
+        f"wraps={wraps} clock_toggles={clock_toggles} phase_range={phase_min:.3f}/{phase_max:.3f} "
+        f"slopes={low_slope}/{high_slope} expected={expected_low:.3e}/{expected_high:.3e}{coverage}; "
+        f"{property_diagnostics(counts)}"
     )
+
 
 CHECKER_ID = "v4_019_vco_phase_integrator"
 CHECKER: Checker = check_vco_phase_integrator

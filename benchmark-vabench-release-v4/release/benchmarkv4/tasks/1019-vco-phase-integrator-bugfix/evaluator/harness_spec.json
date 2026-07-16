@@ -9,7 +9,10 @@
     "analyses": [
       "tran tran stop=170n maxstep=500p"
     ],
-    "body_lines": [],
+    "body_lines": [
+      "V_vctrl (vctrl 0) vsource type=pwl wave=[0 0.2 60n 0.2 61n 0.7 170n 0.7]",
+      "XDUT (vctrl phase clk) vco_phase_integrator"
+    ],
     "header": [
       "simulator lang=spectre",
       "global 0"
@@ -35,44 +38,17 @@
     "legacy_score_deck_sha256": "e9f90d0d431cbe472077d3f0b5ba4df6ed962d4fe7f3c8fe0a1445d394a0aaa1",
     "notes": [
       "legacy feedback deck was used only to seed the canonical harness spec",
-      "legacy score deck seeded private profile-specific overrides"
+      "legacy score deck seeded private profile-specific overrides",
+      "feedback deck is the canonical stimulus; score is generated with identical semantics"
     ]
   },
   "profile_defaults": {
     "feedback": {
-      "deck_overrides": {
-        "body_lines": [
-          "V_vctrl (vctrl 0) vsource type=pwl wave=[0 0.2 60n 0.2 61n 0.7 170n 0.7]",
-          "",
-          "XDUT (vctrl phase clk) vco_phase_integrator",
-          ""
-        ]
-      },
-      "parameters": {
-        "maxstep": "200p",
-        "stop_time": "100n"
-      },
       "simulatorOptions": {
         "evas_profile": "balanced"
       }
     },
-    "score": {
-      "deck_overrides": {
-        "analyses": [
-          "tran tran stop=180n maxstep=500p"
-        ],
-        "body_lines": [
-          "Vctrl (vctrl 0) vsource type=pwl wave=[0 0.1 80n 0.1 81n 0.8 180n 0.8]",
-          "",
-          "XDUT (vctrl phase clk) vco_phase_integrator",
-          ""
-        ]
-      },
-      "parameters": {
-        "maxstep": "100p",
-        "stop_time": "100n"
-      }
-    }
+    "score": {}
   },
   "property_ids": [
     "P_PERIODIC_PHASE_UPDATE",
