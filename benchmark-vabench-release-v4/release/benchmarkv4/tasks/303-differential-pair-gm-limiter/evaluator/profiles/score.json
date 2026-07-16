@@ -1,25 +1,12 @@
 {
   "corners": [],
-  "deck_overrides": {
-    "analyses": [
-      "tran tran stop=76n maxstep=80p"
-    ],
-    "body_lines": [
-      "Vvinp (vinp 0) vsource type=pwl wave=[0 0.30 8n 0.30 16n 0.70 28n 0.70 38n 0.20 48n 0.20 62n 0.62 76n 0.62]",
-      "Vvinn (vinn 0) vsource type=pwl wave=[0 0.52 8n 0.52 16n 0.40 28n 0.40 38n 0.58 48n 0.58 62n 0.50 76n 0.50]",
-      "Vbias (bias 0) vsource dc=0.45",
-      "Venable (enable 0) vsource type=pwl wave=[0 0 4n 0 4.1n 0.9 50n 0.9 50.1n 0 57n 0 57.1n 0.9 76n 0.9]",
-      "",
-      "XDUT (vinp vinn bias enable voutp voutn gm_metric limit_flag) differential_pair_gm_limiter",
-      ""
-    ]
-  },
+  "deck_overrides": {},
   "deterministic_seed": 0,
   "generated_from": {
     "script": "render_v4_harness.py",
     "version": "v4-harness-renderer-v1"
   },
-  "harness_spec_sha256": "34a1926a6c1ca38a1bbc7f277d6dfabb6702a22ec7d116f910450561ea4df00c",
+  "harness_spec_sha256": "a02267a5dacf50e93154b8030770d4ce19426f2de1c706ef659c813beccc7128",
   "parameters": {
     "maxstep": "100p",
     "stop_time": "100n"

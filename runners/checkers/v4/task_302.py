@@ -2,12 +2,15 @@
 from __future__ import annotations
 
 from ..api import Checker
-def rising_edges(values: list[float], times: list[float], threshold: float = 0.45) -> list[float]:
-    edges: list[float] = []
-    for i in range(1, len(values)):
-        if values[i - 1] < threshold <= values[i]:
-            edges.append(times[i])
-    return edges
+from ..common.relative_events import (
+    event_period,
+    period_step_anchor,
+    relative_rows,
+    rising_edges,
+    rows_between,
+    trace_bounds,
+    weighted_logic_high_fraction,
+)
 
 def check_v3_505_fractional_n_divider_accumulator_flow(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "ref_clk", "fb_clk", "dco_clk", "lock", "vctrl_mon"}
@@ -15,16 +18,18 @@ def check_v3_505_fractional_n_divider_accumulator_flow(rows: list[dict[str, floa
         missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
         return False, "missing_columns=" + ",".join(missing)
 
-    vth = 0.45
-    times = [row["time"] for row in rows]
-    ref_edges = rising_edges([row["ref_clk"] for row in rows], times, threshold=vth)
-    fb_edges = rising_edges([row["fb_clk"] for row in rows], times, threshold=vth)
-    dco_edges = rising_edges([row["dco_clk"] for row in rows], times, threshold=vth)
+    ref_edges = rising_edges(rows, "ref_clk")
+    fb_edges = rising_edges(rows, "fb_clk")
+    dco_edges = rising_edges(rows, "dco_clk")
     if len(ref_edges) < 12 or len(fb_edges) < 12 or len(dco_edges) < 80:
         return False, f"not_enough_edges ref={len(ref_edges)} fb={len(fb_edges)} dco={len(dco_edges)}"
 
-    ref_late = [time_s for time_s in ref_edges if 4.5e-6 <= time_s <= 5.9e-6]
-    fb_late = [time_s for time_s in fb_edges if 4.5e-6 <= time_s <= 5.9e-6]
+    _, trace_end, _ = trace_bounds(rows)
+    late_rows = relative_rows(rows, 0.75, 0.99)
+    late_start = float(late_rows[0]["time"]) if late_rows else trace_end
+    late_end = float(late_rows[-1]["time"]) if late_rows else trace_end
+    ref_late = [time_s for time_s in ref_edges if late_start <= time_s <= late_end]
+    fb_late = [time_s for time_s in fb_edges if late_start <= time_s <= late_end]
     if len(ref_late) < 4 or len(fb_late) < 4:
         return False, f"not_enough_late_edges ref_late={len(ref_late)} fb_late={len(fb_late)}"
 
@@ -47,10 +52,17 @@ def check_v3_505_fractional_n_divider_accumulator_flow(rows: list[dict[str, floa
     if min(dco_counts) >= 16:
         return False, f"fractional_short_count_not_observed counts={dco_counts}"
 
-    lock_edges = rising_edges([row["lock"] for row in rows], times, threshold=vth)
-    pre_lock_edges = [time_s for time_s in lock_edges if time_s < 2.0e-6]
-    post_lock_edges = [time_s for time_s in lock_edges if 2.2e-6 <= time_s <= 5.9e-6]
-    disturb_low_frac = 1.0 - weighted_logic_high_fraction_window(rows, "lock", vth, 2.05e-6, 2.8e-6)
+    lock_edges = rising_edges(rows, "lock")
+    step_anchor = period_step_anchor(rows, "ref_clk")
+    if step_anchor is None:
+        step_anchor = ref_edges[len(ref_edges) // 3]
+    ref_period = event_period(rows, "ref_clk")
+    disturb_start = step_anchor + 2.0 * ref_period
+    disturb_end = step_anchor + 40.0 * ref_period
+    pre_lock_edges = [time_s for time_s in lock_edges if time_s < step_anchor]
+    post_lock_edges = [time_s for time_s in lock_edges if time_s >= disturb_end]
+    disturb_rows = rows_between(rows, disturb_start, disturb_end)
+    disturb_low_frac = 1.0 - weighted_logic_high_fraction(disturb_rows, "lock", 0.45)
 
     vctrl_vals = [row["vctrl_mon"] for row in rows]
     vctrl_min = min(vctrl_vals)
@@ -66,11 +78,19 @@ def check_v3_505_fractional_n_divider_accumulator_flow(rows: list[dict[str, floa
         and vctrl_in_range
         and vctrl_span >= 0.01
     )
+    diagnostics = {
+        "P_USE_REF_CLK_AS_THE_REFERENCE": int(len(ref_edges) < 12),
+        "P_GENERATE_A_BEHAVIORAL_DCO_CLOCK_ON": int(len(dco_edges) < 80),
+        "P_GENERATE_FB_CLK_BY_TOGGLING_IT": int(len(fb_edges) < 12),
+        "P_UPDATE_A_BOUNDED_CONTROL_VOLTAGE_MONITOR": int(not vctrl_in_range),
+        "P_DRIVE_LOCK_HIGH_AFTER_STABLE_TRACKING": int(not (pre_lock_edges and post_lock_edges and disturb_low_frac >= 0.20)),
+    }
     return ok, (
         f"pre_lock_edges={len(pre_lock_edges)} disturb_lock_low_frac={disturb_low_frac:.3f} "
         f"post_lock_edges={len(post_lock_edges)} late_freq_ratio={freq_ratio:.4f} "
         f"dco_counts={dco_counts[:8]} avg_dco_per_fb={avg_dco_per_fb:.3f} "
-        f"vctrl_min={vctrl_min:.3f} vctrl_max={vctrl_max:.3f} vctrl_span={vctrl_span:.3f}"
+        f"vctrl_min={vctrl_min:.3f} vctrl_max={vctrl_max:.3f} vctrl_span={vctrl_span:.3f}; "
+        + "; ".join(f"{key} mismatch_count={value}" for key, value in diagnostics.items())
     )
 
 def weighted_logic_high_fraction(rows: list[dict[str, float]], signal: str, threshold: float) -> float:
@@ -89,18 +109,6 @@ def weighted_logic_high_fraction(rows: list[dict[str, float]], signal: str, thre
         if v_mid > threshold:
             high_dt += dt
     return high_dt / total_dt
-
-def time_window(rows: list[dict[str, float]], t_start: float, t_end: float) -> list[dict[str, float]]:
-    return [r for r in rows if t_start <= r["time"] <= t_end]
-
-def weighted_logic_high_fraction_window(
-    rows: list[dict[str, float]],
-    signal: str,
-    threshold: float,
-    t_start: float,
-    t_end: float,
-) -> float:
-    return weighted_logic_high_fraction(time_window(rows, t_start, t_end), signal, threshold)
 
 CHECKER_ID = "v4_302_fractional_n_divider_accumulator_flow"
 CHECKER: Checker = check_v3_505_fractional_n_divider_accumulator_flow

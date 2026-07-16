@@ -291,6 +291,13 @@ def profile_semantic_diffs(spec: dict[str, Any]) -> dict[str, tuple[Any, Any]]:
     }
 
 
+def effective_profile_semantics(spec: dict[str, Any], profile_name: str) -> dict[str, Any]:
+    """Public projection used by batch-scoped parity audits."""
+    if profile_name not in {"feedback", "score"}:
+        raise ValueError(f"unknown profile: {profile_name}")
+    return _effective_profile_semantics(spec, profile_name)
+
+
 def validate_profile_semantic_parity(spec: dict[str, Any]) -> None:
     """Reject feedback/score drift that could change the measured behavior."""
     diffs = profile_semantic_diffs(spec)
@@ -358,6 +365,11 @@ def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser()
     parser.add_argument("--spec", type=Path, required=True, help="Canonical harness_spec.json.")
     parser.add_argument("--profile", choices=["feedback", "score"], required=True)
+    parser.add_argument(
+        "--check-parity",
+        action="store_true",
+        help="Reject feedback/score semantic drift before rendering.",
+    )
     parser.add_argument("--profile-output", type=Path)
     parser.add_argument("--deck-output", type=Path)
     return parser.parse_args()
@@ -366,6 +378,8 @@ def parse_args() -> argparse.Namespace:
 def main() -> int:
     args = parse_args()
     spec, spec_hash = load_spec(args.spec)
+    if args.check_parity:
+        validate_profile_semantic_parity(spec)
     profile = build_profile(spec, args.profile, spec_hash)
     deck = render_scs(spec, profile)
     if args.profile_output:
