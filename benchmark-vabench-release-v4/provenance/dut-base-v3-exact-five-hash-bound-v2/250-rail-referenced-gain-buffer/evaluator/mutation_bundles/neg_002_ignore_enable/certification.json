@@ -33,7 +33,7 @@
     }
   },
   "diagnostics": {
-    "expected": "trigger=stimulus exercises neg_002_ignore_enable; violated_properties=P_COMPUTE_THE_RAIL_REFERENCED_BUFFER_VALUE,P_VTH_0_45_V_LOGIC_THRESHOLD",
+    "expected": "trigger=public stimulus exercises enable-gated behavior; violated_properties=P_COMPUTE_THE_RAIL_REFERENCED_BUFFER_VALUE,P_VTH_0_45_V_LOGIC_THRESHOLD",
     "observed": "EVAS: issue109_remaining_error=0.6238; Spectre: issue109_remaining_error=0.6238",
     "violated_property_ids": [
       "P_COMPUTE_THE_RAIL_REFERENCED_BUFFER_VALUE",

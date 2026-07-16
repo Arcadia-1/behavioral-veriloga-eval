@@ -12,9 +12,7 @@ Vin3 (in3 0) vsource type=pwl wave=[0 0.12 3n 0.12 3.05n 0.64 6n 0.64 6.05n 0.88
 Vctrl0 (ctrl0 0) vsource type=pwl wave=[0 0.0 3n 0.0 3.05n 0.9 6n 0.9 6.05n 0.0 9n 0.0 9.05n 0.9 16n 0.9]
 Vctrl1 (ctrl1 0) vsource type=pwl wave=[0 0.0 4.5n 0.0 4.55n 0.9 8n 0.9 8.05n 0.0 12n 0.0 12.05n 0.9 16n 0.9]
 Ven (en 0) vsource type=pwl wave=[0 0.9 5.8n 0.9 5.85n 0 7.1n 0 7.15n 0.9 12n 0.9]
-
 XDUT (in0 in1 in2 in3 ctrl0 ctrl1 vdd vss en out flag metric) rail_referenced_gain_buffer
-
 
 simulatorOptions options evas_profile=balanced
 
