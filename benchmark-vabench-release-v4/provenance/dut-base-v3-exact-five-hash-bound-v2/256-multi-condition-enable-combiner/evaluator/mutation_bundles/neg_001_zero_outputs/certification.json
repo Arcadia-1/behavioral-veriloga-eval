@@ -33,7 +33,7 @@
     }
   },
   "diagnostics": {
-    "expected": "trigger=stimulus exercises neg_001_zero_outputs; violated_properties=P_MEASURE_ANALOG_INPUTS_RELATIVE_TO_THE,P_BUILD_A_VOLTAGE_DOMAIN_ANALOG_MIXED",
+    "expected": "trigger=stimulus exercises the selected negative case; violated_properties=P_MEASURE_ANALOG_INPUTS_RELATIVE_TO_THE,P_BUILD_A_VOLTAGE_DOMAIN_ANALOG_MIXED",
     "observed": "EVAS: issue109_remaining_error=0.9000; Spectre: issue109_remaining_error=0.9000",
     "violated_property_ids": [
       "P_BUILD_A_VOLTAGE_DOMAIN_ANALOG_MIXED",
