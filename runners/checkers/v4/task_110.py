@@ -2,6 +2,9 @@
 from __future__ import annotations
 
 from ..api import Checker
+from .stimulus_relative import structured_result
+
+
 def _threshold_crossings(
     values: list[float],
     times: list[float],
@@ -162,4 +165,12 @@ def _event_probe_time(
     return fallback if fallback > event_time_s else None
 
 CHECKER_ID = "v4_110_start_gated_offset_search"
-CHECKER: Checker = check_v3_start_gated_offset_search
+PROPERTY_IDS = (
+    "P_DISABLED_COMMON_MODE",
+    "P_START_REINITIALIZATION",
+    "P_FALLING_CLOCK_UPDATES",
+    "P_DECISION_DIRECTED_STEP",
+    "P_REVERSAL_STEP_HALVING",
+    "P_COMMON_MODE_AND_DIFFERENTIAL",
+)
+CHECKER: Checker = structured_result(check_v3_start_gated_offset_search, PROPERTY_IDS)

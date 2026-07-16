@@ -2,6 +2,9 @@
 from __future__ import annotations
 
 from ..api import Checker
+from .stimulus_relative import structured_result
+
+
 def _threshold_crossings(
     values: list[float],
     times: list[float],
@@ -160,4 +163,12 @@ def _event_probe_time(
     return fallback if fallback > event_time_s else None
 
 CHECKER_ID = "v4_103_clocked_sar_comparator"
-CHECKER: Checker = check_v3_clocked_sar_comparator
+PROPERTY_IDS = (
+    "P_INITIAL_PRECHARGE",
+    "P_FALLING_EDGE_PRECHARGE",
+    "P_POSITIVE_DIFFERENTIAL_DECISION",
+    "P_NEGATIVE_DIFFERENTIAL_DECISION",
+    "P_EQUAL_INPUT_DECISION",
+    "P_LATCHED_HOLD_AND_TIMING",
+)
+CHECKER: Checker = structured_result(check_v3_clocked_sar_comparator, PROPERTY_IDS)

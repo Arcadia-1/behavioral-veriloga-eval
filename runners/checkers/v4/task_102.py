@@ -2,6 +2,9 @@
 from __future__ import annotations
 
 from ..api import Checker
+from .stimulus_relative import structured_result
+
+
 def check_v3_clocked_sine_source(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "clk", "rst_n", "vinp", "vinn", "vamp_p", "vamp_n"}
     if not rows or not required.issubset(rows[0]):
@@ -104,4 +107,12 @@ def _max_signal_value(
     return max(values) if values else default
 
 CHECKER_ID = "v4_102_clocked_sine_source"
-CHECKER: Checker = check_v3_clocked_sine_source
+PROPERTY_IDS = (
+    "P_RESET_COMMON_MODE",
+    "P_RISING_EDGE_SAMPLE",
+    "P_SAMPLED_SINE",
+    "P_REFERENCE_SIDE_COMMON_MODE",
+    "P_INTEREDGE_HOLD",
+    "P_SEEDED_REPEATABILITY",
+)
+CHECKER: Checker = structured_result(check_v3_clocked_sine_source, PROPERTY_IDS)

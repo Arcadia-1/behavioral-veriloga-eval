@@ -5,13 +5,18 @@ must not encode a particular public or private deck's absolute schedule.
 """
 from __future__ import annotations
 
+import re
 from bisect import bisect_left
-from collections.abc import Iterable
+from collections.abc import Callable, Iterable
 from dataclasses import dataclass
 from statistics import median
 
 
 Row = dict[str, float]
+CheckResult = tuple[bool, str]
+Checker = Callable[[list[Row]], CheckResult]
+
+_SAFE_TOKEN_RE = re.compile(r"[^A-Za-z0-9_.:+/-]+")
 
 
 def diagnostic(
@@ -28,6 +33,46 @@ def diagnostic(
         f"property_id={property_id} category={category} "
         f"expected={expected} observed={observed} event={event}"
     )
+
+
+def _redacted_observation(note: str) -> str:
+    """Collapse a free-form checker note into a public-safe diagnostic token."""
+
+    head = (note or "checker_failed").strip().split(";", 1)[0].split()
+    token = head[0] if head else "checker_failed"
+    token = token.split("=", 1)[0].split("@", 1)[0]
+    token = _SAFE_TOKEN_RE.sub("_", token).strip("_")
+    return (token or "checker_failed")[:96]
+
+
+def structured_result(
+    checker: Checker,
+    property_ids: Iterable[str],
+    *,
+    event: str = "stimulus_relative_trace",
+) -> Checker:
+    """Wrap a checker with redacted property-level V4 diagnostics."""
+
+    property_tuple = tuple(property_ids)
+    primary = property_tuple[0] if property_tuple else "P_OBSERVABLE_CONTRACT"
+
+    def wrapped(rows: list[Row]) -> CheckResult:
+        ok, note = checker(rows)
+        observed = _redacted_observation(note)
+        if ok:
+            return True, pass_note(property_tuple, observed)
+        return False, diagnostic(
+            primary,
+            "observable_mismatch",
+            expected="satisfy_observable_contract",
+            observed=observed,
+            event=event,
+        )
+
+    wrapped.__name__ = checker.__name__
+    wrapped.__doc__ = checker.__doc__
+    wrapped.__module__ = checker.__module__
+    return wrapped
 
 
 def require_signals(rows: list[Row], signals: Iterable[str], property_id: str) -> str | None:
