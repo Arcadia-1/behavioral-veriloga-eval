@@ -3,14 +3,14 @@
   "checker_task_id": "v4_304_common_gate_tia_front_end",
   "counted_in_score": true,
   "evaluator_hashes": {
-    "certification.json": "07875f23711f1a6c1cd313a497f4404c5bda4c2bd0aa940c6ca4a67cc50ca96c",
+    "certification.json": "b62292cf66e7a1405405aef8774fa4e8127e86ac8fcdc2ca7cc9483b53ee45e5",
     "checker_profile.json": "21d6d029d5ed7f0d9bba0890c24260cb1e96c819b8cffbd285242bad783446c8",
     "derivation_manifest.json": "ce4f5cea6eee8c1dbdbc8f22f8c4c55953a38793a6d6df87e722560df11e7b6b",
     "family_spec.json": "9c147b2a95c6cea4d8172bedce299b8ab64abf828fd2ba75cc53e5bef5918eba",
     "harness_spec.json": "521f2b04e7a5219795489e69586a7503565360726d7a4d3241aa8823f96859f4",
     "mutation_catalog.json": "1f5393c8519418021666bfde55c3d4eea306c47245b9fa26e5739073ff2fb7fa",
-    "profiles/feedback.json": "e07d4b11aec03e2ebcce98cc9b539df23a3ed26c0a0553130c607ef5898c9c33",
-    "profiles/score.json": "8b982d64c271c53ae4e843f632dc008aa7cbfe1890a675bab20531db43c32f94",
+    "profiles/feedback.json": "67f0aea989b98e77817e7bed33e6b276886b535ca6ff611def3876ed6ebe1d14",
+    "profiles/score.json": "f23af477be67eda982c291878f766107f9064ea0910b55385f1d03bf18989487",
     "score_tb.scs": "3f0041173974a67606580f5ed9ac714898e28cdaceb84d68737917d16bb7da5f",
     "solution_tree": "27552b5145231283585454408ed028c2cd72147e56901569cb6122de5c5e4020",
     "toolchain_lock.json": "97f05b4212cf53c691a3b9296d9993d0dea1c0cf5a2b1bdf4fca9eab6246461c"
@@ -24,7 +24,7 @@
   "readiness_evidence": {
     "kind": "task_certification",
     "path": "evaluator/certification.json",
-    "sha256": "07875f23711f1a6c1cd313a497f4404c5bda4c2bd0aa940c6ca4a67cc50ca96c"
+    "sha256": "b62292cf66e7a1405405aef8774fa4e8127e86ac8fcdc2ca7cc9483b53ee45e5"
   },
   "release_dir": "304-common-gate-tia-front-end",
   "schema_version": "v4-canonical-dut-release-task-v1",
