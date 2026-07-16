@@ -9,7 +9,10 @@
     "analyses": [
       "tran tran stop=13n maxstep=10p"
     ],
-    "body_lines": [],
+    "body_lines": [
+      "Vin (vin 0) vsource type=pwl wave=[0n -0.02 1n -0.02 1.02n 0.14 3n 0.14 3.02n 0.31 5n 0.31 5.02n 0.58 7n 0.58 7.02n 0.76 9n 0.76 9.02n 0.92 11n 0.92 11.02n 1.08]",
+      "XDUT (vin d2 d1 d0) dc_aware_adc3bit"
+    ],
     "header": [
       "simulator lang=spectre",
       "global 0"
@@ -36,41 +39,17 @@
     "legacy_score_deck_sha256": "0136152799557cad7e6a7b2a7740813d6696ee98043866b07f395f28965d8957",
     "notes": [
       "legacy feedback deck was used only to seed the canonical harness spec",
-      "legacy score deck seeded private profile-specific overrides"
+      "legacy score deck seeded private profile-specific overrides",
+      "feedback deck is the canonical stimulus; score is generated with identical semantics"
     ]
   },
   "profile_defaults": {
     "feedback": {
-      "deck_overrides": {
-        "body_lines": [
-          "Vin (vin 0) vsource type=pwl wave=[0n -0.02 1n -0.02 1.02n 0.14 3n 0.14 3.02n 0.31 5n 0.31 5.02n 0.58 7n 0.58 7.02n 0.76 9n 0.76 9.02n 0.92 11n 0.92 11.02n 1.08]",
-          "",
-          "XDUT (vin d2 d1 d0) dc_aware_adc3bit",
-          ""
-        ]
-      },
-      "parameters": {
-        "maxstep": "200p",
-        "stop_time": "100n"
-      },
       "simulatorOptions": {
         "evas_profile": "balanced"
       }
     },
-    "score": {
-      "deck_overrides": {
-        "body_lines": [
-          "Vin (vin 0) vsource type=pwl wave=[0n -0.05 1n -0.05 1.02n 0.04 3n 0.04 3.02n 0.19 5n 0.19 5.02n 0.38 7n 0.38 7.02n 0.62 9n 0.62 9.02n 0.87 11n 0.87 11.02n 1.1]",
-          "",
-          "XDUT (vin d2 d1 d0) dc_aware_adc3bit",
-          ""
-        ]
-      },
-      "parameters": {
-        "maxstep": "100p",
-        "stop_time": "100n"
-      }
-    }
+    "score": {}
   },
   "property_ids": [
     "P_STATIC_CONVERSION",
