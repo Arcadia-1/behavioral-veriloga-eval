@@ -1,0 +1,376 @@
+#!/usr/bin/env python3
+"""Exercise V4 testbench gold and mutations under affine stimulus timing.
+
+The checker must infer events from the submitted trace.  This runner applies
+``t' = scale * t + shift`` to source waveforms and analysis limits, then
+replays the same gold and five mutation cases.  A second deck with all source
+waveforms held at zero is used to make insufficient excitation an explicit,
+non-infrastructure failure.
+"""
+from __future__ import annotations
+
+import argparse
+import json
+import os
+import re
+import shutil
+import sys
+import time
+from pathlib import Path
+from typing import Any
+
+
+ROOT = Path(__file__).resolve().parents[2]
+OPS = ROOT / "benchmark-vabench-release-v4" / "operations" / "tri_form_derivation_prep"
+sys.path.insert(0, str(ROOT))
+sys.path.insert(0, str(ROOT / "runners"))
+sys.path.insert(0, str(OPS))
+
+from run_v4_reference_evas_smoke import (  # noqa: E402
+    case_evas2_runtime,
+    overlay_mutation,
+    require_evas2_environment,
+    stage_case,
+    task_dir_for_id,
+)
+from runners.simulate_evas import (  # noqa: E402
+    effective_evas_engine,
+    evaluate_behavior_with_timeout,
+    parse_evas_performance_counters,
+    parse_evas_timing,
+    required_trace_signals_for_checker,
+    run_evas,
+)
+
+
+REQUIRED_EVAS_ENGINE = "evas2"
+REQUIRED_EVAS_VERSION = "0.8.2"
+REQUIRED_EVAS_BACKEND = "evas-rust"
+
+
+_QUANTITY = re.compile(r"^(?P<number>[+-]?(?:\d+(?:\.\d*)?|\.\d+)(?:[eE][+-]?\d+)?)(?P<unit>[a-zA-Z]*)$")
+_SCALE = {
+    "": 1.0,
+    "s": 1.0,
+    "ms": 1e-3,
+    "us": 1e-6,
+    "ns": 1e-9,
+    "ps": 1e-12,
+    "fs": 1e-15,
+    "m": 1e-3,
+    "u": 1e-6,
+    "n": 1e-9,
+    "p": 1e-12,
+    "f": 1e-15,
+}
+
+
+def parse_time(value: str) -> float:
+    match = _QUANTITY.fullmatch(value.strip())
+    if match is None or match.group("unit").lower() not in _SCALE:
+        raise ValueError(f"unsupported time quantity: {value!r}")
+    return float(match.group("number")) * _SCALE[match.group("unit").lower()]
+
+
+def format_time(seconds: float) -> str:
+    magnitude = abs(seconds)
+    if magnitude >= 1e-6:
+        return f"{seconds / 1e-6:.12g}u"
+    if magnitude >= 1e-9:
+        return f"{seconds / 1e-9:.12g}n"
+    if magnitude >= 1e-12:
+        return f"{seconds / 1e-12:.12g}p"
+    return f"{seconds / 1e-15:.12g}f"
+
+
+def require_rust_evas2(combined: str) -> dict[str, str]:
+    """Reject metamorphic evidence unless EVAS 0.8.2 Rust actually ran."""
+    configured = effective_evas_engine()
+    explicit_engine = os.environ.get("EVAS_ENGINE", "").strip().lower()
+    default_engine = os.environ.get("VAEVAS_DEFAULT_EVAS_ENGINE", "").strip().lower()
+    if (
+        configured != REQUIRED_EVAS_ENGINE
+        or explicit_engine != REQUIRED_EVAS_ENGINE
+        or default_engine != REQUIRED_EVAS_ENGINE
+    ):
+        raise RuntimeError(
+            "EVAS2 evidence requires EVAS_ENGINE=evas2 and "
+            "VAEVAS_DEFAULT_EVAS_ENGINE=evas2; "
+            f"configured={configured!r} explicit={explicit_engine!r} default={default_engine!r}"
+        )
+    if f"Version {REQUIRED_EVAS_VERSION}" not in combined:
+        raise RuntimeError("EVAS2 evidence missing EVAS 0.8.2 version marker")
+    if f"evas_engine = {REQUIRED_EVAS_BACKEND}" not in combined:
+        raise RuntimeError("EVAS2 evidence missing Rust backend marker")
+    return {
+        "evas_engine": REQUIRED_EVAS_ENGINE,
+        "evas_engine_used": REQUIRED_EVAS_ENGINE,
+        "evas_version": REQUIRED_EVAS_VERSION,
+        "evas_backend": REQUIRED_EVAS_BACKEND,
+    }
+
+
+def affine_time(value: str, scale: float, shift: float, *, absolute: bool) -> str:
+    parsed = parse_time(value)
+    return format_time(scale * parsed + shift if absolute else scale * parsed)
+
+
+def _transform_wave(match: re.Match[str], scale: float, shift: float) -> str:
+    tokens = match.group("tokens").split()
+    if len(tokens) % 2:
+        raise ValueError(f"PWL wave has an odd token count: {match.group(0)!r}")
+    for index in range(0, len(tokens), 2):
+        tokens[index] = affine_time(tokens[index], scale, shift, absolute=True)
+    return "wave=[" + " ".join(tokens) + "]"
+
+
+def transform_stimulus(text: str, *, scale: float = 1.37, shift: float = 2e-9) -> str:
+    """Apply an affine transform only to stimulus/analysis timing fields."""
+    if scale <= 0:
+        raise ValueError("scale must be positive")
+    transformed = re.sub(
+        r"wave=\[(?P<tokens>[^\]]*)\]",
+        lambda match: _transform_wave(match, scale, shift),
+        text,
+    )
+
+    def replace_duration(match: re.Match[str]) -> str:
+        return f"{match.group('key')}={affine_time(match.group('value'), scale, shift, absolute=False)}"
+
+    def replace_absolute(match: re.Match[str]) -> str:
+        return f"{match.group('key')}={affine_time(match.group('value'), scale, shift, absolute=True)}"
+
+    transformed = re.sub(
+        r"\b(?P<key>period|width|rise|fall|maxstep|unit_phase_delay|tr)=(?P<value>[+-]?(?:\d+(?:\.\d*)?|\.\d+)(?:[eE][+-]?\d+)?[a-zA-Z]*)",
+        replace_duration,
+        transformed,
+    )
+    transformed = re.sub(
+        r"\b(?P<key>delay|stop)=(?P<value>[+-]?(?:\d+(?:\.\d*)?|\.\d+)(?:[eE][+-]?\d+)?[a-zA-Z]*)",
+        replace_absolute,
+        transformed,
+    )
+    return transformed
+
+
+def suppress_stimulus(text: str) -> str:
+    """Keep a legal deck while removing all source excitation."""
+    suppressed = re.sub(r"vsource\s+type=(?:pwl|pulse)\s+wave=\[[^\]]*\]", "vsource dc=0", text)
+    suppressed = re.sub(r"vsource\s+type=pulse\s+[^\n]*", "vsource dc=0", suppressed)
+    return suppressed
+
+
+def run_case(
+    *,
+    task_dir: Path,
+    checker_task_id: str,
+    deck_text: str,
+    case_id: str,
+    mutation_id: str | None,
+    output_root: Path,
+    timeout_s: int,
+) -> dict[str, Any]:
+    case_dir = output_root / case_id
+    if case_dir.exists():
+        shutil.rmtree(case_dir)
+    case_dir.mkdir(parents=True)
+    tb_path, changed = stage_case(task_dir=task_dir, case_dir=case_dir, mutation_id=mutation_id)
+    tb_path.write_text(deck_text, encoding="utf-8")
+    case_output = case_dir / "output"
+    required_signals = required_trace_signals_for_checker(checker_task_id)
+    started = time.perf_counter()
+    proc = run_evas(
+        case_dir,
+        tb_path,
+        case_output,
+        timeout_s,
+        required_trace_signals=required_signals,
+    )
+    combined = (proc.stdout or "") + "\n" + (proc.stderr or "")
+    case_runtime = case_evas2_runtime(case_output)
+    csv_path = case_output / "tran.csv"
+    simulator_ok = (
+        proc.returncode == 0
+        and csv_path.is_file()
+        and case_runtime["evas_runtime_valid"] is True
+    )
+    checker_score = 0.0
+    checker_notes: list[str] = []
+    if simulator_ok:
+        checker_score, checker_notes = evaluate_behavior_with_timeout(
+            checker_task_id, csv_path, timeout_s=timeout_s
+        )
+    behavior_ok = checker_score > 0.0
+    if mutation_id is None:
+        status = "reference_pass" if simulator_ok and behavior_ok else (
+            "reference_fail" if simulator_ok else "infrastructure_error"
+        )
+    else:
+        status = "mutation_survived" if simulator_ok and behavior_ok else (
+            "mutation_killed" if simulator_ok else "infrastructure_error"
+        )
+    return {
+        "case_id": case_id,
+        "mutation_id": mutation_id,
+        "status": status,
+        "simulator_ok": simulator_ok,
+        "checker_ok": behavior_ok,
+        "checker_notes": checker_notes,
+        "changed_artifacts": changed,
+        "returncode": proc.returncode,
+        "required_trace_signal_count": len(required_signals - {"time"}) if required_signals else 0,
+        **case_runtime,
+        "timing": parse_evas_timing(combined),
+        "performance_counters": parse_evas_performance_counters(combined),
+        "wall_time_s": time.perf_counter() - started,
+        "stdout_tail": combined[-1200:],
+    }
+
+
+def run_task(
+    *,
+    release: Path,
+    task_id: str,
+    output_root: Path,
+    scale: float,
+    shift: float,
+    timeout_s: int,
+) -> dict[str, Any]:
+    task_dir = task_dir_for_id(release, task_id)
+    record = json.loads((task_dir / "task_record.json").read_text(encoding="utf-8"))
+    if record.get("form") != "testbench":
+        raise SystemExit(f"{task_id}: expected testbench task")
+    checker_task_id = str(record.get("checker_task_id") or "")
+    score_policy = json.loads((task_dir / "evaluator" / "score_policy.json").read_text(encoding="utf-8"))
+    base_text = (task_dir / "evaluator" / "reference_tb.scs").read_text(encoding="utf-8")
+    transformed = transform_stimulus(base_text, scale=scale, shift=shift)
+    task_root = output_root / task_id
+    task_root.mkdir(parents=True, exist_ok=True)
+    cases = [
+        run_case(
+            task_dir=task_dir,
+            checker_task_id=checker_task_id,
+            deck_text=transformed,
+            case_id="correct",
+            mutation_id=None,
+            output_root=task_root / "affine",
+            timeout_s=timeout_s,
+        )
+    ]
+    for mutation_id in score_policy.get("negative_suite_mutation_ids") or []:
+        cases.append(
+            run_case(
+                task_dir=task_dir,
+                checker_task_id=checker_task_id,
+                deck_text=transformed,
+                case_id=str(mutation_id),
+                mutation_id=str(mutation_id),
+                output_root=task_root / "affine",
+                timeout_s=timeout_s,
+            )
+        )
+    insufficient = run_case(
+        task_dir=task_dir,
+        checker_task_id=checker_task_id,
+        deck_text=suppress_stimulus(base_text),
+        case_id="insufficient_excitation",
+        mutation_id=None,
+        output_root=task_root,
+        timeout_s=timeout_s,
+    )
+    kills = sum(case["status"] == "mutation_killed" for case in cases[1:])
+    infra = sum(case["status"] == "infrastructure_error" for case in cases)
+    survivors = sum(case["status"] == "mutation_survived" for case in cases[1:])
+    affine_pass = cases[0]["status"] == "reference_pass" and kills == len(cases) - 1 and infra == 0 and survivors == 0
+    insufficient_explicit = insufficient["status"] == "reference_fail" and insufficient["simulator_ok"]
+    return {
+        "task_id": task_id,
+        "family_id": record.get("family_id"),
+        "checker_task_id": checker_task_id,
+        "affine": {
+            "scale": scale,
+            "shift_s": shift,
+            "status": "pass" if affine_pass else "fail",
+            "reference_pass": cases[0]["status"] == "reference_pass",
+            "mutation_kill_count": kills,
+            "mutation_count": len(cases) - 1,
+            "infrastructure_error_count": infra,
+            "mutation_survivor_count": survivors,
+            "cases": cases,
+        },
+        "insufficient_excitation": {
+            "status": "explicit_failure" if insufficient_explicit else "invalid",
+            "simulator_ok": insufficient["simulator_ok"],
+            "checker_ok": insufficient["checker_ok"],
+            "checker_notes": insufficient["checker_notes"],
+            "case": insufficient,
+        },
+        "status": "pass" if affine_pass and insufficient_explicit else "fail",
+    }
+
+
+def main() -> int:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--release", type=Path, required=True)
+    parser.add_argument("--task-id", action="append", required=True)
+    parser.add_argument("--output", type=Path, required=True)
+    parser.add_argument("--work-root", type=Path, required=True)
+    parser.add_argument("--scale", type=float, default=1.37)
+    parser.add_argument("--shift", type=float, default=2e-9)
+    parser.add_argument("--timeout-s", type=int, default=120)
+    args = parser.parse_args()
+    require_evas2_environment()
+    if args.work_root.exists():
+        shutil.rmtree(args.work_root)
+    args.work_root.mkdir(parents=True)
+    results = [
+        run_task(
+            release=args.release.resolve(),
+            task_id=task_id,
+            output_root=args.work_root,
+            scale=args.scale,
+            shift=args.shift,
+            timeout_s=args.timeout_s,
+        )
+        for task_id in args.task_id
+    ]
+    report = {
+        "schema_version": "v4-stimulus-metamorphic-evidence-v1",
+        "evas_engine": REQUIRED_EVAS_ENGINE,
+        "evas_engine_used": REQUIRED_EVAS_ENGINE,
+        "evas_version": REQUIRED_EVAS_VERSION,
+        "evas_backend": REQUIRED_EVAS_BACKEND,
+        "release": str(args.release.resolve()),
+        "transform": {"scale": args.scale, "shift_s": args.shift},
+        "task_count": len(results),
+        "pass_count": sum(item["status"] == "pass" for item in results),
+        "fail_count": sum(item["status"] != "pass" for item in results),
+        "status": "pass" if all(item["status"] == "pass" for item in results) else "fail",
+        "results": results,
+    }
+    args.output.parent.mkdir(parents=True, exist_ok=True)
+    args.output.write_text(json.dumps(report, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+    print(json.dumps({
+        "schema_version": report["schema_version"],
+        "status": report["status"],
+        "task_count": report["task_count"],
+        "pass_count": report["pass_count"],
+        "fail_count": report["fail_count"],
+        "output": str(args.output),
+        "tasks": [
+            {
+                "task_id": item["task_id"],
+                "status": item["status"],
+                "affine": item["affine"]["status"],
+                "insufficient_excitation": item["insufficient_excitation"]["status"],
+                "mutation_kill_count": item["affine"]["mutation_kill_count"],
+                "mutation_count": item["affine"]["mutation_count"],
+            }
+            for item in results
+        ],
+    }, indent=2, sort_keys=True))
+    return 0 if report["status"] == "pass" else 1
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

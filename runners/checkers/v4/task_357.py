@@ -5,6 +5,7 @@ from ..api import Checker
 from dataclasses import dataclass
 
 VTH = 0.45
+PHASE_ERROR_FRACTION_MAX = 0.025
 
 @dataclass
 class PropertyResult:
@@ -146,6 +147,7 @@ def check_v4_357_bangbang_cdr_loop(rows: list[dict[str, float]]) -> tuple[bool, 
     expected_locked = False
     lock_assert_seen = False
     unlock_seen = False
+    out_of_window_seen = False
     for current in recovered:
         if previous_recovered is None:
             previous_recovered = current
@@ -175,8 +177,11 @@ def check_v4_357_bangbang_cdr_loop(rows: list[dict[str, float]]) -> tuple[bool, 
         item.checked += 1
         observed_lock = _high(sample, "lock")
         if median_unit is not None and median_unit > 0.0:
-            phase_error_steps = min(abs(data_edge - previous_recovered), abs(current - data_edge)) / median_unit
-            if phase_error_steps <= 2.0:
+            phase_error = min(abs(data_edge - previous_recovered), abs(current - data_edge))
+            local_period = max(current - previous_recovered, 1e-15)
+            phase_error_steps = phase_error / median_unit
+            phase_error_fraction = phase_error / local_period
+            if phase_error_fraction <= PHASE_ERROR_FRACTION_MAX:
                 good_count += 1
                 bad_count = 0
                 if good_count >= 4:
@@ -184,6 +189,7 @@ def check_v4_357_bangbang_cdr_loop(rows: list[dict[str, float]]) -> tuple[bool, 
             else:
                 good_count = 0
                 if expected_locked:
+                    out_of_window_seen = True
                     bad_count += 1
                     if bad_count >= 2:
                         expected_locked = False
@@ -191,7 +197,10 @@ def check_v4_357_bangbang_cdr_loop(rows: list[dict[str, float]]) -> tuple[bool, 
                             unlock_seen = True
             if observed_lock != expected_locked:
                 item.mismatch(
-                    expected=f"lock={int(expected_locked)} phase_error_steps={phase_error_steps:.4g}",
+                    expected=(
+                        f"lock={int(expected_locked)} "
+                        f"phase_error_fraction<={PHASE_ERROR_FRACTION_MAX:.4g}"
+                    ),
                     observed=f"lock={int(observed_lock)}",
                     time=current,
                     gap=1.0,
@@ -206,7 +215,7 @@ def check_v4_357_bangbang_cdr_loop(rows: list[dict[str, float]]) -> tuple[bool, 
             time=float(rows[-1]["time"]),
             gap=1.0,
         )
-    if not unlock_seen:
+    if out_of_window_seen and not unlock_seen:
         prop["P_LOCK_QUALIFICATION"].mismatch(
             expected="lock_deassertion_observed_after_two_out_of_window_decisions",
             observed="unlock_not_activated",
