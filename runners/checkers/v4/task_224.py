@@ -56,6 +56,13 @@ def check_v3_coarse_qtz_3bit_residue(rows: list[dict[str, float]]) -> tuple[bool
         checked += 1
     if checked < 8:
         return False, f"too_few_quantizer_samples={checked}"
+    if not saw_low_clip or not saw_high_clip or not saw_internal:
+        return (
+            False,
+            "insufficient_excitation coarse_qtz_3bit_residue "
+            f"low_clip={saw_low_clip} high_clip={saw_high_clip} "
+            f"internal={saw_internal}",
+        )
     ok = max_bit_error <= 0.09 and max_res_error <= 0.035
     return (
         ok,
