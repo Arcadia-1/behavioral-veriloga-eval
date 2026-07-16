@@ -33,7 +33,7 @@
     }
   },
   "diagnostics": {
-    "expected": "trigger=stimulus exercises neg_004_ignore_control_or_reset; violated_properties=P_MEASURE_ANALOG_INPUTS_RELATIVE_TO_THE,P_SPAN_MIN_0_62_V_SPAN",
+    "expected": "trigger=stimulus exercises mutation-case-004_ignore_control_or_reset; violated_properties=P_MEASURE_ANALOG_INPUTS_RELATIVE_TO_THE,P_SPAN_MIN_0_62_V_SPAN",
     "observed": "EVAS: issue109_remaining_error=0.9000; Spectre: issue109_remaining_error=0.9000",
     "violated_property_ids": [
       "P_MEASURE_ANALOG_INPUTS_RELATIVE_TO_THE",

@@ -33,7 +33,7 @@
     }
   },
   "diagnostics": {
-    "expected": "trigger=stimulus exercises neg_002_ignore_enable; violated_properties=P_INITIALIZE_THE_EVENT_COUNT_AND_ALL,P_VTH_0_45_V_LOGIC_THRESHOLD",
+    "expected": "trigger=stimulus exercises mutation-case-002_ignore_enable; violated_properties=P_INITIALIZE_THE_EVENT_COUNT_AND_ALL,P_VTH_0_45_V_LOGIC_THRESHOLD",
     "observed": "EVAS: issue109_remaining_clock_error=0.9000; Spectre: issue109_remaining_clock_error=0.9000",
     "violated_property_ids": [
       "P_INITIALIZE_THE_EVENT_COUNT_AND_ALL",

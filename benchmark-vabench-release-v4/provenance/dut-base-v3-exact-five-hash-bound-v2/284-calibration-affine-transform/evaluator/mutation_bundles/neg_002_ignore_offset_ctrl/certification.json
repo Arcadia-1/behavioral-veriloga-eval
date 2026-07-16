@@ -33,7 +33,7 @@
     }
   },
   "diagnostics": {
-    "expected": "trigger=stimulus exercises neg_002_ignore_offset_ctrl; violated_properties=P_MAP_GAIN_CTRL_TO_A_PUBLIC",
+    "expected": "trigger=stimulus exercises mutation-case-002_ignore_offset_ctrl; violated_properties=P_MAP_GAIN_CTRL_TO_A_PUBLIC",
     "observed": "EVAS: calibration_affine_error=0.7380; Spectre: calibration_affine_error=0.7380",
     "violated_property_ids": [
       "P_MAP_GAIN_CTRL_TO_A_PUBLIC"

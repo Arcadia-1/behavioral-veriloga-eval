@@ -33,7 +33,7 @@
     }
   },
   "diagnostics": {
-    "expected": "trigger=stimulus exercises neg_003_wrong_scale; violated_properties=P_MEASURE_ANALOG_INPUTS_RELATIVE_TO_THE,P_VHI_0_9_V_HIGH_LEVEL",
+    "expected": "trigger=stimulus exercises mutation-case-003_wrong_scale; violated_properties=P_MEASURE_ANALOG_INPUTS_RELATIVE_TO_THE,P_VHI_0_9_V_HIGH_LEVEL",
     "observed": "EVAS: issue109_remaining_error=0.3362; Spectre: issue109_remaining_error=0.3362",
     "violated_property_ids": [
       "P_MEASURE_ANALOG_INPUTS_RELATIVE_TO_THE",
