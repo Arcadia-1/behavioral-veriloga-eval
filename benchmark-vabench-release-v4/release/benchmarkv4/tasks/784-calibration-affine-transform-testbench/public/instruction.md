@@ -48,10 +48,10 @@ hierarchical/private nodes, or use checker/gold/internal files.
 
 Create stimulus and save traces sufficient for the fixed evaluator oracle to check:
 
-- `P_ON_EACH_RISING_CLOCK_CROSSING_COMPUTE`: exercise and make observable: On each rising clock crossing, compute a local affine calibration transform from raw, gain_ctrl, and offset_ctrl while reset is low and enable is high. Required traces: `time`, `clk`, `en`, `gain_ctrl`, `offset_ctrl`, `out`, `raw`, `resid_metric`, `rst`.
-- `P_MAP_GAIN_CTRL_TO_A_PUBLIC`: exercise and make observable: Map gain_ctrl to a public gain range and offset_ctrl to a centered offset. Required traces: `time`, `clk`, `en`, `gain_ctrl`, `offset_ctrl`, `out`, `raw`, `resid_metric`, `rst`.
-- `P_CLEAR_OUTPUT_AND_METRIC_WHILE_RESET`: exercise and make observable: Clear output and metric while reset is high or enable is low; otherwise clip the transformed output into the public voltage-coded range. Required traces: `time`, `clk`, `en`, `gain_ctrl`, `offset_ctrl`, `out`, `raw`, `resid_metric`, `rst`.
-- `P_EXPOSE_A_BOUNDED_RESIDUAL_METRIC_FOR`: exercise and make observable: Expose a bounded residual metric for the transform magnitude. Required traces: `time`, `clk`, `en`, `gain_ctrl`, `offset_ctrl`, `out`, `raw`, `resid_metric`, `rst`.
+- `P_ON_EACH_RISING_CLOCK_CROSSING_COMPUTE`: exercise and make observable: Update the stored output and metric only on rising `clk` crossings. Required traces: `time`, `clk`, `en`, `gain_ctrl`, `offset_ctrl`, `out`, `raw`, `resid_metric`, `rst`.
+- `P_MAP_GAIN_CTRL_TO_A_PUBLIC`: exercise and make observable: Let `gain = gain_base + gain_span * clip01(V(gain_ctrl) / vhi)`, `offset = V(offset_ctrl) - center`, and `transformed = center + gain * (V(raw) - center) + offset`. Required traces: `time`, `clk`, `en`, `gain_ctrl`, `offset_ctrl`, `out`, `raw`, `resid_metric`, `rst`.
+- `P_CLEAR_OUTPUT_AND_METRIC_WHILE_RESET`: exercise and make observable: At a rising edge, reset high or enable low stores both outputs at `0 V`; otherwise store `out = clamp(transformed, 0, vhi)`. Required traces: `time`, `clk`, `en`, `gain_ctrl`, `offset_ctrl`, `out`, `raw`, `resid_metric`, `rst`.
+- `P_EXPOSE_A_BOUNDED_RESIDUAL_METRIC_FOR`: exercise and make observable: Store `resid_metric = vhi * clip01(abs(transformed - V(raw)) / resid_fullscale)`, where `clip01` limits its argument to `[0, 1]`. Required traces: `time`, `clk`, `en`, `gain_ctrl`, `offset_ctrl`, `out`, `raw`, `resid_metric`, `rst`.
 - `P_USE_LOCAL_ANALOG_HELPER_FUNCTIONS_RATHER`: exercise and make observable: Use local analog helper functions rather than user task/endtask syntax. Required traces: `time`, `clk`, `en`, `gain_ctrl`, `offset_ctrl`, `out`, `raw`, `resid_metric`, `rst`.
 
 The required trace names are: `time`, `clk`, `en`, `gain_ctrl`, `offset_ctrl`, `out`, `raw`, `resid_metric`, `rst`.
