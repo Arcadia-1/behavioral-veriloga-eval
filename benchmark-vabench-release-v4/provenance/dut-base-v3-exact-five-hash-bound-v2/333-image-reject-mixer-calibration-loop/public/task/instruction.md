@@ -37,6 +37,34 @@ Provide these overrideable public parameters on the top module and propagate com
 - Use only voltage-domain behavioral state and voltage contributions on public electrical outputs.
 - Do not expose pass/fail flags; expose only the public observable metrics named in the interface.
 
+`i_out`, `q_out`, `image_metric`, and `calibrated` are DUT-driven outputs.  On
+reset or while disabled, reset both internal trim states to `vcm`, drive
+`i_out` and `q_out` to the neutral mixer level `vcm`, and drive `image_metric`
+and `calibrated` to `vss`.
+
+While enabled, let `x = rf_in-vcm`, let `si` be `+1` when `lo_i > vth` and
+`-1` otherwise, and define `sq` the same way from `lo_q`.  Encode the internal
+signed trim states as `g = 0.8*(gain_trim-vcm)` and
+`p = 0.6*(phase_trim-vcm)`.  The continuously evaluated mixer proxy is:
+
+1. `i = x*si*(1-g)`.
+2. `q = -x*sq*(1+g) - p*x*si`.
+3. `i_out = clamp(vcm+i, vss, vdd)` and
+   `q_out = clamp(vcm+q, vss, vdd)`.
+4. `raw_image_metric = clamp(0.5*abs(i+q), vss, vdd)`.
+
+On each enabled rising `clk` edge, latch `image_metric = raw_image_metric`.
+The controller starts with `gain_trim = phase_trim = vcm` and search direction
+`d = +1`.  When the sampled metric is below `image_tol`, move both trim
+deviations halfway back toward zero and increment the consecutive-good count:
+`gain_trim = vcm + 0.5*(gain_trim-vcm)` and
+`phase_trim = vcm + 0.5*(phase_trim-vcm)`.  Otherwise clear that count, update
+`gain_trim = clamp(gain_trim+d*18e-3, vcm-0.18, vcm+0.18)` and
+`phase_trim = clamp(phase_trim-d*9e-3, vcm-0.18, vcm+0.18)`, then reverse the
+direction with `d = -d`.  Drive `calibrated` to `vdd` after three consecutive
+below-threshold samples and to `vss` otherwise.  Reset or disable also clears
+the count and restores `d = +1`.
+
 ## Modeling Constraints
 
 Use deterministic voltage-domain behavioral Verilog-A suitable for transient simulation. Use voltage contributions for public electrical outputs. Do not instantiate transistor-level devices. Do not add verification harnesses, simulation decks, generated result files, logs, reports, debug-only ports, or pass/fail flags.
