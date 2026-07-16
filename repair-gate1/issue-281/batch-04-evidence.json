@@ -63,11 +63,13 @@
     }
   ],
   "issue": 281,
-  "not_tested": [
+  "not_applicable": [
     {
-      "gap": "Cadence/Spectre transient parity",
-      "reason": "`command -v spectre` returned no executable in this local environment; Spectre remains the final judge."
-    },
+      "system": "Spectre/Cadence",
+      "reason": "Spectre is not available or required by the repository acceptance protocol; executable validation uses pinned Rust EVAS2."
+    }
+  ],
+  "not_tested": [
     {
       "gap": "Repository layout script",
       "reason": "`scripts/check_repo_layout.py` is not present in this worktree, so the layout checker could not be run."

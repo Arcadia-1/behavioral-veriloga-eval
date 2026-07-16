@@ -7,9 +7,15 @@
   },
   "deck": {
     "analyses": [
-      "tran tran stop=5n maxstep=100p"
+      "tran tran stop=76n maxstep=125p"
     ],
-    "body_lines": [],
+    "body_lines": [
+      "// Public feedback sweeps below-range, nominal, and above-range inputs.",
+      "V_clk (clk 0) vsource type=pulse val0=0 val1=0.9 period=2.5n delay=600p rise=40p fall=40p width=1.1n",
+      "V_rst (rst 0) vsource type=pwl wave=[0 0.9 3.2n 0.9 3.3n 0 76n 0]",
+      "V_vin (vin 0) vsource type=pwl wave=[0 -0.08 20n -0.08 20.2n 0.50 44n 0.50 44.2n 1.02 76n 1.02]",
+      "XDUT (clk rst vin out metric) ptat_ctat_reference_generator"
+    ],
     "header": [
       "simulator lang=spectre",
       "global 0"
@@ -20,7 +26,9 @@
     "save_signals": [
       "clk",
       "rst",
-      "vin"
+      "vin",
+      "out",
+      "metric"
     ]
   },
   "family_id": "040",
@@ -35,66 +43,17 @@
     "legacy_score_deck_sha256": "1502562e5d7488064a263ef530890ba720d8ad74897655dd53691166f96e0f86",
     "notes": [
       "legacy feedback deck was used only to seed the canonical harness spec",
-      "legacy score deck seeded private profile-specific overrides"
+      "legacy score deck seeded private profile-specific overrides",
+      "feedback deck supplies the unified feedback/score stimulus semantics"
     ]
   },
   "profile_defaults": {
     "feedback": {
-      "deck_overrides": {
-        "analyses": [
-          "tran tran stop={stop_time} maxstep={maxstep}"
-        ],
-        "body_lines": [
-          "// Public feedback sweeps below-range, nominal, and above-range inputs.",
-          "V_clk (clk 0) vsource type=pulse val0=0 val1=0.9 period=2.5n delay=600p rise=40p fall=40p width=1.1n",
-          "V_rst (rst 0) vsource type=pwl wave=[0 0.9 3.2n 0.9 3.3n 0 {stop_time} 0]",
-          "V_vin (vin 0) vsource type=pwl wave=[0 -0.08 20n -0.08 20.2n 0.50 44n 0.50 44.2n 1.02 {stop_time} 1.02]",
-          "",
-          "XDUT (clk rst vin out metric) ptat_ctat_reference_generator",
-          ""
-        ],
-        "save_signals": [
-          "clk",
-          "rst",
-          "vin",
-          "out",
-          "metric"
-        ]
-      },
-      "parameters": {
-        "maxstep": "125p",
-        "stop_time": "76n"
-      },
       "simulatorOptions": {
         "evas_profile": "balanced"
       }
     },
-    "score": {
-      "deck_overrides": {
-        "analyses": [
-          "tran tran stop=80n maxstep=0.5n"
-        ],
-        "body_lines": [
-          "Vclk (clk 0) vsource type=pulse val0=0 val1=0.9 period=2n width=1n rise=50p fall=50p",
-          "Vrst (rst 0) vsource type=pwl wave=[0 0.9 2n 0.9 2.1n 0 80n 0]",
-          "Vvin (vin 0) vsource type=pwl wave=[0 0.15 18n 0.15 18.1n 0.45 42n 0.45 42.1n 0.80 80n 0.80]",
-          "",
-          "XDUT (clk rst vin out metric) ptat_ctat_reference_generator",
-          ""
-        ],
-        "save_signals": [
-          "clk",
-          "rst",
-          "vin",
-          "out",
-          "metric"
-        ]
-      },
-      "parameters": {
-        "maxstep": "100p",
-        "stop_time": "100n"
-      }
-    }
+    "score": {}
   },
   "property_ids": [
     "P_RESET_REFERENCE",

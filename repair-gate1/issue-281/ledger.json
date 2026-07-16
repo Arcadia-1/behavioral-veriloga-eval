@@ -2319,15 +2319,15 @@
       "039",
       "040"
     ],
-    "not_tested": [
-      "Cadence/Spectre transient parity unavailable locally; command -v spectre returned no executable."
+    "not_applicable": [
+      "Spectre/Cadence is not part of the repository acceptance protocol; use pinned Rust EVAS2."
     ],
     "status": "complete"
   },
   "schema_version": "v4-repair-gate1-ledger-v1",
   "source": {
     "release": "benchmark-vabench-release-v4/release/benchmarkv4",
-    "repo": "/Users/bucketsran/Documents/TsingProject/vaEvas/_worktrees/behavioral-v4-repair-batch281"
+    "repo": "Arcadia-1/behavioral-veriloga-eval"
   },
   "summary": {
     "class_counts": {

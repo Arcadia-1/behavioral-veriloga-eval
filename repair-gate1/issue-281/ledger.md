@@ -4,7 +4,7 @@
 - class_counts: `{"A": 0, "B": 0, "C": 4, "D": 6}`
 - repair_status: `complete`
 - batch_evidence: `repair-gate1/issue-281/batch-04-evidence.json`
-- not_tested: Cadence/Spectre transient parity; `command -v spectre` found no local executable, so Spectre remains a documented final-judge gap.
+- not_applicable: Spectre/Cadence is not part of the repository acceptance protocol; executable validation uses pinned Rust EVAS2.
 
 | Family | Class | Reasons |
 |---|---:|---|
