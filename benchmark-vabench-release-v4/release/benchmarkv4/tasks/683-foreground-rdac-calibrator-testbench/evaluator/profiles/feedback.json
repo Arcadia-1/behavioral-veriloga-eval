@@ -6,8 +6,11 @@
     "script": "render_v4_harness.py",
     "version": "v4-harness-renderer-v1"
   },
-  "harness_spec_sha256": "241dda28b07a0f892221e5e2932799f18586375990ae10a7ec3bdc5e94756688",
-  "parameters": {},
+  "harness_spec_sha256": "b466cbdd6d689b23176e8476ffe3aa1b75df30d96e5953deeec049e0e3aaf777",
+  "parameters": {
+    "maxstep": "200p",
+    "stop_time": "100n"
+  },
   "profile_name": "feedback",
   "property_ids": [
     "P_INITIAL_MSB_TRIAL_CODE",
