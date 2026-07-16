@@ -11,10 +11,8 @@
     "139",
     "140"
   ],
-  "evas_engine_used": "evas2",
   "failure_count": 0,
   "failures": [],
-  "python_fallback_evidence_claimed": false,
   "runs": [
     {
       "family_id": "131",
@@ -209,5 +207,7 @@
   ],
   "schema_version": "v4-issue-291-schema-render-validation-v1",
   "source": "benchmark-vabench-release-v4/provenance/dut-base-v3-exact-five-hash-bound-v2",
-  "status": "PASS"
+  "status": "PASS",
+  "evidence_kind": "static_schema_render",
+  "runtime_evidence_claimed": false
 }

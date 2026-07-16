@@ -1,5 +1,5 @@
 {
-  "schema_version": "v4-issue-291-rust-evas2-mutations-v2",
+  "schema_version": "v4-issue-291-rust-evas2-metamorphic-v1",
   "issue": 291,
   "family_range": "131-140",
   "status": "PASS",
@@ -12,12 +12,26 @@
     "status": "not_applicable",
     "required": false
   },
-  "mutation_count": 50,
-  "mutation_kill_count": 50,
-  "mutation_survivor_count": 0,
+  "task_count": 10,
+  "affine_gold_pass_count": 10,
+  "affine_mutation_kill_count": 50,
+  "insufficient_excitation_explicit_failure_count": 10,
+  "case_count": 70,
   "cases": [
     {
       "task_id": "v4-631",
+      "phase": "affine",
+      "case_id": "correct",
+      "mutation_id": null,
+      "status": "reference_pass",
+      "evas_engine_used": "evas2",
+      "evas_backend": "evas-rust",
+      "evas_version": "0.8.2",
+      "evas_runtime_valid": true
+    },
+    {
+      "task_id": "v4-631",
+      "phase": "affine",
       "case_id": "neg_002_missing_input_offset",
       "mutation_id": "neg_002_missing_input_offset",
       "status": "mutation_killed",
@@ -28,6 +42,7 @@
     },
     {
       "task_id": "v4-631",
+      "phase": "affine",
       "case_id": "neg_003_no_clamp",
       "mutation_id": "neg_003_no_clamp",
       "status": "mutation_killed",
@@ -38,6 +53,7 @@
     },
     {
       "task_id": "v4-631",
+      "phase": "affine",
       "case_id": "neg_004_wrong_reference",
       "mutation_id": "neg_004_wrong_reference",
       "status": "mutation_killed",
@@ -48,6 +64,7 @@
     },
     {
       "task_id": "v4-631",
+      "phase": "affine",
       "case_id": "neg_005_metric_scale_low",
       "mutation_id": "neg_005_metric_scale_low",
       "status": "mutation_killed",
@@ -58,6 +75,7 @@
     },
     {
       "task_id": "v4-631",
+      "phase": "affine",
       "case_id": "neg_001_zero",
       "mutation_id": "neg_001_zero",
       "status": "mutation_killed",
@@ -68,6 +86,18 @@
     },
     {
       "task_id": "v4-632",
+      "phase": "affine",
+      "case_id": "correct",
+      "mutation_id": null,
+      "status": "reference_pass",
+      "evas_engine_used": "evas2",
+      "evas_backend": "evas-rust",
+      "evas_version": "0.8.2",
+      "evas_runtime_valid": true
+    },
+    {
+      "task_id": "v4-632",
+      "phase": "affine",
       "case_id": "neg_002_adds_inputs",
       "mutation_id": "neg_002_adds_inputs",
       "status": "mutation_killed",
@@ -78,6 +108,7 @@
     },
     {
       "task_id": "v4-632",
+      "phase": "affine",
       "case_id": "neg_003_missing_gain",
       "mutation_id": "neg_003_missing_gain",
       "status": "mutation_killed",
@@ -88,6 +119,7 @@
     },
     {
       "task_id": "v4-632",
+      "phase": "affine",
       "case_id": "neg_001_zero",
       "mutation_id": "neg_001_zero",
       "status": "mutation_killed",
@@ -98,6 +130,7 @@
     },
     {
       "task_id": "v4-632",
+      "phase": "affine",
       "case_id": "neg_004_square_first_input",
       "mutation_id": "neg_004_square_first_input",
       "status": "mutation_killed",
@@ -108,6 +141,7 @@
     },
     {
       "task_id": "v4-632",
+      "phase": "affine",
       "case_id": "neg_005_metric_scale_low",
       "mutation_id": "neg_005_metric_scale_low",
       "status": "mutation_killed",
@@ -118,6 +152,18 @@
     },
     {
       "task_id": "v4-633",
+      "phase": "affine",
+      "case_id": "correct",
+      "mutation_id": null,
+      "status": "reference_pass",
+      "evas_engine_used": "evas2",
+      "evas_backend": "evas-rust",
+      "evas_version": "0.8.2",
+      "evas_runtime_valid": true
+    },
+    {
+      "task_id": "v4-633",
+      "phase": "affine",
       "case_id": "neg_002_swapped_low_high_outputs",
       "mutation_id": "neg_002_swapped_low_high_outputs",
       "status": "mutation_killed",
@@ -128,6 +174,7 @@
     },
     {
       "task_id": "v4-633",
+      "phase": "affine",
       "case_id": "neg_003_uses_single_ended_control",
       "mutation_id": "neg_003_uses_single_ended_control",
       "status": "mutation_killed",
@@ -138,6 +185,7 @@
     },
     {
       "task_id": "v4-633",
+      "phase": "affine",
       "case_id": "neg_004_missing_middle_selection",
       "mutation_id": "neg_004_missing_middle_selection",
       "status": "mutation_killed",
@@ -148,6 +196,7 @@
     },
     {
       "task_id": "v4-633",
+      "phase": "affine",
       "case_id": "neg_005_metric_scale_low",
       "mutation_id": "neg_005_metric_scale_low",
       "status": "mutation_killed",
@@ -158,6 +207,7 @@
     },
     {
       "task_id": "v4-633",
+      "phase": "affine",
       "case_id": "neg_001_zero",
       "mutation_id": "neg_001_zero",
       "status": "mutation_killed",
@@ -168,6 +218,18 @@
     },
     {
       "task_id": "v4-634",
+      "phase": "affine",
+      "case_id": "correct",
+      "mutation_id": null,
+      "status": "reference_pass",
+      "evas_engine_used": "evas2",
+      "evas_backend": "evas-rust",
+      "evas_version": "0.8.2",
+      "evas_runtime_valid": true
+    },
+    {
+      "task_id": "v4-634",
+      "phase": "affine",
       "case_id": "neg_003_missing_offset",
       "mutation_id": "neg_003_missing_offset",
       "status": "mutation_killed",
@@ -178,6 +240,7 @@
     },
     {
       "task_id": "v4-634",
+      "phase": "affine",
       "case_id": "neg_002_single_ended_input",
       "mutation_id": "neg_002_single_ended_input",
       "status": "mutation_killed",
@@ -188,6 +251,7 @@
     },
     {
       "task_id": "v4-634",
+      "phase": "affine",
       "case_id": "neg_004_wrong_gain",
       "mutation_id": "neg_004_wrong_gain",
       "status": "mutation_killed",
@@ -198,6 +262,7 @@
     },
     {
       "task_id": "v4-634",
+      "phase": "affine",
       "case_id": "neg_001_zero",
       "mutation_id": "neg_001_zero",
       "status": "mutation_killed",
@@ -208,6 +273,7 @@
     },
     {
       "task_id": "v4-634",
+      "phase": "affine",
       "case_id": "neg_005_metric_scale_low",
       "mutation_id": "neg_005_metric_scale_low",
       "status": "mutation_killed",
@@ -218,6 +284,18 @@
     },
     {
       "task_id": "v4-635",
+      "phase": "affine",
+      "case_id": "correct",
+      "mutation_id": null,
+      "status": "reference_pass",
+      "evas_engine_used": "evas2",
+      "evas_backend": "evas-rust",
+      "evas_version": "0.8.2",
+      "evas_runtime_valid": true
+    },
+    {
+      "task_id": "v4-635",
+      "phase": "affine",
       "case_id": "neg_004_wrong_offset",
       "mutation_id": "neg_004_wrong_offset",
       "status": "mutation_killed",
@@ -228,6 +306,7 @@
     },
     {
       "task_id": "v4-635",
+      "phase": "affine",
       "case_id": "neg_002_no_abs",
       "mutation_id": "neg_002_no_abs",
       "status": "mutation_killed",
@@ -238,6 +317,7 @@
     },
     {
       "task_id": "v4-635",
+      "phase": "affine",
       "case_id": "neg_005_metric_scale_low",
       "mutation_id": "neg_005_metric_scale_low",
       "status": "mutation_killed",
@@ -248,6 +328,7 @@
     },
     {
       "task_id": "v4-635",
+      "phase": "affine",
       "case_id": "neg_003_missing_floor",
       "mutation_id": "neg_003_missing_floor",
       "status": "mutation_killed",
@@ -258,6 +339,7 @@
     },
     {
       "task_id": "v4-635",
+      "phase": "affine",
       "case_id": "neg_001_zero",
       "mutation_id": "neg_001_zero",
       "status": "mutation_killed",
@@ -268,6 +350,18 @@
     },
     {
       "task_id": "v4-636",
+      "phase": "affine",
+      "case_id": "correct",
+      "mutation_id": null,
+      "status": "reference_pass",
+      "evas_engine_used": "evas2",
+      "evas_backend": "evas-rust",
+      "evas_version": "0.8.2",
+      "evas_runtime_valid": true
+    },
+    {
+      "task_id": "v4-636",
+      "phase": "affine",
       "case_id": "neg_003_wrong_knee_points",
       "mutation_id": "neg_003_wrong_knee_points",
       "status": "mutation_killed",
@@ -278,6 +372,7 @@
     },
     {
       "task_id": "v4-636",
+      "phase": "affine",
       "case_id": "neg_002_hard_clamp",
       "mutation_id": "neg_002_hard_clamp",
       "status": "mutation_killed",
@@ -288,6 +383,7 @@
     },
     {
       "task_id": "v4-636",
+      "phase": "affine",
       "case_id": "neg_001_zero",
       "mutation_id": "neg_001_zero",
       "status": "mutation_killed",
@@ -298,6 +394,7 @@
     },
     {
       "task_id": "v4-636",
+      "phase": "affine",
       "case_id": "neg_005_metric_scale_low",
       "mutation_id": "neg_005_metric_scale_low",
       "status": "mutation_killed",
@@ -308,6 +405,7 @@
     },
     {
       "task_id": "v4-636",
+      "phase": "affine",
       "case_id": "neg_004_half_soft_fraction",
       "mutation_id": "neg_004_half_soft_fraction",
       "status": "mutation_killed",
@@ -318,6 +416,18 @@
     },
     {
       "task_id": "v4-637",
+      "phase": "affine",
+      "case_id": "correct",
+      "mutation_id": null,
+      "status": "reference_pass",
+      "evas_engine_used": "evas2",
+      "evas_backend": "evas-rust",
+      "evas_version": "0.8.2",
+      "evas_runtime_valid": true
+    },
+    {
+      "task_id": "v4-637",
+      "phase": "affine",
       "case_id": "neg_002_missing_midpoint",
       "mutation_id": "neg_002_missing_midpoint",
       "status": "mutation_killed",
@@ -328,6 +438,7 @@
     },
     {
       "task_id": "v4-637",
+      "phase": "affine",
       "case_id": "neg_003_single_ended_control",
       "mutation_id": "neg_003_single_ended_control",
       "status": "mutation_killed",
@@ -338,6 +449,7 @@
     },
     {
       "task_id": "v4-637",
+      "phase": "affine",
       "case_id": "neg_004_no_clamp",
       "mutation_id": "neg_004_no_clamp",
       "status": "mutation_killed",
@@ -348,6 +460,7 @@
     },
     {
       "task_id": "v4-637",
+      "phase": "affine",
       "case_id": "neg_001_zero",
       "mutation_id": "neg_001_zero",
       "status": "mutation_killed",
@@ -358,6 +471,7 @@
     },
     {
       "task_id": "v4-637",
+      "phase": "affine",
       "case_id": "neg_005_metric_scale_low",
       "mutation_id": "neg_005_metric_scale_low",
       "status": "mutation_killed",
@@ -368,6 +482,18 @@
     },
     {
       "task_id": "v4-638",
+      "phase": "affine",
+      "case_id": "correct",
+      "mutation_id": null,
+      "status": "reference_pass",
+      "evas_engine_used": "evas2",
+      "evas_backend": "evas-rust",
+      "evas_version": "0.8.2",
+      "evas_runtime_valid": true
+    },
+    {
+      "task_id": "v4-638",
+      "phase": "affine",
       "case_id": "neg_002_missing_input_offset",
       "mutation_id": "neg_002_missing_input_offset",
       "status": "mutation_killed",
@@ -378,6 +504,7 @@
     },
     {
       "task_id": "v4-638",
+      "phase": "affine",
       "case_id": "neg_003_single_ended_control",
       "mutation_id": "neg_003_single_ended_control",
       "status": "mutation_killed",
@@ -388,6 +515,7 @@
     },
     {
       "task_id": "v4-638",
+      "phase": "affine",
       "case_id": "neg_004_no_clamp",
       "mutation_id": "neg_004_no_clamp",
       "status": "mutation_killed",
@@ -398,6 +526,7 @@
     },
     {
       "task_id": "v4-638",
+      "phase": "affine",
       "case_id": "neg_005_metric_scale_low",
       "mutation_id": "neg_005_metric_scale_low",
       "status": "mutation_killed",
@@ -408,6 +537,7 @@
     },
     {
       "task_id": "v4-638",
+      "phase": "affine",
       "case_id": "neg_001_zero",
       "mutation_id": "neg_001_zero",
       "status": "mutation_killed",
@@ -418,6 +548,18 @@
     },
     {
       "task_id": "v4-639",
+      "phase": "affine",
+      "case_id": "correct",
+      "mutation_id": null,
+      "status": "reference_pass",
+      "evas_engine_used": "evas2",
+      "evas_backend": "evas-rust",
+      "evas_version": "0.8.2",
+      "evas_runtime_valid": true
+    },
+    {
+      "task_id": "v4-639",
+      "phase": "affine",
       "case_id": "neg_004_wrong_common_mode",
       "mutation_id": "neg_004_wrong_common_mode",
       "status": "mutation_killed",
@@ -428,6 +570,7 @@
     },
     {
       "task_id": "v4-639",
+      "phase": "affine",
       "case_id": "neg_002_half_gain",
       "mutation_id": "neg_002_half_gain",
       "status": "mutation_killed",
@@ -438,6 +581,7 @@
     },
     {
       "task_id": "v4-639",
+      "phase": "affine",
       "case_id": "neg_003_inverted_polarity",
       "mutation_id": "neg_003_inverted_polarity",
       "status": "mutation_killed",
@@ -448,6 +592,7 @@
     },
     {
       "task_id": "v4-639",
+      "phase": "affine",
       "case_id": "neg_001_zero",
       "mutation_id": "neg_001_zero",
       "status": "mutation_killed",
@@ -458,6 +603,7 @@
     },
     {
       "task_id": "v4-639",
+      "phase": "affine",
       "case_id": "neg_005_metric_scale_low",
       "mutation_id": "neg_005_metric_scale_low",
       "status": "mutation_killed",
@@ -468,6 +614,18 @@
     },
     {
       "task_id": "v4-640",
+      "phase": "affine",
+      "case_id": "correct",
+      "mutation_id": null,
+      "status": "reference_pass",
+      "evas_engine_used": "evas2",
+      "evas_backend": "evas-rust",
+      "evas_version": "0.8.2",
+      "evas_runtime_valid": true
+    },
+    {
+      "task_id": "v4-640",
+      "phase": "affine",
       "case_id": "neg_002_no_hold",
       "mutation_id": "neg_002_no_hold",
       "status": "mutation_killed",
@@ -478,6 +636,7 @@
     },
     {
       "task_id": "v4-640",
+      "phase": "affine",
       "case_id": "neg_003_swapped_set_reset",
       "mutation_id": "neg_003_swapped_set_reset",
       "status": "mutation_killed",
@@ -488,6 +647,7 @@
     },
     {
       "task_id": "v4-640",
+      "phase": "affine",
       "case_id": "neg_004_qbar_not_complement",
       "mutation_id": "neg_004_qbar_not_complement",
       "status": "mutation_killed",
@@ -498,6 +658,7 @@
     },
     {
       "task_id": "v4-640",
+      "phase": "affine",
       "case_id": "neg_005_metric_scale_low",
       "mutation_id": "neg_005_metric_scale_low",
       "status": "mutation_killed",
@@ -508,9 +669,120 @@
     },
     {
       "task_id": "v4-640",
+      "phase": "affine",
       "case_id": "neg_001_zero",
       "mutation_id": "neg_001_zero",
       "status": "mutation_killed",
+      "evas_engine_used": "evas2",
+      "evas_backend": "evas-rust",
+      "evas_version": "0.8.2",
+      "evas_runtime_valid": true
+    },
+    {
+      "task_id": "v4-631",
+      "phase": "insufficient_excitation",
+      "case_id": "insufficient_excitation",
+      "mutation_id": null,
+      "status": "reference_fail",
+      "evas_engine_used": "evas2",
+      "evas_backend": "evas-rust",
+      "evas_version": "0.8.2",
+      "evas_runtime_valid": true
+    },
+    {
+      "task_id": "v4-632",
+      "phase": "insufficient_excitation",
+      "case_id": "insufficient_excitation",
+      "mutation_id": null,
+      "status": "reference_fail",
+      "evas_engine_used": "evas2",
+      "evas_backend": "evas-rust",
+      "evas_version": "0.8.2",
+      "evas_runtime_valid": true
+    },
+    {
+      "task_id": "v4-633",
+      "phase": "insufficient_excitation",
+      "case_id": "insufficient_excitation",
+      "mutation_id": null,
+      "status": "reference_fail",
+      "evas_engine_used": "evas2",
+      "evas_backend": "evas-rust",
+      "evas_version": "0.8.2",
+      "evas_runtime_valid": true
+    },
+    {
+      "task_id": "v4-634",
+      "phase": "insufficient_excitation",
+      "case_id": "insufficient_excitation",
+      "mutation_id": null,
+      "status": "reference_fail",
+      "evas_engine_used": "evas2",
+      "evas_backend": "evas-rust",
+      "evas_version": "0.8.2",
+      "evas_runtime_valid": true
+    },
+    {
+      "task_id": "v4-635",
+      "phase": "insufficient_excitation",
+      "case_id": "insufficient_excitation",
+      "mutation_id": null,
+      "status": "reference_fail",
+      "evas_engine_used": "evas2",
+      "evas_backend": "evas-rust",
+      "evas_version": "0.8.2",
+      "evas_runtime_valid": true
+    },
+    {
+      "task_id": "v4-636",
+      "phase": "insufficient_excitation",
+      "case_id": "insufficient_excitation",
+      "mutation_id": null,
+      "status": "reference_fail",
+      "evas_engine_used": "evas2",
+      "evas_backend": "evas-rust",
+      "evas_version": "0.8.2",
+      "evas_runtime_valid": true
+    },
+    {
+      "task_id": "v4-637",
+      "phase": "insufficient_excitation",
+      "case_id": "insufficient_excitation",
+      "mutation_id": null,
+      "status": "reference_fail",
+      "evas_engine_used": "evas2",
+      "evas_backend": "evas-rust",
+      "evas_version": "0.8.2",
+      "evas_runtime_valid": true
+    },
+    {
+      "task_id": "v4-638",
+      "phase": "insufficient_excitation",
+      "case_id": "insufficient_excitation",
+      "mutation_id": null,
+      "status": "reference_fail",
+      "evas_engine_used": "evas2",
+      "evas_backend": "evas-rust",
+      "evas_version": "0.8.2",
+      "evas_runtime_valid": true
+    },
+    {
+      "task_id": "v4-639",
+      "phase": "insufficient_excitation",
+      "case_id": "insufficient_excitation",
+      "mutation_id": null,
+      "status": "reference_fail",
+      "evas_engine_used": "evas2",
+      "evas_backend": "evas-rust",
+      "evas_version": "0.8.2",
+      "evas_runtime_valid": true
+    },
+    {
+      "task_id": "v4-640",
+      "phase": "insufficient_excitation",
+      "case_id": "insufficient_excitation",
+      "mutation_id": null,
+      "status": "reference_fail",
       "evas_engine_used": "evas2",
       "evas_backend": "evas-rust",
       "evas_version": "0.8.2",

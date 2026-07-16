@@ -1,23 +1,13 @@
 {
   "corners": [],
-  "deck_overrides": {
-    "body_lines": [
-      "Vin (vin 0) vsource type=pwl wave=[0 -0.4 10n -0.4 10.1n 0.2 20n 0.2 20.1n 0.8 30n 0.8 30.1n 0.5 45n 0.5]",
-      "",
-      "XDUT (vin vout 0) soft_voltage_clamp_behavior",
-      ""
-    ]
-  },
+  "deck_overrides": {},
   "deterministic_seed": 0,
   "generated_from": {
     "script": "render_v4_harness.py",
     "version": "v4-harness-renderer-v1"
   },
-  "harness_spec_sha256": "ae15d30a7071b2af80fdfe2257742097e197f9d9e3f91f7accd3ff84da99f64f",
-  "parameters": {
-    "maxstep": "200p",
-    "stop_time": "100n"
-  },
+  "harness_spec_sha256": "92d5cc4ef365702c16106d7c2f2807c07d2cb9f99552a6bc89291bd3e632e785",
+  "parameters": {},
   "profile_name": "feedback",
   "property_ids": [
     "P_REFERENCED_INPUT_OUTPUT",
