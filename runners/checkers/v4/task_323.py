@@ -20,6 +20,7 @@ def check_v4_1021_programmable_clock_skew_aligner(rows: list[dict[str, float]]) 
     checked = metric_errors = timing_errors = valid_errors = clear_errors = 0
     input_edges = output_edges = 0
     reset_clear = disabled_clear = valid_seen = False
+    ever_enabled = False
     codes_seen: set[int] = set()
     pending_edges: list[tuple[float, int]] = []
     for row in rows:
@@ -31,15 +32,17 @@ def check_v4_1021_programmable_clock_skew_aligner(rows: list[dict[str, float]]) 
         if not enabled:
             pending_edges.clear()
             clear = abs(float(row["clk_out"])) < 0.08 and abs(float(row["delay_metric"])) < 0.08 and not _v4_topup_logic_high(row, "valid")
-            if rst and t < 5e-9 and clear:
+            disabled = ever_enabled and not _v4_topup_logic_high(row, "enable")
+            if rst and clear:
                 reset_clear = True
-            if t > 82e-9 and not _v4_topup_logic_high(row, "enable") and clear:
+            if disabled and clear:
                 disabled_clear = True
-            if ((rst and t < 5e-9) or t > 82e-9) and not clear:
+            if ((rst and reset_clear) or (disabled and disabled_clear)) and not clear:
                 clear_errors += 1
             prev_clk_in = clk_in
             prev_clk_out = clk_out
             continue
+        ever_enabled = True
         code = _v4_code_from_bits(row, ["skew_0", "skew_1", "skew_2"])
         if _v4_rising(prev_clk_in, clk_in):
             input_edges += 1
@@ -58,7 +61,7 @@ def check_v4_1021_programmable_clock_skew_aligner(rows: list[dict[str, float]]) 
                 timing_errors += 1
         prev_clk_in = clk_in
         prev_clk_out = clk_out
-        if t < 8e-9:
+        if input_edges == 0:
             continue
         checked += 1
         if abs(float(row["delay_metric"]) - expected_metric) > 0.06:

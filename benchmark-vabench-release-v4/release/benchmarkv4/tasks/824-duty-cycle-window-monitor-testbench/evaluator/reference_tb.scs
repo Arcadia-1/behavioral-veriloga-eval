@@ -10,6 +10,5 @@ Vduty_min (duty_min 0) vsource dc=0.315
 Vduty_max (duty_max 0) vsource dc=0.585
 XDUT (clk_in rst enable duty_min duty_max duty_metric in_window valid) duty_cycle_window_monitor
 
-
 tran tran stop=92n maxstep=200p
 save clk_in rst enable duty_min duty_max duty_metric in_window valid

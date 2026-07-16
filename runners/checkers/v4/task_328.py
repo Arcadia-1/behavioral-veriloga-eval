@@ -19,6 +19,7 @@ def check_v4_1026_pam4_linearity_monitor(rows: list[dict[str, float]]) -> tuple[
     update_time = -1.0
     checked = level_errors = metric_errors = valid_errors = clear_errors = 0
     reset_clear = disabled_clear = False
+    ever_enabled = False
     codes_seen: set[int] = set()
     for row in rows:
         t = float(row["time"])
@@ -27,14 +28,16 @@ def check_v4_1026_pam4_linearity_monitor(rows: list[dict[str, float]]) -> tuple[
         enabled = _v4_topup_logic_high(row, "enable") and not rst
         if not enabled:
             clear = abs(float(row["level_out"])) < 0.08 and abs(float(row["linearity_metric"])) < 0.08 and not _v4_topup_logic_high(row, "valid")
-            if rst and t < 5e-9 and clear:
+            disabled = ever_enabled and not _v4_topup_logic_high(row, "enable")
+            if rst and clear:
                 reset_clear = True
-            if t > 82e-9 and not _v4_topup_logic_high(row, "enable") and clear:
+            if disabled and clear:
                 disabled_clear = True
-            if ((rst and t < 5e-9) or t > 82e-9) and not clear:
+            if ((rst and reset_clear) or (disabled and disabled_clear)) and not clear:
                 clear_errors += 1
             prev_clk = clk
             continue
+        ever_enabled = True
         if _v4_rising(prev_clk, clk):
             code = _v4_code_from_bits(row, ["symbol_0", "symbol_1"])
             codes_seen.add(code)

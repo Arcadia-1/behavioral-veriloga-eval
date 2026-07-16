@@ -15,6 +15,7 @@ def check_v4_1022_duty_cycle_window_monitor(rows: list[dict[str, float]]) -> tup
     update_time = -1.0
     checked = metric_errors = window_errors = valid_errors = clear_errors = 0
     reset_clear = disabled_clear = high_duty_seen = low_duty_seen = in_window_seen = out_window_seen = False
+    ever_enabled = False
     for row in rows:
         t = float(row["time"])
         clk = float(row["clk_in"])
@@ -25,14 +26,16 @@ def check_v4_1022_duty_cycle_window_monitor(rows: list[dict[str, float]]) -> tup
             last_fall = None
             expected_duty = None
             clear = abs(float(row["duty_metric"])) < 0.08 and not _v4_topup_logic_high(row, "in_window") and not _v4_topup_logic_high(row, "valid")
-            if rst and t < 5e-9 and clear:
+            disabled = ever_enabled and not _v4_topup_logic_high(row, "enable")
+            if rst and clear:
                 reset_clear = True
-            if t > 82e-9 and not _v4_topup_logic_high(row, "enable") and clear:
+            if disabled and clear:
                 disabled_clear = True
-            if ((rst and t < 5e-9) or t > 82e-9) and not clear:
+            if ((rst and reset_clear) or (disabled and disabled_clear)) and not clear:
                 clear_errors += 1
             prev_clk = clk
             continue
+        ever_enabled = True
         if prev_clk <= 0.45 and clk > 0.45:
             if last_rise is not None and last_fall is not None and last_rise < last_fall < t:
                 expected_duty = (last_fall - last_rise) / (t - last_rise)

@@ -25,7 +25,7 @@ def check_v4_330_ffe_tap_adaptation_monitor(rows: list[dict[str, float]]) -> tup
     if miss:
         return False, f"v4_330 missing_signals={','.join(miss)}"
     prev_clk = float(rows[0]["clk"])
-    checked = main_errors = adapt_errors = done_errors = clear_errors = 0
+    checked = main_errors = adapt_errors = done_errors = clear_errors = polarity_errors = 0
     reset_clear = disabled_clear = ever_enabled = False
     updates = 0
     adapt_max = 0.0
@@ -55,8 +55,6 @@ def check_v4_330_ffe_tap_adaptation_monitor(rows: list[dict[str, float]]) -> tup
             prev_clk = clk
             continue
         prev_clk = clk
-        if t < 8e-9:
-            continue
         checked += 1
         updates += 1
         err = float(row["err_in"])
@@ -66,7 +64,11 @@ def check_v4_330_ffe_tap_adaptation_monitor(rows: list[dict[str, float]]) -> tup
             main_errors += 1
         adapt = float(row["adapt_metric"])
         adapt_max = max(adapt_max, adapt)
-        tap_mag = abs(float(row["tap_pre"]) - VCM) + abs(float(row["tap_post"]) - VCM)
+        pre_offset = float(row["tap_pre"]) - VCM
+        post_offset = float(row["tap_post"]) - VCM
+        tap_mag = abs(pre_offset) + abs(post_offset)
+        if max(abs(pre_offset), abs(post_offset)) > 0.02 and pre_offset * post_offset > 0.0:
+            polarity_errors += 1
         if adapt + 0.08 < tap_mag:
             adapt_errors += 1
         done = _high(row, "done")
@@ -82,13 +84,19 @@ def check_v4_330_ffe_tap_adaptation_monitor(rows: list[dict[str, float]]) -> tup
         and disabled_clear
         and main_errors <= max(3, checked // 3)
         and adapt_errors <= max(3, checked // 3)
+        and polarity_errors == 0
         and done_errors <= 3
         and clear_errors <= 6
     )
     return ok, (
         f"v4_330 checked={checked} updates={updates} done_at={done_at} adapt_max={adapt_max:.3f} "
-        f"main_errors={main_errors} adapt_errors={adapt_errors} done_errors={done_errors} "
-        f"reset_clear={reset_clear} disabled_clear={disabled_clear} clear_errors={clear_errors}"
+        f"main_errors={main_errors} adapt_errors={adapt_errors} polarity_errors={polarity_errors} done_errors={done_errors} "
+        f"reset_clear={reset_clear} disabled_clear={disabled_clear} clear_errors={clear_errors}; "
+        f"P_ON_RESET_OR_WHEN_DISABLED_CLEAR mismatch_count={int(not reset_clear) + int(not disabled_clear)}; "
+        f"P_ON_EACH_ENABLED_RISING_CLK_EDGE mismatch_count={max(0, 8 - checked)}; "
+        f"P_DRIVE_MAIN_OUT_AS_THE_CURRENT mismatch_count={main_errors}; "
+        f"P_EXPOSE_AGGREGATE_TAP_MAGNITUDE_ON_ADAPT mismatch_count={adapt_errors + polarity_errors}; "
+        f"P_ASSERT_DONE_AFTER_SIX_ENABLED_ADAPTATION mismatch_count={done_errors}"
     )
 
 CHECKER_ID = "v4_330_ffe_tap_adaptation_monitor"

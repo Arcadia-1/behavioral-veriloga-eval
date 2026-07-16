@@ -15,8 +15,7 @@
       "Venable (enable 0) vsource type=pwl wave=[0 0 5n 0 5.2n 0.9 80n 0.9 80.2n 0 92n 0]",
       "Vsymbol_0 (symbol_0 0) vsource type=pwl wave=[0 0 8n 0 8.2n 0 18n 0 18.2n 0.9 28n 0.9 28.2n 0 38n 0 38.2n 0.9 48n 0.9 48.2n 0 58n 0 58.2n 0.9 68n 0.9 68.2n 0.9 78n 0.9 78.2n 0 92n 0]",
       "Vsymbol_1 (symbol_1 0) vsource type=pwl wave=[0 0 8n 0 8.2n 0 18n 0 18.2n 0 28n 0 28.2n 0.9 38n 0.9 38.2n 0.9 48n 0.9 48.2n 0 58n 0 58.2n 0.9 68n 0.9 68.2n 0 78n 0 78.2n 0.9 92n 0.9]",
-      "XDUT (symbol_1 symbol_0 clk rst enable level_out linearity_metric valid) pam4_linearity_monitor",
-      ""
+      "XDUT (symbol_1 symbol_0 clk rst enable level_out linearity_metric valid) pam4_linearity_monitor"
     ],
     "header": [
       "simulator lang=spectre",
@@ -48,25 +47,17 @@
     "legacy_score_deck_sha256": "1d6f57c61fcab098308f8374dc8e60923187f237c522789387ceaea9c71e9ad9",
     "notes": [
       "legacy feedback deck was used only to seed the canonical harness spec",
-      "legacy score deck seeded private profile-specific overrides"
+      "legacy score deck seeded private profile-specific overrides",
+      "feedback deck is the canonical stimulus; score is generated with identical semantics"
     ]
   },
   "profile_defaults": {
     "feedback": {
-      "parameters": {
-        "maxstep": "200p",
-        "stop_time": "100n"
-      },
       "simulatorOptions": {
         "evas_profile": "balanced"
       }
     },
-    "score": {
-      "parameters": {
-        "maxstep": "100p",
-        "stop_time": "100n"
-      }
-    }
+    "score": {}
   },
   "property_ids": [
     "P_ON_RESET_OR_WHEN_DISABLED_CLEAR",

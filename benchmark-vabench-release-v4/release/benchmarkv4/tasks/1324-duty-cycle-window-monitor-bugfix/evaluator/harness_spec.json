@@ -15,8 +15,7 @@
       "Venable (enable 0) vsource type=pwl wave=[0 0 5n 0 5.2n 0.9 80n 0.9 80.2n 0 92n 0]",
       "Vduty_min (duty_min 0) vsource dc=0.315",
       "Vduty_max (duty_max 0) vsource dc=0.585",
-      "XDUT (clk_in rst enable duty_min duty_max duty_metric in_window valid) duty_cycle_window_monitor",
-      ""
+      "XDUT (clk_in rst enable duty_min duty_max duty_metric in_window valid) duty_cycle_window_monitor"
     ],
     "header": [
       "simulator lang=spectre",
@@ -48,25 +47,17 @@
     "legacy_score_deck_sha256": "902fbf21088c133134b54814d5b52aebb7695414023a38477734929c24ded34e",
     "notes": [
       "legacy feedback deck was used only to seed the canonical harness spec",
-      "legacy score deck seeded private profile-specific overrides"
+      "legacy score deck seeded private profile-specific overrides",
+      "feedback deck is the canonical stimulus; score is generated with identical semantics"
     ]
   },
   "profile_defaults": {
     "feedback": {
-      "parameters": {
-        "maxstep": "200p",
-        "stop_time": "100n"
-      },
       "simulatorOptions": {
         "evas_profile": "balanced"
       }
     },
-    "score": {
-      "parameters": {
-        "maxstep": "100p",
-        "stop_time": "100n"
-      }
-    }
+    "score": {}
   },
   "property_ids": [
     "P_ON_RESET_OR_WHEN_DISABLED_CLEAR",

@@ -11,18 +11,16 @@ def _v4_code_from_bits(row: dict[str, float], bits: list[str]) -> int:
 def _v4_rising(prev_v: float, now_v: float, vth: float = 0.45) -> bool:
     return now_v > vth and prev_v <= vth
 
-def _v4_edges(rows: list[dict[str, float]], name: str, *, start: float = 0.0, stop: float | None = None, vth: float = 0.45) -> list[float]:
+def _v4_edges(rows: list[dict[str, float]], name: str, *, vth: float = 0.45) -> list[float]:
     if not rows:
         return []
     prev = float(rows[0].get(name, 0.0))
     edges: list[float] = []
     for row in rows[1:]:
         t = float(row["time"])
-        if t < start or (stop is not None and t > stop):
-            prev = float(row.get(name, 0.0))
-            continue
+        enabled = _v4_topup_logic_high(row, "enable") and not _v4_topup_logic_high(row, "rst")
         now = float(row.get(name, 0.0))
-        if prev <= vth and now > vth:
+        if enabled and prev <= vth and now > vth:
             edges.append(t)
         prev = now
     return edges
@@ -36,6 +34,7 @@ def check_v4_1024_fractional_delay_dtc_macro(rows: list[dict[str, float]]) -> tu
     expected_metric = 0.0
     checked = metric_errors = valid_errors = clear_errors = 0
     reset_clear = disabled_clear = False
+    ever_enabled = False
     codes_seen: set[int] = set()
     for row in rows:
         t = float(row["time"])
@@ -44,14 +43,16 @@ def check_v4_1024_fractional_delay_dtc_macro(rows: list[dict[str, float]]) -> tu
         enabled = _v4_topup_logic_high(row, "enable") and not rst
         if not enabled:
             clear = abs(float(row["clk_out"])) < 0.08 and abs(float(row["phase_metric"])) < 0.08 and not _v4_topup_logic_high(row, "valid")
-            if rst and t < 5e-9 and clear:
+            disabled = ever_enabled and not _v4_topup_logic_high(row, "enable")
+            if rst and clear:
                 reset_clear = True
-            if t > 82e-9 and not _v4_topup_logic_high(row, "enable") and clear:
+            if disabled and clear:
                 disabled_clear = True
-            if ((rst and t < 5e-9) or t > 82e-9) and not clear:
+            if ((rst and reset_clear) or (disabled and disabled_clear)) and not clear:
                 clear_errors += 1
             prev_clk = clk
             continue
+        ever_enabled = True
         if _v4_rising(prev_clk, clk):
             code = _v4_code_from_bits(row, ["frac_0", "frac_1", "frac_2", "frac_3"])
             input_edges.append((t, code))
@@ -66,7 +67,7 @@ def check_v4_1024_fractional_delay_dtc_macro(rows: list[dict[str, float]]) -> tu
             metric_errors += 1
         if not _v4_topup_logic_high(row, "valid"):
             valid_errors += 1
-    output_edges = _v4_edges(rows, "clk_out", start=5e-9, stop=82e-9)
+    output_edges = _v4_edges(rows, "clk_out")
     delay_errors = 0
     matched = 0
     prev_delay = None

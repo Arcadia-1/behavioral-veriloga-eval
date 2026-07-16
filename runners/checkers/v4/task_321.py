@@ -34,7 +34,7 @@ def check_charge_pump_pulse_balancer(rows: list[Row]) -> tuple[bool, str]:
     }
     missing = sorted(required - (set(rows[0]) if rows else set()))
     if missing:
-        return False, "missing_columns=" + ",".join(missing)
+        return False, "v4_321 missing_signals=" + ",".join(missing)
 
     previous_clk = float(rows[0]["clk"])
     previous_row = rows[0]
@@ -110,10 +110,15 @@ def check_charge_pump_pulse_balancer(rows: list[Row]) -> tuple[bool, str]:
     )
     ok = coverage_ok and step_errors <= 1 and metric_errors <= 1 and balance_errors <= 1
     return ok, (
-        f"checked={checked} up_only={up_only} dn_only={dn_only} holds={holds} "
+        f"v4_321 checked={checked} up_only={up_only} dn_only={dn_only} holds={holds} "
         f"reset_clear={reset_clear} disabled_clear={disabled_clear} "
         f"step_errors={step_errors} metric_errors={metric_errors} "
-        f"balance_errors={balance_errors}"
+        f"balance_errors={balance_errors}; "
+        f"P_ON_RESET_OR_WHEN_DISABLED_DRIVE mismatch_count={int(not reset_clear) + int(not disabled_clear)}; "
+        f"P_ON_EACH_RISING_CLK_EDGE_OBSERVE mismatch_count={step_errors}; "
+        f"P_INCREASE_VCTRL_FOR_UP_ONLY_DECREASE mismatch_count={step_errors}; "
+        f"P_DRIVE_IMBALANCE_METRIC_FROM_THE_ACCUMULATED mismatch_count={metric_errors}; "
+        f"P_ASSERT_BALANCED_ONLY_WHEN_THE_RECENT mismatch_count={balance_errors}"
     )
 
 
