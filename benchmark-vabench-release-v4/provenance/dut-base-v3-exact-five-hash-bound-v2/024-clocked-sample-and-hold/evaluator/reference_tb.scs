@@ -3,36 +3,13 @@ global 0
 
 ahdl_include "./dut/sample_hold.va"
 
-// Clocked sample-and-hold reference testbench.
-// The input is stable at each rising sampling edge, then steps well inside
-// the high clock phase. A correct edge-sampled S/H holds the old value;
-// high-phase-transparent mutations visibly follow the step.
+V_VDD (vdd 0) vsource dc=1.0
+V_VSS (vss 0) vsource dc=0.1
+V_IN (in vss) vsource type=pwl wave=[0 0 240n 0.9]
+V_CLK (clk vss) vsource type=pulse val0=0 val1=0.9 period=20n delay=1n rise=200p fall=200p width=10n
+XDUT (vdd vss in clk out) sample_hold
 
-Vvdd (vdd 0) vsource dc=1.0 type=dc
-Vvss (vss 0) vsource dc=0.1 type=dc
+simulatorOptions options evas_profile=balanced
 
-Vin (in vss) vsource type=pwl wave=[ \
-    0       0.10 \
-    3.8n    0.10 \
-    4.0n    0.78 \
-    19.8n   0.78 \
-    20.0n   0.78 \
-    23.8n   0.78 \
-    24.0n   0.22 \
-    39.8n   0.22 \
-    40.0n   0.22 \
-    43.8n   0.22 \
-    44.0n   0.72 \
-    59.8n   0.72 \
-    60.0n   0.72 \
-    63.8n   0.72 \
-    64.0n   0.30 \
-    1u      0.30 \
-]
-
-Vclk (clk vss) vsource type=pulse val0=0 val1=0.9 period=20n width=10n rise=200p fall=200p
-
-IDUT (vdd vss in clk out) sample_hold vth=0.45 tedge=100p
-
-tran tran stop=1u maxstep=1n
+tran tran stop=240n maxstep=1n
 save vdd vss in clk out

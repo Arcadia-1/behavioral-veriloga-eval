@@ -7,9 +7,15 @@
   },
   "deck": {
     "analyses": [
-      "tran tran stop=5n maxstep=100p"
+      "tran tran stop=40n maxstep=0.5n"
     ],
-    "body_lines": [],
+    "body_lines": [
+      "V_b0 (b0 0) vsource type=pwl wave=[0 0 5n 0 5.1n 0.5 10n 0.5 10.1n 0 20n 0 20.1n 0.5 40n 0.5]",
+      "V_b1 (b1 0) vsource type=pwl wave=[0 0 12n 0 12.1n 0.9 40n 0.9]",
+      "V_b2 (b2 0) vsource type=pwl wave=[0 0 20n 0 20.1n 0.9 40n 0.9]",
+      "V_b3 (b3 0) vsource type=pwl wave=[0 0 30n 0 30.1n 0.9 40n 0.9]",
+      "XDUT (b0 b1 b2 b3 out) dac_mismatch_unit_weighting_model"
+    ],
     "header": [
       "simulator lang=spectre",
       "global 0"
@@ -37,67 +43,17 @@
     "legacy_score_deck_sha256": "d4dded8fcd25d29c92227aed233eafbed6a00e7d079c372d18818c7ea4fe1fe9",
     "notes": [
       "legacy feedback deck was used only to seed the canonical harness spec",
-      "legacy score deck seeded private profile-specific overrides"
+      "legacy score deck seeded private profile-specific overrides",
+      "feedback deck is the canonical stimulus; score is generated with identical semantics"
     ]
   },
   "profile_defaults": {
-      "feedback": {
-        "deck_overrides": {
-          "analyses": [
-            "tran tran stop=40n maxstep=0.5n"
-          ],
-          "body_lines": [
-          "V_b0 (b0 0) vsource type=pwl wave=[0 0 5n 0 5.1n 0.5 10n 0.5 10.1n 0 20n 0 20.1n 0.5 40n 0.5]",
-          "V_b1 (b1 0) vsource type=pwl wave=[0 0 12n 0 12.1n 0.9 40n 0.9]",
-          "V_b2 (b2 0) vsource type=pwl wave=[0 0 20n 0 20.1n 0.9 40n 0.9]",
-          "V_b3 (b3 0) vsource type=pwl wave=[0 0 30n 0 30.1n 0.9 40n 0.9]",
-          "",
-          "XDUT (b0 b1 b2 b3 out) dac_mismatch_unit_weighting_model",
-            ""
-          ],
-          "save_signals": [
-            "b0",
-            "b1",
-            "b2",
-            "b3",
-            "out"
-          ]
-      },
-      "parameters": {
-        "maxstep": "200p",
-        "stop_time": "100n"
-      },
+    "feedback": {
       "simulatorOptions": {
         "evas_profile": "balanced"
       }
     },
-    "score": {
-      "deck_overrides": {
-        "analyses": [
-          "tran tran stop=80n maxstep=0.5n"
-        ],
-        "body_lines": [
-          "Vb0 (b0 0) vsource type=pwl wave=[0 0 5n 0 5.1n 0.5 10n 0.5 10.1n 0 20n 0 20.1n 0.5 40n 0.5]",
-          "Vb1 (b1 0) vsource type=pwl wave=[0 0 12n 0 12.1n 0.9 40n 0.9]",
-          "Vb2 (b2 0) vsource type=pwl wave=[0 0 20n 0 20.1n 0.9 40n 0.9]",
-          "Vb3 (b3 0) vsource type=pwl wave=[0 0 30n 0 30.1n 0.9 40n 0.9]",
-          "",
-          "XDUT (b0 b1 b2 b3 out) dac_mismatch_unit_weighting_model",
-          ""
-        ],
-        "save_signals": [
-          "b0",
-          "b1",
-          "b2",
-          "b3",
-          "out"
-        ]
-      },
-      "parameters": {
-        "maxstep": "100p",
-        "stop_time": "100n"
-      }
-    }
+    "score": {}
   },
   "property_ids": [
     "P_ZERO_AND_FULL_SCALE",
@@ -108,7 +64,7 @@
   ],
   "schema_version": "v4-harness-spec-v1",
   "source_contract": {
-    "checker_profile_sha256": "1940071fdf1a1510f30b99b6bf6fa4a692e09ad24bae6cff47abdb03d2fe8800",
+    "checker_profile_sha256": "eb9231bee2487d87bab39f2006d89c5a01cd250062c3ba4e245c77ab1ac966c0",
     "family_spec_sha256": "1acdd25464a0149d401d5d678772da49ab86763afebd8c9867bbb9767643b3d5"
   },
   "task_id": "v4-025"

@@ -1,122 +1,104 @@
-"""Task-specific checker for canonical v4 DUT 021."""
+"""Stimulus-relative checker for canonical v4 DUT 021."""
 from __future__ import annotations
 
 from ..api import Checker
-DEFAULT_EDGE_SETTLE_DELAY_S = 1.2e-10
+from .stimulus_relative import (
+    event_settle_delay,
+    finish,
+    missing_trace,
+    rising_indices,
+    row_at_or_after,
+)
 
-def check_release_calibration_loop(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    required = {"time", "clk", "rst", "out"}
-    if not rows or not required.issubset(rows[0]):
-        return False, "missing time/clk/rst/out"
-    input_key = "vin" if "vin" in rows[0] else "err" if "err" in rows[0] else None
-    if input_key is None:
-        return False, "missing vin/err input"
 
-    reset_rows = [r for r in rows if r["rst"] > 0.45 and r["time"] < 3e-9]
-    post_rows = [r for r in rows if r["rst"] <= 0.45 and r["time"] > 3e-9]
-    if len(post_rows) < 10:
-        return False, f"too_few_post_reset_rows={len(post_rows)}"
+PROPERTY_IDS = [
+    "P_INITIAL_AND_RESET_TARGET",
+    "P_POSITIVE_ERROR_STEP",
+    "P_NEGATIVE_ERROR_STEP",
+    "P_DEADBAND_HOLD",
+    "P_OUTPUT_CLAMP",
+    "P_BETWEEN_EDGE_HOLD",
+]
 
-    reset_mean = sum(r["out"] for r in reset_rows) / len(reset_rows) if reset_rows else rows[0]["out"]
-    out_vals = [r["out"] for r in post_rows]
-    out_min = min(out_vals)
-    out_max = max(out_vals)
-    out_span = out_max - out_min
-    if not (0.0 <= out_min <= out_max <= 0.95):
-        return False, f"out_range=({out_min:.3f},{out_max:.3f})"
-    if abs(reset_mean - 0.45) > 0.12:
-        return False, f"reset_trim_mean={reset_mean:.3f}"
-    # EVAS and Spectre can land on opposite sides of the exact 0.120 V boundary
-    # from transition sampling granularity while producing the same trim sequence.
-    if out_span < 0.12 - 1e-6:
-        return False, f"trim_span_too_small={out_span:.3f}"
 
-    edge_idx = [
-        idx for idx in range(1, len(rows))
-        if rows[idx - 1]["clk"] <= 0.45 < rows[idx]["clk"] and rows[idx]["rst"] <= 0.45
-    ]
-    directional_checks = 0
-    directional_matches = 0
-    prev_out: float | None = None
-    for idx in edge_idx:
-        settle = min(idx + 3, len(rows) - 1)
-        current_out = rows[settle]["out"]
-        if prev_out is None:
-            prev_out = current_out
+def check_calibration_deadband_controller(
+    rows: list[dict[str, float]],
+) -> tuple[bool, str]:
+    required = {"time", "clk", "rst", "vin", "out", "metric"}
+    results, error = missing_trace(CHECKER_ID, rows, required, PROPERTY_IDS)
+    if error is not None:
+        return error
+    by_id = {result.property_id: result for result in results}
+
+    edges = rising_indices(rows, "clk")
+    edge_times = [float(rows[index]["time"]) for index in edges]
+    settle = event_settle_delay(edge_times)
+    state = 0.45
+
+    for index in edges:
+        edge = rows[index]
+        event_time = float(edge["time"])
+        if edge["rst"] > 0.45:
+            state = 0.45
+            expected_metric = 0.0
+            property_id = "P_INITIAL_AND_RESET_TARGET"
+        else:
+            error_v = float(edge["vin"]) - 0.45
+            if error_v > 0.05:
+                state += 0.06
+                expected_metric = 0.9
+                property_id = "P_POSITIVE_ERROR_STEP"
+            elif error_v < -0.05:
+                state -= 0.06
+                expected_metric = 0.9
+                property_id = "P_NEGATIVE_ERROR_STEP"
+            else:
+                expected_metric = 0.0
+                property_id = "P_DEADBAND_HOLD"
+        state = min(0.85, max(0.05, state))
+        sample = row_at_or_after(rows, event_time + settle)
+        by_id[property_id].compare(
+            expected=state,
+            observed=sample["out"],
+            tolerance=0.018,
+            time_s=sample["time"],
+            label="out",
+        )
+        by_id[property_id].compare(
+            expected=expected_metric,
+            observed=sample["metric"],
+            tolerance=0.075,
+            time_s=sample["time"],
+            label="metric",
+        )
+        by_id["P_OUTPUT_CLAMP"].condition(
+            0.032 <= sample["out"] <= 0.868,
+            expected="out_in_[0.05,0.85]",
+            observed=f"out={sample['out']:.6g}",
+            time_s=sample["time"],
+            gap=max(0.05 - sample["out"], sample["out"] - 0.85, 0.0),
+        )
+
+    for left, right in zip(edge_times, edge_times[1:]):
+        spacing = right - left
+        if spacing <= 2.5 * settle:
             continue
-        errv = rows[idx][input_key] - 0.45
-        delta = current_out - prev_out
-        prev_out = current_out
-        if abs(errv) <= 0.08:
-            continue
-        if current_out < 0.08 or current_out > 0.82 or prev_out < 0.08 or prev_out > 0.82:
-            continue
-        directional_checks += 1
-        if (errv > 0.0 and delta > 0.004) or (errv < 0.0 and delta < -0.004):
-            directional_matches += 1
-    if directional_checks < 3:
-        return False, f"too_few_directional_trim_checks={directional_checks}"
-    if directional_matches < directional_checks - 1:
-        return False, f"trim_direction_mismatches={directional_checks - directional_matches}/{directional_checks}"
+        early = row_at_or_after(rows, left + max(settle, 0.30 * spacing))
+        late = row_at_or_after(rows, left + 0.78 * spacing)
+        by_id["P_BETWEEN_EDGE_HOLD"].compare(
+            expected=early["out"],
+            observed=late["out"],
+            tolerance=0.012,
+            time_s=late["time"],
+            label="held_out",
+        )
 
-    return True, (
-        f"release_calibration_loop reset={reset_mean:.3f} span={out_span:.3f} "
-        f"direction={directional_matches}/{directional_checks}"
+    return finish(
+        CHECKER_ID,
+        results,
+        coverage=f"rising_edges={len(edges)} settle_s={settle:.6g}",
     )
 
-def settled_row_index_after_delay(
-    rows: list[dict[str, float]],
-    start_idx: int,
-    settle_delay_s: float = DEFAULT_EDGE_SETTLE_DELAY_S,
-) -> int:
-    settle_time = rows[start_idx]["time"] + settle_delay_s
-    settle = start_idx
-    while settle + 1 < len(rows) and rows[settle]["time"] < settle_time:
-        settle += 1
-    return settle
-
-def edge_settled_values(
-    rows: list[dict[str, float]],
-    key: str,
-    *,
-    clk_key: str = "clk",
-    rst_key: str = "rst",
-    settle_delay_s: float | None = None,
-) -> list[tuple[dict[str, float], float]]:
-    values: list[tuple[dict[str, float], float]] = []
-    for idx in range(1, len(rows)):
-        if rows[idx - 1][clk_key] <= 0.45 < rows[idx][clk_key] and rows[idx].get(rst_key, 0.0) <= 0.45:
-            settle = settled_row_index_after_delay(
-                rows,
-                idx,
-                DEFAULT_EDGE_SETTLE_DELAY_S if settle_delay_s is None else settle_delay_s,
-            )
-            values.append((rows[idx], rows[settle][key]))
-    return values
-
-def check_release_deadband_calibration(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    ok, note = check_release_calibration_loop(rows)
-    if not ok:
-        return ok, note
-    samples = edge_settled_values(rows, "out", settle_delay_s=0.12e-9)
-    hold_checks = hold_ok = 0
-    previous: float | None = None
-    for edge_row, out in samples:
-        if previous is None:
-            previous = out
-            continue
-        errv = edge_row.get("vin", edge_row.get("err", 0.45)) - 0.45
-        delta = abs(out - previous)
-        previous = out
-        if abs(errv) <= 0.055 and edge_row["time"] < 60e-9:
-            hold_checks += 1
-            if delta <= 0.025:
-                hold_ok += 1
-    if hold_checks < 2:
-        return False, f"deadband_missing_hold_samples={hold_checks}"
-    if hold_ok < hold_checks:
-        return False, f"deadband_hold_mismatches={hold_checks - hold_ok}/{hold_checks}"
-    return True, f"{note}; deadband_hold={hold_ok}/{hold_checks}"
 
 CHECKER_ID = "v4_021_calibration_deadband_controller"
-CHECKER: Checker = check_release_deadband_calibration
+CHECKER: Checker = check_calibration_deadband_controller

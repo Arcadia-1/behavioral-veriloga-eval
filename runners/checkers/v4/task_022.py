@@ -1,92 +1,103 @@
-"""Task-specific checker for canonical v4 DUT 022."""
+"""Stimulus-relative checker for canonical v4 DUT 022."""
 from __future__ import annotations
 
 from ..api import Checker
-DEFAULT_EDGE_SETTLE_DELAY_S = 1.2e-10
+from .stimulus_relative import (
+    event_settle_delay,
+    finish,
+    missing_trace,
+    rising_indices,
+    row_at_or_after,
+)
 
-def settled_row_index_after_delay(
-    rows: list[dict[str, float]],
-    start_idx: int,
-    settle_delay_s: float = DEFAULT_EDGE_SETTLE_DELAY_S,
-) -> int:
-    settle_time = rows[start_idx]["time"] + settle_delay_s
-    settle = start_idx
-    while settle + 1 < len(rows) and rows[settle]["time"] < settle_time:
-        settle += 1
-    return settle
 
-def edge_settled_values(
-    rows: list[dict[str, float]],
-    key: str,
-    *,
-    clk_key: str = "clk",
-    rst_key: str = "rst",
-    settle_delay_s: float | None = None,
-) -> list[tuple[dict[str, float], float]]:
-    values: list[tuple[dict[str, float], float]] = []
-    for idx in range(1, len(rows)):
-        if rows[idx - 1][clk_key] <= 0.45 < rows[idx][clk_key] and rows[idx].get(rst_key, 0.0) <= 0.45:
-            settle = settled_row_index_after_delay(
-                rows,
-                idx,
-                DEFAULT_EDGE_SETTLE_DELAY_S if settle_delay_s is None else settle_delay_s,
-            )
-            values.append((rows[idx], rows[settle][key]))
-    return values
+PROPERTY_IDS = [
+    "P_RESET_MIDSCALE",
+    "P_UP_ONLY_STEP",
+    "P_DN_ONLY_STEP",
+    "P_HOLD_CASES",
+    "P_CONTROL_CLAMP",
+    "P_SAMPLED_HOLD",
+]
 
-def check_release_charge_pump(rows: list[dict[str, float]]) -> tuple[bool, str]:
+
+def check_charge_pump_abstraction(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "clk", "rst", "up", "dn", "vctrl", "metric"}
-    if not rows or not required.issubset(rows[0]):
-        return False, "missing time/clk/rst/up/dn/vctrl/metric"
+    results, error = missing_trace(CHECKER_ID, rows, required, PROPERTY_IDS)
+    if error is not None:
+        return error
+    by_id = {result.property_id: result for result in results}
 
-    ctrl_vals = [r["vctrl"] for r in rows]
-    ctrl_min = min(ctrl_vals)
-    ctrl_max = max(ctrl_vals)
-    if not (0.0 <= ctrl_min <= ctrl_max <= 0.95):
-        return False, f"charge_pump_vctrl_range=({ctrl_min:.3f},{ctrl_max:.3f})"
+    edges = rising_indices(rows, "clk")
+    edge_times = [float(rows[index]["time"]) for index in edges]
+    settle = event_settle_delay(edge_times)
+    state = 0.45
 
-    reset_vals = [r["vctrl"] for r in rows if r["rst"] > 0.45 and r["time"] <= 3.0e-9]
-    if not reset_vals:
-        return False, "charge_pump_missing_reset_window"
-    reset_mean = sum(reset_vals) / len(reset_vals)
-    if abs(reset_mean - 0.45) > 0.12:
-        return False, f"charge_pump_reset_mean={reset_mean:.3f}"
-    ctrl_span = ctrl_max - ctrl_min
-    if ctrl_span < 0.12:
-        return False, f"charge_pump_vctrl_span_too_small={ctrl_span:.3f}"
+    for index in edges:
+        edge = rows[index]
+        event_time = float(edge["time"])
+        if edge["rst"] > 0.45:
+            state = 0.45
+            expected_metric = 0.45
+            property_id = "P_RESET_MIDSCALE"
+        else:
+            up = edge["up"] > 0.45
+            down = edge["dn"] > 0.45
+            if up and not down:
+                state += 0.06
+                expected_metric = 0.75
+                property_id = "P_UP_ONLY_STEP"
+            elif down and not up:
+                state -= 0.06
+                expected_metric = 0.15
+                property_id = "P_DN_ONLY_STEP"
+            else:
+                expected_metric = 0.45
+                property_id = "P_HOLD_CASES"
+        state = min(0.85, max(0.05, state))
+        sample = row_at_or_after(rows, event_time + settle)
+        by_id[property_id].compare(
+            expected=state,
+            observed=sample["vctrl"],
+            tolerance=0.018,
+            time_s=sample["time"],
+            label="vctrl",
+        )
+        by_id[property_id].compare(
+            expected=expected_metric,
+            observed=sample["metric"],
+            tolerance=0.055,
+            time_s=sample["time"],
+            label="metric",
+        )
+        by_id["P_CONTROL_CLAMP"].condition(
+            0.032 <= sample["vctrl"] <= 0.868,
+            expected="vctrl_in_[0.05,0.85]",
+            observed=f"vctrl={sample['vctrl']:.6g}",
+            time_s=sample["time"],
+            gap=max(0.05 - sample["vctrl"], sample["vctrl"] - 0.85, 0.0),
+        )
 
-    samples = edge_settled_values(rows, "vctrl")
-    up_checks = down_checks = up_ok = down_ok = 0
-    previous: float | None = None
-    for edge_row, ctrl in samples:
-        if previous is None:
-            previous = ctrl
+    for left, right in zip(edge_times, edge_times[1:]):
+        spacing = right - left
+        if spacing <= 2.5 * settle:
             continue
-        previous_out = previous
-        delta = ctrl - previous_out
-        previous = ctrl
-        if edge_row["time"] > 60e-9:
-            continue
-        if ctrl < 0.08 or ctrl > 0.82 or previous_out < 0.08 or previous_out > 0.82:
-            continue
-        up_high = edge_row["up"] > 0.45
-        dn_high = edge_row["dn"] > 0.45
-        if up_high and not dn_high:
-            up_checks += 1
-            if delta > 0.004:
-                up_ok += 1
-        elif dn_high and not up_high:
-            down_checks += 1
-            if delta < -0.004:
-                down_ok += 1
-    if up_checks < 2 or down_checks < 2:
-        return False, f"charge_pump_missing_polarity_windows up={up_checks} down={down_checks}"
-    if up_ok < up_checks - 1 or down_ok < down_checks - 1:
-        return False, f"charge_pump_polarity up={up_ok}/{up_checks} down={down_ok}/{down_checks}"
-    return True, (
-        f"release_charge_pump reset={reset_mean:.3f} span={ctrl_span:.3f} "
-        f"polarity up={up_ok}/{up_checks} down={down_ok}/{down_checks}"
+        early = row_at_or_after(rows, left + max(settle, 0.30 * spacing))
+        late = row_at_or_after(rows, left + 0.78 * spacing)
+        by_id["P_SAMPLED_HOLD"].compare(
+            expected=early["vctrl"],
+            observed=late["vctrl"],
+            tolerance=0.012,
+            time_s=late["time"],
+            label="held_vctrl",
+        )
+
+    return finish(
+        CHECKER_ID,
+        results,
+        coverage=f"rising_edges={len(edges)} settle_s={settle:.6g}",
     )
 
+
 CHECKER_ID = "v4_022_charge_pump_abstraction"
-CHECKER: Checker = check_release_charge_pump
+CHECKER: Checker = check_charge_pump_abstraction
