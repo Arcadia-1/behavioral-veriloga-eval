@@ -33,7 +33,7 @@
     }
   },
   "diagnostics": {
-    "expected": "trigger=stimulus exercises neg_004_ignore_control_or_reset; violated_properties=P_COMPUTE_THE_WEIGHTED_BALANCE_SUM_AS,P_SPAN_MIN_0_62_V_SPAN",
+    "expected": "trigger=stimulus exercises the selected negative case; violated_properties=P_COMPUTE_THE_WEIGHTED_BALANCE_SUM_AS,P_SPAN_MIN_0_62_V_SPAN",
     "observed": "EVAS: issue109_remaining_error=0.9000; Spectre: issue109_remaining_error=0.9000",
     "violated_property_ids": [
       "P_COMPUTE_THE_WEIGHTED_BALANCE_SUM_AS",

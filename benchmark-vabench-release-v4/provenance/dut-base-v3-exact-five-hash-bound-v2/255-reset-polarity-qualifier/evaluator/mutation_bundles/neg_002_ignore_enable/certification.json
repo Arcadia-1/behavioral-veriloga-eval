@@ -33,7 +33,7 @@
     }
   },
   "diagnostics": {
-    "expected": "trigger=stimulus exercises neg_002_ignore_enable; violated_properties=P_DRIVE_OUT_VHI_CLIP01_X0_ASSERT,P_VTH_0_45_V_LOGIC_THRESHOLD",
+    "expected": "trigger=stimulus exercises the selected negative case; violated_properties=P_DRIVE_OUT_VHI_CLIP01_X0_ASSERT,P_VTH_0_45_V_LOGIC_THRESHOLD",
     "observed": "EVAS: issue109_remaining_error=0.9000; Spectre: issue109_remaining_error=0.9000",
     "violated_property_ids": [
       "P_DRIVE_OUT_VHI_CLIP01_X0_ASSERT",
