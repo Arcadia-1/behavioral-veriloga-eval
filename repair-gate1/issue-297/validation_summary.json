@@ -1,0 +1,1620 @@
+{
+  "environment": {
+    "EVAS_ENGINE": "evas2",
+    "VAEVAS_DEFAULT_EVAS_ENGINE": "evas2",
+    "VAEVAS_EVAS_PERSISTENT_WORKER": "0"
+  },
+  "evas_engine": "evas2",
+  "evas_engine_used": "evas2",
+  "evas_source": {
+    "commit": "985bba40929da8066dc9f1e4a08d27c010424c5f",
+    "describe": "v0.8.1-9-g985bba4",
+    "source_root": "/Users/bucketsran/Documents/TsingProject/vaEvas/EVAS",
+    "wrapper": "/Users/bucketsran/bin/evas"
+  },
+  "families": [
+    {
+      "checker_task_id": "v4_191_sar_das_logic_6b",
+      "evas_engine_used": "evas2",
+      "family_dir": "191-sar-das-logic-6b",
+      "family_id": 191,
+      "gold": [
+        {
+          "candidate_sha256": "25071c60dc4f70755645e13b70c4325d04310d00f241a136d7f8e42ae00b92e4",
+          "checker_task_id": "v4_191_sar_das_logic_6b",
+          "evas_engine_used": "evas2",
+          "expected_pass": true,
+          "family_id": 191,
+          "label": "gold_feedback",
+          "notes": [
+            "checked=15 sar_rises=7 final_bit=0"
+          ],
+          "profile": "feedback",
+          "returncode": 0,
+          "score": 1.0,
+          "status": "PASS",
+          "testbench_sha256": "63f796bc62cd723098d75c4a5691dcedc4453e2ec8221e0556b2a9079c3c7975",
+          "tran_csv_sha256": "b265de6251c7a2cf46130154b98fb3a5b017fb88a619feba658496ee39dc6f2f"
+        },
+        {
+          "candidate_sha256": "25071c60dc4f70755645e13b70c4325d04310d00f241a136d7f8e42ae00b92e4",
+          "checker_task_id": "v4_191_sar_das_logic_6b",
+          "evas_engine_used": "evas2",
+          "expected_pass": true,
+          "family_id": 191,
+          "label": "gold_score",
+          "notes": [
+            "checked=16 sar_rises=7 final_bit=0"
+          ],
+          "profile": "score",
+          "returncode": 0,
+          "score": 1.0,
+          "status": "PASS",
+          "testbench_sha256": "b4314766153337d123e45bcbd36676d382eef75bff3dab64897462ea8ca33c87",
+          "tran_csv_sha256": "31cabf06e1820aee9f840646e6b14746470de0d2d7685a83c4e49f016a29c66b"
+        }
+      ],
+      "mutations": [
+        {
+          "candidate_sha256": "9a41230061db7c4ac1440791bc0657945de70c0f009e4c2fde064817c6d3c350",
+          "checker_task_id": "v4_191_sar_das_logic_6b",
+          "evas_engine_used": "evas2",
+          "expected_pass": false,
+          "family_id": 191,
+          "label": "neg_001_zero",
+          "notes": [
+            "sampling_fall_d1@1.2ns=0.0000 expected=1.1000 tol=0.1300"
+          ],
+          "profile": "feedback",
+          "returncode": 0,
+          "score": 0.0,
+          "status": "PASS",
+          "testbench_sha256": "63f796bc62cd723098d75c4a5691dcedc4453e2ec8221e0556b2a9079c3c7975",
+          "tran_csv_sha256": "9a5d426f165db4239c3fb5c66a5c5708b601489c29a8c4865103743b4e041bae"
+        },
+        {
+          "candidate_sha256": "2a1c77c2996ad7f06e33f220abb42ff71fa5c36ad3c583d4f0d2a204a8d3f1c9",
+          "checker_task_id": "v4_191_sar_das_logic_6b",
+          "evas_engine_used": "evas2",
+          "expected_pass": false,
+          "family_id": 191,
+          "label": "neg_002_invert_comparator",
+          "notes": [
+            "sar_rise_co@1.58ns=0.0000 expected=1.1000 tol=0.1300"
+          ],
+          "profile": "feedback",
+          "returncode": 0,
+          "score": 0.0,
+          "status": "PASS",
+          "testbench_sha256": "63f796bc62cd723098d75c4a5691dcedc4453e2ec8221e0556b2a9079c3c7975",
+          "tran_csv_sha256": "28a467b9e172d762b92cca1df008ab37ab1974c01d9269d9f9149756dd420a3e"
+        },
+        {
+          "candidate_sha256": "b798d9ff2122aad743835d3598a80a8040be80a39bfc0ccc4cf984a7a928f36b",
+          "checker_task_id": "v4_191_sar_das_logic_6b",
+          "evas_engine_used": "evas2",
+          "expected_pass": false,
+          "family_id": 191,
+          "label": "neg_003_half_d6_level",
+          "notes": [
+            "sampling_fall_d6@1.2ns=0.5500 expected=1.1000 tol=0.1300"
+          ],
+          "profile": "score",
+          "returncode": 0,
+          "score": 0.0,
+          "status": "PASS",
+          "testbench_sha256": "b4314766153337d123e45bcbd36676d382eef75bff3dab64897462ea8ca33c87",
+          "tran_csv_sha256": "599a9cf180b6cf2defbabc65a0b016fa0699ddf28705ed763d71a3c99c5e37c5"
+        },
+        {
+          "candidate_sha256": "1cd064ed24e481e861b05b19bfb346e2736eb51b7bca95f9e28c590f7d208b6a",
+          "checker_task_id": "v4_191_sar_das_logic_6b",
+          "evas_engine_used": "evas2",
+          "expected_pass": false,
+          "family_id": 191,
+          "label": "neg_004_half_co_level",
+          "notes": [
+            "sar_rise_co@2.48ns=0.5500 expected=1.1000 tol=0.1300"
+          ],
+          "profile": "score",
+          "returncode": 0,
+          "score": 0.0,
+          "status": "PASS",
+          "testbench_sha256": "b4314766153337d123e45bcbd36676d382eef75bff3dab64897462ea8ca33c87",
+          "tran_csv_sha256": "3374059ed6d6ed2a049d2975bd7456b16003b17f8737e8b46a29cc59e43d340a"
+        },
+        {
+          "candidate_sha256": "594ba3b71d827610a06b5e8d33915022de53477ea234f5fab72273ec378cdab9",
+          "checker_task_id": "v4_191_sar_das_logic_6b",
+          "evas_engine_used": "evas2",
+          "expected_pass": false,
+          "family_id": 191,
+          "label": "neg_005_metric_scale_low",
+          "notes": [
+            "sampling_fall_d1@1.2ns=0.4620 expected=1.1000 tol=0.1300"
+          ],
+          "profile": "score",
+          "returncode": 0,
+          "score": 0.0,
+          "status": "PASS",
+          "testbench_sha256": "b4314766153337d123e45bcbd36676d382eef75bff3dab64897462ea8ca33c87",
+          "tran_csv_sha256": "1fad49337d483d3c4d47b9186ebc780135b5905f7fbe26dbfbb500467beba53c"
+        }
+      ],
+      "profile_parity": {
+        "checker_task_id": "v4_191_sar_das_logic_6b",
+        "deck_identity_except_profile_controls": false,
+        "feedback_tb_sha256": "63f796bc62cd723098d75c4a5691dcedc4453e2ec8221e0556b2a9079c3c7975",
+        "property_ids": [
+          "P_SAMPLING_RESET_CONVERSION_STATE",
+          "P_SAR_COMPARATOR_POLARITY",
+          "P_SIX_BIT_DECISION_SEQUENCE",
+          "P_CONTROL_OUTPUT_LEVELS"
+        ],
+        "score_tb_sha256": "b4314766153337d123e45bcbd36676d382eef75bff3dab64897462ea8ca33c87",
+        "semantic_basis": [
+          "shared_checker_task_id",
+          "shared_family_spec_properties",
+          "same_trace_contract_required_signals",
+          "feedback_gold_passed_under_evas2",
+          "score_gold_passed_under_evas2"
+        ],
+        "semantic_feedback_score_parity_pass": true,
+        "solution_sha256": "25071c60dc4f70755645e13b70c4325d04310d00f241a136d7f8e42ae00b92e4"
+      },
+      "summary": {
+        "deck_identity_except_profile_controls": false,
+        "gold_passed": 2,
+        "gold_total": 2,
+        "mutations_killed": 5,
+        "mutations_total": 5,
+        "profile_parity_pass": true
+      }
+    },
+    {
+      "checker_task_id": "v4_192_sar_logic_4b_self_timed",
+      "evas_engine_used": "evas2",
+      "family_dir": "192-sar-logic-4b-self-timed",
+      "family_id": 192,
+      "gold": [
+        {
+          "candidate_sha256": "f0d41d00519e727f7128a778cff9b2ab197bd1dd9b4f44f29afdaf099dcbef09",
+          "checker_task_id": "v4_192_sar_logic_4b_self_timed",
+          "evas_engine_used": "evas2",
+          "expected_pass": true,
+          "family_id": 192,
+          "label": "gold_feedback",
+          "notes": [
+            "checked=13 comparator_pulses=4 final_step=1"
+          ],
+          "profile": "feedback",
+          "returncode": 0,
+          "score": 1.0,
+          "status": "PASS",
+          "testbench_sha256": "1d2256efb08d391dfca26ecf945eb954173bd3534a754ec609ec8704a13d5cfa",
+          "tran_csv_sha256": "5f511f0039e422c79a987435cf3286ce985d5e01362903ce0ac90fd267f03aa8"
+        },
+        {
+          "candidate_sha256": "f0d41d00519e727f7128a778cff9b2ab197bd1dd9b4f44f29afdaf099dcbef09",
+          "checker_task_id": "v4_192_sar_logic_4b_self_timed",
+          "evas_engine_used": "evas2",
+          "expected_pass": true,
+          "family_id": 192,
+          "label": "gold_score",
+          "notes": [
+            "checked=13 comparator_pulses=4 final_step=1"
+          ],
+          "profile": "score",
+          "returncode": 0,
+          "score": 1.0,
+          "status": "PASS",
+          "testbench_sha256": "8f804d15218a54db38b36884e6934187721a40019e338dbb7bf86afb1805c688",
+          "tran_csv_sha256": "fa85c168dfb3f963b250d0056b755e27f51c16e08b04693acad5097de7921040"
+        }
+      ],
+      "mutations": [
+        {
+          "candidate_sha256": "88f39d586acbd2b7d975fd81c7032394de6baaec7b82b4d8ad59ce389b883b4b",
+          "checker_task_id": "v4_192_sar_logic_4b_self_timed",
+          "evas_engine_used": "evas2",
+          "expected_pass": false,
+          "family_id": 192,
+          "label": "neg_001_zero",
+          "notes": [
+            "reset_dbotp1@0.28ns=0.0000 expected=1.0000 tol=0.1200"
+          ],
+          "profile": "feedback",
+          "returncode": 0,
+          "score": 0.0,
+          "status": "PASS",
+          "testbench_sha256": "1d2256efb08d391dfca26ecf945eb954173bd3534a754ec609ec8704a13d5cfa",
+          "tran_csv_sha256": "c37f088d749d0b39b956257c706c44eb91b965e931f2e865ecc07f4a2d3e2048"
+        },
+        {
+          "candidate_sha256": "07227045aaaaba07e11461fba4d421da877281cf1a61a244a37a7b716966f468",
+          "checker_task_id": "v4_192_sar_logic_4b_self_timed",
+          "evas_engine_used": "evas2",
+          "expected_pass": false,
+          "family_id": 192,
+          "label": "neg_002_invert_decision",
+          "notes": [
+            "decision_step4_dout4@1.4ns=0.0000 expected=1.0000 tol=0.1200"
+          ],
+          "profile": "feedback",
+          "returncode": 0,
+          "score": 0.0,
+          "status": "PASS",
+          "testbench_sha256": "1d2256efb08d391dfca26ecf945eb954173bd3534a754ec609ec8704a13d5cfa",
+          "tran_csv_sha256": "94307e1276ac48688ba9e493cb8d49ee02ff9f0de413d3a465c3c220d3521594"
+        },
+        {
+          "candidate_sha256": "87508755b6ccfa4af9cbc4d9eebbb31319930b36c1820400eeee19cfa79c6fbc",
+          "checker_task_id": "v4_192_sar_logic_4b_self_timed",
+          "evas_engine_used": "evas2",
+          "expected_pass": false,
+          "family_id": 192,
+          "label": "neg_003_no_step_decrement",
+          "notes": [
+            "decision_step3_dout4@1.9ns=0.0000 expected=1.0000 tol=0.1200"
+          ],
+          "profile": "score",
+          "returncode": 0,
+          "score": 0.0,
+          "status": "PASS",
+          "testbench_sha256": "8f804d15218a54db38b36884e6934187721a40019e338dbb7bf86afb1805c688",
+          "tran_csv_sha256": "688ddbb18a8faf5f2c53f4079a7ace67768230105675eee3a0c508ab8edbb222"
+        },
+        {
+          "candidate_sha256": "e00ddb442a1bf37f4a7724f5f1bdcdcae68afb903d5753dcc10fa58504ffc3eb",
+          "checker_task_id": "v4_192_sar_logic_4b_self_timed",
+          "evas_engine_used": "evas2",
+          "expected_pass": false,
+          "family_id": 192,
+          "label": "neg_004_half_cmpck",
+          "notes": [
+            "clkc_start_cmpck@0.95ns=0.5000 expected=1.0000 tol=0.1200"
+          ],
+          "profile": "score",
+          "returncode": 0,
+          "score": 0.0,
+          "status": "PASS",
+          "testbench_sha256": "8f804d15218a54db38b36884e6934187721a40019e338dbb7bf86afb1805c688",
+          "tran_csv_sha256": "2f3863b8f915e230f4ec4e8863d476425ef2b7b25e6cee07ba6e0853afccbf6b"
+        },
+        {
+          "candidate_sha256": "a559b837f37d7a5627553c3f3e800d466462129c1982e5ba7823ef68da7bd46e",
+          "checker_task_id": "v4_192_sar_logic_4b_self_timed",
+          "evas_engine_used": "evas2",
+          "expected_pass": false,
+          "family_id": 192,
+          "label": "neg_005_metric_scale_low",
+          "notes": [
+            "reset_dbotp1@0.28ns=0.4200 expected=1.0000 tol=0.1200"
+          ],
+          "profile": "score",
+          "returncode": 0,
+          "score": 0.0,
+          "status": "PASS",
+          "testbench_sha256": "8f804d15218a54db38b36884e6934187721a40019e338dbb7bf86afb1805c688",
+          "tran_csv_sha256": "442b28ce18921634824697eae178bc868130a6a8089cd29d0f12aa8ffa2a12c7"
+        }
+      ],
+      "profile_parity": {
+        "checker_task_id": "v4_192_sar_logic_4b_self_timed",
+        "deck_identity_except_profile_controls": false,
+        "feedback_tb_sha256": "1d2256efb08d391dfca26ecf945eb954173bd3534a754ec609ec8704a13d5cfa",
+        "property_ids": [
+          "P_RESET_INITIALIZES_SELF_TIMED_STATE",
+          "P_COMPARATOR_PULSE_DECISION_POLARITY",
+          "P_STEP_ADVANCE_ON_COMPARATOR_FALL",
+          "P_CMPCK_TIMING_AND_LEVEL"
+        ],
+        "score_tb_sha256": "8f804d15218a54db38b36884e6934187721a40019e338dbb7bf86afb1805c688",
+        "semantic_basis": [
+          "shared_checker_task_id",
+          "shared_family_spec_properties",
+          "same_trace_contract_required_signals",
+          "feedback_gold_passed_under_evas2",
+          "score_gold_passed_under_evas2"
+        ],
+        "semantic_feedback_score_parity_pass": true,
+        "solution_sha256": "f0d41d00519e727f7128a778cff9b2ab197bd1dd9b4f44f29afdaf099dcbef09"
+      },
+      "summary": {
+        "deck_identity_except_profile_controls": false,
+        "gold_passed": 2,
+        "gold_total": 2,
+        "mutations_killed": 5,
+        "mutations_total": 5,
+        "profile_parity_pass": true
+      }
+    },
+    {
+      "checker_task_id": "v4_193_pfd_tdomain_reset_window",
+      "evas_engine_used": "evas2",
+      "family_dir": "193-pfd-tdomain-reset-window",
+      "family_id": 193,
+      "gold": [
+        {
+          "candidate_sha256": "2e2314098391bd738f67022b75035cb0066292883cc9a8e5e173c87aa615f693",
+          "checker_task_id": "v4_193_pfd_tdomain_reset_window",
+          "evas_engine_used": "evas2",
+          "expected_pass": true,
+          "family_id": 193,
+          "label": "gold_feedback",
+          "notes": [
+            "P_LEADING_EDGE_DIRECTION mismatch_count=0; P_RESET_OVERLAP_WINDOW mismatch_count=0; P_CLEAR_AFTER_RESET_WINDOW mismatch_count=0; P_PFD_OUTPUT_LEVELS mismatch_count=0; pairs=1; checked_windows=3; max_err=0"
+          ],
+          "profile": "feedback",
+          "returncode": 0,
+          "score": 1.0,
+          "status": "PASS",
+          "testbench_sha256": "1fb2158ec3049f5ee025931c649986db82344e8e41f99f079e0401216188aef8",
+          "tran_csv_sha256": "204d455b5bdf226f61b55dd7bf931e65b5ed9480bf4e04ab4de9bbbc6aa42840"
+        },
+        {
+          "candidate_sha256": "2e2314098391bd738f67022b75035cb0066292883cc9a8e5e173c87aa615f693",
+          "checker_task_id": "v4_193_pfd_tdomain_reset_window",
+          "evas_engine_used": "evas2",
+          "expected_pass": true,
+          "family_id": 193,
+          "label": "gold_score",
+          "notes": [
+            "P_LEADING_EDGE_DIRECTION mismatch_count=0; P_RESET_OVERLAP_WINDOW mismatch_count=0; P_CLEAR_AFTER_RESET_WINDOW mismatch_count=0; P_PFD_OUTPUT_LEVELS mismatch_count=0; pairs=2; checked_windows=6; max_err=0"
+          ],
+          "profile": "score",
+          "returncode": 0,
+          "score": 1.0,
+          "status": "PASS",
+          "testbench_sha256": "57a11d3263a9961b022e4da1132cd532deb4c7e915aca11dd8fcef6256b309dc",
+          "tran_csv_sha256": "f1804bc4819645e8042aaf98b52a52793ca92ca071fa7b63a37d2fc88d6ec993"
+        }
+      ],
+      "mutations": [
+        {
+          "candidate_sha256": "240c7faa4131d030745a1935d0872b497cda53648dd32982b1a80f8b2d7e3dbd",
+          "checker_task_id": "v4_193_pfd_tdomain_reset_window",
+          "evas_engine_used": "evas2",
+          "expected_pass": false,
+          "family_id": 193,
+          "label": "neg_001_zero",
+          "notes": [
+            "P_LEADING_EDGE_DIRECTION mismatch_count=2; P_RESET_OVERLAP_WINDOW mismatch_count=2; P_CLEAR_AFTER_RESET_WINDOW mismatch_count=0; P_PFD_OUTPUT_LEVELS mismatch_count=4; pairs=2; checked_windows=6; max_err=1"
+          ],
+          "profile": "score",
+          "returncode": 0,
+          "score": 0.0,
+          "status": "PASS",
+          "testbench_sha256": "57a11d3263a9961b022e4da1132cd532deb4c7e915aca11dd8fcef6256b309dc",
+          "tran_csv_sha256": "37e791dc74643f397ad39d5745631e3f04da7b1dbb548689c9654be76bac7928"
+        },
+        {
+          "candidate_sha256": "eb042eb4549f217e6b2e6c9532bbafbcb7df5ed3bc7303b09012a8372cf4b582",
+          "checker_task_id": "v4_193_pfd_tdomain_reset_window",
+          "evas_engine_used": "evas2",
+          "expected_pass": false,
+          "family_id": 193,
+          "label": "neg_002_short_reset_window",
+          "notes": [
+            "P_LEADING_EDGE_DIRECTION mismatch_count=0; P_RESET_OVERLAP_WINDOW mismatch_count=0; P_CLEAR_AFTER_RESET_WINDOW mismatch_count=1; P_PFD_OUTPUT_LEVELS mismatch_count=1; pairs=1; checked_windows=3; max_err=1"
+          ],
+          "profile": "feedback",
+          "returncode": 0,
+          "score": 0.0,
+          "status": "PASS",
+          "testbench_sha256": "1fb2158ec3049f5ee025931c649986db82344e8e41f99f079e0401216188aef8",
+          "tran_csv_sha256": "b2f3c784bbb1ec2e7934efe954eceafc4c3fef9476a190d61ccb732bfe9dd7a7"
+        },
+        {
+          "candidate_sha256": "55df63038ef390d2510d1c83276b9f395f28d8cd5c0f102ae4fd943fdd2d6ae0",
+          "checker_task_id": "v4_193_pfd_tdomain_reset_window",
+          "evas_engine_used": "evas2",
+          "expected_pass": false,
+          "family_id": 193,
+          "label": "neg_003_no_hide_state",
+          "notes": [
+            "P_LEADING_EDGE_DIRECTION mismatch_count=0; P_RESET_OVERLAP_WINDOW mismatch_count=1; P_CLEAR_AFTER_RESET_WINDOW mismatch_count=1; P_PFD_OUTPUT_LEVELS mismatch_count=2; pairs=2; checked_windows=6; max_err=1"
+          ],
+          "profile": "score",
+          "returncode": 0,
+          "score": 0.0,
+          "status": "PASS",
+          "testbench_sha256": "57a11d3263a9961b022e4da1132cd532deb4c7e915aca11dd8fcef6256b309dc",
+          "tran_csv_sha256": "2e1bfb832d9b197ff6db0870b0d7fb163d334c2d0b4e4b6bae8cc227a9c51c8f"
+        },
+        {
+          "candidate_sha256": "ea545ffbe9af1001c0e3c9628ba0c6af75f1808f9e90e05f5ee950f46ea00f4d",
+          "checker_task_id": "v4_193_pfd_tdomain_reset_window",
+          "evas_engine_used": "evas2",
+          "expected_pass": false,
+          "family_id": 193,
+          "label": "neg_004_invert_up_down_outputs",
+          "notes": [
+            "P_LEADING_EDGE_DIRECTION mismatch_count=1; P_RESET_OVERLAP_WINDOW mismatch_count=0; P_CLEAR_AFTER_RESET_WINDOW mismatch_count=0; P_PFD_OUTPUT_LEVELS mismatch_count=1; pairs=1; checked_windows=3; max_err=1"
+          ],
+          "profile": "feedback",
+          "returncode": 0,
+          "score": 0.0,
+          "status": "PASS",
+          "testbench_sha256": "1fb2158ec3049f5ee025931c649986db82344e8e41f99f079e0401216188aef8",
+          "tran_csv_sha256": "0a82bdb772aa620b19e9e9087a504f9243749cfb467ff869926bbb3269806c44"
+        },
+        {
+          "candidate_sha256": "350a08127b38db881cae65f3acd7eeaa19380940b092ced3bb1b69e9fecb7f46",
+          "checker_task_id": "v4_193_pfd_tdomain_reset_window",
+          "evas_engine_used": "evas2",
+          "expected_pass": false,
+          "family_id": 193,
+          "label": "neg_005_metric_scale_low",
+          "notes": [
+            "P_LEADING_EDGE_DIRECTION mismatch_count=2; P_RESET_OVERLAP_WINDOW mismatch_count=2; P_CLEAR_AFTER_RESET_WINDOW mismatch_count=0; P_PFD_OUTPUT_LEVELS mismatch_count=4; pairs=2; checked_windows=6; max_err=0.58"
+          ],
+          "profile": "score",
+          "returncode": 0,
+          "score": 0.0,
+          "status": "PASS",
+          "testbench_sha256": "57a11d3263a9961b022e4da1132cd532deb4c7e915aca11dd8fcef6256b309dc",
+          "tran_csv_sha256": "0b831260c472942a2d343dc7790694cdcd6a1a6585da70804f77f4beb13aa035"
+        }
+      ],
+      "profile_parity": {
+        "checker_task_id": "v4_193_pfd_tdomain_reset_window",
+        "deck_identity_except_profile_controls": true,
+        "feedback_tb_sha256": "1fb2158ec3049f5ee025931c649986db82344e8e41f99f079e0401216188aef8",
+        "property_ids": [
+          "P_LEADING_EDGE_DIRECTION",
+          "P_RESET_OVERLAP_WINDOW",
+          "P_CLEAR_AFTER_RESET_WINDOW",
+          "P_PFD_OUTPUT_LEVELS"
+        ],
+        "score_tb_sha256": "57a11d3263a9961b022e4da1132cd532deb4c7e915aca11dd8fcef6256b309dc",
+        "semantic_basis": [
+          "shared_checker_task_id",
+          "shared_family_spec_properties",
+          "same_trace_contract_required_signals",
+          "feedback_gold_passed_under_evas2",
+          "score_gold_passed_under_evas2"
+        ],
+        "semantic_feedback_score_parity_pass": true,
+        "solution_sha256": "2e2314098391bd738f67022b75035cb0066292883cc9a8e5e173c87aa615f693"
+      },
+      "summary": {
+        "deck_identity_except_profile_controls": true,
+        "gold_passed": 2,
+        "gold_total": 2,
+        "mutations_killed": 5,
+        "mutations_total": 5,
+        "profile_parity_pass": true
+      }
+    },
+    {
+      "checker_task_id": "v4_194_pipe_adc_gain_control_loop",
+      "evas_engine_used": "evas2",
+      "family_dir": "194-pipe-adc-gain-control-loop",
+      "family_id": 194,
+      "gold": [
+        {
+          "candidate_sha256": "2e559859fc11306a2d86d79d88efd51922e19cac57eefd31e5495389168bc132",
+          "checker_task_id": "v4_194_pipe_adc_gain_control_loop",
+          "evas_engine_used": "evas2",
+          "expected_pass": true,
+          "family_id": 194,
+          "label": "gold_feedback",
+          "notes": [
+            "checked=5 codes=[20, 40, 102] minus=True plus=True gain_update=True max_err=0.0000"
+          ],
+          "profile": "feedback",
+          "returncode": 0,
+          "score": 1.0,
+          "status": "PASS",
+          "testbench_sha256": "2ce3bbf342e6219aea872dbd8a8f0709728d64135a2f3dc74a1113abd1eeeadb",
+          "tran_csv_sha256": "983cdddb208abe4e48f6f4ca7cad0dd7bd02c1c32d50a2e4f8f863934bdfc36d"
+        },
+        {
+          "candidate_sha256": "2e559859fc11306a2d86d79d88efd51922e19cac57eefd31e5495389168bc132",
+          "checker_task_id": "v4_194_pipe_adc_gain_control_loop",
+          "evas_engine_used": "evas2",
+          "expected_pass": true,
+          "family_id": 194,
+          "label": "gold_score",
+          "notes": [
+            "checked=9 codes=[20, 40, 90, 102] minus=True plus=True gain_update=True max_err=0.0000"
+          ],
+          "profile": "score",
+          "returncode": 0,
+          "score": 1.0,
+          "status": "PASS",
+          "testbench_sha256": "2a6194cd7103d603de24c37629abc181e805a5a31ae4e2eedcf8bac63e6d6267",
+          "tran_csv_sha256": "e65539ce57f4e9ca43a95e5946b68cffc9107df8c13d989ac578deb3dd14d292"
+        }
+      ],
+      "mutations": [
+        {
+          "candidate_sha256": "b6e6c7dbe669c2c01e0df43703be00e978ac0166943dfc85db611bb7c461135c",
+          "checker_task_id": "v4_194_pipe_adc_gain_control_loop",
+          "evas_engine_used": "evas2",
+          "expected_pass": false,
+          "family_id": 194,
+          "label": "neg_001_zero",
+          "notes": [
+            "dout10@0.290ns observed=0.000 expected=0.900 code=20 phase=1 dout11@0.290ns observed=0.000 expected=0.900 code=20 phase=1 dout12@0.290ns observed=0.000 expected=0.900 code=20 phase=1 gainctrl1@0.290ns observed=0.000 expected=0.900 code=20 phase=1 gainctrl3@0.290ns observed=0.000 expected=0.900 code=20 phase=1 gainctrl4@0.290ns observed=0.000 expected=0.900 code=20 phase=1 gainctrl6@0.290ns observed=0.000 expected=0.900 code=20 phase=1 dop@0.290ns observed=0.000 expected=0.960 code=20 phase=1"
+          ],
+          "profile": "feedback",
+          "returncode": 0,
+          "score": 0.0,
+          "status": "PASS",
+          "testbench_sha256": "2ce3bbf342e6219aea872dbd8a8f0709728d64135a2f3dc74a1113abd1eeeadb",
+          "tran_csv_sha256": "fffe07a9316bcfce19fbe8bf9165be343adfc05c8175cefcbba4fefe5d9f1563"
+        },
+        {
+          "candidate_sha256": "064fa0eed24404a1fc8c1469c4fb35d6cd6e5bb37cf8d33d073f49b53f4ddd2c",
+          "checker_task_id": "v4_194_pipe_adc_gain_control_loop",
+          "evas_engine_used": "evas2",
+          "expected_pass": false,
+          "family_id": 194,
+          "label": "neg_002_wrong_target_diff",
+          "notes": [
+            "ddiff@1.290ns observed=0.500 expected=0.820 code=102 phase=0 dop@1.290ns observed=0.700 expected=1.020 code=102 phase=0 ddiff@2.110ns observed=0.500 expected=0.820 code=102 phase=0 dop@2.110ns observed=0.700 expected=1.020 code=102 phase=0 ddiff@2.290ns observed=0.500 expected=0.820 code=40 phase=1 dop@2.290ns observed=0.700 expected=1.020 code=40 phase=1"
+          ],
+          "profile": "feedback",
+          "returncode": 0,
+          "score": 0.0,
+          "status": "PASS",
+          "testbench_sha256": "2ce3bbf342e6219aea872dbd8a8f0709728d64135a2f3dc74a1113abd1eeeadb",
+          "tran_csv_sha256": "b921df4bc369129c9675af18dd615eb19ed69b06b3b0408b63fba5312c95a353"
+        },
+        {
+          "candidate_sha256": "bc786beb8c2ff6ae65eb74db5f5a02850065aecb799de823c1d729ef53c8058b",
+          "checker_task_id": "v4_194_pipe_adc_gain_control_loop",
+          "evas_engine_used": "evas2",
+          "expected_pass": false,
+          "family_id": 194,
+          "label": "neg_003_no_gain_update",
+          "notes": [
+            "gainctrl1@1.290ns observed=0.900 expected=0.000 code=102 phase=0 gainctrl4@1.290ns observed=0.900 expected=0.000 code=102 phase=0 gctrlcode@1.290ns observed=0.900 expected=0.720 code=102 phase=0 gainctrl1@2.110ns observed=0.900 expected=0.000 code=102 phase=0 gainctrl4@2.110ns observed=0.900 expected=0.000 code=102 phase=0 gctrlcode@2.110ns observed=0.900 expected=0.720 code=102 phase=0 gainctrl1@2.290ns observed=0.900 expected=0.000 code=40 phase=1 gainctrl4@2.290ns observed=0.900 expected=0.00"
+          ],
+          "profile": "score",
+          "returncode": 0,
+          "score": 0.0,
+          "status": "PASS",
+          "testbench_sha256": "2a6194cd7103d603de24c37629abc181e805a5a31ae4e2eedcf8bac63e6d6267",
+          "tran_csv_sha256": "703404c5274a7366d22bc82ce68e27e36b77a2f2d4e52a5e5d3c8553bcb17ed7"
+        },
+        {
+          "candidate_sha256": "9fdb61c6fc63a65ec22292ebff4b61dcc06bd6eb7448ef2067fbef6819e94e58",
+          "checker_task_id": "v4_194_pipe_adc_gain_control_loop",
+          "evas_engine_used": "evas2",
+          "expected_pass": false,
+          "family_id": 194,
+          "label": "neg_004_half_gain_outputs",
+          "notes": [
+            "gainctrl6@0.290ns observed=0.450 expected=0.900 code=20 phase=1 gainctrl6@1.110ns observed=0.450 expected=0.900 code=20 phase=1 gainctrl6@1.290ns observed=0.450 expected=0.900 code=102 phase=0 gainctrl6@2.110ns observed=0.450 expected=0.900 code=102 phase=0 gainctrl6@2.290ns observed=0.450 expected=0.900 code=40 phase=1 gainctrl6@3.110ns observed=0.450 expected=0.900 code=40 phase=1 gainctrl6@3.290ns observed=0.450 expected=0.900 code=90 phase=0 gainctrl6@4.110ns observed=0.450 expected=0.900 co"
+          ],
+          "profile": "score",
+          "returncode": 0,
+          "score": 0.0,
+          "status": "PASS",
+          "testbench_sha256": "2a6194cd7103d603de24c37629abc181e805a5a31ae4e2eedcf8bac63e6d6267",
+          "tran_csv_sha256": "a8e70a28d230383cba1b97313b9abcbd1eec855c65ec52187a0b9dcd50f32bca"
+        },
+        {
+          "candidate_sha256": "f5038677fe7b930ddc98ca018b9b72acaf42a0e4e6f9996e239b4ebea195ce90",
+          "checker_task_id": "v4_194_pipe_adc_gain_control_loop",
+          "evas_engine_used": "evas2",
+          "expected_pass": false,
+          "family_id": 194,
+          "label": "neg_005_metric_scale_low",
+          "notes": [
+            "dout10@0.290ns observed=0.378 expected=0.900 code=20 phase=1 dout11@0.290ns observed=0.378 expected=0.900 code=20 phase=1 dout12@0.290ns observed=0.378 expected=0.900 code=20 phase=1 gainctrl1@0.290ns observed=0.378 expected=0.900 code=20 phase=1 gainctrl3@0.290ns observed=0.378 expected=0.900 code=20 phase=1 gainctrl4@0.290ns observed=0.378 expected=0.900 code=20 phase=1 gainctrl6@0.290ns observed=0.378 expected=0.900 code=20 phase=1 dop@0.290ns observed=0.403 expected=0.960 code=20 phase=1"
+          ],
+          "profile": "score",
+          "returncode": 0,
+          "score": 0.0,
+          "status": "PASS",
+          "testbench_sha256": "2a6194cd7103d603de24c37629abc181e805a5a31ae4e2eedcf8bac63e6d6267",
+          "tran_csv_sha256": "23cdbcf4257476717fb1dd130fb0ef51421ee1872b122277515c2ca2eae3a394"
+        }
+      ],
+      "profile_parity": {
+        "checker_task_id": "v4_194_pipe_adc_gain_control_loop",
+        "deck_identity_except_profile_controls": true,
+        "feedback_tb_sha256": "2ce3bbf342e6219aea872dbd8a8f0709728d64135a2f3dc74a1113abd1eeeadb",
+        "property_ids": [
+          "P_GAIN_CONTROL_INITIAL_STATE",
+          "P_ALTERNATING_TEST_DAC_PHASES",
+          "P_TARGET_DIFFERENCE_GAIN_UPDATE",
+          "P_GAIN_OUTPUT_LEVELS"
+        ],
+        "score_tb_sha256": "2a6194cd7103d603de24c37629abc181e805a5a31ae4e2eedcf8bac63e6d6267",
+        "semantic_basis": [
+          "shared_checker_task_id",
+          "shared_family_spec_properties",
+          "same_trace_contract_required_signals",
+          "feedback_gold_passed_under_evas2",
+          "score_gold_passed_under_evas2"
+        ],
+        "semantic_feedback_score_parity_pass": true,
+        "solution_sha256": "2e559859fc11306a2d86d79d88efd51922e19cac57eefd31e5495389168bc132"
+      },
+      "summary": {
+        "deck_identity_except_profile_controls": true,
+        "gold_passed": 2,
+        "gold_total": 2,
+        "mutations_killed": 5,
+        "mutations_total": 5,
+        "profile_parity_pass": true
+      }
+    },
+    {
+      "checker_task_id": "v4_195_clock_sample_1600n_sequencer",
+      "evas_engine_used": "evas2",
+      "family_dir": "195-clock-sample-1600n-sequencer",
+      "family_id": 195,
+      "gold": [
+        {
+          "candidate_sha256": "686314090cb401eac03445e5a89a7de9315ee5a32b3438c23aea4b696c2148ae",
+          "checker_task_id": "v4_195_clock_sample_1600n_sequencer",
+          "evas_engine_used": "evas2",
+          "expected_pass": true,
+          "family_id": 195,
+          "label": "gold_feedback",
+          "notes": [
+            "P_PERIODIC_16NS_FRAME mismatch_count=0; P_RESET_AND_SAMPLE_WINDOWS mismatch_count=0; P_NONOVERLAP_AND_RESIDUE_WINDOWS mismatch_count=0; P_CONVERSION_OUTPUT_TIMING mismatch_count=0; checked_windows=10; frame_period_ns=16; max_timing_err_ns=0.01"
+          ],
+          "profile": "feedback",
+          "returncode": 0,
+          "score": 1.0,
+          "status": "PASS",
+          "testbench_sha256": "87c2363ac170d36d8722842a352b2a429adaeb33381e6047e7dbcb8cf48d8150",
+          "tran_csv_sha256": "0a3db5b3910ef8b35f61262d4c5a61d314ed3d3e060626fdc66f0d5ae8d1f9cf"
+        },
+        {
+          "candidate_sha256": "686314090cb401eac03445e5a89a7de9315ee5a32b3438c23aea4b696c2148ae",
+          "checker_task_id": "v4_195_clock_sample_1600n_sequencer",
+          "evas_engine_used": "evas2",
+          "expected_pass": true,
+          "family_id": 195,
+          "label": "gold_score",
+          "notes": [
+            "P_PERIODIC_16NS_FRAME mismatch_count=0; P_RESET_AND_SAMPLE_WINDOWS mismatch_count=0; P_NONOVERLAP_AND_RESIDUE_WINDOWS mismatch_count=0; P_CONVERSION_OUTPUT_TIMING mismatch_count=0; checked_windows=11; frame_period_ns=16; max_timing_err_ns=0.01"
+          ],
+          "profile": "score",
+          "returncode": 0,
+          "score": 1.0,
+          "status": "PASS",
+          "testbench_sha256": "3427d9d592b6fe02bf9bd009c7454351bb83e1beb9f2fbd8b00ab48fb6606dd7",
+          "tran_csv_sha256": "9ed8c119e026bf0bb600946be372bdcf210ee39e932784b03b5fce86d73e242f"
+        }
+      ],
+      "mutations": [
+        {
+          "candidate_sha256": "930a0719b70a8b96e77310277e63b6568d708c75e09b7b238b5b8fae3572a21e",
+          "checker_task_id": "v4_195_clock_sample_1600n_sequencer",
+          "evas_engine_used": "evas2",
+          "expected_pass": false,
+          "family_id": 195,
+          "label": "neg_001_zero",
+          "notes": [
+            "insufficient_excitation clock_sample_1600n_sequencer rail_hi=0"
+          ],
+          "profile": "feedback",
+          "returncode": 0,
+          "score": 0.0,
+          "status": "PASS",
+          "testbench_sha256": "87c2363ac170d36d8722842a352b2a429adaeb33381e6047e7dbcb8cf48d8150",
+          "tran_csv_sha256": "ea92b2284c526ac18d0de45b9375997641415079a22624352d1fcc1fb4651557"
+        },
+        {
+          "candidate_sha256": "359bca2a1ba94e5a5c7c8c7d1a8f2b9c33593fcf8e00bdfa60cafa13127c3499",
+          "checker_task_id": "v4_195_clock_sample_1600n_sequencer",
+          "evas_engine_used": "evas2",
+          "expected_pass": false,
+          "family_id": 195,
+          "label": "neg_002_half_conv_level",
+          "notes": [
+            "P_PERIODIC_16NS_FRAME mismatch_count=0; P_RESET_AND_SAMPLE_WINDOWS mismatch_count=0; P_NONOVERLAP_AND_RESIDUE_WINDOWS mismatch_count=0; P_CONVERSION_OUTPUT_TIMING mismatch_count=1; checked_windows=10; frame_period_ns=16; max_timing_err_ns=0.02"
+          ],
+          "profile": "feedback",
+          "returncode": 0,
+          "score": 0.0,
+          "status": "PASS",
+          "testbench_sha256": "87c2363ac170d36d8722842a352b2a429adaeb33381e6047e7dbcb8cf48d8150",
+          "tran_csv_sha256": "38506e4a38e8457db13fda8f15fc1a096a058211441de0e0eba17cb40e94452d"
+        },
+        {
+          "candidate_sha256": "615d58285b00272b3640973f467f7ab2cbedd48abe5369c9242cce8935e69ba9",
+          "checker_task_id": "v4_195_clock_sample_1600n_sequencer",
+          "evas_engine_used": "evas2",
+          "expected_pass": false,
+          "family_id": 195,
+          "label": "neg_003_swap_nc_res",
+          "notes": [
+            "P_PERIODIC_16NS_FRAME mismatch_count=0; P_RESET_AND_SAMPLE_WINDOWS mismatch_count=0; P_NONOVERLAP_AND_RESIDUE_WINDOWS mismatch_count=6; P_CONVERSION_OUTPUT_TIMING mismatch_count=0; checked_windows=11; frame_period_ns=16; max_timing_err_ns=0.01"
+          ],
+          "profile": "score",
+          "returncode": 0,
+          "score": 0.0,
+          "status": "PASS",
+          "testbench_sha256": "3427d9d592b6fe02bf9bd009c7454351bb83e1beb9f2fbd8b00ab48fb6606dd7",
+          "tran_csv_sha256": "8fd17a40ff874f93661dffaac96429b63dd712fb4dec4f0ba48706dd933faf42"
+        },
+        {
+          "candidate_sha256": "129d37480819d9462c485cc5b3a18f9a4a438a95e3d7ce469c9b6027598b96a2",
+          "checker_task_id": "v4_195_clock_sample_1600n_sequencer",
+          "evas_engine_used": "evas2",
+          "expected_pass": false,
+          "family_id": 195,
+          "label": "neg_004_missing_second_sample",
+          "notes": [
+            "P_PERIODIC_16NS_FRAME mismatch_count=1; P_RESET_AND_SAMPLE_WINDOWS mismatch_count=3; P_NONOVERLAP_AND_RESIDUE_WINDOWS mismatch_count=5; P_CONVERSION_OUTPUT_TIMING mismatch_count=2; checked_windows=9; frame_period_ns=24.005; max_timing_err_ns=3.49219"
+          ],
+          "profile": "score",
+          "returncode": 0,
+          "score": 0.0,
+          "status": "PASS",
+          "testbench_sha256": "3427d9d592b6fe02bf9bd009c7454351bb83e1beb9f2fbd8b00ab48fb6606dd7",
+          "tran_csv_sha256": "277c618f0f71f35b504932d8c830276285b65f46dd44b62f0d0b0cd6d9f39e04"
+        },
+        {
+          "candidate_sha256": "a6f355dc85ace1449690c02a9693b40d3fbb71547863474850c704b2130e022b",
+          "checker_task_id": "v4_195_clock_sample_1600n_sequencer",
+          "evas_engine_used": "evas2",
+          "expected_pass": false,
+          "family_id": 195,
+          "label": "neg_005_metric_scale_low",
+          "notes": [
+            "insufficient_excitation clock_sample_1600n_sequencer s_intervals=3 conv_intervals=0"
+          ],
+          "profile": "score",
+          "returncode": 0,
+          "score": 0.0,
+          "status": "PASS",
+          "testbench_sha256": "3427d9d592b6fe02bf9bd009c7454351bb83e1beb9f2fbd8b00ab48fb6606dd7",
+          "tran_csv_sha256": "71f5a101283db9a2c2ee08e9366dfe9bd928f7619219570c46521667a1ddaae4"
+        }
+      ],
+      "profile_parity": {
+        "checker_task_id": "v4_195_clock_sample_1600n_sequencer",
+        "deck_identity_except_profile_controls": true,
+        "feedback_tb_sha256": "87c2363ac170d36d8722842a352b2a429adaeb33381e6047e7dbcb8cf48d8150",
+        "property_ids": [
+          "P_PERIODIC_16NS_FRAME",
+          "P_RESET_AND_SAMPLE_WINDOWS",
+          "P_NONOVERLAP_AND_RESIDUE_WINDOWS",
+          "P_CONVERSION_OUTPUT_TIMING"
+        ],
+        "score_tb_sha256": "3427d9d592b6fe02bf9bd009c7454351bb83e1beb9f2fbd8b00ab48fb6606dd7",
+        "semantic_basis": [
+          "shared_checker_task_id",
+          "shared_family_spec_properties",
+          "same_trace_contract_required_signals",
+          "feedback_gold_passed_under_evas2",
+          "score_gold_passed_under_evas2"
+        ],
+        "semantic_feedback_score_parity_pass": true,
+        "solution_sha256": "686314090cb401eac03445e5a89a7de9315ee5a32b3438c23aea4b696c2148ae"
+      },
+      "summary": {
+        "deck_identity_except_profile_controls": true,
+        "gold_passed": 2,
+        "gold_total": 2,
+        "mutations_killed": 5,
+        "mutations_total": 5,
+        "profile_parity_pass": true
+      }
+    },
+    {
+      "checker_task_id": "v4_196_phase_detector_chopper",
+      "evas_engine_used": "evas2",
+      "family_dir": "196-phase-detector-chopper",
+      "family_id": 196,
+      "gold": [
+        {
+          "candidate_sha256": "c2e827affa3eeeb78306183d255adddda74d71a5745bef752ce45d81fea28a09",
+          "checker_task_id": "v4_196_phase_detector_chopper",
+          "evas_engine_used": "evas2",
+          "expected_pass": true,
+          "family_id": 196,
+          "label": "gold_feedback",
+          "notes": [
+            "P_POSITIVE_LO_GAIN_PATH mismatch_count=0; P_NEGATIVE_LO_CHOP_PATH mismatch_count=0; P_CONTINUOUS_TRACKING mismatch_count=0; checked=279; positive_samples=99; negative_samples=180; max_err=0"
+          ],
+          "profile": "feedback",
+          "returncode": 0,
+          "score": 1.0,
+          "status": "PASS",
+          "testbench_sha256": "67be263b5a2ec7fbc904f90004f658f24bc1f3f79c1468db9173881330fde667",
+          "tran_csv_sha256": "1dba0524d0996af316119650e9d465d0b55df3feede2ce8a139d890c271123e1"
+        },
+        {
+          "candidate_sha256": "c2e827affa3eeeb78306183d255adddda74d71a5745bef752ce45d81fea28a09",
+          "checker_task_id": "v4_196_phase_detector_chopper",
+          "evas_engine_used": "evas2",
+          "expected_pass": true,
+          "family_id": 196,
+          "label": "gold_score",
+          "notes": [
+            "P_POSITIVE_LO_GAIN_PATH mismatch_count=0; P_NEGATIVE_LO_CHOP_PATH mismatch_count=0; P_CONTINUOUS_TRACKING mismatch_count=0; checked=378; positive_samples=184; negative_samples=194; max_err=0"
+          ],
+          "profile": "score",
+          "returncode": 0,
+          "score": 1.0,
+          "status": "PASS",
+          "testbench_sha256": "846f3501b6da21dcc0d9618099843f86742e9fb46843dfd66e7f77f07bb91707",
+          "tran_csv_sha256": "d09745d9265b32084f4fbe574d024fc8afbbacbf31c2de115671dec44e86e3d4"
+        }
+      ],
+      "mutations": [
+        {
+          "candidate_sha256": "af8764097cce1da536aeea6d303b5ad725fa0dd1653164c4c532fdcb0ffc91e1",
+          "checker_task_id": "v4_196_phase_detector_chopper",
+          "evas_engine_used": "evas2",
+          "expected_pass": false,
+          "family_id": 196,
+          "label": "neg_001_zero",
+          "notes": [
+            "P_POSITIVE_LO_GAIN_PATH mismatch_count=184; P_NEGATIVE_LO_CHOP_PATH mismatch_count=193; P_CONTINUOUS_TRACKING mismatch_count=377; checked=378; positive_samples=184; negative_samples=194; max_err=0.3"
+          ],
+          "profile": "score",
+          "returncode": 0,
+          "score": 0.0,
+          "status": "PASS",
+          "testbench_sha256": "846f3501b6da21dcc0d9618099843f86742e9fb46843dfd66e7f77f07bb91707",
+          "tran_csv_sha256": "2902113bba1578a3d1c6d01beecc0109b41fcf7dc2460e333322ff2d4e235d1a"
+        },
+        {
+          "candidate_sha256": "2c0593e80a09b080da49c8dec77e62c601dedb3c4dc2f767c28be767795774fe",
+          "checker_task_id": "v4_196_phase_detector_chopper",
+          "evas_engine_used": "evas2",
+          "expected_pass": false,
+          "family_id": 196,
+          "label": "neg_002_no_chop_inversion",
+          "notes": [
+            "P_POSITIVE_LO_GAIN_PATH mismatch_count=0; P_NEGATIVE_LO_CHOP_PATH mismatch_count=194; P_CONTINUOUS_TRACKING mismatch_count=194; checked=378; positive_samples=184; negative_samples=194; max_err=0.48"
+          ],
+          "profile": "score",
+          "returncode": 0,
+          "score": 0.0,
+          "status": "PASS",
+          "testbench_sha256": "846f3501b6da21dcc0d9618099843f86742e9fb46843dfd66e7f77f07bb91707",
+          "tran_csv_sha256": "3e6186709f73ef138018ebe193c68ed2e2d2374333d18095ca966bb11b59e0ba"
+        },
+        {
+          "candidate_sha256": "c8578b98064eae1827d3784398c3e03b0271005f9e83360caa5b550e0fc27e05",
+          "checker_task_id": "v4_196_phase_detector_chopper",
+          "evas_engine_used": "evas2",
+          "expected_pass": false,
+          "family_id": 196,
+          "label": "neg_003_wrong_gain",
+          "notes": [
+            "P_POSITIVE_LO_GAIN_PATH mismatch_count=97; P_NEGATIVE_LO_CHOP_PATH mismatch_count=86; P_CONTINUOUS_TRACKING mismatch_count=183; checked=279; positive_samples=99; negative_samples=180; max_err=0.05"
+          ],
+          "profile": "feedback",
+          "returncode": 0,
+          "score": 0.0,
+          "status": "PASS",
+          "testbench_sha256": "67be263b5a2ec7fbc904f90004f658f24bc1f3f79c1468db9173881330fde667",
+          "tran_csv_sha256": "3d74d1ce11b9737d832be1b9fc9b744ebc35168b35563967d4e33d92819fd217"
+        },
+        {
+          "candidate_sha256": "2acfb2ce59f903ba18fc51e9eddd53341f816f7704b959522f10da0039fea209",
+          "checker_task_id": "v4_196_phase_detector_chopper",
+          "evas_engine_used": "evas2",
+          "expected_pass": false,
+          "family_id": 196,
+          "label": "neg_004_inverted_lo_polarity",
+          "notes": [
+            "P_POSITIVE_LO_GAIN_PATH mismatch_count=99; P_NEGATIVE_LO_CHOP_PATH mismatch_count=180; P_CONTINUOUS_TRACKING mismatch_count=279; checked=279; positive_samples=99; negative_samples=180; max_err=0.5"
+          ],
+          "profile": "feedback",
+          "returncode": 0,
+          "score": 0.0,
+          "status": "PASS",
+          "testbench_sha256": "67be263b5a2ec7fbc904f90004f658f24bc1f3f79c1468db9173881330fde667",
+          "tran_csv_sha256": "2ae69fca428c74648579e0a694a5acd571ceefddd80e3d387cd342a508c438a8"
+        },
+        {
+          "candidate_sha256": "84b12cbce868390de7159a0eb71d0ebb29b45ea76f246b097880772b40e69c9a",
+          "checker_task_id": "v4_196_phase_detector_chopper",
+          "evas_engine_used": "evas2",
+          "expected_pass": false,
+          "family_id": 196,
+          "label": "neg_005_metric_scale_low",
+          "notes": [
+            "P_POSITIVE_LO_GAIN_PATH mismatch_count=184; P_NEGATIVE_LO_CHOP_PATH mismatch_count=193; P_CONTINUOUS_TRACKING mismatch_count=377; checked=378; positive_samples=184; negative_samples=194; max_err=0.174"
+          ],
+          "profile": "score",
+          "returncode": 0,
+          "score": 0.0,
+          "status": "PASS",
+          "testbench_sha256": "846f3501b6da21dcc0d9618099843f86742e9fb46843dfd66e7f77f07bb91707",
+          "tran_csv_sha256": "d7275a57ec9315a735ab7135a4375812bc460e62568ea58779af0f7cf3bce7aa"
+        }
+      ],
+      "profile_parity": {
+        "checker_task_id": "v4_196_phase_detector_chopper",
+        "deck_identity_except_profile_controls": true,
+        "feedback_tb_sha256": "67be263b5a2ec7fbc904f90004f658f24bc1f3f79c1468db9173881330fde667",
+        "property_ids": [
+          "P_POSITIVE_LO_GAIN_PATH",
+          "P_NEGATIVE_LO_CHOP_PATH",
+          "P_CONTINUOUS_TRACKING"
+        ],
+        "score_tb_sha256": "846f3501b6da21dcc0d9618099843f86742e9fb46843dfd66e7f77f07bb91707",
+        "semantic_basis": [
+          "shared_checker_task_id",
+          "shared_family_spec_properties",
+          "same_trace_contract_required_signals",
+          "feedback_gold_passed_under_evas2",
+          "score_gold_passed_under_evas2"
+        ],
+        "semantic_feedback_score_parity_pass": true,
+        "solution_sha256": "c2e827affa3eeeb78306183d255adddda74d71a5745bef752ce45d81fea28a09"
+      },
+      "summary": {
+        "deck_identity_except_profile_controls": true,
+        "gold_passed": 2,
+        "gold_total": 2,
+        "mutations_killed": 5,
+        "mutations_total": 5,
+        "profile_parity_pass": true
+      }
+    },
+    {
+      "checker_task_id": "v4_197_single_adc_7b_weighted",
+      "evas_engine_used": "evas2",
+      "family_dir": "197-single-adc-7b-weighted",
+      "family_id": 197,
+      "gold": [
+        {
+          "candidate_sha256": "9df5c2d2d49b18559407a4d5ddfdefe173690b544b136fae7df18b9f839089bf",
+          "checker_task_id": "v4_197_single_adc_7b_weighted",
+          "evas_engine_used": "evas2",
+          "expected_pass": true,
+          "family_id": 197,
+          "label": "gold_feedback",
+          "notes": [
+            "P_INPUT_THRESHOLDING mismatch_count=0; P_WEIGHTED_CODE_SUM mismatch_count=0; P_NORMALIZED_SINGLE_ENDED_OUTPUT mismatch_count=0; P_MONOTONIC_CODE_RESPONSE mismatch_count=0; plateaus=3; distinct_codes=3; max_err=0"
+          ],
+          "profile": "feedback",
+          "returncode": 0,
+          "score": 1.0,
+          "status": "PASS",
+          "testbench_sha256": "31f17df8f76bbc4921f60254c6a143a7e9bf70159f8cb112f4caf426368e0f25",
+          "tran_csv_sha256": "bc2d01aa2c5f8abccc7743b5b4fc6eb4d75cc7ea5bb0d32dde11a59c9106bd83"
+        },
+        {
+          "candidate_sha256": "9df5c2d2d49b18559407a4d5ddfdefe173690b544b136fae7df18b9f839089bf",
+          "checker_task_id": "v4_197_single_adc_7b_weighted",
+          "evas_engine_used": "evas2",
+          "expected_pass": true,
+          "family_id": 197,
+          "label": "gold_score",
+          "notes": [
+            "P_INPUT_THRESHOLDING mismatch_count=0; P_WEIGHTED_CODE_SUM mismatch_count=0; P_NORMALIZED_SINGLE_ENDED_OUTPUT mismatch_count=0; P_MONOTONIC_CODE_RESPONSE mismatch_count=0; plateaus=4; distinct_codes=4; max_err=0"
+          ],
+          "profile": "score",
+          "returncode": 0,
+          "score": 1.0,
+          "status": "PASS",
+          "testbench_sha256": "a8a16253d664d84197cd8c593105729b663d83c9732b894da51986c6606bf59c",
+          "tran_csv_sha256": "160ce138de1537d5454074ac310184d8a36d62bbdac3e0d06bff1b46f8f3989b"
+        }
+      ],
+      "mutations": [
+        {
+          "candidate_sha256": "117c97ba1c2377622a1f21a4496ece5ffc9fc7ff7de4e2fd0f40937d9ed8382b",
+          "checker_task_id": "v4_197_single_adc_7b_weighted",
+          "evas_engine_used": "evas2",
+          "expected_pass": false,
+          "family_id": 197,
+          "label": "neg_001_zero",
+          "notes": [
+            "P_INPUT_THRESHOLDING mismatch_count=2; P_WEIGHTED_CODE_SUM mismatch_count=2; P_NORMALIZED_SINGLE_ENDED_OUTPUT mismatch_count=2; P_MONOTONIC_CODE_RESPONSE mismatch_count=1; plateaus=3; distinct_codes=3; max_err=0.664062"
+          ],
+          "profile": "feedback",
+          "returncode": 0,
+          "score": 0.0,
+          "status": "PASS",
+          "testbench_sha256": "31f17df8f76bbc4921f60254c6a143a7e9bf70159f8cb112f4caf426368e0f25",
+          "tran_csv_sha256": "f8662ba6f2d546845f918b33f9c5f9b45ca41a3558622d8bbd2cae63b24bffeb"
+        },
+        {
+          "candidate_sha256": "dd17de235d978dc64640a0c01cfd784ded97f246b698a339f9b3cb09706c53cc",
+          "checker_task_id": "v4_197_single_adc_7b_weighted",
+          "evas_engine_used": "evas2",
+          "expected_pass": false,
+          "family_id": 197,
+          "label": "neg_002_omit_msb",
+          "notes": [
+            "P_INPUT_THRESHOLDING mismatch_count=2; P_WEIGHTED_CODE_SUM mismatch_count=2; P_NORMALIZED_SINGLE_ENDED_OUTPUT mismatch_count=2; P_MONOTONIC_CODE_RESPONSE mismatch_count=2; plateaus=4; distinct_codes=4; max_err=0.5"
+          ],
+          "profile": "score",
+          "returncode": 0,
+          "score": 0.0,
+          "status": "PASS",
+          "testbench_sha256": "a8a16253d664d84197cd8c593105729b663d83c9732b894da51986c6606bf59c",
+          "tran_csv_sha256": "301b07885bc06b08b923fefea311e426b316efaeec6d45f58fd564331f404103"
+        },
+        {
+          "candidate_sha256": "87f518ca2b5672777dd312f7659de6ac887ddbb05b9b1d1cd7432b840e994128",
+          "checker_task_id": "v4_197_single_adc_7b_weighted",
+          "evas_engine_used": "evas2",
+          "expected_pass": false,
+          "family_id": 197,
+          "label": "neg_003_half_scale",
+          "notes": [
+            "P_INPUT_THRESHOLDING mismatch_count=3; P_WEIGHTED_CODE_SUM mismatch_count=3; P_NORMALIZED_SINGLE_ENDED_OUTPUT mismatch_count=3; P_MONOTONIC_CODE_RESPONSE mismatch_count=1; plateaus=4; distinct_codes=4; max_err=0.496094"
+          ],
+          "profile": "score",
+          "returncode": 0,
+          "score": 0.0,
+          "status": "PASS",
+          "testbench_sha256": "a8a16253d664d84197cd8c593105729b663d83c9732b894da51986c6606bf59c",
+          "tran_csv_sha256": "595b4f1266d10ee41d77c44c45c026539be6d3a8ff66a84c5cf4dffaf8099e95"
+        },
+        {
+          "candidate_sha256": "2ced99fe95a8460d2ba16ff56c237e3247aaa0ff0d89405449c7f4572458bdb4",
+          "checker_task_id": "v4_197_single_adc_7b_weighted",
+          "evas_engine_used": "evas2",
+          "expected_pass": false,
+          "family_id": 197,
+          "label": "neg_004_fixed_offset",
+          "notes": [
+            "P_INPUT_THRESHOLDING mismatch_count=3; P_WEIGHTED_CODE_SUM mismatch_count=3; P_NORMALIZED_SINGLE_ENDED_OUTPUT mismatch_count=3; P_MONOTONIC_CODE_RESPONSE mismatch_count=0; plateaus=3; distinct_codes=3; max_err=0.125"
+          ],
+          "profile": "feedback",
+          "returncode": 0,
+          "score": 0.0,
+          "status": "PASS",
+          "testbench_sha256": "31f17df8f76bbc4921f60254c6a143a7e9bf70159f8cb112f4caf426368e0f25",
+          "tran_csv_sha256": "9f40868ec3ae1aad7323c7cb9e734bb385fe8973cbca11e037e3381737da044c"
+        },
+        {
+          "candidate_sha256": "0fb842b743f837322d6bf4a22c33e51ebc47477c12500fb97160a21ae4f24d56",
+          "checker_task_id": "v4_197_single_adc_7b_weighted",
+          "evas_engine_used": "evas2",
+          "expected_pass": false,
+          "family_id": 197,
+          "label": "neg_005_metric_scale_low",
+          "notes": [
+            "P_INPUT_THRESHOLDING mismatch_count=3; P_WEIGHTED_CODE_SUM mismatch_count=3; P_NORMALIZED_SINGLE_ENDED_OUTPUT mismatch_count=3; P_MONOTONIC_CODE_RESPONSE mismatch_count=1; plateaus=4; distinct_codes=4; max_err=0.575469"
+          ],
+          "profile": "score",
+          "returncode": 0,
+          "score": 0.0,
+          "status": "PASS",
+          "testbench_sha256": "a8a16253d664d84197cd8c593105729b663d83c9732b894da51986c6606bf59c",
+          "tran_csv_sha256": "b82419cde7fccbdd7411317e832c2ffdd7b5b58293039fc1def8217673c06894"
+        }
+      ],
+      "profile_parity": {
+        "checker_task_id": "v4_197_single_adc_7b_weighted",
+        "deck_identity_except_profile_controls": true,
+        "feedback_tb_sha256": "31f17df8f76bbc4921f60254c6a143a7e9bf70159f8cb112f4caf426368e0f25",
+        "property_ids": [
+          "P_INPUT_THRESHOLDING",
+          "P_WEIGHTED_CODE_SUM",
+          "P_NORMALIZED_SINGLE_ENDED_OUTPUT",
+          "P_MONOTONIC_CODE_RESPONSE"
+        ],
+        "score_tb_sha256": "a8a16253d664d84197cd8c593105729b663d83c9732b894da51986c6606bf59c",
+        "semantic_basis": [
+          "shared_checker_task_id",
+          "shared_family_spec_properties",
+          "same_trace_contract_required_signals",
+          "feedback_gold_passed_under_evas2",
+          "score_gold_passed_under_evas2"
+        ],
+        "semantic_feedback_score_parity_pass": true,
+        "solution_sha256": "9df5c2d2d49b18559407a4d5ddfdefe173690b544b136fae7df18b9f839089bf"
+      },
+      "summary": {
+        "deck_identity_except_profile_controls": true,
+        "gold_passed": 2,
+        "gold_total": 2,
+        "mutations_killed": 5,
+        "mutations_total": 5,
+        "profile_parity_pass": true
+      }
+    },
+    {
+      "checker_task_id": "v4_198_qtz_differential_2level",
+      "evas_engine_used": "evas2",
+      "family_dir": "198-qtz-differential-2level",
+      "family_id": 198,
+      "gold": [
+        {
+          "candidate_sha256": "0a4f7a339a042be492231e843eea7d329c47d5029dda52ff57f64655bf723bcb",
+          "checker_task_id": "v4_198_qtz_differential_2level",
+          "evas_engine_used": "evas2",
+          "expected_pass": true,
+          "family_id": 198,
+          "label": "gold_feedback",
+          "notes": [
+            "checked=4 low_codes=2 high_codes=2 max_error=0.0000"
+          ],
+          "profile": "feedback",
+          "returncode": 0,
+          "score": 1.0,
+          "status": "PASS",
+          "testbench_sha256": "7fc0532a06a7d6e635f357f04ecfd7d03512749fb0e53fdc7347e3b1864ba4ce",
+          "tran_csv_sha256": "4a00fc35bb95923c8042216dd7e2fed659ffc5f7c9088b2928f86a5f3316bc6a"
+        },
+        {
+          "candidate_sha256": "0a4f7a339a042be492231e843eea7d329c47d5029dda52ff57f64655bf723bcb",
+          "checker_task_id": "v4_198_qtz_differential_2level",
+          "evas_engine_used": "evas2",
+          "expected_pass": true,
+          "family_id": 198,
+          "label": "gold_score",
+          "notes": [
+            "checked=4 low_codes=3 high_codes=1 max_error=0.0000"
+          ],
+          "profile": "score",
+          "returncode": 0,
+          "score": 1.0,
+          "status": "PASS",
+          "testbench_sha256": "a183c3ce0cce2fb8e4408bcd31fcf5771699c8a426da47061eb8014312552b6c",
+          "tran_csv_sha256": "cd1929842f81ffc96fc8dbd41a6dd38ad542ab1a6e7a635cc4b260ad0bb0f03a"
+        }
+      ],
+      "mutations": [
+        {
+          "candidate_sha256": "a95c5b075616731b5496d4f5352a66e493c810c890d1935b20e84a1180b3d1e2",
+          "checker_task_id": "v4_198_qtz_differential_2level",
+          "evas_engine_used": "evas2",
+          "expected_pass": false,
+          "family_id": 198,
+          "label": "neg_001_zero",
+          "notes": [
+            "dout_after_clk=0.0000 expected=-0.5000 err=0.5000"
+          ],
+          "profile": "score",
+          "returncode": 0,
+          "score": 0.0,
+          "status": "PASS",
+          "testbench_sha256": "a183c3ce0cce2fb8e4408bcd31fcf5771699c8a426da47061eb8014312552b6c",
+          "tran_csv_sha256": "5d244dd424993cc5eb265f0b16f3418f43c9016c06d27ba59040f55d16cd65f8"
+        },
+        {
+          "candidate_sha256": "42e8458cf6d1bd08501c9215aac226dca7b8699702946d7dcb4dc788e6556cc2",
+          "checker_task_id": "v4_198_qtz_differential_2level",
+          "evas_engine_used": "evas2",
+          "expected_pass": false,
+          "family_id": 198,
+          "label": "neg_002_invert_decision",
+          "notes": [
+            "dout_after_clk=0.5000 expected=-0.5000 err=1.0000"
+          ],
+          "profile": "feedback",
+          "returncode": 0,
+          "score": 0.0,
+          "status": "PASS",
+          "testbench_sha256": "7fc0532a06a7d6e635f357f04ecfd7d03512749fb0e53fdc7347e3b1864ba4ce",
+          "tran_csv_sha256": "9c6a2c75b0adcde60c9d96b3b00e01a2db39b266ab7cb6b8225659a24b5eb7c6"
+        },
+        {
+          "candidate_sha256": "65789087730fc5fe7d53ccc889eedbfd9bfd506473de0ccc34b5f1f06fd8c8e8",
+          "checker_task_id": "v4_198_qtz_differential_2level",
+          "evas_engine_used": "evas2",
+          "expected_pass": false,
+          "family_id": 198,
+          "label": "neg_003_wrong_threshold",
+          "notes": [
+            "dout_after_clk=-0.5000 expected=0.5000 err=1.0000"
+          ],
+          "profile": "feedback",
+          "returncode": 0,
+          "score": 0.0,
+          "status": "PASS",
+          "testbench_sha256": "7fc0532a06a7d6e635f357f04ecfd7d03512749fb0e53fdc7347e3b1864ba4ce",
+          "tran_csv_sha256": "80341d5c98f22d52d957bb8eb7aaffebd90c3a31338978b50130dadbf91138d7"
+        },
+        {
+          "candidate_sha256": "e91dbc32008678f3c354ce8b281b5fa409bedb3472a0cc6213336c3c43dea437",
+          "checker_task_id": "v4_198_qtz_differential_2level",
+          "evas_engine_used": "evas2",
+          "expected_pass": false,
+          "family_id": 198,
+          "label": "neg_004_unipolar_output",
+          "notes": [
+            "dout_after_clk=0.0000 expected=-0.5000 err=0.5000"
+          ],
+          "profile": "score",
+          "returncode": 0,
+          "score": 0.0,
+          "status": "PASS",
+          "testbench_sha256": "a183c3ce0cce2fb8e4408bcd31fcf5771699c8a426da47061eb8014312552b6c",
+          "tran_csv_sha256": "5ac0f00c1e1380d2fd90c3902e99d2d808261a4269a2c12cab56903928d24ed5"
+        },
+        {
+          "candidate_sha256": "585d365d3f27051e168bc1d85e0d68cf202f31ad878e135a261ba3e496a604e4",
+          "checker_task_id": "v4_198_qtz_differential_2level",
+          "evas_engine_used": "evas2",
+          "expected_pass": false,
+          "family_id": 198,
+          "label": "neg_005_metric_scale_low",
+          "notes": [
+            "dout_after_clk=-0.2100 expected=-0.5000 err=0.2900"
+          ],
+          "profile": "score",
+          "returncode": 0,
+          "score": 0.0,
+          "status": "PASS",
+          "testbench_sha256": "a183c3ce0cce2fb8e4408bcd31fcf5771699c8a426da47061eb8014312552b6c",
+          "tran_csv_sha256": "b3cfcc375b91f677f736fa7c6613728001a086b29b7d477e777cd60e065e92ee"
+        }
+      ],
+      "profile_parity": {
+        "checker_task_id": "v4_198_qtz_differential_2level",
+        "deck_identity_except_profile_controls": false,
+        "feedback_tb_sha256": "7fc0532a06a7d6e635f357f04ecfd7d03512749fb0e53fdc7347e3b1864ba4ce",
+        "property_ids": [
+          "P_INITIAL_SIGNED_CODE",
+          "P_DIFFERENTIAL_MIDPOINT_DECISION",
+          "P_BIPOLAR_TWO_LEVEL_OUTPUT",
+          "P_CLOCKED_OUTPUT_HOLD"
+        ],
+        "score_tb_sha256": "a183c3ce0cce2fb8e4408bcd31fcf5771699c8a426da47061eb8014312552b6c",
+        "semantic_basis": [
+          "shared_checker_task_id",
+          "shared_family_spec_properties",
+          "same_trace_contract_required_signals",
+          "feedback_gold_passed_under_evas2",
+          "score_gold_passed_under_evas2"
+        ],
+        "semantic_feedback_score_parity_pass": true,
+        "solution_sha256": "0a4f7a339a042be492231e843eea7d329c47d5029dda52ff57f64655bf723bcb"
+      },
+      "summary": {
+        "deck_identity_except_profile_controls": false,
+        "gold_passed": 2,
+        "gold_total": 2,
+        "mutations_killed": 5,
+        "mutations_total": 5,
+        "profile_parity_pass": true
+      }
+    },
+    {
+      "checker_task_id": "v4_199_l2_7b_dac_ready",
+      "evas_engine_used": "evas2",
+      "family_dir": "199-l2-7b-dac-ready",
+      "family_id": 199,
+      "gold": [
+        {
+          "candidate_sha256": "c7f1604e8f0347703a420beca19850de69b0050609021567bf7398f444b271db",
+          "checker_task_id": "v4_199_l2_7b_dac_ready",
+          "evas_engine_used": "evas2",
+          "expected_pass": true,
+          "family_id": 199,
+          "label": "gold_feedback",
+          "notes": [
+            "checked=349 ready_edges=4 max_ready_dac_error=0.00000"
+          ],
+          "profile": "feedback",
+          "returncode": 0,
+          "score": 1.0,
+          "status": "PASS",
+          "testbench_sha256": "b9da530517c98b7f6c6b915923889d9605694feb7705e216401e2d3bd9836260",
+          "tran_csv_sha256": "306ffc452a8d0539d23c9535a118c137aec08f80888e29d87648a138f999d357"
+        },
+        {
+          "candidate_sha256": "c7f1604e8f0347703a420beca19850de69b0050609021567bf7398f444b271db",
+          "checker_task_id": "v4_199_l2_7b_dac_ready",
+          "evas_engine_used": "evas2",
+          "expected_pass": true,
+          "family_id": 199,
+          "label": "gold_score",
+          "notes": [
+            "checked=412 ready_edges=6 max_ready_dac_error=0.00000"
+          ],
+          "profile": "score",
+          "returncode": 0,
+          "score": 1.0,
+          "status": "PASS",
+          "testbench_sha256": "a423af8a8f709a9ee3981aac01ee46396c8a0d67b1a38023a20814283ee4040d",
+          "tran_csv_sha256": "15c74948f85a9055ab4e3e9cb2f70ce86247feeade37cf3e6613435c1e4de7f8"
+        }
+      ],
+      "mutations": [
+        {
+          "candidate_sha256": "191d299f07cf2cbc7a24d9832f761feb2a963b3198af962bdce34cfa62a0afad",
+          "checker_task_id": "v4_199_l2_7b_dac_ready",
+          "evas_engine_used": "evas2",
+          "expected_pass": false,
+          "family_id": 199,
+          "label": "neg_001_zero",
+          "notes": [
+            "checked=349 ready_edges=4 max_ready_dac_error=0.90000"
+          ],
+          "profile": "feedback",
+          "returncode": 0,
+          "score": 0.0,
+          "status": "PASS",
+          "testbench_sha256": "b9da530517c98b7f6c6b915923889d9605694feb7705e216401e2d3bd9836260",
+          "tran_csv_sha256": "f2fa4015b4c69554a611a03f1d61bc039f665cec6f6e5fc4c52024d5b0e0d464"
+        },
+        {
+          "candidate_sha256": "5f1da1918b7db6a5374f0e04fa20d8cd593d4c4b026539f66fccdcde41cc2aa5",
+          "checker_task_id": "v4_199_l2_7b_dac_ready",
+          "evas_engine_used": "evas2",
+          "expected_pass": false,
+          "family_id": 199,
+          "label": "neg_002_no_ready_skip",
+          "notes": [
+            "checked=412 ready_edges=6 max_ready_dac_error=0.87209"
+          ],
+          "profile": "score",
+          "returncode": 0,
+          "score": 0.0,
+          "status": "PASS",
+          "testbench_sha256": "a423af8a8f709a9ee3981aac01ee46396c8a0d67b1a38023a20814283ee4040d",
+          "tran_csv_sha256": "76c6667cb177046eac53d1381f27c4d6f2c122a77a0fff658e1e8577d1fd8e66"
+        },
+        {
+          "candidate_sha256": "58aed887832b79a1d6724b4870a9568740698dfa7a44c88ede6e83e79f372803",
+          "checker_task_id": "v4_199_l2_7b_dac_ready",
+          "evas_engine_used": "evas2",
+          "expected_pass": false,
+          "family_id": 199,
+          "label": "neg_003_wrong_denominator",
+          "notes": [
+            "checked=349 ready_edges=4 max_ready_dac_error=0.45000"
+          ],
+          "profile": "feedback",
+          "returncode": 0,
+          "score": 0.0,
+          "status": "PASS",
+          "testbench_sha256": "b9da530517c98b7f6c6b915923889d9605694feb7705e216401e2d3bd9836260",
+          "tran_csv_sha256": "30058289eca186f753eb3450848f76f14d2cd978acd3f0d952b0512f09106328"
+        },
+        {
+          "candidate_sha256": "6b5d448b75bdba54e7a5e23ec50e96e48c043eaf15180bfaa6ebf14832b16169",
+          "checker_task_id": "v4_199_l2_7b_dac_ready",
+          "evas_engine_used": "evas2",
+          "expected_pass": false,
+          "family_id": 199,
+          "label": "neg_004_unipolar_output",
+          "notes": [
+            "checked=412 ready_edges=6 max_ready_dac_error=0.90000"
+          ],
+          "profile": "score",
+          "returncode": 0,
+          "score": 0.0,
+          "status": "PASS",
+          "testbench_sha256": "a423af8a8f709a9ee3981aac01ee46396c8a0d67b1a38023a20814283ee4040d",
+          "tran_csv_sha256": "f7e2145d9740d7b12dadb1c91eba426581215d82fb82baea11e68e3005be6709"
+        },
+        {
+          "candidate_sha256": "d174a2250e1b79a59357cc971b1a982d28fc8ae44aa1c81094063da7572c48af",
+          "checker_task_id": "v4_199_l2_7b_dac_ready",
+          "evas_engine_used": "evas2",
+          "expected_pass": false,
+          "family_id": 199,
+          "label": "neg_005_metric_scale_low",
+          "notes": [
+            "checked=412 ready_edges=6 max_ready_dac_error=0.52200"
+          ],
+          "profile": "score",
+          "returncode": 0,
+          "score": 0.0,
+          "status": "PASS",
+          "testbench_sha256": "a423af8a8f709a9ee3981aac01ee46396c8a0d67b1a38023a20814283ee4040d",
+          "tran_csv_sha256": "abf9f9b82ca1f9dfb4444aee3cb5e36ec4d6a1a8473fe858725e760ff9c7726d"
+        }
+      ],
+      "profile_parity": {
+        "checker_task_id": "v4_199_l2_7b_dac_ready",
+        "deck_identity_except_profile_controls": false,
+        "feedback_tb_sha256": "b9da530517c98b7f6c6b915923889d9605694feb7705e216401e2d3bd9836260",
+        "property_ids": [
+          "P_FIRST_READY_EDGE_ARMS_ONLY",
+          "P_READY_SAMPLES_SEVEN_BITS",
+          "P_BIPOLAR_WEIGHTED_DAC_OUTPUT",
+          "P_DAC_OUTPUT_LEVEL_AND_HOLD"
+        ],
+        "score_tb_sha256": "a423af8a8f709a9ee3981aac01ee46396c8a0d67b1a38023a20814283ee4040d",
+        "semantic_basis": [
+          "shared_checker_task_id",
+          "shared_family_spec_properties",
+          "same_trace_contract_required_signals",
+          "feedback_gold_passed_under_evas2",
+          "score_gold_passed_under_evas2"
+        ],
+        "semantic_feedback_score_parity_pass": true,
+        "solution_sha256": "c7f1604e8f0347703a420beca19850de69b0050609021567bf7398f444b271db"
+      },
+      "summary": {
+        "deck_identity_except_profile_controls": false,
+        "gold_passed": 2,
+        "gold_total": 2,
+        "mutations_killed": 5,
+        "mutations_total": 5,
+        "profile_parity_pass": true
+      }
+    },
+    {
+      "checker_task_id": "v4_200_l2_cdac_4b_switch",
+      "evas_engine_used": "evas2",
+      "family_dir": "200-l2-cdac-4b-switch",
+      "family_id": 200,
+      "gold": [
+        {
+          "candidate_sha256": "280d786beed2653e7abff38324ee2b5657d27bf171aa7ba66a053001c0c2d27c",
+          "checker_task_id": "v4_200_l2_cdac_4b_switch",
+          "evas_engine_used": "evas2",
+          "expected_pass": true,
+          "family_id": 200,
+          "label": "gold_feedback",
+          "notes": [
+            "P_FIRST_READY_EDGE_ARMS_ONLY mismatch_count=0; P_READY_SAMPLES_FOUR_BITS mismatch_count=0; P_SWITCHED_WEIGHT_DENOMINATOR mismatch_count=0; P_BIPOLAR_CDAC_OUTPUT mismatch_count=0; ready_edges=3; checked_edges=3; distinct_codes=2; max_err=0"
+          ],
+          "profile": "feedback",
+          "returncode": 0,
+          "score": 1.0,
+          "status": "PASS",
+          "testbench_sha256": "2aec16a5b56364b8dfb1e78fab448b69b026493135a649a68fcab6f8ce5db09c",
+          "tran_csv_sha256": "b603ed6950f18edbe5cc9e1556b825683d8dd142a21e314b735c65fe3a7cee63"
+        },
+        {
+          "candidate_sha256": "280d786beed2653e7abff38324ee2b5657d27bf171aa7ba66a053001c0c2d27c",
+          "checker_task_id": "v4_200_l2_cdac_4b_switch",
+          "evas_engine_used": "evas2",
+          "expected_pass": true,
+          "family_id": 200,
+          "label": "gold_score",
+          "notes": [
+            "P_FIRST_READY_EDGE_ARMS_ONLY mismatch_count=0; P_READY_SAMPLES_FOUR_BITS mismatch_count=0; P_SWITCHED_WEIGHT_DENOMINATOR mismatch_count=0; P_BIPOLAR_CDAC_OUTPUT mismatch_count=0; ready_edges=4; checked_edges=5; distinct_codes=3; max_err=0"
+          ],
+          "profile": "score",
+          "returncode": 0,
+          "score": 1.0,
+          "status": "PASS",
+          "testbench_sha256": "ebf4f3956972ad048fa6eb12c1694d5a73e74f89432d8f0ac72daab1fc6611a6",
+          "tran_csv_sha256": "50eaf31857172be65a02d67e6f29ab2da7a4ddd465d20e2b30bfe03989d8ab23"
+        }
+      ],
+      "mutations": [
+        {
+          "candidate_sha256": "bef847bf6b3ea79dcd142964f30f81f50acca182ffde60ccb80dd53c5fa50406",
+          "checker_task_id": "v4_200_l2_cdac_4b_switch",
+          "evas_engine_used": "evas2",
+          "expected_pass": false,
+          "family_id": 200,
+          "label": "neg_001_zero",
+          "notes": [
+            "P_FIRST_READY_EDGE_ARMS_ONLY mismatch_count=0; P_READY_SAMPLES_FOUR_BITS mismatch_count=3; P_SWITCHED_WEIGHT_DENOMINATOR mismatch_count=3; P_BIPOLAR_CDAC_OUTPUT mismatch_count=3; ready_edges=3; checked_edges=3; distinct_codes=2; max_err=1.1"
+          ],
+          "profile": "feedback",
+          "returncode": 0,
+          "score": 0.0,
+          "status": "PASS",
+          "testbench_sha256": "2aec16a5b56364b8dfb1e78fab448b69b026493135a649a68fcab6f8ce5db09c",
+          "tran_csv_sha256": "1cace2cf1d1bf5fca3f157ed450d9493c9ea2dce959db6e05b56d7656279eb89"
+        },
+        {
+          "candidate_sha256": "5814449928c0ca2b985e97e78e1c38523869ef2051766ca490142d721b2f59d7",
+          "checker_task_id": "v4_200_l2_cdac_4b_switch",
+          "evas_engine_used": "evas2",
+          "expected_pass": false,
+          "family_id": 200,
+          "label": "neg_002_no_ready_skip",
+          "notes": [
+            "P_FIRST_READY_EDGE_ARMS_ONLY mismatch_count=1; P_READY_SAMPLES_FOUR_BITS mismatch_count=0; P_SWITCHED_WEIGHT_DENOMINATOR mismatch_count=0; P_BIPOLAR_CDAC_OUTPUT mismatch_count=1; ready_edges=4; checked_edges=5; distinct_codes=3; max_err=1.1"
+          ],
+          "profile": "score",
+          "returncode": 0,
+          "score": 0.0,
+          "status": "PASS",
+          "testbench_sha256": "ebf4f3956972ad048fa6eb12c1694d5a73e74f89432d8f0ac72daab1fc6611a6",
+          "tran_csv_sha256": "7b89d0074f8d00d1ffbb6a0997c5b9f7e6d65cd998c487e0e61cf215388c26ba"
+        },
+        {
+          "candidate_sha256": "9e89a948090bfbf921fd9564b428f8d65c3b06951c8faf030c83148116c2142c",
+          "checker_task_id": "v4_200_l2_cdac_4b_switch",
+          "evas_engine_used": "evas2",
+          "expected_pass": false,
+          "family_id": 200,
+          "label": "neg_003_wrong_denominator",
+          "notes": [
+            "P_FIRST_READY_EDGE_ARMS_ONLY mismatch_count=0; P_READY_SAMPLES_FOUR_BITS mismatch_count=1; P_SWITCHED_WEIGHT_DENOMINATOR mismatch_count=1; P_BIPOLAR_CDAC_OUTPUT mismatch_count=1; ready_edges=3; checked_edges=3; distinct_codes=2; max_err=0.0808824"
+          ],
+          "profile": "feedback",
+          "returncode": 0,
+          "score": 0.0,
+          "status": "PASS",
+          "testbench_sha256": "2aec16a5b56364b8dfb1e78fab448b69b026493135a649a68fcab6f8ce5db09c",
+          "tran_csv_sha256": "dd217f442ad9064b406f96edbeaf6659bf9fb1dacc06ff5a4c94164d8250e472"
+        },
+        {
+          "candidate_sha256": "cfb96ec909693135cf647e1383fd95272462cc7179588e7a33299640dd13aa30",
+          "checker_task_id": "v4_200_l2_cdac_4b_switch",
+          "evas_engine_used": "evas2",
+          "expected_pass": false,
+          "family_id": 200,
+          "label": "neg_004_unipolar_output",
+          "notes": [
+            "P_FIRST_READY_EDGE_ARMS_ONLY mismatch_count=0; P_READY_SAMPLES_FOUR_BITS mismatch_count=5; P_SWITCHED_WEIGHT_DENOMINATOR mismatch_count=5; P_BIPOLAR_CDAC_OUTPUT mismatch_count=5; ready_edges=4; checked_edges=5; distinct_codes=3; max_err=1.1"
+          ],
+          "profile": "score",
+          "returncode": 0,
+          "score": 0.0,
+          "status": "PASS",
+          "testbench_sha256": "ebf4f3956972ad048fa6eb12c1694d5a73e74f89432d8f0ac72daab1fc6611a6",
+          "tran_csv_sha256": "1c8c07ac390edaf72f2361e810e31fd838f6416782762fce0a404e0d677750a3"
+        },
+        {
+          "candidate_sha256": "48b34ffedacc04e2cdaa888c6094d0a956c8ad61345302cfa8f4e0017b55eecf",
+          "checker_task_id": "v4_200_l2_cdac_4b_switch",
+          "evas_engine_used": "evas2",
+          "expected_pass": false,
+          "family_id": 200,
+          "label": "neg_005_metric_scale_low",
+          "notes": [
+            "P_FIRST_READY_EDGE_ARMS_ONLY mismatch_count=0; P_READY_SAMPLES_FOUR_BITS mismatch_count=5; P_SWITCHED_WEIGHT_DENOMINATOR mismatch_count=5; P_BIPOLAR_CDAC_OUTPUT mismatch_count=5; ready_edges=4; checked_edges=5; distinct_codes=3; max_err=0.638"
+          ],
+          "profile": "score",
+          "returncode": 0,
+          "score": 0.0,
+          "status": "PASS",
+          "testbench_sha256": "ebf4f3956972ad048fa6eb12c1694d5a73e74f89432d8f0ac72daab1fc6611a6",
+          "tran_csv_sha256": "792f50a5cf60b34e1c257598a80e8d5f49564b067647d17bda72ed159e31ae5e"
+        }
+      ],
+      "profile_parity": {
+        "checker_task_id": "v4_200_l2_cdac_4b_switch",
+        "deck_identity_except_profile_controls": true,
+        "feedback_tb_sha256": "2aec16a5b56364b8dfb1e78fab448b69b026493135a649a68fcab6f8ce5db09c",
+        "property_ids": [
+          "P_FIRST_READY_EDGE_ARMS_ONLY",
+          "P_READY_SAMPLES_FOUR_BITS",
+          "P_SWITCHED_WEIGHT_DENOMINATOR",
+          "P_BIPOLAR_CDAC_OUTPUT"
+        ],
+        "score_tb_sha256": "ebf4f3956972ad048fa6eb12c1694d5a73e74f89432d8f0ac72daab1fc6611a6",
+        "semantic_basis": [
+          "shared_checker_task_id",
+          "shared_family_spec_properties",
+          "same_trace_contract_required_signals",
+          "feedback_gold_passed_under_evas2",
+          "score_gold_passed_under_evas2"
+        ],
+        "semantic_feedback_score_parity_pass": true,
+        "solution_sha256": "280d786beed2653e7abff38324ee2b5657d27bf171aa7ba66a053001c0c2d27c"
+      },
+      "summary": {
+        "deck_identity_except_profile_controls": true,
+        "gold_passed": 2,
+        "gold_total": 2,
+        "mutations_killed": 5,
+        "mutations_total": 5,
+        "profile_parity_pass": true
+      }
+    }
+  ],
+  "generated_at_utc": "2026-07-16T08:36:49.204052+00:00",
+  "issue": 297,
+  "python_fallback_evidence_claimed": false,
+  "schema_version": "issue-297-repair-gate1-v1",
+  "scope": "families 191-200 under dut-base-v3-exact-five-hash-bound-v2",
+  "spectre": {
+    "available": false,
+    "not_tested_reason": "Spectre/Cadence executable not available on PATH in this worktree session.",
+    "path": null
+  },
+  "summary": {
+    "deck_identity_except_profile_controls_passed": 6,
+    "deck_identity_except_profile_controls_total": 10,
+    "failed_results": [],
+    "families_total": 10,
+    "gold_passed": 20,
+    "gold_total": 20,
+    "mutations_killed": 50,
+    "mutations_total": 50,
+    "profile_parity_passed": 10,
+    "profile_parity_total": 10,
+    "semantic_profile_parity_passed": 10,
+    "semantic_profile_parity_total": 10
+  }
+}
