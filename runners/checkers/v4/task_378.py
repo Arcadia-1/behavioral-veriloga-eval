@@ -76,13 +76,13 @@ def check_v4_378_current_limited_regulator_macro(rows: list[dict[str, float]]) -
     dropout=PropertyResult("P_DROPOUT_CLAMP")
     limiting=PropertyResult("P_CURRENT_LIMITING")
     flag=PropertyResult("P_REGULATION_FLAG")
-    # Evaluate a bounded, approximately 1 ns-spaced trace subset.
-    next_t=0.0
+    # Sample by trace index, not by an absolute time grid.  This keeps the
+    # checker invariant under shifted/scaled stimulus schedules while bounding
+    # work for dense simulator traces.
+    stride = max(1, len(rows) // 240)
     regimes=set()
-    for row in rows:
+    for row in rows[::stride]:
         t=_value(row,"time")
-        if t+1e-15<next_t: continue
-        next_t=t+1e-9
         enabled=_high(row,"enable") and not _high(row,"rst")
         vout=_value(row,"vout"); metric=_value(row,"limit_metric"); ok=_high(row,"regulation_ok")
         if not enabled:

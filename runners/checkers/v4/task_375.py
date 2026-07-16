@@ -1,7 +1,11 @@
 """Task-specific checker for canonical v4 DUT 375."""
 from __future__ import annotations
 
+from statistics import median
+
 from ..api import Checker
+
+
 def _rising_times(rows: list[dict[str, float]], col: str, vth: float = 0.45) -> list[float]:
     times: list[float] = []
     last = rows[0][col] > vth
@@ -11,6 +15,13 @@ def _rising_times(rows: list[dict[str, float]], col: str, vth: float = 0.45) -> 
             times.append(row["time"])
         last = cur
     return times
+
+
+def _event_period(rows: list[dict[str, float]], col: str) -> float:
+    rising = _rising_times(rows, col)
+    periods = [right - left for left, right in zip(rising, rising[1:]) if right > left]
+    return float(median(periods)) if periods else 0.0
+
 
 def _falling_times(rows: list[dict[str, float]], col: str, vth: float = 0.45) -> list[float]:
     times: list[float] = []
@@ -22,9 +33,11 @@ def _falling_times(rows: list[dict[str, float]], col: str, vth: float = 0.45) ->
         last = cur
     return times
 
-def _sample_after(rows: list[dict[str, float]], t: float, delay: float = 5e-9) -> dict[str, float]:
-    target = t + delay
+
+def _sample_after(rows: list[dict[str, float]], t: float, delay: float) -> dict[str, float]:
+    target = t + max(0.0, delay)
     return min(rows, key=lambda row: abs(row["time"] - target))
+
 
 def _v4_missing_columns(rows: list[dict[str, float]], required: set[str]) -> str | None:
     if not rows:
@@ -34,11 +47,15 @@ def _v4_missing_columns(rows: list[dict[str, float]], required: set[str]) -> str
         return "missing_columns=" + ",".join(missing[:16])
     return None
 
+
 def check_v4_nonoverlap_clock_generator(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "clk_in", "rst", "enable", "phi1", "phi2", "deadtime_metric", "valid"}
     missing = _v4_missing_columns(rows, required)
     if missing:
         return False, missing
+    period = _event_period(rows, "clk_in")
+    rise_delay = 0.22 * period if period > 0.0 else 1.8e-9
+    disable_delay = 0.10 * period if period > 0.0 else 0.8e-9
     overlap = sum(
         1
         for row in rows
@@ -52,11 +69,10 @@ def check_v4_nonoverlap_clock_generator(rows: list[dict[str, float]]) -> tuple[b
         and row["phi2"] <= 0.45
         for row in rows
     )
-    valid_seen = any(row["time"] > 15e-9 and row["enable"] > 0.45 and row["valid"] > 0.45 for row in rows)
+    valid_seen = any(row["enable"] > 0.45 and row["valid"] > 0.45 for row in rows)
     disable_samples = [
-        _sample_after(rows, edge_t, 0.8e-9)
+        _sample_after(rows, edge_t, disable_delay)
         for edge_t in _falling_times(rows, "enable")
-        if edge_t > 1e-9
     ]
     disable_clears = bool(disable_samples) and all(
         row["enable"] <= 0.45
@@ -71,14 +87,14 @@ def check_v4_nonoverlap_clock_generator(rows: list[dict[str, float]]) -> tuple[b
     checked_fall = 0
     for edge_t in _rising_times(rows, "clk_in"):
         edge_row = min(rows, key=lambda row: abs(row["time"] - edge_t))
-        sample = _sample_after(rows, edge_t, 1.8e-9)
+        sample = _sample_after(rows, edge_t, rise_delay)
         if edge_row["rst"] <= 0.45 and edge_row["enable"] > 0.45 and sample["enable"] > 0.45:
             checked_rise += 1
             if sample["phi1"] <= 0.45 or sample["phi2"] > 0.45:
                 errors += 1
     for edge_t in _falling_times(rows, "clk_in"):
         edge_row = min(rows, key=lambda row: abs(row["time"] - edge_t))
-        sample = _sample_after(rows, edge_t, 1.8e-9)
+        sample = _sample_after(rows, edge_t, rise_delay)
         if edge_row["rst"] <= 0.45 and edge_row["enable"] > 0.45 and sample["enable"] > 0.45:
             checked_fall += 1
             if sample["phi2"] <= 0.45 or sample["phi1"] > 0.45:

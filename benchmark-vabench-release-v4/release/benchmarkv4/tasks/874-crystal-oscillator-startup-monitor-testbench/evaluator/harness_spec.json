@@ -5,6 +5,9 @@
     ],
     "source_root": "./dut"
   },
+  "canonical_semantics": {
+    "mode": "single_deck_v1"
+  },
   "deck": {
     "analyses": [
       "tran tran stop=92n maxstep=200p"
@@ -45,14 +48,14 @@
     "legacy_score_deck_sha256": "85dae85708947112976353e6efae63387f62c9a4ff6a847b82b1d3437eb3ba0c",
     "notes": [
       "legacy feedback deck was used only to seed the canonical harness spec",
-      "legacy score deck seeded private profile-specific overrides"
+      "canonical deck is shared by feedback and score; legacy deck hashes remain provenance-only"
     ]
   },
   "profile_defaults": {
     "feedback": {
       "parameters": {
         "maxstep": "200p",
-        "stop_time": "100n"
+        "stop_time": "92n"
       },
       "simulatorOptions": {
         "evas_profile": "balanced"
@@ -60,8 +63,8 @@
     },
     "score": {
       "parameters": {
-        "maxstep": "100p",
-        "stop_time": "100n"
+        "maxstep": "200p",
+        "stop_time": "92n"
       }
     }
   },
