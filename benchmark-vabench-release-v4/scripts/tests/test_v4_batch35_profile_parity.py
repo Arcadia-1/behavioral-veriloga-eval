@@ -1,16 +1,30 @@
 from __future__ import annotations
 
 import copy
+import importlib.util
 import json
 import subprocess
 import sys
 from pathlib import Path
+
+import pytest
 
 
 ROOT = Path(__file__).resolve().parents[2]
 SOURCE_ROOT = ROOT / "provenance" / "dut-base-v3-exact-five-hash-bound-v2"
 RELEASE_ROOT = ROOT / "release" / "benchmarkv4"
 RENDERER = ROOT / "scripts" / "render_v4_harness.py"
+EVAS_SMOKE_RUNNER = (
+    ROOT / "operations" / "tri_form_derivation_prep" / "run_v4_reference_evas_smoke.py"
+)
+
+
+def _load_evas_smoke_runner():
+    spec = importlib.util.spec_from_file_location("v4_evas_smoke_runner", EVAS_SMOKE_RUNNER)
+    assert spec is not None and spec.loader is not None
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
 
 
 def _semantic_projection(spec: dict, profile_name: str) -> dict:
@@ -132,3 +146,11 @@ def test_batch35_checker_trace_and_mutation_contracts_are_structurally_complete(
             and item["violated_property_ids"]
             for item in active
         )
+
+
+def test_batch35_evas_evidence_requires_explicit_rust_engine(monkeypatch: pytest.MonkeyPatch) -> None:
+    runner = _load_evas_smoke_runner()
+    monkeypatch.setenv("EVAS_ENGINE", "python")
+    monkeypatch.setenv("VAEVAS_DEFAULT_EVAS_ENGINE", "python")
+    with pytest.raises(SystemExit, match="explicit EVAS_ENGINE=evas2"):
+        runner.probe_evas2_runtime()
