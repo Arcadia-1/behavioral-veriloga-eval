@@ -11,5 +11,5 @@ XDUT (in1 in2 up dn vdd gnd) pfd_tdomain_reset_window
 
 simulatorOptions options evas_profile=balanced
 
-tran tran stop=2.8n maxstep=5p
+tran tran stop=3.8n maxstep=5p
 save dn in1 in2 up vdd gnd
