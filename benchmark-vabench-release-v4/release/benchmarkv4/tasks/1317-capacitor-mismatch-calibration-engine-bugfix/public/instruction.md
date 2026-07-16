@@ -75,6 +75,8 @@ The repaired bundle must satisfy every public property:
 - `P_ASSERT_DONE_AFTER_EIGHT_ENABLED_UPDATES`: restore: Assert `done` after eight enabled updates or when the error remains within `err_tol` for two updates. Required traces: `time`, `err_in`, `clk`, `rst`, `enable`, `cal_3`, `cal_2`, `cal_1`, `cal_0`, `correction_metric`, `done`.
 - `P_USE_ONLY_VOLTAGE_DOMAIN_BEHAVIORAL_STATE`: restore: Use only voltage-domain behavioral state and voltage contributions on public electrical outputs. Required traces: `time`, `err_in`, `clk`, `rst`, `enable`, `cal_3`, `cal_2`, `cal_1`, `cal_0`, `correction_metric`, `done`.
 
+Decode the public calibration outputs as `code = cal_0 + 2*cal_1 + 4*cal_2 + 8*cal_3` using `vth`, and drive `correction_metric = clamp(code*corr_lsb, vss, vdd)`.
+
 ## Modeling Constraints
 
 - Use deterministic voltage-domain behavioral Verilog-A.

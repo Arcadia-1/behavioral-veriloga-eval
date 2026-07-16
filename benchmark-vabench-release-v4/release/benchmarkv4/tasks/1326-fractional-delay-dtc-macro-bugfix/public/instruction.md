@@ -41,6 +41,8 @@ The repaired bundle must satisfy every public property:
 - `P_EXPOSE_THE_FRACTIONAL_DELAY_AS_PHASE`: restore: Expose the fractional delay as `phase_metric`. Required traces: `time`, `clk_in`, `rst`, `enable`, `frac_3`, `frac_2`, `frac_1`, `frac_0`, `clk_out`, `phase_metric`, `valid`.
 - `P_PRESERVE_INPUT_EDGE_ORDER_AND_ASSERT`: restore: Preserve input-edge order and assert `valid` after the first emitted delayed edge. Required traces: `time`, `clk_in`, `rst`, `enable`, `frac_3`, `frac_2`, `frac_1`, `frac_0`, `clk_out`, `phase_metric`, `valid`.
 
+On each rising `clk_in` edge, latch `code = frac_0 + 2*frac_1 + 4*frac_2 + 8*frac_3` using `vth`, emit one rising output edge after `(code+1)*200 ps`, and from the accepted edge onward drive `phase_metric = vss + (vdd-vss)*code/15`.
+
 ## Modeling Constraints
 
 - Use deterministic voltage-domain behavioral Verilog-A.

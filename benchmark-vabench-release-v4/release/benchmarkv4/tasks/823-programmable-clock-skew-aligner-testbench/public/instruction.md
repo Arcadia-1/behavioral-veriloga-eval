@@ -56,6 +56,8 @@ Create stimulus and save traces sufficient for the fixed evaluator oracle to che
 
 The required trace names are: `time`, `clk_in`, `rst`, `enable`, `skew_2`, `skew_1`, `skew_0`, `clk_out`, `delay_metric`, `valid`.
 
+On each accepted rising `clk_in` edge, latch `code = skew_0 + 2*skew_1 + 4*skew_2` using `vth`, schedule one rising output edge after `code*200 ps` (code zero has no added delay), and drive `delay_metric = clamp(code*unit_delay_metric, vss, vdd)` from that accepted edge onward.
+
 ## Modeling Constraints
 
 - Submit one self-contained top-level transient `.scs` file.

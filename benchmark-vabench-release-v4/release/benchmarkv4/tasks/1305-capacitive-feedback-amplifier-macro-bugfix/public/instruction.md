@@ -42,6 +42,8 @@ The repaired bundle must satisfy every public property:
 - `P_ASSERT_SETTLED_AFTER_THE_OUTPUT_HAS`: restore: Assert `settled` after the output has stayed within `settle_tol` of the target for two enabled updates. Required traces: `time`, `vin`, `clk`, `rst`, `enable`, `gain_1`, `gain_0`, `vout`, `sampled_metric`, `settled`.
 - `P_USE_ONLY_VOLTAGE_DOMAIN_BEHAVIORAL_STATE`: restore: Use only voltage-domain behavioral state and voltage contributions on public electrical outputs. Required traces: `time`, `vin`, `clk`, `rst`, `enable`, `gain_1`, `gain_0`, `vout`, `sampled_metric`, `settled`.
 
+The exact gain contract is `code = (gain_0 > vth ? 1 : 0) + 2*(gain_1 > vth ? 1 : 0)`, `gain = 1.0 + gain_step*code`, and, on each accepted edge, `vout = clamp(vcm + gain*(sample - vcm), vss, vdd)`. Do not apply an additional slew step.
+
 ## Modeling Constraints
 
 - Use deterministic voltage-domain behavioral Verilog-A.

@@ -40,6 +40,8 @@ The repaired bundle must satisfy every public property:
 - `P_EXPOSE_THE_ACTIVE_DELAY_CODE_AS`: restore: Expose the active delay code as `delay_metric`. Required traces: `time`, `clk_in`, `rst`, `enable`, `skew_2`, `skew_1`, `skew_0`, `clk_out`, `delay_metric`, `valid`.
 - `P_ASSERT_VALID_AFTER_THE_FIRST_DELAYED`: restore: Assert `valid` after the first delayed output edge has been generated. Required traces: `time`, `clk_in`, `rst`, `enable`, `skew_2`, `skew_1`, `skew_0`, `clk_out`, `delay_metric`, `valid`.
 
+On each accepted rising `clk_in` edge, latch `code = skew_0 + 2*skew_1 + 4*skew_2` using `vth`, schedule one rising output edge after `code*200 ps` (code zero has no added delay), and drive `delay_metric = clamp(code*unit_delay_metric, vss, vdd)` from that accepted edge onward.
+
 ## Modeling Constraints
 
 - Use deterministic voltage-domain behavioral Verilog-A.

@@ -55,6 +55,8 @@ Create stimulus and save traces sufficient for the fixed evaluator oracle to che
 
 The required trace names are: `time`, `vinp`, `vinn`, `clk`, `rst`, `enable`, `decision`, `kickback_metric`, `valid`.
 
+The exact metric contract is `overdrive = abs(V(vinp)-V(vinn))` and `kickback_metric = clamp(vcm + 0.30/(1.0 + overdrive/0.030), vss, vdd)`.
+
 ## Modeling Constraints
 
 - Submit one self-contained top-level transient `.scs` file.

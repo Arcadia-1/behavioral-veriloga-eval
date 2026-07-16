@@ -39,6 +39,8 @@ The repaired bundle must satisfy every public property:
 - `P_ASSERT_VALID_AFTER_EACH_COMPLETED_DECISION`: restore: Assert `valid` after each completed decision update. Required traces: `time`, `vinp`, `vinn`, `clk`, `rst`, `enable`, `decision`, `kickback_metric`, `valid`.
 - `P_USE_ONLY_VOLTAGE_DOMAIN_BEHAVIORAL_STATE`: restore: Use only voltage-domain behavioral state and voltage contributions on public electrical outputs. Required traces: `time`, `vinp`, `vinn`, `clk`, `rst`, `enable`, `decision`, `kickback_metric`, `valid`.
 
+The exact metric contract is `overdrive = abs(V(vinp)-V(vinn))` and `kickback_metric = clamp(vcm + 0.30/(1.0 + overdrive/0.030), vss, vdd)`.
+
 ## Modeling Constraints
 
 - Use deterministic voltage-domain behavioral Verilog-A.
