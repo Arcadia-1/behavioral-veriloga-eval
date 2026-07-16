@@ -10,5 +10,5 @@ Venable (enable 0) vsource type=pwl wave=[0 0 5n 0 5.2n 0.9 82n 0.9 82.2n 0 92n 
 XDUT (vin clk rst enable i_out q_out amp_metric phase_metric valid) polyphase_quadrature_filter
 
 
-tran tran stop=92n maxstep=200p
+tran tran stop=100n maxstep=100p
 save vin clk rst enable i_out q_out amp_metric phase_metric valid

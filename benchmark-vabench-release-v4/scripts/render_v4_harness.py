@@ -120,6 +120,49 @@ def format_value(value: Any) -> str:
     return str(value)
 
 
+SEMANTIC_PROFILE_FIELDS = ("body_lines", "analyses", "save_signals", "parameters", "corners")
+SEMANTIC_DECK_OVERRIDE_FIELDS = {"body_lines", "analyses", "save_signals"}
+
+
+def _effective_profile_semantics(spec: dict[str, Any], profile_name: str) -> dict[str, Any]:
+    """Return the deck semantics that a profile is allowed to select.
+
+    Feedback and score may differ in simulator identity, but they must share
+    the stimulus, analyses, saved traces, stopping/solver parameters, and
+    simulation corners.
+    Those fields therefore belong to the canonical deck, not profile overrides.
+    """
+    defaults = dict((spec.get("profile_defaults") or {}).get(profile_name) or {})
+    overrides = dict(defaults.get("deck_overrides") or {})
+    forbidden = sorted(SEMANTIC_DECK_OVERRIDE_FIELDS.intersection(overrides))
+    if forbidden:
+        raise ValueError(
+            f"{profile_name} deck_overrides contain semantic fields {forbidden}; "
+            "move them to the canonical deck"
+        )
+    deck = spec.get("deck") or {}
+    return {
+        "body_lines": list(deck.get("body_lines") or []),
+        "analyses": list(deck.get("analyses") or []),
+        "save_signals": list(deck.get("save_signals") or []),
+        "parameters": dict(defaults.get("parameters") or {}),
+        "corners": list(defaults.get("corners") or []),
+    }
+
+
+def validate_profile_semantics(spec: dict[str, Any]) -> None:
+    """Reject profile pairs whose observable evaluation surface diverges."""
+    feedback = _effective_profile_semantics(spec, "feedback")
+    score = _effective_profile_semantics(spec, "score")
+    differences = [
+        field for field in SEMANTIC_PROFILE_FIELDS if feedback[field] != score[field]
+    ]
+    if differences:
+        raise ValueError(
+            "feedback/score semantic parity failure: " + ", ".join(differences)
+        )
+
+
 def render_template(text: str, values: dict[str, Any]) -> str:
     return text.format(**{key: format_value(value) for key, value in values.items()})
 
@@ -236,6 +279,7 @@ def parse_args() -> argparse.Namespace:
 def main() -> int:
     args = parse_args()
     spec, spec_hash = load_spec(args.spec)
+    validate_profile_semantics(spec)
     profile = build_profile(spec, args.profile, spec_hash)
     deck = render_scs(spec, profile)
     if args.profile_output:

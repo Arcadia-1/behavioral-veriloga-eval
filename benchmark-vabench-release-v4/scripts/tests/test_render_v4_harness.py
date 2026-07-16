@@ -1,0 +1,106 @@
+#!/usr/bin/env python3
+"""Regression tests for v4 canonical feedback/score harness parity."""
+from __future__ import annotations
+
+import copy
+import hashlib
+import json
+import sys
+from pathlib import Path
+
+import pytest
+
+
+SCRIPTS = Path(__file__).resolve().parents[1]
+RELEASE_ROOT = SCRIPTS.parent
+SOURCE_ROOT = RELEASE_ROOT / "provenance" / "dut-base-v3-exact-five-hash-bound-v2"
+sys.path.insert(0, str(SCRIPTS))
+sys.path.insert(0, str(RELEASE_ROOT / "operations" / "tri_form_derivation_prep"))
+
+import render_v4_harness  # noqa: E402
+from run_v4_metamorphic_smoke import transform_deck  # noqa: E402
+
+
+FAMILIES = range(361, 371)
+
+
+def load_family_spec(family: int) -> dict:
+    path = next(SOURCE_ROOT.glob(f"{family:03d}-*/evaluator/harness_spec.json"))
+    return json.loads(path.read_text(encoding="utf-8"))
+
+
+def family_dir(family: int) -> Path:
+    return next(SOURCE_ROOT.glob(f"{family:03d}-*"))
+
+
+def spec_hash(spec: dict) -> str:
+    payload = json.dumps(spec, sort_keys=True, separators=(",", ":")).encode()
+    return hashlib.sha256(payload).hexdigest()
+
+
+def _without_simulator_options(deck: str) -> str:
+    return "\n".join(
+        line
+        for line in deck.splitlines()
+        if line.strip() and not line.startswith("simulatorOptions options ")
+    )
+
+
+def test_assigned_specs_have_profile_parity() -> None:
+    for family in FAMILIES:
+        render_v4_harness.validate_profile_semantics(load_family_spec(family))
+
+
+def test_assigned_checker_contracts_preserve_diagnostics_and_mutation_scope() -> None:
+    for family in FAMILIES:
+        root = family_dir(family)
+        checker = json.loads((root / "evaluator" / "checker_profile.json").read_text())
+        harness = load_family_spec(family)
+        catalog = json.loads((root / "evaluator" / "mutation_catalog.json").read_text())
+        trace_contract = checker.get("trace_contract") or {}
+        assert checker["score_and_feedback_share_checker"] is True
+        assert "evaluator/score_tb.scs" in checker["shared_by"]
+        assert trace_contract.get("public_observables")
+        family_spec = json.loads((root / "evaluator" / "family_spec.json").read_text())
+        assert set(harness["property_ids"]) == {
+            property_spec["id"] for property_spec in family_spec["properties"]
+        }
+        assert len(catalog.get("mutations") or []) == 5
+        assert all(
+            mutation.get("certification", {}).get("status") == "pass"
+            for mutation in catalog["mutations"]
+        )
+
+
+def test_semantic_profile_override_is_rejected() -> None:
+    spec = copy.deepcopy(load_family_spec(361))
+    spec["profile_defaults"]["score"]["deck_overrides"] = {"body_lines": ["bad"]}
+    with pytest.raises(ValueError, match="semantic fields"):
+        render_v4_harness.validate_profile_semantics(spec)
+
+
+def test_metamorphic_transform_affinely_moves_events_and_scales_durations() -> None:
+    deck = (
+        "Vx (x 0) vsource type=pwl wave=[0 0.4 10n 0.4]\n"
+        "Vclk (clk 0) vsource type=pulse delay=2n period=4n width=1n rise=10p fall=10p\n"
+        "tran tran stop=20n maxstep=100p\n"
+    )
+    transformed = transform_deck(deck, scale=1.05, shift_s=1e-9)
+    assert "wave=[0 0.4 11.5n 0.4]" in transformed
+    assert "delay=3.1n period=4.2n width=1.05n" in transformed
+    assert "stop=22n maxstep=105p" in transformed
+
+
+def test_feedback_and_score_render_the_same_canonical_deck() -> None:
+    spec = load_family_spec(362)
+    render_v4_harness.validate_profile_semantics(spec)
+    digest = spec_hash(spec)
+    feedback = render_v4_harness.render_scs(
+        spec, render_v4_harness.build_profile(spec, "feedback", digest)
+    )
+    score = render_v4_harness.render_scs(
+        spec, render_v4_harness.build_profile(spec, "score", digest)
+    )
+    assert _without_simulator_options(feedback) == _without_simulator_options(score)
+    assert "tran tran stop=190n maxstep=50p" in feedback
+    assert "tran tran stop=190n maxstep=50p" in score

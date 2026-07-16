@@ -13,5 +13,5 @@ Vgain_2 (gain_2 0) vsource type=pwl wave=[0 0 8n 0 8.2n 0 18n 0 18.2n 0 28n 0 28
 XDUT (vin clk rst enable gain_2 gain_1 gain_0 vout error_metric settled) opamp_feedback_settling
 
 
-tran tran stop=92n maxstep=200p
+tran tran stop=100n maxstep=100p
 save vin clk rst enable gain_2 gain_1 gain_0 vout error_metric settled
