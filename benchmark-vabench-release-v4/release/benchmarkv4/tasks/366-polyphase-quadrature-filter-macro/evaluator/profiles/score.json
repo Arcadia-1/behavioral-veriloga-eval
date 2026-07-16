@@ -1,21 +1,12 @@
 {
   "corners": [],
-  "deck_overrides": {
-    "body_lines": [
-      "Vvin (vin 0) vsource type=pwl wave=[0 0.45 16n 0.45 16.2n 0.2 42n 0.2 42.2n 0.76 68n 0.76 68.2n 0.35 92n 0.35]",
-      "Vclk (clk 0) vsource type=pwl wave=[0 0 9n 0 10n 0.9 12n 0.9 12.2n 0 20n 0.9 22n 0.9 22.2n 0 30n 0.9 32n 0.9 32.2n 0 40n 0.9 42n 0.9 42.2n 0 50n 0.9 52n 0.9 52.2n 0 60n 0.9 62n 0.9 62.2n 0 70n 0.9 72n 0.9 72.2n 0 80n 0.9 82n 0.9 82.2n 0 92n 0]",
-      "Vrst (rst 0) vsource type=pwl wave=[0 0.9 3n 0.9 3.2n 0 92n 0]",
-      "Venable (enable 0) vsource type=pwl wave=[0 0 5n 0 5.2n 0.9 82n 0.9 82.2n 0 92n 0]",
-      "XDUT (vin clk rst enable i_out q_out amp_metric phase_metric valid) polyphase_quadrature_filter",
-      ""
-    ]
-  },
+  "deck_overrides": {},
   "deterministic_seed": 0,
   "generated_from": {
     "script": "render_v4_harness.py",
     "version": "v4-harness-renderer-v1"
   },
-  "harness_spec_sha256": "3e981646b0b003bf00fd72489289a2e8c02d494ac0948c8b2085c9113b679b24",
+  "harness_spec_sha256": "20a33d25f0bb20f694a20d3e010315d15111ab9c6a0deecfb7592785b114e66d",
   "parameters": {
     "maxstep": "100p",
     "stop_time": "100n"

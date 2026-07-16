@@ -9,7 +9,15 @@
     "analyses": [
       "tran tran stop={stop_time} maxstep={maxstep}"
     ],
-    "body_lines": [],
+    "body_lines": [
+      "Vi (i_in 0) vsource type=sine sinedc=0.45 ampl=0.16 freq=9Meg phase=20",
+      "Vq (q_in 0) vsource type=sine sinedc=0.45 ampl=0.11 freq=15Meg phase=70",
+      "Vloi (lo_i 0) vsource type=pulse val0=0 val1=0.9 delay=4n period=8n width=4n rise=25p fall=25p",
+      "Vloq (lo_q 0) vsource type=pulse val0=0 val1=0.9 delay=6n period=8n width=4n rise=25p fall=25p",
+      "Vrst (rst 0) vsource type=pwl wave=[0 0.9 1.2n 0.9 1.3n 0 91n 0 91.1n 0.9 97n 0.9 97.1n 0 125n 0]",
+      "Ven (enable 0) vsource type=pwl wave=[0 0 2n 0 2.1n 0.9 68n 0.9 68.1n 0 76n 0 76.1n 0.9 125n 0.9]",
+      "XDUT (i_in q_in lo_i lo_q rst enable rf_out i_mix_dbg q_mix_dbg quad_ok) iq_upconversion_mixer"
+    ],
     "header": [
       "simulator lang=spectre",
       "global 0"
@@ -37,38 +45,18 @@
   },
   "profile_defaults": {
     "feedback": {
-      "deck_overrides": {
-        "body_lines": [
-          "Vi (i_in 0) vsource type=sine sinedc=0.45 ampl=0.12 freq=12Meg",
-          "Vq (q_in 0) vsource type=sine sinedc=0.45 ampl=0.09 freq=18Meg phase=35",
-          "Vloi (lo_i 0) vsource type=pulse val0=0 val1=0.9 delay=5n period=10n width=5n rise=30p fall=30p",
-          "Vloq (lo_q 0) vsource type=pulse val0=0 val1=0.9 delay=7.5n period=10n width=5n rise=30p fall=30p",
-          "Vrst (rst 0) vsource type=pwl wave=[0 0.9 1.5n 0.9 1.6n 0 72n 0 72.1n 0.9 78n 0.9 78.1n 0 100n 0]",
-          "Ven (enable 0) vsource type=pwl wave=[0 0 2.5n 0 2.6n 0.9 55n 0.9 55.1n 0 62n 0 62.1n 0.9 100n 0.9]",
-          "XDUT (i_in q_in lo_i lo_q rst enable rf_out i_mix_dbg q_mix_dbg quad_ok) iq_upconversion_mixer"
-        ]
-      },
+      "deck_overrides": {},
       "deterministic_seed": 0,
       "parameters": {
         "maxstep": "50p",
-        "stop_time": "100n"
+        "stop_time": "125n"
       },
       "simulatorOptions": {
         "evas_profile": "balanced"
       }
     },
     "score": {
-      "deck_overrides": {
-        "body_lines": [
-          "Vi (i_in 0) vsource type=sine sinedc=0.45 ampl=0.16 freq=9Meg phase=20",
-          "Vq (q_in 0) vsource type=sine sinedc=0.45 ampl=0.11 freq=15Meg phase=70",
-          "Vloi (lo_i 0) vsource type=pulse val0=0 val1=0.9 delay=4n period=8n width=4n rise=25p fall=25p",
-          "Vloq (lo_q 0) vsource type=pulse val0=0 val1=0.9 delay=6n period=8n width=4n rise=25p fall=25p",
-          "Vrst (rst 0) vsource type=pwl wave=[0 0.9 1.2n 0.9 1.3n 0 91n 0 91.1n 0.9 97n 0.9 97.1n 0 125n 0]",
-          "Ven (enable 0) vsource type=pwl wave=[0 0 2n 0 2.1n 0.9 68n 0.9 68.1n 0 76n 0 76.1n 0.9 125n 0.9]",
-          "XDUT (i_in q_in lo_i lo_q rst enable rf_out i_mix_dbg q_mix_dbg quad_ok) iq_upconversion_mixer"
-        ]
-      },
+      "deck_overrides": {},
       "deterministic_seed": 1,
       "parameters": {
         "maxstep": "50p",

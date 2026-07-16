@@ -7,7 +7,7 @@
   },
   "deck": {
     "analyses": [
-      "tran tran stop=92n maxstep=200p"
+      "tran tran stop={stop_time} maxstep={maxstep}"
     ],
     "body_lines": [
       "Vvin (vin 0) vsource type=pwl wave=[0 0.50 60n 0.50 60.2n 0.40 92n 0.40]",
@@ -57,8 +57,9 @@
   },
   "profile_defaults": {
     "feedback": {
+      "deck_overrides": {},
       "parameters": {
-        "maxstep": "200p",
+        "maxstep": "100p",
         "stop_time": "100n"
       },
       "simulatorOptions": {
@@ -66,6 +67,7 @@
       }
     },
     "score": {
+      "deck_overrides": {},
       "parameters": {
         "maxstep": "100p",
         "stop_time": "100n"

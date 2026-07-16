@@ -1,8 +1,7 @@
 #!/usr/bin/env python3
 """Run benchmarkv4 testbench references through Rust EVAS as a smoke gate.
 
-This is a local, fast triage runner.  Spectre remains the final judge, but this
-script stages benchmarkv4 tasks exactly as the release contract expects:
+This runner stages benchmarkv4 tasks exactly as the release contract expects:
 ``reference_tb.scs`` sees the supplied DUT under ``./dut/...`` including any
 public support files.  Optional mutation runs overlay each score mutation on
 top of the same supplied DUT tree and verify that the private checker rejects
@@ -43,8 +42,20 @@ PACKAGE_ROOT = Path(__file__).resolve().parents[2]
 DEFAULT_RELEASE = PACKAGE_ROOT / "release" / "benchmarkv4"
 REQUIRED_EVAS_ENGINE = "evas2"
 REQUIRED_EVAS_VERSION = "0.8.2"
+RUST_EVAS_LOG_ENGINE = "evas-rust"
 EVAS_VERSION_RE = re.compile(r"^Version\s+(\S+)", re.MULTILINE)
 EVAS_BACKEND_RE = re.compile(r"^\s*evas_engine\s*=\s*(\S+)\s*$", re.MULTILINE)
+
+
+def require_evas2_environment() -> None:
+    """Require explicit EVAS2 selection before any evidence is produced."""
+    explicit = os.environ.get("EVAS_ENGINE", "").strip().lower()
+    default = os.environ.get("VAEVAS_DEFAULT_EVAS_ENGINE", "").strip().lower()
+    if explicit != REQUIRED_EVAS_ENGINE or default != REQUIRED_EVAS_ENGINE:
+        raise SystemExit(
+            "EVAS2 evidence requires explicit EVAS_ENGINE=evas2 and "
+            "VAEVAS_DEFAULT_EVAS_ENGINE=evas2"
+        )
 
 
 def read_json(path: Path) -> dict[str, Any]:
@@ -121,27 +132,64 @@ def case_evas2_runtime(output_dir: Path) -> dict[str, Any]:
             "evas_engine_used": "unknown",
             "evas_version": "unknown",
             "evas_backend": "unknown",
+            "evas_backend_used": "unknown",
             "evas_runtime_valid": False,
             "evas_runtime_notes": ["missing evas.log"],
+            "evas_engine_validation": {"valid": False, "notes": ["missing evas.log"]},
         }
     text = log_path.read_text(encoding="utf-8", errors="replace")
     version_match = EVAS_VERSION_RE.search(text)
     backend_match = EVAS_BACKEND_RE.search(text)
     version = version_match.group(1) if version_match else "unknown"
     backend = backend_match.group(1) if backend_match else "unknown"
-    valid = version == REQUIRED_EVAS_VERSION and backend == "evas-rust"
+    valid = version == REQUIRED_EVAS_VERSION and backend == RUST_EVAS_LOG_ENGINE
     notes: list[str] = []
     if version != REQUIRED_EVAS_VERSION:
         notes.append(f"expected EVAS {REQUIRED_EVAS_VERSION}, got {version}")
-    if backend != "evas-rust":
-        notes.append(f"expected evas-rust backend, got {backend}")
+    if backend != RUST_EVAS_LOG_ENGINE:
+        notes.append(f"expected {RUST_EVAS_LOG_ENGINE} backend, got {backend}")
     return {
         "evas_engine": REQUIRED_EVAS_ENGINE if valid else "invalid",
         "evas_engine_used": REQUIRED_EVAS_ENGINE if valid else "invalid",
         "evas_version": version,
         "evas_backend": backend,
+        "evas_backend_used": backend,
         "evas_runtime_valid": valid,
         "evas_runtime_notes": notes,
+        "evas_engine_validation": {"valid": valid, "notes": notes},
+    }
+
+
+def engine_evidence_from_log(log_path: Path, combined_output: str) -> dict[str, Any]:
+    """Compatibility API for the metamorphic/profile evidence runners."""
+    configured_engine = effective_evas_engine()
+    text = combined_output
+    if log_path.is_file():
+        text += "\n" + log_path.read_text(encoding="utf-8", errors="replace")
+    version_match = EVAS_VERSION_RE.search(text)
+    backend_match = EVAS_BACKEND_RE.search(text)
+    version = version_match.group(1) if version_match else "unknown"
+    backend = backend_match.group(1) if backend_match else "unknown"
+    valid = (
+        configured_engine == REQUIRED_EVAS_ENGINE
+        and version == REQUIRED_EVAS_VERSION
+        and backend == RUST_EVAS_LOG_ENGINE
+    )
+    notes: list[str] = []
+    if configured_engine != REQUIRED_EVAS_ENGINE:
+        notes.append(f"configured_evas_engine={configured_engine}")
+    if version != REQUIRED_EVAS_VERSION:
+        notes.append(f"evas_version={version}")
+    if backend != RUST_EVAS_LOG_ENGINE:
+        notes.append(f"evas_backend={backend}")
+    return {
+        "evas_engine": configured_engine,
+        "evas_engine_used": configured_engine,
+        "evas_version": version,
+        "evas_backend": backend,
+        "evas_backend_used": backend,
+        "valid": valid,
+        "notes": notes,
     }
 
 
@@ -364,6 +412,7 @@ def main() -> int:
             raise SystemExit(f"work root exists: {work_root}")
         shutil.rmtree(work_root)
     work_root.mkdir(parents=True)
+    require_evas2_environment()
     runtime = probe_evas2_runtime()
     results = [
         run_task(
