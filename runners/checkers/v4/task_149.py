@@ -2,97 +2,54 @@
 from __future__ import annotations
 
 from ..api import Checker
-def sample_signal_at(rows: list[dict[str, float]], signal: str, time_s: float) -> float | None:
-    if not rows or "time" not in rows[0] or signal not in rows[0]:
-        return None
-    first_time = rows[0]["time"]
-    last_time = rows[-1].get("time")
-    if last_time is None or time_s < first_time or time_s > last_time:
-        return None
-    if time_s == first_time:
-        return rows[0].get(signal)
-    for idx in range(1, len(rows)):
-        prev = rows[idx - 1]
-        cur = rows[idx]
-        t0 = prev.get("time")
-        t1 = cur.get("time")
-        if t0 is None or t1 is None:
-            continue
-        if t0 <= time_s <= t1:
-            v0 = prev.get(signal)
-            v1 = cur.get(signal)
-            if v0 is None or v1 is None:
-                return None
-            if t1 == t0:
-                return v1
-            alpha = (time_s - t0) / (t1 - t0)
-            return v0 + alpha * (v1 - v0)
-    return None
+from .stimulus_relative import crossings, probe_time, require_signals, sample
 
-def _sample_many(
-    rows: list[dict[str, float]],
-    samples: dict[str, list[tuple[float, float]]],
-    *,
-    tol: float,
-) -> tuple[bool, str]:
-    details: list[str] = []
-    for signal, expected_samples in samples.items():
-        observed: list[float] = []
-        for time_ns, expected in expected_samples:
-            value = sample_signal_at(rows, signal, time_ns * 1e-9)
-            if value is None:
-                return False, f"missing_{signal}_sample_at={time_ns:g}ns"
-            observed.append(value)
-            if abs(value - expected) > tol:
-                return False, (
-                    f"{signal}@{time_ns:g}ns={value:.4f} expected={expected:.4f} "
-                    f"tol={tol:.4f}"
-                )
-        details.append(f"{signal}=" + ",".join(f"{value:.3f}" for value in observed))
-    return True, " ".join(details)
-
-def _sample_many_within_trace(
-    rows: list[dict[str, float]],
-    samples: dict[str, list[tuple[float, float]]],
-    *,
-    tol: float,
-) -> tuple[bool, str]:
-    if not rows:
-        return _sample_many(rows, samples, tol=tol)
-    end_time = rows[-1].get("time")
-    if end_time is None:
-        return _sample_many(rows, samples, tol=tol)
-    end_ns = end_time * 1e9
-    filtered: dict[str, list[tuple[float, float]]] = {}
-    for signal, expected_samples in samples.items():
-        visible_samples = [
-            (time_ns, expected)
-            for time_ns, expected in expected_samples
-            if time_ns <= end_ns + 1e-3
-        ]
-        filtered[signal] = visible_samples or expected_samples
-    return _sample_many(rows, filtered, tol=tol)
 
 def check_v3_dual_modulus_divider_16_17(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    required = {"time", "fin", "mc", "fout"}
-    if not rows or not required.issubset(rows[0]):
-        return False, "missing time/fin/mc/fout"
-    return _sample_many_within_trace(
-        rows,
-        {
-            "fout": [
-                (30.0, 0.0),
-                (32.0, 1.0),
-                (48.0, 1.0),
-                (50.0, 0.0),
-                (64.0, 0.0),
-                (66.0, 1.0),
-                (82.0, 1.0),
-                (84.0, 0.0),
-            ]
-        },
-        tol=0.08,
-    )
+    invalid = require_signals(rows, {"time", "fin", "mc", "fout"}, "P_MC_SELECTS_MODULUS")
+    if invalid:
+        return False, invalid
+    edges = crossings(rows, "fin", threshold=0.5, direction="rising")
+    if len(edges) < 34:
+        return False, f"insufficient_excitation fin_rising_edges={len(edges)}"
+
+    count = 0
+    output_high = False
+    mismatches = 0
+    saw_mod16 = saw_mod17 = False
+    for index, edge in enumerate(edges):
+        mc = sample(rows, "mc", edge)
+        if mc is None:
+            return False, f"missing_mc_sample edge={index}"
+        mod17 = mc > 0.5
+        saw_mod17 |= mod17
+        saw_mod16 |= not mod17
+        if count == 15:
+            if mod17:
+                count = 16
+            else:
+                count = 0
+                output_high = True
+        elif count == 16:
+            count = 0
+            output_high = True
+        elif count == 8:
+            count += 1
+            output_high = False
+        else:
+            count += 1
+
+        next_edge = edges[index + 1] if index + 1 < len(edges) else None
+        probe = probe_time(rows, edge, next_edge, fraction=0.25)
+        observed = sample(rows, "fout", probe) if probe is not None else None
+        expected = 1.0 if output_high else 0.0
+        if observed is None or abs(observed - expected) > 0.08:
+            mismatches += 1
+
+    if not (saw_mod16 and saw_mod17):
+        return False, f"insufficient_excitation mod16={saw_mod16} mod17={saw_mod17}"
+    return mismatches == 0, f"fin_rising_edges={len(edges)} mismatch_count={mismatches}"
+
 
 CHECKER_ID = "v4_149_dual_modulus_divider_16_17"
 CHECKER: Checker = check_v3_dual_modulus_divider_16_17

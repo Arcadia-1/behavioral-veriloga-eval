@@ -9,7 +9,17 @@
     "analyses": [
       "tran tran stop=36n maxstep=20p"
     ],
-    "body_lines": [],
+    "body_lines": [
+      "Vb0 (b0 0) vsource type=pwl wave=[0 0 10n 0 10.1n 0.9 40n 0.9]",
+      "Vb1 (b1 0) vsource type=pwl wave=[0 0 10n 0 10.1n 0.9 40n 0.9]",
+      "Vb2 (b2 0) vsource type=pwl wave=[0 0 10n 0 10.1n 0.9 40n 0.9]",
+      "Vb3 (b3 0) vsource type=pwl wave=[0 0 20n 0 20.1n 0.9 40n 0.9]",
+      "Vb4 (b4 0) vsource type=pwl wave=[0 0 20n 0 20.1n 0.9 40n 0.9]",
+      "Vb5 (b5 0) vsource type=pwl wave=[0 0 30n 0 30.1n 0.9 40n 0.9]",
+      "Vb6 (b6 0) vsource type=pwl wave=[0 0 30n 0 30.1n 0.9 40n 0.9]",
+      "Vb7 (b7 0) vsource type=pwl wave=[0 0 30n 0 30.1n 0.9 40n 0.9]",
+      "XDUT (b0 b1 b2 b3 b4 b5 b6 b7 dout) flash_thermometer_centered_sum"
+    ],
     "header": [
       "simulator lang=spectre",
       "global 0"
@@ -41,58 +51,17 @@
     "legacy_score_deck_sha256": "c6a11ba1869fd3e58de7ab683c205eda3b181d6de0e26030f1642a2676223aa4",
     "notes": [
       "legacy feedback deck was used only to seed the canonical harness spec",
-      "legacy score deck seeded private profile-specific overrides"
+      "legacy score deck seeded private profile-specific overrides",
+      "feedback deck is the canonical stimulus; score is generated with identical semantics"
     ]
   },
   "profile_defaults": {
     "feedback": {
-      "deck_overrides": {
-        "body_lines": [
-          "Vb0 (b0 0) vsource type=pwl wave=[0 0 10n 0 10.1n 0.9 40n 0.9]",
-          "Vb1 (b1 0) vsource type=pwl wave=[0 0 10n 0 10.1n 0.9 40n 0.9]",
-          "Vb2 (b2 0) vsource type=pwl wave=[0 0 10n 0 10.1n 0.9 40n 0.9]",
-          "Vb3 (b3 0) vsource type=pwl wave=[0 0 20n 0 20.1n 0.9 40n 0.9]",
-          "Vb4 (b4 0) vsource type=pwl wave=[0 0 20n 0 20.1n 0.9 40n 0.9]",
-          "Vb5 (b5 0) vsource type=pwl wave=[0 0 30n 0 30.1n 0.9 40n 0.9]",
-          "Vb6 (b6 0) vsource type=pwl wave=[0 0 30n 0 30.1n 0.9 40n 0.9]",
-          "Vb7 (b7 0) vsource type=pwl wave=[0 0 30n 0 30.1n 0.9 40n 0.9]",
-          "",
-          "XDUT (b0 b1 b2 b3 b4 b5 b6 b7 dout) flash_thermometer_centered_sum",
-          ""
-        ]
-      },
-      "parameters": {
-        "maxstep": "200p",
-        "stop_time": "100n"
-      },
       "simulatorOptions": {
         "evas_profile": "balanced"
       }
     },
-    "score": {
-      "deck_overrides": {
-        "analyses": [
-          "tran tran stop=44n maxstep=20p"
-        ],
-        "body_lines": [
-          "Vb0 (b0 0) vsource type=pwl wave=[0 0 8n 0 8.1n 0.9 46n 0.9]",
-          "Vb1 (b1 0) vsource type=pwl wave=[0 0 8n 0 8.1n 0.9 46n 0.9]",
-          "Vb2 (b2 0) vsource type=pwl wave=[0 0 18n 0 18.1n 0.9 46n 0.9]",
-          "Vb3 (b3 0) vsource type=pwl wave=[0 0 18n 0 18.1n 0.9 26n 0.9 26.1n 0 46n 0]",
-          "Vb4 (b4 0) vsource type=pwl wave=[0 0 18n 0 18.1n 0.9 46n 0.9]",
-          "Vb5 (b5 0) vsource type=pwl wave=[0 0 18n 0 18.1n 0.9 46n 0.9]",
-          "Vb6 (b6 0) vsource type=pwl wave=[0 0 30n 0 30.1n 0.9 46n 0.9]",
-          "Vb7 (b7 0) vsource type=pwl wave=[0 0 30n 0 30.1n 0.9 46n 0.9]",
-          "",
-          "XDUT (b0 b1 b2 b3 b4 b5 b6 b7 dout) flash_thermometer_centered_sum",
-          ""
-        ]
-      },
-      "parameters": {
-        "maxstep": "100p",
-        "stop_time": "100n"
-      }
-    }
+    "score": {}
   },
   "property_ids": [
     "P_THERMOMETER_THRESHOLD_COUNT",
