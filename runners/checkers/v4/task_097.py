@@ -4,6 +4,24 @@ from __future__ import annotations
 from ..api import Checker
 import csv
 import re
+from .stimulus_relative import (
+    crossings,
+    diagnostic,
+    event_label,
+    mean_signal,
+    pass_note,
+    require_signals,
+    sample_around_event,
+)
+
+PROPERTY_IDS = [
+    "P_RESET_IDLE",
+    "P_RAMP_MODE",
+    "P_CHIRP_MODE",
+    "P_BURST_GATE",
+    "P_BURST_IDLE",
+    "P_CONTROL_DRIVEN_SELECTION",
+]
 
 _INDEXED_ALIAS_TARGETS = ('dout_0',
  'dout0',
@@ -207,142 +225,11 @@ def _stream_programmable_stimulus_sequencer_csv(csv_path: Path) -> tuple[float, 
     if missing:
         return 0.0, [f"missing {'/'.join(missing)}"]
 
-    ramp_count = 0
-    ramp_drops = 0
-    ramp_first: float | None = None
-    ramp_last: float | None = None
-    sine_count = 0
-    sine_min = float("inf")
-    sine_max = float("-inf")
-    sine_sum = 0.0
-    sine_prev_t: float | None = None
-    sine_prev_center: float | None = None
-    crossing_times: list[float] = []
-    burst_count = 0
-    burst_min = float("inf")
-    burst_max = float("-inf")
-    burst_transitions = 0
-    burst_prev_out: float | None = None
-    gate_low_sum = 0.0
-    gate_low_count = 0
-    metric_windows = {
-        "ramp": (8.0e-9, 22.0e-9, 0.0, 0),
-        "sine": (32.0e-9, 56.0e-9, 0.0, 0),
-        "burst": (67.0e-9, 75.0e-9, 0.0, 0),
-        "idle": (76.5e-9, 79.0e-9, 0.0, 0),
-    }
-
-    for row in runtime.rows():
-        time_s = runtime.float(row, "time")
-        rst = runtime.float(row, "rst")
-        gate = runtime.float(row, "gate")
-        out = runtime.float(row, "out")
-        metric = runtime.float(row, "metric")
-        if rst <= 0.45:
-            if 6.0e-9 <= time_s <= 24.0e-9:
-                ramp_count += 1
-                if ramp_first is None:
-                    ramp_first = out
-                if ramp_last is not None and out < ramp_last - 0.02:
-                    ramp_drops += 1
-                ramp_last = out
-            if 30.0e-9 <= time_s <= 58.0e-9:
-                sine_count += 1
-                sine_min = min(sine_min, out)
-                sine_max = max(sine_max, out)
-                sine_sum += out
-                cur_center = out - 0.45
-                if sine_prev_center is not None and sine_prev_t is not None:
-                    if sine_prev_center == 0.0:
-                        crossing_times.append(sine_prev_t)
-                    elif sine_prev_center * cur_center < 0.0:
-                        frac = abs(sine_prev_center) / (abs(sine_prev_center) + abs(cur_center))
-                        crossing_times.append(sine_prev_t + frac * (time_s - sine_prev_t))
-                sine_prev_t = time_s
-                sine_prev_center = cur_center
-            if 66.0e-9 <= time_s <= 88.0e-9 and gate > 0.45:
-                burst_count += 1
-                burst_min = min(burst_min, out)
-                burst_max = max(burst_max, out)
-                if burst_prev_out is not None and (
-                    (burst_prev_out <= 0.45 < out) or (burst_prev_out >= 0.45 > out)
-                ):
-                    burst_transitions += 1
-                burst_prev_out = out
-            if 76.0e-9 <= time_s <= 79.5e-9 and gate <= 0.45:
-                gate_low_sum += out
-                gate_low_count += 1
-        for label, (start, stop, total, count) in list(metric_windows.items()):
-            if start <= time_s <= stop:
-                metric_windows[label] = (start, stop, total + metric, count + 1)
-
-    if min(ramp_count, sine_count, burst_count) < 6 or gate_low_count < 3:
-        return 0.0, [
-            "sequencer_missing_windows "
-            f"ramp={ramp_count} sine={sine_count} burst={burst_count} gate_low={gate_low_count}"
-        ]
-    assert ramp_first is not None and ramp_last is not None
-    ramp_delta = ramp_last - ramp_first
-    if ramp_drops or ramp_delta < 0.16 or not (0.16 <= ramp_first <= 0.30):
-        return 0.0, [
-            "sequencer_ramp_not_monotonic "
-            f"drops={ramp_drops} delta={ramp_delta:.3f} start={ramp_first:.3f}"
-        ]
-    sine_mean = sine_sum / sine_count
-    center_crossings = len(crossing_times)
-    if sine_min > 0.34 or sine_max < 0.56 or abs(sine_mean - 0.45) > 0.05 or center_crossings < 4:
-        return 0.0, [
-            "sequencer_chirp_segment_wrong "
-            f"min={sine_min:.3f} max={sine_max:.3f} mean={sine_mean:.3f} crossings={center_crossings}"
-        ]
-    half_periods = [cur - prev for prev, cur in zip(crossing_times, crossing_times[1:])]
-    if len(half_periods) < 3:
-        return 0.0, [f"sequencer_chirp_missing_periods={len(half_periods)}"]
-    early_half_period = sum(half_periods[:2]) / min(2, len(half_periods[:2]))
-    late_half_period = sum(half_periods[-2:]) / min(2, len(half_periods[-2:]))
-    if late_half_period >= early_half_period * 0.90:
-        return 0.0, [
-            "sequencer_chirp_frequency_not_increasing "
-            f"early_half_period={early_half_period:.3e} late_half_period={late_half_period:.3e}"
-        ]
-
-    switch_times = [25.8e-9, 26.3e-9, 61.8e-9, 62.3e-9]
-    switch_samples = runtime.samples_at("out", switch_times)
-    if any(switch_samples[target] is None for target in switch_times):
-        return 0.0, ["sequencer_missing_switch_samples"]
-    switch_1_delta = abs(float(switch_samples[26.3e-9]) - float(switch_samples[25.8e-9]))
-    switch_2_delta = abs(float(switch_samples[62.3e-9]) - float(switch_samples[61.8e-9]))
-    if switch_1_delta > 0.12 or switch_2_delta > 0.12:
-        return 0.0, [f"sequencer_mode_switch_discontinuity={switch_1_delta:.3f}/{switch_2_delta:.3f}"]
-
-    gate_low_mean = gate_low_sum / gate_low_count
-    if burst_min > 0.36 or burst_max < 0.54 or burst_transitions < 2 or abs(gate_low_mean - 0.45) > 0.08:
-        return 0.0, [
-            "sequencer_burst_schedule_wrong "
-            f"low={burst_min:.3f} high={burst_max:.3f} transitions={burst_transitions} "
-            f"gate_low_mean={gate_low_mean:.3f}"
-        ]
-
-    metric_means: dict[str, float] = {}
-    for label, (_, _, total, count) in metric_windows.items():
-        if count == 0:
-            return 0.0, ["sequencer_missing_metric_windows"]
-        metric_means[label] = total / count
-    if not (0.12 <= metric_means["ramp"] <= 0.30 and 0.42 <= metric_means["sine"] <= 0.58 and metric_means["burst"] >= 0.70):
-        return 0.0, [
-            "sequencer_metric_does_not_mark_modes "
-            f"ramp={metric_means['ramp']:.3f} sine={metric_means['sine']:.3f} burst={metric_means['burst']:.3f}"
-        ]
-    if metric_means["idle"] < 0.55 or metric_means["idle"] > metric_means["burst"] - 0.05:
-        return 0.0, [f"sequencer_idle_metric_wrong idle={metric_means['idle']:.3f} burst={metric_means['burst']:.3f}"]
-
-    return 1.0, [
-        "programmable_stimulus_sequencer "
-        f"ramp_delta={ramp_delta:.3f} sine={sine_min:.3f}/{sine_max:.3f} "
-        f"chirp_half_period={early_half_period:.3e}->{late_half_period:.3e} "
-        f"switch={switch_1_delta:.3f}/{switch_2_delta:.3f} "
-        f"burst={burst_min:.3f}/{burst_max:.3f} transitions={burst_transitions}"
-    ]
+    sampled_rows, resample_missing = runtime.resampled_rows(required - {"time"}, sample_count=2000)
+    if resample_missing:
+        return 0.0, ["sequencer_resample_failed " + "/".join(resample_missing)]
+    ok, message = check_programmable_stimulus_sequencer(sampled_rows)
+    return (1.0 if ok else 0.0), [message]
 
 def _canonical_signal_name(name: str) -> str:
     return re.sub(r"[^a-z0-9]+", "", name.lower())
@@ -417,6 +304,13 @@ def _add_canonical_alias_targets(alias_to_index: dict[str, int]) -> None:
         ckey = _canonical_signal_name(target)
         if target not in alias_to_index and ckey in canonical_to_index:
             alias_to_index[target] = canonical_to_index[ckey]
+
+def _dedupe_crossings(crossing_times: list[float], min_spacing_s: float) -> list[float]:
+    filtered: list[float] = []
+    for crossing in crossing_times:
+        if not filtered or crossing - filtered[-1] >= min_spacing_s:
+            filtered.append(crossing)
+    return filtered
 
 class CsvCheckerRuntime:
     """Header-indexed CSV access shared by validated streaming checkers."""
@@ -563,55 +457,24 @@ class CsvCheckerRuntime:
             rows.append(out)
         return rows, []
 
-def sample_signal_at(rows: list[dict[str, float]], signal: str, time_s: float) -> float | None:
-    if not rows or "time" not in rows[0] or signal not in rows[0]:
-        return None
-    first_time = rows[0]["time"]
-    last_time = rows[-1].get("time")
-    if last_time is None or time_s < first_time or time_s > last_time:
-        return None
-    if time_s == first_time:
-        return rows[0].get(signal)
-    for idx in range(1, len(rows)):
-        prev = rows[idx - 1]
-        cur = rows[idx]
-        t0 = prev.get("time")
-        t1 = cur.get("time")
-        if t0 is None or t1 is None:
-            continue
-        if t0 <= time_s <= t1:
-            v0 = prev.get(signal)
-            v1 = cur.get(signal)
-            if v0 is None or v1 is None:
-                return None
-            if t1 == t0:
-                return v1
-            alpha = (time_s - t0) / (t1 - t0)
-            return v0 + alpha * (v1 - v0)
-    return None
-
-def mean_in_window(rows: list[dict[str, float]], key: str, start: float, stop: float) -> float | None:
-    values = [r[key] for r in rows if start <= r["time"] <= stop and key in r]
-    if not values:
-        return None
-    return sum(values) / len(values)
-
 def check_programmable_stimulus_sequencer(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "clk", "rst", "mode", "gate", "out", "metric"}
-    if not rows or not required.issubset(rows[0]):
-        return False, "missing time/clk/rst/mode/gate/out/metric"
+    missing = require_signals(rows, required, "P_CONTROL_DRIVEN_SELECTION")
+    if missing:
+        return False, missing
 
-    def window(start: float, stop: float) -> list[dict[str, float]]:
-        return [r for r in rows if start <= r["time"] <= stop and r["rst"] <= 0.45]
-
-    ramp_rows = window(6.0e-9, 24.0e-9)
-    sine_rows = window(30.0e-9, 58.0e-9)
-    burst_rows = [r for r in window(66.0e-9, 88.0e-9) if r["gate"] > 0.45]
-    gate_low_rows = [r for r in window(76.0e-9, 79.5e-9) if r["gate"] <= 0.45]
+    active = [row for row in rows if row["rst"] <= 0.45]
+    ramp_rows = [row for row in active if row["mode"] < 0.30]
+    sine_rows = [row for row in active if 0.30 <= row["mode"] < 0.60]
+    burst_rows = [row for row in active if row["mode"] >= 0.60 and row["gate"] > 0.45]
+    gate_low_rows = [row for row in active if row["mode"] >= 0.60 and row["gate"] <= 0.45]
     if min(len(ramp_rows), len(sine_rows), len(burst_rows)) < 6 or len(gate_low_rows) < 3:
-        return False, (
-            "sequencer_missing_windows "
-            f"ramp={len(ramp_rows)} sine={len(sine_rows)} burst={len(burst_rows)} gate_low={len(gate_low_rows)}"
+        return False, diagnostic(
+            "P_CONTROL_DRIVEN_SELECTION",
+            "missing_mode_intervals",
+            expected="ramp_sine_burst_and_gate_low_intervals",
+            observed=f"ramp:{len(ramp_rows)},sine:{len(sine_rows)},burst:{len(burst_rows)},gate_low:{len(gate_low_rows)}",
+            event="mode_gate_intervals",
         )
 
     ramp_drops = sum(
@@ -619,9 +482,12 @@ def check_programmable_stimulus_sequencer(rows: list[dict[str, float]]) -> tuple
     )
     ramp_delta = ramp_rows[-1]["out"] - ramp_rows[0]["out"]
     if ramp_drops or ramp_delta < 0.16 or not (0.16 <= ramp_rows[0]["out"] <= 0.30):
-        return False, (
-            "sequencer_ramp_not_monotonic "
-            f"drops={ramp_drops} delta={ramp_delta:.3f} start={ramp_rows[0]['out']:.3f}"
+        return False, diagnostic(
+            "P_RAMP_MODE",
+            "ramp_not_monotonic",
+            expected="monotonic_ramp_delta_above_0.16",
+            observed=f"drops:{ramp_drops},delta:{ramp_delta:.3f},start:{ramp_rows[0]['out']:.3f}",
+            event=event_label("ramp_mode", 0, ramp_rows[0]["time"]),
         )
 
     sine_vals = [r["out"] for r in sine_rows]
@@ -637,29 +503,57 @@ def check_programmable_stimulus_sequencer(rows: list[dict[str, float]]) -> tuple
         elif prev_v * cur_v < 0.0:
             frac = abs(prev_v) / (abs(prev_v) + abs(cur_v))
             crossing_times.append(prev["time"] + frac * (cur["time"] - prev["time"]))
+    sine_duration = max(0.0, sine_rows[-1]["time"] - sine_rows[0]["time"])
+    crossing_times = _dedupe_crossings(crossing_times, max(0.2e-9, 0.01 * sine_duration))
     center_crossings = len(crossing_times)
     if sine_min > 0.34 or sine_max < 0.56 or abs(sine_mean - 0.45) > 0.05 or center_crossings < 4:
-        return False, (
-            "sequencer_chirp_segment_wrong "
-            f"min={sine_min:.3f} max={sine_max:.3f} mean={sine_mean:.3f} crossings={center_crossings}"
+        return False, diagnostic(
+            "P_CHIRP_MODE",
+            "chirp_segment_wrong",
+            expected="centered_chirp_with_at_least_4_center_crossings",
+            observed=f"min:{sine_min:.3f},max:{sine_max:.3f},mean:{sine_mean:.3f},crossings:{center_crossings}",
+            event=event_label("sine_mode", 0, sine_rows[0]["time"]),
         )
     half_periods = [cur - prev for prev, cur in zip(crossing_times, crossing_times[1:])]
     if len(half_periods) < 3:
-        return False, f"sequencer_chirp_missing_periods={len(half_periods)}"
+        return False, diagnostic(
+            "P_CHIRP_MODE",
+            "missing_chirp_periods",
+            expected="at_least_3_half_periods",
+            observed=f"half_periods:{len(half_periods)}",
+            event=event_label("sine_mode", 0, sine_rows[0]["time"]),
+        )
     early_half_period = sum(half_periods[:2]) / min(2, len(half_periods[:2]))
     late_half_period = sum(half_periods[-2:]) / min(2, len(half_periods[-2:]))
     if late_half_period >= early_half_period * 0.90:
-        return False, (
-            "sequencer_chirp_frequency_not_increasing "
-            f"early_half_period={early_half_period:.3e} late_half_period={late_half_period:.3e}"
+        return False, diagnostic(
+            "P_CHIRP_MODE",
+            "frequency_not_increasing",
+            expected="late_half_period_below_0.9x_early",
+            observed=f"early:{early_half_period:.3e},late:{late_half_period:.3e}",
+            event=event_label("sine_mode", 0, sine_rows[0]["time"]),
         )
 
-    switch_1_pre = sample_signal_at(rows, "out", 25.8e-9)
-    switch_1_post = sample_signal_at(rows, "out", 26.3e-9)
-    switch_2_pre = sample_signal_at(rows, "out", 61.8e-9)
-    switch_2_post = sample_signal_at(rows, "out", 62.3e-9)
+    mode_to_sine = crossings(rows, "mode", threshold=0.30, direction="rising")
+    mode_to_burst = crossings(rows, "mode", threshold=0.60, direction="rising")
+    if not mode_to_sine or not mode_to_burst:
+        return False, diagnostic(
+            "P_CONTROL_DRIVEN_SELECTION",
+            "missing_mode_crossings",
+            expected="observable_mode_crossings_at_0.30_and_0.60",
+            observed=f"to_sine:{len(mode_to_sine)},to_burst:{len(mode_to_burst)}",
+            event="mode_crossings",
+        )
+    switch_1_pre, switch_1_post = sample_around_event(rows, "out", mode_to_sine[0])
+    switch_2_pre, switch_2_post = sample_around_event(rows, "out", mode_to_burst[0])
     if None in (switch_1_pre, switch_1_post, switch_2_pre, switch_2_post):
-        return False, "sequencer_missing_switch_samples"
+        return False, diagnostic(
+            "P_CONTROL_DRIVEN_SELECTION",
+            "missing_switch_samples",
+            expected="samples_around_observed_mode_crossings",
+            observed="one_or_more_switch_samples_missing",
+            event="mode_crossings",
+        )
     assert switch_1_pre is not None
     assert switch_1_post is not None
     assert switch_2_pre is not None
@@ -667,7 +561,13 @@ def check_programmable_stimulus_sequencer(rows: list[dict[str, float]]) -> tuple
     switch_1_delta = abs(switch_1_post - switch_1_pre)
     switch_2_delta = abs(switch_2_post - switch_2_pre)
     if switch_1_delta > 0.12 or switch_2_delta > 0.12:
-        return False, f"sequencer_mode_switch_discontinuity={switch_1_delta:.3f}/{switch_2_delta:.3f}"
+        return False, diagnostic(
+            "P_CONTROL_DRIVEN_SELECTION",
+            "mode_switch_discontinuity",
+            expected="output_delta_across_mode_crossings_below_0.12",
+            observed=f"switch_delta:{switch_1_delta:.3f}/{switch_2_delta:.3f}",
+            event="mode_crossings",
+        )
 
     burst_vals = [r["out"] for r in burst_rows]
     burst_low = min(burst_vals)
@@ -679,36 +579,57 @@ def check_programmable_stimulus_sequencer(rows: list[dict[str, float]]) -> tuple
     )
     gate_low_mean = sum(r["out"] for r in gate_low_rows) / len(gate_low_rows)
     if burst_low > 0.36 or burst_high < 0.54 or burst_transitions < 2 or abs(gate_low_mean - 0.45) > 0.08:
-        return False, (
-            "sequencer_burst_schedule_wrong "
-            f"low={burst_low:.3f} high={burst_high:.3f} transitions={burst_transitions} "
-            f"gate_low_mean={gate_low_mean:.3f}"
+        return False, diagnostic(
+            "P_BURST_GATE",
+            "burst_schedule_wrong",
+            expected="gated_burst_toggles_and_gate_low_idle_near_0.45",
+            observed=(
+                f"low:{burst_low:.3f},high:{burst_high:.3f},"
+                f"transitions:{burst_transitions},gate_low_mean:{gate_low_mean:.3f}"
+            ),
+            event=event_label("burst_gate", 0, burst_rows[0]["time"]),
         )
 
-    ramp_metric = mean_in_window(rows, "metric", 8.0e-9, 22.0e-9)
-    sine_metric = mean_in_window(rows, "metric", 32.0e-9, 56.0e-9)
-    burst_metric = mean_in_window(rows, "metric", 67.0e-9, 75.0e-9)
-    idle_metric = mean_in_window(rows, "metric", 76.5e-9, 79.0e-9)
+    ramp_metric = mean_signal(ramp_rows, "metric")
+    sine_metric = mean_signal(sine_rows, "metric")
+    burst_metric = mean_signal(burst_rows, "metric")
+    idle_metric = mean_signal(gate_low_rows, "metric")
     if None in (ramp_metric, sine_metric, burst_metric, idle_metric):
-        return False, "sequencer_missing_metric_windows"
+        return False, diagnostic(
+            "P_CONTROL_DRIVEN_SELECTION",
+            "missing_metric_intervals",
+            expected="metric_samples_for_each_observed_mode",
+            observed="one_or_more_metric_intervals_empty",
+            event="mode_gate_intervals",
+        )
     assert ramp_metric is not None
     assert sine_metric is not None
     assert burst_metric is not None
     assert idle_metric is not None
     if not (0.12 <= ramp_metric <= 0.30 and 0.42 <= sine_metric <= 0.58 and burst_metric >= 0.70):
-        return False, (
-            "sequencer_metric_does_not_mark_modes "
-            f"ramp={ramp_metric:.3f} sine={sine_metric:.3f} burst={burst_metric:.3f}"
+        return False, diagnostic(
+            "P_CONTROL_DRIVEN_SELECTION",
+            "metric_does_not_mark_modes",
+            expected="metric_levels_ramp_low_sine_mid_burst_high",
+            observed=f"ramp:{ramp_metric:.3f},sine:{sine_metric:.3f},burst:{burst_metric:.3f}",
+            event="mode_gate_intervals",
         )
     if idle_metric < 0.55 or idle_metric > burst_metric - 0.05:
-        return False, f"sequencer_idle_metric_wrong idle={idle_metric:.3f} burst={burst_metric:.3f}"
+        return False, diagnostic(
+            "P_BURST_IDLE",
+            "idle_metric_wrong",
+            expected="idle_metric_between_0.55_and_below_burst_metric",
+            observed=f"idle:{idle_metric:.3f},burst:{burst_metric:.3f}",
+            event=event_label("gate_low", 0, gate_low_rows[0]["time"]),
+        )
 
-    return True, (
+    return True, pass_note(
+        PROPERTY_IDS,
         "programmable_stimulus_sequencer "
         f"ramp_delta={ramp_delta:.3f} sine={sine_min:.3f}/{sine_max:.3f} "
         f"chirp_half_period={early_half_period:.3e}->{late_half_period:.3e} "
         f"switch={switch_1_delta:.3f}/{switch_2_delta:.3f} "
-        f"burst={burst_low:.3f}/{burst_high:.3f} transitions={burst_transitions}"
+        f"burst={burst_low:.3f}/{burst_high:.3f} transitions={burst_transitions}",
     )
 
 CHECKER_ID = "v4_097_programmable_stimulus_sequencer"

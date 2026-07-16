@@ -1,0 +1,365 @@
+{
+  "checked_families": [
+    "091",
+    "092",
+    "093",
+    "094",
+    "095",
+    "096",
+    "097",
+    "098",
+    "099",
+    "100"
+  ],
+  "claim_boundary": {
+    "cadence": "not_tested_local_unavailable",
+    "full_release_audit": "not_run_scope_excluded",
+    "python_fallback_evidence_claimed": false,
+    "release_materialization": "not_run_scope_excluded",
+    "spectre": "not_tested_local_unavailable"
+  },
+  "effective_evas_engine": "evas2",
+  "evas_backend_source": {
+    "git_commit": "985bba40929da8066dc9f1e4a08d27c010424c5f",
+    "git_dirty": false,
+    "git_remote_origin": "https://github.com/BucketSran/EVAS",
+    "git_remote_upstream": "https://github.com/Arcadia-1/EVAS.git",
+    "path": "/Users/bucketsran/Documents/TsingProject/vaEvas/EVAS"
+  },
+  "evas_command": [
+    "/Applications/Xcode-26.4.1.app/Contents/Developer/usr/bin/python3",
+    "-m",
+    "evas"
+  ],
+  "evas_engine_used": "evas2",
+  "failure_count": 0,
+  "finished_at_unix": 1784188769,
+  "results": [
+    {
+      "backend_used": "evas",
+      "checker_task_id": "v4_091_final_step_file_metric",
+      "evas_engine_used": "evas2",
+      "family_id": "091",
+      "notes": [
+        "returncode=0",
+        "evas_engine=evas2",
+        "trace_contract=row_required_set",
+        "ref_edges=4 metric_levels=[0.225, 0.45, 0.675, 0.9] max_level_err=0.000 final_norm=1.000/1.000 metric_dips=0"
+      ],
+      "scores": {
+        "dut_compile": 1.0,
+        "sim_correct": 1.0,
+        "tb_compile": 1.0,
+        "weighted_total": 1.0
+      },
+      "status": "PASS",
+      "task": "091-final-step-file-metric",
+      "timing": {
+        "accepted_tran_steps": 4036.0,
+        "csv_write_s": 0.570153,
+        "derive_bus_signals_s": 0.000429,
+        "total_elapsed_s": 1.3,
+        "tran_elapsed_s": 0.22019999999999998
+      },
+      "timing_split": {
+        "behavior_checker_s": 28.461087000000006,
+        "evas_subprocess_wall_s": 14.895758708999999,
+        "run_case_wall_s": 62.671405709000005
+      }
+    },
+    {
+      "backend_used": "evas",
+      "checker_task_id": "v4_092_fixed_gain_amplifier",
+      "evas_engine_used": "evas2",
+      "family_id": "092",
+      "notes": [
+        "returncode=0",
+        "evas_engine=evas2",
+        "trace_contract=row_required_set",
+        "gain=4.750 gain_err=0.0000 cm_max=0.0000"
+      ],
+      "scores": {
+        "dut_compile": 1.0,
+        "sim_correct": 1.0,
+        "tb_compile": 1.0,
+        "weighted_total": 1.0
+      },
+      "status": "PASS",
+      "task": "092-fixed-gain-amplifier",
+      "timing": {
+        "accepted_tran_steps": 550.0,
+        "csv_write_s": 0.010695,
+        "derive_bus_signals_s": 2.8e-05,
+        "total_elapsed_s": 0.4,
+        "tran_elapsed_s": 0.022699999999999998
+      },
+      "timing_split": {
+        "behavior_checker_s": 4.63331320799999,
+        "evas_subprocess_wall_s": 0.767608917000004,
+        "run_case_wall_s": 5.718096416999998
+      }
+    },
+    {
+      "backend_used": "evas",
+      "checker_task_id": "v4_093_gain_estimator",
+      "evas_engine_used": "evas2",
+      "family_id": "093",
+      "notes": [
+        "returncode=0",
+        "evas_engine=evas2",
+        "trace_contract=row_required_set",
+        "in_span=0.0600 out_span=0.3600 waveform_gain=6.00 gain_est=6.00 gain_err=0.00 valid_final=True"
+      ],
+      "scores": {
+        "dut_compile": 1.0,
+        "sim_correct": 1.0,
+        "tb_compile": 1.0,
+        "weighted_total": 1.0
+      },
+      "status": "PASS",
+      "task": "093-gain-estimator",
+      "timing": {
+        "accepted_tran_steps": 1203.0,
+        "csv_write_s": 0.01989,
+        "derive_bus_signals_s": 3.3e-05,
+        "total_elapsed_s": 0.8,
+        "tran_elapsed_s": 0.4417
+      },
+      "timing_split": {
+        "behavior_checker_s": 9.546111582999998,
+        "evas_subprocess_wall_s": 0.7704879589999933,
+        "run_case_wall_s": 10.564773708000004
+      }
+    },
+    {
+      "backend_used": "evas",
+      "checker_task_id": "v4_094_iq_downconversion_chain",
+      "evas_engine_used": "evas2",
+      "family_id": "094",
+      "notes": [
+        "returncode=0",
+        "evas_engine=evas2",
+        "trace_contract=row_required_set",
+        "iq_downconversion_chain i_hi/q_hi/i_lo/q_lo=0.710/0.710/0.184/0.184 common_mode=0.450/0.451 phase=0.000/0.300/0.600/0.900; P_RESET_COMMON_MODE mismatch_count=0; P_QUADRATURE_SEQUENCE mismatch_count=0; P_LO_MONITORS mismatch_count=0; P_MIXER_MONITORS mismatch_count=0; P_BASEBAND_UPDATES mismatch_count=0; P_PHASE_MONITOR mismatch_count=0"
+      ],
+      "scores": {
+        "dut_compile": 1.0,
+        "sim_correct": 1.0,
+        "tb_compile": 1.0,
+        "weighted_total": 1.0
+      },
+      "status": "PASS",
+      "task": "094-iq-downconversion-chain",
+      "timing": {
+        "accepted_tran_steps": 455.0,
+        "csv_write_s": 0.008184,
+        "derive_bus_signals_s": 3.9e-05,
+        "total_elapsed_s": 1.1,
+        "tran_elapsed_s": 0.1695
+      },
+      "timing_split": {
+        "behavior_checker_s": 3.5385793339999907,
+        "evas_subprocess_wall_s": 1.2202196249999986,
+        "run_case_wall_s": 5.747247583000004
+      }
+    },
+    {
+      "backend_used": "evas",
+      "checker_task_id": "v4_095_ldo_load_step_recovery",
+      "evas_engine_used": "evas2",
+      "family_id": "095",
+      "notes": [
+        "returncode=0",
+        "evas_engine=evas2",
+        "trace_contract=row_required_set",
+        "ldo_load_step_recovery_flow pre/early/late/light/second=0.606/0.543/0.586/0.608/0.540 load=0.100/0.850/0.200/0.750 ctrl=0.491/0.821/0.528/0.778; P_RESET_REGULATION_STATE mismatch_count=0; P_BOUNDED_LOAD_AND_TARGET mismatch_count=0; P_CONTROL_MONITOR mismatch_count=0; P_HEAVY_LOAD_DROOP mismatch_count=0; P_LIGHT_LOAD_KICK mismatch_count=0; P_RECOVERY_AND_SETTLING mismatch_count=0"
+      ],
+      "scores": {
+        "dut_compile": 1.0,
+        "sim_correct": 1.0,
+        "tb_compile": 1.0,
+        "weighted_total": 1.0
+      },
+      "status": "PASS",
+      "task": "095-ldo-load-step-recovery",
+      "timing": {
+        "accepted_tran_steps": 527.0,
+        "csv_write_s": 0.016187,
+        "derive_bus_signals_s": 2.4e-05,
+        "total_elapsed_s": 1.1,
+        "tran_elapsed_s": 1.0175
+      },
+      "timing_split": {
+        "behavior_checker_s": 4.549078499999993,
+        "evas_subprocess_wall_s": 1.1363159999999937,
+        "run_case_wall_s": 6.440823207999998
+      }
+    },
+    {
+      "backend_used": "evas",
+      "checker_task_id": "v4_096_pipeline_adc_chain_4b",
+      "evas_engine_used": "evas2",
+      "family_id": "096",
+      "notes": [
+        "returncode=0",
+        "evas_engine=evas2",
+        "trace_contract=row_required_set",
+        "observed_codes=0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15 expected_codes=0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15 stage_bit_mismatches=0 final_concat_mismatches=0 final_code_mismatches=0 residue_mismatches=0 max_res1_err=0.0000 max_res2_err=0.0000 res2_span=0.4500 reversals=0 bounded_failures=0"
+      ],
+      "scores": {
+        "dut_compile": 1.0,
+        "sim_correct": 1.0,
+        "tb_compile": 1.0,
+        "weighted_total": 1.0
+      },
+      "status": "PASS",
+      "task": "096-pipeline-adc-chain-4b",
+      "timing": {
+        "accepted_tran_steps": 985.0,
+        "csv_write_s": 0.205359,
+        "derive_bus_signals_s": 4.3e-05,
+        "total_elapsed_s": 2.3,
+        "tran_elapsed_s": 0.9386
+      },
+      "timing_split": {
+        "behavior_checker_s": 6.72966550000001,
+        "evas_subprocess_wall_s": 2.297303624999998,
+        "run_case_wall_s": 9.402228500000007
+      }
+    },
+    {
+      "backend_used": "evas",
+      "checker_task_id": "v4_097_programmable_stimulus_sequencer",
+      "evas_engine_used": "evas2",
+      "family_id": "097",
+      "notes": [
+        "returncode=0",
+        "evas_engine=evas2",
+        "trace_contract=row_required_set",
+        "programmable_stimulus_sequencer ramp_delta=0.269 sine=0.300/0.600 chirp_half_period=7.783e-09->5.046e-09 switch=0.005/0.018 burst=0.280/0.620 transitions=6; P_RESET_IDLE mismatch_count=0; P_RAMP_MODE mismatch_count=0; P_CHIRP_MODE mismatch_count=0; P_BURST_GATE mismatch_count=0; P_BURST_IDLE mismatch_count=0; P_CONTROL_DRIVEN_SELECTION mismatch_count=0"
+      ],
+      "scores": {
+        "dut_compile": 1.0,
+        "sim_correct": 1.0,
+        "tb_compile": 1.0,
+        "weighted_total": 1.0
+      },
+      "status": "PASS",
+      "task": "097-programmable-stimulus-sequencer",
+      "timing": {
+        "accepted_tran_steps": 450.0,
+        "csv_write_s": 0.007097,
+        "derive_bus_signals_s": 3.1e-05,
+        "total_elapsed_s": 0.9,
+        "tran_elapsed_s": 0.3409
+      },
+      "timing_split": {
+        "behavior_checker_s": 4.313617082999997,
+        "evas_subprocess_wall_s": 0.8729367909999866,
+        "run_case_wall_s": 6.273365249999998
+      }
+    },
+    {
+      "backend_used": "evas",
+      "checker_task_id": "v4_098_reference_step_clock",
+      "evas_engine_used": "evas2",
+      "family_id": "098",
+      "notes": [
+        "returncode=0",
+        "evas_engine=evas2",
+        "trace_contract=row_required_set",
+        "period_pre=2.000e-08 period_post=1.950e-08 duty_pre=0.500 duty_post=0.496 period_pair_ok=True"
+      ],
+      "scores": {
+        "dut_compile": 1.0,
+        "sim_correct": 1.0,
+        "tb_compile": 1.0,
+        "weighted_total": 1.0
+      },
+      "status": "PASS",
+      "task": "098-reference-step-clock",
+      "timing": {
+        "accepted_tran_steps": 13208.0,
+        "csv_write_s": 0.616402,
+        "derive_bus_signals_s": 2.1e-05,
+        "total_elapsed_s": 3.5,
+        "tran_elapsed_s": 2.5562
+      },
+      "timing_split": {
+        "behavior_checker_s": 85.42189154200001,
+        "evas_subprocess_wall_s": 3.526791541999998,
+        "run_case_wall_s": 89.568752125
+      }
+    },
+    {
+      "backend_used": "evas",
+      "checker_task_id": "v4_099_reference_startup_enable_flow",
+      "evas_engine_used": "evas2",
+      "family_id": "099",
+      "notes": [
+        "returncode=0",
+        "evas_engine=evas2",
+        "trace_contract=row_required_set",
+        "reference_startup_enable_flow pre_enable=0.050 startup=0.541 metric=0.900->0.746 dip=0.000; P_SUPPLY_AND_ENABLE_MONITORS mismatch_count=0; P_RESET_OR_BROWNOUT mismatch_count=0; P_DISABLED_REFERENCE mismatch_count=0; P_ENABLED_SETTLING mismatch_count=0; P_STARTUP_VALIDITY mismatch_count=0; P_BROWNOUT_RECOVERY mismatch_count=0"
+      ],
+      "scores": {
+        "dut_compile": 1.0,
+        "sim_correct": 1.0,
+        "tb_compile": 1.0,
+        "weighted_total": 1.0
+      },
+      "status": "PASS",
+      "task": "099-reference-startup-enable-flow",
+      "timing": {
+        "accepted_tran_steps": 474.0,
+        "csv_write_s": 0.031913,
+        "derive_bus_signals_s": 2.6e-05,
+        "total_elapsed_s": 1.0,
+        "tran_elapsed_s": 0.4248
+      },
+      "timing_split": {
+        "behavior_checker_s": 2.657935292000019,
+        "evas_subprocess_wall_s": 1.0052731250000022,
+        "run_case_wall_s": 4.072324583000011
+      }
+    },
+    {
+      "backend_used": "evas",
+      "checker_task_id": "v4_100_sample_hold_droop_front_end",
+      "evas_engine_used": "evas2",
+      "family_id": "100",
+      "notes": [
+        "returncode=0",
+        "evas_engine=evas2",
+        "trace_contract=row_required_set",
+        "edges=9 max_sample_err=0.000 coarse_mismatches=0 valid_high_hits=8 valid_low_hits=8 aperture_sensitive=4 droop_windows=4 droop_failures=0"
+      ],
+      "scores": {
+        "dut_compile": 1.0,
+        "sim_correct": 1.0,
+        "tb_compile": 1.0,
+        "weighted_total": 1.0
+      },
+      "status": "PASS",
+      "task": "100-sample-hold-droop-front-end",
+      "timing": {
+        "accepted_tran_steps": 2587.0,
+        "csv_write_s": 0.250367,
+        "derive_bus_signals_s": 2.3e-05,
+        "total_elapsed_s": 1.0,
+        "tran_elapsed_s": 0.6522
+      },
+      "timing_split": {
+        "behavior_checker_s": 13.195297915999987,
+        "evas_subprocess_wall_s": 1.0087635000000148,
+        "run_case_wall_s": 14.446067207999988
+      }
+    }
+  ],
+  "started_at_unix": 1784188552,
+  "status": "PASS",
+  "validation_environment": {
+    "EVAS_ENGINE": "evas2",
+    "VAEVAS_DEFAULT_EVAS_ENGINE": "evas2"
+  }
+}

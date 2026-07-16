@@ -13,6 +13,7 @@ from statistics import median
 
 
 Row = dict[str, float]
+Interval = tuple[float, float]
 CheckResult = tuple[bool, str]
 Checker = Callable[[list[Row]], CheckResult]
 
@@ -114,6 +115,102 @@ def sample(rows: list[Row], signal: str, time_s: float) -> float | None:
         alpha = (time_s - t0) / (t1 - t0)
         return left[signal] + alpha * (right[signal] - left[signal])
     return None
+
+
+def mean_signal(rows: list[Row], signal: str) -> float | None:
+    values = [row[signal] for row in rows if signal in row]
+    if not values:
+        return None
+    return sum(values) / len(values)
+
+
+def rows_in_interval(rows: list[Row], start: float, stop: float) -> list[Row]:
+    return [row for row in rows if start <= row["time"] <= stop]
+
+
+def mean_in_interval(rows: list[Row], signal: str, interval: Interval) -> float | None:
+    return mean_signal(rows_in_interval(rows, interval[0], interval[1]), signal)
+
+
+def median_step(rows: list[Row]) -> float:
+    steps = [
+        right["time"] - left["time"]
+        for left, right in zip(rows, rows[1:])
+        if right.get("time", 0.0) > left.get("time", 0.0)
+    ]
+    if not steps:
+        return 0.0
+    return percentile(steps, 0.5)
+
+
+def intervals_where(
+    rows: list[Row],
+    predicate: Callable[[Row], bool],
+    *,
+    min_duration: float = 0.0,
+) -> list[Interval]:
+    """Return contiguous time intervals where an observed predicate holds."""
+
+    intervals: list[Interval] = []
+    start: float | None = None
+    previous: float | None = None
+    for row in rows:
+        time_s = row["time"]
+        if predicate(row):
+            if start is None:
+                start = time_s
+            previous = time_s
+        elif start is not None and previous is not None:
+            if previous - start >= min_duration:
+                intervals.append((start, previous))
+            start = None
+            previous = None
+    if start is not None and previous is not None and previous - start >= min_duration:
+        intervals.append((start, previous))
+    return intervals
+
+
+def inner_interval(
+    interval: Interval, start_fraction: float, stop_fraction: float
+) -> Interval | None:
+    start, stop = interval
+    if stop <= start:
+        return None
+    start_fraction = max(0.0, min(1.0, start_fraction))
+    stop_fraction = max(0.0, min(1.0, stop_fraction))
+    if stop_fraction <= start_fraction:
+        return None
+    span = stop - start
+    return start + span * start_fraction, start + span * stop_fraction
+
+
+def mean_in_inner_interval(
+    rows: list[Row],
+    signal: str,
+    interval: Interval,
+    start_fraction: float,
+    stop_fraction: float,
+) -> float | None:
+    inner = inner_interval(interval, start_fraction, stop_fraction)
+    if inner is None:
+        return None
+    return mean_in_interval(rows, signal, inner)
+
+
+def sample_around_event(
+    rows: list[Row],
+    signal: str,
+    event_time: float,
+    *,
+    step_multiplier: float = 2.0,
+) -> tuple[float | None, float | None]:
+    step = median_step(rows)
+    if step <= 0.0:
+        return None, None
+    return (
+        sample(rows, signal, event_time - step_multiplier * step),
+        sample(rows, signal, event_time + step_multiplier * step),
+    )
 
 
 def nearest_row(rows: list[Row], time_s: float) -> Row | None:
