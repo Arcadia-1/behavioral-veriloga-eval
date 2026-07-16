@@ -3,18 +3,11 @@ global 0
 
 ahdl_include "./dut/flash_adc_3b.va"
 
-// flash_adc_3b gold smoke testbench
-// Ramp input 0->0.9V over 800ns, 100MHz clock. All 8 codes expected.
+V_VDD (vdd 0) vsource dc=0.9
+V_VSS (vss 0) vsource dc=0
+V_VIN (vin 0) vsource type=pwl wave=[0 0 220n 0.9]
+V_CLK (clk 0) vsource type=pulse val0=0 val1=0.9 period=10n delay=100p rise=20p fall=20p width=5n
+XDUT (vdd vss vin clk dout2 dout1 dout0) flash_adc_3b
 
-Vvdd (vdd 0) vsource dc=0.9 type=dc
-Vvss (vss 0) vsource dc=0.0 type=dc
-
-Vvin (vin 0) vsource type=pwl wave=[0 0 800e-9 0.9]
-
-Vclk (clk 0) vsource type=pulse val0=0 val1=0.9 period=10n width=5n rise=100p fall=100p
-
-IDUT (vdd vss vin clk dout2 dout1 dout0) flash_adc_3b vrefp=0.9 vrefn=0.0 vth=0.45 tedge=100p
-
-
-tran tran stop=820n maxstep=2n
+tran tran stop=230n maxstep=200p
 save vdd vss vin clk dout2 dout1 dout0

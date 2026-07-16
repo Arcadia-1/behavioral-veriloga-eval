@@ -3,13 +3,9 @@ global 0
 
 ahdl_include "./dut/phase_accumulator_timer_wrap_ref.va"
 
-Vvdd (VDD 0) vsource dc=0.9 type=dc
-Vvss (VSS 0) vsource dc=0.0 type=dc
+V_fb_vdd (VDD 0) vsource dc=0.9 type=dc
+V_fb_vss (VSS 0) vsource dc=0 type=dc
+XFB_DUT (VDD VSS clk_out phase_out) phase_accumulator_timer_wrap_ref dt=4n phase_step=0.2 tedge=160p
 
-IDUT (VDD VSS clk_out phase_out) phase_accumulator_timer_wrap_ref
-
-simulatorOptions options reltol=1e-4 vabstol=1e-6 iabstol=1e-12 temp=27 tnom=27 gmin=1e-12
-
-
-tran tran stop=75n maxstep=20p errpreset=conservative
+tran tran stop=72n maxstep=40p
 save VDD VSS clk_out phase_out

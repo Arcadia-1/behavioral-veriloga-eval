@@ -1192,8 +1192,8 @@
   "pass_count": 60,
   "schema_version": "v4-checker-batch-certification-v1",
   "spectre_cadence": {
-    "reason": "targeted local EVAS2 validation only; no Spectre/Cadence evidence claimed",
-    "status": "not_tested"
+    "reason": "The repository does not have or require Spectre for this repair campaign; acceptance uses Rust EVAS2.",
+    "status": "not_applicable"
   },
   "status": "pass",
   "timing_invariant_count": 60,

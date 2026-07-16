@@ -3,7 +3,7 @@
   "candidate_artifacts": [
     "testbench.scs"
   ],
-  "checker_profile_sha256": "3533798e01034fc6a2dfdf0d241144be0d09074fca6e784d57e8dba388754169",
+  "checker_profile_sha256": "09a2a00b6aac2d3ed5a71c684f010f54f3f448db12e059b70ab4e502e1f348f7",
   "full_credit": "reference_gate and five_of_five_killed_behaviorally",
   "kill_ratio_denominator": 5,
   "materialized_checker_profile": "evaluator/checker_profile.json",
@@ -21,7 +21,7 @@
     "neg_002_timing_window"
   ],
   "reference_gate": "all applicable public properties pass on supplied correct DUT",
-  "reference_tb_sha256": "eae2152981b9c40fa87365767dbbce571c4dc9a18a361743762a7843e9b2aff8",
+  "reference_tb_sha256": "09fd0f4aa23ea1aa4932f36b0ffc30eedcc56ee8d8944dd581af4b4e75e48e80",
   "schema_version": "v4-testbench-score-policy-v1",
   "spectre_final_judge": true,
   "task_id": "v4-526"
