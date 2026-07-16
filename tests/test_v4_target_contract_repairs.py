@@ -390,6 +390,29 @@ def test_tia_and_track_hold_expose_numeric_metric_contracts() -> None:
         assert "vout" in compact and "vcm" in compact
 
 
+def test_long_running_families_expose_exact_numeric_contracts() -> None:
+    expected = {
+        "305": ("1.0+gain_step*code", "donotapplyanadditionalslewstep"),
+        "313": ("0.30/(1.0+overdrive/0.030)", "abs(v(vinp)-v(vinn))"),
+        "317": ("code*corr_lsb", "cal_0+2*cal_1+4*cal_2+8*cal_3"),
+        "323": ("code*200ps", "code*unit_delay_metric"),
+        "326": ("(code+1)*200ps", "(vdd-vss)*code/15"),
+    }
+    for family_id, snippets in expected.items():
+        task_root = RELEASE / "tasks"
+        for task_dir in sorted(task_root.glob(f"{family_id}-*")) + sorted(
+            task_root.glob(f"{int(family_id) + 500}-*")
+        ) + sorted(task_root.glob(f"{int(family_id) + 1000}-*")):
+            compact = (
+                (task_dir / "public" / "instruction.md")
+                .read_text()
+                .lower()
+                .replace(" ", "")
+            )
+            for snippet in snippets:
+                assert snippet in compact
+
+
 def test_repaired_testbench_bindings_match_reference_trace_names() -> None:
     expected = {
         "517-strongarm-style-latch-comparator-testbench": {

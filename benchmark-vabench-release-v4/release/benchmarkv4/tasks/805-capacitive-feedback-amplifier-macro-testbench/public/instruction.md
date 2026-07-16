@@ -58,6 +58,8 @@ Create stimulus and save traces sufficient for the fixed evaluator oracle to che
 
 The required trace names are: `time`, `vin`, `clk`, `rst`, `enable`, `gain_1`, `gain_0`, `vout`, `sampled_metric`, `settled`.
 
+The exact gain contract is `code = (gain_0 > vth ? 1 : 0) + 2*(gain_1 > vth ? 1 : 0)`, `gain = 1.0 + gain_step*code`, and, on each accepted edge, `vout = clamp(vcm + gain*(sample - vcm), vss, vdd)`. Do not apply an additional slew step.
+
 ## Modeling Constraints
 
 - Submit one self-contained top-level transient `.scs` file.

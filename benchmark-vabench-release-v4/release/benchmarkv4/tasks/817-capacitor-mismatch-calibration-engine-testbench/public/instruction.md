@@ -91,6 +91,8 @@ Create stimulus and save traces sufficient for the fixed evaluator oracle to che
 
 The required trace names are: `time`, `err_in`, `clk`, `rst`, `enable`, `cal_3`, `cal_2`, `cal_1`, `cal_0`, `correction_metric`, `done`.
 
+Decode the public calibration outputs as `code = cal_0 + 2*cal_1 + 4*cal_2 + 8*cal_3` using `vth`, and drive `correction_metric = clamp(code*corr_lsb, vss, vdd)`.
+
 ## Modeling Constraints
 
 - Submit one self-contained top-level transient `.scs` file.
