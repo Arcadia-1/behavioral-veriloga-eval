@@ -9,7 +9,11 @@
     "analyses": [
       "tran tran stop=40n maxstep=25p"
     ],
-    "body_lines": [],
+    "body_lines": [
+      "Vp (inp 0) vsource type=pwl wave=[0 0.35 10n 0.35 10.1n 0.45 20n 0.45 20.1n 0.55 30n 0.55 30.1n 0.70 45n 0.70]",
+      "Vn (inn 0) vsource dc=0.45",
+      "XDUT (inp inn outp outn) polynomial_differential_vcvs vcmo=0.5 a1=2 a2=0 a3=1 a5=0 a7=0 vsat=0.3"
+    ],
     "header": [
       "simulator lang=spectre",
       "global 0"
@@ -36,43 +40,17 @@
     "legacy_score_deck_sha256": "4c1142d1be9e10280e8e8ae35bcb694061c1d281d3e2b03ae27181a471bbcafd",
     "notes": [
       "legacy feedback deck was used only to seed the canonical harness spec",
-      "legacy score deck seeded private profile-specific overrides"
+      "legacy score deck seeded private profile-specific overrides",
+      "feedback deck is the canonical stimulus; score is generated with identical semantics"
     ]
   },
   "profile_defaults": {
     "feedback": {
-      "deck_overrides": {
-        "body_lines": [
-          "Vp (inp 0) vsource type=pwl wave=[0 0.35 10n 0.35 10.1n 0.45 20n 0.45 20.1n 0.55 30n 0.55 30.1n 0.70 45n 0.70]",
-          "Vn (inn 0) vsource dc=0.45",
-          "",
-          "XDUT (inp inn outp outn) polynomial_differential_vcvs vcmo=0.5 a1=2 a2=0 a3=1 a5=0 a7=0 vsat=0.3",
-          ""
-        ]
-      },
-      "parameters": {
-        "maxstep": "200p",
-        "stop_time": "100n"
-      },
       "simulatorOptions": {
         "evas_profile": "balanced"
       }
     },
-    "score": {
-      "deck_overrides": {
-        "body_lines": [
-          "Vp (inp 0) vsource type=pwl wave=[0 0.20 10n 0.20 10.1n 0.35 20n 0.35 20.1n 0.50 30n 0.50 30.1n 0.80 45n 0.80]",
-          "Vn (inn 0) vsource dc=0.40",
-          "",
-          "XDUT (inp inn outp outn) polynomial_differential_vcvs vcmo=0.5 a1=2 a2=0 a3=1 a5=0 a7=0 vsat=0.3",
-          ""
-        ]
-      },
-      "parameters": {
-        "maxstep": "100p",
-        "stop_time": "100n"
-      }
-    }
+    "score": {}
   },
   "property_ids": [
     "P_POLYNOMIAL_DIFFERENTIAL_INPUT",

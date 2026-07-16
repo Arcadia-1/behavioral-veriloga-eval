@@ -9,7 +9,11 @@
     "analyses": [
       "tran tran stop=30n maxstep=25p"
     ],
-    "body_lines": [],
+    "body_lines": [
+      "Vnum (signumer 0) vsource type=pwl wave=[0 0.2 10n 0.2 10.1n 0.3 20n 0.3 20.1n -0.2 35n -0.2]",
+      "Vden (sigdenom 0) vsource type=pwl wave=[0 0.4 10n 0.4 10.1n 0.1 20n 0.1 20.1n -0.1 35n -0.1]",
+      "XDUT (signumer sigdenom sigout) safe_voltage_divider gain=2 min_sigdenom=0.25"
+    ],
     "header": [
       "simulator lang=spectre",
       "global 0"
@@ -35,46 +39,17 @@
     "legacy_score_deck_sha256": "c3831c7a88cfe055567620c8c6fbecd7ac7414cc4b51d8338aa9fa799a70439e",
     "notes": [
       "legacy feedback deck was used only to seed the canonical harness spec",
-      "legacy score deck seeded private profile-specific overrides"
+      "legacy score deck seeded private profile-specific overrides",
+      "feedback deck is the canonical stimulus; score is generated with identical semantics"
     ]
   },
   "profile_defaults": {
     "feedback": {
-      "deck_overrides": {
-        "body_lines": [
-          "Vnum (signumer 0) vsource type=pwl wave=[0 0.2 10n 0.2 10.1n 0.3 20n 0.3 20.1n -0.2 35n -0.2]",
-          "Vden (sigdenom 0) vsource type=pwl wave=[0 0.4 10n 0.4 10.1n 0.1 20n 0.1 20.1n -0.1 35n -0.1]",
-          "",
-          "XDUT (signumer sigdenom sigout) safe_voltage_divider gain=2 min_sigdenom=0.25",
-          ""
-        ]
-      },
-      "parameters": {
-        "maxstep": "200p",
-        "stop_time": "100n"
-      },
       "simulatorOptions": {
         "evas_profile": "balanced"
       }
     },
-    "score": {
-      "deck_overrides": {
-        "analyses": [
-          "tran tran stop=40n maxstep=25p"
-        ],
-        "body_lines": [
-          "Vnum (signumer 0) vsource type=pwl wave=[0 0.15 8n 0.15 8.1n -0.30 18n -0.30 18.1n 0.45 30n 0.45 30.1n -0.20 45n -0.20]",
-          "Vden (sigdenom 0) vsource type=pwl wave=[0 0.50 8n 0.50 8.1n 0.05 18n 0.05 18.1n -0.05 30n -0.05 30.1n -0.60 45n -0.60]",
-          "",
-          "XDUT (signumer sigdenom sigout) safe_voltage_divider gain=2 min_sigdenom=0.25",
-          ""
-        ]
-      },
-      "parameters": {
-        "maxstep": "100p",
-        "stop_time": "100n"
-      }
-    }
+    "score": {}
   },
   "property_ids": [
     "P_GAINED_DIVISION",

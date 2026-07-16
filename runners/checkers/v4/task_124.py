@@ -21,11 +21,19 @@ def _check_source_tanh_transfer(
         return False, "missing source tanh comparator signals"
     max_err = 0.0
     checked = 0
+    regions: set[str] = set()
     for row in rows:
         if row["time"] < 0.05e-9:
             continue
+        differential = row["sigin"] - row["sigref"] - offset
+        if differential < -0.05:
+            regions.add("low")
+        elif differential > 0.05:
+            regions.add("high")
+        else:
+            regions.add("transition")
         expected = (
-            0.5 * (high - low) * math.tanh(slope * (row["sigin"] - row["sigref"] - offset))
+            0.5 * (high - low) * math.tanh(slope * differential)
             + 0.5 * (high + low)
         )
         err = abs(row["sigout"] - expected)
@@ -33,7 +41,9 @@ def _check_source_tanh_transfer(
         checked += 1
     if checked < 20:
         return False, f"insufficient_tanh_rows={checked}"
-    return max_err <= tol, f"checked={checked} max_tanh_error={max_err:.5f}"
+    if regions != {"low", "transition", "high"}:
+        return False, f"insufficient_tanh_regions={sorted(regions)}"
+    return max_err <= tol, f"checked={checked} max_tanh_error={max_err:.5f} regions={sorted(regions)}"
 
 CHECKER_ID = "v4_124_smooth_comparator_tanh"
 CHECKER: Checker = check_v3_smooth_comparator_tanh

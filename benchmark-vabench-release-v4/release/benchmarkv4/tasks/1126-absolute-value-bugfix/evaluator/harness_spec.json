@@ -9,7 +9,10 @@
     "analyses": [
       "tran tran stop=30n maxstep=25p"
     ],
-    "body_lines": [],
+    "body_lines": [
+      "Vin (sigin 0) vsource type=pwl wave=[0 -0.4 10n -0.4 10.1n 0.3 20n 0.3 20.1n -0.1 35n -0.1]",
+      "XDUT (sigin sigout) absolute_value_behavior"
+    ],
     "header": [
       "simulator lang=spectre",
       "global 0"
@@ -34,44 +37,17 @@
     "legacy_score_deck_sha256": "3b5dc58342629d9569ce7136111cb301e88b5d597e40cf8316e0e123663a75ed",
     "notes": [
       "legacy feedback deck was used only to seed the canonical harness spec",
-      "legacy score deck seeded private profile-specific overrides"
+      "legacy score deck seeded private profile-specific overrides",
+      "feedback deck is the canonical stimulus; score is generated with identical semantics"
     ]
   },
   "profile_defaults": {
     "feedback": {
-      "deck_overrides": {
-        "body_lines": [
-          "Vin (sigin 0) vsource type=pwl wave=[0 -0.4 10n -0.4 10.1n 0.3 20n 0.3 20.1n -0.1 35n -0.1]",
-          "",
-          "XDUT (sigin sigout) absolute_value_behavior",
-          ""
-        ]
-      },
-      "parameters": {
-        "maxstep": "200p",
-        "stop_time": "100n"
-      },
       "simulatorOptions": {
         "evas_profile": "balanced"
       }
     },
-    "score": {
-      "deck_overrides": {
-        "analyses": [
-          "tran tran stop=3.4n maxstep=5p"
-        ],
-        "body_lines": [
-          "Vin (sigin 0) vsource type=pwl wave=[0 0.6 0.7n 0.6 0.75n -0.75 1.4n -0.75 1.45n -0.03 2.1n -0.03 2.15n 0.0 2.8n 0.0 2.85n 0.45 3.6n 0.45]",
-          "",
-          "XDUT (sigin sigout) absolute_value_behavior",
-          ""
-        ]
-      },
-      "parameters": {
-        "maxstep": "100p",
-        "stop_time": "100n"
-      }
-    }
+    "score": {}
   },
   "property_ids": [
     "P_POSITIVE_INPUT_PASSTHROUGH",

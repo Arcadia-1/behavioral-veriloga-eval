@@ -10,8 +10,12 @@ def check_v3_polynomial_differential_vcvs(rows: list[dict[str, float]]) -> tuple
     checked = 0
     max_err = 0.0
     max_cm_error = 0.0
+    saw_positive = False
+    saw_negative = False
     for row in rows[::stride]:
         vid = row["inp"] - row["inn"]
+        saw_positive = saw_positive or vid > 0.05
+        saw_negative = saw_negative or vid < -0.05
         vod = (2.0 * vid + vid * vid * vid) / 2.0
         if vod > 0.3:
             vod = 0.3
@@ -26,6 +30,8 @@ def check_v3_polynomial_differential_vcvs(rows: list[dict[str, float]]) -> tuple
         checked += 1
     if checked < 20:
         return False, f"too_few_vcvs_samples={checked}"
+    if not (saw_positive and saw_negative):
+        return False, f"insufficient_vcvs_polarity positive={saw_positive} negative={saw_negative}"
     ok = max_err <= 0.035 and max_cm_error <= 0.02
     return ok, f"checked={checked} max_error={max_err:.5f} max_cm_error={max_cm_error:.5f}"
 
