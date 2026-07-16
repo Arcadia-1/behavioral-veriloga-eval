@@ -7,5 +7,5 @@ Vfin (fin 0) vsource type=pwl wave=[0 0 1n 0 1.05n 0.9 1.45n 0.9 1.5n 0 3n 0 3.0
 Vmc (mc 0) vsource type=pwl wave=[0 0 35n 0 35.1n 0.9 90n 0.9]
 XDUT (fin mc fout) dual_modulus_divider_16_17
 
-tran tran stop=52n maxstep=20p
+tran tran stop=90n maxstep=20p
 save fin fout mc

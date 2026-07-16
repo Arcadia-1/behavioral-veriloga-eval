@@ -9,5 +9,5 @@ XDUT (fin mc fout) dual_modulus_divider_16_17
 
 simulatorOptions options evas_profile=balanced
 
-tran tran stop=52n maxstep=20p
+tran tran stop=90n maxstep=20p
 save fin fout mc

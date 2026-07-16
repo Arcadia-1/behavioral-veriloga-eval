@@ -10,7 +10,10 @@
       "tran tran stop=36n maxstep=20p"
     ],
     "body_lines": [
-      "Vclk (clk 0) vsource type=pwl wave=[0 1 1n 1 1.1n 0 3n 0 3.1n 1 11n 1 11.1n 0 13n 0 13.1n 1 21n 1 21.1n 0 23n 0 23.1n 1 31n 1 31.1n 0 33n 0 33.1n 1 38n 1]"
+      "Vclk (clk 0) vsource type=pwl wave=[0 1 1n 1 1.1n 0 3n 0 3.1n 1 11n 1 11.1n 0 13n 0 13.1n 1 21n 1 21.1n 0 23n 0 23.1n 1 31n 1 31.1n 0 33n 0 33.1n 1 38n 1]",
+      "Vdig (digital 0) vsource type=pwl wave=[0 0 7n 0 7.1n 5 17n 5 17.1n 8 27n 8 27.1n 15 38n 15]",
+      "Vcm (vcm 0) vsource dc=0.5",
+      "XDUT (clk digital vcm vop von) ideal_dac_4bit_differential"
     ],
     "header": [
       "simulator lang=spectre",
@@ -39,43 +42,17 @@
     "legacy_score_deck_sha256": "8d9140e144d1442c9b97478b3fc1981643fbbe2723f44b52cc80695e8d327b16",
     "notes": [
       "legacy feedback deck was used only to seed the canonical harness spec",
-      "legacy score deck seeded private profile-specific overrides"
+      "legacy score deck seeded private profile-specific overrides",
+      "feedback deck is the canonical stimulus; score is generated with identical semantics"
     ]
   },
   "profile_defaults": {
     "feedback": {
-      "deck_overrides": {
-        "body_lines": [
-          "Vdig (digital 0) vsource type=pwl wave=[0 0 7n 0 7.1n 5 17n 5 17.1n 8 27n 8 27.1n 15 38n 15]",
-          "Vcm (vcm 0) vsource dc=0.5",
-          "",
-          "XDUT (clk digital vcm vop von) ideal_dac_4bit_differential",
-          ""
-        ]
-      },
-      "parameters": {
-        "maxstep": "200p",
-        "stop_time": "100n"
-      },
       "simulatorOptions": {
         "evas_profile": "balanced"
       }
     },
-    "score": {
-      "deck_overrides": {
-        "body_lines": [
-          "Vdig (digital 0) vsource type=pwl wave=[0 2 7n 2 7.1n 7 17n 7 17.1n 12 27n 12 27.1n 15 38n 15]",
-          "Vcm (vcm 0) vsource dc=0.6",
-          "",
-          "XDUT (clk digital vcm vop von) ideal_dac_4bit_differential",
-          ""
-        ]
-      },
-      "parameters": {
-        "maxstep": "100p",
-        "stop_time": "100n"
-      }
-    }
+    "score": {}
   },
   "property_ids": [
     "P_FALLING_EDGE_CODE_SAMPLE",

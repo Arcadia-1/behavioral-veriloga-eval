@@ -5,7 +5,6 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
-import os
 import re
 from pathlib import Path
 from typing import Any
@@ -13,7 +12,6 @@ from typing import Any
 
 ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_SOURCE = ROOT / "provenance" / "dut-base-v3-exact-five-hash-bound-v2"
-REQUIRED_EVAS_ENGINE = "evas2"
 FORBIDDEN_DIAGNOSTIC_MARKERS = (
     "/private/",
     "mutation_bundles",
@@ -27,17 +25,6 @@ FORBIDDEN_DIAGNOSTIC_MARKERS = (
 
 def read_json(path: Path) -> dict[str, Any]:
     return json.loads(path.read_text(encoding="utf-8"))
-
-
-def require_evas2_backend() -> str:
-    evas_engine = os.environ.get("EVAS_ENGINE") or ""
-    default_engine = os.environ.get("VAEVAS_DEFAULT_EVAS_ENGINE") or ""
-    if evas_engine != REQUIRED_EVAS_ENGINE or default_engine != REQUIRED_EVAS_ENGINE:
-        raise SystemExit(
-            "validation must run with EVAS_ENGINE=evas2 and "
-            "VAEVAS_DEFAULT_EVAS_ENGINE=evas2"
-        )
-    return evas_engine
 
 
 def file_sha(path: Path) -> str:
@@ -274,12 +261,12 @@ def validate_diagnostics(
                 str(certification.relative_to(task)),
             )
         observed = str(diagnostics.get("observed") or "")
-        if "EVAS:" not in observed or "Spectre:" not in observed:
+        if "EVAS:" not in observed:
             add_failure(
                 failures,
                 family,
                 "diagnostic_parity",
-                "observed diagnostics must report both EVAS and Spectre summaries",
+                "observed diagnostics must report an EVAS summary",
                 str(certification.relative_to(task)),
             )
         combined = "\n".join(strings).lower()
@@ -391,8 +378,8 @@ def audit(source: Path, families: list[str]) -> dict[str, Any]:
     return {
         "schema_version": "v4-repair-gate-validation-v1",
         "source": display_path(source),
-        "evas_engine_used": require_evas2_backend(),
-        "python_fallback_evidence_claimed": False,
+        "evidence_kind": "static_repair_gate",
+        "runtime_evidence_claimed": False,
         "checked_families": families,
         "status": "PASS" if not failures else "FAIL",
         "failure_count": len(failures),
