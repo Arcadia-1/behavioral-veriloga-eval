@@ -272,6 +272,32 @@ def test_rail_normalized_mapper_exposes_formula_and_distinct_valid_gate() -> Non
         ]
 
 
+def test_affine_calibration_exposes_sampled_update_and_exact_formula() -> None:
+    task_names = (
+        "284-calibration-affine-transform",
+        "784-calibration-affine-transform-testbench",
+        "1284-calibration-affine-transform-bugfix",
+    )
+    for task_name in task_names:
+        task = _task(task_name)
+        instruction = (task / "public" / "instruction.md").read_text()
+        assert "only on" in instruction
+        assert "gain_base + gain_span * clip01(V(gain_ctrl) / vhi)" in instruction
+        assert "center + gain * (V(raw) - center) + offset" in instruction
+        assert "abs(transformed - V(raw)) / resid_fullscale" in instruction
+
+        properties = {
+            item["id"]: item["observable_contract"]
+            for item in _public_contract(task_name)["properties"]
+        }
+        assert "only on each rising clk crossing" in properties[
+            "P_ON_EACH_RISING_CLOCK_CROSSING_COMPUTE"
+        ]
+        assert "clip01(abs(transformed - V(raw))" in properties[
+            "P_EXPOSE_A_BOUNDED_RESIDUAL_METRIC_FOR"
+        ]
+
+
 def test_repaired_testbench_bindings_match_reference_trace_names() -> None:
     expected = {
         "517-strongarm-style-latch-comparator-testbench": {
