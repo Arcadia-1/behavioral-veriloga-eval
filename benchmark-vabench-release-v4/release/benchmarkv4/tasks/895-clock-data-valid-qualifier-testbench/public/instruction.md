@@ -24,7 +24,7 @@ Stable public Spectre binding:
 The submitted `testbench.scs` must use the supplied DUT through this public binding:
 
 - Include path: `./dut/clock_data_valid_qualifier.va`
-- DUT instance: `XDUT (clk data rst enable valid_out edge_age_metric qualified) clock_data_valid_qualifier`
+- DUT instance: `XDUT (clk data rst enable valid_out edge_age_metric qualified) clock_data_valid_qualifier max_age_cycles=3`
 - Required saved public traces: `clk`, `data`, `rst`, `enable`, `valid_out`, `edge_age_metric`, `qualified`
 - Use one bounded transient analysis with a finite positive stop time.
 

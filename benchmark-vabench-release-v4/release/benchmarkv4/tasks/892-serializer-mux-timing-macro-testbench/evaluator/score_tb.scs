@@ -12,6 +12,5 @@ Vd2 (d2 0) vsource type=pwl wave=[0 0 92n 0]
 Vd3 (d3 0) vsource type=pwl wave=[0 0.9 92n 0.9]
 XDUT (clk rst enable d0 d1 d2 d3 serial_out slot_1 slot_0 valid) serializer_mux_timing_macro
 
-
 tran tran stop=92n maxstep=200p
 save clk rst enable d0 d1 d2 d3 serial_out slot_1 slot_0 valid

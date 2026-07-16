@@ -298,7 +298,10 @@
           }
         ],
         "module_ref": "downconversion_mixer_lo_polarity",
-        "name": "XDUT"
+        "name": "XDUT",
+        "parameter_overrides": {
+          "conversion_gain": 0.5
+        }
       }
     ],
     "source_path_template": "./dut/{artifact_path}"
