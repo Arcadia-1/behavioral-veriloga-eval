@@ -39,6 +39,28 @@ Provide these overrideable public parameters on the top module and propagate com
 - Use only voltage-domain behavioral state and voltage contributions on public electrical outputs.
 - Do not expose pass/fail flags; expose only the public observable metrics named in the interface.
 
+`gain_2`, `gain_1`, and `gain_0` are DUT-driven observable outputs that encode
+an unsigned gain code from 0 through 7; they are not coefficient inputs.  On
+reset or while `cal_en` is low, clear the code and lock streak, drive the three
+gain outputs, `error_metric`, and `locked` to `vss`, and drive `vout` to the
+neutral residue level `vcm`.  Holding `vout` at `vcm` is the defined cleared
+output state for this common-mode-centered residue signal.
+
+While enabled, decode the active code as
+`gain = base_gain + gain_lsb*code` and drive
+`vout = clamp(vcm + gain*(vin-vcm), vss, vdd)`.  At each rising `clk` edge,
+sample `signed_error = residue_ref-vout`.  When `signed_error > lock_tol`,
+increment the code by one, saturating at 7.  When
+`signed_error < -lock_tol`, decrement the code by one, saturating at 0.  When
+`abs(signed_error) <= lock_tol`, leave the code unchanged.  Expose the error
+magnitude as `error_metric = abs(residue_ref-vout)`.
+
+Count consecutive enabled rising-edge samples whose error magnitude is at or
+below `lock_tol`.  Drive `locked` to `vdd` after the third such sample and to
+`vss` otherwise.  An out-of-tolerance sample, reset, or disabled interval
+clears the consecutive-sample count.  Apply the public `tr` smoothing time to
+observable output transitions without changing these settled values.
+
 ## Modeling Constraints
 
 Use deterministic voltage-domain behavioral Verilog-A suitable for transient simulation. Use voltage contributions for public electrical outputs. Do not instantiate transistor-level devices. Do not add verification harnesses, simulation decks, generated result files, logs, reports, debug-only ports, or pass/fail flags.

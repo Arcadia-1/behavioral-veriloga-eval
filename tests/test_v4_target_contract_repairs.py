@@ -535,6 +535,60 @@ def test_dfe_family_exposes_exact_state_transition_contract() -> None:
     ]
 
 
+def test_residue_gain_calibration_exposes_exact_state_transition_contract() -> None:
+    snippets = (
+        "gain_2,gain_1,andgain_0aredut-driven",
+        "drivevouttotheneutralresiduelevelvcm",
+        "gain=base_gain+gain_lsb*code",
+        "vout=clamp(vcm+gain*(vin-vcm),vss,vdd)",
+        "signed_error=residue_ref-vout",
+        "error_metric=abs(residue_ref-vout)",
+        "saturatingat7",
+        "saturatingat0",
+        "afterthethirdsuchsample",
+    )
+    family = (
+        ROOT
+        / "benchmark-vabench-release-v4"
+        / "provenance"
+        / "dut-base-v3-exact-five-hash-bound-v2"
+        / "316-residue-amplifier-gain-calibration"
+    )
+    compact = (
+        (family / "public" / "task" / "instruction.md")
+        .read_text()
+        .lower()
+        .replace(" ", "")
+        .replace("\n", "")
+        .replace("`", "")
+    )
+    for snippet in snippets:
+        assert snippet in compact
+
+    spec = json.loads((family / "evaluator" / "family_spec.json").read_text())
+    contracts = " ".join(item["observable_contract"] for item in spec["properties"])
+    assert "vout = clamp(vcm + gain*(vin-vcm), vss, vdd)" in contracts
+    assert "error_metric = abs(residue_ref-vout)" in contracts
+    assert "while `cal_en` is low" in contracts
+
+
+def test_residue_gain_calibration_emits_property_diagnostics() -> None:
+    from runners.checkers.v4.task_316 import CHECKER
+
+    passed, note = CHECKER([])
+    assert not passed
+    for property_id in (
+        "P_ON_RESET_CLEAR_GAIN_CODE_OUTPUT",
+        "P_WHILE_CAL_EN_IS_HIGH_COMPARE",
+        "P_INCREMENT_OR_DECREMENT_THE_GAIN_CODE",
+        "P_DRIVE_VOUT_AS_A_CLAMPED_RESIDUE",
+        "P_ASSERT_LOCKED_AFTER_THREE_CONSECUTIVE_UPDATES",
+        "P_USE_ONLY_VOLTAGE_DOMAIN_BEHAVIORAL_STATE",
+    ):
+        assert f"{property_id} mismatch_count=" in note
+    assert "diagnostic_schema=v4-checker-diagnostic-v1" in note
+
+
 def test_repaired_testbench_bindings_match_reference_trace_names() -> None:
     expected = {
         "517-strongarm-style-latch-comparator-testbench": {
