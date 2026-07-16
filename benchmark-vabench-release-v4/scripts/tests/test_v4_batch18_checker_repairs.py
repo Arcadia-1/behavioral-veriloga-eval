@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from runners.checkers.v4.batch18_diagnostics import bind_properties
 from runners.checkers.v4.task_176 import CHECKER as CHECK_WEIGHTED_DECODER
+from runners.checkers.v4.task_179 import _stimulus_time_scale
 
 
 def test_batch18_diagnostics_bind_all_properties_and_redact_failure() -> None:
@@ -34,3 +35,14 @@ def test_weighted_decoder_rejects_static_prefix_as_insufficient() -> None:
     passed, note = CHECK_WEIGHTED_DECODER(rows)
     assert not passed
     assert "P_SHARED_272_DENOMINATOR" in note
+
+
+def test_tdc_checker_derives_affine_scale_from_public_sample_edges() -> None:
+    rows = [
+        {"time": 2.0e-9, "samp": 0.0},
+        {"time": 2.2e-9, "samp": 0.9},
+        {"time": 8.165e-9, "samp": 0.0},
+        {"time": 8.365e-9, "samp": 0.9},
+    ]
+
+    assert abs((_stimulus_time_scale(rows) or 0.0) - 1.37) < 1e-9
