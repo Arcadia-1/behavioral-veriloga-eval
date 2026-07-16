@@ -10,9 +10,14 @@
   },
   "deck": {
     "analyses": [
-      "tran tran stop=240n maxstep=200p"
+      "tran tran stop=240n maxstep=100p"
     ],
-    "body_lines": [],
+    "body_lines": [
+      "Vclk (clk 0) vsource type=pulse val0=0 val1=0.9 period=9n width=3.5n rise=100p fall=100p delay=1n",
+      "Vrst (rst 0) vsource type=pwl wave=[0 0.9 3n 0.9 3.2n 0 180n 0 180.2n 0.9 192n 0.9 192.2n 0]",
+      "Ven (enable 0) vsource type=pwl wave=[0 0 4n 0 4.2n 0.9 145n 0.9 145.2n 0 162n 0 162.2n 0.9 240n 0.9]",
+      "XDUT (clk rst enable phi1 phi2 phi3 phi4 sample_cmd hold_cmd phase_code_1 phase_code_0 valid) switched_cap_phase_seq_top"
+    ],
     "header": [
       "simulator lang=spectre",
       "global 0"
@@ -43,21 +48,11 @@
   "profile_defaults": {
     "feedback": {
       "corners": [],
-      "deck_overrides": {
-        "analyses": [
-          "tran tran stop=180n maxstep=200p"
-        ],
-        "body_lines": [
-          "Vclk (clk 0) vsource type=pulse val0=0 val1=0.9 period=12n width=5n rise=100p fall=100p delay=2n",
-          "Vrst (rst 0) vsource type=pwl wave=[0 0.9 4n 0.9 4.2n 0 135n 0 135.2n 0.9 147n 0.9 147.2n 0]",
-          "Ven (enable 0) vsource type=pwl wave=[0 0 5n 0 5.2n 0.9 105n 0.9 105.2n 0 120n 0 120.2n 0.9 180n 0.9]",
-          "XDUT (clk rst enable phi1 phi2 phi3 phi4 sample_cmd hold_cmd phase_code_1 phase_code_0 valid) switched_cap_phase_seq_top"
-        ]
-      },
-      "deterministic_seed": 0,
+      "deck_overrides": {},
+      "deterministic_seed": 17,
       "parameters": {
-        "maxstep": "200p",
-        "stop_time": "180n"
+        "maxstep": "100p",
+        "stop_time": "240n"
       },
       "simulatorOptions": {
         "evas_profile": "balanced"
@@ -65,17 +60,7 @@
     },
     "score": {
       "corners": [],
-      "deck_overrides": {
-        "analyses": [
-          "tran tran stop=240n maxstep=100p"
-        ],
-        "body_lines": [
-          "Vclk (clk 0) vsource type=pulse val0=0 val1=0.9 period=9n width=3.5n rise=100p fall=100p delay=1n",
-          "Vrst (rst 0) vsource type=pwl wave=[0 0.9 3n 0.9 3.2n 0 180n 0 180.2n 0.9 192n 0.9 192.2n 0]",
-          "Ven (enable 0) vsource type=pwl wave=[0 0 4n 0 4.2n 0.9 145n 0.9 145.2n 0 162n 0 162.2n 0.9 240n 0.9]",
-          "XDUT (clk rst enable phi1 phi2 phi3 phi4 sample_cmd hold_cmd phase_code_1 phase_code_0 valid) switched_cap_phase_seq_top"
-        ]
-      },
+      "deck_overrides": {},
       "deterministic_seed": 17,
       "parameters": {
         "maxstep": "100p",
