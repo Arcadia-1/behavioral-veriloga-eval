@@ -77,7 +77,7 @@ def check_v3_spi_shift_mux(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "rst", "out0", "out1", "out2", "out3", "out4", "out5", "out6", "out7", "sdo", "scko"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing spi shift mux outputs"
-    return _sample_many_within_trace(
+    return _sample_many(
         rows,
         {
             "rst": [(4.7, 0.9), (5.3, 0.0)],

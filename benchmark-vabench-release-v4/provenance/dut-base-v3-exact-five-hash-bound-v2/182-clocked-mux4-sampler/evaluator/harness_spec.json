@@ -7,7 +7,7 @@
   },
   "deck": {
     "analyses": [
-      "tran tran stop=6n maxstep=20p"
+      "tran tran stop=10n maxstep=20p"
     ],
     "body_lines": [
       "Vclks (clks 0) vsource type=pwl wave=[0 0.9 1n 0.9 1.05n 0 1.5n 0 1.55n 0.9 3n 0.9 3.05n 0 3.5n 0 3.55n 0.9 5n 0.9 5.05n 0 5.5n 0 5.55n 0.9 7n 0.9 7.05n 0 7.5n 0 7.55n 0.9 9n 0.9 9.05n 0 9.5n 0 9.55n 0.9]",
@@ -55,30 +55,18 @@
     "legacy_score_deck_sha256": "ab7d8ca8a50d0fb750bfcae127cc7de08ce120ce3eeaeb5be8c86fb14c30ecc6",
     "notes": [
       "legacy feedback deck was used only to seed the canonical harness spec",
-      "legacy score deck seeded private profile-specific overrides"
+      "legacy score deck seeded private profile-specific overrides",
+      "feedback deck is the canonical stimulus; score is generated with identical semantics",
+      "legacy score analysis window promoted to canonical stimulus to avoid insufficient-excitation blind spots"
     ]
   },
   "profile_defaults": {
     "feedback": {
-      "parameters": {
-        "maxstep": "200p",
-        "stop_time": "100n"
-      },
       "simulatorOptions": {
         "evas_profile": "balanced"
       }
     },
-    "score": {
-      "deck_overrides": {
-        "analyses": [
-          "tran tran stop=10n maxstep=20p"
-        ]
-      },
-      "parameters": {
-        "maxstep": "100p",
-        "stop_time": "100n"
-      }
-    }
+    "score": {}
   },
   "property_ids": [
     "P_RESET_SELECTS_DIN0",

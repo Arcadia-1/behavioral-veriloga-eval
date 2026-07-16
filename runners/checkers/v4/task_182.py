@@ -77,7 +77,7 @@ def check_v3_clocked_mux4_sampler(rows: list[dict[str, float]]) -> tuple[bool, s
     required = {"time", "dsel0", "dsel1", "din0", "din1", "din2", "din3", "update", "rst", "clks", "dout"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing clocked mux4 sampler signals"
-    return _sample_many_within_trace(
+    return _sample_many(
         rows,
         {
             "update": [(1.3, 0.9), (3.3, 0.0), (5.3, 0.9), (7.3, 0.0), (9.3, 0.9)],

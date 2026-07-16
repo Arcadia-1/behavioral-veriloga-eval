@@ -11,5 +11,5 @@ XDUT (ck d vrefp vrefn dc0 dc1 dc2 dc3 dc4 dc5 dc6 cvinp cvinn en enb) foregroun
 
 simulatorOptions options evas_profile=balanced
 
-tran tran stop=12n maxstep=20p
+tran tran stop=15n maxstep=20p
 save ck cvinn cvinp d dc0 dc1 dc2 dc3 dc4 dc5 dc6 en enb vrefn vrefp

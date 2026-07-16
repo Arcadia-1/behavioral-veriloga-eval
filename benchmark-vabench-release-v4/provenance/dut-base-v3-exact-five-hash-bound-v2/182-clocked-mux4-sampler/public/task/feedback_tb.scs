@@ -18,5 +18,5 @@ XDUT (dsel0 dsel1 din0 din1 din2 din3 update rst clks dout) clocked_mux4_sampler
 
 simulatorOptions options evas_profile=balanced
 
-tran tran stop=6n maxstep=20p
+tran tran stop=10n maxstep=20p
 save clks din0 din1 din2 din3 dout dsel0 dsel1 rst update

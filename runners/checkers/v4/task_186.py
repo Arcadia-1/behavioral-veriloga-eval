@@ -92,7 +92,7 @@ def check_v3_sarfend_logic_4b(rows: list[dict[str, float]]) -> tuple[bool, str]:
     }
     if not rows or not required.issubset(rows[0]):
         return False, "missing sarfend logic outputs"
-    return _sample_many_within_trace(
+    return _sample_many(
         rows,
         {
             "clkc": [(0.3, 0.0), (1.8, 1.0), (2.4, 0.0), (3.0, 1.0), (4.2, 0.0)],

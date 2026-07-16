@@ -77,7 +77,7 @@ def check_v3_trim_ctrl_4bit(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "ain", "dout0", "dout1", "dout2", "dout3"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing trim ctrl 4bit signals"
-    return _sample_many_within_trace(
+    return _sample_many(
         rows,
         {
             "dout0": [(0.5, 0.0), (1.5, 0.9), (2.5, 0.0), (3.5, 0.9), (4.5, 0.0)],

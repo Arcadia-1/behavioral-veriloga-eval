@@ -77,7 +77,7 @@ def check_v3_foreground_rdac_calibrator(rows: list[dict[str, float]]) -> tuple[b
     required = {"time", "dc0", "dc1", "dc2", "dc3", "dc4", "dc5", "dc6", "cvinp", "cvinn", "en", "enb"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing foreground rdac calibrator outputs"
-    return _sample_many_within_trace(
+    return _sample_many(
         rows,
         {
             "dc6": [(0.5, 1.0), (11.7, 1.0), (14.5, 1.0)],

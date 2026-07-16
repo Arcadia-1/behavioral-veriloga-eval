@@ -77,7 +77,7 @@ def check_v3_offset_rdac_search_flow(rows: list[dict[str, float]]) -> tuple[bool
     required = {"time", "vinp", "vinn", "vrefp", "vrefn", "dc0", "dc1", "dc2", "dc3", "dc4", "dc5", "dc6"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing offset rdac search outputs"
-    return _sample_many_within_trace(
+    return _sample_many(
         rows,
         {
             "dc6": [(0.5, 1.0), (7.7, 1.0), (17.7, 1.0)],
