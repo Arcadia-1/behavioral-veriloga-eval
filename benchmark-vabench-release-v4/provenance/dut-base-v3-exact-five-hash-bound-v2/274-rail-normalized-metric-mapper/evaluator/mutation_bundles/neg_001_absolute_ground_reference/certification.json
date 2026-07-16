@@ -33,7 +33,7 @@
     }
   },
   "diagnostics": {
-    "expected": "trigger=stimulus exercises neg_001_absolute_ground_reference; violated_properties=P_NORMALIZE_MEAS_RELATIVE_TO_THE_LOCAL",
+    "expected": "trigger=stimulus exercises a certified counterexample; violated_properties=P_NORMALIZE_MEAS_RELATIVE_TO_THE_LOCAL",
     "observed": "EVAS: rail_normalized_metric_error=0.1019; Spectre: rail_normalized_metric_error=0.1019",
     "violated_property_ids": [
       "P_NORMALIZE_MEAS_RELATIVE_TO_THE_LOCAL"

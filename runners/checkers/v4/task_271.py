@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 from ..api import Checker
+from .family_271_280_diagnostics import bind_properties
 def _threshold_crossings(
     values: list[float],
     times: list[float],
@@ -120,4 +121,7 @@ def check_v3_375_windowed_event_rate_monitor(rows: list[dict[str, float]]) -> tu
     return True, f"samples={checked} max_err={max_err:.4f}"
 
 CHECKER_ID = "v4_271_windowed_event_rate_monitor"
-CHECKER: Checker = check_v3_375_windowed_event_rate_monitor
+CHECKER: Checker = bind_properties(check_v3_375_windowed_event_rate_monitor, (
+    "P_INITIALIZE_EVENT_COUNT_SAMPLE_COUNT_RATE",
+    "P_FOR_THE_SAME_GATED_SAMPLE_WINDOW",
+))

@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from ..api import Checker
+from .family_271_280_diagnostics import bind_properties
 from ..common.issue109_split import check_clocked
 
 
@@ -25,4 +26,7 @@ CHECKS = {
 }
 
 CHECKER_ID = TASK_LABEL
-CHECKER: Checker = check_v4_275_deterministic_energy_accumulator
+CHECKER: Checker = bind_properties(check_v4_275_deterministic_energy_accumulator, (
+    "P_MEASURE_ANALOG_INPUTS_RELATIVE_TO_THE",
+    "P_INITIALIZE_THE_ACCUMULATOR_STATE_AND_ALL",
+))

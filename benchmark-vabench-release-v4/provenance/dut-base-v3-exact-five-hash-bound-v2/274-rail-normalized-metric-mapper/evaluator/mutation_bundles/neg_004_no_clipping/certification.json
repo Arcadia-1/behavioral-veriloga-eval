@@ -33,7 +33,7 @@
     }
   },
   "diagnostics": {
-    "expected": "trigger=stimulus exercises neg_004_no_clipping; violated_properties=P_CLEAR_NORM_AND_VALID_WHILE_DISABLED",
+    "expected": "trigger=stimulus exercises a certified counterexample; violated_properties=P_CLEAR_NORM_AND_VALID_WHILE_DISABLED",
     "observed": "EVAS: rail_normalized_metric_error=0.0915; Spectre: rail_normalized_metric_error=0.0915",
     "violated_property_ids": [
       "P_CLEAR_NORM_AND_VALID_WHILE_DISABLED"

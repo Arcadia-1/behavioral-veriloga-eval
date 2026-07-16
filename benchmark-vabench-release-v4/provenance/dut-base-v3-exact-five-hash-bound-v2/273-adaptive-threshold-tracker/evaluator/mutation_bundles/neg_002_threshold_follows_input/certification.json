@@ -33,7 +33,7 @@
     }
   },
   "diagnostics": {
-    "expected": "trigger=stimulus exercises neg_002_threshold_follows_input; violated_properties=P_WHEN_ADAPT_VTH_UPDATE_THE_STORED",
+    "expected": "trigger=stimulus exercises a certified counterexample; violated_properties=P_WHEN_ADAPT_VTH_UPDATE_THE_STORED",
     "observed": "EVAS: adaptive_threshold_error=0.9000; Spectre: adaptive_threshold_error=0.9000",
     "violated_property_ids": [
       "P_WHEN_ADAPT_VTH_UPDATE_THE_STORED"

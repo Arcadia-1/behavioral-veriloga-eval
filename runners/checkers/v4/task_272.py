@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 from ..api import Checker
+from .family_271_280_diagnostics import bind_properties
 def _threshold_crossings(
     values: list[float],
     times: list[float],
@@ -130,4 +131,7 @@ def check_v3_376_reset_release_sequencer(rows: list[dict[str, float]]) -> tuple[
     )
 
 CHECKER_ID = "v4_272_reset_release_sequencer"
-CHECKER: Checker = check_v3_376_reset_release_sequencer
+CHECKER: Checker = bind_properties(check_v3_376_reset_release_sequencer, (
+    "P_INITIALIZE_THE_INTERNAL_STAGE_COUNT_AND",
+    "P_AFTER_UPDATING_THE_STAGE_COUNT_DRIVE",
+))

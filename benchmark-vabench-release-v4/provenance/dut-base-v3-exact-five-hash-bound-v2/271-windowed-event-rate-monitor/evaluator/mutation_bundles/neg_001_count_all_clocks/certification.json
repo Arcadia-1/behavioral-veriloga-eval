@@ -33,7 +33,7 @@
     }
   },
   "diagnostics": {
-    "expected": "trigger=stimulus exercises neg_001_count_all_clocks; violated_properties=P_INITIALIZE_EVENT_COUNT_SAMPLE_COUNT_RATE",
+    "expected": "trigger=stimulus exercises a certified counterexample; violated_properties=P_INITIALIZE_EVENT_COUNT_SAMPLE_COUNT_RATE",
     "observed": "EVAS: event_rate_monitor_error=0.9000; Spectre: event_rate_monitor_error=0.9000",
     "violated_property_ids": [
       "P_INITIALIZE_EVENT_COUNT_SAMPLE_COUNT_RATE"
