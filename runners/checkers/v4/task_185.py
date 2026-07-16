@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 from ..api import Checker
+from .stimulus_relative import normalize_affine_time
 def sample_signal_at(rows: list[dict[str, float]], signal: str, time_s: float) -> float | None:
     if not rows or "time" not in rows[0] or signal not in rows[0]:
         return None
@@ -74,10 +75,16 @@ def _sample_many_within_trace(
     return _sample_many(rows, filtered, tol=tol)
 
 def check_v3_spi_shift_mux(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    required = {"time", "rst", "out0", "out1", "out2", "out3", "out4", "out5", "out6", "out7", "sdo", "scko"}
+    required = {"time", "scki", "rst", "out0", "out1", "out2", "out3", "out4", "out5", "out6", "out7", "sdo", "scko"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing spi shift mux outputs"
-    return _sample_many_within_trace(
+    rows = normalize_affine_time(rows, [
+        ("scki", 0.45, "rising", 1.025, 0),
+        ("scki", 0.45, "rising", 5.025, 2),
+    ])
+    if rows is None:
+        return False, "missing_scki_stimulus_edges"
+    return _sample_many(
         rows,
         {
             "rst": [(4.7, 0.9), (5.3, 0.0)],

@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 from ..api import Checker
+from .stimulus_relative import normalize_affine_time
 def sample_signal_at(rows: list[dict[str, float]], signal: str, time_s: float) -> float | None:
     if not rows or "time" not in rows[0] or signal not in rows[0]:
         return None
@@ -76,6 +77,7 @@ def _sample_many_within_trace(
 def check_v3_sarfend_logic_4b(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {
         "time",
+        "clks",
         "clkc",
         "dp1",
         "dp2",
@@ -92,7 +94,13 @@ def check_v3_sarfend_logic_4b(rows: list[dict[str, float]]) -> tuple[bool, str]:
     }
     if not rows or not required.issubset(rows[0]):
         return False, "missing sarfend logic outputs"
-    return _sample_many_within_trace(
+    rows = normalize_affine_time(rows, [
+        ("clks", 0.5, "rising", 1.025, 0),
+        ("clks", 0.5, "rising", 8.025, 1),
+    ])
+    if rows is None:
+        return False, "missing_clks_stimulus_edges"
+    return _sample_many(
         rows,
         {
             "clkc": [(0.3, 0.0), (1.8, 1.0), (2.4, 0.0), (3.0, 1.0), (4.2, 0.0)],

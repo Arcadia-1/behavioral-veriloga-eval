@@ -77,7 +77,7 @@ def check_v3_adc_sample_clock_sequencer(rows: list[dict[str, float]]) -> tuple[b
     required = {"time", "rst", "s", "ss", "nc_az", "nc", "conv"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing adc sample clock sequencer outputs"
-    return _sample_many_within_trace(
+    return _sample_many(
         rows,
         {
             "rst": [(0.1, 0.9), (0.7, 0.0), (18.1, 0.9), (20.6, 0.0)],

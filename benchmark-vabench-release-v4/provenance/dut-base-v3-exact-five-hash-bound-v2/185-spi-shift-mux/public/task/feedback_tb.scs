@@ -10,5 +10,5 @@ XDUT (scki sdi rst out0 out1 out2 out3 out4 out5 out6 out7 sdo scko) spi_shift_m
 
 simulatorOptions options evas_profile=balanced
 
-tran tran stop=4.8n maxstep=20p
+tran tran stop=7n maxstep=20p
 save out0 out1 out2 out3 out4 out5 out6 out7 rst scki scko sdi sdo

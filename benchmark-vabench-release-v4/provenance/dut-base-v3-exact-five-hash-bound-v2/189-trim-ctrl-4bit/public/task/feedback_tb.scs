@@ -8,5 +8,5 @@ XDUT (ain dout0 dout1 dout2 dout3) trim_ctrl_4bit
 
 simulatorOptions options evas_profile=balanced
 
-tran tran stop=3.6n maxstep=10p
+tran tran stop=5n maxstep=10p
 save ain dout0 dout1 dout2 dout3

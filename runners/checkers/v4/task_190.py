@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 from ..api import Checker
+from .stimulus_relative import normalize_affine_time
 def sample_signal_at(rows: list[dict[str, float]], signal: str, time_s: float) -> float | None:
     if not rows or "time" not in rows[0] or signal not in rows[0]:
         return None
@@ -77,6 +78,12 @@ def check_v3_linearity_rdac_offset_sweep(rows: list[dict[str, float]]) -> tuple[
     required = {"time", "ck", "d", "vinp", "vinn", "vrefp", "vrefn", "dc0", "dc1", "dc2", "dc3", "dc4", "dc5", "dc6"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing linearity rdac offset sweep signals"
+    rows = normalize_affine_time(rows, [
+        ("d", 0.5, "rising", 1.11, 0),
+        ("d", 0.5, "rising", 7.11, 3),
+    ])
+    if rows is None:
+        return False, "missing_d_stimulus_edges"
     ok, detail = _sample_many_within_trace(
         rows,
         {

@@ -15,5 +15,5 @@ XDUT (clks dcomp dcompb test dtest0 dtest1 dtest2 dtest3 clkc dp1 dp2 dp3 dp4 dm
 
 simulatorOptions options evas_profile=balanced
 
-tran tran stop=5n maxstep=10p
+tran tran stop=10n maxstep=10p
 save clkc clks dcomp dcompb dm1 dm2 dm3 dm4 dout0 dout1 dout2 dout3 dp1 dp2 dp3 dp4 dtest0 dtest1 dtest2 dtest3 test
