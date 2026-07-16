@@ -65,6 +65,37 @@ def _crossings(rows: list[dict[str, float]], signal: str, threshold: float = VTH
     return edges
 
 
+def _stimulus_change_times(
+    rows: list[dict[str, float]], signals: tuple[str, ...], tolerance: float = 1e-9
+) -> list[float]:
+    """Return trace times where a public stimulus is still changing.
+
+    Continuous-output contracts may legitimately use the declared transition
+    time. Sampling at the exact input breakpoint would then compare an output
+    midpoint with its new steady-state target. Track public stimulus changes so
+    individual checkers can request a short settling guard without weakening
+    steady-state coverage.
+    """
+
+    changes: list[float] = []
+    for previous, current in zip(rows, rows[1:]):
+        if any(
+            signal in previous
+            and signal in current
+            and abs(current[signal] - previous[signal]) > tolerance
+            for signal in signals
+        ):
+            changes.append(current["time"])
+    return changes
+
+
+def _is_settled(change_times: list[float], time_s: float, settle_time_s: float) -> bool:
+    if settle_time_s <= 0.0 or not change_times:
+        return True
+    idx = bisect_right(change_times, time_s) - 1
+    return idx < 0 or time_s - change_times[idx] >= settle_time_s
+
+
 def normalized(values: dict[str, float]) -> dict[str, float]:
     raw_span = values["vdd"] - values["vss"]
     span = max(raw_span, 0.05)
@@ -162,13 +193,23 @@ def _format_mismatch(label: str, worst: dict[str, float | str]) -> str:
     )
 
 
-def check_continuous(rows: list[dict[str, float]], mode: str, label: str) -> tuple[bool, str]:
+def check_continuous(
+    rows: list[dict[str, float]],
+    mode: str,
+    label: str,
+    *,
+    settle_time_s: float = 0.0,
+) -> tuple[bool, str]:
     required = {"time", "in0", "in1", "in2", "in3", "ctrl0", "ctrl1", "vdd", "vss", "en", "out", "flag", "metric"}
     msg = _missing(rows, required)
     if msg:
         return False, msg
     rows = sorted(rows, key=lambda row: row["time"])
     names = tuple(sorted(required))
+    stimulus_signals = (
+        "in0", "in1", "in2", "in3", "ctrl0", "ctrl1", "vdd", "vss", "en"
+    )
+    change_times = _stimulus_change_times(rows, stimulus_signals)
     start, stop = rows[0]["time"], rows[-1]["time"]
     checked = 0
     saw_disabled = False
@@ -176,6 +217,8 @@ def check_continuous(rows: list[dict[str, float]], mode: str, label: str) -> tup
     worst: dict[str, float | str] = {"err": 0.0, "time": 0.0, "signal": "", "expected": 0.0, "observed": 0.0}
     for idx in range(1, 80):
         time_s = start + (stop - start) * idx / 80.0
+        if not _is_settled(change_times, time_s, settle_time_s):
+            continue
         values = _values_at(rows, names, time_s)
         if values is None or any(not isfinite(values[name]) for name in names if name != "time"):
             continue

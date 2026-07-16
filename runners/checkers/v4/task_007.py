@@ -62,15 +62,29 @@ def check_first_order_lowpass(rows: list[dict[str, float]]) -> tuple[bool, str]:
     monotonic = samples[0] < samples[1] < samples[2] <= samples[3] + 0.03
     response_fast_enough = samples[1] > 0.55 and samples[2] > 0.70 and samples[3] > 0.76
     not_instant = samples[0] < 0.45
-    post_rows = [r for r in rows if r.get("time", 0.0) >= step_time and "vout" in r]
-    bounded = bool(post_rows) and -0.03 <= min(r["vout"] for r in post_rows) <= max(r["vout"] for r in post_rows) <= 0.88
+    post_rows = [
+        r
+        for r in rows
+        if r.get("time", 0.0) >= step_time and "vout" in r and "vin" in r
+    ]
+    min_vout = min((r["vout"] for r in post_rows), default=float("nan"))
+    max_vout = max((r["vout"] for r in post_rows), default=float("nan"))
+    input_ceiling = max((r["vin"] for r in post_rows), default=float("nan"))
+    bounded = bool(post_rows) and -0.03 <= min_vout <= max_vout <= input_ceiling + 0.03
     ok = input_step and monotonic and response_fast_enough and not_instant and bounded
     values = ",".join(f"{value:.3f}" for value in samples)
-    return ok, (
+    note = (
         f"lowpass_samples={values} input_step={input_step} monotonic={monotonic} "
         f"response_fast_enough={response_fast_enough} not_instant={not_instant} "
-        f"bounded={bounded}"
+        f"bounded={bounded} input_ceiling={input_ceiling:.6g} max_vout={max_vout:.6g}"
     )
+    if not bounded:
+        note += (
+            "; first_mismatch=P_STEP_MONOTONICITY signal=vout "
+            f"time={end_time:.6e} expected<={input_ceiling + 0.03:.6g} "
+            f"observed={max_vout:.6g} tolerance=0.03"
+        )
+    return ok, note
 
 def sample_signal_at(rows: list[dict[str, float]], signal: str, time_s: float) -> float | None:
     if not rows or "time" not in rows[0] or signal not in rows[0]:

@@ -336,6 +336,51 @@ def test_submission_gate_rejects_undeclared_files_and_symlinks(tmp_path: Path) -
     assert "symlink_not_allowed:link.va" in gate["diagnostics"]
 
 
+def test_feedback_compaction_keeps_actionable_property_diagnostics() -> None:
+    runner = load_run_campaign()
+    stdout = "\n".join(
+        [
+            "FEEDBACK_EVAS_ENGINE evas_version=0.8.2 evas_engine=evas2",
+            "FEEDBACK_BEHAVIOR_FAIL",
+            "solver counters: accepted=812 rejected=4",
+            (
+                "task=v4_312_interleaved_adc_skew_monitor | "
+                "P_SKEW_METRIC:mismatch_count=2 expected=0.04 "
+                "observed=0.11 time=8.2e-08 gap=0.07"
+            ),
+        ]
+    )
+
+    compact = runner.compact_feedback_result(
+        {"returncode": 1, "stdout": stdout, "stderr": "", "elapsed_s": 0.4}
+    )
+
+    assert compact["diagnostics"][0].startswith("task=v4_312")
+    assert "P_SKEW_METRIC" in compact["diagnostics"][0]
+    assert compact["markers"] == [
+        "FEEDBACK_EVAS_ENGINE evas_version=0.8.2 evas_engine=evas2",
+        "FEEDBACK_BEHAVIOR_FAIL",
+    ]
+    assert all("solver counters" not in line for line in compact["diagnostics"])
+
+
+def test_feedback_compaction_keeps_reference_failure_detail() -> None:
+    runner = load_run_campaign()
+    stdout = "\n".join(
+        [
+            "reference: missing_vin_step_samples initial_samples=[0.0, 0.0] initial_ok=True",
+            "FEEDBACK_TB_REFERENCE_FAIL",
+        ]
+    )
+
+    lines = runner.compact_text_lines(stdout)
+
+    assert lines == [
+        "reference: missing_vin_step_samples initial_samples=[0.0, 0.0] initial_ok=True",
+        "FEEDBACK_TB_REFERENCE_FAIL",
+    ]
+
+
 def test_direct_run_cell_submits_only_an_exact_artifact_response(tmp_path: Path) -> None:
     runner = load_run_campaign()
     cell = campaign_cell("G0")
