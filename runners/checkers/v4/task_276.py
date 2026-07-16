@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from ..api import Checker
+from .family_271_280_diagnostics import bind_properties
 from ..common.issue109_split import check_clocked
 
 
@@ -25,4 +26,9 @@ CHECKS = {
 }
 
 CHECKER_ID = TASK_LABEL
-CHECKER: Checker = check_v4_276_bounded_tail_dither_shaper
+CHECKER: Checker = bind_properties(check_v4_276_bounded_tail_dither_shaper, (
+    "P_MEASURE_ANALOG_INPUTS_RELATIVE_TO_THE",
+    "P_FOR_EACH_VALID_UPDATE_COMPUTE",
+    "P_TEXT_X0_CLIP01_V_IN0_V",
+    "P_RESET_DISABLED_AND_OUT_OF_RANGE",
+))

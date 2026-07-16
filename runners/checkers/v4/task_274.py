@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 from ..api import Checker
+from .family_271_280_diagnostics import bind_properties
 def sample_signal_at(rows: list[dict[str, float]], signal: str, time_s: float) -> float | None:
     if not rows or "time" not in rows[0] or signal not in rows[0]:
         return None
@@ -97,4 +98,10 @@ def check_v3_378_rail_normalized_metric_mapper(rows: list[dict[str, float]]) -> 
     return True, f"samples={checked} max_err={max_err:.4f}"
 
 CHECKER_ID = "v4_274_rail_normalized_metric_mapper"
-CHECKER: Checker = check_v3_378_rail_normalized_metric_mapper
+CHECKER: Checker = bind_properties(check_v3_378_rail_normalized_metric_mapper, (
+    "P_NORMALIZE_MEAS_RELATIVE_TO_THE_LOCAL",
+    "P_CLIP_THE_NORMALIZED_METRIC_TO_THE",
+    "P_ASSERT_VALID_ONLY_WHEN_ENABLE_IS",
+    "P_CLEAR_NORM_AND_VALID_WHILE_DISABLED",
+    "P_USE_LOCAL_ANALOG_HELPER_FUNCTIONS_RATHER",
+))

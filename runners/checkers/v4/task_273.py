@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 from ..api import Checker
+from .family_271_280_diagnostics import bind_properties
 def _threshold_crossings(
     values: list[float],
     times: list[float],
@@ -134,4 +135,7 @@ def check_v3_377_adaptive_threshold_tracker(rows: list[dict[str, float]]) -> tup
     )
 
 CHECKER_ID = "v4_273_adaptive_threshold_tracker"
-CHECKER: Checker = check_v3_377_adaptive_threshold_tracker
+CHECKER: Checker = bind_properties(check_v3_377_adaptive_threshold_tracker, (
+    "P_INITIALIZE_THE_STORED_THRESHOLD_TO_THRESHOLD",
+    "P_WHEN_ADAPT_VTH_UPDATE_THE_STORED",
+))

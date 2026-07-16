@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from ..api import Checker
+from .family_271_280_diagnostics import bind_properties
 from ..common.issue109_split import check_continuous
 
 
@@ -25,4 +26,7 @@ CHECKS = {
 }
 
 CHECKER_ID = TASK_LABEL
-CHECKER: Checker = check_v4_278_lane_mask_replication_driver
+CHECKER: Checker = bind_properties(check_v4_278_lane_mask_replication_driver, (
+    "P_MEASURE_ANALOG_INPUTS_RELATIVE_TO_THE",
+    "P_COUNT_THE_NUMBER_OF_NORMALIZED_INPUTS",
+))
