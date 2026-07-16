@@ -3,78 +3,7 @@ from __future__ import annotations
 
 from ..api import Checker
 from .stimulus_relative import normalize_affine_time
-
-
-def sample_signal_at(rows: list[dict[str, float]], signal: str, time_s: float) -> float | None:
-    if not rows or "time" not in rows[0] or signal not in rows[0]:
-        return None
-    first_time = rows[0]["time"]
-    last_time = rows[-1].get("time")
-    if last_time is None or time_s < first_time or time_s > last_time:
-        return None
-    if time_s == first_time:
-        return rows[0].get(signal)
-    for idx in range(1, len(rows)):
-        prev = rows[idx - 1]
-        cur = rows[idx]
-        t0 = prev.get("time")
-        t1 = cur.get("time")
-        if t0 is None or t1 is None:
-            continue
-        if t0 <= time_s <= t1:
-            v0 = prev.get(signal)
-            v1 = cur.get(signal)
-            if v0 is None or v1 is None:
-                return None
-            if t1 == t0:
-                return v1
-            alpha = (time_s - t0) / (t1 - t0)
-            return v0 + alpha * (v1 - v0)
-    return None
-
-def _sample_many(
-    rows: list[dict[str, float]],
-    samples: dict[str, list[tuple[float, float]]],
-    *,
-    tol: float,
-) -> tuple[bool, str]:
-    details: list[str] = []
-    for signal, expected_samples in samples.items():
-        observed: list[float] = []
-        for time_ns, expected in expected_samples:
-            value = sample_signal_at(rows, signal, time_ns * 1e-9)
-            if value is None:
-                return False, f"missing_{signal}_sample_at={time_ns:g}ns"
-            observed.append(value)
-            if abs(value - expected) > tol:
-                return False, (
-                    f"{signal}@{time_ns:g}ns={value:.4f} expected={expected:.4f} "
-                    f"tol={tol:.4f}"
-                )
-        details.append(f"{signal}=" + ",".join(f"{value:.3f}" for value in observed))
-    return True, " ".join(details)
-
-def _sample_many_within_trace(
-    rows: list[dict[str, float]],
-    samples: dict[str, list[tuple[float, float]]],
-    *,
-    tol: float,
-) -> tuple[bool, str]:
-    if not rows:
-        return _sample_many(rows, samples, tol=tol)
-    end_time = rows[-1].get("time")
-    if end_time is None:
-        return _sample_many(rows, samples, tol=tol)
-    end_ns = end_time * 1e9
-    filtered: dict[str, list[tuple[float, float]]] = {}
-    for signal, expected_samples in samples.items():
-        visible_samples = [
-            (time_ns, expected)
-            for time_ns, expected in expected_samples
-            if time_ns <= end_ns + 1e-3
-        ]
-        filtered[signal] = visible_samples or expected_samples
-    return _sample_many(rows, filtered, tol=tol)
+from .trace_utils import sample_signal, threshold_crossings
 
 def check_v3_divide_by_8_9_switch(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "clkin", "mc", "out"}
@@ -86,10 +15,59 @@ def check_v3_divide_by_8_9_switch(rows: list[dict[str, float]]) -> tuple[bool, s
     ])
     if rows is None:
         return False, "missing_clock_stimulus_edges"
-    return _sample_many_within_trace(
-        rows,
-        {"out": [(2.0, 1.2), (4.0, 0.0), (12.0, 1.2), (16.0, 1.2), (20.0, 0.0), (26.0, 0.0), (28.0, 1.2)]},
-        tol=0.08,
+    edges = threshold_crossings(rows, "clkin", threshold=0.6, direction=1)
+    if len(edges) < 8:
+        return False, f"insufficient_clock_edges={len(edges)} expected>=8"
+
+    pre_edge_time = rows[0]["time"] + 0.5 * (edges[0] - rows[0]["time"])
+    pre_edge_out = sample_signal(rows, "out", pre_edge_time)
+    if pre_edge_out is None:
+        return False, "missing_initial_out_sample"
+    if abs(pre_edge_out) > 0.08:
+        return False, (
+            f"first_mismatch=P_DIVIDER_DUTY_WINDOW signal=out time={pre_edge_time:.6e} "
+            f"expected=0 observed={pre_edge_out:.6g} tolerance=0.08"
+        )
+
+    samples: list[tuple[int, float, float, int]] = []
+    for index, edge in enumerate(edges):
+        next_edge = edges[index + 1] if index + 1 < len(edges) else rows[-1]["time"]
+        if next_edge <= edge:
+            continue
+        sample_time = edge + 0.25 * (next_edge - edge)
+        observed = sample_signal(rows, "out", sample_time)
+        mc = sample_signal(rows, "mc", edge)
+        if observed is None or mc is None:
+            return False, f"missing_edge_sample_at={sample_time:.6e}"
+        samples.append((index + 1, sample_time, observed, 9 if mc > 0.6 else 8))
+
+    phase_failures: dict[int, list[tuple[int, float, float, float]]] = {}
+    for first_count in range(4):
+        count = first_count
+        failures: list[tuple[int, float, float, float]] = []
+        for sample_index, (edge_index, sample_time, observed, modulus) in enumerate(samples):
+            if sample_index:
+                count = (count + 1) % modulus
+            expected = 1.2 if count < 4 else 0.0
+            if abs(observed - expected) > 0.08:
+                failures.append((edge_index, sample_time, expected, observed))
+        if not failures:
+            return True, (
+                f"checked={len(samples)} initial_high_window_count={first_count} "
+                "modulus_sequence=stimulus_relative"
+            )
+        phase_failures[first_count] = failures
+
+    best_phase, best_failures = min(
+        phase_failures.items(), key=lambda item: (len(item[1]), item[0])
+    )
+    edge_index, sample_time, expected, observed = best_failures[0]
+    return False, (
+        "first_mismatch=P_MODULUS_SWITCHING_ON_MC_EDGES signal=out "
+        f"event=clkin_rise[{edge_index}] time={sample_time:.6e} "
+        f"expected={expected:.6g} observed={observed:.6g} tolerance=0.08 "
+        f"best_initial_high_window_count={best_phase} "
+        f"mismatch_count={len(best_failures)}"
     )
 
 CHECKER_ID = "v4_160_divide_by_8_9_switch"

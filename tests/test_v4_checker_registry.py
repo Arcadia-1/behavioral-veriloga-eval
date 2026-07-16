@@ -203,6 +203,41 @@ def test_bandgap_checker_does_not_treat_midcycle_brownout_as_hold_failure(
     assert "P_CLOCKED_HOLD mismatch_count=0" in detail
 
 
+def _divide_8_9_rows(first_count: int, *, honor_mc: bool = True) -> list[dict[str, float]]:
+    rows: list[dict[str, float]] = []
+    count = first_count
+    rising_index = 0
+    previous_clk = 0.0
+    out = 0.0
+    for step in range(321):
+        time_ns = step * 0.1
+        clk = 1.2 if any(start <= time_ns < start + 0.5 for start in [1.0 + 2.0 * i for i in range(15)]) else 0.0
+        mc = 1.2 if 12.0 <= time_ns < 24.0 else 0.0
+        if previous_clk < 0.6 <= clk:
+            if rising_index:
+                modulus = 9 if honor_mc and mc > 0.6 else 8
+                count = (count + 1) % modulus
+            out = 1.2 if count < 4 else 0.0
+            rising_index += 1
+        rows.append({"time": time_ns * 1e-9, "clkin": clk, "mc": mc, "out": out})
+        previous_clk = clk
+    return rows
+
+
+def test_divide_8_9_checker_accepts_all_public_initial_high_window_phases() -> None:
+    from checkers.v4.registry import load_checker
+
+    checker = load_checker("v4_160_divide_by_8_9_switch")
+    assert checker is not None
+    for first_count in range(4):
+        passed, detail = checker(_divide_8_9_rows(first_count))
+        assert passed, (first_count, detail)
+
+    passed, detail = checker(_divide_8_9_rows(0, honor_mc=False))
+    assert not passed
+    assert "first_mismatch=P_MODULUS_SWITCHING_ON_MC_EDGES" in detail
+
+
 def test_all_current_benchmarkv4_tasks_resolve_migrated_checker_candidates() -> None:
     from checkers.v4.registry import load_checker
 
