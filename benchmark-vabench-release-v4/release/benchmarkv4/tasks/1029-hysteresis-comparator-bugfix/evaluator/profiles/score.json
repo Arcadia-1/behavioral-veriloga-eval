@@ -1,41 +1,13 @@
 {
   "corners": [],
-  "deck_overrides": {
-    "analyses": [
-      "tran tran stop=80n maxstep=100p"
-    ],
-    "body_lines": [
-      "// Continuous hysteresis comparator sweep",
-      "",
-      "Vvdd (vdd 0) vsource dc=0.9 type=dc",
-      "Vvss (vss 0) vsource dc=0.1 type=dc",
-      "",
-      "Vvinp (vinp vss) vsource type=pwl wave=[0 0.44 40n 0.46 80n 0.44]",
-      "Vvinn (vinn vss) vsource dc=0.45 type=dc",
-      "",
-      "// DUT (port order: VINN VINP OUTN OUTP VSS VDD)",
-      "IDUT (vinn vinp out_n out_p vss vdd) cmp_hysteresis vhys=10m tedge=50p",
-      ""
-    ],
-    "save_signals": [
-      "vinp",
-      "vinn",
-      "out_p",
-      "out_n",
-      "vss",
-      "vdd"
-    ]
-  },
+  "deck_overrides": {},
   "deterministic_seed": 0,
   "generated_from": {
     "script": "render_v4_harness.py",
     "version": "v4-harness-renderer-v1"
   },
-  "harness_spec_sha256": "624ca2a6e47c6e1354fc7942927cb5fb1bce78fdc0e7f2868a253307f9adc72a",
-  "parameters": {
-    "maxstep": "100p",
-    "stop_time": "100n"
-  },
+  "harness_spec_sha256": "ce44ce68d3e3920e92a3be3ba9fc5c5c108318ac8b4d2943e78ef02da1bd5819",
+  "parameters": {},
   "profile_name": "score",
   "property_ids": [
     "P_INITIAL_DECISION",

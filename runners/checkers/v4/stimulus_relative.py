@@ -5,7 +5,10 @@ must not encode a particular public or private deck's absolute schedule.
 """
 from __future__ import annotations
 
+from bisect import bisect_left
 from collections.abc import Iterable
+from dataclasses import dataclass
+from statistics import median
 
 
 Row = dict[str, float]
@@ -142,3 +145,147 @@ def percentile(values: list[float], fraction: float) -> float:
 def pass_note(property_ids: Iterable[str], summary: str) -> str:
     diagnostics = "; ".join(f"{property_id} mismatch_count=0" for property_id in property_ids)
     return f"{summary}; {diagnostics}"
+
+
+@dataclass
+class PropertyResult:
+    """Compact, redacted diagnostic for one public property."""
+
+    property_id: str
+    checked: int = 0
+    mismatch_count: int = 0
+    expected: str = "contract_satisfied"
+    observed: str = "contract_satisfied"
+    sample_time: float = 0.0
+    metric_gap: float = 0.0
+
+    def check(self) -> None:
+        self.checked += 1
+
+    def compare(self, *, expected: float, observed: float, tolerance: float,
+                time_s: float, label: str = "value") -> None:
+        self.check()
+        gap = abs(float(observed) - float(expected))
+        if gap > tolerance:
+            self.mismatch(
+                expected=f"{label}={expected:.6g}+/-{tolerance:.3g}",
+                observed=f"{label}={observed:.6g}", time_s=time_s, gap=gap,
+            )
+
+    def condition(self, passed: bool, *, expected: object, observed: object,
+                  time_s: float, gap: float = 0.0) -> None:
+        self.check()
+        if not passed:
+            self.mismatch(expected=expected, observed=observed, time_s=time_s, gap=gap)
+
+    def mismatch(self, *, expected: object, observed: object,
+                 time_s: float, gap: float = 0.0) -> None:
+        self.mismatch_count += 1
+        if self.mismatch_count == 1:
+            self.expected = str(expected).replace(" ", "_")
+            self.observed = str(observed).replace(" ", "_")
+            self.sample_time = float(time_s)
+            self.metric_gap = float(gap)
+
+    def require_coverage(self, minimum: int = 1) -> None:
+        if self.checked < minimum:
+            self.mismatch(
+                expected=f"checked>={minimum}", observed=f"checked={self.checked}",
+                time_s=0.0, gap=float(minimum - self.checked),
+            )
+
+    def render(self) -> str:
+        return (
+            f"{self.property_id} checked={self.checked} "
+            f"mismatch_count={self.mismatch_count} "
+            f"expected={self.expected} observed={self.observed} "
+            f"sample_time={self.sample_time:.12g} metric_gap={self.metric_gap:.6g}"
+        )
+
+
+def finish(task_id: str, results: list[PropertyResult], *, coverage: str,
+           minimum_checks: int = 1) -> tuple[bool, str]:
+    for result in results:
+        result.require_coverage(minimum_checks)
+    ok = all(result.mismatch_count == 0 for result in results)
+    checked = sum(result.checked for result in results)
+    mismatches = sum(result.mismatch_count for result in results)
+    details = "; ".join(result.render() for result in results)
+    return ok, (
+        f"{task_id} checked={checked} mismatch_count={mismatches} "
+        f"coverage={coverage}; {details}"
+    )
+
+
+def missing_trace(task_id: str, rows: list[Row], required: set[str],
+                  property_ids: list[str]) -> tuple[list[PropertyResult], tuple[bool, str] | None]:
+    results = [PropertyResult(property_id) for property_id in property_ids]
+    missing = sorted(required - set(rows[0])) if rows else sorted(required)
+    if not missing:
+        return results, None
+    observed = "missing_signals:" + ",".join(missing)
+    for result in results:
+        result.check()
+        result.mismatch(
+            expected="complete_public_trace", observed=observed,
+            time_s=0.0, gap=float(len(missing)),
+        )
+    return results, finish(task_id, results, coverage="trace_incomplete")
+
+
+def rising_indices(rows: list[Row], signal: str, threshold: float = 0.45) -> list[int]:
+    return [index for index in range(1, len(rows))
+            if float(rows[index - 1][signal]) <= threshold < float(rows[index][signal])]
+
+
+def falling_indices(rows: list[Row], signal: str, threshold: float = 0.45) -> list[int]:
+    return [index for index in range(1, len(rows))
+            if float(rows[index - 1][signal]) >= threshold > float(rows[index][signal])]
+
+
+def interpolate_crossing(previous: Row, current: Row, signal: str, threshold: float) -> float:
+    v0 = float(previous[signal])
+    v1 = float(current[signal])
+    t0 = float(previous["time"])
+    t1 = float(current["time"])
+    if v1 == v0:
+        return t1
+    return t0 + (threshold - v0) / (v1 - v0) * (t1 - t0)
+
+
+def edge_times(rows: list[Row], signal: str, *, threshold: float = 0.45,
+               rising: bool = True) -> list[float]:
+    indices = rising_indices(rows, signal, threshold) if rising else falling_indices(rows, signal, threshold)
+    return [interpolate_crossing(rows[index - 1], rows[index], signal, threshold)
+            for index in indices]
+
+
+def row_at_or_after(rows: list[Row], time_s: float) -> Row:
+    times = [float(row["time"]) for row in rows]
+    return rows[min(bisect_left(times, time_s), len(rows) - 1)]
+
+
+def row_before(rows: list[Row], time_s: float) -> Row:
+    times = [float(row["time"]) for row in rows]
+    return rows[max(0, bisect_left(times, time_s) - 1)]
+
+
+def event_settle_delay(event_times: list[float], *, fraction: float = 0.12,
+                       minimum_s: float = 1.5e-10, maximum_s: float = 2.0e-9) -> float:
+    spacings = [right - left for left, right in zip(event_times, event_times[1:])
+                if right > left]
+    if not spacings:
+        return minimum_s
+    return min(maximum_s, max(minimum_s, fraction * median(spacings)))
+
+
+def bit_code(row: Row, bits_lsb_first: list[str], threshold: float = 0.45) -> int:
+    return sum(1 << index for index, signal in enumerate(bits_lsb_first)
+               if float(row[signal]) > threshold)
+
+
+def transformed_rows(rows: list[Row], *, scale: float = 1.37,
+                     shift_s: float = 2e-9) -> list[Row]:
+    """Return a timing metamorph used only by checker regression tests."""
+
+    return [{**row, "time": scale * float(row["time"]) + shift_s} for row in rows]

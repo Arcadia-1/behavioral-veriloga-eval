@@ -1,112 +1,163 @@
-"""Task-specific checker for canonical v4 DUT 029."""
+"""Stimulus-relative checker for canonical v4 DUT 029."""
 from __future__ import annotations
 
 from ..api import Checker
-def check_cmp_hysteresis(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    required = {"time", "out_p", "out_n"}
-    if not rows or not required.issubset(rows[0]):
-        return False, "missing time/out_p/out_n"
+from .stimulus_relative import event_settle_delay, finish, missing_trace, row_at_or_after
 
-    threshold = 0.45
-    times_ns = [r["time"] * 1e9 for r in rows]
-    out_p = [r["out_p"] for r in rows]
-    out_n = [r["out_n"] for r in rows]
 
-    threshold_crossings: list[float] = []
-    if {"vinp", "vinn"}.issubset(rows[0]):
-        diffs = [row["vinp"] - row["vinn"] for row in rows]
-        for idx in range(1, len(rows)):
-            previous = diffs[idx - 1]
-            current = diffs[idx]
-            target = None
-            if previous < 0.005 <= current:
-                target = 0.005
-            elif previous > -0.005 >= current:
-                target = -0.005
-            if target is None or current == previous:
-                continue
-            fraction = (target - previous) / (current - previous)
-            crossing_time = rows[idx - 1]["time"] + fraction * (
-                rows[idx]["time"] - rows[idx - 1]["time"]
-            )
-            threshold_crossings.append(crossing_time)
+PROPERTY_IDS = [
+    "P_INITIAL_DECISION",
+    "P_POSITIVE_SWITCH_THRESHOLD",
+    "P_NEGATIVE_SWITCH_THRESHOLD",
+    "P_HYSTERESIS_HOLD",
+    "P_COMPLEMENTARY_RAIL_OUTPUT",
+]
 
-    if max(out_p) - min(out_p) < threshold or max(out_n) - min(out_n) < threshold:
-        return False, (
-            "outputs_do_not_toggle "
-            f"observed=out_p_span:{max(out_p) - min(out_p):.3f},out_n_span:{max(out_n) - min(out_n):.3f} "
-            "expected=>0.45 window=full_trace"
-        )
 
-    rail_checks = 0
-    guarded_transition_samples = 0
-    rail_errors: list[str] = []
-    if {"vdd", "vss"}.issubset(rows[0]):
-        for row in rows[:: max(1, len(rows) // 160)]:
-            if row["time"] < 0.5e-9:
-                continue
-            if any(abs(row["time"] - crossing) <= 0.5e-9 for crossing in threshold_crossings):
-                guarded_transition_samples += 1
-                continue
-            vdd = row["vdd"]
-            vss = row["vss"]
-            mid = 0.5 * (vdd + vss)
-            outp_hi = row["out_p"] > mid
-            outn_hi = row["out_n"] > mid
-            if outp_hi == outn_hi:
-                rail_errors.append(
-                    f"observed=out_p:{row['out_p']:.3f},out_n:{row['out_n']:.3f} "
-                    f"expected=complementary_rails:{vss:.3f}/{vdd:.3f} window={row['time'] * 1e9:.3f}ns"
-                )
-            elif outp_hi and (abs(row["out_p"] - vdd) > 0.10 or abs(row["out_n"] - vss) > 0.10):
-                rail_errors.append(
-                    f"observed=out_p:{row['out_p']:.3f},out_n:{row['out_n']:.3f} "
-                    f"expected=out_p:{vdd:.3f},out_n:{vss:.3f} window={row['time'] * 1e9:.3f}ns"
-                )
-            elif outn_hi and (abs(row["out_n"] - vdd) > 0.10 or abs(row["out_p"] - vss) > 0.10):
-                rail_errors.append(
-                    f"observed=out_p:{row['out_p']:.3f},out_n:{row['out_n']:.3f} "
-                    f"expected=out_p:{vss:.3f},out_n:{vdd:.3f} window={row['time'] * 1e9:.3f}ns"
-                )
-            rail_checks += 1
-        if rail_checks < 12:
-            return False, f"insufficient_rail_checks observed={rail_checks} expected>=12 window=full_trace"
-        if rail_errors:
-            return False, "rail_or_complement_error " + " ".join(rail_errors[:3])
+def _threshold_crossings(
+    rows: list[dict[str, float]],
+    *,
+    threshold: float,
+    rising: bool,
+) -> list[float]:
+    crossings: list[float] = []
+    for index in range(1, len(rows)):
+        previous = rows[index - 1]["vinp"] - rows[index - 1]["vinn"]
+        current = rows[index]["vinp"] - rows[index]["vinn"]
+        hit = previous <= threshold < current if rising else previous >= threshold > current
+        if not hit:
+            continue
+        t0 = float(rows[index - 1]["time"])
+        t1 = float(rows[index]["time"])
+        fraction = 1.0 if current == previous else (threshold - previous) / (current - previous)
+        crossings.append(t0 + fraction * (t1 - t0))
+    return crossings
 
-    pre = [out_p[idx] for idx, t in enumerate(times_ns) if t < 20.0]
-    mid = [out_p[idx] for idx, t in enumerate(times_ns) if 35.0 < t < 60.0]
-    post = [out_p[idx] for idx, t in enumerate(times_ns) if t > 75.0]
-    if not pre or not mid or not post:
-        return False, "insufficient_hysteresis_windows"
 
-    pre_low_frac = sum(1 for v in pre if v < threshold) / len(pre)
-    mid_high_frac = sum(1 for v in mid if v > threshold) / len(mid)
-    post_low_frac = sum(1 for v in post if v < threshold) / len(post)
-    if pre_low_frac < 0.95 or mid_high_frac < 0.95 or post_low_frac < 0.95:
-        return False, (
-            f"window_fracs observed=pre:{pre_low_frac:.3f},mid:{mid_high_frac:.3f},post:{post_low_frac:.3f} "
-            "expected=>=0.95 window=pre/mid/post"
-        )
-
-    rise_t = None
-    fall_t = None
-    for idx in range(1, len(out_p)):
-        if rise_t is None and out_p[idx - 1] < threshold <= out_p[idx]:
-            rise_t = times_ns[idx]
-        if fall_t is None and out_p[idx - 1] > threshold >= out_p[idx]:
-            fall_t = times_ns[idx]
-
-    if rise_t is None or fall_t is None:
-        return False, "missing_trip_crossings"
-    if not (29.0 <= rise_t <= 31.5):
-        return False, f"rise_t_out_of_range observed={rise_t:.3f}ns expected=29.0..31.5ns window=positive_crossing"
-    if not (68.5 <= fall_t <= 71.5):
-        return False, f"fall_t_out_of_range observed={fall_t:.3f}ns expected=68.5..71.5ns window=negative_crossing"
-    return True, (
-        f"rise_t={rise_t:.3f}ns fall_t={fall_t:.3f}ns rail_checks={rail_checks} "
-        f"guarded_transition_samples={guarded_transition_samples}"
+def _check_state(
+    result,
+    row: dict[str, float],
+    *,
+    state_high: bool,
+    label: str,
+) -> None:
+    expected_p = row["vdd"] if state_high else row["vss"]
+    expected_n = row["vss"] if state_high else row["vdd"]
+    result.compare(
+        expected=expected_p,
+        observed=row["out_p"],
+        tolerance=0.075,
+        time_s=row["time"],
+        label=f"{label}_out_p",
+    )
+    result.compare(
+        expected=expected_n,
+        observed=row["out_n"],
+        tolerance=0.075,
+        time_s=row["time"],
+        label=f"{label}_out_n",
     )
 
+
+def check_hysteresis_comparator(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {"time", "vdd", "vss", "vinp", "vinn", "out_p", "out_n"}
+    results, error = missing_trace(CHECKER_ID, rows, required, PROPERTY_IDS)
+    if error is not None:
+        return error
+    by_id = {result.property_id: result for result in results}
+
+    positive = _threshold_crossings(rows, threshold=0.005, rising=True)
+    negative = _threshold_crossings(rows, threshold=-0.005, rising=False)
+    events = sorted(
+        [(time, True) for time in positive] + [(time, False) for time in negative],
+        key=lambda item: item[0],
+    )
+    event_times = [time for time, _ in events]
+    settle = event_settle_delay(event_times)
+
+    first_event = event_times[0] if event_times else float(rows[-1]["time"])
+    initial_time = float(rows[0]["time"]) + 0.50 * (first_event - float(rows[0]["time"]))
+    initial = row_at_or_after(rows, initial_time)
+    initial_diff = initial["vinp"] - initial["vinn"]
+    initial_state = initial_diff > 0.005
+    _check_state(by_id["P_INITIAL_DECISION"], initial, state_high=initial_state, label="initial")
+
+    for event_time in positive:
+        sample = row_at_or_after(rows, event_time + settle)
+        _check_state(
+            by_id["P_POSITIVE_SWITCH_THRESHOLD"],
+            sample,
+            state_high=True,
+            label="positive_switch",
+        )
+    for event_time in negative:
+        sample = row_at_or_after(rows, event_time + settle)
+        _check_state(
+            by_id["P_NEGATIVE_SWITCH_THRESHOLD"],
+            sample,
+            state_high=False,
+            label="negative_switch",
+        )
+
+    state = initial_state
+    event_cursor = 0
+    stride = max(1, len(rows) // 240)
+    hold_checks = 0
+    rail_checks = 0
+    for row in rows[::stride]:
+        time_s = float(row["time"])
+        while event_cursor < len(events) and events[event_cursor][0] <= time_s:
+            state = events[event_cursor][1]
+            event_cursor += 1
+        if any(0.0 <= time_s - event_time <= settle for event_time in event_times):
+            continue
+        diff = row["vinp"] - row["vinn"]
+        if -0.0045 < diff < 0.0045:
+            hold_checks += 1
+            _check_state(
+                by_id["P_HYSTERESIS_HOLD"],
+                row,
+                state_high=state,
+                label="hysteresis_hold",
+            )
+        rail_checks += 1
+        _check_state(
+            by_id["P_COMPLEMENTARY_RAIL_OUTPUT"],
+            row,
+            state_high=state,
+            label="local_rails",
+        )
+
+    by_id["P_POSITIVE_SWITCH_THRESHOLD"].condition(
+        len(positive) >= 1,
+        expected="positive_threshold_crossing_exercised",
+        observed=f"crossings={len(positive)}",
+        time_s=rows[-1]["time"],
+        gap=max(0, 1 - len(positive)),
+    )
+    by_id["P_NEGATIVE_SWITCH_THRESHOLD"].condition(
+        len(negative) >= 1,
+        expected="negative_threshold_crossing_exercised",
+        observed=f"crossings={len(negative)}",
+        time_s=rows[-1]["time"],
+        gap=max(0, 1 - len(negative)),
+    )
+    by_id["P_HYSTERESIS_HOLD"].condition(
+        hold_checks >= 4,
+        expected="interior_band_observed_in_both_sweeps",
+        observed=f"hold_checks={hold_checks}",
+        time_s=rows[-1]["time"],
+        gap=max(0, 4 - hold_checks),
+    )
+    return finish(
+        CHECKER_ID,
+        results,
+        coverage=(
+            f"positive_crossings={len(positive)} negative_crossings={len(negative)} "
+            f"hold_checks={hold_checks} rail_checks={rail_checks} settle_s={settle:.6g}"
+        ),
+    )
+
+
 CHECKER_ID = "v4_029_hysteresis_comparator"
-CHECKER: Checker = check_cmp_hysteresis
+CHECKER: Checker = check_hysteresis_comparator
