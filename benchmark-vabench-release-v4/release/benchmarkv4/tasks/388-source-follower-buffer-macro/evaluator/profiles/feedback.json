@@ -1,24 +1,14 @@
 {
   "corners": [],
-  "deck_overrides": {
-    "body_lines": [
-      "Vvin (vin 0) vsource type=pwl wave=[0 0.20 8n 0.20 8.1n 0.55 22n 0.55 22.1n 0.88 38n 0.88 38.1n 0.10 54n 0.10 54.1n 0.70 72n 0.70]",
-      "Vbias (vbias 0) vsource type=pwl wave=[0 0.75 28n 0.75 28.1n 0.55 46n 0.55 46.1n 0.90 72n 0.90]",
-      "Ven (enable 0) vsource type=pwl wave=[0 0 5n 0 5.1n 0.9 58n 0.9 58.1n 0 64n 0 64.1n 0.9 72n 0.9]",
-      "Vrst (rst 0) vsource type=pwl wave=[0 0.9 2n 0.9 2.1n 0 72n 0]",
-      "",
-      "XDUT (vin vbias enable rst vout headroom_metric valid) source_follower_buffer_macro",
-      ""
-    ]
-  },
+  "deck_overrides": {},
   "deterministic_seed": 0,
   "generated_from": {
     "script": "render_v4_harness.py",
     "version": "v4-harness-renderer-v1"
   },
-  "harness_spec_sha256": "9f211510ea719915a2dba2ada567fa1bf99740d7c5a65351730a63a21a6a695a",
+  "harness_spec_sha256": "1a3aeca97d8f9eb391bbb9e608c0fb2fe59cb4c4e6912481ac164873bf183834",
   "parameters": {
-    "maxstep": "200p",
+    "maxstep": "100p",
     "stop_time": "100n"
   },
   "profile_name": "feedback",

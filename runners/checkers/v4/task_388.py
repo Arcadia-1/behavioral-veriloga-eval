@@ -36,8 +36,6 @@ def _v4_settled_sparse_samples(
 ) -> list[dict[str, float]]:
     samples: list[dict[str, float]] = []
     for row in _v4_sparse_samples(rows, count=count):
-        if row["time"] < settle_s:
-            continue
         prior = _sample_after(rows, row["time"], -settle_s)
         if prior["time"] >= row["time"]:
             continue
@@ -49,15 +47,16 @@ def check_v4_source_follower_buffer_macro(rows: list[dict[str, float]]) -> tuple
     required = {"time", "vin", "vbias", "enable", "rst", "vout", "headroom_metric", "valid"}
     missing = _v4_missing_columns(rows, required)
     if missing:
-        return False, missing
-    errors = 0
+        return False, f"P_TRACE_CONTRACT mismatch_count=1 expected=required_signals observed={missing}"
+    vout_errors = metric_errors = valid_errors = clear_errors = 0
     checked = 0
     clamp_seen = False
     disabled_seen = False
     for row in _v4_settled_sparse_samples(rows, {"vin", "vbias", "enable", "rst"}):
-        if row["time"] < 3e-9 or 0.1 < row["enable"] < 0.8 or 0.1 < row["rst"] < 0.8:
+        if 0.1 < row["enable"] < 0.8 or 0.1 < row["rst"] < 0.8:
             continue
-        if row["rst"] > 0.45 or row["enable"] <= 0.45 or row["vbias"] <= 0.10:
+        inactive = row["rst"] > 0.45 or row["enable"] <= 0.45 or row["vbias"] <= 0.10
+        if inactive:
             expected_out = 0.0
             expected_metric = 0.0
             expected_valid = 0.0
@@ -70,14 +69,38 @@ def check_v4_source_follower_buffer_macro(rows: list[dict[str, float]]) -> tuple
             expected_metric = _v4_clip(row["vbias"] - expected_out)
             expected_valid = 0.9
         if not _v4_close(row["vout"], expected_out, 0.08):
-            errors += 1
+            if inactive:
+                clear_errors += 1
+            else:
+                vout_errors += 1
         if not _v4_close(row["headroom_metric"], expected_metric, 0.08):
-            errors += 1
+            if inactive:
+                clear_errors += 1
+            else:
+                metric_errors += 1
         if not _v4_close(row["valid"], expected_valid, 0.08):
-            errors += 1
+            if inactive:
+                clear_errors += 1
+            else:
+                valid_errors += 1
         checked += 1
-    ok = errors == 0 and checked >= 20 and clamp_seen and disabled_seen
-    return ok, f"v4_source_follower checked={checked} clamp_seen={clamp_seen} disabled={disabled_seen} errors={errors}"
+    coverage_errors = int(not clamp_seen) + int(not disabled_seen)
+    ok = (
+        checked >= 20
+        and clear_errors == 0
+        and vout_errors == 0
+        and metric_errors == 0
+        and valid_errors == 0
+        and coverage_errors == 0
+    )
+    notes = [
+        f"P_RESET_DISABLE_CLEAR mismatch_count={clear_errors} expected=outputs_clear_when_inactive observed=checked={checked}",
+        f"P_SOURCE_FOLLOWER_TRANSFER mismatch_count={vout_errors} expected=vout=clamp(vin-0.12) observed=checked={checked}",
+        f"P_HEADROOM_METRIC mismatch_count={metric_errors} expected=vbias-vout observed=checked={checked}",
+        f"P_VALID_QUALIFICATION mismatch_count={valid_errors} expected=valid=0.9_when_active observed=checked={checked}",
+        f"P_EXERCISE_COVERAGE mismatch_count={coverage_errors} expected=clamp_and_disable_regions observed=clamp={clamp_seen},disabled={disabled_seen}",
+    ]
+    return ok, "; ".join(notes)
 
 CHECKER_ID = "v4_388_source_follower_buffer_macro"
 CHECKER: Checker = check_v4_source_follower_buffer_macro

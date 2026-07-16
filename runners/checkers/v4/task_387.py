@@ -2,26 +2,43 @@
 from __future__ import annotations
 
 from ..api import Checker
+
+
 def _v4_topup_clip01(value: float, low: float = 0.0, high: float = 0.9) -> float:
     return max(low, min(high, value))
 
-def _v4_topup_logic_high(row: dict[str, float], name: str, threshold: float = 0.45) -> bool:
-    return float(row.get(name, 0.0)) > threshold
+
+def _level(row: dict[str, float], name: str, threshold: float = 0.45) -> bool | None:
+    value = float(row.get(name, 0.0))
+    if 0.1 < value < 0.8:
+        return None
+    return value > threshold
+
+
+def _property_note(property_id: str, mismatch_count: int, expected: str, observed: str) -> str:
+    return (
+        f"{property_id} mismatch_count={mismatch_count} "
+        f"expected={expected} observed={observed}"
+    )
 
 def check_v4_946_lna_gain_compression_macro(rows: list[dict[str, float]]) -> tuple[bool, str]:
     if not rows:
-        return False, "v4_946 empty_trace"
+        return False, _property_note("P_TRACE_CONTRACT", 1, "non_empty_trace", "empty_trace")
     checked = vout_errors = gain_errors = flag_errors = clear_errors = 0
     reset_clear = disabled_clear = compressed_seen = uncompressed_seen = False
     for row in rows[::6]:
-        t = float(row["time"])
-        rst = _v4_topup_logic_high(row, "rst")
-        enabled = _v4_topup_logic_high(row, "enable") and not rst
+        rst = _level(row, "rst")
+        enable = _level(row, "enable")
+        if rst is None or enable is None:
+            continue
+        enabled = enable and not rst
         if not enabled:
             clear = abs(row["vout"] - 0.45) < 0.08 and row["gain_metric"] < 0.10 and row["compression_flag"] < 0.10
-            reset_clear = reset_clear or (rst and t < 5e-9 and clear)
-            disabled_clear = disabled_clear or (t > 82e-9 and clear)
-            if ((rst and t < 5e-9) or t > 82e-9) and not clear:
+            if rst and clear:
+                reset_clear = True
+            if not rst and not enable and clear:
+                disabled_clear = True
+            if not clear:
                 clear_errors += 1
             continue
         excess = max(0.0, abs(float(row["vin"]) - 0.45) - 0.18)
@@ -36,10 +53,32 @@ def check_v4_946_lna_gain_compression_macro(rows: list[dict[str, float]]) -> tup
             vout_errors += 1
         if abs(float(row["gain_metric"]) - expected_gain) > 0.10:
             gain_errors += 1
-        if _v4_topup_logic_high(row, "compression_flag") != expected_flag:
+        if bool(_level(row, "compression_flag")) != expected_flag:
             flag_errors += 1
-    ok = checked >= 15 and reset_clear and disabled_clear and compressed_seen and uncompressed_seen and vout_errors <= 4 and gain_errors <= 4 and flag_errors <= 3 and clear_errors <= 3
-    return ok, f"v4_946 checked={checked} reset_clear={reset_clear} disabled_clear={disabled_clear} compressed_seen={compressed_seen} uncompressed_seen={uncompressed_seen} vout_errors={vout_errors} gain_errors={gain_errors} flag_errors={flag_errors} clear_errors={clear_errors}"
+    coverage_errors = int(not compressed_seen) + int(not uncompressed_seen)
+    ok = (
+        checked >= 15
+        and reset_clear
+        and disabled_clear
+        and coverage_errors == 0
+        and vout_errors <= 4
+        and gain_errors <= 4
+        and flag_errors <= 3
+        and clear_errors <= 3
+    )
+    notes = [
+        _property_note(
+            "P_RESET_DISABLE_CLEAR",
+            clear_errors + int(not reset_clear) + int(not disabled_clear),
+            "vout=0.45,metrics=0,flag=0_when_inactive",
+            f"reset_clear={reset_clear},disabled_clear={disabled_clear}",
+        ),
+        _property_note("P_LNA_OUTPUT_TRANSFER", vout_errors, "vout=bounded_gain(vin)", f"checked={checked}"),
+        _property_note("P_GAIN_METRIC", gain_errors, "gain_metric=bounded_gain", f"errors={gain_errors}"),
+        _property_note("P_COMPRESSION_FLAG", flag_errors, "flag=1_when_compressed", f"errors={flag_errors}"),
+        _property_note("P_COMPRESSION_COVERAGE", coverage_errors, "compressed_and_uncompressed_regions", f"compressed={compressed_seen},uncompressed={uncompressed_seen}"),
+    ]
+    return ok, "; ".join(notes)
 
 CHECKER_ID = "v4_387_lna_gain_compression_macro"
 CHECKER: Checker = check_v4_946_lna_gain_compression_macro

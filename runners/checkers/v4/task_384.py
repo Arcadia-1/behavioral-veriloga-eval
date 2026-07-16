@@ -33,8 +33,6 @@ def _v4_settled_sparse_samples(
 ) -> list[dict[str, float]]:
     samples: list[dict[str, float]] = []
     for row in _v4_sparse_samples(rows, count=count):
-        if row["time"] < settle_s:
-            continue
         prior = _sample_after(rows, row["time"], -settle_s)
         if prior["time"] >= row["time"]:
             continue
@@ -54,8 +52,6 @@ def check_v4_level_shifter_enable_rail_tracking(rows: list[dict[str, float]]) ->
     disabled_seen = False
     rail_values: list[float] = []
     for row in _v4_settled_sparse_samples(rows, {"vin", "enable", "rst", "vddl", "vddh"}):
-        if row["time"] < 3e-9:
-            continue
         if 0.1 < row["enable"] < 0.8 or 0.1 < row["rst"] < 0.8:
             continue
         if row["rst"] > 0.45 or row["enable"] <= 0.45 or row["vddh"] < 0.2:
@@ -64,7 +60,9 @@ def check_v4_level_shifter_enable_rail_tracking(rows: list[dict[str, float]]) ->
             disabled_seen = disabled_seen or row["enable"] <= 0.45
         else:
             threshold = 0.5 * row["vddl"] if 0.5 * row["vddl"] >= 0.05 else 0.45
-            expected_out = row["vddh"] if row["vin"] > threshold else 0.0
+            # Treat samples numerically indistinguishable from the threshold as
+            # low; Spectre/EVAS can report a few ulps above an exact PWL value.
+            expected_out = row["vddh"] if row["vin"] > threshold + 1e-6 else 0.0
             expected_valid = row["vddh"]
             high_seen = high_seen or expected_out > 0.45
             low_seen = low_seen or expected_out <= 0.45
@@ -78,7 +76,11 @@ def check_v4_level_shifter_enable_rail_tracking(rows: list[dict[str, float]]) ->
     ok = errors == 0 and checked >= 20 and high_seen and low_seen and disabled_seen and rail_tracks
     return ok, (
         f"v4_level_shifter checked={checked} errors={errors} high={high_seen} low={low_seen} "
-        f"disabled={disabled_seen} rail_tracks={rail_tracks}"
+        f"disabled={disabled_seen} rail_tracks={rail_tracks} "
+        f"P_LEVEL_TRANSFER mismatch_count={errors} expected=rail_relative_transfer "
+        f"observed=checked_rows={checked} "
+        f"P_RESET_ENABLE_CLEAR mismatch_count={int(not disabled_seen)} expected=clear_when_inactive "
+        f"observed=disabled_seen={disabled_seen}"
     )
 
 CHECKER_ID = "v4_384_level_shifter_enable_rail_tracking"
