@@ -125,7 +125,7 @@ SEMANTIC_PROFILE_FIELDS = ("body_lines", "analyses", "save_signals", "parameters
 SEMANTIC_DECK_OVERRIDE_FIELDS = {"body_lines", "analyses", "save_signals"}
 
 
-def _effective_profile_semantics(spec: dict[str, Any], profile_name: str) -> dict[str, Any]:
+def _canonical_profile_semantics(spec: dict[str, Any], profile_name: str) -> dict[str, Any]:
     """Return the deck semantics that a profile is allowed to select.
 
     Feedback and score may differ in simulator identity, but they must share
@@ -153,8 +153,8 @@ def _effective_profile_semantics(spec: dict[str, Any], profile_name: str) -> dic
 
 def validate_profile_semantics(spec: dict[str, Any]) -> None:
     """Reject profile pairs whose observable evaluation surface diverges."""
-    feedback = _effective_profile_semantics(spec, "feedback")
-    score = _effective_profile_semantics(spec, "score")
+    feedback = _canonical_profile_semantics(spec, "feedback")
+    score = _canonical_profile_semantics(spec, "score")
     differences = [
         field for field in SEMANTIC_PROFILE_FIELDS if feedback[field] != score[field]
     ]
