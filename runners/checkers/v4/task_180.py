@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 from ..api import Checker
+from .batch18_diagnostics import bind_properties
 def _threshold_crossings(
     values: list[float],
     times: list[float],
@@ -151,4 +152,8 @@ def check_v4_track_hold_with_droop_and_aperture(rows: list[dict[str, float]]) ->
     )
 
 CHECKER_ID = "v4_180_track_hold_with_droop_and_aperture"
-CHECKER: Checker = check_v4_track_hold_with_droop_and_aperture
+CHECKER: Checker = bind_properties(check_v4_track_hold_with_droop_and_aperture, (
+    "P_RESET_DISABLE_CLEAR", "P_TRACK_MODE_FOLLOWS_INPUT",
+    "P_FALLING_TRACK_SAMPLE_APERTURE", "P_HOLD_MODE_DROOP",
+    "P_DROOP_METRIC_ACCUMULATION",
+))

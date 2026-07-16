@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 from ..api import Checker
+from .batch18_diagnostics import bind_properties
 def _threshold_crossings(
     values: list[float],
     times: list[float],
@@ -113,4 +114,7 @@ def check_v3_iterative_isar_dac(rows: list[dict[str, float]]) -> tuple[bool, str
     return True, f"updates={checked_updates} ratio_count={len(ratios)}"
 
 CHECKER_ID = "v4_174_iterative_isar_dac"
-CHECKER: Checker = check_v3_iterative_isar_dac
+CHECKER: Checker = bind_properties(check_v3_iterative_isar_dac, (
+    "P_RESET_INITIAL_SEARCH_STATE", "P_COMPARATOR_POLARITY_UPDATE",
+    "P_RADIX_STEP_REDUCTION", "P_HELD_DAC_OUTPUT",
+))

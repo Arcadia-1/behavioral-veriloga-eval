@@ -2,13 +2,16 @@
 from __future__ import annotations
 
 from ..api import Checker
+from .batch18_diagnostics import bind_properties
+from .stimulus_relative import normalize_affine_time
 def sample_signal_at(rows: list[dict[str, float]], signal: str, time_s: float) -> float | None:
     if not rows or "time" not in rows[0] or signal not in rows[0]:
         return None
     first_time = rows[0]["time"]
     last_time = rows[-1].get("time")
-    if last_time is None or time_s < first_time or time_s > last_time:
+    if last_time is None or time_s < first_time - 1e-18 or time_s > last_time + 1e-18:
         return None
+    time_s = min(last_time, max(first_time, time_s))
     if time_s == first_time:
         return rows[0].get(signal)
     for idx in range(1, len(rows)):
@@ -77,6 +80,12 @@ def check_v3_dac_serial_accumulator(rows: list[dict[str, float]]) -> tuple[bool,
     required = {"time", "clk_sample", "clk_sarready", "data", "out"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing dac serial accumulator signals"
+    rows = normalize_affine_time(rows, [
+        ("clk_sample", 0.55, "rising", 1.025, 0),
+        ("clk_sample", 0.55, "rising", 13.025, 1),
+    ])
+    if rows is None:
+        return False, "missing_clk_sample_stimulus_edges"
     return _sample_many_within_trace(
         rows,
         {"out": [(2.0, -1.1), (4.0, 0.0), (6.0, 0.0), (8.0, 0.275), (10.0, 0.4125), (14.0, -1.1), (16.0, -1.1), (18.0, -0.55), (20.0, -0.55), (22.0, -0.4125)]},
@@ -84,4 +93,7 @@ def check_v3_dac_serial_accumulator(rows: list[dict[str, float]]) -> tuple[bool,
     )
 
 CHECKER_ID = "v4_173_dac_serial_accumulator"
-CHECKER: Checker = check_v3_dac_serial_accumulator
+CHECKER: Checker = bind_properties(check_v3_dac_serial_accumulator, (
+    "P_SAMPLE_CLOCK_RESET", "P_SARREADY_SERIAL_ACCUMULATION",
+    "P_BINARY_WEIGHT_ORDER", "P_BIPOLAR_OUTPUT_MAPPING",
+))

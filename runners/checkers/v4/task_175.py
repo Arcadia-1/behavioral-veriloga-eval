@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 from ..api import Checker
+from .batch18_diagnostics import bind_properties
 def _threshold_crossings(
     values: list[float],
     times: list[float],
@@ -181,4 +182,7 @@ def _event_probe_time(
     return fallback if fallback > event_time_s else None
 
 CHECKER_ID = "v4_175_offset_bisection_driver"
-CHECKER: Checker = check_v3_offset_bisection_driver
+CHECKER: Checker = bind_properties(check_v3_offset_bisection_driver, (
+    "P_BISECTION_INITIAL_STATE", "P_FALLING_CLOCK_DECISION_UPDATE",
+    "P_SIGN_CHANGE_STEP_HALVING", "P_VCM_CENTERED_DIFFERENTIAL_DRIVE",
+))

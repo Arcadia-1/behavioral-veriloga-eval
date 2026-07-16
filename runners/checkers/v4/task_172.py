@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 from ..api import Checker
+from .batch18_diagnostics import bind_properties
 def _threshold_crossings(
     values: list[float],
     times: list[float],
@@ -94,4 +95,7 @@ def check_v3_pipe_2lane_edge_align(rows: list[dict[str, float]]) -> tuple[bool, 
     return True, f"alignment_edges={checked} max_err={max_err:.4f}"
 
 CHECKER_ID = "v4_172_pipe_2lane_edge_align"
-CHECKER: Checker = check_v3_pipe_2lane_edge_align
+CHECKER: Checker = bind_properties(check_v3_pipe_2lane_edge_align, (
+    "P_INITIAL_LANE1_STATE", "P_RISING_EDGE_LANE1",
+    "P_FALLING_EDGE_LANE2", "P_SELECTED_LEVEL_HOLD",
+))
