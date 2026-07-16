@@ -102,6 +102,11 @@ def update_task_record(task: Path) -> None:
             evaluator_hashes[relative] = file_sha(path)
     for relative in ("harness_spec.json", "profiles/feedback.json", "profiles/score.json", "score_tb.scs"):
         evaluator_hashes[relative] = file_sha(evaluator / relative)
+    readiness = record.get("readiness_evidence")
+    if isinstance(readiness, dict):
+        relative = readiness.get("path")
+        if isinstance(relative, str) and (task / relative).is_file():
+            readiness["sha256"] = file_sha(task / relative)
     public_hashes = record.setdefault("public_hashes", {})
     for relative in tuple(public_hashes):
         path = public / relative
@@ -118,6 +123,7 @@ def update_denominator(source: Path, families: set[str]) -> None:
         evaluator = task / "evaluator"
         row.setdefault("hashes", {})["task_record_sha256"] = file_sha(evaluator / "task_record.json")
         row["hashes"]["score_deck_sha256"] = file_sha(evaluator / "score_tb.scs")
+        row["hashes"]["mutation_catalog_sha256"] = file_sha(evaluator / "mutation_catalog.json")
         write_family_row(source, family, row)
 
 
