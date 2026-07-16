@@ -287,6 +287,27 @@ def _validate_required_evas_engine(
     )
 
 
+def _simulation_failure_excerpt(combined: str, *, limit: int = 4000) -> str:
+    """Preserve root-cause lines even when EVAS appends long counter reports."""
+    diagnostic = re.compile(
+        r"\b(error|errors|fatal|failed|failure|invalid|unsupported|unknown|"
+        r"unrecognized|unexpected|cannot|exception|traceback|parse|syntax)\b|"
+        r"no such file|not found|can't\s",
+        flags=re.IGNORECASE,
+    )
+    lines = [line.strip() for line in combined.splitlines() if line.strip()]
+    selected: list[str] = []
+    for index, line in enumerate(lines):
+        if diagnostic.search(line) is None:
+            continue
+        for nearby in lines[max(0, index - 1) : min(len(lines), index + 2)]:
+            if nearby not in selected:
+                selected.append(nearby)
+    if not selected:
+        selected = lines[:6] + lines[-6:]
+    return "\n".join(selected)[:limit]
+
+
 def _run_case(
     *,
     package_root: Path,
@@ -365,7 +386,11 @@ def _run_case(
                 role=role,
                 valid=False,
                 behavior_pass=None,
-                notes=[f"{label}: {engine_note}", f"{label}: simulation failed", combined[-2000:]],
+                notes=[
+                    f"{label}: {engine_note}",
+                    f"{label}: simulation failed",
+                    _simulation_failure_excerpt(combined),
+                ],
             )
         csv_path = output_dir / "tran.csv"
         if not csv_path.exists():
