@@ -1,0 +1,199 @@
+{
+  "batch": "6/40",
+  "contains_evas_evidence": false,
+  "created_by": "codex/v4-repair-batch-283",
+  "created_unix_s": 1784188267.067755,
+  "family_count": 10,
+  "issue": 283,
+  "problem_count": 0,
+  "problems": [],
+  "results": [
+    {
+      "expected_hashes": {
+        "mutation_catalog_sha256": "ab672b71d35765307a26c649e83125d831d65331c622a037fcecc43d3fece008",
+        "score_deck_sha256": "cbd4ffbec27c9d4b1919ada227168f78dff145033e7450fc645261c9ec67b339",
+        "task_certification_sha256": "ec86a8f82c71f3d78f59d266fd5a1bdf87a2d57ff3494a9bf55d7238566ef1fc",
+        "task_record_sha256": "e8f0da8929517201bbfe0f2f7fc9dd3c2ab3d420ae909ba4227c621f20320f9a"
+      },
+      "family_id": "051",
+      "manifest_hashes": {
+        "mutation_catalog_sha256": "ab672b71d35765307a26c649e83125d831d65331c622a037fcecc43d3fece008",
+        "score_deck_sha256": "cbd4ffbec27c9d4b1919ada227168f78dff145033e7450fc645261c9ec67b339",
+        "task_certification_sha256": "ec86a8f82c71f3d78f59d266fd5a1bdf87a2d57ff3494a9bf55d7238566ef1fc",
+        "task_record_sha256": "e8f0da8929517201bbfe0f2f7fc9dd3c2ab3d420ae909ba4227c621f20320f9a"
+      },
+      "mismatches": [],
+      "release_dir": "051-latched-bus-dac8",
+      "status": "PASS"
+    },
+    {
+      "expected_hashes": {
+        "mutation_catalog_sha256": "2cce54b4d21e8cd68074b38a80e9d0155d2d2f32ab4de89c403f1261c64fb7e5",
+        "score_deck_sha256": "ee9dc6baf7ca7f2d9ee2314aca31b5a66c82f0c7f40f8507318369f385919a85",
+        "task_certification_sha256": "b20218cde2689db3fb25d55914f4c528b35742ab0c469ede5218ad8784dda792",
+        "task_record_sha256": "2498142f49de3b759c2d1d93c7a82dd8f074d1bdf350692791751b44137d0c0a"
+      },
+      "family_id": "052",
+      "manifest_hashes": {
+        "mutation_catalog_sha256": "2cce54b4d21e8cd68074b38a80e9d0155d2d2f32ab4de89c403f1261c64fb7e5",
+        "score_deck_sha256": "ee9dc6baf7ca7f2d9ee2314aca31b5a66c82f0c7f40f8507318369f385919a85",
+        "task_certification_sha256": "b20218cde2689db3fb25d55914f4c528b35742ab0c469ede5218ad8784dda792",
+        "task_record_sha256": "2498142f49de3b759c2d1d93c7a82dd8f074d1bdf350692791751b44137d0c0a"
+      },
+      "mismatches": [],
+      "release_dir": "052-thermometer-bus-encoder",
+      "status": "PASS"
+    },
+    {
+      "expected_hashes": {
+        "mutation_catalog_sha256": "0882b1c7f9eeb4841c926398f66215ffba56d8450fb5a4c0511fd5b704b65097",
+        "score_deck_sha256": "7806423d2ffc3e2d15e86412bf3f2be1d5676f3d9c05bfea54f9c46ca14a8a30",
+        "task_certification_sha256": "74b3405b3e6c52f0bfd567fdd0cf3d79d757af44b20b55109241b80d77abce3b",
+        "task_record_sha256": "120a9b082dcbb34e8b041f99f63a451b01b7b7c01459ab6ea0a7c1be571f0ef0"
+      },
+      "family_id": "053",
+      "manifest_hashes": {
+        "mutation_catalog_sha256": "0882b1c7f9eeb4841c926398f66215ffba56d8450fb5a4c0511fd5b704b65097",
+        "score_deck_sha256": "7806423d2ffc3e2d15e86412bf3f2be1d5676f3d9c05bfea54f9c46ca14a8a30",
+        "task_certification_sha256": "74b3405b3e6c52f0bfd567fdd0cf3d79d757af44b20b55109241b80d77abce3b",
+        "task_record_sha256": "120a9b082dcbb34e8b041f99f63a451b01b7b7c01459ab6ea0a7c1be571f0ef0"
+      },
+      "mismatches": [],
+      "release_dir": "053-slew-rate-dac4",
+      "status": "PASS"
+    },
+    {
+      "expected_hashes": {
+        "mutation_catalog_sha256": "3b0e98d4c4f6d2705978a4dfff84371e2aa0fb402eb894bcc22cabadc1a37625",
+        "score_deck_sha256": "375ddde459652938be1f39ce4e4bc6f8703dc8aaad895bbc8a613a48f0cd0daa",
+        "task_certification_sha256": "95bcaa101d144050bb631681f69476af768d98764f196ed474d3c1f534ac42f5",
+        "task_record_sha256": "56d62bb32d8dc60d48cae3f14225d06de80efda7ebd6eea68ddd27d08c5c9e4d"
+      },
+      "family_id": "054",
+      "manifest_hashes": {
+        "mutation_catalog_sha256": "3b0e98d4c4f6d2705978a4dfff84371e2aa0fb402eb894bcc22cabadc1a37625",
+        "score_deck_sha256": "375ddde459652938be1f39ce4e4bc6f8703dc8aaad895bbc8a613a48f0cd0daa",
+        "task_certification_sha256": "95bcaa101d144050bb631681f69476af768d98764f196ed474d3c1f534ac42f5",
+        "task_record_sha256": "56d62bb32d8dc60d48cae3f14225d06de80efda7ebd6eea68ddd27d08c5c9e4d"
+      },
+      "mismatches": [],
+      "release_dir": "054-correlated-double-sampler",
+      "status": "PASS"
+    },
+    {
+      "expected_hashes": {
+        "mutation_catalog_sha256": "13a6eec865d069559871252601ec5016edd226cc4c33732c9ea0331290407327",
+        "score_deck_sha256": "9cad43568e5e9a65c841f3df95a50b8eb60fd203cafbb863940e9ac7e5b31ac1",
+        "task_certification_sha256": "cad60351ec9ba1fc0bd288e29bd2fb08e9ff2b7ff20eab952ca08bf6bd1829b4",
+        "task_record_sha256": "b61bc25a8ff269e5fc02654387f221bb93a6ab093568d81aa76b71dabed9c73f"
+      },
+      "family_id": "055",
+      "manifest_hashes": {
+        "mutation_catalog_sha256": "13a6eec865d069559871252601ec5016edd226cc4c33732c9ea0331290407327",
+        "score_deck_sha256": "9cad43568e5e9a65c841f3df95a50b8eb60fd203cafbb863940e9ac7e5b31ac1",
+        "task_certification_sha256": "cad60351ec9ba1fc0bd288e29bd2fb08e9ff2b7ff20eab952ca08bf6bd1829b4",
+        "task_record_sha256": "b61bc25a8ff269e5fc02654387f221bb93a6ab093568d81aa76b71dabed9c73f"
+      },
+      "mismatches": [],
+      "release_dir": "055-first-order-sigma-delta-modulator",
+      "status": "PASS"
+    },
+    {
+      "expected_hashes": {
+        "mutation_catalog_sha256": "3edc71ac00a4ff293dcb25ddb0f6bb31501faf8e238c3bda2018ace7d995f5f4",
+        "score_deck_sha256": "286450ea1cd063c405b1bb7e2e2676a60d83896a055ad2dd52ade4fad79b0687",
+        "task_certification_sha256": "e0d0c2ef5140732fb0b6d090cecedf9766c3c12206a50859dcba716b09897f90",
+        "task_record_sha256": "184a3d4d9e3af5bac786858cf159b93c63455205096dc49b7925126799e69733"
+      },
+      "family_id": "056",
+      "manifest_hashes": {
+        "mutation_catalog_sha256": "3edc71ac00a4ff293dcb25ddb0f6bb31501faf8e238c3bda2018ace7d995f5f4",
+        "score_deck_sha256": "286450ea1cd063c405b1bb7e2e2676a60d83896a055ad2dd52ade4fad79b0687",
+        "task_certification_sha256": "e0d0c2ef5140732fb0b6d090cecedf9766c3c12206a50859dcba716b09897f90",
+        "task_record_sha256": "184a3d4d9e3af5bac786858cf159b93c63455205096dc49b7925126799e69733"
+      },
+      "mismatches": [],
+      "release_dir": "056-config-latch-32b-clocked",
+      "status": "PASS"
+    },
+    {
+      "expected_hashes": {
+        "mutation_catalog_sha256": "f94153a940b27d8a19db1e067bc45092401f5cdccedd0f50cf5538fb1cb423ff",
+        "score_deck_sha256": "c1ff08c1b89f375e2207c7aa45580e3cf2638bf5c8cd81e4cd8099419e218540",
+        "task_certification_sha256": "efdc2374b393fb6fa6c2d0ac70117a2fb1f2f2f2db59810e1b194a4acb0c1fff",
+        "task_record_sha256": "e4eae999eafd26e84ccd9a6fb2b769682ff248df5d6f3863ae73ce06e31c1e51"
+      },
+      "family_id": "057",
+      "manifest_hashes": {
+        "mutation_catalog_sha256": "f94153a940b27d8a19db1e067bc45092401f5cdccedd0f50cf5538fb1cb423ff",
+        "score_deck_sha256": "c1ff08c1b89f375e2207c7aa45580e3cf2638bf5c8cd81e4cd8099419e218540",
+        "task_certification_sha256": "efdc2374b393fb6fa6c2d0ac70117a2fb1f2f2f2db59810e1b194a4acb0c1fff",
+        "task_record_sha256": "e4eae999eafd26e84ccd9a6fb2b769682ff248df5d6f3863ae73ce06e31c1e51"
+      },
+      "mismatches": [],
+      "release_dir": "057-config-shift-register-64b",
+      "status": "PASS"
+    },
+    {
+      "expected_hashes": {
+        "mutation_catalog_sha256": "fc56e9fac5ba2ac15a621b9bfafd41f1d41387105c4505c36bee132b311dee11",
+        "score_deck_sha256": "be1f691af4b6abd9f4f846494678e0ca5c260d7d852239982c95df46b61907d8",
+        "task_certification_sha256": "c71df18801b8fba62c6023249f9421fe42ffbf0330e959cb7b2900f63d357295",
+        "task_record_sha256": "77c16969b50bab86052785bc522419763e847e3f9664add7e3d61f227472b472"
+      },
+      "family_id": "058",
+      "manifest_hashes": {
+        "mutation_catalog_sha256": "fc56e9fac5ba2ac15a621b9bfafd41f1d41387105c4505c36bee132b311dee11",
+        "score_deck_sha256": "be1f691af4b6abd9f4f846494678e0ca5c260d7d852239982c95df46b61907d8",
+        "task_certification_sha256": "c71df18801b8fba62c6023249f9421fe42ffbf0330e959cb7b2900f63d357295",
+        "task_record_sha256": "77c16969b50bab86052785bc522419763e847e3f9664add7e3d61f227472b472"
+      },
+      "mismatches": [],
+      "release_dir": "058-masked-config-update-32b",
+      "status": "PASS"
+    },
+    {
+      "expected_hashes": {
+        "mutation_catalog_sha256": "1c5318d8fb9a7e8bbda41de95494bb9a363eb9250be24d4f51f3553c03a3fea7",
+        "score_deck_sha256": "1f5a0cb15809001a8d0f9e3a91a75501cb706301f00858683428a7d5c0f482ec",
+        "task_certification_sha256": "01a18eeaba7b6ac648aa3da4655281719227c0e8f54456e78e2f21a937b1b049",
+        "task_record_sha256": "cdc315bb8307f498abf58268c36f9db24915cbc80b9c095fe654b9585967b1d4"
+      },
+      "family_id": "059",
+      "manifest_hashes": {
+        "mutation_catalog_sha256": "1c5318d8fb9a7e8bbda41de95494bb9a363eb9250be24d4f51f3553c03a3fea7",
+        "score_deck_sha256": "1f5a0cb15809001a8d0f9e3a91a75501cb706301f00858683428a7d5c0f482ec",
+        "task_certification_sha256": "01a18eeaba7b6ac648aa3da4655281719227c0e8f54456e78e2f21a937b1b049",
+        "task_record_sha256": "cdc315bb8307f498abf58268c36f9db24915cbc80b9c095fe654b9585967b1d4"
+      },
+      "mismatches": [],
+      "release_dir": "059-edge-interval-tdc-8b",
+      "status": "PASS"
+    },
+    {
+      "expected_hashes": {
+        "mutation_catalog_sha256": "fda5bb961033e4daae7089565658e4bfb2f8f4629d2c3de2e10eee0b1985365e",
+        "score_deck_sha256": "89638420e8b1d299ef8830315e7bef569f52a0e05db95d51e1facc006cb3e72c",
+        "task_certification_sha256": "badee157c4f18bc199d310ec927260b20661f8b876ff5dc22ce99081c6cea9a2",
+        "task_record_sha256": "a4166dff958da38d67a237b55616d00247b0034aaf060b532bfe72c155ac660d"
+      },
+      "family_id": "060",
+      "manifest_hashes": {
+        "mutation_catalog_sha256": "fda5bb961033e4daae7089565658e4bfb2f8f4629d2c3de2e10eee0b1985365e",
+        "score_deck_sha256": "89638420e8b1d299ef8830315e7bef569f52a0e05db95d51e1facc006cb3e72c",
+        "task_certification_sha256": "badee157c4f18bc199d310ec927260b20661f8b876ff5dc22ce99081c6cea9a2",
+        "task_record_sha256": "a4166dff958da38d67a237b55616d00247b0034aaf060b532bfe72c155ac660d"
+      },
+      "mismatches": [],
+      "release_dir": "060-duty-cycle-meter-8b",
+      "status": "PASS"
+    }
+  ],
+  "schema_version": "issue-283-denominator-hash-audit-v1",
+  "scope": "families 051-060",
+  "score_denominator_manifest": "benchmark-vabench-release-v4/provenance/dut-base-v3-exact-five-hash-bound-v2/score_denominator_manifest.json",
+  "score_denominator_manifest_content_sha256": "b83e736eabbe65c64655b6e3a5d1bdd50876480b525b995c58f10ac50b6ef813",
+  "score_denominator_manifest_content_sha256_recomputed": "b83e736eabbe65c64655b6e3a5d1bdd50876480b525b995c58f10ac50b6ef813",
+  "status": "PASS",
+  "validation_kind": "targeted_hash_binding_audit"
+}

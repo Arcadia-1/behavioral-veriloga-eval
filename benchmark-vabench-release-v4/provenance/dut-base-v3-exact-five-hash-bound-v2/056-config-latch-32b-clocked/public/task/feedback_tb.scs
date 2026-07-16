@@ -36,9 +36,7 @@ Vd29 (d29 0) vsource type=pwl wave=[0 0 9.5n 0 10n 0 19.5n 0 20n 0.9 29.5n 0.9 3
 Vd30 (d30 0) vsource type=pwl wave=[0 0 9.5n 0 10n 0.9 19.5n 0.9 20n 0 29.5n 0 30n 0.9 39.5n 0.9 40n 0 49.5n 0]
 Vd31 (d31 0) vsource type=pwl wave=[0 0 9.5n 0 10n 0 19.5n 0 20n 0.9 29.5n 0.9 30n 0.9 39.5n 0.9 40n 0 49.5n 0]
 Ven (en 0) vsource type=pwl wave=[0 0.9 40n 0.9 40.1n 0 55n 0]
-
 XDUT (en d31 d30 d29 d28 d27 d26 d25 d24 d23 d22 d21 d20 d19 d18 d17 d16 d15 d14 d13 d12 d11 d10 d9 d8 d7 d6 d5 d4 d3 d2 d1 d0 q31 q30 q29 q28 q27 q26 q25 q24 q23 q22 q21 q20 q19 q18 q17 q16 q15 q14 q13 q12 q11 q10 q9 q8 q7 q6 q5 q4 q3 q2 q1 q0) config_latch_32b
-
 
 simulatorOptions options evas_profile=balanced
 

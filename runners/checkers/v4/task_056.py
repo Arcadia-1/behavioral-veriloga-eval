@@ -2,50 +2,97 @@
 from __future__ import annotations
 
 from ..api import Checker
-def _sample_rows_every_10ns(rows: list[dict[str, float]]) -> list[dict[str, float]]:
-    # Formal utility testbenches hold each vector for a 10 ns window. Sample
-    # mid-window to avoid transition edges and PWL update times.
-    max_time = rows[-1]["time"]
-    times = [row["time"] for row in rows]
-    samples: list[dict[str, float]] = []
-    sample_t = 5e-9
-    while sample_t <= max_time + 1e-15:
-        idx = min(range(len(times)), key=lambda i: abs(times[i] - sample_t))
-        samples.append(rows[idx])
-        sample_t += 10e-9
-    return samples
+from .stimulus_relative import Row, diagnostic, pass_note, require_signals
 
-def _check_bus_equal(
-    rows: list[dict[str, float]],
-    input_prefix: str,
-    output_prefix: str,
-    width: int,
-    enable_col: str | None = None,
-    invert_enable: bool = False,
-) -> tuple[bool, str]:
-    required = {"time", *{f"{input_prefix}{i}" for i in range(width)}, *{f"{output_prefix}{i}" for i in range(width)}}
-    if enable_col:
-        required.add(enable_col)
-    if not rows or not required.issubset(rows[0]):
-        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
-        return False, "missing_columns=" + ",".join(missing[:12])
-    errors = 0
-    checked = 0
-    for row in _sample_rows_every_10ns(rows):
-        enabled = True
-        if enable_col:
-            en_high = row[enable_col] > 0.45
-            enabled = (not en_high) if invert_enable else en_high
-        for idx in range(width):
-            expected_high = enabled and row[f"{input_prefix}{idx}"] > 0.45
-            actual_high = row[f"{output_prefix}{idx}"] > 0.45
-            if actual_high != expected_high:
-                errors += 1
-        checked += 1
-    return errors == 0 and checked >= 3, f"checked={checked} bit_errors={errors}"
+
+WIDTH = 32
+VTH = 0.45
+LOW_MAX = 0.18
+HIGH_MIN = 0.72
+PROPERTIES = (
+    "P_ENABLED_PASS",
+    "P_DISABLED_CLEAR",
+    "P_STATIC_ENABLE_BEHAVIOR",
+    "P_BIT_ALIGNMENT",
+    "P_OUTPUT_LEVELS",
+)
+
+
+def _logic_word(row: Row, prefix: str) -> int | None:
+    word = 0
+    for bit in range(WIDTH):
+        value = row[f"{prefix}{bit}"]
+        if LOW_MAX < value < HIGH_MIN:
+            return None
+        if value > VTH:
+            word |= 1 << bit
+    return word
+
+
+def _settled_vectors(rows: list[Row]) -> list[tuple[bool, int, int]]:
+    vectors: list[tuple[bool, int, int]] = []
+    last_key: tuple[bool, int, int] | None = None
+    for row in rows:
+        if LOW_MAX < row["en"] < HIGH_MIN:
+            continue
+        input_word = _logic_word(row, "d")
+        output_word = _logic_word(row, "q")
+        if input_word is None or output_word is None:
+            continue
+        key = (row["en"] > VTH, input_word, output_word)
+        if key != last_key:
+            vectors.append(key)
+            last_key = key
+    return vectors
 
 def check_config_latch_32b_clocked(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    return _check_bus_equal(rows, "d", "q", 32, "en")
+    required = {"time", "en", *{f"d{i}" for i in range(WIDTH)}, *{f"q{i}" for i in range(WIDTH)}}
+    missing = require_signals(rows, required, "P_ENABLED_PASS")
+    if missing:
+        return False, missing
+    vectors = _settled_vectors(rows)
+    if len(vectors) < 3:
+        return False, diagnostic(
+            "P_STATIC_ENABLE_BEHAVIOR",
+            "insufficient_coverage",
+            expected="settled_vectors>=3",
+            observed=f"settled_vectors={len(vectors)}",
+            event="full_trace",
+        )
+
+    enabled_samples = 0
+    disabled_samples = 0
+    enabled_words: set[int] = set()
+    for index, (enabled, input_word, output_word) in enumerate(vectors):
+        expected_word = input_word if enabled else 0
+        if output_word != expected_word:
+            property_id = "P_ENABLED_PASS" if enabled else "P_DISABLED_CLEAR"
+            category = "enabled_pass_mismatch" if enabled else "disabled_clear_mismatch"
+            return False, diagnostic(
+                property_id,
+                category,
+                expected=f"word=0x{expected_word:08x}",
+                observed=f"word=0x{output_word:08x}",
+                event=f"settled_vector[{index}]",
+            )
+        if enabled:
+            enabled_samples += 1
+            enabled_words.add(input_word)
+        else:
+            disabled_samples += 1
+
+    if enabled_samples < 2 or disabled_samples < 1 or len(enabled_words) < 2:
+        return False, diagnostic(
+            "P_STATIC_ENABLE_BEHAVIOR",
+            "insufficient_enable_coverage",
+            expected="enabled_vectors>=2_disabled_vectors>=1_distinct_enabled_words>=2",
+            observed=(
+                f"enabled_vectors={enabled_samples},disabled_vectors={disabled_samples},"
+                f"distinct_enabled_words={len(enabled_words)}"
+            ),
+            event="full_trace",
+        )
+    return True, pass_note(PROPERTIES, f"settled_vectors={len(vectors)}")
 
 CHECKER_ID = "v4_056_config_latch_32b_clocked"
 CHECKER: Checker = check_config_latch_32b_clocked

@@ -1,73 +1,146 @@
 """Task-specific checker for canonical v4 DUT 052."""
 from __future__ import annotations
 
-from ..api import Checker
 import math
 
-def sample_signal_at(rows: list[dict[str, float]], signal: str, time_s: float) -> float | None:
-    if not rows or "time" not in rows[0] or signal not in rows[0]:
-        return None
-    first_time = rows[0]["time"]
-    last_time = rows[-1].get("time")
-    if last_time is None or time_s < first_time or time_s > last_time:
-        return None
-    if time_s == first_time:
-        return rows[0].get(signal)
-    for idx in range(1, len(rows)):
-        prev = rows[idx - 1]
-        cur = rows[idx]
-        t0 = prev.get("time")
-        t1 = cur.get("time")
-        if t0 is None or t1 is None:
+from ..api import Checker
+from .stimulus_relative import Row, diagnostic, event_label, pass_note, require_signals
+
+
+WIDTH = 16
+VTH = 0.45
+LOW_MAX = 0.18
+HIGH_MIN = 0.72
+VIN_STABLE_TOL = 1e-6
+PROPERTIES = (
+    "P_PREFIX_CODE",
+    "P_ORDERED_ACTIVATION",
+    "P_UNIFORM_SEGMENTS",
+    "P_INPUT_CLIPPING",
+    "P_OUTPUT_LEVELS",
+)
+
+
+def _expected_code(vin: float) -> int:
+    clipped = min(1.0, max(0.0, vin))
+    return max(0, min(WIDTH, int(math.floor(WIDTH * clipped))))
+
+
+def _logic_bits(row: Row) -> list[int] | None:
+    bits: list[int] = []
+    for bit in range(WIDTH):
+        value = row[f"t{bit}"]
+        if LOW_MAX < value < HIGH_MIN:
+            return None
+        bits.append(1 if value > VTH else 0)
+    return bits
+
+
+def _samples_from_vin_segments(rows: list[Row], *, require_repeated_vin: bool) -> list[tuple[int, Row, list[int]]]:
+    """Pick one settled observable row from each stable input plateau."""
+
+    samples: list[tuple[int, Row, list[int]]] = []
+    start = 0
+    last_key: tuple[int, tuple[int, ...]] | None = None
+    for index in range(1, len(rows) + 1):
+        if index < len(rows) and abs(rows[index]["vin"] - rows[index - 1]["vin"]) <= VIN_STABLE_TOL:
             continue
-        if t0 <= time_s <= t1:
-            v0 = prev.get(signal)
-            v1 = cur.get(signal)
-            if v0 is None or v1 is None:
-                return None
-            if t1 == t0:
-                return v1
-            alpha = (time_s - t0) / (t1 - t0)
-            return v0 + alpha * (v1 - v0)
-    return None
+        segment = rows[start:index]
+        selected: tuple[int, Row, list[int]] | None = None
+        if not require_repeated_vin or len(segment) > 1:
+            for row in reversed(segment):
+                bits = _logic_bits(row)
+                if bits is not None:
+                    selected = (_expected_code(row["vin"]), row, bits)
+                    break
+        if selected is not None:
+            key = (selected[0], tuple(selected[2]))
+            if key != last_key:
+                samples.append(selected)
+                last_key = key
+        start = index
+    return samples
+
+
+def _stable_code_samples(rows: list[Row]) -> list[tuple[int, Row, list[int]]]:
+    samples = _samples_from_vin_segments(rows, require_repeated_vin=True)
+    if samples:
+        return samples
+    return _samples_from_vin_segments(rows, require_repeated_vin=False)
+
 
 def check_v3_497_thermometer_bus_encoder(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    required = {"time", "vin", *{f"t{i}" for i in range(16)}}
-    if not rows or not required.issubset(rows[0]):
-        return False, "missing thermometer bus encoder signals"
-    sample_times = [1.4e-9, 3.4e-9, 5.4e-9, 7.4e-9, 9.4e-9, 10.8e-9]
+    required = {"time", "vin", *{f"t{i}" for i in range(WIDTH)}}
+    missing = require_signals(rows, required, "P_PREFIX_CODE")
+    if missing:
+        return False, missing
+    samples = _stable_code_samples(rows)
+    if len(samples) < 4:
+        return False, diagnostic(
+            "P_UNIFORM_SEGMENTS",
+            "insufficient_coverage",
+            expected="stable_code_samples>=4",
+            observed=f"stable_code_samples={len(samples)}",
+            event="full_trace",
+        )
+
     checked = 0
-    failures: list[str] = []
-    for sample_t in sample_times:
-        vin = sample_signal_at(rows, "vin", sample_t)
-        if vin is None:
-            continue
-        clipped = min(1.0, max(0.0, vin))
-        code = int(math.floor(16.0 * clipped))
-        code = max(0, min(16, code))
-        bits = []
-        for bit in range(16):
-            value = sample_signal_at(rows, f"t{bit}", sample_t)
-            if value is None:
-                bits.append(-1)
-            else:
-                bits.append(1 if value > 0.45 else 0)
-        if -1 in bits:
-            failures.append(f"missing_bus_sample@{sample_t * 1e9:.2f}ns")
-            continue
-        expected = [1 if bit < code else 0 for bit in range(16)]
+    previous_code: int | None = None
+    seen_codes: set[int] = set()
+    max_level_error = 0
+    for sample_index, (code, row, bits) in enumerate(samples):
+        expected = [1 if bit < code else 0 for bit in range(WIDTH)]
         if bits != expected:
-            failures.append(
-                f"therm@{sample_t * 1e9:.2f}ns code={code} observed={sum(bits)} prefix={''.join(str(x) for x in bits[:8])}"
+            return False, diagnostic(
+                "P_UNIFORM_SEGMENTS",
+                "wrong_segment_count",
+                expected=f"active_count={code}",
+                observed=f"active_count={sum(bits)}",
+                event=event_label("vin_code_segment", sample_index),
             )
-        if any(bits[i] < bits[i + 1] for i in range(15)):
-            failures.append(f"non_prefix_order@{sample_t * 1e9:.2f}ns")
+        if any(bits[bit] < bits[bit + 1] for bit in range(WIDTH - 1)):
+            return False, diagnostic(
+                "P_PREFIX_CODE",
+                "non_prefix_order",
+                expected="contiguous_prefix",
+                observed="higher_segment_without_lower_segment",
+                event=event_label("vin_code_segment", sample_index),
+            )
+        if previous_code is not None and row["vin"] >= samples[sample_index - 1][1]["vin"] and code < previous_code:
+            return False, diagnostic(
+                "P_ORDERED_ACTIVATION",
+                "non_monotonic_count",
+                expected="active_count_non_decreasing",
+                observed=f"previous={previous_code},current={code}",
+                event=event_label("vin_code_segment", sample_index),
+            )
+        for bit, expected_bit in enumerate(expected):
+            value = row[f"t{bit}"]
+            if expected_bit and value < HIGH_MIN:
+                max_level_error += 1
+            elif not expected_bit and value > LOW_MAX:
+                max_level_error += 1
+        seen_codes.add(code)
+        previous_code = code
         checked += 1
-    if checked < 4:
-        return False, f"insufficient_thermometer_samples={checked}"
-    if failures:
-        return False, " ".join(failures[:5])
-    return True, f"thermometer_samples={checked}"
+
+    if max_level_error:
+        return False, diagnostic(
+            "P_OUTPUT_LEVELS",
+            "rail_level_error",
+            expected="inactive<=0.18_active>=0.72",
+            observed=f"rail_errors={max_level_error}",
+            event="stable_code_segments",
+        )
+    if len(seen_codes) < 4 or 0 not in seen_codes or WIDTH not in seen_codes:
+        return False, diagnostic(
+            "P_INPUT_CLIPPING",
+            "insufficient_endpoint_coverage",
+            expected="code0_and_code16_plus_two_midcodes",
+            observed="codes=" + ",".join(str(code) for code in sorted(seen_codes)),
+            event="full_trace",
+        )
+    return True, pass_note(PROPERTIES, f"thermometer_samples={checked}")
 
 CHECKER_ID = "v4_052_thermometer_bus_encoder"
 CHECKER: Checker = check_v3_497_thermometer_bus_encoder

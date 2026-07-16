@@ -12,9 +12,7 @@ Vb3 (b3 0) vsource type=pwl wave=[0n 0 1n 0 1.02n 0.9 4.3n 0.9 4.32n 0 7.5n 0 7.
 Vb2 (b2 0) vsource type=pwl wave=[0n 0 7.5n 0 7.52n 0.9]
 Vb1 (b1 0) vsource type=pwl wave=[0n 0 1n 0 1.02n 0.9 7.5n 0.9 7.52n 0 10.2n 0 10.22n 0.9]
 Vb0 (b0 0) vsource type=pwl wave=[0n 0 4.3n 0 4.32n 0.9 7.5n 0.9 7.52n 0 10.2n 0 10.22n 0.9]
-
 XDUT (vclk b7 b6 b5 b4 b3 b2 b1 b0 vout) latched_bus_dac8
-
 
 simulatorOptions options evas_profile=balanced
 

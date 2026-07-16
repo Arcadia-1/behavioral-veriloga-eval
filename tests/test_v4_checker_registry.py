@@ -113,6 +113,101 @@ def test_masked_config_checker_is_relative_to_observed_vectors_not_fixed_times()
     assert checker(rows)[0]
 
 
+def _thermometer_row(time_s: float, vin: float, output_code: int | None = None) -> dict[str, float]:
+    code = output_code
+    if code is None:
+        code = max(0, min(16, int(16.0 * min(1.0, max(0.0, vin)))))
+    row = {"time": time_s, "vin": vin}
+    for bit in range(16):
+        row[f"t{bit}"] = 0.9 if bit < code else 0.0
+    return row
+
+
+def test_thermometer_checker_is_relative_to_observed_vin_segments() -> None:
+    from checkers.v4.registry import load_checker
+
+    checker = load_checker("v4_052_thermometer_bus_encoder")
+    assert checker is not None
+    rows = [
+        _thermometer_row(77.0e-9, 0.02),
+        _thermometer_row(78.5e-9, 0.22),
+        _thermometer_row(81.0e-9, 0.51),
+        _thermometer_row(83.5e-9, 0.88),
+        _thermometer_row(89.0e-9, 1.05),
+    ]
+    assert checker(rows)[0]
+
+    rows[2]["t15"] = 0.9
+    passed, detail = checker(rows)
+    assert not passed
+    assert "property_id=P_UNIFORM_SEGMENTS" in detail
+    assert "category=wrong_segment_count" in detail
+
+
+def test_thermometer_checker_ignores_single_row_vin_ramp_transients() -> None:
+    from checkers.v4.registry import load_checker
+
+    checker = load_checker("v4_052_thermometer_bus_encoder")
+    assert checker is not None
+    rows = [
+        _thermometer_row(0.0e-9, 0.02),
+        _thermometer_row(0.8e-9, 0.02),
+        _thermometer_row(1.01e-9, 0.08, output_code=0),
+        _thermometer_row(1.03e-9, 0.14, output_code=1),
+        _thermometer_row(1.10e-9, 0.22),
+        _thermometer_row(2.80e-9, 0.22),
+        _thermometer_row(3.01e-9, 0.31, output_code=3),
+        _thermometer_row(3.12e-9, 0.51),
+        _thermometer_row(4.80e-9, 0.51),
+        _thermometer_row(5.10e-9, 0.88),
+        _thermometer_row(6.80e-9, 0.88),
+        _thermometer_row(7.10e-9, 1.05),
+        _thermometer_row(8.80e-9, 1.05),
+    ]
+    assert checker(rows)[0]
+
+
+def _config_latch_row(
+    time_s: float,
+    *,
+    en: bool,
+    data_word: int,
+    output_word: int | None = None,
+) -> dict[str, float]:
+    if output_word is None:
+        output_word = data_word if en else 0
+    row = {"time": time_s, "en": 0.9 if en else 0.0}
+    for bit in range(32):
+        row[f"d{bit}"] = 0.9 if (data_word >> bit) & 1 else 0.0
+        row[f"q{bit}"] = 0.9 if (output_word >> bit) & 1 else 0.0
+    return row
+
+
+def test_config_latch_checker_is_relative_to_observed_vectors() -> None:
+    from checkers.v4.registry import load_checker
+
+    checker = load_checker("v4_056_config_latch_32b_clocked")
+    assert checker is not None
+    rows = [
+        _config_latch_row(201.0e-9, en=True, data_word=0x0000000F),
+        _config_latch_row(204.0e-9, en=True, data_word=0x00F0000F),
+        _config_latch_row(211.0e-9, en=False, data_word=0xFFFFFFFF),
+        _config_latch_row(219.0e-9, en=True, data_word=0xA5A55A5A),
+    ]
+    assert checker(rows)[0]
+
+    rows[2] = _config_latch_row(
+        211.0e-9,
+        en=False,
+        data_word=0xFFFFFFFF,
+        output_word=0x00F0000F,
+    )
+    passed, detail = checker(rows)
+    assert not passed
+    assert "property_id=P_DISABLED_CLEAR" in detail
+    assert "category=disabled_clear_mismatch" in detail
+
+
 def test_control_word_checker_accepts_a_short_stable_public_trace() -> None:
     from checkers.v4.registry import load_checker
 
