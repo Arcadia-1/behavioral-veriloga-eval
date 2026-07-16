@@ -3,11 +3,9 @@ global 0
 
 ahdl_include "./dut/safe_voltage_divider.va"
 
-Vnum (signumer 0) vsource type=pwl wave=[0 0.15 8n 0.15 8.1n -0.30 18n -0.30 18.1n 0.45 30n 0.45 30.1n -0.20 45n -0.20]
-Vden (sigdenom 0) vsource type=pwl wave=[0 0.50 8n 0.50 8.1n 0.05 18n 0.05 18.1n -0.05 30n -0.05 30.1n -0.60 45n -0.60]
-
+Vnum (signumer 0) vsource type=pwl wave=[0 0.2 10n 0.2 10.1n 0.3 20n 0.3 20.1n -0.2 35n -0.2]
+Vden (sigdenom 0) vsource type=pwl wave=[0 0.4 10n 0.4 10.1n 0.1 20n 0.1 20.1n -0.1 35n -0.1]
 XDUT (signumer sigdenom sigout) safe_voltage_divider gain=2 min_sigdenom=0.25
 
-
-tran tran stop=40n maxstep=25p
+tran tran stop=30n maxstep=25p
 save sigdenom signumer sigout

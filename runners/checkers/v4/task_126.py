@@ -8,14 +8,20 @@ def check_v3_absolute_value(rows: list[dict[str, float]]) -> tuple[bool, str]:
         return False, "missing absolute value signals"
     max_err = 0.0
     checked = 0
+    saw_positive = False
+    saw_negative = False
     for row in rows:
         if row.get("time", 0.0) < 0.2e-9:
             continue
+        saw_positive = saw_positive or row["sigin"] > 0.05
+        saw_negative = saw_negative or row["sigin"] < -0.05
         err = abs(row["sigout"] - abs(row["sigin"]))
         max_err = max(max_err, err)
         checked += 1
     if checked == 0:
         return False, "no_absolute_value_rows_checked"
+    if not (saw_positive and saw_negative):
+        return False, f"insufficient_absolute_value_polarity positive={saw_positive} negative={saw_negative}"
     return max_err <= 0.02, f"checked={checked} max_abs_error={max_err:.5f}"
 
 CHECKER_ID = "v4_126_absolute_value"

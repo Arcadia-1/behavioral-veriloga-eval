@@ -9,7 +9,10 @@
     "analyses": [
       "tran tran stop=40n maxstep=25p"
     ],
-    "body_lines": [],
+    "body_lines": [
+      "Vin (vin 0) vsource type=pwl wave=[0 -0.5 10n -0.5 10.1n 0.3 20n 0.3 20.1n 0.9 30n 0.9 30.1n 0.1 45n 0.1]",
+      "XDUT (vin vout 0) hard_voltage_clamp_behavior vclamp_upper=0.6 vclamp_lower=-0.2"
+    ],
     "header": [
       "simulator lang=spectre",
       "global 0"
@@ -34,41 +37,17 @@
     "legacy_score_deck_sha256": "f1ad2f2c25a0ac60b77345c96dae46af60c7247b67902947d5ca89ed4dc27990",
     "notes": [
       "legacy feedback deck was used only to seed the canonical harness spec",
-      "legacy score deck seeded private profile-specific overrides"
+      "legacy score deck seeded private profile-specific overrides",
+      "feedback deck is the canonical stimulus; score is generated with identical semantics"
     ]
   },
   "profile_defaults": {
     "feedback": {
-      "deck_overrides": {
-        "body_lines": [
-          "Vin (vin 0) vsource type=pwl wave=[0 -0.5 10n -0.5 10.1n 0.3 20n 0.3 20.1n 0.9 30n 0.9 30.1n 0.1 45n 0.1]",
-          "",
-          "XDUT (vin vout 0) hard_voltage_clamp_behavior vclamp_upper=0.6 vclamp_lower=-0.2",
-          ""
-        ]
-      },
-      "parameters": {
-        "maxstep": "200p",
-        "stop_time": "100n"
-      },
       "simulatorOptions": {
         "evas_profile": "balanced"
       }
     },
-    "score": {
-      "deck_overrides": {
-        "body_lines": [
-          "Vin (vin 0) vsource type=pwl wave=[0 0.8 8n 0.8 8.1n -0.4 18n -0.4 18.1n 0 28n 0 28.1n 0.6 38n 0.6 38.1n -0.2 45n -0.2]",
-          "",
-          "XDUT (vin vout 0) hard_voltage_clamp_behavior vclamp_upper=0.6 vclamp_lower=-0.2",
-          ""
-        ]
-      },
-      "parameters": {
-        "maxstep": "100p",
-        "stop_time": "100n"
-      }
-    }
+    "score": {}
   },
   "property_ids": [
     "P_GROUND_REFERENCED_INPUT",
