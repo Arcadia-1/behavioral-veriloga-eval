@@ -302,7 +302,10 @@
           }
         ],
         "module_ref": "supply_supervisor_brownout_por",
-        "name": "XDUT"
+        "name": "XDUT",
+        "parameter_overrides": {
+          "release_cycles": 4
+        }
       }
     ],
     "source_path_template": "./dut/{artifact_path}"

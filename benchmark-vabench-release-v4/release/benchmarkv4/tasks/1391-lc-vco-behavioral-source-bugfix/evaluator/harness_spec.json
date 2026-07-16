@@ -7,9 +7,14 @@
   },
   "deck": {
     "analyses": [
-      "tran tran stop=900n maxstep=500p"
+      "tran tran stop=1050n maxstep=350p"
     ],
-    "body_lines": [],
+    "body_lines": [
+      "Ven (enable 0) vsource type=pwl wave=[0 0 10n 0 10.1n 0.9 820n 0.9 820.1n 0 870n 0 870.1n 0.9 1050n 0.9]",
+      "Vrst (rst 0) vsource type=pwl wave=[0 0.9 4n 0.9 4.1n 0 1050n 0]",
+      "Vctrl (vctrl 0) vsource type=pwl wave=[0 -0.1 250n -0.1 250.1n 0.45 600n 0.45 600.1n 1.0 1050n 1.0]",
+      "XDUT (vctrl enable rst osc_p osc_n freq_metric amp_metric valid) lc_vco_behavioral_source"
+    ],
     "header": [
       "simulator lang=spectre",
       "global 0"
@@ -36,15 +41,8 @@
   "profile_defaults": {
     "feedback": {
       "corners": [],
-      "deck_overrides": {
-        "body_lines": [
-          "Ven (enable 0) vsource type=pwl wave=[0 0 8n 0 8.1n 0.9 760n 0.9 760.1n 0 800n 0 800.1n 0.9 900n 0.9]",
-          "Vrst (rst 0) vsource type=pwl wave=[0 0.9 3n 0.9 3.1n 0 900n 0]",
-          "Vctrl (vctrl 0) vsource type=pwl wave=[0 0.18 360n 0.18 360.1n 0.72 900n 0.72]",
-          "XDUT (vctrl enable rst osc_p osc_n freq_metric amp_metric valid) lc_vco_behavioral_source"
-        ]
-      },
-      "deterministic_seed": 0,
+      "deck_overrides": {},
+      "deterministic_seed": 1,
       "parameters": {},
       "simulatorOptions": {
         "evas_profile": "balanced"
@@ -52,17 +50,7 @@
     },
     "score": {
       "corners": [],
-      "deck_overrides": {
-        "analyses": [
-          "tran tran stop=1050n maxstep=350p"
-        ],
-        "body_lines": [
-          "Ven (enable 0) vsource type=pwl wave=[0 0 10n 0 10.1n 0.9 820n 0.9 820.1n 0 870n 0 870.1n 0.9 1050n 0.9]",
-          "Vrst (rst 0) vsource type=pwl wave=[0 0.9 4n 0.9 4.1n 0 1050n 0]",
-          "Vctrl (vctrl 0) vsource type=pwl wave=[0 -0.1 250n -0.1 250.1n 0.45 600n 0.45 600.1n 1.0 1050n 1.0]",
-          "XDUT (vctrl enable rst osc_p osc_n freq_metric amp_metric valid) lc_vco_behavioral_source"
-        ]
-      },
+      "deck_overrides": {},
       "deterministic_seed": 1,
       "parameters": {},
       "simulatorOptions": {}

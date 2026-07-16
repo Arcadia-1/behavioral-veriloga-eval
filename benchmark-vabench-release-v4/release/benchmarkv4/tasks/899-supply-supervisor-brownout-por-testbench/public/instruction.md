@@ -26,7 +26,7 @@ Stable public Spectre binding:
 The submitted `testbench.scs` must use the supplied DUT through this public binding:
 
 - Include path: `./dut/supply_supervisor_brownout_por.va`
-- DUT instance: `XDUT (vdd_sense clk rst enable por_n pgood brownout delay_metric state_metric) supply_supervisor_brownout_por`
+- DUT instance: `XDUT (vdd_sense clk rst enable por_n pgood brownout delay_metric state_metric) supply_supervisor_brownout_por release_cycles=4`
 - Required saved public traces: `vdd_sense`, `clk`, `rst`, `enable`, `por_n`, `pgood`, `brownout`, `delay_metric`, `state_metric`
 - Use one bounded transient analysis with a finite positive stop time.
 

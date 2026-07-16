@@ -247,7 +247,10 @@
           }
         ],
         "module_ref": "clock_data_valid_qualifier",
-        "name": "XDUT"
+        "name": "XDUT",
+        "parameter_overrides": {
+          "max_age_cycles": 3
+        }
       }
     ],
     "source_path_template": "./dut/{artifact_path}"

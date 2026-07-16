@@ -9,7 +9,6 @@ from __future__ import annotations
 
 import argparse
 import json
-import os
 from pathlib import Path
 from typing import Any
 
@@ -86,26 +85,12 @@ def audit(source: Path, family_ids: list[str]) -> dict[str, Any]:
             failures.append({"family_id": family, "differences": differences})
     return {
         "status": "PASS" if not failures else "FAIL",
-        "evas_engine": os.environ.get("EVAS_ENGINE", "").strip().lower()
-        or os.environ.get("VAEVAS_DEFAULT_EVAS_ENGINE", "evas2").strip().lower(),
-        "evas_engine_used": os.environ.get("EVAS_ENGINE", "").strip().lower()
-        or os.environ.get("VAEVAS_DEFAULT_EVAS_ENGINE", "evas2").strip().lower(),
+        "evidence_kind": "static_profile_parity",
         "checked_families": checked,
         "failure_count": len(failures),
         "failures": failures,
         "allowed_profile_differences": ["simulatorOptions"],
     }
-
-
-def require_rust_evas2() -> str:
-    explicit = os.environ.get("EVAS_ENGINE", "").strip().lower()
-    default = os.environ.get("VAEVAS_DEFAULT_EVAS_ENGINE", "").strip().lower()
-    if explicit != "evas2" or default != "evas2":
-        raise SystemExit(
-            "profile parity evidence requires EVAS_ENGINE=evas2 and "
-            "VAEVAS_DEFAULT_EVAS_ENGINE=evas2"
-        )
-    return "evas2"
 
 
 def main() -> int:
@@ -115,7 +100,6 @@ def main() -> int:
     parser.add_argument("--family-range", action="append", default=[])
     parser.add_argument("--output", type=Path)
     args = parser.parse_args()
-    require_rust_evas2()
     family_ids = parse_family_ids(args.family, args.family_range)
     if not family_ids:
         family_ids = [f"{value:03d}" for value in range(1, 401)]

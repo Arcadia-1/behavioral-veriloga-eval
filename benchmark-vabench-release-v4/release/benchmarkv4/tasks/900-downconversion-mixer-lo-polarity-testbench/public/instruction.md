@@ -27,7 +27,7 @@ Stable public Spectre binding:
 The submitted `testbench.scs` must use the supplied DUT through this public binding:
 
 - Include path: `./dut/downconversion_mixer_lo_polarity.va`
-- DUT instance: `XDUT (rf_in lo_i lo_q rst enable i_out q_out lo_i_metric lo_q_metric polarity_ok) downconversion_mixer_lo_polarity`
+- DUT instance: `XDUT (rf_in lo_i lo_q rst enable i_out q_out lo_i_metric lo_q_metric polarity_ok) downconversion_mixer_lo_polarity conversion_gain=0.5`
 - Required saved public traces: `rf_in`, `lo_i`, `lo_q`, `rst`, `enable`, `i_out`, `q_out`, `lo_i_metric`, `lo_q_metric`, `polarity_ok`
 - Use one bounded transient analysis with a finite positive stop time.
 
