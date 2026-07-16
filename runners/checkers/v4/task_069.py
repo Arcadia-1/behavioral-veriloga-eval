@@ -43,6 +43,7 @@ def check_configurable_pulse_train(rows: list[dict[str, float]]) -> tuple[bool, 
     done_seen = False
     expected_total = 0
     expected_total_all = 0
+    command_totals: list[int] = []
     zero_code_command = False
     failures: list[str] = []
     pre_start_quiet = False
@@ -59,6 +60,7 @@ def check_configurable_pulse_train(rows: list[dict[str, float]]) -> tuple[bool, 
             total = max(1, raw_total)
             expected_total = total
             expected_total_all += total
+            command_totals.append(total)
             running = True
             tick = 0
             emitted = 0
@@ -114,8 +116,11 @@ def check_configurable_pulse_train(rows: list[dict[str, float]]) -> tuple[bool, 
             diagnostic(
                 "P_PULSE_COUNT",
                 "semantic_mismatch",
-                expected=f"pulse_count={expected_total_all}",
-                observed=f"pulse_count={pulse_count}",
+                expected=(
+                    f"aggregate_pulse_count={expected_total_all},"
+                    f"command_totals={command_totals}"
+                ),
+                observed=f"aggregate_pulse_count={pulse_count}",
                 event="full_trace",
             ),
         )

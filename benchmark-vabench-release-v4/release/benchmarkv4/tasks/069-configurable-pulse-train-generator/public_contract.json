@@ -225,7 +225,7 @@
     },
     {
       "id": "P_WIDTH_AND_PERIOD",
-      "observable_contract": "Each pulse remains high for the captured width in clock samples and pulse starts are separated by the captured period in clock samples.",
+      "observable_contract": "The rising clk edge that accepts start is sample zero and starts the first pulse. Each pulse remains high for the captured width in clock samples and pulse starts are separated by the captured period in clock samples.",
       "required_signals": [
         "time",
         "clk",
