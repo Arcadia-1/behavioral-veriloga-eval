@@ -9,9 +9,7 @@ Vvim (vim 0) vsource dc=0
 Vrefp (refp 0) vsource dc=1
 Vrefn (refn 0) vsource dc=0
 Vreset (reset 0) vsource dc=0.9
-
 XDUT (vip vim clks reset refp refn doutsum doutsumdelay) flash_8level_sum_delay
-
 
 simulatorOptions options evas_profile=balanced
 

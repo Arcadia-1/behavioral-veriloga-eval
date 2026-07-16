@@ -2,6 +2,9 @@
 from __future__ import annotations
 
 from ..api import Checker
+from .stimulus_relative import normalize_affine_time
+
+
 def sample_signal_at(rows: list[dict[str, float]], signal: str, time_s: float) -> float | None:
     if not rows or "time" not in rows[0] or signal not in rows[0]:
         return None
@@ -77,6 +80,12 @@ def check_v3_dac_5v_weighted_7b(rows: list[dict[str, float]]) -> tuple[bool, str
     required = {"time", "clks", "vout"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing time/clks/vout"
+    rows = normalize_affine_time(rows, [
+        ("clks", 0.45, "rising", 1.025, 0),
+        ("clks", 0.45, "rising", 11.025, 1),
+    ])
+    if rows is None:
+        return False, "missing_clock_stimulus_edges"
     return _sample_many_within_trace(
         rows,
         {"vout": [(5.0, 1.0), (15.0, 3.65625), (25.0, 2.5625), (35.0, 4.96875)]},
