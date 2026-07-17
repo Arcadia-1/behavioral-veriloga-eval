@@ -14,6 +14,7 @@ from materialize_tri_form_release import (  # noqa: E402
     MODES,
     REFERENCE_TOKENIZER,
     build_testbench_view,
+    canonical_required_behavior,
     install_prompt_assets,
     iter_public_inputs,
     public_contract_relative_path,
@@ -60,6 +61,14 @@ def sample_source_task(tmp_path: Path, *, independent_reference: bool) -> tuple[
     (evaluator / "profiles").mkdir(parents=True)
     (evaluator / "solution").mkdir()
     (evaluator / "mutation_bundles").mkdir()
+    instruction = source_task / "public" / "task" / "instruction.md"
+    instruction.parent.mkdir(parents=True)
+    instruction.write_text(
+        "# Sample Hold\n\n## Required Behavior\n\n"
+        "Capture `vin` on each rising sample edge and hold it until the next edge.\n\n"
+        "## Modeling Constraints\n\nRemain deterministic.\n",
+        encoding="utf-8",
+    )
     spec = sample_spec()
     (evaluator / "family_spec.json").write_text(json.dumps(spec) + "\n", encoding="utf-8")
     (evaluator / "checker_profile.json").write_text(
@@ -164,6 +173,15 @@ def test_bugfix_instruction_does_not_localize_fault() -> None:
     text = render_bugfix_instruction(sample_spec()).lower()
     for forbidden in ("mutation", "faulty file", "root cause", "changed line", "baseline result"):
         assert forbidden not in text
+
+
+def test_derived_instructions_preserve_canonical_required_behavior(tmp_path: Path) -> None:
+    source_task, _, _ = sample_source_task(tmp_path, independent_reference=True)
+    behavior = canonical_required_behavior(source_task, "bugfix")
+
+    assert behavior == "Capture `vin` on each rising sample edge and hold it until the next edge."
+    assert behavior in render_bugfix_instruction(sample_spec(), canonical_behavior=behavior)
+    assert behavior in render_testbench_instruction(sample_spec(), canonical_behavior=behavior)
 
 
 def test_testbench_instruction_has_one_candidate_and_five_anonymous_negatives() -> None:
