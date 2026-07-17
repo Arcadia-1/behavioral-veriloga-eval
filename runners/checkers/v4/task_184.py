@@ -1,106 +1,153 @@
-"""Task-specific checker for canonical v4 DUT 184."""
+"""Stimulus-relative checker for canonical v4 DUT 184."""
 from __future__ import annotations
 
 from ..api import Checker
-from .stimulus_relative import normalize_affine_time
-def sample_signal_at(rows: list[dict[str, float]], signal: str, time_s: float) -> float | None:
-    if not rows or "time" not in rows[0] or signal not in rows[0]:
-        return None
-    first_time = rows[0]["time"]
-    last_time = rows[-1].get("time")
-    if last_time is None or time_s < first_time or time_s > last_time:
-        return None
-    if time_s == first_time:
-        return rows[0].get(signal)
-    for idx in range(1, len(rows)):
-        prev = rows[idx - 1]
-        cur = rows[idx]
-        t0 = prev.get("time")
-        t1 = cur.get("time")
-        if t0 is None or t1 is None:
+from .stimulus_relative import (
+    PropertyResult,
+    edge_times,
+    event_settle_delay,
+    finish,
+    missing_trace,
+    row_at_or_after,
+    row_before,
+)
+
+
+PROPERTY_IDS = [
+    "P_TWO_PHASE_CLOCKED_FLOW",
+    "P_REFERENCE_AND_CODE_INITIALIZATION",
+    "P_RDAC_REFINEMENT_SEQUENCE",
+    "P_OFFSET_SEARCH_BISECTION",
+]
+
+
+def _expected_outputs(vin: float, vref: float, codes: list[int]) -> dict[str, float]:
+    values = {
+        "vinp": 0.6 + 0.5 * vin,
+        "vinn": 0.6 - 0.5 * vin,
+        "vrefp": 0.6 + 0.5 * vref,
+        "vrefn": 0.6 - 0.5 * vref,
+    }
+    values.update({f"dc{bit}": float(value) for bit, value in enumerate(codes)})
+    return values
+
+
+def _compare(
+    result: PropertyResult,
+    probe: dict[str, float],
+    expected: dict[str, float],
+    *,
+    time_s: float,
+) -> None:
+    for signal, target in expected.items():
+        result.compare(
+            expected=target,
+            observed=probe[signal],
+            tolerance=0.025 if signal.startswith("v") else 0.08,
+            time_s=time_s,
+            label=signal,
+        )
+
+
+def check_v4_offset_rdac_search_flow(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {
+        "time", "ck", "d", "vinp", "vinn", "vrefp", "vrefn",
+        *{f"dc{bit}" for bit in range(7)},
+    }
+    results, missing = missing_trace("v4_184", rows, required, PROPERTY_IDS)
+    if missing is not None:
+        return missing
+    flow_result, init_result, refinement_result, offset_result = results
+    rises = edge_times(rows, "ck", threshold=0.5, rising=True)
+    settle = event_settle_delay(rises)
+    lsb = 1.0 / 16.0
+    vref = -17.0 / 2.0 * lsb
+    vin = vref
+    step = 0.04
+    state = 1
+    iteration = 6
+    offset_phase = False
+    codes = [0, 0, 0, 0, 0, 0, 1]
+    decisions: set[int] = set()
+    offset_steps = 0
+    phase_transitions = 0
+
+    initial_delay = settle
+    if rises:
+        initial_delay = min(initial_delay, 0.4 * (rises[0] - rows[0]["time"]))
+    initial_probe = row_at_or_after(rows, rows[0]["time"] + initial_delay)
+    _compare(init_result, initial_probe, _expected_outputs(vin, vref, codes), time_s=initial_probe["time"])
+
+    for edge in rises:
+        decision = int(row_before(rows, edge)["d"] < 0.5)
+        decisions.add(decision)
+        if not offset_phase:
+            if iteration > 0:
+                next_bit = iteration - 1
+                codes[next_bit] = 1
+                if not decision:
+                    codes[iteration] = 0
+                iteration -= 1
+                primary = refinement_result
+            else:
+                offset_phase = True
+                iteration = 0
+                step = 0.04
+                phase_transitions += 1
+                primary = flow_result
+        elif iteration == 8:
+            iteration = 6
+            step = 0.04
+            offset_phase = False
+            phase_transitions += 1
+            primary = flow_result
+        else:
+            if state != decision and step > 0.0:
+                step /= 2.0
+            state = decision
+            vin += (2 * state - 1) * step
+            iteration += 1
+            offset_steps += 1
+            if iteration == 8:
+                vref += lsb
+                vin = vref
+                codes = [0, 0, 0, 0, 0, 0, 1]
+            primary = offset_result
+        probe_time = edge + settle
+        if probe_time > rows[-1]["time"]:
             continue
-        if t0 <= time_s <= t1:
-            v0 = prev.get(signal)
-            v1 = cur.get(signal)
-            if v0 is None or v1 is None:
-                return None
-            if t1 == t0:
-                return v1
-            alpha = (time_s - t0) / (t1 - t0)
-            return v0 + alpha * (v1 - v0)
-    return None
+        probe = row_at_or_after(rows, probe_time)
+        expected = _expected_outputs(vin, vref, codes)
+        _compare(primary, probe, expected, time_s=probe_time)
+        _compare(flow_result, probe, expected, time_s=probe_time)
 
-def _sample_many(
-    rows: list[dict[str, float]],
-    samples: dict[str, list[tuple[float, float]]],
-    *,
-    tol: float,
-) -> tuple[bool, str]:
-    details: list[str] = []
-    for signal, expected_samples in samples.items():
-        observed: list[float] = []
-        for time_ns, expected in expected_samples:
-            value = sample_signal_at(rows, signal, time_ns * 1e-9)
-            if value is None:
-                return False, f"missing_{signal}_sample_at={time_ns:g}ns"
-            observed.append(value)
-            if abs(value - expected) > tol:
-                return False, (
-                    f"{signal}@{time_ns:g}ns={value:.4f} expected={expected:.4f} "
-                    f"tol={tol:.4f}"
-                )
-        details.append(f"{signal}=" + ",".join(f"{value:.3f}" for value in observed))
-    return True, " ".join(details)
-
-def _sample_many_within_trace(
-    rows: list[dict[str, float]],
-    samples: dict[str, list[tuple[float, float]]],
-    *,
-    tol: float,
-) -> tuple[bool, str]:
-    if not rows:
-        return _sample_many(rows, samples, tol=tol)
-    end_time = rows[-1].get("time")
-    if end_time is None:
-        return _sample_many(rows, samples, tol=tol)
-    end_ns = end_time * 1e9
-    filtered: dict[str, list[tuple[float, float]]] = {}
-    for signal, expected_samples in samples.items():
-        visible_samples = [
-            (time_ns, expected)
-            for time_ns, expected in expected_samples
-            if time_ns <= end_ns + 1e-3
-        ]
-        filtered[signal] = visible_samples or expected_samples
-    return _sample_many(rows, filtered, tol=tol)
-
-def check_v3_offset_rdac_search_flow(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    required = {"time", "ck", "vinp", "vinn", "vrefp", "vrefn", "dc0", "dc1", "dc2", "dc3", "dc4", "dc5", "dc6"}
-    if not rows or not required.issubset(rows[0]):
-        return False, "missing offset rdac search outputs"
-    rows = normalize_affine_time(rows, [
-        ("ck", 0.5, "rising", 1.01, 0),
-        ("ck", 0.5, "rising", 17.01, 16),
-    ])
-    if rows is None:
-        return False, "missing_ck_stimulus_edges"
-    return _sample_many(
-        rows,
-        {
-            "dc6": [(0.5, 1.0), (7.7, 1.0), (17.7, 1.0)],
-            "dc5": [(1.7, 1.0), (7.7, 1.0), (17.7, 1.0)],
-            "dc4": [(3.7, 0.0), (7.7, 0.0), (17.7, 0.0)],
-            "dc3": [(3.7, 1.0), (5.7, 0.0), (17.7, 0.0)],
-            "dc2": [(5.7, 1.0), (13.7, 1.0), (17.7, 0.0)],
-            "dc1": [(5.7, 1.0), (13.7, 1.0), (17.7, 0.0)],
-            "dc0": [(7.7, 1.0), (13.7, 1.0), (17.7, 0.0)],
-            "vrefp": [(0.5, 0.3344), (13.7, 0.3344), (17.7, 0.3656)],
-            "vrefn": [(0.5, 0.8656), (13.7, 0.8656), (17.7, 0.8344)],
-            "vinp": [(0.5, 0.3344), (9.7, 0.3294), (17.7, 0.3656)],
-            "vinn": [(0.5, 0.8656), (9.7, 0.8706), (17.7, 0.8344)],
-        },
-        tol=0.08,
+    flow_result.condition(
+        phase_transitions >= 2,
+        expected="enter_and_exit_offset_phase",
+        observed=f"phase_transitions={phase_transitions}",
+        time_s=rows[-1]["time"],
+    )
+    refinement_result.condition(
+        len(rises) >= 17 and decisions == {0, 1},
+        expected="clock_rises>=17_decisions=low,high",
+        observed=f"clock_rises={len(rises)}_decisions={sorted(decisions)}",
+        time_s=rows[-1]["time"],
+    )
+    offset_result.condition(
+        offset_steps >= 8,
+        expected="offset_steps>=8",
+        observed=f"offset_steps={offset_steps}",
+        time_s=rows[-1]["time"],
+    )
+    return finish(
+        "v4_184",
+        results,
+        coverage=(
+            f"clock_rises={len(rises)} decisions={sorted(decisions)} "
+            f"offset_steps={offset_steps} phase_transitions={phase_transitions}"
+        ),
     )
 
+
 CHECKER_ID = "v4_184_offset_rdac_search_flow"
-CHECKER: Checker = check_v3_offset_rdac_search_flow
+CHECKER: Checker = check_v4_offset_rdac_search_flow

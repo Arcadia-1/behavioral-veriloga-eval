@@ -1,106 +1,132 @@
-"""Task-specific checker for canonical v4 DUT 183."""
+"""Stimulus-relative checker for canonical v4 DUT 183."""
 from __future__ import annotations
 
 from ..api import Checker
-from .stimulus_relative import normalize_affine_time
-def sample_signal_at(rows: list[dict[str, float]], signal: str, time_s: float) -> float | None:
-    if not rows or "time" not in rows[0] or signal not in rows[0]:
-        return None
-    first_time = rows[0]["time"]
-    last_time = rows[-1].get("time")
-    if last_time is None or time_s < first_time or time_s > last_time:
-        return None
-    if time_s == first_time:
-        return rows[0].get(signal)
-    for idx in range(1, len(rows)):
-        prev = rows[idx - 1]
-        cur = rows[idx]
-        t0 = prev.get("time")
-        t1 = cur.get("time")
-        if t0 is None or t1 is None:
-            continue
-        if t0 <= time_s <= t1:
-            v0 = prev.get(signal)
-            v1 = cur.get(signal)
-            if v0 is None or v1 is None:
-                return None
-            if t1 == t0:
-                return v1
-            alpha = (time_s - t0) / (t1 - t0)
-            return v0 + alpha * (v1 - v0)
-    return None
+from .stimulus_relative import (
+    PropertyResult,
+    edge_times,
+    event_settle_delay,
+    finish,
+    missing_trace,
+    row_at_or_after,
+    row_before,
+)
 
-def _sample_many(
-    rows: list[dict[str, float]],
-    samples: dict[str, list[tuple[float, float]]],
+
+PROPERTY_IDS = [
+    "P_INITIAL_MSB_TRIAL_CODE",
+    "P_CLOCKED_RDAC_DECISION_SEQUENCE",
+    "P_DECISION_POLARITY",
+    "P_CALIBRATION_COMPLETION",
+    "P_RDAC_OUTPUT_LEVELS",
+]
+
+
+def _compare_outputs(
+    results: list[PropertyResult],
+    probe: dict[str, float],
+    codes: list[int],
+    active: bool,
     *,
-    tol: float,
-) -> tuple[bool, str]:
-    details: list[str] = []
-    for signal, expected_samples in samples.items():
-        observed: list[float] = []
-        for time_ns, expected in expected_samples:
-            value = sample_signal_at(rows, signal, time_ns * 1e-9)
-            if value is None:
-                return False, f"missing_{signal}_sample_at={time_ns:g}ns"
-            observed.append(value)
-            if abs(value - expected) > tol:
-                return False, (
-                    f"{signal}@{time_ns:g}ns={value:.4f} expected={expected:.4f} "
-                    f"tol={tol:.4f}"
-                )
-        details.append(f"{signal}=" + ",".join(f"{value:.3f}" for value in observed))
-    return True, " ".join(details)
-
-def _sample_many_within_trace(
-    rows: list[dict[str, float]],
-    samples: dict[str, list[tuple[float, float]]],
-    *,
-    tol: float,
-) -> tuple[bool, str]:
-    if not rows:
-        return _sample_many(rows, samples, tol=tol)
-    end_time = rows[-1].get("time")
-    if end_time is None:
-        return _sample_many(rows, samples, tol=tol)
-    end_ns = end_time * 1e9
-    filtered: dict[str, list[tuple[float, float]]] = {}
-    for signal, expected_samples in samples.items():
-        visible_samples = [
-            (time_ns, expected)
-            for time_ns, expected in expected_samples
-            if time_ns <= end_ns + 1e-3
-        ]
-        filtered[signal] = visible_samples or expected_samples
-    return _sample_many(rows, filtered, tol=tol)
-
-def check_v3_foreground_rdac_calibrator(rows: list[dict[str, float]]) -> tuple[bool, str]:
-    required = {"time", "ck", "dc0", "dc1", "dc2", "dc3", "dc4", "dc5", "dc6", "cvinp", "cvinn", "en", "enb"}
-    if not rows or not required.issubset(rows[0]):
-        return False, "missing foreground rdac calibrator outputs"
-    rows = normalize_affine_time(rows, [
-        ("ck", 0.5, "rising", 1.025, 0),
-        ("ck", 0.5, "rising", 13.025, 6),
-    ])
-    if rows is None:
-        return False, "missing_ck_stimulus_edges"
-    return _sample_many(
-        rows,
-        {
-            "dc6": [(0.5, 1.0), (11.7, 1.0), (14.5, 1.0)],
-            "dc5": [(1.7, 1.0), (3.7, 0.0), (14.5, 0.0)],
-            "dc4": [(3.7, 1.0), (14.5, 1.0)],
-            "dc3": [(5.7, 1.0), (7.7, 0.0), (14.5, 0.0)],
-            "dc2": [(7.7, 1.0), (14.5, 1.0)],
-            "dc1": [(9.7, 1.0), (11.7, 0.0), (14.5, 0.0)],
-            "dc0": [(11.7, 1.0), (14.5, 1.0)],
-            "cvinp": [(0.5, 0.78), (8.5, 0.78), (14.5, 0.78)],
-            "cvinn": [(0.5, 0.22), (8.5, 0.22), (14.5, 0.22)],
-            "en": [(0.5, 1.0), (11.7, 1.0), (13.7, 0.0)],
-            "enb": [(0.5, 0.0), (11.7, 0.0), (13.7, 1.0)],
-        },
-        tol=0.08,
+    time_s: float,
+    primary: PropertyResult,
+) -> None:
+    initial, sequence, polarity, completion, levels = results
+    for bit, expected_bit in enumerate(codes):
+        expected = float(expected_bit)
+        observed = probe[f"dc{bit}"]
+        primary.compare(
+            expected=expected, observed=observed, tolerance=0.08,
+            time_s=time_s, label=f"dc{bit}",
+        )
+        levels.condition(
+            min(abs(observed), abs(observed - 1.0)) <= 0.08,
+            expected="logic_rail_0_or_1", observed=f"dc{bit}={observed:.6g}",
+            time_s=time_s,
+        )
+    completion.compare(
+        expected=1.0 if active else 0.0,
+        observed=probe["en"], tolerance=0.08, time_s=time_s, label="en",
+    )
+    completion.compare(
+        expected=0.0 if active else 1.0,
+        observed=probe["enb"], tolerance=0.08, time_s=time_s, label="enb",
+    )
+    sequence.compare(
+        expected=probe["vrefp"], observed=probe["cvinp"], tolerance=0.02,
+        time_s=time_s, label="cvinp_tracks_vrefp",
+    )
+    sequence.compare(
+        expected=probe["vrefn"], observed=probe["cvinn"], tolerance=0.02,
+        time_s=time_s, label="cvinn_tracks_vrefn",
     )
 
+
+def check_v4_foreground_rdac_calibrator(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    required = {
+        "time", "ck", "d", "vrefp", "vrefn", "cvinp", "cvinn", "en", "enb",
+        *{f"dc{bit}" for bit in range(7)},
+    }
+    results, missing = missing_trace("v4_183", rows, required, PROPERTY_IDS)
+    if missing is not None:
+        return missing
+    initial, sequence, polarity, completion, _levels = results
+    rises = edge_times(rows, "ck", threshold=0.5, rising=True)
+    settle = event_settle_delay(rises)
+    codes = [0, 0, 0, 0, 0, 0, 1]
+    iteration = 6
+    active = True
+    decisions: set[int] = set()
+    initial_delay = settle
+    if rises:
+        initial_delay = min(initial_delay, 0.4 * (rises[0] - rows[0]["time"]))
+    initial_probe = row_at_or_after(rows, rows[0]["time"] + initial_delay)
+    _compare_outputs(results, initial_probe, codes, active, time_s=initial_probe["time"], primary=initial)
+
+    for edge in rises:
+        before = row_before(rows, edge)
+        decision_low = int(before["d"] < 0.5)
+        if iteration > 0:
+            decisions.add(decision_low)
+            next_bit = iteration - 1
+            codes[next_bit] = 1
+            if not decision_low:
+                codes[iteration] = 0
+            iteration -= 1
+            primary = polarity
+        else:
+            active = False
+            primary = completion
+        probe_time = edge + settle
+        if probe_time > rows[-1]["time"]:
+            continue
+        probe = row_at_or_after(rows, probe_time)
+        _compare_outputs(results, probe, codes, active, time_s=probe_time, primary=primary)
+
+    sequence.condition(
+        len(rises) >= 7,
+        expected="clock_rises>=7",
+        observed=f"clock_rises={len(rises)}",
+        time_s=rows[-1]["time"],
+    )
+    polarity.condition(
+        decisions == {0, 1},
+        expected="decision_levels=low,high",
+        observed=f"decision_levels={sorted(decisions)}",
+        time_s=rows[-1]["time"],
+    )
+    completion.condition(
+        not active,
+        expected="calibration_complete",
+        observed=f"active={active}",
+        time_s=rows[-1]["time"],
+    )
+    return finish(
+        "v4_183",
+        results,
+        coverage=f"clock_rises={len(rises)} decisions={sorted(decisions)} active={active}",
+    )
+
+
 CHECKER_ID = "v4_183_foreground_rdac_calibrator"
-CHECKER: Checker = check_v3_foreground_rdac_calibrator
+CHECKER: Checker = check_v4_foreground_rdac_calibrator

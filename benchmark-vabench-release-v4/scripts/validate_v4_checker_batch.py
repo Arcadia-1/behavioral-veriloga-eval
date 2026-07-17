@@ -107,9 +107,22 @@ def diagnostics_are_complete(
 ) -> bool:
     if passed:
         return all(property_id in note for property_id in property_ids)
-    return any(property_id in note for property_id in property_ids) and all(
+    property_named = any(property_id in note for property_id in property_ids)
+    compact_diagnostic = all(
         field in note for field in ("category=", "expected=", "observed=", "event=")
     )
+    property_result = all(
+        field in note
+        for field in (
+            "checked=",
+            "mismatch_count=",
+            "expected=",
+            "observed=",
+            "sample_time=",
+            "metric_gap=",
+        )
+    )
+    return property_named and (compact_diagnostic or property_result)
 
 
 def source_binding(task: Path, mutation_ids: list[str]) -> dict[str, Any]:

@@ -833,6 +833,26 @@ def test_v4_batch_certifier_uses_the_active_suite_not_the_full_catalog() -> None
     assert "selected_mutation_ids(task, active_suites)" in certifier
     assert 'if str(row["id"]) in mutation_ids' in certifier
     assert 'field in note for field in ("category=", "expected=", "observed=", "event=")' in certifier
+    assert '"sample_time="' in certifier
+    assert '"metric_gap="' in certifier
+
+
+def test_legacy_event_checkers_replay_submitted_stimulus_instead_of_gold_times() -> None:
+    event_families = ("173", "182", "183", "184", "185")
+    for family_id in event_families:
+        checker = (
+            ROOT / "runners" / "checkers" / "v4" / f"task_{family_id}.py"
+        ).read_text()
+        assert "normalize_affine_time" not in checker
+        assert "edge_times(" in checker
+        assert "PropertyResult" in checker
+
+    trim_checker = (
+        ROOT / "runners" / "checkers" / "v4" / "task_189.py"
+    ).read_text()
+    assert "normalize_affine_time" not in trim_checker
+    assert "_code_plateaus" in trim_checker
+    assert 'math.floor(row["ain"] + 0.5)' in trim_checker
 
 
 def test_leaky_hold_capture_ignores_sample_edges_while_reset_is_active() -> None:

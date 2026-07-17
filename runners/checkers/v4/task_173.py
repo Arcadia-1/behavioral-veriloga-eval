@@ -1,99 +1,123 @@
-"""Task-specific checker for canonical v4 DUT 173."""
+"""Stimulus-relative checker for canonical v4 DUT 173."""
 from __future__ import annotations
 
 from ..api import Checker
-from .batch18_diagnostics import bind_properties
-from .stimulus_relative import normalize_affine_time
-def sample_signal_at(rows: list[dict[str, float]], signal: str, time_s: float) -> float | None:
-    if not rows or "time" not in rows[0] or signal not in rows[0]:
-        return None
-    first_time = rows[0]["time"]
-    last_time = rows[-1].get("time")
-    if last_time is None or time_s < first_time - 1e-18 or time_s > last_time + 1e-18:
-        return None
-    time_s = min(last_time, max(first_time, time_s))
-    if time_s == first_time:
-        return rows[0].get(signal)
-    for idx in range(1, len(rows)):
-        prev = rows[idx - 1]
-        cur = rows[idx]
-        t0 = prev.get("time")
-        t1 = cur.get("time")
-        if t0 is None or t1 is None:
-            continue
-        if t0 <= time_s <= t1:
-            v0 = prev.get(signal)
-            v1 = cur.get(signal)
-            if v0 is None or v1 is None:
-                return None
-            if t1 == t0:
-                return v1
-            alpha = (time_s - t0) / (t1 - t0)
-            return v0 + alpha * (v1 - v0)
-    return None
+from .stimulus_relative import (
+    PropertyResult,
+    edge_times,
+    event_settle_delay,
+    finish,
+    missing_trace,
+    row_at_or_after,
+    row_before,
+)
 
-def _sample_many(
-    rows: list[dict[str, float]],
-    samples: dict[str, list[tuple[float, float]]],
-    *,
-    tol: float,
-) -> tuple[bool, str]:
-    details: list[str] = []
-    for signal, expected_samples in samples.items():
-        observed: list[float] = []
-        for time_ns, expected in expected_samples:
-            value = sample_signal_at(rows, signal, time_ns * 1e-9)
-            if value is None:
-                return False, f"missing_{signal}_sample_at={time_ns:g}ns"
-            observed.append(value)
-            if abs(value - expected) > tol:
-                return False, (
-                    f"{signal}@{time_ns:g}ns={value:.4f} expected={expected:.4f} "
-                    f"tol={tol:.4f}"
-                )
-        details.append(f"{signal}=" + ",".join(f"{value:.3f}" for value in observed))
-    return True, " ".join(details)
 
-def _sample_many_within_trace(
-    rows: list[dict[str, float]],
-    samples: dict[str, list[tuple[float, float]]],
-    *,
-    tol: float,
-) -> tuple[bool, str]:
-    if not rows:
-        return _sample_many(rows, samples, tol=tol)
-    end_time = rows[-1].get("time")
-    if end_time is None:
-        return _sample_many(rows, samples, tol=tol)
-    end_ns = end_time * 1e9
-    filtered: dict[str, list[tuple[float, float]]] = {}
-    for signal, expected_samples in samples.items():
-        visible_samples = [
-            (time_ns, expected)
-            for time_ns, expected in expected_samples
-            if time_ns <= end_ns + 1e-3
-        ]
-        filtered[signal] = visible_samples or expected_samples
-    return _sample_many(rows, filtered, tol=tol)
+PROPERTY_IDS = [
+    "P_SAMPLE_CLOCK_RESET",
+    "P_SARREADY_SERIAL_ACCUMULATION",
+    "P_BINARY_WEIGHT_ORDER",
+    "P_BIPOLAR_OUTPUT_MAPPING",
+]
 
-def check_v3_dac_serial_accumulator(rows: list[dict[str, float]]) -> tuple[bool, str]:
+
+def check_v4_dac_serial_accumulator(rows: list[dict[str, float]]) -> tuple[bool, str]:
     required = {"time", "clk_sample", "clk_sarready", "data", "out"}
-    if not rows or not required.issubset(rows[0]):
-        return False, "missing dac serial accumulator signals"
-    rows = normalize_affine_time(rows, [
-        ("clk_sample", 0.55, "rising", 1.025, 0),
-        ("clk_sample", 0.55, "rising", 13.025, 1),
-    ])
-    if rows is None:
-        return False, "missing_clk_sample_stimulus_edges"
-    return _sample_many_within_trace(
-        rows,
-        {"out": [(2.0, -1.1), (4.0, 0.0), (6.0, 0.0), (8.0, 0.275), (10.0, 0.4125), (14.0, -1.1), (16.0, -1.1), (18.0, -0.55), (20.0, -0.55), (22.0, -0.4125)]},
-        tol=0.035,
+    results, missing = missing_trace("v4_173", rows, required, PROPERTY_IDS)
+    if missing is not None:
+        return missing
+    reset_result, accumulation_result, weight_result, bipolar_result = results
+    sample_falls = edge_times(rows, "clk_sample", threshold=0.55, rising=False)
+    serial_falls = edge_times(rows, "clk_sarready", threshold=0.55, rising=False)
+    events = sorted(
+        [(time_s, "sample") for time_s in sample_falls]
+        + [(time_s, "serial") for time_s in serial_falls]
+    )
+    settle = event_settle_delay([time_s for time_s, _ in events])
+    state = 0.0
+    counter = 1
+    frame_bits: list[list[int]] = [[]]
+    initial_probe = row_at_or_after(rows, rows[0]["time"] + settle)
+    bipolar_result.compare(
+        expected=-1.1,
+        observed=initial_probe["out"],
+        tolerance=0.04,
+        time_s=initial_probe["time"],
+        label="initial_bipolar_zero",
+    )
+    for event_time, kind in events:
+        before = row_before(rows, event_time)
+        if kind == "sample":
+            state = 0.0
+            counter = 1
+            frame_bits.append([])
+            target = -1.1
+            result = reset_result
+        else:
+            if counter > 4:
+                continue
+            bit = int(before["data"] > 0.55)
+            frame_bits[-1].append(bit)
+            state += bit / (2.0 ** counter)
+            counter += 1
+            target = state * 2.2 - 1.1
+            result = accumulation_result
+        probe_time = event_time + settle
+        if probe_time > rows[-1]["time"]:
+            continue
+        observed = row_at_or_after(rows, probe_time)["out"]
+        result.compare(
+            expected=target,
+            observed=observed,
+            tolerance=0.04,
+            time_s=probe_time,
+            label="out",
+        )
+        bipolar_result.compare(
+            expected=target,
+            observed=observed,
+            tolerance=0.04,
+            time_s=probe_time,
+            label="bipolar_out",
+        )
+        if kind == "serial":
+            weight_result.compare(
+                expected=target,
+                observed=observed,
+                tolerance=0.04,
+                time_s=probe_time,
+                label=f"serial_weight_{counter - 1}",
+            )
+
+    complete_frames = [bits for bits in frame_bits if len(bits) >= 4]
+    observed_bits = [bit for bits in frame_bits for bit in bits]
+    reset_result.condition(
+        len(sample_falls) >= 2,
+        expected="sample_resets>=2",
+        observed=f"sample_resets={len(sample_falls)}",
+        time_s=rows[-1]["time"],
+    )
+    accumulation_result.condition(
+        len(serial_falls) >= 5,
+        expected="serial_falls>=5",
+        observed=f"serial_falls={len(serial_falls)}",
+        time_s=rows[-1]["time"],
+    )
+    weight_result.condition(
+        bool(complete_frames) and set(observed_bits) == {0, 1},
+        expected="complete_4bit_frame_with_zero_and_one",
+        observed=f"frames={frame_bits}",
+        time_s=rows[-1]["time"],
+    )
+    return finish(
+        "v4_173",
+        results,
+        coverage=(
+            f"sample_falls={len(sample_falls)} serial_falls={len(serial_falls)} "
+            f"frames={frame_bits}"
+        ),
     )
 
+
 CHECKER_ID = "v4_173_dac_serial_accumulator"
-CHECKER: Checker = bind_properties(check_v3_dac_serial_accumulator, (
-    "P_SAMPLE_CLOCK_RESET", "P_SARREADY_SERIAL_ACCUMULATION",
-    "P_BINARY_WEIGHT_ORDER", "P_BIPOLAR_OUTPUT_MAPPING",
-))
+CHECKER: Checker = check_v4_dac_serial_accumulator
