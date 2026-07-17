@@ -96,11 +96,11 @@ def check_v4_cascode_gain_cell_headroom(rows: list[dict[str, float]]) -> tuple[b
         and coverage_errors == 0
     )
     notes = [
-        f"P_RESET_DISABLE_CLEAR mismatch_count={clear_errors} expected=vout=0.45,metrics=0,headroom_ok=0_when_inactive observed=checked={checked}",
-        f"P_CASCODE_TRANSFER mismatch_count={vout_errors} expected=rail_clamped_gain_transfer observed=checked={checked}",
-        f"P_GAIN_METRIC mismatch_count={metric_errors} expected=abs(vout-0.45) observed=checked={checked}",
-        f"P_HEADROOM_QUALIFICATION mismatch_count={flag_errors} expected=headroom_ok=rail_margin_condition observed=checked={checked}",
-        f"P_EXERCISE_COVERAGE mismatch_count={coverage_errors} expected=clamp_disable_and_low_margin_regions observed=clamp={clamp_seen},disabled={disabled_seen},low={ok_low_seen}",
+        f"P_RESET_OR_LOW_ENABLE_DRIVES_VOUT mismatch_count={clear_errors} expected=vout=0.45,metrics=0,headroom_ok=0_when_inactive observed=checked={checked}",
+        f"P_WHEN_ENABLED_COMPUTE_AN_INVERTING_GAIN mismatch_count={vout_errors} expected=inverting_gain_transfer observed=checked={checked}",
+        f"P_CLAMP_THE_OUTPUT_BETWEEN_VSS_AND mismatch_count={vout_errors + coverage_errors} expected=rail_clamped_transfer_and_coverage observed=clamp={clamp_seen},disabled={disabled_seen},low={ok_low_seen}",
+        f"P_GAIN_METRIC_REPORTS_THE_ABSOLUTE_OUTPUT mismatch_count={metric_errors} expected=abs(vout-0.45) observed=checked={checked}",
+        f"P_HEADROOM_OK_IS_HIGH_ONLY_WHEN mismatch_count={flag_errors} expected=headroom_ok=rail_margin_condition observed=checked={checked}",
     ]
     return ok, "; ".join(notes)
 

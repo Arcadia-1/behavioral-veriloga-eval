@@ -696,6 +696,54 @@ def test_common_mode_feedback_exposes_exact_unsigned_control_contract() -> None:
     assert "applying the same correction to preserve the differential" in contracts
 
 
+def test_late_dut_families_expose_checker_defining_equations() -> None:
+    required = {
+        "365": (
+            "gain_error=abs(i_in-vcm)-abs(q_in-vcm)-signed_gain*trim_lsb",
+            "phase_error=(i_in-vcm)*(q_in-vcm)-signed_phase*trim_lsb",
+        ),
+        "366": (
+            "i_state=i_state+alpha*(vin-i_state)",
+            "q_state=q_state+alpha*(old_i-q_state)",
+        ),
+        "370": (
+            "error_metric=vcm+error",
+            "target=clamp(vcm+(1+gain_lsb*code)*(vin-vcm),vss,vdd)",
+        ),
+        "372": (
+            "carrier_count=(carrier_count+1)%20",
+            "carrier_count+0.5<20*duty_metric",
+        ),
+        "387": (
+            "active_gain=small_gain/(1+excess/0.20)",
+            "active_gain<0.85*small_gain",
+        ),
+        "389": (
+            "rail_limit=min(vdd_sense,vbias)-headroom_drop",
+            "rail_limit>vcm+0.05v",
+        ),
+    }
+    for family_id, snippets in required.items():
+        compact = (
+            (_family(family_id) / "public" / "task" / "instruction.md")
+            .read_text()
+            .lower()
+            .replace(" ", "")
+            .replace("\n", "")
+            .replace("`", "")
+        )
+        for snippet in snippets:
+            assert snippet in compact
+
+
+def test_quadrature_correction_rejects_short_calibration_prefix() -> None:
+    source = (ROOT / "runners" / "checkers" / "v4" / "task_365.py").read_text()
+    assert "minimum_checks = 5" in source
+    assert "trim_checks < minimum_checks" in source
+    assert "correction_checks < minimum_checks" in source
+    assert "hold_checks < minimum_checks" in source
+
+
 def test_repaired_testbench_bindings_match_reference_trace_names() -> None:
     expected = {
         "517-strongarm-style-latch-comparator-testbench": {

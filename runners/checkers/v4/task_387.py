@@ -68,15 +68,15 @@ def check_v4_946_lna_gain_compression_macro(rows: list[dict[str, float]]) -> tup
     )
     notes = [
         _property_note(
-            "P_RESET_DISABLE_CLEAR",
+            "P_ON_RESET_OR_WHEN_DISABLED_DRIVE",
             clear_errors + int(not reset_clear) + int(not disabled_clear),
             "vout=0.45,metrics=0,flag=0_when_inactive",
             f"reset_clear={reset_clear},disabled_clear={disabled_clear}",
         ),
-        _property_note("P_LNA_OUTPUT_TRANSFER", vout_errors, "vout=bounded_gain(vin)", f"checked={checked}"),
-        _property_note("P_GAIN_METRIC", gain_errors, "gain_metric=bounded_gain", f"errors={gain_errors}"),
-        _property_note("P_COMPRESSION_FLAG", flag_errors, "flag=1_when_compressed", f"errors={flag_errors}"),
-        _property_note("P_COMPRESSION_COVERAGE", coverage_errors, "compressed_and_uncompressed_regions", f"compressed={compressed_seen},uncompressed={uncompressed_seen}"),
+        _property_note("P_WHEN_ENABLED_PROVIDE_HIGH_GAIN_FOR", vout_errors, "vout=bounded_gain(vin)", f"checked={checked}"),
+        _property_note("P_REDUCE_EFFECTIVE_GAIN_MONOTONICALLY_WHEN_THE", coverage_errors, "compressed_and_uncompressed_regions", f"compressed={compressed_seen},uncompressed={uncompressed_seen}"),
+        _property_note("P_EXPOSE_ACTIVE_GAIN_ON_GAIN_METRIC", gain_errors + flag_errors, "gain_metric=bounded_gain,flag=1_when_compressed", f"gain_errors={gain_errors},flag_errors={flag_errors}"),
+        _property_note("P_CLAMP_VOUT_INSIDE_VSS_VDD", vout_errors, "vss<=vout<=vdd", f"checked={checked}"),
     ]
     return ok, "; ".join(notes)
 

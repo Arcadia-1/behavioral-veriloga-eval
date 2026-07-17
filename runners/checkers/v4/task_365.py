@@ -180,6 +180,13 @@ def check_v4_365_quadrature_correction_loop(rows: list[dict[str, float]]) -> tup
                 correction_gap, correction_time = gap_out, t
         last_gain, last_phase = gain, phase
         last_clock_t = t
+    minimum_checks = 5
+    if trim_checks < minimum_checks:
+        trim_bad += minimum_checks - trim_checks
+    if correction_checks < minimum_checks:
+        correction_bad += minimum_checks - correction_checks
+    if hold_checks < minimum_checks:
+        hold_bad += minimum_checks - hold_checks
     return _finish([
         PropertyDiagnostic("P_RESET_CLEAR", clear_bad, "codes=metric=lock=0,outputs=vcm", f"max_clear_gap={clear_gap:.3g}", clear_time, clear_gap, len(clear_samples)),
         PropertyDiagnostic("P_TRIM_DIRECTION", trim_bad, "signed_trim_steps_reduce_error", f"clock_checks={trim_checks}", trim_time, trim_gap, trim_checks, allowed_mismatches=max(1, trim_checks // 12)),
