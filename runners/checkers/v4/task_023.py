@@ -22,6 +22,9 @@ PROPERTY_IDS = [
     "P_SAMPLE_HOLD",
 ]
 BITS = ["dout0", "dout1", "dout2"]
+# The stable testbench binding forbids instance overrides; these are the public defaults.
+VREFP = 0.9
+VREFN = 0.0
 
 
 def check_clocked_adc_quantizer(rows: list[dict[str, float]]) -> tuple[bool, str]:
@@ -51,7 +54,7 @@ def check_clocked_adc_quantizer(rows: list[dict[str, float]]) -> tuple[bool, str
                 gap=0.2 - rail_span,
             )
             continue
-        normalized = 8.0 * (float(edge["vin"]) - edge["vss"]) / rail_span
+        normalized = 8.0 * (float(edge["vin"]) - VREFN) / (VREFP - VREFN)
         expected_code = min(7, max(0, math.floor(normalized)))
         sample = row_at_or_after(rows, event_time + settle)
         observed_code = bit_code(sample, BITS)

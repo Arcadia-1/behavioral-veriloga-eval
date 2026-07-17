@@ -125,18 +125,17 @@ def _trace_022() -> list[Row]:
     )
 
 
-def _trace_023() -> list[Row]:
+def _trace_023(*, vdd: float = 0.9) -> list[Row]:
     bits = ["dout0", "dout1", "dout2"]
 
     def update(edge: Row) -> dict[str, float]:
-        span = edge["vdd"] - edge["vss"]
-        code = min(7, max(0, math.floor(8.0 * (edge["vin"] - edge["vss"]) / span)))
+        code = min(7, max(0, math.floor(8.0 * edge["vin"] / 0.9)))
         return _rails(code, bits, high=edge["vdd"], low=edge["vss"])
 
     scenarios = []
     for code in range(8):
         normalized = 0.25 if code == 0 else 7.75 if code == 7 else code + 0.25
-        scenarios.append({"vin": 0.9 * normalized / 8.0, "vdd": 0.9, "vss": 0.0})
+        scenarios.append({"vin": 0.9 * normalized / 8.0, "vdd": vdd, "vss": 0.0})
     return _clocked_rows(scenarios, update, signal_names=("clk", "vin", "vdd", "vss", *bits))
 
 
@@ -356,3 +355,7 @@ def test_batch03_checker_diagnostics_are_structured_and_redacted() -> None:
     assert "sample_time=" in detail
     assert "metric_gap=" in detail
     assert "secret" not in detail.lower()
+
+
+def test_clocked_adc_conversion_endpoints_are_independent_of_output_rails() -> None:
+    _assert_event_relative("v4_023_clocked_adc_quantizer", _trace_023(vdd=1.2))
