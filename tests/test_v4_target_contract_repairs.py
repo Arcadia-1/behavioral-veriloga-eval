@@ -802,12 +802,16 @@ def test_testbench_checkers_do_not_require_canonical_stimulus_end_states() -> No
 def test_dynamic_testbench_checkers_do_not_bind_unrelated_stimulus_windows() -> None:
     divider_checker = (ROOT / "runners" / "checkers" / "v4" / "task_012.py").read_text()
     slew_checker = (ROOT / "runners" / "checkers" / "v4" / "task_016.py").read_text()
+    tdc_checker = (ROOT / "runners" / "checkers" / "v4" / "task_179.py").read_text()
 
     assert "stable_logic_plateaus" in divider_checker
     assert "active[-1][bit] > 0.45" not in divider_checker
     assert 'max(row[bit] for row in rows)' not in divider_checker
     assert "0.10 <= row[\"vout\"] <= 0.68" not in slew_checker
     assert "_transition_fit(rows, rise_time, fall_time)" in slew_checker
+    assert "measured_deltas" in tdc_checker
+    assert "_trace_time_scale" in tdc_checker
+    assert "(3.0, -0.3" not in tdc_checker
 
 
 def test_leaky_hold_capture_ignores_sample_edges_while_reset_is_active() -> None:
