@@ -660,6 +660,42 @@ def test_vga_step_response_exposes_exact_classifier_contract() -> None:
     assert "without adding an overshoot excursion to `vout`" in contracts
 
 
+def test_common_mode_feedback_exposes_exact_unsigned_control_contract() -> None:
+    snippets = (
+        "raw_error=(vop_in+von_in)/2-vcm",
+        "residual_before=raw_error-trim_code*trim_lsb",
+        "residual_before>lock_tol",
+        "residual_before<-lock_tol",
+        "residual_after=raw_error-trim_code*trim_lsb",
+        "abs(residual_after)<=lock_tol",
+        "vop_out=clamp(vop_in-trim_corr,vss,vdd)",
+        "von_out=clamp(von_in-trim_corr,vss,vdd)",
+    )
+    family = (
+        ROOT
+        / "benchmark-vabench-release-v4"
+        / "provenance"
+        / "dut-base-v3-exact-five-hash-bound-v2"
+        / "390-common-mode-feedback-loop"
+    )
+    compact = (
+        (family / "public" / "task" / "instruction.md")
+        .read_text()
+        .lower()
+        .replace(" ", "")
+        .replace("\n", "")
+        .replace("`", "")
+    )
+    for snippet in snippets:
+        assert snippet in compact
+
+    spec = json.loads((family / "evaluator" / "family_spec.json").read_text())
+    contracts = " ".join(item["observable_contract"] for item in spec["properties"])
+    assert "residual_before=raw_error-trim_code*trim_lsb" in contracts
+    assert "abs(residual_after)<=lock_tol" in contracts
+    assert "applying the same correction to preserve the differential" in contracts
+
+
 def test_repaired_testbench_bindings_match_reference_trace_names() -> None:
     expected = {
         "517-strongarm-style-latch-comparator-testbench": {

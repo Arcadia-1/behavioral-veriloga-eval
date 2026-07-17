@@ -43,6 +43,38 @@ Provide these overrideable public parameters on the top module and propagate com
 - `trim_2..trim_0` must expose the active trim code and `cm_error` must expose the signed residual error.
 - Assert `locked` after two consecutive updates within `lock_tol`.
 
+Use this deterministic unsigned-control convention. Let
+
+`raw_error = (vop_in + von_in)/2 - vcm`
+
+and initialize `trim_code = 0`, the within-tolerance counter to zero, and
+`locked = vss`. On every enabled rising `clk` edge, first compute
+
+`residual_before = raw_error - trim_code*trim_lsb`.
+
+If `residual_before > lock_tol`, increment `trim_code` by one; if
+`residual_before < -lock_tol`, decrement it by one. Saturate the unsigned code
+to the range 0 through 7. Then compute
+
+`residual_after = raw_error - trim_code*trim_lsb`.
+
+Increment the within-tolerance counter when
+`abs(residual_after) <= lock_tol`, otherwise clear the counter and `locked`.
+Assert `locked = vdd` once two consecutive enabled updates are within
+tolerance. Reset or disable immediately restores the initial controller state.
+
+Expose `trim_2..trim_0` as the binary bits of `trim_code` and drive
+`trim_corr = trim_code*trim_lsb`. While active, the balancer applies the same
+correction to both sides:
+
+`vop_out = clamp(vop_in - trim_corr, vss, vdd)`
+
+`von_out = clamp(von_in - trim_corr, vss, vdd)`
+
+and exposes `cm_error = (vop_in+von_in)/2 - vcm - trim_corr`. On reset or
+while disabled, bypass the inputs without correction and drive `cm_error = 0`.
+Applying the same correction to both sides preserves the input differential.
+
 ## Modeling Constraints
 
 Use deterministic voltage-domain behavioral Verilog-A suitable for transient simulation. Use voltage contributions for public electrical outputs. Do not instantiate transistor-level devices. Do not add testbench code, Spectre decks, checker code, generated result files, debug-only ports, or pass/fail flags.
