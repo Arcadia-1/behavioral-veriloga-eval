@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 from ..api import Checker
+from .diagnostics import with_diagnostic_contract
 VTH = 0.45
 
 def _high(row: dict[str, float], signal: str, threshold: float = VTH) -> bool:
@@ -13,12 +14,56 @@ def _rising(previous: dict[str, float], current: dict[str, float], signal: str, 
 def _falling(previous: dict[str, float], current: dict[str, float], signal: str, threshold: float = VTH) -> bool:
     return float(previous[signal]) > threshold >= float(current[signal])
 
-def _sample_after(rows: list[dict[str, float]], event_index: int, delay: float = 4e-10) -> dict[str, float]:
+def _crossing_time(
+    previous: dict[str, float],
+    current: dict[str, float],
+    signal: str,
+    threshold: float,
+) -> float:
+    before = float(previous[signal])
+    after = float(current[signal])
+    if after == before:
+        return float(current["time"])
+    fraction = (threshold - before) / (after - before)
+    return float(previous["time"]) + fraction * (
+        float(current["time"]) - float(previous["time"])
+    )
+
+def _value_at_time(
+    previous: dict[str, float],
+    current: dict[str, float],
+    signal: str,
+    time_s: float,
+) -> float:
+    duration = float(current["time"]) - float(previous["time"])
+    if duration <= 0.0:
+        return float(current[signal])
+    fraction = (time_s - float(previous["time"])) / duration
+    fraction = max(0.0, min(1.0, fraction))
+    return float(previous[signal]) + fraction * (
+        float(current[signal]) - float(previous[signal])
+    )
+
+def _sample_after(rows: list[dict[str, float]], event_index: int, delay: float = 4e-10) -> dict[str, float] | None:
     target = float(rows[event_index]["time"]) + delay
-    for row in rows[event_index:]:
+    for sample_index, row in enumerate(rows[event_index:], start=event_index):
         if float(row["time"]) >= target:
+            previous = rows[event_index]
+            for current in rows[event_index + 1 : sample_index + 1]:
+                controls_changed = (
+                    _rising(previous, current, "clk")
+                    or _falling(previous, current, "vdd_sense", 0.64)
+                    or _rising(previous, current, "vdd_sense", 0.72)
+                    or _rising(previous, current, "rst")
+                    or _falling(previous, current, "rst")
+                    or _rising(previous, current, "enable")
+                    or _falling(previous, current, "enable")
+                )
+                if controls_changed:
+                    return None
+                previous = current
             return row
-    return rows[-1]
+    return None
 
 def _required(rows: list[dict[str, float]], signals: set[str], task: str) -> tuple[bool, str | None]:
     if not rows:
@@ -95,25 +140,37 @@ def check_v4_399_supply_supervisor_brownout_por(rows: list[dict[str, float]]) ->
             brown=True; count=0; released=False; state=0
             coverage["inactive_rows"]+=1
         else:
+            events: list[tuple[float, str]] = []
             if index and _falling(previous,row,"vdd_sense",0.64):
-                brown=True; count=0; released=False; state=1
-                coverage["fall_crossings"]+=1
+                events.append((_crossing_time(previous, row, "vdd_sense", 0.64), "fall"))
             if index and _rising(previous,row,"vdd_sense",0.72):
-                brown=False; count=0; released=False; state=2
-                coverage["rise_crossings"]+=1
+                events.append((_crossing_time(previous, row, "vdd_sense", 0.72), "rise"))
             if index and _rising(previous,row,"clk"):
-                coverage["clock_edges"]+=1
-                if float(row["vdd_sense"])<0.64:
+                events.append((_crossing_time(previous, row, "clk", VTH), "clock"))
+            events.sort()
+            for event_time, event_kind in events:
+                if event_kind == "fall":
                     brown=True; count=0; released=False; state=1
-                elif not brown and float(row["vdd_sense"])>=0.72:
-                    count=min(count+1,4)
-                    released=count>=4
-                    state=3 if released else 2
-            event = index and (_rising(previous,row,"clk") or _falling(previous,row,"vdd_sense",0.64) or _rising(previous,row,"vdd_sense",0.72))
+                    coverage["fall_crossings"]+=1
+                elif event_kind == "rise":
+                    brown=False; count=0; released=False; state=2
+                    coverage["rise_crossings"]+=1
+                else:
+                    coverage["clock_edges"]+=1
+                    vdd_at_event = _value_at_time(
+                        previous, row, "vdd_sense", event_time
+                    )
+                    if vdd_at_event < 0.64:
+                        brown=True; count=0; released=False; state=1
+                    elif not brown and vdd_at_event >= 0.72:
+                        count=min(count+1,4)
+                        released=count>=4
+                        state=3 if released else 2
+            event = bool(events)
             sample=_sample_after(rows,index,2.5e-10) if event else row
             if released:
                 coverage["released_samples"]+=1
-            if event:
+            if event and sample is not None:
                 expected_por=released
                 expected_brown=brown
                 expected_delay=0.9*count/4.0
@@ -121,9 +178,9 @@ def check_v4_399_supply_supervisor_brownout_por(rows: list[dict[str, float]]) ->
                 if _high(sample,"por_n")!=expected_por or _high(sample,"pgood")!=expected_por:
                     _add(mismatches,"P_RELEASE_DELAY",sample,f"por_n=pgood={int(expected_por)} count={count}",f"por_n={int(_high(sample,'por_n'))},pgood={int(_high(sample,'pgood'))}",1.0)
                 if _high(sample,"brownout")!=expected_brown:
-                    pid="P_DIP_RESTART" if _falling(previous,row,"vdd_sense",0.64) else "P_UVLO_HYSTERESIS"
+                    pid="P_DIP_RESTART" if any(kind == "fall" for _, kind in events) else "P_UVLO_HYSTERESIS"
                     _add(mismatches,pid,sample,f"brownout={int(expected_brown)}",f"brownout={int(_high(sample,'brownout'))}",1.0)
-                if _falling(previous,row,"vdd_sense",0.64) and (_high(sample,"por_n") or _high(sample,"pgood") or abs(float(sample["delay_metric"]))>0.05):
+                if any(kind == "fall" for _, kind in events) and (_high(sample,"por_n") or _high(sample,"pgood") or abs(float(sample["delay_metric"]))>0.05):
                     _add(mismatches,"P_DIP_RESTART",sample,"por_n=pgood=delay_metric=0 after_uvlo_fall",f"por_n={int(_high(sample,'por_n'))},pgood={int(_high(sample,'pgood'))},delay={sample['delay_metric']:.4g}",max(abs(float(sample["delay_metric"])),float(_high(sample,"por_n") or _high(sample,"pgood"))))
                 if abs(float(sample["delay_metric"])-expected_delay)>0.05 or abs(float(sample["state_metric"])-expected_state)>0.05:
                     _add(mismatches,"P_STATE_METRICS",sample,f"delay={expected_delay:.4g},state={expected_state:.4g}",f"delay={sample['delay_metric']:.4g},state={sample['state_metric']:.4g}",max(abs(float(sample["delay_metric"])-expected_delay),abs(float(sample["state_metric"])-expected_state)))
@@ -138,4 +195,4 @@ def check_v4_399_supply_supervisor_brownout_por(rows: list[dict[str, float]]) ->
     return _finish("v4_399_supply_supervisor_brownout_por",properties,mismatches,coverage)
 
 CHECKER_ID = "v4_399_supply_supervisor_brownout_por"
-CHECKER: Checker = check_v4_399_supply_supervisor_brownout_por
+CHECKER: Checker = with_diagnostic_contract(check_v4_399_supply_supervisor_brownout_por)
