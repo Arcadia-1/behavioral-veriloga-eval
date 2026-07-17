@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 from ..api import Checker
+from .diagnostics import with_property_diagnostics
 def sample_signal_at(rows: list[dict[str, float]], signal: str, time_s: float) -> float | None:
     if not rows or "time" not in rows[0] or signal not in rows[0]:
         return None
@@ -33,23 +34,42 @@ def check_v3_candidate_afe_differential_common_mode_window_monitor(rows: list[di
     required = {"time", "vip", "vin", "vcm_ref", "en", "diff_ok", "cm_ok", "valid", "diff_metric", "cm_metric"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing differential common mode window monitor signals"
-    end_t = rows[-1]["time"]
-    sample_t = 0.75e-9
     checked = 0
     max_err = 0.0
     valid_high = valid_low = diff_fail = cm_fail = enable_low = negative_diff = ref_changed = False
     first_ref: float | None = None
-    while sample_t < end_t - 0.2e-9:
-        values = {name: sample_signal_at(rows, name, sample_t) for name in required if name != "time"}
-        if any(value is None for value in values.values()):
-            sample_t += 1.0e-9
-            continue
+    for index, row in enumerate(rows[1:-1], start=1):
+        values = {name: float(row[name]) for name in required if name != "time"}
         if first_ref is None:
             first_ref = values["vcm_ref"]
         vdiff = values["vip"] - values["vin"]
         vcm = 0.5 * (values["vip"] + values["vin"])
         diff_abs = abs(vdiff)
         cm_err = abs(vcm - values["vcm_ref"])
+        # Boolean outputs are explicitly smoothed.  Samples in a narrow band
+        # around a predicate transition do not have a unique instantaneous
+        # Boolean value, so only compare settled predicate regions.
+        previous = rows[index - 1]
+        following = rows[index + 1]
+        neighbor_predicates = []
+        for neighbor in (previous, row, following):
+            neighbor_diff = abs(float(neighbor["vip"]) - float(neighbor["vin"]))
+            neighbor_cm = abs(
+                0.5 * (float(neighbor["vip"]) + float(neighbor["vin"]))
+                - float(neighbor["vcm_ref"])
+            )
+            neighbor_predicates.append((
+                float(neighbor["en"]) > 0.45,
+                neighbor_diff <= 0.30,
+                neighbor_cm <= 0.080,
+            ))
+        if (
+            abs(values["en"] - 0.45) < 0.03
+            or abs(diff_abs - 0.30) < 0.01
+            or abs(cm_err - 0.080) < 0.005
+            or len(set(neighbor_predicates)) != 1
+        ):
+            continue
         enabled = values["en"] > 0.45
         diff_valid = enabled and diff_abs <= 0.30
         cm_valid = enabled and cm_err <= 0.080
@@ -75,14 +95,23 @@ def check_v3_candidate_afe_differential_common_mode_window_monitor(rows: list[di
         negative_diff = negative_diff or (vdiff < -0.05)
         ref_changed = ref_changed or abs(values["vcm_ref"] - first_ref) > 0.04
         checked += 1
-        sample_t += 1.0e-9
     if checked < 10:
-        return False, f"insufficient_diff_cm_samples={checked}"
+        return False, f"samples={checked} errors=1 insufficient_diff_cm_samples={checked}"
     if not (valid_high and valid_low and diff_fail and cm_fail and enable_low and negative_diff and ref_changed):
-        return False, "insufficient_diff_cm_coverage"
+        return False, f"samples={checked} errors=1 insufficient_diff_cm_coverage"
     if max_err > 0.08:
-        return False, f"diff_cm_monitor_error={max_err:.4f}"
-    return True, f"samples={checked} max_err={max_err:.4f}"
+        return False, f"samples={checked} errors=1 diff_cm_monitor_error={max_err:.4f}"
+    return True, f"samples={checked} errors=0 max_err={max_err:.4f}"
 
 CHECKER_ID = "v4_298_differential_common_mode_window_monitor"
-CHECKER: Checker = check_v3_candidate_afe_differential_common_mode_window_monitor
+CHECKER: Checker = with_property_diagnostics(
+    check_v3_candidate_afe_differential_common_mode_window_monitor,
+    {
+        "P_CONTINUOUSLY_COMPUTE_VDIFF_V_VIP_V": "errors",
+        "P_BUILD_A_VOLTAGE_DOMAIN_INPUT_VALIDITY": "errors",
+        "P_VTH_0_45_V_LOGIC_THRESHOLD": "errors",
+        "P_VHI_0_9_V_HIGH_LEVEL": "errors",
+        "P_DIFF_MAX_0_30_V_MAXIMUM": "errors",
+        "P_DIFF_FULLSCALE_0_45_V_FULL": "errors",
+    },
+)

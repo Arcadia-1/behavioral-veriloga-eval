@@ -64,9 +64,11 @@ def with_property_diagnostics(
 def _append_contract(note: str, ok: bool) -> str:
     """Expose a redacted, machine-readable result envelope for feedback."""
     status = "pass" if ok else "fail"
+    category = "behavior_pass" if ok else "behavior_mismatch"
     return (
         f"{note}; diagnostic_schema={DIAGNOSTIC_SCHEMA} status={status} "
-        "event_context=stimulus_relative expected=public_contract observed=trace"
+        f"category={category} event=stimulus_relative event_context=stimulus_relative "
+        "expected=public_contract observed=trace"
     )
 
 
