@@ -54,9 +54,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_metric_scale_low/certification.json",
-        "certification_sha256": "6de57d3d83b814c7ffea21a77570f9500695898c35e4bfb177a1e0ee40103ec3",
+        "certification_sha256": "c9b2b2d5d1d04a1486f841e7abd0282a16680163fcdc500cdb550b1c8822a914",
         "fault_class": "timing_or_state_update_fault",
-        "mutation_bundle_sha256": "a81996dd3fe3a271999fd49cd07042d94e585eee3db623e31c704a9de9966cf8",
+        "mutation_bundle_sha256": "aad67ccec195eda8bad0a28ace99b118fd5e0f70d88dace18646e89ec44be73d",
         "mutation_id": "neg_005_metric_scale_low",
         "source_catalog_certification_path": "negative_variants/neg_005_metric_scale_low/certification.json",
         "trigger_condition": "ADC Zoom Timing Sequencer: scales the metric output, preserving the main path while failing measurement checks.",
@@ -68,10 +68,10 @@
     "bugfix_seed": "neg_002_half_clk_sar",
     "canonical_dut_id": "202",
     "hashes": {
-      "mutation_catalog_sha256": "4193a5bf63ed754d7131c3fcc83a6ddd2fe133d511c5dc488ff8903606469670",
+      "mutation_catalog_sha256": "01e8ea6337ec3ac868ac1ad6f33d46849c80181bf225240a106e9bdade049f13",
       "score_deck_sha256": "6814af9104b66624588b6dbb50cacfc19a467382c45dbf6a35094a6381e6bcc0",
       "task_certification_sha256": "710d3901588c68396b4d026468645cacada80bde0d8296cd5fc138b297bcb816",
-      "task_record_sha256": "b4d790c87df1509898c614f46b68f51d8a4a72f4f3258afd5336a563375b9362"
+      "task_record_sha256": "277cf8144e5d63a6a8fa15cfc11159b2ad2eeab536a185e29023662984d8ab60"
     },
     "release_dir": "202-adc-zoom-timing-sequencer"
   }

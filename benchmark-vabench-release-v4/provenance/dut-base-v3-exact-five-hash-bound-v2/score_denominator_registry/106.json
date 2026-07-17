@@ -43,9 +43,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_metric_scale_low/certification.json",
-        "certification_sha256": "15b76b16cd9f7cb0d2c381edcbf6b3d47d84613b5941e534134eff3b82f3a3f3",
+        "certification_sha256": "faf3ddd830dadc25ef9bc48c790bd4d3224bd405b69ab8e8913a7763e6efcb52",
         "fault_class": "fault_005_metric_scale_low",
-        "mutation_bundle_sha256": "2313fab61fb4eb264fc118371e447dfecaed1ba3a5cdcbcc6a63e07407c372c8",
+        "mutation_bundle_sha256": "98bc7f70177a5a585a6ca4083608ce9544a7df74a340c4289f589da35a3ef3fc",
         "mutation_id": "neg_005_metric_scale_low",
         "source_catalog_certification_path": "negative_variants/neg_005_metric_scale_low/certification.json",
         "trigger_condition": "Clocked Comparator Reset Low: scales the metric output, preserving the main path while failing measurement checks.",
@@ -69,10 +69,10 @@
     "bugfix_seed": "neg_001_zero",
     "canonical_dut_id": "106",
     "hashes": {
-      "mutation_catalog_sha256": "d829863bddf90b695cab6c3280948d2658730dd1b2580c9ccd6ae6d7441678fa",
+      "mutation_catalog_sha256": "f28f35715315d4679986444b9a8043859af0c10249a47e30828c0db7d6da8d56",
       "score_deck_sha256": "469955cb41a6f41de22363e38c26d401340011e7d01964bf3c260205503ec832",
       "task_certification_sha256": "41531841f0b5d40a31f5500373ea49bb948f8ca49aced0fa4dd69c82c21e4d2c",
-      "task_record_sha256": "e0bdd79963215c4703c85083fadd3b57eb39827f2bd279e00b43eae7a820deee"
+      "task_record_sha256": "f52ece6b4b74e698debc3cc9842843fdb84e4a075497e1fbf492b82768ee1766"
     },
     "release_dir": "106-clocked-comparator-reset-low"
   }

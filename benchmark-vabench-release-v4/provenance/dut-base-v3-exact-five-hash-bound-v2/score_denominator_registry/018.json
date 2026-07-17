@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_boundary/certification.json",
-        "certification_sha256": "7dea76c5ac66271866cc98ae3196f4fcc22ff91b4d12b8c8fa54ad34b850f555",
+        "certification_sha256": "002fa679a09a40b55e1d66ca5f8873f57ae19365f7883940c3ddc279c7f2d75c",
         "fault_class": "boundary_semantic_error",
-        "mutation_bundle_sha256": "d8fb2952c5b5bb0a14101c40adbdd23bcbafc8f37359306f2470d30c6c42f102",
+        "mutation_bundle_sha256": "cefcb83fccc29c5c86f029542d09164f1e6359751c8a57add2a049758ec6fa44",
         "mutation_id": "neg_001_boundary",
         "source_catalog_certification_path": "negative_variants/neg_001_boundary/certification.json",
         "trigger_condition": "a public endpoint, threshold, saturation, or settling boundary is exercised",
@@ -74,10 +74,10 @@
     "bugfix_seed": "neg_001_boundary",
     "canonical_dut_id": "018",
     "hashes": {
-      "mutation_catalog_sha256": "ec187fbf9ca644fef9f740e5ca920d4f01e2d8945e913a8aab0ded66014399da",
-      "score_deck_sha256": "624a5c132bfee6b453380d74360a602fef5a56311935191b5bc7bf057e8a1270",
+      "mutation_catalog_sha256": "250920aa2ded217c1af3ecaf42b29ba706feba278999f5951aefc3426573cb1a",
+      "score_deck_sha256": "54a909bffdf299f5c115431d437f33cccdfec870059aaa39d0db86058d7e4af2",
       "task_certification_sha256": "619a6dc638e89bdf27870256476f070c7a83ea11f32dbcb767b24c89b62439b0",
-      "task_record_sha256": "c4666d1328a87c292556fd8dfa0af2436ee20ee41f8840a8a2a92d527760dcd6"
+      "task_record_sha256": "97804d5cf4c4803e35452c1640249c9985b1a17e5c1f434a4fe93e8df97d8f88"
     },
     "release_dir": "018-unit-element-thermometer-dac"
   }

@@ -1,5 +1,3 @@
-// vaBench generated partial-pass negative: metric_scale_low
-// Preserves module/interface shape while intentionally violating one public contract.
 `include "disciplines.vams"
 
 module four_channel_edge_sampler(clk, vin0, vin1, vin2, vin3, vout0, vout1, vout2, vout3);

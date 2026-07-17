@@ -1,4 +1,3 @@
-// neg_001_drive_vctrl_mid: holds vctrl at the initial mid value so it never ramps.
 `include "constants.vams"
 `include "disciplines.vams"
 
@@ -39,7 +38,6 @@ module charge_pump_pfd_state_machine (
         end
 
         @(timer(0, tstep)) begin
-            // vctrl intentionally held flat.
         end
 
         metric_q = (state_q < 0) ? metric_lo : (state_q > 0) ? metric_hi : metric_mid;

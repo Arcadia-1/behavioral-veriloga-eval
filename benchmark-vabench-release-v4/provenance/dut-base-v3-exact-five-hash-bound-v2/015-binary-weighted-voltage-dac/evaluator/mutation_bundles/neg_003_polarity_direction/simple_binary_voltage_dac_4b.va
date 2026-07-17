@@ -15,8 +15,3 @@ module simple_binary_voltage_dac_4b(code_0, code_1, code_2, code_3, vref, vss, a
         V(aout, vss) <+ slew(y - V(vss), 0.9 / (tr), -0.9 / (tr));
     end
 endmodule
-
-// vaBench partial-pass negative 3 for binary_weighted_voltage_dac:dut
-// Intended to preserve interface/smoke behavior while failing full checks.
-// Mutation note: polarity_direction_near_miss. The bit significance is
-// reversed, preserving interface shape while failing code-to-voltage mapping.

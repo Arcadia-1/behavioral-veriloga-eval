@@ -5,10 +5,10 @@
   "evaluator_hashes": {
     "certification.json": "710d3901588c68396b4d026468645cacada80bde0d8296cd5fc138b297bcb816",
     "checker_profile.json": "f3f85a22e4a208302282c15fec20a79e846707c409bf5985ccfd44519bcbb35d",
-    "derivation_manifest.json": "a9b3e619b5209db424c8dfd97f44af18a206ce42ace735756fc9e8627d3e5b0e",
+    "derivation_manifest.json": "7cdc333ab23b916e63fb1eccb8700e0b4c203da3b0e4a98f4691d3a83ae72789",
     "family_spec.json": "3091409e1058e7b28b7ffd90b77e69536ea3faae06e6876f7826bb15ae084b7f",
     "harness_spec.json": "1874e218ef6992f4fac5a634221278cda8b5205bf17a5cf264940383a4991707",
-    "mutation_catalog.json": "4193a5bf63ed754d7131c3fcc83a6ddd2fe133d511c5dc488ff8903606469670",
+    "mutation_catalog.json": "01e8ea6337ec3ac868ac1ad6f33d46849c80181bf225240a106e9bdade049f13",
     "profiles/feedback.json": "6b97df3145d951d31a5ccfe07d0691bfe6e03121622b17fa1b11d4e4f49616c6",
     "profiles/score.json": "1cf4175a5eae021b49146f057f2b871776319841889f311cba1af310767a7900",
     "score_tb.scs": "6814af9104b66624588b6dbb50cacfc19a467382c45dbf6a35094a6381e6bcc0",
@@ -24,7 +24,7 @@
   "readiness_evidence": {
     "kind": "task_certification",
     "path": "evaluator/certification.json",
-    "sha256": "b394086c2fcac656fd0ad5e939755e8c96e1c5bc10bc2b16ddd3ae7903442622"
+    "sha256": "710d3901588c68396b4d026468645cacada80bde0d8296cd5fc138b297bcb816"
   },
   "release_dir": "202-adc-zoom-timing-sequencer",
   "schema_version": "v4-canonical-dut-release-task-v1",

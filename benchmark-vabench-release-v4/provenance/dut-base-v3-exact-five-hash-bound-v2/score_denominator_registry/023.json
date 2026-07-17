@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_boundary/certification.json",
-        "certification_sha256": "40499841153d56cc40c97e121eba76e530166483810c280bfc0852553daf18da",
+        "certification_sha256": "e0cc76912c40a13381e3a7a6239675b8716f71a556380485b09aaac58952f0d8",
         "fault_class": "boundary_semantic_error",
-        "mutation_bundle_sha256": "e7c1a6649e66c8596f9eccebceca56ba1ca0025aeef1f8980152e35b907ac46f",
+        "mutation_bundle_sha256": "1af04e3c07480e7be110f3ec83cc02d49391376591cc453818e3e4e1b95a1938",
         "mutation_id": "neg_001_boundary",
         "source_catalog_certification_path": "negative_variants/neg_001_boundary/certification.json",
         "trigger_condition": "a public endpoint, threshold, saturation, or settling boundary is exercised",
@@ -68,10 +68,10 @@
     "bugfix_seed": "neg_001_boundary",
     "canonical_dut_id": "023",
     "hashes": {
-      "mutation_catalog_sha256": "1a83c05d4c000783536c9c82ed72e3d71cfb3a9229b00beefc08817961bea12c",
+      "mutation_catalog_sha256": "15e7fe0da8187c9a4765bc67e05eb0a7ec5554e765c74f17ad52398483d0e2e4",
       "score_deck_sha256": "445056abb550d10d987daba8cace264232cb665bd28f050c178617138807df2f",
       "task_certification_sha256": "1255b477f7f51efe7df2fcef43d5f1a6a48ae29ef72911f907b7afffe6d4bb84",
-      "task_record_sha256": "c98563e9889195bf008d95ea7371c56df26ed0df242136d3e937158cead8170b"
+      "task_record_sha256": "1d5bc5b0a915f9f5179af9a40bfcca4b66a27b841de91f4081bb0e45907b5d38"
     },
     "release_dir": "023-clocked-adc-quantizer"
   }

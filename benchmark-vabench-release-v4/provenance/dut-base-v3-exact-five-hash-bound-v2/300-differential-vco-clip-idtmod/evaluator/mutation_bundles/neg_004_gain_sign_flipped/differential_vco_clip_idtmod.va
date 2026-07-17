@@ -1,5 +1,3 @@
-// neg_004_gain_sign_flipped: flips the dFdV sign so the frequency moves the
-// wrong way with the differential control and the reintegrated phase diverges.
 `include "constants.vams"
 `include "disciplines.vams"
 

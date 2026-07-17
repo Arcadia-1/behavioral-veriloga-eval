@@ -55,9 +55,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_off_by_one_divide_ratio/certification.json",
-        "certification_sha256": "6668b1185032149fcc14beb3abe42e35fe8f72dbaad8764bda9e378ae39405d5",
+        "certification_sha256": "47311fd4cc6b57682dde5d6af346cc166ef9a4f8da82a14210ce610ca9716252",
         "fault_class": "off_by_one_divide_ratio",
-        "mutation_bundle_sha256": "98b3bbfde69977db1a44e9a4b83d63d37ce804970bd72602c5d281091257391f",
+        "mutation_bundle_sha256": "5218611c3b907a65c58fe7bb28d547f0c0c063941c5ab0299576c2fcac5faae9",
         "mutation_id": "neg_002_off_by_one_divide_ratio",
         "source_catalog_certification_path": "negative_variants/neg_002_off_by_one_divide_ratio/certification.json",
         "trigger_condition": "a nonzero decoded divide ratio is exercised after reset release",
@@ -69,10 +69,10 @@
     "bugfix_seed": "neg_001_ratio_decode_bit_drop",
     "canonical_dut_id": "012",
     "hashes": {
-      "mutation_catalog_sha256": "69cb21a3fdb25362960283c4d0a08714c82aa648d5dcdd2bdd9763a6ab4e0376",
+      "mutation_catalog_sha256": "2de9ad91f1351a784483fcb8c09222324bb63f5030a1fd8848f0469d75b20e6c",
       "score_deck_sha256": "fdc7011f6a6afa0d1d40489aa56c74cb911558d3a1eb9964f022694434ab4e2d",
       "task_certification_sha256": "b0511cb7e892c125a12107c231eb77a870b18cd3e88173b5ea1b3aa94672615e",
-      "task_record_sha256": "76269d8926347cf817ad7aba2895d5255e36fdad304b1aacbd9d5acfb8ae1b54"
+      "task_record_sha256": "cdadea19bbbcfc3cc5ded8bceb167606926eb116ffef1954dc2b3ff76d95e741"
     },
     "release_dir": "012-clock-divider"
   }

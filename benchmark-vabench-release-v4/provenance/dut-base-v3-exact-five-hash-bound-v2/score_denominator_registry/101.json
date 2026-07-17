@@ -30,9 +30,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_reset_polarity_wrong/certification.json",
-        "certification_sha256": "43875407a64893f44a03b1210f9380e873b20255a8514e196b9e4301e5eb4d8a",
+        "certification_sha256": "9da09fb9e2e63ddb287416b7ca58030ae50cceed42a8628f369a2a7fc3b109e8",
         "fault_class": "fault_004_reset_polarity_wrong",
-        "mutation_bundle_sha256": "3135a0e30fc7404882e819fcd4f9fe5397d8a90a7afb6869291334b84b88184e",
+        "mutation_bundle_sha256": "08ade483bf227a55751a46f5c76b28dbbaf57cfa1b99594cfaf79e874121452d",
         "mutation_id": "neg_004_reset_polarity_wrong",
         "source_catalog_certification_path": "negative_variants/neg_004_reset_polarity_wrong/certification.json",
         "trigger_condition": "Settling Time Measurement: uses the wrong reset polarity, preserving steady-state behavior while failing recovery checks.",
@@ -68,10 +68,10 @@
     "bugfix_seed": "neg_001_zero",
     "canonical_dut_id": "101",
     "hashes": {
-      "mutation_catalog_sha256": "370be0e7804f432038c8c35aaabeaf75c0738cb9f299199eaea5f9e0c305cfaf",
+      "mutation_catalog_sha256": "91a42a27b22ee5ce81385aa44a3a4e4943a8a8aa2ff186067108ef46a0bef9aa",
       "score_deck_sha256": "61210e700ee5dc09a49e50a77f5d16112eb75fe65af8cbaad7df473f7c1c11c3",
       "task_certification_sha256": "da7a14b70e3472d10e471ee00075a7cffaf6f95eba34da4120026e8e0d502b75",
-      "task_record_sha256": "eecb7efa9d6741c9a6371a6714a72022a45bbefaa97e8281413c4d5746faba16"
+      "task_record_sha256": "1bef4764fd8e32acad59d7035d7ed1f3dea480833b11a0009be4eea301aa05a1"
     },
     "release_dir": "101-settling-time-measurement"
   }

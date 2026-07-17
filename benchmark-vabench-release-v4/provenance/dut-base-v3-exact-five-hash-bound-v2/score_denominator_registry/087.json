@@ -47,9 +47,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_reset_polarity_wrong/certification.json",
-        "certification_sha256": "f35e3c893af1c2bce5d2d7ac7329f48a397a915a40c329f2834a19ea5c028fb1",
+        "certification_sha256": "7ae26117aa230f3c883ffabd10800ca37110d41a15e538f000823851e05d7f86",
         "fault_class": "reset_semantics_error",
-        "mutation_bundle_sha256": "d12fcb3877d821120850fc97a65550dbfdce03f77d0d9b803503c10ad074221d",
+        "mutation_bundle_sha256": "6655149d111d12306569902b1050f2e41f043fec08dfd8fa7e3c035f1855cb40",
         "mutation_id": "neg_004_reset_polarity_wrong",
         "source_catalog_certification_path": "negative_variants/neg_004_reset_polarity_wrong/certification.json",
         "trigger_condition": "reset/recovery stimulus exercises Converter Static Linearity Measurement state override behavior",
@@ -74,10 +74,10 @@
     "bugfix_seed": "neg_002_threshold_shifted",
     "canonical_dut_id": "087",
     "hashes": {
-      "mutation_catalog_sha256": "6e547b434954270786d70b587ed7c1138dde5118dd8444b17bca2055dc34bff1",
+      "mutation_catalog_sha256": "792f42b0646913a30d397bf4541fb1661b1b21cd6d202efc4f80b128144df9d1",
       "score_deck_sha256": "6d3d703d44464093d4123ba8f323f9622d8bd4c735f1f37101e11778458c7222",
       "task_certification_sha256": "9e7722127efe069a33d106272e033fec079ba2fc612d47a0c4b5cfeffba4d14e",
-      "task_record_sha256": "fa58d2101760164af70eb799ad1f9442a08fdbbd05bf8a3d9410f88252efe9bd"
+      "task_record_sha256": "45c99ea346c1c4928a4e9c04f066133828d3b58d914ba453b3ed57e5f0785600"
     },
     "release_dir": "087-converter-static-linearity-measurement"
   }

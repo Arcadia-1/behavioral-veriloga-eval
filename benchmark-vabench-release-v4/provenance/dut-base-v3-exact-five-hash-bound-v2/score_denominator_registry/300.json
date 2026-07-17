@@ -30,9 +30,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_gain_sign_flipped/certification.json",
-        "certification_sha256": "0f211b2c5d434e73dc76230c41cda50302c8fdfcf4ceb67f554794adf8851468",
+        "certification_sha256": "a29b87a80cc13a240174c8919f771176f2c4cf9033de7d4b853a65bf8c2c59e4",
         "fault_class": "vco_tuning_polarity_error",
-        "mutation_bundle_sha256": "bde230ea82935153b5b9e89139a68a35a78aebf3af51ffbd85ccdb8a25a8eb94",
+        "mutation_bundle_sha256": "f138467eed1727efaeb38c5939e63ee2582118af5c096e9cc580ad3ec57e4540",
         "mutation_id": "neg_004_gain_sign_flipped",
         "source_catalog_certification_path": "negative_variants/neg_004_gain_sign_flipped/certification.json",
         "trigger_condition": "Differential VCO With Clip And Idtmod: flips the dFdV sign so the frequency moves the wrong way with the differential control and the reintegrated phase diverges.",
@@ -68,10 +68,10 @@
     "bugfix_seed": "neg_003_wrong_phase_modulus",
     "canonical_dut_id": "300",
     "hashes": {
-      "mutation_catalog_sha256": "1da0cb3cd238d997c225438550468b0931f4e4b5f4529db077918e42b8c7dbe3",
+      "mutation_catalog_sha256": "b8232e1a366cb54894e6155970734e6726ee4eb4f274b5fc1aa332b37652b2a1",
       "score_deck_sha256": "3cbdca7bfb7e447db03ea39fa5e035a69c3099af8f0aef285da2f2605ce89cbb",
       "task_certification_sha256": "e0e5da995edb7023e97776765be322aa3239c9d8e67bba8b7bedfa8415318380",
-      "task_record_sha256": "d8bab9e34bc8d2cdf1d7d5f74c12fb67197d8a152b4081cd961219b1785461a7"
+      "task_record_sha256": "20ab38b4958d863db5df847a50bef93bd2c91a80ee4a7b7411cf60e8f5b12ec4"
     },
     "release_dir": "300-differential-vco-clip-idtmod"
   }

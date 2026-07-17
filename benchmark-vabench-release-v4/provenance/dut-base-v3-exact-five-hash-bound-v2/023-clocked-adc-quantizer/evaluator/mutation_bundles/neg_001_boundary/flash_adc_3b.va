@@ -1,4 +1,3 @@
-// 3-bit Flash ADC behavioral model
 // 7 comparator levels uniformly spaced between vrefn and vrefp.
 // Thermometer code -> binary encoding. Output latched on rising CLK edge.
 // Bit outputs stored as piecewise-constant reals (updated in @(cross) block).
@@ -54,7 +53,3 @@ analog begin
 end
 
 endmodule
-
-// vaBench partial-pass negative 1 for clocked_adc_quantizer:dut
-// Intended to preserve interface/smoke behavior while failing full checks.
-// Mutation note: boundary_near_miss.

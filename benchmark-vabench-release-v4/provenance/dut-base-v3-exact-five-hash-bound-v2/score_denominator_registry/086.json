@@ -19,9 +19,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_reset_polarity_wrong/certification.json",
-        "certification_sha256": "033e52dac54ba9535f175b979e22bdcf0bd2a6a2921f6ff4e116b7acf3090b68",
+        "certification_sha256": "9d4238997fe18dbf937e676b41859c6532432c16b83a58e9ad9be3c0b0c24b9b",
         "fault_class": "reset_semantics_error",
-        "mutation_bundle_sha256": "2d0a13244b084b6fe83507d8bff7954dde2e371fe51aac1fae24b5340aff8928",
+        "mutation_bundle_sha256": "df0bf370447b87391541ede088f27fef708562bf6a4145bb50867aafebda8ac4",
         "mutation_id": "neg_004_reset_polarity_wrong",
         "source_catalog_certification_path": "negative_variants/neg_004_reset_polarity_wrong/certification.json",
         "trigger_condition": "reset/recovery stimulus exercises Complete Calibration Loop state override behavior",
@@ -74,10 +74,10 @@
     "bugfix_seed": "neg_002_threshold_shifted",
     "canonical_dut_id": "086",
     "hashes": {
-      "mutation_catalog_sha256": "5be121a5ecf9b5330c74aa4810b52162b0157922e35e209d9a2632948e22a299",
+      "mutation_catalog_sha256": "113ea9de5daedc4f3ee57160f909ef2bd3b58b1a096104f2aa9c7109fc403d30",
       "score_deck_sha256": "05b4851c8f006acbc1f56156447fbfedbca376db72d7106f485494b8f553c50c",
       "task_certification_sha256": "9d6a838e8b9b8e7efe819f9c2798a3f857c65f114ae7159e8c0e16d62d04033c",
-      "task_record_sha256": "dfc3f7f7cf65d6810d757386637d149a3b493ad1d6a91eaef9ef04e83dbf360c"
+      "task_record_sha256": "e76b51920d18e5ecfbf1c7ec99e90793c85b822676ad45afeb1ed3f8d78f9a3e"
     },
     "release_dir": "086-complete-calibration-loop"
   }

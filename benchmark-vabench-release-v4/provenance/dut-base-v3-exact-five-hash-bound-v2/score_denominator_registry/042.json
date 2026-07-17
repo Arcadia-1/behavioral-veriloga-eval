@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_001/certification.json",
-        "certification_sha256": "4a6751c467569f964f4bcb9faed46f29621f1ca4fab4214166eb0be61df53df5",
+        "certification_sha256": "2694d6317a551d641725ef4b55032f9bed89576fe8a1332bb43dfc96b5b36eb4",
         "fault_class": "passes_nominal_smoke_cases_but_fails_an_endpoint",
-        "mutation_bundle_sha256": "b5c8f1d2ee103a214981cea9535188ca37365bc1c9b63031be143c0539b5f05e",
+        "mutation_bundle_sha256": "7160f0feba5d58cd890b3b7fefcc6e1248e6a9f371eb2d536e13b04f8a4b6c5b",
         "mutation_id": "neg_001",
         "source_catalog_certification_path": "negative_variants/neg_001/certification.json",
         "trigger_condition": "Passes nominal/smoke cases but fails an endpoint, threshold, saturation, or settling boundary.",
@@ -68,10 +68,10 @@
     "bugfix_seed": "neg_001",
     "canonical_dut_id": "042",
     "hashes": {
-      "mutation_catalog_sha256": "aab420bad15cd8dfad80541db626d1ede4dfbd1ff4b3698e49458b62945b5f2b",
+      "mutation_catalog_sha256": "225f54924d4ca6208793ddf310b34b0584303f4dc8ec393735f28b17f5d50b1a",
       "score_deck_sha256": "3acc14ce6a6e963a1a9081a173c3b35354de90ec7eb2cf1ad448a9ab4dc82c90",
       "task_certification_sha256": "d51c962174fceef62fce5b098ec4c91af9caf5ecb4618c10cf385ca7d1d26a75",
-      "task_record_sha256": "164993719e3d825605005b01fd7894633729af26ad04cd32ec101c56e7a4744f"
+      "task_record_sha256": "3ef3f33aaa7d9a5187eebef84529a5238cc2806cff205a413a2b663af330d2e1"
     },
     "release_dir": "042-sample-and-hold-with-droop-leakage"
   }
