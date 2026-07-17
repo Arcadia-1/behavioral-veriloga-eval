@@ -34,6 +34,15 @@ Provide these overrideable public parameters:
 - `gain_metric` reports the absolute output excursion from common mode.
 - `headroom_ok` is high only when the available headroom limit remains above common mode.
 
+Compute the available rail as
+`rail_limit=min(vdd_sense,vbias)-headroom_drop`. While enabled, drive
+
+`vout = clamp(vcm-gain*(vin-vcm),vss,rail_limit)`
+
+and `gain_metric=abs(vout-vcm)`. Assert `headroom_ok=0.9 V` exactly when
+`rail_limit > vcm+0.05 V`, otherwise drive it to vss. Reset or low `enable`
+drives `vout=vcm` and clears `gain_metric` and `headroom_ok` to vss.
+
 ## Modeling Constraints
 
 Use deterministic voltage-domain behavioral Verilog-A suitable for transient simulation. Use voltage contributions for public electrical outputs. Do not use current contributions, transistor-level devices, AC/noise analysis, random sources, table files, or topology-level assumptions. Use explicit initialization for stored state and smooth public voltage outputs with transition-style behavior.

@@ -37,6 +37,20 @@ Provide these overrideable public parameters on the top module and propagate com
 - Assert `valid` after at least four enabled sample updates.
 - The I and Q outputs must not collapse to identical waveforms during enabled operation.
 
+Poll controls every `tick = 250 ps` and detect rising `clk` edges from adjacent
+polls. Initialize both states to `vcm`. On each enabled rising edge save
+`old_i=i_state`, then update
+
+`i_state = i_state + alpha*(vin-i_state)`
+
+`q_state = q_state + alpha*(old_i-q_state)`.
+
+Drive `i_out=i_state` and `q_out=q_state` with `tr` smoothing. After the update,
+drive `amp_metric = min(vdd,2*abs(i_state-q_state))` and drive `phase_metric`
+to 0.65 V when `i_state >= q_state`, otherwise 0.25 V. Assert `valid=vdd`
+starting with the fourth enabled update. Reset or disable restores both states
+to `vcm`, clears the update count, and drives both metrics and `valid` to vss.
+
 ## Modeling Constraints
 
 Use deterministic voltage-domain behavioral Verilog-A suitable for transient simulation. Use voltage contributions for public electrical outputs. Do not instantiate transistor-level devices. Do not add external stimulus decks, private validation code, generated result files, debug-only ports, or pass/fail flags.

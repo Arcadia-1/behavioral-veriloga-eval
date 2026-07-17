@@ -31,13 +31,28 @@ Provide these overrideable public parameters on the top module and propagate com
 
 ## Required Behavior
 
-- On reset or when `enable` is low, drive `vout` to `vcm`, clear `error_metric`, and clear `settled`.
+- On reset or when `enable` is low, drive `vout` and the zero-error encoding on `error_metric` to `vcm`, and clear `settled`.
 - Decode `gain_2..gain_0` into a closed-loop target gain of at least unity.
 - Update `vout` once per rising `clk` edge toward the target closed-loop output using `alpha`.
 - Clamp `vout` to the range `vss` through `vdd`.
-- `error_metric` must expose the signed difference between the current output and the target closed-loop value.
+- `error_metric` must expose the target-minus-output error as a `vcm`-centered voltage code.
 - Assert `settled` after three consecutive updates where the absolute error is below `settle_tol`.
 - The output must move in the direction of the target after an input step unless already clamped.
+
+Poll controls every `tick = 250 ps`. Decode
+`code=4*gain_2+2*gain_1+gain_0` and, on each enabled rising edge, compute
+
+`target = clamp(vcm + (1+gain_lsb*code)*(vin-vcm), vss, vdd)`
+
+`vout_next = clamp(vout + alpha*(target-vout), vss, vdd)`
+
+`error = target-vout_next`.
+
+Drive `vout=vout_next` and encode the signed error on the public electrical
+metric as `error_metric=vcm+error`; `vcm` therefore represents zero error.
+Increment the settle counter when `abs(error)<settle_tol`, otherwise clear it,
+and assert `settled=vdd` at count three. Reset or disable drives `vout=vcm`,
+`error_metric=vcm`, and `settled=vss`, and clears the counter.
 
 ## Modeling Constraints
 

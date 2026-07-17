@@ -13,8 +13,7 @@
       "Vvin (vin 0) vsource type=pwl wave=[0 0.47 18n 0.47 18.2n 0.58 42n 0.58 42.2n 0.72 64n 0.72 64.2n 0.25 92n 0.25]",
       "Venable (enable 0) vsource type=pwl wave=[0 0 5n 0 5.2n 0.9 82n 0.9 82.2n 0 92n 0]",
       "Vrst (rst 0) vsource type=pwl wave=[0 0.9 3n 0.9 3.2n 0 92n 0]",
-      "XDUT (vin enable rst vout gain_metric compression_flag) lna_gain_compression_macro",
-      ""
+      "XDUT (vin enable rst vout gain_metric compression_flag) lna_gain_compression_macro"
     ],
     "header": [
       "simulator lang=spectre",
@@ -44,31 +43,17 @@
     "legacy_score_deck_sha256": "70a17c331e0ddceb342223d0cab81a7db3d212650dac687256a9833163991df8",
     "notes": [
       "legacy feedback deck was used only to seed the canonical harness spec",
-      "legacy score deck seeded private profile-specific overrides"
+      "legacy score deck seeded private profile-specific overrides",
+      "feedback deck is the canonical stimulus; score is generated with identical semantics"
     ]
   },
   "profile_defaults": {
     "feedback": {
-      "corners": [],
-      "deck_overrides": {},
-      "deterministic_seed": 0,
-      "parameters": {
-        "maxstep": "100p",
-        "stop_time": "100n"
-      },
       "simulatorOptions": {
         "evas_profile": "balanced"
       }
     },
-    "score": {
-      "corners": [],
-      "deck_overrides": {},
-      "deterministic_seed": 0,
-      "parameters": {
-        "maxstep": "100p",
-        "stop_time": "100n"
-      }
-    }
+    "score": {}
   },
   "property_ids": [
     "P_ON_RESET_OR_WHEN_DISABLED_DRIVE",

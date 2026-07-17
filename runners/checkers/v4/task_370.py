@@ -62,7 +62,15 @@ def check_v4_929_opamp_feedback_settling_monitor(rows: list[dict[str, float]]) -
                     settled_errors += 1
         prev_clk = float(row["clk"])
     ok = checked >= 6 and reset_clear and disabled_clear and move_seen and settled_seen and vout_errors <= 1 and err_errors <= 1 and settled_errors <= 1 and clear_errors <= 12
-    return ok, f"v4_929 checked={checked} reset_clear={reset_clear} disabled_clear={disabled_clear} move_seen={move_seen} settled_seen={settled_seen} vout_errors={vout_errors} err_errors={err_errors} settled_errors={settled_errors} clear_errors={clear_errors}"
+    diagnostics = [
+        f"P_ON_RESET_OR_WHEN_ENABLE_IS mismatch_count={clear_errors + int(not reset_clear) + int(not disabled_clear)} expected=vout=vcm,metric=settled=0 observed=reset_clear={reset_clear},disabled_clear={disabled_clear},clear_errors={clear_errors}",
+        f"P_DECODE_GAIN_2_GAIN_0_INTO mismatch_count={vout_errors + int(checked < 6)} expected=target_from_binary_gain_code observed=checked={checked},vout_errors={vout_errors}",
+        f"P_UPDATE_VOUT_ONCE_PER_RISING_CLK mismatch_count={vout_errors + int(not move_seen)} expected=alpha_step_toward_target observed=vout_errors={vout_errors},move_seen={move_seen}",
+        f"P_CLAMP_VOUT_TO_THE_RANGE_VSS mismatch_count={vout_errors} expected=vss<=vout<=vdd observed=vout_errors={vout_errors}",
+        f"P_ERROR_METRIC_MUST_EXPOSE_THE_SIGNED mismatch_count={err_errors} expected=error_metric=vcm+target-vout observed=err_errors={err_errors}",
+        f"P_ASSERT_SETTLED_AFTER_THREE_CONSECUTIVE_UPDATES mismatch_count={settled_errors + int(not settled_seen)} expected=settled_after_three observed=settled_errors={settled_errors},settled_seen={settled_seen}",
+    ]
+    return ok, "; ".join(diagnostics)
 
 CHECKER_ID = "v4_370_opamp_feedback_settling_monitor"
 CHECKER: Checker = check_v4_929_opamp_feedback_settling_monitor

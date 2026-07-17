@@ -60,7 +60,15 @@ def check_v4_925_polyphase_quadrature_filter_macro(rows: list[dict[str, float]])
                     valid_errors += 1
         prev_clk = float(row["clk"])
     ok = checked >= 6 and reset_clear and disabled_clear and iq_separated and valid_seen and i_errors <= 2 and q_errors <= 2 and amp_errors <= 2 and phase_errors <= 2 and valid_errors <= 1 and clear_errors <= 12
-    return ok, f"v4_925 checked={checked} reset_clear={reset_clear} disabled_clear={disabled_clear} iq_separated={iq_separated} valid_seen={valid_seen} i_errors={i_errors} q_errors={q_errors} amp_errors={amp_errors} phase_errors={phase_errors} valid_errors={valid_errors} clear_errors={clear_errors}"
+    diagnostics = [
+        f"P_ON_RESET_OR_WHEN_ENABLE_IS mismatch_count={clear_errors + int(not reset_clear) + int(not disabled_clear)} expected=states=vcm,metrics=valid=0 observed=reset_clear={reset_clear},disabled_clear={disabled_clear},clear_errors={clear_errors}",
+        f"P_ON_EACH_RISING_CLK_EDGE_WHILE mismatch_count={i_errors + int(checked < 6)} expected=i_state_alpha_update observed=checked={checked},i_errors={i_errors}",
+        f"P_UPDATE_A_QUADRATURE_SAMPLED_STATE_USING mismatch_count={q_errors + int(not iq_separated)} expected=q_uses_previous_i observed=q_errors={q_errors},iq_separated={iq_separated}",
+        f"P_DRIVE_I_OUT_AND_Q_OUT mismatch_count={i_errors + q_errors} expected=outputs_follow_states observed=i_errors={i_errors},q_errors={q_errors}",
+        f"P_REPORT_A_BOUNDED_PHASE_ORDER_METRIC mismatch_count={amp_errors + phase_errors} expected=exact_amp_and_phase_metrics observed=amp_errors={amp_errors},phase_errors={phase_errors}",
+        f"P_ASSERT_VALID_AFTER_AT_LEAST_FOUR mismatch_count={valid_errors + int(not valid_seen)} expected=valid_after_update_four observed=valid_errors={valid_errors},valid_seen={valid_seen}",
+    ]
+    return ok, "; ".join(diagnostics)
 
 CHECKER_ID = "v4_366_polyphase_quadrature_filter_macro"
 CHECKER: Checker = check_v4_925_polyphase_quadrature_filter_macro
