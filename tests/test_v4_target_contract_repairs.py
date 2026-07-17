@@ -807,3 +807,11 @@ def test_dynamic_testbench_checkers_do_not_bind_unrelated_stimulus_windows() -> 
     assert 'max(row[bit] for row in rows)' not in divider_checker
     assert "0.10 <= row[\"vout\"] <= 0.68" not in slew_checker
     assert "_transition_fit(rows, rise_time, fall_time)" in slew_checker
+
+
+def test_leaky_hold_capture_ignores_sample_edges_while_reset_is_active() -> None:
+    checker = (ROOT / "runners" / "checkers" / "v4" / "task_042.py").read_text()
+
+    assert 'sample(rows, "rst", edge_t)' in checker
+    assert 'expected="active_sample_edges>=3"' in checker
+    assert "hold_windows" in checker

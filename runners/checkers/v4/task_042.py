@@ -19,14 +19,23 @@ def check_release_vin_sampled_droop_hold(rows: list[dict[str, float]]) -> tuple[
     if missing:
         return False, missing
 
-    sample_edges = crossings(rows, "sample", threshold=0.45, direction="rising")
+    all_sample_edges = crossings(rows, "sample", threshold=0.45, direction="rising")
+    sample_edges = [
+        edge_t
+        for edge_t in all_sample_edges
+        if (sample(rows, "rst", edge_t) or 0.0) < 0.45
+        and (sample(rows, "rst", edge_t + 1.20e-9) or 0.0) < 0.45
+    ]
     if len(sample_edges) < 3:
         return False, diagnostic(
             "P_SAMPLE_CAPTURE",
             "insufficient_excitation",
-            expected="sample_edges>=3",
-            observed=f"sample_edges={len(sample_edges)}",
-            event="sample.rising",
+            expected="active_sample_edges>=3",
+            observed=(
+                f"active_sample_edges={len(sample_edges)},"
+                f"all_sample_edges={len(all_sample_edges)}"
+            ),
+            event="sample.rising while rst.low",
         )
 
     expected: list[float] = []
@@ -52,11 +61,19 @@ def check_release_vin_sampled_droop_hold(rows: list[dict[str, float]]) -> tuple[
     observed_span = max(observed) - min(observed)
     sample_match = max_err <= 0.045 and expected_span >= 0.35 and observed_span >= 0.30
 
-    # Use the high second sample as the droop window; reset begins well after it.
-    second_edge = sample_edges[1]
-    droop_start_t = second_edge + 2.0e-9
     reset_edges = crossings(rows, "rst", threshold=0.45, direction="rising")
-    droop_end_t = (reset_edges[0] - 2.0e-9) if reset_edges else (second_edge + 35.0e-9)
+    hold_windows: list[tuple[float, float]] = []
+    for edge_t in sample_edges:
+        boundaries = [
+            boundary
+            for boundary in (*sample_edges, *reset_edges, rows[-1]["time"])
+            if boundary > edge_t
+        ]
+        if boundaries:
+            hold_windows.append((edge_t, min(boundaries)))
+    hold_edge, hold_end = max(hold_windows, key=lambda window: window[1] - window[0])
+    droop_start_t = hold_edge + 2.0e-9
+    droop_end_t = hold_end - 2.0e-9
     droop_values = [r["vout"] for r in rows if droop_start_t <= r["time"] <= droop_end_t]
     if len(droop_values) < 8:
         return False, diagnostic(
@@ -64,7 +81,7 @@ def check_release_vin_sampled_droop_hold(rows: list[dict[str, float]]) -> tuple[
             "insufficient_excitation",
             expected="droop_samples>=8",
             observed=f"droop_samples={len(droop_values)}",
-            event="between_second_sample_and_reset",
+            event="longest_active_hold_window",
         )
     droop = droop_values[0] - droop_values[-1]
     upward_steps = sum(1 for a, b in zip(droop_values[:-1], droop_values[1:]) if b - a > 0.004)
@@ -111,4 +128,11 @@ def check_release_vin_sampled_droop_hold(rows: list[dict[str, float]]) -> tuple[
     return ok, pass_note(PROPERTY_IDS, note)
 
 CHECKER_ID = "v4_042_sample_and_hold_with_droop_leakage"
-CHECKER: Checker = check_release_vin_sampled_droop_hold
+
+
+def check(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    passed, note = check_release_vin_sampled_droop_hold(rows)
+    return passed, f"{note} properties_checked={','.join(PROPERTY_IDS)}"
+
+
+CHECKER: Checker = check
