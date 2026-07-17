@@ -296,6 +296,13 @@ def test_serializer_checker_uses_observed_disable_timing() -> None:
     assert "t > 82e-9" not in checker
 
 
+def test_supply_supervisor_checker_orders_overlapping_input_crossings() -> None:
+    checker = (ROOT / "runners" / "checkers" / "v4" / "task_399.py").read_text()
+    assert "events.sort()" in checker
+    assert "vdd_at_event = _value_at_time" in checker
+    assert "controls_changed" in checker
+
+
 def test_sample_hold_checker_uses_clamped_capture_and_duration_scaled_droop() -> None:
     checker = (ROOT / "runners" / "checkers" / "v4" / "task_100.py").read_text()
 
