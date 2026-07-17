@@ -1,116 +1,132 @@
-"""Task-specific checker for canonical v4 DUT 179."""
+"""Stimulus-relative checker for canonical v4 DUT 179."""
+
 from __future__ import annotations
 
-from ..api import Checker
-from .batch18_diagnostics import bind_properties
-from .stimulus_relative import crossings, normalize_affine_time
+from ..api import Checker, Row
+from .trace_utils import median_step, property_diagnostics, sample_signal, threshold_crossings
 
 
-def _stimulus_time_scale(rows: list[dict[str, float]]) -> float | None:
-    samp_edges = crossings(rows, "samp", threshold=0.45, direction="rising")
-    if len(samp_edges) < 2:
+FULL_RANGE_S = 100e-12
+OUTPUT_TRANSITION_S = 10e-12
+PROPERTY_IDS = (
+    "P_SAMPLE_REARMS_MEASUREMENT",
+    "P_INPUT_EDGE_PAIR_CAPTURE",
+    "P_SIGNED_DELTA_POLARITY",
+    "P_FULL_RANGE_SCALE",
+)
+
+
+def _probe_time(event_time: float, next_time: float, settle: float) -> float:
+    if next_time == float("inf"):
+        return event_time + settle
+    return event_time + min(settle, 0.45 * (next_time - event_time))
+
+
+def _trace_time_scale(rows: list[Row]) -> float | None:
+    """Recover post-simulation affine time scaling from the fixed DUT slew."""
+    spans: list[float] = []
+    start: int | None = None
+    end: int | None = None
+    for index in range(1, len(rows)):
+        changing = abs(rows[index]["vout"] - rows[index - 1]["vout"]) > 1e-7
+        if changing:
+            if start is None:
+                start = index - 1
+            end = index
+        elif start is not None and end is not None:
+            spans.append(rows[end]["time"] - rows[start]["time"])
+            start = None
+            end = None
+    if start is not None and end is not None:
+        spans.append(rows[end]["time"] - rows[start]["time"])
+    valid = sorted(span for span in spans if span > 0.0)
+    if not valid:
         return None
-    scale = (samp_edges[1] - samp_edges[0]) / (4.5e-9)
-    return scale if scale > 0 else None
+    return valid[len(valid) // 2] / OUTPUT_TRANSITION_S
 
 
-def sample_signal_at(rows: list[dict[str, float]], signal: str, time_s: float) -> float | None:
-    if not rows or "time" not in rows[0] or signal not in rows[0]:
-        return None
-    first_time = rows[0]["time"]
-    last_time = rows[-1].get("time")
-    if last_time is None or time_s < first_time or time_s > last_time:
-        return None
-    if time_s == first_time:
-        return rows[0].get(signal)
-    for idx in range(1, len(rows)):
-        prev = rows[idx - 1]
-        cur = rows[idx]
-        t0 = prev.get("time")
-        t1 = cur.get("time")
-        if t0 is None or t1 is None:
-            continue
-        if t0 <= time_s <= t1:
-            v0 = prev.get(signal)
-            v1 = cur.get(signal)
-            if v0 is None or v1 is None:
-                return None
-            if t1 == t0:
-                return v1
-            alpha = (time_s - t0) / (t1 - t0)
-            return v0 + alpha * (v1 - v0)
-    return None
-
-def _sample_many(
-    rows: list[dict[str, float]],
-    samples: dict[str, list[tuple[float, float]]],
-    *,
-    tol: float,
-) -> tuple[bool, str]:
-    details: list[str] = []
-    for signal, expected_samples in samples.items():
-        observed: list[float] = []
-        for time_ns, expected in expected_samples:
-            value = sample_signal_at(rows, signal, time_ns * 1e-9)
-            if value is None:
-                return False, f"missing_{signal}_sample_at={time_ns:g}ns"
-            observed.append(value)
-            if abs(value - expected) > tol:
-                return False, (
-                    f"{signal}@{time_ns:g}ns={value:.4f} expected={expected:.4f} "
-                    f"tol={tol:.4f}"
-                )
-        details.append(f"{signal}=" + ",".join(f"{value:.3f}" for value in observed))
-    return True, " ".join(details)
-
-def _sample_many_within_trace(
-    rows: list[dict[str, float]],
-    samples: dict[str, list[tuple[float, float]]],
-    *,
-    tol: float,
-) -> tuple[bool, str]:
-    if not rows:
-        return _sample_many(rows, samples, tol=tol)
-    end_time = rows[-1].get("time")
-    if end_time is None:
-        return _sample_many(rows, samples, tol=tol)
-    end_ns = end_time * 1e9
-    filtered: dict[str, list[tuple[float, float]]] = {}
-    for signal, expected_samples in samples.items():
-        visible_samples = [
-            (time_ns, expected)
-            for time_ns, expected in expected_samples
-            if time_ns <= end_ns + 1e-3
-        ]
-        filtered[signal] = visible_samples or expected_samples
-    return _sample_many(rows, filtered, tol=tol)
-
-def check_v3_tdc_ideal_edge_delta(rows: list[dict[str, float]]) -> tuple[bool, str]:
+def check_v3_tdc_ideal_edge_delta(rows: list[Row]) -> tuple[bool, str]:
     required = {"time", "inp", "inn", "samp", "vout"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing tdc ideal edge delta signals"
-    time_scale = _stimulus_time_scale(rows)
-    if time_scale is None:
-        return False, "missing_sample_stimulus_edges"
-    rows = normalize_affine_time(rows, [
-        ("samp", 0.45, "rising", 0.525, 0),
-        ("samp", 0.45, "rising", 5.025, 1),
-    ])
-    if rows is None:
-        return False, "missing_sample_stimulus_edges"
-    return _sample_many_within_trace(
-        rows,
-        {"vout": [
-            (1.0, 0.0),
-            (3.0, -0.3 * time_scale),
-            (7.0, 0.6 * time_scale),
-            (12.0, 0.2 * time_scale),
-        ]},
-        tol=0.025,
+
+    events = sorted(
+        [
+            *[(time_s, 0, "samp") for time_s in threshold_crossings(rows, "samp", direction=1)],
+            *[(time_s, 1, "inp") for time_s in threshold_crossings(rows, "inp", direction=1)],
+            *[(time_s, 1, "inn") for time_s in threshold_crossings(rows, "inn", direction=1)],
+        ]
     )
+    counts = dict.fromkeys(PROPERTY_IDS, 0)
+    measured_time_scale = _trace_time_scale(rows)
+    scale_missing = measured_time_scale is None or not 0.1 <= measured_time_scale <= 10.0
+    time_scale = 1.0 if scale_missing else measured_time_scale
+    settle = max(30e-12 * time_scale, 5.0 * median_step(rows))
+    expected = 0.0
+    timep: float | None = None
+    timen: float | None = None
+    sample_edges = 0
+    retained_single_edges = 0
+    measured_deltas: list[float] = []
+    first_mismatch = ""
+
+    for index, (event_time, _, signal) in enumerate(events):
+        next_time = events[index + 1][0] if index + 1 < len(events) else float("inf")
+        probe_time = _probe_time(event_time, next_time, settle)
+        if probe_time > rows[-1]["time"]:
+            continue
+
+        if signal == "samp":
+            sample_edges += 1
+            timep = None
+            timen = None
+            property_id = "P_SAMPLE_REARMS_MEASUREMENT"
+        else:
+            if signal == "inp":
+                timep = event_time
+            else:
+                timen = event_time
+            if timep is None or timen is None:
+                retained_single_edges += 1
+                property_id = "P_SAMPLE_REARMS_MEASUREMENT"
+            else:
+                expected = (timep - timen) / (FULL_RANGE_S * time_scale)
+                measured_deltas.append(expected)
+                property_id = "P_INPUT_EDGE_PAIR_CAPTURE"
+
+        observed = sample_signal(rows, "vout", probe_time)
+        tolerance = max(0.025, 0.01 * abs(expected))
+        if observed is None or abs(observed - expected) > tolerance:
+            counts[property_id] += 1
+            if signal != "samp" and timep is not None and timen is not None:
+                counts["P_SIGNED_DELTA_POLARITY"] += 1
+                counts["P_FULL_RANGE_SCALE"] += 1
+            if not first_mismatch:
+                observed_note = "missing" if observed is None else f"{observed:.6g}"
+                first_mismatch = (
+                    f" first_mismatch_time={probe_time:.12g} expected={expected:.6g} "
+                    f"observed={observed_note} property={property_id}"
+                )
+
+    positive = sum(delta > 0.2 for delta in measured_deltas)
+    negative = sum(delta < -0.2 for delta in measured_deltas)
+    counts["P_SAMPLE_REARMS_MEASUREMENT"] += int(sample_edges < 2)
+    counts["P_SAMPLE_REARMS_MEASUREMENT"] += int(retained_single_edges < 2)
+    counts["P_INPUT_EDGE_PAIR_CAPTURE"] += int(len(measured_deltas) < 2)
+    counts["P_SIGNED_DELTA_POLARITY"] += int(not positive or not negative)
+    counts["P_FULL_RANGE_SCALE"] += int(
+        len({round(abs(delta), 6) for delta in measured_deltas if abs(delta) > 0.2}) < 2
+    )
+    counts["P_FULL_RANGE_SCALE"] += int(scale_missing)
+
+    coverage = (
+        f"sample_edges={sample_edges} retained_single_edges={retained_single_edges} "
+        f"time_scale={time_scale:.6g} scale_missing={int(scale_missing)} "
+        f"measured_deltas={[round(delta, 6) for delta in measured_deltas]}"
+    )
+    ok = all(count == 0 for count in counts.values())
+    return ok, f"{property_diagnostics(counts)}; {coverage}{first_mismatch}"
+
 
 CHECKER_ID = "v4_179_tdc_ideal_edge_delta"
-CHECKER: Checker = bind_properties(check_v3_tdc_ideal_edge_delta, (
-    "P_SAMPLE_REARMS_MEASUREMENT", "P_INPUT_EDGE_PAIR_CAPTURE",
-    "P_SIGNED_DELTA_POLARITY", "P_FULL_RANGE_SCALE",
-))
+CHECKER: Checker = check_v3_tdc_ideal_edge_delta
