@@ -63,9 +63,12 @@ def append_continuous_property_diagnostics(
                 min(float(rows[-1]["time"]), time_s + 0.12e-9),
             )
             if before is not None and after is not None:
-                before_flag = _cont_expected(mode, before)["flag"]
-                after_flag = _cont_expected(mode, after)["flag"]
-                if abs(before_flag - after_flag) > 0.45:
+                before_expected = _cont_expected(mode, before)
+                after_expected = _cont_expected(mode, after)
+                if any(
+                    abs(before_expected[name] - after_expected[name]) > tolerance
+                    for name in ("out", "flag", "metric")
+                ):
                     continue
 
             expected = _cont_expected(mode, values)

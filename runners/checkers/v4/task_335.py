@@ -1,8 +1,12 @@
 """Task-specific checker for canonical v4 DUT 335."""
 from __future__ import annotations
 
+from bisect import bisect_left
+
 from ..api import Checker
 from .diagnostics import with_diagnostic_contract
+
+
 def _v4_topup_logic_high(row: dict[str, float], name: str, threshold: float = 0.45) -> bool:
     return float(row.get(name, 0.0)) > threshold
 
@@ -37,35 +41,53 @@ def check_v4_1033_quadrature_oscillator_phase_error_monitor(rows: list[dict[str,
         return False, "v4_1033 empty_trace"
     i_edges = _v4_edges(rows, "clk_i")
     q_edges = _v4_edges(rows, "clk_q")
-    expected_by_time: list[tuple[float, float, bool]] = []
-    for idx in range(1, len(i_edges)):
-        prev_i = i_edges[idx - 1]
-        cur_i = i_edges[idx]
-        period = cur_i - prev_i
-        qs = [q for q in q_edges if prev_i < q < cur_i]
-        if not qs or period <= 0:
-            continue
-        q = qs[0]
-        phase = (q - prev_i) / period
-        err = abs(phase - 0.25)
-        expected_by_time.append((q, min(0.9, 3.6 * err), err <= (60e-3 / 0.9)))
+    times = [float(row["time"]) for row in rows]
+
+    def active(row: dict[str, float]) -> bool:
+        return _v4_topup_logic_high(row, "enable") and not _v4_topup_logic_high(row, "rst")
+
+    segments: list[tuple[float, float]] = []
+    segment_start: float | None = None
+    for row in rows:
+        t = float(row["time"])
+        if active(row) and segment_start is None:
+            segment_start = t
+        elif not active(row) and segment_start is not None:
+            segments.append((segment_start, t))
+            segment_start = None
+    if segment_start is not None:
+        segments.append((segment_start, times[-1]))
+
+    expected_by_segment: list[list[tuple[float, float, bool]]] = []
+    for start, stop in segments:
+        segment_i = [edge for edge in i_edges if start <= edge < stop]
+        segment_q = [edge for edge in q_edges if start <= edge < stop]
+        expected: list[tuple[float, float, bool]] = []
+        # The DUT learns the I period at the second I edge, so a Q edge in
+        # the first interval cannot yet produce a phase measurement.
+        for idx in range(2, len(segment_i)):
+            prev_i = segment_i[idx - 1]
+            cur_i = segment_i[idx]
+            period = cur_i - prev_i
+            qs = [q for q in segment_q if prev_i < q < cur_i]
+            if not qs or period <= 0:
+                continue
+            q = qs[0]
+            phase = (q - prev_i) / period
+            err = abs(phase - 0.25)
+            metric = min(0.9, 3.6 * err)
+            expected.append((q, metric, metric <= 60e-3))
+        expected_by_segment.append(expected)
+
     checked = metric_errors = ok_errors = valid_errors = clear_errors = 0
     reset_clear = disabled_clear = valid_seen = ok_seen = bad_phase_seen = False
     ever_enabled = False
     disable_time: float | None = None
-    expected_metric = 0.0
-    expected_ok = False
-    stable_ok = 0
-    update_time = -1.0
-    exp_idx = 0
     for row in rows:
         t = float(row["time"])
         rst = _v4_topup_logic_high(row, "rst")
-        enabled = _v4_topup_logic_high(row, "enable") and not rst
+        enabled = active(row)
         if not enabled:
-            expected_metric = 0.0
-            expected_ok = False
-            stable_ok = 0
             clear = abs(float(row["phase_error_metric"])) < 0.08 and not _v4_topup_logic_high(row, "quadrature_ok") and not _v4_topup_logic_high(row, "valid")
             if rst and clear:
                 reset_clear = True
@@ -84,35 +106,35 @@ def check_v4_1033_quadrature_oscillator_phase_error_monitor(rows: list[dict[str,
             continue
         ever_enabled = True
         disable_time = None
-        while exp_idx < len(expected_by_time) and t >= expected_by_time[exp_idx][0]:
-            _, expected_metric, raw_ok = expected_by_time[exp_idx]
+    for expected_events in expected_by_segment:
+        stable_ok = 0
+        for update_time, expected_metric, raw_ok in expected_events:
             stable_ok = stable_ok + 1 if raw_ok else 0
             expected_ok = stable_ok >= 2
-            if not raw_ok:
-                bad_phase_seen = True
-            update_time = expected_by_time[exp_idx][0]
-            exp_idx += 1
-        if update_time < 0 or t < update_time + 0.7e-9:
-            continue
-        checked += 1
-        if abs(float(row["phase_error_metric"]) - expected_metric) > 0.08:
-            metric_errors += 1
-        got_ok = _v4_topup_logic_high(row, "quadrature_ok")
-        ok_seen = ok_seen or got_ok
-        if got_ok != expected_ok:
-            ok_errors += 1
-        valid = _v4_topup_logic_high(row, "valid")
-        valid_seen = valid_seen or valid
-        if not valid:
-            valid_errors += 1
-    metric_budget = max(6, checked // 12)
-    ok_budget = max(8, checked // 5)
-    valid_budget = max(8, checked // 5)
+            bad_phase_seen = bad_phase_seen or not raw_ok
+            sample_index = min(len(rows) - 1, bisect_left(times, update_time + 0.7e-9))
+            sample = rows[sample_index]
+            if not active(sample):
+                continue
+            checked += 1
+            if abs(float(sample["phase_error_metric"]) - expected_metric) > 0.08:
+                metric_errors += 1
+            got_ok = _v4_topup_logic_high(sample, "quadrature_ok")
+            ok_seen = ok_seen or got_ok
+            if got_ok != expected_ok:
+                ok_errors += 1
+            valid = _v4_topup_logic_high(sample, "valid")
+            valid_seen = valid_seen or valid
+            if not valid:
+                valid_errors += 1
+    metric_budget = 1
+    ok_budget = 1
+    valid_budget = 1
     clear_budget = 4
     ok = (
         len(i_edges) >= 5
         and len(q_edges) >= 5
-        and checked >= 35
+        and checked >= 5
         and reset_clear
         and disabled_clear
         and valid_seen

@@ -260,6 +260,30 @@ def test_sarfend_checker_clamps_pre_roll_baseline_after_affine_normalization() -
     assert sample_signal_at(rows, "clkc", 2.0e-9) is None
 
 
+def test_quadrature_monitor_gold_uses_the_public_voltage_tolerance() -> None:
+    solution = (
+        _family("335")
+        / "evaluator"
+        / "solution"
+        / "quadrature_oscillator_phase_error_monitor.va"
+    ).read_text(encoding="utf-8")
+    assert "metric_v <= phase_tol" in solution
+    assert "phase_err <= 0.10" not in solution
+
+
+def test_repaired_checkers_name_every_public_property() -> None:
+    sys.path.insert(0, str(ROOT))
+    from runners.checkers.v4.task_254 import CHECKER as checker_254
+    from runners.checkers.v4.task_393 import CHECKER as checker_393
+
+    for prefix, checker in (("254", checker_254), ("393", checker_393)):
+        property_ids = json.loads(
+            (_family(prefix) / "evaluator" / "harness_spec.json").read_text()
+        )["property_ids"]
+        _, note = checker([])
+        assert all(property_id in note for property_id in property_ids)
+
+
 def test_sample_hold_checker_uses_clamped_capture_and_duration_scaled_droop() -> None:
     checker = (ROOT / "runners" / "checkers" / "v4" / "task_100.py").read_text()
 

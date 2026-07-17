@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from ..api import Checker
 from ..common.issue109_factory import CheckResult, Row, check_continuous_factory
+from .diagnostics import with_property_diagnostics
 from .factory_property_diagnostics import append_continuous_property_diagnostics
 
 
@@ -29,4 +30,12 @@ CHECKS = {
 }
 
 CHECKER_ID = TASK_LABEL
-CHECKER: Checker = check_v4_254_bias_trim_affine_mapper
+CHECKER: Checker = with_property_diagnostics(
+    check_v4_254_bias_trim_affine_mapper,
+    {
+        "P_BUILD_A_VOLTAGE_DOMAIN_ANALOG_MIXED": "max_error",
+        "P_VTH_0_45_V_LOGIC_THRESHOLD": "max_error",
+        "P_VHI_0_9_V_HIGH_LEVEL": "max_error",
+        "P_SPAN_MIN_0_62_V_SPAN": "max_error",
+    },
+)
