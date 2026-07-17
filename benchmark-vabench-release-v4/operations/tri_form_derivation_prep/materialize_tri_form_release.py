@@ -296,10 +296,32 @@ def sanitize_instruction_text(text: str, form: str) -> str:
     return text
 
 
+def canonical_required_behavior(source_task: Path, form: str) -> str:
+    instruction = source_task / "public" / "task" / "instruction.md"
+    if not instruction.is_file():
+        return ""
+    text = sanitize_instruction_text(instruction.read_text(encoding="utf-8"), form)
+    match = re.search(
+        r"(?ms)^## Required Behavior\s*\n(?P<body>.*?)(?=^##\s|\Z)",
+        text,
+    )
+    return match.group("body").strip() if match else ""
+
+
+def render_canonical_behavior(value: str) -> str:
+    if not value:
+        return ""
+    return (
+        "\nThe following canonical public behavior is normative for this derived form:\n\n"
+        f"{value}\n"
+    )
+
+
 def render_testbench_instruction(
     spec: dict[str, Any],
     *,
     support_artifacts: list[str] | None = None,
+    canonical_behavior: str = "",
 ) -> str:
     title = task_title(spec)
     support_clause = ""
@@ -335,6 +357,8 @@ Create stimulus and save traces sufficient for the fixed evaluator oracle to che
 
 {render_properties(spec, 'exercise and make observable:')}
 
+{render_canonical_behavior(canonical_behavior)}
+
 The required trace names are: {', '.join(f'`{x}`' for x in (spec.get('trace_contract') or {}).get('required_signals') or [])}.
 
 ## Modeling Constraints
@@ -352,7 +376,11 @@ checker, script, data file, waveform, or auxiliary deck.
 """
 
 
-def render_bugfix_instruction(spec: dict[str, Any]) -> str:
+def render_bugfix_instruction(
+    spec: dict[str, Any],
+    *,
+    canonical_behavior: str = "",
+) -> str:
     title = task_title(spec)
     paths = [str(item["path"]) for item in (spec.get("artifact_contract") or {}).get("files") or []]
     return f"""# {title} Bugfix
@@ -377,6 +405,8 @@ Preserve this exact artifact and module interface:
 The repaired bundle must satisfy every public property:
 
 {render_properties(spec, 'restore:')}
+
+{render_canonical_behavior(canonical_behavior)}
 
 ## Modeling Constraints
 
@@ -677,7 +707,11 @@ def build_testbench_view(
     support_artifacts = copy_public_support(source_task, supplied)
     write_text(
         public / "instruction.md",
-        render_testbench_instruction(spec, support_artifacts=support_artifacts),
+        render_testbench_instruction(
+            spec,
+            support_artifacts=support_artifacts,
+            canonical_behavior=canonical_required_behavior(source_task, "testbench"),
+        ),
     )
     contract = public_semantics(spec)
     contract.update({
@@ -776,7 +810,13 @@ def build_bugfix_view(
     task_dir.mkdir(parents=True)
     public = task_dir / "public"
     public.mkdir()
-    write_text(public / "instruction.md", render_bugfix_instruction(spec))
+    write_text(
+        public / "instruction.md",
+        render_bugfix_instruction(
+            spec,
+            canonical_behavior=canonical_required_behavior(source_task, "bugfix"),
+        ),
+    )
     buggy = public / "buggy_bundle"
     artifacts = copy_solution(source_task, buggy, spec)
     changed = overlay_mutation(source_task, seed_review["mutation_id"], buggy, artifacts)
