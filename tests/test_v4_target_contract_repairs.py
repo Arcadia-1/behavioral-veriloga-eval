@@ -271,6 +271,12 @@ def test_quadrature_monitor_gold_uses_the_public_voltage_tolerance() -> None:
     assert "phase_err <= 0.10" not in solution
 
 
+def test_quadrature_monitor_checker_waits_for_inactive_outputs_to_settle() -> None:
+    checker = (ROOT / "runners" / "checkers" / "v4" / "task_335.py").read_text()
+    assert "inactive_ready = t >= inactive_time + 0.7e-9" in checker
+    assert "if inactive_ready and (rst or disabled) and not clear" in checker
+
+
 def test_repaired_checkers_name_every_public_property() -> None:
     sys.path.insert(0, str(ROOT))
     from runners.checkers.v4.task_254 import CHECKER as checker_254
