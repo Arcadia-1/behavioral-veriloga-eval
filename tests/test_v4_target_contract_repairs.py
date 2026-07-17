@@ -797,3 +797,13 @@ def test_testbench_checkers_do_not_require_canonical_stimulus_end_states() -> No
     assert 'sequence == "LLLHHLL"' not in offset_checker
     assert "for edge_t in edge_times:" in offset_checker
     assert "for index, edge_time in enumerate(edge_times):" in offset_checker
+
+
+def test_dynamic_testbench_checkers_do_not_bind_unrelated_stimulus_windows() -> None:
+    divider_checker = (ROOT / "runners" / "checkers" / "v4" / "task_012.py").read_text()
+    slew_checker = (ROOT / "runners" / "checkers" / "v4" / "task_016.py").read_text()
+
+    assert 'active[-1][bit] > 0.45' in divider_checker
+    assert 'max(row[bit] for row in rows)' not in divider_checker
+    assert "0.10 <= row[\"vout\"] <= 0.68" not in slew_checker
+    assert "_transition_fit(rows, rise_time, fall_time)" in slew_checker

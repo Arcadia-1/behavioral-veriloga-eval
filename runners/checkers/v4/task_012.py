@@ -13,7 +13,6 @@ def check_v4_clock_divider(rows: list[Row]) -> tuple[bool, str]:
     if missing:
         return False, "missing_columns=" + ",".join(missing)
 
-    ratio = sum((1 << index) for index, bit in enumerate(bits) if max(row[bit] for row in rows) > 0.45) or 1
     reset_segments: list[tuple[int, int]] = []
     start: int | None = None
     for index, row in enumerate(rows):
@@ -33,6 +32,14 @@ def check_v4_clock_divider(rows: list[Row]) -> tuple[bool, str]:
 
     analysis_start = reset_segments[-1][1] + 1 if reset_segments else len(rows)
     active = rows[analysis_start:]
+    ratio = (
+        sum(
+            (1 << index)
+            for index, bit in enumerate(bits)
+            if active and active[-1][bit] > 0.45
+        )
+        or 1
+    )
     in_rises = threshold_crossings(active, "clk_in", direction=1) if active else []
     out_rises = threshold_crossings(active, "clk_out", direction=1) if active else []
     out_falls = threshold_crossings(active, "clk_out", direction=-1) if active else []
