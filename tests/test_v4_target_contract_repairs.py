@@ -803,7 +803,8 @@ def test_dynamic_testbench_checkers_do_not_bind_unrelated_stimulus_windows() -> 
     divider_checker = (ROOT / "runners" / "checkers" / "v4" / "task_012.py").read_text()
     slew_checker = (ROOT / "runners" / "checkers" / "v4" / "task_016.py").read_text()
 
-    assert 'active[-1][bit] > 0.45' in divider_checker
+    assert "stable_logic_plateaus" in divider_checker
+    assert "active[-1][bit] > 0.45" not in divider_checker
     assert 'max(row[bit] for row in rows)' not in divider_checker
     assert "0.10 <= row[\"vout\"] <= 0.68" not in slew_checker
     assert "_transition_fit(rows, rise_time, fall_time)" in slew_checker
