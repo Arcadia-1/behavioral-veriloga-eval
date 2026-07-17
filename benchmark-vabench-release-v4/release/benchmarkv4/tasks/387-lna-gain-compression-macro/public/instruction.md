@@ -36,6 +36,18 @@ Provide these overrideable public parameters on the top module and propagate com
 - Expose active gain on `gain_metric` and assert `compression_flag` during compressed operation.
 - Clamp `vout` inside `[vss, vdd]`.
 
+While enabled, compute
+
+`excess = max(0,abs(vin-vcm)-input_clip)`
+
+`active_gain = small_gain/(1+excess/0.20)`
+
+and drive `vout=clamp(vcm+active_gain*(vin-vcm),vss,vdd)`. Encode active gain
+as `gain_metric=clamp(vdd*active_gain/small_gain,vss,vdd)`. Assert
+`compression_flag=vdd` exactly when `active_gain < 0.85*small_gain`, otherwise
+drive it to vss. Reset or disable drives `vout=vcm` and clears both metric and
+flag to vss.
+
 ## Modeling Constraints
 
 Use deterministic voltage-domain behavioral Verilog-A suitable for transient simulation. Use voltage contributions for public electrical outputs. Do not instantiate transistor-level devices. Do not add stimulus harnesses, simulator control decks, external validation logic, generated result files, debug-only ports, or pass/fail flags.

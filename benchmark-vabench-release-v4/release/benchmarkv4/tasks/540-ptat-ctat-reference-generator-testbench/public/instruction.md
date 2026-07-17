@@ -46,6 +46,26 @@ Create stimulus and save traces sufficient for the fixed evaluator oracle to che
 - `P_CTAT_PTAT_AVERAGE`: exercise and make observable: Out is the equal-weight average of PTAT = 0.18 V + 0.34*vin_clamped and CTAT = 0.78 V - 0.34*vin_clamped. Required traces: `time`, `clk`, `vin`, `out`, `metric`.
 - `P_REFERENCE_BOUNDS`: exercise and make observable: Out remains within the public 0 V through 0.9 V voltage range with finite transition smoothing. Required traces: `time`, `out`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+- `clk` and `rst` are voltage-coded logic signals.
+- Treat `vin` as a normalized temperature/control voltage in the 0 V to 0.9 V range.
+- Reset should initialize `out` to 0.45 V and drive `metric` to 0 V until
+  valid updates occur.
+- On each rising `clk` crossing with reset low, clamp the sampled temperature
+  input to `[0 V, 0.9 V]`.
+- Compute the PTAT branch as `0.18 V + 0.34 * vin_clamped` and the CTAT branch
+  as `0.78 V - 0.34 * vin_clamped`.
+- Drive the reference output as the equal-weight branch average:
+  `out = 0.5 * ptat + 0.5 * ctat`.
+- Drive `metric` as the PTAT branch voltage so it increases with the
+  temperature/control input.
+- Clamp the driven `out` voltage to the public 0 V to 0.9 V voltage-domain
+  range.
+- Keep the model pure voltage-domain behavioral Verilog-A. Do not use branch-current contributions, transistor-level devices, AC/noise analysis, or KCL/KVL regulation loops.
+
+
 The required trace names are: `time`, `clk`, `rst`, `vin`, `out`, `metric`.
 
 ## Modeling Constraints

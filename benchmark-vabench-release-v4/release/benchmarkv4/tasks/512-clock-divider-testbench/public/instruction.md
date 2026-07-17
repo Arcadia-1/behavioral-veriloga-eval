@@ -55,6 +55,29 @@ Create stimulus and save traces sufficient for the fixed evaluator oracle to che
 - `P_ODD_RATIO_DUTY`: exercise and make observable: Odd ratios retain both phases with floor/ceil segment lengths differing by at most one input cycle. Required traces: `time`, `clk_in`, `clk_out`.
 - `P_LOCK_REACQUIRE`: exercise and make observable: lock asserts after one complete output period and clears/reacquires when the ratio changes. Required traces: `time`, `clk_in`, `rst_n`, `div_code_0`, `div_code_1`, `div_code_2`, `div_code_3`, `div_code_4`, `div_code_5`, `div_code_6`, `div_code_7`, `clk_out`, `lock`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+The module is a resettable, voltage-domain PLL/ADPLL feedback divider with an 8-bit programmable ratio code and a lock indicator.
+
+- Treat all inputs and outputs as electrical voltage-domain signals.
+- Interpret `rst_n` as active-low reset. While reset is low, clear the divider
+  state and drive `clk_out` and `lock` low.
+- Decode `div_code_0` through `div_code_7` as an unsigned 8-bit LSB-first
+  voltage-coded ratio. Code 0 maps to divide ratio 1.
+- For divide ratio 1, reproduce the input clock activity on `clk_out` and
+  assert `lock` after the first valid post-reset clock cycle.
+- For divide ratios greater than 1, generate a periodic divided clock whose
+  rising-to-rising output period spans the decoded number of input rising
+  edges after startup.
+- For odd divide ratios, use floor/ceil segment lengths so both high and low
+  phases are present and the long segment differs by at most one input cycle
+  from the short segment.
+- Assert `lock` only after the first complete output period for the current
+  decoded ratio. If the ratio code changes after reset, clear divider phase and
+  `lock`, then reacquire using the new ratio.
+
+
 The required trace names are: `time`, `clk_in`, `rst_n`, `div_code_0`, `div_code_1`, `div_code_2`, `div_code_3`, `div_code_4`, `div_code_5`, `div_code_6`, `div_code_7`, `clk_out`, `lock`.
 
 ## Modeling Constraints

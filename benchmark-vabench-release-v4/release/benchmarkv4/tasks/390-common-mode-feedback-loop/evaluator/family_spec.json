@@ -432,7 +432,7 @@
   "properties": [
     {
       "id": "P_RESET_DISABLE_CLEAR",
-      "observable_contract": "Reset or disable clears trim and lock, reports zero residual error, and bypasses correction.",
+      "observable_contract": "On reset or while disabled immediately restore trim_code=0 and the within-tolerance counter to zero, clear locked, bypass both inputs without correction, and drive cm_error=0.",
       "required_signals": [
         "time",
         "vop_in",
@@ -451,7 +451,7 @@
     },
     {
       "id": "P_COMMON_MODE_ERROR",
-      "observable_contract": "The reported common-mode error equals the corrected output average minus vcm.",
+      "observable_contract": "Measure raw_error=(vop_in+von_in)/2-vcm and, while active, expose cm_error=raw_error-trim_code*trim_lsb; on reset or disable expose cm_error=0.",
       "required_signals": [
         "time",
         "vop_in",
@@ -470,7 +470,7 @@
     },
     {
       "id": "P_TRIM_DIRECTION",
-      "observable_contract": "At enabled rising clock edges the bounded unsigned trim code moves in the direction that reduces representable positive common-mode error.",
+      "observable_contract": "Start at trim_code=0. On each enabled rising clock edge compute residual_before=raw_error-trim_code*trim_lsb; increment when residual_before>lock_tol, decrement when residual_before<-lock_tol, and saturate the unsigned code to 0..7.",
       "required_signals": [
         "time",
         "vop_in",
@@ -489,7 +489,7 @@
     },
     {
       "id": "P_DIFFERENTIAL_PRESERVATION",
-      "observable_contract": "Common-mode correction preserves input differential polarity and differential magnitude unless a supply clamp is reached.",
+      "observable_contract": "Drive trim_corr=trim_code*trim_lsb and, while active, drive vop_out=clamp(vop_in-trim_corr,vss,vdd) and von_out=clamp(von_in-trim_corr,vss,vdd), applying the same correction to preserve the differential.",
       "required_signals": [
         "time",
         "vop_in",
@@ -508,7 +508,7 @@
     },
     {
       "id": "P_LOCK_QUALIFICATION",
-      "observable_contract": "Lock asserts only after two consecutive enabled updates within lock_tol.",
+      "observable_contract": "After updating the code compute residual_after=raw_error-trim_code*trim_lsb; increment the counter when abs(residual_after)<=lock_tol, otherwise clear it and locked, and assert locked=vdd after two consecutive qualifying enabled updates.",
       "required_signals": [
         "time",
         "vop_in",

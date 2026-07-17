@@ -31,6 +31,12 @@ The repaired bundle must satisfy every public property:
 - `P_DIVIDER_DUTY_WINDOW`: restore: The divider output high window spans the specified count interval for the active modulus. Required traces: `time`, `clkin`, `mc`, `out`.
 - `P_OUTPUT_RAIL_LEVEL`: restore: `out` uses the declared high and low output levels without amplitude scaling. Required traces: `time`, `clkin`, `mc`, `out`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+Initialize the divider in divide-by-8 mode with `out` low; the first post-initial rising `clkin` crossing enters the high output window. Count rising crossings of `clkin` through `vth`. Use divide-by-8 mode while `mc` is low and switch to divide-by-9 mode while `mc` is high. Wrap the counter modulo the active divisor and drive `out` high for count values 0 through 3, low otherwise.
+
+
 ## Modeling Constraints
 
 - Use deterministic voltage-domain behavioral Verilog-A.

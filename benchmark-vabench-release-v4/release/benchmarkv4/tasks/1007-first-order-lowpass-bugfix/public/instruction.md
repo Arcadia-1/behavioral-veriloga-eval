@@ -28,6 +28,16 @@ The repaired bundle must satisfy every public property:
 - `P_STEP_MONOTONICITY`: restore: For a positive input step, vout is monotone and bounded by the input level. Required traces: `time`, `vin`, `vout`.
 - `P_LOW_PASS_RESPONSE`: restore: The step response is slower than an instantaneous copy of vin. Required traces: `time`, `vin`, `vout`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+- Initialize the internal output state to `0 V`.
+- Update the state only on a periodic `500 ps` timer.
+- At each update, apply `y = y + alpha * (V(vin) - y)`.
+- Drive `vout` from the internal state with a smoothed voltage contribution.
+- For a positive input step, the response must be monotone, bounded by the input level, and slower than an instantaneous copy of `vin`.
+
+
 ## Modeling Constraints
 
 - Use deterministic voltage-domain behavior with a 500 ps periodic update.

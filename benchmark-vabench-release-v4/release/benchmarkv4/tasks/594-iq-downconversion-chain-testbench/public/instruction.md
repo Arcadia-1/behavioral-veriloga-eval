@@ -52,6 +52,36 @@ Create stimulus and save traces sufficient for the fixed evaluator oracle to che
 - `P_BASEBAND_UPDATES`: exercise and make observable: On each valid edge, out and metric apply the public 0.85 first-order update toward mix_i and mix_q respectively and remain clamped to 0.02 V through 0.88 V. Required traces: `time`, `clk`, `mix_i`, `mix_q`, `out`, `metric`.
 - `P_PHASE_MONITOR`: exercise and make observable: Phase_mon exposes the current four-state phase as phase/3 times 0.9 V. Required traces: `time`, `clk`, `phase_mon`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+On reset, return the I/Q baseband outputs, LO monitors, and mixer monitors to
+the 0.45 V common-mode level. Drive `phase_mon` to 0.9 V on reset and
+initialize the phase state so the first post-reset rising `clk` crossing
+advances to phase 0.
+
+After reset releases, advance a four-state quadrature LO sequence on each
+rising `clk` crossing and wrap from phase 3 back to phase 0. Use this
+coefficient table:
+
+| Phase | I coefficient | Q coefficient |
+| ---: | ---: | ---: |
+| 0 | 1.0 | 0.0 |
+| 1 | 0.0 | 1.0 |
+| 2 | -1.0 | 0.0 |
+| 3 | 0.0 | -1.0 |
+
+For each phase, drive `lo_i` and `lo_q` as
+`0.45 V + 0.40 V * coefficient`. Compute each mixer monitor as
+`0.45 V + 1.25 * (vin - 0.45 V) * coefficient`, then clamp each mixer monitor
+to `[0.02 V, 0.88 V]`.
+
+Update each I/Q baseband state once per valid clock edge using
+`state_next = state_prev + 0.85 * (mixer_value - state_prev)`, then clamp the
+state to `[0.02 V, 0.88 V]`. Drive `out` from the I-path state and `metric`
+from the Q-path state. Drive `phase_mon` as `phase / 3.0 * 0.9 V`.
+
+
 The required trace names are: `time`, `clk`, `rst`, `vin`, `out`, `metric`, `lo_i`, `lo_q`, `mix_i`, `mix_q`, `phase_mon`.
 
 ## Modeling Constraints

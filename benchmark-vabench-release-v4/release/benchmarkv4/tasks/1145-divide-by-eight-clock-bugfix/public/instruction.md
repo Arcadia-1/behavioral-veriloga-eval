@@ -33,6 +33,12 @@ The repaired bundle must satisfy every public property:
 - `P_ENABLE_QUALIFIED_DIVIDE_BY_EIGHT`: restore: Rising `vin` crossings through `vth` advance the divide-by-eight counter only while `en` is high. Required traces: `time`, `en`, `rst`, `vin`, `vout`.
 - `P_OUTPUT_DUTY_AND_LEVEL`: restore: The divided waveform follows the specified high/low count window and uses the declared high and low voltage levels. Required traces: `time`, `en`, `rst`, `vin`, `vout`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+Initialize the divided output high. An active-high reset forces the counter to zero and the output high. On rising input-clock crossings through `vth`, advance the counter only when reset is low and enable is high. Wrap the counter modulo `divisor` and drive the output high for the first half of the count range and low for the second half.
+
+
 ## Modeling Constraints
 
 - Use deterministic voltage-domain behavioral Verilog-A.

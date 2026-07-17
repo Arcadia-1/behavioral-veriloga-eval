@@ -42,7 +42,17 @@ The repaired bundle must satisfy every public property:
 - `P_ASSERT_SETTLED_AFTER_THE_OUTPUT_HAS`: restore: Assert `settled` after the output has stayed within `settle_tol` of the target for two enabled updates. Required traces: `time`, `vin`, `clk`, `rst`, `enable`, `gain_1`, `gain_0`, `vout`, `sampled_metric`, `settled`.
 - `P_USE_ONLY_VOLTAGE_DOMAIN_BEHAVIORAL_STATE`: restore: Use only voltage-domain behavioral state and voltage contributions on public electrical outputs. Required traces: `time`, `vin`, `clk`, `rst`, `enable`, `gain_1`, `gain_0`, `vout`, `sampled_metric`, `settled`.
 
-The exact gain contract is `code = (gain_0 > vth ? 1 : 0) + 2*(gain_1 > vth ? 1 : 0)`, `gain = 1.0 + gain_step*code`, and, on each accepted edge, `vout = clamp(vcm + gain*(sample - vcm), vss, vdd)`. Do not apply an additional slew step.
+
+The following canonical public behavior is normative for this derived form:
+
+- On reset or when disabled, drive `vout` to `vcm`, clear `sampled_metric`, and clear `settled`.
+- On each rising `clk` edge while enabled, sample `vin` and decode `gain_1..gain_0` as a programmable capacitor ratio.
+- Drive `sampled_metric` with the held input sample.
+- Move `vout` toward `vcm + gain * (sample - vcm)` with bounded per-update movement.
+- Assert `settled` after the output has stayed within `settle_tol` of the target for two enabled updates.
+- Use only voltage-domain behavioral state and voltage contributions on public electrical outputs.
+- Do not expose pass/fail flags; expose only the public observable metrics named in the interface.
+
 
 ## Modeling Constraints
 

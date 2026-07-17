@@ -44,6 +44,22 @@ The repaired bundle must satisfy every public property:
 - `P_CALIBRATION_WEIGHT`: restore: CAL0 contributes one calibration unit, CAL1 contributes two, and each unit offsets the main code by 32 codes. Required traces: `time`, `CLK`, `CAL0`, `CAL1`, `VDAC_P`, `VDAC_N`.
 - `P_DIFFERENTIAL_COMMON_MODE`: restore: VDAC_P and VDAC_N are complementary about vcm. Required traces: `time`, `VDAC_P`, `VDAC_N`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+On each rising `CLK` edge, sample `D9..D0`, `CAL0`, and `CAL1`. Interpret
+`D9..D0` as an unsigned 10-bit binary word with `D9` as the most significant
+bit and `D0` as the least significant bit. Interpret the calibration pins as a
+small unsigned code where `CAL0` contributes one unit and `CAL1` contributes
+two units.
+
+Model the redundant calibration contribution as an additive offset of 32 main
+DAC codes per calibration unit. Higher effective code should raise `VDAC_P`
+relative to `VDAC_N`; lower effective code should lower it. Drive complementary
+outputs around `vcm`, with the output differential proportional to the centered
+effective code over the full 10-bit main-code range.
+
+
 ## Modeling Constraints
 
 - Use deterministic voltage-domain behavior and smooth output transitions.

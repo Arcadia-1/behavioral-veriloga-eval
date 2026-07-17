@@ -43,6 +43,31 @@ Create stimulus and save traces sufficient for the fixed evaluator oracle to che
 - `P_DETERMINISTIC_SEQUENCE`: exercise and make observable: The normalized perturbation sample repeats the public eight-sample sequence [-1.0, -0.5, 0.0, 0.5, 1.0, 0.5, 0.0, -0.5], advancing by one entry at each dt update. Required traces: `time`, `vin_i`, `vout_o`.
 - `P_ZERO_MEAN_DITHER`: exercise and make observable: Every complete eight-sample sequence period is exactly zero mean, and every perturbation is bounded within [-sigma, +sigma]. Required traces: `time`, `vin_i`, `vout_o`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+Generate a sampled, zero-mean, noise-like deterministic perturbation and add it
+to `V(vin_i)`. The output is piecewise constant between sample events:
+
+```text
+vout_o = V(vin_i) + sigma * sample
+```
+
+The normalized perturbation `sample` must repeat this public eight-sample sequence, advancing by one entry at each `dt` update:
+
+```text
+[-1.0, -0.5, 0.0, 0.5, 1.0, 0.5, 0.0, -0.5]
+```
+
+Every complete eight-sample period is exactly zero mean, and every perturbation must remain bounded within `[-sigma, +sigma]`.
+
+Use a periodic timer-driven sample-and-hold style, such as `@(timer(0, dt))`,
+so the perturbation is updated once per sample interval rather than recomputed
+at every analog evaluation point or sampled only once. The task models a
+bounded dither/noise-like stimulus source for transient behavioral benches; it
+does not require physical noise analysis.
+
+
 The required trace names are: `time`, `vin_i`, `vout_o`.
 
 ## Modeling Constraints

@@ -98,6 +98,18 @@ The repaired bundle must satisfy every public property:
 - `P_PIPE_ALIGNED_CODE`: restore: The delayed coarse and fine decisions align into the clamped 4-bit conversion code. Required traces: `time`, `vin`, `clk`, `valid_i`, `code_3`, `code_2`, `code_1`, `code_0`, `valid_o`.
 - `P_PIPE_VALID_LATENCY`: restore: valid_o accompanies each completed pipeline result and no reset result is marked valid. Required traces: `time`, `clk`, `rst`, `valid_i`, `valid_o`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+- On reset, clear both pipeline stages, all code outputs, `valid_o`, and `residue_dbg`.
+- When `valid_i` is high on a rising `clk` edge, stage 1 samples `vin` and emits a 2-bit coarse code for four equal input ranges over `[vss, vref]`.
+- `residue_amp` must compute a normalized residue for the sampled input after subtracting the stage-1 coarse level and multiplying by 4.
+- On the next rising `clk` edge, stage 2 quantizes the residue into the lower two output bits.
+- `code_aligner` must align the delayed stage-1 bits with the stage-2 bits and assert `valid_o` with the complete 4-bit code.
+- Clamp out-of-range input voltages to the endpoint codes 0 and 15.
+- `residue_dbg` must expose the stage-1 residue used by stage 2.
+
+
 ## Modeling Constraints
 
 - Use deterministic voltage-domain transient behavioral Verilog-A.

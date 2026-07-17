@@ -46,6 +46,21 @@ Create stimulus and save traces sufficient for the fixed evaluator oracle to che
 - `P_PHASE_DERIVED_CLOCK`: exercise and make observable: Clk_out is rail-high while normalized phase is below 0.5 and low while phase is at or above 0.5. Required traces: `time`, `clk_out`, `phase_out`, `VDD`, `VSS`.
 - `P_PARAMETERIZED_PERIOD`: exercise and make observable: Changing dt or phase_step changes the observable phase and clock cadence according to the same update and wrap rules. Required traces: `time`, `clk_out`, `phase_out`, `VDD`, `VSS`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+The module is an ADPLL/NCO phase-timing primitive that keeps a wrapped phase state and derives voltage-domain timing outputs.
+
+- Maintain a normalized phase state in `[0, 1)`.
+- Advance the phase by `phase_step` on each `dt` timer event.
+- Manually wrap phase back into `[0, 1)` instead of letting it grow unbounded.
+- Drive `phase_out` as the wrapped phase scaled by the rail voltage
+  `V(VDD,VSS)`.
+- Drive `clk_out` as a rail-referenced voltage-coded clock derived from the
+  wrapped phase: high at `V(VDD,VSS)` when `phase < 0.5`, and low at 0 V when
+  `phase >= 0.5`.
+
+
 The required trace names are: `time`, `VDD`, `VSS`, `clk_out`, `phase_out`.
 
 ## Modeling Constraints

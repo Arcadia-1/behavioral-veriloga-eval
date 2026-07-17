@@ -33,6 +33,12 @@ The repaired bundle must satisfy every public property:
 - `P_RADIX_STEP_REDUCTION`: restore: The search step is divided by the public radix after each active comparison until it reaches the LSB limit. Required traces: `time`, `clk`, `dcmp`, `rst`, `vdac`.
 - `P_HELD_DAC_OUTPUT`: restore: `vdac` holds the current iterative search value between reset and qualifying clock events. Required traces: `time`, `clk`, `rst`, `vdac`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+At initialization and reset, set `vdac` to zero and set the search step to `range`. On each rising `clk` crossing while the step remains above `lsb`, update `vdac` according to the comparator decision: if `dcmp > vth`, subtract the current step from `vdac`; if `dcmp <= vth`, add the current step to `vdac`. After each update, divide the step by `radix`. Hold the DAC value after the step reaches the LSB limit.
+
+
 ## Modeling Constraints
 
 - Use deterministic voltage-domain behavioral Verilog-A.

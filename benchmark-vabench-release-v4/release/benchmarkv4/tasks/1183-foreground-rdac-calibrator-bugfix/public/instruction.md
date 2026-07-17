@@ -41,6 +41,12 @@ The repaired bundle must satisfy every public property:
 - `P_CALIBRATION_COMPLETION`: restore: After the final RDAC decision, deassert calibration enable and hold the completed code. Required traces: `time`, `ck`, `cvinn`, `cvinp`, `d`, `dc0`, `dc1`, `dc2`, `dc3`, `dc4`, `dc5`, `dc6`, `en`, `enb`, `vrefn`, `vrefp`.
 - `P_RDAC_OUTPUT_LEVELS`: restore: All RDAC code and enable outputs remain voltage-coded at valid low/high levels. Required traces: `time`, `ck`, `cvinn`, `cvinp`, `d`, `dc0`, `dc1`, `dc2`, `dc3`, `dc4`, `dc5`, `dc6`, `en`, `enb`, `vrefn`, `vrefp`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+Initialize calibration active with the MSB trial code set (`dc6 = vdd`, all lower RDAC bits low). On each rising `ck` crossing while calibration is active, sample `d` against the `0.5*vdd` threshold and refine the 7-bit RDAC code from MSB toward LSB. For the current trial bit, keep that bit when `d < 0.5*vdd`; clear that bit when `d >= 0.5*vdd`. In both cases, assert the next lower trial bit as the search advances. After the seven-bit capture phase completes, deassert `en` and assert `enb`. Continuously drive `cvinp` from `vrefp` and `cvinn` from `vrefn`.
+
+
 ## Modeling Constraints
 
 - Use deterministic voltage-domain behavioral Verilog-A.

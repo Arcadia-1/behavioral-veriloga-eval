@@ -54,6 +54,18 @@ Create stimulus and save traces sufficient for the fixed evaluator oracle to che
 - `P_EXPOSE_THE_CURRENT_STATE_AS_STATE`: exercise and make observable: Expose the current state as `state_metric` and pulse `toggled` high on state changes. Required traces: `time`, `vin`, `rst`, `enable`, `low_trip`, `high_trip`, `inside_flag`, `state_metric`, `toggled`.
 - `P_DO_NOT_CHATTER_FOR_SMALL_INPUT`: exercise and make observable: Do not chatter for small input movement inside the hysteresis band. Required traces: `time`, `vin`, `rst`, `enable`, `low_trip`, `high_trip`, `inside_flag`, `state_metric`, `toggled`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+- On reset or when disabled, clear `inside_flag`, `state_metric`, and `toggled`.
+- Use `low_trip` and `high_trip` as public voltage thresholds.
+- Assert `inside_flag` when `vin` enters the window and keep it asserted until `vin` crosses outside the hysteresis margins.
+- Expose the current state as `state_metric` and pulse `toggled` high on state changes.
+- Do not chatter for small input movement inside the hysteresis band.
+- Use only voltage-domain behavioral state and voltage contributions on public electrical outputs.
+- Do not expose pass/fail flags; expose only the public observable metrics named in the interface.
+
+
 The required trace names are: `time`, `vin`, `rst`, `enable`, `low_trip`, `high_trip`, `inside_flag`, `state_metric`, `toggled`.
 
 ## Modeling Constraints

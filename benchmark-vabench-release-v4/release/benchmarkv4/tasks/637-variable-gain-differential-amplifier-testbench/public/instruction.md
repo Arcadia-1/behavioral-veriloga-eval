@@ -43,6 +43,12 @@ Create stimulus and save traces sufficient for the fixed evaluator oracle to che
 - `P_VARIABLE_GAIN_MIDPOINT`: exercise and make observable: Drive the unclamped target as `2.0 * V(sigctrl_p, sigctrl_n) * V(sigin_p, sigin_n) + 0.2`. Required traces: `time`, `sigin_p`, `sigin_n`, `sigctrl_p`, `sigctrl_n`, `sigout`.
 - `P_OUTPUT_CLAMP`: exercise and make observable: Clamp the final output target to the inclusive interval `[-0.4 V, 0.8 V]`. Required traces: `time`, `sigout`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+Use `V(sigctrl_p, sigctrl_n)` as the gain-control voltage and `V(sigin_p, sigin_n)` as the signal input. Multiply the two differential voltages by a gain constant of 2.0, center the output around 0.2 V, and clamp the final target to -0.4 V through 0.8 V.
+
+
 The required trace names are: `time`, `sigctrl_n`, `sigctrl_p`, `sigin_n`, `sigin_p`, `sigout`.
 
 ## Modeling Constraints

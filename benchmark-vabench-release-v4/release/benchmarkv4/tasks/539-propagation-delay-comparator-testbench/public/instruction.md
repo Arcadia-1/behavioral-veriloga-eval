@@ -61,6 +61,26 @@ Create stimulus and save traces sufficient for the fixed evaluator oracle to che
 - `P_EDGE_INTERVAL_MEASUREMENT`: exercise and make observable: After a rising CLK_1 crossing arms the timer, the next rising CLK_2 crossing updates OUT_PS to the elapsed interval expressed in picoseconds and holds that completed measurement. Required traces: `time`, `clk`, `out_p`, `delay_ps`.
 - `P_BUNDLE_BINDING`: exercise and make observable: The timing helper observes the comparator clock as CLK_1 and the positive comparator decision as CLK_2, exposing their measured interval on delay_ps. Required traces: `time`, `clk`, `out_p`, `delay_ps`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+- Initialize the comparator decision outputs low.
+- Use `V(VDD,VSS)/2` as the comparator clock threshold.
+- On each rising clock crossing, latch the sign of
+  `V(VINP,VSS) - V(VINN,VSS) - voffset`.
+- Schedule the decision outputs using a log-linear regeneration delay:
+  compute `vdiff_eff = abs(V(VINP,VSS) - V(VINN,VSS) - voffset)`, floor it at
+  a small positive value to avoid `ln(0)`, compute
+  `td_raw = td_0 + tau * ln(V(VDD,VSS) / vdiff_eff)`, and clamp the result to
+  `[td_min, td_max]`.
+- On each falling clock crossing, reset the comparator decision outputs low.
+- Drive `LP` with the same delayed voltage-coded state as `DCMPP` and `LM`
+  with the same delayed voltage-coded state as `DCMPN`.
+- Drive the timing helper so it captures the time between rising crossings of
+  `CLK_1` and `CLK_2`, converts that interval to picoseconds, and holds the
+  most recent completed measurement on `OUT_PS`.
+
+
 The required trace names are: `time`, `clk`, `vinn`, `vinp`, `out_n`, `out_p`, `lp_int`, `lm_int`, `gnd`, `vdd`, `delay_ps`.
 
 ## Modeling Constraints

@@ -49,6 +49,12 @@ Create stimulus and save traces sufficient for the fixed evaluator oracle to che
 - `P_ONE_CYCLE_DELAYED_SUM`: exercise and make observable: `doutsumdelay` reports the previous sampled flash summary, not the current summary. Required traces: `time`, `clks`, `doutsum`, `doutsumdelay`, `refn`, `refp`, `reset`, `vim`, `vip`.
 - `P_NORMALIZED_OUTPUT`: exercise and make observable: The flash summary is normalized by the eight-level count before being driven. Required traces: `time`, `clks`, `doutsum`, `doutsumdelay`, `refn`, `refp`, `reset`, `vim`, `vip`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+On each rising crossing of `clks` through `vth`, compare `V(vip, vim)` against eight symmetric thresholds derived from `V(refp)-V(refn)`, `ref_scaling`, and the 1/8, 3/8, 5/8, and 7/8 flash tap positions. Drive `doutsum` with the current asserted-threshold fraction and `doutsumdelay` with the previous conversion's fraction. The `reset` port is present for interface compatibility and is not part of the state update.
+
+
 The required trace names are: `time`, `clks`, `doutsum`, `doutsumdelay`, `refn`, `refp`, `reset`, `vim`, `vip`.
 
 ## Modeling Constraints

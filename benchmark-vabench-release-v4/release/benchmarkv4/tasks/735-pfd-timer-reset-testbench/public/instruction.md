@@ -45,6 +45,12 @@ Create stimulus and save traces sufficient for the fixed evaluator oracle to che
 - `P_DELAYED_MUTUAL_RESET`: exercise and make observable: After both detector states have occurred, schedule the mutual reset after `reset_delay` instead of clearing immediately or never clearing. Required traces: `time`, `a`, `b`, `d`, `ub`.
 - `P_OUTPUT_LEVELS_AND_TRANSITIONS`: exercise and make observable: Drive asserted/deasserted outputs near the public `vh`/`0 V` levels with the declared transition smoothing. Required traces: `time`, `a`, `b`, `d`, `ub`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+A rising crossing of `a` asserts the UP state. A rising crossing of `b` asserts the DOWN state. Drive `ub` near `0 V` while UP is asserted and near `vh` otherwise. Drive `d` near `vh` while DOWN is asserted and near `0 V` otherwise. Once both states have occurred, schedule a reset after `reset_delay` and clear both states at that timer event.
+
+
 The required trace names are: `time`, `a`, `b`, `d`, `ub`.
 
 ## Modeling Constraints

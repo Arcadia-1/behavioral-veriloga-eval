@@ -30,6 +30,12 @@ The repaired bundle must satisfy every public property:
 - `P_OUTPUT_MIDPOINT_REFERENCE`: restore: Center the amplified value at `(sigout_high + sigout_low) / 2`. Required traces: `time`, `sigin_p`, `sigin_n`, `sigout`.
 - `P_OUTPUT_RAIL_CLAMP`: restore: Clamp the final target to the inclusive interval `[sigout_low, sigout_high]`. Required traces: `time`, `sigin_p`, `sigin_n`, `sigout`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+Read `V(sigin_p, sigin_n)`, subtract the input-referred offset, multiply by `gain`, and center the result at the midpoint of `sigout_high` and `sigout_low`. Clamp the final output target to the inclusive output rail interval.
+
+
 ## Modeling Constraints
 
 - Use deterministic voltage-domain behavioral Verilog-A.

@@ -77,6 +77,18 @@ The repaired bundle must satisfy every public property:
 - `P_PREEMPHASIS`: restore: Enabled pre-emphasis follows the sign of the symbol-to-symbol mapped-level transition. Required traces: `time`, `bit_msb`, `bit_lsb`, `clk`, `rst`, `emph_en`, `vout`, `level_1`, `level_0`, `delta_dbg`.
 - `P_OUTPUT_CLAMP`: restore: The driven output remains between VSS and VDD. Required traces: `time`, `rst`, `vout`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+- On reset, clear the previous symbol, level outputs, `delta_dbg`, and drive `vout` to `vss`.
+- On each rising `clk` edge, `gray_mapper` maps input bits to PAM4 levels in Gray order: 00, 01, 11, 10 correspond to levels 0, 1, 2, 3.
+- `level_dac` converts the mapped level to a voltage from `vss` to `vss + 3 * level_step`.
+- When `emph_en` is high, `preemphasis_driver` adds one-symbol emphasis with polarity matching the transition from the previous mapped level to the current level.
+- Clamp the final output to the range `vss` through `vdd`.
+- `level_1..level_0` must expose the mapped level as voltage-coded bits.
+- `delta_dbg` must expose the signed transition delta used for emphasis.
+
+
 ## Modeling Constraints
 
 - Use deterministic voltage-domain behavioral Verilog-A.

@@ -45,6 +45,16 @@ The repaired bundle must satisfy every public property:
 - `P_INPUT_CLIPPING`: restore: Inputs at or below 0 V produce no active segments, and inputs at or above vref produce all sixteen active segments. Required traces: `time`, `vin`, `t0`, `t1`, `t2`, `t3`, `t4`, `t5`, `t6`, `t7`, `t8`, `t9`, `t10`, `t11`, `t12`, `t13`, `t14`, `t15`.
 - `P_OUTPUT_LEVELS`: restore: Each inactive segment approaches 0 V and each active segment approaches vh with finite transition smoothing. Required traces: `time`, `t0`, `t1`, `t2`, `t3`, `t4`, `t5`, `t6`, `t7`, `t8`, `t9`, `t10`, `t11`, `t12`, `t13`, `t14`, `t15`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+Convert `vin` into a 16-segment thermometer code. Clip the input to the
+0-to-`vref` range, choose the number of active segments from the clipped input
+level, and drive a prefix thermometer word: `t0` is the first segment to turn
+on, then `t1`, and so on up to `t15`. The output must remain monotonic with
+the input and must not emit a binary-coded word.
+
+
 ## Modeling Constraints
 
 - Use deterministic combinational voltage-domain thermometer encoding.

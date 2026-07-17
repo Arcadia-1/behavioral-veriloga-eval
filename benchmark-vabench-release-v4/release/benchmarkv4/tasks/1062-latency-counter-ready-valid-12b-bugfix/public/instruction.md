@@ -44,6 +44,16 @@ The repaired bundle must satisfy every public property:
 - `P_ZERO_LATENCY`: restore: If valid_i and ready_i are both high on the starting clock edge, the reported latency is zero. Required traces: `time`, `clk`, `valid_i`, `ready_i`, `done`, `lat0`, `lat1`, `lat2`, `lat3`, `lat4`, `lat5`, `lat6`, `lat7`, `lat8`, `lat9`, `lat10`, `lat11`.
 - `P_RESULT_HOLD_AND_ORDER`: restore: The completed result holds until a later request starts; lat0 is LSB, lat11 is MSB, and asserted outputs use vdd. Required traces: `time`, `clk`, `valid_i`, `done`, `lat0`, `lat1`, `lat2`, `lat3`, `lat4`, `lat5`, `lat6`, `lat7`, `lat8`, `lat9`, `lat10`, `lat11`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+- Sample `valid_i` and `ready_i` on rising `clk` crossings.
+- While idle, a sampled high `valid_i` starts a latency measurement with count zero and clears `done`.
+- While active, increment the count on each rising clock where `ready_i` is sampled low.
+- When `ready_i` is sampled high while active, latch the current count to `lat[11:0]`, assert `done`, and return to idle.
+- If `valid_i` and `ready_i` are both sampled high on the starting edge, report zero latency.
+
+
 ## Modeling Constraints
 
 - AMS role: ready/valid latency measurement block for converter/readout handshakes.

@@ -53,6 +53,17 @@ Create stimulus and save traces sufficient for the fixed evaluator oracle to che
 - `P_ACCUMULATED_STATE`: exercise and make observable: Between declared sampling and switch events, VRES represents and holds the accumulated residue state. Required traces: `time`, `vin`, `clk`, `s6`, `s5`, `s4`, `s3`, `s2`, `s1`, `vres`.
 - `P_OUTPUT_TRANSITION`: exercise and make observable: VRES changes from the residue state using the declared tr transition time. Required traces: `time`, `vres`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+Sample `VIN` into the residue at `initial_step` and on each rising `CLK`
+crossing at `vdd/2`. A falling `S6` crossing through `vdd/2` adds one half of
+the reference span. Rising `S5`, `S4`, `S3`, `S2`, and `S1` crossings through
+`vdd/2` subtract one fourth, one eighth, one sixteenth, one thirty-second, and
+one sixty-fourth of the reference span respectively. Drive `VRES` from the
+current residue state.
+
+
 The required trace names are: `time`, `vin`, `clk`, `s6`, `s5`, `s4`, `s3`, `s2`, `s1`, `vres`.
 
 ## Modeling Constraints

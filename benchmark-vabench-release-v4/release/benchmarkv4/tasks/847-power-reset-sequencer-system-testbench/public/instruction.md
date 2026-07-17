@@ -93,6 +93,17 @@ Create stimulus and save traces sufficient for the fixed evaluator oracle to che
 - `P_PWR_SEQUENCE_ORDER`: exercise and make observable: With power good and enable requested, rst_n_core, en_ana, and en_dig release on successive rising clock edges. Required traces: `time`, `vdd_sense`, `clk`, `rst_n_ext`, `enable_req`, `por_n`, `rst_n_core`, `en_ana`, `en_dig`.
 - `P_PWR_READY_DELAY`: exercise and make observable: ready asserts one rising clock after both enables are high. Required traces: `time`, `clk`, `en_ana`, `en_dig`, `ready`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+- `por_detector` drives `por_n` high only after `vdd_sense` has been above `vpor` for two consecutive rising `clk` edges while `rst_n_ext` is high.
+- When power is not good or external reset is low, drive all outputs low and restart the sequence.
+- After `por_n` is high and `enable_req` is high, `reset_synchronizer` releases `rst_n_core` on the next rising `clk` edge.
+- `enable_sequencer` then asserts `en_ana` one clock after core reset release and `en_dig` one clock after `en_ana`.
+- `ready_flag` asserts `ready` one clock after both enables are high.
+- If `vdd_sense` drops below `vpor` or `rst_n_ext` goes low, all outputs must return low without waiting for the sequence to finish.
+
+
 The required trace names are: `time`, `vdd_sense`, `clk`, `rst_n_ext`, `enable_req`, `por_n`, `rst_n_core`, `en_ana`, `en_dig`, `ready`.
 
 ## Modeling Constraints

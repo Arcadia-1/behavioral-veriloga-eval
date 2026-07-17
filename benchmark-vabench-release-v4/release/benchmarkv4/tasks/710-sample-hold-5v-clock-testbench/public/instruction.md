@@ -39,6 +39,12 @@ Create stimulus and save traces sufficient for the fixed evaluator oracle to che
 
 - `P_DETECT_RISING_CROSSINGS_OF_VCLK_THROUGH`: exercise and make observable: Detect rising crossings of `vclk` through `vtrans_clk`. At each qualifying edge, sample the instantaneous value of `vin` and hold that sampled value on `vout` until the next rising clock edge. Falling clock edges must not update the held value. Required traces: `time`, `vclk`, `vin`, `vout`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+Detect rising crossings of `vclk` through `vtrans_clk`. At each qualifying edge, sample the instantaneous value of `vin` and hold that sampled value on `vout` until the next rising clock edge. Falling clock edges must not update the held value.
+
+
 The required trace names are: `time`, `vclk`, `vin`, `vout`.
 
 ## Modeling Constraints

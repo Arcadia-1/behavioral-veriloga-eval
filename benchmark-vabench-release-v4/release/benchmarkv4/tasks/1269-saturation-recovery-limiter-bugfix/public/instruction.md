@@ -36,6 +36,19 @@ The repaired bundle must satisfy every public property:
 - `P_DRIVE_SAT_VHI_WHEN_ENABLED_AND`: restore: Drive `sat = vhi` when enabled and `V(vin)` is outside `[vlo, vlimit]`; Required traces: `time`, `en`, `out`, `recovery_metric`, `sat`, `vin`.
 - `P_DRIVE_THE_RECOVERY_METRIC_AS`: restore: Drive the recovery metric as Required traces: `time`, `en`, `out`, `recovery_metric`, `sat`, `vin`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+- `P_CLAMP_THE_ENABLED_INPUT_BETWEEN_THE`: Clamp the enabled input between the public low and high limiter levels.
+- `P_DRIVE_A_SATURATION_FLAG_WHEN_EITHER`: Drive a saturation flag when either limiter boundary is active.
+- `P_CLEAR_OUTPUT_FLAG_AND_RECOVERY_METRIC`: Clear output, flag, and recovery metric while enable is low.
+- `P_COMPUTE_LIMITED_CLAMP_V_VIN_VLO`: Compute `limited = clamp(V(vin), vlo, vlimit)` while enabled and drive `out`
+- `P_DRIVE_SAT_VHI_WHEN_ENABLED_AND`: Drive `sat = vhi` when enabled and `V(vin)` is outside `[vlo, vlimit]`;
+- `P_DRIVE_THE_RECOVERY_METRIC_AS`: Drive the recovery metric as
+
+The evaluator saves and may inspect these public trace signals: `time`, `en`, `out`, `recovery_metric`, `sat`, `vin`.
+
+
 ## Modeling Constraints
 
 - Use deterministic voltage-domain behavioral Verilog-A.

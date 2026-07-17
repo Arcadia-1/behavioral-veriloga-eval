@@ -57,6 +57,19 @@ Create stimulus and save traces sufficient for the fixed evaluator oracle to che
 - `P_DIVIDER_MONITOR`: exercise and make observable: div_clk toggles once per divide_ratio rising DCO edges and its counter restarts after reset or disable. Required traces: `time`, `enable`, `rst`, `dco_clk`, `div_clk`.
 - `P_RESTART_MONOTONICITY`: exercise and make observable: Enable restarts both clocks low with the first DCO rise one half-period later, and larger frequency words produce nondecreasing edge counts. Required traces: `time`, `enable`, `rst`, `fcw_5`, `fcw_4`, `fcw_3`, `fcw_2`, `fcw_1`, `fcw_0`, `dco_clk`, `div_clk`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+- On reset or when `enable` is low, stop toggling, clear `dco_clk`, `div_clk`, and `freq_metric`.
+- Decode `fcw_5..fcw_0` as an unsigned frequency-control word.
+- Map the decoded word to `min(f_max, f_min + f_step * code)`.
+- Generate a free-running DCO clock while enabled using the mapped frequency.
+- Toggle `div_clk` once per `divide_ratio` rising DCO edges and restart its edge counter whenever reset is asserted or enable is low.
+- `freq_metric` must expose `vss + (vdd - vss) * (f_target - f_min) / (f_max - f_min)`.
+- On enable, restart both clocks low and schedule the first `dco_clk` rising edge one half-period later. Sample the current frequency word at each DCO transition; a word change affects the next half-period and does not retime a transition already pending.
+- Higher frequency-control words must produce nondecreasing DCO edge counts over the same observation window.
+
+
 The required trace names are: `time`, `enable`, `rst`, `fcw_5`, `fcw_4`, `fcw_3`, `fcw_2`, `fcw_1`, `fcw_0`, `dco_clk`, `div_clk`, `freq_metric`.
 
 ## Modeling Constraints

@@ -48,6 +48,16 @@ Create stimulus and save traces sufficient for the fixed evaluator oracle to che
 - `P_GENERATE_ONE_OUTPUT_PULSE_PER_INPUT`: exercise and make observable: Generate one output pulse per input rising edge. Required traces: `time`, `vin`, `vout`.
 - `P_HOLD_THE_LOW_OUTPUT_LEVEL_BETWEEN`: exercise and make observable: Hold the low output level between pulses. Required traces: `time`, `vin`, `vout`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+- Detect rising `vin` crossings at `vtrans`.
+- On each qualifying rising edge, drive `vout` high after the configured transition delay.
+- Use a timer to schedule the low-going state update at `edge_time + pulse_width + trise`, where `edge_time` is the qualifying rising input edge time. The voltage contribution still uses the public `tdel`, `trise`, and `tfall` transition parameters.
+- Generate one output pulse per input rising edge.
+- Hold the low output level between pulses.
+
+
 The required trace names are: `time`, `vin`, `vout`.
 
 ## Modeling Constraints

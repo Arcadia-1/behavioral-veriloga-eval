@@ -50,6 +50,18 @@ Create stimulus and save traces sufficient for the fixed evaluator oracle to che
 - `P_DRIVE_Y_HIGH_WHEN_VALID_IS`: exercise and make observable: Drive `y` high only when `valid` is high and both decision inputs are high. Required traces: `time`, `dl`, `dm`, `valid`, `vin1`, `vin2`, `x`, `y`, `z`.
 - `P_DRIVE_Z_HIGH_WHEN_VALID_IS`: exercise and make observable: Drive `z` high only when `valid` is high, `vin1` is low, and `vin2` is high. Required traces: `time`, `dl`, `dm`, `valid`, `vin1`, `vin2`, `x`, `y`, `z`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+- Interpret `vin1`, `vin2`, and `valid` relative to `vth`.
+- Drive `dm` high when `vin1` is high.
+- Drive `dl` high when `vin1` is low and `vin2` is high.
+- Drive `x` high when `valid` is high and both decision inputs are low.
+- Drive `y` high when `valid` is high and both decision inputs are high.
+- Drive `z` high when `valid` is high, `vin1` is low, and `vin2` is high.
+- Drive all other listed outputs low under their inactive conditions.
+
+
 The required trace names are: `time`, `dl`, `dm`, `valid`, `vin1`, `vin2`, `x`, `y`, `z`.
 
 ## Modeling Constraints

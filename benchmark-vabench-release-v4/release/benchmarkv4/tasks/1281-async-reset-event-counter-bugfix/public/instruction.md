@@ -45,6 +45,25 @@ The repaired bundle must satisfy every public property:
 - `P_VHI_0_9_V_HIGH_LEVEL`: restore: `vhi = 0.9 V`: high level for output observables. Required traces: `time`, `clk`, `ctrl0`, `ctrl1`, `en`, `flag`, `in0`, `in1`, `in2`, `in3`, `metric`, `out`, `rst`, `vdd`, `vss`.
 - `P_SPAN_MIN_0_62_V_SPAN`: restore: `span_min = 0.62 V`, `span_max = 1.28 V`: legal local supply span measured as Required traces: `time`, `clk`, `ctrl0`, `ctrl1`, `en`, `flag`, `in0`, `in1`, `in2`, `in3`, `metric`, `out`, `rst`, `vdd`, `vss`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+Measure analog inputs relative to the local `vss` rail and normalize by the
+current local supply span. Let `span = V(vdd, vss)` and treat the row as valid
+only when `V(en) > vth` and `span_min <= span <= span_max`. If `span` is below
+`0.05 V`, use `0.05 V` as the normalization span. Define `clip01(y)` as `y`
+limited to the range `[0, 1]` and `x0..x3 = clip01((V(inN) - V(vss)) / span)`.
+
+Initialize the event count and all observables to `0 V`. On a rising crossing
+of `clk` or a rising crossing of `rst`, clear the count and all observables
+when `rst` is high or the row is not valid. Otherwise, increment a saturating
+count by one up to a maximum of `4` when both `x0 > 0.25` and `x1 > 0.20`; if
+that event condition is not met, clear the count to zero. Drive
+`out = vhi * clip01(count / 4.0)`, assert `flag = vhi` when `count >= 3`, and
+drive `metric = vhi * clip01(abs(x0 - x1))`. Hold the last observable values
+between update events.
+
+
 ## Modeling Constraints
 
 - Use deterministic voltage-domain behavioral Verilog-A.

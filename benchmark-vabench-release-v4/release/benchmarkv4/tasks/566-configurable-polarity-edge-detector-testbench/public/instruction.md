@@ -45,6 +45,15 @@ Create stimulus and save traces sufficient for the fixed evaluator oracle to che
 - `P_BOUNDED_PULSE`: exercise and make observable: Each detected edge produces a bounded short pulse with nominal width about 2 ns rather than a latched high level. Required traces: `time`, `pulse`.
 - `P_OUTPUT_LEVELS`: exercise and make observable: pulse uses 0 V and vdd levels with finite transition smoothing set by tr. Required traces: `time`, `pulse`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+- Treat `sig` and `rise_en` as voltage-coded logic using `vth`.
+- When `rise_en` is high, generate a short pulse after each rising edge of `sig` and do not pulse on falling edges.
+- When `rise_en` is low, generate a short pulse after each falling edge of `sig` and do not pulse on rising edges.
+- The output pulse width should be a short support-timing pulse, nominally about 2 ns, with smooth edges.
+
+
 The required trace names are: `time`, `sig`, `rise_en`, `pulse`.
 
 ## Modeling Constraints

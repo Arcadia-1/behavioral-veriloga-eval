@@ -49,12 +49,38 @@ hierarchical/private nodes, or use checker/gold/internal files.
 
 Create stimulus and save traces sufficient for the fixed evaluator oracle to check:
 
-- `P_ON_RESET_OR_WHEN_ENABLE_IS`: exercise and make observable: On reset or when `enable` is low, clear path states, metrics, `valid`, and drive outputs to `vcm`. Required traces: `time`, `vin`, `clk`, `rst`, `enable`, `i_out`, `q_out`, `amp_metric`, `phase_metric`, `valid`.
-- `P_ON_EACH_RISING_CLK_EDGE_WHILE`: exercise and make observable: On each rising `clk` edge while enabled, update an in-phase sampled state from `vin`. Required traces: `time`, `vin`, `clk`, `rst`, `enable`, `i_out`, `q_out`, `amp_metric`, `phase_metric`, `valid`.
-- `P_UPDATE_A_QUADRATURE_SAMPLED_STATE_USING`: exercise and make observable: Update a quadrature sampled state using the previous in-phase state so the Q output is phase-shifted relative to I. Required traces: `time`, `vin`, `clk`, `rst`, `enable`, `i_out`, `q_out`, `amp_metric`, `phase_metric`, `valid`.
+- `P_ON_RESET_OR_WHEN_ENABLE_IS`: exercise and make observable: On reset or while disabled restore i_state=q_state=vcm, clear the update count, and drive amp_metric=phase_metric=valid=vss. Required traces: `time`, `vin`, `clk`, `rst`, `enable`, `i_out`, `q_out`, `amp_metric`, `phase_metric`, `valid`.
+- `P_ON_EACH_RISING_CLK_EDGE_WHILE`: exercise and make observable: Poll every tick=250ps and on each enabled rising clk edge update i_state=i_state+alpha*(vin-i_state). Required traces: `time`, `vin`, `clk`, `rst`, `enable`, `i_out`, `q_out`, `amp_metric`, `phase_metric`, `valid`.
+- `P_UPDATE_A_QUADRATURE_SAMPLED_STATE_USING`: exercise and make observable: Save old_i before the I update and then update q_state=q_state+alpha*(old_i-q_state). Required traces: `time`, `vin`, `clk`, `rst`, `enable`, `i_out`, `q_out`, `amp_metric`, `phase_metric`, `valid`.
 - `P_DRIVE_I_OUT_AND_Q_OUT`: exercise and make observable: Drive `i_out` and `q_out` around `vcm` from the two path states. Required traces: `time`, `vin`, `clk`, `rst`, `enable`, `i_out`, `q_out`, `amp_metric`, `phase_metric`, `valid`.
-- `P_REPORT_A_BOUNDED_PHASE_ORDER_METRIC`: exercise and make observable: Report a bounded phase/order metric on `phase_metric` and an amplitude-balance metric on `amp_metric`. Required traces: `time`, `vin`, `clk`, `rst`, `enable`, `i_out`, `q_out`, `amp_metric`, `phase_metric`, `valid`.
-- `P_ASSERT_VALID_AFTER_AT_LEAST_FOUR`: exercise and make observable: Assert `valid` after at least four enabled sample updates. Required traces: `time`, `vin`, `clk`, `rst`, `enable`, `i_out`, `q_out`, `amp_metric`, `phase_metric`, `valid`.
+- `P_REPORT_A_BOUNDED_PHASE_ORDER_METRIC`: exercise and make observable: After each enabled update drive amp_metric=min(vdd,2*abs(i_state-q_state)) and phase_metric=0.65V when i_state>=q_state, otherwise 0.25V. Required traces: `time`, `vin`, `clk`, `rst`, `enable`, `i_out`, `q_out`, `amp_metric`, `phase_metric`, `valid`.
+- `P_ASSERT_VALID_AFTER_AT_LEAST_FOUR`: exercise and make observable: Increment the enabled-update count once per detected rising edge and drive valid=vdd starting with update four, otherwise vss. Required traces: `time`, `vin`, `clk`, `rst`, `enable`, `i_out`, `q_out`, `amp_metric`, `phase_metric`, `valid`.
+
+
+The following canonical public behavior is normative for this derived form:
+
+- On reset or when `enable` is low, clear path states, metrics, `valid`, and drive outputs to `vcm`.
+- On each rising `clk` edge while enabled, update an in-phase sampled state from `vin`.
+- Update a quadrature sampled state using the previous in-phase state so the Q output is phase-shifted relative to I.
+- Drive `i_out` and `q_out` around `vcm` from the two path states.
+- Report a bounded phase/order metric on `phase_metric` and an amplitude-balance metric on `amp_metric`.
+- Assert `valid` after at least four enabled sample updates.
+- The I and Q outputs must not collapse to identical waveforms during enabled operation.
+
+Poll controls every `tick = 250 ps` and detect rising `clk` edges from adjacent
+polls. Initialize both states to `vcm`. On each enabled rising edge save
+`old_i=i_state`, then update
+
+`i_state = i_state + alpha*(vin-i_state)`
+
+`q_state = q_state + alpha*(old_i-q_state)`.
+
+Drive `i_out=i_state` and `q_out=q_state` with `tr` smoothing. After the update,
+drive `amp_metric = min(vdd,2*abs(i_state-q_state))` and drive `phase_metric`
+to 0.65 V when `i_state >= q_state`, otherwise 0.25 V. Assert `valid=vdd`
+starting with the fourth enabled update. Reset or disable restores both states
+to `vcm`, clears the update count, and drives both metrics and `valid` to vss.
+
 
 The required trace names are: `time`, `vin`, `clk`, `rst`, `enable`, `i_out`, `q_out`, `amp_metric`, `phase_metric`, `valid`.
 

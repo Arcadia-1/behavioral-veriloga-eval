@@ -34,6 +34,12 @@ The repaired bundle must satisfy every public property:
 - `P_BIT_POLARITY`: restore: A decoded one drives its output high and a decoded zero drives its output low. Required traces: `time`, `d0_42`, `d0_85`, `d1_42`, `d1_85`, `d2_42`, `d2_85`, `d3_42`, `d3_85`, `d4_42`, `d4_85`, `d5_42`, `d5_85`, `d6_42`, `d6_85`.
 - `P_OUTPUT_RAIL_LEVELS`: restore: Each output uses the declared `vhi` and `vlo` voltage levels for its decoded bit. Required traces: `time`, `d0_42`, `d0_85`, `d1_42`, `d1_85`, `d2_42`, `d2_85`, `d3_42`, `d3_85`, `d4_42`, `d4_85`, `d5_42`, `d5_85`, `d6_42`, `d6_85`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+Decode `ctrl` into seven output bits, LSB first: `d0` carries bit 0 and `d6` carries bit 6. Drive each output to `vhi` when its bit is 1 and `vlo` when its bit is 0.
+
+
 ## Modeling Constraints
 
 - Use deterministic voltage-domain behavioral Verilog-A.

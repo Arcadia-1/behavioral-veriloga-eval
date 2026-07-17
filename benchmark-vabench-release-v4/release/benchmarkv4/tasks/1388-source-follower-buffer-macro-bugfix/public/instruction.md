@@ -38,6 +38,16 @@ The repaired bundle must satisfy every public property:
 - `P_HEADROOM_METRIC_REPORTS_THE_REMAINING_VBIAS`: restore: `headroom_metric` reports the remaining `vbias - vout` margin clipped to the nominal flag range. Required traces: `time`, `vin`, `vbias`, `enable`, `rst`, `vout`, `headroom_metric`, `valid`.
 - `P_VALID_IS_HIGH_ONLY_WHEN_ENABLED`: restore: `valid` is high only when enabled, not reset, and the bias rail can support at least the minimum headroom. Required traces: `time`, `vin`, `vbias`, `enable`, `rst`, `vout`, `headroom_metric`, `valid`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+- Reset or low `enable` drives the output and metrics low.
+- When enabled, the output follows `vin - vgs_drop`.
+- Clamp the output between `vss` and `vbias - min_headroom`.
+- `headroom_metric` reports the remaining `vbias - vout` margin clipped to the nominal flag range.
+- `valid` is high only when enabled, not reset, and the bias rail can support at least the minimum headroom.
+
+
 ## Modeling Constraints
 
 - Use deterministic voltage-domain behavioral Verilog-A.

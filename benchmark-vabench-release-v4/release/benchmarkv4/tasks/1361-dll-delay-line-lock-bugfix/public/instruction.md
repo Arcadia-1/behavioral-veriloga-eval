@@ -95,6 +95,19 @@ The repaired bundle must satisfy every public property:
 - `P_PHASE_CORRECTION`: restore: Completed ref/delayed comparisons request the correction direction that moves the delay code toward edge alignment and update the code once within 0 through 31. Required traces: `time`, `ref_clk`, `delayed_clk`, `up`, `down`, `delay_4`, `delay_3`, `delay_2`, `delay_1`, `delay_0`.
 - `P_LOCK_QUALIFICATION`: restore: Lock asserts only after four consecutive comparisons within lock_window times unit_delay and clears after an out-of-window comparison. Required traces: `time`, `ref_clk`, `delayed_clk`, `up`, `down`, `lock`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+- On reset or when `enable` is low, reset the delay code to `delay_center`, clear `up`, `down`, and `lock`.
+- `delay_line` generates `delayed_clk` by delaying `in_clk` edges according to the current delay code.
+- `phase_detector` treats one rising edge from each clock as a completed comparison cycle. Request `up` and increment the delay code by one when `delayed_clk` arrived before `ref_clk`; request `down` and decrement the code by one when `delayed_clk` arrived after `ref_clk`; coincident edges request neither correction.
+- Update the delay code once per completed comparison cycle, clamped to 0 through 31.
+- Drive `delay_4..delay_0` as voltage-coded copies of the current delay code.
+- `lock_detector` asserts `lock` after four consecutive comparisons whose absolute edge-time error is no greater than `lock_window * unit_delay`.
+- Unlike a PLL, this DUT must not synthesize a free-running oscillator; output edges derive from `in_clk` only.
+- Latch the delay code independently for each originating input edge. A later correction must not retime an already pending edge. Reset or low `enable` cancels pending delayed edges, clears unmatched comparison edges, and drives `delayed_clk` low.
+
+
 ## Modeling Constraints
 
 - Use deterministic voltage-domain behavioral Verilog-A suitable for transient simulation.

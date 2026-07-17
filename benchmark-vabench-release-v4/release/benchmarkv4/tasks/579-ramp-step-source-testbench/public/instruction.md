@@ -48,6 +48,21 @@ Create stimulus and save traces sufficient for the fixed evaluator oracle to che
 - `P_RAIL_TRACKING`: exercise and make observable: Both outputs derive their low and high endpoints from the observed VSS and VDD rails rather than fixed absolute voltages. Required traces: `time`, `VDD`, `VSS`, `guard_out`, `phase_out`.
 - `P_PERIODICITY`: exercise and make observable: The ramp-wrap and guard-window pattern repeats every period with guard transitions smoothed by tedge. Required traces: `time`, `guard_out`, `phase_out`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+Generate a periodic normalized phase ramp and a guard pulse. Within each
+period, `phase_out` ramps from `VSS` toward `VDD` and wraps at the start of the
+next period. `guard_out` is high during the first `min(pulse_w, period)` seconds
+of each period. If `pulse_w >= period`, `guard_out` has no low remainder during
+that period. The output levels should track the supplied rail
+voltages, not hard-coded absolute rails.
+
+Using `$bound_step(period / points_per_period)` is allowed to keep the narrow
+guard pulse observable, but the scored behavior is the ramp wrap and guard
+timing.
+
+
 The required trace names are: `time`, `VDD`, `VSS`, `guard_out`, `phase_out`.
 
 ## Modeling Constraints

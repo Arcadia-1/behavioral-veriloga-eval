@@ -32,6 +32,14 @@ The repaired bundle must satisfy every public property:
 - `P_PHASE_STABILITY`: restore: The output phase ordering and offsets remain stable across repeated periods. Required traces: `time`, `clk0`, `clk90`, `clk180`, `clk270`.
 - `P_OUTPUT_LEVELS`: restore: All clocks use 0 V and vdd levels with finite transition smoothing set by tr. Required traces: `time`, `clk0`, `clk90`, `clk180`, `clk270`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+- Generate four 0-to-`vdd` clocks with a 20 ns period and about 50 percent duty cycle.
+- The rising edges of `clk90`, `clk180`, and `clk270` must lag the corresponding `clk0` rising edge by 5 ns, 10 ns, and 15 ns respectively.
+- Keep the phase relationship stable over repeated cycles.
+
+
 ## Modeling Constraints
 
 - AMS role: deterministic four-phase clock stimulus source for sampled-data timing.

@@ -28,6 +28,12 @@ The repaired bundle must satisfy every public property:
 - `P_DIFFERENTIAL_GAIN_FOUR`: restore: Make the differential output `V(voutp) - V(voutn)` equal to four times `V(vinp, vinn)`. Required traces: `time`, `vinp`, `vinn`, `voutp`, `voutn`.
 - `P_OUTPUT_POLARITY`: restore: For positive `V(vinp, vinn)`, drive `voutp` above common mode and `voutn` below common mode. Required traces: `time`, `vinp`, `vinn`, `voutp`, `voutn`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+Maintain a fixed output common mode of 0.5 V. The differential output must be four times the input differential voltage, with `voutp` increasing and `voutn` decreasing when `V(vinp, vinn)` is positive.
+
+
 ## Modeling Constraints
 
 - Use deterministic voltage-domain behavioral Verilog-A.

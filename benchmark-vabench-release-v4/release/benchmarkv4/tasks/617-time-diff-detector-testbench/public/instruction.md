@@ -50,6 +50,18 @@ Create stimulus and save traces sufficient for the fixed evaluator oracle to che
 - `P_WINDOW_REARM`: exercise and make observable: Each reporting clock edge rearms both input-edge detectors so the next window is measured independently. Required traces: `time`, `clk`, `vinp`, `vinn`, `vout`.
 - `P_OUTPUT_TRANSITION`: exercise and make observable: Reported output changes use the declared td delay and tr transition time. Required traces: `time`, `clk`, `vout`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+On each rising `clk` crossing of `vth_clk`, output the stored difference
+between the first rising `vinp` crossing and first rising `vinn` crossing
+captured in the previous clock window. A window is valid only when both input
+edges are captured. If either input edge is absent in the previous window, hold
+the previous `vout` value unchanged while rearming detection for the next
+window. For a valid window, scale the time difference by `scale`, clip the
+output to `[-vdd, vdd]`, then rearm detection for the next window.
+
+
 The required trace names are: `time`, `clk`, `vinp`, `vinn`, `vout`.
 
 ## Modeling Constraints

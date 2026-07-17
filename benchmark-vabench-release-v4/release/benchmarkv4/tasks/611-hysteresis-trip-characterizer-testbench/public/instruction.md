@@ -49,6 +49,21 @@ Create stimulus and save traces sufficient for the fixed evaluator oracle to che
 - `P_HYSTERESIS_WIDTH_SIGN`: exercise and make observable: After both directions are captured, hyst_width equals trip_rise minus trip_fall with that signed polarity. Required traces: `time`, `trip_rise`, `trip_fall`, `hyst_width`.
 - `P_VALID_AFTER_BOTH_DIRECTIONS`: exercise and make observable: Valid remains at vss until at least one rising and one falling trip have been captured, then rises to vdd. Required traces: `time`, `vdd`, `vss`, `cmp_out`, `valid`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+- Use the midpoint between `vdd` and `vss` as the decision threshold for
+  `cmp_out`.
+- When `cmp_out` rises through the midpoint, capture the instantaneous
+  `vin - vss` value into `trip_rise`.
+- When `cmp_out` falls through the midpoint, capture the instantaneous
+  `vin - vss` value into `trip_fall`.
+- Continue updating the captured values on later output transitions.
+- Drive `hyst_width` as `trip_rise - trip_fall` once both captures are present.
+- Drive `valid` low until both directions have been captured, then drive it
+  high.
+
+
 The required trace names are: `time`, `vdd`, `vss`, `vin`, `cmp_out`, `trip_rise`, `trip_fall`, `hyst_width`, `valid`.
 
 ## Modeling Constraints

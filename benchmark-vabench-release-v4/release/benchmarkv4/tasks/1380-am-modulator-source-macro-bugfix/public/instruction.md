@@ -39,6 +39,17 @@ The repaired bundle must satisfy every public property:
 - `P_ENVELOPE_DBG_MUST_EXPOSE_THE_ACTIVE`: restore: `envelope_dbg` must expose the active voltage-domain envelope multiplier mapped into the output voltage range. Required traces: `time`, `carrier_in`, `mod_in`, `enable`, `rst`, `vout`, `envelope_dbg`, `valid`.
 - `P_ASSERT_VALID_WHILE_ENABLED_AFTER_RESET`: restore: Assert `valid` while enabled after reset has been released. Required traces: `time`, `carrier_in`, `mod_in`, `enable`, `rst`, `vout`, `envelope_dbg`, `valid`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+- On reset or when disabled, drive `vout` to `vcm`, clear `envelope_dbg`, and clear `valid`.
+- When enabled, treat `carrier_in` and `mod_in` as deviations around `vcm`.
+- Drive an amplitude-modulated output whose carrier deviation increases when `mod_in` rises above `vcm` and decreases when it falls below `vcm`.
+- Clamp the envelope multiplier so the output stays within `[vss, vdd]`.
+- `envelope_dbg` must expose the active voltage-domain envelope multiplier mapped into the output voltage range.
+- Assert `valid` while enabled after reset has been released.
+
+
 ## Modeling Constraints
 
 - Use deterministic voltage-domain behavioral Verilog-A.

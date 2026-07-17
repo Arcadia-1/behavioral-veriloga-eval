@@ -81,6 +81,18 @@ The repaired bundle must satisfy every public property:
 - `P_CAL_READY_QUALIFICATION`: restore: ready asserts after four updates in one calibration window and the code holds while cal_en is low. Required traces: `time`, `clk`, `rst`, `cal_en`, `ready`, `offset_3`, `offset_2`, `offset_1`, `offset_0`.
 - `P_CAL_COMPARATOR_DECISION`: restore: decision reflects the sign of vinp minus vinn plus threshold_dbg and is low in reset. Required traces: `time`, `vinp`, `vinn`, `rst`, `threshold_dbg`, `decision`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+- On reset, clear the offset code, `decision`, `ready`, and `threshold_dbg`.
+- While `cal_en` is high, `calibration_fsm` updates the signed offset code once per rising `clk` edge using `cal_ref` as the calibration error input.
+- When `cal_ref` is above `vth`, increment the offset code by one step up to code 15; otherwise decrement by one step down to code 0.
+- After four calibration updates with `cal_en` high, assert `ready` and hold the final offset code until reset or another calibration window.
+- `offset_dac` must convert the 4-bit offset code to `threshold_dbg = (offset_code - 8) * offset_lsb`.
+- `comparator_core` must drive `decision` high when `V(vinp) - V(vinn) + threshold_dbg >= 0`, otherwise low.
+- Drive `offset_3..offset_0` as voltage-coded copies of the current offset code.
+
+
 ## Modeling Constraints
 
 - Use deterministic voltage-domain transient behavioral Verilog-A.

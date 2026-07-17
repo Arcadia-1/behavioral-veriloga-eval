@@ -47,6 +47,12 @@ Create stimulus and save traces sufficient for the fixed evaluator oracle to che
 - `P_ENABLE_QUALIFIED_DIVIDE_BY_EIGHT`: exercise and make observable: Rising `vin` crossings through `vth` advance the divide-by-eight counter only while `en` is high. Required traces: `time`, `en`, `rst`, `vin`, `vout`.
 - `P_OUTPUT_DUTY_AND_LEVEL`: exercise and make observable: The divided waveform follows the specified high/low count window and uses the declared high and low voltage levels. Required traces: `time`, `en`, `rst`, `vin`, `vout`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+Initialize the divided output high. An active-high reset forces the counter to zero and the output high. On rising input-clock crossings through `vth`, advance the counter only when reset is low and enable is high. Wrap the counter modulo `divisor` and drive the output high for the first half of the count range and low for the second half.
+
+
 The required trace names are: `time`, `en`, `rst`, `vin`, `vout`.
 
 ## Modeling Constraints

@@ -53,6 +53,20 @@ Create stimulus and save traces sufficient for the fixed evaluator oracle to che
 - `P_LOW_PHASE_DROOP`: exercise and make observable: While clk is low, vout applies bounded droop updates governed by tau and dt instead of remaining ideal or changing discontinuously. Required traces: `time`, `clk`, `vout`.
 - `P_NO_TRACK_THROUGH`: exercise and make observable: Between aperture captures, vout does not transparently track changes on vin; only the specified droop behavior is permitted. Required traces: `time`, `clk`, `vin`, `vout`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+Model a compact sampling front end:
+
+- On each rising `clk` crossing, schedule a sample after `taperture`.
+- At the aperture sample, capture `vin`, clamp the held value to the local
+  `vss`-to-`vdd` range, update `vout`, assert `valid`, and update `coarse`.
+- `coarse` is high when the sampled value is above `vth` and low otherwise.
+- While the clock is low, apply bounded droop to the held output using `tau`
+  and `dt`.
+- Deassert `valid` after `valid_width`.
+
+
 The required trace names are: `time`, `vdd`, `vss`, `clk`, `vin`, `vout`, `valid`, `coarse`.
 
 ## Modeling Constraints

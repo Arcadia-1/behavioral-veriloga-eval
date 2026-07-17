@@ -124,6 +124,17 @@ Create stimulus and save traces sufficient for the fixed evaluator oracle to che
 - `P_TDC_VALID_LATCH`: exercise and make observable: A completed interval asserts valid and preserves its code until restart or reset. Required traces: `time`, `start`, `stop`, `clk`, `valid`, `code_7`, `code_0`.
 - `P_TDC_OVERFLOW`: exercise and make observable: The 256th armed clock saturates code at 255, asserts overflow and valid, and disarms. Required traces: `time`, `start`, `stop`, `clk`, `code_7`, `code_6`, `code_5`, `code_4`, `code_3`, `code_2`, `code_1`, `code_0`, `valid`, `overflow`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+- On reset, clear the interval counter, output code, `valid`, and `overflow`.
+- A rising `start` crossing arms a measurement and clears the active count.
+- While armed, increment the active count on each rising `clk` edge until a rising `stop` crossing is observed.
+- On the first stop edge after start, latch the count into `code_7..code_0`, assert `valid`, and disarm the measurement.
+- If the active count exceeds 255 before stop, saturate the output code to 255, assert `overflow`, assert `valid`, and disarm.
+- A new rising `start` edge begins a new measurement and clears `valid` and `overflow`.
+
+
 The required trace names are: `time`, `start`, `stop`, `clk`, `rst`, `code_7`, `code_6`, `code_5`, `code_4`, `code_3`, `code_2`, `code_1`, `code_0`, `valid`, `overflow`.
 
 ## Modeling Constraints

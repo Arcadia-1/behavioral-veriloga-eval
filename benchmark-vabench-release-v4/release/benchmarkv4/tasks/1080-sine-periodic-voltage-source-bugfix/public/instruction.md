@@ -33,6 +33,19 @@ The repaired bundle must satisfy every public property:
 - `P_LINEAR_SUPERPOSITION`: restore: At every transient time t, OUT equals a1*sin(2*pi*f1*t) plus a2*sin(2*pi*f2*t) plus a3*sin(2*pi*f3*t). Required traces: `time`, `OUT`.
 - `P_ZERO_INITIAL_PHASE`: restore: With no added offset and zero initial phase for all tones, OUT is 0 V at t = 0. Required traces: `time`, `OUT`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+Drive `OUT` with a three-tone voltage source:
+
+```text
+V(OUT,VSS) = a1*sin(2*pi*f1*t) + a2*sin(2*pi*f2*t) + a3*sin(2*pi*f3*t)
+```
+
+Use `$bound_step(...)` or equivalent timestep guidance based on the highest
+tone frequency so the waveform is well resolved in transient simulation.
+
+
 ## Modeling Constraints
 
 - Use deterministic continuous voltage contribution from the declared three-tone sum.

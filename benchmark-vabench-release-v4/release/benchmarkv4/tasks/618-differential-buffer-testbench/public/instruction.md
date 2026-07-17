@@ -44,6 +44,12 @@ Create stimulus and save traces sufficient for the fixed evaluator oracle to che
 - `P_DIFFERENTIAL_PRESERVATION`: exercise and make observable: The differential output VOUTP minus VOUTN equals the differential input VINP minus VINN. Required traces: `time`, `vinp`, `vinn`, `voutp`, `voutn`.
 - `P_COMMON_MODE_PRESERVATION`: exercise and make observable: The output pair preserves the input pair common-mode voltage without conversion or rail logic. Required traces: `time`, `vinp`, `vinn`, `voutp`, `voutn`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+Drive `VOUTP` from `VINP` and `VOUTN` from `VINN` with unity gain and the same polarity on each side.
+
+
 The required trace names are: `time`, `vinp`, `vinn`, `voutp`, `voutn`.
 
 ## Modeling Constraints

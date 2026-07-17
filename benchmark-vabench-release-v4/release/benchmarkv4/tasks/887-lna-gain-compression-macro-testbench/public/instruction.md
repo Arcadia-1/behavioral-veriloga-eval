@@ -47,10 +47,32 @@ hierarchical/private nodes, or use checker/gold/internal files.
 Create stimulus and save traces sufficient for the fixed evaluator oracle to check:
 
 - `P_ON_RESET_OR_WHEN_DISABLED_DRIVE`: exercise and make observable: On reset or when disabled, drive `vout` to `vcm`, clear `gain_metric`, and clear `compression_flag`. Required traces: `time`, `vin`, `enable`, `rst`, `vout`, `gain_metric`, `compression_flag`.
-- `P_WHEN_ENABLED_PROVIDE_HIGH_GAIN_FOR`: exercise and make observable: When enabled, provide high gain for small input deviations around `vcm`. Required traces: `time`, `vin`, `enable`, `rst`, `vout`, `gain_metric`, `compression_flag`.
-- `P_REDUCE_EFFECTIVE_GAIN_MONOTONICALLY_WHEN_THE`: exercise and make observable: Reduce effective gain monotonically when the absolute input deviation exceeds `input_clip`. Required traces: `time`, `vin`, `enable`, `rst`, `vout`, `gain_metric`, `compression_flag`.
-- `P_EXPOSE_ACTIVE_GAIN_ON_GAIN_METRIC`: exercise and make observable: Expose active gain on `gain_metric` and assert `compression_flag` during compressed operation. Required traces: `time`, `vin`, `enable`, `rst`, `vout`, `gain_metric`, `compression_flag`.
+- `P_WHEN_ENABLED_PROVIDE_HIGH_GAIN_FOR`: exercise and make observable: While enabled compute excess=max(0,abs(vin-vcm)-input_clip) and active_gain=small_gain/(1+excess/0.20). Required traces: `time`, `vin`, `enable`, `rst`, `vout`, `gain_metric`, `compression_flag`.
+- `P_REDUCE_EFFECTIVE_GAIN_MONOTONICALLY_WHEN_THE`: exercise and make observable: Drive vout=clamp(vcm+active_gain*(vin-vcm),vss,vdd), with active_gain decreasing monotonically once abs(vin-vcm)>input_clip. Required traces: `time`, `vin`, `enable`, `rst`, `vout`, `gain_metric`, `compression_flag`.
+- `P_EXPOSE_ACTIVE_GAIN_ON_GAIN_METRIC`: exercise and make observable: Drive gain_metric=clamp(vdd*active_gain/small_gain,vss,vdd) and compression_flag=vdd exactly when active_gain<0.85*small_gain, otherwise vss. Required traces: `time`, `vin`, `enable`, `rst`, `vout`, `gain_metric`, `compression_flag`.
 - `P_CLAMP_VOUT_INSIDE_VSS_VDD`: exercise and make observable: Clamp `vout` inside `[vss, vdd]`. Required traces: `time`, `vin`, `enable`, `rst`, `vout`, `gain_metric`, `compression_flag`.
+
+
+The following canonical public behavior is normative for this derived form:
+
+- On reset or when disabled, drive `vout` to `vcm`, clear `gain_metric`, and clear `compression_flag`.
+- When enabled, provide high gain for small input deviations around `vcm`.
+- Reduce effective gain monotonically when the absolute input deviation exceeds `input_clip`.
+- Expose active gain on `gain_metric` and assert `compression_flag` during compressed operation.
+- Clamp `vout` inside `[vss, vdd]`.
+
+While enabled, compute
+
+`excess = max(0,abs(vin-vcm)-input_clip)`
+
+`active_gain = small_gain/(1+excess/0.20)`
+
+and drive `vout=clamp(vcm+active_gain*(vin-vcm),vss,vdd)`. Encode active gain
+as `gain_metric=clamp(vdd*active_gain/small_gain,vss,vdd)`. Assert
+`compression_flag=vdd` exactly when `active_gain < 0.85*small_gain`, otherwise
+drive it to vss. Reset or disable drives `vout=vcm` and clears both metric and
+flag to vss.
+
 
 The required trace names are: `time`, `vin`, `enable`, `rst`, `vout`, `gain_metric`, `compression_flag`.
 

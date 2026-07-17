@@ -33,6 +33,21 @@ The repaired bundle must satisfy every public property:
 - `P_PULSE_CLEAR`: restore: An asserted correction output returns low after the next clock transition. Required traces: `time`, `clk`, `up`, `down`.
 - `P_RAIL_LEVELS`: restore: Asserted outputs approach vdd and inactive outputs approach 0 V with finite smoothing. Required traces: `time`, `up`, `down`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+Treat logic low as below `vth` and logic high as above `vth`.
+
+On each rising or falling transition of `data`:
+
+- assert `up` when `clk` is high and `retimed_data` is low;
+- assert `down` when `clk` is low and `retimed_data` is high;
+- assert neither output when the observed relationship does not indicate a correction direction;
+- never drive `up` and `down` high at the same time.
+
+Each correction output is a pulse near `vdd` that returns to 0 V after the next clock transition. Use smooth voltage-domain output contributions.
+
+
 ## Modeling Constraints
 
 - Use deterministic voltage-domain behavior.

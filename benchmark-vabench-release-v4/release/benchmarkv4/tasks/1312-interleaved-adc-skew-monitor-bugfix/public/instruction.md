@@ -74,6 +74,18 @@ The repaired bundle must satisfy every public property:
 - `P_ASSERT_ALARM_WHEN_SKEW_METRIC_EXCEEDS`: restore: Assert `alarm` when `skew_metric` exceeds `skew_limit` for two consecutive comparisons. Required traces: `time`, `vin_a`, `vin_b`, `clk_a`, `clk_b`, `rst`, `enable`, `skew_metric`, `magnitude_metric`, `alarm`.
 - `P_USE_ONLY_VOLTAGE_DOMAIN_BEHAVIORAL_STATE`: restore: Use only voltage-domain behavioral state and voltage contributions on public electrical outputs. Required traces: `time`, `vin_a`, `vin_b`, `clk_a`, `clk_b`, `rst`, `enable`, `skew_metric`, `magnitude_metric`, `alarm`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+- On reset or when disabled, clear both sample states and all metrics.
+- Capture `vin_a` on rising `clk_a` and `vin_b` on rising `clk_b`.
+- Estimate a skew proxy from the signed difference between the two most recent samples.
+- Drive `skew_metric` with the absolute skew proxy and `magnitude_metric` with the average sample magnitude.
+- Assert `alarm` when `skew_metric` exceeds `skew_limit` for two consecutive comparisons.
+- Use only voltage-domain behavioral state and voltage contributions on public electrical outputs.
+- Do not expose pass/fail flags; expose only the public observable metrics named in the interface.
+
+
 ## Modeling Constraints
 
 - Use deterministic voltage-domain behavioral Verilog-A.

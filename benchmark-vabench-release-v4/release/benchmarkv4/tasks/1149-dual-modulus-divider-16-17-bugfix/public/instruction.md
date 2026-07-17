@@ -27,6 +27,12 @@ The repaired bundle must satisfy every public property:
 - `P_DIVIDE_COUNT_TIMING`: restore: The output counter resets only at the terminal count for the selected modulus. Required traces: `time`, `fin`, `fout`, `mc`.
 - `P_OUTPUT_LOW_MARKER_AND_LEVEL`: restore: `fout` uses the specified low-marker count and declared voltage-coded output levels. Required traces: `time`, `fin`, `fout`, `mc`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+Start with `fout` low. Count rising crossings of `fin` through 0.5 V. Produce the divider output pulse pattern for divide-by-16 when `mc` is low, and extend the terminal count by one input edge for divide-by-17 when `mc` is high at the modulus decision point. Assert the high marker on the terminal divide event: count 15 for divide-by-16 and count 16 for divide-by-17. Return `fout` low at the midpoint marker, count 8 within the following marker interval.
+
+
 ## Modeling Constraints
 
 - Use deterministic voltage-domain behavioral Verilog-A.

@@ -47,6 +47,20 @@ Create stimulus and save traces sufficient for the fixed evaluator oracle to che
 - `P_MONOTONIC_TRIM`: exercise and make observable: For otherwise equal enabled histories, a higher trim request produces a target and settled out value no lower than a smaller request. Required traces: `time`, `clk`, `vin`, `out`.
 - `P_ENABLE_METRIC`: exercise and make observable: metric approaches 0.9 V while enabled and 0 V while disabled, with transition smoothing set by tr. Required traces: `time`, `clk`, `rst`, `vin`, `metric`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+- `clk` and `rst` are voltage-coded logic signals, low near 0 V and high near 0.9 V.
+- Treat `vin` as a combined enable/trim request voltage.
+- Update the bias state on rising `clk` crossings through `vth`.
+- A high `rst` or `vin < 0.25 V` disables the bias generator: reset `out` to 0 V and drive `metric` to 0 V.
+- When enabled, compute the bias target as `0.28 + 0.55 * ((vin - 0.25) / 0.65)` and clamp it to `[0.28 V, 0.82 V]`.
+- On each enabled clock update, move the output state toward the target with `out_next = out_prev + 0.45 * (target - out_prev)` instead of jumping directly to the target.
+- Higher trim/control voltage should increase `out` monotonically.
+- Drive `metric` to 0.9 V while the bias generator is enabled and to 0 V while disabled.
+- Keep the model pure voltage-domain behavioral Verilog-A. Do not use branch-current contributions, transistor-level devices, AC/noise analysis, or KCL/KVL regulation loops.
+
+
 The required trace names are: `time`, `clk`, `rst`, `vin`, `out`, `metric`.
 
 ## Modeling Constraints

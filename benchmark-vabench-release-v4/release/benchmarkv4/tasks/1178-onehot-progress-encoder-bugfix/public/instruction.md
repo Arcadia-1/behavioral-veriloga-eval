@@ -43,6 +43,12 @@ The repaired bundle must satisfy every public property:
 - `P_ACCUMULATING_PROGRESS_BITS`: restore: Previously asserted progress bits remain high until all sixteen bits have been asserted. Required traces: `time`, `ck`, `d0`, `d1`, `d2`, `d3`, `d4`, `d5`, `d6`, `d7`, `d8`, `d9`, `d10`, `d11`, `d12`, `d13`, `d14`, `d15`.
 - `P_SUM_COUNT_OUTPUT`: restore: `sum` reports the current count value corresponding to the number of asserted progress bits. Required traces: `time`, `ck`, `sum`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+Initialize all progress outputs and the count to zero. On each rising `ck` crossing, set the next progress bit high and increment the count until all sixteen bits have been asserted. Drive `sum` with the current count value and hold all state between clock events.
+
+
 ## Modeling Constraints
 
 - Use deterministic voltage-domain behavioral Verilog-A.

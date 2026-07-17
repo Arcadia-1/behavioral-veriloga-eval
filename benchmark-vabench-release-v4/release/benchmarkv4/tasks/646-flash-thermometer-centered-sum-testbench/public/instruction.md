@@ -48,6 +48,12 @@ Create stimulus and save traces sufficient for the fixed evaluator oracle to che
 - `P_CENTERED_SUM`: exercise and make observable: The output subtracts the four-count midpoint so the analog sum is centered around zero asserted-input balance. Required traces: `time`, `b0`, `b1`, `b2`, `b3`, `b4`, `b5`, `b6`, `b7`, `dout`.
 - `P_OUTPUT_GAIN`: exercise and make observable: The centered count is multiplied by `gain` and driven on `dout` without extra scaling. Required traces: `time`, `b0`, `b1`, `b2`, `b3`, `b4`, `b5`, `b6`, `b7`, `dout`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+Count how many thermometer inputs are above `vth`. Center the count around midscale by subtracting four asserted inputs, then scale the centered count by `gain` and drive `dout`.
+
+
 The required trace names are: `time`, `b0`, `b1`, `b2`, `b3`, `b4`, `b5`, `b6`, `b7`, `dout`.
 
 ## Modeling Constraints

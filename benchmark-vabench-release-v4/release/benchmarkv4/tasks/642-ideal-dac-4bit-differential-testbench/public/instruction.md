@@ -48,6 +48,12 @@ Create stimulus and save traces sufficient for the fixed evaluator oracle to che
 - `P_MIDRISE_DIFFERENTIAL_SCALE`: exercise and make observable: The sampled code maps to a mid-rise differential DAC level with the declared `levels` and `vref` scale. Required traces: `time`, `clk`, `digital`, `vcm`, `von`, `vop`.
 - `P_OUTPUT_POLARITY_AND_COMMON_MODE`: exercise and make observable: `vop` and `von` are complementary about `vcm`, with positive differential polarity for larger sampled codes. Required traces: `time`, `clk`, `digital`, `vcm`, `von`, `vop`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+On each falling crossing of `clk` through `vtrans_clk`, sample the analog code on `digital`, clamp it into the valid code range, and convert it to a mid-rise differential DAC level over the span `-vref` to `+vref`. Drive `vop` and `von` complementarily around `V(vcm)`.
+
+
 The required trace names are: `time`, `clk`, `digital`, `vcm`, `von`, `vop`.
 
 ## Modeling Constraints

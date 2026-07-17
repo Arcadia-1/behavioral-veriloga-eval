@@ -26,6 +26,16 @@ The repaired bundle must satisfy every public property:
 - `P_NEGATIVE_INPUT_REFLECTION`: restore: For negative `V(sigin)`, drive `sigout` to `-V(sigin)`. Required traces: `time`, `sigin`, `sigout`.
 - `P_MEMORYLESS_ABSOLUTE_VALUE`: restore: The output is an instantaneous absolute-value function of `sigin` with no retained state or waveform schedule. Required traces: `time`, `sigin`, `sigout`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+- `P_POSITIVE_INPUT_PASSTHROUGH`: For nonnegative `V(sigin)`, drive `sigout` to the same nonnegative voltage.
+
+- `P_NEGATIVE_INPUT_REFLECTION`: For negative `V(sigin)`, drive `sigout` to `-V(sigin)`.
+
+- `P_MEMORYLESS_ABSOLUTE_VALUE`: The output is an instantaneous absolute-value function of `sigin` with no retained state or waveform schedule.
+
+
 ## Modeling Constraints
 
 - Use deterministic voltage-domain behavioral Verilog-A.

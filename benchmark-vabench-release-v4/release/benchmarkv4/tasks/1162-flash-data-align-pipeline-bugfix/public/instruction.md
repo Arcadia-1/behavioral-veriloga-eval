@@ -38,6 +38,12 @@ The repaired bundle must satisfy every public property:
 - `P_BINARY_OUTPUT_ORDER`: restore: The delayed count is driven as voltage-coded binary with `dout0` as LSB and `dout3` as MSB. Required traces: `time`, `clk`, `dout0`, `dout1`, `dout2`, `dout3`.
 - `P_EVENT_HELD_OUTPUTS`: restore: Outputs update only from pipeline clock events and hold their previous voltage-coded state between events. Required traces: `time`, `clk`, `dout0`, `dout1`, `dout2`, `dout3`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+On each rising crossing of `clk` through `vth`, count the eight asserted thermometer inputs and shift that count through a four-stage alignment pipeline. Drive `dout0` as the LSB and `dout3` as the MSB of the delayed count.
+
+
 ## Modeling Constraints
 
 - Use deterministic voltage-domain behavioral Verilog-A.

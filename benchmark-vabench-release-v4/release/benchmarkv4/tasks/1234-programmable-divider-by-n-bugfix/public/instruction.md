@@ -28,6 +28,12 @@ The repaired bundle must satisfy every public property:
 - `P_CLOCK_THRESHOLD_OBSERVABILITY`: restore: Use the public `vth` threshold for edge detection so the declared clock stimulus produces the expected counted edges. Required traces: `time`, `clk`, `divctrl`, `out`.
 - `P_OUTPUT_HIGH_LEVEL`: restore: Drive high output states near the public `vh` level and low states near `0 V`. Required traces: `time`, `clk`, `divctrl`, `out`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+Detect rising crossings of `clk` through `vth`. At each qualifying edge, interpret `divctrl` as the requested divide ratio by rounding it to the nearest integer; clip ratios below one to one. Maintain an internal modulo counter for the current ratio and drive `out` high only when the counter state is zero, low otherwise. For a requested ratio of three, the output is high once every three input clock edges.
+
+
 ## Modeling Constraints
 
 - Use deterministic voltage-domain behavioral Verilog-A.

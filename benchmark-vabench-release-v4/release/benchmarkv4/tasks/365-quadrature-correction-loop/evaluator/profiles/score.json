@@ -1,16 +1,13 @@
 {
   "corners": [],
   "deck_overrides": {},
-  "deterministic_seed": 1,
+  "deterministic_seed": 0,
   "generated_from": {
     "script": "render_v4_harness.py",
     "version": "v4-harness-renderer-v1"
   },
-  "harness_spec_sha256": "003f9ba6bc16b6b1fd75f6207f527b74ce8d5fb3125613aaeb87fc09c8f5b406",
-  "parameters": {
-    "maxstep": "100p",
-    "stop_time": "178n"
-  },
+  "harness_spec_sha256": "25633dc0b942b5765e6cac3b0042a9f83b6ef5268dac63a7bd8e8337afa1c669",
+  "parameters": {},
   "profile_name": "score",
   "property_ids": [
     "P_RESET_CLEAR",

@@ -34,11 +34,21 @@ Preserve this exact artifact and module interface:
 
 The repaired bundle must satisfy every public property:
 
-- `P_ON_EACH_RISING_CLOCK_CROSSING_COMPUTE`: restore: Update the stored output and metric only on rising `clk` crossings. Required traces: `time`, `clk`, `en`, `gain_ctrl`, `offset_ctrl`, `out`, `raw`, `resid_metric`, `rst`.
-- `P_MAP_GAIN_CTRL_TO_A_PUBLIC`: restore: Let `gain = gain_base + gain_span * clip01(V(gain_ctrl) / vhi)`, `offset = V(offset_ctrl) - center`, and `transformed = center + gain * (V(raw) - center) + offset`. Required traces: `time`, `clk`, `en`, `gain_ctrl`, `offset_ctrl`, `out`, `raw`, `resid_metric`, `rst`.
-- `P_CLEAR_OUTPUT_AND_METRIC_WHILE_RESET`: restore: At a rising edge, reset high or enable low stores both outputs at `0 V`; otherwise store `out = clamp(transformed, 0, vhi)`. Required traces: `time`, `clk`, `en`, `gain_ctrl`, `offset_ctrl`, `out`, `raw`, `resid_metric`, `rst`.
-- `P_EXPOSE_A_BOUNDED_RESIDUAL_METRIC_FOR`: restore: Store `resid_metric = vhi * clip01(abs(transformed - V(raw)) / resid_fullscale)`, where `clip01` limits its argument to `[0, 1]`. Required traces: `time`, `clk`, `en`, `gain_ctrl`, `offset_ctrl`, `out`, `raw`, `resid_metric`, `rst`.
+- `P_ON_EACH_RISING_CLOCK_CROSSING_COMPUTE`: restore: On each rising clock crossing, compute a local affine calibration transform from raw, gain_ctrl, and offset_ctrl while reset is low and enable is high. Required traces: `time`, `clk`, `en`, `gain_ctrl`, `offset_ctrl`, `out`, `raw`, `resid_metric`, `rst`.
+- `P_MAP_GAIN_CTRL_TO_A_PUBLIC`: restore: Map gain_ctrl to a public gain range and offset_ctrl to a centered offset. Required traces: `time`, `clk`, `en`, `gain_ctrl`, `offset_ctrl`, `out`, `raw`, `resid_metric`, `rst`.
+- `P_CLEAR_OUTPUT_AND_METRIC_WHILE_RESET`: restore: Clear output and metric while reset is high or enable is low; otherwise clip the transformed output into the public voltage-coded range. Required traces: `time`, `clk`, `en`, `gain_ctrl`, `offset_ctrl`, `out`, `raw`, `resid_metric`, `rst`.
+- `P_EXPOSE_A_BOUNDED_RESIDUAL_METRIC_FOR`: restore: Expose a bounded residual metric for the transform magnitude. Required traces: `time`, `clk`, `en`, `gain_ctrl`, `offset_ctrl`, `out`, `raw`, `resid_metric`, `rst`.
 - `P_USE_LOCAL_ANALOG_HELPER_FUNCTIONS_RATHER`: restore: Use local analog helper functions rather than user task/endtask syntax. Required traces: `time`, `clk`, `en`, `gain_ctrl`, `offset_ctrl`, `out`, `raw`, `resid_metric`, `rst`.
+
+
+The following canonical public behavior is normative for this derived form:
+
+- On each rising clock crossing, compute a local affine calibration transform from raw, gain_ctrl, and offset_ctrl while reset is low and enable is high.
+- Map gain_ctrl to a public gain range and offset_ctrl to a centered offset.
+- Clear output and metric while reset is high or enable is low; otherwise clip the transformed output into the public voltage-coded range.
+- Expose a bounded residual metric for the transform magnitude.
+- Use local analog helper functions rather than user task/endtask syntax.
+
 
 ## Modeling Constraints
 

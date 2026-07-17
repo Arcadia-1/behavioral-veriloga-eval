@@ -39,6 +39,12 @@ Create stimulus and save traces sufficient for the fixed evaluator oracle to che
 - `P_DRIVE_SIGOUT_TO_V_SIGIN_PLUS_SIGSHIFT`: exercise and make observable: Drive `sigout` to `V(sigin) + sigshift` for the current input voltage. Required traces: `time`, `sigin`, `sigout`.
 - `P_PRESERVE_UNITY_GAIN_WHILE_ADDING_OFFSET`: exercise and make observable: Preserve unity gain from `sigin` to `sigout` while adding the configured `sigshift` offset; input changes must appear at `sigout` with the same voltage step size. Required traces: `time`, `sigin`, `sigout`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+Drive `sigout` to `V(sigin) + sigshift` for the current input voltage.
+
+
 The required trace names are: `time`, `sigin`, `sigout`.
 
 ## Modeling Constraints

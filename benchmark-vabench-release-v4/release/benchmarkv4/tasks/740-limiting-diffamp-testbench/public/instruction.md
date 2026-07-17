@@ -42,6 +42,12 @@ Create stimulus and save traces sufficient for the fixed evaluator oracle to che
 - `P_SMALL_SIGNAL_GAIN`: exercise and make observable: Near zero differential input, drive approximately `gain * V(sigin_p, sigin_n)`. Required traces: `time`, `sigin_n`, `sigin_p`, `sigout`.
 - `P_SMOOTH_SYMMETRIC_LIMITING`: exercise and make observable: For large positive and negative differential inputs, smoothly approach `+limit` and `-limit` without a hard clamp. Required traces: `time`, `sigin_n`, `sigin_p`, `sigout`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+Compute the differential input from `sigin_p` to `sigin_n`, preserve polarity, and drive a smooth odd transfer that is approximately `gain * V(sigin_p, sigin_n)` near zero while asymptotically approaching `+limit` and `-limit` for large positive and negative differential inputs. The limiting behavior should be continuous and smooth rather than a hard clamp.
+
+
 The required trace names are: `time`, `sigin_n`, `sigin_p`, `sigout`.
 
 ## Modeling Constraints

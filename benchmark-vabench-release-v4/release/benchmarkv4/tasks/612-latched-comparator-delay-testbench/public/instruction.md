@@ -51,6 +51,20 @@ Create stimulus and save traces sufficient for the fixed evaluator oracle to che
 - `P_INTEREDGE_HOLD`: exercise and make observable: The latched decision holds between rising CLK events even if VINP or VINN changes. Required traces: `time`, `clk`, `vinn`, `vinp`, `dout`.
 - `P_DELAY_AND_SMOOTHING`: exercise and make observable: DOUT applies td delay and tr transition smoothing after each latch event. Required traces: `time`, `clk`, `dout`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+- At `initial_step`, derive `vh`, `vl`, and the clock threshold from `VDD` and
+  `GND`, and initialize the random seed from `seed_init`.
+- On each rising crossing of `CLK` through the midpoint of the supply rails,
+  latch whether `VINP - VINN` exceeds `vos` plus the random decision term.
+- When `vn` is zero, the random term is deterministic zero; when `vn` is
+  nonzero, draw it from a normal distribution using the initialized seed.
+- Hold the latched value between clock events.
+- Drive `DOUT` to the derived supply rails with the configured delay and
+  transition time.
+
+
 The required trace names are: `time`, `vdd`, `clk`, `vinn`, `vinp`, `dout`.
 
 ## Modeling Constraints

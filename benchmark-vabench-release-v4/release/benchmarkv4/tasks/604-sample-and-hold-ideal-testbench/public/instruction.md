@@ -44,6 +44,14 @@ Create stimulus and save traces sufficient for the fixed evaluator oracle to che
 - `P_UNITY_SAMPLE_GAIN`: exercise and make observable: The held target equals the sampled vin without gain, offset, quantization, or rail remapping. Required traces: `time`, `vclk`, `vin`, `vout`.
 - `P_PARAMETERIZED_THRESHOLD`: exercise and make observable: Legal vtrans_clk overrides move the sampling crossing threshold while preserving rising-edge capture and hold behavior. Required traces: `time`, `vclk`, `vin`, `vout`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+On each rising crossing of `vclk` through `vtrans_clk`, sample the instantaneous
+input voltage `V(vin)`. Hold that sampled value until the next rising sampling
+event and drive it on `vout`.
+
+
 The required trace names are: `time`, `vclk`, `vin`, `vout`.
 
 ## Modeling Constraints

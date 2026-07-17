@@ -47,6 +47,18 @@ Create stimulus and save traces sufficient for the fixed evaluator oracle to che
 - `P_ACTIVE_METRIC`: exercise and make observable: Metric is 0.9 V while reset is inactive and conversion is active, and low during reset. Required traces: `time`, `rst`, `metric`.
 - `P_OUTPUT_CLAMP`: exercise and make observable: Out is clamped to 0.02 V through 0.88 V and changes with finite smoothing. Required traces: `time`, `out`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+When reset is asserted, drive `out` to the 0.45 V common-mode level and drive
+`metric` low. After reset releases, interpret `clk` as the LO polarity: use
+LO coefficient `+1.0` when `clk > vth`, and `-1.0` otherwise. Compute the
+converted baseband target as
+`0.45 V + conv_gain * (vin - 0.45 V) * LO_coefficient`. Clamp the driven `out`
+voltage to `[0.02 V, 0.88 V]`. Drive `metric` to 0.9 V while conversion is
+active.
+
+
 The required trace names are: `time`, `clk`, `rst`, `vin`, `out`, `metric`.
 
 ## Modeling Constraints

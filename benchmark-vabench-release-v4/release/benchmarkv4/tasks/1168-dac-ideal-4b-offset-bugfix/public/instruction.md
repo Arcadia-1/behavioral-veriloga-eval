@@ -31,6 +31,12 @@ The repaired bundle must satisfy every public property:
 - `P_OFFSET_PLUS_SCALED_TRIM`: restore: The output equals the public `offset` plus the code-scaled trim increment using the public `scaling` factor. Required traces: `time`, `din0`, `din1`, `din2`, `din3`, `dout`.
 - `P_EVENT_UPDATED_OUTPUT`: restore: `dout` updates on input threshold crossings or initial step and otherwise holds the smooth voltage output. Required traces: `time`, `din0`, `din1`, `din2`, `din3`, `dout`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+Interpret `din3` as the MSB and `din0` as the LSB of a 4-bit unsigned code using threshold `vth`. Add the code-scaled trim increment to `offset`, using `scaling` as the public code-to-voltage scale, and drive the result on `dout`.
+
+
 ## Modeling Constraints
 
 - Use deterministic voltage-domain behavioral Verilog-A.

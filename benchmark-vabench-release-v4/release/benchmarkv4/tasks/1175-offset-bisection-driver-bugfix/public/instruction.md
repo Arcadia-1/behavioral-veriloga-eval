@@ -31,6 +31,12 @@ The repaired bundle must satisfy every public property:
 - `P_SIGN_CHANGE_STEP_HALVING`: restore: The bisection step halves when the sampled decision polarity changes. Required traces: `time`, `clk`, `vout`, `vinp`, `vinn`.
 - `P_VCM_CENTERED_DIFFERENTIAL_DRIVE`: restore: `vinp` and `vinn` remain centered around `vcm` with half of the differential residue on each side. Required traces: `time`, `vcm`, `vinp`, `vinn`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+Initialize the differential residue to zero, the search step to `step_initial`, and the previous decision polarity to the low-decision direction. On each falling `clk` crossing, sample `vout`. A low decision (`vout < vth`) increases `vinp-vinn`, and a high decision (`vout >= vth`) decreases `vinp-vinn`. Halve the step only when the sampled polarity changes relative to the previous update; therefore the first low decision does not halve the step, while the first high decision halves the step before moving in the negative direction. Drive `vinp` and `vinn` symmetrically around `V(vcm)`.
+
+
 ## Modeling Constraints
 
 - Use deterministic voltage-domain behavioral Verilog-A.

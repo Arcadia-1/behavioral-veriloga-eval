@@ -52,6 +52,16 @@ Create stimulus and save traces sufficient for the fixed evaluator oracle to che
 - `P_HEADROOM_METRIC_REPORTS_THE_REMAINING_VBIAS`: exercise and make observable: `headroom_metric` reports the remaining `vbias - vout` margin clipped to the nominal flag range. Required traces: `time`, `vin`, `vbias`, `enable`, `rst`, `vout`, `headroom_metric`, `valid`.
 - `P_VALID_IS_HIGH_ONLY_WHEN_ENABLED`: exercise and make observable: `valid` is high only when enabled, not reset, and the bias rail can support at least the minimum headroom. Required traces: `time`, `vin`, `vbias`, `enable`, `rst`, `vout`, `headroom_metric`, `valid`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+- Reset or low `enable` drives the output and metrics low.
+- When enabled, the output follows `vin - vgs_drop`.
+- Clamp the output between `vss` and `vbias - min_headroom`.
+- `headroom_metric` reports the remaining `vbias - vout` margin clipped to the nominal flag range.
+- `valid` is high only when enabled, not reset, and the bias rail can support at least the minimum headroom.
+
+
 The required trace names are: `time`, `vin`, `vbias`, `enable`, `rst`, `vout`, `headroom_metric`, `valid`.
 
 ## Modeling Constraints

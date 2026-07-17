@@ -61,6 +61,42 @@ Create stimulus and save traces sufficient for the fixed evaluator oracle to che
 - `P_UPDATE_A_BOUNDED_CONTROL_VOLTAGE_MONITOR`: exercise and make observable: Update a bounded control-voltage monitor on `vctrl_mon` from the PFD phase Required traces: `time`, `VDD`, `VSS`, `ref_clk`, `fb_clk`, `dco_clk`, `vctrl_mon`, `lock`.
 - `P_DRIVE_LOCK_HIGH_AFTER_STABLE_TRACKING`: exercise and make observable: Drive `lock` high after stable tracking, low or unstable during the Required traces: `time`, `VDD`, `VSS`, `ref_clk`, `fb_clk`, `dco_clk`, `vctrl_mon`, `lock`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+This task asks for the `fracn_pll_timer_ref` behavioral module, not a Spectre
+testbench. The verification harness supplies a reference-step clock source and
+instantiates your module in a fractional-N PLL tracking/reacquire scenario.
+
+This is a behavioral continuous-time task. Do not use `I(...)`, `ddt(...)`, or
+`idt(...)`. Use voltage contributions only.
+
+Required observable behavior:
+
+- Use `ref_clk` as the reference timing input.
+- Generate a behavioral DCO clock on `dco_clk`.
+- Generate `fb_clk` by toggling it after a DCO rising-edge count selected by a
+  fractional accumulator: maintain an accumulator that increments by `frac_word`
+  after each feedback-output toggle; on overflow (modulo `acc_modulus`) use
+  `div_int - 1` for the next toggle count, otherwise use `div_int`. A complete
+  rising-edge period of `fb_clk` spans two such output toggles.
+- Update a bounded control-voltage monitor on `vctrl_mon` from the PFD phase
+  error (proportional + bounded integral).
+- Drive `lock` high after stable tracking, low or unstable during the
+  reference-frequency disturbance, and high again after reacquisition.
+
+Use voltage-coded logic with a mid-supply decision threshold where applicable,
+drive high logic outputs near `VDD` and low outputs near `VSS`. Keep the model
+pure behavioral Verilog-A. Do not use transistor-level devices, AC/noise
+analysis, external validation code, or simulator-specific test hooks.
+
+The supplied reference-step support clock uses public defaults
+`period_pre = 20 ns`, `period_post = 19.5 ns`, `t_switch = 2 us`, and
+`tedge = 100 ps`. That support source is not the candidate implementation, but
+the fractional-N model must work when the harness supplies a legal nearby
+reference cadence.
+
+
 The required trace names are: `time`, `VDD`, `VSS`, `ref_clk`, `fb_clk`, `dco_clk`, `vctrl_mon`, `lock`.
 
 ## Modeling Constraints

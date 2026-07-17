@@ -50,6 +50,29 @@ Create stimulus and save traces sufficient for the fixed evaluator oracle to che
 - `P_OUTM_VCM_VAC_SIN_M_TWO`: exercise and make observable: `outm = Vcm - Vac * sin(M_TWO_PI * phase_q)` (negative differential arm) Required traces: `time`, `vinp`, `vinm`, `outp`, `outm`, `metric`.
 - `P_METRIC_0_9_PHASE_Q_VOLTAGE`: exercise and make observable: `metric = 0.9 * phase_q` (voltage-coded instantaneous wrapped phase, `0 V` to `0.9 V`) Required traces: `time`, `vinp`, `vinm`, `outp`, `outm`, `metric`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+Use `idtmod()` as a voltage-domain phase integrator whose instantaneous
+frequency is set by the differential control voltage `V(vinp, vinm)`, clamp the
+frequency into a legal band with a `clip` macro, and produce a fully
+differential sine output.
+
+This is a behavioral continuous-time task, not a conservative-current/KCL task.
+Do not use `I(...)`, `ddt(...)`, or `idt(...)`.
+
+The observable instantaneous frequency must equal `Fnom + dFdV * V(vinp,
+vinm)` while that value lies inside `[Fmin, Fmax]`, and must remain at the
+corresponding endpoint outside that band. Integrate this frequency with a
+modulo-one `idtmod()` phase accumulator.
+
+Drive `outp` and `outm` as equal-amplitude, opposite-polarity sine arms around
+`Vcm`. Their common mode must remain at `Vcm`, each arm must have amplitude
+`Vac`, and a rising zero crossing must recur at the clipped frequency. Expose
+the wrapped phase as `metric`, linearly mapping phase zero to `0 V` and the
+upper end of the modulo-one interval to `0.9 V`.
+
+
 The required trace names are: `time`, `vinp`, `vinm`, `outp`, `outm`, `metric`.
 
 ## Modeling Constraints

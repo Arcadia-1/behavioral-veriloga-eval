@@ -95,6 +95,15 @@ The repaired bundle must satisfy every public property:
 - `P_HOLD_BETWEEN_EDGES`: restore: The parallel register state holds between rising clock crossings despite changes on serial_in. Required traces: `time`, `clk`, `serial_in`, `q0`, `q1`, `q2`, `q3`, `q4`, `q5`, `q6`, `q7`, `q8`, `q9`, `q10`, `q11`, `q12`, `q13`, `q14`, `q15`, `q16`, `q17`, `q18`, `q19`, `q20`, `q21`, `q22`, `q23`, `q24`, `q25`, `q26`, `q27`, `q28`, `q29`, `q30`, `q31`, `q32`, `q33`, `q34`, `q35`, `q36`, `q37`, `q38`, `q39`, `q40`, `q41`, `q42`, `q43`, `q44`, `q45`, `q46`, `q47`, `q48`, `q49`, `q50`, `q51`, `q52`, `q53`, `q54`, `q55`, `q56`, `q57`, `q58`, `q59`, `q60`, `q61`, `q62`, `q63`.
 - `P_OUTPUT_LEVELS`: restore: Each q bit uses 0 V for logic low and vdd for logic high with finite transition smoothing. Required traces: `time`, `q0`, `q1`, `q2`, `q3`, `q4`, `q5`, `q6`, `q7`, `q8`, `q9`, `q10`, `q11`, `q12`, `q13`, `q14`, `q15`, `q16`, `q17`, `q18`, `q19`, `q20`, `q21`, `q22`, `q23`, `q24`, `q25`, `q26`, `q27`, `q28`, `q29`, `q30`, `q31`, `q32`, `q33`, `q34`, `q35`, `q36`, `q37`, `q38`, `q39`, `q40`, `q41`, `q42`, `q43`, `q44`, `q45`, `q46`, `q47`, `q48`, `q49`, `q50`, `q51`, `q52`, `q53`, `q54`, `q55`, `q56`, `q57`, `q58`, `q59`, `q60`, `q61`, `q62`, `q63`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+- Treat `clk`, `rst_n`, and `serial_in` as voltage-coded logic using `vth`.
+- On each rising `clk` crossing, clear all register bits if `rst_n` is low.
+- Otherwise shift `serial_in` into `q[0]`, previous `q[0]` into `q[1]`, and so on through `q[63]`.
+- Drive `q[63:0]` as the current parallel register state.
+
+
 ## Modeling Constraints
 
 - AMS role: serial trim/configuration loader for calibration and mode-control flows.

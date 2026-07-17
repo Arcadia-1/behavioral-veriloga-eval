@@ -25,6 +25,12 @@ The repaired bundle must satisfy every public property:
 - `P_DRIVE_SIGOUT_TO_V_SIGIN_PLUS_SIGSHIFT`: restore: Drive `sigout` to `V(sigin) + sigshift` for the current input voltage. Required traces: `time`, `sigin`, `sigout`.
 - `P_PRESERVE_UNITY_GAIN_WHILE_ADDING_OFFSET`: restore: Preserve unity gain from `sigin` to `sigout` while adding the configured `sigshift` offset; input changes must appear at `sigout` with the same voltage step size. Required traces: `time`, `sigin`, `sigout`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+Drive `sigout` to `V(sigin) + sigshift` for the current input voltage.
+
+
 ## Modeling Constraints
 
 - Use deterministic voltage-domain behavioral Verilog-A.

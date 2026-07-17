@@ -32,6 +32,12 @@ The repaired bundle must satisfy every public property:
 - `P_WEIGHTED_GROUP_SUM`: restore: `din6` through `din2` contribute 16, 8, 4, 2, and 1 unit groups, while `din1` and `din0` contribute half-LSB and quarter-LSB trim groups. Required traces: `time`, `din0`, `din1`, `din2`, `din3`, `din4`, `din5`, `din6`, `dout`.
 - `P_SCALED_SCALAR_OUTPUT`: restore: `dout` represents the correctly scaled fractional scalar sum without fixed offsets or denominator errors. Required traces: `time`, `din0`, `din1`, `din2`, `din3`, `din4`, `din5`, `din6`, `dout`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+Interpret each input as asserted above `vth`. `din6` through `din2` represent the 16, 8, 4, 2, and 1 unit groups of a nominal 5-bit span, while `din1` and `din0` are half-LSB and quarter-LSB trim groups. Sum the asserted groups and normalize by the nominal 5-bit full-scale span before driving `dout`.
+
+
 ## Modeling Constraints
 
 - Use deterministic voltage-domain behavioral Verilog-A.

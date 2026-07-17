@@ -53,6 +53,12 @@ Create stimulus and save traces sufficient for the fixed evaluator oracle to che
 - `P_SDO_EXPOSES_SHIFTED_OUT_BIT`: exercise and make observable: `sdo` exposes the shifted-out `out7` bit rather than another register bit. Required traces: `time`, `out0`, `out1`, `out2`, `out3`, `out4`, `out5`, `out6`, `out7`, `rst`, `scki`, `scko`, `sdi`, `sdo`.
 - `P_OUTPUT_RAIL_LEVELS`: exercise and make observable: The parallel outputs and `sdo` are voltage-coded at valid low/high levels. Required traces: `time`, `out0`, `out1`, `out2`, `out3`, `out4`, `out5`, `out6`, `out7`, `rst`, `scki`, `scko`, `sdi`, `sdo`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+Initialize and reset the 8-bit configuration word to `10110010`, with the leftmost bit exposed on `out7` and `sdo` and the rightmost bit on `out0`. While `rst` is high, reload that word and block serial shifting. On each `scki` threshold crossing while reset is inactive, shift the word toward `out7`; sampled `sdi` enters `out0`. Drive `sdo` from the current `out7` bit and drive `scko` from the current `scki` logic state.
+
+
 The required trace names are: `time`, `out0`, `out1`, `out2`, `out3`, `out4`, `out5`, `out6`, `out7`, `rst`, `scki`, `scko`, `sdi`, `sdo`.
 
 ## Modeling Constraints

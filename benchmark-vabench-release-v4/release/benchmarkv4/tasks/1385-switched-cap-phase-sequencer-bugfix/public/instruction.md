@@ -80,6 +80,17 @@ The repaired bundle must satisfy every public property:
 - `P_PHASE_CODE`: restore: phase_code_1 and phase_code_0 encode the active phase index zero through three. Required traces: `time`, `phi1`, `phi2`, `phi3`, `phi4`, `phase_code_1`, `phase_code_0`.
 - `P_VALID_AFTER_SEQUENCE`: restore: valid remains low initially and asserts only after a complete enabled four-phase sample/hold sequence. Required traces: `time`, `clk`, `rst`, `enable`, `phase_code_1`, `phase_code_0`, `valid`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+- On reset or when disabled, clear all phase outputs, commands, phase-code outputs, and `valid`.
+- `nonoverlap_phase_gen` must step through four one-hot non-overlapping phases on rising `clk` edges while enabled.
+- `sample_switch_scheduler` must assert `sample_cmd` only during the sample phases and `hold_cmd` only during hold phases.
+- `hold_flagger` must assert `valid` after a complete sample/hold phase sequence.
+- `phase_code_1..phase_code_0` must expose the active phase index.
+- No two phase outputs may be high at the same time.
+
+
 ## Modeling Constraints
 
 - Use deterministic voltage-domain transient behavior.

@@ -59,6 +59,16 @@ Create stimulus and save traces sufficient for the fixed evaluator oracle to che
 - `P_COMPLETION`: exercise and make observable: After the final pulse completes, pulse is low and done is asserted. Required traces: `time`, `clk`, `pulse`, `done`.
 - `P_OUTPUT_LEVELS`: exercise and make observable: pulse and done use 0 V and vdd levels with finite transition smoothing set by tr. Required traces: `time`, `pulse`, `done`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+- Sample controls on rising `clk` crossings.
+- While idle, a sampled high `start` captures unsigned 4-bit `period`, `width`, and `count` control words.
+- Interpret each captured control word as at least one clock sample: zero-coded period, width, or count values map to 1.
+- Emit exactly `count` pulses. Each pulse is high for `width` clock samples, and pulse starts are separated by `period` clock samples.
+- After the final pulse completes, drive `pulse` low and assert `done`.
+
+
 The required trace names are: `time`, `clk`, `start`, `period0`, `period1`, `period2`, `period3`, `width0`, `width1`, `width2`, `width3`, `count0`, `count1`, `count2`, `count3`, `pulse`, `done`.
 
 ## Modeling Constraints

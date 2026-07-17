@@ -165,7 +165,7 @@
   "properties": [
     {
       "id": "P_ON_RESET_OR_WHEN_ENABLE_IS",
-      "observable_contract": "On reset or when `enable` is low, drive `vout` to `vcm`, clear `error_metric`, and clear `settled`.",
+      "observable_contract": "On reset or while disabled drive vout=vcm, drive the zero-error encoding error_metric=vcm, clear settled to vss, and clear the settle counter.",
       "required_signals": [
         "time",
         "vin",
@@ -182,7 +182,7 @@
     },
     {
       "id": "P_DECODE_GAIN_2_GAIN_0_INTO",
-      "observable_contract": "Decode `gain_2..gain_0` into a closed-loop target gain of at least unity.",
+      "observable_contract": "Poll every tick=250ps, decode code=4*gain_2+2*gain_1+gain_0, and compute target=clamp(vcm+(1+gain_lsb*code)*(vin-vcm),vss,vdd).",
       "required_signals": [
         "time",
         "vin",
@@ -199,7 +199,7 @@
     },
     {
       "id": "P_UPDATE_VOUT_ONCE_PER_RISING_CLK",
-      "observable_contract": "Update `vout` once per rising `clk` edge toward the target closed-loop output using `alpha`.",
+      "observable_contract": "On each enabled rising clk edge update vout_next=clamp(vout+alpha*(target-vout),vss,vdd) and then error=target-vout_next.",
       "required_signals": [
         "time",
         "vin",
@@ -233,7 +233,7 @@
     },
     {
       "id": "P_ERROR_METRIC_MUST_EXPOSE_THE_SIGNED",
-      "observable_contract": "`error_metric` must expose the signed difference between the current output and the target closed-loop value.",
+      "observable_contract": "Encode target-minus-output error as the vcm-centered public voltage error_metric=vcm+(target-vout_next), so vcm denotes zero error on active updates and during reset or disable.",
       "required_signals": [
         "time",
         "vin",
@@ -250,7 +250,7 @@
     },
     {
       "id": "P_ASSERT_SETTLED_AFTER_THREE_CONSECUTIVE_UPDATES",
-      "observable_contract": "Assert `settled` after three consecutive updates where the absolute error is below `settle_tol`.",
+      "observable_contract": "Increment the counter when abs(target-vout_next)<settle_tol, clear it otherwise, and assert settled=vdd at count three.",
       "required_signals": [
         "time",
         "vin",

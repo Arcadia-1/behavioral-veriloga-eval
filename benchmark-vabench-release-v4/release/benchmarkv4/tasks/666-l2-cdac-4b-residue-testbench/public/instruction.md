@@ -46,6 +46,12 @@ Create stimulus and save traces sufficient for the fixed evaluator oracle to che
 - `P_CONTROL_STEP_WEIGHTS`: exercise and make observable: Rising control crossings add positive capacitive reference steps: `dctrl3` is half scale, `dctrl2` quarter scale, and `dctrl1` eighth scale. Required traces: `time`, `dctrl1`, `dctrl2`, `dctrl3`, `vres`.
 - `P_RETAINED_RESIDUE_OUTPUT`: exercise and make observable: `vres` retains the accumulated sampled residue between clock/control events. Required traces: `time`, `vin`, `clks`, `dctrl1`, `dctrl2`, `dctrl3`, `vres`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+Sample `vin` into the residue level on the initial step and on each falling crossing of `clks` through `vdd/2`. Add capacitive reference steps to the held residue on rising crossings of the control inputs: `dctrl3` adds one-half of the reference span, `dctrl2` adds one-quarter, and `dctrl1` adds one-eighth.
+
+
 The required trace names are: `time`, `vin`, `clks`, `dctrl1`, `dctrl2`, `dctrl3`, `vres`.
 
 ## Modeling Constraints

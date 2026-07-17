@@ -39,6 +39,16 @@ The repaired bundle must satisfy every public property:
 - `P_RATIO_METRIC_EXPOSES_THE_SAMPLED_DIVISOR`: restore: `ratio_metric` exposes the sampled divisor as a voltage-coded fraction of the 1-to-16 range. Required traces: `time`, `clk_in`, `rst`, `enable`, `n_3`, `n_2`, `n_1`, `n_0`, `clk_div`, `ratio_metric`, `valid`.
 - `P_VALID_IS_HIGH_AFTER_THE_FIRST`: restore: `valid` is high after the first divider toggle and low before that or during reset/disable. Required traces: `time`, `clk_in`, `rst`, `enable`, `n_3`, `n_2`, `n_1`, `n_0`, `clk_div`, `ratio_metric`, `valid`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+- Reset or low `enable` clears the divider state, `clk_div`, `ratio_metric`, and `valid`.
+- On each enabled rising `clk_in` edge, sample the four control bits and form divisor `N = code + 1`.
+- Toggle `clk_div` whenever `N` enabled input-clock rising edges have been counted.
+- `ratio_metric` exposes the sampled divisor as a voltage-coded fraction of the 1-to-16 range.
+- `valid` is high after the first divider toggle and low before that or during reset/disable.
+
+
 ## Modeling Constraints
 
 - Use deterministic voltage-domain behavioral Verilog-A.

@@ -43,6 +43,34 @@ Create stimulus and save traces sufficient for the fixed evaluator oracle to che
 - `P_DONE_TIME_GATE`: exercise and make observable: Done remains low through 120 ns regardless of the response level. Required traces: `time`, `vout`, `done`.
 - `P_DONE_SETTLED_GATE`: exercise and make observable: After 120 ns, done is high only while the internal settled response is above 0.75 V and otherwise remains low. Required traces: `time`, `step`, `vout`, `done`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+This is a measurement-helper DUT task, not a Spectre testbench-generation task.
+Return only the Verilog-A source file `settling_time_measurement_tb.va`.
+
+Use a 1 ns timer update to model a first-order settling response:
+
+```text
+y += 0.04 * (V(step) - y)
+```
+
+Drive `vout` from the internal state `y` using `tr` for transition smoothing.
+Drive `done` low before the settling
+boundary and high only after the simulation time is beyond 120 ns and the
+settled state is above 0.75 V. The validation applies a step input, runs past
+the 120 ns boundary, and saves `step`, `vout`, and `done`.
+
+Use voltage-coded logic with a 0.45 V threshold where applicable. Drive high
+logic outputs near 0.9 V and low outputs near 0 V. Keep the model pure
+behavioral Verilog-A.
+
+Do not generate a Spectre `.scs` file despite the historical `_tb` filename.
+Do not use transistor-level devices,
+AC/noise analysis, current contributions, waveform files, validation artifacts, or
+simulator side channels.
+
+
 The required trace names are: `time`, `step`, `vout`, `done`.
 
 ## Modeling Constraints

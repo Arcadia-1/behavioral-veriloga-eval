@@ -47,6 +47,18 @@ Create stimulus and save traces sufficient for the fixed evaluator oracle to che
 - `P_DRIVE_OUTN_HIGH_AND_OUTP_LOW`: exercise and make observable: Drive `outn` high and `outp` low for `vinp < vinn`. Required traces: `time`, `clk`, `outn`, `outp`, `vinn`, `vinp`.
 - `P_DRIVE_BOTH_OUTPUTS_LOW_FOR_AN`: exercise and make observable: Drive both outputs low for an equal-input decision. Required traces: `time`, `clk`, `outn`, `outp`, `vinn`, `vinp`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+- Initialize both decision outputs low.
+- Whenever `clk` falls through `vdd/2`, reset both outputs low.
+- Whenever `clk` rises through `vdd/2`, latch a differential decision.
+- Drive `outp` high and `outn` low for `vinp > vinn`.
+- Drive `outn` high and `outp` low for `vinp < vinn`.
+- Drive both outputs low for an equal-input decision.
+- Hold the latched or reset state until the next clock event.
+
+
 The required trace names are: `time`, `clk`, `outn`, `outp`, `vinn`, `vinp`.
 
 ## Modeling Constraints

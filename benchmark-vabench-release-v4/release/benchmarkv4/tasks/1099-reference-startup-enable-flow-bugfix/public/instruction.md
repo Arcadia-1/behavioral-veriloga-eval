@@ -38,6 +38,23 @@ The repaired bundle must satisfy every public property:
 - `P_STARTUP_VALIDITY`: restore: During enabled startup metric is 0.25 V and state is 2; after at least five enabled updates with out above 0.48 V, metric is 0.9 V and state is 3. Required traces: `time`, `clk`, `out`, `metric`, `state_mon`, `startup_mon`.
 - `P_BROWNOUT_RECOVERY`: restore: After a supply dip and restoration with enable asserted, the output and monitors repeat the same startup sequence before returning valid. Required traces: `time`, `clk`, `vdd_in`, `en`, `out`, `metric`, `supply_ok`, `state_mon`, `startup_mon`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+- `clk`, `rst`, and `en` are voltage-coded logic signals.
+- `vdd_in` is the monitored supply waveform for the reference-startup flow.
+- Update the startup flow on rising `clk` crossings through `vth`.
+- Treat the supply as good when `vdd_in > 0.32 V`; drive `supply_ok` to 0.9 V when good and to 0 V otherwise.
+- Drive `enable_mon` to 0.9 V when `en > vth` and to 0 V otherwise.
+- When reset is active or the supply is not good, reset `out = 0 V`, `metric = 0 V`, startup count `0`, and state `0`.
+- When supply is good but enable is low, hold the disabled reference at `out = 0.05 V`, drive `metric = 0.1 V`, reset startup count to `0`, and use state `1`.
+- When supply is good and enable is high, update the reference as `out_next = out_prev + 0.32 * (0.55 - out_prev)` and increment the startup count by one until it saturates at `8`.
+- The startup is valid after the enabled update when the count is at least `5` and `out > 0.48 V`. In startup but not yet valid, drive `metric = 0.25 V` and use state `2`; when valid, drive `metric = 0.9 V` and use state `3`.
+- Drive `state_mon = 0.9 * state / 3.0`. Drive `startup_mon = 0.9 * count / 8.0` using the saturated startup count.
+- A supply dip should reset valid status and startup progress; after the supply returns and enable remains asserted, the flow should recover through the same startup sequence.
+- Keep the model pure voltage-domain behavioral Verilog-A. Do not use branch-current contributions, transistor-level devices, AC/noise analysis, or KCL/KVL regulation loops.
+
+
 ## Modeling Constraints
 
 - Update startup state only on rising clk crossings and derive all monitor outputs from public state.

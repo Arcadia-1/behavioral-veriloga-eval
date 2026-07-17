@@ -44,6 +44,16 @@ Create stimulus and save traces sufficient for the fixed evaluator oracle to che
 - `P_LEAK_INSIDE_DEADBAND`: exercise and make observable: For `dead_low <= V(sigin_p, sigin_n) <= dead_high`, drive `sigout` to the parameter `leak`. Required traces: `time`, `sigin_p`, `sigin_n`, `sigout`.
 - `P_GAINED_RESIDUE_OUTSIDE_DEADBAND`: exercise and make observable: Below `dead_low`, drive `gain * (diff - dead_low) + leak`; above `dead_high`, drive `gain * (diff - dead_high) + leak`. Required traces: `time`, `sigin_p`, `sigin_n`, `sigout`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+- `P_DIFFERENTIAL_INPUT`: Use `V(sigin_p, sigin_n)` as the signed input error; do not collapse the transfer to one input terminal.
+
+- `P_LEAK_INSIDE_DEADBAND`: For `dead_low <= V(sigin_p, sigin_n) <= dead_high`, drive `sigout` to the parameter `leak`.
+
+- `P_GAINED_RESIDUE_OUTSIDE_DEADBAND`: Below `dead_low`, drive `gain * (diff - dead_low) + leak`; above `dead_high`, drive `gain * (diff - dead_high) + leak`.
+
+
 The required trace names are: `time`, `sigin_n`, `sigin_p`, `sigout`.
 
 ## Modeling Constraints

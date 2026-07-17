@@ -37,11 +37,47 @@ Preserve this exact artifact and module interface:
 
 The repaired bundle must satisfy every public property:
 
-- `P_ON_RESET_OR_WHEN_DISABLED_DRIVE`: restore: On reset or when disabled, drive `vout` to `vcm`, clear metric, and clear `settled`. Required traces: `time`, `vin`, `clk`, `rst`, `enable`, `gain_2`, `gain_1`, `gain_0`, `vout`, `overshoot_metric`, `settled`.
-- `P_ON_EACH_ENABLED_RISING_CLK_EDGE`: restore: On each enabled rising `clk` edge, decode the gain code and update the target output from `vin`. Required traces: `time`, `vin`, `clk`, `rst`, `enable`, `gain_2`, `gain_1`, `gain_0`, `vout`, `overshoot_metric`, `settled`.
-- `P_APPLY_BOUNDED_SETTLING_WITH_A_CODE`: restore: Apply bounded settling with a code-dependent overshoot proxy after large gain changes. Required traces: `time`, `vin`, `clk`, `rst`, `enable`, `gain_2`, `gain_1`, `gain_0`, `vout`, `overshoot_metric`, `settled`.
-- `P_EXPOSE_OVERSHOOT_MAGNITUDE_ON_OVERSHOOT_METRIC`: restore: Expose overshoot magnitude on `overshoot_metric`. Required traces: `time`, `vin`, `clk`, `rst`, `enable`, `gain_2`, `gain_1`, `gain_0`, `vout`, `overshoot_metric`, `settled`.
-- `P_ASSERT_SETTLED_AFTER_TWO_CONSECUTIVE_UPDATES`: restore: Assert `settled` after two consecutive updates within `settle_tol` of the target. Required traces: `time`, `vin`, `clk`, `rst`, `enable`, `gain_2`, `gain_1`, `gain_0`, `vout`, `overshoot_metric`, `settled`.
+- `P_ON_RESET_OR_WHEN_DISABLED_DRIVE`: restore: On reset or while disabled, restore `prev_code=0` and the unchanged-code counter to zero, drive `vout=vcm`, and drive `overshoot_metric=settled=vss`. Required traces: `time`, `vin`, `clk`, `rst`, `enable`, `gain_2`, `gain_1`, `gain_0`, `vout`, `overshoot_metric`, `settled`.
+- `P_ON_EACH_ENABLED_RISING_CLK_EDGE`: restore: Poll every `tick`; on each enabled rising `clk` edge decode `code=4*gain_2+2*gain_1+gain_0` and drive `vout=clamp(vcm+(1+gain_lsb*code)*(vin-vcm),vss,vdd)`. Required traces: `time`, `vin`, `clk`, `rst`, `enable`, `gain_2`, `gain_1`, `gain_0`, `vout`, `overshoot_metric`, `settled`.
+- `P_APPLY_BOUNDED_SETTLING_WITH_A_CODE`: restore: Use the `tr` transition for bounded output smoothing without adding an overshoot excursion to `vout`; expose the code-step proxy separately on `overshoot_metric`. Required traces: `time`, `vin`, `clk`, `rst`, `enable`, `gain_2`, `gain_1`, `gain_0`, `vout`, `overshoot_metric`, `settled`.
+- `P_EXPOSE_OVERSHOOT_MAGNITUDE_ON_OVERSHOOT_METRIC`: restore: On every enabled rising edge drive `overshoot_metric=vdd*abs(code-prev_code)/7` before storing the current code as `prev_code`. Required traces: `time`, `vin`, `clk`, `rst`, `enable`, `gain_2`, `gain_1`, `gain_0`, `vout`, `overshoot_metric`, `settled`.
+- `P_ASSERT_SETTLED_AFTER_TWO_CONSECUTIVE_UPDATES`: restore: Use unchanged gain code as the deterministic settling proxy: increment the counter when `code==prev_code`, clear it otherwise, assert `settled=vdd` at count two, and drive `vss` otherwise; a newly changed code therefore needs two subsequent unchanged-code comparisons. Required traces: `time`, `vin`, `clk`, `rst`, `enable`, `gain_2`, `gain_1`, `gain_0`, `vout`, `overshoot_metric`, `settled`.
+
+
+The following canonical public behavior is normative for this derived form:
+
+- On reset or when disabled, drive `vout` to `vcm`, clear metric, and clear `settled`.
+- On each enabled rising `clk` edge, decode the gain code and update the target output from `vin`.
+- Apply bounded settling with a code-dependent overshoot proxy after large gain changes.
+- Expose overshoot magnitude on `overshoot_metric`.
+- Assert `settled` after two consecutive updates within `settle_tol` of the target.
+- Use only voltage-domain behavioral state and voltage contributions on public electrical outputs.
+- Do not expose pass/fail flags; expose only the public observable metrics named in the interface.
+
+Treat `gain_2,gain_1,gain_0` as a binary code
+`code = 4*gain_2 + 2*gain_1 + gain_0`, with each bit high when its voltage is
+greater than `vth`.  The state starts with `prev_code = 0` and an unchanged-code
+counter of zero.  On reset or while disabled, restore those values, drive
+`vout = vcm`, and drive `overshoot_metric = settled = vss`.
+
+Poll the controls every `tick`.  On each enabled rising `clk` edge, compute
+
+`target = clamp(vcm + (1 + gain_lsb*code)*(vin-vcm), vss, vdd)`
+
+and update `vout` to that target.  The bounded step-response proxy is reported
+only through
+
+`overshoot_metric = vdd*abs(code-prev_code)/7`.
+
+Do not add a separate overshoot excursion to `vout`; the public `tr` transition
+provides its output smoothing.  If `code == prev_code`, increment the
+unchanged-code counter; otherwise clear it to zero.  Assert `settled = vdd`
+when that counter reaches two and drive `settled = vss` otherwise, then store
+the current code as `prev_code`.  Thus a newly changed code settles after two
+subsequent unchanged-code comparisons.  This unchanged-code counter is the
+deterministic public proxy for consecutive updates within `settle_tol`; the
+`settle_tol` parameter remains part of the compatible public interface.
+
 
 ## Modeling Constraints
 

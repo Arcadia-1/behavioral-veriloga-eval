@@ -54,6 +54,17 @@ Create stimulus and save traces sufficient for the fixed evaluator oracle to che
 - `P_BIDIRECTIONAL_LEVELS`: exercise and make observable: Qualified rising and falling input edges can respectively drive vout toward vdd and vss, and all public outputs use tr-smoothed voltage transitions. Required traces: `time`, `vin`, `vout`, `edge_valid`, `rejected`.
 - `P_PARAMETER_OVERRIDE`: exercise and make observable: Overriding tick, min_width_ticks, or delay_ticks changes the observable qualification or emission timing without changing module ports, output polarity, or reset/enable behavior. Required traces: `time`, `vin`, `rst`, `enable`, `vout`, `edge_valid`, `rejected`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+- Reset or a low `enable` clears the delayed output and all pending edge state.
+- An input edge must remain stable for `min_width_ticks` timer ticks before it can be emitted.
+- A qualified edge updates `vout` after an additional `delay_ticks` timer ticks.
+- A pending edge that reverses before qualification is rejected and must not update `vout`.
+- `edge_valid` pulses when a qualified delayed edge updates the output.
+- `rejected` pulses when a narrow glitch is rejected.
+
+
 The required trace names are: `time`, `vin`, `rst`, `enable`, `vout`, `edge_valid`, `rejected`.
 
 ## Modeling Constraints

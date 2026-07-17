@@ -50,6 +50,14 @@ Create stimulus and save traces sufficient for the fixed evaluator oracle to che
 - `P_MONOTONIC_TRANSFER`: exercise and make observable: The output is strictly monotonic with increasing unsigned code for vref greater than zero. Required traces: `time`, `vd3`, `vd2`, `vd1`, `vd0`, `vout`.
 - `P_CONTINUOUS_REEVALUATION`: exercise and make observable: The DAC target responds to input-code threshold changes without requiring a clock event, using tdel, trise, and tfall for output timing. Required traces: `time`, `vd3`, `vd2`, `vd1`, `vd0`, `vout`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+Continuously decode the four input voltages into an unsigned binary code. An input bit is logic 1 when its voltage is greater than `vtrans`, otherwise it is logic 0.
+
+Drive `vout` as a linear bipolar DAC output. Code 0 must produce approximately `-vref`, code 15 must produce approximately `+vref`, and each one-code increase must raise the output by the same voltage step. The output must be monotonic with the unsigned code.
+
+
 The required trace names are: `time`, `vd3`, `vd2`, `vd1`, `vd0`, `vout`.
 
 ## Modeling Constraints

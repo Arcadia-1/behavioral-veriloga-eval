@@ -104,6 +104,18 @@ Create stimulus and save traces sufficient for the fixed evaluator oracle to che
 - `P_ERROR_METRIC`: exercise and make observable: Expose the current residual offset on error_metric after each enabled trim update. Required traces: `time`, `vinp`, `vinn`, `clk`, `rst`, `cal_en`, `corrected_out`, `trim_4`, `trim_3`, `trim_2`, `trim_1`, `trim_0`, `error_metric`, `done`.
 - `P_DONE_QUALIFICATION`: exercise and make observable: Assert done only after four consecutive calibration updates with residual magnitude within error_tol. Required traces: `time`, `vinp`, `vinn`, `clk`, `rst`, `cal_en`, `corrected_out`, `trim_4`, `trim_3`, `trim_2`, `trim_1`, `trim_0`, `error_metric`, `done`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+- On reset, clear the trim code, `corrected_out`, `error_metric`, and `done`.
+- While `cal_en` is high, `offset_sampler` samples the differential input error once per rising `clk` edge.
+- `error_integrator` updates a 5-bit trim code in the direction that reduces the sampled differential error.
+- `trim_dac` converts the trim code to a signed correction applied to the differential input.
+- `corrected_out` must expose the corrected differential signal as a voltage metric.
+- Drive `trim_4..trim_0` as voltage-coded copies of the trim code.
+- Assert `done` after four consecutive calibration updates where `error_metric` magnitude is within `error_tol`.
+
+
 The required trace names are: `time`, `vinp`, `vinn`, `clk`, `rst`, `cal_en`, `corrected_out`, `trim_4`, `trim_3`, `trim_2`, `trim_1`, `trim_0`, `error_metric`, `done`.
 
 ## Modeling Constraints

@@ -36,6 +36,12 @@ The repaired bundle must satisfy every public property:
 - `P_ANALOG_CHANNEL_MUX`: restore: `out` follows the input channel selected by the current counter value. Required traces: `time`, `clk`, `out`, `in0`, `in1`, `in2`, `in3`, `in4`, `in5`, `in6`, `in7`.
 - `P_COUNTER_MONITOR_LEVEL`: restore: `count_x` reports the current selector count with the specified voltage scaling. Required traces: `time`, `clk`, `count_x`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+Initialize an internal modulo-8 counter to zero. On each rising crossing of `clk` through 0.5 V, increment the counter modulo eight. Route the input selected by the current counter value to `out`, and drive `count_x` with the current counter value as an analog voltage.
+
+
 ## Modeling Constraints
 
 - Use deterministic voltage-domain behavioral Verilog-A.

@@ -52,6 +52,12 @@ Create stimulus and save traces sufficient for the fixed evaluator oracle to che
 - `P_BIT_WEIGHT_ORDER`: exercise and make observable: `d0` is the LSB and `d11` is the MSB in the decoded code. Required traces: `time`, `clks`, `d0`, `d1`, `d10`, `d11`, `d2`, `d3`, `d4`, `d5`, `d6`, `d7`, `d8`, `d9`, `dout`.
 - `P_CENTERED_OUTPUT_SCALE`: exercise and make observable: The decoded value is normalized to the full 12-bit range, shifted by the half-scale midpoint, and held on `dout`. Required traces: `time`, `clks`, `d0`, `d1`, `d10`, `d11`, `d2`, `d3`, `d4`, `d5`, `d6`, `d7`, `d8`, `d9`, `dout`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+On each rising crossing of `clks` through `vth`, decode `d0` as the LSB and `d11` as the MSB of a 12-bit unsigned code. Normalize the code to the full 12-bit range and subtract 0.5 before driving `dout`.
+
+
 The required trace names are: `time`, `clks`, `d0`, `d1`, `d10`, `d11`, `d2`, `d3`, `d4`, `d5`, `d6`, `d7`, `d8`, `d9`, `dout`.
 
 ## Modeling Constraints

@@ -47,6 +47,23 @@ Create stimulus and save traces sufficient for the fixed evaluator oracle to che
 - `P_SYMMETRIC_COMPRESSION`: exercise and make observable: Targets above 0.78 V or below 0.12 V are compressed with slope 0.18 about the corresponding boundary, and metric is 0.85 V. Required traces: `time`, `clk`, `vin`, `out`, `metric`.
 - `P_OUTPUT_CLAMP`: exercise and make observable: The compressed output remains within 0.02 V through 0.88 V with finite transition smoothing. Required traces: `time`, `out`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+- Initialize `out` to the 0.45 V common-mode level and `metric` to `0 V`.
+- Update the held output state on rising `clk` crossings through `vth`.
+- When `rst` is high, return the output to common mode and clear `metric`.
+- Treat `x = V(vin) - 0.45 V` as the signed drive and compute `drive = 0.45 + gain * x`.
+- In the moderate-drive region, `0.12 V <= drive <= 0.78 V`, drive `out = drive` and `metric = 0.1 V`.
+- For high-side compression, when `drive > 0.78 V`, drive `out = 0.78 + 0.18 * (drive - 0.78)` and `metric = 0.85 V`.
+- For low-side compression, when `drive < 0.12 V`, drive `out = 0.12 + 0.18 * (drive - 0.12)` and `metric = 0.85 V`.
+- Clamp the output to `[0.02 V, 0.88 V]`.
+
+The visible testbench is a public verification scenario for wiring and saved
+observables. Do not hard-code its transient stop time, waveform breakpoints, or
+sample windows into the DUT.
+
+
 The required trace names are: `time`, `clk`, `rst`, `vin`, `out`, `metric`.
 
 ## Modeling Constraints

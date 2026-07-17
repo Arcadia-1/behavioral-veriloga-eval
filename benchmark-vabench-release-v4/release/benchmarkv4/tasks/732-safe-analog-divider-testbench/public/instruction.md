@@ -44,6 +44,16 @@ Create stimulus and save traces sufficient for the fixed evaluator oracle to che
 - `P_WHEN_V_SIGDENOM_IS_NEGATIVE_BUT`: exercise and make observable: For negative denominator magnitudes below `min_sigdenom`, use `-min_sigdenom` as the guarded denominator. Required traces: `time`, `sigdenom`, `signumer`, `sigout`.
 - `P_DRIVE_SIGOUT_TO_GAIN_V_SIGNUMER`: exercise and make observable: Drive `sigout` to the observable transfer `gain * V(signumer) / guarded_denominator`. Required traces: `time`, `sigdenom`, `signumer`, `sigout`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+- Use `V(sigdenom)` directly when its magnitude is at least `min_sigdenom`.
+- When `V(sigdenom)` is positive but smaller than `min_sigdenom`, use `+min_sigdenom`.
+- When `V(sigdenom)` is exactly zero, use `+min_sigdenom`.
+- When `V(sigdenom)` is negative but its magnitude is smaller than `min_sigdenom`, use `-min_sigdenom`.
+- Drive `sigout` to `gain * V(signumer) / guarded_denominator`.
+
+
 The required trace names are: `time`, `sigdenom`, `signumer`, `sigout`.
 
 ## Modeling Constraints

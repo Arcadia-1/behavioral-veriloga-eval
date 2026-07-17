@@ -41,6 +41,12 @@ Create stimulus and save traces sufficient for the fixed evaluator oracle to che
 - `P_INPUT_OFFSET`: exercise and make observable: Subtract the fixed 0.05 V input-referred offset before applying gain. Required traces: `time`, `sigin_p`, `sigin_n`, `sigout`.
 - `P_GAIN_TWO_OUTPUT`: exercise and make observable: Drive `sigout` to `2.0 * (V(sigin_p, sigin_n) - 0.05)`. Required traces: `time`, `sigin_p`, `sigin_n`, `sigout`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+Use `V(sigin_p, sigin_n)` as the input. Subtract a 0.05 V input-referred offset, apply a fixed voltage gain of 2.0, and drive the resulting single-ended output voltage on `sigout`.
+
+
 The required trace names are: `time`, `sigin_n`, `sigin_p`, `sigout`.
 
 ## Modeling Constraints

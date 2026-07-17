@@ -87,6 +87,18 @@ The repaired bundle must satisfy every public property:
 - `P_TRIM_SEARCH`: restore: When trim_req is high, update the 4-bit trim code once per rising clock edge to reduce reference error. Required traces: `time`, `vdd_sense`, `clk`, `rst`, `trim_req`, `temp_proxy`, `vref`, `trim_3`, `trim_2`, `trim_1`, `trim_0`, `ready`, `error_metric`.
 - `P_READY_QUALIFICATION`: restore: Assert ready only after three consecutive enabled updates with error magnitude within ready_tol. Required traces: `time`, `vdd_sense`, `clk`, `rst`, `trim_req`, `temp_proxy`, `vref`, `trim_3`, `trim_2`, `trim_1`, `trim_0`, `ready`, `error_metric`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+- On reset or when `vdd_sense` is below `vpor`, clear the trim code, `ready`, `error_metric`, and drive `vref` low.
+- `startup_detector` enables the reference only after `vdd_sense` has been above `vpor` for two consecutive rising `clk` edges.
+- `ptat_ctat_core` must generate a behavioral reference metric from `temp_proxy` around `vref_nom`.
+- When `trim_req` is high, `trim_controller` updates the 4-bit trim code once per rising `clk` edge to reduce reference error.
+- `vref` must reflect the core reference plus trim correction and remain clamped between `vlo` and `vhi`.
+- Drive `trim_3..trim_0` as voltage-coded copies of the trim code.
+- Assert `ready` after three consecutive enabled updates with `error_metric` magnitude within `ready_tol`.
+
+
 ## Modeling Constraints
 
 - Use deterministic voltage-domain behavioral Verilog-A.

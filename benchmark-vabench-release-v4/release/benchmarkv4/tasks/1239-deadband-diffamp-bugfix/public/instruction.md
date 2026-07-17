@@ -31,6 +31,12 @@ The repaired bundle must satisfy every public property:
 - `P_DEADBAND_LEAK_OUTPUT`: restore: Inside the inclusive differential deadband, drive the public leakage level `sigout_leak`. Required traces: `time`, `sigin_n`, `sigin_p`, `sigout`.
 - `P_ASYMMETRIC_RESIDUE_GAINS`: restore: Below the lower threshold use `gain_low` for the low-side signed residue plus leakage; above the upper threshold use `gain_high` for the high-side signed residue plus leakage. Required traces: `time`, `sigin_n`, `sigin_p`, `sigout`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+Compute the differential input from `sigin_p` to `sigin_n`. Inside the deadband, including both thresholds, drive `sigout_leak`. Below the lower threshold, drive the low-side signed residue using `gain_low` and add the leakage level. Above the upper threshold, drive the high-side signed residue using `gain_high` and add the leakage level.
+
+
 ## Modeling Constraints
 
 - Use deterministic voltage-domain behavioral Verilog-A.

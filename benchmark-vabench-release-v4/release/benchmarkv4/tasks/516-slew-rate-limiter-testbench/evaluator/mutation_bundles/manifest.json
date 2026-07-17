@@ -83,58 +83,6 @@
     },
     {
       "artifact_hashes": {
-        "slew_rate_limiter.va": "20304cdf010a6f36c0d605047d75bba6bee6d96a7d7a40bfb65f665761cbf852"
-      },
-      "certification": {
-        "activated_property_ids": [
-          "P_EVENTUAL_TRACKING"
-        ],
-        "behavior_status": "killed_behaviorally",
-        "compile_status": "pass",
-        "evidence_path": "negative_variants/neg_004_step_too_small/certification.json",
-        "profile": "feedback",
-        "simulation_status": "pass",
-        "status": "pass"
-      },
-      "changed_artifacts": [
-        "slew_rate_limiter.va"
-      ],
-      "fault_class": "slew_rate_magnitude_error",
-      "id": "neg_004_step_too_small",
-      "trigger_condition": "a sustained high or low vin level requires the configured step response",
-      "violated_property_ids": [
-        "P_EVENTUAL_TRACKING"
-      ]
-    },
-    {
-      "artifact_hashes": {
-        "slew_rate_limiter.va": "055e283e3a5cb70cdbd3a3b22d9c0cf0041ca5cf852d12d71f1348cb227a3f46"
-      },
-      "certification": {
-        "activated_property_ids": [
-          "P_BIDIRECTIONAL_STEP_LIMIT",
-          "P_EVENTUAL_TRACKING"
-        ],
-        "behavior_status": "killed_behaviorally",
-        "compile_status": "pass",
-        "evidence_path": "negative_variants/neg_005_missing_fall_branch/certification.json",
-        "profile": "feedback",
-        "simulation_status": "pass",
-        "status": "pass"
-      },
-      "changed_artifacts": [
-        "slew_rate_limiter.va"
-      ],
-      "fault_class": "falling_slew_omission",
-      "id": "neg_005_missing_fall_branch",
-      "trigger_condition": "vin falls below the current output by more than step",
-      "violated_property_ids": [
-        "P_BIDIRECTIONAL_STEP_LIMIT",
-        "P_EVENTUAL_TRACKING"
-      ]
-    },
-    {
-      "artifact_hashes": {
         "slew_rate_limiter.va": "a95c00f633d8f327b6c851068dfe4b4fdc000d217e068224ea12bc332c7edfeb"
       },
       "certification": {

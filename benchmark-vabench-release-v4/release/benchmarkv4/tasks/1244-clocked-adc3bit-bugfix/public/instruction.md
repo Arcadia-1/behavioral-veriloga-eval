@@ -33,6 +33,17 @@ The repaired bundle must satisfy every public property:
 - `P_THE_OUTPUT_LOW_LEVEL_IS_0`: restore: The output low level is `0 V`; the public input conversion range is `0 V` to `1 V`. Required traces: `time`, `vclk`, `vd0`, `vd1`, `vd2`, `vin`.
 - `P_USE_DETERMINISTIC_VOLTAGE_DOMAIN_VERILOG_A`: restore: Use deterministic voltage-domain Verilog-A and voltage contributions only. Do not emit a testbench, checker logic, out-of-band test hooks, file I/O, random behavior, current contributions, transistor-level devices, `ddt()`, `idt()`, or simulator side channels. Required traces: `time`, `vclk`, `vd0`, `vd1`, `vd2`, `vin`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+- `P_ON_EACH_RISING_CROSSING_OF_VCLK`: On each rising crossing of `vclk` through `vth_clk`, sample `vin` and quantize the `0 V` to `1 V` range into eight uniform lower-inclusive bins. Values below `0 V` clip to code `0`; values at or above `1 V` clip to code `7`. Drive `vd2`, `vd1`, and `vd0` as the binary representation of the held sampled code using `vh` for logic one and `0 V` for logic zero.
+- `P_VTH_CLK_0_45_V_RISING`: `vth_clk = 0.45 V`: rising-edge threshold for `vclk`.
+- `P_VH_0_9_V_LOGIC_HIGH`: `vh = 0.9 V`: logic-high output level.
+- `P_VTH_CLK_0_45_V_RISING_2`: - `vth_clk = 0.45 V`: rising-edge threshold for `vclk`. - `vh = 0.9 V`: logic-high output level.
+- `P_THE_OUTPUT_LOW_LEVEL_IS_0`: The output low level is `0 V`; the public input conversion range is `0 V` to `1 V`.
+- `P_USE_DETERMINISTIC_VOLTAGE_DOMAIN_VERILOG_A`: Use deterministic voltage-domain Verilog-A and voltage contributions only. Do not emit a testbench, checker logic, out-of-band test hooks, file I/O, random behavior, current contributions, transistor-level devices, `ddt()`, `idt()`, or simulator side channels.
+
+
 ## Modeling Constraints
 
 - Use deterministic voltage-domain behavioral Verilog-A.

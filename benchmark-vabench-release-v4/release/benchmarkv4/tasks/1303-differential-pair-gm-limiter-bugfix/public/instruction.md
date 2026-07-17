@@ -42,6 +42,18 @@ The repaired bundle must satisfy every public property:
 - `P_ASSERT_LIMIT_FLAG_ONLY_WHEN_COMPRESSION`: restore: Assert `limit_flag` only when compression is active. Required traces: `time`, `vinp`, `vinn`, `bias`, `enable`, `voutp`, `voutn`, `gm_metric`, `limit_flag`.
 - `P_USE_ONLY_VOLTAGE_DOMAIN_BEHAVIORAL_STATE`: restore: Use only voltage-domain behavioral state and voltage contributions on public electrical outputs. Required traces: `time`, `vinp`, `vinn`, `bias`, `enable`, `voutp`, `voutn`, `gm_metric`, `limit_flag`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+- When disabled, drive both outputs to `vcm`, clear `gm_metric`, and clear `limit_flag`.
+- When enabled, convert the sampled differential input into equal-and-opposite output deviations around `vcm`.
+- Scale small-signal output separation by `gm_gain` and compress large differential inputs smoothly at `diff_limit`.
+- Drive `gm_metric` as a voltage-coded estimate of the active transconductance region.
+- Assert `limit_flag` only when compression is active.
+- Use only voltage-domain behavioral state and voltage contributions on public electrical outputs.
+- Do not expose pass/fail flags; expose only the public observable metrics named in the interface.
+
+
 ## Modeling Constraints
 
 - Use deterministic voltage-domain behavioral Verilog-A.

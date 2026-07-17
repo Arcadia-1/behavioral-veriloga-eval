@@ -41,6 +41,12 @@ Create stimulus and save traces sufficient for the fixed evaluator oracle to che
 - `P_NEGATIVE_LO_CHOP_PATH`: exercise and make observable: When `vlocal_osc` is not positive, drive `vif = -gain * vin_rf`. Required traces: `time`, `vif`, `vin_rf`, `vlocal_osc`.
 - `P_CONTINUOUS_TRACKING`: exercise and make observable: `vif` tracks `vin_rf` and `vlocal_osc` continuously without clocked state or hidden latching. Required traces: `time`, `vif`, `vin_rf`, `vlocal_osc`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+Drive `vif` as `gain*vin_rf` when `vlocal_osc` is positive and as `-gain*vin_rf` otherwise. The output should track input changes continuously without clocked state.
+
+
 The required trace names are: `time`, `vif`, `vin_rf`, `vlocal_osc`.
 
 ## Modeling Constraints

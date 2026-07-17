@@ -30,6 +30,14 @@ The repaired bundle must satisfy every public property:
 - `P_ENABLE_GATING`: restore: Changing en gates the observed clock level without creating a high output while clk is logically low. Required traces: `time`, `clk`, `en`, `pulse`.
 - `P_OUTPUT_LEVELS`: restore: pulse uses voltage-coded 0 V and vdd levels with finite transition smoothing set by tr. Required traces: `time`, `pulse`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+- Treat `clk` and `en` as voltage-coded logic using `vth`.
+- Drive `pulse` high exactly when both `clk` and `en` are high.
+- Drive `pulse` low otherwise.
+
+
 ## Modeling Constraints
 
 - AMS role: enable-qualified clock/control pulse gate for sampled-data timing.

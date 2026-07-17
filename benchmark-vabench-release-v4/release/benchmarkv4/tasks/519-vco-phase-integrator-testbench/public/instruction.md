@@ -42,6 +42,18 @@ Create stimulus and save traces sufficient for the fixed evaluator oracle to che
 - `P_WRAP_TOGGLES_CLOCK`: exercise and make observable: Each phase wrap by one cycle toggles the voltage-coded clock between 0 V and 0.9 V. Required traces: `time`, `phase`, `clk`.
 - `P_CONTROLLED_EDGE_RATE`: exercise and make observable: A sustained higher vctrl produces more clock toggles over the same observation interval than a sustained lower vctrl. Required traces: `time`, `vctrl`, `clk`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+- Maintain a real phase state normalized to the range `[0, 1)`.
+- Update the phase state on a periodic `1 ns` timer.
+- At each update, increment phase by `0.03 + 0.09 * V(vctrl)`.
+- When the phase reaches or exceeds `1.0`, wrap it by one cycle and toggle `clk`.
+- Drive `phase` as the wrapped normalized phase voltage.
+- Drive `clk` as a smoothed `0 V` / `0.9 V` voltage-coded clock.
+- The clock edge rate must increase when `vctrl` increases.
+
+
 The required trace names are: `time`, `vctrl`, `phase`, `clk`.
 
 ## Modeling Constraints

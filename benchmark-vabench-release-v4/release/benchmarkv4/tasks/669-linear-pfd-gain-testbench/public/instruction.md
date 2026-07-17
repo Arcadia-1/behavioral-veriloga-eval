@@ -41,6 +41,12 @@ Create stimulus and save traces sufficient for the fixed evaluator oracle to che
 - `P_KPHI_GAIN_SCALE`: exercise and make observable: `out` is scaled by the public gain coefficient `kphi` rather than unit gain or an alternate scale. Required traces: `time`, `in1`, `in2`, `out`.
 - `P_CONTINUOUS_ANALOG_TRACKING`: exercise and make observable: `out` continuously tracks analog input changes without clocked state, clipping, or single-ended substitution. Required traces: `time`, `in1`, `in2`, `out`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+Drive `out` continuously as the gain coefficient times the input difference `in1 - in2`. The output should track analog input changes without clocked state or clipping.
+
+
 The required trace names are: `time`, `in1`, `in2`, `out`.
 
 ## Modeling Constraints

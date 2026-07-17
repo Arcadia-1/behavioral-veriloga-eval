@@ -41,6 +41,12 @@ Create stimulus and save traces sufficient for the fixed evaluator oracle to che
 - `P_SIGNED_RESIDUE_OUTSIDE_WINDOW`: exercise and make observable: Below the lower edge, drive the signed excess below `sigin_dead_low`; above the upper edge, drive the signed excess above `sigin_dead_high` while preserving sign. Required traces: `time`, `sigin`, `sigout`.
 - `P_DEADBAND_EDGE_CONTINUITY`: exercise and make observable: Use the public lower and upper threshold values so the output is continuous at both deadband edges. Required traces: `time`, `sigin`, `sigout`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+Inside the deadband window, including both edges, drive `sigout` to `0 V`. Below the lower edge, drive the signed excess below `sigin_dead_low`. Above the upper edge, drive the signed excess above `sigin_dead_high`. The output should preserve sign outside the window and be continuous at both thresholds.
+
+
 The required trace names are: `time`, `sigin`, `sigout`.
 
 ## Modeling Constraints

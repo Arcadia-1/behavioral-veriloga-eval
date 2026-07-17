@@ -30,6 +30,16 @@ The repaired bundle must satisfy every public property:
 - `P_WHEN_V_SIGDENOM_IS_NEGATIVE_BUT`: restore: For negative denominator magnitudes below `min_sigdenom`, use `-min_sigdenom` as the guarded denominator. Required traces: `time`, `sigdenom`, `signumer`, `sigout`.
 - `P_DRIVE_SIGOUT_TO_GAIN_V_SIGNUMER`: restore: Drive `sigout` to the observable transfer `gain * V(signumer) / guarded_denominator`. Required traces: `time`, `sigdenom`, `signumer`, `sigout`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+- Use `V(sigdenom)` directly when its magnitude is at least `min_sigdenom`.
+- When `V(sigdenom)` is positive but smaller than `min_sigdenom`, use `+min_sigdenom`.
+- When `V(sigdenom)` is exactly zero, use `+min_sigdenom`.
+- When `V(sigdenom)` is negative but its magnitude is smaller than `min_sigdenom`, use `-min_sigdenom`.
+- Drive `sigout` to `gain * V(signumer) / guarded_denominator`.
+
+
 ## Modeling Constraints
 
 - Use deterministic voltage-domain behavioral Verilog-A.

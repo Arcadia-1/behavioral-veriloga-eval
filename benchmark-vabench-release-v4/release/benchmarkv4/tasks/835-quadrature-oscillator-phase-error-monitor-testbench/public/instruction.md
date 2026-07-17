@@ -53,6 +53,18 @@ Create stimulus and save traces sufficient for the fixed evaluator oracle to che
 - `P_ASSERT_QUADRATURE_OK_WHEN_THE_MEASURED`: exercise and make observable: Assert `quadrature_ok` when the measured phase proxy stays within `phase_tol` for two cycles. Required traces: `time`, `clk_i`, `clk_q`, `rst`, `enable`, `phase_error_metric`, `quadrature_ok`, `valid`.
 - `P_ASSERT_VALID_AFTER_BOTH_I_AND`: exercise and make observable: Assert `valid` after both I and Q edges have been observed. Required traces: `time`, `clk_i`, `clk_q`, `rst`, `enable`, `phase_error_metric`, `quadrature_ok`, `valid`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+- On reset or when disabled, clear phase metric, status, and `valid`.
+- Track rising threshold crossings of `clk_i` and `clk_q`.
+- Estimate a voltage-domain phase-error metric from the relative event order and interval proxy.
+- Assert `quadrature_ok` when the measured phase proxy stays within `phase_tol` for two cycles.
+- Assert `valid` after both I and Q edges have been observed.
+- Use only voltage-domain behavioral state and voltage contributions on public electrical outputs.
+- Do not expose pass/fail flags; expose only the public observable metrics named in the interface.
+
+
 The required trace names are: `time`, `clk_i`, `clk_q`, `rst`, `enable`, `phase_error_metric`, `quadrature_ok`, `valid`.
 
 ## Modeling Constraints

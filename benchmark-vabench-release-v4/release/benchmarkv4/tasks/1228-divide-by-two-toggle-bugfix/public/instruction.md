@@ -30,6 +30,15 @@ The repaired bundle must satisfy every public property:
 - `P_DRIVE_OUT_LOW_WHEN_THE_STATE`: restore: Drive `out` low when the state is low and to `vdd` when the state is high. Required traces: `time`, `clk`, `out`.
 - `P_THE_FIRST_VALID_RISING_EDGE_DRIVES`: restore: The first valid rising edge drives `out` high. Required traces: `time`, `clk`, `out`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+- Initialize the internal divider state low.
+- Toggle the state on every rising `clk` crossing through `vth`.
+- Drive `out` low when the state is low and to `vdd` when the state is high.
+- The first valid rising edge drives `out` high.
+
+
 ## Modeling Constraints
 
 - Use deterministic voltage-domain behavioral Verilog-A.

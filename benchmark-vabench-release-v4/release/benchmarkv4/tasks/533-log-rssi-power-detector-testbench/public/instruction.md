@@ -46,6 +46,20 @@ Create stimulus and save traces sufficient for the fixed evaluator oracle to che
 - `P_AMPLITUDE_METRIC`: exercise and make observable: Metric equals three times the sampled magnitude, clamped to the 0 V to 0.9 V range. Required traces: `time`, `clk`, `vin`, `metric`.
 - `P_OUTPUT_BOUNDS`: exercise and make observable: Out remains within the public 0.08 V to 0.82 V clamp range with finite transition smoothing. Required traces: `time`, `out`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+- Initialize and reset RSSI output to `0.12 V` and `metric` to `0 V`.
+- On each rising `clk` crossing through `vth`, sample the input magnitude unless reset is active.
+- Measure input magnitude as `amp = abs(V(vin) - 0.45 V)`.
+- Map `amp < 0.035 V` to `out = 0.12 V`.
+- Map `0.035 V <= amp < 0.11 V` to `out = 0.30 V`.
+- Map `0.11 V <= amp < 0.22 V` to `out = 0.54 V`.
+- Map `amp >= 0.22 V` to `out = 0.72 V`.
+- Clamp the RSSI output to `[0.08 V, 0.82 V]`.
+- Drive `metric = 3.0 * amp`, clamped to `[0 V, 0.9 V]`.
+
+
 The required trace names are: `time`, `clk`, `rst`, `vin`, `out`, `metric`.
 
 ## Modeling Constraints

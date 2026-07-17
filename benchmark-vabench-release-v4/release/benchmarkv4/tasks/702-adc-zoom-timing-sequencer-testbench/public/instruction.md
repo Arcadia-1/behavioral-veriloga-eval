@@ -45,6 +45,12 @@ Create stimulus and save traces sufficient for the fixed evaluator oracle to che
 
 - `P_GENERATE_A_REPEATING_32_NS_COMPACT`: exercise and make observable: Generate a repeating 32 ns compact ADC timing frame with these high windows: `rst` from 0.5 to 0.8 ns; `s` from 1.5 to 2.5 ns; `sar` from 3.0 to 5.4 ns; `clk_sar` from 3.0 to 3.25 ns, 3.6 to 3.85 ns, and 4.2 to 4.45 ns; `res` from 6.0 to 6.6 ns; `intg` from 8.0 to 8.7 ns; `zoom` from 9.2 to 10.8 ns; `clk_zoom` from 9.2 to 9.45 ns and 9.8 to 10.05 ns; and `rst_zoom` from 11.0 to 11.5 ns. All outputs should return low between their public windows and repeat every 32 ns. Required traces: `time`, `clk_sar`, `clk_zoom`, `intg`, `res`, `rst`, `rst_zoom`, `s`, `sar`, `zoom`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+Generate a repeating 32 ns compact ADC timing frame with these high windows: `rst` from 0.5 to 0.8 ns; `s` from 1.5 to 2.5 ns; `sar` from 3.0 to 5.4 ns; `clk_sar` from 3.0 to 3.25 ns, 3.6 to 3.85 ns, and 4.2 to 4.45 ns; `res` from 6.0 to 6.6 ns; `intg` from 8.0 to 8.7 ns; `zoom` from 9.2 to 10.8 ns; `clk_zoom` from 9.2 to 9.45 ns and 9.8 to 10.05 ns; and `rst_zoom` from 11.0 to 11.5 ns. All outputs should return low between their public windows and repeat every 32 ns.
+
+
 The required trace names are: `time`, `clk_sar`, `clk_zoom`, `intg`, `res`, `rst`, `rst_zoom`, `s`, `sar`, `zoom`.
 
 ## Modeling Constraints

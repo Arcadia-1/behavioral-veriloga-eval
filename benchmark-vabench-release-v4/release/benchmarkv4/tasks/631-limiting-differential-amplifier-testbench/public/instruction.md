@@ -44,6 +44,12 @@ Create stimulus and save traces sufficient for the fixed evaluator oracle to che
 - `P_OUTPUT_MIDPOINT_REFERENCE`: exercise and make observable: Center the amplified value at `(sigout_high + sigout_low) / 2`. Required traces: `time`, `sigin_p`, `sigin_n`, `sigout`.
 - `P_OUTPUT_RAIL_CLAMP`: exercise and make observable: Clamp the final target to the inclusive interval `[sigout_low, sigout_high]`. Required traces: `time`, `sigin_p`, `sigin_n`, `sigout`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+Read `V(sigin_p, sigin_n)`, subtract the input-referred offset, multiply by `gain`, and center the result at the midpoint of `sigout_high` and `sigout_low`. Clamp the final output target to the inclusive output rail interval.
+
+
 The required trace names are: `time`, `sigin_n`, `sigin_p`, `sigout`.
 
 ## Modeling Constraints

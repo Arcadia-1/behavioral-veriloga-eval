@@ -32,6 +32,19 @@ The repaired bundle must satisfy every public property:
 - `P_FRAME_REPEAT`: restore: The two-cycle burst followed by the quiet remainder repeats every div rising CLK crossings. Required traces: `time`, `CLK`, `RST_N`, `CLK_OUT`.
 - `P_OUTPUT_LEVELS`: restore: CLK_OUT uses 0 V and vdd as its voltage-coded low and high levels. Required traces: `time`, `CLK_OUT`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+`RST_N` is an active-low reset. While reset is asserted, restart the burst
+cycle counter and drive `CLK_OUT` low. After reset is released, detect rising
+crossings of `CLK` through `vth`. In each `div`-cycle frame, pass the input
+clock waveform to `CLK_OUT` for frame positions 0 and 1, then hold `CLK_OUT`
+low for the remaining frame positions. Repeat this frame pattern indefinitely.
+
+Use voltage-domain event logic such as `@(cross(...,+1))`/`@(cross(...,-1))`
+and drive the output with `transition(...)`.
+
+
 ## Modeling Constraints
 
 - Use deterministic threshold-crossing event logic and voltage output contribution.

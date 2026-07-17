@@ -51,6 +51,20 @@ Create stimulus and save traces sufficient for the fixed evaluator oracle to che
 - `P_INCLUSIVE_WINDOW`: exercise and make observable: Ages one through max_age_cycles are qualified and older ages are not. Required traces: `time`, `clk`, `data`, `rst`, `enable`, `valid_out`, `edge_age_metric`, `qualified`.
 - `P_REGISTERED_METRIC`: exercise and make observable: valid_out is the registered qualified state and the metric reports saturated normalized age. Required traces: `time`, `clk`, `data`, `rst`, `enable`, `valid_out`, `edge_age_metric`, `qualified`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+- On reset or when disabled, clear `valid_out`, `edge_age_metric`, and `qualified`.
+- A rising or falling data crossing sets the age counter to zero. Each later
+  rising `clk` edge increments the counter before evaluating qualification.
+- Assert `qualified` when the resulting age is from 1 through
+  `max_age_cycles`, inclusive, and the qualifier is enabled.
+- `edge_age_metric` must expose the age as
+  `vss + (vdd - vss) * min(age, max_age_cycles) / max_age_cycles`.
+- `valid_out` must be a registered copy of the qualified condition on rising `clk` edges.
+- This is an AMS-tied timing qualifier, not a bare DFF task.
+
+
 The required trace names are: `time`, `clk`, `data`, `rst`, `enable`, `valid_out`, `edge_age_metric`, `qualified`.
 
 ## Modeling Constraints

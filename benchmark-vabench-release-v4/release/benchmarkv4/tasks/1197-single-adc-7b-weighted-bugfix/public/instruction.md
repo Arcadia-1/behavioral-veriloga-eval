@@ -33,6 +33,12 @@ The repaired bundle must satisfy every public property:
 - `P_NORMALIZED_SINGLE_ENDED_OUTPUT`: restore: Drive the normalized single-ended ADC output from the weighted code without extra fixed offsets or scale errors. Required traces: `time`, `din0`, `din1`, `din2`, `din3`, `din4`, `din5`, `din6`, `dout`.
 - `P_MONOTONIC_CODE_RESPONSE`: restore: The output changes monotonically with increasing selected code weight. Required traces: `time`, `din0`, `din1`, `din2`, `din3`, `din4`, `din5`, `din6`, `dout`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+Treat each input as high when above `vth`. Sum the selected weights and drive the normalized single-ended ADC output according to the public weight basis. The output should be monotonic with the weighted code and held as a smooth voltage contribution.
+
+
 ## Modeling Constraints
 
 - Use deterministic voltage-domain behavioral Verilog-A.

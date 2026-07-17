@@ -434,7 +434,7 @@
   "properties": [
     {
       "id": "P_ON_RESET_CLEAR_GAIN_CODE_OUTPUT",
-      "observable_contract": "On reset, clear gain code, output, error metric, and `locked`.",
+      "observable_contract": "On reset or while `cal_en` is low, clear the unsigned gain code and lock streak; drive gain bits, `error_metric`, and `locked` to `vss`, and drive the common-mode-centered `vout` to `vcm`.",
       "required_signals": [
         "time",
         "vin",
@@ -452,7 +452,7 @@
     },
     {
       "id": "P_WHILE_CAL_EN_IS_HIGH_COMPARE",
-      "observable_contract": "While `cal_en` is high, compare the current residue output against `residue_ref` on each rising `clk` edge.",
+      "observable_contract": "While `cal_en` is high, sample `signed_error = residue_ref-vout` on each rising `clk` edge and expose `error_metric = abs(residue_ref-vout)`.",
       "required_signals": [
         "time",
         "vin",
@@ -470,7 +470,7 @@
     },
     {
       "id": "P_INCREMENT_OR_DECREMENT_THE_GAIN_CODE",
-      "observable_contract": "Increment or decrement the gain code by one step to reduce the signed error.",
+      "observable_contract": "When signed error exceeds `lock_tol`, increment the unsigned code by one up to 7; when it is below `-lock_tol`, decrement by one down to 0; otherwise hold the code.",
       "required_signals": [
         "time",
         "vin",
@@ -488,7 +488,7 @@
     },
     {
       "id": "P_DRIVE_VOUT_AS_A_CLAMPED_RESIDUE",
-      "observable_contract": "Drive `vout` as a clamped residue-amplified version of `vin - vcm` using the active gain code.",
+      "observable_contract": "Decode `gain = base_gain + gain_lsb*code` and drive `vout = clamp(vcm + gain*(vin-vcm), vss, vdd)` while enabled.",
       "required_signals": [
         "time",
         "vin",
@@ -506,7 +506,7 @@
     },
     {
       "id": "P_ASSERT_LOCKED_AFTER_THREE_CONSECUTIVE_UPDATES",
-      "observable_contract": "Assert `locked` after three consecutive updates with error magnitude below `lock_tol`.",
+      "observable_contract": "Drive `locked` to `vdd` after three consecutive enabled rising-edge samples with error magnitude at or below `lock_tol`, otherwise drive `vss`; clear the streak on reset, disable, or an out-of-tolerance sample.",
       "required_signals": [
         "time",
         "vin",

@@ -50,6 +50,12 @@ Create stimulus and save traces sufficient for the fixed evaluator oracle to che
 - `P_ABSOLUTE_OVERDRIVE_METRIC`: exercise and make observable: `overdrive_mv` reports the absolute input differential magnitude at launch time. Required traces: `time`, `clk`, `vinp`, `vinn`, `overdrive_mv`.
 - `P_POLARITY_AND_VALID_FLAG`: exercise and make observable: `polarity` reports the winning output decision direction and `valid` asserts only for a completed armed measurement. Required traces: `time`, `outp`, `outn`, `polarity`, `valid`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+On each rising `clk` threshold crossing, store the current time and the absolute differential input overdrive. Arm one pending measurement. When either `outp` or `outn` rises through the decision threshold while armed, drive the voltage on `delay_ps` to the elapsed clock-to-output delay expressed in seconds and drive the voltage on `overdrive_mv` to the stored overdrive expressed in volts. The historical port suffixes name the human-facing diagnostic units; the evaluator converts these SI-valued electrical observables to picoseconds and millivolts. Set `polarity` high for an `outp` decision and low for an `outn` decision, assert `valid`, and disarm until the next clock edge. Hold reported values between measurements.
+
+
 The required trace names are: `time`, `clk`, `vinp`, `vinn`, `outp`, `outn`, `delay_ps`, `overdrive_mv`, `polarity`, `valid`.
 
 ## Modeling Constraints

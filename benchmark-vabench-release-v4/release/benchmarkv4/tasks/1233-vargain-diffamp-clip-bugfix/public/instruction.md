@@ -35,6 +35,17 @@ The repaired bundle must satisfy every public property:
 - `P_CLAMP_THE_RESULT_TO_THE_PUBLIC`: restore: Clamp the amplified target to the public positive and negative output limits. Required traces: `time`, `sigctrl_n`, `sigctrl_p`, `sigin_n`, `sigin_p`, `sigout`.
 - `P_DRIVE_SIGOUT_WITH_THE_CLIPPED_TARGET`: restore: Drive `sigout` with the clipped target transfer and correct output scale. Required traces: `time`, `sigctrl_n`, `sigctrl_p`, `sigin_n`, `sigin_p`, `sigout`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+- Compute the differential signal as `V(sigin_p, sigin_n)`.
+- Compute the differential control as `V(sigctrl_p, sigctrl_n)`.
+- Subtract `sigin_offset` from the differential signal.
+- Multiply the offset-corrected signal by the differential control and `gain_const`.
+- Clamp the result to the public output limits.
+- Drive `sigout` with the clipped target.
+
+
 ## Modeling Constraints
 
 - Use deterministic voltage-domain behavioral Verilog-A.

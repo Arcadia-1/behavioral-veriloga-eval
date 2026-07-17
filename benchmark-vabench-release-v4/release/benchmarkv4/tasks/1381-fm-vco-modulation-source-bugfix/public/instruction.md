@@ -41,6 +41,17 @@ The repaired bundle must satisfy every public property:
 - `P_PHASE_MARKER_MUST_PULSE_OR_TOGGLE`: restore: `phase_marker` must pulse or toggle once per oscillator cycle so cycle period order is observable from public behavior. Required traces: `time`, `mod_in`, `enable`, `rst`, `osc_out`, `freq_metric`, `phase_marker`, `valid`.
 - `P_ASSERT_VALID_AFTER_THE_FIRST_COMPLETED`: restore: Assert `valid` after the first completed oscillator cycle following enable. Required traces: `time`, `mod_in`, `enable`, `rst`, `osc_out`, `freq_metric`, `phase_marker`, `valid`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+- On reset or when disabled, drive `osc_out`, `freq_metric`, `phase_marker`, and `valid` low.
+- When enabled, generate a deterministic behavioral oscillator whose frequency increases monotonically with `mod_in`.
+- Clamp the commanded frequency to a nonnegative range and expose the normalized command on `freq_metric`.
+- `osc_out` must toggle between `vss` and `vdd` according to the commanded oscillator state.
+- `phase_marker` must pulse or toggle once per oscillator cycle so cycle period order is observable from public behavior.
+- Assert `valid` after the first completed oscillator cycle following enable.
+
+
 ## Modeling Constraints
 
 - Use deterministic voltage-domain behavioral Verilog-A.

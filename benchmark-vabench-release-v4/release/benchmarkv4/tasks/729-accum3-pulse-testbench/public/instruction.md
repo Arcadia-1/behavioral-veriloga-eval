@@ -44,6 +44,15 @@ Create stimulus and save traces sufficient for the fixed evaluator oracle to che
 - `P_DRIVE_OUT_HIGH_ONLY_WHEN_THE`: exercise and make observable: Drive `out` high only when the modulo count is 0. Required traces: `time`, `clk`, `out`.
 - `P_DRIVE_OUT_LOW_FOR_ALL_OTHER`: exercise and make observable: Drive `out` low for all other count values. Required traces: `time`, `clk`, `out`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+- Initialize the internal 3-bit count to 7.
+- Increment the count modulo 8 on each rising `clk` crossing.
+- Drive `out` high only when the modulo count is 0.
+- Drive `out` low for all other count values.
+
+
 The required trace names are: `time`, `clk`, `out`.
 
 ## Modeling Constraints

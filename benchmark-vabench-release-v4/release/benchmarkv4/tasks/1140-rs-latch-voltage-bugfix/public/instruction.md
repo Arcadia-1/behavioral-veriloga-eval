@@ -29,6 +29,12 @@ The repaired bundle must satisfy every public property:
 - `P_HOLD_STATE`: restore: When neither set-only nor reset-only is asserted, preserve the previous Q state after initializing Q low. Required traces: `time`, `vin_s`, `vin_r`, `vout_q`, `vout_qbar`.
 - `P_QBAR_COMPLEMENT`: restore: Drive `vout_qbar` as the logical complement of Q. Required traces: `time`, `vout_q`, `vout_qbar`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+Interpret set and reset as logic 1 above 0.45 V. Initialize Q low. A set-only input drives Q high, a reset-only input drives Q low, and the hold condition preserves the previous state. Drive `vout_qbar` as the complement of Q. Use 0.9 V for high and 0.0 V for low.
+
+
 ## Modeling Constraints
 
 - Use deterministic voltage-domain behavioral Verilog-A.

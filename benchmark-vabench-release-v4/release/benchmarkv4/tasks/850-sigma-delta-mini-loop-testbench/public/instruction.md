@@ -97,6 +97,17 @@ Create stimulus and save traces sufficient for the fixed evaluator oracle to che
 - `P_DECIMATOR_WINDOW`: exercise and make observable: The four-bit result reports the saturated high-bit count for each complete 16-sample window. Required traces: `time`, `clk`, `rst`, `bit_out`, `avg_3`, `avg_2`, `avg_1`, `avg_0`.
 - `P_STATE_BOUNDED`: exercise and make observable: The public state metric remains within the configured state limit. Required traces: `time`, `rst`, `state_metric`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+- On reset, clear the integrator state, bit output, decimator count, and `avg_3..avg_0`.
+- On each rising `clk` edge, `feedback_dac` produces `vdd` when the previous output bit was high and `vss` otherwise.
+- `integrator_state` updates `state = clamp(state + V(vin) - feedback + vcm, -state_limit, state_limit)`.
+- `sd_comparator` drives the next `bit_out` high when the updated state is greater than or equal to `vcm`, otherwise low.
+- `decimator_lite` counts the number of high bits in each 16-sample window and drives that count on `avg_3..avg_0` at the end of the window. Because the public result bus is four bits wide, a count of 16 must saturate to code 15 rather than wrap to zero.
+- `state_metric` must expose the current integrator state as a voltage.
+
+
 The required trace names are: `time`, `vin`, `clk`, `rst`, `bit_out`, `avg_3`, `avg_2`, `avg_1`, `avg_0`, `state_metric`.
 
 ## Modeling Constraints

@@ -153,7 +153,7 @@
     },
     {
       "id": "P_WHEN_ENABLED_PROVIDE_HIGH_GAIN_FOR",
-      "observable_contract": "When enabled, provide high gain for small input deviations around `vcm`.",
+      "observable_contract": "While enabled compute excess=max(0,abs(vin-vcm)-input_clip) and active_gain=small_gain/(1+excess/0.20).",
       "required_signals": [
         "time",
         "vin",
@@ -166,7 +166,7 @@
     },
     {
       "id": "P_REDUCE_EFFECTIVE_GAIN_MONOTONICALLY_WHEN_THE",
-      "observable_contract": "Reduce effective gain monotonically when the absolute input deviation exceeds `input_clip`.",
+      "observable_contract": "Drive vout=clamp(vcm+active_gain*(vin-vcm),vss,vdd), with active_gain decreasing monotonically once abs(vin-vcm)>input_clip.",
       "required_signals": [
         "time",
         "vin",
@@ -179,7 +179,7 @@
     },
     {
       "id": "P_EXPOSE_ACTIVE_GAIN_ON_GAIN_METRIC",
-      "observable_contract": "Expose active gain on `gain_metric` and assert `compression_flag` during compressed operation.",
+      "observable_contract": "Drive gain_metric=clamp(vdd*active_gain/small_gain,vss,vdd) and compression_flag=vdd exactly when active_gain<0.85*small_gain, otherwise vss.",
       "required_signals": [
         "time",
         "vin",

@@ -48,6 +48,27 @@ Create stimulus and save traces sufficient for the fixed evaluator oracle to che
 - `P_VALIDITY_ENCODING`: exercise and make observable: Metric is 0 V in reset or brownout, 0.2 V during startup below the 0.48 V validity threshold, and 0.9 V after the held reference exceeds it. Required traces: `time`, `rst`, `vin`, `out`, `metric`.
 - `P_CLOCKED_HOLD`: exercise and make observable: Above startup, the reference state changes only on rising clock crossings and holds between samples. Required traces: `time`, `clk`, `vin`, `out`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+- `clk` and `rst` are voltage-coded logic signals, low near 0 V and high near 0.9 V.
+- `vin` is a sub-1 V supply ramp for the reference macro.
+- During reset or when `vin < vstart`, hold the reference state and `out` at
+  0 V and drive `metric` to 0 V.
+- On each rising `clk` crossing with reset low and `vin >= vstart`, compute the
+  target reference as `vref + 0.020 * (vin - 0.75 V)`.
+- Clamp that target so it is not below 0 V and not above `vin - 0.05 V`.
+- Update the held reference state with first-order settling:
+  `ref_next = ref_prev + 0.35 * (target - ref_prev)`.
+- Clamp the driven `out` voltage to the `[0 V, 0.9 V]` signal range.
+- During brownout below `vstart`, return `out` to 0 V and mark the reference
+  invalid.
+- Drive `metric` as a voltage-coded reference-valid observable: 0 V during
+  reset/brownout, 0.9 V when the held reference exceeds 0.48 V, and 0.2 V
+  after startup while the held reference has not yet exceeded 0.48 V.
+- Keep the model pure voltage-domain behavioral Verilog-A. Do not use branch-current contributions, transistor-level devices, AC/noise analysis, or KCL/KVL regulation loops.
+
+
 The required trace names are: `time`, `clk`, `rst`, `vin`, `out`, `metric`.
 
 ## Modeling Constraints

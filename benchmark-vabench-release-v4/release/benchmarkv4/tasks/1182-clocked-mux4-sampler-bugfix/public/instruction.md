@@ -38,6 +38,12 @@ The repaired bundle must satisfy every public property:
 - `P_UPDATE_LOW_HOLDS_STATE`: restore: On falling `clks` crossings with `update` low, hold the previous selection and output value. Required traces: `time`, `clks`, `din0`, `din1`, `din2`, `din3`, `dout`, `dsel0`, `dsel1`, `rst`, `update`.
 - `P_SELECT_DECODE_AND_OUTPUT_TIMING`: restore: The held two-bit selection maps to `din0..din3` in binary order and drives `dout` with the declared transition timing. Required traces: `time`, `clks`, `din0`, `din1`, `din2`, `din3`, `dout`, `dsel0`, `dsel1`, `rst`, `update`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+When `rst` is high, force the selected channel to `din0` and drive `dout` from `din0`. On each falling `clks` crossing while reset is inactive, if `update` is high, latch the two select bits and sample the selected input; if `update` is low, hold the previous selection and output value. Drive the held output with the public transition timing.
+
+
 ## Modeling Constraints
 
 - Use deterministic voltage-domain behavioral Verilog-A.

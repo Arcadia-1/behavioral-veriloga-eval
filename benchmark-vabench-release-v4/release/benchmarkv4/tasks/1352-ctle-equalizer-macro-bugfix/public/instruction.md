@@ -42,6 +42,17 @@ The repaired bundle must satisfy every public property:
 - `P_EDGE_METRIC_REPORTS_THE_ABSOLUTE_BOOSTED`: restore: `edge_metric` reports the absolute boosted edge contribution after clipping to full scale. Required traces: `time`, `vin`, `clk`, `rst`, `boost_2`, `boost_1`, `boost_0`, `vout`, `edge_metric`, `sat_flag`.
 - `P_SAT_FLAG_IS_HIGH_WHEN_THE`: restore: `sat_flag` is high when the unclamped equalized target would exceed either output rail. Required traces: `time`, `vin`, `clk`, `rst`, `boost_2`, `boost_1`, `boost_0`, `vout`, `edge_metric`, `sat_flag`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+- Reset initializes the equalized output to common mode and clears metric outputs.
+- On each rising `clk`, sample the boost code and the current input.
+- Drive `vout` from the current input plus a boost-code-scaled edge term relative to the previous sampled input.
+- Clamp `vout` to the `vss` to `vdd` range.
+- `edge_metric` reports the absolute boosted edge contribution after clipping to full scale.
+- `sat_flag` is high when the unclamped equalized target would exceed either output rail.
+
+
 ## Modeling Constraints
 
 - Use deterministic voltage-domain behavioral Verilog-A.

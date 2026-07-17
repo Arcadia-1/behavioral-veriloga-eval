@@ -79,6 +79,18 @@ Create stimulus and save traces sufficient for the fixed evaluator oracle to che
 - `P_REDUCE_LIMITED_CMD_AS_TEMPERATURE_RISES`: exercise and make observable: Reduce `limited_cmd` as temperature rises above threshold and expose the reduction on `foldback_metric`. Required traces: `time`, `power_cmd`, `temp_sense`, `clk`, `rst`, `enable`, `limited_cmd`, `foldback_metric`, `thermal_ok`.
 - `P_ASSERT_THERMAL_OK_ONLY_WHEN_NO`: exercise and make observable: Assert `thermal_ok` only when no foldback reduction is active. Required traces: `time`, `power_cmd`, `temp_sense`, `clk`, `rst`, `enable`, `limited_cmd`, `foldback_metric`, `thermal_ok`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+- On reset or when disabled, clear limited command, foldback metric, and status.
+- On each enabled rising `clk` edge, compare `temp_sense` against the foldback threshold.
+- Pass `power_cmd` through while temperature is below threshold.
+- Reduce `limited_cmd` as temperature rises above threshold and expose the reduction on `foldback_metric`.
+- Assert `thermal_ok` only when no foldback reduction is active.
+- Use only voltage-domain behavioral state and voltage contributions on public electrical outputs.
+- Do not expose pass/fail flags; expose only the public observable metrics named in the interface.
+
+
 The required trace names are: `time`, `power_cmd`, `temp_sense`, `clk`, `rst`, `enable`, `limited_cmd`, `foldback_metric`, `thermal_ok`.
 
 ## Modeling Constraints

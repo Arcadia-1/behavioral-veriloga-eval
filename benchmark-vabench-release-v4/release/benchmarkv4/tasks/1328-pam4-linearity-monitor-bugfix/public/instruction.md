@@ -38,6 +38,18 @@ The repaired bundle must satisfy every public property:
 - `P_EXPOSE_A_LINEARITY_METRIC_THAT_IS`: restore: Expose a `linearity_metric` that is high only when adjacent level spacing is uniform. Required traces: `time`, `symbol_1`, `symbol_0`, `clk`, `rst`, `enable`, `level_out`, `linearity_metric`, `valid`.
 - `P_ASSERT_VALID_AFTER_EACH_SAMPLED_SYMBOL`: restore: Assert `valid` after each sampled symbol update. Required traces: `time`, `symbol_1`, `symbol_0`, `clk`, `rst`, `enable`, `level_out`, `linearity_metric`, `valid`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+- On reset or when disabled, clear output, metric, and `valid`.
+- On each enabled rising `clk` edge, decode `symbol_1..symbol_0` as one of four PAM4 levels.
+- Drive `level_out` to evenly spaced voltage levels between `vss` and `vdd`.
+- Expose a `linearity_metric` that is high only when adjacent level spacing is uniform.
+- Assert `valid` after each sampled symbol update.
+- Use only voltage-domain behavioral state and voltage contributions on public electrical outputs.
+- Do not expose pass/fail flags; expose only the public observable metrics named in the interface.
+
+
 ## Modeling Constraints
 
 - Use deterministic voltage-domain behavioral Verilog-A.

@@ -49,6 +49,12 @@ Create stimulus and save traces sufficient for the fixed evaluator oracle to che
 - `P_BIT_POLARITY`: exercise and make observable: A decoded one drives its output high and a decoded zero drives its output low. Required traces: `time`, `d0_42`, `d0_85`, `d1_42`, `d1_85`, `d2_42`, `d2_85`, `d3_42`, `d3_85`, `d4_42`, `d4_85`, `d5_42`, `d5_85`, `d6_42`, `d6_85`.
 - `P_OUTPUT_RAIL_LEVELS`: exercise and make observable: Each output uses the declared `vhi` and `vlo` voltage levels for its decoded bit. Required traces: `time`, `d0_42`, `d0_85`, `d1_42`, `d1_85`, `d2_42`, `d2_85`, `d3_42`, `d3_85`, `d4_42`, `d4_85`, `d5_42`, `d5_85`, `d6_42`, `d6_85`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+Decode `ctrl` into seven output bits, LSB first: `d0` carries bit 0 and `d6` carries bit 6. Drive each output to `vhi` when its bit is 1 and `vlo` when its bit is 0.
+
+
 The required trace names are: `time`, `d0_42`, `d0_85`, `d1_42`, `d1_85`, `d2_42`, `d2_85`, `d3_42`, `d3_85`, `d4_42`, `d4_85`, `d5_42`, `d5_85`, `d6_42`, `d6_85`.
 
 ## Modeling Constraints

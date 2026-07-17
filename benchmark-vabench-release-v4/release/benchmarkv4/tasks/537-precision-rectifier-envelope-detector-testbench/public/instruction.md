@@ -49,6 +49,17 @@ Create stimulus and save traces sufficient for the fixed evaluator oracle to che
 - `P_BOUNDED_DECAY`: exercise and make observable: When rect is below the stored envelope, each rising clk update lowers env by at most decay and never below rect or vcm. Required traces: `time`, `clk`, `rect`, `env`.
 - `P_ENVELOPE_LAG_METRIC`: exercise and make observable: Metric is high while env exceeds rect by more than 30 mV and low otherwise. Required traces: `time`, `rect`, `env`, `metric`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+- Compute `rect` as a precision full-wave rectified voltage around `vcm`, bounded to the valid signal range.
+- Initialize the envelope state to `vcm`.
+- On each rising `clk` crossing, reset the envelope state to `vcm` when `rst` is above `vth`.
+- When not reset, update the envelope by immediately following upward rectified peaks and otherwise decaying by `decay` toward the current rectified level.
+- Do not let the envelope decay below either the current rectified level or `vcm`.
+- Drive `metric` high when the envelope exceeds the instantaneous rectified value by more than `30 mV`, and low otherwise.
+
+
 The required trace names are: `time`, `clk`, `rst`, `vin`, `rect`, `env`, `metric`.
 
 ## Modeling Constraints

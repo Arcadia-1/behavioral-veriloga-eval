@@ -30,6 +30,12 @@ The repaired bundle must satisfy every public property:
 - `P_DIFFERENTIAL_PRESERVATION`: restore: The differential output VOUTP minus VOUTN equals the differential input VINP minus VINN. Required traces: `time`, `vinp`, `vinn`, `voutp`, `voutn`.
 - `P_COMMON_MODE_PRESERVATION`: restore: The output pair preserves the input pair common-mode voltage without conversion or rail logic. Required traces: `time`, `vinp`, `vinn`, `voutp`, `voutn`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+Drive `VOUTP` from `VINP` and `VOUTN` from `VINN` with unity gain and the same polarity on each side.
+
+
 ## Modeling Constraints
 
 - Use deterministic direct voltage contributions.

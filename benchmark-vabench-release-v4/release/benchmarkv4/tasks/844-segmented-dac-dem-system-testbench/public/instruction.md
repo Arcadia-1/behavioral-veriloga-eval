@@ -124,6 +124,18 @@ Create stimulus and save traces sufficient for the fixed evaluator oracle to che
 - `P_DEM_ROTATED_MASK`: exercise and make observable: The selection mask contains the requested number of consecutive circular unit elements starting at the prior pointer. Required traces: `time`, `clk`, `code_5`, `code_4`, `code_3`, `sel_7`, `sel_6`, `sel_5`, `sel_4`, `sel_3`, `sel_2`, `sel_1`, `sel_0`.
 - `P_DEM_POINTER_ADVANCE`: exercise and make observable: After each update the pointer advances by the requested unit count modulo eight. Required traces: `time`, `clk`, `code_5`, `code_4`, `code_3`, `ptr_2`, `ptr_1`, `ptr_0`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+- On reset, clear the DEM pointer, selected unit mask, pointer outputs, and `vout`.
+- On each rising `clk` edge, sample the 6-bit input code as an unsigned integer from 0 to 63.
+- `thermometer_decoder` must decode the three MSBs into a requested count from 0 to 7 unit elements.
+- `dwa_rotator` must select that many unit elements in a rotating circular order and then advance the pointer by the selected count.
+- `binary_decoder` must decode the three LSBs as the fine binary contribution.
+- `dac_driver` must drive `vout = vref * code / 63.0` while `sel_7..sel_0` expose the rotated unit-element mask.
+- `ptr_2..ptr_0` must expose the pointer value after the sampled update.
+
+
 The required trace names are: `time`, `clk`, `rst`, `code_5`, `code_4`, `code_3`, `code_2`, `code_1`, `code_0`, `vout`, `sel_7`, `sel_6`, `sel_5`, `sel_4`, `sel_3`, `sel_2`, `sel_1`, `sel_0`, `ptr_2`, `ptr_1`, `ptr_0`.
 
 ## Modeling Constraints

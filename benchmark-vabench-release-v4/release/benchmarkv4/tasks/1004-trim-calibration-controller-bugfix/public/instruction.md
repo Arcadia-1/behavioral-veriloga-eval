@@ -30,6 +30,18 @@ The repaired bundle must satisfy every public property:
 - `P_TRIM_CLAMP`: restore: trim is clamped to the inclusive 0.05 V to 0.85 V range. Required traces: `time`, `trim`.
 - `P_CLOCKED_HOLD`: restore: trim holds its state between rising clk updates. Required traces: `time`, `clk`, `trim`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+- Implement a voltage-domain calibration accumulator that generates a trim voltage, not a capacitor-array CDAC model.
+- Initialize `trim` to 0.45 V before the first clocked update.
+- On every rising crossing of `clk` through `vth`, update the internal trim state.
+- Reset `trim` to 0.45 V on a rising `clk` while `rst` is above `vth`.
+- When reset is low, add 0.06 V on high `err` and subtract 0.06 V on low `err`.
+- Clamp the trim state to the 0.05 V to 0.85 V range.
+- Drive `trim` with a smoothed voltage contribution.
+
+
 ## Modeling Constraints
 
 - Use deterministic voltage-domain behavior.

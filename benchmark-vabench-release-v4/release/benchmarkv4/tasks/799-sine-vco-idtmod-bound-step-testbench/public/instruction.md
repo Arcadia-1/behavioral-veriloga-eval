@@ -46,6 +46,25 @@ Create stimulus and save traces sufficient for the fixed evaluator oracle to che
 - `P_METRIC_VCO_AMP_PHASE_Q_VOLTAGE`: exercise and make observable: `metric = vco_amp * phase_q` (voltage-coded instantaneous wrapped phase, `0 V` to `vco_amp`) Required traces: `time`, `vin`, `out`, `metric`.
 - `P_CALL_BOUND_STEP_1_0_VCO`: exercise and make observable: call `$bound_step(1.0 / (vco_ppc * freq_q))` every step so the sine is resolved Required traces: `time`, `vin`, `out`, `metric`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+Use `idtmod()` as a voltage-domain phase integrator whose instantaneous
+frequency is controlled by `vin`, and produce a continuous-time sine output.
+
+This is a behavioral continuous-time task, not a conservative-current/KCL task.
+Do not use `I(...)`, `ddt(...)`, or `idt(...)`.
+
+Implement:
+
+- `freq_q = center_freq + vco_gain * V(vin)`
+- `phase_q = idtmod(freq_q, 0.0, 1.0)` (modulo-1 phase accumulator)
+- `out = vco_amp * sin(M_TWO_PI * phase_q)` (bipolar sine centered at `0 V`)
+- `metric = vco_amp * phase_q` (voltage-coded instantaneous wrapped phase, `0 V` to `vco_amp`)
+- call `$bound_step(1.0 / (vco_ppc * freq_q))` every step so the sine is resolved
+  with at least `vco_ppc` timepoints per cycle
+
+
 The required trace names are: `time`, `vin`, `out`, `metric`.
 
 ## Modeling Constraints

@@ -36,6 +36,20 @@ The repaired bundle must satisfy every public property:
 - `P_STATE_METRIC`: restore: div_metric reports the currently driven sequence index as k/3 of the output span. Required traces: `time`, `clk_in`, `rst`, `enable`, `lo_i`, `lo_q`, `div_metric`, `quad_ok`.
 - `P_QUAD_OK_DELAY`: restore: quad_ok asserts only after two complete four-state output cycles. Required traces: `time`, `clk_in`, `rst`, `enable`, `lo_i`, `lo_q`, `div_metric`, `quad_ok`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+- On reset or when disabled, clear `lo_i`, `lo_q`, `div_metric`, and `quad_ok`.
+- On successive rising `clk_in` edges while enabled, generate the repeating
+  state sequence `(lo_i, lo_q) = 10, 11, 01, 00`. Each state lasts one input
+  clock period, so both outputs divide the input clock by four and `lo_q`
+  trails `lo_i` by one quarter of the divided-clock period.
+- `lo_i` and `lo_q` must have the same divided frequency and a deterministic quadrature phase relationship.
+- `div_metric` must expose the state index `k` for the currently driven pair as
+  `vss + (vdd - vss) * k / 3`, where the sequence above uses `k = 0..3`.
+- Assert `quad_ok` after two complete quadrature output cycles with the expected state sequence.
+
+
 ## Modeling Constraints
 
 - Use deterministic voltage-domain behavioral Verilog-A.

@@ -53,6 +53,17 @@ Create stimulus and save traces sufficient for the fixed evaluator oracle to che
 - `P_DEADTIME_METRIC_IS_HIGH_ONLY_WHILE`: exercise and make observable: `deadtime_metric` is high only while a pending phase request is in the enforced both-low interval. Required traces: `time`, `clk_in`, `rst`, `enable`, `phi1`, `phi2`, `deadtime_metric`, `valid`.
 - `P_VALID_BECOMES_HIGH_AFTER_THE_FIRST`: exercise and make observable: `valid` becomes high after the first enabled handoff completes and remains high until reset or disable. Required traces: `time`, `clk_in`, `rst`, `enable`, `phi1`, `phi2`, `deadtime_metric`, `valid`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+- Reset or a low `enable` clears both phases, `deadtime_metric`, and `valid`.
+- A rising `clk_in` request eventually enables `phi1`; a falling `clk_in` request eventually enables `phi2`.
+- During each handoff, both `phi1` and `phi2` remain low for the configured dead-time interval.
+- `phi1` and `phi2` must never be high at the same time.
+- `deadtime_metric` is high only while a pending phase request is in the enforced both-low interval.
+- `valid` becomes high after the first enabled handoff completes and remains high until reset or disable.
+
+
 The required trace names are: `time`, `clk_in`, `rst`, `enable`, `phi1`, `phi2`, `deadtime_metric`, `valid`.
 
 ## Modeling Constraints

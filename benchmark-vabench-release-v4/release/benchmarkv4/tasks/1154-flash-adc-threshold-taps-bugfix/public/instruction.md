@@ -37,6 +37,12 @@ The repaired bundle must satisfy every public property:
 - `P_THERMOMETER_POLARITY`: restore: Outputs assert high when `vin` exceeds their associated threshold and low otherwise. Required traces: `time`, `clk`, `dout0`, `dout1`, `dout2`, `dout3`, `dout4`, `dout5`, `dout6`, `vin`.
 - `P_OUTPUT_HIGH_LEVEL`: restore: Asserted thermometer outputs use `vh` and inactive outputs use `vl`. Required traces: `time`, `clk`, `dout0`, `dout1`, `dout2`, `dout3`, `dout4`, `dout5`, `dout6`, `vin`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+On each rising crossing of `clk` through `vth`, compare `vin` against seven selected thresholds at tap indices 1, 5, 10, 15, 20, 25, and 30 of a 31-step span from `vrefn` to `vrefp`. Drive each `dout` high at `vh` when `vin` exceeds its tap threshold and low at `vl` otherwise.
+
+
 ## Modeling Constraints
 
 - Use deterministic voltage-domain behavioral Verilog-A.

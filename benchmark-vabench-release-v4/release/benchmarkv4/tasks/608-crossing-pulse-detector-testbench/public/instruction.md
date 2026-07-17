@@ -49,6 +49,38 @@ Create stimulus and save traces sufficient for the fixed evaluator oracle to che
 - `P_REPEATABLE_BIDIRECTIONAL_EVENTS`: exercise and make observable: Alternating rising and falling crossings each produce corresponding pulses rather than only the first event or one polarity. Required traces: `time`, `sigin`, `sigout`.
 - `P_TRANSITION_TIMING`: exercise and make observable: Sigout changes use tdel delay with trise and tfall smoothing. Required traces: `time`, `sigin`, `sigout`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+This task asks for the `source_crossing_pulse_detector` behavioral DUT module,
+not a Spectre testbench. The module emits a fixed-width pulse when `sigin`
+crosses the configured threshold in either direction.
+
+Support these public parameters and legal overrides:
+
+| Parameter | Default | Unit / range | Contract |
+| --- | ---: | --- | --- |
+| `pulse_width` | `4 ns` | time, `(0:inf)` | Output high duration after a qualifying input crossing. |
+| `sigcrossing` | `0.45` | V | Threshold for `sigin`. |
+| `vlogic_high` | `0.9` | V | Output high level. |
+| `vlogic_low` | `0.0` | V | Output low level. |
+| `tdel` | `1 ns` | time, `[0:inf)` | Output transition delay. |
+| `trise` | `20 ps` | time, `(0:inf)` | Output rise time. |
+| `tfall` | `20 ps` | time, `(0:inf)` | Output fall time. |
+
+Required observable behavior:
+
+- Detect `sigin` crossings through `sigcrossing` in either direction.
+- On each qualifying crossing, drive `sigout` high.
+- Use a timer to return `sigout` low after `pulse_width`.
+- Produce a pulse after each input crossing and return low between pulses.
+- Drive `sigout` through smoothed voltage contributions.
+
+Use voltage contributions only. Do not use current contributions, `ddt()`,
+`idt()`, transistor-level devices, AC/noise analysis, validation logic, validation-only
+test hooks, or simulator-specific side channels.
+
+
 The required trace names are: `time`, `sigin`, `sigout`.
 
 ## Modeling Constraints

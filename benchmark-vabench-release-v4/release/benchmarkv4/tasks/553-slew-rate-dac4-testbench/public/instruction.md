@@ -47,6 +47,16 @@ Create stimulus and save traces sufficient for the fixed evaluator oracle to che
 - `P_SLEW_LIMIT`: exercise and make observable: During a target change, the magnitude of the output slope does not exceed slewrate. Required traces: `time`, `d3`, `d2`, `d1`, `d0`, `vout`.
 - `P_SETTLED_TARGET`: exercise and make observable: After sufficient time at a stable code, vout reaches the corresponding code-to-vref target. Required traces: `time`, `d3`, `d2`, `d1`, `d0`, `vout`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+Interpret the four input voltages as an unsigned binary code using `vth`.
+Map code zero to 0 V and code fifteen to `vref`, with monotonic binary-weighted
+steps between those endpoints. Drive `vout` with slew-rate-limited analog
+motion so large code changes ramp at the configured `slewrate` instead of
+jumping immediately to the final value.
+
+
 The required trace names are: `time`, `d3`, `d2`, `d1`, `d0`, `vout`.
 
 ## Modeling Constraints

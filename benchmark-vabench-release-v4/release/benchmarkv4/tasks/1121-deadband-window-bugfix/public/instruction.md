@@ -27,6 +27,16 @@ The repaired bundle must satisfy every public property:
 - `P_LOWER_RESIDUE`: restore: For `V(sigin) < dead_low`, drive `sigout` to `V(sigin) - dead_low`. Required traces: `time`, `sigin`, `sigout`.
 - `P_UPPER_RESIDUE`: restore: For `V(sigin) > dead_high`, drive `sigout` to `V(sigin) - dead_high`. Required traces: `time`, `sigin`, `sigout`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+- `P_ZERO_INSIDE_DEADBAND`: For `dead_low <= V(sigin) <= dead_high`, drive `sigout` to 0 V.
+
+- `P_LOWER_RESIDUE`: For `V(sigin) < dead_low`, drive `sigout` to `V(sigin) - dead_low`.
+
+- `P_UPPER_RESIDUE`: For `V(sigin) > dead_high`, drive `sigout` to `V(sigin) - dead_high`.
+
+
 ## Modeling Constraints
 
 - Use deterministic voltage-domain behavioral Verilog-A.

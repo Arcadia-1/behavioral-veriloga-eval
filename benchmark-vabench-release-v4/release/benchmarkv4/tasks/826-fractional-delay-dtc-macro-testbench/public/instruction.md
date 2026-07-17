@@ -55,9 +55,19 @@ Create stimulus and save traces sufficient for the fixed evaluator oracle to che
 - `P_EXPOSE_THE_FRACTIONAL_DELAY_AS_PHASE`: exercise and make observable: Expose the fractional delay as `phase_metric`. Required traces: `time`, `clk_in`, `rst`, `enable`, `frac_3`, `frac_2`, `frac_1`, `frac_0`, `clk_out`, `phase_metric`, `valid`.
 - `P_PRESERVE_INPUT_EDGE_ORDER_AND_ASSERT`: exercise and make observable: Preserve input-edge order and assert `valid` after the first emitted delayed edge. Required traces: `time`, `clk_in`, `rst`, `enable`, `frac_3`, `frac_2`, `frac_1`, `frac_0`, `clk_out`, `phase_metric`, `valid`.
 
-The required trace names are: `time`, `clk_in`, `rst`, `enable`, `frac_3`, `frac_2`, `frac_1`, `frac_0`, `clk_out`, `phase_metric`, `valid`.
 
-On each rising `clk_in` edge, latch `code = frac_0 + 2*frac_1 + 4*frac_2 + 8*frac_3` using `vth`, emit one rising output edge after `(code+1)*200 ps`, and from the accepted edge onward drive `phase_metric = vss + (vdd-vss)*code/15`.
+The following canonical public behavior is normative for this derived form:
+
+- On reset or when disabled, clear output, phase metric, and `valid`.
+- Decode `frac_3..frac_0` as a fractional delay setting.
+- For each input edge, emit one output edge with a delay proportional to the fractional code.
+- Expose the fractional delay as `phase_metric`.
+- Preserve input-edge order and assert `valid` after the first emitted delayed edge.
+- Use only voltage-domain behavioral state and voltage contributions on public electrical outputs.
+- Do not expose pass/fail flags; expose only the public observable metrics named in the interface.
+
+
+The required trace names are: `time`, `clk_in`, `rst`, `enable`, `frac_3`, `frac_2`, `frac_1`, `frac_0`, `clk_out`, `phase_metric`, `valid`.
 
 ## Modeling Constraints
 

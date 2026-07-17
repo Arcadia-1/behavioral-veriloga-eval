@@ -52,6 +52,12 @@ Create stimulus and save traces sufficient for the fixed evaluator oracle to che
 - `P_UPDATE_LOW_HOLDS_STATE`: exercise and make observable: On falling `clks` crossings with `update` low, hold the previous selection and output value. Required traces: `time`, `clks`, `din0`, `din1`, `din2`, `din3`, `dout`, `dsel0`, `dsel1`, `rst`, `update`.
 - `P_SELECT_DECODE_AND_OUTPUT_TIMING`: exercise and make observable: The held two-bit selection maps to `din0..din3` in binary order and drives `dout` with the declared transition timing. Required traces: `time`, `clks`, `din0`, `din1`, `din2`, `din3`, `dout`, `dsel0`, `dsel1`, `rst`, `update`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+When `rst` is high, force the selected channel to `din0` and drive `dout` from `din0`. On each falling `clks` crossing while reset is inactive, if `update` is high, latch the two select bits and sample the selected input; if `update` is low, hold the previous selection and output value. Drive the held output with the public transition timing.
+
+
 The required trace names are: `time`, `clks`, `din0`, `din1`, `din2`, `din3`, `dout`, `dsel0`, `dsel1`, `rst`, `update`.
 
 ## Modeling Constraints

@@ -54,31 +54,6 @@
     },
     {
       "artifact_hashes": {
-        "clk_divider_ref.va": "82ebc5d022b09e220d21bbfe7fe42dabe0e65fdaf48d5a7b1f9689fb502b8e3b"
-      },
-      "certification": {
-        "activated_property_ids": [
-          "P_RATIO_DECODE"
-        ],
-        "behavior_status": "killed_behaviorally",
-        "compile_status": "pass",
-        "evidence_path": "negative_variants/neg_003_ratio_bit_order_reversed/certification.json",
-        "profile": "feedback",
-        "simulation_status": "pass",
-        "status": "pass"
-      },
-      "changed_artifacts": [
-        "clk_divider_ref.va"
-      ],
-      "fault_class": "ratio_bit_order_reversed",
-      "id": "neg_003_ratio_bit_order_reversed",
-      "trigger_condition": "an asymmetric code distinguishes div_code_0 as the LSB from div_code_7 as the MSB",
-      "violated_property_ids": [
-        "P_RATIO_DECODE"
-      ]
-    },
-    {
-      "artifact_hashes": {
         "clk_divider_ref.va": "80521ef5ff6f61465a6f7ea41d7117e64790b3d220242330da074d826699572d"
       },
       "certification": {

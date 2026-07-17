@@ -61,6 +61,17 @@ Create stimulus and save traces sufficient for the fixed evaluator oracle to che
 - `P_DRIVE_VOUT_AS_THE_CLIPPED_GAIN`: exercise and make observable: Drive `vout` as the clipped gain-and-offset adjusted input around common mode. Required traces: `time`, `vin`, `clk`, `rst`, `enable`, `gain_2`, `gain_1`, `gain_0`, `offset_2`, `offset_1`, `offset_0`, `vout`, `residual_metric`, `valid`.
 - `P_RESIDUAL_METRIC_REPORTS_THE_ABSOLUTE_OUTPUT`: exercise and make observable: `residual_metric` reports the absolute output distance from common mode and `valid` marks that a trim sample has occurred. Required traces: `time`, `vin`, `clk`, `rst`, `enable`, `gain_2`, `gain_1`, `gain_0`, `offset_2`, `offset_1`, `offset_0`, `vout`, `residual_metric`, `valid`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+- Reset or low `enable` drives `vout` to common mode, clears residual metric, and clears `valid`.
+- On each enabled rising `clk`, sample gain and offset trim codes.
+- Use `gain = gain_base + gain_step * gain_code`.
+- Use signed offset `(offset_code - 3) * offset_lsb`.
+- Drive `vout` as the clipped gain-and-offset adjusted input around common mode.
+- `residual_metric` reports the absolute output distance from common mode and `valid` marks that a trim sample has occurred.
+
+
 The required trace names are: `time`, `vin`, `clk`, `rst`, `enable`, `gain_2`, `gain_1`, `gain_0`, `offset_2`, `offset_1`, `offset_0`, `vout`, `residual_metric`, `valid`.
 
 ## Modeling Constraints

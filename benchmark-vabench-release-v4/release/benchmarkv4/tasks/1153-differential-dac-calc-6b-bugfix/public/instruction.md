@@ -38,6 +38,12 @@ The repaired bundle must satisfy every public property:
 - `P_COMPLEMENTARY_DIFFERENTIAL_OUTPUTS`: restore: `voutp` and `voutn` use complementary weighted sums about the common-mode value. Required traces: `time`, `clks`, `din0`, `din1`, `din2`, `din3`, `din4`, `din5`, `voutn`, `voutp`.
 - `P_OUTPUT_SWING_SCALE`: restore: The differential outputs use the declared reference span and bit weights without extra swing scaling. Required traces: `time`, `clks`, `din0`, `din1`, `din2`, `din3`, `din4`, `din5`, `voutn`, `voutp`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+On each rising crossing of `clks` through `vth`, decode `din0` as the largest binary-weighted decision and `din5` as the smallest. For `voutp`, each high bit selects the corresponding weighted contribution from `refp` and each low bit selects `refn`; `voutn` uses the complementary selections. Include the common-mode termination contribution so the two outputs remain centered around `vcm`.
+
+
 ## Modeling Constraints
 
 - Use deterministic voltage-domain behavioral Verilog-A.

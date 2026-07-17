@@ -157,7 +157,7 @@
   "properties": [
     {
       "id": "P_ON_RESET_OR_WHEN_DISABLED_DRIVE",
-      "observable_contract": "On reset or when disabled, drive `vout` to `vcm`, clear metric, and clear `settled`.",
+      "observable_contract": "On reset or while disabled, restore `prev_code=0` and the unchanged-code counter to zero, drive `vout=vcm`, and drive `overshoot_metric=settled=vss`.",
       "required_signals": [
         "time",
         "vin",
@@ -174,7 +174,7 @@
     },
     {
       "id": "P_ON_EACH_ENABLED_RISING_CLK_EDGE",
-      "observable_contract": "On each enabled rising `clk` edge, decode the gain code and update the target output from `vin`.",
+      "observable_contract": "Poll every `tick`; on each enabled rising `clk` edge decode `code=4*gain_2+2*gain_1+gain_0` and drive `vout=clamp(vcm+(1+gain_lsb*code)*(vin-vcm),vss,vdd)`.",
       "required_signals": [
         "time",
         "vin",
@@ -191,7 +191,7 @@
     },
     {
       "id": "P_APPLY_BOUNDED_SETTLING_WITH_A_CODE",
-      "observable_contract": "Apply bounded settling with a code-dependent overshoot proxy after large gain changes.",
+      "observable_contract": "Use the `tr` transition for bounded output smoothing without adding an overshoot excursion to `vout`; expose the code-step proxy separately on `overshoot_metric`.",
       "required_signals": [
         "time",
         "vin",
@@ -208,7 +208,7 @@
     },
     {
       "id": "P_EXPOSE_OVERSHOOT_MAGNITUDE_ON_OVERSHOOT_METRIC",
-      "observable_contract": "Expose overshoot magnitude on `overshoot_metric`.",
+      "observable_contract": "On every enabled rising edge drive `overshoot_metric=vdd*abs(code-prev_code)/7` before storing the current code as `prev_code`.",
       "required_signals": [
         "time",
         "vin",
@@ -225,7 +225,7 @@
     },
     {
       "id": "P_ASSERT_SETTLED_AFTER_TWO_CONSECUTIVE_UPDATES",
-      "observable_contract": "Assert `settled` after two consecutive updates within `settle_tol` of the target.",
+      "observable_contract": "Use unchanged gain code as the deterministic settling proxy: increment the counter when `code==prev_code`, clear it otherwise, assert `settled=vdd` at count two, and drive `vss` otherwise; a newly changed code therefore needs two subsequent unchanged-code comparisons.",
       "required_signals": [
         "time",
         "vin",

@@ -32,6 +32,17 @@ The repaired bundle must satisfy every public property:
 - `P_BIDIRECTIONAL_CROSSINGS`: restore: Crossings of both vlow and vhigh in either direction update the retained in-window decision. Required traces: `time`, `vin`, `out`.
 - `P_RAIL_SMOOTHING`: restore: Out is rail-referenced to VDD and VSS with finite transition smoothing set by tedge. Required traces: `time`, `VDD`, `VSS`, `out`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+- Initialize the decision from the initial input voltage.
+- Drive `out` high only while `vlow < V(vin,VSS) < vhigh`.
+- Drive `out` low when `V(vin,VSS) <= vlow` or `V(vin,VSS) >= vhigh`.
+- Resolve crossings of both the lower and upper thresholds in both directions.
+- Drive `out` rail-to-rail relative to `VDD` and `VSS` using finite
+  transition-style smoothing.
+
+
 ## Modeling Constraints
 
 - Use deterministic threshold-crossing state updates and voltage contributions only.

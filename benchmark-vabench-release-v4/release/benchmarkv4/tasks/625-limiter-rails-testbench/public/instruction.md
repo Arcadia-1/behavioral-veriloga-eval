@@ -45,6 +45,18 @@ Create stimulus and save traces sufficient for the fixed evaluator oracle to che
 - `P_LIMIT_ABOVE_UPPER`: exercise and make observable: When `V(vin)` exceeds the upper limit, drive `vout` to the upper limit. Required traces: `time`, `vdd`, `vin`, `vmax`, `vout`.
 - `P_LIMIT_BELOW_LOWER`: exercise and make observable: When `V(vin)` is below the lower limit, drive `vout` to the lower limit. Required traces: `time`, `vss`, `vin`, `vmin`, `vout`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+- `P_RAIL_DERIVED_LIMITS`: Derive the upper limit as `V(vdd) - V(vmax)` and the lower limit as `V(vss) + V(vmin)`.
+
+- `P_PASS_WITHIN_LIMITS`: When `V(vin)` lies between the derived limits, drive `vout` to `V(vin)`.
+
+- `P_LIMIT_ABOVE_UPPER`: When `V(vin)` exceeds the upper limit, drive `vout` to the upper limit.
+
+- `P_LIMIT_BELOW_LOWER`: When `V(vin)` is below the lower limit, drive `vout` to the lower limit.
+
+
 The required trace names are: `time`, `vdd`, `vin`, `vmax`, `vmin`, `vout`, `vss`.
 
 ## Modeling Constraints

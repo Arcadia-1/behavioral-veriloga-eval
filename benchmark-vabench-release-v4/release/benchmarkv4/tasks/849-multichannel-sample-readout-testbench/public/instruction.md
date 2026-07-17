@@ -96,6 +96,17 @@ Create stimulus and save traces sufficient for the fixed evaluator oracle to che
 - `P_READOUT_HELD_VALUE`: exercise and make observable: out equals the held value of the exposed selected channel, independent of later live-input changes. Required traces: `time`, `ch0`, `ch1`, `ch2`, `ch3`, `clk`, `sample`, `read`, `out`, `ch_sel_1`, `ch_sel_0`.
 - `P_READOUT_VALID_TIMING`: exercise and make observable: valid is high only for read cycles; when read is low out holds and the pointer does not advance. Required traces: `time`, `clk`, `rst`, `read`, `out`, `ch_sel_1`, `ch_sel_0`, `valid`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+- On reset, clear the held channel values, read pointer, `out`, `ch_sel_1`, `ch_sel_0`, and `valid`.
+- When `sample` is high on a rising `clk` edge, `sample_hold_bank` captures `ch0..ch3` simultaneously.
+- When `read` is high on a rising `clk` edge, `mux_controller` outputs the next held channel in order 0, 1, 2, 3 and then wraps to 0.
+- `output_driver` drives `out` to the selected held channel voltage and asserts `valid` on read cycles.
+- `ch_sel_1..ch_sel_0` must expose the channel index currently driven on `out`.
+- When `read` is low, hold `out` and deassert `valid` without advancing the pointer.
+
+
 The required trace names are: `time`, `ch0`, `ch1`, `ch2`, `ch3`, `clk`, `rst`, `sample`, `read`, `out`, `ch_sel_1`, `ch_sel_0`, `valid`.
 
 ## Modeling Constraints

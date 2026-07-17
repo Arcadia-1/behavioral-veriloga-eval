@@ -46,6 +46,16 @@ Create stimulus and save traces sufficient for the fixed evaluator oracle to che
 - `P_LATCH_HOLD`: exercise and make observable: OUT_P holds its sampled decision between rising clock edges. Required traces: `time`, `CLK`, `VINP`, `VINN`, `OUT_P`.
 - `P_RAIL_REFERENCE`: exercise and make observable: OUT_P low and high levels track VSS and VDD respectively with finite smoothing. Required traces: `time`, `VDD`, `VSS`, `OUT_P`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+- Initialize `OUT_P` low relative to `VSS`.
+- On each rising crossing of `CLK` through the local rail midpoint, latch whether `V(VINP,VSS) - V(VINN,VSS)` is greater than `vos`.
+- Drive `OUT_P` high to the `VDD` rail only for latched inputs above the positive offset threshold; otherwise drive it low to `VSS`.
+- Hold the latched decision between rising clock edges, even if the input polarity changes between samples.
+- Use smoothed rail-referenced voltage-domain output transitions.
+
+
 The required trace names are: `time`, `VDD`, `VSS`, `CLK`, `VINP`, `VINN`, `OUT_P`.
 
 ## Modeling Constraints

@@ -41,11 +41,17 @@ Preserve this exact artifact and module interface:
 
 The repaired bundle must satisfy every public property:
 
-- `P_CONVERSION_RESET_AND_PREVIOUS_WORD`: restore: Each rising `clks` crossing first publishes `dout3=dp4`, `dout2=dp3`, `dout1=dp2`, and `dout0=dp1`, then initializes `dp4=dm4=0` and `dp3=dm3=dp2=dm2=dp1=dm1=1`. The equal-valued pairs are intentional undecided/trial states. Required traces: `time`, `clkc`, `clks`, `dcomp`, `dcompb`, `dm1`, `dm2`, `dm3`, `dm4`, `dout0`, `dout1`, `dout2`, `dout3`, `dp1`, `dp2`, `dp3`, `dp4`, `dtest0`, `dtest1`, `dtest2`, `dtest3`, `test`.
-- `P_SAMPLE_AND_COMPARATOR_DECISIONS`: restore: Decisions update `dp4/dm4` through `dp1/dm1` in MSB-to-LSB order. `dcomp` high selects P/M=`1/0`; `dcompb` high selects P/M=`0/1`. Required traces: `time`, `clkc`, `clks`, `dcomp`, `dcompb`, `dm1`, `dm2`, `dm3`, `dm4`, `dout0`, `dout1`, `dout2`, `dout3`, `dp1`, `dp2`, `dp3`, `dp4`, `dtest0`, `dtest1`, `dtest2`, `dtest3`, `test`.
-- `P_TEST_OVERRIDE_BEHAVIOR`: restore: With `test` high, captured `dtest3`, `dtest2`, `dtest1`, then `dtest0` replace the four live decisions in `dp4`-through-`dp1` order. Required traces: `time`, `clkc`, `clks`, `dcomp`, `dcompb`, `dm1`, `dm2`, `dm3`, `dm4`, `dout0`, `dout1`, `dout2`, `dout3`, `dp1`, `dp2`, `dp3`, `dp4`, `dtest0`, `dtest1`, `dtest2`, `dtest3`, `test`.
-- `P_DOUT_BIT_MAPPING`: restore: The previous P-side state maps as `dout3=dp4`, `dout2=dp3`, `dout1=dp2`, and `dout0=dp1`. Required traces: `time`, `clkc`, `clks`, `dcomp`, `dcompb`, `dm1`, `dm2`, `dm3`, `dm4`, `dout0`, `dout1`, `dout2`, `dout3`, `dp1`, `dp2`, `dp3`, `dp4`, `dtest0`, `dtest1`, `dtest2`, `dtest3`, `test`.
+- `P_CONVERSION_RESET_AND_PREVIOUS_WORD`: restore: Each rising `clks` crossing publishes the previous DAC-P word on `dout0..dout3`, resets the conversion pointer, and initializes controls for a new conversion. Required traces: `time`, `clkc`, `clks`, `dcomp`, `dcompb`, `dm1`, `dm2`, `dm3`, `dm4`, `dout0`, `dout1`, `dout2`, `dout3`, `dp1`, `dp2`, `dp3`, `dp4`, `dtest0`, `dtest1`, `dtest2`, `dtest3`, `test`.
+- `P_SAMPLE_AND_COMPARATOR_DECISIONS`: restore: The conversion captures comparator inputs and updates SAR decisions with the declared `dcomp/dcompb` polarity. Required traces: `time`, `clkc`, `clks`, `dcomp`, `dcompb`, `dm1`, `dm2`, `dm3`, `dm4`, `dout0`, `dout1`, `dout2`, `dout3`, `dp1`, `dp2`, `dp3`, `dp4`, `dtest0`, `dtest1`, `dtest2`, `dtest3`, `test`.
+- `P_TEST_OVERRIDE_BEHAVIOR`: restore: The public test override controls the DAC/control outputs when asserted and does not corrupt normal conversion state. Required traces: `time`, `clkc`, `clks`, `dcomp`, `dcompb`, `dm1`, `dm2`, `dm3`, `dm4`, `dout0`, `dout1`, `dout2`, `dout3`, `dp1`, `dp2`, `dp3`, `dp4`, `dtest0`, `dtest1`, `dtest2`, `dtest3`, `test`.
+- `P_DOUT_BIT_MAPPING`: restore: `dout0..dout3` preserve the declared bit order of the previous DAC-P state. Required traces: `time`, `clkc`, `clks`, `dcomp`, `dcompb`, `dm1`, `dm2`, `dm3`, `dm4`, `dout0`, `dout1`, `dout2`, `dout3`, `dp1`, `dp2`, `dp3`, `dp4`, `dtest0`, `dtest1`, `dtest2`, `dtest3`, `test`.
 - `P_LOGIC_OUTPUT_LEVELS`: restore: Handshake, DAC-control, and data outputs use full voltage-coded low/high levels. Required traces: `time`, `clkc`, `clks`, `dcomp`, `dcompb`, `dm1`, `dm2`, `dm3`, `dm4`, `dout0`, `dout1`, `dout2`, `dout3`, `dp1`, `dp2`, `dp3`, `dp4`, `dtest0`, `dtest1`, `dtest2`, `dtest3`, `test`.
+
+
+The following canonical public behavior is normative for this derived form:
+
+On each rising `clks` crossing, publish the previous cycle DAC-P word on `dout0..dout3`, reset the conversion pointer, initialize the DAC controls for a new conversion, capture the test override word, and clear `clkc`. On falling `clks`, assert `clkc` to start comparison. While `clks` is low, comparator output reset/recovery should reassert `clkc`; comparator decision activity should capture one MSB-to-LSB decision per step. With `test` low, use the live comparator decision; with `test` high, use the captured test bit for that step. Drive complementary `dp`/`dm` controls and stop requesting comparisons after four decisions.
+
 
 ## Modeling Constraints
 

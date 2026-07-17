@@ -55,6 +55,15 @@ Create stimulus and save traces sufficient for the fixed evaluator oracle to che
 - `P_MEASURE_ANALOG_INPUTS_RELATIVE_TO_THE`: exercise and make observable: Measure analog inputs relative to the local `vss` rail and normalize by the current local supply span. Let `span = V(vdd, vss)` and treat the row as valid only when `V(en) > vth` and `span_min <= span <= span_max`. If `span` is below `0.05 V`, use `0.05 V` as the normalization span. Define `clip01(y)` as `y` limited to the range `[0, 1]` and `x0..x3 = clip01((V(inN) - V(vss)) / span)`. Required traces: `time`, `clk`, `ctrl0`, `ctrl1`, `en`, `flag`, `in0`, `in1`, `in2`, `in3`, `metric`, `out`, `rst`, `vdd`, `vss`.
 - `P_INITIALIZE_A_SAMPLED_PROGRESS_COUNT_TO`: exercise and make observable: Initialize a sampled progress count to zero. On a rising edge of `clk`, clear the count and all observables when `rst` is high or the row is not valid. Otherwise, increment the count by one and saturate at `4.0` when `x0 > 0.25` and `x1 > 0.20`; clear the count to zero when either condition is not met. After the update, drive `out = vhi * clip01(count / 4.0)`, assert `flag = vhi` when `count >= 3.0`, otherwise drive `flag = 0 V`, and drive `metric = vhi * clip01(abs(x0 - x1))`. Hold the last observable values between rising clock edges, except that a reset assertion clears them. Required traces: `time`, `clk`, `ctrl0`, `ctrl1`, `en`, `flag`, `in0`, `in1`, `in2`, `in3`, `metric`, `out`, `rst`, `vdd`, `vss`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+- `P_MEASURE_ANALOG_INPUTS_RELATIVE_TO_THE`: Measure analog inputs relative to the local `vss` rail and normalize by the current local supply span. Let `span = V(vdd, vss)` and treat the row as valid only when `V(en) > vth` and `span_min <= span <= span_max`. If `span` is below `0.05 V`, use `0.05 V` as the normalization span. Define `clip01(y)` as `y` limited to the range `[0, 1]` and `x0..x3 = clip01((V(inN) - V(vss)) / span)`.
+- `P_INITIALIZE_A_SAMPLED_PROGRESS_COUNT_TO`: Initialize a sampled progress count to zero. On a rising edge of `clk`, clear the count and all observables when `rst` is high or the row is not valid. Otherwise, increment the count by one and saturate at `4.0` when `x0 > 0.25` and `x1 > 0.20`; clear the count to zero when either condition is not met. After the update, drive `out = vhi * clip01(count / 4.0)`, assert `flag = vhi` when `count >= 3.0`, otherwise drive `flag = 0 V`, and drive `metric = vhi * clip01(abs(x0 - x1))`. Hold the last observable values between rising clock edges, except that a reset assertion clears them.
+
+The evaluator saves and may inspect these public trace signals: `time`, `clk`, `ctrl0`, `ctrl1`, `en`, `flag`, `in0`, `in1`, `in2`, `in3`, `metric`, `out`, `rst`, `vdd`, `vss`.
+
+
 The required trace names are: `time`, `clk`, `ctrl0`, `ctrl1`, `en`, `flag`, `in0`, `in1`, `in2`, `in3`, `metric`, `out`, `rst`, `vdd`, `vss`.
 
 ## Modeling Constraints

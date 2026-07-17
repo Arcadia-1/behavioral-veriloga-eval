@@ -41,6 +41,21 @@ The repaired bundle must satisfy every public property:
 - `P_DIP_RESTART`: restore: A supply dip below uvlo_fall immediately reasserts brownout and clears release progress. Required traces: `time`, `vdd_sense`, `clk`, `rst`, `enable`, `por_n`, `pgood`, `brownout`, `delay_metric`, `state_metric`.
 - `P_STATE_METRICS`: restore: Delay and state metrics report the saturated release count and four public supervisor states. Required traces: `time`, `vdd_sense`, `clk`, `rst`, `enable`, `por_n`, `pgood`, `brownout`, `delay_metric`, `state_metric`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+- On reset or when `enable` is low, assert brownout, deassert `pgood`, drive `por_n` low, and clear delay/state metrics.
+- Apply hysteresis to `vdd_sense`: enter brownout below `uvlo_fall` and leave brownout only after `vdd_sense` rises above `uvlo_rise`.
+- After leaving brownout, count consecutive rising `clk` edges while the supply remains above `uvlo_rise`.
+- Release `por_n` and assert `pgood` only after `release_cycles` consecutive good enabled cycles.
+- If `vdd_sense` drops below `uvlo_fall`, immediately assert brownout, clear the release counter, deassert `pgood`, and drive `por_n` low.
+- `delay_metric` must expose release count `k` as
+  `vol + (voh - vol) * k / release_cycles`, saturated at `voh`.
+- `state_metric` must map reset, brownout, counting, and released to
+  `vol`, `vol + (voh - vol)/3`, `vol + 2*(voh - vol)/3`, and `voh`,
+  respectively.
+
+
 ## Modeling Constraints
 
 - Use deterministic voltage-domain behavioral Verilog-A.

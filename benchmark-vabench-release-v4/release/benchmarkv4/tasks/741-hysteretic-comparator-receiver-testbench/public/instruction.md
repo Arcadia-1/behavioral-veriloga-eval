@@ -49,6 +49,17 @@ Create stimulus and save traces sufficient for the fixed evaluator oracle to che
 - `P_VHYS_40_MV_FROM_0_INF`: exercise and make observable: `vhys = 40 mV from [0:inf)`: total hysteresis width. Required traces: `time`, `inm`, `inp`, `out`.
 - `P_TD_400_PS_FROM_0_INF`: exercise and make observable: `td = 400 ps from [0:inf)`: propagation delay from a qualifying threshold crossing to the output state change. Required traces: `time`, `inm`, `inp`, `out`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+- `P_DEFINE_UPPER_TH_OFFSET_VHYS_2`: Define `upper_th = offset + vhys/2` and `lower_th = offset - vhys/2`. On initialization, set the output state high if `V(inp,inm)` is at or above the upper threshold; otherwise set it low. After initialization, switch high only on a rising crossing of `upper_th`, switch low only on a falling crossing of `lower_th`, and hold the previous state inside the hysteresis band. Drive `out` to the selected rail with delay `td` and transition time `tr`.
+- `P_VOUT_HIGH_0_9_V_HIGH`: `vout_high = 0.9 V`: high output rail.
+- `P_VOUT_LOW_0_0_V_LOW`: `vout_low = 0.0 V`: low output rail.
+- `P_OFFSET_0_0_V_INPUT_REFERRED`: `offset = 0.0 V`: input-referred switching offset.
+- `P_VHYS_40_MV_FROM_0_INF`: `vhys = 40 mV from [0:inf)`: total hysteresis width.
+- `P_TD_400_PS_FROM_0_INF`: `td = 400 ps from [0:inf)`: propagation delay from a qualifying threshold crossing to the output state change.
+
+
 The required trace names are: `time`, `inm`, `inp`, `out`.
 
 ## Modeling Constraints

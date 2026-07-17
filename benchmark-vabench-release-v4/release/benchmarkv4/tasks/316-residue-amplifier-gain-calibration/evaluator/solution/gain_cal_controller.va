@@ -7,22 +7,21 @@ module gain_cal_controller(residue, residue_ref, clk, rst, cal_en, gain_2, gain_
     parameter real vdd = 0.9; parameter real vss = 0.0; parameter real vcm = 0.45;
     parameter real vth = 0.45; parameter real tr = 200p from (0:inf); parameter real lock_tol = 15e-3;
     parameter real tick = 250p from (0:inf);
-    integer code, lock_count, updates; real prev_clk, err, residue_v, ref_v, metric_v, lock_v;
+    integer code, lock_count; real prev_clk, err, residue_v, ref_v, metric_v, lock_v;
     analog function real absval; input x; real x; begin absval = (x < 0.0) ? -x : x; end endfunction
     analog begin
-        @(initial_step) begin code = 0; lock_count = 0; updates = 0; prev_clk = 0.0; metric_v = 0.0; lock_v = vss; end
+        @(initial_step) begin code = 0; lock_count = 0; prev_clk = 0.0; metric_v = 0.0; lock_v = vss; end
         @(timer(0, tick)) begin
             if (V(rst) > vth || V(cal_en) <= vth) begin
-                code = 0; lock_count = 0; updates = 0; metric_v = 0.0; lock_v = vss;
+                code = 0; lock_count = 0; metric_v = 0.0; lock_v = vss;
             end else if (V(clk) > vth && prev_clk <= vth) begin
-                updates = updates + 1;
                 residue_v = V(residue); ref_v = V(residue_ref); err = ref_v - residue_v;
-
-                    if (residue_v < ref_v && code < 7) code = code + 1;
-                    else if (residue_v > ref_v && code > 0) code = code - 1;
                 metric_v = absval(err);
-                if (code >= 4 && absval(err) < 0.05) lock_count = lock_count + 1; else lock_count = 0;
-                lock_v = (((code >= 4 && updates >= 8)) ? vdd : vss);
+                if (err > lock_tol && code < 7) code = code + 1;
+                else if (err < -lock_tol && code > 0) code = code - 1;
+                if (absval(err) <= lock_tol) lock_count = lock_count + 1;
+                else lock_count = 0;
+                lock_v = ((lock_count >= 3) ? vdd : vss);
             end
             prev_clk = V(clk);
         end

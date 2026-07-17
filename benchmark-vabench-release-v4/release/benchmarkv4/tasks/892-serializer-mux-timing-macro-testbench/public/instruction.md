@@ -55,6 +55,17 @@ Create stimulus and save traces sufficient for the fixed evaluator oracle to che
 - `P_SLOT_1_SLOT_0_MUST_EXPOSE`: exercise and make observable: `slot_1..slot_0` must expose the active slot index. Required traces: `time`, `clk`, `rst`, `enable`, `d0`, `d1`, `d2`, `d3`, `serial_out`, `slot_1`, `slot_0`, `valid`.
 - `P_ASSERT_VALID_AFTER_THE_FIRST_COMPLETE`: exercise and make observable: Assert `valid` after the first complete four-slot frame. Required traces: `time`, `clk`, `rst`, `enable`, `d0`, `d1`, `d2`, `d3`, `serial_out`, `slot_1`, `slot_0`, `valid`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+- On reset or when disabled, clear `serial_out`, slot outputs, and `valid`.
+- When enabled, step through inputs `d0`, `d1`, `d2`, and `d3` on successive rising `clk` edges.
+- Drive `serial_out` as the voltage-coded value of the active input slot.
+- `slot_1..slot_0` must expose the active slot index.
+- Assert `valid` after the first complete four-slot frame.
+- This is a serializer timing DUT, not a generic bus splitter.
+
+
 The required trace names are: `time`, `clk`, `rst`, `enable`, `d0`, `d1`, `d2`, `d3`, `serial_out`, `slot_1`, `slot_0`, `valid`.
 
 ## Modeling Constraints

@@ -52,6 +52,17 @@ Create stimulus and save traces sufficient for the fixed evaluator oracle to che
 - `P_OUTPUT_CLAMP`: exercise and make observable: Out is limited to the inclusive vmin through vmax range with finite smoothing. Required traces: `time`, `out`.
 - `P_CLIP_METRIC`: exercise and make observable: Metric is high exactly when the unclamped target lies outside vmin through vmax, and low otherwise; reset forces it low. Required traces: `time`, `rst`, `vin`, `out`, `metric`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+- Initialize the sampled gain to unity.
+- On each rising `clk` crossing, sample `gain_sel` unless reset is active.
+- While `rst` is above `vth`, use unity gain, drive `out` to `vcm`, and drive `metric` low.
+- When not reset, select `gain_high` for high `gain_sel` and `gain_low` for low `gain_sel`.
+- Drive `out` as `vcm + gain * (V(vin) - vcm)` after clipping to the `vmin` to `vmax` range.
+- Drive `metric` high when the unclamped target would exceed either clamp limit, and low otherwise.
+
+
 The required trace names are: `time`, `clk`, `rst`, `gain_sel`, `vin`, `out`, `metric`.
 
 ## Modeling Constraints

@@ -40,6 +40,17 @@ The repaired bundle must satisfy every public property:
 - `P_GRAY_MAPPING`: restore: Levels zero through three map to Gray codes 00, 01, 11, and 10. Required traces: `time`, `vin`, `clk`, `rst`, `enable`, `bit_msb`, `bit_lsb`, `level_metric`, `valid`.
 - `P_LEVEL_METRIC`: restore: level_metric reports the sliced level as vss plus k/3 of the output span. Required traces: `time`, `vin`, `clk`, `rst`, `enable`, `bit_msb`, `bit_lsb`, `level_metric`, `valid`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+- On reset or when disabled, clear output bits, `level_metric`, and `valid`.
+- On each rising `clk` edge while enabled, slice `vin` into four ordered PAM4 levels using `t0`, `t1`, and `t2`.
+- Encode the sliced level with Gray ordering: level 0 -> 00, level 1 -> 01, level 2 -> 11, level 3 -> 10.
+- `level_metric` must expose sliced level `k` as
+  `vss + (vdd - vss) * k / 3`, for `k` from 0 through 3.
+- Assert `valid` after each enabled sample.
+
+
 ## Modeling Constraints
 
 - Use deterministic voltage-domain behavioral Verilog-A.

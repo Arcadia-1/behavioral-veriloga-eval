@@ -45,6 +45,15 @@ The repaired bundle must satisfy every public property:
 - `P_PERMUTATION_INVARIANCE`: restore: Any two segment patterns with the same active count produce the same settled aout. Required traces: `time`, `seg0`, `seg1`, `seg2`, `seg3`, `seg4`, `seg5`, `seg6`, `seg7`, `seg8`, `seg9`, `seg10`, `seg11`, `seg12`, `seg13`, `seg14`, `aout`.
 - `P_COUNT_MONOTONICITY`: restore: Increasing the active segment count cannot reduce the settled DAC output for vref above vss. Required traces: `time`, `seg0`, `seg1`, `seg2`, `seg3`, `seg4`, `seg5`, `seg6`, `seg7`, `seg8`, `seg9`, `seg10`, `seg11`, `seg12`, `seg13`, `seg14`, `vref`, `vss`, `aout`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+Treat every segment input above `vth` as one active unit element. Count all
+fifteen unary segment pins, including `seg14`. Drive `aout` between `vss` and
+`vref` in proportion to the active segment count, with zero active segments at
+`vss` and all fifteen active segments at `vref`.
+
+
 ## Modeling Constraints
 
 - Use all fifteen public segment inputs as identical unit elements.

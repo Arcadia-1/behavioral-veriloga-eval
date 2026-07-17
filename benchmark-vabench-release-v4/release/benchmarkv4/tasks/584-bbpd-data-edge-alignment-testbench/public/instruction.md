@@ -54,6 +54,34 @@ Create stimulus and save traces sufficient for the fixed evaluator oracle to che
 - `P_BOTH_DATA_POLARITIES`: exercise and make observable: Both rising and falling data transitions participate in timing classification. Required traces: `time`, `clk`, `data`, `up`, `dn`.
 - `P_MUTUAL_EXCLUSION`: exercise and make observable: UP and DN are mutually exclusive apart from finite analog transition overlap and use the vdd-to-vss logic range. Required traces: `time`, `vdd`, `vss`, `up`, `dn`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+This task asks for the `bbpd_data_edge_alignment_ref` behavioral module, not a
+Spectre testbench. The module is a bang-bang phase detector front end that
+compares data-transition timing against a voltage-coded clock and emits
+short UP/DN correction pulses.
+
+Required observable behavior:
+
+- Use `clk` rising edges to retime the current `data` logic level onto
+  `retimed_data`.
+- Detect both rising and falling `data` transitions.
+- Compare each data-transition time with the previous and next nominal clock
+  edge.
+- Assert an `up` pulse when the transition is closer to the upcoming clock edge
+  and outside the dead zone.
+- Assert a `dn` pulse when the transition is closer to the previous clock edge
+  and outside the dead zone.
+- Suppress both correction pulses for transitions inside the dead zone.
+- Keep UP and DN mutually exclusive except for analog smoothing overlap.
+
+Use voltage-coded logic referenced to `vdd` and `vss`, keep the model pure
+behavioral Verilog-A, and do not use transistor-level devices, AC/noise
+analysis, validation logic, validation-only hooks, or simulator-specific side
+channels.
+
+
 The required trace names are: `time`, `vdd`, `vss`, `clk`, `data`, `up`, `dn`, `retimed_data`.
 
 ## Modeling Constraints

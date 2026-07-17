@@ -35,6 +35,12 @@ The repaired bundle must satisfy every public property:
 - `P_BIPOLAR_WEIGHTED_DAC_OUTPUT`: restore: Map the sampled 7-bit weight to the declared bipolar single-ended output with the correct denominator and offset. Required traces: `time`, `aout`, `din1`, `din2`, `din3`, `din4`, `din5`, `din6`, `din7`, `rdy`.
 - `P_DAC_OUTPUT_LEVEL_AND_HOLD`: restore: Hold `aout` between ready edges and drive the declared voltage scale without half-level errors. Required traces: `time`, `aout`, `din1`, `din2`, `din3`, `din4`, `din5`, `din6`, `din7`, `rdy`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+The first rising `rdy` edge only arms the DAC and leaves the initialized output at zero. On each later rising `rdy` edge, sample `din1..din7` with switched capacitor weights `0.5, 1, 2, 4, 8, 16, 32` from `din1` through `din7`. Normalize the bipolar single-ended output against the full capacitive basis, including one additional fixed non-switching unit capacitance. An all-zero sampled code should drive near `-vdd`; an all-one sampled code remains below `+vdd` because of the fixed unit.
+
+
 ## Modeling Constraints
 
 - Use deterministic voltage-domain behavioral Verilog-A.

@@ -39,7 +39,17 @@ The repaired bundle must satisfy every public property:
 - `P_ASSERT_VALID_AFTER_EACH_COMPLETED_DECISION`: restore: Assert `valid` after each completed decision update. Required traces: `time`, `vinp`, `vinn`, `clk`, `rst`, `enable`, `decision`, `kickback_metric`, `valid`.
 - `P_USE_ONLY_VOLTAGE_DOMAIN_BEHAVIORAL_STATE`: restore: Use only voltage-domain behavioral state and voltage contributions on public electrical outputs. Required traces: `time`, `vinp`, `vinn`, `clk`, `rst`, `enable`, `decision`, `kickback_metric`, `valid`.
 
-The exact metric contract is `overdrive = abs(V(vinp)-V(vinn))` and `kickback_metric = clamp(vcm + 0.30/(1.0 + overdrive/0.030), vss, vdd)`.
+
+The following canonical public behavior is normative for this derived form:
+
+- On reset or when disabled, clear `decision`, `kickback_metric`, and `valid`.
+- On each enabled rising `clk` edge, latch the sign of `vinp - vinn` into `decision`.
+- Drive `kickback_metric` as a voltage-coded function of the absolute input overdrive.
+- Small overdrive must produce a larger kickback metric than large overdrive, up to the public rail limits.
+- Assert `valid` after each completed decision update.
+- Use only voltage-domain behavioral state and voltage contributions on public electrical outputs.
+- Do not expose pass/fail flags; expose only the public observable metrics named in the interface.
+
 
 ## Modeling Constraints
 

@@ -55,6 +55,15 @@ Create stimulus and save traces sufficient for the fixed evaluator oracle to che
 - `P_MEASURE_ANALOG_INPUTS_RELATIVE_TO_THE`: exercise and make observable: Measure analog inputs relative to the local `vss` rail and normalize by the current local supply span. Let `span = V(vdd, vss)` and treat the row as valid only when `V(en) > vth` and `span_min <= span <= span_max`. If `span` is below `0.05 V`, use `0.05 V` as the normalization span. Define `clip01(y)` as `y` limited to the range `[0, 1]` and `x0..x3 = clip01((V(inN) - V(vss)) / span)`. Required traces: `time`, `clk`, `ctrl0`, `ctrl1`, `en`, `flag`, `in0`, `in1`, `in2`, `in3`, `metric`, `out`, `rst`, `vdd`, `vss`.
 - `P_INITIALIZE_THE_READY_COUNT_AND_ALL`: exercise and make observable: Initialize the ready count and all observables to `0 V`. On a rising crossing of `clk` or a rising crossing of `rst`, clear the count and all observables when `rst` is high or the row is not valid. Otherwise, increment a saturating count by one up to a maximum of `4` when both `x0 > 0.25` and `x1 > 0.20`; if that sampled condition is not met, clear the count to zero. Drive `out = vhi * clip01(count / 4.0)`, assert `flag = vhi` when `count >= 3`, and drive `metric = vhi * clip01(abs(x0 - x1))`. Hold the last observable values between update events. Required traces: `time`, `clk`, `ctrl0`, `ctrl1`, `en`, `flag`, `in0`, `in1`, `in2`, `in3`, `metric`, `out`, `rst`, `vdd`, `vss`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+- `P_MEASURE_ANALOG_INPUTS_RELATIVE_TO_THE`: Measure analog inputs relative to the local `vss` rail and normalize by the current local supply span. Let `span = V(vdd, vss)` and treat the row as valid only when `V(en) > vth` and `span_min <= span <= span_max`. If `span` is below `0.05 V`, use `0.05 V` as the normalization span. Define `clip01(y)` as `y` limited to the range `[0, 1]` and `x0..x3 = clip01((V(inN) - V(vss)) / span)`.
+- `P_INITIALIZE_THE_READY_COUNT_AND_ALL`: Initialize the ready count and all observables to `0 V`. On a rising crossing of `clk` or a rising crossing of `rst`, clear the count and all observables when `rst` is high or the row is not valid. Otherwise, increment a saturating count by one up to a maximum of `4` when both `x0 > 0.25` and `x1 > 0.20`; if that sampled condition is not met, clear the count to zero. Drive `out = vhi * clip01(count / 4.0)`, assert `flag = vhi` when `count >= 3`, and drive `metric = vhi * clip01(abs(x0 - x1))`. Hold the last observable values between update events.
+
+The evaluator saves and may inspect these public trace signals: `time`, `clk`, `ctrl0`, `ctrl1`, `en`, `flag`, `in0`, `in1`, `in2`, `in3`, `metric`, `out`, `rst`, `vdd`, `vss`.
+
+
 The required trace names are: `time`, `clk`, `ctrl0`, `ctrl1`, `en`, `flag`, `in0`, `in1`, `in2`, `in3`, `metric`, `out`, `rst`, `vdd`, `vss`.
 
 ## Modeling Constraints

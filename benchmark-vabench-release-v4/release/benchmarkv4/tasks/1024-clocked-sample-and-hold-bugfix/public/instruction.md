@@ -31,6 +31,15 @@ The repaired bundle must satisfy every public property:
 - `P_NO_HIGH_PHASE_TRACKING`: restore: Changes on IN while CLK remains high do not make OUT transparent before the next rising crossing. Required traces: `time`, `in`, `clk`, `out`.
 - `P_LOCAL_RAIL_REFERENCE`: restore: The held analog voltage is driven as a smooth voltage-domain output referenced to the local VDD and VSS rails. Required traces: `time`, `vdd`, `vss`, `in`, `out`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+- Sample `IN` on each rising `CLK` crossing of `vth`.
+- Hold the sampled voltage on `OUT` between rising clock crossings.
+- Do not continuously track `IN` while the clock is between sample events.
+- Drive `OUT` with smooth voltage-domain behavior referenced to the local rails.
+
+
 ## Modeling Constraints
 
 - Use deterministic rising-edge sampled state and intersample hold.

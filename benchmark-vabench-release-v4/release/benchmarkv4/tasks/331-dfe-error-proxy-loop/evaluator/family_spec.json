@@ -48,9 +48,9 @@
                 "valid_range": "finite"
               },
               {
-                "default": "1n from (0:inf)",
-                "name": "tick",
-                "override_behavior": "overrides tick",
+                "default": "35e-3 from [0:inf)",
+                "name": "residual_tol",
+                "override_behavior": "overrides residual_tol",
                 "type": "real",
                 "units": "",
                 "valid_range": "finite"
@@ -126,6 +126,38 @@
             "name": "decision_history",
             "parameters": [
               {
+                "default": "0.9",
+                "name": "vdd",
+                "override_behavior": "overrides vdd",
+                "type": "real",
+                "units": "",
+                "valid_range": "finite"
+              },
+              {
+                "default": "0.0",
+                "name": "vss",
+                "override_behavior": "overrides vss",
+                "type": "real",
+                "units": "",
+                "valid_range": "finite"
+              },
+              {
+                "default": "0.45",
+                "name": "vcm",
+                "override_behavior": "overrides vcm",
+                "type": "real",
+                "units": "",
+                "valid_range": "finite"
+              },
+              {
+                "default": "0.45",
+                "name": "vth",
+                "override_behavior": "overrides vth",
+                "type": "real",
+                "units": "",
+                "valid_range": "finite"
+              },
+              {
                 "default": "200p from (0:inf)",
                 "name": "tr",
                 "override_behavior": "overrides tr",
@@ -138,14 +170,38 @@
               {
                 "direction": "inout",
                 "discipline": "electrical",
-                "name": "a",
+                "name": "sample_in",
                 "position": 0
               },
               {
                 "direction": "inout",
                 "discipline": "electrical",
-                "name": "b",
+                "name": "decision_clk",
                 "position": 1
+              },
+              {
+                "direction": "inout",
+                "discipline": "electrical",
+                "name": "rst",
+                "position": 2
+              },
+              {
+                "direction": "inout",
+                "discipline": "electrical",
+                "name": "enable",
+                "position": 3
+              },
+              {
+                "direction": "inout",
+                "discipline": "electrical",
+                "name": "hist_1",
+                "position": 4
+              },
+              {
+                "direction": "inout",
+                "discipline": "electrical",
+                "name": "hist_0",
+                "position": 5
               }
             ],
             "role": "required_submodule"
@@ -162,9 +218,49 @@
             "name": "feedback_correction_core",
             "parameters": [
               {
+                "default": "0.9",
+                "name": "vdd",
+                "override_behavior": "overrides vdd",
+                "type": "real",
+                "units": "",
+                "valid_range": "finite"
+              },
+              {
+                "default": "0.0",
+                "name": "vss",
+                "override_behavior": "overrides vss",
+                "type": "real",
+                "units": "",
+                "valid_range": "finite"
+              },
+              {
+                "default": "0.45",
+                "name": "vcm",
+                "override_behavior": "overrides vcm",
+                "type": "real",
+                "units": "",
+                "valid_range": "finite"
+              },
+              {
+                "default": "0.45",
+                "name": "vth",
+                "override_behavior": "overrides vth",
+                "type": "real",
+                "units": "",
+                "valid_range": "finite"
+              },
+              {
                 "default": "200p from (0:inf)",
                 "name": "tr",
                 "override_behavior": "overrides tr",
+                "type": "real",
+                "units": "",
+                "valid_range": "finite"
+              },
+              {
+                "default": "35e-3 from [0:inf)",
+                "name": "residual_tol",
+                "override_behavior": "overrides residual_tol",
                 "type": "real",
                 "units": "",
                 "valid_range": "finite"
@@ -174,14 +270,68 @@
               {
                 "direction": "inout",
                 "discipline": "electrical",
-                "name": "a",
+                "name": "sample_in",
                 "position": 0
               },
               {
                 "direction": "inout",
                 "discipline": "electrical",
-                "name": "b",
+                "name": "decision_clk",
                 "position": 1
+              },
+              {
+                "direction": "inout",
+                "discipline": "electrical",
+                "name": "rst",
+                "position": 2
+              },
+              {
+                "direction": "inout",
+                "discipline": "electrical",
+                "name": "enable",
+                "position": 3
+              },
+              {
+                "direction": "inout",
+                "discipline": "electrical",
+                "name": "hist_1",
+                "position": 4
+              },
+              {
+                "direction": "inout",
+                "discipline": "electrical",
+                "name": "hist_0",
+                "position": 5
+              },
+              {
+                "direction": "inout",
+                "discipline": "electrical",
+                "name": "tap_1",
+                "position": 6
+              },
+              {
+                "direction": "inout",
+                "discipline": "electrical",
+                "name": "tap_0",
+                "position": 7
+              },
+              {
+                "direction": "inout",
+                "discipline": "electrical",
+                "name": "corrected_out",
+                "position": 8
+              },
+              {
+                "direction": "inout",
+                "discipline": "electrical",
+                "name": "error_metric",
+                "position": 9
+              },
+              {
+                "direction": "inout",
+                "discipline": "electrical",
+                "name": "converged",
+                "position": 10
               }
             ],
             "role": "required_submodule"
@@ -207,7 +357,7 @@
   "properties": [
     {
       "id": "P_ON_RESET_OR_WHEN_DISABLED_CLEAR",
-      "observable_contract": "On reset or when disabled, clear taps, corrected output, error metric, and `converged`.",
+      "observable_contract": "On reset or when disabled, clear signed tap weights and decision history; drive `tap_1`, `tap_0`, and `corrected_out` to `vcm`, and drive `error_metric` and `converged` to `vss`.",
       "required_signals": [
         "time",
         "sample_in",
@@ -223,7 +373,7 @@
     },
     {
       "id": "P_ON_EACH_ENABLED_DECISION_CLOCK_LATCH",
-      "observable_contract": "On each enabled decision clock, latch the sign of `sample_in - vcm` as the current decision.",
+      "observable_contract": "On each enabled rising `decision_clk` edge, use the pre-edge history for the weight update, then latch `d = +1` when `sample_in >= vcm` else `-1` and shift `h0 = h1; h1 = d`.",
       "required_signals": [
         "time",
         "sample_in",
@@ -239,7 +389,7 @@
     },
     {
       "id": "P_USE_THE_PREVIOUS_DECISION_HISTORY_TO",
-      "observable_contract": "Use the previous decision history to subtract a two-tap feedback estimate from the live sample.",
+      "observable_contract": "With `x = sample_in-vcm`, compute `r0 = x-w1*h1-w0*h0`, update `w1 = clamp(w1+0.04*r0*h1,-0.18,0.18)` and `w0 = clamp(w0+0.025*r0*h0,-0.12,0.12)`, then recompute `r = x-w1*h1-w0*h0`.",
       "required_signals": [
         "time",
         "sample_in",
@@ -255,7 +405,7 @@
     },
     {
       "id": "P_EXPOSE_THE_ABSOLUTE_RESIDUAL_ON_ERROR",
-      "observable_contract": "Expose the absolute residual on `error_metric`.",
+      "observable_contract": "Drive `tap_1 = vcm+w1`, `tap_0 = vcm+w0`, `corrected_out = clamp(vcm+r,vss,vdd)`, and `error_metric = clamp(abs(r),vss,vdd)` after each enabled update.",
       "required_signals": [
         "time",
         "sample_in",
@@ -271,7 +421,7 @@
     },
     {
       "id": "P_ASSERT_CONVERGED_WHEN_THE_RESIDUAL_REMAINS",
-      "observable_contract": "Assert `converged` when the residual remains below `residual_tol` for three decisions.",
+      "observable_contract": "Drive `converged = vdd` after three consecutive enabled updates with `abs(r) <= residual_tol`, otherwise drive `vss`.",
       "required_signals": [
         "time",
         "sample_in",

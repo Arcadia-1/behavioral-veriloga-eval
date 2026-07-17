@@ -57,6 +57,22 @@ Create stimulus and save traces sufficient for the fixed evaluator oracle to che
 - `P_VDD_MIN_0_75_V_VDD`: exercise and make observable: `vdd_min = 0.75 V`, `vdd_max = 1.05 V`: valid `V(vdd, vss)` window. Required traces: `time`, `clk`, `delay_mon`, `drive_en`, `en`, `pd`, `pwr_ok`, `vbias`, `vdd`, `vss`.
 - `P_VBIAS_MIN_0_25_V_VBIAS`: exercise and make observable: `vbias_min = 0.25 V`, `vbias_max = 0.75 V`: valid `V(vbias, vss)` window. Required traces: `time`, `clk`, `delay_mon`, `drive_en`, `en`, `pd`, `pwr_ok`, `vbias`, `vdd`, `vss`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+On each rising crossing of `clk`, evaluate whether supply, bias, enable, and
+power-down conditions allow operation. Drive `pwr_ok` high whenever the sampled
+conditions are valid, meaning `vdd_min <= V(vdd, vss) <= vdd_max`,
+`vbias_min <= V(vbias, vss) <= vbias_max`, `V(en) > vth`, and `V(pd) <= vth`.
+Maintain an integer consecutive-valid counter. Increment the counter by one on
+each sampled valid rising-clock update until it reaches `delay_cycles`; reset
+the counter to zero on any sampled invalid update. After applying that update,
+assert `drive_en` when the counter is greater than or equal to `delay_cycles`.
+Drive `delay_mon = min(vhi, vhi * counter / delay_cycles)` as the bounded
+voltage-coded turn-on progress value from `0 V` to `vhi`. Smooth all outputs
+with `transition()`.
+
+
 The required trace names are: `time`, `clk`, `delay_mon`, `drive_en`, `en`, `pd`, `pwr_ok`, `vbias`, `vdd`, `vss`.
 
 ## Modeling Constraints

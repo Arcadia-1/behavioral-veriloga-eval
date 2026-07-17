@@ -30,6 +30,12 @@ The repaired bundle must satisfy every public property:
 - `P_SIGNED_DELTA_POLARITY`: restore: `vout` represents the `inp` minus `inn` edge-time delta with the specified polarity. Required traces: `time`, `inp`, `inn`, `vout`.
 - `P_FULL_RANGE_SCALE`: restore: The reported timing delta uses the specified full-range scale rather than a half-range or alternate denominator. Required traces: `time`, `inp`, `inn`, `vout`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+At initialization, clear both trigger flags and initialize the output state to zero. On each rising `samp` crossing, clear only the input trigger flags and keep the previous output until a new edge pair is measured. Within the window, record the rising threshold crossing time of `inp` and `inn`; once both have occurred, drive the output with the signed time difference `(time_inp - time_inn)` normalized by `fullrange`.
+
+
 ## Modeling Constraints
 
 - Use deterministic voltage-domain behavioral Verilog-A.

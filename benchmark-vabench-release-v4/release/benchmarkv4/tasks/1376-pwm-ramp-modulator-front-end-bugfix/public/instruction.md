@@ -38,6 +38,16 @@ The repaired bundle must satisfy every public property:
 - `P_PWM_OUT_IS_HIGH_WHEN_VCTRL`: restore: `pwm_out` is high when `vctrl` is greater than the current ramp value and low otherwise. Required traces: `time`, `clk`, `rst`, `enable`, `vctrl`, `ramp_out`, `pwm_out`, `cycle_start`, `duty_metric`.
 - `P_DUTY_METRIC_TRACKS_THE_CLIPPED_DUTY`: restore: `duty_metric` tracks the clipped duty command between `vss` and `vdd`. Required traces: `time`, `clk`, `rst`, `enable`, `vctrl`, `ramp_out`, `pwm_out`, `cycle_start`, `duty_metric`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+- Reset or a low `enable` clears the ramp, PWM output, cycle marker, and duty metric.
+- On each enabled rising `clk` edge, advance `ramp_out` by `ramp_step` and wrap to `vss` at full scale.
+- `cycle_start` pulses high for the clock edge where the ramp wraps.
+- `pwm_out` is high when `vctrl` is greater than the current ramp value and low otherwise.
+- `duty_metric` tracks the clipped duty command between `vss` and `vdd`.
+
+
 ## Modeling Constraints
 
 - Use deterministic voltage-domain behavioral Verilog-A.

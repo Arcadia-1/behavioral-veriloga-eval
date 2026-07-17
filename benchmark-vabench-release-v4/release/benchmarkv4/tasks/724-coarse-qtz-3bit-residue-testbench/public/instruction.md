@@ -47,6 +47,17 @@ Create stimulus and save traces sufficient for the fixed evaluator oracle to che
 - `P_DRIVE_D0_D1_AND_D2_AS`: exercise and make observable: Drive `d0`, `d1`, and `d2` as LSB-to-MSB voltage-coded bits. Required traces: `time`, `d0`, `d1`, `d2`, `vin`, `vres`.
 - `P_DRIVE_VRES_AS_THE_CLIPPED_INPUT`: exercise and make observable: Drive `vres` as the clipped input minus the selected quantized analog level. Required traces: `time`, `d0`, `d1`, `d2`, `vin`, `vres`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+- Clip `vin` to the range from `-vref` to `+vref`.
+- Quantize the clipped value into eight 3-bit codes using round-to-nearest behavior.
+- Saturate the code at the endpoints.
+- Use uniformly spaced quantization levels starting at `-vref`, with one LSB equal to one eighth of the full input span.
+- Drive `d0`, `d1`, and `d2` as LSB-to-MSB voltage-coded bits.
+- Drive `vres` as the clipped input minus the selected quantized analog level.
+
+
 The required trace names are: `time`, `d0`, `d1`, `d2`, `vin`, `vres`.
 
 ## Modeling Constraints

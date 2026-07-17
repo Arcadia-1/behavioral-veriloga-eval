@@ -59,6 +59,28 @@ Create stimulus and save traces sufficient for the fixed evaluator oracle to che
 - `P_DWA_SELECTED_MASK`: exercise and make observable: Cell_en implements the public rotating span and LSB boundary-cell rule for the sampled code, including the code-zero boundary-cell case. Required traces: `time`, `code_3`, `code_2`, `code_1`, `code_0`, `cell_en_15`, `cell_en_14`, `cell_en_13`, `cell_en_12`, `cell_en_11`, `cell_en_10`, `cell_en_9`, `cell_en_8`, `cell_en_7`, `cell_en_6`, `cell_en_5`, `cell_en_4`, `cell_en_3`, `cell_en_2`, `cell_en_1`, `cell_en_0`, `ptr_15`, `ptr_14`, `ptr_13`, `ptr_12`, `ptr_11`, `ptr_10`, `ptr_9`, `ptr_8`, `ptr_7`, `ptr_6`, `ptr_5`, `ptr_4`, `ptr_3`, `ptr_2`, `ptr_1`, `ptr_0`.
 - `P_SYSTEM_CODE_BINDING`: exercise and make observable: The four helper outputs feed the DWA code bus in MSB-to-LSB order without bit reversal. Required traces: `time`, `vin_node`, `code_3`, `code_2`, `code_1`, `code_0`, `cell_en_15`, `cell_en_14`, `cell_en_13`, `cell_en_12`, `cell_en_11`, `cell_en_10`, `cell_en_9`, `cell_en_8`, `cell_en_7`, `cell_en_6`, `cell_en_5`, `cell_en_4`, `cell_en_3`, `cell_en_2`, `cell_en_1`, `cell_en_0`, `ptr_15`, `ptr_14`, `ptr_13`, `ptr_12`, `ptr_11`, `ptr_10`, `ptr_9`, `ptr_8`, `ptr_7`, `ptr_6`, `ptr_5`, `ptr_4`, `ptr_3`, `ptr_2`, `ptr_1`, `ptr_0`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+For `dwa_ptr_gen`:
+
+- Treat `clk_i`, `rst_ni`, and each `code_msb_i` bit as voltage-coded logic using threshold `vth`.
+- Reset initializes the one-hot pointer to `ptr_init`.
+- Decode `code_msb_i[3:0]` as an unsigned integer from 0 to 15.
+- On each post-reset rising clock edge, sample the code and update `ptr_next = (ptr_prev + code) % 16`.
+- Drive `ptr_o` as a one-hot output at `ptr_next`.
+- Drive `cell_en_o` as the DWA selected-cell mask for that sampled code: assert the rotating MSB span ending at `ptr_next`, plus the LSB boundary cell at `lsb_idx = (ptr_next - code + 16) % 16`.
+- Equivalently, for each cell index `j`, assert `cell_en_o[j]` when `((ptr_next - j + 16) % 16) < code` or `j == lsb_idx`; drive all other cells low.
+- For code 0, only the LSB boundary cell is high.
+
+For `v2b_4b`:
+
+- Treat `clk` as voltage-coded logic with a threshold of `0.5 * vdd`.
+- On each rising `clk` crossing, convert `V(vin)` to the nearest integer code using `floor(V(vin) + 0.5)`.
+- Clamp the code to the 0 to 15 range.
+- Drive `out_3..out_0` as a 4-bit binary code with `out_3` as the most significant bit.
+
+
 The required trace names are: `time`, `clk_i`, `rst_ni`, `vin_node`, `code_3`, `code_2`, `code_1`, `code_0`, `cell_en_15`, `cell_en_14`, `cell_en_13`, `cell_en_12`, `cell_en_11`, `cell_en_10`, `cell_en_9`, `cell_en_8`, `cell_en_7`, `cell_en_6`, `cell_en_5`, `cell_en_4`, `cell_en_3`, `cell_en_2`, `cell_en_1`, `cell_en_0`, `ptr_15`, `ptr_14`, `ptr_13`, `ptr_12`, `ptr_11`, `ptr_10`, `ptr_9`, `ptr_8`, `ptr_7`, `ptr_6`, `ptr_5`, `ptr_4`, `ptr_3`, `ptr_2`, `ptr_1`, `ptr_0`.
 
 ## Modeling Constraints

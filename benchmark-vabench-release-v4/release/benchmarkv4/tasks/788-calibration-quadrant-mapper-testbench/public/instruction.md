@@ -57,6 +57,26 @@ Create stimulus and save traces sufficient for the fixed evaluator oracle to che
 - `P_VHI_0_9_V_HIGH_LEVEL`: exercise and make observable: `vhi = 0.9 V`: high level for output observables. Required traces: `time`, `ctrl0`, `ctrl1`, `en`, `flag`, `in0`, `in1`, `in2`, `in3`, `metric`, `out`, `vdd`, `vss`.
 - `P_SPAN_MIN_0_62_V_SPAN`: exercise and make observable: `span_min = 0.62 V`, `span_max = 1.28 V`: legal local supply span measured as Required traces: `time`, `ctrl0`, `ctrl1`, `en`, `flag`, `in0`, `in1`, `in2`, `in3`, `metric`, `out`, `vdd`, `vss`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+Measure analog inputs relative to the local `vss` rail and normalize by the
+current local supply span. Let `span = V(vdd, vss)` and treat the row as valid
+only when `V(en) > vth` and `span_min <= span <= span_max`; otherwise drive
+`out`, `flag`, and `metric` to `0 V`. If `span` is below `0.05 V`, use
+`0.05 V` as the normalization span. Define `clip01(y)` as `y` limited to the
+range `[0, 1]`, `x0..x3 = clip01((V(inN) - V(vss)) / span)`,
+`c0 = clip01(V(ctrl0) / vhi)`, and `c1 = clip01(V(ctrl1) / vhi)`.
+
+Use the two control levels as a voltage-coded quadrant select: choose `x0` when
+`c1 <= 0.5` and `c0 <= 0.5`, `x1` when `c1 <= 0.5` and `c0 > 0.5`, `x2` when
+`c1 > 0.5` and `c0 <= 0.5`, and `x3` when `c1 > 0.5` and `c0 > 0.5`. Compute
+`core = 0.88 * selected + 0.04`, drive `out = vhi * clip01(core)`, assert
+`flag = vhi` when either `c0 > 0.5` or `c1 > 0.5`, otherwise drive
+`flag = 0 V`, and drive
+`metric = vhi * clip01(((c1 > 0.5 ? 2.0 : 0.0) + (c0 > 0.5 ? 1.0 : 0.0)) / 3.0)`.
+
+
 The required trace names are: `time`, `ctrl0`, `ctrl1`, `en`, `flag`, `in0`, `in1`, `in2`, `in3`, `metric`, `out`, `vdd`, `vss`.
 
 ## Modeling Constraints

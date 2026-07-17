@@ -49,6 +49,12 @@ Create stimulus and save traces sufficient for the fixed evaluator oracle to che
 - `P_FINITE_TRACKING_AND_HOLD`: exercise and make observable: Use finite acquisition updates and preserve held values between tracking windows rather than making the output continuously transparent or a single ideal edge sample. Required traces: `time`, `clk`, `phase`, `vin`, `vout`, `vdd`, `vss`.
 - `P_PHASE_MONITOR_POLARITY`: exercise and make observable: Drive `phase` high only during output-stage tracking and low otherwise. Required traces: `time`, `clk`, `phase`, `vin`, `vout`, `vdd`, `vss`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+During low clock phase, the input stage tracks `vin` with finite acquisition while the output stage holds. On the rising clock transition, the input stage retains its acquired value. During high clock phase, the output stage tracks that retained input-stage value with finite bandwidth. On falling clock transition, the output stage holds until the next high phase. Clamp internal stored voltages to the local rail span and drive `phase` high only during output-stage tracking.
+
+
 The required trace names are: `time`, `clk`, `phase`, `vin`, `vout`, `vdd`, `vss`.
 
 ## Modeling Constraints

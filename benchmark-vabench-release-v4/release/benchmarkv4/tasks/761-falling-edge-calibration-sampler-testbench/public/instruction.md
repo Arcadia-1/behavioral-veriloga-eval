@@ -55,6 +55,15 @@ Create stimulus and save traces sufficient for the fixed evaluator oracle to che
 - `P_MEASURE_ANALOG_INPUTS_RELATIVE_TO_THE`: exercise and make observable: Measure analog inputs relative to the local `vss` rail and normalize by the current local supply span. Let `span = V(vdd, vss)` and treat the row as valid only when `V(en) > vth` and `span_min <= span <= span_max`. If `span` is below `0.05 V`, use `0.05 V` as the normalization span. Define `clip01(y)` as `y` limited to the range `[0, 1]` and `x0..x3 = clip01((V(inN) - V(vss)) / span)`. Required traces: `time`, `clk`, `ctrl0`, `ctrl1`, `en`, `flag`, `in0`, `in1`, `in2`, `in3`, `metric`, `out`, `rst`, `vdd`, `vss`.
 - `P_INITIALIZE_OUT_FLAG_AND_METRIC_TO`: exercise and make observable: Initialize `out`, `flag`, and `metric` to `0 V`. On a falling edge of `clk`, clear all observables when `rst` is high or the row is not valid. Otherwise sample the comparison `x0 > x1`: drive `out = vhi` for true and `out = 0 V` for false, drive `flag` to the same value as `out`, and drive `metric = vhi * clip01(abs(x0 - x1))`. Hold the last observable values between falling clock edges, except that a reset assertion clears them. Required traces: `time`, `clk`, `ctrl0`, `ctrl1`, `en`, `flag`, `in0`, `in1`, `in2`, `in3`, `metric`, `out`, `rst`, `vdd`, `vss`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+- `P_MEASURE_ANALOG_INPUTS_RELATIVE_TO_THE`: Measure analog inputs relative to the local `vss` rail and normalize by the current local supply span. Let `span = V(vdd, vss)` and treat the row as valid only when `V(en) > vth` and `span_min <= span <= span_max`. If `span` is below `0.05 V`, use `0.05 V` as the normalization span. Define `clip01(y)` as `y` limited to the range `[0, 1]` and `x0..x3 = clip01((V(inN) - V(vss)) / span)`.
+- `P_INITIALIZE_OUT_FLAG_AND_METRIC_TO`: Initialize `out`, `flag`, and `metric` to `0 V`. On a falling edge of `clk`, clear all observables when `rst` is high or the row is not valid. Otherwise sample the comparison `x0 > x1`: drive `out = vhi` for true and `out = 0 V` for false, drive `flag` to the same value as `out`, and drive `metric = vhi * clip01(abs(x0 - x1))`. Hold the last observable values between falling clock edges, except that a reset assertion clears them.
+
+The evaluator saves and may inspect these public trace signals: `time`, `clk`, `ctrl0`, `ctrl1`, `en`, `flag`, `in0`, `in1`, `in2`, `in3`, `metric`, `out`, `rst`, `vdd`, `vss`.
+
+
 The required trace names are: `time`, `clk`, `ctrl0`, `ctrl1`, `en`, `flag`, `in0`, `in1`, `in2`, `in3`, `metric`, `out`, `rst`, `vdd`, `vss`.
 
 ## Modeling Constraints

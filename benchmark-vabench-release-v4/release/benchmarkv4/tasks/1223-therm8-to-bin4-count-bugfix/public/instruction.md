@@ -37,6 +37,15 @@ The repaired bundle must satisfy every public property:
 - `P_DRIVE_B0_B3_AS_VOLTAGE_CODED`: restore: Drive `b0..b3` as voltage-coded outputs with `b0` as the least significant bit. Required traces: `time`, `b0`, `b1`, `b2`, `b3`, `th0`, `th1`, `th2`, `th3`, `th4`, `th5`, `th6`, `th7`.
 - `P_SUPPORT_ANY_INPUT_PATTERN_BY_COUNTING`: restore: Support any input pattern by counting high inputs rather than assuming a perfectly monotonic thermometer prefix. Required traces: `time`, `b0`, `b1`, `b2`, `b3`, `th0`, `th1`, `th2`, `th3`, `th4`, `th5`, `th6`, `th7`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+- Count how many of `th0..th7` are above `vth`.
+- Encode the count as a 4-bit binary word.
+- Drive `b0..b3` as voltage-coded outputs with `b0` as the least significant bit.
+- Support any input pattern by counting high inputs rather than assuming a perfectly monotonic thermometer prefix.
+
+
 ## Modeling Constraints
 
 - Use deterministic voltage-domain behavioral Verilog-A.

@@ -47,6 +47,31 @@ Create stimulus and save traces sufficient for the fixed evaluator oracle to che
 - `P_OUTPUT_LIMITS`: exercise and make observable: Out is clamped to 0.10 V through 0.82 V with finite transition smoothing. Required traces: `time`, `out`.
 - `P_STATE_METRIC`: exercise and make observable: Metric equals 0.45 V plus twice the remembered offset, producing 0.61 V and 0.29 V for the default high- and low-memory states. Required traces: `time`, `clk`, `vin`, `metric`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+- Implement a clocked soft limiter with hysteresis memory around the `0.45 V`
+  common-mode level.
+- Initialize the held output and state monitor to `0.45 V`, with neutral
+  hysteresis offset `0 V`.
+- On each rising `clk` crossing, update the held limiter state. While `rst` is
+  active high, reset the output and hysteresis state to their neutral
+  common-mode values.
+- When reset is low, set the hysteresis offset to `+hys_step` after a sampled
+  input above `0.62 V`, set it to `-hys_step` after a sampled input below
+  `0.38 V`, and otherwise preserve the previous hysteresis offset.
+- Compute the held output target as
+  `gain * (vin - 0.45 V) + 0.45 V + hysteresis_offset`.
+- Clamp the driven `out` voltage to `[0.10 V, 0.82 V]`.
+- Drive `metric` as a voltage-coded state monitor:
+  `0.45 V + 2.0 * hysteresis_offset`, so the default high- and low-memory
+  states produce 0.61 V and 0.29 V respectively.
+
+The public example harness is a public verification scenario for wiring and saved
+observables. Do not hard-code its runtime horizon, waveform breakpoints, or
+sample windows into the DUT.
+
+
 The required trace names are: `time`, `clk`, `rst`, `vin`, `out`, `metric`.
 
 ## Modeling Constraints

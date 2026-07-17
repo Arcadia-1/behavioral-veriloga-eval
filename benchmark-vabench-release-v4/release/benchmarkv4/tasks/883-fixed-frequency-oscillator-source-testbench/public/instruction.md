@@ -50,6 +50,16 @@ Create stimulus and save traces sufficient for the fixed evaluator oracle to che
 - `P_ASSERT_VALID_AFTER_THE_FIRST_COMPLETE`: exercise and make observable: Assert `valid` after the first complete oscillator cycle following enable. Required traces: `time`, `enable`, `rst`, `osc_out`, `period_metric`, `valid`.
 - `P_RESET_OR_DISABLE_MUST_RESTART_THE`: exercise and make observable: Reset or disable must restart the oscillator phase deterministically. Required traces: `time`, `enable`, `rst`, `osc_out`, `period_metric`, `valid`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+- On reset or when disabled, drive `osc_out`, `period_metric`, and `valid` low.
+- When enabled, generate a periodic voltage-domain clock that toggles between `vss` and `vdd` with the configured period.
+- `period_metric` must expose a stable voltage-coded representation of the configured period after the first complete cycle.
+- Assert `valid` after the first complete oscillator cycle following enable.
+- Reset or disable must restart the oscillator phase deterministically.
+
+
 The required trace names are: `time`, `enable`, `rst`, `osc_out`, `period_metric`, `valid`.
 
 ## Modeling Constraints

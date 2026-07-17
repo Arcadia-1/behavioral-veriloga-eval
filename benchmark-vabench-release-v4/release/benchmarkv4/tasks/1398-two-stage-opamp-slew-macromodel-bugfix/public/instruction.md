@@ -48,6 +48,19 @@ The repaired bundle must satisfy every public property:
 - `P_MOVE_VOUT_TOWARD_THE_CLAMPED_TARGET`: restore: Move `vout` toward the clamped target by no more than `slew_step` per enabled clock edge. Required traces: `time`, `vinp`, `vinn`, `clk`, `rst`, `enable`, `load_step`, `vout`, `stage1_metric`, `slew_metric`, `clamp_flag`, `settled`.
 - `P_ASSERT_SETTLED_ONLY_AFTER_TWO_CONSECUTIVE_UPDATES`: restore: Assert `settled` only after the output error has remained within `settle_tol` for two consecutive enabled updates. Required traces: `time`, `vinp`, `vinn`, `clk`, `rst`, `enable`, `load_step`, `vout`, `stage1_metric`, `slew_metric`, `clamp_flag`, `settled`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+- On reset or when `enable` is low, drive `vout` and `stage1_metric` to `vcm`, clear `slew_metric`, `clamp_flag`, and `settled`.
+- On each rising `clk` edge while enabled, sample the differential input `vinp - vinn`.
+- Compute a first-stage metric from the sampled differential input, centered around `vcm` and limited to `[vss, vdd]`.
+- Compute an output target from the first-stage metric and `stage2_gain`; `load_step` may request a bounded target perturbation around the same common-mode reference.
+- Clamp the output target to `[vss, vdd]` and assert `clamp_flag` only when clamping occurs.
+- Move `vout` toward the clamped target by no more than `slew_step` per enabled clock edge.
+- `slew_metric` must expose the magnitude of the most recent output movement.
+- Assert `settled` only after the output error has remained within `settle_tol` for two consecutive enabled updates.
+
+
 ## Modeling Constraints
 
 - Use deterministic voltage-domain behavioral Verilog-A.

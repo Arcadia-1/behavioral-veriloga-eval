@@ -89,9 +89,19 @@ Create stimulus and save traces sufficient for the fixed evaluator oracle to che
 - `P_ASSERT_DONE_AFTER_EIGHT_ENABLED_UPDATES`: exercise and make observable: Assert `done` after eight enabled updates or when the error remains within `err_tol` for two updates. Required traces: `time`, `err_in`, `clk`, `rst`, `enable`, `cal_3`, `cal_2`, `cal_1`, `cal_0`, `correction_metric`, `done`.
 - `P_USE_ONLY_VOLTAGE_DOMAIN_BEHAVIORAL_STATE`: exercise and make observable: Use only voltage-domain behavioral state and voltage contributions on public electrical outputs. Required traces: `time`, `err_in`, `clk`, `rst`, `enable`, `cal_3`, `cal_2`, `cal_1`, `cal_0`, `correction_metric`, `done`.
 
-The required trace names are: `time`, `err_in`, `clk`, `rst`, `enable`, `cal_3`, `cal_2`, `cal_1`, `cal_0`, `correction_metric`, `done`.
 
-Decode the public calibration outputs as `code = cal_0 + 2*cal_1 + 4*cal_2 + 8*cal_3` using `vth`, and drive `correction_metric = clamp(code*corr_lsb, vss, vdd)`.
+The following canonical public behavior is normative for this derived form:
+
+- On reset or when disabled, clear the calibration code, metric, and `done`.
+- On each enabled rising `clk` edge, update a signed correction accumulator using the sign of `err_in - vcm`.
+- Saturate the public 4-bit calibration code at the endpoints.
+- Drive `correction_metric` as the voltage-coded correction applied by the active code.
+- Assert `done` after eight enabled updates or when the error remains within `err_tol` for two updates.
+- Use only voltage-domain behavioral state and voltage contributions on public electrical outputs.
+- Do not expose pass/fail flags; expose only the public observable metrics named in the interface.
+
+
+The required trace names are: `time`, `err_in`, `clk`, `rst`, `enable`, `cal_3`, `cal_2`, `cal_1`, `cal_0`, `correction_metric`, `done`.
 
 ## Modeling Constraints
 

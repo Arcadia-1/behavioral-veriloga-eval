@@ -35,6 +35,37 @@ The repaired bundle must satisfy every public property:
 - `P_LIGHT_LOAD_KICK`: restore: A sampled load decrease greater than 0.20 V causes the public 0.05 V light-load recovery kick before first-order recovery and restarts qualification. Required traces: `time`, `clk`, `load_mon`, `out`, `metric`.
 - `P_RECOVERY_AND_SETTLING`: restore: Every non-reset update applies the public 0.30 first-order recovery, clamps out to 0.20 V through 0.75 V, and sets metric high only after at least five updates with target error below 0.045 V. Required traces: `time`, `clk`, `out`, `metric`, `load_mon`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+- `clk` and `rst` are voltage-coded logic signals.
+- Treat `vin` as a bounded load-step request for a behavioral LDO recovery flow.
+- On reset, initialize the regulator output state and target to 0.60 V,
+  `load_mon` to 0.10 V, `ctrl_mon` to 0.50 V, `metric` to 0.9 V, and the
+  recovery counter to zero.
+- On each rising `clk` crossing with reset low, clamp the sampled load request
+  to `[0 V, 0.9 V]` and drive `load_mon` from that bounded load.
+- Compute the load-dependent regulation target as `0.61 V - 0.025 * load`.
+- Compute the abstract pass/recovery control monitor as
+  `0.45 V + 0.40 * load + 0.50 * (target - regulator_state)`, clamped to
+  `[0.05 V, 0.85 V]`, and drive `ctrl_mon` from that value.
+- If the bounded load has increased by more than 0.20 V since the previous
+  sampled load, apply a transient droop by subtracting 0.13 V from the
+  regulator state and reset the recovery counter.
+- If the bounded load has decreased by more than 0.20 V since the previous
+  sampled load, apply a light-load recovery kick by adding 0.05 V to the
+  regulator state and reset the recovery counter.
+- On every non-reset update, after applying any load-step kick, update the
+  current regulator state with first-order recovery:
+  `state_next = state_prev + 0.30 * (target - state_prev)`, then clamp the
+  driven `out` voltage to `[0.20 V, 0.75 V]`.
+- Increment the recovery counter on each non-reset update. Drive `metric` to
+  0.9 V when the recovery counter is at least 5 and
+  `abs(regulator_state - target) < 0.045 V`; otherwise drive `metric` to
+  0.25 V.
+- Keep the model pure voltage-domain behavioral Verilog-A. Do not use branch-current contributions, transistor-level devices, AC/noise analysis, or KCL/KVL regulation loops.
+
+
 ## Modeling Constraints
 
 - Use deterministic rising-edge sampled load-step and recovery state.

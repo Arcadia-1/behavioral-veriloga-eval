@@ -53,6 +53,18 @@ Create stimulus and save traces sufficient for the fixed evaluator oracle to che
 - `P_TIMING_BOUNDS`: exercise and make observable: Every jitter-enabled half-period remains within the public modulation range from 8.4 ns through 11.6 ns. Required traces: `time`, `jitter_en`, `clk_out`.
 - `P_OUTPUT_LEVELS`: exercise and make observable: clk_out uses 0 V and vdd levels with finite transition smoothing set by tr. Required traces: `time`, `clk_out`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+- Generate `clk_out` as a 0-to-`vdd` deterministic clock.
+- With `jitter_en` low, use a constant 20 ns period, i.e. a 10 ns nominal half-period.
+- With `jitter_en` high, sample `seed7:seed0` through `vth` at each output transition, interpret it as an unsigned seed, and apply repeatable edge-to-edge half-period modulation.
+- A seed input change affects the next half-period computed after the next output transition; it must not move an already scheduled current edge.
+- For edge index `k`, update the next half-period as `10 ns + (((seed + 3*k) % 5) - 2) * 0.8 ns`.
+- With a constant seed and `jitter_en` state, the resulting modulo-5 half-period sequence repeats every five output transitions.
+- Keep every resulting full clock period bounded and repeatable for the same seed.
+
+
 The required trace names are: `time`, `jitter_en`, `seed0`, `seed1`, `seed2`, `seed3`, `seed4`, `seed5`, `seed6`, `seed7`, `clk_out`.
 
 ## Modeling Constraints

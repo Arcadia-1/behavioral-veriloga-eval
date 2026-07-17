@@ -47,6 +47,40 @@ The repaired bundle must satisfy every public property:
 - `P_PRE_HOP_LOCK`: restore: Stable pre-hop tracking produces lock only after lock_count_target consecutive feedback events satisfy lock_tol. Required traces: `time`, `ref_clk`, `fb_clk`, `lock`.
 - `P_RATIO_HOP_REACQUISITION`: restore: A changed ratio request causes loss of lock qualification followed by renewed lock after the loop tracks the new feedback cadence. Required traces: `time`, `ratio_ctrl`, `ref_clk`, `fb_clk`, `vctrl_mon`, `lock`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+This task asks for the `adpll_ratio_hop_ref` behavioral module, not a Spectre
+testbench. The module models an ADPLL timing loop that locks to a reference,
+responds to a commanded divider-ratio hop, and reacquires lock after the hop.
+
+Required observable behavior:
+
+- Use `ref_clk` as the reference timing input.
+- Interpret `ratio_ctrl` as a voltage-coded requested feedback divide ratio in
+  volts: round `V(ratio_ctrl)` to the nearest integer with half-step boundaries,
+  then clip the requested ratio to the inclusive `ratio_min` through `ratio_max`
+  range. Legal overrides of `ratio_min` and `ratio_max` must extend this
+  encoding rather than limiting it to the default 2-through-16 range.
+- Generate a behavioral DCO clock on `vout`.
+- Generate `fb_clk` by dividing the DCO activity according to the requested
+  ratio.
+- Adjust a bounded internal control code from reference/feedback timing error
+  rather than driving `fb_clk` from an independent source.
+- Drive `vctrl_mon` as a rail-referenced monitor of the bounded loop-control
+  state.
+- Assert `lock` after stable pre-hop tracking, deassert or lose qualification
+  during a ratio hop, and assert again after reacquisition.
+- Keep generated frequencies within `f_min` and `f_max`; use appropriate
+  timestep guidance such as `$bound_step` for oscillator timing.
+
+Use voltage-coded logic with a mid-supply decision threshold where applicable,
+drive high logic outputs near `VDD` and low outputs near `VSS`, and keep the
+model pure behavioral Verilog-A. Do not use transistor-level devices, AC/noise
+analysis, validation logic, validation-only hooks, or simulator-specific side
+channels.
+
+
 ## Modeling Constraints
 
 - Use a deterministic timing loop whose feedback clock is derived from the generated DCO.

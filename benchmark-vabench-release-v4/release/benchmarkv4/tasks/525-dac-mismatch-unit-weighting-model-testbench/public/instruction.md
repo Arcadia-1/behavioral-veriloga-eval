@@ -47,6 +47,15 @@ Create stimulus and save traces sufficient for the fixed evaluator oracle to che
 - `P_BOUNDED_OUTPUT`: exercise and make observable: For every input pattern, the settled output remains within the vlo-to-vhi interval. Required traces: `time`, `b0`, `b1`, `b2`, `b3`, `out`.
 - `P_MISMATCH_OBSERVABILITY`: exercise and make observable: Single-bit output increments preserve the stated nonideal weighting rather than ideal powers-of-two weighting. Required traces: `time`, `b0`, `b1`, `b2`, `b3`, `out`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+Treat `b0..b3` as voltage-coded control bits. Reconstruct the DAC output from
+explicit nonideal weights 1.00, 2.02, 3.96, and 8.08, normalized by the
+all-active weight sum. Drive `out` between `vlo` and `vhi`; the all-zero input
+maps to `vlo` and the all-active input maps to `vhi`.
+
+
 The required trace names are: `time`, `b0`, `b1`, `b2`, `b3`, `out`.
 
 ## Modeling Constraints

@@ -55,6 +55,17 @@ Create stimulus and save traces sufficient for the fixed evaluator oracle to che
 - `P_VDD_MIN_0_75_V_VDD`: exercise and make observable: `vdd_min = 0.75 V`, `vdd_max = 1.05 V`: valid supply-voltage window measured Required traces: `time`, `en`, `gated`, `ok`, `pd`, `vbias`, `vdd`, `vss`.
 - `P_VSS_MAX_0_08_V_MAXIMUM`: exercise and make observable: `vss_max = 0.08 V`: maximum absolute ground-rail displacement allowed for Required traces: `time`, `en`, `gated`, `ok`, `pd`, `vbias`, `vdd`, `vss`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+Model a reusable supply/bias validity gate for a behavioral AMS block. Drive
+`ok` high only when the local supply is inside the supply window, the local
+ground rail is close enough to the global reference, and the bias input is
+inside its `vss`-referenced window. Drive `gated` high only when `ok` is high,
+`en` is high, and `pd` is low. Both outputs must be voltage-coded and smoothed
+with `transition()`.
+
+
 The required trace names are: `time`, `en`, `gated`, `ok`, `pd`, `vbias`, `vdd`, `vss`.
 
 ## Modeling Constraints

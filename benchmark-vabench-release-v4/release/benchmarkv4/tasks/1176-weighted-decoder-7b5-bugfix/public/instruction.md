@@ -37,6 +37,12 @@ The repaired bundle must satisfy every public property:
 - `P_SEVEN_HALF_BIT_OUTPUT`: restore: `aout7b5` preserves the half-bit redundant contribution and correct polarity. Required traces: `time`, `d0`, `d1`, `d2`, `d3`, `d4`, `d5`, `d6`, `d7`, `aout7b5`.
 - `P_EIGHT_BIT_OUTPUT`: restore: `aout8b` reports the full 8-bit weighted output with the correct amplitude. Required traces: `time`, `d0`, `d1`, `d2`, `d3`, `d4`, `d5`, `d6`, `d7`, `d8`, `aout8b`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+Produce three related decoded analog outputs using a shared normalization denominator of `272.0`, corresponding to twice the public redundant SAR array basis including the fixed reference basis rather than only the switchable weights. Let `b0..b8` be the signed input decisions, where a high input is `+1` and a low input is `-1`. `aout7b` decodes the shared ladder from `d1..d8` as `(b1 + 2*b2 + 4*b3 + 8*b4 + 8*b5 + 16*b6 + 32*b7 + 64*b8) / 272.0`. `aout8b` adds the half-weight `d0` contribution as `(0.5*b0 + b1 + 2*b2 + 4*b3 + 8*b4 + 8*b5 + 16*b6 + 32*b7 + 64*b8) / 272.0`. For `aout7b5`, use `d0` and `d1` as a three-level subrange pair: both high selects `+1`, both low selects `-1`, and mixed decisions select `0`; then decode `(sublevel + 2*b2 + 4*b3 + 8*b4 + 8*b5 + 16*b6 + 32*b7 + 64*b8) / 272.0`.
+
+
 ## Modeling Constraints
 
 - Use deterministic voltage-domain behavioral Verilog-A.

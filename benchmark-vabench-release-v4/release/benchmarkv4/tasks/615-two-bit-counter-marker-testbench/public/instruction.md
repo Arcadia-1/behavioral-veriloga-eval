@@ -42,6 +42,16 @@ Create stimulus and save traces sufficient for the fixed evaluator oracle to che
 - `P_NONWRAP_LOW`: exercise and make observable: MC is driven to 0.0 V on each of the other three counted edges in every four-edge cycle. Required traces: `time`, `clkin`, `mc`.
 - `P_PERIOD_FOUR`: exercise and make observable: For a continuing valid clock, marker assertions repeat once per four rising threshold crossings. Required traces: `time`, `clkin`, `mc`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+Implement a modulo-four edge counter marker for timing/readout sequencing.
+Initialize the internal counter and `MC` low. On each rising crossing of
+`CLKIN` through 0.5 V, increment the counter modulo four. Drive `MC` high as a
+1.0 V voltage-coded marker only on the edge that wraps the count from 3 back to
+0; keep it at 0.0 V on the other counted edges.
+
+
 The required trace names are: `time`, `clkin`, `mc`.
 
 ## Modeling Constraints

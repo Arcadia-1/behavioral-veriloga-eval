@@ -40,6 +40,17 @@ The repaired bundle must satisfy every public property:
 - `P_RF_SUM_CLAMP`: restore: rf_out equals the bounded sum of the I and Q path contributions about vcm. Required traces: `time`, `i_in`, `q_in`, `lo_i`, `lo_q`, `rf_out`, `i_mix_dbg`, `q_mix_dbg`.
 - `P_QUADRATURE_ACTIVITY`: restore: quad_ok asserts only after each LO input has crossed threshold since the latest reset or enable event. Required traces: `time`, `lo_i`, `lo_q`, `rst`, `enable`, `quad_ok`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+- On reset or when `enable` is low, drive `rf_out`, `i_mix_dbg`, and `q_mix_dbg` to `vcm` and clear `quad_ok`.
+- Interpret `lo_i` and `lo_q` as quadrature LO phases and assert `quad_ok` when both phases are toggling.
+- Interpret each LO as +1 above `vth` and -1 otherwise. Define the I-path contribution as `gain * (V(i_in) - vcm) * lo_i_sign` and the Q-path contribution as `-gain * (V(q_in) - vcm) * lo_q_sign`.
+- Drive `i_mix_dbg` and `q_mix_dbg` to `vcm` plus their respective signed path contribution.
+- Drive `rf_out` to `vcm` plus the sum of the two path contributions, bounded to `vss..vdd`.
+- Assert `quad_ok` only after both LO inputs have exhibited at least one threshold crossing since the latest reset or enable. When either LO phase is missing, hold `quad_ok` low and keep the RF output bounded around `vcm`.
+
+
 ## Modeling Constraints
 
 - Use deterministic voltage-domain behavioral Verilog-A suitable for transient simulation.

@@ -27,6 +27,12 @@ The repaired bundle must satisfy every public property:
 - `P_GAIN_PARAMETER_APPLIED`: restore: Apply the overridable `gain` parameter multiplicatively to the input product. Required traces: `time`, `sigin1`, `sigin2`, `sigout`.
 - `P_MULTIPLICATIVE_NOT_ADDITIVE`: restore: The transfer must be multiplicative and must not replace the product with addition or a square of one input. Required traces: `time`, `sigin1`, `sigin2`, `sigout`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+Drive `sigout` to the product `gain * V(sigin1) * V(sigin2)` for both positive and negative input products.
+
+
 ## Modeling Constraints
 
 - Use deterministic voltage-domain behavioral Verilog-A.

@@ -31,6 +31,12 @@ The repaired bundle must satisfy every public property:
 - `P_BINARY_WEIGHT_ORDER`: restore: The first accepted serial bit has the largest binary weight and later bits use descending weights. Required traces: `time`, `clk_sarready`, `data`, `out`.
 - `P_BIPOLAR_OUTPUT_MAPPING`: restore: The accumulated code is mapped to the required bipolar output range rather than an unipolar code. Required traces: `time`, `out`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+On each falling `clk_sample` crossing, reset the accumulator and bit counter. On each falling `clk_sarready` crossing during the active bit window, add a binary-weighted contribution when `data` is high, with the first accepted bit carrying the largest weight and later bits halving successively. Drive `out` as the accumulated normalized value mapped to a bipolar span from `-vdd` to `+vdd`. Hold the output between update events.
+
+
 ## Modeling Constraints
 
 - Use deterministic voltage-domain behavioral Verilog-A.

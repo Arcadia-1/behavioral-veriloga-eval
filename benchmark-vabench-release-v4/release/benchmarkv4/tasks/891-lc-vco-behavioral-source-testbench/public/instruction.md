@@ -55,6 +55,17 @@ Create stimulus and save traces sufficient for the fixed evaluator oracle to che
 - `P_METRIC_REPORTING`: exercise and make observable: freq_metric reports clamped vctrl and amp_metric reports amplitude while enabled. Required traces: `time`, `vctrl`, `enable`, `rst`, `osc_p`, `osc_n`, `freq_metric`, `amp_metric`, `valid`.
 - `P_VALID_AFTER_TWO_CYCLES`: exercise and make observable: valid remains low until two complete oscillator cycles have elapsed after enable. Required traces: `time`, `vctrl`, `enable`, `rst`, `osc_p`, `osc_n`, `freq_metric`, `amp_metric`, `valid`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+- On reset or when disabled, drive both oscillator outputs to `vcm`, clear metrics, and clear `valid`.
+- When enabled, clamp `vctrl` to `vss..vdd` and map it linearly to `fmin..fmax`.
+- Generate complementary square-wave oscillator outputs at `vcm + amplitude` and `vcm - amplitude`.
+- Drive `freq_metric` to the clamped control voltage and `amp_metric` to `amplitude` while enabled.
+- Assert `valid` after two completed oscillator cycles following enable.
+- This is a behavioral oscillator source and must not require an LC tank or branch-current model. On enable, restart both outputs at `vcm`; the first complementary state begins one half-period later. A control-voltage change affects the next half-period and must not retime a transition already pending.
+
+
 The required trace names are: `time`, `vctrl`, `enable`, `rst`, `osc_p`, `osc_n`, `freq_metric`, `amp_metric`, `valid`.
 
 ## Modeling Constraints

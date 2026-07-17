@@ -37,6 +37,24 @@ The repaired bundle must satisfy every public property:
 - `P_SYMMETRIC_DIFFERENTIAL_STIMULUS`: restore: Vinp and vinn remain symmetric around mid-supply and vinp minus vinn equals offset_est. Required traces: `time`, `vdd`, `vss`, `vinp`, `vinn`, `offset_est`.
 - `P_VALID_COMPLETION`: restore: Valid remains at vss until iterations updates complete, then rises to vdd and the reported estimate resolves the supplied comparator trip point represented by vos_ref within the search resolution. Required traces: `time`, `vdd`, `vss`, `clk`, `offset_est`, `valid`, `vos_ref`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+- Initialize the signed differential estimate to zero and the search step to
+  `step_initial`.
+- On each falling crossing of `clk` through the midpoint between `vdd` and
+  `vss`, sample `dcmpp`.
+- A high sampled decision means the applied differential stimulus is above the
+  comparator trip point, so the loop decreases the estimate by the current
+  search step. A low sampled decision means the loop increases the estimate by
+  the current search step.
+- Halve the search step after every update.
+- Drive `vinp` and `vinn` symmetrically around mid-supply so that `vinp - vinn`
+  equals the current estimate.
+- Drive `offset_est` with the current signed estimate. Drive `valid` low until
+  the configured number of updates has completed, then drive it high.
+
+
 ## Modeling Constraints
 
 - Treat the companion comparator as a supplied harness component coupled only through the declared voltage-domain ports.

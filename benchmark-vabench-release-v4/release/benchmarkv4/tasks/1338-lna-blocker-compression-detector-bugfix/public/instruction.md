@@ -40,6 +40,18 @@ The repaired bundle must satisfy every public property:
 - `P_EXPOSE_GAIN_REDUCTION_ON_COMPRESSION_METRIC`: restore: Expose gain reduction on `compression_metric`. Required traces: `time`, `vin`, `blocker`, `enable`, `rst`, `vout`, `compression_metric`, `compressed`.
 - `P_ASSERT_COMPRESSED_ONLY_WHEN_THE_EFFECTIVE`: restore: Assert `compressed` only when the effective gain is reduced by more than `compression_tol`. Required traces: `time`, `vin`, `blocker`, `enable`, `rst`, `vout`, `compression_metric`, `compressed`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+- On reset or when disabled, drive output to `vcm` and clear compression outputs.
+- Amplify `vin - vcm` with small-signal gain when `blocker` is low.
+- Reduce effective gain as `blocker` rises above `blocker_start`.
+- Expose gain reduction on `compression_metric`.
+- Assert `compressed` only when the effective gain is reduced by more than `compression_tol`.
+- Use only voltage-domain behavioral state and voltage contributions on public electrical outputs.
+- Do not expose pass/fail flags; expose only the public observable metrics named in the interface.
+
+
 ## Modeling Constraints
 
 - Use deterministic voltage-domain behavioral Verilog-A.

@@ -46,6 +46,15 @@ Create stimulus and save traces sufficient for the fixed evaluator oracle to che
 - `P_DRIVE_T2_HIGH_WHEN_B0_IS`: exercise and make observable: Drive `t2` high when `b0` is high. Required traces: `time`, `b0`, `b1`, `gnd`, `t0`, `t1`, `t2`, `vdd`.
 - `P_DRIVE_EACH_LOW_OUTPUT_TO_THE`: exercise and make observable: Drive each low output to the local `gnd` rail and each high output to the local `vdd` rail. Required traces: `time`, `b0`, `b1`, `gnd`, `t0`, `t1`, `t2`, `vdd`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+- Interpret `b1` and `b0` relative to the local rail midpoint.
+- Drive `t0` and `t1` high together when `b1` is high.
+- Drive `t2` high when `b0` is high.
+- Drive each low output to the local `gnd` rail and each high output to the local `vdd` rail.
+
+
 The required trace names are: `time`, `b0`, `b1`, `gnd`, `t0`, `t1`, `t2`, `vdd`.
 
 ## Modeling Constraints

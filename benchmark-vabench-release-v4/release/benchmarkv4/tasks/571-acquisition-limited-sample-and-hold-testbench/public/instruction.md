@@ -49,6 +49,20 @@ Create stimulus and save traces sufficient for the fixed evaluator oracle to che
 - `P_ACQUISITION_CONVERGENCE`: exercise and make observable: For a constant vin and repeated acquisition updates, vout moves monotonically toward vin without overshoot for the declared alpha range. Required traces: `time`, `sample`, `vin`, `vout`.
 - `P_HOLD`: exercise and make observable: A falling sample crossing freezes the last acquired value; vout holds it and metric remains low until acquisition resumes or reset is asserted. Required traces: `time`, `sample`, `rst`, `vin`, `vout`, `metric`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+Model finite acquisition bandwidth rather than an ideal instantaneous sampler:
+
+- A high `sample` level opens a tracking/acquisition window.
+- While acquiring, `vout` moves toward the current `vin` voltage in discrete
+  updates separated by `tick`.
+- A falling `sample` crossing freezes the last acquired value.
+- High `rst` returns the held output to `vinit` and clears the acquisition
+  monitor.
+- `metric` is high only while acquisition is active.
+
+
 The required trace names are: `time`, `sample`, `rst`, `vin`, `vout`, `metric`.
 
 ## Modeling Constraints

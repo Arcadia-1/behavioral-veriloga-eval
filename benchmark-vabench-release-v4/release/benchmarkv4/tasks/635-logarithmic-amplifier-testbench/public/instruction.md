@@ -41,6 +41,12 @@ Create stimulus and save traces sufficient for the fixed evaluator oracle to che
 - `P_MAGNITUDE_FLOOR`: exercise and make observable: Floor the magnitude at 0.1 V before applying the logarithm. Required traces: `time`, `sigin`, `sigout`.
 - `P_NATURAL_LOG_OUTPUT`: exercise and make observable: Drive `sigout` to the natural logarithm of the guarded magnitude. Required traces: `time`, `sigin`, `sigout`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+Subtract a 0.2 V input offset, take the absolute value of the adjusted voltage, floor the magnitude at 0.1 V to keep the logarithm well-defined, and drive `sigout` with the natural logarithm of that guarded magnitude.
+
+
 The required trace names are: `time`, `sigin`, `sigout`.
 
 ## Modeling Constraints

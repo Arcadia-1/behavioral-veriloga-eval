@@ -55,6 +55,16 @@ Create stimulus and save traces sufficient for the fixed evaluator oracle to che
 - `P_ASSERT_WORD_VALID_AFTER_ALL_FOUR`: exercise and make observable: Assert `word_valid` after all four output slots have been updated since the most recent alignment event. Required traces: `time`, `clk`, `rst`, `enable`, `serial_in`, `align_pulse`, `out0`, `out1`, `out2`, `out3`, `phase_metric`, `word_valid`.
 - `P_PHASE_METRIC_MUST_EXPOSE_THE_ACTIVE`: exercise and make observable: `phase_metric` must expose the active slot pointer. Required traces: `time`, `clk`, `rst`, `enable`, `serial_in`, `align_pulse`, `out0`, `out1`, `out2`, `out3`, `phase_metric`, `word_valid`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+- On reset or when disabled, clear all parallel outputs, `phase_metric`, and `word_valid`.
+- A rising `align_pulse` resets the slot pointer so the next sampled serial bit is written to `out0`.
+- On each rising `clk` edge while enabled, sample `serial_in` into the active output slot and advance the slot pointer.
+- Assert `word_valid` after all four output slots have been updated since the most recent alignment event.
+- `phase_metric` must expose the active slot pointer.
+
+
 The required trace names are: `time`, `clk`, `rst`, `enable`, `serial_in`, `align_pulse`, `out0`, `out1`, `out2`, `out3`, `phase_metric`, `word_valid`.
 
 ## Modeling Constraints

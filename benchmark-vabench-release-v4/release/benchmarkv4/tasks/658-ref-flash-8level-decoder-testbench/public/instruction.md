@@ -52,6 +52,12 @@ Create stimulus and save traces sufficient for the fixed evaluator oracle to che
 - `P_RESIDUE_CENTERING`: exercise and make observable: `vres` subtracts the centered four-count flash estimate from the sampled input residue. Required traces: `time`, `clks`, `dout`, `dt0`, `dt1`, `dt2`, `dt3`, `dt4`, `dt5`, `dt6`, `dt7`, `vin`, `vres`.
 - `P_OUTPUT_NORMALIZATION`: exercise and make observable: `dout` reports the tap count normalized by eight without extra output scaling. Required traces: `time`, `clks`, `dout`, `dt0`, `dt1`, `dt2`, `dt3`, `dt4`, `dt5`, `dt6`, `dt7`, `vin`, `vres`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+On each rising crossing of `clks` through `vth`, count the asserted flash taps. Drive `dout` with the count divided by eight. Drive `vres` with the sampled `vin` minus the centered tap count scaled by `vref/8`.
+
+
 The required trace names are: `time`, `clks`, `dout`, `dt0`, `dt1`, `dt2`, `dt3`, `dt4`, `dt5`, `dt6`, `dt7`, `vin`, `vres`.
 
 ## Modeling Constraints

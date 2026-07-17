@@ -31,6 +31,21 @@ The repaired bundle must satisfy every public property:
 - `P_FALL_CLEAR`: restore: A sig falling edge clears out and cancels pending qualification. Required traces: `time`, `sig`, `out`.
 - `P_EVENT_HOLD`: restore: out holds between reset, sig-edge, and qualification-timer events. Required traces: `time`, `sig`, `rst_n`, `out`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+- Initialize `out` low.
+- When `rst_n` is below `vth`, force `out` low and cancel any pending
+  qualification.
+- When `sig` rises through `vth` while reset is released, start a qualification
+  timer.
+- When the qualification timer expires, set `out` high only if both `sig` and
+  `rst_n` are still above `vth`.
+- When `sig` falls below `vth`, clear `out` low and cancel any pending
+  qualification.
+- Hold the debounced output state between reset, input-edge, and timer events.
+
+
 ## Modeling Constraints
 
 - Use voltage contributions only.

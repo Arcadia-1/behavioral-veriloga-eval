@@ -49,6 +49,12 @@ Create stimulus and save traces sufficient for the fixed evaluator oracle to che
 - `P_SYMMETRIC_SATURATION`: exercise and make observable: Limit the half-swing to the inclusive interval `[-vsat, vsat]` before driving both outputs. Required traces: `time`, `inp`, `inn`, `outp`, `outn`.
 - `P_OUTPUT_COMMON_MODE`: exercise and make observable: Keep both outputs symmetric around the common-mode parameter `vcmo`. Required traces: `time`, `outp`, `outn`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+Use `V(inp, inn)` as the differential input. Build the output half-swing from the odd and even polynomial coefficients through seventh order, divide the polynomial result by two, limit that half-swing to `[-vsat, vsat]`, and drive `outp` and `outn` symmetrically around `vcmo`.
+
+
 The required trace names are: `time`, `inn`, `inp`, `outn`, `outp`.
 
 ## Modeling Constraints

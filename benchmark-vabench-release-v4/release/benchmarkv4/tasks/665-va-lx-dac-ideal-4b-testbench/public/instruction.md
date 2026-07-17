@@ -45,6 +45,12 @@ Create stimulus and save traces sufficient for the fixed evaluator oracle to che
 - `P_BINARY_BIT_ORDER`: exercise and make observable: `din4` is the MSB and `din1` is the LSB of the sampled 4-bit unipolar code. Required traces: `time`, `rdy`, `din1`, `din2`, `din3`, `din4`, `aout`.
 - `P_VDD_SCALED_DAC_OUTPUT`: exercise and make observable: The sampled binary fraction is scaled by `vdd` and driven smoothly on `aout`. Required traces: `time`, `rdy`, `din1`, `din2`, `din3`, `din4`, `aout`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+On each rising crossing of `rdy` through `vth`, decode `din4` as the MSB and `din1` as the LSB of a 4-bit unipolar binary fraction. Scale the fraction by `vdd` and hold the result on `aout`.
+
+
 The required trace names are: `time`, `din1`, `din2`, `din3`, `din4`, `rdy`, `aout`.
 
 ## Modeling Constraints

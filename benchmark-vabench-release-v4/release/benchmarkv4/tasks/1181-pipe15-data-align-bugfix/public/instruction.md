@@ -57,6 +57,12 @@ The repaired bundle must satisfy every public property:
 - `P_STAGGERED_DELAY_OUTPUT_GROUPS`: restore: Outputs `do3..do6`, `do7..do10`, and `do11..do14` publish the one-, two-, and three-sample delayed input groups respectively. Required traces: `time`, `d0`, `d1`, `d10`, `d11`, `d12`, `d13`, `d14`, `d2`, `d3`, `d4`, `d5`, `d6`, `d7`, `d8`, `d9`, `do0`, `do1`, `do10`, `do11`, `do12`, `do13`, `do14`, `do2`, `do3`, `do4`, `do5`, `do6`, `do7`, `do8`, `do9`, `samp`.
 - `P_VOLTAGE_CODED_OUTPUT_LEVELS`: restore: Every aligned output is driven as a voltage-coded logic level near 0 V or `vdd` with the declared transition timing. Required traces: `time`, `d0`, `d1`, `d10`, `d11`, `d12`, `d13`, `d14`, `d2`, `d3`, `d4`, `d5`, `d6`, `d7`, `d8`, `d9`, `do0`, `do1`, `do10`, `do11`, `do12`, `do13`, `do14`, `do2`, `do3`, `do4`, `do5`, `do6`, `do7`, `do8`, `do9`, `samp`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+On each rising `samp` crossing, sample all input bits. Publish `do0..do2` from the current sample, `do3..do6` from the one-sample-delayed group, `do7..do10` from the two-sample-delayed group, and `do11..do14` from the four-sample-delayed group. Use zero for delayed history that is not yet available after startup, and hold outputs between sample events.
+
+
 ## Modeling Constraints
 
 - Use deterministic voltage-domain behavioral Verilog-A.

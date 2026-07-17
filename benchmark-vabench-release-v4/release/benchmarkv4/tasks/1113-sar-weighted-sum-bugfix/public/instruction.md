@@ -38,6 +38,23 @@ The repaired bundle must satisfy every public property:
 - `P_MONOTONIC_CODE_WEIGHT`: restore: Changing any decoded decision from low to high without lowering another decision cannot decrease VOUT. Required traces: `time`, `d10`, `d9`, `d8`, `d7`, `d6`, `d5`, `d4`, `d3`, `d2`, `d1`, `d0`, `vout`.
 - `P_CONTINUOUS_DECODE`: restore: VOUT continuously reflects the current threshold-decoded input combination without a clock, reset, or retained code state. Required traces: `time`, `d10`, `d9`, `d8`, `d7`, `d6`, `d5`, `d4`, `d3`, `d2`, `d1`, `d0`, `vout`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+- Treat each `D*` input as logic `1` when its voltage is greater than `vth`,
+  otherwise logic `0`.
+- Implement a continuous SAR residue/source weighting law:
+  - `D10` is the coarse residue bit with a seven-eighths full-scale weight.
+  - `D9` and `D8` continue with half-scale and quarter-scale weights.
+  - `D7` and `D6` split the next binary step in a 5:3 ratio to model a
+    redundant SAR decision boundary.
+  - `D5` through `D0` continue as the binary tail down to the unit LSB.
+- Normalize the accumulated residue on a 512-unit bipolar scale so that all
+  inputs low produce `-1 V`, the output is monotonic with added decision weight,
+  and all inputs high land one 512-unit step below `+1 V`.
+- Drive `VOUT` continuously from the decoded voltage-domain decision inputs.
+
+
 ## Modeling Constraints
 
 - Use deterministic continuous voltage-domain decoding.

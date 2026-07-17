@@ -39,6 +39,18 @@ The repaired bundle must satisfy every public property:
 - `P_TOL_0_035_V_ALLOWED_ABSOLUTE`: restore: `tol = 0.035 V`: allowed absolute error around `target`. Required traces: `time`, `clk`, `err_metric`, `ref`, `rst`, `settle_mon`, `target`, `valid`.
 - `P_ERR_SCALE_0_20_V_ERROR`: restore: `err_scale = 0.20 V`: error that maps to full-scale `err_metric`. Required traces: `time`, `clk`, `err_metric`, `ref`, `rst`, `settle_mon`, `target`, `valid`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+On each rising crossing of `clk`, measure the absolute difference between `ref`
+and `target`. Drive `err_metric` as the clipped error magnitude scaled by
+`err_scale`. While reset is high, clear the settling counter and keep `valid`
+low. Otherwise, increment the counter on each in-window sample, clear it on any
+out-of-window sample, and assert `valid` only after `settle_cycles` consecutive
+in-window samples. Drive `settle_mon` as bounded progress from 0 to `vhi`.
+Smooth all outputs with `transition()`.
+
+
 ## Modeling Constraints
 
 - Use deterministic voltage-domain behavioral Verilog-A.

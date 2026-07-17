@@ -47,6 +47,16 @@ Create stimulus and save traces sufficient for the fixed evaluator oracle to che
 - `P_DRIVE_HIGH_BITS_NEAR_VH_AND`: exercise and make observable: Drive high bits near `vh` and low bits near 0 V. Required traces: `time`, `ain`, `dout0`, `dout1`, `dout2`, `dout3`, `dout4`.
 - `P_UPDATE_DETERMINISTICALLY_AS_THE_ANALOG_INPUT`: exercise and make observable: Update deterministically as the analog input changes. Required traces: `time`, `ain`, `dout0`, `dout1`, `dout2`, `dout3`, `dout4`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+- Convert `V(ain)` to the nearest integer code using half-up rounding.
+- Clamp the code to the valid 5-bit trim range `0..31`.
+- Drive `dout0..dout4` from the clamped binary code, LSB first.
+- Drive high bits near `vh` and low bits near 0 V.
+- Update deterministically as the analog input changes.
+
+
 The required trace names are: `time`, `ain`, `dout0`, `dout1`, `dout2`, `dout3`, `dout4`.
 
 ## Modeling Constraints

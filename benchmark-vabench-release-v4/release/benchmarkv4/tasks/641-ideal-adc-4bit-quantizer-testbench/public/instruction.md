@@ -47,6 +47,12 @@ Create stimulus and save traces sufficient for the fixed evaluator oracle to che
 - `P_SYMMETRIC_INPUT_RANGE`: exercise and make observable: The sampled differential input is quantized over the symmetric span from `-vref` to `+vref`; values outside that span saturate to the endpoint codes. Required traces: `time`, `digital`, `vclk`, `vin`, `vip`.
 - `P_CODE_SCALE_AND_LSB`: exercise and make observable: `digital` represents the selected code using the declared `levels` spacing so adjacent quantization bins differ by one LSB. Required traces: `time`, `digital`, `vclk`, `vin`, `vip`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+On each rising crossing of `vclk` through `vtrans_clk`, sample the differential input `V(vip) - V(vin)`. Quantize the sample over the symmetric input span from `-vref` to `+vref` using `levels` uniformly spaced output codes, and drive `digital` with the resulting analog code value.
+
+
 The required trace names are: `time`, `digital`, `vclk`, `vin`, `vip`.
 
 ## Modeling Constraints

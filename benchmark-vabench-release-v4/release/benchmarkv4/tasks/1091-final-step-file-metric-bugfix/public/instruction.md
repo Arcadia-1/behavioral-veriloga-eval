@@ -31,6 +31,31 @@ The repaired bundle must satisfy every public property:
 - `P_EVENT_UPDATED_OUTPUT`: restore: Metric_out changes only after counted rising events and uses finite transition smoothing of the retained target. Required traces: `time`, `ref`, `metric_out`.
 - `P_FINAL_TEXT_RECORD`: restore: At final_step, the module emits one text metric record to candidate.out in the simulator working directory with format count=<integer> metric=<fixed-point to three decimals>. Required traces: `time`, `ref`, `metric_out`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+Write a pure voltage-domain measurement helper that counts rising reference
+events during transient simulation, exposes a voltage-coded metric, and writes
+the final metric at `final_step`.
+
+Required observable behavior:
+
+- Initialize the event count and metric to zero.
+- On every rising crossing of `ref` through `vth`, increment the event count.
+- Expose the normalized metric as `metric_out = V(VDD,VSS) * count / 4`.
+- At `final_step`, write exactly one text metric record to the public basename
+  `candidate.out` in the simulator working directory. The record format is
+  `count=<integer> metric=<fixed-point>` and the metric value is the final
+  normalized count divided by four, formatted to three digits after the decimal
+  point.
+
+Use voltage-coded logic referenced to `VDD` and `VSS`. Smooth only event-updated
+metric state; do not feed a continuously varying branch expression directly
+into `transition()`. Do not generate a testbench, waveform files,
+validation artifacts, transistor-level devices, current contributions, `ddt()`, or
+`idt()`.
+
+
 ## Modeling Constraints
 
 - Use deterministic rising-crossing count state and a final_step text-metric write.

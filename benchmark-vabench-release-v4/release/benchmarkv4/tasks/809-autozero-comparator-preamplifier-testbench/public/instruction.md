@@ -83,6 +83,18 @@ Create stimulus and save traces sufficient for the fixed evaluator oracle to che
 - `P_EXPOSE_STORED_OFFSET_ON_OFFSET_STORE`: exercise and make observable: Expose stored offset on `offset_store` and assert `ready` after at least one auto-zero update. Required traces: `time`, `vinp`, `vinn`, `clk`, `rst`, `az_en`, `eval_en`, `decision`, `offset_store`, `ready`.
 - `P_USE_ONLY_VOLTAGE_DOMAIN_BEHAVIORAL_STATE`: exercise and make observable: Use only voltage-domain behavioral state and voltage contributions on public electrical outputs. Required traces: `time`, `vinp`, `vinn`, `clk`, `rst`, `az_en`, `eval_en`, `decision`, `offset_store`, `ready`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+- On reset, clear stored offset, `decision`, and `ready`.
+- During an auto-zero clock update with `az_en` high, store the apparent differential offset between `vinp` and `vinn`.
+- During an evaluation clock update with `eval_en` high, subtract the stored offset from the live differential input.
+- Drive `decision` high for corrected nonnegative differential input and low otherwise.
+- Expose stored offset on `offset_store` and assert `ready` after at least one auto-zero update.
+- Use only voltage-domain behavioral state and voltage contributions on public electrical outputs.
+- Do not expose pass/fail flags; expose only the public observable metrics named in the interface.
+
+
 The required trace names are: `time`, `vinp`, `vinn`, `clk`, `rst`, `az_en`, `eval_en`, `decision`, `offset_store`, `ready`.
 
 ## Modeling Constraints
