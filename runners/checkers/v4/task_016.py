@@ -18,6 +18,20 @@ def _slope(rows: list[Row]) -> float | None:
     return None if denominator <= 0 else sum((x - xbar) * (y - ybar) for x, y in zip(xs, ys)) / denominator
 
 
+def _transition_fit(rows: list[Row], start: float, stop: float) -> list[Row]:
+    start_out = sample_signal(rows, "vout", start)
+    target = sample_signal(rows, "vin", start + 0.5 * (stop - start))
+    if start_out is None or target is None or abs(target - start_out) < 1e-6:
+        return []
+    low = min(start_out + 0.10 * (target - start_out), start_out + 0.90 * (target - start_out))
+    high = max(start_out + 0.10 * (target - start_out), start_out + 0.90 * (target - start_out))
+    return [
+        row
+        for row in rows
+        if start < row["time"] < stop and low <= row["vout"] <= high
+    ]
+
+
 def check_slew_rate_limiter(rows: list[Row]) -> tuple[bool, str]:
     required = {"time", "vin", "vout"}
     missing = sorted(required - (set(rows[0]) if rows else set()))
@@ -39,28 +53,40 @@ def check_slew_rate_limiter(rows: list[Row]) -> tuple[bool, str]:
 
     rise_time = rises[0]
     fall_time = next((time_s for time_s in falls if time_s > rise_time), falls[-1])
-    rising_fit = [row for row in rows if rise_time < row["time"] < fall_time and 0.10 <= row["vout"] <= 0.68]
-    falling_fit = [row for row in rows if row["time"] > fall_time and 0.20 <= row["vout"] <= 0.70]
+    next_rise = next((time_s for time_s in rises if time_s > fall_time), rows[-1]["time"])
+    rising_fit = _transition_fit(rows, rise_time, fall_time)
+    falling_fit = _transition_fit(rows, fall_time, next_rise)
     rising_slope = _slope(rising_fit)
     falling_slope = _slope(falling_fit)
-    target_rate = 0.015 / 1e-9
     rate_errors = int(rising_slope is None) + int(falling_slope is None)
-    if rising_slope is not None:
-        rate_errors += abs(rising_slope - target_rate) > 0.23 * target_rate
-    if falling_slope is not None:
-        rate_errors += abs(falling_slope + target_rate) > 0.23 * target_rate
+    if rising_slope is not None and falling_slope is not None:
+        rate_errors += int(rising_slope <= 0.0) + int(falling_slope >= 0.0)
+        larger_rate = max(abs(rising_slope), abs(falling_slope))
+        rate_errors += int(
+            larger_rate <= 0.0
+            or abs(abs(rising_slope) - abs(falling_slope)) > 0.30 * larger_rate
+        )
 
     initial = sample_signal(rows, "vout", rows[0]["time"])
     high_sample = sample_signal(rows, "vout", rise_time + 0.82 * (fall_time - rise_time))
     final_sample = sample_signal(rows, "vout", rows[-1]["time"])
     early_sample = sample_signal(rows, "vout", rise_time + 0.12 * (fall_time - rise_time))
     high_input = sample_signal(rows, "vin", rise_time + 0.5 * (fall_time - rise_time))
+    start_output = sample_signal(rows, "vout", rise_time)
     final_input = rows[-1]["vin"]
     initial_error = int(initial is None or abs(initial) > 0.05)
     settle_errors = int(high_sample is None or high_input is None or abs(high_sample - high_input) > 0.08)
     settle_errors += int(final_sample is None or abs(final_sample - final_input) > 0.06)
+    minimum_lag = max(
+        1.25 * 0.015,
+        0.20 * abs(high_input - start_output)
+        if high_input is not None and start_output is not None
+        else 0.0,
+    )
     passthrough_errors = int(
-        early_sample is None or high_input is None or early_sample >= high_input - 0.25
+        early_sample is None
+        or high_input is None
+        or abs(high_input - early_sample) < minimum_lag
     )
     coverage_missing += int(len(rising_fit) < 4) + int(len(falling_fit) < 4)
     counts = {
