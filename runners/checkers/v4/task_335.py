@@ -82,30 +82,27 @@ def check_v4_1033_quadrature_oscillator_phase_error_monitor(rows: list[dict[str,
     checked = metric_errors = ok_errors = valid_errors = clear_errors = 0
     reset_clear = disabled_clear = valid_seen = ok_seen = bad_phase_seen = False
     ever_enabled = False
-    disable_time: float | None = None
+    inactive_time: float | None = None
     for row in rows:
         t = float(row["time"])
         rst = _v4_topup_logic_high(row, "rst")
         enabled = active(row)
         if not enabled:
+            if inactive_time is None:
+                inactive_time = t
+            inactive_ready = t >= inactive_time + 0.7e-9
             clear = abs(float(row["phase_error_metric"])) < 0.08 and not _v4_topup_logic_high(row, "quadrature_ok") and not _v4_topup_logic_high(row, "valid")
-            if rst and clear:
+            if rst and inactive_ready and clear:
                 reset_clear = True
             disabled = ever_enabled and not _v4_topup_logic_high(row, "enable")
-            if disabled and disable_time is None:
-                disable_time = t
-            disabled_ready = (
-                disabled
-                and disable_time is not None
-                and t >= disable_time + 0.7e-9
-            )
+            disabled_ready = disabled and inactive_ready
             if disabled_ready and clear:
                 disabled_clear = True
-            if (rst or disabled_ready) and not clear:
+            if inactive_ready and (rst or disabled) and not clear:
                 clear_errors += 1
             continue
         ever_enabled = True
-        disable_time = None
+        inactive_time = None
     for expected_events in expected_by_segment:
         stable_ok = 0
         for update_time, expected_metric, raw_ok in expected_events:
