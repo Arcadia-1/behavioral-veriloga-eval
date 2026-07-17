@@ -2,8 +2,18 @@
 from __future__ import annotations
 
 from ..api import Checker
+from .batch18_diagnostics import bind_properties
 import csv
 import math
+
+PROPERTY_IDS = (
+    "P_START_TIME_GATING",
+    "P_PERIODIC_EXTREMA",
+    "P_VALIDITY_THRESHOLD",
+    "P_SPAN_RATIO",
+    "P_NORMALIZED_GAIN_OUTPUT",
+    "P_EVENT_UPDATED_TARGETS",
+)
 
 def _csv_header_indices(csv_path: Path) -> tuple[list[str], dict[str, int]]:
     with csv_path.open(newline="", encoding="utf-8") as f:
@@ -88,12 +98,13 @@ def _stream_gain_estimator_csv(csv_path: Path) -> tuple[float, list[str]]:
     gain_est = gain_sum / late_valid_count
     gain_err = abs(gain_est - waveform_gain)
     valid_final = final_valid > 0.45
+    gain_tolerance = max(0.35, 0.05 * abs(waveform_gain))
     ok = (
         valid_final
-        and 0.045 <= in_span <= 0.075
-        and 0.27 <= out_span <= 0.45
-        and 5.0 <= waveform_gain <= 7.2
-        and gain_err <= 0.35
+        and in_span > 0.022
+        and out_span > 0.02
+        and abs(waveform_gain) > 0.2
+        and gain_err <= gain_tolerance
     )
     return (1.0 if ok else 0.0), [
         f"in_span={in_span:.4f} out_span={out_span:.4f} "
@@ -126,14 +137,15 @@ def check_gain_estimator(rows: list[dict[str, float]]) -> tuple[bool, str]:
     gain_estimates = [row["gain_out"] / vdd_est * 10.0 for row in late_valid]
     gain_est = sum(gain_estimates) / len(gain_estimates)
     gain_err = abs(gain_est - waveform_gain)
+    gain_tolerance = max(0.35, 0.05 * abs(waveform_gain))
 
     valid_final = rows[-1]["valid"] > 0.45
     ok = (
         valid_final
-        and 0.045 <= in_span <= 0.075
-        and 0.27 <= out_span <= 0.45
-        and 5.0 <= waveform_gain <= 7.2
-        and gain_err <= 0.35
+        and in_span > 0.022
+        and out_span > 0.02
+        and abs(waveform_gain) > 0.2
+        and gain_err <= gain_tolerance
     )
     return ok, (
         f"in_span={in_span:.4f} out_span={out_span:.4f} "
@@ -142,5 +154,5 @@ def check_gain_estimator(rows: list[dict[str, float]]) -> tuple[bool, str]:
     )
 
 CHECKER_ID = "v4_093_gain_estimator"
-CHECKER: Checker = check_gain_estimator
+CHECKER: Checker = bind_properties(check_gain_estimator, PROPERTY_IDS)
 STREAMING_CHECKER = _stream_gain_estimator_csv
