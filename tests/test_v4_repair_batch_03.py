@@ -10,6 +10,8 @@ from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
 SOURCE = (
     ROOT
     / "benchmark-vabench-release-v4"
@@ -264,7 +266,12 @@ def test_batch_03_timing_metamorph_is_exact_and_certifier_is_importable() -> Non
 
     rows = [{"time": 0.0, "x": 1.0}, {"time": 4e-9, "x": 2.0}]
     transformed = transformed_rows(rows, scale=1.37, shift_s=2e-9)
-    assert transformed[0] == {"time": 2e-9, "x": 1.0, "_time_scale": 1.37}
+    assert transformed[0] == {
+        "time": 2e-9,
+        "x": 1.0,
+        "_time_scale": 1.37,
+        "_time_shift_s": 2e-9,
+    }
     assert transformed[1]["time"] == 1.37 * 4e-9 + 2e-9
     result = subprocess.run(
         [sys.executable, str(CERTIFIER), "--help"],

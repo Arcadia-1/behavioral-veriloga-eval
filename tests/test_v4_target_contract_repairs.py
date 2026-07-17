@@ -937,6 +937,70 @@ def test_dynamic_testbench_checkers_do_not_bind_unrelated_stimulus_windows() -> 
     assert "stop - start < 2.0e-9" in peak_checker
 
 
+def test_slew_checker_skips_short_diagnostic_pulses() -> None:
+    sys.path.insert(0, str(ROOT))
+    from runners.checkers.v4.task_016 import _sustained_excursion
+
+    excursion = _sustained_excursion(
+        [0.5e-9, 5.5e-9, 45.5e-9],
+        [1.5e-9, 20.5e-9],
+        trace_stop=95.0e-9,
+    )
+
+    assert excursion == (5.5e-9, 20.5e-9, 45.5e-9)
+
+
+def test_slew_transition_fit_ignores_later_near_target_reentry() -> None:
+    sys.path.insert(0, str(ROOT))
+    from runners.checkers.v4.task_016 import _transition_fit
+
+    outputs = (0.06, 0.045, 0.03, 0.015, 0.0, 0.0, 0.0, 0.008, 0.008, 0.008)
+    rows = [
+        {"time": index * 1e-9, "vin": 0.0, "vout": output}
+        for index, output in enumerate(outputs)
+    ]
+
+    fit = _transition_fit(rows, 0.0, 10e-9)
+
+    assert len(fit) == 3
+    assert fit[-1]["time"] < 4e-9
+
+
+def test_settling_window_gold_and_mutations_saturate_entry_code() -> None:
+    evaluator = _family("063") / "evaluator"
+    implementations = [
+        evaluator / "solution" / "settling_window_detector.va",
+        *sorted(
+            (evaluator / "mutation_bundles").glob(
+                "neg_00*/settling_window_detector.va"
+            )
+        ),
+    ]
+    implementations = [path for path in implementations if "neg_001_zero" not in path.parts]
+
+    for implementation in implementations:
+        source = implementation.read_text()
+        assert "if (code > 255) code=255;" in source
+        assert "if (code < 0) code=0;" in source
+
+    wrong_code = (
+        evaluator
+        / "mutation_bundles"
+        / "neg_005_wrong_code"
+        / "settling_window_detector.va"
+    ).read_text()
+    assert "$abstime+20n" in wrong_code
+
+
+def test_settling_window_checker_normalizes_affine_trace_time() -> None:
+    checker = (ROOT / "runners" / "checkers" / "v4" / "task_063.py").read_text()
+
+    assert 'rows[0].get("_time_scale", 1.0)' in checker
+    assert 'rows[0].get("_time_shift_s", 0.0)' in checker
+    assert "physical_entry = (entry - time_shift_s) / time_scale" in checker
+    assert 'row_at_or_after(rows, settled_t)' in checker
+
+
 def test_v4_batch_certifier_uses_the_active_suite_not_the_full_catalog() -> None:
     certifier = (
         ROOT
