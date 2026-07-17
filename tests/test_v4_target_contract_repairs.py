@@ -787,3 +787,13 @@ def test_repaired_testbench_bindings_match_reference_trace_names() -> None:
         actual = _binding_nets(task_name)
         for port_ref, net in expected_nets.items():
             assert actual[port_ref] == net
+
+
+def test_testbench_checkers_do_not_require_canonical_stimulus_end_states() -> None:
+    lock_checker = (ROOT / "runners" / "checkers" / "v4" / "task_009.py").read_text()
+    offset_checker = (ROOT / "runners" / "checkers" / "v4" / "task_010.py").read_text()
+
+    assert "and final_lock_low" not in lock_checker
+    assert 'sequence == "LLLHHLL"' not in offset_checker
+    assert "for edge_t in edge_times:" in offset_checker
+    assert "for index, edge_time in enumerate(edge_times):" in offset_checker

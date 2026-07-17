@@ -4460,7 +4460,7 @@ def check_release_offset_comparator(rows: list[dict[str, float]]) -> tuple[bool,
         return False, f"output_span_too_small={out_span:.3f}"
 
     edge_times = rising_edges(clk_vals, times, threshold=0.45)
-    if len(edge_times) < 7:
+    if len(edge_times) < 3:
         return False, f"too_few_clock_edges={len(edge_times)}"
 
     vos = 5e-3
@@ -4469,7 +4469,7 @@ def check_release_offset_comparator(rows: list[dict[str, float]]) -> tuple[bool,
     observed: list[str] = []
     diffs_mv: list[float] = []
     mismatches = 0
-    for edge_t in edge_times[:7]:
+    for edge_t in edge_times:
         sample_t = edge_t + sample_delay
         vinp = sample_signal_at(rows, "vinp", edge_t)
         vinn = sample_signal_at(rows, "vinn", edge_t)
@@ -4489,13 +4489,10 @@ def check_release_offset_comparator(rows: list[dict[str, float]]) -> tuple[bool,
     expected_sequence = "".join(expected)
     has_below_offset_positive = any(0.0 <= mv < vos * 1e3 for mv, want in zip(diffs_mv, expected) if want == "L")
     has_above_offset_positive = any(mv > vos * 1e3 for mv, want in zip(diffs_mv, expected) if want == "H")
-    has_negative_low = any(mv < -1.0 for mv, want in zip(diffs_mv, expected) if want == "L")
     ok = (
         mismatches == 0
-        and sequence == "LLLHHLL"
         and has_below_offset_positive
         and has_above_offset_positive
-        and has_negative_low
     )
     diff_text = ",".join(f"{mv:.1f}" for mv in diffs_mv)
     return ok, (
@@ -4518,14 +4515,18 @@ def check_v3_009_lock_detector(rows: list[dict[str, float]]) -> tuple[bool, str]
     if len(ref_edges) < 8 or len(fb_edges) < 8:
         return False, f"too_few_edges ref={len(ref_edges)} fb={len(fb_edges)}"
 
+    ref_periods = [right - left for left, right in zip(ref_edges, ref_edges[1:])]
+    nominal_period = sorted(ref_periods)[len(ref_periods) // 2]
+    alignment_tolerance = 0.20 * nominal_period
+    observation_delay = 0.08 * nominal_period
     events: list[tuple[float, bool, bool]] = []
     for ref_t in ref_edges:
         rst = sample_signal_at(rows, "rst_n", ref_t)
         if rst is None or rst <= 0.45:
             continue
         nearest_fb = min((abs(fb_t - ref_t) for fb_t in fb_edges), default=1.0)
-        aligned = nearest_fb <= 2.0e-9
-        lock_after = sample_signal_at(rows, "lock", ref_t + 0.8e-9)
+        aligned = nearest_fb <= alignment_tolerance
+        lock_after = sample_signal_at(rows, "lock", ref_t + observation_delay)
         events.append((ref_t, aligned, bool(lock_after is not None and lock_after > 0.45)))
 
     streak = 0
@@ -4547,19 +4548,24 @@ def check_v3_009_lock_detector(rows: list[dict[str, float]]) -> tuple[bool, str]
                 mismatch_clears += 1
             streak = 0
 
-    reset_sample_times = (1e-9, 58e-9, 59e-9, 95e-9, 99e-9, 102e-9)
-    reset_samples = [sample_signal_at(rows, "lock", t) for t in reset_sample_times]
-    reset_low = all(value is not None and value < 0.45 for value in reset_samples)
-    final_lock = sample_signal_at(rows, "lock", max(times) - 1e-9)
-    final_lock_low = final_lock is not None and final_lock < 0.45
-
+    reset_falls = [
+        current["time"]
+        for previous, current in zip(rows, rows[1:])
+        if previous["rst_n"] > 0.45 >= current["rst_n"]
+    ]
+    reset_probe_times = [time_s + observation_delay for time_s in reset_falls]
+    if rows[0]["rst_n"] < 0.45:
+        reset_probe_times.insert(0, rows[0]["time"] + observation_delay)
+    reset_samples = [sample_signal_at(rows, "lock", time_s) for time_s in reset_probe_times]
+    reset_low = len(reset_samples) >= 2 and all(
+        value is not None and value < 0.45 for value in reset_samples
+    )
     ok = (
         reset_low
         and early_locks == 0
         and mismatch_failures == 0
         and mismatch_clears >= 1
         and good_lock_after_three >= 2
-        and final_lock_low
     )
     aligned_count = sum(1 for _, aligned, _ in events if aligned)
     mismatch_count = sum(1 for _, aligned, _ in events if not aligned)
@@ -4567,7 +4573,7 @@ def check_v3_009_lock_detector(rows: list[dict[str, float]]) -> tuple[bool, str]
         f"events={len(events)} aligned={aligned_count} mismatch={mismatch_count} "
         f"good_lock_after_three={good_lock_after_three} early_locks={early_locks} "
         f"mismatch_clears={mismatch_clears} mismatch_failures={mismatch_failures} "
-        f"reset_low={reset_low} final_lock_low={final_lock_low}"
+        f"reset_low={reset_low}"
     )
 
 
@@ -4615,18 +4621,30 @@ def check_v3_offset_comparator(rows: list[dict[str, float]]) -> tuple[bool, str]
     if not base_ok:
         return False, base_msg
 
-    sample_plan = [
-        (1.35e-9, "L", "edge_neg_10mv"),
-        (5.35e-9, "L", "edge_zero_mv"),
-        (9.35e-9, "L", "edge_pos_3mv"),
-        (12.60e-9, "L", "async_hold_before_pos_7mv_edge"),
-        (13.35e-9, "H", "edge_pos_7mv"),
-        (17.35e-9, "H", "edge_pos_20mv"),
-        (20.60e-9, "H", "async_hold_before_zero_edge"),
-        (21.35e-9, "L", "edge_zero_again"),
-        (24.60e-9, "L", "async_hold_before_neg_10mv_edge"),
-        (25.35e-9, "L", "edge_neg_10mv_again"),
-    ]
+    required = {"time", "vdd", "vss", "clk", "vinp", "vinn", "out_p"}
+    if not rows or not required.issubset(rows[0]):
+        missing = sorted(required - set(rows[0].keys())) if rows else sorted(required)
+        return False, "missing_columns=" + ",".join(missing)
+
+    times = [row["time"] for row in rows]
+    edge_times = rising_edges([row["clk"] for row in rows], times)
+    periods = [right - left for left, right in zip(edge_times, edge_times[1:])]
+    if len(edge_times) < 3 or not periods:
+        return False, "too_few_clock_edges"
+    nominal_period = sorted(periods)[len(periods) // 2]
+    sample_delay = 0.125 * nominal_period
+    sample_plan: list[tuple[float, str, str]] = []
+    previous_expected = "L"
+    for index, edge_time in enumerate(edge_times):
+        vinp = sample_signal_at(rows, "vinp", edge_time)
+        vinn = sample_signal_at(rows, "vinn", edge_time)
+        if vinp is None or vinn is None:
+            return False, f"missing_inputs_at_edge={index}"
+        expected = "H" if vinp - vinn > 5e-3 else "L"
+        sample_plan.append((edge_time + sample_delay, expected, f"edge_{index}"))
+        if index > 0:
+            sample_plan.append((edge_time - sample_delay, previous_expected, f"hold_before_edge_{index}"))
+        previous_expected = expected
     failures: list[str] = []
     observed: list[str] = []
     for time_s, expected, label in sample_plan:
@@ -4635,14 +4653,21 @@ def check_v3_offset_comparator(rows: list[dict[str, float]]) -> tuple[bool, str]
             failures.append(f"{label}=missing")
             observed.append("?")
             continue
-        state = _logic_state(value)
+        vdd = sample_signal_at(rows, "vdd", time_s)
+        vss = sample_signal_at(rows, "vss", time_s)
+        if vdd is None or vss is None or vdd <= vss:
+            failures.append(f"{label}:invalid_rails")
+            observed.append("?")
+            continue
+        span = vdd - vss
+        state = "H" if value > vss + 0.5 * span else "L"
         observed.append(state)
         if state != expected:
             failures.append(f"{label}:{state}!={expected}@{value:.3f}")
-        if expected == "H" and value < 0.81:
-            failures.append(f"{label}:high_not_rail={value:.3f}")
-        if expected == "L" and value > 0.09:
-            failures.append(f"{label}:low_not_rail={value:.3f}")
+        if expected == "H" and value < vdd - 0.1 * span:
+            failures.append(f"{label}:high_not_rail={value:.3f}<min={vdd - 0.1 * span:.3f}")
+        if expected == "L" and value > vss + 0.1 * span:
+            failures.append(f"{label}:low_not_rail={value:.3f}>max={vss + 0.1 * span:.3f}")
 
     ok = not failures
     return ok, base_msg + " strict_samples=" + "".join(observed) + (" " + " ".join(failures) if failures else "")
