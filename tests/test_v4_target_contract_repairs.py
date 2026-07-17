@@ -284,6 +284,18 @@ def test_repaired_checkers_name_every_public_property() -> None:
         assert all(property_id in note for property_id in property_ids)
 
 
+def test_dynamic_comparator_checker_does_not_require_redundant_decisions() -> None:
+    checker = (ROOT / "runners" / "checkers" / "v4" / "task_313.py").read_text()
+    assert "checked >= 5" in checker
+    assert "checked >= 6" not in checker
+
+
+def test_serializer_checker_uses_observed_disable_timing() -> None:
+    checker = (ROOT / "runners" / "checkers" / "v4" / "task_392.py").read_text()
+    assert "disable_time" in checker
+    assert "t > 82e-9" not in checker
+
+
 def test_sample_hold_checker_uses_clamped_capture_and_duration_scaled_droop() -> None:
     checker = (ROOT / "runners" / "checkers" / "v4" / "task_100.py").read_text()
 
