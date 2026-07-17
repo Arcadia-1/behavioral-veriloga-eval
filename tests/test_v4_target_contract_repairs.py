@@ -309,6 +309,38 @@ def test_pll_monitor_checker_resets_across_clockless_inactive_windows() -> None:
     assert "inactive_between(previous_fb_time, edge)" in checker
 
 
+def test_cdr_checker_uses_the_bound_lock_window_and_transition_sample() -> None:
+    checker = (ROOT / "runners" / "checkers" / "v4" / "task_357.py").read_text()
+
+    assert "LOCK_WINDOW_STEPS = 2.0" in checker
+    assert "UNIT_PHASE_DELAY = 40e-12" in checker
+    assert "DECISION_SAMPLE_FRACTION = 0.5" in checker
+    assert 'rows[0].get("_time_scale", 1.0)' in checker
+    assert "PHASE_ERROR_FRACTION_MAX" not in checker
+
+
+def test_tia_checker_samples_only_stable_input_windows() -> None:
+    checker = (ROOT / "runners" / "checkers" / "v4" / "task_368.py").read_text()
+
+    assert "last_input_change" in checker
+    assert "stable_samples" in checker
+    assert 'rows[0].get("_time_scale", 1.0)' in checker
+    assert "t > 82e-9" not in checker
+
+
+def test_cdr_and_tia_checkers_name_every_public_property() -> None:
+    sys.path.insert(0, str(ROOT))
+    from runners.checkers.v4.task_357 import CHECKER as checker_357
+    from runners.checkers.v4.task_368 import CHECKER as checker_368
+
+    for prefix, checker in (("357", checker_357), ("368", checker_368)):
+        property_ids = json.loads(
+            (_family(prefix) / "evaluator" / "harness_spec.json").read_text()
+        )["property_ids"]
+        _, note = checker([])
+        assert all(property_id in note for property_id in property_ids)
+
+
 def test_sample_hold_checker_uses_clamped_capture_and_duration_scaled_droop() -> None:
     checker = (ROOT / "runners" / "checkers" / "v4" / "task_100.py").read_text()
 
