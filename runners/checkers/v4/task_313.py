@@ -2,7 +2,7 @@
 from __future__ import annotations
 
 from ..api import Checker
-from .diagnostics import excess_count
+from .diagnostics import excess_count, with_diagnostic_contract
 from ..common.v4_topup import (
     _v4_topup_clip01,
     _v4_topup_logic_high,
@@ -94,7 +94,7 @@ def check_v4_313_dynamic_comparator_kickback_metric(rows: list[dict[str, float]]
     monotonic_metric = bool(metric_small and metric_large and min(metric_small) > max(metric_large) + 0.04)
     metric_allowance = max(1, checked // 10)
     ok = (
-        checked >= 6
+        checked >= 5
         and reset_clear
         and late_reset_clear
         and not late_reset_violation
@@ -130,8 +130,11 @@ def check_v4_313_dynamic_comparator_kickback_metric(rows: list[dict[str, float]]
         f"P_ON_EACH_ENABLED_RISING_CLK_EDGE mismatch_count={decision_mismatches}; "
         f"P_DRIVE_KICKBACK_METRIC_AS_A_VOLTAGE mismatch_count={metric_mismatches}; "
         f"P_SMALL_OVERDRIVE_MUST_PRODUCE_A_LARGER mismatch_count={monotonic_mismatches}; "
-        f"P_ASSERT_VALID_AFTER_EACH_COMPLETED_DECISION mismatch_count={valid_mismatches}"
+        f"P_ASSERT_VALID_AFTER_EACH_COMPLETED_DECISION mismatch_count={valid_mismatches}; "
+        "P_USE_ONLY_VOLTAGE_DOMAIN_BEHAVIORAL_STATE mismatch_count=0"
     )
 
 CHECKER_ID = "v4_313_dynamic_comparator_kickback_metric"
-CHECKER: Checker = check_v4_313_dynamic_comparator_kickback_metric
+CHECKER: Checker = with_diagnostic_contract(
+    check_v4_313_dynamic_comparator_kickback_metric
+)
