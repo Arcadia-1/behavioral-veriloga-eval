@@ -1323,12 +1323,12 @@
     "062: source negative neg_005_ignore_valid input hash mismatch: profile_sha256",
     "062: source negative neg_002_off_by_one input hash mismatch: harness_spec_sha256",
     "062: source negative neg_002_off_by_one input hash mismatch: profile_sha256",
-    "063: source task record hash mismatch",
-    "063: source score deck hash mismatch",
     "063: source gold certification input hash mismatch: feedback_profile",
+    "063: source gold certification input hash mismatch: gold_bundle",
     "063: source gold certification input hash mismatch: harness_spec",
     "063: source gold certification input hash mismatch: score_profile",
     "063: source gold certification component hash mismatch: feedback_profile_sha256",
+    "063: source gold certification component hash mismatch: gold_bundle_sha256",
     "063: source gold certification component hash mismatch: harness_spec_sha256",
     "063: source gold certification component hash mismatch: score_deck_sha256",
     "063: source gold certification component hash mismatch: score_profile_sha256",
@@ -10704,10 +10704,10 @@
   "family_count": 400,
   "input_hashes": {
     "TASK_INDEX.json": "0599693adec2ce3b910bc785f211c4898c1eed01cf9d1801e5d57c8a17f8842a",
-    "manifest_sha256": "71ddf4254ca5b91970917dd7cae9a6bd47f3761ed74615f5420479e59221105d",
+    "manifest_sha256": "1691930025b1ea170baf521db75e6200b411b3731fa6e39115eca7b489a54fec",
     "prompt_modes/manifest.json": "f5be68a5e0fca8e09aa65542d984d18eb148b8274e63c7f65ec8092f7f1fef51",
     "prompt_modes/modes.json": "2fe6660e24f515c5dbd12ab5e84386ad1c8776d14e3615668add64fe2d1eecf2",
-    "source_score_denominator_manifest_sha256": "dfc8ef801bd0359885a6046e42f704b20cd620388e85b34164dce1b4c36444fe"
+    "source_score_denominator_manifest_sha256": "30636659adc1a11f153a49ee684631c06268a1448dc415b832fd521dd3c6db2e"
   },
   "problems": [],
   "prompt_record_count": 7200,

@@ -14,7 +14,11 @@ module settling_window_detector(vin, target, tol, settled, t_code0, t_code1, t_c
     analog begin
         @(initial_step) begin entry_t=0; in_window=0; code=0; settled_level=0; end
         if (abs(V(vin)-V(target)) <= V(tol)) begin
-            if (!in_window) begin entry_t=$abstime; in_window=1; settled_level=0; code=((($abstime+20n)/1n)+0.5); end
+            if (!in_window) begin
+                entry_t=$abstime; in_window=1; settled_level=0; code=((($abstime+20n)/1n)+0.5);
+                if (code > 255) code=255;
+                if (code < 0) code=0;
+            end
             if (($abstime-entry_t) >= 20n) settled_level=vdd;
         end else begin in_window=0; settled_level=0; end
         V(settled) <+ settled_level;
