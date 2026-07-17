@@ -260,6 +260,15 @@ def test_sarfend_checker_clamps_pre_roll_baseline_after_affine_normalization() -
     assert sample_signal_at(rows, "clkc", 2.0e-9) is None
 
 
+def test_sample_hold_checker_uses_clamped_capture_and_duration_scaled_droop() -> None:
+    checker = (ROOT / "runners" / "checkers" / "v4" / "task_100.py").read_text()
+
+    assert "expected = min(vdd, max(vss, vin_capture))" in checker
+    assert "math.exp(-(stop_time - start_time) / droop_tau)" in checker
+    assert 'expected="rising_edges>=6_aperture_sensitive>=1"' in checker
+    assert "0.004 <= droop <= 0.16" not in checker
+
+
 def test_sarfend_checker_accepts_event_relative_noncanonical_timing() -> None:
     from runners.checkers.v4.task_186 import CHECKER
 
