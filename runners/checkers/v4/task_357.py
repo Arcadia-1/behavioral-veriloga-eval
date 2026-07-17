@@ -5,7 +5,9 @@ from ..api import Checker
 from dataclasses import dataclass
 
 VTH = 0.45
-PHASE_ERROR_FRACTION_MAX = 0.025
+LOCK_WINDOW_STEPS = 2.0
+UNIT_PHASE_DELAY = 40e-12
+DECISION_SAMPLE_FRACTION = 0.5
 
 @dataclass
 class PropertyResult:
@@ -107,6 +109,7 @@ def check_v4_357_bangbang_cdr_loop(rows: list[dict[str, float]]) -> tuple[bool, 
     missing = _missing(rows, required, results)
     if missing:
         return missing
+    time_scale = float(rows[0].get("_time_scale", 1.0))
     for row in _representative_clear_rows(rows, has_enable=True):
         item = prop["P_RESET_DISABLE_CLEAR"]
         item.checked += 1
@@ -145,12 +148,24 @@ def check_v4_357_bangbang_cdr_loop(rows: list[dict[str, float]]) -> tuple[bool, 
     good_count = 0
     bad_count = 0
     expected_locked = False
+    previous_phase_error_steps = 0.0
     lock_assert_seen = False
     unlock_seen = False
     out_of_window_seen = False
     for current in recovered:
         if previous_recovered is None:
             previous_recovered = current
+            continue
+        if any(
+            _high(row, "rst") or not _high(row, "enable")
+            for row in rows
+            if previous_recovered < float(row["time"]) <= current
+        ):
+            previous_recovered = current
+            previous_code = 16
+            good_count = bad_count = 0
+            expected_locked = False
+            previous_phase_error_steps = 0.0
             continue
         candidates = [edge for edge in data if previous_recovered < edge <= current]
         if not candidates:
@@ -159,7 +174,7 @@ def check_v4_357_bangbang_cdr_loop(rows: list[dict[str, float]]) -> tuple[bool, 
         data_edge = candidates[-1]
         expected_early = abs(data_edge - previous_recovered) < abs(current - data_edge)
         expected_late = not expected_early
-        sample = _after(rows, current + 0.4e-9)
+        sample = _after(rows, current + time_scale * 0.4e-9)
         item = prop["P_BANGBANG_DECISION"]
         item.checked += 1
         observed = (_high(sample, "early"), _high(sample, "late"))
@@ -177,11 +192,22 @@ def check_v4_357_bangbang_cdr_loop(rows: list[dict[str, float]]) -> tuple[bool, 
         item.checked += 1
         observed_lock = _high(sample, "lock")
         if median_unit is not None and median_unit > 0.0:
-            phase_error = min(abs(data_edge - previous_recovered), abs(current - data_edge))
-            local_period = max(current - previous_recovered, 1e-15)
-            phase_error_steps = phase_error / median_unit
-            phase_error_fraction = phase_error / local_period
-            if phase_error_fraction <= PHASE_ERROR_FRACTION_MAX:
+            if abs(data_edge - previous_recovered) < abs(current - data_edge):
+                phase_error_steps = (
+                    (data_edge - previous_recovered)
+                    / (time_scale * UNIT_PHASE_DELAY)
+                )
+            else:
+                phase_error_steps = (
+                    (data_edge - current) / (time_scale * UNIT_PHASE_DELAY)
+                )
+            sampled_phase_error_steps = abs(
+                previous_phase_error_steps
+                + DECISION_SAMPLE_FRACTION
+                * (phase_error_steps - previous_phase_error_steps)
+            )
+            previous_phase_error_steps = phase_error_steps
+            if sampled_phase_error_steps <= LOCK_WINDOW_STEPS:
                 good_count += 1
                 bad_count = 0
                 if good_count >= 4:
@@ -199,7 +225,7 @@ def check_v4_357_bangbang_cdr_loop(rows: list[dict[str, float]]) -> tuple[bool, 
                 item.mismatch(
                     expected=(
                         f"lock={int(expected_locked)} "
-                        f"phase_error_fraction<={PHASE_ERROR_FRACTION_MAX:.4g}"
+                        f"sampled_phase_error_steps<={LOCK_WINDOW_STEPS:.4g}"
                     ),
                     observed=f"lock={int(observed_lock)}",
                     time=current,
