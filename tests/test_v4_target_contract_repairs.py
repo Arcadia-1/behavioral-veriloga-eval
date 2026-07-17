@@ -815,3 +815,11 @@ def test_leaky_hold_capture_ignores_sample_edges_while_reset_is_active() -> None
     assert 'sample(rows, "rst", edge_t)' in checker
     assert 'expected="active_sample_edges>=3"' in checker
     assert "hold_windows" in checker
+
+
+def test_edge_interval_tdc_pairs_only_armed_start_stop_events() -> None:
+    checker = (ROOT / "runners" / "checkers" / "v4" / "task_059.py").read_text()
+
+    assert "_measurement_pairs(starts, stops)" in checker
+    assert "for start_t, stop_t in zip(starts, stops)" not in checker
+    assert "math.floor((stop_t - start_t)" in checker

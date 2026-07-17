@@ -465,4 +465,11 @@ def transformed_rows(rows: list[Row], *, scale: float = 1.37,
                      shift_s: float = 2e-9) -> list[Row]:
     """Return a timing metamorph used only by checker regression tests."""
 
-    return [{**row, "time": scale * float(row["time"]) + shift_s} for row in rows]
+    return [
+        {
+            **row,
+            "time": scale * float(row["time"]) + shift_s,
+            "_time_scale": scale * float(row.get("_time_scale", 1.0)),
+        }
+        for row in rows
+    ]
