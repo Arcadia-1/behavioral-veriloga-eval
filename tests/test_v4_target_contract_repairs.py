@@ -626,6 +626,40 @@ def test_image_reject_mixer_exposes_exact_calibration_contract() -> None:
     assert "drive `i_out` and `q_out` to `vcm`" in contracts
 
 
+def test_vga_step_response_exposes_exact_classifier_contract() -> None:
+    snippets = (
+        "tick=250ps",
+        "code=4*gain_2+2*gain_1+gain_0",
+        "target=clamp(vcm+(1+gain_lsb*code)*(vin-vcm),vss,vdd)",
+        "overshoot_metric=vdd*abs(code-prev_code)/7",
+        "ifcode==prev_code",
+        "newlychangedcodesettlesaftertwosubsequentunchanged-codecomparisons",
+    )
+    family = (
+        ROOT
+        / "benchmark-vabench-release-v4"
+        / "provenance"
+        / "dut-base-v3-exact-five-hash-bound-v2"
+        / "337-vga-step-response-classifier"
+    )
+    compact = (
+        (family / "public" / "task" / "instruction.md")
+        .read_text()
+        .lower()
+        .replace(" ", "")
+        .replace("\n", "")
+        .replace("`", "")
+    )
+    for snippet in snippets:
+        assert snippet in compact
+
+    spec = json.loads((family / "evaluator" / "family_spec.json").read_text())
+    contracts = " ".join(item["observable_contract"] for item in spec["properties"])
+    assert "overshoot_metric=vdd*abs(code-prev_code)/7" in contracts
+    assert "a newly changed code therefore needs two subsequent unchanged-code comparisons" in contracts
+    assert "without adding an overshoot excursion to `vout`" in contracts
+
+
 def test_repaired_testbench_bindings_match_reference_trace_names() -> None:
     expected = {
         "517-strongarm-style-latch-comparator-testbench": {
