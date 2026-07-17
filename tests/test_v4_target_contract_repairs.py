@@ -803,6 +803,7 @@ def test_dynamic_testbench_checkers_do_not_bind_unrelated_stimulus_windows() -> 
     divider_checker = (ROOT / "runners" / "checkers" / "v4" / "task_012.py").read_text()
     slew_checker = (ROOT / "runners" / "checkers" / "v4" / "task_016.py").read_text()
     tdc_checker = (ROOT / "runners" / "checkers" / "v4" / "task_179.py").read_text()
+    gain_checker = (ROOT / "runners" / "checkers" / "v4" / "task_093.py").read_text()
 
     assert "stable_logic_plateaus" in divider_checker
     assert "active[-1][bit] > 0.45" not in divider_checker
@@ -812,6 +813,9 @@ def test_dynamic_testbench_checkers_do_not_bind_unrelated_stimulus_windows() -> 
     assert "measured_deltas" in tdc_checker
     assert "_trace_time_scale" in tdc_checker
     assert "(3.0, -0.3" not in tdc_checker
+    assert "0.045 <= in_span <= 0.075" not in gain_checker
+    assert "0.27 <= out_span <= 0.45" not in gain_checker
+    assert "gain_err <= gain_tolerance" in gain_checker
 
 
 def test_leaky_hold_capture_ignores_sample_edges_while_reset_is_active() -> None:
