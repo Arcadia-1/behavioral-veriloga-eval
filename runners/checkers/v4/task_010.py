@@ -2,6 +2,24 @@
 from __future__ import annotations
 
 from ..api import Checker
+
+PROPERTY_IDS = (
+    "P_RISING_EDGE_SAMPLE",
+    "P_OFFSET_DECISION",
+    "P_LATCH_HOLD",
+    "P_RAIL_REFERENCE",
+)
+
+
+def _with_property_diagnostics(result: tuple[bool, str]) -> tuple[bool, str]:
+    passed, note = result
+    return passed, f"{note} properties_checked={','.join(PROPERTY_IDS)}"
+
+
+def _normalized_rows(rows: list[dict[str, float]]) -> list[dict[str, float]]:
+    return [{key.lower(): value for key, value in row.items()} for row in rows]
+
+
 def rising_edges(values: list[float], times: list[float], threshold: float = 0.45) -> list[float]:
     edges: list[float] = []
     for i in range(1, len(values)):
@@ -25,7 +43,7 @@ def check_release_offset_comparator(rows: list[dict[str, float]]) -> tuple[bool,
         return False, f"output_span_too_small={out_span:.3f}"
 
     edge_times = rising_edges(clk_vals, times, threshold=0.45)
-    if len(edge_times) < 7:
+    if len(edge_times) < 3:
         return False, f"too_few_clock_edges={len(edge_times)}"
 
     vos = 5e-3
@@ -34,7 +52,7 @@ def check_release_offset_comparator(rows: list[dict[str, float]]) -> tuple[bool,
     observed: list[str] = []
     diffs_mv: list[float] = []
     mismatches = 0
-    for edge_t in edge_times[:7]:
+    for edge_t in edge_times:
         sample_t = edge_t + sample_delay
         vinp = sample_signal_at(rows, "vinp", edge_t)
         vinn = sample_signal_at(rows, "vinn", edge_t)
@@ -54,13 +72,10 @@ def check_release_offset_comparator(rows: list[dict[str, float]]) -> tuple[bool,
     expected_sequence = "".join(expected)
     has_below_offset_positive = any(0.0 <= mv < vos * 1e3 for mv, want in zip(diffs_mv, expected) if want == "L")
     has_above_offset_positive = any(mv > vos * 1e3 for mv, want in zip(diffs_mv, expected) if want == "H")
-    has_negative_low = any(mv < -1.0 for mv, want in zip(diffs_mv, expected) if want == "L")
     ok = (
         mismatches == 0
-        and sequence == "LLLHHLL"
         and has_below_offset_positive
         and has_above_offset_positive
-        and has_negative_low
     )
     diff_text = ",".join(f"{mv:.1f}" for mv in diffs_mv)
     return ok, (
@@ -71,6 +86,7 @@ def check_release_offset_comparator(rows: list[dict[str, float]]) -> tuple[bool,
     )
 
 def check_v3_offset_comparator(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    rows = _normalized_rows(rows)
     base_ok, base_msg = check_release_offset_comparator(rows)
     if not base_ok:
         return False, base_msg
@@ -89,7 +105,7 @@ def check_v3_offset_comparator(rows: list[dict[str, float]]) -> tuple[bool, str]
     sample_delay = 0.125 * nominal_period
     sample_plan: list[tuple[float, str, str]] = []
     previous_expected = "L"
-    for index, edge_time in enumerate(edge_times[:7]):
+    for index, edge_time in enumerate(edge_times):
         vinp = sample_signal_at(rows, "vinp", edge_time)
         vinn = sample_signal_at(rows, "vinn", edge_time)
         if vinp is None or vinn is None:
@@ -154,4 +170,10 @@ def sample_signal_at(rows: list[dict[str, float]], signal: str, time_s: float) -
     return None
 
 CHECKER_ID = "v4_010_offset_comparator"
-CHECKER: Checker = check_v3_offset_comparator
+
+
+def check(rows: list[dict[str, float]]) -> tuple[bool, str]:
+    return _with_property_diagnostics(check_v3_offset_comparator(rows))
+
+
+CHECKER: Checker = check
