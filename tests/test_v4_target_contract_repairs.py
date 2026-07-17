@@ -303,6 +303,12 @@ def test_supply_supervisor_checker_orders_overlapping_input_crossings() -> None:
     assert "controls_changed" in checker
 
 
+def test_pll_monitor_checker_resets_across_clockless_inactive_windows() -> None:
+    checker = (ROOT / "runners" / "checkers" / "v4" / "task_351.py").read_text()
+    assert "inactive_between(previous_event_time, time)" in checker
+    assert "inactive_between(previous_fb_time, edge)" in checker
+
+
 def test_sample_hold_checker_uses_clamped_capture_and_duration_scaled_droop() -> None:
     checker = (ROOT / "runners" / "checkers" / "v4" / "task_100.py").read_text()
 

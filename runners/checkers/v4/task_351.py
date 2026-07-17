@@ -1,6 +1,8 @@
 """Task-specific checker for canonical v4 DUT 351."""
 from __future__ import annotations
 
+from bisect import bisect_left, bisect_right
+
 from ..api import Checker
 from dataclasses import dataclass
 
@@ -32,7 +34,23 @@ class PropertyResult:
         )
 
 def _finish(results: list[PropertyResult]) -> tuple[bool, str]:
-    ok = all(item.checked > 0 and item.mismatch_count == 0 for item in results)
+    minimum_checks = {
+        "P_RESET_DISABLE_CLEAR": 2,
+        "P_PHASE_COMPARE": 4,
+        "P_PHASE_CODE": 4,
+        "P_DIVIDE_BY_FOUR_EDGES": 4,
+        "P_LOCK_REACQUIRE": 6,
+    }
+    for item in results:
+        minimum = minimum_checks[item.property_id]
+        if item.checked < minimum:
+            item.mismatch(
+                expected=f"checked>={minimum}",
+                observed=f"checked={item.checked}",
+                time=0.0,
+                gap=float(minimum - item.checked),
+            )
+    ok = all(item.mismatch_count == 0 for item in results)
     return ok, " ; ".join(item.render() for item in results)
 
 def _missing(rows: list[dict[str, float]], required: set[str], results: list[PropertyResult]) -> tuple[bool, str] | None:
@@ -94,6 +112,19 @@ def check_v4_351_pll_timing_monitor_system(rows: list[dict[str, float]]) -> tupl
     if missing:
         return missing
 
+    times = [float(row["time"]) for row in rows]
+    inactive_prefix = [0]
+    for row in rows:
+        inactive_prefix.append(
+            inactive_prefix[-1]
+            + int(_high(row, "rst") or not _high(row, "enable"))
+        )
+
+    def inactive_between(start_time: float, stop_time: float) -> bool:
+        left = bisect_right(times, start_time)
+        right = bisect_left(times, stop_time)
+        return inactive_prefix[right] > inactive_prefix[left]
+
     for row in _representative_clear_rows(rows, has_enable=True):
         item = prop["P_RESET_DISABLE_CLEAR"]
         item.checked += 1
@@ -110,8 +141,17 @@ def check_v4_351_pll_timing_monitor_system(rows: list[dict[str, float]]) -> tupl
     good_count = 0
     was_locked = False
     bad_count = 0
+    previous_event_time = times[0]
     for time, kind in events:
         state = _before(rows, time)
+        crossed_clear_window = inactive_between(previous_event_time, time)
+        previous_event_time = time
+        if crossed_clear_window:
+            first = None
+            phase_est = 0
+            good_count = 0
+            was_locked = False
+            bad_count = 0
         if _high(state, "rst") or not _high(state, "enable"):
             first = None
             phase_est = 0
@@ -164,8 +204,13 @@ def check_v4_351_pll_timing_monitor_system(rows: list[dict[str, float]]) -> tupl
 
     expected_div = False
     edge_count = 0
+    previous_fb_time = times[0]
     for edge in fb_edges:
         before = _before(rows, edge)
+        if inactive_between(previous_fb_time, edge):
+            expected_div = False
+            edge_count = 0
+        previous_fb_time = edge
         if _high(before, "rst") or not _high(before, "enable"):
             expected_div = False
             edge_count = 0
