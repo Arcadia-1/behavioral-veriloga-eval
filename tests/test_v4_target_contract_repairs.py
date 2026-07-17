@@ -323,6 +323,9 @@ def test_cdr_checker_uses_the_bound_lock_window_and_transition_sample() -> None:
     assert "DECISION_SAMPLE_FRACTION = 0.5" in checker
     assert 'rows[0].get("_time_scale", 1.0)' in checker
     assert "PHASE_ERROR_FRACTION_MAX" not in checker
+    assert "_inactive_between(rows, source_time, observation_stop)" in checker
+    assert 'expected_destination > float(rows[-1]["time"])' in checker
+    assert "last_inactive < edge < source_time" in checker
 
 
 def test_tia_checker_samples_only_stable_input_windows() -> None:
