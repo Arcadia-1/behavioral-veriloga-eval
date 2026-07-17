@@ -804,6 +804,7 @@ def test_dynamic_testbench_checkers_do_not_bind_unrelated_stimulus_windows() -> 
     slew_checker = (ROOT / "runners" / "checkers" / "v4" / "task_016.py").read_text()
     tdc_checker = (ROOT / "runners" / "checkers" / "v4" / "task_179.py").read_text()
     gain_checker = (ROOT / "runners" / "checkers" / "v4" / "task_093.py").read_text()
+    peak_checker = (ROOT / "runners" / "checkers" / "v4" / "task_075.py").read_text()
 
     assert "stable_logic_plateaus" in divider_checker
     assert "active[-1][bit] > 0.45" not in divider_checker
@@ -816,6 +817,22 @@ def test_dynamic_testbench_checkers_do_not_bind_unrelated_stimulus_windows() -> 
     assert "0.045 <= in_span <= 0.075" not in gain_checker
     assert "0.27 <= out_span <= 0.45" not in gain_checker
     assert "gain_err <= gain_tolerance" in gain_checker
+    assert "stop - start < 8.0e-9" not in peak_checker
+    assert "stop - start < 2.0e-9" in peak_checker
+
+
+def test_v4_batch_certifier_uses_the_active_suite_not_the_full_catalog() -> None:
+    certifier = (
+        ROOT
+        / "benchmark-vabench-release-v4"
+        / "scripts"
+        / "validate_v4_checker_batch.py"
+    ).read_text()
+
+    assert "ACTIVE_MUTATION_SUITE_INDEX.json" in certifier
+    assert "selected_mutation_ids(task, active_suites)" in certifier
+    assert 'if str(row["id"]) in mutation_ids' in certifier
+    assert 'field in note for field in ("category=", "expected=", "observed=", "event=")' in certifier
 
 
 def test_leaky_hold_capture_ignores_sample_edges_while_reset_is_active() -> None:
