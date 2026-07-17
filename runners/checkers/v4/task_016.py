@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from ..api import Checker, Row
+from .stimulus_relative import diagnostic
 from .trace_utils import property_diagnostics, sample_signal, threshold_crossings
 
 
@@ -25,11 +26,33 @@ def _transition_fit(rows: list[Row], start: float, stop: float) -> list[Row]:
         return []
     low = min(start_out + 0.10 * (target - start_out), start_out + 0.90 * (target - start_out))
     high = max(start_out + 0.10 * (target - start_out), start_out + 0.90 * (target - start_out))
-    return [
-        row
-        for row in rows
-        if start < row["time"] < stop and low <= row["vout"] <= high
-    ]
+    fit: list[Row] = []
+    for row in rows:
+        if not start < row["time"] < stop:
+            continue
+        if low <= row["vout"] <= high:
+            fit.append(row)
+        elif fit:
+            break
+    return fit
+
+
+def _sustained_excursion(
+    rises: list[float],
+    falls: list[float],
+    *,
+    trace_stop: float,
+    minimum_phase_duration: float = 4.0e-9,
+) -> tuple[float, float, float] | None:
+    """Select a bidirectional excursion long enough to exercise periodic updates."""
+    for rise_time in rises:
+        fall_time = next((time_s for time_s in falls if time_s > rise_time), None)
+        if fall_time is None or fall_time - rise_time < minimum_phase_duration:
+            continue
+        next_rise = next((time_s for time_s in rises if time_s > fall_time), trace_stop)
+        if next_rise - fall_time >= minimum_phase_duration:
+            return rise_time, fall_time, next_rise
+    return None
 
 
 def check_slew_rate_limiter(rows: list[Row]) -> tuple[bool, str]:
@@ -49,11 +72,34 @@ def check_slew_rate_limiter(rows: list[Row]) -> tuple[bool, str]:
             "P_INITIAL_ZERO", "P_PERIODIC_UPDATE", "P_BIDIRECTIONAL_STEP_LIMIT",
             "P_NEAR_TARGET_SETTLE", "P_EVENTUAL_TRACKING",
         )}
-        return False, f"insufficient_excitation={coverage_missing}; {property_diagnostics(counts)}"
+        return False, diagnostic(
+            "P_BIDIRECTIONAL_STEP_LIMIT",
+            "insufficient_coverage",
+            expected="sustained_rising_and_falling_excursions",
+            observed=f"rises={len(rises)},falls={len(falls)}",
+            event="full_trace",
+        ) + f"; insufficient_excitation={coverage_missing}; {property_diagnostics(counts)}"
 
-    rise_time = rises[0]
-    fall_time = next((time_s for time_s in falls if time_s > rise_time), falls[-1])
-    next_rise = next((time_s for time_s in rises if time_s > fall_time), rows[-1]["time"])
+    time_scale = float(rows[0].get("_time_scale", 1.0))
+    excursion = _sustained_excursion(
+        rises,
+        falls,
+        trace_stop=rows[-1]["time"],
+        minimum_phase_duration=4.0e-9 * time_scale,
+    )
+    if excursion is None:
+        counts = {property_id: 1 for property_id in (
+            "P_INITIAL_ZERO", "P_PERIODIC_UPDATE", "P_BIDIRECTIONAL_STEP_LIMIT",
+            "P_NEAR_TARGET_SETTLE", "P_EVENTUAL_TRACKING",
+        )}
+        return False, diagnostic(
+            "P_BIDIRECTIONAL_STEP_LIMIT",
+            "insufficient_coverage",
+            expected="bidirectional_phases>=4_update_periods",
+            observed="no_qualifying_excursion",
+            event="full_trace",
+        ) + f"; insufficient_excitation=1; {property_diagnostics(counts)}"
+    rise_time, fall_time, next_rise = excursion
     rising_fit = _transition_fit(rows, rise_time, fall_time)
     falling_fit = _transition_fit(rows, fall_time, next_rise)
     rising_slope = _slope(rising_fit)
@@ -98,10 +144,20 @@ def check_slew_rate_limiter(rows: list[Row]) -> tuple[bool, str]:
     }
     ok = coverage_missing == 0 and all(count == 0 for count in counts.values())
     coverage = "" if coverage_missing == 0 else f" insufficient_excitation={coverage_missing}"
-    return ok, (
+    summary = (
         f"rise={rise_time:.3e} fall={fall_time:.3e} slopes={rising_slope}/{falling_slope} "
         f"high={high_sample} final={final_sample}{coverage}; {property_diagnostics(counts)}"
     )
+    if not ok:
+        failing_property = next(property_id for property_id, count in counts.items() if count)
+        return False, diagnostic(
+            failing_property,
+            "semantic_mismatch",
+            expected="public_slew_contract_satisfied",
+            observed=f"mismatch_count={counts[failing_property]}",
+            event=f"primary_excursion@{rise_time:.6e}s",
+        ) + "; " + summary
+    return True, summary
 
 
 CHECKER_ID = "v4_016_slew_rate_limiter"

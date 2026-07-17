@@ -10,6 +10,7 @@ from .stimulus_relative import (
     pass_note,
     probe_time,
     require_signals,
+    row_at_or_after,
 )
 
 
@@ -27,7 +28,9 @@ def check_settling_window_detector(rows: list[dict[str, float]]) -> tuple[bool, 
     invalid = require_signals(rows, required, "P_WINDOW_DEFINITION")
     if invalid:
         return False, invalid
-    hold = 20e-9
+    time_scale = float(rows[0].get("_time_scale", 1.0))
+    time_shift_s = float(rows[0].get("_time_shift_s", 0.0))
+    hold = 20e-9 * time_scale
     flags = [abs(row["vin"] - row["target"]) <= row["tol"] + 1e-12 for row in rows]
     intervals: list[tuple[float, float]] = []
     start: float | None = rows[0]["time"] if flags[0] else None
@@ -40,7 +43,9 @@ def check_settling_window_detector(rows: list[dict[str, float]]) -> tuple[bool, 
     if start is not None:
         intervals.append((start, rows[-1]["time"]))
 
-    long_intervals = [(a, b) for a, b in intervals if b - a >= hold + 2e-9]
+    long_intervals = [
+        (a, b) for a, b in intervals if b - a >= hold + 2e-9 * time_scale
+    ]
     if not long_intervals:
         return False, diagnostic(
             "P_ENTRY_AND_HOLD",
@@ -81,7 +86,11 @@ def check_settling_window_detector(rows: list[dict[str, float]]) -> tuple[bool, 
         settled_t = probe_time(rows, entry + hold, exit_t, fraction=0.25)
         interval_samples: list[tuple[str, float, dict[str, float] | None]] = [
             ("early", early_t, nearest_row(rows, early_t)),
-            ("settled", settled_t, nearest_row(rows, settled_t) if settled_t is not None else None),
+            (
+                "settled",
+                settled_t,
+                row_at_or_after(rows, settled_t) if settled_t is not None else None,
+            ),
         ]
         for phase, sample_t, row in interval_samples:
             if row is None:
@@ -123,7 +132,8 @@ def check_settling_window_detector(rows: list[dict[str, float]]) -> tuple[bool, 
                 )
                 continue
             settled_seen = True
-            expected_code = max(0, min(255, int(round(entry / 1e-9))))
+            physical_entry = (entry - time_shift_s) / time_scale
+            expected_code = max(0, min(255, int(round(physical_entry / 1e-9))))
             actual_code = logic_bits_to_int(row, "t_code", 8)
             if abs(actual_code - expected_code) > 1:
                 errors += 1

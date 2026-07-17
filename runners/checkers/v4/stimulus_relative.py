@@ -470,6 +470,9 @@ def transformed_rows(rows: list[Row], *, scale: float = 1.37,
             **row,
             "time": scale * float(row["time"]) + shift_s,
             "_time_scale": scale * float(row.get("_time_scale", 1.0)),
+            "_time_shift_s": (
+                scale * float(row.get("_time_shift_s", 0.0)) + shift_s
+            ),
         }
         for row in rows
     ]
