@@ -97,15 +97,25 @@ def check_v4_331_dfe_error_proxy_loop(rows: list[dict[str, float]]) -> tuple[boo
         expected_corrected = max(0.0, min(VDD, VCM + expected_residual))
         decision = 1 if float(row["sample_in"]) >= VCM else -1
         history_0, history_1 = history_1, decision
+        sample_enabled = _high(sample, "enable") and not _high(sample, "rst")
+        if not sample_enabled:
+            # A disable/reset before the observation point clears the DUT, so
+            # this edge no longer has a settled enabled result to compare.
+            continue
+        corrected = float(sample["corrected_out"])
+        err = abs(float(sample["error_metric"]))
+        if err < 0.035:
+            streak += 1
+        else:
+            streak = 0
         # Ignore the first edge after each observed enable transition while
         # the stateful proxy settles; this is relative to the submitted
-        # stimulus, not a hidden absolute timestamp.
+        # stimulus, not a hidden absolute timestamp.  It still counts toward
+        # the public consecutive-low-error convergence streak.
         if active_edges == 1:
             continue
         checked += 1
         decisions += 1
-        corrected = float(sample["corrected_out"])
-        err = abs(float(sample["error_metric"]))
         error_max = max(error_max, err)
         tap_1 = float(sample["tap_1"]) - VCM
         tap_0 = float(sample["tap_0"]) - VCM
@@ -118,10 +128,6 @@ def check_v4_331_dfe_error_proxy_loop(rows: list[dict[str, float]]) -> tuple[boo
         # corrected_out is vcm plus the residual proxy.
         if abs(err - abs(corrected - VCM)) > 0.08:
             corr_errors += 1
-        if err < 0.035:
-            streak += 1
-        else:
-            streak = 0
         converged = _high(sample, "converged")
         if converged and streak < 3:
             conv_errors += 1

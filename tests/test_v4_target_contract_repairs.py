@@ -598,6 +598,26 @@ def test_residue_gain_calibration_emits_property_diagnostics() -> None:
     assert "diagnostic_schema=v4-checker-diagnostic-v1" in note
 
 
+def test_residue_gain_calibration_gold_uses_public_lock_contract() -> None:
+    controller = (
+        ROOT
+        / "benchmark-vabench-release-v4"
+        / "provenance"
+        / "dut-base-v3-exact-five-hash-bound-v2"
+        / "316-residue-amplifier-gain-calibration"
+        / "evaluator"
+        / "solution"
+        / "gain_cal_controller.va"
+    ).read_text(encoding="utf-8")
+
+    assert "err > lock_tol" in controller
+    assert "err < -lock_tol" in controller
+    assert "absval(err) <= lock_tol" in controller
+    assert "lock_count >= 3" in controller
+    assert "code >= 4" not in controller
+    assert "updates >= 8" not in controller
+
+
 def test_image_reject_mixer_exposes_exact_calibration_contract() -> None:
     snippets = (
         "drivei_outandq_outtotheneutralmixerlevelvcm",

@@ -2,7 +2,7 @@
 from __future__ import annotations
 
 from ..api import Checker
-from .stimulus_relative import normalize_affine_time
+from .diagnostics import with_property_diagnostics
 
 
 def sample_signal_at(rows: list[dict[str, float]], signal: str, time_s: float) -> float | None:
@@ -80,23 +80,60 @@ def check_v3_sar_comparator_reset_high(rows: list[dict[str, float]]) -> tuple[bo
     required = {"time", "cmpck", "vinn", "vinp", "dcmpn", "dcmpp"}
     if not rows or not required.issubset(rows[0]):
         return False, "missing sar comparator reset high signals"
-    normalized = normalize_affine_time(
-        rows,
-        (
-            ("cmpck", 0.45, "rising", 0.36, 0),
-            ("cmpck", 0.45, "rising", 2.36, 2),
-        ),
-    )
-    if normalized is None:
-        return False, "missing_cmpck_stimulus_edges"
-    return _sample_many_within_trace(
-        normalized,
-        {
-            "dcmpp": [(0.2, 0.9), (0.5, 0.9), (0.95, 0.9), (1.5, 0.0), (1.95, 0.9), (2.5, 0.9)],
-            "dcmpn": [(0.2, 0.9), (0.5, 0.0), (0.95, 0.9), (1.5, 0.9), (1.95, 0.9), (2.5, 0.0)],
-        },
-        tol=0.07,
+    edges: list[tuple[int, str]] = []
+    previous = float(rows[0]["cmpck"])
+    for index, row in enumerate(rows[1:], start=1):
+        current = float(row["cmpck"])
+        if previous <= 0.45 < current:
+            edges.append((index, "rising"))
+        elif previous > 0.45 >= current:
+            edges.append((index, "falling"))
+        previous = current
+    if len(edges) < 3:
+        return False, f"insufficient_cmpck_edges={len(edges)}"
+
+    checked = errors = falling = positive = negative = equal = 0
+    for edge_number, (index, direction) in enumerate(edges):
+        edge = rows[index]
+        edge_time = float(edge["time"])
+        next_time = (
+            float(rows[edges[edge_number + 1][0]]["time"])
+            if edge_number + 1 < len(edges)
+            else float(rows[-1]["time"])
+        )
+        if next_time <= edge_time:
+            continue
+        sample_time = edge_time + 0.2 * (next_time - edge_time)
+        dcmpp = sample_signal_at(rows, "dcmpp", sample_time)
+        dcmpn = sample_signal_at(rows, "dcmpn", sample_time)
+        vinp = sample_signal_at(rows, "vinp", edge_time)
+        vinn = sample_signal_at(rows, "vinn", edge_time)
+        if None in (dcmpp, dcmpn, vinp, vinn):
+            continue
+        if direction == "falling":
+            expected_p = expected_n = 0.9
+            falling += 1
+        elif vinp > vinn + 1e-3:
+            expected_p, expected_n = 0.9, 0.0
+            positive += 1
+        elif vinp < vinn - 1e-3:
+            expected_p, expected_n = 0.0, 0.9
+            negative += 1
+        else:
+            expected_p = expected_n = 0.0
+            equal += 1
+        checked += 1
+        if abs(dcmpp - expected_p) > 0.08 or abs(dcmpn - expected_n) > 0.08:
+            errors += 1
+    coverage = falling > 0 and positive > 0 and negative > 0
+    ok = checked >= 3 and coverage and errors == 0
+    return ok, (
+        f"cmpck_events={checked} errors={errors} coverage={coverage} falling={falling} "
+        f"positive={positive} negative={negative} equal={equal}"
     )
 
 CHECKER_ID = "v4_206_sar_comparator_reset_high"
-CHECKER: Checker = check_v3_sar_comparator_reset_high
+CHECKER: Checker = with_property_diagnostics(
+    check_v3_sar_comparator_reset_high,
+    {"P_INITIALIZE_BOTH_DECISION_OUTPUTS_HIGH_WHENEVER": ("errors", "!coverage")},
+)
