@@ -1,6 +1,8 @@
 """Task-specific checker for canonical v4 DUT 333."""
 from __future__ import annotations
 
+from bisect import bisect_left
+
 from ..api import Checker
 from .diagnostics import with_property_diagnostics
 VCM = 0.45
@@ -32,6 +34,24 @@ def check_v4_333_image_reject_mixer_calibration_loop(rows: list[dict[str, float]
     active_edges = 0
     image_min = 1e9
     streak = 0
+    gain_trim = VCM
+    phase_trim = VCM
+    direction = 1
+    times = [float(row["time"]) for row in rows]
+
+    def mix(row: dict[str, float], gain: float, phase: float) -> tuple[float, float, float]:
+        x = float(row["rf_in"]) - VCM
+        si = 1.0 if float(row["lo_i"]) > VTH else -1.0
+        sq = 1.0 if float(row["lo_q"]) > VTH else -1.0
+        g = 0.8 * (gain - VCM)
+        p = 0.6 * (phase - VCM)
+        i = x * si * (1.0 - g)
+        q = -x * sq * (1.0 + g) - p * x * si
+        return (
+            max(0.0, min(0.9, VCM + i)),
+            max(0.0, min(0.9, VCM + q)),
+            max(0.0, min(0.9, 0.5 * abs(i + q))),
+        )
     for row in rows:
         t = float(row["time"])
         clk = float(row["clk"])
@@ -59,6 +79,9 @@ def check_v4_333_image_reject_mixer_calibration_loop(rows: list[dict[str, float]
             if (rst or disabled_ready) and not clear:
                 clear_errors += 1
             streak = 0
+            gain_trim = VCM
+            phase_trim = VCM
+            direction = 1
             active_edges = 0
             prev_clk = clk
             continue
@@ -69,31 +92,32 @@ def check_v4_333_image_reject_mixer_calibration_loop(rows: list[dict[str, float]
             continue
         prev_clk = clk
         active_edges += 1
-        if active_edges == 1:
-            continue
-        checked += 1
-        rf = float(row["rf_in"])
-        lo_i = float(row["lo_i"])
-        lo_q = float(row["lo_q"])
-        i_out = float(row["i_out"])
-        q_out = float(row["q_out"])
-        # proxy mixer polarity around vcm
-        i_exp = VCM + (rf - VCM) * (1.0 if lo_i > VCM else -1.0) * 0.5
-        q_exp = VCM + (rf - VCM) * (1.0 if lo_q > VCM else -1.0) * 0.5
-        if abs(i_out - i_exp) > 0.25:
-            mixer_errors += 1
-        if abs(q_out - q_exp) > 0.25:
-            mixer_errors += 1
-        image = abs(float(row["image_metric"]))
-        image_min = min(image_min, image)
-        if image < 0.04:
+        _, _, sampled_image = mix(row, gain_trim, phase_trim)
+        image_min = min(image_min, sampled_image)
+        if sampled_image < 0.04:
             streak += 1
+            gain_trim = VCM + 0.5 * (gain_trim - VCM)
+            phase_trim = VCM + 0.5 * (phase_trim - VCM)
         else:
             streak = 0
-        calibrated = _high(row, "calibrated")
-        if calibrated and streak < 3:
-            cal_errors += 1
-        if calibrated and image > 0.06:
+            gain_trim = max(VCM - 0.18, min(VCM + 0.18, gain_trim + direction * 18e-3))
+            phase_trim = max(VCM - 0.18, min(VCM + 0.18, phase_trim - direction * 9e-3))
+            direction = -direction
+        expected_calibrated = streak >= 3
+        sample_index = min(len(rows) - 1, bisect_left(times, t + 0.7e-9))
+        sample = rows[sample_index]
+        if _high(sample, "rst") or not _high(sample, "enable"):
+            continue
+        checked += 1
+        i_exp, q_exp, _ = mix(sample, gain_trim, phase_trim)
+        if abs(float(sample["i_out"]) - i_exp) > 0.08:
+            mixer_errors += 1
+        if abs(float(sample["q_out"]) - q_exp) > 0.08:
+            mixer_errors += 1
+        if abs(float(sample["image_metric"]) - sampled_image) > 0.08:
+            mixer_errors += 1
+        calibrated = _high(sample, "calibrated")
+        if calibrated != expected_calibrated:
             cal_errors += 1
     if image_min > 1e8:
         image_min = 0.0
@@ -101,8 +125,8 @@ def check_v4_333_image_reject_mixer_calibration_loop(rows: list[dict[str, float]
         checked >= 8
         and reset_clear
         and disabled_clear
-        and mixer_errors <= max(4, checked // 2)
-        and cal_errors <= 3
+        and mixer_errors == 0
+        and cal_errors == 0
         and clear_errors <= 6
     )
     return ok, (

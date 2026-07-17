@@ -185,7 +185,12 @@ def check_continuous_factory(rows: list[Row], *, mode: str, task_name: str) -> C
         before = _values_at(rows, ("in0", "in1", "in2", "in3", "ctrl0", "ctrl1", "vdd", "vss", "en"), max(float(rows[0]["time"]), time_s - 0.12e-9))
         after = _values_at(rows, ("in0", "in1", "in2", "in3", "ctrl0", "ctrl1", "vdd", "vss", "en"), min(float(rows[-1]["time"]), time_s + 0.12e-9))
         if before is not None and after is not None:
-            if abs(_cont_expected(mode, before)["flag"] - _cont_expected(mode, after)["flag"]) > 0.45:
+            before_expected = _cont_expected(mode, before)
+            after_expected = _cont_expected(mode, after)
+            if any(
+                abs(before_expected[name] - after_expected[name]) > 0.08
+                for name in ("out", "flag", "metric")
+            ):
                 continue
         observed = {"out": values["out"], "flag": values["flag"], "metric": values["metric"]}
         worst = _worst_error(observed, expected, time_s, worst)
