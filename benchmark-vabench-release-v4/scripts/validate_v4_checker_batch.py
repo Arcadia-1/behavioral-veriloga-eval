@@ -66,7 +66,53 @@ def tree_sha(path: Path, *, excluded_names: set[str] | None = None) -> str:
     return digest.hexdigest()
 
 
-def source_binding(task: Path) -> dict[str, Any]:
+def load_active_mutation_suites(source: Path) -> dict[str, list[str]]:
+    index_path = source / "selection_inputs" / "ACTIVE_MUTATION_SUITE_INDEX.json"
+    if not index_path.is_file():
+        return {}
+    rows = read_json(index_path).get("families", [])
+    suites: dict[str, list[str]] = {}
+    for row in rows:
+        family_id = str(row["family_id"])
+        mutation_ids = [str(value) for value in row["testbench_suite"]]
+        if family_id in suites:
+            raise SystemExit(f"duplicate active mutation suite for family {family_id}")
+        if len(mutation_ids) != 5 or len(set(mutation_ids)) != 5:
+            raise SystemExit(
+                f"family {family_id}: expected exactly five unique active mutations"
+            )
+        suites[family_id] = mutation_ids
+    return suites
+
+
+def selected_mutation_ids(
+    task: Path, active_suites: dict[str, list[str]]
+) -> list[str]:
+    family_id = task.name[:3]
+    manifest = read_json(task / "evaluator" / "mutation_bundles" / "manifest.json")
+    catalog_ids = [str(row["id"]) for row in manifest["mutations"]]
+    mutation_ids = active_suites.get(family_id, catalog_ids)
+    if len(mutation_ids) != 5 or len(set(mutation_ids)) != 5:
+        raise SystemExit(f"{task.name}: expected exactly five active mutations")
+    missing = sorted(set(mutation_ids) - set(catalog_ids))
+    if missing:
+        raise SystemExit(
+            f"{task.name}: active mutations missing from catalog: {', '.join(missing)}"
+        )
+    return mutation_ids
+
+
+def diagnostics_are_complete(
+    *, passed: bool, note: str, property_ids: list[str]
+) -> bool:
+    if passed:
+        return all(property_id in note for property_id in property_ids)
+    return any(property_id in note for property_id in property_ids) and all(
+        field in note for field in ("category=", "expected=", "observed=", "event=")
+    )
+
+
+def source_binding(task: Path, mutation_ids: list[str]) -> dict[str, Any]:
     family_id = task.name[:3]
     evaluator = task / "evaluator"
     public = task / "public" / "task"
@@ -117,6 +163,7 @@ def source_binding(task: Path) -> dict[str, Any]:
                 ),
             }
             for row in manifest["mutations"]
+            if str(row["id"]) in mutation_ids
         ],
     }
 
@@ -235,7 +282,9 @@ def run_case(
     expected_pass = mutation_id is None
     classification_ok = passed is expected_pass
     timing_invariant = transformed_passed is passed
-    diagnostics_complete = all(property_id in note for property_id in property_ids)
+    diagnostics_complete = diagnostics_are_complete(
+        passed=passed, note=note, property_ids=property_ids
+    )
     insufficient_excitation_rejected: bool | None = None
     insufficient_note: str | None = None
     if mutation_id is None:
@@ -294,13 +343,13 @@ def main() -> int:
 
     start, stop = args.family_range
     tasks = [family_dir(source, f"{value:03d}") for value in range(start, stop + 1)]
+    active_suites = load_active_mutation_suites(source)
+    task_mutation_ids: dict[Path, list[str]] = {}
     requests: list[tuple[Path, str, str | None]] = []
     for task in tasks:
         requests.append((task, "gold", None))
-        manifest = read_json(task / "evaluator" / "mutation_bundles" / "manifest.json")
-        mutation_ids = [str(row["id"]) for row in manifest["mutations"]]
-        if len(mutation_ids) != 5:
-            raise SystemExit(f"{task.name}: expected exactly five active mutations")
+        mutation_ids = selected_mutation_ids(task, active_suites)
+        task_mutation_ids[task] = mutation_ids
         requests.extend((task, mutation_id, mutation_id) for mutation_id in mutation_ids)
 
     def execute(request: tuple[Path, str, str | None]) -> dict[str, Any]:
@@ -364,7 +413,9 @@ def main() -> int:
             "missing_trace",
             "infrastructure_error",
         ],
-        "source_bindings": [source_binding(task) for task in tasks],
+        "source_bindings": [
+            source_binding(task, task_mutation_ids[task]) for task in tasks
+        ],
         "status": "pass" if all(case["status"] == "pass" for case in cases) else "fail",
         "cases": cases,
     }
