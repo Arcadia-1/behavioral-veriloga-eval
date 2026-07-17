@@ -18,9 +18,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_event_edge_wrong/certification.json",
-        "certification_sha256": "a2c4b4d0a2ec56ef1f127933d9184d2c1e6b1944ce8818b7cd87aac329de299f",
+        "certification_sha256": "7529d01343545e4d3fd887c3876b128dd36ad6f4b1a01359cd165d9871041c16",
         "fault_class": "trim_update_gain_too_low_under_settles_bias",
-        "mutation_bundle_sha256": "df5f996e762235f4b25dbf5fdbeb89fd9a576295eeb7e44598fad0ddba2d97b6",
+        "mutation_bundle_sha256": "58701eacae15bf07871216abd24c9a544261083981fe7cbdbe777607ff188807",
         "mutation_id": "neg_003_event_edge_wrong",
         "source_catalog_certification_path": "negative_variants/neg_003_event_edge_wrong/certification.json",
         "trigger_condition": "Uses the correct clock/reset contract but an under-relaxed trim update coefficient, so the bias does not reach the low-trim target window.",
@@ -69,10 +69,10 @@
     "bugfix_seed": "neg_001_zero",
     "canonical_dut_id": "073",
     "hashes": {
-      "mutation_catalog_sha256": "35c338707656f1f8f4f4fe27767e30fa8b0535a06c585c3fcaa81c81ac22103a",
+      "mutation_catalog_sha256": "5f9b334266e2649e9c3ca3fbefffad8b020b7bf2bb021aef530061444fbfaae9",
       "score_deck_sha256": "e26be8e98fe137c4726cec898901a8e2878df107183ae9d22c388c8e292904b7",
       "task_certification_sha256": "6998ed6c4d8a1bb32f3974c6c118ff059f58f4f2fd9fbef5b324fede6ac56e2a",
-      "task_record_sha256": "288058b6e7acf94742560bf22d0d10d8d42c8210eed3ab18ce90120935eda66f"
+      "task_record_sha256": "ef8e547a9cffbaacf7e3bfa4c37ef43136a7ea843b3164326032166df28ad9db"
     },
     "release_dir": "073-bias-voltage-generator-with-enable-trim"
   }

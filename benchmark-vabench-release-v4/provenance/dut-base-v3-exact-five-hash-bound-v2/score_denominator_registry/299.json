@@ -30,9 +30,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_gain_sign_flipped/certification.json",
-        "certification_sha256": "fbbcf1bd7a3d1ab64813ac27069731e1b8705c081aa5fbd6e6727d1a94313ae9",
+        "certification_sha256": "4f803ae230bb0e4e934e8e2c4e1c6e4572b9d845af653f4288a4f81a796d3fb4",
         "fault_class": "timing_or_state_update_fault",
-        "mutation_bundle_sha256": "1a8cbda0b0e0fcf0b2e468e334cdbd6bd3975c940a573e27ee1ee0ed581f582b",
+        "mutation_bundle_sha256": "5e7f475be4c2a78cf6a97d2ef632f3550b1b331b3d5ce1512fb394d235292327",
         "mutation_id": "neg_004_gain_sign_flipped",
         "source_catalog_certification_path": "negative_variants/neg_004_gain_sign_flipped/certification.json",
         "trigger_condition": "Sine VCO With Idtmod And Bound Step: flips the vco_gain sign so the output frequency moves the wrong way with vin and the reintegrated phase diverges.",
@@ -68,10 +68,10 @@
     "bugfix_seed": "neg_002_drive_metric_zero",
     "canonical_dut_id": "299",
     "hashes": {
-      "mutation_catalog_sha256": "84283947c8f51f4029bd1f93857e2a34dcc34753e83b560f55e37b9b28491f5d",
+      "mutation_catalog_sha256": "577c6a3023a509fd59c49241fde625faf20fc64cd25395f72b0197297532a3e3",
       "score_deck_sha256": "38ac68f5686aea7340897e765244a2a622cd038ed5282708c7d7731d33f9990d",
       "task_certification_sha256": "245420738c79f6cd957ed4cb8e92f4ac50562e39ca33495ef52b1ab095ad3bb3",
-      "task_record_sha256": "dc376b6d2fe71a482e1dc5cff6f8607db9509e0b2a0ff111543bdaa333632b56"
+      "task_record_sha256": "648b2521e772ad2bed1ad1b4d86455f9135fe6854c3b8c7e358bc0d191500e18"
     },
     "release_dir": "299-sine-vco-idtmod-bound-step"
   }

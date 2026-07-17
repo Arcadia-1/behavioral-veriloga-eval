@@ -60,9 +60,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_metric_scale_low/certification.json",
-        "certification_sha256": "590159c8d8c641dfb4695a466c5b32630b076c3672a82a7a75bfd8bb57ba4f7e",
+        "certification_sha256": "7e5935244e5c5c92fd792513a0e26c5bf6409fd72a762276d08c80840924e3bc",
         "fault_class": "metric_or_observable_fault",
-        "mutation_bundle_sha256": "a25b352330ad0330566ab8a30ee904a70374fee89a9f0d0ad90f268da3372821",
+        "mutation_bundle_sha256": "84430c20535a67b2a0404333c9019406cf078d6e046a5a1058c6de4834d0c8cc",
         "mutation_id": "neg_005_metric_scale_low",
         "source_catalog_certification_path": "negative_variants/neg_005_metric_scale_low/certification.json",
         "trigger_condition": "Decision Router Logic: scales the metric output, preserving the main path while failing measurement checks.",
@@ -78,10 +78,10 @@
     "bugfix_seed": "neg_002_ignore_valid_for_x",
     "canonical_dut_id": "231",
     "hashes": {
-      "mutation_catalog_sha256": "854bfec666ceb62b3c2bb989c08a8f03076ec85093331fe562d13d6136456ad0",
+      "mutation_catalog_sha256": "ead5cd400c44dc5c567b9f6349e620fa2cfff30a91271efe1e5b165202fda129",
       "score_deck_sha256": "05563860279a9e78a860e6acce6419aeb35a633d2c590ca70776650c8481481a",
       "task_certification_sha256": "b682afca421804a79926aab5f23d58dcf1ef7d6db7eda49889c0244823c88824",
-      "task_record_sha256": "9b00bbddabb330dd16604e77e198c643ebf903616224bbfd3ce076fb03485658"
+      "task_record_sha256": "e7f230a632567ac798ec40008dd4c379e96c3e61aa04c0d1d9c897afc29dcf78"
     },
     "release_dir": "231-decision-router-logic"
   }

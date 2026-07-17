@@ -66,7 +66,3 @@ analog begin
 end
 
 endmodule
-
-// vaBench partial-pass negative 1 for strongarm_style_latch_comparator:dut
-// Intended to preserve interface/smoke behavior while failing full checks.
-// Mutation note: boundary_near_miss.

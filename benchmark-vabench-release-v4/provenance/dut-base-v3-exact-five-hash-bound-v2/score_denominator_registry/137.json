@@ -54,9 +54,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_metric_scale_low/certification.json",
-        "certification_sha256": "9986771a84016b2954e6fe7cdc8c5bf76d14db4e1b41c9f8f33ee8dc722e046b",
+        "certification_sha256": "5c601a19a520aa6f9d065e0d2bd98ecd87db300ac0e7e770747d08745753fcd8",
         "fault_class": "metric_or_observable_fault",
-        "mutation_bundle_sha256": "d9cea472b8f2286a9f06c4bd71a923abe9ccb7140b75be3cc89011c5d169b543",
+        "mutation_bundle_sha256": "6dc6dc074a8855ecf6a17d523064d959c2c506f25462160bd6851909daee1b05",
         "mutation_id": "neg_005_metric_scale_low",
         "source_catalog_certification_path": "negative_variants/neg_005_metric_scale_low/certification.json",
         "trigger_condition": "Scales the limited variable-gain output too low while preserving the module/interface shape.",
@@ -68,10 +68,10 @@
     "bugfix_seed": "neg_002_missing_midpoint",
     "canonical_dut_id": "137",
     "hashes": {
-      "mutation_catalog_sha256": "758e49c1525ba6157a2dc9955733610d412fcdb88ac8956c1bfa00f494c75f2e",
+      "mutation_catalog_sha256": "b2c49f18878726ea877e4fd4ea0002509f7ad90b33bf8080fb72cf02dfe1c1e3",
       "score_deck_sha256": "b931e084e3bc2690837d21666aeeb68ec1164ebbf9ddda3dd5e6b0ba986acb5e",
       "task_certification_sha256": "ea34fb54cad55cc24ba6f46ef01881fccf65d214beeba46889f64f367557ab5a",
-      "task_record_sha256": "ff0bf339926a0eac9e2b32d7abe510ff7523b148ff46afd916eef01b052186bd"
+      "task_record_sha256": "f19ede6cf429745c15f55f0ff9433e75e8ca741ea75463e05c16cbea9bf473ed"
     },
     "release_dir": "137-variable-gain-differential-amplifier"
   }

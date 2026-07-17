@@ -42,9 +42,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_metric_scale_low/certification.json",
-        "certification_sha256": "6c66c70cc6185205e6f84f50d6906bc3c660c65a74ddeacbbc9348162116fd13",
+        "certification_sha256": "789a37ac9760272c3ace8ea698215a006f5da2d33d60347cd4978a9ceecb0cf9",
         "fault_class": "fault_005_metric_scale_low",
-        "mutation_bundle_sha256": "b5fe5dfd2eb4d1ea4e91a4b30e6eed22658a8fb3728762130de9d997c00fdd2a",
+        "mutation_bundle_sha256": "7aadba04b1e026cae1bcb31159585c9e5ec05c84604bb805d8bea10b02cd19b3",
         "mutation_id": "neg_005_metric_scale_low",
         "source_catalog_certification_path": "negative_variants/neg_005_metric_scale_low/certification.json",
         "trigger_condition": "Analog Mux Threshold: scales the metric output, preserving the main path while failing measurement checks.",
@@ -68,10 +68,10 @@
     "bugfix_seed": "neg_001_zero",
     "canonical_dut_id": "114",
     "hashes": {
-      "mutation_catalog_sha256": "faae43965e2c451fb0d9740abe43dacb59ee24d3aa5cbb7caa094a6fa76dc606",
+      "mutation_catalog_sha256": "19bde8d36ffa73ea91f81236d9205174eb546eb79e8329b7e37603ddb0de0a76",
       "score_deck_sha256": "608e4f8c442c72503667f20ab2045ac804cc3d05eef3fb85076095388027df1b",
       "task_certification_sha256": "56bbd193b0cf633f5b5bc838776c6e41af29c0b2933b8395f4a84a804c52e589",
-      "task_record_sha256": "0ca55d7e6448ec862dc37d95081548dc632bd42107e4a44600753f42557051e0"
+      "task_record_sha256": "a4fa64b8a4fbdd484af4468ddcc143c0097c40b9042b71bbf63aaceaa38c08a3"
     },
     "release_dir": "114-analog-mux-threshold"
   }

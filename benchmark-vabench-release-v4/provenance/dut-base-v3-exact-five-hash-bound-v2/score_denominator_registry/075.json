@@ -18,9 +18,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_002_threshold_shifted/certification.json",
-        "certification_sha256": "435745ad3679bb7df4566531db0f9e9e5d2bf832b8767e492233c0e35fa659ed",
+        "certification_sha256": "f234b47f4ee6673dea15efbdab517ffbf3febf1092ac466bb5891512ca4400cf",
         "fault_class": "peak_accept_threshold_too_high_misses_valid_public_peak",
-        "mutation_bundle_sha256": "71e777442da3c1bba0a14e696061e168059918bf3dc5ac91ed71bdb6c7f7f8e9",
+        "mutation_bundle_sha256": "ae78474bda80b6dc1af7b13ec7c596d6552cbfdb1a064740b06d14eeab891fb8",
         "mutation_id": "neg_002_threshold_shifted",
         "source_catalog_certification_path": "negative_variants/neg_002_threshold_shifted/certification.json",
         "trigger_condition": "Requires vin to exceed 0.60 V before updating the held peak, missing a valid 0.55 V public peak while retaining reset behavior.",
@@ -68,10 +68,10 @@
     "bugfix_seed": "neg_001_zero",
     "canonical_dut_id": "075",
     "hashes": {
-      "mutation_catalog_sha256": "39074e09ca272a0bc7a176ec3cbb82cb9aad861164fd9d07ed1ba64bef788f2d",
+      "mutation_catalog_sha256": "faa85bdd27e997a6ed84d04ae2a7cd21f7764616f9239f40f6fc1f25b3bdcaca",
       "score_deck_sha256": "8933ffbc05eef1afcc43a28ce30801be576d8c18b7f984748edb723f2a450cd7",
       "task_certification_sha256": "279ff2ec4598ff888f5a7ead0d51f7d253d28f8238cb5a8b929f8a1243c6b4ab",
-      "task_record_sha256": "34cefaa0babb591e263885811220806bf7734bbf911bd060e0c6589365300234"
+      "task_record_sha256": "1f65397d3cc8fa50b385355b3c2a5e03414530617c96c80566eb946e67290a19"
     },
     "release_dir": "075-peak-detector"
   }

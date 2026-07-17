@@ -30,9 +30,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_metric_scale_low/certification.json",
-        "certification_sha256": "dc6255e79ffd00f47c3996a6f63152816ab17868422af373f1cb9aff40a177a5",
+        "certification_sha256": "a4979dcf400f31244ef647496e782589deeefe20177b5c4933d58afd8bc42927",
         "fault_class": "timing_or_state_update_fault",
-        "mutation_bundle_sha256": "d8350c8158d79ee73fbe5863e6db180cc11a5240158b6235a8939b116105192e",
+        "mutation_bundle_sha256": "21741b66b59688d2aabb0f4e52522f9acf5f343f29ea2442fea2c466e3a65dd7",
         "mutation_id": "neg_005_metric_scale_low",
         "source_catalog_certification_path": "negative_variants/neg_005_metric_scale_low/certification.json",
         "trigger_condition": "DAC Restore 4bit Clocked: scales the metric output, preserving the main path while failing measurement checks.",
@@ -68,10 +68,10 @@
     "bugfix_seed": "neg_003_wrong_denominator",
     "canonical_dut_id": "207",
     "hashes": {
-      "mutation_catalog_sha256": "88c728c891a03139e7e12a0dfe86ae9e793504ac50e6eba48a4026dac8fcc4ba",
+      "mutation_catalog_sha256": "8337764f3bd60eff1f2877829d11c7a6216b7ba33e5ea4417b31645746640fdc",
       "score_deck_sha256": "2de6b985d3614cd07421c75c5e4e36402164b3a369234910ddc63163f21bd118",
       "task_certification_sha256": "fbb14c87328e1aecdcba03f0b240975c36538790e438e648f4827ea9bae343dd",
-      "task_record_sha256": "65c54945f445357c21abda60aec87ec9fc3be76bab50a9ff4b0117ad1a5879af"
+      "task_record_sha256": "e555621462ca6164443969ab8f825a1e8f9b2c3608139b70ac5aa527a447226a"
     },
     "release_dir": "207-dac-restore-4bit-clocked"
   }

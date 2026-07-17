@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_boundary/certification.json",
-        "certification_sha256": "b44178f601bbce3bd37fafe4f0afb8592596bdcc633cdc5168e59afc71376930",
+        "certification_sha256": "aac898015088faa612bf12cc8a9481fbbfbf727fa6daebffda39ce0e09aefa4f",
         "fault_class": "boundary_semantic_error",
-        "mutation_bundle_sha256": "e717a79bb21a721c89ecc1bbd1b7a8dfa608fc1b8fc35b0b92b463e4c81f401c",
+        "mutation_bundle_sha256": "81429e09c1898c8212da73e702130b46587b2e286215f0ad6869c18849b13a23",
         "mutation_id": "neg_001_boundary",
         "source_catalog_certification_path": "negative_variants/neg_001_boundary/certification.json",
         "trigger_condition": "a public endpoint, threshold, saturation, or settling boundary is exercised",
@@ -68,10 +68,10 @@
     "bugfix_seed": "neg_001_boundary",
     "canonical_dut_id": "026",
     "hashes": {
-      "mutation_catalog_sha256": "ec5266356d86cf2fff2c95a35d9d564a0848af80e7a91468b51cd88879d126dc",
+      "mutation_catalog_sha256": "4c3557798dacee31eb27072f8d0455acd2cd277fc0f306657f899abfdc20c0b2",
       "score_deck_sha256": "09fd0f4aa23ea1aa4932f36b0ffc30eedcc56ee8d8944dd581af4b4e75e48e80",
       "task_certification_sha256": "649553cbb23640a0b175956692f063ba905fa867ee968e0252c21b79e125b50c",
-      "task_record_sha256": "e691dfa542ad2e827f5fb174f54769dabf1bc7bc3902e49bfca03f6f441b87e0"
+      "task_record_sha256": "1e16701dfe8298089ed3472ebe328a0bf6ee59f0ff0c4b2352616734c7aeeb8d"
     },
     "release_dir": "026-digital-phase-accumulator-with-modulo-wrap"
   }

@@ -1,7 +1,6 @@
 `include "constants.vams"
 `include "disciplines.vams"
 
-// Negative: adds one to every nonzero decoded divide ratio.
 module clk_divider_ref (
     input electrical clk_in, input electrical rst_n,
     input electrical div_code_0, input electrical div_code_1,

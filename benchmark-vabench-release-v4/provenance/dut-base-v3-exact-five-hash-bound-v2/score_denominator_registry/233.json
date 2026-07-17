@@ -56,9 +56,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_005_metric_scale_low/certification.json",
-        "certification_sha256": "8af020de7bbb93f77662b21cbd09135c17aacc5034b05799d206e30494d55c19",
+        "certification_sha256": "c1642dafb658ce14b0487916feea477efc26432921228dae99a27fb658177631",
         "fault_class": "threshold_or_boundary_fault",
-        "mutation_bundle_sha256": "fc11de8a4696db9c8e84c7a096b99884fcd5d08976b2305a8b7e12e516d9a238",
+        "mutation_bundle_sha256": "5f0b43fbc0cbf8eda187563422cda1d0c3126a38f307832294f5f7d9f8db23a2",
         "mutation_id": "neg_005_metric_scale_low",
         "source_catalog_certification_path": "negative_variants/neg_005_metric_scale_low/certification.json",
         "trigger_condition": "Scales the clipped variable-gain output too low while preserving the module/interface shape.",
@@ -71,10 +71,10 @@
     "bugfix_seed": "neg_002_missing_input_offset",
     "canonical_dut_id": "233",
     "hashes": {
-      "mutation_catalog_sha256": "bb86ade46ecd404770d452c0fc08ee5eebe15ef1032c8ad675fbf13d1277e5db",
+      "mutation_catalog_sha256": "8a2d53b80905825118aafc50379bc6d40aed82b46a5ea6a4886cd25fe9985423",
       "score_deck_sha256": "c564e109b72585d8177f58c216f09711c4811c6d7dc5f0f039fcae5aa593fa25",
       "task_certification_sha256": "8ad58ae1b98ba028c9d428947ca8c19612967b8892a49c41b686643cc6e16436",
-      "task_record_sha256": "949eb9f945510fee75f42d4933efd317d207b662dd6198bce83f6b8e27e3dbe1"
+      "task_record_sha256": "c8214bede4c1c2aa2e823c834b21b7f9939c997279fc33a284cdf9f07c9ba74e"
     },
     "release_dir": "233-vargain-diffamp-clip"
   }

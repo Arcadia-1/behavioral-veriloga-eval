@@ -55,9 +55,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_drive_vctrl_mid/certification.json",
-        "certification_sha256": "fe82e97b292115a848cc9d450f43bd752e47f76c476e12c1b8e7c09a367d146e",
+        "certification_sha256": "49bc5fcc01bba3fdc460b6561e8fa06cb92308686d5df08cf5a4fa585a44dabf",
         "fault_class": "polarity_or_direction_error",
-        "mutation_bundle_sha256": "230862cc5ecb4badf8c291e6b36be4b2e129c3e593d461388cf61f5f286b9d92",
+        "mutation_bundle_sha256": "ff730c25aa11123993647c09f379044a7855785f388c197585c2c7b680cfa3e7",
         "mutation_id": "neg_001_drive_vctrl_mid",
         "source_catalog_certification_path": "negative_variants/neg_001_drive_vctrl_mid/certification.json",
         "trigger_condition": "Charge Pump PFD State Machine: holds vctrl at the initial mid value so it never ramps toward the lead polarity and the late-window rail check fails.",
@@ -69,10 +69,10 @@
     "bugfix_seed": "neg_002_drive_metric_mid",
     "canonical_dut_id": "301",
     "hashes": {
-      "mutation_catalog_sha256": "c03ef6f6ec5abe9bdf05e1b955a6e2a170b96a098271b8e598887fc51e9c0e54",
+      "mutation_catalog_sha256": "7315d29f37d913290945f73aaa68f25b07a6c4df6e284ae761e1fe9eb695b5e3",
       "score_deck_sha256": "e3548aadbebb00c32c88ac8776988f7891d73aa8296a3d423df96765ed616d21",
-      "task_certification_sha256": "92f76d7dfb1a0be99147603a37dcf66350a4b341740f8736af7f52548e02ec56",
-      "task_record_sha256": "341ad4fe14cea26cfc26372784a676eea4913567e848557d2025ccc0704121e8"
+      "task_certification_sha256": "2dbabaf0daeac05adf51504c2c67ca14ecee6d23718018955642a2820ea9fef3",
+      "task_record_sha256": "a26113c114dd94d0d4871068489fda230ebb02d94fdd45eed6066c293c5ee42b"
     },
     "release_dir": "301-charge-pump-pfd-state-machine"
   }

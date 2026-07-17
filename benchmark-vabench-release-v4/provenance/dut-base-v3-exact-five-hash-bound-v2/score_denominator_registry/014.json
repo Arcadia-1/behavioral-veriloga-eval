@@ -19,9 +19,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_003_polarity_direction/certification.json",
-        "certification_sha256": "8385ec810a339064a449c87236ffef35b1972395b0f4f11acb6ae7533c46b8a6",
+        "certification_sha256": "9de7580d2194312c2e7103460677b07b62161e9a63c000ac74cf6ee9431bb82d",
         "fault_class": "binary_lsb_weight_swap",
-        "mutation_bundle_sha256": "9c7d540978d628d9252fbf33168e0421bca40451dee2611466fd3ec4f909e299",
+        "mutation_bundle_sha256": "01e4bf71e291ce49d87733233dc19fd98253f00708a4b36b9001116b64402d78",
         "mutation_id": "neg_003_polarity_direction",
         "source_catalog_certification_path": "negative_variants/neg_003_polarity_direction/certification.json",
         "trigger_condition": "the code sequence distinguishes b0 from b1 weighting",
@@ -73,10 +73,10 @@
     "bugfix_seed": "neg_001_boundary",
     "canonical_dut_id": "014",
     "hashes": {
-      "mutation_catalog_sha256": "a3ac50c77b7742ad758a3657b0ca4557e525dea43298672f6321112edd3c138c",
-      "score_deck_sha256": "2e6a69280db182a5c75ffc91a15f3eb340df5a8f56596a766ba20225e8694413",
+      "mutation_catalog_sha256": "4c60e8005f82a0e4d02895b9f67b1f15de6195e789b1c9ca59073d0eab12e44a",
+      "score_deck_sha256": "05fb4d65ae86af1016acc065aa2c28d1caf15c8ea34a9cf06467d6a6b8930296",
       "task_certification_sha256": "a242e6b36280351f592ebc8e12d9b79861dd8aa2bca06b6d84e45a001dd51340",
-      "task_record_sha256": "9eac94c6ca8a96730e11ce1326e9f0e978f2a303cf6e97bca0a7cfb6dd29d8fe"
+      "task_record_sha256": "e6199cf88250bbd9755f1792d615a0411c27ef1f56f2f0b25c7ce4297dee98f2"
     },
     "release_dir": "014-segmented-dac"
   }

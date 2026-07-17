@@ -20,9 +20,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_004_reset_polarity_wrong/certification.json",
-        "certification_sha256": "6d6e822cf1be9a5ba6251b3665f6b287f3b9aa74d747d9b3647cbf4cd58845e8",
+        "certification_sha256": "f417f57f5ee306d9d674b0c11e5675d496677eee61759f2f386885de77080ddd",
         "fault_class": "reset_semantics_error",
-        "mutation_bundle_sha256": "3be5b088a8784ca01f1c242180eca071d2dac66f01bf8668ce66481d3b617f22",
+        "mutation_bundle_sha256": "1d63bd09688e02067fb2836e156f3847da18bbecc82492f2e7c7cc617bf76c3a",
         "mutation_id": "neg_004_reset_polarity_wrong",
         "source_catalog_certification_path": "negative_variants/neg_004_reset_polarity_wrong/certification.json",
         "trigger_condition": "reset/recovery stimulus exercises Reference Startup Enable Flow state override behavior",
@@ -76,10 +76,10 @@
     "bugfix_seed": "neg_002_threshold_shifted",
     "canonical_dut_id": "099",
     "hashes": {
-      "mutation_catalog_sha256": "4ae5cd57386119993ffcd314b2e16d974f3561dd5d6eebe5b62929f25f975a44",
+      "mutation_catalog_sha256": "642e0cbc28b8372804089a19e3b9e69cf945f82e0be36c7c623520e2783f4a00",
       "score_deck_sha256": "eab68179d0e8d6870f8c7e5842ff3e803e226b5e948bee4bb4c9661d0b0b5372",
       "task_certification_sha256": "1a69a24dd6b6cfc68b407d84dcdcef27d553a7e0fa50ca33d456736c08534dec",
-      "task_record_sha256": "58372c978f8bb149019f07fb1aef300f82f882216ce49d117a2fc4ce68fdca68"
+      "task_record_sha256": "c334cbc05f415e6a93b99fa41bd086f372e59bdc8deb2cc1af3ca748c91dc37a"
     },
     "release_dir": "099-reference-startup-enable-flow"
   }

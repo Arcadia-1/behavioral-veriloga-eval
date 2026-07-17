@@ -6,9 +6,9 @@
     "active_mutations": [
       {
         "certification_path": "evaluator/mutation_bundles/neg_001/certification.json",
-        "certification_sha256": "9cd3775762986a60aabbc82a1579be9fc754942f8b9611ed171579e95d79c4ba",
+        "certification_sha256": "78e7fd4c243d84753650db631328df3d74206b2e25cad0f8a096e26e91b04092",
         "fault_class": "applies_a_nonzero_comparator_offset_that_changes_the_near_threshold_latch_decision",
-        "mutation_bundle_sha256": "f814078db5f5f588f76f8dcd7571118f6e46c1e4bd8255fb3f11ff4c4626fe23",
+        "mutation_bundle_sha256": "9a7d0db348d29586513d141fbf27e86ba84ec86d185f6e240f389ab81c7c8807",
         "mutation_id": "neg_001",
         "source_catalog_certification_path": "negative_variants/neg_001/certification.json",
         "trigger_condition": "Applies a nonzero comparator offset that changes the near-threshold latch decision.",
@@ -69,10 +69,10 @@
     "bugfix_seed": "neg_001",
     "canonical_dut_id": "017",
     "hashes": {
-      "mutation_catalog_sha256": "3e1375b254fb64a837402aeb54252b2e8390a9001b6107a61e253dda2ec5ce48",
-      "score_deck_sha256": "18dc58917bc552597487a78c3ea8b65bc3da56686ac925974a14be363ebee4ff",
+      "mutation_catalog_sha256": "a526182a28621bfcf12b8781110d5cba32bc611a9e752adbe48e4515be20e5e7",
+      "score_deck_sha256": "033974764333f063812d1f12535d1eb39cc2f6b8c1137f718b1a368819b1ce15",
       "task_certification_sha256": "4d4e869f9786e2f0237000232c351a28daf262e5d0702c3be64d0bee6b254144",
-      "task_record_sha256": "4d657d732e77c5f5f96e374371ebb000eb6d154a44c2f5f2edca1f1b9a500af3"
+      "task_record_sha256": "6a4d9dd83315994559ed59ccb5cd071152dd06ff8548aa242737fca208f1d116"
     },
     "release_dir": "017-strongarm-style-latch-comparator"
   }

@@ -1,5 +1,3 @@
-// vaBench generated partial-pass negative: reset_polarity_wrong
-// Preserves module/interface shape while intentionally violating one hidden behavior contract.
 `include "constants.vams"
 `include "disciplines.vams"
 module settling_time_measurement_tb(step,vout,done);

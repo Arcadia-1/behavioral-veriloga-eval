@@ -18,9 +18,9 @@
       },
       {
         "certification_path": "evaluator/mutation_bundles/neg_001_threshold_too_wide/certification.json",
-        "certification_sha256": "972e62ae2164d4b22d25ad10fd457a28671b74ca113c0d6948d78d8015b1ebda",
+        "certification_sha256": "cab62f0e1d1a7203ed0a87503e60f85895dde977566136f72cca307d4b1c2b37",
         "fault_class": "decision_threshold_error",
-        "mutation_bundle_sha256": "91a630d1ffdab0ca0065eb0cc6593beb4e573d590091203638892d17dec05f0d",
+        "mutation_bundle_sha256": "87b1edc4cf42376ed78756ebef07d21725ab3ef9a6b40d8c2c16a3bc63057a7b",
         "mutation_id": "neg_001_threshold_too_wide",
         "source_catalog_certification_path": "negative_variants/neg_001_threshold_too_wide/certification.json",
         "trigger_condition": "sampled VIN lies between the quarter- and third-reference thresholds",
@@ -69,10 +69,10 @@
     "bugfix_seed": "neg_004_middle_code_wrong",
     "canonical_dut_id": "003",
     "hashes": {
-      "mutation_catalog_sha256": "18d61dd01d2ebdb162e64009f8f5850a7a1f7517d4c0dd5632315acaf0ab59d4",
+      "mutation_catalog_sha256": "64202a5aa1060857f08c05d85a89b1d8e2901b4b260d5c8c09054ac02e8ab1b2",
       "score_deck_sha256": "867ab654a840a85d28d4ea360e3c1df2e96161439fbd0c442d587660031d376c",
       "task_certification_sha256": "a8c4766e1e5c35444a1358def11087891ac471669c66de273a979361c76b131a",
-      "task_record_sha256": "0a4942e20181683009d17eb61c8cada69d562a0f7f5ef0c5eb26f41a557e2b70"
+      "task_record_sha256": "290116af7ad3a1655cc1844c45a21fdd471a476410fba803c49d3b5d94a9f41a"
     },
     "release_dir": "003-pipeline-adc-stage"
   }

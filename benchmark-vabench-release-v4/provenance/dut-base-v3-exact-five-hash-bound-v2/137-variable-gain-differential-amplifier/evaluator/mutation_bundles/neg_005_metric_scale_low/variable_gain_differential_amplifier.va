@@ -1,5 +1,3 @@
-// vaBench generated partial-pass negative: metric_scale_low
-// Preserves module/interface shape while intentionally violating one public contract.
 `include "disciplines.vams"
 
 module variable_gain_differential_amplifier(sigin_p, sigin_n, sigctrl_p, sigctrl_n, sigout);
