@@ -101,6 +101,24 @@ def _representative_clear_rows(rows: list[dict[str, float]], *, has_enable: bool
             last_selected = time
     return selected
 
+def _inactive_between(rows: list[dict[str, float]], start: float, stop: float) -> bool:
+    return any(
+        _high(row, "rst") or not _high(row, "enable")
+        for row in rows
+        if start < float(row["time"]) <= stop
+    )
+
+def _last_inactive_time(rows: list[dict[str, float]], stop: float) -> float:
+    return max(
+        (
+            float(row["time"])
+            for row in rows
+            if float(row["time"]) < stop
+            and (_high(row, "rst") or not _high(row, "enable"))
+        ),
+        default=float(rows[0]["time"]),
+    )
+
 def check_v4_357_bangbang_cdr_loop(rows: list[dict[str, float]]) -> tuple[bool, str]:
     ids = ["P_RESET_DISABLE_CLEAR", "P_BANGBANG_DECISION", "P_PHASE_CODE_UPDATE", "P_PHASE_ROTATION", "P_LOCK_QUALIFICATION"]
     results = [PropertyResult(pid) for pid in ids]
@@ -129,7 +147,21 @@ def check_v4_357_bangbang_cdr_loop(rows: list[dict[str, float]]) -> tuple[bool, 
         if _high(before, "rst") or not _high(before, "enable"):
             continue
         code = _code(before, ["phase_0", "phase_1", "phase_2", "phase_3", "phase_4"])
+        expected_destination = source_time + code * time_scale * UNIT_PHASE_DELAY
         destination = _nearest_after(destinations, source_time, limit=source_time + 0.45 * 10e-9)
+        observation_stop = destination if destination is not None else expected_destination
+        if (
+            expected_destination > float(rows[-1]["time"])
+            or _inactive_between(rows, source_time, observation_stop)
+        ):
+            continue
+        if destination is None:
+            last_inactive = _last_inactive_time(rows, source_time)
+            polarity_synchronized = any(
+                last_inactive < edge < source_time for edge in destinations
+            )
+            if not polarity_synchronized:
+                continue
         item = prop["P_PHASE_ROTATION"]
         item.checked += 1
         if destination is None or code == 0:
