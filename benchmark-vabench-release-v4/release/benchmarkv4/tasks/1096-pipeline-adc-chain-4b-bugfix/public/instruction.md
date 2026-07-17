@@ -44,6 +44,37 @@ The repaired bundle must satisfy every public property:
 - `P_STAGE2_RESIDUE`: restore: RES2 is four times the stage-2 input error from its selected bin center, clipped to the conversion range. Required traces: `time`, `res1`, `s2b1`, `s2b0`, `res2`.
 - `P_FINAL_CODE_CONCATENATION`: restore: DOUT3/DOUT2 equal the stage-1 bits and DOUT1/DOUT0 equal the stage-2 bits, using VDD for high and VSS for low. Required traces: `time`, `vdd`, `vss`, `s1b1`, `s1b0`, `s2b1`, `s2b0`, `dout3`, `dout2`, `dout1`, `dout0`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+This is an L2 pipeline-ADC residue-chain component. On each rising crossing of
+`CLK`, clip `VIN` to the `vrefn`-to-`vrefp` range and perform a two-stage
+2-bit/stage conversion.
+
+Stage 1 makes a 2-bit coarse decision from the clipped input. It should output
+that decision on `S1B1/S1B0`, compute the center of the selected quarter-scale
+bin, amplify the input error from that center by four, and drive the clipped
+first residue on `RES1`.
+
+Stage 2 quantizes `RES1` with the same 2-bit quarter-scale rule. It should
+output the backend decision on `S2B1/S2B0`, compute the second residue with the
+same gain-of-four residue rule, and drive the clipped backend residue on
+`RES2`.
+
+The final output word is the stage-1 decision concatenated with the stage-2
+decision: `DOUT3/DOUT2` are the stage-1 bits and `DOUT1/DOUT0` are the stage-2
+bits. High logic outputs should be near `VDD`; low logic outputs should be near
+`VSS`.
+
+**Public Verification Context**
+
+The public transient scenario drives representative points across all 16 final
+4-bit code bins, alternates lower-half and upper-half points inside adjacent
+bins, and observes `vin`, `clk`, `res1`, `res2`, the stage bits, and the final
+code bits. Treat that scenario as observable verification context, not as values
+to hard-code into the DUT.
+
+
 ## Modeling Constraints
 
 - Use deterministic rising-edge sampled two-stage quarter-scale conversion.

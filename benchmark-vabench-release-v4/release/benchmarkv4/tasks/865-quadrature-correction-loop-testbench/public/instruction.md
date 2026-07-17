@@ -116,10 +116,50 @@ hierarchical/private nodes, or use checker/gold/internal files.
 
 Create stimulus and save traces sufficient for the fixed evaluator oracle to check:
 
-- `P_RESET_CLEAR`: exercise and make observable: Reset clears both trim buses, corrected outputs, error metric, and lock state. Required traces: `time`, `rst`, `i_out`, `q_out`, `gain_code_3`, `gain_code_2`, `gain_code_1`, `gain_code_0`, `phase_code_3`, `phase_code_2`, `phase_code_1`, `phase_code_0`, `error_metric`, `locked`.
-- `P_TRIM_DIRECTION`: exercise and make observable: Enabled calibration updates signed gain and phase trim codes in directions that reduce measured amplitude and quadrature errors. Required traces: `time`, `i_in`, `q_in`, `clk`, `cal_en`, `gain_code_3`, `gain_code_2`, `gain_code_1`, `gain_code_0`, `phase_code_3`, `phase_code_2`, `phase_code_1`, `phase_code_0`, `error_metric`.
-- `P_CORRECTION_APPLICATION`: exercise and make observable: Corrected I and Q outputs apply the currently exposed gain and phase trim codes and remain bounded by the supplies. Required traces: `time`, `i_in`, `q_in`, `rst`, `i_out`, `q_out`, `gain_code_3`, `gain_code_2`, `gain_code_1`, `gain_code_0`, `phase_code_3`, `phase_code_2`, `phase_code_1`, `phase_code_0`.
-- `P_LOCK_HOLD`: exercise and make observable: Lock asserts after three consecutive in-tolerance calibration updates, and disabling calibration holds codes while correction remains active. Required traces: `time`, `clk`, `cal_en`, `gain_code_3`, `gain_code_2`, `gain_code_1`, `gain_code_0`, `phase_code_3`, `phase_code_2`, `phase_code_1`, `phase_code_0`, `error_metric`, `locked`.
+- `P_RESET_CLEAR`: exercise and make observable: Reset asynchronously clears signed_gain, signed_phase, both encoded trim buses, error_metric, the qualification counter, and locked, and drives i_out=q_out=vcm. Required traces: `time`, `rst`, `i_out`, `q_out`, `gain_code_3`, `gain_code_2`, `gain_code_1`, `gain_code_0`, `phase_code_3`, `phase_code_2`, `phase_code_1`, `phase_code_0`, `error_metric`, `locked`.
+- `P_TRIM_DIRECTION`: exercise and make observable: On each enabled rising edge update signed_gain from gain_error=abs(i_in-vcm)-abs(q_in-vcm)-signed_gain*trim_lsb and signed_phase from phase_error=(i_in-vcm)*(q_in-vcm)-signed_phase*trim_lsb using +/-error_tol thresholds, saturating each to -8..7 and encoding negatives as code=7-signed_value. Required traces: `time`, `i_in`, `q_in`, `clk`, `cal_en`, `gain_code_3`, `gain_code_2`, `gain_code_1`, `gain_code_0`, `phase_code_3`, `phase_code_2`, `phase_code_1`, `phase_code_0`, `error_metric`.
+- `P_CORRECTION_APPLICATION`: exercise and make observable: Decode signed trim buses, set gain_corr=signed_gain*trim_lsb and phase_corr=signed_phase*trim_lsb, and clamp i_out=vcm+(i_in-vcm)-0.5*gain_corr and q_out=vcm+(q_in-vcm)+0.5*gain_corr-phase_corr*(i_in-vcm)/vcm to the supplies. Required traces: `time`, `i_in`, `q_in`, `rst`, `i_out`, `q_out`, `gain_code_3`, `gain_code_2`, `gain_code_1`, `gain_code_0`, `phase_code_3`, `phase_code_2`, `phase_code_1`, `phase_code_0`.
+- `P_LOCK_HOLD`: exercise and make observable: Expose post-update phase_error on error_metric; count inclusive in-tolerance pre-update phase errors, clear the count on a phase update, assert locked at count three, and hold codes and correction while cal_en is low. Required traces: `time`, `clk`, `cal_en`, `gain_code_3`, `gain_code_2`, `gain_code_1`, `gain_code_0`, `phase_code_3`, `phase_code_2`, `phase_code_1`, `phase_code_0`, `error_metric`, `locked`.
+
+
+The following canonical public behavior is normative for this derived form:
+
+- On reset, clear gain and phase trim codes, outputs, `error_metric`, and `locked`.
+- When `cal_en` is high, `skew_estimator` samples I/Q imbalance once per rising `clk` edge and updates a signed public error metric.
+- `gain_trim` updates the gain code in the direction that reduces amplitude imbalance between I and Q deviations from `vcm`.
+- `corrector` applies the gain and phase trim codes to drive corrected `i_out` and `q_out`.
+- Clamp gain and phase trim codes to 0 through 15 and expose them on their voltage-coded output buses.
+- Assert `locked` after three consecutive calibration updates where `error_metric` magnitude is within `error_tol`.
+- When `cal_en` is low, hold trim codes and continue applying the last correction.
+
+Use signed trim states `signed_gain,signed_phase` in the range -8 through 7.
+Encode a nonnegative signed value directly as public code 0 through 7, and
+encode a negative value as `code = 7-signed_value` (so -1 through -8 map to
+8 through 15). On each enabled rising edge compute
+
+`gain_error = abs(i_in-vcm) - abs(q_in-vcm) - signed_gain*trim_lsb`
+
+and increment/decrement `signed_gain` when this error is respectively above
+`error_tol` or below `-error_tol`. Independently compute
+
+`phase_error = (i_in-vcm)*(q_in-vcm) - signed_phase*trim_lsb`
+
+and update `signed_phase` by the same threshold rule. Expose the post-update
+`phase_error` on `error_metric`. Count consecutive edges on which the
+pre-update phase error is within the inclusive tolerance; clear the count on a
+phase update and assert `locked` when the count reaches three.
+
+Decode the two exposed buses back to signed values, let
+`gain_corr=signed_gain*trim_lsb`, `phase_corr=signed_phase*trim_lsb`, and drive
+
+`i_out = clamp(vcm + (i_in-vcm) - 0.5*gain_corr, vss, vdd)`
+
+`q_out = clamp(vcm + (q_in-vcm) + 0.5*gain_corr - phase_corr*(i_in-vcm)/vcm, vss, vdd)`.
+
+Reset asynchronously clears both signed states, codes, metric, counter, and
+lock, and drives both corrected outputs to `vcm`. Low `cal_en` holds all
+calibration state while the corrector remains active.
+
 
 The required trace names are: `time`, `i_in`, `q_in`, `clk`, `rst`, `cal_en`, `i_out`, `q_out`, `gain_code_3`, `gain_code_2`, `gain_code_1`, `gain_code_0`, `phase_code_3`, `phase_code_2`, `phase_code_1`, `phase_code_0`, `error_metric`, `locked`.
 

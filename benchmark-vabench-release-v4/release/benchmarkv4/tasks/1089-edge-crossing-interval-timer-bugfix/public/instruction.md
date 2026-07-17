@@ -34,6 +34,31 @@ The repaired bundle must satisfy every public property:
 - `P_COMPLETION_MARKER`: restore: Seen_out is rail-high after a valid a-then-b capture and rail-low while a newly armed measurement is incomplete. Required traces: `time`, `vdd`, `vss`, `a`, `b`, `seen_out`.
 - `P_SINGLE_CAPTURE_PER_ARM`: restore: Additional b crossings after completion do not change delay_out until the next rising a edge rearms the timer. Required traces: `time`, `a`, `b`, `delay_out`, `seen_out`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+This task asks for the `cross_interval_163p333_ref` behavioral DUT module, not
+a testbench. The module measures the interval from a rising edge on
+`a` to the next rising edge on `b` and exposes both the measured interval and a
+completion marker.
+
+Required observable behavior:
+
+- On a rising `a` crossing, arm a fresh measurement and clear the completion
+  marker.
+- On the first rising `b` crossing after the armed `a` edge, compute the elapsed
+  time in picoseconds.
+- Drive `delay_out` as `V(VDD,VSS) * measured_delay_ps / scale_ps`.
+- Drive `seen_out` high after a valid `a`-then-`b` measurement and low while a
+  measurement is armed but incomplete.
+- Ignore additional `b` crossings until a new rising `a` edge starts the next
+  measurement.
+
+Use voltage-coded logic referenced to `VDD` and `VSS`, keep the model pure
+behavioral Verilog-A, and do not use transistor-level devices, AC/noise
+analysis, waveform files, validation artifacts, or simulator side channels.
+
+
 ## Modeling Constraints
 
 - Use deterministic crossing events and retained measurement state.

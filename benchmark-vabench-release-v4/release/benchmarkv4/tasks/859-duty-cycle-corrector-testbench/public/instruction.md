@@ -99,6 +99,18 @@ Create stimulus and save traces sufficient for the fixed evaluator oracle to che
 - `P_EDGE_DELAY`: exercise and make observable: Rising edges pass without intentional delay while falling edges receive the latched trim-code delay. Required traces: `time`, `clk_in`, `clk_out`, `rst`, `enable`, `trim_3`, `trim_2`, `trim_1`, `trim_0`.
 - `P_LOCK_QUALIFICATION`: exercise and make observable: Lock asserts after three consecutive measured cycles inside the target window. Required traces: `time`, `clk_in`, `rst`, `enable`, `duty_metric`, `locked`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+- On reset or when `enable` is low, clear the trim code, `duty_metric`, `locked`, and drive `clk_out` low.
+- `duty_meter` measures high-time fraction over complete input-clock cycles.
+- `trim_controller` increments the trim code when measured duty is below `target_duty - duty_tol` and decrements it when above `target_duty + duty_tol`.
+- `delay_pair` passes each rising input edge without intentional delay and delays its corresponding falling edge by `trim_code * trim_step`, using the trim code latched at that rising edge. A trim update must not retime an already active output pulse.
+- Clamp the trim code to 0 through 15 and drive `trim_3..trim_0` as voltage-coded bits.
+- Assert `locked` after three consecutive completed cycles within tolerance.
+- `duty_metric` must expose the latest measured duty fraction directly as a voltage, so a measured fraction of 0.5 is reported as 0.5 V. Reset or low `enable` cancels a pending falling edge and drives `clk_out` low.
+
+
 The required trace names are: `time`, `clk_in`, `rst`, `enable`, `clk_out`, `trim_3`, `trim_2`, `trim_1`, `trim_0`, `duty_metric`, `locked`.
 
 ## Modeling Constraints

@@ -59,6 +59,15 @@ Create stimulus and save traces sufficient for the fixed evaluator oracle to che
 - `P_PERMUTATION_INVARIANCE`: exercise and make observable: Any two segment patterns with the same active count produce the same settled aout. Required traces: `time`, `seg0`, `seg1`, `seg2`, `seg3`, `seg4`, `seg5`, `seg6`, `seg7`, `seg8`, `seg9`, `seg10`, `seg11`, `seg12`, `seg13`, `seg14`, `aout`.
 - `P_COUNT_MONOTONICITY`: exercise and make observable: Increasing the active segment count cannot reduce the settled DAC output for vref above vss. Required traces: `time`, `seg0`, `seg1`, `seg2`, `seg3`, `seg4`, `seg5`, `seg6`, `seg7`, `seg8`, `seg9`, `seg10`, `seg11`, `seg12`, `seg13`, `seg14`, `vref`, `vss`, `aout`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+Treat every segment input above `vth` as one active unit element. Count all
+fifteen unary segment pins, including `seg14`. Drive `aout` between `vss` and
+`vref` in proportion to the active segment count, with zero active segments at
+`vss` and all fifteen active segments at `vref`.
+
+
 The required trace names are: `time`, `seg0`, `seg1`, `seg2`, `seg3`, `seg4`, `seg5`, `seg6`, `seg7`, `seg8`, `seg9`, `seg10`, `seg11`, `seg12`, `seg13`, `seg14`, `vref`, `vss`, `aout`.
 
 ## Modeling Constraints

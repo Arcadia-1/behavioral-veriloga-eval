@@ -30,6 +30,16 @@ The repaired bundle must satisfy every public property:
 - `P_LEAK_INSIDE_DEADBAND`: restore: For `dead_low <= V(sigin_p, sigin_n) <= dead_high`, drive `sigout` to the parameter `leak`. Required traces: `time`, `sigin_p`, `sigin_n`, `sigout`.
 - `P_GAINED_RESIDUE_OUTSIDE_DEADBAND`: restore: Below `dead_low`, drive `gain * (diff - dead_low) + leak`; above `dead_high`, drive `gain * (diff - dead_high) + leak`. Required traces: `time`, `sigin_p`, `sigin_n`, `sigout`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+- `P_DIFFERENTIAL_INPUT`: Use `V(sigin_p, sigin_n)` as the signed input error; do not collapse the transfer to one input terminal.
+
+- `P_LEAK_INSIDE_DEADBAND`: For `dead_low <= V(sigin_p, sigin_n) <= dead_high`, drive `sigout` to the parameter `leak`.
+
+- `P_GAINED_RESIDUE_OUTSIDE_DEADBAND`: Below `dead_low`, drive `gain * (diff - dead_low) + leak`; above `dead_high`, drive `gain * (diff - dead_high) + leak`.
+
+
 ## Modeling Constraints
 
 - Use deterministic voltage-domain behavioral Verilog-A.

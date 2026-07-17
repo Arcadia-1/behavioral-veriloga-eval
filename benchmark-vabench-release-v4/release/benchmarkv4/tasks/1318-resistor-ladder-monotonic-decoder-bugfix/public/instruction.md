@@ -40,6 +40,18 @@ The repaired bundle must satisfy every public property:
 - `P_ASSERT_MONOTONIC_OK_WHEN_THE_ACTIVE`: restore: Assert `monotonic_ok` when the active code-to-output mapping is nondecreasing. Required traces: `time`, `code_2`, `code_1`, `code_0`, `enable`, `rst`, `vout`, `step_metric`, `monotonic_ok`.
 - `P_USE_ONLY_VOLTAGE_DOMAIN_BEHAVIORAL_STATE`: restore: Use only voltage-domain behavioral state and voltage contributions on public electrical outputs. Required traces: `time`, `code_2`, `code_1`, `code_0`, `enable`, `rst`, `vout`, `step_metric`, `monotonic_ok`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+- On reset or when disabled, drive `vout` low, clear `step_metric`, and clear `monotonic_ok`.
+- Decode `code_2..code_0` as an unsigned ladder tap index from 0 to 7.
+- Drive `vout` to the corresponding evenly spaced ladder voltage between `vss` and `vdd`.
+- Expose one LSB step on `step_metric` while enabled.
+- Assert `monotonic_ok` when the active code-to-output mapping is nondecreasing.
+- Use only voltage-domain behavioral state and voltage contributions on public electrical outputs.
+- Do not expose pass/fail flags; expose only the public observable metrics named in the interface.
+
+
 ## Modeling Constraints
 
 - Use deterministic voltage-domain behavioral Verilog-A.

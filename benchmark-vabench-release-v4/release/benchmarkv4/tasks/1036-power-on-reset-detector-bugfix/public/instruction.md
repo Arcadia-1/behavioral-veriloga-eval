@@ -33,6 +33,19 @@ The repaired bundle must satisfy every public property:
 - `P_FAULT_REASSERTION`: restore: A new reset assertion or a brownout below vtrip immediately reasserts out and clears the accumulated release delay, independent of the next clk edge. Required traces: `time`, `clk`, `rst`, `vin`, `out`, `metric`.
 - `P_VOLTAGE_CODED_LEVELS`: restore: Out and metric use bounded voltage-coded low and high levels with finite transition smoothing. Required traces: `time`, `out`, `metric`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+- `clk` and `rst` are voltage-coded logic signals.
+- Treat `vin` as the monitored supply ramp and brownout stimulus.
+- `out` is an active-high reset voltage.
+- Keep `out` reset-asserted high while reset input is high or `vin` is below the supply-good threshold.
+- After `vin` is power-good and reset is released, wait four rising clock updates before deasserting `out` low.
+- During the release delay, drive `metric` to an intermediate status level; after release, drive `metric` high.
+- If the supply falls below `vtrip` or `rst` rises above `vth`, assert `out` high and clear the release delay immediately, independent of the next clock edge.
+- Keep the model pure voltage-domain behavioral Verilog-A. Do not use branch-current contributions, transistor-level devices, AC/noise analysis, or KCL/KVL regulation loops.
+
+
 ## Modeling Constraints
 
 - Use deterministic voltage-domain reset-sequencing behavior.

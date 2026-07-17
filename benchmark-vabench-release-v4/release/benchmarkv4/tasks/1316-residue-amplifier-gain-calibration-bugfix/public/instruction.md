@@ -74,12 +74,46 @@ Preserve this exact artifact and module interface:
 
 The repaired bundle must satisfy every public property:
 
-- `P_ON_RESET_CLEAR_GAIN_CODE_OUTPUT`: restore: On reset, clear gain code, output, error metric, and `locked`. Required traces: `time`, `vin`, `residue_ref`, `clk`, `rst`, `cal_en`, `gain_2`, `gain_1`, `gain_0`, `vout`, `error_metric`, `locked`.
-- `P_WHILE_CAL_EN_IS_HIGH_COMPARE`: restore: While `cal_en` is high, compare the current residue output against `residue_ref` on each rising `clk` edge. Required traces: `time`, `vin`, `residue_ref`, `clk`, `rst`, `cal_en`, `gain_2`, `gain_1`, `gain_0`, `vout`, `error_metric`, `locked`.
-- `P_INCREMENT_OR_DECREMENT_THE_GAIN_CODE`: restore: Increment or decrement the gain code by one step to reduce the signed error. Required traces: `time`, `vin`, `residue_ref`, `clk`, `rst`, `cal_en`, `gain_2`, `gain_1`, `gain_0`, `vout`, `error_metric`, `locked`.
-- `P_DRIVE_VOUT_AS_A_CLAMPED_RESIDUE`: restore: Drive `vout` as a clamped residue-amplified version of `vin - vcm` using the active gain code. Required traces: `time`, `vin`, `residue_ref`, `clk`, `rst`, `cal_en`, `gain_2`, `gain_1`, `gain_0`, `vout`, `error_metric`, `locked`.
-- `P_ASSERT_LOCKED_AFTER_THREE_CONSECUTIVE_UPDATES`: restore: Assert `locked` after three consecutive updates with error magnitude below `lock_tol`. Required traces: `time`, `vin`, `residue_ref`, `clk`, `rst`, `cal_en`, `gain_2`, `gain_1`, `gain_0`, `vout`, `error_metric`, `locked`.
+- `P_ON_RESET_CLEAR_GAIN_CODE_OUTPUT`: restore: On reset or while `cal_en` is low, clear the unsigned gain code and lock streak; drive gain bits, `error_metric`, and `locked` to `vss`, and drive the common-mode-centered `vout` to `vcm`. Required traces: `time`, `vin`, `residue_ref`, `clk`, `rst`, `cal_en`, `gain_2`, `gain_1`, `gain_0`, `vout`, `error_metric`, `locked`.
+- `P_WHILE_CAL_EN_IS_HIGH_COMPARE`: restore: While `cal_en` is high, sample `signed_error = residue_ref-vout` on each rising `clk` edge and expose `error_metric = abs(residue_ref-vout)`. Required traces: `time`, `vin`, `residue_ref`, `clk`, `rst`, `cal_en`, `gain_2`, `gain_1`, `gain_0`, `vout`, `error_metric`, `locked`.
+- `P_INCREMENT_OR_DECREMENT_THE_GAIN_CODE`: restore: When signed error exceeds `lock_tol`, increment the unsigned code by one up to 7; when it is below `-lock_tol`, decrement by one down to 0; otherwise hold the code. Required traces: `time`, `vin`, `residue_ref`, `clk`, `rst`, `cal_en`, `gain_2`, `gain_1`, `gain_0`, `vout`, `error_metric`, `locked`.
+- `P_DRIVE_VOUT_AS_A_CLAMPED_RESIDUE`: restore: Decode `gain = base_gain + gain_lsb*code` and drive `vout = clamp(vcm + gain*(vin-vcm), vss, vdd)` while enabled. Required traces: `time`, `vin`, `residue_ref`, `clk`, `rst`, `cal_en`, `gain_2`, `gain_1`, `gain_0`, `vout`, `error_metric`, `locked`.
+- `P_ASSERT_LOCKED_AFTER_THREE_CONSECUTIVE_UPDATES`: restore: Drive `locked` to `vdd` after three consecutive enabled rising-edge samples with error magnitude at or below `lock_tol`, otherwise drive `vss`; clear the streak on reset, disable, or an out-of-tolerance sample. Required traces: `time`, `vin`, `residue_ref`, `clk`, `rst`, `cal_en`, `gain_2`, `gain_1`, `gain_0`, `vout`, `error_metric`, `locked`.
 - `P_USE_ONLY_VOLTAGE_DOMAIN_BEHAVIORAL_STATE`: restore: Use only voltage-domain behavioral state and voltage contributions on public electrical outputs. Required traces: `time`, `vin`, `residue_ref`, `clk`, `rst`, `cal_en`, `gain_2`, `gain_1`, `gain_0`, `vout`, `error_metric`, `locked`.
+
+
+The following canonical public behavior is normative for this derived form:
+
+- On reset, clear gain code, output, error metric, and `locked`.
+- While `cal_en` is high, compare the current residue output against `residue_ref` on each rising `clk` edge.
+- Increment or decrement the gain code by one step to reduce the signed error.
+- Drive `vout` as a clamped residue-amplified version of `vin - vcm` using the active gain code.
+- Assert `locked` after three consecutive updates with error magnitude below `lock_tol`.
+- Use only voltage-domain behavioral state and voltage contributions on public electrical outputs.
+- Do not expose pass/fail flags; expose only the public observable metrics named in the interface.
+
+`gain_2`, `gain_1`, and `gain_0` are DUT-driven observable outputs that encode
+an unsigned gain code from 0 through 7; they are not coefficient inputs.  On
+reset or while `cal_en` is low, clear the code and lock streak, drive the three
+gain outputs, `error_metric`, and `locked` to `vss`, and drive `vout` to the
+neutral residue level `vcm`.  Holding `vout` at `vcm` is the defined cleared
+output state for this common-mode-centered residue signal.
+
+While enabled, decode the active code as
+`gain = base_gain + gain_lsb*code` and drive
+`vout = clamp(vcm + gain*(vin-vcm), vss, vdd)`.  At each rising `clk` edge,
+sample `signed_error = residue_ref-vout`.  When `signed_error > lock_tol`,
+increment the code by one, saturating at 7.  When
+`signed_error < -lock_tol`, decrement the code by one, saturating at 0.  When
+`abs(signed_error) <= lock_tol`, leave the code unchanged.  Expose the error
+magnitude as `error_metric = abs(residue_ref-vout)`.
+
+Count consecutive enabled rising-edge samples whose error magnitude is at or
+below `lock_tol`.  Drive `locked` to `vdd` after the third such sample and to
+`vss` otherwise.  An out-of-tolerance sample, reset, or disabled interval
+clears the consecutive-sample count.  Apply the public `tr` smoothing time to
+observable output transitions without changing these settled values.
+
 
 ## Modeling Constraints
 

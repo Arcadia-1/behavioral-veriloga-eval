@@ -45,6 +45,12 @@ Create stimulus and save traces sufficient for the fixed evaluator oracle to che
 
 - `P_AT_INITIALIZATION_AND_ON_EACH_FALLING`: exercise and make observable: At initialization and on each falling `clks` crossing, sample `vin` into the residue. On rising control crossings, add binary-weighted residue contributions: `dctrl5` adds 1/2, `dctrl4` 1/4, continuing down to `dctrl0` at 1/64. Hold and continuously drive the current residue state between events. Required traces: `time`, `clks`, `dctrl0`, `dctrl1`, `dctrl2`, `dctrl3`, `dctrl4`, `dctrl5`, `vin`, `vres`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+At initialization and on each falling `clks` crossing, sample `vin` into the residue. On rising control crossings, add binary-weighted residue contributions: `dctrl5` adds 1/2, `dctrl4` 1/4, continuing down to `dctrl0` at 1/64. Hold and continuously drive the current residue state between events.
+
+
 The required trace names are: `time`, `clks`, `dctrl0`, `dctrl1`, `dctrl2`, `dctrl3`, `dctrl4`, `dctrl5`, `vin`, `vres`.
 
 ## Modeling Constraints

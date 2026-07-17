@@ -33,6 +33,12 @@ The repaired bundle must satisfy every public property:
 - `P_SELECT_BIT_DECODE`: restore: `dsel0` is the LSB and `dsel1` is the MSB when selecting among `din0` through `din3`. Required traces: `time`, `clks`, `din0`, `din1`, `din2`, `din3`, `dout`, `dsel0`, `dsel1`.
 - `P_ALL_FOUR_INPUTS_REACHABLE`: restore: All four data inputs can be selected and forwarded to `dout` according to the two-bit select code. Required traces: `time`, `clks`, `din0`, `din1`, `din2`, `din3`, `dout`, `dsel0`, `dsel1`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+On each falling crossing of `clks` through `vth`, decode `dsel0` as the LSB and `dsel1` as the MSB using threshold `vth`, sample the selected data input, and hold that sampled value on `dout` until the next clock event.
+
+
 ## Modeling Constraints
 
 - Use deterministic voltage-domain behavioral Verilog-A.

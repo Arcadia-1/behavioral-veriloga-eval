@@ -50,6 +50,16 @@ Create stimulus and save traces sufficient for the fixed evaluator oracle to che
 - `P_VALID_IS_HIGH_ONLY_WHEN_ENABLED`: exercise and make observable: `valid` is high only when enabled, not reset, and the high-side rail is above the minimum valid rail. Required traces: `time`, `vin`, `enable`, `rst`, `vddl`, `vddh`, `vout`, `valid`.
 - `P_THE_OUTPUT_HIGH_LEVEL_MUST_TRACK`: exercise and make observable: The output high level must track changes in `vddh`; it must not use a fixed internal high level. Required traces: `time`, `vin`, `enable`, `rst`, `vddl`, `vddh`, `vout`, `valid`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+- Reset or low `enable` drives `vout` to `vss` and clears `valid`.
+- When enabled, compare `vin` against half of the sensed low-side rail `vddl`.
+- Drive `vout` to `vddh` for a high input and to `vss` for a low input.
+- `valid` is high only when enabled, not reset, and the high-side rail is above the minimum valid rail.
+- The output high level must track changes in `vddh`; it must not use a fixed internal high level.
+
+
 The required trace names are: `time`, `vin`, `enable`, `rst`, `vddl`, `vddh`, `vout`, `valid`.
 
 ## Modeling Constraints

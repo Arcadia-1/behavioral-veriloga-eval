@@ -30,6 +30,12 @@ The repaired bundle must satisfy every public property:
 
 - `P_ON_EACH_RISING_CROSSING_OF_SH`: restore: On each rising crossing of `sh` through `vth`, evaluate bits `d3..d0` with weights `8, 4, 2, 1`. A high bit contributes the positive weight and a low bit contributes the negative weight. Drive `aout` to the signed weighted sum multiplied by `gain` and hold it until the next sample trigger. Required traces: `time`, `aout`, `d0`, `d1`, `d2`, `d3`, `sh`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+On each rising crossing of `sh` through `vth`, evaluate bits `d3..d0` with weights `8, 4, 2, 1`. A high bit contributes the positive weight and a low bit contributes the negative weight. Drive `aout` to the signed weighted sum multiplied by `gain` and hold it until the next sample trigger.
+
+
 ## Modeling Constraints
 
 - Use deterministic voltage-domain behavioral Verilog-A.

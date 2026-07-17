@@ -47,6 +47,17 @@ Create stimulus and save traces sufficient for the fixed evaluator oracle to che
 - `P_RESET_CLEAR`: exercise and make observable: Active reset clears the held state to 0 V at sampling or leakage update events. Required traces: `time`, `sample`, `rst`, `vout`.
 - `P_SMOOTH_OUTPUT`: exercise and make observable: Vout approaches each held-state target with the finite transition smoothing set by tr. Required traces: `time`, `vout`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+- On each rising `sample` crossing while reset is low, capture the current
+  `vin` voltage into the held state.
+- While reset is low, apply leakage by periodically multiplying the held state
+  by `decay`.
+- While reset is high, clear the held state to zero.
+- Drive `vout` from the held state with smooth voltage-domain transitions.
+
+
 The required trace names are: `time`, `sample`, `rst`, `vin`, `vout`.
 
 ## Modeling Constraints

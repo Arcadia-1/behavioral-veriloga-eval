@@ -44,6 +44,16 @@ Create stimulus and save traces sufficient for the fixed evaluator oracle to che
 - `P_INPUT_POLARITY`: exercise and make observable: A larger `V(sigin, sigref)` must move the output toward `high`, not toward `low`. Required traces: `time`, `sigin`, `sigref`, `sigout`.
 - `P_SMOOTH_TRANSITION`: exercise and make observable: The output must transition smoothly between `low` and `high` according to the tanh slope, not as a hard switch. Required traces: `time`, `sigin`, `sigref`, `sigout`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+- `P_TANH_TRANSFER`: Drive `sigout` as `0.5 * (high - low) * tanh(comp_slope * (V(sigin, sigref) - offset)) + 0.5 * (high + low)`.
+
+- `P_INPUT_POLARITY`: A larger `V(sigin, sigref)` must move the output toward `high`, not toward `low`.
+
+- `P_SMOOTH_TRANSITION`: The output must transition smoothly between `low` and `high` according to the tanh slope, not as a hard switch.
+
+
 The required trace names are: `time`, `sigin`, `sigout`, `sigref`.
 
 ## Modeling Constraints

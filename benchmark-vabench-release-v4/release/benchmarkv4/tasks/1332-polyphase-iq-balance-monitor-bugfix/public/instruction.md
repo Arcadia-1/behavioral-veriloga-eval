@@ -65,6 +65,18 @@ The repaired bundle must satisfy every public property:
 - `P_EXPOSE_AMPLITUDE_AND_PHASE_ERROR_PROXIES`: restore: Expose amplitude and phase-error proxies as separate voltage-domain metrics. Required traces: `time`, `i_in`, `q_in`, `clk`, `rst`, `enable`, `i_out`, `q_out`, `amp_error_metric`, `phase_error_metric`, `balanced`.
 - `P_ASSERT_BALANCED_ONLY_WHEN_BOTH_METRICS`: restore: Assert `balanced` only when both metrics remain below their thresholds for two updates. Required traces: `time`, `i_in`, `q_in`, `clk`, `rst`, `enable`, `i_out`, `q_out`, `amp_error_metric`, `phase_error_metric`, `balanced`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+- On reset or when disabled, drive outputs to `vcm` and clear metrics.
+- On each enabled rising `clk` edge, sample I and Q input deviations around `vcm`.
+- Drive corrected I/Q outputs with bounded amplitude normalization.
+- Expose amplitude and phase-error proxies as separate voltage-domain metrics.
+- Assert `balanced` only when both metrics remain below their thresholds for two updates.
+- Use only voltage-domain behavioral state and voltage contributions on public electrical outputs.
+- Do not expose pass/fail flags; expose only the public observable metrics named in the interface.
+
+
 ## Modeling Constraints
 
 - Use deterministic voltage-domain behavioral Verilog-A.

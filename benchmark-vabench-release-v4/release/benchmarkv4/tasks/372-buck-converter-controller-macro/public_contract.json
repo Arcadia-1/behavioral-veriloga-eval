@@ -509,7 +509,7 @@
     },
     {
       "id": "P_SOFT_START_TRACKING",
-      "observable_contract": "At enabled rising clock edges soft_ref moves toward vref by the configured soft-step and never overshoots the target.",
+      "observable_contract": "At each enabled rising edge move soft_ref toward vref by soft_step without overshoot and set duty_up high exactly when vfb<soft_ref.",
       "required_signals": [
         "time",
         "clk",
@@ -521,7 +521,7 @@
     },
     {
       "id": "P_DUTY_DIRECTION_BOUNDS",
-      "observable_contract": "The duty metric increases when vfb is below soft_ref, decreases otherwise, and remains within the configured duty bounds.",
+      "observable_contract": "Starting from zero, add 0.05 to duty when duty_up is high and subtract 0.05 otherwise, clamp the post-update value to [duty_min,duty_max], and expose it on duty_metric.",
       "required_signals": [
         "time",
         "clk",
@@ -534,7 +534,7 @@
     },
     {
       "id": "P_PWM_ENCODING",
-      "observable_contract": "PWM high samples are rail-valid and their enabled-cycle activity is consistent with a nonzero bounded duty command.",
+      "observable_contract": "After each duty update advance carrier_count=(carrier_count+1)%20 and drive pwm=vdd exactly when carrier_count+0.5<20*duty_metric, otherwise vss.",
       "required_signals": [
         "time",
         "clk",
@@ -546,7 +546,7 @@
     },
     {
       "id": "P_POWER_GOOD_QUALIFICATION",
-      "observable_contract": "Power-good asserts only after three consecutive enabled clock updates with vfb within pgood_tol of vref and clears when qualification is lost.",
+      "observable_contract": "Count consecutive enabled edges with abs(vfb-vref)<=pgood_tol, assert pgood at count three, and clear the count and pgood when qualification is lost; reset or disable also clears all controller state.",
       "required_signals": [
         "time",
         "clk",

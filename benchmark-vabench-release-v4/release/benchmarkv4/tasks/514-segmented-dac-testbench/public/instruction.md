@@ -48,6 +48,15 @@ Create stimulus and save traces sufficient for the fixed evaluator oracle to che
 - `P_ENDPOINTS`: exercise and make observable: The zero code maps to vss and the all-active 15-step code maps to vref. Required traces: `time`, `b0`, `b1`, `t0`, `t1`, `t2`, `vref`, `vss`, `aout`.
 - `P_RAIL_RELATIVE_MAPPING`: exercise and make observable: Intermediate codes linearly span the vss-to-vref range. Required traces: `time`, `b0`, `b1`, `t0`, `t1`, `t2`, `vref`, `vss`, `aout`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+Treat `b0` and `b1` as binary LSB controls with weights 1 and 2. Treat
+`t0`, `t1`, and `t2` as unary thermometer segment controls, each contributing
+four LSB steps. Drive `aout` between `vss` and `vref` according to the summed
+15-step segmented code, so the all-active code reaches full scale.
+
+
 The required trace names are: `time`, `b0`, `b1`, `t0`, `t1`, `t2`, `vref`, `vss`, `aout`.
 
 ## Modeling Constraints

@@ -35,6 +35,12 @@ The repaired bundle must satisfy every public property:
 - `P_ONE_CYCLE_DELAYED_SUM`: restore: `doutsumdelay` reports the previous sampled flash summary, not the current summary. Required traces: `time`, `clks`, `doutsum`, `doutsumdelay`, `refn`, `refp`, `reset`, `vim`, `vip`.
 - `P_NORMALIZED_OUTPUT`: restore: The flash summary is normalized by the eight-level count before being driven. Required traces: `time`, `clks`, `doutsum`, `doutsumdelay`, `refn`, `refp`, `reset`, `vim`, `vip`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+On each rising crossing of `clks` through `vth`, compare `V(vip, vim)` against eight symmetric thresholds derived from `V(refp)-V(refn)`, `ref_scaling`, and the 1/8, 3/8, 5/8, and 7/8 flash tap positions. Drive `doutsum` with the current asserted-threshold fraction and `doutsumdelay` with the previous conversion's fraction. The `reset` port is present for interface compatibility and is not part of the state update.
+
+
 ## Modeling Constraints
 
 - Use deterministic voltage-domain behavioral Verilog-A.

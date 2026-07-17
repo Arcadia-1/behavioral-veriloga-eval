@@ -38,6 +38,15 @@ The repaired bundle must satisfy every public property:
 - `P_BINARY_MONOTONICITY`: restore: Increasing the latched unsigned code never decreases vout, with b7 as MSB and b0 as LSB. Required traces: `time`, `vclk`, `b7`, `b6`, `b5`, `b4`, `b3`, `b2`, `b1`, `b0`, `vout`.
 - `P_OUTPUT_SMOOTHING`: restore: vout approaches each newly latched target with finite transition smoothing set by tr. Required traces: `time`, `vclk`, `vout`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+On each rising crossing of `vclk` through `vth`, sample the eight input bits and
+latch the unsigned binary code. Hold the previously latched code between update
+edges even if the input bus changes. Map code zero to 0 V and code 255 to
+`vref`, with monotonic binary-weighted steps between those endpoints.
+
+
 ## Modeling Constraints
 
 - Use deterministic rising-edge state updates and unconditional voltage output contribution.

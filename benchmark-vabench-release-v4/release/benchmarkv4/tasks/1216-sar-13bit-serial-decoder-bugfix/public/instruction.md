@@ -32,6 +32,17 @@ The repaired bundle must satisfy every public property:
 - `P_MAP_AN_ALL_LOW_FRAME_TO`: restore: Map an all-low frame to `-0.5` and an all-high frame near `+0.5`. Required traces: `time`, `clks`, `din`, `dnum`, `dout`, `ready`.
 - `P_AFTER_PUBLISHING_RESET_THE_ACCUMULATOR_HIGH`: restore: After publishing, reset the accumulator, high-bit count, and bit pointer for the next frame. Required traces: `time`, `clks`, `din`, `dnum`, `dout`, `ready`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+- Consume one MSB-first bit on each rising `ready` crossing, starting with bit 12 and ending with bit 0.
+- Add the corresponding binary weight when `din` is high.
+- Increment `dnum` for each high decision in the current frame.
+- On each rising `clks` crossing, publish the previous frame as a normalized bipolar output.
+- Map an all-low frame to `-0.5` and an all-high frame near `+0.5`.
+- After publishing, reset the accumulator, high-bit count, and bit pointer for the next frame.
+
+
 ## Modeling Constraints
 
 - Use deterministic voltage-domain behavioral Verilog-A.

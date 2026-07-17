@@ -42,6 +42,24 @@ The repaired bundle must satisfy every public property:
 - `P_SERIAL_OUTPUT`: restore: serial_out always represents the current state_6 bit. Required traces: `time`, `serial_out`, `state_6`.
 - `P_OUTPUT_LEVELS`: restore: serial_out and every state output use 0 V and vdd levels with delay td and transition smoothing trf. Required traces: `time`, `serial_out`, `state_0`, `state_1`, `state_2`, `state_3`, `state_4`, `state_5`, `state_6`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+Create a clocked PRBS-7 stimulus source using a 7-bit LFSR with polynomial
+`x^7 + x^6 + 1`. Treat `state_0` as bit 0 and `state_6` as bit 6. On reset,
+load the public seed. On each rising crossing of `clk` through `vth`, advance
+the LFSR only when `rst_n` and `en` are high. The feedback bit is:
+
+```text
+feedback = state_6 xor state_5
+next_state_0 = feedback
+next_state_i = previous_state_(i-1), for i = 1..6
+```
+
+Drive `serial_out` from `state_6` and expose each state bit on its matching
+`state_i` output using voltage-coded `0`/`vdd` levels.
+
+
 ## Modeling Constraints
 
 - Use deterministic rising-edge state updates with active-low reset semantics.

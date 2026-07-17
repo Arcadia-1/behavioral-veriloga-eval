@@ -36,6 +36,18 @@ The repaired bundle must satisfy every public property:
 - `P_WINDOW_REARM`: restore: Each reporting clock edge rearms both input-edge detectors so the next window is measured independently. Required traces: `time`, `clk`, `vinp`, `vinn`, `vout`.
 - `P_OUTPUT_TRANSITION`: restore: Reported output changes use the declared td delay and tr transition time. Required traces: `time`, `clk`, `vout`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+On each rising `clk` crossing of `vth_clk`, output the stored difference
+between the first rising `vinp` crossing and first rising `vinn` crossing
+captured in the previous clock window. A window is valid only when both input
+edges are captured. If either input edge is absent in the previous window, hold
+the previous `vout` value unchanged while rearming detection for the next
+window. For a valid window, scale the time difference by `scale`, clip the
+output to `[-vdd, vdd]`, then rearm detection for the next window.
+
+
 ## Modeling Constraints
 
 - Use deterministic threshold-crossing event detection and per-window state.

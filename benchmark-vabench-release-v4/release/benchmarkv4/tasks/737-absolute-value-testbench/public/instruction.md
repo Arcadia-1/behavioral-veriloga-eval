@@ -38,6 +38,12 @@ Create stimulus and save traces sufficient for the fixed evaluator oracle to che
 
 - `P_SMOOTH_ABSOLUTE_TRANSFER`: exercise and make observable: Drive `sigout` as the smooth absolute-value transfer `V(sigin) * tanh(V(sigin) / smooth)`: even in input, nonnegative, deterministic, memoryless, rounded near zero, and asymptotically equal to input magnitude for large positive and negative inputs. Required traces: `time`, `sigin`, `sigout`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+Drive `sigout` as the smooth absolute-value transfer `V(sigin) * tanh(V(sigin) / smooth)`. The transfer should be even in the input, nonnegative, deterministic, memoryless, and rounded near zero instead of using a sharp ideal absolute-value cusp. For large positive and negative inputs, the output should approach the corresponding input magnitude.
+
+
 The required trace names are: `time`, `sigin`, `sigout`.
 
 ## Modeling Constraints

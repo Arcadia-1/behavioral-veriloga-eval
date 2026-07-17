@@ -82,6 +82,18 @@ Create stimulus and save traces sufficient for the fixed evaluator oracle to che
 - `P_EXPOSE_THE_RESET_SAMPLE_ON_OFFSET`: exercise and make observable: Expose the reset sample on `offset_dbg` and assert `valid` only after a complete reset/signal pair. Required traces: `time`, `vin`, `clk`, `rst`, `sample_reset`, `sample_signal`, `vout`, `offset_dbg`, `valid`.
 - `P_USE_ONLY_VOLTAGE_DOMAIN_BEHAVIORAL_STATE`: exercise and make observable: Use only voltage-domain behavioral state and voltage contributions on public electrical outputs. Required traces: `time`, `vin`, `clk`, `rst`, `sample_reset`, `sample_signal`, `vout`, `offset_dbg`, `valid`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+- On reset, clear reset-sample, signal-sample, output, debug metric, and `valid`.
+- On a rising `clk` edge with `sample_reset` high, capture `vin` as the reset/reference sample.
+- On a later rising `clk` edge with `sample_signal` high, capture `vin` as the signal sample.
+- Drive `vout` as `vcm` plus the signal-minus-reset difference scaled by `cds_gain`.
+- Expose the reset sample on `offset_dbg` and assert `valid` only after a complete reset/signal pair.
+- Use only voltage-domain behavioral state and voltage contributions on public electrical outputs.
+- Do not expose pass/fail flags; expose only the public observable metrics named in the interface.
+
+
 The required trace names are: `time`, `vin`, `clk`, `rst`, `sample_reset`, `sample_signal`, `vout`, `offset_dbg`, `valid`.
 
 ## Modeling Constraints

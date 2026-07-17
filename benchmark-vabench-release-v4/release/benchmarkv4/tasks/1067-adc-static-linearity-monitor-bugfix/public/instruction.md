@@ -36,6 +36,17 @@ The repaired bundle must satisfy every public property:
 - `P_MAX_RETENTION`: restore: maxerr never decreases during a run and represents the largest sampled absolute code error seen so far. Required traces: `time`, `vsample`, `maxerr`.
 - `P_METRIC_SCALE`: restore: maxerr equals the retained maximum code error multiplied by lsb_out, with smoothing set by tr. Required traces: `time`, `maxerr`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+Act as a sampled static-linearity measurement monitor for a three-bit ADC sweep.
+On each rising crossing of `vsample` through `vth`, clip `vin` to the
+0-to-`vref` range and compute the ideal bin-floor three-bit code. Decode the
+observed `d2..d0` word using `vth`, compute the absolute code error in LSBs, and
+retain the maximum sampled error seen so far during the run. Drive `maxerr` to
+that retained maximum multiplied by `lsb_out`.
+
+
 ## Modeling Constraints
 
 - Use deterministic sampled voltage-domain behavior and retain state across strobes.

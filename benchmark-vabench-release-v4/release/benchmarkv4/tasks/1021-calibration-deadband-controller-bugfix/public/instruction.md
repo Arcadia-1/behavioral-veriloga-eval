@@ -38,6 +38,20 @@ The repaired bundle must satisfy every public property:
 - `P_OUTPUT_CLAMP`: restore: Repeated updates cannot drive out below vmin or above vmax. Required traces: `time`, `clk`, `vin`, `out`.
 - `P_BETWEEN_EDGE_HOLD`: restore: Out state does not follow vin between rising clock crossings. Required traces: `time`, `clk`, `vin`, `out`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+- Initialize the trim output to `target`.
+- On each rising crossing of `clk` through `vth`, sample `vin` and update the trim state.
+- While `rst` is above `vth`, reset the trim state to `target` and drive `metric` low.
+- Compute signed error as `V(vin) - target`.
+- If the error is greater than `deadband`, increase the trim by `step_size`.
+- If the error is less than `-deadband`, decrease the trim by `step_size`.
+- If the error is inside the deadband, hold the trim state.
+- Clamp the trim state between `vmin` and `vmax`.
+- Drive `metric` high only on accepted trim updates and low otherwise.
+
+
 ## Modeling Constraints
 
 - Use deterministic rising-edge sampled state updates.

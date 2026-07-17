@@ -30,6 +30,14 @@ The repaired bundle must satisfy every public property:
 - `P_UNITY_SAMPLE_GAIN`: restore: The held target equals the sampled vin without gain, offset, quantization, or rail remapping. Required traces: `time`, `vclk`, `vin`, `vout`.
 - `P_PARAMETERIZED_THRESHOLD`: restore: Legal vtrans_clk overrides move the sampling crossing threshold while preserving rising-edge capture and hold behavior. Required traces: `time`, `vclk`, `vin`, `vout`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+On each rising crossing of `vclk` through `vtrans_clk`, sample the instantaneous
+input voltage `V(vin)`. Hold that sampled value until the next rising sampling
+event and drive it on `vout`.
+
+
 ## Modeling Constraints
 
 - Use rising-edge event-driven capture and persistent held state.

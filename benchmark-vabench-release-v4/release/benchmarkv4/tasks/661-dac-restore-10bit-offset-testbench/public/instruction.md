@@ -53,6 +53,12 @@ Create stimulus and save traces sufficient for the fixed evaluator oracle to che
 - `P_OFFSET_MIDRISE_OUTPUT`: exercise and make observable: The asserted weighted code is shifted by the source -32 LSB offset and placed at the mid-rise half-LSB output level using the public `lsb` scale. Required traces: `time`, `clk`, `D0`, `D1`, `D2`, `D3`, `D4`, `D5`, `D6`, `D7`, `D8`, `D9`, `D10`, `vout`.
 - `P_OUTPUT_SMOOTH_HOLD`: exercise and make observable: `vout` transitions smoothly to each sampled code value and holds that value until the next qualifying clock edge. Required traces: `time`, `clk`, `vout`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+On each rising crossing of `clk` through `vth`, reconstruct the source offset DAC code. `D10` is the largest weight, `D0` is the LSB, and `D6` and `D7` both contribute the same 64-LSB redundant weight. After summing the asserted weights, apply the source code offset of -32 LSBs and use a mid-rise half-LSB output placement around the bipolar 1.8 V span.
+
+
 The required trace names are: `time`, `clk`, `D0`, `D1`, `D2`, `D3`, `D4`, `D5`, `D6`, `D7`, `D8`, `D9`, `D10`, `vout`.
 
 ## Modeling Constraints

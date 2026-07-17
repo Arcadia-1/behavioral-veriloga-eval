@@ -43,6 +43,12 @@ Create stimulus and save traces sufficient for the fixed evaluator oracle to che
 - `P_BALANCED_HALF_SPLIT`: exercise and make observable: Drive `sigout_p` and `sigout_n` as equal and opposite half-swings around `sigref`. Required traces: `time`, `sigin_p`, `sigin_n`, `sigout_p`, `sigout_n`, `sigref`.
 - `P_OUTPUT_POLARITY`: exercise and make observable: For a positive input differential, `sigout_p` rises relative to `sigref` and `sigout_n` falls relative to `sigref`. Required traces: `time`, `sigin_p`, `sigin_n`, `sigout_p`, `sigout_n`, `sigref`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+Read `V(sigin_p, sigin_n)` and generate a differential output equal to that input differential voltage multiplied by `gain`. Split the output swing equally: `sigout_p` moves positive around `sigref`, and `sigout_n` moves negative around `sigref` for a positive input differential.
+
+
 The required trace names are: `time`, `sigin_n`, `sigin_p`, `sigout_n`, `sigout_p`, `sigref`.
 
 ## Modeling Constraints

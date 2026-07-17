@@ -58,6 +58,18 @@ Create stimulus and save traces sufficient for the fixed evaluator oracle to che
 - `P_QUADRANT_1_QUADRANT_0_MUST_EXPOSE`: exercise and make observable: `quadrant_1..quadrant_0` must expose the selected quadrant. Required traces: `time`, `clk_i`, `clk_q`, `rst`, `code_4`, `code_0`, `clk_out`, `quadrant_1`, `quadrant_0`, `phase_metric`.
 - `P_PHASE_METRIC_MUST_EXPOSE_THE_DECODED`: exercise and make observable: `phase_metric` must expose the decoded phase code as a voltage-level metric. Required traces: `time`, `clk_i`, `clk_q`, `rst`, `code_4`, `code_0`, `clk_out`, `quadrant_1`, `quadrant_0`, `phase_metric`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+- On reset, clear `clk_out`, quadrant outputs, and `phase_metric`.
+- Observe the rising edges of `clk_i` and `clk_q` and maintain a four-quadrant phase reference.
+- Decode `code_4..code_0` as an unsigned phase code from 0 to 31.
+- Generate `clk_out` edges delayed from the selected quadrant reference by `unit_delay` times the intra-quadrant code.
+- `quadrant_1..quadrant_0` must expose the selected quadrant.
+- `phase_metric` must expose the decoded phase code as a voltage-level metric.
+- The output edge delay must increase monotonically as the phase code increases, with wrap-around at the quadrant boundary.
+
+
 The required trace names are: `time`, `clk_i`, `clk_q`, `rst`, `code_4`, `code_0`, `clk_out`, `quadrant_1`, `quadrant_0`, `phase_metric`, `code_3`, `code_2`, `code_1`.
 
 ## Modeling Constraints

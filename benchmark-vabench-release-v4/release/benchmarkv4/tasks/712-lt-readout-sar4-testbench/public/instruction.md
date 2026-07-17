@@ -43,6 +43,12 @@ Create stimulus and save traces sufficient for the fixed evaluator oracle to che
 
 - `P_CONTINUOUSLY_DECODE_D0_D3_AS_AN`: exercise and make observable: Continuously decode `d0..d3` as an unsigned binary code with `d0` as LSB and `d3` as MSB. Drive `vout` to the readout level `code * vref / 16`. The output should update when the voltage-coded input bits cross the threshold. Required traces: `time`, `d0`, `d1`, `d2`, `d3`, `gnd`, `vout`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+Continuously decode `d0..d3` as an unsigned binary code with `d0` as LSB and `d3` as MSB. Drive `vout` to the readout level `code * vref / 16`. The output should update when the voltage-coded input bits cross the threshold.
+
+
 The required trace names are: `time`, `d0`, `d1`, `d2`, `d3`, `gnd`, `vout`.
 
 ## Modeling Constraints

@@ -71,6 +71,35 @@ Create stimulus and save traces sufficient for the fixed evaluator oracle to che
 - `P_DISTURBANCE_UNLOCK`: exercise and make observable: The reference-period step removes or destabilizes lock qualification while the loop responds to the changed cadence. Required traces: `time`, `ref_clk`, `fb_clk`, `vctrl_mon`, `lock`.
 - `P_LATE_REACQUISITION`: exercise and make observable: After the step, fb_clk tracks the new reference cadence and lock reasserts while vctrl_mon remains rail-bounded. Required traces: `time`, `vdd`, `vss`, `ref_clk`, `fb_clk`, `vctrl_mon`, `lock`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+This task asks for a two-file DUT bundle: `cppll_timer_ref.va` and
+`ref_step_clk.va`, not a Spectre testbench. Both files are scored DUT source
+artifacts; preserve their interfaces and overrideable parameters when
+returning the bundle.
+
+Required observable behavior:
+
+- Use `ref_clk` as the reference timing input.
+- Generate a behavioral DCO clock on `dco_clk`.
+- Generate `fb_clk` by dividing the DCO activity according to `div_ratio`.
+- Update a bounded control-voltage monitor on `vctrl_mon`.
+- Drive `lock` high after stable tracking, low or unstable during the
+  reference-frequency disturbance, and high again after reacquisition.
+- The late-window relation should show `fb_clk` tracking the new `ref_clk`
+  cadence while `vctrl_mon` remains within the supply rails.
+
+Use voltage-coded logic with a mid-supply decision threshold where applicable,
+drive high logic outputs near `VDD` and low outputs near `VSS`, and keep the
+model pure behavioral Verilog-A. Do not use transistor-level devices, AC/noise
+analysis, validation logic, validation-only hooks, or simulator-specific side channels.
+
+`cppll_timer_ref.va` is the primary loop implementation and `ref_step_clk.va`
+is the bundled reference-step source used by the flow. Both files are required
+source artifacts.
+
+
 The required trace names are: `time`, `vdd`, `vss`, `ref_clk`, `fb_clk`, `dco_clk`, `vctrl_mon`, `lock`.
 
 ## Modeling Constraints

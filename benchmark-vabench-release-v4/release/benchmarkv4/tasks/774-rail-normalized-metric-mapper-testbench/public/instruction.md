@@ -44,11 +44,23 @@ hierarchical/private nodes, or use checker/gold/internal files.
 
 Create stimulus and save traces sufficient for the fixed evaluator oracle to check:
 
-- `P_NORMALIZE_MEAS_RELATIVE_TO_THE_LOCAL`: exercise and make observable: Let `span = V(vdd, vss)` and `local_meas = V(meas) - V(vss)`. When `V(en) > vth` and `span >= span_min`, `norm = vhi * clip01(local_meas / span)`. Required traces: `time`, `en`, `meas`, `norm`, `valid`, `vdd`, `vss`.
-- `P_CLIP_THE_NORMALIZED_METRIC_TO_THE`: exercise and make observable: `clip01(x)` limits `x` to `[0, 1]`, so enabled `norm` is clipped to `[0 V, vhi]` even when `meas` lies outside the local rails. Required traces: `time`, `en`, `meas`, `norm`, `valid`, `vdd`, `vss`.
-- `P_ASSERT_VALID_ONLY_WHEN_ENABLE_IS`: exercise and make observable: `valid = vhi` exactly when `V(en) > vth`, `span_min <= span <= span_max`, and `0 <= local_meas <= span`; otherwise `valid = 0 V`. Required traces: `time`, `en`, `meas`, `norm`, `valid`, `vdd`, `vss`.
-- `P_CLEAR_NORM_AND_VALID_WHILE_DISABLED`: exercise and make observable: Disabled or `span < span_min` clears both outputs. A span above `span_max` clears `valid` but does not by itself clear clipped `norm`. Required traces: `time`, `en`, `meas`, `norm`, `valid`, `vdd`, `vss`.
+- `P_NORMALIZE_MEAS_RELATIVE_TO_THE_LOCAL`: exercise and make observable: Normalize meas relative to the local V(vdd,vss) span and vss rail. Required traces: `time`, `en`, `meas`, `norm`, `valid`, `vdd`, `vss`.
+- `P_CLIP_THE_NORMALIZED_METRIC_TO_THE`: exercise and make observable: Clip the normalized metric to the public voltage-coded range. Required traces: `time`, `en`, `meas`, `norm`, `valid`, `vdd`, `vss`.
+- `P_ASSERT_VALID_ONLY_WHEN_ENABLE_IS`: exercise and make observable: Assert valid only when enable is high, supply span is valid, and the measurement lies inside the local rail window. Required traces: `time`, `en`, `meas`, `norm`, `valid`, `vdd`, `vss`.
+- `P_CLEAR_NORM_AND_VALID_WHILE_DISABLED`: exercise and make observable: Clear norm and valid while disabled or under the minimum supply span. Required traces: `time`, `en`, `meas`, `norm`, `valid`, `vdd`, `vss`.
 - `P_USE_LOCAL_ANALOG_HELPER_FUNCTIONS_RATHER`: exercise and make observable: Use local analog helper functions rather than user task/endtask syntax. Required traces: `time`, `en`, `meas`, `norm`, `valid`, `vdd`, `vss`.
+
+
+The following canonical public behavior is normative for this derived form:
+
+- `P_NORMALIZE_MEAS_RELATIVE_TO_THE_LOCAL`: Normalize meas relative to the local V(vdd,vss) span and vss rail.
+- `P_CLIP_THE_NORMALIZED_METRIC_TO_THE`: Clip the normalized metric to the public voltage-coded range.
+- `P_ASSERT_VALID_ONLY_WHEN_ENABLE_IS`: Assert valid only when enable is high, supply span is valid, and the measurement lies inside the local rail window.
+- `P_CLEAR_NORM_AND_VALID_WHILE_DISABLED`: Clear norm and valid while disabled or under the minimum supply span.
+- `P_USE_LOCAL_ANALOG_HELPER_FUNCTIONS_RATHER`: Use local analog helper functions rather than user task/endtask syntax.
+
+The evaluator saves and may inspect these public trace signals: `time`, `en`, `meas`, `norm`, `valid`, `vdd`, `vss`.
+
 
 The required trace names are: `time`, `en`, `meas`, `norm`, `valid`, `vdd`, `vss`.
 

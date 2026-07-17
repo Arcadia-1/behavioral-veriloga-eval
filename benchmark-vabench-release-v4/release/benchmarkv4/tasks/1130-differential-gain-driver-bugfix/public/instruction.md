@@ -29,6 +29,12 @@ The repaired bundle must satisfy every public property:
 - `P_BALANCED_HALF_SPLIT`: restore: Drive `sigout_p` and `sigout_n` as equal and opposite half-swings around `sigref`. Required traces: `time`, `sigin_p`, `sigin_n`, `sigout_p`, `sigout_n`, `sigref`.
 - `P_OUTPUT_POLARITY`: restore: For a positive input differential, `sigout_p` rises relative to `sigref` and `sigout_n` falls relative to `sigref`. Required traces: `time`, `sigin_p`, `sigin_n`, `sigout_p`, `sigout_n`, `sigref`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+Read `V(sigin_p, sigin_n)` and generate a differential output equal to that input differential voltage multiplied by `gain`. Split the output swing equally: `sigout_p` moves positive around `sigref`, and `sigout_n` moves negative around `sigref` for a positive input differential.
+
+
 ## Modeling Constraints
 
 - Use deterministic voltage-domain behavioral Verilog-A.

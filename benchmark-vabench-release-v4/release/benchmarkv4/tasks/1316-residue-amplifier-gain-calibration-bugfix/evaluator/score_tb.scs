@@ -12,6 +12,5 @@ Vrst (rst 0) vsource type=pwl wave=[0 0.9 3n 0.9 3.2n 0 92n 0]
 Ven (cal_en 0) vsource type=pwl wave=[0 0 5n 0 5.2n 0.9 80n 0.9 80.2n 0 92n 0]
 XDUT (vin residue_ref clk rst cal_en gain_2 gain_1 gain_0 vout error_metric locked) residue_amp_gain_calibration_top
 
-
 tran tran stop=92n maxstep=200p
 save vin residue_ref clk rst cal_en gain_2 gain_1 gain_0 vout error_metric locked

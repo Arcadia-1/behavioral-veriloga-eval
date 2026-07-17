@@ -606,7 +606,7 @@
   "properties": [
     {
       "id": "P_RESET_CLEAR",
-      "observable_contract": "Reset clears both trim buses, corrected outputs, error metric, and lock state.",
+      "observable_contract": "Reset asynchronously clears signed_gain, signed_phase, both encoded trim buses, error_metric, the qualification counter, and locked, and drives i_out=q_out=vcm.",
       "required_signals": [
         "time",
         "rst",
@@ -626,7 +626,7 @@
     },
     {
       "id": "P_TRIM_DIRECTION",
-      "observable_contract": "Enabled calibration updates signed gain and phase trim codes in directions that reduce measured amplitude and quadrature errors.",
+      "observable_contract": "On each enabled rising edge update signed_gain from gain_error=abs(i_in-vcm)-abs(q_in-vcm)-signed_gain*trim_lsb and signed_phase from phase_error=(i_in-vcm)*(q_in-vcm)-signed_phase*trim_lsb using +/-error_tol thresholds, saturating each to -8..7 and encoding negatives as code=7-signed_value.",
       "required_signals": [
         "time",
         "i_in",
@@ -646,7 +646,7 @@
     },
     {
       "id": "P_CORRECTION_APPLICATION",
-      "observable_contract": "Corrected I and Q outputs apply the currently exposed gain and phase trim codes and remain bounded by the supplies.",
+      "observable_contract": "Decode signed trim buses, set gain_corr=signed_gain*trim_lsb and phase_corr=signed_phase*trim_lsb, and clamp i_out=vcm+(i_in-vcm)-0.5*gain_corr and q_out=vcm+(q_in-vcm)+0.5*gain_corr-phase_corr*(i_in-vcm)/vcm to the supplies.",
       "required_signals": [
         "time",
         "i_in",
@@ -666,7 +666,7 @@
     },
     {
       "id": "P_LOCK_HOLD",
-      "observable_contract": "Lock asserts after three consecutive in-tolerance calibration updates, and disabling calibration holds codes while correction remains active.",
+      "observable_contract": "Expose post-update phase_error on error_metric; count inclusive in-tolerance pre-update phase errors, clear the count on a phase update, assert locked at count three, and hold codes and correction while cal_en is low.",
       "required_signals": [
         "time",
         "clk",

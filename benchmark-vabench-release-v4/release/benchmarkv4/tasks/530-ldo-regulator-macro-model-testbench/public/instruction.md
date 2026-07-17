@@ -47,6 +47,19 @@ Create stimulus and save traces sufficient for the fixed evaluator oracle to che
 - `P_ERROR_METRIC`: exercise and make observable: Metric equals 0.9 V minus four times the absolute output-to-target error, clamped to 0 through 0.9 V. Required traces: `time`, `vin`, `out`, `metric`.
 - `P_CLOCKED_HOLD`: exercise and make observable: Out and metric hold between rising clock crossings except for transition smoothing. Required traces: `time`, `clk`, `vin`, `out`, `metric`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+- `clk` and `rst` are voltage-coded logic signals.
+- Treat `vin` as a bounded load/disturbance-control voltage, not as the regulator supply rail.
+- Initialize and reset the regulated state to `out = 0.60 V` and `metric = 0.9 V`.
+- On each rising `clk` crossing through `vth`, clamp `load = V(vin)` to `[0 V, 0.9 V]` and compute the regulation target as `target = 0.62 - 0.055 * load`.
+- Update the regulated output state as `out_next = out_prev + 0.35 * (target - out_prev)`.
+- Clamp the regulated output state to `[0.25 V, 0.75 V]` before driving `out`.
+- Drive `metric = 0.9 - 4.0 * abs(out - target)`, clamped to `[0 V, 0.9 V]`, so regulation error lowers the metric during droop and recovery.
+- Keep the model pure voltage-domain behavioral Verilog-A. Do not use branch-current contributions, transistor-level devices, AC/noise analysis, or KCL/KVL regulation loops.
+
+
 The required trace names are: `time`, `clk`, `rst`, `vin`, `out`, `metric`.
 
 ## Modeling Constraints

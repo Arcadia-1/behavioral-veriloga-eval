@@ -106,6 +106,19 @@ Create stimulus and save traces sufficient for the fixed evaluator oracle to che
 - `P_SAR_FINAL_CODE`: exercise and make observable: Four MSB-first trials quantize the held sample to the clamped unsigned 4-bit SAR code. Required traces: `time`, `vin`, `clk`, `start`, `code_3`, `code_2`, `code_1`, `code_0`, `done`.
 - `P_SAR_DAC_TRIAL`: exercise and make observable: dac_dbg exposes vref times the active trial code divided by 16 and settles to the final-code DAC level. Required traces: `time`, `clk`, `code_3`, `code_2`, `code_1`, `code_0`, `done`, `dac_dbg`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+- On reset, clear the conversion state, code outputs, `done`, `sample_dbg`, and `dac_dbg`.
+- A rising `start` request arms a new conversion; the next rising `clk` samples `vin` into `sample_hold`.
+- The controller then resolves bits from `code_3` down to `code_0`, one bit per rising `clk` edge.
+- For each trial code, `binary_weighted_cdac` produces `dac_dbg = vref * trial_code / 16.0`.
+- `sar_comparator` keeps the active trial bit when the held sample is greater than or equal to `dac_dbg`; otherwise it clears that bit.
+- After bit 0 is resolved, assert `done` high and hold the final output code until reset or the next armed conversion.
+- Drive each code bit as `vdd` for logic 1 and `vss` for logic 0.
+- `sample_dbg` must expose the held sample voltage used for the active conversion.
+
+
 The required trace names are: `time`, `vin`, `clk`, `rst`, `start`, `code_3`, `code_2`, `code_1`, `code_0`, `done`, `sample_dbg`, `dac_dbg`.
 
 ## Modeling Constraints

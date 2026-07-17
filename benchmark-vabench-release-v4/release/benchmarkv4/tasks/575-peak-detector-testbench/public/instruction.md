@@ -45,6 +45,26 @@ Create stimulus and save traces sufficient for the fixed evaluator oracle to che
 - `P_RESET_CLEAR`: exercise and make observable: While rst is above vth, the retained peak is cleared and vout returns to 0 V. Required traces: `time`, `rst`, `vout`.
 - `P_OUTPUT_SMOOTHING`: exercise and make observable: Changes of the retained peak appear on vout with finite transition smoothing set by tr. Required traces: `time`, `vout`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+Write a pure voltage-domain resettable peak detector. The model should sample
+`vin` on a 500 ps timer, retain the maximum sampled value, and drive `vout`
+from that retained peak.
+
+Required observable behavior:
+
+- Initialize the retained peak to 0 V.
+- While `rst` is above `vth`, clear the retained peak to 0 V.
+- While reset is inactive, update the retained peak when a sampled `vin` value
+  is larger than the current peak.
+- Hold the first peak, clear it on reset, and update to a larger later peak.
+
+Use voltage contributions only. Smooth `vout` with `transition()`. Do not
+generate a the simulator example harness, waveform files, validation artifacts,
+transistor-level devices, current contributions, `ddt()`, or `idt()`.
+
+
 The required trace names are: `time`, `vin`, `rst`, `vout`.
 
 ## Modeling Constraints

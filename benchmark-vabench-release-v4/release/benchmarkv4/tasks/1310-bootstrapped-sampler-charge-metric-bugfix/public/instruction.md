@@ -41,6 +41,18 @@ The repaired bundle must satisfy every public property:
 - `P_ASSERT_DROOP_FLAG_WHEN_ACCUMULATED_HOLD`: restore: Assert `droop_flag` when accumulated hold error exceeds `droop_tol`. Required traces: `time`, `vin`, `clk`, `rst`, `enable`, `vhold`, `boot_metric`, `droop_flag`.
 - `P_USE_ONLY_VOLTAGE_DOMAIN_BEHAVIORAL_STATE`: restore: Use only voltage-domain behavioral state and voltage contributions on public electrical outputs. Required traces: `time`, `vin`, `clk`, `rst`, `enable`, `vhold`, `boot_metric`, `droop_flag`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+- On reset or when disabled, clear held output, bootstrap metric, and droop flag.
+- On each rising `clk` edge while enabled, capture `vin` into `vhold`.
+- Expose a `boot_metric` that increases when the sampled input is near the rails and decreases near common-mode.
+- Between samples, hold `vhold` and apply a bounded droop step toward `vcm`.
+- Assert `droop_flag` when accumulated hold error exceeds `droop_tol`.
+- Use only voltage-domain behavioral state and voltage contributions on public electrical outputs.
+- Do not expose pass/fail flags; expose only the public observable metrics named in the interface.
+
+
 ## Modeling Constraints
 
 - Use deterministic voltage-domain behavioral Verilog-A.

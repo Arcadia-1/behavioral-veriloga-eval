@@ -61,6 +61,15 @@ Create stimulus and save traces sufficient for the fixed evaluator oracle to che
 - `P_WINDOW_CLOSE_HOLD`: exercise and make observable: A falling gate crossing closes the window, preserves the final count, and asserts done. Required traces: `time`, `gate`, `event`, `done`, `count0`, `count1`, `count2`, `count3`, `count4`, `count5`, `count6`, `count7`, `count8`, `count9`, `count10`, `count11`, `count12`, `count13`, `count14`, `count15`.
 - `P_BIT_ORDER_AND_LEVELS`: exercise and make observable: count0 is the least significant bit and count15 is the most significant bit; asserted outputs use vdd and inactive outputs use 0 V. Required traces: `time`, `done`, `count0`, `count1`, `count2`, `count3`, `count4`, `count5`, `count6`, `count7`, `count8`, `count9`, `count10`, `count11`, `count12`, `count13`, `count14`, `count15`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+- On a rising `gate` crossing, clear the counter, mark the window active, and drive `done` low.
+- Count rising `event_in` crossings only while the window is active and `gate` is high.
+- On a falling `gate` crossing, close the window, hold the count, and assert `done`.
+- Drive `count0` as the least significant bit through `count15` as the most significant bit.
+
+
 The required trace names are: `time`, `gate`, `event`, `done`, `count0`, `count1`, `count2`, `count3`, `count4`, `count5`, `count6`, `count7`, `count8`, `count9`, `count10`, `count11`, `count12`, `count13`, `count14`, `count15`.
 
 ## Modeling Constraints

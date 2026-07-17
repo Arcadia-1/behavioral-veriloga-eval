@@ -42,6 +42,19 @@ The repaired bundle must satisfy every public property:
 - `P_DATA_POLARITY`: restore: High and low latched data drive equal-polarity swings around VCM. Required traces: `time`, `data`, `clk`, `rst`, `enable`, `vout`, `swing_metric`.
 - `P_TRIM_METRIC`: restore: The trim metric maps unsigned codes 0 and 7 to the public rails linearly. Required traces: `time`, `z_2`, `z_1`, `z_0`, `z_metric`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+- On reset or when `enable` is low, drive `vout` to `vcm` and clear `swing_metric`.
+- On rising `clk` edges while enabled, latch the input data level.
+- Convert `z_2..z_0` to an unsigned trim code from 0 to 7.
+- Map larger trim codes to larger voltage swing around `vcm` using `swing_min` and `swing_lsb`.
+- Drive `vout` above `vcm` for data high and below `vcm` for data low.
+- `swing_metric` must expose the selected swing magnitude in volts.
+- `z_metric` must expose trim code `k` as `vss + (vdd - vss) * k / 7`, so
+  codes 0 and 7 map to the public output rails.
+
+
 ## Modeling Constraints
 
 - Use deterministic voltage-domain behavioral Verilog-A.

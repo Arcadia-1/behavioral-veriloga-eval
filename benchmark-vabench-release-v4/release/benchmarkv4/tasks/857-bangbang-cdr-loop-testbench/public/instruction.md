@@ -110,6 +110,18 @@ Create stimulus and save traces sufficient for the fixed evaluator oracle to che
 - `P_PHASE_ROTATION`: exercise and make observable: Recovered-clock edges preserve the reference-clock waveform with phase-code-proportional delay. Required traces: `time`, `ref_clk`, `recovered_clk`, `rst`, `enable`, `phase_4`, `phase_3`, `phase_2`, `phase_1`, `phase_0`.
 - `P_LOCK_QUALIFICATION`: exercise and make observable: Lock requires four in-window decisions and drops after two consecutive out-of-window decisions. Required traces: `time`, `data_edge`, `recovered_clk`, `rst`, `enable`, `phase_4`, `phase_3`, `phase_2`, `phase_1`, `phase_0`, `lock`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+- On reset or when `enable` is low, reset the phase code to `phase_center`, clear `early`, `late`, and `lock`.
+- `bbpd` compares each rising `data_edge` event with the nearest rising `recovered_clk` event. Report `early` when the recovered-clock edge occurs before the data edge and `late` when it occurs after the data edge; coincident edges clear both decisions.
+- `loop_filter_code` increments the phase code on late decisions and decrements it on early decisions, clamped to 0 through 31.
+- `phase_rotator` must generate `recovered_clk` by delaying both edges of `ref_clk` by `phase_code * unit_phase_delay`. Latch the code separately for each originating edge so a later code update does not retime an already pending output edge.
+- Drive `phase_4..phase_0` as voltage-coded copies of the current phase code.
+- Assert `lock` after four consecutive decisions whose absolute phase-code error is within `lock_window`.
+- If two consecutive out-of-window decisions occur after lock, deassert `lock` and continue correcting. Reset or low `enable` cancels pending delayed edges, clears comparison history, and drives `recovered_clk` low.
+
+
 The required trace names are: `time`, `data_edge`, `ref_clk`, `rst`, `enable`, `recovered_clk`, `early`, `late`, `phase_4`, `phase_3`, `phase_2`, `phase_1`, `phase_0`, `lock`.
 
 ## Modeling Constraints

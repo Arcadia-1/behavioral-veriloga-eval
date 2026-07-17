@@ -48,6 +48,23 @@ The repaired bundle must satisfy every public property:
 - `P_VDD_MIN_0_72_V_VDD`: restore: `vdd_min = 0.72 V`, `vdd_max = 1.08 V`: valid `V(vdd, vss)` operating Required traces: `time`, `clk`, `en`, `rail_ok`, `ramp_ok`, `slew_metric`, `startup_ready`, `vdd`, `vss`.
 - `P_VREADY_0_86_V_SAMPLED_RAIL`: restore: `vready = 0.86 V`: sampled rail level above which settling qualification is Required traces: `time`, `clk`, `en`, `rail_ok`, `ramp_ok`, `slew_metric`, `startup_ready`, `vdd`, `vss`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+On each rising crossing of `clk`, sample `V(vdd, vss)` and compute the sampled
+change from the previous clock update. Drive `rail_ok` high only while `en` is
+high and the sampled local supply is inside the public operating window. Before
+the sampled rail reaches `vready`, drive `ramp_ok` high only when the sampled
+positive rail movement is between `dv_min` and `dv_max`. Once the sampled rail
+is at or above `vready`, drive `ramp_ok` high only when the absolute sampled
+movement is no larger than `dv_settle_max`. Accumulate consecutive settled
+samples only when `rail_ok` is high, `ramp_ok` is high, and the rail is at or
+above `vready`; clear that accumulator on any sampled invalid condition. Assert
+`startup_ready` only after `ready_cycles` consecutive settled updates. Drive
+`slew_metric` as `vhi * clip(abs(delta_v) / dv_max, 0, 1)`. Smooth the
+voltage-coded outputs with `transition()`.
+
+
 ## Modeling Constraints
 
 - Use deterministic voltage-domain behavioral Verilog-A.

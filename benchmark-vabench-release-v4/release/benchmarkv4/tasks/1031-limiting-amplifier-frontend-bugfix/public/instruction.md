@@ -33,6 +33,19 @@ The repaired bundle must satisfy every public property:
 - `P_OUTPUT_CLAMP`: restore: The final held output remains within 0.04 V through 0.86 V. Required traces: `time`, `out`.
 - `P_CLOCKED_HOLD`: restore: Out and metric update only on rising clock crossings and hold between samples. Required traces: `time`, `clk`, `vin`, `out`, `metric`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+- Initialize `out` to `0.45 V` and `metric` to `0 V`.
+- On each rising `clk` crossing through `vth`, sample `vin` unless reset is active.
+- On a rising `clk` crossing where `rst` is above `vth`, reset `out` to `0.45 V` and clear `metric` to `0 V`; reset is sampled synchronously with `clk`.
+- Treat `x = V(vin) - 0.45 V` as the signed input.
+- In the central linear region, when `-0.09 V <= x <= 0.09 V`, drive `out = 0.45 + 1.7 * x` and `metric = 0 V`.
+- In the positive limiting region, when `x > 0.09 V`, drive `out = 0.73 + 0.45 * (x - 0.09)` and `metric = 0.85 V`.
+- In the negative limiting region, when `x < -0.09 V`, drive `out = 0.17 + 0.45 * (x + 0.09)` and `metric = 0.85 V`.
+- Clamp the output to `[0.04 V, 0.86 V]`.
+
+
 ## Modeling Constraints
 
 - Use deterministic rising-edge sampled piecewise limiting behavior.

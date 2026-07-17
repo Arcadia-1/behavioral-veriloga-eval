@@ -35,6 +35,18 @@ The repaired bundle must satisfy every public property:
 - `P_TEXT_VOUT_VREF_VREF_D7_D6`: restore: ```text vout = -vref + vref * (d7 + d6/2 + d5/4 + d4/8 + d3/16 + d2/32 + d1/64 + d0/128) ``` Required traces: `time`, `d0`, `d1`, `d2`, `d3`, `d4`, `d5`, `d6`, `d7`, `gnd`, `vout`.
 - `P_WHERE_EACH_D_TERM_IS_1`: restore: where each `d` term is `1` when the corresponding input voltage is above `vth` and `0` otherwise. Required traces: `time`, `d0`, `d1`, `d2`, `d3`, `d4`, `d5`, `d6`, `d7`, `gnd`, `vout`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+Continuously drive:
+
+```text
+vout = -vref + vref * (d7 + d6/2 + d5/4 + d4/8 + d3/16 + d2/32 + d1/64 + d0/128)
+```
+
+where each `d` term is `1` when the corresponding input voltage is above `vth` and `0` otherwise.
+
+
 ## Modeling Constraints
 
 - Use deterministic voltage-domain behavioral Verilog-A.

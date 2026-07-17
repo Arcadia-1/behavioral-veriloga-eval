@@ -46,6 +46,18 @@ Create stimulus and save traces sufficient for the fixed evaluator oracle to che
 - `P_BROWNOUT_CLEAR`: exercise and make observable: On a sampled update, vin strictly less than 0.55 V clears out to the brownout state. Required traces: `time`, `clk`, `rst`, `vin`, `out`.
 - `P_STATUS_DISTINCTION`: exercise and make observable: Metric is the checker-observable status code: 0.1 V when out is power-good high and 0.9 V when reset, undervoltage, or brownout is active. Required traces: `time`, `vin`, `out`, `metric`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+- `clk` and `rst` are voltage-coded logic signals.
+- Treat `vin` as the monitored supply voltage.
+- Assert the power-good output `out` high only on a sampled clock update where `vin > 0.65 V`.
+- Preserve the previous `out` state on sampled clock updates where `0.55 V <= vin <= 0.65 V`.
+- Clear `out` low on reset or on a sampled clock update where `vin < 0.55 V`.
+- Drive `metric` as a public status code: `0.1 V` when `out` is power-good high, and `0.9 V` when reset, undervoltage, or brownout is active.
+- Keep the model pure voltage-domain behavioral Verilog-A. Do not use branch-current contributions, transistor-level devices, AC/noise analysis, or KCL/KVL regulation loops.
+
+
 The required trace names are: `time`, `clk`, `rst`, `vin`, `out`, `metric`.
 
 ## Modeling Constraints

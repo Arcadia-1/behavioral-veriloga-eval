@@ -34,6 +34,16 @@ The repaired bundle must satisfy every public property:
 - `P_MAP_ALL_ZERO_INPUT_TO_0`: restore: Map all-zero input to 0 V. Required traces: `time`, `vd1`, `vd2`, `vd3`, `vd4`, `vd5`, `vd6`, `vout`.
 - `P_MAP_ALL_ONES_INPUT_TO_VREF`: restore: Map all-ones input to `vref`. Required traces: `time`, `vd1`, `vd2`, `vd3`, `vd4`, `vd5`, `vd6`, `vout`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+- Treat each input as logic 1 when its voltage is greater than `vth`, otherwise logic 0.
+- Interpret `vd1..vd6` as an unsigned binary word with `vd1` as MSB and `vd6` as LSB.
+- Scale the decoded code by `vref`.
+- Map all-zero input to 0 V.
+- Map all-ones input to `vref`.
+
+
 ## Modeling Constraints
 
 - Use deterministic voltage-domain behavioral Verilog-A.

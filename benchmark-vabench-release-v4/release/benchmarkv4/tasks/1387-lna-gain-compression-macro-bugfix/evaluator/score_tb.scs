@@ -8,6 +8,5 @@ Venable (enable 0) vsource type=pwl wave=[0 0 5n 0 5.2n 0.9 82n 0.9 82.2n 0 92n 
 Vrst (rst 0) vsource type=pwl wave=[0 0.9 3n 0.9 3.2n 0 92n 0]
 XDUT (vin enable rst vout gain_metric compression_flag) lna_gain_compression_macro
 
-
 tran tran stop=92n maxstep=200p
 save vin enable rst vout gain_metric compression_flag

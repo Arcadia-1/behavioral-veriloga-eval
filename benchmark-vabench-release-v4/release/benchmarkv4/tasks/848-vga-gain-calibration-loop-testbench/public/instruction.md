@@ -107,6 +107,18 @@ Create stimulus and save traces sufficient for the fixed evaluator oracle to che
 - `P_VGA_OUTPUT_GAIN`: exercise and make observable: vout continuously equals vin times gain_min plus gain_lsb times gain code. Required traces: `time`, `vin`, `vout`, `gain_3`, `gain_2`, `gain_1`, `gain_0`.
 - `P_VGA_LOCK_QUALIFICATION`: exercise and make observable: locked asserts after three consecutive enabled updates whose prior sampled peak lies within tolerance. Required traces: `time`, `target`, `clk`, `rst`, `start`, `peak_metric`, `locked`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+- On reset, set gain code to 4, clear `locked`, clear `peak_metric`, and drive `vout` from the reset gain.
+- When `start` is high, `peak_detector` samples the absolute magnitude of `vin` on each rising `clk` edge.
+- `vga_model` drives `vout = (gain_min + gain_lsb * gain_code) * V(vin)`.
+- `gain_controller` increments the gain code by one when `peak_metric` is below `V(target) - tol`, decrements it by one when above `V(target) + tol`, and otherwise holds it.
+- Clamp the gain code to the range 0 to 15.
+- `lock_detector` asserts `locked` after three consecutive update cycles where the peak is within tolerance.
+- Drive `gain_3..gain_0` as voltage-coded copies of the current gain code.
+
+
 The required trace names are: `time`, `vin`, `target`, `clk`, `rst`, `start`, `vout`, `gain_3`, `gain_2`, `gain_1`, `gain_0`, `locked`, `peak_metric`.
 
 ## Modeling Constraints

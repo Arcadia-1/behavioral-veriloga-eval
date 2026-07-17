@@ -44,6 +44,26 @@ Create stimulus and save traces sufficient for the fixed evaluator oracle to che
 - `P_DONE_LATCH`: exercise and make observable: done remains low before the first qualifying crossing and high after it, with transition smoothing set by tr. Required traces: `time`, `vin`, `done`.
 - `P_SINGLE_RECORD`: exercise and make observable: Later vin crossings do not clear done or create additional metric records. Required traces: `time`, `vin`, `done`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+Write a pure voltage-domain measurement helper that records the first rising
+threshold crossing of `vin`.
+
+Required observable behavior:
+
+- Open the relative basename `filename` on `initial_step`.
+- On the first rising crossing of `vin` through `vth`, write the crossing time
+  to the metric file and latch completion.
+- The file content must be exactly one text record of the form `cross <time_seconds>` followed by a newline.
+- Keep `done` low before the first crossing and high after completion.
+- Ignore later crossings after the first recorded event.
+
+Use voltage contributions only. Smooth the `done` output with `transition()`.
+Do not generate a the simulator example harness, waveform files, validation artifacts,
+transistor-level devices, current contributions, `ddt()`, or `idt()`.
+
+
 The required trace names are: `time`, `vin`, `done`.
 
 ## Modeling Constraints

@@ -54,6 +54,18 @@ Create stimulus and save traces sufficient for the fixed evaluator oracle to che
 - `P_ASSERT_VALID_AFTER_THE_FIRST_ENABLED`: exercise and make observable: Assert `valid` after the first enabled code update. Required traces: `time`, `clk`, `rst`, `enable`, `code_2`, `code_1`, `code_0`, `vout`, `glitch_metric`, `valid`.
 - `P_USE_ONLY_VOLTAGE_DOMAIN_BEHAVIORAL_STATE`: exercise and make observable: Use only voltage-domain behavioral state and voltage contributions on public electrical outputs. Required traces: `time`, `clk`, `rst`, `enable`, `code_2`, `code_1`, `code_0`, `vout`, `glitch_metric`, `valid`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+- On reset or when disabled, clear output, previous code, glitch metric, and `valid`.
+- On each enabled rising `clk` edge, decode the 3-bit code as a unary element count.
+- Drive `vout` proportional to the decoded count.
+- Drive `glitch_metric` proportional to the absolute change in count since the previous enabled update.
+- Assert `valid` after the first enabled code update.
+- Use only voltage-domain behavioral state and voltage contributions on public electrical outputs.
+- Do not expose pass/fail flags; expose only the public observable metrics named in the interface.
+
+
 The required trace names are: `time`, `clk`, `rst`, `enable`, `code_2`, `code_1`, `code_0`, `vout`, `glitch_metric`, `valid`.
 
 ## Modeling Constraints

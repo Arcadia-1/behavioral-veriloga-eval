@@ -50,6 +50,18 @@ Create stimulus and save traces sufficient for the fixed evaluator oracle to che
 - `P_VALID_SEQUENCE`: exercise and make observable: valid is low before a completed signal sample and after every reset sample, then rises to vhi when a signal sample is published. Required traces: `time`, `phi_reset`, `phi_signal`, `valid`.
 - `P_HOLD_BETWEEN_EVENTS`: exercise and make observable: vout and valid hold their last event-updated states between reset and signal sampling crossings. Required traces: `time`, `phi_reset`, `phi_signal`, `vin`, `vout`, `valid`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+Initialize the stored reset sample to `vcm`, drive `vout` to `vcm`, and drive
+`valid` low. On each rising crossing of `phi_reset` through `vth`, sample the
+current `vin` value as the reset level, drive `vout` back to `vcm`, and clear
+`valid` low. On each rising crossing of `phi_signal` through `vth`, compute
+`vcm + gain * (signal_level - reset_level)`, clamp that corrected value between
+`vlo` and `vhi`, drive `vout` to the clamped value, and drive `valid` high to
+`vhi`. Hold both outputs between sampling events.
+
+
 The required trace names are: `time`, `phi_reset`, `phi_signal`, `vin`, `vout`, `valid`.
 
 ## Modeling Constraints

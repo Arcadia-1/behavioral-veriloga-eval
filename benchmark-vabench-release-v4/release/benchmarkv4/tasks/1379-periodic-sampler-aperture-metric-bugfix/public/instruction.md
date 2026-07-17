@@ -37,6 +37,16 @@ The repaired bundle must satisfy every public property:
 - `P_HOLD_VHOLD_AND_THE_LAST_METRIC`: restore: Hold `vhold` and the last metric between enabled sampling events. Required traces: `time`, `vin`, `clk`, `rst`, `sample_en`, `vhold`, `aperture_metric`, `valid`.
 - `P_VALID_IS_HIGH_AFTER_THE_FIRST`: restore: `valid` is high after the first enabled sample and low during reset. Required traces: `time`, `vin`, `clk`, `rst`, `sample_en`, `vhold`, `aperture_metric`, `valid`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+- Reset clears the held value, aperture metric, and valid flag.
+- On each rising `clk` edge with `sample_en` high, capture `vin` into `vhold`.
+- The aperture metric after a capture is proportional to the absolute difference between the new sample and the previous held sample.
+- Hold `vhold` and the last metric between enabled sampling events.
+- `valid` is high after the first enabled sample and low during reset.
+
+
 ## Modeling Constraints
 
 - Use deterministic voltage-domain behavioral Verilog-A.

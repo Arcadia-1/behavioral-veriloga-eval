@@ -52,12 +52,22 @@ hierarchical/private nodes, or use checker/gold/internal files.
 
 Create stimulus and save traces sufficient for the fixed evaluator oracle to check:
 
-- `P_MEASURE_ANALOG_INPUTS_RELATIVE_TO_THE`: exercise and make observable: Update on rising `clk` or rising `rst`. Let `span=V(vdd,vss)` and `xN=clip01((V(inN)-V(vss))/max(span,0.05))`. Reset or invalid enable/span clears all outputs. Otherwise `out=flag=vhi` exactly when `x0>x1`, and `metric=vhi*clip01(abs(x0-x1))`. `in2`, `in3`, and controls do not affect the observables. Required traces: `time`, `clk`, `ctrl0`, `ctrl1`, `en`, `flag`, `in0`, `in1`, `in2`, `in3`, `metric`, `out`, `rst`, `vdd`, `vss`.
+- `P_MEASURE_ANALOG_INPUTS_RELATIVE_TO_THE`: exercise and make observable: Measure analog inputs relative to the local `vss` rail and normalize by the current local supply span. Clear all observables when `en` is low or when the local supply span is outside the public range. The DUT updates its observable state on the public clock edge and clears state while reset is high. Drive `out` with the task-specific bounded analog result, drive `flag` with the task-specific qualification condition, and drive `metric` with a bounded diagnostic magnitude. Required traces: `time`, `clk`, `ctrl0`, `ctrl1`, `en`, `flag`, `in0`, `in1`, `in2`, `in3`, `metric`, `out`, `rst`, `vdd`, `vss`.
 - `P_BUILD_A_VOLTAGE_DOMAIN_ANALOG_MIXED`: exercise and make observable: Build a voltage-domain analog/mixed-signal helper or monitor. Clock-edge qualified delay-style driver replacing specify/specparam timing with explicit event state. Required traces: `time`, `clk`, `ctrl0`, `ctrl1`, `en`, `flag`, `in0`, `in1`, `in2`, `in3`, `metric`, `out`, `rst`, `vdd`, `vss`.
 - `P_VTH_0_45_V_LOGIC_THRESHOLD`: exercise and make observable: `vth = 0.45 V`: logic threshold for voltage-coded controls. Required traces: `time`, `clk`, `ctrl0`, `ctrl1`, `en`, `flag`, `in0`, `in1`, `in2`, `in3`, `metric`, `out`, `rst`, `vdd`, `vss`.
 - `P_VHI_0_9_V_HIGH_LEVEL`: exercise and make observable: `vhi = 0.9 V`: high level for output observables. Required traces: `time`, `clk`, `ctrl0`, `ctrl1`, `en`, `flag`, `in0`, `in1`, `in2`, `in3`, `metric`, `out`, `rst`, `vdd`, `vss`.
 - `P_SPAN_MIN_0_62_V_SPAN`: exercise and make observable: `span_min = 0.62 V`, `span_max = 1.28 V`: legal local supply span measured as Required traces: `time`, `clk`, `ctrl0`, `ctrl1`, `en`, `flag`, `in0`, `in1`, `in2`, `in3`, `metric`, `out`, `rst`, `vdd`, `vss`.
 - `P_TR_50P_OUTPUT_TRANSITION_SMOOTHING_TIME`: exercise and make observable: `tr = 50p`: output transition smoothing time. Required traces: `time`, `clk`, `ctrl0`, `ctrl1`, `en`, `flag`, `in0`, `in1`, `in2`, `in3`, `metric`, `out`, `rst`, `vdd`, `vss`.
+
+
+The following canonical public behavior is normative for this derived form:
+
+Measure analog inputs relative to the local `vss` rail and normalize by the
+current local supply span. Clear all observables when `en` is low or when the
+local supply span is outside the public range. The DUT updates its observable state on the public clock edge and clears state while reset is high. Drive `out` with the
+task-specific bounded analog result, drive `flag` with the task-specific
+qualification condition, and drive `metric` with a bounded diagnostic magnitude.
+
 
 The required trace names are: `time`, `clk`, `ctrl0`, `ctrl1`, `en`, `flag`, `in0`, `in1`, `in2`, `in3`, `metric`, `out`, `rst`, `vdd`, `vss`.
 

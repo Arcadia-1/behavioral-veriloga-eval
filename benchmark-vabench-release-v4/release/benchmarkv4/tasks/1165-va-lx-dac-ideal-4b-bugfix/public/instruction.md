@@ -31,6 +31,12 @@ The repaired bundle must satisfy every public property:
 - `P_BINARY_BIT_ORDER`: restore: `din4` is the MSB and `din1` is the LSB of the sampled 4-bit unipolar code. Required traces: `time`, `rdy`, `din1`, `din2`, `din3`, `din4`, `aout`.
 - `P_VDD_SCALED_DAC_OUTPUT`: restore: The sampled binary fraction is scaled by `vdd` and driven smoothly on `aout`. Required traces: `time`, `rdy`, `din1`, `din2`, `din3`, `din4`, `aout`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+On each rising crossing of `rdy` through `vth`, decode `din4` as the MSB and `din1` as the LSB of a 4-bit unipolar binary fraction. Scale the fraction by `vdd` and hold the result on `aout`.
+
+
 ## Modeling Constraints
 
 - Use deterministic voltage-domain behavioral Verilog-A.

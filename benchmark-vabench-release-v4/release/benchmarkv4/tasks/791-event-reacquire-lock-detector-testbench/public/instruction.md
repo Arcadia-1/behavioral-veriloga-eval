@@ -45,11 +45,21 @@ hierarchical/private nodes, or use checker/gold/internal files.
 
 Create stimulus and save traces sufficient for the fixed evaluator oracle to check:
 
-- `P_RECORD_REFERENCE_CLOCK_RISING_EDGE_TIME`: exercise and make observable: Rising `ref_clk` records `$abstime`; a reset-low rising `fb_clk` uses the absolute elapsed time since that reference, or `metric_fullscale` before any reference edge. Required traces: `time`, `fb_clk`, `lock`, `phase_metric`, `ref_clk`, `rst`, `state_mon`.
-- `P_REQUIRE_CONSECUTIVE_IN_WINDOW_FEEDBACK_EDGE`: exercise and make observable: A feedback edge with `phase_error <= lock_window` increments the good count capped at `lock_count`; another feedback edge clears it. `lock = vhi` exactly when the count reaches `lock_count`. Required traces: `time`, `fb_clk`, `lock`, `phase_metric`, `ref_clk`, `rst`, `state_mon`.
-- `P_CLEAR_LOCK_STATE_AND_PROGRESS_WHEN`: exercise and make observable: Reset rising or sampled high on a feedback edge clears the good count and all three outputs. Required traces: `time`, `fb_clk`, `lock`, `phase_metric`, `ref_clk`, `rst`, `state_mon`.
-- `P_EXPOSE_PHASE_METRIC_AND_STATE_MON`: exercise and make observable: After each reset-low feedback edge, `phase_metric = vhi * clip01(phase_error / metric_fullscale)` and `state_mon = vhi * clip01(good_count / lock_count)`. Required traces: `time`, `fb_clk`, `lock`, `phase_metric`, `ref_clk`, `rst`, `state_mon`.
+- `P_RECORD_REFERENCE_CLOCK_RISING_EDGE_TIME`: exercise and make observable: Record reference clock rising-edge time and evaluate feedback clock rising edges against it. Required traces: `time`, `fb_clk`, `lock`, `phase_metric`, `ref_clk`, `rst`, `state_mon`.
+- `P_REQUIRE_CONSECUTIVE_IN_WINDOW_FEEDBACK_EDGE`: exercise and make observable: Require consecutive in-window feedback edge errors before lock asserts. Required traces: `time`, `fb_clk`, `lock`, `phase_metric`, `ref_clk`, `rst`, `state_mon`.
+- `P_CLEAR_LOCK_STATE_AND_PROGRESS_WHEN`: exercise and make observable: Clear lock state and progress when reset rises or is sampled high. Required traces: `time`, `fb_clk`, `lock`, `phase_metric`, `ref_clk`, `rst`, `state_mon`.
+- `P_EXPOSE_PHASE_METRIC_AND_STATE_MON`: exercise and make observable: Expose phase_metric and state_mon as bounded voltage-coded observables. Required traces: `time`, `fb_clk`, `lock`, `phase_metric`, `ref_clk`, `rst`, `state_mon`.
 - `P_USE_EVENT_BODY_STATE_UPDATES_PLUS`: exercise and make observable: Use event-body state updates plus local analog helper functions rather than user task/endtask syntax. Required traces: `time`, `fb_clk`, `lock`, `phase_metric`, `ref_clk`, `rst`, `state_mon`.
+
+
+The following canonical public behavior is normative for this derived form:
+
+- Record reference clock rising-edge time and evaluate feedback clock rising edges against it.
+- Require consecutive in-window feedback edge errors before lock asserts.
+- Clear lock state and progress when reset rises or is sampled high.
+- Expose phase_metric and state_mon as bounded voltage-coded observables.
+- Use event-body state updates plus local analog helper functions rather than user task/endtask syntax.
+
 
 The required trace names are: `time`, `fb_clk`, `lock`, `phase_metric`, `ref_clk`, `rst`, `state_mon`.
 

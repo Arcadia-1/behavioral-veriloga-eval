@@ -51,6 +51,18 @@ The repaired bundle must satisfy every public property:
 - `P_LATCH_THE_COARSE_COUNT_INTO_COARSE`: restore: Latch the coarse count into `coarse_3..coarse_0` and expose a fine residual proxy on `fine_metric`. Required traces: `time`, `start`, `stop`, `ref_clk`, `rst`, `enable`, `coarse_3`, `coarse_2`, `coarse_1`, `coarse_0`, `fine_metric`, `valid`.
 - `P_ASSERT_VALID_ONLY_AFTER_THE_STOP`: restore: Assert `valid` only after the stop edge completes the measurement. Required traces: `time`, `start`, `stop`, `ref_clk`, `rst`, `enable`, `coarse_3`, `coarse_2`, `coarse_1`, `coarse_0`, `fine_metric`, `valid`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+- On reset or when disabled, clear coarse code, fine metric, and `valid`.
+- A rising `start` edge arms a measurement and clears the coarse counter.
+- Count rising `ref_clk` edges until the first rising `stop` edge.
+- Latch the coarse count into `coarse_3..coarse_0` and expose a fine residual proxy on `fine_metric`.
+- Assert `valid` only after the stop edge completes the measurement.
+- Use only voltage-domain behavioral state and voltage contributions on public electrical outputs.
+- Do not expose pass/fail flags; expose only the public observable metrics named in the interface.
+
+
 ## Modeling Constraints
 
 - Use deterministic voltage-domain behavioral Verilog-A.

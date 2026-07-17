@@ -109,6 +109,18 @@ Create stimulus and save traces sufficient for the fixed evaluator oracle to che
 - `P_DIVIDE_BY_FOUR_EDGES`: exercise and make observable: DIV2 toggles after each pair of feedback-clock rising edges. Required traces: `time`, `fb_clk`, `rst`, `enable`, `div2_clk`.
 - `P_LOCK_REACQUIRE`: exercise and make observable: Lock requires four consecutive in-window comparisons and reacquire requires two post-lock out-of-window comparisons. Required traces: `time`, `ref_clk`, `fb_clk`, `rst`, `enable`, `lock`, `reacquire`, `phase_3`, `phase_2`, `phase_1`, `phase_0`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+- On reset or when `enable` is low, clear `up`, `down`, `lock`, `reacquire`, `div2_clk`, and the phase code.
+- `divider` must toggle `div2_clk` on every second rising edge of `fb_clk`.
+- `phase_detector` compares rising `ref_clk` and `fb_clk` events: assert `up` when the reference edge leads, assert `down` when the feedback edge leads, and clear both after the opposite edge arrives.
+- Treat the arrival of one rising edge from each clock as one completed comparison cycle. Increment the signed phase estimate by exactly one when the reference edge arrived first, decrement it by exactly one when the feedback edge arrived first, and leave it unchanged for coincident edges. Clamp the estimate to -8 through +7.
+- Represent the signed phase estimate on `phase_3..phase_0` as offset binary with code 8 representing zero phase error.
+- `lock_detector` asserts `lock` after four consecutive comparison cycles with absolute phase-code error less than or equal to `lock_window`.
+- `reacquire_timer` asserts `reacquire` when the system was locked and then observes two consecutive out-of-window phase comparisons. A reset or low `enable` clears any unmatched edge and all consecutive-cycle history.
+
+
 The required trace names are: `time`, `ref_clk`, `fb_clk`, `rst`, `enable`, `up`, `down`, `lock`, `reacquire`, `div2_clk`, `phase_3`, `phase_2`, `phase_1`, `phase_0`.
 
 ## Modeling Constraints

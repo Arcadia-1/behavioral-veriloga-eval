@@ -29,6 +29,12 @@ The repaired bundle must satisfy every public property:
 - `P_BOTH_CHANNELS_REACHABLE`: restore: Both clocked sample channels can independently update `vout` without one channel masking the other. Required traces: `time`, `clks1`, `clks2`, `samp1`, `samp2`, `vout`.
 - `P_OUTPUT_GAIN_AND_HOLD`: restore: `vout` holds the selected sample amplitude without gain scaling between clock events. Required traces: `time`, `clks1`, `clks2`, `samp1`, `samp2`, `vout`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+On a rising crossing of `clks1` through `vth`, sample `samp1` into the output register. On a rising crossing of `clks2` through `vth`, sample `samp2` into the output register. Hold the most recently sampled value on `vout` between events.
+
+
 ## Modeling Constraints
 
 - Use deterministic voltage-domain behavioral Verilog-A.

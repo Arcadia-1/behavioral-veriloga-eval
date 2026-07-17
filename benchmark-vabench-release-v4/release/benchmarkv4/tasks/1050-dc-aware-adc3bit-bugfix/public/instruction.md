@@ -32,6 +32,17 @@ The repaired bundle must satisfy every public property:
 - `P_BINARY_BIT_ORDER`: restore: d2 is the most significant output bit and d0 is the least significant output bit. Required traces: `time`, `d2`, `d1`, `d0`.
 - `P_OUTPUT_LEVELS`: restore: Each output bit approaches 0 V for logic low and vh for logic high with finite transition smoothing. Required traces: `time`, `d2`, `d1`, `d0`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+Model a static, analysis-friendly three-bit ADC. Clip `vin` to the 0-to-`vref`
+range, quantize the clipped value into eight uniform output codes, and drive
+`d2..d0` as the binary representation of that code. The conversion is
+combinational/static rather than clocked: the output word should represent the
+current input level after transition smoothing, including at the beginning of a
+transient run.
+
+
 ## Modeling Constraints
 
 - Use deterministic static voltage-domain quantization.

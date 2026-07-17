@@ -46,6 +46,17 @@ Create stimulus and save traces sufficient for the fixed evaluator oracle to che
 - `P_INPUT_DENSITY_ORDER`: exercise and make observable: Over a sufficiently long common observation interval, a larger constant vin produces a nondecreasing fraction of high output bits. Required traces: `time`, `vin`, `vclk`, `bitout`.
 - `P_FEEDBACK_STABILITY`: exercise and make observable: For an in-range constant input, the output stream continues to alternate as needed rather than running away as an open-loop accumulator. Required traces: `time`, `vin`, `vclk`, `bitout`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+Maintain a first-order accumulator. On each rising crossing of `vclk`, update
+the accumulator with the current normalized input minus the previous one-bit
+feedback value. Publish the next output bit high when the updated accumulator
+is nonnegative and low otherwise. The output stream should therefore have a
+higher pulse density for larger `vin` values while keeping the accumulator
+bounded by the feedback action.
+
+
 The required trace names are: `time`, `vin`, `vclk`, `bitout`.
 
 ## Modeling Constraints

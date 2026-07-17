@@ -72,6 +72,18 @@ The repaired bundle must satisfy every public property:
 - `P_EXPOSE_THE_CURRENT_TARGET_ON_TARGET`: restore: Expose the current target on `target_dbg` and the remaining error on `settling_metric`. Required traces: `time`, `clk`, `rst`, `enable`, `code_3`, `code_2`, `code_1`, `code_0`, `vout`, `target_dbg`, `settling_metric`, `settled`.
 - `P_ASSERT_SETTLED_AFTER_THE_REMAINING_ERROR`: restore: Assert `settled` after the remaining error stays below `settle_tol` for two enabled updates. Required traces: `time`, `clk`, `rst`, `enable`, `code_3`, `code_2`, `code_1`, `code_0`, `vout`, `target_dbg`, `settling_metric`, `settled`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+- On reset or when disabled, drive `vout` to `vcm` and drive `target_dbg`, `settling_metric`, and `settled` to `vss`.
+- Decode the current 4-bit code as a linear target from `vss` for code 0 to `vdd` for code 15. On each enabled rising `clk` edge, update the buffered output toward that target.
+- Apply a code-dependent settling step so large code jumps take more updates to settle.
+- Expose the current target on `target_dbg` and the remaining error on `settling_metric`.
+- Assert `settled` after the remaining error stays below `settle_tol` for two enabled updates.
+- Use only voltage-domain behavioral state and voltage contributions on public electrical outputs.
+- Do not expose pass/fail flags; expose only the public observable metrics named in the interface.
+
+
 ## Modeling Constraints
 
 - Use deterministic voltage-domain behavioral Verilog-A.

@@ -39,6 +39,18 @@ The repaired bundle must satisfy every public property:
 - `P_ASSERT_IN_WINDOW_ONLY_WHEN_THE`: restore: Assert `in_window` only when the measured duty lies between `duty_min` and `duty_max`. Required traces: `time`, `clk_in`, `rst`, `enable`, `duty_min`, `duty_max`, `duty_metric`, `in_window`, `valid`.
 - `P_ASSERT_VALID_AFTER_A_COMPLETE_HIGH`: restore: Assert `valid` after a complete high/low cycle has been observed. Required traces: `time`, `clk_in`, `rst`, `enable`, `duty_min`, `duty_max`, `duty_metric`, `in_window`, `valid`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+- On reset or when disabled, clear duty metric, window flag, and `valid`.
+- Measure high and low intervals over complete clock cycles using threshold crossings.
+- Drive `duty_metric` as the measured high-time fraction mapped to the public voltage range.
+- Assert `in_window` only when the measured duty lies between `duty_min` and `duty_max`.
+- Assert `valid` after a complete high/low cycle has been observed.
+- Use only voltage-domain behavioral state and voltage contributions on public electrical outputs.
+- Do not expose pass/fail flags; expose only the public observable metrics named in the interface.
+
+
 ## Modeling Constraints
 
 - Use deterministic voltage-domain behavioral Verilog-A.

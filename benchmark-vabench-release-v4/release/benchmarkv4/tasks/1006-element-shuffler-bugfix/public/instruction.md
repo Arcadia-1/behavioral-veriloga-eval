@@ -33,6 +33,24 @@ The repaired bundle must satisfy every public property:
 - `P_ONE_HOT`: restore: Exactly one output is high in every stable released-reset state. Required traces: `time`, `rst_n`, `out0`, `out1`, `out2`, `out3`.
 - `P_RAIL_LEVELS`: restore: The selected output approaches vdd and all other outputs approach 0 V with finite smoothing. Required traces: `time`, `out0`, `out1`, `out2`, `out3`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+Treat `clk` and `rst_n` as voltage-coded logic signals using threshold `vth`.
+
+`rst_n` is active low. When `rst_n` is low, the shuffler must reset its internal state so the first valid rising edge of `clk` after reset release produces `out2` as the active output.
+
+After reset is released, the active output must advance on each rising edge of `clk` through this repeating permutation:
+
+```text
+out2 -> out0 -> out3 -> out1 -> out2 -> ...
+```
+
+Exactly one of `out0`, `out1`, `out2`, and `out3` must be high in each stable state. Active outputs should be near `vdd`; inactive outputs should be near `0 V`.
+
+The output sequence must be driven by `clk` and `rst_n` behavior, not by absolute simulation time.
+
+
 ## Modeling Constraints
 
 - Use deterministic voltage-domain behavior driven by clk and rst_n rather than absolute time.

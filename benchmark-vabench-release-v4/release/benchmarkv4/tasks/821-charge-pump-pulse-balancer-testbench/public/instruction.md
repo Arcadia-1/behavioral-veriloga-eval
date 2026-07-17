@@ -54,6 +54,18 @@ Create stimulus and save traces sufficient for the fixed evaluator oracle to che
 - `P_DRIVE_IMBALANCE_METRIC_FROM_THE_ACCUMULATED`: exercise and make observable: Drive `imbalance_metric` from the accumulated UP-minus-DN activity. Required traces: `time`, `up`, `dn`, `clk`, `rst`, `enable`, `vctrl`, `imbalance_metric`, `balanced`.
 - `P_ASSERT_BALANCED_ONLY_WHEN_THE_RECENT`: exercise and make observable: Assert `balanced` only when the recent absolute imbalance is below `balance_tol`. Required traces: `time`, `up`, `dn`, `clk`, `rst`, `enable`, `vctrl`, `imbalance_metric`, `balanced`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+- On reset or when disabled, drive `vctrl` to `vcm`, clear imbalance, and clear `balanced`.
+- On each rising `clk` edge, observe voltage-coded `up` and `dn` pulse states.
+- Increase `vctrl` for UP-only, decrease it for DN-only, and hold for simultaneous or inactive pulses.
+- Drive `imbalance_metric` from the accumulated UP-minus-DN activity.
+- Assert `balanced` only when the recent absolute imbalance is below `balance_tol`.
+- Use only voltage-domain behavioral state and voltage contributions on public electrical outputs.
+- Do not expose pass/fail flags; expose only the public observable metrics named in the interface.
+
+
 The required trace names are: `time`, `up`, `dn`, `clk`, `rst`, `enable`, `vctrl`, `imbalance_metric`, `balanced`.
 
 ## Modeling Constraints

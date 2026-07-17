@@ -50,6 +50,20 @@ Create stimulus and save traces sufficient for the fixed evaluator oracle to che
 - `P_FOUR_STEP_DONE`: exercise and make observable: Metric asserts after four active search updates and subsequent rising clocks hold the completed trial state until reset. Required traces: `time`, `clk`, `rst`, `vin`, `out`, `metric`.
 - `P_TRIM_CLAMP`: exercise and make observable: Out remains within vmin through vmax for every trial update. Required traces: `time`, `out`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+- Initialize the trial trim to `target`, the step size to `step_init`, and `metric` low.
+- On each rising crossing of `clk` through `vth`, update the search state unless the search is already done.
+- While `rst` is above `vth`, reset the trial trim to `target`, restore the initial step size, clear the cycle counter, and drive `metric` low.
+- Treat `V(vin) - target` as the signed decision input.
+- For a positive decision input, increase the trial trim by the current step size.
+- For a negative decision input, decrease the trial trim by the current step size.
+- Halve the step size after each active decision update.
+- Assert `metric` after the public four-step search window has completed.
+- Clamp the trial trim between `vmin` and `vmax`.
+
+
 The required trace names are: `time`, `clk`, `rst`, `vin`, `out`, `metric`.
 
 ## Modeling Constraints

@@ -66,6 +66,18 @@ The repaired bundle must satisfy every public property:
 - `P_EXPOSE_AGGREGATE_TAP_MAGNITUDE_ON_ADAPT`: restore: Expose aggregate tap magnitude on `adapt_metric`. Required traces: `time`, `err_in`, `clk`, `rst`, `enable`, `tap_pre`, `tap_post`, `main_out`, `adapt_metric`, `done`.
 - `P_ASSERT_DONE_AFTER_SIX_ENABLED_ADAPTATION`: restore: Assert `done` after six enabled adaptation updates. Required traces: `time`, `err_in`, `clk`, `rst`, `enable`, `tap_pre`, `tap_post`, `main_out`, `adapt_metric`, `done`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+- On reset or when disabled, clear tap states, output, adapt metric, and `done`.
+- On each enabled rising `clk` edge, update pre and post tap signs according to `err_in - vcm`.
+- Drive `main_out` as the current main cursor correction around `vcm`.
+- Expose aggregate tap magnitude on `adapt_metric`.
+- Assert `done` after six enabled adaptation updates.
+- Use only voltage-domain behavioral state and voltage contributions on public electrical outputs.
+- Do not expose pass/fail flags; expose only the public observable metrics named in the interface.
+
+
 ## Modeling Constraints
 
 - Use deterministic voltage-domain behavioral Verilog-A.

@@ -34,6 +34,20 @@ The repaired bundle must satisfy every public property:
 - `P_EQUAL_INPUT_DECISION`: restore: On a rising CMPCK crossing with equal differential inputs, both decision outputs become low. Required traces: `time`, `cmpck`, `vinp`, `vinn`, `dcmpn`, `dcmpp`.
 - `P_LATCHED_HOLD_AND_TIMING`: restore: The precharged or decided state holds between clock events and output changes use td_cmp delay and tr smoothing. Required traces: `time`, `cmpck`, `dcmpn`, `dcmpp`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+- Initialize both decision outputs high.
+- Whenever `CMPCK` falls through `vdd/2`, precharge/reset both decision outputs
+  high.
+- Whenever `CMPCK` rises through `vdd/2`, latch a differential decision:
+  `DCMPP` goes high when `VINP > VINN`, `DCMPN` goes high when `VINP < VINN`,
+  and both outputs go low for an equal-input decision.
+- Hold the latched or precharged state until the next clock event.
+- Drive outputs as smooth voltage-domain levels using the configured delay and
+  transition time.
+
+
 ## Modeling Constraints
 
 - Update decision state only at CMPCK crossings through vdd/2 and hold it between events.

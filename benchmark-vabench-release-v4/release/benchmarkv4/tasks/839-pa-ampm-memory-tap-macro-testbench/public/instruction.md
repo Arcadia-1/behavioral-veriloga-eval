@@ -56,6 +56,18 @@ Create stimulus and save traces sufficient for the fixed evaluator oracle to che
 - `P_APPLY_A_ONE_SAMPLE_MEMORY_TERM`: exercise and make observable: Apply a one-sample memory term that changes output polarity metric after large input changes. Required traces: `time`, `vin`, `clk`, `rst`, `enable`, `drive`, `vout`, `am_metric`, `pm_metric`, `valid`.
 - `P_EXPOSE_AM_AND_PM_PROXIES_SEPARATELY`: exercise and make observable: Expose AM and PM proxies separately and assert `valid` after the first update. Required traces: `time`, `vin`, `clk`, `rst`, `enable`, `drive`, `vout`, `am_metric`, `pm_metric`, `valid`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+- On reset or when disabled, drive `vout` to `vcm`, clear metrics, and clear `valid`.
+- On each enabled rising `clk` edge, sample input amplitude and drive level.
+- Apply an AM gain compression proxy as drive increases.
+- Apply a one-sample memory term that changes output polarity metric after large input changes.
+- Expose AM and PM proxies separately and assert `valid` after the first update.
+- Use only voltage-domain behavioral state and voltage contributions on public electrical outputs.
+- Do not expose pass/fail flags; expose only the public observable metrics named in the interface.
+
+
 The required trace names are: `time`, `vin`, `clk`, `rst`, `enable`, `drive`, `vout`, `am_metric`, `pm_metric`, `valid`.
 
 ## Modeling Constraints

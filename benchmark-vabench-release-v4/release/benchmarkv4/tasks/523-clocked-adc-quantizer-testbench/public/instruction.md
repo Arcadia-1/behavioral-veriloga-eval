@@ -50,6 +50,19 @@ Create stimulus and save traces sufficient for the fixed evaluator oracle to che
 - `P_CODE_MONOTONICITY`: exercise and make observable: For increasing VIN samples across the conversion range, the sampled three-bit code is nondecreasing. Required traces: `time`, `clk`, `vin`, `dout2`, `dout1`, `dout0`.
 - `P_SAMPLE_HOLD`: exercise and make observable: The output code remains stable between rising CLK crossings even when VIN changes. Required traces: `time`, `clk`, `vin`, `dout2`, `dout1`, `dout0`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+On each rising crossing of `CLK` through `vth`, quantize `VIN` into one of
+eight uniform bins spanning `vrefn` to `vrefp`. Clamp the sampled code to the
+inclusive range 0 through 7 and hold that code until the next rising clock
+event.
+
+Drive `DOUT2`, `DOUT1`, and `DOUT0` as the binary representation of the held
+code, using `VDD` for logic 1 and `VSS` for logic 0. The output bits must remain
+stable between sampling events.
+
+
 The required trace names are: `time`, `vdd`, `vss`, `vin`, `clk`, `dout2`, `dout1`, `dout0`.
 
 ## Modeling Constraints

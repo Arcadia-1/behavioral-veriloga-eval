@@ -45,6 +45,16 @@ The repaired bundle must satisfy every public property:
 - `P_COMPLETION`: restore: After the final pulse completes, pulse is low and done is asserted. Required traces: `time`, `clk`, `pulse`, `done`.
 - `P_OUTPUT_LEVELS`: restore: pulse and done use 0 V and vdd levels with finite transition smoothing set by tr. Required traces: `time`, `pulse`, `done`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+- Sample controls on rising `clk` crossings.
+- While idle, a sampled high `start` captures unsigned 4-bit `period`, `width`, and `count` control words.
+- Interpret each captured control word as at least one clock sample: zero-coded period, width, or count values map to 1.
+- Emit exactly `count` pulses. Each pulse is high for `width` clock samples, and pulse starts are separated by `period` clock samples.
+- After the final pulse completes, drive `pulse` low and assert `done`.
+
+
 ## Modeling Constraints
 
 - AMS role: finite pulse-train sequencer for calibration, startup, and sampled-data control timing.

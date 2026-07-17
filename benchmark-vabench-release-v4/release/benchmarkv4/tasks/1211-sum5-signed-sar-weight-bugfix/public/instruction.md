@@ -30,6 +30,18 @@ The repaired bundle must satisfy every public property:
 - `P_TEXT_OUT_1_1_2_SIGNED`: restore: ```text out = 1.1 * (2 * signed_weighted_sum - 1) ``` Required traces: `time`, `d1`, `d2`, `d3`, `d4`, `d5`, `out`.
 - `P_THE_BEHAVIOR_IS_CONTINUOUS_WITH_RESPECT`: restore: The behavior is continuous with respect to the voltage-coded decision inputs after thresholding. Required traces: `time`, `d1`, `d2`, `d3`, `d4`, `d5`, `out`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+Treat each decision input as `+1` when its voltage is above `vth` and `-1` otherwise. Combine the signed decisions with SAR weights `d5 = 1/2`, `d4 = 1/4`, `d3 = 1/8`, `d2 = 1/16`, and `d1 = 1/32`. Drive `out` to the scaled signed reconstruction:
+
+```text
+out = 1.1 * (2 * signed_weighted_sum - 1)
+```
+
+The behavior is continuous with respect to the voltage-coded decision inputs after thresholding.
+
+
 ## Modeling Constraints
 
 - Use deterministic voltage-domain behavioral Verilog-A.

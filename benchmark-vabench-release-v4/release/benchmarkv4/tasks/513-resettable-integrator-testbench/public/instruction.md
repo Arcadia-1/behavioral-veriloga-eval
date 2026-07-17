@@ -47,6 +47,18 @@ Create stimulus and save traces sufficient for the fixed evaluator oracle to che
 - `P_ACCUMULATOR_CLAMP`: exercise and make observable: vout remains in the closed 0 V to vmax range. Required traces: `time`, `vout`.
 - `P_EVENT_HOLD`: exercise and make observable: The accumulated state changes only on dt timer events. Required traces: `time`, `vin`, `rst`, `vout`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+- Initialize the internal accumulator to `0 V`.
+- Update state only on `@(timer(0, dt))`.
+- Treat reset as active high when `V(rst) > vth`; while reset is active, force the accumulator and `vout` toward `0 V`.
+- When reset is low, add `gain * V(vin) * dt` to the accumulator on each timer event.
+- Clamp the accumulator to the closed range from `0 V` to `vmax`.
+- After reset deasserts, integration must restart from `0 V` using the same update rule.
+- Drive `vout` from the accumulator with a smoothed voltage contribution.
+
+
 The required trace names are: `time`, `vin`, `rst`, `vout`.
 
 ## Modeling Constraints

@@ -25,7 +25,7 @@ module quadrature_oscillator_phase_error_monitor(clk_i, clk_q, rst, enable, phas
                     phase_proxy = (last_q_tick - last_i_tick + 0.0) / period_ticks;
                     phase_err = (phase_proxy > 0.25) ? (phase_proxy - 0.25) : (0.25 - phase_proxy);
                     metric_v = (phase_err * 3.6 > vdd) ? vdd : phase_err * 3.6;
-                    if (phase_err <= 0.10) stable_ok = stable_ok + 1; else stable_ok = 0;
+                    if (metric_v <= phase_tol) stable_ok = stable_ok + 1; else stable_ok = 0;
                     ok_v = ((stable_ok >= 2)) ? vdd : vss;
                     valid_v = vdd;
                 end

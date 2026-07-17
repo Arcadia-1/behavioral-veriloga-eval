@@ -29,6 +29,15 @@ The repaired bundle must satisfy every public property:
 - `P_DRIVE_DOWN_HIGH_WHEN_THE_INTERPRETED`: restore: Drive `down` high when the interpreted `ref` and `fb` levels match. Required traces: `time`, `down`, `fb`, `ref`, `up`.
 - `P_UPDATE_OUTPUTS_COMBINATIONALLY_FROM_THE_CURREN`: restore: Update outputs combinationally from the current input voltages. Required traces: `time`, `down`, `fb`, `ref`, `up`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+- Interpret `ref` and `fb` logic levels using a threshold of `vdd/2`.
+- Drive `up` high when the interpreted `ref` and `fb` levels differ.
+- Drive `down` high when the interpreted `ref` and `fb` levels match.
+- Update outputs combinationally from the current input voltages.
+
+
 ## Modeling Constraints
 
 - Use deterministic voltage-domain behavioral Verilog-A.

@@ -45,6 +45,18 @@ Create stimulus and save traces sufficient for the fixed evaluator oracle to che
 - `P_DEADBAND_HOLD`: exercise and make observable: gain_ctrl holds when meas is within the inclusive target deadband. Required traces: `time`, `clk`, `meas`, `target`, `gain_ctrl`.
 - `P_CONTROL_CLAMP`: exercise and make observable: gain_ctrl remains within the inclusive 0.05 V to 0.85 V range. Required traces: `time`, `gain_ctrl`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+- Initialize `gain_ctrl` to 0.30 V before the first clocked update.
+- Treat `clk` and `rst` as voltage-coded logic with threshold `vth`.
+- On every rising crossing of `clk` through `vth`, update the internal
+  control state.
+- Reset `gain_ctrl` to 0.30 V on a rising `clk` while `rst` is above `vth`.
+- When `meas` is below `target - 0.02`, increase the control by 0.05 V; when above `target + 0.02`, decrease it by 0.05 V.
+- Hold inside the deadband, clamp to 0.05 V to 0.85 V, and drive through `transition()`.
+
+
 The required trace names are: `time`, `clk`, `rst`, `meas`, `target`, `gain_ctrl`.
 
 ## Modeling Constraints

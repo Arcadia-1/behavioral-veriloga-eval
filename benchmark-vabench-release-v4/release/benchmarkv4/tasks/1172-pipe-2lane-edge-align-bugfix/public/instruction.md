@@ -29,6 +29,12 @@ The repaired bundle must satisfy every public property:
 - `P_FALLING_EDGE_LANE2`: restore: A falling `clk_align` crossing samples and publishes `din2`. Required traces: `time`, `clk_align`, `din2`, `dout`.
 - `P_SELECTED_LEVEL_HOLD`: restore: `dout` holds the last selected lane level with full output amplitude between alignment edges. Required traces: `time`, `clk_align`, `din1`, `din2`, `dout`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+Initialize the output state from `din1`. On a rising `clk_align` crossing, sample and publish `din1`. On a falling `clk_align` crossing, sample and publish `din2`. Hold the last sampled lane between clock events.
+
+
 ## Modeling Constraints
 
 - Use deterministic voltage-domain behavioral Verilog-A.

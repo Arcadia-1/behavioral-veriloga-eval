@@ -42,6 +42,12 @@ Create stimulus and save traces sufficient for the fixed evaluator oracle to che
 - `P_MONOTONE_OUTPUT`: exercise and make observable: Across transient operation, vout is monotone nondecreasing. Required traces: `time`, `vin`, `vout`.
 - `P_RUNNING_MAX`: exercise and make observable: At each observation time, vout equals the maximum vin value observed from simulation start through that time. Required traces: `time`, `vin`, `vout`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+Initialize the held value from the input at the start of simulation. During transient simulation, update the held value only when `V(vin)` exceeds the previously held maximum. Drive `vout` to the held maximum, so `vout` is monotone nondecreasing even when `vin` falls.
+
+
 The required trace names are: `time`, `vin`, `vout`.
 
 ## Modeling Constraints

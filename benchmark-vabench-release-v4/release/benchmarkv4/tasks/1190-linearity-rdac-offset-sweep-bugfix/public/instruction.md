@@ -42,6 +42,18 @@ The repaired bundle must satisfy every public property:
 - `P_ITERATIVE_SEARCH_UPDATES`: restore: For each RDAC code, run exactly `iter_num` search-update clocks and halve the step before moving on direction changes. Required traces: `time`, `ck`, `d`, `dc0`, `dc1`, `dc2`, `dc3`, `dc4`, `dc5`, `dc6`, `vinn`, `vinp`, `vrefn`, `vrefp`.
 - `P_CODE_UPDATE_AND_RECENTER`: restore: The clock after each search window updates the 7-bit code, recenters the search, and advances the sweep without an extra search step. Required traces: `time`, `ck`, `d`, `dc0`, `dc1`, `dc2`, `dc3`, `dc4`, `dc5`, `dc6`, `vinn`, `vinp`, `vrefn`, `vrefp`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+Implement the sweep on rising crossings of `ck` through `0.5 * vdd`. Treat `d < 0.5 * vdd` as the low comparator direction and `d >= 0.5 * vdd` as the high comparator direction. Represent the generated input and reference as signed differential values `vin` and `vref`; drive `vinp/vinn` and `vrefp/vrefn` as half-differential outputs around `vcm`: `p = vcm + 0.5 * value` and `n = vcm - 0.5 * value`.
+
+Initialize `vref` to the initial reference-grid value above, initialize `vin = vref`, initialize the search step to 40 mV, and initialize the stored comparator direction to the low direction. Initialize the 7-bit sweep code to full scale `127`, with `dc0` as the LSB, `dc6` as the MSB, high bits driven to `vdd`, and low bits driven to 0 V.
+
+For each RDAC code, run exactly `iter_num` search-update clocks. On each search-update clock, sample `d`, halve the current step before moving when the sampled direction differs from the stored direction, then move `vin` by `+step` for the low direction or `-step` for the high direction. Update the stored direction to the sampled direction after the move.
+
+The rising clock after those `iter_num` search updates is a code-update and recenter clock, not another search update. On that clock, decrement the 7-bit sweep code by one when it is nonzero; when the code is zero, wrap it back to `127` and advance `vref` by one reference-grid LSB. Update `dc0..dc6` from the new code, reset `vin = vref`, reset the search step to 40 mV, and begin the next code's `iter_num` search-update clocks on the following rising clock. The stored comparator direction carries across the code-update clock.
+
+
 ## Modeling Constraints
 
 - Use deterministic voltage-domain behavioral Verilog-A.

@@ -35,6 +35,12 @@ The repaired bundle must satisfy every public property:
 - `P_FINITE_TRACKING_AND_HOLD`: restore: Use finite acquisition updates and preserve held values between tracking windows rather than making the output continuously transparent or a single ideal edge sample. Required traces: `time`, `clk`, `phase`, `vin`, `vout`, `vdd`, `vss`.
 - `P_PHASE_MONITOR_POLARITY`: restore: Drive `phase` high only during output-stage tracking and low otherwise. Required traces: `time`, `clk`, `phase`, `vin`, `vout`, `vdd`, `vss`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+During low clock phase, the input stage tracks `vin` with finite acquisition while the output stage holds. On the rising clock transition, the input stage retains its acquired value. During high clock phase, the output stage tracks that retained input-stage value with finite bandwidth. On falling clock transition, the output stage holds until the next high phase. Clamp internal stored voltages to the local rail span and drive `phase` high only during output-stage tracking.
+
+
 ## Modeling Constraints
 
 - Use deterministic voltage-domain behavioral Verilog-A.

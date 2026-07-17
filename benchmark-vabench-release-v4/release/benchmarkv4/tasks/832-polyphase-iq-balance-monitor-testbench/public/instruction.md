@@ -79,6 +79,18 @@ Create stimulus and save traces sufficient for the fixed evaluator oracle to che
 - `P_EXPOSE_AMPLITUDE_AND_PHASE_ERROR_PROXIES`: exercise and make observable: Expose amplitude and phase-error proxies as separate voltage-domain metrics. Required traces: `time`, `i_in`, `q_in`, `clk`, `rst`, `enable`, `i_out`, `q_out`, `amp_error_metric`, `phase_error_metric`, `balanced`.
 - `P_ASSERT_BALANCED_ONLY_WHEN_BOTH_METRICS`: exercise and make observable: Assert `balanced` only when both metrics remain below their thresholds for two updates. Required traces: `time`, `i_in`, `q_in`, `clk`, `rst`, `enable`, `i_out`, `q_out`, `amp_error_metric`, `phase_error_metric`, `balanced`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+- On reset or when disabled, drive outputs to `vcm` and clear metrics.
+- On each enabled rising `clk` edge, sample I and Q input deviations around `vcm`.
+- Drive corrected I/Q outputs with bounded amplitude normalization.
+- Expose amplitude and phase-error proxies as separate voltage-domain metrics.
+- Assert `balanced` only when both metrics remain below their thresholds for two updates.
+- Use only voltage-domain behavioral state and voltage contributions on public electrical outputs.
+- Do not expose pass/fail flags; expose only the public observable metrics named in the interface.
+
+
 The required trace names are: `time`, `i_in`, `q_in`, `clk`, `rst`, `enable`, `i_out`, `q_out`, `amp_error_metric`, `phase_error_metric`, `balanced`.
 
 ## Modeling Constraints

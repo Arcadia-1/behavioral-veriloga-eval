@@ -40,6 +40,18 @@ The repaired bundle must satisfy every public property:
 - `P_DRIVE_ENVELOPE_WITH_THE_TRACKED_MAGNITUDE`: restore: Drive `envelope` with the tracked magnitude mapped into the public voltage range. Required traces: `time`, `vin`, `clk`, `rst`, `enable`, `envelope`, `attack_metric`, `valid`.
 - `P_EXPOSE_WHETHER_THE_LAST_UPDATE_USED`: restore: Expose whether the last update used attack or release on `attack_metric`. Required traces: `time`, `vin`, `clk`, `rst`, `enable`, `envelope`, `attack_metric`, `valid`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+- On reset or when disabled, clear envelope, metric, and `valid`.
+- On each enabled rising `clk` edge, estimate input magnitude as distance from `vcm`.
+- Use a faster attack step when magnitude rises and a slower release step when it falls.
+- Drive `envelope` with the tracked magnitude mapped into the public voltage range.
+- Expose whether the last update used attack or release on `attack_metric`.
+- Use only voltage-domain behavioral state and voltage contributions on public electrical outputs.
+- Do not expose pass/fail flags; expose only the public observable metrics named in the interface.
+
+
 ## Modeling Constraints
 
 - Use deterministic voltage-domain behavioral Verilog-A.

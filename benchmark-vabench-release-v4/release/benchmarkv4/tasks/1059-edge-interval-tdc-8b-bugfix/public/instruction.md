@@ -39,6 +39,16 @@ The repaired bundle must satisfy every public property:
 - `P_CODE_SATURATION`: restore: Measured interval codes are saturated to the inclusive 8-bit range 0 through 255. Required traces: `time`, `start`, `stop`, `code0`, `code1`, `code2`, `code3`, `code4`, `code5`, `code6`, `code7`.
 - `P_VALID_AND_BIT_ORDER`: restore: valid asserts after completion; code0 is the least significant bit and code7 is the most significant bit, using 0 V and vdd logic levels. Required traces: `time`, `valid`, `code0`, `code1`, `code2`, `code3`, `code4`, `code5`, `code6`, `code7`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+- On each rising `start` crossing, arm a new measurement, store the start time, and clear `valid`.
+- On the next rising `stop` crossing after an armed start, compute `round((stop_time - start_time) / 1 ns)`.
+- Saturate the code to the inclusive range 0 to 255.
+- Drive `code0` as the least significant bit through `code7` as the most significant bit, and assert `valid` after a completed measurement.
+- Ignore unarmed `stop` edges.
+
+
 ## Modeling Constraints
 
 - Use deterministic event state for arming, edge times, result code, and validity.

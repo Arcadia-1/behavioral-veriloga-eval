@@ -44,6 +44,15 @@ Create stimulus and save traces sufficient for the fixed evaluator oracle to che
 - `P_INITIAL_SELECTION`: exercise and make observable: Before any select transition, vout is selected from the initial vsel level using the same strict-greater-than threshold rule. Required traces: `time`, `vin1`, `vin2`, `vsel`, `vout`.
 - `P_NO_MIXING`: exercise and make observable: The output represents one selected input and does not average or sum vin1 and vin2. Required traces: `time`, `vin1`, `vin2`, `vsel`, `vout`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+When `V(vsel)` is above `vth`, drive `vout` from `vin1`. When `V(vsel)` is at
+or below `vth`, drive `vout` from `vin2`. The selection must update on both
+rising and falling threshold crossings, and the initial selection must match
+the initial `vsel` level using the same strict-greater-than threshold rule.
+
+
 The required trace names are: `time`, `vin1`, `vin2`, `vsel`, `vout`.
 
 ## Modeling Constraints

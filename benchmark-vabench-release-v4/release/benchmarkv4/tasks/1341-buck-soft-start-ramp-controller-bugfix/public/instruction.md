@@ -39,6 +39,18 @@ The repaired bundle must satisfy every public property:
 - `P_EXPOSE_THE_REMAINING_RAMP_DISTANCE_ON`: restore: Expose the remaining ramp distance on `ramp_metric`. Required traces: `time`, `clk`, `rst`, `enable`, `target_ref`, `soft_ref`, `ramp_metric`, `done`.
 - `P_ASSERT_DONE_ONLY_AFTER_SOFT_REF`: restore: Assert `done` only after `soft_ref` reaches the target within `ramp_tol`. Required traces: `time`, `clk`, `rst`, `enable`, `target_ref`, `soft_ref`, `ramp_metric`, `done`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+- On reset or when disabled, clear `soft_ref`, ramp metric, and `done`.
+- On each enabled rising `clk` edge, increase `soft_ref` toward `target_ref` by at most `ramp_step`.
+- Never allow `soft_ref` to exceed `target_ref` or the public rails.
+- Expose the remaining ramp distance on `ramp_metric`.
+- Assert `done` only after `soft_ref` reaches the target within `ramp_tol`.
+- Use only voltage-domain behavioral state and voltage contributions on public electrical outputs.
+- Do not expose pass/fail flags; expose only the public observable metrics named in the interface.
+
+
 ## Modeling Constraints
 
 - Use deterministic voltage-domain behavioral Verilog-A.

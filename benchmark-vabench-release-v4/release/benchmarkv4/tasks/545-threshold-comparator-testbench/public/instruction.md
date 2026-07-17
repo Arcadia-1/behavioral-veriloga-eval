@@ -45,6 +45,16 @@ Create stimulus and save traces sufficient for the fixed evaluator oracle to che
 - `P_BIDIRECTIONAL_RESPONSE`: exercise and make observable: Repeated differential crossings in either direction update the retained decision without requiring a clock or reset. Required traces: `time`, `VINP`, `VINN`, `OUT_P`.
 - `P_RAIL_SMOOTHING`: exercise and make observable: OUT_P is rail-referenced and changes with finite transition smoothing set by tedge. Required traces: `time`, `VDD`, `VSS`, `OUT_P`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+- Initialize `OUT_P` from the initial sign of `V(VINP,VSS) - V(VINN,VSS)`.
+- Drive `OUT_P` high to `VDD` when `VINP` crosses above `VINN`.
+- Drive `OUT_P` low to `VSS` when `VINP` crosses below `VINN`.
+- Respond to both rising and falling zero-differential crossings.
+- Use finite transition-style smoothing for rail-referenced output changes.
+
+
 The required trace names are: `time`, `VDD`, `VSS`, `VINP`, `VINN`, `OUT_P`.
 
 ## Modeling Constraints

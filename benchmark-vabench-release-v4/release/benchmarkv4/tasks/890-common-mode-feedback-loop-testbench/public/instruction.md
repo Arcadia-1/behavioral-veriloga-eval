@@ -91,11 +91,54 @@ hierarchical/private nodes, or use checker/gold/internal files.
 
 Create stimulus and save traces sufficient for the fixed evaluator oracle to check:
 
-- `P_RESET_DISABLE_CLEAR`: exercise and make observable: Reset or disable clears trim and lock, reports zero residual error, and bypasses correction. Required traces: `time`, `vop_in`, `von_in`, `clk`, `rst`, `enable`, `vop_out`, `von_out`, `trim_2`, `trim_1`, `trim_0`, `cm_error`, `locked`.
-- `P_COMMON_MODE_ERROR`: exercise and make observable: The reported common-mode error equals the corrected output average minus vcm. Required traces: `time`, `vop_in`, `von_in`, `clk`, `rst`, `enable`, `vop_out`, `von_out`, `trim_2`, `trim_1`, `trim_0`, `cm_error`, `locked`.
-- `P_TRIM_DIRECTION`: exercise and make observable: At enabled rising clock edges the bounded unsigned trim code moves in the direction that reduces representable positive common-mode error. Required traces: `time`, `vop_in`, `von_in`, `clk`, `rst`, `enable`, `vop_out`, `von_out`, `trim_2`, `trim_1`, `trim_0`, `cm_error`, `locked`.
-- `P_DIFFERENTIAL_PRESERVATION`: exercise and make observable: Common-mode correction preserves input differential polarity and differential magnitude unless a supply clamp is reached. Required traces: `time`, `vop_in`, `von_in`, `clk`, `rst`, `enable`, `vop_out`, `von_out`, `trim_2`, `trim_1`, `trim_0`, `cm_error`, `locked`.
-- `P_LOCK_QUALIFICATION`: exercise and make observable: Lock asserts only after two consecutive enabled updates within lock_tol. Required traces: `time`, `vop_in`, `von_in`, `clk`, `rst`, `enable`, `vop_out`, `von_out`, `trim_2`, `trim_1`, `trim_0`, `cm_error`, `locked`.
+- `P_RESET_DISABLE_CLEAR`: exercise and make observable: On reset or while disabled immediately restore trim_code=0 and the within-tolerance counter to zero, clear locked, bypass both inputs without correction, and drive cm_error=0. Required traces: `time`, `vop_in`, `von_in`, `clk`, `rst`, `enable`, `vop_out`, `von_out`, `trim_2`, `trim_1`, `trim_0`, `cm_error`, `locked`.
+- `P_COMMON_MODE_ERROR`: exercise and make observable: Measure raw_error=(vop_in+von_in)/2-vcm and, while active, expose cm_error=raw_error-trim_code*trim_lsb; on reset or disable expose cm_error=0. Required traces: `time`, `vop_in`, `von_in`, `clk`, `rst`, `enable`, `vop_out`, `von_out`, `trim_2`, `trim_1`, `trim_0`, `cm_error`, `locked`.
+- `P_TRIM_DIRECTION`: exercise and make observable: Start at trim_code=0. On each enabled rising clock edge compute residual_before=raw_error-trim_code*trim_lsb; increment when residual_before>lock_tol, decrement when residual_before<-lock_tol, and saturate the unsigned code to 0..7. Required traces: `time`, `vop_in`, `von_in`, `clk`, `rst`, `enable`, `vop_out`, `von_out`, `trim_2`, `trim_1`, `trim_0`, `cm_error`, `locked`.
+- `P_DIFFERENTIAL_PRESERVATION`: exercise and make observable: Drive trim_corr=trim_code*trim_lsb and, while active, drive vop_out=clamp(vop_in-trim_corr,vss,vdd) and von_out=clamp(von_in-trim_corr,vss,vdd), applying the same correction to preserve the differential. Required traces: `time`, `vop_in`, `von_in`, `clk`, `rst`, `enable`, `vop_out`, `von_out`, `trim_2`, `trim_1`, `trim_0`, `cm_error`, `locked`.
+- `P_LOCK_QUALIFICATION`: exercise and make observable: After updating the code compute residual_after=raw_error-trim_code*trim_lsb; increment the counter when abs(residual_after)<=lock_tol, otherwise clear it and locked, and assert locked=vdd after two consecutive qualifying enabled updates. Required traces: `time`, `vop_in`, `von_in`, `clk`, `rst`, `enable`, `vop_out`, `von_out`, `trim_2`, `trim_1`, `trim_0`, `cm_error`, `locked`.
+
+
+The following canonical public behavior is normative for this derived form:
+
+- On reset or when disabled, clear the trim code, drive outputs toward inputs without correction, clear `cm_error`, and clear `locked`.
+- `cm_sensor` must measure the average of `vop_in` and `von_in` relative to `vcm`.
+- `trim_controller` must update the unsigned trim code once per rising `clk` edge in the direction that reduces representable positive common-mode error, saturating at code 0 or 7.
+- `output_balancer` must apply the trim correction symmetrically to `vop_out` and `von_out` without changing differential polarity.
+- `trim_2..trim_0` must expose the active trim code and `cm_error` must expose the signed residual error.
+- Assert `locked` after two consecutive updates within `lock_tol`.
+
+Use this deterministic unsigned-control convention. Let
+
+`raw_error = (vop_in + von_in)/2 - vcm`
+
+and initialize `trim_code = 0`, the within-tolerance counter to zero, and
+`locked = vss`. On every enabled rising `clk` edge, first compute
+
+`residual_before = raw_error - trim_code*trim_lsb`.
+
+If `residual_before > lock_tol`, increment `trim_code` by one; if
+`residual_before < -lock_tol`, decrement it by one. Saturate the unsigned code
+to the range 0 through 7. Then compute
+
+`residual_after = raw_error - trim_code*trim_lsb`.
+
+Increment the within-tolerance counter when
+`abs(residual_after) <= lock_tol`, otherwise clear the counter and `locked`.
+Assert `locked = vdd` once two consecutive enabled updates are within
+tolerance. Reset or disable immediately restores the initial controller state.
+
+Expose `trim_2..trim_0` as the binary bits of `trim_code` and drive
+`trim_corr = trim_code*trim_lsb`. While active, the balancer applies the same
+correction to both sides:
+
+`vop_out = clamp(vop_in - trim_corr, vss, vdd)`
+
+`von_out = clamp(von_in - trim_corr, vss, vdd)`
+
+and exposes `cm_error = (vop_in+von_in)/2 - vcm - trim_corr`. On reset or
+while disabled, bypass the inputs without correction and drive `cm_error = 0`.
+Applying the same correction to both sides preserves the input differential.
+
 
 The required trace names are: `time`, `vop_in`, `von_in`, `clk`, `rst`, `enable`, `vop_out`, `von_out`, `trim_2`, `trim_1`, `trim_0`, `cm_error`, `locked`.
 

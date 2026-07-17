@@ -56,6 +56,19 @@ Create stimulus and save traces sufficient for the fixed evaluator oracle to che
 - `P_EDGE_DELAY_MAPPING`: exercise and make observable: Each input-clock edge appears at the output after delay_min plus delay_lsb times the code captured for that edge. Required traces: `time`, `in_clk`, `out_clk`, `load`, `code_5`, `code_4`, `code_3`, `code_2`, `code_1`, `code_0`.
 - `P_PULSE_INTEGRITY_VALID`: exercise and make observable: Rising and falling edges receive equal delay, preserving pulse width, and valid asserts after the first delayed rising edge. Required traces: `time`, `rst`, `in_clk`, `out_clk`, `valid`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+- On reset, clear the latched code, `out_clk`, `delay_metric`, and `valid`.
+- On rising `load`, capture `code_5..code_0` as an unsigned delay code.
+- Map the latched code to a delay equal to `delay_min + delay_lsb * code`.
+- For each rising edge of `in_clk`, produce a corresponding rising edge on `out_clk` after the mapped delay.
+- Delay both rising and falling input edges by the same selected delay, preserving the input pulse width. Latch the selected delay independently at each originating edge so a later code load does not retime an already pending output edge.
+- `delay_metric` must expose the latched code normalized onto `vss..vdd`, using `vss + (vdd - vss) * code / 63`.
+- `valid` must assert after the first output pulse generated from a loaded code.
+- Reset cancels pending delayed edges, clears the loaded-code state, and drives `out_clk` low.
+
+
 The required trace names are: `time`, `in_clk`, `load`, `rst`, `code_5`, `code_4`, `code_3`, `code_2`, `code_1`, `code_0`, `out_clk`, `delay_metric`, `valid`.
 
 ## Modeling Constraints

@@ -48,6 +48,26 @@ Create stimulus and save traces sufficient for the fixed evaluator oracle to che
 - `P_FINAL_OUTPUT_CLAMP`: exercise and make observable: The final held output remains within 0.04 V through 0.86 V. Required traces: `time`, `out`.
 - `P_CLOCKED_HOLD`: exercise and make observable: Out and metric update on rising clock crossings and hold between samples. Required traces: `time`, `clk`, `vin`, `out`, `metric`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+- Initialize `out` to the 0.45 V common-mode level and `metric` low.
+- Update the held output state on rising `clk` crossings.
+- On a rising `clk` crossing where `rst` is high, return the output to common mode and clear `metric`; reset is sampled synchronously with `clk`.
+- Compute the small-signal value as `linear = 0.45 + gain * (V(vin) - 0.45)`.
+- In the linear region `0.14 <= linear <= 0.76`, drive `out = linear` and
+  drive `metric = 0.1`.
+- For positive compression, when `linear > 0.76`, drive
+  `out = 0.76 + 0.28 * (linear - 0.76)` and drive `metric = 0.8`.
+- For negative compression, when `linear < 0.14`, drive
+  `out = 0.14 + 0.28 * (linear - 0.14)` and drive `metric = 0.8`.
+- Clamp the final output to the public range `0.04 V <= out <= 0.86 V`.
+
+The visible testbench is a public verification scenario for wiring and saved
+observables. Do not hard-code its transient stop time, waveform breakpoints, or
+sample windows into the DUT.
+
+
 The required trace names are: `time`, `clk`, `rst`, `vin`, `out`, `metric`.
 
 ## Modeling Constraints

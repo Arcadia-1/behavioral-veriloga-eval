@@ -98,10 +98,36 @@ hierarchical/private nodes, or use checker/gold/internal files.
 Create stimulus and save traces sufficient for the fixed evaluator oracle to check:
 
 - `P_RESET_DISABLE_CLEAR`: exercise and make observable: Reset or disabled operation clears PWM, duty metric, soft reference, and power-good. Required traces: `time`, `clk`, `rst`, `enable`, `pwm`, `duty_metric`, `soft_ref`, `pgood`.
-- `P_SOFT_START_TRACKING`: exercise and make observable: At enabled rising clock edges soft_ref moves toward vref by the configured soft-step and never overshoots the target. Required traces: `time`, `clk`, `rst`, `enable`, `vref`, `soft_ref`.
-- `P_DUTY_DIRECTION_BOUNDS`: exercise and make observable: The duty metric increases when vfb is below soft_ref, decreases otherwise, and remains within the configured duty bounds. Required traces: `time`, `clk`, `rst`, `enable`, `vfb`, `soft_ref`, `duty_metric`.
-- `P_PWM_ENCODING`: exercise and make observable: PWM high samples are rail-valid and their enabled-cycle activity is consistent with a nonzero bounded duty command. Required traces: `time`, `clk`, `rst`, `enable`, `pwm`, `duty_metric`.
-- `P_POWER_GOOD_QUALIFICATION`: exercise and make observable: Power-good asserts only after three consecutive enabled clock updates with vfb within pgood_tol of vref and clears when qualification is lost. Required traces: `time`, `clk`, `rst`, `enable`, `vfb`, `vref`, `pgood`.
+- `P_SOFT_START_TRACKING`: exercise and make observable: At each enabled rising edge move soft_ref toward vref by soft_step without overshoot and set duty_up high exactly when vfb<soft_ref. Required traces: `time`, `clk`, `rst`, `enable`, `vref`, `soft_ref`.
+- `P_DUTY_DIRECTION_BOUNDS`: exercise and make observable: Starting from zero, add 0.05 to duty when duty_up is high and subtract 0.05 otherwise, clamp the post-update value to [duty_min,duty_max], and expose it on duty_metric. Required traces: `time`, `clk`, `rst`, `enable`, `vfb`, `soft_ref`, `duty_metric`.
+- `P_PWM_ENCODING`: exercise and make observable: After each duty update advance carrier_count=(carrier_count+1)%20 and drive pwm=vdd exactly when carrier_count+0.5<20*duty_metric, otherwise vss. Required traces: `time`, `clk`, `rst`, `enable`, `pwm`, `duty_metric`.
+- `P_POWER_GOOD_QUALIFICATION`: exercise and make observable: Count consecutive enabled edges with abs(vfb-vref)<=pgood_tol, assert pgood at count three, and clear the count and pgood when qualification is lost; reset or disable also clears all controller state. Required traces: `time`, `clk`, `rst`, `enable`, `vfb`, `vref`, `pgood`.
+
+
+The following canonical public behavior is normative for this derived form:
+
+- On reset or when `enable` is low, clear `pwm`, `duty_metric`, `soft_ref`, and `pgood`.
+- `soft_start` ramps `soft_ref` toward `vref` by at most `soft_step` per rising `clk` edge.
+- `error_comparator` compares `vfb` against `soft_ref` and requests a larger duty metric when feedback is low.
+- `pwm_modulator` updates a bounded duty metric once per rising `clk` edge and drives `pwm` from that metric.
+- Clamp `duty_metric` between `duty_min` and `duty_max`.
+- `power_good` asserts `pgood` after three consecutive cycles where `vfb` is within `pgood_tol` of `vref`.
+- This DUT models the controller only; it must not instantiate an inductor, switch device, or current-domain power stage.
+
+On every enabled rising edge, move `soft_ref` toward `vref` by `soft_step`
+without overshoot. Set the internal `duty_up` decision high exactly when
+`vfb < soft_ref`. Starting from duty zero, add 0.05 when `duty_up` is high and
+subtract 0.05 otherwise, then clamp the updated duty to
+`[duty_min,duty_max]` and expose it on `duty_metric`.
+
+Maintain an integer carrier counter modulo 20. After updating the duty,
+advance the counter as `carrier_count=(carrier_count+1)%20` and drive
+`pwm=vdd` exactly when `carrier_count+0.5 < 20*duty_metric`, otherwise drive
+`pwm=vss`. Count consecutive enabled edges satisfying
+`abs(vfb-vref)<=pgood_tol`; assert `pgood` at count three and clear both the
+count and `pgood` when the condition is lost. Reset or disable clears soft
+reference, duty, PWM, carrier count, power-good count, and `pgood` to vss.
+
 
 The required trace names are: `time`, `vfb`, `vref`, `clk`, `rst`, `enable`, `pwm`, `duty_metric`, `soft_ref`, `pgood`.
 

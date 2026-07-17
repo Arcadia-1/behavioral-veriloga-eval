@@ -41,6 +41,17 @@ The repaired bundle must satisfy every public property:
 - `P_ASSERT_COMPRESSED_WHEN_THE_EFFECTIVE_GAIN`: restore: Assert `compressed` when the effective gain is below the small-signal gain by the configured compression condition. Required traces: `time`, `vin`, `envelope`, `enable`, `rst`, `vout`, `gain_metric`, `phase_metric`, `compressed`.
 - `P_CLAMP_VOUT_INSIDE_VSS_VDD`: restore: Clamp `vout` inside `[vss, vdd]`. Required traces: `time`, `vin`, `envelope`, `enable`, `rst`, `vout`, `gain_metric`, `phase_metric`, `compressed`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+- On reset or when disabled, drive `vout` to `vcm`, clear metrics, and clear `compressed`.
+- When enabled, amplify `vin - vcm` with high small-signal gain at low envelope.
+- As `envelope` exceeds the compression threshold, reduce the effective gain monotonically.
+- Expose the active gain on `gain_metric` and a monotonic AM/PM proxy on `phase_metric`.
+- Assert `compressed` when the effective gain is below the small-signal gain by the configured compression condition.
+- Clamp `vout` inside `[vss, vdd]`.
+
+
 ## Modeling Constraints
 
 - Use deterministic voltage-domain behavioral Verilog-A.

@@ -32,6 +32,16 @@ The repaired bundle must satisfy every public property:
 - `P_LATCH_HOLD`: restore: OUT_P holds its sampled decision between rising clock edges. Required traces: `time`, `CLK`, `VINP`, `VINN`, `OUT_P`.
 - `P_RAIL_REFERENCE`: restore: OUT_P low and high levels track VSS and VDD respectively with finite smoothing. Required traces: `time`, `VDD`, `VSS`, `OUT_P`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+- Initialize `OUT_P` low relative to `VSS`.
+- On each rising crossing of `CLK` through the local rail midpoint, latch whether `V(VINP,VSS) - V(VINN,VSS)` is greater than `vos`.
+- Drive `OUT_P` high to the `VDD` rail only for latched inputs above the positive offset threshold; otherwise drive it low to `VSS`.
+- Hold the latched decision between rising clock edges, even if the input polarity changes between samples.
+- Use smoothed rail-referenced voltage-domain output transitions.
+
+
 ## Modeling Constraints
 
 - Use deterministic voltage-domain behavior and voltage contributions only.

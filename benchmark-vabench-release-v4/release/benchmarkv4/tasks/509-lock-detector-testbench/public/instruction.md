@@ -47,6 +47,22 @@ Create stimulus and save traces sufficient for the fixed evaluator oracle to che
 - `P_MISS_BREAKS_STREAK`: exercise and make observable: A reference event outside tol breaks the streak and clears lock. Required traces: `time`, `ref_clk`, `fb_clk`, `lock`.
 - `P_RESET_REACQUIRE`: exercise and make observable: Active-low reset clears stored edge history, streak, and lock and requires a fresh post-reset acquisition. Required traces: `time`, `ref_clk`, `fb_clk`, `rst_n`, `lock`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+- `rst_n` is active low. While reset is low, clear the consecutive-hit counter and drive `lock` low.
+- On every rising edge of `fb_clk`, record that feedback edge time.
+- Feedback edges observed while `rst_n` is low must not count toward a later post-reset lock sequence.
+- On every rising edge of `ref_clk` while reset is high, compare the reference edge time with the most recent feedback rising edge time.
+- A reference event is aligned only when the most recent feedback rising edge is within `tol` of that reference rising edge.
+- Assert `lock` only after `need` consecutive aligned reference events.
+- Before the `need`th consecutive aligned reference event, `lock` must remain low.
+- Any reference event whose most recent feedback edge is outside the `tol` window breaks the streak and drives `lock` low.
+- A later active-low reset must clear an already asserted lock and require `need` new consecutive aligned reference events before reassertion.
+
+Use voltage contributions for `lock`, preferably with `transition(...)`. Do not use current contributions, `ddt()`, or `idt()`.
+
+
 The required trace names are: `time`, `ref_clk`, `fb_clk`, `rst_n`, `lock`.
 
 ## Modeling Constraints

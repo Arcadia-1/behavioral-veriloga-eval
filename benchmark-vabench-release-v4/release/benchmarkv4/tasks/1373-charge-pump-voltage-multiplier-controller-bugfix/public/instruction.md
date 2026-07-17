@@ -84,6 +84,18 @@ The repaired bundle must satisfy every public property:
 - `P_ERROR_REPORTING`: restore: regulation_error continuously reports target minus vout and pump_en requests pumping below the lower tolerance boundary. Required traces: `time`, `rst`, `enable`, `target`, `vout`, `pump_en`, `regulation_error`.
 - `P_READY_QUALIFICATION`: restore: Ready asserts only after three consecutive enabled clock updates within the regulation tolerance and clears outside qualification. Required traces: `time`, `clk`, `rst`, `enable`, `regulation_error`, `ready`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+- On reset, clear pump phases, `pump_en`, `ready`, `regulation_error`, and drive `vout` to `vss`.
+- `phase_generator` must generate non-overlapping `phase_a` and `phase_b` updates from rising `clk` edges while enabled.
+- `regulation_comparator` asserts `pump_en` when `vout` is below `target - ready_tol` and deasserts it when above `target + ready_tol`.
+- `pump_stage_model` updates `vout` as a voltage-domain state: it rises by `pump_step` on active pump phases while `pump_en` is high and decays by `leak_step` when disabled.
+- Clamp `vout` between `vss` and `vout_max`.
+- `regulation_error` must expose `target - vout` as a voltage metric.
+- Assert `ready` after three consecutive phase updates within the regulation tolerance.
+
+
 ## Modeling Constraints
 
 - Use deterministic voltage-domain transient behavior.

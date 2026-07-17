@@ -29,6 +29,12 @@ The repaired bundle must satisfy every public property:
 
 - `P_CONTINUOUSLY_DECODE_D0_D3_AS_AN`: restore: Continuously decode `d0..d3` as an unsigned binary code with `d0` as LSB and `d3` as MSB. Drive `vout` to the readout level `code * vref / 16`. The output should update when the voltage-coded input bits cross the threshold. Required traces: `time`, `d0`, `d1`, `d2`, `d3`, `gnd`, `vout`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+Continuously decode `d0..d3` as an unsigned binary code with `d0` as LSB and `d3` as MSB. Drive `vout` to the readout level `code * vref / 16`. The output should update when the voltage-coded input bits cross the threshold.
+
+
 ## Modeling Constraints
 
 - Use deterministic voltage-domain behavioral Verilog-A.

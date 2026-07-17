@@ -30,6 +30,12 @@ The repaired bundle must satisfy every public property:
 - `P_NONOVERLAP_AND_RESIDUE_WINDOWS`: restore: `nc` and `res` use the declared non-overlap and residue windows without swapping outputs. Required traces: `time`, `conv`, `nc`, `res`, `rst`, `s`.
 - `P_CONVERSION_OUTPUT_TIMING`: restore: `conv` is asserted in the declared conversion windows with valid timing and level. Required traces: `time`, `conv`, `nc`, `res`, `rst`, `s`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+Generate a repeating 16 ns ADC timing frame with these high windows: `rst` from 0 to 0.2 ns; `s` from 1.0 to 1.8 ns and 9.0 to 9.8 ns; `nc` from 2.0 to 2.25 ns and 10.0 to 10.25 ns; `res` from 3.0 to 3.25 ns, 4.5 to 4.75 ns, 6.0 to 6.25 ns, and 7.5 to 7.75 ns; and `conv` from 3.0 to 7.0 ns and 11.0 to 15.0 ns. All outputs should return low between their public windows and repeat every 16 ns.
+
+
 ## Modeling Constraints
 
 - Use deterministic voltage-domain behavioral Verilog-A.

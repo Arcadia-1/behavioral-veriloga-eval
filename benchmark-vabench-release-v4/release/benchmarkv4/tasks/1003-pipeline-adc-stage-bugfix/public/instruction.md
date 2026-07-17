@@ -36,6 +36,24 @@ The repaired bundle must satisfy every public property:
 - `P_RESIDUE_MAPPING`: restore: The residue is gain-two with the specified half-reference subtraction, no offset, or addition for the three regions. Required traces: `time`, `PHI2`, `VIN`, `VREF`, `VRES`, `D1`, `D0`.
 - `P_RESIDUE_CLAMP`: restore: VRES remains within the VSS-to-VDD supply range. Required traces: `time`, `VDD`, `VSS`, `VRES`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+On each rising `PHI1` edge, sample `VIN`. On each rising `PHI2` edge, compare
+the sampled input around `V(VDD)/2` against the 1.5-bit thresholds
+`+V(VREF)/4` and `-V(VREF)/4`.
+
+- Upper region: drive `D1` high, `D0` low, and subtract a half-reference from
+  the gain-two residue.
+- Middle region: drive `D1` low, `D0` high, and use the gain-two residue
+  without reference subtraction or addition.
+- Lower region: drive both decision outputs low and add a half-reference to the
+  gain-two residue.
+
+Clamp `VRES` to the supply range and drive all outputs with smooth
+voltage-domain transitions.
+
+
 ## Modeling Constraints
 
 - Use deterministic voltage-domain behavior.

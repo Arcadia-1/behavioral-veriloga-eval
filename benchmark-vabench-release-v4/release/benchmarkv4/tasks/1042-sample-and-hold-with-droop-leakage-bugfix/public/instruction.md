@@ -33,6 +33,17 @@ The repaired bundle must satisfy every public property:
 - `P_RESET_CLEAR`: restore: Active reset clears the held state to 0 V at sampling or leakage update events. Required traces: `time`, `sample`, `rst`, `vout`.
 - `P_SMOOTH_OUTPUT`: restore: Vout approaches each held-state target with the finite transition smoothing set by tr. Required traces: `time`, `vout`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+- On each rising `sample` crossing while reset is low, capture the current
+  `vin` voltage into the held state.
+- While reset is low, apply leakage by periodically multiplying the held state
+  by `decay`.
+- While reset is high, clear the held state to zero.
+- Drive `vout` from the held state with smooth voltage-domain transitions.
+
+
 ## Modeling Constraints
 
 - Use deterministic event-driven voltage-domain sample and leakage updates.

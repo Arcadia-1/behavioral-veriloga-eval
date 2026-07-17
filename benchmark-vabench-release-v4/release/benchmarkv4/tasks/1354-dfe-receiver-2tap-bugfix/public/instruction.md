@@ -80,6 +80,18 @@ The repaired bundle must satisfy every public property:
 - `P_CLOCKED_DECISION`: restore: Each rising clock edge latches the threshold decision derived from the corrected input. Required traces: `time`, `vin`, `clk`, `rst`, `decision`, `slicer_in_dbg`.
 - `P_HISTORY_ORDER`: restore: Feedback for a decision is based only on decisions from preceding clock edges. Required traces: `time`, `vin`, `clk`, `rst`, `decision`, `fb_metric`, `slicer_in_dbg`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+- On reset, clear the decision history, `decision`, `fb_metric`, and `slicer_in_dbg`.
+- On each rising `clk` edge, `feedback_filter` must compute feedback from the previous two decisions only.
+- The current slicer input is `V(vin)` minus the computed feedback correction.
+- `slicer` must drive the new decision high when the corrected slicer input is greater than or equal to `vcm`, otherwise low.
+- `decision_latch` must update the two-decision history after the new decision is produced.
+- `fb_metric` must expose the signed feedback correction used for the active decision.
+- `slicer_in_dbg` must expose the corrected slicer input used by the active decision.
+
+
 ## Modeling Constraints
 
 - Use deterministic voltage-domain behavioral Verilog-A.

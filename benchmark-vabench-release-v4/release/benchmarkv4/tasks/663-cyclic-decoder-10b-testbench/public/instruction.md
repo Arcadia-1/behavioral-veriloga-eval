@@ -45,6 +45,12 @@ Create stimulus and save traces sufficient for the fixed evaluator oracle to che
 - `P_NORMALIZED_MIDSCALE_OUTPUT`: exercise and make observable: The decoded value is normalized by the public bit depth and shifted by the required midscale offset before driving `dout`. Required traces: `time`, `clks`, `ready`, `dout`.
 - `P_CLOCKED_PUBLICATION_HOLD`: exercise and make observable: `dout` updates from event-driven ready/publication handling and holds between publication events. Required traces: `time`, `clks`, `ready`, `dout`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+After each publication clock, collect up to `nbit` serial decisions on rising `ready` crossings, MSB first. A high `dp` adds the full current binary weight. If `dp` is low and `dn` is high, add half of the current binary weight. On each rising `clks` crossing, publish the accumulated value normalized to the `nbit` full-scale range and centered by subtracting 0.5, then reset the accumulator.
+
+
 The required trace names are: `time`, `dp`, `dn`, `ready`, `clks`, `dout`.
 
 ## Modeling Constraints

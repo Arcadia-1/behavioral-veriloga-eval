@@ -31,6 +31,12 @@ The repaired bundle must satisfy every public property:
 - `P_NORMALIZED_MIDSCALE_OUTPUT`: restore: The decoded value is normalized by the public bit depth and shifted by the required midscale offset before driving `dout`. Required traces: `time`, `clks`, `ready`, `dout`.
 - `P_CLOCKED_PUBLICATION_HOLD`: restore: `dout` updates from event-driven ready/publication handling and holds between publication events. Required traces: `time`, `clks`, `ready`, `dout`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+After each publication clock, collect up to `nbit` serial decisions on rising `ready` crossings, MSB first. A high `dp` adds the full current binary weight. If `dp` is low and `dn` is high, add half of the current binary weight. On each rising `clks` crossing, publish the accumulated value normalized to the `nbit` full-scale range and centered by subtracting 0.5, then reset the accumulator.
+
+
 ## Modeling Constraints
 
 - Use deterministic voltage-domain behavioral Verilog-A.

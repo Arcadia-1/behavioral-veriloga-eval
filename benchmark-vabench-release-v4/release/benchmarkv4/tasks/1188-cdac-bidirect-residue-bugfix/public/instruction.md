@@ -35,6 +35,12 @@ The repaired bundle must satisfy every public property:
 - `P_LOWER_BIT_RESIDUE_WEIGHTS`: restore: Falling `dctrl6..dctrl1` events apply the declared binary-weighted residue steps. Required traces: `time`, `clks`, `dctrl1`, `dctrl2`, `dctrl3`, `dctrl4`, `dctrl5`, `dctrl6`, `dctrl7`, `vin`, `vres`.
 - `P_RESIDUE_OUTPUT_GAIN`: restore: `vres` drives the sampled residue with the declared gain and voltage scale. Required traces: `time`, `clks`, `dctrl1`, `dctrl2`, `dctrl3`, `dctrl4`, `dctrl5`, `dctrl6`, `dctrl7`, `vin`, `vres`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+At initialization and on each falling `clks` crossing, sample `vin` into the residue state. When `dctrl7` falls, add the half-scale MSB residue step. When `dctrl6` through `dctrl1` rise, subtract binary-weighted residue steps from MSB toward LSB. Continuously drive `vres` from the current residue state and hold it between events.
+
+
 ## Modeling Constraints
 
 - Use deterministic voltage-domain behavioral Verilog-A.

@@ -33,6 +33,16 @@ The repaired bundle must satisfy every public property:
 - `P_DRIVE_HIGH_BITS_NEAR_VH_AND`: restore: Drive high bits near `vh` and low bits near 0 V. Required traces: `time`, `ain`, `dout0`, `dout1`, `dout2`, `dout3`, `dout4`.
 - `P_UPDATE_DETERMINISTICALLY_AS_THE_ANALOG_INPUT`: restore: Update deterministically as the analog input changes. Required traces: `time`, `ain`, `dout0`, `dout1`, `dout2`, `dout3`, `dout4`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+- Convert `V(ain)` to the nearest integer code using half-up rounding.
+- Clamp the code to the valid 5-bit trim range `0..31`.
+- Drive `dout0..dout4` from the clamped binary code, LSB first.
+- Drive high bits near `vh` and low bits near 0 V.
+- Update deterministically as the analog input changes.
+
+
 ## Modeling Constraints
 
 - Use deterministic voltage-domain behavioral Verilog-A.

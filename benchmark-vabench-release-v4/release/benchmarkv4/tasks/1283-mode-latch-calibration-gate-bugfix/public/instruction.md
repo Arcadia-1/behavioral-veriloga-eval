@@ -45,6 +45,25 @@ The repaired bundle must satisfy every public property:
 - `P_VHI_0_9_V_HIGH_LEVEL`: restore: `vhi = 0.9 V`: high level for output observables. Required traces: `time`, `clk`, `ctrl0`, `ctrl1`, `en`, `flag`, `in0`, `in1`, `in2`, `in3`, `metric`, `out`, `rst`, `vdd`, `vss`.
 - `P_SPAN_MIN_0_62_V_SPAN`: restore: `span_min = 0.62 V`, `span_max = 1.28 V`: legal local supply span measured as Required traces: `time`, `clk`, `ctrl0`, `ctrl1`, `en`, `flag`, `in0`, `in1`, `in2`, `in3`, `metric`, `out`, `rst`, `vdd`, `vss`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+Measure analog inputs relative to the local `vss` rail and normalize by the
+current local supply span. Let `span = V(vdd, vss)` and treat the row as valid
+only when `V(en) > vth` and `span_min <= span <= span_max`. If `span` is below
+`0.05 V`, use `0.05 V` as the normalization span. Define `clip01(y)` as `y`
+limited to the range `[0, 1]`, `x0..x3 = clip01((V(inN) - V(vss)) / span)`,
+and `c0 = clip01(V(ctrl0) / vhi)`.
+
+Initialize the held output, `flag`, and `metric` to `0 V`. On a rising edge of
+`clk` or on reset assertion, clear all observables when `rst` is high or the
+row is not valid. Otherwise, when `c0 > 0.45`, update the held output to
+`out = vhi * clip01(0.70 * x0 + 0.30 * x1)` and assert `flag = vhi`. When
+`c0 <= 0.45`, hold the previous output value and drive `flag = 0 V`. After the
+update or hold decision, drive `metric = vhi * clip01(abs((out / vhi) - x2))`.
+Hold the last observable values between update events.
+
+
 ## Modeling Constraints
 
 - Use deterministic voltage-domain behavioral Verilog-A.

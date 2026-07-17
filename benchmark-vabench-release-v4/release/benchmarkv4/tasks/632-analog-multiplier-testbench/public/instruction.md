@@ -41,6 +41,12 @@ Create stimulus and save traces sufficient for the fixed evaluator oracle to che
 - `P_GAIN_PARAMETER_APPLIED`: exercise and make observable: Apply the overridable `gain` parameter multiplicatively to the input product. Required traces: `time`, `sigin1`, `sigin2`, `sigout`.
 - `P_MULTIPLICATIVE_NOT_ADDITIVE`: exercise and make observable: The transfer must be multiplicative and must not replace the product with addition or a square of one input. Required traces: `time`, `sigin1`, `sigin2`, `sigout`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+Drive `sigout` to the product `gain * V(sigin1) * V(sigin2)` for both positive and negative input products.
+
+
 The required trace names are: `time`, `sigin1`, `sigin2`, `sigout`.
 
 ## Modeling Constraints

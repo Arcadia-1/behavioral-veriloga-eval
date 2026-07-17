@@ -46,6 +46,12 @@ Create stimulus and save traces sufficient for the fixed evaluator oracle to che
 
 - `P_WHEN_RST_RISES_ABOVE_THRESHOLD_IMMEDIATELY`: exercise and make observable: When `rst` rises above threshold, immediately restore `vout` to the midscale value of 0 V. While `rst` remains high, ignore clock edges and hold the restored midscale value. When `rst` is low, each rising `clk` crossing decodes `d6..d0` as a 7-bit binary word and drives `vout` to the center of that code bin across a bipolar 1.8 V span from `-0.9 V` to `+0.9 V`. Hold the output between clock events. Required traces: `time`, `clk`, `d0`, `d1`, `d2`, `d3`, `d4`, `d5`, `d6`, `rst`, `vout`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+When `rst` rises above threshold, immediately restore `vout` to the midscale value of 0 V. While `rst` remains high, ignore clock edges and hold the restored midscale value. When `rst` is low, each rising `clk` crossing decodes `d6..d0` as a 7-bit binary word and drives `vout` to the center of that code bin across a bipolar 1.8 V span from `-0.9 V` to `+0.9 V`. Hold the output between clock events.
+
+
 The required trace names are: `time`, `clk`, `d0`, `d1`, `d2`, `d3`, `d4`, `d5`, `d6`, `rst`, `vout`.
 
 ## Modeling Constraints

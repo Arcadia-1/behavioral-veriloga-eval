@@ -53,6 +53,12 @@ The repaired bundle must satisfy every public property:
 - `P_FINAL_OUTPUT_CAPTURE`: restore: The most delayed output `do8` reflects the final synchronized stage with correct polarity. Required traces: `time`, `ck8`, `ck9`, `dl8`, `do8`.
 - `P_FULL_LEVEL_OUTPUTS`: restore: All `do` outputs drive full voltage-coded levels for their captured state. Required traces: `time`, `do0`, `do1`, `do2`, `do3`, `do4`, `do5`, `do6`, `do7`, `do8`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+Implement the staged nine-bit alignment chain. Each phase clock captures its corresponding input and shifts previously captured upper-phase data down the chain; `ck9` captures `dl8`, `ck8` shifts that value and captures `dl7`, continuing down to `ck1`. On `ck1`, publish the complete aligned word on `do0..do8`. Hold outputs between publishing events.
+
+
 ## Modeling Constraints
 
 - Use deterministic voltage-domain behavioral Verilog-A.

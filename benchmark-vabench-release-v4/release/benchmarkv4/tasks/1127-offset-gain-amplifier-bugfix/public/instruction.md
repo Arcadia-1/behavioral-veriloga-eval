@@ -26,6 +26,16 @@ The repaired bundle must satisfy every public property:
 - `P_FIXED_GAIN_THREE`: restore: Drive `sigout` to `3.0 * (V(sigin) - 0.2)`. Required traces: `time`, `sigin`, `sigout`.
 - `P_DIRECT_MEMORYLESS_OUTPUT`: restore: Use a direct memoryless voltage output without clipping, filtering, current output, or stimulus-specific behavior. Required traces: `time`, `sigin`, `sigout`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+- `P_INPUT_OFFSET_SUBTRACTION`: Subtract 0.2 V from `V(sigin)` before applying gain.
+
+- `P_FIXED_GAIN_THREE`: Drive `sigout` to `3.0 * (V(sigin) - 0.2)`.
+
+- `P_DIRECT_MEMORYLESS_OUTPUT`: Use a direct memoryless voltage output without clipping, filtering, current output, or stimulus-specific behavior.
+
+
 ## Modeling Constraints
 
 - Use deterministic voltage-domain behavioral Verilog-A.

@@ -46,6 +46,17 @@ Create stimulus and save traces sufficient for the fixed evaluator oracle to che
 - `P_BIDIRECTIONAL_CROSSINGS`: exercise and make observable: Crossings of both vlow and vhigh in either direction update the retained in-window decision. Required traces: `time`, `vin`, `out`.
 - `P_RAIL_SMOOTHING`: exercise and make observable: Out is rail-referenced to VDD and VSS with finite transition smoothing set by tedge. Required traces: `time`, `VDD`, `VSS`, `out`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+- Initialize the decision from the initial input voltage.
+- Drive `out` high only while `vlow < V(vin,VSS) < vhigh`.
+- Drive `out` low when `V(vin,VSS) <= vlow` or `V(vin,VSS) >= vhigh`.
+- Resolve crossings of both the lower and upper thresholds in both directions.
+- Drive `out` rail-to-rail relative to `VDD` and `VSS` using finite
+  transition-style smoothing.
+
+
 The required trace names are: `time`, `VDD`, `VSS`, `vin`, `out`.
 
 ## Modeling Constraints

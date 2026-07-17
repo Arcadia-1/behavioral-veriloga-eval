@@ -47,6 +47,16 @@ Create stimulus and save traces sufficient for the fixed evaluator oracle to che
 - `P_HOLD_THE_MOST_RECENT_LATCH_STATE`: exercise and make observable: Hold the most recent latch state between qualifying input edges. Required traces: `time`, `down`, `fb`, `ref`, `up`.
 - `P_INITIALIZE_TO_THE_RESET_STATE_WITH`: exercise and make observable: Initialize to the reset state with `up` low and `down` high. Required traces: `time`, `down`, `fb`, `ref`, `up`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+- Detect rising `ref` and `fb` crossings at `vdd/2`.
+- A rising `ref` edge sets the latch state so `up` is high and `down` is low.
+- A rising `fb` edge resets the latch state so `up` is low and `down` is high.
+- Hold the most recent latch state between qualifying input edges.
+- Initialize to the reset state with `up` low and `down` high.
+
+
 The required trace names are: `time`, `down`, `fb`, `ref`, `up`.
 
 ## Modeling Constraints

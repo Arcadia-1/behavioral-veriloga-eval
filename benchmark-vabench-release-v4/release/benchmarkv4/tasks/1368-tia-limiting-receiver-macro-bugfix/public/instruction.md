@@ -44,6 +44,18 @@ The repaired bundle must satisfy every public property:
 - `P_ON_EACH_RISING_CLK_EDGE_DRIVE`: restore: On each rising `clk` edge, drive `decision` high when the limited output is at or above `vcm`, otherwise low. Required traces: `time`, `vin_proxy`, `clk`, `rst`, `enable`, `vout`, `decision`, `limit_flag`, `valid`, `amp_metric`.
 - `P_ASSERT_VALID_WHEN_AMP_METRIC_IS`: restore: Assert `valid` when `amp_metric` is at least `valid_min` for two consecutive clock updates. Required traces: `time`, `vin_proxy`, `clk`, `rst`, `enable`, `vout`, `decision`, `limit_flag`, `valid`, `amp_metric`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+- On reset or when `enable` is low, drive `vout` to `vcm` and clear `decision`, `limit_flag`, `valid`, and `amp_metric`.
+- Treat `vin_proxy` as a voltage-domain proxy for receiver input magnitude; no current ports are required.
+- Apply gain to the deviation from `vcm` and clamp the output to `vcm +/- limit`.
+- Assert `limit_flag` when the unclamped amplified signal would exceed the limiter range.
+- On each rising `clk` edge, drive `decision` high when the limited output is at or above `vcm`, otherwise low.
+- Assert `valid` when `amp_metric` is at least `valid_min` for two consecutive clock updates.
+- `amp_metric` must expose the absolute limited signal deviation from `vcm`.
+
+
 ## Modeling Constraints
 
 - Use deterministic voltage-domain behavioral Verilog-A.

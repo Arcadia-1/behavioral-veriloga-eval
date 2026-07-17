@@ -30,6 +30,15 @@ The repaired bundle must satisfy every public property:
 - `P_DO_NOT_CONTINUOUSLY_TRACK_VIN_BETWEEN`: restore: Do not continuously track `vin` between sample events. Required traces: `time`, `control`, `vin`, `vout`.
 - `P_DRIVE_VOUT_WITH_SMOOTH_VOLTAGE_DOMAIN`: restore: Drive `vout` with smooth voltage-domain output behavior. Required traces: `time`, `control`, `vin`, `vout`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+- Sample `vin` on each rising `control` crossing of `thresh`.
+- Hold the sampled voltage on `vout` until the next rising control crossing.
+- Do not continuously track `vin` between sample events.
+- Drive `vout` with smooth voltage-domain output behavior.
+
+
 ## Modeling Constraints
 
 - Use deterministic voltage-domain behavioral Verilog-A.

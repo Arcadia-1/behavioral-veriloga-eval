@@ -42,6 +42,12 @@ Create stimulus and save traces sufficient for the fixed evaluator oracle to che
 - `P_DENOMINATOR_MAGNITUDE_FLOOR`: exercise and make observable: When `abs(V(sigdenom)) < min_sigdenom`, use a denominator magnitude of `min_sigdenom`. Required traces: `time`, `sigdenom`, `sigout`.
 - `P_DENOMINATOR_SIGN_PRESERVED`: exercise and make observable: Preserve the original denominator sign when applying the minimum denominator guard. Required traces: `time`, `signumer`, `sigdenom`, `sigout`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+Compute the output as `gain` times the numerator voltage divided by a guarded denominator voltage. If the denominator magnitude is below `min_sigdenom`, replace it with `+min_sigdenom` for a nonnegative denominator and `-min_sigdenom` for a negative denominator.
+
+
 The required trace names are: `time`, `sigdenom`, `signumer`, `sigout`.
 
 ## Modeling Constraints

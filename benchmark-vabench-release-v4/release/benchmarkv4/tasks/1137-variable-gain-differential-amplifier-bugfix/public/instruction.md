@@ -29,6 +29,12 @@ The repaired bundle must satisfy every public property:
 - `P_VARIABLE_GAIN_MIDPOINT`: restore: Drive the unclamped target as `2.0 * V(sigctrl_p, sigctrl_n) * V(sigin_p, sigin_n) + 0.2`. Required traces: `time`, `sigin_p`, `sigin_n`, `sigctrl_p`, `sigctrl_n`, `sigout`.
 - `P_OUTPUT_CLAMP`: restore: Clamp the final output target to the inclusive interval `[-0.4 V, 0.8 V]`. Required traces: `time`, `sigout`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+Use `V(sigctrl_p, sigctrl_n)` as the gain-control voltage and `V(sigin_p, sigin_n)` as the signal input. Multiply the two differential voltages by a gain constant of 2.0, center the output around 0.2 V, and clamp the final target to -0.4 V through 0.8 V.
+
+
 ## Modeling Constraints
 
 - Use deterministic voltage-domain behavioral Verilog-A.

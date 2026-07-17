@@ -26,6 +26,12 @@ The repaired bundle must satisfy every public property:
 - `P_INITIAL_LOW_STATE`: restore: The retained state and `clkout` start low before the first input-clock edge. Required traces: `time`, `clkin`, `clkout`.
 - `P_OUTPUT_RAIL_LEVELS`: restore: `clkout` drives 0.9 V for high state and 0.0 V for low state without amplitude scaling. Required traces: `time`, `clkin`, `clkout`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+Initialize the internal state low. On each rising crossing of `clkin` through 0.5 V, toggle the internal state. Drive `clkout` to 0.9 V when the state is high and 0.0 V when it is low.
+
+
 ## Modeling Constraints
 
 - Use deterministic voltage-domain behavioral Verilog-A.

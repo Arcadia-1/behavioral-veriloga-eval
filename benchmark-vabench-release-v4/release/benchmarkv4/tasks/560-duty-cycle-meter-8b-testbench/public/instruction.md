@@ -52,6 +52,16 @@ Create stimulus and save traces sufficient for the fixed evaluator oracle to che
 - `P_VALID_HOLD`: exercise and make observable: valid remains low before the first complete measurement and asserts and holds high after a duty result is available. Required traces: `time`, `clk_in`, `valid`.
 - `P_BIT_ORDER_AND_LEVELS`: exercise and make observable: duty0 is the least significant bit and duty7 is the most significant bit; asserted outputs use vdd and inactive outputs use 0 V. Required traces: `time`, `valid`, `duty0`, `duty1`, `duty2`, `duty3`, `duty4`, `duty5`, `duty6`, `duty7`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+- Record each rising and falling threshold crossing of `clk_in`.
+- For each complete cycle with one falling edge between two rising edges, compute `round(255 * high_time / period)`.
+- Saturate the code to 0 through 255.
+- Drive `duty0` as the least significant bit through `duty7` as the most significant bit.
+- Assert and hold `valid` after a duty-cycle measurement has been made.
+
+
 The required trace names are: `time`, `clk_in`, `valid`, `duty0`, `duty1`, `duty2`, `duty3`, `duty4`, `duty5`, `duty6`, `duty7`.
 
 ## Modeling Constraints

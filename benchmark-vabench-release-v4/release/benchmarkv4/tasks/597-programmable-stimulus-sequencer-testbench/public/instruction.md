@@ -47,6 +47,28 @@ Create stimulus and save traces sufficient for the fixed evaluator oracle to che
 - `P_BURST_IDLE`: exercise and make observable: In burst mode with gate low, out returns near 0.45 V and metric reports the idle rather than active-burst status. Required traces: `time`, `rst`, `mode`, `gate`, `out`, `metric`.
 - `P_CONTROL_DRIVEN_SELECTION`: exercise and make observable: Mode and gate behavior follows the voltage-coded inputs over arbitrary legal control schedules rather than a fixed stimulus timeline. Required traces: `time`, `clk`, `rst`, `mode`, `gate`, `out`, `metric`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+Use low level near 0 V, high level near 0.9 V, and a 0.45 V decision threshold
+for voltage-coded control signals. When reset is high, drive `out` near 0.45 V
+and `metric` low. Otherwise:
+
+- ramp mode, selected when `mode < 0.30 V`, drives a monotonic ramp segment
+  from roughly 0.18 V toward 0.45 V and marks `metric` near 0.20 V;
+- chirp mode, selected when `0.30 V <= mode < 0.60 V`, drives a sine segment
+  centered near 0.45 V whose instantaneous frequency increases over the segment
+  and marks `metric` near 0.50 V;
+- burst mode, selected when `mode >= 0.60 V`, drives a gated PRBS-like burst
+  between low and high stimulus levels while `gate` is high, returns `out` near
+  0.45 V while `gate` is low, and marks `metric` near the burst or idle status.
+
+The visible transient deck is a public verification scenario. Additional
+validation may use different control schedules, so derive mode and gating
+decisions from the voltage-coded inputs rather than from a particular stimulus
+file.
+
+
 The required trace names are: `time`, `clk`, `rst`, `mode`, `gate`, `out`, `metric`.
 
 ## Modeling Constraints

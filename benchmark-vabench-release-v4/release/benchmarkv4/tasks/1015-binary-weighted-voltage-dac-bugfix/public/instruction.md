@@ -33,6 +33,15 @@ The repaired bundle must satisfy every public property:
 - `P_LINEAR_MONOTONIC_MAPPING`: restore: aout changes linearly and monotonically with the unsigned code between the rail endpoints. Required traces: `time`, `code_0`, `code_1`, `code_2`, `code_3`, `vref`, `vss`, `aout`.
 - `P_CONTINUOUS_UPDATE`: restore: aout responds continuously to code-bit changes without a clock event. Required traces: `time`, `code_0`, `code_1`, `code_2`, `code_3`, `aout`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+Treat `code_0..code_3` as an unsigned 4-bit binary word with weights 1, 2, 4,
+and 8. Drive `aout` linearly between `vss` and `vref`, with the all-zero input
+at `vss` and the all-ones input at `vref`. The output should update
+continuously with input bit changes.
+
+
 ## Modeling Constraints
 
 - Use deterministic voltage-domain continuous code mapping with finite transition smoothing.

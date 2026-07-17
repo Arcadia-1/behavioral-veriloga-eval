@@ -48,6 +48,17 @@ Create stimulus and save traces sufficient for the fixed evaluator oracle to che
 - `P_RAIL_OBSERVABILITY`: exercise and make observable: VDD and VSS are public supply-observation ports for harness compatibility only; they do not clamp, scale, or shift the captured vin value. Required traces: `time`, `VDD`, `VSS`, `vin`, `vout`.
 - `P_OUTPUT_SMOOTHING`: exercise and make observable: Changes in the held value appear on vout with finite transition smoothing set by tedge. Required traces: `time`, `vin`, `vout`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+- Initialize the held value from the initial value of `vin`.
+- On each rising `clk` transition, arm a sample for `$abstime + taperture`.
+- At the delayed aperture instant, capture the current value of `vin`.
+- Hold the captured value on `vout` until the next delayed sample.
+- Do not rail-limit `vout`; output the held `vin` value even if it is outside the instantaneous `VSS` to `VDD` interval.
+- Drive `vout` with smooth voltage-domain transitions.
+
+
 The required trace names are: `time`, `VDD`, `VSS`, `clk`, `vin`, `vout`.
 
 ## Modeling Constraints

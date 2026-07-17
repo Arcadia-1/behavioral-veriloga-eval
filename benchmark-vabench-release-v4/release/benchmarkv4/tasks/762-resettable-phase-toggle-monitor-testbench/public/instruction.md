@@ -55,6 +55,15 @@ Create stimulus and save traces sufficient for the fixed evaluator oracle to che
 - `P_MEASURE_ANALOG_INPUTS_RELATIVE_TO_THE`: exercise and make observable: Measure analog inputs relative to the local `vss` rail and normalize by the current local supply span. Let `span = V(vdd, vss)` and treat the row as valid only when `V(en) > vth` and `span_min <= span <= span_max`. If `span` is below `0.05 V`, use `0.05 V` as the normalization span. Define `clip01(y)` as `y` limited to the range `[0, 1]` and `x0..x3 = clip01((V(inN) - V(vss)) / span)`. Required traces: `time`, `clk`, `ctrl0`, `ctrl1`, `en`, `flag`, `in0`, `in1`, `in2`, `in3`, `metric`, `out`, `rst`, `vdd`, `vss`.
 - `P_INITIALIZE_ALL_OBSERVABLE_STATE_TO_0`: exercise and make observable: Initialize all observable state to `0 V`. On a rising crossing of `clk` or a rising crossing of `rst`, clear `out`, `flag`, and `metric` when `rst` is high or the row is not valid. Otherwise, when `x0 > 0.50`, toggle `out` between `0 V` and `vhi` and set `flag` equal to the new `out` value; when `x0 <= 0.50`, hold the previous `out` and `flag` values. On every valid update, drive `metric = vhi * clip01(abs(x0 - x1))`; hold observable values between update events. Required traces: `time`, `clk`, `ctrl0`, `ctrl1`, `en`, `flag`, `in0`, `in1`, `in2`, `in3`, `metric`, `out`, `rst`, `vdd`, `vss`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+- `P_MEASURE_ANALOG_INPUTS_RELATIVE_TO_THE`: Measure analog inputs relative to the local `vss` rail and normalize by the current local supply span. Let `span = V(vdd, vss)` and treat the row as valid only when `V(en) > vth` and `span_min <= span <= span_max`. If `span` is below `0.05 V`, use `0.05 V` as the normalization span. Define `clip01(y)` as `y` limited to the range `[0, 1]` and `x0..x3 = clip01((V(inN) - V(vss)) / span)`.
+- `P_INITIALIZE_ALL_OBSERVABLE_STATE_TO_0`: Initialize all observable state to `0 V`. On a rising crossing of `clk` or a rising crossing of `rst`, clear `out`, `flag`, and `metric` when `rst` is high or the row is not valid. Otherwise, when `x0 > 0.50`, toggle `out` between `0 V` and `vhi` and set `flag` equal to the new `out` value; when `x0 <= 0.50`, hold the previous `out` and `flag` values. On every valid update, drive `metric = vhi * clip01(abs(x0 - x1))`; hold observable values between update events.
+
+The evaluator saves and may inspect these public trace signals: `time`, `clk`, `ctrl0`, `ctrl1`, `en`, `flag`, `in0`, `in1`, `in2`, `in3`, `metric`, `out`, `rst`, `vdd`, `vss`.
+
+
 The required trace names are: `time`, `clk`, `ctrl0`, `ctrl1`, `en`, `flag`, `in0`, `in1`, `in2`, `in3`, `metric`, `out`, `rst`, `vdd`, `vss`.
 
 ## Modeling Constraints

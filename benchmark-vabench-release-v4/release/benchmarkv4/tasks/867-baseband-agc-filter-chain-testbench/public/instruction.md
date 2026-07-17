@@ -120,6 +120,18 @@ Create stimulus and save traces sufficient for the fixed evaluator oracle to che
 - `P_VGA_FILTER_RESPONSE`: exercise and make observable: The VGA applies gain_min plus gain_lsb times code and the sampled filter moves by alpha toward that VGA result. Required traces: `time`, `vin`, `clk`, `enable`, `vout`, `gain_3`, `gain_2`, `gain_1`, `gain_0`.
 - `P_CLIP_AND_SETTLE`: exercise and make observable: clip_flag reports an unclamped filter excursion beyond the rails and settled asserts only after three consecutive in-tolerance updates. Required traces: `time`, `target`, `clk`, `enable`, `vout`, `level_metric`, `clip_flag`, `settled`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+- On reset or when `enable` is low, set gain code to 4, clear metrics, clear flags, and drive `vout` to `vcm`.
+- `level_meter` measures the magnitude of `vin` deviation from `vcm` once per rising `clk` edge.
+- `gain_controller` increments the gain code when the measured level is below `V(target) - tol` and decrements it when above `V(target) + tol`.
+- `vga_stage` applies the selected gain to the input deviation from `vcm`.
+- `filter_stage` applies sampled low-pass smoothing to the VGA output.
+- `clip_flag` must assert when the unclamped filtered output would exceed `vss` through `vdd`.
+- `settled` must assert after three consecutive updates where `level_metric` is within tolerance.
+
+
 The required trace names are: `time`, `vin`, `target`, `clk`, `rst`, `enable`, `vout`, `gain_3`, `gain_2`, `gain_1`, `gain_0`, `level_metric`, `clip_flag`, `settled`.
 
 ## Modeling Constraints

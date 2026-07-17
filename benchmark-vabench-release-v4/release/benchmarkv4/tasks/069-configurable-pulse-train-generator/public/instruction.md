@@ -35,8 +35,6 @@ Inputs are `clk`, `start`, 4-bit `period`, 4-bit `width`, and 4-bit `count`. Out
 
 - Sample controls on rising `clk` crossings.
 - While idle, a sampled high `start` captures unsigned 4-bit `period`, `width`, and `count` control words.
-- The rising `clk` edge that accepts `start` is sample zero of the sequence and
-  starts the first pulse; do not delay the first pulse until the next rising edge.
 - Interpret each captured control word as at least one clock sample: zero-coded period, width, or count values map to 1.
 - Emit exactly `count` pulses. Each pulse is high for `width` clock samples, and pulse starts are separated by `period` clock samples.
 - After the final pulse completes, drive `pulse` low and assert `done`.

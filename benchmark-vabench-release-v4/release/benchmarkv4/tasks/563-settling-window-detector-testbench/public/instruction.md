@@ -53,6 +53,16 @@ Create stimulus and save traces sufficient for the fixed evaluator oracle to che
 - `P_ENTRY_TIME_CODE`: exercise and make observable: After qualification, t_code[7:0] reports the rounded window-entry time in whole nanoseconds, saturated to 0 through 255. Required traces: `time`, `vin`, `target`, `tol`, `settled`, `t_code0`, `t_code1`, `t_code2`, `t_code3`, `t_code4`, `t_code5`, `t_code6`, `t_code7`.
 - `P_BIT_ORDER_AND_LEVELS`: exercise and make observable: t_code0 is the least significant bit and t_code7 is the most significant bit; asserted outputs use vdd and inactive outputs use 0 V. Required traces: `time`, `settled`, `t_code0`, `t_code1`, `t_code2`, `t_code3`, `t_code4`, `t_code5`, `t_code6`, `t_code7`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+- Treat the input as in-window when `abs(V(vin) - V(target)) <= V(tol)`.
+- When the signal first enters the window, record the entry time and drive `settled` low.
+- If the signal leaves the window, clear the entry state, drive `settled` low, and clear the time code.
+- Assert `settled` only after the signal has remained continuously in-window for at least 20 ns.
+- Drive `t_code[7:0]` to `round(entry_time / 1 ns)`, saturated to the 8-bit range, with `t_code0` as the least significant bit.
+
+
 The required trace names are: `time`, `vin`, `target`, `tol`, `settled`, `t_code0`, `t_code1`, `t_code2`, `t_code3`, `t_code4`, `t_code5`, `t_code6`, `t_code7`.
 
 ## Modeling Constraints

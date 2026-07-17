@@ -29,6 +29,18 @@ The repaired bundle must satisfy every public property:
 - `P_LOWER_CLAMP`: restore: When the referenced input is below `vclamp_lower`, drive the lower clamp value. Required traces: `time`, `vin`, `vout`.
 - `P_UPPER_CLAMP`: restore: When the referenced input is above `vclamp_upper`, drive the upper clamp value. Required traces: `time`, `vin`, `vout`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+- `P_GROUND_REFERENCED_INPUT`: Measure the clamp input as `V(vin, vgnd)` and drive `V(vout, vgnd)` relative to the same reference.
+
+- `P_PASSBAND_TRANSFER`: When the referenced input lies inside `[vclamp_lower, vclamp_upper]`, pass that referenced voltage to the output.
+
+- `P_LOWER_CLAMP`: When the referenced input is below `vclamp_lower`, drive the lower clamp value.
+
+- `P_UPPER_CLAMP`: When the referenced input is above `vclamp_upper`, drive the upper clamp value.
+
+
 ## Modeling Constraints
 
 - Use deterministic voltage-domain behavioral Verilog-A.

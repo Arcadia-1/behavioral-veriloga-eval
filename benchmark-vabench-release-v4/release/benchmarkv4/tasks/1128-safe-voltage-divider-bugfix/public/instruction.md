@@ -28,6 +28,12 @@ The repaired bundle must satisfy every public property:
 - `P_DENOMINATOR_MAGNITUDE_FLOOR`: restore: When `abs(V(sigdenom)) < min_sigdenom`, use a denominator magnitude of `min_sigdenom`. Required traces: `time`, `sigdenom`, `sigout`.
 - `P_DENOMINATOR_SIGN_PRESERVED`: restore: Preserve the original denominator sign when applying the minimum denominator guard. Required traces: `time`, `signumer`, `sigdenom`, `sigout`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+Compute the output as `gain` times the numerator voltage divided by a guarded denominator voltage. If the denominator magnitude is below `min_sigdenom`, replace it with `+min_sigdenom` for a nonnegative denominator and `-min_sigdenom` for a negative denominator.
+
+
 ## Modeling Constraints
 
 - Use deterministic voltage-domain behavioral Verilog-A.

@@ -90,6 +90,18 @@ Create stimulus and save traces sufficient for the fixed evaluator oracle to che
 - `P_EXPOSE_THE_ACTIVE_CORRECTION_ON_OFFSET`: exercise and make observable: Expose the active correction on `offset_metric` and assert `ready` after three calibration updates. Required traces: `time`, `vinp`, `vinn`, `clk`, `rst`, `cal_en`, `trim_2`, `trim_1`, `trim_0`, `vout`, `offset_metric`, `ready`.
 - `P_USE_ONLY_VOLTAGE_DOMAIN_BEHAVIORAL_STATE`: exercise and make observable: Use only voltage-domain behavioral state and voltage contributions on public electrical outputs. Required traces: `time`, `vinp`, `vinn`, `clk`, `rst`, `cal_en`, `trim_2`, `trim_1`, `trim_0`, `vout`, `offset_metric`, `ready`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+- On reset, clear the trim state, drive `vout` to `vcm`, clear `offset_metric`, and clear `ready`.
+- Decode `trim_2..trim_0` as a signed offset correction around zero.
+- While `cal_en` is high, update the internal trim accumulator once per rising `clk` edge toward reducing the measured input offset.
+- Drive `vout` from the corrected differential input and clamp to the output rails.
+- Expose the active correction on `offset_metric` and assert `ready` after three calibration updates.
+- Use only voltage-domain behavioral state and voltage contributions on public electrical outputs.
+- Do not expose pass/fail flags; expose only the public observable metrics named in the interface.
+
+
 The required trace names are: `time`, `vinp`, `vinn`, `clk`, `rst`, `cal_en`, `trim_2`, `trim_1`, `trim_0`, `vout`, `offset_metric`, `ready`.
 
 ## Modeling Constraints

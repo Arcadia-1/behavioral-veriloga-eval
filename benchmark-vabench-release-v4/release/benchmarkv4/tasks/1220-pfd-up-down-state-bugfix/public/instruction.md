@@ -34,6 +34,18 @@ The repaired bundle must satisfy every public property:
 - `P_DRIVE_UP_HIGH_WHEN_THE_STATE`: restore: Drive `up` high when the state is `+1`. Required traces: `time`, `down`, `fb`, `ref`, `up`.
 - `P_DRIVE_DOWN_HIGH_WHEN_THE_STATE`: restore: Drive `down` high when the state is `-1`. Required traces: `time`, `down`, `fb`, `ref`, `up`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+- Detect rising `ref` and `fb` crossings at `vdd/2`.
+- Maintain an integer detector state bounded to `-1`, `0`, or `+1`.
+- A rising `ref` edge increments the state up to `+1`.
+- A rising `fb` edge decrements the state down to `-1`.
+- Drive `up` high when the state is `+1`.
+- Drive `down` high when the state is `-1`.
+- Drive both outputs low when the state is `0`.
+
+
 ## Modeling Constraints
 
 - Use deterministic voltage-domain behavioral Verilog-A.

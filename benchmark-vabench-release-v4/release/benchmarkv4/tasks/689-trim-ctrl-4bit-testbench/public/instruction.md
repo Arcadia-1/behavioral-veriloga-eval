@@ -44,6 +44,12 @@ Create stimulus and save traces sufficient for the fixed evaluator oracle to che
 - `P_CONTINUOUS_CODE_UPDATE`: exercise and make observable: Update deterministically as `ain` changes without requiring hidden state or clocks. Required traces: `time`, `ain`, `dout0`, `dout1`, `dout2`, `dout3`.
 - `P_TRIM_OUTPUT_LEVELS`: exercise and make observable: All trim outputs are voltage-coded at valid low/high levels. Required traces: `time`, `ain`, `dout0`, `dout1`, `dout2`, `dout3`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+Round `ain` to the nearest integer code level and emit the low four bits on `dout0..dout3`. Update deterministically as `ain` changes and keep the output voltage-coded rather than current-domain.
+
+
 The required trace names are: `time`, `ain`, `dout0`, `dout1`, `dout2`, `dout3`.
 
 ## Modeling Constraints

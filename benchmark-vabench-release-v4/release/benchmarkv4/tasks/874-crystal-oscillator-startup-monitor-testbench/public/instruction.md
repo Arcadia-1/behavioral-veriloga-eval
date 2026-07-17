@@ -55,6 +55,18 @@ Create stimulus and save traces sufficient for the fixed evaluator oracle to che
 - `P_ASSERT_STARTUP_DONE_WHEN_AMP_METRIC`: exercise and make observable: Assert `startup_done` when `amp_metric` reaches `amp_target`. Required traces: `time`, `enable`, `rst`, `clk_ref`, `osc_out`, `amp_metric`, `valid`, `startup_done`.
 - `P_ASSERT_VALID_AFTER_TWO_CONSECUTIVE_SLICED`: exercise and make observable: Assert `valid` after two consecutive sliced oscillator periods after startup is done. Required traces: `time`, `enable`, `rst`, `clk_ref`, `osc_out`, `amp_metric`, `valid`, `startup_done`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+- On reset or when `enable` is low, clear oscillator amplitude, `osc_out`, `valid`, and `startup_done`.
+- Increase a behavioral amplitude state by `amp_step` on each rising `clk_ref` edge while enabled until `amp_target` is reached.
+- Clamp the amplitude at `amp_target` and expose it on `amp_metric`.
+- Toggle `osc_out` from `clk_ref` only after the amplitude state is nonzero.
+- Assert `startup_done` when `amp_metric` reaches `amp_target`.
+- Assert `valid` after two consecutive sliced oscillator periods after startup is done.
+- This DUT is a behavioral startup monitor and must not require a crystal resonator or branch-current model.
+
+
 The required trace names are: `time`, `enable`, `rst`, `clk_ref`, `osc_out`, `amp_metric`, `valid`, `startup_done`.
 
 ## Modeling Constraints

@@ -153,7 +153,7 @@
   "properties": [
     {
       "id": "P_ON_RESET_OR_WHEN_ENABLE_IS",
-      "observable_contract": "On reset or when `enable` is low, clear path states, metrics, `valid`, and drive outputs to `vcm`.",
+      "observable_contract": "On reset or while disabled restore i_state=q_state=vcm, clear the update count, and drive amp_metric=phase_metric=valid=vss.",
       "required_signals": [
         "time",
         "vin",
@@ -169,7 +169,7 @@
     },
     {
       "id": "P_ON_EACH_RISING_CLK_EDGE_WHILE",
-      "observable_contract": "On each rising `clk` edge while enabled, update an in-phase sampled state from `vin`.",
+      "observable_contract": "Poll every tick=250ps and on each enabled rising clk edge update i_state=i_state+alpha*(vin-i_state).",
       "required_signals": [
         "time",
         "vin",
@@ -185,7 +185,7 @@
     },
     {
       "id": "P_UPDATE_A_QUADRATURE_SAMPLED_STATE_USING",
-      "observable_contract": "Update a quadrature sampled state using the previous in-phase state so the Q output is phase-shifted relative to I.",
+      "observable_contract": "Save old_i before the I update and then update q_state=q_state+alpha*(old_i-q_state).",
       "required_signals": [
         "time",
         "vin",
@@ -217,7 +217,7 @@
     },
     {
       "id": "P_REPORT_A_BOUNDED_PHASE_ORDER_METRIC",
-      "observable_contract": "Report a bounded phase/order metric on `phase_metric` and an amplitude-balance metric on `amp_metric`.",
+      "observable_contract": "After each enabled update drive amp_metric=min(vdd,2*abs(i_state-q_state)) and phase_metric=0.65V when i_state>=q_state, otherwise 0.25V.",
       "required_signals": [
         "time",
         "vin",
@@ -233,7 +233,7 @@
     },
     {
       "id": "P_ASSERT_VALID_AFTER_AT_LEAST_FOUR",
-      "observable_contract": "Assert `valid` after at least four enabled sample updates.",
+      "observable_contract": "Increment the enabled-update count once per detected rising edge and drive valid=vdd starting with update four, otherwise vss.",
       "required_signals": [
         "time",
         "vin",

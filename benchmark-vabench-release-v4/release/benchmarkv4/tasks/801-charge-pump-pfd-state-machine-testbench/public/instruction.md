@@ -54,6 +54,35 @@ Create stimulus and save traces sufficient for the fixed evaluator oracle to che
 - `P_DRIVE_VCTRL_TRANSITION_VCTRL_Q_0`: exercise and make observable: Drive `vctrl = transition(vctrl_q, 0, tedge, tedge)`. Required traces: `time`, `ref`, `fb`, `vctrl`, `metric`.
 - `P_DRIVE_METRIC_AS_A_VOLTAGE_CODED`: exercise and make observable: Drive `metric` as a voltage-coded copy of the detector state: Required traces: `time`, `ref`, `fb`, `vctrl`, `metric`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+Implement a classic three-state phase-frequency detector as a voltage-domain
+event-driven state machine, and integrate its output onto a bounded control
+voltage.
+
+This is a behavioral continuous-time task, not a conservative-current/KCL task.
+Do not use `I(...)`, `ddt(...)`, or `idt(...)`.
+
+Use voltage-coded logic levels with high inputs near `0.9 V` and low inputs near
+`0.0 V`, threshold `vth = 0.45 V`.
+
+Implement:
+
+- An integer `state_q` held in `[-1, 0, +1]`, initialized to `0`.
+- On each rising crossing of `V(ref)` through `vth` (`@(cross(V(ref) - vth, +1))`),
+  increment `state_q` but clamp it to `+1`.
+- On each rising crossing of `V(fb)` through `vth` (`@(cross(V(fb) - vth, +1))`),
+  decrement `state_q` but clamp it to `-1`.
+- Maintain a control voltage `vctrl_q`, initialized to `vctrl_init`. On a fixed
+  `tstep` timer (`@(timer(0, tstep))`), update
+  `vctrl_q = vctrl_q + state_q * pump_rate * tstep`, then clamp `vctrl_q` into
+  `[vctrl_min, vctrl_max]`.
+- Drive `vctrl = transition(vctrl_q, 0, tedge, tedge)`.
+- Drive `metric` as a voltage-coded copy of the detector state:
+  `metric = transition((state_q < 0) ? metric_lo : (state_q > 0) ? metric_hi : metric_mid, 0, tedge, tedge)`.
+
+
 The required trace names are: `time`, `ref`, `fb`, `vctrl`, `metric`.
 
 ## Modeling Constraints

@@ -36,6 +36,24 @@ The repaired bundle must satisfy every public property:
 - `P_ZERO_DIFFERENTIAL`: restore: An exactly zero effective differential sampled at a rising clock crossing leaves both complementary decision states low. Required traces: `time`, `clk`, `vinp`, `vinn`, `out_p`, `out_n`, `lp`, `lm`.
 - `P_LATCH_HOLD`: restore: The sampled decision is held between clock events and does not track input changes while the clock remains high. Required traces: `time`, `clk`, `vinp`, `vinn`, `out_p`, `out_n`, `lp`, `lm`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+- Initialize all public decision and latch-state outputs low.
+- Use `V(VDD,VSS)/2` as the clock decision threshold.
+- On each rising clock crossing, latch the sign of
+  `V(VINP,VSS) - V(VINN,VSS) - voffset`.
+- For a positive latched differential input, drive `DCMPP` and `LP` high while
+  `DCMPN` and `LM` remain low. For a negative latched differential input, drive
+  `DCMPN` and `LM` high while `DCMPP` and `LP` remain low.
+- For an exactly zero effective differential input, keep both complementary
+  decision states low.
+- On each falling clock crossing, reset all public decision and latch-state
+  outputs low.
+- Hold the latched decision between clock events; the model must not become
+  transparent while the clock is high.
+
+
 ## Modeling Constraints
 
 - Use the local rail midpoint as the clock threshold.

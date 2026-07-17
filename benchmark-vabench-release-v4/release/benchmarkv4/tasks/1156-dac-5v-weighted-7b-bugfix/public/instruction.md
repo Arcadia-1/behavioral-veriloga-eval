@@ -37,6 +37,12 @@ The repaired bundle must satisfy every public property:
 - `P_MSB_AND_TERMINATION_CONTRIBUTIONS`: restore: `din0` contributes the largest switched weight and the fixed termination contribution is included. Required traces: `time`, `clks`, `din0`, `din1`, `din2`, `din3`, `din4`, `din5`, `din6`, `vout`.
 - `P_REFERENCE_ENDPOINTS_AND_SCALE`: restore: The output uses the declared `refp` and `refn` endpoints and full DAC scale. Required traces: `time`, `clks`, `din0`, `din1`, `din2`, `din3`, `din4`, `din5`, `din6`, `vout`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+On each rising crossing of `clks` through `vth`, evaluate a 7-bit binary-weighted DAC where `din0` is the largest weight and `din6` is the smallest switched weight. Each bit selects `refp` for high and `refn` for low at its binary fraction. Include the fixed terminating LSB contribution tied to `refn`, then drive the held DAC output.
+
+
 ## Modeling Constraints
 
 - Use deterministic voltage-domain behavioral Verilog-A.

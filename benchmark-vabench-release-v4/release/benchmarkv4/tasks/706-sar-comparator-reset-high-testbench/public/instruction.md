@@ -42,6 +42,12 @@ Create stimulus and save traces sufficient for the fixed evaluator oracle to che
 
 - `P_INITIALIZE_BOTH_DECISION_OUTPUTS_HIGH_WHENEVER`: exercise and make observable: Initialize both decision outputs high. Whenever `cmpck` falls through `vdd/2`, reset both outputs high. Whenever `cmpck` rises through `vdd/2`, latch a differential decision: `dcmpp` high for `vinp > vinn`, `dcmpn` high for `vinp < vinn`, and both outputs low for equal inputs. Hold the latched or reset state until the next clock event. Required traces: `time`, `cmpck`, `dcmpn`, `dcmpp`, `vinn`, `vinp`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+Initialize both decision outputs high. Whenever `cmpck` falls through `vdd/2`, reset both outputs high. Whenever `cmpck` rises through `vdd/2`, latch a differential decision: `dcmpp` high for `vinp > vinn`, `dcmpn` high for `vinp < vinn`, and both outputs low for equal inputs. Hold the latched or reset state until the next clock event.
+
+
 The required trace names are: `time`, `cmpck`, `dcmpn`, `dcmpp`, `vinn`, `vinp`.
 
 ## Modeling Constraints

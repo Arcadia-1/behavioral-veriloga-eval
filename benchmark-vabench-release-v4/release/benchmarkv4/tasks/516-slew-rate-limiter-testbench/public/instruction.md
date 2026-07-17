@@ -43,6 +43,18 @@ Create stimulus and save traces sufficient for the fixed evaluator oracle to che
 - `P_NEAR_TARGET_SETTLE`: exercise and make observable: When vin is within one step, vout may settle directly to vin. Required traces: `time`, `vin`, `vout`.
 - `P_EVENTUAL_TRACKING`: exercise and make observable: The limited response eventually reaches sustained high and low input levels while remaining non-instantaneous. Required traces: `time`, `vin`, `vout`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+- Initialize the internal output state to `0 V`.
+- Update the state only on a periodic `1 ns` timer.
+- On each update, move the internal state toward `V(vin)` by no more than `step`.
+- Limit both rising and falling changes.
+- If `V(vin)` is within one `step` of the internal state, the state may settle directly to `V(vin)`.
+- Drive `vout` from the internal state with a smoothed voltage contribution.
+- The response must eventually reach both high and low input levels while remaining slower than an instantaneous copy of `vin`.
+
+
 The required trace names are: `time`, `vin`, `vout`.
 
 ## Modeling Constraints

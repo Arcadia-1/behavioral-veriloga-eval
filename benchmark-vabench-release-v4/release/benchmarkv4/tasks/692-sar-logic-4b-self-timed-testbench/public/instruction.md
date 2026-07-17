@@ -56,6 +56,14 @@ Create stimulus and save traces sufficient for the fixed evaluator oracle to che
 - `P_STEP_ADVANCE_ON_COMPARATOR_FALL`: exercise and make observable: Comparator-output falling events advance the SAR step and update the next control state. Required traces: `time`, `clkc`, `cmpck`, `dbotn1`, `dbotn2`, `dbotn3`, `dbotp1`, `dbotp2`, `dbotp3`, `dcmpn`, `dcmpp`, `dout1`, `dout2`, `dout3`, `dout4`, `rst`, `vdd`, `gnd`.
 - `P_CMPCK_TIMING_AND_LEVEL`: exercise and make observable: `cmpck` is scheduled low after `t_logic_delay` and driven with valid voltage-coded levels. Required traces: `time`, `clkc`, `cmpck`, `dbotn1`, `dbotn2`, `dbotn3`, `dbotp1`, `dbotp2`, `dbotp3`, `dcmpn`, `dcmpp`, `dout1`, `dout2`, `dout3`, `dout4`, `rst`, `vdd`, `gnd`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+At initialization and on each rising `rst` transition, reset the conversion to step 4, clear `cmpck` and `dout1..dout4`, and initialize `dbotp1..dbotp3` and `dbotn1..dbotn3` high. A rising `clkc` transition schedules `cmpck` high after `t_logic_delay`.
+
+Each rising comparator pulse on `dcmpp` or `dcmpn` schedules `cmpck` low after `t_logic_delay`. At the pulse, treat `dcmpp > dcmpn` as a positive decision and store that decision in `dout{step}` for the current MSB-to-LSB step sequence 4, 3, 2, 1. For steps above 1, a positive decision clears the positive bottom-plate control `dbotp{step-1}`, while a negative decision clears the negative bottom-plate control `dbotn{step-1}`. Step 1 only latches `dout1` and does not update a bottom-plate control. When the comparator pulse falls, decrement the step and re-enable `cmpck` after `t_logic_delay` while further decisions remain.
+
+
 The required trace names are: `time`, `clkc`, `cmpck`, `dbotn1`, `dbotn2`, `dbotn3`, `dbotp1`, `dbotp2`, `dbotp3`, `dcmpn`, `dcmpp`, `dout1`, `dout2`, `dout3`, `dout4`, `rst`, `vdd`, `gnd`.
 
 ## Modeling Constraints

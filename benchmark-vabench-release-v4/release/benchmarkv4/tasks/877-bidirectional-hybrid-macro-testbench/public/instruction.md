@@ -58,6 +58,18 @@ Create stimulus and save traces sufficient for the fixed evaluator oracle to che
 - `P_DIRECTIONAL_METRICS`: exercise and make observable: At rising clock edges forward and reverse metrics reconstruct the directional components from the mapped sum and difference outputs. Required traces: `time`, `clk`, `rst`, `sum_out`, `diff_out`, `forward_metric`, `reverse_metric`.
 - `P_BALANCE_QUALIFICATION`: exercise and make observable: balance_ok asserts only after two consecutive metric updates whose directional mismatch is within balance_tol. Required traces: `time`, `clk`, `rst`, `forward_metric`, `reverse_metric`, `balance_ok`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+- On reset, drive `sum_out` and `diff_out` to `vcm`, clear metrics, and clear `balance_ok`.
+- Form voltage-domain sum and difference outputs from deviations of `port_a` and `port_b` around `vcm`.
+- Decode `trim_2..trim_0` and apply a signed correction to reduce imbalance between the two paths.
+- Update `forward_metric` and `reverse_metric` once per rising `clk` edge from the corrected sum/difference states.
+- `balance_ok` must assert after two consecutive updates where the absolute metric mismatch is within `balance_tol`.
+- Swapping the relative stimulus on `port_a` and `port_b` must swap the dominant forward/reverse metric relationship.
+- This is a behavioral voltage-domain hybrid macro; it must not require an S-parameter file or branch-current RF network.
+
+
 The required trace names are: `time`, `port_a`, `port_b`, `clk`, `rst`, `trim_2`, `trim_1`, `trim_0`, `sum_out`, `diff_out`, `forward_metric`, `reverse_metric`, `balance_ok`.
 
 ## Modeling Constraints

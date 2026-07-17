@@ -43,6 +43,12 @@ Create stimulus and save traces sufficient for the fixed evaluator oracle to che
 - `P_INITIAL_OUTPUT_VALUE`: exercise and make observable: Before enough update events have occurred, the retained samples and `aout` start from `init`. Required traces: `time`, `ain`, `aout`, `update`.
 - `P_OUTPUT_GAIN_AND_HOLD`: exercise and make observable: The held `aout` value matches the delayed sample amplitude without gain scaling between update events. Required traces: `time`, `ain`, `aout`, `update`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+Initialize the internal samples and output to `init`. On each rising crossing of `update` through `vth`, output the previous sampled input value, then capture the current `ain` value for use on the next update. Hold `aout` between update events.
+
+
 The required trace names are: `time`, `ain`, `aout`, `update`.
 
 ## Modeling Constraints

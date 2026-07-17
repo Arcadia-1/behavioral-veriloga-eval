@@ -40,6 +40,16 @@ Create stimulus and save traces sufficient for the fixed evaluator oracle to che
 - `P_FIXED_GAIN_THREE`: exercise and make observable: Drive `sigout` to `3.0 * (V(sigin) - 0.2)`. Required traces: `time`, `sigin`, `sigout`.
 - `P_DIRECT_MEMORYLESS_OUTPUT`: exercise and make observable: Use a direct memoryless voltage output without clipping, filtering, current output, or stimulus-specific behavior. Required traces: `time`, `sigin`, `sigout`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+- `P_INPUT_OFFSET_SUBTRACTION`: Subtract 0.2 V from `V(sigin)` before applying gain.
+
+- `P_FIXED_GAIN_THREE`: Drive `sigout` to `3.0 * (V(sigin) - 0.2)`.
+
+- `P_DIRECT_MEMORYLESS_OUTPUT`: Use a direct memoryless voltage output without clipping, filtering, current output, or stimulus-specific behavior.
+
+
 The required trace names are: `time`, `sigin`, `sigout`.
 
 ## Modeling Constraints

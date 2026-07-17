@@ -43,6 +43,12 @@ Create stimulus and save traces sufficient for the fixed evaluator oracle to che
 - `P_INPUT_OFFSET_AND_GAIN`: exercise and make observable: Compute the unclamped target as `1.5 * V(vctrl_p, vctrl_n) * (V(vin_p, vin_n) - 0.05) + 0.5`. Required traces: `time`, `vin_p`, `vin_n`, `vctrl_p`, `vctrl_n`, `vout`.
 - `P_UNIPOLAR_OUTPUT_CLAMP`: exercise and make observable: Clamp the final output target to the inclusive interval `[0.1 V, 0.9 V]`. Required traces: `time`, `vout`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+Use `V(vctrl_p, vctrl_n)` as the gain-control voltage. Subtract a 0.05 V input-referred offset from `V(vin_p, vin_n)`, multiply by the control voltage and a gain constant of 1.5, center the output around 0.5 V, and clamp the final target to 0.1 V through 0.9 V.
+
+
 The required trace names are: `time`, `vctrl_n`, `vctrl_p`, `vin_n`, `vin_p`, `vout`.
 
 ## Modeling Constraints

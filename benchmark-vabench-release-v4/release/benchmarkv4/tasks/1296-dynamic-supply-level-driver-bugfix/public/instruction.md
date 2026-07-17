@@ -35,6 +35,17 @@ The repaired bundle must satisfy every public property:
 - `P_VLO_FRAC_0_0_VHI_FRAC`: restore: `vlo_frac = 0.0`, `vhi_frac = 1.0`: output low and high levels expressed as Required traces: `time`, `din`, `out`, `vdd`, `vss`.
 - `P_TR_40P_OUTPUT_TRANSITION_SMOOTHING_TIME`: restore: `tr = 40p`: output transition smoothing time. Required traces: `time`, `din`, `out`, `vdd`, `vss`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+Model a dynamic-supply electrical level driver. Compute the input level relative
+to the local rails, not global ground. When `V(vdd, vss)` is at least
+`vsup_min`, drive `out` to the local low or high rail-derived level according to
+whether the normalized input exceeds `vth_frac`. When the supply is below
+`vsup_min`, drive `out` to the local low level. Smooth the output with
+`transition()`.
+
+
 ## Modeling Constraints
 
 - Use deterministic voltage-domain behavioral Verilog-A.

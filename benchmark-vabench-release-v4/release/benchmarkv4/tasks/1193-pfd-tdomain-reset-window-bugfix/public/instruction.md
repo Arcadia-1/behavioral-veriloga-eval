@@ -34,6 +34,12 @@ The repaired bundle must satisfy every public property:
 - `P_CLEAR_AFTER_RESET_WINDOW`: restore: After the reset-overlap window, both `up` and `dn` clear before the next phase event. Required traces: `time`, `dn`, `in1`, `in2`, `up`, `vdd`, `gnd`.
 - `P_PFD_OUTPUT_LEVELS`: restore: `up` and `dn` use rail-referenced voltage-coded low/high levels. Required traces: `time`, `dn`, `in1`, `in2`, `up`, `vdd`, `gnd`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+A leading `in1` edge asserts `up`; a leading `in2` edge asserts `dn`. When both inputs have arrived, keep both outputs asserted for the reset-overlap window `ton`, then clear both states. Use the public delay and transition parameters for output shaping and hold states between events.
+
+
 ## Modeling Constraints
 
 - Use deterministic voltage-domain behavioral Verilog-A.

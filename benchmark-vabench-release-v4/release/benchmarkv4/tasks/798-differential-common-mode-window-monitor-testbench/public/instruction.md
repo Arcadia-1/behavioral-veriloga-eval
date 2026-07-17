@@ -56,6 +56,19 @@ Create stimulus and save traces sufficient for the fixed evaluator oracle to che
 - `P_DIFF_MAX_0_30_V_MAXIMUM`: exercise and make observable: `diff_max = 0.30 V`: maximum allowed `abs(V(vip) - V(vin))`. Required traces: `time`, `cm_metric`, `cm_ok`, `diff_metric`, `diff_ok`, `en`, `valid`, `vcm_ref`, `vin`, `vip`.
 - `P_DIFF_FULLSCALE_0_45_V_FULL`: exercise and make observable: `diff_fullscale = 0.45 V`: full-scale value for `diff_metric`. Required traces: `time`, `cm_metric`, `cm_ok`, `diff_metric`, `diff_ok`, `en`, `valid`, `vcm_ref`, `vin`, `vip`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+Continuously compute `vdiff = V(vip) - V(vin)` and
+`vcm = 0.5 * (V(vip) + V(vin))`. Drive `diff_ok` high only while `en` is high
+and `abs(vdiff)` is no larger than `diff_max`. Drive `cm_ok` high only while
+`en` is high and `abs(vcm - V(vcm_ref))` is no larger than `cm_tol`. Drive
+`valid` high only when both `diff_ok` and `cm_ok` would be high. Drive
+`diff_metric` as `vhi * clip(abs(vdiff) / diff_fullscale, 0, 1)` and
+`cm_metric` as `vhi * clip(abs(vcm - V(vcm_ref)) / cm_fullscale, 0, 1)`.
+Smooth the voltage-coded Boolean outputs with `transition()`.
+
+
 The required trace names are: `time`, `cm_metric`, `cm_ok`, `diff_metric`, `diff_ok`, `en`, `valid`, `vcm_ref`, `vin`, `vip`.
 
 ## Modeling Constraints

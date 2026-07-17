@@ -41,6 +41,18 @@ The repaired bundle must satisfy every public property:
 - `P_SMOOTH_TAP_OUTPUT_TRANSITIONS_WITH_THE`: restore: Smooth tap output transitions with the public transition parameter. Required traces: `time`, `vref_hi`, `vref_lo`, `enable`, `rst`, `tap0`, `tap1`, `tap2`, `tap3`, `monotonic_ok`.
 - `P_USE_ONLY_VOLTAGE_DOMAIN_BEHAVIORAL_STATE`: restore: Use only voltage-domain behavioral state and voltage contributions on public electrical outputs. Required traces: `time`, `vref_hi`, `vref_lo`, `enable`, `rst`, `tap0`, `tap1`, `tap2`, `tap3`, `monotonic_ok`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+- On reset or when disabled, drive taps to `vss` and clear `monotonic_ok`.
+- When enabled, generate four evenly spaced buffered tap voltages between `vref_lo` and `vref_hi`.
+- Clamp reversed or out-of-range references into the public rail range before generating taps.
+- Assert `monotonic_ok` only when the exposed tap sequence is nondecreasing.
+- Smooth tap output transitions with the public transition parameter.
+- Use only voltage-domain behavioral state and voltage contributions on public electrical outputs.
+- Do not expose pass/fail flags; expose only the public observable metrics named in the interface.
+
+
 ## Modeling Constraints
 
 - Use deterministic voltage-domain behavioral Verilog-A.

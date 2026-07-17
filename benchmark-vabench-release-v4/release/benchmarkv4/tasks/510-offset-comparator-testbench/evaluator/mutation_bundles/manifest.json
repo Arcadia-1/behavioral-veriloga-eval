@@ -106,31 +106,6 @@
     },
     {
       "artifact_hashes": {
-        "cmp_offset_ref.va": "700aaf3f0e0a847b0432ebc8d1e3b3575b2d4a161ca2f773ad2d1348909612de"
-      },
-      "certification": {
-        "activated_property_ids": [
-          "P_RAIL_REFERENCE"
-        ],
-        "behavior_status": "killed_behaviorally",
-        "compile_status": "pass",
-        "evidence_path": "negative_variants/neg_005_weak_high/certification.json",
-        "profile": "feedback",
-        "simulation_status": "pass",
-        "status": "pass"
-      },
-      "changed_artifacts": [
-        "cmp_offset_ref.va"
-      ],
-      "fault_class": "weak_high_rail",
-      "id": "neg_005_weak_high",
-      "trigger_condition": "a latched high decision is driven",
-      "violated_property_ids": [
-        "P_RAIL_REFERENCE"
-      ]
-    },
-    {
-      "artifact_hashes": {
         "cmp_offset_ref.va": "6aad38e1b3d8fbcffbc8eff7a20de849b2ed3ae17565df75ca0e01837a5ff41f"
       },
       "certification": {

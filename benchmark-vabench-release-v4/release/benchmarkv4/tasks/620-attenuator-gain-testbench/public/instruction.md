@@ -42,6 +42,14 @@ Create stimulus and save traces sufficient for the fixed evaluator oracle to che
 - `P_MONOTONIC_ATTENUATION`: exercise and make observable: For a fixed nonzero vin magnitude, increasing the nonnegative attenuation parameter cannot increase the magnitude of vout. Required traces: `time`, `vin`, `vout`.
 - `P_CONTINUOUS_RESPONSE`: exercise and make observable: vout is a continuous memoryless scaled version of vin without clocking, retained state, clipping, or added delay. Required traces: `time`, `vin`, `vout`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+Implement a continuous voltage attenuator. The `attenuation` parameter is in dB and controls the amplitude ratio. A 0 dB setting passes the input unchanged; positive attenuation reduces the output amplitude using the standard voltage dB relationship.
+
+Drive `vout` as a voltage-domain output proportional to `vin`. Use Verilog-A real arithmetic and math operators for the dB-to-linear conversion. Do not use current contributions, transistor devices, or testbench-specific constants.
+
+
 The required trace names are: `time`, `vin`, `vout`.
 
 ## Modeling Constraints

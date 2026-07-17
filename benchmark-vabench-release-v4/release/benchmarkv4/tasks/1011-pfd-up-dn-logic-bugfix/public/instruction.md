@@ -33,6 +33,28 @@ The repaired bundle must satisfy every public property:
 - `P_NO_PERSISTENT_OVERLAP`: restore: UP and DN are not intentionally held high together beyond finite transition smoothing overlap. Required traces: `time`, `up`, `dn`.
 - `P_RAIL_REFERENCE`: restore: UP and DN high levels track the local VDD rail and low levels track the local VSS rail. Required traces: `time`, `vdd`, `vss`, `up`, `dn`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+The module is a voltage-domain phase-frequency detector UP/DN generator with reset-race clearing.
+
+- Detect rising `REF` and `DIV` crossings at `vth`.
+- Set `UP` high on a rising `REF` edge and keep it high until a qualifying
+  reset-race clear.
+- Set `DN` high on a rising `DIV` edge and keep it high until a qualifying
+  reset-race clear.
+- If a rising edge arrives while the opposite output state is already high,
+  clear both `UP` and `DN` immediately. This must work when `REF` leads `DIV`
+  and when `DIV` leads `REF`.
+- Falling input edges must not set either output.
+- After a reset-race clear, both outputs must remain low until the next rising
+  input edge.
+- Do not intentionally hold both `UP` and `DN` high beyond analog smoothing
+  overlap.
+- Drive `UP` and `DN` as smoothed voltage-domain logic levels referenced to
+  `VDD` for high and `VSS` for low.
+
+
 ## Modeling Constraints
 
 - Use deterministic voltage-domain rising-edge behavior for REF and DIV.

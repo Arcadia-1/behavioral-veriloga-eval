@@ -84,6 +84,18 @@ Create stimulus and save traces sufficient for the fixed evaluator oracle to che
 - `P_DRIVE_EYE_METRIC_FROM_RECENT_TRANSITION`: exercise and make observable: Drive `eye_metric` from recent transition stability and sample margin. Required traces: `time`, `data_in`, `sample_clk`, `rst`, `enable`, `early`, `late`, `eye_metric`, `lock_hint`, `valid`.
 - `P_ASSERT_LOCK_HINT_AFTER_FOUR_CONSECUTIVE`: exercise and make observable: Assert `lock_hint` after four consecutive samples with eye metric above `eye_min`. Required traces: `time`, `data_in`, `sample_clk`, `rst`, `enable`, `early`, `late`, `eye_metric`, `lock_hint`, `valid`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+- On reset or when disabled, clear early/late flags, eye metric, lock hint, and `valid`.
+- On each rising sampling-clock edge, produce a valid timing observation.
+- Raise `early` for a data transition within `edge_window` before a sampling edge, and raise `late` for a transition within `edge_window` after it. Keep the flags mutually exclusive.
+- Drive `eye_metric` from the measured sample margin; samples without a nearby transition represent an open-eye observation.
+- Assert `lock_hint` after four consecutive samples with eye metric above `eye_min`.
+- Use only voltage-domain behavioral state and voltage contributions on public electrical outputs.
+- Do not expose pass/fail flags; expose only the public observable metrics named in the interface.
+
+
 The required trace names are: `time`, `data_in`, `sample_clk`, `rst`, `enable`, `early`, `late`, `eye_metric`, `lock_hint`, `valid`.
 
 ## Modeling Constraints

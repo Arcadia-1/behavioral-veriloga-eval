@@ -47,23 +47,18 @@
     "name": "render_v4_harness.py",
     "version": "v4-harness-renderer-v1"
   },
+  "migration": {
+    "notes": [
+      "feedback deck is the canonical stimulus; score is generated with identical semantics"
+    ]
+  },
   "profile_defaults": {
     "feedback": {
-      "corners": [],
-      "deck_overrides": {},
-      "deterministic_seed": 1,
-      "parameters": {},
       "simulatorOptions": {
         "evas_profile": "balanced"
       }
     },
-    "score": {
-      "corners": [],
-      "deck_overrides": {},
-      "deterministic_seed": 1,
-      "parameters": {},
-      "simulatorOptions": {}
-    }
+    "score": {}
   },
   "property_ids": [
     "P_RESET_DISABLE_CLEAR",

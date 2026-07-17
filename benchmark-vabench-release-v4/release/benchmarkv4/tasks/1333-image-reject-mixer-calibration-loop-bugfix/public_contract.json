@@ -394,7 +394,7 @@
   "properties": [
     {
       "id": "P_ON_RESET_OR_WHEN_DISABLED_CLEAR",
-      "observable_contract": "On reset or when disabled, clear outputs, image metric, and `calibrated`.",
+      "observable_contract": "On reset or while disabled, reset both internal trims to `vcm`, drive `i_out` and `q_out` to `vcm`, and drive `image_metric` and `calibrated` to `vss`.",
       "required_signals": [
         "time",
         "rf_in",
@@ -411,7 +411,7 @@
     },
     {
       "id": "P_ON_EACH_ENABLED_RISING_CLK_EDGE",
-      "observable_contract": "On each enabled rising `clk` edge, sample RF and quadrature LO inputs as voltage-domain mixer proxies.",
+      "observable_contract": "Continuously evaluate the voltage-domain mixer proxy while enabled, and latch its raw image metric on each enabled rising `clk` edge.",
       "required_signals": [
         "time",
         "rf_in",
@@ -428,7 +428,7 @@
     },
     {
       "id": "P_GENERATE_I_AND_Q_OUTPUTS_USING",
-      "observable_contract": "Generate I and Q outputs using opposite LO polarities.",
+      "observable_contract": "With `x=rf_in-vcm`, LO signs `si` and `sq`, `g=0.8*(gain_trim-vcm)`, and `p=0.6*(phase_trim-vcm)`, compute `i=x*si*(1-g)` and `q=-x*sq*(1+g)-p*x*si`; drive rail-clamped `vcm+i`, `vcm+q`, and raw image metric `0.5*abs(i+q)`.",
       "required_signals": [
         "time",
         "rf_in",
@@ -445,7 +445,7 @@
     },
     {
       "id": "P_UPDATE_A_SIMPLE_GAIN_PHASE_CORRECTION",
-      "observable_contract": "Update a simple gain/phase correction state to reduce the image metric.",
+      "observable_contract": "For an in-tolerance sample halve both trim deviations toward `vcm`; otherwise update gain trim by `d*18e-3`, phase trim by `-d*9e-3`, clamp both to `vcm+/-0.18`, and reverse `d`.",
       "required_signals": [
         "time",
         "rf_in",
@@ -462,7 +462,7 @@
     },
     {
       "id": "P_ASSERT_CALIBRATED_AFTER_THREE_CONSECUTIVE_UPDA",
-      "observable_contract": "Assert `calibrated` after three consecutive updates with image metric below `image_tol`.",
+      "observable_contract": "Drive `calibrated` to `vdd` after three consecutive enabled rising-edge samples with image metric below `image_tol`, otherwise drive `vss`; reset or disable clears the count and restores search direction `d=+1`.",
       "required_signals": [
         "time",
         "rf_in",

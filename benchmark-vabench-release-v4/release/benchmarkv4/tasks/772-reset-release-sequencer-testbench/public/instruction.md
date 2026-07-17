@@ -48,6 +48,15 @@ Create stimulus and save traces sufficient for the fixed evaluator oracle to che
 - `P_INITIALIZE_THE_INTERNAL_STAGE_COUNT_AND`: exercise and make observable: Initialize the internal stage count and all observables to zero. On each rising clock crossing, clear the stage count when `rst` is high, `supply_ok <= vth`, or `bias_ok <= vth`. Otherwise increment the stage count by one until it reaches `final_stage`. Required traces: `time`, `bias_ok`, `clk`, `progress`, `ready`, `rst`, `stage1`, `stage2`, `supply_ok`.
 - `P_AFTER_UPDATING_THE_STAGE_COUNT_DRIVE`: exercise and make observable: After updating the stage count, drive `stage1 = vhi` when `stage_count >= 1`, `stage2 = vhi` when `stage_count >= 2`, and `ready = vhi` when `stage_count >= final_stage`; otherwise drive each of those observables to `0 V`. Drive `progress = vhi * clip01(stage_count / final_stage)`. Hold the last observable values between rising clock crossings. Required traces: `time`, `bias_ok`, `clk`, `progress`, `ready`, `rst`, `stage1`, `stage2`, `supply_ok`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+- `P_INITIALIZE_THE_INTERNAL_STAGE_COUNT_AND`: Initialize the internal stage count and all observables to zero. On each rising clock crossing, clear the stage count when `rst` is high, `supply_ok <= vth`, or `bias_ok <= vth`. Otherwise increment the stage count by one until it reaches `final_stage`.
+- `P_AFTER_UPDATING_THE_STAGE_COUNT_DRIVE`: After updating the stage count, drive `stage1 = vhi` when `stage_count >= 1`, `stage2 = vhi` when `stage_count >= 2`, and `ready = vhi` when `stage_count >= final_stage`; otherwise drive each of those observables to `0 V`. Drive `progress = vhi * clip01(stage_count / final_stage)`. Hold the last observable values between rising clock crossings.
+
+The evaluator saves and may inspect these public trace signals: `time`, `bias_ok`, `clk`, `progress`, `ready`, `rst`, `stage1`, `stage2`, `supply_ok`.
+
+
 The required trace names are: `time`, `bias_ok`, `clk`, `progress`, `ready`, `rst`, `stage1`, `stage2`, `supply_ok`.
 
 ## Modeling Constraints

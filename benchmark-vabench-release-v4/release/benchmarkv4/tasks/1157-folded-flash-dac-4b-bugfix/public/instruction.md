@@ -33,6 +33,12 @@ The repaired bundle must satisfy every public property:
 - `P_FOLD_MIRROR_TRANSFER`: restore: The upper folded branch mirrors the subcode around the fold center instead of using a direct unsigned code. Required traces: `time`, `vd1`, `vd2`, `vd3`, `vd4`, `vout`.
 - `P_OUTPUT_SCALE_DENOMINATOR`: restore: The folded code is scaled by the declared 4-bit denominator and reference before driving `vout`. Required traces: `time`, `vd1`, `vd2`, `vd3`, `vd4`, `vout`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+Decode the inputs as voltage-coded bits. Use `vd4` as the folding MSB and `vd3:vd1` as the lower subcode. When the folding MSB is high, add the subcode above the fold center; when it is low, mirror the subcode below the fold center. Drive `vout = vref * folded_code / 16.0`, where `folded_code` is the folded 4-bit code after that mirror operation.
+
+
 ## Modeling Constraints
 
 - Use deterministic voltage-domain behavioral Verilog-A.

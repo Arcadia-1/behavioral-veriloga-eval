@@ -53,6 +53,17 @@ Create stimulus and save traces sufficient for the fixed evaluator oracle to che
 - `P_CURRENT_LIMITING`: exercise and make observable: Demand above demand_limit produces limit_metric equal to the overload and reduces vout by that overload subject to rails and dropout. Required traces: `time`, `vin`, `load_demand`, `enable`, `rst`, `vout`, `limit_metric`.
 - `P_REGULATION_FLAG`: exercise and make observable: regulation_ok is high only for enabled, non-reset, non-limited operation with enough input headroom. Required traces: `time`, `vin`, `load_demand`, `enable`, `rst`, `regulation_ok`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+- On reset or when disabled, drive `vout`, `limit_metric`, and `regulation_ok` low.
+- When enabled with enough input headroom and load demand below `demand_limit`, drive `vout` toward `vref`.
+- When input headroom is insufficient, clamp the target output below `V(vin) - dropout`.
+- When `load_demand` exceeds `demand_limit`, reduce the target output in proportion to the overload and expose the overload amount on `limit_metric`.
+- Assert `regulation_ok` only when the commanded target is within the normal regulation window and not current-limited.
+- This is a voltage-domain macromodel; the load demand is a voltage-coded proxy and no branch-current oracle is required.
+
+
 The required trace names are: `time`, `vin`, `load_demand`, `enable`, `rst`, `vout`, `limit_metric`, `regulation_ok`.
 
 ## Modeling Constraints

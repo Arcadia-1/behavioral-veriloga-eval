@@ -37,6 +37,22 @@ The repaired bundle must satisfy every public property:
 - `P_CONTROL_CLAMP`: restore: Repeated sampled movement cannot drive vctrl below vmin or above vmax. Required traces: `time`, `clk`, `up`, `dn`, `vctrl`.
 - `P_SAMPLED_HOLD`: restore: Changes on up or dn between rising clock crossings do not immediately change vctrl. Required traces: `time`, `clk`, `up`, `dn`, `vctrl`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+The module represents UP/DN pulse effects as a sampled voltage-domain control-node update without current-domain charge-pump contributions.
+
+- Treat `clk`, `rst`, `up`, and `dn` as voltage-coded logic inputs.
+- On rising `clk` edges, sample the UP/DN request when reset is low.
+- A sampled UP-only pulse increases `vctrl` by `step`.
+- A sampled DN-only pulse decreases `vctrl` by `step`.
+- Simultaneous UP/DN or absent pulses hold the current control voltage.
+- Clamp `vctrl` between `vmin` and `vmax`.
+- When `rst` is high, reset `vctrl` to midscale.
+- Drive `metric` as a voltage-coded status observable: 0.75 V for UP movement,
+  0.15 V for DN movement, and 0.45 V for hold/reset.
+
+
 ## Modeling Constraints
 
 - Represent charge-pump requests as sampled voltage-domain state updates.

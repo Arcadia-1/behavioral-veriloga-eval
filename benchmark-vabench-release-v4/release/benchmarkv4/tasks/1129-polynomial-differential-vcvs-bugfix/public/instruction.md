@@ -35,6 +35,12 @@ The repaired bundle must satisfy every public property:
 - `P_SYMMETRIC_SATURATION`: restore: Limit the half-swing to the inclusive interval `[-vsat, vsat]` before driving both outputs. Required traces: `time`, `inp`, `inn`, `outp`, `outn`.
 - `P_OUTPUT_COMMON_MODE`: restore: Keep both outputs symmetric around the common-mode parameter `vcmo`. Required traces: `time`, `outp`, `outn`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+Use `V(inp, inn)` as the differential input. Build the output half-swing from the odd and even polynomial coefficients through seventh order, divide the polynomial result by two, limit that half-swing to `[-vsat, vsat]`, and drive `outp` and `outn` symmetrically around `vcmo`.
+
+
 ## Modeling Constraints
 
 - Use deterministic voltage-domain behavioral Verilog-A.

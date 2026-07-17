@@ -43,6 +43,12 @@ Create stimulus and save traces sufficient for the fixed evaluator oracle to che
 - `P_HALVING_SEARCH_STEP`: exercise and make observable: The differential search step halves after each sampled decision. Required traces: `time`, `clk`, `dcmpp`, `vinp`, `vinn`.
 - `P_COMMON_MODE_HALF_SCALE_DRIVE`: exercise and make observable: `vinp` and `vinn` are driven symmetrically around the common-mode level with half differential amplitude on each side. Required traces: `time`, `vinp`, `vinn`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+Initialize the differential search residue to zero. On each falling `clk` threshold crossing, sample `dcmpp`: a high decision moves the differential input in the negative direction, and a low decision moves it in the positive direction. Halve the search step after every update. Drive `vinp` and `vinn` symmetrically around `0.5*vdd` from the current residue.
+
+
 The required trace names are: `time`, `clk`, `dcmpp`, `vinp`, `vinn`.
 
 ## Modeling Constraints

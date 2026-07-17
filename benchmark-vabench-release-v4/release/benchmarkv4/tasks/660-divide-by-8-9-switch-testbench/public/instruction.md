@@ -45,6 +45,12 @@ Create stimulus and save traces sufficient for the fixed evaluator oracle to che
 - `P_DIVIDER_DUTY_WINDOW`: exercise and make observable: The divider output high window spans the specified count interval for the active modulus. Required traces: `time`, `clkin`, `mc`, `out`.
 - `P_OUTPUT_RAIL_LEVEL`: exercise and make observable: `out` uses the declared high and low output levels without amplitude scaling. Required traces: `time`, `clkin`, `mc`, `out`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+Initialize the divider in divide-by-8 mode with `out` low; the first post-initial rising `clkin` crossing enters the high output window. Count rising crossings of `clkin` through `vth`. Use divide-by-8 mode while `mc` is low and switch to divide-by-9 mode while `mc` is high. Wrap the counter modulo the active divisor and drive `out` high for count values 0 through 3, low otherwise.
+
+
 The required trace names are: `time`, `clkin`, `mc`, `out`.
 
 ## Modeling Constraints

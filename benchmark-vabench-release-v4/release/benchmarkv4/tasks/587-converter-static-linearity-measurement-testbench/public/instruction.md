@@ -50,6 +50,49 @@ Create stimulus and save traces sufficient for the fixed evaluator oracle to che
 - `P_DNL_INCREASING_STEP`: exercise and make observable: For a valid increasing code step, dnl encodes actual reconstruction-step error relative to vfs/15 per code step with the public scaling and clamp. Required traces: `time`, `clk`, `code`, `recon`, `dnl`.
 - `P_DNL_NO_STEP_BASELINE`: exercise and make observable: Before a valid increasing step, or when code does not increase, dnl is held at the 0.45 V baseline. Required traces: `time`, `clk`, `code`, `recon`, `dnl`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+This is an L2 converter measurement-flow component, not just an ideal quantizer.
+On each rising crossing of `clk`, reset the retained state when `rst` is high.
+Otherwise, clip `vin` to the 0-to-`vfs` range, quantize it to a 4-bit code, and
+drive `code` as the code index times `vfs / 15`.
+
+Drive `recon` from this public monotonic non-ideal reconstruction table for
+codes 0 through 15. The numbers below are the default voltages for
+`vfs = 0.9 V`; for any legal `vfs` override, scale each table entry by
+`vfs / 0.9`.
+
+```text
+0.000, 0.055, 0.118, 0.182, 0.245, 0.303, 0.366, 0.428,
+0.491, 0.553, 0.612, 0.674, 0.735, 0.798, 0.855, 0.900
+```
+
+Use the ideal 4-bit reference ramp `ideal_recon = (vfs / 15) * code_index`.
+Drive `inl` as:
+
+```text
+inl = clamp(0.45 + 3.0 * (recon - ideal_recon), 0.05, 0.85)
+```
+
+For `dnl`, retain the previous valid code and reconstruction. When the current
+code is greater than the previous code, compute:
+
+```text
+ideal_step = (vfs / 15) * (code_index - previous_code_index)
+step_err = (recon - previous_recon) - ideal_step
+dnl = clamp(0.45 + 4.0 * step_err, 0.05, 0.85)
+```
+
+When there is no previous valid increasing code step, drive `dnl = 0.45`.
+
+**Public Verification Context**
+
+The public transient scenario saves `clk`, `rst`, `vin`, `code`, `recon`, `dnl`,
+and `inl` over a converter sweep. Treat those values as the verification
+scenario for observable behavior, not as DUT implementation details.
+
+
 The required trace names are: `time`, `clk`, `rst`, `vin`, `code`, `recon`, `dnl`, `inl`.
 
 ## Modeling Constraints

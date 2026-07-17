@@ -42,6 +42,12 @@ Create stimulus and save traces sufficient for the fixed evaluator oracle to che
 - `P_DIFFERENTIAL_GAIN_FOUR`: exercise and make observable: Make the differential output `V(voutp) - V(voutn)` equal to four times `V(vinp, vinn)`. Required traces: `time`, `vinp`, `vinn`, `voutp`, `voutn`.
 - `P_OUTPUT_POLARITY`: exercise and make observable: For positive `V(vinp, vinn)`, drive `voutp` above common mode and `voutn` below common mode. Required traces: `time`, `vinp`, `vinn`, `voutp`, `voutn`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+Maintain a fixed output common mode of 0.5 V. The differential output must be four times the input differential voltage, with `voutp` increasing and `voutn` decreasing when `V(vinp, vinn)` is positive.
+
+
 The required trace names are: `time`, `vinn`, `vinp`, `voutn`, `voutp`.
 
 ## Modeling Constraints

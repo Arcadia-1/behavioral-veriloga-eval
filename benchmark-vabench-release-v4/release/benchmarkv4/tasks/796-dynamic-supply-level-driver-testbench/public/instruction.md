@@ -49,6 +49,17 @@ Create stimulus and save traces sufficient for the fixed evaluator oracle to che
 - `P_VLO_FRAC_0_0_VHI_FRAC`: exercise and make observable: `vlo_frac = 0.0`, `vhi_frac = 1.0`: output low and high levels expressed as Required traces: `time`, `din`, `out`, `vdd`, `vss`.
 - `P_TR_40P_OUTPUT_TRANSITION_SMOOTHING_TIME`: exercise and make observable: `tr = 40p`: output transition smoothing time. Required traces: `time`, `din`, `out`, `vdd`, `vss`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+Model a dynamic-supply electrical level driver. Compute the input level relative
+to the local rails, not global ground. When `V(vdd, vss)` is at least
+`vsup_min`, drive `out` to the local low or high rail-derived level according to
+whether the normalized input exceeds `vth_frac`. When the supply is below
+`vsup_min`, drive `out` to the local low level. Smooth the output with
+`transition()`.
+
+
 The required trace names are: `time`, `din`, `out`, `vdd`, `vss`.
 
 ## Modeling Constraints

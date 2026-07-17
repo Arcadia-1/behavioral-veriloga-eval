@@ -44,6 +44,15 @@ Create stimulus and save traces sufficient for the fixed evaluator oracle to che
 - `P_DRIVE_OUT_LOW_WHEN_THE_STATE`: exercise and make observable: Drive `out` low when the state is low and to `vdd` when the state is high. Required traces: `time`, `clk`, `out`.
 - `P_THE_FIRST_VALID_RISING_EDGE_DRIVES`: exercise and make observable: The first valid rising edge drives `out` high. Required traces: `time`, `clk`, `out`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+- Initialize the internal divider state low.
+- Toggle the state on every rising `clk` crossing through `vth`.
+- Drive `out` low when the state is low and to `vdd` when the state is high.
+- The first valid rising edge drives `out` high.
+
+
 The required trace names are: `time`, `clk`, `out`.
 
 ## Modeling Constraints

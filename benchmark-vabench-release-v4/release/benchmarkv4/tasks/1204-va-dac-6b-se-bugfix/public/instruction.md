@@ -33,6 +33,19 @@ The repaired bundle must satisfy every public property:
 - `P_TEXT_WEIGHTED_CODE_16_DIN5_8`: restore: ```text weighted_code = 16*din5 + 8*din4 + 4*din3 + 2*din2 + 1*din1 + 0.5*din0 aout = (weighted_code / 47.5) * 2.0 * vdd - vdd ``` Required traces: `time`, `aout`, `din0`, `din1`, `din2`, `din3`, `din4`, `din5`, `rdy`.
 - `P_EACH_DIN_TERM_IS_1_WHEN`: restore: Each `din*` term is `1` when the corresponding voltage is above `vth` and `0` otherwise. The denominator `47.5` is the fixed source normalization basis including the non-switching reference contribution. Required traces: `time`, `aout`, `din0`, `din1`, `din2`, `din3`, `din4`, `din5`, `rdy`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+On each rising `rdy` crossing, sample `din0..din5` with switched weights `0.5, 1, 2, 4, 8, 16` from `din0` through `din5`. Map the sampled weighted code to a bipolar single-ended output scaled by `vdd` using this public normalization:
+
+```text
+weighted_code = 16*din5 + 8*din4 + 4*din3 + 2*din2 + 1*din1 + 0.5*din0
+aout = (weighted_code / 47.5) * 2.0 * vdd - vdd
+```
+
+Each `din*` term is `1` when the corresponding voltage is above `vth` and `0` otherwise. The denominator `47.5` is the fixed source normalization basis including the non-switching reference contribution.
+
+
 ## Modeling Constraints
 
 - Use deterministic voltage-domain behavioral Verilog-A.

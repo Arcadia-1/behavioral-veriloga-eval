@@ -44,6 +44,14 @@ Create stimulus and save traces sufficient for the fixed evaluator oracle to che
 - `P_ENABLE_GATING`: exercise and make observable: Changing en gates the observed clock level without creating a high output while clk is logically low. Required traces: `time`, `clk`, `en`, `pulse`.
 - `P_OUTPUT_LEVELS`: exercise and make observable: pulse uses voltage-coded 0 V and vdd levels with finite transition smoothing set by tr. Required traces: `time`, `pulse`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+- Treat `clk` and `en` as voltage-coded logic using `vth`.
+- Drive `pulse` high exactly when both `clk` and `en` are high.
+- Drive `pulse` low otherwise.
+
+
 The required trace names are: `time`, `clk`, `en`, `pulse`.
 
 ## Modeling Constraints

@@ -43,6 +43,16 @@ The repaired bundle must satisfy every public property:
 - `P_VOUT_IS_THE_CLIPPED_SUM_OF`: restore: `vout` is the clipped sum of the current main contribution, previous-symbol pre contribution, and older-symbol post contribution. Required traces: `time`, `data`, `clk`, `rst`, `pre_1`, `pre_0`, `post_1`, `post_0`, `vout`, `main_dbg`, `pre_dbg`, `post_dbg`.
 - `P_HIGHER_TAP_CONTROL_CODES_MUST_INCREASE`: restore: Higher tap-control codes must increase the corresponding contribution magnitude. Required traces: `time`, `data`, `clk`, `rst`, `pre_1`, `pre_0`, `post_1`, `post_0`, `vout`, `main_dbg`, `pre_dbg`, `post_dbg`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+- Reset clears symbol history and drives all outputs to common mode.
+- On each rising `clk`, sample `data` as +1 for high and -1 for low.
+- Drive `main_dbg`, `pre_dbg`, and `post_dbg` as voltage-coded per-tap contributions around common mode.
+- `vout` is the clipped sum of the current main contribution, previous-symbol pre contribution, and older-symbol post contribution.
+- Higher tap-control codes must increase the corresponding contribution magnitude.
+
+
 ## Modeling Constraints
 
 - Use deterministic voltage-domain behavioral Verilog-A.

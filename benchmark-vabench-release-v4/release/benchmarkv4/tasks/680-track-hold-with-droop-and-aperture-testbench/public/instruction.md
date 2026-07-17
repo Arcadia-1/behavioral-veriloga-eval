@@ -54,6 +54,16 @@ Create stimulus and save traces sufficient for the fixed evaluator oracle to che
 - `P_HOLD_MODE_DROOP`: exercise and make observable: During hold mode, `vhold` droops downward by `droop_per_tick` on each update tick without going below `vss`. Required traces: `time`, `track`, `enable`, `vhold`, `droop_metric`.
 - `P_DROOP_METRIC_ACCUMULATION`: exercise and make observable: `droop_metric` accumulates total hold-mode droop and clears on a new sample, reset, or disable. Required traces: `time`, `track`, `rst`, `enable`, `droop_metric`, `valid`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+- Reset or a low `enable` clears the held output, aperture metric, droop metric, and valid flag.
+- While `track` is high, the held state tracks the input at the internal update cadence and `valid` remains low.
+- On a falling `track` edge, sample `vin`, assert `valid`, and report an aperture metric proportional to the step from the previous tracked value.
+- During hold mode, the held output droops downward by `droop_per_tick` on each update tick without going below `vss`.
+- `droop_metric` accumulates the total hold-mode droop and clears on a new sample, reset, or disable.
+
+
 The required trace names are: `time`, `vin`, `track`, `rst`, `enable`, `vhold`, `aperture_metric`, `droop_metric`, `valid`.
 
 ## Modeling Constraints

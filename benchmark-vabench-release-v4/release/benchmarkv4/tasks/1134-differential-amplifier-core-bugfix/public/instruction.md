@@ -27,6 +27,12 @@ The repaired bundle must satisfy every public property:
 - `P_INPUT_OFFSET`: restore: Subtract the fixed 0.05 V input-referred offset before applying gain. Required traces: `time`, `sigin_p`, `sigin_n`, `sigout`.
 - `P_GAIN_TWO_OUTPUT`: restore: Drive `sigout` to `2.0 * (V(sigin_p, sigin_n) - 0.05)`. Required traces: `time`, `sigin_p`, `sigin_n`, `sigout`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+Use `V(sigin_p, sigin_n)` as the input. Subtract a 0.05 V input-referred offset, apply a fixed voltage gain of 2.0, and drive the resulting single-ended output voltage on `sigout`.
+
+
 ## Modeling Constraints
 
 - Use deterministic voltage-domain behavioral Verilog-A.

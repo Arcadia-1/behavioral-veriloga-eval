@@ -41,6 +41,20 @@ The repaired bundle must satisfy every public property:
 - `P_VNOM_0_9_V_NOMINAL_SUPPLY`: restore: `vnom = 0.9 V`: nominal supply used for supply-ratio scaling. Required traces: `time`, `en`, `isup_metric`, `load`, `mode`, `pd`, `vdd`, `vss`.
 - `P_IQ0_0_08_IQ1_0_14`: restore: `iq0 = 0.08`, `iq1 = 0.14`: active quiescent metric levels for low and high Required traces: `time`, `en`, `isup_metric`, `load`, `mode`, `pd`, `vdd`, `vss`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+Drive `isup_metric` as a voltage-coded supply-current estimate. The estimate
+must scale with the local supply ratio `V(vdd, vss) / vnom` clipped to the
+range `[0, 1.5]`. Normalize load as `V(load, vss) / vhi` clipped to `[0, 1]`.
+When the block is disabled or powered down, meaning `V(en) <= vth` or
+`V(pd) > vth`, drive `isup_metric = ipd * supply_scale`. Otherwise choose the
+active base metric as `iq1` when `V(mode) > vth` and `iq0` when `V(mode) <= vth`,
+then drive `isup_metric = (base_metric + load_gain * load_norm) * supply_scale`.
+The metric is not a real branch current; it is an observable behavioral
+macro-model output.
+
+
 ## Modeling Constraints
 
 - Use deterministic voltage-domain behavioral Verilog-A.

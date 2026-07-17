@@ -47,6 +47,21 @@ Create stimulus and save traces sufficient for the fixed evaluator oracle to che
 - `P_HYSTERESIS_HOLD`: exercise and make observable: The previous decision is retained while the differential remains inside the hysteresis band. Required traces: `time`, `vinp`, `vinn`, `out_p`, `out_n`.
 - `P_COMPLEMENTARY_RAIL_OUTPUT`: exercise and make observable: OUTP and OUTN remain complementary and use the local VDD and VSS rail levels after smoothing. Required traces: `time`, `out_p`, `out_n`, `vdd`, `vss`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+- Initialize `OUTP` high only when `V(VINP,VSS) - V(VINN,VSS)` is above
+  `+vhys/2`; otherwise initialize `OUTP` low and `OUTN` high.
+- Switch to the high `OUTP` state only when the differential input rises
+  through `+vhys/2`.
+- Switch back to the low `OUTP` state only when the differential input falls
+  through `-vhys/2`.
+- Hold the previous decision while the differential input remains inside the
+  hysteresis band.
+- Drive `OUTP` and `OUTN` as complementary rail-referenced outputs using finite
+  transition-style smoothing.
+
+
 The required trace names are: `time`, `vinn`, `vinp`, `out_n`, `out_p`, `vss`, `vdd`.
 
 ## Modeling Constraints

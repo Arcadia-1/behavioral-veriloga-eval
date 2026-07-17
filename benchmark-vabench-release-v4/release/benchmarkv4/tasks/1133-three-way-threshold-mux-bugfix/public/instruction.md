@@ -32,6 +32,12 @@ The repaired bundle must satisfy every public property:
 - `P_MIDDLE_REGION_SELECTS_SIGIN2`: restore: When control is in the inclusive window `[sigth_low, sigth_high]`, drive `sigout` from `sigin2`. Required traces: `time`, `sigin2`, `cntrlp`, `cntrlm`, `sigout`.
 - `P_HIGH_REGION_SELECTS_SIGIN3`: restore: When control is above `sigth_high`, drive `sigout` from `sigin3`. Required traces: `time`, `sigin3`, `cntrlp`, `cntrlm`, `sigout`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+Use `V(cntrlp, cntrlm)` as the control signal. Select `sigin1` when the control is below `sigth_low`, select `sigin2` when it is inside the inclusive threshold window, and select `sigin3` when it is above `sigth_high`.
+
+
 ## Modeling Constraints
 
 - Use deterministic voltage-domain behavioral Verilog-A.

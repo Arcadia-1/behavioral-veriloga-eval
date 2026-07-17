@@ -48,6 +48,29 @@ Create stimulus and save traces sufficient for the fixed evaluator oracle to che
 - `P_REVERSAL_STEP_HALVING`: exercise and make observable: When the newly sampled decision direction differs from the remembered direction, the current step is halved before applying the move. Required traces: `time`, `clk`, `vout`, `vinp`, `vinn`.
 - `P_COMMON_MODE_AND_DIFFERENTIAL`: exercise and make observable: During search, the average of VINP and VINN remains vcm and their difference equals the accumulated differential search value. Required traces: `time`, `start`, `vinp`, `vinn`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+Before `START` is asserted, hold both outputs at `vcm` and reset the search
+state to differential value `0`, step `20 mV`, and high direction. On each
+rising `START` crossing through `vstart_th`, reinitialize the same search
+state. When `START` falls below `vstart_th`, disable the search and return both
+outputs to `vcm`.
+
+While `START` is high, update the search only on falling `CLK` crossings through
+`0.5 * vdd`. Use that same `0.5 * vdd` threshold for the comparator decision:
+treat `VOUT > 0.5 * vdd` as the high decision direction and `VOUT <= 0.5 * vdd`
+as the low decision direction. If the newly sampled direction differs from the
+previous search direction, halve the current step before moving. Then update
+the differential search value by `+step` for the high direction or `-step` for
+the low direction, and remember the sampled direction for the next update.
+
+Drive `VINP = vcm + 0.5 * differential_value` and
+`VINN = vcm - 0.5 * differential_value` while the search is enabled. This keeps
+the output common mode at `vcm` and makes `VINP - VINN` equal to the accumulated
+differential search value.
+
+
 The required trace names are: `time`, `clk`, `vout`, `start`, `vinp`, `vinn`.
 
 ## Modeling Constraints

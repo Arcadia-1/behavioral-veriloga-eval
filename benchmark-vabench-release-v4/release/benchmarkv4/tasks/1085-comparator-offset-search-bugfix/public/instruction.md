@@ -35,6 +35,23 @@ The repaired bundle must satisfy every public property:
 - `P_CAPTURE_HOLD`: restore: After valid asserts, trip_v, offset_est, and valid retain their first-measurement values despite later differential-input changes. Required traces: `time`, `inp`, `inn`, `trip_v`, `offset_est`, `valid`.
 - `P_RAIL_REFERENCED_LOGIC`: restore: Outp and valid use the vdd-to-vss logic range with finite transition smoothing. Required traces: `time`, `vdd`, `vss`, `outp`, `valid`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+- Initialize `valid`, `trip_v`, and `offset_est` to a zero-measurement state.
+- Initialize `outp` consistently with the current differential input relative
+  to `vos`.
+- Drive `outp` high when `V(inp,vss) - V(inn,vss)` rises above `vos`.
+- Drive `outp` low when that differential input falls back below `vos`.
+- On the first positive crossing of the offset threshold, capture the input
+  trip voltage on `trip_v`, capture the measured differential offset on
+  `offset_est`, and assert `valid`.
+- Keep the captured `trip_v`, `offset_est`, and `valid` state stable after the
+  first valid measurement.
+- Drive voltage-coded logic outputs rail-to-rail relative to `vdd` and `vss`
+  using finite transition-style smoothing.
+
+
 ## Modeling Constraints
 
 - Use deterministic crossing-event state for comparator decision and one-shot measurement capture.

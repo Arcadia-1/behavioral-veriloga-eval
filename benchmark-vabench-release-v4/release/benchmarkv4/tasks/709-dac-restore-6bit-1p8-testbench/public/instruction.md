@@ -46,6 +46,18 @@ Create stimulus and save traces sufficient for the fixed evaluator oracle to che
 - `P_TEXT_VOUT_CODE_0_5_3`: exercise and make observable: ```text vout = (code + 0.5) * 3.6 / 64 - 1.8 ``` Required traces: `time`, `clk`, `d1`, `d2`, `d3`, `d4`, `d5`, `d6`, `vout`.
 - `P_THE_ALL_ZERO_CODE_THEREFORE_PRODUCES`: exercise and make observable: The all-zero code therefore produces the lowest half-LSB-centered negative level, and the all-one code produces the highest half-LSB-centered positive level. Required traces: `time`, `clk`, `d1`, `d2`, `d3`, `d4`, `d5`, `d6`, `vout`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+On each rising crossing of `clk` through `vth`, sample `d1..d6` and decode an unsigned 6-bit code with weights `32, 16, 8, 4, 2, 1`. Hold the decoded output until the next rising clock event. Map the sampled code to a bipolar 1.8 V mid-rise level:
+
+```text
+vout = (code + 0.5) * 3.6 / 64 - 1.8
+```
+
+The all-zero code therefore produces the lowest half-LSB-centered negative level, and the all-one code produces the highest half-LSB-centered positive level.
+
+
 The required trace names are: `time`, `clk`, `d1`, `d2`, `d3`, `d4`, `d5`, `d6`, `vout`.
 
 ## Modeling Constraints

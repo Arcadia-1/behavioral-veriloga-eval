@@ -54,6 +54,27 @@ Create stimulus and save traces sufficient for the fixed evaluator oracle to che
 - `P_PLANT_CONVERGENCE`: exercise and make observable: Out follows out_next = clamp(out + plant_alpha * (residual_mon_next - out), vmin, vmax) on each non-reset update. Required traces: `time`, `clk`, `vin`, `out`, `residual_mon`.
 - `P_BOUNDS_AND_METRIC`: exercise and make observable: Bounded analog states remain within vmin through vmax, while metric equals clamp(0.9 - 1.5 * abs(out-target), 0.0, 0.9) after each update. Required traces: `time`, `out`, `metric`, `trim_mon`, `residual_mon`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+On reset, initialize the trim state, residual monitor, corrected output, and
+metric to their target states. After reset releases, update the loop on rising
+clock crossings. Use the following observable update relationship:
+
+```text
+raw_error = V(vin) - target
+residual_before_update = raw_error + (trim_mon - target)
+trim_mon_next = clamp(trim_mon - loop_gain * residual_before_update, vmin, vmax)
+residual_mon_next = clamp(target + raw_error + (trim_mon_next - target), vmin, vmax)
+out_next = clamp(out + plant_alpha * (residual_mon_next - out), vmin, vmax)
+metric_next = clamp(0.9 - 1.5 * abs(out_next - target), 0.0, 0.9)
+```
+
+Thus the trim correction moves opposite the sampled residual, all bounded
+analog states stay in the public `vmin` through `vmax` range, and `metric`
+reaches its maximum when `out` is at `target`.
+
+
 The required trace names are: `time`, `clk`, `rst`, `vin`, `out`, `metric`, `trim_mon`, `residual_mon`.
 
 ## Modeling Constraints

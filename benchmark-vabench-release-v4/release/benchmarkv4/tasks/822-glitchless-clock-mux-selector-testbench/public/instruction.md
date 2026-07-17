@@ -53,6 +53,18 @@ Create stimulus and save traces sufficient for the fixed evaluator oracle to che
 - `P_EXPOSE_A_SWITCH_EVENT_ON_SWITCH`: exercise and make observable: Expose a switch event on `switch_metric` for one output cycle after the selected source changes. Required traces: `time`, `clk_a`, `clk_b`, `sel`, `rst`, `enable`, `clk_out`, `switch_metric`, `valid`.
 - `P_ASSERT_VALID_AFTER_THE_SELECTED_SOURCE`: exercise and make observable: Assert `valid` after the selected source has produced one clean output edge. Required traces: `time`, `clk_a`, `clk_b`, `sel`, `rst`, `enable`, `clk_out`, `switch_metric`, `valid`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+- On reset or when disabled, drive `clk_out`, `switch_metric`, and `valid` low.
+- Route `clk_a` when `sel` is low and `clk_b` when `sel` is high.
+- When `sel` changes, wait until both input clocks are low before changing the active source.
+- Expose a switch event on `switch_metric` for one output cycle after the selected source changes.
+- Assert `valid` after the selected source has produced one clean output edge.
+- Use only voltage-domain behavioral state and voltage contributions on public electrical outputs.
+- Do not expose pass/fail flags; expose only the public observable metrics named in the interface.
+
+
 The required trace names are: `time`, `clk_a`, `clk_b`, `sel`, `rst`, `enable`, `clk_out`, `switch_metric`, `valid`.
 
 ## Modeling Constraints

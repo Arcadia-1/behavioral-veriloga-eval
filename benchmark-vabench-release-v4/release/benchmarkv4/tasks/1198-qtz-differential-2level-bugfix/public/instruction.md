@@ -32,6 +32,12 @@ The repaired bundle must satisfy every public property:
 - `P_BIPOLAR_TWO_LEVEL_OUTPUT`: restore: Drive `dout` to the signed `+0.5` or `-0.5` level rather than a unipolar code. Required traces: `time`, `clk`, `dout`, `vinn`, `vinp`, `vrefn`, `vrefp`.
 - `P_CLOCKED_OUTPUT_HOLD`: restore: Between rising clock decisions, hold the previous quantized output value. Required traces: `time`, `clk`, `dout`, `vinn`, `vinp`, `vrefn`, `vrefp`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+Initialize the signed output code to `-0.5`. On each rising `clk` crossing, compute `vinp-vinn` and compare it with the midpoint between `vrefn` and `vrefp`. Drive `dout` to `+0.5` when the sampled input difference is above that reference level and to `-0.5` otherwise. Hold the previous quantized code between clock edges.
+
+
 ## Modeling Constraints
 
 - Use deterministic voltage-domain behavioral Verilog-A.

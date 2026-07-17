@@ -27,6 +27,12 @@ The repaired bundle must satisfy every public property:
 - `P_MAGNITUDE_FLOOR`: restore: Floor the magnitude at 0.1 V before applying the logarithm. Required traces: `time`, `sigin`, `sigout`.
 - `P_NATURAL_LOG_OUTPUT`: restore: Drive `sigout` to the natural logarithm of the guarded magnitude. Required traces: `time`, `sigin`, `sigout`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+Subtract a 0.2 V input offset, take the absolute value of the adjusted voltage, floor the magnitude at 0.1 V to keep the logarithm well-defined, and drive `sigout` with the natural logarithm of that guarded magnitude.
+
+
 ## Modeling Constraints
 
 - Use deterministic voltage-domain behavioral Verilog-A.

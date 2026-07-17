@@ -40,6 +40,18 @@ The repaired bundle must satisfy every public property:
 - `P_HIGHER_BANDWIDTH_CODE_MUST_MOVE_VOUT`: restore: Higher bandwidth code must move `vout` closer to `vin` per update. Required traces: `time`, `vin`, `clk`, `rst`, `enable`, `bw_1`, `bw_0`, `vout`, `bandwidth_metric`, `valid`.
 - `P_EXPOSE_THE_ACTIVE_BANDWIDTH_CODE_ON`: restore: Expose the active bandwidth code on `bandwidth_metric` and assert `valid` after the first update. Required traces: `time`, `vin`, `clk`, `rst`, `enable`, `bw_1`, `bw_0`, `vout`, `bandwidth_metric`, `valid`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+- On reset or when disabled, drive `vout` to `vcm`, clear metric, and clear `valid`.
+- On each enabled rising `clk` edge, decode `bw_1..bw_0` as a bandwidth setting.
+- Update `vout` as a first-order discrete-time low-pass response to `vin`.
+- Higher bandwidth code must move `vout` closer to `vin` per update.
+- Expose the active bandwidth code on `bandwidth_metric` and assert `valid` after the first update.
+- Use only voltage-domain behavioral state and voltage contributions on public electrical outputs.
+- Do not expose pass/fail flags; expose only the public observable metrics named in the interface.
+
+
 ## Modeling Constraints
 
 - Use deterministic voltage-domain behavioral Verilog-A.

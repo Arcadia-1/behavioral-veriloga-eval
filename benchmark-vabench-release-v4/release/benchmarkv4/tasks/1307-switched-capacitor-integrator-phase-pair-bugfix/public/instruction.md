@@ -71,6 +71,18 @@ The repaired bundle must satisfy every public property:
 - `P_EXPOSE_THE_MOST_RECENT_ACCEPTED_PHASE`: restore: Expose the most recent accepted phase pair on `phase_metric` and clamp `vout` to the rails. Required traces: `time`, `vin`, `phi1`, `phi2`, `rst`, `enable`, `vout`, `phase_metric`, `valid`.
 - `P_USE_ONLY_VOLTAGE_DOMAIN_BEHAVIORAL_STATE`: restore: Use only voltage-domain behavioral state and voltage contributions on public electrical outputs. Required traces: `time`, `vin`, `phi1`, `phi2`, `rst`, `enable`, `vout`, `phase_metric`, `valid`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+- On reset or when disabled, clear the integration state, drive `vout` to `vcm`, and clear `valid`.
+- On a rising `phi1` crossing, sample the input deviation from `vcm` into the sampling state.
+- On the following rising `phi2` crossing, add `k_int` times the sampled deviation to the integrator state.
+- Reject overlapping `phi1` and `phi2` updates by holding the previous state and lowering `valid` for that cycle.
+- Expose the most recent accepted phase pair on `phase_metric` and clamp `vout` to the rails.
+- Use only voltage-domain behavioral state and voltage contributions on public electrical outputs.
+- Do not expose pass/fail flags; expose only the public observable metrics named in the interface.
+
+
 ## Modeling Constraints
 
 - Use deterministic voltage-domain behavioral Verilog-A.

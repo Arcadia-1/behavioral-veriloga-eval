@@ -41,6 +41,21 @@ The repaired bundle must satisfy every public property:
 - `P_OUTPUT_CLAMP`: restore: Both baseband outputs remain within the declared supply rails. Required traces: `time`, `rf_in`, `lo_i`, `lo_q`, `rst`, `enable`, `i_out`, `q_out`, `lo_i_metric`, `lo_q_metric`, `polarity_ok`.
 - `P_POLARITY_QUALIFICATION`: restore: polarity_ok asserts only after both LO controls have toggled while enabled. Required traces: `time`, `rf_in`, `lo_i`, `lo_q`, `rst`, `enable`, `i_out`, `q_out`, `lo_i_metric`, `lo_q_metric`, `polarity_ok`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+- On reset or when `enable` is low, drive `i_out` and `q_out` to `vcm`, clear LO metrics, and clear `polarity_ok`.
+- Interpret `lo_i` and `lo_q` as voltage-coded quadrature LO polarity controls.
+- Map each LO control to signed multiplier `s`: high means `s = +1` and low
+  means `s = -1`.
+- Drive `i_out = vcm + conversion_gain * (V(rf_in) - vcm) * s_i` and
+  `q_out = vcm + conversion_gain * (V(rf_in) - vcm) * s_q` before clamping.
+- Clamp `i_out` and `q_out` to `[vss, vdd]`.
+- `lo_i_metric` and `lo_q_metric` must be `vdd` for positive polarity and
+  `vss` for negative polarity.
+- Assert `polarity_ok` only after both LO controls have been observed toggling while enabled.
+
+
 ## Modeling Constraints
 
 - Use deterministic voltage-domain behavioral Verilog-A.

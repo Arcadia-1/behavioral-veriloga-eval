@@ -42,6 +42,12 @@ The repaired bundle must satisfy every public property:
 - `P_FULL_TAP_COVERAGE`: restore: Upper and lower tap inputs all contribute to the count; no subset of taps is ignored. Required traces: `time`, `clks`, `dout`, `dt0`, `dt1`, `dt10`, `dt11`, `dt12`, `dt13`, `dt14`, `dt2`, `dt3`, `dt4`, `dt5`, `dt6`, `dt7`, `dt8`, `dt9`.
 - `P_FRACTION_NORMALIZATION_AND_GAIN`: restore: `dout` reports the count divided by 15 without additional gain scaling. Required traces: `time`, `clks`, `dout`, `dt0`, `dt1`, `dt10`, `dt11`, `dt12`, `dt13`, `dt14`, `dt2`, `dt3`, `dt4`, `dt5`, `dt6`, `dt7`, `dt8`, `dt9`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+On each rising crossing of `clks` through `vth`, count how many of the 15 tap inputs are above `vth`, divide the count by 15, and hold the fraction on `dout`.
+
+
 ## Modeling Constraints
 
 - Use deterministic voltage-domain behavioral Verilog-A.

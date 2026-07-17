@@ -87,6 +87,18 @@ Create stimulus and save traces sufficient for the fixed evaluator oracle to che
 - `P_DRIVE_VOUT_AS_A_BOOSTED_VERSION`: exercise and make observable: Drive `vout` as a boosted version of `vin - vcm` using the active boost code. Required traces: `time`, `vin`, `edge_metric_in`, `clk`, `rst`, `enable`, `boost_2`, `boost_1`, `boost_0`, `vout`, `adapt_metric`, `locked`.
 - `P_ASSERT_LOCKED_AFTER_THREE_CONSECUTIVE_UPDATES`: exercise and make observable: Assert `locked` after three consecutive updates within the target tolerance. Required traces: `time`, `vin`, `edge_metric_in`, `clk`, `rst`, `enable`, `boost_2`, `boost_1`, `boost_0`, `vout`, `adapt_metric`, `locked`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+- On reset or when disabled, clear boost code, output, metric, and `locked`.
+- On each enabled rising `clk` edge, compare `edge_metric_in` with `edge_target`.
+- Increase boost code when edge metric is too low and decrease it when too high.
+- Drive `vout` as a boosted version of `vin - vcm` using the active boost code.
+- Assert `locked` after three consecutive updates within the target tolerance.
+- Use only voltage-domain behavioral state and voltage contributions on public electrical outputs.
+- Do not expose pass/fail flags; expose only the public observable metrics named in the interface.
+
+
 The required trace names are: `time`, `vin`, `edge_metric_in`, `clk`, `rst`, `enable`, `boost_2`, `boost_1`, `boost_0`, `vout`, `adapt_metric`, `locked`.
 
 ## Modeling Constraints

@@ -46,6 +46,15 @@ Create stimulus and save traces sufficient for the fixed evaluator oracle to che
 - `P_INITIALIZE_EVENT_COUNT_SAMPLE_COUNT_RATE`: exercise and make observable: Initialize `event_count`, `sample_count`, `rate`, and `average` to zero. On each rising clock crossing, clear the measurement window and both observables when `rst` is high or `gate <= vth`. Otherwise increment `sample_count`, increment `event_count` when `event_in > vth`, and drive `rate = vhi * clip01(event_count / window_count)`. Required traces: `time`, `average`, `clk`, `event_in`, `gate`, `rate`, `rst`.
 - `P_FOR_THE_SAME_GATED_SAMPLE_WINDOW`: exercise and make observable: For the same gated sample window, drive `average = vhi * clip01(event_count / sample_count)`. Hold the last observable values between rising clock crossings. Required traces: `time`, `average`, `clk`, `event_in`, `gate`, `rate`, `rst`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+- `P_INITIALIZE_EVENT_COUNT_SAMPLE_COUNT_RATE`: Initialize `event_count`, `sample_count`, `rate`, and `average` to zero. On each rising clock crossing, clear the measurement window and both observables when `rst` is high or `gate <= vth`. Otherwise increment `sample_count`, increment `event_count` when `event_in > vth`, and drive `rate = vhi * clip01(event_count / window_count)`.
+- `P_FOR_THE_SAME_GATED_SAMPLE_WINDOW`: For the same gated sample window, drive `average = vhi * clip01(event_count / sample_count)`. Hold the last observable values between rising clock crossings.
+
+The evaluator saves and may inspect these public trace signals: `time`, `average`, `clk`, `event_in`, `gate`, `rate`, `rst`.
+
+
 The required trace names are: `time`, `average`, `clk`, `event_in`, `gate`, `rate`, `rst`.
 
 ## Modeling Constraints

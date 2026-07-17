@@ -37,6 +37,12 @@ The repaired bundle must satisfy every public property:
 - `P_CHANNEL_MAPPING`: restore: Each sampled input channel maps to the same-numbered output channel without swaps. Required traces: `time`, `clk`, `vin0`, `vin1`, `vin2`, `vin3`, `vout0`, `vout1`, `vout2`, `vout3`.
 - `P_OUTPUT_GAIN_AND_HOLD`: restore: Each `vout` holds the sampled amplitude without gain scaling until the next sampling edge. Required traces: `time`, `clk`, `vin0`, `vin1`, `vin2`, `vin3`, `vout0`, `vout1`, `vout2`, `vout3`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+On the configured crossing direction of `clk` through `vdd/2`, simultaneously sample `vin0` through `vin3` and hold the sampled values on the matching outputs until the next sampling event.
+
+
 ## Modeling Constraints
 
 - Use deterministic voltage-domain behavioral Verilog-A.

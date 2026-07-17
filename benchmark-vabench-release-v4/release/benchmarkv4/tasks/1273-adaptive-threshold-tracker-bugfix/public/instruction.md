@@ -37,6 +37,15 @@ The repaired bundle must satisfy every public property:
 - `P_INITIALIZE_THE_STORED_THRESHOLD_TO_THRESHOLD`: restore: Initialize the stored threshold to `threshold_init`, `threshold_mon` to `threshold_init`, and the other observables to zero. On each rising clock crossing, reset the stored threshold and outputs to those initial values while `rst` is high. Otherwise compare `vin` against the previously stored threshold: drive `trip = vhi` when `V(vin) > old_threshold`, otherwise drive `trip = 0 V`. Drive `margin_metric = vhi * clip01(abs(V(vin) - old_threshold) / margin_fullscale)`. Required traces: `time`, `adapt`, `clk`, `margin_metric`, `rst`, `threshold_mon`, `trip`, `vin`.
 - `P_WHEN_ADAPT_VTH_UPDATE_THE_STORED`: restore: When `adapt > vth`, update the stored threshold after the comparison using `threshold = clamp(adapt_alpha * old_threshold + (1.0 - adapt_alpha) * V(vin), threshold_min, threshold_max)`. Drive `threshold_mon` with the resulting next-sample threshold. Hold the last observable values between rising clock crossings. Required traces: `time`, `adapt`, `clk`, `margin_metric`, `rst`, `threshold_mon`, `trip`, `vin`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+- `P_INITIALIZE_THE_STORED_THRESHOLD_TO_THRESHOLD`: Initialize the stored threshold to `threshold_init`, `threshold_mon` to `threshold_init`, and the other observables to zero. On each rising clock crossing, reset the stored threshold and outputs to those initial values while `rst` is high. Otherwise compare `vin` against the previously stored threshold: drive `trip = vhi` when `V(vin) > old_threshold`, otherwise drive `trip = 0 V`. Drive `margin_metric = vhi * clip01(abs(V(vin) - old_threshold) / margin_fullscale)`.
+- `P_WHEN_ADAPT_VTH_UPDATE_THE_STORED`: When `adapt > vth`, update the stored threshold after the comparison using `threshold = clamp(adapt_alpha * old_threshold + (1.0 - adapt_alpha) * V(vin), threshold_min, threshold_max)`. Drive `threshold_mon` with the resulting next-sample threshold. Hold the last observable values between rising clock crossings.
+
+The evaluator saves and may inspect these public trace signals: `time`, `adapt`, `clk`, `margin_metric`, `rst`, `threshold_mon`, `trip`, `vin`.
+
+
 ## Modeling Constraints
 
 - Use deterministic voltage-domain behavioral Verilog-A.

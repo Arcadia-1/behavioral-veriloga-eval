@@ -45,6 +45,15 @@ Create stimulus and save traces sufficient for the fixed evaluator oracle to che
 - `P_NO_HIGH_PHASE_TRACKING`: exercise and make observable: Changes on IN while CLK remains high do not make OUT transparent before the next rising crossing. Required traces: `time`, `in`, `clk`, `out`.
 - `P_LOCAL_RAIL_REFERENCE`: exercise and make observable: The held analog voltage is driven as a smooth voltage-domain output referenced to the local VDD and VSS rails. Required traces: `time`, `vdd`, `vss`, `in`, `out`.
 
+
+The following canonical public behavior is normative for this derived form:
+
+- Sample `IN` on each rising `CLK` crossing of `vth`.
+- Hold the sampled voltage on `OUT` between rising clock crossings.
+- Do not continuously track `IN` while the clock is between sample events.
+- Drive `OUT` with smooth voltage-domain behavior referenced to the local rails.
+
+
 The required trace names are: `time`, `vdd`, `vss`, `in`, `clk`, `out`.
 
 ## Modeling Constraints
